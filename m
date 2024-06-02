@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B533F8D7A42
+	by mail.lfdr.de (Postfix) with ESMTPS id A5D208D7A41
 	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jun 2024 05:00:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sDxsi-00015S-Ja; Sun, 02 Jun 2024 22:57:08 -0400
+	id 1sDxsi-00015n-M3; Sun, 02 Jun 2024 22:57:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sDxsc-0000xE-BI
- for qemu-devel@nongnu.org; Sun, 02 Jun 2024 22:57:02 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sDxsd-0000uk-Sb
+ for qemu-devel@nongnu.org; Sun, 02 Jun 2024 22:57:03 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sDmJo-0000En-2l
- for qemu-devel@nongnu.org; Sun, 02 Jun 2024 10:36:21 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sDqpN-0005PH-Tt
+ for qemu-devel@nongnu.org; Sun, 02 Jun 2024 15:25:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717338979;
+ s=mimecast20190719; t=1717356312;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=qOiQWelfsvCuTOBh54Zg8345vYYblEdKtiJmi87wNRA=;
- b=g7Meb31IySgk76se4x9SvZxYTEzSmgyFIFlxJ+93SVW3s/BUPndWonR0yOcyu7N/MaN2vo
- d7G6W27HhiaOSUzJ8G9PlPu/oZQd/LWuwmxgZKKTf+FhKUIFe85kiY13NnH9sTYQwTg7IK
- 6ebaSJyyko93N1otyIBvhFbKruT8PEc=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=pYw2EH0ataK0bb5mgQgyo7GMtT3yQ/uN5Gk2Sx5SY7c=;
+ b=U5RPDn5N/qt2Brym8a8QWwJTLG7TbAM+u7j7laxWMp4/19m7cFadDasyCVJOQ8Wodxu8Vc
+ qfY0x/Y/efclLKt1OSMrR1Rday/tNeWjR63sCCbSDwLli9GFLb24wiFj1sDwUYAm6AIAOt
+ rFYzEKNaHmkbtvrFhum8J6qSiWK28WU=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-644-_HkT3N0RN0qbtPDRWm9hnw-1; Sun, 02 Jun 2024 10:36:18 -0400
-X-MC-Unique: _HkT3N0RN0qbtPDRWm9hnw-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-4212e2a3a1bso14491415e9.3
- for <qemu-devel@nongnu.org>; Sun, 02 Jun 2024 07:36:17 -0700 (PDT)
+ us-mta-466-VFNQhDjnNmu4Lyi5a5fGCw-1; Sun, 02 Jun 2024 15:25:10 -0400
+X-MC-Unique: VFNQhDjnNmu4Lyi5a5fGCw-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-35dcf7d4014so1565798f8f.0
+ for <qemu-devel@nongnu.org>; Sun, 02 Jun 2024 12:25:10 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717338976; x=1717943776;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=qOiQWelfsvCuTOBh54Zg8345vYYblEdKtiJmi87wNRA=;
- b=wjy3zMPLoRlGjHXkvaLoosX7F/chzfAM3lfd+Q1g6LKZf7bPOSfoR1THDZMn3fp9w4
- 3QIkZi2fs9p7bvff3S1eXRWPPHmxelK5r3rydKCRI6czhIpcY8UPjPOZKqSKvhTkYjBj
- CUy3rjdkJepyJceD3muSLVVsLAw48lmk1nN1vUOGZ6U9P9DBnTM15m7QLWXIs/DNCVr/
- 2KH1D5ijfIsKp5ABu+5JqQscxO5Bi3yAyH7DlnpGE75+bF3zH7MtFqETyBIDRHdAHqFw
- X1zzp7OarojTY8Zg3KeD0JPHdxvJ3ex8SbwWoSYtZyG6wBW2epQOUzG5PBoBlUI5lqTW
- SGSQ==
-X-Gm-Message-State: AOJu0YwXDHWR5tkUXBEX35stWjm+/dGvhhjClG4T7rTEbWQpqg5ej30r
- 6yOeP3pLx3RalaMs2r1ebZ/vGOC7M1P742sNer9VqhZvR3Bzq9UUvehVvFgS5J9qyNfK5j9mW6u
- afhYxBBdNvC3J71GjqucOrJbURTAo7MABJUHu/hl4SHovB8CluRF9OHJb3fI3
-X-Received: by 2002:a5d:6d05:0:b0:356:4cfa:b4b9 with SMTP id
- ffacd0b85a97d-35e0f25e190mr5953629f8f.2.1717338975684; 
- Sun, 02 Jun 2024 07:36:15 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGgAtCY+lAetQ0mtVEJg+zGfZqsPkxXdP4HPadCu/nLvG5EftUYDWWWFJLuOuLFb8Ls97uiGA==
-X-Received: by 2002:a5d:6d05:0:b0:356:4cfa:b4b9 with SMTP id
- ffacd0b85a97d-35e0f25e190mr5953619f8f.2.1717338975208; 
- Sun, 02 Jun 2024 07:36:15 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1717356309; x=1717961109;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=pYw2EH0ataK0bb5mgQgyo7GMtT3yQ/uN5Gk2Sx5SY7c=;
+ b=tQcZ6RkV2gET1JYABr2qbbtl3BQqnrYTivynJigd24MMJriGUZQfsM7/9lYn62sO7T
+ POAA144JckNJrIVLRubOA7B4voqBLyG/pdQqyjYLJVs7YGHps19Alw6nQzTpL3/Fu8pA
+ 6F+wvyqQ40xjALZKxkQIy2WKAKboQRQkwg7gEFrA9tM8uYxqt1W7YTNH+2dnGtED57TE
+ w7HOU2t2PCXruk9HE750KFGcbHJaofWg/LWt823HQnbDXDbeTEtHP33WfH8sjpd85RMX
+ pCMdZLJqe0S0zAZ+jI9dmdSblTfssyD1UlEcOixsrVc2LJihooZenQ++jYpX+Zsi0LRI
+ eXkg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVxmfEWYZ2sXH4/P/bj6FqvbDyt8qX9lFNuH08mLZ92G9+JAVks1f1M4keBTieA4kTdH71g42pjvLfFReVe5ufKSfsMigA=
+X-Gm-Message-State: AOJu0YxVJ50DKOxC8OgcY2aGKUkzyw0lIOlRK/nwrE2XiXmK/L149JpX
+ o1sdt0VKQppJ7D5MrssEZ4Mtee77queKnUrGTLwx3JqYPk0LnavVC6+WfpjzN9bJxPcy+0GWON5
+ GBQsWb715y7M2nhih8ejaPeapUUoZ2/Ks5n5iRG/X5Oesdk/1gwfS
+X-Received: by 2002:adf:ce91:0:b0:355:161:b7e3 with SMTP id
+ ffacd0b85a97d-35e0f316a57mr4970410f8f.48.1717356309360; 
+ Sun, 02 Jun 2024 12:25:09 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGXlrJxfSMWporena43/yel9GfnVa6qXRhzG7vs5Yf7QPvk2H1McS/vnnnwlk5uNlvedM8jEA==
+X-Received: by 2002:adf:ce91:0:b0:355:161:b7e3 with SMTP id
+ ffacd0b85a97d-35e0f316a57mr4970401f8f.48.1717356308797; 
+ Sun, 02 Jun 2024 12:25:08 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc7:440:950b:d4e:f17a:17d8:5699])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-35e56669a23sm1460571f8f.83.2024.06.02.07.36.13
+ ffacd0b85a97d-35dd04caea8sm6823543f8f.28.2024.06.02.12.25.07
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 02 Jun 2024 07:36:14 -0700 (PDT)
-Date: Sun, 2 Jun 2024 10:36:10 -0400
+ Sun, 02 Jun 2024 12:25:08 -0700 (PDT)
+Date: Sun, 2 Jun 2024 15:25:04 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
-To: marcandre.lureau@redhat.com
-Cc: qemu-devel@nongnu.org, dongwon.kim@intel.com,
- Gerd Hoffmann <kraxel@redhat.com>
-Subject: Re: [PATCH v3] vhost-user-gpu: fix import of DMABUF
-Message-ID: <20240602103555-mutt-send-email-mst@kernel.org>
-References: <20240515105237.1074116-1-marcandre.lureau@redhat.com>
+To: Ira Weiny <ira.weiny@intel.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, qemu-devel@nongnu.org,
+ Fan Ni <fan.ni@samsung.com>, Peter Maydell <peter.maydell@linaro.org>
+Subject: Re: [PATCH] hw/cxl: Fix read from bogus memory
+Message-ID: <20240602152439-mutt-send-email-mst@kernel.org>
+References: <20240531-fix-poison-set-cacheline-v1-1-e3bc7e8f1158@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240515105237.1074116-1-marcandre.lureau@redhat.com>
+In-Reply-To: <20240531-fix-poison-set-cacheline-v1-1-e3bc7e8f1158@intel.com>
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -22
@@ -99,45 +99,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, May 15, 2024 at 02:52:37PM +0400, marcandre.lureau@redhat.com wrote:
-> From: Marc-André Lureau <marcandre.lureau@redhat.com>
+On Fri, May 31, 2024 at 11:22:05AM -0500, Ira Weiny wrote:
+> Peter and coverity report:
 > 
-> When using vhost-user-gpu with GL, qemu -display gtk doesn't show output
-> and prints: qemu: eglCreateImageKHR failed
+> 	We've passed '&data' to address_space_write(), which means "read
+> 	from the address on the stack where the function argument 'data'
+> 	lives", so instead of writing 64 bytes of data to the guest ,
+> 	we'll write 64 bytes which start with a host pointer value and
+> 	then continue with whatever happens to be on the host stack
+> 	after that.
 > 
-> Since commit 9ac06df8b ("virtio-gpu-udmabuf: correct naming of
-> QemuDmaBuf size properties"), egl_dmabuf_import_texture() uses
-> backing_{width,height} for the texture dimension.
+> Indeed the intention was to write 64 bytes of data at the address given.
 > 
-> Fixes: commit 9ac06df8b ("virtio-gpu-udmabuf: correct naming of QemuDmaBuf size properties")
+> Fix the parameter to address_space_write().
+> 
+> Reported-by: Peter Maydell <peter.maydell@linaro.org>
+> Link: https://lore.kernel.org/all/CAFEAcA-u4sytGwTKsb__Y+_+0O2-WwARntm3x8WNhvL1WfHOBg@mail.gmail.com/
+> Fixes: 6bda41a69bdc ("hw/cxl: Add clear poison mailbox command support.")
+> Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Signed-off-by: Ira Weiny <ira.weiny@intel.com>
 
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 
-should be:
-Fixes: 9ac06df8b ("virtio-gpu-udmabuf: correct naming of QemuDmaBuf size properties")
+I'll queue it for the next pull which should go out soonish.
 
-
-> Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 > ---
->  hw/display/vhost-user-gpu.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
+> Compile tested only.  Jonathan please double check me.
+> ---
+>  hw/mem/cxl_type3.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/hw/display/vhost-user-gpu.c b/hw/display/vhost-user-gpu.c
-> index e4b398d26c..63c64ddde6 100644
-> --- a/hw/display/vhost-user-gpu.c
-> +++ b/hw/display/vhost-user-gpu.c
-> @@ -281,8 +281,9 @@ vhost_user_gpu_handle_display(VhostUserGPU *g, VhostUserGpuMsg *msg)
->              modifier = m2->modifier;
->          }
+> diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
+> index 3e42490b6ce8..582412d9925f 100644
+> --- a/hw/mem/cxl_type3.c
+> +++ b/hw/mem/cxl_type3.c
+> @@ -1025,7 +1025,7 @@ static bool set_cacheline(CXLType3Dev *ct3d, uint64_t dpa_offset, uint8_t *data)
+>          as = &ct3d->hostpmem_as;
+>      }
 >  
-> -        dmabuf = qemu_dmabuf_new(m->fd_width, m->fd_height,
-> -                                 m->fd_stride, 0, 0, 0, 0,
-> +        dmabuf = qemu_dmabuf_new(m->width, m->height,
-> +                                 m->fd_stride, 0, 0,
-> +                                 m->fd_width, m->fd_height,
->                                   m->fd_drm_fourcc, modifier,
->                                   fd, false, m->fd_flags &
->                                   VIRTIO_GPU_RESOURCE_FLAG_Y_0_TOP);
+> -    address_space_write(as, dpa_offset, MEMTXATTRS_UNSPECIFIED, &data,
+> +    address_space_write(as, dpa_offset, MEMTXATTRS_UNSPECIFIED, data,
+>                          CXL_CACHE_LINE_SIZE);
+>      return true;
+>  }
+> 
+> ---
+> base-commit: 3b2fe44bb7f605f179e5e7feb2c13c2eb3abbb80
+> change-id: 20240531-fix-poison-set-cacheline-e32bc1e74b27
+> 
+> Best regards,
 > -- 
-> 2.41.0.28.gd7d8841f67
+> Ira Weiny <ira.weiny@intel.com>
 
 
