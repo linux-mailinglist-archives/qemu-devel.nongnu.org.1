@@ -2,59 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAB738D7A88
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jun 2024 05:49:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6677C8D7AEB
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jun 2024 07:12:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sDyfW-0000y7-FM; Sun, 02 Jun 2024 23:47:34 -0400
+	id 1sDzyS-0007qY-DI; Mon, 03 Jun 2024 01:11:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ethan84@andestech.com>)
- id 1sDyfT-0000wU-8f; Sun, 02 Jun 2024 23:47:31 -0400
-Received: from 60-248-80-70.hinet-ip.hinet.net ([60.248.80.70]
- helo=Atcsqr.andestech.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ethan84@andestech.com>)
- id 1sDyfQ-0003ri-4L; Sun, 02 Jun 2024 23:47:30 -0400
-Received: from Atcsqr.andestech.com (localhost [127.0.0.2] (may be forged))
- by Atcsqr.andestech.com with ESMTP id 4533DGrc015663;
- Mon, 3 Jun 2024 11:13:16 +0800 (+08)
- (envelope-from ethan84@andestech.com)
-Received: from mail.andestech.com (ATCPCS16.andestech.com [10.0.1.222])
- by Atcsqr.andestech.com with ESMTP id 4533Ctcq015602;
- Mon, 3 Jun 2024 11:12:55 +0800 (+08)
- (envelope-from ethan84@andestech.com)
-Received: from ethan84-VirtualBox (10.0.12.12) by ATCPCS16.andestech.com
- (10.0.1.222) with Microsoft SMTP Server id 14.3.498.0; Mon, 3 Jun 2024
- 11:12:50 +0800
-Date: Mon, 3 Jun 2024 11:12:44 +0800
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-CC: <qemu-devel@nongnu.org>, <pbonzini@redhat.com>, <palmer@dabbelt.com>,
- <alistair.francis@wdc.com>, <bin.meng@windriver.com>,
- <liwei1518@gmail.com>, <zhiwei_liu@linux.alibaba.com>,
- <qemu-riscv@nongnu.org>
-Subject: Re: [PATCH v6 0/3] Support RISC-V IOPMP
-Message-ID: <Zl00rIvxrkLohQi6@ethan84-VirtualBox>
-References: <20240207093444.249112-1-ethan84@andestech.com>
- <6e46adc9-9e0a-4488-938f-fbf781e72996@ventanamicro.com>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sDzyP-0007pz-JN
+ for qemu-devel@nongnu.org; Mon, 03 Jun 2024 01:11:09 -0400
+Received: from mail-oi1-x230.google.com ([2607:f8b0:4864:20::230])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sDpHQ-0005Rx-7W
+ for qemu-devel@nongnu.org; Sun, 02 Jun 2024 13:46:07 -0400
+Received: by mail-oi1-x230.google.com with SMTP id
+ 5614622812f47-3c9cc681ee0so1937049b6e.0
+ for <qemu-devel@nongnu.org>; Sun, 02 Jun 2024 10:46:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1717350362; x=1717955162; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=vf8avGYPfK1pjp+iUujkpgOjYtQ17Y7vKM7SLuav6rk=;
+ b=DnqzTWhQ/4l53WXLPEASQY+GAJXDd/QcfOWCz9vzq5xSKB0OY/WrusF7JLpnLdeB8B
+ BCuaaAyMJBjQVTsC3spWXC1e8Trp16wrY7rwqxyjtLhJl3pRWc53bJcuJKlWIiB2r1VT
+ RldTtFDtlYsv47N2JC6BSBe5AEF4qlqMH8yOPEEJT3eSY9OzZMxWHFELZ+eUb2NHWIFP
+ WYeuPEo+2xD8zmtXve0r6O3qqmKOZsUPkLEQdI/FbePKID7y2XSlOonJNtf40IYRQVSs
+ Qx8KA9oXsWK9QVLsrFRf6lmyMoj5pbpJAFB2Bd8S1DGyB1hHxzsoPUN/J/td/VVUgRda
+ YGxg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1717350362; x=1717955162;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=vf8avGYPfK1pjp+iUujkpgOjYtQ17Y7vKM7SLuav6rk=;
+ b=xSV397v0mOhDmKtbQOCEzM8K29rk2WK0Lq+7xwE2a2vchOwsyBgj3e98WmdspNBYdY
+ wSNprmvVFlW9+Pohu+Rh2S9mIaTK4txQg0Qu+HddvoY3C2gUiI3PTCP5ZNEA2knrRwuF
+ g6644U7KwCb307FMXgQvrv+JaWkgfsh1mwUHEW/lDwYedqAG2Db1OD5lg6+s3rcvH9V6
+ YjqJm1cAIvj+ggf9wXSKhCShtBlhv+kzikqxlKMyItCbH+YLAvWl96M1+CK/ejk9Qf2y
+ YY+B/POQ4X3Nu+Ykh1FmhWOS1o+9Lc6ARksTU3Aiu/j9nwwsvOjRjGR0qPQYAdBxgrbw
+ gO2w==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUewc6i34tRfHN73YXO1nlZhf+kpNDRzLo+ahlngGfEd0V+XJI1kd6LxpRy9ZsMhh4YhYw8fFQUy1j6XCMDnNxff5uV7qA=
+X-Gm-Message-State: AOJu0YzcOrruKvV2tYy52G0yOF8YVFGRSJC9sm780HwwlcEipIsc0Ydb
+ EUj4gWCYo3ZuAF7LrGyqF981AKbRpDn+BpH+q8fjgYbm+jpFYeosjhoAhVaEVHM=
+X-Google-Smtp-Source: AGHT+IEkaximBPlWK0TigvaEZPMiQxcud6+feW69n1PHprIXapAyvKsNqyoXSOp6LzmUFjFX0Gd/HQ==
+X-Received: by 2002:a05:6808:1591:b0:3d1:e1df:364d with SMTP id
+ 5614622812f47-3d1e35b9c63mr9483008b6e.44.1717350362353; 
+ Sun, 02 Jun 2024 10:46:02 -0700 (PDT)
+Received: from ?IPV6:2601:2c6:8480:9270:9cca:35bf:cded:133b?
+ ([2601:2c6:8480:9270:9cca:35bf:cded:133b])
+ by smtp.gmail.com with ESMTPSA id
+ 5614622812f47-3d1e1a4637esm999105b6e.36.2024.06.02.10.46.01
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 02 Jun 2024 10:46:01 -0700 (PDT)
+Message-ID: <1016c817-d1e0-4dbd-8fd9-921bcdc23a0a@linaro.org>
+Date: Sun, 2 Jun 2024 12:45:59 -0500
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <6e46adc9-9e0a-4488-938f-fbf781e72996@ventanamicro.com>
-User-Agent: Mutt/2.1.4 (2021-12-11)
-X-Originating-IP: [10.0.12.12]
-X-DNSRBL: 
-X-SPAM-SOURCE-CHECK: pass
-X-MAIL: Atcsqr.andestech.com 4533DGrc015663
-Received-SPF: pass client-ip=60.248.80.70; envelope-from=ethan84@andestech.com;
- helo=Atcsqr.andestech.com
-X-Spam_score_int: -8
-X-Spam_score: -0.9
-X-Spam_bar: /
-X-Spam_report: (-0.9 / 5.0 requ) BAYES_00=-1.9, RDNS_DYNAMIC=0.982,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001, TVD_RCVD_IP=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v2 5/6] target/riscv: rvv: Optimize v[l|s]e8.v with
+ limitations
+To: Max Chou <max.chou@sifive.com>, qemu-devel@nongnu.org,
+ qemu-riscv@nongnu.org
+Cc: dbarboza@ventanamicro.com, Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bmeng.cn@gmail.com>,
+ Weiwei Li <liwei1518@gmail.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+References: <20240531174504.281461-1-max.chou@sifive.com>
+ <20240531174504.281461-6-max.chou@sifive.com>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20240531174504.281461-6-max.chou@sifive.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::230;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x230.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -67,77 +98,27 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Ethan Chen <ethan84@andestech.com>
-From:  Ethan Chen via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Dainel,
+On 5/31/24 12:44, Max Chou wrote:
+> The vector unit-stride load/store instructions (e.g. vle8.v/vse8.v)
+> perform continuous load/store. We can replace the corresponding helper
+> functions by TCG ops to copy more data at a time with following
+> assumptions:
+> 
+> * Perform virtual address resolution once for entire vector at beginning
+> * Without mask
+> * Without tail agnostic
+> * Both host and target are little endian
+> 
+> Signed-off-by: Max Chou <max.chou@sifive.com>
 
-Sorry for the delayed response. I've been busy over the past two months.
-I plan to submit the next version of the patch within two weeks.
+Why are you generating all of this inline?  This expansion is very large.  I would expect 
+you to get better performance with a helper function.
 
-Thanks,
-Ethan Chen
+AGAIN, please see the Arm implementation.
 
-On Mon, May 27, 2024 at 09:09:49AM -0300, Daniel Henrique Barboza wrote:
-> Hi Ethan,
-> 
-> 
-> Did you send v7 already and I somehow missed it? This is the latest version I
-> have for this IOPMP work in my inbox.
-> 
-> If this is the latest, do you plan to send a new version? Most of the comments
-> made in patche 2 are simple code style changes and there's no technical reason to
-> not get this work merged for this release.
-> 
-> 
-> Thanks,
-> 
-> Daniel
-> 
-> On 2/7/24 06:34, Ethan Chen wrote:
-> > This series implements IOPMP specification v1.0.0-draft4 rapid-k model and add
-> > IOPMP device to RISC-V virt machine.
-> > 
-> > Patch 1 add config STREAM make other device can reuse /hw/core/stream.c, IOPMP
-> > implementation will use it. Patch 2 implement IOPMP deivce. Patch 3 add IOPMP
-> > device to RISC-V virt machine.
-> > 
-> > The IOPMP specification url:
-> > https://github.com/riscv-non-isa/iopmp-spec/blob/main/riscv_iopmp_specification.pdf
-> > 
-> > Changes for v6:
-> >    - Rebased
-> >    - IOPMP: Fix MDLCK_MD and ENTRYLCK_F did not lock correspond registers
-> >             Fix iopmp_write for ENTRY_ADDRH and ENTRYLCK_L
-> >    - Refine coding style (Daniel Henrique Barboza)
-> > 
-> > Thanks,
-> > Ethan Chen
-> > 
-> > Ethan Chen (3):
-> >    hw/core: Add config stream
-> >    Add RISC-V IOPMP support
-> >    hw/riscv/virt: Add IOPMP support
-> > 
-> >   docs/system/riscv/virt.rst                    |   12 +
-> >   hw/Kconfig                                    |    1 +
-> >   hw/core/Kconfig                               |    3 +
-> >   hw/core/meson.build                           |    2 +-
-> >   hw/misc/Kconfig                               |    4 +
-> >   hw/misc/meson.build                           |    1 +
-> >   hw/misc/riscv_iopmp.c                         | 1202 +++++++++++++++++
-> >   hw/misc/trace-events                          |    4 +
-> >   hw/riscv/Kconfig                              |    1 +
-> >   hw/riscv/virt.c                               |  110 +-
-> >   include/hw/misc/riscv_iopmp.h                 |  187 +++
-> >   .../hw/misc/riscv_iopmp_transaction_info.h    |   28 +
-> >   include/hw/riscv/virt.h                       |    8 +-
-> >   13 files changed, 1559 insertions(+), 4 deletions(-)
-> >   create mode 100644 hw/misc/riscv_iopmp.c
-> >   create mode 100644 include/hw/misc/riscv_iopmp.h
-> >   create mode 100644 include/hw/misc/riscv_iopmp_transaction_info.h
-> > 
-> 
+
+r~
 
