@@ -2,73 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0A2A8D80E2
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jun 2024 13:18:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E10E8D810C
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jun 2024 13:22:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sE5hd-00077y-IS; Mon, 03 Jun 2024 07:18:14 -0400
+	id 1sE5jm-0007SB-Aa; Mon, 03 Jun 2024 07:20:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sE5hT-0006O8-AW
- for qemu-devel@nongnu.org; Mon, 03 Jun 2024 07:18:03 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sE5hQ-0006Ps-7r
- for qemu-devel@nongnu.org; Mon, 03 Jun 2024 07:18:03 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717413477;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=HKQqMBDtS6A+Sj4jd/8BRDsnCw8kb3YuMImOtsFJCmg=;
- b=ZZjh/LUgkUSWUVM7+jg+rRPNo6JFVdcMFhotkqtKNTlv22AFYfGjoWR41XbUsqtcoD6WMP
- J4pgJFnFabawj2WuK7aG0mImtsesNFyLhspL3WV6QbzNlY5NdWz1dfEHS9K3E6Dq5TVAX/
- 0UB99lXosoyolbY9CQ7iSSPDG6lOa7o=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-81-YKlAeizLMhSeR2dhptFN2A-1; Mon, 03 Jun 2024 07:17:55 -0400
-X-MC-Unique: YKlAeizLMhSeR2dhptFN2A-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0BB9F8058D5;
- Mon,  3 Jun 2024 11:17:55 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.93])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id DFEA0202696B;
- Mon,  3 Jun 2024 11:17:54 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 1696221E681D; Mon,  3 Jun 2024 13:17:54 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Fiona Ebner <f.ebner@proxmox.com>
-Cc: qemu-devel@nongnu.org,  qemu-block@nongnu.org,  armbru@redhat.com,
- eblake@redhat.com,  hreitz@redhat.com,  kwolf@redhat.com,
- vsementsov@yandex-team.ru,  jsnow@redhat.com
-Subject: Re: [PATCH v2 2/2] backup: add minimum cluster size to performance
- options
-In-Reply-To: <20240528120114.344416-3-f.ebner@proxmox.com> (Fiona Ebner's
- message of "Tue, 28 May 2024 14:01:14 +0200")
-References: <20240528120114.344416-1-f.ebner@proxmox.com>
- <20240528120114.344416-3-f.ebner@proxmox.com>
-Date: Mon, 03 Jun 2024 13:17:54 +0200
-Message-ID: <87cyoytgv1.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sE5jf-0007ON-1c
+ for qemu-devel@nongnu.org; Mon, 03 Jun 2024 07:20:19 -0400
+Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sE5jb-00078l-7U
+ for qemu-devel@nongnu.org; Mon, 03 Jun 2024 07:20:18 -0400
+Received: by mail-ed1-x529.google.com with SMTP id
+ 4fb4d7f45d1cf-57a3d21299aso2970261a12.2
+ for <qemu-devel@nongnu.org>; Mon, 03 Jun 2024 04:20:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1717413610; x=1718018410; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=3PrsjsdSdVSRCiA/1fQoIFNQW5VnBHf/05Ib5C8jLN0=;
+ b=QUxUsPCMzisoE1tod3ZV2vrmyYUacwdoONRHfY7HY4TKa3VaeS2r25NoZPAYPCN2b1
+ srqWQWwLCQjY19//bKdishXqorCpqGma2SLN35lX2NvYSJ149kbuCm4SAthmy/cB3rmQ
+ EqL2wcKv66WGtQKsVnaZaINWeHN9QKyrmenYROwcWVyZ/IW5NrBOXUT2w14D4q0yrTHj
+ PP9kOo7hN1V/W6nzjtxsxw0Pu8PCghCF+lBDkETcc87bcxPIvLLtDHTNZQ03pXmw6D4z
+ XMXFW8W2TjzzQNP669Chyah01Jd3oKywj9fhh88Z6cZXyMPLgvm3vmnzp3Dv3UuoU2QF
+ ePCQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1717413610; x=1718018410;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=3PrsjsdSdVSRCiA/1fQoIFNQW5VnBHf/05Ib5C8jLN0=;
+ b=WfuHw9VdMU3MPqsP7hNipaqQKOFVU4FMfNI8QnBjqm20Ma/4MzwVq1WnScVuWzhm4E
+ vFreigLlvtyJCizZceETHFZAxeTzRLnd0saIC9l7fheKhwo+/xX1yOLu6XtcGXsvirRG
+ fzy9wHP8Pnt7EuBIyUMakoSKZdLjAF/rWHIzQGNlxmokA0DYy05eHcFOrn8BplBNsIVx
+ FJ3/OA8uzsKrR+lLA5cg6aXe+GzN12s/OSlav5ke2BBPi83LT4s8Pluta8mUnzGYQwIa
+ evTHC608OXu6+I0GZD6sTPl2y7i3wle3p97jOqG8WPUTtbkU5XRNtkWppP9Cbq+JUAUq
+ dCtg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUIpO8uNUeDJiYKj2HR5gfuaQEreRNpXMUDU6BKcn7HpSWXE/sbdXENk9JuODGyvVlhWSUIKlL3ptOSNm1qQbld05Uma1c=
+X-Gm-Message-State: AOJu0YzVSsU3Bfo6mRS4qzrtfw3Ee/Xwaa1wILnd0FWvpe2jx3m60L9i
+ oIzbp3yeiTaeqHegj6LChFBXGxb8J6GRldIi+ci9/qAvoIiJr+SkfVKqxVCt4NF3DcqL1eqN0FC
+ L
+X-Google-Smtp-Source: AGHT+IHDu/9PfDR8gxHXeBTYjPlLPDXsMNWGhmWTzmZvyJs8zrYcHwnE4MFZ8xOhI9u529VY3Zycpw==
+X-Received: by 2002:a50:d582:0:b0:57a:2ccb:b3f1 with SMTP id
+ 4fb4d7f45d1cf-57a36448228mr5272559a12.26.1717413610000; 
+ Mon, 03 Jun 2024 04:20:10 -0700 (PDT)
+Received: from [192.168.69.100] ([176.176.177.241])
+ by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-57a31be5695sm5230292a12.55.2024.06.03.04.20.08
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 03 Jun 2024 04:20:09 -0700 (PDT)
+Message-ID: <1cb7361a-1111-4728-bc65-81e7b328ff0e@linaro.org>
+Date: Mon, 3 Jun 2024 13:20:07 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/5] tests/lcitool: Install mingw-w64-tools for the
+ Windows cross-builds
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>
+References: <20240601070543.37786-1-thuth@redhat.com>
+ <20240601070543.37786-5-thuth@redhat.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240601070543.37786-5-thuth@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::529;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x529.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,48 +97,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fiona Ebner <f.ebner@proxmox.com> writes:
+On 1/6/24 09:05, Thomas Huth wrote:
+> Beside g++ we also need the mingw-w64-tools for properly building
+> the code in qga/vss-win32/ , so let's install that package now, too.
+> 
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> ---
+>   tests/lcitool/projects/qemu-win-installer.yml | 1 +
+>   1 file changed, 1 insertion(+)
 
-> In the context of backup fleecing, discarding the source will not work
-> when the fleecing image has a larger granularity than the one used for
-> block-copy operations (can happen if the backup target has smaller
-> cluster size), because cbw_co_pdiscard_snapshot() will align down the
-> discard requests and thus effectively ignore then.
->
-> To make @discard-source work in such a scenario, allow specifying the
-> minimum cluster size used for block-copy operations and thus in
-> particular also the granularity for discard requests to the source.
->
-> Suggested-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-> Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-[...]
-
-> diff --git a/qapi/block-core.json b/qapi/block-core.json
-> index 8fc0a4b234..f1219a9dfb 100644
-> --- a/qapi/block-core.json
-> +++ b/qapi/block-core.json
-> @@ -1551,11 +1551,16 @@
->  #     it should not be less than job cluster size which is calculated
->  #     as maximum of target image cluster size and 64k.  Default 0.
->  #
-> +# @min-cluster-size: Minimum size of blocks used by copy-before-write
-> +#     and background copy operations.  Has to be a power of 2.  No
-> +#     effect if smaller than the maximum of the target's cluster size
-> +#     and 64 KiB.  Default 0.  (Since 9.1)
-> +#
->  # Since: 6.0
->  ##
->  { 'struct': 'BackupPerf',
-> -  'data': { '*use-copy-range': 'bool',
-> -            '*max-workers': 'int', '*max-chunk': 'int64' } }
-> +  'data': { '*use-copy-range': 'bool', '*max-workers': 'int',
-> +            '*max-chunk': 'int64', '*min-cluster-size': 'size' } }
->  
->  ##
->  # @BackupCommon:
-
-QAPI schema
-Acked-by: Markus Armbruster <armbru@redhat.com>
 
 
