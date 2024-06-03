@@ -2,88 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC57D8D84D7
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jun 2024 16:22:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 647788D84DB
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jun 2024 16:23:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sE8a4-0003X2-5t; Mon, 03 Jun 2024 10:22:36 -0400
+	id 1sE8bF-00060c-5X; Mon, 03 Jun 2024 10:23:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sE8a1-0003Wu-Ll
- for qemu-devel@nongnu.org; Mon, 03 Jun 2024 10:22:33 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1sE8bC-0005sE-Sw
+ for qemu-devel@nongnu.org; Mon, 03 Jun 2024 10:23:46 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sE8Zz-00035W-WC
- for qemu-devel@nongnu.org; Mon, 03 Jun 2024 10:22:33 -0400
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1sE8bB-0003Go-6s
+ for qemu-devel@nongnu.org; Mon, 03 Jun 2024 10:23:46 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717424550;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ s=mimecast20190719; t=1717424624;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=efLqh7H5R1H2MCstarX4MnmJFfDoGl/LnoB3y6f71Jo=;
- b=N4S3r5qJNltr6PlveBVYG5AjITPoQARpdIx7Va1mRS47EIHkVR8xKNnBIHqp1og47hOdY8
- cGP4QaWo2m+0pXtbgZ6Iz833fO5jT1zqjNKQTtV3/dEfA/lDxOD9dJb+7Z86jynLlwC8Pq
- z2i8Sv134f5mz4uL28IO6DkxX3WSO5Y=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=t4dOFUGvuWUT6GfEY9yJdHEE3meFeaBpFGLzxbYoJA4=;
+ b=jCDI+l8YZCPwHpUG4rhslg+He7E8A7b4kKAbji+A0zjD3x1Xq7uuMoFTBbAQSMGzPFGflu
+ lx0+S7PZWKjmJDz0K2cpTB608SwGd8hQem890BbVDR0UO44DKfPJFdjOloBp+fgoH5wYCD
+ n1yNjR6Myjj6lg2+hRux7plaj6mF7nE=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-392-4PV8XSSIMZSB5cgSRxX3fA-1; Mon, 03 Jun 2024 10:22:25 -0400
-X-MC-Unique: 4PV8XSSIMZSB5cgSRxX3fA-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-35dbf83bb20so2566664f8f.2
- for <qemu-devel@nongnu.org>; Mon, 03 Jun 2024 07:22:25 -0700 (PDT)
+ us-mta-439-vsfcmJbiNfupUUxQuWIGCQ-1; Mon, 03 Jun 2024 10:23:42 -0400
+X-MC-Unique: vsfcmJbiNfupUUxQuWIGCQ-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-35e0f8bcc3cso1648665f8f.2
+ for <qemu-devel@nongnu.org>; Mon, 03 Jun 2024 07:23:42 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717424544; x=1718029344;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=efLqh7H5R1H2MCstarX4MnmJFfDoGl/LnoB3y6f71Jo=;
- b=ghzT9ECdU4vExqzu8GDX563zToNlukSvCAwH4UAYiev3mbV54R18Ff5fWh4kAmWAzo
- ySoS9cZhBaq7Tw5NT+ggt3IHTM/0ea5r5O2+7S+74h8w/jpqGkPnDNMi85eIqbLTRt8H
- 8whWBI77fXZB9bkntatDtqq3Bbe4upZtMM0D2dg1P9pnBhGz0UsOAQNThmOAgg++Mk53
- J9jVHwMxyj9JagVyxAqbba5KZoq/6FfjAnhm0Y19QmHIhD7luh8cr7Xulxeq6xNQUD7P
- XS5wMMGSpvBdBnqUFpXmaNn8Ve4wxo9ciRXaeVBSEcvXxXYuIp22o9XhK/H4CXiK3PKk
- riqg==
+ d=1e100.net; s=20230601; t=1717424622; x=1718029422;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=t4dOFUGvuWUT6GfEY9yJdHEE3meFeaBpFGLzxbYoJA4=;
+ b=KDaLchbAngiiHbvDs2fSZMx612qKfdd6TPB8tuGSRxEIerDjn3nBha8lz8U1Roa7+J
+ bJgHjNeLZCxAOivrkoOdg8FDRfPGcrBf563VtveGI/ERIBPDKLSWq8Mre61yxZwH+yfh
+ iGGdDTvqj9JEw4D0S/B4iR4qg7dhGjQ9kb9GkurmhOW1SttIfD1P1T1uL7qqc4jJZY+L
+ OXucB5c7JDwydsW2XOFNzNSHcNH4o6vhVHU1GD2tdlMSY1TOHesLM1mCNwcLBVsXZN85
+ nQyhlLjSdgeKpFZ3WwDNDDoS4GU04tXq0k1AjDBLiKSUpCwu6Z3nlHGmrHQfbyrDT/Xd
+ H/TA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXspksnjurxSnbMaRSXjL7wsT0Z60BwCZ3AZ/Gby4ZdaCLDTIUD+iVVV8wbip1Z20s+ILu2wrT8e4ecj+L5pWjSnbnJkJ4=
-X-Gm-Message-State: AOJu0YzmTWhlgZUF+deHf5ikA4VfA6nVdVDBjCUGrV9HUiAHMQWRa3iU
- JndrhrRLdX30Mz8OamRPnBUxC0Pl/PTURLfu9DHULVbnlCmDtg+NOheIL7wc7mrmHbfnoy3VEDs
- B/vUO2wF3jPomibW0Xn65/OkHOlI7GOwpyfYDE5qDkWNCNLg4gfWlX7JKjXGeDq/HrnAZWEtgTR
- lAq5DKz6PalJd3AcswsBHpttrP0Bw=
-X-Received: by 2002:adf:fecb:0:b0:357:ff92:aae7 with SMTP id
- ffacd0b85a97d-35e0f25c3e6mr6739800f8f.2.1717424544722; 
- Mon, 03 Jun 2024 07:22:24 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH67uOr9eOqicMCPNEhJhZpPzutpMuvtEFRvQ9siWY62a4sbnmkxWF/LwmjxcRZntnhm0yGRx+NDnbedJ/adBI=
-X-Received: by 2002:adf:fecb:0:b0:357:ff92:aae7 with SMTP id
- ffacd0b85a97d-35e0f25c3e6mr6739776f8f.2.1717424544320; Mon, 03 Jun 2024
- 07:22:24 -0700 (PDT)
+ AJvYcCXJSHbwuXB45UKyvA324xvAWK+mQ/n6efjRAuPI3kmxjdMMV9HII2t7egt8fpzeA8paD3Bx07sy9lJ8tgrKw0tg2x211bA=
+X-Gm-Message-State: AOJu0YxKx91Pt4RS+LKDgzyaEpVRC9wLoW9G33LOfR/YIpi31PljVIKJ
+ tvoWgIgjYwez1GAR4cJizAMLrmR7VgJdp83pZOSFKP3NHu9qIALJyzJoD59PAzihrhmmDkQxB2q
+ FekdCE0o8P64UDCDGk1379RrgWKDes/dv+bLVeE+TZS6li/5Dx7/M
+X-Received: by 2002:a5d:6d05:0:b0:354:fbb6:1b16 with SMTP id
+ ffacd0b85a97d-35e0f30a906mr8973382f8f.52.1717424621805; 
+ Mon, 03 Jun 2024 07:23:41 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHNgZyzg4Vrawz/lVNivWG/YU165NivQhUTt1Ba51w9/Or6Ji7NbMNU3PGwWZc/o3/dH2IyVw==
+X-Received: by 2002:a5d:6d05:0:b0:354:fbb6:1b16 with SMTP id
+ ffacd0b85a97d-35e0f30a906mr8973350f8f.52.1717424621409; 
+ Mon, 03 Jun 2024 07:23:41 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
+ ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-35e57474921sm3922411f8f.80.2024.06.03.07.23.40
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 03 Jun 2024 07:23:41 -0700 (PDT)
+Message-ID: <0d612695-09ed-4ef1-8994-4091803779fb@redhat.com>
+Date: Mon, 3 Jun 2024 16:23:39 +0200
 MIME-Version: 1.0
-References: <20240530111643.1091816-1-pankaj.gupta@amd.com>
- <CABgObfYFryXwEtVkMH-F6kw8hrivpQD6USMQ9=7fVikn5-mAhQ@mail.gmail.com>
- <CABgObfbwr6CJK1XCmmVhp83AsC2YcQfSsfuPFWDuxzCB_R4GoQ@mail.gmail.com>
- <621a8792-5b19-0861-0356-fb2d05caffa1@amd.com>
- <CABgObfbrWNB4-UzHURF-iO9dTTS4CkJXODE0wNEKOA_fk790_w@mail.gmail.com>
- <05d89881-bdbd-8b85-3330-37eae03e6632@amd.com>
- <3j2llxlh3gzyn33n6uo7o5jdx4dmi4rzbax5buluof5ru2paii@2ze452jtocth>
-In-Reply-To: <3j2llxlh3gzyn33n6uo7o5jdx4dmi4rzbax5buluof5ru2paii@2ze452jtocth>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Mon, 3 Jun 2024 16:22:10 +0200
-Message-ID: <CABgObfa5Bnm2vNcHqyo+DbXET2aZrmH5C6h7HV=6Qio7bKVTsw@mail.gmail.com>
-Subject: Re: [PATCH v4 00/31] Add AMD Secure Nested Paging (SEV-SNP) support
-To: Michael Roth <michael.roth@amd.com>
-Cc: "Gupta, Pankaj" <pankaj.gupta@amd.com>, qemu-devel@nongnu.org,
- brijesh.singh@amd.com, 
- dovmurik@linux.ibm.com, armbru@redhat.com, xiaoyao.li@intel.com, 
- thomas.lendacky@amd.com, isaku.yamahata@intel.com, berrange@redhat.com, 
- kvm@vger.kernel.org, anisinha@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 19/19] intel_iommu: Check compatibility with host IOMMU
+ capabilities
+Content-Language: en-US
+To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
+Cc: alex.williamson@redhat.com, clg@redhat.com, mst@redhat.com,
+ peterx@redhat.com, jasowang@redhat.com, jgg@nvidia.com, nicolinc@nvidia.com,
+ joao.m.martins@oracle.com, clement.mathieu--drif@eviden.com,
+ kevin.tian@intel.com, yi.l.liu@intel.com, chao.p.peng@intel.com,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>
+References: <20240603061023.269738-1-zhenzhong.duan@intel.com>
+ <20240603061023.269738-20-zhenzhong.duan@intel.com>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <20240603061023.269738-20-zhenzhong.duan@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,55 +112,74 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jun 3, 2024 at 4:16=E2=80=AFPM Michael Roth <michael.roth@amd.com> =
-wrote:
-> Paolo mentioned he dropped the this hunk from:
->
->   hw/i386: Add support for loading BIOS using guest_memfd
->
->   diff --git a/hw/i386/x86.c b/hw/i386/x86.c
->   index de606369b0..d076b30ccb 100644
->   --- a/hw/i386/x86.c
->   +++ b/hw/i386/x86.c
->   @@ -1147,10 +1147,18 @@ void x86_bios_rom_init(MachineState *ms, const =
-char *default_firmware,
->        }
->        if (bios_size <=3D 0 ||
->            (bios_size % 65536) !=3D 0) {
->   -        goto bios_error;
->   +        if (!machine_require_guest_memfd(ms)) {
->   +            g_warning("%s: Unaligned BIOS size %d", __func__, bios_siz=
-e);
->   +            goto bios_error;
->   +        }
->
-> without that, OVMF with split CODE/VARS won't work because the CODE
-> portion is not 64KB aligned.
->
-> If I add that back the split builds work for qemu-coco-queue as well.
->
-> We need to understand why the 64KB alignment exists in the first place, w=
-hy
-> it's not necessary for SNP, and then resubmit the above change with prope=
-r
-> explanation.
+Hi Zhenzhong,
 
-I think it was only needed to make sure that people weren't using
-"unpadded" BIOS (not OVMF) binaries. I think we can delete it
-altogether, and it can be submitted separately from this series.
-
-> However, if based on Daniel's comments we decide not to support split
-> CODE/VARS for SNP, then the above change won't be needed. But if we do,
-> then it goes make sense that the above change is grouped with (or
-> submitted as a fix-up for):
-
-Yes, I think we want to go for a variable store that is not "right
-below BIOS". The advantage of something that isn't pflash-based is
-that it can be used by any code-only firmware binary.
-
-Paolo
+On 6/3/24 08:10, Zhenzhong Duan wrote:
+> If check fails, host device (either VFIO or VDPA device) is not
+> compatible with current vIOMMU config and should not be passed to
+> guest.
+>
+> Only aw_bits is checked for now, we don't care other capabilities
+we don't care about other caps
+> before scalable modern mode is introduced.
+>
+> Signed-off-by: Yi Liu <yi.l.liu@intel.com>
+> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+> ---
+>  hw/i386/intel_iommu.c | 29 +++++++++++++++++++++++++++++
+>  1 file changed, 29 insertions(+)
+>
+> diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
+> index 747c988bc4..d8202a77dd 100644
+> --- a/hw/i386/intel_iommu.c
+> +++ b/hw/i386/intel_iommu.c
+> @@ -3819,6 +3819,30 @@ VTDAddressSpace *vtd_find_add_as(IntelIOMMUState *s, PCIBus *bus,
+>      return vtd_dev_as;
+>  }
+>  
+> +static bool vtd_check_hdev(IntelIOMMUState *s, HostIOMMUDevice *hiod,
+> +                           Error **errp)
+> +{
+> +    HostIOMMUDeviceClass *hiodc = HOST_IOMMU_DEVICE_GET_CLASS(hiod);
+> +    int ret;
+> +
+> +    if (!hiodc->get_cap) {
+> +        error_setg(errp, ".get_cap() not implemented");
+> +        return false;
+> +    }
+> +
+> +    /* Common checks */
+> +    ret = hiodc->get_cap(hiod, HOST_IOMMU_DEVICE_CAP_AW_BITS, errp);
+> +    if (ret < 0) {
+> +        return false;
+> +    }
+> +    if (s->aw_bits > ret) {
+> +        error_setg(errp, "aw-bits %d > host aw-bits %d", s->aw_bits, ret);
+> +        return false;
+> +    }
+> +
+> +    return true;
+> +}
+> +
+>  static bool vtd_dev_set_iommu_device(PCIBus *bus, void *opaque, int devfn,
+>                                       HostIOMMUDevice *hiod, Error **errp)
+>  {
+> @@ -3842,6 +3866,11 @@ static bool vtd_dev_set_iommu_device(PCIBus *bus, void *opaque, int devfn,
+>          return false;
+>      }
+>  
+> +    if (!vtd_check_hdev(s, hiod, errp)) {
+> +        vtd_iommu_unlock(s);
+> +        return false;
+> +    }
+> +
+>      vtd_hdev = g_malloc0(sizeof(VTDHostIOMMUDevice));
+>      vtd_hdev->bus = bus;
+>      vtd_hdev->devfn = (uint8_t)devfn;
+Eric
 
 
