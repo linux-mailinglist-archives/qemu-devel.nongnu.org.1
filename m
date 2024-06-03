@@ -2,94 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C2D58D851B
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jun 2024 16:33:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 158608D8567
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jun 2024 16:47:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sE8jH-0000nB-MV; Mon, 03 Jun 2024 10:32:07 -0400
+	id 1sE8wV-0005Bd-7y; Mon, 03 Jun 2024 10:45:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sE8jF-0000md-7Z
- for qemu-devel@nongnu.org; Mon, 03 Jun 2024 10:32:05 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
+ id 1sE8wT-0005Al-0R; Mon, 03 Jun 2024 10:45:45 -0400
+Received: from proxmox-new.maurer-it.com ([94.136.29.106])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sE8jC-00053E-MU
- for qemu-devel@nongnu.org; Mon, 03 Jun 2024 10:32:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717425120;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=uMnGCaUCOJM5udsLF47byKKqJDKb1E5kZ3laZqy4Wr8=;
- b=b35BPGj1ivaM/xtQPuSHTS2vlwcQtP2jRMfHIWN1UJ0+6XJ17spW+wVUvh9Rd5C72ajYmQ
- 8HlJVSXkojBwJugNZpplwvcUfFJ7X3FXvelyB7c2omDrhPDk7gU+0Ti5A7VDpvkdOX0zgG
- Nt8D47QUMsLS2nVE8+q52X+P4Jonfuc=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-502-dVS2bzBaOtWZvKggeU6fjg-1; Mon, 03 Jun 2024 10:31:58 -0400
-X-MC-Unique: dVS2bzBaOtWZvKggeU6fjg-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-4212b505781so19592025e9.0
- for <qemu-devel@nongnu.org>; Mon, 03 Jun 2024 07:31:58 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717425117; x=1718029917;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=uMnGCaUCOJM5udsLF47byKKqJDKb1E5kZ3laZqy4Wr8=;
- b=LNR7V09NKWsIbNHsyK94bAxjXwenWBKjq8TW3kthS8zDGvGW0DxhV4mNSkc3dFU2uM
- sNBI3pDdr8qn90t5D/AFhmt2zP3S2GIo61oPTAew8RFv7b8+OtFuT7JxV9B5+xtbkIIK
- WN9ZiM87lV66pb5o/ncHRUCMt4XasdJMoRBSrWiBwNR3HByM00RwbFmBfEJGXkB6vK1U
- U1oMH6xw4pBcsouFfirj+Tqi5VYFqDkoTRLPZlW9gYevuv9AvdDJw/GN0wUL067NXsYO
- kYISSNVgmplgpUDARFSZoi0I1BOvOk5VCY64QziLxM2R4AJDBRsDlg1F0jz6futwtVOC
- 1rjA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUQ7Jl10W7lEIHDwn0JZMW8dTHXmZfGQTEvBYw6rETzYUg2NyLDMhe+6zoo1c2CAI3rL11QoYwZjMz8BnhdfcOUStQZzmc=
-X-Gm-Message-State: AOJu0YxzPjPSqQe6OE+gTZ0EsjKJBVPXz/gT4E3/izg5Vl8njI+o/ihm
- rheuUqdpiV0MMcR/X9xoT29TzCXSsr7xVEgVHCIgKmZz3bdz9EWyFdJr+ASztSxgjzd1Msc9xKC
- 8N2zq/gnQzX5XNuyzcvOy0CtEis+Bu2iguetg+2U/mWfQuojLOvLCTreQSmRd812o6NTafBrO5Z
- Cqg0Cw6cCnJgv+7JrLh3TVtAY832k=
-X-Received: by 2002:a05:600c:3b03:b0:421:37fa:e4c8 with SMTP id
- 5b1f17b1804b1-42137fae759mr47275455e9.1.1717425117195; 
- Mon, 03 Jun 2024 07:31:57 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGIqVgMiZETokwx4bnQfwEuYfXGJ9+dX3tDZuMpzrYFYkEGfDNRhvdAm2VeKVBzxGhk2RlybO7OquqkEUsJj0M=
-X-Received: by 2002:a05:600c:3b03:b0:421:37fa:e4c8 with SMTP id
- 5b1f17b1804b1-42137fae759mr47275195e9.1.1717425116846; Mon, 03 Jun 2024
- 07:31:56 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
+ id 1sE8wR-0007tn-6T; Mon, 03 Jun 2024 10:45:44 -0400
+Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id DBBB444B9B;
+ Mon,  3 Jun 2024 16:45:37 +0200 (CEST)
+Message-ID: <ea2c0988-9c29-44d0-828e-aa1d8f011ef1@proxmox.com>
+Date: Mon, 3 Jun 2024 16:45:37 +0200
 MIME-Version: 1.0
-References: <20240530111643.1091816-1-pankaj.gupta@amd.com>
- <20240530111643.1091816-30-pankaj.gupta@amd.com> <Zl2vP9hohrgaPMTs@redhat.com>
- <wfu7az7ofb5lxciw2ewxoyf5xggex5npr7j2qookddfuaioikk@3lf2nzapab5c>
-In-Reply-To: <wfu7az7ofb5lxciw2ewxoyf5xggex5npr7j2qookddfuaioikk@3lf2nzapab5c>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Mon, 3 Jun 2024 16:31:45 +0200
-Message-ID: <CABgObfa1ha1MXYWLRTfBtMCTh0n=wNO=9jbRgbO10ksuzMO9hQ@mail.gmail.com>
-Subject: Re: [PATCH v4 29/31] hw/i386/sev: Allow use of pflash in conjunction
- with -bios
-To: Michael Roth <michael.roth@amd.com>
-Cc: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Pankaj Gupta <pankaj.gupta@amd.com>, qemu-devel@nongnu.org,
- brijesh.singh@amd.com, 
- dovmurik@linux.ibm.com, armbru@redhat.com, xiaoyao.li@intel.com, 
- thomas.lendacky@amd.com, isaku.yamahata@intel.com, kvm@vger.kernel.org, 
- anisinha@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] block/copy-before-write: use uint64_t for timeout in
+ nanoseconds
+To: Kevin Wolf <kwolf@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, qemu-stable@nongnu.org,
+ hreitz@redhat.com, vsementsov@yandex-team.ru, jsnow@redhat.com,
+ f.weber@proxmox.com
+References: <20240429141934.442154-1-f.ebner@proxmox.com>
+ <ZlYA9QXVaDSfjxOT@redhat.com>
+Content-Language: en-US
+From: Fiona Ebner <f.ebner@proxmox.com>
+In-Reply-To: <ZlYA9QXVaDSfjxOT@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=94.136.29.106; envelope-from=f.ebner@proxmox.com;
+ helo=proxmox-new.maurer-it.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,19 +58,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jun 3, 2024 at 4:28=E2=80=AFPM Michael Roth <michael.roth@amd.com> =
-wrote:
-> So for now maybe we should plan to drop it from qemu-coco-queue and
-> focus on the stateless builds for the initial code merge.
+Am 28.05.24 um 18:06 schrieb Kevin Wolf:
+> Am 29.04.2024 um 16:19 hat Fiona Ebner geschrieben:
+>> rather than the uint32_t for which the maximum is slightly more than 4
+>> seconds and larger values would overflow. The QAPI interface allows
+>> specifying the number of seconds, so only values 0 to 4 are safe right
+>> now, other values lead to a much lower timeout than a user expects.
+>>
+>> The block_copy() call where this is used already takes a uint64_t for
+>> the timeout, so no change required there.
+>>
+>> Fixes: 6db7fd1ca9 ("block/copy-before-write: implement cbw-timeout option")
+>> Reported-by: Friedrich Weber <f.weber@proxmox.com>
+>> Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
+> 
+> Thanks, applied to the block branch.
+> 
+> But I don't think our job is done yet with this. Increasing the limit is
+> good and useful, but even if it's now unlikely to hit with sane values,
+> we should still catch integer overflows in cbw_open() and return an
+> error on too big values instead of silently wrapping around.
 
-Yes, I included it in qemu-coco-queue to ensure that other things
-didn't break split firmware (or they were properly identified), but
-basically everything else in qemu-coco-queue is ready for merge.
+NANOSECONDS_PER_SECOND is 10^9 and the QAPI type for cbw-timeout is
+uint32_t, so even with the maximum allowed value, there is no overflow.
+Should I still add such a check?
 
-Please double check "i386/sev: Allow measured direct kernel boot on
-SNP" as well, as I did some reorganization of the code into a new
-class method for sev-guest and sev-snp-guest objects.
-
-Paolo
+Best Regards,
+Fiona
 
 
