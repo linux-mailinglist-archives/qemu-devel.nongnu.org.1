@@ -2,92 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DE2A8D84CD
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jun 2024 16:21:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24F058D84D9
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jun 2024 16:23:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sE8Xr-0001wS-Ku; Mon, 03 Jun 2024 10:20:19 -0400
+	id 1sE8aK-0003ZV-NC; Mon, 03 Jun 2024 10:22:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sE8Xn-0001w0-Nt
- for qemu-devel@nongnu.org; Mon, 03 Jun 2024 10:20:15 -0400
-Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sE8Xh-0002V4-JF
- for qemu-devel@nongnu.org; Mon, 03 Jun 2024 10:20:14 -0400
-Received: by mail-ed1-x52d.google.com with SMTP id
- 4fb4d7f45d1cf-57a1fe63947so3718294a12.1
- for <qemu-devel@nongnu.org>; Mon, 03 Jun 2024 07:20:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1717424400; x=1718029200; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:references
- :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=fcPdkpRWp56Gkr8DQ3RfeedzRUWF4Qj2aToRrp6ZnS0=;
- b=YxPD6JFcYSsjwyRqzpYQraLXHfciKGendTAYXgbi4s2aRc+3sBR2hNLNO7QaN6fkKC
- YR4Ondcj/f2SttH+bhvucQ1tb+Lol42XmWHjxOoaeonxVnOHOhYaZrWxHbpQOf3zB4vu
- tug6Yfry+WRUtRR7JpVPfZJzl1OsEGc8Z1V15ye0WvoQLOs6aRkBjxmBtciRFlHh6lNZ
- qm3ljf4tWGB97gmG0lOCjwQ+ZE797SddI/gt9yrjNBr2twGt+DLGqxnhZg6B8B1cWNJy
- CC3h7uHWZ2CCdHECy1IF2mqOgukLGDWYwzhBf/Droptk98TpHMHGK9dmHBZmTCINRGfe
- 50/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717424400; x=1718029200;
- h=content-transfer-encoding:mime-version:message-id:date:references
- :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=fcPdkpRWp56Gkr8DQ3RfeedzRUWF4Qj2aToRrp6ZnS0=;
- b=ECkArkIO/ncHC1eeD5p4Wztas9/nKzDZzQyN6xRvqGLRxBnAqtqGoxP1FELtgqMNUF
- sAXdtmQNh1BZKiqKjovr8zapmi3tsGaPdNiRLN/zqptiC9ygmSjFhAYxnKnlT38GJeGG
- OT660X1qASg6e7KBnXQEZK3r2QossGZy9Ay/ASu4ffO1zS2B/NErDKGskk2oxepbvYHm
- 7fZuMR+aS6T4YG878TGoSREFbuIAgTmvygkJLZvNK7RdIpzvEYFHrbkdAsQ/F1q2h9NK
- 6K5e1YgyPqCMpbdm3MIxm4FQIWiYHffkWH/LLxsUrVLtCmal3IPoMX+OEIEkNmodaTr4
- DZYA==
-X-Gm-Message-State: AOJu0YwGuJapS2zcqg7TD/Z2eyiTIUwFrIGTe7kOMZYvjdtzAX05cyzJ
- 6u2dSmwVeY2Zd1Piw9MRjGGjzMm61lQJk3BxlcBHoBbdYmv8ZxXehE45x4/LuA0=
-X-Google-Smtp-Source: AGHT+IGtxUcz5Jn3s4N4L7hQt1Rb6KtzRJuNUUTb5gXSMDjmOSvQ4MZJrc68H8z6sbOUSEFfMNAzRg==
-X-Received: by 2002:a17:907:7241:b0:a67:910d:1b4a with SMTP id
- a640c23a62f3a-a6821982261mr681149066b.62.1717424400410; 
- Mon, 03 Jun 2024 07:20:00 -0700 (PDT)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a68fcb85d66sm219983266b.34.2024.06.03.07.19.59
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Jun 2024 07:19:59 -0700 (PDT)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 4732A5F860;
- Mon,  3 Jun 2024 15:19:59 +0100 (BST)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org,  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Cameron Esfahani <dirty@apple.com>,  Alexandre Iooss <erdnaxe@crans.org>,
- Yanan Wang <wangyanan55@huawei.com>,  Paolo Bonzini
- <pbonzini@redhat.com>,  Eduardo Habkost <eduardo@habkost.net>,  Sunil
- Muthuswamy <sunilmut@microsoft.com>,  Richard Henderson
- <richard.henderson@linaro.org>,  Pierrick Bouvier
- <pierrick.bouvier@linaro.org>,  Mahmoud Mandour <ma.mandourr@gmail.com>,
- Reinoud Zandijk <reinoud@netbsd.org>,  kvm@vger.kernel.org,  Roman
- Bolshakov <rbolshakov@ddn.com>
-Subject: Re: [PATCH 4/5] plugins: remove special casing for cpu->realized
-In-Reply-To: <0a76250f-db5b-4c94-941a-cbec1f2e1db6@linaro.org> ("Philippe
- =?utf-8?Q?Mathieu-Daud=C3=A9=22's?= message of "Mon, 3 Jun 2024 13:31:07
- +0200")
-References: <20240530194250.1801701-1-alex.bennee@linaro.org>
- <20240530194250.1801701-5-alex.bennee@linaro.org>
- <0a76250f-db5b-4c94-941a-cbec1f2e1db6@linaro.org>
-Date: Mon, 03 Jun 2024 15:19:59 +0100
-Message-ID: <87bk4iglbk.fsf@draig.linaro.org>
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1sE8aI-0003Xy-Lu
+ for qemu-devel@nongnu.org; Mon, 03 Jun 2024 10:22:50 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1sE8aF-00036D-Ly
+ for qemu-devel@nongnu.org; Mon, 03 Jun 2024 10:22:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1717424565;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=YChZMKO6GNpdQIJ42scRbs2Z0mTCWoWKtJ/+ygMTGNE=;
+ b=W8GPhfZQsBjRLU/VZaI/d6DZSugmZMx1QGZj4Uz9GnmSJew5e/cnWOVRwvZgU/KiXSJXbz
+ Q0bgxJquOMq/rIZKJUZzOwUNsUE/xJhyoSqDBzqDTbTq3Ky6sl2Gq4dTdIOEu+9vNvlHg5
+ Ug5Q4cIrwiEag+3cKf/czf2kkzDyFtw=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-593-y3P6bCW4OiG2zjScvfS8zQ-1; Mon, 03 Jun 2024 10:22:43 -0400
+X-MC-Unique: y3P6bCW4OiG2zjScvfS8zQ-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 196CB812296;
+ Mon,  3 Jun 2024 14:22:43 +0000 (UTC)
+Received: from green.redhat.com (unknown [10.2.16.55])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id CC0AC1C008BB;
+ Mon,  3 Jun 2024 14:22:42 +0000 (UTC)
+From: Eric Blake <eblake@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-block@nongnu.org
+Subject: [PULL v2 0/2] NBD patches for 2024-05-30
+Date: Mon,  3 Jun 2024 09:21:41 -0500
+Message-ID: <20240603142240.22679-4-eblake@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52d.google.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -104,42 +75,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
+The following changes since commit 3b2fe44bb7f605f179e5e7feb2c13c2eb3abbb80:
 
-> On 30/5/24 21:42, Alex Benn=C3=A9e wrote:
->> Now the condition variable is initialised early on we don't need to go
->> through hoops to avoid calling async_run_on_cpu.
->> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
->> ---
->>   plugins/core.c | 6 +-----
->>   1 file changed, 1 insertion(+), 5 deletions(-)
->> diff --git a/plugins/core.c b/plugins/core.c
->> index 0726bc7f25..badede28cf 100644
->> --- a/plugins/core.c
->> +++ b/plugins/core.c
->> @@ -65,11 +65,7 @@ static void plugin_cpu_update__locked(gpointer k, gpo=
-inter v, gpointer udata)
->>       CPUState *cpu =3D container_of(k, CPUState, cpu_index);
->>       run_on_cpu_data mask =3D RUN_ON_CPU_HOST_ULONG(*plugin.mask);
->>   -    if (DEVICE(cpu)->realized) {
->
-> We could assert() this to protect future refactors.
+  Merge tag 'pull-request-2024-05-29' of https://gitlab.com/thuth/qemu into staging (2024-05-29 08:38:20 -0700)
 
-No because the CPU can still not be realized but it will be able to
-queue async work.
+are available in the Git repository at:
 
->
-> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
->
->> -        async_run_on_cpu(cpu, plugin_cpu_update__async, mask);
->> -    } else {
->> -        plugin_cpu_update__async(cpu, mask);
->> -    }
->> +    async_run_on_cpu(cpu, plugin_cpu_update__async, mask);
->>   }
->>     void plugin_unregister_cb__locked(struct qemu_plugin_ctx *ctx,
+  https://repo.or.cz/qemu/ericb.git tags/pull-nbd-2024-05-30-v2
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+for you to fetch changes up to a73c99378022ebb785481e84cfe1e81097546268:
+
+  iotests: test NBD+TLS+iothread (2024-06-03 09:17:11 -0500)
+
+----------------------------------------------------------------
+NBD patches for 2024-05-30
+
+- Fix AioContext assertion with NBD+TLS
+
+----------------------------------------------------------------
+Eric Blake (2):
+      qio: Inherit follow_coroutine_ctx across TLS
+      iotests: test NBD+TLS+iothread
+
+ io/channel-tls.c                              |  26 ++--
+ io/channel-websock.c                          |   1 +
+ tests/qemu-iotests/tests/nbd-tls-iothread     | 168 ++++++++++++++++++++++++++
+ tests/qemu-iotests/tests/nbd-tls-iothread.out |  54 +++++++++
+ 4 files changed, 238 insertions(+), 11 deletions(-)
+ create mode 100755 tests/qemu-iotests/tests/nbd-tls-iothread
+ create mode 100644 tests/qemu-iotests/tests/nbd-tls-iothread.out
+
+-- 
+2.45.1
+
 
