@@ -2,82 +2,136 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 391FA8D7AC6
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jun 2024 06:34:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C15C28D7AF8
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jun 2024 07:23:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sDzMx-0007KL-9j; Mon, 03 Jun 2024 00:32:27 -0400
+	id 1sE09r-0004X7-Lv; Mon, 03 Jun 2024 01:23:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sDzMv-0007IN-S4; Mon, 03 Jun 2024 00:32:25 -0400
-Received: from mail-yw1-x1130.google.com ([2607:f8b0:4864:20::1130])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sDzMu-0006X3-8s; Mon, 03 Jun 2024 00:32:25 -0400
-Received: by mail-yw1-x1130.google.com with SMTP id
- 00721157ae682-627ebbe7720so36330617b3.0; 
- Sun, 02 Jun 2024 21:32:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1717389142; x=1717993942; darn=nongnu.org;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=frMU1SG/dvwjn4JSrlVCcOXAzJO+1GSSJ7QQ8JQ+5tg=;
- b=UVGZrhT+14iQ9OGErwKhkpDF3+fOOFe/f/cd3Jd3NQ8cz4Wr5NOWhfCyEHNeZ5izHm
- ByzO2AlNybVWTnjGV55wRHZpd+cMBl34lT8ct5nRUa9HkxfFL9GP48BzkmsRXQHZLZeo
- lI5XgOmWZMeSiwQiNWNJNLwJRvjTIbCqYhev0E9W9IyAkREDATIyd8dufuIaUvgVF6p2
- Ej1RBVOsrUg7vVV9xBefqu/BCJ/iUreMCQAKPYh2el3uMY3mJachEq5KesdwG5XiBiHw
- PPaPSrhAg7o23FutTfrDE1V0UrADXuiLS2VFKTJ630PNIWwMt/w3UQZUgLQfcDaYrgpN
- KFkA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717389142; x=1717993942;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=frMU1SG/dvwjn4JSrlVCcOXAzJO+1GSSJ7QQ8JQ+5tg=;
- b=mbLOmFGCux8UrXOaB7bACwJfGbY01GJD0hh3B8U7tpm/IFS09Fdo6lFkJam0wD5NJh
- TCY5ZGYHoStrdnJBOD4cq5jF6MPArOXzDnpld7AmtBKS4O+xB0b2K/yLpYRUlaVREajw
- 5ueEgn/Kr5xzcQzGiCPTDcMA22BBLykm53iI5eIEW6FRttLhThDjR5W5LYlViGesYi/U
- vMhp4ms4mUhpQd7Yn7VKLckwtZ/VPET39tl7kQmBX1hlSMQSZvJbvTkCV9hucjKUmHme
- R5ZLZCQJMNEOR0lgLnzf030dhDDVzQTuxfaNVUrOaxLuS7s6HFMT70meZrohIBi2N7gG
- YRzA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXiHnergHgrNSRW8S67hf0zKV2WKhxFQQ65G8rY3DQj1muXcV8mOzqPmT01XwSqFRZZEztvMNthv2WRqtCcsnjDUY4BK4c=
-X-Gm-Message-State: AOJu0YwYFl5DYNm/FzQzity66UytIP5x+tgHSd33YF5tPNb64/6ofzD8
- 2UoIzNj7iD9rrARlG52TN25SjDcAHr5njVD+gke/Zj4Uk3vn115w
-X-Google-Smtp-Source: AGHT+IGGvNtVib4RLAUMCX6a9mVQvn0IFYulq4anTXrPuG4Xo0UDzI1dcsVxMufbUEUonPkaH+3mkw==
-X-Received: by 2002:a81:ad4d:0:b0:614:29b4:670 with SMTP id
- 00721157ae682-62c7968e07amr74689057b3.1.1717389141921; 
- Sun, 02 Jun 2024 21:32:21 -0700 (PDT)
-Received: from localhost ([1.146.6.28]) by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-6c355ec0f50sm4567309a12.53.2024.06.02.21.32.19
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 02 Jun 2024 21:32:21 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 03 Jun 2024 14:32:16 +1000
-Message-Id: <D1Q3N1LQCFLC.1AUOTQ4YMO282@gmail.com>
-Cc: <qemu-ppc@nongnu.org>, "Glenn Miles" <milesg@linux.vnet.ibm.com>
-Subject: Re: [PULL 25/72] Adds migration support for Branch History Rolling
- Buffer (BHRB) internal state.
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Fabiano Rosas" <farosas@suse.de>, <qemu-devel@nongnu.org>
-X-Mailer: aerc 0.17.0
-References: <20240523230747.45703-1-npiggin@gmail.com>
- <20240523230747.45703-26-npiggin@gmail.com> <87le3phhlc.fsf@suse.de>
-In-Reply-To: <87le3phhlc.fsf@suse.de>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1130;
- envelope-from=npiggin@gmail.com; helo=mail-yw1-x1130.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+ (Exim 4.90_1) (envelope-from <Shivasagar.Myana@amd.com>)
+ id 1sE09m-0004W7-Rm
+ for qemu-devel@nongnu.org; Mon, 03 Jun 2024 01:22:54 -0400
+Received: from mail-dm6nam10on2046.outbound.protection.outlook.com
+ ([40.107.93.46] helo=NAM10-DM6-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <Shivasagar.Myana@amd.com>)
+ id 1sE09k-0000vR-5y
+ for qemu-devel@nongnu.org; Mon, 03 Jun 2024 01:22:54 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Gqf7a+AmZCtm+rTdEJd9VTX1le/BkfCiOmO4i24xuAHRm2jizMcxhkei9XNmwy17rNtZvVOWIChzZHjw0upxUrqOIi7LA+8E86bJDD559/I++i0QwPObbqntll13+aYUF/KuJwDJPluBE5k5sse79dPepLU5BC8dZqea9QEb98pBzqlH8p6DKItV5OELS86oy8DgOopIcHm/lDUKURNYWnt173DLCKJj7ZeKlnTEmBkB0sbtmlJYCERkpvgMzYg+7WgZ5kAZZ9ZaT3LDaA3C/l2GPAjYIfkzl3XRk+mlRvMOpcAonaPhkL3d7Ge28WV9WgSB35QmvEbkeBB5xlwK9A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ZFJrrdDgUxmJG+fhMLgr0y4da+l8OpIwBifKFxEymjg=;
+ b=kk3BI4Rc0nIQDWi2VSoKad9i7EY+s0QzN80POKFhiTIqudvpYWfOsioM/WnXpKz66iVmeQsNo86I6jc6v5M5NNP2Mvc+iuAa7YluQ6ZHDbLOQm7F6zIgEyf8ueGcQ2nyh9kd+uXLjFcAqPZ4t6AcsTJ+ezCQGlR6jyZPRXsMkSsyEyARbEJFH7GhzvrROK983eQzmVOmPZLimUDYSzo0uq8M9SnQZKQ2OucG5cNYvniZ4IcWvO0lTJX6DQyKj1IxPbh4475BW2elK77Mwcf5xgCdAbdDpOjjdMqNxWM/Q1Wyz1+Tb0i2k5Tn59//pMq0Rrfp90vHnDeVHYt5lGF/cw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ZFJrrdDgUxmJG+fhMLgr0y4da+l8OpIwBifKFxEymjg=;
+ b=gjw2j3VPH9vTc8L+m8USRp/txmCSUHTMxyVmJFRjZ3UqaAXHI/TGj8cuH4N3doKAFZWbfgFbP1JJ2EF3fB+XaouR9o3B8QMr5tljbIQJ9APsUr+paopQD/5Ae6TYqBtM/g+7nSQXEATQ7yuws0g+9JC9dP7hCjRNlLSsjbvBVSs=
+Received: from BL1PR13CA0131.namprd13.prod.outlook.com (2603:10b6:208:2bb::16)
+ by MW3PR12MB4425.namprd12.prod.outlook.com (2603:10b6:303:5e::21)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7633.25; Mon, 3 Jun
+ 2024 05:17:44 +0000
+Received: from BL02EPF00021F68.namprd02.prod.outlook.com
+ (2603:10b6:208:2bb:cafe::ac) by BL1PR13CA0131.outlook.office365.com
+ (2603:10b6:208:2bb::16) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7656.13 via Frontend
+ Transport; Mon, 3 Jun 2024 05:17:43 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ BL02EPF00021F68.mail.protection.outlook.com (10.167.249.4) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7633.15 via Frontend Transport; Mon, 3 Jun 2024 05:17:43 +0000
+Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Mon, 3 Jun
+ 2024 00:17:42 -0500
+Received: from xhdsaipava41.xilinx.com (10.180.168.240) by SATLEXMB03.amd.com
+ (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.35 via
+ Frontend Transport; Mon, 3 Jun 2024 00:17:40 -0500
+From: Shiva sagar Myana <Shivasagar.Myana@amd.com>
+To: <francisco.iglesias@amd.com>, <jasowang@redhat.com>,
+ <qemu-devel@nongnu.org>, <pisa@cmp.felk.cvut.cz>
+CC: <peter.maydell@linaro.org>, <sai.pavan.boddu@amd.com>,
+ <Shivasagar.Myana@amd.com>
+Subject: [QEMU][PATCH v3 1/1] hw/net/can/xlnx-versal-canfd: Fix sorting of the
+ tx queue
+Date: Mon, 3 Jun 2024 10:47:32 +0530
+Message-ID: <20240603051732.3334571-1-Shivasagar.Myana@amd.com>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+Received-SPF: None (SATLEXMB04.amd.com: Shivasagar.Myana@amd.com does not
+ designate permitted sender hosts)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL02EPF00021F68:EE_|MW3PR12MB4425:EE_
+X-MS-Office365-Filtering-Correlation-Id: db0c18a0-6e1c-4a49-36e2-08dc838c7f94
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230031|376005|82310400017|1800799015|36860700004; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?3Nn0FnjNUGsvRzOIQDbxrAWe3HnTfRWk+1502H8uYPTEjV74L0jWe4Lv2aLi?=
+ =?us-ascii?Q?RpxkyRon/eMBPUNJCUeZMj6NjOLRv21HXBuf3uSjWVe+BquCqssehXeQTfXc?=
+ =?us-ascii?Q?Vha/we8oQQvIKdBWMtobMndUINjiB6DWH/XrLe8BBatXQsbcUrMkZIeTF3fu?=
+ =?us-ascii?Q?JtbJlCX7cIPI182QehKqaZ+8YAoY0Rf3K673exifC8nl01LkkOjz97OmZkXc?=
+ =?us-ascii?Q?BIyGsS31wOXzmENjJIPRP4QZudiEmjiyMmdnfmr7twIwN3oOO6vjig8vRvL0?=
+ =?us-ascii?Q?O/lDbVWCgd6osuPu4hq/OSHnzQP3OSAaLkOFbD9gy73oAQOEjbLqiJkR2qo5?=
+ =?us-ascii?Q?l1XTwlyIElncWgNkzkBziGPW8iSH693a0RpPezNvFfS2jM5KpjkX2zg43BOu?=
+ =?us-ascii?Q?q/JkBFHcnW8iM92LQ/A8eWLf5Qe5llxKe+b3NL9UgbXr3W8k/HHyV1kH16e3?=
+ =?us-ascii?Q?NB3MFBBQpVkW1qbvL1oe9mw0DPBzm4NRxTjWhjltgm4918pMGOHxqpLUV1le?=
+ =?us-ascii?Q?L4avAmPNV2O3HxwuxBHBw6EceJnnSEkfL3A2PHAr3G0fTHqUIRHy4SQ7fZPk?=
+ =?us-ascii?Q?DtSrhbfoMfGmoAl1+wL9LDII6rExiQMR+uxThltGlgwc9xWEMzCLqTglA4HQ?=
+ =?us-ascii?Q?L2kC+CghjDD+Tbl9hrLOUSOs79+FGM4d6/RjIp9p85/PV8tr39fObIwPSqCz?=
+ =?us-ascii?Q?IS2Wn8xZtV2B8LIr5KBrcR7smPd8MenZzyoJw9dvoZDx/USk9eNbmH+DdMKe?=
+ =?us-ascii?Q?hBN2NQaJq8OfMSDtUvY1d59hByz98mxMHfiOLR5Ue0K6Kf9AhMUIFVzF+rPR?=
+ =?us-ascii?Q?QWjltDqUQ9GDZfUMV+qtksISdvhroDxejB+SCploFhLo/Vh4ZPqjN/gYoGrN?=
+ =?us-ascii?Q?MG4E+3moF3w9J8TOEefqngg9fuUEgGud5Zv2nCeo535RqLRPV48hv60c6NTR?=
+ =?us-ascii?Q?xifSVEtpC1iI7Myy2tcCFR5XQ0Jod3tKSO9CVfuz4d7t96/Hcqkfnr/sQtZE?=
+ =?us-ascii?Q?cVJWvOGJr26MyWOL7wbP1suaR1pWnpObYV09qknB7A7YJTaGXqrnufrUxTt/?=
+ =?us-ascii?Q?9UuH7yG931CfoNlQ7EPBQ76X5zNLc6qoAwuG21MREIhi0RonOpOcr+P6pUIW?=
+ =?us-ascii?Q?6xASU6cFfRES4PNuHBcc7at8ZBW1C0l9kmShBZiwIdClbBQn9wZeg6qjaa/2?=
+ =?us-ascii?Q?J8CVhdHZxq6L251LnuOEolwQtayjxSbp4FnXHgNpy5ZPr3kBHncJr3GQgvlQ?=
+ =?us-ascii?Q?95Widpi4qnpwtXy74Irg7+kJ6pqqrjwuUvclLVpzN/+KDobCJB9SbOwiBB35?=
+ =?us-ascii?Q?jSMcvu6hWNjgIw0O5k9vs+Ww47N4Oyzbl8pwmnB/6l5yNJ5PPCGK6698CjBW?=
+ =?us-ascii?Q?2pqTTd9ISm65+QNf0KU0DkA63Ici?=
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230031)(376005)(82310400017)(1800799015)(36860700004); DIR:OUT;
+ SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jun 2024 05:17:43.8378 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: db0c18a0-6e1c-4a49-36e2-08dc838c7f94
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: BL02EPF00021F68.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR12MB4425
+Received-SPF: permerror client-ip=40.107.93.46;
+ envelope-from=Shivasagar.Myana@amd.com;
+ helo=NAM10-DM6-obe.outbound.protection.outlook.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.142,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,87 +147,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat Jun 1, 2024 at 6:06 AM AEST, Fabiano Rosas wrote:
-> Nicholas Piggin <npiggin@gmail.com> writes:
->
-> > From: Glenn Miles <milesg@linux.vnet.ibm.com>
-> >
-> > Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
-> > Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
-> > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> > ---
-> >  target/ppc/machine.c | 21 +++++++++++++++++++++
-> >  1 file changed, 21 insertions(+)
-> >
-> > diff --git a/target/ppc/machine.c b/target/ppc/machine.c
-> > index 6b6c31d903..731dd8df35 100644
-> > --- a/target/ppc/machine.c
-> > +++ b/target/ppc/machine.c
-> > @@ -711,6 +711,26 @@ static const VMStateDescription vmstate_reservatio=
-n =3D {
-> >      }
-> >  };
-> > =20
-> > +#ifdef TARGET_PPC64
-> > +static bool bhrb_needed(void *opaque)
-> > +{
-> > +    PowerPCCPU *cpu =3D opaque;
-> > +    return (cpu->env.flags & POWERPC_FLAG_BHRB) !=3D 0;
-> > +}
-> > +
-> > +static const VMStateDescription vmstate_bhrb =3D {
-> > +    .name =3D "cpu/bhrb",
-> > +    .version_id =3D 1,
-> > +    .minimum_version_id =3D 1,
-> > +    .needed =3D bhrb_needed,
-> > +    .fields =3D (VMStateField[]) {
-> > +        VMSTATE_UINTTL(env.bhrb_offset, PowerPCCPU),
-> > +        VMSTATE_UINT64_ARRAY(env.bhrb, PowerPCCPU, BHRB_MAX_NUM_ENTRIE=
-S),
-> > +        VMSTATE_END_OF_LIST()
-> > +    }
-> > +};
-> > +#endif
-> > +
-> >  const VMStateDescription vmstate_ppc_cpu =3D {
-> >      .name =3D "cpu",
-> >      .version_id =3D 5,
-> > @@ -756,6 +776,7 @@ const VMStateDescription vmstate_ppc_cpu =3D {
-> >  #ifdef TARGET_PPC64
-> >          &vmstate_tm,
-> >          &vmstate_slb,
-> > +        &vmstate_bhrb,
->
-> Running some tests now that Nick re-enabled ppc for migration tests, I
-> see that this new state breaks backward migrations:
->
-> $ QTEST_TRACE=3D"vmstate_*" \
->   QTEST_QEMU_BINARY_DST=3D../build-previous/qemu-system-ppc64 \
->   QTEST_QEMU_BINARY=3D./qemu-system-ppc64 \
->   ./tests/qtest/migration-test -p /ppc64/migration/precopy/tcp/plain
-> ...
-> vmstate_load_state_field cpu/slb:env.slb
-> vmstate_n_elems env.slb: 64
-> vmstate_subsection_load cpu/slb
-> vmstate_subsection_load_bad cpu/slb: cpu/bhrb/(prefix)
-> vmstate_load_state_end cpu/slb end/0
-> vmstate_subsection_load_bad cpu: cpu/bhrb/(lookup)
-> qemu-system-ppc64: error while loading state for instance 0x0 of device '=
-cpu'
-> vmstate_downtime_checkpoint dst-precopy-loadvm-completed
-> qemu-system-ppc64: load of migration failed: No such file or directory
->
-> If you want to support backwards migration, then this needs to be
-> fixed. Otherwise we can ignore it.
+Returning an uint32_t casted to a gint from g_cmp_ids causes the tx queue to
+become wrongly sorted when executing g_slist_sort. Fix this by always
+returning -1 or 1 from g_cmp_ids based on the ID comparison instead.
+Also, if two message IDs are the same, sort them by using their index and
+transmit the message at the lowest index first.
 
+Signed-off-by: Shiva sagar Myana <Shivasagar.Myana@amd.com>
+Reviewed-by: Francisco Iglesias <francisco.iglesias@amd.com>
+---
+Changelog:
+v1 -> v2 : subject line is modified.
+v2 -> v3 : subject line is modified from "[QEMU][master][PATCH" to
+"[QEMU][PATCH".
 
-Hey Fabiano,
+ hw/net/can/xlnx-versal-canfd.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-Thanks for picking that up, I missed it.
+diff --git a/hw/net/can/xlnx-versal-canfd.c b/hw/net/can/xlnx-versal-canfd.c
+index 47a14cfe63..5f083c21e9 100644
+--- a/hw/net/can/xlnx-versal-canfd.c
++++ b/hw/net/can/xlnx-versal-canfd.c
+@@ -1312,7 +1312,10 @@ static gint g_cmp_ids(gconstpointer data1, gconstpointer data2)
+     tx_ready_reg_info *tx_reg_1 = (tx_ready_reg_info *) data1;
+     tx_ready_reg_info *tx_reg_2 = (tx_ready_reg_info *) data2;
+ 
+-    return tx_reg_1->can_id - tx_reg_2->can_id;
++    if (tx_reg_1->can_id == tx_reg_2->can_id) {
++        return (tx_reg_1->reg_num < tx_reg_2->reg_num) ? -1 : 1;
++    }
++    return (tx_reg_1->can_id < tx_reg_2->can_id) ? -1 : 1;
+ }
+ 
+ static void free_list(GSList *list)
+-- 
+2.34.1
 
-I think we could just say it's not needed, or only needed in
-case we are doing replay. I will work on a fix.
-
-Thanks,
-Nick
 
