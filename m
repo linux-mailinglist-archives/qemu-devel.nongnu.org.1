@@ -2,76 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76A718D8846
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jun 2024 19:56:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B9648D887E
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jun 2024 20:16:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEBuC-0001bZ-Le; Mon, 03 Jun 2024 13:55:36 -0400
+	id 1sECDJ-0005Pf-V9; Mon, 03 Jun 2024 14:15:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sEBtr-00014q-HI
- for qemu-devel@nongnu.org; Mon, 03 Jun 2024 13:55:18 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sEBtn-0000YZ-Ak
- for qemu-devel@nongnu.org; Mon, 03 Jun 2024 13:55:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717437306;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=KARoLuBVHwanDn5ZOSrMUvpIv5PZX8QSh4rGPd7RZs8=;
- b=MjuuMbqbQuPc62stP9ZUFfC13D8M7Ci3el0iowocIzFuvmtbxyhT4pJ7AeuXRgHIwMjGHJ
- +f5v854fZ/77bqQJvo4+JsU7Eyxv728muPq9pN6T0wfBnpGCN5RR472WA2Px7GvKFU6ykX
- IN+fUiJEa0ykgbfLjLjgPmqSFX91dmU=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-534-kx1ZY5kuPr2WkVm4BZxHLw-1; Mon,
- 03 Jun 2024 13:55:03 -0400
-X-MC-Unique: kx1ZY5kuPr2WkVm4BZxHLw-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C43E829AA385;
- Mon,  3 Jun 2024 17:55:02 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.31])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 0CB4F5620;
- Mon,  3 Jun 2024 17:55:01 +0000 (UTC)
-Date: Mon, 3 Jun 2024 18:55:00 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-Cc: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
- qemu-trivial@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: Re: [PATCH] io/channel-socket: Fix -fsanitize=undefined problem with
- latest Clang
-Message-ID: <Zl4DdL1Cwiy-GuCj@redhat.com>
-References: <20240529133106.1224866-1-thuth@redhat.com>
- <877cf6gk10.fsf@draig.linaro.org> <Zl3YTm0-rEs2Kqqj@redhat.com>
- <8734pthqc8.fsf@draig.linaro.org>
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1sECDF-0005PM-7u
+ for qemu-devel@nongnu.org; Mon, 03 Jun 2024 14:15:17 -0400
+Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1sECD9-0006VB-WA
+ for qemu-devel@nongnu.org; Mon, 03 Jun 2024 14:15:15 -0400
+Received: by mail-pf1-x42b.google.com with SMTP id
+ d2e1a72fcca58-702342c60dfso214535b3a.2
+ for <qemu-devel@nongnu.org>; Mon, 03 Jun 2024 11:15:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1717438509; x=1718043309; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=jvfXxxZU3SJUWuSQ3mKhNHtEqPZa3igYEuAdMvPvdH0=;
+ b=L+5G7y23EeCeORRDIXF8JZSQ2H3dKB1zmhxBddD4eOFOJRssFpaO1itrfl+jIHFNI0
+ UBkqpphPCDUsxjDURM0QmGtvMdtjze2Q9+fasezlX58FKsudCycCdw7X64tHMou5z16A
+ Mt14CfBp54BzHtHDv+6mjNyiNhMRxHMOiubNOReH5g9unWlhiMwidM3fa62/kcI2kvDg
+ Zm1g7uFsroY/qzFBmi/yV5IhtCC9H7uXIr/1YQgn85VILqC92FMcmlS/MWJ0Z6gAxokn
+ XuN6CjRhZBSpGiX+x/aRNtYOKSguzPzn3ANiB4TlJWsbGhqnnl6XQGBtaihakwmLZdIg
+ Mrgg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1717438509; x=1718043309;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=jvfXxxZU3SJUWuSQ3mKhNHtEqPZa3igYEuAdMvPvdH0=;
+ b=ZmQp3Bvo2NWCepU9oNRIj2qDwrv/iFKoq6Er7BtTSurNYEkxr6gW3drNbD7ZgXrTEi
+ 7BIgl/zt3LLDh+KJyY4HmVaXPpQig7Bi16Lj00llaoOxN8uZYPZsiVCTejlCS+Rzduy7
+ GhOZvH4HDS5h9Ulfi0GjQxJcpr6HMcAUsLwzWHmsM13mDzg/RyJRhXB+tmOe4THRklfY
+ y9RMAtLlSWrzs0uUmQbin5Uao2oDRlOb6glrRwCGu/nDdA8SzaJJdipv31HDLTW54gwe
+ /uhCJ3OcqHEULJMZDTDIxrb0KbwP9jgNSa742CFtnzA/f5O3ytiZGthd8q9GfyGayBJz
+ nSrg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWu/2rER4ROEO/oJXhnh51q1WWiQRQL3GOC9zSrszgg8kdH5KpEyYvjjcwg1F2CEWooojhxz/zjf22TUdAIDjcd/MSAugA=
+X-Gm-Message-State: AOJu0YxKqTFFHzI3vEbq878XfHsf5iko4oV+saXJKI/v6p1DbKyGAO7j
+ vmplufmWlY+TqllBlEolqsY8GP7Xe22Ac+wOCytK1y6o6cDt+1JVYLsQxwsw91w=
+X-Google-Smtp-Source: AGHT+IHG0/GyJ4Jlml+oKxhNNRpVmrNB25mx9Ore06F0f64Fur2jUjOvFrV1UGWV3bilQztkHTDJ2A==
+X-Received: by 2002:a05:6a21:99a6:b0:1a9:c4ca:dc74 with SMTP id
+ adf61e73a8af0-1b26f0e6242mr12328748637.5.1717438509018; 
+ Mon, 03 Jun 2024 11:15:09 -0700 (PDT)
+Received: from ?IPV6:2604:3d08:9384:1d00::e697? ([2604:3d08:9384:1d00::e697])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-702423c856dsm5773787b3a.21.2024.06.03.11.15.07
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 03 Jun 2024 11:15:07 -0700 (PDT)
+Message-ID: <f1e66166-0e06-4a02-8d88-9faad1f0274b@linaro.org>
+Date: Mon, 3 Jun 2024 11:15:06 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <8734pthqc8.fsf@draig.linaro.org>
-User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mips64el-softmmu: Enable MTTCG
+Content-Language: en-US
+To: Jiaxun Yang <jiaxun.yang@flygoat.com>, qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+References: <20240511-mips_mttcg-v1-1-1b71d9b85234@flygoat.com>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <20240511-mips_mttcg-v1-1-1b71d9b85234@flygoat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,41 +92,96 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jun 03, 2024 at 06:46:15PM +0100, Alex Bennée wrote:
-> Daniel P. Berrangé <berrange@redhat.com> writes:
+On 5/11/24 13:26, Jiaxun Yang wrote:
+> MTTCG was disabled in a092a9554771 ("configure: disable MTTCG
+> for MIPS guests") due to test case instability.
 > 
-> > On Mon, Jun 03, 2024 at 03:47:55PM +0100, Alex Bennée wrote:
-> >> Thomas Huth <thuth@redhat.com> writes:
-> >> 
-> >> > Casting function pointers from one type to another causes undefined
-> >> > behavior errors when compiling with -fsanitize=undefined with Clang
-> >> > v18:
-> >> 
-> >> Queued to testing/next, thanks.
-> >
-> > Please remove, as I don't think this is a viable approach to the
-> > problem
+> I was able to reproduce this issue with in latest QEMU and look
+> into reason behind that.
 > 
-> Ok - I'll drop it.
+> What actually happend is kernel's CP0 timer synchronisation
+> mechanism assumed a consistent latency in memory access between
+> cores, which TCG can't guarantee. Thus there is a huge drift in
+> count value between cores, and in early kernel versions CP0 timer
+> is always used as sched_clock.
 > 
-> I still have:
+> sched_clock drift back on some cores triggered RCU watchdog in
+> some extreme cases.
 > 
->   .gitlab-ci.d/buildtest.yml: Use -fno-sanitize=function in the clang-system job
+> This can be resolved by setting clocksource to MIPS, which allows
+> clocksource to drift together with sched_clock. However this will
+> leed to other problems after boot.
 > 
-> to prevent the CI failures.
+> Another option would beupdating kernel to later version, which
+> will use GIC as sched_clock.
+> 
+> In non-MTTCG build, the execution is slow enough so kernel won't
+> observe back drifts.
+> 
+> Test results:
+> 
+> With clocksource=MIPS
+> ```
+>   ~/tmp/retry/retry.py -n 100 -c -- ./qemu-system-mips64el \
+>      -display none -vga none -serial mon:stdio \
+>      -machine malta -kernel ./vmlinux-4.7.0-rc1.I6400 \
+>      -cpu I6400 -smp 8 -vga std \
+>      -append "printk.time=0 clocksource=MIPS console=tty0 console=ttyS0 panic=-1" \
+>      --no-reboot
+> 
+> 100, 0, PASS, 5.258126, 100, 100, -
+> Results summary:
+> 0: 100 times (100.00%), avg time 6.508 (55.53 varience/7.45 deviation)
+> Ran command 100 times, 100 passes
+> ```
+> 
+> With linux-next:
+> ```
+>   ~/tmp/retry/retry.py -n 100 -c -- ./qemu-system-mips64el \
+>      -display none -vga none -serial mon:stdio \
+>      -machine malta -kernel ~/linux-next/vmlinux \
+>      -cpu I6400 -smp 8 -vga std \
+>      -append "printk.time=0 console=tty0 console=ttyS0 panic=-1" \
+>      --no-reboot
+> 
+> 100, 0, PASS, 4.507921, 100, 100, -
+> Results summary:
+> 0: 100 times (100.00%), avg time 4.233 (0.04 varience/0.21 deviation)
+> Ran command 100 times, 100 passes
+> ```
+> 
+> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+> ---
+> I'll leave the test case alone as it's already marked as QEMU_TEST_FLAKY_TESTS
+> ---
+>   configs/targets/mips64el-softmmu.mak | 1 +
+>   1 file changed, 1 insertion(+)
+> 
+> diff --git a/configs/targets/mips64el-softmmu.mak b/configs/targets/mips64el-softmmu.mak
+> index 8d9ab3ddc4b1..199b1d909a7d 100644
+> --- a/configs/targets/mips64el-softmmu.mak
+> +++ b/configs/targets/mips64el-softmmu.mak
+> @@ -1,3 +1,4 @@
+>   TARGET_ARCH=mips64
+>   TARGET_BASE_ARCH=mips
+> +TARGET_SUPPORTS_MTTCG=y
+>   TARGET_NEED_FDT=y
+> 
+> ---
+> base-commit: 248f6f62df073a3b4158fd0093863ab885feabb5
+> change-id: 20240511-mips_mttcg-47a6b19074b3
+> 
+> Best regards,
 
-Yes, that's good.
+Hi Jiaxun,
+Thanks for your analysis!
 
+We should see to update concerned test in another series.
+I'm not sure which way is preferred between updating kernel used or 
+changing current command line.
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
