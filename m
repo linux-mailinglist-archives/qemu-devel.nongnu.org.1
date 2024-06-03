@@ -2,86 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 423BD8D80FC
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jun 2024 13:22:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B31D8D80D9
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jun 2024 13:18:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sE5iB-0001KF-PA; Mon, 03 Jun 2024 07:18:47 -0400
+	id 1sE5h6-0004Jb-A9; Mon, 03 Jun 2024 07:17:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sE5i3-0000zR-Pd; Mon, 03 Jun 2024 07:18:39 -0400
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1sE5gx-00046J-Ah
+ for qemu-devel@nongnu.org; Mon, 03 Jun 2024 07:17:31 -0400
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sE5ht-0006ZT-UQ; Mon, 03 Jun 2024 07:18:39 -0400
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-1f44b5d0c50so32800045ad.2; 
- Mon, 03 Jun 2024 04:18:26 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1sE5ge-0006Bk-0W
+ for qemu-devel@nongnu.org; Mon, 03 Jun 2024 07:17:24 -0400
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-1f62fae8c3cso28799495ad.3
+ for <qemu-devel@nongnu.org>; Mon, 03 Jun 2024 04:17:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1717413504; x=1718018304; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=J5jhBOyEYmtoTJBDh000o1EH0VVoye2sH2+Q4KCgR/U=;
- b=gJAJd3oZzfJ47PsVKVTFimNohC6P08xVldq9yxmbRNOYc1QZ0j0w2BPlFmqEP8LPhq
- 5pA2HeJg5RSofow4kcrg2vfHSnD1UGTAq1K6YSneVb3OvnYVGA1w0YYZtJK6uatPhC2Z
- xxoB+qYzNtup23UW5RksX1EfU8ZxF7yI+mkLF0j1CdY4kbeYy75Dma3rDRENaiY5EVho
- 98NONICNqgYELzTeNrMNMuFf5PNxIFp9uT7VCu1j6or5TWDZyy14PYUNzTqmzNvLXSx2
- gWekoDJUTrijxxEEr7drdiyPPP8gbZCJqBSZutzfDnafDVEOTP9Pt/ZrcyL7vKVbz9wy
- fniw==
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1717413430; x=1718018230;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=A885skJMu8sWdVQrS46wFUx/4xOSYNYMrymGY5OQ5ug=;
+ b=h/mSfUdwcDdqbJgANrWkNsO7j88MvqTwNsiByaHEOjfJJDq1qE4VigLnav8gMuhLqe
+ m43Ec/ZXvaY8yP1ffd83PeLrWnpxzZmZc34uLvpsPEkdI3MGlOMmkijNw0pyeeisXWl4
+ QGTt/A5tfavXVttGkLgc5rcAmlb/lZrsqM271kbt6915lbbJm+EN/Pcne8bLWrwBUeYk
+ j0Nzp4BsfwD3QRrW91QbJ3KRIXyuGXoOUAqzAOScx+OlacLSAdIsYvFFRSSYa9TPUnyL
+ JYxR7POR97JJr5SPA9M6yYZt8qBtfCovRggaz3V0nVFndte+Jd8OfA+S2mkGr2RQgjHi
+ ljCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717413504; x=1718018304;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=J5jhBOyEYmtoTJBDh000o1EH0VVoye2sH2+Q4KCgR/U=;
- b=bS5LUCl9kaKOiAvvN6G/ktaqhY1W96yLvVUyH3qfoBhL533yAlu88DSHA1cQBvjnTl
- MwDB0rWC9U3FNL0w83KLQbi/ZVHnFvwxo8UPNZdx4ju3uRTNRFIIjPuZ8lvvY3xDAEd0
- xdLhlRm2tVuUR8mod42mse4HvNJTkzpfHco1lPbUd962NlJ0UByldKfwAZeNFrZ2IOnU
- u7uZIdTtt1iPEWP42jtlCRRnA9HY3ohSDeLe7DIZrfbmWdj22H0KKXD89xMSTmJPpWDP
- XqKncqpGVoHH/2nW57mAGejdxJFBbRtGfgje97uJmr44pzKoezotzFyy2H7n8igqjIMA
- K+Lw==
+ d=1e100.net; s=20230601; t=1717413430; x=1718018230;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=A885skJMu8sWdVQrS46wFUx/4xOSYNYMrymGY5OQ5ug=;
+ b=I0xq7wTld+8KFEqxoZKgmVFQo/B/Uxe+MQqnGMlnNrW4bYuHvHOpXEGn35ThP0d5uo
+ GqAt6+o2fV/MF/VSsXj8KhNit9yR3ZeavidJR3ESwwY9aWuWh0b0dveoij0l6xpcgqwz
+ GQhj+SGcfgiQIeKJgA8IgHviVk8JjRruthUAHL+7sxFxbIZtpJB5usSdEUkK1sgkD8S3
+ 4EEMWvuWofakuOyLRZHNbL0Tn+M8CsplcKXAHS4nxRpcc1k2mFdWnJ2C6vilZ+gWYWNC
+ MT77JjxTurmwgKdJcGDwY5+dkJhHp4uvkwqGLnFxDIwFpnK5BxZZd5UX07KsQMu54cKT
+ rZZA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWFbkMEs9VvTluqDEcHlFIOz7QwkTOpRRUspGEoSxF9d9nv94dnMTlpdjueBvkYLlpNTVlNmhj+VdX9ck/kxpAslRJn8cxN
-X-Gm-Message-State: AOJu0Yz1V40meMw/KIRRtrr18DdabZtjh0iG9DpHN8gTQvzJP9XPO5Eh
- Wi/k8rIJwUSP1pDsoN/YX/cHc1m+tbRHRQ02I4vwYmQtD8Q9c5YUrgJsuQ==
-X-Google-Smtp-Source: AGHT+IGprzGl40Bl/5JMeynK43PtUtsZ/Pihfxau7fetzUeQPNf7sTL5U6SNNppvDYZ7e1w7GebpIg==
-X-Received: by 2002:a17:902:d4c7:b0:1f6:8ae2:4dd9 with SMTP id
- d9443c01a7336-1f68ae25231mr4307715ad.66.1717413504285; 
- Mon, 03 Jun 2024 04:18:24 -0700 (PDT)
-Received: from toolbox.alistair23.me
- (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
- [2403:580b:97e8:0:82ce:f179:8a79:69f4])
+ AJvYcCXyNVkxM7iAuAam6XMqpx2HgxsWBQpBtNiefGZwdeNq/jTTdBKXAQk2UP8+FfcsIBHOXBd0HdUOb+DWIP8xmo+5MxJPfPk=
+X-Gm-Message-State: AOJu0YzuM2DEmd/aS2N3raGhuEPKFc79KYufZ/cr5Zr7NefPyNw+xgOr
+ Bopm2BHbQNgnEt6BTleOrfqCGkNMrRDTnkXOGx97BXtvnnzUlWf1moo97DUoJN8=
+X-Google-Smtp-Source: AGHT+IF1PqCUUJQZsjG72DQc6f1T9lbSIgNbHUTHM9T1ph+KnPPwUnHoGRllFKavKDKeXoOW/koQvQ==
+X-Received: by 2002:a17:903:22c3:b0:1f4:bb5c:b7bd with SMTP id
+ d9443c01a7336-1f6370b8aa1mr95412095ad.61.1717413429612; 
+ Mon, 03 Jun 2024 04:17:09 -0700 (PDT)
+Received: from ?IPV6:2400:4050:a840:1e00:9ac7:6d57:2b16:6932?
+ ([2400:4050:a840:1e00:9ac7:6d57:2b16:6932])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1f6323e18c7sm62375435ad.177.2024.06.03.04.18.21
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Jun 2024 04:18:23 -0700 (PDT)
-From: Alistair Francis <alistair23@gmail.com>
-X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
-To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Eric DeVolder <eric_devolder@yahoo.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- qemu-stable <qemu-stable@nongnu.org>
-Subject: [PULL v2 27/27] disas/riscv: Decode all of the pmpcfg and pmpaddr CSRs
-Date: Mon,  3 Jun 2024 21:16:43 +1000
-Message-ID: <20240603111643.258712-28-alistair.francis@wdc.com>
-X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240603111643.258712-1-alistair.francis@wdc.com>
-References: <20240603111643.258712-1-alistair.francis@wdc.com>
+ d9443c01a7336-1f6323e3c33sm62572685ad.176.2024.06.03.04.17.08
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 03 Jun 2024 04:17:09 -0700 (PDT)
+Message-ID: <ae9f48f2-466a-42bd-9aab-82279fb9011d@daynix.com>
+Date: Mon, 3 Jun 2024 20:17:06 +0900
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/4] osdep: Make qemu_madvise() to set errno in all
+ cases
+To: =?UTF-8?B?TWljaGFsIFByw612b3puw61r?= <mprivozn@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Cameron Esfahani <dirty@apple.com>
+References: <cover.1717168113.git.mprivozn@redhat.com>
+ <393c7b26302cb445f1a086a2c80b1d718c31a071.1717168113.git.mprivozn@redhat.com>
+ <4b146ec6-bec2-4191-8c95-fc30d8307ef6@linaro.org>
+ <08ff19ed-9d1b-4fa3-8a40-3fe10d1f9bfa@daynix.com>
+ <d32e3ea3-32fb-4893-a950-91e60c9778d2@redhat.com>
+ <22e6b199-a23f-4b5d-ad80-86e82a232c8c@daynix.com>
+ <78f8d06f-9dee-4944-8635-af2316c84a33@redhat.com>
+Content-Language: en-US
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <78f8d06f-9dee-4944-8635-af2316c84a33@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x636.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,107 +105,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Alistair Francis <alistair23@gmail.com>
+On 2024/06/03 19:07, Michal Prívozník wrote:
+> On 6/3/24 10:50, Akihiko Odaki wrote:
+>> On 2024/06/03 16:56, Michal Prívozník wrote:
+>>> On 6/2/24 08:26, Akihiko Odaki wrote:
+>>>> On 2024/06/01 0:46, Philippe Mathieu-Daudé wrote:
+>>>>> On 31/5/24 17:10, Michal Privoznik wrote:
+>>>>>> The unspoken premise of qemu_madvise() is that errno is set on
+>>>>>> error. And it is mostly the case except for posix_madvise() which
+>>>>>> is documented to return either zero (on success) or a positive
+>>>>>> error number. This means, we must set errno ourselves. And while
+>>>>>> at it, make the function return a negative value on error, just
+>>>>>> like other error paths do.
+>>>>>>
+>>>>>> Signed-off-by: Michal Privoznik <mprivozn@redhat.com>
+>>>>>> ---
+>>>>>>     util/osdep.c | 14 +++++++++++++-
+>>>>>>     1 file changed, 13 insertions(+), 1 deletion(-)
+>>>>>>
+>>>>>> diff --git a/util/osdep.c b/util/osdep.c
+>>>>>> index e996c4744a..1345238a5c 100644
+>>>>>> --- a/util/osdep.c
+>>>>>> +++ b/util/osdep.c
+>>>>>> @@ -57,7 +57,19 @@ int qemu_madvise(void *addr, size_t len, int
+>>>>>> advice)
+>>>>>>     #if defined(CONFIG_MADVISE)
+>>>>>>         return madvise(addr, len, advice);
+>>>>>>     #elif defined(CONFIG_POSIX_MADVISE)
+>>>>>> -    return posix_madvise(addr, len, advice);
+>>>>>> +    /*
+>>>>>> +     * On Darwin posix_madvise() has the same return semantics as
+>>>>>> +     * plain madvise, i.e. errno is set and -1 is returned.
+>>>>>> Otherwise,
+>>>>>> +     * a positive error number is returned.
+>>>>>> +     */
+>>>>>
+>>>>> Alternative is to guard with #ifdef CONFIG_DARWIN ... #else ... #endif
+>>>>> which might be clearer.
+>>>>>
+>>>>> Although this approach seems reasonable, so:
+>>>>> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>>>>
+>>>> We should use plain madvise() if posix_madvise() is broken. In fact,
+>>>> QEMU detects the availability of plain madvise() and use it instead of
+>>>> posix_madvise() on my MacBook.
+>>>>
+>>>> Perhaps it may be better to stop defining CONFIG_POSIX_MADVISE on Darwin
+>>>> to ensure we never use the broken implementation.
+>>>>
+>>>
+>>> Well, doesn't Darwin have madvise() in the first place?
+>>>
+>>> https://opensource.apple.com/source/xnu/xnu-7195.81.3/bsd/man/man2/madvise.2.auto.html
+>>>
+>>> I thought that's the reason for posix_madvise() to behave the same as
+>>> madvise() there.
+>>
+>> It does have madvise() and QEMU on my MacBook uses it instead of
+>> posix_madvise().
+>>
+> 
+> I don't have a Mac myself, but I ran some tests on my colleague's Mac
+> and yes, posix_madvise() is basically just an alias to madvise(). No
+> dispute there.
+> 
+>> The behavior of posix_madvise() is probably just a bug (and perhaps it
+>> is too late for them to fix).
+>>
+> 
+> So what does this mean for this patch? Should I resend with the change
+> you're suggesting or this is good as is? I mean, posix_madvise() is not
+> going to be used on Mac anyways.
 
-Previously we only listed a single pmpcfg CSR and the first 16 pmpaddr
-CSRs. This patch fixes this to list all 16 pmpcfg and all 64 pmpaddr
-CSRs are part of the disassembly.
-
-Reported-by: Eric DeVolder <eric_devolder@yahoo.com>
-Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-Fixes: ea10325917 ("RISC-V Disassembler")
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-stable <qemu-stable@nongnu.org>
-Message-ID: <20240514051615.330979-1-alistair.francis@wdc.com>
-Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
----
- disas/riscv.c | 65 ++++++++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 64 insertions(+), 1 deletion(-)
-
-diff --git a/disas/riscv.c b/disas/riscv.c
-index e236c8b5b7..297cfa2f63 100644
---- a/disas/riscv.c
-+++ b/disas/riscv.c
-@@ -2190,7 +2190,22 @@ static const char *csr_name(int csrno)
-     case 0x0383: return "mibound";
-     case 0x0384: return "mdbase";
-     case 0x0385: return "mdbound";
--    case 0x03a0: return "pmpcfg3";
-+    case 0x03a0: return "pmpcfg0";
-+    case 0x03a1: return "pmpcfg1";
-+    case 0x03a2: return "pmpcfg2";
-+    case 0x03a3: return "pmpcfg3";
-+    case 0x03a4: return "pmpcfg4";
-+    case 0x03a5: return "pmpcfg5";
-+    case 0x03a6: return "pmpcfg6";
-+    case 0x03a7: return "pmpcfg7";
-+    case 0x03a8: return "pmpcfg8";
-+    case 0x03a9: return "pmpcfg9";
-+    case 0x03aa: return "pmpcfg10";
-+    case 0x03ab: return "pmpcfg11";
-+    case 0x03ac: return "pmpcfg12";
-+    case 0x03ad: return "pmpcfg13";
-+    case 0x03ae: return "pmpcfg14";
-+    case 0x03af: return "pmpcfg15";
-     case 0x03b0: return "pmpaddr0";
-     case 0x03b1: return "pmpaddr1";
-     case 0x03b2: return "pmpaddr2";
-@@ -2207,6 +2222,54 @@ static const char *csr_name(int csrno)
-     case 0x03bd: return "pmpaddr13";
-     case 0x03be: return "pmpaddr14";
-     case 0x03bf: return "pmpaddr15";
-+    case 0x03c0: return "pmpaddr16";
-+    case 0x03c1: return "pmpaddr17";
-+    case 0x03c2: return "pmpaddr18";
-+    case 0x03c3: return "pmpaddr19";
-+    case 0x03c4: return "pmpaddr20";
-+    case 0x03c5: return "pmpaddr21";
-+    case 0x03c6: return "pmpaddr22";
-+    case 0x03c7: return "pmpaddr23";
-+    case 0x03c8: return "pmpaddr24";
-+    case 0x03c9: return "pmpaddr25";
-+    case 0x03ca: return "pmpaddr26";
-+    case 0x03cb: return "pmpaddr27";
-+    case 0x03cc: return "pmpaddr28";
-+    case 0x03cd: return "pmpaddr29";
-+    case 0x03ce: return "pmpaddr30";
-+    case 0x03cf: return "pmpaddr31";
-+    case 0x03d0: return "pmpaddr32";
-+    case 0x03d1: return "pmpaddr33";
-+    case 0x03d2: return "pmpaddr34";
-+    case 0x03d3: return "pmpaddr35";
-+    case 0x03d4: return "pmpaddr36";
-+    case 0x03d5: return "pmpaddr37";
-+    case 0x03d6: return "pmpaddr38";
-+    case 0x03d7: return "pmpaddr39";
-+    case 0x03d8: return "pmpaddr40";
-+    case 0x03d9: return "pmpaddr41";
-+    case 0x03da: return "pmpaddr42";
-+    case 0x03db: return "pmpaddr43";
-+    case 0x03dc: return "pmpaddr44";
-+    case 0x03dd: return "pmpaddr45";
-+    case 0x03de: return "pmpaddr46";
-+    case 0x03df: return "pmpaddr47";
-+    case 0x03e0: return "pmpaddr48";
-+    case 0x03e1: return "pmpaddr49";
-+    case 0x03e2: return "pmpaddr50";
-+    case 0x03e3: return "pmpaddr51";
-+    case 0x03e4: return "pmpaddr52";
-+    case 0x03e5: return "pmpaddr53";
-+    case 0x03e6: return "pmpaddr54";
-+    case 0x03e7: return "pmpaddr55";
-+    case 0x03e8: return "pmpaddr56";
-+    case 0x03e9: return "pmpaddr57";
-+    case 0x03ea: return "pmpaddr58";
-+    case 0x03eb: return "pmpaddr59";
-+    case 0x03ec: return "pmpaddr60";
-+    case 0x03ed: return "pmpaddr61";
-+    case 0x03ee: return "pmpaddr62";
-+    case 0x03ef: return "pmpaddr63";
-     case 0x0780: return "mtohost";
-     case 0x0781: return "mfromhost";
-     case 0x0782: return "mreset";
--- 
-2.45.1
-
+I'm for my suggestion. The current patch seems to imply that we will use 
+posix_madvise() on macOS but in reality plain madivse() is used so it is 
+a bit misleading. We can explicitly say we won't use posix_madvise() on 
+macOS by not defining CONFIG_POSIX_MADVISE for that platform.
 
