@@ -2,83 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FD0E8D8A67
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jun 2024 21:41:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01C4B8D8B17
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jun 2024 22:56:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEDXr-0006AX-Dr; Mon, 03 Jun 2024 15:40:39 -0400
+	id 1sEEhV-0001Vi-3Z; Mon, 03 Jun 2024 16:54:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sEDXo-0006AG-LW
- for qemu-devel@nongnu.org; Mon, 03 Jun 2024 15:40:36 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sEDXn-0004J4-3h
- for qemu-devel@nongnu.org; Mon, 03 Jun 2024 15:40:36 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-42121d27861so2337395e9.0
- for <qemu-devel@nongnu.org>; Mon, 03 Jun 2024 12:40:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1717443633; x=1718048433; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=73PFY5xWborYI1O3JlhX3yOnbYtZ1/HEH+/R3eKO5fo=;
- b=weXOLAO+sAP8L/WmRFA6YeQ3wnTjjY0rirdhVjqiQib+6WPWvGIoOQFbGeFXGEgXjF
- c8OgJ5k9vl8rDomBSwEZ9Ea2EFSfZN4DRs1DI3PaXOxfxB0+2ZeQbgzgCzksd8wjM+kX
- qv9qBEfdDXzSEGY/byU2075gFpJ4KLy4/RUbi3FKTuLPh3RjPgfxLi02mUPvi86kvoIc
- N5xNHrzlXoaIVVZK7erT/d2zGCMZLvRW2N9ueuz7sTTcEtW9vdUXQzDQcMZls5pG+R9q
- LlsBoiCq5F0ueW+kKnT0iobI9cJ4c0dApV+wnizmhRh/KSwBW7gPFjXOmOyvLnos8eeZ
- 14hA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717443633; x=1718048433;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=73PFY5xWborYI1O3JlhX3yOnbYtZ1/HEH+/R3eKO5fo=;
- b=jxkQvJ/rh1YmlHTsDL2qE3ZxtxqhH1ZrZy5jnJg8sLI88Vd2exdBbpH34WNTgpPoCE
- +A2uqpC/S0q86SnoPNQSPWvJwoOevukAXqoVP7XAYISkmwJ7MMs/WUV6O3jy54/iFnJv
- 0lgI1ufHvUhi41jMwG8O53rIlW8O266RUqFMpLJj7iy4/zYvxblAvexfhrhrAWxfykfn
- WgJZDEmsZ7SDwQ2UXe9ZU0P3ANI2BBy8SRueLS49AZW5VCMR1S2wzMQEEtaSYMpAs2h7
- bYfcMPBpzg/lbOn0q5LlA2deAnQsGfivbJ3V4tngU+1A7aEOf4SOgqWUk+poznIcvi+H
- trDA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUJt7JG+CWDjIT8c/pVx6vZjXMsYadL6Sm1dtJWmEsQ4WAN/KEDETU7+p/bLSCZ/ajzvhrZTaUq+s8Oc5IHZlVO1qa8jGw=
-X-Gm-Message-State: AOJu0Yzy9/6R2SB2+bW96KPN3dQNAuSJwoyaS1qRVBSLlf8L+mVJKWr3
- UPS8T+xS7eBIMRU5pWdUBloYFosK4VZeg1ALwNYGeBUt8xzzxDT/cf8pPDCVcHY=
-X-Google-Smtp-Source: AGHT+IEr41gHAHMPST4HWcu99m4k9PKxhs0+QdnMgKaFdqUzIGAw6aV31xx4cg09B9eBR1R5Vnzt8Q==
-X-Received: by 2002:a7b:c449:0:b0:418:fe93:22d0 with SMTP id
- 5b1f17b1804b1-4212e09bc0dmr71948795e9.11.1717443632210; 
- Mon, 03 Jun 2024 12:40:32 -0700 (PDT)
-Received: from [192.168.69.100] ([176.176.177.241])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-421381c650csm84966745e9.27.2024.06.03.12.40.31
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 03 Jun 2024 12:40:31 -0700 (PDT)
-Message-ID: <74f43b2e-889a-4a97-b1c4-b71d6de83a8e@linaro.org>
-Date: Mon, 3 Jun 2024 21:40:30 +0200
+ (Exim 4.90_1) (envelope-from <dg@treblig.org>)
+ id 1sEEhR-0001VQ-I8; Mon, 03 Jun 2024 16:54:38 -0400
+Received: from mx.treblig.org ([2a00:1098:5b::1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <dg@treblig.org>)
+ id 1sEEhP-0003kQ-Ov; Mon, 03 Jun 2024 16:54:37 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
+ ; s=bytemarkmx;
+ h=Content-Type:MIME-Version:Message-ID:Subject:From:Date:From
+ :Subject; bh=bf3Q4VEvwj/mOWP9QOR2naUzVaiZxBRGyxhLDJ92NU0=; b=hx+9GB4p5IDGXEi+
+ nd0IhJd1PhYPisRTDoieZrg6DQPbmAB1uuxRbrIup3onrC//pnTYX2XRN4dJHQmMIqnUV3KsUjx02
+ pYwRZFcT7BCuAcDiyXaTi9LcVmPMy39cxe/FWlDBMCeAf8AzkUAEN7aoYsNb270kO2JDdYMzJa9fy
+ RMggQvfo2xd0gagiAVEgxuBl7TmQLecrV5zbTHOE6rv8gYjtvcIQurzGjRwbW+FFYBqkpmXJGbjEE
+ R11rVGY+IcIiG/PxfRyg9FK/ekRPqU0v92bjWUszYDm9FskCo+QIpaTH5HSdGnt53EiyeClSr7zDv
+ G45RUMzwOO+f5RSnCQ==;
+Received: from dg by mx.treblig.org with local (Exim 4.96)
+ (envelope-from <dg@treblig.org>) id 1sEEhE-0041ci-15;
+ Mon, 03 Jun 2024 20:54:24 +0000
+Date: Mon, 3 Jun 2024 20:54:24 +0000
+From: "Dr. David Alan Gilbert" <dave@treblig.org>
+To: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
+Cc: Thomas Huth <thuth@redhat.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, Cornelia Huck <cohuck@redhat.com>,
+ David Hildenbrand <david@redhat.com>,
+ Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ qemu-s390x@nongnu.org, devel@lists.libvirt.org,
+ Eric Farman <farman@linux.ibm.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eric Blake <eblake@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
+ Anton Johansson <anjo@rev.ng>, qemu-arm <qemu-arm@nongnu.org>
+Subject: Re: [PATCH 0/4] hw/s390x: Alias @dump-skeys -> @dump-s390-skey and
+ deprecate
+Message-ID: <Zl4tgFuAdjU2bst6@gallifrey>
+References: <20240530074544.25444-1-philmd@linaro.org>
+ <cb4028fc-9596-47f3-9468-f8912dd48aed@redhat.com>
+ <Zl20rAjHLJlZkwxE@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 01/27] util/hexdump: Remove b parameter from
- qemu_hexdump_line
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-References: <20240412073346.458116-1-richard.henderson@linaro.org>
- <20240412073346.458116-2-richard.henderson@linaro.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240412073346.458116-2-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <Zl20rAjHLJlZkwxE@redhat.com>
+X-Chocolate: 70 percent or better cocoa solids preferably
+X-Operating-System: Linux/6.1.0-21-amd64 (x86_64)
+X-Uptime: 20:53:35 up 26 days, 8:07, 1 user, load average: 0.00, 0.00, 0.00
+User-Agent: Mutt/2.2.12 (2023-09-09)
+Received-SPF: pass client-ip=2a00:1098:5b::1; envelope-from=dg@treblig.org;
+ helo=mx.treblig.org
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,39 +81,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/4/24 09:33, Richard Henderson wrote:
-> Require that the caller output the offset and increment bufptr.
-> Use QEMU_HEXDUMP_LINE_BYTES in vhost_vdpa_dump_config instead
-> of raw integer.
+* Daniel P. Berrangé (berrange@redhat.com) wrote:
+> On Fri, May 31, 2024 at 06:47:45AM +0200, Thomas Huth wrote:
+> > On 30/05/2024 09.45, Philippe Mathieu-Daudé wrote:
+> > > We are trying to unify all qemu-system-FOO to a single binary.
+> > > In order to do that we need to remove QAPI target specific code.
+> > > 
+> > > @dump-skeys is only available on qemu-system-s390x. This series
+> > > rename it as @dump-s390-skey, making it available on other
+> > > binaries. We take care of backward compatibility via deprecation.
+> > > 
+> > > Philippe Mathieu-Daudé (4):
+> > >    hw/s390x: Introduce the @dump-s390-skeys QMP command
+> > >    hw/s390x: Introduce the 'dump_s390_skeys' HMP command
+> > >    hw/s390x: Deprecate the HMP 'dump_skeys' command
+> > >    hw/s390x: Deprecate the QMP @dump-skeys command
+> > 
+> > Why do we have to rename the command? Just for the sake of it? I think
+> > renaming HMP commands is maybe ok, but breaking the API in QMP is something
+> > you should consider twice.
 > 
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   include/qemu/cutils.h  |  2 +-
->   hw/virtio/vhost-vdpa.c |  4 ++--
->   util/hexdump.c         | 13 ++++++-------
->   hw/virtio/trace-events |  2 +-
->   4 files changed, 10 insertions(+), 11 deletions(-)
+> That was going to be my question too. Seems like its possible to simply
+> stub out the existing command for other targets.
 
+Are these commands really supposed to be stable, or are they just debug
+commands?  If they are debug, then add the x- and don't worry too much.
 
-> diff --git a/hw/virtio/trace-events b/hw/virtio/trace-events
-> index 96632fd026..d01bc85037 100644
-> --- a/hw/virtio/trace-events
-> +++ b/hw/virtio/trace-events
-> @@ -50,7 +50,7 @@ vhost_vdpa_get_device_id(void *dev, uint32_t device_id) "dev: %p device_id %"PRI
->   vhost_vdpa_reset_device(void *dev) "dev: %p"
->   vhost_vdpa_get_vq_index(void *dev, int idx, int vq_idx) "dev: %p idx: %d vq idx: %d"
->   vhost_vdpa_set_vring_enable_one(void *dev, unsigned i, int enable, int r) "dev: %p, idx: %u, enable: %u, r: %d"
-> -vhost_vdpa_dump_config(void *dev, const char *line) "dev: %p %s"
-> +vhost_vdpa_dump_config(void *dev, unsigned ofs, const char *line) "dev: %p %04x: %s"
+Dave
 
-Queued squashing "0x" due to:
-
-     ERROR: Hex numbers must be prefixed with '0x'
-     #108: FILE: hw/virtio/trace-events:53:
-     +vhost_vdpa_dump_config(void *dev, unsigned ofs, const char *line) 
-"dev: %p %04x: %s"
-
-     total: 1 errors, 0 warnings, 67 lines checked
-
-
+> The renaming is just window dressing.
+> 
+> > 
+> > And even if we decide to rename ... maybe we should discuss whether it makes
+> > sense to come up with a generic command instead: As far as I know, ARM also
+> > has something similar, called MTE. Maybe we also want to dump MTE keys one
+> > day? So the new command should maybe be called "dump-memory-keys" instead?
+> > Or should it maybe rather be an option to the existing "dump-guest-memory"
+> > command instead?
+> 
+> With regards,
+> Daniel
+> -- 
+> |: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+> |: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+> |: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+> 
+-- 
+ -----Open up your eyes, open up your mind, open up your code -------   
+/ Dr. David Alan Gilbert    |       Running GNU/Linux       | Happy  \ 
+\        dave @ treblig.org |                               | In Hex /
+ \ _________________________|_____ http://www.treblig.org   |_______/
 
