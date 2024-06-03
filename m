@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90EF68D7B6B
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jun 2024 08:14:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EBA18D7B72
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jun 2024 08:15:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sE0xO-0005LC-FI; Mon, 03 Jun 2024 02:14:10 -0400
+	id 1sE0xN-0005F5-Ba; Mon, 03 Jun 2024 02:14:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1sE0xG-00055M-DZ
+ id 1sE0xF-00053t-Fz
  for qemu-devel@nongnu.org; Mon, 03 Jun 2024 02:14:02 -0400
 Received: from mgamail.intel.com ([192.198.163.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1sE0xB-0000xl-2n
+ id 1sE0xD-0000xv-Je
  for qemu-devel@nongnu.org; Mon, 03 Jun 2024 02:14:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1717395237; x=1748931237;
+ t=1717395240; x=1748931240;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=aGQbaAJ8Mo1eAYh7VSQnzPpxX2caqE6yUjp/Zueg3F4=;
- b=moH0ZAbw2jiW89ya0/7UWT2N/vhZrZfDwoYPHgwdO5653YDQQZysj4a5
- yzNToJg17Vrt1OyYlAxxcNkM7KBtxwhdmmPYAnJpau9U3CmlLK1VgjhSS
- cOgyfsBGY/IVXCOnk7uNVytCjBCrX0gcWidS9WzJcXOTqusp13h/x+Mq1
- UouX12en+VzXABFoM6MFQeIw5h7qb3UVkBE65F6RqJ8KYvpMCxCorcKe6
- wby5BtKBa9f2aWDZVJTIqjgoiC4PIrjTwxHKsQUd3Y1u6BuvUpfHDyvIX
- HjTK15A1xRpoGuorft3OhHpFhJykKP8txzQ7rO/hB6+/MGKGamW6JJX7q w==;
-X-CSE-ConnectionGUID: X9wCeZ3pS4Gixc/45qP7KQ==
-X-CSE-MsgGUID: 6KA9cXb0S3uuyW5RV0lNcw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11091"; a="25277699"
-X-IronPort-AV: E=Sophos;i="6.08,210,1712646000"; d="scan'208";a="25277699"
+ bh=dAKZSk5QgrnUIjill0jO2g0zyj3Uf0goHqo6GXW+pBI=;
+ b=JNZyTkqyMZR7BFjewvP5//hYXZD9QqOhAuLQ8CT3jzwTX/VcGkryaQW1
+ LMnLY3yvtNHDt2/2lvUK3Wc2XFc4QUjgh8LObV+nTnfRftDbCFCEw3Y/J
+ nIUBqrBR4y3OYUcUxbwjoaldQnGEf/ZJ1NRuzozRjBV2PRAUuf3MRz5in
+ pReHVznRNaa9/4cOrfz7lQZzG0SdQXu5fbTzuZHB2NIK5iHq0sFCG10Gg
+ 7PCL07UW51zr1y/BZ6sHyXc0Z6IoaJzyZD6btEwXuezzqJ/W4++XZFdgD
+ ZllEV3sbFolHJJD3+bFRL8UtER9VOpr+DsOnRtKkoLfk9QLrpaFTRKj5S w==;
+X-CSE-ConnectionGUID: 1XJypS3MQyeDLhQ0ghUzHQ==
+X-CSE-MsgGUID: f4nTW8e9QdGQyXEaZINfFA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11091"; a="25277707"
+X-IronPort-AV: E=Sophos;i="6.08,210,1712646000"; d="scan'208";a="25277707"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Jun 2024 23:13:54 -0700
-X-CSE-ConnectionGUID: gIILgM3FTxa/FTbp/Isd2g==
-X-CSE-MsgGUID: gt7Hk+SvQ8KWvvImT67D3A==
+ 02 Jun 2024 23:13:58 -0700
+X-CSE-ConnectionGUID: 4+04TMNbRk2ZzHKqVINCGA==
+X-CSE-MsgGUID: v2BwHxoRQPW0LnWSjTnFTg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,210,1712646000"; d="scan'208";a="36855914"
+X-IronPort-AV: E=Sophos;i="6.08,210,1712646000"; d="scan'208";a="36855934"
 Received: from unknown (HELO SPR-S2600BT.bj.intel.com) ([10.240.192.127])
  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Jun 2024 23:13:50 -0700
+ 02 Jun 2024 23:13:54 -0700
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
@@ -51,10 +51,10 @@ Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
  nicolinc@nvidia.com, joao.m.martins@oracle.com,
  clement.mathieu--drif@eviden.com, kevin.tian@intel.com, yi.l.liu@intel.com,
  chao.p.peng@intel.com, Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PATCH v6 10/19] vfio/container: Implement
+Subject: [PATCH v6 11/19] backends/iommufd: Implement
  HostIOMMUDeviceClass::get_cap() handler
-Date: Mon,  3 Jun 2024 14:10:14 +0800
-Message-Id: <20240603061023.269738-11-zhenzhong.duan@intel.com>
+Date: Mon,  3 Jun 2024 14:10:15 +0800
+Message-Id: <20240603061023.269738-12-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240603061023.269738-1-zhenzhong.duan@intel.com>
 References: <20240603061023.269738-1-zhenzhong.duan@intel.com>
@@ -63,13 +63,13 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=192.198.163.10;
  envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
+X-Spam_score_int: -45
+X-Spam_score: -4.6
 X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.142,
+X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.142,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,23 +88,24 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Suggested-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- hw/vfio/container.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ backends/iommufd.c | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-diff --git a/hw/vfio/container.c b/hw/vfio/container.c
-index 48800fe92f..a46c275a88 100644
---- a/hw/vfio/container.c
-+++ b/hw/vfio/container.c
-@@ -1154,11 +1154,26 @@ static bool hiod_legacy_vfio_realize(HostIOMMUDevice *hiod, void *opaque,
+diff --git a/backends/iommufd.c b/backends/iommufd.c
+index c7e969d6f7..f2f7a762a0 100644
+--- a/backends/iommufd.c
++++ b/backends/iommufd.c
+@@ -230,6 +230,28 @@ bool iommufd_backend_get_device_info(IOMMUFDBackend *be, uint32_t devid,
      return true;
  }
  
-+static int hiod_legacy_vfio_get_cap(HostIOMMUDevice *hiod, int cap,
-+                                    Error **errp)
++static int hiod_iommufd_get_cap(HostIOMMUDevice *hiod, int cap, Error **errp)
 +{
 +    HostIOMMUDeviceCaps *caps = &hiod->caps;
 +
 +    switch (cap) {
++    case HOST_IOMMU_DEVICE_CAP_IOMMU_TYPE:
++        return caps->type;
 +    case HOST_IOMMU_DEVICE_CAP_AW_BITS:
 +        return caps->aw_bits;
 +    default:
@@ -113,15 +114,24 @@ index 48800fe92f..a46c275a88 100644
 +    }
 +}
 +
- static void hiod_legacy_vfio_class_init(ObjectClass *oc, void *data)
- {
-     HostIOMMUDeviceClass *hioc = HOST_IOMMU_DEVICE_CLASS(oc);
- 
-     hioc->realize = hiod_legacy_vfio_realize;
-+    hioc->get_cap = hiod_legacy_vfio_get_cap;
- };
- 
++static void hiod_iommufd_class_init(ObjectClass *oc, void *data)
++{
++    HostIOMMUDeviceClass *hioc = HOST_IOMMU_DEVICE_CLASS(oc);
++
++    hioc->get_cap = hiod_iommufd_get_cap;
++};
++
  static const TypeInfo types[] = {
+     {
+         .name = TYPE_IOMMUFD_BACKEND,
+@@ -246,6 +268,7 @@ static const TypeInfo types[] = {
+     }, {
+         .name = TYPE_HOST_IOMMU_DEVICE_IOMMUFD,
+         .parent = TYPE_HOST_IOMMU_DEVICE,
++        .class_init = hiod_iommufd_class_init,
+         .abstract = true,
+     }
+ };
 -- 
 2.34.1
 
