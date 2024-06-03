@@ -2,62 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F99A8D7B0E
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jun 2024 07:48:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E7A18D7B0F
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jun 2024 07:48:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sE0Xv-0008P8-7J; Mon, 03 Jun 2024 01:47:51 -0400
+	id 1sE0Xy-0008Sf-2g; Mon, 03 Jun 2024 01:47:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <fea.wang@sifive.com>)
- id 1sE0Xq-0008Oc-Ic
- for qemu-devel@nongnu.org; Mon, 03 Jun 2024 01:47:46 -0400
-Received: from mail-pg1-x52e.google.com ([2607:f8b0:4864:20::52e])
+ id 1sE0Xw-0008RY-6z
+ for qemu-devel@nongnu.org; Mon, 03 Jun 2024 01:47:52 -0400
+Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <fea.wang@sifive.com>)
- id 1sE0Xo-00059o-0t
- for qemu-devel@nongnu.org; Mon, 03 Jun 2024 01:47:46 -0400
-Received: by mail-pg1-x52e.google.com with SMTP id
- 41be03b00d2f7-6c55e3d2740so1457628a12.0
- for <qemu-devel@nongnu.org>; Sun, 02 Jun 2024 22:47:43 -0700 (PDT)
+ id 1sE0Xt-0005BK-JY
+ for qemu-devel@nongnu.org; Mon, 03 Jun 2024 01:47:51 -0400
+Received: by mail-pl1-x630.google.com with SMTP id
+ d9443c01a7336-1f47f07aceaso23721075ad.0
+ for <qemu-devel@nongnu.org>; Sun, 02 Jun 2024 22:47:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1717393662; x=1717998462; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=TfMhfV8dvPnkBl/1AVtWU1jfvBLDGGE+d3x8Cnm3ugc=;
- b=L9sSUxCk6IupdHmIAKy8m5GzMjCfqxSsyohF+8wSmYk08ROP5Suw67SEdMgXgwrpGW
- HCBCHKd1ssHCboy0b0xLgleZGWhT/7YAv0gksv/mw7OFpJUjYO4e7JKUe/g7q3agwOWz
- BgsugpgIfLj6Jr+6GzxG9pdSZHKKMywf+dO7zl9jZLy8IoCsMOxtbWnYWxGtiL4cIzRz
- 3jx5J7286hwvZ/cow1sGS2dEarIv5MfQCg3oKZ+uyIxhLhPF2q+qZM7ygtm8eFiZhzdf
- aBOYbNs8Z+EKyJyxD6D69Q/mtqsgPIx7cJAoXV8yX3Na4O6e4Negej0TlPRii9AIiWlH
- KMrg==
+ d=sifive.com; s=google; t=1717393668; x=1717998468; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=GEhvW8mMXGFmnN1YikczckSrxHyJV9SouAqt0p1mFPM=;
+ b=OV7FobpQpqeLVKtgsJn72Byc/xzLgtjGYN+WnypUL0sG5fIMo+0ECDssba+g4AcKTK
+ Jgsolf2cHA+v9u0nGAQYjkiHk/wzvH3/7SvCabVLrRxBABkW6QfVZiFC4vTDBoxhFs5l
+ YzW9M4fD6J4rW7sRx2nMDBZEGW1z0IxlvLN5sgcKz97uYbFHXrurQicKSi7M+WXbIq8R
+ Col/+CO43qqUqDtsW3vbiY+LXLYrQefnAAgZ3lU3cc7RRDUiC5YxId3g3FbAXsFoz8CP
+ 44CBb+hLKvUFCgHKy7ggNepaj9nPSDztk5OpHRzO8jvCuzY5DxFtrn6LALtQp+i53+OW
+ hc2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717393662; x=1717998462;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=TfMhfV8dvPnkBl/1AVtWU1jfvBLDGGE+d3x8Cnm3ugc=;
- b=kCSg9ncxTxXlnaC5hd8lxtGAzFw2cpxy4zKtludpxkIgEs8QKUHwV4EGj1twdhwUsU
- z+I4v3mZVDA1/RNcdslP/pOJODlAKZzmGmhPljepaQ6o16kojq8O0Gm3oc09IfAQ1+er
- ca6cDVMxiWezyRU1m4vchwfk81H5u5LojntUPCNLCGVy44vGSRVu+jkMfws357CsZqZb
- uZjTSeCg7vRwpqV4RDwkBgZ0taa0NLHVx3u6oUndlSjqOBPg3R+TZmYXJLgbXwxNQLTs
- ygQIDf5ZakqyC3Sr93TXQlNA9zvxgqw66MIDcbjw5gaTvP6g5TZ8i7f+/bEVzAbeYyH7
- F2Mg==
-X-Gm-Message-State: AOJu0YxvbqjPt8KIahtNx2zTGkMfQihjPrOWNB59bByAALVHckuxky7D
- PmhAUfahCAB31u0oR7ll5rPihXola+SVFgGC1BmdMaRxE2bR0zZhwd19xs/Bj2rpc4ZYUroSIBY
- 7rO7Vpdeqme5AtpHpwxAFAkzj5unfmaUW3P4YdzWHAm4A47QbgLAVFcMd/ovFdn5jzi4nVqmXM2
- E+4RbY+oX3XKnZKbIUH/dvSnZNj2gZCogXseQ=
-X-Google-Smtp-Source: AGHT+IG8fwgrD6qGJdoObgw/d9nq3DJ7GQZeaTOt0e8MEHsP0l4TNZq+10y0RgwjmpYqwTM7KgcfIA==
-X-Received: by 2002:a17:902:e5d1:b0:1f3:620:c92 with SMTP id
- d9443c01a7336-1f6359934d1mr130619955ad.7.1717393661589; 
- Sun, 02 Jun 2024 22:47:41 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1717393668; x=1717998468;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=GEhvW8mMXGFmnN1YikczckSrxHyJV9SouAqt0p1mFPM=;
+ b=ZmDxRyNMUg0JAAr0cEUbo06hdKdcRnYwrqozgVjZC6ap1UUltLAbBomZWM2cLUbaPG
+ NE/0x012MeIICHfxeMcqIM9LUQIP3tBhpGF5PwNmlGcIFNGlyXzy5h2h9kiKdBWdadzq
+ JUlh/W5EoBhTgX77bbRgNEzVSjHjpDaEcxYLO2z94neKDDnOM+bzYjFc1cHEUj/9MWVs
+ 9YPj9pGGEUQyz5TXKQF4/YKdngaYE41ogDBHD61AP4PxOQTkBXwL+uX3GiYRfYrdf/jK
+ 0eBXWrnsaotA2LAsqBykFIHTiEru9TALdosPnKY3UkJLro+GpqBzEqYVcIrtI6wrbsKe
+ ELKg==
+X-Gm-Message-State: AOJu0YxTvBAsxP4+9MhCb4HOTDYyTGPr7n1iOC7DqqFT9XMZyAZN6kOu
+ iRYh1eTdge2AOLRP5t3kByQztiLrVMDg2avqh6vV/yoOgFsEKYso5d7fcECrQJuAqz+TWavw2xO
+ papFLGHNW7wCpYAeBZVlZfhGY5r9o4pJ6bn/k8s/IauxpIhYck5mb1X+lpI/NYk/Zl7pK2z1LdR
+ YHu9jBdlV97qE/M1Ect2mSUMyqp2bnFSAoeE8=
+X-Google-Smtp-Source: AGHT+IHmdBM6KFnJn5VK2xewRuucEsqZ8fKEK414IFJ+RE/5x+5oq1s2Q8A+zMWE3drGYrCkgzyjgA==
+X-Received: by 2002:a17:902:ea03:b0:1f4:a45b:8429 with SMTP id
+ d9443c01a7336-1f636ffde39mr95009475ad.27.1717393667593; 
+ Sun, 02 Jun 2024 22:47:47 -0700 (PDT)
 Received: from hsinchu36-syssw02.internal.sifive.com
  (59-124-168-89.hinet-ip.hinet.net. [59.124.168.89])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1f63241e085sm55824135ad.299.2024.06.02.22.47.39
+ d9443c01a7336-1f63241e085sm55824135ad.299.2024.06.02.22.47.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 02 Jun 2024 22:47:41 -0700 (PDT)
+ Sun, 02 Jun 2024 22:47:47 -0700 (PDT)
 From: "Fea.Wang" <fea.wang@sifive.com>
 To: qemu-devel@nongnu.org,
 	qemu-riscv@nongnu.org
@@ -66,15 +67,16 @@ Cc: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
  Peter Maydell <peter.maydell@linaro.org>, Jason Wang <jasowang@redhat.com>,
  qemu-arm@nongnu.org (open list:Xilinx Zynq),
  "Fea.Wang" <fea.wang@sifive.com>
-Subject: [PATCH 0/4] hw/dma: Add error handling for loading descriptions
- failing
-Date: Mon,  3 Jun 2024 13:52:44 +0800
-Message-Id: <20240603055248.3928469-1-fea.wang@sifive.com>
+Subject: [PATCH 1/4] hw/dma: Enhance error handling in loading description
+Date: Mon,  3 Jun 2024 13:52:45 +0800
+Message-Id: <20240603055248.3928469-2-fea.wang@sifive.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240603055248.3928469-1-fea.wang@sifive.com>
+References: <20240603055248.3928469-1-fea.wang@sifive.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52e;
- envelope-from=fea.wang@sifive.com; helo=mail-pg1-x52e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
+ envelope-from=fea.wang@sifive.com; helo=mail-pl1-x630.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,26 +99,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The original code assumes that memory transmission is always successful,
-but in some cases, it gets bus-error.
+Loading a description from memory may cause a bus-error. In this
+case, the DMA should stop working, set the error flag, and return
+the error value.
 
-Add error handling for DMA reading description failures. Do some
-reasonable settings, and return the corrected transmission size.
-Finally, return the error status.
+Signed-off-by: Fea.Wang <fea.wang@sifive.com>
+---
+ hw/dma/xilinx_axidma.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
-base-commit: 1806da76cb81088ea026ca3441551782b850e393
-
-Fea.Wang (4):
-  hw/dma: Enhance error handling in loading description
-  hw/dma: Break the loop when loading descriptions fails
-  hw/dma: Add a trace log for a description loading failure
-  hw/net: Fix the transmission return size
-
- hw/dma/trace-events     |  3 +++
- hw/dma/xilinx_axidma.c  | 27 +++++++++++++++++++++++----
- hw/net/xilinx_axienet.c |  2 +-
- 3 files changed, 27 insertions(+), 5 deletions(-)
-
+diff --git a/hw/dma/xilinx_axidma.c b/hw/dma/xilinx_axidma.c
+index 0ae056ed06..4b475e5484 100644
+--- a/hw/dma/xilinx_axidma.c
++++ b/hw/dma/xilinx_axidma.c
+@@ -71,8 +71,10 @@ enum {
+ enum {
+     DMASR_HALTED = 1,
+     DMASR_IDLE  = 2,
++    DMASR_SLVERR = 1 << 5,
+     DMASR_IOC_IRQ  = 1 << 12,
+     DMASR_DLY_IRQ  = 1 << 13,
++    DMASR_ERR_IRQ  = 1 << 14,
+ 
+     DMASR_IRQ_MASK = 7 << 12
+ };
+@@ -190,17 +192,27 @@ static inline int streamid_from_addr(hwaddr addr)
+     return sid;
+ }
+ 
+-static void stream_desc_load(struct Stream *s, hwaddr addr)
++static MemTxResult stream_desc_load(struct Stream *s, hwaddr addr)
+ {
+     struct SDesc *d = &s->desc;
+ 
+-    address_space_read(&s->dma->as, addr, MEMTXATTRS_UNSPECIFIED, d, sizeof *d);
++    MemTxResult result = address_space_read(&s->dma->as,
++                                            addr, MEMTXATTRS_UNSPECIFIED,
++                                            d, sizeof *d);
++    if (result != MEMTX_OK) {
++        s->regs[R_DMACR] &= ~DMACR_RUNSTOP;
++        s->regs[R_DMASR] |= DMASR_HALTED;
++        s->regs[R_DMASR] |= DMASR_SLVERR;
++        s->regs[R_DMASR] |= DMASR_ERR_IRQ;
++        return result;
++    }
+ 
+     /* Convert from LE into host endianness.  */
+     d->buffer_address = le64_to_cpu(d->buffer_address);
+     d->nxtdesc = le64_to_cpu(d->nxtdesc);
+     d->control = le32_to_cpu(d->control);
+     d->status = le32_to_cpu(d->status);
++    return result;
+ }
+ 
+ static void stream_desc_store(struct Stream *s, hwaddr addr)
 -- 
 2.34.1
 
