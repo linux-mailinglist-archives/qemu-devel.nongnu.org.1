@@ -2,73 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B5418D80F3
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jun 2024 13:21:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A58548D80F1
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jun 2024 13:20:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sE5hp-0007jE-8T; Mon, 03 Jun 2024 07:18:25 -0400
+	id 1sE5iG-0001ba-0P; Mon, 03 Jun 2024 07:18:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sE5hl-0007Zl-EV; Mon, 03 Jun 2024 07:18:21 -0400
+ id 1sE5i5-0001Be-NQ; Mon, 03 Jun 2024 07:18:42 -0400
 Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sE5hg-0006Wr-Kf; Mon, 03 Jun 2024 07:18:21 -0400
+ id 1sE5hq-0006XE-1e; Mon, 03 Jun 2024 07:18:41 -0400
 Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-1f44b45d6abso29776055ad.0; 
- Mon, 03 Jun 2024 04:18:15 -0700 (PDT)
+ d9443c01a7336-1f44b42d1caso31644135ad.0; 
+ Mon, 03 Jun 2024 04:18:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1717413494; x=1718018294; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1717413497; x=1718018297; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Tj+xbQPw1aTPPkVQS9cYzQUJajn8RHcrOCksv3MTYMs=;
- b=DwOpcmCGes3PI+YWKRpzaGGK3BSN/ZuXH1Ml7kWrC10ueqKA/so0klJ+T2cBeoiDpM
- KBLNIShNQDKjVPW4uu+wbwVw5sGswaRfVZ3ZVRefyqadIic9uKfZ855Y77u926D0U30y
- zJXyjoCXpTxr5VDy7+tjaOgnO3pToCfTezhyGo2AGJrOfgdlGKpszGm+y0Xw+Ld5qXMf
- qdlvLd/uVyiOdbV1lLDwxBsiqk/XQLzfAv0n8hcoqbbB269GcEgBgfrAv60VAZOfS8lo
- X8wZw5Y0cIib3JDBmPj6fnw0SfRRA8DnW94Inxcf6wJ6zBjh61boaaGPPWgQ/r4XPTnO
- v3wA==
+ bh=okL/u9Yr4I1gdpYP+OUmz0dGlxU1P8AIMDXGmwEB0cY=;
+ b=DmNQcPw9JMc7Zjf7bAm5ShfxecBWkiYyYza9zBgBdRvtz7PAC+cCEDAoOacwLEs5PW
+ aq2ClBxCBRDQUymOJZP+Cd1U52/BqgdY25nDtbFgd6G7iT5Dc8n1ySIQsZR0uUS83HT6
+ MDlxxsLW1aBmp75EE9BqQpSZqhkzPo9JG8UGXHPBQ4KWOf1Yeu4m/DJGhgC5M15BkHh0
+ HWBWEzxkJDi9Dhi/MClpEWy1HYcg2615skm0lz5R7Fc9i1xg/IQwveT/a7RR0TWw/n0e
+ QiY8jlko/yyxlJkuv+WtAQdvgAowZtLzxp4LEGCrvoZECd2+Fopy2hgxND/cDA/s2d3C
+ gycw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717413494; x=1718018294;
+ d=1e100.net; s=20230601; t=1717413497; x=1718018297;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Tj+xbQPw1aTPPkVQS9cYzQUJajn8RHcrOCksv3MTYMs=;
- b=IiQDitK85Q25sAEFKRVf+h2rn5cX4xCn2piJ6dKA4c3jY7YVq1Ag2hqNrqKfvNj1+8
- eN1/7slacpRcGk1BgQzm8jQZ3YTeK3tj6yOPpbinwMohd60xn2DaD31oYW9upcsdHoTO
- 4p8mcGmrZ9wQkVXlG9ofZwlf836Y8lBo7pegxhNzIkz75xxLfCSGYK7uNKRWOpK5qw1g
- fft5rgqzd8wAh3DmCaHLtndiC2uhmH50G6ZEGeCvxbQ3oNkVMQwqT3aygf7K/kO2Ml2F
- nhSuOKSCiK9kFsDVQiDEpaWyIAmHrlbBCV10RzAzXxYieOlae5YLexIw+R1uN9BKV629
- zeoQ==
+ bh=okL/u9Yr4I1gdpYP+OUmz0dGlxU1P8AIMDXGmwEB0cY=;
+ b=tPxO6NMFRyIEEOheYw9xKzhmw5xNf9taeWiE6qRNp6DnDjDtmNrwleF0EcAt/8Cleg
+ kcla8pGZQ8aVL3ajmLOl77Rhp7NGGW/lMzCQ6ivJ7rYpthZwSD4rbOGMB3gHCnh4xvKU
+ ceornvnP94BJZQO9LPWez/qkwdbiyPd8ejCByYVxUA8gF2RgLUMVhdhep/hLPFrQAcYB
+ J63Mqb1tKRH9PQvr6NA76M6Ufwrvvy9zSqQ8ztOskr4XIWnBnFiUmnmuz/P2RwXoW5Sz
+ /rfqNotYWdBS658+npnkynHXBkW3GR5QGHabk5RJU+hmFWjiuFw04c8TY3faJl9Pbbrp
+ TKRw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCV6ltbyULYFlHbszYs2rTZ/9NyuTNS4fIKhmcls6wAVz3BUCD1dL0FsYl5ZJQSMgXBUn+SCJAI5Pv1rMzmr7/8DgK6h5eHb
-X-Gm-Message-State: AOJu0YzVgfY4C0oqnt7jsvIdGoqn9flaWbXwLerAEoqy8s3wYLEBOiex
- XbN5ZGtDt0qcYQ6G7vojachB48JKFqyE/HN5nRcVIq/TfSWIszOjWNk1IQ==
-X-Google-Smtp-Source: AGHT+IGKrY8IagvVVSdQaol6lJys9GgQbHEbjGT0vStfWyb+ZlyPi+R8qVjEdKVhSam3BWg1iSDWog==
-X-Received: by 2002:a17:903:32c2:b0:1f3:2e5d:902d with SMTP id
- d9443c01a7336-1f636fd9704mr98098505ad.4.1717413493552; 
- Mon, 03 Jun 2024 04:18:13 -0700 (PDT)
+ AJvYcCW36U3uFmwywMM8Wmcc5qYo5vcscijERMwLG/4W1piFxAAHmfBVUj+4sPeCi1GZIZpM63uRIuyos1viQKNZLbkcahDhL7uK
+X-Gm-Message-State: AOJu0YzOec6wxoNraNpVuiDkCXaThfn1QMKEQ2BtREPQgLJtO+ibouiT
+ XJ/bY/g8uuj6nI7qiMfGWFQtmJlne8JvUqR/AE//JDqkXBX2FInNqHTPXQ==
+X-Google-Smtp-Source: AGHT+IEwm17AaeWkVnSCEdgpsmu7Zlp9BB/vFh3ccCz8f25QhWn3K+LpdbcBjyy38V5B8kMNRoZEgw==
+X-Received: by 2002:a17:902:da86:b0:1f6:8dc8:184d with SMTP id
+ d9443c01a7336-1f68dc81aeemr2121805ad.23.1717413496938; 
+ Mon, 03 Jun 2024 04:18:16 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1f6323e18c7sm62375435ad.177.2024.06.03.04.18.10
+ d9443c01a7336-1f6323e18c7sm62375435ad.177.2024.06.03.04.18.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Jun 2024 04:18:13 -0700 (PDT)
+ Mon, 03 Jun 2024 04:18:16 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Alistair Francis <alistair.francis@wdc.com>,
- Fabian Thomas <fabian.thomas@cispa.de>,
- Richard Henderson <richard.henderson@linaro.org>,
- qemu-stable <qemu-stable@nongnu.org>
-Subject: [PULL v2 24/27] target/riscv: rvzicbo: Fixup CBO extension register
- calculation
-Date: Mon,  3 Jun 2024 21:16:40 +1000
-Message-ID: <20240603111643.258712-25-alistair.francis@wdc.com>
+Cc: alistair23@gmail.com, Yong-Xuan Wang <yongxuan.wang@sifive.com>,
+ Andrew Jones <ajones@ventanamicro.com>,
+ qemu-stable <qemu-stable@nongnu.org>,
+ Alistair Francis <alistair.francis@wdc.com>
+Subject: [PULL v2 25/27] target/riscv/kvm.c: Fix the hart bit setting of AIA
+Date: Mon,  3 Jun 2024 21:16:41 +1000
+Message-ID: <20240603111643.258712-26-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240603111643.258712-1-alistair.francis@wdc.com>
 References: <20240603111643.258712-1-alistair.francis@wdc.com>
@@ -76,13 +75,13 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
  envelope-from=alistair23@gmail.com; helo=mail-pl1-x629.google.com
-X-Spam_score_int: -14
-X-Spam_score: -1.5
+X-Spam_score_int: -18
+X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,87 +97,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Alistair Francis <alistair23@gmail.com>
+From: Yong-Xuan Wang <yongxuan.wang@sifive.com>
 
-When running the instruction
+In AIA spec, each hart (or each hart within a group) has a unique hart
+number to locate the memory pages of interrupt files in the address
+space. The number of bits required to represent any hart number is equal
+to ceil(log2(hmax + 1)), where hmax is the largest hart number among
+groups.
 
-```
-    cbo.flush 0(x0)
-```
+However, if the largest hart number among groups is a power of 2, QEMU
+will pass an inaccurate hart-index-bit setting to Linux. For example, when
+the guest OS has 4 harts, only ceil(log2(3 + 1)) = 2 bits are sufficient
+to represent 4 harts, but we passes 3 to Linux. The code needs to be
+updated to ensure accurate hart-index-bit settings.
 
-QEMU would segfault.
+Additionally, a Linux patch[1] is necessary to correctly recover the hart
+index when the guest OS has only 1 hart, where the hart-index-bit is 0.
 
-The issue was in cpu_gpr[a->rs1] as QEMU does not have cpu_gpr[0]
-allocated.
+[1] https://lore.kernel.org/lkml/20240415064905.25184-1-yongxuan.wang@sifive.com/t/
 
-In order to fix this let's use the existing get_address()
-helper. This also has the benefit of performing pointer mask
-calculations on the address specified in rs1.
-
-The pointer masking specificiation specifically states:
-
-"""
-Cache Management Operations: All instructions in Zicbom, Zicbop and Zicboz
-"""
-
-So this is the correct behaviour and we previously have been incorrectly
-not masking the address.
-
-Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-Reported-by: Fabian Thomas <fabian.thomas@cispa.de>
-Fixes: e05da09b7cfd ("target/riscv: implement Zicbom extension")
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Yong-Xuan Wang <yongxuan.wang@sifive.com>
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
 Cc: qemu-stable <qemu-stable@nongnu.org>
-Message-ID: <20240514023910.301766-1-alistair.francis@wdc.com>
+Message-ID: <20240515091129.28116-1-yongxuan.wang@sifive.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/insn_trans/trans_rvzicbo.c.inc | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ target/riscv/kvm/kvm-cpu.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/target/riscv/insn_trans/trans_rvzicbo.c.inc b/target/riscv/insn_trans/trans_rvzicbo.c.inc
-index d5d7095903..15711c3140 100644
---- a/target/riscv/insn_trans/trans_rvzicbo.c.inc
-+++ b/target/riscv/insn_trans/trans_rvzicbo.c.inc
-@@ -31,27 +31,35 @@
- static bool trans_cbo_clean(DisasContext *ctx, arg_cbo_clean *a)
- {
-     REQUIRE_ZICBOM(ctx);
--    gen_helper_cbo_clean_flush(tcg_env, cpu_gpr[a->rs1]);
-+    TCGv src = get_address(ctx, a->rs1, 0);
-+
-+    gen_helper_cbo_clean_flush(tcg_env, src);
-     return true;
- }
+diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
+index 473416649f..235e2cdaca 100644
+--- a/target/riscv/kvm/kvm-cpu.c
++++ b/target/riscv/kvm/kvm-cpu.c
+@@ -1777,7 +1777,14 @@ void kvm_riscv_aia_create(MachineState *machine, uint64_t group_shift,
+         }
+     }
  
- static bool trans_cbo_flush(DisasContext *ctx, arg_cbo_flush *a)
- {
-     REQUIRE_ZICBOM(ctx);
--    gen_helper_cbo_clean_flush(tcg_env, cpu_gpr[a->rs1]);
-+    TCGv src = get_address(ctx, a->rs1, 0);
+-    hart_bits = find_last_bit(&max_hart_per_socket, BITS_PER_LONG) + 1;
 +
-+    gen_helper_cbo_clean_flush(tcg_env, src);
-     return true;
- }
- 
- static bool trans_cbo_inval(DisasContext *ctx, arg_cbo_inval *a)
- {
-     REQUIRE_ZICBOM(ctx);
--    gen_helper_cbo_inval(tcg_env, cpu_gpr[a->rs1]);
-+    TCGv src = get_address(ctx, a->rs1, 0);
++    if (max_hart_per_socket > 1) {
++        max_hart_per_socket--;
++        hart_bits = find_last_bit(&max_hart_per_socket, BITS_PER_LONG) + 1;
++    } else {
++        hart_bits = 0;
++    }
 +
-+    gen_helper_cbo_inval(tcg_env, src);
-     return true;
- }
- 
- static bool trans_cbo_zero(DisasContext *ctx, arg_cbo_zero *a)
- {
-     REQUIRE_ZICBOZ(ctx);
--    gen_helper_cbo_zero(tcg_env, cpu_gpr[a->rs1]);
-+    TCGv src = get_address(ctx, a->rs1, 0);
-+
-+    gen_helper_cbo_zero(tcg_env, src);
-     return true;
- }
+     ret = kvm_device_access(aia_fd, KVM_DEV_RISCV_AIA_GRP_CONFIG,
+                             KVM_DEV_RISCV_AIA_CONFIG_HART_BITS,
+                             &hart_bits, true, NULL);
 -- 
 2.45.1
 
