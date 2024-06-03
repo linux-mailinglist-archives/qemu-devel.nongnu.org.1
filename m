@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B0618D80F9
+	by mail.lfdr.de (Postfix) with ESMTPS id 784848D80F7
 	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jun 2024 13:21:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sE5hq-0007jR-3x; Mon, 03 Jun 2024 07:18:26 -0400
+	id 1sE5hj-0007NZ-W8; Mon, 03 Jun 2024 07:18:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sE5hf-0007LH-Lb; Mon, 03 Jun 2024 07:18:15 -0400
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ id 1sE5ha-0006yR-3P; Mon, 03 Jun 2024 07:18:10 -0400
+Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sE5hU-0006Rp-Ra; Mon, 03 Jun 2024 07:18:15 -0400
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-1f661450af5so11830975ad.3; 
- Mon, 03 Jun 2024 04:18:03 -0700 (PDT)
+ id 1sE5hY-0006UT-7x; Mon, 03 Jun 2024 07:18:09 -0400
+Received: by mail-pf1-x434.google.com with SMTP id
+ d2e1a72fcca58-70264bcb631so861219b3a.2; 
+ Mon, 03 Jun 2024 04:18:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1717413481; x=1718018281; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1717413486; x=1718018286; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Xv5zByHXrMR6OVpxVCKjSat3U6+gmlv5WCvdVnmoelg=;
- b=PLLuZeRoHwHSCj6Uts4cFUte5U9zNkCACpHAvlxRxKDIChsmP95unziJzt0+URSvGR
- dHSSV/RUB+yB4zIuTVRqvolPFxhLfbFFn+oZ0qt+TD86x8h+NhvQTgUuPPOrVcrmuAPG
- 9T8D9Kf7YMHYSPr95XChueblx82tDBqOVxsz25F7nm5qKOxx8ri59thpIEBK0e2pNf9r
- GBcx1dC0PfwGQuDKjUVNEH7TlxxU6q+3LSNtgTOfo8HokYjOMGPceOOaP5KhduyDapBI
- eeN466gkqVLO2r5gLvr0siVmV1P8X1aE7dF4SMy8TgFQWFx12A7U5zPXT8mye1H6GHtB
- KQkQ==
+ bh=hxijtPcNuNAmolOxSVas1wwngjgg5P1pW7tz7cm2XA8=;
+ b=dQVwjhvlkJpBpRLKRLWvfKs413DjBUF+Dc02PMW40xsIsM/mlyuo/tpUM0fGuv2oIw
+ EPa35z5vvNQVuTLsWuFZSqzK2GfjDYA99zD3ZADCA0Mpl36FhBYI41WcE1qC/9MK1N4L
+ oW2g1DJnF8TBNYWgdsDFhHKxpdADOiP3fxQ3UrS7ZUv8R3F5+BxKw9NgAm3m8+g54zu4
+ G5fJFM5DKchD7DOGu+cno9ud58DsmH1Bb143TqLQix2N+pCjgibjEbgSQWQIf3aygQV1
+ oRjUkGkyAIX+r+8kNaGdCURg9GpmQs6r8bIBbrNGNvyweKxZBvnnkqRfHN1kqMXhM0vt
+ PIRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717413481; x=1718018281;
+ d=1e100.net; s=20230601; t=1717413486; x=1718018286;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Xv5zByHXrMR6OVpxVCKjSat3U6+gmlv5WCvdVnmoelg=;
- b=IbfaHSJOodnpcg0kT28ONeKHO+4VqJ5m2vVe/vVqZwNdzZ8WfjxjUfNPkUCyzQpoRs
- zer0oJIPx60FU0jqlMW+98KIDv+fkK0+N6arhtGZvPUfeaPGOu4iACVJ09lHf2HG58jO
- EdY2s83c0KZ1L3d+uRGB06IXTyZUKNAKIV3N8KsqsKtbXZCNXbmlvYKHQbhMMeKJBwF3
- tjq6dSSKxNsifkKdaA4Pqr6EoOpD0r8i1VgfkTG5+rWBT073aqKh7qELVy6y5ZiooMe0
- /MOs53oKFoEwKtexFkEdKj87crbYNDaLlhczBg33QsVy7jZ38a0LOP2UilkBkRgN0Uzh
- z8Qg==
+ bh=hxijtPcNuNAmolOxSVas1wwngjgg5P1pW7tz7cm2XA8=;
+ b=kCA41cPp2CRoYTDXZPDhXPghyuYwkeeohScrQZyvYQvYUHWbw35oKQErEv8mswNtTq
+ OnVffMgMG74lmOO4tZypypfqRsFdVogZiB3KFJunuBHeGvBwHugK4OTPAr7QjiaRvpUc
+ 2B6HiorWixGVtosw08jjStb0ahpHI2KPEZio9yE6tpam+GOT/IsGULhlm0tuYpFjzHQa
+ tM7jr6jGiVSJHafoco6xl1YPjDfss3ecWRwC1Lu7seN7SgQA5aHLsaNuFomZBmCV7hBI
+ lOPklVpiYbQnQ5OZWUP5bJfv91sTYNwMecuik8mlY2Qze9d46cW5l+pNueQGtJFMWwqo
+ Y5yg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUVpE4CX32xA28zE1RCtxX6J3wQSIkkrsyiMYcKLxZ62G7nK/ZMbop18ZuTS9wLLvfWZlMqGXaR1jx94+XhBFm6unuzotgJ
-X-Gm-Message-State: AOJu0Yx6VVrQ+VZT+B/ajNeicLR8CWFbX+TI1jCwGY0ou+mXBWivXEzv
- nVlXfgCOBOtT+vUVm0/kt0ZVVZ7EL502ArSag2lbDQlKvy5RxEFjLOOipA==
-X-Google-Smtp-Source: AGHT+IHKwWGWoQHsxhWagjo7ZnQo3SwqkkTjEh+26LfSs4UJqiKELfvl72tIAeikFFjwMw62tofcBg==
-X-Received: by 2002:a17:902:f549:b0:1f6:8ae4:50de with SMTP id
- d9443c01a7336-1f68ae45481mr4404815ad.61.1717413481461; 
- Mon, 03 Jun 2024 04:18:01 -0700 (PDT)
+ AJvYcCXhe1LAULb2w2gibor8OJev7EwwNfZm80y40rj87afgbTgIkGSOrZoPjzlygX1CMAPKXojSPVFSVCfuphzqmDtYtKJxNdPX
+X-Gm-Message-State: AOJu0YxN2qSI4cTi3eMWT5pJNKQJP9QCDLKKrwRQ2BHmnUR20k1cHCRY
+ YVQlwOfXmMxamZrLSpMmzm7Z6/PLF1+8QHRwq2y7bWzJJb8RP6G4pOHRfg==
+X-Google-Smtp-Source: AGHT+IGTX3sVXNmCpwF4evW2ehWf0+K4fA+ODjk/VIUvCoS+0aDVSP2VlhPBc2Tpu0+NAEMEdpVrSw==
+X-Received: by 2002:a05:6a20:a115:b0:1b1:e7de:4d36 with SMTP id
+ adf61e73a8af0-1b26f0f1b28mr9232152637.2.1717413484743; 
+ Mon, 03 Jun 2024 04:18:04 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1f6323e18c7sm62375435ad.177.2024.06.03.04.17.58
+ d9443c01a7336-1f6323e18c7sm62375435ad.177.2024.06.03.04.18.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Jun 2024 04:18:00 -0700 (PDT)
+ Mon, 03 Jun 2024 04:18:04 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Joseph Chan <jchan@ventanamicro.com>,
+Cc: alistair23@gmail.com, Alexei Filippov <alexei.filippov@syntacore.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>,
  qemu-stable <qemu-stable@nongnu.org>
-Subject: [PULL v2 21/27] target/riscv: prioritize pmp errors in
- raise_mmu_exception()
-Date: Mon,  3 Jun 2024 21:16:37 +1000
-Message-ID: <20240603111643.258712-22-alistair.francis@wdc.com>
+Subject: [PULL v2 22/27] target/riscv: do not set mtval2 for non guest-page
+ faults
+Date: Mon,  3 Jun 2024 21:16:38 +1000
+Message-ID: <20240603111643.258712-23-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240603111643.258712-1-alistair.francis@wdc.com>
 References: <20240603111643.258712-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x62d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
+ envelope-from=alistair23@gmail.com; helo=mail-pf1-x434.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -99,88 +99,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+From: Alexei Filippov <alexei.filippov@syntacore.com>
 
-raise_mmu_exception(), as is today, is prioritizing guest page faults by
-checking first if virt_enabled && !first_stage, and then considering the
-regular inst/load/store faults.
+Previous patch fixed the PMP priority in raise_mmu_exception() but we're still
+setting mtval2 incorrectly. In riscv_cpu_tlb_fill(), after pmp check in 2 stage
+translation part, mtval2 will be set in case of successes 2 stage translation but
+failed pmp check.
 
-There's no mention in the spec about guest page fault being a higher
-priority that PMP faults. In fact, privileged spec section 3.7.1 says:
+In this case we gonna set mtval2 via env->guest_phys_fault_addr in context of
+riscv_cpu_tlb_fill(), as this was a guest-page-fault, but it didn't and mtval2
+should be zero, according to RISCV privileged spec sect. 9.4.4: When a guest
+page-fault is taken into M-mode, mtval2 is written with either zero or guest
+physical address that faulted, shifted by 2 bits. *For other traps, mtval2
+is set to zero...*
 
-"Attempting to fetch an instruction from a PMP region that does not have
-execute permissions raises an instruction access-fault exception.
-Attempting to execute a load or load-reserved instruction which accesses
-a physical address within a PMP region without read permissions raises a
-load access-fault exception. Attempting to execute a store,
-store-conditional, or AMO instruction which accesses a physical address
-within a PMP region without write permissions raises a store
-access-fault exception."
-
-So, in fact, we're doing it wrong - PMP faults should always be thrown,
-regardless of also being a first or second stage fault.
-
-The way riscv_cpu_tlb_fill() and get_physical_address() work is
-adequate: a TRANSLATE_PMP_FAIL error is immediately reported and
-reflected in the 'pmp_violation' flag. What we need is to change
-raise_mmu_exception() to prioritize it.
-
-Reported-by: Joseph Chan <jchan@ventanamicro.com>
-Fixes: 82d53adfbb ("target/riscv/cpu_helper.c: Invalid exception on MMU translation stage")
-Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Signed-off-by: Alexei Filippov <alexei.filippov@syntacore.com>
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20240413105929.7030-1-alexei.filippov@syntacore.com>
+Message-ID: <20240503103052.6819-1-alexei.filippov@syntacore.com>
 Cc: qemu-stable <qemu-stable@nongnu.org>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu_helper.c | 22 ++++++++++++----------
- 1 file changed, 12 insertions(+), 10 deletions(-)
+ target/riscv/cpu_helper.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
 diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-index d71245a8cb..574886a694 100644
+index 574886a694..a02497d778 100644
 --- a/target/riscv/cpu_helper.c
 +++ b/target/riscv/cpu_helper.c
-@@ -1177,28 +1177,30 @@ static void raise_mmu_exception(CPURISCVState *env, target_ulong address,
+@@ -1376,17 +1376,17 @@ bool riscv_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
+                               __func__, pa, ret, prot_pmp, tlb_size);
  
-     switch (access_type) {
-     case MMU_INST_FETCH:
--        if (env->virt_enabled && !first_stage) {
-+        if (pmp_violation) {
-+            cs->exception_index = RISCV_EXCP_INST_ACCESS_FAULT;
-+        } else if (env->virt_enabled && !first_stage) {
-             cs->exception_index = RISCV_EXCP_INST_GUEST_PAGE_FAULT;
-         } else {
--            cs->exception_index = pmp_violation ?
--                RISCV_EXCP_INST_ACCESS_FAULT : RISCV_EXCP_INST_PAGE_FAULT;
-+            cs->exception_index = RISCV_EXCP_INST_PAGE_FAULT;
+                 prot &= prot_pmp;
+-            }
+-
+-            if (ret != TRANSLATE_SUCCESS) {
++            } else {
+                 /*
+                  * Guest physical address translation failed, this is a HS
+                  * level exception
+                  */
+                 first_stage_error = false;
+-                env->guest_phys_fault_addr = (im_address |
+-                                              (address &
+-                                               (TARGET_PAGE_SIZE - 1))) >> 2;
++                if (ret != TRANSLATE_PMP_FAIL) {
++                    env->guest_phys_fault_addr = (im_address |
++                                                  (address &
++                                                   (TARGET_PAGE_SIZE - 1))) >> 2;
++                }
+             }
          }
-         break;
-     case MMU_DATA_LOAD:
--        if (two_stage && !first_stage) {
-+        if (pmp_violation) {
-+            cs->exception_index = RISCV_EXCP_LOAD_ACCESS_FAULT;
-+        } else if (two_stage && !first_stage) {
-             cs->exception_index = RISCV_EXCP_LOAD_GUEST_ACCESS_FAULT;
-         } else {
--            cs->exception_index = pmp_violation ?
--                RISCV_EXCP_LOAD_ACCESS_FAULT : RISCV_EXCP_LOAD_PAGE_FAULT;
-+            cs->exception_index = RISCV_EXCP_LOAD_PAGE_FAULT;
-         }
-         break;
-     case MMU_DATA_STORE:
--        if (two_stage && !first_stage) {
-+        if (pmp_violation) {
-+            cs->exception_index = RISCV_EXCP_STORE_AMO_ACCESS_FAULT;
-+        } else if (two_stage && !first_stage) {
-             cs->exception_index = RISCV_EXCP_STORE_GUEST_AMO_ACCESS_FAULT;
-         } else {
--            cs->exception_index = pmp_violation ?
--                RISCV_EXCP_STORE_AMO_ACCESS_FAULT :
--                RISCV_EXCP_STORE_PAGE_FAULT;
-+            cs->exception_index = RISCV_EXCP_STORE_PAGE_FAULT;
-         }
-         break;
-     default:
+     } else {
 -- 
 2.45.1
 
