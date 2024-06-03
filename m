@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CA698D8843
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jun 2024 19:55:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 348A28D8848
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jun 2024 19:56:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEBsc-0007A1-OP; Mon, 03 Jun 2024 13:53:58 -0400
+	id 1sEBsf-0007DT-Dh; Mon, 03 Jun 2024 13:54:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sEBsI-0006zc-Ui
+ id 1sEBsJ-0006zf-Hd
  for qemu-devel@nongnu.org; Mon, 03 Jun 2024 13:53:40 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sEBsF-00008c-2j
- for qemu-devel@nongnu.org; Mon, 03 Jun 2024 13:53:38 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-35dc9cef36dso3806445f8f.3
- for <qemu-devel@nongnu.org>; Mon, 03 Jun 2024 10:53:33 -0700 (PDT)
+ id 1sEBsF-00008n-2z
+ for qemu-devel@nongnu.org; Mon, 03 Jun 2024 13:53:39 -0400
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-35dca73095aso3880319f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 03 Jun 2024 10:53:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1717437212; x=1718042012; darn=nongnu.org;
+ d=linaro.org; s=google; t=1717437213; x=1718042013; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=nwO5Xk/JBsiCE4LMX0EusCkO9JTloZRZc0GlJ2FQNxg=;
- b=S6JV52Q4deEVTgCgnFc0zBWfQA32ss4/k6GSiy5q4dkeBN4nSq07UOqhEMZZoZBgd2
- QgxCWPDGS23/izh0EakrOUf2/I52ZAYn5vyEhDxQMYUIwR51FxUM2t2IeohvlfZmWWbx
- XU6VQGMFhg+4QuKma7faYE50nZ+u7afJjXIuvIlk641mxQkyaKTSsSd19stLmuquGsUY
- n/fHC1lQbExp0lpeYIuto8wjluyzgZdRHN+2IkQGRYbK4Vnfgy0jr7MomSoIziAvKcHx
- iF+4oFnHJfSxMxqFvHO38YbUqjc9M8LO7NMoV+qeRR5HZonfcDJzz1Q0vyvm1281TP9S
- BmBA==
+ bh=WgDjv/yNA+r/3CuM/gO8/vu8/drYzlHihSkbPO1TE7o=;
+ b=t5753XUMbTFw+hSKdA4HaNFXFx3KYwt4ytY3SDbC55yma5FCRVUSZQ0ZBCAPGorkpR
+ g4hdMCxeg4BwD18sYzVDrl1nuwnOYzLfS5oss2CQ+M5S3tK2L5v0kedz+byletTRpr65
+ SsgcK1xKwMyRfufqdY/rvPVnlx82oWD6cugWnbWTV/QmN2cZ0A0XColf0ECw0oYPrL/e
+ gyJNvLOFOmLDr9euv80MbOE9W7Xv65keG5H2Y5J04SNJSbraLzLFK76Xhq0vAt4iFIco
+ 4AV7gLcK0q7u+mHYU/sz5+lgqNHXgpsKlfdhNezFUUep7HQqWo/88N92VJSCTkaXiPAa
+ im7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717437212; x=1718042012;
+ d=1e100.net; s=20230601; t=1717437213; x=1718042013;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=nwO5Xk/JBsiCE4LMX0EusCkO9JTloZRZc0GlJ2FQNxg=;
- b=CALDIrlO/fJpgDQrow3eoeP5M4BkC/PiuHMGIw84wYB680uv+4E1hfyZEQ4rcCfm+A
- fElyg9dTcUvN5g9392fmo6CiCM+xB+x2PzogpTtH72PQ+dsIVfiqoq1wXZi4XtaMhIV2
- SltIufNQalIvNWwt0lbe+r9vTRmjm/zM1FRWr29NWm/9WPfkBZj+ppO2ybnx5u2MDeEn
- NO9IGAIEx6MtbUROupIIk6sqfF1WHkXf+ScR416PCxYfSgAJwBT/AxeTVEzzA+yoCXO8
- +wHDWzxHo1WP3bvaJ4ViSkX0kApQnV9zpy0PqJGBisz/2m/BIvJEKYqX824oiSxa4Vtk
- m5xA==
-X-Gm-Message-State: AOJu0YywnQ/7M5sFguzLPeoSi0g0Q/AL+KX+7Lgpp/0epblWpCfIA04P
- ER71LDvIBHJl9oAmYXxMwBy6ouUuHdQRlATeVSdIMvWhGeNpWpXEAgCJkCTUQlI=
-X-Google-Smtp-Source: AGHT+IF1PCBb2CO9/Ha0W0kFzU945k4om4tTwmp9tb4scoZqYEgQk/JoA5gdXNQKPLn7IBQz8Mqlwg==
-X-Received: by 2002:a05:6000:1282:b0:354:f944:11de with SMTP id
- ffacd0b85a97d-35e0f2869f4mr6834901f8f.28.1717437212642; 
+ bh=WgDjv/yNA+r/3CuM/gO8/vu8/drYzlHihSkbPO1TE7o=;
+ b=OJIbRU+qauaJOUCc5QKPPtF4iX3H26D/+4ZkcnVr/7nu29H6HcfY2qCQb3cbmGwxfo
+ JyiQRIzwSViOp0h9CK7dsBzVg5FwpVt73gug98GfpfKUFS3HVco5TPhGRJYHh7kypwaO
+ 2MdurtybrVFmmQgEAcrm4gWDPJL0KNioTUF5Rv+pVxqd1vPmJHtI8kVaUB0nkWsPmTnY
+ o/bZduvkM1pBLkdojwTGwsOMrNTN0x54S/qGsrbjxa6UL7ftqoKi9CtniEYrNAl/788v
+ JL9mOAbI5md8AnHtLKNkrqciL8QkMmU8yTCxKr0lq7/sjFYSbAKSGzR7iLrGNSJDuIxH
+ k5/g==
+X-Gm-Message-State: AOJu0YzxLK+ckVxnkC2brC7Y4huJttT62It+McqPuvT6Uf7fNqlruCmE
+ r2R8TX2ndp3Pt7sDTY5xFmka4iEdnVnZnUHZj4gBT+V88D28bIPQmAlH0f1GsiM=
+X-Google-Smtp-Source: AGHT+IFPMVOs0cZxyUpMZWaqXcWqMLE7CRhMxhhqYX/DOQFE7h+Us9X/uZj47qK5TckI4QVw4nXhDQ==
+X-Received: by 2002:a05:600c:4753:b0:41a:9fc2:a6b1 with SMTP id
+ 5b1f17b1804b1-4212e075ed3mr85037035e9.22.1717437212889; 
  Mon, 03 Jun 2024 10:53:32 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-35dd064bbb1sm9295671f8f.101.2024.06.03.10.53.29
+ 5b1f17b1804b1-4212278b24dsm85913135e9.0.2024.06.03.10.53.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Mon, 03 Jun 2024 10:53:31 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 1C8CB5F9FB;
+ by draig.lan (Postfix) with ESMTP id 327DB5F9FF;
  Mon,  3 Jun 2024 18:53:29 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -80,17 +80,18 @@ Cc: Markus Armbruster <armbru@redhat.com>,
  qemu-s390x@nongnu.org, Beraldo Leal <bleal@redhat.com>,
  Jiaxun Yang <jiaxun.yang@flygoat.com>,
  Radoslaw Biernacki <rad@semihalf.com>
-Subject: [PATCH v3 06/12] docs/ci: clean-up references for consistency
-Date: Mon,  3 Jun 2024 18:53:22 +0100
-Message-Id: <20240603175328.3823123-7-alex.bennee@linaro.org>
+Subject: [PATCH v3 07/12] tests/lcitool: Delete obsolete centos-stream-8.yml
+ file
+Date: Mon,  3 Jun 2024 18:53:23 +0100
+Message-Id: <20240603175328.3823123-8-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240603175328.3823123-1-alex.bennee@linaro.org>
 References: <20240603175328.3823123-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -113,87 +114,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Document we have split up build-environment by distro and update the
-references that exist in the code base to be correct.
+From: Thomas Huth <thuth@redhat.com>
 
+We've missed to delete this file when removing support for CentOS 8.
+Since the current upstream version of the lcitool removed support
+for CentOS 8 now, too, we have to remove the file before updating.
+
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20240529160934.982373-7-alex.bennee@linaro.org>
+Message-Id: <20240601070543.37786-2-thuth@redhat.com>
 ---
- docs/devel/ci-runners.rst.inc                       | 13 ++++++-------
- .../custom-runners/ubuntu-22.04-aarch32.yml         |  2 +-
- .../custom-runners/ubuntu-22.04-aarch64.yml         |  2 +-
- .gitlab-ci.d/custom-runners/ubuntu-22.04-s390x.yml  |  2 +-
- scripts/ci/setup/{ => ubuntu}/build-environment.yml |  0
- 5 files changed, 9 insertions(+), 10 deletions(-)
- rename scripts/ci/setup/{ => ubuntu}/build-environment.yml (100%)
+ tests/lcitool/targets/centos-stream-8.yml | 3 ---
+ 1 file changed, 3 deletions(-)
+ delete mode 100644 tests/lcitool/targets/centos-stream-8.yml
 
-diff --git a/docs/devel/ci-runners.rst.inc b/docs/devel/ci-runners.rst.inc
-index 7817001fb2..67b23d3719 100644
---- a/docs/devel/ci-runners.rst.inc
-+++ b/docs/devel/ci-runners.rst.inc
-@@ -41,19 +41,18 @@ those hosts.  This would look like::
- Build environment
- ~~~~~~~~~~~~~~~~~
- 
--The ``scripts/ci/setup/build-environment.yml`` Ansible playbook will
--set up machines with the environment needed to perform builds and run
--QEMU tests.  This playbook consists on the installation of various
--required packages (and a general package update while at it).  It
--currently covers a number of different Linux distributions, but it can
--be expanded to cover other systems.
-+The ``scripts/ci/setup/$DISTRO/build-environment.yml`` Ansible
-+playbook will set up machines with the environment needed to perform
-+builds and run QEMU tests. This playbook consists on the installation
-+of various required packages (and a general package update while at
-+it).
- 
- The minimum required version of Ansible successfully tested in this
- playbook is 2.8.0 (a version check is embedded within the playbook
- itself).  To run the playbook, execute::
- 
-   cd scripts/ci/setup
--  ansible-playbook -i inventory build-environment.yml
-+  ansible-playbook -i inventory $DISTRO/build-environment.yml
- 
- Please note that most of the tasks in the playbook require superuser
- privileges, such as those from the ``root`` account or those obtained
-diff --git a/.gitlab-ci.d/custom-runners/ubuntu-22.04-aarch32.yml b/.gitlab-ci.d/custom-runners/ubuntu-22.04-aarch32.yml
-index b8a0d75162..8727687e2b 100644
---- a/.gitlab-ci.d/custom-runners/ubuntu-22.04-aarch32.yml
-+++ b/.gitlab-ci.d/custom-runners/ubuntu-22.04-aarch32.yml
-@@ -1,5 +1,5 @@
- # All ubuntu-22.04 jobs should run successfully in an environment
--# setup by the scripts/ci/setup/qemu/build-environment.yml task
-+# setup by the scripts/ci/setup/ubuntu/build-environment.yml task
- # "Install basic packages to build QEMU on Ubuntu 22.04"
- 
- ubuntu-22.04-aarch32-all:
-diff --git a/.gitlab-ci.d/custom-runners/ubuntu-22.04-aarch64.yml b/.gitlab-ci.d/custom-runners/ubuntu-22.04-aarch64.yml
-index 374b0956c3..263a3c2140 100644
---- a/.gitlab-ci.d/custom-runners/ubuntu-22.04-aarch64.yml
-+++ b/.gitlab-ci.d/custom-runners/ubuntu-22.04-aarch64.yml
-@@ -1,5 +1,5 @@
- # All ubuntu-22.04 jobs should run successfully in an environment
--# setup by the scripts/ci/setup/qemu/build-environment.yml task
-+# setup by the scripts/ci/setup/ubuntu/build-environment.yml task
- # "Install basic packages to build QEMU on Ubuntu 22.04"
- 
- ubuntu-22.04-aarch64-all-linux-static:
-diff --git a/.gitlab-ci.d/custom-runners/ubuntu-22.04-s390x.yml b/.gitlab-ci.d/custom-runners/ubuntu-22.04-s390x.yml
-index 25935048e2..69ddd3e7d5 100644
---- a/.gitlab-ci.d/custom-runners/ubuntu-22.04-s390x.yml
-+++ b/.gitlab-ci.d/custom-runners/ubuntu-22.04-s390x.yml
-@@ -1,5 +1,5 @@
- # All ubuntu-22.04 jobs should run successfully in an environment
--# setup by the scripts/ci/setup/build-environment.yml task
-+# setup by the scripts/ci/setup/ubuntu/build-environment.yml task
- # "Install basic packages to build QEMU on Ubuntu 22.04"
- 
- ubuntu-22.04-s390x-all-linux:
-diff --git a/scripts/ci/setup/build-environment.yml b/scripts/ci/setup/ubuntu/build-environment.yml
-similarity index 100%
-rename from scripts/ci/setup/build-environment.yml
-rename to scripts/ci/setup/ubuntu/build-environment.yml
+diff --git a/tests/lcitool/targets/centos-stream-8.yml b/tests/lcitool/targets/centos-stream-8.yml
+deleted file mode 100644
+index 6b11160fd1..0000000000
+--- a/tests/lcitool/targets/centos-stream-8.yml
++++ /dev/null
+@@ -1,3 +0,0 @@
+-paths:
+-  pip3: /usr/bin/pip3.8
+-  python: /usr/bin/python3.8
 -- 
 2.39.2
 
