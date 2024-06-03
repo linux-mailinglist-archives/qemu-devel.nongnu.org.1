@@ -2,86 +2,150 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 763DC8D84AC
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jun 2024 16:14:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 059A28D84D0
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jun 2024 16:21:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sE8S7-0007IO-2I; Mon, 03 Jun 2024 10:14:23 -0400
+	id 1sE8Yi-0002R7-0O; Mon, 03 Jun 2024 10:21:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <porter@cs.unc.edu>) id 1sE8S0-0007Hk-EI
- for qemu-devel@nongnu.org; Mon, 03 Jun 2024 10:14:16 -0400
-Received: from mail-qt1-x835.google.com ([2607:f8b0:4864:20::835])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <porter@cs.unc.edu>) id 1sE8Ry-0001JG-2a
- for qemu-devel@nongnu.org; Mon, 03 Jun 2024 10:14:15 -0400
-Received: by mail-qt1-x835.google.com with SMTP id
- d75a77b69052e-43feec1a475so21419881cf.2
- for <qemu-devel@nongnu.org>; Mon, 03 Jun 2024 07:14:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=cs.unc.edu; s=google; t=1717424052; x=1718028852; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=htfnCi25EheVh9FsVUjvtPYrq2LKQ8fNesJnIGJPoiU=;
- b=alnVi4x8ysHzpgcCWrtUhvPITE/rwMyvM0Lux+4q4BxSjnMr7WNi2i3ehUvlhmJqus
- DFGi9edzNVJuHfysM0Q4lVAjCWtNavzLxkqcGA5yvOh0MumEWAkF0bM5XDRtgTm+/IAh
- 8skvnyJEGaT1+eiMKyNM4fQp1Lf1yd4Y4d0VfRZHzkbKiANil7IP8VVbFuskLt9SUV4e
- v8iLgcHTAPoQLnMnH40fGwc8VbOf2fhSE3EwFcdOFvqvQKpGCZznyuRiyXzUgGlYTm9V
- K+UVd2l0x60ABtfdySdFTY9Obu7wfr9guD0FEpQ1Aty+7YuxzGmaqIDt569e8AnkpcQv
- cTgQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717424052; x=1718028852;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=htfnCi25EheVh9FsVUjvtPYrq2LKQ8fNesJnIGJPoiU=;
- b=CLPMtoam4ls0sLuLDHiLIAUGYrvssa9xwFpp7HCUSzslfWSZzYX+1rwn69O/SO8tlS
- 9mTx2fHk5lW11nekMQ/3kvGG+eC/QyAVy++ocwLutVKYYINJ//Zm/DXZ9IeVnuE58g/R
- pw1pbvLX/i3ajU6UK8tIDNx3qyL1wcz4aH4aVQ3CmFELInchSSXXg2YBsk9X4q+FAwMM
- OcY+p5nKFsfmLeHfWYDH6mLmX1L7YrTlNSsR0OOkannWgy+tbrUGp4Rux9lRbjqlv6EL
- sMDIrtl4hTFUBxzTn4DqIgMYo18xBup3UqoKsPVPQasJ47aUOxnCd/ybrerUr/EbwptJ
- lpcw==
-X-Gm-Message-State: AOJu0YwIQ4YOpagYewUYtF4MgQx/K+oiooLJOmSwpz7lYxIuqUmCOTTi
- OYDA/4WACVpU3A5G3jV3fE9UCTXnPouv7/2bLJLJYTioTVv1EekiBE6pNwFQ9Q==
-X-Google-Smtp-Source: AGHT+IEQMqD83ml+OWW0bLztgyv4dOREIM/9AyDr9dD43r65Od0PUBoI8YismgTVDae+b1lOsbSMGA==
-X-Received: by 2002:ac8:7c47:0:b0:43a:dede:73b8 with SMTP id
- d75a77b69052e-43ff54a5700mr98459461cf.57.1717424052465; 
- Mon, 03 Jun 2024 07:14:12 -0700 (PDT)
-Received: from [192.168.86.22] ([136.56.85.135])
- by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-43ff23bfaf9sm39712901cf.27.2024.06.03.07.14.11
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 03 Jun 2024 07:14:12 -0700 (PDT)
-Message-ID: <f49772c0-77da-4ab0-bd06-05e6f964e813@cs.unc.edu>
-Date: Mon, 3 Jun 2024 10:14:09 -0400
+ (Exim 4.90_1) (envelope-from <Michael.Roth@amd.com>)
+ id 1sE8Ye-0002Kl-53
+ for qemu-devel@nongnu.org; Mon, 03 Jun 2024 10:21:08 -0400
+Received: from mail-dm6nam04on2065.outbound.protection.outlook.com
+ ([40.107.102.65] helo=NAM04-DM6-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <Michael.Roth@amd.com>)
+ id 1sE8YZ-0002wU-Sj
+ for qemu-devel@nongnu.org; Mon, 03 Jun 2024 10:21:07 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=JOVnHD5pCkmgjl5eoKAJ3l0PwD3Cak5Adm1aja+Twp+eB82SZjPNtN2DEtuBPQ/Rh2dwDh+k6CMI+BOXUkfhBeWQlE3xgL7IMu8/ij7f37EVRh727X3lBnPvfkvAEyK5ojMsfat4H0/zlvO3aKjkEYUC98mmMYs6S3dfVAOAFW9GUFD27FpKQ2satEKS+7/70kW+8NT4xarKZuLh0XrIBuZexr71mXeInNkCCPaKrjsfbp4ug7q6cNYjpymxfuyfpDiM7xP4/KOKLg5WCw8lSlXt4bcTY665LSmitbGw7fNUfN0Ebrp5Bz360+yr2Zyy32e0pihqeQ6j3ek9vIgmrg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5AVTRN4rx0epJn2VuwuLPuBJUFvcWNNHxvifF0fFvro=;
+ b=KShD0/Lxblq4vNkwMLleTy8t5eYo/pul0YL0uRiTfjJiIKogM3cltXajwRZoBy9d0tOgK03V+VF4xtU8N4VkVjVvoc9DomNml/2pxG9DOIe9pll0V85TR0T8sUvGV7mNskCddLcqHHLctSi0GIsPH+813H4AS0cDu4vpQnTkPIlTefK/td7V5g/fqZrCnZWumwpXJgnaf7yxjC05ZawI7B+DXPRC6k8jf4yScn+/kZoCWa1iwHmOej/J83SRq+1/AcwTfCPoWSAeRy/v+DNIXGk/oYTAfPKuxozpqnGO3z+kFvYKb+oUjJvL98yE1G8m3Mprg+J4ooZgDXwAeS0FfA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5AVTRN4rx0epJn2VuwuLPuBJUFvcWNNHxvifF0fFvro=;
+ b=I/YuVgZxfOHycxAeiMZcwAmRbOH/ZyKASG05ahanbXNJUQ22KA3XUxiXU+bfDEGepQ4nwNLS5w4SSmtBNbfnxNUA14rHghXql4u0Aa2IMAamV7Tk3fKIRbvY9k2rd1aPcXGdzE/DC/LecuH42y5uEU2bPMp6lmtFmAWW0iDAGl8=
+Received: from SN7PR04CA0187.namprd04.prod.outlook.com (2603:10b6:806:126::12)
+ by CH3PR12MB7570.namprd12.prod.outlook.com (2603:10b6:610:149::17)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7633.22; Mon, 3 Jun
+ 2024 14:15:55 +0000
+Received: from SN1PEPF0002636A.namprd02.prod.outlook.com
+ (2603:10b6:806:126:cafe::4) by SN7PR04CA0187.outlook.office365.com
+ (2603:10b6:806:126::12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7633.30 via Frontend
+ Transport; Mon, 3 Jun 2024 14:15:55 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ SN1PEPF0002636A.mail.protection.outlook.com (10.167.241.135) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7633.15 via Frontend Transport; Mon, 3 Jun 2024 14:15:55 +0000
+Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Mon, 3 Jun
+ 2024 09:15:53 -0500
+Date: Mon, 3 Jun 2024 09:15:37 -0500
+From: Michael Roth <michael.roth@amd.com>
+To: "Gupta, Pankaj" <pankaj.gupta@amd.com>
+CC: Paolo Bonzini <pbonzini@redhat.com>, <qemu-devel@nongnu.org>,
+ <brijesh.singh@amd.com>, <dovmurik@linux.ibm.com>, <armbru@redhat.com>,
+ <xiaoyao.li@intel.com>, <thomas.lendacky@amd.com>,
+ <isaku.yamahata@intel.com>, <berrange@redhat.com>, <kvm@vger.kernel.org>,
+ <anisinha@redhat.com>
+Subject: Re: [PATCH v4 00/31] Add AMD Secure Nested Paging (SEV-SNP) support
+Message-ID: <3j2llxlh3gzyn33n6uo7o5jdx4dmi4rzbax5buluof5ru2paii@2ze452jtocth>
+References: <20240530111643.1091816-1-pankaj.gupta@amd.com>
+ <CABgObfYFryXwEtVkMH-F6kw8hrivpQD6USMQ9=7fVikn5-mAhQ@mail.gmail.com>
+ <CABgObfbwr6CJK1XCmmVhp83AsC2YcQfSsfuPFWDuxzCB_R4GoQ@mail.gmail.com>
+ <621a8792-5b19-0861-0356-fb2d05caffa1@amd.com>
+ <CABgObfbrWNB4-UzHURF-iO9dTTS4CkJXODE0wNEKOA_fk790_w@mail.gmail.com>
+ <05d89881-bdbd-8b85-3330-37eae03e6632@amd.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/6] Add an "info pg" command that prints the current
- page tables
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- "Dr. David Alan Gilbert" <dave@treblig.org>
-Cc: qemu-devel@nongnu.org, peter.maydell@linaro.org, nadav.amit@gmail.com,
- richard.henderson@linaro.org
-References: <ZiKkWCjreGOMFX5p@gallifrey>
- <20240524170748.1842030-1-porter@cs.unc.edu>
- <20240524170748.1842030-2-porter@cs.unc.edu> <ZlnajZpUHyGDTgNx@gallifrey>
- <1bafa185-25bd-44d2-8f4b-51ca28125115@linaro.org>
-Content-Language: en-US
-From: Don Porter <porter@cs.unc.edu>
-In-Reply-To: <1bafa185-25bd-44d2-8f4b-51ca28125115@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::835;
- envelope-from=porter@cs.unc.edu; helo=mail-qt1-x835.google.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+In-Reply-To: <05d89881-bdbd-8b85-3330-37eae03e6632@amd.com>
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN1PEPF0002636A:EE_|CH3PR12MB7570:EE_
+X-MS-Office365-Filtering-Correlation-Id: a9cbc08e-075e-4921-be13-08dc83d7aef1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230031|82310400017|1800799015|36860700004|376005; 
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?Mk85c0Rad1NmTVZ2N2cxalVmcm8wRTZFdW45RjB0QmplNzh1Y1RzbnZlREJC?=
+ =?utf-8?B?MytJTWp2cUlab3lzd2FKV1NlOEdpUEZaYkx6cDdLTTNhL0FPcENOb1dKZFNy?=
+ =?utf-8?B?ZlJvbUtjTmNEVjVjQTZVa2tQdVpuN2lYNnlFOEp6UlJPQmpvd1J5SU1iQ0Vj?=
+ =?utf-8?B?OGxWTWFOdFpxYU9LYTdFRnVQRE93S1hoQkdmUEVvN3Y0UnVrR2N1L3RsTjNl?=
+ =?utf-8?B?UmhLOE5kY2QxRllGMWdEdHFjSm9LQ2JzMW5CRVRGRjAraE1HZERxalk0QTFX?=
+ =?utf-8?B?ZTlxUGhZVzE1cTRDeGF3L3RRbXhsK2c0QWZwREhrSjRMeTg5NWFTaVpwdndi?=
+ =?utf-8?B?YXBiZ0llZHE0V2ovcDNBMFd3VFJNUW1vc3hzbjZ5dWxDRmZqSkNiMWI4S2I3?=
+ =?utf-8?B?RG1JdVhMcFZZUUw2dGJ4Qi9JbmVGTThBTDIzOEpjSVZpK015K1pZQmJ3TVQ2?=
+ =?utf-8?B?UVNuUi9rV1ZjaEhaVVd5YkM5NUtCOFppckFtRklHa0FpYjM4SUErbHRTazJP?=
+ =?utf-8?B?WC8vcVl0N2ZrVklBbTM1M1JLY0FpYVh2UURhVWtTRThLNnhQRThKang2bzlh?=
+ =?utf-8?B?bThIMy9GYWxvdzZhMjJacDB1MjJZWnRNOEE3bmpDenVxZnBVK3NlY3lwdjFk?=
+ =?utf-8?B?SjhwMkVWTDRYYUJTTWJLalRxWEVGZFdaZDQyUUpyNkpEcC9UVHN4V09wTEl4?=
+ =?utf-8?B?aCtkdHRGL21Xbnk0aGtLT1J1cXEreTZQZk1aSlloVEFKbXRkUENtcCtOaGU1?=
+ =?utf-8?B?QlJKcURZeTYyNmJDamV3SER1eDdMUlRtVWIzTGEwNENVS0Q3b3gvb3F6RW50?=
+ =?utf-8?B?dzM3SjV6anFjR1puYzdqWVZYbWJWTHVoQ2wrek94VVR3bS9PeEttWW9NaU1X?=
+ =?utf-8?B?dU9qb0w4Zi9lblEzNlpzV1JTakFtMDVhdkVSL0FvR1FQclhzNXA4VG1MVVhH?=
+ =?utf-8?B?c09wdkFyTUJyMjZxcnZtS0xXL1ZHcW5VbHF2NmVNTlRwRWRIWTV3Qmh6a2xD?=
+ =?utf-8?B?clRQUnp5dnNveXhtMzRldnZ5Ty9pNGhhWWdYZWM5eCtTZGVZZUtkVkMvUk0v?=
+ =?utf-8?B?R1ZSSGZib0tBdjZjRWY1cXo5NzNkZ0VQWjg3R2RzeEFoMiswSDNNb3JhRW5p?=
+ =?utf-8?B?NWhZWFkxdFRlUVRwcDBvcXdaelI3dlNCb0FpelRFQml0ejBCMndYOVFTTzU5?=
+ =?utf-8?B?WVhlSDgvSXpEckp1SGNtV25rL2EyS24zbi9IWXMwelJPMXJTVFNwOThOYkxR?=
+ =?utf-8?B?NVJESDZ5cXNqUTNvdDJaZlJMV205SENxU1BVM1pMME1aZy9XSXZkdVRSRCtZ?=
+ =?utf-8?B?bXY2S2JjbHIxcU5XY25FRlRhb2xjcFdvcis5U2FyeTVUenpZVXQ5dVJSS2NK?=
+ =?utf-8?B?a0NkRVJhYzhiVHlYOG1odk1oaHRuQ3JJNUc2VEkyTll3SWxoV0hLVEtuN1c4?=
+ =?utf-8?B?dHJjazc3WG1BcXV1SDFIWjdsYnFWSVRTUUJ1b1JmVjJOWWgrSmZOd1psQ2dI?=
+ =?utf-8?B?RFIwZ2pzRHMyckRrVzNETWFiWUttK3Q0U3AwWk1sTi9oMm11YU9PSDEvTFoz?=
+ =?utf-8?B?YUtlZytoVFRZMkZ1V1d0YkdFcE44TlI3YjZqaEs2VGtmYkc5VnFMdzFnU3BN?=
+ =?utf-8?B?bWIxMm4zYkszRmFaN2NaUXJuRVVxbnFHcXVTY1FZNHo4NEZZQmdBbmtYY0Iy?=
+ =?utf-8?B?aVNhWkd6SWs3Vzgvc3hhYWNxakdiQUsybFhobUhtemU1a2JIODZ2bGxZeVBX?=
+ =?utf-8?B?aHFJbWZwU0Z2RmtTRFc5OExPdnlvU2hDUjNWVk1kRmtOdUk3NTgwMmpoYnJt?=
+ =?utf-8?B?OG1idHpTbWx0NEk1V0IyaWRCZURidytLWXRXTDB3QTViOC94MUtGSmQyR0tM?=
+ =?utf-8?Q?Vym8dD5/Q5fHx?=
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230031)(82310400017)(1800799015)(36860700004)(376005); DIR:OUT;
+ SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jun 2024 14:15:55.5272 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: a9cbc08e-075e-4921-be13-08dc83d7aef1
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: SN1PEPF0002636A.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB7570
+Received-SPF: permerror client-ip=40.107.102.65;
+ envelope-from=Michael.Roth@amd.com;
+ helo=NAM04-DM6-obe.outbound.protection.outlook.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,82 +161,159 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/3/24 4:46 AM, Philippe Mathieu-Daudé wrote:
-> On 31/5/24 16:11, Dr. David Alan Gilbert wrote:
->> * Don Porter (porter@cs.unc.edu) wrote:
->>> The new "info pg" monitor command prints the current page table,
->>> including virtual address ranges, flag bits, and snippets of physical
->>> page numbers.  Completely filled regions of the page table with
->>> compatible flags are "folded", with the result that the complete
->>> output for a freshly booted x86-64 Linux VM can fit in a single
->>> terminal window.  The output looks like this:
->>>
->>> VPN range             Entry         Flags            Physical page
->>> [7f0000000-7f0000000] PML4[0fe]     ---DA--UWP
->>>    [7f28c0000-7f28fffff]  PDP[0a3]     ---DA--UWP
->>>      [7f28c4600-7f28c47ff]  PDE[023]     ---DA--UWP
->>>        [7f28c4655-7f28c4656]  PTE[055-056] X--D---U-P 
->>> 0000007f14-0000007f15
->>>        [7f28c465b-7f28c465b]  PTE[05b]     ----A--U-P 0000001cfc
->>> ...
->>> [ff8000000-ff8000000] PML4[1ff]     ---DA--UWP
->>>    [ffff80000-ffffbffff]  PDP[1fe]     ---DA---WP
->>>      [ffff81000-ffff81dff]  PDE[008-00e] -GSDA---WP 
->>> 0000001000-0000001dff
->>>    [ffffc0000-fffffffff]  PDP[1ff]     ---DA--UWP
->>>      [ffffff400-ffffff5ff]  PDE[1fa]     ---DA--UWP
->>>        [ffffff5fb-ffffff5fc]  PTE[1fb-1fc] XG-DACT-WP 00000fec00 
->>> 00000fee00
->>>      [ffffff600-ffffff7ff]  PDE[1fb]     ---DA--UWP
->>>        [ffffff600-ffffff600]  PTE[000]     -G-DA--U-P 0000001467
->>>
->>> This draws heavy inspiration from Austin Clements' original patch.
->>>
->>> This also adds a generic page table walker, which other monitor
->>> and execution commands will be migrated to in subsequent patches.
->>>
->>> Signed-off-by: Don Porter <porter@cs.unc.edu>
->>> ---
->>>   hmp-commands-info.hx              |  26 ++
->>>   include/monitor/hmp-target.h      |   1 +
->>>   target/i386/arch_memory_mapping.c | 486 
->>> +++++++++++++++++++++++++++++-
->>>   target/i386/cpu.h                 |  16 +
->>>   target/i386/monitor.c             | 380 +++++++++++++++++++++++
->>>   5 files changed, 908 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/hmp-commands-info.hx b/hmp-commands-info.hx
->>> index 20a9835ea8..918b82015c 100644
->>> --- a/hmp-commands-info.hx
->>> +++ b/hmp-commands-info.hx
->>> @@ -237,6 +237,32 @@ ERST
->>>           .cmd        = hmp_info_mtree,
->>>       },
->>>   +#if defined(TARGET_I386)
->
-> FYI in order to unify all QEMU system binaries as a single
-> one, we are trying to remove target-specific bits in monitor.
->
-> How 'info pg' should work in a binary supporting heterogeneous
-> emulation? 
+On Sat, Jun 01, 2024 at 06:57:21AM +0200, Gupta, Pankaj wrote:
+> Hi Paolo,
+> 
+> > > > please check if branch qemu-coco-queue of
+> > > > https://gitlab.com/bonzini/qemu works for you!
+> > > 
+> > > Getting compilation error here: Hope I am looking at correct branch.
+> > 
+> > Oops, sorry:
+> > 
+> > diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+> > index 96dc41d355c..ede3ef1225f 100644
+> > --- a/target/i386/kvm/kvm.c
+> > +++ b/target/i386/kvm/kvm.c
+> > @@ -168,7 +168,7 @@ static const char *vm_type_name[] = {
+> >       [KVM_X86_DEFAULT_VM] = "default",
+> >       [KVM_X86_SEV_VM] = "SEV",
+> >       [KVM_X86_SEV_ES_VM] = "SEV-ES",
+> > -    [KVM_X86_SEV_SNP_VM] = "SEV-SNP",
+> > +    [KVM_X86_SNP_VM] = "SEV-SNP",
+> >   };
+> > 
+> >   bool kvm_is_vm_type_supported(int type)
+> > 
+> > Tested the above builds, and pushed!
+> 
+> Thank you for your work! I tested (quick tests) the updated branch and OVMF
+> [1], it works well for single bios option[2] & direct kernel boot [3]. For
+> some reason separate 'pflash' & 'bios' option, facing issue (maybe some
+> other bug in my code, will try to figure it out and get back on this). Also,
 
-In the discussion of v1 of this patch, it was suggested that we
-rework this mmu related code into generic hooks that need to be
-implemented on each ISA.  The hooks need to be migrated, but in
-the monitor.c code there are several functions (pg_print,
-pg_print_header, etc), and in arch_memory_mapping.c
-(mmu_page_table_root, mmu_page_table_entries_per_node, etc)
-that each ISA would need to implement to interpret its particular
-page table structures.
+Paolo mentioned he dropped the this hunk from:
 
-I suppose one can also push the check for whether a given ISA supports
-the command down one level in the code, and call a wrapper that
-may do nothing on some ISAs.
+  hw/i386: Add support for loading BIOS using guest_memfd
 
-Does that answer the question?
+  diff --git a/hw/i386/x86.c b/hw/i386/x86.c
+  index de606369b0..d076b30ccb 100644
+  --- a/hw/i386/x86.c
+  +++ b/hw/i386/x86.c
+  @@ -1147,10 +1147,18 @@ void x86_bios_rom_init(MachineState *ms, const char *default_firmware,
+       }
+       if (bios_size <= 0 ||
+           (bios_size % 65536) != 0) {
+  -        goto bios_error;
+  +        if (!machine_require_guest_memfd(ms)) {
+  +            g_warning("%s: Unaligned BIOS size %d", __func__, bios_size);
+  +            goto bios_error;
+  +        }
 
-Thanks,
+without that, OVMF with split CODE/VARS won't work because the CODE
+portion is not 64KB aligned.
 
-Don
+If I add that back the split builds work for qemu-coco-queue as well.
 
+We need to understand why the 64KB alignment exists in the first place, why
+it's not necessary for SNP, and then resubmit the above change with proper
+explanation.
+
+> will check your comment on mailing list on patch [4],
+> maybe they are related.
+
+However, if based on Daniel's comments we decide not to support split
+CODE/VARS for SNP, then the above change won't be needed. But if we do,
+then it goes make sense that the above change is grouped with (or
+submitted as a fix-up for):
+
+  hw/i386/sev: Allow use of pflash in conjunction with -bios
+
+and untangled from "hw/i386: Add support for loading BIOS using
+guest_memfd", since that's the patch where we actually start dealing
+with non-64K-aligned OVMF CODE images.
+
+-Mike
+
+> 
+> For now I think we are good with the 'qemu-coco-queue' & single bios binary
+> configuration using 'AmdSevX64'.
+> 
+> [1]  https://github.com/mdroth/edk2/commits/apic-mmio-fix1d/
+> 
+> [2]  -bios
+> /home/amd/AMDSEV/OVMF_CODE-upstream-20240228-apicfix-1c-AmdSevX64.fd
+> 
+> [3] Direct kernel loading with '-bios
+> /home/amd/AMDSEV/ovmf/OVMF_CODE-apic-mmio-fix1d-AmdSevX64.fd'
+> 
+> [4] "hw/i386/sev: Allow use of pflash in conjunction with -bios"
+> 
+> Thanks,
+> Pankaj
+> > 
+> > Paolo
+> > 
+> > > softmmu.fa.p/target_i386_kvm_kvm.c.o.d -o
+> > > libqemu-x86_64-softmmu.fa.p/target_i386_kvm_kvm.c.o -c
+> > > ../target/i386/kvm/kvm.c
+> > > ../target/i386/kvm/kvm.c:171:6: error: ‘KVM_X86_SEV_SNP_VM’ undeclared
+> > > here (not in a function); did you mean ‘KVM_X86_SEV_ES_VM’?
+> > >     171 |     [KVM_X86_SEV_SNP_VM] = "SEV-SNP",
+> > >         |      ^~~~~~~~~~~~~~~~~~
+> > >         |      KVM_X86_SEV_ES_VM
+> > > 
+> > > Thanks,
+> > > Pankaj
+> > > 
+> > > > 
+> > > > I tested it successfully on CentOS 9 Stream with kernel from kvm/next
+> > > > and firmware from edk2-ovmf-20240524-1.fc41.noarch.
+> > > > 
+> > > > Paolo
+> > > > 
+> > > > > i386/sev: Replace error_report with error_setg
+> > > > > linux-headers: Update to current kvm/next
+> > > > > i386/sev: Introduce "sev-common" type to encapsulate common SEV state
+> > > > > i386/sev: Move sev_launch_update to separate class method
+> > > > > i386/sev: Move sev_launch_finish to separate class method
+> > > > > i386/sev: Introduce 'sev-snp-guest' object
+> > > > > i386/sev: Add a sev_snp_enabled() helper
+> > > > > i386/sev: Add sev_kvm_init() override for SEV class
+> > > > > i386/sev: Add snp_kvm_init() override for SNP class
+> > > > > i386/cpu: Set SEV-SNP CPUID bit when SNP enabled
+> > > > > i386/sev: Don't return launch measurements for SEV-SNP guests
+> > > > > i386/sev: Add a class method to determine KVM VM type for SNP guests
+> > > > > i386/sev: Update query-sev QAPI format to handle SEV-SNP
+> > > > > i386/sev: Add the SNP launch start context
+> > > > > i386/sev: Add handling to encrypt/finalize guest launch data
+> > > > > i386/sev: Set CPU state to protected once SNP guest payload is finalized
+> > > > > hw/i386/sev: Add function to get SEV metadata from OVMF header
+> > > > > i386/sev: Add support for populating OVMF metadata pages
+> > > > > i386/sev: Add support for SNP CPUID validation
+> > > > > i386/sev: Invoke launch_updata_data() for SEV class
+> > > > > i386/sev: Invoke launch_updata_data() for SNP class
+> > > > > i386/kvm: Add KVM_EXIT_HYPERCALL handling for KVM_HC_MAP_GPA_RANGE
+> > > > > i386/sev: Enable KVM_HC_MAP_GPA_RANGE hcall for SNP guests
+> > > > > i386/sev: Extract build_kernel_loader_hashes
+> > > > > i386/sev: Reorder struct declarations
+> > > > > i386/sev: Allow measured direct kernel boot on SNP
+> > > > > hw/i386/sev: Add support to encrypt BIOS when SEV-SNP is enabled
+> > > > > memory: Introduce memory_region_init_ram_guest_memfd()
+> > > > > 
+> > > > > These patches need a small prerequisite that I'll post soon:
+> > > > > 
+> > > > > hw/i386/sev: Use guest_memfd for legacy ROMs
+> > > > > hw/i386: Add support for loading BIOS using guest_memfd
+> > > > > 
+> > > > > This one definitely requires more work:
+> > > > > 
+> > > > > hw/i386/sev: Allow use of pflash in conjunction with -bios
+> > > > > 
+> > > > > 
+> > > > > Paolo
+> > > > 
+> > > 
+> > 
+> 
 
