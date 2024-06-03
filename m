@@ -2,67 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D39C28D7CD3
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jun 2024 09:52:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35A518D7D1F
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jun 2024 10:17:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sE2UI-0002Pt-Lh; Mon, 03 Jun 2024 03:52:14 -0400
+	id 1sE2r4-0001TF-J9; Mon, 03 Jun 2024 04:15:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sE2UH-0002Pl-C5
- for qemu-devel@nongnu.org; Mon, 03 Jun 2024 03:52:13 -0400
-Received: from mgamail.intel.com ([192.198.163.12])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1sE2r0-0001SG-EH
+ for qemu-devel@nongnu.org; Mon, 03 Jun 2024 04:15:42 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sE2UE-0001CG-64
- for qemu-devel@nongnu.org; Mon, 03 Jun 2024 03:52:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1717401130; x=1748937130;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=w9YIIUf/5C7FHss0rgAraaR4ET4kMcP20VUjyG9Z30U=;
- b=LZSB4armBPhcNxf5SdXvSfcv8m+vylkcm6e6EBBnGb5dGuSSRNPbMn+/
- HXdsfg04D40QJzc5wheVjnYOujwMk9KPry1P2/J2MJdUB/41GiHMs6HX0
- wf+AjwuIBqPy1GL/PaCwAZjutUwciaNx2Oniq5I6up0y5TeZWqjirhCb1
- AOoEjo6Bcl/Xlyuh2cofQrGMfIAsPcD04sBG0LGeFzsWsjIGDko+0y+c2
- 2vqJIsWt1s6td4JVBDLiGAM14f+YmTjNe9cZhuBrZjXP8y6DIaR+IzDYU
- YXzkcHuLpusEtOtFk9G43WpOab88R7CvqRDGPxBP6/mtb0GR5u4SzZniv Q==;
-X-CSE-ConnectionGUID: fytPHrPXRN2MK3Ec0VnTgg==
-X-CSE-MsgGUID: 2kTn6NOJSWmnCCO2ku6Luw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11091"; a="17723555"
-X-IronPort-AV: E=Sophos;i="6.08,211,1712646000"; d="scan'208";a="17723555"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Jun 2024 00:52:04 -0700
-X-CSE-ConnectionGUID: u+r/XwjITzG0FwPIp5jYsA==
-X-CSE-MsgGUID: BUb3ah6LTF6U3n1p1Og3Qg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,211,1712646000"; d="scan'208";a="41724308"
-Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by orviesa003.jf.intel.com with ESMTP; 03 Jun 2024 00:52:03 -0700
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>
-Cc: qemu-devel@nongnu.org, Zhao Liu <zhao1.liu@intel.com>,
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1sE2qy-0005qR-5U
+ for qemu-devel@nongnu.org; Mon, 03 Jun 2024 04:15:41 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1717402538;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
+ b=NX07tEATqImdeWZI+UoxQU2h/4V6FGrpCi7+91IvSrIoHbdMG/iZBx05EigszT9HfR+tSd
+ dwwbpvGG0IF8Mm//AOFnp8uSCJT4gPyhqwB1rfgZ4niCkS7XqhzC+8rIAetJW46Dy8LdV9
+ t2rZ2TrFEYd1s/MBaULbd4I99+4z61c=
+Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
+ [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-558-lZJG25EiOqiyvrVlg2F3nQ-1; Mon, 03 Jun 2024 04:15:36 -0400
+X-MC-Unique: lZJG25EiOqiyvrVlg2F3nQ-1
+Received: by mail-lf1-f70.google.com with SMTP id
+ 2adb3069b0e04-52b88c558a5so2435335e87.3
+ for <qemu-devel@nongnu.org>; Mon, 03 Jun 2024 01:15:36 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1717402535; x=1718007335;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
+ b=UB/IaN25R1lgofoM133bbRA4LWAfDI0P4QHKXP3Td0BIXUJa8HLwVvpdMBdbLsgn0j
+ gQIHDURgqu7/gslEjtRA20W+8i41ztd2r72NMSXKXPQ6PBA3RJn34EmelK89lkA38OPy
+ 18FHf0pINa3m/ZsVtJGXT6n8n9YhsltPAkP/7KsZWyRhqTBqghDy9xQV9tez37NlEt4c
+ O73FTEBLFbhKk/ix7UJ8u1k6B/hsfyxRa1wn2lzZ3cSbJgkW6OQ8t+UIrZc0SezCTf5H
+ f4Q8SDTnjzDxVRW5hrTtbIilaIxGWcs/TWIgCtAGgESDrP8RUsj5xD9bhrKuwZH/diyg
+ MkMw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUj03sHIKoU2sGMNDLZl1TTb2DXAzzTW6afd1FJYzuHtrLmOn+hetnmy7300igo2mLsWhu+phJi9w1OERWSYp50cjnSqaQ=
+X-Gm-Message-State: AOJu0Yy5xRuM/2aSiVRj2yG2AiaRfPBXZpwSixGusG0bjS2bT2ILrNFV
+ yqgp+3AgNmL324So+ww7TzEHNRVo95eHZKrI3lgyn7+tBmJepOUHbTOZ3GOIag4b5/3p4Qyo0hb
+ kHJcTnpxljZxBQBrU5EvZsXEpSuVx4hYkMm5t0fV7kt4s5QL/i4ED
+X-Received: by 2002:a05:6512:4803:b0:52a:f0e7:65ae with SMTP id
+ 2adb3069b0e04-52b895a37bcmr6262729e87.46.1717402534832; 
+ Mon, 03 Jun 2024 01:15:34 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFY6aoXIaPejXvdOSHzS21CqjGpup9h4qZ2kz8pao8R5nOt07U2sPdpF49JIpI2SGuDgN/gbQ==
+X-Received: by 2002:a05:6512:4803:b0:52a:f0e7:65ae with SMTP id
+ 2adb3069b0e04-52b895a37bcmr6262717e87.46.1717402534383; 
+ Mon, 03 Jun 2024 01:15:34 -0700 (PDT)
+Received: from avogadro.local ([151.81.115.112])
+ by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-a68fbebec36sm177286066b.162.2024.06.03.01.15.33
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 03 Jun 2024 01:15:33 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: Zhao Liu <zhao1.liu@intel.com>
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, qemu-devel@nongnu.org,
  Xinyu Li <lixinyu20s@ict.ac.cn>
-Subject: [PATCH] target/i386/tcg: Fix RDPID feature check
-Date: Mon,  3 Jun 2024 16:07:23 +0800
-Message-Id: <20240603080723.1256662-1-zhao1.liu@intel.com>
-X-Mailer: git-send-email 2.34.1
+Subject: Re: [PATCH] target/i386/tcg: Fix RDPID feature check
+Date: Mon,  3 Jun 2024 10:15:29 +0200
+Message-ID: <20240603081529.598574-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.45.1
+In-Reply-To: <20240603080723.1256662-1-zhao1.liu@intel.com>
+References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=192.198.163.12; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -45
-X-Spam_score: -4.6
-X-Spam_bar: ----
-X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.142,
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
+X-Spam_bar: --
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.142,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -79,32 +103,8 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-DisasContext.cpuid_ext_features indicates CPUID.01H.ECX.
+Queued, thanks.
 
-Use DisasContext.cpuid_7_0_ecx_features field to check RDPID feature bit
-(CPUID_7_0_ECX_RDPID).
-
-Fixes: 6750485bf42a ("target/i386: implement RDPID in TCG")
-Inspired-by: Xinyu Li <lixinyu20s@ict.ac.cn>
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
----
- target/i386/tcg/translate.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-index 6dedfe94c04c..0486ab691120 100644
---- a/target/i386/tcg/translate.c
-+++ b/target/i386/tcg/translate.c
-@@ -3199,7 +3199,7 @@ static void disas_insn_old(DisasContext *s, CPUState *cpu, int b)
-                 goto illegal_op;
-             }
-             if (s->prefix & PREFIX_REPZ) {
--                if (!(s->cpuid_ext_features & CPUID_7_0_ECX_RDPID)) {
-+                if (!(s->cpuid_7_0_ecx_features & CPUID_7_0_ECX_RDPID)) {
-                     goto illegal_op;
-                 }
-                 gen_helper_rdpid(s->T0, tcg_env);
--- 
-2.34.1
+Paolo
 
 
