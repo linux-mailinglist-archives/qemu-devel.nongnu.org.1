@@ -2,97 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E36448D7CC9
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jun 2024 09:51:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B6F08D7CEB
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jun 2024 09:58:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sE2Sx-0001IM-4h; Mon, 03 Jun 2024 03:50:51 -0400
+	id 1sE2Z7-00047J-Rg; Mon, 03 Jun 2024 03:57:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mprivozn@redhat.com>)
- id 1sE2Su-0001Hl-UF
- for qemu-devel@nongnu.org; Mon, 03 Jun 2024 03:50:49 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1sE2Z5-00046u-M2
+ for qemu-devel@nongnu.org; Mon, 03 Jun 2024 03:57:11 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mprivozn@redhat.com>)
- id 1sE2Ss-00014z-NM
- for qemu-devel@nongnu.org; Mon, 03 Jun 2024 03:50:48 -0400
+ id 1sE2Yt-000226-ED
+ for qemu-devel@nongnu.org; Mon, 03 Jun 2024 03:57:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717401043;
+ s=mimecast20190719; t=1717401418;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=BJdojyxkk9WmdYBBnBDwCN7m2Ehmdp9HPJ+LGsdeO1s=;
- b=WXpUxBvl9mmt7y+QouCEbZmSkWaeNMhXw47v+P7DxL7UXj0zmvqR8utVnT9C26FgpbNZAv
- 2xATxFgCVAioJozubN+x4ubJmyf6GhYcimqQ9WkMDZZNw754sZiGbaIVKjOcZOrwKBKyHJ
- rhHzqFts42oZV0H/7NwIvgXGw8rIrpw=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=HI8rBTa8fLFhWagPDs89Oyv56t5/7/OToI5osZ9vWrY=;
+ b=Ueg0tkO7r/Oz4EYRGrPKw6Rddg00SOAXjJrVrH51KEPPjEyakj4mAgf+/81DTh6MMoConU
+ 5x1AO0Hbqe/vJxA8g1nvg+Wo8VoJ/Xf/6O3jim2/Sy2B/IA0wkZMUotL0VcG8BuD+hkEzp
+ Nj+gEUmw1ku/QxCVpS/+0kCy2IvbWVs=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-306-xNUOhxJOMISwnbXMKXw4sA-1; Mon, 03 Jun 2024 03:50:39 -0400
-X-MC-Unique: xNUOhxJOMISwnbXMKXw4sA-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-4212941e244so6304215e9.0
- for <qemu-devel@nongnu.org>; Mon, 03 Jun 2024 00:50:39 -0700 (PDT)
+ us-mta-331-nbpsgC6kMJ-oipJotwnSuQ-1; Mon, 03 Jun 2024 03:56:56 -0400
+X-MC-Unique: nbpsgC6kMJ-oipJotwnSuQ-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-4212abb4720so20721095e9.0
+ for <qemu-devel@nongnu.org>; Mon, 03 Jun 2024 00:56:53 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717401038; x=1718005838;
+ d=1e100.net; s=20230601; t=1717401412; x=1718006212;
  h=content-transfer-encoding:in-reply-to:content-language:from
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=BJdojyxkk9WmdYBBnBDwCN7m2Ehmdp9HPJ+LGsdeO1s=;
- b=m7muxr76ebzkzekivYCp54LSDxbS8nnY/J0C3Sa9EgO+vCpYs2piUcg9dCKKVyj8Xu
- dh+7EcxNiWBWXrD7T2INnWKC4yQ0JFqJeZFU0ZX9+py9Vw5IyAIee4FbUxQmLT952+HL
- aFkLU/8p1Uu9+YVGaBL7o7CA8jMeOfZCDVVOmTTHgKFvA/hvD25+DrQGDwGtbLD/NP8r
- tuYYq2tB8sJZ1zjRFaPHs0u6q5yAFIz+UKF2RmjO4tQQcBq989duqoRkxpBsu0b71f8B
- GChTPAlUOxAboJ9kGYNDQwt+qDExn3V+pFVWR4r5QKFKFnZzL0Ds8EDSfqN3zUGtk2is
- QpjA==
+ bh=HI8rBTa8fLFhWagPDs89Oyv56t5/7/OToI5osZ9vWrY=;
+ b=ZoOtrgaK3jjR78WlwqoLsfENc7GHQ2rPp+YV7/mTql7bVkCZ61l+Edg7sW+xRDmP9x
+ UX61nq9NpQw3aAsSlAVt9WKSghLtQclMd+AMFBC1+sGH4Eozuno1MpIsrjvFy2qtAIUW
+ CMNgVNh+8Los70ppwBaxzeOjr5qj+QFF7wrh12cohhNkhASh9urLPuKGRLfpQtLxSpKV
+ YpOOIJqjFbvesAlKPPuDpIZrEjUcsF8AFWIRfQWugjE/hdoYBbATySbRPsjiS4Gh12sk
+ P9v01pa9VsFjhTg+upjYDo/LtAFCNTsmd9Rk1KDVVyvu2xbMG7E1952AsfPlKSic4+be
+ znew==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUDUvZk1kivi6DDsboUdarjEPzHvO85CsnE70MDYJVkm+CZrVmjhiEscveXDWN6zFvTKxz3wNeU78tKXLlpeC1eOdsn2L8=
-X-Gm-Message-State: AOJu0YytRF/GVMYMOrJ1AKTwVestd/Re9oqOrbtnMaV1HqZDF+EmclR+
- wm6MJRACjWbmNYWvDsbhZZGc4ehNG5kfxoi7muqg1DKEFAfAfrbHBGAIRjzkQd8Dmu1CnJ9oOYa
- EuxuVW8XWJ1OyoNqm9YuFlJoiUPFiEgpC9PFbC9qcpz5K+gxOGNhW
-X-Received: by 2002:a05:600c:4454:b0:421:2cb3:143 with SMTP id
- 5b1f17b1804b1-4212e044873mr69368145e9.3.1717401038387; 
- Mon, 03 Jun 2024 00:50:38 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEHEEwzr1an7EhCvjUQgPbNuQBfOw9XIP8X+6/FPdODbG2d2zM9urXoJJ1HYPFyItz7BcOVRw==
-X-Received: by 2002:a05:600c:4454:b0:421:2cb3:143 with SMTP id
- 5b1f17b1804b1-4212e044873mr69367955e9.3.1717401037961; 
- Mon, 03 Jun 2024 00:50:37 -0700 (PDT)
+ AJvYcCU7U7SDKV42M528eRL6NkiWg+hJlmNw2zn5K64ob0SdCIBv+7njR9L/qChEXr+35wM7v9boURNIaQSkOk8jPxVRWHkUtFU=
+X-Gm-Message-State: AOJu0Yz4bDYh7GJYV4QaH5jNwtfqgJOQyWgrTsZcDseagEGDeCweY06G
+ mXXCbElVepmldlYjcPG0qRLzso0qSrfJr5bLdUMuKuC1axVSw5mNmqP9DLHwoKzRJRxPuECnyX2
+ TE/L+vcmWsv/8w/p6wmMuvtZI9+pwjjGvAGwkqayq27Ewko4fpnDT
+X-Received: by 2002:a05:600c:19cc:b0:41f:f957:96ac with SMTP id
+ 5b1f17b1804b1-4212e04a57dmr77739715e9.13.1717401412630; 
+ Mon, 03 Jun 2024 00:56:52 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH3zim4reQa3bMdTRrrshR+Wrstfkvxtg2QnEU2YbGVXSbWafaJSnV0xcwavNzXx2m0y1HKsA==
+X-Received: by 2002:a05:600c:19cc:b0:41f:f957:96ac with SMTP id
+ 5b1f17b1804b1-4212e04a57dmr77739515e9.13.1717401412212; 
+ Mon, 03 Jun 2024 00:56:52 -0700 (PDT)
 Received: from [10.43.3.102] (nat-pool-brq-t.redhat.com. [213.175.37.10])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42138260c5asm62270375e9.41.2024.06.03.00.50.37
+ ffacd0b85a97d-35dd04c9d78sm7975848f8f.27.2024.06.03.00.56.51
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 03 Jun 2024 00:50:37 -0700 (PDT)
-Message-ID: <be43d0d8-f987-4892-8cda-de0f4ac202f6@redhat.com>
-Date: Mon, 3 Jun 2024 09:50:36 +0200
+ Mon, 03 Jun 2024 00:56:51 -0700 (PDT)
+Message-ID: <d32e3ea3-32fb-4893-a950-91e60c9778d2@redhat.com>
+Date: Mon, 3 Jun 2024 09:56:51 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v3 1/4] osdep: Make qemu_madvise() to set errno in all
  cases
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+To: Akihiko Odaki <akihiko.odaki@daynix.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
-Cc: Cameron Esfahani <dirty@apple.com>,
- Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: Cameron Esfahani <dirty@apple.com>
 References: <cover.1717168113.git.mprivozn@redhat.com>
  <393c7b26302cb445f1a086a2c80b1d718c31a071.1717168113.git.mprivozn@redhat.com>
  <4b146ec6-bec2-4191-8c95-fc30d8307ef6@linaro.org>
+ <08ff19ed-9d1b-4fa3-8a40-3fe10d1f9bfa@daynix.com>
 From: =?UTF-8?B?TWljaGFsIFByw612b3puw61r?= <mprivozn@redhat.com>
 Content-Language: en-US
-In-Reply-To: <4b146ec6-bec2-4191-8c95-fc30d8307ef6@linaro.org>
+In-Reply-To: <08ff19ed-9d1b-4fa3-8a40-3fe10d1f9bfa@daynix.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mprivozn@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mprivozn@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -22
 X-Spam_score: -2.3
 X-Spam_bar: --
 X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.142,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,47 +108,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/31/24 17:46, Philippe Mathieu-Daudé wrote:
-> On 31/5/24 17:10, Michal Privoznik wrote:
->> The unspoken premise of qemu_madvise() is that errno is set on
->> error. And it is mostly the case except for posix_madvise() which
->> is documented to return either zero (on success) or a positive
->> error number. This means, we must set errno ourselves. And while
->> at it, make the function return a negative value on error, just
->> like other error paths do.
+On 6/2/24 08:26, Akihiko Odaki wrote:
+> On 2024/06/01 0:46, Philippe Mathieu-Daudé wrote:
+>> On 31/5/24 17:10, Michal Privoznik wrote:
+>>> The unspoken premise of qemu_madvise() is that errno is set on
+>>> error. And it is mostly the case except for posix_madvise() which
+>>> is documented to return either zero (on success) or a positive
+>>> error number. This means, we must set errno ourselves. And while
+>>> at it, make the function return a negative value on error, just
+>>> like other error paths do.
+>>>
+>>> Signed-off-by: Michal Privoznik <mprivozn@redhat.com>
+>>> ---
+>>>   util/osdep.c | 14 +++++++++++++-
+>>>   1 file changed, 13 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/util/osdep.c b/util/osdep.c
+>>> index e996c4744a..1345238a5c 100644
+>>> --- a/util/osdep.c
+>>> +++ b/util/osdep.c
+>>> @@ -57,7 +57,19 @@ int qemu_madvise(void *addr, size_t len, int advice)
+>>>   #if defined(CONFIG_MADVISE)
+>>>       return madvise(addr, len, advice);
+>>>   #elif defined(CONFIG_POSIX_MADVISE)
+>>> -    return posix_madvise(addr, len, advice);
+>>> +    /*
+>>> +     * On Darwin posix_madvise() has the same return semantics as
+>>> +     * plain madvise, i.e. errno is set and -1 is returned. Otherwise,
+>>> +     * a positive error number is returned.
+>>> +     */
 >>
->> Signed-off-by: Michal Privoznik <mprivozn@redhat.com>
->> ---
->>   util/osdep.c | 14 +++++++++++++-
->>   1 file changed, 13 insertions(+), 1 deletion(-)
+>> Alternative is to guard with #ifdef CONFIG_DARWIN ... #else ... #endif
+>> which might be clearer.
 >>
->> diff --git a/util/osdep.c b/util/osdep.c
->> index e996c4744a..1345238a5c 100644
->> --- a/util/osdep.c
->> +++ b/util/osdep.c
->> @@ -57,7 +57,19 @@ int qemu_madvise(void *addr, size_t len, int advice)
->>   #if defined(CONFIG_MADVISE)
->>       return madvise(addr, len, advice);
->>   #elif defined(CONFIG_POSIX_MADVISE)
->> -    return posix_madvise(addr, len, advice);
->> +    /*
->> +     * On Darwin posix_madvise() has the same return semantics as
->> +     * plain madvise, i.e. errno is set and -1 is returned. Otherwise,
->> +     * a positive error number is returned.
->> +     */
+>> Although this approach seems reasonable, so:
+>> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > 
-> Alternative is to guard with #ifdef CONFIG_DARWIN ... #else ... #endif
-> which might be clearer.
-
-That's how I had it written (locally) initially, but then thought: well,
-what if there's another OS that behaves the same? This way, we don't
-have to care and just do the right thing.
-
+> We should use plain madvise() if posix_madvise() is broken. In fact,
+> QEMU detects the availability of plain madvise() and use it instead of
+> posix_madvise() on my MacBook.
 > 
-> Although this approach seems reasonable, so:
-> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Perhaps it may be better to stop defining CONFIG_POSIX_MADVISE on Darwin
+> to ensure we never use the broken implementation.
+> 
 
-Thanks!
+Well, doesn't Darwin have madvise() in the first place?
+
+https://opensource.apple.com/source/xnu/xnu-7195.81.3/bsd/man/man2/madvise.2.auto.html
+
+I thought that's the reason for posix_madvise() to behave the same as madvise() there.
 
 Michal
 
