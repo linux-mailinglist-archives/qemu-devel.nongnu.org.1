@@ -2,89 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4ECF98D80FA
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jun 2024 13:21:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B5418D80F3
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jun 2024 13:21:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sE5hm-0007aD-RJ; Mon, 03 Jun 2024 07:18:23 -0400
+	id 1sE5hp-0007jE-8T; Mon, 03 Jun 2024 07:18:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sE5hf-0007LB-Jb
- for qemu-devel@nongnu.org; Mon, 03 Jun 2024 07:18:15 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ id 1sE5hl-0007Zl-EV; Mon, 03 Jun 2024 07:18:21 -0400
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sE5hd-0006Vs-Cn
- for qemu-devel@nongnu.org; Mon, 03 Jun 2024 07:18:15 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-1f44b42d1caso31643175ad.0
- for <qemu-devel@nongnu.org>; Mon, 03 Jun 2024 04:18:12 -0700 (PDT)
+ id 1sE5hg-0006Wr-Kf; Mon, 03 Jun 2024 07:18:21 -0400
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-1f44b45d6abso29776055ad.0; 
+ Mon, 03 Jun 2024 04:18:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1717413490; x=1718018290; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1717413494; x=1718018294; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=w6AzoFo8JUHoIoVJzS9JZAaDEbHq/fZUj2l7V7rYL/A=;
- b=jzS1loQ4JxEszbqBmTCY3OU9rmtWKcDO88YqnDJ8ASEluDOPxuwXLsJL8RYu1ZdfnQ
- lF/C74Eog1pxTBXj/+KqOmdnF7YOx9kd7DuTeWQwKY6f5rkaEWvuDmybW8yWbmtNALIP
- gN1WlF8pZorZRrOJ7jBlJ7CNuKJSercX4/DIlvrxPy/8bstq7RV+VLM4u/S49KkTUSXQ
- JP/s5+Hv60mCkAzaRH+MDqWdHg1X6DcQypaDiTIegolOYOkJljuX3a/TgacZBbZC+HlZ
- UQpAv+JG4z/vPm5lWGv3pLP0LGWPZQ6J3P/UxszSYsp7nqj3UHUIrG8dOXzFhLTV58qe
- 7IRw==
+ bh=Tj+xbQPw1aTPPkVQS9cYzQUJajn8RHcrOCksv3MTYMs=;
+ b=DwOpcmCGes3PI+YWKRpzaGGK3BSN/ZuXH1Ml7kWrC10ueqKA/so0klJ+T2cBeoiDpM
+ KBLNIShNQDKjVPW4uu+wbwVw5sGswaRfVZ3ZVRefyqadIic9uKfZ855Y77u926D0U30y
+ zJXyjoCXpTxr5VDy7+tjaOgnO3pToCfTezhyGo2AGJrOfgdlGKpszGm+y0Xw+Ld5qXMf
+ qdlvLd/uVyiOdbV1lLDwxBsiqk/XQLzfAv0n8hcoqbbB269GcEgBgfrAv60VAZOfS8lo
+ X8wZw5Y0cIib3JDBmPj6fnw0SfRRA8DnW94Inxcf6wJ6zBjh61boaaGPPWgQ/r4XPTnO
+ v3wA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717413490; x=1718018290;
+ d=1e100.net; s=20230601; t=1717413494; x=1718018294;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=w6AzoFo8JUHoIoVJzS9JZAaDEbHq/fZUj2l7V7rYL/A=;
- b=TaKXrkYs/BL71JYmx2VoVNsUyPof+YzutSUG8lhzx9A+4dpU3Tyn+h8Xe3u77lystB
- G82LDubNN5lJuZGYoakGEc9IjeplWLbnvBjxjz76bX3MWgfAuXrm6iHvoCGDSNM49cr/
- XefYZ6gBRlGkBatq9veRUEIgOdRU5Ru0p7M7w8t99Os0J0fDiyllONHO9cZI+Qt5J/3Q
- hZCprjya8waVbaEzBNk+EuUC3o77tYyoeRaxh2xVGouNscpxYvm3BEtaIkiFEr4q+b+7
- pSQXCyo+KIgQCz252aKnYZTg0nv4Cj4EG3qEfqesCuN2H8yuqrFQrSF5mhloPdIQp9Rz
- AGqQ==
-X-Gm-Message-State: AOJu0YwGqWV1nvJlF6eGCBA5xa28/Kda4n2RF/zU8lO3a7Cuv+UMewTA
- daqDOLWX5CcBGACi9Vm4277asqm3B7x1Xk11G6K/IzSBCKa8vtszbTC9/A==
-X-Google-Smtp-Source: AGHT+IELaqT5zsTCVytn5m1fuR1ae7RyOQ50dgeEuwEobS4zVRBZCz8GOun5O9EVZd/EJLC1jA2Lkg==
-X-Received: by 2002:a17:902:cec7:b0:1f2:eff9:cd4 with SMTP id
- d9443c01a7336-1f63696304dmr77153385ad.0.1717413490306; 
- Mon, 03 Jun 2024 04:18:10 -0700 (PDT)
+ bh=Tj+xbQPw1aTPPkVQS9cYzQUJajn8RHcrOCksv3MTYMs=;
+ b=IiQDitK85Q25sAEFKRVf+h2rn5cX4xCn2piJ6dKA4c3jY7YVq1Ag2hqNrqKfvNj1+8
+ eN1/7slacpRcGk1BgQzm8jQZ3YTeK3tj6yOPpbinwMohd60xn2DaD31oYW9upcsdHoTO
+ 4p8mcGmrZ9wQkVXlG9ofZwlf836Y8lBo7pegxhNzIkz75xxLfCSGYK7uNKRWOpK5qw1g
+ fft5rgqzd8wAh3DmCaHLtndiC2uhmH50G6ZEGeCvxbQ3oNkVMQwqT3aygf7K/kO2Ml2F
+ nhSuOKSCiK9kFsDVQiDEpaWyIAmHrlbBCV10RzAzXxYieOlae5YLexIw+R1uN9BKV629
+ zeoQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCV6ltbyULYFlHbszYs2rTZ/9NyuTNS4fIKhmcls6wAVz3BUCD1dL0FsYl5ZJQSMgXBUn+SCJAI5Pv1rMzmr7/8DgK6h5eHb
+X-Gm-Message-State: AOJu0YzVgfY4C0oqnt7jsvIdGoqn9flaWbXwLerAEoqy8s3wYLEBOiex
+ XbN5ZGtDt0qcYQ6G7vojachB48JKFqyE/HN5nRcVIq/TfSWIszOjWNk1IQ==
+X-Google-Smtp-Source: AGHT+IGKrY8IagvVVSdQaol6lJys9GgQbHEbjGT0vStfWyb+ZlyPi+R8qVjEdKVhSam3BWg1iSDWog==
+X-Received: by 2002:a17:903:32c2:b0:1f3:2e5d:902d with SMTP id
+ d9443c01a7336-1f636fd9704mr98098505ad.4.1717413493552; 
+ Mon, 03 Jun 2024 04:18:13 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1f6323e18c7sm62375435ad.177.2024.06.03.04.18.06
+ d9443c01a7336-1f6323e18c7sm62375435ad.177.2024.06.03.04.18.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Jun 2024 04:18:08 -0700 (PDT)
+ Mon, 03 Jun 2024 04:18:13 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Rob Bradford <rbradford@rivosinc.com>,
- Andrew Jones <ajones@ventanamicro.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-Subject: [PULL v2 23/27] target/riscv: Remove experimental prefix from "B"
- extension
-Date: Mon,  3 Jun 2024 21:16:39 +1000
-Message-ID: <20240603111643.258712-24-alistair.francis@wdc.com>
+Cc: alistair23@gmail.com, Alistair Francis <alistair.francis@wdc.com>,
+ Fabian Thomas <fabian.thomas@cispa.de>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ qemu-stable <qemu-stable@nongnu.org>
+Subject: [PULL v2 24/27] target/riscv: rvzicbo: Fixup CBO extension register
+ calculation
+Date: Mon,  3 Jun 2024 21:16:40 +1000
+Message-ID: <20240603111643.258712-25-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240603111643.258712-1-alistair.francis@wdc.com>
 References: <20240603111643.258712-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x634.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x629.google.com
+X-Spam_score_int: -14
+X-Spam_score: -1.5
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,53 +98,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Rob Bradford <rbradford@rivosinc.com>
+From: Alistair Francis <alistair23@gmail.com>
 
-This extension has now been ratified:
-https://jira.riscv.org/browse/RVS-2006 so the "x-" prefix can be
-removed.
+When running the instruction
 
-Since this is now a ratified extension add it to the list of extensions
-included in the "max" CPU variant.
+```
+    cbo.flush 0(x0)
+```
 
-Signed-off-by: Rob Bradford <rbradford@rivosinc.com>
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-Message-ID: <20240514110217.22516-1-rbradford@rivosinc.com>
+QEMU would segfault.
+
+The issue was in cpu_gpr[a->rs1] as QEMU does not have cpu_gpr[0]
+allocated.
+
+In order to fix this let's use the existing get_address()
+helper. This also has the benefit of performing pointer mask
+calculations on the address specified in rs1.
+
+The pointer masking specificiation specifically states:
+
+"""
+Cache Management Operations: All instructions in Zicbom, Zicbop and Zicboz
+"""
+
+So this is the correct behaviour and we previously have been incorrectly
+not masking the address.
+
+Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
+Reported-by: Fabian Thomas <fabian.thomas@cispa.de>
+Fixes: e05da09b7cfd ("target/riscv: implement Zicbom extension")
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-stable <qemu-stable@nongnu.org>
+Message-ID: <20240514023910.301766-1-alistair.francis@wdc.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu.c         | 2 +-
- target/riscv/tcg/tcg-cpu.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ target/riscv/insn_trans/trans_rvzicbo.c.inc | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 2946ac298a..cee6fc4a9a 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -1400,7 +1400,7 @@ static const MISAExtInfo misa_ext_info_arr[] = {
-     MISA_EXT_INFO(RVJ, "x-j", "Dynamic translated languages"),
-     MISA_EXT_INFO(RVV, "v", "Vector operations"),
-     MISA_EXT_INFO(RVG, "g", "General purpose (IMAFD_Zicsr_Zifencei)"),
--    MISA_EXT_INFO(RVB, "x-b", "Bit manipulation (Zba_Zbb_Zbs)")
-+    MISA_EXT_INFO(RVB, "b", "Bit manipulation (Zba_Zbb_Zbs)")
- };
+diff --git a/target/riscv/insn_trans/trans_rvzicbo.c.inc b/target/riscv/insn_trans/trans_rvzicbo.c.inc
+index d5d7095903..15711c3140 100644
+--- a/target/riscv/insn_trans/trans_rvzicbo.c.inc
++++ b/target/riscv/insn_trans/trans_rvzicbo.c.inc
+@@ -31,27 +31,35 @@
+ static bool trans_cbo_clean(DisasContext *ctx, arg_cbo_clean *a)
+ {
+     REQUIRE_ZICBOM(ctx);
+-    gen_helper_cbo_clean_flush(tcg_env, cpu_gpr[a->rs1]);
++    TCGv src = get_address(ctx, a->rs1, 0);
++
++    gen_helper_cbo_clean_flush(tcg_env, src);
+     return true;
+ }
  
- static void riscv_cpu_validate_misa_mxl(RISCVCPUClass *mcc)
-diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-index f59b5d7f2d..683f604d9f 100644
---- a/target/riscv/tcg/tcg-cpu.c
-+++ b/target/riscv/tcg/tcg-cpu.c
-@@ -1301,7 +1301,7 @@ static void riscv_init_max_cpu_extensions(Object *obj)
-     const RISCVCPUMultiExtConfig *prop;
+ static bool trans_cbo_flush(DisasContext *ctx, arg_cbo_flush *a)
+ {
+     REQUIRE_ZICBOM(ctx);
+-    gen_helper_cbo_clean_flush(tcg_env, cpu_gpr[a->rs1]);
++    TCGv src = get_address(ctx, a->rs1, 0);
++
++    gen_helper_cbo_clean_flush(tcg_env, src);
+     return true;
+ }
  
-     /* Enable RVG, RVJ and RVV that are disabled by default */
--    riscv_cpu_set_misa_ext(env, env->misa_ext | RVG | RVJ | RVV);
-+    riscv_cpu_set_misa_ext(env, env->misa_ext | RVB | RVG | RVJ | RVV);
+ static bool trans_cbo_inval(DisasContext *ctx, arg_cbo_inval *a)
+ {
+     REQUIRE_ZICBOM(ctx);
+-    gen_helper_cbo_inval(tcg_env, cpu_gpr[a->rs1]);
++    TCGv src = get_address(ctx, a->rs1, 0);
++
++    gen_helper_cbo_inval(tcg_env, src);
+     return true;
+ }
  
-     for (prop = riscv_cpu_extensions; prop && prop->name; prop++) {
-         isa_ext_update_enabled(cpu, prop->offset, true);
+ static bool trans_cbo_zero(DisasContext *ctx, arg_cbo_zero *a)
+ {
+     REQUIRE_ZICBOZ(ctx);
+-    gen_helper_cbo_zero(tcg_env, cpu_gpr[a->rs1]);
++    TCGv src = get_address(ctx, a->rs1, 0);
++
++    gen_helper_cbo_zero(tcg_env, src);
+     return true;
+ }
 -- 
 2.45.1
 
