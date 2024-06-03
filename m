@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF2AB8D7B6C
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jun 2024 08:15:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FE798D7B6E
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jun 2024 08:15:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sE0wr-0004jr-IO; Mon, 03 Jun 2024 02:13:37 -0400
+	id 1sE0wv-0004oL-RM; Mon, 03 Jun 2024 02:13:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1sE0wo-0004iY-Tf
- for qemu-devel@nongnu.org; Mon, 03 Jun 2024 02:13:35 -0400
+ id 1sE0wu-0004nA-1P
+ for qemu-devel@nongnu.org; Mon, 03 Jun 2024 02:13:40 -0400
 Received: from mgamail.intel.com ([192.198.163.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1sE0wn-0000uQ-4x
- for qemu-devel@nongnu.org; Mon, 03 Jun 2024 02:13:34 -0400
+ id 1sE0ws-0000uQ-Dk
+ for qemu-devel@nongnu.org; Mon, 03 Jun 2024 02:13:39 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1717395213; x=1748931213;
+ t=1717395218; x=1748931218;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=DzFkETpqsyCUSo4mpTVuvp6zaJicWw8iv9n76ZkukHM=;
- b=FX5C1DAsMocLJItY9l9EyoajCghR59koUSZmwB9sPp0BCBJSrBP8r5gJ
- CSz54bkaV1q0HBPROs4JWwSPKXCRvSg0uVts+Gd1Dxu89oTEHRAeroYYF
- BhjQxg24f1RGk5xTl+udhfxk/uvKkXfd3/lx3Q2uO0fKqO0/W1JO23pia
- EHjPCeDu/pVMIwmvbJ+OoOvPoSvXW+Nz1zhInXcrpene60UYwrJt7vydQ
- +5vxmFuNZU8S9dRlj5tltnpHYZ+TIXF2jKUwRESeQPnAyzoRUjEw0XvDK
- DNnDpsT7+O7wVxD8Unl+F7qEJ9+4KAtFkgFZQ7g+Ats4fwHxO/njoETK2 Q==;
-X-CSE-ConnectionGUID: 0Hr9kC3zSnCGoRsTgB0bew==
-X-CSE-MsgGUID: LxZldkP5QfO5N9iJ8oOLQw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11091"; a="25277648"
-X-IronPort-AV: E=Sophos;i="6.08,210,1712646000"; d="scan'208";a="25277648"
+ bh=OP3qnqR2eeb5LkENXO26BG3fJHDhCXlpbz0ddpelol0=;
+ b=e9CSkT46lGvO8jGMHLefMdFXj4xc9w2vPytV2zDfFzAjueCqGrd3xngr
+ q8OLsNFMQbkrSaceiUfYEClUJkBDwnFpQSyANdwd/NIecMt5KV46inAX8
+ VlnmkLn5VozW8SUjzBmQYjSaUMTe6uVsobVEmKaQKT/U3IuxFdcwSFrtf
+ OAqWZgy6yAy76OwUPgG7cg141IgajsxJ6PYhqC59sxYKAZnTNo6uEUDdQ
+ 5Nf0uxEyYJFpxZj1+IcedGwGagqwh4/OtipCzgouCx5W1Wr52ovAzBT8Z
+ /bMhXD/WyfkJ8xXgxj5Xe2SKYZIbxF+YokZE72NRYFTGwSTf+GU1zCzZL g==;
+X-CSE-ConnectionGUID: kCEAUqUES3iWE8+9j09CRA==
+X-CSE-MsgGUID: 9g8LJuigTjKj6zjtSzf3Pw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11091"; a="25277658"
+X-IronPort-AV: E=Sophos;i="6.08,210,1712646000"; d="scan'208";a="25277658"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Jun 2024 23:13:32 -0700
-X-CSE-ConnectionGUID: APkEOgYsTTe5TQ7XV1sb2w==
-X-CSE-MsgGUID: NBPqAnmERL+4ku9Qqeaw0g==
+ 02 Jun 2024 23:13:36 -0700
+X-CSE-ConnectionGUID: HOLPRB7jSfGAn3MhCF7sZw==
+X-CSE-MsgGUID: U5YmlkyvRjumko5cZI17Lg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,210,1712646000"; d="scan'208";a="36855857"
+X-IronPort-AV: E=Sophos;i="6.08,210,1712646000"; d="scan'208";a="36855866"
 Received: from unknown (HELO SPR-S2600BT.bj.intel.com) ([10.240.192.127])
  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Jun 2024 23:13:29 -0700
+ 02 Jun 2024 23:13:33 -0700
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
@@ -51,10 +51,9 @@ Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
  nicolinc@nvidia.com, joao.m.martins@oracle.com,
  clement.mathieu--drif@eviden.com, kevin.tian@intel.com, yi.l.liu@intel.com,
  chao.p.peng@intel.com, Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PATCH v6 05/19] backends/host_iommu_device: Introduce
- HostIOMMUDeviceCaps
-Date: Mon,  3 Jun 2024 14:10:09 +0800
-Message-Id: <20240603061023.269738-6-zhenzhong.duan@intel.com>
+Subject: [PATCH v6 06/19] range: Introduce range_get_last_bit()
+Date: Mon,  3 Jun 2024 14:10:10 +0800
+Message-Id: <20240603061023.269738-7-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240603061023.269738-1-zhenzhong.duan@intel.com>
 References: <20240603061023.269738-1-zhenzhong.duan@intel.com>
@@ -85,81 +84,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-HostIOMMUDeviceCaps's elements map to the host IOMMU's capabilities.
-Different platform IOMMU can support different elements.
+This helper get the highest 1 bit position of the upper bound.
 
-Currently only two elements, type and aw_bits, type hints the host
-platform IOMMU type, i.e., INTEL vtd, ARM smmu, etc; aw_bits hints
-host IOMMU address width.
-
-Introduce .get_cap() handler to check if HOST_IOMMU_DEVICE_CAP_XXX
-is supported.
+If the range is empty or upper bound is zero, -1 is returned.
 
 Suggested-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- include/sysemu/host_iommu_device.h | 37 ++++++++++++++++++++++++++++++
- 1 file changed, 37 insertions(+)
+ include/qemu/range.h | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/include/sysemu/host_iommu_device.h b/include/sysemu/host_iommu_device.h
-index 2b58a94d62..d47d1034b1 100644
---- a/include/sysemu/host_iommu_device.h
-+++ b/include/sysemu/host_iommu_device.h
-@@ -15,11 +15,25 @@
- #include "qom/object.h"
- #include "qapi/error.h"
+diff --git a/include/qemu/range.h b/include/qemu/range.h
+index 205e1da76d..4ce694a398 100644
+--- a/include/qemu/range.h
++++ b/include/qemu/range.h
+@@ -20,6 +20,8 @@
+ #ifndef QEMU_RANGE_H
+ #define QEMU_RANGE_H
  
-+/**
-+ * struct HostIOMMUDeviceCaps - Define host IOMMU device capabilities.
-+ *
-+ * @type: host platform IOMMU type.
-+ *
-+ * @aw_bits: host IOMMU address width. 0xff if no limitation.
-+ */
-+typedef struct HostIOMMUDeviceCaps {
-+    uint32_t type;
-+    uint8_t aw_bits;
-+} HostIOMMUDeviceCaps;
++#include "qemu/bitops.h"
 +
- #define TYPE_HOST_IOMMU_DEVICE "host-iommu-device"
- OBJECT_DECLARE_TYPE(HostIOMMUDevice, HostIOMMUDeviceClass, HOST_IOMMU_DEVICE)
+ /*
+  * Operations on 64 bit address ranges.
+  * Notes:
+@@ -217,6 +219,15 @@ static inline int ranges_overlap(uint64_t first1, uint64_t len1,
+     return !(last2 < first1 || last1 < first2);
+ }
  
- struct HostIOMMUDevice {
-     Object parent_obj;
++/* Get highest non-zero bit position of a range */
++static inline int range_get_last_bit(Range *range)
++{
++    if (range_is_empty(range)) {
++        return -1;
++    }
++    return 63 - clz64(range->upb);
++}
 +
-+    HostIOMMUDeviceCaps caps;
- };
- 
- /**
-@@ -47,5 +61,28 @@ struct HostIOMMUDeviceClass {
-      * Returns: true on success, false on failure.
-      */
-     bool (*realize)(HostIOMMUDevice *hiod, void *opaque, Error **errp);
-+    /**
-+     * @get_cap: check if a host IOMMU device capability is supported.
-+     *
-+     * Optional callback, if not implemented, hint not supporting query
-+     * of @cap.
-+     *
-+     * @hiod: pointer to a host IOMMU device instance.
-+     *
-+     * @cap: capability to check.
-+     *
-+     * @errp: pass an Error out when fails to query capability.
-+     *
-+     * Returns: <0 on failure, 0 if a @cap is unsupported, or else
-+     * 1 or some positive value for some special @cap,
-+     * i.e., HOST_IOMMU_DEVICE_CAP_AW_BITS.
-+     */
-+    int (*get_cap)(HostIOMMUDevice *hiod, int cap, Error **errp);
- };
-+
-+/*
-+ * Host IOMMU device capability list.
-+ */
-+#define HOST_IOMMU_DEVICE_CAP_IOMMU_TYPE    0
-+#define HOST_IOMMU_DEVICE_CAP_AW_BITS       1
- #endif
+ /*
+  * Return -1 if @a < @b, 1 @a > @b, and 0 if they touch or overlap.
+  * Both @a and @b must not be empty.
 -- 
 2.34.1
 
