@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9547F8D8840
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jun 2024 19:55:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64EC28D8842
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jun 2024 19:55:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEBse-0007B9-4W; Mon, 03 Jun 2024 13:54:00 -0400
+	id 1sEBsh-0007EV-Ty; Mon, 03 Jun 2024 13:54:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sEBsL-00070M-Vl
- for qemu-devel@nongnu.org; Mon, 03 Jun 2024 13:53:42 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ id 1sEBsN-00072p-RC
+ for qemu-devel@nongnu.org; Mon, 03 Jun 2024 13:53:44 -0400
+Received: from mail-lj1-x234.google.com ([2a00:1450:4864:20::234])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sEBsH-00009t-7g
- for qemu-devel@nongnu.org; Mon, 03 Jun 2024 13:53:41 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-42121d27861so1167275e9.0
- for <qemu-devel@nongnu.org>; Mon, 03 Jun 2024 10:53:36 -0700 (PDT)
+ id 1sEBsH-0000AT-SY
+ for qemu-devel@nongnu.org; Mon, 03 Jun 2024 13:53:43 -0400
+Received: by mail-lj1-x234.google.com with SMTP id
+ 38308e7fff4ca-2eaa794eb9fso29804011fa.2
+ for <qemu-devel@nongnu.org>; Mon, 03 Jun 2024 10:53:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1717437215; x=1718042015; darn=nongnu.org;
+ d=linaro.org; s=google; t=1717437216; x=1718042016; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=8KRfXE/oVtlnzDt4+VcBXOC8p+C9OfeddYY4ThUlh64=;
- b=BB6MK6n1YqKqv9uB5WscHGQ0SaLj/vATi5ZC24gilyxpSrDC6NiV/hN2WWZeqw+h0A
- F9Pw038Cw39oE+2NrXoNjJlRgCQFqkldjUlgyLhSyEy79D0kiAmhvnm0kRI2tpF7p9fh
- asUXLrqmJpLTfSKuSzMBw01lkzaqQzy/KtRH+jNERnLKCIJ0/AgFvyyVjOCFgUk4nkb0
- 0fhqCUV3ZFLUwYgWe+Urd0MYK8P0KwSiDjwe/t2G5kF75CGyvsqR7Ep3IrH08TcIT/6k
- EtpBl93egESRnDTwNddw3blDNtfj7/pXHyhCW5rJ7fuKD0F+CKR6ishbkKOdM5oh+gcc
- Up9Q==
+ bh=evivfxd//u248pB/wuxxX0v0kMcuc3vdhqbsfwPCZNI=;
+ b=RyXIO6Y5e8KhEzltBeuuoMCmSYoE9Mcpemgqc9teOOt6z6Mr9ioGH8nOnl42JieRfe
+ fIZNEb1gQJ1LwvcRv4wDxam/aVvIj27ufdV2TMwr71igV0F9bIgayhD3J+abXx6QwVMy
+ uVFAtxEVmcQ/HFJUODFwMTd0tL6/WQfdOkeUKST7oA/3DGBlFxdhHtC70AEsBPskUa4P
+ Drj8gC1/CAc4+wkc3czi8lNwwe1xjE7mRoxE5L8rv/TDzzZDfgBDB8xAV+kCqA5U9K39
+ vibq8h7/3wnPWQHyaL3Ih/JQolNbHifNdXgdu7zNDjRkxQ5VufGYqFoHv8NzB9Kbn2OJ
+ hMnA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717437215; x=1718042015;
+ d=1e100.net; s=20230601; t=1717437216; x=1718042016;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=8KRfXE/oVtlnzDt4+VcBXOC8p+C9OfeddYY4ThUlh64=;
- b=nUfHdl5DjoJkWt140jAii7V6GTjMv+86Uiw8dkER3ZhKnzsX8xmvOBn02UYsqeA5W5
- Auqac9zKYr8J3TFcAadwGC3UYScm4MGo763/1fvVZlGmx8T/k25v1BRW1+KrPXaiovS/
- XhV1Svtn9cDfF9MSNVx5SPvWvHMwgG5knG3eGlHk56bkgduEQXEuGfhXh1e9P4ojeN65
- f7ZcceRxwMBGKmbM1jMvuRNgfNBO+QRvJb2cNDRE9MUpiD9mxNHl9RUuxpXtg7xDLnbd
- OuUJufqsfPq7IrPVb94cZV5FNbq1psOiGKl5Mgj7ulqk97s2vDYUX8vG/VbL/UuMm5CC
- m4gA==
-X-Gm-Message-State: AOJu0YyWbM5OIOrHWi7pS2DQRxqv5qAtvoK8I14SbK8+kc1VOoWzhDej
- RmzzAUePWrXvMI0JN8g3j8kQnIYeKic9loDVovnAFurBOctA9fTW/zeQU12L7Mc=
-X-Google-Smtp-Source: AGHT+IGyZdIQEfHdp9u5swINaBBzgo8dcyRSI6VfEevC4uMYiFPOA4JifExa5rRMj86gHWFySSotOg==
-X-Received: by 2002:a05:600c:474a:b0:41b:285:8417 with SMTP id
- 5b1f17b1804b1-4212e0be702mr69738275e9.40.1717437215050; 
+ bh=evivfxd//u248pB/wuxxX0v0kMcuc3vdhqbsfwPCZNI=;
+ b=U+R1BVHI98I7+2690t01Xs8f8ZNQ3R5fAm72C5krwsA8heXaPMZpj0MGZtnVXc5hVF
+ wxd1uVTlFiNM/vgodSsr5YHw5EX9oMuuVnnUGAa+5hKnUF2ylQXWi3h2bpyIATZwUnDD
+ NSg2a88BSTiNhShbLAE0OSFTbOSM1BxbeomDoq6P+cUFNil7K+tn56Za9LjMQC2/MWTT
+ W+oBVtAD5b+PjscsRc0bdew0ojrhlciTbf6EcvU3SnVza7+CdzWFHqRYcXX0gBcVAxpv
+ USh+EQig+Dg4BERMPYKFl82zOntKQg+61q8WV8FIy+gR20/rZRZBQ6zwrM2YEphTICwT
+ iLAg==
+X-Gm-Message-State: AOJu0YwU1d4jZhNAh+hQeQd0LZASN8wzMbMkw5NYFFV0zecU5CISEa3W
+ ZbZWHJgbCXYwv0fMJYdVPiqW4bzky/QVm4NdShL+n9ZYxyOfWSnHR7zHBZa03bA=
+X-Google-Smtp-Source: AGHT+IFEIfuFuMp1xHbLpdG8zfFz9rbX1l/B55wAXshfTwRuhblQvD4KXsTwkty8ro1cRvZSpevneA==
+X-Received: by 2002:a05:651c:1504:b0:2ea:b956:db2b with SMTP id
+ 38308e7fff4ca-2eab956e51amr10220441fa.7.1717437215945; 
  Mon, 03 Jun 2024 10:53:35 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4212b85c628sm125954845e9.25.2024.06.03.10.53.30
+ ffacd0b85a97d-35dd04d943esm9298741f8f.47.2024.06.03.10.53.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Jun 2024 10:53:31 -0700 (PDT)
+ Mon, 03 Jun 2024 10:53:34 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 47C145FA01;
+ by draig.lan (Postfix) with ESMTP id 67B055FA03;
  Mon,  3 Jun 2024 18:53:29 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -80,18 +80,18 @@ Cc: Markus Armbruster <armbru@redhat.com>,
  qemu-s390x@nongnu.org, Beraldo Leal <bleal@redhat.com>,
  Jiaxun Yang <jiaxun.yang@flygoat.com>,
  Radoslaw Biernacki <rad@semihalf.com>
-Subject: [PATCH v3 08/12] .gitlab-ci.d/buildtest.yml: Use
- -fno-sanitize=function in the clang-system job
-Date: Mon,  3 Jun 2024 18:53:24 +0100
-Message-Id: <20240603175328.3823123-9-alex.bennee@linaro.org>
+Subject: [PATCH v3 09/12] tests/lcitool: Bump to latest libvirt-ci and update
+ Fedora and Alpine version
+Date: Mon,  3 Jun 2024 18:53:25 +0100
+Message-Id: <20240603175328.3823123-10-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240603175328.3823123-1-alex.bennee@linaro.org>
 References: <20240603175328.3823123-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::234;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lj1-x234.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -116,33 +116,140 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Thomas Huth <thuth@redhat.com>
 
-The latest version of Clang (version 18 from Fedora 40) now reports
-bad function pointer casts as undefined behavior. Unfortunately, we are
-still doing this in quite a lot of places in the QEMU code and some of
-them are not easy to fix. So for the time being, temporarily switch this
-off in the failing clang-system job until all spots in the QEMU sources
-have been tackled.
+Update to the latest version of lcitool. It dropped support for Fedora 38
+and Alpine 3.18, so we have to update these to newer versions here, too.
+
+Python 3.12 dropped the "imp" module which we still need for running
+Avocado. Fortunately Fedora 40 still ships with a work-around package
+that we can use until somebody updates our Avocado to a newer version.
 
 Signed-off-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-Id: <20240601070543.37786-4-thuth@redhat.com>
+Message-Id: <20240601070543.37786-3-thuth@redhat.com>
+[AJB: regen on rebase]
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- .gitlab-ci.d/buildtest.yml | 1 +
- 1 file changed, 1 insertion(+)
+ tests/docker/dockerfiles/alpine.docker             | 4 ++--
+ tests/docker/dockerfiles/fedora-win64-cross.docker | 5 +++--
+ tests/docker/dockerfiles/fedora.docker             | 5 +++--
+ tests/lcitool/libvirt-ci                           | 2 +-
+ tests/lcitool/projects/qemu.yml                    | 1 +
+ tests/lcitool/refresh                              | 6 +++---
+ 6 files changed, 13 insertions(+), 10 deletions(-)
 
-diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index 91c57efded..0eec570310 100644
---- a/.gitlab-ci.d/buildtest.yml
-+++ b/.gitlab-ci.d/buildtest.yml
-@@ -432,6 +432,7 @@ clang-system:
-     IMAGE: fedora
-     CONFIGURE_ARGS: --cc=clang --cxx=clang++
-       --extra-cflags=-fsanitize=undefined --extra-cflags=-fno-sanitize-recover=undefined
-+      --extra-cflags=-fno-sanitize=function
-     TARGETS: alpha-softmmu arm-softmmu m68k-softmmu mips64-softmmu s390x-softmmu
-     MAKE_CHECK_ARGS: check-qtest check-tcg
+diff --git a/tests/docker/dockerfiles/alpine.docker b/tests/docker/dockerfiles/alpine.docker
+index 554464f31e..b079a83fe2 100644
+--- a/tests/docker/dockerfiles/alpine.docker
++++ b/tests/docker/dockerfiles/alpine.docker
+@@ -1,10 +1,10 @@
+ # THIS FILE WAS AUTO-GENERATED
+ #
+-#  $ lcitool dockerfile --layers all alpine-318 qemu
++#  $ lcitool dockerfile --layers all alpine-319 qemu
+ #
+ # https://gitlab.com/libvirt/libvirt-ci
  
+-FROM docker.io/library/alpine:3.18
++FROM docker.io/library/alpine:3.19
+ 
+ RUN apk update && \
+     apk upgrade && \
+diff --git a/tests/docker/dockerfiles/fedora-win64-cross.docker b/tests/docker/dockerfiles/fedora-win64-cross.docker
+index 0f78711876..fef846d5a6 100644
+--- a/tests/docker/dockerfiles/fedora-win64-cross.docker
++++ b/tests/docker/dockerfiles/fedora-win64-cross.docker
+@@ -1,10 +1,10 @@
+ # THIS FILE WAS AUTO-GENERATED
+ #
+-#  $ lcitool dockerfile --layers all --cross-arch mingw64 fedora-38 qemu,qemu-win-installer
++#  $ lcitool dockerfile --layers all --cross-arch mingw64 fedora-40 qemu,qemu-win-installer
+ #
+ # https://gitlab.com/libvirt/libvirt-ci
+ 
+-FROM registry.fedoraproject.org/fedora:38
++FROM registry.fedoraproject.org/fedora:40
+ 
+ RUN dnf install -y nosync && \
+     printf '#!/bin/sh\n\
+@@ -51,6 +51,7 @@ exec "$@"\n' > /usr/bin/nosync && \
+                python3-pip \
+                python3-sphinx \
+                python3-sphinx_rtd_theme \
++               python3-zombie-imp \
+                sed \
+                socat \
+                sparse \
+diff --git a/tests/docker/dockerfiles/fedora.docker b/tests/docker/dockerfiles/fedora.docker
+index 098c894d10..44f239c088 100644
+--- a/tests/docker/dockerfiles/fedora.docker
++++ b/tests/docker/dockerfiles/fedora.docker
+@@ -1,10 +1,10 @@
+ # THIS FILE WAS AUTO-GENERATED
+ #
+-#  $ lcitool dockerfile --layers all fedora-38 qemu
++#  $ lcitool dockerfile --layers all fedora-40 qemu
+ #
+ # https://gitlab.com/libvirt/libvirt-ci
+ 
+-FROM registry.fedoraproject.org/fedora:38
++FROM registry.fedoraproject.org/fedora:40
+ 
+ RUN dnf install -y nosync && \
+     printf '#!/bin/sh\n\
+@@ -110,6 +110,7 @@ exec "$@"\n' > /usr/bin/nosync && \
+                python3-pip \
+                python3-sphinx \
+                python3-sphinx_rtd_theme \
++               python3-zombie-imp \
+                rdma-core-devel \
+                sed \
+                snappy-devel \
+diff --git a/tests/lcitool/libvirt-ci b/tests/lcitool/libvirt-ci
+index cec6703971..0e9490cebc 160000
+--- a/tests/lcitool/libvirt-ci
++++ b/tests/lcitool/libvirt-ci
+@@ -1 +1 @@
+-Subproject commit cec67039719becbfbab866f9c23574f389cf9559
++Subproject commit 0e9490cebc726ef772b6c9e27dac32e7ae99f9b2
+diff --git a/tests/lcitool/projects/qemu.yml b/tests/lcitool/projects/qemu.yml
+index 7511ec7ccb..070d7f4706 100644
+--- a/tests/lcitool/projects/qemu.yml
++++ b/tests/lcitool/projects/qemu.yml
+@@ -89,6 +89,7 @@ packages:
+  - pkg-config
+  - pulseaudio
+  - python3
++ - python3-imp
+  - python3-numpy
+  - python3-opencv
+  - python3-pillow
+diff --git a/tests/lcitool/refresh b/tests/lcitool/refresh
+index 789acefb75..9d8e9c6a4a 100755
+--- a/tests/lcitool/refresh
++++ b/tests/lcitool/refresh
+@@ -124,11 +124,11 @@ try:
+     #
+     # Standard native builds
+     #
+-    generate_dockerfile("alpine", "alpine-318")
++    generate_dockerfile("alpine", "alpine-319")
+     generate_dockerfile("centos9", "centos-stream-9")
+     generate_dockerfile("debian", "debian-12",
+                         trailer="".join(debian12_extras))
+-    generate_dockerfile("fedora", "fedora-38")
++    generate_dockerfile("fedora", "fedora-40")
+     generate_dockerfile("opensuse-leap", "opensuse-leap-15")
+     generate_dockerfile("ubuntu2204", "ubuntu-2204")
+ 
+@@ -191,7 +191,7 @@ try:
+                         trailer=cross_build("s390x-linux-gnu-",
+                                             "s390x-softmmu,s390x-linux-user"))
+ 
+-    generate_dockerfile("fedora-win64-cross", "fedora-38",
++    generate_dockerfile("fedora-win64-cross", "fedora-40",
+                         project='qemu,qemu-win-installer',
+                         cross="mingw64",
+                         trailer=cross_build("x86_64-w64-mingw32-",
 -- 
 2.39.2
 
