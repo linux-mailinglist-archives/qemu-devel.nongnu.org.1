@@ -2,71 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9379C8D86EE
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jun 2024 18:11:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1A718D86F2
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jun 2024 18:11:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEAFo-00021E-VI; Mon, 03 Jun 2024 12:09:48 -0400
+	id 1sEAFo-00020j-BD; Mon, 03 Jun 2024 12:09:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sEAFh-000206-JJ
+ id 1sEAFh-000205-DG
  for qemu-devel@nongnu.org; Mon, 03 Jun 2024 12:09:41 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sEAFd-0000Yz-Kq
+ id 1sEAFe-0000Z5-Qy
  for qemu-devel@nongnu.org; Mon, 03 Jun 2024 12:09:40 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-42108856c33so26756105e9.1
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-42134bb9735so21458805e9.1
  for <qemu-devel@nongnu.org>; Mon, 03 Jun 2024 09:09:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1717430975; x=1718035775; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=HODORKgU1EFXIaunqKu4Lfl93imSbojPrOim6zkduVg=;
- b=RvON31FF28fp+aOh+lPcBLs3URwdkmfj9/kuA6us7kY8PHlp/Q9MZc9gtuCYwUbfyz
- XRfzBfK0zjgFxZoZGuhuchnzY6nDFNeKxbZfmvwqI4eg08PYwAuFmu6k/NQE4TX8ILfy
- IAFTaxz9jx+hKrvqvceh1uEOESPKvTXCXIs1iAIQgmYdY0VVrEBdTcCDHp1EJdi7vJBP
- kzIdPfj50I5m7uXZc1jpfz8DDhy2o1SgrM197z86o06+4iMNTPx1w7m5tTNq96Oh/1lz
- 5fvK/8GA71JpPW4k5/ayAxGSeLrgzPXZoWceFo3lAw4stvzsf9qBvO95HAOBd33p0bLm
- 98GQ==
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=dAmag+cWpcLwhgu5cuQHENQ1h6AJ+A+dNV70xL+L7j4=;
+ b=iVIIDOHVmhZt/q2pxqYjt5evBNfqYdAmv/gY5fDEjx/mZZc1SNs4IdsZR8f7zWCHh3
+ gRAcZ1MtkdbCInNw7dNTnUfkTgZPT+ZSGX/zb+Ih16WsAkmGvNSun6C7GMH9ZOWR8jyj
+ L+rpTmTF+Z8i5eVqzDQb32um27MxTCnRhJ4XVES22Ns+YSqKtzddc+OrpQcJ9g4fPFpJ
+ Cs/FeB3wwF0KkWHianmsi3SmCHzVJYgtF99JgDO/HR6AbJqknVvrEHE01P+arvSzvwNV
+ IubM0GbD/+ewsqh17uybRkoDxyHjJgtMm8BlxLALOb/rz5tOA4w2L/JKTyCw5N20k1Bf
+ tGfA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1717430975; x=1718035775;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=HODORKgU1EFXIaunqKu4Lfl93imSbojPrOim6zkduVg=;
- b=DDqzcMaubSZwNHavL3kKBZSnnXsLcJ7WdTLYA0Z3K1AHjEKbfoQoLVJAi9yPgCKYjd
- K6oKy+tmRmI+mdM+LvrO85CGJ141Z6SQn5CAmXzDbmZ7evOlUxaDACAbJfCNwGTeswsU
- oWK0ww4cAWzSHPytH25VPSQRDcqOfxd7lBvYStx7KUHA03J7MGNoEXVKaFDC/Ss/pDsz
- Rh+fZ+ihXhNaw6VdHHOn7yHuU7Li347hCfICn3NLjUpT1I9ZY9voDO0D7tCIoL2xCXmB
- iNCzFEuZ5x3WJXismhZ+eShrSwLeEQa9Ge9m2ZdDd55KYJ4czPWXEo1wjFtIBiUHP5ww
- 2WhA==
-X-Gm-Message-State: AOJu0Yykfqgo/O8rqz6yuB/jqhQ5+3pt8jdRcKMcbhi1VnqgzVpERJhP
- vB1uj/IuUL4TgMYELUS9aj87Gkqaa8h/y0Bg9ydgfmpNUcWVF3dKViDrmwP0/b2hEBGN+tbvUgv
- L
-X-Google-Smtp-Source: AGHT+IH1BPbR32cBOiPggxnZeD6z90NU0b429j3zoFxAR2hrKia+FxyYZbv9cHyKUyTOB7EqC3NAzQ==
-X-Received: by 2002:a5d:5310:0:b0:34d:8d11:f8c0 with SMTP id
- ffacd0b85a97d-35e7c55a0e8mr112728f8f.18.1717430974915; 
- Mon, 03 Jun 2024 09:09:34 -0700 (PDT)
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=dAmag+cWpcLwhgu5cuQHENQ1h6AJ+A+dNV70xL+L7j4=;
+ b=iNxOlAEFnl0vAUBfOvRarRV9PJ57NObn7Ze6Vl++i1PxO7ZL61d9DQfcpKQ9xA3mtv
+ dCXjp/h65ZG/6mVEyqbG/uP/iEUKwJSjw7Y6OjseDZxJLxSPKM8Np8Eh8J95qBKv4+Ed
+ wjkjaYLUN0mPjFTOwH35Sqolsmtrgrcb7jA4EmHmD5YeGu322vfEcAuNILhV05ey8Onr
+ OVJnNHkw+Uwg1LJ8Jds96eCiI0LPv3vYXNoMQG3MHIWrLfXDkl2uYoDDJKdPwOY39ABL
+ sfQox2lwn9OfIu9Fu1xC1P0oR0kFnikxqiHLcaSKu0HhhfL1eIS/sfeIyLGnQhYVTLGr
+ H2SQ==
+X-Gm-Message-State: AOJu0Yw/1wrBdSunSlsPR+5YT3Tfp3sX/fR7qYilqbiIQGTCuIg9BGhS
+ 0z7hDC9hndN9q2eds33NpYW7wS5amR0BYNWNi7lZEc8+EounKEnSp/o5BnFYGgdKMrxxkCp6WC7
+ U
+X-Google-Smtp-Source: AGHT+IEo9I+QgwyFPpE8UA7gzFvqqxv3KT56TJX4vzSME6jkm8uH/eng2IRzAkRjJofkLBj1UgtwmA==
+X-Received: by 2002:a05:600c:4e8b:b0:421:3a41:5428 with SMTP id
+ 5b1f17b1804b1-4213a4157bcmr28421855e9.41.1717430975395; 
+ Mon, 03 Jun 2024 09:09:35 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-35dd0649fb5sm8975858f8f.94.2024.06.03.09.09.34
+ ffacd0b85a97d-35dd0649fb5sm8975858f8f.94.2024.06.03.09.09.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Jun 2024 09:09:34 -0700 (PDT)
+ Mon, 03 Jun 2024 09:09:35 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH 0/3] cpu_exec_halt: make method mandatory
-Date: Mon,  3 Jun 2024 17:09:30 +0100
-Message-Id: <20240603160933.1141717-1-peter.maydell@linaro.org>
+Subject: [PATCH 1/3] target/arm: Set arm_v7m_tcg_ops cpu_exec_halt to
+ arm_cpu_exec_halt()
+Date: Mon,  3 Jun 2024 17:09:31 +0100
+Message-Id: <20240603160933.1141717-2-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240603160933.1141717-1-peter.maydell@linaro.org>
+References: <20240603160933.1141717-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,57 +93,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patchset makes the TCGCPUOps::cpu_exec_halt method
-mandatory, which is a cleanup that RTH asked for when we
-were discussing my FEAT_WFxT series.
+In commit a96edb687e76 we set the cpu_exec_halt field of the
+TCGCPUOps arm_tcg_ops to arm_cpu_exec_halt(), but we left the
+arm_v7m_tcg_ops struct unchanged.  That isn't wrong, because for
+M-profile FEAT_WFxT doesn't exist and the default handling for "no
+cpu_exec_halt method" is correct, but it's perhaps a little
+confusing.  We would also like to make setting the cpu_exec_halt
+method mandatory.
 
-I'm not 100% convinced about this, because if we ever find we
-need to change the cpu_exec_halt method so it's no longer the
-exact same function signature as the has_work method then
-we'll have to undo this change. But I don't feel very strongly
-about it, and it does mean we can skip a runtime check for
-whether the method exists.
+Initialize arm_v7m_tcg_ops cpu_exec_halt to the same function we use
+for A-profile.  (On M-profile we never set up the wfxt timer so there
+is no change in behaviour here.)
 
-We probably want patch 1 anyway; I didn't notice at the
-time that M-profile has its own TCGCPUOps, and it's less
-confusing if A and M both use the same arm_cpu_exec_halt().
-(This isn't a bug in the FEAT_WFxT commit, though -- the
-behaviour is the same.)
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+---
+ target/arm/internals.h   | 3 +++
+ target/arm/cpu.c         | 2 +-
+ target/arm/tcg/cpu-v7m.c | 1 +
+ 3 files changed, 5 insertions(+), 1 deletion(-)
 
-thanks
--- PMM
-
-Peter Maydell (3):
-  target/arm: Set arm_v7m_tcg_ops cpu_exec_halt to arm_cpu_exec_halt()
-  target: Set TCGCPUOps::cpu_exec_halt to target's has_work
-    implementation
-  accel/tcg: Make TCGCPUOps::cpu_exec_halt mandatory
-
- include/hw/core/tcg-cpu-ops.h | 9 ++++++---
- target/arm/internals.h        | 3 +++
- target/riscv/internals.h      | 3 +++
- accel/tcg/cpu-exec.c          | 7 +------
- target/alpha/cpu.c            | 1 +
- target/arm/cpu.c              | 2 +-
- target/arm/tcg/cpu-v7m.c      | 1 +
- target/avr/cpu.c              | 1 +
- target/cris/cpu.c             | 2 ++
- target/hppa/cpu.c             | 1 +
- target/loongarch/cpu.c        | 1 +
- target/m68k/cpu.c             | 1 +
- target/microblaze/cpu.c       | 1 +
- target/mips/cpu.c             | 1 +
- target/openrisc/cpu.c         | 1 +
- target/ppc/cpu_init.c         | 2 ++
- target/riscv/cpu.c            | 2 +-
- target/riscv/tcg/tcg-cpu.c    | 2 ++
- target/rx/cpu.c               | 1 +
- target/s390x/cpu.c            | 1 +
- target/sh4/cpu.c              | 1 +
- target/sparc/cpu.c            | 1 +
- target/xtensa/cpu.c           | 1 +
- 23 files changed, 35 insertions(+), 11 deletions(-)
-
+diff --git a/target/arm/internals.h b/target/arm/internals.h
+index 11b5da2562f..e45ccd983e1 100644
+--- a/target/arm/internals.h
++++ b/target/arm/internals.h
+@@ -364,6 +364,9 @@ void arm_restore_state_to_opc(CPUState *cs,
+ 
+ #ifdef CONFIG_TCG
+ void arm_cpu_synchronize_from_tb(CPUState *cs, const TranslationBlock *tb);
++
++/* Our implementation of TCGCPUOps::cpu_exec_halt */
++bool arm_cpu_exec_halt(CPUState *cs);
+ #endif /* CONFIG_TCG */
+ 
+ typedef enum ARMFPRounding {
+diff --git a/target/arm/cpu.c b/target/arm/cpu.c
+index 35fa281f1b9..948e904bd8a 100644
+--- a/target/arm/cpu.c
++++ b/target/arm/cpu.c
+@@ -1133,7 +1133,7 @@ static bool arm_cpu_virtio_is_big_endian(CPUState *cs)
+ }
+ 
+ #ifdef CONFIG_TCG
+-static bool arm_cpu_exec_halt(CPUState *cs)
++bool arm_cpu_exec_halt(CPUState *cs)
+ {
+     bool leave_halt = cpu_has_work(cs);
+ 
+diff --git a/target/arm/tcg/cpu-v7m.c b/target/arm/tcg/cpu-v7m.c
+index c059c681e94..5496f14dc16 100644
+--- a/target/arm/tcg/cpu-v7m.c
++++ b/target/arm/tcg/cpu-v7m.c
+@@ -244,6 +244,7 @@ static const TCGCPUOps arm_v7m_tcg_ops = {
+ #else
+     .tlb_fill = arm_cpu_tlb_fill,
+     .cpu_exec_interrupt = arm_v7m_cpu_exec_interrupt,
++    .cpu_exec_halt = arm_cpu_exec_halt,
+     .do_interrupt = arm_v7m_cpu_do_interrupt,
+     .do_transaction_failed = arm_cpu_do_transaction_failed,
+     .do_unaligned_access = arm_cpu_do_unaligned_access,
 -- 
 2.34.1
 
