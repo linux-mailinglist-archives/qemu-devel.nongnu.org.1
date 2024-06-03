@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 515488D8104
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jun 2024 13:22:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE6088D80F2
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jun 2024 13:21:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sE5hH-0005BA-HH; Mon, 03 Jun 2024 07:17:51 -0400
+	id 1sE5hV-0006Gm-E7; Mon, 03 Jun 2024 07:18:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sE5hB-0004km-HD; Mon, 03 Jun 2024 07:17:47 -0400
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ id 1sE5hD-0004kv-2U; Mon, 03 Jun 2024 07:17:47 -0400
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sE5h4-0006IB-2I; Mon, 03 Jun 2024 07:17:45 -0400
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-1f6134df05fso38297945ad.1; 
- Mon, 03 Jun 2024 04:17:36 -0700 (PDT)
+ id 1sE5h8-0006LV-N2; Mon, 03 Jun 2024 07:17:45 -0400
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-1f4c7b022f8so38055835ad.1; 
+ Mon, 03 Jun 2024 04:17:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1717413455; x=1718018255; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1717413459; x=1718018259; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Rwx0SPD4bR7zPO/4n31t9fpXIatcICjktSL4UeCf/R8=;
- b=H/40aWslX9Eu/Nv67P1tQvFFfG3s/KsXZuvpMA9DlcqLQxP9X5JHFRwEjF537fq5JR
- Pm2ARSgMVaIf1y4bDYERfp5TmNQoTMzQPVjPnVXfQNvCW11Q6KkbPZxyNm5LKSFh9Ajq
- DICDAZHffFDw9Xmo8RlgpHV2qIhQ0lsfbf9HMjvPHG8OLMwyEje+OZrqLyO0giqkDCTL
- 91pyZsCuiO13xdwAIS8e1lrqJc+F9ABUcrXj9iJvYQoBimooohpfa7XW5RxYSKePzVbw
- oEod74REZ6Sz1iayyn5nrgggtiZomlGU9Y4AvFlKOwwOvvM2OYm8aFhBL47scIMycmDt
- /vqQ==
+ bh=5qcQTiAdEv5FwQ27d9xmN3ZTsEtqw8BucwxaZ316zkY=;
+ b=i9EkhQFh+rK3wsLrxevdTJY2z7KLv9m2k+Gd3VrwDykomCP7jOtXMQ0+1PZhQGzjst
+ zB7L9Izyum9FPCKUAqsgf5iNKgOgC7Foge0qJec6YHNR6/TXrIXKI2mGsJhUepqBxhhN
+ DYRY3IF15sTg+G4ABdpXH3VolcUx+I2KkCnkrxn7AK7rK/ouUqomtF3UMj0cqQi3NKsD
+ WNW3Z07GBavXDkMTff8VynklUTtk/kwYGdhyM9pwpgd7R7DLGXdmxnjQwiwDqgCC/9W3
+ Ysn600JvJ0PHrmbpCxvzcqgdmwMC88f6SSg26nJzP4CySPY5kGQJ9bgSLhVJYOgORngd
+ iA3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717413455; x=1718018255;
+ d=1e100.net; s=20230601; t=1717413459; x=1718018259;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Rwx0SPD4bR7zPO/4n31t9fpXIatcICjktSL4UeCf/R8=;
- b=X84OdSJbHrkUaALalO9eNM5kHaoxrG3d6LAmyFKRSC5tBI1T/Kpll/2f5ppOeAxXRE
- 1HX5RMAKpk7DN7USQT9/jRB3uT11LwIA17/yr/e+YqWNq/d+lXbrYGf46T8ZSYpjD6XE
- +Et+xku6KkI1tkmKOUE2tzyIgZmMqZ/P+QJKk0Vs2pwl4a0N7GnYnepWDJjeHMXiZse4
- 4eLI8VLsMGGjRfCHrtBS7KtQ+xMAwLWcmPMHbVl8YRlk7Fi2KpCN61dXpsyhKwrwL7/3
- g0+v8EvAnuL1US3DT83l0AuoEI2o8ty47BH8GLDGX0WgE97YymBavEiQI/0w/xWFYsEK
- /sSg==
+ bh=5qcQTiAdEv5FwQ27d9xmN3ZTsEtqw8BucwxaZ316zkY=;
+ b=DUuISO9WLAaJ/sIK/3/n28vd9ZH0j/8lPTE3VTI/qGD7d1YyO93hEaXqTI2iR9KG7j
+ 52BlxGlIkPLRNiHn8MyflxxJ5Ol9LOfXXZ4nhQp52VOV6ZOHRHrO5jrMb/P2Z/BNJnHS
+ 1wajh2WlYIcPBrVFWgjV3K8fATrsoVfBlJTbk9aCIhkG4dlfaHC545z1qsllmdZc+WBx
+ U4QgMlQDkHaMgXGKpIw04iX4Y8vUHfH2jOhWG4lhbIQFrmaHyhfDacABx0ldGswhtvvG
+ 0GCfiBkRxIr+Wt2nb/rX98pdnbw0Vsvry0+vXvkNe9RAIx8+Nbil/IoTCnE8+FlqTC8C
+ FDiw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVh9lXOX7KbWYOZkdQXJnrx4Vz4l7yeRY3Onf6+mw3+oDoohTPIe/l20/LCKIRPAzNmC3lV8lEOtlC3axBAcKewj6H2ThpV
-X-Gm-Message-State: AOJu0YzgWoPo1R3LUcMxiSnTnuFB7YH0Npztkbn2joJISP1dRqsgqgE+
- e2h7MAabNNK33EVu5N5Mdd0cHaNG5lV2x2+IyVNjPwPYNeJ1P530DaKycg==
-X-Google-Smtp-Source: AGHT+IG5UvPfbBB0v2XrQ3gefMLp1whTssZ+CYnpJJKKoRrcvhbjWsuWTe53y6bjWbt5ByzLVbCNhA==
-X-Received: by 2002:a17:902:d548:b0:1f4:7a5c:65bf with SMTP id
- d9443c01a7336-1f6370320dbmr109693475ad.38.1717413455174; 
- Mon, 03 Jun 2024 04:17:35 -0700 (PDT)
+ AJvYcCVAzYxcyb0JLbxBriElnPZOITcgMxkijdhQIqlLpHd9C3WwVJ5L9v+EYEkabYK4xAajvMfVIPa2q1E2jzf+zh7AWW48exBU
+X-Gm-Message-State: AOJu0YzaXRNGuGBl4nTtUH5P96NYDTg8PTF9t2Lum1NHiJFun7JXUtuq
+ A3iqSqX9BjyF6N/OIFf4/T+Hqq/1pEGoBltM3L+FCQ5uRbER/zL/T6+xfA==
+X-Google-Smtp-Source: AGHT+IF9Cdee7jeshmcjHDKjUQVxnWbIgFwGJXO2McPQ+VxIMUzLcFKvtw7m5/rTlLVQXnegNT2onQ==
+X-Received: by 2002:a17:902:d507:b0:1f4:5b00:401 with SMTP id
+ d9443c01a7336-1f6370a0bb7mr97974495ad.54.1717413458677; 
+ Mon, 03 Jun 2024 04:17:38 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1f6323e18c7sm62375435ad.177.2024.06.03.04.17.32
+ d9443c01a7336-1f6323e18c7sm62375435ad.177.2024.06.03.04.17.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Jun 2024 04:17:34 -0700 (PDT)
+ Mon, 03 Jun 2024 04:17:38 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Huang Tao <eric.huang@linux.alibaba.com>,
- Richard Henderson <richard.henderson@linaro.org>,
+Cc: alistair23@gmail.com, Yangyu Chen <cyy@cyyself.name>,
  LIU Zhiwei <zhiwei_liu@linux.alibaba.com>,
- qemu-stable <qemu-stable@nongnu.org>,
- Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL v2 13/27] target/riscv: Fix the element agnostic function
- problem
-Date: Mon,  3 Jun 2024 21:16:29 +1000
-Message-ID: <20240603111643.258712-14-alistair.francis@wdc.com>
+ Alistair Francis <alistair.francis@wdc.com>,
+ Max Chou <max.chou@sifive.com>, qemu-stable <qemu-stable@nongnu.org>
+Subject: [PULL v2 14/27] target/riscv/cpu.c: fix Zvkb extension config
+Date: Mon,  3 Jun 2024 21:16:30 +1000
+Message-ID: <20240603111643.258712-15-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240603111643.258712-1-alistair.francis@wdc.com>
 References: <20240603111643.258712-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x62d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x62a.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -100,58 +99,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Huang Tao <eric.huang@linux.alibaba.com>
+From: Yangyu Chen <cyy@cyyself.name>
 
-In RVV and vcrypto instructions, the masked and tail elements are set to 1s
-using vext_set_elems_1s function if the vma/vta bit is set. It is the element
-agnostic policy.
+This code has a typo that writes zvkb to zvkg, causing users can't
+enable zvkb through the config. This patch gets this fixed.
 
-However, this function can't deal the big endian situation. This patch fixes
-the problem by adding handling of such case.
-
-Signed-off-by: Huang Tao <eric.huang@linux.alibaba.com>
-Suggested-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Yangyu Chen <cyy@cyyself.name>
+Fixes: ea61ef7097d0 ("target/riscv: Move vector crypto extensions to riscv_cpu_extensions")
 Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Reviewed-by: Max Chou <max.chou@sifive.com>
+Reviewed-by:  Weiwei Li <liwei1518@gmail.com>
+Message-ID: <tencent_7E34EEF0F90B9A68BF38BEE09EC6D4877C0A@qq.com>
 Cc: qemu-stable <qemu-stable@nongnu.org>
-Message-ID: <20240325021654.6594-1-eric.huang@linux.alibaba.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/vector_internals.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ target/riscv/cpu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/riscv/vector_internals.c b/target/riscv/vector_internals.c
-index 996c21eb31..05b2d01e58 100644
---- a/target/riscv/vector_internals.c
-+++ b/target/riscv/vector_internals.c
-@@ -30,6 +30,28 @@ void vext_set_elems_1s(void *base, uint32_t is_agnostic, uint32_t cnt,
-     if (tot - cnt == 0) {
-         return ;
-     }
-+
-+    if (HOST_BIG_ENDIAN) {
-+        /*
-+         * Deal the situation when the elements are insdie
-+         * only one uint64 block including setting the
-+         * masked-off element.
-+         */
-+        if (((tot - 1) ^ cnt) < 8) {
-+            memset(base + H1(tot - 1), -1, tot - cnt);
-+            return;
-+        }
-+        /*
-+         * Otherwise, at least cross two uint64_t blocks.
-+         * Set first unaligned block.
-+         */
-+        if (cnt % 8 != 0) {
-+            uint32_t j = ROUND_UP(cnt, 8);
-+            memset(base + H1(j - 1), -1, j - cnt);
-+            cnt = j;
-+        }
-+        /* Set other 64bit aligend blocks */
-+    }
-     memset(base + cnt, -1, tot - cnt);
- }
- 
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index a74f0eb29c..0d6fb9b4ba 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -1539,7 +1539,7 @@ const RISCVCPUMultiExtConfig riscv_cpu_extensions[] = {
+     /* Vector cryptography extensions */
+     MULTI_EXT_CFG_BOOL("zvbb", ext_zvbb, false),
+     MULTI_EXT_CFG_BOOL("zvbc", ext_zvbc, false),
+-    MULTI_EXT_CFG_BOOL("zvkb", ext_zvkg, false),
++    MULTI_EXT_CFG_BOOL("zvkb", ext_zvkb, false),
+     MULTI_EXT_CFG_BOOL("zvkg", ext_zvkg, false),
+     MULTI_EXT_CFG_BOOL("zvkned", ext_zvkned, false),
+     MULTI_EXT_CFG_BOOL("zvknha", ext_zvknha, false),
 -- 
 2.45.1
 
