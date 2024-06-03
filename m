@@ -2,87 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AB438D80EA
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jun 2024 13:20:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 515488D8104
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jun 2024 13:22:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sE5hG-0004px-Ct; Mon, 03 Jun 2024 07:17:50 -0400
+	id 1sE5hH-0005BA-HH; Mon, 03 Jun 2024 07:17:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sE5h7-0004YH-H5
- for qemu-devel@nongnu.org; Mon, 03 Jun 2024 07:17:41 -0400
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ id 1sE5hB-0004km-HD; Mon, 03 Jun 2024 07:17:47 -0400
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sE5gz-0006Fk-8x
- for qemu-devel@nongnu.org; Mon, 03 Jun 2024 07:17:41 -0400
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-1f62217f806so35449695ad.2
- for <qemu-devel@nongnu.org>; Mon, 03 Jun 2024 04:17:32 -0700 (PDT)
+ id 1sE5h4-0006IB-2I; Mon, 03 Jun 2024 07:17:45 -0400
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-1f6134df05fso38297945ad.1; 
+ Mon, 03 Jun 2024 04:17:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1717413452; x=1718018252; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1717413455; x=1718018255; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=SPVDknq2+BTuhMMVK1D5LD3yvwRgzrMP0W6CSFXWWAk=;
- b=WqXr1P0zfAmXf/LlZhR8LhtpJHsLpj53jf8hdgdeC2JMlWlcchUgJ29xRDa75piqkN
- /tCFn+QaffL5Dln+ar5zXBei2tFFFCnxQ9d3sNi1U6ZAY6T41NNicscjY3n/XAS96iGZ
- qOmTd7Lqi5RYrJQFTsH6d1ed3xLchmuzBIkle5HmSYXOOUknPy8H2LyP2A4sMCfH1gcd
- 60JdOxrydJz5MLr+56j1Ae+1R6fdexkykPN4owIv68wHpfO+TbkvPegHYfn3tCG75elm
- 8sejGFyoyqVjETSeiA8LYHBGZPXQXDKH1CWE40SC5XhHUOS/yXoeNByIAeBgLLk8GVPs
- klmQ==
+ bh=Rwx0SPD4bR7zPO/4n31t9fpXIatcICjktSL4UeCf/R8=;
+ b=H/40aWslX9Eu/Nv67P1tQvFFfG3s/KsXZuvpMA9DlcqLQxP9X5JHFRwEjF537fq5JR
+ Pm2ARSgMVaIf1y4bDYERfp5TmNQoTMzQPVjPnVXfQNvCW11Q6KkbPZxyNm5LKSFh9Ajq
+ DICDAZHffFDw9Xmo8RlgpHV2qIhQ0lsfbf9HMjvPHG8OLMwyEje+OZrqLyO0giqkDCTL
+ 91pyZsCuiO13xdwAIS8e1lrqJc+F9ABUcrXj9iJvYQoBimooohpfa7XW5RxYSKePzVbw
+ oEod74REZ6Sz1iayyn5nrgggtiZomlGU9Y4AvFlKOwwOvvM2OYm8aFhBL47scIMycmDt
+ /vqQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717413452; x=1718018252;
+ d=1e100.net; s=20230601; t=1717413455; x=1718018255;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=SPVDknq2+BTuhMMVK1D5LD3yvwRgzrMP0W6CSFXWWAk=;
- b=Tu/f4CHp/XcVvWrtqwz6pe8q2qyVGKcnz4foebpk3hlXzmSr8KVJGscGg6BXRTsHeb
- 5h0Xa8PpY66fltPtsNTji6AkmBTnL8gt6U2hMtx3ORtO1QlC3c4tswiekMAHpgdWRegq
- dI2sSI2dDMVGhpq1o9iwMsgVaEuoqP39HYunwp2YyqXVB6cJAr5weVyBNlgyLCRrcWJt
- p2+T1XG9o/8mMOrUcp32fsXjd3uPCHK1gmFYG5MRYWoAPvPr3zLC8Lf2useexAOyVQ0L
- jKGRPXjQc3s697EEJsW9vY6705ihHi5sFg524KuJR8fM3n2XwrZmxcPzCgq0Br5kXT0S
- khiQ==
-X-Gm-Message-State: AOJu0YzLhBXUqpNTJgN2PHOM2NVOHMQ3hK7iKuSXIFQSqMrQeMoR6B07
- GEAwlnbskPxD/oQC8DmJVpSjxHzAZF8XwbD2TLyD8opQ5tkmOiy6umBN9A==
-X-Google-Smtp-Source: AGHT+IEDZ/jq8I4QpITLMalpleF8gtBHxBeTLH8NVRIKf9KkSDavmPhbot2Eh3/NLRUL6Mfxz2O1IQ==
-X-Received: by 2002:a17:902:e5cb:b0:1f6:6cd5:d003 with SMTP id
- d9443c01a7336-1f66cd5d823mr48930605ad.37.1717413451700; 
- Mon, 03 Jun 2024 04:17:31 -0700 (PDT)
+ bh=Rwx0SPD4bR7zPO/4n31t9fpXIatcICjktSL4UeCf/R8=;
+ b=X84OdSJbHrkUaALalO9eNM5kHaoxrG3d6LAmyFKRSC5tBI1T/Kpll/2f5ppOeAxXRE
+ 1HX5RMAKpk7DN7USQT9/jRB3uT11LwIA17/yr/e+YqWNq/d+lXbrYGf46T8ZSYpjD6XE
+ +Et+xku6KkI1tkmKOUE2tzyIgZmMqZ/P+QJKk0Vs2pwl4a0N7GnYnepWDJjeHMXiZse4
+ 4eLI8VLsMGGjRfCHrtBS7KtQ+xMAwLWcmPMHbVl8YRlk7Fi2KpCN61dXpsyhKwrwL7/3
+ g0+v8EvAnuL1US3DT83l0AuoEI2o8ty47BH8GLDGX0WgE97YymBavEiQI/0w/xWFYsEK
+ /sSg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVh9lXOX7KbWYOZkdQXJnrx4Vz4l7yeRY3Onf6+mw3+oDoohTPIe/l20/LCKIRPAzNmC3lV8lEOtlC3axBAcKewj6H2ThpV
+X-Gm-Message-State: AOJu0YzgWoPo1R3LUcMxiSnTnuFB7YH0Npztkbn2joJISP1dRqsgqgE+
+ e2h7MAabNNK33EVu5N5Mdd0cHaNG5lV2x2+IyVNjPwPYNeJ1P530DaKycg==
+X-Google-Smtp-Source: AGHT+IG5UvPfbBB0v2XrQ3gefMLp1whTssZ+CYnpJJKKoRrcvhbjWsuWTe53y6bjWbt5ByzLVbCNhA==
+X-Received: by 2002:a17:902:d548:b0:1f4:7a5c:65bf with SMTP id
+ d9443c01a7336-1f6370320dbmr109693475ad.38.1717413455174; 
+ Mon, 03 Jun 2024 04:17:35 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1f6323e18c7sm62375435ad.177.2024.06.03.04.17.28
+ d9443c01a7336-1f6323e18c7sm62375435ad.177.2024.06.03.04.17.32
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Jun 2024 04:17:31 -0700 (PDT)
+ Mon, 03 Jun 2024 04:17:34 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Jason Chien <jason.chien@sifive.com>,
- Frank Chang <frank.chang@sifive.com>, Max Chou <max.chou@sifive.com>,
+Cc: alistair23@gmail.com, Huang Tao <eric.huang@linux.alibaba.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ LIU Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ qemu-stable <qemu-stable@nongnu.org>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL v2 12/27] target/riscv: Relax vector register check in RISCV
- gdbstub
-Date: Mon,  3 Jun 2024 21:16:28 +1000
-Message-ID: <20240603111643.258712-13-alistair.francis@wdc.com>
+Subject: [PULL v2 13/27] target/riscv: Fix the element agnostic function
+ problem
+Date: Mon,  3 Jun 2024 21:16:29 +1000
+Message-ID: <20240603111643.258712-14-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240603111643.258712-1-alistair.francis@wdc.com>
 References: <20240603111643.258712-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x62f.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x62d.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,35 +100,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jason Chien <jason.chien@sifive.com>
+From: Huang Tao <eric.huang@linux.alibaba.com>
 
-In current implementation, the gdbstub allows reading vector registers
-only if V extension is supported. However, all vector extensions and
-vector crypto extensions have the vector registers and they all depend
-on Zve32x. The gdbstub should check for Zve32x instead.
+In RVV and vcrypto instructions, the masked and tail elements are set to 1s
+using vext_set_elems_1s function if the vma/vta bit is set. It is the element
+agnostic policy.
 
-Signed-off-by: Jason Chien <jason.chien@sifive.com>
-Reviewed-by: Frank Chang <frank.chang@sifive.com>
-Reviewed-by: Max Chou <max.chou@sifive.com>
-Message-ID: <20240328022343.6871-4-jason.chien@sifive.com>
+However, this function can't deal the big endian situation. This patch fixes
+the problem by adding handling of such case.
+
+Signed-off-by: Huang Tao <eric.huang@linux.alibaba.com>
+Suggested-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+Cc: qemu-stable <qemu-stable@nongnu.org>
+Message-ID: <20240325021654.6594-1-eric.huang@linux.alibaba.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/gdbstub.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/riscv/vector_internals.c | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
-diff --git a/target/riscv/gdbstub.c b/target/riscv/gdbstub.c
-index be7a02cd90..d0cc5762c2 100644
---- a/target/riscv/gdbstub.c
-+++ b/target/riscv/gdbstub.c
-@@ -338,7 +338,7 @@ void riscv_cpu_register_gdb_regs_for_features(CPUState *cs)
-                                  gdb_find_static_feature("riscv-32bit-fpu.xml"),
-                                  0);
+diff --git a/target/riscv/vector_internals.c b/target/riscv/vector_internals.c
+index 996c21eb31..05b2d01e58 100644
+--- a/target/riscv/vector_internals.c
++++ b/target/riscv/vector_internals.c
+@@ -30,6 +30,28 @@ void vext_set_elems_1s(void *base, uint32_t is_agnostic, uint32_t cnt,
+     if (tot - cnt == 0) {
+         return ;
      }
--    if (env->misa_ext & RVV) {
-+    if (cpu->cfg.ext_zve32x) {
-         gdb_register_coprocessor(cs, riscv_gdb_get_vector,
-                                  riscv_gdb_set_vector,
-                                  ricsv_gen_dynamic_vector_feature(cs, cs->gdb_num_regs),
++
++    if (HOST_BIG_ENDIAN) {
++        /*
++         * Deal the situation when the elements are insdie
++         * only one uint64 block including setting the
++         * masked-off element.
++         */
++        if (((tot - 1) ^ cnt) < 8) {
++            memset(base + H1(tot - 1), -1, tot - cnt);
++            return;
++        }
++        /*
++         * Otherwise, at least cross two uint64_t blocks.
++         * Set first unaligned block.
++         */
++        if (cnt % 8 != 0) {
++            uint32_t j = ROUND_UP(cnt, 8);
++            memset(base + H1(j - 1), -1, j - cnt);
++            cnt = j;
++        }
++        /* Set other 64bit aligend blocks */
++    }
+     memset(base + cnt, -1, tot - cnt);
+ }
+ 
 -- 
 2.45.1
 
