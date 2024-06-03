@@ -2,61 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E9D58D7B6F
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jun 2024 08:15:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D315A8D7B68
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jun 2024 08:14:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sE0xa-00060U-Nm; Mon, 03 Jun 2024 02:14:22 -0400
+	id 1sE0xv-0006Po-Bn; Mon, 03 Jun 2024 02:14:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1sE0xW-0005q9-OO
- for qemu-devel@nongnu.org; Mon, 03 Jun 2024 02:14:18 -0400
+ id 1sE0xd-00069g-AT
+ for qemu-devel@nongnu.org; Mon, 03 Jun 2024 02:14:26 -0400
 Received: from mgamail.intel.com ([192.198.163.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1sE0xU-0000xl-Fu
- for qemu-devel@nongnu.org; Mon, 03 Jun 2024 02:14:18 -0400
+ id 1sE0xY-0000xl-Ou
+ for qemu-devel@nongnu.org; Mon, 03 Jun 2024 02:14:23 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1717395256; x=1748931256;
+ t=1717395261; x=1748931261;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=IJL5PsoklMNCE7TY1tLnHp4d+Usegx9kN+idzGTHTOY=;
- b=dfHdOAG7QlzyUXpUSHV5+r1RMhfvxHGJ6XmN3udgBmsRI8uLtmnc89il
- JO3SaLd1TnOSqwKSMGITZRbq3hDGRgVS63n1NKSS3ckyx7ilXIIqlfy1S
- 2JqwfE/Xdl1JVmptONtI+I9NF5p8KqPKhxJj8eJI7kMlcQyxTCaqsfKog
- szElwqFYdEvpenpFM/MeecNG/GSwKMrlQMfTATCXAx4REyZuMKf6O8dNz
- bq1Y9WhyqkP8+qMEkZ6YpSOxxEZSwGb5/9c2rQqiA9hW+nc5pbueM/3Sn
- VoGTUGyW5JUL8Jzau2qPF4ZFm0mcJvaB2WZ+ByVMPmedXO0jmz7Wg+vZ2 w==;
-X-CSE-ConnectionGUID: lU7lQxsWTD+wkl9ev0BdwQ==
-X-CSE-MsgGUID: zXGtoTA7TkW0/URT0q2Iyw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11091"; a="25277756"
-X-IronPort-AV: E=Sophos;i="6.08,210,1712646000"; d="scan'208";a="25277756"
+ bh=Nyd3SwoK+cs9yuOOZ+aoWR7QGb+/QWyokm8AotAsE9k=;
+ b=UejF9VCkRnKnEKO7ZrSCls+WcV7d/b/pDTFSHG2qlpHJp02Z+UD0v4A1
+ eEJA6vlX9wetSvs1iIPBnbh/D+6xymPixRWoG05cV1uh1GgKdddIVDT81
+ nnrMJYdrm/Nlg0nYZBZigr4Fog7XGo7co4JUCcVagYMo+Tsnv23+JpDsN
+ eGCDxe5/aG4s0zfnRJUvdmNmzcEFqyeB97X8EWPeMHn+V0+lOmdIXWMA+
+ E/gYL7JZqxgvOmZRj/giqZg0ShI2UU7Eeej3Bfjj8WiBnbV5oMlPmbzgL
+ QoxN3mKPhRYEfwQuuoiLljXDZFst7zZMhMSTt6TwHam3V9lyx5E6HNZLf g==;
+X-CSE-ConnectionGUID: W1VWog/LQFCIfDPdJ398BQ==
+X-CSE-MsgGUID: v2Mz+jA+TciNUoEOxC6mQw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11091"; a="25277766"
+X-IronPort-AV: E=Sophos;i="6.08,210,1712646000"; d="scan'208";a="25277766"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Jun 2024 23:14:15 -0700
-X-CSE-ConnectionGUID: IHyAdZVNTA+Mg+pfJRBwbQ==
-X-CSE-MsgGUID: xGgdzKSgTIWbDBsfFdedew==
+ 02 Jun 2024 23:14:20 -0700
+X-CSE-ConnectionGUID: dnT36AlqSeO4435cS38E/w==
+X-CSE-MsgGUID: 7UCD2hSjR0emdJUVHLYebw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,210,1712646000"; d="scan'208";a="36855973"
+X-IronPort-AV: E=Sophos;i="6.08,210,1712646000"; d="scan'208";a="36855976"
 Received: from unknown (HELO SPR-S2600BT.bj.intel.com) ([10.240.192.127])
  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Jun 2024 23:14:11 -0700
+ 02 Jun 2024 23:14:16 -0700
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
  mst@redhat.com, peterx@redhat.com, jasowang@redhat.com, jgg@nvidia.com,
  nicolinc@nvidia.com, joao.m.martins@oracle.com,
  clement.mathieu--drif@eviden.com, kevin.tian@intel.com, yi.l.liu@intel.com,
- chao.p.peng@intel.com, Yi Sun <yi.y.sun@linux.intel.com>,
- Zhenzhong Duan <zhenzhong.duan@intel.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PATCH v6 15/19] hw/pci: Introduce
- pci_device_[set|unset]_iommu_device()
-Date: Mon,  3 Jun 2024 14:10:19 +0800
-Message-Id: <20240603061023.269738-16-zhenzhong.duan@intel.com>
+ chao.p.peng@intel.com, Zhenzhong Duan <zhenzhong.duan@intel.com>,
+ Yi Sun <yi.y.sun@linux.intel.com>
+Subject: [PATCH v6 16/19] vfio/pci: Pass HostIOMMUDevice to vIOMMU
+Date: Mon,  3 Jun 2024 14:10:20 +0800
+Message-Id: <20240603061023.269738-17-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240603061023.269738-1-zhenzhong.duan@intel.com>
 References: <20240603061023.269738-1-zhenzhong.duan@intel.com>
@@ -86,118 +84,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Yi Liu <yi.l.liu@intel.com>
+With HostIOMMUDevice passed, vIOMMU can check compatibility with host
+IOMMU, call into IOMMUFD specific methods, etc.
 
-pci_device_[set|unset]_iommu_device() call pci_device_get_iommu_bus_devfn()
-to get iommu_bus->iommu_ops and call [set|unset]_iommu_device callback to
-set/unset HostIOMMUDevice for a given PCI device.
-
-Signed-off-by: Yi Liu <yi.l.liu@intel.com>
-Signed-off-by: Yi Sun <yi.y.sun@linux.intel.com>
+Originally-by: Yi Liu <yi.l.liu@intel.com>
 Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
+Signed-off-by: Yi Sun <yi.y.sun@linux.intel.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- include/hw/pci/pci.h | 38 +++++++++++++++++++++++++++++++++++++-
- hw/pci/pci.c         | 27 +++++++++++++++++++++++++++
- 2 files changed, 64 insertions(+), 1 deletion(-)
+ hw/vfio/pci.c | 19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
 
-diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
-index eaa3fc99d8..c84cc9b99a 100644
---- a/include/hw/pci/pci.h
-+++ b/include/hw/pci/pci.h
-@@ -3,6 +3,7 @@
+diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+index 74a79bdf61..d8a76c1ee0 100644
+--- a/hw/vfio/pci.c
++++ b/hw/vfio/pci.c
+@@ -3121,10 +3121,15 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
  
- #include "exec/memory.h"
- #include "sysemu/dma.h"
-+#include "sysemu/host_iommu_device.h"
+     vfio_bars_register(vdev);
  
- /* PCI includes legacy ISA access.  */
- #include "hw/isa/isa.h"
-@@ -383,10 +384,45 @@ typedef struct PCIIOMMUOps {
-      *
-      * @devfn: device and function number
-      */
--   AddressSpace * (*get_address_space)(PCIBus *bus, void *opaque, int devfn);
-+    AddressSpace * (*get_address_space)(PCIBus *bus, void *opaque, int devfn);
-+    /**
-+     * @set_iommu_device: attach a HostIOMMUDevice to a vIOMMU
-+     *
-+     * Optional callback, if not implemented in vIOMMU, then vIOMMU can't
-+     * retrieve host information from the associated HostIOMMUDevice.
-+     *
-+     * @bus: the #PCIBus of the PCI device.
-+     *
-+     * @opaque: the data passed to pci_setup_iommu().
-+     *
-+     * @devfn: device and function number of the PCI device.
-+     *
-+     * @dev: the data structure representing host IOMMU device.
-+     *
-+     * @errp: pass an Error out only when return false
-+     *
-+     * Returns: true if HostIOMMUDevice is attached or else false with errp set.
-+     */
-+    bool (*set_iommu_device)(PCIBus *bus, void *opaque, int devfn,
-+                             HostIOMMUDevice *dev, Error **errp);
-+    /**
-+     * @unset_iommu_device: detach a HostIOMMUDevice from a vIOMMU
-+     *
-+     * Optional callback.
-+     *
-+     * @bus: the #PCIBus of the PCI device.
-+     *
-+     * @opaque: the data passed to pci_setup_iommu().
-+     *
-+     * @devfn: device and function number of the PCI device.
-+     */
-+    void (*unset_iommu_device)(PCIBus *bus, void *opaque, int devfn);
- } PCIIOMMUOps;
+-    if (!vfio_add_capabilities(vdev, errp)) {
++    if (!pci_device_set_iommu_device(pdev, vbasedev->hiod, errp)) {
++        error_prepend(errp, "Failed to set iommu_device: ");
+         goto out_teardown;
+     }
  
- AddressSpace *pci_device_iommu_address_space(PCIDevice *dev);
-+bool pci_device_set_iommu_device(PCIDevice *dev, HostIOMMUDevice *hiod,
-+                                 Error **errp);
-+void pci_device_unset_iommu_device(PCIDevice *dev);
++    if (!vfio_add_capabilities(vdev, errp)) {
++        goto out_unset_idev;
++    }
++
+     if (vdev->vga) {
+         vfio_vga_quirk_setup(vdev);
+     }
+@@ -3141,7 +3146,7 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
+             error_setg(errp,
+                        "cannot support IGD OpRegion feature on hotplugged "
+                        "device");
+-            goto out_teardown;
++            goto out_unset_idev;
+         }
  
- /**
-  * pci_setup_iommu: Initialize specific IOMMU handlers for a PCIBus
-diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-index 02a4bb2af6..c8a8aab306 100644
---- a/hw/pci/pci.c
-+++ b/hw/pci/pci.c
-@@ -2742,6 +2742,33 @@ AddressSpace *pci_device_iommu_address_space(PCIDevice *dev)
-     return &address_space_memory;
+         ret = vfio_get_dev_region_info(vbasedev,
+@@ -3150,11 +3155,11 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
+         if (ret) {
+             error_setg_errno(errp, -ret,
+                              "does not support requested IGD OpRegion feature");
+-            goto out_teardown;
++            goto out_unset_idev;
+         }
+ 
+         if (!vfio_pci_igd_opregion_init(vdev, opregion, errp)) {
+-            goto out_teardown;
++            goto out_unset_idev;
+         }
+     }
+ 
+@@ -3238,6 +3243,8 @@ out_deregister:
+     if (vdev->intx.mmap_timer) {
+         timer_free(vdev->intx.mmap_timer);
+     }
++out_unset_idev:
++    pci_device_unset_iommu_device(pdev);
+ out_teardown:
+     vfio_teardown_msi(vdev);
+     vfio_bars_exit(vdev);
+@@ -3266,6 +3273,7 @@ static void vfio_instance_finalize(Object *obj)
+ static void vfio_exitfn(PCIDevice *pdev)
+ {
+     VFIOPCIDevice *vdev = VFIO_PCI(pdev);
++    VFIODevice *vbasedev = &vdev->vbasedev;
+ 
+     vfio_unregister_req_notifier(vdev);
+     vfio_unregister_err_notifier(vdev);
+@@ -3280,7 +3288,8 @@ static void vfio_exitfn(PCIDevice *pdev)
+     vfio_teardown_msi(vdev);
+     vfio_pci_disable_rp_atomics(vdev);
+     vfio_bars_exit(vdev);
+-    vfio_migration_exit(&vdev->vbasedev);
++    vfio_migration_exit(vbasedev);
++    pci_device_unset_iommu_device(pdev);
  }
  
-+bool pci_device_set_iommu_device(PCIDevice *dev, HostIOMMUDevice *hiod,
-+                                 Error **errp)
-+{
-+    PCIBus *iommu_bus;
-+
-+    /* set_iommu_device requires device's direct BDF instead of aliased BDF */
-+    pci_device_get_iommu_bus_devfn(dev, &iommu_bus, NULL, NULL);
-+    if (iommu_bus && iommu_bus->iommu_ops->set_iommu_device) {
-+        return iommu_bus->iommu_ops->set_iommu_device(pci_get_bus(dev),
-+                                                      iommu_bus->iommu_opaque,
-+                                                      dev->devfn, hiod, errp);
-+    }
-+    return true;
-+}
-+
-+void pci_device_unset_iommu_device(PCIDevice *dev)
-+{
-+    PCIBus *iommu_bus;
-+
-+    pci_device_get_iommu_bus_devfn(dev, &iommu_bus, NULL, NULL);
-+    if (iommu_bus && iommu_bus->iommu_ops->unset_iommu_device) {
-+        return iommu_bus->iommu_ops->unset_iommu_device(pci_get_bus(dev),
-+                                                        iommu_bus->iommu_opaque,
-+                                                        dev->devfn);
-+    }
-+}
-+
- void pci_setup_iommu(PCIBus *bus, const PCIIOMMUOps *ops, void *opaque)
- {
-     /*
+ static void vfio_pci_reset(DeviceState *dev)
 -- 
 2.34.1
 
