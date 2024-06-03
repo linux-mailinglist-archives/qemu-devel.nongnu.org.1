@@ -2,68 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09F208D86E3
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jun 2024 18:05:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9379C8D86EE
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jun 2024 18:11:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEABP-0000T6-UW; Mon, 03 Jun 2024 12:05:16 -0400
+	id 1sEAFo-00021E-VI; Mon, 03 Jun 2024 12:09:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1sEABL-0000Rt-7F
- for qemu-devel@nongnu.org; Mon, 03 Jun 2024 12:05:11 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1sEABI-0008AC-Bp
- for qemu-devel@nongnu.org; Mon, 03 Jun 2024 12:05:10 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717430702;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=bIxO9GF1Z6Wt6+sy8+1Wt4+ugx5LdwMO4ZYGGKBPb5c=;
- b=cUqiGzJVyhlT/31k1dxnTLQEoP9zWivEPD48zQK8Cz6XvMLxPpiN3VW4XUmJIeeer/u7Mq
- /cXWRMRGHfYz6/Ehtk5Z4n8iFZiL35hNya/UT0bKqGp41XD8pZnv3R2phAMnvNn4T7eayb
- aDWX8U2Fl8HPnX+yeVuRifDhm3K+GiA=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-423-_GtZeEX9MSSA7ePMeajUdw-1; Mon,
- 03 Jun 2024 12:04:43 -0400
-X-MC-Unique: _GtZeEX9MSSA7ePMeajUdw-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 967F13800090;
- Mon,  3 Jun 2024 16:04:38 +0000 (UTC)
-Received: from redhat.com (unknown [10.39.193.235])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id CD56C4087041;
- Mon,  3 Jun 2024 16:04:36 +0000 (UTC)
-Date: Mon, 3 Jun 2024 18:04:34 +0200
-From: Kevin Wolf <kwolf@redhat.com>
-To: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: qemu-devel@nongnu.org, Hanna Reitz <hreitz@redhat.com>,
- qemu-block@nongnu.org,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
-Subject: Re: [PATCH 0/2] block/crypto: do not require number of threads upfront
-Message-ID: <Zl3pkvsXwaOY-J8r@redhat.com>
-References: <20240527155851.892885-1-stefanha@redhat.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sEAFh-000206-JJ
+ for qemu-devel@nongnu.org; Mon, 03 Jun 2024 12:09:41 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sEAFd-0000Yz-Kq
+ for qemu-devel@nongnu.org; Mon, 03 Jun 2024 12:09:40 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-42108856c33so26756105e9.1
+ for <qemu-devel@nongnu.org>; Mon, 03 Jun 2024 09:09:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1717430975; x=1718035775; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=HODORKgU1EFXIaunqKu4Lfl93imSbojPrOim6zkduVg=;
+ b=RvON31FF28fp+aOh+lPcBLs3URwdkmfj9/kuA6us7kY8PHlp/Q9MZc9gtuCYwUbfyz
+ XRfzBfK0zjgFxZoZGuhuchnzY6nDFNeKxbZfmvwqI4eg08PYwAuFmu6k/NQE4TX8ILfy
+ IAFTaxz9jx+hKrvqvceh1uEOESPKvTXCXIs1iAIQgmYdY0VVrEBdTcCDHp1EJdi7vJBP
+ kzIdPfj50I5m7uXZc1jpfz8DDhy2o1SgrM197z86o06+4iMNTPx1w7m5tTNq96Oh/1lz
+ 5fvK/8GA71JpPW4k5/ayAxGSeLrgzPXZoWceFo3lAw4stvzsf9qBvO95HAOBd33p0bLm
+ 98GQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1717430975; x=1718035775;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=HODORKgU1EFXIaunqKu4Lfl93imSbojPrOim6zkduVg=;
+ b=DDqzcMaubSZwNHavL3kKBZSnnXsLcJ7WdTLYA0Z3K1AHjEKbfoQoLVJAi9yPgCKYjd
+ K6oKy+tmRmI+mdM+LvrO85CGJ141Z6SQn5CAmXzDbmZ7evOlUxaDACAbJfCNwGTeswsU
+ oWK0ww4cAWzSHPytH25VPSQRDcqOfxd7lBvYStx7KUHA03J7MGNoEXVKaFDC/Ss/pDsz
+ Rh+fZ+ihXhNaw6VdHHOn7yHuU7Li347hCfICn3NLjUpT1I9ZY9voDO0D7tCIoL2xCXmB
+ iNCzFEuZ5x3WJXismhZ+eShrSwLeEQa9Ge9m2ZdDd55KYJ4czPWXEo1wjFtIBiUHP5ww
+ 2WhA==
+X-Gm-Message-State: AOJu0Yykfqgo/O8rqz6yuB/jqhQ5+3pt8jdRcKMcbhi1VnqgzVpERJhP
+ vB1uj/IuUL4TgMYELUS9aj87Gkqaa8h/y0Bg9ydgfmpNUcWVF3dKViDrmwP0/b2hEBGN+tbvUgv
+ L
+X-Google-Smtp-Source: AGHT+IH1BPbR32cBOiPggxnZeD6z90NU0b429j3zoFxAR2hrKia+FxyYZbv9cHyKUyTOB7EqC3NAzQ==
+X-Received: by 2002:a5d:5310:0:b0:34d:8d11:f8c0 with SMTP id
+ ffacd0b85a97d-35e7c55a0e8mr112728f8f.18.1717430974915; 
+ Mon, 03 Jun 2024 09:09:34 -0700 (PDT)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-35dd0649fb5sm8975858f8f.94.2024.06.03.09.09.34
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 03 Jun 2024 09:09:34 -0700 (PDT)
+From: Peter Maydell <peter.maydell@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>
+Subject: [PATCH 0/3] cpu_exec_halt: make method mandatory
+Date: Mon,  3 Jun 2024 17:09:30 +0100
+Message-Id: <20240603160933.1141717-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240527155851.892885-1-stefanha@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,16 +89,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 27.05.2024 um 17:58 hat Stefan Hajnoczi geschrieben:
-> The block layer does not know how many threads will perform I/O. It is possible
-> to exceed the number of threads that is given to qcrypto_block_open() and this
-> can trigger an assertion failure in qcrypto_block_pop_cipher().
-> 
-> This patch series removes the n_threads argument and instead handles an
-> arbitrary number of threads.
+This patchset makes the TCGCPUOps::cpu_exec_halt method
+mandatory, which is a cleanup that RTH asked for when we
+were discussing my FEAT_WFxT series.
 
-Thanks, applied to the block branch.
+I'm not 100% convinced about this, because if we ever find we
+need to change the cpu_exec_halt method so it's no longer the
+exact same function signature as the has_work method then
+we'll have to undo this change. But I don't feel very strongly
+about it, and it does mean we can skip a runtime check for
+whether the method exists.
 
-Kevin
+We probably want patch 1 anyway; I didn't notice at the
+time that M-profile has its own TCGCPUOps, and it's less
+confusing if A and M both use the same arm_cpu_exec_halt().
+(This isn't a bug in the FEAT_WFxT commit, though -- the
+behaviour is the same.)
+
+thanks
+-- PMM
+
+Peter Maydell (3):
+  target/arm: Set arm_v7m_tcg_ops cpu_exec_halt to arm_cpu_exec_halt()
+  target: Set TCGCPUOps::cpu_exec_halt to target's has_work
+    implementation
+  accel/tcg: Make TCGCPUOps::cpu_exec_halt mandatory
+
+ include/hw/core/tcg-cpu-ops.h | 9 ++++++---
+ target/arm/internals.h        | 3 +++
+ target/riscv/internals.h      | 3 +++
+ accel/tcg/cpu-exec.c          | 7 +------
+ target/alpha/cpu.c            | 1 +
+ target/arm/cpu.c              | 2 +-
+ target/arm/tcg/cpu-v7m.c      | 1 +
+ target/avr/cpu.c              | 1 +
+ target/cris/cpu.c             | 2 ++
+ target/hppa/cpu.c             | 1 +
+ target/loongarch/cpu.c        | 1 +
+ target/m68k/cpu.c             | 1 +
+ target/microblaze/cpu.c       | 1 +
+ target/mips/cpu.c             | 1 +
+ target/openrisc/cpu.c         | 1 +
+ target/ppc/cpu_init.c         | 2 ++
+ target/riscv/cpu.c            | 2 +-
+ target/riscv/tcg/tcg-cpu.c    | 2 ++
+ target/rx/cpu.c               | 1 +
+ target/s390x/cpu.c            | 1 +
+ target/sh4/cpu.c              | 1 +
+ target/sparc/cpu.c            | 1 +
+ target/xtensa/cpu.c           | 1 +
+ 23 files changed, 35 insertions(+), 11 deletions(-)
+
+-- 
+2.34.1
 
 
