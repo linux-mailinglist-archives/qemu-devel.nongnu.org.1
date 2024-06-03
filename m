@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 348A28D8848
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jun 2024 19:56:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9547F8D8840
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jun 2024 19:55:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEBsf-0007DT-Dh; Mon, 03 Jun 2024 13:54:01 -0400
+	id 1sEBse-0007B9-4W; Mon, 03 Jun 2024 13:54:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sEBsJ-0006zf-Hd
- for qemu-devel@nongnu.org; Mon, 03 Jun 2024 13:53:40 -0400
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ id 1sEBsL-00070M-Vl
+ for qemu-devel@nongnu.org; Mon, 03 Jun 2024 13:53:42 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sEBsF-00008n-2z
- for qemu-devel@nongnu.org; Mon, 03 Jun 2024 13:53:39 -0400
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-35dca73095aso3880319f8f.0
- for <qemu-devel@nongnu.org>; Mon, 03 Jun 2024 10:53:34 -0700 (PDT)
+ id 1sEBsH-00009t-7g
+ for qemu-devel@nongnu.org; Mon, 03 Jun 2024 13:53:41 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-42121d27861so1167275e9.0
+ for <qemu-devel@nongnu.org>; Mon, 03 Jun 2024 10:53:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1717437213; x=1718042013; darn=nongnu.org;
+ d=linaro.org; s=google; t=1717437215; x=1718042015; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=WgDjv/yNA+r/3CuM/gO8/vu8/drYzlHihSkbPO1TE7o=;
- b=t5753XUMbTFw+hSKdA4HaNFXFx3KYwt4ytY3SDbC55yma5FCRVUSZQ0ZBCAPGorkpR
- g4hdMCxeg4BwD18sYzVDrl1nuwnOYzLfS5oss2CQ+M5S3tK2L5v0kedz+byletTRpr65
- SsgcK1xKwMyRfufqdY/rvPVnlx82oWD6cugWnbWTV/QmN2cZ0A0XColf0ECw0oYPrL/e
- gyJNvLOFOmLDr9euv80MbOE9W7Xv65keG5H2Y5J04SNJSbraLzLFK76Xhq0vAt4iFIco
- 4AV7gLcK0q7u+mHYU/sz5+lgqNHXgpsKlfdhNezFUUep7HQqWo/88N92VJSCTkaXiPAa
- im7A==
+ bh=8KRfXE/oVtlnzDt4+VcBXOC8p+C9OfeddYY4ThUlh64=;
+ b=BB6MK6n1YqKqv9uB5WscHGQ0SaLj/vATi5ZC24gilyxpSrDC6NiV/hN2WWZeqw+h0A
+ F9Pw038Cw39oE+2NrXoNjJlRgCQFqkldjUlgyLhSyEy79D0kiAmhvnm0kRI2tpF7p9fh
+ asUXLrqmJpLTfSKuSzMBw01lkzaqQzy/KtRH+jNERnLKCIJ0/AgFvyyVjOCFgUk4nkb0
+ 0fhqCUV3ZFLUwYgWe+Urd0MYK8P0KwSiDjwe/t2G5kF75CGyvsqR7Ep3IrH08TcIT/6k
+ EtpBl93egESRnDTwNddw3blDNtfj7/pXHyhCW5rJ7fuKD0F+CKR6ishbkKOdM5oh+gcc
+ Up9Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717437213; x=1718042013;
+ d=1e100.net; s=20230601; t=1717437215; x=1718042015;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=WgDjv/yNA+r/3CuM/gO8/vu8/drYzlHihSkbPO1TE7o=;
- b=OJIbRU+qauaJOUCc5QKPPtF4iX3H26D/+4ZkcnVr/7nu29H6HcfY2qCQb3cbmGwxfo
- JyiQRIzwSViOp0h9CK7dsBzVg5FwpVt73gug98GfpfKUFS3HVco5TPhGRJYHh7kypwaO
- 2MdurtybrVFmmQgEAcrm4gWDPJL0KNioTUF5Rv+pVxqd1vPmJHtI8kVaUB0nkWsPmTnY
- o/bZduvkM1pBLkdojwTGwsOMrNTN0x54S/qGsrbjxa6UL7ftqoKi9CtniEYrNAl/788v
- JL9mOAbI5md8AnHtLKNkrqciL8QkMmU8yTCxKr0lq7/sjFYSbAKSGzR7iLrGNSJDuIxH
- k5/g==
-X-Gm-Message-State: AOJu0YzxLK+ckVxnkC2brC7Y4huJttT62It+McqPuvT6Uf7fNqlruCmE
- r2R8TX2ndp3Pt7sDTY5xFmka4iEdnVnZnUHZj4gBT+V88D28bIPQmAlH0f1GsiM=
-X-Google-Smtp-Source: AGHT+IFPMVOs0cZxyUpMZWaqXcWqMLE7CRhMxhhqYX/DOQFE7h+Us9X/uZj47qK5TckI4QVw4nXhDQ==
-X-Received: by 2002:a05:600c:4753:b0:41a:9fc2:a6b1 with SMTP id
- 5b1f17b1804b1-4212e075ed3mr85037035e9.22.1717437212889; 
- Mon, 03 Jun 2024 10:53:32 -0700 (PDT)
+ bh=8KRfXE/oVtlnzDt4+VcBXOC8p+C9OfeddYY4ThUlh64=;
+ b=nUfHdl5DjoJkWt140jAii7V6GTjMv+86Uiw8dkER3ZhKnzsX8xmvOBn02UYsqeA5W5
+ Auqac9zKYr8J3TFcAadwGC3UYScm4MGo763/1fvVZlGmx8T/k25v1BRW1+KrPXaiovS/
+ XhV1Svtn9cDfF9MSNVx5SPvWvHMwgG5knG3eGlHk56bkgduEQXEuGfhXh1e9P4ojeN65
+ f7ZcceRxwMBGKmbM1jMvuRNgfNBO+QRvJb2cNDRE9MUpiD9mxNHl9RUuxpXtg7xDLnbd
+ OuUJufqsfPq7IrPVb94cZV5FNbq1psOiGKl5Mgj7ulqk97s2vDYUX8vG/VbL/UuMm5CC
+ m4gA==
+X-Gm-Message-State: AOJu0YyWbM5OIOrHWi7pS2DQRxqv5qAtvoK8I14SbK8+kc1VOoWzhDej
+ RmzzAUePWrXvMI0JN8g3j8kQnIYeKic9loDVovnAFurBOctA9fTW/zeQU12L7Mc=
+X-Google-Smtp-Source: AGHT+IGyZdIQEfHdp9u5swINaBBzgo8dcyRSI6VfEevC4uMYiFPOA4JifExa5rRMj86gHWFySSotOg==
+X-Received: by 2002:a05:600c:474a:b0:41b:285:8417 with SMTP id
+ 5b1f17b1804b1-4212e0be702mr69738275e9.40.1717437215050; 
+ Mon, 03 Jun 2024 10:53:35 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4212278b24dsm85913135e9.0.2024.06.03.10.53.30
+ 5b1f17b1804b1-4212b85c628sm125954845e9.25.2024.06.03.10.53.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Mon, 03 Jun 2024 10:53:31 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 327DB5F9FF;
+ by draig.lan (Postfix) with ESMTP id 47C145FA01;
  Mon,  3 Jun 2024 18:53:29 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -80,25 +80,25 @@ Cc: Markus Armbruster <armbru@redhat.com>,
  qemu-s390x@nongnu.org, Beraldo Leal <bleal@redhat.com>,
  Jiaxun Yang <jiaxun.yang@flygoat.com>,
  Radoslaw Biernacki <rad@semihalf.com>
-Subject: [PATCH v3 07/12] tests/lcitool: Delete obsolete centos-stream-8.yml
- file
-Date: Mon,  3 Jun 2024 18:53:23 +0100
-Message-Id: <20240603175328.3823123-8-alex.bennee@linaro.org>
+Subject: [PATCH v3 08/12] .gitlab-ci.d/buildtest.yml: Use
+ -fno-sanitize=function in the clang-system job
+Date: Mon,  3 Jun 2024 18:53:24 +0100
+Message-Id: <20240603175328.3823123-9-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240603175328.3823123-1-alex.bennee@linaro.org>
 References: <20240603175328.3823123-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x430.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -116,28 +116,33 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Thomas Huth <thuth@redhat.com>
 
-We've missed to delete this file when removing support for CentOS 8.
-Since the current upstream version of the lcitool removed support
-for CentOS 8 now, too, we have to remove the file before updating.
+The latest version of Clang (version 18 from Fedora 40) now reports
+bad function pointer casts as undefined behavior. Unfortunately, we are
+still doing this in quite a lot of places in the QEMU code and some of
+them are not easy to fix. So for the time being, temporarily switch this
+off in the failing clang-system job until all spots in the QEMU sources
+have been tackled.
 
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Message-Id: <20240601070543.37786-4-thuth@redhat.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20240601070543.37786-2-thuth@redhat.com>
 ---
- tests/lcitool/targets/centos-stream-8.yml | 3 ---
- 1 file changed, 3 deletions(-)
- delete mode 100644 tests/lcitool/targets/centos-stream-8.yml
+ .gitlab-ci.d/buildtest.yml | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tests/lcitool/targets/centos-stream-8.yml b/tests/lcitool/targets/centos-stream-8.yml
-deleted file mode 100644
-index 6b11160fd1..0000000000
---- a/tests/lcitool/targets/centos-stream-8.yml
-+++ /dev/null
-@@ -1,3 +0,0 @@
--paths:
--  pip3: /usr/bin/pip3.8
--  python: /usr/bin/python3.8
+diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
+index 91c57efded..0eec570310 100644
+--- a/.gitlab-ci.d/buildtest.yml
++++ b/.gitlab-ci.d/buildtest.yml
+@@ -432,6 +432,7 @@ clang-system:
+     IMAGE: fedora
+     CONFIGURE_ARGS: --cc=clang --cxx=clang++
+       --extra-cflags=-fsanitize=undefined --extra-cflags=-fno-sanitize-recover=undefined
++      --extra-cflags=-fno-sanitize=function
+     TARGETS: alpha-softmmu arm-softmmu m68k-softmmu mips64-softmmu s390x-softmmu
+     MAKE_CHECK_ARGS: check-qtest check-tcg
+ 
 -- 
 2.39.2
 
