@@ -2,64 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 206678D86C5
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jun 2024 17:59:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B80848D86DF
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jun 2024 18:04:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEA5Q-0002Fn-H1; Mon, 03 Jun 2024 11:59:04 -0400
+	id 1sEA8H-00058m-KB; Mon, 03 Jun 2024 12:02:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1sEA5O-0002FT-N6
- for qemu-devel@nongnu.org; Mon, 03 Jun 2024 11:59:02 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1sEA8A-0004zd-6l
+ for qemu-devel@nongnu.org; Mon, 03 Jun 2024 12:01:54 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1sEA5M-0006Aj-Cw
- for qemu-devel@nongnu.org; Mon, 03 Jun 2024 11:59:02 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1sEA86-0007Yp-UA
+ for qemu-devel@nongnu.org; Mon, 03 Jun 2024 12:01:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717430338;
+ s=mimecast20190719; t=1717430508;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=qjZRTgn9qmVT/sBREieCS/gpAzmHNex6NjTyRRTZkmQ=;
- b=fAtxvsrv+pg0+eOgwsVnF/aKlDvGuBuOg4rL0WqqmQJmabI6fQyWUrpQnnTpvrFL3Qm3ZL
- bXjwACxOzWRr10oM0Bl68/QBlyARDJ5HWsKk49qaAlW2PnzunfjGQx15+Pb1qcl/7pijlC
- O8ZTK1oRkK6yXJTJhRJZoMPZcLMAUgQ=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=TKkVZTxzls9uJK95gb97w0xocQQsfZfvM7Sxhp61SAU=;
+ b=TP5Ej7N/HxvAQOfdaWSLQ/Y85XjlSi4GA8K91NirxpuKVzFBH2HWBGoZvcAiTHAqKdNVcn
+ +RwgkFkbclNjG7hboPDEmQ9GQQ0zcHJC4EltzDOffKsaYJJbnS7eKMyAAXJRhNTIm/02BG
+ zAG/Hvo9WdltyLs8n4X3KilVHQ2fO5U=
+Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
+ [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-65-p9PpwOVIMLSf2zD5XmVGSg-1; Mon, 03 Jun 2024 11:58:57 -0400
-X-MC-Unique: p9PpwOVIMLSf2zD5XmVGSg-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CC95C8058D8;
- Mon,  3 Jun 2024 15:58:56 +0000 (UTC)
-Received: from localhost (unknown [10.39.194.201])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 955341C0654B;
- Mon,  3 Jun 2024 15:58:56 +0000 (UTC)
-From: Cornelia Huck <cohuck@redhat.com>
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-Cc: thuth@redhat.com, Pankaj Gupta <pankaj.gupta@amd.com>, Michael Roth
- <michael.roth@amd.com>
-Subject: Re: [PATCH 3/4] linux-headers: Update to current kvm/next
-In-Reply-To: <20240603131141.834241-4-pbonzini@redhat.com>
-Organization: "Red Hat GmbH, Sitz: Werner-von-Siemens-Ring 12, D-85630
- Grasbrunn, Handelsregister: Amtsgericht =?utf-8?Q?M=C3=BCnchen=2C?= HRB
- 153243,
- =?utf-8?Q?Gesch=C3=A4ftsf=C3=BChrer=3A?= Ryan Barnhart, Charles Cachera,
- Michael O'Neill, Amy Ross"
+ us-mta-620-TNnM_2e4NmSapIM2FkWmXw-1; Mon, 03 Jun 2024 12:01:47 -0400
+X-MC-Unique: TNnM_2e4NmSapIM2FkWmXw-1
+Received: by mail-lf1-f71.google.com with SMTP id
+ 2adb3069b0e04-52b91217fcfso14438e87.3
+ for <qemu-devel@nongnu.org>; Mon, 03 Jun 2024 09:01:46 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1717430505; x=1718035305;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=TKkVZTxzls9uJK95gb97w0xocQQsfZfvM7Sxhp61SAU=;
+ b=D1tlKOLVO8YHLmULrqwEexJEBAgjop3vTeLXgRkXgnkjwrc6gD+qI+Uxq2oJOHobvS
+ CRz+wow2GhhjYSHmeB+RiBXFGFUk3R5ObIgLWIdj7xq6Eis5dmwDNd5dPswbDMJPbVQZ
+ 3+bG+RB6O5DLVB94gG72ENBXVbQkVwaqLNyts6UgH+32kRudCH2avxqpL6vUIj60nLEp
+ skXnJ0u95GboXEo9GiveAjRNAF+9nhbxeCGENx2kq+Mi1xgFmwOLVwWE1JRdTPdgeV9Q
+ pz/75yVN2QZme8SYXRaaFHVcd5EA0l1k+OyZKhry+uFdNDqVqf1yEh+Ofh3e4HL/MafS
+ ywEQ==
+X-Gm-Message-State: AOJu0YwZk245clotjlu3MHYpm4T1rtyppVCmskTwZtxKNVQmFZe+tC00
+ OOeeTAU8wY4EX0XH8pnhpBEutLjGCJWABQO2WJkaP7KjEiVnrYKG78zz/Rb50HR05e36kxhCVfM
+ OlrSuo+XGxL6pO0sRAvTKQIYZaXfW0Nrt+JtDgEs9Z6nzUQ5qGJAejj/BRMRe7G8IaZNhApPmgq
+ VVo3i0T0DcqJKCwN2daPww3XyHxuQ=
+X-Received: by 2002:a2e:a7ce:0:b0:2ea:b908:d840 with SMTP id
+ 38308e7fff4ca-2eab908d9e2mr10877311fa.29.1717430505555; 
+ Mon, 03 Jun 2024 09:01:45 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH1VzgKQysQjyCOrzlLwTl8QPEkYAcdIEUjLe1tdcg110zLYWnMXHvJeeD/mervQNP29mRGLyW7f+gvQBAPj4E=
+X-Received: by 2002:a2e:a7ce:0:b0:2ea:b908:d840 with SMTP id
+ 38308e7fff4ca-2eab908d9e2mr10877071fa.29.1717430505139; Mon, 03 Jun 2024
+ 09:01:45 -0700 (PDT)
+MIME-Version: 1.0
 References: <20240603131141.834241-1-pbonzini@redhat.com>
  <20240603131141.834241-4-pbonzini@redhat.com>
-User-Agent: Notmuch/0.38.3 (https://notmuchmail.org)
-Date: Mon, 03 Jun 2024 17:58:55 +0200
-Message-ID: <874jaam30g.fsf@redhat.com>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=cohuck@redhat.com;
+ <874jaam30g.fsf@redhat.com>
+In-Reply-To: <874jaam30g.fsf@redhat.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Mon, 3 Jun 2024 18:01:33 +0200
+Message-ID: <CABgObfaROVKsGD1sLk=ry4PSRzBbEHe9GZzew7F6Pqf6QLBDwQ@mail.gmail.com>
+Subject: Re: [PATCH 3/4] linux-headers: Update to current kvm/next
+To: Cornelia Huck <cohuck@redhat.com>
+Cc: qemu-devel@nongnu.org, thuth@redhat.com, 
+ Pankaj Gupta <pankaj.gupta@amd.com>, Michael Roth <michael.roth@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -84,27 +98,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jun 03 2024, Paolo Bonzini <pbonzini@redhat.com> wrote:
+On Mon, Jun 3, 2024 at 5:58=E2=80=AFPM Cornelia Huck <cohuck@redhat.com> wr=
+ote:
+> Hm, I'm not sure updating to kvm/next is a good idea ("current kvm/next"
+> does not mean anything without a commit hash anyway.) I think we should
+> only update to something that's in Linus' tree already... how stable is
+> kvm/next?
 
-> From: Pankaj Gupta <pankaj.gupta@amd.com>
->
-> Also brings in an linux-headers/linux/vhost.h fix from v6.9-rc4.
->
-> Co-developed-by: Michael Roth <michael.roth@amd.com>
-> Signed-off-by: Michael Roth <michael.roth@amd.com>
-> Signed-off-by: Pankaj Gupta <pankaj.gupta@amd.com>
-> Message-ID: <20240530111643.1091816-3-pankaj.gupta@amd.com>
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->  linux-headers/asm-loongarch/kvm.h |  4 +++
->  linux-headers/asm-riscv/kvm.h     |  1 +
->  linux-headers/asm-x86/kvm.h       | 52 ++++++++++++++++++++++++++++++-
->  linux-headers/linux/vhost.h       | 15 ++++-----
->  4 files changed, 64 insertions(+), 8 deletions(-)
+It is stable, things are only applied there once UAPI is set. Even
+rebasing is very rare.
 
-Hm, I'm not sure updating to kvm/next is a good idea ("current kvm/next"
-does not mean anything without a commit hash anyway.) I think we should
-only update to something that's in Linus' tree already... how stable is
-kvm/next?
+The problem here is that if (as is the case for 6.11) the merge window
+only opens once QEMU is in freeze, waiting for it would delay merging
+the QEMU side by 4 months. In this case, the patches barely missed
+6.10.
+
+Paolo
 
 
