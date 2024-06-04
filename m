@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B22A88FAB60
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 08:52:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 205058FAB25
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 08:46:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sENuP-0001yF-MG; Tue, 04 Jun 2024 02:44:37 -0400
+	id 1sENuR-00021c-R0; Tue, 04 Jun 2024 02:44:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sENuN-0001xX-Ea
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:44:35 -0400
+ id 1sENuP-0001yG-8F
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:44:37 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sENuM-0007Fl-0K
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:44:35 -0400
+ id 1sENuN-0007Fy-SF
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:44:37 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717483473;
+ s=mimecast20190719; t=1717483475;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=jnre2UF7/f5unB3VrXj0N5RhP/b8i4wPnG8jXCu2p4Y=;
- b=AW64SsAgfvD3RkLNSxu9ET1rq2xamIP5Fl+kSlLQwgnm1O937V+4A4qQsWRqVrPCJUklQA
- HpkPxjPjcZPCgIuQz4zviYlZUNvHdsEau56LKyOwVJivFHwktq+PTZCli+YO3JR8vsRng5
- oAcbop8j7lki3v9zf9yPPzXT+AWcuAI=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=PqRHhSmhqOho/JuUmdj0d/FeC7VO5aHrFPmub5RDLS4=;
+ b=Rbezkeyobzv/6HzpBzKnt5aFcal+lzXjvz7vN3zSWRFFoUqMQFeaJp18Zj8XT8yej8Lh9U
+ TKi7NjeaW/Aah+BFY5zQ8AcV5tcUP8f+ZlhcXV9TpNV7oW3eTDp5pIvhCBQKAzNzHG8maM
+ N2FmNqZShkSm9l+bTZ0jJmDuKF/JnCc=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-222-Vw_6IhouPZ66uwKiy1hPzg-1; Tue, 04 Jun 2024 02:44:30 -0400
-X-MC-Unique: Vw_6IhouPZ66uwKiy1hPzg-1
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-a68f654dc69so107864566b.1
- for <qemu-devel@nongnu.org>; Mon, 03 Jun 2024 23:44:30 -0700 (PDT)
+ us-mta-44-2qL_hYraOFi54CkWPV7QBg-1; Tue, 04 Jun 2024 02:44:33 -0400
+X-MC-Unique: 2qL_hYraOFi54CkWPV7QBg-1
+Received: by mail-ed1-f70.google.com with SMTP id
+ 4fb4d7f45d1cf-57a2ffddca3so1672431a12.1
+ for <qemu-devel@nongnu.org>; Mon, 03 Jun 2024 23:44:33 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717483469; x=1718088269;
+ d=1e100.net; s=20230601; t=1717483471; x=1718088271;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=jnre2UF7/f5unB3VrXj0N5RhP/b8i4wPnG8jXCu2p4Y=;
- b=UE9g4/xGbt063dIpT2jW/laDComxRRrxi2eEC7SSll864Xr3SsjtTpNxBB2BmJSPKl
- tvx6ifkRGTC2pusPYfunmvtuL+IwPgaslUr3hTuAvfrU/E/QWttOl5ICXntFHbHCpJ1p
- B+nWXKfxgAUORMhBhVpy0eLcu2hGzbT17Bsv6TN5eV/AvPaaeXyF9H7PDTHIP2W1hfGy
- 60DEvLesPbC2wpRcKOYVjkoSEpJo+F8kL+2MP3RyOq4NOqkfhZurT5f+lxvzhHkDC1jR
- 9OWk6ymrSERuPJGiWmB5dBKE2aRgwpZC3xpezqbFxMdJqO+0UCf7ncoa7L6Wz5j+edlM
- Mdiw==
-X-Gm-Message-State: AOJu0Yx5CvkVYg8rcRbaFHb7A8IPbhA2/2M5vNxRmyNFmOBSJgmuQa42
- JWwhGuM+HtBLA+AL0zoc/t2rSZBDeeUdsZGnDGFKGlDfnpUv9S4+d0uPV3jNEE/btwFwCT+vYb/
- 4IX81Na3k1v1/9EHrNVzrBe4ZktK0/2yGswngFw+9dmYm8b7hYUA/QAooR6wUyp+CxFwqhP/3qA
- ba8HhMYfJ9AqAvDBo9j/UQm8S79IpKUMAsI5Hh
-X-Received: by 2002:a17:907:940b:b0:a69:2bce:e41e with SMTP id
- a640c23a62f3a-a692bcee4bemr282320466b.9.1717483468929; 
- Mon, 03 Jun 2024 23:44:28 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFw9YQl6f71DA6i9PendEh30fTQFobGQh5qPn6O5dlLLub2Q9COeoYRVKF2PJC1BZkNCizNFw==
-X-Received: by 2002:a17:907:940b:b0:a69:2bce:e41e with SMTP id
- a640c23a62f3a-a692bcee4bemr282319766b.9.1717483468608; 
- Mon, 03 Jun 2024 23:44:28 -0700 (PDT)
+ bh=PqRHhSmhqOho/JuUmdj0d/FeC7VO5aHrFPmub5RDLS4=;
+ b=lete7xyYFnpkVF0BErb0QxnJYE7ZctZBSBRgpVAzf3ftzSPJFJ8xPKA1rDDF/E8ldN
+ lYo9PuU50ar7C9zrbZI9zHUBqLLLJ5Ugly1jNBZqYKltp0E36BbM4ryflu8PzNFHc0Ix
+ njnK5VDnLsAeFlhb0526ShF1w4IMcA1rh5p1pNywePEVozjrzHybyo8+yPwhvL7eAlrz
+ iF3vzWhJyAP9zcWRvAYgHqvQNSA09eCTTEjWGCP7vs2lqi3KGEgktRM7oBawXqDFokyL
+ FcvXOSNpYaJHHa+fFJ/nDB8SFLqp9CxcjKVquj7YPwGWOVmPBJrTsVHsEAoCVRhzimtE
+ VZJw==
+X-Gm-Message-State: AOJu0YzB9no2hNeQswaEWDB/7atQ9K7DVb8qgJwCAU0W3i6W0BbrtiOw
+ nCBzM6bfOIGKspmpuCrzYhYwIvM22R5LEHD1DZmiXkXHcuwnsMoLCFRIUGxLqBFO4nARY2XAO6t
+ Z1clfGi2keeFOn5bA6WxlfoWAs+yCScWRXCtZe1t0nsBUQ5CKXSb3I54xBC1EzbrxtfiwgVrnPJ
+ FM6p/WL+t+mZF3fnHay+rHKMNhyrlst5jNH3+R
+X-Received: by 2002:a50:9f41:0:b0:57a:2430:67eb with SMTP id
+ 4fb4d7f45d1cf-57a3644b40bmr7453367a12.28.1717483471490; 
+ Mon, 03 Jun 2024 23:44:31 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEGA0z2vvrlFgK78vmDfXqJwIIeaAq8LZ9Rzbnn9oHKA08nVRPptFoJ025pkNZAEbfFlZBTRw==
+X-Received: by 2002:a50:9f41:0:b0:57a:2430:67eb with SMTP id
+ 4fb4d7f45d1cf-57a3644b40bmr7453360a12.28.1717483471097; 
+ Mon, 03 Jun 2024 23:44:31 -0700 (PDT)
 Received: from avogadro.local ([151.81.115.112])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a691122859esm233259166b.224.2024.06.03.23.44.28
+ 4fb4d7f45d1cf-57a5dc1e2d6sm3753569a12.59.2024.06.03.23.44.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Jun 2024 23:44:28 -0700 (PDT)
+ Mon, 03 Jun 2024 23:44:30 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 05/45] host/i386: assume presence of SSE2
-Date: Tue,  4 Jun 2024 08:43:29 +0200
-Message-ID: <20240604064409.957105-6-pbonzini@redhat.com>
+Subject: [PULL 06/45] host/i386: assume presence of SSSE3
+Date: Tue,  4 Jun 2024 08:43:30 +0200
+Message-ID: <20240604064409.957105-7-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240604064409.957105-1-pbonzini@redhat.com>
 References: <20240604064409.957105-1-pbonzini@redhat.com>
@@ -101,62 +101,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-QEMU now requires an x86-64-v2 host, which has SSE2.
-Use it freely in buffer_is_zero.
+QEMU now requires an x86-64-v2 host, which has SSSE3 instructions
+(notably, PSHUFB which is used by QEMU's AES implementation).
+Do not bother checking it.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- host/include/i386/host/cpuinfo.h | 1 -
- util/bufferiszero.c              | 4 ++--
- util/cpuinfo-i386.c              | 1 -
- 3 files changed, 2 insertions(+), 4 deletions(-)
+ util/cpuinfo-i386.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/host/include/i386/host/cpuinfo.h b/host/include/i386/host/cpuinfo.h
-index 81771733eaa..72f6fad61e5 100644
---- a/host/include/i386/host/cpuinfo.h
-+++ b/host/include/i386/host/cpuinfo.h
-@@ -14,7 +14,6 @@
- #define CPUINFO_POPCNT          (1u << 4)
- #define CPUINFO_BMI1            (1u << 5)
- #define CPUINFO_BMI2            (1u << 6)
--#define CPUINFO_SSE2            (1u << 7)
- #define CPUINFO_AVX1            (1u << 9)
- #define CPUINFO_AVX2            (1u << 10)
- #define CPUINFO_AVX512F         (1u << 11)
-diff --git a/util/bufferiszero.c b/util/bufferiszero.c
-index 74864f7b782..11c080e02cf 100644
---- a/util/bufferiszero.c
-+++ b/util/bufferiszero.c
-@@ -188,14 +188,14 @@ static biz_accel_fn const accel_table[] = {
- 
- static unsigned best_accel(void)
- {
-+#ifdef CONFIG_AVX2_OPT
-     unsigned info = cpuinfo_init();
- 
--#ifdef CONFIG_AVX2_OPT
-     if (info & CPUINFO_AVX2) {
-         return 2;
-     }
- #endif
--    return info & CPUINFO_SSE2 ? 1 : 0;
-+    return 1;
- }
- 
- #elif defined(__aarch64__) && defined(__ARM_NEON)
 diff --git a/util/cpuinfo-i386.c b/util/cpuinfo-i386.c
-index 90f92a42dc8..ca74ef04f54 100644
+index ca74ef04f54..6d474a6259a 100644
 --- a/util/cpuinfo-i386.c
 +++ b/util/cpuinfo-i386.c
-@@ -34,7 +34,6 @@ unsigned __attribute__((constructor)) cpuinfo_init(void)
-     if (max >= 1) {
-         __cpuid(1, a, b, c, d);
- 
--        info |= (d & bit_SSE2 ? CPUINFO_SSE2 : 0);
-         info |= (c & bit_MOVBE ? CPUINFO_MOVBE : 0);
+@@ -38,8 +38,8 @@ unsigned __attribute__((constructor)) cpuinfo_init(void)
          info |= (c & bit_POPCNT ? CPUINFO_POPCNT : 0);
          info |= (c & bit_PCLMUL ? CPUINFO_PCLMUL : 0);
+ 
+-        /* Our AES support requires PSHUFB as well. */
+-        info |= ((c & bit_AES) && (c & bit_SSSE3) ? CPUINFO_AES : 0);
++        /* NOTE: our AES support requires SSSE3 (PSHUFB) as well. */
++        info |= (c & bit_AES) ? CPUINFO_AES : 0;
+ 
+         /* For AVX features, we must check available and usable. */
+         if ((c & bit_AVX) && (c & bit_OSXSAVE)) {
 -- 
 2.45.1
 
