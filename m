@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E48C08FBC4B
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 21:11:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB67C8FBC4C
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 21:11:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEZVj-0003Wo-M2; Tue, 04 Jun 2024 15:07:55 -0400
+	id 1sEZVo-00046b-1Y; Tue, 04 Jun 2024 15:08:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sEZVh-0003KO-Lq
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 15:07:53 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sEZVl-0003t1-PQ
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 15:07:57 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sEZVg-0000xr-09
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 15:07:53 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sEZVk-0000yM-1k
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 15:07:57 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717528071;
+ s=mimecast20190719; t=1717528075;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=WFUPapk07PnJ8CLhVhbjjsuC+NoP2UxN6SJb+Hfxl60=;
- b=W0Gt58qV/FEigNP+5udIrmtxE5r/NgRxVTUdqRm6V+Vo6lYFfa2Y3Md3TdX/oKa6ApBijh
- jDJRxPH4eIcm4WqiohQC5mzTiadlvEp7518B1XWrlO8wNlMHs+67UcYzTERJ8ALNOGY1cS
- /AL4dweFaGEOimX32ylBwtT/YyGncn8=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=VYKkp6fHZoal2oiYNWaG4icBm491Zje1r86kUs5B3ls=;
+ b=XfXwZ100Apolfa/+2FbEmJDAseq2wxX/d4QQLPhj/NycyKA9MNcGDHIZzqdCdSg0fVLGf+
+ jIR77U38amHlXNSgVS56PYpzJONeQfmhNx6RrB7JKu97VQOegSs9xV3Fh3Py2o2xFe9Mbq
+ xR4mG0XYBxoURJhXtGFNNOryFkPWSYg=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-473-_Zk0_7QuPFuD8eiOzYJShA-1; Tue, 04 Jun 2024 15:07:50 -0400
-X-MC-Unique: _Zk0_7QuPFuD8eiOzYJShA-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-35e7cce4c32so1055328f8f.3
- for <qemu-devel@nongnu.org>; Tue, 04 Jun 2024 12:07:49 -0700 (PDT)
+ us-mta-527-pV7sq-qvPgi-46Mjr1hTQA-1; Tue, 04 Jun 2024 15:07:53 -0400
+X-MC-Unique: pV7sq-qvPgi-46Mjr1hTQA-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-42156093037so1611705e9.1
+ for <qemu-devel@nongnu.org>; Tue, 04 Jun 2024 12:07:53 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717528068; x=1718132868;
+ d=1e100.net; s=20230601; t=1717528072; x=1718132872;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=WFUPapk07PnJ8CLhVhbjjsuC+NoP2UxN6SJb+Hfxl60=;
- b=s4sV7GQAz6FRvhM5r9O+xaE6/WohwmC76c1/sanu8c7zbv9QyWKEROMrg+y/lk6BxK
- qJ+3nJxq3ezQciG0pnAfKRy7BpoiRdorfQvHMeRjuo6cweL4lhXz6c7Xzdebx8J9zxVn
- JlaiCEKv4ZMFrgOvuuJvY2roA1cNJ6UeIgzbodx1gfEBn1ELXXDQ7z5lrxI65E4oukHz
- vste7Os2JwXoiw3cowDY+sd6KcjPclLjDiTEywiF3ARImJMXgTbK+P3ZF/1MZ9Aw0GGn
- S1nYLUgsp2O9eRKSrKONT+AKlDxakXr+cunAm3cW6BydxXYsNd30Czv4KKg0UubaEQyt
- /BJw==
-X-Gm-Message-State: AOJu0YyBVyoTuS+DiEAHTok02P0FnLl/yVpeLJg7bZ1Mu8Jkk5h/D6ux
- w7OQIKs2m7o4m9C97yGSSIhmI9BIWNNSvWOeFrsUiYEaaGwKK5kel01r+L41wKlBCQ0AhJaGN/q
- 1dn3DBJcAo5GZMsSypj5HOwCaxKyQ1j3OWZQegrN68GiMkOJPNL1jBdTrUv+/kzBNfDmxq9/LXo
- CGYl5nvMGeMZEpAS98H7EOcK9PvbC/lQ==
-X-Received: by 2002:a05:6000:d0e:b0:35e:83c3:48cb with SMTP id
- ffacd0b85a97d-35e8ef93fedmr235716f8f.67.1717528068288; 
- Tue, 04 Jun 2024 12:07:48 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEQp0e7dBdyt71188NymBMa3QkPpuGkRfzjcqcU5FZ0eBtRJjlLpDwgNGnYcCtOA4LwbSOC1A==
-X-Received: by 2002:a05:6000:d0e:b0:35e:83c3:48cb with SMTP id
- ffacd0b85a97d-35e8ef93fedmr235694f8f.67.1717528067837; 
- Tue, 04 Jun 2024 12:07:47 -0700 (PDT)
+ bh=VYKkp6fHZoal2oiYNWaG4icBm491Zje1r86kUs5B3ls=;
+ b=MVpXi/2o8KlFgpXkxOi4elKTEIPpsS2eyDL6b0rw2ST9SAlSsl7ythI3LekDy7plJj
+ 9c5fQ+g7v8tBAvFl9i8ulFcRqZWY8N3pSCcuSXKgM0EKHZkylDBG/PSSIad2ffWdVD5h
+ e/ST9jerx2bxE6eKaD1MkBilg/bIRnLD3HvlQeQ51gYTL7MsjEnx/cZ1Fi9nLeDueuqH
+ YCLqk/FwTt+sa5aOl1WWFmWQwSgkdx3RR3gml2SL0L/PkTB2/1jIS7Nf/G1ILg1K/g2k
+ chq8nnIKuuYc1ouVGdG1PjYH2IjRT4i5JagkeXUhpM/IEAXUCe9PvI4afOljft/aYZig
+ cYrg==
+X-Gm-Message-State: AOJu0Yz+ePJVhTm7ZurVYe6bMJ94puVA/NKdVJ9nTx80gVE9iIdkQRhk
+ 2eOXSVX3He/12iqHeklTbLE0Q9kJ/cQ/A+kpjMXZ08jD8qLJS4+rlULMCT6aNk9MueNj0G3FutU
+ HmJXDIHGthj4eghfNiYQYqaQaZNa0AxeB4nIazfc/0g1AaRUOUzjpd/c9AaaZ1Rz0UcELc3q0Jy
+ 9S775KJETvz2Qw7Kg8tNNXOurDaHCRDQ==
+X-Received: by 2002:a05:600c:1da3:b0:419:f9ae:e50 with SMTP id
+ 5b1f17b1804b1-4215634dba3mr3428745e9.37.1717528072159; 
+ Tue, 04 Jun 2024 12:07:52 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHtmf1otv2cfBpSc0kN/2tPZPOjIDE3hj4mgg2t9VZw5P52wHDeIYV7CndRteKV44ug4AObAg==
+X-Received: by 2002:a05:600c:1da3:b0:419:f9ae:e50 with SMTP id
+ 5b1f17b1804b1-4215634dba3mr3428565e9.37.1717528071749; 
+ Tue, 04 Jun 2024 12:07:51 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc7:552:cf5c:2b13:215c:b9df:f231])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-35dd04caf05sm12262706f8f.42.2024.06.04.12.07.45
+ ffacd0b85a97d-35ed8b574e3sm52528f8f.79.2024.06.04.12.07.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 04 Jun 2024 12:07:47 -0700 (PDT)
-Date: Tue, 4 Jun 2024 15:07:44 -0400
+ Tue, 04 Jun 2024 12:07:51 -0700 (PDT)
+Date: Tue, 4 Jun 2024 15:07:48 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, Fan Ni <fan.ni@samsung.com>,
- Svetly Todorov <svetly.todorov@memverge.com>,
- Gregory Price <gregory.price@memverge.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PULL 30/46] hw/mem/cxl_type3: Allow to release extent superset in
- QMP interface
-Message-ID: <ed2a51d1e637171208b119b0d81164da1af7da52.1717527933.git.mst@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Ankit Agrawal <ankita@nvidia.com>, Igor Mammedov <imammedo@redhat.com>,
+ Ani Sinha <anisinha@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>,
+ Laurent Vivier <laurent@vivier.eu>, qemu-trivial@nongnu.org
+Subject: [PULL 31/46] hw/acpi/GI: Fix trivial parameter alignment issue.
+Message-ID: <481a30a72769a5086a0596fb6ebe19d16d2bac77.1717527933.git.mst@redhat.com>
 References: <cover.1717527933.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -103,39 +103,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Fan Ni <fan.ni@samsung.com>
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Before the change, the QMP interface used for add/release DC extents
-only allows to release an extent whose DPA range is contained by a single
-accepted extent in the device.
+Before making additional modification, tidy up this misleading indentation.
 
-With the change, we relax the constraints.  As long as the DPA range of
-the extent is covered by accepted extents, we allow the release.
-
-Tested-by: Svetly Todorov <svetly.todorov@memverge.com>
-Reviewed-by: Gregory Price <gregory.price@memverge.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Fan Ni <fan.ni@samsung.com>
-Message-Id: <20240523174651.1089554-15-nifan.cxl@gmail.com>
+Reviewed-by: Ankit Agrawal <ankita@nvidia.com>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Message-Id: <20240524100507.32106-2-Jonathan.Cameron@huawei.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/mem/cxl_type3.c | 2 +-
+ hw/acpi/acpi_generic_initiator.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
-index 0d18259ec0..5d4a1276be 100644
---- a/hw/mem/cxl_type3.c
-+++ b/hw/mem/cxl_type3.c
-@@ -1947,7 +1947,7 @@ static void qmp_cxl_process_dynamic_capacity_prescriptive(const char *path,
-                            "cannot release extent with pending DPA range");
-                 return;
-             }
--            if (!cxl_extents_contains_dpa_range(&dcd->dc.extents, dpa, len)) {
-+            if (!ct3_test_region_block_backed(dcd, dpa, len)) {
-                 error_setg(errp,
-                            "cannot release extent with non-existing DPA range");
-                 return;
+diff --git a/hw/acpi/acpi_generic_initiator.c b/hw/acpi/acpi_generic_initiator.c
+index 17b9a052f5..18a939b0e5 100644
+--- a/hw/acpi/acpi_generic_initiator.c
++++ b/hw/acpi/acpi_generic_initiator.c
+@@ -132,7 +132,7 @@ static int build_all_acpi_generic_initiators(Object *obj, void *opaque)
+ 
+     dev_handle.segment = 0;
+     dev_handle.bdf = PCI_BUILD_BDF(pci_bus_num(pci_get_bus(pci_dev)),
+-                                               pci_dev->devfn);
++                                   pci_dev->devfn);
+ 
+     build_srat_generic_pci_initiator_affinity(table_data,
+                                               gi->node, &dev_handle);
 -- 
 MST
 
