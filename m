@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E1BB8FAF53
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 11:57:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 706AB8FAF5C
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 11:58:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEQul-0005mW-Ti; Tue, 04 Jun 2024 05:57:11 -0400
+	id 1sEQus-0006MT-68; Tue, 04 Jun 2024 05:57:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sEQuj-0005c6-EG
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 05:57:09 -0400
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sEQup-00069a-BG
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 05:57:15 -0400
+Received: from mail-lf1-x133.google.com ([2a00:1450:4864:20::133])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sEQuh-00026j-RZ
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 05:57:09 -0400
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-35dcff36522so775208f8f.1
- for <qemu-devel@nongnu.org>; Tue, 04 Jun 2024 02:57:07 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sEQun-000272-Mb
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 05:57:15 -0400
+Received: by mail-lf1-x133.google.com with SMTP id
+ 2adb3069b0e04-5295eb47b48so917137e87.1
+ for <qemu-devel@nongnu.org>; Tue, 04 Jun 2024 02:57:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1717495026; x=1718099826; darn=nongnu.org;
+ d=linaro.org; s=google; t=1717495032; x=1718099832; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=IKCb8LNXYSVbebdxNMftRVpPNmizlFVEcNh6n2gVUMA=;
- b=uVEsyXqtdFcCLy4mFlnKWY05yOTrMAbICi8yS5Syorty92KbKJjPj21R6Y9t7Z4gAr
- L+LQi4VgORgQ+VEHF3LfnwFZQdH4GmJkC3IfycVTHrDYJLfDsOWvSVVocwATVqvlftSJ
- 4NCLciTEV91BHI+QZXJcfbsTrAHHfVZ1oi9QW3i7p3hkFvUZ/4PHkVBDEDfFwhBm2hFx
- kts5BWk9fFlengmvPzujjSnJusdSjSzb9HLNnkVxpgzF+yTJAjJ4rHvEwXq/l2z2fte0
- RvjlJUFiPkrYdgfTlWkCUIW5IlU/yuELqy28yLk1ofW9Li4Q8mXB4k3nDENdfXL4jdGV
- PKNQ==
+ bh=ImVmefo1MlwAmY4FNzose8vP9/wMtnxVjazWG/n/+Lw=;
+ b=Iips2Im6vBwTDCb3WLOsaVMwPyunx4KfWRy+1oLXKorwGVn213VOO9u9oluQ2I+MfY
+ Rw4+0cp2pJ2P6gvnlMXxn3cSpy6HB220pKPUglwiU1EPqN3NjM1wFyx7IujrD1G5J1Os
+ 3htD8d1ktaDGm4Gen4jFqm/MkZSuMFfpmMsBA3o8Sx7VCKuueaGXgJVENAs7HF+WoKhC
+ 35lS+0sG9GhzBS3zAzSQqK310k2qT12LKo9MjUePSkvrBc22WxJ1PYbd+Bxf19RTgydX
+ jl200G4uJF9fkF4keDXjTYGB51v2sumtmEKx6X8wbYWlbHx76EBpeiXt5wUNmOzBdI1c
+ RTDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717495026; x=1718099826;
+ d=1e100.net; s=20230601; t=1717495032; x=1718099832;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=IKCb8LNXYSVbebdxNMftRVpPNmizlFVEcNh6n2gVUMA=;
- b=b3wXLGMtPLCXPlqwNQyQfMzmVUnep/x2Rw+SsylSS/jG4RUvPteJl7zdPtzliZJ54Y
- uOKyjrgNJaIvQy2lfdUx8tO9Ze34DAx4sYn2WZBbMhU9JVn31qAHytnGTk7Wij+2yKXe
- Tijs0RgL9v6iTShiibtzrywHwGDr3UxvPJXVRK5c/MAriMPciM5Lio5SP0XnktKmSpju
- QZSc9EnbRbFqJGJr2rLpy+i0ob//mMB4G5X52ckgS91weGl7NbhlRnqd56+lfajBDASZ
- vV9tl2gMteks64qPFh8joJoXsnbkM5IjCrU9eR9OFWn5ziNMbyEFz+w5b+GEQkIuaFot
- klxw==
-X-Gm-Message-State: AOJu0YxcsC0p40rPR4blyzlAHBJxWwuPjvtTTeLgcfZ+ilt+4ZxV++dh
- +fDH6SGSbQBNApjtgm1lEqZdp46Kp7MlxkEBjDobUoj4An09TUaC79CmoRsOWdzWR00+2Jmgj69
- S
-X-Google-Smtp-Source: AGHT+IE8KrpvqisRgdrcfUDOzvij0a2+1NWoxiD2NITeksUXozUz8Emny9VeMDiqSFyqgyrcql9gBg==
-X-Received: by 2002:a5d:5f8b:0:b0:356:c47a:87d2 with SMTP id
- ffacd0b85a97d-35e0f25a5d9mr9190500f8f.6.1717495026208; 
- Tue, 04 Jun 2024 02:57:06 -0700 (PDT)
+ bh=ImVmefo1MlwAmY4FNzose8vP9/wMtnxVjazWG/n/+Lw=;
+ b=JG0tA+dQFfrjmrDzqqfddra1d841qx8wKAQ0qrB1JPQPsAht7lEPQ9Gg5IaZYR2tIT
+ /aKQ3k5tAwOpfcIxT6djskzYprqdz+tmtXviv1wUViVuKdcMbmgPu7DyOGO71rk1vtyj
+ zpUq6plaIFGdfwIqT76/memVrG2F+AjN+0R7/XZRWMsvfBRcQqcDmOTKrRLPRsgDjJrx
+ TjPoTjOo9C9oGdDlajuD+/q1wmqpGQBRTI07wleJn+J8CEEqwApk1rSc+Tca+dP2DI8X
+ PDEZWvYNOLSAE+9YHdX9Y/Zw4UYWeYvo4F0VwhPhqaf/8xVeRdS7QeyTyIqlmKfBLUov
+ YucQ==
+X-Gm-Message-State: AOJu0YxbD6y9k1I5qQkci6DDSMlTINu4vr+nzVtWxoMf7PSjh23w8jh5
+ jhQKgPYbmW+f0bTaLD4f8r0ZusIbN6BNelvhIA0Jvy/VlG+dcy4BLMpeaebdMFZfSSL5yhBoQC6
+ Y
+X-Google-Smtp-Source: AGHT+IEnB+OfoGZGHL7izD1AQ0ApPkEpicQlRTfCoLwEG1OAbzt/sn1ZXy9I33G2SdxSt0XWdH62nQ==
+X-Received: by 2002:ac2:5b5d:0:b0:51d:68fb:5d73 with SMTP id
+ 2adb3069b0e04-52b8956932dmr7798641e87.8.1717495031553; 
+ Tue, 04 Jun 2024 02:57:11 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.159.34])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-35dd04d96f6sm11103296f8f.61.2024.06.04.02.57.05
+ ffacd0b85a97d-35dd04c0de3sm11095383f8f.9.2024.06.04.02.57.10
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 04 Jun 2024 02:57:05 -0700 (PDT)
+ Tue, 04 Jun 2024 02:57:11 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
+Cc: Gerd Hoffmann <kraxel@redhat.com>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 10/32] util/hexdump: Remove ascii parameter from
- qemu_hexdump_line
-Date: Tue,  4 Jun 2024 11:55:46 +0200
-Message-ID: <20240604095609.12285-11-philmd@linaro.org>
+Subject: [PULL 11/32] MAINTAINERS: drop usb maintainership
+Date: Tue,  4 Jun 2024 11:55:47 +0200
+Message-ID: <20240604095609.12285-12-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240604095609.12285-1-philmd@linaro.org>
 References: <20240604095609.12285-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::133;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x133.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,135 +93,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+From: Gerd Hoffmann <kraxel@redhat.com>
 
-Split out asciidump_line as a separate function, local to hexdump.c,
-for use by qemu_hexdump.  Use "%-*s" to generate the alignment
-between the hex and the ascii, rather than explicit spaces.
+Remove myself from usb entries.
+Flip status to "Orphan" for entries which have nobody else listed.
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20240412073346.458116-3-richard.henderson@linaro.org>
+Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
+Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Message-ID: <20240528083858.836262-3-kraxel@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/qemu/cutils.h  |  3 +--
- hw/virtio/vhost-vdpa.c |  2 +-
- util/hexdump.c         | 56 ++++++++++++++++++++++++------------------
- 3 files changed, 34 insertions(+), 27 deletions(-)
+ MAINTAINERS | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/include/qemu/cutils.h b/include/qemu/cutils.h
-index d7715f7a33..c5dea63742 100644
---- a/include/qemu/cutils.h
-+++ b/include/qemu/cutils.h
-@@ -287,8 +287,7 @@ int parse_debug_env(const char *name, int max, int initial);
-  */
- #define QEMU_HEXDUMP_LINE_BYTES 16 /* Number of bytes to dump */
- #define QEMU_HEXDUMP_LINE_LEN 75   /* Number of characters in line */
--void qemu_hexdump_line(char *line, const void *bufptr,
--                       unsigned int len, bool ascii);
-+void qemu_hexdump_line(char *line, const void *bufptr, size_t len);
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 448dc951c5..5bc478f7ff 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -2141,8 +2141,7 @@ F: tests/qtest/fuzz-sdcard-test.c
+ F: tests/qtest/sdhci-test.c
  
- /*
-  * Hexdump a buffer to a file. An optional string prefix is added to every line
-diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
-index f3a86c1a8c..7368b71902 100644
---- a/hw/virtio/vhost-vdpa.c
-+++ b/hw/virtio/vhost-vdpa.c
-@@ -949,7 +949,7 @@ static void vhost_vdpa_dump_config(struct vhost_dev *dev, const uint8_t *config,
+ USB
+-M: Gerd Hoffmann <kraxel@redhat.com>
+-S: Odd Fixes
++S: Orphan
+ F: hw/usb/*
+ F: stubs/usb-dev-stub.c
+ F: tests/qtest/usb-*-test.c
+@@ -2151,7 +2150,6 @@ F: include/hw/usb.h
+ F: include/hw/usb/
  
-     for (b = 0; b < config_len; b += 16) {
-         len = config_len - b;
--        qemu_hexdump_line(line, config + b, len, false);
-+        qemu_hexdump_line(line, config + b, len);
-         trace_vhost_vdpa_dump_config(dev, b, line);
-     }
- }
-diff --git a/util/hexdump.c b/util/hexdump.c
-index 7324e7b126..0f943e31e5 100644
---- a/util/hexdump.c
-+++ b/util/hexdump.c
-@@ -16,49 +16,57 @@
- #include "qemu/osdep.h"
- #include "qemu/cutils.h"
- 
--void qemu_hexdump_line(char *line, const void *bufptr,
--                       unsigned int len, bool ascii)
-+void qemu_hexdump_line(char *line, const void *bufptr, size_t len)
- {
-     const char *buf = bufptr;
--    int i, c;
-+    int i;
- 
-     if (len > QEMU_HEXDUMP_LINE_BYTES) {
-         len = QEMU_HEXDUMP_LINE_BYTES;
-     }
- 
--    for (i = 0; i < QEMU_HEXDUMP_LINE_BYTES; i++) {
-+    for (i = 0; i < len; i++) {
-         if (i != 0 && (i % 4) == 0) {
-             *line++ = ' ';
-         }
--        if (i < len) {
--            line += sprintf(line, " %02x", (unsigned char)buf[i]);
--        } else {
--            line += sprintf(line, "   ");
--        }
--    }
--    if (ascii) {
--        *line++ = ' ';
--        for (i = 0; i < len; i++) {
--            c = buf[i];
--            if (c < ' ' || c > '~') {
--                c = '.';
--            }
--            *line++ = c;
--        }
-+        line += sprintf(line, " %02x", (unsigned char)buf[i]);
-     }
-     *line = '\0';
- }
- 
-+static void asciidump_line(char *line, const void *bufptr, size_t len)
-+{
-+    const char *buf = bufptr;
-+
-+    for (size_t i = 0; i < len; i++) {
-+        char c = buf[i];
-+
-+        if (c < ' ' || c > '~') {
-+            c = '.';
-+        }
-+        *line++ = c;
-+    }
-+    *line = '\0';
-+}
-+
-+#define QEMU_HEXDUMP_LINE_WIDTH \
-+    (QEMU_HEXDUMP_LINE_BYTES * 2 + QEMU_HEXDUMP_LINE_BYTES / 4)
-+
- void qemu_hexdump(FILE *fp, const char *prefix,
-                   const void *bufptr, size_t size)
- {
--    unsigned int b, len;
-     char line[QEMU_HEXDUMP_LINE_LEN];
-+    char ascii[QEMU_HEXDUMP_LINE_BYTES + 1];
-+    size_t b, len;
- 
--    for (b = 0; b < size; b += QEMU_HEXDUMP_LINE_BYTES) {
--        len = size - b;
--        qemu_hexdump_line(line, bufptr + b, len, true);
--        fprintf(fp, "%s: %04x: %s\n", prefix, b, line);
-+    for (b = 0; b < size; b += len) {
-+        len = MIN(size - b, QEMU_HEXDUMP_LINE_BYTES);
-+
-+        qemu_hexdump_line(line, bufptr + b, len);
-+        asciidump_line(ascii, bufptr + b, len);
-+
-+        fprintf(fp, "%s: %04zx: %-*s %s\n",
-+                prefix, b, QEMU_HEXDUMP_LINE_WIDTH, line, ascii);
-     }
- 
- }
+ USB (serial adapter)
+-R: Gerd Hoffmann <kraxel@redhat.com>
+ M: Samuel Thibault <samuel.thibault@ens-lyon.org>
+ S: Maintained
+ F: hw/usb/dev-serial.c
 -- 
 2.41.0
 
