@@ -2,75 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC2DE8FAB3C
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 08:49:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 938E08FAB15
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 08:44:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sENuA-0001tT-KO; Tue, 04 Jun 2024 02:44:22 -0400
+	id 1sENuJ-0001vt-DF; Tue, 04 Jun 2024 02:44:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sENu8-0001tE-Dw
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:44:20 -0400
+ id 1sENuD-0001vN-9u
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:44:25 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sENu6-0007DE-Ce
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:44:20 -0400
+ id 1sENuB-0007DW-Cq
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:44:25 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717483457;
+ s=mimecast20190719; t=1717483462;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:  content-type:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=5tfVh19Jz3v9eHuHwUJ7uxqcc0LIdrHQjN+tlfZic74=;
- b=BWyocOEkFaKiyaEO7vEWhCkRbvd/+69FVl4DE9IqhSWB+idVQN3z4rs7qcMNwz1wDpfxWf
- fdkAlJcUnt215RoKJzn8yUMDEFWkI7V9oZzIbCdfVfnFx7HcZIzItLbUZfG4fwqiScH2GY
- BtOBPLaT3ZiWLED8dAtmB8Wb7kFbIFI=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=iKT6IARhOSF18hfyR8oDplmJ8TdlS5OJky1bfHLBpe8=;
+ b=AvXrPEvDyWE58VTmDWNl02R6ORevXqcpJvBHUczoQUosLz4xEyLGZBhLMKTXVDzR1Q5JQh
+ n5JkZUYBY79EGXOmWXOXZ9s6sfW8GqyLrLRZXl1tuRAtKmB5Mc9W/tmw7YdPp6nPLCxJ4E
+ N68FEi9+jtWjlY32oAsqOfzIluUfJ2E=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-29-z7GRM_-SNwK5lmnLWHGaFA-1; Tue, 04 Jun 2024 02:44:15 -0400
-X-MC-Unique: z7GRM_-SNwK5lmnLWHGaFA-1
-Received: by mail-ed1-f70.google.com with SMTP id
- 4fb4d7f45d1cf-57a22ad0d04so935534a12.3
- for <qemu-devel@nongnu.org>; Mon, 03 Jun 2024 23:44:15 -0700 (PDT)
+ us-mta-223-2tHstuVDMKaTewRlsNSNqw-1; Tue, 04 Jun 2024 02:44:18 -0400
+X-MC-Unique: 2tHstuVDMKaTewRlsNSNqw-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-a68eb60d73cso16095266b.2
+ for <qemu-devel@nongnu.org>; Mon, 03 Jun 2024 23:44:17 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717483453; x=1718088253;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=5tfVh19Jz3v9eHuHwUJ7uxqcc0LIdrHQjN+tlfZic74=;
- b=volxz6fxApL84R96oO2Yq3M2ATG1fAwo/vNKPUbghX70505AfC7Bx9h35qatLOtntQ
- 47Bi4FaGuVrdWfmRNJai4cxkFKWzWgL5tC/PC0gwWDn1kMrUj0CGdZnnfCCuu/0rUK6Q
- c5NiROCY31wSfEQdmmxvQZVyajd+FoYxpe0I3izrRRuNxKUVNrNEEHfTZLbxPFj9uLkq
- 8K+GVdyO0AujCKQhjWXeek6gMjqh2MszJqT3GjorY3O9GnCeiokQbgFoPIQR1X/y6R4I
- cPsr5QeopDsbwB0NIwkzLhJZvrQg80pNDVO1PCMdAFL5ia2NlA5fOjhX7F7OPAlvdaQm
- /KOQ==
-X-Gm-Message-State: AOJu0Ywj68RPQqP805vulJ4VKWakn2RxMuVt/EgxxrEZuoNfituqDJ4R
- uzvQ45iAvuRav2kZgAEIflCpOH5ZhBNdohKcuA9i8GbqNPHceA2qGv9Y5JbIq84/bjWWEWt8Kq/
- u9NnVcQsYtFHDtUfi3Trob87wCbuzovF6niHLTH10DWud3yk6QKICQ1zn8883eSfBWun8yzqXzR
- qnxfgxlLfYotrwW8sOwSBY5CVv4YotK4WKiYrt
-X-Received: by 2002:a50:d756:0:b0:57a:6eb4:101a with SMTP id
- 4fb4d7f45d1cf-57a6eb41079mr2230150a12.39.1717483453218; 
- Mon, 03 Jun 2024 23:44:13 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IECbXUT/WrwkW1vU3oOmCctUVjTEnHyiN7Lv6Lm7l2HRfUQVotXiLegdYxXfEV+BxgApe6ObQ==
-X-Received: by 2002:a50:d756:0:b0:57a:6eb4:101a with SMTP id
- 4fb4d7f45d1cf-57a6eb41079mr2230139a12.39.1717483452624; 
- Mon, 03 Jun 2024 23:44:12 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1717483456; x=1718088256;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=iKT6IARhOSF18hfyR8oDplmJ8TdlS5OJky1bfHLBpe8=;
+ b=aiSrYuhjznulTkbTfAAduPWWru/pR3nCrXNeFNznXEaNCR0oV+m48+3OxEOe6T+3vF
+ o+puOUFgRmq8jTXDWldazJ2zS6Oynhq+7/ALwAimLMaHbh6Dzuss46DK5yqbjWjD/D8e
+ 45jyvpjq1UG69uqu5ctYtrOG8XN7+BOSfbMfA2mafev8eaE0R4NuTF8HKYBFVz9dgplC
+ w4U5Wlx5HC3F3iq4cahEZFbl5PP9o/364o6m+SHpyP8S7UFcBn84sIHXzwiK9bSxvxPl
+ fRhZdLuV5EhT+J0fyxJbpcr8vdh6iEs6L7O1hrmouqvhq4LqTdEYGNuGRAiLxGl0Q9I7
+ YagA==
+X-Gm-Message-State: AOJu0YyZXSj74TnqEzWO9eaNpi6SY9f1I4/Ex1e1ATdksyLuVS6TPw2l
+ fRFNiV3PitpW6Ua18wyqv2D5kaY5d0TP+PCPvOC0e+Shdmf4n+VOlj4HtjJICZzxfJS/ZupoyjI
+ 07VWGIYlxrpQ1f/TCu8G9JeA7BSNbSMcFbVnhKmRO/Qi04qBaZSB2fs+fndqF4nemIHFnfxsR8h
+ xCEvaOvPzHBKDBOWK2Jxh62BBMTu6PCv8bbpfd
+X-Received: by 2002:a17:906:dfc1:b0:a68:bdab:48e4 with SMTP id
+ a640c23a62f3a-a68bdab4adcmr487512066b.1.1717483456421; 
+ Mon, 03 Jun 2024 23:44:16 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHWNDABUKVfnf4FRvg8m/OJxoGDEaFsZiCwYDzgItLe5ZtqQxkAe27FYwRMhjA3O2gFdNe4zg==
+X-Received: by 2002:a17:906:dfc1:b0:a68:bdab:48e4 with SMTP id
+ a640c23a62f3a-a68bdab4adcmr487510666b.1.1717483455699; 
+ Mon, 03 Jun 2024 23:44:15 -0700 (PDT)
 Received: from avogadro.local ([151.81.115.112])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-57a31bb83f0sm6688651a12.35.2024.06.03.23.44.12
+ a640c23a62f3a-a67e6f02e45sm587182366b.29.2024.06.03.23.44.14
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Jun 2024 23:44:12 -0700 (PDT)
+ Mon, 03 Jun 2024 23:44:14 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 00/45] mostly i386 patches for 2024-06-04
-Date: Tue,  4 Jun 2024 08:43:24 +0200
-Message-ID: <20240604064409.957105-1-pbonzini@redhat.com>
+Subject: [PULL 01/45] virtio-blk: remove SCSI passthrough functionality
+Date: Tue,  4 Jun 2024 08:43:25 +0200
+Message-ID: <20240604064409.957105-2-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.1
+In-Reply-To: <20240604064409.957105-1-pbonzini@redhat.com>
+References: <20240604064409.957105-1-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
@@ -98,138 +101,289 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 3b2fe44bb7f605f179e5e7feb2c13c2eb3abbb80:
+The legacy SCSI passthrough functionality has never been enabled for
+VIRTIO 1.0 and was deprecated more than four years ago.
 
-  Merge tag 'pull-request-2024-05-29' of https://gitlab.com/thuth/qemu into staging (2024-05-29 08:38:20 -0700)
+Get rid of it---almost, because QEMU is advertising it unconditionally
+for legacy virtio-blk devices.  Just parse the header and return a
+nonzero status.
 
-are available in the Git repository at:
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ docs/about/deprecated.rst       |  10 --
+ docs/about/removed-features.rst |   8 ++
+ hw/block/virtio-blk.c           | 166 +++-----------------------------
+ hw/core/machine.c               |   2 -
+ 4 files changed, 19 insertions(+), 167 deletions(-)
 
-  https://gitlab.com/bonzini/qemu.git tags/for-upstream
-
-for you to fetch changes up to ba849076b6fc2290275ce7491547f6ae831cd2aa:
-
-  hw/i386: Add support for loading BIOS using guest_memfd (2024-06-04 08:40:46 +0200)
-
-----------------------------------------------------------------
-* virtio-blk: remove SCSI passthrough functionality
-* require x86-64-v2 baseline ISA
-* SEV-SNP host support
-* fix xsave.flat with TCG
-* fixes for CPUID checks done by TCG
-
-----------------------------------------------------------------
-Brijesh Singh (6):
-      i386/sev: Introduce 'sev-snp-guest' object
-      i386/sev: Add the SNP launch start context
-      i386/sev: Add handling to encrypt/finalize guest launch data
-      hw/i386/sev: Add function to get SEV metadata from OVMF header
-      i386/sev: Add support for populating OVMF metadata pages
-      hw/i386/sev: Add support to encrypt BIOS when SEV-SNP is enabled
-
-Dov Murik (3):
-      i386/sev: Extract build_kernel_loader_hashes
-      i386/sev: Reorder struct declarations
-      i386/sev: Allow measured direct kernel boot on SNP
-
-Michael Roth (11):
-      i386/sev: Introduce "sev-common" type to encapsulate common SEV state
-      i386/sev: Add a sev_snp_enabled() helper
-      i386/cpu: Set SEV-SNP CPUID bit when SNP enabled
-      i386/sev: Don't return launch measurements for SEV-SNP guests
-      i386/sev: Update query-sev QAPI format to handle SEV-SNP
-      i386/sev: Set CPU state to protected once SNP guest payload is finalized
-      i386/sev: Add support for SNP CPUID validation
-      i386/kvm: Add KVM_EXIT_HYPERCALL handling for KVM_HC_MAP_GPA_RANGE
-      i386/sev: Enable KVM_HC_MAP_GPA_RANGE hcall for SNP guests
-      hw/i386/sev: Use guest_memfd for legacy ROMs
-      hw/i386: Add support for loading BIOS using guest_memfd
-
-Pankaj Gupta (7):
-      linux-headers: Update to current kvm/next
-      i386/sev: Replace error_report with error_setg
-      i386/sev: Move sev_launch_update to separate class method
-      i386/sev: Move sev_launch_finish to separate class method
-      i386/sev: Add sev_kvm_init() override for SEV class
-      i386/sev: Add snp_kvm_init() override for SNP class
-      i386/sev: Invoke launch_updata_data() for SNP class
-
-Paolo Bonzini (14):
-      virtio-blk: remove SCSI passthrough functionality
-      host/i386: nothing looks at CPUINFO_SSE4
-      meson: assume x86-64-v2 baseline ISA
-      host/i386: assume presence of CMOV
-      host/i386: assume presence of SSE2
-      host/i386: assume presence of SSSE3
-      host/i386: assume presence of POPCNT
-      target/i386: fix xsave.flat from kvm-unit-tests
-      update-linux-headers: fix forwarding to asm-generic headers
-      update-linux-headers: move pvpanic.h to correct directory
-      update-linux-headers: import linux/kvm_para.h header
-      machine: allow early use of machine_require_guest_memfd
-      i386/sev: Add a class method to determine KVM VM type for SNP guests
-      i386/sev: Invoke launch_updata_data() for SEV class
-
-Xiaoyao Li (1):
-      memory: Introduce memory_region_init_ram_guest_memfd()
-
-Xinyu Li (2):
-      target/i386: fix SSE and SSE2 feature check
-      target/i386: fix memory opsize for Mov to/from Seg
-
-Zhao Liu (1):
-      target/i386/tcg: Fix RDPID feature check
-
- docs/about/deprecated.rst                          |   10 -
- docs/about/removed-features.rst                    |    8 +
- docs/system/i386/amd-memory-encryption.rst         |   70 +-
- meson.build                                        |   10 +-
- qapi/misc-target.json                              |   72 +-
- qapi/qom.json                                      |   98 +-
- host/include/i386/host/cpuinfo.h                   |    4 -
- include/exec/confidential-guest-support.h          |    5 +
- include/exec/memory.h                              |    6 +
- include/hw/boards.h                                |    1 -
- include/hw/i386/pc.h                               |   28 +
- include/hw/i386/x86.h                              |    2 +-
- include/standard-headers/linux/kvm_para.h          |   38 +
- include/standard-headers/{linux => misc}/pvpanic.h |    0
- linux-headers/asm-loongarch/kvm.h                  |    4 +
- linux-headers/asm-riscv/kvm.h                      |    1 +
- linux-headers/asm-x86/kvm.h                        |   52 +-
- linux-headers/asm-x86/kvm_para.h                   |    1 +
- linux-headers/linux/kvm_para.h                     |    2 +
- linux-headers/linux/vhost.h                        |   15 +-
- target/i386/kvm/kvm_i386.h                         |    1 +
- target/i386/sev.h                                  |   13 +-
- target/i386/tcg/decode-new.h                       |    3 +
- tcg/i386/tcg-target.h                              |    5 +-
- hw/block/virtio-blk.c                              |  166 +-
- hw/core/machine.c                                  |    4 +-
- hw/i386/pc.c                                       |   14 +-
- hw/i386/pc_sysfw.c                                 |   35 +-
- hw/i386/x86-common.c                               |   19 +-
- hw/misc/pvpanic-isa.c                              |    2 +-
- hw/misc/pvpanic-pci.c                              |    2 +-
- hw/misc/pvpanic.c                                  |    2 +-
- system/memory.c                                    |   24 +
- target/i386/cpu.c                                  |    1 +
- target/i386/kvm/kvm.c                              |   56 +
- target/i386/sev-sysemu-stub.c                      |    6 +-
- target/i386/sev.c                                  | 1581 +++++++++++++++-----
- target/i386/tcg/fpu_helper.c                       |    5 +
- target/i386/tcg/translate.c                        |    2 +-
- util/bufferiszero.c                                |    4 +-
- util/cpuinfo-i386.c                                |    8 +-
- target/i386/tcg/decode-new.c.inc                   |   17 +-
- tcg/i386/tcg-target.c.inc                          |   15 +-
- scripts/update-linux-headers.sh                    |   37 +-
- target/i386/kvm/trace-events                       |    1 +
- target/i386/trace-events                           |    3 +
- 46 files changed, 1844 insertions(+), 609 deletions(-)
- create mode 100644 include/standard-headers/linux/kvm_para.h
- rename include/standard-headers/{linux => misc}/pvpanic.h (100%)
- create mode 100644 linux-headers/asm-x86/kvm_para.h
- create mode 100644 linux-headers/linux/kvm_para.h
+diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+index 40585ca7d55..4980d721cf4 100644
+--- a/docs/about/deprecated.rst
++++ b/docs/about/deprecated.rst
+@@ -296,16 +296,6 @@ Device options
+ Emulated device options
+ '''''''''''''''''''''''
+ 
+-``-device virtio-blk,scsi=on|off`` (since 5.0)
+-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+-
+-The virtio-blk SCSI passthrough feature is a legacy VIRTIO feature.  VIRTIO 1.0
+-and later do not support it because the virtio-scsi device was introduced for
+-full SCSI support.  Use virtio-scsi instead when SCSI passthrough is required.
+-
+-Note this also applies to ``-device virtio-blk-pci,scsi=on|off``, which is an
+-alias.
+-
+ ``-device nvme-ns,eui64-default=on|off`` (since 7.1)
+ ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ 
+diff --git a/docs/about/removed-features.rst b/docs/about/removed-features.rst
+index fba0cfb0b02..ae6269eb562 100644
+--- a/docs/about/removed-features.rst
++++ b/docs/about/removed-features.rst
+@@ -510,6 +510,14 @@ than zero.
+ 
+ Removed along with the ``compression`` migration capability.
+ 
++``-device virtio-blk,scsi=on|off`` (since 9.1)
++''''''''''''''''''''''''''''''''''''''''''''''
++
++The virtio-blk SCSI passthrough feature is a legacy VIRTIO feature.  VIRTIO 1.0
++and later do not support it because the virtio-scsi device was introduced for
++full SCSI support.  Use virtio-scsi instead when SCSI passthrough is required.
++
++
+ User-mode emulator command line arguments
+ -----------------------------------------
+ 
+diff --git a/hw/block/virtio-blk.c b/hw/block/virtio-blk.c
+index bb86e65f652..73bdfd6122a 100644
+--- a/hw/block/virtio-blk.c
++++ b/hw/block/virtio-blk.c
+@@ -172,57 +172,6 @@ static void virtio_blk_discard_write_zeroes_complete(void *opaque, int ret)
+     virtio_blk_free_request(req);
+ }
+ 
+-#ifdef __linux__
+-
+-typedef struct {
+-    VirtIOBlockReq *req;
+-    struct sg_io_hdr hdr;
+-} VirtIOBlockIoctlReq;
+-
+-static void virtio_blk_ioctl_complete(void *opaque, int status)
+-{
+-    VirtIOBlockIoctlReq *ioctl_req = opaque;
+-    VirtIOBlockReq *req = ioctl_req->req;
+-    VirtIOBlock *s = req->dev;
+-    VirtIODevice *vdev = VIRTIO_DEVICE(s);
+-    struct virtio_scsi_inhdr *scsi;
+-    struct sg_io_hdr *hdr;
+-
+-    scsi = (void *)req->elem.in_sg[req->elem.in_num - 2].iov_base;
+-
+-    if (status) {
+-        status = VIRTIO_BLK_S_UNSUPP;
+-        virtio_stl_p(vdev, &scsi->errors, 255);
+-        goto out;
+-    }
+-
+-    hdr = &ioctl_req->hdr;
+-    /*
+-     * From SCSI-Generic-HOWTO: "Some lower level drivers (e.g. ide-scsi)
+-     * clear the masked_status field [hence status gets cleared too, see
+-     * block/scsi_ioctl.c] even when a CHECK_CONDITION or COMMAND_TERMINATED
+-     * status has occurred.  However they do set DRIVER_SENSE in driver_status
+-     * field. Also a (sb_len_wr > 0) indicates there is a sense buffer.
+-     */
+-    if (hdr->status == 0 && hdr->sb_len_wr > 0) {
+-        hdr->status = CHECK_CONDITION;
+-    }
+-
+-    virtio_stl_p(vdev, &scsi->errors,
+-                 hdr->status | (hdr->msg_status << 8) |
+-                 (hdr->host_status << 16) | (hdr->driver_status << 24));
+-    virtio_stl_p(vdev, &scsi->residual, hdr->resid);
+-    virtio_stl_p(vdev, &scsi->sense_len, hdr->sb_len_wr);
+-    virtio_stl_p(vdev, &scsi->data_len, hdr->dxfer_len);
+-
+-out:
+-    virtio_blk_req_complete(req, status);
+-    virtio_blk_free_request(req);
+-    g_free(ioctl_req);
+-}
+-
+-#endif
+-
+ static VirtIOBlockReq *virtio_blk_get_request(VirtIOBlock *s, VirtQueue *vq)
+ {
+     VirtIOBlockReq *req = virtqueue_pop(vq, sizeof(VirtIOBlockReq));
+@@ -233,20 +182,14 @@ static VirtIOBlockReq *virtio_blk_get_request(VirtIOBlock *s, VirtQueue *vq)
+     return req;
+ }
+ 
+-static int virtio_blk_handle_scsi_req(VirtIOBlockReq *req)
++static void virtio_blk_handle_scsi(VirtIOBlockReq *req)
+ {
+-    int status = VIRTIO_BLK_S_OK;
+-    struct virtio_scsi_inhdr *scsi = NULL;
++    int status;
++    struct virtio_scsi_inhdr *scsi;
+     VirtIOBlock *blk = req->dev;
+     VirtIODevice *vdev = VIRTIO_DEVICE(blk);
+     VirtQueueElement *elem = &req->elem;
+ 
+-#ifdef __linux__
+-    int i;
+-    VirtIOBlockIoctlReq *ioctl_req;
+-    BlockAIOCB *acb;
+-#endif
+-
+     /*
+      * We require at least one output segment each for the virtio_blk_outhdr
+      * and the SCSI command block.
+@@ -262,95 +205,16 @@ static int virtio_blk_handle_scsi_req(VirtIOBlockReq *req)
+     /*
+      * The scsi inhdr is placed in the second-to-last input segment, just
+      * before the regular inhdr.
++     *
++     * Just put anything nonzero so that the ioctl fails in the guest.
+      */
+     scsi = (void *)elem->in_sg[elem->in_num - 2].iov_base;
+-
+-    if (!virtio_has_feature(blk->host_features, VIRTIO_BLK_F_SCSI)) {
+-        status = VIRTIO_BLK_S_UNSUPP;
+-        goto fail;
+-    }
+-
+-    /*
+-     * No support for bidirection commands yet.
+-     */
+-    if (elem->out_num > 2 && elem->in_num > 3) {
+-        status = VIRTIO_BLK_S_UNSUPP;
+-        goto fail;
+-    }
+-
+-#ifdef __linux__
+-    ioctl_req = g_new0(VirtIOBlockIoctlReq, 1);
+-    ioctl_req->req = req;
+-    ioctl_req->hdr.interface_id = 'S';
+-    ioctl_req->hdr.cmd_len = elem->out_sg[1].iov_len;
+-    ioctl_req->hdr.cmdp = elem->out_sg[1].iov_base;
+-    ioctl_req->hdr.dxfer_len = 0;
+-
+-    if (elem->out_num > 2) {
+-        /*
+-         * If there are more than the minimally required 2 output segments
+-         * there is write payload starting from the third iovec.
+-         */
+-        ioctl_req->hdr.dxfer_direction = SG_DXFER_TO_DEV;
+-        ioctl_req->hdr.iovec_count = elem->out_num - 2;
+-
+-        for (i = 0; i < ioctl_req->hdr.iovec_count; i++) {
+-            ioctl_req->hdr.dxfer_len += elem->out_sg[i + 2].iov_len;
+-        }
+-
+-        ioctl_req->hdr.dxferp = elem->out_sg + 2;
+-
+-    } else if (elem->in_num > 3) {
+-        /*
+-         * If we have more than 3 input segments the guest wants to actually
+-         * read data.
+-         */
+-        ioctl_req->hdr.dxfer_direction = SG_DXFER_FROM_DEV;
+-        ioctl_req->hdr.iovec_count = elem->in_num - 3;
+-        for (i = 0; i < ioctl_req->hdr.iovec_count; i++) {
+-            ioctl_req->hdr.dxfer_len += elem->in_sg[i].iov_len;
+-        }
+-
+-        ioctl_req->hdr.dxferp = elem->in_sg;
+-    } else {
+-        /*
+-         * Some SCSI commands don't actually transfer any data.
+-         */
+-        ioctl_req->hdr.dxfer_direction = SG_DXFER_NONE;
+-    }
+-
+-    ioctl_req->hdr.sbp = elem->in_sg[elem->in_num - 3].iov_base;
+-    ioctl_req->hdr.mx_sb_len = elem->in_sg[elem->in_num - 3].iov_len;
+-
+-    acb = blk_aio_ioctl(blk->blk, SG_IO, &ioctl_req->hdr,
+-                        virtio_blk_ioctl_complete, ioctl_req);
+-    if (!acb) {
+-        g_free(ioctl_req);
+-        status = VIRTIO_BLK_S_UNSUPP;
+-        goto fail;
+-    }
+-    return -EINPROGRESS;
+-#else
+-    abort();
+-#endif
++    virtio_stl_p(vdev, &scsi->errors, 255);
++    status = VIRTIO_BLK_S_UNSUPP;
+ 
+ fail:
+-    /* Just put anything nonzero so that the ioctl fails in the guest.  */
+-    if (scsi) {
+-        virtio_stl_p(vdev, &scsi->errors, 255);
+-    }
+-    return status;
+-}
+-
+-static void virtio_blk_handle_scsi(VirtIOBlockReq *req)
+-{
+-    int status;
+-
+-    status = virtio_blk_handle_scsi_req(req);
+-    if (status != -EINPROGRESS) {
+-        virtio_blk_req_complete(req, status);
+-        virtio_blk_free_request(req);
+-    }
++    virtio_blk_req_complete(req, status);
++    virtio_blk_free_request(req);
+ }
+ 
+ static inline void submit_requests(VirtIOBlock *s, MultiReqBuffer *mrb,
+@@ -1379,13 +1243,9 @@ static uint64_t virtio_blk_get_features(VirtIODevice *vdev, uint64_t features,
+     virtio_add_feature(&features, VIRTIO_BLK_F_GEOMETRY);
+     virtio_add_feature(&features, VIRTIO_BLK_F_TOPOLOGY);
+     virtio_add_feature(&features, VIRTIO_BLK_F_BLK_SIZE);
+-    if (virtio_has_feature(features, VIRTIO_F_VERSION_1)) {
+-        if (virtio_has_feature(s->host_features, VIRTIO_BLK_F_SCSI)) {
+-            error_setg(errp, "Please set scsi=off for virtio-blk devices in order to use virtio 1.0");
+-            return 0;
+-        }
+-    } else {
++    if (!virtio_has_feature(features, VIRTIO_F_VERSION_1)) {
+         virtio_clear_feature(&features, VIRTIO_F_ANY_LAYOUT);
++        /* Added for historical reasons, removing it could break migration.  */
+         virtio_add_feature(&features, VIRTIO_BLK_F_SCSI);
+     }
+ 
+@@ -2132,10 +1992,6 @@ static Property virtio_blk_properties[] = {
+     DEFINE_PROP_STRING("serial", VirtIOBlock, conf.serial),
+     DEFINE_PROP_BIT64("config-wce", VirtIOBlock, host_features,
+                       VIRTIO_BLK_F_CONFIG_WCE, true),
+-#ifdef __linux__
+-    DEFINE_PROP_BIT64("scsi", VirtIOBlock, host_features,
+-                      VIRTIO_BLK_F_SCSI, false),
+-#endif
+     DEFINE_PROP_BIT("request-merging", VirtIOBlock, conf.request_merging, 0,
+                     true),
+     DEFINE_PROP_UINT16("num-queues", VirtIOBlock, conf.num_queues,
+diff --git a/hw/core/machine.c b/hw/core/machine.c
+index 8087026b45d..17292b13e62 100644
+--- a/hw/core/machine.c
++++ b/hw/core/machine.c
+@@ -265,8 +265,6 @@ GlobalProperty hw_compat_2_5[] = {
+ const size_t hw_compat_2_5_len = G_N_ELEMENTS(hw_compat_2_5);
+ 
+ GlobalProperty hw_compat_2_4[] = {
+-    /* Optional because the 'scsi' property is Linux-only */
+-    { "virtio-blk-device", "scsi", "true", .optional = true },
+     { "e1000", "extra_mac_registers", "off" },
+     { "virtio-pci", "x-disable-pcie", "on" },
+     { "virtio-pci", "migrate-extra", "off" },
 -- 
 2.45.1
 
