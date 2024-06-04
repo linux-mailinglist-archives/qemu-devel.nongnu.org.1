@@ -2,61 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C3D48FA8DC
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 05:47:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BA428FA8EC
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 06:01:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEL8z-0005ya-Cv; Mon, 03 Jun 2024 23:47:29 -0400
+	id 1sELLg-0002a6-2N; Tue, 04 Jun 2024 00:00:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sEL8u-0005sN-1F; Mon, 03 Jun 2024 23:47:24 -0400
-Received: from mgamail.intel.com ([192.198.163.9])
+ id 1sELLb-0002ZW-DO
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 00:00:33 -0400
+Received: from mgamail.intel.com ([192.198.163.15])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sEL8s-0002pm-Ds; Mon, 03 Jun 2024 23:47:23 -0400
+ id 1sELLY-0007tW-AM
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 00:00:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1717472842; x=1749008842;
+ t=1717473628; x=1749009628;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=git2OT0UIEDtb/bX8lyOcRRkdxqRgtAdhkuc7Y1gais=;
- b=NivGlJlLLElCuHmj2wzVIxXwN2RPicGFubT2Es8oDkcvaGrrxIX1wmdx
- 5cBEWaoDV6Xp3/98WNUQhg0esLhKQC4HDERD9UeXM1ICqBuE6STES7NX3
- aSZIck6IbTsOW1JOGP/pdNb5VWE+019MvjLOKm9WnwKgGOJMOsk0iyuwa
- p9FwTreMyManAVvdDmbARedyYhKgoXM2//OVS4171riLtDMqxLh5jUrqP
- YvoMt7AzN1cr84cNDaJMvKDvTEutVUh7BAI7bwLYG1/6MIBd4oEruWmPS
- ZBkamFtfWUwvwx31oSJD7uWrULVE9IgU1c+eCZBFagCnW8CNkZYkSoXbB w==;
-X-CSE-ConnectionGUID: 1c/WfEGQS1S05jHZe9GHWQ==
-X-CSE-MsgGUID: cgEqoCC1TAaOvxW7kXZaMw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11092"; a="24652026"
-X-IronPort-AV: E=Sophos;i="6.08,213,1712646000"; d="scan'208";a="24652026"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Jun 2024 20:47:20 -0700
-X-CSE-ConnectionGUID: 962IT0q2S0qNZwHf4r4/iQ==
-X-CSE-MsgGUID: odMLjDu0Sc2n9HqEePWBSA==
+ bh=U9gNdv+NByTLimtreMfD1AOf3Ii9CqGhRkRMOnayw8g=;
+ b=RFPyVetrBqTOEXy9a6rdQit7H1fXrVDXHsb172y2vhd2ISZzFFAnS9Y0
+ j6lSiOV058cwJiSAhcLmruPnVv3/Np91AKmof7GFW8Lg1eCSWOY6/YGUs
+ 2+MB6feswvSvjvqUWF9l4G+JzHuSiPnC3H1kMEomhVB7E87GiSV8UEQwP
+ JQejRhdySzhwPCG5CyujfSZvekjraMHQykoSEoKsJRWSIXWucJU5iW5wK
+ pQMU++zBzq4J9v8vktiZWRTw1TYQ95OlHrF6gq4d3vvcNtsRH/mLnXMvq
+ lqo4CUB8KawpsxXP09p03SdadaIAO+h6in+Gu8fEehURUDeiIUO3qF8r9 g==;
+X-CSE-ConnectionGUID: g3AYTFjQT/S9RQuns5ASEw==
+X-CSE-MsgGUID: b1AjfUYvS9CJKORoaLZ/zg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11092"; a="14182104"
+X-IronPort-AV: E=Sophos;i="6.08,213,1712646000"; d="scan'208";a="14182104"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Jun 2024 21:00:10 -0700
+X-CSE-ConnectionGUID: 70+xPaqqQqmNVaEeB6JbEg==
+X-CSE-MsgGUID: 5Jmt97LJRdyelzj8pWF3EQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,213,1712646000"; d="scan'208";a="37157855"
+X-IronPort-AV: E=Sophos;i="6.08,213,1712646000"; d="scan'208";a="36969682"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.36])
- by orviesa009.jf.intel.com with ESMTP; 03 Jun 2024 20:47:17 -0700
-Date: Tue, 4 Jun 2024 12:02:43 +0800
+ by fmviesa007.fm.intel.com with ESMTP; 03 Jun 2024 21:00:08 -0700
+Date: Tue, 4 Jun 2024 12:15:34 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
-To: Zide Chen <zide.chen@intel.com>
-Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, mst@redhat.com,
- thuth@redhat.com, cfontana@suse.de, xiaoyao.li@intel.com,
- qemu-trivial@nongnu.org, seanjc@google.com
-Subject: Re: [PATCH V3 2/2] target/i386: Advertise MWAIT iff host supports
-Message-ID: <Zl6R47mj8T7nlWMc@intel.com>
-References: <20240604000222.75065-1-zide.chen@intel.com>
- <20240604000222.75065-3-zide.chen@intel.com>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, Thomas Huth <thuth@redhat.com>,
+ qemu-devel@nongnu.org
+Subject: Re: [PATCH] hw/core: Rename CpuTopology to CPUTopology
+Message-ID: <Zl6U5n+QeEAiCBBv@intel.com>
+References: <20240527131837.2630961-1-zhao1.liu@intel.com>
+ <87sexus0m0.fsf@pond.sub.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240604000222.75065-3-zide.chen@intel.com>
-Received-SPF: pass client-ip=192.198.163.9; envelope-from=zhao1.liu@intel.com;
+In-Reply-To: <87sexus0m0.fsf@pond.sub.org>
+Received-SPF: pass client-ip=192.198.163.15; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -43
 X-Spam_score: -4.4
@@ -80,46 +84,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jun 03, 2024 at 05:02:22PM -0700, Zide Chen wrote:
-> Date: Mon, 3 Jun 2024 17:02:22 -0700
-> From: Zide Chen <zide.chen@intel.com>
-> Subject: [PATCH V3 2/2] target/i386: Advertise MWAIT iff host supports
-> X-Mailer: git-send-email 2.34.1
+On Mon, Jun 03, 2024 at 01:54:15PM +0200, Markus Armbruster wrote:
+> Date: Mon, 03 Jun 2024 13:54:15 +0200
+> From: Markus Armbruster <armbru@redhat.com>
+> Subject: Re: [PATCH] hw/core: Rename CpuTopology to CPUTopology
 > 
-> host_cpu_realizefn() sets CPUID_EXT_MONITOR without consulting host/KVM
-> capabilities. This may cause problems:
+> Zhao Liu <zhao1.liu@intel.com> writes:
 > 
-> - If MWAIT/MONITOR is not available on the host, advertising this
->   feature to the guest and executing MWAIT/MONITOR from the guest
->   triggers #UD and the guest doesn't boot.  This is because typically
->   #UD takes priority over VM-Exit interception checks and KVM doesn't
->   emulate MONITOR/MWAIT on #UD.
+> > Use CPUTopology to honor the generic style of CPU capitalization
+> > abbreviations.
+> >
+> > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 > 
-> - If KVM doesn't support KVM_X86_DISABLE_EXITS_MWAIT, MWAIT/MONITOR
->   from the guest are intercepted by KVM, which is not what cpu-pm=on
->   intends to do.
-> 
-> In these cases, MWAIT/MONITOR should not be exposed to the guest.
-> 
-> The logic in kvm_arch_get_supported_cpuid() to handle CPUID_EXT_MONITOR
-> is correct and sufficient, and we can't set CPUID_EXT_MONITOR after
-> x86_cpu_filter_features().
-> 
-> This was not an issue before commit 662175b91ff ("i386: reorder call to
-> cpu_exec_realizefn") because the feature added in the accel-specific
-> realizefn could be checked against host availability and filtered out.
-> 
-> Additionally, it seems not a good idea to handle guest CPUID leaves in
-> host_cpu_realizefn(), and this patch merges host_cpu_enable_cpu_pm()
-> into kvm_cpu_realizefn().
-> 
-> Fixes: f5cc5a5c1686 ("i386: split cpu accelerators from cpu.c, using AccelCPUClass")
-> Fixes: 662175b91ff2 ("i386: reorder call to cpu_exec_realizefn")
-> Signed-off-by: Zide Chen <zide.chen@intel.com>
-> ---
+> Is CPUFoo really more common than CpuFoo?  It isn't in the qapi
+> schema...
 
-LGTM,
+Hi Markus, do you think this style needs to be standardized?
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+All-caps cases, like the widely used CPUState.
+
+And the common structures declared in include/qemu/typedefs.h, are all
+using CPU, not Cpu...
+
+If you feel this is necessary, I'd be happy to help more places change
+their names to standardize their style...
 
 
