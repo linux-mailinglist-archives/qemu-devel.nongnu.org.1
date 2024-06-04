@@ -2,74 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E19A8FBC49
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 21:11:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19EA18FBC3C
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 21:10:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEZW4-0005la-2u; Tue, 04 Jun 2024 15:08:16 -0400
+	id 1sEZW6-00066U-29; Tue, 04 Jun 2024 15:08:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sEZW0-0005PR-5Y
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 15:08:12 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sEZW3-0005sS-P8
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 15:08:15 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sEZVy-0000zP-41
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 15:08:11 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sEZW0-0000zV-Nt
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 15:08:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717528089;
+ s=mimecast20190719; t=1717528091;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=381VnGSReclgz5bDfsJYpCqnbDXNXRPUyOf3bkjFhOs=;
- b=L54ahSSOR1n8YGwvGy0l1eUEfI5vqCEZpetrg0ezIEfwfZWaj13xUc6t2shzWQO6x35HgY
- e+WVgRF1/CSUbUNVsYpsBBFzotvSHQQBiaVCUmwOeioHu/tY4km8ogh9bFC3VSzRXFg42l
- NPwMRxsZs/ZW754rxlI7v9Puc24BGZE=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=C/pPfQru8bTuS9+eYSG9NAw/m9gJaYYAeXPgdlqxVn4=;
+ b=TRxQhf70lArVHDdYlrrFd7cwllV0Ln34mLK5g0mkGghC/wL9cEbmhjrhoQN08LBxHI3b+j
+ m8WhYx74s0KlnG18nZSPgJ+jHGUYi0tPvi7zekL1rFkidU+Qsy0LGVnFXSJZT+vJLc2W/X
+ a8QRLfjOPbfrzU210IKLA8E4RSX3UJ8=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-372-6OhfSn7SOoSAGcYG-quBMw-1; Tue, 04 Jun 2024 15:08:06 -0400
-X-MC-Unique: 6OhfSn7SOoSAGcYG-quBMw-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-4212adbe3b6so35388455e9.2
- for <qemu-devel@nongnu.org>; Tue, 04 Jun 2024 12:08:06 -0700 (PDT)
+ us-mta-554-IfsphAAnPzq42slk_WmnLQ-1; Tue, 04 Jun 2024 15:08:10 -0400
+X-MC-Unique: IfsphAAnPzq42slk_WmnLQ-1
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-35e50fe93a5so2484664f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 04 Jun 2024 12:08:09 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717528085; x=1718132885;
+ d=1e100.net; s=20230601; t=1717528088; x=1718132888;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=381VnGSReclgz5bDfsJYpCqnbDXNXRPUyOf3bkjFhOs=;
- b=kvEl5AlenFaUHytHGPFa2n35ovy0W7Aig0l8+4fhUpwwDJP0/OpwdBeqpMoKofgspQ
- 1aEsRLUgyaCylwxS5ISB2399wCUCpz7mcrVoVeNJlvvCspmivaugoDMsM2ppRP3MmjoA
- JYSaS4ggwiyeHzdp+nFgURf9gyjBzkldiQilD/V6UL+OXGh+wKBPbREbEwTz0WnkbB4c
- QHQlRfnZsCBqaNNSuY8RQayCdUVvJLGWwqKuYAgjjw4OhUjwt+aqPeWRpZiR+rvUQX6h
- iZEnxtALXVmTQFWGondaLMN7vF5EPDf7i8LsXkRk9EOu/gkJdTL/ol895N9f0qgRxcAU
- gJzg==
-X-Gm-Message-State: AOJu0YzOJmgj+BFJ8dnyECGSsA5UOK7GvuGgr+L29xUiwycs7WMGdg3p
- 90I/A8fesiI9ey+tYXuJnflUtIdz3299/zl3OH1Dl667PIo17Cv8/mFT7/o59uemXlaxDOQW+Wt
- CWV2M3XA1rAU3GzTbGGTnekLOWk7rcxwuqRnL+oM1p0g7qEdOzw/377PRozPoJ6zjuboNrPtIb+
- HCf+nSNuU+4bc0BtIDC91KishD+iNsLw==
-X-Received: by 2002:a05:600c:524d:b0:421:20aa:6045 with SMTP id
- 5b1f17b1804b1-421562f21f3mr4042085e9.24.1717528085130; 
- Tue, 04 Jun 2024 12:08:05 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFzV7pUpU6/XIevsL2Do1McPWw8dJNepxEqsayE4n7jiFfSkJ3RtWWQs8e2PVjBYnmRaUE5sA==
-X-Received: by 2002:a05:600c:524d:b0:421:20aa:6045 with SMTP id
- 5b1f17b1804b1-421562f21f3mr4041855e9.24.1717528084606; 
- Tue, 04 Jun 2024 12:08:04 -0700 (PDT)
+ bh=C/pPfQru8bTuS9+eYSG9NAw/m9gJaYYAeXPgdlqxVn4=;
+ b=kcOUFv28vpOAuoQ20CrFYks7Z0YSygvdATokcyHc2hEb/JkaBXwoaDszTspw1R05+N
+ XTtqf8jK4LVO5kNrXBDwGRKlVeQh4pejIRcNF86ZhqE2LuESKXXEIkl463OteM4KQ85+
+ 3hgwu1SJFHtfwpaeZOwNpkRh4N22SKCeLLsAZQibxQN87pmLG38UUZYDaUPr1iG3nGDc
+ 8XoQ+EYs9DFj7KXpeSIwu5BLZwBxKK3FU2lAQWv2pKa5Bny8HexqZBzC/lcyMBsTYyrZ
+ 4iM04YKcoGqKKYlwTg9liw2jJ+jSZ6En+HA5rwHm2kycU8GUoQU7orWJ2/WzJWotIkId
+ AfvQ==
+X-Gm-Message-State: AOJu0Yzocatc57Q29omP0UvWR9AkSi7c+NvcobDWgPXRmPZJ+9cjR8w6
+ 8XvtXZBL9uAgyiPAeQWKmdV1K1yU9gKsVxIhBAb9wU68vFTlOGwDnV3SKV/OMfG/DFT4aMmDyiL
+ 3zyTnSpNDCbiiZLicw/0ct0Trp/ujnvuhCkrEsSmHB7WFMM8dJlvZbrBB6IvGyACu6B0kdJjaFm
+ 2Z+laCa3h8ggPmTjJEivroAP9g+gxKOg==
+X-Received: by 2002:adf:face:0:b0:35a:e90b:5474 with SMTP id
+ ffacd0b85a97d-35e840494e7mr235583f8f.2.1717528088331; 
+ Tue, 04 Jun 2024 12:08:08 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFd05LZFHilV3739r92v+dC/xUoybqIfk45A3yOXGdMdDtBbowCxsSsuww+Qx0LEl5JSLGUTA==
+X-Received: by 2002:adf:face:0:b0:35a:e90b:5474 with SMTP id
+ ffacd0b85a97d-35e840494e7mr235562f8f.2.1717528087832; 
+ Tue, 04 Jun 2024 12:08:07 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc7:552:cf5c:2b13:215c:b9df:f231])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4214beb5c9asm32041825e9.7.2024.06.04.12.08.03
+ ffacd0b85a97d-35dd064afd8sm12314270f8f.95.2024.06.04.12.08.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 04 Jun 2024 12:08:04 -0700 (PDT)
-Date: Tue, 4 Jun 2024 15:08:01 -0400
+ Tue, 04 Jun 2024 12:08:07 -0700 (PDT)
+Date: Tue, 4 Jun 2024 15:08:04 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Jonathan Cameron <Jonathan.Cameron@huawei.com>,
  Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>
-Subject: [PULL 34/46] bios-tables-test: Allow for new acpihmat-generic-x test
- data.
-Message-ID: <4680fb4a69d137870c421a4da697f4b39b002dc9.1717527933.git.mst@redhat.com>
+Subject: [PULL 35/46] bios-tables-test: Add complex SRAT / HMAT test for GI GP
+Message-ID: <4c4979cc62f7db9a137c21d64e01766535272fbe.1717527933.git.mst@redhat.com>
 References: <cover.1717527933.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -104,53 +103,129 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-The test to be added exercises many corners of the SRAT and HMAT
-table generation.
+Add a test with 6 nodes to exercise most interesting corner cases
+of SRAT and HMAT generation including the new Generic Initiator
+and Generic Port Affinity structures.  More details of the
+set up in the following patch adding the table data.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Message-Id: <20240524100507.32106-5-Jonathan.Cameron@huawei.com>
+Message-Id: <20240524100507.32106-6-Jonathan.Cameron@huawei.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- tests/qtest/bios-tables-test-allowed-diff.h | 5 +++++
- tests/data/acpi/q35/APIC.acpihmat-generic-x | 0
- tests/data/acpi/q35/CEDT.acpihmat-generic-x | 0
- tests/data/acpi/q35/DSDT.acpihmat-generic-x | 0
- tests/data/acpi/q35/HMAT.acpihmat-generic-x | 0
- tests/data/acpi/q35/SRAT.acpihmat-generic-x | 0
- 6 files changed, 5 insertions(+)
- create mode 100644 tests/data/acpi/q35/APIC.acpihmat-generic-x
- create mode 100644 tests/data/acpi/q35/CEDT.acpihmat-generic-x
- create mode 100644 tests/data/acpi/q35/DSDT.acpihmat-generic-x
- create mode 100644 tests/data/acpi/q35/HMAT.acpihmat-generic-x
- create mode 100644 tests/data/acpi/q35/SRAT.acpihmat-generic-x
+ tests/qtest/bios-tables-test.c | 92 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 92 insertions(+)
 
-diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
-index dfb8523c8b..a5aa801c99 100644
---- a/tests/qtest/bios-tables-test-allowed-diff.h
-+++ b/tests/qtest/bios-tables-test-allowed-diff.h
-@@ -1 +1,6 @@
- /* List of comma-separated changed AML files to ignore */
-+"tests/data/acpi/q35/APIC.acpihmat-generic-x",
-+"tests/data/acpi/q35/CEDT.acpihmat-generic-x",
-+"tests/data/acpi/q35/DSDT.acpihmat-generic-x",
-+"tests/data/acpi/q35/HMAT.acpihmat-generic-x",
-+"tests/data/acpi/q35/SRAT.acpihmat-generic-x",
-diff --git a/tests/data/acpi/q35/APIC.acpihmat-generic-x b/tests/data/acpi/q35/APIC.acpihmat-generic-x
-new file mode 100644
-index 0000000000..e69de29bb2
-diff --git a/tests/data/acpi/q35/CEDT.acpihmat-generic-x b/tests/data/acpi/q35/CEDT.acpihmat-generic-x
-new file mode 100644
-index 0000000000..e69de29bb2
-diff --git a/tests/data/acpi/q35/DSDT.acpihmat-generic-x b/tests/data/acpi/q35/DSDT.acpihmat-generic-x
-new file mode 100644
-index 0000000000..e69de29bb2
-diff --git a/tests/data/acpi/q35/HMAT.acpihmat-generic-x b/tests/data/acpi/q35/HMAT.acpihmat-generic-x
-new file mode 100644
-index 0000000000..e69de29bb2
-diff --git a/tests/data/acpi/q35/SRAT.acpihmat-generic-x b/tests/data/acpi/q35/SRAT.acpihmat-generic-x
-new file mode 100644
-index 0000000000..e69de29bb2
+diff --git a/tests/qtest/bios-tables-test.c b/tests/qtest/bios-tables-test.c
+index d1ff4db7a2..1651d06b7b 100644
+--- a/tests/qtest/bios-tables-test.c
++++ b/tests/qtest/bios-tables-test.c
+@@ -1862,6 +1862,96 @@ static void test_acpi_q35_tcg_acpi_hmat_noinitiator(void)
+     free_test_data(&data);
+ }
+ 
++/* Test intended to hit corner cases of SRAT and HMAT */
++static void test_acpi_q35_tcg_acpi_hmat_generic_x(void)
++{
++    test_data data = {};
++
++    data.machine = MACHINE_Q35;
++    data.variant = ".acpihmat-generic-x";
++    test_acpi_one(" -machine hmat=on,cxl=on"
++                  " -smp 3,sockets=3"
++                  " -m 128M,maxmem=384M,slots=2"
++                  " -device virtio-rng-pci,id=gidev"
++                  " -device pxb-cxl,bus_nr=64,bus=pcie.0,id=cxl.1"
++                  " -object memory-backend-ram,size=64M,id=ram0"
++                  " -object memory-backend-ram,size=64M,id=ram1"
++                  " -numa node,nodeid=0,cpus=0,memdev=ram0"
++                  " -numa node,nodeid=1"
++                  " -object acpi-generic-initiator,id=gi0,pci-dev=gidev,node=1"
++                  " -numa node,nodeid=2"
++                  " -object acpi-generic-port,id=gp0,pci-bus=cxl.1,node=2"
++                  " -numa node,nodeid=3,cpus=1"
++                  " -numa node,nodeid=4,memdev=ram1"
++                  " -numa node,nodeid=5,cpus=2"
++                  " -numa hmat-lb,initiator=0,target=0,hierarchy=memory,"
++                  "data-type=access-latency,latency=10"
++                  " -numa hmat-lb,initiator=0,target=0,hierarchy=memory,"
++                  "data-type=access-bandwidth,bandwidth=800M"
++                  " -numa hmat-lb,initiator=0,target=2,hierarchy=memory,"
++                  "data-type=access-latency,latency=100"
++                  " -numa hmat-lb,initiator=0,target=2,hierarchy=memory,"
++                  "data-type=access-bandwidth,bandwidth=200M"
++                  " -numa hmat-lb,initiator=0,target=4,hierarchy=memory,"
++                  "data-type=access-latency,latency=100"
++                  " -numa hmat-lb,initiator=0,target=4,hierarchy=memory,"
++                  "data-type=access-bandwidth,bandwidth=200M"
++                  " -numa hmat-lb,initiator=0,target=5,hierarchy=memory,"
++                  "data-type=access-latency,latency=200"
++                  " -numa hmat-lb,initiator=0,target=5,hierarchy=memory,"
++                  "data-type=access-bandwidth,bandwidth=400M"
++                  " -numa hmat-lb,initiator=1,target=0,hierarchy=memory,"
++                  "data-type=access-latency,latency=500"
++                  " -numa hmat-lb,initiator=1,target=0,hierarchy=memory,"
++                  "data-type=access-bandwidth,bandwidth=100M"
++                  " -numa hmat-lb,initiator=1,target=2,hierarchy=memory,"
++                  "data-type=access-latency,latency=50"
++                  " -numa hmat-lb,initiator=1,target=2,hierarchy=memory,"
++                  "data-type=access-bandwidth,bandwidth=400M"
++                  " -numa hmat-lb,initiator=1,target=4,hierarchy=memory,"
++                  "data-type=access-latency,latency=50"
++                  " -numa hmat-lb,initiator=1,target=4,hierarchy=memory,"
++                  "data-type=access-bandwidth,bandwidth=800M"
++                  " -numa hmat-lb,initiator=1,target=5,hierarchy=memory,"
++                  "data-type=access-latency,latency=500"
++                  " -numa hmat-lb,initiator=1,target=5,hierarchy=memory,"
++                  "data-type=access-bandwidth,bandwidth=100M"
++                  " -numa hmat-lb,initiator=3,target=0,hierarchy=memory,"
++                  "data-type=access-latency,latency=20"
++                  " -numa hmat-lb,initiator=3,target=0,hierarchy=memory,"
++                  "data-type=access-bandwidth,bandwidth=400M"
++                  " -numa hmat-lb,initiator=3,target=2,hierarchy=memory,"
++                  "data-type=access-latency,latency=80"
++                  " -numa hmat-lb,initiator=3,target=2,hierarchy=memory,"
++                  "data-type=access-bandwidth,bandwidth=200M"
++                  " -numa hmat-lb,initiator=3,target=4,hierarchy=memory,"
++                  "data-type=access-latency,latency=80"
++                  " -numa hmat-lb,initiator=3,target=4,hierarchy=memory,"
++                  "data-type=access-bandwidth,bandwidth=200M"
++                  " -numa hmat-lb,initiator=3,target=5,hierarchy=memory,"
++                  "data-type=access-latency,latency=20"
++                  " -numa hmat-lb,initiator=3,target=5,hierarchy=memory,"
++                  "data-type=access-bandwidth,bandwidth=400M"
++                  " -numa hmat-lb,initiator=5,target=0,hierarchy=memory,"
++                  "data-type=access-latency,latency=20"
++                  " -numa hmat-lb,initiator=5,target=0,hierarchy=memory,"
++                  "data-type=access-bandwidth,bandwidth=400M"
++                  " -numa hmat-lb,initiator=5,target=2,hierarchy=memory,"
++                  "data-type=access-latency,latency=80"
++                  " -numa hmat-lb,initiator=5,target=4,hierarchy=memory,"
++                  "data-type=access-bandwidth,bandwidth=200M"
++                  " -numa hmat-lb,initiator=5,target=4,hierarchy=memory,"
++                  "data-type=access-latency,latency=80"
++                  " -numa hmat-lb,initiator=5,target=2,hierarchy=memory,"
++                  "data-type=access-bandwidth,bandwidth=200M"
++                  " -numa hmat-lb,initiator=5,target=5,hierarchy=memory,"
++                  "data-type=access-latency,latency=10"
++                  " -numa hmat-lb,initiator=5,target=5,hierarchy=memory,"
++                  "data-type=access-bandwidth,bandwidth=800M",
++                  &data);
++    free_test_data(&data);
++}
++
+ #ifdef CONFIG_POSIX
+ static void test_acpi_erst(const char *machine)
+ {
+@@ -2304,6 +2394,8 @@ int main(int argc, char *argv[])
+             qtest_add_func("acpi/q35/nohpet", test_acpi_q35_tcg_nohpet);
+             qtest_add_func("acpi/q35/acpihmat-noinitiator",
+                            test_acpi_q35_tcg_acpi_hmat_noinitiator);
++            qtest_add_func("acpi/q35/acpihmat-genericx",
++                           test_acpi_q35_tcg_acpi_hmat_generic_x);
+ 
+             /* i386 does not support memory hotplug */
+             if (strcmp(arch, "i386")) {
 -- 
 MST
 
