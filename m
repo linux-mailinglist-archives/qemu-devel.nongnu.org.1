@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D3F28FAB46
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 08:49:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93ABE8FAB1C
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 08:45:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sENut-000385-65; Tue, 04 Jun 2024 02:45:07 -0400
+	id 1sENuu-0003Do-Ns; Tue, 04 Jun 2024 02:45:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sENup-00033l-NT
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:45:03 -0400
+ id 1sENus-00038p-2m
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:45:06 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sENun-0007J2-OM
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:45:03 -0400
+ id 1sENuq-0007Tx-AX
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:45:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717483501;
+ s=mimecast20190719; t=1717483503;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=+G34f1WIn8F8g0esxlR58hldLKEcQHT7tF7se0puCJI=;
- b=VbPCjMArkRUogkHFFIcF6Fas3AFNqRMqbW6YQr8yOaL+WP/J3jrT0XcaZLhkHpa5g2mjFt
- XyEOFfGy/ipDC//22bWga+LnysK+tzNMoVsGncCualqmTkTjTgjqY/4C0KRvqdsrNP1/gY
- O3/U/XS34Z071xKWGBYG8GP6nUQfZaw=
+ bh=MELx3a4wImL1JG8cbryKCbUuCn7aSkqRfzZzglKDbxQ=;
+ b=EsHyXdk+H12fwf7gGkAbpwjMJd++uj1zzw4+ivLXBIW9imEmhccr3rXRPnpM80hqHf7ooo
+ LLkn3jpHyrckBxi7Js4kBGxQqkthk2JidQt7UcWm1ggh2pc7mRzL4vU8ZiS/Y6IKm9ufRF
+ 7zufxnTS5dOI69ESVv2KYiPXDP4pKlY=
 Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
  [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-656-omY619JeMNu15vszmYYeBw-1; Tue, 04 Jun 2024 02:44:59 -0400
-X-MC-Unique: omY619JeMNu15vszmYYeBw-1
+ us-mta-604-iSGYBXzwPqu0TDbJh4gRwQ-1; Tue, 04 Jun 2024 02:45:02 -0400
+X-MC-Unique: iSGYBXzwPqu0TDbJh4gRwQ-1
 Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-a68abbd0c78so160212266b.0
- for <qemu-devel@nongnu.org>; Mon, 03 Jun 2024 23:44:59 -0700 (PDT)
+ a640c23a62f3a-a6840dde124so353556566b.1
+ for <qemu-devel@nongnu.org>; Mon, 03 Jun 2024 23:45:01 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717483498; x=1718088298;
+ d=1e100.net; s=20230601; t=1717483500; x=1718088300;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+G34f1WIn8F8g0esxlR58hldLKEcQHT7tF7se0puCJI=;
- b=Bp2SHlHQnn+nsaBlMEvYNKdwXns74BF1gAcBHnVsvROe5RWD9jMRzPaBYtALMQTqmN
- 8JhiHzAdsloSi9Da47HF7jjmqByo80eeyIr82rXBnOy7qWfy+vJv4zVMi3iWgoih76Vx
- FH+6ea90Q9h6SDgfubOeUB/nFtc7lkvLh4MsPdD56e/23xWZT6VzqkS4FV/e8vLGOU9o
- Vvd6+Xtd+U9DW9hXSDoXiH3r0tPstw6PGUrjAcl28sUmMJyo/tgQj3gr+aSIWCUtdgP8
- EbGyB8pubWhV1Wa9JiIxdAE/JXsx8/wRwEHpbA6jX0sUKOe+jdY5xheiCxBwjSONnqeU
- F34w==
-X-Gm-Message-State: AOJu0YyGmEOb/fn7Gh8npeqxQuaZyvdtX/Rx3xx3GYBkFNlS+6UoScF6
- lG1hmueXbhJ9MuMmvab5k4EGiPDcIC0+UGXG9NAL/F9s4ILrQgZpL9s87Nefi4lKII1k7t0ByQC
- Vpur12jJFRnreSHkvP6z7JS0QLKBZupM+CORVtBMJM377uACgDJW+Ct86Lmm3w/AjuUHbmOcjev
- Ndmip7gYBLAhT9/AFtqDLFAAdPzM3Wy4q4Qniy
-X-Received: by 2002:a17:906:7f9a:b0:a5a:84c8:7710 with SMTP id
- a640c23a62f3a-a6822049b07mr677774066b.55.1717483497937; 
- Mon, 03 Jun 2024 23:44:57 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IENOprgd/rraqUR8dY8/UEVkAlv6s3PO+OQwpvPxJMshqmlh/WuRruV2q7G4mznNta+Y0AQGw==
-X-Received: by 2002:a17:906:7f9a:b0:a5a:84c8:7710 with SMTP id
- a640c23a62f3a-a6822049b07mr677772766b.55.1717483497493; 
- Mon, 03 Jun 2024 23:44:57 -0700 (PDT)
+ bh=MELx3a4wImL1JG8cbryKCbUuCn7aSkqRfzZzglKDbxQ=;
+ b=OJ01sZ186cZGH0x4QkGR2iA8pN2azLGvygWUcnFLkrl7RcWwKDfrgCk7CoW4K0OBRn
+ Q0M7jKDyijFuubSFtwDOdy2jZ20LQqDRc7J70YKpAzDOAwbwi13iOSgPq4wDbqat10+L
+ jgaBWgMIETlK2XxORXc6ejDk7CCeYv/dBnpnGWs/R5WUPXuufgEjox2NW98ObOtC99A/
+ ZgT+wSsby3LPr7grIW1rXZYCWmaZzkEtGqqS5OVWRnk8DRpEgTSphwSfNktfSMrihsv/
+ pvDuL2MWVhVdj0dG+NcKaZ6WX33NlNPzhmXA+MOuLLpfDcrDZtQjrRH8tJlHiVPW+alN
+ BQ4w==
+X-Gm-Message-State: AOJu0YyriQYHe9are9sj/7ZQZ3TbrjOhPieAIrVhR+L0d8GZYBqTAYfw
+ 8S40uHkdoF7kKdGnaGv0i6efyqiROqYGeBkKhlc0OVa/r29KuBj9PHYSTdDYyQWsXbDFUn/FBVe
+ Q/OFYIPZNACTiKushqf3E9PK5MF+IJ3BXUJNDVMxtc+EPIBjNYeFhJnQbqpOwSlet/pglMFTk4d
+ ajaHtTVW8pocHkta3xK8+eoXtpL6brvAKUnWSx
+X-Received: by 2002:a17:906:f299:b0:a59:c698:41ae with SMTP id
+ a640c23a62f3a-a69545681d7mr130022966b.34.1717483500463; 
+ Mon, 03 Jun 2024 23:45:00 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF6Q+VT4oWH8leYvid1PjpB2EftMUvVziXppNecf89ZrhGIrNCKkOarmxQO4X8p/UNG0frFsQ==
+X-Received: by 2002:a17:906:f299:b0:a59:c698:41ae with SMTP id
+ a640c23a62f3a-a69545681d7mr130021266b.34.1717483499960; 
+ Mon, 03 Jun 2024 23:44:59 -0700 (PDT)
 Received: from avogadro.local ([151.81.115.112])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a68f56506dcsm324993966b.57.2024.06.03.23.44.55
+ a640c23a62f3a-a691364322csm228016966b.109.2024.06.03.23.44.59
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Jun 2024 23:44:55 -0700 (PDT)
+ Mon, 03 Jun 2024 23:44:59 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Thomas Huth <thuth@redhat.com>
-Subject: [PULL 15/45] update-linux-headers: import linux/kvm_para.h header
-Date: Tue,  4 Jun 2024 08:43:39 +0200
-Message-ID: <20240604064409.957105-16-pbonzini@redhat.com>
+Subject: [PULL 16/45] machine: allow early use of machine_require_guest_memfd
+Date: Tue,  4 Jun 2024 08:43:40 +0200
+Message-ID: <20240604064409.957105-17-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240604064409.957105-1-pbonzini@redhat.com>
 References: <20240604064409.957105-1-pbonzini@redhat.com>
@@ -101,163 +101,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Right now QEMU is importing arch/x86/include/uapi/asm/kvm_para.h
-because it includes definitions for kvmclock and for KVM CPUID
-bits.  However, other definitions for KVM hypercall values and return
-codes are included in include/uapi/linux/kvm_para.h and they will be
-used by SEV-SNP.
+Ask the ConfidentialGuestSupport object whether to use guest_memfd
+for KVM-backend private memory.  This bool can be set in instance_init
+(or user_complete) so that it is available when the machine is created.
 
-To ensure that it is possible to include both <linux/kvm_para.h> and
-"standard-headers/asm-x86/kvm_para.h" without conflicts, provide
-linux/kvm_para.h as a portable header too, and forward linux-headers/
-files to those in include/standard-headers.  Note that <linux/kvm_para.h>
-will include architecture-specific definitions as well, but
-"standard-headers/linux/kvm_para.h" will not because it can be used in
-architecture-independent files.
-
-This could easily be extended to other architectures, but right now
-they do not need any symbol in their specific kvm_para.h files.
-
-Reviewed-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- include/standard-headers/linux/kvm_para.h | 38 +++++++++++++++++++++++
- linux-headers/asm-x86/kvm_para.h          |  1 +
- linux-headers/linux/kvm_para.h            |  2 ++
- scripts/update-linux-headers.sh           | 22 ++++++++++++-
- 4 files changed, 62 insertions(+), 1 deletion(-)
- create mode 100644 include/standard-headers/linux/kvm_para.h
- create mode 100644 linux-headers/asm-x86/kvm_para.h
- create mode 100644 linux-headers/linux/kvm_para.h
+ include/exec/confidential-guest-support.h | 5 +++++
+ include/hw/boards.h                       | 1 -
+ hw/core/machine.c                         | 2 +-
+ 3 files changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/include/standard-headers/linux/kvm_para.h b/include/standard-headers/linux/kvm_para.h
-new file mode 100644
-index 00000000000..015c1663021
---- /dev/null
-+++ b/include/standard-headers/linux/kvm_para.h
-@@ -0,0 +1,38 @@
-+/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
-+#ifndef __LINUX_KVM_PARA_H
-+#define __LINUX_KVM_PARA_H
-+
-+/*
-+ * This header file provides a method for making a hypercall to the host
-+ * Architectures should define:
-+ * - kvm_hypercall0, kvm_hypercall1...
-+ * - kvm_arch_para_features
-+ * - kvm_para_available
-+ */
-+
-+/* Return values for hypercalls */
-+#define KVM_ENOSYS		1000
-+#define KVM_EFAULT		EFAULT
-+#define KVM_EINVAL		EINVAL
-+#define KVM_E2BIG		E2BIG
-+#define KVM_EPERM		EPERM
-+#define KVM_EOPNOTSUPP		95
-+
-+#define KVM_HC_VAPIC_POLL_IRQ		1
-+#define KVM_HC_MMU_OP			2
-+#define KVM_HC_FEATURES			3
-+#define KVM_HC_PPC_MAP_MAGIC_PAGE	4
-+#define KVM_HC_KICK_CPU			5
-+#define KVM_HC_MIPS_GET_CLOCK_FREQ	6
-+#define KVM_HC_MIPS_EXIT_VM		7
-+#define KVM_HC_MIPS_CONSOLE_OUTPUT	8
-+#define KVM_HC_CLOCK_PAIRING		9
-+#define KVM_HC_SEND_IPI		10
-+#define KVM_HC_SCHED_YIELD		11
-+#define KVM_HC_MAP_GPA_RANGE		12
-+
-+/*
-+ * hypercalls use architecture specific
-+ */
-+
-+#endif /* __LINUX_KVM_PARA_H */
-diff --git a/linux-headers/asm-x86/kvm_para.h b/linux-headers/asm-x86/kvm_para.h
-new file mode 100644
-index 00000000000..1d3e0e0b07a
---- /dev/null
-+++ b/linux-headers/asm-x86/kvm_para.h
-@@ -0,0 +1 @@
-+#include "standard-headers/asm-x86/kvm_para.h"
-diff --git a/linux-headers/linux/kvm_para.h b/linux-headers/linux/kvm_para.h
-new file mode 100644
-index 00000000000..6a1e672259c
---- /dev/null
-+++ b/linux-headers/linux/kvm_para.h
-@@ -0,0 +1,2 @@
-+#include "standard-headers/linux/kvm_para.h"
-+#include <asm/kvm_para.h>
-diff --git a/scripts/update-linux-headers.sh b/scripts/update-linux-headers.sh
-index 7e93acb3b5f..c34ac6454ef 100755
---- a/scripts/update-linux-headers.sh
-+++ b/scripts/update-linux-headers.sh
-@@ -63,6 +63,7 @@ cp_portable() {
-                                      -e 'linux/kernel' \
-                                      -e 'linux/sysinfo' \
-                                      -e 'asm/setup_data.h' \
-+                                     -e 'asm/kvm_para.h' \
-                                      > /dev/null
-     then
-         echo "Unexpected #include in input file $f".
-@@ -70,6 +71,15 @@ cp_portable() {
-     fi
+diff --git a/include/exec/confidential-guest-support.h b/include/exec/confidential-guest-support.h
+index e5b188cffbf..02dc4e518f0 100644
+--- a/include/exec/confidential-guest-support.h
++++ b/include/exec/confidential-guest-support.h
+@@ -31,6 +31,11 @@ OBJECT_DECLARE_TYPE(ConfidentialGuestSupport,
+ struct ConfidentialGuestSupport {
+     Object parent;
  
-     header=$(basename "$f");
++    /*
++     * True if the machine should use guest_memfd for RAM.
++     */
++    bool require_guest_memfd;
 +
-+    if test -z "$arch"; then
-+        # Let users of include/standard-headers/linux/ headers pick the
-+        # asm-* header that they care about
-+        arch_cmd='/<asm\/\([^>]*\)>/d'
-+    else
-+        arch_cmd='s/<asm\/\([^>]*\)>/"standard-headers\/asm-'$arch'\/\1"/'
-+    fi
-+
-     sed -e 's/__aligned_u64/__u64 __attribute__((aligned(8)))/g' \
-         -e 's/__u\([0-9][0-9]*\)/uint\1_t/g' \
-         -e 's/u\([0-9][0-9]*\)/uint\1_t/g' \
-@@ -78,7 +88,7 @@ cp_portable() {
-         -e 's/__be\([0-9][0-9]*\)/uint\1_t/g' \
-         -e 's/"\(input-event-codes\.h\)"/"standard-headers\/linux\/\1"/' \
-         -e 's/<linux\/\([^>]*\)>/"standard-headers\/linux\/\1"/' \
--        -e 's/<asm\/\([^>]*\)>/"standard-headers\/asm-'$arch'\/\1"/' \
-+        -e "$arch_cmd" \
-         -e 's/__bitwise//' \
-         -e 's/__attribute__((packed))/QEMU_PACKED/' \
-         -e 's/__inline__/inline/' \
-@@ -158,7 +168,12 @@ EOF
-         cp "$hdrdir/include/asm/unistd_32.h" "$output/linux-headers/asm-x86/"
-         cp "$hdrdir/include/asm/unistd_x32.h" "$output/linux-headers/asm-x86/"
-         cp "$hdrdir/include/asm/unistd_64.h" "$output/linux-headers/asm-x86/"
-+
-         cp_portable "$hdrdir/include/asm/kvm_para.h" "$output/include/standard-headers/asm-$arch"
-+        cat <<EOF >$output/linux-headers/asm-$arch/kvm_para.h
-+#include "standard-headers/asm-$arch/kvm_para.h"
-+EOF
-+
-         # Remove everything except the macros from bootparam.h avoiding the
-         # unnecessary import of several video/ist/etc headers
-         sed -e '/__ASSEMBLY__/,/__ASSEMBLY__/d' \
-@@ -208,6 +223,10 @@ if [ -d "$linux/LICENSES" ]; then
-     done
- fi
+     /*
+      * ready: flag set by CGS initialization code once it's ready to
+      *        start executing instructions in a potentially-secure
+diff --git a/include/hw/boards.h b/include/hw/boards.h
+index 2fa800f11ae..73ad319d7da 100644
+--- a/include/hw/boards.h
++++ b/include/hw/boards.h
+@@ -375,7 +375,6 @@ struct MachineState {
+     char *dt_compatible;
+     bool dump_guest_core;
+     bool mem_merge;
+-    bool require_guest_memfd;
+     bool usb;
+     bool usb_disabled;
+     char *firmware;
+diff --git a/hw/core/machine.c b/hw/core/machine.c
+index 17292b13e62..77a356f232f 100644
+--- a/hw/core/machine.c
++++ b/hw/core/machine.c
+@@ -1216,7 +1216,7 @@ bool machine_mem_merge(MachineState *machine)
  
-+cat <<EOF >$output/linux-headers/linux/kvm_para.h
-+#include "standard-headers/linux/kvm_para.h"
-+#include <asm/kvm_para.h>
-+EOF
- cat <<EOF >$output/linux-headers/linux/virtio_config.h
- #include "standard-headers/linux/virtio_config.h"
- EOF
-@@ -230,6 +249,7 @@ for i in "$hdrdir"/include/linux/*virtio*.h \
-          "$hdrdir/include/linux/ethtool.h" \
-          "$hdrdir/include/linux/const.h" \
-          "$hdrdir/include/linux/kernel.h" \
-+         "$hdrdir/include/linux/kvm_para.h" \
-          "$hdrdir/include/linux/vhost_types.h" \
-          "$hdrdir/include/linux/sysinfo.h"; do
-     cp_portable "$i" "$output/include/standard-headers/linux"
+ bool machine_require_guest_memfd(MachineState *machine)
+ {
+-    return machine->require_guest_memfd;
++    return machine->cgs && machine->cgs->require_guest_memfd;
+ }
+ 
+ static char *cpu_slot_to_string(const CPUArchId *cpu)
 -- 
 2.45.1
 
