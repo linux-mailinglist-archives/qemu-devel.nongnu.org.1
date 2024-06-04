@@ -2,83 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 404D48FBC23
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 21:07:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 106B78FBC4E
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 21:11:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEZUo-0006av-3l; Tue, 04 Jun 2024 15:06:58 -0400
+	id 1sEZUt-0006dc-8C; Tue, 04 Jun 2024 15:07:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sEZUl-0006U8-EM
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 15:06:55 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sEZUr-0006cx-5w
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 15:07:01 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sEZUj-0000q6-7P
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 15:06:55 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sEZUo-0000qa-V0
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 15:07:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717528012;
+ s=mimecast20190719; t=1717528017;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=3bV+n5a+n2PubUhTQh2qtot7neovPmYiRH9+8WKEDSw=;
- b=TsXVfhysq+J67o2n0dgYnsoSdSErj170YsCPpC6D2v7HppSGGYkae4c4iGu+7tsJ5kqQ4G
- MMlgYqA5w8Zu7FzBHxyaxsVLnpBozadGuzetPr5wJ6Gn2nTl6ST+VHYnZVAb6Tig5gcY9w
- PU4AVBZNMIgAZ90ReSdea/A06B6P1pc=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=+cVsXdQI2RthGLy7TxkQZRDMuYIrDeTU2bckWSqVXa0=;
+ b=HKtcIwc8QGhh54QXzUPQkZlzE/SEE90lrovueAk4ILWZHb5EnscaROR9spX27k+d1/ofpi
+ ycdkgDk7ugh00KmugqGcrMN2BVeFIJKaJHTClh8qsfcStsbGucQBcZ3MgiaWHKR89ZswA3
+ jTWwOC7oy8eI+NdRfY7H/1oQ4SBApio=
+Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
+ [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-652-29FyxhtWOf2qHUudYCMSiQ-1; Tue, 04 Jun 2024 15:06:51 -0400
-X-MC-Unique: 29FyxhtWOf2qHUudYCMSiQ-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-4212e3418b1so28890145e9.0
- for <qemu-devel@nongnu.org>; Tue, 04 Jun 2024 12:06:50 -0700 (PDT)
+ us-mta-621-3gBYGC6wP7CBdfHRIPsNWA-1; Tue, 04 Jun 2024 15:06:55 -0400
+X-MC-Unique: 3gBYGC6wP7CBdfHRIPsNWA-1
+Received: by mail-lj1-f198.google.com with SMTP id
+ 38308e7fff4ca-2ea93c06e3cso40114581fa.2
+ for <qemu-devel@nongnu.org>; Tue, 04 Jun 2024 12:06:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717528009; x=1718132809;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=3bV+n5a+n2PubUhTQh2qtot7neovPmYiRH9+8WKEDSw=;
- b=gYfd7HIiL5OvulClhJCIDPR5O1Q/bUrUJkbm9IuUYdgRqE069EYb1R49gQZz3aJUN1
- Ok684aohqtmKLyunstJIhpaFkaqIt3YzkvorfNTuVvc7zSiM8MgPj95qDgssP9NzG/Fv
- AhvMk2KK3AdS+cY+nqBAvdsr302dpgbGh35fVLb4HNus+ouHAQc4w44boPHl+wCv1mpE
- C/WCxIe7Rx3RQqkUvi4/2i1vnbsaHNR0GsS8WkoYT1AVGePgL+bXRMjh8NuS1wMPju3q
- nthoZAuYg+6J/1RNSdNAKH7aaqGVMjXhpDG5sxz3WQFDmUk4eaePnDgPq0peamuNOhld
- GKMg==
-X-Gm-Message-State: AOJu0Yxva+R3r1lD56P8ppGD+vddzrdmu5/1T2fUJspVhOt5KNqjniHb
- 5qJCvkz4goyJwXb8YSPR1yK+ckdxrMs6qimuP+TPQrG3eepjf18JQEOp0rwNsLxp0M9mpds2NIL
- iXnrv+4X3C6i3Aga9l7o66I1uZwfDGbF+XeFVvxuoyTyuoWVeoRARkApqGekcaE3HyTTF/ZaYpj
- Msh1mCZjhmlyrhV8TZm2qy/coFEXR65Q==
-X-Received: by 2002:a05:600c:468a:b0:420:2cbe:7efc with SMTP id
- 5b1f17b1804b1-42156338119mr3821995e9.30.1717528009489; 
- Tue, 04 Jun 2024 12:06:49 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFF8nIjvxzqDzX68xtPyayDg2GMCvXfhLLLwu7DRDdP2kNBvtKw7BjaOhA681ygADbLyAXhDA==
-X-Received: by 2002:a05:600c:468a:b0:420:2cbe:7efc with SMTP id
- 5b1f17b1804b1-42156338119mr3821795e9.30.1717528009043; 
- Tue, 04 Jun 2024 12:06:49 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1717528013; x=1718132813;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=+cVsXdQI2RthGLy7TxkQZRDMuYIrDeTU2bckWSqVXa0=;
+ b=WGTmWLvlUllFFDlfpUt53YWdaJC+WjKZnFiRu0TCNW9SXOaWg6343ltpFe0Xv7jUDc
+ a9U6EM8VNbtj3sulkCRTiwAW76n8ObcYK/tI0M7FTTIaY2eu3RVD/AgQgpSIpMX9S3wS
+ BoezeHq6EWjnrcOL/Q8QALlusHI+aWCBRVBzXwerBQxMToQV5/QSxDE5myy+3JzjsYHr
+ FpvvBcYWl0rwVoCqGvumfC48Vt7/asL+xibRmZ0E6V+zVdPIMLhB9Kmmzct37cyNkLmQ
+ R7TUn1kaQpxZepb3k1GIiFzRp1MCg9xXTDknqQXMOlqhE1aWbysYcpXTbMgKcbPAQgfU
+ Z/Ng==
+X-Gm-Message-State: AOJu0YxYH6dJY4HvO7wzSWMIhtepjMR0+DeUsFSHciRMh1Ttng1SA0iA
+ Doze8c5QUMW1oALWtKRw3WuEV/DdM/C9qNUl/Io6mTSCS5T2gNyfQassmWMVe+99vZrX8ZuE6Lg
+ wmrrQ64OvdcuH8Wj1Ym0eC0r1DrrX6f6eRmRKVKLX17kWuhzmw/5S1o1Ksh6ymwEvdy3ft7sn9z
+ Nckd3r9ggcwY5XuGBmMhbsednZKq2JXg==
+X-Received: by 2002:a05:651c:b2a:b0:2e9:5b89:dc6a with SMTP id
+ 38308e7fff4ca-2eac7a52b27mr1366381fa.39.1717528013256; 
+ Tue, 04 Jun 2024 12:06:53 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE7Ru2hPSpUe0cE9lir+g1PguAn9zQdV1nKll5J/tP04HjprCj9F6vnCPvONBdGL11xbxK21w==
+X-Received: by 2002:a05:651c:b2a:b0:2e9:5b89:dc6a with SMTP id
+ 38308e7fff4ca-2eac7a52b27mr1366031fa.39.1717528012630; 
+ Tue, 04 Jun 2024 12:06:52 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc7:552:cf5c:2b13:215c:b9df:f231])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-35dd062fe96sm12348566f8f.67.2024.06.04.12.06.47
+ 5b1f17b1804b1-421526593cfsm27227825e9.42.2024.06.04.12.06.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 04 Jun 2024 12:06:48 -0700 (PDT)
-Date: Tue, 4 Jun 2024 15:06:46 -0400
+ Tue, 04 Jun 2024 12:06:52 -0700 (PDT)
+Date: Tue, 4 Jun 2024 15:06:49 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>
-Subject: [PULL 14/46] vhost-user-gpu: fix import of DMABUF
-Message-ID: <f08920e742aedb11438c07fa9f0040ad010915ae.1717527933.git.mst@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>, Li Feng <fengli@smartx.com>,
+ Raphael Norwitz <raphael@enfabrica.net>,
+ Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>,
+ Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ qemu-block@nongnu.org
+Subject: [PULL 15/46] Revert "vhost-user: fix lost reconnect"
+Message-ID: <acc7fa97ce8012e50b7ba4f46a770b3a86f3ba24.1717527933.git.mst@redhat.com>
 References: <cover.1717527933.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1717527933.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -87,7 +88,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,40 +104,126 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Marc-André Lureau <marcandre.lureau@redhat.com>
+From: Li Feng <fengli@smartx.com>
 
-When using vhost-user-gpu with GL, qemu -display gtk doesn't show output
-and prints: qemu: eglCreateImageKHR failed
+This reverts commit f02a4b8e6431598612466f76aac64ab492849abf.
 
-Since commit 9ac06df8b ("virtio-gpu-udmabuf: correct naming of
-QemuDmaBuf size properties"), egl_dmabuf_import_texture() uses
-backing_{width,height} for the texture dimension.
+Since the current patch cannot completely fix the lost reconnect
+problem, there is a scenario that is not considered:
+- When the virtio-blk driver is removed from the guest os,
+  s->connected has no chance to be set to false, resulting in
+  subsequent reconnection not being executed.
 
-Fixes: 9ac06df8b ("virtio-gpu-udmabuf: correct naming of QemuDmaBuf size properties")
-Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Message-Id: <20240515105237.1074116-1-marcandre.lureau@redhat.com>
+The next patch will completely fix this issue with a better approach.
+
+Signed-off-by: Li Feng <fengli@smartx.com>
+Message-Id: <20240516025753.130171-2-fengli@smartx.com>
+Reviewed-by: Raphael Norwitz <raphael@enfabrica.net>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/display/vhost-user-gpu.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ include/hw/virtio/vhost-user.h |  3 +--
+ hw/block/vhost-user-blk.c      |  2 +-
+ hw/scsi/vhost-user-scsi.c      |  3 +--
+ hw/virtio/vhost-user-base.c    |  2 +-
+ hw/virtio/vhost-user.c         | 10 ++--------
+ 5 files changed, 6 insertions(+), 14 deletions(-)
 
-diff --git a/hw/display/vhost-user-gpu.c b/hw/display/vhost-user-gpu.c
-index e4b398d26c..63c64ddde6 100644
---- a/hw/display/vhost-user-gpu.c
-+++ b/hw/display/vhost-user-gpu.c
-@@ -281,8 +281,9 @@ vhost_user_gpu_handle_display(VhostUserGPU *g, VhostUserGpuMsg *msg)
-             modifier = m2->modifier;
-         }
+diff --git a/include/hw/virtio/vhost-user.h b/include/hw/virtio/vhost-user.h
+index d7c09ffd34..324cd8663a 100644
+--- a/include/hw/virtio/vhost-user.h
++++ b/include/hw/virtio/vhost-user.h
+@@ -108,7 +108,6 @@ typedef void (*vu_async_close_fn)(DeviceState *cb);
  
--        dmabuf = qemu_dmabuf_new(m->fd_width, m->fd_height,
--                                 m->fd_stride, 0, 0, 0, 0,
-+        dmabuf = qemu_dmabuf_new(m->width, m->height,
-+                                 m->fd_stride, 0, 0,
-+                                 m->fd_width, m->fd_height,
-                                  m->fd_drm_fourcc, modifier,
-                                  fd, false, m->fd_flags &
-                                  VIRTIO_GPU_RESOURCE_FLAG_Y_0_TOP);
+ void vhost_user_async_close(DeviceState *d,
+                             CharBackend *chardev, struct vhost_dev *vhost,
+-                            vu_async_close_fn cb,
+-                            IOEventHandler *event_cb);
++                            vu_async_close_fn cb);
+ 
+ #endif
+diff --git a/hw/block/vhost-user-blk.c b/hw/block/vhost-user-blk.c
+index bc2677dbef..15cc24d017 100644
+--- a/hw/block/vhost-user-blk.c
++++ b/hw/block/vhost-user-blk.c
+@@ -385,7 +385,7 @@ static void vhost_user_blk_event(void *opaque, QEMUChrEvent event)
+     case CHR_EVENT_CLOSED:
+         /* defer close until later to avoid circular close */
+         vhost_user_async_close(dev, &s->chardev, &s->dev,
+-                               vhost_user_blk_disconnect, vhost_user_blk_event);
++                               vhost_user_blk_disconnect);
+         break;
+     case CHR_EVENT_BREAK:
+     case CHR_EVENT_MUX_IN:
+diff --git a/hw/scsi/vhost-user-scsi.c b/hw/scsi/vhost-user-scsi.c
+index 0b050805a8..421cd654f8 100644
+--- a/hw/scsi/vhost-user-scsi.c
++++ b/hw/scsi/vhost-user-scsi.c
+@@ -215,8 +215,7 @@ static void vhost_user_scsi_event(void *opaque, QEMUChrEvent event)
+     case CHR_EVENT_CLOSED:
+         /* defer close until later to avoid circular close */
+         vhost_user_async_close(dev, &vs->conf.chardev, &vsc->dev,
+-                               vhost_user_scsi_disconnect,
+-                               vhost_user_scsi_event);
++                               vhost_user_scsi_disconnect);
+         break;
+     case CHR_EVENT_BREAK:
+     case CHR_EVENT_MUX_IN:
+diff --git a/hw/virtio/vhost-user-base.c b/hw/virtio/vhost-user-base.c
+index a83167191e..4b54255682 100644
+--- a/hw/virtio/vhost-user-base.c
++++ b/hw/virtio/vhost-user-base.c
+@@ -254,7 +254,7 @@ static void vub_event(void *opaque, QEMUChrEvent event)
+     case CHR_EVENT_CLOSED:
+         /* defer close until later to avoid circular close */
+         vhost_user_async_close(dev, &vub->chardev, &vub->vhost_dev,
+-                               vub_disconnect, vub_event);
++                               vub_disconnect);
+         break;
+     case CHR_EVENT_BREAK:
+     case CHR_EVENT_MUX_IN:
+diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
+index cdf9af4a4b..c929097e87 100644
+--- a/hw/virtio/vhost-user.c
++++ b/hw/virtio/vhost-user.c
+@@ -2776,7 +2776,6 @@ typedef struct {
+     DeviceState *dev;
+     CharBackend *cd;
+     struct vhost_dev *vhost;
+-    IOEventHandler *event_cb;
+ } VhostAsyncCallback;
+ 
+ static void vhost_user_async_close_bh(void *opaque)
+@@ -2791,10 +2790,7 @@ static void vhost_user_async_close_bh(void *opaque)
+      */
+     if (vhost->vdev) {
+         data->cb(data->dev);
+-    } else if (data->event_cb) {
+-        qemu_chr_fe_set_handlers(data->cd, NULL, NULL, data->event_cb,
+-                                 NULL, data->dev, NULL, true);
+-   }
++    }
+ 
+     g_free(data);
+ }
+@@ -2806,8 +2802,7 @@ static void vhost_user_async_close_bh(void *opaque)
+  */
+ void vhost_user_async_close(DeviceState *d,
+                             CharBackend *chardev, struct vhost_dev *vhost,
+-                            vu_async_close_fn cb,
+-                            IOEventHandler *event_cb)
++                            vu_async_close_fn cb)
+ {
+     if (!runstate_check(RUN_STATE_SHUTDOWN)) {
+         /*
+@@ -2823,7 +2818,6 @@ void vhost_user_async_close(DeviceState *d,
+         data->dev = d;
+         data->cd = chardev;
+         data->vhost = vhost;
+-        data->event_cb = event_cb;
+ 
+         /* Disable any further notifications on the chardev */
+         qemu_chr_fe_set_handlers(chardev,
 -- 
 MST
 
