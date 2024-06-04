@@ -2,77 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5423D8FAF81
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 12:01:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CBEC88FAF79
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 12:00:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEQwP-0007vL-Th; Tue, 04 Jun 2024 05:58:53 -0400
+	id 1sEQwX-0008Ol-ET; Tue, 04 Jun 2024 05:59:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sEQwO-0007oK-Cu
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 05:58:52 -0400
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sEQwV-0008E4-1A
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 05:58:59 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sEQwL-0002N0-SX
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 05:58:51 -0400
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-35dce610207so3378663f8f.2
- for <qemu-devel@nongnu.org>; Tue, 04 Jun 2024 02:58:49 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sEQwR-0002Nd-3T
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 05:58:57 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-42120fc8cbfso41562405e9.2
+ for <qemu-devel@nongnu.org>; Tue, 04 Jun 2024 02:58:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1717495127; x=1718099927; darn=nongnu.org;
+ d=linaro.org; s=google; t=1717495133; x=1718099933; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=TGqa4LCtUPmfqT7FCKxDXiSWjLBqv6GKh2fc2iPwQg4=;
- b=Urb4x7Qt7N3XyuJxgXhZbii6bOtI0Sk3xMOqO5B5DlVLF4BntRwNHOW7B1XZfsnQRJ
- 18HlzU+aKV3giCPdW3If1j/m/DC16YoEklXrl2tYXoyXiKjYcKP9GbrO0a/WAYAvdg9E
- e6ZmYE2YaH6wvMSHkAek757cqajdJwTN4L+ng+/Crlf0rAWSiH14w1vXLZJAaUORNt3A
- q1Mlh0qsZT6N10hN1drLa+qp0lQWiUgj2kbIZQk/cLhzgWIed2xQ7m33z1s/5/7aHhx7
- iQl5trgOYlfSw2uegTVSpnxzL1kq6CSuvP6stNa3E5H6X99fhstGXcpI6avsHK9fI/hx
- fV1Q==
+ bh=/VTJJ/3m83pWTt3riL5Bvq0vb1UCAyg2JZO38z+luX4=;
+ b=KvpsUzmjeAIsoBkpuFu0LsS9A2O6+YycXDc7FJpCAkAkAPxb8Zl+wJywdqkQCpkSJ6
+ NBYEkDHCn95PeK9mi32Y7eFNWMSCc5pLPjB4qbmENOdRM5T55L4TP7PTN6L7S2Zfynvj
+ lc4whVD+oAa1A6ifPn8esKu1gp9ktP8567XOsX3D5tbIMCu6gID0sn+jri3LI5os5dvI
+ BvVVIW0EZCjUrZrTVahCSoS3RkkLpEw3h5IjWO5AjuQXY8/Dqc4QL9nbgCbzr8FjfB+z
+ DaiWmPg+s1WOjbTz53M/DsnKfPlP2wHvTnbOi6DSI2wFgCnYKTyiI/wNnT36NPP7w2SN
+ 9f4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717495127; x=1718099927;
+ d=1e100.net; s=20230601; t=1717495133; x=1718099933;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=TGqa4LCtUPmfqT7FCKxDXiSWjLBqv6GKh2fc2iPwQg4=;
- b=YrIQjH9lvC+JCNnzlrOgxg/94sD867u/k78jlppmulhbbzqN8u2YMKMLsfbcXC831j
- UmsYvRpfk/FrJHSoOYRkkPaKZ2wDozQssqAefXleMHJZicDNWlM/MrRpCRGKuJ/ZSuWh
- oaJXmAavgMtWL4sAjkyvn+rSYd5/HZHFmunZBkapLjU5NRGloAVydne+YuD1G2dZ+08d
- Nzas5EP/3Zx+9ToT2Utkac8e5W6YgYP2z44BBWv++T38lxW/zmxRby6TPzoFytHileui
- LHdnwcgOVFuDyUdZTz/Ss3VwwUOQCeE2qzXOUdFh4YAu7H//TM5KBjC//mZ1Fke9nXxF
- R75w==
-X-Gm-Message-State: AOJu0Yw3MoLluuSJPFGe5oopj+sEKxw0+AOCLh1ChuY3VpFoK/kjhbj/
- giechi7eG6aQzcBO21Xo3toUjWoTpotcmDm1CwIS0RcOUJmavbqRXHStYD/BDHqfAy7mCm75q6f
- z
-X-Google-Smtp-Source: AGHT+IG94P5WWPomVHoZIPdJKM7vpl6wDv2k1eL81l1TaEoE4MJF3s2yBYxpESSwDCnW58uEBYVcVQ==
-X-Received: by 2002:adf:e88d:0:b0:351:c960:b5a2 with SMTP id
- ffacd0b85a97d-35e0f254f8amr10288142f8f.6.1717495127353; 
- Tue, 04 Jun 2024 02:58:47 -0700 (PDT)
+ bh=/VTJJ/3m83pWTt3riL5Bvq0vb1UCAyg2JZO38z+luX4=;
+ b=LiThmH5aI3AwIbWl54S2kZ1u6j9DBg/30UgJ8fzETfe/1L+/gUqMLY9yyAkeuyjDM0
+ WkK7atpiyBpCe3fkM2Ab/mThhv+4woWEm6haEqKb6G74BXCyirH5he9sAUKDiX5p/RY8
+ 3tb2CT68jW8nwXtKjFuwX4k4lAtnfUeJvBJBaILe5ffX1w/zeowJrWm/p5G0OcjW8/vM
+ iAsFj34nprvc1KUG+nbnBzoWsGtnkw78hA63EEMvqTpWge1xkQSkzfwl8kKqJxllWI1T
+ XTDBfCLIyOGN5DQLO1GBrmQ9tCE6qlV8VwhXBUJm2VCnUeeATRvdzaerxzG61BOCQfzL
+ mvzA==
+X-Gm-Message-State: AOJu0YwPfC13Vc/icIq+j2YuILe/wNLAUol0lbQXOLSRb+Qgvd9EQWKz
+ ybEa7NVyCQ4VrcrbktYClYik3ff7vMCn7e+X8Tmj/kANf2aKAHXICEhnLeoNKGIpIGmwHuHpqwq
+ 9
+X-Google-Smtp-Source: AGHT+IGAgCk1ZFYpPc2Dl/YiWidc0JYy6Mxgj63pxZhDA+Wefk4eYItmYH6Av1iHM1qW4pxQocE91w==
+X-Received: by 2002:a05:600c:5488:b0:421:3464:dc7a with SMTP id
+ 5b1f17b1804b1-4213464df71mr84635205e9.39.1717495133228; 
+ Tue, 04 Jun 2024 02:58:53 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.159.34])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-35dd062ecd3sm11240886f8f.74.2024.06.04.02.58.46
+ 5b1f17b1804b1-4214a9ff986sm19161995e9.42.2024.06.04.02.58.52
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 04 Jun 2024 02:58:46 -0700 (PDT)
+ Tue, 04 Jun 2024 02:58:52 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
  "Michael S . Tsirkin" <mst@redhat.com>,
  Markus Armbruster <armbru@redhat.com>
-Subject: [PULL 29/32] hw/acpi: Remove the deprecated QAPI MEM_UNPLUG_ERROR
- event
-Date: Tue,  4 Jun 2024 11:56:05 +0200
-Message-ID: <20240604095609.12285-30-philmd@linaro.org>
+Subject: [PULL 30/32] trace: Remove deprecated 'vcpu' field from QMP trace
+ events
+Date: Tue,  4 Jun 2024 11:56:06 +0200
+Message-ID: <20240604095609.12285-31-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240604095609.12285-1-philmd@linaro.org>
 References: <20240604095609.12285-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,147 +94,169 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The MEM_UNPLUG_ERROR event is deprecated since commit d43f1670c7
-("qapi/qdev.json: add DEVICE_UNPLUG_GUEST_ERROR QAPI event"),
-time to remove it.
+'vcpu' fields are deprecated since commit 5485e52a33
+("qapi: make the vcpu parameters deprecated for 8.1"),
+time to remove them.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Reviewed-by: Markus Armbruster <armbru@redhat.com>
-Message-Id: <20240530071548.20074-2-philmd@linaro.org>
+Message-Id: <20240530071548.20074-3-philmd@linaro.org>
 ---
- docs/about/deprecated.rst       |  5 -----
- docs/about/removed-features.rst |  9 +++++++++
- qapi/machine.json               | 28 ----------------------------
- hw/acpi/memory_hotplug.c        |  8 --------
- hw/ppc/spapr.c                  | 11 +----------
- 5 files changed, 10 insertions(+), 51 deletions(-)
+ docs/about/deprecated.rst       | 11 -----------
+ docs/about/removed-features.rst |  6 ++++++
+ qapi/trace.json                 | 27 +++------------------------
+ trace/qmp.c                     |  2 --
+ trace/trace-hmp-cmds.c          |  4 ++--
+ 5 files changed, 11 insertions(+), 39 deletions(-)
 
 diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-index 40585ca7d5..4a61894db6 100644
+index 4a61894db6..187c8a3f97 100644
 --- a/docs/about/deprecated.rst
 +++ b/docs/about/deprecated.rst
-@@ -151,11 +151,6 @@ property types.
- QEMU Machine Protocol (QMP) events
- ----------------------------------
+@@ -148,17 +148,6 @@ accepted incorrect commands will return an error. Users should make sure that
+ all arguments passed to ``device_add`` are consistent with the documented
+ property types.
  
--``MEM_UNPLUG_ERROR`` (since 6.2)
--''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+-QEMU Machine Protocol (QMP) events
+-----------------------------------
 -
--Use the more generic event ``DEVICE_UNPLUG_GUEST_ERROR`` instead.
+-``vcpu`` trace events (since 8.1)
+-'''''''''''''''''''''''''''''''''
 -
- ``vcpu`` trace events (since 8.1)
- '''''''''''''''''''''''''''''''''
+-The ability to instrument QEMU helper functions with vCPU-aware trace
+-points was removed in 7.0. However QMP still exposed the vcpu
+-parameter. This argument has now been deprecated and the remaining
+-remaining trace points that used it are selected just by name.
+-
+ Host Architectures
+ ------------------
  
 diff --git a/docs/about/removed-features.rst b/docs/about/removed-features.rst
-index fba0cfb0b0..f1e70263e2 100644
+index f1e70263e2..1e64c27cd8 100644
 --- a/docs/about/removed-features.rst
 +++ b/docs/about/removed-features.rst
-@@ -671,6 +671,15 @@ Use ``multifd-channels`` instead.
+@@ -679,6 +679,12 @@ QEMU Machine Protocol (QMP) events
  
- Use ``multifd-compression`` instead.
+ MEM_UNPLUG_ERROR has been replaced by the more generic ``DEVICE_UNPLUG_GUEST_ERROR`` event.
  
-+QEMU Machine Protocol (QMP) events
-+----------------------------------
++``vcpu`` trace events (removed in 9.1)
++''''''''''''''''''''''''''''''''''''''
 +
-+``MEM_UNPLUG_ERROR`` (removed in 9.1)
-+'''''''''''''''''''''''''''''''''''''
++The ability to instrument QEMU helper functions with vCPU-aware trace
++points was removed in 7.0.
 +
-+MEM_UNPLUG_ERROR has been replaced by the more generic ``DEVICE_UNPLUG_GUEST_ERROR`` event.
-+
-+
+ 
  Human Monitor Protocol (HMP) commands
  -------------------------------------
- 
-diff --git a/qapi/machine.json b/qapi/machine.json
-index bce6e1bbc4..453feb9347 100644
---- a/qapi/machine.json
-+++ b/qapi/machine.json
-@@ -1607,34 +1607,6 @@
- { 'event': 'MEMORY_DEVICE_SIZE_CHANGE',
-   'data': { '*id': 'str', 'size': 'size', 'qom-path' : 'str'} }
- 
--##
--# @MEM_UNPLUG_ERROR:
--#
--# Emitted when memory hot unplug error occurs.
--#
--# @device: device name
--#
--# @msg: Informative message
+diff --git a/qapi/trace.json b/qapi/trace.json
+index 043d12f83e..9ebb6d9eaf 100644
+--- a/qapi/trace.json
++++ b/qapi/trace.json
+@@ -35,17 +35,10 @@
+ #
+ # @state: Tracing state.
+ #
+-# @vcpu: Whether this is a per-vCPU event (since 2.7).
 -#
 -# Features:
 -#
--# @deprecated: This event is deprecated.  Use
--#     @DEVICE_UNPLUG_GUEST_ERROR instead.
+-# @deprecated: Member @vcpu is deprecated, and always ignored.
 -#
--# Since: 2.4
--#
--# Example:
--#
--#     <- { "event": "MEM_UNPLUG_ERROR",
--#          "data": { "device": "dimm1",
--#                    "msg": "acpi: device unplug for unsupported device"
--#          },
--#          "timestamp": { "seconds": 1265044230, "microseconds": 450486 } }
--##
--{ 'event': 'MEM_UNPLUG_ERROR',
--  'data': { 'device': 'str', 'msg': 'str' },
--  'features': ['deprecated'] }
--
+ # Since: 2.2
  ##
- # @BootConfiguration:
+ { 'struct': 'TraceEventInfo',
+-  'data': {'name': 'str', 'state': 'TraceEventState',
+-           'vcpu': { 'type': 'bool', 'features': ['deprecated'] } } }
++  'data': {'name': 'str', 'state': 'TraceEventState' } }
+ 
+ ##
+ # @trace-event-get-state:
+@@ -54,12 +47,6 @@
  #
-diff --git a/hw/acpi/memory_hotplug.c b/hw/acpi/memory_hotplug.c
-index de6f974ebb..9b974b7274 100644
---- a/hw/acpi/memory_hotplug.c
-+++ b/hw/acpi/memory_hotplug.c
-@@ -178,14 +178,6 @@ static void acpi_memory_hotplug_write(void *opaque, hwaddr addr, uint64_t data,
-             hotplug_handler_unplug(hotplug_ctrl, dev, &local_err);
-             if (local_err) {
-                 trace_mhp_acpi_pc_dimm_delete_failed(mem_st->selector);
--
--                /*
--                 * Send both MEM_UNPLUG_ERROR and DEVICE_UNPLUG_GUEST_ERROR
--                 * while the deprecation of MEM_UNPLUG_ERROR is
--                 * pending.
--                 */
--                qapi_event_send_mem_unplug_error(dev->id ? : "",
--                                                 error_get_pretty(local_err));
-                 qapi_event_send_device_unplug_guest_error(dev->id,
-                                                           dev->canonical_path);
-                 error_free(local_err);
-diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-index 4345764bce..81a187f126 100644
---- a/hw/ppc/spapr.c
-+++ b/hw/ppc/spapr.c
-@@ -3786,7 +3786,6 @@ void spapr_memory_unplug_rollback(SpaprMachineState *spapr, DeviceState *dev)
-     SpaprDrc *drc;
-     uint32_t nr_lmbs;
-     uint64_t size, addr_start, addr;
--    g_autofree char *qapi_error = NULL;
-     int i;
+ # @name: Event name pattern (case-sensitive glob).
+ #
+-# @vcpu: The vCPU to query (since 2.7).
+-#
+-# Features:
+-#
+-# @deprecated: Member @vcpu is deprecated, and always ignored.
+-#
+ # Returns: a list of @TraceEventInfo for the matching events
+ #
+ # Since: 2.2
+@@ -71,8 +58,7 @@
+ #     <- { "return": [ { "name": "qemu_memalign", "state": "disabled", "vcpu": false } ] }
+ ##
+ { 'command': 'trace-event-get-state',
+-  'data': {'name': 'str',
+-           '*vcpu': {'type': 'int', 'features': ['deprecated'] } },
++  'data': {'name': 'str' },
+   'returns': ['TraceEventInfo'] }
  
-     if (!dev) {
-@@ -3823,16 +3822,8 @@ void spapr_memory_unplug_rollback(SpaprMachineState *spapr, DeviceState *dev)
- 
-     /*
-      * Tell QAPI that something happened and the memory
--     * hotunplug wasn't successful. Keep sending
--     * MEM_UNPLUG_ERROR even while sending
--     * DEVICE_UNPLUG_GUEST_ERROR until the deprecation of
--     * MEM_UNPLUG_ERROR is due.
-+     * hotunplug wasn't successful.
-      */
--    qapi_error = g_strdup_printf("Memory hotunplug rejected by the guest "
--                                 "for device %s", dev->id);
--
--    qapi_event_send_mem_unplug_error(dev->id ? : "", qapi_error);
--
-     qapi_event_send_device_unplug_guest_error(dev->id,
-                                               dev->canonical_path);
+ ##
+@@ -86,12 +72,6 @@
+ #
+ # @ignore-unavailable: Do not match unavailable events with @name.
+ #
+-# @vcpu: The vCPU to act upon (all by default; since 2.7).
+-#
+-# Features:
+-#
+-# @deprecated: Member @vcpu is deprecated, and always ignored.
+-#
+ # Since: 2.2
+ #
+ # Example:
+@@ -101,5 +81,4 @@
+ #     <- { "return": {} }
+ ##
+ { 'command': 'trace-event-set-state',
+-  'data': {'name': 'str', 'enable': 'bool', '*ignore-unavailable': 'bool',
+-           '*vcpu': {'type': 'int', 'features': ['deprecated'] } } }
++  'data': {'name': 'str', 'enable': 'bool', '*ignore-unavailable': 'bool' } }
+diff --git a/trace/qmp.c b/trace/qmp.c
+index 3e3971c6a8..074a27b204 100644
+--- a/trace/qmp.c
++++ b/trace/qmp.c
+@@ -48,7 +48,6 @@ static bool check_events(bool ignore_unavailable, bool is_pattern,
  }
+ 
+ TraceEventInfoList *qmp_trace_event_get_state(const char *name,
+-                                              bool has_vcpu, int64_t vcpu,
+                                               Error **errp)
+ {
+     TraceEventInfoList *events = NULL;
+@@ -86,7 +85,6 @@ TraceEventInfoList *qmp_trace_event_get_state(const char *name,
+ 
+ void qmp_trace_event_set_state(const char *name, bool enable,
+                                bool has_ignore_unavailable, bool ignore_unavailable,
+-                               bool has_vcpu, int64_t vcpu,
+                                Error **errp)
+ {
+     TraceEventIter iter;
+diff --git a/trace/trace-hmp-cmds.c b/trace/trace-hmp-cmds.c
+index 86211fce27..d38dd600de 100644
+--- a/trace/trace-hmp-cmds.c
++++ b/trace/trace-hmp-cmds.c
+@@ -40,7 +40,7 @@ void hmp_trace_event(Monitor *mon, const QDict *qdict)
+     Error *local_err = NULL;
+ 
+     qmp_trace_event_set_state(tp_name, new_state,
+-                              true, true, false, 0, &local_err);
++                              true, true, &local_err);
+     if (local_err) {
+         error_report_err(local_err);
+     }
+@@ -82,7 +82,7 @@ void hmp_info_trace_events(Monitor *mon, const QDict *qdict)
+         name = "*";
+     }
+ 
+-    events = qmp_trace_event_get_state(name, false, 0, &local_err);
++    events = qmp_trace_event_get_state(name, &local_err);
+     if (local_err) {
+         error_report_err(local_err);
+         return;
 -- 
 2.41.0
 
