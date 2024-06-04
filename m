@@ -2,84 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 834DD8FBCC1
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 21:53:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF0298FBD38
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 22:21:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEaDB-0007Aq-2y; Tue, 04 Jun 2024 15:52:49 -0400
+	id 1sEadg-0006nH-0k; Tue, 04 Jun 2024 16:20:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sEaD9-0007AL-3D
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 15:52:47 -0400
-Received: from mail-oo1-xc2b.google.com ([2607:f8b0:4864:20::c2b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sEaD7-0007AB-H3
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 15:52:46 -0400
-Received: by mail-oo1-xc2b.google.com with SMTP id
- 006d021491bc7-5b9778bb7c8so3369660eaf.3
- for <qemu-devel@nongnu.org>; Tue, 04 Jun 2024 12:52:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1717530764; x=1718135564; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=zisOd2FXRld0oo3UDLNzFRd7bcHsRdxky1rEPxhG8n4=;
- b=SofcIDuBc26RMSNsbt0E0b4rjuIa08WNlNMdKamEtQIME3A73u7+r2bEKKoL4FPggU
- PnTggmWjqW1eTQB7jrlRPvNmIIh+HSet1aKWe2QgaZkRySD6eBP2EApBjGAHZSVPNUX0
- n6APduZZ943JhBEVGYXLwdVMnaWJiD7rqpXQMgNZ8G4ABrWR7/0yvIC5O1H3l4IAppB9
- aF93WWosR21DVii7TGTBC6WE3ko3QwWETLEreq7T3aZ70P0QA1xvzSyCkEp2Lk7pjXLT
- fOanRy/r56yL3ZXcUHpRpUXOM1NBsd0wseDpyDeLcDWHrrx602r570og1kxA6535abdT
- ejFw==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sEadd-0006mv-6v
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 16:20:10 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sEada-00005Z-Pw
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 16:20:08 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1717532405;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Q4tWmedTKEOSjNMnG1l2EwkkTdat3uEs+uQkbqZQYsA=;
+ b=MQqHTklGtt+Ym4H4BqrvfsqPZ30N/5D9VKItOauEH5MTRwWOTl3VnE2uhdh/ATb9pjyIOT
+ yXM2X8H9/QNYqofuYqZq+jTA+rVB5SsGbIGoH2h7PAGxiS1DES6K30nQZ6ef/tP7vHAmx7
+ SNQmp38nsWrdPSuvinxFT0X49X4eWeI=
+Received: from mail-oo1-f71.google.com (mail-oo1-f71.google.com
+ [209.85.161.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-457-WEi1E2unNf2C9wyEfc9KvA-1; Tue, 04 Jun 2024 16:19:59 -0400
+X-MC-Unique: WEi1E2unNf2C9wyEfc9KvA-1
+Received: by mail-oo1-f71.google.com with SMTP id
+ 006d021491bc7-5b970b125fcso1326729eaf.0
+ for <qemu-devel@nongnu.org>; Tue, 04 Jun 2024 13:19:57 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717530764; x=1718135564;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=zisOd2FXRld0oo3UDLNzFRd7bcHsRdxky1rEPxhG8n4=;
- b=jeKv6GwecJ3o/2Lbeu0+wjLr154ltRIweFWRSASLR61nGQaqT6n5ngogfP5Rsy0ppY
- 4imjBSdlCI9bW5infJxUElgB+QNJ6eM7h3MKXB3zrKy8vfBelReOofblgABxBvYoTGjA
- BwC9x26eNtnrMIdffvoCKgYf4vQnvCkRBocOIkMddNCKQWJf8h7outsBCsoJ4Np58T3d
- a0isyHcqpMxGMvH8AK5gPqNreqWshuHvdSBbRbMKNyeNVoFC1kDs5KLy7ssQS8vhoWc1
- jtVNfdsJBWJghqY9MQIIxGE8tHvKgksiLE4jWFsXJ5P/1uzPF9WBIj7ASGg0U+VNJM4l
- zdSA==
+ d=1e100.net; s=20230601; t=1717532397; x=1718137197;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Q4tWmedTKEOSjNMnG1l2EwkkTdat3uEs+uQkbqZQYsA=;
+ b=dujSmAsmZ7Ajv2SQKDgXSRTkYnQ3OMUNFpTLB+pkvATQqQzv6YJvnrdCv8qqjYcyeL
+ b1xlZ3KRMMkyBA7xKSFRJVSPG+JlLXNWR7B9Vpyin/Yv1WqORSYlC844IOKz0WtxyHJv
+ nxYbepoDPfJhZTqD05rL6JppSzWdkoa1uljyxK2cXgb+cT73EsY6GSPRFReSOQNNmxdl
+ mDUzKBm3Sl4RwqrZqDxRwTCjLTwNAyvCMFqwytg4F7QheEKoH9POLkUXcDmTSYoG8ddi
+ 8JiV39OEj5fqiPphLIQLrBLfNGvaeE1eIKJP1/RnZ3vQZ4IZvaVlrLXGkZ3ZY8kipRbI
+ EnCw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUPUP4UomPWwJfndOc5C2h8qCU6l+iwwz+jQVTTbb6rnARNEIIPgF2ORwUKRC9/JSUwS7s0o+IuQLtsep6xcjVXFYFVFYA=
-X-Gm-Message-State: AOJu0Yyzku5H+1iRTVlVCLJz/h5qaxl9xsTvTEeKrPVBm6B/54Pt+45w
- qfpxp5UhrnZ1QsonLQpkwS0o6UXKONDlQ/P8U9KILDeEdDy/vxH1mMnw0GkssaA=
-X-Google-Smtp-Source: AGHT+IFkRU6UIwKKIPMyHnJvFuviGiMhV+7QpKPgF/JpDgd8b4V4FFOZMXcfjqlx3PaT1oa5pDWU9w==
-X-Received: by 2002:a05:6820:1607:b0:5b1:bf03:d1c6 with SMTP id
- 006d021491bc7-5ba78f2cf7amr674426eaf.1.1717530764060; 
- Tue, 04 Jun 2024 12:52:44 -0700 (PDT)
-Received: from ?IPV6:2607:fb90:4563:8160:73fd:f139:21f2:408e?
- ([2607:fb90:4563:8160:73fd:f139:21f2:408e])
- by smtp.gmail.com with ESMTPSA id
- 006d021491bc7-5ba7aa54866sm50615eaf.35.2024.06.04.12.52.43
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 04 Jun 2024 12:52:43 -0700 (PDT)
-Message-ID: <17a5e0df-73bc-498e-825c-d3cfd66cab92@linaro.org>
-Date: Tue, 4 Jun 2024 14:52:41 -0500
+ AJvYcCVGs6zY4uvXlykS7wjYhoQTsf4y8B7O1S8fx4MXoyjY1HejWeLdl1XvH7typaCV6rEgrPknu27UePEXd/BoSHFtPymLLQE=
+X-Gm-Message-State: AOJu0YyuYL2y3tLsRkulNLYMymKBozD8zDUvJGvc+rGvlqAhtfP8sJ2a
+ HdDFkWTflVKVY249l877L2yNG9CH1JRLZpTVBINHiCxFjDinClmV9zCedkvUHwiqSgsWRc45Ezm
+ +lqH2pIBOp35ieE4Y7xN7MxhPuLBhika1yZgGXF6NXI5LfsUUM+8U
+X-Received: by 2002:a4a:2450:0:b0:5ba:6959:edf8 with SMTP id
+ 006d021491bc7-5ba7904cd39mr757105eaf.1.1717532396933; 
+ Tue, 04 Jun 2024 13:19:56 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHV9EGDpHxWl7dp8Hd84jUR8rbVVa0eFm/Juqea+CTVl4GDIcwhgwd+Jm/WoNIdsI/LwWzgrA==
+X-Received: by 2002:a4a:2450:0:b0:5ba:6959:edf8 with SMTP id
+ 006d021491bc7-5ba7904cd39mr757075eaf.1.1717532396481; 
+ Tue, 04 Jun 2024 13:19:56 -0700 (PDT)
+Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com.
+ [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
+ 6a1803df08f44-6ae4b406617sm42436716d6.95.2024.06.04.13.19.55
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 04 Jun 2024 13:19:55 -0700 (PDT)
+Date: Tue, 4 Jun 2024 16:19:53 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Yuan Liu <yuan1.liu@intel.com>
+Cc: farosas@suse.de, pbonzini@redhat.com, marcandre.lureau@redhat.com,
+ berrange@redhat.com, thuth@redhat.com, philmd@linaro.org,
+ qemu-devel@nongnu.org, nanhai.zou@intel.com,
+ shameerali.kolothum.thodi@huawei.com
+Subject: Re: [PATCH v7 1/7] docs/migration: add qpl compression feature
+Message-ID: <Zl926XxG5ZrZ04tD@x1n>
+References: <20240603154106.764378-1-yuan1.liu@intel.com>
+ <20240603154106.764378-2-yuan1.liu@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 00/20] Net patches
-To: Jason Wang <jasowang@redhat.com>, peter.maydell@linaro.org,
- qemu-devel@nongnu.org
-References: <20240604073755.1859-1-jasowang@redhat.com>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240604073755.1859-1-jasowang@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2b;
- envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc2b.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240603154106.764378-2-yuan1.liu@intel.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,24 +102,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/4/24 02:37, Jason Wang wrote:
-> The following changes since commit 3ab42e46acf867c45bc929fcc37693e327a35a24:
+On Mon, Jun 03, 2024 at 11:41:00PM +0800, Yuan Liu wrote:
+> add Intel Query Processing Library (QPL) compression method
+> introduction
 > 
->    Merge tag 'pull-ufs-20240603' ofhttps://gitlab.com/jeuk20.kim/qemu  into staging (2024-06-03 08:18:14 -0500)
-> 
-> are available in the Git repository at:
-> 
->    https://github.com/jasowang/qemu.git  tags/net-pull-request
-> 
-> for you to fetch changes up to dcab53611191f50cf4feabc1d8794d04afe53407:
-> 
->    ebpf: Added traces back. Changed source set for eBPF to 'system'. (2024-06-04 15:14:26 +0800)
-> 
-> -----------------------
+> Signed-off-by: Yuan Liu <yuan1.liu@intel.com>
+> Reviewed-by: Nanhai Zou <nanhai.zou@intel.com>
 
-Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/9.1 as appropriate.
+Acked-by: Peter Xu <peterx@redhat.com>
 
-
-r~
+-- 
+Peter Xu
 
 
