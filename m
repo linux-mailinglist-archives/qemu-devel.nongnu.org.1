@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD2858FB460
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 15:51:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF40E8FB46E
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 15:51:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEUYT-0006g8-8U; Tue, 04 Jun 2024 09:50:25 -0400
+	id 1sEUYW-00071B-5t; Tue, 04 Jun 2024 09:50:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sEUYR-0006br-Lc
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 09:50:23 -0400
+ id 1sEUYT-0006nE-OZ
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 09:50:25 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sEUYP-0003BK-3j
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 09:50:23 -0400
+ id 1sEUYS-0003BZ-1w
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 09:50:25 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717509020;
+ s=mimecast20190719; t=1717509022;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Gwe3McvH0597SIk+LYVVN7py9uHxlvJhA93NGDK0X0w=;
- b=WbrnU0lkYP34PkbaAKlEjWa03g3x2oLy0ogroQtf1mi4WXs1id/OO2IQtRtMS2tRfFTXIw
- 3uhSveG+yZjqZi4tBgSzObe4qdNtoaOdn88GMNxfUuBjxjHfDYkNPA+q41Yonw6vqcJyza
- XPwfar0UiRwagYhh1/Ux1kmQB60tg08=
+ bh=qYZr3fwgw717JFUyBmktse/fqjl/ZkKCOJMRUp6hAp4=;
+ b=JG3u9lCL2mFMKOxIpmqpTjN0eo9sTLUY+H/Q0SzNmwZheGJ9UWSqy3YGowGDoVNfsVY7iX
+ Wtak7XwVWC/f20kSG3Ee1NcfM5+MEqOna7wiPjVJCxuLLuQyBYnJ1T8lLdiQpyltq/lTVP
+ CqrqwAu+FzxZtA9pvNXgmDnNb01rHYc=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-86-qSyqN-djMvmfA-eTPvwTVw-1; Tue, 04 Jun 2024 09:50:16 -0400
-X-MC-Unique: qSyqN-djMvmfA-eTPvwTVw-1
+ us-mta-56-ukYt0j7WMDakCACaJGzbvQ-1; Tue, 04 Jun 2024 09:50:19 -0400
+X-MC-Unique: ukYt0j7WMDakCACaJGzbvQ-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
  [10.11.54.8])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 91D728007A1;
- Tue,  4 Jun 2024 13:50:16 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9506A8038E3;
+ Tue,  4 Jun 2024 13:50:18 +0000 (UTC)
 Received: from toolbox.redhat.com (unknown [10.39.194.137])
- by smtp.corp.redhat.com (Postfix) with ESMTP id A8841C15C40;
- Tue,  4 Jun 2024 13:50:14 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id CC678C15C41;
+ Tue,  4 Jun 2024 13:50:16 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>, Konstantin Kostiuk <kkostiuk@redhat.com>,
@@ -51,10 +51,10 @@ Cc: Thomas Huth <thuth@redhat.com>, Konstantin Kostiuk <kkostiuk@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PATCH 17/20] qga: conditionalize schema for commands not supported
- on other UNIX
-Date: Tue,  4 Jun 2024 14:49:30 +0100
-Message-ID: <20240604134933.220112-18-berrange@redhat.com>
+Subject: [PATCH 18/20] qga: add note about where to disable commands for a
+ platform
+Date: Tue,  4 Jun 2024 14:49:31 +0100
+Message-ID: <20240604134933.220112-19-berrange@redhat.com>
 In-Reply-To: <20240604134933.220112-1-berrange@redhat.com>
 References: <20240604134933.220112-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -86,68 +86,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Rather than creating stubs for every command that just return
-QERR_UNSUPPORTED, use 'if' conditions in the QAPI schema  to
-fully exclude generation of the commands on other UNIX.
-
-The command will be rejected at QMP dispatch time instead,
-avoiding reimplementing rejection by blocking the stub commands.
-
-This has the additional benefit that the QGA protocol reference
-now documents what conditions enable use of the command.
+Any command that is known to be unimplemented on a given build target
+must be disabled using a QAPI schema conditional. Only use dynamidc
+disabling for commands that require a runtime feature check.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- meson.build          | 1 +
- qga/commands-posix.c | 8 --------
- qga/qapi-schema.json | 3 ++-
- 3 files changed, 3 insertions(+), 9 deletions(-)
+ qga/commands-posix.c | 8 +++++++-
+ qga/commands-win32.c | 8 +++++++-
+ 2 files changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/meson.build b/meson.build
-index 356b2a4817..f39a9b123f 100644
---- a/meson.build
-+++ b/meson.build
-@@ -2233,6 +2233,7 @@ config_host_data.set('CONFIG_ATTR', libattr.found())
- config_host_data.set('CONFIG_BDRV_WHITELIST_TOOLS', get_option('block_drv_whitelist_in_tools'))
- config_host_data.set('CONFIG_BRLAPI', brlapi.found())
- config_host_data.set('CONFIG_BSD', host_os in bsd_oses)
-+config_host_data.set('CONFIG_FREEBSD', host_os == 'freebsd')
- config_host_data.set('CONFIG_CAPSTONE', capstone.found())
- config_host_data.set('CONFIG_COCOA', cocoa.found())
- config_host_data.set('CONFIG_DARWIN', host_os == 'darwin')
 diff --git a/qga/commands-posix.c b/qga/commands-posix.c
-index a353f64ae6..f4104f2760 100644
+index f4104f2760..8f09162562 100644
 --- a/qga/commands-posix.c
 +++ b/qga/commands-posix.c
-@@ -877,14 +877,6 @@ void qmp_guest_set_user_password(const char *username,
-         return;
-     }
+@@ -1136,7 +1136,13 @@ error:
+ 
+ #endif /* HAVE_GETIFADDRS */
+ 
+-/* add unsupported commands to the list of blocked RPCs */
++/*
++ * Add commands that cannot be supported based on the results of
++ * dynamic check of the running OS installation.
++ *
++ * Commands that cannot be supported at all on a given platform
++ * should be disabled with a condition in the QAPI schema.
++ */
+ GList *ga_command_init_blockedrpcs(GList *blockedrpcs)
+ {
+     return blockedrpcs;
+diff --git a/qga/commands-win32.c b/qga/commands-win32.c
+index 2533e4c748..0198e37a96 100644
+--- a/qga/commands-win32.c
++++ b/qga/commands-win32.c
+@@ -1958,7 +1958,13 @@ done:
+     g_free(rawpasswddata);
  }
--#else /* __linux__ || __FreeBSD__ */
--void qmp_guest_set_user_password(const char *username,
--                                 const char *password,
--                                 bool crypted,
--                                 Error **errp)
--{
--    error_setg(errp, QERR_UNSUPPORTED);
--}
- #endif /* __linux__ || __FreeBSD__ */
  
- #ifdef HAVE_GETIFADDRS
-diff --git a/qga/qapi-schema.json b/qga/qapi-schema.json
-index 70d4f173ad..571be3a914 100644
---- a/qga/qapi-schema.json
-+++ b/qga/qapi-schema.json
-@@ -1108,7 +1108,8 @@
- # Since: 2.3
- ##
- { 'command': 'guest-set-user-password',
--  'data': { 'username': 'str', 'password': 'str', 'crypted': 'bool' } }
-+  'data': { 'username': 'str', 'password': 'str', 'crypted': 'bool' },
-+  'if': { 'any': [ 'CONFIG_WIN32', 'CONFIG_LINUX', 'CONFIG_FREEBSD'] } }
- 
- ##
- # @GuestMemoryBlock:
+-/* add unsupported commands to the list of blocked RPCs */
++/*
++ * Add commands that cannot be supported based on the results of
++ * dynamic check of the running OS installation.
++ *
++ * Commands that cannot be supported at all on Wnidows
++ * should be disabled with a condition in the QAPI schema.
++ */
+ GList *ga_command_init_blockedrpcs(GList *blockedrpcs)
+ {
+     if (!vss_init(true)) {
 -- 
 2.45.1
 
