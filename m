@@ -2,89 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D8508FAAA9
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 08:23:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F025C8FAAB4
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 08:25:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sENZc-0007EU-EU; Tue, 04 Jun 2024 02:23:08 -0400
+	id 1sENbn-0003ja-5N; Tue, 04 Jun 2024 02:25:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1sENZa-0007C8-8o
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:23:06 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1sENbj-0003jB-TQ
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:25:20 -0400
+Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1sENZY-0006hg-K2
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:23:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717482183;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=J+ovs+ClrjmIKL1rj7dPkx6BFhvtiS+7s0voHfgRLgY=;
- b=BTeQmwAa42OR7VgKFJugKm36kWfQu+VW24oaAzaXNiHWn0u36xRtKbYqK/DPnI8b3iD9Dk
- FY4y30UFYfPpef/5bN3nkwCJGBKEXoeLMtYaBm85ZKe7IBT9FrO4PG6jkKYg99yg9/T66V
- W1T0n8xkszmSz89qAnpvBndYje0fxVw=
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
- [209.85.216.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-110-Z3ak5kjaP22wBTLcZqm5Mg-1; Tue, 04 Jun 2024 02:21:52 -0400
-X-MC-Unique: Z3ak5kjaP22wBTLcZqm5Mg-1
-Received: by mail-pj1-f72.google.com with SMTP id
- 98e67ed59e1d1-2c1e953176cso3348346a91.0
- for <qemu-devel@nongnu.org>; Mon, 03 Jun 2024 23:21:52 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717482111; x=1718086911;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=J+ovs+ClrjmIKL1rj7dPkx6BFhvtiS+7s0voHfgRLgY=;
- b=sn9deYbt4l2gVQPxopiYHSAzWtfnypyMTqMexZ/8I4giLG+e4Cy5ZSCElHo/4pguv4
- DLyIl4V7giHphOf/zlYogfgwr5srawEWiDYfw6Cyoyc2Ao2dqRbJSacpRvuvjcKlvsxi
- qbqUHTx7j8yK8P0atcJB5RTEIpd/Ej23dh2TB+f+nTXwvGBxClYxEI/MwSLGBIIjkMM6
- u6md2XvgTznQHhUz3s8yuTxG3zQxUbpzJbhkaXFMAqbtvxlFNZJKOOrE+hWB9SXkV8so
- pgOH8NFgsLam+niW6eJabFlecSAdEyzP8vPzcwZOi/G0vP8ALasnl2zFRHV/lf2dvKTs
- wFFQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUGWNuTmJOygsFT0L/0LmuUdoZCccZPOVrvuAeql8F247CV66EPeJg4NuBDIXncD1b6UAvms6vja4ACxFEvp72gEYBA5oo=
-X-Gm-Message-State: AOJu0YyPzQQnaoHNPVWrVc5efzmU6Gyf6xZ4YsER5p/jLAkE67oh5Yoi
- bzsB8Q/k9BLgedtH4UQO2XvuHvBZIFufjJTbSJv0AzMsRSAWOwEKRi5zqJ6hW0ceda7/37t/M8a
- ORogf3Vt5MbdDMqhyfxWoSI8WCZnyG1wXzOZ4KBs15BcReYiTrsaZ
-X-Received: by 2002:a17:90a:4942:b0:2c1:9e9d:b9b5 with SMTP id
- 98e67ed59e1d1-2c1dc57513fmr10587222a91.15.1717482111527; 
- Mon, 03 Jun 2024 23:21:51 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGmFc5rcpZWlDf+G2xM7RA718gsPhiOJT1tgmOMvY0SJVixYuPDIKpAXotIhrTpC/eBU6RApw==
-X-Received: by 2002:a17:90a:4942:b0:2c1:9e9d:b9b5 with SMTP id
- 98e67ed59e1d1-2c1dc57513fmr10587203a91.15.1717482111060; 
- Mon, 03 Jun 2024 23:21:51 -0700 (PDT)
-Received: from localhost.localdomain ([115.96.138.219])
- by smtp.googlemail.com with ESMTPSA id
- 98e67ed59e1d1-2c1c27ad277sm7717987a91.6.2024.06.03.23.21.48
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Jun 2024 23:21:50 -0700 (PDT)
-From: Ani Sinha <anisinha@redhat.com>
-To: Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Cc: Ani Sinha <anisinha@redhat.com>,
-	qemu-devel@nongnu.org
-Subject: [PATCH] qtest/x86/numa-test: do not use the obsolete 'pentium' cpu
-Date: Tue,  4 Jun 2024 11:51:33 +0530
-Message-ID: <20240604062133.40637-1-anisinha@redhat.com>
-X-Mailer: git-send-email 2.42.0
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1sENbg-0007cF-UT
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:25:18 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
+ In-Reply-To:References:To:From:MIME-Version:Date:Message-ID:Sender:Reply-To:
+ Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+ Resent-To:Resent-Cc:Resent-Message-ID;
+ bh=ka94TAQHaS9qvy4fWC4rghetLsHXFN6yDg85DdIgrCc=; b=s8kaHLBI+SC1ILjtG85hDPHAkK
+ EDLxU+cvExDyv9PyWcB/ouOudfZsXT0RJU2Bl7xRFOWhjM6MZiWRQ2k2k1544k/e3ej4rPWseChGR
+ xdZ6k84+XGivp3LHl0de/OqJURWF8MyeGysLSY70+bBW2+eYsVqFisAATGY5r903MCAp6BUOlLuIi
+ GZ/TyuDk8YmNO2BkKw+NNj3mQOUBYHnBSdwYdcz17X2v1Yw2veUom4IvLgWFOpfiqZW+Fdqi0cqhj
+ ZeNVsgzTBi8vIQlXGneTx+mWziLC0TS62grqd20aXNORDm0g0PT5XsmumiIjWgV6a66MW96ge6Scg
+ /KSOFsPnkYWNWfxQYC9XM/om6zh2LxrvSIa9zaPQPCifzbSEBapuE0FAHZn6Afq3KMhj+5Ck2L8zO
+ Zk/dd3DfL3RzQwzYDbiK9fC5Sjlnla8nwptSP6dVsSPS4IKH3S34U1WiFvZROfrYyb4HUszU5c/U6
+ zxFWgB0qDjGhF6zRuBuSazqiN9Eqmw7P7mgS9jzDgBHr8WS2b4N2JR5s84940li9g5GHUTr71H0Yk
+ 6RLkxOaL67V+st61kLE8O+1P4JgM6JwTg2y7wLsnWoPanlruii9/NcWKPDGklVEvbLRgTtPOLPhqr
+ 3yK/BOiynudwaTZL4bTwozwtoox2P2Mc2TnM1bOts=;
+Received: from [2a00:23c4:8bb4:4000:ce26:7186:74ad:2d8c]
+ by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1sENaM-0006xt-Hy; Tue, 04 Jun 2024 07:23:58 +0100
+Message-ID: <b19b642c-e5ee-4a09-9346-680caca5a96b@ilande.co.uk>
+Date: Tue, 4 Jun 2024 07:25:04 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+References: <20240526194254.459395-1-richard.henderson@linaro.org>
+ <b7ef97e1-5e3a-419e-bc35-0f51bc18e563@ilande.co.uk>
+Content-Language: en-US
+Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
+ xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
+ 3JzBTbtd4JfFcSupo6MNNOrCzdCbCjZ64ik8ycaUOSzK2tKbeQLEXzXoaDL1Y7vuVO7nL9bG
+ E5Ru3wkhCFc7SkoypIoAUqz8EtiB6T89/D9TDEyjdXUacc53R5gu8wEWiMg5MQQuGwzbQy9n
+ PFI+mXC7AaEUqBVc2lBQVpAYXkN0EyqNNT12UfDLdxaxaFpUAE2pCa2LTyo5vn5hEW+i3VdN
+ PkmjyPvL6DdY03fvC01PyY8zaw+UI94QqjlrDisHpUH40IUPpC/NB0LwzL2aQOMkzT2NABEB
+ AAHNME1hcmsgQ2F2ZS1BeWxhbmQgPG1hcmsuY2F2ZS1heWxhbmRAaWxhbmRlLmNvLnVrPsLA
+ eAQTAQIAIgUCVAm7PAIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQW8LFb64PMh9f
+ NAgAuc3ObOEY8NbZko72AGrg2tWKdybcMVITxmcor4hb9155o/OWcA4IDbeATR6cfiDL/oxU
+ mcmtXVgPqOwtW3NYAKr5g/FrZZ3uluQ2mtNYAyTFeALy8YF7N3yhs7LOcpbFP7tEbkSzoXNG
+ z8iYMiYtKwttt40WaheWuRs0ZOLbs6yoczZBDhna3Nj0LA3GpeJKlaV03O4umjKJgACP1c/q
+ T2Pkg+FCBHHFP454+waqojHp4OCBo6HyK+8I4wJRa9Z0EFqXIu8lTDYoggeX0Xd6bWeCFHK3
+ DhD0/Xi/kegSW33unsp8oVcM4kcFxTkpBgj39dB4KwAUznhTJR0zUHf63M7ATQRUCbs8AQgA
+ y7kyevA4bpetM/EjtuqQX4U05MBhEz/2SFkX6IaGtTG2NNw5wbcAfhOIuNNBYbw6ExuaJ3um
+ 2uLseHnudmvN4VSJ5Hfbd8rhqoMmmO71szgT/ZD9MEe2KHzBdmhmhxJdp+zQNivy215j6H27
+ 14mbC2dia7ktwP1rxPIX1OOfQwPuqlkmYPuVwZP19S4EYnCELOrnJ0m56tZLn5Zj+1jZX9Co
+ YbNLMa28qsktYJ4oU4jtn6V79H+/zpERZAHmH40IRXdR3hA+Ye7iC/ZpWzT2VSDlPbGY9Yja
+ Sp7w2347L5G+LLbAfaVoejHlfy/msPeehUcuKjAdBLoEhSPYzzdvEQARAQABwsBfBBgBAgAJ
+ BQJUCbs8AhsMAAoJEFvCxW+uDzIfabYIAJXmBepHJpvCPiMNEQJNJ2ZSzSjhic84LTMWMbJ+
+ opQgr5cb8SPQyyb508fc8b4uD8ejlF/cdbbBNktp3BXsHlO5BrmcABgxSP8HYYNsX0n9kERv
+ NMToU0oiBuAaX7O/0K9+BW+3+PGMwiu5ml0cwDqljxfVN0dUBZnQ8kZpLsY+WDrIHmQWjtH+
+ Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
+ KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
+ imgcU9TTGC5qd9g=
+In-Reply-To: <b7ef97e1-5e3a-419e-bc35-0f51bc18e563@ilande.co.uk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+X-SA-Exim-Connect-IP: 2a00:23c4:8bb4:4000:ce26:7186:74ad:2d8c
+X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
+Subject: Re: [PATCH v2 00/37] target/sparc: Implement VIS4
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
+Received-SPF: pass client-ip=2001:41c9:1:41f::167;
+ envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,31 +101,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-'pentium' cpu is old and obsolete and should be avoided for running tests if
-its not strictly needed. Use 'max' cpu instead for generic non-cpu specific
-numa test.
+On 28/05/2024 22:29, Mark Cave-Ayland wrote:
 
-CC: thuth@redhat.com
-Signed-off-by: Ani Sinha <anisinha@redhat.com>
----
- tests/qtest/numa-test.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+> On 26/05/2024 20:42, Richard Henderson wrote:
+> 
+>> Now tested with RISU, using a Solaris M8 host as reference.
+>> This exposed a few bugs in the existing VIS1 support as well,
+>> so fix those before anything else.  It also exposed a few bugs
+>> in the implementation of VIS3, so fixes squashed there as well.
+>>
+>>
+>> r~
+>>
+>>
+>> Richard Henderson (37):
+>>    target/sparc: Fix ARRAY8
+>>    target/sparc: Rewrite gen_edge
+>>    target/sparc: Fix do_dc
+>>    target/sparc: Fix helper_fmul8ulx16
+>>    target/sparc: Perform DFPREG/QFPREG in decodetree
+>>    target/sparc: Remove gen_dest_fpr_D
+>>    target/sparc: Remove cpu_fpr[]
+>>    target/sparc: Use gvec for VIS1 parallel add/sub
+>>    target/sparc: Implement FMAf extension
+>>    target/sparc: Add feature bits for VIS 3
+>>    target/sparc: Implement ADDXC, ADDXCcc
+>>    target/sparc: Implement CMASK instructions
+>>    target/sparc: Implement FCHKSM16
+>>    target/sparc: Implement FHADD, FHSUB, FNHADD, FNADD, FNMUL
+>>    target/sparc: Implement FLCMP
+>>    target/sparc: Implement FMEAN16
+>>    target/sparc: Implement FPADD64, FPSUB64
+>>    target/sparc: Implement FPADDS, FPSUBS
+>>    target/sparc: Implement FPCMPEQ8, FPCMPNE8, FPCMPULE8, FPCMPUGT8
+>>    target/sparc: Implement FSLL, FSRL, FSRA, FSLAS
+>>    target/sparc: Implement LDXEFSR
+>>    target/sparc: Implement LZCNT
+>>    target/sparc: Implement MOVsTOw, MOVdTOx, MOVwTOs, MOVxTOd
+>>    target/sparc: Implement PDISTN
+>>    target/sparc: Implement UMULXHI
+>>    target/sparc: Implement XMULX
+>>    target/sparc: Enable VIS3 feature bit
+>>    target/sparc: Implement IMA extension
+>>    target/sparc: Add feature bit for VIS4
+>>    target/sparc: Implement FALIGNDATAi
+>>    target/sparc: Implement 8-bit FPADD, FPADDS, and FPADDUS
+>>    target/sparc: Implement VIS4 comparisons
+>>    target/sparc: Implement FPMIN, FPMAX
+>>    target/sparc: Implement SUBXC, SUBXCcc
+>>    target/sparc: Implement MWAIT
+>>    target/sparc: Implement monitor ASIs
+>>    target/sparc: Enable VIS4 feature bit
+>>
+>>   target/sparc/asi.h             |   4 +
+>>   target/sparc/helper.h          |  27 +-
+>>   target/sparc/cpu-feature.h.inc |   4 +
+>>   target/sparc/insns.decode      | 338 ++++++++----
+>>   linux-user/elfload.c           |   3 +
+>>   target/sparc/cpu.c             |  12 +
+>>   target/sparc/fop_helper.c      | 136 +++++
+>>   target/sparc/ldst_helper.c     |   4 +
+>>   target/sparc/translate.c       | 938 ++++++++++++++++++++++++++-------
+>>   target/sparc/vis_helper.c      | 392 +++++++++++---
+>>   fpu/softfloat-specialize.c.inc |  31 ++
+>>   11 files changed, 1558 insertions(+), 331 deletions(-)
+> 
+> Thanks - I'll give this series a quick run over my test images over the next few days 
+> just to make sure there are no regressions (unlikely as I don't have much in the way 
+> of current VIS test cases) and report back.
 
-diff --git a/tests/qtest/numa-test.c b/tests/qtest/numa-test.c
-index 7aa262dbb9..f01f19592d 100644
---- a/tests/qtest/numa-test.c
-+++ b/tests/qtest/numa-test.c
-@@ -125,7 +125,8 @@ static void pc_numa_cpu(const void *data)
-     QTestState *qts;
-     g_autofree char *cli = NULL;
- 
--    cli = make_cli(data, "-cpu pentium -machine smp.cpus=8,smp.sockets=2,smp.cores=2,smp.threads=2 "
-+    cli = make_cli(data,
-+        "-cpu max -machine smp.cpus=8,smp.sockets=2,smp.cores=2,smp.threads=2 "
-         "-numa node,nodeid=0,memdev=ram -numa node,nodeid=1 "
-         "-numa cpu,node-id=1,socket-id=0 "
-         "-numa cpu,node-id=0,socket-id=1,core-id=0 "
--- 
-2.42.0
+This series passes all my sun4u boot tests so:
+
+Tested-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+
+I don't have any other pending patches so feel free to take this via your TCG branch 
+if you would like it merged in the near future.
+
+
+ATB,
+
+Mark.
 
 
