@@ -2,62 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3ACC8FB777
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 17:34:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 864AC8FB77D
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 17:34:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEW9h-0006eH-Fq; Tue, 04 Jun 2024 11:32:57 -0400
+	id 1sEW9i-0006ex-Mi; Tue, 04 Jun 2024 11:32:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sEW9e-0006bI-SD
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 11:32:54 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1sEW9f-0006bz-Db
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 11:32:55 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sEW9d-0001Hb-6B
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 11:32:54 -0400
+ id 1sEW9d-0001Hs-Qt
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 11:32:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1717515172;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=4adVHmCbzeBezujTwCZuobD70x9l5Rn6nXDmdzXRVJg=;
- b=DIdSeb87OZKmox+H3KZi3eoextxl5QELTgiR9ayICS6DMWHn91CZjEwyIhmJkExyTFex0e
- iP8XhBFJzom5bKgAlibyYurhPtDqsENLL+8fuYcqen07NFV6eMOZe8OFimnbCl3Wr1FJOr
- bW1AjujSsYAHWagsfZVQhg7RYyHT2Ww=
+ bh=LhJGSDZ4EPSyDcTb/UIgC5oAmgl4HhjH70MRGxKNRxY=;
+ b=M8uRtmoBPhspYrNVuSCsbwmekBibtWC3h49nzkPy76D44zsfoebvI7gqtfsD+hlDR7cXX6
+ aDbyAMYvolnllKBX9ofKjQKfMP93vqll5BBgdlmRIs7aVyHhiZ8jzwT8+tw0GW6QMkSi0Q
+ GXggpx1SuQECYe72URlpi2ye+lgafkU=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-142-GCiby5NiPgqCeFAws9BTJA-1; Tue,
- 04 Jun 2024 11:32:50 -0400
-X-MC-Unique: GCiby5NiPgqCeFAws9BTJA-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-445-sWAXfsigPTayNG6KmBO86Q-1; Tue,
+ 04 Jun 2024 11:32:51 -0400
+X-MC-Unique: sWAXfsigPTayNG6KmBO86Q-1
 Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
  [10.11.54.9])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0BFA829ABA01;
- Tue,  4 Jun 2024 15:32:50 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1186A3801F4A;
+ Tue,  4 Jun 2024 15:32:51 +0000 (UTC)
 Received: from toolbox.redhat.com (unknown [10.39.194.137])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 3B142492BD3;
- Tue,  4 Jun 2024 15:32:49 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 40A00492BD6;
+ Tue,  4 Jun 2024 15:32:50 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>,
  Konstantin Kostiuk <kkostiuk@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 05/14] qapi: stop hardcoding list of special features
-Date: Tue,  4 Jun 2024 16:32:33 +0100
-Message-ID: <20240604153242.251334-6-berrange@redhat.com>
+Subject: [PATCH 06/14] qapi: define enum for custom special features on
+ commands
+Date: Tue,  4 Jun 2024 16:32:34 +0100
+Message-ID: <20240604153242.251334-7-berrange@redhat.com>
 In-Reply-To: <20240604153242.251334-1-berrange@redhat.com>
 References: <20240604153242.251334-1-berrange@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -82,84 +83,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use the additional list of special features for commands, previously
-defined by a pragma, to augment the standard 'unstable' and 'deprecated'
-ones.
+In order to register custom special features against a command,
+they have to have enum constants defined. The defined constant
+values start where the last built-in special feature stops.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- scripts/qapi/schema.py | 33 ++++++++++++++++++++++++++++-----
- 1 file changed, 28 insertions(+), 5 deletions(-)
+ include/qapi/util.h      |  2 ++
+ scripts/qapi/commands.py | 20 ++++++++++++++++++++
+ 2 files changed, 22 insertions(+)
 
-diff --git a/scripts/qapi/schema.py b/scripts/qapi/schema.py
-index 721c470d2b..b83a9bdcb7 100644
---- a/scripts/qapi/schema.py
-+++ b/scripts/qapi/schema.py
-@@ -932,8 +932,18 @@ def connect_doc(self, doc: Optional[QAPIDoc]) -> None:
- class QAPISchemaFeature(QAPISchemaMember):
-     role = 'feature'
- 
-+    def __init__(
-+        self,
-+        name: str,
-+        info: Optional[QAPISourceInfo],
-+        ifcond: Optional[QAPISchemaIfCond] = None,
-+        special: bool = False,
-+    ):
-+        super().__init__(name, info, ifcond)
-+        self.special = special
+diff --git a/include/qapi/util.h b/include/qapi/util.h
+index 7698e789a9..3c3c9e401c 100644
+--- a/include/qapi/util.h
++++ b/include/qapi/util.h
+@@ -14,6 +14,8 @@
+ typedef enum {
+     QAPI_FEATURE_DEPRECATED,
+     QAPI_FEATURE_UNSTABLE,
 +
-     def is_special(self) -> bool:
--        return self.name in ('deprecated', 'unstable')
-+        return self.special
++    QAPI_FEATURE_BUILT_IN_LAST,
+ } QapiSpecialFeature;
  
+ typedef struct QEnumLookup {
+diff --git a/scripts/qapi/commands.py b/scripts/qapi/commands.py
+index 79951a841f..50a60968d4 100644
+--- a/scripts/qapi/commands.py
++++ b/scripts/qapi/commands.py
+@@ -347,7 +347,27 @@ def visit_begin(self, schema: QAPISchema) -> None:
+         self._add_module('./init', ' * QAPI Commands initialization')
+         self._genh.add(mcgen('''
+ #include "qapi/qmp/dispatch.h"
++'''))
++
++        features = schema._custom_special_features['command']
++        if len(features) > 0:
++            self._genh.add(mcgen('''
++
++typedef enum {
++'''))
++            suffix = " = QAPI_FEATURE_BUILT_IN_LAST"
++            for f in features:
++                self._genh.add(mcgen('''
++    QAPI_FEATURE_%(name)s%(suffix)s,
++''', suffix=suffix, name=f.upper().replace('-', '_')))
++                suffix = ""
  
- class QAPISchemaObjectTypeMember(QAPISchemaMember):
-@@ -1143,6 +1153,9 @@ def __init__(self, fname: str):
-         self._predefining = True
-         self._def_predefineds()
-         self._predefining = False
-+        self._custom_special_features: Dict[str, List[str]] = {
-+            'command': parser.info.pragma.command_features
-+        }
-         self._def_exprs(exprs)
-         self.check()
- 
-@@ -1254,12 +1267,21 @@ def _make_features(
-         self,
-         features: Optional[List[Dict[str, Any]]],
-         info: Optional[QAPISourceInfo],
-+        custom_special_features: Optional[List[str]] = [],
-     ) -> List[QAPISchemaFeature]:
-         if features is None:
-             return []
--        return [QAPISchemaFeature(f['name'], info,
--                                  QAPISchemaIfCond(f.get('if')))
--                for f in features]
-+        ret = []
-+        for f in features:
-+            name = f['name']
-+            special = name in ["unstable", "deprecated"]
-+            if custom_special_features is not None:
-+                if name in custom_special_features:
-+                    special = True
-+            ret.append(QAPISchemaFeature(name, info,
-+                                         QAPISchemaIfCond(f.get('if')),
-+                                         special))
-+        return ret
- 
-     def _make_enum_member(
-         self,
-@@ -1430,7 +1452,8 @@ def _def_command(self, expr: QAPIExpression) -> None:
-         coroutine = expr.get('coroutine', False)
-         ifcond = QAPISchemaIfCond(expr.get('if'))
-         info = expr.info
--        features = self._make_features(expr.get('features'), info)
-+        features = self._make_features(expr.get('features'), info,
-+                                       self._custom_special_features['command'])
-         if isinstance(data, OrderedDict):
-             data = self._make_implicit_object_type(
-                 name, info, ifcond,
++            self._genh.add(mcgen('''
++} QapiSpecialFeatureCustom;
++
++'''))
++
++        self._genh.add(mcgen('''
+ void %(c_prefix)sqmp_init_marshal(QmpCommandList *cmds);
+ ''',
+                              c_prefix=c_name(self._prefix, protect=False)))
 -- 
 2.45.1
 
