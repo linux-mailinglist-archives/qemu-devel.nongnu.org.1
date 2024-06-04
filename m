@@ -2,41 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F27F88FAE7B
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 11:13:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F1028FAE99
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 11:19:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEQDN-0005ln-Bb; Tue, 04 Jun 2024 05:12:21 -0400
+	id 1sEQJK-0007aa-AQ; Tue, 04 Jun 2024 05:18:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1sEQDL-0005la-GK; Tue, 04 Jun 2024 05:12:19 -0400
-Received: from proxmox-new.maurer-it.com ([94.136.29.106])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sEQJI-0007aI-Ct
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 05:18:28 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1sEQDJ-0001eN-BG; Tue, 04 Jun 2024 05:12:19 -0400
-Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
- by proxmox-new.maurer-it.com (Proxmox) with ESMTP id D030A42A29;
- Tue,  4 Jun 2024 11:12:13 +0200 (CEST)
-From: Fiona Ebner <f.ebner@proxmox.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, crosa@redhat.com, jsnow@redhat.com,
- hreitz@redhat.com, kwolf@redhat.com
-Subject: [RFC PATCH] block-coroutine-wrapper: support generating wrappers for
- functions without arguments
-Date: Tue,  4 Jun 2024 11:12:08 +0200
-Message-Id: <20240604091208.39677-1-f.ebner@proxmox.com>
-X-Mailer: git-send-email 2.39.2
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sEQJG-00046l-MQ
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 05:18:28 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1717492705;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=KJxLCaBaIuRGcA0TH+Rg+hOm7JhuMGzVkNLWQKfNTtc=;
+ b=BIwjng8Iu2B8fG+E9TD2jePoFx7Op+mkKNwke9Y4eyzd5Lw4R85mMeRPui94LwZBcaf3RE
+ DVA0upQYnW7I0QgG/nK0BFBO7UcmRkXdjpdKnl2UbFRD8dIsr2jk37HbM+7yx1fjKyezCG
+ Rax6AL2SjvBXBk0ow7ic9Fnm/TCd2I0=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-453-fZA_7lFZOYKinfcPFuq64Q-1; Tue,
+ 04 Jun 2024 05:18:21 -0400
+X-MC-Unique: fZA_7lFZOYKinfcPFuq64Q-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6074E3C025CE;
+ Tue,  4 Jun 2024 09:18:20 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.93])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 5591A4D6D;
+ Tue,  4 Jun 2024 09:18:19 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 61B0321E668A; Tue,  4 Jun 2024 11:18:18 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+Cc: fan <nifan.cxl@gmail.com>,  <qemu-devel@nongnu.org>,
+ <linux-cxl@vger.kernel.org>,  <gregory.price@memverge.com>,
+ <ira.weiny@intel.com>,  <dan.j.williams@intel.com>,
+ <a.manzanares@samsung.com>,  <dave@stgolabs.net>,
+ <nmtadam.samsung@gmail.com>,  <jim.harris@samsung.com>,
+ <Jorgen.Hansen@wdc.com>,  <wj28.lee@gmail.com>,  Fan Ni
+ <fan.ni@samsung.com>
+Subject: Re: [PATCH v7 09/12] hw/cxl/events: Add qmp interfaces to
+ add/release dynamic capacity extents
+In-Reply-To: <20240501155812.00002ec3@Huawei.com> (Jonathan Cameron's message
+ of "Wed, 1 May 2024 15:58:12 +0100")
+References: <20240418232902.583744-1-fan.ni@samsung.com>
+ <20240418232902.583744-10-fan.ni@samsung.com>
+ <877cgkxzal.fsf@pond.sub.org> <Zivk37xBGPsL_yo5@debian>
+ <87h6fkob0t.fsf@pond.sub.org> <ZjEnwPeoivsW8y5Z@debian>
+ <20240501155812.00002ec3@Huawei.com>
+Date: Tue, 04 Jun 2024 11:18:18 +0200
+Message-ID: <87cyox9icl.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=94.136.29.106; envelope-from=f.ebner@proxmox.com;
- helo=proxmox-new.maurer-it.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -52,92 +91,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
----
+I finally got around to read this slowly.  Thank you, Fan and Jonathan!
 
-An alternative would be to detect whether the argument list is 'void'
-in FuncDecl's __init__, assign the empty list to self.args there and
-special case based on that in the rest of the code.
+I'm getting some "incomplete" vibes: "if we ever implement", "patches
+for this on list", "we aren't emulating this yet at all", and ...
 
-Not super happy about the introduction of the 'void_value' parameter,
-but the different callers seem to make something like it necessary.
-Could be avoided if there were a nice way to map a format which
-contains no other keys besides '{name}' to the empty list if the
-argument's 'name' is 'None'. At least until there is a format that
-contains both '{name}' and another key which would require special
-handling again.
+Jonathan Cameron <Jonathan.Cameron@Huawei.com> writes:
 
-The generated code unfortunately does contain a few extra blank lines.
-Avoiding that would require turning some of the (currently static)
-formatting surrounding gen_block() dynamic based upon whether the
-argument list is 'void'.
+[...]
 
-Happy about any feedback/suggestions!
+> Only thing I'd add is that for now (because we don't need it for testing
+> the kernel flows) is that this does not provide any way for external
+> agents (e.g. our 'fabric manager' to find out what the state is - i.e.
+> if the extents have been accepted by the host etc). That stuff is all
+> defined by the spec, but not yet in the QMP interface.  At somepoint
+> we may want to add that as a state query type interface.
 
- scripts/block-coroutine-wrapper.py | 17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
+... this, too.
 
-diff --git a/scripts/block-coroutine-wrapper.py b/scripts/block-coroutine-wrapper.py
-index dbbde99e39..533f6dbe12 100644
---- a/scripts/block-coroutine-wrapper.py
-+++ b/scripts/block-coroutine-wrapper.py
-@@ -54,6 +54,11 @@ class ParamDecl:
-                           r')')
- 
-     def __init__(self, param_decl: str) -> None:
-+        if param_decl.strip() == 'void':
-+            self.decl = 'void'
-+            self.type = 'void'
-+            self.name = None
-+            return
-         m = self.param_re.match(param_decl.strip())
-         if m is None:
-             raise ValueError(f'Wrong parameter declaration: "{param_decl}"')
-@@ -114,10 +119,14 @@ def gen_ctx(self, prefix: str = '') -> str:
-         else:
-             return 'qemu_get_aio_context()'
- 
--    def gen_list(self, format: str) -> str:
-+    def gen_list(self, format: str, void_value='') -> str:
-+        if len(self.args) == 1 and self.args[0].type == 'void':
-+            return void_value
-         return ', '.join(format.format_map(arg.__dict__) for arg in self.args)
- 
-     def gen_block(self, format: str) -> str:
-+        if len(self.args) == 1 and self.args[0].type == 'void':
-+            return ''
-         return '\n'.join(format.format_map(arg.__dict__) for arg in self.args)
- 
- 
-@@ -158,7 +167,7 @@ def create_mixed_wrapper(func: FuncDecl) -> str:
-     graph_assume_lock = 'assume_graph_lock();' if func.graph_rdlock else ''
- 
-     return f"""\
--{func.return_type} {func.name}({ func.gen_list('{decl}') })
-+{func.return_type} {func.name}({ func.gen_list('{decl}', 'void') })
- {{
-     if (qemu_in_coroutine()) {{
-         {graph_assume_lock}
-@@ -186,7 +195,7 @@ def create_co_wrapper(func: FuncDecl) -> str:
-     name = func.target_name
-     struct_name = func.struct_name
-     return f"""\
--{func.return_type} {func.name}({ func.gen_list('{decl}') })
-+{func.return_type} {func.name}({ func.gen_list('{decl}', 'void') })
- {{
-     {struct_name} s = {{
-         .poll_state.ctx = qemu_get_current_aio_context(),
-@@ -284,7 +293,7 @@ def gen_no_co_wrapper(func: FuncDecl) -> str:
-     aio_co_wake(s->co);
- }}
- 
--{func.return_type} coroutine_fn {func.name}({ func.gen_list('{decl}') })
-+{func.return_type} coroutine_fn {func.name}({ func.gen_list('{decl}', 'void') })
- {{
-     {struct_name} s = {{
-         .co = qemu_coroutine_self(),
--- 
-2.39.2
+In review of v5, I asked whether this interface needs to be stable.
 
+"Not stable" doesn't mean we change an interface without thought.  It
+merely means we can change it much, much faster, and with much less
+overhead.
+
+I understand you want it chiefly for CXL development.  Development aids
+commonly don't need to be stable.
+
+If you're aiming for stable, you need to convince us the interface can
+support the foreseeable purposes without incompatible changes.  In
+particular, I'd like to see how you intend to support "finding out what
+the state is".  I suspect that's related to my question in review of v8:
+how to detect completion, and maybe track progress.
+
+There's infrastructure for background jobs: job.json.  We might be
+better off using it, unless completion is trivial and progress tracking
+unnecessary.
+
+[...]
 
 
