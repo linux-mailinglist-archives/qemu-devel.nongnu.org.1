@@ -2,74 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B29538FB745
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 17:30:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BACA08FB6C3
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 17:17:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEW65-0004nv-MJ; Tue, 04 Jun 2024 11:29:13 -0400
+	id 1sEVtc-0005Hr-Uy; Tue, 04 Jun 2024 11:16:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1sEW5z-0004mQ-6y
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 11:29:07 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sEVtR-0005BM-Em; Tue, 04 Jun 2024 11:16:10 -0400
+Received: from mgamail.intel.com ([192.198.163.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1sEW5u-0008G5-Vv
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 11:29:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717514941;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=GPDHaOfyHjR6XE5rBcFgBngFaJkXFAjqpxH2sMZme1M=;
- b=ZAT1eQnyPg8TfzAn2SIYQUPBLc+QLeJ5up25U4Xy5wQrAvRmmLjOzQB/dFyPN8kRRvuJ8a
- FDRz2o2y0h1jQ0Fmo2fHA6JOZKh+o0x1jwUxUt6Psy3/owwqGNtiI+cIqpl5a4c/JsY35/
- 0srICrzAywWp5hy1TFwpUn4iMGZas7M=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-633-P9GVlUjkNO68OguwnureNQ-1; Tue, 04 Jun 2024 11:28:57 -0400
-X-MC-Unique: P9GVlUjkNO68OguwnureNQ-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 65223811E85;
- Tue,  4 Jun 2024 15:28:57 +0000 (UTC)
-Received: from redhat.com (unknown [10.39.193.234])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 6B7E8111DCFA;
- Tue,  4 Jun 2024 15:28:55 +0000 (UTC)
-Date: Tue, 4 Jun 2024 17:28:54 +0200
-From: Kevin Wolf <kwolf@redhat.com>
-To: Fiona Ebner <f.ebner@proxmox.com>
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, qemu-stable@nongnu.org,
- hreitz@redhat.com, fam@euphon.net, stefanha@redhat.com,
- t.lamprecht@proxmox.com, w.bumiller@proxmox.com
-Subject: Re: [PATCH v3 2/4] block-backend: fix edge case in bdrv_next() where
- BDS associated to BB changes
-Message-ID: <Zl8yto1PfDto33yp@redhat.com>
-References: <20240322095009.346989-1-f.ebner@proxmox.com>
- <20240322095009.346989-3-f.ebner@proxmox.com>
- <ZgLDEdmI0rBcJcGh@redhat.com>
- <bf1537a6-0597-4e82-8b42-32364a6246a3@proxmox.com>
- <Zl3tcRie6y3wEpsP@redhat.com>
- <5e3a6579-d8be-4907-9b24-26ce467a74eb@proxmox.com>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sEVtJ-0003VX-Tu; Tue, 04 Jun 2024 11:16:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1717514162; x=1749050162;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=qXPxwp4Krxnak53hDhODVhsVAD6HPOWoEFdGvkvs9S0=;
+ b=ITCDR9R/kixH+XcT0vbniTdIRW8kFDmoWFLKsSuYIS60lPmyPxmjhC5g
+ jTbuyQzfos245Qqw1l/4P3WSLCrAKY+ml/TCCbSnfjy/HSLLCjTCmUeDC
+ gQg7I+eM5+qtYtwdgTZu6giNRrwkdFfN9YzCsFvHlYt7SL9ghZlJYUd+j
+ Gu1MR6Tgl0U+xzNsPwyKz39ZLHOmqhJaX/NMvJV3ZLQZuaOIgIg/sNm+9
+ vx1H9+N6ktt9BCdUVgw+6YN4oe9w3XGtwDo79r+WdF4aY2jaWDrHHaRs2
+ VaNzHMvQMYBDwmtDazuTP9sm3u68drMeZjW3ZsRWitaysNF0hBz5vvIEv w==;
+X-CSE-ConnectionGUID: S50ujfx8Si+QFaaQmX2AGg==
+X-CSE-MsgGUID: Ag4eX3cqTk6URpCssrFP2Q==
+X-IronPort-AV: E=McAfee;i="6600,9927,11093"; a="25468255"
+X-IronPort-AV: E=Sophos;i="6.08,214,1712646000"; d="scan'208";a="25468255"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Jun 2024 08:15:50 -0700
+X-CSE-ConnectionGUID: zIy4auewSF6TmnhNZjiSLg==
+X-CSE-MsgGUID: rDc0TgSUTsGt7J+8QTX8CA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,214,1712646000"; d="scan'208";a="42379247"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by orviesa004.jf.intel.com with ESMTP; 04 Jun 2024 08:15:45 -0700
+Date: Tue, 4 Jun 2024 23:31:11 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
+Cc: Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>,
+ Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Sia Jee Heng <jeeheng.sia@starfivetech.com>, qemu-devel@nongnu.org,
+ kvm@vger.kernel.org, qemu-riscv@nongnu.org, qemu-arm@nongnu.org,
+ Zhenyu Wang <zhenyu.z.wang@intel.com>,
+ Dapeng Mi <dapeng1.mi@linux.intel.com>, Yongwei Ma <yongwei.ma@intel.com>
+Subject: Re: [RFC v2 0/7] Introduce SMP Cache Topology
+Message-ID: <Zl8zP4pXjRmVs3VP@intel.com>
+References: <20240530101539.768484-1-zhao1.liu@intel.com>
+ <Zl7ea2o2aaxXMj9X@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=gb2312
 Content-Disposition: inline
-In-Reply-To: <5e3a6579-d8be-4907-9b24-26ce467a74eb@proxmox.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <Zl7ea2o2aaxXMj9X@redhat.com>
+Received-SPF: pass client-ip=192.198.163.10; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ MIME_CHARSET_FARAWAY=2.45, RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,118 +94,198 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 04.06.2024 um 09:58 hat Fiona Ebner geschrieben:
-> Am 03.06.24 um 18:21 schrieb Kevin Wolf:
-> > Am 03.06.2024 um 16:17 hat Fiona Ebner geschrieben:
-> >> Am 26.03.24 um 13:44 schrieb Kevin Wolf:
-> >>>
-> >>> The fix for bdrv_flush_all() is probably to make it bdrv_co_flush_all()
-> >>> with a coroutine wrapper so that the graph lock is held for the whole
-> >>> function. Then calling bdrv_co_flush() while iterating the list is safe
-> >>> and doesn't allow concurrent graph modifications.
-> >>
-> >> The second is that iotest 255 ran into an assertion failure upon QMP 'quit':
-> >>
-> >>> ../block/graph-lock.c:113: bdrv_graph_wrlock: Assertion `!qemu_in_coroutine()' failed.
-> >>
-> >> Looking at the backtrace:
-> >>
-> >>> #5  0x0000762a90cc3eb2 in __GI___assert_fail
-> >>>     (assertion=0x5afb07991e7d "!qemu_in_coroutine()", file=0x5afb07991e00 "../block/graph-lock.c", line=113, function=0x5afb07991f20 <__PRETTY_FUNCTION__.4> "bdrv_graph_wrlock")
-> >>>     at ./assert/assert.c:101
-> >>> #6  0x00005afb07585311 in bdrv_graph_wrlock () at ../block/graph-lock.c:113
-> >>> #7  0x00005afb07573a36 in blk_remove_bs (blk=0x5afb0af99420) at ../block/block-backend.c:901
-> >>> #8  0x00005afb075729a7 in blk_delete (blk=0x5afb0af99420) at ../block/block-backend.c:487
-> >>> #9  0x00005afb07572d88 in blk_unref (blk=0x5afb0af99420) at ../block/block-backend.c:547
-> >>> #10 0x00005afb07572fe8 in bdrv_next (it=0x762a852fef00) at ../block/block-backend.c:618
-> >>> #11 0x00005afb0758cd65 in bdrv_co_flush_all () at ../block/io.c:2347
-> >>> #12 0x00005afb0753ba37 in bdrv_co_flush_all_entry (opaque=0x7ffff12c6050) at block/block-gen.c:1391
-> >>> #13 0x00005afb0773bf41 in coroutine_trampoline (i0=168365184, i1=23291)
-> >>
-> >> So I guess calling bdrv_next() is not safe from a coroutine, because
-> >> the function doing the iteration could end up being the last thing to
-> >> have a reference for the BB.
-> > 
-> > Does your bdrv_co_flush_all() take the graph (reader) lock? If so, this
-> > is surprising, because while we hold the graph lock, no reference should
-> > be able to go away - you need the writer lock for that and you won't get
-> > it as long as bdrv_co_flush_all() locks the graph. So whatever had a
-> > reference before the bdrv_next() loop must still have it now. Do you
-> > know where it gets dropped?
-> > 
-> 
-> AFAICT, yes, it does hold the graph reader lock. The generated code is:
-> 
-> > static void coroutine_fn bdrv_co_flush_all_entry(void *opaque)
-> > {
-> >     BdrvFlushAll *s = opaque;
-> > 
-> >     bdrv_graph_co_rdlock();
-> >     s->ret = bdrv_co_flush_all();
-> >     bdrv_graph_co_rdunlock();
-> >     s->poll_state.in_progress = false;
-> > 
-> >     aio_wait_kick();
-> > }
-> 
-> Apparently when the mirror job is aborted/exits, which can happen during
-> the polling for bdrv_co_flush_all_entry(), a reference can go away
-> without the write lock (at least my breakpoints didn't trigger) being held:
-> 
-> > #0  blk_unref (blk=0x5cdefe943d20) at ../block/block-backend.c:537
-> > #1  0x00005cdefb26697e in mirror_exit_common (job=0x5cdefeb53000) at ../block/mirror.c:710
-> > #2  0x00005cdefb263575 in mirror_abort (job=0x5cdefeb53000) at ../block/mirror.c:823
-> > #3  0x00005cdefb2248a6 in job_abort (job=0x5cdefeb53000) at ../job.c:825
-> > #4  0x00005cdefb2245f2 in job_finalize_single_locked (job=0x5cdefeb53000) at ../job.c:855
-> > #5  0x00005cdefb223852 in job_completed_txn_abort_locked (job=0x5cdefeb53000) at ../job.c:958
-> > #6  0x00005cdefb223714 in job_completed_locked (job=0x5cdefeb53000) at ../job.c:1065
-> > #7  0x00005cdefb224a8b in job_exit (opaque=0x5cdefeb53000) at ../job.c:1088
-> > #8  0x00005cdefb4134fc in aio_bh_call (bh=0x5cdefe7487c0) at ../util/async.c:171
-> > #9  0x00005cdefb4136ce in aio_bh_poll (ctx=0x5cdefd9cd750) at ../util/async.c:218
-> > #10 0x00005cdefb3efdfd in aio_poll (ctx=0x5cdefd9cd750, blocking=true) at ../util/aio-posix.c:722
-> > #11 0x00005cdefb20435e in bdrv_poll_co (s=0x7ffe491621d8) at ../block/block-gen.h:43
-> > #12 0x00005cdefb206a33 in bdrv_flush_all () at block/block-gen.c:1410
-> > #13 0x00005cdefae5c8ed in do_vm_stop (state=RUN_STATE_SHUTDOWN, send_stop=false)
-> >     at ../system/cpus.c:297
-> > #14 0x00005cdefae5c850 in vm_shutdown () at ../system/cpus.c:308
-> > #15 0x00005cdefae6d892 in qemu_cleanup (status=0) at ../system/runstate.c:871
-> > #16 0x00005cdefb1a7e78 in qemu_default_main () at ../system/main.c:38
-> > #17 0x00005cdefb1a7eb8 in main (argc=34, argv=0x7ffe491623a8) at ../system/main.c:48
-> 
-> Looking at the code in mirror_exit_common(), it doesn't seem to acquire
-> a write lock:
-> 
-> >     bdrv_graph_rdunlock_main_loop();
-> > 
-> >     /*
-> >      * Remove target parent that still uses BLK_PERM_WRITE/RESIZE before
-> >      * inserting target_bs at s->to_replace, where we might not be able to get
-> >      * these permissions.
-> >      */
-> >     blk_unref(s->target);
-> >     s->target = NULL;
-> 
-> The write lock is taken in blk_remove_bs() when the refcount drops to 0
-> and the BB is actually removed:
-> 
-> >     bdrv_graph_wrlock();
-> >     bdrv_root_unref_child(root);
-> >     bdrv_graph_wrunlock();
+Hi Daniel,
 
-Ah, so it _would_ take the writer lock (and wait for bdrv_flush_all() to
-finish) if it were the last reference, but because bdrv_next() took
-another reference, it can just decrease the refcount without modifying
-the graph.
+On Tue, Jun 04, 2024 at 10:29:15AM +0100, Daniel P. Berrang¨¦ wrote:
+> Date: Tue, 4 Jun 2024 10:29:15 +0100
+> From: "Daniel P. Berrang¨¦" <berrange@redhat.com>
+> Subject: Re: [RFC v2 0/7] Introduce SMP Cache Topology
+> 
+> On Thu, May 30, 2024 at 06:15:32PM +0800, Zhao Liu wrote:
+> > Hi,
+> > 
+> > Now that the i386 cache model has been able to define the topology
+> > clearly, it's time to move on to discussing/advancing this feature about
+> > configuring the cache topology with -smp as the following example:
+> > 
+> > -smp 32,sockets=2,dies=2,modules=2,cores=2,threads=2,maxcpus=32,\
+> >      l1d-cache=core,l1i-cache=core,l2-cache=core,l3-cache=die
+> > 
+> > With the new cache topology options ("l1d-cache", "l1i-cache",
+> > "l2-cache" and "l3-cache"), we could adjust the cache topology via -smp.
+> 
+> Switching to QAPI for a second, your proposal is effectively
+> 
+>     { 'enum': 'SMPCacheTopo',
+>       'data': [ 'default','socket','die','cluster','module','core','thread'] }
+> 
+>    { 'struct': 'SMPConfiguration',
+>      'data': {
+>        '*cpus': 'int',
+>        '*drawers': 'int',
+>        '*books': 'int',
+>        '*sockets': 'int',
+>        '*dies': 'int',
+>        '*clusters': 'int',
+>        '*modules': 'int',
+>        '*cores': 'int',
+>        '*threads': 'int',
+>        '*maxcpus': 'int',
+>        '*l1d-cache': 'SMPCacheTopo',
+>        '*l1i-cache': 'SMPCacheTopo',
+>        '*l2-cache': 'SMPCacheTopo',
+>        '*l3-cache': 'SMPCacheTopo',
+>      } }
+> 
+> I think that would be more natural to express as an array of structs
+> thus:
+> 
+>     { 'enum': 'SMPCacheTopo',
+>       'data': [ 'default','socket','die','cluster','module','core','thread'] }
+> 
+>     { 'enum': 'SMPCacheType',
+>       'data': [ 'l1d', 'l1i', 'l2', 'l3' ] }
+>      
+>     { 'struct': 'SMPCache',
+>       'data': {
+>         'type': 'SMPCacheType',
+>         'topo': 'SMPCacheTopo',
+>       } }
+> 
+>    { 'struct': 'SMPConfiguration',
+>      'data': {
+>        '*cpus': 'int',
+>        '*drawers': 'int',
+>        '*books': 'int',
+>        '*sockets': 'int',
+>        '*dies': 'int',
+>        '*clusters': 'int',
+>        '*modules': 'int',
+>        '*cores': 'int',
+>        '*threads': 'int',
+>        '*maxcpus': 'int',
+>        'caches': [ 'SMPCache' ]
+>      } }
+> 
+> Giving an example in (hypothetical) JSON cli syntax of:
+> 
+>   -smp  "{'cpus':32,'sockets':2,'dies':2,'modules':2,
+>           'cores':2,'threads':2,'maxcpus':32,'caches': [
+> 	    {'type':'l1d','topo':'core' },
+> 	    {'type':'l1i','topo':'core' },
+> 	    {'type':'l2','topo':'core' },
+> 	    {'type':'l3','topo':'die' },
+> 	  ]}"
+ 
+Thanks! Looks clean to me and I think it is ok.
 
-Does this mean that if we just remove the whole blk/bdrv_ref/unref()
-code from bdrv_next(), which is what the final state should look like
-anyway, it would actually work?
+Just one further question, for this case where it must be expressed in a
+raw JSON string, is there any requirement in QEMU that a simple
+command-line friendly variant must be provided that corresponds to it?
 
-Of course, we then need to audit the callers of bdrv_next() to make sure
-that all of them really keep the graph lock and don't poll during the
-whole iteration like they are supposed to (i.e. nobody else violates the
-rules the same way bdrv_flush_all() does).
+> > Open about How to Handle the Default Options
+> > ============================================
+> > 
+> > (For the detailed description of this series, pls skip this "long"
+> > section and review the subsequent content.)
+> > 
+> > 
+> > Background of OPEN
+> > ------------------
+> > 
+> > Daniel and I discussed initial thoughts on cache topology, and there was
+> > an idea that the default *cache_topo is on the CORE level [3]:
+> > 
+> > > simply preferring "cores" for everything is a reasonable
+> > > default long term plan for everything, unless the specific
+> > > architecture target has no concept of "cores".
+> 
+> FYI, when I wrote that I wasn't specifically thinking about cache
+> mappings. I just meant that when exposing SMP topology to guests,
+> 'cores' is a good default, compared to 'sockets', or 'threads',etc.
+> 
+> Defaults for cache <-> topology  mappings should be whatever makes
+> most sense to the architecture target/cpu.
 
-Kevin
+Thank you for the additional clarification!
+
+> > Problem with this OPEN
+> > ----------------------
+> > 
+> > Some arches have their own arch-specific cache topology, such as l1 per
+> > core/l2 per core/l3 per die for i386. And as Jeehang proposed for
+> > RISC-V, the cache topologies are like: l1/l2 per core and l3 per
+> > cluster. 
+> > 
+> > Taking L3 as an example, logically there is a difference between the two
+> > starting points of user-specified core level and with the default core
+> > level.
+> > 
+> > For example,
+> > 
+> > "(user-specified) l3-cache-topo=core" should override i386's default l3
+> > per core, but i386's default l3 per core should also override
+> > "(default) l3-cache-topo=core" because this default value is like a
+> > placeholder that specifies nothing.
+> > 
+> > However, from a command line parsing perspective, it's impossible to
+> > tell what the ¡°l3-cache-topo=core¡± setting is for...
+> 
+> Yes, we need to explicitly distinguish built-in defaults from
+> user specified data, otherwise we risk too many mistakes.
+> 
+> > Options to solve OPEN
+> > ---------------------
+> > 
+> > So, I think we have the following options:
+> > 
+> > 
+> > 1. Can we avoid such default parameters?
+> > ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> > 
+> > This would reduce the pain in QEMU, but I'm not sure if it's possible to
+> > make libvirt happy?
+> 
+> I think having an explicit "defualt" value is inevitable, not simply
+> because of libvirt. Long experiance with QEMU shows that we need to
+> be able to reliably distinguish direct user input from  built-in
+> defaults in cases like this.
+
+Thanks, that gives me an answer to that question!
+
+> > 
+> > It is also possible to expose Cache topology information as the CPU
+> > properties in ¡°query-cpu-model-expansion type=full¡±, but that adds
+> > arch-specific work.
+> > 
+> > If omitted, I think it's just like omitting ¡°cores¡±/¡°sockets¡±,
+> > leaving it up to the machine to decide based on the specific CPU model
+> > (and now the cache topology is indeed determined by the CPU model as
+> > well).
+> > 
+> > 
+> > 2. If default is required, can we use a specific abstract word?
+> > ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> > 
+> > That is, is it possible to use a specific word like ¡°auto¡±/¡°invalid¡±
+> > /¡°default¡± and avoid a specific topology level?
+> 
+> "invalid" feels a bit wierd, but 'auto' or 'default' are fine,
+> and possibly "unspecified"
+
+I prefer the "default" like you listed in your QAPI example. :)
+
+> > Like setting ¡°l3-cache-topo=invalid¡± (since I've only added the invalid
+> > hierarchy so far ;-) ).
+> > 
+> > I found the cache topology of arches varies so much that I'm sorry to
+> > say it's hard to have a uniform default cache topology.
+> > 
+> > 
+> > I apologize for the very lengthy note and appreciate you reviewing it
+> > here as well as your time!
+
+Thanks,
+Zhao
 
 
