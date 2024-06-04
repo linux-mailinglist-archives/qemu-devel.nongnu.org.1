@@ -2,76 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18A768FB667
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 17:00:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A34EE8FB68B
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 17:05:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEVdZ-0001fo-H1; Tue, 04 Jun 2024 10:59:45 -0400
+	id 1sEVhz-0007Np-Il; Tue, 04 Jun 2024 11:04:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sEVdW-0001dE-Oe
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 10:59:42 -0400
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sEVhy-0007Nc-5O
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 11:04:18 -0400
+Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sEVdU-0005CN-5m
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 10:59:42 -0400
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-35dcff36522so1041454f8f.1
- for <qemu-devel@nongnu.org>; Tue, 04 Jun 2024 07:59:39 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sEVhw-00086h-IL
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 11:04:17 -0400
+Received: by mail-ej1-x632.google.com with SMTP id
+ a640c23a62f3a-a68a4a9946cso366191566b.1
+ for <qemu-devel@nongnu.org>; Tue, 04 Jun 2024 08:04:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1717513178; x=1718117978; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=qo7bOaIzAQcUzkTaJnx0P/HxkSLlV0aDBbgft0XvoY8=;
- b=Msf2B/y4MadzJZTbQu9vDXvd7G4/C9mPm69CPdW+Ty/QpALBBCnrrF6MIasfc7rhbx
- uqcMbRF8dphNKlE1F9JJrLgGtxW5RufQkVs0C86zdDVjTg4iUma6p2kURvgMqgr5U58c
- 37DRmWiejKDkhpjvkPIyw4QMBxs2Qs8Mw+Z3FBxAPh7KEIiJIEUpJ8elv4xDELkgNy24
- syJJoHxIj51NeHiRCuaONwujIJR5EhC+Rt1HgzSmTIgA4K6OEDGALTqj9TngWC9WSTIE
- W61w+WPJxm3+JQFnKSi5a1eIVnAbEbJvNjnaV299fqyBti3LmirChIrhQ+PH7YdqvuTq
- b8Rw==
+ d=linaro.org; s=google; t=1717513453; x=1718118253; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=wSzs+zKcUQxrtmTuUp8fbNprhDlADaEg/kR0r35duH0=;
+ b=K9tftLJa0nZfXnwcGA2YdHc1RUckQ/wy3++Yl4YJtX9yUmisO4ioXRivecn79wGsF4
+ i+DuHZTi+ouEawF1aB//y0UMd0/k9yC2l7JsHf/SQyBa21Xk1P0vTm4qhJeHJ78IIMuo
+ 0OA7ch3JlcAb2ljkdSYpkIralHDtyx6YnjNCJ9lpPMdwC+pLJZiqjDpaFGyuRmlGC2Sk
+ +19BxB8z45jqm9GBqsLdBF8yYItnkN7/TO8z0cpVkQ/SkuQEh2a7uiRFO3e0erX+tcOK
+ 58VGpoNrN3YY46h3bjB9Yq3rLWKqsxvZ8Vgjoddj9PJ1jk3ISSuthLhcCtsUcW4eyjpa
+ 1UHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717513178; x=1718117978;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=qo7bOaIzAQcUzkTaJnx0P/HxkSLlV0aDBbgft0XvoY8=;
- b=uio8M9MWDmopRZZKTY446cPBC/bcbQUkiipwva788WgbbBiamgUF6pw6usZRFgVwYO
- AmbmFvyu+fbLsFka/Mz62xBKQ7GofvPoSc+c2SM69k+GQU4YalEC7ERkn100SnIk/RtF
- 8xqpxZTB3fu8Tbux+1Bh3YsnZ/AsfS8rv0BrKXCDTh70ZDzn7v3yhotVlpZGb6/uhQ0+
- JvkzbdFbCcFjwyL+lI5mB9P0swPdIuY544H0Im3gxQmnHUmpONz25jWQIGNCww9NlXEO
- E8Lp9LlKZcOyaKMdVzUO2HDrfD2SVJ2zZRO5pR8yEiCN/ZuHpnJZclr1oc65hVo2K7as
- 7CsA==
-X-Gm-Message-State: AOJu0YxjNYr9iueh86oIuRpFpgY+r62qasy1RLUuzruD5rskDwutYKz/
- DlShXEt5CdTeePECztodieT903a02CF/a+dAC/1kIPPBQb2pznJ6HnH//h6frZnL9b9s/ZDwdIU
- Y
-X-Google-Smtp-Source: AGHT+IFeVxgZ6cebiGI9HC34MEh1jNtKkFkmWbRmTKhOkXDPE61TGy4N2ca1XU0Sz9b3J5Ef8nTklA==
-X-Received: by 2002:adf:ec4c:0:b0:35e:8333:28f0 with SMTP id
- ffacd0b85a97d-35e833329bdmr153368f8f.28.1717513178311; 
- Tue, 04 Jun 2024 07:59:38 -0700 (PDT)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ d=1e100.net; s=20230601; t=1717513453; x=1718118253;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=wSzs+zKcUQxrtmTuUp8fbNprhDlADaEg/kR0r35duH0=;
+ b=UkXphWQimfmpdKW3KQ0hHmPLtKeWA05a/QOmO9K++AZg2tha41+A2A7wdEGdrcpM1C
+ J349gpXtgeHgPPnBCp7RLOHHmehDcDpvBR8DRbf38nV0Gk8OK1tcY20xJA7gUo0Dc5aB
+ XXKvI00N5gtMyzmyDvO+uuNmJcRrwwmC+AqVHQhHOyC0VEjhc+2vr0N1EAz1M9C6D+3q
+ 9UGl+07vFyRiBnUUh8jMvLchjp3sy7CWRyyCd7R5CLdaw42Gmng8z0/n58SLnAH6djg8
+ gwRA4bHbohEq9/wY9yoTObYMsvSBn4X/KY951pBmj/SOGhpitymNINaPJ9K8B5xHvgQ+
+ Fusg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVeGiEBOeC4KWrbm8mYF/thakleMoODzgXeziT9uUd3l0zpRCVX/+5vWpSeE4umOTYpI7mJK0Lh5vnCJ7YtX5/dTuhCbB8=
+X-Gm-Message-State: AOJu0YzRrSWLarLXLf+Te2BvsBtzx53e9StQzYRx1Zr7ctKp/vUQxVnV
+ kj6EC7L725C5sZ2Ckjhl1/DAomYgO18ILKmNayF3Z6jNwo4+J6/bmSmSkRS7cUE=
+X-Google-Smtp-Source: AGHT+IGJfiY38eKkXOnQni5+IjP5Z7x2CJUQFHtXV3T8oeckHAsi1oDwsRVt9N+hfZGvMtjwluaHiw==
+X-Received: by 2002:a17:906:244e:b0:a68:c2dd:8ce0 with SMTP id
+ a640c23a62f3a-a68c2dd8f90mr548830966b.13.1717513453343; 
+ Tue, 04 Jun 2024 08:04:13 -0700 (PDT)
+Received: from [192.168.69.100] ([176.176.159.34])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-35dd064bbb1sm11767869f8f.101.2024.06.04.07.59.38
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 04 Jun 2024 07:59:38 -0700 (PDT)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 5/5] scripts/coverity-scan/COMPONENTS.md: Include libqmp in
- testlibs
-Date: Tue,  4 Jun 2024 15:59:34 +0100
-Message-Id: <20240604145934.1230583-6-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240604145934.1230583-1-peter.maydell@linaro.org>
-References: <20240604145934.1230583-1-peter.maydell@linaro.org>
+ a640c23a62f3a-a68c64e50casm462884466b.53.2024.06.04.08.04.11
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 04 Jun 2024 08:04:12 -0700 (PDT)
+Message-ID: <ff369835-ed76-4b57-8eef-117b5d8c845c@linaro.org>
+Date: Tue, 4 Jun 2024 17:04:10 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] qapi/qom: make some QOM properties depend on the build
+ settings
+To: Stefano Garzarella <sgarzare@redhat.com>, qemu-devel@nongnu.org
+Cc: Eric Blake <eblake@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
+References: <20240604135931.311709-1-sgarzare@redhat.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240604135931.311709-1-sgarzare@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::632;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,27 +96,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add libqmp to the testlibs component.
+On 4/6/24 15:59, Stefano Garzarella wrote:
+> Some QOM properties are associated with ObjectTypes that already
+> depend on CONFIG_* switches. So to avoid generating dead code,
+> let's also make the definition of those properties dependent on
+> the corresponding CONFIG_*.
+> 
+> Suggested-by: Markus Armbruster <armbru@redhat.com>
+> Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+> ---
+>   qapi/qom.json | 21 ++++++++++++++-------
+>   1 file changed, 14 insertions(+), 7 deletions(-)
 
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
- scripts/coverity-scan/COMPONENTS.md | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/scripts/coverity-scan/COMPONENTS.md b/scripts/coverity-scan/COMPONENTS.md
-index 3864f8eda07..858190be097 100644
---- a/scripts/coverity-scan/COMPONENTS.md
-+++ b/scripts/coverity-scan/COMPONENTS.md
-@@ -154,7 +154,7 @@ sysemu
-   ~ .*/qemu(/include/.*)
- 
- testlibs
--  ~ .*/qemu(/tests/qtest(/libqos/.*|/libqtest.*))
-+  ~ .*/qemu(/tests/qtest(/libqos/.*|/libqtest.*|/libqmp.*))
- 
- tests
-   ~ .*/qemu(/tests/.*)
--- 
-2.34.1
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
