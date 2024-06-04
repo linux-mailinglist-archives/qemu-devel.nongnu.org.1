@@ -2,83 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 378438FB6C9
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 17:18:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 008C68FB6DC
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 17:22:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEVvg-00088W-Nr; Tue, 04 Jun 2024 11:18:28 -0400
+	id 1sEVyf-0001vi-Nl; Tue, 04 Jun 2024 11:21:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sEVvd-00087M-VS
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 11:18:25 -0400
-Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sEVvc-0004g3-34
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 11:18:25 -0400
-Received: by mail-ej1-x634.google.com with SMTP id
- a640c23a62f3a-a6341cf2c99so636356366b.0
- for <qemu-devel@nongnu.org>; Tue, 04 Jun 2024 08:18:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1717514302; x=1718119102; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=iwwEq//xitEw6lvnECVdWqgsuT4ApH0kwxUUkvpqRJo=;
- b=SnMsFG2qWGwyY4qwfpsqRfVHf/Wyz59VQR3HkbT+1vkVh7kQmUuGif8UAWVwSRNcAI
- 4cVpfdkuXGncocvF7kHIKTW3cUdMo2NRWHtNf6mTgYmj6S3rkL2+hjZQFt1WPmmQp8n5
- b390y6oJQLJVWHYHC0/DyL8OFlVBPoQmO9bDNErAGqSRsrqg2rQcW6mIK3NJzQOcLnyk
- MwWqZ/fGcljkOFJOf0HixSJYBiGrzKqu1moPAeg3qQU8m7sJ65SKBPqUNri6ffjFiQio
- gXXBwxtwYminUDASJnij20wHqYeNz9S+BI1sw2SweXlkn/uMVhX7aZ/u4lg3nWa+oVEU
- cBKw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717514302; x=1718119102;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=iwwEq//xitEw6lvnECVdWqgsuT4ApH0kwxUUkvpqRJo=;
- b=Rj8ihOhYkWqSFyPIyHAnPLKUjAcZo69Q9IXKDOLtepbyVVmGomdenx2zWdzzxVQ/lN
- b9dK0yvIkSTy6fmXbnwOV/wvnEdCKbud74DQ0cFJAQe5bYYyAxg83Atu0Z7Klizif8wy
- +Geg9d4qrN2pr0h6NlyTkFP0+pQqPQZW+VzSVP/BYT0bLTfvZOKBW2gZKuLuNZPEfoWn
- DJ6m1E3P2JrV9PiAwQKEfRLsR7XkM7agV1vFKLQWB7yoXmwR/RTeKh5WFZW/wnp3RS5I
- T17RYPG5EnMgZhSRBKm+cCzS1wy7589bxvv5frE0zW9biL/U1TQQ225jByfPeRtMsmhd
- mH4Q==
-X-Forwarded-Encrypted: i=1;
- AJvYcCX6fCnBQoMNI3BHgagX7NEnf/mTlkmLhNzctWAicmbwtMaXE7h/ChWiLYRa5PZAVuO9TuhxEKbGfThs6Ix0yVodoXj/0qQ=
-X-Gm-Message-State: AOJu0YwP7q0GMBaiidbxTPhtXtkSaygGGMADc0b9fpux51z5f1qYDioq
- 07tCe6fXIE2qSx1bXU5kcB9bzEG6Wyzxa7OIbzFIcpx6VNxyBbnLs/nAZRvj0C0=
-X-Google-Smtp-Source: AGHT+IFFYqZJaZRLpu4TVY299W/3XzSLo2XPfDV4NFprBQleNibuWasC5vq0u+SknSDbp/3b2OQFwA==
-X-Received: by 2002:a17:907:84c8:b0:a68:6559:cf7 with SMTP id
- a640c23a62f3a-a68655911c2mr698711066b.27.1717514302470; 
- Tue, 04 Jun 2024 08:18:22 -0700 (PDT)
-Received: from [192.168.69.100] ([176.176.159.34])
- by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a67eab85e8dsm629781066b.164.2024.06.04.08.18.21
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 04 Jun 2024 08:18:22 -0700 (PDT)
-Message-ID: <a099b5bf-bc57-4401-abdb-b5e6191d3d40@linaro.org>
-Date: Tue, 4 Jun 2024 17:18:20 +0200
+ (Exim 4.90_1) (envelope-from <SRS0=OW7X=NG=kaod.org=clg@ozlabs.org>)
+ id 1sEVye-0001uM-Cu
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 11:21:32 -0400
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <SRS0=OW7X=NG=kaod.org=clg@ozlabs.org>)
+ id 1sEVyc-0005Ku-EM
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 11:21:32 -0400
+Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4VtvSj5gm3z4x2f;
+ Wed,  5 Jun 2024 01:21:25 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits))
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4VtvSg1qflz4x1T;
+ Wed,  5 Jun 2024 01:21:22 +1000 (AEST)
+Message-ID: <83ea5768-fbec-457e-954f-bfad462b1916@kaod.org>
+Date: Tue, 4 Jun 2024 17:21:20 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 5/5] scripts/coverity-scan/COMPONENTS.md: Include
- libqmp in testlibs
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-References: <20240604145934.1230583-1-peter.maydell@linaro.org>
- <20240604145934.1230583-6-peter.maydell@linaro.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240604145934.1230583-6-peter.maydell@linaro.org>
+Subject: Re: [PATCH 24/32] hw/sd: Subtract bootarea size from blk
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Bin Meng <bin.meng@windriver.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Lucien Murray-Pitts <lucienmp.qemu@gmail.com>, Joel Stanley <joel@jms.id.au>
+References: <20230703132509.2474225-1-clg@kaod.org>
+ <20230703132509.2474225-25-clg@kaod.org>
+ <29f32aca-74d0-4562-bffa-4573124812bf@linaro.org>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <29f32aca-74d0-4562-bffa-4573124812bf@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::634;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x634.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=SRS0=OW7X=NG=kaod.org=clg@ozlabs.org; helo=mail.ozlabs.org
+X-Spam_score_int: -39
+X-Spam_score: -4.0
+X-Spam_bar: ----
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,15 +69,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 4/6/24 16:59, Peter Maydell wrote:
-> Add libqmp to the testlibs component.
+On 6/3/24 14:31, Philippe Mathieu-Daudé wrote:
+> On 3/7/23 15:25, Cédric Le Goater wrote:
+>> From: Joel Stanley <joel@jms.id.au>
+>>
+>> The userdata size is derived from the file the user passes on the
+>> command line, but we must take into account the boot areas.
+>>
+>> Signed-off-by: Joel Stanley <joel@jms.id.au>
+>> Signed-off-by: Cédric Le Goater <clg@kaod.org>
+>> ---
+>>   hw/sd/sd.c | 5 +++++
+>>   1 file changed, 5 insertions(+)
+>>
+>> diff --git a/hw/sd/sd.c b/hw/sd/sd.c
+>> index 6da17a8d0972..1df7c7ac9dae 100644
+>> --- a/hw/sd/sd.c
+>> +++ b/hw/sd/sd.c
+>> @@ -674,6 +674,7 @@ static unsigned sd_boot_capacity_bytes(SDState *sd)
+>>   static void sd_reset(DeviceState *dev)
+>>   {
+>>       SDState *sd = SD_CARD(dev);
+>> +    SDCardClass *sc = SD_CARD_GET_CLASS(sd);
+>>       uint64_t size;
+>>       uint64_t sect;
+>> @@ -685,6 +686,10 @@ static void sd_reset(DeviceState *dev)
+>>       }
+>>       size = sect << 9;
+>> +    if (sc->bootpart_offset) {
+>> +        size -= sd_boot_capacity_bytes(sd) * 2;
 > 
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-> ---
->   scripts/coverity-scan/COMPONENTS.md | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+> IMO this patch and sd_boot_capacity_bytes() definition
+> from previous patch should be squashed in patch 22 where
+> you add emmc_cmd_SEND_EXT_CSD.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+OK. I will check.
 
+Have you looked at the other patches ?
+
+Thanks,
+
+C.
+
+
+> 
+>> +    }
+>> +
+>>       sect = sd_addr_to_wpnum(size) + 1;
+>>       sd->state = sd_idle_state;
+> 
 
 
