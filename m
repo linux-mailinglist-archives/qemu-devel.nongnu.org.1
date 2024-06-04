@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A15498FB669
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 17:00:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18A768FB667
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 17:00:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEVdY-0001eZ-DM; Tue, 04 Jun 2024 10:59:44 -0400
+	id 1sEVdZ-0001fo-H1; Tue, 04 Jun 2024 10:59:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sEVdW-0001d5-Ev
+ id 1sEVdW-0001dE-Oe
  for qemu-devel@nongnu.org; Tue, 04 Jun 2024 10:59:42 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sEVdT-0005CE-Cb
+ id 1sEVdU-0005CN-5m
  for qemu-devel@nongnu.org; Tue, 04 Jun 2024 10:59:42 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-35dcd5377c4so4749831f8f.2
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-35dcff36522so1041454f8f.1
  for <qemu-devel@nongnu.org>; Tue, 04 Jun 2024 07:59:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1717513178; x=1718117978; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=8A5GBY6RBxkhaAlIyTmqKtiXMHCA3RDVhMBok/swKuk=;
- b=EKZ0rx8IOvebugpXEC+5Qw9LgInpB2UfsnJENSCGmGYSmr3aog9Z3N4hmZuQ9yH3D2
- fAWZJJxhdnjWPr7rElRhAzchD4BktneojRY2loXpO8mYj8lCRFwz/hRss15AHlkdiL1f
- v+gytQVykueJ4kcnOxSi/M4Ulk8UBuiTfiA3AMvCT00Jkr5GxKYsU2oYqLPLqes2J/cF
- 1pX0vPtNrd/3hudxkz+GtFs0o5IhU0iZhQElIB/blvDs3NZmZwEY9zr+vphzkptJjn7b
- w0RVDvdSErtIVEeer8MG19so124O9eRWw8XP+swf+PLWVphVb/CVxGOApdp+5axnEbaw
- j/4Q==
+ bh=qo7bOaIzAQcUzkTaJnx0P/HxkSLlV0aDBbgft0XvoY8=;
+ b=Msf2B/y4MadzJZTbQu9vDXvd7G4/C9mPm69CPdW+Ty/QpALBBCnrrF6MIasfc7rhbx
+ uqcMbRF8dphNKlE1F9JJrLgGtxW5RufQkVs0C86zdDVjTg4iUma6p2kURvgMqgr5U58c
+ 37DRmWiejKDkhpjvkPIyw4QMBxs2Qs8Mw+Z3FBxAPh7KEIiJIEUpJ8elv4xDELkgNy24
+ syJJoHxIj51NeHiRCuaONwujIJR5EhC+Rt1HgzSmTIgA4K6OEDGALTqj9TngWC9WSTIE
+ W61w+WPJxm3+JQFnKSi5a1eIVnAbEbJvNjnaV299fqyBti3LmirChIrhQ+PH7YdqvuTq
+ b8Rw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1717513178; x=1718117978;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=8A5GBY6RBxkhaAlIyTmqKtiXMHCA3RDVhMBok/swKuk=;
- b=ise4Cc3kFClH9yx+6KGD8Qqw1/QD5HSgN19si68d12BTeuADywrj3iHEZdJy7OCjXd
- lCZSgG7x/Bnb0Q0zG1j6UwXsWFtcy6CPZ/mOwgvgChNXQFskHk4WD2XFQVqdKhSgg7Yd
- M4RkwtMpVpsf/VcjTbNM5aMIGOKgRHYg6fUl3PR8iqIyihjCteRnXUsPCCsCu/U7Pjd7
- KBZNfZ8tth3a7baMweHY4EX1DMAA4RHZgLQaK8S4lSA4DlwJwPeBVUFPRCiOnOIVRr4d
- VBm7oVyfbgeOUC0ww/PFt5LpTz1B46e1RPlVncJdwzongd5XTryhzEuqyo7cYbti7Inh
- LMnw==
-X-Gm-Message-State: AOJu0YyXeQnXU8KIjvbMeCWwPBg4qGcM82oIKuUX/D/Z1GKCil/HbEG8
- dvkiwCrmEmoJxE7rWImQS33mw/k79ydOniGr4MVYSpi84XYzupqHA/DLhwLlI7ahI54T0j+w8F9
- S
-X-Google-Smtp-Source: AGHT+IFs/KitqhxahR5fQChYFnG0LYuBLhKXw4q0k93vlehoNygVViKdMKCQkJLpzB2vKKn8f9ze8Q==
-X-Received: by 2002:adf:e386:0:b0:355:2db:a0d with SMTP id
- ffacd0b85a97d-35e0f2589d3mr8959035f8f.13.1717513177922; 
- Tue, 04 Jun 2024 07:59:37 -0700 (PDT)
+ bh=qo7bOaIzAQcUzkTaJnx0P/HxkSLlV0aDBbgft0XvoY8=;
+ b=uio8M9MWDmopRZZKTY446cPBC/bcbQUkiipwva788WgbbBiamgUF6pw6usZRFgVwYO
+ AmbmFvyu+fbLsFka/Mz62xBKQ7GofvPoSc+c2SM69k+GQU4YalEC7ERkn100SnIk/RtF
+ 8xqpxZTB3fu8Tbux+1Bh3YsnZ/AsfS8rv0BrKXCDTh70ZDzn7v3yhotVlpZGb6/uhQ0+
+ JvkzbdFbCcFjwyL+lI5mB9P0swPdIuY544H0Im3gxQmnHUmpONz25jWQIGNCww9NlXEO
+ E8Lp9LlKZcOyaKMdVzUO2HDrfD2SVJ2zZRO5pR8yEiCN/ZuHpnJZclr1oc65hVo2K7as
+ 7CsA==
+X-Gm-Message-State: AOJu0YxjNYr9iueh86oIuRpFpgY+r62qasy1RLUuzruD5rskDwutYKz/
+ DlShXEt5CdTeePECztodieT903a02CF/a+dAC/1kIPPBQb2pznJ6HnH//h6frZnL9b9s/ZDwdIU
+ Y
+X-Google-Smtp-Source: AGHT+IFeVxgZ6cebiGI9HC34MEh1jNtKkFkmWbRmTKhOkXDPE61TGy4N2ca1XU0Sz9b3J5Ef8nTklA==
+X-Received: by 2002:adf:ec4c:0:b0:35e:8333:28f0 with SMTP id
+ ffacd0b85a97d-35e833329bdmr153368f8f.28.1717513178311; 
+ Tue, 04 Jun 2024 07:59:38 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-35dd064bbb1sm11767869f8f.101.2024.06.04.07.59.37
+ ffacd0b85a97d-35dd064bbb1sm11767869f8f.101.2024.06.04.07.59.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 04 Jun 2024 07:59:37 -0700 (PDT)
+ Tue, 04 Jun 2024 07:59:38 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 4/5] scripts/coverity-scan/COMPONENTS.md: Fix monitor
- component
-Date: Tue,  4 Jun 2024 15:59:33 +0100
-Message-Id: <20240604145934.1230583-5-peter.maydell@linaro.org>
+Subject: [PATCH v2 5/5] scripts/coverity-scan/COMPONENTS.md: Include libqmp in
+ testlibs
+Date: Tue,  4 Jun 2024 15:59:34 +0100
+Message-Id: <20240604145934.1230583-6-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240604145934.1230583-1-peter.maydell@linaro.org>
 References: <20240604145934.1230583-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,9 +94,7 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Update the 'monitor' component:
- * qapi/ and monitor/ are now subdirectories
- * add job-qmp.c
+Add libqmp to the testlibs component.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
@@ -104,18 +102,18 @@ Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/scripts/coverity-scan/COMPONENTS.md b/scripts/coverity-scan/COMPONENTS.md
-index 205ab23b280..3864f8eda07 100644
+index 3864f8eda07..858190be097 100644
 --- a/scripts/coverity-scan/COMPONENTS.md
 +++ b/scripts/coverity-scan/COMPONENTS.md
-@@ -97,7 +97,7 @@ migration
-   ~ .*/qemu((/include)?/migration/.*)
+@@ -154,7 +154,7 @@ sysemu
+   ~ .*/qemu(/include/.*)
  
- monitor
--  ~ .*/qemu(/qapi.*|/qobject/.*|/monitor\..*|/[hq]mp\..*)
-+  ~ .*/qemu((/include)?/(qapi|qobject|monitor)/.*|/job-qmp.c)
+ testlibs
+-  ~ .*/qemu(/tests/qtest(/libqos/.*|/libqtest.*))
++  ~ .*/qemu(/tests/qtest(/libqos/.*|/libqtest.*|/libqmp.*))
  
- nbd
-   ~ .*/qemu(/nbd/.*|/include/block/nbd.*|/qemu-nbd\.c)
+ tests
+   ~ .*/qemu(/tests/.*)
 -- 
 2.34.1
 
