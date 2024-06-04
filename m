@@ -2,54 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A6A08FAC3A
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 09:40:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6E1A8FAC42
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 09:41:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEOkR-0008Kl-Hj; Tue, 04 Jun 2024 03:38:23 -0400
+	id 1sEOkT-0008LJ-PP; Tue, 04 Jun 2024 03:38:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1sEOkO-0008K2-Rv
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 03:38:20 -0400
+ id 1sEOkR-0008L1-Lb
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 03:38:23 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1sEOkM-0006Jo-UA
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 03:38:20 -0400
+ id 1sEOkQ-0006K5-3N
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 03:38:23 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717486698;
+ s=mimecast20190719; t=1717486701;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=1dqPkncFfB1FgWa428rMSVrEaMDjc0DtVpmMVvVAxsI=;
- b=GaVz0mckED8fa2pXalLOKUxBcSDuavpo+bIg9FH8/Lop1FXFY6iuWnzY8Pm5ZLl86sLvWX
- MaCjnIMwS0+G++W4f8toMAwABVKon0P8HqogAM9AMYf+c6jHbIANldRrZDZJp7SZlyk6PX
- 0+H7piM5PYKnJhx5BgEUuCHLjTYFdCY=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-39-tU0WOS1wMY6zjdzF35gaDQ-1; Tue,
- 04 Jun 2024 03:38:14 -0400
-X-MC-Unique: tU0WOS1wMY6zjdzF35gaDQ-1
+ bh=6eWp1nR7cePuserjyHYyDpdrl8p1rvahw3nr6DvzmSw=;
+ b=ZI9x82gm3ocsp00AdYxlRsEeKC7eaOnKyyTNE7vKp6LK+7nKM1ETNWv6ac8FGti1a6wPuG
+ CSrWoeKGhhHeTIjdFahiVKAfcJ4mdT8VfhChhIgk6/Iq5uMNqvOLdcuBTd064Cdr41YEbc
+ 67wFZGhAOToUlv/Ww3RN4V2n0Ox3akg=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-531-j5Mkj26eMS-V_EyoaH55mw-1; Tue, 04 Jun 2024 03:38:17 -0400
+X-MC-Unique: j5Mkj26eMS-V_EyoaH55mw-1
 Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
  [10.11.54.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 534FC28C9822;
- Tue,  4 Jun 2024 07:38:14 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7F6A885A5BA;
+ Tue,  4 Jun 2024 07:38:17 +0000 (UTC)
 Received: from localhost.localdomain (unknown [10.72.112.238])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 5DBA0492BD4;
- Tue,  4 Jun 2024 07:38:12 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 0839C492BD4;
+ Tue,  4 Jun 2024 07:38:14 +0000 (UTC)
 From: Jason Wang <jasowang@redhat.com>
 To: peter.maydell@linaro.org,
 	qemu-devel@nongnu.org
-Cc: Akihiko Odaki <akihiko.odaki@daynix.com>, Jason Wang <jasowang@redhat.com>
-Subject: [PULL 04/20] net: Remove receive_raw()
-Date: Tue,  4 Jun 2024 15:37:39 +0800
-Message-ID: <20240604073755.1859-5-jasowang@redhat.com>
+Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
+ "Zhang, Chen" <chen.zhang@intel.com>, Jason Wang <jasowang@redhat.com>
+Subject: [PULL 05/20] tap: Call tap_receive_iov() from tap_receive()
+Date: Tue,  4 Jun 2024 15:37:40 +0800
+Message-ID: <20240604073755.1859-6-jasowang@redhat.com>
 In-Reply-To: <20240604073755.1859-1-jasowang@redhat.com>
 References: <20240604073755.1859-1-jasowang@redhat.com>
 MIME-Version: 1.0
@@ -83,87 +84,65 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-While netmap implements virtio-net header, it does not implement
-receive_raw(). Instead of implementing receive_raw for netmap, add
-virtio-net headers in the common code and use receive_iov()/receive()
-instead. This also fixes the buffer size for the virtio-net header.
+This will save duplicate logic found in both of tap_receive_iov() and
+tap_receive().
 
-Fixes: fbbdbddec0 ("tap: allow extended virtio header with hash info")
+Suggested-by: "Zhang, Chen" <chen.zhang@intel.com>
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 Signed-off-by: Jason Wang <jasowang@redhat.com>
 ---
- include/net/net.h |  1 -
- net/net.c         | 18 ++++++++++++------
- net/tap.c         |  1 -
- 3 files changed, 12 insertions(+), 8 deletions(-)
+ net/tap.c | 35 +++++------------------------------
+ 1 file changed, 5 insertions(+), 30 deletions(-)
 
-diff --git a/include/net/net.h b/include/net/net.h
-index 6fe5a0aee8..c8f679761b 100644
---- a/include/net/net.h
-+++ b/include/net/net.h
-@@ -72,7 +72,6 @@ typedef struct NetClientInfo {
-     NetClientDriver type;
-     size_t size;
-     NetReceive *receive;
--    NetReceive *receive_raw;
-     NetReceiveIOV *receive_iov;
-     NetCanReceive *can_receive;
-     NetStart *start;
-diff --git a/net/net.c b/net/net.c
-index db096765f4..6938da05e0 100644
---- a/net/net.c
-+++ b/net/net.c
-@@ -787,11 +787,7 @@ static ssize_t nc_sendv_compat(NetClientState *nc, const struct iovec *iov,
-         offset = iov_to_buf(iov, iovcnt, 0, buf, offset);
-     }
- 
--    if (flags & QEMU_NET_PACKET_FLAG_RAW && nc->info->receive_raw) {
--        ret = nc->info->receive_raw(nc, buffer, offset);
--    } else {
--        ret = nc->info->receive(nc, buffer, offset);
--    }
-+    ret = nc->info->receive(nc, buffer, offset);
- 
-     g_free(buf);
-     return ret;
-@@ -806,6 +802,8 @@ static ssize_t qemu_deliver_packet_iov(NetClientState *sender,
-     MemReentrancyGuard *owned_reentrancy_guard;
-     NetClientState *nc = opaque;
-     int ret;
-+    struct virtio_net_hdr_v1_hash vnet_hdr = { };
-+    g_autofree struct iovec *iov_copy = NULL;
- 
- 
-     if (nc->link_down) {
-@@ -824,7 +822,15 @@ static ssize_t qemu_deliver_packet_iov(NetClientState *sender,
-         owned_reentrancy_guard->engaged_in_io = true;
-     }
- 
--    if (nc->info->receive_iov && !(flags & QEMU_NET_PACKET_FLAG_RAW)) {
-+    if ((flags & QEMU_NET_PACKET_FLAG_RAW) && nc->vnet_hdr_len) {
-+        iov_copy = g_new(struct iovec, iovcnt + 1);
-+        iov_copy[0].iov_base = &vnet_hdr;
-+        iov_copy[0].iov_len =  nc->vnet_hdr_len;
-+        memcpy(&iov_copy[1], iov, iovcnt * sizeof(*iov));
-+        iov = iov_copy;
-+    }
-+
-+    if (nc->info->receive_iov) {
-         ret = nc->info->receive_iov(nc, iov, iovcnt);
-     } else {
-         ret = nc_sendv_compat(nc, iov, iovcnt, flags);
 diff --git a/net/tap.c b/net/tap.c
-index 49edf6c2b6..99c59ee468 100644
+index 99c59ee468..9825518ff1 100644
 --- a/net/tap.c
 +++ b/net/tap.c
-@@ -360,7 +360,6 @@ static NetClientInfo net_tap_info = {
-     .type = NET_CLIENT_DRIVER_TAP,
-     .size = sizeof(TAPState),
-     .receive = tap_receive,
--    .receive_raw = tap_receive_raw,
-     .receive_iov = tap_receive_iov,
-     .poll = tap_poll,
-     .cleanup = tap_cleanup,
+@@ -133,39 +133,14 @@ static ssize_t tap_receive_iov(NetClientState *nc, const struct iovec *iov,
+     return tap_write_packet(s, iovp, iovcnt);
+ }
+ 
+-static ssize_t tap_receive_raw(NetClientState *nc, const uint8_t *buf, size_t size)
+-{
+-    TAPState *s = DO_UPCAST(TAPState, nc, nc);
+-    struct iovec iov[2];
+-    int iovcnt = 0;
+-    struct virtio_net_hdr_mrg_rxbuf hdr = { };
+-
+-    if (s->host_vnet_hdr_len) {
+-        iov[iovcnt].iov_base = &hdr;
+-        iov[iovcnt].iov_len  = s->host_vnet_hdr_len;
+-        iovcnt++;
+-    }
+-
+-    iov[iovcnt].iov_base = (char *)buf;
+-    iov[iovcnt].iov_len  = size;
+-    iovcnt++;
+-
+-    return tap_write_packet(s, iov, iovcnt);
+-}
+-
+ static ssize_t tap_receive(NetClientState *nc, const uint8_t *buf, size_t size)
+ {
+-    TAPState *s = DO_UPCAST(TAPState, nc, nc);
+-    struct iovec iov[1];
+-
+-    if (s->host_vnet_hdr_len && !s->using_vnet_hdr) {
+-        return tap_receive_raw(nc, buf, size);
+-    }
+-
+-    iov[0].iov_base = (char *)buf;
+-    iov[0].iov_len  = size;
++    struct iovec iov = {
++        .iov_base = (void *)buf,
++        .iov_len = size
++    };
+ 
+-    return tap_write_packet(s, iov, 1);
++    return tap_receive_iov(nc, &iov, 1);
+ }
+ 
+ #ifndef __sun__
 -- 
 2.42.0
 
