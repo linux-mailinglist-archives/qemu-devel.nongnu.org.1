@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6591B8FAB14
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 08:44:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B22A88FAB60
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 08:52:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sENuQ-0001yP-7R; Tue, 04 Jun 2024 02:44:38 -0400
+	id 1sENuP-0001yF-MG; Tue, 04 Jun 2024 02:44:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sENuO-0001y4-Qu
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:44:36 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1sENuN-0001xX-Ea
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:44:35 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sENuN-0007Fp-9V
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:44:36 -0400
+ id 1sENuM-0007Fl-0K
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:44:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717483474;
+ s=mimecast20190719; t=1717483473;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=p/55UBJHPP0pMfaMY7gMW8buEJYTanSZ8PJmFCw0e2U=;
- b=EbIKPb54VRRAT5L7tyBZSU5vDVt2AWgqZUqynM9987SABsBSyqBbJcfn8ULFH7LNK9gluv
- 9TOwsMu7QQ59x2mH/uPaqd1RG9+TcFa5OvtzLjaD5Trqjt2Xlc5EnrbZHN6iG/DiSYZLiC
- hrDYWEN3ggnIxSa8uUMse/Wi4QfkvHM=
-Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
- [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=jnre2UF7/f5unB3VrXj0N5RhP/b8i4wPnG8jXCu2p4Y=;
+ b=AW64SsAgfvD3RkLNSxu9ET1rq2xamIP5Fl+kSlLQwgnm1O937V+4A4qQsWRqVrPCJUklQA
+ HpkPxjPjcZPCgIuQz4zviYlZUNvHdsEau56LKyOwVJivFHwktq+PTZCli+YO3JR8vsRng5
+ oAcbop8j7lki3v9zf9yPPzXT+AWcuAI=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-675-KLy0m_I2MnCRgUiIsNYkUw-1; Tue, 04 Jun 2024 02:44:28 -0400
-X-MC-Unique: KLy0m_I2MnCRgUiIsNYkUw-1
-Received: by mail-lf1-f72.google.com with SMTP id
- 2adb3069b0e04-52b98d73cf9so1313982e87.1
- for <qemu-devel@nongnu.org>; Mon, 03 Jun 2024 23:44:28 -0700 (PDT)
+ us-mta-222-Vw_6IhouPZ66uwKiy1hPzg-1; Tue, 04 Jun 2024 02:44:30 -0400
+X-MC-Unique: Vw_6IhouPZ66uwKiy1hPzg-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-a68f654dc69so107864566b.1
+ for <qemu-devel@nongnu.org>; Mon, 03 Jun 2024 23:44:30 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717483466; x=1718088266;
+ d=1e100.net; s=20230601; t=1717483469; x=1718088269;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=p/55UBJHPP0pMfaMY7gMW8buEJYTanSZ8PJmFCw0e2U=;
- b=VFKEXIIA63ix56rALgYUTSYQS0V8DYJ1vtmyN18TLQhS7t9dXkMklLm5P7nCiD/Hr5
- VWcNO3qnt843nlIlpDHe5qckgFHmfVGTMRbs6/pwsq5sht24eORgEfNEjkN29rb6GmkO
- VCV3vFqNiNbLMX8/uuIqwveTsY50sMxl/2u2w9GEOVA2MfQb+Z5bS9QFiwtb3oCSX22l
- S8dT1U+RhmEb8EWMf6HkaqkqGEoghmsDrA/oZkMi45Izrqg4B5q00wfGuORN8PZ8OqqA
- lK3aWpH4ZhhM2AMdMT9aSFzgn9XavCzhiIukW/8qdlkB1Kh+qTbIpLLsbwrlf3+dRt5Q
- WxbQ==
-X-Gm-Message-State: AOJu0Yyx7jQQ1zGOuTrAyXlks8uM0S7X+jDOf/lk/vTTBAvDgBqQyfGm
- PTrwsPg3EI9ocWEHVIzby29R+8OurOYl7H77EBgrSdLX0+nCVPSIOkDzi9M6D4y6NUgqpuol4Aq
- nEzyeQcSZ5hriIRLB3tRFLCn/9RInAkfZ5aUboIVl6nWtaXqQcUeQGisYajgUDBioiMkrOeR2bB
- 1cwHheif/M7dfjY3swmMiWo9+ujnQLQGsDDxg7
-X-Received: by 2002:a19:4354:0:b0:529:b6c3:be9e with SMTP id
- 2adb3069b0e04-52b895217c9mr9184857e87.9.1717483466532; 
- Mon, 03 Jun 2024 23:44:26 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGRDasS5jYE+hqoRdKRlitDs5LYgGcsTzuc7JC8xJ7IkT1+pRVWkPjM894yZ1los0NCQKnVdg==
-X-Received: by 2002:a19:4354:0:b0:529:b6c3:be9e with SMTP id
- 2adb3069b0e04-52b895217c9mr9184842e87.9.1717483466099; 
- Mon, 03 Jun 2024 23:44:26 -0700 (PDT)
+ bh=jnre2UF7/f5unB3VrXj0N5RhP/b8i4wPnG8jXCu2p4Y=;
+ b=UE9g4/xGbt063dIpT2jW/laDComxRRrxi2eEC7SSll864Xr3SsjtTpNxBB2BmJSPKl
+ tvx6ifkRGTC2pusPYfunmvtuL+IwPgaslUr3hTuAvfrU/E/QWttOl5ICXntFHbHCpJ1p
+ B+nWXKfxgAUORMhBhVpy0eLcu2hGzbT17Bsv6TN5eV/AvPaaeXyF9H7PDTHIP2W1hfGy
+ 60DEvLesPbC2wpRcKOYVjkoSEpJo+F8kL+2MP3RyOq4NOqkfhZurT5f+lxvzhHkDC1jR
+ 9OWk6ymrSERuPJGiWmB5dBKE2aRgwpZC3xpezqbFxMdJqO+0UCf7ncoa7L6Wz5j+edlM
+ Mdiw==
+X-Gm-Message-State: AOJu0Yx5CvkVYg8rcRbaFHb7A8IPbhA2/2M5vNxRmyNFmOBSJgmuQa42
+ JWwhGuM+HtBLA+AL0zoc/t2rSZBDeeUdsZGnDGFKGlDfnpUv9S4+d0uPV3jNEE/btwFwCT+vYb/
+ 4IX81Na3k1v1/9EHrNVzrBe4ZktK0/2yGswngFw+9dmYm8b7hYUA/QAooR6wUyp+CxFwqhP/3qA
+ ba8HhMYfJ9AqAvDBo9j/UQm8S79IpKUMAsI5Hh
+X-Received: by 2002:a17:907:940b:b0:a69:2bce:e41e with SMTP id
+ a640c23a62f3a-a692bcee4bemr282320466b.9.1717483468929; 
+ Mon, 03 Jun 2024 23:44:28 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFw9YQl6f71DA6i9PendEh30fTQFobGQh5qPn6O5dlLLub2Q9COeoYRVKF2PJC1BZkNCizNFw==
+X-Received: by 2002:a17:907:940b:b0:a69:2bce:e41e with SMTP id
+ a640c23a62f3a-a692bcee4bemr282319766b.9.1717483468608; 
+ Mon, 03 Jun 2024 23:44:28 -0700 (PDT)
 Received: from avogadro.local ([151.81.115.112])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a68ae9bf7e2sm462040966b.213.2024.06.03.23.44.24
+ a640c23a62f3a-a691122859esm233259166b.224.2024.06.03.23.44.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Jun 2024 23:44:24 -0700 (PDT)
+ Mon, 03 Jun 2024 23:44:28 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 04/45] host/i386: assume presence of CMOV
-Date: Tue,  4 Jun 2024 08:43:28 +0200
-Message-ID: <20240604064409.957105-5-pbonzini@redhat.com>
+Subject: [PULL 05/45] host/i386: assume presence of SSE2
+Date: Tue,  4 Jun 2024 08:43:29 +0200
+Message-ID: <20240604064409.957105-6-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240604064409.957105-1-pbonzini@redhat.com>
 References: <20240604064409.957105-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -101,74 +101,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-QEMU now requires an x86-64-v2 host, which always has CMOV.
-Use it freely in TCG generated code.
+QEMU now requires an x86-64-v2 host, which has SSE2.
+Use it freely in buffer_is_zero.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- host/include/i386/host/cpuinfo.h |  1 -
- util/cpuinfo-i386.c              |  1 -
- tcg/i386/tcg-target.c.inc        | 15 +--------------
- 3 files changed, 1 insertion(+), 16 deletions(-)
+ host/include/i386/host/cpuinfo.h | 1 -
+ util/bufferiszero.c              | 4 ++--
+ util/cpuinfo-i386.c              | 1 -
+ 3 files changed, 2 insertions(+), 4 deletions(-)
 
 diff --git a/host/include/i386/host/cpuinfo.h b/host/include/i386/host/cpuinfo.h
-index 9386c749881..81771733eaa 100644
+index 81771733eaa..72f6fad61e5 100644
 --- a/host/include/i386/host/cpuinfo.h
 +++ b/host/include/i386/host/cpuinfo.h
-@@ -9,7 +9,6 @@
- /* Digested version of <cpuid.h> */
- 
- #define CPUINFO_ALWAYS          (1u << 0)  /* so cpuinfo is nonzero */
--#define CPUINFO_CMOV            (1u << 1)
- #define CPUINFO_MOVBE           (1u << 2)
- #define CPUINFO_LZCNT           (1u << 3)
+@@ -14,7 +14,6 @@
  #define CPUINFO_POPCNT          (1u << 4)
+ #define CPUINFO_BMI1            (1u << 5)
+ #define CPUINFO_BMI2            (1u << 6)
+-#define CPUINFO_SSE2            (1u << 7)
+ #define CPUINFO_AVX1            (1u << 9)
+ #define CPUINFO_AVX2            (1u << 10)
+ #define CPUINFO_AVX512F         (1u << 11)
+diff --git a/util/bufferiszero.c b/util/bufferiszero.c
+index 74864f7b782..11c080e02cf 100644
+--- a/util/bufferiszero.c
++++ b/util/bufferiszero.c
+@@ -188,14 +188,14 @@ static biz_accel_fn const accel_table[] = {
+ 
+ static unsigned best_accel(void)
+ {
++#ifdef CONFIG_AVX2_OPT
+     unsigned info = cpuinfo_init();
+ 
+-#ifdef CONFIG_AVX2_OPT
+     if (info & CPUINFO_AVX2) {
+         return 2;
+     }
+ #endif
+-    return info & CPUINFO_SSE2 ? 1 : 0;
++    return 1;
+ }
+ 
+ #elif defined(__aarch64__) && defined(__ARM_NEON)
 diff --git a/util/cpuinfo-i386.c b/util/cpuinfo-i386.c
-index 18ab747a6d2..90f92a42dc8 100644
+index 90f92a42dc8..ca74ef04f54 100644
 --- a/util/cpuinfo-i386.c
 +++ b/util/cpuinfo-i386.c
 @@ -34,7 +34,6 @@ unsigned __attribute__((constructor)) cpuinfo_init(void)
      if (max >= 1) {
          __cpuid(1, a, b, c, d);
  
--        info |= (d & bit_CMOV ? CPUINFO_CMOV : 0);
-         info |= (d & bit_SSE2 ? CPUINFO_SSE2 : 0);
+-        info |= (d & bit_SSE2 ? CPUINFO_SSE2 : 0);
          info |= (c & bit_MOVBE ? CPUINFO_MOVBE : 0);
          info |= (c & bit_POPCNT ? CPUINFO_POPCNT : 0);
-diff --git a/tcg/i386/tcg-target.c.inc b/tcg/i386/tcg-target.c.inc
-index 59235b4f387..9a54ef7f8db 100644
---- a/tcg/i386/tcg-target.c.inc
-+++ b/tcg/i386/tcg-target.c.inc
-@@ -157,12 +157,6 @@ static TCGReg tcg_target_call_oarg_reg(TCGCallReturnKind kind, int slot)
- #define SOFTMMU_RESERVE_REGS \
-     (tcg_use_softmmu ? (1 << TCG_REG_L0) | (1 << TCG_REG_L1) : 0)
- 
--/* For 64-bit, we always know that CMOV is available.  */
--#if TCG_TARGET_REG_BITS == 64
--# define have_cmov      true
--#else
--# define have_cmov      (cpuinfo & CPUINFO_CMOV)
--#endif
- #define have_bmi2       (cpuinfo & CPUINFO_BMI2)
- #define have_lzcnt      (cpuinfo & CPUINFO_LZCNT)
- 
-@@ -1815,14 +1809,7 @@ static void tcg_out_setcond2(TCGContext *s, const TCGArg *args,
- static void tcg_out_cmov(TCGContext *s, int jcc, int rexw,
-                          TCGReg dest, TCGReg v1)
- {
--    if (have_cmov) {
--        tcg_out_modrm(s, OPC_CMOVCC | jcc | rexw, dest, v1);
--    } else {
--        TCGLabel *over = gen_new_label();
--        tcg_out_jxx(s, jcc ^ 1, over, 1);
--        tcg_out_mov(s, TCG_TYPE_I32, dest, v1);
--        tcg_out_label(s, over);
--    }
-+    tcg_out_modrm(s, OPC_CMOVCC | jcc | rexw, dest, v1);
- }
- 
- static void tcg_out_movcond(TCGContext *s, int rexw, TCGCond cond,
+         info |= (c & bit_PCLMUL ? CPUINFO_PCLMUL : 0);
 -- 
 2.45.1
 
