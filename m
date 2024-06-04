@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8897C8FAF69
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 11:58:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 110888FAF70
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 11:59:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEQwF-0006eA-K9; Tue, 04 Jun 2024 05:58:43 -0400
+	id 1sEQwL-0007QF-0q; Tue, 04 Jun 2024 05:58:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sEQwC-0006Qq-RU
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 05:58:41 -0400
-Received: from mail-lf1-x12f.google.com ([2a00:1450:4864:20::12f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sEQwI-0007Ez-Cb
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 05:58:46 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sEQwB-0002L1-3A
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 05:58:40 -0400
-Received: by mail-lf1-x12f.google.com with SMTP id
- 2adb3069b0e04-52b9dda4906so1978410e87.2
- for <qemu-devel@nongnu.org>; Tue, 04 Jun 2024 02:58:38 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sEQwG-0002LO-90
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 05:58:45 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-42134bb9735so29710245e9.1
+ for <qemu-devel@nongnu.org>; Tue, 04 Jun 2024 02:58:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1717495117; x=1718099917; darn=nongnu.org;
+ d=linaro.org; s=google; t=1717495122; x=1718099922; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=fenTnqVRpu5N0h4sB+9IKfbou1R637umnDD1Q49OsQo=;
- b=HLZOaw8atNr7louzNmdzCxjob+fdDDKJi4X5U52xVT6wRWoAm6fvcVNmoh7v/UhV2J
- rOEqKSS/kRgfRMMB25XmgQ2wgQlod3sZz1TK1TPmksl7Mpb2A+qZswq4VUOK1AB9MPJG
- h4hmteVLNKqsQkZN6GhaZO++EGZB5oxzG/Lq/TC6Zba/7+sEPDqbGxKEM+n1/MUwokLq
- kXvyt5HBfdLcb/i3FKhKsq/+UorZT7KtB1usmVKWv+1X9Gxiu6WTpGevTAegmx9A/eAX
- Zeqkk5hQbpgBXQm/0gm2DLFBiYCDfk3gY7w+twUGSvigrZ8z4w9bjOrxXaUPLuJHsruG
- Wqfg==
+ bh=2xJYxwlPHFAuhiLDRZkfUXQ6zjFldlOAPPa4Gg5JdMk=;
+ b=Kg4SYeE+81ZHVI/OjjQdnyDC1cEVEl7ZOYYhoyx2G5ugbA1zYEHp6MvCtiH9Yp7pWH
+ CiUCG8agC02dx+wx0C/gMa7lEPp5cSAzOeuyJwO/q5ip0MamoaUUCCkaGyYb6UcHeFbn
+ yFFk4Uj6h8RoshSfMNZ95SJndc6Og1yWSWPMd/5btbFyWQ+ITpIkKjxy9JjzQ8LfPSMJ
+ 8HFPuzttcJqaV7bgAyPFL1veDurCsKCkKH5KkWNRmXwvvNOkHGJk/UX/lEmc3KgMgMKo
+ NR1rhnMaAMNEMVBrvu6eXbLKVXGk/m6vj1Kk95WKLBWkZSoXJaMfmufwjpRcJN1GkwhD
+ D1MA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717495117; x=1718099917;
+ d=1e100.net; s=20230601; t=1717495122; x=1718099922;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=fenTnqVRpu5N0h4sB+9IKfbou1R637umnDD1Q49OsQo=;
- b=TfJgApEmCs904UI6AWPkS6uUZCS51QJ5bjc7qi0VrTnz/wPwRTnkYEBYJCqbkr8zSS
- LDOYVKqDLEAtgSwsVUSQM8klj2vuYSMVouwqzaw0C5i+0beeLcQRoVWWqVVeXvZg4uI5
- r5NJrGdjDq+6wgnPHNFbXA+sZbduZalPyhttYkKyG+t5U5iacWRsbZJRWnshOZ2eCsbq
- BF05MaTvkZE6XOcZgpcj5b7lXT4USLIEze41ZLzTf4+9pzfhVdlz79Wv3OzEj6oLKasO
- z08sdlyZL6NdN1vVMlX/5V1jMJSruvfZUq3n0Cj63KGcxYkw0heyJpL3P+YbJHOzBaTl
- 31Pg==
-X-Gm-Message-State: AOJu0YxrqgbpSQwJs6Ob90URP7OyBVGcYQHpD9YPonwq2Ly7JGpG2aED
- Ll1NhjEy5G/RvO0aTWHnWbwH7LzVqIeEs038j81tLKz/4pn8rBrcgEjogPIT2svgtQ1MKnprq6P
- T
-X-Google-Smtp-Source: AGHT+IHUA11IW1AKvmEzUAac9DNZ0j6nmv78yeSZMEg64da3ya/uY+STP5HLyUYf8awk6HuH2Lf7Pw==
-X-Received: by 2002:a05:6512:3e24:b0:52b:8455:fb1f with SMTP id
- 2adb3069b0e04-52b895609e6mr12046025e87.10.1717495116852; 
- Tue, 04 Jun 2024 02:58:36 -0700 (PDT)
+ bh=2xJYxwlPHFAuhiLDRZkfUXQ6zjFldlOAPPa4Gg5JdMk=;
+ b=Wssf/MjEkXdvsWzpfe58qN/bWX62OY9yGIUVWEk98rfU4dMYC55NDSakV3lGUG0ka5
+ jIdIzboq94+bOkzreAAhhXl11xnk/87q48VSJgMGh1/mlGrdKt50KxQ0eojYlYJzijaT
+ UMdhi6hnAmHRiaeWN4dQNU9Tf+GCG3yYqLH8tUdNUmF5HbxxGZ9RXlBYc9oMKOAx/NuI
+ uGCMhFBDCqfBX95Hv0zv0oBgEF60QEdoZ79UpJykFRbkhVTtv7J/DThwOZ/b1mMRr/J9
+ LGUFvw0T5t+GKr7bKoaWhc+uCDC/STs4xKhSa9pxyPLKvPoaBlNGZO9eT40V9KJi+yGn
+ 0BsQ==
+X-Gm-Message-State: AOJu0Yyhtg2cPNvnwdhOnvVSmiUMsMGPGoFn4XU0M87c1HD7UEyish89
+ xqgTJQkaA5/UOnms29YMYEx/MCZ9SE15qLNvG2VsLRZ0wgXUvM3tV+7gZ/gnuyN1QWmNqk8wdDv
+ 1
+X-Google-Smtp-Source: AGHT+IGXYO5WgcV76r2okXv1SIz5QZc9EfEaCRwCvct+pMZdg0fDNclY/39UOOdYBXmVYxeJySJV+g==
+X-Received: by 2002:a05:600c:4f8d:b0:41b:85bf:f3a8 with SMTP id
+ 5b1f17b1804b1-42138622459mr60251755e9.35.1717495122078; 
+ Tue, 04 Jun 2024 02:58:42 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.159.34])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-35dd062fe96sm11004277f8f.67.2024.06.04.02.58.35
+ 5b1f17b1804b1-42133d745aasm128622335e9.38.2024.06.04.02.58.41
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 04 Jun 2024 02:58:36 -0700 (PDT)
+ Tue, 04 Jun 2024 02:58:41 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas@t-8ch.de>,
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ "Edgar E . Iglesias" <edgar.iglesias@amd.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 27/32] hw/misc/debugexit: use runstate API instead of plain
- exit()
-Date: Tue,  4 Jun 2024 11:56:03 +0200
-Message-ID: <20240604095609.12285-28-philmd@linaro.org>
+Subject: [PULL 28/32] hw/dma/xlnx_dpdma: Read descriptor into buffer,
+ not into pointer-to-buffer
+Date: Tue,  4 Jun 2024 11:56:04 +0200
+Message-ID: <20240604095609.12285-29-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240604095609.12285-1-philmd@linaro.org>
 References: <20240604095609.12285-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12f;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x12f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,42 +94,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Weißschuh <thomas@t-8ch.de>
+From: Peter Maydell <peter.maydell@linaro.org>
 
-Directly calling exit() prevents any kind of management or handling.
-Instead use the corresponding runstate API.
-The default behavior of the runstate API is the same as exit().
+In fdf029762f501 we factored out the handling of reading and writing
+DMA descriptors from guest memory.  Unfortunately we accidentally
+made the descriptor-read read the descriptor into the address of the
+buffer rather than into the buffer, because we didn't notice we
+needed to update the arguments to the dma_memory_read() call. Before
+the refactoring, "&desc" is the address of a local struct DPDMADescriptor
+variable in xlnx_dpdma_start_operation(), which is the correct target
+for the guest-memory-read. But after the refactoring 'desc' is the
+"DPDMADescriptor *desc" argument to the new function, and so it is
+already an address.
 
-Signed-off-by: Thomas Weißschuh <thomas@t-8ch.de>
+This bug is an overrun of a stack variable, since a pointer is at
+most 8 bytes long and we try to read 64 bytes, as well as being
+incorrect behaviour.
+
+Pass 'desc' rather than '&desc' as the dma_memory_read() argument
+to fix this.
+
+(The same bug is not present in xlnx_dpdma_write_descriptor(),
+because there we are writing the descriptor from a local struct
+variable "DPDMADescriptor tmp_desc" and so passing &tmp_desc to
+dma_memory_write() is correct.)
+
+Spotted by Coverity: CID 1546649
+
+Fixes: fdf029762f50101 ("xlnx_dpdma: fix descriptor endianness bug")
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20240523-debugexit-v1-1-d52fcaf7bf8b@t-8ch.de>
+Message-ID: <20240531124628.476938-1-peter.maydell@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/misc/debugexit.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ hw/dma/xlnx_dpdma.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/misc/debugexit.c b/hw/misc/debugexit.c
-index ab6de69ce7..c5c562fd93 100644
---- a/hw/misc/debugexit.c
-+++ b/hw/misc/debugexit.c
-@@ -12,6 +12,7 @@
- #include "hw/qdev-properties.h"
- #include "qemu/module.h"
- #include "qom/object.h"
-+#include "sysemu/runstate.h"
- 
- #define TYPE_ISA_DEBUG_EXIT_DEVICE "isa-debug-exit"
- OBJECT_DECLARE_SIMPLE_TYPE(ISADebugExitState, ISA_DEBUG_EXIT_DEVICE)
-@@ -32,7 +33,8 @@ static uint64_t debug_exit_read(void *opaque, hwaddr addr, unsigned size)
- static void debug_exit_write(void *opaque, hwaddr addr, uint64_t val,
-                              unsigned width)
+diff --git a/hw/dma/xlnx_dpdma.c b/hw/dma/xlnx_dpdma.c
+index dde4aeca40..a685bd28bb 100644
+--- a/hw/dma/xlnx_dpdma.c
++++ b/hw/dma/xlnx_dpdma.c
+@@ -619,7 +619,7 @@ static MemTxResult xlnx_dpdma_read_descriptor(XlnxDPDMAState *s,
+                                               DPDMADescriptor *desc)
  {
--    exit((val << 1) | 1);
-+    qemu_system_shutdown_request_with_code(SHUTDOWN_CAUSE_GUEST_SHUTDOWN,
-+                                           (val << 1) | 1);
- }
- 
- static const MemoryRegionOps debug_exit_ops = {
+     MemTxResult res = dma_memory_read(&address_space_memory, desc_addr,
+-                                      &desc, sizeof(DPDMADescriptor),
++                                      desc, sizeof(DPDMADescriptor),
+                                       MEMTXATTRS_UNSPECIFIED);
+     if (res) {
+         return res;
 -- 
 2.41.0
 
