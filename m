@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1FA88FAB17
+	by mail.lfdr.de (Postfix) with ESMTPS id C97048FAB18
 	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 08:45:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sENul-0002yO-MT; Tue, 04 Jun 2024 02:44:59 -0400
+	id 1sENuk-0002xf-8a; Tue, 04 Jun 2024 02:44:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sENui-0002x5-Az
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:44:56 -0400
+ id 1sENuf-0002v4-QJ
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:44:53 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sENug-0007Hi-SG
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:44:55 -0400
+ id 1sENue-0007HX-An
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:44:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717483494;
+ s=mimecast20190719; t=1717483491;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=HiB4Hw6azSkFPrbk6MCCFjkMKXK9lBPN9bXi9w7Jn5M=;
- b=UWy8mcsZ0hto8fJ4op0RHn7KvM4C/oU2zloG1kBdrx4a7pw77Q7EDnmDtby4udtwNgVTSp
- edjhBHomN9xi1ejLcCUR775Q9wSY9iQtuqfl/lXXCbxVn9XB8+sw6BaSnDQNdCR384nU9X
- AfblNHPKLA/v9RtUESzh6X2VjHMcDio=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=pZD7vE8gF0Y5V60aNmYypp+fbL0TaGRRhrBUq5pD118=;
+ b=W0J8LUcG+pzyuaE0oCbEoFAd+vYNj7+xcncCQMX7jne5xkegytVRgGKTkUbsxbhV4iYKJA
+ umUIq4KeOn+1NIzd9j5OVUvc6nBPsShnK3nxlyKG3mDdbVmZdDESp9MXKg87tD63tP2X1o
+ gVWGiGPjZX8TqDt7i9HicNYZY5bIcLI=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-33-JURd1l2hNYi9o6xEnsCSLw-1; Tue, 04 Jun 2024 02:44:47 -0400
-X-MC-Unique: JURd1l2hNYi9o6xEnsCSLw-1
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-a68e0faf0e6so124981366b.2
- for <qemu-devel@nongnu.org>; Mon, 03 Jun 2024 23:44:46 -0700 (PDT)
+ us-mta-477--zeLSUPGOkuo_YpRDpFGOQ-1; Tue, 04 Jun 2024 02:44:49 -0400
+X-MC-Unique: -zeLSUPGOkuo_YpRDpFGOQ-1
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-a68ee264225so92309566b.1
+ for <qemu-devel@nongnu.org>; Mon, 03 Jun 2024 23:44:49 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717483485; x=1718088285;
+ d=1e100.net; s=20230601; t=1717483487; x=1718088287;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=HiB4Hw6azSkFPrbk6MCCFjkMKXK9lBPN9bXi9w7Jn5M=;
- b=d6N32xT3lOcgwqYeD1QQ/PZUZ8mYjiAOrI6QCwUL7QWQOLnPmxQxGsBQ+fWlHItb/T
- 53OCJhl5n9AB9alM/uwJY+J0csXwl8uDH7Wn1BB4YT2GgTlhr9gTgInDC/heGQadGCZ3
- xRc1Zq1cg8ZZgRgQ+qUDIoeOmu6O3JN320YpBzXvgcukKLldDrVNhPI4tQlmE3ohU2uy
- Ht0vfG8N0bug+FtXVcLgUCA49sOPQd3QdsbnCicZP18FHeU4UL6lGxnpDqiC9haD4FWr
- uM+LW9pN0/aFPVRkDPCkfU2PJKTaTSjWWV5mVOQhDZVxTAsJNJIFm8QiyCfws5El9tqN
- YkyA==
-X-Gm-Message-State: AOJu0YytYsz6sw4dDsq6rJ8VkXtFfecon9SVn1Xr5CtMoJeYz8z/8AA3
- +p4eMuuAtwBS4PThY4YSWaS20ds2qLM/8aA5bToD6MOdAfAs9o0OfjKehOyOuD0XEeDY1QpViaZ
- DkymNG+68PxJylRK6Mqgkx5DEqEJZ4BH8YInUQ1pX89w48M6Av0Yyg2+up4Iv7QqZjRj1EWd0rB
- nJlvx0KJzggbiyh2JZmG7zleDogujf45bZuqUj
-X-Received: by 2002:a17:906:f144:b0:a68:c3fe:c8ff with SMTP id
- a640c23a62f3a-a68c3fecacamr563210866b.17.1717483485284; 
- Mon, 03 Jun 2024 23:44:45 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG7Sdld/MdeyvJ55F9HYttwz3opkQ2TbPOPX+0uPM4gufad4nGXugqtr1AFaiT0wzK0e0INRw==
-X-Received: by 2002:a17:906:f144:b0:a68:c3fe:c8ff with SMTP id
- a640c23a62f3a-a68c3fecacamr563209766b.17.1717483484866; 
- Mon, 03 Jun 2024 23:44:44 -0700 (PDT)
+ bh=pZD7vE8gF0Y5V60aNmYypp+fbL0TaGRRhrBUq5pD118=;
+ b=Wa0UElhzy6NkttQ1UukY+W2sDGI5rtc+wghzEJlndLvrR9LVNaiPPOipEfTG9oPpOn
+ 1ewKr0e/X7aXfRQxQI5sNx1twoiE3I7TecusLtbb47MmYHF7n6t/uako+DCWKrXCBGHD
+ PVNw/rTEnKiwlsKnQ+tFYQDK6SM7xL2VrCJKmBe6srd/SunWlbZDmoaWqdUK0j8zcXxV
+ tASVuxvqJNrbsBCCEYxO8tVnjHNJVSnMucw9q0Jyf3sSBiydVB4ZkPgfgYIASPniPmhc
+ VRa77KUwPQa4Og+G9LuNKPYFGqA3uW51+kX9772K35+ayRkrA3/5Thcl4Hz6rZHgiI90
+ 4DJA==
+X-Gm-Message-State: AOJu0YzYzyBaoTVSSVs6IkJu9GLl+i0zGUZ1FWHIN0UmR0fRQHSxYYUX
+ hqXJ3Z77bEUe2oaOcQJvlz62GnrYZD6zGx7ra2a6no6PxKgFnAdxB9JSczsxK/G3A8glrC6FLYM
+ hD42tZ7Ch6qEFKaMPEMsxkP6cUqy3RjI+9BZXics1R453DLM5VXR5ATGNs9UQdoy+HlrO9e77NU
+ wcY+oolIeKFc8TMmYLaF6mjJv4qISGu2abpRBo
+X-Received: by 2002:a17:906:2a91:b0:a68:689e:db4c with SMTP id
+ a640c23a62f3a-a68689ee2bbmr623275566b.55.1717483487691; 
+ Mon, 03 Jun 2024 23:44:47 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHawltmXHutgxyWDFfJ1efGdkkpjDIfu12XRUbKoZlS462Y24DI7nx7gWSwhO8jRNOv5/v3BQ==
+X-Received: by 2002:a17:906:2a91:b0:a68:689e:db4c with SMTP id
+ a640c23a62f3a-a68689ee2bbmr623274166b.55.1717483487291; 
+ Mon, 03 Jun 2024 23:44:47 -0700 (PDT)
 Received: from avogadro.local ([151.81.115.112])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a68f76cd1fbsm319301766b.223.2024.06.03.23.44.44
+ a640c23a62f3a-a68e1bcfb95sm382718966b.107.2024.06.03.23.44.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Jun 2024 23:44:44 -0700 (PDT)
+ Mon, 03 Jun 2024 23:44:46 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
-	Thomas Huth <thuth@redhat.com>
-Subject: [PULL 11/45] target/i386: fix xsave.flat from kvm-unit-tests
-Date: Tue,  4 Jun 2024 08:43:35 +0200
-Message-ID: <20240604064409.957105-12-pbonzini@redhat.com>
+Cc: Thomas Huth <thuth@redhat.com>
+Subject: [PULL 12/45] update-linux-headers: fix forwarding to asm-generic
+ headers
+Date: Tue,  4 Jun 2024 08:43:36 +0200
+Message-ID: <20240604064409.957105-13-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240604064409.957105-1-pbonzini@redhat.com>
 References: <20240604064409.957105-1-pbonzini@redhat.com>
@@ -86,7 +86,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,34 +102,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-xsave.flat checks that "executing the XSETBV instruction causes a general-
-protection fault (#GP) if ECX = 0 and EAX[2:1] has the value 10b".  QEMU allows
-that option, so the test fails.  Add the condition.
+Afer commit 3efc75ad9d9 ("scripts/update-linux-headers.sh: Remove
+temporary directory inbetween", 2024-05-29), updating linux-headers/
+results in errors such as
 
-Cc: qemu-stable@nongnu.org
-Fixes: 892544317fe ("target/i386: implement XSAVE and XRSTOR of AVX registers", 2022-10-18)
-Reported-by: Thomas Huth <thuth@redhat.com>
+   cp: cannot stat '/tmp/tmp.1A1Eejh1UE/headers/include/asm/bitsperlong.h': No such file or directory
+
+because Loongarch does not have an asm/bitsperlong.h file and uses the
+generic version.  Before commit 3efc75ad9d9, the missing file would
+incorrectly cause stale files to be included in linux-headers/.  The files
+were never committed to qemu.git, but were wrong nevertheless. The build
+would just use the system version of the files, which is opposite to
+the idea of importing Linux header files into QEMU's tree.
+
+Create forwarding headers, resembling the ones that are generated during a
+kernel build by scripts/Makefile.asm-generic, if a file is only installed
+under include/asm-generic/.
+
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/tcg/fpu_helper.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ scripts/update-linux-headers.sh | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/target/i386/tcg/fpu_helper.c b/target/i386/tcg/fpu_helper.c
-index e322293371c..e1b850f3fc2 100644
---- a/target/i386/tcg/fpu_helper.c
-+++ b/target/i386/tcg/fpu_helper.c
-@@ -3142,6 +3142,11 @@ void helper_xsetbv(CPUX86State *env, uint32_t ecx, uint64_t mask)
-         goto do_gpf;
-     }
+diff --git a/scripts/update-linux-headers.sh b/scripts/update-linux-headers.sh
+index 23afe8c08ad..57a48837aa4 100755
+--- a/scripts/update-linux-headers.sh
++++ b/scripts/update-linux-headers.sh
+@@ -118,7 +118,14 @@ for arch in $ARCHLIST; do
+     rm -rf "$output/linux-headers/asm-$arch"
+     mkdir -p "$output/linux-headers/asm-$arch"
+     for header in kvm.h unistd.h bitsperlong.h mman.h; do
+-        cp "$hdrdir/include/asm/$header" "$output/linux-headers/asm-$arch"
++        if test -f "$hdrdir/include/asm/$header"; then
++            cp "$hdrdir/include/asm/$header" "$output/linux-headers/asm-$arch"
++        elif test -f "$hdrdir/include/asm-generic/$header"; then
++            # not installed as <asm/$header>, but used as such in kernel sources
++            cat <<EOF >$output/linux-headers/asm-$arch/$header
++#include <asm-generic/$header>
++EOF
++        fi
+     done
  
-+    /* SSE can be disabled, but only if AVX is disabled too.  */
-+    if ((mask & (XSTATE_SSE_MASK | XSTATE_YMM_MASK)) == XSTATE_YMM_MASK) {
-+        goto do_gpf;
-+    }
-+
-     /* Disallow enabling unimplemented features.  */
-     cpu_x86_cpuid(env, 0x0d, 0, &ena_lo, &dummy, &dummy, &ena_hi);
-     ena = ((uint64_t)ena_hi << 32) | ena_lo;
+     if [ $arch = mips ]; then
 -- 
 2.45.1
 
