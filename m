@@ -2,101 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A36B78FAC0A
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 09:32:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2C948FAC2D
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 09:39:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEOdg-0005VG-3h; Tue, 04 Jun 2024 03:31:24 -0400
+	id 1sEOkE-0008Gr-Pf; Tue, 04 Jun 2024 03:38:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1sEOdc-0005S4-2Y
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 03:31:21 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1sEOkB-0008G0-9s
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 03:38:07 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1sEOdZ-0002L9-P4
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 03:31:19 -0400
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1sEOk9-0006IM-BG
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 03:38:07 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717486276;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=kOe5HAyE0xfr3Cspq6gCWkXVKkXlYloeCN+g5nEU/iI=;
- b=hyMwwkuIKah6sNWT9Tny5XV4h+ZLWm2WgoQ/KRwPgooZAsodPi1ylr7fUtVJpAJg1x0LsR
- qhy5f5cK1V5HBQi/YdjYGI1wYCvr79+05zkMCPiC9dBdMx+NFgP6PFp47fQNy8ueLe84sY
- g4UG5kv58di0COuxcWnBM9RbdF9Vias=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-272-0_eZ4bgqM9GEvXTyCTjbBA-1; Tue, 04 Jun 2024 03:31:05 -0400
-X-MC-Unique: 0_eZ4bgqM9GEvXTyCTjbBA-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-35dc7e6e859so3406531f8f.2
- for <qemu-devel@nongnu.org>; Tue, 04 Jun 2024 00:31:05 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717486264; x=1718091064;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=kOe5HAyE0xfr3Cspq6gCWkXVKkXlYloeCN+g5nEU/iI=;
- b=CuFQrsxyM7C5dvF/TDZu6eNSmhxZuWWPPqF0WMwBnwdW+s/fY/xxjBpn11/GjVzaB4
- SWYmibTufHcXIsK64NDf4C3OppPKU68C7vjcUpjhv7Qc3BpVhexZQwAJ0Ao3BkYW3/QX
- SQroArbN40/pSwSLwiBWVSchyzyGE9+6oOpIxRkdqq43ARKyK9AZpsk4rRiwEALn54uU
- M5KofXEQ6WHyj42oUWpd6wKWTLAWaGd5gv9Up5uYHXw7twD2tvdr7Dd8UvNdjVYZcXCx
- ZEkfeHZBGMt235wHlzv5y9BDqE2Bjd4/ui8T4GR34wCP5WjyYFQBWLnSLVqdhctKFF+T
- nUZA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVEX+9DMpioA+VVLujoWzr0t+KURChOeTBu8Ef4JzVPI6T+UTNLfxtesEfwmWrWn6lB3C7hkMXudTRsX7MkykgnQtMHXn0=
-X-Gm-Message-State: AOJu0YyonbKUC/cVma9inorFv71akBV8VFNuLQbhnZvnUA473RKQJFEV
- HiTLp8S9nW85OLfAjC2AXZfMaOKL03u0aEwtjhDjIiFKY8k26JohYVOymPO0d/dBis/5JvnTmtK
- ftV4GkC7azTl25e5P1O6PIPz+shMhJ1pqDkDZluIjiqazj77zqOe9
-X-Received: by 2002:adf:f7c4:0:b0:349:8ba8:e26d with SMTP id
- ffacd0b85a97d-35e0f25ade5mr8174966f8f.13.1717486264570; 
- Tue, 04 Jun 2024 00:31:04 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEYcvB1+0fgppTR2Jw5Mk2G4taz4okM9GGD3IpPcTlLSJn2d0qujqWFn1LQaqxUUqC2xqIrew==
-X-Received: by 2002:adf:f7c4:0:b0:349:8ba8:e26d with SMTP id
- ffacd0b85a97d-35e0f25ade5mr8174937f8f.13.1717486264056; 
- Tue, 04 Jun 2024 00:31:04 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
- ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-35dd04cafb8sm10605914f8f.37.2024.06.04.00.31.01
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 04 Jun 2024 00:31:02 -0700 (PDT)
-Message-ID: <999a8b13-61e9-4c5d-a02b-a608487f7114@redhat.com>
-Date: Tue, 4 Jun 2024 09:31:00 +0200
+ s=mimecast20190719; t=1717486684;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=AOt5JHbAMCPIkltxISgzDGnurGl/u+SrTaXFBg2sdGg=;
+ b=grQBr18kvWlVAa7laIRcfacVVwFusO7ut4rKKXdmBYFbaySlx+F3L93mF1rrL8P783tBWe
+ f47pxMe+pHESHKBUKrSYquP6wGcUdhDJd4on/mxDA/zFR6cZg+frl034GtxFfiHsW0XVZd
+ dIaKxOa8tUrStk8Q8Q80RhWUTV8l9Ec=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-505-nm2lVGr0PiKDauqAXIBmNQ-1; Tue,
+ 04 Jun 2024 03:38:02 -0400
+X-MC-Unique: nm2lVGr0PiKDauqAXIBmNQ-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 150A23C025CE;
+ Tue,  4 Jun 2024 07:38:02 +0000 (UTC)
+Received: from localhost.localdomain (unknown [10.72.112.238])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 0989D492BD2;
+ Tue,  4 Jun 2024 07:37:58 +0000 (UTC)
+From: Jason Wang <jasowang@redhat.com>
+To: peter.maydell@linaro.org,
+	qemu-devel@nongnu.org
+Cc: Jason Wang <jasowang@redhat.com>
+Subject: [PULL 00/20] Net patches
+Date: Tue,  4 Jun 2024 15:37:35 +0800
+Message-ID: <20240604073755.1859-1-jasowang@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 09/19] vfio/iommufd: Implement
- HostIOMMUDeviceClass::realize() handler
-Content-Language: en-US
-To: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Cc: "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
- "clg@redhat.com" <clg@redhat.com>, "mst@redhat.com" <mst@redhat.com>,
- "peterx@redhat.com" <peterx@redhat.com>,
- "jasowang@redhat.com" <jasowang@redhat.com>, "jgg@nvidia.com"
- <jgg@nvidia.com>, "nicolinc@nvidia.com" <nicolinc@nvidia.com>,
- "joao.m.martins@oracle.com" <joao.m.martins@oracle.com>,
- "clement.mathieu--drif@eviden.com" <clement.mathieu--drif@eviden.com>,
- "Tian, Kevin" <kevin.tian@intel.com>, "Liu, Yi L" <yi.l.liu@intel.com>,
- "Peng, Chao P" <chao.p.peng@intel.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-References: <20240603061023.269738-1-zhenzhong.duan@intel.com>
- <20240603061023.269738-10-zhenzhong.duan@intel.com>
- <e20c3fce-5a5a-4efb-9383-9ed7c9c6ef32@redhat.com>
- <SJ0PR11MB67441F9E6629728ABBF7655092F82@SJ0PR11MB6744.namprd11.prod.outlook.com>
-From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <SJ0PR11MB67441F9E6629728ABBF7655092F82@SJ0PR11MB6744.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+Content-type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -117,145 +75,82 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+The following changes since commit 3ab42e46acf867c45bc929fcc37693e327a35a24:
 
+  Merge tag 'pull-ufs-20240603' of https://gitlab.com/jeuk20.kim/qemu into staging (2024-06-03 08:18:14 -0500)
 
-On 6/4/24 04:58, Duan, Zhenzhong wrote:
->
->> -----Original Message-----
->> From: Eric Auger <eric.auger@redhat.com>
->> Subject: Re: [PATCH v6 09/19] vfio/iommufd: Implement
->> HostIOMMUDeviceClass::realize() handler
->>
->> Hi Zhenzhong,
->>
->> On 6/3/24 08:10, Zhenzhong Duan wrote:
->>> It calls iommufd_backend_get_device_info() to get host IOMMU
->>> related information and translate it into HostIOMMUDeviceCaps
->>> for query with .get_cap().
->>>
->>> Introduce macro VTD_MGAW_FROM_CAP to get MGAW which equals to
->>> (aw_bits - 1).
->>>
->>> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
->>> ---
->>>  include/hw/i386/intel_iommu.h |  1 +
->>>  hw/vfio/iommufd.c             | 37
->> +++++++++++++++++++++++++++++++++++
->>>  2 files changed, 38 insertions(+)
->>>
->>> diff --git a/include/hw/i386/intel_iommu.h
->> b/include/hw/i386/intel_iommu.h
->>> index 7fa0a695c8..7d694b0813 100644
->>> --- a/include/hw/i386/intel_iommu.h
->>> +++ b/include/hw/i386/intel_iommu.h
->>> @@ -47,6 +47,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(IntelIOMMUState,
->> INTEL_IOMMU_DEVICE)
->>>  #define VTD_HOST_AW_48BIT           48
->>>  #define VTD_HOST_ADDRESS_WIDTH      VTD_HOST_AW_39BIT
->>>  #define VTD_HAW_MASK(aw)            ((1ULL << (aw)) - 1)
->>> +#define VTD_MGAW_FROM_CAP(cap)      ((cap >> 16) & 0x3fULL)
->>>
->>>  #define DMAR_REPORT_F_INTR          (1)
->>>
->>> diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
->>> index e4a507d55c..9d2e95e20e 100644
->>> --- a/hw/vfio/iommufd.c
->>> +++ b/hw/vfio/iommufd.c
->>> @@ -25,6 +25,7 @@
->>>  #include "qemu/cutils.h"
->>>  #include "qemu/chardev_open.h"
->>>  #include "pci.h"
->>> +#include "hw/i386/intel_iommu_internal.h"
->>>
->>>  static int iommufd_cdev_map(const VFIOContainerBase *bcontainer,
->> hwaddr iova,
->>>                              ram_addr_t size, void *vaddr, bool readonly)
->>> @@ -619,6 +620,41 @@ static void
->> vfio_iommu_iommufd_class_init(ObjectClass *klass, void *data)
->>>      vioc->pci_hot_reset = iommufd_cdev_pci_hot_reset;
->>>  };
->>>
->>> +static bool hiod_iommufd_vfio_realize(HostIOMMUDevice *hiod, void
->> *opaque,
->>> +                                      Error **errp)
->>> +{
->>> +    VFIODevice *vdev = opaque;
->>> +    HostIOMMUDeviceCaps *caps = &hiod->caps;
->>> +    enum iommu_hw_info_type type;
->>> +    union {
->>> +        struct iommu_hw_info_vtd vtd;
->>> +    } data;
->>> +
->>> +    if (!iommufd_backend_get_device_info(vdev->iommufd, vdev->devid,
->>> +                                         &type, &data, sizeof(data), errp)) {
->>> +        return false;
->>> +    }
->>> +
->>> +    caps->type = type;
->>> +
->>> +    switch (type) {
->>> +    case IOMMU_HW_INFO_TYPE_INTEL_VTD:
->>> +        caps->aw_bits = VTD_MGAW_FROM_CAP(data.vtd.cap_reg) + 1;
->> Please can you remind me of why you can't reuse the iova_ranges method.
->> isn't it generic enough?
-> Yes, iova_ranges method is only for iova_ranges, we want to make
-> HostIOMMUDevice.get_cap() a common interface.
->
-> When we want to pass iova_ranges, we can add HOST_IOMMU_DEVICE_CAP_IOVA_RANGES
-> and HostIOMMUDevice.iova_ranges.
+are available in the Git repository at:
 
-I rather meant that iova_ranges is part of VFIOContainerBase and you
-could reuse the technics used in hiod_legacy_vfio_realize, relying on a
-common helper instead of using
+  https://github.com/jasowang/qemu.git tags/net-pull-request
 
-VTD_MGAW_FROM_CAP(data.vtd.cap_reg). Doesn't it work? 
+for you to fetch changes up to dcab53611191f50cf4feabc1d8794d04afe53407:
 
+  ebpf: Added traces back. Changed source set for eBPF to 'system'. (2024-06-04 15:14:26 +0800)
 
->
->>> +        break;
->>> +    case IOMMU_HW_INFO_TYPE_NONE:
->> so what about other types?
-> There is no other types for now. When there is, we can easily add the code
+----------------------------------------------------------------
+-----BEGIN PGP SIGNATURE-----
 
-Thanks
+iQEzBAABCAAdFiEEIV1G9IJGaJ7HfzVi7wSWWzmNYhEFAmZewo4ACgkQ7wSWWzmN
+YhHhxgf/ZaECxru4fP8wi34XdSG/PR+BF+W5M9gZIRGrHg3vIf3/LRTpZTDccbRN
+Qpwtypr9O6/AWG9Os80rn7alsmMDxN8PDDNLa9T3wf5pJUQSyQ87Yy0MiuTNPSKD
+HKYUIfIlbFCM5WUW4huMmg98gKTgnzZMqOoRyMFZitbkR59qCm+Exws4HtXvCH68
+3k4lgvnFccmzO9iIzaOUIPs+Yf04Kw/FrY0Q/6nypvqbF2W80Md6w02JMQuTLwdF
+Guxeg/n6g0NLvCBbkjiM2VWfTaWJYbwFSwRTAMxM/geqh7qAgGsmD0N5lPlgqRDy
+uAy2GvFyrwzcD0lYqf0/fRK0Go0HPA==
+=J70K
+-----END PGP SIGNATURE-----
 
-Eric
+----------------------------------------------------------------
+Akihiko Odaki (18):
+      tap: Remove tap_probe_vnet_hdr_len()
+      tap: Remove qemu_using_vnet_hdr()
+      net: Move virtio-net header length assertion
+      net: Remove receive_raw()
+      tap: Call tap_receive_iov() from tap_receive()
+      tap: Shrink zeroed virtio-net header
+      virtio-net: Do not propagate ebpf-rss-fds errors
+      virtio-net: Add only one queue pair when realizing
+      virtio-net: Copy header only when necessary
+      virtio-net: Shrink header byte swapping buffer
+      virtio-net: Disable RSS on reset
+      virtio-net: Unify the logic to update NIC state for RSS
+      virtio-net: Always set populate_hash
+      virtio-net: Do not write hashes to peer buffer
+      ebpf: Fix RSS error handling
+      ebpf: Return 0 when configuration fails
+      ebpf: Refactor tun_rss_steering_prog()
+      ebpf: Add a separate target for skeleton
 
->
-> case IOMMU_HW_INFO_TYPE_ARM_SMMU:
->     caps->aw_bits = xxx;
->
-> Thanks
-> Zhenzhong
->
->> Eric
->>> +        break;
->>> +    }
->>> +
->>> +    return true;
->>> +}
->>> +
->>> +static void hiod_iommufd_vfio_class_init(ObjectClass *oc, void *data)
->>> +{
->>> +    HostIOMMUDeviceClass *hiodc = HOST_IOMMU_DEVICE_CLASS(oc);
->>> +
->>> +    hiodc->realize = hiod_iommufd_vfio_realize;
->>> +};
->>> +
->>>  static const TypeInfo types[] = {
->>>      {
->>>          .name = TYPE_VFIO_IOMMU_IOMMUFD,
->>> @@ -627,6 +663,7 @@ static const TypeInfo types[] = {
->>>      }, {
->>>          .name = TYPE_HOST_IOMMU_DEVICE_IOMMUFD_VFIO,
->>>          .parent = TYPE_HOST_IOMMU_DEVICE_IOMMUFD,
->>> +        .class_init = hiod_iommufd_vfio_class_init,
->>>      }
->>>  };
->>>
+Alexey Dobriyan (1):
+      virtio-net: drop too short packets early
+
+Andrew Melnychenko (1):
+      ebpf: Added traces back. Changed source set for eBPF to 'system'.
+
+ ebpf/ebpf_rss.c          |    7 +
+ ebpf/rss.bpf.skeleton.h  | 1558 +++++++++++++++++++++++-----------------------
+ ebpf/trace.h             |    1 +
+ hw/net/e1000e.c          |    1 -
+ hw/net/igb.c             |    1 -
+ hw/net/net_tx_pkt.c      |    4 +-
+ hw/net/virtio-net.c      |  282 ++++-----
+ hw/net/vmxnet3.c         |    2 -
+ include/net/net.h        |    8 -
+ net/dump.c               |    4 +-
+ net/net.c                |   47 +-
+ net/netmap.c             |    5 -
+ net/tap-bsd.c            |    5 -
+ net/tap-linux.c          |   20 -
+ net/tap-solaris.c        |    5 -
+ net/tap-stub.c           |    5 -
+ net/tap.c                |   77 +--
+ net/tap_int.h            |    1 -
+ tools/ebpf/Makefile.ebpf |   15 +-
+ tools/ebpf/rss.bpf.c     |   44 +-
+ 20 files changed, 968 insertions(+), 1124 deletions(-)
+ create mode 100644 ebpf/trace.h
 
 
