@@ -2,78 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EC0A8FADD1
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 10:44:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DEE498FAE42
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 11:04:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEPmR-0002kE-Eu; Tue, 04 Jun 2024 04:44:31 -0400
+	id 1sEQ4y-0003CP-3G; Tue, 04 Jun 2024 05:03:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sEPmP-0002k3-OS
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 04:44:29 -0400
-Received: from mgamail.intel.com ([198.175.65.21])
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1sEQ4p-0003Bu-26
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 05:03:32 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sEPmO-0005Mw-35
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 04:44:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1717490668; x=1749026668;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=cnxSJ8ziyTSI8m54PMa/4pI6Kz5sXTiDeaTZk0G1aDg=;
- b=nK+nWRLQJHLsxkt9+y+E1lL+G6SFmIpvrzCHEjzKufLhIprL0QV7MeXX
- xcETSuV+1upNfjs/70W6iYeJySNDmUijWiMgT85pzaQ5lHoEaduhcPTmj
- Zfk26c3OPQXYXd08GMB8/wJwDjN1wAjZ/dJj1xrZOOFIxtalMbHwCIkl6
- 1S0chkier15oi2Dro3ewKwy1ar2hoiVYT7OQclpMRe3VlU5bi+2zAFOs1
- RjdY97bufGWbRhRTZWc90l5neMHoTFrvIn1GWzPmXPOFgWRxcPP82cLHH
- t/Fhx+0Qq9vushL2txSDrD6dtP1WsMlvx86hJt7d6BLR1+36AL3GC/kSZ Q==;
-X-CSE-ConnectionGUID: dg+wACMjQNC1E8iXXn+7xg==
-X-CSE-MsgGUID: 0zvqzdKCR+qkcKFaoGUzfQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11092"; a="13970929"
-X-IronPort-AV: E=Sophos;i="6.08,213,1712646000"; d="scan'208";a="13970929"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Jun 2024 01:44:26 -0700
-X-CSE-ConnectionGUID: z8JNVk9cSHS5hLlVWaPyvw==
-X-CSE-MsgGUID: MlW2zfMtSY6ATSqvFrEc2A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,213,1712646000"; d="scan'208";a="42268122"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orviesa004.jf.intel.com with ESMTP; 04 Jun 2024 01:44:23 -0700
-Date: Tue, 4 Jun 2024 16:59:49 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Zhao Liu <zhao1.liu@linux.intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org,
- Ani Sinha <anisinha@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, Thomas Huth <thuth@redhat.com>
-Subject: Re: [PATCH-for-9.0?] docs: i386: pc: Update maximum CPU numbers for
- PC Q35
-Message-ID: <Zl7XhRvpxQNy+vna@intel.com>
-References: <20240412085358.731560-1-zhao1.liu@linux.intel.com>
- <305d659b-d4d6-4681-bdad-cd869e552333@linaro.org>
- <20240602092857-mutt-send-email-mst@kernel.org>
- <77840065-1ad4-42bc-a19c-181ac7d63cf1@linaro.org>
- <Zl3_x-HIuzcTwXlw@redhat.com>
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1sEQ4n-0007Gg-1b
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 05:03:30 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1717491807;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=zTryAwAqFpVVeeFnolgKRJ1jpm4fqSOt2rryPRNNmtg=;
+ b=fSq33TwKtZ0PqsttDF0Dw75woOcZtHWONlqGddlquqrtXeokDOY7+MfQCO32q/p4TBpfX9
+ itpENZagPi9hDBfyhh+HDFeOTc1SFypstZfHnlW52+NKuln1ppVljIh4yLGxdX6g2gwxzy
+ LigN7Y/JmBfjAsValh9oc1QbSRc/HxA=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-240-Zm8srSYdP5mU-GgZ412-5g-1; Tue, 04 Jun 2024 05:03:21 -0400
+X-MC-Unique: Zm8srSYdP5mU-GgZ412-5g-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1810B101A521;
+ Tue,  4 Jun 2024 09:03:21 +0000 (UTC)
+Received: from sirius.home.kraxel.org (unknown [10.39.192.217])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id DD4AB2028B56;
+ Tue,  4 Jun 2024 09:03:20 +0000 (UTC)
+Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
+ id ED737180098E; Tue,  4 Jun 2024 11:03:19 +0200 (CEST)
+Date: Tue, 4 Jun 2024 11:03:19 +0200
+From: "Hoffmann, Gerd" <kraxel@redhat.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>, 
+ Pankaj Gupta <pankaj.gupta@amd.com>, qemu-devel@nongnu.org,
+ brijesh.singh@amd.com, 
+ dovmurik@linux.ibm.com, armbru@redhat.com, michael.roth@amd.com,
+ xiaoyao.li@intel.com, 
+ thomas.lendacky@amd.com, isaku.yamahata@intel.com, kvm@vger.kernel.org, 
+ anisinha@redhat.com, Oliver Steffen <osteffen@redhat.com>
+Subject: Re: [PATCH v4 29/31] hw/i386/sev: Allow use of pflash in conjunction
+ with -bios
+Message-ID: <vcvfiqwhv7v3dhlmolz6ur4a62yfbyusihdzk5w7etyv676xmu@5xdmf7recsjz>
+References: <20240530111643.1091816-1-pankaj.gupta@amd.com>
+ <20240530111643.1091816-30-pankaj.gupta@amd.com>
+ <Zl2vP9hohrgaPMTs@redhat.com>
+ <CABgObfapGXenv8MZv5wnMkESQMJveZvP-kqUj=EwMszTkg0EsA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <Zl3_x-HIuzcTwXlw@redhat.com>
-Received-SPF: pass client-ip=198.175.65.21; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+In-Reply-To: <CABgObfapGXenv8MZv5wnMkESQMJveZvP-kqUj=EwMszTkg0EsA@mail.gmail.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kraxel@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -90,73 +91,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Michael, Daniel, and Philippe,
-
-On Mon, Jun 03, 2024 at 06:39:19PM +0100, Daniel P. Berrangé wrote:
-> Date: Mon, 3 Jun 2024 18:39:19 +0100
-> From: "Daniel P. Berrangé" <berrange@redhat.com>
-> Subject: Re: [PATCH-for-9.0?] docs: i386: pc: Update maximum CPU numbers
->  for PC Q35
+On Mon, Jun 03, 2024 at 03:38:05PM GMT, Paolo Bonzini wrote:
+> On Mon, Jun 3, 2024 at 1:55â€¯PM Daniel P. BerrangÃ© <berrange@redhat.com> wrote:
+> > I really wish we didn't have to introduce this though - is there really
+> > no way to make it possible to use pflash for both CODE & VARS with SNP,
+> > as is done with traditional VMs, so we don't diverge in setup, needing
+> > yet more changes up the mgmt stack ?
 > 
-> On Mon, Jun 03, 2024 at 07:31:47PM +0200, Philippe Mathieu-Daudé wrote:
-> > Hi Michael,
-> > 
-> > On 2/6/24 15:30, Michael S. Tsirkin wrote:
-> > > On Fri, Apr 12, 2024 at 11:57:35AM +0200, Philippe Mathieu-Daudé wrote:
-> > > > Hi Zhao,
-> > > > 
-> > > > On 12/4/24 10:53, Zhao Liu wrote:
-> > > > > From: Zhao Liu <zhao1.liu@intel.com>
-> > > > > 
-> > > > > Commit e4e98c7eebfa ("pc: q35: Bump max_cpus to 4096 vcpus") increases
-> > > > > the supported CPUs for PC Q35 machine.
-> > > > > 
-> > > > > Update maximum CPU numbers for PC Q35 in the document.
-> > > > > 
-> > > > > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-> > > > > ---
-> > > > >    docs/system/target-i386-desc.rst.inc | 2 +-
-> > > > >    1 file changed, 1 insertion(+), 1 deletion(-)
-> > > > > 
-> > > > > diff --git a/docs/system/target-i386-desc.rst.inc b/docs/system/target-i386-desc.rst.inc
-> > > > > index 5ebbcda9db4c..319e540573d3 100644
-> > > > > --- a/docs/system/target-i386-desc.rst.inc
-> > > > > +++ b/docs/system/target-i386-desc.rst.inc
-> > > > > @@ -36,7 +36,7 @@ The QEMU PC System emulator simulates the following peripherals:
-> > > > >    -  PCI UHCI, OHCI, EHCI or XHCI USB controller and a virtual USB-1.1
-> > > > >       hub.
-> > > > > -SMP is supported with up to 255 CPUs.
-> > > > > +SMP is supported with up to 255 CPUs (and 4096 CPUs for PC Q35 machine).
-> > > > 
-> > > > This comment is not accurate since a while, IIUC:
-> > > > 
-> > > > Up to q35-2.7: 255
-> > > > q35-2.8: 288
-> > > > q35-8.0+: 1024
-> > > > q35-9.0: 4096
-> > > 
-> > > 
-> > > What are you saying here, Philippe? I don't think compat
-> > > machine types matter enough to bother with more detail.
-> > 
-> > My point is I find this description confusing w.r.t. how QEMU behaves:
+> No, you cannot use pflash for CODE in either SNP or TDX. The hardware
+> does not support it.
 > 
->   snip
-> 
-> I think the docs should simply avoid mentioning any limit at all. ie
-> 
->    -SMP is supported with up to 255 CPUs.
->    +SMP is supported with a large number of virtual CPUs (upper limit is
->     configuration dependent)
+> One possibility is to only support non-pflash-based variable store.
+> This is not yet in QEMU, but it is how both AWS and Google implemented
+> UEFI variables and I think Gerd was going to work on it for QEMU.
 
-I agree, the limit may also be different for different scenarios, and it
-is not appropriate to describe it in detail.
+Yes, working on and off on it.  Progress is slower that I wish it would
+be due to getting side tracked into other important edk2 things ...
 
-Sorry I forgot that this patch has been merged in by Thomas for me
-(838f82468a12), and I can modify it with a new patch based on Daniel's
-suggestion.
+But, yes, the longer-term plan is that edk2 wouldn't manage the variable
+store itself.  It will be either qemu (non-confidential setups), or the
+svsm (confidential setups).
 
-Thanks,
-Zhao
+Where we are going to store svsm state (vtpm, efi vars, ...) is not
+fully clear yet.  pflash is one option, but we are also checking out
+alternatives like virtio-blk (via virtio-mmio).
+
+take care,
+  Gerd
 
 
