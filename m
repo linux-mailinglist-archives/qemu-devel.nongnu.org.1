@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE5348FABBE
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 09:20:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 018E38FABBF
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 09:20:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEORg-0003Cd-Eg; Tue, 04 Jun 2024 03:19:00 -0400
+	id 1sEORl-0003GG-NJ; Tue, 04 Jun 2024 03:19:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sEORe-0003CC-Nx
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 03:18:58 -0400
+ id 1sEORj-0003Fu-93
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 03:19:03 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sEORd-0005dG-8D
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 03:18:58 -0400
+ id 1sEORh-0005dt-Kq
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 03:19:02 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717485536;
+ s=mimecast20190719; t=1717485541;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Omj7V/9neG3Skvv8V7gZhHDNOP50DtvEDEa1OSvAS0I=;
- b=A0mjk/L1SvU4vLUkmMoQz6nlPNSiOt0W2xQ1rP9NEotSJJQs21EJihrk/Nf+iyOmvzcd1g
- p65+dBr0MjrNFSFpSetzIsYrfV1n8unjmPP/UR7yDd8IHvLZNUBY7e25JjlnXhhztRPbgV
- 1jk6OUkWfJw/CqOhMMuOfNymjguZNDc=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=aHLLmdM1T47s1VBxMQynaNLfQGaY0mg7XaNcdIi3/jE=;
+ b=efhTdAymb0TMMJdPeZtGRQRnPIdBGScx3IHZcNQVsKb2WFVuHM0Xhfi/EduHp52ySEYotD
+ Ud/GzcmqpBhfmIRYdIr/Pe2ObePXikCIz6XghyPeVWme5toRgQl5wu9o8XIfYRJCZUIDss
+ VQqW0+bFAWMoo2edMatNX3x4FprrGG4=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-558-JkrlGbTJOJ2yd_9XeoYcOQ-1; Tue, 04 Jun 2024 03:18:55 -0400
-X-MC-Unique: JkrlGbTJOJ2yd_9XeoYcOQ-1
-Received: by mail-ed1-f71.google.com with SMTP id
- 4fb4d7f45d1cf-57a49b8a27eso280391a12.0
- for <qemu-devel@nongnu.org>; Tue, 04 Jun 2024 00:18:55 -0700 (PDT)
+ us-mta-634-JmLhD4cwN9aHzLJtN2dPKw-1; Tue, 04 Jun 2024 03:18:58 -0400
+X-MC-Unique: JmLhD4cwN9aHzLJtN2dPKw-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-a68e0faf1f6so91954566b.3
+ for <qemu-devel@nongnu.org>; Tue, 04 Jun 2024 00:18:57 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717485533; x=1718090333;
+ d=1e100.net; s=20230601; t=1717485536; x=1718090336;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Omj7V/9neG3Skvv8V7gZhHDNOP50DtvEDEa1OSvAS0I=;
- b=wCw5DjyC6l6rz/1xc4yjaSnFRZvIxef7obpgjOZQnIYZtuvqlBGH3X+IxKa3TooGhq
- 7J+VyZ1/bXVUmXnKQXnJwiDlSr+7JcbGVylXW1JTDbYWLvJSr+eO/dd5dtMKgZ/Qcj9p
- y3Ie27X6PsxtNPJ3IfzcJFExKKY1O0cO3UGRw9iv96cbjsAoVXT1Jsddpq6AbgW0+AR9
- Yo8+V8anvyA4vRcBUhmGmPaMTrvKizUsS0MaF++sR6Q78suIYtNPzr1XHqKa9cIBcmy6
- qYlGNgapoZPL7/hbk2MNyg3DHUzA4RhwPQZc4Uk1ls3Z2NMYrQR1J8u1xQY99irO+qC6
- gIdg==
-X-Gm-Message-State: AOJu0Yy3G2v8TKbExa4IqMt279CJdimCjrKOweFp/uKwe3+Y5vtnLVdC
- TQ3ZY52V/6ozrV+yaP+NzXTY8JXrNdYGO10xOxz5y4f9Vzd80nYPJfCfan8hZRlwuV9bZdOb0KU
- SEB6rej6X1o0ezdmIf4G1A2wUKL8hiGhtbs/dxKxgztMjuxl09ZUJQeF9i5oSSD0pEhSy6PWIlx
- UzS3T3uIoNJTA2+/2wRG+7gnq8I/3aZt3NMMKm
-X-Received: by 2002:a50:f61a:0:b0:57a:21ac:cffb with SMTP id
- 4fb4d7f45d1cf-57a363c0b25mr6727881a12.6.1717485533094; 
- Tue, 04 Jun 2024 00:18:53 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFCezG3hGaTMkTnK57x1SObQ44iKILGwexCJljPWHBvebFJP7okSozYhSVbwBCwbI5SKYGCOA==
-X-Received: by 2002:a50:f61a:0:b0:57a:21ac:cffb with SMTP id
- 4fb4d7f45d1cf-57a363c0b25mr6727865a12.6.1717485532602; 
- Tue, 04 Jun 2024 00:18:52 -0700 (PDT)
+ bh=aHLLmdM1T47s1VBxMQynaNLfQGaY0mg7XaNcdIi3/jE=;
+ b=GidKJJWEnP32gxLclhF9ClCy1+lbDNGdE1zU+UHU6kz4VJfHEAsFySFT3OqaDlowQw
+ qofOvh6zf2Wo1FGmzXaIytJO+DXMgrC44CyHonc5YUm/cWwv3alPlffnRPBrugRvfAZj
+ cHs9cutqi7ENOtWVkCo5Y7yu1J4My72+nrNty/mAeQyEIKoNIq0tj3B8hqJrm0kWN1MM
+ SeErNbAYETOJDgN+dOVyP7L+MJNuMQRgOYwbLiwfd0SUjNAArrDm6A9fNDVwUXXz2j5b
+ VfaP6Fje3bKyeuSsJXrJhm9L5eutHopaYHoo3+hqvgnLyXhY5jD+/rweVe3K0VA17s+7
+ oWPA==
+X-Gm-Message-State: AOJu0Yxk3S4hO5n5AFa27r2iJl7cJq0XO5+sPQGsMkWS7skoZOM68oLU
+ DT2sYy4hB4OFuWH2/Nw5U9eGu+wuYrEJjYvOhNlMKdA9VOtd4MTeU0+C+2ae1yOxfd6EZkoYQJi
+ mkSzYuRuE5OF92GKPl0L7gxpMcOFDb4Jl4ACYCXDUtB+LJ+q3oYbJuS9gDxnA21HzvdxIi/2iBC
+ 2v/NAowW24Azv3XCDFwmfNkk6zTG2ZsbImptyq
+X-Received: by 2002:a17:906:1314:b0:a68:f02d:755e with SMTP id
+ a640c23a62f3a-a68f02d75ffmr367376266b.33.1717485536209; 
+ Tue, 04 Jun 2024 00:18:56 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEiDKlwyMKl0NsNRRK1YIeDVRXuTckOHGSViOkixZOCxkXtftRfzpQTqPq38EA02n+X/FiQ3A==
+X-Received: by 2002:a17:906:1314:b0:a68:f02d:755e with SMTP id
+ a640c23a62f3a-a68f02d75ffmr367374766b.33.1717485535681; 
+ Tue, 04 Jun 2024 00:18:55 -0700 (PDT)
 Received: from avogadro.local ([151.81.115.112])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-57a31c6d301sm6731711a12.76.2024.06.04.00.18.52
+ a640c23a62f3a-a68c7892dd5sm415290966b.43.2024.06.04.00.18.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 04 Jun 2024 00:18:52 -0700 (PDT)
+ Tue, 04 Jun 2024 00:18:54 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org
-Subject: [PATCH 05/11] target/i386: implement DR7.GD
-Date: Tue,  4 Jun 2024 09:18:27 +0200
-Message-ID: <20240604071833.962574-6-pbonzini@redhat.com>
+Subject: [PATCH 06/11] target/i386: disable/enable breakpoints on
+ vmentry/vmexit
+Date: Tue,  4 Jun 2024 09:18:28 +0200
+Message-ID: <20240604071833.962574-7-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240604071833.962574-1-pbonzini@redhat.com>
 References: <20240604071833.962574-1-pbonzini@redhat.com>
@@ -101,45 +102,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-DR7.GD triggers a #DB exception on any access to debug registers.
-The GD bit is cleared so that the #DB handler itself can access
-the debug registers.
+If the required DR7 (either from the VMCB or from the host save
+area) disables a breakpoint that was enabled prior to vmentry
+or vmexit, it is left enabled and will trigger EXCP_DEBUG.
+This causes a spurious #DB on the next crossing of the breakpoint.
+
+To disable it, vmentry/vmexit must use cpu_x86_update_dr7
+to load DR7.
+
+Because cpu_x86_update_dr7 takes a 32-bit argument, check
+reserved bits prior to calling cpu_x86_update_dr7, and do the
+same for DR6 as well for consistency.
+
+This scenario is tested by the "host_rflags" test in kvm-unit-tests.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/tcg/sysemu/bpt_helper.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ target/i386/tcg/sysemu/svm_helper.c | 25 +++++++++++++++----------
+ 1 file changed, 15 insertions(+), 10 deletions(-)
 
-diff --git a/target/i386/tcg/sysemu/bpt_helper.c b/target/i386/tcg/sysemu/bpt_helper.c
-index 4d96a48a3ca..c1d5fce250c 100644
---- a/target/i386/tcg/sysemu/bpt_helper.c
-+++ b/target/i386/tcg/sysemu/bpt_helper.c
-@@ -238,6 +238,12 @@ target_ulong helper_get_dr(CPUX86State *env, int reg)
-         }
-     }
+diff --git a/target/i386/tcg/sysemu/svm_helper.c b/target/i386/tcg/sysemu/svm_helper.c
+index 5d6de2294fa..922d8964f8e 100644
+--- a/target/i386/tcg/sysemu/svm_helper.c
++++ b/target/i386/tcg/sysemu/svm_helper.c
+@@ -163,6 +163,8 @@ void helper_vmrun(CPUX86State *env, int aflag, int next_eip_addend)
+     uint64_t new_cr0;
+     uint64_t new_cr3;
+     uint64_t new_cr4;
++    uint64_t new_dr6;
++    uint64_t new_dr7;
  
-+    if (env->dr[7] & DR7_GD) {
-+        env->dr[7] &= ~DR7_GD;
-+        env->dr[6] |= DR6_BD;
-+        raise_exception_ra(env, EXCP01_DB, GETPC());
-+    }
+     if (aflag == 2) {
+         addr = env->regs[R_EAX];
+@@ -361,20 +363,22 @@ void helper_vmrun(CPUX86State *env, int aflag, int next_eip_addend)
+                                 env->vm_vmcb + offsetof(struct vmcb, save.rsp));
+     env->regs[R_EAX] = x86_ldq_phys(cs,
+                                 env->vm_vmcb + offsetof(struct vmcb, save.rax));
+-    env->dr[7] = x86_ldq_phys(cs,
+-                          env->vm_vmcb + offsetof(struct vmcb, save.dr7));
+-    env->dr[6] = x86_ldq_phys(cs,
+-                          env->vm_vmcb + offsetof(struct vmcb, save.dr6));
 +
-     return env->dr[reg];
- }
++    new_dr7 = x86_ldq_phys(cs, env->vm_vmcb + offsetof(struct vmcb, save.dr7));
++    new_dr6 = x86_ldq_phys(cs, env->vm_vmcb + offsetof(struct vmcb, save.dr6));
  
-@@ -251,6 +257,12 @@ void helper_set_dr(CPUX86State *env, int reg, target_ulong t0)
-         }
+ #ifdef TARGET_X86_64
+-    if (env->dr[6] & DR_RESERVED_MASK) {
++    if (new_dr7 & DR_RESERVED_MASK) {
+         cpu_vmexit(env, SVM_EXIT_ERR, 0, GETPC());
      }
+-    if (env->dr[7] & DR_RESERVED_MASK) {
++    if (new_dr6 & DR_RESERVED_MASK) {
+         cpu_vmexit(env, SVM_EXIT_ERR, 0, GETPC());
+     }
+ #endif
  
-+    if (env->dr[7] & DR7_GD) {
-+        env->dr[7] &= ~DR7_GD;
-+        env->dr[6] |= DR6_BD;
-+        raise_exception_ra(env, EXCP01_DB, GETPC());
-+    }
++    cpu_x86_update_dr7(env, new_dr7);
++    env->dr[6] = new_dr6;
 +
-     if (reg < 4) {
-         if (hw_breakpoint_enabled(env->dr[7], reg)
-             && hw_breakpoint_type(env->dr[7], reg) != DR7_TYPE_IO_RW) {
+     if (is_efer_invalid_state(env)) {
+         cpu_vmexit(env, SVM_EXIT_ERR, 0, GETPC());
+     }
+@@ -864,8 +868,11 @@ void do_vmexit(CPUX86State *env)
+ 
+     env->dr[6] = x86_ldq_phys(cs,
+                           env->vm_hsave + offsetof(struct vmcb, save.dr6));
+-    env->dr[7] = x86_ldq_phys(cs,
+-                          env->vm_hsave + offsetof(struct vmcb, save.dr7));
++
++    /* Disables all breakpoints in the host DR7 register. */
++    cpu_x86_update_dr7(env,
++             x86_ldq_phys(cs,
++                          env->vm_hsave + offsetof(struct vmcb, save.dr7)) & ~0xff);
+ 
+     /* other setups */
+     x86_stl_phys(cs,
+@@ -891,8 +898,6 @@ void do_vmexit(CPUX86State *env)
+        from the page table indicated the host's CR3. If the PDPEs contain
+        illegal state, the processor causes a shutdown. */
+ 
+-    /* Disables all breakpoints in the host DR7 register. */
+-
+     /* Checks the reloaded host state for consistency. */
+ 
+     /* If the host's rIP reloaded by #VMEXIT is outside the limit of the
 -- 
 2.45.1
 
