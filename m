@@ -2,91 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A185B8FAB4C
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 08:49:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E69998FAB5C
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 08:51:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sENx5-000844-It; Tue, 04 Jun 2024 02:47:23 -0400
+	id 1sEO0d-00079w-6V; Tue, 04 Jun 2024 02:51:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sENw8-00054w-MK
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:46:29 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1sEO0M-00072K-Li
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:50:48 -0400
+Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sENw7-0007fN-6N
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:46:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717483582;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=mkSjX6Tgf/hIveuNh1PWp+shd4Akyf2hePPEwewEYlA=;
- b=Hqt9+IPM1Rqld738jTOps5J3IwFd8yYD9nLRLM26hg6zOTC5k7aqc2H2tw6s322yTl41su
- 182ZhmeECKaNCGiLNfyoZ0IU2CrdIRBIuX5Cq9lvQ3AsZZWmHLby71wbnHhWR2vGND12K/
- tpZvuqAKEjLnoBEr43PpC+M/R5ssJEI=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-465-mY1NHqpOOjOQCvhreFYZfw-1; Tue, 04 Jun 2024 02:46:18 -0400
-X-MC-Unique: mY1NHqpOOjOQCvhreFYZfw-1
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-a68c70ab413so247045766b.1
- for <qemu-devel@nongnu.org>; Mon, 03 Jun 2024 23:46:18 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717483577; x=1718088377;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=mkSjX6Tgf/hIveuNh1PWp+shd4Akyf2hePPEwewEYlA=;
- b=GLQQE2uVtpsj5T6ml01bQkJu1eRU84TbQnKGesjnAGYHjC8WZqmac1oTCoTAD46PZ5
- eJcNxr0VTmkxe6ASHbJyWT3eIB88tvu/5zH4t0VK4ZPiZniuna+yr66o9mpkktWUQlFg
- hVm30iS4UhkWluVh/qeE4QQ+XfFPtEnTnLyKouquOELk7HcT6qtNtt/Fx8QG1n8l/X/j
- aCDoPZDtvalcayfM+mlQVvje1+U8CmZEc1JKi3UXZfovqbs88JSGznZb8wrPAHE/ZaKg
- cwfI0hCg6FWakMV6x9KgFuT5RXSpnChBTZIwtPEgBO9lVYQdcXHSAtbDPkgRUMCKR7m5
- 7Dsg==
-X-Gm-Message-State: AOJu0Yws6T9bU61wBZySOT2ai+wr6BDP+udhPSv3+D2V7Jlc7s7V4raY
- dkyqaKYbBHeAqnRnYnvTAKSI9ysT//+DG7FJzbmxoDolH1eo0VMax66TgmI9aqDRKdR9pSByJt9
- f5VGFdLPT+So7bY4Utcr+vPTGV0qnys0TE5xm+FQVAEazcrhP7E7JKhFRzN336jkHtFfedzmA11
- NKxqs6cUBKRkKvdw5XdZg1TqjNh/nlLaawNdz2
-X-Received: by 2002:a17:906:3995:b0:a68:c375:bc03 with SMTP id
- a640c23a62f3a-a695457434dmr116862866b.38.1717483577197; 
- Mon, 03 Jun 2024 23:46:17 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF/ad+iRFFwYT815k1/vRouNlMS1mIqD7fCb6m/0C1rgr/04nT38pGTAdd6GPfXz1R1LpzARA==
-X-Received: by 2002:a17:906:3995:b0:a68:c375:bc03 with SMTP id
- a640c23a62f3a-a695457434dmr116862066b.38.1717483576853; 
- Mon, 03 Jun 2024 23:46:16 -0700 (PDT)
-Received: from avogadro.local ([151.81.115.112])
- by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a691a8f98ffsm201174266b.123.2024.06.03.23.46.16
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Jun 2024 23:46:16 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Michael Roth <michael.roth@amd.com>,
-	Pankaj Gupta <pankaj.gupta@amd.com>
-Subject: [PULL 45/45] hw/i386: Add support for loading BIOS using guest_memfd
-Date: Tue,  4 Jun 2024 08:44:09 +0200
-Message-ID: <20240604064409.957105-46-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240604064409.957105-1-pbonzini@redhat.com>
-References: <20240604064409.957105-1-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1sEO0K-0000by-My
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:50:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
+ In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
+ Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+ :Resent-To:Resent-Cc:Resent-Message-ID;
+ bh=yuBtWfTkrnTAZrU7XfC2/Et6fnWohchYjwJ9hrsrIig=; b=OIHDbB3uEzSnU+C+HMYwMp7g0I
+ sy8y7NGR+gUlkaO5GSAB9Iy5h43qK8eTI9MFy+uvof8Ng9U+F+wmqNanAfq42DyL56Hm0dhpk5KVV
+ qLtQfByiKfcLGXnYVlDsPRK5EdkM2Hu7I9PFh21BUVwSsX85sdDJEQR/idQrKWYteJl+RD3QajUof
+ Rmd1ZdNtYRkwCf27SrHfKWW6VVq524i0k772tf3Cym5SYNDk4JJnNxlAG1iPn4SuII/xEt1p9eEGn
+ GBruN61OVuNSsMOJ3LaDT4X6QYVCmihOZghy/J9tICBBCTpFvqatZzqJZxHtHjIiluVUqD/cH6L0I
+ VK04kqkC+Gt3lVMk1978VD6erVJYnltklpF6IIhwbiQIAEcLxHMP2K46u+Cg7VnIXbxNfwn8VdokZ
+ 8Iw67cYjJl4+Mva+p3eiwVD17xJEj6CWSb+f963e+fDxCTBDEJMjBQ8sOCq8pgj1ZXU0TDGHsujNx
+ hSRblVe4P9mwTaAglh/vRpQYhqkZR+AuLmVKTcc+bmZtXNQbb6MskhrPERYLpIZMPwH9ascVwd2K0
+ xIqKi5MPST0DRr4cpRcXQHIFEIvahzMXZR0uR0R3tdNCQbH2qh9YpX3EhOqZCphqUEfTMRUt+oytq
+ LtNqj4TrhkH/iNpkhm0iWjxKcMHEjbH1C91XwJtno=;
+Received: from [2a00:23c4:8bb4:4000:ce26:7186:74ad:2d8c]
+ by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1sENz2-00078t-W7; Tue, 04 Jun 2024 07:49:25 +0100
+Message-ID: <b3a2ae5f-a6d1-4d13-a7e3-35f4b1417b88@ilande.co.uk>
+Date: Tue, 4 Jun 2024 07:50:38 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: BALATON Zoltan <balaton@eik.bme.hu>, Gerd Hoffmann <kraxel@redhat.com>,
+ qemu-devel@nongnu.org, Eduardo Habkost <eduardo@habkost.net>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+References: <20240530112718.1752905-1-kraxel@redhat.com>
+ <20240530112718.1752905-5-kraxel@redhat.com>
+ <3efcf132-dec1-3765-e77e-3fd207224eeb@eik.bme.hu>
+ <c928e9e7-21b2-4017-be45-b0a4b91f1d06@ilande.co.uk>
+ <Zl2rxIYdohROHXbg@redhat.com>
+Content-Language: en-US
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
+ xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
+ 3JzBTbtd4JfFcSupo6MNNOrCzdCbCjZ64ik8ycaUOSzK2tKbeQLEXzXoaDL1Y7vuVO7nL9bG
+ E5Ru3wkhCFc7SkoypIoAUqz8EtiB6T89/D9TDEyjdXUacc53R5gu8wEWiMg5MQQuGwzbQy9n
+ PFI+mXC7AaEUqBVc2lBQVpAYXkN0EyqNNT12UfDLdxaxaFpUAE2pCa2LTyo5vn5hEW+i3VdN
+ PkmjyPvL6DdY03fvC01PyY8zaw+UI94QqjlrDisHpUH40IUPpC/NB0LwzL2aQOMkzT2NABEB
+ AAHNME1hcmsgQ2F2ZS1BeWxhbmQgPG1hcmsuY2F2ZS1heWxhbmRAaWxhbmRlLmNvLnVrPsLA
+ eAQTAQIAIgUCVAm7PAIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQW8LFb64PMh9f
+ NAgAuc3ObOEY8NbZko72AGrg2tWKdybcMVITxmcor4hb9155o/OWcA4IDbeATR6cfiDL/oxU
+ mcmtXVgPqOwtW3NYAKr5g/FrZZ3uluQ2mtNYAyTFeALy8YF7N3yhs7LOcpbFP7tEbkSzoXNG
+ z8iYMiYtKwttt40WaheWuRs0ZOLbs6yoczZBDhna3Nj0LA3GpeJKlaV03O4umjKJgACP1c/q
+ T2Pkg+FCBHHFP454+waqojHp4OCBo6HyK+8I4wJRa9Z0EFqXIu8lTDYoggeX0Xd6bWeCFHK3
+ DhD0/Xi/kegSW33unsp8oVcM4kcFxTkpBgj39dB4KwAUznhTJR0zUHf63M7ATQRUCbs8AQgA
+ y7kyevA4bpetM/EjtuqQX4U05MBhEz/2SFkX6IaGtTG2NNw5wbcAfhOIuNNBYbw6ExuaJ3um
+ 2uLseHnudmvN4VSJ5Hfbd8rhqoMmmO71szgT/ZD9MEe2KHzBdmhmhxJdp+zQNivy215j6H27
+ 14mbC2dia7ktwP1rxPIX1OOfQwPuqlkmYPuVwZP19S4EYnCELOrnJ0m56tZLn5Zj+1jZX9Co
+ YbNLMa28qsktYJ4oU4jtn6V79H+/zpERZAHmH40IRXdR3hA+Ye7iC/ZpWzT2VSDlPbGY9Yja
+ Sp7w2347L5G+LLbAfaVoejHlfy/msPeehUcuKjAdBLoEhSPYzzdvEQARAQABwsBfBBgBAgAJ
+ BQJUCbs8AhsMAAoJEFvCxW+uDzIfabYIAJXmBepHJpvCPiMNEQJNJ2ZSzSjhic84LTMWMbJ+
+ opQgr5cb8SPQyyb508fc8b4uD8ejlF/cdbbBNktp3BXsHlO5BrmcABgxSP8HYYNsX0n9kERv
+ NMToU0oiBuAaX7O/0K9+BW+3+PGMwiu5ml0cwDqljxfVN0dUBZnQ8kZpLsY+WDrIHmQWjtH+
+ Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
+ KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
+ imgcU9TTGC5qd9g=
+In-Reply-To: <Zl2rxIYdohROHXbg@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+X-SA-Exim-Connect-IP: 2a00:23c4:8bb4:4000:ce26:7186:74ad:2d8c
+X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
+Subject: Re: [PATCH v2 4/4] vga/cirrus: deprecate, don't build by default
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
+Received-SPF: pass client-ip=2001:41c9:1:41f::167;
+ envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,63 +108,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Michael Roth <michael.roth@amd.com>
+On 03/06/2024 12:40, Daniel P. Berrangé wrote:
 
-When guest_memfd is enabled, the BIOS is generally part of the initial
-encrypted guest image and will be accessed as private guest memory. Add
-the necessary changes to set up the associated RAM region with a
-guest_memfd backend to allow for this.
+> On Thu, May 30, 2024 at 01:22:11PM +0100, Mark Cave-Ayland wrote:
+>> On 30/05/2024 12:40, BALATON Zoltan wrote:
+>>
+>>> On Thu, 30 May 2024, Gerd Hoffmann wrote:
+>>>> stdvga is the much better option.
+>>>>
+>>>> Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
+>>>> ---
+>>>> hw/display/cirrus_vga.c     | 1 +
+>>>> hw/display/cirrus_vga_isa.c | 1 +
+>>>> hw/display/Kconfig          | 1 -
+>>>> 3 files changed, 2 insertions(+), 1 deletion(-)
+>>>>
+>>>> diff --git a/hw/display/cirrus_vga.c b/hw/display/cirrus_vga.c
+>>>> index 150883a97166..81421be1f89d 100644
+>>>> --- a/hw/display/cirrus_vga.c
+>>>> +++ b/hw/display/cirrus_vga.c
+>>>> @@ -3007,6 +3007,7 @@ static void cirrus_vga_class_init(ObjectClass
+>>>> *klass, void *data)
+>>>>      dc->vmsd = &vmstate_pci_cirrus_vga;
+>>>>      device_class_set_props(dc, pci_vga_cirrus_properties);
+>>>>      dc->hotpluggable = false;
+>>>> +    klass->deprecation_note = "use stdvga instead";
+>>>> }
+>>>>
+>>>> static const TypeInfo cirrus_vga_info = {
+>>>> diff --git a/hw/display/cirrus_vga_isa.c b/hw/display/cirrus_vga_isa.c
+>>>> index 84be51670ed8..3abbf4dddd90 100644
+>>>> --- a/hw/display/cirrus_vga_isa.c
+>>>> +++ b/hw/display/cirrus_vga_isa.c
+>>>> @@ -85,6 +85,7 @@ static void isa_cirrus_vga_class_init(ObjectClass
+>>>> *klass, void *data)
+>>>>      dc->realize = isa_cirrus_vga_realizefn;
+>>>>      device_class_set_props(dc, isa_cirrus_vga_properties);
+>>>>      set_bit(DEVICE_CATEGORY_DISPLAY, dc->categories);
+>>>> +    klass->deprecation_note = "use stdvga instead";
+>>>
+>>> Excepr some old OSes work better with this than stdvga so could this be
+>>> left and not removed? Does it cause a lot of work to keep this device? I
+>>> thought it's stable already and were not many changes for it lately. If
+>>> something works why drop it?
+>>
+>> Seconded: whilst stdvga is preferred, there are a lot of older OSs that work
+>> well in QEMU using the Cirrus emulation. I appreciate that the code could do
+>> with a bit of work, but is there a more specific reason that it should be
+>> deprecated?
+> 
+> I think there's different answers here for upstream vs downstream.
+> 
+> Upstream QEMU's scope is to emulate pretty much arbitrary hardware that
+> may have existed at any point in time. Emulating Cirrus is very much
+> in scope upstream, and even if there are other better VGA devices, that
+> doesn't make emulation of Cirrus redundant.
+> 
+> Downstream is a different matter - if a downstream vendor wants to be
+> opinionated and limit the scope of devices they ship to customers, it
+> is totally valid to cull Cirrus.
 
-Current support centers around using -bios to load the BIOS data.
-Support for loading the BIOS via pflash requires additional enablement
-since those interfaces rely on the use of ROM memory regions which make
-use of the KVM_MEM_READONLY memslot flag, which is not supported for
-guest_memfd-backed memslots.
+The concern for me is that if someone such as RedHat decided not to ship Cirrus then 
+we'd end up in a place where command lines for some legacy OSs would work on an 
+upstream build, but if someone was using RHEL then they would fail due to the device 
+not being present. I can see this causing confusion for users since they would report 
+that a command line doesn't work whilst others would shrug and report back that it 
+works for them.
 
-Signed-off-by: Michael Roth <michael.roth@amd.com>
-Signed-off-by: Pankaj Gupta <pankaj.gupta@amd.com>
-Message-ID: <20240530111643.1091816-29-pankaj.gupta@amd.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- hw/i386/x86-common.c | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+I do wonder if a solution for this would be to add a blocklist file in /etc that 
+prevents the listed QOM types from being instantiated. The file could contain also 
+contain a machine regex to match and a reason that can be reported to the user e.g.
 
-diff --git a/hw/i386/x86-common.c b/hw/i386/x86-common.c
-index f41cb0a6a8b..c0c66a0eb52 100644
---- a/hw/i386/x86-common.c
-+++ b/hw/i386/x86-common.c
-@@ -1001,8 +1001,13 @@ void x86_bios_rom_init(X86MachineState *x86ms, const char *default_firmware,
-         (bios_size % 65536) != 0) {
-         goto bios_error;
-     }
--    memory_region_init_ram(&x86ms->bios, NULL, "pc.bios", bios_size,
--                           &error_fatal);
-+    if (machine_require_guest_memfd(MACHINE(x86ms))) {
-+        memory_region_init_ram_guest_memfd(&x86ms->bios, NULL, "pc.bios",
-+                                           bios_size, &error_fatal);
-+    } else {
-+        memory_region_init_ram(&x86ms->bios, NULL, "pc.bios",
-+                               bios_size, &error_fatal);
-+    }
-     if (sev_enabled()) {
-         /*
-          * The concept of a "reset" simply doesn't exist for
-@@ -1023,9 +1028,11 @@ void x86_bios_rom_init(X86MachineState *x86ms, const char *default_firmware,
-     }
-     g_free(filename);
- 
--    /* map the last 128KB of the BIOS in ISA space */
--    x86_isa_bios_init(&x86ms->isa_bios, rom_memory, &x86ms->bios,
--                      !isapc_ram_fw);
-+    if (!machine_require_guest_memfd(MACHINE(x86ms))) {
-+        /* map the last 128KB of the BIOS in ISA space */
-+        x86_isa_bios_init(&x86ms->isa_bios, rom_memory, &x86ms->bios,
-+                          !isapc_ram_fw);
-+    }
- 
-     /* map all the bios at the top of memory */
-     memory_region_add_subregion(rom_memory,
--- 
-2.45.1
+# QEMU QOM type blocklist
+#
+# QOM type regex, machine regex list, reason
+"cirrus*","pc*,machine*","contains insecure blitter routines"
+"fdc","pc*","may not be completely secure"
+
+This feels like a better solution because:
+
+- It's easy to add a message that reports "The requested QOM type <foo> cannot be 
+instantiated because <reason>" for specific machine types. The machine regex also 
+fixes the problem where usb-ohci should be allowed for PPC machines, but not 
+generally for PC machines.
+
+- Downstream can ship with a secure policy for production environments but also a 
+less restrictive policy for more casual users
+
+- If someone really needs a device that is not enabled by default, a privileged user 
+can simply edit the blocklist file and allow it
+
+- It should work both with or without modules
+
+
+ATB,
+
+Mark.
 
 
