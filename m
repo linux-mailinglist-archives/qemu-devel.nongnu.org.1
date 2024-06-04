@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E76C18FAF6B
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 11:59:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79D548FAF60
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 11:58:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEQvU-0001Dd-15; Tue, 04 Jun 2024 05:57:56 -0400
+	id 1sEQvi-0001wo-F3; Tue, 04 Jun 2024 05:58:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sEQvQ-00018G-TI
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 05:57:52 -0400
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sEQvW-0001Sx-8y
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 05:57:59 -0400
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sEQvP-0002Gu-AX
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 05:57:52 -0400
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-35e4d6f7c5cso2923564f8f.2
- for <qemu-devel@nongnu.org>; Tue, 04 Jun 2024 02:57:50 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sEQvU-0002H4-La
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 05:57:58 -0400
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-42134bb9735so29704055e9.1
+ for <qemu-devel@nongnu.org>; Tue, 04 Jun 2024 02:57:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1717495069; x=1718099869; darn=nongnu.org;
+ d=linaro.org; s=google; t=1717495075; x=1718099875; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=xZ3BsgSsDpVAMiUE0ZHS//M9sgcI8U2Pt7eSzUE/3vA=;
- b=gwZLW4ZYcfY0bgwBnD2xOM09lHUAw93F9FnFgr6LEsV7kze+sX/B0ZL4EpwgXD03Ad
- UMzB0y7GFTzKeZO53HeNudYyGSfMUMj3ATb2QjAmIHE1H+LTlR6vtD1pGrRwUW6s4afC
- PHdhuqmwq5R/GRq0xuw+20f+fAVj3n/VhSJG8sfMFZdNUV9+pA3h1K04nM5ezYmG+3FZ
- KZ+KO4KmujOzdSrK+wXQnDb0sMIAm9aCyuaPllc6OBL9VPYe7IHJLyyBzDZAtd8Wh2+p
- j5Vsti7W5kFVq+ALi5vDJCTDUom6/EyeCj+pjRso9zWkSHWSXvibg80YEVJcUvzCCXmm
- zb8w==
+ bh=aye1K/Rd4o81X/8PhiFbSTR8xpOCjIohLrumKVTvmK4=;
+ b=Nzb4Zdns0rmVXzwrbPLG2/nJmXMbfxA+mYgr0GvxlzqBdY9c7kOm6/tA9/oQH+0a34
+ CP1uCPOq5iaSz42n3JagGZBQ8s4HnojaqV/kRSzbHdo5E4iw7DXSC8FTkJuEaJIozP6O
+ oZPRT1rpaXFdaM/FEfulCPwLijPcDqskU8Zybb9smRJwUW4zuT7TUzaSLK2wM2Wzffon
+ YjupyKrZJnoPMj+gms+wcil3hUULi/fXOotOnZDTIFpFlNTSoBJgHU0z89Dfn0fzeUOa
+ rHHha1uZ4zqs8vxFMZV5Qt6KPW53sGNfGPzXiHzvyjQTMRH5CIH18sOBuEDNEGEJhYAU
+ 5JPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717495069; x=1718099869;
+ d=1e100.net; s=20230601; t=1717495075; x=1718099875;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=xZ3BsgSsDpVAMiUE0ZHS//M9sgcI8U2Pt7eSzUE/3vA=;
- b=YaBGt84qPOfZ1/sUCeVLkPZ2sMry069SAuQtD5rpSeY83YTEJU+pHB3ODycZX0wWD4
- D4AlMZues84UGwsWqxcHUcJUnA24pcBdJvg7FpLlb1eVTNPGHAMMb4D571Lnki6HE0og
- HTfpvfPGUhK7AK9MnevVJ36cjtxlmqTghKtmLm26e6JTXQ0j75JKiO4kZxyQbsq9f7Aj
- zaxHaHcNxWwMopc5rKKuroWZ/YRqjJdJxlfK/2z7a0GeffTnHjjrW4cyKRPlxr4NFcNe
- Za1Vi9X1+ss6DwXI5Kqhyn0sS7A9lZBis0msvLL6VOogm/zzbnFDKItV8uRrvRkFHG3i
- wycA==
-X-Gm-Message-State: AOJu0Yx1SGwi9Qly9xoxdXfococv9gqMHmAk7zJWiUYZAvRqxzYRWPLo
- GDkEG1NlaKKeFzNgtaMWCqVA2YH/KltVdow40o2sgY7cDt07x906UBDa+O2+9Bz80kKHjAz80NK
- c
-X-Google-Smtp-Source: AGHT+IGjzaumT/kpOGRm5EuVd3DXmuuCEwaPu7dIKF+VdsyNyTkig7dkZAqwGLIGbVEm5FgqE6Jh3Q==
-X-Received: by 2002:a5d:4647:0:b0:359:b737:68d9 with SMTP id
- ffacd0b85a97d-35e0f25a5c3mr8371812f8f.12.1717495069692; 
- Tue, 04 Jun 2024 02:57:49 -0700 (PDT)
+ bh=aye1K/Rd4o81X/8PhiFbSTR8xpOCjIohLrumKVTvmK4=;
+ b=M4wYdWg+EN8cp0kKVRYBgHbp0DvabMSIew3RX+a4yN8zggQ7nS6C05lciby9AwmasC
+ 7AG08Sth79OF1ZGRQhckQEbkzn3LLSRjF3DjbtilxtzoevthlPu76h4JD5f2UrdNx344
+ Qi3PmOd7/fgBwJCWd6+KD3LsRVNPQslY6ta1vQ6M8QemMbi2vm2Zz3lmaVuvWrT2XLfQ
+ /Cwwi0I/i+BM5Qn+aH1RQCbFWyaSk2NQQJtAmIgaEeAUUrsKuroZAZzgd/bNPCWicikc
+ FZg6Z/WPRrVcGKsNRxEEfpB7e+FNADd6h3EdvxSwJ6m1+tKa66v5A/lyf+zmmekuaWUe
+ Hf4g==
+X-Gm-Message-State: AOJu0YzS2ul7KREjOEnO/h3SRePMkQV9UTv2X7E+6gLC/i+AKjLBseAq
+ /NYQGpWhrlJw0F1Ke/6jzZPiVC9DXoaxlgTElofFP/iwGMjVIIpFGXBigtWmKbrIKAWCESI3XkL
+ 8
+X-Google-Smtp-Source: AGHT+IH820FPTAz8jhvDdJDxTB8ZEN2lFP7D9uhU+IKV7jKFduNrJ2Uvl4Ln9Dhh1pFrnhLo8ktBqg==
+X-Received: by 2002:a05:600c:1d1a:b0:41a:1b3f:b465 with SMTP id
+ 5b1f17b1804b1-4212e0ae724mr95394855e9.26.1717495074888; 
+ Tue, 04 Jun 2024 02:57:54 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.159.34])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-35dd04da182sm10991675f8f.54.2024.06.04.02.57.48
+ 5b1f17b1804b1-421535bc543sm8948085e9.43.2024.06.04.02.57.53
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 04 Jun 2024 02:57:49 -0700 (PDT)
+ Tue, 04 Jun 2024 02:57:54 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 18/32] plugins: remove special casing for cpu->realized
-Date: Tue,  4 Jun 2024 11:55:54 +0200
-Message-ID: <20240604095609.12285-19-philmd@linaro.org>
+Subject: [PULL 19/32] core/cpu-common: initialise plugin state before thread
+ creation
+Date: Tue,  4 Jun 2024 11:55:55 +0200
+Message-ID: <20240604095609.12285-20-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240604095609.12285-1-philmd@linaro.org>
 References: <20240604095609.12285-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,34 +96,62 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Alex Bennée <alex.bennee@linaro.org>
 
-Now the condition variable is initialised early on we don't need to go
-through hoops to avoid calling async_run_on_cpu.
+Originally I tried to move where vCPU thread initialisation to later
+in realize. However pulling that thread (sic) got gnarly really
+quickly. It turns out some steps of CPU realization need values that
+can only be determined from the running vCPU thread.
+
+However having moved enough out of the thread creation we can now
+queue work before the thread starts (at least for TCG guests) and
+avoid the race between vcpu_init and other vcpu states a plugin might
+subscribe to.
 
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-ID: <20240530194250.1801701-5-alex.bennee@linaro.org>
+Message-ID: <20240530194250.1801701-6-alex.bennee@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- plugins/core.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ hw/core/cpu-common.c | 20 ++++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
 
-diff --git a/plugins/core.c b/plugins/core.c
-index 0726bc7f25..badede28cf 100644
---- a/plugins/core.c
-+++ b/plugins/core.c
-@@ -65,11 +65,7 @@ static void plugin_cpu_update__locked(gpointer k, gpointer v, gpointer udata)
-     CPUState *cpu = container_of(k, CPUState, cpu_index);
-     run_on_cpu_data mask = RUN_ON_CPU_HOST_ULONG(*plugin.mask);
+diff --git a/hw/core/cpu-common.c b/hw/core/cpu-common.c
+index 6cfc01593a..bf1a7b8892 100644
+--- a/hw/core/cpu-common.c
++++ b/hw/core/cpu-common.c
+@@ -222,14 +222,6 @@ static void cpu_common_realizefn(DeviceState *dev, Error **errp)
+         cpu_resume(cpu);
+     }
  
--    if (DEVICE(cpu)->realized) {
--        async_run_on_cpu(cpu, plugin_cpu_update__async, mask);
--    } else {
--        plugin_cpu_update__async(cpu, mask);
+-    /* Plugin initialization must wait until the cpu start executing code */
+-#ifdef CONFIG_PLUGIN
+-    if (tcg_enabled()) {
+-        cpu->plugin_state = qemu_plugin_create_vcpu_state();
+-        async_run_on_cpu(cpu, qemu_plugin_vcpu_init__async, RUN_ON_CPU_NULL);
 -    }
-+    async_run_on_cpu(cpu, plugin_cpu_update__async, mask);
+-#endif
+-
+     /* NOTE: latest generic point where the cpu is fully realized */
  }
  
- void plugin_unregister_cb__locked(struct qemu_plugin_ctx *ctx,
+@@ -273,6 +265,18 @@ static void cpu_common_initfn(Object *obj)
+     QTAILQ_INIT(&cpu->watchpoints);
+ 
+     cpu_exec_initfn(cpu);
++
++    /*
++     * Plugin initialization must wait until the cpu start executing
++     * code, but we must queue this work before the threads are
++     * created to ensure we don't race.
++     */
++#ifdef CONFIG_PLUGIN
++    if (tcg_enabled()) {
++        cpu->plugin_state = qemu_plugin_create_vcpu_state();
++        async_run_on_cpu(cpu, qemu_plugin_vcpu_init__async, RUN_ON_CPU_NULL);
++    }
++#endif
+ }
+ 
+ static void cpu_common_finalize(Object *obj)
 -- 
 2.41.0
 
