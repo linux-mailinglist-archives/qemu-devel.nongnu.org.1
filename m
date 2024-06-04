@@ -2,85 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 405B38FBCC2
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 21:54:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F8858FBBF0
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 20:56:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEaEV-00080x-21; Tue, 04 Jun 2024 15:54:11 -0400
+	id 1sEZIk-0001X9-1F; Tue, 04 Jun 2024 14:54:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <beeman@rivosinc.com>)
- id 1sEZBc-0007Ft-Cd
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 14:47:08 -0400
-Received: from mail-yw1-x112d.google.com ([2607:f8b0:4864:20::112d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <beeman@rivosinc.com>)
- id 1sEZBZ-0001jR-Kc
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 14:47:08 -0400
-Received: by mail-yw1-x112d.google.com with SMTP id
- 00721157ae682-62a2424ed01so60507717b3.1
- for <qemu-devel@nongnu.org>; Tue, 04 Jun 2024 11:47:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1717526823; x=1718131623;
- darn=nongnu.org; 
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=9dzBwmguy3/vQ+kgEZPDQWKkmi1aBtYoWjvo/mZ2H8Y=;
- b=CwrvZj6bqu1xjItaEyz75kZ6Jsx3JRKToLF0k/Aj4NV/9eLBcJraumc+X7ckfsqUG5
- qmQRnVnZnf5NDqMF6V7jm4iqwSsuyZivKbAQwGoilUAeiYwy4XRpdIuwkyQAmTE7fRYH
- D1n3jaeUcNq1SJWxIOUkT68O/x6zLBhkzhggc8IJdW0x6roOAeHpATjoBpl2DC3dsZ5V
- sMVniIfUAPEuvMzSwSVjgSeyqZa+B/85MJbtnTYV47sQqshkc9N0GRCe3UAj4Ben200Q
- jlzEjZ6qpdhzppAQSQw+stpsmnE2ilrMazAwLEgLT4KOqq1lsQjfgP5TAMvsIXbcrV7q
- 7Ifw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717526823; x=1718131623;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=9dzBwmguy3/vQ+kgEZPDQWKkmi1aBtYoWjvo/mZ2H8Y=;
- b=twxGW/E+XXK/0u8mXlhvi03qcToEhOiP7MMABm5HnNONdur80dLnhp2bhG4DtbGR7w
- jbsFQ9aa+7XBLNDvPgO/OF4J4yYcstosifo0bWXcYLA3ynUDo2hMBIcE3M9ySQl7nskF
- +80AFUrJ24W1dalicotGN1zFcQoXeaJFOQrhEzxrZfKQBGECmmbrR6x6dkSamPNJZ18H
- fsZo9kFgF9CNDdEiL10aX1XkO5csTZojnDK5aMEwy1D7+qrq6DXeMTgthXpuBiejo7Ak
- ejpg6sdLAMQjGqtb7QESm3Ber/ZFU0uD5pfx3tfc5BdVMiK0hCeOaP1PMDnMD/OkOz5+
- db5w==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXqwuLq+ZjkybbA/5my+Knte9ykM9lFTZM0jYha/Zemiss4s4P4yN8qZ/krGMyVxVQP9OjQLN9bw/jL6CSqAOYue6xFUdI=
-X-Gm-Message-State: AOJu0YzFN3xUBtV9dkP7eJfKCE5t07rZudQqbSZYI1i+PZfAHRMWaTe9
- y4JBj5p5mMM4Lshvxl1V53maZu2BxP9ls9eZj48Umzc4x1J014oUm1NSIdSOP458TQzsw01724K
- 1rpXvpdb7sCb9sg4lZvJDjziuaXij8u+6VZYEJg==
-X-Google-Smtp-Source: AGHT+IHKV8yohT/ln5XpNOij8EAGJgdpjX5vbS+qVTGwxG/wX2Dr8mU0y6nxhjdcc1/02m+LVivY1R9mWh87cjwxoKw=
-X-Received: by 2002:a81:ad0d:0:b0:627:760f:80cc with SMTP id
- 00721157ae682-62cbb48dba1mr1879147b3.10.1717526823508; Tue, 04 Jun 2024
- 11:47:03 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1sEZIg-0001Wf-HH
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 14:54:26 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1sEZId-0004ms-Ue
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 14:54:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1717527262;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=r0eu0knB70b0H66qeRg6U2bIJPgbSupoTzuc7x7HVFU=;
+ b=MTO7iNq4uDV57GOezn7FeLbm8SMCtPIj55/+L9ls7iwychlq10Zwq8QIVUvxjWeHjDjPtQ
+ QN6t4nw54Xzm7ZDg0/7kHcfxSpFfNtsa8Uneof/jp49maQ4Xt9aaol15Q3in9vquJ6sNI/
+ 0svYKT6qasmhHKLhnysd4XzXwdHniME=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-468-kbMRUoioOKaPGoi-BVINbg-1; Tue, 04 Jun 2024 14:54:20 -0400
+X-MC-Unique: kbMRUoioOKaPGoi-BVINbg-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 55EBC8007A3
+ for <qemu-devel@nongnu.org>; Tue,  4 Jun 2024 18:54:20 +0000 (UTC)
+Received: from localhost (unknown [10.39.195.177])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id AD24D111DCFF;
+ Tue,  4 Jun 2024 18:54:18 +0000 (UTC)
+Date: Tue, 4 Jun 2024 14:54:16 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Albert Esteve <aesteve@redhat.com>
+Cc: qemu-devel@nongnu.org, mst@redhat.com, slp@redhat.com, jasowang@redhat.com
+Subject: Re: [RFC PATCH 1/1] vhost-user: add shmem mmap request
+Message-ID: <20240604185416.GB90471@fedora.redhat.com>
+References: <20240530152223.780232-1-aesteve@redhat.com>
+ <20240530152223.780232-2-aesteve@redhat.com>
 MIME-Version: 1.0
-References: <20240529160950.132754-1-rkanwal@rivosinc.com>
- <20240529160950.132754-6-rkanwal@rivosinc.com>
- <71bc36b9-cc17-4036-91b2-e7ddd81f0c07@sifive.com>
-In-Reply-To: <71bc36b9-cc17-4036-91b2-e7ddd81f0c07@sifive.com>
-From: Beeman Strong <beeman@rivosinc.com>
-Date: Tue, 4 Jun 2024 11:46:52 -0700
-Message-ID: <CAP55G9AAF9wwPEkNdG60Mnie8p=f-+ZzcjDBJU_RCSL+KSU77w@mail.gmail.com>
-Subject: Re: [PATCH 5/6] target/riscv: Add CTR sctrclr instruction.
-To: Jason Chien <jason.chien@sifive.com>
-Cc: Rajnesh Kanwal <rkanwal@rivosinc.com>, qemu-riscv@nongnu.org,
- qemu-devel@nongnu.org, 
- alistair.francis@wdc.com, bin.meng@windriver.com, liweiwei@iscas.ac.cn, 
- dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com, atishp@rivosinc.com, 
- apatel@ventanamicro.com, tech-control-transfer-records@lists.riscv.org
-Content-Type: multipart/alternative; boundary="000000000000353ec8061a14e0d0"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::112d;
- envelope-from=beeman@rivosinc.com; helo=mail-yw1-x112d.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="8zQ8sZXeub3CbO/H"
+Content-Disposition: inline
+In-Reply-To: <20240530152223.780232-2-aesteve@redhat.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Tue, 04 Jun 2024 15:54:07 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,288 +81,350 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000353ec8061a14e0d0
-Content-Type: text/plain; charset="UTF-8"
+
+--8zQ8sZXeub3CbO/H
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jun 4, 2024 at 10:19=E2=80=AFAM Jason Chien <jason.chien@sifive.com=
-> wrote:
+On Thu, May 30, 2024 at 05:22:23PM +0200, Albert Esteve wrote:
+> Add SHMEM_MAP/UNMAP requests to vhost-user.
+>=20
+> This request allows backends to dynamically map
+> fds into a shared memory region indentified by
 
->
-> Rajnesh Kanwal =E6=96=BC 2024/5/30 =E4=B8=8A=E5=8D=88 12:09 =E5=AF=AB=E9=
-=81=93:
-> > CTR extension adds a new instruction sctrclr to quickly
-> > clear the recorded entries buffer.
-> >
-> > Signed-off-by: Rajnesh Kanwal <rkanwal@rivosinc.com>
-> > ---
-> >   target/riscv/cpu.h                             |  1 +
-> >   target/riscv/cpu_helper.c                      |  7 +++++++
-> >   target/riscv/insn32.decode                     |  1 +
-> >   target/riscv/insn_trans/trans_privileged.c.inc | 10 ++++++++++
-> >   target/riscv/op_helper.c                       |  5 +++++
-> >   5 files changed, 24 insertions(+)
-> >
-> > diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-> > index a294a5372a..fade71aa09 100644
-> > --- a/target/riscv/cpu.h
-> > +++ b/target/riscv/cpu.h
-> > @@ -572,6 +572,7 @@ void riscv_cpu_set_mode(CPURISCVState *env,
-> target_ulong newpriv, bool virt_en);
-> >   void riscv_ctr_freeze(CPURISCVState *env, uint64_t freeze_mask);
-> >   void riscv_ctr_add_entry(CPURISCVState *env, target_long src,
-> target_long dst,
-> >                            uint64_t type, target_ulong prev_priv, bool
-> prev_virt);
-> > +void riscv_ctr_clear(CPURISCVState *env);
-> >
-> >   void riscv_translate_init(void);
-> >   G_NORETURN void riscv_raise_exception(CPURISCVState *env,
-> > diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-> > index e064a7306e..45502f50a7 100644
-> > --- a/target/riscv/cpu_helper.c
-> > +++ b/target/riscv/cpu_helper.c
-> > @@ -704,6 +704,13 @@ void riscv_ctr_freeze(CPURISCVState *env, uint64_t
-> freeze_mask)
-> >       }
-> >   }
-> >
-> > +void riscv_ctr_clear(CPURISCVState *env)
-> > +{
-> > +    memset(env->ctr_src, 0x0, sizeof(env->ctr_src));
-> > +    memset(env->ctr_dst, 0x0, sizeof(env->ctr_dst));
-> > +    memset(env->ctr_data, 0x0, sizeof(env->ctr_data));
-> > +}
-> > +
-> >   static uint64_t riscv_ctr_priv_to_mask(target_ulong priv, bool virt)
-> >   {
-> >       switch (priv) {
-> > diff --git a/target/riscv/insn32.decode b/target/riscv/insn32.decode
-> > index 9cb1a1b4ec..d3d38c7c68 100644
-> > --- a/target/riscv/insn32.decode
-> > +++ b/target/riscv/insn32.decode
-> > @@ -107,6 +107,7 @@
-> >   # *** Privileged Instructions ***
-> >   ecall       000000000000     00000 000 00000 1110011
-> >   ebreak      000000000001     00000 000 00000 1110011
-> > +sctrclr     000100000100     00000 000 00000 1110011
-> >   uret        0000000    00010 00000 000 00000 1110011
-> >   sret        0001000    00010 00000 000 00000 1110011
-> >   mret        0011000    00010 00000 000 00000 1110011
-> > diff --git a/target/riscv/insn_trans/trans_privileged.c.inc
-> b/target/riscv/insn_trans/trans_privileged.c.inc
-> > index 339d659151..dd9da8651f 100644
-> > --- a/target/riscv/insn_trans/trans_privileged.c.inc
-> > +++ b/target/riscv/insn_trans/trans_privileged.c.inc
-> > @@ -69,6 +69,16 @@ static bool trans_ebreak(DisasContext *ctx,
-> arg_ebreak *a)
-> >       return true;
-> >   }
-> >
-> > +static bool trans_sctrclr(DisasContext *ctx, arg_sctrclr *a)
-> > +{
-> > +#ifndef CONFIG_USER_ONLY
-> If both of smctr and ssctr are not enabled, it is an illegal instruction.
-> > +    gen_helper_ctr_clear(tcg_env);
-> > +    return true;
-> > +#else
-> > +    return false;
-> > +#endif
-> > +}
-> > +
-> >   static bool trans_uret(DisasContext *ctx, arg_uret *a)
-> >   {
-> >       return false;
-> > diff --git a/target/riscv/op_helper.c b/target/riscv/op_helper.c
-> > index c8053d9c2f..89423c04b3 100644
-> > --- a/target/riscv/op_helper.c
-> > +++ b/target/riscv/op_helper.c
-> > @@ -461,6 +461,11 @@ void helper_ctr_branch(CPURISCVState *env,
-> target_ulong src, target_ulong dest,
-> >       }
-> >   }
-> >
-> > +void helper_ctr_clear(CPURISCVState *env)
-> > +{
->
-> There should be some checks here.
-> The spec states:
-> SCTRCLR raises an illegal-instruction exception in U-mode, and a
-> virtual-instruction exception in VU-mode, unless CTR state enable access
-> restrictions apply.
->
-> I don't quite understand "unless CTR state enable access restrictions
-> apply" though.
->
+Please call this "VIRTIO Shared Memory Region" everywhere (code,
+vhost-user spec, commit description, etc) so it's clear that this is not
+about vhost-user shared memory tables/regions.
 
-The next sentence says "See Chapter 5", which states that execution of
-SCTRCLR raises an illegal instruction exception if mstateen0.CTR=3D0 and th=
-e
-priv mode is not M-mode, and it raises a virtual instruction exception if
-mstateen0.CTR=3D0 && hstateen0.CTR=3D1 and the priv mode is VS-mode.
+> its `shmid`. Then, the fd memory is advertised
+> to the frontend through a BAR+offset, so it can
+> be read by the driver while its valid.
 
+Why is a PCI BAR mentioned here? vhost-user does not know about the
+VIRTIO Transport (e.g. PCI) being used. It's the frontend's job to
+report VIRTIO Shared Memory Regions to the driver.
 
->
-> > +    riscv_ctr_clear(env);
-> > +}
-> > +
-> >   void helper_wfi(CPURISCVState *env)
-> >   {
-> >       CPUState *cs =3D env_cpu(env);
->
+>=20
+> Then, the backend can munmap the memory range
+> in a given shared memory region (again, identified
+> by its `shmid`), to free it. After this, the
+> region becomes private and shall not be accessed
+> by the frontend anymore.
 
---000000000000353ec8061a14e0d0
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+What does "private" mean?
 
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
-<div dir=3D"ltr" class=3D"gmail_attr">On Tue, Jun 4, 2024 at 10:19=E2=80=AF=
-AM Jason Chien &lt;<a href=3D"mailto:jason.chien@sifive.com">jason.chien@si=
-five.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D=
-"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-le=
-ft:1ex"><br>
-Rajnesh Kanwal =E6=96=BC 2024/5/30 =E4=B8=8A=E5=8D=88 12:09 =E5=AF=AB=E9=81=
-=93:<br>
-&gt; CTR extension adds a new instruction sctrclr to quickly<br>
-&gt; clear the recorded entries buffer.<br>
-&gt;<br>
-&gt; Signed-off-by: Rajnesh Kanwal &lt;<a href=3D"mailto:rkanwal@rivosinc.c=
-om" target=3D"_blank">rkanwal@rivosinc.com</a>&gt;<br>
-&gt; ---<br>
-&gt;=C2=A0 =C2=A0target/riscv/cpu.h=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 1=
- +<br>
-&gt;=C2=A0 =C2=A0target/riscv/cpu_helper.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 |=C2=A0 7 +++++++<br>
-&gt;=C2=A0 =C2=A0target/riscv/insn32.decode=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 1 +<br>
-&gt;=C2=A0 =C2=A0target/riscv/insn_trans/trans_privileged.c.inc | 10 ++++++=
-++++<br>
-&gt;=C2=A0 =C2=A0target/riscv/op_helper.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 5 +++++<br>
-&gt;=C2=A0 =C2=A05 files changed, 24 insertions(+)<br>
-&gt;<br>
-&gt; diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h<br>
-&gt; index a294a5372a..fade71aa09 100644<br>
-&gt; --- a/target/riscv/cpu.h<br>
-&gt; +++ b/target/riscv/cpu.h<br>
-&gt; @@ -572,6 +572,7 @@ void riscv_cpu_set_mode(CPURISCVState *env, target=
-_ulong newpriv, bool virt_en);<br>
-&gt;=C2=A0 =C2=A0void riscv_ctr_freeze(CPURISCVState *env, uint64_t freeze_=
-mask);<br>
-&gt;=C2=A0 =C2=A0void riscv_ctr_add_entry(CPURISCVState *env, target_long s=
-rc, target_long dst,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 uint64_t type, target_ulong prev_priv, bool pre=
-v_virt);<br>
-&gt; +void riscv_ctr_clear(CPURISCVState *env);<br>
-&gt;=C2=A0 =C2=A0<br>
-&gt;=C2=A0 =C2=A0void riscv_translate_init(void);<br>
-&gt;=C2=A0 =C2=A0G_NORETURN void riscv_raise_exception(CPURISCVState *env,<=
-br>
-&gt; diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c<br>
-&gt; index e064a7306e..45502f50a7 100644<br>
-&gt; --- a/target/riscv/cpu_helper.c<br>
-&gt; +++ b/target/riscv/cpu_helper.c<br>
-&gt; @@ -704,6 +704,13 @@ void riscv_ctr_freeze(CPURISCVState *env, uint64_=
-t freeze_mask)<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
-&gt;=C2=A0 =C2=A0}<br>
-&gt;=C2=A0 =C2=A0<br>
-&gt; +void riscv_ctr_clear(CPURISCVState *env)<br>
-&gt; +{<br>
-&gt; +=C2=A0 =C2=A0 memset(env-&gt;ctr_src, 0x0, sizeof(env-&gt;ctr_src));<=
-br>
-&gt; +=C2=A0 =C2=A0 memset(env-&gt;ctr_dst, 0x0, sizeof(env-&gt;ctr_dst));<=
-br>
-&gt; +=C2=A0 =C2=A0 memset(env-&gt;ctr_data, 0x0, sizeof(env-&gt;ctr_data))=
-;<br>
-&gt; +}<br>
-&gt; +<br>
-&gt;=C2=A0 =C2=A0static uint64_t riscv_ctr_priv_to_mask(target_ulong priv, =
-bool virt)<br>
-&gt;=C2=A0 =C2=A0{<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0switch (priv) {<br>
-&gt; diff --git a/target/riscv/insn32.decode b/target/riscv/insn32.decode<b=
-r>
-&gt; index 9cb1a1b4ec..d3d38c7c68 100644<br>
-&gt; --- a/target/riscv/insn32.decode<br>
-&gt; +++ b/target/riscv/insn32.decode<br>
-&gt; @@ -107,6 +107,7 @@<br>
-&gt;=C2=A0 =C2=A0# *** Privileged Instructions ***<br>
-&gt;=C2=A0 =C2=A0ecall=C2=A0 =C2=A0 =C2=A0 =C2=A0000000000000=C2=A0 =C2=A0 =
-=C2=A000000 000 00000 1110011<br>
-&gt;=C2=A0 =C2=A0ebreak=C2=A0 =C2=A0 =C2=A0 000000000001=C2=A0 =C2=A0 =C2=
-=A000000 000 00000 1110011<br>
-&gt; +sctrclr=C2=A0 =C2=A0 =C2=A0000100000100=C2=A0 =C2=A0 =C2=A000000 000 =
-00000 1110011<br>
-&gt;=C2=A0 =C2=A0uret=C2=A0 =C2=A0 =C2=A0 =C2=A0 0000000=C2=A0 =C2=A0 00010=
- 00000 000 00000 1110011<br>
-&gt;=C2=A0 =C2=A0sret=C2=A0 =C2=A0 =C2=A0 =C2=A0 0001000=C2=A0 =C2=A0 00010=
- 00000 000 00000 1110011<br>
-&gt;=C2=A0 =C2=A0mret=C2=A0 =C2=A0 =C2=A0 =C2=A0 0011000=C2=A0 =C2=A0 00010=
- 00000 000 00000 1110011<br>
-&gt; diff --git a/target/riscv/insn_trans/trans_privileged.c.inc b/target/r=
-iscv/insn_trans/trans_privileged.c.inc<br>
-&gt; index 339d659151..dd9da8651f 100644<br>
-&gt; --- a/target/riscv/insn_trans/trans_privileged.c.inc<br>
-&gt; +++ b/target/riscv/insn_trans/trans_privileged.c.inc<br>
-&gt; @@ -69,6 +69,16 @@ static bool trans_ebreak(DisasContext *ctx, arg_ebr=
-eak *a)<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0return true;<br>
-&gt;=C2=A0 =C2=A0}<br>
-&gt;=C2=A0 =C2=A0<br>
-&gt; +static bool trans_sctrclr(DisasContext *ctx, arg_sctrclr *a)<br>
-&gt; +{<br>
-&gt; +#ifndef CONFIG_USER_ONLY<br>
-If both of smctr and ssctr are not enabled, it is an illegal instruction.<b=
-r>
-&gt; +=C2=A0 =C2=A0 gen_helper_ctr_clear(tcg_env);<br>
-&gt; +=C2=A0 =C2=A0 return true;<br>
-&gt; +#else<br>
-&gt; +=C2=A0 =C2=A0 return false;<br>
-&gt; +#endif<br>
-&gt; +}<br>
-&gt; +<br>
-&gt;=C2=A0 =C2=A0static bool trans_uret(DisasContext *ctx, arg_uret *a)<br>
-&gt;=C2=A0 =C2=A0{<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0return false;<br>
-&gt; diff --git a/target/riscv/op_helper.c b/target/riscv/op_helper.c<br>
-&gt; index c8053d9c2f..89423c04b3 100644<br>
-&gt; --- a/target/riscv/op_helper.c<br>
-&gt; +++ b/target/riscv/op_helper.c<br>
-&gt; @@ -461,6 +461,11 @@ void helper_ctr_branch(CPURISCVState *env, target=
-_ulong src, target_ulong dest,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
-&gt;=C2=A0 =C2=A0}<br>
-&gt;=C2=A0 =C2=A0<br>
-&gt; +void helper_ctr_clear(CPURISCVState *env)<br>
-&gt; +{<br>
-<br>
-There should be some checks here.<br>
-The spec states:<br>
-SCTRCLR raises an illegal-instruction exception in U-mode, and a <br>
-virtual-instruction exception in VU-mode, unless CTR state enable access <b=
-r>
-restrictions apply.<br>
-<br>
-I don&#39;t quite understand &quot;unless CTR state enable access restricti=
-ons <br>
-apply&quot; though.<br></blockquote><div><br></div><div>The next sentence s=
-ays &quot;See Chapter 5&quot;, which states that execution of SCTRCLR raise=
-s an illegal instruction exception if mstateen0.CTR=3D0 and the priv mode i=
-s not M-mode, and it raises a virtual instruction exception if mstateen0.CT=
-R=3D0 &amp;&amp; hstateen0.CTR=3D1 and the priv mode is VS-mode.</div><div>=
-=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0=
-.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
-<br>
-&gt; +=C2=A0 =C2=A0 riscv_ctr_clear(env);<br>
-&gt; +}<br>
-&gt; +<br>
-&gt;=C2=A0 =C2=A0void helper_wfi(CPURISCVState *env)<br>
-&gt;=C2=A0 =C2=A0{<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0CPUState *cs =3D env_cpu(env);<br>
-</blockquote></div></div>
+The frontend must mmap PROT_NONE to reserve the virtual memory space
+when no fd is mapped in the VIRTIO Shared Memory Region. Otherwise an
+unrelated mmap(NULL, ...) might use that address range and the guest
+would have access to the host memory! This is a security issue and needs
+to be mentioned explicitly in the spec.
 
---000000000000353ec8061a14e0d0--
+>=20
+> Initializing the memory region is reponsiblity
+> of the PCI device that will using it.
+
+What does this mean?
+
+>=20
+> Signed-off-by: Albert Esteve <aesteve@redhat.com>
+> ---
+>  docs/interop/vhost-user.rst |  23 ++++++++
+>  hw/virtio/vhost-user.c      | 106 ++++++++++++++++++++++++++++++++++++
+>  hw/virtio/virtio.c          |   2 +
+>  include/hw/virtio/virtio.h  |   3 +
+>  4 files changed, 134 insertions(+)
+
+Two missing pieces:
+
+1. QEMU's --device vhost-user-device needs a way to enumerate VIRTIO
+Shared Memory Regions from the vhost-user backend. vhost-user-device is
+a generic vhost-user frontend without knowledge of the device type, so
+it doesn't know what the valid shmids are and what size the regions
+have.
+
+2. Other backends don't see these mappings. If the guest submits a vring
+descriptor referencing a mapping to another backend, then that backend
+won't be able to access this memory. David Gilbert hit this problem when
+working on the virtiofs DAX Window. Either the frontend needs to forward
+all SHMAP_MAP/UNMAP messages to the other backends (inefficient and
+maybe racy!) or a new "memcpy" message is needed as a fallback for when
+vhost-user memory region translation fails.
+
+>=20
+> diff --git a/docs/interop/vhost-user.rst b/docs/interop/vhost-user.rst
+> index d8419fd2f1..3caf2a290c 100644
+> --- a/docs/interop/vhost-user.rst
+> +++ b/docs/interop/vhost-user.rst
+> @@ -1859,6 +1859,29 @@ is sent by the front-end.
+>    when the operation is successful, or non-zero otherwise. Note that if =
+the
+>    operation fails, no fd is sent to the backend.
+> =20
+> +``VHOST_USER_BACKEND_SHMEM_MAP``
+> +  :id: 9
+> +  :equivalent ioctl: N/A
+> +  :request payload: fd and ``struct VhostUserMMap``
+> +  :reply payload: N/A
+> +
+> +  This message can be submitted by the backends to advertise a new mappi=
+ng
+> +  to be made in a given shared memory region. Upon receiving the message,
+> +  QEMU will mmap the given fd into the shared memory region with the
+
+s/QEMU/the frontend/
+
+> +  requested ``shmid``. A reply is generated indicating whether mapping
+> +  succeeded.
+
+Please document whether mapping over an existing mapping is allowed. I
+think it should be allowed because it might be useful to atomically
+update a mapping without a race where the driver sees unmapped memory.
+
+If mapping over an existing mapping is allowed, does the new mapping
+need to cover the old mapping exactly, or can it span multiple previous
+mappings or a subset of an existing mapping?
+
+=46rom a security point of view we need to be careful here. A potentially
+untrusted backend process now has the ability to mmap an arbitrary file
+descriptor into the frontend process. The backend can cause
+denial of service by creating many small mappings to exhaust the OS
+limits on virtual memory areas. The backend can map memory to use as
+part of a security compromise, so we need to be sure the virtual memory
+addresses are not leaked to the backend and only read/write page
+permissions are available.
+
+> +``VHOST_USER_BACKEND_SHMEM_UNMAP``
+> +  :id: 10
+> +  :equivalent ioctl: N/A
+> +  :request payload: ``struct VhostUserMMap``
+> +  :reply payload: N/A
+> +
+> +  This message can be submitted by the backends so that QEMU un-mmap
+
+s/QEMU/the frontend/
+
+> +  a given range (``offset``, ``len``) in the shared memory region with t=
+he
+> +  requested ``shmid``.
+
+Does the range need to correspond to a previously-mapped VhostUserMMap
+or can it cross multiple VhostUserMMaps, be a subset of a VhostUserMMap,
+etc?
+
+> +  A reply is generated indicating whether unmapping succeeded.
+> +
+>  .. _reply_ack:
+> =20
+>  VHOST_USER_PROTOCOL_F_REPLY_ACK
+> diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
+> index cdf9af4a4b..9526b9d07f 100644
+> --- a/hw/virtio/vhost-user.c
+> +++ b/hw/virtio/vhost-user.c
+> @@ -115,6 +115,8 @@ typedef enum VhostUserBackendRequest {
+>      VHOST_USER_BACKEND_SHARED_OBJECT_ADD =3D 6,
+>      VHOST_USER_BACKEND_SHARED_OBJECT_REMOVE =3D 7,
+>      VHOST_USER_BACKEND_SHARED_OBJECT_LOOKUP =3D 8,
+> +    VHOST_USER_BACKEND_SHMEM_MAP =3D 9,
+> +    VHOST_USER_BACKEND_SHMEM_UNMAP =3D 10,
+>      VHOST_USER_BACKEND_MAX
+>  }  VhostUserBackendRequest;
+> =20
+> @@ -192,6 +194,23 @@ typedef struct VhostUserShared {
+>      unsigned char uuid[16];
+>  } VhostUserShared;
+> =20
+> +/* For the flags field of VhostUserMMap */
+> +#define VHOST_USER_FLAG_MAP_R (1u << 0)
+> +#define VHOST_USER_FLAG_MAP_W (1u << 1)
+> +
+> +typedef struct {
+> +    /* Shared memory region ID */
+> +    uint8_t shmid;
+
+There is a hole (padding) in the struct since the following fields are
+naturally aligned to 8 bytes. I suggest moving shmid to the end to
+reduce the chance of information leaks if padding is not zeroed.
+
+> +    /* File offset */
+> +    uint64_t fd_offset;
+> +    /* Offset within the shared memory region */
+> +    uint64_t shm_offset;
+> +    /* Size of region to map */
+
+To avoid giving "region" additional meanings:
+
+s/Size of the region to map/Size of the mapping/
+
+> +    uint64_t len;
+> +    /* Flags for the mmap operation, from VHOST_USER_FLAG_* */
+> +    uint64_t flags;
+> +} VhostUserMMap;
+> +
+>  typedef struct {
+>      VhostUserRequest request;
+> =20
+> @@ -224,6 +243,7 @@ typedef union {
+>          VhostUserInflight inflight;
+>          VhostUserShared object;
+>          VhostUserTransferDeviceState transfer_state;
+> +        VhostUserMMap mmap;
+>  } VhostUserPayload;
+> =20
+>  typedef struct VhostUserMsg {
+> @@ -1748,6 +1768,85 @@ vhost_user_backend_handle_shared_object_lookup(str=
+uct vhost_user *u,
+>      return 0;
+>  }
+> =20
+> +static int
+> +vhost_user_backend_handle_shmem_map(struct vhost_dev *dev,
+> +                                  VhostUserMMap *vu_mmap,
+> +                                  int fd)
+> +{
+> +    void *addr =3D 0;
+> +    MemoryRegion *mr =3D NULL;
+> +
+> +    if (fd < 0) {
+> +        error_report("Bad fd for map");
+> +        return -EBADF;
+> +    }
+> +
+> +    if (!dev->vdev->shmem_list ||
+> +        dev->vdev->n_shmem_regions <=3D vu_mmap->shmid) {
+> +        error_report("Shared memory region at "
+> +                     "ID %d unitialized", vu_mmap->shmid);
+> +        return -EFAULT;
+> +    }
+> +
+> +    mr =3D &dev->vdev->shmem_list[vu_mmap->shmid];
+> +
+> +    if ((vu_mmap->shm_offset + vu_mmap->len) < vu_mmap->len ||
+> +        (vu_mmap->shm_offset + vu_mmap->len) > mr->size) {
+> +        error_report("Bad offset/len for mmap %" PRIx64 "+%" PRIx64,
+> +                     vu_mmap->shm_offset, vu_mmap->len);
+> +        return -EFAULT;
+> +    }
+> +
+> +    void *shmem_ptr =3D memory_region_get_ram_ptr(mr);
+> +
+> +    addr =3D mmap(shmem_ptr + vu_mmap->shm_offset, vu_mmap->len,
+> +        ((vu_mmap->flags & VHOST_USER_FLAG_MAP_R) ? PROT_READ : 0) |
+> +        ((vu_mmap->flags & VHOST_USER_FLAG_MAP_W) ? PROT_WRITE : 0),
+> +        MAP_SHARED | MAP_FIXED, fd, vu_mmap->fd_offset);
+> +    if (addr =3D=3D MAP_FAILED) {
+> +        error_report("Failed to mmap mem fd");
+> +        return -EFAULT;
+> +    }
+> +
+> +    return 0;
+> +}
+> +
+> +static int
+> +vhost_user_backend_handle_shmem_unmap(struct vhost_dev *dev,
+> +                                    VhostUserMMap *vu_mmap)
+> +{
+> +    void *addr =3D 0;
+> +    MemoryRegion *mr =3D NULL;
+> +
+> +    if (!dev->vdev->shmem_list ||
+> +        dev->vdev->n_shmem_regions <=3D vu_mmap->shmid) {
+> +        error_report("Shared memory region at "
+> +                     "ID %d unitialized", vu_mmap->shmid);
+> +        return -EFAULT;
+> +    }
+> +
+> +    mr =3D &dev->vdev->shmem_list[vu_mmap->shmid];
+> +
+> +    if ((vu_mmap->shm_offset + vu_mmap->len) < vu_mmap->len ||
+> +        (vu_mmap->shm_offset + vu_mmap->len) > mr->size) {
+> +        error_report("Bad offset/len for mmap %" PRIx64 "+%" PRIx64,
+> +                     vu_mmap->shm_offset, vu_mmap->len);
+> +        return -EFAULT;
+> +    }
+> +
+> +    void *shmem_ptr =3D memory_region_get_ram_ptr(mr);
+> +
+> +    addr =3D mmap(shmem_ptr + vu_mmap->shm_offset, vu_mmap->len,
+> +                PROT_NONE, MAP_PRIVATE | MAP_ANONYMOUS | MAP_FIXED, -1, =
+0);
+> +
+> +    if (addr =3D=3D MAP_FAILED) {
+> +        error_report("Failed to unmap memory");
+> +        return -EFAULT;
+> +    }
+> +
+> +    return 0;
+> +}
+> +
+>  static void close_backend_channel(struct vhost_user *u)
+>  {
+>      g_source_destroy(u->backend_src);
+> @@ -1816,6 +1915,13 @@ static gboolean backend_read(QIOChannel *ioc, GIOC=
+ondition condition,
+>          ret =3D vhost_user_backend_handle_shared_object_lookup(dev->opaq=
+ue, ioc,
+>                                                               &hdr, &payl=
+oad);
+>          break;
+> +    case VHOST_USER_BACKEND_SHMEM_MAP:
+> +        ret =3D vhost_user_backend_handle_shmem_map(dev, &payload.mmap,
+> +                                                fd ? fd[0] : -1);
+> +        break;
+> +    case VHOST_USER_BACKEND_SHMEM_UNMAP:
+> +        ret =3D vhost_user_backend_handle_shmem_unmap(dev, &payload.mmap=
+);
+> +        break;
+>      default:
+>          error_report("Received unexpected msg type: %d.", hdr.request);
+>          ret =3D -EINVAL;
+> diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
+> index 893a072c9d..59596370ec 100644
+> --- a/hw/virtio/virtio.c
+> +++ b/hw/virtio/virtio.c
+> @@ -3264,6 +3264,8 @@ void virtio_init(VirtIODevice *vdev, uint16_t devic=
+e_id, size_t config_size)
+>              virtio_vmstate_change, vdev);
+>      vdev->device_endian =3D virtio_default_endian();
+>      vdev->use_guest_notifier_mask =3D true;
+> +    vdev->shmem_list =3D NULL;
+> +    vdev->n_shmem_regions =3D 0;
+>  }
+> =20
+>  /*
+> diff --git a/include/hw/virtio/virtio.h b/include/hw/virtio/virtio.h
+> index 7d5ffdc145..34bec26593 100644
+> --- a/include/hw/virtio/virtio.h
+> +++ b/include/hw/virtio/virtio.h
+> @@ -165,6 +165,9 @@ struct VirtIODevice
+>       */
+>      EventNotifier config_notifier;
+>      bool device_iotlb_enabled;
+> +    /* Shared memory region for vhost-user mappings. */
+> +    MemoryRegion *shmem_list;
+> +    int n_shmem_regions;
+>  };
+> =20
+>  struct VirtioDeviceClass {
+> --=20
+> 2.44.0
+>=20
+
+--8zQ8sZXeub3CbO/H
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmZfYtgACgkQnKSrs4Gr
+c8hAsAf+PcOyntv3z3JouRbnWjH0xltlVQh2UGQcGlUS8ztTep8rLlSd2Oul77q2
+yB6e+BIMFfJITOisIyZ4/CChVqV66RODEEXwDhwP45pKUcJ6FwFicPOSHPXBDN/w
+vGc+FUKrSIsY2QIkpshONheFcfCLu2g/RqkvMvaO1MUpLKw0dpUuwdbgakfQuxPW
+UwdaZQ+23xVmhsKxSmoMhYy7rMUnDJlM2cqkGuexqxZmjrCFszXaTGJjDJjnm5oy
+7v16BuYmB85DB7F3DH+R830eY2pIaiPoyOaHE65P81d6fR+5fKInytDZuEr1Ovmw
+6767kucV4U+l1Y+5dDXznfYxwT4Cdg==
+=XEqE
+-----END PGP SIGNATURE-----
+
+--8zQ8sZXeub3CbO/H--
+
 
