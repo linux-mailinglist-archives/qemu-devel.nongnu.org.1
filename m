@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 995518FAB38
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 08:48:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F074D8FAB52
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 08:50:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sENwO-0004jw-0D; Tue, 04 Jun 2024 02:46:40 -0400
+	id 1sENx3-0007ze-5X; Tue, 04 Jun 2024 02:47:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sENvL-0004Ej-Sg
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:45:40 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1sENvY-0004OL-14
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:45:51 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sENvK-0007Zz-Br
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:45:35 -0400
+ id 1sENvU-0007b6-LE
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:45:47 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717483533;
+ s=mimecast20190719; t=1717483544;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=0FtFMf2zANvlKiTEbIODyYK7bqgLhlm5mAbr7EpnP2A=;
- b=Pstwc3t9lNnCltjTd4OonCrjSKvGry2sc1N4KLAlH8V2krNKF8UgUfjL1BWMbpGwW5Qe+W
- ADrCRxnRrjFMga8prUx4ir0Gp7ZguCsW8c1/gvQzt5E2n9tgJM8YzVzdNP9DEy4X+9ItC5
- 7lr7Kh/sAjzQgqEBWWrzw6rWBU5Uk8M=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=h3kk6qDClWUbQZl0B321Mu8iHJPjC3lDTl307Q8JEmA=;
+ b=jNXy4mAIAD6XUVFotp0ZuiiUo6qGyDEnntyLSiypdqV7K6jHgPvOF5yum1hbqkzITaAyQN
+ odaY7a6yJx/lloPY4XIPEIzfKDllCGw12aFeMdGE3ah5xdAX7lshizuvGh2avRjpmY829T
+ uilGRo0jqAIKEvvrBQWkgAL6vbzV6RY=
+Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
+ [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-554-K7ukP_CROt2LP7PMTRJSmQ-1; Tue, 04 Jun 2024 02:45:32 -0400
-X-MC-Unique: K7ukP_CROt2LP7PMTRJSmQ-1
-Received: by mail-ed1-f70.google.com with SMTP id
- 4fb4d7f45d1cf-57a52cb6d86so322250a12.1
- for <qemu-devel@nongnu.org>; Mon, 03 Jun 2024 23:45:32 -0700 (PDT)
+ us-mta-681-WYORbEgDNE2w6i2669bw4w-1; Tue, 04 Jun 2024 02:45:35 -0400
+X-MC-Unique: WYORbEgDNE2w6i2669bw4w-1
+Received: by mail-lf1-f69.google.com with SMTP id
+ 2adb3069b0e04-52b9267d9d6so1824659e87.2
+ for <qemu-devel@nongnu.org>; Mon, 03 Jun 2024 23:45:35 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717483530; x=1718088330;
+ d=1e100.net; s=20230601; t=1717483533; x=1718088333;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0FtFMf2zANvlKiTEbIODyYK7bqgLhlm5mAbr7EpnP2A=;
- b=q3O3XeP3W/HtfaAP7KNxHlXCscnqOeAXjUmYGfvsT8A8Yd3fwXkr09NwG5+VZaJsMP
- WlLaopGFqq0pdf3goc9iXyD1JaKcUvt/mioF202vtuzozGku1gtJq8bsThAW5DZxtec4
- jU7c5DjvrCK+AaoxYYgHt3Qo5YZLOMW/s/5FHYtQmZwXYvl2LcfgsjoKfPN7DlnR46tK
- ycnErNzrgE3vfUWyAratWILMKb/unw0uBXcpA+ZjnueIK6MEN41eZJgCbp5p6fQYFi9k
- qfWBqKHYJCjMuZ4QfIeVt7xYXFOqsy49zzjsJy2Xt5Wl+ERIWMy89pBSpd8EDMf+Z3Xj
- wo0g==
-X-Gm-Message-State: AOJu0Yx3nR+1vPjCePjYUzUQfm5fpbfNvOT2b7vwQgc4ef6YFW6lLI3M
- cFFhNmiw56CGxYYSgKtHiNcpbQFE2hZeGnjorRhScsoVZPq21okkoeFdOtGA9zvtMDiQZ3XToGC
- WSGWqJ9Yp6n1WdfLLt/K/j097vnW61SH/OqO0PTJhnKa6vbAkvubtEyv+ity4ussNIq+vXxRJbd
- qfvXJvMFlnfXCa09ko6ocZypNLDupAy8TlVXMl
-X-Received: by 2002:a50:9518:0:b0:57a:2e93:fe80 with SMTP id
- 4fb4d7f45d1cf-57a3638e699mr7020937a12.18.1717483530586; 
- Mon, 03 Jun 2024 23:45:30 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF/5eN0Z+DGTyDA5aNfx90+JeVLPhJxYdd7KlNFaCh06wnI+vLaZaRs/ET5eaU009pBeBEIQQ==
-X-Received: by 2002:a50:9518:0:b0:57a:2e93:fe80 with SMTP id
- 4fb4d7f45d1cf-57a3638e699mr7020927a12.18.1717483530293; 
- Mon, 03 Jun 2024 23:45:30 -0700 (PDT)
+ bh=h3kk6qDClWUbQZl0B321Mu8iHJPjC3lDTl307Q8JEmA=;
+ b=ApZciwpeR+mbrO6I01DDNZk2WaSjZfkiGhPHpLFR6JkFw39ro4zRYEKSb1eHcerOTS
+ l6ZIFgP1+ivFYy6fkv5u/yCM+2Ih2l8nyg+XDjdcKiH7NXx7gDi0dlrU8uEl1PzW9Yie
+ 2Xpb9FtB0l63jYKoEAaTDvu3U/OehgtUKFM6VzNX9H4EWidk8ukUvi2jpJOZ8FheTJ6C
+ YnjIaMofQgUfJalzI12pPyC7nUlFnoq2qdu5bdLmzeUCPrH7u9lrFqILtM+VBXSszMQk
+ UPUfAgtIalzq9BRv0pYkO7ToZnJCe7tRej0SGTaitbf8srcKMuQYyor0XXenNpeU54Nm
+ 3MDw==
+X-Gm-Message-State: AOJu0YyBkvrtU/jt3JkGlIqGJw1O60z695q2qNvAouPKKU/qzh6zS0KG
+ im3FK/cEUxKSUNTfGO2TBMRqdAo3QV3bF/84Q1fp25H0tplNrNKwyLZsYqZ3+Qe6ugPHMtG1ImX
+ TM9SEmxjFpWBcmMKIbGSuEgI66PJb/xv5UKk4ppw/4cIQOhg10J0d9S68dndkk8W7m4QLGYQQtr
+ FsnxTyMs9Z3J61BSqQ2eTOdkGlkOJm/s1QRX6J
+X-Received: by 2002:ac2:5dc1:0:b0:51c:778f:b569 with SMTP id
+ 2adb3069b0e04-52b8956362bmr8294294e87.29.1717483533115; 
+ Mon, 03 Jun 2024 23:45:33 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH6w+yFphJKXxZ7Hv1uk/Se2vv1lMWFUixy72s1hKJDznmempiWcF2D8FFKTHJI4rK1wpspwg==
+X-Received: by 2002:ac2:5dc1:0:b0:51c:778f:b569 with SMTP id
+ 2adb3069b0e04-52b8956362bmr8294284e87.29.1717483532673; 
+ Mon, 03 Jun 2024 23:45:32 -0700 (PDT)
 Received: from avogadro.local ([151.81.115.112])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-57a52f5cbd3sm4484351a12.12.2024.06.03.23.45.29
+ a640c23a62f3a-a6959f932b4sm67763466b.171.2024.06.03.23.45.32
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Jun 2024 23:45:29 -0700 (PDT)
+ Mon, 03 Jun 2024 23:45:32 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Pankaj Gupta <pankaj.gupta@amd.com>
-Subject: [PULL 27/45] i386/sev: Add a class method to determine KVM VM type
- for SNP guests
-Date: Tue,  4 Jun 2024 08:43:51 +0200
-Message-ID: <20240604064409.957105-28-pbonzini@redhat.com>
+Cc: Michael Roth <michael.roth@amd.com>,
+	Pankaj Gupta <pankaj.gupta@amd.com>
+Subject: [PULL 28/45] i386/sev: Update query-sev QAPI format to handle SEV-SNP
+Date: Tue,  4 Jun 2024 08:43:52 +0200
+Message-ID: <20240604064409.957105-29-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240604064409.957105-1-pbonzini@redhat.com>
 References: <20240604064409.957105-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -102,103 +102,230 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-SEV guests can use either KVM_X86_DEFAULT_VM, KVM_X86_SEV_VM,
-or KVM_X86_SEV_ES_VM depending on the configuration and what
-the host kernel supports. SNP guests on the other hand can only
-ever use KVM_X86_SNP_VM, so split determination of VM type out
-into a separate class method that can be set accordingly for
-sev-guest vs. sev-snp-guest objects and add handling for SNP.
+From: Michael Roth <michael.roth@amd.com>
 
+Most of the current 'query-sev' command is relevant to both legacy
+SEV/SEV-ES guests and SEV-SNP guests, with 2 exceptions:
+
+  - 'policy' is a 64-bit field for SEV-SNP, not 32-bit, and
+    the meaning of the bit positions has changed
+  - 'handle' is not relevant to SEV-SNP
+
+To address this, this patch adds a new 'sev-type' field that can be
+used as a discriminator to select between SEV and SEV-SNP-specific
+fields/formats without breaking compatibility for existing management
+tools (so long as management tools that add support for launching
+SEV-SNP guest update their handling of query-sev appropriately).
+
+The corresponding HMP command has also been fixed up similarly.
+
+Signed-off-by: Michael Roth <michael.roth@amd.com>
+Co-developed-by:Pankaj Gupta <pankaj.gupta@amd.com>
 Signed-off-by: Pankaj Gupta <pankaj.gupta@amd.com>
-Message-ID: <20240530111643.1091816-14-pankaj.gupta@amd.com>
-[Remove unnecessary function pointer declaration. - Paolo]
+Message-ID: <20240530111643.1091816-15-pankaj.gupta@amd.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/kvm/kvm.c |  1 +
- target/i386/sev.c     | 15 ++++++++++++---
- 2 files changed, 13 insertions(+), 3 deletions(-)
+ qapi/misc-target.json | 72 ++++++++++++++++++++++++++++++++++---------
+ target/i386/sev.h     |  3 ++
+ target/i386/sev.c     | 57 +++++++++++++++++++++-------------
+ 3 files changed, 97 insertions(+), 35 deletions(-)
 
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 6c864e4611f..23a003aaa7e 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -167,6 +167,7 @@ static const char *vm_type_name[] = {
-     [KVM_X86_DEFAULT_VM] = "default",
-     [KVM_X86_SEV_VM] = "SEV",
-     [KVM_X86_SEV_ES_VM] = "SEV-ES",
-+    [KVM_X86_SNP_VM] = "SEV-SNP",
- };
+diff --git a/qapi/misc-target.json b/qapi/misc-target.json
+index 4e0a6492a9a..2d7d4d89bd5 100644
+--- a/qapi/misc-target.json
++++ b/qapi/misc-target.json
+@@ -47,6 +47,50 @@
+            'send-update', 'receive-update' ],
+   'if': 'TARGET_I386' }
  
- bool kvm_is_vm_type_supported(int type)
++##
++# @SevGuestType:
++#
++# An enumeration indicating the type of SEV guest being run.
++#
++# @sev: The guest is a legacy SEV or SEV-ES guest.
++#
++# @sev-snp: The guest is an SEV-SNP guest.
++#
++# Since: 6.2
++##
++{ 'enum': 'SevGuestType',
++  'data': [ 'sev', 'sev-snp' ],
++  'if': 'TARGET_I386' }
++
++##
++# @SevGuestInfo:
++#
++# Information specific to legacy SEV/SEV-ES guests.
++#
++# @policy: SEV policy value
++#
++# @handle: SEV firmware handle
++#
++# Since: 2.12
++##
++{ 'struct': 'SevGuestInfo',
++  'data': { 'policy': 'uint32',
++            'handle': 'uint32' },
++  'if': 'TARGET_I386' }
++
++##
++# @SevSnpGuestInfo:
++#
++# Information specific to SEV-SNP guests.
++#
++# @snp-policy: SEV-SNP policy value
++#
++# Since: 9.1
++##
++{ 'struct': 'SevSnpGuestInfo',
++  'data': { 'snp-policy': 'uint64' },
++  'if': 'TARGET_I386' }
++
+ ##
+ # @SevInfo:
+ #
+@@ -60,25 +104,25 @@
+ #
+ # @build-id: SEV FW build id
+ #
+-# @policy: SEV policy value
+-#
+ # @state: SEV guest state
+ #
+-# @handle: SEV firmware handle
++# @sev-type: Type of SEV guest being run
+ #
+ # Since: 2.12
+ ##
+-{ 'struct': 'SevInfo',
+-    'data': { 'enabled': 'bool',
+-              'api-major': 'uint8',
+-              'api-minor' : 'uint8',
+-              'build-id' : 'uint8',
+-              'policy' : 'uint32',
+-              'state' : 'SevState',
+-              'handle' : 'uint32'
+-            },
+-  'if': 'TARGET_I386'
+-}
++{ 'union': 'SevInfo',
++  'base': { 'enabled': 'bool',
++            'api-major': 'uint8',
++            'api-minor' : 'uint8',
++            'build-id' : 'uint8',
++            'state' : 'SevState',
++            'sev-type' : 'SevGuestType' },
++  'discriminator': 'sev-type',
++  'data': {
++      'sev': 'SevGuestInfo',
++      'sev-snp': 'SevSnpGuestInfo' },
++  'if': 'TARGET_I386' }
++
+ 
+ ##
+ # @query-sev:
+diff --git a/target/i386/sev.h b/target/i386/sev.h
+index 94295ee74f7..5dc4767b1e9 100644
+--- a/target/i386/sev.h
++++ b/target/i386/sev.h
+@@ -31,6 +31,9 @@
+ #define SEV_POLICY_DOMAIN       0x10
+ #define SEV_POLICY_SEV          0x20
+ 
++#define SEV_SNP_POLICY_SMT      0x10000
++#define SEV_SNP_POLICY_DBG      0x80000
++
+ typedef struct SevKernelLoaderContext {
+     char *setup_data;
+     size_t setup_size;
 diff --git a/target/i386/sev.c b/target/i386/sev.c
-index c3daaf1ad50..072cc4f8530 100644
+index 072cc4f8530..43d1c48bd9e 100644
 --- a/target/i386/sev.c
 +++ b/target/i386/sev.c
-@@ -885,6 +885,11 @@ out:
-     return sev_common->kvm_type;
- }
- 
-+static int sev_snp_kvm_type(X86ConfidentialGuest *cg)
-+{
-+    return KVM_X86_SNP_VM;
-+}
-+
- static int sev_common_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
+@@ -363,25 +363,27 @@ static SevInfo *sev_get_info(void)
  {
-     char *devname;
-@@ -894,6 +899,8 @@ static int sev_common_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
-     struct sev_user_data_status status = {};
-     SevCommonState *sev_common = SEV_COMMON(cgs);
-     SevCommonStateClass *klass = SEV_COMMON_GET_CLASS(cgs);
-+    X86ConfidentialGuestClass *x86_klass =
-+                               X86_CONFIDENTIAL_GUEST_GET_CLASS(cgs);
+     SevInfo *info;
+     SevCommonState *sev_common = SEV_COMMON(MACHINE(qdev_get_machine())->cgs);
+-    SevGuestState *sev_guest =
+-        (SevGuestState *)object_dynamic_cast(OBJECT(sev_common),
+-                                             TYPE_SEV_GUEST);
  
-     sev_common->state = SEV_STATE_UNINIT;
+     info = g_new0(SevInfo, 1);
+     info->enabled = sev_enabled();
  
-@@ -964,7 +971,7 @@ static int sev_common_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
+     if (info->enabled) {
+-        if (sev_guest) {
+-            info->handle = sev_guest->handle;
+-        }
+         info->api_major = sev_common->api_major;
+         info->api_minor = sev_common->api_minor;
+         info->build_id = sev_common->build_id;
+         info->state = sev_common->state;
+-        /* we only report the lower 32-bits of policy for SNP, ok for now... */
+-        info->policy =
+-            (uint32_t)object_property_get_uint(OBJECT(sev_common),
+-                                               "policy", NULL);
++
++        if (sev_snp_enabled()) {
++            info->sev_type = SEV_GUEST_TYPE_SEV_SNP;
++            info->u.sev_snp.snp_policy =
++                object_property_get_uint(OBJECT(sev_common), "policy", NULL);
++        } else {
++            info->sev_type = SEV_GUEST_TYPE_SEV;
++            info->u.sev.handle = SEV_GUEST(sev_common)->handle;
++            info->u.sev.policy =
++                (uint32_t)object_property_get_uint(OBJECT(sev_common),
++                                                   "policy", NULL);
++        }
      }
  
-     trace_kvm_sev_init();
--    if (sev_kvm_type(X86_CONFIDENTIAL_GUEST(sev_common)) == KVM_X86_DEFAULT_VM) {
-+    if (x86_klass->kvm_type(X86_CONFIDENTIAL_GUEST(sev_common)) == KVM_X86_DEFAULT_VM) {
-         cmd = sev_es_enabled() ? KVM_SEV_ES_INIT : KVM_SEV_INIT;
- 
-         ret = sev_ioctl(sev_common->sev_fd, cmd, NULL, &fw_error);
-@@ -1441,10 +1448,8 @@ static void
- sev_common_class_init(ObjectClass *oc, void *data)
+     return info;
+@@ -404,20 +406,33 @@ void hmp_info_sev(Monitor *mon, const QDict *qdict)
  {
-     ConfidentialGuestSupportClass *klass = CONFIDENTIAL_GUEST_SUPPORT_CLASS(oc);
--    X86ConfidentialGuestClass *x86_klass = X86_CONFIDENTIAL_GUEST_CLASS(oc);
+     SevInfo *info = sev_get_info();
  
-     klass->kvm_init = sev_common_kvm_init;
--    x86_klass->kvm_type = sev_kvm_type;
+-    if (info && info->enabled) {
+-        monitor_printf(mon, "handle: %d\n", info->handle);
+-        monitor_printf(mon, "state: %s\n", SevState_str(info->state));
+-        monitor_printf(mon, "build: %d\n", info->build_id);
+-        monitor_printf(mon, "api version: %d.%d\n",
+-                       info->api_major, info->api_minor);
+-        monitor_printf(mon, "debug: %s\n",
+-                       info->policy & SEV_POLICY_NODBG ? "off" : "on");
+-        monitor_printf(mon, "key-sharing: %s\n",
+-                       info->policy & SEV_POLICY_NOKS ? "off" : "on");
+-    } else {
++    if (!info || !info->enabled) {
+         monitor_printf(mon, "SEV is not enabled\n");
++        goto out;
+     }
  
-     object_class_property_add_str(oc, "sev-device",
-                                   sev_common_get_sev_device,
-@@ -1529,10 +1534,12 @@ static void
- sev_guest_class_init(ObjectClass *oc, void *data)
- {
-     SevCommonStateClass *klass = SEV_COMMON_CLASS(oc);
-+    X86ConfidentialGuestClass *x86_klass = X86_CONFIDENTIAL_GUEST_CLASS(oc);
++    monitor_printf(mon, "SEV type: %s\n", SevGuestType_str(info->sev_type));
++    monitor_printf(mon, "state: %s\n", SevState_str(info->state));
++    monitor_printf(mon, "build: %d\n", info->build_id);
++    monitor_printf(mon, "api version: %d.%d\n", info->api_major,
++                   info->api_minor);
++
++    if (sev_snp_enabled()) {
++        monitor_printf(mon, "debug: %s\n",
++                       info->u.sev_snp.snp_policy & SEV_SNP_POLICY_DBG ? "on"
++                                                                       : "off");
++        monitor_printf(mon, "SMT allowed: %s\n",
++                       info->u.sev_snp.snp_policy & SEV_SNP_POLICY_SMT ? "on"
++                                                                       : "off");
++    } else {
++        monitor_printf(mon, "handle: %d\n", info->u.sev.handle);
++        monitor_printf(mon, "debug: %s\n",
++                       info->u.sev.policy & SEV_POLICY_NODBG ? "off" : "on");
++        monitor_printf(mon, "key-sharing: %s\n",
++                       info->u.sev.policy & SEV_POLICY_NOKS ? "off" : "on");
++    }
++
++out:
+     qapi_free_SevInfo(info);
+ }
  
-     klass->launch_start = sev_launch_start;
-     klass->launch_finish = sev_launch_finish;
-     klass->kvm_init = sev_kvm_init;
-+    x86_klass->kvm_type = sev_kvm_type;
- 
-     object_class_property_add_str(oc, "dh-cert-file",
-                                   sev_guest_get_dh_cert_file,
-@@ -1770,8 +1777,10 @@ static void
- sev_snp_guest_class_init(ObjectClass *oc, void *data)
- {
-     SevCommonStateClass *klass = SEV_COMMON_CLASS(oc);
-+    X86ConfidentialGuestClass *x86_klass = X86_CONFIDENTIAL_GUEST_CLASS(oc);
- 
-     klass->kvm_init = sev_snp_kvm_init;
-+    x86_klass->kvm_type = sev_snp_kvm_type;
- 
-     object_class_property_add(oc, "policy", "uint64",
-                               sev_snp_guest_get_policy,
 -- 
 2.45.1
 
