@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79D548FAF60
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 11:58:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CA828FAF7D
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 12:00:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEQvi-0001wo-F3; Tue, 04 Jun 2024 05:58:10 -0400
+	id 1sEQvl-0002SO-JB; Tue, 04 Jun 2024 05:58:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sEQvW-0001Sx-8y
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 05:57:59 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sEQvc-0001sq-Kx
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 05:58:06 -0400
+Received: from mail-lj1-x232.google.com ([2a00:1450:4864:20::232])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sEQvU-0002H4-La
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 05:57:58 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-42134bb9735so29704055e9.1
- for <qemu-devel@nongnu.org>; Tue, 04 Jun 2024 02:57:56 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sEQva-0002Hh-UZ
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 05:58:04 -0400
+Received: by mail-lj1-x232.google.com with SMTP id
+ 38308e7fff4ca-2eabd22d3f4so8443741fa.1
+ for <qemu-devel@nongnu.org>; Tue, 04 Jun 2024 02:58:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1717495075; x=1718099875; darn=nongnu.org;
+ d=linaro.org; s=google; t=1717495080; x=1718099880; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=aye1K/Rd4o81X/8PhiFbSTR8xpOCjIohLrumKVTvmK4=;
- b=Nzb4Zdns0rmVXzwrbPLG2/nJmXMbfxA+mYgr0GvxlzqBdY9c7kOm6/tA9/oQH+0a34
- CP1uCPOq5iaSz42n3JagGZBQ8s4HnojaqV/kRSzbHdo5E4iw7DXSC8FTkJuEaJIozP6O
- oZPRT1rpaXFdaM/FEfulCPwLijPcDqskU8Zybb9smRJwUW4zuT7TUzaSLK2wM2Wzffon
- YjupyKrZJnoPMj+gms+wcil3hUULi/fXOotOnZDTIFpFlNTSoBJgHU0z89Dfn0fzeUOa
- rHHha1uZ4zqs8vxFMZV5Qt6KPW53sGNfGPzXiHzvyjQTMRH5CIH18sOBuEDNEGEJhYAU
- 5JPA==
+ bh=KhtO+b8xKpbz5dyKFVe313y98g7MQZe0qAfemmQJG2o=;
+ b=Ny/YqwUT/L2YSs78/vGsJKV1vSBtQ5AmMqhJu9gQsaScoWSV8s3+ru2LQtsiaVqCMJ
+ NuiC1xsisspQj/irZv94ZfcVo2v5/IcaSXmJEVkWHmMA7CHVLJu0pH2IWWcoL6mqLYLb
+ LTWRvKnNNDW4Jx0VKxG+H46ZcDPTKv4RskdU+wEtZpipAeZSf3dUbM/0QDUfxrlQZtLa
+ VkZaQLT3HAKHxq/sdqwEJZYTKW+pmg8KJ3KFTmU0OuwStQypY1yj1NpYOjOMW5tHgvrI
+ qnNEguq3Q1INFBqRVDYpmDTolaQvQf7YdyeMnd+AByGv5NW1scWmAFf6V+cgjzZEw5H/
+ k4Iw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717495075; x=1718099875;
+ d=1e100.net; s=20230601; t=1717495080; x=1718099880;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=aye1K/Rd4o81X/8PhiFbSTR8xpOCjIohLrumKVTvmK4=;
- b=M4wYdWg+EN8cp0kKVRYBgHbp0DvabMSIew3RX+a4yN8zggQ7nS6C05lciby9AwmasC
- 7AG08Sth79OF1ZGRQhckQEbkzn3LLSRjF3DjbtilxtzoevthlPu76h4JD5f2UrdNx344
- Qi3PmOd7/fgBwJCWd6+KD3LsRVNPQslY6ta1vQ6M8QemMbi2vm2Zz3lmaVuvWrT2XLfQ
- /Cwwi0I/i+BM5Qn+aH1RQCbFWyaSk2NQQJtAmIgaEeAUUrsKuroZAZzgd/bNPCWicikc
- FZg6Z/WPRrVcGKsNRxEEfpB7e+FNADd6h3EdvxSwJ6m1+tKa66v5A/lyf+zmmekuaWUe
- Hf4g==
-X-Gm-Message-State: AOJu0YzS2ul7KREjOEnO/h3SRePMkQV9UTv2X7E+6gLC/i+AKjLBseAq
- /NYQGpWhrlJw0F1Ke/6jzZPiVC9DXoaxlgTElofFP/iwGMjVIIpFGXBigtWmKbrIKAWCESI3XkL
- 8
-X-Google-Smtp-Source: AGHT+IH820FPTAz8jhvDdJDxTB8ZEN2lFP7D9uhU+IKV7jKFduNrJ2Uvl4Ln9Dhh1pFrnhLo8ktBqg==
-X-Received: by 2002:a05:600c:1d1a:b0:41a:1b3f:b465 with SMTP id
- 5b1f17b1804b1-4212e0ae724mr95394855e9.26.1717495074888; 
- Tue, 04 Jun 2024 02:57:54 -0700 (PDT)
+ bh=KhtO+b8xKpbz5dyKFVe313y98g7MQZe0qAfemmQJG2o=;
+ b=wPer/ULnyxr3yGF+8CHX/jm/k1zjsdYHtzqOBZJ+0BiIx7bTo1M8Z4T72CEDJD5FQx
+ xjvATgnzf6VWk539b8TcfpI7FdL+HJ/32nTqxFSfqd/nn1RnD4FtH25wvwrOTyNdwmBH
+ slPZ6fq3cM0VsLhPnvIwoffhW9qLwRusvdPvWrheJbCfjlPnRikqU1XL6gKoJOGmv+Zq
+ HtTiVX3Vf2XUfZ3HZYiuCdy4aRp1fXr2XXxKAJ/gl1hq5IotWXZfrpoLPW62Xuk3Twr+
+ 0Ic/s7GE5hKFtt20VuQN7SZ9i5pdaZmoWqritg0VJzq4rXqtrxao1Hh5oN++nDos6OPw
+ 8H+g==
+X-Gm-Message-State: AOJu0YztetSL4GfdncSHKMLMNzpJLCldI0ATD8bM1blvTrgBeLIKFYJT
+ REKemd2XQZygNnFNK4jyOxevIjPMeoOHVSQzh4OR9wKEtBAN0coOKz1zKAIeNqPY1y84nTnLkVG
+ 9
+X-Google-Smtp-Source: AGHT+IErAEByG+blH4ldyvqDww6GNUxSaTcykxJ/kVYXoj55TqH4GjOyWKIh80aTT64WwxIhvkFeKg==
+X-Received: by 2002:a2e:994b:0:b0:2ea:7e5b:98db with SMTP id
+ 38308e7fff4ca-2ea951f9657mr71594191fa.51.1717495080415; 
+ Tue, 04 Jun 2024 02:58:00 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.159.34])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-421535bc543sm8948085e9.43.2024.06.04.02.57.53
+ ffacd0b85a97d-35dd062ec39sm11105957f8f.89.2024.06.04.02.57.59
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 04 Jun 2024 02:57:54 -0700 (PDT)
+ Tue, 04 Jun 2024 02:58:00 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+Cc: "Edgar E. Iglesias" <edgar.iglesias@amd.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ David Hildenbrand <david@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 19/32] core/cpu-common: initialise plugin state before thread
- creation
-Date: Tue,  4 Jun 2024 11:55:55 +0200
-Message-ID: <20240604095609.12285-20-philmd@linaro.org>
+Subject: [PULL 20/32] xen: Add xen_mr_is_memory()
+Date: Tue,  4 Jun 2024 11:55:56 +0200
+Message-ID: <20240604095609.12285-21-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240604095609.12285-1-philmd@linaro.org>
 References: <20240604095609.12285-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::232;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x232.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,64 +94,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Alex Bennée <alex.bennee@linaro.org>
+From: "Edgar E. Iglesias" <edgar.iglesias@amd.com>
 
-Originally I tried to move where vCPU thread initialisation to later
-in realize. However pulling that thread (sic) got gnarly really
-quickly. It turns out some steps of CPU realization need values that
-can only be determined from the running vCPU thread.
+Add xen_mr_is_memory() to abstract away tests for the
+xen_memory MR.
 
-However having moved enough out of the thread creation we can now
-queue work before the thread starts (at least for TCG guests) and
-avoid the race between vcpu_init and other vcpu states a plugin might
-subscribe to.
+No functional changes.
 
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-ID: <20240530194250.1801701-6-alex.bennee@linaro.org>
+Signed-off-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
+Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
+Acked-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20240529140739.1387692-4-edgar.iglesias@gmail.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/core/cpu-common.c | 20 ++++++++++++--------
- 1 file changed, 12 insertions(+), 8 deletions(-)
+ include/sysemu/xen.h    |  1 +
+ hw/xen/xen-hvm-common.c | 10 ++++++++--
+ 2 files changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/hw/core/cpu-common.c b/hw/core/cpu-common.c
-index 6cfc01593a..bf1a7b8892 100644
---- a/hw/core/cpu-common.c
-+++ b/hw/core/cpu-common.c
-@@ -222,14 +222,6 @@ static void cpu_common_realizefn(DeviceState *dev, Error **errp)
-         cpu_resume(cpu);
+diff --git a/include/sysemu/xen.h b/include/sysemu/xen.h
+index 754ec2e6cb..3445888e39 100644
+--- a/include/sysemu/xen.h
++++ b/include/sysemu/xen.h
+@@ -49,4 +49,5 @@ static inline void xen_ram_alloc(ram_addr_t ram_addr, ram_addr_t size,
+ 
+ #endif /* CONFIG_XEN_IS_POSSIBLE */
+ 
++bool xen_mr_is_memory(MemoryRegion *mr);
+ #endif
+diff --git a/hw/xen/xen-hvm-common.c b/hw/xen/xen-hvm-common.c
+index 2d1b032121..a0a0252da0 100644
+--- a/hw/xen/xen-hvm-common.c
++++ b/hw/xen/xen-hvm-common.c
+@@ -12,6 +12,12 @@
+ 
+ MemoryRegion xen_memory;
+ 
++/* Check for xen memory.  */
++bool xen_mr_is_memory(MemoryRegion *mr)
++{
++    return mr == &xen_memory;
++}
++
+ void xen_ram_alloc(ram_addr_t ram_addr, ram_addr_t size, MemoryRegion *mr,
+                    Error **errp)
+ {
+@@ -28,7 +34,7 @@ void xen_ram_alloc(ram_addr_t ram_addr, ram_addr_t size, MemoryRegion *mr,
+         return;
      }
  
--    /* Plugin initialization must wait until the cpu start executing code */
--#ifdef CONFIG_PLUGIN
--    if (tcg_enabled()) {
--        cpu->plugin_state = qemu_plugin_create_vcpu_state();
--        async_run_on_cpu(cpu, qemu_plugin_vcpu_init__async, RUN_ON_CPU_NULL);
--    }
--#endif
--
-     /* NOTE: latest generic point where the cpu is fully realized */
- }
+-    if (mr == &xen_memory) {
++    if (xen_mr_is_memory(mr)) {
+         return;
+     }
  
-@@ -273,6 +265,18 @@ static void cpu_common_initfn(Object *obj)
-     QTAILQ_INIT(&cpu->watchpoints);
+@@ -55,7 +61,7 @@ static void xen_set_memory(struct MemoryListener *listener,
+ {
+     XenIOState *state = container_of(listener, XenIOState, memory_listener);
  
-     cpu_exec_initfn(cpu);
-+
-+    /*
-+     * Plugin initialization must wait until the cpu start executing
-+     * code, but we must queue this work before the threads are
-+     * created to ensure we don't race.
-+     */
-+#ifdef CONFIG_PLUGIN
-+    if (tcg_enabled()) {
-+        cpu->plugin_state = qemu_plugin_create_vcpu_state();
-+        async_run_on_cpu(cpu, qemu_plugin_vcpu_init__async, RUN_ON_CPU_NULL);
-+    }
-+#endif
- }
- 
- static void cpu_common_finalize(Object *obj)
+-    if (section->mr == &xen_memory) {
++    if (xen_mr_is_memory(section->mr)) {
+         return;
+     } else {
+         if (add) {
 -- 
 2.41.0
 
