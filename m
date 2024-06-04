@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93ABE8FAB1C
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 08:45:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C38788FAB55
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 08:50:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sENuu-0003Do-Ns; Tue, 04 Jun 2024 02:45:08 -0400
+	id 1sENv3-0003Wn-Kx; Tue, 04 Jun 2024 02:45:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sENus-00038p-2m
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:45:06 -0400
+ id 1sENuv-0003Lm-No
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:45:09 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sENuq-0007Tx-AX
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:45:05 -0400
+ id 1sENut-0007Uk-Oh
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:45:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717483503;
+ s=mimecast20190719; t=1717483507;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=MELx3a4wImL1JG8cbryKCbUuCn7aSkqRfzZzglKDbxQ=;
- b=EsHyXdk+H12fwf7gGkAbpwjMJd++uj1zzw4+ivLXBIW9imEmhccr3rXRPnpM80hqHf7ooo
- LLkn3jpHyrckBxi7Js4kBGxQqkthk2JidQt7UcWm1ggh2pc7mRzL4vU8ZiS/Y6IKm9ufRF
- 7zufxnTS5dOI69ESVv2KYiPXDP4pKlY=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=gL7H6TrSHsDkCBwd59AyjrEB8aK2tm0LoE7ROoerM98=;
+ b=Li655TP/RTa5WK0/dDnUt+LL/Wu0QZoCcjhb3+S4AmE/PsvJUq2awS+jOYm+wb1a+JmV/w
+ pvsGTewNbW3lUhGD0lSdNV2rDFHnkuvIUceJo+IobNQYUjobIdE3a5x/pElxUY68NyA8g6
+ pean7eJoBWX03rGEsMQYS2sYRfUNzdc=
+Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
+ [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-604-iSGYBXzwPqu0TDbJh4gRwQ-1; Tue, 04 Jun 2024 02:45:02 -0400
-X-MC-Unique: iSGYBXzwPqu0TDbJh4gRwQ-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-a6840dde124so353556566b.1
- for <qemu-devel@nongnu.org>; Mon, 03 Jun 2024 23:45:01 -0700 (PDT)
+ us-mta-688-sMieBnRZNti30nyL4XTAqw-1; Tue, 04 Jun 2024 02:45:05 -0400
+X-MC-Unique: sMieBnRZNti30nyL4XTAqw-1
+Received: by mail-lj1-f200.google.com with SMTP id
+ 38308e7fff4ca-2ea91ce9225so34707141fa.3
+ for <qemu-devel@nongnu.org>; Mon, 03 Jun 2024 23:45:05 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717483500; x=1718088300;
+ d=1e100.net; s=20230601; t=1717483503; x=1718088303;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=MELx3a4wImL1JG8cbryKCbUuCn7aSkqRfzZzglKDbxQ=;
- b=OJ01sZ186cZGH0x4QkGR2iA8pN2azLGvygWUcnFLkrl7RcWwKDfrgCk7CoW4K0OBRn
- Q0M7jKDyijFuubSFtwDOdy2jZ20LQqDRc7J70YKpAzDOAwbwi13iOSgPq4wDbqat10+L
- jgaBWgMIETlK2XxORXc6ejDk7CCeYv/dBnpnGWs/R5WUPXuufgEjox2NW98ObOtC99A/
- ZgT+wSsby3LPr7grIW1rXZYCWmaZzkEtGqqS5OVWRnk8DRpEgTSphwSfNktfSMrihsv/
- pvDuL2MWVhVdj0dG+NcKaZ6WX33NlNPzhmXA+MOuLLpfDcrDZtQjrRH8tJlHiVPW+alN
- BQ4w==
-X-Gm-Message-State: AOJu0YyriQYHe9are9sj/7ZQZ3TbrjOhPieAIrVhR+L0d8GZYBqTAYfw
- 8S40uHkdoF7kKdGnaGv0i6efyqiROqYGeBkKhlc0OVa/r29KuBj9PHYSTdDYyQWsXbDFUn/FBVe
- Q/OFYIPZNACTiKushqf3E9PK5MF+IJ3BXUJNDVMxtc+EPIBjNYeFhJnQbqpOwSlet/pglMFTk4d
- ajaHtTVW8pocHkta3xK8+eoXtpL6brvAKUnWSx
-X-Received: by 2002:a17:906:f299:b0:a59:c698:41ae with SMTP id
- a640c23a62f3a-a69545681d7mr130022966b.34.1717483500463; 
- Mon, 03 Jun 2024 23:45:00 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF6Q+VT4oWH8leYvid1PjpB2EftMUvVziXppNecf89ZrhGIrNCKkOarmxQO4X8p/UNG0frFsQ==
-X-Received: by 2002:a17:906:f299:b0:a59:c698:41ae with SMTP id
- a640c23a62f3a-a69545681d7mr130021266b.34.1717483499960; 
- Mon, 03 Jun 2024 23:44:59 -0700 (PDT)
+ bh=gL7H6TrSHsDkCBwd59AyjrEB8aK2tm0LoE7ROoerM98=;
+ b=H6rKAkCxIjaRSQOPeOQSLnDVtZ/NEiEQaLrWmYBaYroCH6R7063qfEon9H5JzjS/vy
+ OhpmW75PTYrl2VT2rXus3wfcrZ05t+9w1Tofh+uDS7/X8CnoUuL7a8aOi93WeAHiTDGO
+ 0bmnOejnl2NJBv6ozCKzLXcUVsuuXBkKlhmJaimoRyqp0CrrR5zVCbunv54rzzR9wjnY
+ amRCajDMt8VWlrNHLVZbkFT60P7rw9Kw+R6NsewsAgp7pqyGVdzomxWs5qOP+mVCzFpv
+ gOCBzXG9R9+YnxB2RHvIGiAkv/aVc7o/kPKB76RY4FjZLq6DZcYOCMAKihPUrII+OUWF
+ lgxQ==
+X-Gm-Message-State: AOJu0Yy+9bYqfnwJA5UbmtH7Q8i3qSKhdSRky08z2mjY6vVJN5ecSrTe
+ +WooYQ9qKkdcoFuXUEIKoinaTGdXL7KMa07btckzbyCmuAzkEzyu/YPPxu02Qoo8O7UL5T+bS6Q
+ bXxCaXrG3Vdrr7gOqLbOxul4F0ZXwTpzExGxCilQkfqwbTWCrkEa7Q4Szzlvdj38u/ofD6ixeLz
+ PP9ZePr2N0aLe7C9IaQfdCfw3zp7HGen34yyyc
+X-Received: by 2002:a2e:3202:0:b0:2ea:83b1:bf70 with SMTP id
+ 38308e7fff4ca-2ea951df832mr90800411fa.37.1717483503085; 
+ Mon, 03 Jun 2024 23:45:03 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHG2EFb3kpWeBCqXRCEX8l1FvNmNvGFoav8wXYBgU0trykJYsFWc6EhHUQLNDU52BsSkAXFtQ==
+X-Received: by 2002:a2e:3202:0:b0:2ea:83b1:bf70 with SMTP id
+ 38308e7fff4ca-2ea951df832mr90800261fa.37.1717483502629; 
+ Mon, 03 Jun 2024 23:45:02 -0700 (PDT)
 Received: from avogadro.local ([151.81.115.112])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a691364322csm228016966b.109.2024.06.03.23.44.59
- for <qemu-devel@nongnu.org>
+ a640c23a62f3a-a68f8110912sm322669466b.17.2024.06.03.23.45.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Jun 2024 23:44:59 -0700 (PDT)
+ Mon, 03 Jun 2024 23:45:02 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 16/45] machine: allow early use of machine_require_guest_memfd
-Date: Tue,  4 Jun 2024 08:43:40 +0200
-Message-ID: <20240604064409.957105-17-pbonzini@redhat.com>
+Cc: Pankaj Gupta <pankaj.gupta@amd.com>
+Subject: [PULL 17/45] i386/sev: Replace error_report with error_setg
+Date: Tue,  4 Jun 2024 08:43:41 +0200
+Message-ID: <20240604064409.957105-18-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240604064409.957105-1-pbonzini@redhat.com>
 References: <20240604064409.957105-1-pbonzini@redhat.com>
@@ -101,58 +101,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Ask the ConfidentialGuestSupport object whether to use guest_memfd
-for KVM-backend private memory.  This bool can be set in instance_init
-(or user_complete) so that it is available when the machine is created.
+From: Pankaj Gupta <pankaj.gupta@amd.com>
 
+Signed-off-by: Pankaj Gupta <pankaj.gupta@amd.com>
+Message-ID: <20240530111643.1091816-2-pankaj.gupta@amd.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- include/exec/confidential-guest-support.h | 5 +++++
- include/hw/boards.h                       | 1 -
- hw/core/machine.c                         | 2 +-
- 3 files changed, 6 insertions(+), 2 deletions(-)
+ target/i386/sev.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/include/exec/confidential-guest-support.h b/include/exec/confidential-guest-support.h
-index e5b188cffbf..02dc4e518f0 100644
---- a/include/exec/confidential-guest-support.h
-+++ b/include/exec/confidential-guest-support.h
-@@ -31,6 +31,11 @@ OBJECT_DECLARE_TYPE(ConfidentialGuestSupport,
- struct ConfidentialGuestSupport {
-     Object parent;
+diff --git a/target/i386/sev.c b/target/i386/sev.c
+index d30b68c11e4..67ed32e5ea9 100644
+--- a/target/i386/sev.c
++++ b/target/i386/sev.c
+@@ -952,13 +952,13 @@ static int sev_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
  
-+    /*
-+     * True if the machine should use guest_memfd for RAM.
-+     */
-+    bool require_guest_memfd;
-+
-     /*
-      * ready: flag set by CGS initialization code once it's ready to
-      *        start executing instructions in a potentially-secure
-diff --git a/include/hw/boards.h b/include/hw/boards.h
-index 2fa800f11ae..73ad319d7da 100644
---- a/include/hw/boards.h
-+++ b/include/hw/boards.h
-@@ -375,7 +375,6 @@ struct MachineState {
-     char *dt_compatible;
-     bool dump_guest_core;
-     bool mem_merge;
--    bool require_guest_memfd;
-     bool usb;
-     bool usb_disabled;
-     char *firmware;
-diff --git a/hw/core/machine.c b/hw/core/machine.c
-index 17292b13e62..77a356f232f 100644
---- a/hw/core/machine.c
-+++ b/hw/core/machine.c
-@@ -1216,7 +1216,7 @@ bool machine_mem_merge(MachineState *machine)
+     if (sev_es_enabled()) {
+         if (!kvm_kernel_irqchip_allowed()) {
+-            error_report("%s: SEV-ES guests require in-kernel irqchip support",
+-                         __func__);
++            error_setg(errp, "%s: SEV-ES guests require in-kernel irqchip"
++                       "support", __func__);
+             goto err;
+         }
  
- bool machine_require_guest_memfd(MachineState *machine)
- {
--    return machine->require_guest_memfd;
-+    return machine->cgs && machine->cgs->require_guest_memfd;
- }
- 
- static char *cpu_slot_to_string(const CPUArchId *cpu)
+         if (!(status.flags & SEV_STATUS_FLAGS_CONFIG_ES)) {
+-            error_report("%s: guest policy requires SEV-ES, but "
++            error_setg(errp, "%s: guest policy requires SEV-ES, but "
+                          "host SEV-ES support unavailable",
+                          __func__);
+             goto err;
 -- 
 2.45.1
 
