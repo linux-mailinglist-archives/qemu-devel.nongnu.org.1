@@ -2,74 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 940DD8FAAA3
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 08:21:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4AFA8FAAF6
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 08:43:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sENXY-0006Jr-Pf; Tue, 04 Jun 2024 02:21:00 -0400
+	id 1sENrS-00087W-5k; Tue, 04 Jun 2024 02:41:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sENXS-0006JO-OJ
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:20:56 -0400
-Received: from mgamail.intel.com ([198.175.65.11])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sENXN-0006OB-BB
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:20:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1717482050; x=1749018050;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=jkmF1Sdu7dprfyTrmrSTK2ZzrkvZl905OiDhjvu6h3M=;
- b=TgLvhYKwwL2kET6UW3g4awTPftxHIqc8aKRQd299PYo1nOHUNw8x3TSZ
- Po1+HPtF/OhYz5LNk5wsVjPQI62K73ivl4f22df1dmGM9Jyc72TJqUuHY
- gYWYhAxHsNO+0sMXptGYJWcBfW22VIN+Io51r/L7KxHvbjfSnifwiY8ZM
- 3+KU9EkyVAWr3GcADsa+RJOCVLOYaxJJvyvuJ8Y19YlhqMT3G33jQtYQV
- G4r4KOqWcL8tBbfXa17jkUYAMV+cCVnaGIjDmq3gzJlyrNFhzr7YONcgg
- vsc6t56Q7aaOTjvJ+L2hyjPXJtajprduFAIY1KWO8BjoP/tEnxwm0zHeU g==;
-X-CSE-ConnectionGUID: O/mF8BURRfG04ySjT5Ab8g==
-X-CSE-MsgGUID: IXfiDO5/TPuiI2L0k1+1qA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11092"; a="24581519"
-X-IronPort-AV: E=Sophos;i="6.08,213,1712646000"; d="scan'208";a="24581519"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Jun 2024 23:20:47 -0700
-X-CSE-ConnectionGUID: +Id/oB9DTsqGH9e6xkakaQ==
-X-CSE-MsgGUID: tHlThJAoTTCeoGqVqirk8w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,213,1712646000"; d="scan'208";a="37758601"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orviesa007.jf.intel.com with ESMTP; 03 Jun 2024 23:20:44 -0700
-Date: Tue, 4 Jun 2024 14:36:10 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>, Thomas Huth <thuth@redhat.com>,
- qemu-devel@nongnu.org
-Subject: Re: [PATCH] hw/core: Rename CpuTopology to CPUTopology
-Message-ID: <Zl612v8IK+RyufE+@intel.com>
-References: <20240527131837.2630961-1-zhao1.liu@intel.com>
- <87sexus0m0.fsf@pond.sub.org> <Zl6U5n+QeEAiCBBv@intel.com>
- <87r0ddcm38.fsf@pond.sub.org>
+ (Exim 4.90_1) (envelope-from <fea.wang@sifive.com>)
+ id 1sENrL-00086P-A8
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:41:27 -0400
+Received: from mail-vk1-xa31.google.com ([2607:f8b0:4864:20::a31])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <fea.wang@sifive.com>)
+ id 1sENrH-0006X8-RF
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:41:27 -0400
+Received: by mail-vk1-xa31.google.com with SMTP id
+ 71dfb90a1353d-4eb14c1a15aso858343e0c.2
+ for <qemu-devel@nongnu.org>; Mon, 03 Jun 2024 23:41:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=sifive.com; s=google; t=1717483281; x=1718088081; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=zm2gmNUyLiYeot720PZVrFYl2KkhT9X1YFFONMEoscE=;
+ b=ayjLK7LKa1k70BmfAAxATqmdQQBzhZeO+u1Y53YubpL1V63mj+4tVk3UYP3qfE7W1j
+ 5ArF3i7k0zEM4gBGz+8LcvmrdeoTUN+XL5X2oPKXqw7E3pSwuhyaHjr7hWtVH0zsvoUl
+ 34+gaO1B6RbyWNeHlZ2Y6KkpkuanNlXgxPgOb4eLGaeImBjVYFbH4JGtAtQcOT4HKY8q
+ ty7G+j2uj416EmtfheJMv8Lp1mk627xDgVmYMdT9GNJoHlKDsRYg4GEcVHSEVMGvnKkc
+ TYMZuN8T+ZgdExr0kadDKzc5S8NE9A/OckimY3doK7km9S0Ilc+BbOozleRP4weKI2yE
+ 7Hrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1717483281; x=1718088081;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=zm2gmNUyLiYeot720PZVrFYl2KkhT9X1YFFONMEoscE=;
+ b=JqNnsP3GN8ixr+zTb90iEDVTlLtWnC2x9nfdn0j76KDntAWQuhnlsHM1J0K1KwRMQN
+ hSMX1goVLeBIHn9gVO9G42F4YfPxg1SPENGYRi+50v+nqPNY/3/x9xubIgaSXpRUg9xk
+ oGi+VDIW++QWPm4qiNhvxvKUS7CqO5q4CwN3q6hEVOywo/cNHK2lJAX8uVBOPMS1xzSS
+ qi6JvQnKR9hOzAm/hNj8Ra1tPtCYLrws3vW6lNC0PXUjOyYJitVwzrsmco2Sms1b2Dmd
+ ETyBHmAxG7hIv2TwC9TO3h3C6WppN20QVz2aYJPR/GbTCb9wrjJ2dJdNvguYdliQ9inY
+ vZRA==
+X-Gm-Message-State: AOJu0YyuffI798HWijc5SOZNSjVUEbOoW8fLe1XApA2ARn6UQPbLHrLt
+ 0rnPcXlI8GErECwcKorCU0nnDHZzPy++6JQK7hIT4LSEoQny6uDuRdwC5oPPs3734Vss6zUXI5T
+ lXQ8/+bSsRLwaXhZYn7uek7vFvhSAMPUzIGdJVA==
+X-Google-Smtp-Source: AGHT+IG45rJsRmI49kOjiXKUIYqrAnz2yUq+LkPMrhma6QwCgLxIkt+fFFcgzvwKsK7E0s+tYFTK5w+IrtGzbqthfrE=
+X-Received: by 2002:a05:6122:910:b0:4eb:1b53:47a8 with SMTP id
+ 71dfb90a1353d-4eb1b5357bdmr4491058e0c.15.1717483281356; Mon, 03 Jun 2024
+ 23:41:21 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87r0ddcm38.fsf@pond.sub.org>
-Received-SPF: pass client-ip=198.175.65.11; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+References: <20240603055248.3928469-1-fea.wang@sifive.com>
+ <20240603055248.3928469-2-fea.wang@sifive.com>
+ <CAJy5ezr-_xnjXqtZnqaWSagMD8pGgU2bDUD0TsHxfkYvQYeHpw@mail.gmail.com>
+In-Reply-To: <CAJy5ezr-_xnjXqtZnqaWSagMD8pGgU2bDUD0TsHxfkYvQYeHpw@mail.gmail.com>
+From: Fea Wang <fea.wang@sifive.com>
+Date: Tue, 4 Jun 2024 14:41:10 +0800
+Message-ID: <CAKhCfscTZ7PVosWxoozYOpJUhVj=vYPChnEZzK0SYrd6KORi_g@mail.gmail.com>
+Subject: Re: [PATCH 1/4] hw/dma: Enhance error handling in loading description
+To: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, 
+ Alistair Francis <alistair@alistair23.me>,
+ Peter Maydell <peter.maydell@linaro.org>, 
+ Jason Wang <jasowang@redhat.com>, "open list:Xilinx Zynq" <qemu-arm@nongnu.org>
+Content-Type: multipart/alternative; boundary="000000000000e4b1c2061a0abc6e"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::a31;
+ envelope-from=fea.wang@sifive.com; helo=mail-vk1-xa31.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,68 +90,207 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jun 04, 2024 at 07:29:15AM +0200, Markus Armbruster wrote:
-> Date: Tue, 04 Jun 2024 07:29:15 +0200
-> From: Markus Armbruster <armbru@redhat.com>
-> Subject: Re: [PATCH] hw/core: Rename CpuTopology to CPUTopology
-> 
-> Zhao Liu <zhao1.liu@intel.com> writes:
-> 
-> > On Mon, Jun 03, 2024 at 01:54:15PM +0200, Markus Armbruster wrote:
-> >> Date: Mon, 03 Jun 2024 13:54:15 +0200
-> >> From: Markus Armbruster <armbru@redhat.com>
-> >> Subject: Re: [PATCH] hw/core: Rename CpuTopology to CPUTopology
-> >> 
-> >> Zhao Liu <zhao1.liu@intel.com> writes:
-> >> 
-> >> > Use CPUTopology to honor the generic style of CPU capitalization
-> >> > abbreviations.
-> >> >
-> >> > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-> >> 
-> >> Is CPUFoo really more common than CpuFoo?  It isn't in the qapi
-> >> schema...
-> >
-> > Hi Markus, do you think this style needs to be standardized?
-> >
-> > All-caps cases, like the widely used CPUState.
-> >
-> > And the common structures declared in include/qemu/typedefs.h, are all
-> > using CPU, not Cpu...
-> >
-> > If you feel this is necessary, I'd be happy to help more places change
-> > their names to standardize their style...
-> 
-> The situation is unfortunate[*].  The renaming cure could be worse than
-> the disease, though.
-> 
-> In a situation like this, settling for local consistency is often the
-> least bad.  machine.json is locally consistent: it consistently uses
-> CpuFoo.
-> 
-> 
-> [*] We suck at systematic, disciplined naming.
+--000000000000e4b1c2061a0abc6e
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-I see, by local consistency principle, my another patch (adding topology
-enumeration in machine.json) should use Cpu...
+Hi Edgar,
+Thank you for recommending to me. I will make the change in the next
+version of the patch series.
 
-The CpuTopology that this patch modifies is located in include/hw/boards.h,
-where that looks as if this file prefers to use CPUs (defining the
-CPUArchIdList and CPUArchId). And there's also another case for all-caps,
-SMPCompatProps (using SMP not Smp). So I feel like this patch change
-still makes sense... Sorry if I'm being a bit obsessive.
+Sincerely,
+Fea
 
-The most confusing thing in include/hw/boards.h is this structure:
+On Mon, Jun 3, 2024 at 6:19=E2=80=AFPM Edgar E. Iglesias <edgar.iglesias@gm=
+ail.com>
+wrote:
 
-typedef struct CPUArchId {
-    ...
-    CpuInstanceProperties props;
-    CPUState *cpu;
-    ...
-} CPUArchId;
+> On Mon, Jun 3, 2024 at 7:47=E2=80=AFAM Fea.Wang <fea.wang@sifive.com> wro=
+te:
+>
+>> Loading a description from memory may cause a bus-error. In this
+>> case, the DMA should stop working, set the error flag, and return
+>> the error value.
+>>
+>> Signed-off-by: Fea.Wang <fea.wang@sifive.com>
+>>
+>
+>
+> Hi Fea,
+>
+> I've got a couple of small comments:
+>
+>
+> ---
+>>  hw/dma/xilinx_axidma.c | 16 ++++++++++++++--
+>>  1 file changed, 14 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/hw/dma/xilinx_axidma.c b/hw/dma/xilinx_axidma.c
+>> index 0ae056ed06..4b475e5484 100644
+>> --- a/hw/dma/xilinx_axidma.c
+>> +++ b/hw/dma/xilinx_axidma.c
+>> @@ -71,8 +71,10 @@ enum {
+>>  enum {
+>>      DMASR_HALTED =3D 1,
+>>      DMASR_IDLE  =3D 2,
+>> +    DMASR_SLVERR =3D 1 << 5,
+>>
+>
+> We should also add DMASR_DECERR =3D 1 << 6
+>
+>
+>>      DMASR_IOC_IRQ  =3D 1 << 12,
+>>      DMASR_DLY_IRQ  =3D 1 << 13,
+>> +    DMASR_ERR_IRQ  =3D 1 << 14,
+>>
+>>      DMASR_IRQ_MASK =3D 7 << 12
+>>  };
+>> @@ -190,17 +192,27 @@ static inline int streamid_from_addr(hwaddr addr)
+>>      return sid;
+>>  }
+>>
+>> -static void stream_desc_load(struct Stream *s, hwaddr addr)
+>> +static MemTxResult stream_desc_load(struct Stream *s, hwaddr addr)
+>>  {
+>>      struct SDesc *d =3D &s->desc;
+>>
+>> -    address_space_read(&s->dma->as, addr, MEMTXATTRS_UNSPECIFIED, d,
+>> sizeof *d);
+>> +    MemTxResult result =3D address_space_read(&s->dma->as,
+>> +                                            addr, MEMTXATTRS_UNSPECIFIE=
+D,
+>> +                                            d, sizeof *d);
+>> +    if (result !=3D MEMTX_OK) {
+>> +        s->regs[R_DMACR] &=3D ~DMACR_RUNSTOP;
+>> +        s->regs[R_DMASR] |=3D DMASR_HALTED;
+>> +        s->regs[R_DMASR] |=3D DMASR_SLVERR;
+>>
+>
+> ... and map MEMTX_DECODE_ERROR to DMASR_DECERR and everything else to
+> SLVERR, for example:
+> if (result =3D=3D MEMTX_DECODE_ERROR) {
+>     s->regs[R_DMASR] |=3D DMASR_DECERR;
+> } else {
+>     s->regs[R_DMASR] |=3D DMASR_SLVERR;
+> }
+>
+>
+>> +        s->regs[R_DMASR] |=3D DMASR_ERR_IRQ;
+>> +        return result;
+>> +    }
+>>
+>>      /* Convert from LE into host endianness.  */
+>>      d->buffer_address =3D le64_to_cpu(d->buffer_address);
+>>      d->nxtdesc =3D le64_to_cpu(d->nxtdesc);
+>>      d->control =3D le32_to_cpu(d->control);
+>>      d->status =3D le32_to_cpu(d->status);
+>> +    return result;
+>>  }
+>>
+>>  static void stream_desc_store(struct Stream *s, hwaddr addr)
+>> --
+>> 2.34.1
+>>
+>>
 
-CPU and Cpu are mixed together, but this is also explained by the local
-consistency principle, since the CpuInstanceProperties belong to
-machine.json. ;-)
+--000000000000e4b1c2061a0abc6e
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+<div dir=3D"ltr">Hi=C2=A0Edgar,<div>Thank you for recommending to me. I wil=
+l make the change in the next version of the patch series.</div><div><br></=
+div><div>Sincerely,</div><div>Fea</div></div><br><div class=3D"gmail_quote"=
+><div dir=3D"ltr" class=3D"gmail_attr">On Mon, Jun 3, 2024 at 6:19=E2=80=AF=
+PM Edgar E. Iglesias &lt;<a href=3D"mailto:edgar.iglesias@gmail.com">edgar.=
+iglesias@gmail.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote=
+" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);=
+padding-left:1ex"><div dir=3D"ltr"><div dir=3D"ltr">On Mon, Jun 3, 2024 at =
+7:47=E2=80=AFAM Fea.Wang &lt;<a href=3D"mailto:fea.wang@sifive.com" target=
+=3D"_blank">fea.wang@sifive.com</a>&gt; wrote:<br></div><div class=3D"gmail=
+_quote"><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex=
+;border-left:1px solid rgb(204,204,204);padding-left:1ex">Loading a descrip=
+tion from memory may cause a bus-error. In this<br>
+case, the DMA should stop working, set the error flag, and return<br>
+the error value.<br>
+<br>
+Signed-off-by: Fea.Wang &lt;<a href=3D"mailto:fea.wang@sifive.com" target=
+=3D"_blank">fea.wang@sifive.com</a>&gt;<br></blockquote><div><br></div><div=
+><br></div><div>Hi Fea,</div><div><br></div><div>I&#39;ve got a couple of s=
+mall comments:</div><div>=C2=A0</div><div><br></div><blockquote class=3D"gm=
+ail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,=
+204,204);padding-left:1ex">
+---<br>
+=C2=A0hw/dma/xilinx_axidma.c | 16 ++++++++++++++--<br>
+=C2=A01 file changed, 14 insertions(+), 2 deletions(-)<br>
+<br>
+diff --git a/hw/dma/xilinx_axidma.c b/hw/dma/xilinx_axidma.c<br>
+index 0ae056ed06..4b475e5484 100644<br>
+--- a/hw/dma/xilinx_axidma.c<br>
++++ b/hw/dma/xilinx_axidma.c<br>
+@@ -71,8 +71,10 @@ enum {<br>
+=C2=A0enum {<br>
+=C2=A0 =C2=A0 =C2=A0DMASR_HALTED =3D 1,<br>
+=C2=A0 =C2=A0 =C2=A0DMASR_IDLE=C2=A0 =3D 2,<br>
++=C2=A0 =C2=A0 DMASR_SLVERR =3D 1 &lt;&lt; 5,<br></blockquote><div><br></di=
+v><div>We should also add DMASR_DECERR =3D 1 &lt;&lt; 6</div><div>=C2=A0</d=
+iv><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;bord=
+er-left:1px solid rgb(204,204,204);padding-left:1ex">
+=C2=A0 =C2=A0 =C2=A0DMASR_IOC_IRQ=C2=A0 =3D 1 &lt;&lt; 12,<br>
+=C2=A0 =C2=A0 =C2=A0DMASR_DLY_IRQ=C2=A0 =3D 1 &lt;&lt; 13,<br>
++=C2=A0 =C2=A0 DMASR_ERR_IRQ=C2=A0 =3D 1 &lt;&lt; 14,<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0DMASR_IRQ_MASK =3D 7 &lt;&lt; 12<br>
+=C2=A0};<br>
+@@ -190,17 +192,27 @@ static inline int streamid_from_addr(hwaddr addr)<br>
+=C2=A0 =C2=A0 =C2=A0return sid;<br>
+=C2=A0}<br>
+<br>
+-static void stream_desc_load(struct Stream *s, hwaddr addr)<br>
++static MemTxResult stream_desc_load(struct Stream *s, hwaddr addr)<br>
+=C2=A0{<br>
+=C2=A0 =C2=A0 =C2=A0struct SDesc *d =3D &amp;s-&gt;desc;<br>
+<br>
+-=C2=A0 =C2=A0 address_space_read(&amp;s-&gt;dma-&gt;as, addr, MEMTXATTRS_U=
+NSPECIFIED, d, sizeof *d);<br>
++=C2=A0 =C2=A0 MemTxResult result =3D address_space_read(&amp;s-&gt;dma-&gt=
+;as,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 addr, MEMTXATTRS_UNSPECIFIED,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 d, sizeof *d);<br>
++=C2=A0 =C2=A0 if (result !=3D MEMTX_OK) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 s-&gt;regs[R_DMACR] &amp;=3D ~DMACR_RUNSTOP;<b=
+r>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 s-&gt;regs[R_DMASR] |=3D DMASR_HALTED;<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 s-&gt;regs[R_DMASR] |=3D DMASR_SLVERR;<br></bl=
+ockquote><div><br></div><div>... and map MEMTX_DECODE_ERROR to DMASR_DECERR=
+ and everything else to SLVERR, for example:</div><div>if (result =3D=3D ME=
+MTX_DECODE_ERROR) {</div><div>=C2=A0 =C2=A0 s-&gt;regs[R_DMASR] |=3D DMASR_=
+DECERR;</div><div>} else {<br><div>=C2=A0 =C2=A0 s-&gt;regs[R_DMASR] |=3D D=
+MASR_SLVERR;</div></div><div>}</div><div>=C2=A0</div><blockquote class=3D"g=
+mail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204=
+,204,204);padding-left:1ex">
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 s-&gt;regs[R_DMASR] |=3D DMASR_ERR_IRQ;<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 return result;<br>
++=C2=A0 =C2=A0 }<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0/* Convert from LE into host endianness.=C2=A0 */<br>
+=C2=A0 =C2=A0 =C2=A0d-&gt;buffer_address =3D le64_to_cpu(d-&gt;buffer_addre=
+ss);<br>
+=C2=A0 =C2=A0 =C2=A0d-&gt;nxtdesc =3D le64_to_cpu(d-&gt;nxtdesc);<br>
+=C2=A0 =C2=A0 =C2=A0d-&gt;control =3D le32_to_cpu(d-&gt;control);<br>
+=C2=A0 =C2=A0 =C2=A0d-&gt;status =3D le32_to_cpu(d-&gt;status);<br>
++=C2=A0 =C2=A0 return result;<br>
+=C2=A0}<br>
+<br>
+=C2=A0static void stream_desc_store(struct Stream *s, hwaddr addr)<br>
+-- <br>
+2.34.1<br>
+<br>
+</blockquote></div></div>
+</blockquote></div>
+
+--000000000000e4b1c2061a0abc6e--
 
