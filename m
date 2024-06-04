@@ -2,65 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC4458FB1E9
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 14:14:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45E768FB1EF
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 14:15:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sET2u-0003JU-S6; Tue, 04 Jun 2024 08:13:44 -0400
+	id 1sET3q-0003ic-4X; Tue, 04 Jun 2024 08:14:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1sET2s-0003HX-Fr
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 08:13:42 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <arei.gonglei@huawei.com>)
+ id 1sET3l-0003gK-EO
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 08:14:37 -0400
+Received: from szxga01-in.huawei.com ([45.249.212.187])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1sET2p-0006Yi-AC
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 08:13:42 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.31])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VtqBw0GTZz6JBT1;
- Tue,  4 Jun 2024 20:09:12 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
- by mail.maildlp.com (Postfix) with ESMTPS id BF22D140DD5;
- Tue,  4 Jun 2024 20:13:27 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Tue, 4 Jun
- 2024 13:13:27 +0100
-Date: Tue, 4 Jun 2024 13:13:26 +0100
-To: Markus Armbruster <armbru@redhat.com>
-CC: fan <nifan.cxl@gmail.com>, <qemu-devel@nongnu.org>,
- <linux-cxl@vger.kernel.org>, <gregory.price@memverge.com>,
- <ira.weiny@intel.com>, <dan.j.williams@intel.com>,
- <a.manzanares@samsung.com>, <dave@stgolabs.net>, <nmtadam.samsung@gmail.com>, 
- <jim.harris@samsung.com>, <Jorgen.Hansen@wdc.com>, <wj28.lee@gmail.com>, Fan
- Ni <fan.ni@samsung.com>, <mst@redhat.com>
-Subject: Re: [PATCH v7 09/12] hw/cxl/events: Add qmp interfaces to
- add/release dynamic capacity extents
-Message-ID: <20240604131326.00005fe0@Huawei.com>
-In-Reply-To: <20240604125428.00003a1d@Huawei.com>
-References: <20240418232902.583744-1-fan.ni@samsung.com>
- <20240418232902.583744-10-fan.ni@samsung.com>
- <877cgkxzal.fsf@pond.sub.org> <Zivk37xBGPsL_yo5@debian>
- <87h6fkob0t.fsf@pond.sub.org> <ZjEnwPeoivsW8y5Z@debian>
- <20240501155812.00002ec3@Huawei.com> <87cyox9icl.fsf@pond.sub.org>
- <20240604125428.00003a1d@Huawei.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <arei.gonglei@huawei.com>)
+ id 1sET3h-0006wG-6p
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 08:14:36 -0400
+Received: from mail.maildlp.com (unknown [172.19.163.252])
+ by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4VtqDH0l8gzxRTf;
+ Tue,  4 Jun 2024 20:10:23 +0800 (CST)
+Received: from dggpemf200006.china.huawei.com (unknown [7.185.36.61])
+ by mail.maildlp.com (Postfix) with ESMTPS id CF78D180085;
+ Tue,  4 Jun 2024 20:14:18 +0800 (CST)
+Received: from DESKTOP-8LI8G6S.china.huawei.com (10.173.124.235) by
+ dggpemf200006.china.huawei.com (7.185.36.61) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 4 Jun 2024 20:14:18 +0800
+To: <qemu-devel@nongnu.org>
+CC: <peterx@redhat.com>, <yu.zhang@ionos.com>, <mgalaxy@akamai.com>,
+ <elmar.gerdes@ionos.com>, <zhengchuan@huawei.com>, <berrange@redhat.com>,
+ <armbru@redhat.com>, <lizhijian@fujitsu.com>, <pbonzini@redhat.com>,
+ <mst@redhat.com>, <xiexiangyou@huawei.com>, <linux-rdma@vger.kernel.org>,
+ <lixiao91@huawei.com>, <arei.gonglei@huawei.com>, <jinpu.wang@ionos.com>,
+ Jialin Wang <wangjialin23@huawei.com>
+Subject: [PATCH 0/6] refactor RDMA live migration based on rsocket API
+Date: Tue, 4 Jun 2024 20:14:06 +0800
+Message-ID: <1717503252-51884-1-git-send-email-arei.gonglei@huawei.com>
+X-Mailer: git-send-email 2.8.2.windows.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml500003.china.huawei.com (7.191.162.67) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+Content-Type: text/plain
+X-Originating-IP: [10.173.124.235]
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ dggpemf200006.china.huawei.com (7.185.36.61)
+Received-SPF: pass client-ip=45.249.212.187;
+ envelope-from=arei.gonglei@huawei.com; helo=szxga01-in.huawei.com
 X-Spam_score_int: -41
 X-Spam_score: -4.2
 X-Spam_bar: ----
 X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -74,130 +64,75 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
+Reply-to:  Gonglei <arei.gonglei@huawei.com>
+From:  Gonglei via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 4 Jun 2024 12:54:28 +0100
-Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
+From: Jialin Wang <wangjialin23@huawei.com>
 
-> On Tue, 04 Jun 2024 11:18:18 +0200
-> Markus Armbruster <armbru@redhat.com> wrote:
-> 
-> > I finally got around to read this slowly.  Thank you, Fan and Jonathan!
-> > 
-> > I'm getting some "incomplete" vibes: "if we ever implement", "patches
-> > for this on list", "we aren't emulating this yet at all", and ...  
-> 
-> Absolutely.  There is a bunch of stuff that we reject today but
-> the interfaces allow you to specify it and align with the CXL specification
-> Fabric Management API definition which is the spec used to control this
-> stuff from a BMC etc.  If that doesn't work we have a hardware errata
-> problem, so hopefully that is fairly stable.
-> 
-> I think I can publicly confirm there are some related errata in flight,
-> seeing as we said we'd raise questions on some aspects in the kernel and
-> QEMU series preceding this one (so no IP secrecy issues). These are as a
-> result of this work from Fan, but we have carefully avoided implementing
-> anything that 'may' change.
-> 
-> 
-> > 
-> > Jonathan Cameron <Jonathan.Cameron@Huawei.com> writes:
-> > 
-> > [...]
-> >   
-> > > Only thing I'd add is that for now (because we don't need it for testing
-> > > the kernel flows) is that this does not provide any way for external
-> > > agents (e.g. our 'fabric manager' to find out what the state is - i.e.
-> > > if the extents have been accepted by the host etc). That stuff is all
-> > > defined by the spec, but not yet in the QMP interface.  At somepoint
-> > > we may want to add that as a state query type interface.    
-> > 
-> > ... this, too.
-> > 
-> > In review of v5, I asked whether this interface needs to be stable.
-> > 
-> > "Not stable" doesn't mean we change an interface without thought.  It
-> > merely means we can change it much, much faster, and with much less
-> > overhead.
-> > 
-> > I understand you want it chiefly for CXL development.  Development aids
-> > commonly don't need to be stable.  
-> 
-> Ok. If it makes sense to make this unstable for now I'm fine with that.
-> I don't see why it would change beyond in backwards compatible fashion
-> with new optional fields to cover future specification updates allowing
-> for more information. However I've been wrong on such things before.
-> 
-> So I'm fine adding a patch on top of v8 marking them unstable for now.
+Hi,
 
-Does this look correct?  Applied on top of the docs update patch just
-posted in response to v8.  In my view neither is a blocker on Michael
-Tsirkin sending a pull request but +CC so he is aware of discussion.
+This patch series attempts to refactor RDMA live migration by
+introducing a new QIOChannelRDMA class based on the rsocket API.
 
-[PATCH] hw/cxl/events: Mark cxl-add-dynamic-capacity and cxl-release-dynamic-capcity unstable
+The /usr/include/rdma/rsocket.h provides a higher level rsocket API
+that is a 1-1 match of the normal kernel 'sockets' API, which hides the
+detail of rdma protocol into rsocket and allows us to add support for
+some modern features like multifd more easily.
 
-Markus suggested that we make the unstable. I don't expect these
-interfaces to change because of their tight coupling to the Compute
-Express Link (CXL) Specification, Revision 3.1 Fabric Management API
-definitions which can only be extended in backwards compatible way.
-However, there seems little disadvantage in taking a cautious path
-for now and marking them as unstable interfaces.
+Here is the previous discussion on refactoring RDMA live migration using
+the rsocket API:
 
-Suggested-by: Markus Armbruster <armbru@redhat.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
----
- qapi/cxl.json | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+https://lore.kernel.org/qemu-devel/20240328130255.52257-1-philmd@linaro.org/
 
-diff --git a/qapi/cxl.json b/qapi/cxl.json
-index a38622a0d1..bdfac67c47 100644
---- a/qapi/cxl.json
-+++ b/qapi/cxl.json
-@@ -453,6 +453,10 @@
- # @extents: The "Extent List" field as defined in Compute Express Link
- #     (CXL) Specification, Revision 3.1, Table 7-70.
- #
-+# Features:
-+#
-+# @unstable: For now this command is subject to change.
-+#
- # Since : 9.1
- ##
- { 'command': 'cxl-add-dynamic-capacity',
-@@ -462,7 +466,8 @@
-             'region': 'uint8',
-             '*tag': 'str',
-             'extents': [ 'CxlDynamicCapacityExtent' ]
--           }
-+           },
-+  'features': [ 'unstable' ]
- }
- 
- ##
-@@ -527,6 +532,10 @@
- # @extents: The "Extent List" field as defined in Compute Express
- #     Link (CXL) Specification, Revision 3.1, Table 7-71.
- #
-+# Features:
-+#
-+# @unstable: For now this command is subject to change.
-+#
- # Since : 9.1
- ##
- { 'command': 'cxl-release-dynamic-capacity',
-@@ -538,5 +547,6 @@
-             'region': 'uint8',
-             '*tag': 'str',
-             'extents': [ 'CxlDynamicCapacityExtent' ]
--           }
-+           },
-+  'features': [ 'unstable' ]
- }
+We have encountered some bugs when using rsocket and plan to submit them to
+the rdma-core community.
+
+In addition, the use of rsocket makes our programming more convenient,
+but it must be noted that this method introduces multiple memory copies,
+which can be imagined that there will be a certain performance degradation,
+hoping that friends with RDMA network cards can help verify, thank you!
+
+Jialin Wang (6):
+  migration: remove RDMA live migration temporarily
+  io: add QIOChannelRDMA class
+  io/channel-rdma: support working in coroutine
+  tests/unit: add test-io-channel-rdma.c
+  migration: introduce new RDMA live migration
+  migration/rdma: support multifd for RDMA migration
+
+ docs/rdma.txt                     |  420 ---
+ include/io/channel-rdma.h         |  165 ++
+ io/channel-rdma.c                 |  798 ++++++
+ io/meson.build                    |    1 +
+ io/trace-events                   |   14 +
+ meson.build                       |    6 -
+ migration/meson.build             |    3 +-
+ migration/migration-stats.c       |    5 +-
+ migration/migration-stats.h       |    4 -
+ migration/migration.c             |   13 +-
+ migration/migration.h             |    9 -
+ migration/multifd.c               |   10 +
+ migration/options.c               |   16 -
+ migration/options.h               |    2 -
+ migration/qemu-file.c             |    1 -
+ migration/ram.c                   |   90 +-
+ migration/rdma.c                  | 4205 +----------------------------
+ migration/rdma.h                  |   67 +-
+ migration/savevm.c                |    2 +-
+ migration/trace-events            |   68 +-
+ qapi/migration.json               |   13 +-
+ scripts/analyze-migration.py      |    3 -
+ tests/unit/meson.build            |    1 +
+ tests/unit/test-io-channel-rdma.c |  276 ++
+ 24 files changed, 1360 insertions(+), 4832 deletions(-)
+ delete mode 100644 docs/rdma.txt
+ create mode 100644 include/io/channel-rdma.h
+ create mode 100644 io/channel-rdma.c
+ create mode 100644 tests/unit/test-io-channel-rdma.c
+
 -- 
-2.39.2
-
+2.43.0
 
 
