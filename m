@@ -2,82 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60B558FAB50
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 08:50:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8957C8FAB5D
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 08:51:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sENwh-0005sc-FS; Tue, 04 Jun 2024 02:47:00 -0400
+	id 1sENwo-0006MH-LJ; Tue, 04 Jun 2024 02:47:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sENvj-0004Xn-CK
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:46:03 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1sENvm-0004Yl-Qc
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:46:04 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sENvc-0007cC-KU
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:45:54 -0400
+ id 1sENvk-0007ci-SB
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:46:02 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717483552;
+ s=mimecast20190719; t=1717483559;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=yQxTyCkViFqK9megWi2GDlafsm2LHU0mRoruP/ycIy0=;
- b=DqNehMoPnqpv3GLHhRaGrBuQSzpMphtfv5uLwiKVLkprnNPSRCUWR/NOZGQ2Eh75LZp9kB
- cIMohC90zGhP1pJHcx4u4T5CjiHX88AKsX0mnJucjYAKfNeqhar4MQ/smrGZc0jyNUGCsR
- /NtpggNB8Cq0LYU+OzFGntwj7LYa/qY=
-Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
- [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=8bt9EMAvb2uqqlG2EVvh0go+BINiKLQvUIsp6j0IIbQ=;
+ b=RRLpxGdGoYEraUWprkwGdxZuSjWRN7HnG6fdhVeReie4DhKCL7m1N2Uam9gIGZ3c7wnH+Z
+ pneZN4QAmTadgUWWRKVPPIPP4UuFzsooLGVms9EJzZizgR6EEyP+xTTfg99NPFyou/W7hy
+ VX+7bWBQj299SWWkHHoY2r8Y/MCle7o=
+Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
+ [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-607-o4gh8EWnPyeQJ7mmhh5pgA-1; Tue, 04 Jun 2024 02:45:50 -0400
-X-MC-Unique: o4gh8EWnPyeQJ7mmhh5pgA-1
-Received: by mail-lf1-f69.google.com with SMTP id
- 2adb3069b0e04-52b84eb911dso3182086e87.0
- for <qemu-devel@nongnu.org>; Mon, 03 Jun 2024 23:45:50 -0700 (PDT)
+ us-mta-632-Q_ngoZHJOIyKbhFsJP2nVQ-1; Tue, 04 Jun 2024 02:45:52 -0400
+X-MC-Unique: Q_ngoZHJOIyKbhFsJP2nVQ-1
+Received: by mail-lf1-f71.google.com with SMTP id
+ 2adb3069b0e04-52b950b3dc7so2001850e87.0
+ for <qemu-devel@nongnu.org>; Mon, 03 Jun 2024 23:45:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717483548; x=1718088348;
+ d=1e100.net; s=20230601; t=1717483551; x=1718088351;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=yQxTyCkViFqK9megWi2GDlafsm2LHU0mRoruP/ycIy0=;
- b=rJWFvjpNqahnrgHR0jh8bSCn5dcqAEHaz9lww4QRwb4MSAwNmrI2H04kHyM01Uy2fs
- dqYy5jtzguU8RuKceo68+MoMJPid7OFrY2UgDX7EsKS1F4zgLZ6xgO+8EDOnKEK5fkYB
- tiXbe864wO4F55ZwiSBOpFcphhWbwTVrXJOsWbYr2J3tPARpTZtxzd1XBesMVaSxXPqc
- /J54j5KuIikxbkrctmGqJ+axq70ANaQL6VH4qqdisGvTV8YbyCqThEAslJVG5TLgb1cK
- FuRTjeQ65WonlcCc3z+5rI9Sa1jh91ntriMXgPbF6wFj8hHwM8YnrIg460SFE/LuHdjn
- fU4Q==
-X-Gm-Message-State: AOJu0YxifrWkiFYqKh3k80l7Hr6+HCyi2vTd74tdMfgbC+HoqeAQ3YuI
- pMv9ZqWspF5gZXcRhqrFZj0ddbK1huX3HA/1VvNMdY6vq8Qr4sdAGDUfgmm+69zA+YAy+/lBlPp
- z+sdU+3XviTjjmgtrKxnIbkSKWgNsDdAA8821+v8cxlChFkpgz9Vf6xy3VH8IaFPjOuJQ5Cvawb
- T5SLz0nDEU8g9hyhr0LBYpr3qLrDruYB8+DsKH
-X-Received: by 2002:a05:6512:7b:b0:52b:8843:b084 with SMTP id
- 2adb3069b0e04-52b896bfa33mr7463253e87.47.1717483548385; 
- Mon, 03 Jun 2024 23:45:48 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFM1Qtu3YZM5185bh8mBy+tZLZLHFna0aaQXvn57Y/jiYRFD+Wtr96dinCcWnjRKnxBtsdsIQ==
-X-Received: by 2002:a05:6512:7b:b0:52b:8843:b084 with SMTP id
- 2adb3069b0e04-52b896bfa33mr7463232e87.47.1717483547879; 
- Mon, 03 Jun 2024 23:45:47 -0700 (PDT)
+ bh=8bt9EMAvb2uqqlG2EVvh0go+BINiKLQvUIsp6j0IIbQ=;
+ b=MOVxU4gdg6NH2c6VaA/4EtynysBeTYVX+hAPV0xAhUasQQJ1HPwwiHtsyQNz2kzV69
+ VMJZGiYXBj1S92+GvGar4NIw8BBC4qUlZ6IkCHZsXI666FYRZ3Gb099C4mFFRQVajnaP
+ 6Wd0Jm8k7bLbkfJdNkYPOFcXUo6uUtKI0tBngQ7NEuY1t9isW0WcYGS+3qcr0HD5+wbF
+ AbDQ8joo17uwxaNa4U7oz3xRT1rgeLUg6DgLLcmzv0zdCMr9gyNTfDYapw7yp9FRqQ0p
+ 8k0OIVFZOqs/Rek9XpWbIWFYrjThTjEkDRqlqM6voObY3WhoXdTkDnWpLn2E+3bWCBdv
+ kXJw==
+X-Gm-Message-State: AOJu0Yzc3tWUdJGSO3w5L3RnH/gR3I+zhm5A4W4SEp2uA2pj1NvxXGMa
+ 63C4wlNDJ5Jnu8quSiX9N9Q+vUJaPN+MvU+3HJpQsgfmqZ21Koean1kv2vyuTm9cOSZ2zIIEXKD
+ kzvUWXhGMSF/WVz8LBtoyH06D+Du9M1hlzx8tq0lNspjgcSK2W8vMmGRILK1Zu4aa6M+aR7wYDY
+ uDd1AIXiDoLSNmXvgOTzk6CzhZMnXPa42Rop6l
+X-Received: by 2002:a19:2d1b:0:b0:52b:8c88:2d73 with SMTP id
+ 2adb3069b0e04-52b8c882e43mr7124679e87.52.1717483550811; 
+ Mon, 03 Jun 2024 23:45:50 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEbRr9D2dml/HvZIidIMaZJD6E+zQe2s0UM/Pv4pblvRIT+bBNC3JoJAXdOHQwA2XV0XBB7GA==
+X-Received: by 2002:a19:2d1b:0:b0:52b:8c88:2d73 with SMTP id
+ 2adb3069b0e04-52b8c882e43mr7124665e87.52.1717483550382; 
+ Mon, 03 Jun 2024 23:45:50 -0700 (PDT)
 Received: from avogadro.local ([151.81.115.112])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-57a31b99445sm6719543a12.18.2024.06.03.23.45.47
+ a640c23a62f3a-a68ce1e4462sm394866466b.197.2024.06.03.23.45.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Jun 2024 23:45:47 -0700 (PDT)
+ Mon, 03 Jun 2024 23:45:49 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Michael Roth <michael.roth@amd.com>,
-	Pankaj Gupta <pankaj.gupta@amd.com>
-Subject: [PULL 34/45] i386/sev: Add support for SNP CPUID validation
-Date: Tue,  4 Jun 2024 08:43:58 +0200
-Message-ID: <20240604064409.957105-35-pbonzini@redhat.com>
+Cc: Brijesh Singh <brijesh.singh@amd.com>, Michael Roth <michael.roth@amd.com>,
+ Pankaj Gupta <pankaj.gupta@amd.com>
+Subject: [PULL 35/45] hw/i386/sev: Add support to encrypt BIOS when SEV-SNP is
+ enabled
+Date: Tue,  4 Jun 2024 08:43:59 +0200
+Message-ID: <20240604064409.957105-36-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240604064409.957105-1-pbonzini@redhat.com>
 References: <20240604064409.957105-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -102,252 +103,154 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Michael Roth <michael.roth@amd.com>
+From: Brijesh Singh <brijesh.singh@amd.com>
 
-SEV-SNP firmware allows a special guest page to be populated with a
-table of guest CPUID values so that they can be validated through
-firmware before being loaded into encrypted guest memory where they can
-be used in place of hypervisor-provided values[1].
+As with SEV, an SNP guest requires that the BIOS be part of the initial
+encrypted/measured guest payload. Extend sev_encrypt_flash() to handle
+the SNP case and plumb through the GPA of the BIOS location since this
+is needed for SNP.
 
-As part of SEV-SNP guest initialization, use this interface to validate
-the CPUID entries reported by KVM_GET_CPUID2 prior to initial guest
-start and populate the CPUID page reserved by OVMF with the resulting
-encrypted data.
-
-[1] SEV SNP Firmware ABI Specification, Rev. 0.8, 8.13.2.6
-
+Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
 Signed-off-by: Michael Roth <michael.roth@amd.com>
 Signed-off-by: Pankaj Gupta <pankaj.gupta@amd.com>
-Message-ID: <20240530111643.1091816-21-pankaj.gupta@amd.com>
+Message-ID: <20240530111643.1091816-25-pankaj.gupta@amd.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/sev.c | 164 +++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 162 insertions(+), 2 deletions(-)
+ include/hw/i386/x86.h         |  2 +-
+ target/i386/sev.h             |  2 +-
+ hw/i386/pc_sysfw.c            | 12 +++++++-----
+ hw/i386/x86-common.c          |  2 +-
+ target/i386/sev-sysemu-stub.c |  2 +-
+ target/i386/sev.c             |  5 +++--
+ 6 files changed, 14 insertions(+), 11 deletions(-)
 
-diff --git a/target/i386/sev.c b/target/i386/sev.c
-index c57534fca2b..06401f0526f 100644
---- a/target/i386/sev.c
-+++ b/target/i386/sev.c
-@@ -200,6 +200,36 @@ static const char *const sev_fw_errlist[] = {
+diff --git a/include/hw/i386/x86.h b/include/hw/i386/x86.h
+index b006f16b8d3..d43cb3908e6 100644
+--- a/include/hw/i386/x86.h
++++ b/include/hw/i386/x86.h
+@@ -154,6 +154,6 @@ void ioapic_init_gsi(GSIState *gsi_state, Object *parent);
+ DeviceState *ioapic_init_secondary(GSIState *gsi_state);
  
- #define SEV_FW_MAX_ERROR      ARRAY_SIZE(sev_fw_errlist)
+ /* pc_sysfw.c */
+-void x86_firmware_configure(void *ptr, int size);
++void x86_firmware_configure(hwaddr gpa, void *ptr, int size);
  
-+/* <linux/kvm.h> doesn't expose this, so re-use the max from kvm.c */
-+#define KVM_MAX_CPUID_ENTRIES 100
-+
-+typedef struct KvmCpuidInfo {
-+    struct kvm_cpuid2 cpuid;
-+    struct kvm_cpuid_entry2 entries[KVM_MAX_CPUID_ENTRIES];
-+} KvmCpuidInfo;
-+
-+#define SNP_CPUID_FUNCTION_MAXCOUNT 64
-+#define SNP_CPUID_FUNCTION_UNKNOWN 0xFFFFFFFF
-+
-+typedef struct {
-+    uint32_t eax_in;
-+    uint32_t ecx_in;
-+    uint64_t xcr0_in;
-+    uint64_t xss_in;
-+    uint32_t eax;
-+    uint32_t ebx;
-+    uint32_t ecx;
-+    uint32_t edx;
-+    uint64_t reserved;
-+} __attribute__((packed)) SnpCpuidFunc;
-+
-+typedef struct {
-+    uint32_t count;
-+    uint32_t reserved1;
-+    uint64_t reserved2;
-+    SnpCpuidFunc entries[SNP_CPUID_FUNCTION_MAXCOUNT];
-+} __attribute__((packed)) SnpCpuidInfo;
-+
- static int
- sev_ioctl(int fd, int cmd, void *data, int *error)
- {
-@@ -788,6 +818,35 @@ out:
-     return ret;
- }
+ #endif
+diff --git a/target/i386/sev.h b/target/i386/sev.h
+index cc12824dd65..858005a119c 100644
+--- a/target/i386/sev.h
++++ b/target/i386/sev.h
+@@ -59,7 +59,7 @@ uint32_t sev_get_cbit_position(void);
+ uint32_t sev_get_reduced_phys_bits(void);
+ bool sev_add_kernel_loader_hashes(SevKernelLoaderContext *ctx, Error **errp);
  
-+static void
-+sev_snp_cpuid_report_mismatches(SnpCpuidInfo *old,
-+                                SnpCpuidInfo *new)
-+{
-+    size_t i;
-+
-+    if (old->count != new->count) {
-+        error_report("SEV-SNP: CPUID validation failed due to count mismatch,"
-+                     "provided: %d, expected: %d", old->count, new->count);
-+        return;
-+    }
-+
-+    for (i = 0; i < old->count; i++) {
-+        SnpCpuidFunc *old_func, *new_func;
-+
-+        old_func = &old->entries[i];
-+        new_func = &new->entries[i];
-+
-+        if (memcmp(old_func, new_func, sizeof(SnpCpuidFunc))) {
-+            error_report("SEV-SNP: CPUID validation failed for function 0x%x, index: 0x%x"
-+                         "provided: eax:0x%08x, ebx: 0x%08x, ecx: 0x%08x, edx: 0x%08x"
-+                         "expected: eax:0x%08x, ebx: 0x%08x, ecx: 0x%08x, edx: 0x%08x",
-+                         old_func->eax_in, old_func->ecx_in,
-+                         old_func->eax, old_func->ebx, old_func->ecx, old_func->edx,
-+                         new_func->eax, new_func->ebx, new_func->ecx, new_func->edx);
-+        }
-+    }
-+}
-+
- static const char *
- snp_page_type_to_str(int type)
- {
-@@ -806,6 +865,7 @@ sev_snp_launch_update(SevSnpGuestState *sev_snp_guest,
-                       SevLaunchUpdateData *data)
- {
-     int ret, fw_error;
-+    SnpCpuidInfo snp_cpuid_info;
-     struct kvm_sev_snp_launch_update update = {0};
+-int sev_encrypt_flash(uint8_t *ptr, uint64_t len, Error **errp);
++int sev_encrypt_flash(hwaddr gpa, uint8_t *ptr, uint64_t len, Error **errp);
+ int sev_inject_launch_secret(const char *hdr, const char *secret,
+                              uint64_t gpa, Error **errp);
  
-     if (!data->hva || !data->len) {
-@@ -815,6 +875,11 @@ sev_snp_launch_update(SevSnpGuestState *sev_snp_guest,
-         return 1;
-     }
+diff --git a/hw/i386/pc_sysfw.c b/hw/i386/pc_sysfw.c
+index 9b8671c4412..7cdbafc8d22 100644
+--- a/hw/i386/pc_sysfw.c
++++ b/hw/i386/pc_sysfw.c
+@@ -148,6 +148,8 @@ static void pc_system_flash_map(PCMachineState *pcms,
+     assert(PC_MACHINE_GET_CLASS(pcms)->pci_enabled);
  
-+    if (data->type == KVM_SEV_SNP_PAGE_TYPE_CPUID) {
-+        /* Save a copy for comparison in case the LAUNCH_UPDATE fails */
-+        memcpy(&snp_cpuid_info, data->hva, sizeof(snp_cpuid_info));
-+    }
+     for (i = 0; i < ARRAY_SIZE(pcms->flash); i++) {
++        hwaddr gpa;
 +
-     update.uaddr = (__u64)(unsigned long)data->hva;
-     update.gfn_start = data->gpa >> TARGET_PAGE_BITS;
-     update.len = data->len;
-@@ -842,6 +907,11 @@ sev_snp_launch_update(SevSnpGuestState *sev_snp_guest,
-         if (ret && ret != -EAGAIN) {
-             error_report("SNP_LAUNCH_UPDATE ret=%d fw_error=%d '%s'",
-                          ret, fw_error, fw_error_to_str(fw_error));
-+
-+            if (data->type == KVM_SEV_SNP_PAGE_TYPE_CPUID) {
-+                sev_snp_cpuid_report_mismatches(&snp_cpuid_info, data->hva);
-+                error_report("SEV-SNP: failed update CPUID page");
-+            }
-             break;
+         system_flash = pcms->flash[i];
+         blk = pflash_cfi01_get_blk(system_flash);
+         if (!blk) {
+@@ -177,11 +179,11 @@ static void pc_system_flash_map(PCMachineState *pcms,
+         }
+ 
+         total_size += size;
++        gpa = 0x100000000ULL - total_size; /* where the flash is mapped */
+         qdev_prop_set_uint32(DEVICE(system_flash), "num-blocks",
+                              size / FLASH_SECTOR_SIZE);
+         sysbus_realize_and_unref(SYS_BUS_DEVICE(system_flash), &error_fatal);
+-        sysbus_mmio_map(SYS_BUS_DEVICE(system_flash), 0,
+-                        0x100000000ULL - total_size);
++        sysbus_mmio_map(SYS_BUS_DEVICE(system_flash), 0, gpa);
+ 
+         if (i == 0) {
+             flash_mem = pflash_cfi01_get_memory(system_flash);
+@@ -196,7 +198,7 @@ static void pc_system_flash_map(PCMachineState *pcms,
+             if (sev_enabled()) {
+                 flash_ptr = memory_region_get_ram_ptr(flash_mem);
+                 flash_size = memory_region_size(flash_mem);
+-                x86_firmware_configure(flash_ptr, flash_size);
++                x86_firmware_configure(gpa, flash_ptr, flash_size);
+             }
          }
      }
-@@ -1004,7 +1074,8 @@ sev_launch_finish(SevCommonState *sev_common)
+@@ -249,7 +251,7 @@ void pc_system_firmware_init(PCMachineState *pcms,
+     pc_system_flash_cleanup_unused(pcms);
  }
  
- static int
--snp_launch_update_data(uint64_t gpa, void *hva, uint32_t len, int type)
-+snp_launch_update_data(uint64_t gpa, void *hva,
-+                       uint32_t len, int type)
+-void x86_firmware_configure(void *ptr, int size)
++void x86_firmware_configure(hwaddr gpa, void *ptr, int size)
  {
-     SevLaunchUpdateData *data;
+     int ret;
  
-@@ -1019,6 +1090,90 @@ snp_launch_update_data(uint64_t gpa, void *hva, uint32_t len, int type)
-     return 0;
- }
- 
-+static int
-+sev_snp_cpuid_info_fill(SnpCpuidInfo *snp_cpuid_info,
-+                        const KvmCpuidInfo *kvm_cpuid_info)
-+{
-+    size_t i;
-+
-+    if (kvm_cpuid_info->cpuid.nent > SNP_CPUID_FUNCTION_MAXCOUNT) {
-+        error_report("SEV-SNP: CPUID entry count (%d) exceeds max (%d)",
-+                     kvm_cpuid_info->cpuid.nent, SNP_CPUID_FUNCTION_MAXCOUNT);
-+        return -1;
-+    }
-+
-+    memset(snp_cpuid_info, 0, sizeof(*snp_cpuid_info));
-+
-+    for (i = 0; i < kvm_cpuid_info->cpuid.nent; i++) {
-+        const struct kvm_cpuid_entry2 *kvm_cpuid_entry;
-+        SnpCpuidFunc *snp_cpuid_entry;
-+
-+        kvm_cpuid_entry = &kvm_cpuid_info->entries[i];
-+        snp_cpuid_entry = &snp_cpuid_info->entries[i];
-+
-+        snp_cpuid_entry->eax_in = kvm_cpuid_entry->function;
-+        if (kvm_cpuid_entry->flags == KVM_CPUID_FLAG_SIGNIFCANT_INDEX) {
-+            snp_cpuid_entry->ecx_in = kvm_cpuid_entry->index;
-+        }
-+        snp_cpuid_entry->eax = kvm_cpuid_entry->eax;
-+        snp_cpuid_entry->ebx = kvm_cpuid_entry->ebx;
-+        snp_cpuid_entry->ecx = kvm_cpuid_entry->ecx;
-+        snp_cpuid_entry->edx = kvm_cpuid_entry->edx;
-+
-+        /*
-+         * Guest kernels will calculate EBX themselves using the 0xD
-+         * subfunctions corresponding to the individual XSAVE areas, so only
-+         * encode the base XSAVE size in the initial leaves, corresponding
-+         * to the initial XCR0=1 state.
-+         */
-+        if (snp_cpuid_entry->eax_in == 0xD &&
-+            (snp_cpuid_entry->ecx_in == 0x0 || snp_cpuid_entry->ecx_in == 0x1)) {
-+            snp_cpuid_entry->ebx = 0x240;
-+            snp_cpuid_entry->xcr0_in = 1;
-+            snp_cpuid_entry->xss_in = 0;
-+        }
-+    }
-+
-+    snp_cpuid_info->count = i;
-+
-+    return 0;
-+}
-+
-+static int
-+snp_launch_update_cpuid(uint32_t cpuid_addr, void *hva, uint32_t cpuid_len)
-+{
-+    KvmCpuidInfo kvm_cpuid_info = {0};
-+    SnpCpuidInfo snp_cpuid_info;
-+    CPUState *cs = first_cpu;
-+    int ret;
-+    uint32_t i = 0;
-+
-+    assert(sizeof(snp_cpuid_info) <= cpuid_len);
-+
-+    /* get the cpuid list from KVM */
-+    do {
-+        kvm_cpuid_info.cpuid.nent = ++i;
-+        ret = kvm_vcpu_ioctl(cs, KVM_GET_CPUID2, &kvm_cpuid_info);
-+    } while (ret == -E2BIG);
-+
-+    if (ret) {
-+        error_report("SEV-SNP: unable to query CPUID values for CPU: '%s'",
-+                     strerror(-ret));
-+        return 1;
-+    }
-+
-+    ret = sev_snp_cpuid_info_fill(&snp_cpuid_info, &kvm_cpuid_info);
-+    if (ret) {
-+        error_report("SEV-SNP: failed to generate CPUID table information");
-+        return 1;
-+    }
-+
-+    memcpy(hva, &snp_cpuid_info, sizeof(snp_cpuid_info));
-+
-+    return snp_launch_update_data(cpuid_addr, hva, cpuid_len,
-+                                  KVM_SEV_SNP_PAGE_TYPE_CPUID);
-+}
-+
- static int
- snp_metadata_desc_to_page_type(int desc_type)
- {
-@@ -1053,7 +1208,12 @@ snp_populate_metadata_pages(SevSnpGuestState *sev_snp,
+@@ -270,6 +272,6 @@ void x86_firmware_configure(void *ptr, int size)
              exit(1);
          }
  
--        ret = snp_launch_update_data(desc->base, hva, desc->len, type);
-+        if (type == KVM_SEV_SNP_PAGE_TYPE_CPUID) {
-+            ret = snp_launch_update_cpuid(desc->base, hva, desc->len);
-+        } else {
-+            ret = snp_launch_update_data(desc->base, hva, desc->len, type);
-+        }
-+
-         if (ret) {
-             error_report("%s: Failed to add metadata page gpa 0x%x+%x type %d",
-                          __func__, desc->base, desc->len, desc->type);
+-        sev_encrypt_flash(ptr, size, &error_fatal);
++        sev_encrypt_flash(gpa, ptr, size, &error_fatal);
+     }
+ }
+diff --git a/hw/i386/x86-common.c b/hw/i386/x86-common.c
+index ee9046d9a80..f41cb0a6a8b 100644
+--- a/hw/i386/x86-common.c
++++ b/hw/i386/x86-common.c
+@@ -1013,7 +1013,7 @@ void x86_bios_rom_init(X86MachineState *x86ms, const char *default_firmware,
+          */
+         void *ptr = memory_region_get_ram_ptr(&x86ms->bios);
+         load_image_size(filename, ptr, bios_size);
+-        x86_firmware_configure(ptr, bios_size);
++        x86_firmware_configure(0x100000000ULL - bios_size, ptr, bios_size);
+     } else {
+         memory_region_set_readonly(&x86ms->bios, !isapc_ram_fw);
+         ret = rom_add_file_fixed(bios_name, (uint32_t)(-bios_size), -1);
+diff --git a/target/i386/sev-sysemu-stub.c b/target/i386/sev-sysemu-stub.c
+index fc1c57c4113..d5bf886e799 100644
+--- a/target/i386/sev-sysemu-stub.c
++++ b/target/i386/sev-sysemu-stub.c
+@@ -42,7 +42,7 @@ void qmp_sev_inject_launch_secret(const char *packet_header, const char *secret,
+     error_setg(errp, "SEV is not available in this QEMU");
+ }
+ 
+-int sev_encrypt_flash(uint8_t *ptr, uint64_t len, Error **errp)
++int sev_encrypt_flash(hwaddr gpa, uint8_t *ptr, uint64_t len, Error **errp)
+ {
+     g_assert_not_reached();
+ }
+diff --git a/target/i386/sev.c b/target/i386/sev.c
+index 06401f0526f..7b5c4b4874d 100644
+--- a/target/i386/sev.c
++++ b/target/i386/sev.c
+@@ -1484,7 +1484,7 @@ static int sev_snp_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
+ }
+ 
+ int
+-sev_encrypt_flash(uint8_t *ptr, uint64_t len, Error **errp)
++sev_encrypt_flash(hwaddr gpa, uint8_t *ptr, uint64_t len, Error **errp)
+ {
+     SevCommonState *sev_common = SEV_COMMON(MACHINE(qdev_get_machine())->cgs);
+ 
+@@ -1841,7 +1841,8 @@ bool sev_add_kernel_loader_hashes(SevKernelLoaderContext *ctx, Error **errp)
+     /* zero the excess data so the measurement can be reliably calculated */
+     memset(padded_ht->padding, 0, sizeof(padded_ht->padding));
+ 
+-    if (sev_encrypt_flash((uint8_t *)padded_ht, sizeof(*padded_ht), errp) < 0) {
++    if (sev_encrypt_flash(area->base, (uint8_t *)padded_ht,
++                          sizeof(*padded_ht), errp) < 0) {
+         ret = false;
+     }
+ 
 -- 
 2.45.1
 
