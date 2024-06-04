@@ -2,54 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 591128FAC30
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 09:39:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DAD738FAC39
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 09:40:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEOl5-0001T9-Dm; Tue, 04 Jun 2024 03:39:03 -0400
+	id 1sEOlA-0001xX-O1; Tue, 04 Jun 2024 03:39:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1sEOl3-0001Ih-Df
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 03:39:01 -0400
+ id 1sEOl7-0001jc-R8
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 03:39:05 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1sEOl1-0006Oy-LO
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 03:39:01 -0400
+ id 1sEOl5-0006Pb-QZ
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 03:39:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717486738;
+ s=mimecast20190719; t=1717486743;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=5d5y2FC6cxEygSgk8M5FRyNF5zASCRyu9uDVXcrDPpE=;
- b=V6zJ+5oFLHvqD11c57htm9uSi+a7o6MAcg1JXH3CfPsFZbfn9oTiH7mTo1pt2Vqt5KQPoR
- pQDsfmsVkRp5ijAet4uuWpt9PIrWJ19YKZ0zuFmQN3Q4VVDLXEEtieTOB4vGDWlylFSkVs
- 0EQWvtEtndh7y6UXQTKXbSypi2LXCYY=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-424-nBttRGmdPT2XDNfdHyNUqg-1; Tue, 04 Jun 2024 03:38:54 -0400
-X-MC-Unique: nBttRGmdPT2XDNfdHyNUqg-1
+ bh=wNP3v399FEuLCNKjKz1Hgq6Vv7Mh17NVRy0U2xtE/8s=;
+ b=WKeNd70ZGdVW4wNL0x1HyA+IWjy7LFHwhdtYB496Uzt5Uh8VpUiJ18fNXHY9DtvAgRD3Id
+ hlGqk/t+v28b1TyC0LYE3fQDBjVvTmhjZ6NTQGKLaIlouECHH6RUuyNY7WW/9ZYR1Gmet2
+ IHaII/dFlNabQL0KLLr65hdjQixyenQ=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-20-wf9Nkx07NQS0rE2w2BTJpA-1; Tue,
+ 04 Jun 2024 03:38:58 -0400
+X-MC-Unique: wf9Nkx07NQS0rE2w2BTJpA-1
 Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
  [10.11.54.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 74C7980027F;
- Tue,  4 Jun 2024 07:38:54 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9FEA33C0262C;
+ Tue,  4 Jun 2024 07:38:57 +0000 (UTC)
 Received: from localhost.localdomain (unknown [10.72.112.238])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 94AA9492BD4;
- Tue,  4 Jun 2024 07:38:52 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 146FC492BD4;
+ Tue,  4 Jun 2024 07:38:54 +0000 (UTC)
 From: Jason Wang <jasowang@redhat.com>
 To: peter.maydell@linaro.org,
 	qemu-devel@nongnu.org
-Cc: Akihiko Odaki <akihiko.odaki@daynix.com>, Jason Wang <jasowang@redhat.com>
-Subject: [PULL 18/20] ebpf: Add a separate target for skeleton
-Date: Tue,  4 Jun 2024 15:37:53 +0800
-Message-ID: <20240604073755.1859-19-jasowang@redhat.com>
+Cc: Alexey Dobriyan <adobriyan@yandex-team.ru>,
+ Jason Wang <jasowang@redhat.com>
+Subject: [PULL 19/20] virtio-net: drop too short packets early
+Date: Tue,  4 Jun 2024 15:37:54 +0800
+Message-ID: <20240604073755.1859-20-jasowang@redhat.com>
 In-Reply-To: <20240604073755.1859-1-jasowang@redhat.com>
 References: <20240604073755.1859-1-jasowang@redhat.com>
 MIME-Version: 1.0
@@ -81,53 +82,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
+From: Alexey Dobriyan <adobriyan@yandex-team.ru>
 
-This generalizes the rule to generate the skeleton and allows to add
-another.
+Reproducer from https://gitlab.com/qemu-project/qemu/-/issues/1451
+creates small packet (1 segment, len = 10 == n->guest_hdr_len),
+then destroys queue.
 
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+"if (n->host_hdr_len != n->guest_hdr_len)" is triggered, if body creates
+zero length/zero segment packet as there is nothing after guest header.
+
+qemu_sendv_packet_async() tries to send it.
+
+slirp discards it because it is smaller than Ethernet header,
+but returns 0 because tx hooks are supposed to return total length of data.
+
+0 is propagated upwards and is interpreted as "packet has been sent"
+which is terrible because queue is being destroyed, nobody is waiting for TX
+to complete and assert it triggered.
+
+Fix is discard such empty packets instead of sending them.
+
+Length 1 packets will go via different codepath:
+
+	virtqueue_push(q->tx_vq, elem, 0);
+	virtio_notify(vdev, q->tx_vq);
+	g_free(elem);
+
+and aren't problematic.
+
+Signed-off-by: Alexey Dobriyan <adobriyan@yandex-team.ru>
 Signed-off-by: Jason Wang <jasowang@redhat.com>
 ---
- tools/ebpf/Makefile.ebpf | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ hw/net/virtio-net.c | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/tools/ebpf/Makefile.ebpf b/tools/ebpf/Makefile.ebpf
-index 3391e7ce08..572ca5987a 100755
---- a/tools/ebpf/Makefile.ebpf
-+++ b/tools/ebpf/Makefile.ebpf
-@@ -1,23 +1,24 @@
--OBJS = rss.bpf.o
-+SKELETONS = rss.bpf.skeleton.h
+diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
+index 666a4e2a03..9c7e85caea 100644
+--- a/hw/net/virtio-net.c
++++ b/hw/net/virtio-net.c
+@@ -2708,18 +2708,14 @@ static int32_t virtio_net_flush_tx(VirtIONetQueue *q)
+         out_sg = elem->out_sg;
+         if (out_num < 1) {
+             virtio_error(vdev, "virtio-net header not in first element");
+-            virtqueue_detach_element(q->tx_vq, elem, 0);
+-            g_free(elem);
+-            return -EINVAL;
++            goto detach;
+         }
  
- LLVM_STRIP ?= llvm-strip
- CLANG ?= clang
- INC_FLAGS = `$(CLANG) -print-file-name=include`
- EXTRA_CFLAGS ?= -O2 -g -target bpf
- 
--all: $(OBJS)
-+all: $(SKELETONS)
- 
- .PHONY: clean
- 
- clean:
--	rm -f $(OBJS)
--	rm -f rss.bpf.skeleton.h
-+	rm -f $(SKELETONS) $(SKELETONS:%.skeleton.h=%.o)
- 
--$(OBJS):  %.o:%.c
-+%.o: %.c
- 	$(CLANG) $(INC_FLAGS) \
-                 -D__KERNEL__ -D__ASM_SYSREG_H \
-                 -I../include $(LINUXINCLUDE) \
-                 $(EXTRA_CFLAGS) -c $< -o $@
- 	$(LLVM_STRIP) -g $@
--	bpftool gen skeleton rss.bpf.o > rss.bpf.skeleton.h
--	cp rss.bpf.skeleton.h ../../ebpf/
+         if (n->needs_vnet_hdr_swap) {
+             if (iov_to_buf(out_sg, out_num, 0, &vhdr, sizeof(vhdr)) <
+                 sizeof(vhdr)) {
+                 virtio_error(vdev, "virtio-net header incorrect");
+-                virtqueue_detach_element(q->tx_vq, elem, 0);
+-                g_free(elem);
+-                return -EINVAL;
++                goto detach;
+             }
+             virtio_net_hdr_swap(vdev, &vhdr);
+             sg2[0].iov_base = &vhdr;
+@@ -2747,6 +2743,11 @@ static int32_t virtio_net_flush_tx(VirtIONetQueue *q)
+                              n->guest_hdr_len, -1);
+             out_num = sg_num;
+             out_sg = sg;
 +
-+%.skeleton.h: %.o
-+	bpftool gen skeleton $< > $@
-+	cp $@ ../../ebpf/
++            if (out_num < 1) {
++                virtio_error(vdev, "virtio-net nothing to send");
++                goto detach;
++            }
+         }
+ 
+         ret = qemu_sendv_packet_async(qemu_get_subqueue(n->nic, queue_index),
+@@ -2767,6 +2768,11 @@ drop:
+         }
+     }
+     return num_packets;
++
++detach:
++    virtqueue_detach_element(q->tx_vq, elem, 0);
++    g_free(elem);
++    return -EINVAL;
+ }
+ 
+ static void virtio_net_tx_timer(void *opaque);
 -- 
 2.42.0
 
