@@ -2,76 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 110888FAF70
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 11:59:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5423D8FAF81
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 12:01:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEQwL-0007QF-0q; Tue, 04 Jun 2024 05:58:49 -0400
+	id 1sEQwP-0007vL-Th; Tue, 04 Jun 2024 05:58:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sEQwI-0007Ez-Cb
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 05:58:46 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sEQwO-0007oK-Cu
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 05:58:52 -0400
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sEQwG-0002LO-90
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 05:58:45 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-42134bb9735so29710245e9.1
- for <qemu-devel@nongnu.org>; Tue, 04 Jun 2024 02:58:43 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sEQwL-0002N0-SX
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 05:58:51 -0400
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-35dce610207so3378663f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 04 Jun 2024 02:58:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1717495122; x=1718099922; darn=nongnu.org;
+ d=linaro.org; s=google; t=1717495127; x=1718099927; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=2xJYxwlPHFAuhiLDRZkfUXQ6zjFldlOAPPa4Gg5JdMk=;
- b=Kg4SYeE+81ZHVI/OjjQdnyDC1cEVEl7ZOYYhoyx2G5ugbA1zYEHp6MvCtiH9Yp7pWH
- CiUCG8agC02dx+wx0C/gMa7lEPp5cSAzOeuyJwO/q5ip0MamoaUUCCkaGyYb6UcHeFbn
- yFFk4Uj6h8RoshSfMNZ95SJndc6Og1yWSWPMd/5btbFyWQ+ITpIkKjxy9JjzQ8LfPSMJ
- 8HFPuzttcJqaV7bgAyPFL1veDurCsKCkKH5KkWNRmXwvvNOkHGJk/UX/lEmc3KgMgMKo
- NR1rhnMaAMNEMVBrvu6eXbLKVXGk/m6vj1Kk95WKLBWkZSoXJaMfmufwjpRcJN1GkwhD
- D1MA==
+ bh=TGqa4LCtUPmfqT7FCKxDXiSWjLBqv6GKh2fc2iPwQg4=;
+ b=Urb4x7Qt7N3XyuJxgXhZbii6bOtI0Sk3xMOqO5B5DlVLF4BntRwNHOW7B1XZfsnQRJ
+ 18HlzU+aKV3giCPdW3If1j/m/DC16YoEklXrl2tYXoyXiKjYcKP9GbrO0a/WAYAvdg9E
+ e6ZmYE2YaH6wvMSHkAek757cqajdJwTN4L+ng+/Crlf0rAWSiH14w1vXLZJAaUORNt3A
+ q1Mlh0qsZT6N10hN1drLa+qp0lQWiUgj2kbIZQk/cLhzgWIed2xQ7m33z1s/5/7aHhx7
+ iQl5trgOYlfSw2uegTVSpnxzL1kq6CSuvP6stNa3E5H6X99fhstGXcpI6avsHK9fI/hx
+ fV1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717495122; x=1718099922;
+ d=1e100.net; s=20230601; t=1717495127; x=1718099927;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=2xJYxwlPHFAuhiLDRZkfUXQ6zjFldlOAPPa4Gg5JdMk=;
- b=Wssf/MjEkXdvsWzpfe58qN/bWX62OY9yGIUVWEk98rfU4dMYC55NDSakV3lGUG0ka5
- jIdIzboq94+bOkzreAAhhXl11xnk/87q48VSJgMGh1/mlGrdKt50KxQ0eojYlYJzijaT
- UMdhi6hnAmHRiaeWN4dQNU9Tf+GCG3yYqLH8tUdNUmF5HbxxGZ9RXlBYc9oMKOAx/NuI
- uGCMhFBDCqfBX95Hv0zv0oBgEF60QEdoZ79UpJykFRbkhVTtv7J/DThwOZ/b1mMRr/J9
- LGUFvw0T5t+GKr7bKoaWhc+uCDC/STs4xKhSa9pxyPLKvPoaBlNGZO9eT40V9KJi+yGn
- 0BsQ==
-X-Gm-Message-State: AOJu0Yyhtg2cPNvnwdhOnvVSmiUMsMGPGoFn4XU0M87c1HD7UEyish89
- xqgTJQkaA5/UOnms29YMYEx/MCZ9SE15qLNvG2VsLRZ0wgXUvM3tV+7gZ/gnuyN1QWmNqk8wdDv
- 1
-X-Google-Smtp-Source: AGHT+IGXYO5WgcV76r2okXv1SIz5QZc9EfEaCRwCvct+pMZdg0fDNclY/39UOOdYBXmVYxeJySJV+g==
-X-Received: by 2002:a05:600c:4f8d:b0:41b:85bf:f3a8 with SMTP id
- 5b1f17b1804b1-42138622459mr60251755e9.35.1717495122078; 
- Tue, 04 Jun 2024 02:58:42 -0700 (PDT)
+ bh=TGqa4LCtUPmfqT7FCKxDXiSWjLBqv6GKh2fc2iPwQg4=;
+ b=YrIQjH9lvC+JCNnzlrOgxg/94sD867u/k78jlppmulhbbzqN8u2YMKMLsfbcXC831j
+ UmsYvRpfk/FrJHSoOYRkkPaKZ2wDozQssqAefXleMHJZicDNWlM/MrRpCRGKuJ/ZSuWh
+ oaJXmAavgMtWL4sAjkyvn+rSYd5/HZHFmunZBkapLjU5NRGloAVydne+YuD1G2dZ+08d
+ Nzas5EP/3Zx+9ToT2Utkac8e5W6YgYP2z44BBWv++T38lxW/zmxRby6TPzoFytHileui
+ LHdnwcgOVFuDyUdZTz/Ss3VwwUOQCeE2qzXOUdFh4YAu7H//TM5KBjC//mZ1Fke9nXxF
+ R75w==
+X-Gm-Message-State: AOJu0Yw3MoLluuSJPFGe5oopj+sEKxw0+AOCLh1ChuY3VpFoK/kjhbj/
+ giechi7eG6aQzcBO21Xo3toUjWoTpotcmDm1CwIS0RcOUJmavbqRXHStYD/BDHqfAy7mCm75q6f
+ z
+X-Google-Smtp-Source: AGHT+IG94P5WWPomVHoZIPdJKM7vpl6wDv2k1eL81l1TaEoE4MJF3s2yBYxpESSwDCnW58uEBYVcVQ==
+X-Received: by 2002:adf:e88d:0:b0:351:c960:b5a2 with SMTP id
+ ffacd0b85a97d-35e0f254f8amr10288142f8f.6.1717495127353; 
+ Tue, 04 Jun 2024 02:58:47 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.159.34])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42133d745aasm128622335e9.38.2024.06.04.02.58.41
+ ffacd0b85a97d-35dd062ecd3sm11240886f8f.74.2024.06.04.02.58.46
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 04 Jun 2024 02:58:41 -0700 (PDT)
+ Tue, 04 Jun 2024 02:58:46 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- "Edgar E . Iglesias" <edgar.iglesias@amd.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 28/32] hw/dma/xlnx_dpdma: Read descriptor into buffer,
- not into pointer-to-buffer
-Date: Tue,  4 Jun 2024 11:56:04 +0200
-Message-ID: <20240604095609.12285-29-philmd@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>
+Subject: [PULL 29/32] hw/acpi: Remove the deprecated QAPI MEM_UNPLUG_ERROR
+ event
+Date: Tue,  4 Jun 2024 11:56:05 +0200
+Message-ID: <20240604095609.12285-30-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240604095609.12285-1-philmd@linaro.org>
 References: <20240604095609.12285-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,56 +95,147 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+The MEM_UNPLUG_ERROR event is deprecated since commit d43f1670c7
+("qapi/qdev.json: add DEVICE_UNPLUG_GUEST_ERROR QAPI event"),
+time to remove it.
 
-In fdf029762f501 we factored out the handling of reading and writing
-DMA descriptors from guest memory.  Unfortunately we accidentally
-made the descriptor-read read the descriptor into the address of the
-buffer rather than into the buffer, because we didn't notice we
-needed to update the arguments to the dma_memory_read() call. Before
-the refactoring, "&desc" is the address of a local struct DPDMADescriptor
-variable in xlnx_dpdma_start_operation(), which is the correct target
-for the guest-memory-read. But after the refactoring 'desc' is the
-"DPDMADescriptor *desc" argument to the new function, and so it is
-already an address.
-
-This bug is an overrun of a stack variable, since a pointer is at
-most 8 bytes long and we try to read 64 bytes, as well as being
-incorrect behaviour.
-
-Pass 'desc' rather than '&desc' as the dma_memory_read() argument
-to fix this.
-
-(The same bug is not present in xlnx_dpdma_write_descriptor(),
-because there we are writing the descriptor from a local struct
-variable "DPDMADescriptor tmp_desc" and so passing &tmp_desc to
-dma_memory_write() is correct.)
-
-Spotted by Coverity: CID 1546649
-
-Fixes: fdf029762f50101 ("xlnx_dpdma: fix descriptor endianness bug")
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20240531124628.476938-1-peter.maydell@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+Reviewed-by: Markus Armbruster <armbru@redhat.com>
+Message-Id: <20240530071548.20074-2-philmd@linaro.org>
 ---
- hw/dma/xlnx_dpdma.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ docs/about/deprecated.rst       |  5 -----
+ docs/about/removed-features.rst |  9 +++++++++
+ qapi/machine.json               | 28 ----------------------------
+ hw/acpi/memory_hotplug.c        |  8 --------
+ hw/ppc/spapr.c                  | 11 +----------
+ 5 files changed, 10 insertions(+), 51 deletions(-)
 
-diff --git a/hw/dma/xlnx_dpdma.c b/hw/dma/xlnx_dpdma.c
-index dde4aeca40..a685bd28bb 100644
---- a/hw/dma/xlnx_dpdma.c
-+++ b/hw/dma/xlnx_dpdma.c
-@@ -619,7 +619,7 @@ static MemTxResult xlnx_dpdma_read_descriptor(XlnxDPDMAState *s,
-                                               DPDMADescriptor *desc)
- {
-     MemTxResult res = dma_memory_read(&address_space_memory, desc_addr,
--                                      &desc, sizeof(DPDMADescriptor),
-+                                      desc, sizeof(DPDMADescriptor),
-                                       MEMTXATTRS_UNSPECIFIED);
-     if (res) {
-         return res;
+diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+index 40585ca7d5..4a61894db6 100644
+--- a/docs/about/deprecated.rst
++++ b/docs/about/deprecated.rst
+@@ -151,11 +151,6 @@ property types.
+ QEMU Machine Protocol (QMP) events
+ ----------------------------------
+ 
+-``MEM_UNPLUG_ERROR`` (since 6.2)
+-''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+-
+-Use the more generic event ``DEVICE_UNPLUG_GUEST_ERROR`` instead.
+-
+ ``vcpu`` trace events (since 8.1)
+ '''''''''''''''''''''''''''''''''
+ 
+diff --git a/docs/about/removed-features.rst b/docs/about/removed-features.rst
+index fba0cfb0b0..f1e70263e2 100644
+--- a/docs/about/removed-features.rst
++++ b/docs/about/removed-features.rst
+@@ -671,6 +671,15 @@ Use ``multifd-channels`` instead.
+ 
+ Use ``multifd-compression`` instead.
+ 
++QEMU Machine Protocol (QMP) events
++----------------------------------
++
++``MEM_UNPLUG_ERROR`` (removed in 9.1)
++'''''''''''''''''''''''''''''''''''''
++
++MEM_UNPLUG_ERROR has been replaced by the more generic ``DEVICE_UNPLUG_GUEST_ERROR`` event.
++
++
+ Human Monitor Protocol (HMP) commands
+ -------------------------------------
+ 
+diff --git a/qapi/machine.json b/qapi/machine.json
+index bce6e1bbc4..453feb9347 100644
+--- a/qapi/machine.json
++++ b/qapi/machine.json
+@@ -1607,34 +1607,6 @@
+ { 'event': 'MEMORY_DEVICE_SIZE_CHANGE',
+   'data': { '*id': 'str', 'size': 'size', 'qom-path' : 'str'} }
+ 
+-##
+-# @MEM_UNPLUG_ERROR:
+-#
+-# Emitted when memory hot unplug error occurs.
+-#
+-# @device: device name
+-#
+-# @msg: Informative message
+-#
+-# Features:
+-#
+-# @deprecated: This event is deprecated.  Use
+-#     @DEVICE_UNPLUG_GUEST_ERROR instead.
+-#
+-# Since: 2.4
+-#
+-# Example:
+-#
+-#     <- { "event": "MEM_UNPLUG_ERROR",
+-#          "data": { "device": "dimm1",
+-#                    "msg": "acpi: device unplug for unsupported device"
+-#          },
+-#          "timestamp": { "seconds": 1265044230, "microseconds": 450486 } }
+-##
+-{ 'event': 'MEM_UNPLUG_ERROR',
+-  'data': { 'device': 'str', 'msg': 'str' },
+-  'features': ['deprecated'] }
+-
+ ##
+ # @BootConfiguration:
+ #
+diff --git a/hw/acpi/memory_hotplug.c b/hw/acpi/memory_hotplug.c
+index de6f974ebb..9b974b7274 100644
+--- a/hw/acpi/memory_hotplug.c
++++ b/hw/acpi/memory_hotplug.c
+@@ -178,14 +178,6 @@ static void acpi_memory_hotplug_write(void *opaque, hwaddr addr, uint64_t data,
+             hotplug_handler_unplug(hotplug_ctrl, dev, &local_err);
+             if (local_err) {
+                 trace_mhp_acpi_pc_dimm_delete_failed(mem_st->selector);
+-
+-                /*
+-                 * Send both MEM_UNPLUG_ERROR and DEVICE_UNPLUG_GUEST_ERROR
+-                 * while the deprecation of MEM_UNPLUG_ERROR is
+-                 * pending.
+-                 */
+-                qapi_event_send_mem_unplug_error(dev->id ? : "",
+-                                                 error_get_pretty(local_err));
+                 qapi_event_send_device_unplug_guest_error(dev->id,
+                                                           dev->canonical_path);
+                 error_free(local_err);
+diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+index 4345764bce..81a187f126 100644
+--- a/hw/ppc/spapr.c
++++ b/hw/ppc/spapr.c
+@@ -3786,7 +3786,6 @@ void spapr_memory_unplug_rollback(SpaprMachineState *spapr, DeviceState *dev)
+     SpaprDrc *drc;
+     uint32_t nr_lmbs;
+     uint64_t size, addr_start, addr;
+-    g_autofree char *qapi_error = NULL;
+     int i;
+ 
+     if (!dev) {
+@@ -3823,16 +3822,8 @@ void spapr_memory_unplug_rollback(SpaprMachineState *spapr, DeviceState *dev)
+ 
+     /*
+      * Tell QAPI that something happened and the memory
+-     * hotunplug wasn't successful. Keep sending
+-     * MEM_UNPLUG_ERROR even while sending
+-     * DEVICE_UNPLUG_GUEST_ERROR until the deprecation of
+-     * MEM_UNPLUG_ERROR is due.
++     * hotunplug wasn't successful.
+      */
+-    qapi_error = g_strdup_printf("Memory hotunplug rejected by the guest "
+-                                 "for device %s", dev->id);
+-
+-    qapi_event_send_mem_unplug_error(dev->id ? : "", qapi_error);
+-
+     qapi_event_send_device_unplug_guest_error(dev->id,
+                                               dev->canonical_path);
+ }
 -- 
 2.41.0
 
