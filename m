@@ -2,77 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2817D8FAF64
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 11:58:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D0538FAF7C
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 12:00:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEQvp-0002yo-AC; Tue, 04 Jun 2024 05:58:17 -0400
+	id 1sEQvu-0003j1-45; Tue, 04 Jun 2024 05:58:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sEQvm-0002kB-Qm
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 05:58:14 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sEQvr-0003U6-Qo
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 05:58:19 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sEQvl-0002J2-0m
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 05:58:14 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-42121d27861so8664055e9.0
- for <qemu-devel@nongnu.org>; Tue, 04 Jun 2024 02:58:12 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sEQvp-0002JR-Vd
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 05:58:19 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-421338c4c3bso8559625e9.1
+ for <qemu-devel@nongnu.org>; Tue, 04 Jun 2024 02:58:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1717495091; x=1718099891; darn=nongnu.org;
+ d=linaro.org; s=google; t=1717495096; x=1718099896; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=SNllFIjXNz5GjqDOBbChwyL7SF1oO9qoS6VeKoJgVQQ=;
- b=LBkGYM+JHguc/GC/OWjs783zYXQr4eU9T4Y5XiSqleBFQ4RF6tvcB5oLiFLeblmK7b
- IO6IDTIyou6e1zgnE2TWOFX36SNmBT2C8UX4wJ4UzvF34Zgg5p2zF22LE9mPmQiLUoUn
- Nvt5T6EJ5a3myhYEhwP004Hq0iz8ubsiNT6OkbUVzzH8sLwGGhPkhQ9THnKkP0xL6LU3
- znb1UNi7Nco/3RjOhfQmxdoUrNhVTzBU4BlPJIM5oe5kEXvH0AqrNxct9t60bGdpI6//
- g1KoxYIgFC+VV/azRNlcMCY77rgvMXhOvTpnjMS0MBTtYPU3dk5+EfODDIFYn/Kk+9ER
- N4uw==
+ bh=UMNBQrBvKQfv4Dl+hKP/TPgBc1DhyAHhW2w6Yei3CGk=;
+ b=qGm3eQ+frIAk25ighZiIiPxdPwjGeOO55nOBu8D/Imyhe5V5uH7XQU0XtAojxRFvGj
+ FBNQ+WzE4nlIwLR2TnLm9Ec0FzhMINvwESuGi1U5a3cS4GjSjG6P/Sovl8UD4s8BLx4u
+ jOadOL2nLHHlPxCgwqsgz+bhpUAVO1aATwSYqpx9CW4T/080oIEDtw9bSKTXS9U5/cYX
+ TEJXHWKbAiTZKhPIWHvewbZFf6Fi4N7NeW6Hq6GUD65MpvU/4Gg8IXbnQ4F2gjRydBb3
+ F89UUMKIEuB1N5yJiaDOS3p4VWJESqFIwc3/fsaab+8qCYXfKiT75/OUedlwKoz8K8oT
+ iWOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717495091; x=1718099891;
+ d=1e100.net; s=20230601; t=1717495096; x=1718099896;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=SNllFIjXNz5GjqDOBbChwyL7SF1oO9qoS6VeKoJgVQQ=;
- b=r/aDWcf0+ZlLigFkGEC6gG075pfgXujvWkNX+Jf2va+44SiZcOUwDhkh4eKSsfUan+
- rF9Bqk21U2LWjpW6Fma+GUjXFq+2pC/28Bm0RH45a+EpXEaBT1NCmTYR4EwEunLfcI+g
- l2MoegZH87w93sx89pNqG3TNgNuenPUFXkwzSDLeDY8zaWE1fC6BzJsNIV2auNH4/reP
- NwpciR0MzBb25gSsTp8QW7TAgSazPezhGajk1A8BVoXu0AMxupy8mEclcnCjmXSDXjha
- 50OA4YEx4cXxugGFMXVybEK3D4WH/5XndWm/75tvu1T80UrI5zGCeSGY2c3ZW23cycz6
- ZarQ==
-X-Gm-Message-State: AOJu0YyWy7pu/O7ed+4DoqM+vahHQBQAC+XXqzUxT4rZ4uaGvhU7sn1E
- KiKTCSevTokoAGQlt7RudiQv2HanFERjpVY/jygVCmryP3UtrPdcW9lG5zx6TG49habRVGd+x4E
- /
-X-Google-Smtp-Source: AGHT+IGK7i4mnCY4rcZ0K8m+AzlE92Y1UXIKQleM6PeYArTfWB721sahRuFDriX+HnsfYqX5nP1qfA==
-X-Received: by 2002:a05:600c:4f13:b0:421:418d:8f7 with SMTP id
- 5b1f17b1804b1-421418d0be6mr28047945e9.12.1717495090999; 
- Tue, 04 Jun 2024 02:58:10 -0700 (PDT)
+ bh=UMNBQrBvKQfv4Dl+hKP/TPgBc1DhyAHhW2w6Yei3CGk=;
+ b=oDjxC4BdvwuZ1l7O+kQ+lyozAyO6KdZvh8/fkEppte4O/JBKiaZfFea2GuoN9i+/c/
+ IgDwxgBybmmzuakzxZW0OVc6s5ON0goupVMxM8ZtTtaECUoqUcZOVPGU04slj1/DKpkZ
+ /LeaSl9k6A5A6RcDGLmkinG65R6EKhpNOSp0bZpK4cWzrXePnXQGtZw39Of2fpUHeQz6
+ K617eaDwJlzd2eOVK8F9YJFeEAeRx+IfJKkKovEekFubULw1HyTpTGZxcRyPGP7kN6AJ
+ /0z9m7+5fYDDs/5K5jseX0CcleKBvVW5iNjR41vGal4pNYmic/Z07rM2eU2EnjB+hKZ8
+ H2GQ==
+X-Gm-Message-State: AOJu0YynXb7De9qTTbxHDEgftWTzOxCwPLxkI2EVW1QQGPAGO4CvymFM
+ X61a6hfZEZ2wU0IuOWDFpatg0g1qZRWuKMajEGkMPOk7OGQdjZvY/DTMx4qiXZq7RDkflnf2WD6
+ r
+X-Google-Smtp-Source: AGHT+IHGdggg5ewx0/2n3Lu8hrxRYSTHdGkSS5iyyrnz+QbRSHoncf7/+uzqUAg7gR3BPYSgZQK9OA==
+X-Received: by 2002:a05:600c:35d5:b0:419:f3f9:8ed6 with SMTP id
+ 5b1f17b1804b1-4212e044bffmr110122735e9.4.1717495096202; 
+ Tue, 04 Jun 2024 02:58:16 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.159.34])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4212b8a5598sm147525575e9.38.2024.06.04.02.58.10
+ 5b1f17b1804b1-42135c9dc18sm112972305e9.1.2024.06.04.02.58.15
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 04 Jun 2024 02:58:10 -0700 (PDT)
+ Tue, 04 Jun 2024 02:58:15 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: "Edgar E. Iglesias" <edgar.iglesias@amd.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- David Hildenbrand <david@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 22/32] physmem: Replace check for RAMBlock offset 0 with
- xen_mr_is_memory
-Date: Tue,  4 Jun 2024 11:55:58 +0200
-Message-ID: <20240604095609.12285-23-philmd@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Paul Durrant <paul@xen.org>
+Subject: [PULL 23/32] hw/xen: Constify XenLegacyDevice::XenDevOps
+Date: Tue,  4 Jun 2024 11:55:59 +0200
+Message-ID: <20240604095609.12285-24-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240604095609.12285-1-philmd@linaro.org>
 References: <20240604095609.12285-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,37 +92,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: "Edgar E. Iglesias" <edgar.iglesias@amd.com>
+XenDevOps @ops is not updated, mark it const.
 
-For xen, when checking for the first RAM (xen_memory), use
-xen_mr_is_memory() rather than checking for a RAMBlock with
-offset 0.
-
-All Xen machines create xen_memory first so this has no
-functional change for existing machines.
-
-Signed-off-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
-Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Message-ID: <20240529140739.1387692-6-edgar.iglesias@gmail.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Paul Durrant <paul@xen.org>
+Message-Id: <20240510104908.76908-3-philmd@linaro.org>
 ---
- system/physmem.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/hw/xen/xen_pvdev.h  | 2 +-
+ hw/xen/xen-legacy-backend.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/system/physmem.c b/system/physmem.c
-index 5e6257ef65..b7847db1a2 100644
---- a/system/physmem.c
-+++ b/system/physmem.c
-@@ -2229,7 +2229,7 @@ static void *qemu_ram_ptr_length(RAMBlock *block, ram_addr_t addr,
-          * because we don't want to map the entire memory in QEMU.
-          * In that case just map the requested area.
-          */
--        if (block->offset == 0) {
-+        if (xen_mr_is_memory(block->mr)) {
-             return xen_map_cache(block->mr, block->offset + addr,
-                                  len, lock, lock,
-                                  is_write);
+diff --git a/include/hw/xen/xen_pvdev.h b/include/hw/xen/xen_pvdev.h
+index fdf84f47af..0c98444047 100644
+--- a/include/hw/xen/xen_pvdev.h
++++ b/include/hw/xen/xen_pvdev.h
+@@ -52,7 +52,7 @@ struct XenLegacyDevice {
+     xenevtchn_handle   *evtchndev;
+     xengnttab_handle   *gnttabdev;
+ 
+-    struct XenDevOps   *ops;
++    const struct XenDevOps *ops;
+     QTAILQ_ENTRY(XenLegacyDevice) next;
+ };
+ 
+diff --git a/hw/xen/xen-legacy-backend.c b/hw/xen/xen-legacy-backend.c
+index 6f0b300a42..33620fe42e 100644
+--- a/hw/xen/xen-legacy-backend.c
++++ b/hw/xen/xen-legacy-backend.c
+@@ -170,7 +170,7 @@ int xen_be_copy_grant_refs(struct XenLegacyDevice *xendev,
+  */
+ static struct XenLegacyDevice *xen_be_get_xendev(const char *type, int dom,
+                                                  int dev,
+-                                                 struct XenDevOps *ops)
++                                                 const struct XenDevOps *ops)
+ {
+     struct XenLegacyDevice *xendev;
+ 
 -- 
 2.41.0
 
