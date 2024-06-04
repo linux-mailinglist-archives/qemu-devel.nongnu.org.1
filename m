@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF3B58FBC59
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 21:12:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 473C78FBCA1
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 21:34:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEZWj-00024Q-II; Tue, 04 Jun 2024 15:08:57 -0400
+	id 1sEZtZ-0008NJ-91; Tue, 04 Jun 2024 15:32:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sEZWh-0001se-5K
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 15:08:55 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sEZtV-0008Ml-IS
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 15:32:29 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sEZWf-00014l-0w
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 15:08:54 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sEZtS-0000vA-MO
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 15:32:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717528131;
+ s=mimecast20190719; t=1717529545;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=NEpjbSqv96acXddAF0b5elzpuXpH+2dtKbhhCEe0wtQ=;
- b=KlM8mKhtk2yxH+cb2goqT0wuEYQb/5APSw9WkiYTDi86oWkVvZ+DBngPIZJLfSTkjBHoeZ
- zACCVXmRasgYonlUVh+KWiV5YJGoLhDtETkbUSbyG0fpKIsNY4zbv3eWqWYSXf62iYazII
- uOE3cbxsHrfofvl+/1XnO/ZDT80cnRw=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Nn8VVvMg5S3LrLJ8kYp1BIeEBqdiypMdX4uLq+yvay8=;
+ b=dumDalFbO3/mTTicyfpkBmO0VQEN36GWY3PYLGcVOIc1jxTHGEpxG8S/OtbLjC0b0FWI7U
+ gZ0CY52aJvBEVYibQg8EkgatKZkImlox/pqpHcqx9BwwwvSPIV/4yxi8lxQgCfiJF98R3U
+ A2s6eZQUKA1wF1vEUx4i5MXJT0/WsPc=
+Received: from mail-oo1-f71.google.com (mail-oo1-f71.google.com
+ [209.85.161.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-5-8ZsILDqVOxOF1ZGJsRxwiQ-1; Tue, 04 Jun 2024 15:08:50 -0400
-X-MC-Unique: 8ZsILDqVOxOF1ZGJsRxwiQ-1
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-3580f213373so4020055f8f.3
- for <qemu-devel@nongnu.org>; Tue, 04 Jun 2024 12:08:50 -0700 (PDT)
+ us-mta-551-PNnHJ_ZXMs-x0i6Lm-DLmQ-1; Tue, 04 Jun 2024 15:32:24 -0400
+X-MC-Unique: PNnHJ_ZXMs-x0i6Lm-DLmQ-1
+Received: by mail-oo1-f71.google.com with SMTP id
+ 006d021491bc7-5b970b125fcso1318063eaf.0
+ for <qemu-devel@nongnu.org>; Tue, 04 Jun 2024 12:32:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717528129; x=1718132929;
+ d=1e100.net; s=20230601; t=1717529543; x=1718134343;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=NEpjbSqv96acXddAF0b5elzpuXpH+2dtKbhhCEe0wtQ=;
- b=tNWa6xbazBJjKej1U5VrJzBBOmb3zTjZ3h9uHOGiZpBMk/uyMH4YEupFhzqVO4Jqel
- 3ihO9qVsDCsKq9eHebDFbSxj3lo13dqYFlBg2AX+YFvo3bcvlmhKT7QixB0b2ORMpcc5
- BQSQqX4ByOHNx6cU5oB+uq0NoaJqwyfGFbeS/o2CYaPzMT6Fa21NivxnJ8O3tnEn17V1
- IXGI+1DmBL2jWkNhNDb5Q1w1W98cQUSkjjd8PThbT2X965F88pyeVNS+owxODxqDjRd8
- JCGIQF4H2HRb9sF0mDaHE6/4IfoWU6cQKVNC+ap7SIOoOJsvWRg9iPqQuY2/hlBf7ikn
- DEHw==
-X-Gm-Message-State: AOJu0YwLn/8Y9ZQtJ7wIAj22DZcjzXmhcwvw0Gmes4R0R6B/Vu8QM7Ou
- 0Wr8LFLW8ReK1C86YSBKNmcMCZm0PBWkc45N7Pfa7151GKqKLez2YxsyvnjkTUFRBjKlGr0r0M0
- UoxU2JBmOr2FakJ4dgvNRWHrsEO2tQDBIPE/OQy3qWk1bQwjiuHQ6zTn6jG+VP4MqbAV/U0S7CR
- a3uyl8tyQzK1Cz2sOEU7g4Xu0KGsxFEQ==
-X-Received: by 2002:adf:ffc6:0:b0:35e:5b3c:b11f with SMTP id
- ffacd0b85a97d-35e8ef88604mr237889f8f.58.1717528128900; 
- Tue, 04 Jun 2024 12:08:48 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFqaFhfQbrUrDlddkkqAJv2o2eqhwf4J8xkhEdAtGa1xSDl36wXfJBVOrnEHaJgDB5dM6S1iA==
-X-Received: by 2002:adf:ffc6:0:b0:35e:5b3c:b11f with SMTP id
- ffacd0b85a97d-35e8ef88604mr237867f8f.58.1717528128446; 
- Tue, 04 Jun 2024 12:08:48 -0700 (PDT)
-Received: from redhat.com ([2a0d:6fc7:552:cf5c:2b13:215c:b9df:f231])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-35dd04ca9b0sm12300744f8f.26.2024.06.04.12.08.46
+ bh=Nn8VVvMg5S3LrLJ8kYp1BIeEBqdiypMdX4uLq+yvay8=;
+ b=YagQVhdTRXvEOvPY3O2BIPhUSmKE+aW3nAgcHKZrCcdpawavTIOZWMlS+UMuIKzECt
+ /ZAHHUB2lEfFZDa9SZ4zbceqecCjhlIv4cTtb3Bo6g1tgsmnxUUUKrUG+1KLAN0OXczs
+ 0HS9GMNZZBxj5Ded6kAtze4tRhPq+ULjSWdVZ12rqVTd0qM4k3re1QnScRtb4jCmNbvG
+ jDN9YPSLlpdKMWU/cfPVa251+5zdm+5B4wu6cXW/Hvvs3qkvenMPwO8alVWHWqWBtW5I
+ C+o9KIKqNVsRuMQ0HfbaFPUfTxlMle0Ft0gUnjlqLU5LCNkx/tsCpdTx+s+w7VjMs6be
+ OFNA==
+X-Gm-Message-State: AOJu0Yw5Uzm2r2h/UuuaOvasOODFREgbSrMUNuDa3ULVCix21nNTpXuQ
+ KmYbfXL9G8zdTKlmPqxzsR0DqfMGPWvJlgAcPEGumhNZ7Equ7Uspi/vlTaIXYnT/9zH6g98s7GE
+ bwEbsNmNsKQfbIxZI0RsCs1gclzK8sYqZpLC+wBr37nPXNf0IkUXw
+X-Received: by 2002:a05:6870:55ca:b0:24f:ee85:2c9e with SMTP id
+ 586e51a60fabf-251222b7943mr498800fac.5.1717529543058; 
+ Tue, 04 Jun 2024 12:32:23 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG1gB4iI0JHGmExhph7ALHiOFQaV0SHQGCAABO67v817/arMccef/BuXa4ll/7UITsy6Fjpzw==
+X-Received: by 2002:a05:6870:55ca:b0:24f:ee85:2c9e with SMTP id
+ 586e51a60fabf-251222b7943mr498722fac.5.1717529542415; 
+ Tue, 04 Jun 2024 12:32:22 -0700 (PDT)
+Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com.
+ [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
+ af79cd13be357-795183f9dbesm74190685a.132.2024.06.04.12.32.20
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 04 Jun 2024 12:08:47 -0700 (PDT)
-Date: Tue, 4 Jun 2024 15:08:45 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, Ira Weiny <ira.weiny@intel.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>, Fan Ni <fan.ni@samsung.com>
-Subject: [PULL 46/46] hw/cxl: Fix read from bogus memory
-Message-ID: <bfcacf81d63a3d95f128bce3faf3564e7f98ea8b.1717527933.git.mst@redhat.com>
-References: <cover.1717527933.git.mst@redhat.com>
+ Tue, 04 Jun 2024 12:32:21 -0700 (PDT)
+Date: Tue, 4 Jun 2024 15:32:19 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Gonglei <arei.gonglei@huawei.com>
+Cc: qemu-devel@nongnu.org, yu.zhang@ionos.com, mgalaxy@akamai.com,
+ elmar.gerdes@ionos.com, zhengchuan@huawei.com, berrange@redhat.com,
+ armbru@redhat.com, lizhijian@fujitsu.com, pbonzini@redhat.com,
+ mst@redhat.com, xiexiangyou@huawei.com, linux-rdma@vger.kernel.org,
+ lixiao91@huawei.com, jinpu.wang@ionos.com,
+ Jialin Wang <wangjialin23@huawei.com>, Fabiano Rosas <farosas@suse.de>
+Subject: Re: [PATCH 0/6] refactor RDMA live migration based on rsocket API
+Message-ID: <Zl9rw3Q9Z9A0iMYV@x1n>
+References: <1717503252-51884-1-git-send-email-arei.gonglei@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <cover.1717527933.git.mst@redhat.com>
-X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
-X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+In-Reply-To: <1717503252-51884-1-git-send-email-arei.gonglei@huawei.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -100,47 +101,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Ira Weiny <ira.weiny@intel.com>
+Hi, Lei, Jialin,
 
-Peter and coverity report:
+Thanks a lot for working on this!
 
-	We've passed '&data' to address_space_write(), which means "read
-	from the address on the stack where the function argument 'data'
-	lives", so instead of writing 64 bytes of data to the guest ,
-	we'll write 64 bytes which start with a host pointer value and
-	then continue with whatever happens to be on the host stack
-	after that.
+I think we'll need to wait a bit on feedbacks from Jinpu and his team on
+RDMA side, also Daniel for iochannels.  Also, please remember to copy
+Fabiano Rosas in any relevant future posts.  We'd also like to know whether
+he has any comments too.  I have him copied in this reply.
 
-Indeed the intention was to write 64 bytes of data at the address given.
+On Tue, Jun 04, 2024 at 08:14:06PM +0800, Gonglei wrote:
+> From: Jialin Wang <wangjialin23@huawei.com>
+> 
+> Hi,
+> 
+> This patch series attempts to refactor RDMA live migration by
+> introducing a new QIOChannelRDMA class based on the rsocket API.
+> 
+> The /usr/include/rdma/rsocket.h provides a higher level rsocket API
+> that is a 1-1 match of the normal kernel 'sockets' API, which hides the
+> detail of rdma protocol into rsocket and allows us to add support for
+> some modern features like multifd more easily.
+> 
+> Here is the previous discussion on refactoring RDMA live migration using
+> the rsocket API:
+> 
+> https://lore.kernel.org/qemu-devel/20240328130255.52257-1-philmd@linaro.org/
+> 
+> We have encountered some bugs when using rsocket and plan to submit them to
+> the rdma-core community.
+> 
+> In addition, the use of rsocket makes our programming more convenient,
+> but it must be noted that this method introduces multiple memory copies,
+> which can be imagined that there will be a certain performance degradation,
+> hoping that friends with RDMA network cards can help verify, thank you!
 
-Fix the parameter to address_space_write().
+It'll be good to elaborate if you tested it in-house. What people should
+expect on the numbers exactly?  Is that okay from Huawei's POV?
 
-Reported-by: Peter Maydell <peter.maydell@linaro.org>
-Link: https://lore.kernel.org/all/CAFEAcA-u4sytGwTKsb__Y+_+0O2-WwARntm3x8WNhvL1WfHOBg@mail.gmail.com/
-Fixes: 6bda41a69bdc ("hw/cxl: Add clear poison mailbox command support.")
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Ira Weiny <ira.weiny@intel.com>
-Message-Id: <20240531-fix-poison-set-cacheline-v1-1-e3bc7e8f1158@intel.com>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
----
- hw/mem/cxl_type3.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Besides that, the code looks pretty good at a first glance to me.  Before
+others chim in, here're some high level comments..
 
-diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
-index 5d4a1276be..3274e5dcbb 100644
---- a/hw/mem/cxl_type3.c
-+++ b/hw/mem/cxl_type3.c
-@@ -1292,7 +1292,7 @@ static bool set_cacheline(CXLType3Dev *ct3d, uint64_t dpa_offset, uint8_t *data)
-         dpa_offset -= (vmr_size + pmr_size);
-     }
- 
--    address_space_write(as, dpa_offset, MEMTXATTRS_UNSPECIFIED, &data,
-+    address_space_write(as, dpa_offset, MEMTXATTRS_UNSPECIFIED, data,
-                         CXL_CACHE_LINE_SIZE);
-     return true;
- }
+Firstly, can we avoid using coroutine when listen()?  Might be relevant
+when I see that rdma_accept_incoming_migration() runs in a loop to do
+raccept(), but would that also hang the qemu main loop even with the
+coroutine, before all channels are ready?  I'm not a coroutine person, but
+I think the hope is that we can make dest QEMU run in a thread in the
+future just like the src QEMU, so the less coroutine the better in this
+path.
+
+I think I also left a comment elsewhere on whether it would be possible to
+allow iochannels implement their own poll() functions to avoid the
+per-channel poll thread that is proposed in this series.
+
+https://lore.kernel.org/r/ZldY21xVExtiMddB@x1n
+
+Personally I think even with the thread proposal it's better than the old
+rdma code, but I just still want to double check with you guys.  E.g.,
+maybe that just won't work at all?  Again, that'll also be based on the
+fact that we move migration incoming into a thread first to keep the dest
+QEMU main loop intact, I think, but I hope we will reach that irrelevant of
+rdma, IOW it'll be nice to happen even earlier if possible.
+
+Another nitpick is that qio_channel_rdma_listen_async() doesn't look used
+and may prone to removal.
+
+Thanks,
+
 -- 
-MST
+Peter Xu
 
 
