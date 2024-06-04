@@ -2,57 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7B3E8FB6BE
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 17:15:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C9DA8FB6C4
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 17:17:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEVrL-000477-30; Tue, 04 Jun 2024 11:13:59 -0400
+	id 1sEVtp-0005Nu-Tk; Tue, 04 Jun 2024 11:16:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=OW7X=NG=kaod.org=clg@ozlabs.org>)
- id 1sEVrH-00046t-W9
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 11:13:56 -0400
-Received: from gandalf.ozlabs.org ([150.107.74.76] helo=mail.ozlabs.org)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=OW7X=NG=kaod.org=clg@ozlabs.org>)
- id 1sEVrF-0002US-Cc
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 11:13:55 -0400
-Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4VtvHw3W4Gz4x1Y;
- Wed,  5 Jun 2024 01:13:48 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4VtvHt11JJz4wcq;
- Wed,  5 Jun 2024 01:13:45 +1000 (AEST)
-Message-ID: <c24d36b4-4087-4042-931e-0398d32e500e@kaod.org>
-Date: Tue, 4 Jun 2024 17:13:41 +0200
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sEVtn-0005NM-A2
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 11:16:31 -0400
+Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sEVtk-0003Z0-VW
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 11:16:31 -0400
+Received: by mail-ej1-x636.google.com with SMTP id
+ a640c23a62f3a-a63359aaaa6so739887566b.2
+ for <qemu-devel@nongnu.org>; Tue, 04 Jun 2024 08:16:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1717514187; x=1718118987; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=yAWAr4N3YA3GdJySs8E3f63fotTls+67OEhEcLw438I=;
+ b=AhdiiAzDPqjRYJBjBMPVtit3Jp2/GF6pHHceJ6gXK8ooaF09X+xLeP1XjEE+r/C/zl
+ sTpzki4MrNNQZaTBI4OFKymXS5Sxj86X3YLOU7ImOrR8S8s45ZU0RfNIyymBLBOPe07W
+ 4EUBMgEGDQvxWqlxOHdamS4fjdvdYIyW3vMNOu62zKr+5ieOgCTYTjKhgTPM9GjVqdlt
+ ZZlZGZa9cu2rotABfgfuT3XnhXP/OhXhMxSDNaK+JlRKJtGHzVcCFnjELU9u5mtXv8CL
+ LTFtQC+Vn5Zk7v9r/rv7Tu3hCjXX5XWFAVQd3luZmBpbwjrTrNilvZcZe7UU6gn3xjdv
+ Z8zw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1717514187; x=1718118987;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=yAWAr4N3YA3GdJySs8E3f63fotTls+67OEhEcLw438I=;
+ b=OZUE3/OWuQLTsuRmiU8clvjQOdl++qeT5AakFw/t0eBwUQc5HzKqa1sX3tSu3zz3/r
+ GLFGy39rvq2VOVLgmjxDcBmuR0Npzjh6o7Vm+DXvMu01XH0+hEDPhvn+M0dyes0FmkKF
+ GANH0C1XyidE975Otiz4PJH1v7vN1seQegYGlM/tFTAxgklH5KR482yUaWHHTF4kMZqH
+ nIFQVoJzUaM7yAmSuJvCmaL1tdDcT+E/dNDSOimBFVpi07jpFGKxj18XWc6r/HjMg+aZ
+ /UYKFvyf0UnoXM9rP1Z2yuFh1OhdAVvPVQgC+76vRkkhRo3pVPDqqyuIx0WFlyxPPQKN
+ mXkA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXJ/uZRwhVNY4ELCpxDYEcZ9Dap5i21vB/bK+qQiBTi1B6ssd4I1V3pUy5T5BQsbyARkPrT7D9WtwGwGKmurUptPKyE/zQ=
+X-Gm-Message-State: AOJu0YzWVOnlVUcyOs2ZLsQE5B7+OTK7LZErDv1cKXw3OcX5rC/FcIGB
+ nbTLnsm8fm/cTWWJnNsu5xKMjf/U7xiiq9cQuDz9Amo9l3ctMhfqa0yKFAiIBIGfvdRp6LkwkXC
+ IhcA=
+X-Google-Smtp-Source: AGHT+IFF/jYEFDyef+wXeRmRG0HckqqFbhw+j049ZeuNXlkAzUlslWUTM8lHGnvpXYzn7vHomtmWZw==
+X-Received: by 2002:a17:906:a445:b0:a68:c846:b129 with SMTP id
+ a640c23a62f3a-a68c846b17amr500397666b.11.1717514186713; 
+ Tue, 04 Jun 2024 08:16:26 -0700 (PDT)
+Received: from [192.168.69.100] ([176.176.159.34])
+ by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-a68bf18f58fsm476262966b.163.2024.06.04.08.16.25
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 04 Jun 2024 08:16:26 -0700 (PDT)
+Message-ID: <5e1b81d5-ed5e-4b1d-9c39-1cd91d227798@linaro.org>
+Date: Tue, 4 Jun 2024 17:16:24 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 17/32] hw/sd: Add emmc_cmd_SEND_RELATIVE_ADDR() handler
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Bin Meng <bin.meng@windriver.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Lucien Murray-Pitts <lucienmp.qemu@gmail.com>
-References: <20230703132509.2474225-1-clg@kaod.org>
- <20230703132509.2474225-18-clg@kaod.org>
- <d5680124-827a-4b03-838c-77754a84599c@linaro.org>
-Content-Language: en-US, fr
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <d5680124-827a-4b03-838c-77754a84599c@linaro.org>
+Subject: Re: [PATCH v2 1/5] scripts/coverity-scan/COMPONENTS.md: Update paths
+ to match gitlab CI
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+References: <20240604145934.1230583-1-peter.maydell@linaro.org>
+ <20240604145934.1230583-2-peter.maydell@linaro.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240604145934.1230583-2-peter.maydell@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=150.107.74.76;
- envelope-from=SRS0=OW7X=NG=kaod.org=clg@ozlabs.org; helo=mail.ozlabs.org
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=2a00:1450:4864:20::636;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x636.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -69,64 +96,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/3/24 14:26, Philippe Mathieu-Daudé wrote:
-> On 3/7/23 15:24, Cédric Le Goater wrote:
->> Signed-off-by: Cédric Le Goater <clg@kaod.org>
->> ---
->>   hw/sd/sd.c | 20 ++++++++++++++++++++
->>   1 file changed, 20 insertions(+)
->>
->> diff --git a/hw/sd/sd.c b/hw/sd/sd.c
->> index dd60a16f8c0a..5ff132139ea9 100644
->> --- a/hw/sd/sd.c
->> +++ b/hw/sd/sd.c
->> @@ -1053,6 +1053,25 @@ static sd_rsp_type_t sd_cmd_ALL_SEND_CID(SDState *sd, SDRequest req)
->>       return sd_r2_i;
->>   }
->> +static void sd_emmc_set_rca(SDState *sd, uint16_t value)
->> +{
->> +    sd->rca = value;
->> +}
->> +
->> +static sd_rsp_type_t emmc_cmd_SEND_RELATIVE_ADDR(SDState *sd, SDRequest req)
+On 4/6/24 16:59, Peter Maydell wrote:
+> Since commit 83aa1baa069c we have been running the build for Coverity
+> Scan as a Gitlab CI job, rather than the old setup where it was run
+> on a local developer's machine.  This is working well, but the
+> absolute paths of files are different for the Gitlab CI job, which
+> means that the regexes we use to identify Coverity components no
+> longer work. With Gitlab CI builds the file paths are of the form
+>   /builds/qemu-project/qemu/accel/kvm/kvm-all.c
 > 
-> "emmc_cmd_SET_RELATIVE_ADDR".
-
-Fixed.
-
-
-Thanks,
-
-C.
-
-
+> rather than the old
+>   /qemu/accel/kvm/kvm-all.c
 > 
-> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> and our regexes all don't match.
 > 
->> +{
->> +    switch (sd->state) {
->> +    case sd_identification_state:
->> +    case sd_standby_state:
->> +        sd->state = sd_standby_state;
->> +        sd_emmc_set_rca(sd, req.arg >> 16);
->> +        return sd_r1;
->> +
->> +    default:
->> +        return sd_invalid_state_for_cmd(sd, req);
->> +    }
->> +}
->> +
->>   static sd_rsp_type_t sd_cmd_SEND_RELATIVE_ADDR(SDState *sd, SDRequest req)
->>   {
->>       switch (sd->state) {
->> @@ -2194,6 +2213,7 @@ static const SDProto sd_proto_emmc = {
->>           [0]         = sd_cmd_GO_IDLE_STATE,
->>           [1]         = emmc_cmd_SEND_OP_CMD,
->>           [2]         = emmc_cmd_ALL_SEND_CID,
->> +        [3]         = emmc_cmd_SEND_RELATIVE_ADDR,
->>           [5]         = sd_cmd_illegal,
->>           [19]        = sd_cmd_SEND_TUNING_BLOCK,
->>           [23]        = sd_cmd_SET_BLOCK_COUNT,
+> Update all the regexes to start with .*/qemu/ . This will hopefully
+> avoid the need to change them again in future if the build path
+> changes again.
 > 
+> This change was made with a search-and-replace of (/qemu)?
+> to .*/qemu .
+> 
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> ---
+>   scripts/coverity-scan/COMPONENTS.md | 104 ++++++++++++++--------------
+>   1 file changed, 52 insertions(+), 52 deletions(-)
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
