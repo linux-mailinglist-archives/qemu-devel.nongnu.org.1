@@ -2,84 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A8768FAE22
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 10:55:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EC0A8FADD1
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 10:44:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEPwc-0000bJ-Op; Tue, 04 Jun 2024 04:55:02 -0400
+	id 1sEPmR-0002kE-Eu; Tue, 04 Jun 2024 04:44:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sEPwb-0000ad-1n
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 04:55:01 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sEPmP-0002k3-OS
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 04:44:29 -0400
+Received: from mgamail.intel.com ([198.175.65.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sEPwZ-00032F-HN
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 04:55:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717491299;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=7Kh6eB6FJO7y29jcT+D89kAQxKrmCwTX41ilLKqtUEQ=;
- b=bWJ0Wq10+KYgyx54DE+yvvqSUlbMn8PJlYYOQUfiF87Rj6vkw5Co0kP41dV1EI25fZyWLc
- G5mNczydJqzMNzgQtGz4DISNnNoTTOaWHWl9Xo23ZhAFH8KUxTfuFdtZ5Y3VGJVjjantQG
- gjaBGvaKB/SF1cF+1whagMxIbHSyTJk=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-678-m6nBrRR1Plq-R6WoAWdtFA-1; Tue, 04 Jun 2024 04:54:54 -0400
-X-MC-Unique: m6nBrRR1Plq-R6WoAWdtFA-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5831D8025EF;
- Tue,  4 Jun 2024 08:54:53 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.93])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 5656E3C23;
- Tue,  4 Jun 2024 08:54:52 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 6349221E6757; Tue,  4 Jun 2024 10:54:51 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Zhao Liu <zhao1.liu@intel.com>
-Cc: Daniel P . =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,  Eduardo
- Habkost
- <eduardo@habkost.net>,  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Yanan Wang
- <wangyanan55@huawei.com>,  "Michael S . Tsirkin" <mst@redhat.com>,  Paolo
- Bonzini <pbonzini@redhat.com>,  Richard Henderson
- <richard.henderson@linaro.org>,  Eric Blake <eblake@redhat.com>,  Marcelo
- Tosatti <mtosatti@redhat.com>,  Alex =?utf-8?Q?Benn=C3=A9e?=
- <alex.bennee@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,  Jonathan Cameron
- <Jonathan.Cameron@huawei.com>,  Sia Jee Heng
- <jeeheng.sia@starfivetech.com>,  qemu-devel@nongnu.org,
- kvm@vger.kernel.org,  qemu-riscv@nongnu.org,  qemu-arm@nongnu.org,
- Zhenyu Wang <zhenyu.z.wang@intel.com>,  Dapeng Mi
- <dapeng1.mi@linux.intel.com>,  Yongwei Ma <yongwei.ma@intel.com>
-Subject: Re: [RFC v2 3/7] hw/core: Add cache topology options in -smp
-In-Reply-To: <20240530101539.768484-4-zhao1.liu@intel.com> (Zhao Liu's message
- of "Thu, 30 May 2024 18:15:35 +0800")
-References: <20240530101539.768484-1-zhao1.liu@intel.com>
- <20240530101539.768484-4-zhao1.liu@intel.com>
-Date: Tue, 04 Jun 2024 10:54:51 +0200
-Message-ID: <87sext9jfo.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sEPmO-0005Mw-35
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 04:44:29 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1717490668; x=1749026668;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=cnxSJ8ziyTSI8m54PMa/4pI6Kz5sXTiDeaTZk0G1aDg=;
+ b=nK+nWRLQJHLsxkt9+y+E1lL+G6SFmIpvrzCHEjzKufLhIprL0QV7MeXX
+ xcETSuV+1upNfjs/70W6iYeJySNDmUijWiMgT85pzaQ5lHoEaduhcPTmj
+ Zfk26c3OPQXYXd08GMB8/wJwDjN1wAjZ/dJj1xrZOOFIxtalMbHwCIkl6
+ 1S0chkier15oi2Dro3ewKwy1ar2hoiVYT7OQclpMRe3VlU5bi+2zAFOs1
+ RjdY97bufGWbRhRTZWc90l5neMHoTFrvIn1GWzPmXPOFgWRxcPP82cLHH
+ t/Fhx+0Qq9vushL2txSDrD6dtP1WsMlvx86hJt7d6BLR1+36AL3GC/kSZ Q==;
+X-CSE-ConnectionGUID: dg+wACMjQNC1E8iXXn+7xg==
+X-CSE-MsgGUID: 0zvqzdKCR+qkcKFaoGUzfQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11092"; a="13970929"
+X-IronPort-AV: E=Sophos;i="6.08,213,1712646000"; d="scan'208";a="13970929"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Jun 2024 01:44:26 -0700
+X-CSE-ConnectionGUID: z8JNVk9cSHS5hLlVWaPyvw==
+X-CSE-MsgGUID: MlW2zfMtSY6ATSqvFrEc2A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,213,1712646000"; d="scan'208";a="42268122"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by orviesa004.jf.intel.com with ESMTP; 04 Jun 2024 01:44:23 -0700
+Date: Tue, 4 Jun 2024 16:59:49 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Zhao Liu <zhao1.liu@linux.intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org,
+ Ani Sinha <anisinha@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, Thomas Huth <thuth@redhat.com>
+Subject: Re: [PATCH-for-9.0?] docs: i386: pc: Update maximum CPU numbers for
+ PC Q35
+Message-ID: <Zl7XhRvpxQNy+vna@intel.com>
+References: <20240412085358.731560-1-zhao1.liu@linux.intel.com>
+ <305d659b-d4d6-4681-bdad-cd869e552333@linaro.org>
+ <20240602092857-mutt-send-email-mst@kernel.org>
+ <77840065-1ad4-42bc-a19c-181ac7d63cf1@linaro.org>
+ <Zl3_x-HIuzcTwXlw@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <Zl3_x-HIuzcTwXlw@redhat.com>
+Received-SPF: pass client-ip=198.175.65.21; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,71 +90,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Zhao Liu <zhao1.liu@intel.com> writes:
+Hi Michael, Daniel, and Philippe,
 
-> Add "l1d-cache", "l1i-cache". "l2-cache", and "l3-cache" options in
-> -smp to define the cache topology for SMP system.
->
-> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+On Mon, Jun 03, 2024 at 06:39:19PM +0100, Daniel P. Berrangé wrote:
+> Date: Mon, 3 Jun 2024 18:39:19 +0100
+> From: "Daniel P. Berrangé" <berrange@redhat.com>
+> Subject: Re: [PATCH-for-9.0?] docs: i386: pc: Update maximum CPU numbers
+>  for PC Q35
+> 
+> On Mon, Jun 03, 2024 at 07:31:47PM +0200, Philippe Mathieu-Daudé wrote:
+> > Hi Michael,
+> > 
+> > On 2/6/24 15:30, Michael S. Tsirkin wrote:
+> > > On Fri, Apr 12, 2024 at 11:57:35AM +0200, Philippe Mathieu-Daudé wrote:
+> > > > Hi Zhao,
+> > > > 
+> > > > On 12/4/24 10:53, Zhao Liu wrote:
+> > > > > From: Zhao Liu <zhao1.liu@intel.com>
+> > > > > 
+> > > > > Commit e4e98c7eebfa ("pc: q35: Bump max_cpus to 4096 vcpus") increases
+> > > > > the supported CPUs for PC Q35 machine.
+> > > > > 
+> > > > > Update maximum CPU numbers for PC Q35 in the document.
+> > > > > 
+> > > > > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> > > > > ---
+> > > > >    docs/system/target-i386-desc.rst.inc | 2 +-
+> > > > >    1 file changed, 1 insertion(+), 1 deletion(-)
+> > > > > 
+> > > > > diff --git a/docs/system/target-i386-desc.rst.inc b/docs/system/target-i386-desc.rst.inc
+> > > > > index 5ebbcda9db4c..319e540573d3 100644
+> > > > > --- a/docs/system/target-i386-desc.rst.inc
+> > > > > +++ b/docs/system/target-i386-desc.rst.inc
+> > > > > @@ -36,7 +36,7 @@ The QEMU PC System emulator simulates the following peripherals:
+> > > > >    -  PCI UHCI, OHCI, EHCI or XHCI USB controller and a virtual USB-1.1
+> > > > >       hub.
+> > > > > -SMP is supported with up to 255 CPUs.
+> > > > > +SMP is supported with up to 255 CPUs (and 4096 CPUs for PC Q35 machine).
+> > > > 
+> > > > This comment is not accurate since a while, IIUC:
+> > > > 
+> > > > Up to q35-2.7: 255
+> > > > q35-2.8: 288
+> > > > q35-8.0+: 1024
+> > > > q35-9.0: 4096
+> > > 
+> > > 
+> > > What are you saying here, Philippe? I don't think compat
+> > > machine types matter enough to bother with more detail.
+> > 
+> > My point is I find this description confusing w.r.t. how QEMU behaves:
+> 
+>   snip
+> 
+> I think the docs should simply avoid mentioning any limit at all. ie
+> 
+>    -SMP is supported with up to 255 CPUs.
+>    +SMP is supported with a large number of virtual CPUs (upper limit is
+>     configuration dependent)
 
-[...]
+I agree, the limit may also be different for different scenarios, and it
+is not appropriate to describe it in detail.
 
-> diff --git a/qapi/machine.json b/qapi/machine.json
-> index 7ac5a05bb9c9..8fa5af69b1bf 100644
-> --- a/qapi/machine.json
-> +++ b/qapi/machine.json
-> @@ -1746,6 +1746,23 @@
->  #
->  # @threads: number of threads per core
->  #
-> +# @l1d-cache: topology hierarchy of L1 data cache. It accepts the CPU
-> +#     topology enumeration as the parameter, i.e., CPUs in the same
-> +#     topology container share the same L1 data cache. (since 9.1)
-> +#
-> +# @l1i-cache: topology hierarchy of L1 instruction cache. It accepts
-> +#     the CPU topology enumeration as the parameter, i.e., CPUs in the
-> +#     same topology container share the same L1 instruction cache.
-> +#     (since 9.1)
-> +#
-> +# @l2-cache: topology hierarchy of L2 unified cache. It accepts the CPU
-> +#     topology enumeration as the parameter, i.e., CPUs in the same
-> +#     topology container share the same L2 unified cache. (since 9.1)
-> +#
-> +# @l3-cache: topology hierarchy of L3 unified cache. It accepts the CPU
-> +#     topology enumeration as the parameter, i.e., CPUs in the same
-> +#     topology container share the same L3 unified cache. (since 9.1)
-> +#
->  # Since: 6.1
->  ##
+Sorry I forgot that this patch has been merged in by Thomas for me
+(838f82468a12), and I can modify it with a new patch based on Daniel's
+suggestion.
 
-The new members are all optional.  What does "absent" mean?  No such
-cache?  Some default topology?
-
-Is this sufficiently general?  Do all machines of interest have a split
-level 1 cache, a level 2 cache, and a level 3 cache?
-
-Is the CPU topology level the only cache property we'll want to
-configure here?  If the answer isn't "yes", then we should perhaps wrap
-it in an object, so we can easily add more members later.
-
-Two spaces between sentences for consistency, please.
-
->  { 'struct': 'SMPConfiguration', 'data': {
-> @@ -1758,7 +1775,11 @@
->       '*modules': 'int',
->       '*cores': 'int',
->       '*threads': 'int',
-> -     '*maxcpus': 'int' } }
-> +     '*maxcpus': 'int',
-> +     '*l1d-cache': 'CPUTopoLevel',
-> +     '*l1i-cache': 'CPUTopoLevel',
-> +     '*l2-cache': 'CPUTopoLevel',
-> +     '*l3-cache': 'CPUTopoLevel' } }
->  
->  ##
->  # @x-query-irq:
-> diff --git a/system/vl.c b/system/vl.c
-
-[...]
+Thanks,
+Zhao
 
 
