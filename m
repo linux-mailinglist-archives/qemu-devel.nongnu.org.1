@@ -2,134 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F28738FBBB6
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 20:36:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 405B38FBCC2
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 21:54:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEZ06-0002nE-4q; Tue, 04 Jun 2024 14:35:14 -0400
+	id 1sEaEV-00080x-21; Tue, 04 Jun 2024 15:54:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sEZ04-0002mx-9p
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 14:35:12 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sEZ01-0005wB-LR
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 14:35:11 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717526107;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=gNAlOrCN33wzhrrCFbiUysg83Y+7Maz6v4eyHFMOI70=;
- b=bf3HXhi+NlexD8uFP3tcXnE5+ixhXg8UCt1pUbU7vu2GohUlzhiAD1MrTgAylcD0OFlcgT
- a0zPfVlr519I6oIXQqYKhhLZ/LyMgUpaaobURaapEBjg0oZEJzuqHFXNaTkNR1kqg4dRGt
- tAmAmJpkFf21pn78uVKGcjqFFPoXXY4=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-358-XGXW6-GPOdCu9ClF4oiQLA-1; Tue, 04 Jun 2024 14:35:05 -0400
-X-MC-Unique: XGXW6-GPOdCu9ClF4oiQLA-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-42120e033e2so31340465e9.0
- for <qemu-devel@nongnu.org>; Tue, 04 Jun 2024 11:35:05 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <beeman@rivosinc.com>)
+ id 1sEZBc-0007Ft-Cd
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 14:47:08 -0400
+Received: from mail-yw1-x112d.google.com ([2607:f8b0:4864:20::112d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <beeman@rivosinc.com>)
+ id 1sEZBZ-0001jR-Kc
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 14:47:08 -0400
+Received: by mail-yw1-x112d.google.com with SMTP id
+ 00721157ae682-62a2424ed01so60507717b3.1
+ for <qemu-devel@nongnu.org>; Tue, 04 Jun 2024 11:47:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1717526823; x=1718131623;
+ darn=nongnu.org; 
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=9dzBwmguy3/vQ+kgEZPDQWKkmi1aBtYoWjvo/mZ2H8Y=;
+ b=CwrvZj6bqu1xjItaEyz75kZ6Jsx3JRKToLF0k/Aj4NV/9eLBcJraumc+X7ckfsqUG5
+ qmQRnVnZnf5NDqMF6V7jm4iqwSsuyZivKbAQwGoilUAeiYwy4XRpdIuwkyQAmTE7fRYH
+ D1n3jaeUcNq1SJWxIOUkT68O/x6zLBhkzhggc8IJdW0x6roOAeHpATjoBpl2DC3dsZ5V
+ sMVniIfUAPEuvMzSwSVjgSeyqZa+B/85MJbtnTYV47sQqshkc9N0GRCe3UAj4Ben200Q
+ jlzEjZ6qpdhzppAQSQw+stpsmnE2ilrMazAwLEgLT4KOqq1lsQjfgP5TAMvsIXbcrV7q
+ 7Ifw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717526104; x=1718130904;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1717526823; x=1718131623;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=gNAlOrCN33wzhrrCFbiUysg83Y+7Maz6v4eyHFMOI70=;
- b=nPPA1qe23YmedUrXwYAuXWzqhwA/z5CKmfCSWBLulG3+h8p187VNRkqQH9Fa7Es4LK
- 3Wukrb756rtkiREQn8Dy0ebNvc34r8f8pUZhzfWYdhAJe8S78NYQ5m9HqGfJ+xSoej03
- QXlfOM2Tw0Syk7iSM93voxYa/W9QoISiK9NCDI4udZhAVKTuJK4FvZ/ADXWGiTBvNxqD
- J+exRVgmWktMa0ylZemrHhr2spyUIm40RIscMtOqwqylfATvKxxcHTSAHOxbvgxp1gpA
- yXymr4FqPmnS61QiaSDKAAJ0FTRCzsizsVu479akoNRSLhVr0mGSY12fXozPJ7t8SzWC
- 4pCw==
+ bh=9dzBwmguy3/vQ+kgEZPDQWKkmi1aBtYoWjvo/mZ2H8Y=;
+ b=twxGW/E+XXK/0u8mXlhvi03qcToEhOiP7MMABm5HnNONdur80dLnhp2bhG4DtbGR7w
+ jbsFQ9aa+7XBLNDvPgO/OF4J4yYcstosifo0bWXcYLA3ynUDo2hMBIcE3M9ySQl7nskF
+ +80AFUrJ24W1dalicotGN1zFcQoXeaJFOQrhEzxrZfKQBGECmmbrR6x6dkSamPNJZ18H
+ fsZo9kFgF9CNDdEiL10aX1XkO5csTZojnDK5aMEwy1D7+qrq6DXeMTgthXpuBiejo7Ak
+ ejpg6sdLAMQjGqtb7QESm3Ber/ZFU0uD5pfx3tfc5BdVMiK0hCeOaP1PMDnMD/OkOz5+
+ db5w==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUfx1DhxCsUOYGMlotIFtnO+KCSJUNKW/+WEnTglFv8OCflGEku8YrrWkAR2hDDAvWptd3wSnzcpW5rrT03ykDxlKReWEs=
-X-Gm-Message-State: AOJu0YyWU9UKLCCDAebxY47xmujvoOKGJSjBlY0Jh2O7tuFfU3Fl/h3z
- 3yVTcs9wcnHNwe9EyL2xN1CWGZpBd22X+mMFxp/BcwHLk+CCTwxbwNIfMeFi6JiGjSwUdZmxXg1
- 2IU3QQ3IILdHVXIlx/IdttFMp3paITgCbHzUwyc2ZK4uYOHw5PicQ
-X-Received: by 2002:a05:600c:a03:b0:421:1d8:add4 with SMTP id
- 5b1f17b1804b1-4215634e602mr3195065e9.35.1717526104263; 
- Tue, 04 Jun 2024 11:35:04 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGZPhJKH4KbLyG3SD7g42h5tHd4TaPuoT7tVnIz+eTewFzXWEUNTC3p6ARWcKNdiUxsr38mZA==
-X-Received: by 2002:a05:600c:a03:b0:421:1d8:add4 with SMTP id
- 5b1f17b1804b1-4215634e602mr3194895e9.35.1717526103844; 
- Tue, 04 Jun 2024 11:35:03 -0700 (PDT)
-Received: from [192.168.0.4] (ip-109-43-178-97.web.vodafone.de.
- [109.43.178.97]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42135511679sm134050905e9.36.2024.06.04.11.35.03
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 04 Jun 2024 11:35:03 -0700 (PDT)
-Message-ID: <7a6160da-e3fb-42a8-9173-55d3b2c7903d@redhat.com>
-Date: Tue, 4 Jun 2024 20:35:02 +0200
+ AJvYcCXqwuLq+ZjkybbA/5my+Knte9ykM9lFTZM0jYha/Zemiss4s4P4yN8qZ/krGMyVxVQP9OjQLN9bw/jL6CSqAOYue6xFUdI=
+X-Gm-Message-State: AOJu0YzFN3xUBtV9dkP7eJfKCE5t07rZudQqbSZYI1i+PZfAHRMWaTe9
+ y4JBj5p5mMM4Lshvxl1V53maZu2BxP9ls9eZj48Umzc4x1J014oUm1NSIdSOP458TQzsw01724K
+ 1rpXvpdb7sCb9sg4lZvJDjziuaXij8u+6VZYEJg==
+X-Google-Smtp-Source: AGHT+IHKV8yohT/ln5XpNOij8EAGJgdpjX5vbS+qVTGwxG/wX2Dr8mU0y6nxhjdcc1/02m+LVivY1R9mWh87cjwxoKw=
+X-Received: by 2002:a81:ad0d:0:b0:627:760f:80cc with SMTP id
+ 00721157ae682-62cbb48dba1mr1879147b3.10.1717526823508; Tue, 04 Jun 2024
+ 11:47:03 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/5] s390x: Add Full Boot Order Support
-To: jrossi@linux.ibm.com, qemu-devel@nongnu.org, qemu-s390x@nongnu.org
-Cc: frankja@linux.ibm.com, nsg@linux.ibm.com
-References: <20240529154311.734548-1-jrossi@linux.ibm.com>
-From: Thomas Huth <thuth@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20240529154311.734548-1-jrossi@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+References: <20240529160950.132754-1-rkanwal@rivosinc.com>
+ <20240529160950.132754-6-rkanwal@rivosinc.com>
+ <71bc36b9-cc17-4036-91b2-e7ddd81f0c07@sifive.com>
+In-Reply-To: <71bc36b9-cc17-4036-91b2-e7ddd81f0c07@sifive.com>
+From: Beeman Strong <beeman@rivosinc.com>
+Date: Tue, 4 Jun 2024 11:46:52 -0700
+Message-ID: <CAP55G9AAF9wwPEkNdG60Mnie8p=f-+ZzcjDBJU_RCSL+KSU77w@mail.gmail.com>
+Subject: Re: [PATCH 5/6] target/riscv: Add CTR sctrclr instruction.
+To: Jason Chien <jason.chien@sifive.com>
+Cc: Rajnesh Kanwal <rkanwal@rivosinc.com>, qemu-riscv@nongnu.org,
+ qemu-devel@nongnu.org, 
+ alistair.francis@wdc.com, bin.meng@windriver.com, liweiwei@iscas.ac.cn, 
+ dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com, atishp@rivosinc.com, 
+ apatel@ventanamicro.com, tech-control-transfer-records@lists.riscv.org
+Content-Type: multipart/alternative; boundary="000000000000353ec8061a14e0d0"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::112d;
+ envelope-from=beeman@rivosinc.com; helo=mail-yw1-x112d.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Tue, 04 Jun 2024 15:54:07 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -144,62 +95,288 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 29/05/2024 17.43, jrossi@linux.ibm.com wrote:
-> From: Jared Rossi <jrossi@linux.ibm.com>
-> 
-> This patch set primarily adds support for the specification of multiple boot
-> devices, allowing for the guest to automatically use an alternative device on
-> a failed boot without needing to be reconfigured. It additionally provides the
-> ability to define the loadparm attribute on a per-device bases, which allows
-> boot devices to use different loadparm values if needed.
-> 
-> In brief, an IPLB is generated for each designated boot device (up to a maximum
-> of 8) and stored in guest memory immediately before BIOS. If a device fails to
-> boot, the next IPLB is retrieved and we jump back to the start of BIOS.
-> 
-> Devices can be specified using the standard qemu device tag "bootindex" as with
-> other architectures. Lower number indices are tried first, with "bootindex=0"
-> indicating the first device to try.
-> 
-> A subsequent Libvirt patch will be necessary to allow assignment of per-device
-> loadparms in the guest XML
-> 
-> Jared Rossi (5):
->    Create include files for s390x IPL definitions
->    Add loadparm to CcwDevice
->    Build IPLB chain for multiple boot devices
->    Add boot device fallback infrastructure
->    Enable and document boot device fallback on panic
-> 
->   docs/system/bootindex.rst         |   7 +-
->   docs/system/s390x/bootdevices.rst |   9 +-
->   hw/s390x/ccw-device.h             |   2 +
->   hw/s390x/ipl.h                    | 117 +-------------------
->   include/hw/s390x/ipl/qipl.h       | 128 ++++++++++++++++++++++
->   pc-bios/s390-ccw/bootmap.h        |   5 +
->   pc-bios/s390-ccw/iplb.h           | 108 +++++--------------
->   pc-bios/s390-ccw/s390-ccw.h       |   6 ++
->   hw/s390x/ccw-device.c             |  49 +++++++++
->   hw/s390x/ipl.c                    | 170 ++++++++++++++++++++++--------
->   hw/s390x/s390-virtio-ccw.c        |  18 +---
->   hw/s390x/sclp.c                   |   3 +-
->   pc-bios/s390-ccw/bootmap.c        |  41 ++++---
->   pc-bios/s390-ccw/main.c           |  25 +++--
->   pc-bios/s390-ccw/netmain.c        |   4 +
->   pc-bios/s390-ccw/Makefile         |   2 +-
+--000000000000353ec8061a14e0d0
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-  Hi Jared!
+On Tue, Jun 4, 2024 at 10:19=E2=80=AFAM Jason Chien <jason.chien@sifive.com=
+> wrote:
 
-For v2, could you please add at least two tests: one that check booting from 
-the second disk and one that checks booting from the last boot disk when the 
-previous ones are invalid?
+>
+> Rajnesh Kanwal =E6=96=BC 2024/5/30 =E4=B8=8A=E5=8D=88 12:09 =E5=AF=AB=E9=
+=81=93:
+> > CTR extension adds a new instruction sctrclr to quickly
+> > clear the recorded entries buffer.
+> >
+> > Signed-off-by: Rajnesh Kanwal <rkanwal@rivosinc.com>
+> > ---
+> >   target/riscv/cpu.h                             |  1 +
+> >   target/riscv/cpu_helper.c                      |  7 +++++++
+> >   target/riscv/insn32.decode                     |  1 +
+> >   target/riscv/insn_trans/trans_privileged.c.inc | 10 ++++++++++
+> >   target/riscv/op_helper.c                       |  5 +++++
+> >   5 files changed, 24 insertions(+)
+> >
+> > diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+> > index a294a5372a..fade71aa09 100644
+> > --- a/target/riscv/cpu.h
+> > +++ b/target/riscv/cpu.h
+> > @@ -572,6 +572,7 @@ void riscv_cpu_set_mode(CPURISCVState *env,
+> target_ulong newpriv, bool virt_en);
+> >   void riscv_ctr_freeze(CPURISCVState *env, uint64_t freeze_mask);
+> >   void riscv_ctr_add_entry(CPURISCVState *env, target_long src,
+> target_long dst,
+> >                            uint64_t type, target_ulong prev_priv, bool
+> prev_virt);
+> > +void riscv_ctr_clear(CPURISCVState *env);
+> >
+> >   void riscv_translate_init(void);
+> >   G_NORETURN void riscv_raise_exception(CPURISCVState *env,
+> > diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
+> > index e064a7306e..45502f50a7 100644
+> > --- a/target/riscv/cpu_helper.c
+> > +++ b/target/riscv/cpu_helper.c
+> > @@ -704,6 +704,13 @@ void riscv_ctr_freeze(CPURISCVState *env, uint64_t
+> freeze_mask)
+> >       }
+> >   }
+> >
+> > +void riscv_ctr_clear(CPURISCVState *env)
+> > +{
+> > +    memset(env->ctr_src, 0x0, sizeof(env->ctr_src));
+> > +    memset(env->ctr_dst, 0x0, sizeof(env->ctr_dst));
+> > +    memset(env->ctr_data, 0x0, sizeof(env->ctr_data));
+> > +}
+> > +
+> >   static uint64_t riscv_ctr_priv_to_mask(target_ulong priv, bool virt)
+> >   {
+> >       switch (priv) {
+> > diff --git a/target/riscv/insn32.decode b/target/riscv/insn32.decode
+> > index 9cb1a1b4ec..d3d38c7c68 100644
+> > --- a/target/riscv/insn32.decode
+> > +++ b/target/riscv/insn32.decode
+> > @@ -107,6 +107,7 @@
+> >   # *** Privileged Instructions ***
+> >   ecall       000000000000     00000 000 00000 1110011
+> >   ebreak      000000000001     00000 000 00000 1110011
+> > +sctrclr     000100000100     00000 000 00000 1110011
+> >   uret        0000000    00010 00000 000 00000 1110011
+> >   sret        0001000    00010 00000 000 00000 1110011
+> >   mret        0011000    00010 00000 000 00000 1110011
+> > diff --git a/target/riscv/insn_trans/trans_privileged.c.inc
+> b/target/riscv/insn_trans/trans_privileged.c.inc
+> > index 339d659151..dd9da8651f 100644
+> > --- a/target/riscv/insn_trans/trans_privileged.c.inc
+> > +++ b/target/riscv/insn_trans/trans_privileged.c.inc
+> > @@ -69,6 +69,16 @@ static bool trans_ebreak(DisasContext *ctx,
+> arg_ebreak *a)
+> >       return true;
+> >   }
+> >
+> > +static bool trans_sctrclr(DisasContext *ctx, arg_sctrclr *a)
+> > +{
+> > +#ifndef CONFIG_USER_ONLY
+> If both of smctr and ssctr are not enabled, it is an illegal instruction.
+> > +    gen_helper_ctr_clear(tcg_env);
+> > +    return true;
+> > +#else
+> > +    return false;
+> > +#endif
+> > +}
+> > +
+> >   static bool trans_uret(DisasContext *ctx, arg_uret *a)
+> >   {
+> >       return false;
+> > diff --git a/target/riscv/op_helper.c b/target/riscv/op_helper.c
+> > index c8053d9c2f..89423c04b3 100644
+> > --- a/target/riscv/op_helper.c
+> > +++ b/target/riscv/op_helper.c
+> > @@ -461,6 +461,11 @@ void helper_ctr_branch(CPURISCVState *env,
+> target_ulong src, target_ulong dest,
+> >       }
+> >   }
+> >
+> > +void helper_ctr_clear(CPURISCVState *env)
+> > +{
+>
+> There should be some checks here.
+> The spec states:
+> SCTRCLR raises an illegal-instruction exception in U-mode, and a
+> virtual-instruction exception in VU-mode, unless CTR state enable access
+> restrictions apply.
+>
+> I don't quite understand "unless CTR state enable access restrictions
+> apply" though.
+>
 
-I could think of two easy ways for adding such tests, up to you what you prefer:
+The next sentence says "See Chapter 5", which states that execution of
+SCTRCLR raises an illegal instruction exception if mstateen0.CTR=3D0 and th=
+e
+priv mode is not M-mode, and it raises a virtual instruction exception if
+mstateen0.CTR=3D0 && hstateen0.CTR=3D1 and the priv mode is VS-mode.
 
-- Extend the tests/qtest/cdrom-test.c - see add_s390x_tests() there
 
-- Add an avocado test - see "grep -l s390 tests/avocado/*.py" for examples.
+>
+> > +    riscv_ctr_clear(env);
+> > +}
+> > +
+> >   void helper_wfi(CPURISCVState *env)
+> >   {
+> >       CPUState *cs =3D env_cpu(env);
+>
 
-  Thomas
+--000000000000353ec8061a14e0d0
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
+<div dir=3D"ltr" class=3D"gmail_attr">On Tue, Jun 4, 2024 at 10:19=E2=80=AF=
+AM Jason Chien &lt;<a href=3D"mailto:jason.chien@sifive.com">jason.chien@si=
+five.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D=
+"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-le=
+ft:1ex"><br>
+Rajnesh Kanwal =E6=96=BC 2024/5/30 =E4=B8=8A=E5=8D=88 12:09 =E5=AF=AB=E9=81=
+=93:<br>
+&gt; CTR extension adds a new instruction sctrclr to quickly<br>
+&gt; clear the recorded entries buffer.<br>
+&gt;<br>
+&gt; Signed-off-by: Rajnesh Kanwal &lt;<a href=3D"mailto:rkanwal@rivosinc.c=
+om" target=3D"_blank">rkanwal@rivosinc.com</a>&gt;<br>
+&gt; ---<br>
+&gt;=C2=A0 =C2=A0target/riscv/cpu.h=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 1=
+ +<br>
+&gt;=C2=A0 =C2=A0target/riscv/cpu_helper.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 |=C2=A0 7 +++++++<br>
+&gt;=C2=A0 =C2=A0target/riscv/insn32.decode=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 1 +<br>
+&gt;=C2=A0 =C2=A0target/riscv/insn_trans/trans_privileged.c.inc | 10 ++++++=
+++++<br>
+&gt;=C2=A0 =C2=A0target/riscv/op_helper.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 5 +++++<br>
+&gt;=C2=A0 =C2=A05 files changed, 24 insertions(+)<br>
+&gt;<br>
+&gt; diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h<br>
+&gt; index a294a5372a..fade71aa09 100644<br>
+&gt; --- a/target/riscv/cpu.h<br>
+&gt; +++ b/target/riscv/cpu.h<br>
+&gt; @@ -572,6 +572,7 @@ void riscv_cpu_set_mode(CPURISCVState *env, target=
+_ulong newpriv, bool virt_en);<br>
+&gt;=C2=A0 =C2=A0void riscv_ctr_freeze(CPURISCVState *env, uint64_t freeze_=
+mask);<br>
+&gt;=C2=A0 =C2=A0void riscv_ctr_add_entry(CPURISCVState *env, target_long s=
+rc, target_long dst,<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 uint64_t type, target_ulong prev_priv, bool pre=
+v_virt);<br>
+&gt; +void riscv_ctr_clear(CPURISCVState *env);<br>
+&gt;=C2=A0 =C2=A0<br>
+&gt;=C2=A0 =C2=A0void riscv_translate_init(void);<br>
+&gt;=C2=A0 =C2=A0G_NORETURN void riscv_raise_exception(CPURISCVState *env,<=
+br>
+&gt; diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c<br>
+&gt; index e064a7306e..45502f50a7 100644<br>
+&gt; --- a/target/riscv/cpu_helper.c<br>
+&gt; +++ b/target/riscv/cpu_helper.c<br>
+&gt; @@ -704,6 +704,13 @@ void riscv_ctr_freeze(CPURISCVState *env, uint64_=
+t freeze_mask)<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
+&gt;=C2=A0 =C2=A0}<br>
+&gt;=C2=A0 =C2=A0<br>
+&gt; +void riscv_ctr_clear(CPURISCVState *env)<br>
+&gt; +{<br>
+&gt; +=C2=A0 =C2=A0 memset(env-&gt;ctr_src, 0x0, sizeof(env-&gt;ctr_src));<=
+br>
+&gt; +=C2=A0 =C2=A0 memset(env-&gt;ctr_dst, 0x0, sizeof(env-&gt;ctr_dst));<=
+br>
+&gt; +=C2=A0 =C2=A0 memset(env-&gt;ctr_data, 0x0, sizeof(env-&gt;ctr_data))=
+;<br>
+&gt; +}<br>
+&gt; +<br>
+&gt;=C2=A0 =C2=A0static uint64_t riscv_ctr_priv_to_mask(target_ulong priv, =
+bool virt)<br>
+&gt;=C2=A0 =C2=A0{<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0switch (priv) {<br>
+&gt; diff --git a/target/riscv/insn32.decode b/target/riscv/insn32.decode<b=
+r>
+&gt; index 9cb1a1b4ec..d3d38c7c68 100644<br>
+&gt; --- a/target/riscv/insn32.decode<br>
+&gt; +++ b/target/riscv/insn32.decode<br>
+&gt; @@ -107,6 +107,7 @@<br>
+&gt;=C2=A0 =C2=A0# *** Privileged Instructions ***<br>
+&gt;=C2=A0 =C2=A0ecall=C2=A0 =C2=A0 =C2=A0 =C2=A0000000000000=C2=A0 =C2=A0 =
+=C2=A000000 000 00000 1110011<br>
+&gt;=C2=A0 =C2=A0ebreak=C2=A0 =C2=A0 =C2=A0 000000000001=C2=A0 =C2=A0 =C2=
+=A000000 000 00000 1110011<br>
+&gt; +sctrclr=C2=A0 =C2=A0 =C2=A0000100000100=C2=A0 =C2=A0 =C2=A000000 000 =
+00000 1110011<br>
+&gt;=C2=A0 =C2=A0uret=C2=A0 =C2=A0 =C2=A0 =C2=A0 0000000=C2=A0 =C2=A0 00010=
+ 00000 000 00000 1110011<br>
+&gt;=C2=A0 =C2=A0sret=C2=A0 =C2=A0 =C2=A0 =C2=A0 0001000=C2=A0 =C2=A0 00010=
+ 00000 000 00000 1110011<br>
+&gt;=C2=A0 =C2=A0mret=C2=A0 =C2=A0 =C2=A0 =C2=A0 0011000=C2=A0 =C2=A0 00010=
+ 00000 000 00000 1110011<br>
+&gt; diff --git a/target/riscv/insn_trans/trans_privileged.c.inc b/target/r=
+iscv/insn_trans/trans_privileged.c.inc<br>
+&gt; index 339d659151..dd9da8651f 100644<br>
+&gt; --- a/target/riscv/insn_trans/trans_privileged.c.inc<br>
+&gt; +++ b/target/riscv/insn_trans/trans_privileged.c.inc<br>
+&gt; @@ -69,6 +69,16 @@ static bool trans_ebreak(DisasContext *ctx, arg_ebr=
+eak *a)<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0return true;<br>
+&gt;=C2=A0 =C2=A0}<br>
+&gt;=C2=A0 =C2=A0<br>
+&gt; +static bool trans_sctrclr(DisasContext *ctx, arg_sctrclr *a)<br>
+&gt; +{<br>
+&gt; +#ifndef CONFIG_USER_ONLY<br>
+If both of smctr and ssctr are not enabled, it is an illegal instruction.<b=
+r>
+&gt; +=C2=A0 =C2=A0 gen_helper_ctr_clear(tcg_env);<br>
+&gt; +=C2=A0 =C2=A0 return true;<br>
+&gt; +#else<br>
+&gt; +=C2=A0 =C2=A0 return false;<br>
+&gt; +#endif<br>
+&gt; +}<br>
+&gt; +<br>
+&gt;=C2=A0 =C2=A0static bool trans_uret(DisasContext *ctx, arg_uret *a)<br>
+&gt;=C2=A0 =C2=A0{<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0return false;<br>
+&gt; diff --git a/target/riscv/op_helper.c b/target/riscv/op_helper.c<br>
+&gt; index c8053d9c2f..89423c04b3 100644<br>
+&gt; --- a/target/riscv/op_helper.c<br>
+&gt; +++ b/target/riscv/op_helper.c<br>
+&gt; @@ -461,6 +461,11 @@ void helper_ctr_branch(CPURISCVState *env, target=
+_ulong src, target_ulong dest,<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
+&gt;=C2=A0 =C2=A0}<br>
+&gt;=C2=A0 =C2=A0<br>
+&gt; +void helper_ctr_clear(CPURISCVState *env)<br>
+&gt; +{<br>
+<br>
+There should be some checks here.<br>
+The spec states:<br>
+SCTRCLR raises an illegal-instruction exception in U-mode, and a <br>
+virtual-instruction exception in VU-mode, unless CTR state enable access <b=
+r>
+restrictions apply.<br>
+<br>
+I don&#39;t quite understand &quot;unless CTR state enable access restricti=
+ons <br>
+apply&quot; though.<br></blockquote><div><br></div><div>The next sentence s=
+ays &quot;See Chapter 5&quot;, which states that execution of SCTRCLR raise=
+s an illegal instruction exception if mstateen0.CTR=3D0 and the priv mode i=
+s not M-mode, and it raises a virtual instruction exception if mstateen0.CT=
+R=3D0 &amp;&amp; hstateen0.CTR=3D1 and the priv mode is VS-mode.</div><div>=
+=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0=
+.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
+<br>
+&gt; +=C2=A0 =C2=A0 riscv_ctr_clear(env);<br>
+&gt; +}<br>
+&gt; +<br>
+&gt;=C2=A0 =C2=A0void helper_wfi(CPURISCVState *env)<br>
+&gt;=C2=A0 =C2=A0{<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0CPUState *cs =3D env_cpu(env);<br>
+</blockquote></div></div>
+
+--000000000000353ec8061a14e0d0--
 
