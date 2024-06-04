@@ -2,79 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71E438FAAF7
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 08:43:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC2DE8FAB3C
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 08:49:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sENtC-00015C-Bn; Tue, 04 Jun 2024 02:43:22 -0400
+	id 1sENuA-0001tT-KO; Tue, 04 Jun 2024 02:44:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sENt9-000149-Hv; Tue, 04 Jun 2024 02:43:19 -0400
-Received: from mail-ua1-x933.google.com ([2607:f8b0:4864:20::933])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sENt7-00079O-L2; Tue, 04 Jun 2024 02:43:19 -0400
-Received: by mail-ua1-x933.google.com with SMTP id
- a1e0cc1a2514c-80aca0fbcffso220711241.1; 
- Mon, 03 Jun 2024 23:43:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1717483396; x=1718088196; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=K3ql2cT4nN5lj0/lXbbPlUzDIUcijp2aoILioVyJGN0=;
- b=idNQMLfBrSYcEen9BoUe+w5/OW9CjJfsFPu9D4pBF5zAFHhgpMlueLGndz6tFuVLPn
- vcCU+aPX+uBgx3bNgD+KJFCLp8JkD2Qzcg/9gz8a3p/idSKJuELxrGJF/AsOqFprMoIR
- f8jHtL7KnFhgNTOSnRK4/R/Q7NDdJXHXHkRLKhtSuDZMj856u5Qy6A/TJePNZeHHLfxJ
- LR0cA5OTFa5FHpJQPt/89QaEOD9rqz4GmfooMmV8C9zr5evFfPrWppuCrmakHlqr5iTo
- Rtxx4J5cst4xXkqBAdSOYahDs9CknfxLtCRUQ8h3nsV4WE1Me78BqYi/7m65TG+GwS8P
- 7Y2g==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1sENu8-0001tE-Dw
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:44:20 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1sENu6-0007DE-Ce
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:44:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1717483457;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:  content-type:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=5tfVh19Jz3v9eHuHwUJ7uxqcc0LIdrHQjN+tlfZic74=;
+ b=BWyocOEkFaKiyaEO7vEWhCkRbvd/+69FVl4DE9IqhSWB+idVQN3z4rs7qcMNwz1wDpfxWf
+ fdkAlJcUnt215RoKJzn8yUMDEFWkI7V9oZzIbCdfVfnFx7HcZIzItLbUZfG4fwqiScH2GY
+ BtOBPLaT3ZiWLED8dAtmB8Wb7kFbIFI=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-29-z7GRM_-SNwK5lmnLWHGaFA-1; Tue, 04 Jun 2024 02:44:15 -0400
+X-MC-Unique: z7GRM_-SNwK5lmnLWHGaFA-1
+Received: by mail-ed1-f70.google.com with SMTP id
+ 4fb4d7f45d1cf-57a22ad0d04so935534a12.3
+ for <qemu-devel@nongnu.org>; Mon, 03 Jun 2024 23:44:15 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717483396; x=1718088196;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=K3ql2cT4nN5lj0/lXbbPlUzDIUcijp2aoILioVyJGN0=;
- b=CelAuZklZCFYPxtB1il89crLVRNWuFkmtGkB9gsSAFcKDFBUts5nzo0ZqVyF0ha/lt
- 80DBY0tQ8MmuAtebSN8w1Ci35xZllaeFpeVnJ3kP0ndWEu2cdZUWCAjDaSuvC4VkY3g7
- J7KoEuQ81VYFBel7mSHjGI9uuTMTH1fVhrO/8zYLCqhpw1+/peHdYIvjXBQEAmugmicm
- a8HiaFHILqzn0j6VDQYa/C4hNzVgCnLDiKJI4VufzpVidC0A8DqrJ3qlWoE4GuCPWTRA
- xB6VbFgLX+0EZRguEvM/u230+xsXyCXBdPG3Adtm02MCzA/t03kdlRW90o4dWNEyF5NM
- 8QGw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXOrlZyljflMMsIina949kk1aJaNGAtTrkX49nhp23NOfqB7rieJwvumxhB4wn8rJhuEbOYPFdLS8efWuj14KNIofPZuEY=
-X-Gm-Message-State: AOJu0YxFGlj2fEf6BXtpX+0CQn+bQcPaZUu0r0Unul4sKHZrzjPP9Vox
- JEWflb5mhnuKcOeuP5EMidCR5ho5nbDzoRFLwWcSKHJwkjGKJ0EiCgE7GqWPbQrT4rkr6MEoUY4
- 0NY/JzNko4XaowUyMgIn2x16NOC8=
-X-Google-Smtp-Source: AGHT+IFioAP5C37fR4cW9FHBWcCCXZ08FWzJLTVRzMO0cGWjCqp0cCRuhJUJhieKnlP7EUHi5UZWM36wwNVDAZWbx8E=
-X-Received: by 2002:a67:e355:0:b0:48b:ad6a:c7c6 with SMTP id
- ada2fe7eead31-48bc231d445mr9764622137.24.1717483395876; Mon, 03 Jun 2024
- 23:43:15 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1717483453; x=1718088253;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=5tfVh19Jz3v9eHuHwUJ7uxqcc0LIdrHQjN+tlfZic74=;
+ b=volxz6fxApL84R96oO2Yq3M2ATG1fAwo/vNKPUbghX70505AfC7Bx9h35qatLOtntQ
+ 47Bi4FaGuVrdWfmRNJai4cxkFKWzWgL5tC/PC0gwWDn1kMrUj0CGdZnnfCCuu/0rUK6Q
+ c5NiROCY31wSfEQdmmxvQZVyajd+FoYxpe0I3izrRRuNxKUVNrNEEHfTZLbxPFj9uLkq
+ 8K+GVdyO0AujCKQhjWXeek6gMjqh2MszJqT3GjorY3O9GnCeiokQbgFoPIQR1X/y6R4I
+ cPsr5QeopDsbwB0NIwkzLhJZvrQg80pNDVO1PCMdAFL5ia2NlA5fOjhX7F7OPAlvdaQm
+ /KOQ==
+X-Gm-Message-State: AOJu0Ywj68RPQqP805vulJ4VKWakn2RxMuVt/EgxxrEZuoNfituqDJ4R
+ uzvQ45iAvuRav2kZgAEIflCpOH5ZhBNdohKcuA9i8GbqNPHceA2qGv9Y5JbIq84/bjWWEWt8Kq/
+ u9NnVcQsYtFHDtUfi3Trob87wCbuzovF6niHLTH10DWud3yk6QKICQ1zn8883eSfBWun8yzqXzR
+ qnxfgxlLfYotrwW8sOwSBY5CVv4YotK4WKiYrt
+X-Received: by 2002:a50:d756:0:b0:57a:6eb4:101a with SMTP id
+ 4fb4d7f45d1cf-57a6eb41079mr2230150a12.39.1717483453218; 
+ Mon, 03 Jun 2024 23:44:13 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IECbXUT/WrwkW1vU3oOmCctUVjTEnHyiN7Lv6Lm7l2HRfUQVotXiLegdYxXfEV+BxgApe6ObQ==
+X-Received: by 2002:a50:d756:0:b0:57a:6eb4:101a with SMTP id
+ 4fb4d7f45d1cf-57a6eb41079mr2230139a12.39.1717483452624; 
+ Mon, 03 Jun 2024 23:44:12 -0700 (PDT)
+Received: from avogadro.local ([151.81.115.112])
+ by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-57a31bb83f0sm6688651a12.35.2024.06.03.23.44.12
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 03 Jun 2024 23:44:12 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Subject: [PULL 00/45] mostly i386 patches for 2024-06-04
+Date: Tue,  4 Jun 2024 08:43:24 +0200
+Message-ID: <20240604064409.957105-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.45.1
 MIME-Version: 1.0
-References: <20240604041445.244768-1-alvinga@andestech.com>
-In-Reply-To: <20240604041445.244768-1-alvinga@andestech.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Tue, 4 Jun 2024 16:42:48 +1000
-Message-ID: <CAKmqyKOTqvzkukT+864qbbs8qY9td7LsqNaXE=bUjra740SKOw@mail.gmail.com>
-Subject: Re: [PATCH v5 0/4] RISC-V: Modularize common match conditions for
- trigger
-To: Alvin Chang <alvinga@andestech.com>
-Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, alistair.francis@wdc.com, 
- bin.meng@windriver.com, liwei1518@gmail.com, dbarboza@ventanamicro.com, 
- zhiwei_liu@linux.alibaba.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::933;
- envelope-from=alistair23@gmail.com; helo=mail-ua1-x933.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -91,58 +98,139 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jun 4, 2024 at 2:42=E2=80=AFPM Alvin Chang via <qemu-devel@nongnu.o=
-rg> wrote:
->
-> According to RISC-V Debug specification ratified version 0.13 [1]
-> (also applied to version 1.0 [2] but it has not been ratified yet), the
-> enabled privilege levels of the trigger is common match conditions for
-> all the types of the trigger.
->
-> This series modularize the code for checking the privilege levels of
-> type 2/3/6 triggers by implementing functions trigger_common_match()
-> and trigger_priv_match().
->
-> Additional match conditions, such as CSR tcontrol and textra, can be
-> further implemented into trigger_common_match() in the future.
->
-> [1]: https://github.com/riscv/riscv-debug-spec/releases/tag/task_group_vo=
-te
-> [2]: https://github.com/riscv/riscv-debug-spec/releases/tag/1.0.0-rc1-asc=
-iidoc
->
-> Changes from v4:
-> - Rebasing on riscv-to-apply.next
->
-> Changes from v3:
-> - Change this series to target Debug Spec. version 0.13
->
-> Changes from v2:
-> - Explicitly mention the targeting version of RISC-V Debug Spec.
->
-> Changes from v1:
-> - Fix typo
-> - Add commit description for changing behavior of looping the triggers
->   when we check type 2 triggers.
->
-> Alvin Chang (4):
->   target/riscv: Add functions for common matching conditions of trigger
->   target/riscv: Apply modularized matching conditions for breakpoint
->   target/riscv: Apply modularized matching conditions for watchpoint
->   target/riscv: Apply modularized matching conditions for icount trigger
+The following changes since commit 3b2fe44bb7f605f179e5e7feb2c13c2eb3abbb80:
 
-Thanks!
+  Merge tag 'pull-request-2024-05-29' of https://gitlab.com/thuth/qemu into staging (2024-05-29 08:38:20 -0700)
 
-Applied to riscv-to-apply.next
+are available in the Git repository at:
 
-Alistair
+  https://gitlab.com/bonzini/qemu.git tags/for-upstream
 
->
->  target/riscv/debug.c | 129 ++++++++++++++++++++++++++++---------------
->  1 file changed, 85 insertions(+), 44 deletions(-)
->
-> --
-> 2.34.1
->
->
+for you to fetch changes up to ba849076b6fc2290275ce7491547f6ae831cd2aa:
+
+  hw/i386: Add support for loading BIOS using guest_memfd (2024-06-04 08:40:46 +0200)
+
+----------------------------------------------------------------
+* virtio-blk: remove SCSI passthrough functionality
+* require x86-64-v2 baseline ISA
+* SEV-SNP host support
+* fix xsave.flat with TCG
+* fixes for CPUID checks done by TCG
+
+----------------------------------------------------------------
+Brijesh Singh (6):
+      i386/sev: Introduce 'sev-snp-guest' object
+      i386/sev: Add the SNP launch start context
+      i386/sev: Add handling to encrypt/finalize guest launch data
+      hw/i386/sev: Add function to get SEV metadata from OVMF header
+      i386/sev: Add support for populating OVMF metadata pages
+      hw/i386/sev: Add support to encrypt BIOS when SEV-SNP is enabled
+
+Dov Murik (3):
+      i386/sev: Extract build_kernel_loader_hashes
+      i386/sev: Reorder struct declarations
+      i386/sev: Allow measured direct kernel boot on SNP
+
+Michael Roth (11):
+      i386/sev: Introduce "sev-common" type to encapsulate common SEV state
+      i386/sev: Add a sev_snp_enabled() helper
+      i386/cpu: Set SEV-SNP CPUID bit when SNP enabled
+      i386/sev: Don't return launch measurements for SEV-SNP guests
+      i386/sev: Update query-sev QAPI format to handle SEV-SNP
+      i386/sev: Set CPU state to protected once SNP guest payload is finalized
+      i386/sev: Add support for SNP CPUID validation
+      i386/kvm: Add KVM_EXIT_HYPERCALL handling for KVM_HC_MAP_GPA_RANGE
+      i386/sev: Enable KVM_HC_MAP_GPA_RANGE hcall for SNP guests
+      hw/i386/sev: Use guest_memfd for legacy ROMs
+      hw/i386: Add support for loading BIOS using guest_memfd
+
+Pankaj Gupta (7):
+      linux-headers: Update to current kvm/next
+      i386/sev: Replace error_report with error_setg
+      i386/sev: Move sev_launch_update to separate class method
+      i386/sev: Move sev_launch_finish to separate class method
+      i386/sev: Add sev_kvm_init() override for SEV class
+      i386/sev: Add snp_kvm_init() override for SNP class
+      i386/sev: Invoke launch_updata_data() for SNP class
+
+Paolo Bonzini (14):
+      virtio-blk: remove SCSI passthrough functionality
+      host/i386: nothing looks at CPUINFO_SSE4
+      meson: assume x86-64-v2 baseline ISA
+      host/i386: assume presence of CMOV
+      host/i386: assume presence of SSE2
+      host/i386: assume presence of SSSE3
+      host/i386: assume presence of POPCNT
+      target/i386: fix xsave.flat from kvm-unit-tests
+      update-linux-headers: fix forwarding to asm-generic headers
+      update-linux-headers: move pvpanic.h to correct directory
+      update-linux-headers: import linux/kvm_para.h header
+      machine: allow early use of machine_require_guest_memfd
+      i386/sev: Add a class method to determine KVM VM type for SNP guests
+      i386/sev: Invoke launch_updata_data() for SEV class
+
+Xiaoyao Li (1):
+      memory: Introduce memory_region_init_ram_guest_memfd()
+
+Xinyu Li (2):
+      target/i386: fix SSE and SSE2 feature check
+      target/i386: fix memory opsize for Mov to/from Seg
+
+Zhao Liu (1):
+      target/i386/tcg: Fix RDPID feature check
+
+ docs/about/deprecated.rst                          |   10 -
+ docs/about/removed-features.rst                    |    8 +
+ docs/system/i386/amd-memory-encryption.rst         |   70 +-
+ meson.build                                        |   10 +-
+ qapi/misc-target.json                              |   72 +-
+ qapi/qom.json                                      |   98 +-
+ host/include/i386/host/cpuinfo.h                   |    4 -
+ include/exec/confidential-guest-support.h          |    5 +
+ include/exec/memory.h                              |    6 +
+ include/hw/boards.h                                |    1 -
+ include/hw/i386/pc.h                               |   28 +
+ include/hw/i386/x86.h                              |    2 +-
+ include/standard-headers/linux/kvm_para.h          |   38 +
+ include/standard-headers/{linux => misc}/pvpanic.h |    0
+ linux-headers/asm-loongarch/kvm.h                  |    4 +
+ linux-headers/asm-riscv/kvm.h                      |    1 +
+ linux-headers/asm-x86/kvm.h                        |   52 +-
+ linux-headers/asm-x86/kvm_para.h                   |    1 +
+ linux-headers/linux/kvm_para.h                     |    2 +
+ linux-headers/linux/vhost.h                        |   15 +-
+ target/i386/kvm/kvm_i386.h                         |    1 +
+ target/i386/sev.h                                  |   13 +-
+ target/i386/tcg/decode-new.h                       |    3 +
+ tcg/i386/tcg-target.h                              |    5 +-
+ hw/block/virtio-blk.c                              |  166 +-
+ hw/core/machine.c                                  |    4 +-
+ hw/i386/pc.c                                       |   14 +-
+ hw/i386/pc_sysfw.c                                 |   35 +-
+ hw/i386/x86-common.c                               |   19 +-
+ hw/misc/pvpanic-isa.c                              |    2 +-
+ hw/misc/pvpanic-pci.c                              |    2 +-
+ hw/misc/pvpanic.c                                  |    2 +-
+ system/memory.c                                    |   24 +
+ target/i386/cpu.c                                  |    1 +
+ target/i386/kvm/kvm.c                              |   56 +
+ target/i386/sev-sysemu-stub.c                      |    6 +-
+ target/i386/sev.c                                  | 1581 +++++++++++++++-----
+ target/i386/tcg/fpu_helper.c                       |    5 +
+ target/i386/tcg/translate.c                        |    2 +-
+ util/bufferiszero.c                                |    4 +-
+ util/cpuinfo-i386.c                                |    8 +-
+ target/i386/tcg/decode-new.c.inc                   |   17 +-
+ tcg/i386/tcg-target.c.inc                          |   15 +-
+ scripts/update-linux-headers.sh                    |   37 +-
+ target/i386/kvm/trace-events                       |    1 +
+ target/i386/trace-events                           |    3 +
+ 46 files changed, 1844 insertions(+), 609 deletions(-)
+ create mode 100644 include/standard-headers/linux/kvm_para.h
+ rename include/standard-headers/{linux => misc}/pvpanic.h (100%)
+ create mode 100644 linux-headers/asm-x86/kvm_para.h
+ create mode 100644 linux-headers/linux/kvm_para.h
+-- 
+2.45.1
+
 
