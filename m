@@ -2,87 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDCAD8FAABC
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 08:28:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98F088FAAA8
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 08:23:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sENe5-00059t-G6; Tue, 04 Jun 2024 02:27:46 -0400
+	id 1sENZ8-00074k-Ig; Tue, 04 Jun 2024 02:22:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
- id 1sENdw-00059a-Ha
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:27:37 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
- id 1sENdv-0001sw-0U
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:27:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717482453;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=0JVtdIWNto+KqDFiBlQzdZJhx14N17tSKBoZOMoyk4A=;
- b=DPRPU26bNN2uxgtNuuaRbnbG59X5YZ6F0ClIKdiXNXY6G+iqjcnvZMG9rJB3rJh6yliUg1
- 5VRy4IuL6h1RCuRWmRN/NCd1JapbdLkNiWKw7P4Aoq+lxwygZ5WtpsEyKSz1at8BySDqCw
- dEj34bCEYe1kcQHvc4EFaRXxiFV9whE=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-691-6ZyKj-B-NEGkv_UPU8SQAw-1; Tue, 04 Jun 2024 02:27:31 -0400
-X-MC-Unique: 6ZyKj-B-NEGkv_UPU8SQAw-1
-Received: by mail-ed1-f69.google.com with SMTP id
- 4fb4d7f45d1cf-57a79421a14so421536a12.1
- for <qemu-devel@nongnu.org>; Mon, 03 Jun 2024 23:27:31 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <fea.wang@sifive.com>)
+ id 1sENZ6-00074S-OC
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:22:36 -0400
+Received: from mail-pj1-x1029.google.com ([2607:f8b0:4864:20::1029])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <fea.wang@sifive.com>)
+ id 1sENZ5-0006dE-0N
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:22:36 -0400
+Received: by mail-pj1-x1029.google.com with SMTP id
+ 98e67ed59e1d1-2c1b9152848so3511329a91.1
+ for <qemu-devel@nongnu.org>; Mon, 03 Jun 2024 23:22:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=sifive.com; s=google; t=1717482153; x=1718086953; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=AYJOqluW9kRRjRspteLZ2Grfhfy2Xvd2NA37If9Xfwg=;
+ b=BSIbkLxqzdeuDS8TcA7lw7QSUUgz6xJVwZ1YVwUJhWsaiX1GMZw8PT+tfakEr5/9Jl
+ DsrbHkE0g/kt8MRvmRKEDzognRZYCIJKjCQbybD+Lmc0J83mxa3LhZzNwzBiUegshI6x
+ inXwykhwj2j6aFUewfxbsOCh533MH7KQ0RJZKeNXTI/CY00lDmnIO+8eOQqaSn94PLgy
+ yLT45pOAmLwDwxd2kwMqm1CqNHCajpQBz5S4Ylg00nSDgP8TrpfXc3kL9v32UMbfqKyz
+ zwuk9D5biSkeGONGjPjivaOsP7cCa/azGh4vr/7qsAmOVcEw2S/V5j7JIPkoW0FNd9SI
+ vLVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717482450; x=1718087250;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=0JVtdIWNto+KqDFiBlQzdZJhx14N17tSKBoZOMoyk4A=;
- b=ELQXXEATQ5U01dh9Ttmsha9yLXeyv9kd5igUYgMTR+6BD1A2O8TlkxuKIP4JyS7kMq
- xSeTCxGsQpk94pvvVU4M5xKAJjLH/Ldi7/kyW/Upu2PPd3UBRU8PmzvANwcgnyLlXyq0
- lFSedE5GFQGF5UIIAD+KNoEZgfl30KQ/+W3V+pY4myXiGMBpd7CUT3yKOeYUgRG2fpx+
- xhYlE8wdp0UpXyfffYaMTvNIfnmuxJ6xaK+WFuGS5xSfG/5Lv3UNEYhQozLOICMS+SGq
- aegvsxfWyQHjabgpjzhXAM/IQj3pKR1kSVAWhpRBZXESfiRIeWUFjEC/JaO7BpxMyyVh
- UNhQ==
-X-Gm-Message-State: AOJu0YzmFDefID6cClXYDEWzeqo2DEzoX4FRnoMf7cuNSqWnAuSxTh0e
- 3fdfpn9OwEVTOjMOCDGXM6b9japFxhCEgK+EEjxCPncjfLMLCrESfk8SVi6nyOTuNffg7VucRAR
- Y1tUtrzUwLtBe8MS8wOkhbMF7v18Pl6a0Q5Vq5A0gP8zbPainP6vIQWmsHwSKfvyfVz8zS+9VL2
- b+8oRLIAtzNIPzSTzgRhVWbD1LBsI=
-X-Received: by 2002:a50:9548:0:b0:57a:2ccf:ed2f with SMTP id
- 4fb4d7f45d1cf-57a363b4972mr7705405a12.3.1717482450700; 
- Mon, 03 Jun 2024 23:27:30 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGgCCSiWmq1QljOi/YHDSSxZ/u0tvY5jfAekfJZ3pRnQnD3+sRh5XAJAPUGxLID5iQcee+lK0g7D2RiA9UbizE=
-X-Received: by 2002:a50:9548:0:b0:57a:2ccf:ed2f with SMTP id
- 4fb4d7f45d1cf-57a363b4972mr7705397a12.3.1717482450320; Mon, 03 Jun 2024
- 23:27:30 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1717482153; x=1718086953;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=AYJOqluW9kRRjRspteLZ2Grfhfy2Xvd2NA37If9Xfwg=;
+ b=TDDQHfMu5jh72sdpdCXVhnFvW67VF3XF8Se0RhmJN59ziKeBj1nr0kisuKY39WhcHN
+ kGnHcfaoo0OFPipqOjJHvm50jqYPcW8scY3HQRIJ/iJIiAqbRVOYLeiMfGxTgFMvtKrh
+ E7diCMHAeEzNSqZ5Im0MDW4tprj5OVAUjwizuReWIwdUKCCRxomhJvBwdt8HIHCuGuQ9
+ pnRY65w2s0jpMoHnI6V/3GGUC4DF34DWUWI4crz0A5Zh9zp7Fulq/dBq8kdHi8WUDC7F
+ adUZBlyEXZy//TNMbaW+Usc+Uyla6b2mcF/76jVNgMNGpOMqLhxivMJvQU0kHClM8IEj
+ Qg+w==
+X-Gm-Message-State: AOJu0YypxFN1/bDlKvjObkuHAL6nJu2AC4qHG0uVcZC3JmcXBJw1txZ3
+ CyALFcNh9kyNc+90zuwQ30VYFvuAdXKmK/x2Dj2JAj14eOrBbkT+Gkjy1S4mUeieFjh7D0KyMmV
+ HI0Zl+BIYdCIeZZ/pS/+2EAvj9RtmQCuWv0Qg/dwnYwi8a2ZwH+Cp2UWMhIUKgpykG1burIcgCI
+ r4t1lLEsXS8XU0WflDQn+ygXKOrPH7Z9Y1fks=
+X-Google-Smtp-Source: AGHT+IGM/ib7vD1G+8iv5tlP4FKHp7AJOuV2LNmSE3hPCDbrl0JXOrbjWol0FpBB8kTy9778BSzA7g==
+X-Received: by 2002:a17:90b:30cb:b0:2bd:e806:49dd with SMTP id
+ 98e67ed59e1d1-2c1dc5608dbmr9220135a91.8.1717482152900; 
+ Mon, 03 Jun 2024 23:22:32 -0700 (PDT)
+Received: from hsinchu36-syssw02.internal.sifive.com
+ (59-124-168-89.hinet-ip.hinet.net. [59.124.168.89])
+ by smtp.gmail.com with ESMTPSA id
+ 98e67ed59e1d1-2c1dcb56014sm7115617a91.25.2024.06.03.23.22.30
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 03 Jun 2024 23:22:32 -0700 (PDT)
+From: "Fea.Wang" <fea.wang@sifive.com>
+To: qemu-devel@nongnu.org,
+	qemu-riscv@nongnu.org
+Cc: Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bmeng.cn@gmail.com>,
+ Weiwei Li <liwei1518@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, "Fea.Wang" <fea.wang@sifive.com>
+Subject: [PATCH v3 0/6] target/riscv: Support RISC-V privilege 1.13 spec
+Date: Tue,  4 Jun 2024 14:27:41 +0800
+Message-Id: <20240604062747.9212-1-fea.wang@sifive.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20240603151825.188353-1-kraxel@redhat.com>
- <20240603151825.188353-2-kraxel@redhat.com>
-In-Reply-To: <20240603151825.188353-2-kraxel@redhat.com>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
-Date: Tue, 4 Jun 2024 10:27:18 +0400
-Message-ID: <CAMxuvawqf-0dKPsZP2UTcDWPWQ+8FKbZ=S4KX02hQO1qeeGVMA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/3] stdvga: fix screen blanking
-To: Gerd Hoffmann <kraxel@redhat.com>
-Cc: qemu-devel@nongnu.org, Anthony PERARD <anthony@xenproject.org>, 
- Paul Durrant <paul@xen.org>, xen-devel@lists.xenproject.org, 
- Stefano Stabellini <sstabellini@kernel.org>, qemu-stable@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mlureau@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1029;
+ envelope-from=fea.wang@sifive.com; helo=mail-pj1-x1029.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,55 +97,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi
+Based on the change log for the RISC-V privilege 1.13 spec, add the
+support for ss1p13.
 
-On Mon, Jun 3, 2024 at 7:18=E2=80=AFPM Gerd Hoffmann <kraxel@redhat.com> wr=
-ote:
->
-> In case the display surface uses a shared buffer (i.e. uses vga vram
-> directly instead of a shadow) go unshare the buffer before clearing it.
->
-> This avoids vga memory corruption, which in turn fixes unblanking not
-> working properly with X11.
->
-> Cc: qemu-stable@nongnu.org
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2067
-> Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
-> ---
->  hw/display/vga.c | 6 ++++++
->  1 file changed, 6 insertions(+)
->
-> diff --git a/hw/display/vga.c b/hw/display/vga.c
-> index 30facc6c8e33..474b6b14c327 100644
-> --- a/hw/display/vga.c
-> +++ b/hw/display/vga.c
-> @@ -1762,6 +1762,12 @@ static void vga_draw_blank(VGACommonState *s, int =
-full_update)
->      if (s->last_scr_width <=3D 0 || s->last_scr_height <=3D 0)
->          return;
->
-> +    if (is_buffer_shared(surface)) {
+base-commit: 915758c537b5fe09575291f4acd87e2d377a93de
 
-Perhaps the suggestion to rename the function (in the following patch)
-should instead be surface_is_allocated() ? that would match the actual
-flag check. But callers would have to ! the result. Wdyt?
+* Correct the mstateen0 for P1P13 in commit message
+* Refactor commit by splitting to two commits
 
-> +        /* unshare buffer, otherwise the blanking corrupts vga vram */
-> +        surface =3D qemu_create_displaysurface(s->last_scr_width, s->las=
-t_scr_height);
-> +        dpy_gfx_replace_surface(s->con, surface);
+[v2]
+* Check HEDELEGH by hmode32 instead of any32
+* Remove unnecessary code
+* Refine calling functions
 
-Ok, this looks safer than calling "resize".
+[v1]
 
-thanks
+Ref:https://github.com/riscv/riscv-isa-manual/blob/a7d93c9/src/priv-preface.adoc?plain=1#L40-L72
 
-> +    }
-> +
->      w =3D s->last_scr_width * surface_bytes_per_pixel(surface);
->      d =3D surface_data(surface);
->      for(i =3D 0; i < s->last_scr_height; i++) {
-> --
-> 2.45.1
->
+Lists what to do without clarification or document format.
+* Redefined misa.MXL to be read-only, making MXLEN a constant.(Skip, implementation ignored)
+* Added the constraint that SXLEN≥UXLEN.(Skip, implementation ignored)
+* Defined the misa.V field to reflect that the V extension has been implemented.(Skip, existed) 
+* Defined the RV32-only medelegh and hedelegh CSRs.(Done in these patches)
+* Defined the misaligned atomicity granule PMA, superseding the proposed Zam extension..(Skip, implementation ignored)
+* Allocated interrupt 13 for Sscofpmf LCOFI interrupt.(Skip, existed) 
+* Defined hardware error and software check exception codes.(Done in these patches)
+* Specified synchronization requirements when changing the PBMTE fields in menvcfg and henvcfg.(Skip, implementation ignored)
+* Incorporated Svade and Svadu extension specifications.(Skip, existed) 
+
+
+Fea.Wang (5):
+  target/riscv: Define macros and variables for ss1p13
+  target/riscv: Support the version for ss1p13
+  target/riscv: Add 'P1P13' bit in SMSTATEEN0
+  target/riscv: Add MEDELEGH, HEDELEGH csrs for RV32
+  target/riscv: Reserve exception codes for sw-check and hw-err
+
+Jim Shu (1):
+  target/riscv: Reuse the conversion function of priv_spec
+
+ target/riscv/cpu.c         |  8 ++++++--
+ target/riscv/cpu.h         |  5 ++++-
+ target/riscv/cpu_bits.h    |  5 +++++
+ target/riscv/cpu_cfg.h     |  1 +
+ target/riscv/csr.c         | 39 ++++++++++++++++++++++++++++++++++++++
+ target/riscv/tcg/tcg-cpu.c | 17 ++++++++---------
+ 6 files changed, 63 insertions(+), 12 deletions(-)
+
+-- 
+2.34.1
 
 
