@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 088E78FB471
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 15:51:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B9AF8FB47C
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 15:52:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEUYQ-0006ZZ-8H; Tue, 04 Jun 2024 09:50:22 -0400
+	id 1sEUYP-0006X3-Bp; Tue, 04 Jun 2024 09:50:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sEUYI-0006Sj-T7
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 09:50:16 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1sEUYH-0006Qn-QB
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 09:50:14 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sEUYH-00039Q-8A
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 09:50:14 -0400
+ id 1sEUYG-00036f-58
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 09:50:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717509012;
+ s=mimecast20190719; t=1717509011;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=A8RFNKgyFIcY7EBRYpleoUXFOia91EodAg+WIEAdwmA=;
- b=ZQAYOIC2YhEsuxFfkGao4kRYgX8VnHinco6aggiusQ82naaxeJk74hA14LCdtB1Mj0VkRz
- GGA9OaX+FHf//gcCXA94K8QVxaJuVkwc/JD4Cb7bPGeOEynmorukYkoQXvHzMgbkrjpHxg
- V0ji51yYu1okTx33OaoFPfQJsiCHL20=
+ bh=pEIZbL4rSzz/tztL5tUBX070OLTAhHWsfD6/Yg3uOKA=;
+ b=Jpbcll9tJfrnPAWwmteAAr9igSVoC+0vmWQ7z9S8O+13Fam9UqLGer4oTLd6Suthu+4JbJ
+ 6q9tx2ACP9cHCwNNTn8TFhfBUgtUor2v7FxEGQQypKtr2OqXq9cXN084LUmFRRIeItlGe6
+ YPu7/wgPCjpGad62KCPK6wiRBshUPC4=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-546-GxJHj2IkMGKre3lZnE4e3g-1; Tue, 04 Jun 2024 09:50:07 -0400
-X-MC-Unique: GxJHj2IkMGKre3lZnE4e3g-1
+ us-mta-217-E3MbbcM8O6up-0AM8V6yBQ-1; Tue, 04 Jun 2024 09:50:09 -0400
+X-MC-Unique: E3MbbcM8O6up-0AM8V6yBQ-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
  [10.11.54.8])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 20AAE101A521;
- Tue,  4 Jun 2024 13:50:07 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 76C1E185A78E;
+ Tue,  4 Jun 2024 13:50:09 +0000 (UTC)
 Received: from toolbox.redhat.com (unknown [10.39.194.137])
- by smtp.corp.redhat.com (Postfix) with ESMTP id E4CC0C15C16;
- Tue,  4 Jun 2024 13:50:04 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 64965C15C40;
+ Tue,  4 Jun 2024 13:50:07 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>, Konstantin Kostiuk <kkostiuk@redhat.com>,
@@ -51,17 +51,16 @@ Cc: Thomas Huth <thuth@redhat.com>, Konstantin Kostiuk <kkostiuk@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PATCH 13/20] qga: conditionalize schema for commands requiring
- fsfreeze
-Date: Tue,  4 Jun 2024 14:49:26 +0100
-Message-ID: <20240604134933.220112-14-berrange@redhat.com>
+Subject: [PATCH 14/20] qga: conditionalize schema for commands requiring fstrim
+Date: Tue,  4 Jun 2024 14:49:27 +0100
+Message-ID: <20240604134933.220112-15-berrange@redhat.com>
 In-Reply-To: <20240604134933.220112-1-berrange@redhat.com>
 References: <20240604134933.220112-1-berrange@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -87,9 +86,9 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Rather than creating stubs for every command that just return
-QERR_UNSUPPORTED, use 'if' conditions in the schema to fully
-exclude generation of the filesystem freezing commands on POSIX
-platforms lacking the required APIs.
+QERR_UNSUPPORTED, use 'if' conditions in the QAPI schema to
+fully exclude generation of the filesystem trimming commands
+on POSIX platforms lacking required APIs.
 
 The command will be rejected at QMP dispatch time instead,
 avoiding reimplementing rejection by blocking the stub commands.
@@ -99,129 +98,71 @@ now documents what conditions enable use of the command.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- qga/commands-posix.c | 47 --------------------------------------------
- qga/qapi-schema.json | 15 +++++++++-----
- 2 files changed, 10 insertions(+), 52 deletions(-)
+ qga/commands-posix.c | 13 -------------
+ qga/qapi-schema.json |  9 ++++++---
+ 2 files changed, 6 insertions(+), 16 deletions(-)
 
 diff --git a/qga/commands-posix.c b/qga/commands-posix.c
-index b7f96aa005..9207cb7a8f 100644
+index 9207cb7a8f..d92fa0ec87 100644
 --- a/qga/commands-posix.c
 +++ b/qga/commands-posix.c
-@@ -1144,39 +1144,6 @@ error:
+@@ -1144,22 +1144,9 @@ error:
  
  #endif /* HAVE_GETIFADDRS */
  
--#if !defined(CONFIG_FSFREEZE)
--
--GuestFsfreezeStatus qmp_guest_fsfreeze_status(Error **errp)
+-#if !defined(CONFIG_FSTRIM)
+-GuestFilesystemTrimResponse *
+-qmp_guest_fstrim(bool has_minimum, int64_t minimum, Error **errp)
 -{
 -    error_setg(errp, QERR_UNSUPPORTED);
--
--    return 0;
+-    return NULL;
 -}
+-#endif
 -
--int64_t qmp_guest_fsfreeze_freeze(Error **errp)
--{
--    error_setg(errp, QERR_UNSUPPORTED);
--
--    return 0;
--}
--
--int64_t qmp_guest_fsfreeze_freeze_list(bool has_mountpoints,
--                                       strList *mountpoints,
--                                       Error **errp)
--{
--    error_setg(errp, QERR_UNSUPPORTED);
--
--    return 0;
--}
--
--int64_t qmp_guest_fsfreeze_thaw(Error **errp)
--{
--    error_setg(errp, QERR_UNSUPPORTED);
--
--    return 0;
--}
--#endif /* CONFIG_FSFREEZE */
--
- #if !defined(CONFIG_FSTRIM)
- GuestFilesystemTrimResponse *
- qmp_guest_fstrim(bool has_minimum, int64_t minimum, Error **errp)
-@@ -1189,20 +1156,6 @@ qmp_guest_fstrim(bool has_minimum, int64_t minimum, Error **errp)
  /* add unsupported commands to the list of blocked RPCs */
  GList *ga_command_init_blockedrpcs(GList *blockedrpcs)
  {
--#if !defined(CONFIG_FSFREEZE)
--    {
--        const char *list[] = {
--            "guest-fsfreeze-status",
--            "guest-fsfreeze-freeze", "guest-fsfreeze-freeze-list",
--            "guest-fsfreeze-thaw", NULL};
--        char **p = (char **)list;
--
--        while (*p) {
--            blockedrpcs = g_list_append(blockedrpcs, g_strdup(*p++));
--        }
--    }
+-#if !defined(CONFIG_FSTRIM)
+-    blockedrpcs = g_list_append(blockedrpcs, g_strdup("guest-fstrim"));
 -#endif
 -
- #if !defined(CONFIG_FSTRIM)
-     blockedrpcs = g_list_append(blockedrpcs, g_strdup("guest-fstrim"));
- #endif
+     return blockedrpcs;
+ }
+ 
 diff --git a/qga/qapi-schema.json b/qga/qapi-schema.json
-index 2704b814ab..098fa7a08b 100644
+index 098fa7a08b..0f27375ea0 100644
 --- a/qga/qapi-schema.json
 +++ b/qga/qapi-schema.json
-@@ -412,7 +412,8 @@
- # Since: 0.15.0
+@@ -509,7 +509,8 @@
  ##
- { 'enum': 'GuestFsfreezeStatus',
--  'data': [ 'thawed', 'frozen' ] }
-+  'data': [ 'thawed', 'frozen' ],
-+  'if': { 'any': ['CONFIG_WIN32', 'CONFIG_FSFREEZE'] } }
+ { 'struct': 'GuestFilesystemTrimResult',
+   'data': {'path': 'str',
+-           '*trimmed': 'int', '*minimum': 'int', '*error': 'str'} }
++           '*trimmed': 'int', '*minimum': 'int', '*error': 'str'},
++  'if': { 'any': ['CONFIG_WIN32', 'CONFIG_FSTRIM'] } }
  
  ##
- # @guest-fsfreeze-status:
-@@ -428,7 +429,8 @@
- # Since: 0.15.0
+ # @GuestFilesystemTrimResponse:
+@@ -519,7 +520,8 @@
+ # Since: 2.4
  ##
- { 'command': 'guest-fsfreeze-status',
--  'returns': 'GuestFsfreezeStatus' }
-+  'returns': 'GuestFsfreezeStatus',
-+  'if': { 'any': ['CONFIG_WIN32', 'CONFIG_FSFREEZE'] } }
+ { 'struct': 'GuestFilesystemTrimResponse',
+-  'data': {'paths': ['GuestFilesystemTrimResult']} }
++  'data': {'paths': ['GuestFilesystemTrimResult']},
++  'if': { 'any': ['CONFIG_WIN32', 'CONFIG_FSTRIM'] } }
  
  ##
- # @guest-fsfreeze-freeze:
-@@ -450,7 +452,8 @@
- # Since: 0.15.0
+ # @guest-fstrim:
+@@ -541,7 +543,8 @@
  ##
- { 'command': 'guest-fsfreeze-freeze',
--  'returns': 'int' }
-+  'returns': 'int',
-+  'if': { 'any': ['CONFIG_WIN32', 'CONFIG_FSFREEZE'] } }
+ { 'command': 'guest-fstrim',
+   'data': { '*minimum': 'int' },
+-  'returns': 'GuestFilesystemTrimResponse' }
++  'returns': 'GuestFilesystemTrimResponse',
++  'if': { 'any': ['CONFIG_WIN32', 'CONFIG_FSTRIM'] } }
  
  ##
- # @guest-fsfreeze-freeze-list:
-@@ -470,7 +473,8 @@
- ##
- { 'command': 'guest-fsfreeze-freeze-list',
-   'data':    { '*mountpoints': ['str'] },
--  'returns': 'int' }
-+  'returns': 'int',
-+  'if': { 'any': ['CONFIG_WIN32', 'CONFIG_FSFREEZE'] } }
- 
- ##
- # @guest-fsfreeze-thaw:
-@@ -487,7 +491,8 @@
- # Since: 0.15.0
- ##
- { 'command': 'guest-fsfreeze-thaw',
--  'returns': 'int' }
-+  'returns': 'int',
-+  'if': { 'any': ['CONFIG_WIN32', 'CONFIG_FSFREEZE'] } }
- 
- ##
- # @GuestFilesystemTrimResult:
+ # @guest-suspend-disk:
 -- 
 2.45.1
 
