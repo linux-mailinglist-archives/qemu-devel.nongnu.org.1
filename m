@@ -2,73 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B96D48FB451
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 15:50:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4C898FB47B
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 15:52:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEUYa-0007VW-70; Tue, 04 Jun 2024 09:50:32 -0400
+	id 1sEUYa-0007Wp-HG; Tue, 04 Jun 2024 09:50:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sEUYX-0007Dc-AT
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sEUYY-0007JK-1T
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 09:50:30 -0400
+Received: from mail-yw1-x112a.google.com ([2607:f8b0:4864:20::112a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sEUYV-0003Cl-R3
  for qemu-devel@nongnu.org; Tue, 04 Jun 2024 09:50:29 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sEUYU-0003Cc-DV
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 09:50:28 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717509025;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=DRSsWVC3cw+Ko6ofdfEb/eTPlDkeBJ6vGSs+sArOcqc=;
- b=SDtlGOYEgW7eKq0hWpu/+irbj9jcnwR3QRNcK+l5R0JYx5fTnkXVK/o2AEjAy7o4fCU0An
- peMJDbGMSOxrB4qw5YKj0v3hiRp5SkYTAaNrZbOxOjF42WE8Ki4tTnHAk1qp0KTjdCNAGD
- rkCb4NEbXvij6iyZPAr/YdzI078xuCc=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-310-TcTV_JL2On2C3gAdlmTQ2w-1; Tue, 04 Jun 2024 09:50:24 -0400
-X-MC-Unique: TcTV_JL2On2C3gAdlmTQ2w-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E3200185B920;
- Tue,  4 Jun 2024 13:50:23 +0000 (UTC)
-Received: from toolbox.redhat.com (unknown [10.39.194.137])
- by smtp.corp.redhat.com (Postfix) with ESMTP id B6237C15C40;
- Tue,  4 Jun 2024 13:50:21 +0000 (UTC)
-From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Thomas Huth <thuth@redhat.com>, Konstantin Kostiuk <kkostiuk@redhat.com>,
- Michael Roth <michael.roth@amd.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PATCH 20/20] qga: centralize logic for disabling/enabling commands
-Date: Tue,  4 Jun 2024 14:49:33 +0100
-Message-ID: <20240604134933.220112-21-berrange@redhat.com>
-In-Reply-To: <20240604134933.220112-1-berrange@redhat.com>
-References: <20240604134933.220112-1-berrange@redhat.com>
+Received: by mail-yw1-x112a.google.com with SMTP id
+ 00721157ae682-62a145e0bb2so54764187b3.0
+ for <qemu-devel@nongnu.org>; Tue, 04 Jun 2024 06:50:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1717509026; x=1718113826; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=dB59hXZL7t0H82RGgEdW7zN+NbFcCSWihF1p0urT8gA=;
+ b=ln2vUumgTIg5Zu/EtJjcFHPsvwMoBPwYKwThoCDkGrlTuknilBgwzgBDNBT8zLOK5B
+ 1ZL8JPaH6zxgS/sGIiQ9FexVHON9B3AuuYTxXy26jdj5lGFiryRr++ntQ8YYJPDDBPJs
+ 1VafBMWnve0ybG5IJx45k8nOMB4pwfEHC/P96lethaf595ctgx0ytENAMC8SOyVRvJOF
+ AW9htbcG+TOJsQEK+aiBhDw93+4ghm85JtVy3U46S6BKe6nlEXAdMmVmc3O2rEgoiR2a
+ 5jI79u6lyEhlXGiVh7fBvzpKvbdg5LnzbLNqz55ZNUx+b4TFMrm96PmJYapWIANEmYxJ
+ vZvw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1717509026; x=1718113826;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=dB59hXZL7t0H82RGgEdW7zN+NbFcCSWihF1p0urT8gA=;
+ b=uoiFZQo8Z0A3K5TJdBpm03QwMdNM78o4onsYy0sjplUp/AOGWFQTeAcoRqdz8AbO3l
+ Aga9QR9IoHZzS9wN6Zzb80pFw/b3f6+6eN3E0k2cg/HQIBox/MlDXhMsZBkMLgmae71H
+ I0c8baF5w93/sEXbwc4juLRlSqEVWnHVbYLqaovXuNskgEn8hfObLyEjvwMLLaYXOEFv
+ RIQugLOm2KdTMEU8utQWPwsam+kZZYQoLD/GroRuqK4PfoRY6bdrd4fIp7fnUWMVGYGD
+ n+STBf7FL42fxJadNLPvh0ZOBHp20cDX0huMxe27Ja0E7F8qSr1+f+nhlbzhwF+JRgQQ
+ xBWA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCV6F/0tl6VwKR0t8rhA/TngWOO8OlMjxYOBELiiJuEhR2vFTZsfcs6Lo3lFGo3cwJg1BAPRRkSGCk9QIWXorbXXQ0KY9Ig=
+X-Gm-Message-State: AOJu0YzDAWut8jV66n4ROYK5EIugspejKv1ERPiVkIuK0PN3kIGLiZ7Z
+ EJGFeQPvRhpc+YbihkWWCpp46fBr4aSHB8C2B53dPW2RXlutST7KIrPcKNDn3pUDUdJNAHzYdV2
+ t
+X-Google-Smtp-Source: AGHT+IHtQA9cPWQuVm+T2ME76qUDkzxVOCncYTaXXayFnSMwWMNS3OjflcbQqwu5ayb+UATqN/8cCQ==
+X-Received: by 2002:a81:7143:0:b0:615:c96:1a8d with SMTP id
+ 00721157ae682-62c7967cce1mr122405647b3.8.1717509026344; 
+ Tue, 04 Jun 2024 06:50:26 -0700 (PDT)
+Received: from ?IPV6:2607:fb91:1aca:c697:b7cb:e0ad:8679:2c14?
+ ([2607:fb91:1aca:c697:b7cb:e0ad:8679:2c14])
+ by smtp.gmail.com with ESMTPSA id
+ 00721157ae682-62c766857d2sm18178297b3.83.2024.06.04.06.50.25
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 04 Jun 2024 06:50:26 -0700 (PDT)
+Message-ID: <491c8af0-dc2c-4ae3-8624-f594e3a372b8@linaro.org>
+Date: Tue, 4 Jun 2024 08:50:23 -0500
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 02/11] target/i386: fix implementation of ICEBP
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+References: <20240604071833.962574-1-pbonzini@redhat.com>
+ <20240604071833.962574-3-pbonzini@redhat.com>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20240604071833.962574-3-pbonzini@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::112a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-yw1-x112a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -85,203 +97,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It is confusing having many different pieces of code enabling and
-disabling commands, and it is not clear that they all have the same
-semantics, especially wrt prioritization of the block/allow lists.
+On 6/4/24 02:18, Paolo Bonzini wrote:
+> ICEBP generates a trap-like exception, while gen_exception() produces
+> a fault.  Resurrect gen_update_eip_next() to implement the desired
+> semantics.
+> 
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>   target/i386/helper.h          |  1 +
+>   target/i386/tcg/helper-tcg.h  |  3 +++
+>   target/i386/tcg/bpt_helper.c  |  6 ++++++
+>   target/i386/tcg/excp_helper.c | 20 ++++++++++++++++++++
+>   target/i386/tcg/translate.c   | 13 +++++++++++++
+>   target/i386/tcg/emit.c.inc    |  5 ++++-
+>   6 files changed, 47 insertions(+), 1 deletion(-)
+> 
+> diff --git a/target/i386/helper.h b/target/i386/helper.h
+> index a52a1bf0f21..8f291a5f66f 100644
+> --- a/target/i386/helper.h
+> +++ b/target/i386/helper.h
+> @@ -56,6 +56,7 @@ DEF_HELPER_2(sysret, void, env, int)
+>   DEF_HELPER_FLAGS_2(pause, TCG_CALL_NO_WG, noreturn, env, int)
+>   DEF_HELPER_FLAGS_3(raise_interrupt, TCG_CALL_NO_WG, noreturn, env, int, int)
+>   DEF_HELPER_FLAGS_2(raise_exception, TCG_CALL_NO_WG, noreturn, env, int)
+> +DEF_HELPER_FLAGS_1(icebp, TCG_CALL_NO_WG, noreturn, env)
+>   DEF_HELPER_3(boundw, void, env, tl, int)
+>   DEF_HELPER_3(boundl, void, env, tl, int)
+>   
+> diff --git a/target/i386/tcg/helper-tcg.h b/target/i386/tcg/helper-tcg.h
+> index effc2c1c984..6a5505e7b4c 100644
+> --- a/target/i386/tcg/helper-tcg.h
+> +++ b/target/i386/tcg/helper-tcg.h
+> @@ -112,6 +112,9 @@ int exception_has_error_code(int intno);
+>   void do_smm_enter(X86CPU *cpu);
+>   
+>   /* bpt_helper.c */
+> +void do_end_instruction(CPUX86State *env);
+> +
+> +/* sysemu/bpt_helper.c */
+>   bool check_hw_breakpoints(CPUX86State *env, bool force_dr6_update);
+>   
+>   #endif /* I386_HELPER_TCG_H */
+> diff --git a/target/i386/tcg/bpt_helper.c b/target/i386/tcg/bpt_helper.c
+> index bc34ac27fea..9695b9dd041 100644
+> --- a/target/i386/tcg/bpt_helper.c
+> +++ b/target/i386/tcg/bpt_helper.c
+> @@ -37,3 +37,9 @@ void helper_rechecking_single_step(CPUX86State *env)
+>           helper_single_step(env);
+>       }
+>   }
+> +
+> +void do_end_instruction(CPUX86State *env)
+> +{
+> +    env->hflags &= ~HF_INHIBIT_IRQ_MASK; /* needed if sti is just before */
+> +    env->eflags &= ~HF_RF_MASK;
+> +}
 
-Centralizing the code in a single method "ga_apply_command_filters"
-will provide a strong guarantee of consistency and clarify the
-intended behaviour.
+Two and insns.  Perhaps place as static inline in helper-tcg.h?
 
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
----
- qga/main.c | 110 ++++++++++++++++++++++++++---------------------------
- 1 file changed, 55 insertions(+), 55 deletions(-)
+Either way,
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-diff --git a/qga/main.c b/qga/main.c
-index e8f52f0794..c7b7b0a9bc 100644
---- a/qga/main.c
-+++ b/qga/main.c
-@@ -419,60 +419,79 @@ static gint ga_strcmp(gconstpointer str1, gconstpointer str2)
-     return strcmp(str1, str2);
- }
- 
--/* disable commands that aren't safe for fsfreeze */
--static void ga_disable_not_allowed_freeze(const QmpCommand *cmd, void *opaque)
-+static bool ga_command_is_allowed(const QmpCommand *cmd, GAState *state)
- {
--    bool allowed = false;
-     int i = 0;
-+    GAConfig *config = state->config;
-     const char *name = qmp_command_name(cmd);
-+    /* Fallback policy is allow everything */
-+    bool allowed = true;
- 
--    while (ga_freeze_allowlist[i] != NULL) {
--        if (strcmp(name, ga_freeze_allowlist[i]) == 0) {
-+    if (config->allowedrpcs) {
-+        /*
-+         * If an allow-list is given, this changes the fallback
-+         * policy to deny everything
-+         */
-+        allowed = false;
-+
-+        if (g_list_find_custom(config->allowedrpcs, name, ga_strcmp) != NULL) {
-             allowed = true;
-         }
--        i++;
--    }
--    if (!allowed) {
--        g_debug("disabling command: %s", name);
--        qmp_disable_command(&ga_commands, name, "the agent is in frozen state");
-     }
--}
--
--/* [re-]enable all commands, except those explicitly blocked by user */
--static void ga_enable_non_blocked(const QmpCommand *cmd, void *opaque)
--{
--    GAState *s = opaque;
--    GList *blockedrpcs = s->blockedrpcs;
--    GList *allowedrpcs = s->allowedrpcs;
--    const char *name = qmp_command_name(cmd);
- 
--    if (g_list_find_custom(blockedrpcs, name, ga_strcmp) == NULL) {
--        if (qmp_command_is_enabled(cmd)) {
--            return;
-+    /*
-+     * If both allowedrpcs and blockedrpcs are set, the blocked
-+     * list will take priority
-+     */
-+    if (config->blockedrpcs) {
-+        if (g_list_find_custom(config->blockedrpcs, name, ga_strcmp) != NULL) {
-+            allowed = false;
-         }
-+    }
- 
--        if (allowedrpcs &&
--            g_list_find_custom(allowedrpcs, name, ga_strcmp) == NULL) {
--            return;
--        }
-+    /*
-+     * If frozen, this filtering must take priority over
-+     * absolutely everything
-+     */
-+    if (state->frozen) {
-+        allowed = false;
- 
--        g_debug("enabling command: %s", name);
--        qmp_enable_command(&ga_commands, name);
-+        while (ga_freeze_allowlist[i] != NULL) {
-+            if (strcmp(name, ga_freeze_allowlist[i]) == 0) {
-+                allowed = true;
-+            }
-+            i++;
-+        }
-     }
-+
-+    return allowed;
- }
- 
--/* disable commands that aren't allowed */
--static void ga_disable_not_allowed(const QmpCommand *cmd, void *opaque)
-+static void ga_apply_command_filters_iter(const QmpCommand *cmd, void *opaque)
- {
--    GList *allowedrpcs = opaque;
-+    GAState *state = opaque;
-+    bool want = ga_command_is_allowed(cmd, state);
-+    bool have = qmp_command_is_enabled(cmd);
-     const char *name = qmp_command_name(cmd);
- 
--    if (g_list_find_custom(allowedrpcs, name, ga_strcmp) == NULL) {
-+    if (want == have) {
-+        return;
-+    }
-+
-+    if (qmp_command_is_enabled(cmd)) {
-         g_debug("disabling command: %s", name);
-         qmp_disable_command(&ga_commands, name, "the command is not allowed");
-+    } else {
-+        g_debug("enabling command: %s", name);
-+        qmp_enable_command(&ga_commands, name);
-     }
- }
- 
-+static void ga_apply_command_filters(GAState *state)
-+{
-+    qmp_for_each_command(&ga_commands, ga_apply_command_filters_iter, state);
-+}
-+
- static bool ga_create_file(const char *path)
- {
-     int fd = open(path, O_CREAT | O_WRONLY, S_IWUSR | S_IRUSR);
-@@ -505,15 +524,14 @@ void ga_set_frozen(GAState *s)
-     if (ga_is_frozen(s)) {
-         return;
-     }
--    /* disable all forbidden (for frozen state) commands */
--    qmp_for_each_command(&ga_commands, ga_disable_not_allowed_freeze, NULL);
-     g_warning("disabling logging due to filesystem freeze");
--    ga_disable_logging(s);
-     s->frozen = true;
-     if (!ga_create_file(s->state_filepath_isfrozen)) {
-         g_warning("unable to create %s, fsfreeze may not function properly",
-                   s->state_filepath_isfrozen);
-     }
-+    ga_apply_command_filters(s);
-+    ga_disable_logging(s);
- }
- 
- void ga_unset_frozen(GAState *s)
-@@ -545,12 +563,12 @@ void ga_unset_frozen(GAState *s)
-     }
- 
-     /* enable all disabled, non-blocked and allowed commands */
--    qmp_for_each_command(&ga_commands, ga_enable_non_blocked, s);
-     s->frozen = false;
-     if (!ga_delete_file(s->state_filepath_isfrozen)) {
-         g_warning("unable to delete %s, fsfreeze may not function properly",
-                   s->state_filepath_isfrozen);
-     }
-+    ga_apply_command_filters(s);
- }
- 
- #ifdef CONFIG_FSFREEZE
-@@ -1414,7 +1432,6 @@ static GAState *initialize_agent(GAConfig *config, int socket_activation)
-             s->deferred_options.log_filepath = config->log_filepath;
-         }
-         ga_disable_logging(s);
--        qmp_for_each_command(&ga_commands, ga_disable_not_allowed_freeze, NULL);
-     } else {
-         if (config->daemonize) {
-             become_daemon(config->pid_filepath);
-@@ -1438,25 +1455,8 @@ static GAState *initialize_agent(GAConfig *config, int socket_activation)
-         return NULL;
-     }
- 
--    if (config->allowedrpcs) {
--        qmp_for_each_command(&ga_commands, ga_disable_not_allowed, config->allowedrpcs);
--        s->allowedrpcs = config->allowedrpcs;
--    }
-+    ga_apply_command_filters(s);
- 
--    /*
--     * Some commands can be blocked due to system limitation.
--     * Initialize blockedrpcs list even if allowedrpcs specified.
--     */
--    config->blockedrpcs = ga_command_init_blockedrpcs(config->blockedrpcs);
--    if (config->blockedrpcs) {
--        GList *l = config->blockedrpcs;
--        s->blockedrpcs = config->blockedrpcs;
--        do {
--            g_debug("disabling command: %s", (char *)l->data);
--            qmp_disable_command(&ga_commands, l->data, NULL);
--            l = g_list_next(l);
--        } while (l);
--    }
-     s->command_state = ga_command_state_new();
-     ga_command_state_init(s, s->command_state);
-     ga_command_state_init_all(s->command_state);
--- 
-2.45.1
 
+r~
 
