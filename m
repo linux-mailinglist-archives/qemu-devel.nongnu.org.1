@@ -2,73 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BA428FA8EC
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 06:01:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DAC248FA962
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 06:42:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sELLg-0002a6-2N; Tue, 04 Jun 2024 00:00:36 -0400
+	id 1sELzT-0007yM-J4; Tue, 04 Jun 2024 00:41:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sELLb-0002ZW-DO
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 00:00:33 -0400
-Received: from mgamail.intel.com ([192.198.163.15])
+ (Exim 4.90_1) (envelope-from <alvinga@andestech.com>)
+ id 1sELz9-0007xv-W4
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 00:41:24 -0400
+Received: from 60-248-80-70.hinet-ip.hinet.net ([60.248.80.70]
+ helo=Atcsqr.andestech.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sELLY-0007tW-AM
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 00:00:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1717473628; x=1749009628;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=U9gNdv+NByTLimtreMfD1AOf3Ii9CqGhRkRMOnayw8g=;
- b=RFPyVetrBqTOEXy9a6rdQit7H1fXrVDXHsb172y2vhd2ISZzFFAnS9Y0
- j6lSiOV058cwJiSAhcLmruPnVv3/Np91AKmof7GFW8Lg1eCSWOY6/YGUs
- 2+MB6feswvSvjvqUWF9l4G+JzHuSiPnC3H1kMEomhVB7E87GiSV8UEQwP
- JQejRhdySzhwPCG5CyujfSZvekjraMHQykoSEoKsJRWSIXWucJU5iW5wK
- pQMU++zBzq4J9v8vktiZWRTw1TYQ95OlHrF6gq4d3vvcNtsRH/mLnXMvq
- lqo4CUB8KawpsxXP09p03SdadaIAO+h6in+Gu8fEehURUDeiIUO3qF8r9 g==;
-X-CSE-ConnectionGUID: g3AYTFjQT/S9RQuns5ASEw==
-X-CSE-MsgGUID: b1AjfUYvS9CJKORoaLZ/zg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11092"; a="14182104"
-X-IronPort-AV: E=Sophos;i="6.08,213,1712646000"; d="scan'208";a="14182104"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Jun 2024 21:00:10 -0700
-X-CSE-ConnectionGUID: 70+xPaqqQqmNVaEeB6JbEg==
-X-CSE-MsgGUID: 5Jmt97LJRdyelzj8pWF3EQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,213,1712646000"; d="scan'208";a="36969682"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by fmviesa007.fm.intel.com with ESMTP; 03 Jun 2024 21:00:08 -0700
-Date: Tue, 4 Jun 2024 12:15:34 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>, Thomas Huth <thuth@redhat.com>,
- qemu-devel@nongnu.org
-Subject: Re: [PATCH] hw/core: Rename CpuTopology to CPUTopology
-Message-ID: <Zl6U5n+QeEAiCBBv@intel.com>
-References: <20240527131837.2630961-1-zhao1.liu@intel.com>
- <87sexus0m0.fsf@pond.sub.org>
+ (Exim 4.90_1) (envelope-from <alvinga@andestech.com>)
+ id 1sELz7-0000HB-Gj
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 00:41:23 -0400
+Received: from Atcsqr.andestech.com (localhost [127.0.0.2] (may be forged))
+ by Atcsqr.andestech.com with ESMTP id 4544F7tp080370
+ for <qemu-devel@nongnu.org>; Tue, 4 Jun 2024 12:15:07 +0800 (+08)
+ (envelope-from alvinga@andestech.com)
+Received: from mail.andestech.com (ATCPCS16.andestech.com [10.0.1.222])
+ by Atcsqr.andestech.com with ESMTP id 4544EssW080133;
+ Tue, 4 Jun 2024 12:14:54 +0800 (+08)
+ (envelope-from alvinga@andestech.com)
+Received: from alvinga-VirtualBox.andestech.com (10.0.13.68) by
+ ATCPCS16.andestech.com (10.0.1.222) with Microsoft SMTP Server id 14.3.498.0; 
+ Tue, 4 Jun 2024 12:14:52 +0800
+To: <qemu-riscv@nongnu.org>, <qemu-devel@nongnu.org>
+CC: <alistair.francis@wdc.com>, <bin.meng@windriver.com>,
+ <liwei1518@gmail.com>, <dbarboza@ventanamicro.com>,
+ <zhiwei_liu@linux.alibaba.com>, Alvin Chang <alvinga@andestech.com>
+Subject: [PATCH v5 0/4] RISC-V: Modularize common match conditions for trigger
+Date: Tue, 4 Jun 2024 12:14:41 +0800
+Message-ID: <20240604041445.244768-1-alvinga@andestech.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87sexus0m0.fsf@pond.sub.org>
-Received-SPF: pass client-ip=192.198.163.15; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.0.13.68]
+X-DNSRBL: 
+X-SPAM-SOURCE-CHECK: pass
+X-MAIL: Atcsqr.andestech.com 4544F7tp080370
+Received-SPF: pass client-ip=60.248.80.70; envelope-from=alvinga@andestech.com;
+ helo=Atcsqr.andestech.com
+X-Spam_score_int: -8
+X-Spam_score: -0.9
+X-Spam_bar: /
+X-Spam_report: (-0.9 / 5.0 requ) BAYES_00=-1.9, RDNS_DYNAMIC=0.982,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001, TVD_RCVD_IP=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,32 +65,50 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Alvin Chang <alvinga@andestech.com>
+From:  Alvin Chang via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jun 03, 2024 at 01:54:15PM +0200, Markus Armbruster wrote:
-> Date: Mon, 03 Jun 2024 13:54:15 +0200
-> From: Markus Armbruster <armbru@redhat.com>
-> Subject: Re: [PATCH] hw/core: Rename CpuTopology to CPUTopology
-> 
-> Zhao Liu <zhao1.liu@intel.com> writes:
-> 
-> > Use CPUTopology to honor the generic style of CPU capitalization
-> > abbreviations.
-> >
-> > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-> 
-> Is CPUFoo really more common than CpuFoo?  It isn't in the qapi
-> schema...
+According to RISC-V Debug specification ratified version 0.13 [1]
+(also applied to version 1.0 [2] but it has not been ratified yet), the
+enabled privilege levels of the trigger is common match conditions for
+all the types of the trigger.
 
-Hi Markus, do you think this style needs to be standardized?
+This series modularize the code for checking the privilege levels of
+type 2/3/6 triggers by implementing functions trigger_common_match()
+and trigger_priv_match().
 
-All-caps cases, like the widely used CPUState.
+Additional match conditions, such as CSR tcontrol and textra, can be
+further implemented into trigger_common_match() in the future.
 
-And the common structures declared in include/qemu/typedefs.h, are all
-using CPU, not Cpu...
+[1]: https://github.com/riscv/riscv-debug-spec/releases/tag/task_group_vote
+[2]: https://github.com/riscv/riscv-debug-spec/releases/tag/1.0.0-rc1-asciidoc
 
-If you feel this is necessary, I'd be happy to help more places change
-their names to standardize their style...
+Changes from v4:
+- Rebasing on riscv-to-apply.next 
+
+Changes from v3:
+- Change this series to target Debug Spec. version 0.13
+
+Changes from v2:
+- Explicitly mention the targeting version of RISC-V Debug Spec.
+
+Changes from v1:
+- Fix typo
+- Add commit description for changing behavior of looping the triggers
+  when we check type 2 triggers.
+
+Alvin Chang (4):
+  target/riscv: Add functions for common matching conditions of trigger
+  target/riscv: Apply modularized matching conditions for breakpoint
+  target/riscv: Apply modularized matching conditions for watchpoint
+  target/riscv: Apply modularized matching conditions for icount trigger
+
+ target/riscv/debug.c | 129 ++++++++++++++++++++++++++++---------------
+ 1 file changed, 85 insertions(+), 44 deletions(-)
+
+-- 
+2.34.1
 
 
