@@ -2,97 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E69998FAB5C
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 08:51:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 698138FAB65
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 08:52:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEO0d-00079w-6V; Tue, 04 Jun 2024 02:51:03 -0400
+	id 1sEO1q-0003eH-7C; Tue, 04 Jun 2024 02:52:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1sEO0M-00072K-Li
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:50:48 -0400
-Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1sEO0K-0000by-My
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:50:46 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
- In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
- Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
- :Resent-To:Resent-Cc:Resent-Message-ID;
- bh=yuBtWfTkrnTAZrU7XfC2/Et6fnWohchYjwJ9hrsrIig=; b=OIHDbB3uEzSnU+C+HMYwMp7g0I
- sy8y7NGR+gUlkaO5GSAB9Iy5h43qK8eTI9MFy+uvof8Ng9U+F+wmqNanAfq42DyL56Hm0dhpk5KVV
- qLtQfByiKfcLGXnYVlDsPRK5EdkM2Hu7I9PFh21BUVwSsX85sdDJEQR/idQrKWYteJl+RD3QajUof
- Rmd1ZdNtYRkwCf27SrHfKWW6VVq524i0k772tf3Cym5SYNDk4JJnNxlAG1iPn4SuII/xEt1p9eEGn
- GBruN61OVuNSsMOJ3LaDT4X6QYVCmihOZghy/J9tICBBCTpFvqatZzqJZxHtHjIiluVUqD/cH6L0I
- VK04kqkC+Gt3lVMk1978VD6erVJYnltklpF6IIhwbiQIAEcLxHMP2K46u+Cg7VnIXbxNfwn8VdokZ
- 8Iw67cYjJl4+Mva+p3eiwVD17xJEj6CWSb+f963e+fDxCTBDEJMjBQ8sOCq8pgj1ZXU0TDGHsujNx
- hSRblVe4P9mwTaAglh/vRpQYhqkZR+AuLmVKTcc+bmZtXNQbb6MskhrPERYLpIZMPwH9ascVwd2K0
- xIqKi5MPST0DRr4cpRcXQHIFEIvahzMXZR0uR0R3tdNCQbH2qh9YpX3EhOqZCphqUEfTMRUt+oytq
- LtNqj4TrhkH/iNpkhm0iWjxKcMHEjbH1C91XwJtno=;
-Received: from [2a00:23c4:8bb4:4000:ce26:7186:74ad:2d8c]
- by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1sENz2-00078t-W7; Tue, 04 Jun 2024 07:49:25 +0100
-Message-ID: <b3a2ae5f-a6d1-4d13-a7e3-35f4b1417b88@ilande.co.uk>
-Date: Tue, 4 Jun 2024 07:50:38 +0100
+ (Exim 4.90_1) (envelope-from <fea.wang@sifive.com>)
+ id 1sEO1o-0003dU-Kh
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:52:16 -0400
+Received: from mail-ua1-x935.google.com ([2607:f8b0:4864:20::935])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <fea.wang@sifive.com>)
+ id 1sEO1m-0000kh-SH
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:52:16 -0400
+Received: by mail-ua1-x935.google.com with SMTP id
+ a1e0cc1a2514c-80ac76f1226so3136399241.0
+ for <qemu-devel@nongnu.org>; Mon, 03 Jun 2024 23:52:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=sifive.com; s=google; t=1717483934; x=1718088734; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=qOC+SmDoNN1U0JhGwR655j1DQHHhWuybDBkRY9+XO30=;
+ b=apTcDJpzFak7yzm+44gkag06lDgpW+mxT8XqSkwZctWlluK9qt3dsT98BksD0nqyPW
+ 9BRay0RLgwrmw2vSK0lpVpp/mhKeERnlK4lQk+asLn1MzVOIist/nmJo26ljda/yub7s
+ SnomYrTsuTdhpllr6aJ5tR55r+79Bue/EKzBiBWnnP+g56S+tvlQCMvGWwndNsP+cyT2
+ 7/OFIvDisM2Z/GohDyM1ZJsEli1Z+egR7Foi9WUMBBc1dgFJnRlAB6YcjBBJAchqrIl/
+ qfDgCmhRVWBvpkNKzvskkrLsi6VOUvn9cUynUm0z9kXEQX5VUc5mdCbM/7cD7WYC9Coe
+ 669w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1717483934; x=1718088734;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=qOC+SmDoNN1U0JhGwR655j1DQHHhWuybDBkRY9+XO30=;
+ b=uQRDjKq06h92z78k4tjIjiatKk0vU+Jcx5M0dUoKrldzX4pS8kiiY1NaEtJ9PgCggG
+ eW/0usbzoWduu3DaqlChRExuxtXx9OcPlvD7Si1Vgx5BmulFYQRjV87JGHwAjDwnzV+y
+ ehwt/7ndyDfO+xOcdLI5H8X8vs2mjHV5z+IMMH5fQZ0U+hG5dbAeaZqcnk7gLNbyfD0H
+ ujusX6xpRDN1AIsar+p2CZf1xt510B1UBUiZ3kTQ4WbzVSkVXfJJyvHaGw6EgFwI0L2l
+ 4GvF8RH2j5Q9M/wY7Yt+8pRaZcu3n5Dss0W8L5XIXM+tiqoWttK/pNnyP0j5Y3aIuppS
+ 31bQ==
+X-Gm-Message-State: AOJu0YzsxdQciTFbvfb3A8+X1OfeeW4U9bIzru2yUsSMRCL4unwTsk9W
+ 6OmVmIUfELFDwKPnjgzIyalKSjHqdNqF7PPFqMifhvbBrK01TPOmv2+LlpA0FbLB0C+IDE2zVZ4
+ KVEIrR5b0b7P8gDdE8hvcD2D9XZ5qn6T+TzjqHHwFqWK0fcgv
+X-Google-Smtp-Source: AGHT+IFpD9REoOSyGBCtFrKsRux05QLO7+XljyJHp2lp7l94jwIxicQ+CM4IkZIQUjOCTuqSsuRvw4lVhckeaW029zk=
+X-Received: by 2002:a05:6122:d23:b0:4eb:177c:a815 with SMTP id
+ 71dfb90a1353d-4eb2bc02c7dmr1538446e0c.2.1717483933150; Mon, 03 Jun 2024
+ 23:52:13 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: BALATON Zoltan <balaton@eik.bme.hu>, Gerd Hoffmann <kraxel@redhat.com>,
- qemu-devel@nongnu.org, Eduardo Habkost <eduardo@habkost.net>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-References: <20240530112718.1752905-1-kraxel@redhat.com>
- <20240530112718.1752905-5-kraxel@redhat.com>
- <3efcf132-dec1-3765-e77e-3fd207224eeb@eik.bme.hu>
- <c928e9e7-21b2-4017-be45-b0a4b91f1d06@ilande.co.uk>
- <Zl2rxIYdohROHXbg@redhat.com>
-Content-Language: en-US
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
- xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
- 3JzBTbtd4JfFcSupo6MNNOrCzdCbCjZ64ik8ycaUOSzK2tKbeQLEXzXoaDL1Y7vuVO7nL9bG
- E5Ru3wkhCFc7SkoypIoAUqz8EtiB6T89/D9TDEyjdXUacc53R5gu8wEWiMg5MQQuGwzbQy9n
- PFI+mXC7AaEUqBVc2lBQVpAYXkN0EyqNNT12UfDLdxaxaFpUAE2pCa2LTyo5vn5hEW+i3VdN
- PkmjyPvL6DdY03fvC01PyY8zaw+UI94QqjlrDisHpUH40IUPpC/NB0LwzL2aQOMkzT2NABEB
- AAHNME1hcmsgQ2F2ZS1BeWxhbmQgPG1hcmsuY2F2ZS1heWxhbmRAaWxhbmRlLmNvLnVrPsLA
- eAQTAQIAIgUCVAm7PAIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQW8LFb64PMh9f
- NAgAuc3ObOEY8NbZko72AGrg2tWKdybcMVITxmcor4hb9155o/OWcA4IDbeATR6cfiDL/oxU
- mcmtXVgPqOwtW3NYAKr5g/FrZZ3uluQ2mtNYAyTFeALy8YF7N3yhs7LOcpbFP7tEbkSzoXNG
- z8iYMiYtKwttt40WaheWuRs0ZOLbs6yoczZBDhna3Nj0LA3GpeJKlaV03O4umjKJgACP1c/q
- T2Pkg+FCBHHFP454+waqojHp4OCBo6HyK+8I4wJRa9Z0EFqXIu8lTDYoggeX0Xd6bWeCFHK3
- DhD0/Xi/kegSW33unsp8oVcM4kcFxTkpBgj39dB4KwAUznhTJR0zUHf63M7ATQRUCbs8AQgA
- y7kyevA4bpetM/EjtuqQX4U05MBhEz/2SFkX6IaGtTG2NNw5wbcAfhOIuNNBYbw6ExuaJ3um
- 2uLseHnudmvN4VSJ5Hfbd8rhqoMmmO71szgT/ZD9MEe2KHzBdmhmhxJdp+zQNivy215j6H27
- 14mbC2dia7ktwP1rxPIX1OOfQwPuqlkmYPuVwZP19S4EYnCELOrnJ0m56tZLn5Zj+1jZX9Co
- YbNLMa28qsktYJ4oU4jtn6V79H+/zpERZAHmH40IRXdR3hA+Ye7iC/ZpWzT2VSDlPbGY9Yja
- Sp7w2347L5G+LLbAfaVoejHlfy/msPeehUcuKjAdBLoEhSPYzzdvEQARAQABwsBfBBgBAgAJ
- BQJUCbs8AhsMAAoJEFvCxW+uDzIfabYIAJXmBepHJpvCPiMNEQJNJ2ZSzSjhic84LTMWMbJ+
- opQgr5cb8SPQyyb508fc8b4uD8ejlF/cdbbBNktp3BXsHlO5BrmcABgxSP8HYYNsX0n9kERv
- NMToU0oiBuAaX7O/0K9+BW+3+PGMwiu5ml0cwDqljxfVN0dUBZnQ8kZpLsY+WDrIHmQWjtH+
- Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
- KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
- imgcU9TTGC5qd9g=
-In-Reply-To: <Zl2rxIYdohROHXbg@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a00:23c4:8bb4:4000:ce26:7186:74ad:2d8c
-X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: Re: [PATCH v2 4/4] vga/cirrus: deprecate, don't build by default
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
-Received-SPF: pass client-ip=2001:41c9:1:41f::167;
- envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
+References: <20240603055248.3928469-1-fea.wang@sifive.com>
+ <20240603055248.3928469-3-fea.wang@sifive.com>
+ <CAJy5ezp6pkpEqCHc+ggXi+-VR+u+3HKyn5inzasyqBR9FaGiog@mail.gmail.com>
+In-Reply-To: <CAJy5ezp6pkpEqCHc+ggXi+-VR+u+3HKyn5inzasyqBR9FaGiog@mail.gmail.com>
+From: Fea Wang <fea.wang@sifive.com>
+Date: Tue, 4 Jun 2024 14:52:02 +0800
+Message-ID: <CAKhCfsfnDK9A0hpV4cUQMfhg3VBS7_tzbZy783Q3xcePGZefJA@mail.gmail.com>
+Subject: Re: [PATCH 2/4] hw/dma: Break the loop when loading descriptions fails
+To: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, 
+ Alistair Francis <alistair@alistair23.me>,
+ Peter Maydell <peter.maydell@linaro.org>, 
+ Jason Wang <jasowang@redhat.com>, "open list:Xilinx Zynq" <qemu-arm@nongnu.org>
+Content-Type: multipart/alternative; boundary="000000000000be4b35061a0ae3f7"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::935;
+ envelope-from=fea.wang@sifive.com; helo=mail-ua1-x935.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,101 +90,148 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 03/06/2024 12:40, Daniel P. Berrangé wrote:
+--000000000000be4b35061a0ae3f7
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> On Thu, May 30, 2024 at 01:22:11PM +0100, Mark Cave-Ayland wrote:
->> On 30/05/2024 12:40, BALATON Zoltan wrote:
+Hi Edgar,
+thank you for the advice, I will squash them in the next version of the
+patch series.
+
+Sincerely,
+Fea
+
+On Mon, Jun 3, 2024 at 6:21=E2=80=AFPM Edgar E. Iglesias <edgar.iglesias@gm=
+ail.com>
+wrote:
+
+> On Mon, Jun 3, 2024 at 7:48=E2=80=AFAM Fea.Wang <fea.wang@sifive.com> wro=
+te:
+>
+>> When calling the loading a description function, it should be noticed
+>> that the function may return a failure value. Breaking the loop is one
+>> of the possible ways to handle it.
 >>
->>> On Thu, 30 May 2024, Gerd Hoffmann wrote:
->>>> stdvga is the much better option.
->>>>
->>>> Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
->>>> ---
->>>> hw/display/cirrus_vga.c     | 1 +
->>>> hw/display/cirrus_vga_isa.c | 1 +
->>>> hw/display/Kconfig          | 1 -
->>>> 3 files changed, 2 insertions(+), 1 deletion(-)
->>>>
->>>> diff --git a/hw/display/cirrus_vga.c b/hw/display/cirrus_vga.c
->>>> index 150883a97166..81421be1f89d 100644
->>>> --- a/hw/display/cirrus_vga.c
->>>> +++ b/hw/display/cirrus_vga.c
->>>> @@ -3007,6 +3007,7 @@ static void cirrus_vga_class_init(ObjectClass
->>>> *klass, void *data)
->>>>      dc->vmsd = &vmstate_pci_cirrus_vga;
->>>>      device_class_set_props(dc, pci_vga_cirrus_properties);
->>>>      dc->hotpluggable = false;
->>>> +    klass->deprecation_note = "use stdvga instead";
->>>> }
->>>>
->>>> static const TypeInfo cirrus_vga_info = {
->>>> diff --git a/hw/display/cirrus_vga_isa.c b/hw/display/cirrus_vga_isa.c
->>>> index 84be51670ed8..3abbf4dddd90 100644
->>>> --- a/hw/display/cirrus_vga_isa.c
->>>> +++ b/hw/display/cirrus_vga_isa.c
->>>> @@ -85,6 +85,7 @@ static void isa_cirrus_vga_class_init(ObjectClass
->>>> *klass, void *data)
->>>>      dc->realize = isa_cirrus_vga_realizefn;
->>>>      device_class_set_props(dc, isa_cirrus_vga_properties);
->>>>      set_bit(DEVICE_CATEGORY_DISPLAY, dc->categories);
->>>> +    klass->deprecation_note = "use stdvga instead";
->>>
->>> Excepr some old OSes work better with this than stdvga so could this be
->>> left and not removed? Does it cause a lot of work to keep this device? I
->>> thought it's stable already and were not many changes for it lately. If
->>> something works why drop it?
+>> Signed-off-by: Fea.Wang <fea.wang@sifive.com>
 >>
->> Seconded: whilst stdvga is preferred, there are a lot of older OSs that work
->> well in QEMU using the Cirrus emulation. I appreciate that the code could do
->> with a bit of work, but is there a more specific reason that it should be
->> deprecated?
-> 
-> I think there's different answers here for upstream vs downstream.
-> 
-> Upstream QEMU's scope is to emulate pretty much arbitrary hardware that
-> may have existed at any point in time. Emulating Cirrus is very much
-> in scope upstream, and even if there are other better VGA devices, that
-> doesn't make emulation of Cirrus redundant.
-> 
-> Downstream is a different matter - if a downstream vendor wants to be
-> opinionated and limit the scope of devices they ship to customers, it
-> is totally valid to cull Cirrus.
+>
+>
+> Looks good, a nitpick comment, I would either squash this with patch #1
+> or move the change to return of error code in stream_desc_load() to this
+> patch.
+>
+>
+>
+>
+>> ---
+>>  hw/dma/xilinx_axidma.c | 8 ++++++--
+>>  1 file changed, 6 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/hw/dma/xilinx_axidma.c b/hw/dma/xilinx_axidma.c
+>> index 4b475e5484..b8ab5a423d 100644
+>> --- a/hw/dma/xilinx_axidma.c
+>> +++ b/hw/dma/xilinx_axidma.c
+>> @@ -291,7 +291,9 @@ static void stream_process_mem2s(struct Stream *s,
+>> StreamSink *tx_data_dev,
+>>      }
+>>
+>>      while (1) {
+>> -        stream_desc_load(s, s->regs[R_CURDESC]);
+>> +        if (MEMTX_OK !=3D stream_desc_load(s, s->regs[R_CURDESC])) {
+>> +            break;
+>> +        }
+>>
+>>          if (s->desc.status & SDESC_STATUS_COMPLETE) {
+>>              s->regs[R_DMASR] |=3D DMASR_HALTED;
+>> @@ -348,7 +350,9 @@ static size_t stream_process_s2mem(struct Stream *s,
+>> unsigned char *buf,
+>>      }
+>>
+>>      while (len) {
+>> -        stream_desc_load(s, s->regs[R_CURDESC]);
+>> +        if (MEMTX_OK !=3D stream_desc_load(s, s->regs[R_CURDESC])) {
+>> +            break;
+>> +        }
+>>
+>>          if (s->desc.status & SDESC_STATUS_COMPLETE) {
+>>              s->regs[R_DMASR] |=3D DMASR_HALTED;
+>> --
+>> 2.34.1
+>>
+>>
 
-The concern for me is that if someone such as RedHat decided not to ship Cirrus then 
-we'd end up in a place where command lines for some legacy OSs would work on an 
-upstream build, but if someone was using RHEL then they would fail due to the device 
-not being present. I can see this causing confusion for users since they would report 
-that a command line doesn't work whilst others would shrug and report back that it 
-works for them.
+--000000000000be4b35061a0ae3f7
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-I do wonder if a solution for this would be to add a blocklist file in /etc that 
-prevents the listed QOM types from being instantiated. The file could contain also 
-contain a machine regex to match and a reason that can be reported to the user e.g.
+<div dir=3D"ltr">Hi Edgar,<div>thank you for the advice, I will squash them=
+ in the next version of the patch series.</div><div><br></div><div>Sincerel=
+y,</div><div>Fea</div></div><br><div class=3D"gmail_quote"><div dir=3D"ltr"=
+ class=3D"gmail_attr">On Mon, Jun 3, 2024 at 6:21=E2=80=AFPM Edgar E. Igles=
+ias &lt;<a href=3D"mailto:edgar.iglesias@gmail.com">edgar.iglesias@gmail.co=
+m</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin=
+:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex"=
+><div dir=3D"ltr"><div dir=3D"ltr">On Mon, Jun 3, 2024 at 7:48=E2=80=AFAM F=
+ea.Wang &lt;<a href=3D"mailto:fea.wang@sifive.com" target=3D"_blank">fea.wa=
+ng@sifive.com</a>&gt; wrote:<br></div><div class=3D"gmail_quote"><blockquot=
+e class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px s=
+olid rgb(204,204,204);padding-left:1ex">When calling the loading a descript=
+ion function, it should be noticed<br>
+that the function may return a failure value. Breaking the loop is one<br>
+of the possible ways to handle it.<br>
+<br>
+Signed-off-by: Fea.Wang &lt;<a href=3D"mailto:fea.wang@sifive.com" target=
+=3D"_blank">fea.wang@sifive.com</a>&gt;<br></blockquote><div><br></div><div=
+><br></div><div>Looks good, a nitpick comment, I would either squash this w=
+ith patch #1</div><div>or move the change to return of error code in stream=
+_desc_load() to this patch.</div><div><br></div><div><br></div><div>=C2=A0<=
+/div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;bo=
+rder-left:1px solid rgb(204,204,204);padding-left:1ex">
+---<br>
+=C2=A0hw/dma/xilinx_axidma.c | 8 ++++++--<br>
+=C2=A01 file changed, 6 insertions(+), 2 deletions(-)<br>
+<br>
+diff --git a/hw/dma/xilinx_axidma.c b/hw/dma/xilinx_axidma.c<br>
+index 4b475e5484..b8ab5a423d 100644<br>
+--- a/hw/dma/xilinx_axidma.c<br>
++++ b/hw/dma/xilinx_axidma.c<br>
+@@ -291,7 +291,9 @@ static void stream_process_mem2s(struct Stream *s, Stre=
+amSink *tx_data_dev,<br>
+=C2=A0 =C2=A0 =C2=A0}<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0while (1) {<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 stream_desc_load(s, s-&gt;regs[R_CURDESC]);<br=
+>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (MEMTX_OK !=3D stream_desc_load(s, s-&gt;re=
+gs[R_CURDESC])) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 break;<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (s-&gt;desc.status &amp; SDESC_STATUS_=
+COMPLETE) {<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0s-&gt;regs[R_DMASR] |=3D DM=
+ASR_HALTED;<br>
+@@ -348,7 +350,9 @@ static size_t stream_process_s2mem(struct Stream *s, un=
+signed char *buf,<br>
+=C2=A0 =C2=A0 =C2=A0}<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0while (len) {<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 stream_desc_load(s, s-&gt;regs[R_CURDESC]);<br=
+>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (MEMTX_OK !=3D stream_desc_load(s, s-&gt;re=
+gs[R_CURDESC])) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 break;<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (s-&gt;desc.status &amp; SDESC_STATUS_=
+COMPLETE) {<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0s-&gt;regs[R_DMASR] |=3D DM=
+ASR_HALTED;<br>
+-- <br>
+2.34.1<br>
+<br>
+</blockquote></div></div>
+</blockquote></div>
 
-# QEMU QOM type blocklist
-#
-# QOM type regex, machine regex list, reason
-"cirrus*","pc*,machine*","contains insecure blitter routines"
-"fdc","pc*","may not be completely secure"
-
-This feels like a better solution because:
-
-- It's easy to add a message that reports "The requested QOM type <foo> cannot be 
-instantiated because <reason>" for specific machine types. The machine regex also 
-fixes the problem where usb-ohci should be allowed for PPC machines, but not 
-generally for PC machines.
-
-- Downstream can ship with a secure policy for production environments but also a 
-less restrictive policy for more casual users
-
-- If someone really needs a device that is not enabled by default, a privileged user 
-can simply edit the blocklist file and allow it
-
-- It should work both with or without modules
-
-
-ATB,
-
-Mark.
-
+--000000000000be4b35061a0ae3f7--
 
