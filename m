@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 625EC8FAB44
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 08:49:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6269C8FAB19
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 08:45:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sENv4-0003cb-Bw; Tue, 04 Jun 2024 02:45:18 -0400
+	id 1sENv9-0003kg-GU; Tue, 04 Jun 2024 02:45:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sENv1-0003RI-28
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:45:15 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1sENv4-0003e8-0T
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:45:18 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sENuz-0007W6-5M
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:45:14 -0400
+ id 1sENv2-0007WN-0M
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:45:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717483512;
+ s=mimecast20190719; t=1717483515;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=9eBpKMwv8ZIHObCcWR1NvCyq4TOAmQm+iQ+YMChwrck=;
- b=MkYG3Wb0D53OimwVV3W5oVCymjL4E1uS4Zd7U42jue1+JAg/ET9rFnR4FzlzIvEzapB2UO
- m4m9gmqg7ICJaqSyBmx0C7fIWxrQNZSCweHGyVyQH8woeQL7lX6tHiHHYDXCXdDHTA1/Wn
- RVQgs/aFODaIrLCUKFKfQCUON9jtZ4o=
+ bh=igvy5MjawADq4B5bigVhVsctbwF1BmPBU2i5wDuvoNw=;
+ b=PqhylQH+VFbscby68iNn1zZJf6f4az8WOJOmoGiNOgP5oYcLEHYgv6tttUMQ95Eq9RZY79
+ H5osreajzmKFPl8KK5dIArZo/m/21XwygeL1wErHBAb3IyFnazKyEoURQ+QiDPuwp05KG2
+ vWkBUirzMaYkXnLYlc4TkVtEqM8VbFg=
 Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
  [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-686-Ue3BDUaDOUCyD4Q7JtO6cQ-1; Tue, 04 Jun 2024 02:45:11 -0400
-X-MC-Unique: Ue3BDUaDOUCyD4Q7JtO6cQ-1
+ us-mta-509-gd1mdqT8On-wuXyIuVmGdA-1; Tue, 04 Jun 2024 02:45:13 -0400
+X-MC-Unique: gd1mdqT8On-wuXyIuVmGdA-1
 Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-a6912c4ddb1so13735266b.1
- for <qemu-devel@nongnu.org>; Mon, 03 Jun 2024 23:45:10 -0700 (PDT)
+ a640c23a62f3a-a6905050583so97003266b.0
+ for <qemu-devel@nongnu.org>; Mon, 03 Jun 2024 23:45:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717483509; x=1718088309;
+ d=1e100.net; s=20230601; t=1717483512; x=1718088312;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9eBpKMwv8ZIHObCcWR1NvCyq4TOAmQm+iQ+YMChwrck=;
- b=GFStmx6umkMwwParbRwuArcs8oXcB+BLhgED3iTbp8P76LtXAJUt/yethFHw7lDort
- do3SsDJIoZmjbTl8kgyfAOCX9JYuaAow/N0Js4YRizhxQZxPNpJJTtPGwDhOH01ZsMcz
- wNKOv9MHG60pAQ9KCiRbDLijl6i7hsu0G5Lofbwt5dMMRxLqVL3w3kTXhK0AL7Q846dZ
- f7QYhj605cFJZGhzfi8Pfdhn7oPbJw1F9TbR+SkI4DikbEFawQb9lH8985LZp+s7nlRy
- z9KPMhFPXaFxtwwXMJVqqMqGXpvpDIAr8zMQmx/+YLAIq66WnkzIKL7hxjaHeQ/aNe/7
- tVeQ==
-X-Gm-Message-State: AOJu0Yyqpr9zge/apwBOth+YsIUKuw9H8AGBWDAE5cGShJpA5n7FHAzI
- G1oZraI355qdLAhDaxPPNCjfUZkz9ozzioAc3pfFHYyqhSjgHVxkQ5nHVR2nNzNQ7Y965gDQQFd
- /gE8sHDd9+zroLRHmXNSf9c7MdP1Il9AVDxQ9oKHQDgQ73eU1StccFMMgOWrhR9eYB5xJb3BRCN
- KJCPDXdvn2GDFnmvypt+FW3As2KV+PRSxR5a5B
-X-Received: by 2002:a17:907:830f:b0:a59:ba2b:590e with SMTP id
- a640c23a62f3a-a6821d64589mr532735166b.48.1717483508837; 
- Mon, 03 Jun 2024 23:45:08 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG6fnb4LHOMoAN/4J1za5ggJwAH9edSZdn6z6CuQWbYHIormQLr3eHTJR50hLMcuLdcaAb33A==
-X-Received: by 2002:a17:907:830f:b0:a59:ba2b:590e with SMTP id
- a640c23a62f3a-a6821d64589mr532734166b.48.1717483508447; 
- Mon, 03 Jun 2024 23:45:08 -0700 (PDT)
+ bh=igvy5MjawADq4B5bigVhVsctbwF1BmPBU2i5wDuvoNw=;
+ b=WwWWQ3NoxQdfNW0Aar5XEDueZyJQI1PUBsTYtK9aTDwaINDefm/7dBfnPBtJ5P5dIf
+ 6rxAuIqEg9b4Fd3cI5uUGtV4CFBkl6KvsxI/BPh8iG3xvYpRcbgqTWdD4LFQ4VcOKfaY
+ ZntX74UgkojwcqYOKfG6Y2ghUTPB7708z/POrtUHuombP0VhDdocdJ7v9AnQien3eIGS
+ SG6oOk4innlBWgOxu9ymffvzwvQemPJe69mMIHcqF7nGlsopw1J+S56eqVJq1JidEWbP
+ 4CjCd7natGwmW9ut82xaJWHU71RLPQfsApwO3HpXYURCMkdSByHr3gveswTA2kVNA+r8
+ +CsA==
+X-Gm-Message-State: AOJu0Yx3OCRp05ZxGz7xb/x9cAuEjtk6C0tmF7mbctp/OquaGmbjIdOX
+ lrTWF3ya3Qu0XH1cY8lLMY2+o3lym4J1/gAwVSPVtN55I1SqNpGdWlIVwZrYmQRkeWbK5OqVQNw
+ W8R9Fz0oFIsY88AA4lVYSq6LsECMG27fsJSXXytglC7XuGdNxMbQdT7KfTv7fHAl5jDW9+DJtzy
+ S4x+1670N9Lu73sF3SfU2qGDmVL5wnnAC0oki9
+X-Received: by 2002:a17:906:670b:b0:a69:67e3:57e6 with SMTP id
+ a640c23a62f3a-a6967e35b07mr29309566b.49.1717483511879; 
+ Mon, 03 Jun 2024 23:45:11 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFvvOW3MRqpYvtIdHt86T6NL8grWnMNUUd4UEAaWtrQYlS+xr2n0F69nabah24Ifu5bNckVXQ==
+X-Received: by 2002:a17:906:670b:b0:a69:67e3:57e6 with SMTP id
+ a640c23a62f3a-a6967e35b07mr29308566b.49.1717483511478; 
+ Mon, 03 Jun 2024 23:45:11 -0700 (PDT)
 Received: from avogadro.local ([151.81.115.112])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a68b59e925csm443157166b.220.2024.06.03.23.45.07
+ a640c23a62f3a-a68aa93dfbdsm467308966b.196.2024.06.03.23.45.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Jun 2024 23:45:07 -0700 (PDT)
+ Mon, 03 Jun 2024 23:45:10 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Pankaj Gupta <pankaj.gupta@amd.com>
-Subject: [PULL 19/45] i386/sev: Move sev_launch_update to separate class method
-Date: Tue,  4 Jun 2024 08:43:43 +0200
-Message-ID: <20240604064409.957105-20-pbonzini@redhat.com>
+Subject: [PULL 20/45] i386/sev: Move sev_launch_finish to separate class method
+Date: Tue,  4 Jun 2024 08:43:44 +0200
+Message-ID: <20240604064409.957105-21-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240604064409.957105-1-pbonzini@redhat.com>
 References: <20240604064409.957105-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -104,77 +104,74 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 From: Pankaj Gupta <pankaj.gupta@amd.com>
 
 When sev-snp-guest objects are introduced there will be a number of
-differences in how the launch data is handled compared to the existing
-sev-guest object. Move sev_launch_start() to a class method to make it
+differences in how the launch finish is handled compared to the existing
+sev-guest object. Move sev_launch_finish() to a class method to make it
 easier to implement SNP-specific launch update functionality later.
 
 Signed-off-by: Pankaj Gupta <pankaj.gupta@amd.com>
-Message-ID: <20240530111643.1091816-6-pankaj.gupta@amd.com>
+Message-ID: <20240530111643.1091816-7-pankaj.gupta@amd.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/sev.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ target/i386/sev.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
 diff --git a/target/i386/sev.c b/target/i386/sev.c
-index 33e606eea00..b2aa0d6f99b 100644
+index b2aa0d6f99b..28a018ed833 100644
 --- a/target/i386/sev.c
 +++ b/target/i386/sev.c
-@@ -69,6 +69,8 @@ struct SevCommonState {
- struct SevCommonStateClass {
-     X86ConfidentialGuestClass parent_class;
+@@ -71,6 +71,7 @@ struct SevCommonStateClass {
  
-+    /* public */
-+    int (*launch_start)(SevCommonState *sev_common);
+     /* public */
+     int (*launch_start)(SevCommonState *sev_common);
++    void (*launch_finish)(SevCommonState *sev_common);
  };
  
  /**
-@@ -632,16 +634,16 @@ sev_read_file_base64(const char *filename, guchar **data, gsize *len)
- }
+@@ -801,12 +802,12 @@ static Notifier sev_machine_done_notify = {
+ };
  
- static int
--sev_launch_start(SevGuestState *sev_guest)
-+sev_launch_start(SevCommonState *sev_common)
+ static void
+-sev_launch_finish(SevGuestState *sev_guest)
++sev_launch_finish(SevCommonState *sev_common)
  {
-     gsize sz;
-     int ret = 1;
-     int fw_error, rc;
-+    SevGuestState *sev_guest = SEV_GUEST(sev_common);
-     struct kvm_sev_launch_start start = {
-         .handle = sev_guest->handle, .policy = sev_guest->policy
-     };
-     guchar *session = NULL, *dh_cert = NULL;
--    SevCommonState *sev_common = SEV_COMMON(sev_guest);
+     int ret, error;
  
-     if (sev_guest->session_file) {
-         if (sev_read_file_base64(sev_guest->session_file, &session, &sz) < 0) {
-@@ -862,6 +864,7 @@ static int sev_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
-     uint32_t ebx;
-     uint32_t host_cbitpos;
-     struct sev_user_data_status status = {};
-+    SevCommonStateClass *klass = SEV_COMMON_GET_CLASS(cgs);
- 
-     ret = ram_block_discard_disable(true);
+     trace_kvm_sev_launch_finish();
+-    ret = sev_ioctl(SEV_COMMON(sev_guest)->sev_fd, KVM_SEV_LAUNCH_FINISH, 0,
++    ret = sev_ioctl(sev_common->sev_fd, KVM_SEV_LAUNCH_FINISH, 0,
+                     &error);
      if (ret) {
-@@ -952,7 +955,7 @@ static int sev_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
-         goto err;
+         error_report("%s: LAUNCH_FINISH ret=%d fw_error=%d '%s'",
+@@ -814,7 +815,7 @@ sev_launch_finish(SevGuestState *sev_guest)
+         exit(1);
      }
  
--    sev_launch_start(SEV_GUEST(sev_common));
-+    ret = klass->launch_start(sev_common);
-     if (ret) {
-         error_setg(errp, "%s: failed to create encryption context", __func__);
-         goto err;
-@@ -1451,6 +1454,10 @@ static void sev_guest_set_legacy_vm_type(Object *obj, bool value, Error **errp)
- static void
- sev_guest_class_init(ObjectClass *oc, void *data)
+-    sev_set_guest_state(SEV_COMMON(sev_guest), SEV_STATE_RUNNING);
++    sev_set_guest_state(sev_common, SEV_STATE_RUNNING);
+ 
+     /* add migration blocker */
+     error_setg(&sev_mig_blocker,
+@@ -826,10 +827,11 @@ static void
+ sev_vm_state_change(void *opaque, bool running, RunState state)
  {
-+    SevCommonStateClass *klass = SEV_COMMON_CLASS(oc);
-+
-+    klass->launch_start = sev_launch_start;
-+
+     SevCommonState *sev_common = opaque;
++    SevCommonStateClass *klass = SEV_COMMON_GET_CLASS(opaque);
+ 
+     if (running) {
+         if (!sev_check_state(sev_common, SEV_STATE_RUNNING)) {
+-            sev_launch_finish(SEV_GUEST(sev_common));
++            klass->launch_finish(sev_common);
+         }
+     }
+ }
+@@ -1457,6 +1459,7 @@ sev_guest_class_init(ObjectClass *oc, void *data)
+     SevCommonStateClass *klass = SEV_COMMON_CLASS(oc);
+ 
+     klass->launch_start = sev_launch_start;
++    klass->launch_finish = sev_launch_finish;
+ 
      object_class_property_add_str(oc, "dh-cert-file",
                                    sev_guest_get_dh_cert_file,
-                                   sev_guest_set_dh_cert_file);
 -- 
 2.45.1
 
