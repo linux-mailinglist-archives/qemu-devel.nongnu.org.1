@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC8538FB77C
+	by mail.lfdr.de (Postfix) with ESMTPS id 6ABCE8FB77A
 	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 17:34:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEW9l-0006hE-W9; Tue, 04 Jun 2024 11:33:02 -0400
+	id 1sEW9m-0006hl-JL; Tue, 04 Jun 2024 11:33:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sEW9j-0006gB-Ul
+ id 1sEW9j-0006gC-UT
  for qemu-devel@nongnu.org; Tue, 04 Jun 2024 11:32:59 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sEW9h-0001Ic-45
+ id 1sEW9h-0001Im-Qt
  for qemu-devel@nongnu.org; Tue, 04 Jun 2024 11:32:59 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717515176;
+ s=mimecast20190719; t=1717515177;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=NhNOG2TNYSsOZ5fCIRNGn6C26A53X/WFY2Ybv9oatgc=;
- b=dUR57LnYaZeNLgtshUbUomN1s1nMUzvAGTp8eDmaFvdAreye+Lz9rlM7sq71W3qiEc2K5X
- fbnNMkwQkMWfQ7F7RWQSmIiez5HI73XNtwg/NVpzsfQx1kovarCsAHvmT8tjT7e+5yQPjs
- 425Bdor2UcNAkAm88DEOLy3BFuV5D1c=
+ bh=9zUc1+i0TloZjdrrmpIgHGps0532WQ7fdKFCuLWdL1I=;
+ b=DM6WGQBxq/Oxo/HSwR5MgoQL0H1NICMvEYrFBl0rmxJTyu4ywX6YoQlsu8lSf+f/WUGrM8
+ 7az+/LEC5WU2vtWN8jyCYMcOusnoYPT6krKybWSMXY90ZQNc+3jE79kdv7SdXezwd3MIY9
+ wMtZAmgMShwKzDY5QPfWBlK/U8ypvH8=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-319-l8vD4VqlP3aDUFh1B_7GcA-1; Tue, 04 Jun 2024 11:32:54 -0400
-X-MC-Unique: l8vD4VqlP3aDUFh1B_7GcA-1
+ us-mta-221-yVh-L1_yO92AEeOifqAilw-1; Tue, 04 Jun 2024 11:32:55 -0400
+X-MC-Unique: yVh-L1_yO92AEeOifqAilw-1
 Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
  [10.11.54.9])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8096385A588;
- Tue,  4 Jun 2024 15:32:54 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8A704811E81;
+ Tue,  4 Jun 2024 15:32:55 +0000 (UTC)
 Received: from toolbox.redhat.com (unknown [10.39.194.137])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 6A88D492BD5;
- Tue,  4 Jun 2024 15:32:53 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id B3BE8492BD3;
+ Tue,  4 Jun 2024 15:32:54 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>,
  Konstantin Kostiuk <kkostiuk@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 09/14] qga: define commands which can be run in confidential
- mode
-Date: Tue,  4 Jun 2024 16:32:37 +0100
-Message-ID: <20240604153242.251334-10-berrange@redhat.com>
+Subject: [PATCH 10/14] qga: add command line to block unrestricted
+ command/file access
+Date: Tue,  4 Jun 2024 16:32:38 +0100
+Message-ID: <20240604153242.251334-11-berrange@redhat.com>
 In-Reply-To: <20240604153242.251334-1-berrange@redhat.com>
 References: <20240604153242.251334-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -83,416 +83,109 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This adds the 'confidential' feature tag to the commands which are
-safe to permit in confidential VMs. In a confidential virt scenario,
-the host must not be permitted to modify guest data, nor request
-information that could compromise guest data.
+Historically there has been no default policy on command usage in
+the QEMU guest agent. A wide variety of commands have been added
+for various purposes
 
-This effectively limits the QGA to commands which either are part
-of the QGA operation, or are related to modifying virtual hardware
-to assist in a host mgmt tasks.
+ * Co-ordinating host mgmt tasks (FS freezing, CPU hotplug,
+   memory block hotplug)
+ * Guest information querying (CPU stats, mount info, etc)
+ * Arbitrary file read/write and command execution
+ * User account auth setup (passwords, SSH keys)
 
-This results in the following being permitted
+All of these have valid use cases, but they come with very different
+levels of risk to the guest OS.
 
- * guest-sync
- * guest-sync-delimited
- * guest-ping
- * guest-get-time
- * guest-set-time
- * guest-info
- * guest-shutdown
- * guest-fsfreeze-status
- * guest-fsfreeze-freeze
- * guest-fsfreeze-freeze-list
- * guest-fsfreeze-thaw
- * guest-fstrim
- * guest-suspend-disk
- * guest-suspend-ram
- * guest-suspend-hybrid
- * guest-get-vcpus
- * guest-set-vcpus
- * guest-get-memory-blocks
- * guest-set-memory-blocks
- * guest-get-memory-block-info
- * guest-get-host-name
- * guest-get-cpustats
+The commands supporting arbitrary file access / command exec though
+are giving the guest agent client effectively unrestricted access to
+do anything at all in the guest OS.
+
+The guest agent client is the host OS, so in effect running the QEMU
+guest agent gives the host admin a trivial direct backdoor into the
+guest OS, with no authentication, authorization or auditing of what
+they do.
+
+In the absense of confidential computing, the host admin already has
+to be considered largely trustworthy, as they will typically have
+direct access to any guest RAM regardless.
+
+None the less, to limit their exposure, guest OS admins may choose
+to limit these commands by passing '--no-unrestricted' / '-u' to
+QGA
+
+The --allowedrpcs / --blockedrpcs arguments take precedence over the
+--unrestricted arg (whether present or not), thus allowing fine tuning
+the defaults further.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- qga/qapi-schema.json | 117 +++++++++++++++++++++++++++++++++++++++----
- 1 file changed, 107 insertions(+), 10 deletions(-)
+ qga/main.c           | 15 +++++++++++++++
+ qga/qapi-schema.json |  5 ++++-
+ 2 files changed, 19 insertions(+), 1 deletion(-)
 
+diff --git a/qga/main.c b/qga/main.c
+index 12b91eb713..66068ad535 100644
+--- a/qga/main.c
++++ b/qga/main.c
+@@ -87,6 +87,7 @@ struct GAConfig {
+     GList *blockedrpcs;
+     GList *allowedrpcs;
+     bool only_confidential;
++    bool no_unrestricted;
+     int daemonize;
+     GLogLevelFlags log_level;
+     int dumpconf;
+@@ -425,6 +426,16 @@ static bool ga_command_is_allowed(const QmpCommand *cmd, GAState *state)
+         allowed = false;
+     }
+ 
++    /*
++     * If unrestricted commands are not allowed that sets
++     * a new default, but an explicit allow/block list can
++     * override
++     */
++    if (config->no_unrestricted &&
++        qmp_command_has_feature(cmd, QAPI_FEATURE_UNRESTRICTED)) {
++        allowed = false;
++    }
++
+     if (config->allowedrpcs) {
+         /*
+          * If an allow-list is given, this changes the fallback
+@@ -1208,6 +1219,7 @@ static void config_parse(GAConfig *config, int argc, char **argv)
+         { "statedir", 1, NULL, 't' },
+         { "retry-path", 0, NULL, 'r' },
+         { "confidential", 0, NULL, 'i' },
++        { "no-unrestricted", 0, NULL, 'u' },
+         { NULL, 0, NULL, 0 }
+     };
+ 
+@@ -1307,6 +1319,9 @@ static void config_parse(GAConfig *config, int argc, char **argv)
+         case 'i':
+             config->only_confidential = true;
+             break;
++        case 'u':
++            config->no_unrestricted = true;
++            break;
+         case 'h':
+             usage(argv[0]);
+             exit(EXIT_SUCCESS);
 diff --git a/qga/qapi-schema.json b/qga/qapi-schema.json
-index 9a213dfc06..48ea95cdba 100644
+index 48ea95cdba..de7c1de0b7 100644
 --- a/qga/qapi-schema.json
 +++ b/qga/qapi-schema.json
-@@ -78,12 +78,14 @@
- #
- # @fs-frozen: permitted to execute when filesystems are frozen
- #
-+# @confidential: permitted when running inside a confidential VM
-+#
- # Since: 1.1
- ##
- { 'command': 'guest-sync-delimited',
-   'data':    { 'id': 'int' },
-   'returns': 'int',
--  'features': [ 'fs-frozen'] }
-+  'features': [ 'fs-frozen', 'confidential' ] }
+@@ -42,7 +42,10 @@
+         'fs-frozen',
+         # Commands which do not violate privacy
+         # of a confidential guest
+-        'confidential'
++        'confidential',
++        # Commands which allow unrestricted access to or
++        # modification of guest files or execute arbitrary commands
++        'unrestricted'
+     ] } }
  
  ##
- # @guest-sync:
-@@ -120,12 +122,14 @@
- #
- # @fs-frozen: permitted to execute when filesystems are frozen
- #
-+# @confidential: permitted when running inside a confidential VM
-+#
- # Since: 0.15.0
- ##
- { 'command': 'guest-sync',
-   'data':    { 'id': 'int' },
-   'returns': 'int',
--  'features': [ 'fs-frozen'] }
-+  'features': [ 'fs-frozen', 'confidential' ] }
- 
- ##
- # @guest-ping:
-@@ -136,10 +140,12 @@
- #
- # @fs-frozen: permitted to execute when filesystems are frozen
- #
-+# @confidential: permitted when running inside a confidential VM
-+#
- # Since: 0.15.0
- ##
- { 'command': 'guest-ping',
--  'features': [ 'fs-frozen'] }
-+  'features': [ 'fs-frozen', 'confidential' ] }
- 
- ##
- # @guest-get-time:
-@@ -149,10 +155,15 @@
- #
- # Returns: Time in nanoseconds.
- #
-+# Features:
-+#
-+# @confidential: permitted when running inside a confidential VM
-+#
- # Since: 1.5
- ##
- { 'command': 'guest-get-time',
--  'returns': 'int' }
-+  'returns': 'int',
-+  'features': [ 'confidential' ] }
- 
- ##
- # @guest-set-time:
-@@ -175,10 +186,15 @@
- # @time: time of nanoseconds, relative to the Epoch of 1970-01-01 in
- #     UTC.
- #
-+# Features:
-+#
-+# @confidential: permitted when running inside a confidential VM
-+#
- # Since: 1.5
- ##
- { 'command': 'guest-set-time',
--  'data': { '*time': 'int' } }
-+  'data': { '*time': 'int' },
-+  'features': [ 'confidential' ] }
- 
- ##
- # @GuestAgentCommandInfo:
-@@ -222,11 +238,13 @@
- #
- # @fs-frozen: permitted when filesystems are frozen
- #
-+# @confidential: permitted when running inside a confidential VM
-+#
- # Since: 0.15.0
- ##
- { 'command': 'guest-info',
-   'returns': 'GuestAgentInfo',
--  'features': [ 'fs-frozen'] }
-+  'features': [ 'fs-frozen', 'confidential' ] }
- 
- ##
- # @guest-shutdown:
-@@ -241,10 +259,15 @@
- # when running with --no-shutdown, by issuing the query-status QMP
- # command to confirm the VM status is "shutdown".
- #
-+# Features:
-+#
-+# @confidential: permitted when running inside a confidential VM
-+#
- # Since: 0.15.0
- ##
- { 'command': 'guest-shutdown', 'data': { '*mode': 'str' },
--  'success-response': false }
-+  'success-response': false,
-+  'features': [ 'confidential' ] }
- 
- ##
- # @guest-file-open:
-@@ -457,11 +480,13 @@
- #
- # @fs-frozen: permitted when filesystems are frozen
- #
-+# @confidential: permitted when running inside a confidential VM
-+#
- # Since: 0.15.0
- ##
- { 'command': 'guest-fsfreeze-status',
-   'returns': 'GuestFsfreezeStatus',
--  'features': [ 'fs-frozen'],
-+  'features': [ 'fs-frozen', 'confidential' ],
-   'if': { 'any': ['CONFIG_WIN32', 'CONFIG_FSFREEZE'] } }
- 
- ##
-@@ -481,10 +506,15 @@
- #     Volume Shadow-copy Service DLL helper.  The frozen state is
- #     limited for up to 10 seconds by VSS.
- #
-+# Features:
-+#
-+# @confidential: permitted when running inside a confidential VM
-+#
- # Since: 0.15.0
- ##
- { 'command': 'guest-fsfreeze-freeze',
-   'returns': 'int',
-+  'features': [ 'confidential' ],
-   'if': { 'any': ['CONFIG_WIN32', 'CONFIG_FSFREEZE'] } }
- 
- ##
-@@ -501,11 +531,16 @@
- #
- # Returns: Number of file systems currently frozen.
- #
-+# Features:
-+#
-+# @confidential: permitted when running inside a confidential VM
-+#
- # Since: 2.2
- ##
- { 'command': 'guest-fsfreeze-freeze-list',
-   'data':    { '*mountpoints': ['str'] },
-   'returns': 'int',
-+  'features': [ 'confidential' ],
-   'if': { 'any': ['CONFIG_WIN32', 'CONFIG_FSFREEZE'] } }
- 
- ##
-@@ -524,11 +559,13 @@
- #
- # @fs-frozen: permitted when filesystems are frozen
- #
-+# @confidential: permitted when running inside a confidential VM
-+#
- # Since: 0.15.0
- ##
- { 'command': 'guest-fsfreeze-thaw',
-   'returns': 'int',
--  'features': [ 'fs-frozen'],
-+  'features': [ 'fs-frozen', 'confidential' ],
-   'if': { 'any': ['CONFIG_WIN32', 'CONFIG_FSFREEZE'] } }
- 
- ##
-@@ -576,11 +613,16 @@
- # Returns: A @GuestFilesystemTrimResponse which contains the status of
- #     all trimmed paths.  (since 2.4)
- #
-+# Features:
-+#
-+# @confidential: permitted when running inside a confidential VM
-+#
- # Since: 1.2
- ##
- { 'command': 'guest-fstrim',
-   'data': { '*minimum': 'int' },
-   'returns': 'GuestFilesystemTrimResponse',
-+  'features': [ 'confidential' ],
-   'if': { 'any': ['CONFIG_WIN32', 'CONFIG_FSTRIM'] } }
- 
- ##
-@@ -608,9 +650,14 @@
- # Notes: It's strongly recommended to issue the guest-sync command
- #     before sending commands when the guest resumes
- #
-+# Features:
-+#
-+# @confidential: permitted when running inside a confidential VM
-+#
- # Since: 1.1
- ##
- { 'command': 'guest-suspend-disk', 'success-response': false,
-+  'features': [ 'confidential' ],
-   'if': { 'any': ['CONFIG_LINUX', 'CONFIG_WIN32'] } }
- 
- ##
-@@ -645,9 +692,14 @@
- # Notes: It's strongly recommended to issue the guest-sync command
- #     before sending commands when the guest resumes
- #
-+# Features:
-+#
-+# @confidential: permitted when running inside a confidential VM
-+#
- # Since: 1.1
- ##
- { 'command': 'guest-suspend-ram', 'success-response': false,
-+  'features': [ 'confidential' ],
-   'if': { 'any': ['CONFIG_LINUX', 'CONFIG_WIN32'] } }
- 
- ##
-@@ -681,9 +733,14 @@
- # Notes: It's strongly recommended to issue the guest-sync command
- #     before sending commands when the guest resumes
- #
-+# Features:
-+#
-+# @confidential: permitted when running inside a confidential VM
-+#
- # Since: 1.1
- ##
- { 'command': 'guest-suspend-hybrid', 'success-response': false,
-+  'features': [ 'confidential' ],
-   'if': 'CONFIG_LINUX' }
- 
- ##
-@@ -815,10 +872,15 @@
- # Returns: The list of all VCPUs the guest knows about.  Each VCPU is
- #     put on the list exactly once, but their order is unspecified.
- #
-+# Features:
-+#
-+# @confidential: permitted when running inside a confidential VM
-+#
- # Since: 1.5
- ##
- { 'command': 'guest-get-vcpus',
-   'returns': ['GuestLogicalProcessor'],
-+  'features': [ 'confidential' ],
-   'if': { 'any': ['CONFIG_LINUX', 'CONFIG_WIN32'] } }
- 
- ##
-@@ -857,11 +919,16 @@
- #     - If the reconfiguration of the first node in @vcpus failed.
- #       Guest state has not been changed.
- #
-+# Features:
-+#
-+# @confidential: permitted when running inside a confidential VM
-+#
- # Since: 1.5
- ##
- { 'command': 'guest-set-vcpus',
-   'data':    {'vcpus': ['GuestLogicalProcessor'] },
-   'returns': 'int',
-+  'features': [ 'confidential' ],
-   'if': 'CONFIG_LINUX' }
- 
- ##
-@@ -1180,10 +1247,15 @@
- #     memory block is put on the list exactly once, but their order is
- #     unspecified.
- #
-+# Features:
-+#
-+# @confidential: permitted when running inside a confidential VM
-+#
- # Since: 2.3
- ##
- { 'command': 'guest-get-memory-blocks',
-   'returns': ['GuestMemoryBlock'],
-+  'features': [ 'confidential' ],
-   'if': 'CONFIG_LINUX' }
- 
- ##
-@@ -1254,11 +1326,16 @@
- #     empty on input, or there is an error, and in this case, guest
- #     state will not be changed.
- #
-+# Features:
-+#
-+# @confidential: permitted when running inside a confidential VM
-+#
- # Since: 2.3
- ##
- { 'command': 'guest-set-memory-blocks',
-   'data':    {'mem-blks': ['GuestMemoryBlock'] },
-   'returns': ['GuestMemoryBlockResponse'],
-+  'features': [ 'confidential' ],
-   'if': 'CONFIG_LINUX' }
- 
- ##
-@@ -1268,10 +1345,15 @@
- #     minimal units of memory block online/offline operations (also
- #     called Logical Memory Hotplug).
- #
-+# Features:
-+#
-+# @confidential: permitted when running inside a confidential VM
-+#
- # Since: 2.3
- ##
- { 'struct': 'GuestMemoryBlockInfo',
-   'data': {'size': 'uint64'},
-+  'features': [ 'confidential' ],
-   'if': 'CONFIG_LINUX' }
- 
- ##
-@@ -1281,10 +1363,15 @@
- #
- # Returns: @GuestMemoryBlockInfo
- #
-+# Features:
-+#
-+# @confidential: permitted when running inside a confidential VM
-+#
- # Since: 2.3
- ##
- { 'command': 'guest-get-memory-block-info',
-   'returns': 'GuestMemoryBlockInfo',
-+  'features': [ 'confidential' ],
-   'if': 'CONFIG_LINUX' }
- 
- ##
-@@ -1430,10 +1517,15 @@
- #
- # Returns: the host name of the machine
- #
-+# Features:
-+#
-+# @confidential: permitted when running inside a confidential VM
-+#
- # Since: 2.10
- ##
- { 'command': 'guest-get-host-name',
--  'returns': 'GuestHostName' }
-+  'returns': 'GuestHostName',
-+  'features': [ 'confidential' ] }
- 
- 
- ##
-@@ -1882,9 +1974,14 @@
- #
- # Returns: List of CPU stats of guest.
- #
-+# Features:
-+#
-+# @confidential: permitted when running inside a confidential VM
-+#
- # Since: 7.1
- ##
- { 'command': 'guest-get-cpustats',
-   'returns': ['GuestCpuStats'],
-+  'features': [ 'confidential' ],
-   'if': 'CONFIG_LINUX'
- }
 -- 
 2.45.1
 
