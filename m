@@ -2,76 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBEC88FAF79
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 12:00:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 874828FAF6C
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 11:59:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEQwX-0008Ol-ET; Tue, 04 Jun 2024 05:59:01 -0400
+	id 1sEQwb-0000Ho-Dw; Tue, 04 Jun 2024 05:59:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sEQwV-0008E4-1A
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 05:58:59 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sEQwY-00005r-WE
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 05:59:03 -0400
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sEQwR-0002Nd-3T
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 05:58:57 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-42120fc8cbfso41562405e9.2
- for <qemu-devel@nongnu.org>; Tue, 04 Jun 2024 02:58:54 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sEQwW-0002Nw-LS
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 05:59:02 -0400
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-35e4aaa0f33so2674293f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 04 Jun 2024 02:59:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1717495133; x=1718099933; darn=nongnu.org;
+ d=linaro.org; s=google; t=1717495139; x=1718099939; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=/VTJJ/3m83pWTt3riL5Bvq0vb1UCAyg2JZO38z+luX4=;
- b=KvpsUzmjeAIsoBkpuFu0LsS9A2O6+YycXDc7FJpCAkAkAPxb8Zl+wJywdqkQCpkSJ6
- NBYEkDHCn95PeK9mi32Y7eFNWMSCc5pLPjB4qbmENOdRM5T55L4TP7PTN6L7S2Zfynvj
- lc4whVD+oAa1A6ifPn8esKu1gp9ktP8567XOsX3D5tbIMCu6gID0sn+jri3LI5os5dvI
- BvVVIW0EZCjUrZrTVahCSoS3RkkLpEw3h5IjWO5AjuQXY8/Dqc4QL9nbgCbzr8FjfB+z
- DaiWmPg+s1WOjbTz53M/DsnKfPlP2wHvTnbOi6DSI2wFgCnYKTyiI/wNnT36NPP7w2SN
- 9f4w==
+ bh=9IPOKJ4bfj8H7u0AOUJYW14UBzQ/mD/AN0ShzwkJT0k=;
+ b=VgZEP1IYaLhEiCZmyujtyr86zlGWl+CP/mOsP8mykez41DaUhSulyycGdr6MuAB6b8
+ xftFDoiUqK+gGSiy/gJ6GwwY8JNU3hXOPbzUgU5Ud6gAavqktLqu/qB1y43ihNIR/D5y
+ vna/D9AjX24NNvjYWrMCkwCJvjV4kqHLQCCFCzAMimfKwX5BrcvgGZfMSIpvOrh/o9WG
+ 0nMH4O/d3hxv1AW+u3B8fTJsPH38TYUPWjJ83DizooQuL2xElGadac6l5F5ui/BTYzdj
+ k+4z7Im43hBQZv63dlcWGq5vfUD8vPWj0XMb7KxQNpmYgkyQhpjg3zO1ovaWI48j04Za
+ HxlQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717495133; x=1718099933;
+ d=1e100.net; s=20230601; t=1717495139; x=1718099939;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/VTJJ/3m83pWTt3riL5Bvq0vb1UCAyg2JZO38z+luX4=;
- b=LiThmH5aI3AwIbWl54S2kZ1u6j9DBg/30UgJ8fzETfe/1L+/gUqMLY9yyAkeuyjDM0
- WkK7atpiyBpCe3fkM2Ab/mThhv+4woWEm6haEqKb6G74BXCyirH5he9sAUKDiX5p/RY8
- 3tb2CT68jW8nwXtKjFuwX4k4lAtnfUeJvBJBaILe5ffX1w/zeowJrWm/p5G0OcjW8/vM
- iAsFj34nprvc1KUG+nbnBzoWsGtnkw78hA63EEMvqTpWge1xkQSkzfwl8kKqJxllWI1T
- XTDBfCLIyOGN5DQLO1GBrmQ9tCE6qlV8VwhXBUJm2VCnUeeATRvdzaerxzG61BOCQfzL
- mvzA==
-X-Gm-Message-State: AOJu0YwPfC13Vc/icIq+j2YuILe/wNLAUol0lbQXOLSRb+Qgvd9EQWKz
- ybEa7NVyCQ4VrcrbktYClYik3ff7vMCn7e+X8Tmj/kANf2aKAHXICEhnLeoNKGIpIGmwHuHpqwq
- 9
-X-Google-Smtp-Source: AGHT+IGAgCk1ZFYpPc2Dl/YiWidc0JYy6Mxgj63pxZhDA+Wefk4eYItmYH6Av1iHM1qW4pxQocE91w==
-X-Received: by 2002:a05:600c:5488:b0:421:3464:dc7a with SMTP id
- 5b1f17b1804b1-4213464df71mr84635205e9.39.1717495133228; 
- Tue, 04 Jun 2024 02:58:53 -0700 (PDT)
+ bh=9IPOKJ4bfj8H7u0AOUJYW14UBzQ/mD/AN0ShzwkJT0k=;
+ b=LVVLaHKXxrTjrtFGDYS0OTbg32lZnxO0DVI9/IAJ8pQSKevKMawfJAAHr+oYEJH6oy
+ VrbUNirKwnpf0QPVBx3yqp9c6jptEtTZjCVrKo+iSbONCeVErEHFyaMQkQpDbQ8GYfQi
+ 2JWIRGdYS8iAW6RTa51vlnJljWqVJn8EXbdjiJYtJgbW293XNQUJHks/Tu7EzWBZsRVK
+ eB9+RnjaFaPLuaIpexOJDnxWao7AvHS7uOZwGrMdjafo93dBs2SOlsym7n9hBkNgn/rC
+ ln/RHpOKjCMs8Tsv9RVbkPnHb7DL4f/cCpzcelbkNGKZTOC7AiFWvJIFwDWb3NTth1fv
+ X3aw==
+X-Gm-Message-State: AOJu0YxtKbiHDKaGwUt/TriDlf0XA1D18/MM/mh06NqwBKp7jzDLHG9b
+ QIGoMEAvJCKhsqXjrU9IoWZ88e5IyySOiG1o1Ism3oOziW4Mn0kAxVwNnDKHqkhgGnz5X6MxYia
+ E
+X-Google-Smtp-Source: AGHT+IEsMCMfNlTLfFoGlaytIalXtFxe3kWoNTZLNJxbNmBvUg8YBI4KAfdppRGBrANGXYplZqOpJw==
+X-Received: by 2002:adf:f68b:0:b0:354:e729:c101 with SMTP id
+ ffacd0b85a97d-35e0f2551f3mr9370060f8f.12.1717495138820; 
+ Tue, 04 Jun 2024 02:58:58 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.159.34])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4214a9ff986sm19161995e9.42.2024.06.04.02.58.52
+ ffacd0b85a97d-35dd04c0f7esm11074701f8f.22.2024.06.04.02.58.57
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 04 Jun 2024 02:58:52 -0700 (PDT)
+ Tue, 04 Jun 2024 02:58:58 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Markus Armbruster <armbru@redhat.com>
-Subject: [PULL 30/32] trace: Remove deprecated 'vcpu' field from QMP trace
- events
-Date: Tue,  4 Jun 2024 11:56:06 +0200
-Message-ID: <20240604095609.12285-31-philmd@linaro.org>
+ Konstantin Kostiuk <kkostiuk@redhat.com>
+Subject: [PULL 31/32] qga: Remove deprecated 'blacklist' argument / config key
+Date: Tue,  4 Jun 2024 11:56:07 +0200
+Message-ID: <20240604095609.12285-32-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240604095609.12285-1-philmd@linaro.org>
 References: <20240604095609.12285-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,169 +92,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-'vcpu' fields are deprecated since commit 5485e52a33
-("qapi: make the vcpu parameters deprecated for 8.1"),
-time to remove them.
+The 'blacklist' argument / config key are deprecated since commit
+582a098e6c ("qga: Replace 'blacklist' command line and config file
+options by 'block-rpcs'"), time to remove them.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
-Message-Id: <20240530071548.20074-3-philmd@linaro.org>
+Reviewed-by: Konstantin Kostiuk <kkostiuk@redhat.com>
+Message-Id: <20240530070413.19181-1-philmd@linaro.org>
 ---
- docs/about/deprecated.rst       | 11 -----------
- docs/about/removed-features.rst |  6 ++++++
- qapi/trace.json                 | 27 +++------------------------
- trace/qmp.c                     |  2 --
- trace/trace-hmp-cmds.c          |  4 ++--
- 5 files changed, 11 insertions(+), 39 deletions(-)
+ docs/about/deprecated.rst       | 18 ------------------
+ docs/about/removed-features.rst | 18 ++++++++++++++++++
+ qga/main.c                      |  6 ------
+ 3 files changed, 18 insertions(+), 24 deletions(-)
 
 diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-index 4a61894db6..187c8a3f97 100644
+index 187c8a3f97..a6f4655a3a 100644
 --- a/docs/about/deprecated.rst
 +++ b/docs/about/deprecated.rst
-@@ -148,17 +148,6 @@ accepted incorrect commands will return an error. Users should make sure that
- all arguments passed to ``device_add`` are consistent with the documented
- property types.
+@@ -462,24 +462,6 @@ versions, aliases will point to newer CPU model versions
+ depending on the machine type, so management software must
+ resolve CPU model aliases before starting a virtual machine.
  
--QEMU Machine Protocol (QMP) events
------------------------------------
+-QEMU guest agent
+-----------------
 -
--``vcpu`` trace events (since 8.1)
--'''''''''''''''''''''''''''''''''
+-``--blacklist`` command line option (since 7.2)
+-'''''''''''''''''''''''''''''''''''''''''''''''
 -
--The ability to instrument QEMU helper functions with vCPU-aware trace
--points was removed in 7.0. However QMP still exposed the vcpu
--parameter. This argument has now been deprecated and the remaining
--remaining trace points that used it are selected just by name.
+-``--blacklist`` has been replaced by ``--block-rpcs`` (which is a better
+-wording for what this option does). The short form ``-b`` still stays
+-the same and thus is the preferred way for scripts that should run with
+-both, older and future versions of QEMU.
 -
- Host Architectures
- ------------------
+-``blacklist`` config file option (since 7.2)
+-''''''''''''''''''''''''''''''''''''''''''''
+-
+-The ``blacklist`` config file option has been renamed to ``block-rpcs``
+-(to be in sync with the renaming of the corresponding command line
+-option).
+-
+ Migration
+ ---------
  
 diff --git a/docs/about/removed-features.rst b/docs/about/removed-features.rst
-index f1e70263e2..1e64c27cd8 100644
+index 1e64c27cd8..210a90bee8 100644
 --- a/docs/about/removed-features.rst
 +++ b/docs/about/removed-features.rst
-@@ -679,6 +679,12 @@ QEMU Machine Protocol (QMP) events
+@@ -1144,4 +1144,22 @@ stable for some time and is now widely used.
+ The command line and feature set is very close to the removed
+ C implementation.
  
- MEM_UNPLUG_ERROR has been replaced by the more generic ``DEVICE_UNPLUG_GUEST_ERROR`` event.
- 
-+``vcpu`` trace events (removed in 9.1)
-+''''''''''''''''''''''''''''''''''''''
++QEMU guest agent
++----------------
 +
-+The ability to instrument QEMU helper functions with vCPU-aware trace
-+points was removed in 7.0.
++``--blacklist`` command line option (removed in 9.1)
++''''''''''''''''''''''''''''''''''''''''''''''''''''
 +
- 
- Human Monitor Protocol (HMP) commands
- -------------------------------------
-diff --git a/qapi/trace.json b/qapi/trace.json
-index 043d12f83e..9ebb6d9eaf 100644
---- a/qapi/trace.json
-+++ b/qapi/trace.json
-@@ -35,17 +35,10 @@
- #
- # @state: Tracing state.
- #
--# @vcpu: Whether this is a per-vCPU event (since 2.7).
--#
--# Features:
--#
--# @deprecated: Member @vcpu is deprecated, and always ignored.
--#
- # Since: 2.2
- ##
- { 'struct': 'TraceEventInfo',
--  'data': {'name': 'str', 'state': 'TraceEventState',
--           'vcpu': { 'type': 'bool', 'features': ['deprecated'] } } }
-+  'data': {'name': 'str', 'state': 'TraceEventState' } }
- 
- ##
- # @trace-event-get-state:
-@@ -54,12 +47,6 @@
- #
- # @name: Event name pattern (case-sensitive glob).
- #
--# @vcpu: The vCPU to query (since 2.7).
--#
--# Features:
--#
--# @deprecated: Member @vcpu is deprecated, and always ignored.
--#
- # Returns: a list of @TraceEventInfo for the matching events
- #
- # Since: 2.2
-@@ -71,8 +58,7 @@
- #     <- { "return": [ { "name": "qemu_memalign", "state": "disabled", "vcpu": false } ] }
- ##
- { 'command': 'trace-event-get-state',
--  'data': {'name': 'str',
--           '*vcpu': {'type': 'int', 'features': ['deprecated'] } },
-+  'data': {'name': 'str' },
-   'returns': ['TraceEventInfo'] }
- 
- ##
-@@ -86,12 +72,6 @@
- #
- # @ignore-unavailable: Do not match unavailable events with @name.
- #
--# @vcpu: The vCPU to act upon (all by default; since 2.7).
--#
--# Features:
--#
--# @deprecated: Member @vcpu is deprecated, and always ignored.
--#
- # Since: 2.2
- #
- # Example:
-@@ -101,5 +81,4 @@
- #     <- { "return": {} }
- ##
- { 'command': 'trace-event-set-state',
--  'data': {'name': 'str', 'enable': 'bool', '*ignore-unavailable': 'bool',
--           '*vcpu': {'type': 'int', 'features': ['deprecated'] } } }
-+  'data': {'name': 'str', 'enable': 'bool', '*ignore-unavailable': 'bool' } }
-diff --git a/trace/qmp.c b/trace/qmp.c
-index 3e3971c6a8..074a27b204 100644
---- a/trace/qmp.c
-+++ b/trace/qmp.c
-@@ -48,7 +48,6 @@ static bool check_events(bool ignore_unavailable, bool is_pattern,
- }
- 
- TraceEventInfoList *qmp_trace_event_get_state(const char *name,
--                                              bool has_vcpu, int64_t vcpu,
-                                               Error **errp)
- {
-     TraceEventInfoList *events = NULL;
-@@ -86,7 +85,6 @@ TraceEventInfoList *qmp_trace_event_get_state(const char *name,
- 
- void qmp_trace_event_set_state(const char *name, bool enable,
-                                bool has_ignore_unavailable, bool ignore_unavailable,
--                               bool has_vcpu, int64_t vcpu,
-                                Error **errp)
- {
-     TraceEventIter iter;
-diff --git a/trace/trace-hmp-cmds.c b/trace/trace-hmp-cmds.c
-index 86211fce27..d38dd600de 100644
---- a/trace/trace-hmp-cmds.c
-+++ b/trace/trace-hmp-cmds.c
-@@ -40,7 +40,7 @@ void hmp_trace_event(Monitor *mon, const QDict *qdict)
-     Error *local_err = NULL;
- 
-     qmp_trace_event_set_state(tp_name, new_state,
--                              true, true, false, 0, &local_err);
-+                              true, true, &local_err);
-     if (local_err) {
-         error_report_err(local_err);
-     }
-@@ -82,7 +82,7 @@ void hmp_info_trace_events(Monitor *mon, const QDict *qdict)
-         name = "*";
++``--blacklist`` has been replaced by ``--block-rpcs`` (which is a better
++wording for what this option does). The short form ``-b`` still stays
++the same and thus is the preferred way for scripts that should run with
++both, older and future versions of QEMU.
++
++``blacklist`` config file option (removed in 9.1)
++'''''''''''''''''''''''''''''''''''''''''''''''''
++
++The ``blacklist`` config file option has been renamed to ``block-rpcs``
++(to be in sync with the renaming of the corresponding command line
++option).
++
+ .. _Intel discontinuance notification: https://www.intel.com/content/www/us/en/content-details/781327/intel-is-discontinuing-ip-ordering-codes-listed-in-pdn2312-for-nios-ii-ip.html
+diff --git a/qga/main.c b/qga/main.c
+index bdf5344584..f4d5f15bb3 100644
+--- a/qga/main.c
++++ b/qga/main.c
+@@ -1071,11 +1071,6 @@ static void config_load(GAConfig *config)
+             g_key_file_get_boolean(keyfile, "general", "retry-path", &gerr);
      }
  
--    events = qmp_trace_event_get_state(name, false, 0, &local_err);
-+    events = qmp_trace_event_get_state(name, &local_err);
-     if (local_err) {
-         error_report_err(local_err);
-         return;
+-    if (g_key_file_has_key(keyfile, "general", "blacklist", NULL)) {
+-        g_warning("config using deprecated 'blacklist' key, should be replaced"
+-                  " with the 'block-rpcs' key.");
+-        blockrpcs_key = "blacklist";
+-    }
+     if (g_key_file_has_key(keyfile, "general", blockrpcs_key, NULL)) {
+         config->bliststr =
+             g_key_file_get_string(keyfile, "general", blockrpcs_key, &gerr);
+@@ -1190,7 +1185,6 @@ static void config_parse(GAConfig *config, int argc, char **argv)
+         { "path", 1, NULL, 'p' },
+         { "daemonize", 0, NULL, 'd' },
+         { "block-rpcs", 1, NULL, 'b' },
+-        { "blacklist", 1, NULL, 'b' },  /* deprecated alias for 'block-rpcs' */
+         { "allow-rpcs", 1, NULL, 'a' },
+ #ifdef _WIN32
+         { "service", 1, NULL, 's' },
 -- 
 2.41.0
 
