@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 853EC8FB479
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 15:52:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 302B18FB44C
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 15:50:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEUY6-00063p-Q9; Tue, 04 Jun 2024 09:50:02 -0400
+	id 1sEUY8-000668-EF; Tue, 04 Jun 2024 09:50:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sEUY3-0005ya-Sw
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 09:50:00 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1sEUY5-00063D-QP
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 09:50:01 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sEUY1-0002mt-4o
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 09:49:58 -0400
+ id 1sEUY1-0002mx-Fz
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 09:50:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1717508996;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=VTs1CazDuYQYyqNg17yZkKnnH71hmdmUVDNxDCO95G8=;
- b=Jok0UYgwWMXc4YZaJ6KqH/6+ggs7IISSO6E29amsx139wtBNrS72fhw3g68QErAETCqizs
- EjgAEIiAJDyX01OAPAlkzM8lcXXu3elD8NGkt/9C98VbFoMoyV5oij5xHtmhQxWyyD31pg
- XbP+reCbmWvKOXYASuPZ5RJtDwPaSgY=
+ bh=F7NWPJ5tSLT3jMnEYRzuJWc85IGXbTO8E5f2b8b0qV4=;
+ b=Xgf+wMg0auHsIqQETYTIOzTM5oh8Fv0W9zmFaAwZa/dOfcG71G16og/38FlgrEOLCrr3XZ
+ sKyCi3q/cc14j+VnY1+fGmyPla5QnFbxnYnQobNRFYk6S5Au0tWHVqdaB85X1JyQrEQY/S
+ jRrFoHojd7y2tiMB/QbPSWx8Mqex7GU=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-5-xtDvPf1jOh2icgWwWTMlXQ-1; Tue, 04 Jun 2024 09:49:52 -0400
-X-MC-Unique: xtDvPf1jOh2icgWwWTMlXQ-1
+ us-mta-424-1hGTl76cOoiBiXUO0Ut_QA-1; Tue, 04 Jun 2024 09:49:55 -0400
+X-MC-Unique: 1hGTl76cOoiBiXUO0Ut_QA-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
  [10.11.54.8])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 90A8F101A521;
- Tue,  4 Jun 2024 13:49:52 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 23DA4101A523;
+ Tue,  4 Jun 2024 13:49:55 +0000 (UTC)
 Received: from toolbox.redhat.com (unknown [10.39.194.137])
- by smtp.corp.redhat.com (Postfix) with ESMTP id DF9C6C15C46;
- Tue,  4 Jun 2024 13:49:50 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id C2F6BC15C40;
+ Tue,  4 Jun 2024 13:49:52 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>, Konstantin Kostiuk <kkostiuk@redhat.com>,
@@ -51,17 +51,17 @@ Cc: Thomas Huth <thuth@redhat.com>, Konstantin Kostiuk <kkostiuk@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PATCH 07/20] qga: move CONFIG_FSFREEZE/TRIM to be meson defined
- options
-Date: Tue,  4 Jun 2024 14:49:20 +0100
-Message-ID: <20240604134933.220112-8-berrange@redhat.com>
+Subject: [PATCH 08/20] qga: conditionalize schema for commands unsupported on
+ Windows
+Date: Tue,  4 Jun 2024 14:49:21 +0100
+Message-ID: <20240604134933.220112-9-berrange@redhat.com>
 In-Reply-To: <20240604134933.220112-1-berrange@redhat.com>
 References: <20240604134933.220112-1-berrange@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -86,75 +86,270 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Defining these at the meson level allows them to be used a conditional
-tests in the QAPI schemas.
+Rather than creating stubs for every command that just return
+QERR_UNSUPPORTED, use 'if' conditions in the QAPI schema to
+fully exclude generation of the commands on Windows.
+
+The command will be rejected at QMP dispatch time instead,
+avoiding reimplementing rejection by blocking the stub commands.
+
+This fixes inconsistency where some commands are implemented
+as stubs, yet not added to the blockedrpc list.
+
+This has the additional benefit that the QGA protocol reference
+now documents what conditions enable use of the command.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- meson.build           | 18 ++++++++++++++++++
- qga/commands-common.h |  9 ---------
- 2 files changed, 18 insertions(+), 9 deletions(-)
+ qga/commands-win32.c | 56 +-------------------------------------------
+ qga/qapi-schema.json | 45 +++++++++++++++++++++++------------
+ 2 files changed, 31 insertions(+), 70 deletions(-)
 
-diff --git a/meson.build b/meson.build
-index 6386607144..356b2a4817 100644
---- a/meson.build
-+++ b/meson.build
-@@ -2141,6 +2141,22 @@ have_virtfs_proxy_helper = get_option('virtfs_proxy_helper') \
-     .require(libcap_ng.found(), error_message: 'the virtfs proxy helper requires libcap-ng') \
-     .allowed()
+diff --git a/qga/commands-win32.c b/qga/commands-win32.c
+index 9fe670d5b4..2533e4c748 100644
+--- a/qga/commands-win32.c
++++ b/qga/commands-win32.c
+@@ -1494,11 +1494,6 @@ out:
+     }
+ }
  
-+qga_fsfreeze = false
-+qga_fstrim = false
-+if host_os == 'windows'
-+    qga_fsfreeze = true
-+    qga_fstrim = true
-+elif host_os == 'linux'
-+    if cc.has_header_symbol('linux/fs.h', 'FIFREEZE')
-+        qga_fsfreeze = true
-+    endif
-+    if cc.has_header_symbol('linux/fs.h', 'FITRIM')
-+        qga_fstrim = true
-+    endif
-+elif host_os == 'freebsd' and cc.has_header_symbol('ufs/ffs/fs.h', 'UFSSUSPEND')
-+    qga_fsfreeze = true
-+endif
-+
- if get_option('block_drv_ro_whitelist') == ''
-   config_host_data.set('CONFIG_BDRV_RO_WHITELIST', '')
- else
-@@ -2375,6 +2391,8 @@ config_host_data.set('CONFIG_DEBUG_TCG', get_option('debug_tcg'))
- config_host_data.set('CONFIG_DEBUG_REMAP', get_option('debug_remap'))
- config_host_data.set('CONFIG_QOM_CAST_DEBUG', get_option('qom_cast_debug'))
- config_host_data.set('CONFIG_REPLICATION', get_option('replication').allowed())
-+config_host_data.set('CONFIG_FSFREEZE', qga_fsfreeze)
-+config_host_data.set('CONFIG_FSTRIM', qga_fstrim)
+-void qmp_guest_suspend_hybrid(Error **errp)
+-{
+-    error_setg(errp, QERR_UNSUPPORTED);
+-}
+-
+ static IP_ADAPTER_ADDRESSES *guest_get_adapters_addresses(Error **errp)
+ {
+     IP_ADAPTER_ADDRESSES *adptr_addrs = NULL;
+@@ -1862,12 +1857,6 @@ GuestLogicalProcessorList *qmp_guest_get_vcpus(Error **errp)
+     return NULL;
+ }
  
- # has_header
- config_host_data.set('CONFIG_EPOLL', cc.has_header('sys/epoll.h'))
-diff --git a/qga/commands-common.h b/qga/commands-common.h
-index 8c1c56aac9..263e7c0525 100644
---- a/qga/commands-common.h
-+++ b/qga/commands-common.h
-@@ -15,19 +15,10 @@
+-int64_t qmp_guest_set_vcpus(GuestLogicalProcessorList *vcpus, Error **errp)
+-{
+-    error_setg(errp, QERR_UNSUPPORTED);
+-    return -1;
+-}
+-
+ static gchar *
+ get_net_error_message(gint error)
+ {
+@@ -1969,46 +1958,15 @@ done:
+     g_free(rawpasswddata);
+ }
  
- #if defined(__linux__)
- #include <linux/fs.h>
--#ifdef FIFREEZE
--#define CONFIG_FSFREEZE
--#endif
--#ifdef FITRIM
--#define CONFIG_FSTRIM
--#endif
- #endif /* __linux__ */
+-GuestMemoryBlockList *qmp_guest_get_memory_blocks(Error **errp)
+-{
+-    error_setg(errp, QERR_UNSUPPORTED);
+-    return NULL;
+-}
+-
+-GuestMemoryBlockResponseList *
+-qmp_guest_set_memory_blocks(GuestMemoryBlockList *mem_blks, Error **errp)
+-{
+-    error_setg(errp, QERR_UNSUPPORTED);
+-    return NULL;
+-}
+-
+-GuestMemoryBlockInfo *qmp_guest_get_memory_block_info(Error **errp)
+-{
+-    error_setg(errp, QERR_UNSUPPORTED);
+-    return NULL;
+-}
+-
+ /* add unsupported commands to the list of blocked RPCs */
+ GList *ga_command_init_blockedrpcs(GList *blockedrpcs)
+ {
+-    const char *list_unsupported[] = {
+-        "guest-suspend-hybrid",
+-        "guest-set-vcpus",
+-        "guest-get-memory-blocks", "guest-set-memory-blocks",
+-        "guest-get-memory-block-info",
+-        NULL};
+-    char **p = (char **)list_unsupported;
+-
+-    while (*p) {
+-        blockedrpcs = g_list_append(blockedrpcs, g_strdup(*p++));
+-    }
+-
+     if (!vss_init(true)) {
+         g_debug("vss_init failed, vss commands are going to be disabled");
+         const char *list[] = {
+             "guest-get-fsinfo", "guest-fsfreeze-status",
+             "guest-fsfreeze-freeze", "guest-fsfreeze-thaw", NULL};
+-        p = (char **)list;
++        char **p = (char **)list;
  
- #ifdef __FreeBSD__
- #include <ufs/ffs/fs.h>
--#ifdef UFSSUSPEND
--#define CONFIG_FSFREEZE
--#endif
- #endif /* __FreeBSD__ */
+         while (*p) {
+             blockedrpcs = g_list_append(blockedrpcs, g_strdup(*p++));
+@@ -2505,15 +2463,3 @@ char *qga_get_host_name(Error **errp)
  
- #if defined(CONFIG_FSFREEZE) || defined(CONFIG_FSTRIM)
+     return g_utf16_to_utf8(tmp, size, NULL, NULL, NULL);
+ }
+-
+-GuestDiskStatsInfoList *qmp_guest_get_diskstats(Error **errp)
+-{
+-    error_setg(errp, QERR_UNSUPPORTED);
+-    return NULL;
+-}
+-
+-GuestCpuStatsList *qmp_guest_get_cpustats(Error **errp)
+-{
+-    error_setg(errp, QERR_UNSUPPORTED);
+-    return NULL;
+-}
+diff --git a/qga/qapi-schema.json b/qga/qapi-schema.json
+index b3de1fb6b3..b91456e9ad 100644
+--- a/qga/qapi-schema.json
++++ b/qga/qapi-schema.json
+@@ -636,7 +636,8 @@
+ #
+ # Since: 1.1
+ ##
+-{ 'command': 'guest-suspend-hybrid', 'success-response': false }
++{ 'command': 'guest-suspend-hybrid', 'success-response': false,
++  'if': 'CONFIG_POSIX' }
+ 
+ ##
+ # @GuestIpAddressType:
+@@ -806,7 +807,8 @@
+ ##
+ { 'command': 'guest-set-vcpus',
+   'data':    {'vcpus': ['GuestLogicalProcessor'] },
+-  'returns': 'int' }
++  'returns': 'int',
++  'if': 'CONFIG_POSIX' }
+ 
+ ##
+ # @GuestDiskBusType:
+@@ -1099,7 +1101,8 @@
+ { 'struct': 'GuestMemoryBlock',
+   'data': {'phys-index': 'uint64',
+            'online': 'bool',
+-           '*can-offline': 'bool'} }
++           '*can-offline': 'bool'},
++  'if': 'CONFIG_POSIX' }
+ 
+ ##
+ # @guest-get-memory-blocks:
+@@ -1115,7 +1118,8 @@
+ # Since: 2.3
+ ##
+ { 'command': 'guest-get-memory-blocks',
+-  'returns': ['GuestMemoryBlock'] }
++  'returns': ['GuestMemoryBlock'],
++  'if': 'CONFIG_POSIX' }
+ 
+ ##
+ # @GuestMemoryBlockResponseType:
+@@ -1138,7 +1142,8 @@
+ ##
+ { 'enum': 'GuestMemoryBlockResponseType',
+   'data': ['success', 'not-found', 'operation-not-supported',
+-           'operation-failed'] }
++           'operation-failed'],
++  'if': 'CONFIG_POSIX' }
+ 
+ ##
+ # @GuestMemoryBlockResponse:
+@@ -1156,7 +1161,8 @@
+ { 'struct': 'GuestMemoryBlockResponse',
+   'data': { 'phys-index': 'uint64',
+             'response': 'GuestMemoryBlockResponseType',
+-            '*error-code': 'int' }}
++            '*error-code': 'int' },
++  'if': 'CONFIG_POSIX'}
+ 
+ ##
+ # @guest-set-memory-blocks:
+@@ -1187,7 +1193,8 @@
+ ##
+ { 'command': 'guest-set-memory-blocks',
+   'data':    {'mem-blks': ['GuestMemoryBlock'] },
+-  'returns': ['GuestMemoryBlockResponse'] }
++  'returns': ['GuestMemoryBlockResponse'],
++  'if': 'CONFIG_POSIX' }
+ 
+ ##
+ # @GuestMemoryBlockInfo:
+@@ -1199,7 +1206,8 @@
+ # Since: 2.3
+ ##
+ { 'struct': 'GuestMemoryBlockInfo',
+-  'data': {'size': 'uint64'} }
++  'data': {'size': 'uint64'},
++  'if': 'CONFIG_POSIX' }
+ 
+ ##
+ # @guest-get-memory-block-info:
+@@ -1211,7 +1219,8 @@
+ # Since: 2.3
+ ##
+ { 'command': 'guest-get-memory-block-info',
+-  'returns': 'GuestMemoryBlockInfo' }
++  'returns': 'GuestMemoryBlockInfo',
++  'if': 'CONFIG_POSIX' }
+ 
+ ##
+ # @GuestExecStatus:
+@@ -1702,7 +1711,8 @@
+   'data': {'name': 'str',
+            'major': 'uint64',
+            'minor': 'uint64',
+-           'stats': 'GuestDiskStats' } }
++           'stats': 'GuestDiskStats' },
++  'if': 'CONFIG_POSIX' }
+ 
+ ##
+ # @guest-get-diskstats:
+@@ -1714,7 +1724,8 @@
+ # Since: 7.1
+ ##
+ { 'command': 'guest-get-diskstats',
+-  'returns': ['GuestDiskStatsInfo']
++  'returns': ['GuestDiskStatsInfo'],
++  'if': 'CONFIG_POSIX'
+ }
+ 
+ ##
+@@ -1727,7 +1738,8 @@
+ # Since: 7.1
+ ##
+ { 'enum': 'GuestCpuStatsType',
+-  'data': [ 'linux' ] }
++  'data': [ 'linux' ],
++  'if': 'CONFIG_POSIX' }
+ 
+ 
+ ##
+@@ -1772,7 +1784,8 @@
+            '*steal': 'uint64',
+            '*guest': 'uint64',
+            '*guestnice': 'uint64'
+-           } }
++           },
++  'if': 'CONFIG_POSIX' }
+ 
+ ##
+ # @GuestCpuStats:
+@@ -1786,7 +1799,8 @@
+ { 'union': 'GuestCpuStats',
+   'base': { 'type': 'GuestCpuStatsType' },
+   'discriminator': 'type',
+-  'data': { 'linux': 'GuestLinuxCpuStats' } }
++  'data': { 'linux': 'GuestLinuxCpuStats' },
++  'if': 'CONFIG_POSIX' }
+ 
+ ##
+ # @guest-get-cpustats:
+@@ -1798,5 +1812,6 @@
+ # Since: 7.1
+ ##
+ { 'command': 'guest-get-cpustats',
+-  'returns': ['GuestCpuStats']
++  'returns': ['GuestCpuStats'],
++  'if': 'CONFIG_POSIX'
+ }
 -- 
 2.45.1
 
