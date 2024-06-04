@@ -2,75 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62E168FBC1A
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 21:07:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38E8F8FBC3A
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 21:09:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEZU5-0004xl-3o; Tue, 04 Jun 2024 15:06:13 -0400
+	id 1sEZU6-0004xz-3U; Tue, 04 Jun 2024 15:06:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sEZU2-0004x3-7D
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sEZU2-0004xH-Us
  for qemu-devel@nongnu.org; Tue, 04 Jun 2024 15:06:10 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sEZU0-0000gl-0J
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 15:06:09 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sEZU1-0000gr-Am
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 15:06:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717527965;
+ s=mimecast20190719; t=1717527968;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=t5wmX3gtPAYrXQoXBdWTHoluf1os2NoQT8NoHpilReI=;
- b=Cwxgri6FAo1KpBoiKfl9rVbAkMPci3Iy+O1MoRQQlZnG0yOK1Lt5zeb9OtapIiBtn6IqpV
- z3lcH92hVMc7XGavtOYyU3v/QA2x5JxIuyI/ZFxdOWMpX7vF0+X6PMb+OtGOXurctDZQNU
- 82aNk8ymHtsNPWj/n6so5/SNktjngV4=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ in-reply-to:in-reply-to:references:references;
+ bh=gfd+vfybB3O3+4pkXHRWr1BbxFsd2M2r8td4r0aSbjQ=;
+ b=GdHye96uTOtEpCtgGtHa1xVgQ1i7cSXRSSzdb22g475+UHNfO2u2RvySIHWHq799sd9iFA
+ PO8B+lL2M7HBpRK2Vs1bsHYMMstXkfVZF4Vz3fmKlr9uIgZPBqRoLajpkSvBa7qwriG63l
+ CtO+F9AcrzpxDwUAHG+wusAlxL9n+Qc=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-304-Wqp3u9y5NEuc7nN6PAMhXw-1; Tue, 04 Jun 2024 15:06:03 -0400
-X-MC-Unique: Wqp3u9y5NEuc7nN6PAMhXw-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-4212a921370so45106615e9.3
- for <qemu-devel@nongnu.org>; Tue, 04 Jun 2024 12:06:03 -0700 (PDT)
+ us-mta-470-hArG0UZaOTagcJQ8XjIjYg-1; Tue, 04 Jun 2024 15:06:07 -0400
+X-MC-Unique: hArG0UZaOTagcJQ8XjIjYg-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-35dca355ffaso3517561f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 04 Jun 2024 12:06:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717527962; x=1718132762;
- h=content-transfer-encoding:content-disposition:mime-version
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=t5wmX3gtPAYrXQoXBdWTHoluf1os2NoQT8NoHpilReI=;
- b=pgktQ0Hvh/MrrXFED+XHxMUZx1BfgVr5uLVVW0XfxTd39cSXBGPXbf+pwVWRouTpXS
- qgt3PGhcwkTKXEuCTCoy3DhahFucd2+ujLSEC/iuenu0ftZztExKswYMGn1CZ47PwyYY
- jBIgJ5SgNm92IVsHCDEKexPD6UzUz0l9CkEu8uRZsIl++uwl1hlO9dTBcnhNzgcwlbeX
- 8CAPW+u8104h5E0Ym2BuNrE8sbP/0fNQy3dLLSXiIh7RDzc5kMfYsAQYksH3UcHTNs+U
- z3gsZOCxY6408Bk4gqqKkZTzyJMoLOHgN8oX5iWhm+Cx3ukIlQpfu8qiMoJvs2nO9FxY
- oWzA==
-X-Gm-Message-State: AOJu0YwBzhG9i2BOmCi23ZehRPchuEvPo2eTWY3FlGOhiLvyU1tVmRTf
- kFEsrCEJYcXJCRIcPUoRh3ZzP7M3H4PckbM/WuhtwlWW/hoh3S41JIMEfIwhwSWDBAgLt2BNTPN
- 3LbBg6Es+8kvShgul2GEBIRB2bJ0n4yy4zyAsWZo3oR+it3H20N8DIw3fSdksLZBex5I8pGxqPB
- +JvaIM05Yc6xju4HkZUt2nHO0AO8Glkw==
-X-Received: by 2002:a05:600c:458c:b0:41f:e7e6:7f27 with SMTP id
- 5b1f17b1804b1-4215633a0f5mr3944265e9.26.1717527961916; 
- Tue, 04 Jun 2024 12:06:01 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHSSNAKCjN7+qT7aZXHu7SAU/uiL/psBfDwHlM0y6lOaUfnH65VMLsxo16k4WBkXIJHD8A/CA==
-X-Received: by 2002:a05:600c:458c:b0:41f:e7e6:7f27 with SMTP id
- 5b1f17b1804b1-4215633a0f5mr3944005e9.26.1717527961317; 
- Tue, 04 Jun 2024 12:06:01 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1717527965; x=1718132765;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=gfd+vfybB3O3+4pkXHRWr1BbxFsd2M2r8td4r0aSbjQ=;
+ b=UkdPE7RGMP4Vh/ZW7zd0ttra8G6T8eDeULppt7Hu9wKUwk97SHpWeJWJER/7REp2tr
+ SEs08TcG6XERq+VUeRlWJwpbiJtgdboz2yketX+RCyEiuzWCfCyYLFNkYdMaRXnEUohQ
+ cfj5vdnvNYEMQZdT6yH5dgvPFbGHfxcYi96kwoLCZLsgy6P1/4am54wCHFWdGic7vmD/
+ rkzCZ8BNHBnxX7tEjeZmDxbscB5NeHkefCSITKgRDSu5XqOEZ/nc3rnOslMMNo7jMIpD
+ ybZh2AvA2YPHQay686CENtKsRdG04E2McrRKTkW+jnJZTFWfEdkcc97sZsMlD8771dm4
+ ZfxQ==
+X-Gm-Message-State: AOJu0YzU/4xnwbEKYKuPIM0bDamQmw/stCR3oRMcjrfps4Fm/LbEVwJI
+ HZsdiuiWrLct5ReEjFOTUT55Q5dwpHDPUps6YgUIjj/4Jap3kHiZHe2JdOR8xyFwHnblPtqf4qB
+ 8oL7OxXURQ1fZPV1+JcGXqf/dLyR50Qt6crhLjQdDvYhn8Db4qxJopbYkeIErzkHfzwMZXxIMvq
+ rcfCsEIDzMnuZF8U/AZBPeen5qMUiT9A==
+X-Received: by 2002:a5d:4e8f:0:b0:35e:5b2a:1191 with SMTP id
+ ffacd0b85a97d-35e840678f7mr230996f8f.18.1717527965345; 
+ Tue, 04 Jun 2024 12:06:05 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHOlKd+Sx9HuvNacLdaJyPkWeq0f6MFm6oxM6nspWlljSJryAxVZnZo6ksCGJhsM0n5My5Ixg==
+X-Received: by 2002:a5d:4e8f:0:b0:35e:5b2a:1191 with SMTP id
+ ffacd0b85a97d-35e840678f7mr230969f8f.18.1717527964668; 
+ Tue, 04 Jun 2024 12:06:04 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc7:552:cf5c:2b13:215c:b9df:f231])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42127062f0dsm193813275e9.17.2024.06.04.12.05.59
+ ffacd0b85a97d-35e7e07d7besm2777211f8f.18.2024.06.04.12.06.03
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 04 Jun 2024 12:06:00 -0700 (PDT)
-Date: Tue, 4 Jun 2024 15:05:58 -0400
+ Tue, 04 Jun 2024 12:06:04 -0700 (PDT)
+Date: Tue, 4 Jun 2024 15:06:01 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL 00/46] virtio: features,fixes
-Message-ID: <cover.1717527933.git.mst@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Si-Wei Liu <si-wei.liu@oracle.com>
+Subject: [PULL 01/46] vhost: dirty log should be per backend type
+Message-ID: <0b7ca10a059089caef535e86c6523991240e5f29.1717527933.git.mst@redhat.com>
+References: <cover.1717527933.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <cover.1717527933.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
@@ -98,187 +100,135 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 60b54b67c63d8f076152e0f7dccf39854dfc6a77:
+From: Si-Wei Liu <si-wei.liu@oracle.com>
 
-  Merge tag 'pull-lu-20240526' of https://gitlab.com/rth7680/qemu into staging (2024-05-26 17:51:00 -0700)
+There could be a mix of both vhost-user and vhost-kernel clients
+in the same QEMU process, where separate vhost loggers for the
+specific vhost type have to be used. Make the vhost logger per
+backend type, and have them properly reference counted.
 
-are available in the Git repository at:
-
-  https://git.kernel.org/pub/scm/virt/kvm/mst/qemu.git tags/for_upstream
-
-for you to fetch changes up to bfcacf81d63a3d95f128bce3faf3564e7f98ea8b:
-
-  hw/cxl: Fix read from bogus memory (2024-06-04 15:05:03 -0400)
-
-----------------------------------------------------------------
-virtio: features,fixes
-
-A bunch of improvements:
-- vhost dirty log is now only scanned once, not once per device
-- virtio and vhost now support VIRTIO_F_NOTIFICATION_DATA
-- cxl gained DCD emulation support
-- pvpanic gained shutdown support
-- acpi now supports Generic Port Affinity Structure
-- new tests
-- bugfixes
-
+Suggested-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Si-Wei Liu <si-wei.liu@oracle.com>
+Message-Id: <1710448055-11709-1-git-send-email-si-wei.liu@oracle.com>
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+---
+ hw/virtio/vhost.c | 45 +++++++++++++++++++++++++++++++++------------
+ 1 file changed, 33 insertions(+), 12 deletions(-)
 
-----------------------------------------------------------------
-Alejandro Jimenez (1):
-      pvpanic: Emit GUEST_PVSHUTDOWN QMP event on pvpanic shutdown signal
-
-Christian Pötzsch (1):
-      Fix vhost user assertion when sending more than one fd
-
-Cindy Lu (2):
-      virtio-pci: Fix the use of an uninitialized irqfd.
-      virtio-pci: Fix the failure process in kvm_virtio_pci_vector_use_one()
-
-Fan Ni (12):
-      hw/cxl/cxl-mailbox-utils: Add dc_event_log_size field to output payload of identify memory device command
-      hw/cxl/cxl-mailbox-utils: Add dynamic capacity region representative and mailbox command support
-      include/hw/cxl/cxl_device: Rename mem_size as static_mem_size for type3 memory devices
-      hw/mem/cxl_type3: Add support to create DC regions to type3 memory devices
-      hw/mem/cxl-type3: Refactor ct3_build_cdat_entries_for_mr to take mr size instead of mr as argument
-      hw/mem/cxl_type3: Add host backend and address space handling for DC regions
-      hw/mem/cxl_type3: Add DC extent list representative and get DC extent list mailbox support
-      hw/cxl/cxl-mailbox-utils: Add mailbox commands to support add/release dynamic capacity response
-      hw/cxl/events: Add qmp interfaces to add/release dynamic capacity extents
-      hw/mem/cxl_type3: Add DPA range validation for accesses to DC regions
-      hw/cxl/cxl-mailbox-utils: Add superset extent release mailbox support
-      hw/mem/cxl_type3: Allow to release extent superset in QMP interface
-
-Gregory Price (2):
-      hw/cxl/mailbox: change CCI cmd set structure to be a member, not a reference
-      hw/cxl/mailbox: interface to add CCI commands to an existing CCI
-
-Halil Pasic (1):
-      vhost-vsock: add VIRTIO_F_RING_PACKED to feature_bits
-
-Ira Weiny (1):
-      hw/cxl: Fix read from bogus memory
-
-Jiqian Chen (1):
-      virtio-pci: only reset pm state during resetting
-
-Jonah Palmer (5):
-      virtio/virtio-pci: Handle extra notification data
-      virtio: Prevent creation of device using notification-data with ioeventfd
-      virtio-mmio: Handle extra notification data
-      virtio-ccw: Handle extra notification data
-      vhost/vhost-user: Add VIRTIO_F_NOTIFICATION_DATA to vhost feature bits
-
-Jonathan Cameron (6):
-      hw/acpi/GI: Fix trivial parameter alignment issue.
-      hw/acpi: Insert an acpi-generic-node base under acpi-generic-initiator
-      hw/acpi: Generic Port Affinity Structure support
-      bios-tables-test: Allow for new acpihmat-generic-x test data.
-      bios-tables-test: Add complex SRAT / HMAT test for GI GP
-      bios-tables-test: Add data for complex numa test (GI, GP etc)
-
-Li Feng (2):
-      Revert "vhost-user: fix lost reconnect"
-      vhost-user: fix lost reconnect again
-
-Marc-André Lureau (1):
-      vhost-user-gpu: fix import of DMABUF
-
-Si-Wei Liu (2):
-      vhost: dirty log should be per backend type
-      vhost: Perform memory section dirty scans once per iteration
-
-Stefano Garzarella (1):
-      vhost-vdpa: check vhost_vdpa_set_vring_ready() return value
-
-Thomas Weißschuh (7):
-      scripts/update-linux-headers: Copy setup_data.h to correct directory
-      linux-headers: update to 6.10-rc1
-      hw/misc/pvpanic: centralize definition of supported events
-      tests/qtest/pvpanic: use centralized definition of supported events
-      hw/misc/pvpanic: add support for normal shutdowns
-      tests/qtest/pvpanic: add tests for pvshutdown event
-      Revert "docs/specs/pvpanic: mark shutdown event as not implemented"
-
-Wafer (1):
-      hw/virtio: Fix obtain the buffer id from the last descriptor
-
- qapi/cxl.json                               | 143 ++++++
- qapi/qom.json                               |  35 ++
- qapi/run-state.json                         |  14 +
- include/hw/acpi/acpi_generic_initiator.h    |  33 +-
- include/hw/cxl/cxl_device.h                 |  85 +++-
- include/hw/cxl/cxl_events.h                 |  18 +
- include/hw/misc/pvpanic.h                   |   6 +
- include/hw/pci/pci_bridge.h                 |   1 +
- include/hw/virtio/vhost-user.h              |   3 +-
- include/hw/virtio/vhost.h                   |   1 +
- include/hw/virtio/virtio.h                  |   2 +
- include/standard-headers/linux/ethtool.h    |  55 +++
- include/standard-headers/linux/pci_regs.h   |   6 +
- include/standard-headers/linux/pvpanic.h    |   7 +-
- include/standard-headers/linux/virtio_bt.h  |   1 -
- include/standard-headers/linux/virtio_mem.h |   2 +
- include/standard-headers/linux/virtio_net.h | 143 ++++++
- include/sysemu/runstate.h                   |   1 +
- linux-headers/asm-generic/unistd.h          |   5 +-
- linux-headers/asm-loongarch/kvm.h           |   4 +
- linux-headers/asm-mips/unistd_n32.h         |   1 +
- linux-headers/asm-mips/unistd_n64.h         |   1 +
- linux-headers/asm-mips/unistd_o32.h         |   1 +
- linux-headers/asm-powerpc/unistd_32.h       |   1 +
- linux-headers/asm-powerpc/unistd_64.h       |   1 +
- linux-headers/asm-riscv/kvm.h               |   1 +
- linux-headers/asm-s390/unistd_32.h          |   1 +
- linux-headers/asm-s390/unistd_64.h          |   1 +
- linux-headers/asm-x86/kvm.h                 |   4 +-
- linux-headers/asm-x86/unistd_32.h           |   1 +
- linux-headers/asm-x86/unistd_64.h           |   1 +
- linux-headers/asm-x86/unistd_x32.h          |   2 +
- linux-headers/linux/kvm.h                   |   4 +-
- linux-headers/linux/stddef.h                |   8 +
- linux-headers/linux/vhost.h                 |  15 +-
- hw/acpi/acpi_generic_initiator.c            | 209 ++++++---
- hw/block/vhost-user-blk.c                   |   6 +-
- hw/cxl/cxl-mailbox-utils.c                  | 658 +++++++++++++++++++++++++++-
- hw/display/vhost-user-gpu.c                 |   5 +-
- hw/mem/cxl_type3.c                          | 637 +++++++++++++++++++++++++--
- hw/mem/cxl_type3_stubs.c                    |  25 ++
- hw/misc/pvpanic-isa.c                       |   3 +-
- hw/misc/pvpanic-pci.c                       |   3 +-
- hw/misc/pvpanic.c                           |   8 +-
- hw/net/vhost_net.c                          |   2 +
- hw/pci-bridge/pci_expander_bridge.c         |   1 -
- hw/s390x/s390-virtio-ccw.c                  |  17 +-
- hw/scsi/vhost-scsi.c                        |   1 +
- hw/scsi/vhost-user-scsi.c                   |   7 +-
- hw/virtio/vhost-user-base.c                 |   5 +-
- hw/virtio/vhost-user-fs.c                   |   2 +-
- hw/virtio/vhost-user-vsock.c                |   1 +
- hw/virtio/vhost-user.c                      |  18 +-
- hw/virtio/vhost-vsock-common.c              |   1 +
- hw/virtio/vhost.c                           | 112 ++++-
- hw/virtio/virtio-mmio.c                     |  11 +-
- hw/virtio/virtio-pci.c                      |  45 +-
- hw/virtio/virtio.c                          |  45 ++
- net/vhost-vdpa.c                            |  16 +-
- subprojects/libvhost-user/libvhost-user.c   |   2 +-
- system/runstate.c                           |   6 +
- tests/qtest/bios-tables-test.c              |  92 ++++
- tests/qtest/pvpanic-pci-test.c              |  44 +-
- tests/qtest/pvpanic-test.c                  |  34 +-
- docs/specs/pvpanic.rst                      |   2 +-
- scripts/update-linux-headers.sh             |   2 +-
- tests/data/acpi/q35/APIC.acpihmat-generic-x | Bin 0 -> 136 bytes
- tests/data/acpi/q35/CEDT.acpihmat-generic-x | Bin 0 -> 68 bytes
- tests/data/acpi/q35/DSDT.acpihmat-generic-x | Bin 0 -> 10400 bytes
- tests/data/acpi/q35/HMAT.acpihmat-generic-x | Bin 0 -> 360 bytes
- tests/data/acpi/q35/SRAT.acpihmat-generic-x | Bin 0 -> 520 bytes
- 71 files changed, 2407 insertions(+), 221 deletions(-)
- create mode 100644 tests/data/acpi/q35/APIC.acpihmat-generic-x
- create mode 100644 tests/data/acpi/q35/CEDT.acpihmat-generic-x
- create mode 100644 tests/data/acpi/q35/DSDT.acpihmat-generic-x
- create mode 100644 tests/data/acpi/q35/HMAT.acpihmat-generic-x
- create mode 100644 tests/data/acpi/q35/SRAT.acpihmat-generic-x
+diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
+index 4acd77e890..a1e8b79e1a 100644
+--- a/hw/virtio/vhost.c
++++ b/hw/virtio/vhost.c
+@@ -43,8 +43,8 @@
+     do { } while (0)
+ #endif
+ 
+-static struct vhost_log *vhost_log;
+-static struct vhost_log *vhost_log_shm;
++static struct vhost_log *vhost_log[VHOST_BACKEND_TYPE_MAX];
++static struct vhost_log *vhost_log_shm[VHOST_BACKEND_TYPE_MAX];
+ 
+ /* Memslots used by backends that support private memslots (without an fd). */
+ static unsigned int used_memslots;
+@@ -287,6 +287,10 @@ static int vhost_set_backend_type(struct vhost_dev *dev,
+         r = -1;
+     }
+ 
++    if (r == 0) {
++        assert(dev->vhost_ops->backend_type == backend_type);
++    }
++
+     return r;
+ }
+ 
+@@ -319,16 +323,22 @@ static struct vhost_log *vhost_log_alloc(uint64_t size, bool share)
+     return log;
+ }
+ 
+-static struct vhost_log *vhost_log_get(uint64_t size, bool share)
++static struct vhost_log *vhost_log_get(VhostBackendType backend_type,
++                                       uint64_t size, bool share)
+ {
+-    struct vhost_log *log = share ? vhost_log_shm : vhost_log;
++    struct vhost_log *log;
++
++    assert(backend_type > VHOST_BACKEND_TYPE_NONE);
++    assert(backend_type < VHOST_BACKEND_TYPE_MAX);
++
++    log = share ? vhost_log_shm[backend_type] : vhost_log[backend_type];
+ 
+     if (!log || log->size != size) {
+         log = vhost_log_alloc(size, share);
+         if (share) {
+-            vhost_log_shm = log;
++            vhost_log_shm[backend_type] = log;
+         } else {
+-            vhost_log = log;
++            vhost_log[backend_type] = log;
+         }
+     } else {
+         ++log->refcnt;
+@@ -340,11 +350,20 @@ static struct vhost_log *vhost_log_get(uint64_t size, bool share)
+ static void vhost_log_put(struct vhost_dev *dev, bool sync)
+ {
+     struct vhost_log *log = dev->log;
++    VhostBackendType backend_type;
+ 
+     if (!log) {
+         return;
+     }
+ 
++    assert(dev->vhost_ops);
++    backend_type = dev->vhost_ops->backend_type;
++
++    if (backend_type == VHOST_BACKEND_TYPE_NONE ||
++        backend_type >= VHOST_BACKEND_TYPE_MAX) {
++        return;
++    }
++
+     --log->refcnt;
+     if (log->refcnt == 0) {
+         /* Sync only the range covered by the old log */
+@@ -352,13 +371,13 @@ static void vhost_log_put(struct vhost_dev *dev, bool sync)
+             vhost_log_sync_range(dev, 0, dev->log_size * VHOST_LOG_CHUNK - 1);
+         }
+ 
+-        if (vhost_log == log) {
++        if (vhost_log[backend_type] == log) {
+             g_free(log->log);
+-            vhost_log = NULL;
+-        } else if (vhost_log_shm == log) {
++            vhost_log[backend_type] = NULL;
++        } else if (vhost_log_shm[backend_type] == log) {
+             qemu_memfd_free(log->log, log->size * sizeof(*(log->log)),
+                             log->fd);
+-            vhost_log_shm = NULL;
++            vhost_log_shm[backend_type] = NULL;
+         }
+ 
+         g_free(log);
+@@ -376,7 +395,8 @@ static bool vhost_dev_log_is_shared(struct vhost_dev *dev)
+ 
+ static inline void vhost_dev_log_resize(struct vhost_dev *dev, uint64_t size)
+ {
+-    struct vhost_log *log = vhost_log_get(size, vhost_dev_log_is_shared(dev));
++    struct vhost_log *log = vhost_log_get(dev->vhost_ops->backend_type,
++                                          size, vhost_dev_log_is_shared(dev));
+     uint64_t log_base = (uintptr_t)log->log;
+     int r;
+ 
+@@ -2044,7 +2064,8 @@ int vhost_dev_start(struct vhost_dev *hdev, VirtIODevice *vdev, bool vrings)
+         uint64_t log_base;
+ 
+         hdev->log_size = vhost_get_log_size(hdev);
+-        hdev->log = vhost_log_get(hdev->log_size,
++        hdev->log = vhost_log_get(hdev->vhost_ops->backend_type,
++                                  hdev->log_size,
+                                   vhost_dev_log_is_shared(hdev));
+         log_base = (uintptr_t)hdev->log->log;
+         r = hdev->vhost_ops->vhost_set_log_base(hdev,
+-- 
+MST
 
 
