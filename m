@@ -2,21 +2,21 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAD738FAC39
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 09:40:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 098918FAC41
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 09:41:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEOlA-0001xX-O1; Tue, 04 Jun 2024 03:39:08 -0400
+	id 1sEOlA-0001tL-E6; Tue, 04 Jun 2024 03:39:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1sEOl7-0001jc-R8
+ id 1sEOl7-0001kU-Tv
  for qemu-devel@nongnu.org; Tue, 04 Jun 2024 03:39:05 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1sEOl5-0006Pb-QZ
+ id 1sEOl6-0006Ph-AN
  for qemu-devel@nongnu.org; Tue, 04 Jun 2024 03:39:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1717486743;
@@ -24,33 +24,34 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=wNP3v399FEuLCNKjKz1Hgq6Vv7Mh17NVRy0U2xtE/8s=;
- b=WKeNd70ZGdVW4wNL0x1HyA+IWjy7LFHwhdtYB496Uzt5Uh8VpUiJ18fNXHY9DtvAgRD3Id
- hlGqk/t+v28b1TyC0LYE3fQDBjVvTmhjZ6NTQGKLaIlouECHH6RUuyNY7WW/9ZYR1Gmet2
- IHaII/dFlNabQL0KLLr65hdjQixyenQ=
+ bh=V6wYF6GPmM8OuwJc/pDx6VAk3DsnwPDADPmu8GjwvG8=;
+ b=eL/1j9yt0UzsxrTn1f4YZMz2dRKgeqvEg5hZTAlFa/WaC4oSIwGb0pbAyM+svPiMOIXRUU
+ MF7EhvIXRZAesVyAwb+2LRi7tZHr2tTUNMHIj1vl+psKMUPSjVuvcVuoyxClt+8+SzPtOT
+ CYQ3I4vlEBZln7FXJAD2u9B6SIUItJ0=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-20-wf9Nkx07NQS0rE2w2BTJpA-1; Tue,
- 04 Jun 2024 03:38:58 -0400
-X-MC-Unique: wf9Nkx07NQS0rE2w2BTJpA-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-76-IBMTlIoxOICa7CZTbjgGaQ-1; Tue,
+ 04 Jun 2024 03:39:00 -0400
+X-MC-Unique: IBMTlIoxOICa7CZTbjgGaQ-1
 Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
  [10.11.54.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9FEA33C0262C;
- Tue,  4 Jun 2024 07:38:57 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 051843C0262D;
+ Tue,  4 Jun 2024 07:39:00 +0000 (UTC)
 Received: from localhost.localdomain (unknown [10.72.112.238])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 146FC492BD4;
- Tue,  4 Jun 2024 07:38:54 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 40EC6492BD4;
+ Tue,  4 Jun 2024 07:38:57 +0000 (UTC)
 From: Jason Wang <jasowang@redhat.com>
 To: peter.maydell@linaro.org,
 	qemu-devel@nongnu.org
-Cc: Alexey Dobriyan <adobriyan@yandex-team.ru>,
- Jason Wang <jasowang@redhat.com>
-Subject: [PULL 19/20] virtio-net: drop too short packets early
-Date: Tue,  4 Jun 2024 15:37:54 +0800
-Message-ID: <20240604073755.1859-20-jasowang@redhat.com>
+Cc: Andrew Melnychenko <andrew@daynix.com>,
+	Jason Wang <jasowang@redhat.com>
+Subject: [PULL 20/20] ebpf: Added traces back. Changed source set for eBPF to
+ 'system'.
+Date: Tue,  4 Jun 2024 15:37:55 +0800
+Message-ID: <20240604073755.1859-21-jasowang@redhat.com>
 In-Reply-To: <20240604073755.1859-1-jasowang@redhat.com>
 References: <20240604073755.1859-1-jasowang@redhat.com>
 MIME-Version: 1.0
@@ -82,89 +83,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Alexey Dobriyan <adobriyan@yandex-team.ru>
+From: Andrew Melnychenko <andrew@daynix.com>
 
-Reproducer from https://gitlab.com/qemu-project/qemu/-/issues/1451
-creates small packet (1 segment, len = 10 == n->guest_hdr_len),
-then destroys queue.
+There was an issue with Qemu build with "--disable-system".
+The traces could be generated and the build fails.
+The traces were 'cut out' for previous patches, and overall,
+the 'system' source set should be used like in pre-'eBPF blob' patches.
 
-"if (n->host_hdr_len != n->guest_hdr_len)" is triggered, if body creates
-zero length/zero segment packet as there is nothing after guest header.
-
-qemu_sendv_packet_async() tries to send it.
-
-slirp discards it because it is smaller than Ethernet header,
-but returns 0 because tx hooks are supposed to return total length of data.
-
-0 is propagated upwards and is interpreted as "packet has been sent"
-which is terrible because queue is being destroyed, nobody is waiting for TX
-to complete and assert it triggered.
-
-Fix is discard such empty packets instead of sending them.
-
-Length 1 packets will go via different codepath:
-
-	virtqueue_push(q->tx_vq, elem, 0);
-	virtio_notify(vdev, q->tx_vq);
-	g_free(elem);
-
-and aren't problematic.
-
-Signed-off-by: Alexey Dobriyan <adobriyan@yandex-team.ru>
+Signed-off-by: Andrew Melnychenko <andrew@daynix.com>
 Signed-off-by: Jason Wang <jasowang@redhat.com>
 ---
- hw/net/virtio-net.c | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ ebpf/ebpf_rss.c | 7 +++++++
+ ebpf/trace.h    | 1 +
+ 2 files changed, 8 insertions(+)
+ create mode 100644 ebpf/trace.h
 
-diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-index 666a4e2a03..9c7e85caea 100644
---- a/hw/net/virtio-net.c
-+++ b/hw/net/virtio-net.c
-@@ -2708,18 +2708,14 @@ static int32_t virtio_net_flush_tx(VirtIONetQueue *q)
-         out_sg = elem->out_sg;
-         if (out_num < 1) {
-             virtio_error(vdev, "virtio-net header not in first element");
--            virtqueue_detach_element(q->tx_vq, elem, 0);
--            g_free(elem);
--            return -EINVAL;
-+            goto detach;
-         }
+diff --git a/ebpf/ebpf_rss.c b/ebpf/ebpf_rss.c
+index d102f3dd09..87f0714910 100644
+--- a/ebpf/ebpf_rss.c
++++ b/ebpf/ebpf_rss.c
+@@ -25,6 +25,8 @@
+ #include "ebpf/rss.bpf.skeleton.h"
+ #include "ebpf/ebpf.h"
  
-         if (n->needs_vnet_hdr_swap) {
-             if (iov_to_buf(out_sg, out_num, 0, &vhdr, sizeof(vhdr)) <
-                 sizeof(vhdr)) {
-                 virtio_error(vdev, "virtio-net header incorrect");
--                virtqueue_detach_element(q->tx_vq, elem, 0);
--                g_free(elem);
--                return -EINVAL;
-+                goto detach;
-             }
-             virtio_net_hdr_swap(vdev, &vhdr);
-             sg2[0].iov_base = &vhdr;
-@@ -2747,6 +2743,11 @@ static int32_t virtio_net_flush_tx(VirtIONetQueue *q)
-                              n->guest_hdr_len, -1);
-             out_num = sg_num;
-             out_sg = sg;
++#include "trace.h"
 +
-+            if (out_num < 1) {
-+                virtio_error(vdev, "virtio-net nothing to send");
-+                goto detach;
-+            }
-         }
- 
-         ret = qemu_sendv_packet_async(qemu_get_subqueue(n->nic, queue_index),
-@@ -2767,6 +2768,11 @@ drop:
-         }
+ void ebpf_rss_init(struct EBPFRSSContext *ctx)
+ {
+     if (ctx != NULL) {
+@@ -55,18 +57,21 @@ static bool ebpf_rss_mmap(struct EBPFRSSContext *ctx)
+                                    PROT_READ | PROT_WRITE, MAP_SHARED,
+                                    ctx->map_configuration, 0);
+     if (ctx->mmap_configuration == MAP_FAILED) {
++        trace_ebpf_error("eBPF RSS", "can not mmap eBPF configuration array");
+         return false;
      }
-     return num_packets;
-+
-+detach:
-+    virtqueue_detach_element(q->tx_vq, elem, 0);
-+    g_free(elem);
-+    return -EINVAL;
- }
+     ctx->mmap_toeplitz_key = mmap(NULL, qemu_real_host_page_size(),
+                                    PROT_READ | PROT_WRITE, MAP_SHARED,
+                                    ctx->map_toeplitz_key, 0);
+     if (ctx->mmap_toeplitz_key == MAP_FAILED) {
++        trace_ebpf_error("eBPF RSS", "can not mmap eBPF toeplitz key");
+         goto toeplitz_fail;
+     }
+     ctx->mmap_indirections_table = mmap(NULL, qemu_real_host_page_size(),
+                                    PROT_READ | PROT_WRITE, MAP_SHARED,
+                                    ctx->map_indirections_table, 0);
+     if (ctx->mmap_indirections_table == MAP_FAILED) {
++        trace_ebpf_error("eBPF RSS", "can not mmap eBPF indirection table");
+         goto indirection_fail;
+     }
  
- static void virtio_net_tx_timer(void *opaque);
+@@ -108,12 +113,14 @@ bool ebpf_rss_load(struct EBPFRSSContext *ctx)
+ 
+     rss_bpf_ctx = rss_bpf__open();
+     if (rss_bpf_ctx == NULL) {
++        trace_ebpf_error("eBPF RSS", "can not open eBPF RSS object");
+         goto error;
+     }
+ 
+     bpf_program__set_type(rss_bpf_ctx->progs.tun_rss_steering_prog, BPF_PROG_TYPE_SOCKET_FILTER);
+ 
+     if (rss_bpf__load(rss_bpf_ctx)) {
++        trace_ebpf_error("eBPF RSS", "can not load RSS program");
+         goto error;
+     }
+ 
+diff --git a/ebpf/trace.h b/ebpf/trace.h
+new file mode 100644
+index 0000000000..abefc46ab1
+--- /dev/null
++++ b/ebpf/trace.h
+@@ -0,0 +1 @@
++#include "trace/trace-ebpf.h"
 -- 
 2.42.0
 
