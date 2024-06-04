@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D93F8FAF6F
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 11:59:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA98A8FAF55
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 11:57:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEQuK-0005SE-P5; Tue, 04 Jun 2024 05:56:44 -0400
+	id 1sEQuP-0005Va-A4; Tue, 04 Jun 2024 05:56:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sEQuI-0005RJ-Jf
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 05:56:42 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sEQuN-0005UF-GV
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 05:56:47 -0400
 Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sEQuH-00023Y-0L
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 05:56:42 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sEQuL-00025K-UI
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 05:56:47 -0400
 Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-4214aa43a66so6415555e9.1
- for <qemu-devel@nongnu.org>; Tue, 04 Jun 2024 02:56:40 -0700 (PDT)
+ 5b1f17b1804b1-4214053918aso8458395e9.2
+ for <qemu-devel@nongnu.org>; Tue, 04 Jun 2024 02:56:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1717494999; x=1718099799; darn=nongnu.org;
+ d=linaro.org; s=google; t=1717495004; x=1718099804; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=DIOW1O9+X9Zn3nRI+K8vVtjj1gMTn5Z9TMOA7fC7V5E=;
- b=TWdj9g5FinwiyYHMKRkUXc9R2VgTXTVUZ54qGpr1sRmbASXQUUdQ20fkGJ/dDSzaxU
- F0gL49nyPulyQSDlUIkRf0PVjB0+kr7kV/IQIFVdbugwVxJAvvDkyzfObY/8xqQ4xdXw
- CbEEbpH2mDRJiEcUNudDtLlNt0bSgHAtxjocIzafUWvjk0dkxZ1bffJLvgk5Y1BY43Jz
- 7Iqp0cBx5YsAjEUFB5VUz0d3L5FBf34/yP7NAPS/k7HIBsyYJPB4gGkxD+OZ8xE1Or+7
- JWMdnfSywzBB47Fy2sq3IEHThPSj9EnO6VCIFQ24pb85fUcJsSIm56TdQAOUZkPR1LTv
- qzBw==
+ bh=jgoZWUZoZ64J/jsUK/BO8m7HZCfTE8MphpmeDDotPMw=;
+ b=bZjgJBI5284J1SjHUkyo71g4FxGv0FKXFQ7qbmdsp7foBi+PD22NmzUeVL3rR2LvDo
+ 5UZ6+HxGxofMuFiSmmMPZjHrc458b6FK3dXYJVR6yczeoSX2EvqQf376ICBbF6o3E9Q8
+ /mLdZixbEB+m0waUJW0WuI7Nz2mfd59MkvLgGpIWEBcIWYZojBPmD4A0H+XW94/hWcah
+ +91LuGeooOnuRPyoKjLEQjCS3OWCfQ/W82urb9dCDOg6cgH6Ngy/zjhKJ7Pn4sr3uLFz
+ NwkX/cYm2NAMjiiXqxz7t0Lvlq/bjMbnitDihIsvAghryjd8N4QM7zkAGvJmSVnoD1Rt
+ AVQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717494999; x=1718099799;
+ d=1e100.net; s=20230601; t=1717495004; x=1718099804;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=DIOW1O9+X9Zn3nRI+K8vVtjj1gMTn5Z9TMOA7fC7V5E=;
- b=sz1lh7IwC+9pl8dM/jFDtBliWbq8ZnUvJKoxPM/ZSYMo2o5aZ0l30hyuBJDys7msXh
- 5ERCCULIpdkvDUosHOifWy5LNf/AoVVitK4Kc1NfVW9PXopKymb47TYkJEAmgkZ0uDEg
- VLHKNN0Dy9b4UPrbGA9ggTg5ZulTvBYHhrGJA6d6GphpembjYSpytyJ+7/qu698+L5QW
- vC44CtPD1UanJupDRqcBlRMxfQLHVLBBBwEcQRHGuwULpwhdveDrZLrEGqWzwsLqbWLm
- oFkNbQiUCtjZsg1RAgDl3K2aRRsztkUQRRKWdpcum6NTHrLeKlSQnRkvxIvL4RcG9Ds0
- kWjA==
-X-Gm-Message-State: AOJu0YyPTXV0fRP+jfN3mZXdzsOAMtJHW77CKNuCDAdDdMNRJUjmLM5F
- HzBeIJ5yQBj/WbPsMKv5/CNkHRNR2/7mVzO0ci6U/iUM0dwKTT17X8ydXjOoCyY0DH5R3rgUTia
- U
-X-Google-Smtp-Source: AGHT+IHYIfssMgJyQViH/PG6SUuqwghodOPEqtXUG+smjvs7TA/ME23+Z4ueQBHBUjHOhSPJBe1V9Q==
-X-Received: by 2002:a05:600c:45cb:b0:41a:c92:d323 with SMTP id
- 5b1f17b1804b1-4212e04a1famr109906945e9.10.1717494998765; 
- Tue, 04 Jun 2024 02:56:38 -0700 (PDT)
+ bh=jgoZWUZoZ64J/jsUK/BO8m7HZCfTE8MphpmeDDotPMw=;
+ b=RQeXTS5CdvESx9F1rgT1vM5OlJTE9yWL+v418Dv6GMi1xcAvtpTz+5nn/awM+D98yz
+ A3n9xpA40dqkowMVS2OeGPTRXoiftAe+h2kobKl/ISRLNeko/y9VSCVpuFEn0uNB9MhJ
+ aas87yRtjeEJ13rLCSOQ5hQkFjaS2i/GALHkHQ5q0ywh+XI7xN0wKuYkSMwu0SGU30ds
+ /jGNveoJYsYiN7G/ZwCoZv7rsRmd1Mqd4pOlLbk7pExuWZnXsWdrMUsPLC29HWLN+936
+ 7nHCgrtIAAcdOnE6Rk10jvJT3AjwHtvFzcCSeRvaJlwx04rGaqgWWOfJTZh1tSBlEnZP
+ zxyA==
+X-Gm-Message-State: AOJu0YzzZ1vMcnm+6JOvgLobGQ8yrFLCsWKFYum8ZVaiUWRRZIdKOvuq
+ pys8jIplVag6cgr7lRylbsILi0j4nnHL3nYR2kHQD6Bo8xFCOhu0/ikmfXf+WXu6rJTIPMk6UM/
+ L
+X-Google-Smtp-Source: AGHT+IFjz5uT6H7AV9C1AonhIUawUqa9v/TOZ27fTuoOI1efggQKW6efBbW3dYEmVNCqidttAZD92Q==
+X-Received: by 2002:a05:600c:4454:b0:420:18e9:86d5 with SMTP id
+ 5b1f17b1804b1-4212e047556mr110629845e9.10.1717495004276; 
+ Tue, 04 Jun 2024 02:56:44 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.159.34])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42138c41becsm95838805e9.30.2024.06.04.02.56.37
+ 5b1f17b1804b1-4212b83d469sm147315445e9.9.2024.06.04.02.56.43
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 04 Jun 2024 02:56:38 -0700 (PDT)
+ Tue, 04 Jun 2024 02:56:43 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL 05/32] target/arm: Replace sprintf() by snprintf()
-Date: Tue,  4 Jun 2024 11:55:41 +0200
-Message-ID: <20240604095609.12285-6-philmd@linaro.org>
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Zhao Liu <zhao1.liu@intel.com>
+Subject: [PULL 06/32] target/i386/kvm: Improve KVM_EXIT_NOTIFY warnings
+Date: Tue,  4 Jun 2024 11:55:42 +0200
+Message-ID: <20240604095609.12285-7-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240604095609.12285-1-philmd@linaro.org>
 References: <20240604095609.12285-1-philmd@linaro.org>
@@ -93,40 +93,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-sprintf() is deprecated on Darwin since macOS 13.0 / XCode 14.1,
-resulting in painful developper experience. Use snprintf() instead.
+From: Richard Henderson <richard.henderson@linaro.org>
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Message-Id: <20240411104340.6617-9-philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Message-ID: <20240412073346.458116-28-richard.henderson@linaro.org>
+[PMD: Fixed typo reported by Peter Maydell]
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/arm/cpu64.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ target/i386/kvm/kvm.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/target/arm/cpu64.c b/target/arm/cpu64.c
-index 862d2b92fa..262a1d6c0b 100644
---- a/target/arm/cpu64.c
-+++ b/target/arm/cpu64.c
-@@ -437,7 +437,7 @@ void aarch64_add_sve_properties(Object *obj)
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index 6c864e4611..82ebddada1 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -5329,7 +5329,6 @@ int kvm_arch_handle_exit(CPUState *cs, struct kvm_run *run)
+     uint64_t code;
+     int ret;
+     bool ctx_invalid;
+-    char str[256];
+     KVMState *state;
  
-     for (vq = 1; vq <= ARM_MAX_VQ; ++vq) {
-         char name[8];
--        sprintf(name, "sve%d", vq * 128);
-+        snprintf(name, sizeof(name), "sve%d", vq * 128);
-         object_property_add(obj, name, "bool", cpu_arm_get_vq,
-                             cpu_arm_set_vq, NULL, &cpu->sve_vq);
-     }
-@@ -462,7 +462,7 @@ void aarch64_add_sme_properties(Object *obj)
- 
-     for (vq = 1; vq <= ARM_MAX_VQ; vq <<= 1) {
-         char name[8];
--        sprintf(name, "sme%d", vq * 128);
-+        snprintf(name, sizeof(name), "sme%d", vq * 128);
-         object_property_add(obj, name, "bool", cpu_arm_get_vq,
-                             cpu_arm_set_vq, NULL, &cpu->sme_vq);
-     }
+     switch (run->exit_reason) {
+@@ -5389,15 +5388,15 @@ int kvm_arch_handle_exit(CPUState *cs, struct kvm_run *run)
+     case KVM_EXIT_NOTIFY:
+         ctx_invalid = !!(run->notify.flags & KVM_NOTIFY_CONTEXT_INVALID);
+         state = KVM_STATE(current_accel());
+-        sprintf(str, "Encounter a notify exit with %svalid context in"
+-                     " guest. There can be possible misbehaves in guest."
+-                     " Please have a look.", ctx_invalid ? "in" : "");
+         if (ctx_invalid ||
+             state->notify_vmexit == NOTIFY_VMEXIT_OPTION_INTERNAL_ERROR) {
+-            warn_report("KVM internal error: %s", str);
++            warn_report("KVM internal error: Encountered a notify exit "
++                        "with invalid context in guest.");
+             ret = -1;
+         } else {
+-            warn_report_once("KVM: %s", str);
++            warn_report_once("KVM: Encountered a notify exit with valid "
++                             "context in guest. "
++                             "The guest could be misbehaving.");
+             ret = 0;
+         }
+         break;
 -- 
 2.41.0
 
