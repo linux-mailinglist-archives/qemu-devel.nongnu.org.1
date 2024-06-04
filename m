@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6904B8FAB24
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 08:46:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8298E8FAB4D
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 08:50:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sENuZ-0002Yg-VG; Tue, 04 Jun 2024 02:44:47 -0400
+	id 1sENud-0002pu-Jj; Tue, 04 Jun 2024 02:44:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sENuX-0002RU-K7
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:44:45 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1sENua-0002g9-TE
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:44:48 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sENuV-0007Gd-Vj
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:44:45 -0400
+ id 1sENuZ-0007H6-GI
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:44:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717483483;
+ s=mimecast20190719; t=1717483487;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=2wxg0TmdWBIMkB5gATygWJjbihr1KIw55S7JfhXI7Mc=;
- b=XPaabTUkVzWvvilOAiuAe6nsJEwUGKYOj7JuUlvkKO2ZY/kWoDVCUDDn3tapaCByDzaPgr
- MxUYwExcdKnjNEXu7dLtw506Xp3AYcjNyL1yAybgjkVP6fhWH3J1IPAFshLfiLU976Ebc5
- nipKAUdpWoC2sPyLoEJCE++rYn7xDrQ=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=9KuYC4l98tp+GN7sW9Yoq96D/6Jc6WoIXh7OieOEmCQ=;
+ b=FmV5JaqKjnUVMQdNX0elrvM6dAfrFbaOlx/+BzG650ymWdxUHGR7NQ2VS3siE1AKuwoMDQ
+ 5nCDOomqO/uxPDHWmGGBw33mkUUuVnRqKqBGvhLJXvT+42/dzxDRwGZpCOZAPYmGlu5hHE
+ S+kIj4ox5YsWwzQAMZpYZhs4lGjyrZU=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-677-e5sYnl01Noyjc2C1eSuazw-1; Tue, 04 Jun 2024 02:44:41 -0400
-X-MC-Unique: e5sYnl01Noyjc2C1eSuazw-1
-Received: by mail-ed1-f69.google.com with SMTP id
- 4fb4d7f45d1cf-57a67830ea4so332735a12.0
- for <qemu-devel@nongnu.org>; Mon, 03 Jun 2024 23:44:41 -0700 (PDT)
+ us-mta-614-ilalQQUaNsuTE-p7rEnJgA-1; Tue, 04 Jun 2024 02:44:44 -0400
+X-MC-Unique: ilalQQUaNsuTE-p7rEnJgA-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-a68abbd0c78so160199866b.0
+ for <qemu-devel@nongnu.org>; Mon, 03 Jun 2024 23:44:43 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717483479; x=1718088279;
+ d=1e100.net; s=20230601; t=1717483482; x=1718088282;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=2wxg0TmdWBIMkB5gATygWJjbihr1KIw55S7JfhXI7Mc=;
- b=NKV+M0tpMSgzR5Es/8M/FjZInvQ2p473ofBrnc+HdbiA3Nru0x3BSWwJb3eCz33zqt
- aMpyrFc4Jdn8zj2YlOd94j5nahRRf1PUKOKGpHe0OMlZwpXsTYGlROUo1u+0bPhvfPa8
- sEpzABMpiIjll49mOFPKNp9DX7PjxeApyHig4iQz441mcFE8fpHYNXgs0MZoDGPvlvcK
- 2S86rI9gq4Fy3zjYwDoJ7uPaNhdiH5yDibxWMbv6sV325BzO56Bf8th6uslnIFUU/vnA
- 9E2Kru58kivZ4qcPYsfAnhkpJzPuJAHVL1n8mrDC4lh6VbMW0n3IqR5dnJ1WPWdl6TFk
- 8OBA==
-X-Gm-Message-State: AOJu0YygJXirlRCT86zEtBf8OfhWfeNiSup6oTqtsXmFwCouGGTF9jLO
- W9rGC06/Eo7DI/HkjRrqJYrNc88KIKirFTUHJQvmRyEzESe4G6ftNlSjRiZGnK+dOOeKVfKs6yv
- NokCveWcVKYRMcuYvA0YIZ703Iyw+CHF9udv9dwbHTXu5L9S08TlAtJXAXHkhIU0E8AffFIGwBJ
- RK3Ff+cyRH3ETrQN59OZkK5w56CIn6ocRbZnbP
-X-Received: by 2002:a50:99d5:0:b0:579:be37:fa68 with SMTP id
- 4fb4d7f45d1cf-57a3638cde3mr8560880a12.20.1717483479652; 
- Mon, 03 Jun 2024 23:44:39 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF30g8J9XsZnV0Pnh4gKhkP4GeXh3shhTfesLGISVfjr6rLzXVP51rQu6YZYGmEJxCdsNUaMg==
-X-Received: by 2002:a50:99d5:0:b0:579:be37:fa68 with SMTP id
- 4fb4d7f45d1cf-57a3638cde3mr8560868a12.20.1717483479138; 
- Mon, 03 Jun 2024 23:44:39 -0700 (PDT)
+ bh=9KuYC4l98tp+GN7sW9Yoq96D/6Jc6WoIXh7OieOEmCQ=;
+ b=UVbcvDbbjvA5+pojGG7VH0rpGJ7+6IpgU02PYURwqbhL1yvZYdcQGubsRCImkqSVWC
+ b57JJ95KVoPq0hEhX53eoOBh6HNjVkhyHw6XTPzqTyHITjAspjtBlE4W6yArglaIFIpF
+ f2Ggn2y6pqYH/r7rr+Bv1PNaYyWEkODkM179z43ONu6eAYm5unaAGBeZQm7aDfmTUPjz
+ adB1qjRF6QHKxXg7yP6ZLTdsa5f14O6L3GGLHoCRhYTsduEwMaHFYU1rE2ayPrZ/ZD3b
+ mB8XVyErrsgfMhqzunXp89CvSTOoePsIXWHQnKfmj2vT2qQkZgnDswutvH3R83GjJY88
+ ZoPQ==
+X-Gm-Message-State: AOJu0YwZpRzHHIKii3G3Ho9GYRTvPQ8sZrYUQWihgeg+b85swmbtaViB
+ 2VrWGcfDd0iPxIOo+71vJyGxxVY+p6bjPSIsZr2Ff9Ddmz7S+w28ZaEKWDFKoJ+REEvlzA+FP+4
+ 4pZiscK3zd/OdZB4G0E+ywsXZlIMqmQjBtmqrA7GM13P6X9iKZT3USx9scu+o5q4q2Mpah1g4eU
+ wiAxVPz5rvTZ4OBdh8GiwgGMLAvV4W1b4pAQiQ
+X-Received: by 2002:a17:907:9867:b0:a59:d4f0:cfc3 with SMTP id
+ a640c23a62f3a-a682204a7a5mr663859966b.59.1717483482654; 
+ Mon, 03 Jun 2024 23:44:42 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHhiYZ9cJHIOtcLVmaKHnip+Ko9s4rcUsxMwwJpC9S0rx8qQrbOonfut7ax8R/gMNS1jw9PpA==
+X-Received: by 2002:a17:907:9867:b0:a59:d4f0:cfc3 with SMTP id
+ a640c23a62f3a-a682204a7a5mr663859266b.59.1717483482276; 
+ Mon, 03 Jun 2024 23:44:42 -0700 (PDT)
 Received: from avogadro.local ([151.81.115.112])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-57a31b991b1sm6699965a12.5.2024.06.03.23.44.38
+ a640c23a62f3a-a68b59e925csm443108666b.220.2024.06.03.23.44.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Jun 2024 23:44:38 -0700 (PDT)
+ Mon, 03 Jun 2024 23:44:41 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Xinyu Li <lixinyu@loongson.cn>,
+Cc: Zhao Liu <zhao1.liu@intel.com>,
 	Xinyu Li <lixinyu20s@ict.ac.cn>
-Subject: [PULL 09/45] target/i386: fix memory opsize for Mov to/from Seg
-Date: Tue,  4 Jun 2024 08:43:33 +0200
-Message-ID: <20240604064409.957105-10-pbonzini@redhat.com>
+Subject: [PULL 10/45] target/i386/tcg: Fix RDPID feature check
+Date: Tue,  4 Jun 2024 08:43:34 +0200
+Message-ID: <20240604064409.957105-11-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240604064409.957105-1-pbonzini@redhat.com>
 References: <20240604064409.957105-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -102,76 +102,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Xinyu Li <lixinyu@loongson.cn>
+From: Zhao Liu <zhao1.liu@intel.com>
 
-This commit fixes an issue with MOV instructions (0x8C and 0x8E)
-involving segment registers; MOV to segment register's source is
-16-bit, while MOV from segment register has to explicitly set the
-memory operand size to 16 bits.  Introduce a new flag
-X86_SPECIAL_Op0_Mw to handle this specification correctly.
+DisasContext.cpuid_ext_features indicates CPUID.01H.ECX.
 
-Signed-off-by: Xinyu Li <lixinyu20s@ict.ac.cn>
-Message-ID: <20240602100528.2135717-1-lixinyu20s@ict.ac.cn>
-Fixes: 5e9e21bcc4d ("target/i386: move 60-BF opcodes to new decoder", 2024-05-07)
+Use DisasContext.cpuid_7_0_ecx_features field to check RDPID feature bit
+(CPUID_7_0_ECX_RDPID).
+
+Fixes: 6750485bf42a ("target/i386: implement RDPID in TCG")
+Inspired-by: Xinyu Li <lixinyu20s@ict.ac.cn>
+Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+Message-ID: <20240603080723.1256662-1-zhao1.liu@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/tcg/decode-new.h     |  3 +++
- target/i386/tcg/decode-new.c.inc | 13 +++++++++++--
- 2 files changed, 14 insertions(+), 2 deletions(-)
+ target/i386/tcg/translate.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/i386/tcg/decode-new.h b/target/i386/tcg/decode-new.h
-index 51ef0e621b9..1f90cf96407 100644
---- a/target/i386/tcg/decode-new.h
-+++ b/target/i386/tcg/decode-new.h
-@@ -203,6 +203,9 @@ typedef enum X86InsnSpecial {
-     /* When loaded into s->T0, register operand 1 is zero/sign extended.  */
-     X86_SPECIAL_SExtT0,
-     X86_SPECIAL_ZExtT0,
-+
-+    /* Memory operand size of MOV from segment register is MO_16 */
-+    X86_SPECIAL_Op0_Mw,
- } X86InsnSpecial;
- 
- /*
-diff --git a/target/i386/tcg/decode-new.c.inc b/target/i386/tcg/decode-new.c.inc
-index 0ec849b0035..0ff0866e8f3 100644
---- a/target/i386/tcg/decode-new.c.inc
-+++ b/target/i386/tcg/decode-new.c.inc
-@@ -202,6 +202,7 @@
- #define avx_movx .special = X86_SPECIAL_AVXExtMov,
- #define sextT0 .special = X86_SPECIAL_SExtT0,
- #define zextT0 .special = X86_SPECIAL_ZExtT0,
-+#define op0_Mw .special = X86_SPECIAL_Op0_Mw,
- 
- #define vex1 .vex_class = 1,
- #define vex1_rep3 .vex_class = 1, .vex_special = X86_VEX_REPScalar,
-@@ -1576,9 +1577,10 @@ static const X86OpEntry opcodes_root[256] = {
-     [0x89] = X86_OP_ENTRY3(MOV, E,v, G,v, None, None),
-     [0x8A] = X86_OP_ENTRY3(MOV, G,b, E,b, None, None),
-     [0x8B] = X86_OP_ENTRY3(MOV, G,v, E,v, None, None),
--    [0x8C] = X86_OP_ENTRY3(MOV, E,v, S,w, None, None),
-+    /* Missing in Table A-2: memory destination is always 16-bit.  */
-+    [0x8C] = X86_OP_ENTRY3(MOV, E,v, S,w, None, None, op0_Mw),
-     [0x8D] = X86_OP_ENTRY3(LEA, G,v, M,v, None, None, noseg),
--    [0x8E] = X86_OP_ENTRY3(MOV, S,w, E,v, None, None),
-+    [0x8E] = X86_OP_ENTRY3(MOV, S,w, E,w, None, None),
-     [0x8F] = X86_OP_GROUPw(group1A, E,v),
- 
-     [0x98] = X86_OP_ENTRY1(CBW,    0,v), /* rAX */
-@@ -2514,6 +2516,13 @@ static void disas_insn(DisasContext *s, CPUState *cpu)
-         s->override = -1;
-         break;
- 
-+    case X86_SPECIAL_Op0_Mw:
-+        assert(decode.op[0].unit == X86_OP_INT);
-+        if (decode.op[0].has_ea) {
-+            decode.op[0].ot = MO_16;
-+        }
-+        break;
-+
-     default:
-         break;
-     }
+diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
+index 6dedfe94c04..0486ab69112 100644
+--- a/target/i386/tcg/translate.c
++++ b/target/i386/tcg/translate.c
+@@ -3199,7 +3199,7 @@ static void disas_insn_old(DisasContext *s, CPUState *cpu, int b)
+                 goto illegal_op;
+             }
+             if (s->prefix & PREFIX_REPZ) {
+-                if (!(s->cpuid_ext_features & CPUID_7_0_ECX_RDPID)) {
++                if (!(s->cpuid_7_0_ecx_features & CPUID_7_0_ECX_RDPID)) {
+                     goto illegal_op;
+                 }
+                 gen_helper_rdpid(s->T0, tcg_env);
 -- 
 2.45.1
 
