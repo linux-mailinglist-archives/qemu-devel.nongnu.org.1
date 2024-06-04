@@ -2,65 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEFB18FB8BA
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 18:20:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A3B68FB912
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 18:32:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEWrh-0004sk-Ua; Tue, 04 Jun 2024 12:18:25 -0400
+	id 1sEX53-00016k-5J; Tue, 04 Jun 2024 12:32:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1sEWrY-0004r5-3Z
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 12:18:16 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <jrossi@linux.ibm.com>)
+ id 1sEX4w-00010u-69; Tue, 04 Jun 2024 12:32:06 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1sEWrW-00011Q-0y
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 12:18:15 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717517890;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=O4ym7cKHkoDUTOBI0TvbnBN/bOVlZEPR+xZtHwjnfeA=;
- b=aZK/GZmBQkDyIWxnTkyi7dHHwNQsZ5yrYuoAk/mOnW4HWo3Dx2PIHAOEqpSwsNq4b3rRKs
- dBEeZmRzLrCuTMTiBZ7UUX39c8VistD0KjAydJHN5/e2NxBIvT8DmwvmifXPk304pjDEFp
- EAkUxJzMTnGWjhbRyHEfg2ckF67RYtc=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-215-xHsR9Y63NLed0cZMRZjrfw-1; Tue,
- 04 Jun 2024 12:18:09 -0400
-X-MC-Unique: xHsR9Y63NLed0cZMRZjrfw-1
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B0FB31918DC6; Tue,  4 Jun 2024 16:18:07 +0000 (UTC)
-Received: from merkur.fritz.box (unknown [10.39.193.234])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 1FE261956053; Tue,  4 Jun 2024 16:18:05 +0000 (UTC)
-From: Kevin Wolf <kwolf@redhat.com>
-To: qemu-block@nongnu.org
-Cc: kwolf@redhat.com, pkrempa@redhat.com, pbonzini@redhat.com,
- qemu-devel@nongnu.org
-Subject: [PATCH] scsi-disk: Don't silently truncate serial number
-Date: Tue,  4 Jun 2024 18:17:55 +0200
-Message-ID: <20240604161755.63448-1-kwolf@redhat.com>
+ (Exim 4.90_1) (envelope-from <jrossi@linux.ibm.com>)
+ id 1sEX4t-0006M6-2R; Tue, 04 Jun 2024 12:32:05 -0400
+Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 454GPl9A020363; Tue, 4 Jun 2024 16:31:59 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc :
+ content-transfer-encoding : content-type : date : from : in-reply-to :
+ message-id : mime-version : references : subject : to; s=pp1;
+ bh=2UILuxlCh3W8dTgAuk3RkR8ps0I4r0Fr8UE+gz7M34Q=;
+ b=jp6XNWzVUZC6gpueouFfMe71+UV2NGCxm2EPxqGYRWJn7jd0iBUzwxm08dtBRLOz2UFV
+ 9s1jvYmGTPQK0/2O2+mm0t+amA6YRVDHw6wN7arY/UAWa5wIWhD7hI+9dlJQHPiEUEhU
+ 2EA43E73v/BCPCcg6VUZtPb52SbrhbYgdsiTgvskUAFAGEDRMHbextI6oBVh7XJpYdKj
+ MDdahYKXGWgcS2SyEwb7b8zqxmT9kest9FucbMdVPdVzT58d4k/fnEQCYsT6yC4cK3Qu
+ faEUgjKMQyWL3KhvROkD3XX8mgtTjtAO+lI4KnxvBQK7rULOK2LLxCkkymzgh1YLCfqQ PQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yj5xj03f7-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 04 Jun 2024 16:31:59 +0000
+Received: from m0353728.ppops.net (m0353728.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 454GTurq027057;
+ Tue, 4 Jun 2024 16:31:58 GMT
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yj5xj03f2-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 04 Jun 2024 16:31:58 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 454EFRLJ022835; Tue, 4 Jun 2024 16:27:07 GMT
+Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3ygg6m6r20-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 04 Jun 2024 16:27:07 +0000
+Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com
+ [10.39.53.232])
+ by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 454GR3WN590490
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 4 Jun 2024 16:27:05 GMT
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id ACC7958043;
+ Tue,  4 Jun 2024 16:27:03 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1B61558059;
+ Tue,  4 Jun 2024 16:27:03 +0000 (GMT)
+Received: from [9.67.137.138] (unknown [9.67.137.138])
+ by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTPS;
+ Tue,  4 Jun 2024 16:27:02 +0000 (GMT)
+Message-ID: <baf90d34-9894-4174-8888-4ad72c9a8cbc@linux.ibm.com>
+Date: Tue, 4 Jun 2024 12:27:02 -0400
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/5] s390x: Add loadparm to CcwDevice
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
+ qemu-s390x@nongnu.org
+Cc: frankja@linux.ibm.com, nsg@linux.ibm.com
+References: <20240529154311.734548-1-jrossi@linux.ibm.com>
+ <20240529154311.734548-3-jrossi@linux.ibm.com>
+ <8240e6c8-8de1-4529-9479-73e555c1b590@redhat.com>
+Content-Language: en-US
+From: Jared Rossi <jrossi@linux.ibm.com>
+In-Reply-To: <8240e6c8-8de1-4529-9479-73e555c1b590@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: IXPeFbybn0-sRDMZ5SO4YtgT8d4auOTb
+X-Proofpoint-ORIG-GUID: 01BcnPRFA4vq3pJKKK15vs0tsBuyyRuG
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-06-04_09,2024-06-04_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 spamscore=0
+ lowpriorityscore=0 mlxlogscore=766 malwarescore=0 mlxscore=0
+ priorityscore=1501 phishscore=0 adultscore=0 impostorscore=0 clxscore=1015
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2405010000 definitions=main-2406040132
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=jrossi@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,81 +114,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Before this commit, scsi-disk accepts a string of arbitrary length for
-its "serial" property. However, the value visible on the guest is
-actually truncated to 36 characters. This limitation doesn't come from
-the SCSI specification, it is an arbitrary limit that was initially
-picked as 20 and later bumped to 36 by commit 48b62063.
+Hi Thomas,
 
-Similarly, device_id was introduced as a copy of the serial number,
-limited to 20 characters, but commit 48b62063 forgot to actually bump
-it.
+Firstly, thanks for the reviews and I agree with your suggestions about 
+function names, info messages, simplifications, etc...  I will make 
+those changes.
 
-As long as we silently truncate the given string, extending the limit is
-actually not a harmless change, but break the guest ABI. This is the
-most important reason why commit 48b62063 was really wrong (and it's
-also why we can't change device_id to be in sync with the serial number
-again and use 36 characters now, it would be another guest ABI
-breakage).
+As for the DIAG308_FLAGS_LP_VALID flag...
 
-In order to avoid future breakage, don't silently truncate the serial
-number string any more, but just error out if it would be truncated.
+> [snip...]
+>> @@ -438,40 +473,20 @@ static bool s390_gen_initial_iplb(S390IPLState 
+>> *ipl)
+>>               break;
+>>           }
+>>   -        if (!s390_ipl_set_loadparm(ipl->iplb.loadparm)) {
+>> -            ipl->iplb.flags |= DIAG308_FLAGS_LP_VALID;
+>> +        /* If the device loadparm is empty use the global machine 
+>> loadparm */
+>> +        if (memcmp(lp, "\0\0\0\0\0\0\0\0", 8) == 0) {
+>> +            lp = S390_CCW_MACHINE(qdev_get_machine())->loadparm;
+>>           }
+>>   +        s390_ipl_set_loadparm((char *)lp, ipl->iplb.loadparm);
+>> +        ipl->iplb.flags |= DIAG308_FLAGS_LP_VALID; 
+>
+> That means DIAG308_FLAGS_LP_VALID is now always set, even if no 
+> loadparm has been specified? Shouldn't it be omitted if the user did 
+> not specify the loadparm property?
 
-Buglink: https://issues.redhat.com/browse/RHEL-3542
-Suggested-by: Peter Krempa <pkrempa@redhat.com>
-Signed-off-by: Kevin Wolf <kwolf@redhat.com>
----
- hw/scsi/scsi-disk.c | 20 +++++++++++++++++---
- 1 file changed, 17 insertions(+), 3 deletions(-)
+No, I don't think it should be omitted if the loadparm hasn't been 
+specified because it is optional and uses a default value if not set.  
+My understanding is that the flag should, actually, always be set here.
 
-diff --git a/hw/scsi/scsi-disk.c b/hw/scsi/scsi-disk.c
-index 4bd7af9d0c..5f55ae54e4 100644
---- a/hw/scsi/scsi-disk.c
-+++ b/hw/scsi/scsi-disk.c
-@@ -58,6 +58,9 @@
- 
- #define TYPE_SCSI_DISK_BASE         "scsi-disk-base"
- 
-+#define MAX_SERIAL_LEN              36
-+#define MAX_SERIAL_LEN_FOR_DEVID    20
-+
- OBJECT_DECLARE_TYPE(SCSIDiskState, SCSIDiskClass, SCSI_DISK_BASE)
- 
- struct SCSIDiskClass {
-@@ -648,8 +651,8 @@ static int scsi_disk_emulate_vpd_page(SCSIRequest *req, uint8_t *outbuf)
-         }
- 
-         l = strlen(s->serial);
--        if (l > 36) {
--            l = 36;
-+        if (l > MAX_SERIAL_LEN) {
-+            l = MAX_SERIAL_LEN;
-         }
- 
-         trace_scsi_disk_emulate_vpd_page_80(req->cmd.xfer);
-@@ -2501,9 +2504,20 @@ static void scsi_realize(SCSIDevice *dev, Error **errp)
-     if (!s->vendor) {
-         s->vendor = g_strdup("QEMU");
-     }
-+    if (s->serial && strlen(s->serial) > MAX_SERIAL_LEN) {
-+        error_setg(errp, "The serial number can't be longer than %d characters",
-+                   MAX_SERIAL_LEN);
-+        return;
-+    }
-     if (!s->device_id) {
-         if (s->serial) {
--            s->device_id = g_strdup_printf("%.20s", s->serial);
-+            if (strlen(s->serial) > MAX_SERIAL_LEN_FOR_DEVID) {
-+                error_setg(errp, "The serial number can't be longer than %d "
-+                           "characters when it is also used as the default for "
-+                           "device_id", MAX_SERIAL_LEN_FOR_DEVID);
-+                return;
-+            }
-+            s->device_id = g_strdup(s->serial);
-         } else {
-             const char *str = blk_name(s->qdev.conf.blk);
-             if (str && *str) {
--- 
-2.45.1
+As best as I can tell, the existing check is a redundant validation that 
+cannot fail and therefore is not needed. Currently the only way 
+s390_ipl_set_loadparm() can return non-zero is if 
+object_property_get_str() itself returns NULL pointer when getting the 
+loadparm; however, the loadparm is already validated at this point 
+because the string is initialized when the loadparm property is set. If 
+there were a problem with the loadparm string an error would have 
+already been thrown during initialization.
+
+Furthermore, object_property_get_str() is no longer used here.  As such, 
+s390_ipl_set_loadparm() is changed to a void function and the check is 
+removed.
+
+Regards,
+
+Jared Rossi
 
 
