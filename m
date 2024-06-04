@@ -2,63 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48AC58FB76D
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 17:33:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8C448FB83C
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 17:59:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEWA1-0006pl-IJ; Tue, 04 Jun 2024 11:33:17 -0400
+	id 1sEWYZ-0005hf-HY; Tue, 04 Jun 2024 11:58:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sEW9q-0006mP-Lk
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 11:33:06 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sEWYX-0005h6-GR
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 11:58:37 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sEW9p-0001KH-73
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 11:33:06 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sEWYV-0001ns-2d
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 11:58:37 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717515184;
+ s=mimecast20190719; t=1717516713;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=S2ZZ7ZPJISnpZt1cwBtV7RhIp0sWJo7jom/X++Viyag=;
- b=DOvLRWOqX6wfneygX0pQDDLVqI4UxNUztbLNoOcxHin9eQoxAgdhx1xEGnizdkpR6oiL/9
- dbENVG8PV2oA8RxVa/QKZQqTg0tHxafUYtUDWuyvKNTCtk3k1EUpgkucZDe0BslZFDKxq+
- Hu3Gy3Q+wmojKn1EBYh4us1z9wxVCHU=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=hTCKnPUKCGBaSO1uqzIfox+QHaAFTvacrq22+e3G+8Q=;
+ b=MP1qmUI+vZXhZva8MqOfOoNunHdTk16GPTeht4W06Sr11k6YIbwueazGdu03fZx3uZqEnm
+ yg66bmLPzINafUNuHrdNYWZi7xg6RDpTIxTO17TzUWdfMYDxlK3T6KYqALxBnzD2Mcx4sK
+ 2JqhEHAg495pDbHdtB8wisyBeb6ez0g=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-282-rBMWqbGVNFGQKktsmt72QQ-1; Tue, 04 Jun 2024 11:33:00 -0400
-X-MC-Unique: rBMWqbGVNFGQKktsmt72QQ-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 049AD185B920;
- Tue,  4 Jun 2024 15:33:00 +0000 (UTC)
-Received: from toolbox.redhat.com (unknown [10.39.194.137])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 30A18492BD6;
- Tue,  4 Jun 2024 15:32:59 +0000 (UTC)
-From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>,
- Konstantin Kostiuk <kkostiuk@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 14/14] qga: mark guest-ssh-* / guest-*-password commands with
- 'unrestricted' flag
-Date: Tue,  4 Jun 2024 16:32:42 +0100
-Message-ID: <20240604153242.251334-15-berrange@redhat.com>
-In-Reply-To: <20240604153242.251334-1-berrange@redhat.com>
-References: <20240604153242.251334-1-berrange@redhat.com>
+ us-mta-163-h6Ee-EzJNYO49fCc0Rk_Vg-1; Tue, 04 Jun 2024 11:58:32 -0400
+X-MC-Unique: h6Ee-EzJNYO49fCc0Rk_Vg-1
+Received: by mail-qv1-f70.google.com with SMTP id
+ 6a1803df08f44-6afff9d990dso1807526d6.3
+ for <qemu-devel@nongnu.org>; Tue, 04 Jun 2024 08:58:32 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1717516711; x=1718121511;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=hTCKnPUKCGBaSO1uqzIfox+QHaAFTvacrq22+e3G+8Q=;
+ b=E+ILz1rOHdzJ2Tzl0jnDLjfKHPup/gWZsaKl51VuxglPg5kS7dXKz6ks1GCBvia/4q
+ NRK0XemZfNKDMcHqPFaP5BrvOBtprN8SCpnmaLoMHsvwCSrYgmursqRJyZOc+wYPYXsX
+ AoEVy+ZuRBLeslwvxgbD1t44SLhBuA6PcFOkAm6/n/Ki6pRfRwcHMw7voD83pUznwWcx
+ 1/ZgP7BSBXndolCKp40ucljMqvcdtVK01lBqiUzBAnE7nAPAPyuME+Br7q4UP4iHnV69
+ SoJS+usNVNJtDDn5HiieYJwJSWj9XpNdbDF3ii8DiuZYVZUvOYGy7RG9g0duYz2tvu2o
+ UrBA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWCJ5lteT3nWiqbs+bIwO9WpQIhABXD0nWGPMmFXTibZlFXlGQb1YiKQx1HeUpjOb70lD/pCPpK5Gx0PZkC77XvlVnvWXA=
+X-Gm-Message-State: AOJu0YwFUrLLBZt6DbAP7i3/jU8F9GmqfiTjsZl6bgoXkGyoWGmBeVZd
+ 6SJX4rJzfU6CMzATWSJfD/hZX4Sx5E+WE6CR5LiN9Wt501zRSgAd7H6rPyjJJBbZHIDXKu1Pi0P
+ 99epcjusyQ20HH2/ekh+RgiK8XkzXm1+F3XJXoSayFwSEL38setvw
+X-Received: by 2002:a05:6214:f6e:b0:6ad:8c3b:6aed with SMTP id
+ 6a1803df08f44-6aecd599f82mr136237386d6.2.1717516711191; 
+ Tue, 04 Jun 2024 08:58:31 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHRe3qe9Z87nVk9dL9TGxZ2285lE+XtCU8eXgAgUMq3Y1GvLwcdoonOsP6ESMN5FuSJaAofQA==
+X-Received: by 2002:a05:6214:f6e:b0:6ad:8c3b:6aed with SMTP id
+ 6a1803df08f44-6aecd599f82mr136237026d6.2.1717516710401; 
+ Tue, 04 Jun 2024 08:58:30 -0700 (PDT)
+Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com.
+ [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
+ d75a77b69052e-4402177fd6asm6457641cf.66.2024.06.04.08.58.29
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 04 Jun 2024 08:58:29 -0700 (PDT)
+Date: Tue, 4 Jun 2024 11:58:27 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+Cc: Steven Sistare <steven.sistare@oracle.com>, qemu-devel@nongnu.org,
+ Fabiano Rosas <farosas@suse.de>, David Hildenbrand <david@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Philippe Mathieu-Daude <philmd@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Markus Armbruster <armbru@redhat.com>
+Subject: Re: [PATCH V1 17/26] machine: memfd-alloc option
+Message-ID: <Zl85o3w6ncv63zG5@x1n>
+References: <1714406135-451286-1-git-send-email-steven.sistare@oracle.com>
+ <1714406135-451286-18-git-send-email-steven.sistare@oracle.com>
+ <ZlZIoiH5Dj4XBbLO@x1n>
+ <79a8023d-2e19-4d80-821d-a03818a5372e@oracle.com>
+ <Zld-iWfa3_yEWgn6@x1n>
+ <ea8eb67e-583d-41cd-a545-ab18c032a99b@oracle.com>
+ <ZljCHgwJhGcFiP1J@x1n>
+ <e6d5f123-37ad-4d77-8536-f7f85213073d@oracle.com>
+ <Zl46MIO30mGrtsQk@x1n> <Zl6-f245q-M7A62J@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+In-Reply-To: <Zl6-f245q-M7A62J@redhat.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -83,90 +113,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This blocks use of all the 'guest-ssh-*' / 'guest-password' commands
-unless the QGA is runwith the --unrestricted command line argument.
+On Tue, Jun 04, 2024 at 08:13:26AM +0100, Daniel P. Berrangé wrote:
+> On Mon, Jun 03, 2024 at 05:48:32PM -0400, Peter Xu wrote:
+> > That property, irrelevant of what it is called (and I doubt whether Dan's
+> > suggestion on "shared-ram" is good, e.g. mmap(MAP_SHARED) doesn't have user
+> > visible fd but it's shared-ram for sure..), is yet another way to specify
+> > guest mem types.
+> > 
+> > What if the user specified this property but specified something else in
+> > the -object parameters?  E.g. -machine share-ram=on -object
+> > memory-backend-ram,share=off.  What should we do?
+> 
+> The machine property would only apply to memory regions that are
+> *NOT* being created via -object. The memory-backend objects would
+> always honour their own share settnig.
 
-These commands allow the host admin to takeover user accounts and so
-directly compromise the guest OS.
+In that case we may want to rename that to share-ram-by-default=on.
+Otherwise it's not clear which one would take effect from an user POV, even
+if we can define it like that in the code.
 
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
----
- qga/qapi-schema.json | 26 +++++++++++++++++++++++---
- 1 file changed, 23 insertions(+), 3 deletions(-)
+Even with share-ram-by-default=on, it can be still confusing in some form
+or another. Consider this cmdline:
 
-diff --git a/qga/qapi-schema.json b/qga/qapi-schema.json
-index 25068b8110..e7ce80a479 100644
---- a/qga/qapi-schema.json
-+++ b/qga/qapi-schema.json
-@@ -1251,10 +1251,15 @@
- # transmission, even if already crypt()d, to ensure it is 8-bit safe
- # when passed as JSON.
- #
-+# Features:
-+#
-+# @user-auth: not permitted if agent is limiting user auth
-+#
- # Since: 2.3
- ##
- { 'command': 'guest-set-user-password',
-   'data': { 'username': 'str', 'password': 'str', 'crypted': 'bool' },
-+  'features': [ 'user-auth' ],
-   'if': { 'any': [ 'CONFIG_WIN32', 'CONFIG_LINUX', 'CONFIG_FREEBSD'] } }
- 
- ##
-@@ -1810,11 +1815,16 @@
- #
- # Returns: @GuestAuthorizedKeys
- #
-+# Features:
-+#
-+# @user-auth: not permitted if agent is limiting user auth
-+#
- # Since: 5.2
- ##
- { 'command': 'guest-ssh-get-authorized-keys',
-   'data': { 'username': 'str' },
--  'returns': 'GuestAuthorizedKeys'
-+  'returns': 'GuestAuthorizedKeys',
-+  'features': [ 'user-auth' ]
- }
- 
- ##
-@@ -1830,10 +1840,15 @@
- #
- # @reset: ignore the existing content, set it with the given keys only
- #
-+# Features:
-+#
-+# @user-auth: not permitted if agent is limiting user auth
-+#
- # Since: 5.2
- ##
- { 'command': 'guest-ssh-add-authorized-keys',
--  'data': { 'username': 'str', 'keys': ['str'], '*reset': 'bool' }
-+  'data': { 'username': 'str', 'keys': ['str'], '*reset': 'bool' },
-+  'features': [ 'user-auth' ]
- }
- 
- ##
-@@ -1848,10 +1863,15 @@
- # @keys: the public keys to remove (in OpenSSH/sshd(8) authorized_keys
- #     format)
- #
-+# Features:
-+#
-+# @user-auth: not permitted if agent is limiting user auth
-+#
- # Since: 5.2
- ##
- { 'command': 'guest-ssh-remove-authorized-keys',
--  'data': { 'username': 'str', 'keys': ['str'] }
-+  'data': { 'username': 'str', 'keys': ['str'] },
-+  'features': [ 'user-auth' ]
- }
- 
- ##
+  -machine q35,share-ram-by-default=on -object memory-backend-ram,id=mem1
+
+Then is mem1 shared or not?  From reading the cmdline, if share ram by
+default it should be ON if we don't specify it, but it's actually off?
+It's because -object has its own default values.
+
+IMHO fundamentally it's just controversial to have two ways to configure
+guest memory.  If '-object' is the preferred and complete way to configure
+it, I prefer sticking with it if possible and see what is missing.
+
+I think I raised that as the other major reason too, that I think it's so
+far only about the vram that is out of the picture here.  We don't and
+shouldn't have complicated RW RAMs floating around that we want this
+property to cover.  We should make sure we introduce this property with
+some good reason, rather than "ok we don't know what happened, we don't
+know what will leverage this, but maybe there is some floating RAMs..".
+Right after we introduce this property we need to carry it forever, and
+prepared people start to use it with/without cpr, and that's some
+maintenance cost that I want to see whether we can avoid.
+
+Thanks,
+
 -- 
-2.45.1
+Peter Xu
 
 
