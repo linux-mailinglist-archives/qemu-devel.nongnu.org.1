@@ -2,71 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D98888FB377
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 15:21:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8C058FB301
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 14:56:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEU5z-0001kq-R0; Tue, 04 Jun 2024 09:20:59 -0400
+	id 1sEThS-0006Pr-2m; Tue, 04 Jun 2024 08:55:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yuan1.liu@intel.com>)
- id 1sEU5x-0001jz-KT
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 09:20:57 -0400
-Received: from mgamail.intel.com ([198.175.65.11])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yuan1.liu@intel.com>)
- id 1sEU5v-0000aT-Uh
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 09:20:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1717507256; x=1749043256;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=VlGfEAJiMeeLPo42Y0XAV+zdWdqg5u4b2l3ME6k28bg=;
- b=nxeL9Hp+vfeMJPPbehHNan6ooLzWolo+9fNFvB5fRHmZLMf22Od1mnz6
- aoltYw0vNVc0UhzPk5SYDGhktxcgaShw7DyuqSEEEYLx4y+4V3GYpgJuf
- bO6rOBiQvuYTzmvk8IzSdUrm/vDcC1MjSkJYsBCVS+24oH5P7tpCbpy3j
- tibY/HHi9kuuEenTlE8HEcsBwqC6LUxVerIZJ8RP4AAj9nGV2ugVmIbrQ
- VqyJOwS63DZ1bk9tZ/IJWQ8ZmxaHWhLNLbrkp0l2U6PYGjnmm5vibtKJe
- 002zQGS/eNImj6p5CdemuabR26HIWluMbtt6lGB1XRH4QSlUhahrw/yjf A==;
-X-CSE-ConnectionGUID: HntYaNhdQpyG3Y7Ck/Hl7Q==
-X-CSE-MsgGUID: O7IyvcxKRJ+RtJPpipxVIQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11093"; a="24628712"
-X-IronPort-AV: E=Sophos;i="6.08,213,1712646000"; d="scan'208";a="24628712"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Jun 2024 06:20:55 -0700
-X-CSE-ConnectionGUID: 2EL+dEyhTm+b7eE+ZGTk9w==
-X-CSE-MsgGUID: bqyt/jeQTSWo0xdf/ImKRA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,213,1712646000"; d="scan'208";a="37247026"
-Received: from sae-gw02.sh.intel.com (HELO localhost) ([10.239.45.110])
- by fmviesa006.fm.intel.com with ESMTP; 04 Jun 2024 06:20:52 -0700
-From: Yuan Liu <yuan1.liu@intel.com>
-To: peterx@redhat.com, farosas@suse.de, pbonzini@redhat.com,
- marcandre.lureau@redhat.com, berrange@redhat.com, thuth@redhat.com,
- philmd@linaro.org
-Cc: qemu-devel@nongnu.org, yuan1.liu@intel.com, nanhai.zou@intel.com,
- shameerali.kolothum.thodi@huawei.com
-Subject: [PATCH v7 7/7] tests/migration-test: add qpl compression test
-Date: Mon,  3 Jun 2024 23:41:06 +0800
-Message-ID: <20240603154106.764378-8-yuan1.liu@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240603154106.764378-1-yuan1.liu@intel.com>
-References: <20240603154106.764378-1-yuan1.liu@intel.com>
+ (Exim 4.90_1) (envelope-from <lanyanzhi22b@ict.ac.cn>)
+ id 1sEOks-0000Wj-Lf
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 03:38:50 -0400
+Received: from smtp21.cstnet.cn ([159.226.251.21] helo=cstnet.cn)
+ by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_CBC_SHA1:256)
+ (Exim 4.90_1) (envelope-from <lanyanzhi22b@ict.ac.cn>)
+ id 1sEOkp-0006LJ-EL
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 03:38:50 -0400
+Received: from loongson-kernel.loongson.cn (unknown [114.242.206.180])
+ by APP-01 (Coremail) with SMTP id qwCowAD3_5t3xF5m6flOCQ--.12118S2;
+ Tue, 04 Jun 2024 15:38:31 +0800 (CST)
+From: lanyanzhi22b@ict.ac.cn
+To: qemu-devel@nongnu.org
+Cc: gaosong@loongson.cn,
+	lanyanzhi <lanyanzhi22b@ict.ac.cn>
+Subject: [PATCH] target/loongarch: fix a wrong print in cpu dump
+Date: Tue,  4 Jun 2024 15:38:31 +0800
+Message-Id: <20240604073831.666690-1-lanyanzhi22b@ict.ac.cn>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=198.175.65.11; envelope-from=yuan1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_12_24=1.049,
- DKIMWL_WL_HIGH=-0.001, DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
- DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-CM-TRANSID: qwCowAD3_5t3xF5m6flOCQ--.12118S2
+X-Coremail-Antispam: 1UD129KBjvdXoWrtFWkZF4ruFWrGw1kCr48Zwb_yoWkXFX_Ka
+ s3Xr1xKrW8ua42qF4avry5A390yF4rtw4a9a1xuFs3Wr1UJF15Cwsaq3Z3AF4Iq3y7GFnx
+ Aay7JryrZw15AjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+ 9fnUUIcSsGvfJTRUUUb2AFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+ 6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+ A2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
+ Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v26F4UJV
+ W0owAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+ I7IYx2IY67AKxVWUAVWUtwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
+ 4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwAKzVCY07xG64k0F24l
+ 42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJV
+ WUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1Y6r17MIIYrxkI7VAK
+ I48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r
+ 4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY
+ 6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x0JUqD73UUUUU=
+X-Originating-IP: [114.242.206.180]
+X-CM-SenderInfo: 5odq5tpq2kxj0se6xunwoduhdfq/
+Received-SPF: pass client-ip=159.226.251.21;
+ envelope-from=lanyanzhi22b@ict.ac.cn; helo=cstnet.cn
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Tue, 04 Jun 2024 08:55:32 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,70 +73,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-add qpl to compression method test for multifd migration
+From: lanyanzhi <lanyanzhi22b@ict.ac.cn>
 
-the qpl compression supports software path and hardware
-path(IAA device), and the hardware path is used first by
-default. If the hardware path is unavailable, it will
-automatically fallback to the software path for testing.
+description:
+    loongarch_cpu_dump_state() want to dump all loongarch cpu
+state registers, but there is a tiny typographical error when
+printing "PRCFG2".
 
-Signed-off-by: Yuan Liu <yuan1.liu@intel.com>
-Reviewed-by: Nanhai Zou <nanhai.zou@intel.com>
-Reviewed-by: Peter Xu <peterx@redhat.com>
+Signed-off-by: lanyanzhi <lanyanzhi22b@ict.ac.cn>
 ---
- tests/qtest/migration-test.c | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+ target/loongarch/cpu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index b7e3406471..ef0c3f5e28 100644
---- a/tests/qtest/migration-test.c
-+++ b/tests/qtest/migration-test.c
-@@ -2661,6 +2661,15 @@ test_migrate_precopy_tcp_multifd_zstd_start(QTestState *from,
- }
- #endif /* CONFIG_ZSTD */
- 
-+#ifdef CONFIG_QPL
-+static void *
-+test_migrate_precopy_tcp_multifd_qpl_start(QTestState *from,
-+                                            QTestState *to)
-+{
-+    return test_migrate_precopy_tcp_multifd_start_common(from, to, "qpl");
-+}
-+#endif /* CONFIG_QPL */
-+
- static void test_multifd_tcp_uri_none(void)
- {
-     MigrateCommon args = {
-@@ -2741,6 +2750,17 @@ static void test_multifd_tcp_zstd(void)
- }
- #endif
- 
-+#ifdef CONFIG_QPL
-+static void test_multifd_tcp_qpl(void)
-+{
-+    MigrateCommon args = {
-+        .listen_uri = "defer",
-+        .start_hook = test_migrate_precopy_tcp_multifd_qpl_start,
-+    };
-+    test_precopy_common(&args);
-+}
-+#endif
-+
- #ifdef CONFIG_GNUTLS
- static void *
- test_migrate_multifd_tcp_tls_psk_start_match(QTestState *from,
-@@ -3626,6 +3646,10 @@ int main(int argc, char **argv)
-     migration_test_add("/migration/multifd/tcp/plain/zstd",
-                        test_multifd_tcp_zstd);
- #endif
-+#ifdef CONFIG_QPL
-+    migration_test_add("/migration/multifd/tcp/plain/qpl",
-+                       test_multifd_tcp_qpl);
-+#endif
- #ifdef CONFIG_GNUTLS
-     migration_test_add("/migration/multifd/tcp/tls/psk/match",
-                        test_multifd_tcp_tls_psk_match);
+diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
+index b5c1ec94af..270f711f11 100644
+--- a/target/loongarch/cpu.c
++++ b/target/loongarch/cpu.c
+@@ -707,7 +707,7 @@ void loongarch_cpu_dump_state(CPUState *cs, FILE *f, int flags)
+     qemu_fprintf(f, "EENTRY=%016" PRIx64 "\n", env->CSR_EENTRY);
+     qemu_fprintf(f, "PRCFG1=%016" PRIx64 ", PRCFG2=%016" PRIx64 ","
+                  " PRCFG3=%016" PRIx64 "\n",
+-                 env->CSR_PRCFG1, env->CSR_PRCFG3, env->CSR_PRCFG3);
++                 env->CSR_PRCFG1, env->CSR_PRCFG2, env->CSR_PRCFG3);
+     qemu_fprintf(f, "TLBRENTRY=%016" PRIx64 "\n", env->CSR_TLBRENTRY);
+     qemu_fprintf(f, "TLBRBADV=%016" PRIx64 "\n", env->CSR_TLBRBADV);
+     qemu_fprintf(f, "TLBRERA=%016" PRIx64 "\n", env->CSR_TLBRERA);
 -- 
-2.43.0
+2.39.2
 
 
