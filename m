@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E7D78FAB54
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 08:50:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A185B8FAB4C
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 08:49:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sENxa-0000SE-Mv; Tue, 04 Jun 2024 02:47:54 -0400
+	id 1sENx5-000844-It; Tue, 04 Jun 2024 02:47:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sENw5-0004vP-B4
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:46:22 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1sENw8-00054w-MK
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:46:29 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sENw2-0007ex-V5
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:46:21 -0400
+ id 1sENw7-0007fN-6N
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:46:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717483578;
+ s=mimecast20190719; t=1717483582;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=/X80aa+kiFbSRDqQh6cNU/i3xHWccd9vQvylfLP0Pq4=;
- b=DypvTpz4R+ESuz7aFqQIKi5u/UV3ezgwsUSUZNO51IlCXWmr6card/xH0cAHKs1zwKnzk8
- QoqPmLn/mq2uzOkBVhUGuCah/BQvDvukv9nT0IfoshtfQQyX8/k0E1yF9gm/dHzdfaCW9M
- 7W34GtyrrNxQteeM42j1zC2TyCRglkA=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=mkSjX6Tgf/hIveuNh1PWp+shd4Akyf2hePPEwewEYlA=;
+ b=Hqt9+IPM1Rqld738jTOps5J3IwFd8yYD9nLRLM26hg6zOTC5k7aqc2H2tw6s322yTl41su
+ 182ZhmeECKaNCGiLNfyoZ0IU2CrdIRBIuX5Cq9lvQ3AsZZWmHLby71wbnHhWR2vGND12K/
+ tpZvuqAKEjLnoBEr43PpC+M/R5ssJEI=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-128-H3k53xJmOAiZb3DkpB1-WQ-1; Tue, 04 Jun 2024 02:46:16 -0400
-X-MC-Unique: H3k53xJmOAiZb3DkpB1-WQ-1
-Received: by mail-ed1-f71.google.com with SMTP id
- 4fb4d7f45d1cf-579c69260bbso1661620a12.0
- for <qemu-devel@nongnu.org>; Mon, 03 Jun 2024 23:46:16 -0700 (PDT)
+ us-mta-465-mY1NHqpOOjOQCvhreFYZfw-1; Tue, 04 Jun 2024 02:46:18 -0400
+X-MC-Unique: mY1NHqpOOjOQCvhreFYZfw-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-a68c70ab413so247045766b.1
+ for <qemu-devel@nongnu.org>; Mon, 03 Jun 2024 23:46:18 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717483574; x=1718088374;
+ d=1e100.net; s=20230601; t=1717483577; x=1718088377;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/X80aa+kiFbSRDqQh6cNU/i3xHWccd9vQvylfLP0Pq4=;
- b=nNpJm7a+DZS0hVUGPyKHC7BWpuhtNgPDjuQAvZUro8qiUKlB6btMcuhAOXlQyAAz13
- 6n3lVtsDJAoZkt0r+Lx7zJqwPb49ZB/dRz58pBkn84kiZ75sCi83QanNmp7l67bMqJLx
- 0x7kF4L+DQXpiaElTQfiRcFvP9FCYxtr2MNlh2G8mqr+7o+6B9svCKAHxgm9hnmx7v2W
- dXCG7CbyuwNNBsYvvDRBCL6w2PggnatWP0gTu131gi6V9NBKh2BAcPU/byk4gNzCCIhY
- BEIqQKQW2m7/UUhuaDl+0RWkBbv+0zo/cOwjAEMGXqtpEhtEA1L3nafWmMWN0JwS3Hln
- Dzmw==
-X-Gm-Message-State: AOJu0YzuHkcXSD5xS9EPQ77ysWYTVYiy4n0e3tn63Dy95G2vJjCuF+IA
- iObQkklk+qyE8rJyT0Ko5eef7TL1ILKX6T0Rtai93Kw6u9C2QlstzpSl1SWLVXWHL1bcB/57YSf
- HaNKs8qQlF0Shf3S+zf8RnlDfVJZN+NxoSbCQQeg9JNrit1XgZvDDSWeCaRsQ77l+npZDyEaWib
- YP7PvTZk/rfAg60+bFBBHyquddhnPnkfngRITD
-X-Received: by 2002:a17:906:3285:b0:a67:403a:4bf7 with SMTP id
- a640c23a62f3a-a682022f933mr897204766b.26.1717483574707; 
- Mon, 03 Jun 2024 23:46:14 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEFhZZ3IAIa1VY2AK974K/c76EJgSIV6kg8wrA+8gChW6UPanqzZKiaAGTjXpHifjvpPnKmBA==
-X-Received: by 2002:a17:906:3285:b0:a67:403a:4bf7 with SMTP id
- a640c23a62f3a-a682022f933mr897203666b.26.1717483574389; 
- Mon, 03 Jun 2024 23:46:14 -0700 (PDT)
+ bh=mkSjX6Tgf/hIveuNh1PWp+shd4Akyf2hePPEwewEYlA=;
+ b=GLQQE2uVtpsj5T6ml01bQkJu1eRU84TbQnKGesjnAGYHjC8WZqmac1oTCoTAD46PZ5
+ eJcNxr0VTmkxe6ASHbJyWT3eIB88tvu/5zH4t0VK4ZPiZniuna+yr66o9mpkktWUQlFg
+ hVm30iS4UhkWluVh/qeE4QQ+XfFPtEnTnLyKouquOELk7HcT6qtNtt/Fx8QG1n8l/X/j
+ aCDoPZDtvalcayfM+mlQVvje1+U8CmZEc1JKi3UXZfovqbs88JSGznZb8wrPAHE/ZaKg
+ cwfI0hCg6FWakMV6x9KgFuT5RXSpnChBTZIwtPEgBO9lVYQdcXHSAtbDPkgRUMCKR7m5
+ 7Dsg==
+X-Gm-Message-State: AOJu0Yws6T9bU61wBZySOT2ai+wr6BDP+udhPSv3+D2V7Jlc7s7V4raY
+ dkyqaKYbBHeAqnRnYnvTAKSI9ysT//+DG7FJzbmxoDolH1eo0VMax66TgmI9aqDRKdR9pSByJt9
+ f5VGFdLPT+So7bY4Utcr+vPTGV0qnys0TE5xm+FQVAEazcrhP7E7JKhFRzN336jkHtFfedzmA11
+ NKxqs6cUBKRkKvdw5XdZg1TqjNh/nlLaawNdz2
+X-Received: by 2002:a17:906:3995:b0:a68:c375:bc03 with SMTP id
+ a640c23a62f3a-a695457434dmr116862866b.38.1717483577197; 
+ Mon, 03 Jun 2024 23:46:17 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF/ad+iRFFwYT815k1/vRouNlMS1mIqD7fCb6m/0C1rgr/04nT38pGTAdd6GPfXz1R1LpzARA==
+X-Received: by 2002:a17:906:3995:b0:a68:c375:bc03 with SMTP id
+ a640c23a62f3a-a695457434dmr116862066b.38.1717483576853; 
+ Mon, 03 Jun 2024 23:46:16 -0700 (PDT)
 Received: from avogadro.local ([151.81.115.112])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a68b5e8b0fasm441448066b.214.2024.06.03.23.46.13
+ a640c23a62f3a-a691a8f98ffsm201174266b.123.2024.06.03.23.46.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Jun 2024 23:46:14 -0700 (PDT)
+ Mon, 03 Jun 2024 23:46:16 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Michael Roth <michael.roth@amd.com>,
 	Pankaj Gupta <pankaj.gupta@amd.com>
-Subject: [PULL 44/45] hw/i386/sev: Use guest_memfd for legacy ROMs
-Date: Tue,  4 Jun 2024 08:44:08 +0200
-Message-ID: <20240604064409.957105-45-pbonzini@redhat.com>
+Subject: [PULL 45/45] hw/i386: Add support for loading BIOS using guest_memfd
+Date: Tue,  4 Jun 2024 08:44:09 +0200
+Message-ID: <20240604064409.957105-46-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240604064409.957105-1-pbonzini@redhat.com>
 References: <20240604064409.957105-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -104,111 +104,60 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Michael Roth <michael.roth@amd.com>
 
-Current SNP guest kernels will attempt to access these regions with
-with C-bit set, so guest_memfd is needed to handle that. Otherwise,
-kvm_convert_memory() will fail when the guest kernel tries to access it
-and QEMU attempts to call KVM_SET_MEMORY_ATTRIBUTES to set these ranges
-to private.
+When guest_memfd is enabled, the BIOS is generally part of the initial
+encrypted guest image and will be accessed as private guest memory. Add
+the necessary changes to set up the associated RAM region with a
+guest_memfd backend to allow for this.
 
-Whether guests should actually try to access ROM regions in this way (or
-need to deal with legacy ROM regions at all), is a separate issue to be
-addressed on kernel side, but current SNP guest kernels will exhibit
-this behavior and so this handling is needed to allow QEMU to continue
-running existing SNP guest kernels.
+Current support centers around using -bios to load the BIOS data.
+Support for loading the BIOS via pflash requires additional enablement
+since those interfaces rely on the use of ROM memory regions which make
+use of the KVM_MEM_READONLY memslot flag, which is not supported for
+guest_memfd-backed memslots.
 
 Signed-off-by: Michael Roth <michael.roth@amd.com>
-[pankaj: Added sev_snp_enabled() check]
 Signed-off-by: Pankaj Gupta <pankaj.gupta@amd.com>
-Message-ID: <20240530111643.1091816-28-pankaj.gupta@amd.com>
+Message-ID: <20240530111643.1091816-29-pankaj.gupta@amd.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- hw/i386/pc.c       | 14 ++++++++++----
- hw/i386/pc_sysfw.c | 19 +++++++++++++------
- 2 files changed, 23 insertions(+), 10 deletions(-)
+ hw/i386/x86-common.c | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index 7b638da7aaa..0469af00a78 100644
---- a/hw/i386/pc.c
-+++ b/hw/i386/pc.c
-@@ -62,6 +62,7 @@
- #include "hw/mem/memory-device.h"
- #include "e820_memory_layout.h"
- #include "trace.h"
-+#include "sev.h"
- #include CONFIG_DEVICES
- 
- #ifdef CONFIG_XEN_EMU
-@@ -1022,10 +1023,15 @@ void pc_memory_init(PCMachineState *pcms,
-     pc_system_firmware_init(pcms, rom_memory);
- 
-     option_rom_mr = g_malloc(sizeof(*option_rom_mr));
--    memory_region_init_ram(option_rom_mr, NULL, "pc.rom", PC_ROM_SIZE,
--                           &error_fatal);
--    if (pcmc->pci_enabled) {
--        memory_region_set_readonly(option_rom_mr, true);
-+    if (machine_require_guest_memfd(machine)) {
-+        memory_region_init_ram_guest_memfd(option_rom_mr, NULL, "pc.rom",
-+                                           PC_ROM_SIZE, &error_fatal);
-+    } else {
-+        memory_region_init_ram(option_rom_mr, NULL, "pc.rom", PC_ROM_SIZE,
-+                               &error_fatal);
-+        if (pcmc->pci_enabled) {
-+            memory_region_set_readonly(option_rom_mr, true);
-+        }
+diff --git a/hw/i386/x86-common.c b/hw/i386/x86-common.c
+index f41cb0a6a8b..c0c66a0eb52 100644
+--- a/hw/i386/x86-common.c
++++ b/hw/i386/x86-common.c
+@@ -1001,8 +1001,13 @@ void x86_bios_rom_init(X86MachineState *x86ms, const char *default_firmware,
+         (bios_size % 65536) != 0) {
+         goto bios_error;
      }
-     memory_region_add_subregion_overlap(rom_memory,
-                                         PC_ROM_MIN_VGA,
-diff --git a/hw/i386/pc_sysfw.c b/hw/i386/pc_sysfw.c
-index 7cdbafc8d22..ef80281d28b 100644
---- a/hw/i386/pc_sysfw.c
-+++ b/hw/i386/pc_sysfw.c
-@@ -40,8 +40,8 @@
- 
- #define FLASH_SECTOR_SIZE 4096
- 
--static void pc_isa_bios_init(MemoryRegion *isa_bios, MemoryRegion *rom_memory,
--                             MemoryRegion *flash_mem)
-+static void pc_isa_bios_init(PCMachineState *pcms, MemoryRegion *isa_bios,
-+                             MemoryRegion *rom_memory, MemoryRegion *flash_mem)
- {
-     int isa_bios_size;
-     uint64_t flash_size;
-@@ -51,8 +51,13 @@ static void pc_isa_bios_init(MemoryRegion *isa_bios, MemoryRegion *rom_memory,
- 
-     /* map the last 128KB of the BIOS in ISA space */
-     isa_bios_size = MIN(flash_size, 128 * KiB);
--    memory_region_init_ram(isa_bios, NULL, "isa-bios", isa_bios_size,
+-    memory_region_init_ram(&x86ms->bios, NULL, "pc.bios", bios_size,
 -                           &error_fatal);
-+    if (machine_require_guest_memfd(MACHINE(pcms))) {
-+        memory_region_init_ram_guest_memfd(isa_bios, NULL, "isa-bios",
-+                                           isa_bios_size, &error_fatal);
++    if (machine_require_guest_memfd(MACHINE(x86ms))) {
++        memory_region_init_ram_guest_memfd(&x86ms->bios, NULL, "pc.bios",
++                                           bios_size, &error_fatal);
 +    } else {
-+        memory_region_init_ram(isa_bios, NULL, "isa-bios", isa_bios_size,
-+                               &error_fatal);
++        memory_region_init_ram(&x86ms->bios, NULL, "pc.bios",
++                               bios_size, &error_fatal);
 +    }
-     memory_region_add_subregion_overlap(rom_memory,
-                                         0x100000 - isa_bios_size,
-                                         isa_bios,
-@@ -65,7 +70,9 @@ static void pc_isa_bios_init(MemoryRegion *isa_bios, MemoryRegion *rom_memory,
-            ((uint8_t*)flash_ptr) + (flash_size - isa_bios_size),
-            isa_bios_size);
+     if (sev_enabled()) {
+         /*
+          * The concept of a "reset" simply doesn't exist for
+@@ -1023,9 +1028,11 @@ void x86_bios_rom_init(X86MachineState *x86ms, const char *default_firmware,
+     }
+     g_free(filename);
  
--    memory_region_set_readonly(isa_bios, true);
-+    if (!machine_require_guest_memfd(current_machine)) {
-+        memory_region_set_readonly(isa_bios, true);
+-    /* map the last 128KB of the BIOS in ISA space */
+-    x86_isa_bios_init(&x86ms->isa_bios, rom_memory, &x86ms->bios,
+-                      !isapc_ram_fw);
++    if (!machine_require_guest_memfd(MACHINE(x86ms))) {
++        /* map the last 128KB of the BIOS in ISA space */
++        x86_isa_bios_init(&x86ms->isa_bios, rom_memory, &x86ms->bios,
++                          !isapc_ram_fw);
 +    }
- }
  
- static PFlashCFI01 *pc_pflash_create(PCMachineState *pcms,
-@@ -191,7 +198,7 @@ static void pc_system_flash_map(PCMachineState *pcms,
-                 x86_isa_bios_init(&x86ms->isa_bios, rom_memory, flash_mem,
-                                   true);
-             } else {
--                pc_isa_bios_init(&x86ms->isa_bios, rom_memory, flash_mem);
-+                pc_isa_bios_init(pcms, &x86ms->isa_bios, rom_memory, flash_mem);
-             }
- 
-             /* Encrypt the pflash boot ROM */
+     /* map all the bios at the top of memory */
+     memory_region_add_subregion(rom_memory,
 -- 
 2.45.1
 
