@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B84698FB66A
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 17:00:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52BED8FB66B
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 17:00:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEVdX-0001e2-Ro; Tue, 04 Jun 2024 10:59:43 -0400
+	id 1sEVdY-0001fJ-W3; Tue, 04 Jun 2024 10:59:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sEVdV-0001co-7I
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 10:59:41 -0400
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ id 1sEVdW-0001dD-OC
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 10:59:42 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sEVdS-0005Bw-PE
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 10:59:40 -0400
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-42120e3911eso52543025e9.0
+ id 1sEVdS-0005C0-U8
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 10:59:42 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-42133f8432aso24168695e9.3
  for <qemu-devel@nongnu.org>; Tue, 04 Jun 2024 07:59:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1717513177; x=1718117977; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=R0Cu3ztubtJM+wb7uWj3thqkNZBTELcM/1qE/gF5nn8=;
- b=jWo/vqiwoCfCRwDgVLox0AsLAbX0sKOLQtfvMTTAQcUOnCxy8KCVz16wwjrvhGlGRb
- 5Wnonj77mCdJ1D1cvsMRLoM1cim0CbdkZwKXiP1keW1Mc+SigwR6HNV/AUNAZl21odYJ
- 0J/FPFDNVSAHPVmrMqNx+7cDbls5yIPwT1g2P10qiNEd+9V1mUoG+4zUXjn5CIRdOYiQ
- GkUzxn148awGEcB3Uz4f1RklXmglVgrFtxL/OgUb4LAqdepTCqN1mi3JPrA6AHJm1LDG
- OUQJZzpeQqP/m+l07NXU1mhSOFKdqrUS97Jp0tX6QEb/yA6UAB+kCHGp/AamY9A/a8Gg
- NDAQ==
+ bh=m4bZgUY9V+0kKWae7i+NFy4rFQRdggOPXTna/u1168M=;
+ b=Rlee3hIhU0/0oxfqFUgiWy61y/cLgcQONCVPg9Dryx/GtW/wKV1BsD3QpbMv2GE/Ey
+ juC8jCvh5PTqYT/8fjOhXfcSrBrjUUDoNLRg06OZADG48YRHP/DQQlpLvyJ+JEUoOzFi
+ WjRue7nbVHflDhJsD+MIvpeqwVKnc+aATsHpGnCDiwobgz3y5kxaVyT57ejofqONp2ri
+ 4SF793YTW9e6RIPuk6QtRJVpbZLDM7F+WTo6YH/HwE2LlbF2xSCv5rT7mjKPlU/EOyqV
+ ZcnIMdhWk79Z+1h64KgwEOmGmlbc/UGb/TuW8O/g20t3em+QacMOsg8nOGpSfikUDVlq
+ rREQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1717513177; x=1718117977;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=R0Cu3ztubtJM+wb7uWj3thqkNZBTELcM/1qE/gF5nn8=;
- b=nYrVcHk5JJ7cdTwISWmPpJmrwKZFwyAflIhp1FrW5zokuu1OfYWL1u5IlP1MFizDWZ
- fHZgliuUpBUAiXvsVCxeIUDxn66MRbwrkQAx+uGBpGLFZmyol8wRPcIGFGiRyQpArvIj
- gInQos3dBUFDVz57pGA+yYB7G7HseV3H5WOrEWWdkHcrtkfGgXZHXXbrOISmcXFLYEfU
- 60PJSxIS5+458+7HTGlxG3sMu8XcIbL9L5rJySk2P4vMkqnogDgw64XLTzR5esFAyp94
- RSriPSIueTO7Zjv0QmpT2nSgo29x8IPgonqlp8/QYMaPTYR0GjJn8hFb7c1pv5bXkdF5
- aKpQ==
-X-Gm-Message-State: AOJu0YyugNNHc39kYeMzW1x7Myz7CQModTDNnpmPYuBm//WQZSlWbmgZ
- m2O2fp6NO8MODICtObN3tfp4Dnf033E5Hj4Py6jpJUFdNnHqsqEGRMsSAQ62YtL71HhEs85gtc0
- O
-X-Google-Smtp-Source: AGHT+IEsoxCQY2H8jcoMmzisHvMfIGsJwVTDCUrv3stuoZ9Tj/4mIeiZP1rxryUnHG9gjPZdskrkiQ==
-X-Received: by 2002:a05:600c:1e21:b0:41a:bdaf:8c78 with SMTP id
- 5b1f17b1804b1-4212e044942mr108605545e9.8.1717513176694; 
- Tue, 04 Jun 2024 07:59:36 -0700 (PDT)
+ bh=m4bZgUY9V+0kKWae7i+NFy4rFQRdggOPXTna/u1168M=;
+ b=kzT8aBAtpBmAKmEE8bhQXAqxnOQt+vHi8SS0glBm2BR67nRlF12pCiSl67cDaf68Ya
+ XXkzdCTKBQY0ybuDpKSV6uwaRfY4KwzlHNxO63q1bC/nwBgnIa1k7MgA2HW3UlouDlDD
+ 44sxHVXZQHLK3j5OB6sfefiYliKA/9lpEJw/pjaHqDQhDuMDZDP/yVN+ldQqgvox/w1x
+ O4GMhrqdHd9pWxs/MmFbnRYBzqKLaCAUxA6KRGPcRNV3HUSw5cp2Qqg3QuEj2p3bW6pS
+ /cYp7REalBUyClihkKxtwD3LdrVMhZwRlJmklk6TzU32jBnFx5k2sIU8jv4yZEUF4xh2
+ pz2Q==
+X-Gm-Message-State: AOJu0YzvoyI/oUC4aghFidEzLYoId/V5C/VAqLmU7gxMB4dZAHkEO2Xc
+ FEPF+bNdo6upAt1bSmuVnmXNJ/0siYEvtW4LDOhSmqI0inFyLhBFc/P+by9Dp7R+RgrLZvtha5J
+ n
+X-Google-Smtp-Source: AGHT+IG99QVCExKSz+aNCEWqZDPJhs9fcrm8QQCPoofLvdREIr22QfztX1BZ1zsWYCcV/k4+nxkhTA==
+X-Received: by 2002:a05:600c:3d15:b0:41b:f979:e19b with SMTP id
+ 5b1f17b1804b1-4212e0c1435mr111984605e9.39.1717513177132; 
+ Tue, 04 Jun 2024 07:59:37 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  ffacd0b85a97d-35dd064bbb1sm11767869f8f.101.2024.06.04.07.59.36
@@ -61,17 +61,17 @@ From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 1/5] scripts/coverity-scan/COMPONENTS.md: Update paths to
- match gitlab CI
-Date: Tue,  4 Jun 2024 15:59:30 +0100
-Message-Id: <20240604145934.1230583-2-peter.maydell@linaro.org>
+Subject: [PATCH v2 2/5] scripts/coverity-scan/COMPONENTS.md: Fix 'char'
+ component
+Date: Tue,  4 Jun 2024 15:59:31 +0100
+Message-Id: <20240604145934.1230583-3-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240604145934.1230583-1-peter.maydell@linaro.org>
 References: <20240604145934.1230583-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,245 +94,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since commit 83aa1baa069c we have been running the build for Coverity
-Scan as a Gitlab CI job, rather than the old setup where it was run
-on a local developer's machine.  This is working well, but the
-absolute paths of files are different for the Gitlab CI job, which
-means that the regexes we use to identify Coverity components no
-longer work. With Gitlab CI builds the file paths are of the form
- /builds/qemu-project/qemu/accel/kvm/kvm-all.c
+The 'char' component:
+ * includes the no-longer-present qemu-char.c, which has been
+   long since split into the chardev/ backend code
+ * also includes the hw/char devices
 
-rather than the old
- /qemu/accel/kvm/kvm-all.c
-
-and our regexes all don't match.
-
-Update all the regexes to start with .*/qemu/ . This will hopefully
-avoid the need to change them again in future if the build path
-changes again.
-
-This change was made with a search-and-replace of (/qemu)?
-to .*/qemu .
+Split it into two components:
+ * char is the hw/char devices
+ * chardev is the chardev backends
+with regexes matching our current sources.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- scripts/coverity-scan/COMPONENTS.md | 104 ++++++++++++++--------------
- 1 file changed, 52 insertions(+), 52 deletions(-)
+ scripts/coverity-scan/COMPONENTS.md | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/scripts/coverity-scan/COMPONENTS.md b/scripts/coverity-scan/COMPONENTS.md
-index 1537e49cd5a..98d4bcd6a50 100644
+index 98d4bcd6a50..fb081a59265 100644
 --- a/scripts/coverity-scan/COMPONENTS.md
 +++ b/scripts/coverity-scan/COMPONENTS.md
-@@ -1,157 +1,157 @@
- This is the list of currently configured Coverity components:
- 
- alpha
--  ~ (/qemu)?((/include)?/hw/alpha/.*|/target/alpha/.*)
-+  ~ .*/qemu((/include)?/hw/alpha/.*|/target/alpha/.*)
- 
- arm
--  ~ (/qemu)?((/include)?/hw/arm/.*|(/include)?/hw/.*/(arm|allwinner-a10|bcm28|digic|exynos|imx|omap|stellaris|pxa2xx|versatile|zynq|cadence).*|/hw/net/xgmac.c|/hw/ssi/xilinx_spips.c|/target/arm/.*)
-+  ~ .*/qemu((/include)?/hw/arm/.*|(/include)?/hw/.*/(arm|allwinner-a10|bcm28|digic|exynos|imx|omap|stellaris|pxa2xx|versatile|zynq|cadence).*|/hw/net/xgmac.c|/hw/ssi/xilinx_spips.c|/target/arm/.*)
- 
- avr
--  ~ (/qemu)?((/include)?/hw/avr/.*|/target/avr/.*)
-+  ~ .*/qemu((/include)?/hw/avr/.*|/target/avr/.*)
- 
- cris
--  ~ (/qemu)?((/include)?/hw/cris/.*|/target/cris/.*)
-+  ~ .*/qemu((/include)?/hw/cris/.*|/target/cris/.*)
- 
- hexagon-gen (component should be ignored in analysis)
--  ~ (/qemu)?(/target/hexagon/.*generated.*)
-+  ~ .*/qemu(/target/hexagon/.*generated.*)
- 
- hexagon
--  ~ (/qemu)?(/target/hexagon/.*)
-+  ~ .*/qemu(/target/hexagon/.*)
- 
- hppa
--  ~ (/qemu)?((/include)?/hw/hppa/.*|/target/hppa/.*)
-+  ~ .*/qemu((/include)?/hw/hppa/.*|/target/hppa/.*)
- 
- i386
--  ~ (/qemu)?((/include)?/hw/i386/.*|/target/i386/.*|/hw/intc/[^/]*apic[^/]*\.c)
-+  ~ .*/qemu((/include)?/hw/i386/.*|/target/i386/.*|/hw/intc/[^/]*apic[^/]*\.c)
- 
- loongarch
--  ~ (/qemu)?((/include)?/hw/(loongarch/.*|.*/loongarch.*)|/target/loongarch/.*)
-+  ~ .*/qemu((/include)?/hw/(loongarch/.*|.*/loongarch.*)|/target/loongarch/.*)
- 
- m68k
--  ~ (/qemu)?((/include)?/hw/m68k/.*|/target/m68k/.*|(/include)?/hw(/.*)?/mcf.*|(/include)?/hw/nubus/.*)
-+  ~ .*/qemu((/include)?/hw/m68k/.*|/target/m68k/.*|(/include)?/hw(/.*)?/mcf.*|(/include)?/hw/nubus/.*)
- 
- microblaze
--  ~ (/qemu)?((/include)?/hw/microblaze/.*|/target/microblaze/.*)
-+  ~ .*/qemu((/include)?/hw/microblaze/.*|/target/microblaze/.*)
- 
- mips
--  ~ (/qemu)?((/include)?/hw/mips/.*|/target/mips/.*)
-+  ~ .*/qemu((/include)?/hw/mips/.*|/target/mips/.*)
- 
- openrisc
--  ~ (/qemu)?((/include)?/hw/openrisc/.*|/target/openrisc/.*)
-+  ~ .*/qemu((/include)?/hw/openrisc/.*|/target/openrisc/.*)
- 
- ppc
--  ~ (/qemu)?((/include)?/hw/ppc/.*|/target/ppc/.*|/hw/pci-host/(uninorth.*|dec.*|prep.*|ppc.*)|/hw/misc/macio/.*|(/include)?/hw/.*/(xics|openpic|spapr).*)
-+  ~ .*/qemu((/include)?/hw/ppc/.*|/target/ppc/.*|/hw/pci-host/(uninorth.*|dec.*|prep.*|ppc.*)|/hw/misc/macio/.*|(/include)?/hw/.*/(xics|openpic|spapr).*)
- 
- riscv
--  ~ (/qemu)?((/include)?/hw/riscv/.*|/target/riscv/.*|/hw/.*/(riscv_|ibex_|sifive_).*)
-+  ~ .*/qemu((/include)?/hw/riscv/.*|/target/riscv/.*|/hw/.*/(riscv_|ibex_|sifive_).*)
- 
- rx
--  ~ (/qemu)?((/include)?/hw/rx/.*|/target/rx/.*)
-+  ~ .*/qemu((/include)?/hw/rx/.*|/target/rx/.*)
- 
- s390
--  ~ (/qemu)?((/include)?/hw/s390x/.*|/target/s390x/.*|/hw/.*/s390_.*)
-+  ~ .*/qemu((/include)?/hw/s390x/.*|/target/s390x/.*|/hw/.*/s390_.*)
- 
- sh4
--  ~ (/qemu)?((/include)?/hw/sh4/.*|/target/sh4/.*)
-+  ~ .*/qemu((/include)?/hw/sh4/.*|/target/sh4/.*)
- 
- sparc
--  ~ (/qemu)?((/include)?/hw/sparc(64)?.*|/target/sparc/.*|/hw/.*/grlib.*|/hw/display/cg3.c)
-+  ~ .*/qemu((/include)?/hw/sparc(64)?.*|/target/sparc/.*|/hw/.*/grlib.*|/hw/display/cg3.c)
- 
- tricore
--  ~ (/qemu)?((/include)?/hw/tricore/.*|/target/tricore/.*)
-+  ~ .*/qemu((/include)?/hw/tricore/.*|/target/tricore/.*)
- 
- xtensa
--  ~ (/qemu)?((/include)?/hw/xtensa/.*|/target/xtensa/.*)
-+  ~ .*/qemu((/include)?/hw/xtensa/.*|/target/xtensa/.*)
- 
- 9pfs
--  ~ (/qemu)?(/hw/9pfs/.*|/fsdev/.*)
-+  ~ .*/qemu(/hw/9pfs/.*|/fsdev/.*)
- 
- audio
--  ~ (/qemu)?((/include)?/(audio|hw/audio)/.*)
-+  ~ .*/qemu((/include)?/(audio|hw/audio)/.*)
- 
- block
--  ~ (/qemu)?(/block.*|(/include?)/(block|storage-daemon)/.*|(/include)?/hw/(block|ide|nvme)/.*|/qemu-(img|io).*|/util/(aio|async|thread-pool).*)
-+  ~ .*/qemu(/block.*|(/include?)/(block|storage-daemon)/.*|(/include)?/hw/(block|ide|nvme)/.*|/qemu-(img|io).*|/util/(aio|async|thread-pool).*)
+@@ -73,7 +73,10 @@ block
+   ~ .*/qemu(/block.*|(/include?)/(block|storage-daemon)/.*|(/include)?/hw/(block|ide|nvme)/.*|/qemu-(img|io).*|/util/(aio|async|thread-pool).*)
  
  char
--  ~ (/qemu)?(/qemu-char\.c|/include/sysemu/char\.h|(/include)?/hw/char/.*)
-+  ~ .*/qemu(/qemu-char\.c|/include/sysemu/char\.h|(/include)?/hw/char/.*)
+-  ~ .*/qemu(/qemu-char\.c|/include/sysemu/char\.h|(/include)?/hw/char/.*)
++  ~ .*/qemu((/include)?/hw/char/.*)
++
++chardev
++  ~ .*/qemu((/include)?/chardev/.*)
  
  crypto
--  ~ (/qemu)?((/include)?/crypto/.*|/hw/.*/.*crypto.*|(/include/sysemu|/backends)/cryptodev.*)
-+  ~ .*/qemu((/include)?/crypto/.*|/hw/.*/.*crypto.*|(/include/sysemu|/backends)/cryptodev.*)
- 
- disas
--  ~ (/qemu)?((/include)?/disas.*)
-+  ~ .*/qemu((/include)?/disas.*)
- 
- fpu
--  ~ (/qemu)?((/include)?(/fpu|/libdecnumber)/.*)
-+  ~ .*/qemu((/include)?(/fpu|/libdecnumber)/.*)
- 
- io
--  ~ (/qemu)?((/include)?/io/.*)
-+  ~ .*/qemu((/include)?/io/.*)
- 
- ipmi
--  ~ (/qemu)?((/include)?/hw/ipmi/.*)
-+  ~ .*/qemu((/include)?/hw/ipmi/.*)
- 
- migration
--  ~ (/qemu)?((/include)?/migration/.*)
-+  ~ .*/qemu((/include)?/migration/.*)
- 
- monitor
--  ~ (/qemu)?(/qapi.*|/qobject/.*|/monitor\..*|/[hq]mp\..*)
-+  ~ .*/qemu(/qapi.*|/qobject/.*|/monitor\..*|/[hq]mp\..*)
- 
- nbd
--  ~ (/qemu)?(/nbd/.*|/include/block/nbd.*|/qemu-nbd\.c)
-+  ~ .*/qemu(/nbd/.*|/include/block/nbd.*|/qemu-nbd\.c)
- 
- net
--  ~ (/qemu)?((/include)?(/hw)?/(net|rdma)/.*)
-+  ~ .*/qemu((/include)?(/hw)?/(net|rdma)/.*)
- 
- pci
--  ~ (/qemu)?(/include)?/hw/(cxl/|pci).*
-+  ~ .*/qemu(/include)?/hw/(cxl/|pci).*
- 
- qemu-ga
--  ~ (/qemu)?(/qga/.*)
-+  ~ .*/qemu(/qga/.*)
- 
- scsi
--  ~ (/qemu)?(/scsi/.*|/hw/scsi/.*|/include/hw/scsi/.*)
-+  ~ .*/qemu(/scsi/.*|/hw/scsi/.*|/include/hw/scsi/.*)
- 
- trace
--  ~ (/qemu)?(/.*trace.*\.[ch])
-+  ~ .*/qemu(/.*trace.*\.[ch])
- 
- ui
--  ~ (/qemu)?((/include)?(/ui|/hw/display|/hw/input)/.*)
-+  ~ .*/qemu((/include)?(/ui|/hw/display|/hw/input)/.*)
- 
- usb
--  ~ (/qemu)?(/hw/usb/.*|/include/hw/usb/.*)
-+  ~ .*/qemu(/hw/usb/.*|/include/hw/usb/.*)
- 
- user
--  ~ (/qemu)?(/linux-user/.*|/bsd-user/.*|/user-exec\.c|/thunk\.c|/include/user/.*)
-+  ~ .*/qemu(/linux-user/.*|/bsd-user/.*|/user-exec\.c|/thunk\.c|/include/user/.*)
- 
- util
--  ~ (/qemu)?(/util/.*|/include/qemu/.*)
-+  ~ .*/qemu(/util/.*|/include/qemu/.*)
- 
- vfio
--  ~ (/qemu)?(/include)?/hw/vfio/.*
-+  ~ .*/qemu(/include)?/hw/vfio/.*
- 
- virtio
--  ~ (/qemu)?(/include)?/hw/virtio/.*
-+  ~ .*/qemu(/include)?/hw/virtio/.*
- 
- xen
--  ~ (/qemu)?(.*/xen.*)
-+  ~ .*/qemu(.*/xen.*)
- 
- hvf
--  ~ (/qemu)?(.*/hvf.*)
-+  ~ .*/qemu(.*/hvf.*)
- 
- kvm
--  ~ (/qemu)?(.*/kvm.*)
-+  ~ .*/qemu(.*/kvm.*)
- 
- tcg
--  ~ (/qemu)?(/accel/tcg|/replay|/tcg)/.*
-+  ~ .*/qemu(/accel/tcg|/replay|/tcg)/.*
- 
- sysemu
--  ~ (/qemu)?(/system/.*|/accel/.*)
-+  ~ .*/qemu(/system/.*|/accel/.*)
- 
- (headers)
--  ~ (/qemu)?(/include/.*)
-+  ~ .*/qemu(/include/.*)
- 
- testlibs
--  ~ (/qemu)?(/tests/qtest(/libqos/.*|/libqtest.*))
-+  ~ .*/qemu(/tests/qtest(/libqos/.*|/libqtest.*))
- 
- tests
--  ~ (/qemu)?(/tests/.*)
-+  ~ .*/qemu(/tests/.*)
+   ~ .*/qemu((/include)?/crypto/.*|/hw/.*/.*crypto.*|(/include/sysemu|/backends)/cryptodev.*)
 -- 
 2.34.1
 
