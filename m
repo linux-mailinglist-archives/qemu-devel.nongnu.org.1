@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 598DE8FAB3D
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 08:49:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A87F38FAB56
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 08:50:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sENww-0007Gq-HS; Tue, 04 Jun 2024 02:47:14 -0400
+	id 1sENwq-0006ho-Fb; Tue, 04 Jun 2024 02:47:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sENvt-0004e7-Sa
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:46:13 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1sENvw-0004ho-Ti
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:46:14 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sENvs-0007dm-2D
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:46:09 -0400
+ id 1sENvv-0007eD-8I
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:46:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717483567;
+ s=mimecast20190719; t=1717483570;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=lo/3ikAn9rcrJ9CdEidY1h4ZPRHmzUcZc1MlRn3C+HM=;
- b=dLMKoaKBSiwjUQzN/0kmWV48r12F8ey8+afdLZFaiuyvhHzVn7nBuL8jAVW146tf8XrVQL
- ibSDLE6rpcOM77n9uc4Q4gYq78tdyjpIJ4FgMrHcy3SG+ebM+gjOvA5ZDo4qLJ7hN76JQM
- bt2bDUxF8B26WeT5KvghfWS3Fqkbt60=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=l8+XYqbQTMPq1BB+V1VrxOpCjz6T/cPUIIwIMJWLfJo=;
+ b=MDULS0ci4k1FnbAJxTswIb5ghYefWkff8eh0XbDIxl43IYhSVgEuMgRYviSIiD0PoM3wlj
+ kZHwfKhdKRFfPvP7/XYiKRgvGRvKu9+/pttKUU7kZQywzHCRZSAV4RsVjBEOk4voixAIga
+ cRBkMBdLIemig4lYmww/Y8Vz8u/OiTo=
+Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
+ [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-351-RGbMZRfQNTmZUD1tJPQQ7Q-1; Tue, 04 Jun 2024 02:46:05 -0400
-X-MC-Unique: RGbMZRfQNTmZUD1tJPQQ7Q-1
-Received: by mail-ed1-f70.google.com with SMTP id
- 4fb4d7f45d1cf-57a620e4a55so798621a12.0
- for <qemu-devel@nongnu.org>; Mon, 03 Jun 2024 23:46:05 -0700 (PDT)
+ us-mta-292-4kar3kWoOISHjfII_ZGM6g-1; Tue, 04 Jun 2024 02:46:08 -0400
+X-MC-Unique: 4kar3kWoOISHjfII_ZGM6g-1
+Received: by mail-lf1-f72.google.com with SMTP id
+ 2adb3069b0e04-52b90dc90easo2143334e87.3
+ for <qemu-devel@nongnu.org>; Mon, 03 Jun 2024 23:46:08 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717483564; x=1718088364;
+ d=1e100.net; s=20230601; t=1717483566; x=1718088366;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=lo/3ikAn9rcrJ9CdEidY1h4ZPRHmzUcZc1MlRn3C+HM=;
- b=LMUjKFnVlObA5rPm5iEeTdy7Btz934ICa58g31CmDchVOer3KQITb/qqyrBNLO6VpY
- 1QCxoD1Tjzemc2kiplQwqJGMDUtgamcygC6tVOpkUAT1my76Y1Z3lsrRV566eKLSFlbN
- 4h35Er7KKm6S4WDI6GbJOkemJVWAj2blLpvBMCaKU+Ti1kK+UzVhgr/wppgmgaKjYz/L
- tNbRJF7etdNaszWQQ6q+mWQvz93Dz5QLbS9HKCSsJrAcdV5MACXCDsHGEJQltTMu+k7O
- d5v8UDe+ff0BS9ZxMShp+hkjrlLRUqFepK36plesOyTWhTDB80GCgsbERIMjjNzrxxFE
- JW4A==
-X-Gm-Message-State: AOJu0YzPWngzMHUH0A8SCr2mLKvm7PzcBR0r+IAlDW4F42IHYlt6dMQT
- f3YCy2TXfRHtrok7Dw89aQq6hq0iJsQxMPJ64uUge57tFM+J8xa8RA5ALjCRQNluHvxpbOQabhs
- 08+S6gQrc/iRrXfzgpOLT1nf7Vx+Z+oDN2IsDmFBVUWB4cimpmlFxNbnsueD5uUZOurVQ+wtmg/
- KWsFuVuKl5nywASYOza3geR5NtvNPD95JbceyE
-X-Received: by 2002:a50:d757:0:b0:57a:859e:4d81 with SMTP id
- 4fb4d7f45d1cf-57a859e4ef8mr142344a12.28.1717483563771; 
- Mon, 03 Jun 2024 23:46:03 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGT9XGFkiJ/jwiFpmi9hgbngzdVvSNRU38C85DmBpUM1emXzWzkn8jal5zgleqUUIrpvTmjDg==
-X-Received: by 2002:a50:d757:0:b0:57a:859e:4d81 with SMTP id
- 4fb4d7f45d1cf-57a859e4ef8mr142325a12.28.1717483563383; 
- Mon, 03 Jun 2024 23:46:03 -0700 (PDT)
+ bh=l8+XYqbQTMPq1BB+V1VrxOpCjz6T/cPUIIwIMJWLfJo=;
+ b=rSiXVWtYQ26cqWqMMpAGPOECaU32OFuI5rSD1e1+LPvmd1Oo/cOeR+wzyAQy9bUXG3
+ y9UNgg5ERKxad5iE7S1b93UcsU+t3izh+OsdSHM/mmHaZ9C2eqOsY6VLZe8gx7QNlPs0
+ mGWQveHuSIXNZobolCP+krrTb25nn84RJWMUQ2IM3kmgC7wYNn9TuVtf8LaHyxdvmWVu
+ 143vEn3WvTMFQQ//zawwjbBpMJcNfJJlqe1jaPHUPOQkijEPa+htb0hVnq0Vk0TDeDf6
+ HAYqTTG091wAKzHlnVbbnx6dMhX9/ZrK3cMaL96L/4g/RAsE8YYhdbq1jkiHKlYQ5FCD
+ ffAQ==
+X-Gm-Message-State: AOJu0YytkD0fv9gl87cUzSI6edIqor61YWHOUcazrb1sUhpRNFf4Uqdq
+ Ymk9y3dWqTejkTjVcmJjTvEd0NeD2HWY/TN72mCw1YUr35ORwuG/lfDj08BDb5gsQ3YQ1RJWWTX
+ lm3eIX1wuIKg5PhPM7yK/ICBmbK8rIVmfCfejJsSWywUCDjOc+1ILy1mFn9lLMjUtaNv0vU0j6b
+ svJvUETESpsLiGqaNWBZhXt7aBQec4fENTNPdg
+X-Received: by 2002:a05:6512:5d0:b0:524:652e:1696 with SMTP id
+ 2adb3069b0e04-52b896cac46mr7672214e87.60.1717483566388; 
+ Mon, 03 Jun 2024 23:46:06 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHlywvBJ8xrnNB8E69+mDsuaQjlEWpJxczr73wqULn8rzWPA59KqjG2cvRRXfYW8qt1hmYvdQ==
+X-Received: by 2002:a05:6512:5d0:b0:524:652e:1696 with SMTP id
+ 2adb3069b0e04-52b896cac46mr7672196e87.60.1717483565918; 
+ Mon, 03 Jun 2024 23:46:05 -0700 (PDT)
 Received: from avogadro.local ([151.81.115.112])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-57a5fff9bc0sm3356392a12.97.2024.06.03.23.46.02
+ 4fb4d7f45d1cf-57a31bb8247sm6720784a12.30.2024.06.03.23.46.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Jun 2024 23:46:02 -0700 (PDT)
+ Mon, 03 Jun 2024 23:46:05 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Dov Murik <dovmurik@linux.ibm.com>, Michael Roth <michael.roth@amd.com>,
  Pankaj Gupta <pankaj.gupta@amd.com>
-Subject: [PULL 40/45] i386/sev: Extract build_kernel_loader_hashes
-Date: Tue,  4 Jun 2024 08:44:04 +0200
-Message-ID: <20240604064409.957105-41-pbonzini@redhat.com>
+Subject: [PULL 41/45] i386/sev: Reorder struct declarations
+Date: Tue,  4 Jun 2024 08:44:05 +0200
+Message-ID: <20240604064409.957105-42-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240604064409.957105-1-pbonzini@redhat.com>
 References: <20240604064409.957105-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -104,155 +104,122 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Dov Murik <dovmurik@linux.ibm.com>
 
-Extract the building of the kernel hashes table out from
-sev_add_kernel_loader_hashes() to allow building it in
-other memory areas (for SNP support).
+Move the declaration of PaddedSevHashTable before SevSnpGuest so
+we can add a new such field to the latter.
 
 No functional change intended.
 
 Signed-off-by: Dov Murik <dovmurik@linux.ibm.com>
 Signed-off-by: Michael Roth <michael.roth@amd.com>
 Signed-off-by: Pankaj Gupta <pankaj.gupta@amd.com>
-Message-ID: <20240530111643.1091816-22-pankaj.gupta@amd.com>
+Message-ID: <20240530111643.1091816-23-pankaj.gupta@amd.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/sev.c | 102 ++++++++++++++++++++++++++--------------------
- 1 file changed, 58 insertions(+), 44 deletions(-)
+ target/i386/sev.c | 84 +++++++++++++++++++++++------------------------
+ 1 file changed, 42 insertions(+), 42 deletions(-)
 
 diff --git a/target/i386/sev.c b/target/i386/sev.c
-index abb63062ac6..73f94067155 100644
+index 73f94067155..3fce4c08ebb 100644
 --- a/target/i386/sev.c
 +++ b/target/i386/sev.c
-@@ -1754,45 +1754,16 @@ static const QemuUUID sev_cmdline_entry_guid = {
-                     0x4d, 0x36, 0xab, 0x2a)
- };
+@@ -46,6 +46,48 @@ OBJECT_DECLARE_TYPE(SevCommonState, SevCommonStateClass, SEV_COMMON)
+ OBJECT_DECLARE_TYPE(SevGuestState, SevCommonStateClass, SEV_GUEST)
+ OBJECT_DECLARE_TYPE(SevSnpGuestState, SevCommonStateClass, SEV_SNP_GUEST)
  
--/*
-- * Add the hashes of the linux kernel/initrd/cmdline to an encrypted guest page
-- * which is included in SEV's initial memory measurement.
-- */
--bool sev_add_kernel_loader_hashes(SevKernelLoaderContext *ctx, Error **errp)
-+static bool build_kernel_loader_hashes(PaddedSevHashTable *padded_ht,
-+                                       SevKernelLoaderContext *ctx,
-+                                       Error **errp)
- {
--    uint8_t *data;
--    SevHashTableDescriptor *area;
-     SevHashTable *ht;
--    PaddedSevHashTable *padded_ht;
-     uint8_t cmdline_hash[HASH_SIZE];
-     uint8_t initrd_hash[HASH_SIZE];
-     uint8_t kernel_hash[HASH_SIZE];
-     uint8_t *hashp;
-     size_t hash_len = HASH_SIZE;
--    hwaddr mapped_len = sizeof(*padded_ht);
--    MemTxAttrs attrs = { 0 };
--    bool ret = true;
--    SevCommonState *sev_common = SEV_COMMON(MACHINE(qdev_get_machine())->cgs);
--
--    /*
--     * Only add the kernel hashes if the sev-guest configuration explicitly
--     * stated kernel-hashes=on.
--     */
--    if (!sev_common->kernel_hashes) {
--        return false;
--    }
--
--    if (!pc_system_ovmf_table_find(SEV_HASH_TABLE_RV_GUID, &data, NULL)) {
--        error_setg(errp, "SEV: kernel specified but guest firmware "
--                         "has no hashes table GUID");
--        return false;
--    }
--    area = (SevHashTableDescriptor *)data;
--    if (!area->base || area->size < sizeof(PaddedSevHashTable)) {
--        error_setg(errp, "SEV: guest firmware hashes table area is invalid "
--                         "(base=0x%x size=0x%x)", area->base, area->size);
--        return false;
--    }
- 
-     /*
-      * Calculate hash of kernel command-line with the terminating null byte. If
-@@ -1829,16 +1800,6 @@ bool sev_add_kernel_loader_hashes(SevKernelLoaderContext *ctx, Error **errp)
-     }
-     assert(hash_len == HASH_SIZE);
- 
--    /*
--     * Populate the hashes table in the guest's memory at the OVMF-designated
--     * area for the SEV hashes table
--     */
--    padded_ht = address_space_map(&address_space_memory, area->base,
--                                  &mapped_len, true, attrs);
--    if (!padded_ht || mapped_len != sizeof(*padded_ht)) {
--        error_setg(errp, "SEV: cannot map hashes table guest memory area");
--        return false;
--    }
-     ht = &padded_ht->ht;
- 
-     ht->guid = sev_hash_table_header_guid;
-@@ -1859,8 +1820,61 @@ bool sev_add_kernel_loader_hashes(SevKernelLoaderContext *ctx, Error **errp)
-     /* zero the excess data so the measurement can be reliably calculated */
-     memset(padded_ht->padding, 0, sizeof(padded_ht->padding));
- 
--    if (sev_encrypt_flash(area->base, (uint8_t *)padded_ht,
--                          sizeof(*padded_ht), errp) < 0) {
-+    return true;
-+}
++/* hard code sha256 digest size */
++#define HASH_SIZE 32
++
++typedef struct QEMU_PACKED SevHashTableEntry {
++    QemuUUID guid;
++    uint16_t len;
++    uint8_t hash[HASH_SIZE];
++} SevHashTableEntry;
++
++typedef struct QEMU_PACKED SevHashTable {
++    QemuUUID guid;
++    uint16_t len;
++    SevHashTableEntry cmdline;
++    SevHashTableEntry initrd;
++    SevHashTableEntry kernel;
++} SevHashTable;
 +
 +/*
-+ * Add the hashes of the linux kernel/initrd/cmdline to an encrypted guest page
-+ * which is included in SEV's initial memory measurement.
++ * Data encrypted by sev_encrypt_flash() must be padded to a multiple of
++ * 16 bytes.
 + */
-+bool sev_add_kernel_loader_hashes(SevKernelLoaderContext *ctx, Error **errp)
-+{
-+    uint8_t *data;
-+    SevHashTableDescriptor *area;
-+    PaddedSevHashTable *padded_ht;
-+    hwaddr mapped_len = sizeof(*padded_ht);
-+    MemTxAttrs attrs = { 0 };
-+    bool ret = true;
-+    SevCommonState *sev_common = SEV_COMMON(MACHINE(qdev_get_machine())->cgs);
++typedef struct QEMU_PACKED PaddedSevHashTable {
++    SevHashTable ht;
++    uint8_t padding[ROUND_UP(sizeof(SevHashTable), 16) - sizeof(SevHashTable)];
++} PaddedSevHashTable;
 +
-+    /*
-+     * Only add the kernel hashes if the sev-guest configuration explicitly
-+     * stated kernel-hashes=on.
-+     */
-+    if (!sev_common->kernel_hashes) {
-+        return false;
-+    }
++QEMU_BUILD_BUG_ON(sizeof(PaddedSevHashTable) % 16 != 0);
 +
-+    if (!pc_system_ovmf_table_find(SEV_HASH_TABLE_RV_GUID, &data, NULL)) {
-+        error_setg(errp, "SEV: kernel specified but guest firmware "
-+                         "has no hashes table GUID");
-+        return false;
-+    }
++#define SEV_INFO_BLOCK_GUID     "00f771de-1a7e-4fcb-890e-68c77e2fb44e"
++typedef struct __attribute__((__packed__)) SevInfoBlock {
++    /* SEV-ES Reset Vector Address */
++    uint32_t reset_addr;
++} SevInfoBlock;
 +
-+    area = (SevHashTableDescriptor *)data;
-+    if (!area->base || area->size < sizeof(PaddedSevHashTable)) {
-+        error_setg(errp, "SEV: guest firmware hashes table area is invalid "
-+                         "(base=0x%x size=0x%x)", area->base, area->size);
-+        return false;
-+    }
++#define SEV_HASH_TABLE_RV_GUID  "7255371f-3a3b-4b04-927b-1da6efa8d454"
++typedef struct QEMU_PACKED SevHashTableDescriptor {
++    /* SEV hash table area guest address */
++    uint32_t base;
++    /* SEV hash table area size (in bytes) */
++    uint32_t size;
++} SevHashTableDescriptor;
 +
-+    /*
-+     * Populate the hashes table in the guest's memory at the OVMF-designated
-+     * area for the SEV hashes table
-+     */
-+    padded_ht = address_space_map(&address_space_memory, area->base,
-+                                  &mapped_len, true, attrs);
-+    if (!padded_ht || mapped_len != sizeof(*padded_ht)) {
-+        error_setg(errp, "SEV: cannot map hashes table guest memory area");
-+        return false;
-+    }
-+
-+    if (build_kernel_loader_hashes(padded_ht, ctx, errp)) {
-+        if (sev_encrypt_flash(area->base, (uint8_t *)padded_ht,
-+                              sizeof(*padded_ht), errp) < 0) {
-+            ret = false;
-+        }
-+    } else {
-         ret = false;
-     }
+ struct SevCommonState {
+     X86ConfidentialGuest parent_obj;
  
+@@ -128,48 +170,6 @@ typedef struct SevLaunchUpdateData {
+ 
+ static QTAILQ_HEAD(, SevLaunchUpdateData) launch_update;
+ 
+-#define SEV_INFO_BLOCK_GUID     "00f771de-1a7e-4fcb-890e-68c77e2fb44e"
+-typedef struct __attribute__((__packed__)) SevInfoBlock {
+-    /* SEV-ES Reset Vector Address */
+-    uint32_t reset_addr;
+-} SevInfoBlock;
+-
+-#define SEV_HASH_TABLE_RV_GUID  "7255371f-3a3b-4b04-927b-1da6efa8d454"
+-typedef struct QEMU_PACKED SevHashTableDescriptor {
+-    /* SEV hash table area guest address */
+-    uint32_t base;
+-    /* SEV hash table area size (in bytes) */
+-    uint32_t size;
+-} SevHashTableDescriptor;
+-
+-/* hard code sha256 digest size */
+-#define HASH_SIZE 32
+-
+-typedef struct QEMU_PACKED SevHashTableEntry {
+-    QemuUUID guid;
+-    uint16_t len;
+-    uint8_t hash[HASH_SIZE];
+-} SevHashTableEntry;
+-
+-typedef struct QEMU_PACKED SevHashTable {
+-    QemuUUID guid;
+-    uint16_t len;
+-    SevHashTableEntry cmdline;
+-    SevHashTableEntry initrd;
+-    SevHashTableEntry kernel;
+-} SevHashTable;
+-
+-/*
+- * Data encrypted by sev_encrypt_flash() must be padded to a multiple of
+- * 16 bytes.
+- */
+-typedef struct QEMU_PACKED PaddedSevHashTable {
+-    SevHashTable ht;
+-    uint8_t padding[ROUND_UP(sizeof(SevHashTable), 16) - sizeof(SevHashTable)];
+-} PaddedSevHashTable;
+-
+-QEMU_BUILD_BUG_ON(sizeof(PaddedSevHashTable) % 16 != 0);
+-
+ static Error *sev_mig_blocker;
+ 
+ static const char *const sev_fw_errlist[] = {
 -- 
 2.45.1
 
