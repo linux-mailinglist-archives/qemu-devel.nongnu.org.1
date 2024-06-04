@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D4318FBC2B
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 21:08:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9E478FBC1B
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 21:07:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEZUx-0006ie-EO; Tue, 04 Jun 2024 15:07:07 -0400
+	id 1sEZV1-00070R-K3; Tue, 04 Jun 2024 15:07:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sEZUu-0006gH-JV
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 15:07:04 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sEZUy-0006lZ-7y
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 15:07:08 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sEZUs-0000qu-2x
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 15:07:04 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sEZUu-0000rF-OZ
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 15:07:06 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717528020;
+ s=mimecast20190719; t=1717528023;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=cwZ47LpotxgqMUotTFYaru0nOsyfZI/sw2MfKtbkph8=;
- b=ZWgMEApyId333KyUi6WnAo/zsGBW7n11hly1nn7slNVNgO64pa1AjelCFlP6KlXe/7WNSO
- /yVADKsIa7LbH9jMbz4bnUSD6yDIlAmrdftFYjicXd4tDQDm80tzhfZy6DLiMbxY7traxF
- Z0LgysXu++/bltMeDo1DkuhIjug+aT0=
-Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
- [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=2dkENUzfzIIIcUTPF2EEwEXmUV3lpfWAm7D6XMdf5LE=;
+ b=d2McZaScrJE+3/kB6scOlG/HEIZ/guTD4BxnNFupXCV5axzWC1NWtH1zRT8g0chY8H6CZL
+ OB6UhdTH69HawqXxrxP+fHX2jYW8SOAuG0xQtD9As0iTbxkLlHW6//xzacOKLNK0AOIj/3
+ fdJUEhJav4EJXhFwPaMWc6aBsR5Arjo=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-671-ETG8bHgAOHu3DZmgY4mUEA-1; Tue, 04 Jun 2024 15:06:58 -0400
-X-MC-Unique: ETG8bHgAOHu3DZmgY4mUEA-1
-Received: by mail-lj1-f200.google.com with SMTP id
- 38308e7fff4ca-2eaa6f40ef2so11445761fa.3
- for <qemu-devel@nongnu.org>; Tue, 04 Jun 2024 12:06:58 -0700 (PDT)
+ us-mta-527-N969WC7VOGyjXVsTfZPDoA-1; Tue, 04 Jun 2024 15:07:01 -0400
+X-MC-Unique: N969WC7VOGyjXVsTfZPDoA-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-4212aeac0e2so670555e9.1
+ for <qemu-devel@nongnu.org>; Tue, 04 Jun 2024 12:07:01 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717528017; x=1718132817;
+ d=1e100.net; s=20230601; t=1717528020; x=1718132820;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=cwZ47LpotxgqMUotTFYaru0nOsyfZI/sw2MfKtbkph8=;
- b=GDfjLC1JuXN0DfCr8MpPzBGKlPPrCvgn/owH+GGfBAAt5zIq0z4mzb6K238nJcsI4L
- JUZmfQEZKcebDPSOlpKTZFMLM60YpzellkNyVcV3GO8r7JwTsOXN5wmgIguS+fktHnGk
- RErRHS4+0dC7y6FQdFsFPmWggjP+BDCOVtUgBRtdJatIaPBCzrr096iW103eJokufeAe
- Jd35/5xRyDpv67GUD2lPPFJbmGN7lYq5AhjEpHF5QHIylUAJoSeDyA7+pIvOZ92iIQ3q
- hGN5N6FP7YMX+V2QC8smThEiN8G7eQ5ncLGmg9P0AyJ7IOFtgf+wbSecBGL7tRiaSTBD
- Fsww==
-X-Gm-Message-State: AOJu0YzU2EqWjYS2ZgUdqUkZGHAYxlRoIxGoowt30hiEPcAX20lNV0nZ
- 1z4E6/PdRH2JVGmrtv7OQkIbkDAPkTa4YdEyRM+fjbk6j11ip2czNjYlro45LhSLPVEZg58Pclm
- 6Qg0sGL0I4hIb+CRwHwrEcOjJ+YRNpXwmcz/BZ8n6vUy2RqgT7yZDjR0zc4yRpdzHGVZjoJmKxr
- jyDvLnmM8mhgZnlZRSBxmD2AI9lPNx+w==
-X-Received: by 2002:a2e:9396:0:b0:2e6:f1d3:9e7a with SMTP id
- 38308e7fff4ca-2eac7a131c6mr990031fa.19.1717528016771; 
- Tue, 04 Jun 2024 12:06:56 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH7X+ydK2JI/ueRP2L5ShEFmzr2PsFgtPRpJAYhQYmmhY00gcgpD+KGsx8Ap3TTKFGG+xhqZQ==
-X-Received: by 2002:a2e:9396:0:b0:2e6:f1d3:9e7a with SMTP id
- 38308e7fff4ca-2eac7a131c6mr989811fa.19.1717528016280; 
- Tue, 04 Jun 2024 12:06:56 -0700 (PDT)
+ bh=2dkENUzfzIIIcUTPF2EEwEXmUV3lpfWAm7D6XMdf5LE=;
+ b=rrj69GU8/JNvGovU+Yx1edrJOijN6V1ZnAGM95diWfgwnlRJDNDRWukTa4f+oi3SbQ
+ zsiQY8QyZqvgXfy5I5I2EkLWCIPLWeVdrUO7hBjcmoAGuktp3TUGveJoSm5g8eZufwV3
+ g2BmZYHAwpvo+yv8mSMfhkDtOvv/De7y5JQmG8OfjVglIEgVIGxGYN5dU29TLwhQux/K
+ nzCwVLnymJq/S7Cfj11KgyUVxYV3sR26XEMUUiMRfF41jUoO4kSVOu1QK7LmGzFQIAKi
+ 9KUSOYO9rE91M90XUD7oGiAHaW3gYwdvg9f3hkKmRNwdHLnubPIL6seW6V+6Cye7ZwS+
+ hgHA==
+X-Gm-Message-State: AOJu0YwjCxYbKqf0Uly9gizaAiCRbWb9CvuKQiwTVQ7mvjTHn9jfgy/Y
+ SGGtGJ7jUcaMYZZte+cPVdHGiFryEOZNcPgRchpBIIFyfb9OW0SAaWIHas3AaLQIB8jzjBd2/TP
+ AYh3yxjKt1reme7VQOxThML9g8fIl7SWF5+LQFF+QO+Fj4C/sm+uluIYC8DGyRHQmbJOCL4rXIL
+ NZ/yqLMFCd6FTulL4CKA8LoP+zqff2Zg==
+X-Received: by 2002:a05:600c:3589:b0:41f:dc27:a7c1 with SMTP id
+ 5b1f17b1804b1-421562da803mr4715045e9.5.1717528019822; 
+ Tue, 04 Jun 2024 12:06:59 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH+VLGrrKlFVj2OzhlD8Ew6iFdVY76qPENPt7iFHIz7OSYBtzYjKhRNYJ37i2LY30o+4ENsHA==
+X-Received: by 2002:a05:600c:3589:b0:41f:dc27:a7c1 with SMTP id
+ 5b1f17b1804b1-421562da803mr4714885e9.5.1717528019397; 
+ Tue, 04 Jun 2024 12:06:59 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc7:552:cf5c:2b13:215c:b9df:f231])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4214beb7fa9sm31272735e9.48.2024.06.04.12.06.54
+ 5b1f17b1804b1-4213709a0d2sm125137665e9.26.2024.06.04.12.06.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 04 Jun 2024 12:06:55 -0700 (PDT)
-Date: Tue, 4 Jun 2024 15:06:52 -0400
+ Tue, 04 Jun 2024 12:06:58 -0700 (PDT)
+Date: Tue, 4 Jun 2024 15:06:56 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, Li Feng <fengli@smartx.com>,
- Raphael Norwitz <raphael@enfabrica.net>,
- Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>,
- Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
- qemu-block@nongnu.org
-Subject: [PULL 16/46] vhost-user: fix lost reconnect again
-Message-ID: <250aa64c6416a74f18666ec067ec853a3a5e9b35.1717527933.git.mst@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Gregory Price <gourry.memverge@gmail.com>,
+ Gregory Price <gregory.price@memverge.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, Fan Ni <fan.ni@samsung.com>
+Subject: [PULL 17/46] hw/cxl/mailbox: change CCI cmd set structure to be a
+ member, not a reference
+Message-ID: <69a99663c31fbc854e45b124406987347a87bd41.1717527933.git.mst@redhat.com>
 References: <cover.1717527933.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -88,7 +87,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,130 +103,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Li Feng <fengli@smartx.com>
+From: Gregory Price <gourry.memverge@gmail.com>
 
-When the vhost-user is reconnecting to the backend, and if the vhost-user fails
-at the get_features in vhost_dev_init(), then the reconnect will fail
-and it will not be retriggered forever.
+This allows devices to have fully customized CCIs, along with complex
+devices where wrapper devices can override or add additional CCI
+commands without having to replicate full command structures or
+pollute a base device with every command that might ever be used.
 
-The reason is:
-When the vhost-user fail at get_features, the vhost_dev_cleanup will be called
-immediately.
-
-vhost_dev_cleanup calls 'memset(hdev, 0, sizeof(struct vhost_dev))'.
-
-The reconnect path is:
-vhost_user_blk_event
-   vhost_user_async_close(.. vhost_user_blk_disconnect ..)
-     qemu_chr_fe_set_handlers <----- clear the notifier callback
-       schedule vhost_user_async_close_bh
-
-The vhost->vdev is null, so the vhost_user_blk_disconnect will not be
-called, then the event fd callback will not be reinstalled.
-
-We need to ensure that even if vhost_dev_init initialization fails, the event
-handler still needs to be reinstalled when s->connected is false.
-
-All vhost-user devices have this issue, including vhost-user-blk/scsi.
-
-Fixes: 71e076a07d ("hw/virtio: generalise CHR_EVENT_CLOSED handling")
-
-Signed-off-by: Li Feng <fengli@smartx.com>
-Message-Id: <20240516025753.130171-3-fengli@smartx.com>
-Reviewed-by: Raphael Norwitz <raphael@enfabrica.net>
+Signed-off-by: Gregory Price <gregory.price@memverge.com>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Fan Ni <fan.ni@samsung.com>
+Message-Id: <20240523174651.1089554-2-nifan.cxl@gmail.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/block/vhost-user-blk.c   |  3 ++-
- hw/scsi/vhost-user-scsi.c   |  3 ++-
- hw/virtio/vhost-user-base.c |  3 ++-
- hw/virtio/vhost-user.c      | 10 +---------
- 4 files changed, 7 insertions(+), 12 deletions(-)
+ include/hw/cxl/cxl_device.h |  2 +-
+ hw/cxl/cxl-mailbox-utils.c  | 19 +++++++++++++++----
+ 2 files changed, 16 insertions(+), 5 deletions(-)
 
-diff --git a/hw/block/vhost-user-blk.c b/hw/block/vhost-user-blk.c
-index 15cc24d017..fdbc30b9ce 100644
---- a/hw/block/vhost-user-blk.c
-+++ b/hw/block/vhost-user-blk.c
-@@ -354,7 +354,7 @@ static void vhost_user_blk_disconnect(DeviceState *dev)
-     VHostUserBlk *s = VHOST_USER_BLK(vdev);
+diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
+index 279b276bda..ccc4611875 100644
+--- a/include/hw/cxl/cxl_device.h
++++ b/include/hw/cxl/cxl_device.h
+@@ -164,7 +164,7 @@ typedef struct CXLEventLog {
+ } CXLEventLog;
  
-     if (!s->connected) {
--        return;
-+        goto done;
-     }
-     s->connected = false;
- 
-@@ -362,6 +362,7 @@ static void vhost_user_blk_disconnect(DeviceState *dev)
- 
-     vhost_dev_cleanup(&s->dev);
- 
-+done:
-     /* Re-instate the event handler for new connections */
-     qemu_chr_fe_set_handlers(&s->chardev, NULL, NULL, vhost_user_blk_event,
-                              NULL, dev, NULL, true);
-diff --git a/hw/scsi/vhost-user-scsi.c b/hw/scsi/vhost-user-scsi.c
-index 421cd654f8..cc91ade525 100644
---- a/hw/scsi/vhost-user-scsi.c
-+++ b/hw/scsi/vhost-user-scsi.c
-@@ -182,7 +182,7 @@ static void vhost_user_scsi_disconnect(DeviceState *dev)
-     VirtIOSCSICommon *vs = VIRTIO_SCSI_COMMON(dev);
- 
-     if (!s->connected) {
--        return;
-+        goto done;
-     }
-     s->connected = false;
- 
-@@ -190,6 +190,7 @@ static void vhost_user_scsi_disconnect(DeviceState *dev)
- 
-     vhost_dev_cleanup(&vsc->dev);
- 
-+done:
-     /* Re-instate the event handler for new connections */
-     qemu_chr_fe_set_handlers(&vs->conf.chardev, NULL, NULL,
-                              vhost_user_scsi_event, NULL, dev, NULL, true);
-diff --git a/hw/virtio/vhost-user-base.c b/hw/virtio/vhost-user-base.c
-index 4b54255682..11e72b1e3b 100644
---- a/hw/virtio/vhost-user-base.c
-+++ b/hw/virtio/vhost-user-base.c
-@@ -225,13 +225,14 @@ static void vub_disconnect(DeviceState *dev)
-     VHostUserBase *vub = VHOST_USER_BASE(vdev);
- 
-     if (!vub->connected) {
--        return;
-+        goto done;
-     }
-     vub->connected = false;
- 
-     vub_stop(vdev);
-     vhost_dev_cleanup(&vub->vhost_dev);
- 
-+done:
-     /* Re-instate the event handler for new connections */
-     qemu_chr_fe_set_handlers(&vub->chardev,
-                              NULL, NULL, vub_event,
-diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
-index c929097e87..c407ea8939 100644
---- a/hw/virtio/vhost-user.c
-+++ b/hw/virtio/vhost-user.c
-@@ -2781,16 +2781,8 @@ typedef struct {
- static void vhost_user_async_close_bh(void *opaque)
- {
-     VhostAsyncCallback *data = opaque;
--    struct vhost_dev *vhost = data->vhost;
- 
--    /*
--     * If the vhost_dev has been cleared in the meantime there is
--     * nothing left to do as some other path has completed the
--     * cleanup.
--     */
--    if (vhost->vdev) {
--        data->cb(data->dev);
--    }
-+    data->cb(data->dev);
- 
-     g_free(data);
+ typedef struct CXLCCI {
+-    const struct cxl_cmd (*cxl_cmd_set)[256];
++    struct cxl_cmd cxl_cmd_set[256][256];
+     struct cel_log {
+         uint16_t opcode;
+         uint16_t effect;
+diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
+index e5eb97cb91..2c9f50f0f9 100644
+--- a/hw/cxl/cxl-mailbox-utils.c
++++ b/hw/cxl/cxl-mailbox-utils.c
+@@ -1447,10 +1447,21 @@ void cxl_init_cci(CXLCCI *cci, size_t payload_max)
+                                  bg_timercb, cci);
  }
+ 
++static void cxl_copy_cci_commands(CXLCCI *cci, const struct cxl_cmd (*cxl_cmds)[256])
++{
++    for (int set = 0; set < 256; set++) {
++        for (int cmd = 0; cmd < 256; cmd++) {
++            if (cxl_cmds[set][cmd].handler) {
++                cci->cxl_cmd_set[set][cmd] = cxl_cmds[set][cmd];
++            }
++        }
++    }
++}
++
+ void cxl_initialize_mailbox_swcci(CXLCCI *cci, DeviceState *intf,
+                                   DeviceState *d, size_t payload_max)
+ {
+-    cci->cxl_cmd_set = cxl_cmd_set_sw;
++    cxl_copy_cci_commands(cci, cxl_cmd_set_sw);
+     cci->d = d;
+     cci->intf = intf;
+     cxl_init_cci(cci, payload_max);
+@@ -1458,7 +1469,7 @@ void cxl_initialize_mailbox_swcci(CXLCCI *cci, DeviceState *intf,
+ 
+ void cxl_initialize_mailbox_t3(CXLCCI *cci, DeviceState *d, size_t payload_max)
+ {
+-    cci->cxl_cmd_set = cxl_cmd_set;
++    cxl_copy_cci_commands(cci, cxl_cmd_set);
+     cci->d = d;
+ 
+     /* No separation for PCI MB as protocol handled in PCI device */
+@@ -1476,7 +1487,7 @@ static const struct cxl_cmd cxl_cmd_set_t3_ld[256][256] = {
+ void cxl_initialize_t3_ld_cci(CXLCCI *cci, DeviceState *d, DeviceState *intf,
+                                size_t payload_max)
+ {
+-    cci->cxl_cmd_set = cxl_cmd_set_t3_ld;
++    cxl_copy_cci_commands(cci, cxl_cmd_set_t3_ld);
+     cci->d = d;
+     cci->intf = intf;
+     cxl_init_cci(cci, payload_max);
+@@ -1496,7 +1507,7 @@ void cxl_initialize_t3_fm_owned_ld_mctpcci(CXLCCI *cci, DeviceState *d,
+                                            DeviceState *intf,
+                                            size_t payload_max)
+ {
+-    cci->cxl_cmd_set = cxl_cmd_set_t3_fm_owned_ld_mctp;
++    cxl_copy_cci_commands(cci, cxl_cmd_set_t3_fm_owned_ld_mctp);
+     cci->d = d;
+     cci->intf = intf;
+     cxl_init_cci(cci, payload_max);
 -- 
 MST
 
