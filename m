@@ -2,83 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51ABB8FAB4F
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 08:50:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 995518FAB38
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 08:48:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sENwb-0005XQ-Gm; Tue, 04 Jun 2024 02:46:53 -0400
+	id 1sENwO-0004jw-0D; Tue, 04 Jun 2024 02:46:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sENvL-0004Ei-RH
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:45:41 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1sENvL-0004Ej-Sg
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:45:40 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sENvK-0007Zu-CF
+ id 1sENvK-0007Zz-Br
  for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:45:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717483532;
+ s=mimecast20190719; t=1717483533;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=P3zBoQP1hiY+/+l3optnBxCNybf1DH1hAS8jMLWIU5Q=;
- b=Xo8mvFc8i+b1xI+Wufgc6oynk6GOYuPk3VRb81qpTqxCihr4B2Fvc3Eiotj5hJWYVO2UeY
- rLkqX3XIc6pX/GUtDtJ1IZ2EEfD9yogGxJFxdN1uhvGx65/ayMwDw5qlm6/LgDR7EVxIWJ
- yr7eWbphhsa4nE4NAzgXfCTEb/OQ11o=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=0FtFMf2zANvlKiTEbIODyYK7bqgLhlm5mAbr7EpnP2A=;
+ b=Pstwc3t9lNnCltjTd4OonCrjSKvGry2sc1N4KLAlH8V2krNKF8UgUfjL1BWMbpGwW5Qe+W
+ ADrCRxnRrjFMga8prUx4ir0Gp7ZguCsW8c1/gvQzt5E2n9tgJM8YzVzdNP9DEy4X+9ItC5
+ 7lr7Kh/sAjzQgqEBWWrzw6rWBU5Uk8M=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-619-Ap-Mm33eMHSU1TcASXvIpg-1; Tue, 04 Jun 2024 02:45:29 -0400
-X-MC-Unique: Ap-Mm33eMHSU1TcASXvIpg-1
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-a68ee264225so92329066b.1
- for <qemu-devel@nongnu.org>; Mon, 03 Jun 2024 23:45:29 -0700 (PDT)
+ us-mta-554-K7ukP_CROt2LP7PMTRJSmQ-1; Tue, 04 Jun 2024 02:45:32 -0400
+X-MC-Unique: K7ukP_CROt2LP7PMTRJSmQ-1
+Received: by mail-ed1-f70.google.com with SMTP id
+ 4fb4d7f45d1cf-57a52cb6d86so322250a12.1
+ for <qemu-devel@nongnu.org>; Mon, 03 Jun 2024 23:45:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717483528; x=1718088328;
+ d=1e100.net; s=20230601; t=1717483530; x=1718088330;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=P3zBoQP1hiY+/+l3optnBxCNybf1DH1hAS8jMLWIU5Q=;
- b=mneN0t22bo2F3Cz3/wGUEFIA8/mzkIxPG7z6K1DDxHQGwAsN8zLHXonbyhuikcbOGu
- v+XhTnk8R3OtM7fN7/kAkB0g3NhOhrkWuvzWtF6Pa90prVE3/EqQ1PhOkGyYnHvcOhrt
- mk7xdG+eKLVI1TtSLhdNhgXoWQ2tREylkSkqN8bz4EBsUZDodWPk9GzBhiQvZnyKVUG1
- MUlghJL/ZOQKHRRBi433lNppxoLaEzMumV9yF2AGgpq2pH+V4pXyWwNRUmom34Rsq+lb
- 8rLlJ4SBgqkKYnYSl/PY24fMgix3tR44m2imyOQSZr0cischUX4JoJ9eb7iuQpXqTAC6
- cqIw==
-X-Gm-Message-State: AOJu0YxGOoXeFBJ9hTyH/m8+LWd7wn1YAIMsXNaNz21lsDOSyJa0bBkX
- BsKwxX46BGARtMW+GqStM3S7FCa5rRG4YKHQpghlDz5LeP0VAJ4/uOtu/JrJu5xlzqy1ql5YfIR
- zUkkr0wqUCwlKpBJpd5VuCksw0S0D3oQAy4S7QqcX3d2pDPNUGVSuKrZ1B6wtYpZgYU4s+TTWUR
- r8/oYxxizEVJ/5O1zndpvXooYkXv3j2qBzZDxv
-X-Received: by 2002:a17:907:9046:b0:a68:413b:36f1 with SMTP id
- a640c23a62f3a-a68413b3739mr676303466b.32.1717483528252; 
- Mon, 03 Jun 2024 23:45:28 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGI3Uhjh83MQCKuTSMBdkT288C9oJxw+fB58J2xHQ/WKBJTbyCNsZGlsyGZtr9xP/Rch0WVyw==
-X-Received: by 2002:a17:907:9046:b0:a68:413b:36f1 with SMTP id
- a640c23a62f3a-a68413b3739mr676301966b.32.1717483527859; 
- Mon, 03 Jun 2024 23:45:27 -0700 (PDT)
+ bh=0FtFMf2zANvlKiTEbIODyYK7bqgLhlm5mAbr7EpnP2A=;
+ b=q3O3XeP3W/HtfaAP7KNxHlXCscnqOeAXjUmYGfvsT8A8Yd3fwXkr09NwG5+VZaJsMP
+ WlLaopGFqq0pdf3goc9iXyD1JaKcUvt/mioF202vtuzozGku1gtJq8bsThAW5DZxtec4
+ jU7c5DjvrCK+AaoxYYgHt3Qo5YZLOMW/s/5FHYtQmZwXYvl2LcfgsjoKfPN7DlnR46tK
+ ycnErNzrgE3vfUWyAratWILMKb/unw0uBXcpA+ZjnueIK6MEN41eZJgCbp5p6fQYFi9k
+ qfWBqKHYJCjMuZ4QfIeVt7xYXFOqsy49zzjsJy2Xt5Wl+ERIWMy89pBSpd8EDMf+Z3Xj
+ wo0g==
+X-Gm-Message-State: AOJu0Yx3nR+1vPjCePjYUzUQfm5fpbfNvOT2b7vwQgc4ef6YFW6lLI3M
+ cFFhNmiw56CGxYYSgKtHiNcpbQFE2hZeGnjorRhScsoVZPq21okkoeFdOtGA9zvtMDiQZ3XToGC
+ WSGWqJ9Yp6n1WdfLLt/K/j097vnW61SH/OqO0PTJhnKa6vbAkvubtEyv+ity4ussNIq+vXxRJbd
+ qfvXJvMFlnfXCa09ko6ocZypNLDupAy8TlVXMl
+X-Received: by 2002:a50:9518:0:b0:57a:2e93:fe80 with SMTP id
+ 4fb4d7f45d1cf-57a3638e699mr7020937a12.18.1717483530586; 
+ Mon, 03 Jun 2024 23:45:30 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF/5eN0Z+DGTyDA5aNfx90+JeVLPhJxYdd7KlNFaCh06wnI+vLaZaRs/ET5eaU009pBeBEIQQ==
+X-Received: by 2002:a50:9518:0:b0:57a:2e93:fe80 with SMTP id
+ 4fb4d7f45d1cf-57a3638e699mr7020927a12.18.1717483530293; 
+ Mon, 03 Jun 2024 23:45:30 -0700 (PDT)
 Received: from avogadro.local ([151.81.115.112])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a68ca4d6570sm401527466b.28.2024.06.03.23.45.27
+ 4fb4d7f45d1cf-57a52f5cbd3sm4484351a12.12.2024.06.03.23.45.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Jun 2024 23:45:27 -0700 (PDT)
+ Mon, 03 Jun 2024 23:45:29 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Michael Roth <michael.roth@amd.com>,
-	Pankaj Gupta <pankaj.gupta@amd.com>
-Subject: [PULL 26/45] i386/sev: Don't return launch measurements for SEV-SNP
- guests
-Date: Tue,  4 Jun 2024 08:43:50 +0200
-Message-ID: <20240604064409.957105-27-pbonzini@redhat.com>
+Cc: Pankaj Gupta <pankaj.gupta@amd.com>
+Subject: [PULL 27/45] i386/sev: Add a class method to determine KVM VM type
+ for SNP guests
+Date: Tue,  4 Jun 2024 08:43:51 +0200
+Message-ID: <20240604064409.957105-28-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240604064409.957105-1-pbonzini@redhat.com>
 References: <20240604064409.957105-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -103,35 +102,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Michael Roth <michael.roth@amd.com>
+SEV guests can use either KVM_X86_DEFAULT_VM, KVM_X86_SEV_VM,
+or KVM_X86_SEV_ES_VM depending on the configuration and what
+the host kernel supports. SNP guests on the other hand can only
+ever use KVM_X86_SNP_VM, so split determination of VM type out
+into a separate class method that can be set accordingly for
+sev-guest vs. sev-snp-guest objects and add handling for SNP.
 
-For SEV-SNP guests, launch measurement is queried from within the guest
-during attestation, so don't attempt to return it as part of
-query-sev-launch-measure.
-
-Signed-off-by: Michael Roth <michael.roth@amd.com>
 Signed-off-by: Pankaj Gupta <pankaj.gupta@amd.com>
-Message-ID: <20240530111643.1091816-13-pankaj.gupta@amd.com>
+Message-ID: <20240530111643.1091816-14-pankaj.gupta@amd.com>
+[Remove unnecessary function pointer declaration. - Paolo]
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/sev.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ target/i386/kvm/kvm.c |  1 +
+ target/i386/sev.c     | 15 ++++++++++++---
+ 2 files changed, 13 insertions(+), 3 deletions(-)
 
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index 6c864e4611f..23a003aaa7e 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -167,6 +167,7 @@ static const char *vm_type_name[] = {
+     [KVM_X86_DEFAULT_VM] = "default",
+     [KVM_X86_SEV_VM] = "SEV",
+     [KVM_X86_SEV_ES_VM] = "SEV-ES",
++    [KVM_X86_SNP_VM] = "SEV-SNP",
+ };
+ 
+ bool kvm_is_vm_type_supported(int type)
 diff --git a/target/i386/sev.c b/target/i386/sev.c
-index 6525b3c1a0e..c3daaf1ad50 100644
+index c3daaf1ad50..072cc4f8530 100644
 --- a/target/i386/sev.c
 +++ b/target/i386/sev.c
-@@ -795,7 +795,9 @@ sev_launch_get_measure(Notifier *notifier, void *unused)
+@@ -885,6 +885,11 @@ out:
+     return sev_common->kvm_type;
+ }
  
- static char *sev_get_launch_measurement(void)
++static int sev_snp_kvm_type(X86ConfidentialGuest *cg)
++{
++    return KVM_X86_SNP_VM;
++}
++
+ static int sev_common_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
  {
--    SevGuestState *sev_guest = SEV_GUEST(MACHINE(qdev_get_machine())->cgs);
-+    ConfidentialGuestSupport *cgs = MACHINE(qdev_get_machine())->cgs;
-+    SevGuestState *sev_guest =
-+        (SevGuestState *)object_dynamic_cast(OBJECT(cgs), TYPE_SEV_GUEST);
+     char *devname;
+@@ -894,6 +899,8 @@ static int sev_common_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
+     struct sev_user_data_status status = {};
+     SevCommonState *sev_common = SEV_COMMON(cgs);
+     SevCommonStateClass *klass = SEV_COMMON_GET_CLASS(cgs);
++    X86ConfidentialGuestClass *x86_klass =
++                               X86_CONFIDENTIAL_GUEST_GET_CLASS(cgs);
  
-     if (sev_guest &&
-         SEV_COMMON(sev_guest)->state >= SEV_STATE_LAUNCH_SECRET) {
+     sev_common->state = SEV_STATE_UNINIT;
+ 
+@@ -964,7 +971,7 @@ static int sev_common_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
+     }
+ 
+     trace_kvm_sev_init();
+-    if (sev_kvm_type(X86_CONFIDENTIAL_GUEST(sev_common)) == KVM_X86_DEFAULT_VM) {
++    if (x86_klass->kvm_type(X86_CONFIDENTIAL_GUEST(sev_common)) == KVM_X86_DEFAULT_VM) {
+         cmd = sev_es_enabled() ? KVM_SEV_ES_INIT : KVM_SEV_INIT;
+ 
+         ret = sev_ioctl(sev_common->sev_fd, cmd, NULL, &fw_error);
+@@ -1441,10 +1448,8 @@ static void
+ sev_common_class_init(ObjectClass *oc, void *data)
+ {
+     ConfidentialGuestSupportClass *klass = CONFIDENTIAL_GUEST_SUPPORT_CLASS(oc);
+-    X86ConfidentialGuestClass *x86_klass = X86_CONFIDENTIAL_GUEST_CLASS(oc);
+ 
+     klass->kvm_init = sev_common_kvm_init;
+-    x86_klass->kvm_type = sev_kvm_type;
+ 
+     object_class_property_add_str(oc, "sev-device",
+                                   sev_common_get_sev_device,
+@@ -1529,10 +1534,12 @@ static void
+ sev_guest_class_init(ObjectClass *oc, void *data)
+ {
+     SevCommonStateClass *klass = SEV_COMMON_CLASS(oc);
++    X86ConfidentialGuestClass *x86_klass = X86_CONFIDENTIAL_GUEST_CLASS(oc);
+ 
+     klass->launch_start = sev_launch_start;
+     klass->launch_finish = sev_launch_finish;
+     klass->kvm_init = sev_kvm_init;
++    x86_klass->kvm_type = sev_kvm_type;
+ 
+     object_class_property_add_str(oc, "dh-cert-file",
+                                   sev_guest_get_dh_cert_file,
+@@ -1770,8 +1777,10 @@ static void
+ sev_snp_guest_class_init(ObjectClass *oc, void *data)
+ {
+     SevCommonStateClass *klass = SEV_COMMON_CLASS(oc);
++    X86ConfidentialGuestClass *x86_klass = X86_CONFIDENTIAL_GUEST_CLASS(oc);
+ 
+     klass->kvm_init = sev_snp_kvm_init;
++    x86_klass->kvm_type = sev_snp_kvm_type;
+ 
+     object_class_property_add(oc, "policy", "uint64",
+                               sev_snp_guest_get_policy,
 -- 
 2.45.1
 
