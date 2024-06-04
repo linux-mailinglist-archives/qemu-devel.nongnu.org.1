@@ -2,83 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 239608FAD84
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 10:25:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EDBAD8FADD0
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 10:44:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEPTC-0003u1-RF; Tue, 04 Jun 2024 04:24:38 -0400
+	id 1sEPmA-0002hR-9W; Tue, 04 Jun 2024 04:44:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sEPTA-0003tN-JJ; Tue, 04 Jun 2024 04:24:36 -0400
-Received: from mgamail.intel.com ([192.198.163.11])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sEPm7-0002gL-KO
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 04:44:11 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sEPT8-0007QM-DL; Tue, 04 Jun 2024 04:24:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1717489475; x=1749025475;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=atOfj9kWdFuVI1HtcdHLArsthwrM8mfXmtw15855REQ=;
- b=kwMkh8Pzvk52J48JIs5cx4g3m+1WYQUGypPbUgcHQ314XwzSibxIRjeW
- aF9BQxVZdNmKzJFLKJdmhxiU6G6tpdzNMHIMdcKNN26Nz6Te6kLqxpMEb
- lBT5mNcogk71Npo5CsIs68At3Wn4oEFkRzQIwBshC6qr3gvay22+5ft1A
- vKI4M3vgkfuCsd8brkYgfW29ERhlyC5RRVWKBfw5ZAarBXEWwVLeqKC1w
- g8f/XlAjgDWBlzHHCd8nEFrr6P3A2N3r+nuKl30rfx5kYK2VI6j1PEBnb
- 8JHgCvM6nA9SKmCZyeeatxZY9uTd0nFo5ddyxPOVaV5sEH+4IW5hiiEy0 Q==;
-X-CSE-ConnectionGUID: XyfVJNAZRmOSkgLQ1H+mbA==
-X-CSE-MsgGUID: a3+ME09QS3SFWrYHNd9KsQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11092"; a="24644300"
-X-IronPort-AV: E=Sophos;i="6.08,213,1712646000"; d="scan'208";a="24644300"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Jun 2024 01:24:24 -0700
-X-CSE-ConnectionGUID: zjJrKqpcS86f3Y2Vz9QwYA==
-X-CSE-MsgGUID: jwlQwP8FTJCMn3VANeHNmw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,213,1712646000"; d="scan'208";a="37152758"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by fmviesa008.fm.intel.com with ESMTP; 04 Jun 2024 01:24:19 -0700
-Date: Tue, 4 Jun 2024 16:39:44 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eric Blake <eblake@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>,
- Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Sia Jee Heng <jeeheng.sia@starfivetech.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org, qemu-riscv@nongnu.org, qemu-arm@nongnu.org,
- Zhenyu Wang <zhenyu.z.wang@intel.com>,
- Dapeng Mi <dapeng1.mi@linux.intel.com>, Yongwei Ma <yongwei.ma@intel.com>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sEPm6-0005LK-67
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 04:44:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1717490649;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=zh7oc39RI723rzfabH7zb7UQwK5DnQcHFkmye0dvQB8=;
+ b=M7oGuvbtzUHU3ZqrXghC41I0H/KSAAf1K3wN4wIDSil6bqKjrRbHkYeJtHZkvq/Yvi6LKC
+ cJtAIyIsUggxLK7vO31KmgaONJqIkIyy/haa0Dr48x2IjPReVbgjC2E1qsaEmsIsl0Jj/9
+ DASBABcg6aJYJ2q5O05+ipZ9yIofRZA=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-27-4NDhaJXWMhGamih_1BkHOg-1; Tue,
+ 04 Jun 2024 04:44:03 -0400
+X-MC-Unique: 4NDhaJXWMhGamih_1BkHOg-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BE1AB1C03D84;
+ Tue,  4 Jun 2024 08:44:02 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.93])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 4CF982875;
+ Tue,  4 Jun 2024 08:44:02 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 720C521E6687; Tue,  4 Jun 2024 10:44:01 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Zhao Liu <zhao1.liu@intel.com>
+Cc: Daniel P . =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,  Eduardo
+ Habkost
+ <eduardo@habkost.net>,  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Yanan Wang
+ <wangyanan55@huawei.com>,  "Michael S . Tsirkin" <mst@redhat.com>,  Paolo
+ Bonzini <pbonzini@redhat.com>,  Richard Henderson
+ <richard.henderson@linaro.org>,  Eric Blake <eblake@redhat.com>,  Marcelo
+ Tosatti <mtosatti@redhat.com>,  Alex =?utf-8?Q?Benn=C3=A9e?=
+ <alex.bennee@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>,  Jonathan Cameron
+ <Jonathan.Cameron@huawei.com>,  Sia Jee Heng
+ <jeeheng.sia@starfivetech.com>,  qemu-devel@nongnu.org,
+ kvm@vger.kernel.org,  qemu-riscv@nongnu.org,  qemu-arm@nongnu.org,
+ Zhenyu Wang <zhenyu.z.wang@intel.com>,  Dapeng Mi
+ <dapeng1.mi@linux.intel.com>,  Yongwei Ma <yongwei.ma@intel.com>
 Subject: Re: [RFC v2 1/7] hw/core: Make CPU topology enumeration arch-agnostic
-Message-ID: <Zl7S0IOlLvnua319@intel.com>
+In-Reply-To: <Zl7S0IOlLvnua319@intel.com> (Zhao Liu's message of "Tue, 4 Jun
+ 2024 16:39:44 +0800")
 References: <20240530101539.768484-1-zhao1.liu@intel.com>
  <20240530101539.768484-2-zhao1.liu@intel.com>
- <87y17mfccp.fsf@pond.sub.org>
+ <87y17mfccp.fsf@pond.sub.org> <Zl7S0IOlLvnua319@intel.com>
+Date: Tue, 04 Jun 2024 10:44:01 +0200
+Message-ID: <878qzlayi6.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87y17mfccp.fsf@pond.sub.org>
-Received-SPF: pass client-ip=192.198.163.11; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,99 +96,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-[snip]
+Zhao Liu <zhao1.liu@intel.com> writes:
 
-> > +CPUTopoInfo cpu_topo_descriptors[] = {
-> > +    [CPU_TOPO_LEVEL_INVALID] = { .name = "invalid", },
-> > +    [CPU_TOPO_LEVEL_THREAD]  = { .name = "thread",  },
-> > +    [CPU_TOPO_LEVEL_CORE]    = { .name = "core",    },
-> > +    [CPU_TOPO_LEVEL_MODULE]  = { .name = "module",  },
-> > +    [CPU_TOPO_LEVEL_CLUSTER] = { .name = "cluster", },
-> > +    [CPU_TOPO_LEVEL_DIE]     = { .name = "die",     },
-> > +    [CPU_TOPO_LEVEL_SOCKET]  = { .name = "socket",  },
-> > +    [CPU_TOPO_LEVEL_BOOK]    = { .name = "book",    },
-> > +    [CPU_TOPO_LEVEL_DRAWER]  = { .name = "drawer",  },
-> > +    [CPU_TOPO_LEVEL__MAX]    = { .name = NULL,      },
-> > +};
-> 
-> This looks redundant with generated
-> 
->     const QEnumLookup CPUTopoLevel_lookup = {
->         .array = (const char *const[]) {
->             [CPU_TOPO_LEVEL_INVALID] = "invalid",
->             [CPU_TOPO_LEVEL_THREAD] = "thread",
->             [CPU_TOPO_LEVEL_CORE] = "core",
->             [CPU_TOPO_LEVEL_MODULE] = "module",
->             [CPU_TOPO_LEVEL_CLUSTER] = "cluster",
->             [CPU_TOPO_LEVEL_DIE] = "die",
->             [CPU_TOPO_LEVEL_SOCKET] = "socket",
->             [CPU_TOPO_LEVEL_BOOK] = "book",
->             [CPU_TOPO_LEVEL_DRAWER] = "drawer",
->         },
->         .size = CPU_TOPO_LEVEL__MAX
->     };
-> 
-> > +
-> > +const char *cpu_topo_to_string(CPUTopoLevel topo)
-> > +{
-> > +    return cpu_topo_descriptors[topo].name;
-> > +}
-> 
-> And this with generated CPUTopoLevel_str().
+[...]
 
-Thanks! I missed these generated helpers.
+>> > +##
+>> > +# @CPUTopoLevel:
+>> > +#
+>> > +# An enumeration of CPU topology levels.
+>> > +#
+>> > +# @invalid: Invalid topology level, used as a placeholder.
+>> 
+>> Placeholder for what?
+>
+> I was trying to express that when no specific topology level is
+> specified, it will be initialized to this value by default.
+>
+> Or what about just deleting this placeholder related words and just
+> saying it's "Invalid topology level"?
 
-[snip]
+Works for me.
 
-> > +##
-> > +# @CPUTopoLevel:
-> > +#
-> > +# An enumeration of CPU topology levels.
-> > +#
-> > +# @invalid: Invalid topology level, used as a placeholder.
-> 
-> Placeholder for what?
-
-I was trying to express that when no specific topology level is
-specified, it will be initialized to this value by default.
-
-Or what about just deleting this placeholder related words and just
-saying it's "Invalid topology level"?
-
-> > +#
-> > +# @thread: thread level, which would also be called SMT level or logical
-> > +#     processor level. The @threads option in -smp is used to configure
-> > +#     the topology of this level.
-> > +#
-> > +# @core: core level. The @cores option in -smp is used to configure the
-> > +#     topology of this level.
-> > +#
-> > +# @module: module level. The @modules option in -smp is used to
-> > +#     configure the topology of this level.
-> > +#
-> > +# @cluster: cluster level. The @clusters option in -smp is used to
-> > +#     configure the topology of this level.
-> > +#
-> > +# @die: die level. The @dies option in -smp is used to configure the
-> > +#     topology of this level.
-> > +#
-> > +# @socket: socket level, which would also be called package level. The
-> > +#     @sockets option in -smp is used to configure the topology of this
-> > +#     level.
-> > +#
-> > +# @book: book level. The @books option in -smp is used to configure the
-> > +#     topology of this level.
-> > +#
-> > +# @drawer: drawer level. The @drawers option in -smp is used to
-> > +#     configure the topology of this level.
-> 
-> As far as I can tell, -smp is sugar for machine property "smp" of QAPI
-> type SMPConfiguration.  Should we refer to SMPConfiguration instead of
-> -smp?
-
-Yes, SMPConfiguration is better.
-
-Thanks,
-Zhao
+[...]
 
 
