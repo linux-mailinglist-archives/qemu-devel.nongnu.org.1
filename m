@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 781F78FAB58
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 08:50:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DAC508FAB53
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 08:50:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sENx0-0007yi-9M; Tue, 04 Jun 2024 02:47:18 -0400
+	id 1sENws-0006u2-BM; Tue, 04 Jun 2024 02:47:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sENvz-0004mu-Cd
+ id 1sENw1-0004qh-BW
  for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:46:20 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sENvx-0007eO-G8
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:46:15 -0400
+ id 1sENvz-0007em-TW
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:46:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717483573;
+ s=mimecast20190719; t=1717483575;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=15EXu4vw0Eg5jrFDQ9InlnGmqmmoGShg6u4MR7nWG+Q=;
- b=Zzd245zuS3W1XgVsuDqCaM96Zd0C9lEXwdoF9DZXYiwzMMp7yvBokkCLlTTyDu79PETmQX
- YlOHZLVYIcuuFukvqv5M55TZiq7W8PrZ/r/r+EFK4LIJAPmuNDI/LE0MWhlfURDMOM4sOP
- 1nP42BNB18oBguzWwb9dConsLHYX0Jg=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Uq2q9uxyAktwdcKYIxqUTltXlnnz0rVwX7EaTrp/tnM=;
+ b=N3eQ/XqJ+KVCvu4leU2wabvzIm5RMw0dsR8+Mo6T4tdgTwfpuFQecU4m/gDNhzlPjJq7Wc
+ hUwIi17L5uHkkPADEhppLBNkC+lGt9ZDiOOzFbZtg4Hy/VEo5aVVzcfPwCxDS/GXvXtY7C
+ ++j1w0NRtoe3vZE9x7UrsGkoRDgzQuk=
+Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
+ [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-368-rMUyVgbPPwOG0KqAb7n_qw-1; Tue, 04 Jun 2024 02:46:11 -0400
-X-MC-Unique: rMUyVgbPPwOG0KqAb7n_qw-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-a68bc8444f7so73350966b.1
- for <qemu-devel@nongnu.org>; Mon, 03 Jun 2024 23:46:11 -0700 (PDT)
+ us-mta-319-HJ0qzlGrO9eBzsKR8cYQOg-1; Tue, 04 Jun 2024 02:46:14 -0400
+X-MC-Unique: HJ0qzlGrO9eBzsKR8cYQOg-1
+Received: by mail-lj1-f199.google.com with SMTP id
+ 38308e7fff4ca-2eaa6f40e15so19454341fa.2
+ for <qemu-devel@nongnu.org>; Mon, 03 Jun 2024 23:46:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717483569; x=1718088369;
+ d=1e100.net; s=20230601; t=1717483572; x=1718088372;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=15EXu4vw0Eg5jrFDQ9InlnGmqmmoGShg6u4MR7nWG+Q=;
- b=jlOuxuObOsy3+zfPE0a/FJ3Z7F4pKmuu/TiTiJt10xApTuPmuKTR9oADWRZ0jkU0//
- QxyRnsHUJ1XQZEgudIPobRMDcIcZxs2DxJSSJv9231T/jLrXESPrbVDtB5ueqfheXbjZ
- GNxj2UHqO10ti33x4JDm/23qDwAScvaJhj4QsNAnkd+LqHgx/yyKU84XOayWNLtA1iAz
- 4jEKc5/o2cd5JZxI7L0Ss4dJz7AzCUOiWD/rh1Z0zuGImT3/CGqjm1eclb/gBQisarjv
- Rtjq65TYBWsLN/tzvBcYvfDfKwGJvgejBbV4asMSGP33WUWV2ZKmXGcm6zJXV4//6IzP
- HEDg==
-X-Gm-Message-State: AOJu0Yx6WbJVya7oP8KSjJJp2v6mpU7hYIcM6754r+o4bDIgU4aTtctv
- sBqRGFrfg0KuCR2Welhgy558+ud3EhvOJvmBlGRMmbi8eBssLgoV2DSAfOnxrLyiI5K/bI0WMMI
- R0QjGe27zMUoMj1I4kSf3XQutCXPlWRY2ko0yO/nglSwmyOECwTk+v+ROvSj4m7+uhpQcZ4cJDI
- oX1jFLS4tf8H2kfu8ve85Kh5ByjjeolfYzLkbc
-X-Received: by 2002:a50:d4d6:0:b0:578:5756:1519 with SMTP id
- 4fb4d7f45d1cf-57a3637f588mr9668001a12.16.1717483568819; 
- Mon, 03 Jun 2024 23:46:08 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFM3uKBIDz5fRwGVprnCP1O8rVtB2HhQyXRuCbrkg2UkFPpQ3rKOHM1RvtXVOighnzPFP158A==
-X-Received: by 2002:a50:d4d6:0:b0:578:5756:1519 with SMTP id
- 4fb4d7f45d1cf-57a3637f588mr9667985a12.16.1717483568371; 
- Mon, 03 Jun 2024 23:46:08 -0700 (PDT)
+ bh=Uq2q9uxyAktwdcKYIxqUTltXlnnz0rVwX7EaTrp/tnM=;
+ b=swcl/1v8h53gRpVlBaP4zbLIhxAxGVsV4RL0sU+lD5KRZkOKbVINTiI2uX/AqZSCFZ
+ 2AkBMIn4fTC2y3KWm9NWJini5uDxHRJfrcQ+Blt23rLEjQncy934cKQzmVNMV/3ZT/Tm
+ 7VX7qGFUrukoMpQSx8qwsP+ddedrrj5yynfYq8AfUa2snWKhsjNEqbYry/U6uz6xn8GF
+ 0OaxPwJYx/Mq0Z5C8sjZ7xUFe7kQHRg3tgqmNDk24ZOF18ErZIrDZgyyhmE5+iU3nPJa
+ P93VMBjXfzt9SdwjqCeejZqnzZz0FEEjp4M2mMG5fnBBoJu390XaEHV56z282idTsoMi
+ 5twA==
+X-Gm-Message-State: AOJu0Yyqc0TjOhwuLfYLtWVL5UvlgrMtCoWsD5xRSoe9xz+rMmBu4AWy
+ 8iDW4rhM8cfDo85rW2D8JdfXNW4LrLTqfSZRj5TwcL8TZUjv5Oxm7IwJ7rImPjcZyZ13kfxKqPf
+ yq7RJn3HHHxWEdSVTFcehhsA4YTNW/GrtKF7kMnAt8+yc/ssIU6Bnytc7CYHK9p4RrLTfO/bUG4
+ xExTJA1MQavKT/ZWuQIv4tPJckKG/tHzgjUSUo
+X-Received: by 2002:a2e:9d88:0:b0:2e1:9c57:195a with SMTP id
+ 38308e7fff4ca-2ea951de27fmr90810561fa.32.1717483572081; 
+ Mon, 03 Jun 2024 23:46:12 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFPVSJacDWONa1Gd79Mcp5QwQL4/P46iBjL4ndcvKW/Tw1hXRofs0kZFlHIRgu0Ntnp0JDTUg==
+X-Received: by 2002:a2e:9d88:0:b0:2e1:9c57:195a with SMTP id
+ 38308e7fff4ca-2ea951de27fmr90810401fa.32.1717483571710; 
+ Mon, 03 Jun 2024 23:46:11 -0700 (PDT)
 Received: from avogadro.local ([151.81.115.112])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-57a5dc1e2d6sm3756274a12.59.2024.06.03.23.46.07
+ a640c23a62f3a-a67ea586910sm582398766b.113.2024.06.03.23.46.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Jun 2024 23:46:07 -0700 (PDT)
+ Mon, 03 Jun 2024 23:46:10 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Dov Murik <dovmurik@linux.ibm.com>, Michael Roth <michael.roth@amd.com>,
+Cc: Xiaoyao Li <xiaoyao.li@intel.com>, Michael Roth <michael.roth@amd.com>,
  Pankaj Gupta <pankaj.gupta@amd.com>
-Subject: [PULL 42/45] i386/sev: Allow measured direct kernel boot on SNP
-Date: Tue,  4 Jun 2024 08:44:06 +0200
-Message-ID: <20240604064409.957105-43-pbonzini@redhat.com>
+Subject: [PULL 43/45] memory: Introduce memory_region_init_ram_guest_memfd()
+Date: Tue,  4 Jun 2024 08:44:07 +0200
+Message-ID: <20240604064409.957105-44-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240604064409.957105-1-pbonzini@redhat.com>
 References: <20240604064409.957105-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -102,226 +102,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Dov Murik <dovmurik@linux.ibm.com>
+From: Xiaoyao Li <xiaoyao.li@intel.com>
 
-In SNP, the hashes page designated with a specific metadata entry
-published in AmdSev OVMF.
+Introduce memory_region_init_ram_guest_memfd() to allocate private
+guset memfd on the MemoryRegion initialization. It's for the use case of
+TDVF, which must be private on TDX case.
 
-Therefore, if the user enabled kernel hashes (for measured direct boot),
-QEMU should prepare the content of hashes table, and during the
-processing of the metadata entry it copy the content into the designated
-page and encrypt it.
-
-Note that in SNP (unlike SEV and SEV-ES) the measurements is done in
-whole 4KB pages.  Therefore QEMU zeros the whole page that includes the
-hashes table, and fills in the kernel hashes area in that page, and then
-encrypts the whole page.  The rest of the page is reserved for SEV
-launch secrets which are not usable anyway on SNP.
-
-If the user disabled kernel hashes, QEMU pre-validates the kernel hashes
-page as a zero page.
-
-Signed-off-by: Dov Murik <dovmurik@linux.ibm.com>
+Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 Signed-off-by: Michael Roth <michael.roth@amd.com>
 Signed-off-by: Pankaj Gupta <pankaj.gupta@amd.com>
-Message-ID: <20240530111643.1091816-24-pankaj.gupta@amd.com>
+Message-ID: <20240530111643.1091816-4-pankaj.gupta@amd.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- include/hw/i386/pc.h |   2 +
- target/i386/sev.c    | 113 ++++++++++++++++++++++++++++++++-----------
- 2 files changed, 86 insertions(+), 29 deletions(-)
+ include/exec/memory.h |  6 ++++++
+ system/memory.c       | 24 ++++++++++++++++++++++++
+ 2 files changed, 30 insertions(+)
 
-diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
-index c653b8eeb24..ca7904ac2c4 100644
---- a/include/hw/i386/pc.h
-+++ b/include/hw/i386/pc.h
-@@ -172,6 +172,8 @@ typedef enum {
-     SEV_DESC_TYPE_SNP_SECRETS,
-     /* The section contains address that can be used as a CPUID page */
-     SEV_DESC_TYPE_CPUID,
-+    /* The section contains the region for kernel hashes for measured direct boot */
-+    SEV_DESC_TYPE_SNP_KERNEL_HASHES = 0x10,
+diff --git a/include/exec/memory.h b/include/exec/memory.h
+index 9cdd64e9c69..1be58f694c9 100644
+--- a/include/exec/memory.h
++++ b/include/exec/memory.h
+@@ -1638,6 +1638,12 @@ bool memory_region_init_ram(MemoryRegion *mr,
+                             uint64_t size,
+                             Error **errp);
  
- } ovmf_sev_metadata_desc_type;
- 
-diff --git a/target/i386/sev.c b/target/i386/sev.c
-index 3fce4c08ebb..004c667ac14 100644
---- a/target/i386/sev.c
-+++ b/target/i386/sev.c
-@@ -115,6 +115,10 @@ struct SevCommonStateClass {
-     X86ConfidentialGuestClass parent_class;
- 
-     /* public */
-+    bool (*build_kernel_loader_hashes)(SevCommonState *sev_common,
-+                                       SevHashTableDescriptor *area,
-+                                       SevKernelLoaderContext *ctx,
-+                                       Error **errp);
-     int (*launch_start)(SevCommonState *sev_common);
-     void (*launch_finish)(SevCommonState *sev_common);
-     int (*launch_update_data)(SevCommonState *sev_common, hwaddr gpa, uint8_t *ptr, uint64_t len);
-@@ -154,6 +158,9 @@ struct SevSnpGuestState {
- 
-     struct kvm_sev_snp_launch_start kvm_start_conf;
-     struct kvm_sev_snp_launch_finish kvm_finish_conf;
++bool memory_region_init_ram_guest_memfd(MemoryRegion *mr,
++                                        Object *owner,
++                                        const char *name,
++                                        uint64_t size,
++                                        Error **errp);
 +
-+    uint32_t kernel_hashes_offset;
-+    PaddedSevHashTable *kernel_hashes_data;
- };
- 
- #define DEFAULT_GUEST_POLICY    0x1 /* disable debug */
-@@ -1189,6 +1196,23 @@ snp_launch_update_cpuid(uint32_t cpuid_addr, void *hva, uint32_t cpuid_len)
-                                   KVM_SEV_SNP_PAGE_TYPE_CPUID);
- }
- 
-+static int
-+snp_launch_update_kernel_hashes(SevSnpGuestState *sev_snp, uint32_t addr,
-+                                void *hva, uint32_t len)
-+{
-+    int type = KVM_SEV_SNP_PAGE_TYPE_ZERO;
-+    if (sev_snp->parent_obj.kernel_hashes) {
-+        assert(sev_snp->kernel_hashes_data);
-+        assert((sev_snp->kernel_hashes_offset +
-+                sizeof(*sev_snp->kernel_hashes_data)) <= len);
-+        memset(hva, 0, len);
-+        memcpy(hva + sev_snp->kernel_hashes_offset, sev_snp->kernel_hashes_data,
-+               sizeof(*sev_snp->kernel_hashes_data));
-+        type = KVM_SEV_SNP_PAGE_TYPE_NORMAL;
-+    }
-+    return snp_launch_update_data(addr, hva, len, type);
-+}
-+
- static int
- snp_metadata_desc_to_page_type(int desc_type)
- {
-@@ -1225,6 +1249,9 @@ snp_populate_metadata_pages(SevSnpGuestState *sev_snp,
- 
-         if (type == KVM_SEV_SNP_PAGE_TYPE_CPUID) {
-             ret = snp_launch_update_cpuid(desc->base, hva, desc->len);
-+        } else if (desc->type == SEV_DESC_TYPE_SNP_KERNEL_HASHES) {
-+            ret = snp_launch_update_kernel_hashes(sev_snp, desc->base, hva,
-+                                                  desc->len);
-         } else {
-             ret = snp_launch_update_data(desc->base, hva, desc->len, type);
-         }
-@@ -1823,40 +1850,31 @@ static bool build_kernel_loader_hashes(PaddedSevHashTable *padded_ht,
+ /**
+  * memory_region_init_rom: Initialize a ROM memory region.
+  *
+diff --git a/system/memory.c b/system/memory.c
+index 9540caa8a1f..74cd73ebc78 100644
+--- a/system/memory.c
++++ b/system/memory.c
+@@ -3649,6 +3649,30 @@ bool memory_region_init_ram(MemoryRegion *mr,
      return true;
  }
  
--/*
-- * Add the hashes of the linux kernel/initrd/cmdline to an encrypted guest page
-- * which is included in SEV's initial memory measurement.
-- */
--bool sev_add_kernel_loader_hashes(SevKernelLoaderContext *ctx, Error **errp)
-+static bool sev_snp_build_kernel_loader_hashes(SevCommonState *sev_common,
-+                                               SevHashTableDescriptor *area,
-+                                               SevKernelLoaderContext *ctx,
-+                                               Error **errp)
++bool memory_region_init_ram_guest_memfd(MemoryRegion *mr,
++                                        Object *owner,
++                                        const char *name,
++                                        uint64_t size,
++                                        Error **errp)
 +{
-+    /*
-+     * SNP: Populate the hashes table in an area that later in
-+     * snp_launch_update_kernel_hashes() will be copied to the guest memory
-+     * and encrypted.
++    DeviceState *owner_dev;
++
++    if (!memory_region_init_ram_flags_nomigrate(mr, owner, name, size,
++                                                RAM_GUEST_MEMFD, errp)) {
++        return false;
++    }
++    /* This will assert if owner is neither NULL nor a DeviceState.
++     * We only want the owner here for the purposes of defining a
++     * unique name for migration. TODO: Ideally we should implement
++     * a naming scheme for Objects which are not DeviceStates, in
++     * which case we can relax this restriction.
 +     */
-+    SevSnpGuestState *sev_snp_guest = SEV_SNP_GUEST(sev_common);
-+    sev_snp_guest->kernel_hashes_offset = area->base & ~TARGET_PAGE_MASK;
-+    sev_snp_guest->kernel_hashes_data = g_new0(PaddedSevHashTable, 1);
-+    return build_kernel_loader_hashes(sev_snp_guest->kernel_hashes_data, ctx, errp);
++    owner_dev = DEVICE(owner);
++    vmstate_register_ram(mr, owner_dev);
++
++    return true;
 +}
 +
-+static bool sev_build_kernel_loader_hashes(SevCommonState *sev_common,
-+                                           SevHashTableDescriptor *area,
-+                                           SevKernelLoaderContext *ctx,
-+                                           Error **errp)
- {
--    uint8_t *data;
--    SevHashTableDescriptor *area;
-     PaddedSevHashTable *padded_ht;
-     hwaddr mapped_len = sizeof(*padded_ht);
-     MemTxAttrs attrs = { 0 };
-     bool ret = true;
--    SevCommonState *sev_common = SEV_COMMON(MACHINE(qdev_get_machine())->cgs);
--
--    /*
--     * Only add the kernel hashes if the sev-guest configuration explicitly
--     * stated kernel-hashes=on.
--     */
--    if (!sev_common->kernel_hashes) {
--        return false;
--    }
--
--    if (!pc_system_ovmf_table_find(SEV_HASH_TABLE_RV_GUID, &data, NULL)) {
--        error_setg(errp, "SEV: kernel specified but guest firmware "
--                         "has no hashes table GUID");
--        return false;
--    }
--
--    area = (SevHashTableDescriptor *)data;
--    if (!area->base || area->size < sizeof(PaddedSevHashTable)) {
--        error_setg(errp, "SEV: guest firmware hashes table area is invalid "
--                         "(base=0x%x size=0x%x)", area->base, area->size);
--        return false;
--    }
- 
-     /*
-      * Populate the hashes table in the guest's memory at the OVMF-designated
-@@ -1884,6 +1902,41 @@ bool sev_add_kernel_loader_hashes(SevKernelLoaderContext *ctx, Error **errp)
-     return ret;
- }
- 
-+/*
-+ * Add the hashes of the linux kernel/initrd/cmdline to an encrypted guest page
-+ * which is included in SEV's initial memory measurement.
-+ */
-+bool sev_add_kernel_loader_hashes(SevKernelLoaderContext *ctx, Error **errp)
-+{
-+    uint8_t *data;
-+    SevHashTableDescriptor *area;
-+    SevCommonState *sev_common = SEV_COMMON(MACHINE(qdev_get_machine())->cgs);
-+    SevCommonStateClass *klass = SEV_COMMON_GET_CLASS(sev_common);
-+
-+    /*
-+     * Only add the kernel hashes if the sev-guest configuration explicitly
-+     * stated kernel-hashes=on.
-+     */
-+    if (!sev_common->kernel_hashes) {
-+        return false;
-+    }
-+
-+    if (!pc_system_ovmf_table_find(SEV_HASH_TABLE_RV_GUID, &data, NULL)) {
-+        error_setg(errp, "SEV: kernel specified but guest firmware "
-+                         "has no hashes table GUID");
-+        return false;
-+    }
-+
-+    area = (SevHashTableDescriptor *)data;
-+    if (!area->base || area->size < sizeof(PaddedSevHashTable)) {
-+        error_setg(errp, "SEV: guest firmware hashes table area is invalid "
-+                         "(base=0x%x size=0x%x)", area->base, area->size);
-+        return false;
-+    }
-+
-+    return klass->build_kernel_loader_hashes(sev_common, area, ctx, errp);
-+}
-+
- static char *
- sev_common_get_sev_device(Object *obj, Error **errp)
- {
-@@ -1998,6 +2051,7 @@ sev_guest_class_init(ObjectClass *oc, void *data)
-     SevCommonStateClass *klass = SEV_COMMON_CLASS(oc);
-     X86ConfidentialGuestClass *x86_klass = X86_CONFIDENTIAL_GUEST_CLASS(oc);
- 
-+    klass->build_kernel_loader_hashes = sev_build_kernel_loader_hashes;
-     klass->launch_start = sev_launch_start;
-     klass->launch_finish = sev_launch_finish;
-     klass->launch_update_data = sev_launch_update_data;
-@@ -2242,6 +2296,7 @@ sev_snp_guest_class_init(ObjectClass *oc, void *data)
-     SevCommonStateClass *klass = SEV_COMMON_CLASS(oc);
-     X86ConfidentialGuestClass *x86_klass = X86_CONFIDENTIAL_GUEST_CLASS(oc);
- 
-+    klass->build_kernel_loader_hashes = sev_snp_build_kernel_loader_hashes;
-     klass->launch_start = sev_snp_launch_start;
-     klass->launch_finish = sev_snp_launch_finish;
-     klass->launch_update_data = sev_snp_launch_update_data;
+ bool memory_region_init_rom(MemoryRegion *mr,
+                             Object *owner,
+                             const char *name,
 -- 
 2.45.1
 
