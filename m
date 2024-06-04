@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3841C8FAB4B
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 08:49:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60B558FAB50
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 08:50:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sENx9-00087v-W5; Tue, 04 Jun 2024 02:47:28 -0400
+	id 1sENwh-0005sc-FS; Tue, 04 Jun 2024 02:47:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sENvb-0004Ph-Oi
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:45:53 -0400
+ id 1sENvj-0004Xn-CK
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:46:03 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sENvZ-0007bm-M6
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:45:51 -0400
+ id 1sENvc-0007cC-KU
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:45:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717483548;
+ s=mimecast20190719; t=1717483552;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=fdzc0pnme++SQh28YLBWqEPjMSsoA3eLg+edwlgf8UI=;
- b=B7LfIYJi3qCRH+Sl1YTCE9oVr2jtGEWWuQaNrIPwjtPPL0TORaiZvwNfmxFhZk4UGGkZSR
- X70PxuwQ3ZIAjXLuww/gbVWpYgaSQ2PG7OQugQX9gYR4vmPvF+hXq5sd1+HHVrex7rUAYw
- H8sKjip8UAJ1GODYt7tQlmOPvKKHg/g=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=yQxTyCkViFqK9megWi2GDlafsm2LHU0mRoruP/ycIy0=;
+ b=DqNehMoPnqpv3GLHhRaGrBuQSzpMphtfv5uLwiKVLkprnNPSRCUWR/NOZGQ2Eh75LZp9kB
+ cIMohC90zGhP1pJHcx4u4T5CjiHX88AKsX0mnJucjYAKfNeqhar4MQ/smrGZc0jyNUGCsR
+ /NtpggNB8Cq0LYU+OzFGntwj7LYa/qY=
+Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
+ [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-663-xF_kAWUjNOWGLnfo3jo6ZA-1; Tue, 04 Jun 2024 02:45:47 -0400
-X-MC-Unique: xF_kAWUjNOWGLnfo3jo6ZA-1
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-a6840dde124so353644566b.1
- for <qemu-devel@nongnu.org>; Mon, 03 Jun 2024 23:45:47 -0700 (PDT)
+ us-mta-607-o4gh8EWnPyeQJ7mmhh5pgA-1; Tue, 04 Jun 2024 02:45:50 -0400
+X-MC-Unique: o4gh8EWnPyeQJ7mmhh5pgA-1
+Received: by mail-lf1-f69.google.com with SMTP id
+ 2adb3069b0e04-52b84eb911dso3182086e87.0
+ for <qemu-devel@nongnu.org>; Mon, 03 Jun 2024 23:45:50 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717483546; x=1718088346;
+ d=1e100.net; s=20230601; t=1717483548; x=1718088348;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=fdzc0pnme++SQh28YLBWqEPjMSsoA3eLg+edwlgf8UI=;
- b=MX/fwvcm6zProuk7HNkSg+DRa+6ak1Xt+v8jZk8vNvgtm/sIrRCEgb0uVt9nZPp6eM
- 9RXIwiaC+gAE9Lc/LxvUc6mnMJ1dtrVoD0ctz2WhorAUwCxEcpBYZVk8LP+27zcYJnZL
- a3jbEf+hCLobSTiQcq6mkohLqFvJn18E2VOrGwEf3LuYqW5IDGYnNbRzvdziXluK5+dn
- ICYDdgNxqTTq1bFGxVJZnsD5pi+UOCc/0X/VrHV7JWcP5Ys16m4VB+T1xYwwYytZiWPa
- kY+DhY8GgyecdP17Ir6vwDMayxPg4ewp724KiApWwyz+2zmGrw08S0Q652wRLoD562fO
- pbZg==
-X-Gm-Message-State: AOJu0Ywi8VCiraPuyMkS9nS2AUalIGzr4hLZAacNYsQ/8JV+fKg0q7GQ
- hk70wN9Zf4p7VIa392OOOZYVNEYLoz4fC29YhYTNpNSLK1W7ARk94Ub2Yqf6yHmwbZj/pjQEvI3
- qQ9APRsl5wpDlHINVrjjWy/Kyho02WAoEOxWpQXqejG9xhUL7Iy+aKMZDlMeYlERnMzWdfCDHMZ
- x8IaKTZmb3w78h4xEtGA40CSDgrm4iJxwzVTD3
-X-Received: by 2002:a17:907:36c:b0:a65:2b64:f84a with SMTP id
- a640c23a62f3a-a69546b0a23mr122950866b.25.1717483545787; 
- Mon, 03 Jun 2024 23:45:45 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHMJL2vePRvJXiQ9VNn+qDYdfNVtvBaD9K2HF91LoWdjkGZvpP0r6NfVIDWy6i4WX5QSltPaQ==
-X-Received: by 2002:a17:907:36c:b0:a65:2b64:f84a with SMTP id
- a640c23a62f3a-a69546b0a23mr122949166b.25.1717483545352; 
- Mon, 03 Jun 2024 23:45:45 -0700 (PDT)
+ bh=yQxTyCkViFqK9megWi2GDlafsm2LHU0mRoruP/ycIy0=;
+ b=rJWFvjpNqahnrgHR0jh8bSCn5dcqAEHaz9lww4QRwb4MSAwNmrI2H04kHyM01Uy2fs
+ dqYy5jtzguU8RuKceo68+MoMJPid7OFrY2UgDX7EsKS1F4zgLZ6xgO+8EDOnKEK5fkYB
+ tiXbe864wO4F55ZwiSBOpFcphhWbwTVrXJOsWbYr2J3tPARpTZtxzd1XBesMVaSxXPqc
+ /J54j5KuIikxbkrctmGqJ+axq70ANaQL6VH4qqdisGvTV8YbyCqThEAslJVG5TLgb1cK
+ FuRTjeQ65WonlcCc3z+5rI9Sa1jh91ntriMXgPbF6wFj8hHwM8YnrIg460SFE/LuHdjn
+ fU4Q==
+X-Gm-Message-State: AOJu0YxifrWkiFYqKh3k80l7Hr6+HCyi2vTd74tdMfgbC+HoqeAQ3YuI
+ pMv9ZqWspF5gZXcRhqrFZj0ddbK1huX3HA/1VvNMdY6vq8Qr4sdAGDUfgmm+69zA+YAy+/lBlPp
+ z+sdU+3XviTjjmgtrKxnIbkSKWgNsDdAA8821+v8cxlChFkpgz9Vf6xy3VH8IaFPjOuJQ5Cvawb
+ T5SLz0nDEU8g9hyhr0LBYpr3qLrDruYB8+DsKH
+X-Received: by 2002:a05:6512:7b:b0:52b:8843:b084 with SMTP id
+ 2adb3069b0e04-52b896bfa33mr7463253e87.47.1717483548385; 
+ Mon, 03 Jun 2024 23:45:48 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFM1Qtu3YZM5185bh8mBy+tZLZLHFna0aaQXvn57Y/jiYRFD+Wtr96dinCcWnjRKnxBtsdsIQ==
+X-Received: by 2002:a05:6512:7b:b0:52b:8843:b084 with SMTP id
+ 2adb3069b0e04-52b896bfa33mr7463232e87.47.1717483547879; 
+ Mon, 03 Jun 2024 23:45:47 -0700 (PDT)
 Received: from avogadro.local ([151.81.115.112])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a681c4f2b6fsm576670566b.144.2024.06.03.23.45.44
+ 4fb4d7f45d1cf-57a31b99445sm6719543a12.18.2024.06.03.23.45.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Jun 2024 23:45:44 -0700 (PDT)
+ Mon, 03 Jun 2024 23:45:47 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Brijesh Singh <brijesh.singh@amd.com>, Michael Roth <michael.roth@amd.com>,
- Pankaj Gupta <pankaj.gupta@amd.com>
-Subject: [PULL 33/45] i386/sev: Add support for populating OVMF metadata pages
-Date: Tue,  4 Jun 2024 08:43:57 +0200
-Message-ID: <20240604064409.957105-34-pbonzini@redhat.com>
+Cc: Michael Roth <michael.roth@amd.com>,
+	Pankaj Gupta <pankaj.gupta@amd.com>
+Subject: [PULL 34/45] i386/sev: Add support for SNP CPUID validation
+Date: Tue,  4 Jun 2024 08:43:58 +0200
+Message-ID: <20240604064409.957105-35-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240604064409.957105-1-pbonzini@redhat.com>
 References: <20240604064409.957105-1-pbonzini@redhat.com>
@@ -102,116 +102,252 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Brijesh Singh <brijesh.singh@amd.com>
+From: Michael Roth <michael.roth@amd.com>
 
-OVMF reserves various pages so they can be pre-initialized/validated
-prior to launching the guest. Add support for populating these pages
-with the expected content.
+SEV-SNP firmware allows a special guest page to be populated with a
+table of guest CPUID values so that they can be validated through
+firmware before being loaded into encrypted guest memory where they can
+be used in place of hypervisor-provided values[1].
 
-Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
+As part of SEV-SNP guest initialization, use this interface to validate
+the CPUID entries reported by KVM_GET_CPUID2 prior to initial guest
+start and populate the CPUID page reserved by OVMF with the resulting
+encrypted data.
+
+[1] SEV SNP Firmware ABI Specification, Rev. 0.8, 8.13.2.6
+
 Signed-off-by: Michael Roth <michael.roth@amd.com>
-Co-developed-by: Pankaj Gupta <pankaj.gupta@amd.com>
 Signed-off-by: Pankaj Gupta <pankaj.gupta@amd.com>
-Message-ID: <20240530111643.1091816-20-pankaj.gupta@amd.com>
+Message-ID: <20240530111643.1091816-21-pankaj.gupta@amd.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/sev.c | 74 +++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 74 insertions(+)
+ target/i386/sev.c | 164 +++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 162 insertions(+), 2 deletions(-)
 
 diff --git a/target/i386/sev.c b/target/i386/sev.c
-index 17281bb2c74..c57534fca2b 100644
+index c57534fca2b..06401f0526f 100644
 --- a/target/i386/sev.c
 +++ b/target/i386/sev.c
-@@ -1003,15 +1003,89 @@ sev_launch_finish(SevCommonState *sev_common)
-     migrate_add_blocker(&sev_mig_blocker, &error_fatal);
+@@ -200,6 +200,36 @@ static const char *const sev_fw_errlist[] = {
+ 
+ #define SEV_FW_MAX_ERROR      ARRAY_SIZE(sev_fw_errlist)
+ 
++/* <linux/kvm.h> doesn't expose this, so re-use the max from kvm.c */
++#define KVM_MAX_CPUID_ENTRIES 100
++
++typedef struct KvmCpuidInfo {
++    struct kvm_cpuid2 cpuid;
++    struct kvm_cpuid_entry2 entries[KVM_MAX_CPUID_ENTRIES];
++} KvmCpuidInfo;
++
++#define SNP_CPUID_FUNCTION_MAXCOUNT 64
++#define SNP_CPUID_FUNCTION_UNKNOWN 0xFFFFFFFF
++
++typedef struct {
++    uint32_t eax_in;
++    uint32_t ecx_in;
++    uint64_t xcr0_in;
++    uint64_t xss_in;
++    uint32_t eax;
++    uint32_t ebx;
++    uint32_t ecx;
++    uint32_t edx;
++    uint64_t reserved;
++} __attribute__((packed)) SnpCpuidFunc;
++
++typedef struct {
++    uint32_t count;
++    uint32_t reserved1;
++    uint64_t reserved2;
++    SnpCpuidFunc entries[SNP_CPUID_FUNCTION_MAXCOUNT];
++} __attribute__((packed)) SnpCpuidInfo;
++
+ static int
+ sev_ioctl(int fd, int cmd, void *data, int *error)
+ {
+@@ -788,6 +818,35 @@ out:
+     return ret;
+ }
+ 
++static void
++sev_snp_cpuid_report_mismatches(SnpCpuidInfo *old,
++                                SnpCpuidInfo *new)
++{
++    size_t i;
++
++    if (old->count != new->count) {
++        error_report("SEV-SNP: CPUID validation failed due to count mismatch,"
++                     "provided: %d, expected: %d", old->count, new->count);
++        return;
++    }
++
++    for (i = 0; i < old->count; i++) {
++        SnpCpuidFunc *old_func, *new_func;
++
++        old_func = &old->entries[i];
++        new_func = &new->entries[i];
++
++        if (memcmp(old_func, new_func, sizeof(SnpCpuidFunc))) {
++            error_report("SEV-SNP: CPUID validation failed for function 0x%x, index: 0x%x"
++                         "provided: eax:0x%08x, ebx: 0x%08x, ecx: 0x%08x, edx: 0x%08x"
++                         "expected: eax:0x%08x, ebx: 0x%08x, ecx: 0x%08x, edx: 0x%08x",
++                         old_func->eax_in, old_func->ecx_in,
++                         old_func->eax, old_func->ebx, old_func->ecx, old_func->edx,
++                         new_func->eax, new_func->ebx, new_func->ecx, new_func->edx);
++        }
++    }
++}
++
+ static const char *
+ snp_page_type_to_str(int type)
+ {
+@@ -806,6 +865,7 @@ sev_snp_launch_update(SevSnpGuestState *sev_snp_guest,
+                       SevLaunchUpdateData *data)
+ {
+     int ret, fw_error;
++    SnpCpuidInfo snp_cpuid_info;
+     struct kvm_sev_snp_launch_update update = {0};
+ 
+     if (!data->hva || !data->len) {
+@@ -815,6 +875,11 @@ sev_snp_launch_update(SevSnpGuestState *sev_snp_guest,
+         return 1;
+     }
+ 
++    if (data->type == KVM_SEV_SNP_PAGE_TYPE_CPUID) {
++        /* Save a copy for comparison in case the LAUNCH_UPDATE fails */
++        memcpy(&snp_cpuid_info, data->hva, sizeof(snp_cpuid_info));
++    }
++
+     update.uaddr = (__u64)(unsigned long)data->hva;
+     update.gfn_start = data->gpa >> TARGET_PAGE_BITS;
+     update.len = data->len;
+@@ -842,6 +907,11 @@ sev_snp_launch_update(SevSnpGuestState *sev_snp_guest,
+         if (ret && ret != -EAGAIN) {
+             error_report("SNP_LAUNCH_UPDATE ret=%d fw_error=%d '%s'",
+                          ret, fw_error, fw_error_to_str(fw_error));
++
++            if (data->type == KVM_SEV_SNP_PAGE_TYPE_CPUID) {
++                sev_snp_cpuid_report_mismatches(&snp_cpuid_info, data->hva);
++                error_report("SEV-SNP: failed update CPUID page");
++            }
+             break;
+         }
+     }
+@@ -1004,7 +1074,8 @@ sev_launch_finish(SevCommonState *sev_common)
+ }
+ 
+ static int
+-snp_launch_update_data(uint64_t gpa, void *hva, uint32_t len, int type)
++snp_launch_update_data(uint64_t gpa, void *hva,
++                       uint32_t len, int type)
+ {
+     SevLaunchUpdateData *data;
+ 
+@@ -1019,6 +1090,90 @@ snp_launch_update_data(uint64_t gpa, void *hva, uint32_t len, int type)
+     return 0;
  }
  
 +static int
-+snp_launch_update_data(uint64_t gpa, void *hva, uint32_t len, int type)
++sev_snp_cpuid_info_fill(SnpCpuidInfo *snp_cpuid_info,
++                        const KvmCpuidInfo *kvm_cpuid_info)
 +{
-+    SevLaunchUpdateData *data;
++    size_t i;
 +
-+    data = g_new0(SevLaunchUpdateData, 1);
-+    data->gpa = gpa;
-+    data->hva = hva;
-+    data->len = len;
-+    data->type = type;
++    if (kvm_cpuid_info->cpuid.nent > SNP_CPUID_FUNCTION_MAXCOUNT) {
++        error_report("SEV-SNP: CPUID entry count (%d) exceeds max (%d)",
++                     kvm_cpuid_info->cpuid.nent, SNP_CPUID_FUNCTION_MAXCOUNT);
++        return -1;
++    }
 +
-+    QTAILQ_INSERT_TAIL(&launch_update, data, next);
++    memset(snp_cpuid_info, 0, sizeof(*snp_cpuid_info));
++
++    for (i = 0; i < kvm_cpuid_info->cpuid.nent; i++) {
++        const struct kvm_cpuid_entry2 *kvm_cpuid_entry;
++        SnpCpuidFunc *snp_cpuid_entry;
++
++        kvm_cpuid_entry = &kvm_cpuid_info->entries[i];
++        snp_cpuid_entry = &snp_cpuid_info->entries[i];
++
++        snp_cpuid_entry->eax_in = kvm_cpuid_entry->function;
++        if (kvm_cpuid_entry->flags == KVM_CPUID_FLAG_SIGNIFCANT_INDEX) {
++            snp_cpuid_entry->ecx_in = kvm_cpuid_entry->index;
++        }
++        snp_cpuid_entry->eax = kvm_cpuid_entry->eax;
++        snp_cpuid_entry->ebx = kvm_cpuid_entry->ebx;
++        snp_cpuid_entry->ecx = kvm_cpuid_entry->ecx;
++        snp_cpuid_entry->edx = kvm_cpuid_entry->edx;
++
++        /*
++         * Guest kernels will calculate EBX themselves using the 0xD
++         * subfunctions corresponding to the individual XSAVE areas, so only
++         * encode the base XSAVE size in the initial leaves, corresponding
++         * to the initial XCR0=1 state.
++         */
++        if (snp_cpuid_entry->eax_in == 0xD &&
++            (snp_cpuid_entry->ecx_in == 0x0 || snp_cpuid_entry->ecx_in == 0x1)) {
++            snp_cpuid_entry->ebx = 0x240;
++            snp_cpuid_entry->xcr0_in = 1;
++            snp_cpuid_entry->xss_in = 0;
++        }
++    }
++
++    snp_cpuid_info->count = i;
 +
 +    return 0;
 +}
 +
 +static int
-+snp_metadata_desc_to_page_type(int desc_type)
++snp_launch_update_cpuid(uint32_t cpuid_addr, void *hva, uint32_t cpuid_len)
 +{
-+    switch (desc_type) {
-+    /* Add the umeasured prevalidated pages as a zero page */
-+    case SEV_DESC_TYPE_SNP_SEC_MEM: return KVM_SEV_SNP_PAGE_TYPE_ZERO;
-+    case SEV_DESC_TYPE_SNP_SECRETS: return KVM_SEV_SNP_PAGE_TYPE_SECRETS;
-+    case SEV_DESC_TYPE_CPUID: return KVM_SEV_SNP_PAGE_TYPE_CPUID;
-+    default:
-+         return KVM_SEV_SNP_PAGE_TYPE_ZERO;
++    KvmCpuidInfo kvm_cpuid_info = {0};
++    SnpCpuidInfo snp_cpuid_info;
++    CPUState *cs = first_cpu;
++    int ret;
++    uint32_t i = 0;
++
++    assert(sizeof(snp_cpuid_info) <= cpuid_len);
++
++    /* get the cpuid list from KVM */
++    do {
++        kvm_cpuid_info.cpuid.nent = ++i;
++        ret = kvm_vcpu_ioctl(cs, KVM_GET_CPUID2, &kvm_cpuid_info);
++    } while (ret == -E2BIG);
++
++    if (ret) {
++        error_report("SEV-SNP: unable to query CPUID values for CPU: '%s'",
++                     strerror(-ret));
++        return 1;
 +    }
++
++    ret = sev_snp_cpuid_info_fill(&snp_cpuid_info, &kvm_cpuid_info);
++    if (ret) {
++        error_report("SEV-SNP: failed to generate CPUID table information");
++        return 1;
++    }
++
++    memcpy(hva, &snp_cpuid_info, sizeof(snp_cpuid_info));
++
++    return snp_launch_update_data(cpuid_addr, hva, cpuid_len,
++                                  KVM_SEV_SNP_PAGE_TYPE_CPUID);
 +}
 +
-+static void
-+snp_populate_metadata_pages(SevSnpGuestState *sev_snp,
-+                            OvmfSevMetadata *metadata)
-+{
-+    OvmfSevMetadataDesc *desc;
-+    int type, ret, i;
-+    void *hva;
-+    MemoryRegion *mr = NULL;
-+
-+    for (i = 0; i < metadata->num_desc; i++) {
-+        desc = &metadata->descs[i];
-+
-+        type = snp_metadata_desc_to_page_type(desc->type);
-+
-+        hva = gpa2hva(&mr, desc->base, desc->len, NULL);
-+        if (!hva) {
-+            error_report("%s: Failed to get HVA for GPA 0x%x sz 0x%x",
-+                         __func__, desc->base, desc->len);
-+            exit(1);
-+        }
-+
-+        ret = snp_launch_update_data(desc->base, hva, desc->len, type);
-+        if (ret) {
-+            error_report("%s: Failed to add metadata page gpa 0x%x+%x type %d",
-+                         __func__, desc->base, desc->len, desc->type);
-+            exit(1);
-+        }
-+    }
-+}
-+
- static void
- sev_snp_launch_finish(SevCommonState *sev_common)
+ static int
+ snp_metadata_desc_to_page_type(int desc_type)
  {
-     int ret, error;
-     Error *local_err = NULL;
-+    OvmfSevMetadata *metadata;
-     SevLaunchUpdateData *data;
-     SevSnpGuestState *sev_snp = SEV_SNP_GUEST(sev_common);
-     struct kvm_sev_snp_launch_finish *finish = &sev_snp->kvm_finish_conf;
+@@ -1053,7 +1208,12 @@ snp_populate_metadata_pages(SevSnpGuestState *sev_snp,
+             exit(1);
+         }
  
-+    /*
-+     * To boot the SNP guest, the hypervisor is required to populate the CPUID
-+     * and Secrets page before finalizing the launch flow. The location of
-+     * the secrets and CPUID page is available through the OVMF metadata GUID.
-+     */
-+    metadata = pc_system_get_ovmf_sev_metadata_ptr();
-+    if (metadata == NULL) {
-+        error_report("%s: Failed to locate SEV metadata header", __func__);
-+        exit(1);
-+    }
+-        ret = snp_launch_update_data(desc->base, hva, desc->len, type);
++        if (type == KVM_SEV_SNP_PAGE_TYPE_CPUID) {
++            ret = snp_launch_update_cpuid(desc->base, hva, desc->len);
++        } else {
++            ret = snp_launch_update_data(desc->base, hva, desc->len, type);
++        }
 +
-+    /* Populate all the metadata pages */
-+    snp_populate_metadata_pages(sev_snp, metadata);
-+
-     QTAILQ_FOREACH(data, &launch_update, next) {
-         ret = sev_snp_launch_update(sev_snp, data);
          if (ret) {
+             error_report("%s: Failed to add metadata page gpa 0x%x+%x type %d",
+                          __func__, desc->base, desc->len, desc->type);
 -- 
 2.45.1
 
