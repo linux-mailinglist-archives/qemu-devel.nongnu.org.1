@@ -2,57 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 883D18FAE80
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 11:15:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00AF98FAE03
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 10:52:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEQGG-0006bo-50; Tue, 04 Jun 2024 05:15:20 -0400
+	id 1sEPsm-0007p8-W1; Tue, 04 Jun 2024 04:51:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yumin686@andestech.com>)
- id 1sEQFw-0006ag-Q4; Tue, 04 Jun 2024 05:15:01 -0400
-Received: from 60-248-80-70.hinet-ip.hinet.net ([60.248.80.70]
- helo=Atcsqr.andestech.com)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sEPsk-0007nU-F3; Tue, 04 Jun 2024 04:51:02 -0400
+Received: from mgamail.intel.com ([192.198.163.9])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yumin686@andestech.com>)
- id 1sEQFt-0003QL-ED; Tue, 04 Jun 2024 05:15:00 -0400
-Received: from Atcsqr.andestech.com (localhost [127.0.0.2] (may be forged))
- by Atcsqr.andestech.com with ESMTP id 45494wWf090663;
- Tue, 4 Jun 2024 17:04:58 +0800 (+08)
- (envelope-from yumin686@andestech.com)
-Received: from mail.andestech.com (ATCPCS16.andestech.com [10.0.1.222])
- by Atcsqr.andestech.com with ESMTP id 45494epg090481;
- Tue, 4 Jun 2024 17:04:40 +0800 (+08)
- (envelope-from yumin686@andestech.com)
-Received: from lubuntu-vb.andestech.com (10.0.12.32) by ATCPCS16.andestech.com
- (10.0.1.222) with Microsoft SMTP Server id 14.3.498.0;
- Tue, 4 Jun 2024 17:04:40 +0800
-To: <qemu-riscv@nongnu.org>, <qemu-devel@nongnu.org>
-CC: <palmer@dabbelt.com>, <alistair.francis@wdc.com>, <bin.meng@windriver.com>,
- <liwei1518@gmail.com>, <dbarboza@ventanamicro.com>,
- <zhiwei_liu@linux.alibaba.com>, <yumin686@andestech.com>, Alvin Chang
- <alvinga@andestech.com>
-Subject: [PATCH v4] target/riscv: raise an exception when CSRRS/CSRRC writes a
- read-only CSR
-Date: Tue, 4 Jun 2024 17:04:34 +0800
-Message-ID: <20240604090434.37136-1-yumin686@andestech.com>
-X-Mailer: git-send-email 2.34.1
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sEPsh-0002ZG-HR; Tue, 04 Jun 2024 04:51:02 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1717491059; x=1749027059;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=Ap8E/rEAx1h96bUEuIBQzglwJ4IPaipb0Em35hfeCMI=;
+ b=ZgQ5ODMYRJA5ogiEGqo68OAdZGOuXkFosYZCqP4YOqO7gd+e8YKeDqfk
+ l9PHzZihP+BwGyIkVK4VIrYaPmxpfmsKsjvuEVS6Lxb6B3j2Ixj+AvzuH
+ OTvENLEbAsHXQVpgrSEa/jSCo6Je24wRAMGsbCLwsmT38uexegQIxCrKZ
+ Nrvta8wMUwkTf1i/7pSfXLDwBPXiycEOCaqsTivrN/zTd0FBKc2eYhD0l
+ cWzOzIzxsf4A3oeOgWNqd0EPNg0SQG+Rw9nPD6lFCWLSo9IkL9hJT9SdF
+ fafNZvGv61nbhMcK3lx8kL98xcr523jVBgxWVOma+2cIe/TVgLPrMntCv w==;
+X-CSE-ConnectionGUID: MxoCOuMPSCKBfpurCbRG+A==
+X-CSE-MsgGUID: ehPuF1c0R/iAwCLcNuK6lQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11092"; a="24686290"
+X-IronPort-AV: E=Sophos;i="6.08,213,1712646000"; d="scan'208";a="24686290"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Jun 2024 01:50:55 -0700
+X-CSE-ConnectionGUID: xgrFahFxRWmNqr5Axiqaqw==
+X-CSE-MsgGUID: 4ZpV1M0jS6m9NzOxuga+5g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,213,1712646000"; d="scan'208";a="68338779"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by fmviesa001.fm.intel.com with ESMTP; 04 Jun 2024 01:50:50 -0700
+Date: Tue, 4 Jun 2024 17:06:16 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eric Blake <eblake@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>,
+ Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Sia Jee Heng <jeeheng.sia@starfivetech.com>, qemu-devel@nongnu.org,
+ kvm@vger.kernel.org, qemu-riscv@nongnu.org, qemu-arm@nongnu.org,
+ Zhenyu Wang <zhenyu.z.wang@intel.com>,
+ Dapeng Mi <dapeng1.mi@linux.intel.com>, Yongwei Ma <yongwei.ma@intel.com>
+Subject: Re: [RFC v2 1/7] hw/core: Make CPU topology enumeration arch-agnostic
+Message-ID: <Zl7ZCK0SxAFVZckX@intel.com>
+References: <20240530101539.768484-1-zhao1.liu@intel.com>
+ <20240530101539.768484-2-zhao1.liu@intel.com>
+ <87plsyfc1r.fsf@pond.sub.org> <Zl7RbLrYUN0cg+t4@intel.com>
+ <87zfs19jrj.fsf@pond.sub.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.0.12.32]
-X-DNSRBL: 
-X-SPAM-SOURCE-CHECK: pass
-X-MAIL: Atcsqr.andestech.com 45494wWf090663
-Received-SPF: pass client-ip=60.248.80.70; envelope-from=yumin686@andestech.com;
- helo=Atcsqr.andestech.com
-X-Spam_score_int: -8
-X-Spam_score: -0.9
-X-Spam_bar: /
-X-Spam_report: (-0.9 / 5.0 requ) BAYES_00=-1.9, RDNS_DYNAMIC=0.982,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001, TVD_RCVD_IP=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87zfs19jrj.fsf@pond.sub.org>
+Received-SPF: pass client-ip=192.198.163.9; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -65,187 +92,143 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Yu-Ming Chang <yumin686@andestech.com>
-From:  Yu-Ming Chang via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Both CSRRS and CSRRC always read the addressed CSR and cause any read side
-effects regardless of rs1 and rd fields. Note that if rs1 specifies a register
-holding a zero value other than x0, the instruction will still attempt to write
-the unmodified value back to the CSR and will cause any attendant side effects.
+On Tue, Jun 04, 2024 at 10:47:44AM +0200, Markus Armbruster wrote:
+> Date: Tue, 04 Jun 2024 10:47:44 +0200
+> From: Markus Armbruster <armbru@redhat.com>
+> Subject: Re: [RFC v2 1/7] hw/core: Make CPU topology enumeration
+>  arch-agnostic
+> 
+> Zhao Liu <zhao1.liu@intel.com> writes:
+> 
+> > Hi Markus,
+> >
+> > On Mon, Jun 03, 2024 at 02:25:36PM +0200, Markus Armbruster wrote:
+> >> Date: Mon, 03 Jun 2024 14:25:36 +0200
+> >> From: Markus Armbruster <armbru@redhat.com>
+> >> Subject: Re: [RFC v2 1/7] hw/core: Make CPU topology enumeration
+> >>  arch-agnostic
+> >> 
+> >> Zhao Liu <zhao1.liu@intel.com> writes:
+> >> 
+> >> > Cache topology needs to be defined based on CPU topology levels. Thus,
+> >> > define CPU topology enumeration in qapi/machine.json to make it generic
+> >> > for all architectures.
+> >> >
+> >> > To match the general topology naming style, rename CPU_TOPO_LEVEL_SMT
+> >> > and CPU_TOPO_LEVEL_PACKAGE to CPU_TOPO_LEVEL_THREAD and
+> >> > CPU_TOPO_LEVEL_SOCKET.
+> >> >
+> >> > Also, enumerate additional topology levels for non-i386 arches, and add
+> >> > helpers for topology enumeration and string conversion.
+> >> >
+> >> > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> >> 
+> >> [...]
+> >> 
+> >> > diff --git a/qapi/machine.json b/qapi/machine.json
+> >> > index bce6e1bbc412..7ac5a05bb9c9 100644
+> >> > --- a/qapi/machine.json
+> >> > +++ b/qapi/machine.json
+> >> > @@ -1667,6 +1667,46 @@
+> >> >       '*reboot-timeout': 'int',
+> >> >       '*strict': 'bool' } }
+> >> >  
+> >> > +##
+> >> > +# @CPUTopoLevel:
+> >> 
+> >> I understand you're moving existing enum CPUTopoLevel into the QAPI
+> >> schema.  I think the idiomatic QAPI name would be CpuTopologyLevel.
+> >> Would you be willing to rename it, or would that be too much churn?
+> >
+> > Sure, I'll rename it as you suggested.
+> >
+> >> > +#
+> >> > +# An enumeration of CPU topology levels.
+> >> > +#
+> >> > +# @invalid: Invalid topology level, used as a placeholder.
+> >> > +#
+> >> > +# @thread: thread level, which would also be called SMT level or logical
+> >> > +#     processor level. The @threads option in -smp is used to configure
+> >> > +#     the topology of this level.
+> >> > +#
+> >> > +# @core: core level. The @cores option in -smp is used to configure the
+> >> > +#     topology of this level.
+> >> > +#
+> >> > +# @module: module level. The @modules option in -smp is used to
+> >> > +#     configure the topology of this level.
+> >> > +#
+> >> > +# @cluster: cluster level. The @clusters option in -smp is used to
+> >> > +#     configure the topology of this level.
+> >> > +#
+> >> > +# @die: die level. The @dies option in -smp is used to configure the
+> >> > +#     topology of this level.
+> >> > +#
+> >> > +# @socket: socket level, which would also be called package level. The
+> >> > +#     @sockets option in -smp is used to configure the topology of this
+> >> > +#     level.
+> >> > +#
+> >> > +# @book: book level. The @books option in -smp is used to configure the
+> >> > +#     topology of this level.
+> >> > +#
+> >> > +# @drawer: drawer level. The @drawers option in -smp is used to
+> >> > +#     configure the topology of this level.
+> >> 
+> >> docs/devel/qapi-code-gen.rst section Documentation markup:
+> >> 
+> >>     For legibility, wrap text paragraphs so every line is at most 70
+> >>     characters long.
+> >> 
+> >>     Separate sentences with two spaces.
+> >
+> > Thank you for pointing this.
+> >
+> > About separating sentences, is this what I should be doing?
+> >
+> > # @drawer: drawer level. The @drawers option in -smp is used to
+> > #  configure the topology of this level.
+> 
+> Like this:
+> 
+> ##
+> # @CPUTopoLevel:
+> #
+> # An enumeration of CPU topology levels.
+> #
+> # @invalid: Invalid topology level.
+> #
+> # @thread: thread level, which would also be called SMT level or
+> #     logical processor level.  The @threads option in -smp is used to
+> #     configure the topology of this level.
+> #
+> # @core: core level.  The @cores option in -smp is used to configure
+> #     the topology of this level.
+> #
+> # @module: module level.  The @modules option in -smp is used to
+> #     configure the topology of this level.
+> #
+> # @cluster: cluster level.  The @clusters option in -smp is used to
+> #     configure the topology of this level.
+> #
+> # @die: die level.  The @dies option in -smp is used to configure the
+> #     topology of this level.
+> #
+> # @socket: socket level, which would also be called package level.
+> #     The @sockets option in -smp is used to configure the topology of
+> #     this level.
+> #
+> # @book: book level.  The @books option in -smp is used to configure
+> #     the topology of this level.
+> #
+> # @drawer: drawer level.  The @drawers option in -smp is used to
+> #     configure the topology of this level.
+> #
+> # Since: 9.1
+> ##
+>
 
-So if CSRRS or CSRRC tries to write a read-only CSR with rs1 which specifies
-a register holding a zero value, an illegal instruction exception should be
-raised.
-
-Signed-off-by: Yu-Ming Chang <yumin686@andestech.com>
-Signed-off-by: Alvin Chang <alvinga@andestech.com>
----
-Hi Alistair,
-    This fixed the issue of riscv_csrrw_debug().
-
-Best regards,
-Yuming
-
- target/riscv/cpu.h       |  4 +++
- target/riscv/csr.c       | 57 ++++++++++++++++++++++++++++++++++++----
- target/riscv/op_helper.c |  6 ++---
- 3 files changed, 58 insertions(+), 9 deletions(-)
-
-diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index 2d0c02c35b..72921bafc0 100644
---- a/target/riscv/cpu.h
-+++ b/target/riscv/cpu.h
-@@ -708,6 +708,8 @@ void cpu_get_tb_cpu_state(CPURISCVState *env, vaddr *pc,
- void riscv_cpu_update_mask(CPURISCVState *env);
- bool riscv_cpu_is_32bit(RISCVCPU *cpu);
- 
-+RISCVException riscv_csrr(CPURISCVState *env, int csrno,
-+                          target_ulong *ret_value);
- RISCVException riscv_csrrw(CPURISCVState *env, int csrno,
-                            target_ulong *ret_value,
-                            target_ulong new_value, target_ulong write_mask);
-@@ -740,6 +742,8 @@ typedef RISCVException (*riscv_csr_op_fn)(CPURISCVState *env, int csrno,
-                                           target_ulong new_value,
-                                           target_ulong write_mask);
- 
-+RISCVException riscv_csrr_i128(CPURISCVState *env, int csrno,
-+                               Int128 *ret_value);
- RISCVException riscv_csrrw_i128(CPURISCVState *env, int csrno,
-                                 Int128 *ret_value,
-                                 Int128 new_value, Int128 write_mask);
-diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-index 726096444f..aa765678b9 100644
---- a/target/riscv/csr.c
-+++ b/target/riscv/csr.c
-@@ -4312,7 +4312,7 @@ static RISCVException rmw_seed(CPURISCVState *env, int csrno,
- 
- static inline RISCVException riscv_csrrw_check(CPURISCVState *env,
-                                                int csrno,
--                                               bool write_mask)
-+                                               bool write)
- {
-     /* check privileges and return RISCV_EXCP_ILLEGAL_INST if check fails */
-     bool read_only = get_field(csrno, 0xC00) == 3;
-@@ -4334,7 +4334,7 @@ static inline RISCVException riscv_csrrw_check(CPURISCVState *env,
-     }
- 
-     /* read / write check */
--    if (write_mask && read_only) {
-+    if (write && read_only) {
-         return RISCV_EXCP_ILLEGAL_INST;
-     }
- 
-@@ -4421,11 +4421,22 @@ static RISCVException riscv_csrrw_do64(CPURISCVState *env, int csrno,
-     return RISCV_EXCP_NONE;
- }
- 
-+RISCVException riscv_csrr(CPURISCVState *env, int csrno,
-+                           target_ulong *ret_value)
-+{
-+    RISCVException ret = riscv_csrrw_check(env, csrno, false);
-+    if (ret != RISCV_EXCP_NONE) {
-+        return ret;
-+    }
-+
-+    return riscv_csrrw_do64(env, csrno, ret_value, 0, 0);
-+}
-+
- RISCVException riscv_csrrw(CPURISCVState *env, int csrno,
-                            target_ulong *ret_value,
-                            target_ulong new_value, target_ulong write_mask)
- {
--    RISCVException ret = riscv_csrrw_check(env, csrno, write_mask);
-+    RISCVException ret = riscv_csrrw_check(env, csrno, true);
-     if (ret != RISCV_EXCP_NONE) {
-         return ret;
-     }
-@@ -4473,13 +4484,45 @@ static RISCVException riscv_csrrw_do128(CPURISCVState *env, int csrno,
-     return RISCV_EXCP_NONE;
- }
- 
-+RISCVException riscv_csrr_i128(CPURISCVState *env, int csrno,
-+                               Int128 *ret_value)
-+{
-+    RISCVException ret;
-+
-+    ret = riscv_csrrw_check(env, csrno, false);
-+    if (ret != RISCV_EXCP_NONE) {
-+        return ret;
-+    }
-+
-+    if (csr_ops[csrno].read128) {
-+        return riscv_csrrw_do128(env, csrno, ret_value,
-+                                 int128_zero(), int128_zero());
-+    }
-+
-+    /*
-+     * Fall back to 64-bit version for now, if the 128-bit alternative isn't
-+     * at all defined.
-+     * Note, some CSRs don't need to extend to MXLEN (64 upper bits non
-+     * significant), for those, this fallback is correctly handling the
-+     * accesses
-+     */
-+    target_ulong old_value;
-+    ret = riscv_csrrw_do64(env, csrno, &old_value,
-+                           (target_ulong)0,
-+                           (target_ulong)0);
-+    if (ret == RISCV_EXCP_NONE && ret_value) {
-+        *ret_value = int128_make64(old_value);
-+    }
-+    return ret;
-+}
-+
- RISCVException riscv_csrrw_i128(CPURISCVState *env, int csrno,
-                                 Int128 *ret_value,
-                                 Int128 new_value, Int128 write_mask)
- {
-     RISCVException ret;
- 
--    ret = riscv_csrrw_check(env, csrno, int128_nz(write_mask));
-+    ret = riscv_csrrw_check(env, csrno, true);
-     if (ret != RISCV_EXCP_NONE) {
-         return ret;
-     }
-@@ -4518,7 +4561,11 @@ RISCVException riscv_csrrw_debug(CPURISCVState *env, int csrno,
- #if !defined(CONFIG_USER_ONLY)
-     env->debugger = true;
- #endif
--    ret = riscv_csrrw(env, csrno, ret_value, new_value, write_mask);
-+    if (!write_mask) {
-+        ret = riscv_csrr(env, csrno, ret_value);
-+    } else {
-+        ret = riscv_csrrw(env, csrno, ret_value, new_value, write_mask);
-+    }
- #if !defined(CONFIG_USER_ONLY)
-     env->debugger = false;
- #endif
-diff --git a/target/riscv/op_helper.c b/target/riscv/op_helper.c
-index f414aaebdb..b95d47e9ac 100644
---- a/target/riscv/op_helper.c
-+++ b/target/riscv/op_helper.c
-@@ -51,7 +51,7 @@ target_ulong helper_csrr(CPURISCVState *env, int csr)
-     }
- 
-     target_ulong val = 0;
--    RISCVException ret = riscv_csrrw(env, csr, &val, 0, 0);
-+    RISCVException ret = riscv_csrr(env, csr, &val);
- 
-     if (ret != RISCV_EXCP_NONE) {
-         riscv_raise_exception(env, ret, GETPC());
-@@ -84,9 +84,7 @@ target_ulong helper_csrrw(CPURISCVState *env, int csr,
- target_ulong helper_csrr_i128(CPURISCVState *env, int csr)
- {
-     Int128 rv = int128_zero();
--    RISCVException ret = riscv_csrrw_i128(env, csr, &rv,
--                                          int128_zero(),
--                                          int128_zero());
-+    RISCVException ret = riscv_csrr_i128(env, csr, &rv);
- 
-     if (ret != RISCV_EXCP_NONE) {
-         riscv_raise_exception(env, ret, GETPC());
--- 
-2.34.1
+I see, thanks very much for your patience.
 
 
