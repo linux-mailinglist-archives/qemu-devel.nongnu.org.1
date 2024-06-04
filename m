@@ -2,81 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF7BD8FABA3
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 09:13:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65A628FAB9C
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 09:11:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEOMU-0000tM-GT; Tue, 04 Jun 2024 03:13:38 -0400
+	id 1sEOJY-0005I1-A2; Tue, 04 Jun 2024 03:10:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sEOMS-0000ss-Mf
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 03:13:36 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sEOMQ-0004EF-NK
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 03:13:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717485213;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=nEQHZb7BAPTVXF5yyJ1m8X0KsNdaOaLytAJJSP9BFd8=;
- b=TIw7X9//h/jYKDrb4hIgQMnyiKG4xdMpiO50ShSK5dFWf94dM3qGFaVs1esjdCjibw0fcI
- Ilt0o0rGuopwOfz6iwAzzvu3dLJXm8xoayhztJ+69n87ymYcUJZMEN9XgUUrxPLSJ2L+/1
- SvVJ30vIOaVSMXG6MS5b8EVDxJccth0=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-651-TW7QoxizOZ6Qz_U78fwatA-1; Tue, 04 Jun 2024 03:13:30 -0400
-X-MC-Unique: TW7QoxizOZ6Qz_U78fwatA-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0A33B1802847;
- Tue,  4 Jun 2024 07:13:30 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.51])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 3A465492BD2;
- Tue,  4 Jun 2024 07:13:27 +0000 (UTC)
-Date: Tue, 4 Jun 2024 08:13:26 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Peter Xu <peterx@redhat.com>
-Cc: Steven Sistare <steven.sistare@oracle.com>, qemu-devel@nongnu.org,
- Fabiano Rosas <farosas@suse.de>, David Hildenbrand <david@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Philippe Mathieu-Daude <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Markus Armbruster <armbru@redhat.com>
-Subject: Re: [PATCH V1 17/26] machine: memfd-alloc option
-Message-ID: <Zl6-f245q-M7A62J@redhat.com>
-References: <1714406135-451286-1-git-send-email-steven.sistare@oracle.com>
- <1714406135-451286-18-git-send-email-steven.sistare@oracle.com>
- <ZlZIoiH5Dj4XBbLO@x1n>
- <79a8023d-2e19-4d80-821d-a03818a5372e@oracle.com>
- <Zld-iWfa3_yEWgn6@x1n>
- <ea8eb67e-583d-41cd-a545-ab18c032a99b@oracle.com>
- <ZljCHgwJhGcFiP1J@x1n>
- <e6d5f123-37ad-4d77-8536-f7f85213073d@oracle.com>
- <Zl46MIO30mGrtsQk@x1n>
+ (Exim 4.90_1) (envelope-from <fea.wang@sifive.com>)
+ id 1sEOJP-0005D3-LU
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 03:10:27 -0400
+Received: from mail-pj1-x102e.google.com ([2607:f8b0:4864:20::102e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <fea.wang@sifive.com>)
+ id 1sEOJN-0000SQ-3k
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 03:10:27 -0400
+Received: by mail-pj1-x102e.google.com with SMTP id
+ 98e67ed59e1d1-2c19bba897bso3964889a91.2
+ for <qemu-devel@nongnu.org>; Tue, 04 Jun 2024 00:10:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=sifive.com; s=google; t=1717485023; x=1718089823; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=GTd7iSqY+2K6omhWKf9ip5yUDCYSOtXHjx/sKNx+FFs=;
+ b=Dfh9tRe+AiAXqw57l/8jx8CXbAOnrEbA41vMkpWSFaN5OqImauc3GIiQk97EYTjSsl
+ C3kveBsySxd9qVv+En2kEnpLXrKoKf2BqhK2yWSp/O3OV8BgDVJ095GQpSlYfk/Q1KOt
+ mO2RWtH3NHyskgagl+lH0TGE7nb3yWUBzbtrJg17dl6GArRwUpEnQN+o0Ja66On4mWwp
+ i9q/f3hudU0IE8hd60RwI7ZtNkYhjaTH2NPHdiVPf23fMzsjy8EyAYdKmlncu2e7ZyF2
+ oEEnDIv2G6F7jj07e9tWsUuQqWv732So73xpeVLv4foT3fPdlcTNtzNpBOBSNkCdFcXQ
+ dVVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1717485023; x=1718089823;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=GTd7iSqY+2K6omhWKf9ip5yUDCYSOtXHjx/sKNx+FFs=;
+ b=gck7k/M947wH4PemqzRC5B/vdmzzq2fUwPipIoT5lGTvjXG8d5JeXpgOCFHVP923aQ
+ WOWR9+blfTtADbqELJn8IofhUoGOiJ2pwYcUlUN84Xl/aIWwURMBs7BqH9/Scos7y8Z7
+ Q0f+q6d+Qz+iuHQm1pxaSeosc3La6d4WQ9cgCBXoWifkbhdczZLoD+5w7mfHVIGheAmy
+ 7IE7QY8/Bi6dnuyVlUAXHnUbZAV4SZl2ndSdwnc+aL68bQg16mlwWU0q0rxKSrYhFMv2
+ 8aUXVRkC33MI/nPbHhDhl6vEVqYTZtabZ3Dt23YUsMxETxc+ZVOczeI5hZlf3hXmlmju
+ siJA==
+X-Gm-Message-State: AOJu0YzCN7Le8Pz15F8wvU2Xg4Gl7utjHdaN17o/M9OFXR2ame2pFyGP
+ lrWQfTbJo9ztqIwn2M7oEaWtkuWOVngSzZ0I8eMSMi7tmizHRN2YtZQaLjNv/FB3dVNt5yChk5z
+ hPouN8EK/eSUvT6wTfB25UAZpvmjOHb9ppjDjntZMdi5bJhFhax+gpCPc+nAM2z4M/FVuMuIbEB
+ nLiOCNfV/qzLBNq+ev7JL6sa3FNzNogVLqZH0=
+X-Google-Smtp-Source: AGHT+IEc8YChFGXhtlTncs1wQaNEk8JezE0ddEBEFVt1gXzSX++KyXecYneCLrVrXjtA5uyLz1ACLw==
+X-Received: by 2002:a17:90a:db42:b0:2b4:fe80:1b1b with SMTP id
+ 98e67ed59e1d1-2c1dc5cd183mr8783856a91.43.1717485022768; 
+ Tue, 04 Jun 2024 00:10:22 -0700 (PDT)
+Received: from hsinchu36-syssw02.internal.sifive.com
+ (59-124-168-89.hinet-ip.hinet.net. [59.124.168.89])
+ by smtp.gmail.com with ESMTPSA id
+ 98e67ed59e1d1-2c1a775d68dsm9237943a91.6.2024.06.04.00.10.21
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 04 Jun 2024 00:10:22 -0700 (PDT)
+From: "Fea.Wang" <fea.wang@sifive.com>
+To: qemu-devel@nongnu.org
+Cc: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Alistair Francis <alistair@alistair23.me>,
+ Peter Maydell <peter.maydell@linaro.org>, Jason Wang <jasowang@redhat.com>,
+ qemu-arm@nongnu.org (open list:Xilinx Zynq),
+ "Fea.Wang" <fea.wang@sifive.com>
+Subject: [PATCH v2 0/3] hw/dma: Add error handling for loading descriptions
+ failing
+Date: Tue,  4 Jun 2024 15:15:37 +0800
+Message-Id: <20240604071540.18138-1-fea.wang@sifive.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <Zl46MIO30mGrtsQk@x1n>
-User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102e;
+ envelope-from=fea.wang@sifive.com; helo=mail-pj1-x102e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -90,29 +93,36 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jun 03, 2024 at 05:48:32PM -0400, Peter Xu wrote:
-> That property, irrelevant of what it is called (and I doubt whether Dan's
-> suggestion on "shared-ram" is good, e.g. mmap(MAP_SHARED) doesn't have user
-> visible fd but it's shared-ram for sure..), is yet another way to specify
-> guest mem types.
-> 
-> What if the user specified this property but specified something else in
-> the -object parameters?  E.g. -machine share-ram=on -object
-> memory-backend-ram,share=off.  What should we do?
+The original code assumes that memory transmission is always successful,
+but in some cases, it gets bus-error.
 
-The machine property would only apply to memory regions that are
-*NOT* being created via -object. The memory-backend objects would
-always honour their own share settnig.
+Add error handling for DMA reading description failures. Do some
+reasonable settings, and return the corrected transmission size.
+Finally, return the error status.
 
-With regards,
-Daniel
+* Add DMASR_DECERR case
+* Squash the two commits to one
+
+base-commit: 915758c537b5fe09575291f4acd87e2d377a93de
+
+
+[v1]
+base-commit: 1806da76cb81088ea026ca3441551782b850e393
+
+Fea.Wang (3):
+  hw/dma: Enhance error handling in loading description
+  hw/dma: Add a trace log for a description loading failure
+  hw/net: Fix the transmission return size
+
+ hw/dma/trace-events     |  3 +++
+ hw/dma/xilinx_axidma.c  | 33 +++++++++++++++++++++++++++++----
+ hw/net/xilinx_axienet.c |  2 +-
+ 3 files changed, 33 insertions(+), 5 deletions(-)
+
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+2.34.1
 
 
