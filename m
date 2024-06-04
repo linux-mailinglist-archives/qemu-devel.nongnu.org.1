@@ -2,69 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46D2A8FAA38
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 07:48:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 148E68FAA40
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 07:51:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEN1R-0000lk-RF; Tue, 04 Jun 2024 01:47:49 -0400
+	id 1sEN55-0002vX-Tv; Tue, 04 Jun 2024 01:51:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
- id 1sEN18-0008VP-U5
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 01:47:33 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1sEN4m-0002tE-0A
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 01:51:16 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
- id 1sEN15-0000hw-8A
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 01:47:30 -0400
+ id 1sEN4j-00034d-QF
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 01:51:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717480046;
+ s=mimecast20190719; t=1717480272;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=2AP1YdoIO174C+XISh18eoqg9v29Q+hUj6cAr2jat9Y=;
- b=Wr/YGbPZlps7qpgNeew32aoIQO1eJEsXKLkTtecK0j5TG3Qd4WhCkLJCskeGFlc+QawJgD
- ECJ9qtEKt5+J6cAIT1Yt1VmiTbSiBdfozUDKZpDHvC6ZPO4ucI//c7hLzaq7nmB8vzeJYI
- qM5GJCcbcTaq737wEQwCgEBtfwpl+mY=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=GILllscAJ6Vqb4I1oSls69zTzuawY9x8r9Xvacwt5zg=;
+ b=BWZAwK7omXraOKSQL3kIyfbOccEkEvSNF8zBSHxUYaQ/5Jr8OWQM5Cue9jnlYyX7qdJ7g7
+ dPZZ2gOsJ048HONYjFyfGFwKQIw8R02VAhxu9ZLL6vkUtPlVWy3qj+/KCmd3Kkh4c3mD5T
+ D/E45nYieDESWUBQJHBL4G1GIo2sfmo=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-570-NShOp79fPs2G7yn0KwohUQ-1; Tue, 04 Jun 2024 01:47:21 -0400
-X-MC-Unique: NShOp79fPs2G7yn0KwohUQ-1
-Received: by mail-ed1-f72.google.com with SMTP id
- 4fb4d7f45d1cf-57a52be5f2aso785102a12.3
- for <qemu-devel@nongnu.org>; Mon, 03 Jun 2024 22:47:20 -0700 (PDT)
+ us-mta-201-0iaqk6Q0NuGQHDVM995XeQ-1; Tue, 04 Jun 2024 01:51:11 -0400
+X-MC-Unique: 0iaqk6Q0NuGQHDVM995XeQ-1
+Received: by mail-ed1-f71.google.com with SMTP id
+ 4fb4d7f45d1cf-57a58d70e71so769048a12.1
+ for <qemu-devel@nongnu.org>; Mon, 03 Jun 2024 22:51:10 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717480040; x=1718084840;
+ d=1e100.net; s=20230601; t=1717480270; x=1718085070;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=2AP1YdoIO174C+XISh18eoqg9v29Q+hUj6cAr2jat9Y=;
- b=co/IvCHfhPD3aUwG3k5fjuSyHkHKXD2HVW2SOx8h3h8VYGcS7va6eQ6QntZsg6UJ+o
- WvxhrZ2Tu1PMHVqy66m9OFzLgvpm2Hfcx0vxBFKHIhY5o7i1lhNxPwyrHDrkqXnMdhJb
- TCNuyR2mn7BhR/bqCbbVdor+ifBkE5mIGPD7iKQjvgBqxMXRmseIOPxVNGbo8gCAt2VV
- zYSNwA2BhfGVgu1q0Kuv50X0sif7aM57U1VP52rF6kTfALAM/F+2BTTH3lNjISIS5yWc
- grQQiz5KGEZsEdWPdo0c74rfoTIOYohfcQ1XxnHUhWcfEcMMlPreXyOvnYzmpfH9nLVr
- IGQA==
-X-Gm-Message-State: AOJu0YyTOm/oB4xGqhZMH5ZJGBaSLZRp1rzSY2qaXPW9JGw5N7tQXd31
- Dhy/M/s9scyO603lZwVHthG7amcOfic4Y5/fp7J7BJI4befxmvsNCjLWxDWPKJluDcsN0ywhmFD
- glyiRG0KDDkYcL9irStnASTyoaq1MUTKH1K/21ckc55v006fepC7kOtRknbETyHlZ+25X69ZFoV
- ol2+tMgyKTKyI7sPALr6yeDro0i/A=
-X-Received: by 2002:a50:bb46:0:b0:578:5242:a22c with SMTP id
- 4fb4d7f45d1cf-57a36472aecmr8040550a12.25.1717480039883; 
- Mon, 03 Jun 2024 22:47:19 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFKPzrBRIwIHV7ZLREAezP7QVB/SA7+aGsw8U7MbyG/nh7wYdLJgo6OEkM3vmuyX9zalG2HtJPT2fdbxjTRtmA=
-X-Received: by 2002:a50:bb46:0:b0:578:5242:a22c with SMTP id
- 4fb4d7f45d1cf-57a36472aecmr8040545a12.25.1717480039416; Mon, 03 Jun 2024
- 22:47:19 -0700 (PDT)
+ bh=GILllscAJ6Vqb4I1oSls69zTzuawY9x8r9Xvacwt5zg=;
+ b=Amt+8UMBaWRC9Q8GCce9pUsYqYpVAxEC1dg4yvP2Cian0fAIR5MehLuHzVx0sN5ziG
+ H20p7QzqyNX3B4bkBQsC6G0wfacRhfu3d56bv2tngneCVr3VLbtEyiHJzx/lH6ssvqOK
+ y/Q9vHGSUD3x+QCR5eKfB1SnKJAoYYoPHS6iQTh7ZPKHfJ49EQLmQbCnKYgsnkEUXzVL
+ zWpBatebBd20jQ9TBCRFtlKWT/bwz8I0Sdc0UgSezuOJW1Sf6zqUIOfJVl87uc3Mweub
+ TfkXnEXZaufvn+vJiEgs0mV23pTrOqodD1gLnxSMH08Ag8HVMM3QN8BtI9rLRW5lH2P0
+ qCpQ==
+X-Gm-Message-State: AOJu0Yx2/tLG7ko9H2m5fwjW+PkMGRi1f4ktzQDVyDTF8Ri3V7vhTS0c
+ K4Pqwd08LHXTDLXmNArPkV+xEXyBfnJlJ2EHiJGOk6EZEvCL61APINufieJ32MldmjdYpBmeJrd
+ NC5foPWpnyX4x2aahWF/Q5pWqpMRxHYvC99lGuX94mWSdEpMH1TuCJeOdaILZSv/tPeH8kX4QMV
+ TNw1AU/Chnyi0h+JKOtBEs1dJJzPc=
+X-Received: by 2002:a50:9f62:0:b0:578:695d:d78f with SMTP id
+ 4fb4d7f45d1cf-57a3637700dmr7271264a12.15.1717480270003; 
+ Mon, 03 Jun 2024 22:51:10 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFW6WCRmjtXyRm2f8CGOH2hMd6UjTwtQnMfSdPLWFc4w0w7+uJ+X7A+OD6dZDVAlc2uM2vYKu+qYW9MAoPsJdY=
+X-Received: by 2002:a50:9f62:0:b0:578:695d:d78f with SMTP id
+ 4fb4d7f45d1cf-57a3637700dmr7271255a12.15.1717480269639; Mon, 03 Jun 2024
+ 22:51:09 -0700 (PDT)
 MIME-Version: 1.0
 References: <20240603212228.3878836-1-tavip@google.com>
 In-Reply-To: <20240603212228.3878836-1-tavip@google.com>
 From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
-Date: Tue, 4 Jun 2024 09:47:07 +0400
-Message-ID: <CAMxuvazqkx3g-3sCbn+G3o8wKnigJpDvz7wDdSZUjwtkFFzAxw@mail.gmail.com>
+Date: Tue, 4 Jun 2024 09:50:57 +0400
+Message-ID: <CAMxuvaw=PXk-5yuBwPLS4WUygwbXz1qOJTwrA_EEhNJJuoMGsg@mail.gmail.com>
 Subject: Re: [PATCH v2] chardev: add path option for pty backend
 To: Octavian Purdila <tavip@google.com>
 Cc: qemu-devel@nongnu.org, eblake@redhat.com, armbru@redhat.com, 
@@ -72,7 +72,7 @@ Cc: qemu-devel@nongnu.org, eblake@redhat.com, armbru@redhat.com,
  Paulo Neves <ptsneves@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mlureau@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mlureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -128,9 +128,6 @@ wrote:
 > Signed-off-by: Paulo Neves <ptsneves@gmail.com>
 > [OP: rebase and address original patch review comments]
 > Signed-off-by: Octavian Purdila <tavip@google.com>
-
-Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
-
 > ---
 > Changes since v1:
 >
@@ -220,6 +217,9 @@ Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
 > +    dev =3D backend->u.pty.data =3D g_new0(ChardevHostdev, 1);
 > +    qemu_chr_parse_common(opts, qapi_ChardevHostdev_base(dev));
 > +    dev->device =3D path ? g_strdup(path) : NULL;
+
+minor nit, g_strdup(NULL) returns NULL. Get rid of "?:" if you send a v3.
+
 >  }
 >
 >  static void char_pty_class_init(ObjectClass *oc, void *data)
