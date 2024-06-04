@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C51528FAC2E
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 09:39:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 591128FAC30
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 09:39:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEOl6-0001co-SJ; Tue, 04 Jun 2024 03:39:04 -0400
+	id 1sEOl5-0001T9-Dm; Tue, 04 Jun 2024 03:39:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1sEOl2-00017R-CK
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 03:39:00 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1sEOl3-0001Ih-Df
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 03:39:01 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1sEOl0-0006Oq-Ea
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 03:39:00 -0400
+ id 1sEOl1-0006Oy-LO
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 03:39:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717486737;
+ s=mimecast20190719; t=1717486738;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=kPpu3J9dgVPZaMNZ1JdOKNoZ3573PXztcqUvWlO+l9s=;
- b=Pdq8GGLGo61eTJrmJ9uzyZhjAGtGl1rJFLzfWM7w4xaXMntob7giA29lObJdbhGy9UTtsN
- SWUweOgiMlNpEwqLYWRbCMmlyXghKGQXVq+RtFeuLUy9pIwYhsgQTXPXAHijxR3Qi7h069
- eybYbkj3DeZPVS+qi7hklA7m5V9iOhc=
+ bh=5d5y2FC6cxEygSgk8M5FRyNF5zASCRyu9uDVXcrDPpE=;
+ b=V6zJ+5oFLHvqD11c57htm9uSi+a7o6MAcg1JXH3CfPsFZbfn9oTiH7mTo1pt2Vqt5KQPoR
+ pQDsfmsVkRp5ijAet4uuWpt9PIrWJ19YKZ0zuFmQN3Q4VVDLXEEtieTOB4vGDWlylFSkVs
+ 0EQWvtEtndh7y6UXQTKXbSypi2LXCYY=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-641-tBt7MAoCPf-O1v7xcYSHeA-1; Tue, 04 Jun 2024 03:38:52 -0400
-X-MC-Unique: tBt7MAoCPf-O1v7xcYSHeA-1
+ us-mta-424-nBttRGmdPT2XDNfdHyNUqg-1; Tue, 04 Jun 2024 03:38:54 -0400
+X-MC-Unique: nBttRGmdPT2XDNfdHyNUqg-1
 Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
  [10.11.54.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 01AE785A5BA;
- Tue,  4 Jun 2024 07:38:52 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 74C7980027F;
+ Tue,  4 Jun 2024 07:38:54 +0000 (UTC)
 Received: from localhost.localdomain (unknown [10.72.112.238])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 0A05A492BF8;
- Tue,  4 Jun 2024 07:38:48 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 94AA9492BD4;
+ Tue,  4 Jun 2024 07:38:52 +0000 (UTC)
 From: Jason Wang <jasowang@redhat.com>
 To: peter.maydell@linaro.org,
 	qemu-devel@nongnu.org
 Cc: Akihiko Odaki <akihiko.odaki@daynix.com>, Jason Wang <jasowang@redhat.com>
-Subject: [PULL 17/20] ebpf: Refactor tun_rss_steering_prog()
-Date: Tue,  4 Jun 2024 15:37:52 +0800
-Message-ID: <20240604073755.1859-18-jasowang@redhat.com>
+Subject: [PULL 18/20] ebpf: Add a separate target for skeleton
+Date: Tue,  4 Jun 2024 15:37:53 +0800
+Message-ID: <20240604073755.1859-19-jasowang@redhat.com>
 In-Reply-To: <20240604073755.1859-1-jasowang@redhat.com>
 References: <20240604073755.1859-1-jasowang@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -83,57 +83,51 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-This saves branches and makes later BPF program changes easier.
+This generalizes the rule to generate the skeleton and allows to add
+another.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 Signed-off-by: Jason Wang <jasowang@redhat.com>
 ---
- tools/ebpf/rss.bpf.c | 26 +++++++++++---------------
- 1 file changed, 11 insertions(+), 15 deletions(-)
+ tools/ebpf/Makefile.ebpf | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/tools/ebpf/rss.bpf.c b/tools/ebpf/rss.bpf.c
-index 77434435ac..c989cb3cd8 100644
---- a/tools/ebpf/rss.bpf.c
-+++ b/tools/ebpf/rss.bpf.c
-@@ -547,27 +547,23 @@ int tun_rss_steering_prog(struct __sk_buff *skb)
-     config = bpf_map_lookup_elem(&tap_rss_map_configurations, &key);
-     toe = bpf_map_lookup_elem(&tap_rss_map_toeplitz_key, &key);
+diff --git a/tools/ebpf/Makefile.ebpf b/tools/ebpf/Makefile.ebpf
+index 3391e7ce08..572ca5987a 100755
+--- a/tools/ebpf/Makefile.ebpf
++++ b/tools/ebpf/Makefile.ebpf
+@@ -1,23 +1,24 @@
+-OBJS = rss.bpf.o
++SKELETONS = rss.bpf.skeleton.h
  
--    if (config && toe) {
--        if (!config->redirect) {
--            return config->default_queue;
--        }
-+    if (!config || !toe) {
-+        return 0;
-+    }
+ LLVM_STRIP ?= llvm-strip
+ CLANG ?= clang
+ INC_FLAGS = `$(CLANG) -print-file-name=include`
+ EXTRA_CFLAGS ?= -O2 -g -target bpf
  
--        if (calculate_rss_hash(skb, config, toe, &hash)) {
--            __u32 table_idx = hash % config->indirections_len;
--            __u16 *queue = 0;
-+    if (config->redirect && calculate_rss_hash(skb, config, toe, &hash)) {
-+        __u32 table_idx = hash % config->indirections_len;
-+        __u16 *queue = 0;
+-all: $(OBJS)
++all: $(SKELETONS)
  
--            queue = bpf_map_lookup_elem(&tap_rss_map_indirection_table,
--                                        &table_idx);
-+        queue = bpf_map_lookup_elem(&tap_rss_map_indirection_table,
-+                                    &table_idx);
+ .PHONY: clean
  
--            if (queue) {
--                return *queue;
--            }
-+        if (queue) {
-+            return *queue;
-         }
--
--        return config->default_queue;
-     }
+ clean:
+-	rm -f $(OBJS)
+-	rm -f rss.bpf.skeleton.h
++	rm -f $(SKELETONS) $(SKELETONS:%.skeleton.h=%.o)
  
--    return 0;
-+    return config->default_queue;
- }
- 
- char _license[] SEC("license") = "GPL v2";
+-$(OBJS):  %.o:%.c
++%.o: %.c
+ 	$(CLANG) $(INC_FLAGS) \
+                 -D__KERNEL__ -D__ASM_SYSREG_H \
+                 -I../include $(LINUXINCLUDE) \
+                 $(EXTRA_CFLAGS) -c $< -o $@
+ 	$(LLVM_STRIP) -g $@
+-	bpftool gen skeleton rss.bpf.o > rss.bpf.skeleton.h
+-	cp rss.bpf.skeleton.h ../../ebpf/
++
++%.skeleton.h: %.o
++	bpftool gen skeleton $< > $@
++	cp $@ ../../ebpf/
 -- 
 2.42.0
 
