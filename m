@@ -2,76 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8957C8FAB5D
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 08:51:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC2728FAB47
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 08:49:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sENwo-0006MH-LJ; Tue, 04 Jun 2024 02:47:06 -0400
+	id 1sENxN-0008Fe-6l; Tue, 04 Jun 2024 02:47:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sENvm-0004Yl-Qc
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:46:04 -0400
+ id 1sENvr-0004aS-7o
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:46:10 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sENvk-0007ci-SB
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:46:02 -0400
+ id 1sENvp-0007dY-8T
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:46:06 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717483559;
+ s=mimecast20190719; t=1717483564;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=8bt9EMAvb2uqqlG2EVvh0go+BINiKLQvUIsp6j0IIbQ=;
- b=RRLpxGdGoYEraUWprkwGdxZuSjWRN7HnG6fdhVeReie4DhKCL7m1N2Uam9gIGZ3c7wnH+Z
- pneZN4QAmTadgUWWRKVPPIPP4UuFzsooLGVms9EJzZizgR6EEyP+xTTfg99NPFyou/W7hy
- VX+7bWBQj299SWWkHHoY2r8Y/MCle7o=
-Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
- [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=a5Ds/6wWvA9ZKtpiIlGskchmOiVTlP+K7u7gXRzsSMY=;
+ b=hAevIqmijKdUBHeiFpTIaNICEQvHG7fif0xXxcJI2S5bYdFpxArpS+V2IVZHRCDj0oOC6g
+ Rv0OcFgb548zPZABpT3wHWieOW1Aik4xB23Aiz6832VZ2I21SiwAeFf58xuV09V/4NaVoi
+ 3aHGmzVZg7Lf+cGHuggllN/sK8zi6Q0=
+Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
+ [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-632-Q_ngoZHJOIyKbhFsJP2nVQ-1; Tue, 04 Jun 2024 02:45:52 -0400
-X-MC-Unique: Q_ngoZHJOIyKbhFsJP2nVQ-1
-Received: by mail-lf1-f71.google.com with SMTP id
- 2adb3069b0e04-52b950b3dc7so2001850e87.0
- for <qemu-devel@nongnu.org>; Mon, 03 Jun 2024 23:45:52 -0700 (PDT)
+ us-mta-38-nshKZAjFOaCk5rqqs-k1ew-1; Tue, 04 Jun 2024 02:45:55 -0400
+X-MC-Unique: nshKZAjFOaCk5rqqs-k1ew-1
+Received: by mail-lf1-f70.google.com with SMTP id
+ 2adb3069b0e04-52b9ea6e320so908563e87.0
+ for <qemu-devel@nongnu.org>; Mon, 03 Jun 2024 23:45:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717483551; x=1718088351;
+ d=1e100.net; s=20230601; t=1717483553; x=1718088353;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=8bt9EMAvb2uqqlG2EVvh0go+BINiKLQvUIsp6j0IIbQ=;
- b=MOVxU4gdg6NH2c6VaA/4EtynysBeTYVX+hAPV0xAhUasQQJ1HPwwiHtsyQNz2kzV69
- VMJZGiYXBj1S92+GvGar4NIw8BBC4qUlZ6IkCHZsXI666FYRZ3Gb099C4mFFRQVajnaP
- 6Wd0Jm8k7bLbkfJdNkYPOFcXUo6uUtKI0tBngQ7NEuY1t9isW0WcYGS+3qcr0HD5+wbF
- AbDQ8joo17uwxaNa4U7oz3xRT1rgeLUg6DgLLcmzv0zdCMr9gyNTfDYapw7yp9FRqQ0p
- 8k0OIVFZOqs/Rek9XpWbIWFYrjThTjEkDRqlqM6voObY3WhoXdTkDnWpLn2E+3bWCBdv
- kXJw==
-X-Gm-Message-State: AOJu0Yzc3tWUdJGSO3w5L3RnH/gR3I+zhm5A4W4SEp2uA2pj1NvxXGMa
- 63C4wlNDJ5Jnu8quSiX9N9Q+vUJaPN+MvU+3HJpQsgfmqZ21Koean1kv2vyuTm9cOSZ2zIIEXKD
- kzvUWXhGMSF/WVz8LBtoyH06D+Du9M1hlzx8tq0lNspjgcSK2W8vMmGRILK1Zu4aa6M+aR7wYDY
- uDd1AIXiDoLSNmXvgOTzk6CzhZMnXPa42Rop6l
-X-Received: by 2002:a19:2d1b:0:b0:52b:8c88:2d73 with SMTP id
- 2adb3069b0e04-52b8c882e43mr7124679e87.52.1717483550811; 
- Mon, 03 Jun 2024 23:45:50 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEbRr9D2dml/HvZIidIMaZJD6E+zQe2s0UM/Pv4pblvRIT+bBNC3JoJAXdOHQwA2XV0XBB7GA==
-X-Received: by 2002:a19:2d1b:0:b0:52b:8c88:2d73 with SMTP id
- 2adb3069b0e04-52b8c882e43mr7124665e87.52.1717483550382; 
- Mon, 03 Jun 2024 23:45:50 -0700 (PDT)
+ bh=a5Ds/6wWvA9ZKtpiIlGskchmOiVTlP+K7u7gXRzsSMY=;
+ b=PLKIbfqd0L43vcQJEm6JWavhaxjNr4wkMMQHd+ehpnHlIbspLZUjGr9GrZioPIApL4
+ C3P/TEfONu1n5xfMeYk8hButx+ZjP4YAiBBExOnTesFK1aURH1s/FVooA+vm6TmVbrNU
+ B0Hpkn0VQpUJUGWfV9SBhlJQvcFWHVyeomL1n+jFm6KuK934TJ/ZVa2Gkh4KIURwQwwf
+ PBvB1la5RCoganE/FXlciiTCMPQxsOkBOKr18LkDq29n7Q73PDVQt6sF7sx75Ou1/mNR
+ JPj0gtlQvlwK3BH1aHwHQtgnO7F2VPFIIfhOZLysOmJKEYspZI0frAijEcAaqAMq8C7/
+ aDaQ==
+X-Gm-Message-State: AOJu0Yzp5tLUXvHHb+XPLI0CUZm+UGvNTw6RbywRcjauYI329rmJAdH5
+ jBwoozO24FxU4OQYOX//mhNvG7LNkv5UuYqbEQAWScye9dotTOo1IQS0MZAX0EbBvHjP1iyt6LK
+ GzEaT+7YtMTBdy2uHK3rS1eCDGG0pEMe6NpdgRYkmemGenXyZBDx/SFRC0ijh4I7cET8AwVbyEl
+ V7Mm83pezRiaMMkGBCJh8G8FGEG2lFCtBw4mWc
+X-Received: by 2002:a19:a40a:0:b0:522:3551:35f5 with SMTP id
+ 2adb3069b0e04-52b89564058mr6809315e87.14.1717483553163; 
+ Mon, 03 Jun 2024 23:45:53 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGYuP3B4KhN8yWm1LlyvQnT5a4yV7w4AR6/oWkIMPnwLZWxINl+R4RxYtkYMgS2Bxn9y3V+9Q==
+X-Received: by 2002:a19:a40a:0:b0:522:3551:35f5 with SMTP id
+ 2adb3069b0e04-52b89564058mr6809304e87.14.1717483552794; 
+ Mon, 03 Jun 2024 23:45:52 -0700 (PDT)
 Received: from avogadro.local ([151.81.115.112])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a68ce1e4462sm394866466b.197.2024.06.03.23.45.49
+ 4fb4d7f45d1cf-57a31bb8219sm6658159a12.22.2024.06.03.23.45.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Jun 2024 23:45:49 -0700 (PDT)
+ Mon, 03 Jun 2024 23:45:52 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Brijesh Singh <brijesh.singh@amd.com>, Michael Roth <michael.roth@amd.com>,
- Pankaj Gupta <pankaj.gupta@amd.com>
-Subject: [PULL 35/45] hw/i386/sev: Add support to encrypt BIOS when SEV-SNP is
- enabled
-Date: Tue,  4 Jun 2024 08:43:59 +0200
-Message-ID: <20240604064409.957105-36-pbonzini@redhat.com>
+Cc: Pankaj Gupta <pankaj.gupta@amd.com>
+Subject: [PULL 36/45] i386/sev: Invoke launch_updata_data() for SEV class
+Date: Tue,  4 Jun 2024 08:44:00 +0200
+Message-ID: <20240604064409.957105-37-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240604064409.957105-1-pbonzini@redhat.com>
 References: <20240604064409.957105-1-pbonzini@redhat.com>
@@ -103,153 +101,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Brijesh Singh <brijesh.singh@amd.com>
+Add launch_update_data() in SevCommonStateClass and
+invoke as sev_launch_update_data() for SEV object.
 
-As with SEV, an SNP guest requires that the BIOS be part of the initial
-encrypted/measured guest payload. Extend sev_encrypt_flash() to handle
-the SNP case and plumb through the GPA of the BIOS location since this
-is needed for SNP.
-
-Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
-Signed-off-by: Michael Roth <michael.roth@amd.com>
 Signed-off-by: Pankaj Gupta <pankaj.gupta@amd.com>
-Message-ID: <20240530111643.1091816-25-pankaj.gupta@amd.com>
+Message-ID: <20240530111643.1091816-26-pankaj.gupta@amd.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- include/hw/i386/x86.h         |  2 +-
- target/i386/sev.h             |  2 +-
- hw/i386/pc_sysfw.c            | 12 +++++++-----
- hw/i386/x86-common.c          |  2 +-
- target/i386/sev-sysemu-stub.c |  2 +-
- target/i386/sev.c             |  5 +++--
- 6 files changed, 14 insertions(+), 11 deletions(-)
+ target/i386/sev.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/include/hw/i386/x86.h b/include/hw/i386/x86.h
-index b006f16b8d3..d43cb3908e6 100644
---- a/include/hw/i386/x86.h
-+++ b/include/hw/i386/x86.h
-@@ -154,6 +154,6 @@ void ioapic_init_gsi(GSIState *gsi_state, Object *parent);
- DeviceState *ioapic_init_secondary(GSIState *gsi_state);
- 
- /* pc_sysfw.c */
--void x86_firmware_configure(void *ptr, int size);
-+void x86_firmware_configure(hwaddr gpa, void *ptr, int size);
- 
- #endif
-diff --git a/target/i386/sev.h b/target/i386/sev.h
-index cc12824dd65..858005a119c 100644
---- a/target/i386/sev.h
-+++ b/target/i386/sev.h
-@@ -59,7 +59,7 @@ uint32_t sev_get_cbit_position(void);
- uint32_t sev_get_reduced_phys_bits(void);
- bool sev_add_kernel_loader_hashes(SevKernelLoaderContext *ctx, Error **errp);
- 
--int sev_encrypt_flash(uint8_t *ptr, uint64_t len, Error **errp);
-+int sev_encrypt_flash(hwaddr gpa, uint8_t *ptr, uint64_t len, Error **errp);
- int sev_inject_launch_secret(const char *hdr, const char *secret,
-                              uint64_t gpa, Error **errp);
- 
-diff --git a/hw/i386/pc_sysfw.c b/hw/i386/pc_sysfw.c
-index 9b8671c4412..7cdbafc8d22 100644
---- a/hw/i386/pc_sysfw.c
-+++ b/hw/i386/pc_sysfw.c
-@@ -148,6 +148,8 @@ static void pc_system_flash_map(PCMachineState *pcms,
-     assert(PC_MACHINE_GET_CLASS(pcms)->pci_enabled);
- 
-     for (i = 0; i < ARRAY_SIZE(pcms->flash); i++) {
-+        hwaddr gpa;
-+
-         system_flash = pcms->flash[i];
-         blk = pflash_cfi01_get_blk(system_flash);
-         if (!blk) {
-@@ -177,11 +179,11 @@ static void pc_system_flash_map(PCMachineState *pcms,
-         }
- 
-         total_size += size;
-+        gpa = 0x100000000ULL - total_size; /* where the flash is mapped */
-         qdev_prop_set_uint32(DEVICE(system_flash), "num-blocks",
-                              size / FLASH_SECTOR_SIZE);
-         sysbus_realize_and_unref(SYS_BUS_DEVICE(system_flash), &error_fatal);
--        sysbus_mmio_map(SYS_BUS_DEVICE(system_flash), 0,
--                        0x100000000ULL - total_size);
-+        sysbus_mmio_map(SYS_BUS_DEVICE(system_flash), 0, gpa);
- 
-         if (i == 0) {
-             flash_mem = pflash_cfi01_get_memory(system_flash);
-@@ -196,7 +198,7 @@ static void pc_system_flash_map(PCMachineState *pcms,
-             if (sev_enabled()) {
-                 flash_ptr = memory_region_get_ram_ptr(flash_mem);
-                 flash_size = memory_region_size(flash_mem);
--                x86_firmware_configure(flash_ptr, flash_size);
-+                x86_firmware_configure(gpa, flash_ptr, flash_size);
-             }
-         }
-     }
-@@ -249,7 +251,7 @@ void pc_system_firmware_init(PCMachineState *pcms,
-     pc_system_flash_cleanup_unused(pcms);
- }
- 
--void x86_firmware_configure(void *ptr, int size)
-+void x86_firmware_configure(hwaddr gpa, void *ptr, int size)
- {
-     int ret;
- 
-@@ -270,6 +272,6 @@ void x86_firmware_configure(void *ptr, int size)
-             exit(1);
-         }
- 
--        sev_encrypt_flash(ptr, size, &error_fatal);
-+        sev_encrypt_flash(gpa, ptr, size, &error_fatal);
-     }
- }
-diff --git a/hw/i386/x86-common.c b/hw/i386/x86-common.c
-index ee9046d9a80..f41cb0a6a8b 100644
---- a/hw/i386/x86-common.c
-+++ b/hw/i386/x86-common.c
-@@ -1013,7 +1013,7 @@ void x86_bios_rom_init(X86MachineState *x86ms, const char *default_firmware,
-          */
-         void *ptr = memory_region_get_ram_ptr(&x86ms->bios);
-         load_image_size(filename, ptr, bios_size);
--        x86_firmware_configure(ptr, bios_size);
-+        x86_firmware_configure(0x100000000ULL - bios_size, ptr, bios_size);
-     } else {
-         memory_region_set_readonly(&x86ms->bios, !isapc_ram_fw);
-         ret = rom_add_file_fixed(bios_name, (uint32_t)(-bios_size), -1);
-diff --git a/target/i386/sev-sysemu-stub.c b/target/i386/sev-sysemu-stub.c
-index fc1c57c4113..d5bf886e799 100644
---- a/target/i386/sev-sysemu-stub.c
-+++ b/target/i386/sev-sysemu-stub.c
-@@ -42,7 +42,7 @@ void qmp_sev_inject_launch_secret(const char *packet_header, const char *secret,
-     error_setg(errp, "SEV is not available in this QEMU");
- }
- 
--int sev_encrypt_flash(uint8_t *ptr, uint64_t len, Error **errp)
-+int sev_encrypt_flash(hwaddr gpa, uint8_t *ptr, uint64_t len, Error **errp)
- {
-     g_assert_not_reached();
- }
 diff --git a/target/i386/sev.c b/target/i386/sev.c
-index 06401f0526f..7b5c4b4874d 100644
+index 7b5c4b4874d..8834cf9441a 100644
 --- a/target/i386/sev.c
 +++ b/target/i386/sev.c
-@@ -1484,7 +1484,7 @@ static int sev_snp_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
+@@ -74,6 +74,7 @@ struct SevCommonStateClass {
+     /* public */
+     int (*launch_start)(SevCommonState *sev_common);
+     void (*launch_finish)(SevCommonState *sev_common);
++    int (*launch_update_data)(SevCommonState *sev_common, hwaddr gpa, uint8_t *ptr, uint64_t len);
+     int (*kvm_init)(ConfidentialGuestSupport *cgs, Error **errp);
+ };
+ 
+@@ -929,7 +930,7 @@ out:
  }
  
- int
--sev_encrypt_flash(uint8_t *ptr, uint64_t len, Error **errp)
-+sev_encrypt_flash(hwaddr gpa, uint8_t *ptr, uint64_t len, Error **errp)
+ static int
+-sev_launch_update_data(SevGuestState *sev_guest, uint8_t *addr, uint64_t len)
++sev_launch_update_data(SevCommonState *sev_common, hwaddr gpa, uint8_t *addr, uint64_t len)
+ {
+     int ret, fw_error;
+     struct kvm_sev_launch_update_data update;
+@@ -941,7 +942,7 @@ sev_launch_update_data(SevGuestState *sev_guest, uint8_t *addr, uint64_t len)
+     update.uaddr = (uintptr_t)addr;
+     update.len = len;
+     trace_kvm_sev_launch_update_data(addr, len);
+-    ret = sev_ioctl(SEV_COMMON(sev_guest)->sev_fd, KVM_SEV_LAUNCH_UPDATE_DATA,
++    ret = sev_ioctl(sev_common->sev_fd, KVM_SEV_LAUNCH_UPDATE_DATA,
+                     &update, &fw_error);
+     if (ret) {
+         error_report("%s: LAUNCH_UPDATE ret=%d fw_error=%d '%s'",
+@@ -1487,6 +1488,7 @@ int
+ sev_encrypt_flash(hwaddr gpa, uint8_t *ptr, uint64_t len, Error **errp)
  {
      SevCommonState *sev_common = SEV_COMMON(MACHINE(qdev_get_machine())->cgs);
++    SevCommonStateClass *klass = SEV_COMMON_GET_CLASS(sev_common);
  
-@@ -1841,7 +1841,8 @@ bool sev_add_kernel_loader_hashes(SevKernelLoaderContext *ctx, Error **errp)
-     /* zero the excess data so the measurement can be reliably calculated */
-     memset(padded_ht->padding, 0, sizeof(padded_ht->padding));
+     if (!sev_common) {
+         return 0;
+@@ -1494,7 +1496,9 @@ sev_encrypt_flash(hwaddr gpa, uint8_t *ptr, uint64_t len, Error **errp)
  
--    if (sev_encrypt_flash((uint8_t *)padded_ht, sizeof(*padded_ht), errp) < 0) {
-+    if (sev_encrypt_flash(area->base, (uint8_t *)padded_ht,
-+                          sizeof(*padded_ht), errp) < 0) {
-         ret = false;
-     }
+     /* if SEV is in update state then encrypt the data else do nothing */
+     if (sev_check_state(sev_common, SEV_STATE_LAUNCH_UPDATE)) {
+-        int ret = sev_launch_update_data(SEV_GUEST(sev_common), ptr, len);
++        int ret;
++
++        ret = klass->launch_update_data(sev_common, gpa, ptr, len);
+         if (ret < 0) {
+             error_setg(errp, "SEV: Failed to encrypt pflash rom");
+             return ret;
+@@ -1968,6 +1972,7 @@ sev_guest_class_init(ObjectClass *oc, void *data)
+ 
+     klass->launch_start = sev_launch_start;
+     klass->launch_finish = sev_launch_finish;
++    klass->launch_update_data = sev_launch_update_data;
+     klass->kvm_init = sev_kvm_init;
+     x86_klass->kvm_type = sev_kvm_type;
  
 -- 
 2.45.1
