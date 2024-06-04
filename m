@@ -2,96 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB9668FB523
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 16:23:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6CD08FB530
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 16:25:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEV4U-000363-Tm; Tue, 04 Jun 2024 10:23:30 -0400
+	id 1sEV64-0003ud-4R; Tue, 04 Jun 2024 10:25:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1sEV4T-00035q-Ks
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 10:23:29 -0400
-Received: from mail-qv1-xf32.google.com ([2607:f8b0:4864:20::f32])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sEV61-0003u1-5x
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 10:25:05 -0400
+Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1sEV4R-0008DO-Gk
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 10:23:29 -0400
-Received: by mail-qv1-xf32.google.com with SMTP id
- 6a1803df08f44-6af4fcb45ccso22583236d6.0
- for <qemu-devel@nongnu.org>; Tue, 04 Jun 2024 07:23:26 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sEV5z-0000MM-IU
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 10:25:04 -0400
+Received: by mail-ej1-x630.google.com with SMTP id
+ a640c23a62f3a-a68b54577aaso357617666b.3
+ for <qemu-devel@nongnu.org>; Tue, 04 Jun 2024 07:25:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1717511005; x=1718115805; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=oFSqNccqFycVrfo3QkFWzu3TMcH4lBSVziX1WBJjq8g=;
- b=OgGBFVqEkqxwtndzUCnt2Iwxu2nRhP8Z2hNmHFJ41ISJKF7YlTTOdWpHe/c/OO0VcF
- okDLInXiigcgFD0zUTpRlCZCp2Rt/fPyZ0L6lOj+j9hw5oKjkcAO9Y/Z8ofW3KYtxvsb
- K2PoGpCC/MdOhLLmOms1mAXBWqxSuQ74RwPrk2bfywZcZYkaeM6PByroAunNHlFFMXVr
- nKVzY3T9KwN/cDfO1MLsSm2uF2S4hk/tBTmmOAX6TT0j2bWZmXy3YmBEw2G4dzMl7He8
- VRb7hkJTd0LsMcEDS1ntal59vdoir52GXv6kKtkudqrUBfbdwP+4vgD5y5/5nFHd6T5Q
- FJDg==
+ d=linaro.org; s=google; t=1717511101; x=1718115901; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=yTmKZg3CoJGtoh9Amocye8ceQAZCifXakhS9aJZgX3w=;
+ b=oApUvDoJs+29v1FYB/WWhWPLR3v7KncmXlsuKnsyeGjdh0daTieMP1FkNCKlul58KU
+ D451v74ILdhIFfmhk4a+h1Fohd2DrFlJ6boRBuTaG11PVZVGWbeUECKp7o42ORthELsF
+ J5u08b6gi78AKaZy6vZUGSPg9ax/Zn23q4xhuL0cILVi3J9jBuqH8ewfVBE9tGJNVvwG
+ 1UC7l0wTTo8M6oAb/NBsOJNPvVlcTVPjZHxYxn8hkMa/o5ESECKv+VO4BvSd4/020DD2
+ lvKrfg1MpFD7ebp25a3IoO7TGPqoYDmSx/CuVt72q65ymieM8N1LsMpOhiTCj8wOrpaU
+ oxmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717511005; x=1718115805;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=oFSqNccqFycVrfo3QkFWzu3TMcH4lBSVziX1WBJjq8g=;
- b=wmB4i3F5oDr73ymNsMB9OefSu4V30wVoYGT7kFg3tin7jFnKcocBOC0u55m5MTYk7r
- gCVWeGU4uFsiGbNxaZdQtfCdTK/OaknEln04W6P/fFjEl4HUDp09m8waCuh+hZ7yoAo0
- 6FLiGTqJPZ3/pIKKs5/KGgzbD+aYHPOAYPvSqzma4EPYhbsX4KXzDeeh2MXBP/qsQzAo
- wAQYNUGcbTedmu0H1iLjxVCtN26HwtukLOIWyO4vWdstYNeHINSms7DrGQoiecmpEZi2
- x/eOoJCzEp54HiJcRYAuQ+Jdct3uIxeM9Jq+0RT8+Bvnk/VDjgbQRxnDwHbwwZAPMfum
- wQcQ==
+ d=1e100.net; s=20230601; t=1717511101; x=1718115901;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=yTmKZg3CoJGtoh9Amocye8ceQAZCifXakhS9aJZgX3w=;
+ b=VpWQZaZXpMC2/jgpUGgeDlaIlmTVtlxdmCcTySUnXU90MVGkQ5Zw34yr+ccKLltl0F
+ g6vaSvBhM1RwgtyHk2+zRbiZ+wZuBkA+UvZ+S1jhSVwd2gRl02ZUsTLMbei2zGjwC44t
+ ZjBqvmODT7XpyMj6n4WDF5tr4CKnSApQ8YAKHEGBEYqsl+K1jvuc0zK2AktvfK3uh7Qh
+ 7Tg/SAq+HN1JdxnBcEYdeKwQyiRNLRIbbfFa0SWfTqygmSgBIbkSpYo25oSPBfXOEjT9
+ MXJCotGJzB81LDNbTI7Ctaj0p+liQBf0c1ynceSI6ryB14i8SFdrM6ZBTrIYp+Bl0JfL
+ UNVA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCV1blrvCUwWmeiGeHKt6Hf01bMSb/u5A7DcYLvH1qdBN1d0eNnpwoA9TZWVicSsaTJLNdpD/CqWwben01H051K4n4uz1Qk=
-X-Gm-Message-State: AOJu0YzcvR0duw0S3LvYGHIO+OckM+pLRkg/vaWXFHxabgwB+MylwMFi
- JnulWMBDEuWOL2De5JN3r+iGCroI6q9+aUkhzT53UGb+bvEh1KHIXA65J0bIfWs6/fPCgbdOBFH
- emA5pxwYfrJ2UozJpdLpaDID8PUs=
-X-Google-Smtp-Source: AGHT+IE7AwePRa+1aQMEM2cBsKOyG3KzuDNtxzjxCgyjw4ieAWVyAPtDTtoNJW7aR95Ui3+gFXOl8lXD7L5cKW19Wq8=
-X-Received: by 2002:a05:6214:45a1:b0:6ae:d3f9:d71f with SMTP id
- 6a1803df08f44-6aff7239820mr52576766d6.5.1717511005479; Tue, 04 Jun 2024
- 07:23:25 -0700 (PDT)
+ AJvYcCWI+bTeFuFK1gksWVjo6VIhy/H/s9y8eQ7BfF2NIPDjeiq+zM6rDYIFED1EbCH2HU+dEBHld9dX+htpGFBZYGWczqEiLUQ=
+X-Gm-Message-State: AOJu0YyUv8WiOw84M88C3spTWdME/bJ8iBKdyFxwupAFUjayNhXUjXiw
+ P3Ei01cOUMx+92GLpoGp3XXKTkCQnCWoFxr//Bzb2FKcjJ0WxbJbvuuUTiXcviA=
+X-Google-Smtp-Source: AGHT+IHRfw8w8oQ7IsvYJ0H/aXNJRK7M5wNgBbYHtuSIROj+lvSNNNX1GOwHmCc38M10zM7wsoSR9A==
+X-Received: by 2002:a17:906:60b:b0:a68:afbb:c010 with SMTP id
+ a640c23a62f3a-a68afbbec4amr542661066b.10.1717511101521; 
+ Tue, 04 Jun 2024 07:25:01 -0700 (PDT)
+Received: from [192.168.69.100] ([176.176.159.34])
+ by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-a68e728b92fsm415329766b.60.2024.06.04.07.25.00
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 04 Jun 2024 07:25:00 -0700 (PDT)
+Message-ID: <1f4daf4d-980b-47c6-ab3c-f7ec5852d423@linaro.org>
+Date: Tue, 4 Jun 2024 16:24:58 +0200
 MIME-Version: 1.0
-References: <20240527030233.3775514-1-dmitry.osipenko@collabora.com>
- <20240527030233.3775514-5-dmitry.osipenko@collabora.com>
-In-Reply-To: <20240527030233.3775514-5-dmitry.osipenko@collabora.com>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Tue, 4 Jun 2024 18:23:14 +0400
-Message-ID: <CAJ+F1CKRBcPif9QyNOP7jK22PRUALrVY8pSvXhR4zEPaCMmbPw@mail.gmail.com>
-Subject: Re: [PATCH v13 04/13] virtio-gpu: Unrealize GL device
-To: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Cc: Akihiko Odaki <akihiko.odaki@daynix.com>, Huang Rui <ray.huang@amd.com>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Gerd Hoffmann <kraxel@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>, 
- Stefano Stabellini <sstabellini@kernel.org>,
- Antonio Caggiano <quic_acaggian@quicinc.com>, 
- "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
- Robert Beckett <bob.beckett@collabora.com>, 
- Gert Wollny <gert.wollny@collabora.com>,
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- qemu-devel@nongnu.org, Gurchetan Singh <gurchetansingh@chromium.org>,
- ernunes@redhat.com, Alyssa Ross <hi@alyssa.is>,
- =?UTF-8?Q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>, 
- Alex Deucher <alexander.deucher@amd.com>,
- Stefano Stabellini <stefano.stabellini@amd.com>, 
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
- Xenia Ragiadakou <xenia.ragiadakou@amd.com>, 
- Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
- Honglei Huang <honglei1.huang@amd.com>, 
- Julia Zhang <julia.zhang@amd.com>, Chen Jiqian <Jiqian.Chen@amd.com>, 
- Yiwei Zhang <zzyiwei@chromium.org>
-Content-Type: multipart/alternative; boundary="000000000000612acd061a11319c"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::f32;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-qv1-xf32.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/5] hw/mips/loongson3_virt: Implement IPI support
+To: gaosong <gaosong@loongson.cn>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ QEMU devel <qemu-devel@nongnu.org>
+Cc: Huacai Chen <chenhuacai@kernel.org>
+References: <20240508-loongson3-ipi-v1-0-1a7b67704664@flygoat.com>
+ <a9717e72-9de2-469f-89c1-8ae969b0031e@linaro.org>
+ <75c78b9e-4a18-4faf-9b80-a497d3401dba@app.fastmail.com>
+ <96870199-5782-4d87-ba10-f4b886936a96@linaro.org>
+ <3836d4b2-ed2d-3a4c-7092-54d0d9e1429d@loongson.cn>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <3836d4b2-ed2d-3a4c-7092-54d0d9e1429d@loongson.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::630;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x630.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,201 +98,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000612acd061a11319c
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On 4/6/24 14:55, gaosong wrote:
+> 在 2024/6/3 下午11:35, Philippe Mathieu-Daudé 写道:
+>> On 16/5/24 12:53, Jiaxun Yang wrote:
+>>> 在2024年5月8日五月 下午10:41，Philippe Mathieu-Daudé写道：
+>>>> On 8/5/24 15:06, Jiaxun Yang wrote:
+>>>>> Hi all,
+>>>>>
+>>>>> This series enabled IPI support for loongson3 virt board, loosely
+>>>>> based on my previous work[1].
+>>>>> It generalized loongarch_ipi device to share among both loongarch
+>>>>> and MIPS machines.
+>>>>
+>>>>
+>>>>> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+>>>>> ---
+>>>>> Jiaxun Yang (5):
+>>>>>         hw/intc/loongarch_ipi: Remove pointless MAX_CPU check
+>>>>>         hw/intc/loongarch_ipi: Rename as loongson_ipi
+>>>>>         hw/intc/loongson_ipi: Implement IOCSR address space for MIPS
+>>>>
+>>>> So far patches 1-3 queued to hw-misc tree, thanks.
+>>>
+>>> Hi Philippe,
+>>>
+>>> Thanks! What's your plan with the rest of the series
+>>
+>> Patches LGTM, but I'd like an Acked-by from Song Gao ;)
+>>
+> Patch 1 - 4:
+> Acked-by: Song Gao <gaosong@loongson.cn>
 
-Hi
+Thanks!
 
-On Mon, May 27, 2024 at 7:03=E2=80=AFAM Dmitry Osipenko <
-dmitry.osipenko@collabora.com> wrote:
+> and patch2 missed to delete the file loongarch_ipi.c.
 
-> Even though GL GPU doesn't support hotplugging today, free virgl
-> resources when GL device is unrealized. For consistency.
->
-> Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-> ---
->  hw/display/virtio-gpu-gl.c     | 13 +++++++++++++
->  hw/display/virtio-gpu-virgl.c  | 11 +++++++++++
->  include/hw/virtio/virtio-gpu.h |  1 +
->  3 files changed, 25 insertions(+)
->
-> diff --git a/hw/display/virtio-gpu-gl.c b/hw/display/virtio-gpu-gl.c
-> index 38a2b1bd3916..7978b2985e17 100644
-> --- a/hw/display/virtio-gpu-gl.c
-> +++ b/hw/display/virtio-gpu-gl.c
-> @@ -149,6 +149,18 @@ static Property virtio_gpu_gl_properties[] =3D {
->      DEFINE_PROP_END_OF_LIST(),
->  };
->
-> +static void virtio_gpu_gl_device_unrealize(DeviceState *qdev)
-> +{
-> +    VirtIOGPU *g =3D VIRTIO_GPU(qdev);
-> +    VirtIOGPUGL *gl =3D VIRTIO_GPU_GL(qdev);
-> +
-> +    if (gl->renderer_state >=3D RS_INITED) {
-> +        virtio_gpu_virgl_deinit(g);
->
+Jiaxun, I can not apply this series anymore, could you respin?
 
-The extra function seems unnecessary.
+Regards,
 
-
-> +    }
-> +
-> +    gl->renderer_state =3D RS_START;
-> +}
-> +
->  static void virtio_gpu_gl_class_init(ObjectClass *klass, void *data)
->  {
->      DeviceClass *dc =3D DEVICE_CLASS(klass);
-> @@ -162,6 +174,7 @@ static void virtio_gpu_gl_class_init(ObjectClass
-> *klass, void *data)
->      vgc->update_cursor_data =3D virtio_gpu_gl_update_cursor_data;
->
->      vdc->realize =3D virtio_gpu_gl_device_realize;
-> +    vdc->unrealize =3D virtio_gpu_gl_device_unrealize;
->      vdc->reset =3D virtio_gpu_gl_reset;
->      device_class_set_props(dc, virtio_gpu_gl_properties);
->  }
-> diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.=
-c
-> index fa0da8f5c7f1..66c4aab9b283 100644
-> --- a/hw/display/virtio-gpu-virgl.c
-> +++ b/hw/display/virtio-gpu-virgl.c
-> @@ -669,3 +669,14 @@ int virtio_gpu_virgl_get_num_capsets(VirtIOGPU *g)
->
->      return capset2_max_ver ? 2 : 1;
->  }
-> +
-> +void virtio_gpu_virgl_deinit(VirtIOGPU *g)
-> +{
-> +    VirtIOGPUGL *gl =3D VIRTIO_GPU_GL(g);
-> +
-> +    if (virtio_gpu_stats_enabled(g->parent_obj.conf)) {
-> +        timer_free(gl->print_stats);
-> +    }
-> +    timer_free(gl->fence_poll);
-> +    virgl_renderer_cleanup(NULL);
-> +}
-> diff --git a/include/hw/virtio/virtio-gpu.h
-> b/include/hw/virtio/virtio-gpu.h
-> index 6e71d799e5da..2faeda6f6abe 100644
-> --- a/include/hw/virtio/virtio-gpu.h
-> +++ b/include/hw/virtio/virtio-gpu.h
-> @@ -345,6 +345,7 @@ void virtio_gpu_virgl_fence_poll(VirtIOGPU *g);
->  void virtio_gpu_virgl_reset_scanout(VirtIOGPU *g);
->  void virtio_gpu_virgl_reset(VirtIOGPU *g);
->  int virtio_gpu_virgl_init(VirtIOGPU *g);
-> +void virtio_gpu_virgl_deinit(VirtIOGPU *g);
->  int virtio_gpu_virgl_get_num_capsets(VirtIOGPU *g);
->
->  #endif
-> --
-> 2.44.0
->
->
-
---=20
-Marc-Andr=C3=A9 Lureau
-
---000000000000612acd061a11319c
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div dir=3D"ltr">Hi<br></div><br><div class=3D"gmail_quote=
-"><div dir=3D"ltr" class=3D"gmail_attr">On Mon, May 27, 2024 at 7:03=E2=80=
-=AFAM Dmitry Osipenko &lt;<a href=3D"mailto:dmitry.osipenko@collabora.com">=
-dmitry.osipenko@collabora.com</a>&gt; wrote:<br></div><blockquote class=3D"=
-gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(20=
-4,204,204);padding-left:1ex">Even though GL GPU doesn&#39;t support hotplug=
-ging today, free virgl<br>
-resources when GL device is unrealized. For consistency.<br>
-<br>
-Signed-off-by: Dmitry Osipenko &lt;<a href=3D"mailto:dmitry.osipenko@collab=
-ora.com" target=3D"_blank">dmitry.osipenko@collabora.com</a>&gt;<br>
----<br>
-=C2=A0hw/display/virtio-gpu-gl.c=C2=A0 =C2=A0 =C2=A0| 13 +++++++++++++<br>
-=C2=A0hw/display/virtio-gpu-virgl.c=C2=A0 | 11 +++++++++++<br>
-=C2=A0include/hw/virtio/virtio-gpu.h |=C2=A0 1 +<br>
-=C2=A03 files changed, 25 insertions(+)<br>
-<br>
-diff --git a/hw/display/virtio-gpu-gl.c b/hw/display/virtio-gpu-gl.c<br>
-index 38a2b1bd3916..7978b2985e17 100644<br>
---- a/hw/display/virtio-gpu-gl.c<br>
-+++ b/hw/display/virtio-gpu-gl.c<br>
-@@ -149,6 +149,18 @@ static Property virtio_gpu_gl_properties[] =3D {<br>
-=C2=A0 =C2=A0 =C2=A0DEFINE_PROP_END_OF_LIST(),<br>
-=C2=A0};<br>
-<br>
-+static void virtio_gpu_gl_device_unrealize(DeviceState *qdev)<br>
-+{<br>
-+=C2=A0 =C2=A0 VirtIOGPU *g =3D VIRTIO_GPU(qdev);<br>
-+=C2=A0 =C2=A0 VirtIOGPUGL *gl =3D VIRTIO_GPU_GL(qdev);<br>
-+<br>
-+=C2=A0 =C2=A0 if (gl-&gt;renderer_state &gt;=3D RS_INITED) {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 virtio_gpu_virgl_deinit(g);<br></blockquote><d=
-iv><br></div><div>The extra function seems unnecessary.</div><div>=C2=A0<br=
-></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;=
-border-left:1px solid rgb(204,204,204);padding-left:1ex">
-+=C2=A0 =C2=A0 }<br>
-+<br>
-+=C2=A0 =C2=A0 gl-&gt;renderer_state =3D RS_START;<br>
-+}<br>
-+<br>
-=C2=A0static void virtio_gpu_gl_class_init(ObjectClass *klass, void *data)<=
-br>
-=C2=A0{<br>
-=C2=A0 =C2=A0 =C2=A0DeviceClass *dc =3D DEVICE_CLASS(klass);<br>
-@@ -162,6 +174,7 @@ static void virtio_gpu_gl_class_init(ObjectClass *klass=
-, void *data)<br>
-=C2=A0 =C2=A0 =C2=A0vgc-&gt;update_cursor_data =3D virtio_gpu_gl_update_cur=
-sor_data;<br>
-<br>
-=C2=A0 =C2=A0 =C2=A0vdc-&gt;realize =3D virtio_gpu_gl_device_realize;<br>
-+=C2=A0 =C2=A0 vdc-&gt;unrealize =3D virtio_gpu_gl_device_unrealize;<br>
-=C2=A0 =C2=A0 =C2=A0vdc-&gt;reset =3D virtio_gpu_gl_reset;<br>
-=C2=A0 =C2=A0 =C2=A0device_class_set_props(dc, virtio_gpu_gl_properties);<b=
-r>
-=C2=A0}<br>
-diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c<=
-br>
-index fa0da8f5c7f1..66c4aab9b283 100644<br>
---- a/hw/display/virtio-gpu-virgl.c<br>
-+++ b/hw/display/virtio-gpu-virgl.c<br>
-@@ -669,3 +669,14 @@ int virtio_gpu_virgl_get_num_capsets(VirtIOGPU *g)<br>
-<br>
-=C2=A0 =C2=A0 =C2=A0return capset2_max_ver ? 2 : 1;<br>
-=C2=A0}<br>
-+<br>
-+void virtio_gpu_virgl_deinit(VirtIOGPU *g)<br>
-+{<br>
-+=C2=A0 =C2=A0 VirtIOGPUGL *gl =3D VIRTIO_GPU_GL(g);<br>
-+<br>
-+=C2=A0 =C2=A0 if (virtio_gpu_stats_enabled(g-&gt;parent_obj.conf)) {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 timer_free(gl-&gt;print_stats);<br>
-+=C2=A0 =C2=A0 }<br>
-+=C2=A0 =C2=A0 timer_free(gl-&gt;fence_poll);<br>
-+=C2=A0 =C2=A0 virgl_renderer_cleanup(NULL);<br>
-+}<br>
-diff --git a/include/hw/virtio/virtio-gpu.h b/include/hw/virtio/virtio-gpu.=
-h<br>
-index 6e71d799e5da..2faeda6f6abe 100644<br>
---- a/include/hw/virtio/virtio-gpu.h<br>
-+++ b/include/hw/virtio/virtio-gpu.h<br>
-@@ -345,6 +345,7 @@ void virtio_gpu_virgl_fence_poll(VirtIOGPU *g);<br>
-=C2=A0void virtio_gpu_virgl_reset_scanout(VirtIOGPU *g);<br>
-=C2=A0void virtio_gpu_virgl_reset(VirtIOGPU *g);<br>
-=C2=A0int virtio_gpu_virgl_init(VirtIOGPU *g);<br>
-+void virtio_gpu_virgl_deinit(VirtIOGPU *g);<br>
-=C2=A0int virtio_gpu_virgl_get_num_capsets(VirtIOGPU *g);<br>
-<br>
-=C2=A0#endif<br>
--- <br>
-2.44.0<br>
-<br>
-</blockquote></div><br clear=3D"all"><br><span class=3D"gmail_signature_pre=
-fix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signature">Marc-Andr=C3=
-=A9 Lureau<br></div></div>
-
---000000000000612acd061a11319c--
+Phil.
 
