@@ -2,82 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 411B98FAB3A
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 08:49:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51ABB8FAB4F
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jun 2024 08:50:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sENwl-0005xS-51; Tue, 04 Jun 2024 02:47:04 -0400
+	id 1sENwb-0005XQ-Gm; Tue, 04 Jun 2024 02:46:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sENvK-0004Ed-IQ
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:45:39 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1sENvL-0004Ei-RH
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:45:41 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sENvG-0007ZQ-A5
- for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:45:32 -0400
+ id 1sENvK-0007Zu-CF
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 02:45:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717483528;
+ s=mimecast20190719; t=1717483532;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=cRhGc1/va0BMldmkMOF8FLn+sf/je1bF2hCX4br1ZJY=;
- b=awAIjqrHHgbSHotFqRIO46/z3SVaADlO8LBNZQvKG+L8iOeJOqUxpU4deoQZ++fItxvc6v
- eZYjfhOuhmK++2ODmzIb4c9vbrra9aWHNv3YwwfivTt7GkCR34zebbinV6xSCzerN3d6ia
- HFQQZNL7T5IHqc03k4x6ZWk126stw4M=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=P3zBoQP1hiY+/+l3optnBxCNybf1DH1hAS8jMLWIU5Q=;
+ b=Xo8mvFc8i+b1xI+Wufgc6oynk6GOYuPk3VRb81qpTqxCihr4B2Fvc3Eiotj5hJWYVO2UeY
+ rLkqX3XIc6pX/GUtDtJ1IZ2EEfD9yogGxJFxdN1uhvGx65/ayMwDw5qlm6/LgDR7EVxIWJ
+ yr7eWbphhsa4nE4NAzgXfCTEb/OQ11o=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-180-nE3Mse_9Nou50Om3tSAONg-1; Tue, 04 Jun 2024 02:45:27 -0400
-X-MC-Unique: nE3Mse_9Nou50Om3tSAONg-1
-Received: by mail-ed1-f72.google.com with SMTP id
- 4fb4d7f45d1cf-5785176c796so2507501a12.3
- for <qemu-devel@nongnu.org>; Mon, 03 Jun 2024 23:45:27 -0700 (PDT)
+ us-mta-619-Ap-Mm33eMHSU1TcASXvIpg-1; Tue, 04 Jun 2024 02:45:29 -0400
+X-MC-Unique: Ap-Mm33eMHSU1TcASXvIpg-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-a68ee264225so92329066b.1
+ for <qemu-devel@nongnu.org>; Mon, 03 Jun 2024 23:45:29 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717483526; x=1718088326;
+ d=1e100.net; s=20230601; t=1717483528; x=1718088328;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=cRhGc1/va0BMldmkMOF8FLn+sf/je1bF2hCX4br1ZJY=;
- b=iL3accBQYm7VfjJ+gJOe8KPD1ofB/K1kOJr58ih9bvCm4kjNN2ufw7hnafi6e/p46d
- mzCwnt/48N5iEk0QMKZrzdfGDXqynskpXMAV+Qsz1I19CFD3ivsbvu8SavG9UrGYWZTb
- nUtOn6MHTjL78tEFmal3QXUdg4zk2RD+DhXfPv98BN8zCxwk4Hi+mh3xcFmgCFSA44RP
- Oo2moWFReZvC+HkbgBd65nppkYr//wYXyO6YCIgsLEIksuliAl1miVquNDPJzqn5gVB4
- PUQ2pT6ImFM6iqQSC6BnkBW1rO7FkprphDmLgWdKnmjcQidj1Xl0BFippzT7q3+iUhFm
- qDaA==
-X-Gm-Message-State: AOJu0YxoY89m42q9J6aWnepFfeOovfAqgsYKXGyaHc7DUq/QF1JjFXcL
- COGAVeBBJYfkf43H5EswzVq5NOvbtaUOl8qG7HU5XdSNkMC2UqcRxv7ectUCeIc3jHd7lf9k2Ra
- hIbvgfcYKkwCIXKSjGVB3RIm60nNE923NNL2RV+XliXXhe+Iek1IaA9rUfzOvmJryo8r+Po0DsL
- QJMVDXZ7ENqBc1mEJA5hfFU0hOn0Ahhb3By07Y
-X-Received: by 2002:a50:bb03:0:b0:57a:1c44:581c with SMTP id
- 4fb4d7f45d1cf-57a84cb3b01mr296823a12.32.1717483525940; 
- Mon, 03 Jun 2024 23:45:25 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGugWw5niIMHRfoA3JtZEatt3gMCB9XyYuhB0Jd7BN7brHFsX9r/9YrtVGC3PRalegtJwIZKA==
-X-Received: by 2002:a50:bb03:0:b0:57a:1c44:581c with SMTP id
- 4fb4d7f45d1cf-57a84cb3b01mr296804a12.32.1717483525379; 
- Mon, 03 Jun 2024 23:45:25 -0700 (PDT)
+ bh=P3zBoQP1hiY+/+l3optnBxCNybf1DH1hAS8jMLWIU5Q=;
+ b=mneN0t22bo2F3Cz3/wGUEFIA8/mzkIxPG7z6K1DDxHQGwAsN8zLHXonbyhuikcbOGu
+ v+XhTnk8R3OtM7fN7/kAkB0g3NhOhrkWuvzWtF6Pa90prVE3/EqQ1PhOkGyYnHvcOhrt
+ mk7xdG+eKLVI1TtSLhdNhgXoWQ2tREylkSkqN8bz4EBsUZDodWPk9GzBhiQvZnyKVUG1
+ MUlghJL/ZOQKHRRBi433lNppxoLaEzMumV9yF2AGgpq2pH+V4pXyWwNRUmom34Rsq+lb
+ 8rLlJ4SBgqkKYnYSl/PY24fMgix3tR44m2imyOQSZr0cischUX4JoJ9eb7iuQpXqTAC6
+ cqIw==
+X-Gm-Message-State: AOJu0YxGOoXeFBJ9hTyH/m8+LWd7wn1YAIMsXNaNz21lsDOSyJa0bBkX
+ BsKwxX46BGARtMW+GqStM3S7FCa5rRG4YKHQpghlDz5LeP0VAJ4/uOtu/JrJu5xlzqy1ql5YfIR
+ zUkkr0wqUCwlKpBJpd5VuCksw0S0D3oQAy4S7QqcX3d2pDPNUGVSuKrZ1B6wtYpZgYU4s+TTWUR
+ r8/oYxxizEVJ/5O1zndpvXooYkXv3j2qBzZDxv
+X-Received: by 2002:a17:907:9046:b0:a68:413b:36f1 with SMTP id
+ a640c23a62f3a-a68413b3739mr676303466b.32.1717483528252; 
+ Mon, 03 Jun 2024 23:45:28 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGI3Uhjh83MQCKuTSMBdkT288C9oJxw+fB58J2xHQ/WKBJTbyCNsZGlsyGZtr9xP/Rch0WVyw==
+X-Received: by 2002:a17:907:9046:b0:a68:413b:36f1 with SMTP id
+ a640c23a62f3a-a68413b3739mr676301966b.32.1717483527859; 
+ Mon, 03 Jun 2024 23:45:27 -0700 (PDT)
 Received: from avogadro.local ([151.81.115.112])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-57a31be7c04sm6829600a12.58.2024.06.03.23.45.24
+ a640c23a62f3a-a68ca4d6570sm401527466b.28.2024.06.03.23.45.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Jun 2024 23:45:25 -0700 (PDT)
+ Mon, 03 Jun 2024 23:45:27 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Michael Roth <michael.roth@amd.com>,
 	Pankaj Gupta <pankaj.gupta@amd.com>
-Subject: [PULL 25/45] i386/cpu: Set SEV-SNP CPUID bit when SNP enabled
-Date: Tue,  4 Jun 2024 08:43:49 +0200
-Message-ID: <20240604064409.957105-26-pbonzini@redhat.com>
+Subject: [PULL 26/45] i386/sev: Don't return launch measurements for SEV-SNP
+ guests
+Date: Tue,  4 Jun 2024 08:43:50 +0200
+Message-ID: <20240604064409.957105-27-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240604064409.957105-1-pbonzini@redhat.com>
 References: <20240604064409.957105-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -104,28 +105,33 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Michael Roth <michael.roth@amd.com>
 
-SNP guests will rely on this bit to determine certain feature support.
+For SEV-SNP guests, launch measurement is queried from within the guest
+during attestation, so don't attempt to return it as part of
+query-sev-launch-measure.
 
 Signed-off-by: Michael Roth <michael.roth@amd.com>
 Signed-off-by: Pankaj Gupta <pankaj.gupta@amd.com>
-Message-ID: <20240530111643.1091816-12-pankaj.gupta@amd.com>
+Message-ID: <20240530111643.1091816-13-pankaj.gupta@amd.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/cpu.c | 1 +
- 1 file changed, 1 insertion(+)
+ target/i386/sev.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index bc2dceb647f..914bef442c7 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -6979,6 +6979,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-         if (sev_enabled()) {
-             *eax = 0x2;
-             *eax |= sev_es_enabled() ? 0x8 : 0;
-+            *eax |= sev_snp_enabled() ? 0x10 : 0;
-             *ebx = sev_get_cbit_position() & 0x3f; /* EBX[5:0] */
-             *ebx |= (sev_get_reduced_phys_bits() & 0x3f) << 6; /* EBX[11:6] */
-         }
+diff --git a/target/i386/sev.c b/target/i386/sev.c
+index 6525b3c1a0e..c3daaf1ad50 100644
+--- a/target/i386/sev.c
++++ b/target/i386/sev.c
+@@ -795,7 +795,9 @@ sev_launch_get_measure(Notifier *notifier, void *unused)
+ 
+ static char *sev_get_launch_measurement(void)
+ {
+-    SevGuestState *sev_guest = SEV_GUEST(MACHINE(qdev_get_machine())->cgs);
++    ConfidentialGuestSupport *cgs = MACHINE(qdev_get_machine())->cgs;
++    SevGuestState *sev_guest =
++        (SevGuestState *)object_dynamic_cast(OBJECT(cgs), TYPE_SEV_GUEST);
+ 
+     if (sev_guest &&
+         SEV_COMMON(sev_guest)->state >= SEV_STATE_LAUNCH_SECRET) {
 -- 
 2.45.1
 
