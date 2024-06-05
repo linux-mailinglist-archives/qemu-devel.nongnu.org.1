@@ -2,82 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7437C8FDAA6
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jun 2024 01:37:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1CA88FDA98
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jun 2024 01:35:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sF09o-0002qt-H1; Wed, 05 Jun 2024 19:35:04 -0400
+	id 1sF09s-0002rC-7J; Wed, 05 Jun 2024 19:35:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sF09m-0002qO-5H
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 19:35:02 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sF09p-0002r3-Ud
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 19:35:06 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sF09k-0004pA-J7
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 19:35:01 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sF09o-0004w0-BH
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 19:35:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717630499;
+ s=mimecast20190719; t=1717630503;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=rU41nJqg3mDUGH1bcBpKF5g1VLC3bOtqyqIezIWqM9s=;
- b=YDHkkQcjCxi0uFckLXkFl5QpellKuftC/IqcrXaGy+AuA8aIuiW72WgGM+77dClDF8NLRH
- rTF7AsKToFFeRDGrRwCv0kQnUX3mmgREbJx0dWEsGxW0jIHeEPaMM1oEmVT4PQ8Z6/DX4Z
- vUe+6UzDegm7P/jASLidcgM8c/BQRiI=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=czI6QAqPz2gxBOi54M6w2CiDVJgkcwfGVW3OGis4Be4=;
+ b=Q3a4WbZGliQd/g6ukAcJfOlvkVXzNIRUUoIMAFRUWDIu+qPx3xB0aCL8tRGCbMZqalFlNo
+ FPf3njUueSuZEDrK9A/2rvri5Tm3rlS/JVh6AlF8+AE0KmvTHweBb4zQgwN7l9YFC0CI0r
+ fZ8R3nRwDN/etlADE/whyDtHt8erTPE=
+Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
+ [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-256--swm5-G7OJyAlTqJ1hubEQ-1; Wed, 05 Jun 2024 19:34:58 -0400
-X-MC-Unique: -swm5-G7OJyAlTqJ1hubEQ-1
-Received: by mail-ed1-f72.google.com with SMTP id
- 4fb4d7f45d1cf-57a32f2f782so79340a12.1
- for <qemu-devel@nongnu.org>; Wed, 05 Jun 2024 16:34:58 -0700 (PDT)
+ us-mta-463-pscAqLgpPwWIpG81SfnxVA-1; Wed, 05 Jun 2024 19:35:02 -0400
+X-MC-Unique: pscAqLgpPwWIpG81SfnxVA-1
+Received: by mail-lf1-f71.google.com with SMTP id
+ 2adb3069b0e04-52b91217fcfso211831e87.3
+ for <qemu-devel@nongnu.org>; Wed, 05 Jun 2024 16:35:01 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717630496; x=1718235296;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=rU41nJqg3mDUGH1bcBpKF5g1VLC3bOtqyqIezIWqM9s=;
- b=fgRVbLUFxGobH26AvWwAgDa/tn+0Aej9Cby7YSC2LP5cDnqgIrWNrnyt50aVnGxXPH
- uBkmiryXS7iaBmV+4qAdQiCMhC3clkZxJJoYC6w+hRpbUb8OcB4CQFJRHZwOKcxe9Lzv
- FtyaSOsyeuxc27b1foun5aJvig/i2PaDqnq4+2CoCaASFeeH4MHs3PAkFsnpsSFKwxet
- T8RN5MPM0vtpXFkkWD9fLGyrTQ1MrFo7oGnj4VMIzQ6zhXdy3EGIkVQjyBFzEwkXjhdJ
- Fl2FMHb0Vm9FUo4t6m519Zhc26Fk4LLTqZkqqDV8SSU6Yy1/TAjjk8mW2D9/xhMQl9Hx
- AYrA==
-X-Gm-Message-State: AOJu0YxfI9owl0/mjNiGvY1pGYz8Yo1aOlEPm/OlhGuLlI1X10HvYzEQ
- wF1rssxg+IMtvhKUyiN932flRu8dlRku53twkhfRWc9QQypTl3ELwHsJIXjZrJIO9+EAPG659r1
- 9mBVojIi2MvCET1mBT/YtdlzyCRwZRSDHUK1pvi4xCfZ6M3mUT5DClqALd/qgSpC2KTVXY00YiG
- i+PDLBwZLXKCFnBdWMlvEX5X+y4zE+Jw==
-X-Received: by 2002:a50:cd10:0:b0:57a:3357:5967 with SMTP id
- 4fb4d7f45d1cf-57a8bc9f858mr2411428a12.30.1717630496446; 
- Wed, 05 Jun 2024 16:34:56 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGMgv2ZpIyUyXfJqvPhlWngNJwMCoAUIFMvG+vfHkCxWi4UXIr2W3HFnv9tCefxMfWqLMCZBg==
-X-Received: by 2002:a50:cd10:0:b0:57a:3357:5967 with SMTP id
- 4fb4d7f45d1cf-57a8bc9f858mr2411422a12.30.1717630495960; 
- Wed, 05 Jun 2024 16:34:55 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1717630500; x=1718235300;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=czI6QAqPz2gxBOi54M6w2CiDVJgkcwfGVW3OGis4Be4=;
+ b=ErruqIlt7L2nFrsLdJEFGknCBFZwA50hvgB+U7Ys3dCdtExPA/lZ8wvJym5ARcjRYy
+ sxBnDm49QqKdlfSkqmabnzIjni+Jw8wh5spCQeslCtH3J04c68z2EBxUqcmcnI2l6wPE
+ ZG2yIDpO8wgrjPbrag/2qUw4JUZwtVGSXmdq3mY6zlj/h/R8kqVe8JgQ0HH3P2WUIbvX
+ Fp8BgkcYfOhGcEENTeo/SeYGkMBw7tjte5WZwCtgg/tVsYmOGwWkcnYK7yvVQf23Cq6v
+ yoKH7U7YwBP6wK0nGl/3OdKPUKYjm9IELEdZL9BveRj5iBwxOfRnPCN6P0yEKlH18dCK
+ ZF/g==
+X-Gm-Message-State: AOJu0YxyPhH+1cy/egj9onWU5NlMev+FsXqA++Wm9vjcCh1pNNmhYUn5
+ wCG7AXmi+QHVwiRV+KLKBDpRUt+1+pHT4ygtiA0Gy3Yg8gjZW1cRiN7YPxpaG97JkxGpmOFiJxX
+ oBRxrsOZEVmRHvWy1cg0mL8RXu7nS5Fe9DPGl32dIcl1/gwqUngF9VZ+hLY6zHb9u8ghwJ57U/s
+ Gk90eNzpswGRs+N5w/3Fe/zwzwX1wvDQ==
+X-Received: by 2002:a05:6512:701:b0:52b:851e:256 with SMTP id
+ 2adb3069b0e04-52bab4c8ea5mr2121686e87.2.1717630500006; 
+ Wed, 05 Jun 2024 16:35:00 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE4WLXi0bBIL3OT03bJ4+nfahaM13sRo7yMo9FqEV9GAEsx9c5tKE3MUq3g9cAdqUttkIihFw==
+X-Received: by 2002:a05:6512:701:b0:52b:851e:256 with SMTP id
+ 2adb3069b0e04-52bab4c8ea5mr2121679e87.2.1717630499532; 
+ Wed, 05 Jun 2024 16:34:59 -0700 (PDT)
 Received: from redhat.com ([2.55.56.67]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-57aae0c9f88sm99816a12.21.2024.06.05.16.34.54
+ a640c23a62f3a-a6c805d0af8sm6914366b.87.2024.06.05.16.34.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 05 Jun 2024 16:34:55 -0700 (PDT)
-Date: Wed, 5 Jun 2024 19:34:53 -0400
+ Wed, 05 Jun 2024 16:34:58 -0700 (PDT)
+Date: Wed, 5 Jun 2024 19:34:56 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Jonah Palmer <jonah.palmer@oracle.com>,
- Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>
-Subject: [PULL v3 04/41] virtio/virtio-pci: Handle extra notification data
-Message-ID: <2e169a5bc1e75cda7075401ae9ee7e4d28a4df31.1717630437.git.mst@redhat.com>
+ Jonah Palmer <jonah.palmer@oracle.com>
+Subject: [PULL v3 05/41] virtio: Prevent creation of device using
+ notification-data with ioeventfd
+Message-ID: <8fdfaf02767748eadab7ad8ab41da78f261824f2.1717630437.git.mst@redhat.com>
 References: <cover.1717630437.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1717630437.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -104,105 +102,69 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jonah Palmer <jonah.palmer@oracle.com>
 
-Add support to virtio-pci devices for handling the extra data sent
-from the driver to the device when the VIRTIO_F_NOTIFICATION_DATA
-transport feature has been negotiated.
+Prevent the realization of a virtio device that attempts to use the
+VIRTIO_F_NOTIFICATION_DATA transport feature without disabling
+ioeventfd.
 
-The extra data that's passed to the virtio-pci device when this
-feature is enabled varies depending on the device's virtqueue
-layout.
+Due to ioeventfd not being able to carry the extra data associated with
+this feature, having both enabled is a functional mismatch and therefore
+Qemu should not continue the device's realization process.
 
-In a split virtqueue layout, this data includes:
- - upper 16 bits: shadow_avail_idx
- - lower 16 bits: virtqueue index
+Although the device does not yet know if the feature will be
+successfully negotiated, many devices using this feature wont actually
+work without this extra data and would fail FEATURES_OK anyway.
 
-In a packed virtqueue layout, this data includes:
- - upper 16 bits: 1-bit wrap counter & 15-bit shadow_avail_idx
- - lower 16 bits: virtqueue index
+If ioeventfd is able to work with the extra notification data in the
+future, this compatibility check can be removed.
 
 Signed-off-by: Jonah Palmer <jonah.palmer@oracle.com>
-Message-Id: <20240315165557.26942-2-jonah.palmer@oracle.com>
-Reviewed-by: Eugenio Pérez <eperezma@redhat.com>
+Message-Id: <20240315165557.26942-3-jonah.palmer@oracle.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- include/hw/virtio/virtio.h |  2 ++
- hw/virtio/virtio-pci.c     | 12 +++++++++---
- hw/virtio/virtio.c         | 18 ++++++++++++++++++
- 3 files changed, 29 insertions(+), 3 deletions(-)
+ hw/virtio/virtio.c | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
-diff --git a/include/hw/virtio/virtio.h b/include/hw/virtio/virtio.h
-index 7d5ffdc145..1451926a13 100644
---- a/include/hw/virtio/virtio.h
-+++ b/include/hw/virtio/virtio.h
-@@ -307,6 +307,8 @@ int virtio_queue_ready(VirtQueue *vq);
- 
- int virtio_queue_empty(VirtQueue *vq);
- 
-+void virtio_queue_set_shadow_avail_idx(VirtQueue *vq, uint16_t idx);
-+
- /* Host binding interface.  */
- 
- uint32_t virtio_config_readb(VirtIODevice *vdev, uint32_t addr);
-diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
-index b1d02f4b3d..cffc7efcae 100644
---- a/hw/virtio/virtio-pci.c
-+++ b/hw/virtio/virtio-pci.c
-@@ -384,7 +384,7 @@ static void virtio_ioport_write(void *opaque, uint32_t addr, uint32_t val)
- {
-     VirtIOPCIProxy *proxy = opaque;
-     VirtIODevice *vdev = virtio_bus_get_device(&proxy->bus);
--    uint16_t vector;
-+    uint16_t vector, vq_idx;
-     hwaddr pa;
- 
-     switch (addr) {
-@@ -408,8 +408,14 @@ static void virtio_ioport_write(void *opaque, uint32_t addr, uint32_t val)
-             vdev->queue_sel = val;
-         break;
-     case VIRTIO_PCI_QUEUE_NOTIFY:
--        if (val < VIRTIO_QUEUE_MAX) {
--            virtio_queue_notify(vdev, val);
-+        vq_idx = val;
-+        if (vq_idx < VIRTIO_QUEUE_MAX && virtio_queue_get_num(vdev, vq_idx)) {
-+            if (virtio_vdev_has_feature(vdev, VIRTIO_F_NOTIFICATION_DATA)) {
-+                VirtQueue *vq = virtio_get_queue(vdev, vq_idx);
-+
-+                virtio_queue_set_shadow_avail_idx(vq, val >> 16);
-+            }
-+            virtio_queue_notify(vdev, vq_idx);
-         }
-         break;
-     case VIRTIO_PCI_STATUS:
 diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
-index 893a072c9d..f7c99e3a96 100644
+index f7c99e3a96..28cd406e16 100644
 --- a/hw/virtio/virtio.c
 +++ b/hw/virtio/virtio.c
-@@ -2264,6 +2264,24 @@ void virtio_queue_set_align(VirtIODevice *vdev, int n, int align)
-     }
+@@ -2980,6 +2980,20 @@ int virtio_set_features(VirtIODevice *vdev, uint64_t val)
+     return ret;
  }
  
-+void virtio_queue_set_shadow_avail_idx(VirtQueue *vq, uint16_t shadow_avail_idx)
++static void virtio_device_check_notification_compatibility(VirtIODevice *vdev,
++                                                           Error **errp)
 +{
-+    if (!vq->vring.desc) {
-+        return;
-+    }
++    VirtioBusState *bus = VIRTIO_BUS(qdev_get_parent_bus(DEVICE(vdev)));
++    VirtioBusClass *k = VIRTIO_BUS_GET_CLASS(bus);
++    DeviceState *proxy = DEVICE(BUS(bus)->parent);
 +
-+    /*
-+     * 16-bit data for packed VQs include 1-bit wrap counter and
-+     * 15-bit shadow_avail_idx.
-+     */
-+    if (virtio_vdev_has_feature(vq->vdev, VIRTIO_F_RING_PACKED)) {
-+        vq->shadow_avail_wrap_counter = (shadow_avail_idx >> 15) & 0x1;
-+        vq->shadow_avail_idx = shadow_avail_idx & 0x7FFF;
-+    } else {
-+        vq->shadow_avail_idx = shadow_avail_idx;
++    if (virtio_host_has_feature(vdev, VIRTIO_F_NOTIFICATION_DATA) &&
++        k->ioeventfd_enabled(proxy)) {
++        error_setg(errp,
++                   "notification_data=on without ioeventfd=off is not supported");
 +    }
 +}
 +
- static void virtio_queue_notify_vq(VirtQueue *vq)
+ size_t virtio_get_config_size(const VirtIOConfigSizeParams *params,
+                               uint64_t host_features)
  {
-     if (vq->vring.desc && vq->handle_output) {
+@@ -3740,6 +3754,14 @@ static void virtio_device_realize(DeviceState *dev, Error **errp)
+         }
+     }
+ 
++    /* Devices should not use both ioeventfd and notification data feature */
++    virtio_device_check_notification_compatibility(vdev, &err);
++    if (err != NULL) {
++        error_propagate(errp, err);
++        vdc->unrealize(dev);
++        return;
++    }
++
+     virtio_bus_device_plugged(vdev, &err);
+     if (err != NULL) {
+         error_propagate(errp, err);
 -- 
 MST
 
