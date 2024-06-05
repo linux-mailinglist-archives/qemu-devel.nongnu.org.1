@@ -2,85 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE58E8FC43B
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jun 2024 09:14:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 205358FC47C
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jun 2024 09:26:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEkpq-0004S7-75; Wed, 05 Jun 2024 03:13:26 -0400
+	id 1sEl17-000793-8Y; Wed, 05 Jun 2024 03:25:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mcasquer@redhat.com>)
- id 1sEkpn-0004Rm-Us
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 03:13:24 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
+ id 1sEl15-00078k-8k
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 03:25:03 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mcasquer@redhat.com>)
- id 1sEkpm-000105-8I
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 03:13:23 -0400
+ (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
+ id 1sEl13-0004EU-6l
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 03:25:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717571601;
+ s=mimecast20190719; t=1717572298;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=YJayKCGtx/FVicl0F0SG4EUQVy2KXkM/sK1DmCBFGXM=;
- b=i5Oe008Q1FA1yLXbsjmyfMLDadVoZ4zsTURMEGg9hx/7isWr/sfn3g2zpWeHx9YCKUYhlJ
- rWBVzPgNGZKRxPdODTA7HVu7wM8dhD0T3/G47WXWO8KBLdBIO95pR79gUGSG3s4VUKVQkh
- u6zPs3k9lwErYPReWJGM40E4Nm4cd8A=
-Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
- [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=rrgJSeCQSOMJFNSDbCmGiaGo4cr8nGAtQOhdYgKypvk=;
+ b=ROH0Wz8ZcEhESjjXsML4CiNZSY8bvVsrwHpp6I/pn+Mx9HJMIr3Ff6NcUsjTwXPJKvQn1A
+ x5zEvjFL5AqSbBtJLjaFzgeWwHGKSK1DQIp4pTfjpW9WLsgCp2mm/1NG7SENguq1BC8F+Z
+ 4Ropkbp8Vg/9IbtXmoLYf6p2oO/6qGk=
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
+ [209.85.216.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-73-kytbG_DFPFCD4WwBPpY_-A-1; Wed, 05 Jun 2024 03:12:13 -0400
-X-MC-Unique: kytbG_DFPFCD4WwBPpY_-A-1
-Received: by mail-lj1-f197.google.com with SMTP id
- 38308e7fff4ca-2ea8f9159f4so39822231fa.0
- for <qemu-devel@nongnu.org>; Wed, 05 Jun 2024 00:12:13 -0700 (PDT)
+ us-mta-647-9lT5Iy_nNjO8jRCk2uCXYw-1; Wed, 05 Jun 2024 03:24:49 -0400
+X-MC-Unique: 9lT5Iy_nNjO8jRCk2uCXYw-1
+Received: by mail-pj1-f72.google.com with SMTP id
+ 98e67ed59e1d1-2c1a9e8d3b0so1905226a91.0
+ for <qemu-devel@nongnu.org>; Wed, 05 Jun 2024 00:24:49 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717571532; x=1718176332;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=YJayKCGtx/FVicl0F0SG4EUQVy2KXkM/sK1DmCBFGXM=;
- b=kyFbo2XPxlMoYrZDqS+1hGht1ka2Y3HvtmxU4k5W9FOr5LknZ5bhBqxt2P+dQ3eHuj
- L4dgHfMNDNwsBMLLWRReaQVf4jNt7CNniWSeegn6R2Go593DCxZzUcUb9YhNqIJhwjqH
- osUXe4TqrKIGn1PsEHGIwX6YKrTyTGNx/IueDeHX6TwBpX4tapiyh3WEurB/kFNBvPUi
- MuetHKRNKix+3aVRujwe/Y4V6m8TIvrIpeY6cvQ/jA8q3mafiwL0jK/ZUF6hf80iGBOp
- QpcAFT5vU0Bn9ypTPiVJcenUVEYzdQ1bm/QqtAEvXq7KXUT9ojP0KruPHENkbnX5PUla
- MadQ==
-X-Gm-Message-State: AOJu0YxkEACoUtGOPlAGaKIOvhQx4rpyiXYffpUuer8M8S/gIEJ9uk8M
- 80XKhVizCWRJ4gYxtXJHRs+AC6koYEAWOqVp6vwY7C8tVZ2LfYmTTakDWouDpxaZjN3D0tIUVne
- BwOW3f5yWqe0tvlmokg6v2v4vULjwwrsLf4dE8msXdPRhpLGeC5Yo2543GT75nAvGVw6Q5wYrAb
- KJW3hdSo3gQ3/yANa2fMKegLUjzHU=
-X-Received: by 2002:a2e:b703:0:b0:2e9:7417:bb0a with SMTP id
- 38308e7fff4ca-2eac798d18amr8460681fa.3.1717571532012; 
- Wed, 05 Jun 2024 00:12:12 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFDR4KepibulB/OHJi2+GdWMm0E4lwlFJxjpYHpOOPdECcqppSFvNC4ZWmOgODVPFlFIS2ZdKzp2mCWhIr8oAM=
-X-Received: by 2002:a2e:b703:0:b0:2e9:7417:bb0a with SMTP id
- 38308e7fff4ca-2eac798d18amr8460631fa.3.1717571531640; Wed, 05 Jun 2024
- 00:12:11 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1717572288; x=1718177088;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=rrgJSeCQSOMJFNSDbCmGiaGo4cr8nGAtQOhdYgKypvk=;
+ b=c6I3W0plVNfxWk6EacNNm1L4oBN02ZmLvC46CV1lX1A4gHry4Ws2xvMzsEpChVfhfj
+ A4FyJzRQQCi5ktz6wrsQj8F4SsWnkOMxQeu3ojSXKqLZxnIPfV/z/tQ30p6XJ3DPhokv
+ 9f4D5Ip6P5b9ljNyRrhZ50efk47W6UWFVeWN7vFRSlFsUsm0WyM60hezsRkIeB3XWpOr
+ DqSNE4YYCM9Gzp0SUbWdMr9cqkTxyQhZ/VcaB91FELlRkydbSdX4Y7W2PLeKPkkOhn/R
+ NhwyYvnJp5W9iZdVaNU9xYvczXe4ZjIsiXhZNWhAIvFzEINiKaRDHfEseAAfdr4k7c2H
+ z8sQ==
+X-Gm-Message-State: AOJu0YwnkNzjLniJ3sF9i9wOQltP8bMYRTsfxaVdZiqrIxik33sCyV9G
+ 8PSPpDYyqFufimt4MBcJuZb3+4lP2w2EpxlrQaS6KM6DAObPcFR1QSuS+5usgL3Hbz9KuYHFYga
+ i116cfE56jSE5gwOfqwXH1wbeQEbYHzUcWteGtB485rVHRuoR+Z0y2V71W9mJ4Es+mFwv8ZsgU9
+ r3TrSJhaqt5rsCMXH1MlZ5BisUBRUzVOZsz2A=
+X-Received: by 2002:a17:90a:9f8b:b0:2c1:424c:1721 with SMTP id
+ 98e67ed59e1d1-2c27db002d9mr1574655a91.3.1717572288383; 
+ Wed, 05 Jun 2024 00:24:48 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFLM+DYlgbJcqOOeoHkowo0cQ1wM3rJ/Rf2l2slbY6x+16KW2eE8Dd94MFKkLYxMUG8NMu5FKPF/JCq8Gtk1F0=
+X-Received: by 2002:a17:90a:9f8b:b0:2c1:424c:1721 with SMTP id
+ 98e67ed59e1d1-2c27db002d9mr1574642a91.3.1717572287983; Wed, 05 Jun 2024
+ 00:24:47 -0700 (PDT)
 MIME-Version: 1.0
-References: <cover.1717140354.git.mprivozn@redhat.com>
- <58295d1f6c995c0c444e375348436e799689126c.1717140354.git.mprivozn@redhat.com>
-In-Reply-To: <58295d1f6c995c0c444e375348436e799689126c.1717140354.git.mprivozn@redhat.com>
-From: Mario Casquero <mcasquer@redhat.com>
-Date: Wed, 5 Jun 2024 09:12:00 +0200
-Message-ID: <CAMXpfWv7T0wHXgzD8urL+jNMeGJrmObbSCOVqz-ysNUn5Kovzw@mail.gmail.com>
-Subject: Re: [PATCH v2 4/4] backends/hostmem: Report error when memory size is
- unaligned
-To: Michal Privoznik <mprivozn@redhat.com>
-Cc: qemu-devel@nongnu.org, david@redhat.com, imammedo@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mcasquer@redhat.com;
+References: <20240530152223.780232-1-aesteve@redhat.com>
+ <20240604181626.GA90471@fedora.redhat.com>
+In-Reply-To: <20240604181626.GA90471@fedora.redhat.com>
+From: Albert Esteve <aesteve@redhat.com>
+Date: Wed, 5 Jun 2024 09:24:36 +0200
+Message-ID: <CADSE00JnHP_kM5GRUkPnvtwUxSmCYd4ko0ScS=EvpJzsSpX+mg@mail.gmail.com>
+Subject: Re: [RFC PATCH 0/1] vhost-user: Add SHMEM_MAP/UNMAP requests
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: qemu-devel@nongnu.org, mst@redhat.com, slp@redhat.com, jasowang@redhat.com
+Content-Type: multipart/alternative; boundary="0000000000001a0b9a061a1f76cd"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=aesteve@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,68 +94,178 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch has been successfully tested by QE. After allocating some
-hugepages in the host, try to boot up a VM with the memory backed by a
-file and the size unaligned, check now the message displayed by QEMU:
-qemu-system-x86_64: backend memory size must be multiple of 0x200000
+--0000000000001a0b9a061a1f76cd
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Tested-by: Mario Casquero <mcasquer@redhat.com>
+On Tue, Jun 4, 2024 at 8:16=E2=80=AFPM Stefan Hajnoczi <stefanha@redhat.com=
+> wrote:
+
+> On Thu, May 30, 2024 at 05:22:22PM +0200, Albert Esteve wrote:
+> > Hi all,
+> >
+> > This is an early attempt to have backends
+> > support dynamic fd mapping into shared
+> > memory regions. As such, there are a few
+> > things that need settling, so I wanted to
+> > post this first to have some early feedback.
+> >
+> > The usecase for this is, e.g., to support
+> > vhost-user-gpu RESOURCE_BLOB operations,
+> > or DAX Window request for virtio-fs. In
+> > general, any operation where a backend
+> > would need to mmap an fd to a shared
+> > memory so that the guest can access it.
+>
+> I wanted to mention that this sentence confuses me because:
+>
+> - The frontend will mmap an fd into the guest's memory space so that a
+>   VIRTIO Shared Memory Region is exposed to the guest. The backend
+>   requests the frontend to perform this operation. The backend does not
+>   invoke mmap itself.
+>
+
+Sorry for the confused wording. It is true that the backend does not
+do the mmap, but requests it to be done. One point of confusion for
+me from your sentence is that I refer to the driver as the frontend,
+and the mapping is done by the VMM (i.e., QEMU).
+
+But yeah, I agree and the scenario you describe is what
+I had in mind. Thanks for pointing it out. I will rephrase it
+in follow-up patches.
 
 
-On Fri, May 31, 2024 at 9:29=E2=80=AFAM Michal Privoznik <mprivozn@redhat.c=
-om> wrote:
 >
-> If memory-backend-{file,ram} has a size that's not aligned to
-> underlying page size it is not only wasteful, but also may lead
-> to hard to debug behaviour. For instance, in case
-> memory-backend-file and hugepages, madvise() and mbind() fail.
-> Rightfully so, page is the smallest unit they can work with. And
-> even though an error is reported, the root cause it not very
-> clear:
+> - "Shared memory" is ambiguous. Please call it VIRTIO Shared Memory
+>   Region to differentiate from vhost-user shared memory tables/regions.
 >
->   qemu-system-x86_64: Couldn't set property 'dump' on 'memory-backend-fil=
-e': Invalid argument
+
+Ok!
+
+
 >
-> After this commit:
+> > The request will be processed by the VMM,
+> > that will, in turn, trigger a mmap with
+> > the instructed parameters (i.e., shmid,
+> > shm_offset, fd_offset, fd, lenght).
+> >
+> > As there are already a couple devices
+> > that could benefit of such a feature,
+> > and more could require it in the future,
+> > my intention was to make it generic.
+> >
+> > To that end, I declared the shared
+> > memory region list in `VirtIODevice`.
+> > I could add a couple commodity
+> > functions to add new regions to the list,
+> > so that the devices can use them. But
+> > I wanted to gather some feedback before
+> > refining it further, as I am probably
+> > missing some required steps/or security
+> > concerns that I am not taking into account.
+> >
+> > Albert Esteve (1):
+> >   vhost-user: add shmem mmap request
+> >
+> >  docs/interop/vhost-user.rst |  23 ++++++++
+> >  hw/virtio/vhost-user.c      | 106 ++++++++++++++++++++++++++++++++++++
+> >  hw/virtio/virtio.c          |   2 +
+> >  include/hw/virtio/virtio.h  |   3 +
+> >  4 files changed, 134 insertions(+)
+> >
+> > --
+> > 2.44.0
+> >
 >
->   qemu-system-x86_64: backend memory size must be multiple of 0x200000
->
-> Signed-off-by: Michal Privoznik <mprivozn@redhat.com>
-> ---
->  backends/hostmem.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
->
-> diff --git a/backends/hostmem.c b/backends/hostmem.c
-> index 012a8c190f..5f9c9ea8f5 100644
-> --- a/backends/hostmem.c
-> +++ b/backends/hostmem.c
-> @@ -337,6 +337,7 @@ host_memory_backend_memory_complete(UserCreatable *uc=
-, Error **errp)
->      HostMemoryBackendClass *bc =3D MEMORY_BACKEND_GET_CLASS(uc);
->      void *ptr;
->      uint64_t sz;
-> +    size_t pagesize;
->      bool async =3D !phase_check(PHASE_LATE_BACKENDS_CREATED);
->
->      if (!bc->alloc) {
-> @@ -348,6 +349,13 @@ host_memory_backend_memory_complete(UserCreatable *u=
-c, Error **errp)
->
->      ptr =3D memory_region_get_ram_ptr(&backend->mr);
->      sz =3D memory_region_size(&backend->mr);
-> +    pagesize =3D qemu_ram_pagesize(backend->mr.ram_block);
-> +
-> +    if (!QEMU_IS_ALIGNED(sz, pagesize)) {
-> +        error_setg(errp, "backend memory size must be multiple of 0x%"
-> +                   PRIx64, pagesize);
-> +        return;
-> +    }
->
->      if (backend->merge &&
->          qemu_madvise(ptr, sz, QEMU_MADV_MERGEABLE)) {
-> --
-> 2.44.1
->
->
+
+--0000000000001a0b9a061a1f76cd
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><div><div dir=3D"ltr" class=3D"gmail_sign=
+ature"><div dir=3D"ltr"><br></div></div></div></div><br><div class=3D"gmail=
+_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Tue, Jun 4, 2024 at 8:16=
+=E2=80=AFPM Stefan Hajnoczi &lt;<a href=3D"mailto:stefanha@redhat.com">stef=
+anha@redhat.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" s=
+tyle=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);pad=
+ding-left:1ex">On Thu, May 30, 2024 at 05:22:22PM +0200, Albert Esteve wrot=
+e:<br>
+&gt; Hi all,<br>
+&gt; <br>
+&gt; This is an early attempt to have backends<br>
+&gt; support dynamic fd mapping into shared<br>
+&gt; memory regions. As such, there are a few<br>
+&gt; things that need settling, so I wanted to<br>
+&gt; post this first to have some early feedback.<br>
+&gt; <br>
+&gt; The usecase for this is, e.g., to support<br>
+&gt; vhost-user-gpu RESOURCE_BLOB operations,<br>
+&gt; or DAX Window request for virtio-fs. In<br>
+&gt; general, any operation where a backend<br>
+&gt; would need to mmap an fd to a shared<br>
+&gt; memory so that the guest can access it.<br>
+<br>
+I wanted to mention that this sentence confuses me because:<br>
+<br>
+- The frontend will mmap an fd into the guest&#39;s memory space so that a<=
+br>
+=C2=A0 VIRTIO Shared Memory Region is exposed to the guest. The backend<br>
+=C2=A0 requests the frontend to perform this operation. The backend does no=
+t<br>
+=C2=A0 invoke mmap itself.<br></blockquote><div><br></div><div>Sorry for th=
+e confused wording. It is true that the backend does not</div><div>do the m=
+map, but requests it to be done. One point of confusion for</div><div>me fr=
+om your sentence is that I refer to the=C2=A0driver as the frontend,</div><=
+div>and the mapping is done by the VMM (i.e., QEMU).</div><div><br></div><d=
+iv>But yeah, I agree and the scenario you describe is what</div><div>I had =
+in mind. Thanks for pointing it out. I will rephrase it</div><div>in follow=
+-up patches.</div><div>=C2=A0</div><blockquote class=3D"gmail_quote" style=
+=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding=
+-left:1ex">
+<br>
+- &quot;Shared memory&quot; is ambiguous. Please call it VIRTIO Shared Memo=
+ry<br>
+=C2=A0 Region to differentiate from vhost-user shared memory tables/regions=
+.<br></blockquote><div><br></div><div>Ok!</div><div>=C2=A0</div><blockquote=
+ class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px so=
+lid rgb(204,204,204);padding-left:1ex">
+<br>
+&gt; The request will be processed by the VMM,<br>
+&gt; that will, in turn, trigger a mmap with<br>
+&gt; the instructed parameters (i.e., shmid,<br>
+&gt; shm_offset, fd_offset, fd, lenght).<br>
+&gt; <br>
+&gt; As there are already a couple devices<br>
+&gt; that could benefit of such a feature,<br>
+&gt; and more could require it in the future,<br>
+&gt; my intention was to make it generic.<br>
+&gt; <br>
+&gt; To that end, I declared the shared<br>
+&gt; memory region list in `VirtIODevice`.<br>
+&gt; I could add a couple commodity<br>
+&gt; functions to add new regions to the list,<br>
+&gt; so that the devices can use them. But<br>
+&gt; I wanted to gather some feedback before<br>
+&gt; refining it further, as I am probably<br>
+&gt; missing some required steps/or security<br>
+&gt; concerns that I am not taking into account.<br>
+&gt; <br>
+&gt; Albert Esteve (1):<br>
+&gt;=C2=A0 =C2=A0vhost-user: add shmem mmap request<br>
+&gt; <br>
+&gt;=C2=A0 docs/interop/vhost-user.rst |=C2=A0 23 ++++++++<br>
+&gt;=C2=A0 hw/virtio/vhost-user.c=C2=A0 =C2=A0 =C2=A0 | 106 +++++++++++++++=
++++++++++++++++++++++<br>
+&gt;=C2=A0 hw/virtio/virtio.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 |=C2=A0 =C2=
+=A02 +<br>
+&gt;=C2=A0 include/hw/virtio/virtio.h=C2=A0 |=C2=A0 =C2=A03 +<br>
+&gt;=C2=A0 4 files changed, 134 insertions(+)<br>
+&gt; <br>
+&gt; -- <br>
+&gt; 2.44.0<br>
+&gt; <br>
+</blockquote></div></div>
+
+--0000000000001a0b9a061a1f76cd--
 
 
