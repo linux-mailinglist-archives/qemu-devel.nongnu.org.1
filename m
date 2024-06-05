@@ -2,71 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BBCC8FDAAF
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jun 2024 01:38:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C6918FDA9F
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jun 2024 01:36:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sF09v-0002sF-6J; Wed, 05 Jun 2024 19:35:11 -0400
+	id 1sF09y-0002ue-Q5; Wed, 05 Jun 2024 19:35:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sF09s-0002rU-Se
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 19:35:08 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sF09x-0002u9-5M
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 19:35:13 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sF09r-00051w-7D
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 19:35:08 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sF09v-00053k-Je
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 19:35:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717630506;
+ s=mimecast20190719; t=1717630511;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=uByx4Oz+CQ80E+9HMb1HUHKkD83RXYCyv+000WUVwgE=;
- b=gEjj1xLPugT4pw9YrfmCDe+sdQuRPDvf+zYxiEU3XT2iFqNAMbTmuypBTfhbw0fwBGk9re
- ElaaCAxJuSpocLE/9sQJNdvLrw9XsT3AOm7MZJDHqAvHrVbTar6qK21hCSo9XeT706CGJk
- 3WZOUg2tQMNq8MO3n4O3xKr2U9XEt5c=
+ bh=NfEypfhhzAT3jaOXKR+DgWb6iflUNTeNRcp9m8ElhrQ=;
+ b=INBZyVSy2RYwjiUjy+Ap4nfyJLXLB9IpfPXzk7APCzL2Vx/6I6wGUDkUhTaViDYsqUqlXX
+ wpiRLh5pRzj9vWdar/CVDWFUEpoZQAO3BbCvngD/AU96phAno+xeZ85H0zPEX1Mpy2vXbk
+ 83erGHwKuQZlVwVkXzJ13j3zmFLQwYk=
 Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
  [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-664-v-6oZm69ObWuK11cPWh0uA-1; Wed, 05 Jun 2024 19:35:05 -0400
-X-MC-Unique: v-6oZm69ObWuK11cPWh0uA-1
+ us-mta-66-d5Mk8XcsMKm5VfyumiqzrQ-1; Wed, 05 Jun 2024 19:35:09 -0400
+X-MC-Unique: d5Mk8XcsMKm5VfyumiqzrQ-1
 Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-a6c718150f8so44955366b.2
- for <qemu-devel@nongnu.org>; Wed, 05 Jun 2024 16:35:04 -0700 (PDT)
+ a640c23a62f3a-a592c35ac06so27557766b.0
+ for <qemu-devel@nongnu.org>; Wed, 05 Jun 2024 16:35:09 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717630503; x=1718235303;
+ d=1e100.net; s=20230601; t=1717630508; x=1718235308;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=uByx4Oz+CQ80E+9HMb1HUHKkD83RXYCyv+000WUVwgE=;
- b=rPTmRoG6AtBNuvkbmk5LQFomsCvOB7vuOB2HusZuXqd/AGYdrohO1iCh74ZwnyzIvK
- M0km+wrf15JFRHuHryIS4ZhLYeyLIEJmWDcNpbXTuo22xWCjkj61PdleAwwGV1HP3Jou
- c3RDM9Bp0wIV4wt4usuLmMAqlaYV/QBmBy7XO3kKro3hms4++vMCKvu5wbGFtRTdbDPC
- Y992iojGko4uMF4OTkKzwc7laNkRgZcXNduxDbjRa7YJTPam9Fm7CXH7krtUBeKJoWqD
- SBHZCMulZxMJELu2DA53N5+dZzfByDLG5b4O7/Rc3vYrJymnpGVvS4iDnMmRiW+xvC7y
- Macw==
-X-Gm-Message-State: AOJu0YyC7/wywPsIavqxa5NjAixzftZFDqE1FFAS0XzDYYheCeUkwOK2
- ntlbjb1eg0s/ctXAzj6zd7C1qciNtQbjLLmRcfHcVWe/Xpbzm2Avdn0X52Ior7tVsIfl6h9pRRI
- PnEg9jaTtVboVAtvQBSpoREtkNZoaswNpIT5g+qPbmr3Kr/kw6/SjM9h5i70bHHENRGH/EWkg3u
- 9bewxLtYJKGhd8EwrrPsN5W99Rpr4ITg==
-X-Received: by 2002:a17:907:bb84:b0:a59:c23d:85ce with SMTP id
- a640c23a62f3a-a69a000e2bcmr301116766b.51.1717630503535; 
- Wed, 05 Jun 2024 16:35:03 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IERTiJxar1crypFhv8A4eLSChTdHPg/PnttrCEUjwAT9bmo+mlH+Z2RDHVHXTRg/f1S1knd4w==
-X-Received: by 2002:a17:907:bb84:b0:a59:c23d:85ce with SMTP id
- a640c23a62f3a-a69a000e2bcmr301115666b.51.1717630503029; 
- Wed, 05 Jun 2024 16:35:03 -0700 (PDT)
+ bh=NfEypfhhzAT3jaOXKR+DgWb6iflUNTeNRcp9m8ElhrQ=;
+ b=OHy34unNJ5bxM/8ZuiFb4z86xYxxTrWbBIQ/zsfDeh/pdlSXY6dSsYALJlLhxUkCjk
+ mdwQH2aoTISoQVNDMHmKvNBdzdC/rvlADBlX+U/0VcjKAxDpgu7qclgwaXlErtN8asDt
+ ZFsxv4pWf00UJ6fmx5IbyUAj753BJ6uRimsVAqU84O7y9wXX/Kt/4PvrA7oamYF3seeC
+ z4OOndMMDro7o2+VFuPIqI3VpwRrecvDLQHEPPiDtqvLflnz6XQD030wiATB2csbT9RJ
+ kNg4gp10qKAEPObMZ6wPAOIcfw5jmArX7FnIyO6qJ3iyJP9cbiaR2/bEI3gXSmI50pTE
+ 1Xaw==
+X-Gm-Message-State: AOJu0YxXv24NQL0ZG20BUaw5UF+d7OZsQ/QPd3UK22QN4Dsxt7QFQr50
+ wF/N/OpBp6NAZyXJujFc9bPgoPI/PmS/JnvBI2TKtFAxffKx9IKps4lH9fMwUp9o/LnmqFZ1NX2
+ J7CFIv6qWye33ZZ7AVJzriE2eSuxFwu97Y35tK2sGSih5RWtDC4C4dh4eGhJkMyCXOdHL4qInxA
+ V0Bh23iTpiuKIhveWgeAVnvFHzH59hTA==
+X-Received: by 2002:a17:906:add8:b0:a68:be46:742f with SMTP id
+ a640c23a62f3a-a6c75f8edefmr88843366b.3.1717630507856; 
+ Wed, 05 Jun 2024 16:35:07 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH8qjlS+udktv58GsuPwqZCLE2JugkraGrX6J5bR8VSSWhHp3rKl68z+JOewWk/FnZQ8pmpBQ==
+X-Received: by 2002:a17:906:add8:b0:a68:be46:742f with SMTP id
+ a640c23a62f3a-a6c75f8edefmr88841266b.3.1717630507462; 
+ Wed, 05 Jun 2024 16:35:07 -0700 (PDT)
 Received: from redhat.com ([2.55.56.67]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a6c805cd97csm6950466b.67.2024.06.05.16.35.01
+ a640c23a62f3a-a6c80582841sm7079666b.42.2024.06.05.16.35.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 05 Jun 2024 16:35:02 -0700 (PDT)
-Date: Wed, 5 Jun 2024 19:35:00 -0400
+ Wed, 05 Jun 2024 16:35:06 -0700 (PDT)
+Date: Wed, 5 Jun 2024 19:35:03 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Jonah Palmer <jonah.palmer@oracle.com>
-Subject: [PULL v3 06/41] virtio-mmio: Handle extra notification data
-Message-ID: <bed1d72d421f2d1acf6bc7d08603ca3c7bc6571a.1717630437.git.mst@redhat.com>
+ Jonah Palmer <jonah.palmer@oracle.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ Thomas Huth <thuth@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Eric Farman <farman@linux.ibm.com>, qemu-s390x@nongnu.org
+Subject: [PULL v3 07/41] virtio-ccw: Handle extra notification data
+Message-ID: <da5a4f61c4df4ab86beff9c5ee1cf75e948768d8.1717630437.git.mst@redhat.com>
 References: <cover.1717630437.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -101,53 +106,64 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jonah Palmer <jonah.palmer@oracle.com>
 
-Add support to virtio-mmio devices for handling the extra data sent from
+Add support to virtio-ccw devices for handling the extra data sent from
 the driver to the device when the VIRTIO_F_NOTIFICATION_DATA transport
 feature has been negotiated.
 
-The extra data that's passed to the virtio-mmio device when this feature
+The extra data that's passed to the virtio-ccw device when this feature
 is enabled varies depending on the device's virtqueue layout.
 
-The data passed to the virtio-mmio device is in the same format as the
+That data passed to the virtio-ccw device is in the same format as the
 data passed to virtio-pci devices.
 
 Signed-off-by: Jonah Palmer <jonah.palmer@oracle.com>
-Message-Id: <20240315165557.26942-4-jonah.palmer@oracle.com>
+Message-Id: <20240315165557.26942-5-jonah.palmer@oracle.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/virtio/virtio-mmio.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ hw/s390x/s390-virtio-ccw.c | 17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
 
-diff --git a/hw/virtio/virtio-mmio.c b/hw/virtio/virtio-mmio.c
-index 22f9fbcf5a..320428ac0d 100644
---- a/hw/virtio/virtio-mmio.c
-+++ b/hw/virtio/virtio-mmio.c
-@@ -248,6 +248,7 @@ static void virtio_mmio_write(void *opaque, hwaddr offset, uint64_t value,
+diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
+index 3d0bc3e7f2..956ef7b98d 100644
+--- a/hw/s390x/s390-virtio-ccw.c
++++ b/hw/s390x/s390-virtio-ccw.c
+@@ -125,9 +125,11 @@ static void subsystem_reset(void)
+ static int virtio_ccw_hcall_notify(const uint64_t *args)
  {
-     VirtIOMMIOProxy *proxy = (VirtIOMMIOProxy *)opaque;
-     VirtIODevice *vdev = virtio_bus_get_device(&proxy->bus);
-+    uint16_t vq_idx;
+     uint64_t subch_id = args[0];
+-    uint64_t queue = args[1];
++    uint64_t data = args[1];
+     SubchDev *sch;
++    VirtIODevice *vdev;
+     int cssid, ssid, schid, m;
++    uint16_t vq_idx = data;
  
-     trace_virtio_mmio_write_offset(offset, value);
- 
-@@ -407,8 +408,14 @@ static void virtio_mmio_write(void *opaque, hwaddr offset, uint64_t value,
-         }
-         break;
-     case VIRTIO_MMIO_QUEUE_NOTIFY:
--        if (value < VIRTIO_QUEUE_MAX) {
--            virtio_queue_notify(vdev, value);
-+        vq_idx = value;
-+        if (vq_idx < VIRTIO_QUEUE_MAX && virtio_queue_get_num(vdev, vq_idx)) {
-+            if (virtio_vdev_has_feature(vdev, VIRTIO_F_NOTIFICATION_DATA)) {
-+                VirtQueue *vq = virtio_get_queue(vdev, vq_idx);
+     if (ioinst_disassemble_sch_ident(subch_id, &m, &cssid, &ssid, &schid)) {
+         return -EINVAL;
+@@ -136,12 +138,19 @@ static int virtio_ccw_hcall_notify(const uint64_t *args)
+     if (!sch || !css_subch_visible(sch)) {
+         return -EINVAL;
+     }
+-    if (queue >= VIRTIO_QUEUE_MAX) {
 +
-+                virtio_queue_set_shadow_avail_idx(vq, (value >> 16) & 0xFFFF);
-+            }
-+            virtio_queue_notify(vdev, vq_idx);
-         }
-         break;
-     case VIRTIO_MMIO_INTERRUPT_ACK:
++    vdev = virtio_ccw_get_vdev(sch);
++    if (vq_idx >= VIRTIO_QUEUE_MAX || !virtio_queue_get_num(vdev, vq_idx)) {
+         return -EINVAL;
+     }
+-    virtio_queue_notify(virtio_ccw_get_vdev(sch), queue);
+-    return 0;
+ 
++    if (virtio_vdev_has_feature(vdev, VIRTIO_F_NOTIFICATION_DATA)) {
++        virtio_queue_set_shadow_avail_idx(virtio_get_queue(vdev, vq_idx),
++                                          (data >> 16) & 0xFFFF);
++    }
++
++    virtio_queue_notify(vdev, vq_idx);
++    return 0;
+ }
+ 
+ static int virtio_ccw_hcall_early_printk(const uint64_t *args)
 -- 
 MST
 
