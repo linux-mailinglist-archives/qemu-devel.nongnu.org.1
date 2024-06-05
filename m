@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED9068FDAA8
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jun 2024 01:37:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 301048FDAA7
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jun 2024 01:37:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sF0BF-0006ur-92; Wed, 05 Jun 2024 19:36:33 -0400
+	id 1sF0BF-0006yI-UK; Wed, 05 Jun 2024 19:36:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sF0BC-0006lO-NS
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 19:36:30 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sF0BE-0006sE-9y
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 19:36:32 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sF0BA-0005r8-Rl
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 19:36:30 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sF0BC-0005sH-M1
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 19:36:32 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717630587;
+ s=mimecast20190719; t=1717630590;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=J5j8n04Q1gRbmovO7PmlswqpHPYyPExcO8mAPNVjzhI=;
- b=VM/CYZl+g/YYSg2Y4Uo4H2xOftjOnp8ES1MFUk9X6ggr6DzoRB5fkdFsXCm8J5eUiESp/e
- WBo44UETTVT0AL9Ft1Kj9AdO6l63FN6F7O7kKVDto49YWMsq/zw+KwanMCKwzNFKnVGIBH
- 5ASeiipJavwqcDlCW2CjgQ7kZBwMH5E=
-Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
- [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=QuE+o0AC9wdLKXlzVTnODsdNe5/ti8zXK/7OKFfOYUM=;
+ b=fZzzDE7ayuDzpcUHa7CTM4N3nhfjtg8hZoph8url2s5tl75o/8Z7NlUQU/VcfdDlR5RgV+
+ VK069ly/d3/AOisNXHzFykRit0WXvv3UiNayFTqDkNevFcExVUiGxIgSR/X8kLwIrcUYIP
+ ngsh2Oti0batk2sOWuDtFz6TwYP9x8E=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-47-u4xPBN-kOMSpMU-7ij1Cyg-1; Wed, 05 Jun 2024 19:36:26 -0400
-X-MC-Unique: u4xPBN-kOMSpMU-7ij1Cyg-1
-Received: by mail-lf1-f72.google.com with SMTP id
- 2adb3069b0e04-52baa2e4ab1so322388e87.0
- for <qemu-devel@nongnu.org>; Wed, 05 Jun 2024 16:36:26 -0700 (PDT)
+ us-mta-592-lZ7d28d5MfSUjS6Crv3nUQ-1; Wed, 05 Jun 2024 19:36:28 -0400
+X-MC-Unique: lZ7d28d5MfSUjS6Crv3nUQ-1
+Received: by mail-ed1-f72.google.com with SMTP id
+ 4fb4d7f45d1cf-57a941a787dso375941a12.3
+ for <qemu-devel@nongnu.org>; Wed, 05 Jun 2024 16:36:28 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717630584; x=1718235384;
+ d=1e100.net; s=20230601; t=1717630587; x=1718235387;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=J5j8n04Q1gRbmovO7PmlswqpHPYyPExcO8mAPNVjzhI=;
- b=lsyPE60uEDBF2491+artK/3oSfp3gEC6dTp8smpYwZBtfBrWjsmz5xA3iPHp5Gjqag
- ahuwd75hX/U2QUAmZprQRDh4L9XYdUN+I5A+OzehXFbtXR/FWKNEuGfv0Pr8hcSMWHFw
- 2ltopennOWCHMP6Pi8yFfNxiNlhlix6MmzFuZm2kjVQy80CsGoYj6Alovv0JW+KKeHv2
- m7zmAWA1ZkJ5PzCBr+m4r0kn4oodDfMm/hUT+J4Ba0TOD6l0WpZoEO2OOZEAhXERbtyt
- rQ0nvUkI+mjRxitA1i2Fd5R3uFB5uuB+DnD5e2aeRO50wAqvo4cq42/t/LOdf1WZn2Kr
- DfXA==
-X-Gm-Message-State: AOJu0YzqR2P1aEqwKuc/8dh4o+c6FHn+Ja8xT8+vcAG31kE5b+utdwJn
- mUHwVJXTf7qrWYGl5EGFCDjI3JuE9MiQ/0CaJL4aNs8JadUktbSkflKnYRzJLqEzb5wm1DjySeH
- xuSYhT77wEK9/IKKn+d2VNMS8A2K1+vyUMj31Wbf1yvIxRaB6sAuoGF4CyISLzju6seIXRHRT8C
- kiWm1gEloIYCJr7qAFUirvabWHK11DGA==
-X-Received: by 2002:a05:6512:1152:b0:52b:959c:1dc7 with SMTP id
- 2adb3069b0e04-52bab4fca3emr3892784e87.42.1717630584142; 
- Wed, 05 Jun 2024 16:36:24 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGwHh62mUa+chCVe+h363wz7gi1cl9+rtn7oX+t7HnZ26efMkXyf8yQWUyyJgWtkjDZdxyYnA==
-X-Received: by 2002:a05:6512:1152:b0:52b:959c:1dc7 with SMTP id
- 2adb3069b0e04-52bab4fca3emr3892771e87.42.1717630583572; 
- Wed, 05 Jun 2024 16:36:23 -0700 (PDT)
+ bh=QuE+o0AC9wdLKXlzVTnODsdNe5/ti8zXK/7OKFfOYUM=;
+ b=FlmtjvdzEL4FCZSPe81Kkt225nw5HShfbtYWvmke7JoRt/7gd+wVmp/lgNxVvuK2GH
+ buFBM9QQTSa84LNK8kkjkb2tMM7yso1NTnTZqQsplcjUg3FYgNW6vKZAgPTlETMIBp6s
+ +DELTVRXxdLz5rYk3pk5IFptcCmKzAbgy4UlaqZSaApO6DeXgBDWYpwkABCCE5Lna+Bt
+ 9A6qWIUOtinJWn2L+xgPpxXiYd5ay4hU+CF8XjNMmyVhDZEW3ljn/1MC1sUkND4IS9iT
+ 4U0Aqrhw/GqK+nmrDGBJHC5oRv09a/naV9cKOa9XISIhWGaIpdE13atgRgJpGSu9yvHG
+ 709Q==
+X-Gm-Message-State: AOJu0YzLKj/RryuusXtJ8u9Gr1K0nV+F1Kt4H2JyJ0BapklnpoWLGnPO
+ qFVZLO/W3rUQzx5l9WHlJjG4Ow7D0fwpkIKQpq0tC8/zLP9KNbGCK0ByilOu/BfEXtz7RCvEYV/
+ 0oiXhNYKhg4wvlPDHCcyYzaivAByvbrbSi89TKQO+hyGjo6PTHH0tvf4dB4XMKEpCHP6QrmF2Ou
+ g5/MSFiA2vTaHEJRK3305iohkzq5Kmog==
+X-Received: by 2002:a50:bb03:0:b0:57a:1c44:581c with SMTP id
+ 4fb4d7f45d1cf-57a8bc91223mr3180058a12.32.1717630587196; 
+ Wed, 05 Jun 2024 16:36:27 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEUGQTqUQCcPO2wRAfy0GXBR/uwMiRv5mZR6w2lI9QLLukUeSoiVCPlO/QrFqi1VcYrG4916g==
+X-Received: by 2002:a50:bb03:0:b0:57a:1c44:581c with SMTP id
+ 4fb4d7f45d1cf-57a8bc91223mr3180040a12.32.1717630586655; 
+ Wed, 05 Jun 2024 16:36:26 -0700 (PDT)
 Received: from redhat.com ([2.55.56.67]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a6c80581989sm7292266b.30.2024.06.05.16.36.21
+ 4fb4d7f45d1cf-57aae23a0d7sm91917a12.95.2024.06.05.16.36.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 05 Jun 2024 16:36:22 -0700 (PDT)
-Date: Wed, 5 Jun 2024 19:36:20 -0400
+ Wed, 05 Jun 2024 16:36:26 -0700 (PDT)
+Date: Wed, 5 Jun 2024 19:36:23 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, Fan Ni <fan.ni@samsung.com>,
  Svetly Todorov <svetly.todorov@memverge.com>,
  Gregory Price <gregory.price@memverge.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PULL v3 27/41] hw/mem/cxl_type3: Add DPA range validation for
- accesses to DC regions
-Message-ID: <926c82fba0bf9917bdeae518420bff13904516da.1717630437.git.mst@redhat.com>
+ Jonathan Cameron <jonathan.cameron@huawei.com>
+Subject: [PULL v3 28/41] hw/cxl/cxl-mailbox-utils: Add superset extent
+ release mailbox support
+Message-ID: <b841f6e53e910d412a8b8c96489841490e5b67d9.1717630437.git.mst@redhat.com>
 References: <cover.1717630437.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -77,7 +77,7 @@ Content-Disposition: inline
 In-Reply-To: <cover.1717630437.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -104,189 +104,70 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Fan Ni <fan.ni@samsung.com>
 
-All DPA ranges in the DC regions are invalid to access until an extent
-covering the range has been successfully accepted by the host. A bitmap
-is added to each region to record whether a DC block in the region has
-been backed by a DC extent. Each bit in the bitmap represents a DC block.
-When a DC extent is accepted, all the bits representing the blocks in the
-extent are set, which will be cleared when the extent is released.
+With the change, we extend the extent release mailbox command processing
+to allow more flexible release. As long as the DPA range of the extent to
+release is covered by accepted extent(s) in the device, the release can be
+performed.
 
 Tested-by: Svetly Todorov <svetly.todorov@memverge.com>
 Reviewed-by: Gregory Price <gregory.price@memverge.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Fan Ni <fan.ni@samsung.com>
-Message-Id: <20240523174651.1089554-13-nifan.cxl@gmail.com>
+Message-Id: <20240523174651.1089554-14-nifan.cxl@gmail.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- include/hw/cxl/cxl_device.h |  7 ++++
- hw/cxl/cxl-mailbox-utils.c  |  3 ++
- hw/mem/cxl_type3.c          | 76 +++++++++++++++++++++++++++++++++++++
- 3 files changed, 86 insertions(+)
+ hw/cxl/cxl-mailbox-utils.c | 21 ++++++++-------------
+ 1 file changed, 8 insertions(+), 13 deletions(-)
 
-diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
-index c69ff6b5de..0a4fcb2800 100644
---- a/include/hw/cxl/cxl_device.h
-+++ b/include/hw/cxl/cxl_device.h
-@@ -456,6 +456,7 @@ typedef struct CXLDCRegion {
-     uint64_t block_size;
-     uint32_t dsmadhandle;
-     uint8_t flags;
-+    unsigned long *blk_bitmap;
- } CXLDCRegion;
- 
- struct CXLType3Dev {
-@@ -577,4 +578,10 @@ CXLDCExtentGroup *cxl_insert_extent_to_extent_group(CXLDCExtentGroup *group,
- void cxl_extent_group_list_insert_tail(CXLDCExtentGroupList *list,
-                                        CXLDCExtentGroup *group);
- void cxl_extent_group_list_delete_front(CXLDCExtentGroupList *list);
-+void ct3_set_region_block_backed(CXLType3Dev *ct3d, uint64_t dpa,
-+                                 uint64_t len);
-+void ct3_clear_region_block_backed(CXLType3Dev *ct3d, uint64_t dpa,
-+                                   uint64_t len);
-+bool ct3_test_region_block_backed(CXLType3Dev *ct3d, uint64_t dpa,
-+                                  uint64_t len);
- #endif
 diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
-index 64387f34ce..c4852112fe 100644
+index c4852112fe..74eeb6fde7 100644
 --- a/hw/cxl/cxl-mailbox-utils.c
 +++ b/hw/cxl/cxl-mailbox-utils.c
-@@ -1655,6 +1655,7 @@ static CXLRetCode cmd_dcd_add_dyn_cap_rsp(const struct cxl_cmd *cmd,
+@@ -1704,6 +1704,13 @@ static CXLRetCode cxl_dc_extent_release_dry_run(CXLType3Dev *ct3d,
+         dpa = in->updated_entries[i].start_dpa;
+         len = in->updated_entries[i].len;
  
-         cxl_insert_extent_to_extent_list(extent_list, dpa, len, NULL, 0);
-         ct3d->dc.total_extent_count += 1;
-+        ct3_set_region_block_backed(ct3d, dpa, len);
-     }
-     /* Remove the first extent group in the pending list */
-     cxl_extent_group_list_delete_front(&ct3d->dc.extents_pending);
-@@ -1813,10 +1814,12 @@ static CXLRetCode cmd_dcd_release_dyn_cap(const struct cxl_cmd *cmd,
-      * list and update the extent count;
-      */
-     QTAILQ_FOREACH_SAFE(ent, &ct3d->dc.extents, node, ent_next) {
-+        ct3_clear_region_block_backed(ct3d, ent->start_dpa, ent->len);
-         cxl_remove_extent_from_extent_list(&ct3d->dc.extents, ent);
-     }
-     copy_extent_list(&ct3d->dc.extents, &updated_list);
-     QTAILQ_FOREACH_SAFE(ent, &updated_list, node, ent_next) {
-+        ct3_set_region_block_backed(ct3d, ent->start_dpa, ent->len);
-         cxl_remove_extent_from_extent_list(&updated_list, ent);
-     }
-     ct3d->dc.total_extent_count = updated_list_size;
-diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
-index f53bcca6d3..0d18259ec0 100644
---- a/hw/mem/cxl_type3.c
-+++ b/hw/mem/cxl_type3.c
-@@ -672,6 +672,7 @@ static bool cxl_create_dc_regions(CXLType3Dev *ct3d, Error **errp)
-             .flags = 0,
-         };
-         ct3d->dc.total_capacity += region->len;
-+        region->blk_bitmap = bitmap_new(region->len / region->block_size);
-     }
-     QTAILQ_INIT(&ct3d->dc.extents);
-     QTAILQ_INIT(&ct3d->dc.extents_pending);
-@@ -683,6 +684,8 @@ static void cxl_destroy_dc_regions(CXLType3Dev *ct3d)
- {
-     CXLDCExtent *ent, *ent_next;
-     CXLDCExtentGroup *group, *group_next;
-+    int i;
-+    CXLDCRegion *region;
- 
-     QTAILQ_FOREACH_SAFE(ent, &ct3d->dc.extents, node, ent_next) {
-         cxl_remove_extent_from_extent_list(&ct3d->dc.extents, ent);
-@@ -695,6 +698,11 @@ static void cxl_destroy_dc_regions(CXLType3Dev *ct3d)
-         }
-         g_free(group);
-     }
-+
-+    for (i = 0; i < ct3d->dc.num_regions; i++) {
-+        region = &ct3d->dc.regions[i];
-+        g_free(region->blk_bitmap);
-+    }
- }
- 
- static bool cxl_setup_memory(CXLType3Dev *ct3d, Error **errp)
-@@ -926,6 +934,70 @@ static void ct3_exit(PCIDevice *pci_dev)
-     }
- }
- 
-+/*
-+ * Mark the DPA range [dpa, dap + len - 1] to be backed and accessible. This
-+ * happens when a DC extent is added and accepted by the host.
-+ */
-+void ct3_set_region_block_backed(CXLType3Dev *ct3d, uint64_t dpa,
-+                                 uint64_t len)
-+{
-+    CXLDCRegion *region;
-+
-+    region = cxl_find_dc_region(ct3d, dpa, len);
-+    if (!region) {
-+        return;
-+    }
-+
-+    bitmap_set(region->blk_bitmap, (dpa - region->base) / region->block_size,
-+               len / region->block_size);
-+}
-+
-+/*
-+ * Check whether the DPA range [dpa, dpa + len - 1] is backed with DC extents.
-+ * Used when validating read/write to dc regions
-+ */
-+bool ct3_test_region_block_backed(CXLType3Dev *ct3d, uint64_t dpa,
-+                                  uint64_t len)
-+{
-+    CXLDCRegion *region;
-+    uint64_t nbits;
-+    long nr;
-+
-+    region = cxl_find_dc_region(ct3d, dpa, len);
-+    if (!region) {
-+        return false;
-+    }
-+
-+    nr = (dpa - region->base) / region->block_size;
-+    nbits = DIV_ROUND_UP(len, region->block_size);
-+    /*
-+     * if bits between [dpa, dpa + len) are all 1s, meaning the DPA range is
-+     * backed with DC extents, return true; else return false.
-+     */
-+    return find_next_zero_bit(region->blk_bitmap, nr + nbits, nr) == nr + nbits;
-+}
-+
-+/*
-+ * Mark the DPA range [dpa, dap + len - 1] to be unbacked and inaccessible.
-+ * This happens when a dc extent is released by the host.
-+ */
-+void ct3_clear_region_block_backed(CXLType3Dev *ct3d, uint64_t dpa,
-+                                   uint64_t len)
-+{
-+    CXLDCRegion *region;
-+    uint64_t nbits;
-+    long nr;
-+
-+    region = cxl_find_dc_region(ct3d, dpa, len);
-+    if (!region) {
-+        return;
-+    }
-+
-+    nr = (dpa - region->base) / region->block_size;
-+    nbits = len / region->block_size;
-+    bitmap_clear(region->blk_bitmap, nr, nbits);
-+}
-+
- static bool cxl_type3_dpa(CXLType3Dev *ct3d, hwaddr host_addr, uint64_t *dpa)
- {
-     int hdm_inc = R_CXL_HDM_DECODER1_BASE_LO - R_CXL_HDM_DECODER0_BASE_LO;
-@@ -1030,6 +1102,10 @@ static int cxl_type3_hpa_to_as_and_dpa(CXLType3Dev *ct3d,
-         *as = &ct3d->hostpmem_as;
-         *dpa_offset -= vmr_size;
-     } else {
-+        if (!ct3_test_region_block_backed(ct3d, *dpa_offset, size)) {
-+            return -ENODEV;
++        /* Check if the DPA range is not fully backed with valid extents */
++        if (!ct3_test_region_block_backed(ct3d, dpa, len)) {
++            ret = CXL_MBOX_INVALID_PA;
++            goto free_and_exit;
 +        }
 +
-         *as = &ct3d->dc.host_dc_as;
-         *dpa_offset -= (vmr_size + pmr_size);
++        /* After this point, extent overflow is the only error can happen */
+         while (len > 0) {
+             QTAILQ_FOREACH(ent, updated_list, node) {
+                 range_init_nofail(&range, ent->start_dpa, ent->len);
+@@ -1718,14 +1725,7 @@ static CXLRetCode cxl_dc_extent_release_dry_run(CXLType3Dev *ct3d,
+                     if (range_contains(&range, dpa + len - 1)) {
+                         len2 = ent_start_dpa + ent_len - dpa - len;
+                     } else {
+-                        /*
+-                         * TODO: we reject the attempt to remove an extent
+-                         * that overlaps with multiple extents in the device
+-                         * for now. We will allow it once superset release
+-                         * support is added.
+-                         */
+-                        ret = CXL_MBOX_INVALID_PA;
+-                        goto free_and_exit;
++                        dpa = ent_start_dpa + ent_len;
+                     }
+                     len_done = ent_len - len1 - len2;
+ 
+@@ -1752,14 +1752,9 @@ static CXLRetCode cxl_dc_extent_release_dry_run(CXLType3Dev *ct3d,
+                     }
+ 
+                     len -= len_done;
+-                    /* len == 0 here until superset release is added */
+                     break;
+                 }
+             }
+-            if (len) {
+-                ret = CXL_MBOX_INVALID_PA;
+-                goto free_and_exit;
+-            }
+         }
      }
+ free_and_exit:
 -- 
 MST
 
