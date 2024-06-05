@@ -2,99 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C45F38FD165
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jun 2024 17:09:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F84D8FD173
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jun 2024 17:19:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEsEs-0006QA-Kx; Wed, 05 Jun 2024 11:07:46 -0400
+	id 1sEsO3-0003E1-64; Wed, 05 Jun 2024 11:17:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1sEsEr-0006Pt-BM
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 11:07:45 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1sEsEm-0002Mo-Dc
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 11:07:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717600059;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=e35qjsyccZfefOnL0gdhf9y4wVpfLI/EMgKoYs72SN4=;
- b=PxoNY6sKnAAaJSFLFhTaUA4zfYWhADG/bSegwwpDKHwvlW2xtfh+8XC6xnZvZbqmxWvfzq
- /VoBJ3pnZcJEtwl8lTYC5ntGj1rGiAIIqcBB6pRSQfuPMhVOqDrzgvgvbCtXdj/SZSXVH6
- KiggqKvr1El6qO5wd/HGYSm10smIIm4=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-688-mH8c9pXLNVmFidNu_FMNSA-1; Wed, 05 Jun 2024 11:07:37 -0400
-X-MC-Unique: mH8c9pXLNVmFidNu_FMNSA-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-35dced40d17so1655549f8f.2
- for <qemu-devel@nongnu.org>; Wed, 05 Jun 2024 08:07:37 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <beeman@rivosinc.com>)
+ id 1sEsO0-0003D1-Hx
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 11:17:12 -0400
+Received: from mail-yb1-xb2c.google.com ([2607:f8b0:4864:20::b2c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <beeman@rivosinc.com>)
+ id 1sEsNw-0004Q1-Ik
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 11:17:12 -0400
+Received: by mail-yb1-xb2c.google.com with SMTP id
+ 3f1490d57ef6-dfa727cde2dso5641304276.0
+ for <qemu-devel@nongnu.org>; Wed, 05 Jun 2024 08:17:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1717600626; x=1718205426;
+ darn=nongnu.org; 
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=Jlb7ESxOsRm5KDgEYeQVXYTQfK40jOTSEa/j09EcSOQ=;
+ b=ToGPbICOyeYS5+aIPuzjjnnFWfx0nvJby3575Fgmw4O0yXyd+QR7UaBb9V6czmOTDR
+ /2ytQ/tT4epObUFvLIvLrgdyfzk9/sfTWbbn3wLzpmJ79CKqAhfPtbsM9Ow3MX8uCRoN
+ phnPfE6azfjyur7m9ljMB9UFP/yMbDMveRGGIVwF9THnHCo9bfycbzjLMcdWfQAiUB1x
+ JoeyFKLPP1DnYuRtQhbxc0P2g30sWHbcjZvazRDmZvDhX1+wkzWvzIoiBkus1nKRzEKG
+ va6Kz3Ry6W6REyYw4JjcIllwi6/Gey/sbjCTsXX0JAYnOOirU+sHOQerbVwDpChmF3Hd
+ UxaQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717600056; x=1718204856;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=e35qjsyccZfefOnL0gdhf9y4wVpfLI/EMgKoYs72SN4=;
- b=vKEkl8PpPYqp9myQQVCl+POHMCP7iqOCTLDqcz+TWoD5/YtHf7DsQKcNtbBeTR3hz6
- bM//ludvVkB3WNgc8RZ0Wkel0si8LleJ/v1eGsCdRHE1LbzlBxCoCmerhU8qyOslJaAT
- Yf4fh0wdASnK3WhFj6VvbJTlS8jVGaSxDprBlHS1n/Mlppo7Ws264blezIQtCHvazRz2
- lu0mVDKVqfyM9T3vy4keXBix2rL9jNL8/aoKs2c9gFkDnX230ql8/F+75riLYoH2PKg2
- 3JWlZ6nrB0beldL1V28Gmyt5vW6ppZgC/+dCmlxz7sEdrlhssZEsZW1K49v79n1FEz7m
- 85DA==
+ d=1e100.net; s=20230601; t=1717600626; x=1718205426;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Jlb7ESxOsRm5KDgEYeQVXYTQfK40jOTSEa/j09EcSOQ=;
+ b=btYm/yw/1G/Q7JHNsQW+e4WXLPD7BV8tUNt073UqNQweHzaOnyfJ0rSeYPE6drZj48
+ QVkNFodnDBSIDs1EjqD9/EE/h/bvIgxCf6e7aS71rsJgjTGbS1WPvh6moJkzrn9hzESB
+ 1EnSCShk7v/ARCQ3jsTL6oaqrXrsxwve1iyoBy9NUreTAyhBdQPGxfWU7HgdIf06j2DA
+ 9I2nz8xiEZ9nsTxkhkF8bMOmFOVCfmb7FCgqwWkOggad6g8+4RtKOmNm9aLqXRWaGcvE
+ /ct2PNKTOcyUTHRf3jiWqQa34jlsnoepncOdpCmJDD9QO4dseV17vrM6nyOjd2A6bbVp
+ Ho8A==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWch7PDARA7gP+rIjreMW7kgJkw4raXMC5aXseGxZ0Hd691oS4aNogEMUqfFLLjqQRufkxWvlZ3jmsOMMpTrOjfcQ9FiWE=
-X-Gm-Message-State: AOJu0YwDn4dZLrJDD4WmShEWFpbe40A7a1xtmkxpsziW9Hrq+se8vGuW
- rrsAhFb/hkJuS9a08/mxUPwo9C+2+QH+Y+EfUttPLtAik3Kg4GRnVAeOf8qCWUsQxg86HZSTcsR
- eqnOtOtQxQVZnrIA759egOpte2UY8MhsN/o6v6a2Cpcc7ixDkJUg4
-X-Received: by 2002:a5d:424f:0:b0:35e:5189:2d73 with SMTP id
- ffacd0b85a97d-35e8ef9a012mr1982485f8f.63.1717600056649; 
- Wed, 05 Jun 2024 08:07:36 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGVEJXbzgrZPUtNGH9RV7+CPBZCPJUJxMLO/iCzkbBoRf7T2ChZCVasHcy740OOQ0VmfGAlJg==
-X-Received: by 2002:a5d:424f:0:b0:35e:5189:2d73 with SMTP id
- ffacd0b85a97d-35e8ef9a012mr1982459f8f.63.1717600056157; 
- Wed, 05 Jun 2024 08:07:36 -0700 (PDT)
-Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
- [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-35dd064bbb1sm14781718f8f.101.2024.06.05.08.07.35
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 05 Jun 2024 08:07:35 -0700 (PDT)
-Date: Wed, 5 Jun 2024 17:07:35 +0200
-From: Igor Mammedov <imammedo@redhat.com>
-To: "Chen, Zide" <zide.chen@intel.com>
-Cc: Zhao Liu <zhao1.liu@intel.com>, qemu-devel@nongnu.org,
- pbonzini@redhat.com, mst@redhat.com, thuth@redhat.com, cfontana@suse.de,
- xiaoyao.li@intel.com, qemu-trivial@nongnu.org, Sean Christopherson
- <seanjc@google.com>
-Subject: Re: [PATCH V2 2/3] target/i386: call cpu_exec_realizefn before
- x86_cpu_filter_features
-Message-ID: <20240605170735.5a3924cd@imammedo.users.ipa.redhat.com>
-In-Reply-To: <dcd913cd-10ce-45c9-9ed8-79b9c42c234b@intel.com>
-References: <20240524200017.150339-1-zide.chen@intel.com>
- <20240524200017.150339-3-zide.chen@intel.com>
- <ZlluoKXUF6ctecVt@intel.com>
- <04d3dfd8-93d2-493d-82d1-8fbcad6ecd22@intel.com>
- <Zls9v9mg17SXZhO7@intel.com>
- <20240603113022.6569043b@imammedo.users.ipa.redhat.com>
- <dcd913cd-10ce-45c9-9ed8-79b9c42c234b@intel.com>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.42; x86_64-redhat-linux-gnu)
+ AJvYcCWlQM9v1Y3MUuW+iRrtvLiYRR1rK672l+CGXlmXaubMGxt7C9b+jHv7i2fZWVfgfkmW6bFXMBK3RHyRLZZEsfGHD/nITes=
+X-Gm-Message-State: AOJu0Yzr7t66S6AsmS2s0KH6zc2ifIpdF4rRLlxAV/pEwHaNCDoTx+2d
+ H73yquG2iRqLXXZ8btjmQzl7THOB/qtpqRnGlWjrgxKq0cQfJKRENot4Poilgr15gbAKre36o9r
+ r4Z8jmnFh4MIgaCWdcr/hUpFd8GwGUE3JM9Iz8Q==
+X-Google-Smtp-Source: AGHT+IGucXdZ/GTRJNvz8GzD9tUz4SV5iqoz7G997laSxYtLInu9UDA6Y+qpm40kt6aLeiAdxfVdf438KfqLfDKQ6JU=
+X-Received: by 2002:a25:dc93:0:b0:df7:94d3:5555 with SMTP id
+ 3f1490d57ef6-dfacacf8cf7mr2931997276.41.1717600625685; Wed, 05 Jun 2024
+ 08:17:05 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+References: <20240529160950.132754-1-rkanwal@rivosinc.com>
+ <20240529160950.132754-6-rkanwal@rivosinc.com>
+ <71bc36b9-cc17-4036-91b2-e7ddd81f0c07@sifive.com>
+ <CAP55G9AAF9wwPEkNdG60Mnie8p=f-+ZzcjDBJU_RCSL+KSU77w@mail.gmail.com>
+ <7a32916e-00f5-4244-8f4a-a39388136573@sifive.com>
+In-Reply-To: <7a32916e-00f5-4244-8f4a-a39388136573@sifive.com>
+From: Beeman Strong <beeman@rivosinc.com>
+Date: Wed, 5 Jun 2024 08:16:53 -0700
+Message-ID: <CAP55G9CDnz41wusJT-xxbs5=9F0b6tcdO97-uqNQYGYPdvnn=Q@mail.gmail.com>
+Subject: Re: [PATCH 5/6] target/riscv: Add CTR sctrclr instruction.
+To: Jason Chien <jason.chien@sifive.com>
+Cc: Rajnesh Kanwal <rkanwal@rivosinc.com>, qemu-riscv@nongnu.org,
+ qemu-devel@nongnu.org, 
+ alistair.francis@wdc.com, bin.meng@windriver.com, liweiwei@iscas.ac.cn, 
+ dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com, atishp@rivosinc.com, 
+ apatel@ventanamicro.com, tech-control-transfer-records@lists.riscv.org
+Content-Type: multipart/alternative; boundary="0000000000002932fc061a260ff8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b2c;
+ envelope-from=beeman@rivosinc.com; helo=mail-yb1-xb2c.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -112,218 +96,596 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 3 Jun 2024 14:29:50 -0700
-"Chen, Zide" <zide.chen@intel.com> wrote:
+--0000000000002932fc061a260ff8
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> On 6/3/2024 2:30 AM, Igor Mammedov wrote:
-> > On Sat, 1 Jun 2024 23:26:55 +0800
-> > Zhao Liu <zhao1.liu@intel.com> wrote:
-> >   
-> >> On Fri, May 31, 2024 at 10:13:47AM -0700, Chen, Zide wrote:  
-> >>> Date: Fri, 31 May 2024 10:13:47 -0700
-> >>> From: "Chen, Zide" <zide.chen@intel.com>
-> >>> Subject: Re: [PATCH V2 2/3] target/i386: call cpu_exec_realizefn before
-> >>>  x86_cpu_filter_features
-> >>>
-> >>> On 5/30/2024 11:30 PM, Zhao Liu wrote:    
-> >>>> Hi Zide,
-> >>>>
-> >>>> On Fri, May 24, 2024 at 01:00:16PM -0700, Zide Chen wrote:    
-> >>>>> Date: Fri, 24 May 2024 13:00:16 -0700
-> >>>>> From: Zide Chen <zide.chen@intel.com>
-> >>>>> Subject: [PATCH V2 2/3] target/i386: call cpu_exec_realizefn before
-> >>>>>  x86_cpu_filter_features
-> >>>>> X-Mailer: git-send-email 2.34.1
-> >>>>>
-> >>>>> cpu_exec_realizefn which calls the accel-specific realizefn may expand
-> >>>>> features.  e.g., some accel-specific options may require extra features
-> >>>>> to be enabled, and it's appropriate to expand these features in accel-
-> >>>>> specific realizefn.
-> >>>>>
-> >>>>> One such example is the cpu-pm option, which may add CPUID_EXT_MONITOR.
-> >>>>>
-> >>>>> Thus, call cpu_exec_realizefn before x86_cpu_filter_features to ensure
-> >>>>> that it won't expose features not supported by the host.
-> >>>>>
-> >>>>> Fixes: 662175b91ff2 ("i386: reorder call to cpu_exec_realizefn")
-> >>>>> Suggested-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> >>>>> Signed-off-by: Zide Chen <zide.chen@intel.com>
-> >>>>> ---
-> >>>>>  target/i386/cpu.c         | 24 ++++++++++++------------
-> >>>>>  target/i386/kvm/kvm-cpu.c |  1 -
-> >>>>>  2 files changed, 12 insertions(+), 13 deletions(-)
-> >>>>>
-> >>>>> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> >>>>> index bc2dceb647fa..a1c1c785bd2f 100644
-> >>>>> --- a/target/i386/cpu.c
-> >>>>> +++ b/target/i386/cpu.c
-> >>>>> @@ -7604,6 +7604,18 @@ static void x86_cpu_realizefn(DeviceState *dev, Error **errp)
-> >>>>>          }
-> >>>>>      }
-> >>>>>  
-> >>>>> +    /*
-> >>>>> +     * note: the call to the framework needs to happen after feature expansion,
-> >>>>> +     * but before the checks/modifications to ucode_rev, mwait, phys_bits.
-> >>>>> +     * These may be set by the accel-specific code,
-> >>>>> +     * and the results are subsequently checked / assumed in this function.
-> >>>>> +     */
-> >>>>> +    cpu_exec_realizefn(cs, &local_err);
-> >>>>> +    if (local_err != NULL) {
-> >>>>> +        error_propagate(errp, local_err);
-> >>>>> +        return;
-> >>>>> +    }
-> >>>>> +
-> >>>>>      x86_cpu_filter_features(cpu, cpu->check_cpuid || cpu->enforce_cpuid);    
-> >>>>
-> >>>> For your case, which sets cpu-pm=on via overcommit, then
-> >>>> x86_cpu_filter_features() will complain that mwait is not supported.
-> >>>>
-> >>>> Such warning is not necessary, because the purpose of overcommit (from
-> >>>> code) is only to support mwait when possible, not to commit to support
-> >>>> mwait in Guest.
-> >>>>
-> >>>> Additionally, I understand x86_cpu_filter_features() is primarily
-> >>>> intended to filter features configured by the user,     
-> >>>
-> >>> Yes, that's why this patches intends to let x86_cpu_filter_features()
-> >>> filter out the MWAIT bit which is set from the overcommit option.    
-> >>
-> >> HMM, but in fact x86_cpu_filter_features() has already checked the MWAIT
-> >> bit set by "-overcommit cpu-pm=on". ;-)
-> >>
-> >> (Pls correct me if I'm wrong) Revisiting what cpu-pm did to MWAIT:
-> >> * Firstly, it set MWAIT bit in x86_cpu_expand_features():
-> >>   x86_cpu_expand_features()  
-> >>      -> x86_cpu_get_supported_feature_word()
-> >>         -> kvm_arch_get_supported_cpuid()    
-> >>  This MWAIT is based on Host's MWAIT capability. This MWAIT enablement
-> >>  is fine for next x86_cpu_filter_features() and x86_cpu_filter_features()
-> >>  is working correctly here!
-> >>
-> >> * Then, MWAIT was secondly set in host_cpu_enable_cpu_pm() regardless
-> >>   neither Host's support or previous MWAIT enablement result. This is
-> >>   the root cause of your issue.
-> >>
-> >> Therefore, we should make cpu-pm honor his first MWAIT enablement result
-> >> instead of repeatly and unconditionally setting the MWAIT bit again in
-> >> host_cpu_enable_cpu_pm().
-> >>
-> >> Additionally, I think the code in x86_cpu_realizefn():
-> >>   cpu->mwait.ecx |= CPUID_MWAIT_EMX | CPUID_MWAIT_IBE;
-> >> has the similar issue because it also should check MWAIT feature bit.
-> >>
-> >> Further, it may be possible to remove cpu->mwait: just check the MWAIT
-> >> bit in leaf 5 of cpu_x86_cpuid(), and if MWAIT is present, use host's
-> >> mwait info plus CPUID_MWAIT_EMX | CPUID_MWAIT_IBE.  
-> > 
-> > Agreed with above analysis,
-> > we shouldn't have host_cpu_enable_cpu_pm() as kvm_arch_get_supported_cpuid
-> > gets us MWAIT already.  
-> 
-> Yes, I agree don't need to set CPUID_EXT_MONITOR besides
-> kvm_arch_get_supported_cpuid().
-> 
-> > 
-> > filling in cpu->mwait.ecx is benign mistake which likely doesn't
-> > trigger anything if CPUID_EXT_MONITOR is not present.
-> > But for clarity it's better to add an explicit check there as well.  
-> 
-> Yes, I agree without MWAIT available and advertised, it's meaningless to
-> set the EMX and IBE bits. Seems to me it's cleaner to remove cpu->mwait
-> all together, and in cpu_x86_cpuid(), just read from host_cpuid(5) if
-> MWAIT is available to the guest. But I don't understand the history of
-> why QEMU unconditionally advertises these two bits, and don't know it it
-> could break some thing if these two bits are removed.
-> 
-> Even if we want to fix these two bits, we can do it in another separate
-> patch.
-> 
-> e737b32a36 (" Core 2 Duo specification (Alexander Graf).")
-> unconditionally adds "CPUID_MWAIT_EMX | CPUID_MWAIT_IBE" to CPUID.5.ECX
-> with further explanation.
-> 
-> 2266d44311 ("i386/cpu: make -cpu host support monitor/mwait") adds
-> comment "We always wake on interrupt even if host does not have the
-> capability" to CPUID_MWAIT_IBE.
-> 
-> 
-> >   
-> >>  
-> >>>> and the changes of
-> >>>> CPUID after x86_cpu_filter_features() should by default be regarded like
-> >>>> "QEMU knows what it is doing".    
-> >>>
-> >>> Sure, we can add feature bits after x86_cpu_filter_features(), but I
-> >>> think moving cpu_exec_realizefn() before x86_cpu_filter_features() is
-> >>> more generic, and actually this is what QEMU did before commit 662175b91ff2.
-> >>>
-> >>> - Less redundant code. Specifically, no need to call
-> >>> x86_cpu_get_supported_feature_word() again.
-> >>> - Potentially there could be other features could be added from the
-> >>> accel-specific realizefn, kvm_cpu_realizefn() for example.  And these
-> >>> features need to be checked against the host availability.    
-> >>
-> >> Mainly I don't think this reorder is a direct fix for the problem (I
-> >> just analyse it above), also in your case x86_cpu_filter_features() will
-> >> print a WARNING when QEMU boots, which I don't think is cpu-pm's intention.  
-> > 
-> > There is no problem with warning, I'd even say it's a good thing.  
-> 
-> I agree it's good to have the warning as well.
-> 
-> > But you are right reordering just masks the issue.
-> > 
-> > As for expected behavior, if user asked for "-overcommit cpu-pm=on"
-> > there are 2 options:
-> >    * it's working as expected (mwait exiting is enabled successfully with CPUID MONITOR bit set)
-> >    * QEMU shall fail to start.  
-> 
-> I like the idea that QEMU refuses to launch the guest if the asked CPU
-> features are not available, which is more user friendly.  But the
-> problem is, "-overcommit cpu-pm=on" is an umbrella which intends to
-> enable all the following CPUIDs and KVM features if it's possible.  So,
-> if QEMU fails the guest in this case, then it needs to fail the WAITPKG
-> feature as well. Additionally, it may need to provide individual options
-> to enable these individual features, which I doubt could be too complicated.
+On Tue, Jun 4, 2024 at 11:28=E2=80=AFPM Jason Chien <jason.chien@sifive.com=
+> wrote:
 
-how about
+> Chapter 5 describes the CTR behavior when Smstaten is enabled, but it doe=
+s
+> not talk about the CTR behavior when Smstateen is disabled, that is, ther=
+e
+> is no mstateen0 and hstateen0 CSR.
+>
+If Smstateen is not implemented then chapter 5 can be ignored, and the
+behavior is as described in the other chapters.
 
-kvm_arch_init()
-    ...
-    if (enable_cpu_pm) {                                                         
-        int disable_exits = kvm_check_extension(s, KVM_CAP_X86_DISABLE_EXITS);   
+> The spec states:
+>
+>    - Attempts to access sctrdepth from VS-mode or VU-mode raise a
+>    virtual-instruction exception, unless CTR state enable access restrict=
+ions
+>    apply.
+>
+>
+>    - sctrdepth is not included in the above list of supervisor CTR state
+>    controlled by hstateen0.CTR since accesses to sctrdepth from VS-mode r=
+aise
+>    a virtual-instruction exception regardless of the value of hstateen0.C=
+TR.
+>
+> Below is my understanding:
+>
+>    - If Smstateen is enabled:
+>       - If mstateen0.CTR=3D0:
+>          - Attempts to access sctrctl, vsctrctl, sctrdepth, or sctrstatus
+>          raise an illegal-instruction exception for privilege modes less =
+privileged
+>          than M-mode.
+>          - Attempts to access sireg* when siselect is in 0x200..0x2FF, or
+>          vsireg* when vsiselect is in 0x200..0x2FF raise an illegal-instr=
+uction
+>          exception for privilege modes less privileged than M-mode.
+>          - Execution of the SCTRCLR instruction raises an
+>          illegal-instruction exception for privilege modes less privilege=
+d than
+>          M-mode.
+>          - If mstateen.CTR=3D1:
+>          - Attempts to access sctrctl, vsctrctl, sctrdepth, or sctrstatus
+>          raise an illegal-instruction exception for U-mode.
+>          - Attempts to access sireg* when siselect is in 0x200..0x2FF, or
+>          vsireg* when vsiselect is in 0x200..0x2FF raise an illegal-instr=
+uction
+>          exception for U-mode.
+>          - Execution of the SCTRCLR instruction raises an
+>          illegal-instruction exception for U-mode.
+>          - If H extension is enabled:
+>             - If hstateen0.CTR =3D 0:
+>             - Attempts to access sctrctl, vsctrctl, sctrdepth, or
+>                sctrstatus raise an virtual-instruction exception for VU-m=
+ode and VS-mode.
+>                - Attempts to access sireg* when siselect is in
+>                0x200..0x2FF, or vsireg* when vsiselect is in 0x200..0x2FF=
+ raise an
+>                virtual-instruction exception for VU-mode and VS-mode.
+>                - Execution of the SCTRCLR instruction raises an
+>                virtual-instruction exception for VU-mode and VS-mode.
+>             - If hstateen0.CTR =3D 1:
+>                - Attempts to access sctrctl, vsctrctl, sctrdepth, or
+>                sctrstatus raise an virtual-instruction exception for VU-m=
+ode.
+>                - *Attempts to access sctrdepth raise an
+>                virtual-instruction exception for "VS-mode".*
+>                - Attempts to access sireg* when siselect is in
+>                0x200..0x2FF, or vsireg* when vsiselect is in 0x200..0x2FF=
+ raise an
+>                virtual-instruction exception for VU-mode.
+>                - Execution of the SCTRCLR instruction raises an
+>                virtual-instruction exception for VU-mode.
+>             - If Smstateen is disabled:
+>       - Attempts to access sctrctl, vsctrctl, sctrdepth, or sctrstatus
+>       raise an illegal-instruction exception for U-mode.
+>       - Attempts to access sireg* when siselect is in 0x200..0x2FF, or
+>       vsireg* when vsiselect is in 0x200..0x2FF raise an illegal-instruct=
+ion
+>       exception for U-mode.
+>       - Execution of the SCTRCLR instruction raises an
+>       illegal-instruction exception for U-mode.
+>       - If H extension is enabled:
+>          - Attempts to access sctrctl, vsctrctl, sctrdepth, or sctrstatus
+>          raise an virtual-instruction exception for VU-mode.
+>          - *Attempts to access sctrdepth raise an virtual-instruction
+>          exception for "VS-mode".*
+>          - Attempts to access sireg* when siselect is in 0x200..0x2FF, or
+>          vsireg* when vsiselect is in 0x200..0x2FF raise an virtual-instr=
+uction
+>          exception for VU-mode.
+>          - Execution of the SCTRCLR instruction raises an
+>          virtual-instruction exception for VU-mode.
+>
+> If there is any misunderstanding, please let me know. Also Sstateen0 does
+> not involve in CTR. Am I correct?
+>
+That all looks correct.  sctrdepth gets that special treatment in VS-mode
+(bold and underlined above) because it is expected that a hypervisor will
+wish to limit the depth options available to a guest, for the purposes of
+VM-migration.
 
-/* Work around for kernel header with a typo. TODO: fix header and drop. */      
-#if defined(KVM_X86_DISABLE_EXITS_HTL) && !defined(KVM_X86_DISABLE_EXITS_HLT)    
-#define KVM_X86_DISABLE_EXITS_HLT KVM_X86_DISABLE_EXITS_HTL                      
-#endif                                   
-                                        
-above comment probably needs to be cleaned up
-
-        if (disable_exits) {                                                     
-            disable_exits &= (KVM_X86_DISABLE_EXITS_MWAIT |                      
-                              KVM_X86_DISABLE_EXITS_HLT |                        
-                              KVM_X86_DISABLE_EXITS_PAUSE |                      
-                              KVM_X86_DISABLE_EXITS_CSTATE);                     
-        }  
-
-fail here if filtered disable_exits is an empty set?                                                                
-                                                                                 
-        ret = kvm_vm_enable_cap(s, KVM_CAP_X86_DISABLE_EXITS, 0,                 
-                                disable_exits);                                  
-        if (ret < 0) {                                                           
-            error_report("kvm: guest stopping CPU not supported: %s",            
-                         strerror(-ret));                                        
-        }                                                                        
-    }                                                                            
-      
+And yes, there is no U/VU-mode access to CTR, so Ssstaten does not apply to
+CTR.
 
 
-> KVM_X86_DISABLE_EXITS_MWAI
-> KVM_X86_DISABLE_EXITS_HLTKVM_X86_DISABLE_EXITS_PAUSE
-> KVM_X86_DISABLE_EXITS_CSTATE
-> CPUID.7.0:ECX.WAITPKG
-> CPUID.1.ECX.MWAIT
-> 
+> Thanks in advance.
+> Beeman Strong =E6=96=BC 2024/6/5 =E4=B8=8A=E5=8D=88 02:46 =E5=AF=AB=E9=81=
+=93:
+>
+>
+>
+> On Tue, Jun 4, 2024 at 10:19=E2=80=AFAM Jason Chien <jason.chien@sifive.c=
+om>
+> wrote:
+>
+>>
+>> Rajnesh Kanwal =E6=96=BC 2024/5/30 =E4=B8=8A=E5=8D=88 12:09 =E5=AF=AB=E9=
+=81=93:
+>> > CTR extension adds a new instruction sctrclr to quickly
+>> > clear the recorded entries buffer.
+>> >
+>> > Signed-off-by: Rajnesh Kanwal <rkanwal@rivosinc.com>
+>> > ---
+>> >   target/riscv/cpu.h                             |  1 +
+>> >   target/riscv/cpu_helper.c                      |  7 +++++++
+>> >   target/riscv/insn32.decode                     |  1 +
+>> >   target/riscv/insn_trans/trans_privileged.c.inc | 10 ++++++++++
+>> >   target/riscv/op_helper.c                       |  5 +++++
+>> >   5 files changed, 24 insertions(+)
+>> >
+>> > diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+>> > index a294a5372a..fade71aa09 100644
+>> > --- a/target/riscv/cpu.h
+>> > +++ b/target/riscv/cpu.h
+>> > @@ -572,6 +572,7 @@ void riscv_cpu_set_mode(CPURISCVState *env,
+>> target_ulong newpriv, bool virt_en);
+>> >   void riscv_ctr_freeze(CPURISCVState *env, uint64_t freeze_mask);
+>> >   void riscv_ctr_add_entry(CPURISCVState *env, target_long src,
+>> target_long dst,
+>> >                            uint64_t type, target_ulong prev_priv, bool
+>> prev_virt);
+>> > +void riscv_ctr_clear(CPURISCVState *env);
+>> >
+>> >   void riscv_translate_init(void);
+>> >   G_NORETURN void riscv_raise_exception(CPURISCVState *env,
+>> > diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
+>> > index e064a7306e..45502f50a7 100644
+>> > --- a/target/riscv/cpu_helper.c
+>> > +++ b/target/riscv/cpu_helper.c
+>> > @@ -704,6 +704,13 @@ void riscv_ctr_freeze(CPURISCVState *env, uint64_=
+t
+>> freeze_mask)
+>> >       }
+>> >   }
+>> >
+>> > +void riscv_ctr_clear(CPURISCVState *env)
+>> > +{
+>> > +    memset(env->ctr_src, 0x0, sizeof(env->ctr_src));
+>> > +    memset(env->ctr_dst, 0x0, sizeof(env->ctr_dst));
+>> > +    memset(env->ctr_data, 0x0, sizeof(env->ctr_data));
+>> > +}
+>> > +
+>> >   static uint64_t riscv_ctr_priv_to_mask(target_ulong priv, bool virt)
+>> >   {
+>> >       switch (priv) {
+>> > diff --git a/target/riscv/insn32.decode b/target/riscv/insn32.decode
+>> > index 9cb1a1b4ec..d3d38c7c68 100644
+>> > --- a/target/riscv/insn32.decode
+>> > +++ b/target/riscv/insn32.decode
+>> > @@ -107,6 +107,7 @@
+>> >   # *** Privileged Instructions ***
+>> >   ecall       000000000000     00000 000 00000 1110011
+>> >   ebreak      000000000001     00000 000 00000 1110011
+>> > +sctrclr     000100000100     00000 000 00000 1110011
+>> >   uret        0000000    00010 00000 000 00000 1110011
+>> >   sret        0001000    00010 00000 000 00000 1110011
+>> >   mret        0011000    00010 00000 000 00000 1110011
+>> > diff --git a/target/riscv/insn_trans/trans_privileged.c.inc
+>> b/target/riscv/insn_trans/trans_privileged.c.inc
+>> > index 339d659151..dd9da8651f 100644
+>> > --- a/target/riscv/insn_trans/trans_privileged.c.inc
+>> > +++ b/target/riscv/insn_trans/trans_privileged.c.inc
+>> > @@ -69,6 +69,16 @@ static bool trans_ebreak(DisasContext *ctx,
+>> arg_ebreak *a)
+>> >       return true;
+>> >   }
+>> >
+>> > +static bool trans_sctrclr(DisasContext *ctx, arg_sctrclr *a)
+>> > +{
+>> > +#ifndef CONFIG_USER_ONLY
+>> If both of smctr and ssctr are not enabled, it is an illegal instruction=
+.
+>> > +    gen_helper_ctr_clear(tcg_env);
+>> > +    return true;
+>> > +#else
+>> > +    return false;
+>> > +#endif
+>> > +}
+>> > +
+>> >   static bool trans_uret(DisasContext *ctx, arg_uret *a)
+>> >   {
+>> >       return false;
+>> > diff --git a/target/riscv/op_helper.c b/target/riscv/op_helper.c
+>> > index c8053d9c2f..89423c04b3 100644
+>> > --- a/target/riscv/op_helper.c
+>> > +++ b/target/riscv/op_helper.c
+>> > @@ -461,6 +461,11 @@ void helper_ctr_branch(CPURISCVState *env,
+>> target_ulong src, target_ulong dest,
+>> >       }
+>> >   }
+>> >
+>> > +void helper_ctr_clear(CPURISCVState *env)
+>> > +{
+>>
+>> There should be some checks here.
+>> The spec states:
+>> SCTRCLR raises an illegal-instruction exception in U-mode, and a
+>> virtual-instruction exception in VU-mode, unless CTR state enable access
+>> restrictions apply.
+>>
+>> I don't quite understand "unless CTR state enable access restrictions
+>> apply" though.
+>>
+>
+> The next sentence says "See Chapter 5", which states that execution of
+> SCTRCLR raises an illegal instruction exception if mstateen0.CTR=3D0 and =
+the
+> priv mode is not M-mode, and it raises a virtual instruction exception if
+> mstateen0.CTR=3D0 && hstateen0.CTR=3D1 and the priv mode is VS-mode.
+>
+> When mstateen0.CTR=3D0, hstateen0.CTR is read-only 0. I guess you meant
+> "mstateen0.CTR=3D1 && hstateen0.CTR=3D0" here.
+>
 
+You're right, thanks.
+
+>
+>
+>>
+>> > +    riscv_ctr_clear(env);
+>> > +}
+>> > +
+>> >   void helper_wfi(CPURISCVState *env)
+>> >   {
+>> >       CPUState *cs =3D env_cpu(env);
+>>
+>
+
+--0000000000002932fc061a260ff8
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
+<div dir=3D"ltr" class=3D"gmail_attr">On Tue, Jun 4, 2024 at 11:28=E2=80=AF=
+PM Jason Chien &lt;<a href=3D"mailto:jason.chien@sifive.com">jason.chien@si=
+five.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D=
+"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-le=
+ft:1ex"><u></u>
+
+ =20
+   =20
+ =20
+  <div>
+    <p>Chapter 5 describes the CTR behavior when Smstaten is enabled,
+      but it does not talk about the CTR behavior when Smstateen is
+      disabled, that is, there is no mstateen0 and hstateen0 CSR.</p></div>=
+</blockquote><div>If Smstateen is not implemented then chapter 5 can be ign=
+ored, and the behavior is as described in the other chapters.=C2=A0<br></di=
+v><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;borde=
+r-left:1px solid rgb(204,204,204);padding-left:1ex"><div>
+    <p>The spec states:<br>
+    </p>
+    <ul>
+      <li>Attempts to access sctrdepth from VS-mode or VU-mode raise a
+        virtual-instruction exception, unless CTR state enable access
+        restrictions apply.</li>
+    </ul>
+    <ul>
+      <li>sctrdepth is not included in the above list of supervisor CTR
+        state controlled by hstateen0.CTR since accesses to sctrdepth
+        from VS-mode raise a virtual-instruction exception regardless of
+        the value of hstateen0.CTR.</li>
+    </ul>
+    <p>Below is my understanding:<br>
+    </p>
+    <ul>
+      <li>If Smstateen is enabled:</li>
+      <ul>
+        <li>If mstateen0.CTR=3D0:</li>
+        <ul>
+          <li>Attempts to access sctrctl, vsctrctl, sctrdepth, or
+            sctrstatus raise an illegal-instruction exception for
+            privilege modes less privileged than M-mode.</li>
+          <li>Attempts to access sireg* when siselect is in
+            0x200..0x2FF, or vsireg* when vsiselect is in 0x200..0x2FF
+            raise an illegal-instruction exception for privilege modes
+            less privileged than M-mode.</li>
+          <li>Execution of the SCTRCLR instruction raises an
+            illegal-instruction exception for privilege modes less
+            privileged than M-mode.<br>
+          </li>
+        </ul>
+        <li>If mstateen.CTR=3D1:</li>
+        <ul>
+          <li>Attempts to access sctrctl, vsctrctl, sctrdepth, or
+            sctrstatus raise an illegal-instruction exception for
+            U-mode.</li>
+          <li>Attempts to access sireg* when siselect is in
+            0x200..0x2FF, or vsireg* when vsiselect is in 0x200..0x2FF
+            raise an illegal-instruction exception for U-mode.</li>
+          <li>Execution of the SCTRCLR instruction raises an
+            illegal-instruction exception for U-mode.</li>
+          <li>If H extension is enabled:</li>
+          <ul>
+            <li>If hstateen0.CTR =3D 0:<br>
+            </li>
+            <ul>
+              <li>Attempts to access sctrctl, vsctrctl, sctrdepth, or
+                sctrstatus raise an virtual-instruction exception for
+                VU-mode and VS-mode.</li>
+              <li>Attempts to access sireg* when siselect is in
+                0x200..0x2FF, or vsireg* when vsiselect is in
+                0x200..0x2FF raise an virtual-instruction exception for
+                VU-mode and VS-mode.</li>
+              <li>Execution of the SCTRCLR instruction raises an
+                virtual-instruction exception for VU-mode and VS-mode.</li>
+            </ul>
+            <li>If hstateen0.CTR =3D 1:</li>
+            <ul>
+              <li>Attempts to access sctrctl, vsctrctl, sctrdepth, or
+                sctrstatus raise an virtual-instruction exception for
+                VU-mode.</li>
+              <li><b><u><i>Attempts to access sctrdepth raise an
+                      virtual-instruction exception for &quot;VS-mode&quot;=
+</i>.</u></b></li>
+              <li>Attempts to access sireg* when siselect is in
+                0x200..0x2FF, or vsireg* when vsiselect is in
+                0x200..0x2FF raise an virtual-instruction exception for
+                VU-mode.</li>
+              <li>Execution of the SCTRCLR instruction raises an
+                virtual-instruction exception for VU-mode.</li>
+            </ul>
+          </ul>
+        </ul>
+      </ul>
+      <li>If Smstateen is disabled:</li>
+      <ul>
+        <li>Attempts to access sctrctl, vsctrctl, sctrdepth, or
+          sctrstatus raise an illegal-instruction exception for U-mode.</li=
+>
+        <li>Attempts to access sireg* when siselect is in 0x200..0x2FF,
+          or vsireg* when vsiselect is in 0x200..0x2FF raise an
+          illegal-instruction exception for U-mode.</li>
+        <li>Execution of the SCTRCLR instruction raises an
+          illegal-instruction exception for U-mode.</li>
+        <li>If H extension is enabled:</li>
+        <ul>
+          <li>Attempts to access sctrctl, vsctrctl, sctrdepth, or
+            sctrstatus raise an virtual-instruction exception for
+            VU-mode.</li>
+          <li><b><i><u>Attempts to access sctrdepth raise an
+                  virtual-instruction exception for &quot;VS-mode&quot;.</u=
+></i></b></li>
+          <li>Attempts to access sireg* when siselect is in
+            0x200..0x2FF, or vsireg* when vsiselect is in 0x200..0x2FF
+            raise an virtual-instruction exception for VU-mode.</li>
+          <li>Execution of the SCTRCLR instruction raises an
+            virtual-instruction exception for VU-mode.</li>
+        </ul>
+      </ul>
+    </ul>
+    <p>If there is any misunderstanding, please let me know. Also
+      Sstateen0 does not involve in CTR. Am I correct?<br></p></div></block=
+quote><div>That all looks correct.=C2=A0 sctrdepth gets that special treatm=
+ent in VS-mode (bold and underlined above) because it is expected that a hy=
+pervisor will wish to limit the depth options available to a guest, for the=
+ purposes of VM-migration.</div><div><br></div><div>And yes, there is no U/=
+VU-mode access to CTR, so Ssstaten does not apply to CTR.</div><div>=C2=A0<=
+/div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;bo=
+rder-left:1px solid rgb(204,204,204);padding-left:1ex"><div><p>
+    </p>
+    <p>Thanks in advance.<br>
+    </p>
+    <div>Beeman Strong =E6=96=BC 2024/6/5 =E4=B8=8A=E5=8D=88 02:46 =E5=AF=
+=AB=E9=81=93:<br>
+    </div>
+    <blockquote type=3D"cite">
+     =20
+      <div dir=3D"ltr">
+        <div dir=3D"ltr"><br>
+        </div>
+        <br>
+        <div class=3D"gmail_quote">
+          <div dir=3D"ltr" class=3D"gmail_attr">On Tue, Jun 4, 2024 at
+            10:19=E2=80=AFAM Jason Chien &lt;<a href=3D"mailto:jason.chien@=
+sifive.com" target=3D"_blank">jason.chien@sifive.com</a>&gt;
+            wrote:<br>
+          </div>
+          <blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8=
+ex;border-left:1px solid rgb(204,204,204);padding-left:1ex"><br>
+            Rajnesh Kanwal =E6=96=BC 2024/5/30 =E4=B8=8A=E5=8D=88 12:09 =E5=
+=AF=AB=E9=81=93:<br>
+            &gt; CTR extension adds a new instruction sctrclr to quickly<br=
+>
+            &gt; clear the recorded entries buffer.<br>
+            &gt;<br>
+            &gt; Signed-off-by: Rajnesh Kanwal &lt;<a href=3D"mailto:rkanwa=
+l@rivosinc.com" target=3D"_blank">rkanwal@rivosinc.com</a>&gt;<br>
+            &gt; ---<br>
+            &gt;=C2=A0 =C2=A0target/riscv/cpu.h=C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0|=C2=A0 1 +<br>
+            &gt;=C2=A0 =C2=A0target/riscv/cpu_helper.c=C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 |=C2=A0 7
+            +++++++<br>
+            &gt;=C2=A0 =C2=A0target/riscv/insn32.decode=C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 1 +<br>
+            &gt;=C2=A0 =C2=A0target/riscv/insn_trans/trans_privileged.c.inc=
+ | 10
+            ++++++++++<br>
+            &gt;=C2=A0 =C2=A0target/riscv/op_helper.c=C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 5
+            +++++<br>
+            &gt;=C2=A0 =C2=A05 files changed, 24 insertions(+)<br>
+            &gt;<br>
+            &gt; diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h<br>
+            &gt; index a294a5372a..fade71aa09 100644<br>
+            &gt; --- a/target/riscv/cpu.h<br>
+            &gt; +++ b/target/riscv/cpu.h<br>
+            &gt; @@ -572,6 +572,7 @@ void
+            riscv_cpu_set_mode(CPURISCVState *env, target_ulong newpriv,
+            bool virt_en);<br>
+            &gt;=C2=A0 =C2=A0void riscv_ctr_freeze(CPURISCVState *env, uint=
+64_t
+            freeze_mask);<br>
+            &gt;=C2=A0 =C2=A0void riscv_ctr_add_entry(CPURISCVState *env,
+            target_long src, target_long dst,<br>
+            &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 uint64_t type, target_ulong
+            prev_priv, bool prev_virt);<br>
+            &gt; +void riscv_ctr_clear(CPURISCVState *env);<br>
+            &gt;=C2=A0 =C2=A0<br>
+            &gt;=C2=A0 =C2=A0void riscv_translate_init(void);<br>
+            &gt;=C2=A0 =C2=A0G_NORETURN void riscv_raise_exception(CPURISCV=
+State
+            *env,<br>
+            &gt; diff --git a/target/riscv/cpu_helper.c
+            b/target/riscv/cpu_helper.c<br>
+            &gt; index e064a7306e..45502f50a7 100644<br>
+            &gt; --- a/target/riscv/cpu_helper.c<br>
+            &gt; +++ b/target/riscv/cpu_helper.c<br>
+            &gt; @@ -704,6 +704,13 @@ void
+            riscv_ctr_freeze(CPURISCVState *env, uint64_t freeze_mask)<br>
+            &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
+            &gt;=C2=A0 =C2=A0}<br>
+            &gt;=C2=A0 =C2=A0<br>
+            &gt; +void riscv_ctr_clear(CPURISCVState *env)<br>
+            &gt; +{<br>
+            &gt; +=C2=A0 =C2=A0 memset(env-&gt;ctr_src, 0x0,
+            sizeof(env-&gt;ctr_src));<br>
+            &gt; +=C2=A0 =C2=A0 memset(env-&gt;ctr_dst, 0x0,
+            sizeof(env-&gt;ctr_dst));<br>
+            &gt; +=C2=A0 =C2=A0 memset(env-&gt;ctr_data, 0x0,
+            sizeof(env-&gt;ctr_data));<br>
+            &gt; +}<br>
+            &gt; +<br>
+            &gt;=C2=A0 =C2=A0static uint64_t riscv_ctr_priv_to_mask(target_=
+ulong
+            priv, bool virt)<br>
+            &gt;=C2=A0 =C2=A0{<br>
+            &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0switch (priv) {<br>
+            &gt; diff --git a/target/riscv/insn32.decode
+            b/target/riscv/insn32.decode<br>
+            &gt; index 9cb1a1b4ec..d3d38c7c68 100644<br>
+            &gt; --- a/target/riscv/insn32.decode<br>
+            &gt; +++ b/target/riscv/insn32.decode<br>
+            &gt; @@ -107,6 +107,7 @@<br>
+            &gt;=C2=A0 =C2=A0# *** Privileged Instructions ***<br>
+            &gt;=C2=A0 =C2=A0ecall=C2=A0 =C2=A0 =C2=A0 =C2=A0000000000000=
+=C2=A0 =C2=A0 =C2=A000000 000 00000 1110011<br>
+            &gt;=C2=A0 =C2=A0ebreak=C2=A0 =C2=A0 =C2=A0 000000000001=C2=A0 =
+=C2=A0 =C2=A000000 000 00000 1110011<br>
+            &gt; +sctrclr=C2=A0 =C2=A0 =C2=A0000100000100=C2=A0 =C2=A0 =C2=
+=A000000 000 00000 1110011<br>
+            &gt;=C2=A0 =C2=A0uret=C2=A0 =C2=A0 =C2=A0 =C2=A0 0000000=C2=A0 =
+=C2=A0 00010 00000 000 00000 1110011<br>
+            &gt;=C2=A0 =C2=A0sret=C2=A0 =C2=A0 =C2=A0 =C2=A0 0001000=C2=A0 =
+=C2=A0 00010 00000 000 00000 1110011<br>
+            &gt;=C2=A0 =C2=A0mret=C2=A0 =C2=A0 =C2=A0 =C2=A0 0011000=C2=A0 =
+=C2=A0 00010 00000 000 00000 1110011<br>
+            &gt; diff --git
+            a/target/riscv/insn_trans/trans_privileged.c.inc
+            b/target/riscv/insn_trans/trans_privileged.c.inc<br>
+            &gt; index 339d659151..dd9da8651f 100644<br>
+            &gt; --- a/target/riscv/insn_trans/trans_privileged.c.inc<br>
+            &gt; +++ b/target/riscv/insn_trans/trans_privileged.c.inc<br>
+            &gt; @@ -69,6 +69,16 @@ static bool
+            trans_ebreak(DisasContext *ctx, arg_ebreak *a)<br>
+            &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0return true;<br>
+            &gt;=C2=A0 =C2=A0}<br>
+            &gt;=C2=A0 =C2=A0<br>
+            &gt; +static bool trans_sctrclr(DisasContext *ctx,
+            arg_sctrclr *a)<br>
+            &gt; +{<br>
+            &gt; +#ifndef CONFIG_USER_ONLY<br>
+            If both of smctr and ssctr are not enabled, it is an illegal
+            instruction.<br>
+            &gt; +=C2=A0 =C2=A0 gen_helper_ctr_clear(tcg_env);<br>
+            &gt; +=C2=A0 =C2=A0 return true;<br>
+            &gt; +#else<br>
+            &gt; +=C2=A0 =C2=A0 return false;<br>
+            &gt; +#endif<br>
+            &gt; +}<br>
+            &gt; +<br>
+            &gt;=C2=A0 =C2=A0static bool trans_uret(DisasContext *ctx, arg_=
+uret
+            *a)<br>
+            &gt;=C2=A0 =C2=A0{<br>
+            &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0return false;<br>
+            &gt; diff --git a/target/riscv/op_helper.c
+            b/target/riscv/op_helper.c<br>
+            &gt; index c8053d9c2f..89423c04b3 100644<br>
+            &gt; --- a/target/riscv/op_helper.c<br>
+            &gt; +++ b/target/riscv/op_helper.c<br>
+            &gt; @@ -461,6 +461,11 @@ void
+            helper_ctr_branch(CPURISCVState *env, target_ulong src,
+            target_ulong dest,<br>
+            &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
+            &gt;=C2=A0 =C2=A0}<br>
+            &gt;=C2=A0 =C2=A0<br>
+            &gt; +void helper_ctr_clear(CPURISCVState *env)<br>
+            &gt; +{<br>
+            <br>
+            There should be some checks here.<br>
+            The spec states:<br>
+            SCTRCLR raises an illegal-instruction exception in U-mode,
+            and a <br>
+            virtual-instruction exception in VU-mode, unless CTR state
+            enable access <br>
+            restrictions apply.<br>
+            <br>
+            I don&#39;t quite understand &quot;unless CTR state enable acce=
+ss
+            restrictions <br>
+            apply&quot; though.<br>
+          </blockquote>
+          <div><br>
+          </div>
+          <div>The next sentence says &quot;See Chapter 5&quot;, which stat=
+es that
+            execution of SCTRCLR raises an illegal instruction exception
+            if mstateen0.CTR=3D0 and the priv mode is not M-mode, and it
+            raises a virtual instruction exception if mstateen0.CTR=3D0
+            &amp;&amp; hstateen0.CTR=3D1 and the priv mode is VS-mode.</div=
+>
+        </div>
+      </div>
+    </blockquote>
+    When mstateen0.CTR=3D0, hstateen0.CTR is read-only 0. I guess you
+    meant &quot;mstateen0.CTR=3D1 &amp;&amp; hstateen0.CTR=3D0&quot; here.<=
+br></div></blockquote><div><br></div><div>You&#39;re right, thanks.=C2=A0</=
+div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;bor=
+der-left:1px solid rgb(204,204,204);padding-left:1ex"><div>
+    <blockquote type=3D"cite">
+      <div dir=3D"ltr">
+        <div class=3D"gmail_quote">
+          <div>=C2=A0</div>
+          <blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8=
+ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
+            <br>
+            &gt; +=C2=A0 =C2=A0 riscv_ctr_clear(env);<br>
+            &gt; +}<br>
+            &gt; +<br>
+            &gt;=C2=A0 =C2=A0void helper_wfi(CPURISCVState *env)<br>
+            &gt;=C2=A0 =C2=A0{<br>
+            &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0CPUState *cs =3D env_cpu(env);<b=
+r>
+          </blockquote>
+        </div>
+      </div>
+    </blockquote>
+  </div>
+
+</blockquote></div></div>
+
+--0000000000002932fc061a260ff8--
 
