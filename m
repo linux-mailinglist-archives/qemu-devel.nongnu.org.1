@@ -2,78 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D38F8FCA70
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jun 2024 13:27:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A88ED8FCA71
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jun 2024 13:27:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEonJ-0005YU-HU; Wed, 05 Jun 2024 07:27:05 -0400
+	id 1sEonO-0005ZD-CF; Wed, 05 Jun 2024 07:27:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
- id 1sEonH-0005YI-7y
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 07:27:03 -0400
-Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
+ id 1sEonM-0005Yz-3b
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 07:27:08 -0400
+Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
- id 1sEonF-0003NT-Ej
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 07:27:02 -0400
-Received: by mail-ed1-x529.google.com with SMTP id
- 4fb4d7f45d1cf-57a31d63b6bso2890090a12.0
- for <qemu-devel@nongnu.org>; Wed, 05 Jun 2024 04:27:00 -0700 (PDT)
+ id 1sEonJ-0003Nn-Tn
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 07:27:07 -0400
+Received: by mail-ed1-x52d.google.com with SMTP id
+ 4fb4d7f45d1cf-578517c7ae9so2678468a12.3
+ for <qemu-devel@nongnu.org>; Wed, 05 Jun 2024 04:27:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1717586820; x=1718191620;
+ d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1717586824; x=1718191624;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=uQY2cD/0GprlA87LnBKBQ1RwhiZWI8cYgU0dNAemlU4=;
- b=QKChFFyIiXUn0wrYxiYnAeIJDA0EOvRDnPK7T4jSeq34W96PAwwX91Gc0pNBXuvZYu
- lvHB7/2XY4EGOzhXzB0kkt5pIJ1Cj9CrFiF49LMzjpcfFPYAunOkXBshAglZZglKEt53
- sU80J3D9fecbKejWu30kqfAaF16NbW6716ny4CS+Q9o3zWgtRTunsxWaWPnTE3ol+lFV
- jTVymrkDuYLWSMhnxCQ1MFPv/nDWJajDoK1BZjo4Me+zWgnBRjjx0OJQ3sT+TD2JznJr
- anJ7SdM9XiNOu6zut2lG4qdxfkrgIQnljgvIXwCVC5m5CLNOhRaTXf26yrukcVgAG+xh
- UgJg==
+ bh=g0aXqXcmnBCSHTUMGza3JBiKc8v6Yf/pH6Wf+LjvE9A=;
+ b=n6MW/lPncgVtUFN25wnvWYkA9o1oKwS6vhC1n/kGuMzdBRB/42SgYAeLPQP7a5ydxJ
+ nBnTAAEFyF1fu6MySQIivRfAoX7+hkmHU3YUUN/bUMevy/aS6XP34DhlLETXXXPMNcdT
+ zawTDE43nno8+vKs50JqMOEnA5Rk+mxNC8thTRFrHgGHQbjFq5rWiOpGIWU+vIMN771M
+ qnBAmwBGNoc4g2DGPbxod3gvM26cXLVgxXuV9aAxA3GAqwajlcD1EDPn8oLjxEMYVzWm
+ XgV0wqWZ9OX3SnH6WWWFOvXwUcFcQAVyXVZUuRikDj/H9q5oedNDzcBUYmiLveYUWPEQ
+ Adag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717586820; x=1718191620;
+ d=1e100.net; s=20230601; t=1717586824; x=1718191624;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=uQY2cD/0GprlA87LnBKBQ1RwhiZWI8cYgU0dNAemlU4=;
- b=DW1p0RGgGGX35iIpbwyzuqUlHo2k0+c9UgFRpG+5WDeZww2Hk0yDdNYJ5adoTR01sf
- uWOl6laPt/gPbCGod370XIum05h6Jkowfy2qNHwvimA0RrSRql38MkrPL/Y4mpgcAQ7O
- cO/G0nBJO6OQjstTYRK+APWwwsCBxFVuoeOzlWwBXAHNUm+4w/O77Or4KFq3bbfCIBJN
- tGmZKzadhYXenQvuYHVvEFqqhh1i/aqwb7k2BKD73ZyJuo7kxdoVSEG7W+Mooc2sAQhq
- d3X/mteCnpSCYfk+0ZVLBfd3IFAC/GEosoW2+VxqFNeWy77320PX4moE9QsQz8XoG3U+
- p9Rg==
-X-Gm-Message-State: AOJu0Yy7dBHmzEj6rXGllb22ZX2xHc0B0j+3bKd1O6RpM2r2BvMuCSpq
- DWxUqhD8+nZyiKM9j0V65a3cpa1cLgrsf5kalH7tYG5BvvvXFWjauAUjTSH+Djxbg3ozoOiSMdc
+ bh=g0aXqXcmnBCSHTUMGza3JBiKc8v6Yf/pH6Wf+LjvE9A=;
+ b=Kx++wDRLdsAhCuYnzOIn6+09Oy5F2zyKovwQaVMP1wNMLDNFol7VI/L2JPsSoQ4gN9
+ mmlO9NcrAhhsTnAfVfUwOyzl+Z9OptCDTWDUiZMg2slH3i+SP/pP/xmsy1ie4fcCuQEs
+ qkNustEyPNCjIPZlWilbBm9sLW5d934EutjxOepldWCyidK6F7+BbuSjjodmk8DU+Utp
+ d3Vg5SRfE/9zXzDRtLvwITHAu86NC6erhj8nT0a5drBHbr1NxnxFdybZusBOXyWuleft
+ HI9f0dfKmcoDgvCGTP/6qHY+biUpct+AZWAosqX/LGJocXv91pAxFU5o4QTlVyOheXm/
+ kwaQ==
+X-Gm-Message-State: AOJu0YyaJL8I8kUQje6KUQZbqH7RgVI9WvWC8O7/PUdYiz3bNG1w9qt6
+ ly4MNn20O7wTA5LTATuVIVrYpZCliDz24tIZe+Xz9Di4/8c0w7FXowo40e6W5h9jflvQcjb4m8M
  =
-X-Google-Smtp-Source: AGHT+IFH/01QCtamGICFCw0b56PQUC7P70H51nnXXui4HqnCm+hSOuApTn6THfeCGWBqk9dCgpV6ZA==
-X-Received: by 2002:a50:d6d8:0:b0:578:5771:dc2c with SMTP id
- 4fb4d7f45d1cf-57a8b69d84amr1867720a12.3.1717586819693; 
- Wed, 05 Jun 2024 04:26:59 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH4f6E5RmBELgGtPxvCF3hgAjt/4lQFG5C6R4P9pc8H2wr4y5gUeLgCeObO5Q/2jsrW0MUYMQ==
+X-Received: by 2002:a50:d79b:0:b0:57a:259a:489a with SMTP id
+ 4fb4d7f45d1cf-57a8b6a698fmr1355330a12.14.1717586824291; 
+ Wed, 05 Jun 2024 04:27:04 -0700 (PDT)
 Received: from localhost.localdomain (89-104-8-249.customer.bnet.at.
  [89.104.8.249]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-57a51023af4sm7111335a12.29.2024.06.05.04.26.59
+ 4fb4d7f45d1cf-57a51023af4sm7111335a12.29.2024.06.05.04.27.03
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 05 Jun 2024 04:26:59 -0700 (PDT)
+ Wed, 05 Jun 2024 04:27:03 -0700 (PDT)
 From: Phil Dennis-Jordan <phil@philjordan.eu>
 To: qemu-devel@nongnu.org
 Cc: dirty@apple.com, rbolshakov@ddn.com, lists@philjordan.eu,
  Phil Dennis-Jordan <phil@philjordan.eu>
-Subject: [PATCH v3 6/7] i386/hvf: Updates API usage to use modern vCPU run
- function
-Date: Wed,  5 Jun 2024 13:25:55 +0200
-Message-Id: <20240605112556.43193-7-phil@philjordan.eu>
+Subject: [PATCH v3 7/7] hvf: Makes assert_hvf_ok report failed expression
+Date: Wed,  5 Jun 2024 13:25:56 +0200
+Message-Id: <20240605112556.43193-8-phil@philjordan.eu>
 X-Mailer: git-send-email 2.36.1
 In-Reply-To: <20240605112556.43193-1-phil@philjordan.eu>
 References: <20240605112556.43193-1-phil@philjordan.eu>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: neutral client-ip=2a00:1450:4864:20::529;
- envelope-from=phil@philjordan.eu; helo=mail-ed1-x529.google.com
+Received-SPF: neutral client-ip=2a00:1450:4864:20::52d;
+ envelope-from=phil@philjordan.eu; helo=mail-ed1-x52d.google.com
 X-Spam_score_int: -10
 X-Spam_score: -1.1
 X-Spam_bar: -
@@ -95,73 +93,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-macOS 10.15 introduced the more efficient hv_vcpu_run_until() function
-to supersede hv_vcpu_run(). According to the documentation, there is no
-longer any reason to use the latter on modern host OS versions, especially
-after 11.0 added support for an indefinite deadline.
+When a macOS Hypervisor.framework call fails which is checked by
+assert_hvf_ok(), Qemu exits printing the error value, but not the
+location
+in the code, as regular assert() macro expansions would.
 
-Observed behaviour of the newer function is that as documented, it exits
-much less frequently - and most of the original function’s exits seem to
-have been effectively pointless.
+This change turns assert_hvf_ok() into a macro similar to other
+assertions, which expands to a call to the corresponding _impl()
+function together with information about the expression that failed
+the assertion and its location in the code.
 
-Another reason to use the new function is that it is a prerequisite for
-using newer features such as in-kernel APIC support. (Not covered by
-this patch.)
-
-This change implements the upgrade by selecting one of three code paths
-at compile time: two static code paths for the new and old functions
-respectively, when building for targets where the new function is either
-not available, or where the built executable won’t run on older
-platforms lacking the new function anyway. The third code path selects
-dynamically based on runtime detected availability of the weakly-linked
-symbol.
+Additionally, stringifying the numeric hv_return_t code is factored
+into a helper function that can be reused for diagnostics and debugging
+outside of assertions.
 
 Signed-off-by: Phil Dennis-Jordan <phil@philjordan.eu>
 ---
- target/i386/hvf/hvf.c | 23 ++++++++++++++++++++++-
- 1 file changed, 22 insertions(+), 1 deletion(-)
+ accel/hvf/hvf-all.c      | 49 +++++++++++++++++-----------------------
+ include/sysemu/hvf_int.h |  5 +++-
+ 2 files changed, 25 insertions(+), 29 deletions(-)
 
-diff --git a/target/i386/hvf/hvf.c b/target/i386/hvf/hvf.c
-index 106ac5cbf6..2d0eef6cd9 100644
---- a/target/i386/hvf/hvf.c
-+++ b/target/i386/hvf/hvf.c
-@@ -427,6 +427,27 @@ static void hvf_cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-     }
- }
+diff --git a/accel/hvf/hvf-all.c b/accel/hvf/hvf-all.c
+index db05b81be5..c008dc2f1e 100644
+--- a/accel/hvf/hvf-all.c
++++ b/accel/hvf/hvf-all.c
+@@ -13,40 +13,33 @@
+ #include "sysemu/hvf.h"
+ #include "sysemu/hvf_int.h"
  
-+static hv_return_t hvf_vcpu_run(hv_vcpuid_t vcpu_id)
-+{
-+    /*
-+     * hv_vcpu_run_until is available and recommended from macOS 10.15+,
-+     * HV_DEADLINE_FOREVER from 11.0. Test for availability at runtime and fall
-+     * back to hv_vcpu_run() only where necessary.
-+     */
-+#ifndef MAC_OS_VERSION_11_0
-+    return hv_vcpu_run(vcpu_id);
-+#elif MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_VERSION_11_0
-+    return hv_vcpu_run_until(vcpu_id, HV_DEADLINE_FOREVER);
-+#else /* MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_VERSION_11_0 */
-+    /* 11.0 SDK or newer, but could be < 11 at runtime */
-+    if (__builtin_available(macOS 11.0, *)) {
-+        return hv_vcpu_run_until(vcpu_id, HV_DEADLINE_FOREVER);
-+    } else {
-+        return hv_vcpu_run(vcpu_id);
-+    }
-+#endif
+-void assert_hvf_ok(hv_return_t ret)
++const char *hvf_return_string(hv_return_t ret)
+ {
+-    if (ret == HV_SUCCESS) {
+-        return;
+-    }
+-
+     switch (ret) {
+-    case HV_ERROR:
+-        error_report("Error: HV_ERROR");
+-        break;
+-    case HV_BUSY:
+-        error_report("Error: HV_BUSY");
+-        break;
+-    case HV_BAD_ARGUMENT:
+-        error_report("Error: HV_BAD_ARGUMENT");
+-        break;
+-    case HV_NO_RESOURCES:
+-        error_report("Error: HV_NO_RESOURCES");
+-        break;
+-    case HV_NO_DEVICE:
+-        error_report("Error: HV_NO_DEVICE");
+-        break;
+-    case HV_UNSUPPORTED:
+-        error_report("Error: HV_UNSUPPORTED");
+-        break;
++    case HV_SUCCESS:      return "HV_SUCCESS";
++    case HV_ERROR:        return "HV_ERROR";
++    case HV_BUSY:         return "HV_BUSY";
++    case HV_BAD_ARGUMENT: return "HV_BAD_ARGUMENT";
++    case HV_NO_RESOURCES: return "HV_NO_RESOURCES";
++    case HV_NO_DEVICE:    return "HV_NO_DEVICE";
++    case HV_UNSUPPORTED:  return "HV_UNSUPPORTED";
+ #if defined(MAC_OS_VERSION_11_0) && \
+     MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_VERSION_11_0
+-    case HV_DENIED:
+-        error_report("Error: HV_DENIED");
+-        break;
++    case HV_DENIED:       return "HV_DENIED";
+ #endif
+-    default:
+-        error_report("Unknown Error");
++    default:              return "[unknown hv_return value]";
+     }
 +}
 +
- int hvf_vcpu_exec(CPUState *cpu)
- {
-     X86CPU *x86_cpu = X86_CPU(cpu);
-@@ -455,7 +476,7 @@ int hvf_vcpu_exec(CPUState *cpu)
-             return EXCP_HLT;
-         }
++void assert_hvf_ok_impl(hv_return_t ret, const char *file, unsigned int line,
++                        const char *exp)
++{
++    if (ret == HV_SUCCESS) {
++        return;
++    }
++
++    error_report("Error: %s = %s (0x%x, at %s:%u)",
++        exp, hvf_return_string(ret), ret, file, line);
  
--        hv_return_t r  = hv_vcpu_run(cpu->accel->fd);
-+        hv_return_t r = hvf_vcpu_run(cpu->accel->fd);
-         assert_hvf_ok(r);
+     abort();
+ }
+diff --git a/include/sysemu/hvf_int.h b/include/sysemu/hvf_int.h
+index 30e739a2b5..5b28d17ba1 100644
+--- a/include/sysemu/hvf_int.h
++++ b/include/sysemu/hvf_int.h
+@@ -60,7 +60,10 @@ struct AccelCPUState {
+     bool dirty;
+ };
  
-         /* handle VMEXIT */
+-void assert_hvf_ok(hv_return_t ret);
++void assert_hvf_ok_impl(hv_return_t ret, const char *file, unsigned int line,
++                        const char *exp);
++#define assert_hvf_ok(EX) assert_hvf_ok_impl((EX), __FILE__, __LINE__, #EX)
++const char *hvf_return_string(hv_return_t ret);
+ int hvf_arch_init(void);
+ int hvf_arch_init_vcpu(CPUState *cpu);
+ void hvf_arch_vcpu_destroy(CPUState *cpu);
 -- 
 2.36.1
 
