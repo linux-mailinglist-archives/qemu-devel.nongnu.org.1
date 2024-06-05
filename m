@@ -2,85 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CE9B8FD1A2
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jun 2024 17:29:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7B948FD214
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jun 2024 17:51:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEsZe-0000fo-K8; Wed, 05 Jun 2024 11:29:14 -0400
+	id 1sEsu7-00011y-Nr; Wed, 05 Jun 2024 11:50:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <weifeng.liu.z@gmail.com>)
- id 1sEsZb-0000fF-M9
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 11:29:11 -0400
-Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <weifeng.liu.z@gmail.com>)
- id 1sEsZY-0007Xm-4a
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 11:29:11 -0400
-Received: by mail-pf1-x42f.google.com with SMTP id
- d2e1a72fcca58-6f8ec7e054dso4836541b3a.2
- for <qemu-devel@nongnu.org>; Wed, 05 Jun 2024 08:29:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1717601346; x=1718206146; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=1NL/0bUuZW5NfajYFBq9RShKw+LMyCnZCbT2JXrSd7w=;
- b=E8UCBnS7SjS/0N2a7htKeJetxuBOJxIn4Kt4JN+YvaD9iiazii49tOw1+QGXITZWQL
- iHjgHpQqg/wVV2M4OgdkGVPZcr38zyQ9XCJo5vtVXqjOP+spfbpAuUmATX3EhjAtVbwM
- MBv+neYLfAKTY5qobjPd8scvg8/2+1/EgWlw04g+mENgY/Kpss0+pswX3LQ3S6gzOeXX
- kHGF+4HlxZaUi2iYicZqLcHlvY5vo7lbdvp+fqdWRE4izhR1FjU8SNpnZwF4Z3FUcp1j
- UMW1QRXTnxGOKzfzvKkD15MAZTvdiEfGcJddEHMFLW49cJU6spMWIzqeIBmJX3DV9iTJ
- cyIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717601346; x=1718206146;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=1NL/0bUuZW5NfajYFBq9RShKw+LMyCnZCbT2JXrSd7w=;
- b=pZMdE4WKwZPRzJhp6Jzajq4B3KLtUD7lmT1Fd/Gjx+r8j37qcd30+TsStHClUgnyVH
- ODS3wu07uLYqWddVEO17Jlzff9b5KKZ9vs+c18QALWz4v59+XfNnhYCSY5Qd9euuSow/
- KxyDh8Ro5U5NUzI6oRG03vAIG9W6xN2yxckd1s649qljd0Y2rG7wQPu+KOEPK0V9AsBQ
- 8IwGWfMAxQMZYvJ2/zpjSmWKrEcQYEjrWoIre8Ff7D3LTpAqB3iU/oI3rHKRJlAl6/Hg
- cJO2D9D0W2KWa1qgLnIp1q8I9eLvc/bu+7MlAthECubM261dg0xgFbpdkovYewHO3Ek1
- ToPg==
-X-Gm-Message-State: AOJu0YymQuG3z07t1uNhjJ1UMN3VEIROUEy0QucpFykMM4mpf0l/V/fp
- 1Ac9Ch5/LF7L+2PaNkJnH5j8PLVQOrIWJH5tY1prNSj+NUQVEEY7CVmKpCX8Gyw=
-X-Google-Smtp-Source: AGHT+IFPMAW8IAwSm4ZNYG+dmnq5PaDPTtEB06U9CzGhuEHffFjVEp1M85iwVLKuazg0gzBunycnsA==
-X-Received: by 2002:a05:6a00:2ea9:b0:6f8:c6e4:1829 with SMTP id
- d2e1a72fcca58-703e5a1bbfdmr3336205b3a.25.1717601346222; 
- Wed, 05 Jun 2024 08:29:06 -0700 (PDT)
-Received: from localhost ([103.192.227.74]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-702688e7e3dsm5526712b3a.215.2024.06.05.08.29.05
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 05 Jun 2024 08:29:05 -0700 (PDT)
-From: Weifeng Liu <weifeng.liu.z@gmail.com>
-To: qemu-devel@nongnu.org, Gurchetan Singh <gurchetansingh@chromium.org>,
- "Michael S. Tsirkin" <mst@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>
-Cc: Weifeng Liu <weifeng.liu.z@gmail.com>,
- Antonio Caggiano <antonio.caggiano@collabora.com>,
- Huang Rui <ray.huang@amd.com>,
- Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PATCH 3/3] virtio-gpu: rutabaga: Add options to enable virgl and
- venus contexts
-Date: Wed,  5 Jun 2024 23:28:30 +0800
-Message-ID: <20240605152832.11618-4-weifeng.liu.z@gmail.com>
-X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240605152832.11618-1-weifeng.liu.z@gmail.com>
-References: <20240605152832.11618-1-weifeng.liu.z@gmail.com>
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1sEsts-00010N-Fy
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 11:50:09 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1sEstp-0004ku-OT
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 11:50:08 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VvX1r0JLmz6D97l;
+ Wed,  5 Jun 2024 23:48:48 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+ by mail.maildlp.com (Postfix) with ESMTPS id 378B21400DB;
+ Wed,  5 Jun 2024 23:49:59 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Wed, 5 Jun
+ 2024 16:49:58 +0100
+Date: Wed, 5 Jun 2024 16:49:57 +0100
+To: Jonathan Cameron via <qemu-devel@nongnu.org>
+CC: Jonathan Cameron <Jonathan.Cameron@Huawei.com>, Richard Henderson
+ <richard.henderson@linaro.org>, "Michael S. Tsirkin" <mst@redhat.com>, Peter
+ Maydell <peter.maydell@linaro.org>, Igor Mammedov <imammedo@redhat.com>, Ani
+ Sinha <anisinha@redhat.com>
+Subject: Re: [PULL 36/46] bios-tables-test: Add data for complex numa test
+ (GI, GP etc)
+Message-ID: <20240605164957.00005656@Huawei.com>
+In-Reply-To: <20240605162733.00007d8d@Huawei.com>
+References: <cover.1717527933.git.mst@redhat.com>
+ <61cbf56ef1c5dd9dbe6bd6625f6c8d2a82c5697f.1717527933.git.mst@redhat.com>
+ <2eefcbdb-ad41-465a-9c14-1dc15bfff94a@linaro.org>
+ <20240605162733.00007d8d@Huawei.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
- envelope-from=weifeng.liu.z@gmail.com; helo=mail-pf1-x42f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml500006.china.huawei.com (7.191.161.198) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,37 +70,96 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-With this change, people will be able to use parameter like the one
-below to add start virglrenderer backed virtio-gpu-rutabaga device:
+On Wed, 5 Jun 2024 16:27:33 +0100
+Jonathan Cameron via <qemu-devel@nongnu.org> wrote:
 
-    -device virtio-vga-rutabaga,venus=on,virgl2=on,wsi=surfaceless
+> On Wed, 5 Jun 2024 07:39:53 -0700
+> Richard Henderson <richard.henderson@linaro.org> wrote:
+> 
+> > On 6/4/24 14:08, Michael S. Tsirkin wrote:  
+> > > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > > 
+> > > Given this is a new configuration, there are affects on APIC, CEDT
+> > > and DSDT, but the key elements are in SRAT (plus related data in
+> > > HMAT).  The configuration has node to exercise many different combinations.
+> > > 
+> > > 0) CPUs + Memory
+> > > 1) GI only
+> > > 2) GP only
+> > > 3) CPUS only
+> > > 4) Memory only
+> > > 5) CPUs + HP memory
+> > > 
+> > > GI node, GP Node, Memory only node, hotplug memory
+> > > only node, latency and bandwidth such that in Linux Access0
+> > > (any initiator) and Access1 (CPU initiators only) given different
+> > > answers.  Following cropped to remove details of each entry.    
+> > 
+> > 
+> > This fails testing:
+> > 
+> > https://gitlab.com/qemu-project/qemu/-/jobs/7021105504
+> > 
+> > acpi-test: Warning! SRAT binary file mismatch. Actual [aml:/tmp/aml-GHR6O2], Expected 
+> > [aml:tests/data/acpi/q35/SRAT.acpihmat-generic-x].
+> > See source file tests/qtest/bios-tables-test.c for instructions on how to update expected 
+> > files.
+> > to see ASL diff between mismatched files install IASL, rebuild QEMU from scratch and 
+> > re-run tests with V=1 environment variable set**
+> > ERROR:../alt/tests/qtest/bios-tables-test.c:550:test_acpi_asl: assertion failed: 
+> > (all_tables_match)
+> > Bail out! ERROR:../alt/tests/qtest/bios-tables-test.c:550:test_acpi_asl: assertion failed: 
+> > (all_tables_match)
+> > Aborted (core dumped)
+> >   
+> 
+> s390 and passes on an x86 host, so I guess an endian bug - any chance of a table dump
+> from someone with access to an s390 host?
+> 
+> This test covers some stuff that was previously missing tests
+> so may be non trivial to spot.
+> 
+> I'll play guess in the meantime. So far I'm not seeing anything that differs
+> from existing ACPI table building code.
 
-Performance being suboptimal though, this would be the first step.
+Ok. I think it a bug earlier in this patch set. A table dump would confirm.
 
-Signed-off-by: Weifeng Liu <weifeng.liu.z@gmail.com>
----
- hw/display/virtio-gpu-rutabaga.c | 4 ++++
- 1 file changed, 4 insertions(+)
+One item that looks dodgy is the filling in of the ACPI HID.
 
-diff --git a/hw/display/virtio-gpu-rutabaga.c b/hw/display/virtio-gpu-rutabaga.c
-index ecb146315a..85bc33af8c 100644
---- a/hw/display/virtio-gpu-rutabaga.c
-+++ b/hw/display/virtio-gpu-rutabaga.c
-@@ -1203,6 +1203,10 @@ static Property virtio_gpu_rutabaga_properties[] = {
-                       RUTABAGA_CAPSET_GFXSTREAM_GLES, false),
-     DEFINE_PROP_BIT64("x-gfxstream-composer", VirtIOGPURutabaga, capset_mask,
-                       RUTABAGA_CAPSET_GFXSTREAM_COMPOSER, false),
-+    DEFINE_PROP_BIT64("venus", VirtIOGPURutabaga, capset_mask,
-+                      RUTABAGA_CAPSET_VENUS, false),
-+    DEFINE_PROP_BIT64("virgl2", VirtIOGPURutabaga, capset_mask,
-+                      RUTABAGA_CAPSET_VIRGL2, false),
-     DEFINE_PROP_STRING("wayland-socket-path", VirtIOGPURutabaga,
-                        wayland_socket_path),
-     DEFINE_PROP_STRING("wsi", VirtIOGPURutabaga, wsi),
--- 
-2.45.0
+It's messy in the ACPI spec as it's defined as both an integer
+and a string.
+ 
+Need to take a 4 character string and get it into hid of
+
+struct {
+   uint64_t hid;
+   uint32_t uid;
+}
+which id done with an 8 byte memcpy.
+that is then written to SRAT wtih
+build_append_int_noprefix(table_data, handle->hid, 8);
+
+So I need to byte swap it if host doesn't match guest endian.
+
+I'll put together a patch, but perhaps best plan is if Michael
+drops generic ports and we go around again :(
+
+At least I don't have much backed up behind this one.
+
+Jonathan
+
+> 
+> Jonathan
+> 
+> 
+> > 
+> > r~  
+> 
+> 
 
 
