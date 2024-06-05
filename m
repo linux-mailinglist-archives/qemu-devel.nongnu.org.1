@@ -2,70 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3AB08FC708
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jun 2024 10:55:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8412B8FC72F
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jun 2024 11:04:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEmPG-00075r-0D; Wed, 05 Jun 2024 04:54:06 -0400
+	id 1sEmXb-0000iM-68; Wed, 05 Jun 2024 05:02:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sEmPE-00075E-7V
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 04:54:04 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1sEmXY-0000hv-L0
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 05:02:40 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sEmPB-0003X8-Pm
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 04:54:03 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1sEmXW-0005lh-L5
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 05:02:40 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717577640;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=S7o+AyQgR2MpRFU0rryvqeWe0qw66x3Zk2WuQ/OVTKE=;
- b=YG4Hkd9rGB/M59oH2DkLfMBO/SjPa/VdEsWbZQ7U/ryUXp48uSFKAI/jRUnFo+ed9PWlc+
- xfy9ZFVnzccTnFonJ98VVC468lQSyHd223FBVVGM5Cn8URLY0tzrtTVQmw2XbfdQ9dh2R+
- ByH0dsPyTRftoV8ZrTWu5xZMPSu6uQ8=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-413-eIZuSlZnMk-8hBB8PZb6Hw-1; Wed,
- 05 Jun 2024 04:53:57 -0400
-X-MC-Unique: eIZuSlZnMk-8hBB8PZb6Hw-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E96793C025B1;
- Wed,  5 Jun 2024 08:53:56 +0000 (UTC)
-Received: from redhat.com (unknown [10.39.193.183])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 5E0E4FF02;
- Wed,  5 Jun 2024 08:53:55 +0000 (UTC)
-Date: Wed, 5 Jun 2024 09:53:52 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@gmail.com>
-Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>,
- Konstantin Kostiuk <kkostiuk@redhat.com>,
- Michael Roth <michael.roth@amd.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH 07/20] qga: move CONFIG_FSFREEZE/TRIM to be meson defined
- options
-Message-ID: <ZmAnoPgv53noaNmk@redhat.com>
-References: <20240604134933.220112-1-berrange@redhat.com>
- <20240604134933.220112-8-berrange@redhat.com>
- <CAJ+F1CLhfHTnivCcCfOSEYw2nNsTrcgqx+iALRsWf9DbKjhmEg@mail.gmail.com>
+ s=mimecast20190719; t=1717578156;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:  content-type:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=lvtzUrqViQnVa415iJWCgypL+zLlsW1PVD9sTk1VooM=;
+ b=eI/FjRWhZVoUn2d+sau4ggNFVy3nRz7ONFDuDflRwLSv8NpCue9IpxJcx25wigBrKZv6/T
+ YyqlsVUYkVgYLdmKysi9w80ZQqO8I3SB1ANKMaMunrSiYSl6OJG7bQJ/ZbkNM0m7rf8Z9r
+ FaB3bCeZLakAglCPxkK/8t6o5IpSNZs=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-206-f3PJB8xaN9uNt6gTAtQnOQ-1; Wed, 05 Jun 2024 05:02:35 -0400
+X-MC-Unique: f3PJB8xaN9uNt6gTAtQnOQ-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-a6a4615420bso19879966b.3
+ for <qemu-devel@nongnu.org>; Wed, 05 Jun 2024 02:02:35 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1717578153; x=1718182953;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=lvtzUrqViQnVa415iJWCgypL+zLlsW1PVD9sTk1VooM=;
+ b=MITuKH8W/cvyo9j7bfA07kaGz16en82wPVeeicPoCoopSw4V5BdBAqKPqGMBWC7QKE
+ BIPFEs9pYRJWUtUeTGF8DP+3z2MugT3IKDYofsAEHZPsUq44YgiIOfvrUaYYKvqGPEgk
+ f6XYRUC1K5d+ugaUxmYZlS34NsPYvowyYTfQESw6xBxnPXwuszUSGZJmJJy2MQJYFwnG
+ itlq1nB8swjxCT2lMVN0YvIExFI2UZfdTnX+j6lqeaiLPAFxprUhUxpZrjpwGYEw+A2Q
+ XG9sXZmtdXlyLW9mJM2XguFciRIW5WT2GeG+kxpSY/8nRw3nio7CW0mJeDAwa59ndZ/C
+ MD7Q==
+X-Gm-Message-State: AOJu0YwrOOn+1OPWjuXPPGsVuyLrJolx5/ZDInzjnMnJISOqy2vWJhzD
+ CGk7DLng//S0S5swwO1BkPnRm8K9tlYesekzLxxKPABFsf6aDT5gdIkZLfT7BdhYSmdwc/MTKev
+ Xben9azx7T0ZJ+bO11in1uF2iFs3puDtE2tHrHx6iBTs/L67tIMsQAErgKimtIDjYG/mngL3bqn
+ uBmVQonif+bo1GumQ74NWPI5LkonJei5l2hzsK
+X-Received: by 2002:a17:906:3510:b0:a68:c672:b903 with SMTP id
+ a640c23a62f3a-a699fe00edemr114137066b.53.1717578153251; 
+ Wed, 05 Jun 2024 02:02:33 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF0Syfrx8mMy/h2VLOevDOlw4vO6IeuTFHXQTRYE5eAXr4aQo+I3ms+9yuptIaJN2g1hsXTFw==
+X-Received: by 2002:a17:906:3510:b0:a68:c672:b903 with SMTP id
+ a640c23a62f3a-a699fe00edemr114135366b.53.1717578151915; 
+ Wed, 05 Jun 2024 02:02:31 -0700 (PDT)
+Received: from avogadro.local ([151.81.115.112])
+ by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-a68e6b5cdf8sm521491566b.81.2024.06.05.02.02.31
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 05 Jun 2024 02:02:31 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Subject: [PULL 00/46] mostly i386 patches for 2024-06-04
+Date: Wed,  5 Jun 2024 11:02:27 +0200
+Message-ID: <20240605090229.1704300-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.45.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJ+F1CLhfHTnivCcCfOSEYw2nNsTrcgqx+iALRsWf9DbKjhmEg@mail.gmail.com>
-User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -87,116 +95,148 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jun 05, 2024 at 12:47:39PM +0400, Marc-André Lureau wrote:
-> Hi
-> 
-> On Tue, Jun 4, 2024 at 5:50 PM Daniel P. Berrangé <berrange@redhat.com>
-> wrote:
-> 
-> > Defining these at the meson level allows them to be used a conditional
-> > tests in the QAPI schemas.
-> >
-> > Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-> > ---
-> >  meson.build           | 18 ++++++++++++++++++
-> >  qga/commands-common.h |  9 ---------
-> >  2 files changed, 18 insertions(+), 9 deletions(-)
-> >
-> > diff --git a/meson.build b/meson.build
-> > index 6386607144..356b2a4817 100644
-> > --- a/meson.build
-> > +++ b/meson.build
-> > @@ -2141,6 +2141,22 @@ have_virtfs_proxy_helper =
-> > get_option('virtfs_proxy_helper') \
-> >      .require(libcap_ng.found(), error_message: 'the virtfs proxy helper
-> > requires libcap-ng') \
-> >      .allowed()
-> >
-> > +qga_fsfreeze = false
-> > +qga_fstrim = false
-> > +if host_os == 'windows'
-> > +    qga_fsfreeze = true
-> > +    qga_fstrim = true
-> >
-> 
-> The hook code in qga/main.c compiles for win32, but it is not used. Did you
-> intentionally enabled that?
+The following changes since commit 3ab42e46acf867c45bc929fcc37693e327a35a24:
 
-Oh whoops, yes, that is an oversight. I was initially thinking
-that CONFIG_FSFREEZE was used in commands-win32.c, since it has
-a freeze impl, but I forgot I later learnt it was unconditional.
-So we don't need to set these for meson vars for windows.
+  Merge tag 'pull-ufs-20240603' of https://gitlab.com/jeuk20.kim/qemu into staging (2024-06-03 08:18:14 -0500)
 
-> 
-> +elif host_os == 'linux'
-> > +    if cc.has_header_symbol('linux/fs.h', 'FIFREEZE')
-> > +        qga_fsfreeze = true
-> > +    endif
-> > +    if cc.has_header_symbol('linux/fs.h', 'FITRIM')
-> > +        qga_fstrim = true
-> > +    endif
-> > +elif host_os == 'freebsd' and cc.has_header_symbol('ufs/ffs/fs.h',
-> > 'UFSSUSPEND')
-> > +    qga_fsfreeze = true
-> > +endif
-> > +
-> >  if get_option('block_drv_ro_whitelist') == ''
-> >    config_host_data.set('CONFIG_BDRV_RO_WHITELIST', '')
-> >  else
-> > @@ -2375,6 +2391,8 @@ config_host_data.set('CONFIG_DEBUG_TCG',
-> > get_option('debug_tcg'))
-> >  config_host_data.set('CONFIG_DEBUG_REMAP', get_option('debug_remap'))
-> >  config_host_data.set('CONFIG_QOM_CAST_DEBUG',
-> > get_option('qom_cast_debug'))
-> >  config_host_data.set('CONFIG_REPLICATION',
-> > get_option('replication').allowed())
-> > +config_host_data.set('CONFIG_FSFREEZE', qga_fsfreeze)
-> > +config_host_data.set('CONFIG_FSTRIM', qga_fstrim)
-> >
-> >  # has_header
-> >  config_host_data.set('CONFIG_EPOLL', cc.has_header('sys/epoll.h'))
-> > diff --git a/qga/commands-common.h b/qga/commands-common.h
-> > index 8c1c56aac9..263e7c0525 100644
-> > --- a/qga/commands-common.h
-> > +++ b/qga/commands-common.h
-> > @@ -15,19 +15,10 @@
-> >
-> >  #if defined(__linux__)
-> >  #include <linux/fs.h>
-> > -#ifdef FIFREEZE
-> > -#define CONFIG_FSFREEZE
-> > -#endif
-> > -#ifdef FITRIM
-> > -#define CONFIG_FSTRIM
-> > -#endif
-> >  #endif /* __linux__ */
-> >
-> >  #ifdef __FreeBSD__
-> >  #include <ufs/ffs/fs.h>
-> > -#ifdef UFSSUSPEND
-> > -#define CONFIG_FSFREEZE
-> > -#endif
-> >  #endif /* __FreeBSD__ */
-> >
-> >  #if defined(CONFIG_FSFREEZE) || defined(CONFIG_FSTRIM)
-> > --
-> > 2.45.1
-> >
-> >
-> >
-> 
-> -- 
-> Marc-André Lureau
+are available in the Git repository at:
 
-With regards,
-Daniel
+  https://gitlab.com/bonzini/qemu.git tags/for-upstream
+
+for you to fetch changes up to fc7a69e177e4ba26d11fcf47b853f85115b35a11:
+
+  hw/i386: Add support for loading BIOS using guest_memfd (2024-06-04 16:44:23 +0200)
+
+----------------------------------------------------------------
+* virtio-blk: remove SCSI passthrough functionality
+* require x86-64-v2 baseline ISA
+* SEV-SNP host support
+* fix xsave.flat with TCG
+* fixes for CPUID checks done by TCG
+
+----------------------------------------------------------------
+Brijesh Singh (6):
+      i386/sev: Introduce 'sev-snp-guest' object
+      i386/sev: Add the SNP launch start context
+      i386/sev: Add handling to encrypt/finalize guest launch data
+      hw/i386/sev: Add function to get SEV metadata from OVMF header
+      i386/sev: Add support for populating OVMF metadata pages
+      hw/i386/sev: Add support to encrypt BIOS when SEV-SNP is enabled
+
+Dov Murik (3):
+      i386/sev: Extract build_kernel_loader_hashes
+      i386/sev: Reorder struct declarations
+      i386/sev: Allow measured direct kernel boot on SNP
+
+Michael Roth (11):
+      i386/sev: Introduce "sev-common" type to encapsulate common SEV state
+      i386/sev: Add a sev_snp_enabled() helper
+      i386/cpu: Set SEV-SNP CPUID bit when SNP enabled
+      i386/sev: Don't return launch measurements for SEV-SNP guests
+      i386/sev: Update query-sev QAPI format to handle SEV-SNP
+      i386/sev: Set CPU state to protected once SNP guest payload is finalized
+      i386/sev: Add support for SNP CPUID validation
+      i386/kvm: Add KVM_EXIT_HYPERCALL handling for KVM_HC_MAP_GPA_RANGE
+      i386/sev: Enable KVM_HC_MAP_GPA_RANGE hcall for SNP guests
+      hw/i386/sev: Use guest_memfd for legacy ROMs
+      hw/i386: Add support for loading BIOS using guest_memfd
+
+Pankaj Gupta (7):
+      linux-headers: Update to current kvm/next
+      i386/sev: Replace error_report with error_setg
+      i386/sev: Move sev_launch_update to separate class method
+      i386/sev: Move sev_launch_finish to separate class method
+      i386/sev: Add sev_kvm_init() override for SEV class
+      i386/sev: Add snp_kvm_init() override for SNP class
+      i386/sev: Invoke launch_updata_data() for SNP class
+
+Paolo Bonzini (15):
+      docs, tests: do not specify scsi=off
+      virtio-blk: remove SCSI passthrough functionality
+      host/i386: nothing looks at CPUINFO_SSE4
+      meson: assume x86-64-v2 baseline ISA
+      host/i386: assume presence of CMOV
+      host/i386: assume presence of SSE2
+      host/i386: assume presence of SSSE3
+      host/i386: assume presence of POPCNT
+      target/i386: fix xsave.flat from kvm-unit-tests
+      update-linux-headers: fix forwarding to asm-generic headers
+      update-linux-headers: move pvpanic.h to correct directory
+      update-linux-headers: import linux/kvm_para.h header
+      machine: allow early use of machine_require_guest_memfd
+      i386/sev: Add a class method to determine KVM VM type for SNP guests
+      i386/sev: Invoke launch_updata_data() for SEV class
+
+Xiaoyao Li (1):
+      memory: Introduce memory_region_init_ram_guest_memfd()
+
+Xinyu Li (2):
+      target/i386: fix SSE and SSE2 feature check
+      target/i386: fix memory opsize for Mov to/from Seg
+
+Zhao Liu (1):
+      target/i386/tcg: Fix RDPID feature check
+
+ docs/about/deprecated.rst                          |   10 -
+ docs/about/removed-features.rst                    |    8 +
+ docs/pci_expander_bridge.txt                       |    2 +-
+ docs/specs/tpm.rst                                 |    2 +-
+ docs/system/i386/amd-memory-encryption.rst         |   70 +-
+ meson.build                                        |   10 +-
+ qapi/misc-target.json                              |   72 +-
+ qapi/qom.json                                      |   98 +-
+ host/include/i386/host/cpuinfo.h                   |    4 -
+ include/exec/confidential-guest-support.h          |    5 +
+ include/exec/memory.h                              |    6 +
+ include/hw/boards.h                                |    1 -
+ include/hw/i386/pc.h                               |   28 +
+ include/hw/i386/x86.h                              |    2 +-
+ include/standard-headers/linux/kvm_para.h          |   38 +
+ include/standard-headers/{linux => misc}/pvpanic.h |    0
+ linux-headers/asm-loongarch/kvm.h                  |    4 +
+ linux-headers/asm-riscv/kvm.h                      |    1 +
+ linux-headers/asm-x86/kvm.h                        |   52 +-
+ linux-headers/asm-x86/kvm_para.h                   |    1 +
+ linux-headers/linux/kvm_para.h                     |    2 +
+ linux-headers/linux/vhost.h                        |   15 +-
+ target/i386/kvm/kvm_i386.h                         |    1 +
+ target/i386/sev.h                                  |   13 +-
+ target/i386/tcg/decode-new.h                       |    3 +
+ tcg/i386/tcg-target.h                              |    5 +-
+ hw/block/virtio-blk.c                              |  166 +-
+ hw/core/machine.c                                  |    4 +-
+ hw/i386/pc.c                                       |   14 +-
+ hw/i386/pc_sysfw.c                                 |   35 +-
+ hw/i386/x86-common.c                               |   19 +-
+ hw/misc/pvpanic-isa.c                              |    2 +-
+ hw/misc/pvpanic-pci.c                              |    2 +-
+ hw/misc/pvpanic.c                                  |    2 +-
+ system/memory.c                                    |   24 +
+ target/i386/cpu.c                                  |    1 +
+ target/i386/kvm/kvm.c                              |   56 +
+ target/i386/sev-sysemu-stub.c                      |    6 +-
+ target/i386/sev.c                                  | 1581 +++++++++++++++-----
+ target/i386/tcg/fpu_helper.c                       |    5 +
+ target/i386/tcg/translate.c                        |    2 +-
+ util/bufferiszero.c                                |    4 +-
+ util/cpuinfo-i386.c                                |    8 +-
+ target/i386/tcg/decode-new.c.inc                   |   17 +-
+ tcg/i386/tcg-target.c.inc                          |   15 +-
+ scripts/update-linux-headers.sh                    |   37 +-
+ target/i386/kvm/trace-events                       |    1 +
+ target/i386/trace-events                           |    3 +
+ tests/avocado/intel_iommu.py                       |    2 +-
+ tests/avocado/smmu.py                              |    2 +-
+ tests/avocado/tuxrun_baselines.py                  |    2 +-
+ 51 files changed, 1849 insertions(+), 614 deletions(-)
+ create mode 100644 include/standard-headers/linux/kvm_para.h
+ rename include/standard-headers/{linux => misc}/pvpanic.h (100%)
+ create mode 100644 linux-headers/asm-x86/kvm_para.h
+ create mode 100644 linux-headers/linux/kvm_para.h
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+2.45.1
 
 
