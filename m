@@ -2,73 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 166148FD96F
+	by mail.lfdr.de (Postfix) with ESMTPS id 140FD8FD96E
 	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jun 2024 23:59:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEydk-0001la-5j; Wed, 05 Jun 2024 17:57:52 -0400
+	id 1sEydk-0001mC-Sm; Wed, 05 Jun 2024 17:57:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sEydh-0001kE-St
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 17:57:49 -0400
-Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
+ id 1sEydj-0001lI-4b
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 17:57:51 -0400
+Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sEydg-0003r6-9c
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 17:57:49 -0400
-Received: by mail-pf1-x42d.google.com with SMTP id
- d2e1a72fcca58-7024791a950so993844b3a.0
- for <qemu-devel@nongnu.org>; Wed, 05 Jun 2024 14:57:47 -0700 (PDT)
+ id 1sEydh-0003rV-DC
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 17:57:50 -0400
+Received: by mail-pf1-x434.google.com with SMTP id
+ d2e1a72fcca58-6ff6fe215c6so235915b3a.3
+ for <qemu-devel@nongnu.org>; Wed, 05 Jun 2024 14:57:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1717624667; x=1718229467; darn=nongnu.org;
+ d=linaro.org; s=google; t=1717624668; x=1718229468; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=WqJiYcxvLTtBfrkGq1JS6zQ0ORon0JfeSUXl0F2Pjw0=;
- b=IJjguOA+wV76QeGHf1bPQswLwsRlKjCgXnCZGMcpbUmDxjkVDekFZvkEUynDcRt6Ah
- O1GXkEf+cOt0FoWvEEDD7a7e0pW+1otDUEqYdzCTZbv7VKdYKBrHKI3er3Ub/MqpANqQ
- nIOTPd7jpKss7OsMmwe+l1hR77QkoU40Q9yF8JSCeYegmNc72P6j1UUsgdg9P80pgyG7
- bUeN8zyO6ynkQSA17QGm7zhfnVncgfJ9Cz0B2J5vmo3+RaGF/TeXqmQrbyYsfYYoy2x/
- n4o+NRcPpUcMPlP6nc0FcOzuUIZq1Puzvv03QIVXOVLVLmFjXC+C4cXrt/nkrscqkta7
- aXjg==
+ bh=jd2ISjYQWsrbk5WgCP4+tpczbqrOBDh2pjdAAZ3A5n0=;
+ b=N7ykA1uPaEUrbp73sXw8wmOOvqFAKpTgu8xu2vxRVHRSZqDRzh3+XdsEbA9O+bM3oA
+ 7gMGlN/DTRma0sM680GhAo8nEgR88aZe3vzrtC/FzO0YBuu7iGPdXtcB2vuTEXyfTchU
+ jVOkgIEXW783Le+k7LjWV5rHy1gWRedA6Q48esHfrc0naUICYRcr9WMfnpPCkYQM4/VZ
+ kuF1UESuMAWNnNKgmJec1fGBYtWsaM27fv5rZGHjRaFc0R12bGSQdNcDPt2WB8ZcCQoJ
+ ywSARYIULZo25WEfPE1yJ1rd3aOG6a0M42MZ7M7vvc6il93GzWYC5tsbHmv/gA+mk2zR
+ yjkA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717624667; x=1718229467;
+ d=1e100.net; s=20230601; t=1717624668; x=1718229468;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=WqJiYcxvLTtBfrkGq1JS6zQ0ORon0JfeSUXl0F2Pjw0=;
- b=sUyyonhCfI1i+wA4Hb97yUyWYj5MsbzwfwKCNkE5zTgrPbAe7v7PdRpibH08I6TPCw
- R/CYJBbxRczA3aKbVkGI1XtplzVs85GmFWUOD6ngm7s1W5C7Ed5N9v42dMgvB9rTfpOM
- mIOImaC8Q8E/9EHOCl5aRQWz68vYPcgxg+68q7t7pzQOAd8/kpK9hMbNy23CCs74f61X
- dxg+1RjIHa24oBS5bAkpeP/OLV92XVK7txyJL9DlX6OPnvVQRJ6Ndxj7luPVhvcAD6f5
- djoGBjdmgZzFjyuYdEr93e8QDO6UfDsP/cuNoEbBJ8rRbnWzGlkcIN0XYj6Mfa027NPV
- P/TA==
-X-Gm-Message-State: AOJu0YxdvwfP4iOjPLDU0EaQeS/kaH8dIoOwqNGKLLYq82cwu6cjipLJ
- Y8VmhxOFOrHR7WGPUsy0RCHSoEyBSLYN98EjOsV1nIL31c+QZ+Qh+6KjzX4OYa+HCzYgeNLOjO+
- J
-X-Google-Smtp-Source: AGHT+IEU/n0+Cd/+x13+8albmCF6ZvlsR+3nUdVjH2KEtjQ+w4jU7vlY46HSJ9HQRvLGLho1kzN+vA==
-X-Received: by 2002:a05:6a00:6611:b0:702:454a:f543 with SMTP id
- d2e1a72fcca58-703f83ce2f4mr1043707b3a.0.1717624666963; 
- Wed, 05 Jun 2024 14:57:46 -0700 (PDT)
+ bh=jd2ISjYQWsrbk5WgCP4+tpczbqrOBDh2pjdAAZ3A5n0=;
+ b=pGhh/H695njxZYOoz48ZMD5OIOK+plQHiO9cOCuYkhy2I1KbzoRt2FGaLgbRCtdhmG
+ 1Z0ujRddiD8JU/TAHpqwFuv9E7mO7zzdGHShsUvEJrUiXMNb4orbb2ZjrRuaZp9KI8ih
+ PPpTYBFJCU1/PzvzxbCLqrTYaiizLofmT9UNJIFXOz1zs/JslQ9df8taU1hC55KYTRpz
+ XX088LNzGEEso72WlXcxqzN5XuFXJh6uxiB8MWigUC5uDwNRlQ1Qeuyz5Pe56eoJLlYn
+ 7lif5Tg6d1AOz3YkJoO9/RzvCgbqTT6JNeXa1KAOkfqSHU4Je/Soma1DlZsiSF++fStR
+ V57w==
+X-Gm-Message-State: AOJu0Yw7+x2Mcw4Rbg4Io/HjM7ptgTBHpCd7IkmVlL3B9rvrtiU12pss
+ UY/PF1d/u5XOjIpSFj2Atz+QRkVmn8sL2STIGu/IkPcsj1sb4lfnQawrNj4u3hfjLx5U57SXFa4
+ N
+X-Google-Smtp-Source: AGHT+IEVhq+t+UGBaxBkZiYbrYyzboXhtsnCZUcdE/sNU+MjbnImO7Jt8FIbe1quoDXOrxoHuLt7FQ==
+X-Received: by 2002:a05:6a21:27a8:b0:1b0:3301:337e with SMTP id
+ adf61e73a8af0-1b2b7629136mr3491595637.59.1717624667989; 
+ Wed, 05 Jun 2024 14:57:47 -0700 (PDT)
 Received: from stoup.. ([71.212.132.216]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-70242b2ff9dsm9091509b3a.212.2024.06.05.14.57.46
+ d2e1a72fcca58-70242b2ff9dsm9091509b3a.212.2024.06.05.14.57.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 05 Jun 2024 14:57:46 -0700 (PDT)
+ Wed, 05 Jun 2024 14:57:47 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: qemu-s390x@nongnu.org
-Subject: [PATCH v2 06/10] target/s390x: Use deposit in save_link_info
-Date: Wed,  5 Jun 2024 14:57:35 -0700
-Message-Id: <20240605215739.4758-7-richard.henderson@linaro.org>
+Cc: qemu-s390x@nongnu.org,
+	Ilya Leoshkevich <iii@linux.ibm.com>
+Subject: [PATCH v2 07/10] target/s390x: Use gen_psw_addr_disp in op_sam
+Date: Wed,  5 Jun 2024 14:57:36 -0700
+Message-Id: <20240605215739.4758-8-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240605215739.4758-1-richard.henderson@linaro.org>
 References: <20240605215739.4758-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,62 +92,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Replace manual masking and oring with deposits.
+Complicated because we may now require a runtime jump.
 
+Reviewed-by: Ilya Leoshkevich <iii@linux.ibm.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/s390x/tcg/translate.c | 32 ++++++++++++++++++++------------
- 1 file changed, 20 insertions(+), 12 deletions(-)
+ target/s390x/tcg/translate.c | 39 +++++++++++++++++++++++++-----------
+ 1 file changed, 27 insertions(+), 12 deletions(-)
 
 diff --git a/target/s390x/tcg/translate.c b/target/s390x/tcg/translate.c
-index 2654c85a8e..0f0688424f 100644
+index 0f0688424f..bce9a0aeb0 100644
 --- a/target/s390x/tcg/translate.c
 +++ b/target/s390x/tcg/translate.c
-@@ -1418,24 +1418,32 @@ static DisasJumpType op_bas(DisasContext *s, DisasOps *o)
- 
- static void save_link_info(DisasContext *s, DisasOps *o)
+@@ -3805,7 +3805,7 @@ static DisasJumpType op_sacf(DisasContext *s, DisasOps *o)
+ static DisasJumpType op_sam(DisasContext *s, DisasOps *o)
  {
--    TCGv_i64 t;
-+    TCGv_i64 t1, t2;
+     int sam = s->insn->data;
+-    TCGv_i64 tsam;
++    TCGLabel *fault = NULL;
+     uint64_t mask;
  
-     if (s->base.tb->flags & (FLAG_MASK_32 | FLAG_MASK_64)) {
-         pc_to_link_info(o->out, s);
-         return;
+     switch (sam) {
+@@ -3820,20 +3820,35 @@ static DisasJumpType op_sam(DisasContext *s, DisasOps *o)
+         break;
      }
-+
-     gen_op_calc_cc(s);
--    t = tcg_temp_new_i64();
--    tcg_gen_andi_i64(o->out, o->out, 0xffffffff00000000ull);
--    gen_psw_addr_disp(s, t, s->ilen);
--    tcg_gen_or_i64(o->out, o->out, t);
--    tcg_gen_ori_i64(o->out, o->out, (s->ilen / 2) << 30);
--    tcg_gen_shri_i64(t, psw_mask, 16);
--    tcg_gen_andi_i64(t, t, 0x0f000000);
--    tcg_gen_or_i64(o->out, o->out, t);
--    tcg_gen_extu_i32_i64(t, cc_op);
--    tcg_gen_shli_i64(t, t, 28);
--    tcg_gen_or_i64(o->out, o->out, t);
-+    t1 = tcg_temp_new_i64();
-+    t2 = tcg_temp_new_i64();
-+
-+    /* Shift program mask into place, garbage outside of [27:24]. */
-+    tcg_gen_shri_i64(t1, psw_mask, 16);
-+    /* Deposit pc to replace garbage bits below program mask. */
-+    gen_psw_addr_disp(s, t2, s->ilen);
-+    tcg_gen_deposit_i64(t1, t1, t2, 0, 24);
+ 
+-    /* Bizarre but true, we check the address of the current insn for the
+-       specification exception, not the next to be executed.  Thus the PoO
+-       documents that Bad Things Happen two bytes before the end.  */
+-    if (s->base.pc_next & ~mask) {
+-        gen_program_exception(s, PGM_SPECIFICATION);
+-        return DISAS_NORETURN;
+-    }
+-    s->pc_tmp &= mask;
 +    /*
-+     * Deposit cc to replace garbage bits above program mask.
-+     * Note that cc is in [0-3], thus [63:30] are set to zero.
++     * Bizarre but true, we check the address of the current insn for the
++     * specification exception, not the next to be executed.  Thus the PoO
++     * documents that Bad Things Happen two bytes before the end.
 +     */
-+    tcg_gen_extu_i32_i64(t2, cc_op);
-+    tcg_gen_deposit_i64(t1, t1, t2, 28, 64 - 28);
-+    /* Install ilen. */
-+    tcg_gen_ori_i64(t1, t1, (s->ilen / 2) << 30);
++    if (mask != -1) {
++        TCGv_i64 t = tcg_temp_new_i64();
++        fault = gen_new_label();
+ 
+-    tsam = tcg_constant_i64(sam);
+-    tcg_gen_deposit_i64(psw_mask, psw_mask, tsam, 31, 2);
++        gen_psw_addr_disp(s, t, 0);
++        tcg_gen_andi_i64(t, t, ~mask);
++        tcg_gen_brcondi_i64(TCG_COND_NE, t, 0, fault);
++    }
 +
-+    tcg_gen_deposit_i64(o->out, o->out, t1, 0, 32);
++    update_cc_op(s);
++
++    tcg_gen_deposit_i64(psw_mask, psw_mask, tcg_constant_i64(sam), 31, 2);
++
++    gen_psw_addr_disp(s, psw_addr, s->ilen);
++    tcg_gen_andi_i64(psw_addr, psw_addr, mask);
+ 
+     /* Always exit the TB, since we (may have) changed execution mode.  */
+-    return DISAS_TOO_MANY;
++    tcg_gen_lookup_and_goto_ptr();
++
++    if (mask != -1) {
++        gen_set_label(fault);
++        gen_program_exception(s, PGM_SPECIFICATION);
++    }
++    return DISAS_NORETURN;
  }
  
- static DisasJumpType op_bal(DisasContext *s, DisasOps *o)
+ static DisasJumpType op_sar(DisasContext *s, DisasOps *o)
 -- 
 2.34.1
 
