@@ -2,74 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D7678FDABE
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jun 2024 01:39:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C8B88FDAA4
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jun 2024 01:37:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sF0BQ-00088k-5S; Wed, 05 Jun 2024 19:36:44 -0400
+	id 1sF0BS-0008Ny-7K; Wed, 05 Jun 2024 19:36:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sF0BN-0007rH-Ae
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 19:36:41 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sF0BP-00088V-8c
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 19:36:43 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sF0BL-0005tL-MV
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 19:36:40 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sF0BN-0005tn-1w
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 19:36:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717630598;
+ s=mimecast20190719; t=1717630600;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=VYKkp6fHZoal2oiYNWaG4icBm491Zje1r86kUs5B3ls=;
- b=ZzH41aHY/cT0KruGUsNz2mH8vB/57VRDlYGmIaUGDgZD8rFGHDBggF0J3bYalT66BGkFQm
- J3zRxT8BaWGJn57V2n2MD2iQTcUNEBP9l8RyEoFx22ymRqayjTquLdPZx37zj9G7UiXW5G
- hn4DOyO2oxbbaCtoYSTh9A+yAcEF72s=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Rl1nDigpJRwgGE3w/iYUa7vmMKH4nemfm7NPNL/7aBE=;
+ b=eWfJFAHkRJZwt6KeFOoYKYHlhcCfEgX4y8QTPguwD/uil1h3YJ4nOTwYItX5wtpzXWDwZq
+ 84PaNdrK2Tl5trxIn6BILcANIJ5BJH1hkNfRK4pMLzCzY04NmHlEo3WoHZP2LmM9+oD1vw
+ vFWosFtmanZv0A4c69a9/s0YZz1Urmo=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-312-ce_dIIxZMyCxDRzqDL0yag-1; Wed, 05 Jun 2024 19:36:36 -0400
-X-MC-Unique: ce_dIIxZMyCxDRzqDL0yag-1
-Received: by mail-ed1-f70.google.com with SMTP id
- 4fb4d7f45d1cf-57a7946685aso128866a12.2
- for <qemu-devel@nongnu.org>; Wed, 05 Jun 2024 16:36:36 -0700 (PDT)
+ us-mta-584-RR7TZH6NP2ypI4J55HhLow-1; Wed, 05 Jun 2024 19:36:39 -0400
+X-MC-Unique: RR7TZH6NP2ypI4J55HhLow-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-a68ea01c455so8569566b.0
+ for <qemu-devel@nongnu.org>; Wed, 05 Jun 2024 16:36:39 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717630594; x=1718235394;
+ d=1e100.net; s=20230601; t=1717630598; x=1718235398;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=VYKkp6fHZoal2oiYNWaG4icBm491Zje1r86kUs5B3ls=;
- b=jiQMzQ43+hIUcpSNW3OujR6cYMgbvahMCCQmLUX5bLu9tA+VXyMckrJscL3WFTgUid
- 3uS5MQPXSBBG/Na9Yl5OlOwjmnI3FIjf3wD9t+GHzMTY2tHSrFuZpQaUAczKJqoEHb3T
- UmLRr4CNtaD7dU+6vJ6Y05/yQX1ZDEQzESQu4/T0nThr2kQVltEmYevJB+a4/GuLOael
- RPEm51n0YSeAc1WECOXSGAwQETni/ILoegJh1rA9+DCe7SGZgouI33KYCvLtXfOfmvR6
- RO0ukcgLLQ6DRXaLSuOGzBy9kxGJ1sFhnwx5ktfmsynXk7r3jxg0VAhviPv0y4ytQ2mJ
- utGg==
-X-Gm-Message-State: AOJu0Yz5toSMb/97HiuiVthF+vC/DRm99MOZFvmtc0pzKOWToxyG/E3H
- wyohiErTliTur3JX7hReDFHNgayMSsyaoHUryIeefpYRnCzqzq1YxaFrtsyM0kO/PV7zR6MeQQ6
- /qWsDaDeVhoKn+WLW+v6T380HXSwyG4J7GqQnhKJ/YTO+1aiBodnvyST0cr7ZPEjx0f8D8OQIxV
- KQ2zcE+ydaKK6P9LAkn7x3yhL14ZbvBg==
-X-Received: by 2002:a50:f69d:0:b0:57a:79c2:e9d7 with SMTP id
- 4fb4d7f45d1cf-57a8b7c6141mr2531867a12.27.1717630594222; 
- Wed, 05 Jun 2024 16:36:34 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHqDL5XbCU5fqlEGdBT3VAnL6174hRz+Kbaud0YHpoylqwlOVNg+ayQGc3yGA8kSZ3smxm1cQ==
-X-Received: by 2002:a50:f69d:0:b0:57a:79c2:e9d7 with SMTP id
- 4fb4d7f45d1cf-57a8b7c6141mr2531849a12.27.1717630593817; 
- Wed, 05 Jun 2024 16:36:33 -0700 (PDT)
+ bh=Rl1nDigpJRwgGE3w/iYUa7vmMKH4nemfm7NPNL/7aBE=;
+ b=YGbyRPdU5VSxoQxtu/8XLqtPIu1+58nNlIc9+ZZk2LZZjOltWtHfeEA/ztkJRZy5xZ
+ 0WVllG6pFGuBc/FrCaNPlDaWTzEmdI3LcJRcE0yVhGzF8E6uonNBj4o1pimCQ5TnOQMF
+ v980pfXDue0Y9w6glp+uQTudw+aa6kzhkjDst7i4DoiLSLWHYY1elZgWG+8/QIqMq6gc
+ MKQTm7uDi1FHLjBRb8ylC5T8yXPIJHvnwLRs/Rw/dN9o/FS1GTKiQdoT6G0cd/894yZV
+ DJhlL1sIsU/W36TvtrBf5k2eXamn+GK5kAeXDCv3wBFPpXbEIWzuUaEOAgmRjCw/3psm
+ Djsw==
+X-Gm-Message-State: AOJu0YzvIv0SS4ukcxojrPZ9B/MsMBMO3KzarYCCv8a7ISU85IcQdqqt
+ qikDVN/qeQnih7hzBDUNl06uMbn7B/Sl5feW3c3fJIlCc8k98O88PJvbflO7OXHUaEvpZ41I6v9
+ zF/RLPEcxw02qp8/6tVBz0XfkPLfdz9TWoOicxge3GJlW9s7TjsZwg0OTo12lXsmUoUtrC1QgNR
+ t6yJlb4Zkpk3hLZSlUv/eZTLRPDQIXjg==
+X-Received: by 2002:a17:906:25d3:b0:a68:875e:e36f with SMTP id
+ a640c23a62f3a-a699f34e209mr257565166b.16.1717630597677; 
+ Wed, 05 Jun 2024 16:36:37 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEKtnOJAAjArcJYUWegX9PtiPKFIEDkLERc8RCRcvJKDga5aXXaTBvyivDjODQAnJ8ho43EGg==
+X-Received: by 2002:a17:906:25d3:b0:a68:875e:e36f with SMTP id
+ a640c23a62f3a-a699f34e209mr257564466b.16.1717630597166; 
+ Wed, 05 Jun 2024 16:36:37 -0700 (PDT)
 Received: from redhat.com ([2.55.56.67]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-57aae11a98csm98999a12.48.2024.06.05.16.36.31
+ a640c23a62f3a-a6c8072a737sm6378966b.224.2024.06.05.16.36.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 05 Jun 2024 16:36:33 -0700 (PDT)
-Date: Wed, 5 Jun 2024 19:36:30 -0400
+ Wed, 05 Jun 2024 16:36:36 -0700 (PDT)
+Date: Wed, 5 Jun 2024 19:36:34 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Ankit Agrawal <ankita@nvidia.com>, Igor Mammedov <imammedo@redhat.com>,
- Ani Sinha <anisinha@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>,
- Laurent Vivier <laurent@vivier.eu>, qemu-trivial@nongnu.org
-Subject: [PULL v3 30/41] hw/acpi/GI: Fix trivial parameter alignment issue.
-Message-ID: <a8ff9b58450fb1df51302a5d698041aca6adcaaf.1717630437.git.mst@redhat.com>
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>
+Subject: [PULL v3 31/41] hw/acpi: Insert an acpi-generic-node base under
+ acpi-generic-initiator
+Message-ID: <424d0612ffbb091dbc6bc1f18fb09f71069b3fc3.1717630437.git.mst@redhat.com>
 References: <cover.1717630437.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -86,7 +85,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,30 +103,207 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Before making additional modification, tidy up this misleading indentation.
+This will simplify reuse when adding acpi-generic-port.
+Note that some error_printf() messages will now print acpi-generic-node
+whereas others will move to type specific cases in next patch so
+are left alone for now.
 
-Reviewed-by: Ankit Agrawal <ankita@nvidia.com>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Message-Id: <20240524100507.32106-2-Jonathan.Cameron@huawei.com>
+Message-Id: <20240524100507.32106-3-Jonathan.Cameron@huawei.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/acpi/acpi_generic_initiator.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/hw/acpi/acpi_generic_initiator.h | 15 ++++-
+ hw/acpi/acpi_generic_initiator.c         | 80 +++++++++++++++---------
+ 2 files changed, 63 insertions(+), 32 deletions(-)
 
+diff --git a/include/hw/acpi/acpi_generic_initiator.h b/include/hw/acpi/acpi_generic_initiator.h
+index a304bad73e..dd4be19c8f 100644
+--- a/include/hw/acpi/acpi_generic_initiator.h
++++ b/include/hw/acpi/acpi_generic_initiator.h
+@@ -8,15 +8,26 @@
+ 
+ #include "qom/object_interfaces.h"
+ 
+-#define TYPE_ACPI_GENERIC_INITIATOR "acpi-generic-initiator"
++/*
++ * Abstract type to be used as base for
++ * - acpi-generic-initiator
++ * - acpi-generic-port
++ */
++#define TYPE_ACPI_GENERIC_NODE "acpi-generic-node"
+ 
+-typedef struct AcpiGenericInitiator {
++typedef struct AcpiGenericNode {
+     /* private */
+     Object parent;
+ 
+     /* public */
+     char *pci_dev;
+     uint16_t node;
++} AcpiGenericNode;
++
++#define TYPE_ACPI_GENERIC_INITIATOR "acpi-generic-initiator"
++
++typedef struct AcpiGenericInitiator {
++    AcpiGenericNode parent;
+ } AcpiGenericInitiator;
+ 
+ /*
 diff --git a/hw/acpi/acpi_generic_initiator.c b/hw/acpi/acpi_generic_initiator.c
-index 17b9a052f5..18a939b0e5 100644
+index 18a939b0e5..c054e0e27d 100644
 --- a/hw/acpi/acpi_generic_initiator.c
 +++ b/hw/acpi/acpi_generic_initiator.c
-@@ -132,7 +132,7 @@ static int build_all_acpi_generic_initiators(Object *obj, void *opaque)
+@@ -10,45 +10,61 @@
+ #include "hw/pci/pci_device.h"
+ #include "qemu/error-report.h"
  
-     dev_handle.segment = 0;
-     dev_handle.bdf = PCI_BUILD_BDF(pci_bus_num(pci_get_bus(pci_dev)),
--                                               pci_dev->devfn);
-+                                   pci_dev->devfn);
+-typedef struct AcpiGenericInitiatorClass {
++typedef struct AcpiGenericNodeClass {
+     ObjectClass parent_class;
++} AcpiGenericNodeClass;
++
++typedef struct AcpiGenericInitiatorClass {
++     AcpiGenericNodeClass parent_class;
+ } AcpiGenericInitiatorClass;
+ 
++OBJECT_DEFINE_ABSTRACT_TYPE(AcpiGenericNode, acpi_generic_node,
++                            ACPI_GENERIC_NODE, OBJECT)
++
++OBJECT_DECLARE_SIMPLE_TYPE(AcpiGenericNode, ACPI_GENERIC_NODE)
++
+ OBJECT_DEFINE_TYPE_WITH_INTERFACES(AcpiGenericInitiator, acpi_generic_initiator,
+-                   ACPI_GENERIC_INITIATOR, OBJECT,
++                   ACPI_GENERIC_INITIATOR, ACPI_GENERIC_NODE,
+                    { TYPE_USER_CREATABLE },
+                    { NULL })
+ 
+ OBJECT_DECLARE_SIMPLE_TYPE(AcpiGenericInitiator, ACPI_GENERIC_INITIATOR)
+ 
++static void acpi_generic_node_init(Object *obj)
++{
++    AcpiGenericNode *gn = ACPI_GENERIC_NODE(obj);
++
++    gn->node = MAX_NODES;
++    gn->pci_dev = NULL;
++}
++
+ static void acpi_generic_initiator_init(Object *obj)
+ {
+-    AcpiGenericInitiator *gi = ACPI_GENERIC_INITIATOR(obj);
++}
+ 
+-    gi->node = MAX_NODES;
+-    gi->pci_dev = NULL;
++static void acpi_generic_node_finalize(Object *obj)
++{
++    AcpiGenericNode *gn = ACPI_GENERIC_NODE(obj);
++
++    g_free(gn->pci_dev);
+ }
+ 
+ static void acpi_generic_initiator_finalize(Object *obj)
+ {
+-    AcpiGenericInitiator *gi = ACPI_GENERIC_INITIATOR(obj);
+-
+-    g_free(gi->pci_dev);
+ }
+ 
+-static void acpi_generic_initiator_set_pci_device(Object *obj, const char *val,
+-                                                  Error **errp)
++static void acpi_generic_node_set_pci_device(Object *obj, const char *val,
++                                             Error **errp)
+ {
+-    AcpiGenericInitiator *gi = ACPI_GENERIC_INITIATOR(obj);
++    AcpiGenericNode *gn = ACPI_GENERIC_NODE(obj);
+ 
+-    gi->pci_dev = g_strdup(val);
++    gn->pci_dev = g_strdup(val);
+ }
+-
+-static void acpi_generic_initiator_set_node(Object *obj, Visitor *v,
+-                                            const char *name, void *opaque,
+-                                            Error **errp)
++static void acpi_generic_node_set_node(Object *obj, Visitor *v,
++                                       const char *name, void *opaque,
++                                       Error **errp)
+ {
+-    AcpiGenericInitiator *gi = ACPI_GENERIC_INITIATOR(obj);
++    AcpiGenericNode *gn = ACPI_GENERIC_NODE(obj);
+     MachineState *ms = MACHINE(qdev_get_machine());
+     uint32_t value;
+ 
+@@ -58,20 +74,24 @@ static void acpi_generic_initiator_set_node(Object *obj, Visitor *v,
+ 
+     if (value >= MAX_NODES) {
+         error_printf("%s: Invalid NUMA node specified\n",
+-                     TYPE_ACPI_GENERIC_INITIATOR);
++                     TYPE_ACPI_GENERIC_NODE);
+         exit(1);
+     }
+ 
+-    gi->node = value;
+-    ms->numa_state->nodes[gi->node].has_gi = true;
++    gn->node = value;
++    ms->numa_state->nodes[gn->node].has_gi = true;
++}
++
++static void acpi_generic_node_class_init(ObjectClass *oc, void *data)
++{
++    object_class_property_add_str(oc, "pci-dev", NULL,
++        acpi_generic_node_set_pci_device);
++    object_class_property_add(oc, "node", "int", NULL,
++        acpi_generic_node_set_node, NULL, NULL);
+ }
+ 
+ static void acpi_generic_initiator_class_init(ObjectClass *oc, void *data)
+ {
+-    object_class_property_add_str(oc, "pci-dev", NULL,
+-        acpi_generic_initiator_set_pci_device);
+-    object_class_property_add(oc, "node", "int", NULL,
+-        acpi_generic_initiator_set_node, NULL, NULL);
+ }
+ 
+ /*
+@@ -104,9 +124,9 @@ build_srat_generic_pci_initiator_affinity(GArray *table_data, int node,
+ static int build_all_acpi_generic_initiators(Object *obj, void *opaque)
+ {
+     MachineState *ms = MACHINE(qdev_get_machine());
+-    AcpiGenericInitiator *gi;
+     GArray *table_data = opaque;
+     PCIDeviceHandle dev_handle;
++    AcpiGenericNode *gn;
+     PCIDevice *pci_dev;
+     Object *o;
+ 
+@@ -114,14 +134,14 @@ static int build_all_acpi_generic_initiators(Object *obj, void *opaque)
+         return 0;
+     }
+ 
+-    gi = ACPI_GENERIC_INITIATOR(obj);
+-    if (gi->node >= ms->numa_state->num_nodes) {
++    gn = ACPI_GENERIC_NODE(obj);
++    if (gn->node >= ms->numa_state->num_nodes) {
+         error_printf("%s: Specified node %d is invalid.\n",
+-                     TYPE_ACPI_GENERIC_INITIATOR, gi->node);
++                     TYPE_ACPI_GENERIC_INITIATOR, gn->node);
+         exit(1);
+     }
+ 
+-    o = object_resolve_path_type(gi->pci_dev, TYPE_PCI_DEVICE, NULL);
++    o = object_resolve_path_type(gn->pci_dev, TYPE_PCI_DEVICE, NULL);
+     if (!o) {
+         error_printf("%s: Specified device must be a PCI device.\n",
+                      TYPE_ACPI_GENERIC_INITIATOR);
+@@ -135,7 +155,7 @@ static int build_all_acpi_generic_initiators(Object *obj, void *opaque)
+                                    pci_dev->devfn);
  
      build_srat_generic_pci_initiator_affinity(table_data,
-                                               gi->node, &dev_handle);
+-                                              gi->node, &dev_handle);
++                                              gn->node, &dev_handle);
+ 
+     return 0;
+ }
 -- 
 MST
 
