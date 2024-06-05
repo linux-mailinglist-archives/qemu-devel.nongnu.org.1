@@ -2,70 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E93B8FD830
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jun 2024 23:17:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B85B08FD834
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jun 2024 23:17:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sExyn-0000b2-KM; Wed, 05 Jun 2024 17:15:33 -0400
+	id 1sExys-0000c5-0L; Wed, 05 Jun 2024 17:15:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sExyl-0000aV-4I
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 17:15:31 -0400
-Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
+ id 1sExyn-0000bB-NR
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 17:15:33 -0400
+Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sExyf-0003NO-Oj
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 17:15:30 -0400
-Received: by mail-pf1-x430.google.com with SMTP id
- d2e1a72fcca58-703f1e39c07so220025b3a.0
- for <qemu-devel@nongnu.org>; Wed, 05 Jun 2024 14:15:24 -0700 (PDT)
+ id 1sExyg-0003NU-NP
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 17:15:31 -0400
+Received: by mail-pf1-x42e.google.com with SMTP id
+ d2e1a72fcca58-7024cd9dd3dso194825b3a.3
+ for <qemu-devel@nongnu.org>; Wed, 05 Jun 2024 14:15:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1717622123; x=1718226923; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=ZthNw9PbI9iYokm2I4LRNqBbCs0cLjGdyhLxcIkkPF0=;
- b=R5anOzxJlL473dbHshMx+QWJt6TWSrGOnwj1D9YJEKo+xfCC0XEt49ZQ1XOzcxOHNe
- zGEjdrtHpz3YSTqj46gtmCbdoK05rEXqvJRLm6yvqcY0Y4ftOtSLW8dLeTtJ8FKl+pl3
- 1PgC7dUTEGdigwPwIEHP0LqUJwhuVNRxGXG+QdtkTSfEMeB5iPKxpif33Qucsu0oW4dZ
- iWqXY3wwbD8hdfh/lUMCiNzxKIj42PZhE5Lij3YX2bWiuZp5SeOzo3pdxWGx61zCiBu7
- Z090qVwCcpWI8y5r6OKDGBLO8reqVphwD+6I92Lgp+mR4yfWJpMS0Z7OCGwG+w1CIEpO
- THow==
+ d=linaro.org; s=google; t=1717622124; x=1718226924; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=jmQ99CuVUixUPYiVE7xGV4zGNIbhyMF+JitbLNxBw0o=;
+ b=WNQ2F0iaOcHO3J6nVUQmpSJ1/rGj2cy1IJECvqZ1jtjl6uF9OWpPJyj8KUmcMKyw/x
+ XZ4ib6+S7yd3rowQCl7HNJrbG3x43SishYVna+r4kZgjHeUp1LSJcn5I5K4pC4/1HOhe
+ 5xBGI9Sqo+h8aDkoqw3qf6D8VMyBeGejGKgJUTsm5jfl6tb4n8AOm1g7MpjKdPBgjgAF
+ B9FzohcuSriVGDu9UNfuHRT7junD2sJDAeYOaWBv6+UBD3iihQuZ7o5hDfYf8MSRdqX9
+ P2N1+5johABXt3c3LdqQY33Ch5kJEL1uw0VzT1yaw8sMWi3N60deRu5nvzqBq32JlBTW
+ jUWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717622123; x=1718226923;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ZthNw9PbI9iYokm2I4LRNqBbCs0cLjGdyhLxcIkkPF0=;
- b=jHjLqgLsCQ4tM2YSX6pE4Mmtcd3cgQNP6ODOJTIlSomc+HU9z0/BzOFvvkktEVtAM2
- mQNptRPQh+zm6711tTjzR05JKMq9Q0MvYbxNtJIENDjV7625Wqownz9htCijnutZZONr
- IGWZ7IvR27Cm2MqxdqsH9A/y6eBE8hwLCXu7oh/KJVZqjVx7HqSAQbEpmiXuuPWWCFVj
- JhaZmK2aZMCfjByUq7nHM96eSREJoeQYpobmalhxyXpuArum+vQj3u6qZDyrsiS+NtgA
- ZYWpbCkS6jDeOiyGKr2QiA5oZtB0RyoVf+rRk0jKDrY2bcKKhAeqsGS8zkU7Uf2p6mBL
- qJdg==
-X-Gm-Message-State: AOJu0Yw64h3vtaKT4RVg5iUkb8lckG1SbP8jg4H9D8mAQHrvNAjRK3Py
- Wm/zKJTWW7lELcVu1wr1ad+CvjPZgDjMYrrS7cOLPR7nK9BvadYhueLBQCZnI8U34mHbRLjSNlS
- B
-X-Google-Smtp-Source: AGHT+IGJjwU+JCGd3+wcF9Zo+XTybU7HSt5hAtjujrNNalXDCDwFJXGnw5duwcpHEw5GVbcTvHMSSA==
-X-Received: by 2002:a05:6a20:3218:b0:1af:fcbf:df28 with SMTP id
- adf61e73a8af0-1b2b712f4d4mr3912331637.41.1717622122729; 
- Wed, 05 Jun 2024 14:15:22 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1717622124; x=1718226924;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=jmQ99CuVUixUPYiVE7xGV4zGNIbhyMF+JitbLNxBw0o=;
+ b=Q8OaNkBLGiP3nE+hSbpOYzGsJ8OV7RvsvUbpJlev9XM+dI4Vkiuw6B71y/iFz5KgyX
+ x/XayN0ZJj+Uuf+y03OoMRIFP5E3869saNuECWHi3UyqgZTM7RAfm2yE97sbEwHmnfs8
+ 4KydIfA2bmsRV5rWBLAw3Mrj5z5fM9iyRWECfKj1wd9YQS6m1R/Q4bkiw24er1f8l1O2
+ JKZh+/O9Cww8Y1x1/A+f2dRKlWznA8iXWYoEgbUwVYyg14eS6PShRvsxeoNl4JHWU6jm
+ aAejjRQOjCE15vSVSsgtIloOdnzcqKEpaMoZlmU3uxPldtQsz3m5lhgmaPbXrfGfeiLM
+ lyQA==
+X-Gm-Message-State: AOJu0YzLYLAyji9YJ+pri9zNFCOwt7jo8G/E+EBSm/C51asCRMjQ75Ru
+ dyybmgUCJbgEPk0CB8D8g36KwaCGTnE9UMb+e6WBDB47zriePwKloCu0SVoZKo4ACnl+JU0b2EB
+ k
+X-Google-Smtp-Source: AGHT+IGnUYR1pKcUw6T1UD3/2+H5BQ2PS1iNxhLHuN3VwcMyfhrzkXk0HJm7dRFaDpOmSz3lY6QUNA==
+X-Received: by 2002:a05:6a00:194b:b0:6ed:4288:68bc with SMTP id
+ d2e1a72fcca58-703e59bb6aamr4140262b3a.19.1717622123610; 
+ Wed, 05 Jun 2024 14:15:23 -0700 (PDT)
 Received: from stoup.. ([71.212.132.216]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-70242aec7d0sm9347538b3a.99.2024.06.05.14.15.21
+ d2e1a72fcca58-70242aec7d0sm9347538b3a.99.2024.06.05.14.15.23
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 05 Jun 2024 14:15:21 -0700 (PDT)
+ Wed, 05 Jun 2024 14:15:23 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 00/16] sprintf fixes
-Date: Wed,  5 Jun 2024 14:15:05 -0700
-Message-Id: <20240605211521.577094-1-richard.henderson@linaro.org>
+Subject: [PULL 01/16] util/hexdump: Use a GString for qemu_hexdump_line
+Date: Wed,  5 Jun 2024 14:15:06 -0700
+Message-Id: <20240605211521.577094-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240605211521.577094-1-richard.henderson@linaro.org>
+References: <20240605211521.577094-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x430.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -88,57 +90,140 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit f1572ab94738bd5787b7badcd4bd93a3657f0680:
+Allocate a new, or append to an existing GString instead of
+using a fixed sized buffer.  Require the caller to determine
+the length of the line -- do not bound len here.
 
-  Merge tag 'for-upstream' of https://gitlab.com/bonzini/qemu into staging (2024-06-05 07:45:23 -0700)
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20240412073346.458116-4-richard.henderson@linaro.org>
+---
+ include/qemu/cutils.h  | 15 ++++++++++-----
+ hw/virtio/vhost-vdpa.c | 14 ++++++++------
+ util/hexdump.c         | 27 ++++++++++++++++-----------
+ 3 files changed, 34 insertions(+), 22 deletions(-)
 
-are available in the Git repository at:
+diff --git a/include/qemu/cutils.h b/include/qemu/cutils.h
+index c5dea63742..14a3285343 100644
+--- a/include/qemu/cutils.h
++++ b/include/qemu/cutils.h
+@@ -282,12 +282,17 @@ static inline const char *yes_no(bool b)
+  */
+ int parse_debug_env(const char *name, int max, int initial);
+ 
+-/*
+- * Hexdump a line of a byte buffer into a hexadecimal/ASCII buffer
++/**
++ * qemu_hexdump_line:
++ * @str: GString into which to append
++ * @buf: buffer to dump
++ * @len: number of bytes to dump
++ *
++ * Append @len bytes of @buf as hexadecimal into @str.
++ * If @str is NULL, allocate a new string and return it;
++ * otherwise return @str.
+  */
+-#define QEMU_HEXDUMP_LINE_BYTES 16 /* Number of bytes to dump */
+-#define QEMU_HEXDUMP_LINE_LEN 75   /* Number of characters in line */
+-void qemu_hexdump_line(char *line, const void *bufptr, size_t len);
++GString *qemu_hexdump_line(GString *str, const void *buf, size_t len);
+ 
+ /*
+  * Hexdump a buffer to a file. An optional string prefix is added to every line
+diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
+index 7368b71902..419463c154 100644
+--- a/hw/virtio/vhost-vdpa.c
++++ b/hw/virtio/vhost-vdpa.c
+@@ -944,13 +944,15 @@ static int vhost_vdpa_set_config_call(struct vhost_dev *dev,
+ static void vhost_vdpa_dump_config(struct vhost_dev *dev, const uint8_t *config,
+                                    uint32_t config_len)
+ {
+-    int b, len;
+-    char line[QEMU_HEXDUMP_LINE_LEN];
++    g_autoptr(GString) str = g_string_sized_new(4 * 16);
++    size_t b, len;
+ 
+-    for (b = 0; b < config_len; b += 16) {
+-        len = config_len - b;
+-        qemu_hexdump_line(line, config + b, len);
+-        trace_vhost_vdpa_dump_config(dev, b, line);
++    for (b = 0; b < config_len; b += len) {
++        len = MIN(config_len - b, 16);
++
++        g_string_truncate(str, 0);
++        qemu_hexdump_line(str, config + b, len);
++        trace_vhost_vdpa_dump_config(dev, b, str->str);
+     }
+ }
+ 
+diff --git a/util/hexdump.c b/util/hexdump.c
+index 0f943e31e5..521e346bc6 100644
+--- a/util/hexdump.c
++++ b/util/hexdump.c
+@@ -16,22 +16,25 @@
+ #include "qemu/osdep.h"
+ #include "qemu/cutils.h"
+ 
+-void qemu_hexdump_line(char *line, const void *bufptr, size_t len)
++GString *qemu_hexdump_line(GString *str, const void *vbuf, size_t len)
+ {
+-    const char *buf = bufptr;
+-    int i;
++    const uint8_t *buf = vbuf;
++    size_t i;
+ 
+-    if (len > QEMU_HEXDUMP_LINE_BYTES) {
+-        len = QEMU_HEXDUMP_LINE_BYTES;
++    if (str == NULL) {
++        /* Estimate the length of the output to avoid reallocs. */
++        i = len * 3 + len / 4;
++        str = g_string_sized_new(i + 1);
+     }
+ 
+     for (i = 0; i < len; i++) {
+         if (i != 0 && (i % 4) == 0) {
+-            *line++ = ' ';
++            g_string_append_c(str, ' ');
+         }
+-        line += sprintf(line, " %02x", (unsigned char)buf[i]);
++        g_string_append_printf(str, " %02x", buf[i]);
+     }
+-    *line = '\0';
++
++    return str;
+ }
+ 
+ static void asciidump_line(char *line, const void *bufptr, size_t len)
+@@ -49,24 +52,26 @@ static void asciidump_line(char *line, const void *bufptr, size_t len)
+     *line = '\0';
+ }
+ 
++#define QEMU_HEXDUMP_LINE_BYTES 16
+ #define QEMU_HEXDUMP_LINE_WIDTH \
+     (QEMU_HEXDUMP_LINE_BYTES * 2 + QEMU_HEXDUMP_LINE_BYTES / 4)
+ 
+ void qemu_hexdump(FILE *fp, const char *prefix,
+                   const void *bufptr, size_t size)
+ {
+-    char line[QEMU_HEXDUMP_LINE_LEN];
++    g_autoptr(GString) str = g_string_sized_new(QEMU_HEXDUMP_LINE_WIDTH + 1);
+     char ascii[QEMU_HEXDUMP_LINE_BYTES + 1];
+     size_t b, len;
+ 
+     for (b = 0; b < size; b += len) {
+         len = MIN(size - b, QEMU_HEXDUMP_LINE_BYTES);
+ 
+-        qemu_hexdump_line(line, bufptr + b, len);
++        g_string_truncate(str, 0);
++        qemu_hexdump_line(str, bufptr + b, len);
+         asciidump_line(ascii, bufptr + b, len);
+ 
+         fprintf(fp, "%s: %04zx: %-*s %s\n",
+-                prefix, b, QEMU_HEXDUMP_LINE_WIDTH, line, ascii);
++                prefix, b, QEMU_HEXDUMP_LINE_WIDTH, str->str, ascii);
+     }
+ 
+ }
+-- 
+2.34.1
 
-  https://gitlab.com/rth7680/qemu.git tags/pull-misc-20240605
-
-for you to fetch changes up to b89fb575fd467ed5dfde4608d51c47c2aa427f30:
-
-  disas/riscv: Use GString in format_inst (2024-06-05 12:29:54 -0700)
-
-----------------------------------------------------------------
-util/hexdump: Use a GString for qemu_hexdump_line.
-system/qtest: Replace sprintf by qemu_hexdump_line
-hw/scsi/scsi-disk: Use qemu_hexdump_line to avoid sprintf
-hw/ide/atapi: Use qemu_hexdump_line to avoid sprintf
-hw/dma/pl330: Use qemu_hexdump_line to avoid sprintf
-disas/microblaze: Reorg to avoid intermediate sprintf
-disas/riscv: Use GString in format_inst
-
-----------------------------------------------------------------
-Philippe Mathieu-Daudé (5):
-      hw/mips/malta: Add re-usable rng_seed_hex_new() method
-      system/qtest: Replace sprintf by qemu_hexdump_line
-      hw/scsi/scsi-disk: Use qemu_hexdump_line to avoid sprintf
-      hw/ide/atapi: Use qemu_hexdump_line to avoid sprintf
-      hw/dma/pl330: Use qemu_hexdump_line to avoid sprintf
-
-Richard Henderson (11):
-      util/hexdump: Use a GString for qemu_hexdump_line
-      util/hexdump: Add unit_len and block_len to qemu_hexdump_line
-      util/hexdump: Inline g_string_append_printf "%02x"
-      disas/microblaze: Split out print_immval_addr
-      disas/microblaze: Re-indent print_insn_microblaze
-      disas/microblaze: Merge op->name output into each fprintf
-      disas/microblaze: Print registers directly with PRIreg
-      disas/microblaze: Print immediates directly with PRIimm
-      disas/microblaze: Print registers directly with PRIrfsl
-      disas/microblaze: Split get_field_special
-      disas/riscv: Use GString in format_inst
-
- include/qemu/cutils.h  |  19 +-
- disas/microblaze.c     | 551 +++++++++++++++++++++----------------------------
- disas/riscv.c          | 209 +++++++++----------
- hw/dma/pl330.c         |  23 +--
- hw/ide/atapi.c         |  12 +-
- hw/mips/malta.c        |  25 +--
- hw/scsi/scsi-disk.c    |  13 +-
- hw/virtio/vhost-vdpa.c |  14 +-
- system/qtest.c         |  12 +-
- util/hexdump.c         |  57 +++--
- 10 files changed, 418 insertions(+), 517 deletions(-)
 
