@@ -2,73 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1FBE8FC0EB
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jun 2024 02:47:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A4078FC10E
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jun 2024 03:01:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEenp-0005O4-GD; Tue, 04 Jun 2024 20:46:57 -0400
+	id 1sEf0f-0008GY-4z; Tue, 04 Jun 2024 21:00:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sEenn-0005Nq-C7; Tue, 04 Jun 2024 20:46:55 -0400
-Received: from mail-vk1-xa32.google.com ([2607:f8b0:4864:20::a32])
+ (Exim 4.90_1) (envelope-from <amjadsharafi10@gmail.com>)
+ id 1sEf0b-0008FK-39; Tue, 04 Jun 2024 21:00:10 -0400
+Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sEenl-0000Kl-S5; Tue, 04 Jun 2024 20:46:55 -0400
-Received: by mail-vk1-xa32.google.com with SMTP id
- 71dfb90a1353d-4eb236e27adso739410e0c.2; 
- Tue, 04 Jun 2024 17:46:53 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <amjadsharafi10@gmail.com>)
+ id 1sEf0Y-0004Rk-DS; Tue, 04 Jun 2024 21:00:08 -0400
+Received: by mail-pf1-x434.google.com with SMTP id
+ d2e1a72fcca58-7024d571d8eso3860502b3a.0; 
+ Tue, 04 Jun 2024 18:00:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1717548412; x=1718153212; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=iEgFU9uSykQB+7rAJWlbo6pxtOhSMzlZQkmbPM4VwGE=;
- b=f8OdBLYJC15XM9YZ/EewSgKjIbCqKepW0yDUGoOfjf9ZWGtfl84jmPKJWjMpo8pNQL
- RIzPEmpM3uA/jB9I2E2D/BBSTN6eyY5mT8YFLnNH0hnnxU818m4rdG6FEiw0LHHt2PKC
- PTPZBxHfAXpbmrzokhSF3C2w8GfToHcWM0cgPqLwhcksCA6Nl/40aEzQ56L/NaFmimzd
- kBOJGhk+TPTQy3sK0bm9qrddRSeUCOJouRGzrmkG4zQztffbl1ahjJcJLNu2bOGRM05j
- v0B9x9QRnzRuOtZ2wB8a0p+Mr8wHCaKri6Ykdrwrim2kXH+RSWWB7xBUdXuQA5KINmBD
- vvdg==
+ d=gmail.com; s=20230601; t=1717549203; x=1718154003; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=0E1X89onMnXj7jR/KXm35viaRfOjLWkvHpW6iFXu/Es=;
+ b=Y7LIsxoZSob2vcgZlWgbIWeJ/ccP8HF54TFR3V4XseZvQzESL8tisFqH+1o1y5pX5Q
+ V0R4W2AoCRD7C8lQFrGP7YMGzryyoJorKZrSQgQNhqSDfBiXcUxNpH3roVCjRedouqNP
+ ZpPeXhKx+zlG8vUyOnFtn1Z3a9FThtqUQBSzL71XDFiDEAiTt0+cih3Dh6sh5wJN71nB
+ 7jRgUruK2BH0WR46eqDwbESIOnsCao5zwsDUkc6DlERlCxQd76u3oaPXbXWM4MoU9jP9
+ GcNPEcI00zdsJ56mEx3liCYZLNkrGucYaVPYOKOHdlALL1SpcyDwdaVtB5TVMVu/Hyog
+ JvcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717548412; x=1718153212;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=iEgFU9uSykQB+7rAJWlbo6pxtOhSMzlZQkmbPM4VwGE=;
- b=tVBheCoAh2ibt5rgyLxsfNSxQUNb5/hyYTKJbgw8uRJzvn+CIFqgi1l/wA3NSL+zu+
- vWxblZbyt+N2wtgo/h/o2l0bU1P3acoRoyZUSZHsEw+6K3jYFE0eyBi+K1nwKKHGaTJN
- sacAqQqDNX4jmC7Zr6JSe2vNG+HE6UwwDFyjLPKg5xBRzRjpoihHecWf6LOgaw0LQIpz
- 80+9vWB1Ke6rxEJxPBxjkE0Esv/31MN9aqjw6630IRnB3Dv77jgqBoWGPmhIjcb7qXZR
- J/31POaHw6ANm/NSH0gYS0DAc4zM/Bzhciq4p8KeOOvsoyZmP7kmIFnlxK/1lfF+1qjc
- 22ww==
+ d=1e100.net; s=20230601; t=1717549203; x=1718154003;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=0E1X89onMnXj7jR/KXm35viaRfOjLWkvHpW6iFXu/Es=;
+ b=ZbyUn1Q1n9uYqjZLEwwjRpFgDdLNVe3fDG81wqLnHOkwlSB6QU4+xZT4JizBXVf0Xj
+ Eq45ypfM28VLJK/eZ7OSE3zsc8WIKQpGF0stsKNYqRKx6UpwRQYF5JbfTdKNjWNaIv/5
+ CA6D2DFL5GYbWP6+qs624z/BWaKK/+mJ4MHHu7CbEo7r2PszeQXHfUX8Y9psDIV+D/sn
+ jkOIOdzi1JHWEo6PAddZFOeTPp9a47JBAH5OPjyRQPmpJMi2titfGJpwyIZIOrFgHT0M
+ C1ZhGSd29tmaqyBAhike7DMJ6f/W/yOiW7xhxQcIXDgDQq/9/WbhBkbJNhXF1QtuUTKY
+ odsw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCV3Ij4daJObv0ZWEtn/l078JONH3NikDNYvAwOaFvd53p9Q18uwHTb5cNxQZkTsEihY6ts1HMTPQLl94CnypyngI38iOhw=
-X-Gm-Message-State: AOJu0YxtaoUt70nuHQqpRzUad/DWsXGvwdnfmkKWFw3rX7a4r4H4yZT9
- Ztv/205CVU0WSsgYC24MMJkEWC6vX8s6sxDpnv+2+G6i88DhH7SzRzFmatq0tTmr4NdXO09fAqR
- mIxvmHHNA8UmEcmtgHVF453qTUgk=
-X-Google-Smtp-Source: AGHT+IHMQPHym9z6gSiCfQ0As44hWq888uYSIVv3GS+1YIJ31iiQBGQPGciIEy809htUDZijqW4QcTZn2dhH6Y2VdA4=
-X-Received: by 2002:a05:6122:12f0:b0:4eb:1456:34d3 with SMTP id
- 71dfb90a1353d-4eb3a4e689dmr1283133e0c.15.1717548411787; Tue, 04 Jun 2024
- 17:46:51 -0700 (PDT)
+ AJvYcCXigiY56SlWtXCdU3B4ueoOFO7aSfXlu6Zimu2n2iCnQFRjL3a1k+1GT82CGu3Vy9fX2Xo3+CUog8DaWtv0MGDRR4e+3hc=
+X-Gm-Message-State: AOJu0YziZMuyb61OBigAGr1kavtvQ3t8tDJuPc+jGnOA82qWF1bAarpe
+ g1s618gOgc5fnWktaOmC6w7dxd3b3h516GqXk5Y9l9BoqFmNuMpwpMAnt4SkZzo=
+X-Google-Smtp-Source: AGHT+IFo+HCzPenA6ZsPGfJZEIsIF7+sMXXc2n6yunKt8bI6fd01W7WKe8+rRkyX1hh/lfWPq81Dyw==
+X-Received: by 2002:a05:6a21:318b:b0:1b2:91a0:6255 with SMTP id
+ adf61e73a8af0-1b2b71b5cdbmr1669388637.62.1717549203047; 
+ Tue, 04 Jun 2024 18:00:03 -0700 (PDT)
+Received: from amjad-pc.. ([192.228.203.229]) by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-703ee633e04sm3731b3a.19.2024.06.04.18.00.01
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 04 Jun 2024 18:00:02 -0700 (PDT)
+From: Amjad Alsharafi <amjadsharafi10@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: Hanna Reitz <hreitz@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
+ "open list:vvfat" <qemu-block@nongnu.org>,
+ Amjad Alsharafi <amjadsharafi10@gmail.com>
+Subject: [PATCH v4 0/4] vvfat: Fix write bugs for large files and add iotests
+Date: Wed,  5 Jun 2024 08:58:36 +0800
+Message-ID: <cover.1717549035.git.amjadsharafi10@gmail.com>
+X-Mailer: git-send-email 2.45.1
 MIME-Version: 1.0
-References: <20240529160950.132754-1-rkanwal@rivosinc.com>
- <20240529160950.132754-2-rkanwal@rivosinc.com>
-In-Reply-To: <20240529160950.132754-2-rkanwal@rivosinc.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Wed, 5 Jun 2024 10:46:25 +1000
-Message-ID: <CAKmqyKN5zY=O7A9QhNWKsdE3HoEnQW_SdkmO1+OhscKYx1TR5w@mail.gmail.com>
-Subject: Re: [PATCH 1/6] target/riscv: Remove obsolete sfence.vm instruction
-To: Rajnesh Kanwal <rkanwal@rivosinc.com>
-Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, alistair.francis@wdc.com, 
- bin.meng@windriver.com, liweiwei@iscas.ac.cn, dbarboza@ventanamicro.com, 
- zhiwei_liu@linux.alibaba.com, atishp@rivosinc.com, apatel@ventanamicro.com, 
- beeman@rivosinc.com, tech-control-transfer-records@lists.riscv.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::a32;
- envelope-from=alistair23@gmail.com; helo=mail-vk1-xa32.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
+ envelope-from=amjadsharafi10@gmail.com; helo=mail-pf1-x434.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -92,49 +90,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, May 30, 2024 at 2:12=E2=80=AFAM Rajnesh Kanwal <rkanwal@rivosinc.co=
-m> wrote:
->
-> Signed-off-by: Rajnesh Kanwal <rkanwal@rivosinc.com>
+These patches fix some bugs found when modifying files in vvfat.
+First, there was a bug when writing to the cluster 2 or above of a file, it
+will copy the cluster before it instead, so, when writing to cluster=2, the
+content of cluster=1 will be copied into disk instead in its place.
 
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Another issue was modifying the clusters of a file and adding new
+clusters, this showed 2 issues:
+- If the new cluster is not immediately after the last cluster, it will
+cause issues when reading from this file in the future.
+- Generally, the usage of info.file.offset was incorrect, and the
+system would crash on abort() when the file is modified and a new
+cluster was added.
 
-Alistair
+Also, added some iotests for vvfat, covering the this fix and also
+general behavior such as reading, writing, and creating files on the filesystem.
+Including tests for reading/writing the first cluster which
+would pass even before this patch.
 
-> ---
->  target/riscv/insn32.decode                     | 1 -
->  target/riscv/insn_trans/trans_privileged.c.inc | 5 -----
->  2 files changed, 6 deletions(-)
->
-> diff --git a/target/riscv/insn32.decode b/target/riscv/insn32.decode
-> index f22df04cfd..9cb1a1b4ec 100644
-> --- a/target/riscv/insn32.decode
-> +++ b/target/riscv/insn32.decode
-> @@ -112,7 +112,6 @@ sret        0001000    00010 00000 000 00000 1110011
->  mret        0011000    00010 00000 000 00000 1110011
->  wfi         0001000    00101 00000 000 00000 1110011
->  sfence_vma  0001001    ..... ..... 000 00000 1110011 @sfence_vma
-> -sfence_vm   0001000    00100 ..... 000 00000 1110011 @sfence_vm
->
->  # *** RV32I Base Instruction Set ***
->  lui      ....................       ..... 0110111 @u
-> diff --git a/target/riscv/insn_trans/trans_privileged.c.inc b/target/risc=
-v/insn_trans/trans_privileged.c.inc
-> index bc5263a4e0..4eccdddeaa 100644
-> --- a/target/riscv/insn_trans/trans_privileged.c.inc
-> +++ b/target/riscv/insn_trans/trans_privileged.c.inc
-> @@ -127,8 +127,3 @@ static bool trans_sfence_vma(DisasContext *ctx, arg_s=
-fence_vma *a)
->  #endif
->      return false;
->  }
-> -
-> -static bool trans_sfence_vm(DisasContext *ctx, arg_sfence_vm *a)
-> -{
-> -    return false;
-> -}
-> --
-> 2.34.1
->
->
+v4:
+  Applied some suggestions from Kevin Wolf <kwolf@redhat.com>:
+  - Fixed code formatting by following the coding style in `scripts/checkpatch.pl`
+  - Reduced changes related to `iotests` by setting `vvfat` format as non-generic.
+  - Added another test to cover the fix done in `PATCH 2/4` and `PATCH 3/4` for 
+    handling reading/writing files with non-continuous clusters.
+
+v3:
+  Added test for creating new files in vvfat.
+
+v2:
+  Added iotests for `vvfat` driver along with a simple `fat16` module to run the tests.
+
+v1:
+  https://patchew.org/QEMU/20240327201231.31046-1-amjadsharafi10@gmail.com/
+  Fix the issue of writing to the middle of the file in vvfat
+
+Amjad Alsharafi (4):
+  vvfat: Fix bug in writing to middle of file
+  vvfat: Fix usage of `info.file.offset`
+  vvfat: Fix reading files with non-continuous clusters
+  iotests: Add `vvfat` tests
+
+ block/vvfat.c                      |  38 +-
+ tests/qemu-iotests/check           |   2 +-
+ tests/qemu-iotests/fat16.py        | 635 +++++++++++++++++++++++++++++
+ tests/qemu-iotests/testenv.py      |   2 +-
+ tests/qemu-iotests/tests/vvfat     | 440 ++++++++++++++++++++
+ tests/qemu-iotests/tests/vvfat.out |   5 +
+ 6 files changed, 1107 insertions(+), 15 deletions(-)
+ create mode 100644 tests/qemu-iotests/fat16.py
+ create mode 100755 tests/qemu-iotests/tests/vvfat
+ create mode 100755 tests/qemu-iotests/tests/vvfat.out
+
+-- 
+2.45.1
+
 
