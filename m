@@ -2,63 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EE208FC20F
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jun 2024 05:02:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3658A8FC232
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jun 2024 05:34:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEgtA-0006tl-At; Tue, 04 Jun 2024 23:00:36 -0400
+	id 1sEhOC-0007s0-35; Tue, 04 Jun 2024 23:32:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <duchao@eswincomputing.com>)
- id 1sEgt8-0006s9-8G; Tue, 04 Jun 2024 23:00:34 -0400
-Received: from zg8tmtu5ljy1ljeznc42.icoremail.net ([159.65.134.6])
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1sEhO7-0007rf-K4
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 23:32:35 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <duchao@eswincomputing.com>)
- id 1sEgt5-00061V-Rr; Tue, 04 Jun 2024 23:00:34 -0400
-Received: from localhost.localdomain (unknown [10.12.130.31])
- by app1 (Coremail) with SMTP id TAJkCgDniOUt1F9mdWIOAA--.38214S7;
- Wed, 05 Jun 2024 10:57:54 +0800 (CST)
-From: Chao Du <duchao@eswincomputing.com>
-To: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, pbonzini@redhat.com,
- ajones@ventanamicro.com, alistair23@gmail.com, bin.meng@windriver.com,
- liweiwei@iscas.ac.cn, dbarboza@ventanamicro.com,
- zhiwei_liu@linux.alibaba.com, palmer@dabbelt.com, anup@brainfault.org,
- duchao713@qq.com
-Subject: [PATCH v3 3/3] target/riscv/kvm: define TARGET_KVM_HAVE_GUEST_DEBUG
-Date: Wed,  5 Jun 2024 02:55:27 +0000
-Message-Id: <20240605025527.11711-4-duchao@eswincomputing.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20240605025527.11711-1-duchao@eswincomputing.com>
-References: <20240605025527.11711-1-duchao@eswincomputing.com>
-X-CM-TRANSID: TAJkCgDniOUt1F9mdWIOAA--.38214S7
-X-Coremail-Antispam: 1UD129KBjvdXoWrKFyrJr1UXF48XFWxXryrJFb_yoWftFX_Gr
- WrJr1I9FW5Xayv9Fy8ZrZ5ur1rJayrAF1fGanrKr4Ygr4UWr15Aw1kKa1kJFyI9w4xAr1x
- urWfXFyxCr17JjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
- 9fnUUIcSsGvfJTRUUUbq8YjsxI4VWxJwAYFVCjjxCrM7AC8VAFwI0_Wr0E3s1l1xkIjI8I
- 6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l82xGYIkIc2x26280x7
- IE14v26r1rM28IrcIa0xkI8VCY1x0267AKxVW5JVCq3wA2ocxC64kIII0Yj41l84x0c7CE
- w4AK67xGY2AK021l84ACjcxK6xIIjxv20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6x
- kF7I0E14v26r4UJVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIE
- c7CjxVAFwI0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I
- 8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCF
- s4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACI402YVCY1x02628vn2kIc2xKxwCY02
- Avz4vE-syl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG
- 67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MI
- IYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E
- 14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJV
- W8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxU7Zjj
- DUUUU
-X-CM-SenderInfo: xgxfxt3r6h245lqf0zpsxwx03jof0z/
-Received-SPF: pass client-ip=159.65.134.6;
- envelope-from=duchao@eswincomputing.com;
- helo=zg8tmtu5ljy1ljeznc42.icoremail.net
-X-Spam_score_int: -5
-X-Spam_score: -0.6
-X-Spam_bar: /
-X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_MSPIKE_BL=0.001,
- RCVD_IN_MSPIKE_L5=0.001, RCVD_IN_VALIDITY_RPBL=1.31, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+ (envelope-from <gaosong@loongson.cn>) id 1sEhO2-0006vy-JR
+ for qemu-devel@nongnu.org; Tue, 04 Jun 2024 23:32:35 -0400
+Received: from loongson.cn (unknown [10.20.42.239])
+ by gateway (Coremail) with SMTP id _____8AxX+tA3F9m6p8DAA--.15596S3;
+ Wed, 05 Jun 2024 11:32:16 +0800 (CST)
+Received: from [10.20.42.239] (unknown [10.20.42.239])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8Bx08Q+3F9mvBkVAA--.42845S3; 
+ Wed, 05 Jun 2024 11:32:16 +0800 (CST)
+Subject: Re: [PATCH v3 1/4] hw/intc: Remove loongarch_ipi.c
+To: Jiaxun Yang <jiaxun.yang@flygoat.com>, qemu-devel@nongnu.org
+Cc: Huacai Chen <chenhuacai@kernel.org>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+References: <20240605-loongson3-ipi-v3-0-ddd2c0e03fa3@flygoat.com>
+ <20240605-loongson3-ipi-v3-1-ddd2c0e03fa3@flygoat.com>
+From: gaosong <gaosong@loongson.cn>
+Message-ID: <099af1be-8257-84bd-d743-7fe1b133d5c8@loongson.cn>
+Date: Wed, 5 Jun 2024 11:32:13 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
+MIME-Version: 1.0
+In-Reply-To: <20240605-loongson3-ipi-v3-1-ddd2c0e03fa3@flygoat.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-CM-TRANSID: AQAAf8Bx08Q+3F9mvBkVAA--.42845S3
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoWxKF4rCr4kCr48Kr4UGr47WrX_yoWftw1fpr
+ ZxZF4xWF4rtrnrWF1DJa98WF1UCw1fWa43Jan5K3ZY9F4kur1q9Fyvy39Iva4kA3srAw1F
+ vFs7GFZxXF4DtwcCm3ZEXasCq-sJn29KB7ZKAUJUUUU5529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUvFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
+ 6r4UJVWxJr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27w
+ Aqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jrv_JF1lYx0Ex4A2jsIE
+ 14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1c
+ AE67vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8C
+ rVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtw
+ CIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x02
+ 67AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr
+ 0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxU7_Ma
+ UUUUU
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-2.522,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -74,29 +82,372 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-To enable the KVM GUEST DEBUG for RISC-V at QEMU side.
+在 2024/6/5 上午10:15, Jiaxun Yang 写道:
+> It was missed out in previous commit.
+>
+> Fixes: b4a12dfc2132 ("hw/intc/loongarch_ipi: Rename as loongson_ipi")
+> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+> ---
+Reviewed-by: Song Gao <gaosong@loongson.cn>
 
-Signed-off-by: Chao Du <duchao@eswincomputing.com>
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-Acked-by: Alistair Francis <alistair.francis@wdc.com>
----
- configs/targets/riscv64-softmmu.mak | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/configs/targets/riscv64-softmmu.mak b/configs/targets/riscv64-softmmu.mak
-index f688ffa7bc..917980e63e 100644
---- a/configs/targets/riscv64-softmmu.mak
-+++ b/configs/targets/riscv64-softmmu.mak
-@@ -1,6 +1,7 @@
- TARGET_ARCH=riscv64
- TARGET_BASE_ARCH=riscv
- TARGET_SUPPORTS_MTTCG=y
-+TARGET_KVM_HAVE_GUEST_DEBUG=y
- TARGET_XML_FILES= gdb-xml/riscv-64bit-cpu.xml gdb-xml/riscv-32bit-fpu.xml gdb-xml/riscv-64bit-fpu.xml gdb-xml/riscv-64bit-virtual.xml
- # needed by boot.c
- TARGET_NEED_FDT=y
--- 
-2.17.1
+Thanks.
+Song Gao
+>   hw/intc/loongarch_ipi.c | 347 ------------------------------------------------
+>   1 file changed, 347 deletions(-)
+>
+> diff --git a/hw/intc/loongarch_ipi.c b/hw/intc/loongarch_ipi.c
+> deleted file mode 100644
+> index 44b3b9c138d6..000000000000
+> --- a/hw/intc/loongarch_ipi.c
+> +++ /dev/null
+> @@ -1,347 +0,0 @@
+> -/* SPDX-License-Identifier: GPL-2.0-or-later */
+> -/*
+> - * LoongArch ipi interrupt support
+> - *
+> - * Copyright (C) 2021 Loongson Technology Corporation Limited
+> - */
+> -
+> -#include "qemu/osdep.h"
+> -#include "hw/boards.h"
+> -#include "hw/sysbus.h"
+> -#include "hw/intc/loongarch_ipi.h"
+> -#include "hw/irq.h"
+> -#include "hw/qdev-properties.h"
+> -#include "qapi/error.h"
+> -#include "qemu/log.h"
+> -#include "exec/address-spaces.h"
+> -#include "migration/vmstate.h"
+> -#include "target/loongarch/cpu.h"
+> -#include "trace.h"
+> -
+> -static MemTxResult loongarch_ipi_readl(void *opaque, hwaddr addr,
+> -                                       uint64_t *data,
+> -                                       unsigned size, MemTxAttrs attrs)
+> -{
+> -    IPICore *s;
+> -    LoongArchIPI *ipi = opaque;
+> -    uint64_t ret = 0;
+> -    int index = 0;
+> -
+> -    s = &ipi->cpu[attrs.requester_id];
+> -    addr &= 0xff;
+> -    switch (addr) {
+> -    case CORE_STATUS_OFF:
+> -        ret = s->status;
+> -        break;
+> -    case CORE_EN_OFF:
+> -        ret = s->en;
+> -        break;
+> -    case CORE_SET_OFF:
+> -        ret = 0;
+> -        break;
+> -    case CORE_CLEAR_OFF:
+> -        ret = 0;
+> -        break;
+> -    case CORE_BUF_20 ... CORE_BUF_38 + 4:
+> -        index = (addr - CORE_BUF_20) >> 2;
+> -        ret = s->buf[index];
+> -        break;
+> -    default:
+> -        qemu_log_mask(LOG_UNIMP, "invalid read: %x", (uint32_t)addr);
+> -        break;
+> -    }
+> -
+> -    trace_loongarch_ipi_read(size, (uint64_t)addr, ret);
+> -    *data = ret;
+> -    return MEMTX_OK;
+> -}
+> -
+> -static void send_ipi_data(CPULoongArchState *env, uint64_t val, hwaddr addr,
+> -                          MemTxAttrs attrs)
+> -{
+> -    int i, mask = 0, data = 0;
+> -
+> -    /*
+> -     * bit 27-30 is mask for byte writing,
+> -     * if the mask is 0, we need not to do anything.
+> -     */
+> -    if ((val >> 27) & 0xf) {
+> -        data = address_space_ldl(env->address_space_iocsr, addr,
+> -                                 attrs, NULL);
+> -        for (i = 0; i < 4; i++) {
+> -            /* get mask for byte writing */
+> -            if (val & (0x1 << (27 + i))) {
+> -                mask |= 0xff << (i * 8);
+> -            }
+> -        }
+> -    }
+> -
+> -    data &= mask;
+> -    data |= (val >> 32) & ~mask;
+> -    address_space_stl(env->address_space_iocsr, addr,
+> -                      data, attrs, NULL);
+> -}
+> -
+> -static int archid_cmp(const void *a, const void *b)
+> -{
+> -   CPUArchId *archid_a = (CPUArchId *)a;
+> -   CPUArchId *archid_b = (CPUArchId *)b;
+> -
+> -   return archid_a->arch_id - archid_b->arch_id;
+> -}
+> -
+> -static CPUArchId *find_cpu_by_archid(MachineState *ms, uint32_t id)
+> -{
+> -    CPUArchId apic_id, *found_cpu;
+> -
+> -    apic_id.arch_id = id;
+> -    found_cpu = bsearch(&apic_id, ms->possible_cpus->cpus,
+> -        ms->possible_cpus->len, sizeof(*ms->possible_cpus->cpus),
+> -        archid_cmp);
+> -
+> -    return found_cpu;
+> -}
+> -
+> -static CPUState *ipi_getcpu(int arch_id)
+> -{
+> -    MachineState *machine = MACHINE(qdev_get_machine());
+> -    CPUArchId *archid;
+> -
+> -    archid = find_cpu_by_archid(machine, arch_id);
+> -    if (archid) {
+> -        return CPU(archid->cpu);
+> -    }
+> -
+> -    return NULL;
+> -}
+> -
+> -static MemTxResult mail_send(uint64_t val, MemTxAttrs attrs)
+> -{
+> -    uint32_t cpuid;
+> -    hwaddr addr;
+> -    CPUState *cs;
+> -
+> -    cpuid = extract32(val, 16, 10);
+> -    cs = ipi_getcpu(cpuid);
+> -    if (cs == NULL) {
+> -        return MEMTX_DECODE_ERROR;
+> -    }
+> -
+> -    /* override requester_id */
+> -    addr = SMP_IPI_MAILBOX + CORE_BUF_20 + (val & 0x1c);
+> -    attrs.requester_id = cs->cpu_index;
+> -    send_ipi_data(&LOONGARCH_CPU(cs)->env, val, addr, attrs);
+> -    return MEMTX_OK;
+> -}
+> -
+> -static MemTxResult any_send(uint64_t val, MemTxAttrs attrs)
+> -{
+> -    uint32_t cpuid;
+> -    hwaddr addr;
+> -    CPUState *cs;
+> -
+> -    cpuid = extract32(val, 16, 10);
+> -    cs = ipi_getcpu(cpuid);
+> -    if (cs == NULL) {
+> -        return MEMTX_DECODE_ERROR;
+> -    }
+> -
+> -    /* override requester_id */
+> -    addr = val & 0xffff;
+> -    attrs.requester_id = cs->cpu_index;
+> -    send_ipi_data(&LOONGARCH_CPU(cs)->env, val, addr, attrs);
+> -    return MEMTX_OK;
+> -}
+> -
+> -static MemTxResult loongarch_ipi_writel(void *opaque, hwaddr addr, uint64_t val,
+> -                                        unsigned size, MemTxAttrs attrs)
+> -{
+> -    LoongArchIPI *ipi = opaque;
+> -    IPICore *s;
+> -    int index = 0;
+> -    uint32_t cpuid;
+> -    uint8_t vector;
+> -    CPUState *cs;
+> -
+> -    s = &ipi->cpu[attrs.requester_id];
+> -    addr &= 0xff;
+> -    trace_loongarch_ipi_write(size, (uint64_t)addr, val);
+> -    switch (addr) {
+> -    case CORE_STATUS_OFF:
+> -        qemu_log_mask(LOG_GUEST_ERROR, "can not be written");
+> -        break;
+> -    case CORE_EN_OFF:
+> -        s->en = val;
+> -        break;
+> -    case CORE_SET_OFF:
+> -        s->status |= val;
+> -        if (s->status != 0 && (s->status & s->en) != 0) {
+> -            qemu_irq_raise(s->irq);
+> -        }
+> -        break;
+> -    case CORE_CLEAR_OFF:
+> -        s->status &= ~val;
+> -        if (s->status == 0 && s->en != 0) {
+> -            qemu_irq_lower(s->irq);
+> -        }
+> -        break;
+> -    case CORE_BUF_20 ... CORE_BUF_38 + 4:
+> -        index = (addr - CORE_BUF_20) >> 2;
+> -        s->buf[index] = val;
+> -        break;
+> -    case IOCSR_IPI_SEND:
+> -        cpuid = extract32(val, 16, 10);
+> -        /* IPI status vector */
+> -        vector = extract8(val, 0, 5);
+> -        cs = ipi_getcpu(cpuid);
+> -        if (cs == NULL) {
+> -            return MEMTX_DECODE_ERROR;
+> -        }
+> -
+> -        /* override requester_id */
+> -        attrs.requester_id = cs->cpu_index;
+> -        loongarch_ipi_writel(ipi, CORE_SET_OFF, BIT(vector), 4, attrs);
+> -        break;
+> -    default:
+> -        qemu_log_mask(LOG_UNIMP, "invalid write: %x", (uint32_t)addr);
+> -        break;
+> -    }
+> -
+> -    return MEMTX_OK;
+> -}
+> -
+> -static const MemoryRegionOps loongarch_ipi_ops = {
+> -    .read_with_attrs = loongarch_ipi_readl,
+> -    .write_with_attrs = loongarch_ipi_writel,
+> -    .impl.min_access_size = 4,
+> -    .impl.max_access_size = 4,
+> -    .valid.min_access_size = 4,
+> -    .valid.max_access_size = 8,
+> -    .endianness = DEVICE_LITTLE_ENDIAN,
+> -};
+> -
+> -/* mail send and any send only support writeq */
+> -static MemTxResult loongarch_ipi_writeq(void *opaque, hwaddr addr, uint64_t val,
+> -                                        unsigned size, MemTxAttrs attrs)
+> -{
+> -    MemTxResult ret = MEMTX_OK;
+> -
+> -    addr &= 0xfff;
+> -    switch (addr) {
+> -    case MAIL_SEND_OFFSET:
+> -        ret = mail_send(val, attrs);
+> -        break;
+> -    case ANY_SEND_OFFSET:
+> -        ret = any_send(val, attrs);
+> -        break;
+> -    default:
+> -       break;
+> -    }
+> -
+> -    return ret;
+> -}
+> -
+> -static const MemoryRegionOps loongarch_ipi64_ops = {
+> -    .write_with_attrs = loongarch_ipi_writeq,
+> -    .impl.min_access_size = 8,
+> -    .impl.max_access_size = 8,
+> -    .valid.min_access_size = 8,
+> -    .valid.max_access_size = 8,
+> -    .endianness = DEVICE_LITTLE_ENDIAN,
+> -};
+> -
+> -static void loongarch_ipi_realize(DeviceState *dev, Error **errp)
+> -{
+> -    LoongArchIPI *s = LOONGARCH_IPI(dev);
+> -    SysBusDevice *sbd = SYS_BUS_DEVICE(dev);
+> -    int i;
+> -
+> -    if (s->num_cpu == 0) {
+> -        error_setg(errp, "num-cpu must be at least 1");
+> -        return;
+> -    }
+> -
+> -    memory_region_init_io(&s->ipi_iocsr_mem, OBJECT(dev), &loongarch_ipi_ops,
+> -                          s, "loongarch_ipi_iocsr", 0x48);
+> -
+> -    /* loongarch_ipi_iocsr performs re-entrant IO through ipi_send */
+> -    s->ipi_iocsr_mem.disable_reentrancy_guard = true;
+> -
+> -    sysbus_init_mmio(sbd, &s->ipi_iocsr_mem);
+> -
+> -    memory_region_init_io(&s->ipi64_iocsr_mem, OBJECT(dev),
+> -                          &loongarch_ipi64_ops,
+> -                          s, "loongarch_ipi64_iocsr", 0x118);
+> -    sysbus_init_mmio(sbd, &s->ipi64_iocsr_mem);
+> -
+> -    s->cpu = g_new0(IPICore, s->num_cpu);
+> -    if (s->cpu == NULL) {
+> -        error_setg(errp, "Memory allocation for ExtIOICore faile");
+> -        return;
+> -    }
+> -
+> -    for (i = 0; i < s->num_cpu; i++) {
+> -        qdev_init_gpio_out(dev, &s->cpu[i].irq, 1);
+> -    }
+> -}
+> -
+> -static const VMStateDescription vmstate_ipi_core = {
+> -    .name = "ipi-single",
+> -    .version_id = 2,
+> -    .minimum_version_id = 2,
+> -    .fields = (const VMStateField[]) {
+> -        VMSTATE_UINT32(status, IPICore),
+> -        VMSTATE_UINT32(en, IPICore),
+> -        VMSTATE_UINT32(set, IPICore),
+> -        VMSTATE_UINT32(clear, IPICore),
+> -        VMSTATE_UINT32_ARRAY(buf, IPICore, IPI_MBX_NUM * 2),
+> -        VMSTATE_END_OF_LIST()
+> -    }
+> -};
+> -
+> -static const VMStateDescription vmstate_loongarch_ipi = {
+> -    .name = TYPE_LOONGARCH_IPI,
+> -    .version_id = 2,
+> -    .minimum_version_id = 2,
+> -    .fields = (const VMStateField[]) {
+> -        VMSTATE_STRUCT_VARRAY_POINTER_UINT32(cpu, LoongArchIPI, num_cpu,
+> -                         vmstate_ipi_core, IPICore),
+> -        VMSTATE_END_OF_LIST()
+> -    }
+> -};
+> -
+> -static Property ipi_properties[] = {
+> -    DEFINE_PROP_UINT32("num-cpu", LoongArchIPI, num_cpu, 1),
+> -    DEFINE_PROP_END_OF_LIST(),
+> -};
+> -
+> -static void loongarch_ipi_class_init(ObjectClass *klass, void *data)
+> -{
+> -    DeviceClass *dc = DEVICE_CLASS(klass);
+> -
+> -    dc->realize = loongarch_ipi_realize;
+> -    device_class_set_props(dc, ipi_properties);
+> -    dc->vmsd = &vmstate_loongarch_ipi;
+> -}
+> -
+> -static void loongarch_ipi_finalize(Object *obj)
+> -{
+> -    LoongArchIPI *s = LOONGARCH_IPI(obj);
+> -
+> -    g_free(s->cpu);
+> -}
+> -
+> -static const TypeInfo loongarch_ipi_info = {
+> -    .name          = TYPE_LOONGARCH_IPI,
+> -    .parent        = TYPE_SYS_BUS_DEVICE,
+> -    .instance_size = sizeof(LoongArchIPI),
+> -    .class_init    = loongarch_ipi_class_init,
+> -    .instance_finalize = loongarch_ipi_finalize,
+> -};
+> -
+> -static void loongarch_ipi_register_types(void)
+> -{
+> -    type_register_static(&loongarch_ipi_info);
+> -}
+> -
+> -type_init(loongarch_ipi_register_types)
+>
 
 
