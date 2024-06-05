@@ -2,82 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91A408FD17C
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jun 2024 17:20:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 28E2D8FD16C
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jun 2024 17:13:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEsRE-00053d-2W; Wed, 05 Jun 2024 11:20:32 -0400
+	id 1sEsIB-0008Es-Sv; Wed, 05 Jun 2024 11:11:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1sEsRA-00052q-DD
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 11:20:28 -0400
-Received: from mail-lj1-x234.google.com ([2a00:1450:4864:20::234])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1sEsR6-0005Nz-Gr
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 11:20:27 -0400
-Received: by mail-lj1-x234.google.com with SMTP id
- 38308e7fff4ca-2eaccc0979eso385301fa.1
- for <qemu-devel@nongnu.org>; Wed, 05 Jun 2024 08:20:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1717600821; x=1718205621; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=pgufYDfr2vSd1Um9j1aWhMIkNPmsx68QKSVorSRWLCU=;
- b=CgpkRkcGHqL3T7B7a2I38qGAYc9QfR40F4xyKqwYjCeJpaoPZxoqCcS3twnV1qI7HZ
- UmXvteT9DzK7ZcNPs+oBb6JfeEeN/yHzAnE4lG/Y/z706fQpIfle4fOfBgGUbXZk+oOm
- YSaOmMpNo8YZY3+HWGgllpcI+aaSx9ACx2zNdcYbIQld584maC5UoZdBPRcx+vwwzz1e
- 51yr+feoyEOo5Hh4eOuJOeunRp+VJASzeizaEoieVDA3D6MdtodGzTMZmWyWv5mHsLmr
- bWjZGgQ4Q7g5Ky8nQqlAdcy+4KWtZvAsUMzsVNs0nniZkWFyhRVqYZMinOVXLQZQq+z5
- c1uA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717600821; x=1718205621;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=pgufYDfr2vSd1Um9j1aWhMIkNPmsx68QKSVorSRWLCU=;
- b=PfomMe0p/HlqKzr9V7vQo9EmYdcwOgY4Otq9qyAwwNXGrTDEBY5TGQrJ77P7iWLHla
- YsCKOPcmiG3ndXCgrCZOSfBCNcS7vBpWlV+xsNzRLOHEwJv5X5/NFuK6LECsfEQB9gT1
- rZdCxKs/iFMWBRAFarBIABT7Dmi+3pxpGmeBmjB1qF34DqfIjdsMxYPDKIm6oJiwvU38
- B5HFvA7/Uj6kqwte7BYqiNbaAnl/zxosfW3ln99mpiEJWoe7j3geZ7vfwPvZNFu0RVCc
- CW8qxaTSwlAmTSooXSbeAQYQ2aCQJAOZDUmyIYuWn7xaSViMsKyTl1Byl7+6nn/7/nHt
- IRKQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUtrzwjYTfQZPWZUNdSdP1Sk20mjseuumiOyM5CBjr2PR/ewepeoJaF4tw1AJ2D2CHQxHf9lmerQPWcStSWOaKBhNOE+2I=
-X-Gm-Message-State: AOJu0Yx2/+B8CiVaBaA7ozm+50soWQATyUhHObrZijE/mwfYRBprAk75
- svV0REv4FyyV8k5JGQFxFxUA+7oehAAiMICpGUbegycAvRnwmRQdRDY/4U6JaKHoHtRNlusyi1K
- JqYOGl9/NGCaNhRFdN5vz5GyWhC4=
-X-Google-Smtp-Source: AGHT+IGE6GYNMmXUQBguSUuW7NXW16cLFfTY4JjF3bHBZXlJ8225AvsS2VRsp+QiTLN0SdszmIoQLHSe1iF+u9afPoM=
-X-Received: by 2002:a2e:86c6:0:b0:2ea:7def:46d0 with SMTP id
- 38308e7fff4ca-2eac79ba55cmr16318091fa.9.1717600821125; Wed, 05 Jun 2024
- 08:20:21 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sEsI7-0008EQ-Eg
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 11:11:07 -0400
+Received: from mgamail.intel.com ([192.198.163.8])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sEsI4-00032z-MG
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 11:11:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1717600265; x=1749136265;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=eK7PGkfED7xMeQLHQ3Q1K8XxqcOhykX85hK2F2vJEyE=;
+ b=E6/TsWg6VATCWXaxC4ooW6YwEXuz2NbKcD4CMym0E7ilLT8aQ/a/avJ4
+ NC+8UVRzIJrCSa1yI0CHqme0Ks4ZTxN30LngHgEl1lO9DQcc39gQlew9Q
+ VmgD/7NUhDh0sOhUsm66ndOqDrjBmx01Y+MUqUkRQq6huFzlj/rMgBDwA
+ o9PJNKT8DDszUQPoPBnmbEsDXp1zHNsvZdWN/k5PLh+YM1ZjvVmb81Hnw
+ bzsPufWlZJOklA8N3MZtos7Kkqlb8A1qtqj11xIIbgnAJhHIbNA1whdIn
+ dh0MA5Y8W2QeCM19igiaFLjYXW7jQyYF1Z6UWu7EX/NwaD3cbEQX1LG2V Q==;
+X-CSE-ConnectionGUID: tKELU6cJSKWg5aY14iZiGA==
+X-CSE-MsgGUID: 6vE4gjDeQZyU/4Y1/aWGTw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11094"; a="31762459"
+X-IronPort-AV: E=Sophos;i="6.08,216,1712646000"; d="scan'208";a="31762459"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Jun 2024 08:11:01 -0700
+X-CSE-ConnectionGUID: CincIMUtQTCeYHcH/aeIrw==
+X-CSE-MsgGUID: ueQk3hm9TKuEyzAPoXJjqQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,216,1712646000"; d="scan'208";a="60822544"
+Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
+ by fmviesa002.fm.intel.com with ESMTP; 05 Jun 2024 08:11:00 -0700
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>
+Cc: qemu-devel@nongnu.org,
+	Zhao Liu <zhao1.liu@intel.com>
+Subject: [PATCH] stubs/meson: Fix qemuutil build when --disable-system
+Date: Wed,  5 Jun 2024 23:25:49 +0800
+Message-Id: <20240605152549.1795762-1-zhao1.liu@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20240530152223.780232-1-aesteve@redhat.com>
- <20240530152223.780232-2-aesteve@redhat.com>
- <20240604185416.GB90471@fedora.redhat.com>
- <CADSE00+yvsOhiJJg0ePgr7AYVCkjm9xWNj7KpAOFMwj2wuEpGg@mail.gmail.com>
- <20240605142849.GC135899@fedora.redhat.com>
-In-Reply-To: <20240605142849.GC135899@fedora.redhat.com>
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Wed, 5 Jun 2024 11:19:57 -0400
-Message-ID: <CAJSP0QUL8VNsYB-D1gaBoE0nrXAQozELU4fwNqoFy5FC9OiEng@mail.gmail.com>
-Subject: Re: [RFC PATCH 1/1] vhost-user: add shmem mmap request
-To: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: Albert Esteve <aesteve@redhat.com>, qemu-devel@nongnu.org, mst@redhat.com, 
- slp@redhat.com, jasowang@redhat.com, David Hildenbrand <david@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::234;
- envelope-from=stefanha@gmail.com; helo=mail-lj1-x234.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=192.198.163.8; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,89 +81,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 5 Jun 2024 at 10:29, Stefan Hajnoczi <stefanha@redhat.com> wrote:
->
-> On Wed, Jun 05, 2024 at 10:13:32AM +0200, Albert Esteve wrote:
-> > On Tue, Jun 4, 2024 at 8:54=E2=80=AFPM Stefan Hajnoczi <stefanha@redhat=
-.com> wrote:
-> >
-> > > On Thu, May 30, 2024 at 05:22:23PM +0200, Albert Esteve wrote:
-> > > > Add SHMEM_MAP/UNMAP requests to vhost-user.
-> > > >
-> > > > This request allows backends to dynamically map
-> > > > fds into a shared memory region indentified by
-> > >
-> > > Please call this "VIRTIO Shared Memory Region" everywhere (code,
-> > > vhost-user spec, commit description, etc) so it's clear that this is =
-not
-> > > about vhost-user shared memory tables/regions.
-> > >
-> > > > its `shmid`. Then, the fd memory is advertised
-> > > > to the frontend through a BAR+offset, so it can
-> > > > be read by the driver while its valid.
-> > >
-> > > Why is a PCI BAR mentioned here? vhost-user does not know about the
-> > > VIRTIO Transport (e.g. PCI) being used. It's the frontend's job to
-> > > report VIRTIO Shared Memory Regions to the driver.
-> > >
-> > >
-> > I will remove PCI BAR, as it is true that it depends on the
-> > transport. I was trying to explain that the driver
-> > will use the shm_base + shm_offset to access
-> > the mapped memory.
-> >
-> >
-> > > >
-> > > > Then, the backend can munmap the memory range
-> > > > in a given shared memory region (again, identified
-> > > > by its `shmid`), to free it. After this, the
-> > > > region becomes private and shall not be accessed
-> > > > by the frontend anymore.
-> > >
-> > > What does "private" mean?
-> > >
-> > > The frontend must mmap PROT_NONE to reserve the virtual memory space
-> > > when no fd is mapped in the VIRTIO Shared Memory Region. Otherwise an
-> > > unrelated mmap(NULL, ...) might use that address range and the guest
-> > > would have access to the host memory! This is a security issue and ne=
-eds
-> > > to be mentioned explicitly in the spec.
-> > >
-> >
-> > I mentioned private because it changes the mapping from MAP_SHARED
-> > to MAP_PRIVATE. I will highlight PROT_NONE instead.
->
-> I see. Then "MAP_PRIVATE" would be clearer. I wasn't sure whether you
-> mean mmap flags or something like the memory range is no longer
-> accessible to the driver.
+Compiling without system, user, tools or guest-agent fails with the
+following error message:
 
-One more thing: please check whether kvm.ko memory regions need to be
-modified or split to match the SHMEM_MAP mapping's read/write
-permissions.
+./configure --disable-system --disable-user --disable-tools \
+--disable-guest-agent
 
-The VIRTIO Shared Memory Area pages can have PROT_READ, PROT_WRITE,
-PROT_READ|PROT_WRITE, or PROT_NONE.
+error message:
 
-kvm.ko memory regions are read/write or read-only. I'm not sure what
-happens when the guest accesses a kvm.ko memory region containing
-mappings with permissions more restrictive than its kvm.ko memory
-region. In other words, the kvm.ko memory region would allow the
-access but the Linux virtual memory configuration would cause a page
-fault.
+/usr/bin/ld: libqemuutil.a.p/util_error-report.c.o: in function `error_printf':
+/media/liuzhao/data/qemu-cook/build/../util/error-report.c:38: undefined reference to `error_vprintf'
+/usr/bin/ld: libqemuutil.a.p/util_error-report.c.o: in function `vreport':
+/media/liuzhao/data/qemu-cook/build/../util/error-report.c:215: undefined reference to `error_vprintf'
+collect2: error: ld returned 1 exit status
 
-For example, imagine a QEMU MemoryRegion containing a SHMEM_MAP
-mapping with PROT_READ. The kvm.ko memory region would be read/write
-(unless extra steps were taken to tell kvm.ko about the permissions).
-When the guest stores to the PROT_READ page, kvm.ko will process a
-fault...and I'm not sure what happens next.
+This is because tests/bench and tests/unit both need qemuutil, which
+requires error_vprintf stub when system is disabled.
 
-A similar scenario occurs when a PROT_NONE mapping exists within a
-kvm.ko memory region. I don't remember how kvm.ko behaves when the
-guest tries to access the pages.
+Add error_vprintf stub into stub_ss for all cases other than disabling
+system.
 
-It's worth figuring this out before going further because it could
-become tricky if issues are discovered later. I have CCed David
-Hildenbrand in case he knows.
+Fixes: 3a15604900c4 ("stubs: include stubs only if needed")
+Reported-by: Daniel P. Berrangé <berrange@redhat.com>
+Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+---
+ stubs/meson.build | 10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
 
-Stefan
+diff --git a/stubs/meson.build b/stubs/meson.build
+index 3b9d42023cb2..a99522ab6bbf 100644
+--- a/stubs/meson.build
++++ b/stubs/meson.build
+@@ -45,17 +45,10 @@ if have_block or have_ga
+   stub_ss.add(files('qmp-quit.c'))
+ endif
+ 
+-if have_ga
+-  stub_ss.add(files('error-printf.c'))
+-endif
+-
+ if have_block or have_user
+   stub_ss.add(files('qtest.c'))
+   stub_ss.add(files('vm-stop.c'))
+   stub_ss.add(files('vmstate.c'))
+-
+-  # more symbols provided by the monitor
+-  stub_ss.add(files('error-printf.c'))
+ endif
+ 
+ if have_user
+@@ -76,6 +69,9 @@ if have_system
+   stub_ss.add(files('target-monitor-defs.c'))
+   stub_ss.add(files('win32-kbd-hook.c'))
+   stub_ss.add(files('xen-hw-stub.c'))
++else
++  # more symbols provided by the monitor
++  stub_ss.add(files('error-printf.c'))
+ endif
+ 
+ if have_system or have_user
+-- 
+2.34.1
+
 
