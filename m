@@ -2,76 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B4178FDA96
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jun 2024 01:35:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7437C8FDAA6
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jun 2024 01:37:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sF09k-0002q0-FX; Wed, 05 Jun 2024 19:35:00 -0400
+	id 1sF09o-0002qt-H1; Wed, 05 Jun 2024 19:35:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sF09j-0002pd-2a
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 19:34:59 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sF09m-0002qO-5H
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 19:35:02 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sF09h-0004nf-EE
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 19:34:58 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sF09k-0004pA-J7
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 19:35:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717630496;
+ s=mimecast20190719; t=1717630499;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ZMYpex8C2s46cF0GfMcoGvUcCxmqXFvGY/Nt+8TTLHo=;
- b=aajlcr5V8y7QKPy1F4U+J2hKHsN8OaoTOxCwpfQN1/vxxWmI2aamoVS7rvjz9YhNAVl3t2
- ec1YXXltm5AcFawMw+PiVYzl4I4412naMDt/i5ks1uAWeVT/+klDynlLvIFjMRVKYraKVu
- LF3+f41priyky/Tr7YX9nJ9Az3LZj2Y=
-Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
- [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=rU41nJqg3mDUGH1bcBpKF5g1VLC3bOtqyqIezIWqM9s=;
+ b=YDHkkQcjCxi0uFckLXkFl5QpellKuftC/IqcrXaGy+AuA8aIuiW72WgGM+77dClDF8NLRH
+ rTF7AsKToFFeRDGrRwCv0kQnUX3mmgREbJx0dWEsGxW0jIHeEPaMM1oEmVT4PQ8Z6/DX4Z
+ vUe+6UzDegm7P/jASLidcgM8c/BQRiI=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-428-EqWCQrpVOk-Z_9V_BLE9cQ-1; Wed, 05 Jun 2024 19:34:55 -0400
-X-MC-Unique: EqWCQrpVOk-Z_9V_BLE9cQ-1
-Received: by mail-lj1-f199.google.com with SMTP id
- 38308e7fff4ca-2ead17d8db6so1153711fa.0
- for <qemu-devel@nongnu.org>; Wed, 05 Jun 2024 16:34:55 -0700 (PDT)
+ us-mta-256--swm5-G7OJyAlTqJ1hubEQ-1; Wed, 05 Jun 2024 19:34:58 -0400
+X-MC-Unique: -swm5-G7OJyAlTqJ1hubEQ-1
+Received: by mail-ed1-f72.google.com with SMTP id
+ 4fb4d7f45d1cf-57a32f2f782so79340a12.1
+ for <qemu-devel@nongnu.org>; Wed, 05 Jun 2024 16:34:58 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717630493; x=1718235293;
+ d=1e100.net; s=20230601; t=1717630496; x=1718235296;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ZMYpex8C2s46cF0GfMcoGvUcCxmqXFvGY/Nt+8TTLHo=;
- b=E5oDLljQXGanhRiiLu1EANogAnkBfxnkLhUkp1hmysAN1CU2OyidWwUWl9VSqEu6kP
- VnHCA0D8gRmyJMYWfSAa4fLudE/qRwuY49vcUWWHfORmGpCQLSnI7wETmL0SjSIqfCt3
- wjQYHV2HHPFtsKkER1wPD1Wgt2j0MEbHHGVOk4ccIvuHqBBGYZZ7uiODpdsMWrtlMXSZ
- rR5cgt9am1jF4KH4v0XjReqEl3v6zDjljR1QD2l3y16Qb/XTQ8xWs4M6aOTSxeaY3/Zy
- pbH0wYGoChA/nH3kloZ7RznEfdnjetyZbillWwe/t1M6ar+VwrSnYkzZf1b/lyR3LmOx
- 7Aqg==
-X-Gm-Message-State: AOJu0Yyr78eHzmsfFvsryF19w0xab1luOgFLVzAjfuZZQq4BLxPEAxFR
- rIysllq2kbbMVJe6Gmiu4kjVwdqnD9LVr72shoS9iDffDUkUqA1bE8FYlb2/U806tDu/BXkdwbM
- /zRdKa5ybuH8DkHskQ4kEU4px58iqtR0yVfxlVb5HzpF1EdZ8h4ZgMnmZ5VCez9dm+MwBnFJR5I
- W9NeHkQEJWgdLQMVZdUAzoTblHSB+4sg==
-X-Received: by 2002:a05:651c:10b3:b0:2ea:adf7:4dd0 with SMTP id
- 38308e7fff4ca-2eac7a6ee1bmr19386811fa.46.1717630493273; 
- Wed, 05 Jun 2024 16:34:53 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHmL3iHUMgRwpDdc9+IuGWPg8k4uVteUcKLSdsswgxsu3F0U+HZN3+19FdUkpvJGkhuKea7gw==
-X-Received: by 2002:a05:651c:10b3:b0:2ea:adf7:4dd0 with SMTP id
- 38308e7fff4ca-2eac7a6ee1bmr19386641fa.46.1717630492586; 
- Wed, 05 Jun 2024 16:34:52 -0700 (PDT)
+ bh=rU41nJqg3mDUGH1bcBpKF5g1VLC3bOtqyqIezIWqM9s=;
+ b=fgRVbLUFxGobH26AvWwAgDa/tn+0Aej9Cby7YSC2LP5cDnqgIrWNrnyt50aVnGxXPH
+ uBkmiryXS7iaBmV+4qAdQiCMhC3clkZxJJoYC6w+hRpbUb8OcB4CQFJRHZwOKcxe9Lzv
+ FtyaSOsyeuxc27b1foun5aJvig/i2PaDqnq4+2CoCaASFeeH4MHs3PAkFsnpsSFKwxet
+ T8RN5MPM0vtpXFkkWD9fLGyrTQ1MrFo7oGnj4VMIzQ6zhXdy3EGIkVQjyBFzEwkXjhdJ
+ Fl2FMHb0Vm9FUo4t6m519Zhc26Fk4LLTqZkqqDV8SSU6Yy1/TAjjk8mW2D9/xhMQl9Hx
+ AYrA==
+X-Gm-Message-State: AOJu0YxfI9owl0/mjNiGvY1pGYz8Yo1aOlEPm/OlhGuLlI1X10HvYzEQ
+ wF1rssxg+IMtvhKUyiN932flRu8dlRku53twkhfRWc9QQypTl3ELwHsJIXjZrJIO9+EAPG659r1
+ 9mBVojIi2MvCET1mBT/YtdlzyCRwZRSDHUK1pvi4xCfZ6M3mUT5DClqALd/qgSpC2KTVXY00YiG
+ i+PDLBwZLXKCFnBdWMlvEX5X+y4zE+Jw==
+X-Received: by 2002:a50:cd10:0:b0:57a:3357:5967 with SMTP id
+ 4fb4d7f45d1cf-57a8bc9f858mr2411428a12.30.1717630496446; 
+ Wed, 05 Jun 2024 16:34:56 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGMgv2ZpIyUyXfJqvPhlWngNJwMCoAUIFMvG+vfHkCxWi4UXIr2W3HFnv9tCefxMfWqLMCZBg==
+X-Received: by 2002:a50:cd10:0:b0:57a:3357:5967 with SMTP id
+ 4fb4d7f45d1cf-57a8bc9f858mr2411422a12.30.1717630495960; 
+ Wed, 05 Jun 2024 16:34:55 -0700 (PDT)
 Received: from redhat.com ([2.55.56.67]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-57aae201a6esm92473a12.71.2024.06.05.16.34.50
+ 4fb4d7f45d1cf-57aae0c9f88sm99816a12.21.2024.06.05.16.34.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 05 Jun 2024 16:34:51 -0700 (PDT)
-Date: Wed, 5 Jun 2024 19:34:49 -0400
+ Wed, 05 Jun 2024 16:34:55 -0700 (PDT)
+Date: Wed, 5 Jun 2024 19:34:53 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Stefano Garzarella <sgarzare@redhat.com>,
- Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
- Jason Wang <jasowang@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL v3 03/41] vhost-vdpa: check vhost_vdpa_set_vring_ready()
- return value
-Message-ID: <982ae85fe81e3849e27d9eacad85c2ffc131d7e3.1717630437.git.mst@redhat.com>
+ Jonah Palmer <jonah.palmer@oracle.com>,
+ Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>
+Subject: [PULL v3 04/41] virtio/virtio-pci: Handle extra notification data
+Message-ID: <2e169a5bc1e75cda7075401ae9ee7e4d28a4df31.1717630437.git.mst@redhat.com>
 References: <cover.1717630437.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -105,68 +102,107 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Stefano Garzarella <sgarzare@redhat.com>
+From: Jonah Palmer <jonah.palmer@oracle.com>
 
-vhost_vdpa_set_vring_ready() could already fail, but if Linux's
-patch [1] will be merged, it may fail with more chance if
-userspace does not activate virtqueues before DRIVER_OK when
-VHOST_BACKEND_F_ENABLE_AFTER_DRIVER_OK is not negotiated.
+Add support to virtio-pci devices for handling the extra data sent
+from the driver to the device when the VIRTIO_F_NOTIFICATION_DATA
+transport feature has been negotiated.
 
-So better check its return value anyway.
+The extra data that's passed to the virtio-pci device when this
+feature is enabled varies depending on the device's virtqueue
+layout.
 
-[1] https://lore.kernel.org/virtualization/20240206145154.118044-1-sgarzare@redhat.com/T/#u
+In a split virtqueue layout, this data includes:
+ - upper 16 bits: shadow_avail_idx
+ - lower 16 bits: virtqueue index
 
-Acked-by: Eugenio Pérez <eperezma@redhat.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-Message-Id: <20240322092315.31885-1-sgarzare@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+In a packed virtqueue layout, this data includes:
+ - upper 16 bits: 1-bit wrap counter & 15-bit shadow_avail_idx
+ - lower 16 bits: virtqueue index
+
+Signed-off-by: Jonah Palmer <jonah.palmer@oracle.com>
+Message-Id: <20240315165557.26942-2-jonah.palmer@oracle.com>
+Reviewed-by: Eugenio Pérez <eperezma@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- net/vhost-vdpa.c | 15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ include/hw/virtio/virtio.h |  2 ++
+ hw/virtio/virtio-pci.c     | 12 +++++++++---
+ hw/virtio/virtio.c         | 18 ++++++++++++++++++
+ 3 files changed, 29 insertions(+), 3 deletions(-)
 
-diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index 85e73dd6a7..eda714d1a4 100644
---- a/net/vhost-vdpa.c
-+++ b/net/vhost-vdpa.c
-@@ -399,7 +399,10 @@ static int vhost_vdpa_net_data_load(NetClientState *nc)
-     }
+diff --git a/include/hw/virtio/virtio.h b/include/hw/virtio/virtio.h
+index 7d5ffdc145..1451926a13 100644
+--- a/include/hw/virtio/virtio.h
++++ b/include/hw/virtio/virtio.h
+@@ -307,6 +307,8 @@ int virtio_queue_ready(VirtQueue *vq);
  
-     for (int i = 0; i < v->dev->nvqs; ++i) {
--        vhost_vdpa_set_vring_ready(v, i + v->dev->vq_index);
-+        int ret = vhost_vdpa_set_vring_ready(v, i + v->dev->vq_index);
-+        if (ret < 0) {
-+            return ret;
-+        }
+ int virtio_queue_empty(VirtQueue *vq);
+ 
++void virtio_queue_set_shadow_avail_idx(VirtQueue *vq, uint16_t idx);
++
+ /* Host binding interface.  */
+ 
+ uint32_t virtio_config_readb(VirtIODevice *vdev, uint32_t addr);
+diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
+index b1d02f4b3d..cffc7efcae 100644
+--- a/hw/virtio/virtio-pci.c
++++ b/hw/virtio/virtio-pci.c
+@@ -384,7 +384,7 @@ static void virtio_ioport_write(void *opaque, uint32_t addr, uint32_t val)
+ {
+     VirtIOPCIProxy *proxy = opaque;
+     VirtIODevice *vdev = virtio_bus_get_device(&proxy->bus);
+-    uint16_t vector;
++    uint16_t vector, vq_idx;
+     hwaddr pa;
+ 
+     switch (addr) {
+@@ -408,8 +408,14 @@ static void virtio_ioport_write(void *opaque, uint32_t addr, uint32_t val)
+             vdev->queue_sel = val;
+         break;
+     case VIRTIO_PCI_QUEUE_NOTIFY:
+-        if (val < VIRTIO_QUEUE_MAX) {
+-            virtio_queue_notify(vdev, val);
++        vq_idx = val;
++        if (vq_idx < VIRTIO_QUEUE_MAX && virtio_queue_get_num(vdev, vq_idx)) {
++            if (virtio_vdev_has_feature(vdev, VIRTIO_F_NOTIFICATION_DATA)) {
++                VirtQueue *vq = virtio_get_queue(vdev, vq_idx);
++
++                virtio_queue_set_shadow_avail_idx(vq, val >> 16);
++            }
++            virtio_queue_notify(vdev, vq_idx);
+         }
+         break;
+     case VIRTIO_PCI_STATUS:
+diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
+index 893a072c9d..f7c99e3a96 100644
+--- a/hw/virtio/virtio.c
++++ b/hw/virtio/virtio.c
+@@ -2264,6 +2264,24 @@ void virtio_queue_set_align(VirtIODevice *vdev, int n, int align)
      }
-     return 0;
  }
-@@ -1238,7 +1241,10 @@ static int vhost_vdpa_net_cvq_load(NetClientState *nc)
  
-     assert(nc->info->type == NET_CLIENT_DRIVER_VHOST_VDPA);
- 
--    vhost_vdpa_set_vring_ready(v, v->dev->vq_index);
-+    r = vhost_vdpa_set_vring_ready(v, v->dev->vq_index);
-+    if (unlikely(r < 0)) {
-+        return r;
++void virtio_queue_set_shadow_avail_idx(VirtQueue *vq, uint16_t shadow_avail_idx)
++{
++    if (!vq->vring.desc) {
++        return;
 +    }
- 
-     if (v->shadow_vqs_enabled) {
-         n = VIRTIO_NET(v->dev->vdev);
-@@ -1277,7 +1283,10 @@ static int vhost_vdpa_net_cvq_load(NetClientState *nc)
-     }
- 
-     for (int i = 0; i < v->dev->vq_index; ++i) {
--        vhost_vdpa_set_vring_ready(v, i);
-+        r = vhost_vdpa_set_vring_ready(v, i);
-+        if (unlikely(r < 0)) {
-+            return r;
-+        }
-     }
- 
-     return 0;
++
++    /*
++     * 16-bit data for packed VQs include 1-bit wrap counter and
++     * 15-bit shadow_avail_idx.
++     */
++    if (virtio_vdev_has_feature(vq->vdev, VIRTIO_F_RING_PACKED)) {
++        vq->shadow_avail_wrap_counter = (shadow_avail_idx >> 15) & 0x1;
++        vq->shadow_avail_idx = shadow_avail_idx & 0x7FFF;
++    } else {
++        vq->shadow_avail_idx = shadow_avail_idx;
++    }
++}
++
+ static void virtio_queue_notify_vq(VirtQueue *vq)
+ {
+     if (vq->vring.desc && vq->handle_output) {
 -- 
 MST
 
