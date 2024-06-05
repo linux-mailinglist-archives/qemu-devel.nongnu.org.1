@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3896F8FC69E
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jun 2024 10:35:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B0B188FC691
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jun 2024 10:34:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEm65-0001xH-6r; Wed, 05 Jun 2024 04:34:17 -0400
+	id 1sEm69-00023W-TE; Wed, 05 Jun 2024 04:34:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1sEm62-0001td-Oc
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 04:34:14 -0400
+ id 1sEm67-0001y6-Lg
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 04:34:19 -0400
 Received: from mgamail.intel.com ([198.175.65.12])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1sEm61-00062T-2D
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 04:34:14 -0400
+ id 1sEm65-00062T-Tw
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 04:34:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1717576454; x=1749112454;
+ t=1717576458; x=1749112458;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=bwbSf84ooRNJe8IIdpBsth4CJbcXwGzHJSQbv6TPBeU=;
- b=IInKMnFreFzsQuXDMdJl+PP4La6uaHemG6HjAc8rWBCxSQj1w2+KX0ow
- XCbZHD2LaeDf9dt1dj1oUfK5wWHOwCA8zoinbG6ubzax5ziQ3ey1pCHdR
- aEVgGAVE66zTryWkS3A/ushoTiqMjXUOf9pffvb1tLlwVYeP9zE2gXniQ
- ImEvFQtmw8XOPlvafYUSaOrDKmbbbuWMEoQLf6itUWPFDTj55SEL8yB/o
- QciB9sltwrdd08vQaTC/SOWzbWWs8HsWhjOsJUUuWYzyHhjDXu/gYWg9V
- 7Mw7awUQg3FeMy4HPuHSCBd1NmLhjqC/394A9uuKyJH8xq/12+F1FlDTG Q==;
-X-CSE-ConnectionGUID: p1IlOYURRc6ucHLg5JbiSA==
-X-CSE-MsgGUID: nJp7B3UCQouxqTY7DE13bw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11093"; a="25575416"
-X-IronPort-AV: E=Sophos;i="6.08,216,1712646000"; d="scan'208";a="25575416"
+ bh=B7nXRh7ZojaXtdhNyRfMhv/+nlUrwKMI6CTd3vTaKw0=;
+ b=oHdRk+51f2R/IlS5YG57k7iDXdtGF7ttaGXDFPdZNxCRiFnXeid1NX3c
+ sHFl4rWSrSIXrLUHu9uHfCcFBYTS2hFwvJqEhuftBJXcNNpClEjtS2FtM
+ xybgSIR46xIOEPni9zAsrkvjcVjgk6UNA17wVDTOgKbC1hwGCWJooV7m7
+ kHWezCwLY2cII3njS+lJGdS8Fife3FJhIULvjVv4wZ2g8z59jj74sPSm9
+ xbhfP0leF+AY4HOBpTq7RPN9aeBgbZ1BNmX1jrRBHAl2pEFsbkBG2mwqR
+ CCZyFfTSs+a41sK3n52U+n5viGYQmt+yevCEpoNNWfY+XL0bBN20jIoJe w==;
+X-CSE-ConnectionGUID: 2qPi6oJ+TqmWs+h2WuIBEQ==
+X-CSE-MsgGUID: 5TPmJFZJRTaEbycC6qtotw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11093"; a="25575422"
+X-IronPort-AV: E=Sophos;i="6.08,216,1712646000"; d="scan'208";a="25575422"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Jun 2024 01:34:13 -0700
-X-CSE-ConnectionGUID: RUdYFmRKTL+9FyDmpbZVxA==
-X-CSE-MsgGUID: dYS5yEzzRJ6lE9WoiM7VcA==
+ 05 Jun 2024 01:34:18 -0700
+X-CSE-ConnectionGUID: CiKodECQT/SeC6qkAXloGw==
+X-CSE-MsgGUID: R1UGg0TITv2mWyXnlHj01w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,216,1712646000"; d="scan'208";a="37954873"
+X-IronPort-AV: E=Sophos;i="6.08,216,1712646000"; d="scan'208";a="37954887"
 Received: from unknown (HELO SPR-S2600BT.bj.intel.com) ([10.240.192.127])
  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Jun 2024 01:34:09 -0700
+ 05 Jun 2024 01:34:13 -0700
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
@@ -51,10 +51,14 @@ Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
  nicolinc@nvidia.com, joao.m.martins@oracle.com,
  clement.mathieu--drif@eviden.com, kevin.tian@intel.com, yi.l.liu@intel.com,
  chao.p.peng@intel.com, Zhenzhong Duan <zhenzhong.duan@intel.com>,
- Yi Sun <yi.y.sun@linux.intel.com>
-Subject: [PATCH v7 14/17] vfio/pci: Pass HostIOMMUDevice to vIOMMU
-Date: Wed,  5 Jun 2024 16:30:40 +0800
-Message-Id: <20240605083043.317831-15-zhenzhong.duan@intel.com>
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: [PATCH v7 15/17] intel_iommu: Extract out vtd_cap_init() to
+ initialize cap/ecap
+Date: Wed,  5 Jun 2024 16:30:41 +0800
+Message-Id: <20240605083043.317831-16-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240605083043.317831-1-zhenzhong.duan@intel.com>
 References: <20240605083043.317831-1-zhenzhong.duan@intel.com>
@@ -84,89 +88,138 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-With HostIOMMUDevice passed, vIOMMU can check compatibility with host
-IOMMU, call into IOMMUFD specific methods, etc.
+Extract cap/ecap initialization in vtd_cap_init() to make code
+cleaner.
 
-Originally-by: Yi Liu <yi.l.liu@intel.com>
-Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
-Signed-off-by: Yi Sun <yi.y.sun@linux.intel.com>
-Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+No functional change intended.
+
 Reviewed-by: Eric Auger <eric.auger@redhat.com>
+Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- hw/vfio/pci.c | 19 ++++++++++++++-----
- 1 file changed, 14 insertions(+), 5 deletions(-)
+ hw/i386/intel_iommu.c | 93 ++++++++++++++++++++++++-------------------
+ 1 file changed, 51 insertions(+), 42 deletions(-)
 
-diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-index 74a79bdf61..d8a76c1ee0 100644
---- a/hw/vfio/pci.c
-+++ b/hw/vfio/pci.c
-@@ -3121,10 +3121,15 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
- 
-     vfio_bars_register(vdev);
- 
--    if (!vfio_add_capabilities(vdev, errp)) {
-+    if (!pci_device_set_iommu_device(pdev, vbasedev->hiod, errp)) {
-+        error_prepend(errp, "Failed to set iommu_device: ");
-         goto out_teardown;
-     }
- 
-+    if (!vfio_add_capabilities(vdev, errp)) {
-+        goto out_unset_idev;
-+    }
-+
-     if (vdev->vga) {
-         vfio_vga_quirk_setup(vdev);
-     }
-@@ -3141,7 +3146,7 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
-             error_setg(errp,
-                        "cannot support IGD OpRegion feature on hotplugged "
-                        "device");
--            goto out_teardown;
-+            goto out_unset_idev;
-         }
- 
-         ret = vfio_get_dev_region_info(vbasedev,
-@@ -3150,11 +3155,11 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
-         if (ret) {
-             error_setg_errno(errp, -ret,
-                              "does not support requested IGD OpRegion feature");
--            goto out_teardown;
-+            goto out_unset_idev;
-         }
- 
-         if (!vfio_pci_igd_opregion_init(vdev, opregion, errp)) {
--            goto out_teardown;
-+            goto out_unset_idev;
-         }
-     }
- 
-@@ -3238,6 +3243,8 @@ out_deregister:
-     if (vdev->intx.mmap_timer) {
-         timer_free(vdev->intx.mmap_timer);
-     }
-+out_unset_idev:
-+    pci_device_unset_iommu_device(pdev);
- out_teardown:
-     vfio_teardown_msi(vdev);
-     vfio_bars_exit(vdev);
-@@ -3266,6 +3273,7 @@ static void vfio_instance_finalize(Object *obj)
- static void vfio_exitfn(PCIDevice *pdev)
- {
-     VFIOPCIDevice *vdev = VFIO_PCI(pdev);
-+    VFIODevice *vbasedev = &vdev->vbasedev;
- 
-     vfio_unregister_req_notifier(vdev);
-     vfio_unregister_err_notifier(vdev);
-@@ -3280,7 +3288,8 @@ static void vfio_exitfn(PCIDevice *pdev)
-     vfio_teardown_msi(vdev);
-     vfio_pci_disable_rp_atomics(vdev);
-     vfio_bars_exit(vdev);
--    vfio_migration_exit(&vdev->vbasedev);
-+    vfio_migration_exit(vbasedev);
-+    pci_device_unset_iommu_device(pdev);
+diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
+index cc8e59674e..519063c8f8 100644
+--- a/hw/i386/intel_iommu.c
++++ b/hw/i386/intel_iommu.c
+@@ -3934,30 +3934,10 @@ static void vtd_iommu_replay(IOMMUMemoryRegion *iommu_mr, IOMMUNotifier *n)
+     return;
  }
  
- static void vfio_pci_reset(DeviceState *dev)
+-/* Do the initialization. It will also be called when reset, so pay
+- * attention when adding new initialization stuff.
+- */
+-static void vtd_init(IntelIOMMUState *s)
++static void vtd_cap_init(IntelIOMMUState *s)
+ {
+     X86IOMMUState *x86_iommu = X86_IOMMU_DEVICE(s);
+ 
+-    memset(s->csr, 0, DMAR_REG_SIZE);
+-    memset(s->wmask, 0, DMAR_REG_SIZE);
+-    memset(s->w1cmask, 0, DMAR_REG_SIZE);
+-    memset(s->womask, 0, DMAR_REG_SIZE);
+-
+-    s->root = 0;
+-    s->root_scalable = false;
+-    s->dmar_enabled = false;
+-    s->intr_enabled = false;
+-    s->iq_head = 0;
+-    s->iq_tail = 0;
+-    s->iq = 0;
+-    s->iq_size = 0;
+-    s->qi_enabled = false;
+-    s->iq_last_desc_type = VTD_INV_DESC_NONE;
+-    s->iq_dw = false;
+-    s->next_frcd_reg = 0;
+     s->cap = VTD_CAP_FRO | VTD_CAP_NFR | VTD_CAP_ND |
+              VTD_CAP_MAMV | VTD_CAP_PSI | VTD_CAP_SLLPS |
+              VTD_CAP_MGAW(s->aw_bits);
+@@ -3974,27 +3954,6 @@ static void vtd_init(IntelIOMMUState *s)
+     }
+     s->ecap = VTD_ECAP_QI | VTD_ECAP_IRO;
+ 
+-    /*
+-     * Rsvd field masks for spte
+-     */
+-    vtd_spte_rsvd[0] = ~0ULL;
+-    vtd_spte_rsvd[1] = VTD_SPTE_PAGE_L1_RSVD_MASK(s->aw_bits,
+-                                                  x86_iommu->dt_supported);
+-    vtd_spte_rsvd[2] = VTD_SPTE_PAGE_L2_RSVD_MASK(s->aw_bits);
+-    vtd_spte_rsvd[3] = VTD_SPTE_PAGE_L3_RSVD_MASK(s->aw_bits);
+-    vtd_spte_rsvd[4] = VTD_SPTE_PAGE_L4_RSVD_MASK(s->aw_bits);
+-
+-    vtd_spte_rsvd_large[2] = VTD_SPTE_LPAGE_L2_RSVD_MASK(s->aw_bits,
+-                                                         x86_iommu->dt_supported);
+-    vtd_spte_rsvd_large[3] = VTD_SPTE_LPAGE_L3_RSVD_MASK(s->aw_bits,
+-                                                         x86_iommu->dt_supported);
+-
+-    if (s->scalable_mode || s->snoop_control) {
+-        vtd_spte_rsvd[1] &= ~VTD_SPTE_SNP;
+-        vtd_spte_rsvd_large[2] &= ~VTD_SPTE_SNP;
+-        vtd_spte_rsvd_large[3] &= ~VTD_SPTE_SNP;
+-    }
+-
+     if (x86_iommu_ir_supported(x86_iommu)) {
+         s->ecap |= VTD_ECAP_IR | VTD_ECAP_MHMV;
+         if (s->intr_eim == ON_OFF_AUTO_ON) {
+@@ -4027,6 +3986,56 @@ static void vtd_init(IntelIOMMUState *s)
+     if (s->pasid) {
+         s->ecap |= VTD_ECAP_PASID;
+     }
++}
++
++/*
++ * Do the initialization. It will also be called when reset, so pay
++ * attention when adding new initialization stuff.
++ */
++static void vtd_init(IntelIOMMUState *s)
++{
++    X86IOMMUState *x86_iommu = X86_IOMMU_DEVICE(s);
++
++    memset(s->csr, 0, DMAR_REG_SIZE);
++    memset(s->wmask, 0, DMAR_REG_SIZE);
++    memset(s->w1cmask, 0, DMAR_REG_SIZE);
++    memset(s->womask, 0, DMAR_REG_SIZE);
++
++    s->root = 0;
++    s->root_scalable = false;
++    s->dmar_enabled = false;
++    s->intr_enabled = false;
++    s->iq_head = 0;
++    s->iq_tail = 0;
++    s->iq = 0;
++    s->iq_size = 0;
++    s->qi_enabled = false;
++    s->iq_last_desc_type = VTD_INV_DESC_NONE;
++    s->iq_dw = false;
++    s->next_frcd_reg = 0;
++
++    vtd_cap_init(s);
++
++    /*
++     * Rsvd field masks for spte
++     */
++    vtd_spte_rsvd[0] = ~0ULL;
++    vtd_spte_rsvd[1] = VTD_SPTE_PAGE_L1_RSVD_MASK(s->aw_bits,
++                                                  x86_iommu->dt_supported);
++    vtd_spte_rsvd[2] = VTD_SPTE_PAGE_L2_RSVD_MASK(s->aw_bits);
++    vtd_spte_rsvd[3] = VTD_SPTE_PAGE_L3_RSVD_MASK(s->aw_bits);
++    vtd_spte_rsvd[4] = VTD_SPTE_PAGE_L4_RSVD_MASK(s->aw_bits);
++
++    vtd_spte_rsvd_large[2] = VTD_SPTE_LPAGE_L2_RSVD_MASK(s->aw_bits,
++                                                    x86_iommu->dt_supported);
++    vtd_spte_rsvd_large[3] = VTD_SPTE_LPAGE_L3_RSVD_MASK(s->aw_bits,
++                                                    x86_iommu->dt_supported);
++
++    if (s->scalable_mode || s->snoop_control) {
++        vtd_spte_rsvd[1] &= ~VTD_SPTE_SNP;
++        vtd_spte_rsvd_large[2] &= ~VTD_SPTE_SNP;
++        vtd_spte_rsvd_large[3] &= ~VTD_SPTE_SNP;
++    }
+ 
+     vtd_reset_caches(s);
+ 
 -- 
 2.34.1
 
