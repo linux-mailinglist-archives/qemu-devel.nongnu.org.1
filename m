@@ -2,74 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2C6C8FDAB8
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jun 2024 01:39:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88CCA8FDA9B
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jun 2024 01:36:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sF0At-0004Z3-CG; Wed, 05 Jun 2024 19:36:11 -0400
+	id 1sF0Av-0004uo-Ee; Wed, 05 Jun 2024 19:36:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sF0Ap-0004IN-Uy
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 19:36:07 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sF0As-0004ec-W2
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 19:36:11 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sF0An-0005dd-Tz
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 19:36:07 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sF0Ar-0005ez-3k
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 19:36:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717630565;
+ s=mimecast20190719; t=1717630568;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=1ElU1S3yGZ4jv6gdF/qOH23dlnO7FdnAYenskxuOvWI=;
- b=Fthq+GNGFgofDO4BIvv6cglRNNNncISuE8d5/Jcoekn5b3NjK5Cd2yHLmzi4xdQhMbt3SV
- HUCPcasilabAwUmW1L+p+z5xnzvT2LW0aX4guprIT9B05gwOeWn3gvn148uj1j0r/bl2KF
- fFRfqS83LocDtjlmssrgAdMLRA23BOU=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=FMOgEcAe53x2nl/kUwLBbhwXiRFlv4+KNdbX+UZGPhI=;
+ b=K0k400UbUN7WI9mrYGj/Fx4qxVx4/Lt+r5E8KPPfu3zWhQFccycgfcc/vixwh5/iV5312p
+ mgPuuQ+6x4cwP1qLxbhtI47T4EeZi7/nrmoKQze7dHAMsFShNqVw8JkS370+9oNsvVeILR
+ kwrFl33hrVo1AssRD7wyLqLpWi6l2dQ=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-444-ZmkQucclMnmrfRsozdjGlQ-1; Wed, 05 Jun 2024 19:36:03 -0400
-X-MC-Unique: ZmkQucclMnmrfRsozdjGlQ-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-a68f824c3b4so44762766b.3
- for <qemu-devel@nongnu.org>; Wed, 05 Jun 2024 16:36:03 -0700 (PDT)
+ us-mta-471-Xk3IJwvtPGid_MpDOWADyw-1; Wed, 05 Jun 2024 19:36:06 -0400
+X-MC-Unique: Xk3IJwvtPGid_MpDOWADyw-1
+Received: by mail-ed1-f70.google.com with SMTP id
+ 4fb4d7f45d1cf-57a941a787dso375830a12.3
+ for <qemu-devel@nongnu.org>; Wed, 05 Jun 2024 16:36:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717630561; x=1718235361;
+ d=1e100.net; s=20230601; t=1717630565; x=1718235365;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=1ElU1S3yGZ4jv6gdF/qOH23dlnO7FdnAYenskxuOvWI=;
- b=SBWe7blFJGC7zr/zZgmMmzhAPqVebXma1bVJ26a6SkNCoFeBNwiugF/LasujWGyg3S
- g6N6LtycB/QU6mHWRBE+1j7p9RzForeDjiQL6jl675IFwaR8da6zpMlPgtXhgNPffYGw
- tFwZKigz/0teyZFYE5ja+dEXh2KAH+Luyd3X6R2WLzB9kOykGS9Z71UnyGOKhOQcmVkG
- jRuLmuHXk0uDxnZq3eiEJCIbepEygZXptqvMDUvkqG/xJiS0F1Eknc0/ei/njHFC5zWh
- EN9xLfTjaO49C+uUPSVQRkOXJoKpU9C8BxClbxIAAqOdfLrsN92ICTFB0OJslgeqNMBs
- 4luA==
-X-Gm-Message-State: AOJu0YzXzvQR8YOyXyCIVnRW9VQfGZnZ06qXz7PVkMydzr6enE3js8AS
- QpF3h/ZMeczpgj2NfUDx4U+rU3/HYN0QilgLq5GXQEj/7rW/Hno2bLGUZgD0qCoAd9tS87FVh65
- Kdybj96J4bTmVROtHwsS1V2KdWKS2+RPK7Jw4E30DKy13jx2zl3vSSuMSAoceuXm/hSqu/TZ9SO
- l64EhUwEHppIt1xWOTdtY7Vdrxj3DtpQ==
-X-Received: by 2002:a17:906:6c8d:b0:a6a:6ed0:fbdc with SMTP id
- a640c23a62f3a-a6a6ed0feb0mr212178466b.38.1717630561504; 
- Wed, 05 Jun 2024 16:36:01 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGMvZ3gFSOBPemBSK4GJiZT+jtkTjqaaLtFtR7sb0bHoyiZjEqf7MWRTOQAVqt05qpE/KNjvQ==
-X-Received: by 2002:a17:906:6c8d:b0:a6a:6ed0:fbdc with SMTP id
- a640c23a62f3a-a6a6ed0feb0mr212176866b.38.1717630560993; 
- Wed, 05 Jun 2024 16:36:00 -0700 (PDT)
+ bh=FMOgEcAe53x2nl/kUwLBbhwXiRFlv4+KNdbX+UZGPhI=;
+ b=NStNKOTmTKlQs4U/zcinwaks8dIP3eitk0lNLAyKEaxGirJGhtmEncZSO+z/l25DYQ
+ jxReE4w6cCTjV6NIBdxvhmB3XRN9hMYKnJ+JmUT/4dbkrAueFKkjNaUmuU8Z4AxrLve7
+ YHFOBTiF9TX+M8MOcPc2gcF3vQz8io6ucZgx+XUSGKEew1O6YRQMXO1psKqIyZ0j/Ji9
+ KusTiJY2ML40q5XEDq3AkHz+kEdYltUeCdGV5Mhs9G+vBLha1o4Bm1oBicSCiN1p3qOv
+ 085mslkncYnltXcIy44YD0Jkx4f6GpNWC90hmTcC+vv/c/TkEQ/PEnnFkb/viQErzM0h
+ GAYg==
+X-Gm-Message-State: AOJu0YwLozg2WvDxMugFyikSuka0jeMLhblkx6VrNtaBPNzpgQl6/paF
+ v1rHh+gsfVa3oW1AXWPWroL7FjDiQ8yatlveGea6lvNz3d8OnwP3hrn+83yULOahPb/u2CXZXiT
+ jzzEKJhMd8kkcikAdxrX7uH4O7xQ6z9SEU+LJR59btWOensiBdNlDFj2lpcerxA/MUhMAauTHhV
+ LtiGalaN5JJ1b1lAcMSFQUxiNEKgpavQ==
+X-Received: by 2002:a50:8d54:0:b0:579:c3f8:5923 with SMTP id
+ 4fb4d7f45d1cf-57a8b6a8778mr2886648a12.13.1717630565125; 
+ Wed, 05 Jun 2024 16:36:05 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGKuech8vINIo/RmiFFSd+bz+4xjcWAbx34aRwr59onCtphObcAur87eDhxEcTsXy0+Om8saA==
+X-Received: by 2002:a50:8d54:0:b0:579:c3f8:5923 with SMTP id
+ 4fb4d7f45d1cf-57a8b6a8778mr2886626a12.13.1717630564441; 
+ Wed, 05 Jun 2024 16:36:04 -0700 (PDT)
 Received: from redhat.com ([2.55.56.67]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a6c806eb101sm6565966b.121.2024.06.05.16.35.58
+ 4fb4d7f45d1cf-57aae0ff792sm99934a12.40.2024.06.05.16.36.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 05 Jun 2024 16:36:00 -0700 (PDT)
-Date: Wed, 5 Jun 2024 19:35:57 -0400
+ Wed, 05 Jun 2024 16:36:03 -0700 (PDT)
+Date: Wed, 5 Jun 2024 19:36:01 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, Fan Ni <fan.ni@samsung.com>,
  Gregory Price <gregory.price@memverge.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Li Zhijian <lizhijian@fujitsu.com>
-Subject: [PULL v3 21/41] hw/mem/cxl_type3: Add support to create DC regions
- to type3 memory devices
-Message-ID: <74920f586004fb9212343d417f9faa57ada8f37b.1717630437.git.mst@redhat.com>
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PULL v3 22/41] hw/mem/cxl-type3: Refactor
+ ct3_build_cdat_entries_for_mr to take mr size instead of mr as argument
+Message-ID: <11c8c0c5281e984b186de1483da7fd934ea388f5.1717630437.git.mst@redhat.com>
 References: <cover.1717630437.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -77,7 +76,7 @@ Content-Disposition: inline
 In-Reply-To: <cover.1717630437.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -104,125 +103,93 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Fan Ni <fan.ni@samsung.com>
 
-With the change, when setting up memory for type3 memory device, we can
-create DC regions.
-A property 'num-dc-regions' is added to ct3_props to allow users to pass the
-number of DC regions to create. To make it easier, other region parameters
-like region base, length, and block size are hard coded. If needed,
-these parameters can be added easily.
-
-With the change, we can create DC regions with proper kernel side
-support like below:
-
-region=$(cat /sys/bus/cxl/devices/decoder0.0/create_dc_region)
-echo $region > /sys/bus/cxl/devices/decoder0.0/create_dc_region
-echo 256 > /sys/bus/cxl/devices/$region/interleave_granularity
-echo 1 > /sys/bus/cxl/devices/$region/interleave_ways
-
-echo "dc0" >/sys/bus/cxl/devices/decoder2.0/mode
-echo 0x40000000 >/sys/bus/cxl/devices/decoder2.0/dpa_size
-
-echo 0x40000000 > /sys/bus/cxl/devices/$region/size
-echo  "decoder2.0" > /sys/bus/cxl/devices/$region/target0
-echo 1 > /sys/bus/cxl/devices/$region/commit
-echo $region > /sys/bus/cxl/drivers/cxl_region/bind
+The function ct3_build_cdat_entries_for_mr only uses size of the passed
+memory region argument, refactor the function definition to make the passed
+arguments more specific.
 
 Reviewed-by: Gregory Price <gregory.price@memverge.com>
 Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Fan Ni <fan.ni@samsung.com>
-Message-Id: <20240523174651.1089554-7-nifan.cxl@gmail.com>
+Message-Id: <20240523174651.1089554-8-nifan.cxl@gmail.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Reviewed-by: Li Zhijian <lizhijian@fujitsu.com>
 ---
- hw/mem/cxl_type3.c | 53 ++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 53 insertions(+)
+ hw/mem/cxl_type3.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
 diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
-index 7194c8f902..06c6f9bb78 100644
+index 06c6f9bb78..51be50ce87 100644
 --- a/hw/mem/cxl_type3.c
 +++ b/hw/mem/cxl_type3.c
-@@ -30,6 +30,7 @@
- #include "hw/pci/msix.h"
- 
- #define DWORD_BYTE 4
-+#define CXL_CAPACITY_MULTIPLIER   (256 * MiB)
- 
- /* Default CDAT entries for a memory region */
- enum {
-@@ -567,6 +568,50 @@ static void ct3d_reg_write(void *opaque, hwaddr offset, uint64_t value,
-     }
- }
- 
-+/*
-+ * TODO: dc region configuration will be updated once host backend and address
-+ * space support is added for DCD.
-+ */
-+static bool cxl_create_dc_regions(CXLType3Dev *ct3d, Error **errp)
-+{
-+    int i;
-+    uint64_t region_base = 0;
-+    uint64_t region_len =  2 * GiB;
-+    uint64_t decode_len = 2 * GiB;
-+    uint64_t blk_size = 2 * MiB;
-+    CXLDCRegion *region;
-+    MemoryRegion *mr;
-+
-+    if (ct3d->hostvmem) {
-+        mr = host_memory_backend_get_memory(ct3d->hostvmem);
-+        region_base += memory_region_size(mr);
-+    }
-+    if (ct3d->hostpmem) {
-+        mr = host_memory_backend_get_memory(ct3d->hostpmem);
-+        region_base += memory_region_size(mr);
-+    }
-+    if (region_base % CXL_CAPACITY_MULTIPLIER != 0) {
-+        error_setg(errp, "DC region base not aligned to 0x%lx",
-+                   CXL_CAPACITY_MULTIPLIER);
-+        return false;
-+    }
-+
-+    for (i = 0, region = &ct3d->dc.regions[0];
-+         i < ct3d->dc.num_regions;
-+         i++, region++, region_base += region_len) {
-+        *region = (CXLDCRegion) {
-+            .base = region_base,
-+            .decode_len = decode_len,
-+            .len = region_len,
-+            .block_size = blk_size,
-+            /* dsmad_handle set when creating CDAT table entries */
-+            .flags = 0,
-+        };
-+    }
-+
-+    return true;
-+}
-+
- static bool cxl_setup_memory(CXLType3Dev *ct3d, Error **errp)
- {
-     DeviceState *ds = DEVICE(ct3d);
-@@ -635,6 +680,13 @@ static bool cxl_setup_memory(CXLType3Dev *ct3d, Error **errp)
-         g_free(p_name);
-     }
- 
-+    if (ct3d->dc.num_regions > 0) {
-+        if (!cxl_create_dc_regions(ct3d, errp)) {
-+            error_append_hint(errp, "setup DC regions failed");
-+            return false;
-+        }
-+    }
-+
-     return true;
- }
- 
-@@ -930,6 +982,7 @@ static Property ct3_props[] = {
-                      HostMemoryBackend *),
-     DEFINE_PROP_UINT64("sn", CXLType3Dev, sn, UI64_NULL),
-     DEFINE_PROP_STRING("cdat", CXLType3Dev, cxl_cstate.cdat.filename),
-+    DEFINE_PROP_UINT8("num-dc-regions", CXLType3Dev, dc.num_regions, 0),
-     DEFINE_PROP_END_OF_LIST(),
+@@ -44,7 +44,7 @@ enum {
  };
  
+ static void ct3_build_cdat_entries_for_mr(CDATSubHeader **cdat_table,
+-                                          int dsmad_handle, MemoryRegion *mr,
++                                          int dsmad_handle, uint64_t size,
+                                           bool is_pmem, uint64_t dpa_base)
+ {
+     CDATDsmas *dsmas;
+@@ -63,7 +63,7 @@ static void ct3_build_cdat_entries_for_mr(CDATSubHeader **cdat_table,
+         .DSMADhandle = dsmad_handle,
+         .flags = is_pmem ? CDAT_DSMAS_FLAG_NV : 0,
+         .DPA_base = dpa_base,
+-        .DPA_length = memory_region_size(mr),
++        .DPA_length = size,
+     };
+ 
+     /* For now, no memory side cache, plausiblish numbers */
+@@ -132,7 +132,7 @@ static void ct3_build_cdat_entries_for_mr(CDATSubHeader **cdat_table,
+          */
+         .EFI_memory_type_attr = is_pmem ? 2 : 1,
+         .DPA_offset = 0,
+-        .DPA_length = memory_region_size(mr),
++        .DPA_length = size,
+     };
+ 
+     /* Header always at start of structure */
+@@ -149,6 +149,7 @@ static int ct3_build_cdat_table(CDATSubHeader ***cdat_table, void *priv)
+     g_autofree CDATSubHeader **table = NULL;
+     CXLType3Dev *ct3d = priv;
+     MemoryRegion *volatile_mr = NULL, *nonvolatile_mr = NULL;
++    uint64_t vmr_size = 0, pmr_size = 0;
+     int dsmad_handle = 0;
+     int cur_ent = 0;
+     int len = 0;
+@@ -163,6 +164,7 @@ static int ct3_build_cdat_table(CDATSubHeader ***cdat_table, void *priv)
+             return -EINVAL;
+         }
+         len += CT3_CDAT_NUM_ENTRIES;
++        vmr_size = memory_region_size(volatile_mr);
+     }
+ 
+     if (ct3d->hostpmem) {
+@@ -171,21 +173,22 @@ static int ct3_build_cdat_table(CDATSubHeader ***cdat_table, void *priv)
+             return -EINVAL;
+         }
+         len += CT3_CDAT_NUM_ENTRIES;
++        pmr_size = memory_region_size(nonvolatile_mr);
+     }
+ 
+     table = g_malloc0(len * sizeof(*table));
+ 
+     /* Now fill them in */
+     if (volatile_mr) {
+-        ct3_build_cdat_entries_for_mr(table, dsmad_handle++, volatile_mr,
++        ct3_build_cdat_entries_for_mr(table, dsmad_handle++, vmr_size,
+                                       false, 0);
+         cur_ent = CT3_CDAT_NUM_ENTRIES;
+     }
+ 
+     if (nonvolatile_mr) {
+-        uint64_t base = volatile_mr ? memory_region_size(volatile_mr) : 0;
++        uint64_t base = vmr_size;
+         ct3_build_cdat_entries_for_mr(&(table[cur_ent]), dsmad_handle++,
+-                                      nonvolatile_mr, true, base);
++                                      pmr_size, true, base);
+         cur_ent += CT3_CDAT_NUM_ENTRIES;
+     }
+     assert(len == cur_ent);
 -- 
 MST
 
