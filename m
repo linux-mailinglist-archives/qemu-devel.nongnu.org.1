@@ -2,74 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9BFB8FD3F3
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jun 2024 19:24:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DCA98FD3F2
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jun 2024 19:24:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEuLp-0005rC-7p; Wed, 05 Jun 2024 13:23:05 -0400
+	id 1sEuLp-0005rB-1r; Wed, 05 Jun 2024 13:23:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sEuLm-0005pw-4q
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 13:23:02 -0400
-Received: from mail-pj1-x1033.google.com ([2607:f8b0:4864:20::1033])
+ id 1sEuLn-0005qc-7I
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 13:23:03 -0400
+Received: from mail-pg1-x52a.google.com ([2607:f8b0:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sEuLk-0003nm-E9
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 13:23:01 -0400
-Received: by mail-pj1-x1033.google.com with SMTP id
- 98e67ed59e1d1-2c283f0da84so44147a91.3
- for <qemu-devel@nongnu.org>; Wed, 05 Jun 2024 10:23:00 -0700 (PDT)
+ id 1sEuLl-0003o3-GT
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 13:23:02 -0400
+Received: by mail-pg1-x52a.google.com with SMTP id
+ 41be03b00d2f7-6c8c880f526so17009a12.3
+ for <qemu-devel@nongnu.org>; Wed, 05 Jun 2024 10:23:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1717608179; x=1718212979; darn=nongnu.org;
+ d=linaro.org; s=google; t=1717608180; x=1718212980; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=12pggLB5ncte2euD32DfT2Z3jOgpAT90Wl9g66CU9T4=;
- b=RHLCjfc7GKAYuFn4Yay0A4tYeNHlIHdKMtO0JNRuzjVj3evaqTaBg71YHAnXLvA0Jc
- ryxakeGzYlTNCyZg12AVbD+vrqY2hKjxUbLv0baslH6LvTGlDpMQwd+WnEnxIwsa2FAq
- EdNR9Gw0+9z3Jw1L5U+afWRjW/RM06QrYrKus73x0NG7NN1qKGgNHhnMgiQnknfFvkeY
- CvOUh+RLNviZXlMk3GWOFltQb8l6aAI77w5+H91jqYnPu1XGLkdb5A1mjGzAvf91CRGp
- Tw9wYcV7opR17GQ01cGvWZUDHDHPS4t6eKEzU+eEMUhKivsgOetDzSYsP83bKfxlYFkx
- /afw==
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=iPN2ZXnJH67ylasvW5ASBChVEwpUinMe7ale/dDDPYY=;
+ b=Q/My9hHURSGBjNLv2krIBbn9hZ4BI9ajElMopQpFttHcb2Qjqkv2sg8LB1TjL43qRh
+ +vbUYfcQCJrMXegoui7Q0bJZookymYWuFaBuxjgFx2PlKiUB4d5HG6htA/rX6jdRzlto
+ meqKa1y7NzhjPlBJWgPKsKo7YPf23QYzUpAdWCTlbGObXP0pr77D/2yFAM3TzbExgnEA
+ jTZ/C00is3ebYfMVzCR2reLnci0bJX3yK3h2fVgQaE7Ma8ECkl2DL5SzK7iL2qL5lRlB
+ lYmOIpSrP/5Mc1t7FC9EjPc09yTgERtSmHfd5/vPuH0f5lcnJCazCLQDQ8nrCCsPnCVy
+ b6ww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717608179; x=1718212979;
+ d=1e100.net; s=20230601; t=1717608180; x=1718212980;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=12pggLB5ncte2euD32DfT2Z3jOgpAT90Wl9g66CU9T4=;
- b=Xx665ClyiF4QJ6/4de8TEJbc7ULqh9X1LYdjFulICh4odyN9o9Ibs/A48rtesMpLC0
- HA9g70cPFLaJSHlvlVtLndt7/ETfYSdUyafjdNQ/LcIXFofpYk1ruTPdp6AsR8dznolq
- wlcBM/CxNZWXtvCzJBMou0c6DPFGzwwzWETDyY+wl5Ets15GpYvxhwr9F1m3VindmfxI
- 4HpJXNSpuFc6nJVSKB/8wx+vd45G0Tpgb1kaeeBN5iy3cd78L8JFACVzeFwEXaU3vybI
- /KdEdut2CvjRlIlLCHL+Jkpc38DHXJYEdQK9iL90LPocA8Lg57yXoQXjw2fam9nvxhd9
- Y3Ew==
-X-Gm-Message-State: AOJu0YzdAq9g9S7qsMVjmuL0wgQ77o03NuidYip1ltO+1RlwCuqNLGn0
- NosYOP1/VbT2o7KJpy4as7d+M15aHkZdl4VH3q9cH+l+jm/Y9E7Np4EWOMHhLG2fbIgiiD3cy8G
- R
-X-Google-Smtp-Source: AGHT+IHQIAxmPx/r+lPgLdjS/5+Kx1j2L1i6dd2927AVo6inBn9Pkdzyof0ima3+o5QGFgUFIYJ60w==
-X-Received: by 2002:a17:90a:ba8d:b0:2c2:848:de1d with SMTP id
- 98e67ed59e1d1-2c27db227cdmr3798886a91.26.1717608179009; 
+ bh=iPN2ZXnJH67ylasvW5ASBChVEwpUinMe7ale/dDDPYY=;
+ b=DbqmY4DhHdxpLZBr9vrr8kZseErCcS4s6WsQygmnnX5g9kIOUzde40n2A3E4if1CfL
+ 3g8OUTovaKv/sIHvnmBiW3oF7xMzXIfVDlaz3/pblK/O0UmwBWXhGvdRN8pKnJROu77x
+ 5h0CX5X16VppK3tMwdRqGspwzmAnDcH1y/t0aZJ9bl/7rKfrMBkBp85kl1lFZ5AAF0L1
+ F04+wzErLkoBmHbfsAQ4BAlVbHyeKobEuwPbumdc3jlGPzrXvKQhrCp5onjYuUTlfuov
+ mFSYqIl0lUOzpKxwGUuapDZTgNxNylVWek9UKA5KD1VpZdz0Xhz+XbmBrhAo5Hnvu0n9
+ Zn3w==
+X-Gm-Message-State: AOJu0YyP9Q6gFyhf1+QF2xApt/1PqIbGI/KB/qZTpZV+6xr1GTjvddfP
+ Ok9HdYbfRjZtP5IUF0pac51lWKW+odQ34ALO02cDiULxUvnuXZhQD0aMSQlo8/NXwjCBDJu9cU7
+ Y
+X-Google-Smtp-Source: AGHT+IHEOo0M1Q2UADoyDTzWo/CC0zMgHaBgVNHevYKa0XyA4EBjBGJgIeq0w36TzEpMCvt27VWMDQ==
+X-Received: by 2002:a17:90a:aa95:b0:2bd:dce4:8f90 with SMTP id
+ 98e67ed59e1d1-2c27db00325mr3020735a91.6.1717608179984; 
  Wed, 05 Jun 2024 10:22:59 -0700 (PDT)
 Received: from stoup.. ([71.212.132.216]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2c28066d511sm1720915a91.9.2024.06.05.10.22.58
+ 98e67ed59e1d1-2c28066d511sm1720915a91.9.2024.06.05.10.22.59
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 05 Jun 2024 10:22:58 -0700 (PDT)
+ Wed, 05 Jun 2024 10:22:59 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 04/38] target/sparc: Fix do_dc
-Date: Wed,  5 Jun 2024 10:22:19 -0700
-Message-Id: <20240605172253.356302-5-richard.henderson@linaro.org>
+Subject: [PULL 05/38] target/sparc: Fix helper_fmul8ulx16
+Date: Wed,  5 Jun 2024 10:22:20 -0700
+Message-Id: <20240605172253.356302-6-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240605172253.356302-1-richard.henderson@linaro.org>
 References: <20240605172253.356302-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1033;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1033.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,26 +90,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Apply DFPREG to compute the register number.
+This operation returns the high 16 bits of a 24-bit multiply
+that has been sign-extended to 32 bits.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/sparc/translate.c | 1 +
- 1 file changed, 1 insertion(+)
+ target/sparc/vis_helper.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-index 00c2a11353..1eb1a6decf 100644
---- a/target/sparc/translate.c
-+++ b/target/sparc/translate.c
-@@ -4253,6 +4253,7 @@ static bool do_dc(DisasContext *dc, int rd, int64_t c)
-         return true;
-     }
+diff --git a/target/sparc/vis_helper.c b/target/sparc/vis_helper.c
+index f46fcf1f6a..41312deda4 100644
+--- a/target/sparc/vis_helper.c
++++ b/target/sparc/vis_helper.c
+@@ -174,10 +174,10 @@ uint64_t helper_fmul8ulx16(uint64_t src1, uint64_t src2)
+     s.ll = src1;
+     d.ll = src2;
  
-+    rd = DFPREG(rd);
-     tcg_gen_movi_i64(cpu_fpr[rd / 2], c);
-     gen_update_fprs_dirty(dc, rd);
-     return advance_pc(dc);
+-    d.VIS_W64(0) = do_ms16b(s.VIS_B64(0), d.VIS_SW64(0));
+-    d.VIS_W64(1) = do_ms16b(s.VIS_B64(2), d.VIS_SW64(1));
+-    d.VIS_W64(2) = do_ms16b(s.VIS_B64(4), d.VIS_SW64(2));
+-    d.VIS_W64(3) = do_ms16b(s.VIS_B64(6), d.VIS_SW64(3));
++    d.VIS_W64(0) = (s.VIS_B64(0) * d.VIS_SW64(0) + 0x8000) >> 16;
++    d.VIS_W64(1) = (s.VIS_B64(2) * d.VIS_SW64(1) + 0x8000) >> 16;
++    d.VIS_W64(2) = (s.VIS_B64(4) * d.VIS_SW64(2) + 0x8000) >> 16;
++    d.VIS_W64(3) = (s.VIS_B64(6) * d.VIS_SW64(3) + 0x8000) >> 16;
+ 
+     return d.ll;
+ }
 -- 
 2.34.1
 
