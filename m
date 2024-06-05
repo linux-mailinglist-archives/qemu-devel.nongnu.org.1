@@ -2,92 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C9608FC615
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jun 2024 10:24:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5C528FC688
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jun 2024 10:34:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sElvz-0007P6-6P; Wed, 05 Jun 2024 04:23:51 -0400
+	id 1sEm5D-0001Cj-JU; Wed, 05 Jun 2024 04:33:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sElvv-0007Oa-Ev
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 04:23:47 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1sEm5B-0001CR-Bb
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 04:33:21 -0400
+Received: from mgamail.intel.com ([198.175.65.12])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sElvs-0003UB-R5
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 04:23:47 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717575824;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=sTE/OSFzDlK973R5Pf+D79Yh0R4pPjrH99Lr9jmAoTI=;
- b=YUz34OE6TabbV0fS+enj2R1Pe4A5//xG+lEMPOFIbCfdp5ETcqJ/rGpaaV13ABiVMKMeZK
- hPoH/CL/jafTaGqCuHBBzGDqglNMAxQI5lQZcp/ttmJDqdksBpOsXAiMYBDVxpbt8wNFX+
- XoimVhWcOSJTjABHuZHydKyen6tljzI=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-32-q69WdA5VMw-s0kW_prphVA-1; Wed, 05 Jun 2024 04:23:42 -0400
-X-MC-Unique: q69WdA5VMw-s0kW_prphVA-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-a68ce57fb14so168528066b.2
- for <qemu-devel@nongnu.org>; Wed, 05 Jun 2024 01:23:42 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717575821; x=1718180621;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=sTE/OSFzDlK973R5Pf+D79Yh0R4pPjrH99Lr9jmAoTI=;
- b=B3dVaGh8EFBNpXaWGrSg8miOl+ggyN/RnIuxBtw1NRNEp+UJDNKUA1/WisF9GJt0lG
- DAQ3YFFRgB2XPPdGhGPyDcHZagOLb/DciVsivPVbmKJIzTebWEfJjVEBhAskFC3cv+aQ
- wQdv9F6OZ48kaVutwM45YhunfnffVDfJV7kdj7lZp2XCfUI+UFRULib6p3NOJ0nFWHG2
- 2/1y1TosbkMBOTwRY5yrlqKKM0s9O3hKKd76sNM1PQcH8GOF82WcjDji80joHtin6neM
- sDm9fPfD4SfmfJsbUmSKk6KqHwRAvxQw/f3bV3kjTrGVGvx6C+fh3loHPYaZr763KNJm
- 1DFA==
-X-Gm-Message-State: AOJu0YxUeULZvjOOQRRa3fymV4L/ChJWvFVb/IQYkHbz83NOwO/SoWqq
- 8TUOapuv14DolxjwrvxjsQFURB7TeW6Rx/MTNkx3VlsRUnOa7oH3wtzWnZ1ZZ+MzBVsXpieleDK
- MvM7P4k8ho+1s9O4rQq6kX6yaoEvh+T+gmFtdac/Mxzf/FJdYf6Flc0OefWJY
-X-Received: by 2002:a17:906:a184:b0:a5a:15b6:25ab with SMTP id
- a640c23a62f3a-a69a0022d7dmr116951666b.61.1717575820923; 
- Wed, 05 Jun 2024 01:23:40 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEd3IJJUcLMPIO1EJXANKHLqm3Gw8kb/hrIhNSEuwTE0gQzGbBPTpHZH7z2B/qy8gwx9KwasA==
-X-Received: by 2002:a17:906:a184:b0:a5a:15b6:25ab with SMTP id
- a640c23a62f3a-a69a0022d7dmr116949966b.61.1717575820367; 
- Wed, 05 Jun 2024 01:23:40 -0700 (PDT)
-Received: from redhat.com ([2.55.58.53]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a68c7882caesm563091266b.27.2024.06.05.01.23.38
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 05 Jun 2024 01:23:39 -0700 (PDT)
-Date: Wed, 5 Jun 2024 04:23:36 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Sunil V L <sunilvl@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bmeng.cn@gmail.com>, Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Andrew Jones <ajones@ventanamicro.com>
-Subject: Re: [PATCH 1/3] gpex-acpi: Support PCI link devices outside the host
- bridge
-Message-ID: <20240605041837-mutt-send-email-mst@kernel.org>
-References: <20240528073103.1075812-1-sunilvl@ventanamicro.com>
- <20240528073103.1075812-2-sunilvl@ventanamicro.com>
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1sEm57-0005yS-W2
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 04:33:21 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1717576398; x=1749112398;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=O3esBEbDq4gVnm179e06sZ6fP6C5rcTaaLBYavrneFk=;
+ b=ZFg+ktNiKAkD8UxypNW/j2z12jTMma1uyDhtD1yE67aC+J15ZMnqSqo1
+ s1NW+zPH3reM/Z8+92H4x2IBNR4VLq6XD72xNIFgsdr/hcKQitvDPVcO9
+ SK3zhoE8+0le8nQtu7rviyh63XcxEqamlwGxFeJ83zM3B0uMChXY2fsN0
+ u+l/ABAiT/9PlSr5deFgx6dxObUu8ml2kVnKnMYvjQ1GLOobW4KLNxSqc
+ 33ODf7n4icY5nX5tTUbEDEez/F8JX9LX0Yg/z2D7T77R0sjB1JZTSmbYS
+ aRbhGJ6xb3O+J0ctV9+fIZadMG9Cf1hS+T3IJk8J2sZBYI9+C6Ykf9uAn w==;
+X-CSE-ConnectionGUID: VX669lFbRmqQSTojLHr3bQ==
+X-CSE-MsgGUID: 3ml/hrWRR2q1jA8g4WSFBQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11093"; a="25575286"
+X-IronPort-AV: E=Sophos;i="6.08,216,1712646000"; d="scan'208";a="25575286"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Jun 2024 01:33:14 -0700
+X-CSE-ConnectionGUID: mRtxg75lTe26fgkw+OXAgw==
+X-CSE-MsgGUID: y5G/w0XIQGmeLtQBR8YsNQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,216,1712646000"; d="scan'208";a="37954737"
+Received: from unknown (HELO SPR-S2600BT.bj.intel.com) ([10.240.192.127])
+ by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Jun 2024 01:33:10 -0700
+From: Zhenzhong Duan <zhenzhong.duan@intel.com>
+To: qemu-devel@nongnu.org
+Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
+ mst@redhat.com, peterx@redhat.com, jasowang@redhat.com, jgg@nvidia.com,
+ nicolinc@nvidia.com, joao.m.martins@oracle.com,
+ clement.mathieu--drif@eviden.com, kevin.tian@intel.com, yi.l.liu@intel.com,
+ chao.p.peng@intel.com, Zhenzhong Duan <zhenzhong.duan@intel.com>
+Subject: [PATCH v7 00/17] Add a host IOMMU device abstraction to check with
+ vIOMMU
+Date: Wed,  5 Jun 2024 16:30:26 +0800
+Message-Id: <20240605083043.317831-1-zhenzhong.duan@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240528073103.1075812-2-sunilvl@ventanamicro.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=198.175.65.12;
+ envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,177 +83,193 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, May 28, 2024 at 01:01:01PM +0530, Sunil V L wrote:
-> Currently, PCI link devices (PNP0C0F) are always created within the
-> scope of the PCI root complex. However, RISC-V needs PCI link devices to
-> be outside the scope of the PCI host bridge to properly enable the probe
-> order. This matches the example given in the ACPI specification section
-> 6.2.13.1 as well.
+Hi,
 
-Given that, what happens if we do this for all architectures?
+This series introduce a HostIOMMUDevice abstraction and sub-classes.
+Also HostIOMMUDeviceCaps structure in HostIOMMUDevice and a new interface
+between vIOMMU and HostIOMMUDevice.
 
-> 
-> Enable creating link devices outside the scope of PCI root complex based
-> on the flag which gets set currently only for RISC-V.
-> 
-> Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
-> ---
->  hw/pci-host/gpex-acpi.c    | 29 ++++++++++++++++++++++++-----
->  hw/riscv/virt-acpi-build.c |  8 +++++---
->  include/hw/pci-host/gpex.h |  5 ++++-
->  3 files changed, 33 insertions(+), 9 deletions(-)
-> 
-> diff --git a/hw/pci-host/gpex-acpi.c b/hw/pci-host/gpex-acpi.c
-> index f69413ea2c..cea89a3ed8 100644
-> --- a/hw/pci-host/gpex-acpi.c
-> +++ b/hw/pci-host/gpex-acpi.c
-> @@ -7,7 +7,7 @@
->  #include "hw/pci/pcie_host.h"
->  #include "hw/acpi/cxl.h"
->  
-> -static void acpi_dsdt_add_pci_route_table(Aml *dev, uint32_t irq)
-> +static void acpi_dsdt_add_pci_route_table(Aml *scope, Aml *dev, uint32_t irq)
->  {
->      Aml *method, *crs;
->      int i, slot_no;
-> @@ -45,7 +45,17 @@ static void acpi_dsdt_add_pci_route_table(Aml *dev, uint32_t irq)
->          aml_append(dev_gsi, aml_name_decl("_CRS", crs));
->          method = aml_method("_SRS", 1, AML_NOTSERIALIZED);
->          aml_append(dev_gsi, method);
-> -        aml_append(dev, dev_gsi);
-> +
-> +        /*
-> +         * Some architectures like RISC-V
+A HostIOMMUDevice is an abstraction for an assigned device that is protected
+by a physical IOMMU (aka host IOMMU). The userspace interaction with this
+physical IOMMU can be done either through the VFIO IOMMU type 1 legacy
+backend or the new iommufd backend. The assigned device can be a VFIO device
+or a VDPA device. The HostIOMMUDevice is needed to interact with the host
+IOMMU that protects the assigned device. It is especially useful when the
+device is also protected by a virtual IOMMU as this latter use the translation
+services of the physical IOMMU and is constrained by it. In that context the
+HostIOMMUDevice can be passed to the virtual IOMMU to collect physical IOMMU
+capabilities such as the supported address width. In the future, the virtual
+IOMMU will use the HostIOMMUDevice to program the guest page tables in the
+first translation stage of the physical IOMMU.
 
+HostIOMMUDeviceClass::realize() is introduced to initialize
+HostIOMMUDeviceCaps and other fields of HostIOMMUDevice variants.
 
-Just risc-v for now right?
-> need PCI link devices created
-> +         * outside the scope of the PCI host bridge
+HostIOMMUDeviceClass::get_cap() is introduced to query host IOMMU
+device capabilities.
 
-.. in order to load the drivers in the correct order.
-Others .... .
+The class tree is as below:
 
-> similar to the example
-> +         * given in the section 6.2.13.1 of ACPI spec 6.5.
+                              HostIOMMUDevice
+                                     | .caps
+                                     | .realize()
+                                     | .get_cap()
+                                     |
+            .-----------------------------------------------.
+            |                        |                      |
+HostIOMMUDeviceLegacyVFIO  {HostIOMMUDeviceLegacyVDPA}  HostIOMMUDeviceIOMMUFD
+            |                        |                      | [.iommufd]
+                                                            | [.devid]
+                                                            | [.ioas_id]
+                                                            | [.attach_hwpt()]
+                                                            | [.detach_hwpt()]
+                                                            |
+                                            .----------------------.
+                                            |                      |
+                         HostIOMMUDeviceIOMMUFDVFIO  {HostIOMMUDeviceIOMMUFDVDPA}
+                                          | [.vdev]                | {.vdev}
 
+* The attributes in [] will be implemented in nesting series.
+* The classes in {} will be implemented in future.
+* .vdev in different class points to different agent device,
+* i.e., VFIODevice or VDPADevice.
 
-This is not how we quote ACPI spec.
+PATCH1-4: Introduce HostIOMMUDevice and its sub classes
+PATCH5-10: Implement .realize() and .get_cap() handler
+PATCH11-14: Create HostIOMMUDevice instance and pass to vIOMMU
+PATCH15-17: Implement compatibility check between host IOMMU and vIOMMU(intel_iommu)
 
-First you find the earliest spec version which has it.
-Then you mention that, section/table # and title.
-For example:
+Test done:
+make check
+vfio device hotplug/unplug with different backend on linux
+reboot, kexec
+build test on linux and windows11
 
-	ACPI 6.1: 18.3.2.8 Generic Hardware Error Source
+Qemu code can be found at:
+https://github.com/yiliu1765/qemu/tree/zhenzhong/iommufd_nesting_preq_v7
 
+Besides the compatibility check in this series, in nesting series, this
+host IOMMU device is extended for much wider usage. For anyone interested
+on the nesting series, here is the link:
+https://github.com/yiliu1765/qemu/tree/zhenzhong/iommufd_nesting_rfcv2
 
-> +         */
-> +         if (scope) {
-> +            aml_append(scope, dev_gsi);
-> +        } else {
-> +            aml_append(dev, dev_gsi);
-> +        }
->      }
->  }
->  
-> @@ -174,7 +184,11 @@ void acpi_dsdt_add_gpex(Aml *scope, struct GPEXConfig *cfg)
->                  aml_append(dev, aml_name_decl("_PXM", aml_int(numa_node)));
->              }
->  
-> -            acpi_dsdt_add_pci_route_table(dev, cfg->irq);
-> +            if (cfg->flags & GPEX_FLAGS_EXT_GSI_LINK) {
-> +                acpi_dsdt_add_pci_route_table(scope, dev, cfg->irq);
-> +            } else {
-> +                acpi_dsdt_add_pci_route_table(NULL, dev, cfg->irq);
-> +            }
->  
->              /*
->               * Resources defined for PXBs are composed of the following parts:
-> @@ -205,7 +219,11 @@ void acpi_dsdt_add_gpex(Aml *scope, struct GPEXConfig *cfg)
->      aml_append(dev, aml_name_decl("_STR", aml_unicode("PCIe 0 Device")));
->      aml_append(dev, aml_name_decl("_CCA", aml_int(1)));
->  
-> -    acpi_dsdt_add_pci_route_table(dev, cfg->irq);
-> +    if (cfg->flags & GPEX_FLAGS_EXT_GSI_LINK) {
-> +        acpi_dsdt_add_pci_route_table(scope, dev, cfg->irq);
-> +    } else {
-> +        acpi_dsdt_add_pci_route_table(NULL, dev, cfg->irq);
-> +    }
->  
->      method = aml_method("_CBA", 0, AML_NOTSERIALIZED);
->      aml_append(method, aml_return(aml_int(cfg->ecam.base)));
-> @@ -282,7 +300,7 @@ void acpi_dsdt_add_gpex(Aml *scope, struct GPEXConfig *cfg)
->      crs_range_set_free(&crs_range_set);
->  }
->  
-> -void acpi_dsdt_add_gpex_host(Aml *scope, uint32_t irq)
-> +void acpi_dsdt_add_gpex_host(Aml *scope, uint32_t irq, uint32_t flags)
->  {
->      bool ambig;
->      Object *obj = object_resolve_path_type("", TYPE_GPEX_HOST, &ambig);
-> @@ -292,5 +310,6 @@ void acpi_dsdt_add_gpex_host(Aml *scope, uint32_t irq)
->      }
->  
->      GPEX_HOST(obj)->gpex_cfg.irq = irq;
-> +    GPEX_HOST(obj)->gpex_cfg.flags = flags;
->      acpi_dsdt_add_gpex(scope, &GPEX_HOST(obj)->gpex_cfg);
->  }
-> diff --git a/hw/riscv/virt-acpi-build.c b/hw/riscv/virt-acpi-build.c
-> index 0925528160..832a3acb8d 100644
-> --- a/hw/riscv/virt-acpi-build.c
-> +++ b/hw/riscv/virt-acpi-build.c
-> @@ -417,19 +417,21 @@ static void build_dsdt(GArray *table_data,
->          virtio_acpi_dsdt_add(scope, memmap[VIRT_VIRTIO].base,
->                               memmap[VIRT_VIRTIO].size,
->                               VIRTIO_IRQ, 0, VIRTIO_COUNT);
-> -        acpi_dsdt_add_gpex_host(scope, PCIE_IRQ);
-> +        acpi_dsdt_add_gpex_host(scope, PCIE_IRQ, GPEX_FLAGS_EXT_GSI_LINK);
->      } else if (socket_count == 2) {
->          virtio_acpi_dsdt_add(scope, memmap[VIRT_VIRTIO].base,
->                               memmap[VIRT_VIRTIO].size,
->                               VIRTIO_IRQ + VIRT_IRQCHIP_NUM_SOURCES, 0,
->                               VIRTIO_COUNT);
-> -        acpi_dsdt_add_gpex_host(scope, PCIE_IRQ + VIRT_IRQCHIP_NUM_SOURCES);
-> +        acpi_dsdt_add_gpex_host(scope, PCIE_IRQ + VIRT_IRQCHIP_NUM_SOURCES,
-> +                                GPEX_FLAGS_EXT_GSI_LINK);
->      } else {
->          virtio_acpi_dsdt_add(scope, memmap[VIRT_VIRTIO].base,
->                               memmap[VIRT_VIRTIO].size,
->                               VIRTIO_IRQ + VIRT_IRQCHIP_NUM_SOURCES, 0,
->                               VIRTIO_COUNT);
-> -        acpi_dsdt_add_gpex_host(scope, PCIE_IRQ + VIRT_IRQCHIP_NUM_SOURCES * 2);
-> +        acpi_dsdt_add_gpex_host(scope, PCIE_IRQ + VIRT_IRQCHIP_NUM_SOURCES * 2,
-> +                                GPEX_FLAGS_EXT_GSI_LINK);
->      }
->  
->      aml_append(dsdt, scope);
-> diff --git a/include/hw/pci-host/gpex.h b/include/hw/pci-host/gpex.h
-> index dce883573b..bee17d62c5 100644
-> --- a/include/hw/pci-host/gpex.h
-> +++ b/include/hw/pci-host/gpex.h
-> @@ -47,8 +47,11 @@ struct GPEXConfig {
->      MemMapEntry pio;
->      int         irq;
->      PCIBus      *bus;
-> +    uint32_t    flags;
->  };
->  
-> +#define GPEX_FLAGS_EXT_GSI_LINK BIT(0)
-> +
->  struct GPEXHost {
->      /*< private >*/
->      PCIExpressHost parent_obj;
-> @@ -71,7 +74,7 @@ struct GPEXHost {
->  int gpex_set_irq_num(GPEXHost *s, int index, int gsi);
->  
->  void acpi_dsdt_add_gpex(Aml *scope, struct GPEXConfig *cfg);
-> -void acpi_dsdt_add_gpex_host(Aml *scope, uint32_t irq);
-> +void acpi_dsdt_add_gpex_host(Aml *scope, uint32_t irq, uint32_t flags);
->  
->  #define PCI_HOST_PIO_BASE               "x-pio-base"
->  #define PCI_HOST_PIO_SIZE               "x-pio-size"
-> -- 
-> 2.40.1
-> 
-> 
+Thanks
+Zhenzhong
+
+Changelog:
+v7:
+- drop config CONFIG_HOST_IOMMU_DEVICE (Cédric)
+- introduce HOST_IOMMU_DEVICE_CAP_AW_BITS_MAX (Eric)
+- use iova_ranges method in iommufd.realize() (Eric)
+- introduce HostIOMMUDevice::name to facilitate tracing (Eric)
+- implement a custom destroy hash function (Cédric)
+- drop VTDHostIOMMUDevice and save HostIOMMUDevice in hash table (Eric)
+- move patch5 after patch1 (Eric)
+- squash patch3 and 4, squash patch12 and 13 (Eric)
+- refine comments (Eric)
+- collect Eric's R-B
+
+v6:
+- open coded host_iommu_device_get_cap() to avoid #ifdef in intel_iommu.c (Cédric)
+
+v5:
+- pci_device_set_iommu_device return true (Cédric)
+- fix build failure on windows (thanks Cédric found that issue)
+
+v4:
+- move properties vdev, iommufd and devid to nesting series where need it (Cédric)
+- fix 32bit build with clz64 (Cédric)
+- change check_cap naming to get_cap (Cédric)
+- return bool if error is passed through errp (Cédric)
+- drop HostIOMMUDevice[LegacyVFIO|IOMMUFD|IOMMUFDVFIO] declaration (Cédric)
+- drop HOST_IOMMU_DEVICE_CAP_IOMMUFD (Cédric)
+- replace include directive with forward declaration (Cédric)
+
+v3:
+- refine declaration and doc for HostIOMMUDevice (Cédric, Philippe)
+- introduce HostIOMMUDeviceCaps, .realize() and .check_cap() (Cédric)
+- introduce helper range_get_last_bit() for range operation (Cédric)
+- separate pci_device_get_iommu_bus_devfn() in a prereq patch (Cédric)
+- replace HIOD_ abbreviation with HOST_IOMMU_DEVICE_ (Cédric)
+- add header in include/sysemu/iommufd.h (Cédric)
+
+v2:
+- use QOM to abstract host IOMMU device and its sub-classes (Cédric)
+- move host IOMMU device creation in attach_device() (Cédric)
+- refine pci_device_set/unset_iommu_device doc further (Eric)
+- define host IOMMU info format of different backend
+- implement get_host_iommu_info() for different backend (Cédric)
+- drop cap/ecap update logic (MST)
+- check aw-bits from get_host_iommu_info() in legacy mode
+
+v1:
+- use HostIOMMUDevice handle instead of union in VFIODevice (Eric)
+- change host_iommu_device_init to host_iommu_device_create
+- allocate HostIOMMUDevice in host_iommu_device_create callback
+  and set the VFIODevice base_hdev handle (Eric)
+- refine pci_device_set/unset_iommu_device doc (Eric)
+- use HostIOMMUDevice handle instead of union in VTDHostIOMMUDevice (Eric)
+- convert HostIOMMUDevice to sub object pointer in vtd_check_hdev
+
+rfcv2:
+- introduce common abstract HostIOMMUDevice and sub struct for different BEs (Eric, Cédric)
+- remove iommufd_device.[ch] (Cédric)
+- remove duplicate iommufd/devid define from VFIODevice (Eric)
+- drop the p in aliased_pbus and aliased_pdevfn (Eric)
+- assert devfn and iommu_bus in pci_device_get_iommu_bus_devfn (Cédric, Eric)
+- use errp in iommufd_device_get_info (Eric)
+- split and simplify cap/ecap check/sync code in intel_iommu.c (Cédric)
+- move VTDHostIOMMUDevice declaration to intel_iommu_internal.h (Cédric)
+- make '(vtd->cap_reg >> 16) & 0x3fULL' a MACRO and add missed '+1' (Cédric)
+- block migration if vIOMMU cap/ecap updated based on host IOMMU cap/ecap
+- add R-B
+
+Yi Liu (2):
+  hw/pci: Introduce pci_device_[set|unset]_iommu_device()
+  intel_iommu: Implement [set|unset]_iommu_device() callbacks
+
+Zhenzhong Duan (15):
+  backends: Introduce HostIOMMUDevice abstract
+  backends/host_iommu_device: Introduce HostIOMMUDeviceCaps
+  vfio/container: Introduce TYPE_HOST_IOMMU_DEVICE_LEGACY_VFIO device
+  backends/iommufd: Introduce TYPE_HOST_IOMMU_DEVICE_IOMMUFD[_VFIO]
+    devices
+  range: Introduce range_get_last_bit()
+  vfio/container: Implement HostIOMMUDeviceClass::realize() handler
+  backends/iommufd: Introduce helper function
+    iommufd_backend_get_device_info()
+  vfio/iommufd: Implement HostIOMMUDeviceClass::realize() handler
+  vfio/container: Implement HostIOMMUDeviceClass::get_cap() handler
+  backends/iommufd: Implement HostIOMMUDeviceClass::get_cap() handler
+  vfio: Create host IOMMU device instance
+  hw/pci: Introduce helper function pci_device_get_iommu_bus_devfn()
+  vfio/pci: Pass HostIOMMUDevice to vIOMMU
+  intel_iommu: Extract out vtd_cap_init() to initialize cap/ecap
+  intel_iommu: Check compatibility with host IOMMU capabilities
+
+ MAINTAINERS                           |   2 +
+ include/hw/i386/intel_iommu.h         |   2 +
+ include/hw/pci/pci.h                  |  38 ++++-
+ include/hw/vfio/vfio-common.h         |   8 +
+ include/hw/vfio/vfio-container-base.h |   3 +
+ include/qemu/range.h                  |  11 ++
+ include/sysemu/host_iommu_device.h    |  91 ++++++++++++
+ include/sysemu/iommufd.h              |  19 +++
+ backends/host_iommu_device.c          |  33 +++++
+ backends/iommufd.c                    |  76 ++++++++--
+ hw/i386/intel_iommu.c                 | 203 ++++++++++++++++++++------
+ hw/pci/pci.c                          |  75 +++++++++-
+ hw/vfio/common.c                      |  16 +-
+ hw/vfio/container.c                   |  41 +++++-
+ hw/vfio/helpers.c                     |  17 +++
+ hw/vfio/iommufd.c                     |  37 ++++-
+ hw/vfio/pci.c                         |  19 ++-
+ backends/meson.build                  |   1 +
+ 18 files changed, 623 insertions(+), 69 deletions(-)
+ create mode 100644 include/sysemu/host_iommu_device.h
+ create mode 100644 backends/host_iommu_device.c
+
+-- 
+2.34.1
 
 
