@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71FB18FDABD
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jun 2024 01:39:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D7678FDABE
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jun 2024 01:39:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sF0BP-0007wY-0t; Wed, 05 Jun 2024 19:36:43 -0400
+	id 1sF0BQ-00088k-5S; Wed, 05 Jun 2024 19:36:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sF0BL-0007j9-Pk
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 19:36:39 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sF0BN-0007rH-Ae
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 19:36:41 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sF0BH-0005sw-CQ
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 19:36:39 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sF0BL-0005tL-MV
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 19:36:40 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717630594;
+ s=mimecast20190719; t=1717630598;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=WFUPapk07PnJ8CLhVhbjjsuC+NoP2UxN6SJb+Hfxl60=;
- b=Ft46ietRFaHn9v2FBrBYdj5mCl+VSZdd/vxRJwrWbB33HOfqJCRNGfGdA/0DrSf1LCGc7s
- X7ANIHlnivaAMEFZSd5BjkoDhYtYI8ufsTT0IzAqLDu0wY7xUbddo/NcxpN/JTxXlWMqeb
- d20Wct+gnrQ+/8UaPLjIzq8sqzeWYdI=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=VYKkp6fHZoal2oiYNWaG4icBm491Zje1r86kUs5B3ls=;
+ b=ZzH41aHY/cT0KruGUsNz2mH8vB/57VRDlYGmIaUGDgZD8rFGHDBggF0J3bYalT66BGkFQm
+ J3zRxT8BaWGJn57V2n2MD2iQTcUNEBP9l8RyEoFx22ymRqayjTquLdPZx37zj9G7UiXW5G
+ hn4DOyO2oxbbaCtoYSTh9A+yAcEF72s=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-317-DC4zDshaPK-9K2eY8xNbtQ-1; Wed, 05 Jun 2024 19:36:32 -0400
-X-MC-Unique: DC4zDshaPK-9K2eY8xNbtQ-1
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-a6c72164f46so14653866b.1
- for <qemu-devel@nongnu.org>; Wed, 05 Jun 2024 16:36:31 -0700 (PDT)
+ us-mta-312-ce_dIIxZMyCxDRzqDL0yag-1; Wed, 05 Jun 2024 19:36:36 -0400
+X-MC-Unique: ce_dIIxZMyCxDRzqDL0yag-1
+Received: by mail-ed1-f70.google.com with SMTP id
+ 4fb4d7f45d1cf-57a7946685aso128866a12.2
+ for <qemu-devel@nongnu.org>; Wed, 05 Jun 2024 16:36:36 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717630590; x=1718235390;
+ d=1e100.net; s=20230601; t=1717630594; x=1718235394;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=WFUPapk07PnJ8CLhVhbjjsuC+NoP2UxN6SJb+Hfxl60=;
- b=YsRogNU6OjJP82wHYkwiojP4JQWiPcSO6DrrLhPZeG30VvwOot10NuZ/FbAI5WDqy/
- L8mYVd9KRIBXiWYCRiXMvUvEK7bY3TYeJWe+OpCi59O4wD8MTj4tgNt76DTRMPLVNJut
- 8HflEdek9v3eg/4UVvT4qHSjCsqMUgVNhzIZeXrR1fSXr9WPdXRlLchV3sXfeHYfUE68
- /fmTijOQX1p40zluSdpQ/XCh3HaGxon107YFZdo3MPdLWbhuj9bnNtBgvhrIm37ec+Wd
- ruEQpOVSRXxzSmtDDSCywwUJrgPRwpE+7TaFk/LXzaDT0eQqQdVAswSBQTWI5ex/dVw1
- qgDA==
-X-Gm-Message-State: AOJu0YxOjPwTo/jMXX6qhOnF2QT9pLljgywFCBq75uowJF8itR8QWLj1
- j8EKJ6nQXr4Osg5GnNqbIyKaEvUweljOUFHTJxXaDdu5BxhiZqzG+fDzY1LsB0G6GyFHJVJPSV9
- aKoKTc1rpcTaBmtVGV+MUF5cHEctUwE2p14ryha3IchS623p5ZxFVkdMcbcgTIt193MUbO1PcwZ
- IwflTi3QwMxn2R8xnLeJh4EvX9EQzU0Q==
-X-Received: by 2002:a17:906:fc01:b0:a68:f6b7:1fe3 with SMTP id
- a640c23a62f3a-a699fcf3563mr260036466b.43.1717630590395; 
- Wed, 05 Jun 2024 16:36:30 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF+UdcTmmXiKcFmzjKBFsEzkh6+bdd4qVh6x5/J7GAk1xNI240aTztcOcdEzm5PVvASfMYPdQ==
-X-Received: by 2002:a17:906:fc01:b0:a68:f6b7:1fe3 with SMTP id
- a640c23a62f3a-a699fcf3563mr260035666b.43.1717630589890; 
- Wed, 05 Jun 2024 16:36:29 -0700 (PDT)
+ bh=VYKkp6fHZoal2oiYNWaG4icBm491Zje1r86kUs5B3ls=;
+ b=jiQMzQ43+hIUcpSNW3OujR6cYMgbvahMCCQmLUX5bLu9tA+VXyMckrJscL3WFTgUid
+ 3uS5MQPXSBBG/Na9Yl5OlOwjmnI3FIjf3wD9t+GHzMTY2tHSrFuZpQaUAczKJqoEHb3T
+ UmLRr4CNtaD7dU+6vJ6Y05/yQX1ZDEQzESQu4/T0nThr2kQVltEmYevJB+a4/GuLOael
+ RPEm51n0YSeAc1WECOXSGAwQETni/ILoegJh1rA9+DCe7SGZgouI33KYCvLtXfOfmvR6
+ RO0ukcgLLQ6DRXaLSuOGzBy9kxGJ1sFhnwx5ktfmsynXk7r3jxg0VAhviPv0y4ytQ2mJ
+ utGg==
+X-Gm-Message-State: AOJu0Yz5toSMb/97HiuiVthF+vC/DRm99MOZFvmtc0pzKOWToxyG/E3H
+ wyohiErTliTur3JX7hReDFHNgayMSsyaoHUryIeefpYRnCzqzq1YxaFrtsyM0kO/PV7zR6MeQQ6
+ /qWsDaDeVhoKn+WLW+v6T380HXSwyG4J7GqQnhKJ/YTO+1aiBodnvyST0cr7ZPEjx0f8D8OQIxV
+ KQ2zcE+ydaKK6P9LAkn7x3yhL14ZbvBg==
+X-Received: by 2002:a50:f69d:0:b0:57a:79c2:e9d7 with SMTP id
+ 4fb4d7f45d1cf-57a8b7c6141mr2531867a12.27.1717630594222; 
+ Wed, 05 Jun 2024 16:36:34 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHqDL5XbCU5fqlEGdBT3VAnL6174hRz+Kbaud0YHpoylqwlOVNg+ayQGc3yGA8kSZ3smxm1cQ==
+X-Received: by 2002:a50:f69d:0:b0:57a:79c2:e9d7 with SMTP id
+ 4fb4d7f45d1cf-57a8b7c6141mr2531849a12.27.1717630593817; 
+ Wed, 05 Jun 2024 16:36:33 -0700 (PDT)
 Received: from redhat.com ([2.55.56.67]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a6c805d2882sm7047266b.90.2024.06.05.16.36.28
+ 4fb4d7f45d1cf-57aae11a98csm98999a12.48.2024.06.05.16.36.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 05 Jun 2024 16:36:29 -0700 (PDT)
-Date: Wed, 5 Jun 2024 19:36:26 -0400
+ Wed, 05 Jun 2024 16:36:33 -0700 (PDT)
+Date: Wed, 5 Jun 2024 19:36:30 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, Fan Ni <fan.ni@samsung.com>,
- Svetly Todorov <svetly.todorov@memverge.com>,
- Gregory Price <gregory.price@memverge.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PULL v3 29/41] hw/mem/cxl_type3: Allow to release extent superset
- in QMP interface
-Message-ID: <80ac9548a10f6fb3b9dcbc941e77bf1ca0616e7e.1717630437.git.mst@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Ankit Agrawal <ankita@nvidia.com>, Igor Mammedov <imammedo@redhat.com>,
+ Ani Sinha <anisinha@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>,
+ Laurent Vivier <laurent@vivier.eu>, qemu-trivial@nongnu.org
+Subject: [PULL v3 30/41] hw/acpi/GI: Fix trivial parameter alignment issue.
+Message-ID: <a8ff9b58450fb1df51302a5d698041aca6adcaaf.1717630437.git.mst@redhat.com>
 References: <cover.1717630437.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -77,7 +77,7 @@ Content-Disposition: inline
 In-Reply-To: <cover.1717630437.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -86,7 +86,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,39 +102,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Fan Ni <fan.ni@samsung.com>
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Before the change, the QMP interface used for add/release DC extents
-only allows to release an extent whose DPA range is contained by a single
-accepted extent in the device.
+Before making additional modification, tidy up this misleading indentation.
 
-With the change, we relax the constraints.  As long as the DPA range of
-the extent is covered by accepted extents, we allow the release.
-
-Tested-by: Svetly Todorov <svetly.todorov@memverge.com>
-Reviewed-by: Gregory Price <gregory.price@memverge.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Fan Ni <fan.ni@samsung.com>
-Message-Id: <20240523174651.1089554-15-nifan.cxl@gmail.com>
+Reviewed-by: Ankit Agrawal <ankita@nvidia.com>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Message-Id: <20240524100507.32106-2-Jonathan.Cameron@huawei.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/mem/cxl_type3.c | 2 +-
+ hw/acpi/acpi_generic_initiator.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
-index 0d18259ec0..5d4a1276be 100644
---- a/hw/mem/cxl_type3.c
-+++ b/hw/mem/cxl_type3.c
-@@ -1947,7 +1947,7 @@ static void qmp_cxl_process_dynamic_capacity_prescriptive(const char *path,
-                            "cannot release extent with pending DPA range");
-                 return;
-             }
--            if (!cxl_extents_contains_dpa_range(&dcd->dc.extents, dpa, len)) {
-+            if (!ct3_test_region_block_backed(dcd, dpa, len)) {
-                 error_setg(errp,
-                            "cannot release extent with non-existing DPA range");
-                 return;
+diff --git a/hw/acpi/acpi_generic_initiator.c b/hw/acpi/acpi_generic_initiator.c
+index 17b9a052f5..18a939b0e5 100644
+--- a/hw/acpi/acpi_generic_initiator.c
++++ b/hw/acpi/acpi_generic_initiator.c
+@@ -132,7 +132,7 @@ static int build_all_acpi_generic_initiators(Object *obj, void *opaque)
+ 
+     dev_handle.segment = 0;
+     dev_handle.bdf = PCI_BUILD_BDF(pci_bus_num(pci_get_bus(pci_dev)),
+-                                               pci_dev->devfn);
++                                   pci_dev->devfn);
+ 
+     build_srat_generic_pci_initiator_affinity(table_data,
+                                               gi->node, &dev_handle);
 -- 
 MST
 
