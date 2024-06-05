@@ -2,58 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CC028FD1A3
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jun 2024 17:29:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B41978FD1A4
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jun 2024 17:29:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEsZV-0000cW-4H; Wed, 05 Jun 2024 11:29:05 -0400
+	id 1sEsZY-0000e8-Qa; Wed, 05 Jun 2024 11:29:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <weifeng.liu.z@gmail.com>)
- id 1sEsZT-0000bU-2U
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 11:29:03 -0400
-Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
+ id 1sEsZW-0000dJ-8e
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 11:29:06 -0400
+Received: from mail-pj1-x102c.google.com ([2607:f8b0:4864:20::102c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <weifeng.liu.z@gmail.com>)
- id 1sEsZO-0007WL-E8
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 11:29:02 -0400
-Received: by mail-pf1-x432.google.com with SMTP id
- d2e1a72fcca58-6f8ec7e054dso4836398b3a.2
- for <qemu-devel@nongnu.org>; Wed, 05 Jun 2024 08:28:57 -0700 (PDT)
+ id 1sEsZR-0007Wq-KI
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 11:29:06 -0400
+Received: by mail-pj1-x102c.google.com with SMTP id
+ 98e67ed59e1d1-2c19bba897bso11206a91.2
+ for <qemu-devel@nongnu.org>; Wed, 05 Jun 2024 08:29:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1717601336; x=1718206136; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=wnvAk+khpr2juqijwqQqqwCt+1oaDBBIFgjTnKucVmw=;
- b=S1HGTRoHFGy6p9kTSwCZWQ4IeGTMLQL5ZaMAZ/q+Iu39Am20mJHqgEKghoFVCtLOyK
- lVb8aBEPgJsDoBPu2hcxDUzNMi20pXWwxtOPZb7ofrM6nJNEGRhMo2dP0AbQz96oqC25
- HjRRDI0GLH7gKdMZ2dH3WZHO+0QeWVS7bWpEcJeVf3wznJs4eXGo1NYua/zgzbCJpA8T
- U689sE904KSt05c2/oFR2U9PG9fqL1CMi5DRUpRGFx5L0hvzCLMMUQjFQAd6rdxnmhHW
- ZB9ggqMOsUjlL7AG8VX4MXbukUa6jrm5JAGUQhcPFKmD+/VUi7zSf6/rT1OysEG6eFO/
- +7Hg==
+ d=gmail.com; s=20230601; t=1717601339; x=1718206139; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=3uSdqS9y8pZdwZwhzYtQ3lJ2peW+WDx3Tf5rEC64RwM=;
+ b=eUOggr49y5OqexxReIto7Nx16Dh2Awy6Qam8X+i9ZyTXYMX+tQV0fyt7h9R73bVGfI
+ 3oAjXdNyfj6BG5WFEhADlsfsJFO7KSLWMDUb9i4Pq69wOKm51/Po6Dk/cIjYg0zEsTuk
+ LOio3rMr4x1J9m9wzlTNZ+nkU5KXZw1g+cmJWUPVanwoQiO2OZAc0PcvvvS2cae/oSYO
+ jIF0wri2Qihf8enZeib0o6DFaZTos5xyC5QKipNidesn/grE0+gXY9qg01xMC/T9K9wI
+ 2mpbdBriewB/A2wSsWfNajIl8WfBu464FA6GWCKqaLUTkt3SebO3hLq5+TbYEfJWnEN9
+ gflg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717601336; x=1718206136;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=wnvAk+khpr2juqijwqQqqwCt+1oaDBBIFgjTnKucVmw=;
- b=e8ecvaK+zWwB+JCl9Xjqdkxylc58NvE6/kRsmgXlzfx3DV/jLM5hNjTzn1zBSesr44
- /GGtfWl/ASbZh1GEi4orYgiUsM/pwQwUFyuVixaBkcaWVJI4cC1ebg94osrG9LC07cYf
- 5P65dCOtqocG3Bo+13qMYfgz3wx6ycVhXjm3FkdHUPZbU684/le0sxSSq9wLxkDIA6f2
- 81FIrLGi9fL3W+RzX8d5Xu/nyN6OQlZDpt1mC9rAlc2KC6ZfgFCupVNeSYTKY3J798yC
- ZzuBBWKRLM0SLSx4gtOE0yyw+ybdyvIJE56vjrDRqfp48xK0pW9iXADhojcSu2J2kHFE
- J51g==
-X-Gm-Message-State: AOJu0Yx8e7bHkBy79mj6Ql4Bgq6KIvRlwv04Nvo5/R3BNcNb3lN+kpc4
- GkRA+QO6Hs06rVK0rTNw9QWROO8VkkSpWkCyjA+Pzqs98nAiQnLAup3Z/3vdGYw=
-X-Google-Smtp-Source: AGHT+IGW5mFxyHEu6KNjm0Xw2zQogC9KWJKPIQ49rdjdrTIrdztDbBT4aljHUfnqEXxmaV2NKFeQkg==
-X-Received: by 2002:a05:6a00:2ea9:b0:6f8:c6e4:1829 with SMTP id
- d2e1a72fcca58-703e5a1bbfdmr3335658b3a.25.1717601335712; 
- Wed, 05 Jun 2024 08:28:55 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1717601339; x=1718206139;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=3uSdqS9y8pZdwZwhzYtQ3lJ2peW+WDx3Tf5rEC64RwM=;
+ b=Qp/Vl5rHeEVVfm731dJ4WeUxhofWHlKXq0NlLTVK3S8iLmOPJJsuoA432f2Ku36GKA
+ qcbXw656ibZxS0jYZJxmC9ZEqloSHG+3H8PSbiL30XhReH6iSiDEtzTYy/LqXcXRdS44
+ /1flx665tRbfEzlzflLKwXB6zcIIPIlylDgWNRDC+kA32W7BlyjJ12j/SwXyT6Ei5rVl
+ xCwYLBgkRDqwOfTMXgPUU1bA5VuAhk7Wp+zTr2k3FZ/6EKonpZxcQt/2gHqQnsGf4lFG
+ i8fjSsHcrw4YiYfe+hoM6zuyLH8N4IvIKm6eE9NAKv7TUd+oqIL3zfgfR7PZJBo/YrxJ
+ /LTQ==
+X-Gm-Message-State: AOJu0YyCcNR72xdhP7Iu42A0MqROkG4cDomltC6Q8OmHSOOSxGrfVcA4
+ nn+GT/mTsaW86tSKUMb5AwssJcJqIt9ovlsM+pcm3qpaqoT2icVDwk/4opZvevM=
+X-Google-Smtp-Source: AGHT+IGimj//pRmrNZ48SI3fMsWEwh0xWZG0frDs34EZYEwcvCLgKdeD0hmVbeaD6yLOjxOx1umKuw==
+X-Received: by 2002:a17:90a:5410:b0:2bd:fa57:b361 with SMTP id
+ 98e67ed59e1d1-2c27db10aecmr2914768a91.11.1717601339276; 
+ Wed, 05 Jun 2024 08:28:59 -0700 (PDT)
 Received: from localhost ([103.192.227.74]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-702688e7e3dsm5526536b3a.215.2024.06.05.08.28.54
+ 98e67ed59e1d1-2c284aa3161sm1518335a91.27.2024.06.05.08.28.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 05 Jun 2024 08:28:55 -0700 (PDT)
+ Wed, 05 Jun 2024 08:28:58 -0700 (PDT)
 From: Weifeng Liu <weifeng.liu.z@gmail.com>
 To: qemu-devel@nongnu.org, Gurchetan Singh <gurchetansingh@chromium.org>,
  "Michael S. Tsirkin" <mst@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>
@@ -62,14 +63,17 @@ Cc: Weifeng Liu <weifeng.liu.z@gmail.com>,
  Huang Rui <ray.huang@amd.com>,
  Dmitry Osipenko <dmitry.osipenko@collabora.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PATCH 0/3] virtio-gpu: Enable virglrenderer backend for rutabaga
-Date: Wed,  5 Jun 2024 23:28:27 +0800
-Message-ID: <20240605152832.11618-1-weifeng.liu.z@gmail.com>
+Subject: [PATCH 1/3] virtio-gpu: rutabaga: Properly set stride when copying
+ resources
+Date: Wed,  5 Jun 2024 23:28:28 +0800
+Message-ID: <20240605152832.11618-2-weifeng.liu.z@gmail.com>
 X-Mailer: git-send-email 2.45.1
+In-Reply-To: <20240605152832.11618-1-weifeng.liu.z@gmail.com>
+References: <20240605152832.11618-1-weifeng.liu.z@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
- envelope-from=weifeng.liu.z@gmail.com; helo=mail-pf1-x432.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102c;
+ envelope-from=weifeng.liu.z@gmail.com; helo=mail-pj1-x102c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,90 +96,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Greetings,
+The stride is not correctly assigned when copying pixel data, causing
+images being displayed incomplete when using 2d component of rutabaga.
 
-I'd like to introduce you my attempt to enable virglrenderer backend for
-rutabaga empowered virtio-gpu device.  I am aware that there have been
-effort in supporting venus in virtio-gpu-virgl.c [1], but there is no
-reason to prevent us from leveraging the virglrenderer component in
-rutabaga_gfx, especially it being not very hard to add this
-functionality.
+Signed-off-by: Weifeng Liu <weifeng.liu.z@gmail.com>
+---
+ hw/display/virtio-gpu-rutabaga.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-Generally, the gap is the polling capability, i.e., virglrenderer
-requires the main thread (namely the GPU command handling thread) to
-poll virglrenderer at proper moments, which is not yet supported in
-virtio-gpu-rutabaga device. This patch set try to add this so that
-virglrenderer backend (including virgl and venus) can work as expected.
-
-Slight change to rutabaga_gfx_ffi is also a requirement, which is
-included in [2].
-
-Further effort is required to tune the performance, since copying is
-present before the rendered images get displayed. But I still think this
-patch set could be a good starting point for the pending work.
-
-For those interested in setting up environment and playing around with
-this patch set, here is guideline in brief:
-
-1. Clone the master/main branch of virglrenderer, compile and install it.
-
-	git clone https://gitlab.freedesktop.org/virgl/virglrenderer
-	cd virglrenderer
-	meson setup builddir \
-	  --prefix=$INSTALL_DIR/virglrenderer \
-	  -Dvenus=true
-	ninja -C builddir install
-
-2. Clone the patched CrosVM, build and install rutabaga_gfx_ffi.
-
-	git clone -b rutabaga_ffi_virgl https://github.com/phreer/crosvm.git
-	cd crosvm/rutabaga_gfx/ffi
-	export PKG_CONFIG_PATH=$INSTALL_DIR/virglrenderer/lib64/pkgconfig/
-	meson setup builddir/ \
-	  --prefix $HOME/install/rutabaga_gfx/rutabaga_gfx_ffi/ \
-	  -Dvirglrenderer=true
-	ninja -C builddir install
-
-3. Applied this patch set to QEMU, build and install it:
-
-	cd qemu	
-	# Apply this patch set atop main branch ...
-	mkdir builddir; cd builddir
-	../configure --prefix=$INSTALL_DIR/qemu \
-	  --target-list=x86_64-softmmu \
-	  --disable-virglrenderer \
-	  --enable-rutabaga_gfx
-	ninja -C builddir install
-
-4. If you are lucky and everything goes fine, you are prepared to launch
-   VM with virglrenderer backed virtio-gpu-rutabaga device:
-
-	export LD_LIBRARY_PATH=$INSTALL_DIR/virglrenderer/lib64/:$LD_LIBRARY_PATH
-	export LD_LIBRARY_PATH=$INSTALL_DIR/rutabaga_gfx_ffi/lib64/:$LD_LIBRARY_PATH
-	$INSTALL_DIR/qemu/bin/qemu-system-x86_64
-	$QEMU -d guest_errors -enable-kvm -M q35 -smp 4 -m $MEM \
-	  -object memory-backend-memfd,id=mem1,size=$MEM \
-	  -machine memory-backend=mem1 \
-	  -device virtio-vga-rutabaga,venus=on,virgl2=on,wsi=surfaceless,hostmem=$MEM \
-
-Note:
-
-- You might need this patch set [3] to avoid KVM bad address error when
-  you are running on a GPU using TTM for memory management.
-
-[1] https://lore.kernel.org/all/dba6eb97-e1d1-4694-bfb6-e72db95715dd@daynix.com/T/
-[2] https://chromium-review.googlesource.com/c/crosvm/crosvm/+/5599645/1
-[3] https://lore.kernel.org/kvm/20240229025759.1187910-1-stevensd@google.com/
-
-Weifeng Liu (3):
-  virtio-gpu: rutabaga: Properly set stride when copying resources
-  virtio-gpu: rutabaga: Poll rutabaga upon events
-  virtio-gpu: rutabaga: Add options to enable virgl and venus contexts
-
- hw/display/virtio-gpu-rutabaga.c | 104 ++++++++++++++++++++++++++++++-
- include/hw/virtio/virtio-gpu.h   |   1 +
- 2 files changed, 104 insertions(+), 1 deletion(-)
-
+diff --git a/hw/display/virtio-gpu-rutabaga.c b/hw/display/virtio-gpu-rutabaga.c
+index 17bf701a21..2ba6869606 100644
+--- a/hw/display/virtio-gpu-rutabaga.c
++++ b/hw/display/virtio-gpu-rutabaga.c
+@@ -53,6 +53,7 @@ virtio_gpu_rutabaga_update_cursor(VirtIOGPU *g, struct virtio_gpu_scanout *s,
+     transfer.z = 0;
+     transfer.w = res->width;
+     transfer.h = res->height;
++    transfer.stride = res->width * 4;
+     transfer.d = 1;
+ 
+     transfer_iovec.iov_base = s->current_cursor->data;
+@@ -273,6 +274,7 @@ rutabaga_cmd_resource_flush(VirtIOGPU *g, struct virtio_gpu_ctrl_command *cmd)
+     transfer.z = 0;
+     transfer.w = res->width;
+     transfer.h = res->height;
++    transfer.stride = pixman_image_get_stride(res->image);
+     transfer.d = 1;
+ 
+     transfer_iovec.iov_base = pixman_image_get_data(res->image);
+@@ -382,6 +384,7 @@ rutabaga_cmd_transfer_to_host_2d(VirtIOGPU *g,
+     transfer.z = 0;
+     transfer.w = t2d.r.width;
+     transfer.h = t2d.r.height;
++    transfer.stride = t2d.r.width * 4;
+     transfer.d = 1;
+ 
+     result = rutabaga_resource_transfer_write(vr->rutabaga, 0, t2d.resource_id,
 -- 
 2.45.0
 
