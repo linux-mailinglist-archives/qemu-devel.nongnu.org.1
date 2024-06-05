@@ -2,80 +2,116 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D02B78FD839
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jun 2024 23:17:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 994098FD84D
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jun 2024 23:19:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sExzE-0000jn-4q; Wed, 05 Jun 2024 17:16:00 -0400
+	id 1sEy24-0007ow-2i; Wed, 05 Jun 2024 17:18:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sExz2-0000fr-J3
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 17:15:48 -0400
-Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sExyt-0003Rz-1g
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 17:15:48 -0400
-Received: by mail-pf1-x432.google.com with SMTP id
- d2e1a72fcca58-6f6a045d476so195668b3a.1
- for <qemu-devel@nongnu.org>; Wed, 05 Jun 2024 14:15:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1717622137; x=1718226937; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=NRnvBT7dCcRQW46yZ2cILgjEvSH0UMGtXyMJE1zUYf4=;
- b=S9kKFkx20O5iBGODTxQSGVUjSxOWAZreFkd8sJdIMwY7SovB/JQw5x1bLKaX3b43Sj
- DK9cOVLC8xTDyIFt8KD7ebFxyEBAKDtjbxaq5NLrdeNoW3zOxFR3YErXHFP4SwCmzZVG
- YYfEwHfeNAmgUKKucG5q7NaJL0DCP+C7oYtaB19Q3OXBKCcLOPMp50SdpSeFPOBhE+0n
- 7+zGk6kNZATq3GEX+kT5V+Kdm4JGDHyplnXd4PSxkMLlhS34RnF9NCUPj2V/tDhHpT6K
- W3nbXeL21JJOV7PEmiqzTxd4FUQXhCTzhBd4GnUTXSeBH0vCPZUInQzj8ZD+WIsdepKg
- y2KQ==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sEy1z-0007nP-8S
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 17:18:51 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sEy1t-00043R-Q9
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 17:18:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1717622324;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=0qDrUzD2QsqVidyOnu5RGSYDufCOrzbBQ/FVfAKTwKE=;
+ b=VksszJ2D4PExCA9/xE2zs0s64OH+j9oFUfHNuYMFuhnrQLV0whEvmhtx+fYAq21ODjAjMQ
+ wwZV03aUKbYYi6yYMP+ncvfGc6UoB98dFPXFfq/TiREszNipZoZK2Kfw8IhGQ0liStbwgB
+ 57jw/GKCu847M+qCLjRVqTbcFJbxwzY=
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
+ [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-119-7A6sXAoaMdu57JBvUA0rsA-1; Wed, 05 Jun 2024 17:18:42 -0400
+X-MC-Unique: 7A6sXAoaMdu57JBvUA0rsA-1
+Received: by mail-qt1-f197.google.com with SMTP id
+ d75a77b69052e-43ffb7cebdbso298481cf.1
+ for <qemu-devel@nongnu.org>; Wed, 05 Jun 2024 14:18:42 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717622137; x=1718226937;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=NRnvBT7dCcRQW46yZ2cILgjEvSH0UMGtXyMJE1zUYf4=;
- b=qibHiHPtGzikPLpuLfveMWnE84uvvzmfKP2LLbL+Y0lYX7nA+4wonN/Ela497ebcvt
- YFT170tv5iqM5lz+N1CFtkntu+BKiGb7sI6fl5uwNC2elJoTOPId6T57Uuf8Qgmm+ZYg
- rQSbYLkNTpBH+RRFwn0AWAIpohM4PvExkzqpx/mWINqLETMNtFb28aonxZNMUbDlCN8R
- ahuqTtlyv0Zdq/F5Qt9p5vzAl1yVZaMOaTCHgqmUqX185tuOPlKd1Cy6VhFcHzQqWF9V
- 8GdeYixwF37VK1EGKEdAv1MopwFoJRpnRkd5GG0W+9XDZS0uex0fNaBZpb2WBXol9L0w
- quxQ==
-X-Gm-Message-State: AOJu0YyYCcQ8aJsjyBERGd7w4XJuOtkJfWaYiMpMuohA5Hk274Hk0ZsH
- zUTHoDei2SwKWthUHaKG9shOj1VaQ2eRnPhtAoQ8fSTnzM5762P9La9v4Mhh66t/P9K0gK55efj
- M
-X-Google-Smtp-Source: AGHT+IFrOjyBsjPYDMv5dM6bzh8qw21VByPFIHuNpSTu1G2B1BZ0K/Ocd1kb5ph/vQI2oMl6TaytCg==
-X-Received: by 2002:a05:6a20:2593:b0:1a3:8e1d:16b8 with SMTP id
- adf61e73a8af0-1b2b6ffee37mr4401487637.28.1717622137280; 
- Wed, 05 Jun 2024 14:15:37 -0700 (PDT)
-Received: from stoup.. ([71.212.132.216]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-70242aec7d0sm9347538b3a.99.2024.06.05.14.15.36
+ d=1e100.net; s=20230601; t=1717622322; x=1718227122;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=0qDrUzD2QsqVidyOnu5RGSYDufCOrzbBQ/FVfAKTwKE=;
+ b=OpWA0URIfVhOrnpwPJjjEWaKQmV+D1XdimsoMNJgOmw1yoLFQz0iFkgFjv0t9b06D9
+ qzqQFnimlEeTTCavhDFRnnzW917jvT9x2ZnHqAeeB7DTRLzt6qNMXM0o5bTd/ovA/7ry
+ A/P/B9sPn4gJ6oEid2Q8MWaocqgnDeRvH2NBqRH8g4ASHKIwXJusEsF820vw8KQd7TSy
+ kWpslT//Ywf9cTjS1fXI3wfOY707ccuG9ZX7L17ploN8jRVIHdHXBXVbEQnlTdyjkTZk
+ fij6Q7VijOqqLDr9hOl1zc+GaNR2lcisO2R8c9EwZ5Th+V+VuqK4PuY24Dhrd9yo9wU/
+ BQ3Q==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWmPSpBADmuZpRN+oaUYB5pdSz40yje+JPlJDniBBo6h4DAhqWGUVjcZeq0TtJdYRefBbGGT3ldasPvAmYM62Sg9UvZEYo=
+X-Gm-Message-State: AOJu0YyD4gxWjmTB84lr8HrA8CWNcE4P77mYcsxvnl/ScjEI+GiDu1P3
+ 5ip07CyxV6C0n8oJfCUsm0GMkNX3sFXarIydphHwU4nz+XrHP1FVaG0CZlzPnizGxoHLcgK1X2Z
+ qJl0fGznpfCdGefHu6cQ/mTuyJc02HLHeVSOSIg4ckuyiceotTTOz
+X-Received: by 2002:a05:620a:290b:b0:794:c6a0:258a with SMTP id
+ af79cd13be357-79523d97230mr397231885a.4.1717622322062; 
+ Wed, 05 Jun 2024 14:18:42 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGm1wvQdZr+RhwdSCkJIusK9ypevr/zgAzD2oNeBLhHd6Zu8G2fCNRq8exjIgmpTZlWS9vjwQ==
+X-Received: by 2002:a05:620a:290b:b0:794:c6a0:258a with SMTP id
+ af79cd13be357-79523d97230mr397230285a.4.1717622321457; 
+ Wed, 05 Jun 2024 14:18:41 -0700 (PDT)
+Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com.
+ [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
+ af79cd13be357-7952db5fec8sm36278685a.48.2024.06.05.14.18.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 05 Jun 2024 14:15:36 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Alistair Francis <alistair.francis@wdc.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PULL 16/16] disas/riscv: Use GString in format_inst
-Date: Wed,  5 Jun 2024 14:15:21 -0700
-Message-Id: <20240605211521.577094-17-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240605211521.577094-1-richard.henderson@linaro.org>
-References: <20240605211521.577094-1-richard.henderson@linaro.org>
+ Wed, 05 Jun 2024 14:18:40 -0700 (PDT)
+Date: Wed, 5 Jun 2024 17:18:38 -0400
+From: Peter Xu <peterx@redhat.com>
+To: "Dr. David Alan Gilbert" <dave@treblig.org>
+Cc: Michael Galaxy <mgalaxy@akamai.com>, Zheng Chuan <zhengchuan@huawei.com>,
+ "Gonglei (Arei)" <arei.gonglei@huawei.com>,
+ Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, Yu Zhang <yu.zhang@ionos.com>,
+ "Zhijian Li (Fujitsu)" <lizhijian@fujitsu.com>,
+ Jinpu Wang <jinpu.wang@ionos.com>, Elmar Gerdes <elmar.gerdes@ionos.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ Yuval Shaia <yuval.shaia.ml@gmail.com>, Kevin Wolf <kwolf@redhat.com>,
+ Prasanna Kumar Kalever <prasanna.kalever@redhat.com>,
+ Cornelia Huck <cohuck@redhat.com>, Michael Roth <michael.roth@amd.com>,
+ Prasanna Kumar Kalever <prasanna4324@gmail.com>,
+ "integration@gluster.org" <integration@gluster.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ "qemu-block@nongnu.org" <qemu-block@nongnu.org>,
+ "devel@lists.libvirt.org" <devel@lists.libvirt.org>,
+ Hanna Reitz <hreitz@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Song Gao <gaosong@loongson.cn>,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
+ Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>, Pannengyuan <pannengyuan@huawei.com>,
+ Xiexiangyou <xiexiangyou@huawei.com>
+Subject: Re: [PATCH-for-9.1 v2 2/3] migration: Remove RDMA protocol handling
+Message-ID: <ZmDWLkBKISvQcA8I@x1n>
+References: <ZjJgQcPQ29HJsTpY@x1n>
+ <7e902e4e576a4e199e36d28f99bd55e5@huawei.com>
+ <Zjj0xa-3KrFHTK0S@x1n>
+ <addaa8d094904315a466533763689ead@huawei.com>
+ <ZjpWmG2aUJLkYxJm@x1n>
+ <13ce4f9e-1e7c-24a9-0dc9-c40962979663@huawei.com>
+ <cd93922f-cf58-4a42-854d-0b39c6941905@akamai.com>
+ <Zl-x_Az8i4jOwitt@gallifrey> <ZmBx8UDDmO-C1Oqu@x1n>
+ <ZmDPHKLkzBO47XRc@gallifrey>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x432.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <ZmDPHKLkzBO47XRc@gallifrey>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -92,423 +128,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Allocate and fill a GString instead of snprintf and
-appending to a fixed sized buffer.
+On Wed, Jun 05, 2024 at 08:48:28PM +0000, Dr. David Alan Gilbert wrote:
+> > > I just noticed this thread; some random notes from a somewhat
+> > > fragmented memory of this:
+> > > 
+> > >   a) Long long ago, I also tried rsocket; 
+> > >       https://lists.gnu.org/archive/html/qemu-devel/2015-01/msg02040.html
+> > >      as I remember the library was quite flaky at the time.
+> > 
+> > Hmm interesting.  There also looks like a thread doing rpoll().
+> 
+> Yeh, I can't actually remember much more about what I did back then!
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-Id: <20240412073346.458116-22-richard.henderson@linaro.org>
----
- disas/riscv.c | 209 ++++++++++++++++++++++----------------------------
- 1 file changed, 92 insertions(+), 117 deletions(-)
+Heh, that's understandable and fair. :)
 
-diff --git a/disas/riscv.c b/disas/riscv.c
-index 297cfa2f63..90d6b26de9 100644
---- a/disas/riscv.c
-+++ b/disas/riscv.c
-@@ -4820,272 +4820,249 @@ static size_t inst_length(rv_inst inst)
- 
- /* format instruction */
- 
--static void append(char *s1, const char *s2, size_t n)
--{
--    size_t l1 = strlen(s1);
--    if (n - l1 - 1 > 0) {
--        strncat(s1, s2, n - l1);
--    }
--}
--
--static void format_inst(char *buf, size_t buflen, size_t tab, rv_decode *dec)
-+static GString *format_inst(size_t tab, rv_decode *dec)
- {
-     const rv_opcode_data *opcode_data = dec->opcode_data;
--    char tmp[64];
-+    GString *buf = g_string_sized_new(64);
-     const char *fmt;
- 
-     fmt = opcode_data[dec->op].format;
-     while (*fmt) {
-         switch (*fmt) {
-         case 'O':
--            append(buf, opcode_data[dec->op].name, buflen);
-+            g_string_append(buf, opcode_data[dec->op].name);
-             break;
-         case '(':
--            append(buf, "(", buflen);
--            break;
-         case ',':
--            append(buf, ",", buflen);
--            break;
-         case ')':
--            append(buf, ")", buflen);
--            break;
-         case '-':
--            append(buf, "-", buflen);
-+            g_string_append_c(buf, *fmt);
-             break;
-         case 'b':
--            snprintf(tmp, sizeof(tmp), "%d", dec->bs);
--            append(buf, tmp, buflen);
-+            g_string_append_printf(buf, "%d", dec->bs);
-             break;
-         case 'n':
--            snprintf(tmp, sizeof(tmp), "%d", dec->rnum);
--            append(buf, tmp, buflen);
-+            g_string_append_printf(buf, "%d", dec->rnum);
-             break;
-         case '0':
--            append(buf, rv_ireg_name_sym[dec->rd], buflen);
-+            g_string_append(buf, rv_ireg_name_sym[dec->rd]);
-             break;
-         case '1':
--            append(buf, rv_ireg_name_sym[dec->rs1], buflen);
-+            g_string_append(buf, rv_ireg_name_sym[dec->rs1]);
-             break;
-         case '2':
--            append(buf, rv_ireg_name_sym[dec->rs2], buflen);
-+            g_string_append(buf, rv_ireg_name_sym[dec->rs2]);
-             break;
-         case '3':
--            append(buf, dec->cfg->ext_zfinx ? rv_ireg_name_sym[dec->rd] :
--                                              rv_freg_name_sym[dec->rd],
--                   buflen);
-+            if (dec->cfg->ext_zfinx) {
-+                g_string_append(buf, rv_ireg_name_sym[dec->rd]);
-+            } else {
-+                g_string_append(buf, rv_freg_name_sym[dec->rd]);
-+            }
-             break;
-         case '4':
--            append(buf, dec->cfg->ext_zfinx ? rv_ireg_name_sym[dec->rs1] :
--                                              rv_freg_name_sym[dec->rs1],
--                   buflen);
-+            if (dec->cfg->ext_zfinx) {
-+                g_string_append(buf, rv_ireg_name_sym[dec->rs1]);
-+            } else {
-+                g_string_append(buf, rv_freg_name_sym[dec->rs1]);
-+            }
-             break;
-         case '5':
--            append(buf, dec->cfg->ext_zfinx ? rv_ireg_name_sym[dec->rs2] :
--                                              rv_freg_name_sym[dec->rs2],
--                   buflen);
-+            if (dec->cfg->ext_zfinx) {
-+                g_string_append(buf, rv_ireg_name_sym[dec->rs2]);
-+            } else {
-+                g_string_append(buf, rv_freg_name_sym[dec->rs2]);
-+            }
-             break;
-         case '6':
--            append(buf, dec->cfg->ext_zfinx ? rv_ireg_name_sym[dec->rs3] :
--                                              rv_freg_name_sym[dec->rs3],
--                   buflen);
-+            if (dec->cfg->ext_zfinx) {
-+                g_string_append(buf, rv_ireg_name_sym[dec->rs3]);
-+            } else {
-+                g_string_append(buf, rv_freg_name_sym[dec->rs3]);
-+            }
-             break;
-         case '7':
--            snprintf(tmp, sizeof(tmp), "%d", dec->rs1);
--            append(buf, tmp, buflen);
-+            g_string_append_printf(buf, "%d", dec->rs1);
-             break;
-         case 'i':
--            snprintf(tmp, sizeof(tmp), "%d", dec->imm);
--            append(buf, tmp, buflen);
-+            g_string_append_printf(buf, "%d", dec->imm);
-             break;
-         case 'u':
--            snprintf(tmp, sizeof(tmp), "%u", ((uint32_t)dec->imm & 0b111111));
--            append(buf, tmp, buflen);
-+            g_string_append_printf(buf, "%u", ((uint32_t)dec->imm & 0b111111));
-             break;
-         case 'j':
--            snprintf(tmp, sizeof(tmp), "%d", dec->imm1);
--            append(buf, tmp, buflen);
-+            g_string_append_printf(buf, "%d", dec->imm1);
-             break;
-         case 'o':
--            snprintf(tmp, sizeof(tmp), "%d", dec->imm);
--            append(buf, tmp, buflen);
--            while (strlen(buf) < tab * 2) {
--                append(buf, " ", buflen);
-+            g_string_append_printf(buf, "%d", dec->imm);
-+            while (buf->len < tab * 2) {
-+                g_string_append_c(buf, ' ');
-             }
--            snprintf(tmp, sizeof(tmp), "# 0x%" PRIx64,
--                dec->pc + dec->imm);
--            append(buf, tmp, buflen);
-+            g_string_append_printf(buf, "# 0x%" PRIx64, dec->pc + dec->imm);
-             break;
-         case 'U':
-             fmt++;
--            snprintf(tmp, sizeof(tmp), "%d", dec->imm >> 12);
--            append(buf, tmp, buflen);
-+            g_string_append_printf(buf, "%d", dec->imm >> 12);
-             if (*fmt == 'o') {
--                while (strlen(buf) < tab * 2) {
--                    append(buf, " ", buflen);
-+                while (buf->len < tab * 2) {
-+                    g_string_append_c(buf, ' ');
-                 }
--                snprintf(tmp, sizeof(tmp), "# 0x%" PRIx64,
--                    dec->pc + dec->imm);
--                append(buf, tmp, buflen);
-+                g_string_append_printf(buf, "# 0x%" PRIx64, dec->pc + dec->imm);
-             }
-             break;
-         case 'c': {
-             const char *name = csr_name(dec->imm & 0xfff);
-             if (name) {
--                append(buf, name, buflen);
-+                g_string_append(buf, name);
-             } else {
--                snprintf(tmp, sizeof(tmp), "0x%03x", dec->imm & 0xfff);
--                append(buf, tmp, buflen);
-+                g_string_append_printf(buf, "0x%03x", dec->imm & 0xfff);
-             }
-             break;
-         }
-         case 'r':
-             switch (dec->rm) {
-             case rv_rm_rne:
--                append(buf, "rne", buflen);
-+                g_string_append(buf, "rne");
-                 break;
-             case rv_rm_rtz:
--                append(buf, "rtz", buflen);
-+                g_string_append(buf, "rtz");
-                 break;
-             case rv_rm_rdn:
--                append(buf, "rdn", buflen);
-+                g_string_append(buf, "rdn");
-                 break;
-             case rv_rm_rup:
--                append(buf, "rup", buflen);
-+                g_string_append(buf, "rup");
-                 break;
-             case rv_rm_rmm:
--                append(buf, "rmm", buflen);
-+                g_string_append(buf, "rmm");
-                 break;
-             case rv_rm_dyn:
--                append(buf, "dyn", buflen);
-+                g_string_append(buf, "dyn");
-                 break;
-             default:
--                append(buf, "inv", buflen);
-+                g_string_append(buf, "inv");
-                 break;
-             }
-             break;
-         case 'p':
-             if (dec->pred & rv_fence_i) {
--                append(buf, "i", buflen);
-+                g_string_append_c(buf, 'i');
-             }
-             if (dec->pred & rv_fence_o) {
--                append(buf, "o", buflen);
-+                g_string_append_c(buf, 'o');
-             }
-             if (dec->pred & rv_fence_r) {
--                append(buf, "r", buflen);
-+                g_string_append_c(buf, 'r');
-             }
-             if (dec->pred & rv_fence_w) {
--                append(buf, "w", buflen);
-+                g_string_append_c(buf, 'w');
-             }
-             break;
-         case 's':
-             if (dec->succ & rv_fence_i) {
--                append(buf, "i", buflen);
-+                g_string_append_c(buf, 'i');
-             }
-             if (dec->succ & rv_fence_o) {
--                append(buf, "o", buflen);
-+                g_string_append_c(buf, 'o');
-             }
-             if (dec->succ & rv_fence_r) {
--                append(buf, "r", buflen);
-+                g_string_append_c(buf, 'r');
-             }
-             if (dec->succ & rv_fence_w) {
--                append(buf, "w", buflen);
-+                g_string_append_c(buf, 'w');
-             }
-             break;
-         case '\t':
--            while (strlen(buf) < tab) {
--                append(buf, " ", buflen);
-+            while (buf->len < tab) {
-+                g_string_append_c(buf, ' ');
-             }
-             break;
-         case 'A':
-             if (dec->aq) {
--                append(buf, ".aq", buflen);
-+                g_string_append(buf, ".aq");
-             }
-             break;
-         case 'R':
-             if (dec->rl) {
--                append(buf, ".rl", buflen);
-+                g_string_append(buf, ".rl");
-             }
-             break;
-         case 'l':
--            append(buf, ",v0", buflen);
-+            g_string_append(buf, ",v0");
-             break;
-         case 'm':
-             if (dec->vm == 0) {
--                append(buf, ",v0.t", buflen);
-+                g_string_append(buf, ",v0.t");
-             }
-             break;
-         case 'D':
--            append(buf, rv_vreg_name_sym[dec->rd], buflen);
-+            g_string_append(buf, rv_vreg_name_sym[dec->rd]);
-             break;
-         case 'E':
--            append(buf, rv_vreg_name_sym[dec->rs1], buflen);
-+            g_string_append(buf, rv_vreg_name_sym[dec->rs1]);
-             break;
-         case 'F':
--            append(buf, rv_vreg_name_sym[dec->rs2], buflen);
-+            g_string_append(buf, rv_vreg_name_sym[dec->rs2]);
-             break;
-         case 'G':
--            append(buf, rv_vreg_name_sym[dec->rs3], buflen);
-+            g_string_append(buf, rv_vreg_name_sym[dec->rs3]);
-             break;
-         case 'v': {
--            char nbuf[32] = {0};
-             const int sew = 1 << (((dec->vzimm >> 3) & 0b111) + 3);
--            sprintf(nbuf, "%d", sew);
-             const int lmul = dec->vzimm & 0b11;
-             const int flmul = (dec->vzimm >> 2) & 1;
-             const char *vta = (dec->vzimm >> 6) & 1 ? "ta" : "tu";
-             const char *vma = (dec->vzimm >> 7) & 1 ? "ma" : "mu";
--            append(buf, "e", buflen);
--            append(buf, nbuf, buflen);
--            append(buf, ",m", buflen);
-+
-+            g_string_append_printf(buf, "e%d,m", sew);
-             if (flmul) {
-                 switch (lmul) {
-                 case 3:
--                    sprintf(nbuf, "f2");
-+                    g_string_append(buf, "f2");
-                     break;
-                 case 2:
--                    sprintf(nbuf, "f4");
-+                    g_string_append(buf, "f4");
-                     break;
-                 case 1:
--                    sprintf(nbuf, "f8");
--                break;
-+                    g_string_append(buf, "f8");
-+                    break;
-                 }
--                append(buf, nbuf, buflen);
-             } else {
--                sprintf(nbuf, "%d", 1 << lmul);
--                append(buf, nbuf, buflen);
-+                g_string_append_printf(buf, "%d", 1 << lmul);
-             }
--            append(buf, ",", buflen);
--            append(buf, vta, buflen);
--            append(buf, ",", buflen);
--            append(buf, vma, buflen);
-+            g_string_append_c(buf, ',');
-+            g_string_append(buf, vta);
-+            g_string_append_c(buf, ',');
-+            g_string_append(buf, vma);
-             break;
-         }
-         case 'x': {
-             switch (dec->rlist) {
-             case 4:
--                snprintf(tmp, sizeof(tmp), "{ra}");
-+                g_string_append(buf, "{ra}");
-                 break;
-             case 5:
--                snprintf(tmp, sizeof(tmp), "{ra, s0}");
-+                g_string_append(buf, "{ra, s0}");
-                 break;
-             case 15:
--                snprintf(tmp, sizeof(tmp), "{ra, s0-s11}");
-+                g_string_append(buf, "{ra, s0-s11}");
-                 break;
-             default:
--                snprintf(tmp, sizeof(tmp), "{ra, s0-s%d}", dec->rlist - 5);
-+                g_string_append_printf(buf, "{ra, s0-s%d}", dec->rlist - 5);
-                 break;
-             }
--            append(buf, tmp, buflen);
-             break;
-         }
-         case 'h':
--            append(buf, rv_fli_name_const[dec->imm], buflen);
-+            g_string_append(buf, rv_fli_name_const[dec->imm]);
-             break;
-         default:
-             break;
-         }
-         fmt++;
-     }
-+
-+    return buf;
- }
- 
- /* lift instruction to pseudo-instruction */
-@@ -5171,9 +5148,8 @@ static void decode_inst_decompress(rv_decode *dec, rv_isa isa)
- 
- /* disassemble instruction */
- 
--static void
--disasm_inst(char *buf, size_t buflen, rv_isa isa, uint64_t pc, rv_inst inst,
--            RISCVCPUConfig *cfg)
-+static GString *disasm_inst(rv_isa isa, uint64_t pc, rv_inst inst,
-+                            RISCVCPUConfig *cfg)
- {
-     rv_decode dec = { 0 };
-     dec.pc = pc;
-@@ -5220,7 +5196,7 @@ disasm_inst(char *buf, size_t buflen, rv_isa isa, uint64_t pc, rv_inst inst,
-     decode_inst_operands(&dec, isa);
-     decode_inst_decompress(&dec, isa);
-     decode_inst_lift_pseudo(&dec);
--    format_inst(buf, buflen, 24, &dec);
-+    return format_inst(24, &dec);
- }
- 
- #define INST_FMT_2 "%04" PRIx64 "              "
-@@ -5231,7 +5207,6 @@ disasm_inst(char *buf, size_t buflen, rv_isa isa, uint64_t pc, rv_inst inst,
- static int
- print_insn_riscv(bfd_vma memaddr, struct disassemble_info *info, rv_isa isa)
- {
--    char buf[128] = { 0 };
-     bfd_byte packet[2];
-     rv_inst inst = 0;
-     size_t len = 2;
-@@ -5272,9 +5247,9 @@ print_insn_riscv(bfd_vma memaddr, struct disassemble_info *info, rv_isa isa)
-         }
-     }
- 
--    disasm_inst(buf, sizeof(buf), isa, memaddr, inst,
--                (RISCVCPUConfig *)info->target_info);
--    (*info->fprintf_func)(info->stream, "%s", buf);
-+    g_autoptr(GString) str =
-+        disasm_inst(isa, memaddr, inst, (RISCVCPUConfig *)info->target_info);
-+    (*info->fprintf_func)(info->stream, "%s", str->str);
- 
-     return len;
- }
+> > I hope Lei and his team has tested >4G mem, otherwise definitely worth
+> > checking.  Lei also mentioned there're rsocket bugs they found in the cover
+> > letter, but not sure what's that about.
+> 
+> It would probably be a good idea to keep track of what bugs
+> are in flight with it, and try it on a few RDMA cards to see
+> what problems get triggered.
+> I think I reported a few at the time, but I gave up after
+> feeling it was getting very hacky.
+
+Agreed.  Maybe we can have a list of that in the cover letter or even
+QEMU's migration/rmda doc page.
+
+Lei, if you think that makes sense please do so in your upcoming posts.
+There'll need to have a list of things you encountered in the kernel driver
+and it'll be even better if there're further links to read on each problem.
+
+> > > 
+> > >   e) Someone made a good suggestion (sorry can't remember who) - that the
+> > >      RDMA migration structure was the wrong way around - it should be the
+> > >      destination which initiates an RDMA read, rather than the source
+> > >      doing a write; then things might become a LOT simpler; you just need
+> > >      to send page ranges to the destination and it can pull it.
+> > >      That might work nicely for postcopy.
+> > 
+> > I'm not sure whether it'll still be a problem if rdma recv side is based on
+> > zero-copy.  It would be a matter of whether atomicity can be guaranteed so
+> > that we don't want the guest vcpus to see a partially copied page during
+> > on-flight DMAs.  UFFDIO_COPY (or friend) is currently the only solution for
+> > that.
+> 
+> Yes, but even ignoring that (and the UFFDIO_CONTINUE idea you mention), if
+> the destination can issue an RDMA read itself, it doesn't need to send messages
+> to the source to ask for a page fetch; it just goes and grabs it itself,
+> that's got to be good for latency.
+
+Oh, that's pretty internal stuff of rdma to me and beyond my knowledge..
+but from what I can tell it sounds very reasonable indeed!
+
+Thanks!
+
 -- 
-2.34.1
+Peter Xu
 
 
