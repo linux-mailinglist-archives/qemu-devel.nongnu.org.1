@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B41978FD1A4
+	by mail.lfdr.de (Postfix) with ESMTPS id B93708FD1A5
 	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jun 2024 17:29:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEsZY-0000e8-Qa; Wed, 05 Jun 2024 11:29:08 -0400
+	id 1sEsZc-0000fC-2i; Wed, 05 Jun 2024 11:29:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <weifeng.liu.z@gmail.com>)
- id 1sEsZW-0000dJ-8e
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 11:29:06 -0400
+ id 1sEsZa-0000eS-Bg
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 11:29:10 -0400
 Received: from mail-pj1-x102c.google.com ([2607:f8b0:4864:20::102c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <weifeng.liu.z@gmail.com>)
- id 1sEsZR-0007Wq-KI
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 11:29:06 -0400
+ id 1sEsZU-0007XJ-KT
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 11:29:10 -0400
 Received: by mail-pj1-x102c.google.com with SMTP id
- 98e67ed59e1d1-2c19bba897bso11206a91.2
- for <qemu-devel@nongnu.org>; Wed, 05 Jun 2024 08:29:00 -0700 (PDT)
+ 98e67ed59e1d1-2c1a4192d55so1883460a91.2
+ for <qemu-devel@nongnu.org>; Wed, 05 Jun 2024 08:29:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1717601339; x=1718206139; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1717601343; x=1718206143; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=3uSdqS9y8pZdwZwhzYtQ3lJ2peW+WDx3Tf5rEC64RwM=;
- b=eUOggr49y5OqexxReIto7Nx16Dh2Awy6Qam8X+i9ZyTXYMX+tQV0fyt7h9R73bVGfI
- 3oAjXdNyfj6BG5WFEhADlsfsJFO7KSLWMDUb9i4Pq69wOKm51/Po6Dk/cIjYg0zEsTuk
- LOio3rMr4x1J9m9wzlTNZ+nkU5KXZw1g+cmJWUPVanwoQiO2OZAc0PcvvvS2cae/oSYO
- jIF0wri2Qihf8enZeib0o6DFaZTos5xyC5QKipNidesn/grE0+gXY9qg01xMC/T9K9wI
- 2mpbdBriewB/A2wSsWfNajIl8WfBu464FA6GWCKqaLUTkt3SebO3hLq5+TbYEfJWnEN9
- gflg==
+ bh=muSU+HuMkQPsObvQhf3lD7P12fVE5VIQ4NmZQsA6m0g=;
+ b=HNOCXB6xVxdacRa22KhOY7hG1lpGE+S2Xf/ryk7tbugcUdcy3ZYXdolN1sm3QJ/3U6
+ /iaD/La3Fxkx/tlftVqYvGr/ugtaMsB3UyjIQLGW8Ft0kLPfcW5XGO84bPVnH7I89m1K
+ Fm2BA/4KsTXv6Cst8NOPlXx0KEFJjS9E4+DdZWNd4Ik8X6l04ZTGNNIYyuhq0oaIoY5R
+ pEVkUrw0Kc7PZeoAKnv0zskVlGNqwwMyVXRVB/V4yWrC6QH7xQN/KGUUfgQR9c8Ob/PC
+ hcVOxfXn+6/9JvyNQm3nkJ4A3vnvoeQQLl6D9RlKjw1Fr0jPmDjYAFXAhq+R4Ht9dLL8
+ 4KWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717601339; x=1718206139;
+ d=1e100.net; s=20230601; t=1717601343; x=1718206143;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3uSdqS9y8pZdwZwhzYtQ3lJ2peW+WDx3Tf5rEC64RwM=;
- b=Qp/Vl5rHeEVVfm731dJ4WeUxhofWHlKXq0NlLTVK3S8iLmOPJJsuoA432f2Ku36GKA
- qcbXw656ibZxS0jYZJxmC9ZEqloSHG+3H8PSbiL30XhReH6iSiDEtzTYy/LqXcXRdS44
- /1flx665tRbfEzlzflLKwXB6zcIIPIlylDgWNRDC+kA32W7BlyjJ12j/SwXyT6Ei5rVl
- xCwYLBgkRDqwOfTMXgPUU1bA5VuAhk7Wp+zTr2k3FZ/6EKonpZxcQt/2gHqQnsGf4lFG
- i8fjSsHcrw4YiYfe+hoM6zuyLH8N4IvIKm6eE9NAKv7TUd+oqIL3zfgfR7PZJBo/YrxJ
- /LTQ==
-X-Gm-Message-State: AOJu0YyCcNR72xdhP7Iu42A0MqROkG4cDomltC6Q8OmHSOOSxGrfVcA4
- nn+GT/mTsaW86tSKUMb5AwssJcJqIt9ovlsM+pcm3qpaqoT2icVDwk/4opZvevM=
-X-Google-Smtp-Source: AGHT+IGimj//pRmrNZ48SI3fMsWEwh0xWZG0frDs34EZYEwcvCLgKdeD0hmVbeaD6yLOjxOx1umKuw==
-X-Received: by 2002:a17:90a:5410:b0:2bd:fa57:b361 with SMTP id
- 98e67ed59e1d1-2c27db10aecmr2914768a91.11.1717601339276; 
- Wed, 05 Jun 2024 08:28:59 -0700 (PDT)
+ bh=muSU+HuMkQPsObvQhf3lD7P12fVE5VIQ4NmZQsA6m0g=;
+ b=w2GOcYCiMWXmpL25lwHdZWMNLP2vGp1XnXzOdm2THP23F4LdWkLNfc3cl2Wn3U4+F/
+ huB23A+4OiIqAWz0ju3fhTt1Q+HQKRjjK3giKmnglqZZ8kSRK+qou7iT2CBzozdSwqD8
+ jbUUUlzadOn9SOntDWvU5jFlex3YPfHL4EYQVmq3afa1KCrV6O/qZkI9d2SdE7AiuPJs
+ i7KbyMJ8iso/UiGdqshHKVsfFRdmkLRTh4gEu4EI2bOlfkmqOedQGznF1HCtQRgmWwFl
+ V41PW21d4MYTog5G2KfEjw71HNcBgYqO6o4qMF5PzW/r/ij/zHq3VzF5Lms5WUVJpJ/p
+ B7QQ==
+X-Gm-Message-State: AOJu0Yw1+U9q28hs57mvoeTZvwjp5nybjsy+7hzPAYjuy6ZAiL2fcO50
+ b0NIDfrBzC2vplKFj9lkGjbxyRooB0yfUtl44rzqVNEGJAmPqBDvVITPepNNTvY=
+X-Google-Smtp-Source: AGHT+IH0VUmOcWnQskUVsFXf+siPRGl4HlLJ66Psc34i7l0h1fB2Gl+Kfr7yhHO16R1XzJ4s85HSZg==
+X-Received: by 2002:a17:90a:ac16:b0:2bf:ac8a:c795 with SMTP id
+ 98e67ed59e1d1-2c27db4a1e3mr3250415a91.34.1717601342914; 
+ Wed, 05 Jun 2024 08:29:02 -0700 (PDT)
 Received: from localhost ([103.192.227.74]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2c284aa3161sm1518335a91.27.2024.06.05.08.28.58
+ 98e67ed59e1d1-2c28063a485sm1623884a91.3.2024.06.05.08.29.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 05 Jun 2024 08:28:58 -0700 (PDT)
+ Wed, 05 Jun 2024 08:29:02 -0700 (PDT)
 From: Weifeng Liu <weifeng.liu.z@gmail.com>
 To: qemu-devel@nongnu.org, Gurchetan Singh <gurchetansingh@chromium.org>,
  "Michael S. Tsirkin" <mst@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>
@@ -63,10 +63,9 @@ Cc: Weifeng Liu <weifeng.liu.z@gmail.com>,
  Huang Rui <ray.huang@amd.com>,
  Dmitry Osipenko <dmitry.osipenko@collabora.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PATCH 1/3] virtio-gpu: rutabaga: Properly set stride when copying
- resources
-Date: Wed,  5 Jun 2024 23:28:28 +0800
-Message-ID: <20240605152832.11618-2-weifeng.liu.z@gmail.com>
+Subject: [PATCH 2/3] virtio-gpu: rutabaga: Poll rutabaga upon events
+Date: Wed,  5 Jun 2024 23:28:29 +0800
+Message-ID: <20240605152832.11618-3-weifeng.liu.z@gmail.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240605152832.11618-1-weifeng.liu.z@gmail.com>
 References: <20240605152832.11618-1-weifeng.liu.z@gmail.com>
@@ -96,42 +95,151 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The stride is not correctly assigned when copying pixel data, causing
-images being displayed incomplete when using 2d component of rutabaga.
+To make virglrenderer work properly, we must poll it periodically or
+when the event fd is readable, but this functionality is absent now.
+This change registers the event fd as a gsource to the main loop and
+attaches polling function as callback to the gsource.
 
 Signed-off-by: Weifeng Liu <weifeng.liu.z@gmail.com>
 ---
- hw/display/virtio-gpu-rutabaga.c | 3 +++
- 1 file changed, 3 insertions(+)
+ hw/display/virtio-gpu-rutabaga.c | 97 +++++++++++++++++++++++++++++++-
+ include/hw/virtio/virtio-gpu.h   |  1 +
+ 2 files changed, 97 insertions(+), 1 deletion(-)
 
 diff --git a/hw/display/virtio-gpu-rutabaga.c b/hw/display/virtio-gpu-rutabaga.c
-index 17bf701a21..2ba6869606 100644
+index 2ba6869606..ecb146315a 100644
 --- a/hw/display/virtio-gpu-rutabaga.c
 +++ b/hw/display/virtio-gpu-rutabaga.c
-@@ -53,6 +53,7 @@ virtio_gpu_rutabaga_update_cursor(VirtIOGPU *g, struct virtio_gpu_scanout *s,
-     transfer.z = 0;
-     transfer.w = res->width;
-     transfer.h = res->height;
-+    transfer.stride = res->width * 4;
-     transfer.d = 1;
+@@ -899,6 +899,93 @@ virtio_gpu_rutabaga_aio_cb(void *opaque)
+     g_free(data);
+ }
  
-     transfer_iovec.iov_base = s->current_cursor->data;
-@@ -273,6 +274,7 @@ rutabaga_cmd_resource_flush(VirtIOGPU *g, struct virtio_gpu_ctrl_command *cmd)
-     transfer.z = 0;
-     transfer.w = res->width;
-     transfer.h = res->height;
-+    transfer.stride = pixman_image_get_stride(res->image);
-     transfer.d = 1;
++
++static void
++virtio_gpu_fence_poll(void *opaque)
++{
++    VirtIOGPU *g = opaque;
++    VirtIOGPURutabaga *vr = VIRTIO_GPU_RUTABAGA(g);
++
++    rutabaga_poll(vr->rutabaga);
++}
++
++typedef void (*vu_watch_cb) (VirtIOGPURutabaga *dev, int condition, void *data);
++
++static void
++event_poll_cb(VirtIOGPURutabaga *dev, int condition, void *data)
++{
++    virtio_gpu_fence_poll(data);
++}
++
++typedef struct VrSrc {
++    GSource parent;
++    VirtIOGPURutabaga *dev;
++    GPollFD gfd;
++} VrSrc;
++
++static gboolean
++vr_src_prepare(GSource *gsrc, gint *timeout)
++{
++    g_assert(timeout);
++
++    *timeout = -1;
++    return FALSE;
++}
++
++static gboolean
++vr_src_check(GSource *gsrc)
++{
++    VrSrc *src = (VrSrc *)gsrc;
++
++    g_assert(src);
++
++    return src->gfd.revents & src->gfd.events;
++}
++
++static gboolean
++vr_src_dispatch(GSource *gsrc, GSourceFunc cb, gpointer data)
++{
++    VrSrc *src = (VrSrc *)gsrc;
++
++    g_assert(src);
++
++    ((vu_watch_cb)cb)(src->dev, src->gfd.revents, data);
++
++    return G_SOURCE_CONTINUE;
++}
++
++static GSourceFuncs vug_src_funcs = {
++    vr_src_prepare,
++    vr_src_check,
++    vr_src_dispatch,
++    NULL
++};
++
++static GSource *
++vr_source_new(VirtIOGPURutabaga *dev, int fd, GIOCondition cond,
++              vu_watch_cb vu_cb, gpointer data)
++{
++    GSource *gsrc;
++    VrSrc *src;
++    guint id;
++
++    g_assert(fd >= 0);
++    g_assert(vu_cb);
++
++    gsrc = g_source_new(&vug_src_funcs, sizeof(VrSrc));
++    g_source_set_callback(gsrc, (GSourceFunc)vu_cb, data, NULL);
++    src = (VrSrc *)gsrc;
++    src->dev = dev;
++    src->gfd.fd = fd;
++    src->gfd.events = cond;
++
++    g_source_add_poll(gsrc, &src->gfd);
++    id = g_source_attach(gsrc, g_main_context_get_thread_default());
++    g_assert(id);
++
++    return gsrc;
++}
++
+ static void
+ virtio_gpu_rutabaga_fence_cb(uint64_t user_data,
+                              const struct rutabaga_fence *fence)
+@@ -954,6 +1041,7 @@ virtio_gpu_rutabaga_debug_cb(uint64_t user_data,
+ static bool virtio_gpu_rutabaga_init(VirtIOGPU *g, Error **errp)
+ {
+     int result;
++    int poll_descriptor;
+     struct rutabaga_builder builder = { 0 };
+     struct rutabaga_channel channel = { 0 };
+     struct rutabaga_channels channels = { 0 };
+@@ -1031,7 +1119,14 @@ static bool virtio_gpu_rutabaga_init(VirtIOGPU *g, Error **errp)
+         error_setg_errno(errp, -result, "Failed to init rutabaga");
+         return false;
+     }
+-
++    result = rutabaga_poll_descriptor(vr->rutabaga, &poll_descriptor);
++    if (result) {
++        error_setg_errno(errp, -result, "Failed to get rutabaga poll descriptor");
++        return false;
++    }
++    if (poll_descriptor >= 0)
++        vr->poll_event_source = vr_source_new(vr, poll_descriptor, G_IO_IN,
++                                              event_poll_cb, g);
+     return true;
+ }
  
-     transfer_iovec.iov_base = pixman_image_get_data(res->image);
-@@ -382,6 +384,7 @@ rutabaga_cmd_transfer_to_host_2d(VirtIOGPU *g,
-     transfer.z = 0;
-     transfer.w = t2d.r.width;
-     transfer.h = t2d.r.height;
-+    transfer.stride = t2d.r.width * 4;
-     transfer.d = 1;
+diff --git a/include/hw/virtio/virtio-gpu.h b/include/hw/virtio/virtio-gpu.h
+index 7a59379f5a..47a4347a9e 100644
+--- a/include/hw/virtio/virtio-gpu.h
++++ b/include/hw/virtio/virtio-gpu.h
+@@ -261,6 +261,7 @@ struct VirtIOGPURutabaga {
+     char *wsi;
+     bool headless;
+     uint32_t num_capsets;
++    GSource *poll_event_source;
+     struct rutabaga *rutabaga;
+ };
  
-     result = rutabaga_resource_transfer_write(vr->rutabaga, 0, t2d.resource_id,
 -- 
 2.45.0
 
