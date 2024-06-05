@@ -2,79 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CD478FCA6F
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jun 2024 13:27:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9C108FCA6A
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jun 2024 13:27:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEonA-0005Vm-8V; Wed, 05 Jun 2024 07:26:56 -0400
+	id 1sEonD-0005Xq-07; Wed, 05 Jun 2024 07:26:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
- id 1sEon6-0005VV-Ub
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 07:26:53 -0400
-Received: from mail-lf1-x132.google.com ([2a00:1450:4864:20::132])
+ id 1sEonA-0005W1-WA
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 07:26:57 -0400
+Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
- id 1sEon5-0003MQ-D7
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 07:26:52 -0400
-Received: by mail-lf1-x132.google.com with SMTP id
- 2adb3069b0e04-52b7ffd9f6eso6721566e87.3
- for <qemu-devel@nongnu.org>; Wed, 05 Jun 2024 04:26:51 -0700 (PDT)
+ id 1sEon9-0003Mf-Ex
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 07:26:56 -0400
+Received: by mail-ed1-x52f.google.com with SMTP id
+ 4fb4d7f45d1cf-57a7dc13aabso2699232a12.0
+ for <qemu-devel@nongnu.org>; Wed, 05 Jun 2024 04:26:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1717586810; x=1718191610;
+ d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1717586814; x=1718191614;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=MUadvBu0a4VCVhDucQlZlHVU1F0bWouqcdkwO50PULs=;
- b=hJcui3DVXnwen+GMCbf/k/my8D9PNmHjRwkKFgjN9rVWkoDLpgaPX1TvqI/zHt8evl
- IO1F5RZ+WGRKHHRWeetz0S4e+pYWBJW1vmhFHWikTr35vMTzY0dKD6c7MHMOgSiiP4Xm
- BKBPS74cIMK9OAnpHYjpEiwZoWODNYR1yYZTEFkDmuoeGYMLE1FV2d3vyJ+bcZ4FwYU+
- STytIDOn66Wm5VQQ7Hwilj8l4GgRyYrAqVnAU/1B/94HnkqLBYu+TfPl+R8z8Y+myfGl
- XhTX17aBBr+zaXWNXdnYjBNK5bKvlhs3maAZCYscV7QWQFNhSEivMw8ptwUYZ4+9xqzW
- w5/A==
+ bh=AaRzhLsox3oysptViKMojdf5oerb0z9Xurwugiu/cvk=;
+ b=jKktJWPMws6XISdOdfLuEh7/xO0j8udE1qMjz2/3jBcPVQVD9JQ0ZE9zNQzCEU3QkW
+ a5Uom6XB7R3ogIFo4KsyyEckwN5bMTQxqszWfkB4LWU3FzGm/PPl1rzXiDbhgWaOG5vR
+ TETHEuE42uSdvq3OOdfFN1xo6xv3lrokw9i+nobnCb4Hi9FNhda/1zVX41HniwYAtG/P
+ MTjTwc24HNq61R5/Lj7EQ5q40B61MqMkiChrLD9B00nWbxvwkG2EUGZTKENay9JHwv1u
+ mjio01AxlarEy6zxkWAC6xj/OxVvdEcncnRirpnYlCOCW2GqIGhyg+UbCrssPBrO7qU5
+ Bxgg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717586810; x=1718191610;
+ d=1e100.net; s=20230601; t=1717586814; x=1718191614;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=MUadvBu0a4VCVhDucQlZlHVU1F0bWouqcdkwO50PULs=;
- b=kuwz/PUb/KNrgrNQsrxTtRvNqu9KTAx8xVrwExrXmz7sTm/DrRCKY7R8ohfJ3Pnm8+
- JylBdhgPAbC3QZxNkkjUWMmdWhawhKsiBIarPIiKMaLrAiH9J+0TwGzSPN4x3ekiIaAe
- fI84qM43ckd6BAKcRZtngHvP2o8azc28/418HHFGYzL54R5bDVS8wMYFuy2RninrCYZc
- ltNtG5wgFAZY7M07L5GlzIxF7039bA+o7oTnWPEquhI7Qrm4Sg/wXVRjq49YVHfRHf6r
- omPIB9sZqp/5Ibo7Pq905JtYOC7MFH+0AGkk9BapT1g+D+QpWIKn0/VZ4V3c5F0ltw44
- WS3A==
-X-Gm-Message-State: AOJu0YxMomf+Gzhi39QUg72zvEIbVHg2ARIP63wOxGR0JE5/UZQNiQeC
- ZINh4XhF5gJoIQPMRUtCrIoo1RFq+yLgfz+Hg9S6Ijd4/yVZDBe6vaXwyhR75+OnFAB+EED/3Sk
+ bh=AaRzhLsox3oysptViKMojdf5oerb0z9Xurwugiu/cvk=;
+ b=r0HEFyZl6WFdNnrY+alHC3xQJf0AtshjvS3Muw6diH/cqpQxgO7ekjuIO4ELv1msFz
+ mkpOju5dXldFE7APurDi2HKZmt3T/2Wgsi6uGOV5tfLZXnbsI519JvxMCPxKSzu2lktB
+ qa7AWIRo2UvwZ8w1wUpIHn29hTd4WYwfMLaF+szljnQ3TjVAdpZTVmOKk616rKYU4UcZ
+ gk8bQocrUe8RW024pKCkJ9Not6/5ETDjNAlC7i69V0eNtwRjg56Yzo1qCuQXO45T5f4Z
+ wSX1S1dQf2pmtX7GcJKG62dHZSRUZalX4dW+fjI+wwxkz02K3S8vjCZG8FwoqbJWSmYe
+ +6lA==
+X-Gm-Message-State: AOJu0YwpI7VcRN10E2TjPSAdp3+rxOW7OF4QF2XjBYyVi9u4c8+Rf8uI
+ 6q/uYQQA5srRmUYqC6caCVWn1bQFtmpPlbrVY4/ZQMZFNztJSTA5GEEaG8nLgkkJ7t9KZJeMd1s
  =
-X-Google-Smtp-Source: AGHT+IE2yxdv84exD7e0ulqEMKBK5XcEodr0VMamdUn/fuYbTCsBTzwMjHnrW1qhnm6kSzoqmdQIpQ==
-X-Received: by 2002:ac2:46c4:0:b0:520:5261:9cd0 with SMTP id
- 2adb3069b0e04-52bab4f9084mr1314803e87.57.1717586809737; 
- Wed, 05 Jun 2024 04:26:49 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGuR059yOZ0yF5ATbIlW1JtQ3ghYcA21+h58g4T3dNL3WxWSxZRRdEvKI9rlP3xWovzRZH/6Q==
+X-Received: by 2002:a50:a696:0:b0:579:fb79:309 with SMTP id
+ 4fb4d7f45d1cf-57a8b6a4669mr1404754a12.10.1717586813895; 
+ Wed, 05 Jun 2024 04:26:53 -0700 (PDT)
 Received: from localhost.localdomain (89-104-8-249.customer.bnet.at.
  [89.104.8.249]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-57a51023af4sm7111335a12.29.2024.06.05.04.26.48
+ 4fb4d7f45d1cf-57a51023af4sm7111335a12.29.2024.06.05.04.26.53
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 05 Jun 2024 04:26:49 -0700 (PDT)
+ Wed, 05 Jun 2024 04:26:53 -0700 (PDT)
 From: Phil Dennis-Jordan <phil@philjordan.eu>
 To: qemu-devel@nongnu.org
 Cc: dirty@apple.com, rbolshakov@ddn.com, lists@philjordan.eu,
- Phil Dennis-Jordan <phil@philjordan.eu>,
- Roman Bolshakov <roman@roolebo.dev>
-Subject: [PATCH v3 4/7] i386/hvf: Fixes dirty memory tracking by page
- granularity RX->RWX change
-Date: Wed,  5 Jun 2024 13:25:53 +0200
-Message-Id: <20240605112556.43193-5-phil@philjordan.eu>
+ Phil Dennis-Jordan <phil@philjordan.eu>
+Subject: [PATCH v3 5/7] i386/hvf: In kick_vcpu use hv_vcpu_interrupt to force
+ exit
+Date: Wed,  5 Jun 2024 13:25:54 +0200
+Message-Id: <20240605112556.43193-6-phil@philjordan.eu>
 X-Mailer: git-send-email 2.36.1
 In-Reply-To: <20240605112556.43193-1-phil@philjordan.eu>
 References: <20240605112556.43193-1-phil@philjordan.eu>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: neutral client-ip=2a00:1450:4864:20::132;
- envelope-from=phil@philjordan.eu; helo=mail-lf1-x132.google.com
+Received-SPF: neutral client-ip=2a00:1450:4864:20::52f;
+ envelope-from=phil@philjordan.eu; helo=mail-ed1-x52f.google.com
 X-Spam_score_int: -10
 X-Spam_score: -1.1
 X-Spam_bar: -
@@ -96,52 +94,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When using x86 macOS Hypervisor.framework as accelerator, detection of
-dirty memory regions is implemented by marking logged memory region
-slots as read-only in the EPT, then setting the dirty flag when a
-guest write causes a fault. The area marked dirty should then be marked
-writable in order for subsequent writes to succeed without a VM exit.
+When interrupting a vCPU thread, this patch actually tells the hypervisor to
+stop running guest code on that vCPU.
 
-However, dirty bits are tracked on a per-page basis, whereas the fault
-handler was marking the whole logged memory region as writable. This
-change fixes the fault handler so only the protection of the single
-faulting page is marked as dirty.
+Calling hv_vcpu_interrupt actually forces a vCPU exit, analogously to
+hv_vcpus_exit on aarch64. Alternatively, if the vCPU thread
+is not
+running the VM, it will immediately cause an exit when it attempts
+to do so.
 
-(Note: the dirty page tracking appeared to work despite this error
-because HVF’s hv_vcpu_run() function generated unnecessary EPT fault
-exits, which ended up causing the dirty marking handler to run even
-when the memory region had been marked RW. When using
-hv_vcpu_run_until(), a change planned for a subsequent commit, these
-spurious exits no longer occur, so dirty memory tracking malfunctions.)
-
-Additionally, the dirty page is set to permit code execution, the same
-as all other guest memory; changing memory protection from RX to RW not
-RWX appears to have been an oversight.
+Previously, hvf_kick_vcpu_thread relied upon hv_vcpu_run returning very
+frequently, including many spurious exits, which made it less of a problem that
+nothing was actively done to stop the vCPU thread running guest code.
+The newer, more efficient hv_vcpu_run_until exits much more rarely, so a true
+"kick" is needed before switching to that.
 
 Signed-off-by: Phil Dennis-Jordan <phil@philjordan.eu>
-Reviewed-by: Roman Bolshakov <roman@roolebo.dev>
-Tested-by: Roman Bolshakov <roman@roolebo.dev>
 ---
- target/i386/hvf/hvf.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ target/i386/hvf/hvf.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/target/i386/hvf/hvf.c b/target/i386/hvf/hvf.c
-index e6e916225b..268c5734d5 100644
+index 268c5734d5..106ac5cbf6 100644
 --- a/target/i386/hvf/hvf.c
 +++ b/target/i386/hvf/hvf.c
-@@ -135,9 +135,10 @@ static bool ept_emulation_fault(hvf_slot *slot, uint64_t gpa, uint64_t ept_qual)
+@@ -215,6 +215,7 @@ static inline bool apic_bus_freq_is_known(CPUX86State *env)
+ void hvf_kick_vcpu_thread(CPUState *cpu)
+ {
+     cpus_kick_thread(cpu);
++    hv_vcpu_interrupt(&cpu->accel->fd, 1);
+ }
  
-     if (write && slot) {
-         if (slot->flags & HVF_SLOT_LOG) {
-+            uint64_t dirty_page_start = gpa & ~(TARGET_PAGE_SIZE - 1u);
-             memory_region_set_dirty(slot->region, gpa - slot->start, 1);
--            hv_vm_protect((hv_gpaddr_t)slot->start, (size_t)slot->size,
--                          HV_MEMORY_READ | HV_MEMORY_WRITE);
-+            hv_vm_protect(dirty_page_start, TARGET_PAGE_SIZE,
-+                          HV_MEMORY_READ | HV_MEMORY_WRITE | HV_MEMORY_EXEC);
-         }
-     }
- 
+ int hvf_arch_init(void)
 -- 
 2.36.1
 
