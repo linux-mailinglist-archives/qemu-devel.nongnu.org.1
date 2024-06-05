@@ -2,77 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9C108FCA6A
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jun 2024 13:27:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D38F8FCA70
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jun 2024 13:27:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEonD-0005Xq-07; Wed, 05 Jun 2024 07:26:59 -0400
+	id 1sEonJ-0005YU-HU; Wed, 05 Jun 2024 07:27:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
- id 1sEonA-0005W1-WA
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 07:26:57 -0400
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+ id 1sEonH-0005YI-7y
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 07:27:03 -0400
+Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
- id 1sEon9-0003Mf-Ex
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 07:26:56 -0400
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-57a7dc13aabso2699232a12.0
- for <qemu-devel@nongnu.org>; Wed, 05 Jun 2024 04:26:55 -0700 (PDT)
+ id 1sEonF-0003NT-Ej
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 07:27:02 -0400
+Received: by mail-ed1-x529.google.com with SMTP id
+ 4fb4d7f45d1cf-57a31d63b6bso2890090a12.0
+ for <qemu-devel@nongnu.org>; Wed, 05 Jun 2024 04:27:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1717586814; x=1718191614;
+ d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1717586820; x=1718191620;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=AaRzhLsox3oysptViKMojdf5oerb0z9Xurwugiu/cvk=;
- b=jKktJWPMws6XISdOdfLuEh7/xO0j8udE1qMjz2/3jBcPVQVD9JQ0ZE9zNQzCEU3QkW
- a5Uom6XB7R3ogIFo4KsyyEckwN5bMTQxqszWfkB4LWU3FzGm/PPl1rzXiDbhgWaOG5vR
- TETHEuE42uSdvq3OOdfFN1xo6xv3lrokw9i+nobnCb4Hi9FNhda/1zVX41HniwYAtG/P
- MTjTwc24HNq61R5/Lj7EQ5q40B61MqMkiChrLD9B00nWbxvwkG2EUGZTKENay9JHwv1u
- mjio01AxlarEy6zxkWAC6xj/OxVvdEcncnRirpnYlCOCW2GqIGhyg+UbCrssPBrO7qU5
- Bxgg==
+ bh=uQY2cD/0GprlA87LnBKBQ1RwhiZWI8cYgU0dNAemlU4=;
+ b=QKChFFyIiXUn0wrYxiYnAeIJDA0EOvRDnPK7T4jSeq34W96PAwwX91Gc0pNBXuvZYu
+ lvHB7/2XY4EGOzhXzB0kkt5pIJ1Cj9CrFiF49LMzjpcfFPYAunOkXBshAglZZglKEt53
+ sU80J3D9fecbKejWu30kqfAaF16NbW6716ny4CS+Q9o3zWgtRTunsxWaWPnTE3ol+lFV
+ jTVymrkDuYLWSMhnxCQ1MFPv/nDWJajDoK1BZjo4Me+zWgnBRjjx0OJQ3sT+TD2JznJr
+ anJ7SdM9XiNOu6zut2lG4qdxfkrgIQnljgvIXwCVC5m5CLNOhRaTXf26yrukcVgAG+xh
+ UgJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717586814; x=1718191614;
+ d=1e100.net; s=20230601; t=1717586820; x=1718191620;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=AaRzhLsox3oysptViKMojdf5oerb0z9Xurwugiu/cvk=;
- b=r0HEFyZl6WFdNnrY+alHC3xQJf0AtshjvS3Muw6diH/cqpQxgO7ekjuIO4ELv1msFz
- mkpOju5dXldFE7APurDi2HKZmt3T/2Wgsi6uGOV5tfLZXnbsI519JvxMCPxKSzu2lktB
- qa7AWIRo2UvwZ8w1wUpIHn29hTd4WYwfMLaF+szljnQ3TjVAdpZTVmOKk616rKYU4UcZ
- gk8bQocrUe8RW024pKCkJ9Not6/5ETDjNAlC7i69V0eNtwRjg56Yzo1qCuQXO45T5f4Z
- wSX1S1dQf2pmtX7GcJKG62dHZSRUZalX4dW+fjI+wwxkz02K3S8vjCZG8FwoqbJWSmYe
- +6lA==
-X-Gm-Message-State: AOJu0YwpI7VcRN10E2TjPSAdp3+rxOW7OF4QF2XjBYyVi9u4c8+Rf8uI
- 6q/uYQQA5srRmUYqC6caCVWn1bQFtmpPlbrVY4/ZQMZFNztJSTA5GEEaG8nLgkkJ7t9KZJeMd1s
+ bh=uQY2cD/0GprlA87LnBKBQ1RwhiZWI8cYgU0dNAemlU4=;
+ b=DW1p0RGgGGX35iIpbwyzuqUlHo2k0+c9UgFRpG+5WDeZww2Hk0yDdNYJ5adoTR01sf
+ uWOl6laPt/gPbCGod370XIum05h6Jkowfy2qNHwvimA0RrSRql38MkrPL/Y4mpgcAQ7O
+ cO/G0nBJO6OQjstTYRK+APWwwsCBxFVuoeOzlWwBXAHNUm+4w/O77Or4KFq3bbfCIBJN
+ tGmZKzadhYXenQvuYHVvEFqqhh1i/aqwb7k2BKD73ZyJuo7kxdoVSEG7W+Mooc2sAQhq
+ d3X/mteCnpSCYfk+0ZVLBfd3IFAC/GEosoW2+VxqFNeWy77320PX4moE9QsQz8XoG3U+
+ p9Rg==
+X-Gm-Message-State: AOJu0Yy7dBHmzEj6rXGllb22ZX2xHc0B0j+3bKd1O6RpM2r2BvMuCSpq
+ DWxUqhD8+nZyiKM9j0V65a3cpa1cLgrsf5kalH7tYG5BvvvXFWjauAUjTSH+Djxbg3ozoOiSMdc
  =
-X-Google-Smtp-Source: AGHT+IGuR059yOZ0yF5ATbIlW1JtQ3ghYcA21+h58g4T3dNL3WxWSxZRRdEvKI9rlP3xWovzRZH/6Q==
-X-Received: by 2002:a50:a696:0:b0:579:fb79:309 with SMTP id
- 4fb4d7f45d1cf-57a8b6a4669mr1404754a12.10.1717586813895; 
- Wed, 05 Jun 2024 04:26:53 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFH/01QCtamGICFCw0b56PQUC7P70H51nnXXui4HqnCm+hSOuApTn6THfeCGWBqk9dCgpV6ZA==
+X-Received: by 2002:a50:d6d8:0:b0:578:5771:dc2c with SMTP id
+ 4fb4d7f45d1cf-57a8b69d84amr1867720a12.3.1717586819693; 
+ Wed, 05 Jun 2024 04:26:59 -0700 (PDT)
 Received: from localhost.localdomain (89-104-8-249.customer.bnet.at.
  [89.104.8.249]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-57a51023af4sm7111335a12.29.2024.06.05.04.26.53
+ 4fb4d7f45d1cf-57a51023af4sm7111335a12.29.2024.06.05.04.26.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 05 Jun 2024 04:26:53 -0700 (PDT)
+ Wed, 05 Jun 2024 04:26:59 -0700 (PDT)
 From: Phil Dennis-Jordan <phil@philjordan.eu>
 To: qemu-devel@nongnu.org
 Cc: dirty@apple.com, rbolshakov@ddn.com, lists@philjordan.eu,
  Phil Dennis-Jordan <phil@philjordan.eu>
-Subject: [PATCH v3 5/7] i386/hvf: In kick_vcpu use hv_vcpu_interrupt to force
- exit
-Date: Wed,  5 Jun 2024 13:25:54 +0200
-Message-Id: <20240605112556.43193-6-phil@philjordan.eu>
+Subject: [PATCH v3 6/7] i386/hvf: Updates API usage to use modern vCPU run
+ function
+Date: Wed,  5 Jun 2024 13:25:55 +0200
+Message-Id: <20240605112556.43193-7-phil@philjordan.eu>
 X-Mailer: git-send-email 2.36.1
 In-Reply-To: <20240605112556.43193-1-phil@philjordan.eu>
 References: <20240605112556.43193-1-phil@philjordan.eu>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: neutral client-ip=2a00:1450:4864:20::52f;
- envelope-from=phil@philjordan.eu; helo=mail-ed1-x52f.google.com
+Received-SPF: neutral client-ip=2a00:1450:4864:20::529;
+ envelope-from=phil@philjordan.eu; helo=mail-ed1-x529.google.com
 X-Spam_score_int: -10
 X-Spam_score: -1.1
 X-Spam_bar: -
@@ -94,38 +95,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When interrupting a vCPU thread, this patch actually tells the hypervisor to
-stop running guest code on that vCPU.
+macOS 10.15 introduced the more efficient hv_vcpu_run_until() function
+to supersede hv_vcpu_run(). According to the documentation, there is no
+longer any reason to use the latter on modern host OS versions, especially
+after 11.0 added support for an indefinite deadline.
 
-Calling hv_vcpu_interrupt actually forces a vCPU exit, analogously to
-hv_vcpus_exit on aarch64. Alternatively, if the vCPU thread
-is not
-running the VM, it will immediately cause an exit when it attempts
-to do so.
+Observed behaviour of the newer function is that as documented, it exits
+much less frequently - and most of the original function’s exits seem to
+have been effectively pointless.
 
-Previously, hvf_kick_vcpu_thread relied upon hv_vcpu_run returning very
-frequently, including many spurious exits, which made it less of a problem that
-nothing was actively done to stop the vCPU thread running guest code.
-The newer, more efficient hv_vcpu_run_until exits much more rarely, so a true
-"kick" is needed before switching to that.
+Another reason to use the new function is that it is a prerequisite for
+using newer features such as in-kernel APIC support. (Not covered by
+this patch.)
+
+This change implements the upgrade by selecting one of three code paths
+at compile time: two static code paths for the new and old functions
+respectively, when building for targets where the new function is either
+not available, or where the built executable won’t run on older
+platforms lacking the new function anyway. The third code path selects
+dynamically based on runtime detected availability of the weakly-linked
+symbol.
 
 Signed-off-by: Phil Dennis-Jordan <phil@philjordan.eu>
 ---
- target/i386/hvf/hvf.c | 1 +
- 1 file changed, 1 insertion(+)
+ target/i386/hvf/hvf.c | 23 ++++++++++++++++++++++-
+ 1 file changed, 22 insertions(+), 1 deletion(-)
 
 diff --git a/target/i386/hvf/hvf.c b/target/i386/hvf/hvf.c
-index 268c5734d5..106ac5cbf6 100644
+index 106ac5cbf6..2d0eef6cd9 100644
 --- a/target/i386/hvf/hvf.c
 +++ b/target/i386/hvf/hvf.c
-@@ -215,6 +215,7 @@ static inline bool apic_bus_freq_is_known(CPUX86State *env)
- void hvf_kick_vcpu_thread(CPUState *cpu)
- {
-     cpus_kick_thread(cpu);
-+    hv_vcpu_interrupt(&cpu->accel->fd, 1);
+@@ -427,6 +427,27 @@ static void hvf_cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+     }
  }
  
- int hvf_arch_init(void)
++static hv_return_t hvf_vcpu_run(hv_vcpuid_t vcpu_id)
++{
++    /*
++     * hv_vcpu_run_until is available and recommended from macOS 10.15+,
++     * HV_DEADLINE_FOREVER from 11.0. Test for availability at runtime and fall
++     * back to hv_vcpu_run() only where necessary.
++     */
++#ifndef MAC_OS_VERSION_11_0
++    return hv_vcpu_run(vcpu_id);
++#elif MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_VERSION_11_0
++    return hv_vcpu_run_until(vcpu_id, HV_DEADLINE_FOREVER);
++#else /* MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_VERSION_11_0 */
++    /* 11.0 SDK or newer, but could be < 11 at runtime */
++    if (__builtin_available(macOS 11.0, *)) {
++        return hv_vcpu_run_until(vcpu_id, HV_DEADLINE_FOREVER);
++    } else {
++        return hv_vcpu_run(vcpu_id);
++    }
++#endif
++}
++
+ int hvf_vcpu_exec(CPUState *cpu)
+ {
+     X86CPU *x86_cpu = X86_CPU(cpu);
+@@ -455,7 +476,7 @@ int hvf_vcpu_exec(CPUState *cpu)
+             return EXCP_HLT;
+         }
+ 
+-        hv_return_t r  = hv_vcpu_run(cpu->accel->fd);
++        hv_return_t r = hvf_vcpu_run(cpu->accel->fd);
+         assert_hvf_ok(r);
+ 
+         /* handle VMEXIT */
 -- 
 2.36.1
 
