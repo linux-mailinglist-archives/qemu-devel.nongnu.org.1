@@ -2,70 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 486A98FCA6E
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jun 2024 13:27:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CD478FCA6F
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jun 2024 13:27:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEon4-0005Uo-Pr; Wed, 05 Jun 2024 07:26:50 -0400
+	id 1sEonA-0005Vm-8V; Wed, 05 Jun 2024 07:26:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
- id 1sEon2-0005UQ-Iu
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 07:26:48 -0400
+ id 1sEon6-0005VV-Ub
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 07:26:53 -0400
 Received: from mail-lf1-x132.google.com ([2a00:1450:4864:20::132])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
- id 1sEon0-0003Lf-VU
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 07:26:48 -0400
+ id 1sEon5-0003MQ-D7
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 07:26:52 -0400
 Received: by mail-lf1-x132.google.com with SMTP id
- 2adb3069b0e04-52b90038cf7so5694967e87.0
- for <qemu-devel@nongnu.org>; Wed, 05 Jun 2024 04:26:46 -0700 (PDT)
+ 2adb3069b0e04-52b7ffd9f6eso6721566e87.3
+ for <qemu-devel@nongnu.org>; Wed, 05 Jun 2024 04:26:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1717586805; x=1718191605;
+ d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1717586810; x=1718191610;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=LPxAwlCAi7W8nwaqze0FGdE6bUase8BbGObZQt+PM58=;
- b=N8oJNLLH90jDVduNxGNVKUZvS3ICbgHPhikzT0yjhdq/3U7z/jU9IhTaGNHXd8R1w9
- pMV8qQ9M+t7Kyd2XbZJCIBwOmYhwTqOHcLWP1HAPZIA2Sn7JSHz6jXSh+eH3R9IjfEQi
- DzqtagpZI5M2TIoKpyiSSeqGoIao6tut+Cxq3mABr3EeUg1Zvc8dlVqfqbwGJLHTMZi7
- etr+d5C3TSM0tgMQvMGK8Ejkx2QJkMJVcwhVYgPM8BXhi/YZf3siL7w+Ed8XU2EVdcMr
- dEjrDstt4/QfEd7bghzbq2gR60mz4XuLYTUArYngTfbrfal+Dtch13ftMQr/pci5/54B
- lMXw==
+ bh=MUadvBu0a4VCVhDucQlZlHVU1F0bWouqcdkwO50PULs=;
+ b=hJcui3DVXnwen+GMCbf/k/my8D9PNmHjRwkKFgjN9rVWkoDLpgaPX1TvqI/zHt8evl
+ IO1F5RZ+WGRKHHRWeetz0S4e+pYWBJW1vmhFHWikTr35vMTzY0dKD6c7MHMOgSiiP4Xm
+ BKBPS74cIMK9OAnpHYjpEiwZoWODNYR1yYZTEFkDmuoeGYMLE1FV2d3vyJ+bcZ4FwYU+
+ STytIDOn66Wm5VQQ7Hwilj8l4GgRyYrAqVnAU/1B/94HnkqLBYu+TfPl+R8z8Y+myfGl
+ XhTX17aBBr+zaXWNXdnYjBNK5bKvlhs3maAZCYscV7QWQFNhSEivMw8ptwUYZ4+9xqzW
+ w5/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717586805; x=1718191605;
+ d=1e100.net; s=20230601; t=1717586810; x=1718191610;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LPxAwlCAi7W8nwaqze0FGdE6bUase8BbGObZQt+PM58=;
- b=S/you4KeLLyPM89cCn4hhcy1GfPrnEUxwK2ijzNrVZ5Oa+EIkScbxMSHhc1+Xc+8Ou
- byCYR1PO2fPF3ZO6yRbM2tGG0730floVI776/UGih1V86yqlQuNQGbizUHvs0wnnyoOq
- g6bXNZik5L8fdb263PqGyZkCzVfb66SOtZIGqMxvzL6orJLs/D30VFveqPKrvmIkJZuk
- TE5IGQf+s0EoO8E7wpHjbNDnNtRDE+/IZwXlf8E5G3TY8CALBozDv7SsKTfY9V9PSNON
- QHOKy/hjEg1XFGS3jaXDvuXQb9pybMJkpfAHHohICFrSfCRVnTzVH016hCVgmvXzUSPR
- 3ycg==
-X-Gm-Message-State: AOJu0Ywwx1RR61zJa3IaeqXyX+cjh3T2i0RSgSY17Y/XXw6Kil4lkuO1
- uGazWIEkCc0nJ56Xv9JMb/ijuqi27RB+d5bqd+C/WKouDlvr6FM1t4PT3LFzQMUnyQT3laNQDPE
+ bh=MUadvBu0a4VCVhDucQlZlHVU1F0bWouqcdkwO50PULs=;
+ b=kuwz/PUb/KNrgrNQsrxTtRvNqu9KTAx8xVrwExrXmz7sTm/DrRCKY7R8ohfJ3Pnm8+
+ JylBdhgPAbC3QZxNkkjUWMmdWhawhKsiBIarPIiKMaLrAiH9J+0TwGzSPN4x3ekiIaAe
+ fI84qM43ckd6BAKcRZtngHvP2o8azc28/418HHFGYzL54R5bDVS8wMYFuy2RninrCYZc
+ ltNtG5wgFAZY7M07L5GlzIxF7039bA+o7oTnWPEquhI7Qrm4Sg/wXVRjq49YVHfRHf6r
+ omPIB9sZqp/5Ibo7Pq905JtYOC7MFH+0AGkk9BapT1g+D+QpWIKn0/VZ4V3c5F0ltw44
+ WS3A==
+X-Gm-Message-State: AOJu0YxMomf+Gzhi39QUg72zvEIbVHg2ARIP63wOxGR0JE5/UZQNiQeC
+ ZINh4XhF5gJoIQPMRUtCrIoo1RFq+yLgfz+Hg9S6Ijd4/yVZDBe6vaXwyhR75+OnFAB+EED/3Sk
  =
-X-Google-Smtp-Source: AGHT+IFSfd1xl8kHXS5PITZh/7fdw5fwkTyQdE8uskdjgYtv0bWi3lLkfFQJJjGlmPSSUuRldk+/yg==
-X-Received: by 2002:a05:6512:3b23:b0:52b:8255:71ce with SMTP id
- 2adb3069b0e04-52bab4f44a4mr1882841e87.43.1717586805158; 
- Wed, 05 Jun 2024 04:26:45 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE2yxdv84exD7e0ulqEMKBK5XcEodr0VMamdUn/fuYbTCsBTzwMjHnrW1qhnm6kSzoqmdQIpQ==
+X-Received: by 2002:ac2:46c4:0:b0:520:5261:9cd0 with SMTP id
+ 2adb3069b0e04-52bab4f9084mr1314803e87.57.1717586809737; 
+ Wed, 05 Jun 2024 04:26:49 -0700 (PDT)
 Received: from localhost.localdomain (89-104-8-249.customer.bnet.at.
  [89.104.8.249]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-57a51023af4sm7111335a12.29.2024.06.05.04.26.44
+ 4fb4d7f45d1cf-57a51023af4sm7111335a12.29.2024.06.05.04.26.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 05 Jun 2024 04:26:44 -0700 (PDT)
+ Wed, 05 Jun 2024 04:26:49 -0700 (PDT)
 From: Phil Dennis-Jordan <phil@philjordan.eu>
 To: qemu-devel@nongnu.org
 Cc: dirty@apple.com, rbolshakov@ddn.com, lists@philjordan.eu,
  Phil Dennis-Jordan <phil@philjordan.eu>,
  Roman Bolshakov <roman@roolebo.dev>
-Subject: [PATCH v3 3/7] hvf: Consistent types for vCPU handles
-Date: Wed,  5 Jun 2024 13:25:52 +0200
-Message-Id: <20240605112556.43193-4-phil@philjordan.eu>
+Subject: [PATCH v3 4/7] i386/hvf: Fixes dirty memory tracking by page
+ granularity RX->RWX change
+Date: Wed,  5 Jun 2024 13:25:53 +0200
+Message-Id: <20240605112556.43193-5-phil@philjordan.eu>
 X-Mailer: git-send-email 2.36.1
 In-Reply-To: <20240605112556.43193-1-phil@philjordan.eu>
 References: <20240605112556.43193-1-phil@philjordan.eu>
@@ -95,55 +96,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-macOS Hypervisor.framework uses different types for identifying vCPUs, hv_vcpu_t or hv_vcpuid_t, depending on host architecture. They are not just differently named typedefs for the same primitive type, but reference different-width integers.
+When using x86 macOS Hypervisor.framework as accelerator, detection of
+dirty memory regions is implemented by marking logged memory region
+slots as read-only in the EPT, then setting the dirty flag when a
+guest write causes a fault. The area marked dirty should then be marked
+writable in order for subsequent writes to succeed without a VM exit.
 
-Instead of using an integer type and casting where necessary, this change introduces a typedef which resolves the active architecture’s hvf typedef. It also removes a now-unnecessary cast.
+However, dirty bits are tracked on a per-page basis, whereas the fault
+handler was marking the whole logged memory region as writable. This
+change fixes the fault handler so only the protection of the single
+faulting page is marked as dirty.
+
+(Note: the dirty page tracking appeared to work despite this error
+because HVF’s hv_vcpu_run() function generated unnecessary EPT fault
+exits, which ended up causing the dirty marking handler to run even
+when the memory region had been marked RW. When using
+hv_vcpu_run_until(), a change planned for a subsequent commit, these
+spurious exits no longer occur, so dirty memory tracking malfunctions.)
+
+Additionally, the dirty page is set to permit code execution, the same
+as all other guest memory; changing memory protection from RX to RW not
+RWX appears to have been an oversight.
 
 Signed-off-by: Phil Dennis-Jordan <phil@philjordan.eu>
 Reviewed-by: Roman Bolshakov <roman@roolebo.dev>
 Tested-by: Roman Bolshakov <roman@roolebo.dev>
 ---
- accel/hvf/hvf-accel-ops.c | 2 +-
- include/sysemu/hvf_int.h  | 4 +++-
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ target/i386/hvf/hvf.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/accel/hvf/hvf-accel-ops.c b/accel/hvf/hvf-accel-ops.c
-index 6f1e27ef46..b2a37a2229 100644
---- a/accel/hvf/hvf-accel-ops.c
-+++ b/accel/hvf/hvf-accel-ops.c
-@@ -400,7 +400,7 @@ static int hvf_init_vcpu(CPUState *cpu)
-     r = hv_vcpu_create(&cpu->accel->fd,
-                        (hv_vcpu_exit_t **)&cpu->accel->exit, NULL);
- #else
--    r = hv_vcpu_create((hv_vcpuid_t *)&cpu->accel->fd, HV_VCPU_DEFAULT);
-+    r = hv_vcpu_create(&cpu->accel->fd, HV_VCPU_DEFAULT);
- #endif
-     cpu->accel->dirty = true;
-     assert_hvf_ok(r);
-diff --git a/include/sysemu/hvf_int.h b/include/sysemu/hvf_int.h
-index 4a327fd526..30e739a2b5 100644
---- a/include/sysemu/hvf_int.h
-+++ b/include/sysemu/hvf_int.h
-@@ -13,8 +13,10 @@
+diff --git a/target/i386/hvf/hvf.c b/target/i386/hvf/hvf.c
+index e6e916225b..268c5734d5 100644
+--- a/target/i386/hvf/hvf.c
++++ b/target/i386/hvf/hvf.c
+@@ -135,9 +135,10 @@ static bool ept_emulation_fault(hvf_slot *slot, uint64_t gpa, uint64_t ept_qual)
  
- #ifdef __aarch64__
- #include <Hypervisor/Hypervisor.h>
-+typedef hv_vcpu_t hvf_vcpuid;
- #else
- #include <Hypervisor/hv.h>
-+typedef hv_vcpuid_t hvf_vcpuid;
- #endif
+     if (write && slot) {
+         if (slot->flags & HVF_SLOT_LOG) {
++            uint64_t dirty_page_start = gpa & ~(TARGET_PAGE_SIZE - 1u);
+             memory_region_set_dirty(slot->region, gpa - slot->start, 1);
+-            hv_vm_protect((hv_gpaddr_t)slot->start, (size_t)slot->size,
+-                          HV_MEMORY_READ | HV_MEMORY_WRITE);
++            hv_vm_protect(dirty_page_start, TARGET_PAGE_SIZE,
++                          HV_MEMORY_READ | HV_MEMORY_WRITE | HV_MEMORY_EXEC);
+         }
+     }
  
- /* hvf_slot flags */
-@@ -50,7 +52,7 @@ struct HVFState {
- extern HVFState *hvf_state;
- 
- struct AccelCPUState {
--    uint64_t fd;
-+    hvf_vcpuid fd;
-     void *exit;
-     bool vtimer_masked;
-     sigset_t unblock_ipi_mask;
 -- 
 2.36.1
 
