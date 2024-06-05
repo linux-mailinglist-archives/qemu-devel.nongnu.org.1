@@ -2,69 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C01DF8FC8C1
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jun 2024 12:16:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A741E8FC8E8
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jun 2024 12:25:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEnfQ-0005ap-Na; Wed, 05 Jun 2024 06:14:52 -0400
+	id 1sEnnw-0007y7-3c; Wed, 05 Jun 2024 06:23:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1sEnfO-0005aY-IX
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 06:14:50 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sEnnu-0007xt-7M
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 06:23:38 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1sEnfM-0006wd-Do
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 06:14:50 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 456666D622;
- Wed,  5 Jun 2024 13:15:28 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id CC8C4E08D6;
- Wed,  5 Jun 2024 13:14:37 +0300 (MSK)
-Message-ID: <40b59ff0-e3ff-4631-aac2-83a3214d28b6@tls.msk.ru>
-Date: Wed, 5 Jun 2024 13:14:37 +0300
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sEnnr-0001FS-PU
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 06:23:37 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1717583013;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=klsynvVKW5DTrmtKye+CioTAaTuFcNWDg8W+GFHUKSM=;
+ b=X5WaPngirLImkaJUjgxyYf4Bb1VelhLYcRDt0HpA9lkQBrJfFkxvoYvj9iS/jxBvjrn5Wh
+ b4xwlsQU8oThbG+AaeMfAYq4DQyQpL6yvzPICXuOe1q24K5tu9uU/D8KVGXs3XxHpQ2lEu
+ 3SYSNJNbo29yxtvR7fMZ00HBnAtRFVc=
+Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
+ [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-664-56PZ5grKNia-wFEPtFFjDg-1; Wed, 05 Jun 2024 06:23:31 -0400
+X-MC-Unique: 56PZ5grKNia-wFEPtFFjDg-1
+Received: by mail-lf1-f72.google.com with SMTP id
+ 2adb3069b0e04-52b9267d9d6so2891502e87.2
+ for <qemu-devel@nongnu.org>; Wed, 05 Jun 2024 03:23:31 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1717583010; x=1718187810;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=klsynvVKW5DTrmtKye+CioTAaTuFcNWDg8W+GFHUKSM=;
+ b=YXms7Xjs78kruJ0Nq/EsqvpXRR1vh1eKJDPo9QxaBbGQpUeJ86HdKSv0mffTQKtZyP
+ g99Yzn5DPcFk6/UoUkB6lURlo4hSc2JyRKKvW62S3aSMM1MraZdOOFen5n7IzS0Ptfvc
+ x5aT4cQfkezJncXqdRqjML5+oSJD7APE2E4XUmiKZ9wj/nFc/gi/q1E3lgNTzZkQUUV2
+ Ii+fOg6U4EuXGfaf7dFWdJ1Ypv8R411Nnd3DdGejcUpcCjBPPqoZcLRUQ8H68uJMeHOe
+ V6GUYFPequDCwgEXWryFIfC0dCIqy0nSP38YXvJI1X8oHoFEPzUyB17RlHSQ2ny45LTn
+ HW8Q==
+X-Gm-Message-State: AOJu0YzehwAp7mqA6FjhJa/WbmqyjrRxW7Wd7ejPm0RJnA9DcvSszgA/
+ rQ35PUURZA9pH4FzQozHrV3etbTINnBMqEBphKPHRd+l2mlnpsep+bg45dIccjQIzPfP3PEMt6F
+ /X3OebKbhNYuGTd6ORtXAk+UTX92jmQ9SSwRucEl1AJjj5h7PLDZU
+X-Received: by 2002:a05:6512:3481:b0:52b:8ad9:cf0a with SMTP id
+ 2adb3069b0e04-52bab4fca86mr1550274e87.51.1717583009774; 
+ Wed, 05 Jun 2024 03:23:29 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGI1EJwq+5iigab/2MhCGWa1YF9sou6D3GeBKs8zG0mx052UsuPFS2c2AdvBSeo1GOQhTitJA==
+X-Received: by 2002:a05:6512:3481:b0:52b:8ad9:cf0a with SMTP id
+ 2adb3069b0e04-52bab4fca86mr1550248e87.51.1717583009169; 
+ Wed, 05 Jun 2024 03:23:29 -0700 (PDT)
+Received: from redhat.com ([2.55.8.167]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-a68e1201a89sm547324066b.32.2024.06.05.03.23.26
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 05 Jun 2024 03:23:28 -0700 (PDT)
+Date: Wed, 5 Jun 2024 06:23:23 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: "Gonglei (Arei)" <arei.gonglei@huawei.com>
+Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "peterx@redhat.com" <peterx@redhat.com>,
+ "yu.zhang@ionos.com" <yu.zhang@ionos.com>,
+ "mgalaxy@akamai.com" <mgalaxy@akamai.com>,
+ "elmar.gerdes@ionos.com" <elmar.gerdes@ionos.com>,
+ zhengchuan <zhengchuan@huawei.com>,
+ "berrange@redhat.com" <berrange@redhat.com>,
+ "armbru@redhat.com" <armbru@redhat.com>,
+ "lizhijian@fujitsu.com" <lizhijian@fujitsu.com>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>,
+ Xiexiangyou <xiexiangyou@huawei.com>,
+ "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
+ "lixiao (H)" <lixiao91@huawei.com>,
+ "jinpu.wang@ionos.com" <jinpu.wang@ionos.com>,
+ Wangjialin <wangjialin23@huawei.com>
+Subject: Re: [PATCH 0/6] refactor RDMA live migration based on rsocket API
+Message-ID: <20240605062209-mutt-send-email-mst@kernel.org>
+References: <1717503252-51884-1-git-send-email-arei.gonglei@huawei.com>
+ <20240605035622-mutt-send-email-mst@kernel.org>
+ <e39d065823da4ef9beb5b37c17c9a990@huawei.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 00/20] Net patches
-To: Jason Wang <jasowang@redhat.com>, qemu-devel@nongnu.org,
- Akihiko Odaki <akihiko.odaki@daynix.com>
-References: <20240604073755.1859-1-jasowang@redhat.com>
-Content-Language: en-US, ru-RU
-From: Michael Tokarev <mjt@tls.msk.ru>
-Autocrypt: addr=mjt@tls.msk.ru; keydata=
- xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
- bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
- WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
- 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
- WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
- zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
- FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
- CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
- Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
- LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
- UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
- SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
- 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
- K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
- pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
- GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
- fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
- AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
- cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
- HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
- 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
- rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
- Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
-In-Reply-To: <20240604073755.1859-1-jasowang@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e39d065823da4ef9beb5b37c17c9a990@huawei.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -82,43 +111,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-04.06.2024 10:37, Jason Wang wrote:
-> Akihiko Odaki (18):
->        tap: Remove tap_probe_vnet_hdr_len()
->        tap: Remove qemu_using_vnet_hdr()
->        net: Move virtio-net header length assertion
->        net: Remove receive_raw()
->        tap: Call tap_receive_iov() from tap_receive()
->        tap: Shrink zeroed virtio-net header
->        virtio-net: Do not propagate ebpf-rss-fds errors
->        virtio-net: Add only one queue pair when realizing
->        virtio-net: Copy header only when necessary
->        virtio-net: Shrink header byte swapping buffer
->        virtio-net: Disable RSS on reset
->        virtio-net: Unify the logic to update NIC state for RSS
->        virtio-net: Always set populate_hash
->        virtio-net: Do not write hashes to peer buffer
->        ebpf: Fix RSS error handling
->        ebpf: Return 0 when configuration fails
->        ebpf: Refactor tun_rss_steering_prog()
->        ebpf: Add a separate target for skeleton
+On Wed, Jun 05, 2024 at 10:00:24AM +0000, Gonglei (Arei) wrote:
 > 
-> Alexey Dobriyan (1):
->        virtio-net: drop too short packets early
 > 
-> Andrew Melnychenko (1):
->        ebpf: Added traces back. Changed source set for eBPF to 'system'.
+> > -----Original Message-----
+> > From: Michael S. Tsirkin [mailto:mst@redhat.com]
+> > Sent: Wednesday, June 5, 2024 3:57 PM
+> > To: Gonglei (Arei) <arei.gonglei@huawei.com>
+> > Cc: qemu-devel@nongnu.org; peterx@redhat.com; yu.zhang@ionos.com;
+> > mgalaxy@akamai.com; elmar.gerdes@ionos.com; zhengchuan
+> > <zhengchuan@huawei.com>; berrange@redhat.com; armbru@redhat.com;
+> > lizhijian@fujitsu.com; pbonzini@redhat.com; Xiexiangyou
+> > <xiexiangyou@huawei.com>; linux-rdma@vger.kernel.org; lixiao (H)
+> > <lixiao91@huawei.com>; jinpu.wang@ionos.com; Wangjialin
+> > <wangjialin23@huawei.com>
+> > Subject: Re: [PATCH 0/6] refactor RDMA live migration based on rsocket API
+> > 
+> > On Tue, Jun 04, 2024 at 08:14:06PM +0800, Gonglei wrote:
+> > > From: Jialin Wang <wangjialin23@huawei.com>
+> > >
+> > > Hi,
+> > >
+> > > This patch series attempts to refactor RDMA live migration by
+> > > introducing a new QIOChannelRDMA class based on the rsocket API.
+> > >
+> > > The /usr/include/rdma/rsocket.h provides a higher level rsocket API
+> > > that is a 1-1 match of the normal kernel 'sockets' API, which hides
+> > > the detail of rdma protocol into rsocket and allows us to add support
+> > > for some modern features like multifd more easily.
+> > >
+> > > Here is the previous discussion on refactoring RDMA live migration
+> > > using the rsocket API:
+> > >
+> > > https://lore.kernel.org/qemu-devel/20240328130255.52257-1-philmd@linar
+> > > o.org/
+> > >
+> > > We have encountered some bugs when using rsocket and plan to submit
+> > > them to the rdma-core community.
+> > >
+> > > In addition, the use of rsocket makes our programming more convenient,
+> > > but it must be noted that this method introduces multiple memory
+> > > copies, which can be imagined that there will be a certain performance
+> > > degradation, hoping that friends with RDMA network cards can help verify,
+> > thank you!
+> > 
+> > So you didn't test it with an RDMA card?
+> 
+> Yep, we tested it by Soft-ROCE.
+> 
+> > You really should test with an RDMA card though, for correctness as much as
+> > performance.
+> > 
+> We will, we just don't have RDMA cards environment on hand at the moment.
+> 
+> Regards,
+> -Gonglei
 
-Is there anything in there for qemu-stable?
-(NOT picking up without explicit mention of stable)
+Until it's tested on real hardware it is probably best to tag this
+series as RFC in the subject.
 
-Thanks,
-
-/mjt
--- 
-GPG Key transition (from rsa2048 to rsa4096) since 2024-04-24.
-New key: rsa4096/61AD3D98ECDF2C8E  9D8B E14E 3F2A 9DD7 9199  28F1 61AD 3D98 ECDF 2C8E
-Old key: rsa2048/457CE0A0804465C5  6EE1 95D1 886E 8FFB 810D  4324 457C E0A0 8044 65C5
-Transition statement: http://www.corpit.ru/mjt/gpg-transition-2024.txt
+> > 
+> > > Jialin Wang (6):
+> > >   migration: remove RDMA live migration temporarily
+> > >   io: add QIOChannelRDMA class
+> > >   io/channel-rdma: support working in coroutine
+> > >   tests/unit: add test-io-channel-rdma.c
+> > >   migration: introduce new RDMA live migration
+> > >   migration/rdma: support multifd for RDMA migration
+> > >
+> > >  docs/rdma.txt                     |  420 ---
+> > >  include/io/channel-rdma.h         |  165 ++
+> > >  io/channel-rdma.c                 |  798 ++++++
+> > >  io/meson.build                    |    1 +
+> > >  io/trace-events                   |   14 +
+> > >  meson.build                       |    6 -
+> > >  migration/meson.build             |    3 +-
+> > >  migration/migration-stats.c       |    5 +-
+> > >  migration/migration-stats.h       |    4 -
+> > >  migration/migration.c             |   13 +-
+> > >  migration/migration.h             |    9 -
+> > >  migration/multifd.c               |   10 +
+> > >  migration/options.c               |   16 -
+> > >  migration/options.h               |    2 -
+> > >  migration/qemu-file.c             |    1 -
+> > >  migration/ram.c                   |   90 +-
+> > >  migration/rdma.c                  | 4205 +----------------------------
+> > >  migration/rdma.h                  |   67 +-
+> > >  migration/savevm.c                |    2 +-
+> > >  migration/trace-events            |   68 +-
+> > >  qapi/migration.json               |   13 +-
+> > >  scripts/analyze-migration.py      |    3 -
+> > >  tests/unit/meson.build            |    1 +
+> > >  tests/unit/test-io-channel-rdma.c |  276 ++
+> > >  24 files changed, 1360 insertions(+), 4832 deletions(-)  delete mode
+> > > 100644 docs/rdma.txt  create mode 100644 include/io/channel-rdma.h
+> > > create mode 100644 io/channel-rdma.c  create mode 100644
+> > > tests/unit/test-io-channel-rdma.c
+> > >
+> > > --
+> > > 2.43.0
 
 
