@@ -2,86 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 190EA8FD10C
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jun 2024 16:44:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70B068FD0DD
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jun 2024 16:32:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sErsQ-0002U3-5U; Wed, 05 Jun 2024 10:44:34 -0400
+	id 1sErfz-00032Y-9s; Wed, 05 Jun 2024 10:31:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sErsM-0002Sj-2w
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 10:44:30 -0400
-Received: from mail-pj1-x1030.google.com ([2607:f8b0:4864:20::1030])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sErsK-0004a7-1T
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 10:44:29 -0400
-Received: by mail-pj1-x1030.google.com with SMTP id
- 98e67ed59e1d1-2c1b45206abso4981527a91.1
- for <qemu-devel@nongnu.org>; Wed, 05 Jun 2024 07:44:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1717598666; x=1718203466; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=ghXc0BKGmxEYcEMvhHZv6yabJjqxAzyNZ0qps6r06Bo=;
- b=G1M9/HGRaWz5PLFZrL8ZqffAaXCrkpqM3SAYpzMmhHtBK+yHhHbQvlcBX7ZtG47N1q
- Sbf40qsX3HX3FRaJpm6JfnFZeYpfar1OC9mr2d5SiLS6E5a1oT3LpwH8EglHhDmJB0iE
- i21ZX73L9nuolxJMhbs65QWHhDK48IJ5RYkRsA1cyhcueC43kbjfVt6T0G++xDfp+uFS
- 9Lexdw90MFVacGqNUr6nZzwnMHNV7BVk05fQ2XWKozEj3I28fTDQjd5wUsJjhte79WXs
- SLFvBS3ySpUe1/gRzwRhUDTyHT38BdpHL93YlYpSYU1n7okBX2b8SsXMZ57Om7ujPJLR
- +8LQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717598666; x=1718203466;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ghXc0BKGmxEYcEMvhHZv6yabJjqxAzyNZ0qps6r06Bo=;
- b=iL/dY/zXz/2HZHxoWhDbgCHllKvZylDCA75yu5/XdKU2nFhYvoJVyoJ62ti7ljElxR
- i385ujU6VqhVe5bQg9/dyTIL/3k5fEfV9leXPyU9wi2COuedoMj4L/HqMz0ItL781BXd
- zqiHVNlYdOcc/z/VOBzgmACzZ98rGBn88J8P57tWIHf7yKgesyYhlME1J+bqeiXsf0+U
- jAHDO/xYAupBf+lGOCzCFQYXXXDPjip6z1gi3ZMIdVUPsrXtm75zOik8i5N7gNWrtEFp
- v6UQKSKx62xI1x6XEDF7QwP99FkOhQrGu35Q02Ig4BZUH4dxDfw5+48XiwAXReaNGSmG
- ZPWQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWJ5pR3hxdJucAKTdRbWgUOVz7wslmzWT5FJtwM85gGTStUQIuW95snTf5qW/s3pEYpdKnP4mQaY4X7v94Dd/oCFZB1GA8=
-X-Gm-Message-State: AOJu0YzkeZ0e1iZgF6A/RiczeqkOnbT9tGbk+nKi+E+BSL38OWtMOje0
- sSuNIso537eOoXSJj+cLgfDzf2iDeJZhcYn3QJBQbA2FNW1hvFZQnSSP5iqVAkA=
-X-Google-Smtp-Source: AGHT+IG7ydFSNxPbk0OJUMPhwm761tFe0agCz9loXAur1c08uyqbF704N1ujF5fg3iFpYxKqAZk3AA==
-X-Received: by 2002:a17:90a:c788:b0:2c1:a4fc:8ba9 with SMTP id
- 98e67ed59e1d1-2c27db10401mr2428144a91.16.1717598666166; 
- Wed, 05 Jun 2024 07:44:26 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.132.216])
- by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2c2806399c5sm1572509a91.9.2024.06.05.07.44.25
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 05 Jun 2024 07:44:25 -0700 (PDT)
-Message-ID: <ad6d572b-f39e-43ff-b11b-74fbe8ae3148@linaro.org>
-Date: Wed, 5 Jun 2024 07:44:24 -0700
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sErfo-00031a-32
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 10:31:34 -0400
+Received: from mgamail.intel.com ([192.198.163.11])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sErfk-0001Tp-BG
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 10:31:31 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1717597889; x=1749133889;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=HGuRq+EYTDn/aZjM76gzUtTZHnRGmcLxJ0uJnBiVno0=;
+ b=nAHLKgtDkf1DeqlJH377VWrB8DQildn00Cadd6CD1+3MYf/4VfO43S/4
+ goF/DuFGhRGSnM51p/ja+q7VwQ1IjQeBiBEsKGT80IBgEsYmyuifrH03i
+ 6KtK/fBo1xMuPyT4rtku8zJAH/Az+wuo+XGDMLDXLSfkvy4V1TGrGz4JQ
+ mGGLe3+KBIsbZ3o04MYfkNIt5ZjRqzY0FoXMOZEvW4ZaInKrX1y2QiM4D
+ KAXir7LhtSJI3CHfIGadc8asIXOEZ0NZvsMK5ajYtBF3eI6VFNEc5WSbh
+ HJX45uiPEuSEtCXvXhj48GopU2fqCKJZNwpA/u09ht6Km+HTvXWppyFU5 Q==;
+X-CSE-ConnectionGUID: LHpo3gwNRdyX9grr0huhFA==
+X-CSE-MsgGUID: KXBoOMixTVughrFMKpOLZQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11093"; a="24842938"
+X-IronPort-AV: E=Sophos;i="6.08,216,1712646000"; d="scan'208";a="24842938"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Jun 2024 07:31:23 -0700
+X-CSE-ConnectionGUID: UTkUcKj2Sk6UUyKzYk/f7Q==
+X-CSE-MsgGUID: B/jC6NzRRrybeNP7Mrm1vw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,216,1712646000"; d="scan'208";a="37743729"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by fmviesa009.fm.intel.com with ESMTP; 05 Jun 2024 07:31:22 -0700
+Date: Wed, 5 Jun 2024 22:46:48 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+Subject: Re: [PULL 17/63] stubs: include stubs only if needed
+Message-ID: <ZmB6WHbBW5Wkw0cH@intel.com>
+References: <20240423150951.41600-1-pbonzini@redhat.com>
+ <20240423150951.41600-18-pbonzini@redhat.com>
+ <Zl7nYg9l9xOiuGKG@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 00/46] virtio: features,fixes
-To: "Michael S. Tsirkin" <mst@redhat.com>, qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, Cindy Lu <lulu@redhat.com>,
- qemu-stable@nongnu.org, Jason Wang <jasowang@redhat.com>
-References: <cover.1717527933.git.mst@redhat.com>
- <20240605032555-mutt-send-email-mst@kernel.org>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240605032555-mutt-send-email-mst@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1030;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1030.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <Zl7nYg9l9xOiuGKG@redhat.com>
+Received-SPF: pass client-ip=192.198.163.11; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,25 +82,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/5/24 02:27, Michael S. Tsirkin wrote:
-> On Tue, Jun 04, 2024 at 03:06:01PM -0400, Michael S. Tsirkin wrote:
->> The following changes since commit 60b54b67c63d8f076152e0f7dccf39854dfc6a77:
->>
->>    Merge tag 'pull-lu-20240526' of https://gitlab.com/rth7680/qemu into staging (2024-05-26 17:51:00 -0700)
->>
->> are available in the Git repository at:
->>
->>    https://git.kernel.org/pub/scm/virt/kvm/mst/qemu.git tags/for_upstream
->> for you to fetch changes up to bfcacf81d63a3d95f128bce3faf3564e7f98ea8b:
+On Tue, Jun 04, 2024 at 11:07:30AM +0100, Daniel P. Berrangé wrote:
+> Date: Tue, 4 Jun 2024 11:07:30 +0100
+> From: "Daniel P. Berrangé" <berrange@redhat.com>
+> Subject: Re: [PULL 17/63] stubs: include stubs only if needed
 > 
-> Dropped a patch from this pull at Author's request.
-> New head a2da15a164ddd798227262b58507b46ad5ab0ca9
-> Sorry about the noise - ok like this?
-> Don't want to spam the list posting v2 just for this.
+> On Tue, Apr 23, 2024 at 05:09:05PM +0200, Paolo Bonzini wrote:
+> > Currently it is not documented anywhere why some functions need to
+> > be stubbed.
+> > 
+> > Group the files in stubs/meson.build according to who needs them, both
+> > to reduce the size of the compilation and to clarify the use of stubs.
+> > 
+> > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> > Message-ID: <20240408155330.522792-18-pbonzini@redhat.com>
+> > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> > ---
+> >  stubs/{monitor.c => monitor-internal.c} |   0
+> >  stubs/meson.build                       | 122 +++++++++++++++---------
+> >  2 files changed, 75 insertions(+), 47 deletions(-)
+> >  rename stubs/{monitor.c => monitor-internal.c} (100%)
+> 
+> This change breaks the build of many tests in the following situation:
+> 
+>   ./configure --disable-system --disable-user --disable-tools
+> 
+> $ makej
+> changing dir to build for make ""...
+> make[1]: Entering directory '/var/home/berrange/src/virt/qemu/build'
+> [1/46] Generating qemu-version.h with a custom command (wrapped by meson to capture output)
+> [2/46] Linking target tests/bench/qht-bench
+> FAILED: tests/bench/qht-bench 
+> cc -m64  -o tests/bench/qht-bench tests/bench/qht-bench.p/qht-bench.c.o -Wl,--as-needed -Wl,--no-undefined -pie -Wl,--whole-archive libevent-loop-base.fa libqom.fa -Wl,--no-whole-archive -fstack-protector-strong -Wl,-z,relro -Wl,-z,now -Wl,--start-group libqemuutil.a libevent-loop-base.fa libqom.fa -lm -pthread /usr/lib64/libglib-2.0.so /usr/lib64/libgmodule-2.0.so -Wl,--end-group
+> /usr/bin/ld: libqemuutil.a.p/util_error-report.c.o: in function `error_printf':
+> /var/home/berrange/src/virt/qemu/build/../util/error-report.c:38:(.text+0x93): undefined reference to `error_vprintf'
+> /usr/bin/ld: libqemuutil.a.p/util_error-report.c.o: in function `vreport':
+> /var/home/berrange/src/virt/qemu/build/../util/error-report.c:225:(.text+0x195): undefined reference to `error_vprintf'
+> collect2: error: ld returned 1 exit status
+> [3/46] Linking target tests/unit/check-qdict
+> FAILED: tests/unit/check-qdict 
+> cc -m64  -o tests/unit/check-qdict tests/unit/check-qdict.p/check-qdict.c.o -Wl,--as-needed -Wl,--no-undefined -pie -Wl,--whole-archive libevent-loop-base.fa libqom.fa -Wl,--no-whole-archive -fstack-protector-strong -Wl,-z,relro -Wl,-z,now -Wl,--start-group libqemuutil.a libevent-loop-base.fa libqom.fa -lm -pthread /usr/lib64/libglib-2.0.so /usr/lib64/libgmodule-2.0.so -Wl,--end-group
+> /usr/bin/ld: libqemuutil.a.p/util_error-report.c.o: in function `error_printf':
+> /var/home/berrange/src/virt/qemu/build/../util/error-report.c:38:(.text+0x93): undefined reference to `error_vprintf'
+> /usr/bin/ld: libqemuutil.a.p/util_error-report.c.o: in function `vreport':
+> /var/home/berrange/src/virt/qemu/build/../util/error-report.c:225:(.text+0x195): undefined reference to `error_vprintf'
+> collect2: error: ld returned 1 exit status
+> [4/46] Linking target tests/unit/check-qstring
+> FAILED: tests/unit/check-qstring 
+> ...snip many more similar errors...
+>
 
-When you do this in future, send a new v2 cover.
-However, the bios-tables-test still fails, so I won't merge this either.
+error-printf.c should be a common file in stub_ss, since bench test and
+unit test both need qemuutil.
 
+It seems the related previous fix 109f1a437f99 ("stubs: Add missing qga
+stubs") is not a complete fix.
 
-r~
 
