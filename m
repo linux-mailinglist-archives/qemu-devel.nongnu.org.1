@@ -2,82 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A24C98FDA39
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jun 2024 01:16:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38DA48FDA94
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jun 2024 01:35:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEzqX-00078n-Bv; Wed, 05 Jun 2024 19:15:09 -0400
+	id 1sF09c-0002oI-Ul; Wed, 05 Jun 2024 19:34:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sEzqT-00078d-1f
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 19:15:05 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sEzqR-0001FY-6c
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 19:15:04 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-1f692d6e990so3841805ad.3
- for <qemu-devel@nongnu.org>; Wed, 05 Jun 2024 16:15:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1717629300; x=1718234100; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=vlCLkcY2sncir5x2b+MaLJLG/abK6GNTs+IkP/0Iyhc=;
- b=cGkt6zdbTlMYU/ejuUhh4AmSaOgIgHJP0D+P1ImfgyeYiR3XZlcUn72uzxg9+jHciK
- HFltSM/OtXlgiktZ1tGxWOmJ7Y8r0zpIJwowS8KtdqCuYXlaQ747PujmBeEXHOXqfKiR
- w48d4W1RzzCq4i09KJaf2SQRl+GzUxj/DEYTjHvCO5SKEMRiV+fyoroiobrkdbHJeeIE
- CaR+wIdd72Uc5NQHdpvtRz495AGl0Li6W1RTPkpKlVukz05eq2SJSzl30nq5MQnoKsAT
- d9KZqPJwHvN+7HttVunT5NJ+plt/6Eftbl3XitQWNoDXha6crHto6MBa7Y8oAfOU7y6h
- vDCA==
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sF09a-0002nx-Jf
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 19:34:50 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sF09Y-0004lF-J5
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 19:34:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1717630486;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=9FT0efaYSrBLlFjmrniKct7+AXD36CTynTe6pFVstwI=;
+ b=i+uHoqwl90fqNnxyCz54Z0hGQlFfcCKam75RCzhoUzIRV2jlOSCg54feWVTpGeboFKvX2a
+ rPKcdqtoEbZPSEgXnV35E+fThPFyZbrkf/h+HDKX8aLMYnJYEIH9KQ4RZ1tK2KaOBgezTT
+ 0a8CcWIHEaXOkbSCjqS1Jv0pOQYbU3Q=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-387-Fd5plBB1MfyMibT6hXVyBg-1; Wed, 05 Jun 2024 19:34:45 -0400
+X-MC-Unique: Fd5plBB1MfyMibT6hXVyBg-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-a68ee264225so11185566b.1
+ for <qemu-devel@nongnu.org>; Wed, 05 Jun 2024 16:34:44 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717629300; x=1718234100;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=vlCLkcY2sncir5x2b+MaLJLG/abK6GNTs+IkP/0Iyhc=;
- b=sNg+UyludR6CqCDpxFJW7iH+8KT6h8JWRs83XVkPIsgmkT3S5AHFFez2Td1lOzi4CF
- Xmiapjqm9tYE7nBnWKBCrigDBDPP4xh4aOSEAum9+OiFR0UTMXGsuq8X5TGpw1GCqZkA
- WTrUO6jGlc/URyJUrQ/6RnfQS3PoHGkVWX4dASDiwj5xe5cReBlBL2e3WpDhVbF4g2t9
- 7hrwrxLVcNmLw5EDmL8oOizGqw2hVoerCGi60Xx/1K1fpc42tsECljiWNrNfdLUpA6og
- 6uHX8mk6XZVUgX1mPfq5LDUiEO8S+imkvQ2KA4QLhgXRYG6hEsx5Bh9YAf4vWsUEkHUA
- Aqiw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUceq1qEzDCEOva9axdepN+EH+vWXQNmYZ0Iox+nj58X8mN6ew+r0FtBIdSVa5OfRCDsUPUWLmzz6xOJFCialuCw5bkJP8=
-X-Gm-Message-State: AOJu0YwAqNZcRdHXeFk/2UOKHdRW3CRxYQW68Mz7V+KykAeWfGjoYODu
- p3CuF8GdP6LD20+kFhLlfMC4NhH1oB5+eK+YzSLPHBsLOwOloVO5nbkaG5c9ZCk=
-X-Google-Smtp-Source: AGHT+IE7qdeYPsFamn6Nv3nnXhcKEf0mLeTh2yNZYsF088K7QjBNEVHGaokBT0+QWkRr7P7oEWgMcA==
-X-Received: by 2002:a17:902:ec8f:b0:1f6:8ae4:50de with SMTP id
- d9443c01a7336-1f6a5a852b4mr49022645ad.61.1717629299940; 
- Wed, 05 Jun 2024 16:14:59 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.132.216])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1f6bd76c240sm879515ad.89.2024.06.05.16.14.58
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 05 Jun 2024 16:14:59 -0700 (PDT)
-Message-ID: <a0e9ee6b-fbe6-48af-a122-fbf5d31aa476@linaro.org>
-Date: Wed, 5 Jun 2024 16:14:56 -0700
+ d=1e100.net; s=20230601; t=1717630483; x=1718235283;
+ h=content-transfer-encoding:content-disposition:mime-version
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=9FT0efaYSrBLlFjmrniKct7+AXD36CTynTe6pFVstwI=;
+ b=Pz0JT3CxZYS0HAmQGbdXdCo6e5ORwCcWeE3jDBDjo/npvKOu7agxXMaz0A6GNP7CII
+ W40dzkYiNLNMaeOaQ6M8m7fMgJUEMUMsJLeakIZsPV/OjrYU8q0sInAMnqsHu4F2tWPf
+ M3nLQPtpYJE0pJqE027ihwYAU+3LRBBKdsxbVtHbuc/SDAN5A1GFJVPIvI3hBEYalkQd
+ gBkaKypcx4vZHTRNhekZ5WWcU3qiopEyibgEG0roCcVMT6ln/yrc8CJdZbbfbh6GtL5A
+ Ba6X2TBtH2ho3ruFdqkBix9GGbEGrK3834FaznXzucUvKs3rFRGzSsS3r+Cws68HKkG7
+ 9cwg==
+X-Gm-Message-State: AOJu0YxVRt2HdaHVDncbEJ0gTQnQ8TC2TuUQhAAc1YnzJs+ypggXybep
+ CEQRAJS4Ho9VZAdGOBaBCLkhPVSR58jpHqBqoDQPjyyrjQfa16j1PeuK1QqDSRScevsEHz4d6ye
+ /5zCos34Yp6udwTz1/KqSZcNP/9lresh3d5h2YYK4EEMd/V6uMk15XrSOLTP4GAaJweFV7Ldehe
+ DaXsmTLeA980uKhjuhInXb7N2yh6iJNg==
+X-Received: by 2002:a17:906:a457:b0:a59:b590:5d71 with SMTP id
+ a640c23a62f3a-a699e9b1215mr232042666b.0.1717630483349; 
+ Wed, 05 Jun 2024 16:34:43 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHqZE7ECFsjR9+eQcIq2mRaBwbiX+MCKAuZLJsoetcJ2w3i+NMT3vBYow7KznvbPllWGdfuIQ==
+X-Received: by 2002:a17:906:a457:b0:a59:b590:5d71 with SMTP id
+ a640c23a62f3a-a699e9b1215mr232041466b.0.1717630482724; 
+ Wed, 05 Jun 2024 16:34:42 -0700 (PDT)
+Received: from redhat.com ([2.55.56.67]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-a6c802e62a5sm7997966b.0.2024.06.05.16.34.40
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 05 Jun 2024 16:34:41 -0700 (PDT)
+Date: Wed, 5 Jun 2024 19:34:38 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>
+Subject: [PULL v3 00/41] virtio: features,fixes
+Message-ID: <cover.1717630437.git.mst@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: linux-user emulation hangs during fork
-To: Andreas Schwab <schwab@suse.de>, qemu-devel@nongnu.org
-References: <mvm5xunu4ye.fsf@suse.de>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <mvm5xunu4ye.fsf@suse.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
+X-Mutt-Fcc: =sent
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,72 +97,170 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/5/24 02:14, Andreas Schwab wrote:
-> $ qemu-x86_64 --version
-> qemu-x86_64 version 9.0.50 (v9.0.0-1211-gd16cab541a)
-> Copyright (c) 2003-2024 Fabrice Bellard and the QEMU Project developers
-> $ cat fork.rb
-> begin
->    r, w = IO.pipe
->    if pid1 = fork
->      w.close
->      r.read 1
->      Process.kill "USR1", pid1
->      Process.wait2 pid1
->    else
->      print "child\n"
->      r.close
->      if pid2 = fork
->        trap("USR1") { print "child: kill\n"; Process.kill "USR2", pid2 }
->        w.close
->        print "child: wait\n"
->        Process.wait2 pid2
->      else
->        print "grandchild\n"
->        w.close
->        sleep 0.2
->      end
->    end
-> end
-> $ ruby fork.rb
-> child
-> child: wait
-> grandchild
-> child: kill
-> $ qemu-x86_64 /usr/bin/ruby fork.rb
-> child
-> child: wait
-> ^Z
-> [1]+  Stopped                 qemu-x86_64 /usr/bin/ruby fork.rb
-> $ grep SigB $(for p in $(pidof qemu-x86_64); do echo /proc/$p/status; done | sort)
-> /proc/3221/status:SigBlk:       0000000000000000
-> /proc/3224/status:SigBlk:       0000000000000000
-> /proc/3228/status:SigBlk:       fffffff27ffbfa9f
-> 
+Dropped acpi patches that had endian-ness issues.
 
-Works for me:
+The following changes since commit 60b54b67c63d8f076152e0f7dccf39854dfc6a77:
 
-rth@stoup:~/zz$ ~/qemu/bld/qemu-x86_64 `which ruby` fork.rb
-child
-grandchild
-child: wait
-child: kill
-rth@stoup:~/zz$ ~/qemu/bld/qemu-x86_64 `which ruby` fork.rb
-child
-grandchild
-child: wait
-child: kill
-rth@stoup:~/zz$ ~/qemu/bld/qemu-x86_64 `which ruby` fork.rb
-child
-grandchild
-child: wait
-child: kill
-rth@stoup:~/zz$ ~/qemu/bld/qemu-x86_64 `which ruby` fork.rb
-child
-grandchild
-child: wait
-child: kill
+  Merge tag 'pull-lu-20240526' of https://gitlab.com/rth7680/qemu into staging (2024-05-26 17:51:00 -0700)
 
+are available in the Git repository at:
 
-r~
+  https://git.kernel.org/pub/scm/virt/kvm/mst/qemu.git tags/for_upstream
+
+for you to fetch changes up to d23bc95d390a1800198c92a0177240d9e1a1eb66:
+
+  hw/cxl: Fix read from bogus memory (2024-06-05 19:33:01 -0400)
+
+----------------------------------------------------------------
+virtio: features,fixes
+
+A bunch of improvements:
+- vhost dirty log is now only scanned once, not once per device
+- virtio and vhost now support VIRTIO_F_NOTIFICATION_DATA
+- cxl gained DCD emulation support
+- pvpanic gained shutdown support
+- beginning of patchset for Generic Port Affinity Structure
+- new tests
+- bugfixes
+
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+
+----------------------------------------------------------------
+Alejandro Jimenez (1):
+      pvpanic: Emit GUEST_PVSHUTDOWN QMP event on pvpanic shutdown signal
+
+Christian Pötzsch (1):
+      Fix vhost user assertion when sending more than one fd
+
+Cindy Lu (1):
+      virtio-pci: Fix the failure process in kvm_virtio_pci_vector_use_one()
+
+Fan Ni (12):
+      hw/cxl/cxl-mailbox-utils: Add dc_event_log_size field to output payload of identify memory device command
+      hw/cxl/cxl-mailbox-utils: Add dynamic capacity region representative and mailbox command support
+      include/hw/cxl/cxl_device: Rename mem_size as static_mem_size for type3 memory devices
+      hw/mem/cxl_type3: Add support to create DC regions to type3 memory devices
+      hw/mem/cxl-type3: Refactor ct3_build_cdat_entries_for_mr to take mr size instead of mr as argument
+      hw/mem/cxl_type3: Add host backend and address space handling for DC regions
+      hw/mem/cxl_type3: Add DC extent list representative and get DC extent list mailbox support
+      hw/cxl/cxl-mailbox-utils: Add mailbox commands to support add/release dynamic capacity response
+      hw/cxl/events: Add qmp interfaces to add/release dynamic capacity extents
+      hw/mem/cxl_type3: Add DPA range validation for accesses to DC regions
+      hw/cxl/cxl-mailbox-utils: Add superset extent release mailbox support
+      hw/mem/cxl_type3: Allow to release extent superset in QMP interface
+
+Gregory Price (2):
+      hw/cxl/mailbox: change CCI cmd set structure to be a member, not a reference
+      hw/cxl/mailbox: interface to add CCI commands to an existing CCI
+
+Halil Pasic (1):
+      vhost-vsock: add VIRTIO_F_RING_PACKED to feature_bits
+
+Ira Weiny (1):
+      hw/cxl: Fix read from bogus memory
+
+Jiqian Chen (1):
+      virtio-pci: only reset pm state during resetting
+
+Jonah Palmer (5):
+      virtio/virtio-pci: Handle extra notification data
+      virtio: Prevent creation of device using notification-data with ioeventfd
+      virtio-mmio: Handle extra notification data
+      virtio-ccw: Handle extra notification data
+      vhost/vhost-user: Add VIRTIO_F_NOTIFICATION_DATA to vhost feature bits
+
+Jonathan Cameron (2):
+      hw/acpi/GI: Fix trivial parameter alignment issue.
+      hw/acpi: Insert an acpi-generic-node base under acpi-generic-initiator
+
+Li Feng (2):
+      Revert "vhost-user: fix lost reconnect"
+      vhost-user: fix lost reconnect again
+
+Marc-André Lureau (1):
+      vhost-user-gpu: fix import of DMABUF
+
+Si-Wei Liu (2):
+      vhost: dirty log should be per backend type
+      vhost: Perform memory section dirty scans once per iteration
+
+Stefano Garzarella (1):
+      vhost-vdpa: check vhost_vdpa_set_vring_ready() return value
+
+Thomas Weißschuh (7):
+      scripts/update-linux-headers: Copy setup_data.h to correct directory
+      linux-headers: update to 6.10-rc1
+      hw/misc/pvpanic: centralize definition of supported events
+      tests/qtest/pvpanic: use centralized definition of supported events
+      hw/misc/pvpanic: add support for normal shutdowns
+      tests/qtest/pvpanic: add tests for pvshutdown event
+      Revert "docs/specs/pvpanic: mark shutdown event as not implemented"
+
+Wafer (1):
+      hw/virtio: Fix obtain the buffer id from the last descriptor
+
+ qapi/cxl.json                               | 143 ++++++
+ qapi/run-state.json                         |  14 +
+ include/hw/acpi/acpi_generic_initiator.h    |  15 +-
+ include/hw/cxl/cxl_device.h                 |  85 +++-
+ include/hw/cxl/cxl_events.h                 |  18 +
+ include/hw/misc/pvpanic.h                   |   6 +
+ include/hw/virtio/vhost-user.h              |   3 +-
+ include/hw/virtio/vhost.h                   |   1 +
+ include/hw/virtio/virtio.h                  |   2 +
+ include/standard-headers/linux/ethtool.h    |  55 +++
+ include/standard-headers/linux/pci_regs.h   |   6 +
+ include/standard-headers/linux/pvpanic.h    |   7 +-
+ include/standard-headers/linux/virtio_bt.h  |   1 -
+ include/standard-headers/linux/virtio_mem.h |   2 +
+ include/standard-headers/linux/virtio_net.h | 143 ++++++
+ include/sysemu/runstate.h                   |   1 +
+ linux-headers/asm-generic/unistd.h          |   5 +-
+ linux-headers/asm-loongarch/kvm.h           |   4 +
+ linux-headers/asm-mips/unistd_n32.h         |   1 +
+ linux-headers/asm-mips/unistd_n64.h         |   1 +
+ linux-headers/asm-mips/unistd_o32.h         |   1 +
+ linux-headers/asm-powerpc/unistd_32.h       |   1 +
+ linux-headers/asm-powerpc/unistd_64.h       |   1 +
+ linux-headers/asm-riscv/kvm.h               |   1 +
+ linux-headers/asm-s390/unistd_32.h          |   1 +
+ linux-headers/asm-s390/unistd_64.h          |   1 +
+ linux-headers/asm-x86/kvm.h                 |   4 +-
+ linux-headers/asm-x86/unistd_32.h           |   1 +
+ linux-headers/asm-x86/unistd_64.h           |   1 +
+ linux-headers/asm-x86/unistd_x32.h          |   2 +
+ linux-headers/linux/kvm.h                   |   4 +-
+ linux-headers/linux/stddef.h                |   8 +
+ linux-headers/linux/vhost.h                 |  15 +-
+ hw/acpi/acpi_generic_initiator.c            |  82 ++--
+ hw/block/vhost-user-blk.c                   |   6 +-
+ hw/cxl/cxl-mailbox-utils.c                  | 658 +++++++++++++++++++++++++++-
+ hw/display/vhost-user-gpu.c                 |   5 +-
+ hw/mem/cxl_type3.c                          | 637 +++++++++++++++++++++++++--
+ hw/mem/cxl_type3_stubs.c                    |  25 ++
+ hw/misc/pvpanic-isa.c                       |   3 +-
+ hw/misc/pvpanic-pci.c                       |   3 +-
+ hw/misc/pvpanic.c                           |   8 +-
+ hw/net/vhost_net.c                          |   2 +
+ hw/s390x/s390-virtio-ccw.c                  |  17 +-
+ hw/scsi/vhost-scsi.c                        |   1 +
+ hw/scsi/vhost-user-scsi.c                   |   7 +-
+ hw/virtio/vhost-user-base.c                 |   5 +-
+ hw/virtio/vhost-user-fs.c                   |   2 +-
+ hw/virtio/vhost-user-vsock.c                |   1 +
+ hw/virtio/vhost-user.c                      |  18 +-
+ hw/virtio/vhost-vsock-common.c              |   1 +
+ hw/virtio/vhost.c                           | 112 ++++-
+ hw/virtio/virtio-mmio.c                     |  11 +-
+ hw/virtio/virtio-pci.c                      |  38 +-
+ hw/virtio/virtio.c                          |  45 ++
+ net/vhost-vdpa.c                            |  16 +-
+ subprojects/libvhost-user/libvhost-user.c   |   2 +-
+ system/runstate.c                           |   6 +
+ tests/qtest/pvpanic-pci-test.c              |  44 +-
+ tests/qtest/pvpanic-test.c                  |  34 +-
+ docs/specs/pvpanic.rst                      |   2 +-
+ scripts/update-linux-headers.sh             |   2 +-
+ 62 files changed, 2159 insertions(+), 188 deletions(-)
+
 
