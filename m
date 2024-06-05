@@ -2,74 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07F618FD3F9
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jun 2024 19:24:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E03C8FD405
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jun 2024 19:25:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEuLl-0005ny-Oe; Wed, 05 Jun 2024 13:23:01 -0400
+	id 1sEuLm-0005pk-HY; Wed, 05 Jun 2024 13:23:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sEuLj-0005nE-IZ
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 13:22:59 -0400
-Received: from mail-pg1-x535.google.com ([2607:f8b0:4864:20::535])
+ id 1sEuLk-0005nR-DE
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 13:23:00 -0400
+Received: from mail-pj1-x1029.google.com ([2607:f8b0:4864:20::1029])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sEuLh-0003n9-Qh
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 13:22:59 -0400
-Received: by mail-pg1-x535.google.com with SMTP id
- 41be03b00d2f7-681ad081695so20343a12.3
- for <qemu-devel@nongnu.org>; Wed, 05 Jun 2024 10:22:57 -0700 (PDT)
+ id 1sEuLi-0003nH-Im
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 13:23:00 -0400
+Received: by mail-pj1-x1029.google.com with SMTP id
+ 98e67ed59e1d1-2bfff08fc29so54698a91.1
+ for <qemu-devel@nongnu.org>; Wed, 05 Jun 2024 10:22:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1717608176; x=1718212976; darn=nongnu.org;
+ d=linaro.org; s=google; t=1717608177; x=1718212977; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=pN+qsqPGpYhww4jH+ML1rz71xdlmduezi6vORxR7A4w=;
- b=g0Q5v77k3NFcbar4tVnX9Q/mBy2lRdQPsmi4UFCZc/dS3+y3PR+YwXupuZIbjSAUOB
- /Z57BF+LAgUNwYFCDwel+WzpVkmloRrNGtIwHYQ8RGDeZqz7M0sL3gZDII+alrhJXkpb
- loqRrihYD2iXaWz8wH2KKlPGZjHP20HseBEBAzwUtDPqDlJWYuSOB8JBScIZMcfNDxEF
- rynRk+iZcR9XFDWBu8xUeZ4PWDcBf72WCWZ4Xor97Z3WKVn72SmUm5Dg5sKz6bZm2KjU
- ZaHZyyc6v3EvHyLhqtbaxGnfU8os1qotrT8eArmNy1tLyVIZGGSpkyeJKTOycb0QFcSj
- OOiw==
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=QyfYhcDz9GxZwfZD6zLLHvsedkNWvuKT9dIKJJP5Q0E=;
+ b=eXK00aHi4NDl+8yUogLgcCKTdEYgw7ZdkfUbYjrCE8JcfXTo9riINwxDvuWUTxbMAf
+ kVsWwa+xBHCAhMBNLZPjy/ReFoiOZVArjeomqhDnxQO7Zwfq6Y6mGWG3ZrNJrFHq5zVm
+ 0MmrLQY9/Z+Z19Tr7DqDaQyEiE2UJY0w7BZbkaQZDWYZHKNkLRh1jMhWyR+c0r+1nzah
+ RYHdaMDk1Jf0PtLZO/I4iv3urXpFMkxElZLr/DM3Znx0Aa3lGVEcA2TbkVFcMTvc3WUI
+ hiT2uO6UaIC7KZ2RA+/iKO4IXAPetOoEEpxpwPXSt3/bcttRcx7fBUsgoPGQdpI/hcFB
+ z4rg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717608176; x=1718212976;
+ d=1e100.net; s=20230601; t=1717608177; x=1718212977;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=pN+qsqPGpYhww4jH+ML1rz71xdlmduezi6vORxR7A4w=;
- b=OTiINbCYgRfRMOcWpxzdSJcMrvBzgicOzzPmPz9dg0+d1YsGytNxTEE70e7oVBdxby
- Y4q7Ffuy0RZYPiOETOslAcU/EtTHvpG6gi6ws5oN6kyZ+QwT0H7XNQVg5dXNnMjsk7ON
- UQ5ZLnGFnCIao2VfQeDwHyLFSfsm4I3YvRuTueUZhRfuzh6NRpEKwEVITUX9Qr+GiDi7
- XmqYRcbKIwLy8YyJd6/Ea7TdYzKXrA4VIcq9vKq6FBYPRpzL7Nz9WxPkzFZRntCxu9Rf
- TgAj3BjK11irbD/oXzm087RqICcITi/ZhB6/fTX4xXZ941yONLl9D8AmTZHb625wadvv
- D1Dw==
-X-Gm-Message-State: AOJu0YwgiK8om/dF2T4gRKsVY3PQSO7BLj1jL2iMw9ND2ht/UZdSrdKT
- 2uAxCSFSLSAUbU1AaUEYxNZ9lZwU2KZJkxBk3lQGDNoSihLyIAPb+6jjKarHGFVxUJDD2Sx4g8B
- s
-X-Google-Smtp-Source: AGHT+IHiR+K1+3vN80BB0OiMPveeBcNE7TyNlJWXR1DxexBZ51TZ9YIb91H3+RtCVBFlTQtqbzuURQ==
-X-Received: by 2002:a17:90b:1110:b0:2c2:1372:6c81 with SMTP id
- 98e67ed59e1d1-2c27db0fdeamr3395335a91.15.1717608176081; 
- Wed, 05 Jun 2024 10:22:56 -0700 (PDT)
+ bh=QyfYhcDz9GxZwfZD6zLLHvsedkNWvuKT9dIKJJP5Q0E=;
+ b=T90M8kQ8hkHHMq6NfwPBCvhHqCYbwkvDPJrmKwyEBr8jrRJpE23Ngu6T/855ABR/eg
+ dl6Y0+IlYoUTfFhoRs+K1j25vBMSlpba71NqazZoTfVy1kY10avJDy19xGR693PUlLj7
+ nMKwIpq45kiBe+OjoxIn0+0LIpeGvBrYAkDBHpYKPjQ+eK8GbP9PumdFL+w1LsVbppu8
+ Toj2bEdNs/1dbHIfKl147CeVdHUjptOI5plDIw6hh+/sMpNsGo5Aan21cBjuvjpNV6Cn
+ kuYifFYZqnb7rhKbTMcQjT12SxedyjA2TIxK4yOcSIgD4F3dgfXJWobABcDEgQKMlcEp
+ dpQg==
+X-Gm-Message-State: AOJu0Yw1w1YwkrGXNGC6EWMeirCw1JVI34mlj8hM04kMpN1KZnSFi0y3
+ 4UofTCuKVUeLyWR+/3QVM8poi8hwM7OfhrsJ/Xnz+0Vqx7GAthkl1WkVGU+QglSSrlY2KcSNiUS
+ x
+X-Google-Smtp-Source: AGHT+IHvjKhLm2kfYnWFjQPOHh6ib/otYCEMQKaDFddpzivkfwO6RGVbl3EUiYbJuUlMt+n+lmuuMA==
+X-Received: by 2002:a17:90a:590:b0:2bd:d42a:e071 with SMTP id
+ 98e67ed59e1d1-2c27db58ee8mr3175942a91.30.1717608177097; 
+ Wed, 05 Jun 2024 10:22:57 -0700 (PDT)
 Received: from stoup.. ([71.212.132.216]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2c28066d511sm1720915a91.9.2024.06.05.10.22.55
+ 98e67ed59e1d1-2c28066d511sm1720915a91.9.2024.06.05.10.22.56
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 05 Jun 2024 10:22:55 -0700 (PDT)
+ Wed, 05 Jun 2024 10:22:56 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Michael Vogt <michael.vogt@gmail.com>,
-	Michael Vogt <mvogt@redhat.com>
-Subject: [PULL 01/38] linux-user: Add ioctl for BLKBSZSET
-Date: Wed,  5 Jun 2024 10:22:16 -0700
-Message-Id: <20240605172253.356302-2-richard.henderson@linaro.org>
+Subject: [PULL 02/38] target/sparc: Fix ARRAY8
+Date: Wed,  5 Jun 2024 10:22:17 -0700
+Message-Id: <20240605172253.356302-3-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240605172253.356302-1-richard.henderson@linaro.org>
 References: <20240605172253.356302-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::535;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x535.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1029;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1029.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,28 +90,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Michael Vogt <michael.vogt@gmail.com>
+Follow the Oracle Sparc 2015 implementation note and bound
+the input value of N to 5 from the lower 3 bits of rs2.
+Spell out all of the intermediate values, matching the diagram
+in the manual.  Fix extraction of upper_x and upper_y for N=0.
 
-Tiny patch to add the ioctl wrapper definition for BLKBSZSET.
-
-Signed-off-by: Michael Vogt <mvogt@redhat.com>
-Message-Id: <20240423152438.19841-2-mvogt@redhat.com>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/ioctls.h | 1 +
- 1 file changed, 1 insertion(+)
+ target/sparc/vis_helper.c | 53 ++++++++++++++++++++++++++-------------
+ 1 file changed, 35 insertions(+), 18 deletions(-)
 
-diff --git a/linux-user/ioctls.h b/linux-user/ioctls.h
-index d508d0c04a..3b41128fd7 100644
---- a/linux-user/ioctls.h
-+++ b/linux-user/ioctls.h
-@@ -102,6 +102,7 @@
-      IOCTL(BLKRAGET, IOC_R, MK_PTR(TYPE_LONG))
-      IOCTL(BLKSSZGET, IOC_R, MK_PTR(TYPE_INT))
-      IOCTL(BLKBSZGET, IOC_R, MK_PTR(TYPE_INT))
-+     IOCTL(BLKBSZSET, IOC_W, MK_PTR(TYPE_INT))
-      IOCTL_SPECIAL(BLKPG, IOC_W, do_ioctl_blkpg,
-                    MK_PTR(MK_STRUCT(STRUCT_blkpg_ioctl_arg)))
+diff --git a/target/sparc/vis_helper.c b/target/sparc/vis_helper.c
+index e15c6bb34e..f46fcf1f6a 100644
+--- a/target/sparc/vis_helper.c
++++ b/target/sparc/vis_helper.c
+@@ -21,25 +21,42 @@
+ #include "cpu.h"
+ #include "exec/helper-proto.h"
  
+-/* This function uses non-native bit order */
+-#define GET_FIELD(X, FROM, TO)                                  \
+-    ((X) >> (63 - (TO)) & ((1ULL << ((TO) - (FROM) + 1)) - 1))
+-
+-/* This function uses the order in the manuals, i.e. bit 0 is 2^0 */
+-#define GET_FIELD_SP(X, FROM, TO)               \
+-    GET_FIELD(X, 63 - (TO), 63 - (FROM))
+-
+-target_ulong helper_array8(target_ulong pixel_addr, target_ulong cubesize)
++target_ulong helper_array8(target_ulong rs1, target_ulong rs2)
+ {
+-    return (GET_FIELD_SP(pixel_addr, 60, 63) << (17 + 2 * cubesize)) |
+-        (GET_FIELD_SP(pixel_addr, 39, 39 + cubesize - 1) << (17 + cubesize)) |
+-        (GET_FIELD_SP(pixel_addr, 17 + cubesize - 1, 17) << 17) |
+-        (GET_FIELD_SP(pixel_addr, 56, 59) << 13) |
+-        (GET_FIELD_SP(pixel_addr, 35, 38) << 9) |
+-        (GET_FIELD_SP(pixel_addr, 13, 16) << 5) |
+-        (((pixel_addr >> 55) & 1) << 4) |
+-        (GET_FIELD_SP(pixel_addr, 33, 34) << 2) |
+-        GET_FIELD_SP(pixel_addr, 11, 12);
++    /*
++     * From Oracle SPARC Architecture 2015:
++     * Architecturally, an illegal R[rs2] value (>5) causes the array
++     * instructions to produce undefined results. For historic reference,
++     * past implementations of these instructions have ignored R[rs2]{63:3}
++     * and have treated R[rs2] values of 6 and 7 as if they were 5.
++     */
++    target_ulong n = MIN(rs2 & 7, 5);
++
++    target_ulong x_int = (rs1 >> 11) & 0x7ff;
++    target_ulong y_int = (rs1 >> 33) & 0x7ff;
++    target_ulong z_int = rs1 >> 55;
++
++    target_ulong lower_x = x_int & 3;
++    target_ulong lower_y = y_int & 3;
++    target_ulong lower_z = z_int & 1;
++
++    target_ulong middle_x = (x_int >> 2) & 15;
++    target_ulong middle_y = (y_int >> 2) & 15;
++    target_ulong middle_z = (z_int >> 1) & 15;
++
++    target_ulong upper_x = (x_int >> 6) & ((1 << n) - 1);
++    target_ulong upper_y = (y_int >> 6) & ((1 << n) - 1);
++    target_ulong upper_z = z_int >> 5;
++
++    return (upper_z << (17 + 2 * n))
++         | (upper_y << (17 + n))
++         | (upper_x << 17)
++         | (middle_z << 13)
++         | (middle_y << 9)
++         | (middle_x << 5)
++         | (lower_z << 4)
++         | (lower_y << 2)
++         | lower_x;
+ }
+ 
+ #if HOST_BIG_ENDIAN
 -- 
 2.34.1
 
