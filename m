@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA2B28FC689
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jun 2024 10:34:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 356CE8FC68C
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jun 2024 10:34:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEm5w-0001q3-8F; Wed, 05 Jun 2024 04:34:08 -0400
+	id 1sEm61-0001rW-7j; Wed, 05 Jun 2024 04:34:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1sEm5u-0001nQ-IY
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 04:34:06 -0400
+ id 1sEm5y-0001rE-RO
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 04:34:10 -0400
 Received: from mgamail.intel.com ([198.175.65.12])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1sEm5s-00062T-IV
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 04:34:06 -0400
+ id 1sEm5x-00062T-4m
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 04:34:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1717576445; x=1749112445;
+ t=1717576450; x=1749112450;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=cLXto5lTTRuKedPlHNOcB9nwrNNwqPGVin048o0aHD4=;
- b=F7tILgun+Q4rn/OP4wCRD2YD5TNjhCxNvRDvaZNpyKKnwqvHvpUAVg31
- WvK6x58n/EMIEkJzijLD4CBVwDOf+scKH5GFeEuUqqLcVURs4DnEO1B+W
- acBdg6WLE8ieVEZs3ZpSJKd1i5WIVZ9HeOO5t8E9iAcfmeJdgGsMH4Wkc
- OjBSv2r7ydAdu/1C9dIxXFOQm8/BCVFMyGgdsOKwTL4CKWv3kfFjmj5oS
- 8PfHFgd9PM475UPt/D37YlAZBKEm/NVzQBHOTUwCz71lFumIug29tVHlv
- YxEG4qO6RSk9gPmqSkux1ptvOwa9+hdz+y591ESTCMypgkj61Sc7LVCcK A==;
-X-CSE-ConnectionGUID: wAVRzlRCQgOWsCu94a6kdQ==
-X-CSE-MsgGUID: iAW8wq2gT3Kk2VqPr0Ujig==
-X-IronPort-AV: E=McAfee;i="6600,9927,11093"; a="25575399"
-X-IronPort-AV: E=Sophos;i="6.08,216,1712646000"; d="scan'208";a="25575399"
+ bh=MzedrzVPJ3b96duACw24rcIPzI1cSkmrMMmPMZGk+mo=;
+ b=OYQsMP8ZNe4Z+3+//BWVjdcS01dr1i5FWfdeCPHfMMw0ZoPLF0x2EXjo
+ D6k3bNaYC0n/wOqbdmWjbNJZSkxbgMmlL8QbWIMfTWktFsIslIc1JQ8vF
+ kLrsMbCfgXWcq1aoOPjN9E8M92aG3MX1bRwIRrxuBU4mV5a7xxh1FZ3MW
+ 1+ZhVIgx5HIUnTwVMSc4qC8TX5X0U29TOkjii5VZz490PUABtjAW8HNau
+ 7hzoOwg+gVUbzK3uMVQBWCcT+QuO9e5zbMiNimTqGoMUlviRx53da0iRW
+ 5lxNsKdyUJiSkjtEfxBrWEa2mMeBBB12AV/3EASIwuvEA/wSeVezoRte0 w==;
+X-CSE-ConnectionGUID: x2Q+9zlpSg6ZoVp953n7SA==
+X-CSE-MsgGUID: txXcuu4cTQOrEl32lI/pgQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11093"; a="25575406"
+X-IronPort-AV: E=Sophos;i="6.08,216,1712646000"; d="scan'208";a="25575406"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Jun 2024 01:34:04 -0700
-X-CSE-ConnectionGUID: h3StnYd3SLm7lhP8509VtQ==
-X-CSE-MsgGUID: ETRSgtTiQ3OhryMnpk63zA==
+ 05 Jun 2024 01:34:09 -0700
+X-CSE-ConnectionGUID: LCIi//sHRLqBfltaLA1NuA==
+X-CSE-MsgGUID: Pn4wdUc0QIK/ybJVltwhjA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,216,1712646000"; d="scan'208";a="37954847"
+X-IronPort-AV: E=Sophos;i="6.08,216,1712646000"; d="scan'208";a="37954862"
 Received: from unknown (HELO SPR-S2600BT.bj.intel.com) ([10.240.192.127])
  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Jun 2024 01:34:00 -0700
+ 05 Jun 2024 01:34:04 -0700
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
  mst@redhat.com, peterx@redhat.com, jasowang@redhat.com, jgg@nvidia.com,
  nicolinc@nvidia.com, joao.m.martins@oracle.com,
  clement.mathieu--drif@eviden.com, kevin.tian@intel.com, yi.l.liu@intel.com,
- chao.p.peng@intel.com, Zhenzhong Duan <zhenzhong.duan@intel.com>,
- Yi Sun <yi.y.sun@linux.intel.com>,
+ chao.p.peng@intel.com, Yi Sun <yi.y.sun@linux.intel.com>,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PATCH v7 12/17] hw/pci: Introduce helper function
- pci_device_get_iommu_bus_devfn()
-Date: Wed,  5 Jun 2024 16:30:38 +0800
-Message-Id: <20240605083043.317831-13-zhenzhong.duan@intel.com>
+Subject: [PATCH v7 13/17] hw/pci: Introduce
+ pci_device_[set|unset]_iommu_device()
+Date: Wed,  5 Jun 2024 16:30:39 +0800
+Message-Id: <20240605083043.317831-14-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240605083043.317831-1-zhenzhong.duan@intel.com>
 References: <20240605083043.317831-1-zhenzhong.duan@intel.com>
@@ -86,12 +86,11 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Extract out pci_device_get_iommu_bus_devfn() from
-pci_device_iommu_address_space() to facilitate
-implementation of pci_device_[set|unset]_iommu_device()
-in following patch.
+From: Yi Liu <yi.l.liu@intel.com>
 
-No functional change intended.
+pci_device_[set|unset]_iommu_device() call pci_device_get_iommu_bus_devfn()
+to get iommu_bus->iommu_ops and call [set|unset]_iommu_device callback to
+set/unset HostIOMMUDevice for a given PCI device.
 
 Signed-off-by: Yi Liu <yi.l.liu@intel.com>
 Signed-off-by: Yi Sun <yi.y.sun@linux.intel.com>
@@ -99,78 +98,107 @@ Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 Reviewed-by: Eric Auger <eric.auger@redhat.com>
 ---
- hw/pci/pci.c | 48 +++++++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 45 insertions(+), 3 deletions(-)
+ include/hw/pci/pci.h | 38 +++++++++++++++++++++++++++++++++++++-
+ hw/pci/pci.c         | 27 +++++++++++++++++++++++++++
+ 2 files changed, 64 insertions(+), 1 deletion(-)
 
+diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
+index eaa3fc99d8..eb26cac810 100644
+--- a/include/hw/pci/pci.h
++++ b/include/hw/pci/pci.h
+@@ -3,6 +3,7 @@
+ 
+ #include "exec/memory.h"
+ #include "sysemu/dma.h"
++#include "sysemu/host_iommu_device.h"
+ 
+ /* PCI includes legacy ISA access.  */
+ #include "hw/isa/isa.h"
+@@ -383,10 +384,45 @@ typedef struct PCIIOMMUOps {
+      *
+      * @devfn: device and function number
+      */
+-   AddressSpace * (*get_address_space)(PCIBus *bus, void *opaque, int devfn);
++    AddressSpace * (*get_address_space)(PCIBus *bus, void *opaque, int devfn);
++    /**
++     * @set_iommu_device: attach a HostIOMMUDevice to a vIOMMU
++     *
++     * Optional callback, if not implemented in vIOMMU, then vIOMMU can't
++     * retrieve host information from the associated HostIOMMUDevice.
++     *
++     * @bus: the #PCIBus of the PCI device.
++     *
++     * @opaque: the data passed to pci_setup_iommu().
++     *
++     * @devfn: device and function number of the PCI device.
++     *
++     * @dev: the #HostIOMMUDevice to attach.
++     *
++     * @errp: pass an Error out only when return false
++     *
++     * Returns: true if HostIOMMUDevice is attached or else false with errp set.
++     */
++    bool (*set_iommu_device)(PCIBus *bus, void *opaque, int devfn,
++                             HostIOMMUDevice *dev, Error **errp);
++    /**
++     * @unset_iommu_device: detach a HostIOMMUDevice from a vIOMMU
++     *
++     * Optional callback.
++     *
++     * @bus: the #PCIBus of the PCI device.
++     *
++     * @opaque: the data passed to pci_setup_iommu().
++     *
++     * @devfn: device and function number of the PCI device.
++     */
++    void (*unset_iommu_device)(PCIBus *bus, void *opaque, int devfn);
+ } PCIIOMMUOps;
+ 
+ AddressSpace *pci_device_iommu_address_space(PCIDevice *dev);
++bool pci_device_set_iommu_device(PCIDevice *dev, HostIOMMUDevice *hiod,
++                                 Error **errp);
++void pci_device_unset_iommu_device(PCIDevice *dev);
+ 
+ /**
+  * pci_setup_iommu: Initialize specific IOMMU handlers for a PCIBus
 diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-index 324c1302d2..02a4bb2af6 100644
+index 02a4bb2af6..c8a8aab306 100644
 --- a/hw/pci/pci.c
 +++ b/hw/pci/pci.c
-@@ -2648,11 +2648,27 @@ static void pci_device_class_base_init(ObjectClass *klass, void *data)
-     }
+@@ -2742,6 +2742,33 @@ AddressSpace *pci_device_iommu_address_space(PCIDevice *dev)
+     return &address_space_memory;
  }
  
--AddressSpace *pci_device_iommu_address_space(PCIDevice *dev)
-+/*
-+ * Get IOMMU root bus, aliased bus and devfn of a PCI device
-+ *
-+ * IOMMU root bus is needed by all call sites to call into iommu_ops.
-+ * For call sites which don't need aliased BDF, passing NULL to
-+ * aliased_[bus|devfn] is allowed.
-+ *
-+ * @piommu_bus: return root #PCIBus backed by an IOMMU for the PCI device.
-+ *
-+ * @aliased_bus: return aliased #PCIBus of the PCI device, optional.
-+ *
-+ * @aliased_devfn: return aliased devfn of the PCI device, optional.
-+ */
-+static void pci_device_get_iommu_bus_devfn(PCIDevice *dev,
-+                                           PCIBus **piommu_bus,
-+                                           PCIBus **aliased_bus,
-+                                           int *aliased_devfn)
- {
-     PCIBus *bus = pci_get_bus(dev);
-     PCIBus *iommu_bus = bus;
--    uint8_t devfn = dev->devfn;
-+    int devfn = dev->devfn;
- 
-     while (iommu_bus && !iommu_bus->iommu_ops && iommu_bus->parent_dev) {
-         PCIBus *parent_bus = pci_get_bus(iommu_bus->parent_dev);
-@@ -2693,7 +2709,33 @@ AddressSpace *pci_device_iommu_address_space(PCIDevice *dev)
- 
-         iommu_bus = parent_bus;
-     }
--    if (!pci_bus_bypass_iommu(bus) && iommu_bus->iommu_ops) {
++bool pci_device_set_iommu_device(PCIDevice *dev, HostIOMMUDevice *hiod,
++                                 Error **errp)
++{
++    PCIBus *iommu_bus;
 +
-+    assert(0 <= devfn && devfn < PCI_DEVFN_MAX);
-+    assert(iommu_bus);
-+
-+    if (pci_bus_bypass_iommu(bus) || !iommu_bus->iommu_ops) {
-+        iommu_bus = NULL;
++    /* set_iommu_device requires device's direct BDF instead of aliased BDF */
++    pci_device_get_iommu_bus_devfn(dev, &iommu_bus, NULL, NULL);
++    if (iommu_bus && iommu_bus->iommu_ops->set_iommu_device) {
++        return iommu_bus->iommu_ops->set_iommu_device(pci_get_bus(dev),
++                                                      iommu_bus->iommu_opaque,
++                                                      dev->devfn, hiod, errp);
 +    }
++    return true;
++}
 +
-+    *piommu_bus = iommu_bus;
++void pci_device_unset_iommu_device(PCIDevice *dev)
++{
++    PCIBus *iommu_bus;
 +
-+    if (aliased_bus) {
-+        *aliased_bus = bus;
-+    }
-+
-+    if (aliased_devfn) {
-+        *aliased_devfn = devfn;
++    pci_device_get_iommu_bus_devfn(dev, &iommu_bus, NULL, NULL);
++    if (iommu_bus && iommu_bus->iommu_ops->unset_iommu_device) {
++        return iommu_bus->iommu_ops->unset_iommu_device(pci_get_bus(dev),
++                                                        iommu_bus->iommu_opaque,
++                                                        dev->devfn);
 +    }
 +}
 +
-+AddressSpace *pci_device_iommu_address_space(PCIDevice *dev)
-+{
-+    PCIBus *bus;
-+    PCIBus *iommu_bus;
-+    int devfn;
-+
-+    pci_device_get_iommu_bus_devfn(dev, &iommu_bus, &bus, &devfn);
-+    if (iommu_bus) {
-         return iommu_bus->iommu_ops->get_address_space(bus,
-                                  iommu_bus->iommu_opaque, devfn);
-     }
+ void pci_setup_iommu(PCIBus *bus, const PCIIOMMUOps *ops, void *opaque)
+ {
+     /*
 -- 
 2.34.1
 
