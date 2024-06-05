@@ -2,73 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7F1E8FCA29
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jun 2024 13:18:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A4A78FCA6D
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jun 2024 13:27:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEod9-0002XU-WC; Wed, 05 Jun 2024 07:16:36 -0400
+	id 1sEomv-0005QT-Ei; Wed, 05 Jun 2024 07:26:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1sEod7-0002X3-HV
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 07:16:33 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1sEod5-0000Ud-Uz
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 07:16:33 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717586190;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=b1HQhOSMQm0NA4BhtjOg10yMxvnBJMg/NKmz8LEix3Y=;
- b=EYCjr3jkUf2yWQ/qhU1Gxl6n9PUlJ7uAsFC7fxsey05/lI26Wb5nLviVKm8k83dV9SVWd1
- Nuqna/BtmWdP57I84HTokIZAfjM1ZYQ9bH7EOI80JLta8OFfRiwKe3HwH4/jRIhYd4/Bfy
- rVxe5hp4D4KEZi8551XfLTTNieHj/0w=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-378-tn7THxoROlmLTGu3ILMrIg-1; Wed,
- 05 Jun 2024 07:16:28 -0400
-X-MC-Unique: tn7THxoROlmLTGu3ILMrIg-1
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B2A14195DE4B
- for <qemu-devel@nongnu.org>; Wed,  5 Jun 2024 11:16:27 +0000 (UTC)
-Received: from localhost (unknown [10.39.195.133])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 33D7819560A1; Wed,  5 Jun 2024 11:16:25 +0000 (UTC)
-Date: Wed, 5 Jun 2024 07:16:24 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Albert Esteve <aesteve@redhat.com>
-Cc: qemu-devel@nongnu.org, mst@redhat.com, slp@redhat.com, jasowang@redhat.com
-Subject: Re: [RFC PATCH 0/1] vhost-user: Add SHMEM_MAP/UNMAP requests
-Message-ID: <20240605111624.GB135899@fedora.redhat.com>
-References: <20240530152223.780232-1-aesteve@redhat.com>
- <20240604181626.GA90471@fedora.redhat.com>
- <CADSE00JnHP_kM5GRUkPnvtwUxSmCYd4ko0ScS=EvpJzsSpX+mg@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
+ id 1sEome-0005MT-Pu
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 07:26:28 -0400
+Received: from mail-lf1-x12a.google.com ([2a00:1450:4864:20::12a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
+ id 1sEomY-00030m-0y
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 07:26:20 -0400
+Received: by mail-lf1-x12a.google.com with SMTP id
+ 2adb3069b0e04-52962423ed8so2300967e87.2
+ for <qemu-devel@nongnu.org>; Wed, 05 Jun 2024 04:26:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1717586775; x=1718191575;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=F/35RdLoTiYpCSxnDjbZ8KaDHx/8zQ0xEsfE7QqiyHo=;
+ b=b7575HGvEbOvI1Px+eDSErB5lvvduOevMXXahCHXufAquzfgW0qvshXYQJOt0E53cf
+ g5BW0UccQ63gsjJs9PKDKGaZsjmMgPC8TxNFe/Vp6T3w7JuywxPa4omOnRUM3XRQehuV
+ PB9GNqX2R5UDfJY2FuHf/IRceSPGnFJNKCzrzwyOSV8ryq3QQn+LTd5R4zV3EHq7y5yU
+ wXhkn5wz3Ur2Z7a/wiyn/XWBzBVkRRVT0WNEgQnjHNWHYWMFKo+F7n4i2fFNnAkaAdcE
+ ILkJuurBYrGc/ouxUI2dRpiFyPLEsqH4TyiXVXq7OCMoQgAzk3Jis3i0VwtAknB5ExBA
+ snEA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1717586775; x=1718191575;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=F/35RdLoTiYpCSxnDjbZ8KaDHx/8zQ0xEsfE7QqiyHo=;
+ b=Uo5CUxVUtvduEKNgh080VXW3ZOh2G1l9h5uTjfTpaaO6W0bKL8ffuSHNuSDUHwLFOL
+ A90i1Ebp1pQ1xk7f8lA8f3uXQVc4SqYLm7jaZerqEmf/y1MBwPYmfpF734LO7Q5kjVVb
+ 46HO3xy2WVe+1/FrmVw89wHsedate6A95O34MOJnBW8qwzy0g+FK1FMCX8WyZVRyWJzC
+ DSqXAHB22m2Qb3yZ3aIj09oEa3vxqp9oiTOlmR9X0rBifQsH/VZO+EX3yX8LUBOM/AZc
+ wNVYwlN3m+XG/3VBS7VlsTBgabB9Z6WMAOgDy0MKylhccwZh9l64ddG1/9BEcuOLwE2b
+ Edcg==
+X-Gm-Message-State: AOJu0Yw2CS6o+rODrPDWo4cnQB3UdoVd3WdFed7XiIJJFjXZuLWbPG89
+ j4OSv72/Df/vyOylIQ24ImwX+6xHs2tH4ZtAt8oB50nn/V9p3sa8VA264QZRjYyJhREn/sUgaAw
+ =
+X-Google-Smtp-Source: AGHT+IFU5cEhVzxOy7wjRN1bxSXVea55xsJVAG1R/TA7kIcB/uIRpUYEeKrTnpi3b0j2+bVnsPlA/w==
+X-Received: by 2002:a05:6512:3ee:b0:522:4062:6e79 with SMTP id
+ 2adb3069b0e04-52bab4e3e74mr1182929e87.31.1717586774718; 
+ Wed, 05 Jun 2024 04:26:14 -0700 (PDT)
+Received: from localhost.localdomain (89-104-8-249.customer.bnet.at.
+ [89.104.8.249]) by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-57a51023af4sm7111335a12.29.2024.06.05.04.26.13
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 05 Jun 2024 04:26:14 -0700 (PDT)
+From: Phil Dennis-Jordan <phil@philjordan.eu>
+To: qemu-devel@nongnu.org
+Cc: dirty@apple.com, rbolshakov@ddn.com, lists@philjordan.eu,
+ Phil Dennis-Jordan <phil@philjordan.eu>
+Subject: [PATCH v3 0/7] hvf x86 correctness and efficiency improvements
+Date: Wed,  5 Jun 2024 13:25:49 +0200
+Message-Id: <20240605112556.43193-1-phil@philjordan.eu>
+X-Mailer: git-send-email 2.36.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="3Yspl1lHFEx92/Dg"
-Content-Disposition: inline
-In-Reply-To: <CADSE00JnHP_kM5GRUkPnvtwUxSmCYd4ko0ScS=EvpJzsSpX+mg@mail.gmail.com>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: neutral client-ip=2a00:1450:4864:20::12a;
+ envelope-from=phil@philjordan.eu; helo=mail-lf1-x12a.google.com
+X-Spam_score_int: -10
+X-Spam_score: -1.1
+X-Spam_bar: -
+X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NEUTRAL=0.779, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,122 +91,131 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+This is a series of semi-related patches for the x86 macOS Hypervisor.framework
+(hvf) accelerator backend. The intention is to (1) fix bugs and (2) move the
+hvf backend to use more modern and efficient APIs in Hypervisor.framework.
 
---3Yspl1lHFEx92/Dg
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+The goal is to replace the main hv_vcpu_run() call with hv_vcpu_run_until().
+On the one hand, doing so noticeably improves performance in itself. On the
+other hand, using the new API is a prerequisite for enabling hvf's in-kernel
+virtual APIC implementation, which provides a further, even more drastic
+performance improvement on many workloads. Integrating the APIC requires
+a bunch of large commits which still need some compatibility bugfixing, and
+which I hope to submit as a later patch set.
 
-On Wed, Jun 05, 2024 at 09:24:36AM +0200, Albert Esteve wrote:
-> On Tue, Jun 4, 2024 at 8:16=E2=80=AFPM Stefan Hajnoczi <stefanha@redhat.c=
-om> wrote:
->=20
-> > On Thu, May 30, 2024 at 05:22:22PM +0200, Albert Esteve wrote:
-> > > Hi all,
-> > >
-> > > This is an early attempt to have backends
-> > > support dynamic fd mapping into shared
-> > > memory regions. As such, there are a few
-> > > things that need settling, so I wanted to
-> > > post this first to have some early feedback.
-> > >
-> > > The usecase for this is, e.g., to support
-> > > vhost-user-gpu RESOURCE_BLOB operations,
-> > > or DAX Window request for virtio-fs. In
-> > > general, any operation where a backend
-> > > would need to mmap an fd to a shared
-> > > memory so that the guest can access it.
-> >
-> > I wanted to mention that this sentence confuses me because:
-> >
-> > - The frontend will mmap an fd into the guest's memory space so that a
-> >   VIRTIO Shared Memory Region is exposed to the guest. The backend
-> >   requests the frontend to perform this operation. The backend does not
-> >   invoke mmap itself.
-> >
->=20
-> Sorry for the confused wording. It is true that the backend does not
-> do the mmap, but requests it to be done. One point of confusion for
-> me from your sentence is that I refer to the driver as the frontend,
+Compared to v2 of the patch set, I've re-added the kick and hv_vcpu_run_until
+patches after analysing hv_vcpu_interrupt in more detail and finding it safe.
+Plus, there's an ergonomic improvement to the assert_hvf_ok macro.
 
-They are different concepts. Frontend is defined in the vhost-user spec
-and driver is defined in the VIRTIO spec.
+In this series:
 
-The frontend is the application that uses vhost-user protocol messages
-to communicate with the backend.
+Patch 1 enables the INVTSC CPUID bit when running with hvf. This can enable
+some optimisations in the guest OS, and I've not found any reason it shouldn't
+be allowed for hvf based hosts. It now also includes setting a migration
+blocker when the feature is active.
 
-The driver uses VIRTIO device model interfaces like virtqueues to
-communicate with the device.
+Patch 2 fixes a bunch of compile warnings that kept littering my build logs,
+so I finally caved and fixed them. As far as I can tell, these were all
+ancient typos.
 
-> and the mapping is done by the VMM (i.e., QEMU).
->=20
-> But yeah, I agree and the scenario you describe is what
-> I had in mind. Thanks for pointing it out. I will rephrase it
-> in follow-up patches.
+Patch 3 sorts out the minor mess of hvf vCPU IDs/handles. The aarch64 and
+x86-64 versions of Hypervisor.framework's APIs use different integral types
+(uint64_t vs unsigned int) when referencing vCPUs, so this changes the code
+to use the correct one depending on build arch instead of awkward pointer
+casts. (There's currently only one instance of such a cast, but patches
+5 and 6 would have added more, so I'm fixing this preemptively.)
 
-Thanks!
+Patch 4 fixes dirty page tracking for the x86 hvf backend. This has
+previously only accidentally worked because hv_vcpu_run() makes spurious EPT
+fault exits. Switching to hv_vcpu_run_until() surfaces this issue when using
+an emulated VGA adapter for example, as those use dirty page tracking to do
+partial screen updates. This issue was causing problems on previous attempts
+of switching to the newer HVF APIs as it was masked by the inefficiency of
+the older APIs.
 
->=20
->=20
-> >
-> > - "Shared memory" is ambiguous. Please call it VIRTIO Shared Memory
-> >   Region to differentiate from vhost-user shared memory tables/regions.
-> >
->=20
-> Ok!
->=20
->=20
-> >
-> > > The request will be processed by the VMM,
-> > > that will, in turn, trigger a mmap with
-> > > the instructed parameters (i.e., shmid,
-> > > shm_offset, fd_offset, fd, lenght).
-> > >
-> > > As there are already a couple devices
-> > > that could benefit of such a feature,
-> > > and more could require it in the future,
-> > > my intention was to make it generic.
-> > >
-> > > To that end, I declared the shared
-> > > memory region list in `VirtIODevice`.
-> > > I could add a couple commodity
-> > > functions to add new regions to the list,
-> > > so that the devices can use them. But
-> > > I wanted to gather some feedback before
-> > > refining it further, as I am probably
-> > > missing some required steps/or security
-> > > concerns that I am not taking into account.
-> > >
-> > > Albert Esteve (1):
-> > >   vhost-user: add shmem mmap request
-> > >
-> > >  docs/interop/vhost-user.rst |  23 ++++++++
-> > >  hw/virtio/vhost-user.c      | 106 ++++++++++++++++++++++++++++++++++=
-++
-> > >  hw/virtio/virtio.c          |   2 +
-> > >  include/hw/virtio/virtio.h  |   3 +
-> > >  4 files changed, 134 insertions(+)
-> > >
-> > > --
-> > > 2.44.0
-> > >
-> >
+Patch 5 implements a "real" vCPU kick using hv_vcpu_interrupt(). So far, the
+x86 hvf backend's external interrupt injection has relied on hv_vcpu_run()'s
+behaviour of exiting the VM very frequently without host action to handle
+external interrupts. This is not a great state of affairs in itself, but
+fails entirely when switching to hv_vcpu_run_until() which returns only when
+there is actual work to be done by the VMM.
+In previous attempts to introduce this improved 'kick', there has been doubt
+about hv_vcpu_interrupt()'s reliability in edge cases, particularly when an
+interrupt is issued when the vCPU thread is either not running
+hv_vcpu_run_until() at all, or either entering or exiting VMX mode.
+I believe this concern is unfounded for three reasons:
+1) The patches have been in use in a fleet of hundreds of production systems
+running CI workloads for over two years. No symptoms of a missed interrupt
+(or indeed any other issues) have been encountered.
+2) I have tried to provoke such an edge case and failed. To do this, I
+hacked up Michael Steil's toy "hvdos" VMM to run some bare-metal assembly
+code, then hit the running VM with a barrage of hv_vcpu_interrupt calls
+at randomly spaced intervals. Any hv_vcpu_interrupt call is followed shortly
+by a VM exit, regardless of what state the vCPU thread was in. Multiple
+interrupts in short succession are coalesced, but only before a VM exit. If
+an interrupt is issued after the VM has already exited, a further exit is
+triggered as soon as the vCPU thread attempts to re-enter the VM.
+The code for this is here: https://gitlab.com/pmdj/hvf-edge-cases
+3) The doubts about hv_vcpu_interrupt edge cases seem to originate in
+observed behaviour that was actually caused by the dirty memory tracking
+bug fixed in patch 4 of this series. That bug had nothing to do with
+hv_vcpu_interrupt as such, it was surfaced by hv_vcpu_run_until()'s change
+in EPT fault exit behaviour compared to hv_vcpu_run().
+Of course, this is not PROOF of absence of defects, but I'm not aware of
+any formal proofs covering other Qemu code or dependencies. I have also
+asked Apple's DTS to officially clarify hv_vcpu_interrupt()'s behaviour in
+edge cases but unfortunately received no reply. 
 
---3Yspl1lHFEx92/Dg
-Content-Type: application/pgp-signature; name="signature.asc"
+Patch 6 switches from hv_vcpu_run() to hv_vcpu_run_until() where supported.
+This was of course the goal, and the previous patches fix all the bugs that
+caused this patch to surface them.
 
------BEGIN PGP SIGNATURE-----
+Patch 7 provides a small improvement to error messages if and when an hvf
+call fails. assert_hvf_ok() would previously only tell you the error code
+of the failing call, not which call was failing, nor the call site.
+The change makes it behave more like a classic assertion, reporting the
+expression as well as the source code location along with the error.
 
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmZgSQcACgkQnKSrs4Gr
-c8hN5wf9HgFrSi4owTNxaQvmG3RBjmryGJf6jUcyfO1XoRApaaU2lCEi3oc71PCr
-uIoPRkKLvM3aIzTGFD8hEtUk7kQWsziimwJ0FWnho7OLFcOOuWwP6NmdnucbGZPe
-X6XogvfOZ86t5ZNb4F6Y0iSS6dZAWsQn7B3J9JkmWZD34+eiEnA0au5QZQ3blDFh
-kiufnicxpgLDt7ntVYdcbXKQrK35FPpCOI4GQVhfJUEQsELhCc1vY13EfKI8iyfZ
-vyCfCDmoDRvOFtya9pJjgNNWPG0Lwa3/rnzAr95HrWaOhBeqRzY6SPaKDa8Cgqk+
-O8PDNZs6aGo6mQfhEHmZ1nHckrx7Vw==
-=MZn2
------END PGP SIGNATURE-----
+changelog:
+v3:
+ - Back to one patch series with all the changes.
+ - Detailed investigation into edge case behaviour of hv_vcpu_interrupt.
+   Determined it was behaving fine, no race condition workarounds needed,
+   so the kick and hv_vcpu_run_until patches have actually stayed essentially
+   the same as in v1.
+ - Added the assert_hvf_ok patch because I kept using it when debugging.
 
---3Yspl1lHFEx92/Dg--
+v2:
+ - Migration blocker when INVTSC is set (Thanks Paolo for pointing that out!)
+ - Dirty page tracking fix (Thanks Roman for noticing the regression in
+   observed behaviour on certain VMs, which led me to debugging this issue.)
+ - vCPU handle type cleanup (Based on discussion with Paolo)
+ - Added fixes for existing compile warnings.
+ - Split patch series into 2 parts.
+
+This work has been sponsored by Sauce Labs Inc.
+
+Phil Dennis-Jordan (7):
+  i386/hvf: Adds support for INVTSC cpuid bit
+  i386/hvf: Fixes some compilation warnings
+  hvf: Consistent types for vCPU handles
+  i386/hvf: Fixes dirty memory tracking by page granularity RX->RWX
+    change
+  i386/hvf: In kick_vcpu use hv_vcpu_interrupt to force exit
+  i386/hvf: Updates API usage to use modern vCPU run function
+  hvf: Makes assert_hvf_ok report failed expression
+
+ accel/hvf/hvf-accel-ops.c    |  2 +-
+ accel/hvf/hvf-all.c          | 49 ++++++++++++++++--------------------
+ include/sysemu/hvf_int.h     |  9 +++++--
+ target/i386/hvf/hvf.c        | 47 +++++++++++++++++++++++++++++++---
+ target/i386/hvf/vmx.h        |  3 +--
+ target/i386/hvf/x86_cpuid.c  |  4 +++
+ target/i386/hvf/x86_decode.c |  2 +-
+ target/i386/hvf/x86_emu.c    |  4 +--
+ 8 files changed, 81 insertions(+), 39 deletions(-)
+
+-- 
+2.36.1
 
 
