@@ -2,93 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B6988FC34B
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jun 2024 08:07:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE90D8FC361
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jun 2024 08:25:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEjnc-0007uo-Fi; Wed, 05 Jun 2024 02:07:04 -0400
+	id 1sEk3z-0005Mh-IM; Wed, 05 Jun 2024 02:23:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sEjnZ-0007tq-C0
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 02:07:01 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sEjnX-0000EK-Ph
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 02:07:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717567618;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=c4bfhLrQ/uip2L0IrRikn1dd5SD9XBOyv+RolHsnUq0=;
- b=NCyqXuwl6AQzRHN8mGWd6uW/fgz0i59so0VASXujOpUNJslGYHtFr4UtqBLIsg31VN0GMt
- tBmxTkuEnr4gQYd1TbDHTjv+mT//ru9ijwPrQe+WTTqlFeGPMPmm2xsfRRPifbIooIvWfn
- a99Ddq5dRNQ636rkuGeSf6LqU++D0AQ=
-Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
- [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-508-u9kKswQSNh-amaYEN43Ysg-1; Wed, 05 Jun 2024 02:06:55 -0400
-X-MC-Unique: u9kKswQSNh-amaYEN43Ysg-1
-Received: by mail-lj1-f198.google.com with SMTP id
- 38308e7fff4ca-2eaa9f99958so13345841fa.1
- for <qemu-devel@nongnu.org>; Tue, 04 Jun 2024 23:06:55 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717567614; x=1718172414;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=c4bfhLrQ/uip2L0IrRikn1dd5SD9XBOyv+RolHsnUq0=;
- b=By+XvQc8wjpEhv1QB3fhNgFZhtpc8Lt2tmC6QG/E4iqzwkq3ZY7I2jtb3QN4aJFj3t
- s0pfcDqAGIfgadvILKpVC1M0Rp0EKjax3IzEBOj53diF5bzBKtPHoFNAH8JfGcjDSYiX
- Dvwx9+JiCSiCv9zkeW2VgtT820XCGG4Ut6lPT5nY8vL99fMOahqfxYUJBONd9KjeNNyS
- FVaOri0BJHd2mluzaGrMcEJ08+hv3ut+CI5T9N09zF8nJ6foP0cmb9I+KaSnPjHig3Fh
- egkxumcEKktyLsTmmyf9HScoMldveDJ/uv4sRpQmrcDYE8BVns1vtgEnrN+dxDeXFLHH
- ysIQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXyQV26kCfvbCnML04eBNkJG2znOc483M28nM42Bfa1juhllZU6Aw/iBdCP52kSGxAuwDymXl7/2Qu13JulLoeV1PqxWW0=
-X-Gm-Message-State: AOJu0YwToDDJCoJdP+a6vyqq+XR+hwXHimkjtPiABNX3fwVn/TIb236L
- h8RN5ZVk0hJ8QI4S7fWK/Di12bOPS0eH5/oqKLWTtr1U9pG472do29VjbwBGr0fMml/D5CP064P
- UpuQHrdfXVWGFFtJ/BKANgUaUkdK6d9idJ/XpLfRcCwM+wx0//jUV
-X-Received: by 2002:a2e:904b:0:b0:2ea:8abf:3a62 with SMTP id
- 38308e7fff4ca-2eac7aadaa2mr6612971fa.51.1717567614205; 
- Tue, 04 Jun 2024 23:06:54 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEur4LBm2IB+OynHKTrmHYkNBm47r8x+PdxdhpsAbhhtFmaHala8NLp0CTP6YpOG4vyt5dieQ==
-X-Received: by 2002:a2e:904b:0:b0:2ea:8abf:3a62 with SMTP id
- 38308e7fff4ca-2eac7aadaa2mr6612771fa.51.1717567613798; 
- Tue, 04 Jun 2024 23:06:53 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-421580fe3cfsm7989315e9.9.2024.06.04.23.06.52
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 04 Jun 2024 23:06:53 -0700 (PDT)
-Message-ID: <1e041dd1-4298-4607-9aba-1996022e6431@redhat.com>
-Date: Wed, 5 Jun 2024 08:06:52 +0200
+ (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
+ id 1sEk3x-0005MS-CI
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 02:23:57 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <maobibo@loongson.cn>) id 1sEk3u-0004IP-HD
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 02:23:57 -0400
+Received: from loongson.cn (unknown [10.20.42.62])
+ by gateway (Coremail) with SMTP id _____8AxW+pvBGBmD6kDAA--.15666S3;
+ Wed, 05 Jun 2024 14:23:44 +0800 (CST)
+Received: from [10.20.42.62] (unknown [10.20.42.62])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8AxTcdtBGBmdD8VAA--.53417S3; 
+ Wed, 05 Jun 2024 14:23:43 +0800 (CST)
+Subject: Re: [PATCH v4 2/3] hw/loongarch/virt: Use MemTxAttrs interface for
+ misc ops
+To: Song Gao <gaosong@loongson.cn>
+Cc: qemu-devel@nongnu.org
+References: <20240528083855.1912757-1-gaosong@loongson.cn>
+ <20240528083855.1912757-3-gaosong@loongson.cn>
+From: maobibo <maobibo@loongson.cn>
+Message-ID: <62f7a92d-9e12-0998-1443-5e6e8ef4fd84@loongson.cn>
+Date: Wed, 5 Jun 2024 14:23:40 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] MAINTAINERS: Add reviewers for ASPEED BMCs
-To: Jamin Lin <jamin_lin@aspeedtech.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- "open list:All patches CC here" <qemu-devel@nongnu.org>
-Cc: steven_lee@aspeedtech.com, troy_lee@aspeedtech.com
-References: <20240605060310.1946803-1-jamin_lin@aspeedtech.com>
-Content-Language: en-US, fr
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <20240605060310.1946803-1-jamin_lin@aspeedtech.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+In-Reply-To: <20240528083855.1912757-3-gaosong@loongson.cn>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-CM-TRANSID: AQAAf8AxTcdtBGBmdD8VAA--.53417S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoW7tryxGFy3WFy5CFW3Ar4UZFc_yoW8tr45pr
+ WrtFnIka1UKw1a939xWFy5XF15Aa97GrZFqF4a9w109FZxAw1Duryjy342yrW2v34DXFsY
+ 9F1kGrZrCF4qqrXCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUv2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+ xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
+ 1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv
+ 67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
+ AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02
+ F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jrv_JF
+ 1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7Cj
+ xVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r
+ 1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU1CP
+ fJUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-2.522,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -106,39 +82,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/5/24 08:03, Jamin Lin wrote:
-> Add ASPEED members "Steven Lee", "Troy Lee" and "Jamin Lin"
-> to be reviewers of ASPEED BMCs.
+
+
+On 2024/5/28 下午4:38, Song Gao wrote:
+> Use MemTxAttrs interface read_with_attrs/write_with_attrs
+> for virt_iocsr_misc_ops.
 > 
-> Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
-> Signed-off-by: Troy Lee <troy_lee@aspeedtech.com>
-> Signed-off-by: Steven Lee <steven_lee@aspeedtech.com>
-
-
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-
-Thanks,
-
-C.
-
-
+> Signed-off-by: Song Gao <gaosong@loongson.cn>
 > ---
->   MAINTAINERS | 3 +++
->   1 file changed, 3 insertions(+)
+>   hw/loongarch/virt.c | 36 ++++++++++++++++++++++++------------
+>   1 file changed, 24 insertions(+), 12 deletions(-)
 > 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 951556224a..0f63bcdc7d 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -1158,6 +1158,9 @@ F: docs/system/arm/emcraft-sf2.rst
->   ASPEED BMCs
->   M: Cédric Le Goater <clg@kaod.org>
->   M: Peter Maydell <peter.maydell@linaro.org>
-> +R: Steven Lee <steven_lee@aspeedtech.com>
-> +R: Troy Lee <leetroy@gmail.com>
-> +R: Jamin Lin <jamin_lin@aspeedtech.com>
->   R: Andrew Jeffery <andrew@codeconstruct.com.au>
->   R: Joel Stanley <joel@jms.id.au>
->   L: qemu-arm@nongnu.org
+> diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
+> index 4db0d82dbd..a70eeda2fd 100644
+> --- a/hw/loongarch/virt.c
+> +++ b/hw/loongarch/virt.c
+> @@ -899,37 +899,49 @@ static void virt_firmware_init(LoongArchVirtMachineState *lvms)
+>   }
+>   
+>   
+> -static void virt_iocsr_misc_write(void *opaque, hwaddr addr,
+> -                                  uint64_t val, unsigned size)
+> +static MemTxResult virt_iocsr_misc_write(void *opaque, hwaddr addr,
+> +                                         uint64_t val, unsigned size,
+> +                                         MemTxAttrs attrs)
+>   {
+> +    return MEMTX_OK;
+>   }
+>   
+> -static uint64_t virt_iocsr_misc_read(void *opaque, hwaddr addr, unsigned size)
+> +static MemTxResult virt_iocsr_misc_read(void *opaque, hwaddr addr,
+> +                                        uint64_t *data,
+> +                                        unsigned size, MemTxAttrs attrs)
+>   {
+> -    uint64_t ret;
+> +    uint64_t ret = 0;
+>   
+>       switch (addr) {
+>       case VERSION_REG:
+> -        return 0x11ULL;
+> +        ret = 0x11ULL;
+> +        break;
+>       case FEATURE_REG:
+>           ret = BIT(IOCSRF_MSI) | BIT(IOCSRF_EXTIOI) | BIT(IOCSRF_CSRIPI);
+>           if (kvm_enabled()) {
+>               ret |= BIT(IOCSRF_VM);
+>           }
+> -        return ret;
+> +        break;
+>       case VENDOR_REG:
+> -        return 0x6e6f73676e6f6f4cULL; /* "Loongson" */
+> +        ret = 0x6e6f73676e6f6f4cULL; /* "Loongson" */
+> +        break;
+>       case CPUNAME_REG:
+> -        return 0x303030354133ULL;     /* "3A5000" */
+> +        ret = 0x303030354133ULL;     /* "3A5000" */
+> +        break;
+>       case MISC_FUNC_REG:
+> -        return BIT_ULL(IOCSRM_EXTIOI_EN);
+> +        ret = BIT_ULL(IOCSRM_EXTIOI_EN);
+> +        break;
+> +    default:
+> +        g_assert_not_reached();
+>       }
+> -    return 0ULL;
+> +
+> +    *data = ret;
+> +    return MEMTX_OK;
+>   }
+>   
+>   static const MemoryRegionOps virt_iocsr_misc_ops = {
+> -    .read  = virt_iocsr_misc_read,
+> -    .write = virt_iocsr_misc_write,
+> +    .read_with_attrs  = virt_iocsr_misc_read,
+> +    .write_with_attrs = virt_iocsr_misc_write,
+>       .endianness = DEVICE_LITTLE_ENDIAN,
+>       .valid = {
+>           .min_access_size = 4,
+> 
+Reviewed-by: Bibo Mao <maobibo@loongson.cn>
 
 
