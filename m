@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A91FD8FD40C
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jun 2024 19:26:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C67A8FD40D
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jun 2024 19:26:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEuMH-0006ET-F8; Wed, 05 Jun 2024 13:23:33 -0400
+	id 1sEuMI-0006F0-4C; Wed, 05 Jun 2024 13:23:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sEuMF-0006DB-IX
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 13:23:31 -0400
-Received: from mail-pj1-x102a.google.com ([2607:f8b0:4864:20::102a])
+ id 1sEuMG-0006Dm-Ap
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 13:23:32 -0400
+Received: from mail-pj1-x1030.google.com ([2607:f8b0:4864:20::1030])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sEuMD-0003xq-TW
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 13:23:31 -0400
-Received: by mail-pj1-x102a.google.com with SMTP id
- 98e67ed59e1d1-2c2283707b3so66376a91.0
- for <qemu-devel@nongnu.org>; Wed, 05 Jun 2024 10:23:29 -0700 (PDT)
+ id 1sEuME-0003yL-LG
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 13:23:32 -0400
+Received: by mail-pj1-x1030.google.com with SMTP id
+ 98e67ed59e1d1-2c210d3dc6cso46453a91.3
+ for <qemu-devel@nongnu.org>; Wed, 05 Jun 2024 10:23:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1717608208; x=1718213008; darn=nongnu.org;
+ d=linaro.org; s=google; t=1717608209; x=1718213009; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=lGzoPsZRmPScWxThSjP+3q3DF2qUkZ0NxX72PayX2e8=;
- b=oRpW+Wo9hLQi+ETHYrA8fXx/FtHwknvZhwey0OFpd8s9mcByheYx6BIiXHBexDDrCl
- 1Gfj3QwZfIq+PoIvUxz0XKoZKLoxJXTpurtufOHYkveZSsfo/Jt0v90SDBXwdxlb21Vd
- SgHFg/973KcRHo3cWAwqpxOPJjV9gD+3x1cli0TUHuR5tRjsSe7JKxdyPkxcSPB6jdNt
- oVxF/lTo4s+8c8p6aJbjS5317aInSMQGQSkQBPZAlrkn57DrTP0jjmjb91bPtaL+7z9F
- YVlmdTH1LpiLYCBh5/ukZBumAFMwj0dxBe0hhvZznnbT3ckGEEqVOMLwQ3VjjWcicanO
- jQrQ==
+ bh=KRSONPc2DGnaPERH9Q3QmRlRviTZJDZC0RtDsaFgyb8=;
+ b=RV1HFd8642VfVKYPDl5sOjj5CJ0uCwjd7M/Pg7Iebgn79sJCQg4GUDHWT7lVrFNy+v
+ eY4FRnynJHx8uqPG7MO1jPp84f7TlrqSkFKdy7S2SHKWEXCtpUHLwyJxa1Hy9YN6cV3r
+ 5Ghps9LUNt9zvHuIMBi0r5HqtOaPkOADaMnlcpdtiIcmdzIIHDr4Bm14BE6El6QQjbXi
+ n2oTM2XGu7Za8IwAmUl0KGbsdOxB2MsCzMNtynVt/Ca1u9uNHstvCm1/lsTJ5ZmYQTdh
+ qPSAgjxaeIVfZAs4+Bhv/XfMFtesFM6HuhQa5h4OcSDInV2FgfTt7A671BgrwL0MPrzX
+ sozQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717608208; x=1718213008;
+ d=1e100.net; s=20230601; t=1717608209; x=1718213009;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=lGzoPsZRmPScWxThSjP+3q3DF2qUkZ0NxX72PayX2e8=;
- b=XdE6HENNTN+J8e464ZLfuTrtBClmvskzjnd7xiD5yCNMVQQ5yAGS+4fBDr6HIVIwCs
- VszY3StedUVoYFO0KWqGf5uVdn3eRCAhHDs9JIuFj8WBWspShuXnkDAlrlog/wThbcXe
- LUxTKUdnQanNd7VN7qBhP4O0522bEFNxn4y131rJCP05S1U6RXD1s7+3p9+U0dmei5Vb
- DmkgpivzFY/vgHZvQACqeZiWTuLw+G5FIPAhzmRHpH2SKtXh57pdZ1Ux4kSSM324EF1V
- 75YPi2rFDSq6ys88TZPn8/JFthdNWMQrDrg7qJqmd0tqTYEGFdFgwUMal+Am7cbcIe4p
- qtkw==
-X-Gm-Message-State: AOJu0Yw50avAkBRhlmPzzhRCZJ31RdFmbTNLaLNqxOYciE5RGBDI2KYt
- U9cMrRwOcrO2QI8DTgA5xDypjzqjBNAYCquOC5sNmQbK7Ynm689Rss6YQG/SOr5fYvwRD11O7oV
- 4
-X-Google-Smtp-Source: AGHT+IFEgk152lg9mPqTt2/Yx4XCugGafZiWOZjy2Vrc45W15oAPBMMr3g6FH8fXrNZTI3huJFmF4w==
-X-Received: by 2002:a17:90a:a10a:b0:2c1:9cd4:665b with SMTP id
- 98e67ed59e1d1-2c27db22aa5mr2991865a91.28.1717608208555; 
- Wed, 05 Jun 2024 10:23:28 -0700 (PDT)
+ bh=KRSONPc2DGnaPERH9Q3QmRlRviTZJDZC0RtDsaFgyb8=;
+ b=tMegKUE8a9Jv6BF7OsfEidJ9gsKcUV2Y6DQl/148OCBbtKaBb3TYztIpvwhsZ9l5Qf
+ c0wb6FtB7ul3YEpYdqnc9QVPI8bgYVFkPZrKEZaEHiaM4xl/MArTchIKyPCPAA+0NGNz
+ T14pJRMvz3E+Ruu97xrajpjcDuDAIpIWbze/XyWRWKNdjofXBo+GARcI6DUD/CHQjMhk
+ 4MCH+YOdZI0PiwYQwFyUiwDUQxfxDLxaAeNuLpUxD1wvwDpHVW5eXQaFZvc+//Gp25V0
+ MhatJy/U3TGPRBJCTRCCvmoyG1jEcdGMLibwP/UYOXwTpSMnkrki7veCejQqfiD5qXE8
+ oDyQ==
+X-Gm-Message-State: AOJu0YxrIK3moHX8F2i+f6oYB5N0mbbAU208YyebA05O1j3EvyGFxiP1
+ RT2zYZFi8AyfxsKYY6XLixlmwhUcg7AXj8gZDWIQlr0ZAKlIY/KcNUqXkBhXtfN4G/Rggpx4kR1
+ F
+X-Google-Smtp-Source: AGHT+IFa6wt3tkWjgjjSC/yHU0+EJRvb9rlI8S0WBg+xVNOAMfu/vVF3jCmCl//1gtLQsZDR93fveA==
+X-Received: by 2002:a17:90a:b013:b0:2c2:792c:b618 with SMTP id
+ 98e67ed59e1d1-2c27db4acb0mr3267310a91.33.1717608209448; 
+ Wed, 05 Jun 2024 10:23:29 -0700 (PDT)
 Received: from stoup.. ([71.212.132.216]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2c28066d511sm1720915a91.9.2024.06.05.10.23.27
+ 98e67ed59e1d1-2c28066d511sm1720915a91.9.2024.06.05.10.23.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 05 Jun 2024 10:23:28 -0700 (PDT)
+ Wed, 05 Jun 2024 10:23:29 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 36/38] target/sparc: Implement MWAIT
-Date: Wed,  5 Jun 2024 10:22:51 -0700
-Message-Id: <20240605172253.356302-37-richard.henderson@linaro.org>
+Subject: [PULL 37/38] target/sparc: Implement monitor ASIs
+Date: Wed,  5 Jun 2024 10:22:52 -0700
+Message-Id: <20240605172253.356302-38-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240605172253.356302-1-richard.henderson@linaro.org>
 References: <20240605172253.356302-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1030;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1030.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,47 +92,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Ignore the "monitor" portion and treat them the same
+as their base ASIs.
+
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/sparc/insns.decode |  1 +
- target/sparc/translate.c  | 11 +++++++++++
- 2 files changed, 12 insertions(+)
+ target/sparc/asi.h         | 4 ++++
+ target/sparc/ldst_helper.c | 4 ++++
+ target/sparc/translate.c   | 8 ++++++++
+ 3 files changed, 16 insertions(+)
 
-diff --git a/target/sparc/insns.decode b/target/sparc/insns.decode
-index a7720560f8..fbcb4f7aef 100644
---- a/target/sparc/insns.decode
-+++ b/target/sparc/insns.decode
-@@ -124,6 +124,7 @@ CALL    01 i:s30
-     WRTICK_CMPR     10 10111 110000 ..... . .............  @n_r_ri
-     WRSTICK         10 11000 110000 ..... . .............  @n_r_ri
-     WRSTICK_CMPR    10 11001 110000 ..... . .............  @n_r_ri
-+    WRMWAIT         10 11100 110000 ..... . .............  @n_r_ri
-   ]
-   # Before v8, rs1==0 was WRY, and the rest executed as nop.
-   [
+diff --git a/target/sparc/asi.h b/target/sparc/asi.h
+index a66829674b..14ffaa3842 100644
+--- a/target/sparc/asi.h
++++ b/target/sparc/asi.h
+@@ -144,6 +144,8 @@
+  * ASIs, "(4V)" designates SUN4V specific ASIs.  "(NG4)" designates SPARC-T4
+  * and later ASIs.
+  */
++#define ASI_MON_AIUP            0x12 /* (VIS4) Primary, user, monitor   */
++#define ASI_MON_AIUS            0x13 /* (VIS4) Secondary, user, monitor */
+ #define ASI_REAL                0x14 /* Real address, cacheable          */
+ #define ASI_PHYS_USE_EC		0x14 /* PADDR, E-cacheable		*/
+ #define ASI_REAL_IO             0x15 /* Real address, non-cacheable      */
+@@ -257,6 +259,8 @@
+ #define ASI_UDBL_CONTROL_R	0x7f /* External UDB control regs rd low*/
+ #define ASI_INTR_R		0x7f /* IRQ vector dispatch read	*/
+ #define ASI_INTR_DATAN_R	0x7f /* (III) In irq vector data reg N	*/
++#define ASI_MON_P               0x84 /* (VIS4) Primary, monitor         */
++#define ASI_MON_S               0x85 /* (VIS4) Secondary, monitor       */
+ #define ASI_PIC			0xb0 /* (NG4) PIC registers		*/
+ #define ASI_PST8_P		0xc0 /* Primary, 8 8-bit, partial	*/
+ #define ASI_PST8_S		0xc1 /* Secondary, 8 8-bit, partial	*/
+diff --git a/target/sparc/ldst_helper.c b/target/sparc/ldst_helper.c
+index 7bdf99e0c0..2d48e98bf4 100644
+--- a/target/sparc/ldst_helper.c
++++ b/target/sparc/ldst_helper.c
+@@ -1395,6 +1395,10 @@ uint64_t helper_ld_asi(CPUSPARCState *env, target_ulong addr,
+     case ASI_TWINX_PL: /* Primary, twinx, LE */
+     case ASI_TWINX_S:  /* Secondary, twinx */
+     case ASI_TWINX_SL: /* Secondary, twinx, LE */
++    case ASI_MON_P:
++    case ASI_MON_S:
++    case ASI_MON_AIUP:
++    case ASI_MON_AIUS:
+         /* These are always handled inline.  */
+         g_assert_not_reached();
+ 
 diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-index b10936a61a..6d0ad38fd5 100644
+index 6d0ad38fd5..113639083b 100644
 --- a/target/sparc/translate.c
 +++ b/target/sparc/translate.c
-@@ -3344,6 +3344,17 @@ static void do_wrpowerdown(DisasContext *dc, TCGv src)
- 
- TRANS(WRPOWERDOWN, POWERDOWN, do_wr_special, a, supervisor(dc), do_wrpowerdown)
- 
-+static void do_wrmwait(DisasContext *dc, TCGv src)
-+{
-+    /*
-+     * TODO: This is a stub version of mwait, which merely recognizes
-+     * interrupts immediately and does not wait.
-+     */
-+    dc->base.is_jmp = DISAS_EXIT;
-+}
-+
-+TRANS(WRMWAIT, VIS4, do_wr_special, a, true, do_wrmwait)
-+
- static void do_wrpsr(DisasContext *dc, TCGv src)
- {
-     gen_helper_wrpsr(tcg_env, src);
+@@ -1607,6 +1607,7 @@ static DisasASI resolve_asi(DisasContext *dc, int asi, MemOp memop)
+         case ASI_BLK_AIUP_L_4V:
+         case ASI_BLK_AIUP:
+         case ASI_BLK_AIUPL:
++        case ASI_MON_AIUP:
+             mem_idx = MMU_USER_IDX;
+             break;
+         case ASI_AIUS:  /* As if user secondary */
+@@ -1617,6 +1618,7 @@ static DisasASI resolve_asi(DisasContext *dc, int asi, MemOp memop)
+         case ASI_BLK_AIUS_L_4V:
+         case ASI_BLK_AIUS:
+         case ASI_BLK_AIUSL:
++        case ASI_MON_AIUS:
+             mem_idx = MMU_USER_SECONDARY_IDX;
+             break;
+         case ASI_S:  /* Secondary */
+@@ -1630,6 +1632,7 @@ static DisasASI resolve_asi(DisasContext *dc, int asi, MemOp memop)
+         case ASI_FL8_SL:
+         case ASI_FL16_S:
+         case ASI_FL16_SL:
++        case ASI_MON_S:
+             if (mem_idx == MMU_USER_IDX) {
+                 mem_idx = MMU_USER_SECONDARY_IDX;
+             } else if (mem_idx == MMU_KERNEL_IDX) {
+@@ -1647,6 +1650,7 @@ static DisasASI resolve_asi(DisasContext *dc, int asi, MemOp memop)
+         case ASI_FL8_PL:
+         case ASI_FL16_P:
+         case ASI_FL16_PL:
++        case ASI_MON_P:
+             break;
+         }
+         switch (asi) {
+@@ -1664,6 +1668,10 @@ static DisasASI resolve_asi(DisasContext *dc, int asi, MemOp memop)
+         case ASI_SL:
+         case ASI_P:
+         case ASI_PL:
++        case ASI_MON_P:
++        case ASI_MON_S:
++        case ASI_MON_AIUP:
++        case ASI_MON_AIUS:
+             type = GET_ASI_DIRECT;
+             break;
+         case ASI_TWINX_REAL:
 -- 
 2.34.1
 
