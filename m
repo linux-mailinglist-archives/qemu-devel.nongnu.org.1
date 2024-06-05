@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32AA38FD414
+	by mail.lfdr.de (Postfix) with ESMTPS id 478758FD415
 	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jun 2024 19:27:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sEuM6-00063t-Dj; Wed, 05 Jun 2024 13:23:22 -0400
+	id 1sEuM6-00064z-Ib; Wed, 05 Jun 2024 13:23:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sEuM4-000618-5E
+ id 1sEuM4-000626-KQ
  for qemu-devel@nongnu.org; Wed, 05 Jun 2024 13:23:20 -0400
-Received: from mail-pg1-x52c.google.com ([2607:f8b0:4864:20::52c])
+Received: from mail-pg1-x532.google.com ([2607:f8b0:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sEuM1-0003sU-UZ
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 13:23:19 -0400
-Received: by mail-pg1-x52c.google.com with SMTP id
- 41be03b00d2f7-6c4f3e0e3d2so29696a12.1
- for <qemu-devel@nongnu.org>; Wed, 05 Jun 2024 10:23:17 -0700 (PDT)
+ id 1sEuM2-0003sg-SD
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 13:23:20 -0400
+Received: by mail-pg1-x532.google.com with SMTP id
+ 41be03b00d2f7-6c53a315c6eso18119a12.3
+ for <qemu-devel@nongnu.org>; Wed, 05 Jun 2024 10:23:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1717608196; x=1718212996; darn=nongnu.org;
+ d=linaro.org; s=google; t=1717608197; x=1718212997; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=KZeHEsoR9DNVGyATdmd+Zd8qaYj7z+UBk+cUU+SO+Fg=;
- b=Mf6UFrLgIPMWcAH/q1isDCfVxoliYGOQwh7gBn3wPaYrGrtpz//+8sycAUoAy6HeC+
- spWRe9jYsh00aUVdVIm3QQKFmTWs/DXQ+lYe48qfQnqV7d7VHJEBQVjrmc0mveS+pgBt
- cFCjqIqgkqS7obV/QUwmB8rIW8rYD2VpZPxENk4qznbUvicQHMcePJwv0q6pagKS3o+/
- 6iS3xzGdsNyeicUzVNYdfDtJkbl7BI4LM5UYb68enG5JtcVDSe0EWdjpDdNbH6h/zXDW
- sURifiV3sprJqzDeAWmv/5D4n4kGeBX4xEdlHZ0HAYVNboYS4STwBZ2kZoafY8t7MNzm
- aR4A==
+ bh=Pv/is3ik2pgbn45+w62VpQiiH4H5v87F5UfY3vca2so=;
+ b=lGpXDOQSE52xiyFjX5q7kbTCeUJkZd1HO0zhm6popZljTU0LFQND3V9xORyZ61TCzR
+ 3tlN+9J5vDU7FFAMC0Y82BQgeHwqferKIICXYyV/ZPt5sp29PSEcDbPKvrmWdx+lYSf7
+ xwzlhWb5hMAYJas/QIrMjXm546MLpgQF0FHAUZ4SC9A72P8vkxnFgY0PE/I4BMVwr023
+ c8sKP9FSpkF68hARxA+w/b+lvjacQHHwk1nbJiM1VPS58w/LrWmLT+MutJ+M8eHetp6I
+ Q1CJeKvtM7mJ5lOf/Se4zg+Ae8PbKmRc/Xnvz5tY9Aj64ZWWQds4OrUe84oztpm3BKny
+ o7+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717608196; x=1718212996;
+ d=1e100.net; s=20230601; t=1717608197; x=1718212997;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=KZeHEsoR9DNVGyATdmd+Zd8qaYj7z+UBk+cUU+SO+Fg=;
- b=xU/0oVkFBXUs6csVA+3vr9b2ZlK+nhyJYOXCPU2uADST1uWgK9Wop3Ydb2/V8hp+Yq
- CaDck3uXTGQWoqHtp6yACrU1knVT/sOpK1tpUejsIguFXf8tG3Abq5rC/b+LyHPdH2pQ
- bBjJk4iqIuXLiWIOj/V1el7rAB0dFNRmD5CFC9v0pjwye8YoIjRcTpceb7isVUpVTgVq
- lUkKNSR0Yo5vsFazCwtsA7gBQytRPYUwqFr842Pf58Y31W0rOLwak4QVfIH6O/EDZJjz
- mBLlC1EWlHyjLw9xI5k+7py43MTeflW5dRiLpNY47kHO7SsHfwRAnW2qHcCZQB+/1V+i
- kxtw==
-X-Gm-Message-State: AOJu0YzV9T713amvur5rzKoNJZKIrEB3NmkS2vIjepn5QBuWJhUPR+Bj
- gikiPBwIw6/zvOIjYVdYISSbuaynYaYVrLqP55r4/oY/MNjaHacUyzzSfZAHmyKI85N7HJintt3
- Y
-X-Google-Smtp-Source: AGHT+IGPvpfACf0ylLX0h0kirfhADIEtrHE/uEU9MRRnmlbnizxSTaM3h3oq5GdpomhEZa9Vaphjhw==
-X-Received: by 2002:a17:90a:f412:b0:2c1:e3c6:3b90 with SMTP id
- 98e67ed59e1d1-2c27db68d40mr3325080a91.46.1717608196547; 
- Wed, 05 Jun 2024 10:23:16 -0700 (PDT)
+ bh=Pv/is3ik2pgbn45+w62VpQiiH4H5v87F5UfY3vca2so=;
+ b=t0cqeulCWwOpKn6wVl0bx35Eygc87DTRCxZHtqi+jd1KNqdbMxaBoDhI+X7v5OKnc6
+ T+IsFs9Fy6hXXdrE2fE2MBIUIivyRqgHQ8PdkZclx/uaMwnlevAYFd/JDehkgaaveD1u
+ ENbLelTdUwfmW0tz8hbsKEapwdb6waHSE4icsN5QD45xr3ayBv/g/T6wYy/86DixjTPy
+ SOTKunONlFcBGVsamFIMasDzXMjV5t/uX6A6MgYrVdRfQqliYwdw8P3miFp3H/K1ykCu
+ TdaJvp4645U1F8JeyPIxUoWCUt5EKYVZTtTJZSHIN7YSt1GI/gF+ZcV6EhhCmrniK9jV
+ 00Nw==
+X-Gm-Message-State: AOJu0YwiFVoGdd5NBrtUL+qoJG5AilSkTt4vSwHJ6AItIqJMpUN9bYBg
+ CIoa30Yg/cGI8T+sGhYw3dcAlCje8xCovzzUaC6YNPZSk9vMzscQ1Ejh87b99O0fqxjLgcnC0hv
+ 6
+X-Google-Smtp-Source: AGHT+IH3RXYrxxnKlLUeAVb44DZHtaSOPQXSmHp9CQ9uXrGOldlQ6wjjvmxl5zU9YpyAMRfqTLSGgw==
+X-Received: by 2002:a17:90a:7105:b0:2c2:4129:a2d3 with SMTP id
+ 98e67ed59e1d1-2c27db5b4a6mr3682295a91.36.1717608197265; 
+ Wed, 05 Jun 2024 10:23:17 -0700 (PDT)
 Received: from stoup.. ([71.212.132.216]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2c28066d511sm1720915a91.9.2024.06.05.10.23.15
+ 98e67ed59e1d1-2c28066d511sm1720915a91.9.2024.06.05.10.23.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Wed, 05 Jun 2024 10:23:16 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 23/38] target/sparc: Implement LZCNT
-Date: Wed,  5 Jun 2024 10:22:38 -0700
-Message-Id: <20240605172253.356302-24-richard.henderson@linaro.org>
+Subject: [PULL 24/38] target/sparc: Implement MOVsTOw, MOVdTOx, MOVwTOs,
+ MOVxTOd
+Date: Wed,  5 Jun 2024 10:22:39 -0700
+Message-Id: <20240605172253.356302-25-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240605172253.356302-1-richard.henderson@linaro.org>
 References: <20240605172253.356302-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::532;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x532.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,58 +96,74 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/sparc/insns.decode |  1 +
- target/sparc/translate.c  | 18 ++++++++++++++++++
- 2 files changed, 19 insertions(+)
+ target/sparc/insns.decode |  6 ++++++
+ target/sparc/translate.c  | 36 ++++++++++++++++++++++++++++++++++++
+ 2 files changed, 42 insertions(+)
 
 diff --git a/target/sparc/insns.decode b/target/sparc/insns.decode
-index fec055910e..4766964893 100644
+index 4766964893..e0e9248982 100644
 --- a/target/sparc/insns.decode
 +++ b/target/sparc/insns.decode
-@@ -389,6 +389,7 @@ FCMPEq      10 000 cc:2 110101 .....  0 0101 0111 .....    \
+@@ -498,6 +498,12 @@ FCMPEq      10 000 cc:2 110101 .....  0 0101 0111 .....    \
+     FONEd       10 ..... 110110 00000 0 0111 1110 00000    rd=%dfp_rd
+     FONEs       10 rd:5  110110 00000 0 0111 1111 00000
  
-     ADDXC       10 ..... 110110 ..... 0 0001 0001 .....    @r_r_r
-     ADDXCcc     10 ..... 110110 ..... 0 0001 0011 .....    @r_r_r
-+    LZCNT       10 ..... 110110 00000 0 0001 0111 .....    @r_r2
- 
-     ALIGNADDR   10 ..... 110110 ..... 0 0001 1000 .....    @r_r_r
-     ALIGNADDRL  10 ..... 110110 ..... 0 0001 1010 .....    @r_r_r
++    MOVsTOuw    10 ..... 110110 00000 1 0001 0001 .....    @r_r2
++    MOVsTOsw    10 ..... 110110 00000 1 0001 0011 .....    @r_r2
++    MOVwTOs     10 ..... 110110 00000 1 0001 1001 .....    @r_r2
++    MOVdTOx     10 ..... 110110 00000 1 0001 0000 .....    @r_d2
++    MOVxTOd     10 ..... 110110 00000 1 0001 1000 .....    @d_r2
++
+     FLCMPs      10 000 cc:2 110110 rs1:5 1 0101 0001 rs2:5
+     FLCMPd      10 000 cc:2 110110 ..... 1 0101 0010 ..... \
+                 rs1=%dfp_rs1 rs2=%dfp_rs2
 diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-index c40992df96..a12cc9f796 100644
+index a12cc9f796..496d490cdd 100644
 --- a/target/sparc/translate.c
 +++ b/target/sparc/translate.c
-@@ -658,6 +658,11 @@ static void gen_op_popc(TCGv dst, TCGv src1, TCGv src2)
-     tcg_gen_ctpop_tl(dst, src2);
+@@ -5401,6 +5401,42 @@ static bool trans_FLCMPd(DisasContext *dc, arg_FLCMPd *a)
+     return advance_pc(dc);
  }
  
-+static void gen_op_lzcnt(TCGv dst, TCGv src)
++static bool do_movf2r(DisasContext *dc, arg_r_r *a,
++                      int (*offset)(unsigned int),
++                      void (*load)(TCGv, TCGv_ptr, tcg_target_long))
 +{
-+    tcg_gen_clzi_tl(dst, src, TARGET_LONG_BITS);
-+}
++    TCGv dst;
 +
- #ifndef TARGET_SPARC64
- static void gen_helper_array8(TCGv dst, TCGv src1, TCGv src2)
- {
-@@ -3873,6 +3878,19 @@ TRANS(EDGE16LN, VIS2, gen_edge, a, 16, 0, 1)
- TRANS(EDGE32N, VIS2, gen_edge, a, 32, 0, 0)
- TRANS(EDGE32LN, VIS2, gen_edge, a, 32, 0, 1)
- 
-+static bool do_rr(DisasContext *dc, arg_r_r *a,
-+                  void (*func)(TCGv, TCGv))
-+{
-+    TCGv dst = gen_dest_gpr(dc, a->rd);
-+    TCGv src = gen_load_gpr(dc, a->rs);
-+
-+    func(dst, src);
++    if (gen_trap_ifnofpu(dc)) {
++        return true;
++    }
++    dst = gen_dest_gpr(dc, a->rd);
++    load(dst, tcg_env, offset(a->rs));
 +    gen_store_gpr(dc, a->rd, dst);
 +    return advance_pc(dc);
 +}
 +
-+TRANS(LZCNT, VIS3, do_rr, a, gen_op_lzcnt)
++TRANS(MOVsTOsw, VIS3B, do_movf2r, a, gen_offset_fpr_F, tcg_gen_ld32s_tl)
++TRANS(MOVsTOuw, VIS3B, do_movf2r, a, gen_offset_fpr_F, tcg_gen_ld32u_tl)
++TRANS(MOVdTOx, VIS3B, do_movf2r, a, gen_offset_fpr_D, tcg_gen_ld_tl)
 +
- static bool do_rrr(DisasContext *dc, arg_r_r_r *a,
-                    void (*func)(TCGv, TCGv, TCGv))
++static bool do_movr2f(DisasContext *dc, arg_r_r *a,
++                      int (*offset)(unsigned int),
++                      void (*store)(TCGv, TCGv_ptr, tcg_target_long))
++{
++    TCGv src;
++
++    if (gen_trap_ifnofpu(dc)) {
++        return true;
++    }
++    src = gen_load_gpr(dc, a->rs);
++    store(src, tcg_env, offset(a->rd));
++    return advance_pc(dc);
++}
++
++TRANS(MOVwTOs, VIS3B, do_movr2f, a, gen_offset_fpr_F, tcg_gen_st32_tl)
++TRANS(MOVxTOd, VIS3B, do_movr2f, a, gen_offset_fpr_D, tcg_gen_st_tl)
++
+ static void sparc_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
  {
+     DisasContext *dc = container_of(dcbase, DisasContext, base);
 -- 
 2.34.1
 
