@@ -2,81 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44BAC8FE6B4
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jun 2024 14:41:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FB428FE6B9
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jun 2024 14:43:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sFCQC-0001Ny-7L; Thu, 06 Jun 2024 08:40:48 -0400
+	id 1sFCSS-00051H-Kw; Thu, 06 Jun 2024 08:43:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sFCQ3-0001Jw-1R
- for qemu-devel@nongnu.org; Thu, 06 Jun 2024 08:40:41 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sFCSR-00050C-5R
+ for qemu-devel@nongnu.org; Thu, 06 Jun 2024 08:43:07 -0400
+Received: from mail-lj1-x22a.google.com ([2a00:1450:4864:20::22a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sFCQ1-0002RU-42
- for qemu-devel@nongnu.org; Thu, 06 Jun 2024 08:40:38 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-42108856c33so12134175e9.1
- for <qemu-devel@nongnu.org>; Thu, 06 Jun 2024 05:40:35 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sFCSP-0002uX-GE
+ for qemu-devel@nongnu.org; Thu, 06 Jun 2024 08:43:06 -0400
+Received: by mail-lj1-x22a.google.com with SMTP id
+ 38308e7fff4ca-2eacd7e7b38so10165541fa.2
+ for <qemu-devel@nongnu.org>; Thu, 06 Jun 2024 05:43:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1717677634; x=1718282434; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=CRSz2yaOsEhwUEucQOXNUUVmWnoAQi/uTeMffq4fYCw=;
- b=E8n01ZALd7ywVD71zre1scXUbMVv4hdpGKCzsxGxA5PhQ6RBstGqugkk8QUVpuUWhA
- oRSAAhCaj8kpfkliTDYYJo4dstnTQbnPBTY0Si1Peb6RTu7bT5Cbg6acLwGfMlrH7CHV
- b5tLxm+LVyzFfzhDWkoEfXTCNmiEw0XJm3hhqhusbTuWnxZetQrMX2aVSo3WSBnISRGc
- BF7ZftMKDL4s+dTuVo78sVFK9zxuU4e7VErHPa5rRHBrM2A3VtoDnorUKgglnYKosIbf
- cjfh1nMNK+Vk+NLSYhGm/jrlyFcFzdGVF2YyApqQL8E217Fm5wGudFPckLGQKmi1jApr
- U+ug==
+ d=linaro.org; s=google; t=1717677783; x=1718282583; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=wmWSFdenUilBejz9cmBeGqpcFxGB6yhYLz7CzbG1ozs=;
+ b=W0GNHh745gvkcECNfNY2wBRYW0IHE/eSRa/WNPJ9ybdspQZysJUoCzZc+ELSCB/fQx
+ BUHbiBdmMCQpTf0lKiX578we9airKvR0JAtRW8Cbe/HE9x0ij05zlzkj94y5F08YXFyb
+ EcT98ZJsGRVkLz44rEhe5wfBYcu2iDCwBKOcx81HLka33sU+uStAmmQmunxE6OK0tcBm
+ WPoSdOtRb14ENihQm8mHFrPdBf3gx4iHwpn6+Kfoz3cTdAEQKycykrzeqFoQeJTt3dq1
+ x+ZNFiC1rlwy62BjvJMN2j9sKKD875ICBE5l1n/hMm31pRtN3NhRdioOLMibqnpTftxs
+ eDug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717677634; x=1718282434;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=CRSz2yaOsEhwUEucQOXNUUVmWnoAQi/uTeMffq4fYCw=;
- b=CQL2ZS9q4FeHpZI80MGlQb+bTjZ2MWO7ZqjJTcmfqFP+Uxf1DOUXXRklk9+yb/nI7M
- w8hBtJ53dMPl060xBiP1Sy7ppFr4nDEMkIxukBqj/EA78S7VR2A0uSDh9xjSEL62Wnfl
- q2GpP2IYWBbKhaas7k/dEunicy1koH/sYw3K9r4h0keOqhJCKVWqB2SsSo47nCDzUoSl
- PNyBgVLUxg6XKVIBeH77se2OFVOEO27wo3QPleItO9zIQasUG8AnNM710ZI2e4TV3mY3
- Mj0E4EAUKpZCg/gGSOKlB58FbpampMnfY8FByUiTdyvgqcpi0xAXiWkZBBxivoLN7Xas
- 5dsA==
-X-Gm-Message-State: AOJu0Yxq77CaaSjHvbboVwWfIGtiNE5EORt25JbJBDRBBAu0TDyy+f7i
- uHhEhX01l9CILWc/2vCTkrdnjBiBQzJ5dEXCeOUz4fCaipECWwfK8ygoWcxwxGJx3NiRx+OpaI9
- 0pbA=
-X-Google-Smtp-Source: AGHT+IEZ2RL13Eh+mo1ygYvB/9zgzn5BZEJHrltPq+uKH0hh3U+vQw3U0wGPCO+dCo7UP1NGcXo00g==
-X-Received: by 2002:a5d:6a44:0:b0:357:16f6:71dc with SMTP id
- ffacd0b85a97d-35ef0d7a2e0mr2482270f8f.13.1717677634496; 
- Thu, 06 Jun 2024 05:40:34 -0700 (PDT)
-Received: from localhost.localdomain (94.red-88-29-105.staticip.rima-tde.net.
+ d=1e100.net; s=20230601; t=1717677783; x=1718282583;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :cc:to:from:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=wmWSFdenUilBejz9cmBeGqpcFxGB6yhYLz7CzbG1ozs=;
+ b=H/xKrP6e/eF/ejchxxBEvvitwXEPpKDZYjm0F+lYiotT6xLH2H5LG3lWvhAKsW+yBs
+ CGfB+DMHUGEtGASzwMLR+kwISZPBEa4eUuU6bIStpqunhNOD4R1tMw65sdLv4ppe9Xzf
+ 3dwUWy+XkKC8l+/ueG9LudcV3+MXA4JtLtPjGP1RbCica7MwxpbJ7eou15KOmfMUF16M
+ bk30yK+k2WBt/gDTG5C4bhkcnjf3EONYMQZqVmu7dfEbU7cFVZQf1dj1Z/UAikIq1Qqn
+ gIh5z2FJwNgrYUqpWqbBsUxihx7ENQpzjlNH+cIQestr6xU4ya/bTU9MjKdzh3Ab7mX+
+ UEiQ==
+X-Gm-Message-State: AOJu0YxLsOdAqVxebZzDHuJSIoWKRd5C/YdWZHk7DiwKw0I+Y2W/RMxL
+ M581ncQMuPyHm7Qnr8PK3er3uEG3/agghtf43ZKiJNX/RUq4g/29PYtc6CDtY7U/MDb5rYmWE7t
+ pTPE=
+X-Google-Smtp-Source: AGHT+IHUhco/STdOGNOxa91hG63dDQ0DUedIKXnsNZ/2Gkjw2KayegBFid/nJKsmjjXj3oLl9FC77A==
+X-Received: by 2002:a05:651c:551:b0:2ea:89f6:258f with SMTP id
+ 38308e7fff4ca-2eac77a26a9mr46588661fa.0.1717677782972; 
+ Thu, 06 Jun 2024 05:43:02 -0700 (PDT)
+Received: from [192.168.183.175] (94.red-88-29-105.staticip.rima-tde.net.
  [88.29.105.94]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4215c2c6bedsm20432045e9.30.2024.06.06.05.40.32
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 06 Jun 2024 05:40:34 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Alexandre Iooss <erdnaxe@crans.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH 3/3] accel/tcg: Move qemu_plugin_vcpu_init__async() to plugins/
-Date: Thu,  6 Jun 2024 14:40:10 +0200
-Message-ID: <20240606124010.2460-4-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20240606124010.2460-1-philmd@linaro.org>
-References: <20240606124010.2460-1-philmd@linaro.org>
+ 5b1f17b1804b1-4215c2a5f47sm20864055e9.24.2024.06.06.05.43.01
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 06 Jun 2024 05:43:02 -0700 (PDT)
+Message-ID: <f932b4f2-25ed-405f-b9c4-cffaab903e3d@linaro.org>
+Date: Thu, 6 Jun 2024 14:43:00 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/3] semihosting: Restrict to TCG
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Anton Johansson <anjo@rev.ng>
+References: <20240530145349.41309-1-philmd@linaro.org>
+ <1abce060-99cd-4881-835c-1cedc02e61e2@linaro.org>
+Content-Language: en-US
+In-Reply-To: <1abce060-99cd-4881-835c-1cedc02e61e2@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22a;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x22a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,71 +95,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Calling qemu_plugin_vcpu_init__async() on the vCPU thread
-is a detail of plugins, not relevant to TCG vCPU management.
+Kind ping :)
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
----
- hw/core/cpu-common.c | 9 +--------
- plugins/core.c       | 8 +++++++-
- 2 files changed, 8 insertions(+), 9 deletions(-)
-
-diff --git a/hw/core/cpu-common.c b/hw/core/cpu-common.c
-index cd15402552..79fcc0b286 100644
---- a/hw/core/cpu-common.c
-+++ b/hw/core/cpu-common.c
-@@ -192,13 +192,6 @@ static void cpu_common_parse_features(const char *typename, char *features,
-     }
- }
- 
--#ifdef CONFIG_PLUGIN
--static void qemu_plugin_vcpu_init__async(CPUState *cpu, run_on_cpu_data unused)
--{
--    qemu_plugin_vcpu_init_hook(cpu);
--}
--#endif
--
- static void cpu_common_realizefn(DeviceState *dev, Error **errp)
- {
-     CPUState *cpu = CPU(dev);
-@@ -274,7 +267,7 @@ static void cpu_common_initfn(Object *obj)
- #ifdef CONFIG_PLUGIN
-     if (tcg_enabled()) {
-         cpu->plugin_state = qemu_plugin_create_vcpu_state();
--        async_run_on_cpu(cpu, qemu_plugin_vcpu_init__async, RUN_ON_CPU_NULL);
-+        qemu_plugin_vcpu_init_hook(cpu);
-     }
- #endif
- }
-diff --git a/plugins/core.c b/plugins/core.c
-index d339b3db4d..3dec3556c3 100644
---- a/plugins/core.c
-+++ b/plugins/core.c
-@@ -241,7 +241,7 @@ static void plugin_grow_scoreboards__locked(CPUState *cpu)
-     end_exclusive();
- }
- 
--void qemu_plugin_vcpu_init_hook(CPUState *cpu)
-+static void qemu_plugin_vcpu_init__async(CPUState *cpu, run_on_cpu_data unused)
- {
-     bool success;
- 
-@@ -258,6 +258,12 @@ void qemu_plugin_vcpu_init_hook(CPUState *cpu)
-     plugin_vcpu_cb__simple(cpu, QEMU_PLUGIN_EV_VCPU_INIT);
- }
- 
-+void qemu_plugin_vcpu_init_hook(CPUState *cpu)
-+{
-+    /* Plugin initialization must wait until the cpu start executing code */
-+    async_run_on_cpu(cpu, qemu_plugin_vcpu_init__async, RUN_ON_CPU_NULL);
-+}
-+
- void qemu_plugin_vcpu_exit_hook(CPUState *cpu)
- {
-     bool success;
--- 
-2.41.0
+On 3/6/24 10:27, Philippe Mathieu-Daudé wrote:
+> On 30/5/24 16:53, Philippe Mathieu-Daudé wrote:
+>> v2: Address Paolo's comment
+> 
+> Missing review: 1 & 2
+> 
+>> Semihosting currently uses the TCG probe_access API,
+>> so it is pointless to have it in the binary when TCG
+>> isn't.
+>>
+>> It could be implemented for other accelerators, but
+>> work need to be done. Meanwhile, do not enable it
+>> unless TCG is available.
+>>
+>> Philippe Mathieu-Daudé (3):
+>>    target/mips: Restrict semihosting to TCG
+>>    target/riscv: Restrict semihosting to TCG
+>>    semihosting: Restrict to TCG
+>>
+>>   semihosting/Kconfig  | 1 +
+>>   target/mips/Kconfig  | 2 +-
+>>   target/riscv/Kconfig | 4 ++--
+>>   3 files changed, 4 insertions(+), 3 deletions(-)
+>>
+> 
 
 
