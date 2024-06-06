@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 820728FE479
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jun 2024 12:41:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 85E908FE47B
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jun 2024 12:41:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sFAXg-0003sy-Lx; Thu, 06 Jun 2024 06:40:24 -0400
+	id 1sFAXi-0003tX-BK; Thu, 06 Jun 2024 06:40:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sFAXb-0003rx-6R
- for qemu-devel@nongnu.org; Thu, 06 Jun 2024 06:40:20 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sFAXg-0003t0-2C
+ for qemu-devel@nongnu.org; Thu, 06 Jun 2024 06:40:24 -0400
+Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sFAXW-0002xa-HG
- for qemu-devel@nongnu.org; Thu, 06 Jun 2024 06:40:18 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-4213b94b7e7so4465925e9.0
- for <qemu-devel@nongnu.org>; Thu, 06 Jun 2024 03:40:14 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sFAXd-0002yw-AA
+ for qemu-devel@nongnu.org; Thu, 06 Jun 2024 06:40:23 -0400
+Received: by mail-lf1-x136.google.com with SMTP id
+ 2adb3069b0e04-52b9af7a01bso980027e87.0
+ for <qemu-devel@nongnu.org>; Thu, 06 Jun 2024 03:40:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1717670412; x=1718275212; darn=nongnu.org;
+ d=linaro.org; s=google; t=1717670419; x=1718275219; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=UJQM9NsMMAJH9bY3Q3nzlpRNxIjB2sYAJahUizBDung=;
- b=bqAHOmcnRUJveVbMovHHv85HE2FZthdJUWL6LQZ58rlWGzU+/fMg0drmnGdnLAoozO
- ET7lK1ttzXUdDG7j7N/AzqP0WGnhAS4eBxm0s7usOdbObc6/DWv64Z/C8M19wxAzllLl
- hJcq90BHjLoqQBNeKJf/OmF2cBpJpilh2SUnZ4jDbo6qfo823CRRJIjREO4YORJfqNe+
- 5+t0gphlH/nKw/IaCT3XK8h3GOv27e7OMNrdsNNdq34uhOZNV7EvOc3q/f2dPDMXVoGN
- kK78irRJattGpLYYi8+/lru5V4GxGYKJVQpPV4EHHOupdIwQVcnqnHUKV1mk0V71WRCz
- 0wsA==
+ bh=BMtQclkfQ+tzZ8PXSD+8zjanVSPJ3R9g60tZMLUUdbU=;
+ b=qRop8QgJAGLU5YkbpKacQvzQHmJ8spa5rX0r5jtDwrrPCmqxhFAhLd12OuqtTz8Vkq
+ hcTwHlK30dCirJ2BA2UzFxGYSN7SfBdwYJseAktqODEm0bj2KQXrMHCyzClEtoISO5FR
+ NJjhePEKngBNPuRMlSbq1ed/pZQO0K9495ecNnpSLxP/FYbdKXZUpNJeHjY52ioc7ufL
+ a1UApRxddUcc6mNqiQdMPsGDaa2HlkNRp99pVI2cudfLDWBFdg5LGGW1S2+HvzkuapGm
+ VprW+5lafx1ptg3PULfeWyTf7IIsk/GlBYgeDYXEpRqdgjqIiluOX5cmLHmzkTREyhqv
+ +Wzw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717670412; x=1718275212;
+ d=1e100.net; s=20230601; t=1717670419; x=1718275219;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=UJQM9NsMMAJH9bY3Q3nzlpRNxIjB2sYAJahUizBDung=;
- b=N9eCu5h79OiCWCCdv1LyjTmkvhxCRs9Bsv39TbxzKzOB+dV7KMvoskJ+f12S0M79Ty
- XmdTfhvxTA0a3CsN57sx/ooNRZqkY4hyMzKnPEhNEpKoKq8jMvbppjFt55CTTLj+l8qG
- CnAAGq34bllkIaF98SlNcqFKx26Rm/+sKCLD+nl8dHYSrbJ3kdciWiffcD497kdFblqA
- a6EfMp1gs8ayI/e3Nwkyk6+29NcpuLtEkenCINExsoVqtcYrHRSI2tS1Y0RuiFZaGjja
- JUnBOXli2YJwxLq/4DZ090M0P5fZ53ziuvsv+JzGge0vMOtYLiaOWMClak5AKLmetbtD
- br0g==
-X-Gm-Message-State: AOJu0YzFLAd0/Gvt2roebiKdaSw50eFJI/frZQhKC6BDuwWtayVONXlC
- 6pzLaI43jJ7t5vRVpYer8hR3KStnuw9QxV2GPkZ54vI2cCOYET1E8IubpTiO9GB8Nj1JudYP8L2
- LyCI=
-X-Google-Smtp-Source: AGHT+IE9+fiSQIUGoSVTB+yq0KaKF0vUDSpwqgCrbYn9/+XlA9+SqIblJFnsba6dWeNWbO17byeBrA==
-X-Received: by 2002:a05:600c:314c:b0:418:5ef3:4a04 with SMTP id
- 5b1f17b1804b1-4215ad180b9mr21005735e9.18.1717670412599; 
- Thu, 06 Jun 2024 03:40:12 -0700 (PDT)
+ bh=BMtQclkfQ+tzZ8PXSD+8zjanVSPJ3R9g60tZMLUUdbU=;
+ b=hazj2t1Ly6kwZRX/eC1kEzufsL9IzNyVk3EmXwe1SOx8AokANBXEiVRY10R+QXn1uN
+ PgGMDAZFEl4u9DCPFRRaEKIaCy72+n5XNJYEdScYC150w4PFEFI/Gl1KuKQC8fFhTfz5
+ GCDvkmJqtHa6nqUN14yaKZ+C4/SdVCsnxcI9vBK06DFCK62FuMIUT+fxlU95aQ2XfvjR
+ 9xqJZYmOkC1+bw55XKeSoIP4RN6qSo3WPBJ6NHt1DDaJo8EeP+OUiPg1L1MJhB5gGkkj
+ jYNhC4Bb9koyGoDSRoEaKKxXHFvtsVIWZkQ+erOlfnCof6tMHKN6M/DnvwI+qrO0e3b0
+ Epfw==
+X-Gm-Message-State: AOJu0YzR6qRV5VCUZwP4f+rGXb6b5Ce+kR1pR463wogUjSPNgFaDfcNV
+ JDKmZpudYOmqKKHBjOIQyW+AalSTgXEKsK3h+41Aqo+jj0TITvhEaRcYOzj40RdqE/yngBNxMEa
+ e77c=
+X-Google-Smtp-Source: AGHT+IEbNR8LHVKrJlckZeaPyQ5urxX7BGDye3sHYKEAxrx9lJ4V2Zb3B85UKbn0B4f10r9v/PG4lw==
+X-Received: by 2002:a05:6512:3f09:b0:52b:9c8a:735a with SMTP id
+ 2adb3069b0e04-52bab4dbbdbmr3927067e87.40.1717670419082; 
+ Thu, 06 Jun 2024 03:40:19 -0700 (PDT)
 Received: from localhost.localdomain (94.red-88-29-105.staticip.rima-tde.net.
  [88.29.105.94]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42158102a69sm51547525e9.15.2024.06.06.03.40.10
+ 5b1f17b1804b1-4215c19d52dsm17724945e9.8.2024.06.06.03.40.17
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 06 Jun 2024 03:40:12 -0700 (PDT)
+ Thu, 06 Jun 2024 03:40:18 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
@@ -63,17 +63,17 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  Yoshinori Sato <ysato@users.sourceforge.jp>,
  Stefan Berger <stefanb@linux.vnet.ibm.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 4/5] hw/vfio: Remove newline character in trace events
-Date: Thu,  6 Jun 2024 12:39:42 +0200
-Message-ID: <20240606103943.79116-5-philmd@linaro.org>
+Subject: [PATCH 5/5] tracetool: Forbid newline character in event format
+Date: Thu,  6 Jun 2024 12:39:43 +0200
+Message-ID: <20240606103943.79116-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240606103943.79116-1-philmd@linaro.org>
 References: <20240606103943.79116-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::136;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x136.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,36 +96,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Trace events aren't designed to be multi-lines.
-Remove the newline characters.
+Events aren't designed to be multi-lines. Multiple events
+can be used instead. Prevent that format using multi-lines
+by forbidding the newline character.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/vfio/trace-events | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ scripts/tracetool/__init__.py | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/hw/vfio/trace-events b/hw/vfio/trace-events
-index 64161bf6f4..e16179b507 100644
---- a/hw/vfio/trace-events
-+++ b/hw/vfio/trace-events
-@@ -19,7 +19,7 @@ vfio_msix_fixup(const char *name, int bar, uint64_t start, uint64_t end) " (%s)
- vfio_msix_relo(const char *name, int bar, uint64_t offset) " (%s) BAR %d offset 0x%"PRIx64""
- vfio_msi_enable(const char *name, int nr_vectors) " (%s) Enabled %d MSI vectors"
- vfio_msi_disable(const char *name) " (%s)"
--vfio_pci_load_rom(const char *name, unsigned long size, unsigned long offset, unsigned long flags) "Device %s ROM:\n  size: 0x%lx, offset: 0x%lx, flags: 0x%lx"
-+vfio_pci_load_rom(const char *name, unsigned long size, unsigned long offset, unsigned long flags) "Device '%s' ROM: size: 0x%lx, offset: 0x%lx, flags: 0x%lx"
- vfio_rom_read(const char *name, uint64_t addr, int size, uint64_t data) " (%s, 0x%"PRIx64", 0x%x) = 0x%"PRIx64
- vfio_pci_size_rom(const char *name, int size) "%s ROM size 0x%x"
- vfio_vga_write(uint64_t addr, uint64_t data, int size) " (0x%"PRIx64", 0x%"PRIx64", %d)"
-@@ -35,7 +35,7 @@ vfio_pci_hot_reset(const char *name, const char *type) " (%s) %s"
- vfio_pci_hot_reset_has_dep_devices(const char *name) "%s: hot reset dependent devices:"
- vfio_pci_hot_reset_dep_devices(int domain, int bus, int slot, int function, int group_id) "\t%04x:%02x:%02x.%x group %d"
- vfio_pci_hot_reset_result(const char *name, const char *result) "%s hot reset: %s"
--vfio_populate_device_config(const char *name, unsigned long size, unsigned long offset, unsigned long flags) "Device %s config:\n  size: 0x%lx, offset: 0x%lx, flags: 0x%lx"
-+vfio_populate_device_config(const char *name, unsigned long size, unsigned long offset, unsigned long flags) "Device '%s' config: size: 0x%lx, offset: 0x%lx, flags: 0x%lx"
- vfio_populate_device_get_irq_info_failure(const char *errstr) "VFIO_DEVICE_GET_IRQ_INFO failure: %s"
- vfio_attach_device(const char *name, int group_id) " (%s) group %d"
- vfio_detach_device(const char *name, int group_id) " (%s) group %d"
+diff --git a/scripts/tracetool/__init__.py b/scripts/tracetool/__init__.py
+index 7237abe0e8..bc03238c0f 100644
+--- a/scripts/tracetool/__init__.py
++++ b/scripts/tracetool/__init__.py
+@@ -301,6 +301,8 @@ def build(line_str, lineno, filename):
+         if fmt.endswith(r'\n"'):
+             raise ValueError("Event format must not end with a newline "
+                              "character")
++        if '\\n' in fmt:
++            raise ValueError("Event format must not use new line character")
+ 
+         if len(fmt_trans) > 0:
+             fmt = [fmt_trans, fmt]
 -- 
 2.41.0
 
