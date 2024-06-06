@@ -2,94 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 871568FDD97
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jun 2024 05:43:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E755B8FDD7F
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jun 2024 05:30:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sF41H-000404-NY; Wed, 05 Jun 2024 23:42:31 -0400
+	id 1sF3pj-00048G-Uq; Wed, 05 Jun 2024 23:30:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sF41F-0003zt-Qh
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 23:42:29 -0400
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sF41D-0005uN-0w
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 23:42:29 -0400
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-1f480624d0dso4976145ad.1
- for <qemu-devel@nongnu.org>; Wed, 05 Jun 2024 20:42:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1717645344; x=1718250144; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=jHDWegXe5NXAKopAMrt5aDB6pxak4QB04rSLO7shvtA=;
- b=u28PZ+VflIrQMsaTvCIVkn3DrYn76xai2nR/cmKdCm8eFpqiA5FwWAs6DmaSLomPIo
- 35mVfPpi/98gPZANKau//+eMSySM0n4d6CaGvQpb6PV/h4nGz4w9nwK+haqL8SDeiSLn
- b1ty+g8bKbGOLwyv8xedoDxhbQKmsL/U3p1L8FXxotP9dKwDd5d4EEvPCfe4DtOZ13gv
- JUpkvNUhGORjOp58K+Z7rDPZip27e89NTenkwGT4fbNNnZDrr0dwMB6Y3oaGMjtpQiJt
- R/QpF0apFmvcdjmlhAXW2kzarZnkWSnE3txnVmYetTH6bYufQSYs9MCfpuU0/n7fOBhH
- mY0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717645344; x=1718250144;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=jHDWegXe5NXAKopAMrt5aDB6pxak4QB04rSLO7shvtA=;
- b=VfCokGGvFdqRc03WQrmF0OXQTaIiW/ZULk27kzWGOf2zzyg9YmUQsakNJ7zPDEkJKX
- 71frmf7opX/NFXYKYQp4SECNxuZrqN5YkwMlaioJpmz9gp0NJfS6PwGD5DYp6bSpai0n
- VMRRjEibsUIIvXxw3Y9mtlq1UBES7zACiPWw2lgQkUzxLKv/azE6Ow7umwOz6p3MaMRr
- kOXJRrT3U4jf5XtlzWriR2MZs40n6CfGOU+bEfQ+5DsjaOGcdZrLpCb/Dbtrm3NNdf4+
- qc0P83mssopItQdtIM61ltEZc72tgpzRej9lvh2sLQ7AzIZ16/qONUtOylY9J7/rNDis
- z2KA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXhOWZFzWX6/OMo51aW6uE8u3u2xXQf1ZgkcXsEzkxLu59fey38/P/Xz1MrG7RMvAOVpXIqf1d9YWKOQbsJp8bnlhl9u8U=
-X-Gm-Message-State: AOJu0YyHIAemP3vcTqxDsHQULy8NIsIrTYtNrWq20eNmI3zklRIZa2VW
- zP4SDofx03W0x6v0My9jKK1oZcxgs29JOsnS21K1XvZ6lavny719F52QiCppNNo=
-X-Google-Smtp-Source: AGHT+IGkjnz5QLZGGV0xsBKW0MWSmKgcldjeVNB18u9xIzCuV0+yqbWnbceyN3w2Hnx1AydFxT0J0A==
-X-Received: by 2002:a17:903:1d2:b0:1f4:5c6e:3a9b with SMTP id
- d9443c01a7336-1f6a5a6991amr55186035ad.44.1717645344051; 
- Wed, 05 Jun 2024 20:42:24 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.132.216])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1f6bd7ccdecsm3138985ad.177.2024.06.05.20.42.23
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 05 Jun 2024 20:42:23 -0700 (PDT)
-Message-ID: <5dc13c38-353b-4f17-97f3-fefd7f188570@linaro.org>
-Date: Wed, 5 Jun 2024 20:42:21 -0700
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sF3p3-0003Yk-1n
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 23:29:54 -0400
+Received: from mgamail.intel.com ([198.175.65.9])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sF3op-0003n4-Ct
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 23:29:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1717644580; x=1749180580;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=kieskrHj+q6BXqVdHq/yeQgD6BfnrXRu3u4lTS6jM5g=;
+ b=aV5kkPJeasFU1Xkq6aiDNLvMP7QoBeFZMDZpY9QkvVJ6axa71a2qSOEk
+ 393mNsjCyWXoqAaE4juNNTJ966YdIVdEocIHswixASbF0h7elBBlx0Kwt
+ XY66b0th4nsgzrGNBAwOQThPjAbhADvMzruxd8n9Db08iWBk1rPBfnt7w
+ iBsDYcsa4ZARSo7REhW8jPHiiurkZQb0b1zIXQINgNBFswG9JgqhXz4tG
+ bHRTCLcXk1417YC11kCW4VmamoI3HEJGCUuyXxONj1RFqP4dBwKNjosQx
+ qRqmDEdfmTxrZbTDrhuVFCCRBMNviHyuw7vIMZj59t42cKTkywMZfb7BA g==;
+X-CSE-ConnectionGUID: 7qaVlHHJR1emOKd9AW0jaA==
+X-CSE-MsgGUID: bweg2ToHQYWEMDFAEx796Q==
+X-IronPort-AV: E=McAfee;i="6600,9927,11094"; a="36819469"
+X-IronPort-AV: E=Sophos;i="6.08,218,1712646000"; d="scan'208";a="36819469"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Jun 2024 20:29:37 -0700
+X-CSE-ConnectionGUID: eQxjEImWR3m3Ee3xfQmFOA==
+X-CSE-MsgGUID: ee9KFhYcR7WToYtuoarCxw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,218,1712646000"; d="scan'208";a="37826936"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by fmviesa008.fm.intel.com with ESMTP; 05 Jun 2024 20:29:35 -0700
+Date: Thu, 6 Jun 2024 11:45:02 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, pankaj.gupta@amd.com
+Subject: Re: [PATCH] target/i386: SEV: do not assume machine->cgs is SEV
+Message-ID: <ZmEwvsAnh1lXNqhS@intel.com>
+References: <20240605224409.2103109-1-pbonzini@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] util/bufferiszero: Add simd acceleration for
- loongarch64
-To: maobibo <maobibo@loongson.cn>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Thomas Huth <thuth@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, qemu-devel@nongnu.org
-References: <20240605093213.2191929-1-maobibo@loongson.cn>
- <20240605093213.2191929-3-maobibo@loongson.cn>
- <5d78d82d-a939-4103-8411-507b1a0372ac@linaro.org>
- <7b4c6909-40e8-def7-03e8-18a3303295f1@loongson.cn>
- <58ba9ea7-cc45-47d4-a278-3777b496cb44@linaro.org>
- <d504ffbb-353a-452f-bfb1-2640ee1badc9@linaro.org>
- <da613eb1-65f8-b690-4517-04640581261b@loongson.cn>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <da613eb1-65f8-b690-4517-04640581261b@loongson.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240605224409.2103109-1-pbonzini@redhat.com>
+Received-SPF: pass client-ip=198.175.65.9; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -106,42 +79,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/5/24 20:36, maobibo wrote:
->>> static biz_accel_fn const accel_table[] = {
->>>      buffer_is_zero_int_ge256,
->>> #ifdef __loongarch_sx
->>>      buffer_is_zero_lsx,
->>> #endif
->>> #ifdef __loongarch_asx
->>>      buffer_is_zero_lasx,
->>> #endif
->>> };
->>>
->>> static unsigned best_accel(void)
->>> {
->>> #ifdef __loongarch_asx
->>>      /* lasx may be index 1 or 2, but always last */
->>>      return ARRAY_SIZE(accel_table) - 1;
->>> #else
->>>      /* lsx is always index 1 */
->>>      return 1;
->>> #endif
->>> }
-> size of accel_table is decided at compile-time, will it be better if runtime checking is 
-> added also?  something like this:
+On Thu, Jun 06, 2024 at 12:44:09AM +0200, Paolo Bonzini wrote:
+> Date: Thu,  6 Jun 2024 00:44:09 +0200
+> From: Paolo Bonzini <pbonzini@redhat.com>
+> Subject: [PATCH] target/i386: SEV: do not assume machine->cgs is SEV
+> X-Mailer: git-send-email 2.45.1
 > 
->   unsigned info = cpuinfo_init();
+> There can be other confidential computing classes that are not derived
+> from sev-common.  Avoid aborting when encountering them.
 > 
->   #ifdef __loongarch_asx
->   if (info & CPUINFO_LASX) {
->        /* lasx may be index 1 or 2, but always last */
->        return ARRAY_SIZE(accel_table) - 1;
->   }
->   #endif
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>  target/i386/sev.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/target/i386/sev.c b/target/i386/sev.c
+> index 004c667ac14..97e15f8b7a9 100644
+> --- a/target/i386/sev.c
+> +++ b/target/i386/sev.c
+> @@ -1710,7 +1710,9 @@ void sev_es_set_reset_vector(CPUState *cpu)
+>  {
+>      X86CPU *x86;
+>      CPUX86State *env;
+> -    SevCommonState *sev_common = SEV_COMMON(MACHINE(qdev_get_machine())->cgs);
+> +    ConfidentialGuestSupport *cgs = MACHINE(qdev_get_machine())->cgs;
+> +    SevCommonState *sev_common = SEV_COMMON(
+> +        object_dynamic_cast(OBJECT(cgs), TYPE_SEV_COMMON));
 
-No, because the ifdef checks that the *compiler* is prepared to use LASX/LSX instructions 
-itself without further checks.  There's no point in qemu checking further.
+SEV_COMMON(object_dynamic_cast()) looks to be twice cast, we can just
+force to do conversion with pointer type:
 
+(SevCommonState *) object_dynamic_cast(OBJECT(cgs), TYPE_SEV_COMMON)
 
-r~
+>      /* Only update if we have valid reset information */
+>      if (!sev_common || !sev_common->reset_data_valid) {
+> -- 
+> 2.45.1
+> 
+> 
 
