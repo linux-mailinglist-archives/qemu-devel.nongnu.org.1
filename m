@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBA9C8FE5CC
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jun 2024 13:52:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A6E98FE5D0
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jun 2024 13:52:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sFBe6-0007oJ-Ml; Thu, 06 Jun 2024 07:51:06 -0400
+	id 1sFBe4-0007mQ-St; Thu, 06 Jun 2024 07:51:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sFBe3-0007mF-Sp
+ id 1sFBe3-0007le-CZ
  for qemu-devel@nongnu.org; Thu, 06 Jun 2024 07:51:03 -0400
-Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
+Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sFBe0-0000tg-QO
+ id 1sFBe0-0000tc-ES
  for qemu-devel@nongnu.org; Thu, 06 Jun 2024 07:51:03 -0400
-Received: by mail-lf1-x12e.google.com with SMTP id
- 2adb3069b0e04-52b7c82e39eso926335e87.1
+Received: by mail-ed1-x529.google.com with SMTP id
+ 4fb4d7f45d1cf-57a2ed9af7dso1229349a12.1
  for <qemu-devel@nongnu.org>; Thu, 06 Jun 2024 04:50:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1717674658; x=1718279458; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=lBlMBkLWYWGokSaLB9pj45So7IsxTXXq9NxV7kl0WyA=;
- b=QdAryM+u+LfQ1dIJHuyoQ/AimauZY66DtxO4pXwr/vPA3pxAlni3Lh2ccPuF8P1Jrl
- qcvz7Si/bjzKiOCKvsVucjOuUUwrIIH0NEndeZUOJE71URjnuPFvCFnjebHM0TF1jzMD
- 3PWD4tzWLJIKOcS1giScQaOXq7/LplNfbVQNLmQJLNxih5vhAIqfH3E8Sgi0/lNAgiFe
- liVkhtm3D5+ZG8dyNIB5UIV+YizJqxSEIpdHttk7ChZz93k9I54tOP+ObIV6+9tv3XnJ
- R2pzF93nf7w7YXKPpmmRGlU+9PyqQdNOqRVI0UWhynMYR9Q8K4tUzP/ntcFoGwRuKnga
- BbvA==
+ bh=HEiaO79EnHcFSWKjr05NL64y0sp0/W9PFgORRJ4kV5Q=;
+ b=MGN0z1GECs09TirsXeNl7t807yhwrJjHbYrmrBnpopkC1d4xhxFkmFk90KC5sb4lSe
+ RaPXpSH1YjyyVX5y5iKJSecGuNf3L69nbUnalzp3kDPQYZHGcF849afirPStdMthO9gm
+ nT5/RLCxCi4oRly8oipKoLve4N56B5xwUI46lL09gcd4wHXVc2moKeTHYgsa9HxBSWEJ
+ FViQAnegTcD11mfJ1QFaBydQDaRtmnmej8JoLoYffG6A//m3Ep8i4AJPuPbvYYMpoRgY
+ LUEdF9ywXYVHZaM9LmIpACh2vARffJ+0xuCKJWj0rkBRYLexYVV/pgOtaopALp3nCpj0
+ SD5Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1717674658; x=1718279458;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=lBlMBkLWYWGokSaLB9pj45So7IsxTXXq9NxV7kl0WyA=;
- b=aTCicxIhsDhfLN73690Pjsekup3fjNwHHqBos9E/1UecSp5zs2E5iNunYHhwoh4xRU
- WJLh71bPHdeCDWkXtBpNEGzPdgpVlYoUGvl2KF+eD2FvCwRtEKLz9wj0Bj6ybiXkSpBO
- Pz3BVfgVgHoACV5h6zDbFUrZ19gFHz8ZwgxcHX3+pu2TUg9ofFBIEGmNCRFzmkVLdRUW
- mDNrwcErJB6zQ/GhURCNQOzdXcjDc8HezHGvT+HgdeT4ZM0+f4kNaqBeBZ6BuXnMtoBd
- +zSe/h9wwJVYfmJLFvUf5rYrhSbSIpadolyOYIYa9OxMIH8cvNpYIlYolB53fOypySfy
- 1lDg==
-X-Gm-Message-State: AOJu0YyA6rRzVGM7P2nstYbZ/aT57WgxeTfy8mQB0TLZJJyXmEpBdsHn
- tUR+YInOl++6EY+ZvTGHFb8P3fdkLQGWi8QZZl7hgFt9OC5DS2naPLuLpQBu28c=
-X-Google-Smtp-Source: AGHT+IGfFiyYmWNEt1YKxjNQ7RkpY5WfhDxyik8dq9fOoAtRd8Aok7Zdub6nWIooxgMfHf+VChPFHQ==
-X-Received: by 2002:a2e:b619:0:b0:2e7:2d1f:edbd with SMTP id
- 38308e7fff4ca-2eac7a715b1mr40573801fa.39.1717674657969; 
+ bh=HEiaO79EnHcFSWKjr05NL64y0sp0/W9PFgORRJ4kV5Q=;
+ b=fwlwfucCEc5y0U9DaOuoaJW15Uhb/xkVQdgEi//JPkFLP/aUeZZRwRoJ7ehHNlrh9v
+ kSOEC4Oz9KuZo1YPrBFL9PSS7eMS3SNShDWAvt96SVR45jvt98jtBJ7WDJhZkx3RcNz5
+ FRv9742Uf4CFsqf7ywqZmFIn9PvMOm/45vzRWYA/9xRaj7utusC8hRZB910lJe7pXDmJ
+ 1JcQYkEqGZCxbEwyDVnRToqgrOU98tUljIMvmdudPcDnt67bl061rheY2Bp1nz6ZjgyX
+ 9x6KhyapdnzVSPa/V7giHIaLe+tY4J60tKYqhtzvMfivhfZcqKguIDcBv1LN8z2QbbqI
+ SfXg==
+X-Gm-Message-State: AOJu0YzHA91qiITwzLjDn5vCoj8fLCrri20h7x8Qk+FIEw8LEzQ2c7n/
+ 1gm1sy+hj4PXK0kMw61Wm6DZcMAvnyzGhYPDnrZ2xIcp0O2qsCc1VRmZSLXTUK8=
+X-Google-Smtp-Source: AGHT+IGyTifOTlv4a5c2l9SvnG9z9T+rJ2flE5ulMnWnie7F8j69UTDG3ew45mIm27AEux+fsl+CsQ==
+X-Received: by 2002:a50:8e45:0:b0:578:6410:1d50 with SMTP id
+ 4fb4d7f45d1cf-57a8bc912abmr4241181a12.34.1717674657759; 
  Thu, 06 Jun 2024 04:50:57 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-57aadf9ea35sm957024a12.15.2024.06.06.04.50.49
+ 4fb4d7f45d1cf-57aae12ce21sm971618a12.49.2024.06.06.04.50.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 06 Jun 2024 04:50:52 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id F110A5FA1A;
- Thu,  6 Jun 2024 12:50:48 +0100 (BST)
+ by draig.lan (Postfix) with ESMTP id 147345FA2E;
+ Thu,  6 Jun 2024 12:50:49 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -65,17 +65,18 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Thomas Huth <thuth@redhat.com>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Beraldo Leal <bleal@redhat.com>
-Subject: [PULL 11/12] tests/lcitool: generate package lists for ansible
-Date: Thu,  6 Jun 2024 12:50:46 +0100
-Message-Id: <20240606115047.421045-12-alex.bennee@linaro.org>
+Subject: [PULL 12/12] scripts/ci: drive ubuntu/build-environment.yml from
+ lcitool
+Date: Thu,  6 Jun 2024 12:50:47 +0100
+Message-Id: <20240606115047.421045-13-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240606115047.421045-1-alex.bennee@linaro.org>
 References: <20240606115047.421045-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12e;
- envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x12e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::529;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x529.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,450 +99,159 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-With the new ability to output YAML we can build the package list for
-our ansible setup scripts. We will integrate them in the next commit.
+Now lcitool can write the package list for us we no longer need to
+duplicate the information directly in build-environment.
 
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20240603175328.3823123-12-alex.bennee@linaro.org>
+Message-Id: <20240603175328.3823123-13-alex.bennee@linaro.org>
 
-diff --git a/scripts/ci/setup/ubuntu/ubuntu-2204-aarch64.yaml b/scripts/ci/setup/ubuntu/ubuntu-2204-aarch64.yaml
-new file mode 100644
-index 0000000000..8d7d8725fb
---- /dev/null
-+++ b/scripts/ci/setup/ubuntu/ubuntu-2204-aarch64.yaml
-@@ -0,0 +1,127 @@
-+# THIS FILE WAS AUTO-GENERATED
-+#
-+#  $ lcitool variables --host-arch aarch64 ubuntu-2204 qemu
-+#
-+# https://gitlab.com/libvirt/libvirt-ci
-+
-+packages:
-+  - bash
-+  - bc
-+  - bison
-+  - bsdextrautils
-+  - bzip2
-+  - ca-certificates
-+  - ccache
-+  - clang
-+  - dbus
-+  - debianutils
-+  - diffutils
-+  - exuberant-ctags
-+  - findutils
-+  - flex
-+  - gcc
-+  - gcovr
-+  - gettext
-+  - git
-+  - hostname
-+  - libaio-dev
-+  - libasan6
-+  - libasound2-dev
-+  - libattr1-dev
-+  - libbpf-dev
-+  - libbrlapi-dev
-+  - libbz2-dev
-+  - libc6-dev
-+  - libcacard-dev
-+  - libcap-ng-dev
-+  - libcapstone-dev
-+  - libcmocka-dev
-+  - libcurl4-gnutls-dev
-+  - libdaxctl-dev
-+  - libdrm-dev
-+  - libepoxy-dev
-+  - libfdt-dev
-+  - libffi-dev
-+  - libfuse3-dev
-+  - libgbm-dev
-+  - libgcrypt20-dev
-+  - libglib2.0-dev
-+  - libglusterfs-dev
-+  - libgnutls28-dev
-+  - libgtk-3-dev
-+  - libibumad-dev
-+  - libibverbs-dev
-+  - libiscsi-dev
-+  - libjemalloc-dev
-+  - libjpeg-turbo8-dev
-+  - libjson-c-dev
-+  - liblttng-ust-dev
-+  - liblzo2-dev
-+  - libncursesw5-dev
-+  - libnfs-dev
-+  - libnuma-dev
-+  - libpam0g-dev
-+  - libpcre2-dev
-+  - libpipewire-0.3-dev
-+  - libpixman-1-dev
-+  - libpng-dev
-+  - libpulse-dev
-+  - librbd-dev
-+  - librdmacm-dev
-+  - libsasl2-dev
-+  - libsdl2-dev
-+  - libsdl2-image-dev
-+  - libseccomp-dev
-+  - libselinux1-dev
-+  - libslirp-dev
-+  - libsnappy-dev
-+  - libsndio-dev
-+  - libspice-protocol-dev
-+  - libspice-server-dev
-+  - libssh-dev
-+  - libsystemd-dev
-+  - libtasn1-6-dev
-+  - libubsan1
-+  - libudev-dev
-+  - liburing-dev
-+  - libusb-1.0-0-dev
-+  - libusbredirhost-dev
-+  - libvdeplug-dev
-+  - libvirglrenderer-dev
-+  - libvte-2.91-dev
-+  - libxen-dev
-+  - libzstd-dev
-+  - llvm
-+  - locales
-+  - make
-+  - meson
-+  - mtools
-+  - multipath-tools
-+  - ncat
-+  - nettle-dev
-+  - ninja-build
-+  - openssh-client
-+  - pkgconf
-+  - python3
-+  - python3-numpy
-+  - python3-opencv
-+  - python3-pillow
-+  - python3-pip
-+  - python3-sphinx
-+  - python3-sphinx-rtd-theme
-+  - python3-tomli
-+  - python3-venv
-+  - python3-yaml
-+  - rpm2cpio
-+  - sed
-+  - socat
-+  - sparse
-+  - swtpm
-+  - systemtap-sdt-dev
-+  - tar
-+  - tesseract-ocr
-+  - tesseract-ocr-eng
-+  - xorriso
-+  - zlib1g-dev
-+  - zstd
-+
-diff --git a/scripts/ci/setup/ubuntu/ubuntu-2204-armhf-cross.yml b/scripts/ci/setup/ubuntu/ubuntu-2204-armhf-cross.yml
-new file mode 100644
-index 0000000000..0cc34cd10b
---- /dev/null
-+++ b/scripts/ci/setup/ubuntu/ubuntu-2204-armhf-cross.yml
-@@ -0,0 +1,127 @@
-+# THIS FILE WAS AUTO-GENERATED
-+#
-+#  $ lcitool variables --cross-arch armv7l ubuntu-2204 qemu
-+#
-+# https://gitlab.com/libvirt/libvirt-ci
-+
-+packages:
-+  - bash
-+  - bc
-+  - bison
-+  - bsdextrautils
-+  - bzip2
-+  - ca-certificates
-+  - ccache
-+  - dbus
-+  - debianutils
-+  - diffutils
-+  - exuberant-ctags
-+  - findutils
-+  - flex
-+  - gcc
-+  - gcovr
-+  - gettext
-+  - git
-+  - hostname
-+  - libglib2.0-dev
-+  - libpcre2-dev
-+  - libsndio-dev
-+  - libspice-protocol-dev
-+  - llvm
-+  - locales
-+  - make
-+  - meson
-+  - mtools
-+  - ncat
-+  - ninja-build
-+  - openssh-client
-+  - pkgconf
-+  - python3
-+  - python3-numpy
-+  - python3-opencv
-+  - python3-pillow
-+  - python3-pip
-+  - python3-sphinx
-+  - python3-sphinx-rtd-theme
-+  - python3-tomli
-+  - python3-venv
-+  - python3-yaml
-+  - rpm2cpio
-+  - sed
-+  - socat
-+  - sparse
-+  - swtpm
-+  - tar
-+  - tesseract-ocr
-+  - tesseract-ocr-eng
-+  - xorriso
-+  - zstd
-+  - gcc-arm-linux-gnueabihf
-+  - libaio-dev:armhf
-+  - libasan6:armhf
-+  - libasound2-dev:armhf
-+  - libattr1-dev:armhf
-+  - libbpf-dev:armhf
-+  - libbrlapi-dev:armhf
-+  - libbz2-dev:armhf
-+  - libc6-dev:armhf
-+  - libcacard-dev:armhf
-+  - libcap-ng-dev:armhf
-+  - libcapstone-dev:armhf
-+  - libcmocka-dev:armhf
-+  - libcurl4-gnutls-dev:armhf
-+  - libdaxctl-dev:armhf
-+  - libdrm-dev:armhf
-+  - libepoxy-dev:armhf
-+  - libfdt-dev:armhf
-+  - libffi-dev:armhf
-+  - libfuse3-dev:armhf
-+  - libgbm-dev:armhf
-+  - libgcrypt20-dev:armhf
-+  - libglib2.0-dev:armhf
-+  - libglusterfs-dev:armhf
-+  - libgnutls28-dev:armhf
-+  - libgtk-3-dev:armhf
-+  - libibumad-dev:armhf
-+  - libibverbs-dev:armhf
-+  - libiscsi-dev:armhf
-+  - libjemalloc-dev:armhf
-+  - libjpeg-turbo8-dev:armhf
-+  - libjson-c-dev:armhf
-+  - liblttng-ust-dev:armhf
-+  - liblzo2-dev:armhf
-+  - libncursesw5-dev:armhf
-+  - libnfs-dev:armhf
-+  - libnuma-dev:armhf
-+  - libpam0g-dev:armhf
-+  - libpipewire-0.3-dev:armhf
-+  - libpixman-1-dev:armhf
-+  - libpng-dev:armhf
-+  - libpulse-dev:armhf
-+  - librbd-dev:armhf
-+  - librdmacm-dev:armhf
-+  - libsasl2-dev:armhf
-+  - libsdl2-dev:armhf
-+  - libsdl2-image-dev:armhf
-+  - libseccomp-dev:armhf
-+  - libselinux1-dev:armhf
-+  - libslirp-dev:armhf
-+  - libsnappy-dev:armhf
-+  - libspice-server-dev:armhf
-+  - libssh-dev:armhf
-+  - libsystemd-dev:armhf
-+  - libtasn1-6-dev:armhf
-+  - libubsan1:armhf
-+  - libudev-dev:armhf
-+  - liburing-dev:armhf
-+  - libusb-1.0-0-dev:armhf
-+  - libusbredirhost-dev:armhf
-+  - libvdeplug-dev:armhf
-+  - libvirglrenderer-dev:armhf
-+  - libvte-2.91-dev:armhf
-+  - libxen-dev:armhf
-+  - libzstd-dev:armhf
-+  - nettle-dev:armhf
-+  - systemtap-sdt-dev:armhf
-+  - zlib1g-dev:armhf
-+
-diff --git a/scripts/ci/setup/ubuntu/ubuntu-2204-s390x.yaml b/scripts/ci/setup/ubuntu/ubuntu-2204-s390x.yaml
-new file mode 100644
-index 0000000000..16050a5058
---- /dev/null
-+++ b/scripts/ci/setup/ubuntu/ubuntu-2204-s390x.yaml
-@@ -0,0 +1,125 @@
-+# THIS FILE WAS AUTO-GENERATED
-+#
-+#  $ lcitool variables --host-arch s390x ubuntu-2204 qemu
-+#
-+# https://gitlab.com/libvirt/libvirt-ci
-+
-+packages:
-+  - bash
-+  - bc
-+  - bison
-+  - bsdextrautils
-+  - bzip2
-+  - ca-certificates
-+  - ccache
-+  - clang
-+  - dbus
-+  - debianutils
-+  - diffutils
-+  - exuberant-ctags
-+  - findutils
-+  - flex
-+  - gcc
-+  - gcovr
-+  - gettext
-+  - git
-+  - hostname
-+  - libaio-dev
-+  - libasan6
-+  - libasound2-dev
-+  - libattr1-dev
-+  - libbpf-dev
-+  - libbrlapi-dev
-+  - libbz2-dev
-+  - libc6-dev
-+  - libcacard-dev
-+  - libcap-ng-dev
-+  - libcapstone-dev
-+  - libcmocka-dev
-+  - libcurl4-gnutls-dev
-+  - libdaxctl-dev
-+  - libdrm-dev
-+  - libepoxy-dev
-+  - libfdt-dev
-+  - libffi-dev
-+  - libfuse3-dev
-+  - libgbm-dev
-+  - libgcrypt20-dev
-+  - libglib2.0-dev
-+  - libglusterfs-dev
-+  - libgnutls28-dev
-+  - libgtk-3-dev
-+  - libibumad-dev
-+  - libibverbs-dev
-+  - libiscsi-dev
-+  - libjemalloc-dev
-+  - libjpeg-turbo8-dev
-+  - libjson-c-dev
-+  - liblttng-ust-dev
-+  - liblzo2-dev
-+  - libncursesw5-dev
-+  - libnfs-dev
-+  - libnuma-dev
-+  - libpam0g-dev
-+  - libpcre2-dev
-+  - libpipewire-0.3-dev
-+  - libpixman-1-dev
-+  - libpng-dev
-+  - libpulse-dev
-+  - librbd-dev
-+  - librdmacm-dev
-+  - libsasl2-dev
-+  - libsdl2-dev
-+  - libsdl2-image-dev
-+  - libseccomp-dev
-+  - libselinux1-dev
-+  - libslirp-dev
-+  - libsnappy-dev
-+  - libsndio-dev
-+  - libspice-protocol-dev
-+  - libssh-dev
-+  - libsystemd-dev
-+  - libtasn1-6-dev
-+  - libubsan1
-+  - libudev-dev
-+  - liburing-dev
-+  - libusb-1.0-0-dev
-+  - libusbredirhost-dev
-+  - libvdeplug-dev
-+  - libvirglrenderer-dev
-+  - libvte-2.91-dev
-+  - libzstd-dev
-+  - llvm
-+  - locales
-+  - make
-+  - meson
-+  - mtools
-+  - multipath-tools
-+  - ncat
-+  - nettle-dev
-+  - ninja-build
-+  - openssh-client
-+  - pkgconf
-+  - python3
-+  - python3-numpy
-+  - python3-opencv
-+  - python3-pillow
-+  - python3-pip
-+  - python3-sphinx
-+  - python3-sphinx-rtd-theme
-+  - python3-tomli
-+  - python3-venv
-+  - python3-yaml
-+  - rpm2cpio
-+  - sed
-+  - socat
-+  - sparse
-+  - swtpm
-+  - systemtap-sdt-dev
-+  - tar
-+  - tesseract-ocr
-+  - tesseract-ocr-eng
-+  - xorriso
-+  - zlib1g-dev
-+  - zstd
-+
-diff --git a/tests/lcitool/refresh b/tests/lcitool/refresh
-index 9d8e9c6a4a..b25e3ac4dd 100755
---- a/tests/lcitool/refresh
-+++ b/tests/lcitool/refresh
-@@ -80,7 +80,7 @@ def generate_dockerfile(host, target, project="qemu", cross=None, trailer=None):
+diff --git a/scripts/ci/setup/ubuntu/build-environment.yml b/scripts/ci/setup/ubuntu/build-environment.yml
+index e82097b465..edf1900b3e 100644
+--- a/scripts/ci/setup/ubuntu/build-environment.yml
++++ b/scripts/ci/setup/ubuntu/build-environment.yml
+@@ -32,135 +32,18 @@
+       when:
+         - ansible_facts['distribution'] == 'Ubuntu'
  
- def generate_cirrus(target, trailer=None):
-     filename = Path(src_dir, ".gitlab-ci.d", "cirrus", target + ".vars")
--    cmd = lcitool_cmd + ["variables", target, "qemu"]
-+    cmd = lcitool_cmd + ["variables", "--format", "shell", target, "qemu"]
-     generate(filename, cmd, trailer)
+-    # lcitool variables -f json ubuntu-2204 qemu | jq -r '.pkgs[]' | xargs -n 1 echo "-"
+-    - name: Install basic packages to build QEMU on Ubuntu 22.04
+-      package:
+-        name:
+-          - bash
+-          - bc
+-          - bison
+-          - bsdextrautils
+-          - bzip2
+-          - ca-certificates
+-          - ccache
+-          - clang
+-          - dbus
+-          - debianutils
+-          - diffutils
+-          - exuberant-ctags
+-          - findutils
+-          - flex
+-          - g++
+-          - gcc
+-          - gcovr
+-          - genisoimage
+-          - gettext
+-          - git
+-          - hostname
+-          - libaio-dev
+-          - libasan5
+-          - libasound2-dev
+-          - libattr1-dev
+-          - libbpf-dev
+-          - libbrlapi-dev
+-          - libbz2-dev
+-          - libc6-dev
+-          - libcacard-dev
+-          - libcap-ng-dev
+-          - libcapstone-dev
+-          - libcmocka-dev
+-          - libcurl4-gnutls-dev
+-          - libdaxctl-dev
+-          - libdrm-dev
+-          - libepoxy-dev
+-          - libfdt-dev
+-          - libffi-dev
+-          - libgbm-dev
+-          - libgcrypt20-dev
+-          - libglib2.0-dev
+-          - libglusterfs-dev
+-          - libgnutls28-dev
+-          - libgtk-3-dev
+-          - libibumad-dev
+-          - libibverbs-dev
+-          - libiscsi-dev
+-          - libjemalloc-dev
+-          - libjpeg-turbo8-dev
+-          - libjson-c-dev
+-          - liblttng-ust-dev
+-          - liblzo2-dev
+-          - libncursesw5-dev
+-          - libnfs-dev
+-          - libnuma-dev
+-          - libpam0g-dev
+-          - libpcre2-dev
+-          - libpixman-1-dev
+-          - libpng-dev
+-          - libpulse-dev
+-          - librbd-dev
+-          - librdmacm-dev
+-          - libsasl2-dev
+-          - libsdl2-dev
+-          - libsdl2-image-dev
+-          - libseccomp-dev
+-          - libslirp-dev
+-          - libsnappy-dev
+-          - libspice-protocol-dev
+-          - libssh-dev
+-          - libsystemd-dev
+-          - libtasn1-6-dev
+-          - libubsan1
+-          - libudev-dev
+-          - liburing-dev
+-          - libusb-1.0-0-dev
+-          - libusbredirhost-dev
+-          - libvdeplug-dev
+-          - libvirglrenderer-dev
+-          - libvte-2.91-dev
+-          - libxml2-dev
+-          - libzstd-dev
+-          - llvm
+-          - locales
+-          - make
+-          - meson
+-          - multipath-tools
+-          - ncat
+-          - nettle-dev
+-          - ninja-build
+-          - openssh-client
+-          - pkgconf
+-          - python3
+-          - python3-numpy
+-          - python3-opencv
+-          - python3-pillow
+-          - python3-pip
+-          - python3-sphinx
+-          - python3-sphinx-rtd-theme
+-          - python3-venv
+-          - python3-yaml
+-          - rpm2cpio
+-          - sed
+-          - sparse
+-          - systemtap-sdt-dev
+-          - tar
+-          - tesseract-ocr
+-          - tesseract-ocr-eng
+-          - texinfo
+-          - xfslibs-dev
+-          - zlib1g-dev
+-        state: present
++    # the package lists are updated by "make lcitool-refresh"
++    - name: Include package lists based on OS and architecture
++      include_vars:
++        file: "ubuntu-2204-{{ ansible_facts['architecture'] }}.yaml"
+       when:
+         - ansible_facts['distribution'] == 'Ubuntu'
+         - ansible_facts['distribution_version'] == '22.04'
++        - ansible_facts['architecture'] == 'aarch64' or ansible_facts['architecture'] == 'x86_64'
  
- 
-@@ -90,6 +90,13 @@ def generate_pkglist(vm, target):
-     generate(filename, cmd, None)
- 
- 
-+def generate_yaml(os, target, arch, trailer=None):
-+    filename = Path(src_dir, "scripts", "ci", "setup", os, f"{target}-{arch}.yaml")
-+    cmd = lcitool_cmd + ["variables", "--format", "yaml", "-a",
-+                         arch, target, "qemu"]
-+    generate(filename, cmd, trailer)
-+
-+
- # Netmap still needs to be manually built as it is yet to be packaged
- # into a distro. We also add cscope and gtags which are used in the CI
- # test
-@@ -209,6 +216,13 @@ try:
-     #
-     generate_pkglist("freebsd", "freebsd-13")
- 
-+    #
-+    # Ansible package lists
-+    #
-+    generate_yaml("ubuntu", "ubuntu-2204", "aarch64")
-+    generate_yaml("ubuntu", "ubuntu-2204", "s390x")
-+
-+
-     sys.exit(0)
- except Exception as ex:
-     print(str(ex), file=sys.stderr)
+-    # not all packages are available for all architectures
+-    - name: Install additional packages to build QEMU on Ubuntu 22.04
++    - name: Install packages for QEMU on Ubuntu 22.04
+       package:
+-        name:
+-          - libpmem-dev
+-          - libspice-server-dev
+-          - libxen-dev
+-        state: present
++        name: "{{ packages }}"
+       when:
+         - ansible_facts['distribution'] == 'Ubuntu'
+         - ansible_facts['distribution_version'] == '22.04'
 -- 
 2.39.2
 
