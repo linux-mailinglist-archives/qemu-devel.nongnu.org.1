@@ -2,84 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D01CF8FE376
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jun 2024 11:53:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18C248FE37C
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jun 2024 11:53:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sF9nL-0007uf-HZ; Thu, 06 Jun 2024 05:52:31 -0400
+	id 1sF9oO-0000AP-G9; Thu, 06 Jun 2024 05:53:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sF9nF-0007uF-Ri
- for qemu-devel@nongnu.org; Thu, 06 Jun 2024 05:52:25 -0400
-Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sF9nB-000290-UC
- for qemu-devel@nongnu.org; Thu, 06 Jun 2024 05:52:24 -0400
-Received: by mail-ej1-x636.google.com with SMTP id
- a640c23a62f3a-a68c8b90c85so92986766b.2
- for <qemu-devel@nongnu.org>; Thu, 06 Jun 2024 02:52:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1717667538; x=1718272338; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:references
- :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=MlQZejaBOjE1uqizk4CojgeYwkdk7jkyDKqIm2GJIgE=;
- b=eLrcEeS8kn5Ln4hLQLEoP5H8nCzIgjH6Ean7Lmz8uL8J4tKS2jgDzKKyVEww/CDFNG
- BrRkk1ZfXr0RsJO0rh3TXUhviE+GlmAP6uk4BlY+vo8TucmmPMOm8gR94kQ42RsCCz7E
- 9UnBOpmZaK3+0hA9kThDPDVKKJ85Jp4QVJ4bAJ0+Jr83UCrfVTMtEIsd5MUMfru63uvg
- DN3h16OcB9E3EpeXn2++ASq35SrLO7tz83JvoF098sylX6v9oUgUFtgfSm94UoQW4jlN
- KXDUzibNM2UdK1bU9G/ELbKY1e0NmkKdIZFMaqAN3JeVtd+dGhCJ4kI09+LlXLAVO4r7
- o6nw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717667538; x=1718272338;
- h=content-transfer-encoding:mime-version:message-id:date:references
- :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=MlQZejaBOjE1uqizk4CojgeYwkdk7jkyDKqIm2GJIgE=;
- b=abFdy32mVuGlOwN1lKEHQsV+nqp8qA0iL0bepskpMiT5xmOaGvEwEcltZ1c/ZrpIDR
- 7ESzfxlikt6oNe+k0RiM1n7c9GUHk/aetX5M7KPeLE+l/BGlKS0PiffaHTslC0s4oyho
- SxMsyBBHqOQOpJRvf880yOMjL9rm1yIqKYP41QSQ3BVhzyJ0YhkZ4Jbg6dhYOvFplQD8
- CwD38c3SCacU6cMWQZ/d9LRTqy9vUbQRuZqz8uaxnRZaNWACdcidUANd8oqZ/cfuSlfu
- KMxhbpzkTtyiuBG9KKnneQz2oJQ2fDB3QtZ5Q09tHimIdZCIpzv1Jv9xzWvAsw3geSh/
- LyQQ==
-X-Gm-Message-State: AOJu0YxPud2AbNcmOweH62EKxPPRgsWQZOSnjwjhM3ZiC22igJosjV+c
- MbHCXlC45aGDVY38UMK8vlFicpA/FUGUrym9bSMiPR7Ft/+L4359YxT5lAUe9NM=
-X-Google-Smtp-Source: AGHT+IGobA2wGKw5ZmInwzU+RuCY9SE71aM0GARvy85XVp+VI18spfVO6jTXoP90iULfoUdaIKFO5A==
-X-Received: by 2002:a17:906:2b9b:b0:a59:b02a:90da with SMTP id
- a640c23a62f3a-a69a002af78mr391285366b.68.1717667538571; 
- Thu, 06 Jun 2024 02:52:18 -0700 (PDT)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a6c805c96d9sm72985166b.52.2024.06.06.02.52.18
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 06 Jun 2024 02:52:18 -0700 (PDT)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id A3B505F7AD;
- Thu,  6 Jun 2024 10:52:17 +0100 (BST)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org,  pierrick.bouvier@linaro.org
-Subject: Re: [PATCH v2 7/9] target/i386: Implement TCGCPUOps for plugin
- register reads
-In-Reply-To: <20240606032926.83599-8-richard.henderson@linaro.org> (Richard
- Henderson's message of "Wed, 5 Jun 2024 20:29:24 -0700")
-References: <20240606032926.83599-1-richard.henderson@linaro.org>
- <20240606032926.83599-8-richard.henderson@linaro.org>
-Date: Thu, 06 Jun 2024 10:52:17 +0100
-Message-ID: <87tti6l7ou.fsf@draig.linaro.org>
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1sF9oN-00009z-5D
+ for qemu-devel@nongnu.org; Thu, 06 Jun 2024 05:53:35 -0400
+Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1sF9oK-0002GS-Uj
+ for qemu-devel@nongnu.org; Thu, 06 Jun 2024 05:53:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
+ Message-Id:Date:To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:In-Reply-To:References;
+ bh=V/ohVCg/O3eFdXiCWfSvOJH0uNqMmaBrn20gYrGtWr8=; b=SumT0Qo0I98rUj0S1ToZSCIeo7
+ fcYKyWO2Jb0caay6PbKb8DnFqKZ8/xYJjB/dRcmfnPIpRAJvMjSsPq3EtCWUpMfw7qdgqQxAWNzam
+ q8IRjCtXMObpinQMqINSCk8p4Lmum0UYV1P7dvU1UbWGxIPScxxtXLrqHcceV27RcqVWbRDMpOGEc
+ Bm1vdw6AdpRX3XZua2Qh2peakDdCmyfKic9SBPzULPQUM6hGeYdUGY2e+tt1ZJDFN8i92cG4O1ozp
+ FBE6qDfldmiIr5oCQzuytnPiAauUp2TJVDjmtga6FoC998TRHvJDKDTmLJ+/arRVlTSWdR2PkRZ76
+ rO6JoBkVy5JDPrTkUw0Cah9x0jAiSYjjr8FC2waS9VXDEvKyA+bX1hZnA5ueWeQsQ8a6jN7yPX34q
+ AfdV0uUQc8Il2Gq+6AUawxL3/PeeGD/F4Yow80HfJpT/XNyuaB7H14i+zWCdsg9HWQtNQ2sl6HpwM
+ 00WS86iPAWIKLRCQGXpwvbb2Z2/X/FuGxCQEOFL0/XVc4pIWZx8lollBdKoDgUwLXCBUNtNfxn0cB
+ IxZZBJ0LRYQMouNc4e+Oi3IzptCd81X791mlC05XLLm4i5oQfh2pRcmDgDie/06d77WWKA3pshbI7
+ oWdjJF0RM5deMwjOjlvTkON2YHJ0z8YlhlhCTauAY=;
+Received: from [2a02:8012:c93d:0:260e:bf57:a4e9:8142]
+ (helo=cheesecake.fritz.box)
+ by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1sF9mz-0004cT-1V; Thu, 06 Jun 2024 10:52:13 +0100
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+To: pbonzini@redhat.com,
+	qemu-devel@nongnu.org
+Date: Thu,  6 Jun 2024 10:53:15 +0100
+Message-Id: <20240606095319.229650-1-mark.cave-ayland@ilande.co.uk>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::636;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x636.google.com
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a02:8012:c93d:0:260e:bf57:a4e9:8142
+X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
+Subject: [PATCH 0/4] target/i386: fixes for OS/2 Warp
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
+Received-SPF: pass client-ip=2001:41c9:1:41f::167;
+ envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,14 +74,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Richard Henderson <richard.henderson@linaro.org> writes:
+This series contains two fixes which allow booting OS/2 Warp in QEMU with TCG
+(currently it only boots with KVM).
 
-> Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Patches 1 and 2 are tidy-ups which prepare for the POP SP fix in patch 3, whilst
+patch 4 is the final fix for ENTER that allows my test image to boot
+successfully.
 
-Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+
+Mark Cave-Ayland (4):
+  target/i386: use local X86DecodedOp in gen_POP()
+  target/i386: use gen_writeback() within gen_POP()
+  target/i386: fix SP when taking a memory fault during POP
+  target/i386: fix size of EBP writeback in gen_enter()
+
+ target/i386/tcg/emit.c.inc  | 8 +++++---
+ target/i386/tcg/translate.c | 2 +-
+ 2 files changed, 6 insertions(+), 4 deletions(-)
+
+-- 
+2.39.2
+
 
