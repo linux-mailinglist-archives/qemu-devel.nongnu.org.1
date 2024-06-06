@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D41CD8FE5CA
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jun 2024 13:52:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38B9B8FE5D1
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jun 2024 13:52:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sFBe7-0007ob-Js; Thu, 06 Jun 2024 07:51:07 -0400
+	id 1sFBe3-0007lL-5J; Thu, 06 Jun 2024 07:51:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sFBe4-0007mS-LP
- for qemu-devel@nongnu.org; Thu, 06 Jun 2024 07:51:04 -0400
-Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
+ id 1sFBe0-0007ia-0V
+ for qemu-devel@nongnu.org; Thu, 06 Jun 2024 07:51:00 -0400
+Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sFBe2-0000u2-Fs
- for qemu-devel@nongnu.org; Thu, 06 Jun 2024 07:51:04 -0400
-Received: by mail-ed1-x52c.google.com with SMTP id
- 4fb4d7f45d1cf-57a85cc2d96so1009315a12.2
- for <qemu-devel@nongnu.org>; Thu, 06 Jun 2024 04:51:02 -0700 (PDT)
+ id 1sFBdx-0000t5-C5
+ for qemu-devel@nongnu.org; Thu, 06 Jun 2024 07:50:59 -0400
+Received: by mail-ed1-x535.google.com with SMTP id
+ 4fb4d7f45d1cf-57864327f6eso129371a12.1
+ for <qemu-devel@nongnu.org>; Thu, 06 Jun 2024 04:50:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1717674661; x=1718279461; darn=nongnu.org;
+ d=linaro.org; s=google; t=1717674656; x=1718279456; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=7e+DB9WxY9n4W+zWt8GKNJAuHA8yb0ZH9yWXDsgA2Xk=;
- b=LRhPB5P25pQPkgKrjpWWz0nuXWd5RBj3lP2A9TLmB5OmQfd+Q5OYqt1/038MgqtAJJ
- b6Mk5bJHZutjXYmPXMIS2yTEtR6g1iWgpKnZVla524e26SB6H1czX7PGVYG6/cauQDq6
- FNOyXn4rZQHPIxdObaCNrSQlrN4jbBqFMZbbdXdyg1Yuy/l+DpiJDP404ShYbmNGZgxl
- rut2X2Sv6iZ52KVdJXF+/qMEAjH1FFLebhR22y5hk3j5ll/1ZLVBL0syqj+/MdLj6ZXU
- RjoBE9bIWaLguPbEoKhHuIhRWgqBI+X2npNnAwFWs/kO5PWJ4BpISC0PiFuEP/FGAgAU
- NNUQ==
+ bh=XSZ7ULr5xoLbfL40YD36oC8M89gtEpNEdIvx4cfCWlA=;
+ b=G9Hoqe1PdvRxEV9/1goDpbjmt1aYS7iD/LryuQ/Munvv2YwUyyc1vnlikY+NLgwLp7
+ ly4VBEt6MbRpyu/EVzeIs4GWGfG5jPjZUrFSkxauWdvB+MqJ6U698uWwPvopjm0TU/bH
+ SUw2Vv0thm7QYV5XyIJS344fCiQZRCt6zP+TkXGwVlynG2SIO3tIyFwmXbJSd1AxU/mM
+ YAE+XAhNDhCxt1bgmYpdHFW6G+clmfL9eSh6QipQs00m4HcIcFTMEkqVeE27LUdXaXh5
+ 3Bj0Yb4BY8bavqI8237aB710q120odeDKTUX5pQi2Fv+F/LtOYVWBWACvOG6kyEU724e
+ J6IQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717674661; x=1718279461;
+ d=1e100.net; s=20230601; t=1717674656; x=1718279456;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=7e+DB9WxY9n4W+zWt8GKNJAuHA8yb0ZH9yWXDsgA2Xk=;
- b=Aid/mZtXvdjT0hoPMOo5YNRUEh0Ve9vjyyISA6QEfkmGa4sGq3rG+KAJv8UTSezyXw
- ggYrnakWj7U02vDzY+gM79nXmLVNZz7/s5kGyexP7RpFwtPG7Sbna4BsYuCHcObQJZei
- /LOiBubGaADDTrwE0JGykflrnNCoxdbGCuuDhAqd40MUGwNK267GheLGNS027VYPb1FY
- lzTaWN5NObQIODc+lj2g+D8TTHWnufg0SDYjNgSPNx3V4CFJPQfFAFCBfNb7ju9Lbh1O
- VLG9K0cBO4Z7bcUf3G38AfchUjODp9/BNqkmpPP6WK2WtJqeAK/YReC9cAYoPVmLf5CZ
- g82g==
-X-Gm-Message-State: AOJu0Yx9wu5PKiw9tKQUpZW4w3mU/1CiuUOJz2RNZSIW5OV4e1f6rQlp
- lPzgBON7tBXJdtRgqiCxGto44oFIbRwMFBpVZzsNBOVNiJrz+bZTEvCD8GUawZw=
-X-Google-Smtp-Source: AGHT+IEZuMw8/LXTcBbzpfFWqlggwSbAfa1k6FZrx3Bp1hDRv7Hoaa/SMYuagBktm55fUOFgPyWjpg==
-X-Received: by 2002:a50:bac8:0:b0:578:6198:d6fa with SMTP id
- 4fb4d7f45d1cf-57a8b6740a0mr3554123a12.2.1717674660395; 
- Thu, 06 Jun 2024 04:51:00 -0700 (PDT)
+ bh=XSZ7ULr5xoLbfL40YD36oC8M89gtEpNEdIvx4cfCWlA=;
+ b=Gr3JWJbYmmMi8I8bZnFLEwmcIKQdMrqWhY7IIOAo5pgYsSI0UTqbbgdEcBEIaehA68
+ gn4vgbizYDwzggaXmxQyysberh4CP9+GlTzXyvEMf4UinOPZuJNo335jO5YZWT2UKAiv
+ f3gh3madpb9NkUGTgoBxuBzbm8VcX7DiM6Ci9oZHtofrw52XJnsRgt6Z3uwYFofCzAO0
+ 1xgo6XfCXKcmjYWant/sRyPvJawul16wsudYvGZBAPdLsdGPibV9t1K7wc0MdbbvY/Ph
+ UxS2YwfzM+sLpXuEvWW11QNcj7ZqeaXWtURjjAkZ6tvOlc2+A3TY/nsDFnAqZZ+Ruemq
+ 5u/Q==
+X-Gm-Message-State: AOJu0YxJSGzS3tE50Ff7sVkXKFCZekyCdUkMlsptZpDINVOehomyL4aM
+ AvThgEZ5q+Detzo/fCxS+hMGWQNvmNBZSvF/q+UTWOx7wuOf9xHr9dooRRACGF0=
+X-Google-Smtp-Source: AGHT+IH5kK1yewRu+qfImBTjCDRoeB+UpGZwG7oJ/cYvrcwYM8z8Djb2dI9BF/Yzhh9qlUvOEzAwQA==
+X-Received: by 2002:a50:9f86:0:b0:578:635d:67ba with SMTP id
+ 4fb4d7f45d1cf-57aa5595db7mr2357443a12.18.1717674655731; 
+ Thu, 06 Jun 2024 04:50:55 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-57aae0cc36bsm963017a12.26.2024.06.06.04.50.49
+ 4fb4d7f45d1cf-57aadf9e093sm951449a12.13.2024.06.06.04.50.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 06 Jun 2024 04:50:52 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id BFC4E5FA2C;
+ by draig.lan (Postfix) with ESMTP id D76885FA2D;
  Thu,  6 Jun 2024 12:50:48 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Beraldo Leal <bleal@redhat.com>
-Subject: [PULL 09/12] tests/lcitool: Bump to latest libvirt-ci and update
- Fedora and Alpine version
-Date: Thu,  6 Jun 2024 12:50:44 +0100
-Message-Id: <20240606115047.421045-10-alex.bennee@linaro.org>
+Subject: [PULL 10/12] tests/lcitool: Install mingw-w64-tools for the Windows
+ cross-builds
+Date: Thu,  6 Jun 2024 12:50:45 +0100
+Message-Id: <20240606115047.421045-11-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240606115047.421045-1-alex.bennee@linaro.org>
 References: <20240606115047.421045-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::535;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x535.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,133 +102,37 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Thomas Huth <thuth@redhat.com>
 
-Update to the latest version of lcitool. It dropped support for Fedora 38
-and Alpine 3.18, so we have to update these to newer versions here, too.
-
-Python 3.12 dropped the "imp" module which we still need for running
-Avocado. Fortunately Fedora 40 still ships with a work-around package
-that we can use until somebody updates our Avocado to a newer version.
+Beside g++ we also need the mingw-w64-tools for properly building
+the code in qga/vss-win32/ , so let's install that package now, too.
 
 Signed-off-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20240601070543.37786-3-thuth@redhat.com>
-[AJB: regen on rebase]
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Message-Id: <20240601070543.37786-5-thuth@redhat.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20240603175328.3823123-10-alex.bennee@linaro.org>
+Message-Id: <20240603175328.3823123-11-alex.bennee@linaro.org>
 
-diff --git a/tests/docker/dockerfiles/alpine.docker b/tests/docker/dockerfiles/alpine.docker
-index 554464f31e..b079a83fe2 100644
---- a/tests/docker/dockerfiles/alpine.docker
-+++ b/tests/docker/dockerfiles/alpine.docker
-@@ -1,10 +1,10 @@
- # THIS FILE WAS AUTO-GENERATED
- #
--#  $ lcitool dockerfile --layers all alpine-318 qemu
-+#  $ lcitool dockerfile --layers all alpine-319 qemu
- #
- # https://gitlab.com/libvirt/libvirt-ci
- 
--FROM docker.io/library/alpine:3.18
-+FROM docker.io/library/alpine:3.19
- 
- RUN apk update && \
-     apk upgrade && \
 diff --git a/tests/docker/dockerfiles/fedora-win64-cross.docker b/tests/docker/dockerfiles/fedora-win64-cross.docker
-index 0f78711876..fef846d5a6 100644
+index fef846d5a6..007e1574bd 100644
 --- a/tests/docker/dockerfiles/fedora-win64-cross.docker
 +++ b/tests/docker/dockerfiles/fedora-win64-cross.docker
-@@ -1,10 +1,10 @@
- # THIS FILE WAS AUTO-GENERATED
- #
--#  $ lcitool dockerfile --layers all --cross-arch mingw64 fedora-38 qemu,qemu-win-installer
-+#  $ lcitool dockerfile --layers all --cross-arch mingw64 fedora-40 qemu,qemu-win-installer
- #
- # https://gitlab.com/libvirt/libvirt-ci
+@@ -75,6 +75,7 @@ ENV NINJA "/usr/bin/ninja"
+ ENV PYTHON "/usr/bin/python3"
  
--FROM registry.fedoraproject.org/fedora:38
-+FROM registry.fedoraproject.org/fedora:40
- 
- RUN dnf install -y nosync && \
-     printf '#!/bin/sh\n\
-@@ -51,6 +51,7 @@ exec "$@"\n' > /usr/bin/nosync && \
-                python3-pip \
-                python3-sphinx \
-                python3-sphinx_rtd_theme \
-+               python3-zombie-imp \
-                sed \
-                socat \
-                sparse \
-diff --git a/tests/docker/dockerfiles/fedora.docker b/tests/docker/dockerfiles/fedora.docker
-index 098c894d10..44f239c088 100644
---- a/tests/docker/dockerfiles/fedora.docker
-+++ b/tests/docker/dockerfiles/fedora.docker
-@@ -1,10 +1,10 @@
- # THIS FILE WAS AUTO-GENERATED
- #
--#  $ lcitool dockerfile --layers all fedora-38 qemu
-+#  $ lcitool dockerfile --layers all fedora-40 qemu
- #
- # https://gitlab.com/libvirt/libvirt-ci
- 
--FROM registry.fedoraproject.org/fedora:38
-+FROM registry.fedoraproject.org/fedora:40
- 
- RUN dnf install -y nosync && \
-     printf '#!/bin/sh\n\
-@@ -110,6 +110,7 @@ exec "$@"\n' > /usr/bin/nosync && \
-                python3-pip \
-                python3-sphinx \
-                python3-sphinx_rtd_theme \
-+               python3-zombie-imp \
-                rdma-core-devel \
-                sed \
-                snappy-devel \
-diff --git a/tests/lcitool/libvirt-ci b/tests/lcitool/libvirt-ci
-index cec6703971..0e9490cebc 160000
---- a/tests/lcitool/libvirt-ci
-+++ b/tests/lcitool/libvirt-ci
-@@ -1 +1 @@
--Subproject commit cec67039719becbfbab866f9c23574f389cf9559
-+Subproject commit 0e9490cebc726ef772b6c9e27dac32e7ae99f9b2
-diff --git a/tests/lcitool/projects/qemu.yml b/tests/lcitool/projects/qemu.yml
-index 7511ec7ccb..070d7f4706 100644
---- a/tests/lcitool/projects/qemu.yml
-+++ b/tests/lcitool/projects/qemu.yml
-@@ -89,6 +89,7 @@ packages:
-  - pkg-config
-  - pulseaudio
-  - python3
-+ - python3-imp
-  - python3-numpy
-  - python3-opencv
-  - python3-pillow
-diff --git a/tests/lcitool/refresh b/tests/lcitool/refresh
-index 789acefb75..9d8e9c6a4a 100755
---- a/tests/lcitool/refresh
-+++ b/tests/lcitool/refresh
-@@ -124,11 +124,11 @@ try:
-     #
-     # Standard native builds
-     #
--    generate_dockerfile("alpine", "alpine-318")
-+    generate_dockerfile("alpine", "alpine-319")
-     generate_dockerfile("centos9", "centos-stream-9")
-     generate_dockerfile("debian", "debian-12",
-                         trailer="".join(debian12_extras))
--    generate_dockerfile("fedora", "fedora-38")
-+    generate_dockerfile("fedora", "fedora-40")
-     generate_dockerfile("opensuse-leap", "opensuse-leap-15")
-     generate_dockerfile("ubuntu2204", "ubuntu-2204")
- 
-@@ -191,7 +191,7 @@ try:
-                         trailer=cross_build("s390x-linux-gnu-",
-                                             "s390x-softmmu,s390x-linux-user"))
- 
--    generate_dockerfile("fedora-win64-cross", "fedora-38",
-+    generate_dockerfile("fedora-win64-cross", "fedora-40",
-                         project='qemu,qemu-win-installer',
-                         cross="mingw64",
-                         trailer=cross_build("x86_64-w64-mingw32-",
+ RUN nosync dnf install -y \
++               mingw-w64-tools \
+                mingw32-nsis \
+                mingw64-SDL2 \
+                mingw64-SDL2_image \
+diff --git a/tests/lcitool/projects/qemu-win-installer.yml b/tests/lcitool/projects/qemu-win-installer.yml
+index 86aa22297c..f3663ba030 100644
+--- a/tests/lcitool/projects/qemu-win-installer.yml
++++ b/tests/lcitool/projects/qemu-win-installer.yml
+@@ -2,3 +2,4 @@
+ ---
+ packages:
+  - g++
++ - mingw-w64-tools
 -- 
 2.39.2
 
