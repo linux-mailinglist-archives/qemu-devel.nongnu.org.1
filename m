@@ -2,91 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D8D48FE122
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jun 2024 10:38:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89E898FE13C
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jun 2024 10:40:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sF8cH-0001HO-0u; Thu, 06 Jun 2024 04:37:01 -0400
+	id 1sF8fX-0002rV-71; Thu, 06 Jun 2024 04:40:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xadimgnik@gmail.com>)
- id 1sF8cB-0001H0-Tc
- for qemu-devel@nongnu.org; Thu, 06 Jun 2024 04:36:55 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <xadimgnik@gmail.com>)
- id 1sF8cA-0004Ro-9n
- for qemu-devel@nongnu.org; Thu, 06 Jun 2024 04:36:55 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-4215fc19abfso1800555e9.3
- for <qemu-devel@nongnu.org>; Thu, 06 Jun 2024 01:36:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1717663012; x=1718267812; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:organization:content-language
- :references:cc:to:subject:reply-to:user-agent:mime-version:date
- :message-id:from:from:to:cc:subject:date:message-id:reply-to;
- bh=rzOlTpGXOFDC46rae4mb64yBb7uEDZ0xP/1eKZGmBUw=;
- b=LzhvlNfkgvrjF+55yCJBWEh+tCUEou/FpOlB64ao0UrB8+POjmFvKW4mXC1OhzqSGK
- frnQYnl9tRlrCl6gA4kvwJlyM+NVPZHxumsN/kg25lszZaueDa7IOR96nlgt3XPU5okd
- od6wu+GoIS+2ZrN5KhSn5zD6Ut1tbgXJP8rmSlzgDAFZhz9SjDyL8sNupWLjkRnAvC76
- IUU8dWd5rBdFUmCgxmeFvZQE7I5DxQQzOv6InBk/qxQO4yOIMQkjGKe8xkgsA74H30u/
- /MsEYtonWYehP9BmDBbY+M+iZoxvPx7So+Zz5zNEmFIkh5UMLGvKmUu6+Uqk2WVTiO+e
- 5IJw==
+ (Exim 4.90_1) (envelope-from <mszeredi@redhat.com>)
+ id 1sF8fR-0002qt-Uj
+ for qemu-devel@nongnu.org; Thu, 06 Jun 2024 04:40:17 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mszeredi@redhat.com>)
+ id 1sF8fP-00053n-Nr
+ for qemu-devel@nongnu.org; Thu, 06 Jun 2024 04:40:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1717663214;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+ bh=PrcPiljQdixba2DiD9EcpVBDB5M1HH767X6Mx2WSc60=;
+ b=I6V6GBIO80yr7g9KGP5sfOxZr+iFiZ2IwIgrLbN5LbogA+krzupptEZ7Gi3T7sW+BgttTl
+ 78KrhCvPJepffvXgZeP+PlRDBnAfMbhVUxEvBRrqfokVcyc547KgYJutw+Vdn5opaHu29k
+ 2dAnRa2GM6UEd8FubHP1u3pHzvpjxpk=
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
+ [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-542-B0ZX4b2jM3qRTp8LRCxt1g-1; Thu, 06 Jun 2024 04:38:59 -0400
+X-MC-Unique: B0ZX4b2jM3qRTp8LRCxt1g-1
+Received: by mail-pj1-f71.google.com with SMTP id
+ 98e67ed59e1d1-2c23f2dcf46so620855a91.3
+ for <qemu-devel@nongnu.org>; Thu, 06 Jun 2024 01:38:59 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717663012; x=1718267812;
- h=content-transfer-encoding:in-reply-to:organization:content-language
- :references:cc:to:subject:reply-to:user-agent:mime-version:date
- :message-id:from:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=rzOlTpGXOFDC46rae4mb64yBb7uEDZ0xP/1eKZGmBUw=;
- b=BeCX1hCAHfBytmsOwPZ0qkqu9blY4Lh5WTocit6KCUAVxpYCRoqqGknVmSSohc+RVK
- uNTGrrWPzY+zXXR8kJBA2YkvEE4K49YvSl9hD9hR/PPTF0AnSIEympNQobv9/cuMgntw
- Vzya4JV7TQUUGLiTa4Os/fJFiQtQMTNf2x7R0J7LyVIQYiQtYR2MU4F3xsxS74GAm3+U
- CG9x+W2XFBE+WVmHcylNlu61coUb9ffLcrtWxJrCSnPAPq4NGY2109xPYFQkiHcO0sHD
- /UCeqFdNzue6T0M9Jsz7qj07JBtk7XQqviqGNZHZI7HIcmkBpL6Ri3hsKrdk48CH9a66
- DNgw==
+ d=1e100.net; s=20230601; t=1717663138; x=1718267938;
+ h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=PrcPiljQdixba2DiD9EcpVBDB5M1HH767X6Mx2WSc60=;
+ b=ItOw0X3THd0kd6MHPspOmKgIjkXunQRucnBUETy+m513ModeP1QBKugiGvbCEe3VUW
+ JFZqSfBR4KzoDHFWzU1TYKfiQdW41XqIG4oRCJlzFKLIe7mOONZqY0GsoXRgusfCyHQl
+ z95V0eUEMgw/K1IqbraidJBOYbxZBKLgr/bYZitWUNazjEJb3V9JgEUveyWcUDZ16HP4
+ sMlXMw5sn7CbO45sxVQbHdULVZqP7iWntfr7Ax/VKtsL0poky6NHET700346HIochw7z
+ xSb46w7vT+X5VqBfWW7VqAx9UfQ0nB9po54OuQtRVJHydYDMvndenlq7XLnNXH3KmaqG
+ D6fw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVGtfsRIf23VezR5W80gy616hk9R2DbqnORTEHLcdv4VvZYCbNPcRIq/ybm3sJBLRTOMshOPHmmKYPCqlRAUH07mSinvmo=
-X-Gm-Message-State: AOJu0Ywl3eqTgJ3SLdIfbWOJMFrwAKurEkSBwpIsjcOQTEyhaX33/YZU
- mjjT2++n5fgBJ6EzGBis4WQiO0giIrvWv0SOZBS/nFRfbvooqlD0
-X-Google-Smtp-Source: AGHT+IGzT54QNK7IhOhsW9oQdhMM/tkMLq7skxG0VwQqxfW7PvYNgJZbnLqz09Ajr4xdIhZI5tb7+w==
-X-Received: by 2002:a05:600c:524c:b0:421:4f34:3ada with SMTP id
- 5b1f17b1804b1-4215632dd1bmr43362575e9.32.1717663012050; 
- Thu, 06 Jun 2024 01:36:52 -0700 (PDT)
-Received: from [192.168.0.151] (54-240-197-239.amazon.com. [54.240.197.239])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4215c2c690dsm13781485e9.34.2024.06.06.01.36.51
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 06 Jun 2024 01:36:51 -0700 (PDT)
-From: Paul Durrant <xadimgnik@gmail.com>
-X-Google-Original-From: Paul Durrant <paul@xen.org>
-Message-ID: <434fea2b-c7e9-42b3-bc1c-27ef811d0027@xen.org>
-Date: Thu, 6 Jun 2024 09:36:50 +0100
+ AJvYcCWL3PTJaGnw22G9va5r/WoyKFKkMj5rt/TRfvUIfSO5fe/5scjZpyhGf4KlbZ+vIzXZgh4sPFIqgTFs0KTAF5H3693PvAU=
+X-Gm-Message-State: AOJu0Yye7xf2hMUrYgU1QYrboKmRysEE0AWwRok4Kqa2LmbFuJ0LXVk+
+ 5zdfMD/bwot7hDMVmBHbHMWdN4BcPkW1dGcyLWx8GAsmT61F7t+e6f9NzIU2UGbfzD7E8si3Yq2
+ SiD/QvVOZUAYjSsdYox7xNMrzgR4gP6nvhOMVmOHqVpzyeDA53Aa8mL9nCnlvG8pBx4R/ShEjFX
+ JZ3Vx790ujSjlBU0wzlwPvvNHEyCE=
+X-Received: by 2002:a17:90b:4f8a:b0:2b2:6975:bf49 with SMTP id
+ 98e67ed59e1d1-2c27dafd282mr4430926a91.6.1717663138117; 
+ Thu, 06 Jun 2024 01:38:58 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGcnGvJpqYIdn54/SLj9cOyKIDdhl74zABXsbSA9bkex7RoYFcrlcgvHpaIPKsULE0QPvRQcYDnyQiIu12R3Ak=
+X-Received: by 2002:a17:90b:4f8a:b0:2b2:6975:bf49 with SMTP id
+ 98e67ed59e1d1-2c27dafd282mr4430914a91.6.1717663137693; Thu, 06 Jun 2024
+ 01:38:57 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/3] ui+display: rename is_buffer_shared() ->
- surface_is_allocated()
-To: Gerd Hoffmann <kraxel@redhat.com>, qemu-devel@nongnu.org
-Cc: Stefano Stabellini <sstabellini@kernel.org>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- xen-devel@lists.xenproject.org, Anthony PERARD <anthony@xenproject.org>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@gmail.com>
-References: <20240605131444.797896-1-kraxel@redhat.com>
- <20240605131444.797896-4-kraxel@redhat.com>
-Content-Language: en-US
-Organization: Xen Project
-In-Reply-To: <20240605131444.797896-4-kraxel@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=xadimgnik@gmail.com; helo=mail-wm1-x329.google.com
+From: Miklos Szeredi <mszeredi@redhat.com>
+Date: Thu, 6 Jun 2024 10:38:46 +0200
+Message-ID: <CAOssrKeJbfjhZ1rkL=Tj+zQaYxQLQmwLYYT22Cu8nYnY8nriYA@mail.gmail.com>
+Subject: kvm crash with virtiofs
+To: virtio-fs@lists.linux.dev, QEMU Developers <qemu-devel@nongnu.org>
+Cc: Eric Sandeen <sandeen@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mszeredi@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,28 +88,70 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: paul@xen.org
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 05/06/2024 14:14, Gerd Hoffmann wrote:
-> Boolean return value is reversed, to align with QEMU_ALLOCATED_FLAG, so
-> all callers must be adapted.  Also rename share_surface variable in
-> vga_draw_graphic() to reduce confusion.
-> 
-> No functional change.
-> 
-> Suggested-by: Marc-André Lureau <marcandre.lureau@gmail.com>
-> Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
-> ---
->   include/ui/surface.h    |  4 ++--
->   hw/display/qxl-render.c |  2 +-
->   hw/display/vga.c        | 20 ++++++++++----------
->   hw/display/xenfb.c      |  5 +++--
->   ui/console.c            |  3 ++-
->   5 files changed, 18 insertions(+), 16 deletions(-)
-> 
+Hi,
 
-Reviewed-by: Paul Durrant <paul@xen.org>
+I get the below crash when running virtio-fs on fedora 39.
+
+Note: weirdly this makes chrome running on the host also crash.
+
+Eric Sandeen also reported some bad behavior of virtio-fs on fc39,
+which might be related.
+
+Versions:
+kernel-6.8.4-200.fc39.x86_64
+qemu-kvm-8.1.3-5.fc39.x86_64
+virtiofsd-1.10.1-1.fc39.x86_64
+
+Thanks,
+Miklos
+
+/usr/libexec/virtiofsd --socket-path=/tmp/vhostqemu --shared-dir /home &
+
+qemu-system-x86_64 -enable-kvm -s -serial none -parallel none -kernel
+/home/mszeredi/git/linux/arch/x86_64/boot/bzImage -drive
+format=raw,file=/home/mszeredi/root_fs,index=0,if=virtio -drive
+format=raw,file=/home/mszeredi/images/ubd1,index=1,if=virtio -chardev
+stdio,id=virtiocon0,signal=off -device virtio-serial -device
+virtconsole,chardev=virtiocon0 -cpu host -m 16G -smp 8 -object
+memory-backend-file,id=mem,size=16G,mem-path=/dev/shm,share=on -numa
+node,memdev=mem -net user -net nic,model=virtio-net-pci -fsdev
+local,security_model=none,id=fsdev0,path=/home -device virtio-rng-pci
+-chardev socket,id=char0,path=/tmp/vhostqemu -device
+vhost-user-fs-pci,queue-size=1024,chardev=char0,tag=myfs -device
+virtio-9p-pci,fsdev=fsdev0,mount_tag=hostshare -append "root=/dev/vda
+console=hvc0 "
+[...]
+root@kvm:~# time md5sum /host/mszeredi/images/ubd1
+error: kvm run failed Bad address
+RAX=0000000000000000 RBX=ffff888100044240 RCX=0000000000000000
+RDX=ffff888420c59ff0
+RSI=0000000000000020 RDI=ffff888420c59ff8 RBP=0000000000000000
+RSP=ffffc900016d3898
+R8 =ffff888420c59da8 R9 =0000000000000040 R10=0000000000036140
+R11=0000000000000005
+R12=ffff888420c59ff0 R13=000000000000000d R14=ffffea0010831600
+R15=ffff888420c59da8
+RIP=ffffffff82168d80 RFL=00010046 [---Z-P-] CPL=0 II=0 A20=1 SMM=0 HLT=0
+ES =0000 0000000000000000 ffffffff 00c00000
+CS =0010 0000000000000000 ffffffff 00a09b00 DPL=0 CS64 [-RA]
+SS =0018 0000000000000000 ffffffff 00c09300 DPL=0 DS   [-WA]
+DS =0000 0000000000000000 ffffffff 00c00000
+FS =0000 00007fb83cea8740 ffffffff 00c00000
+GS =0000 ffff88842fd40000 ffffffff 00c00000
+LDT=0000 0000000000000000 ffffffff 00c00000
+TR =0040 fffffe000012a000 00004087 00008b00 DPL=0 TSS64-busy
+GDT=     fffffe0000128000 0000007f
+IDT=     fffffe0000000000 00000fff
+CR0=80050033 CR2=00007f2d3bd9b0f0 CR3=00000001036ee005 CR4=00770ef0
+DR0=0000000000000000 DR1=0000000000000000 DR2=0000000000000000
+DR3=0000000000000000
+DR6=00000000ffff0ff0 DR7=0000000000000400
+EFER=0000000000000d01
+Code=90 90 90 90 48 c7 07 00 00 00 00 48 89 fa 48 8d 7f 08 31 c0 <48>
+c7 87 30 02 00 00 00 00 00 00 48 89 d1 48 83 e7 f8 48 29 f9 81 c1 40
+02 00 00 c1 e9 03
 
 
