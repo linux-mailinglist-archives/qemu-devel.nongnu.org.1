@@ -2,87 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDC7A8FDD73
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jun 2024 05:29:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D7E18FDD75
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jun 2024 05:30:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sF3mv-0002nt-Fu; Wed, 05 Jun 2024 23:27:41 -0400
+	id 1sF3om-0003Vr-1V; Wed, 05 Jun 2024 23:29:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sF3ms-0002nV-P9
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 23:27:38 -0400
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+ id 1sF3ok-0003Vc-AI
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 23:29:34 -0400
+Received: from mail-pg1-x52a.google.com ([2607:f8b0:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sF3mq-0003WX-Ix
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 23:27:38 -0400
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-7025b253f64so415691b3a.3
- for <qemu-devel@nongnu.org>; Wed, 05 Jun 2024 20:27:36 -0700 (PDT)
+ id 1sF3of-0003m3-CQ
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 23:29:31 -0400
+Received: by mail-pg1-x52a.google.com with SMTP id
+ 41be03b00d2f7-681bc7f50d0so1150636a12.0
+ for <qemu-devel@nongnu.org>; Wed, 05 Jun 2024 20:29:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1717644455; x=1718249255; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:references
- :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
- :cc:subject:date:message-id:reply-to;
- bh=5+OeKt2GaQAtQiB3F8k0HIb2RVr7xFCltUCSqic68Ww=;
- b=ZOYUm3fyyFvFG058XmonALKsK+dmxgocpBK4Kgf3FwmmugozyWvj3P1pKmcUiAGE+z
- YmS0qk5FmIcAs8ZQev+iN6/Pi27HRp4cwhwxJQRRFBnajCU4I1aAqHHiUN+iOLA1rBZV
- FwnFYEZDQUN5eFaY4Vci+QcTSr1XVAOOTD6vgJk6SUInliRJA72bOSdqC0NxBYmk+5Oo
- 4A6G167y2qFwpPuimA+3vkwILFqnpXXlp/cEqvZmMs4aFK9hKf+r/QlZbPbVZJAwN8mP
- bOuHME5mPauJWGV/QDA2w2ccrcHgvJVIZiPopDCmGe7Xr+GDbcJPPsgqZytpM8soradu
- BEIQ==
+ d=linaro.org; s=google; t=1717644568; x=1718249368; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=yAhR3pNp27v16bA5nOHMXZRb+BlQPJ5i0gki3Nov2RY=;
+ b=VpwnyseQ6A6sitwyP7Pbp9DZffVpbL3P1J5bEG0H7lHZne1w1ehjYJH9Mc/K/BX9sm
+ bKksvw9nZHhXf6mn88V+RlLY8k0lKQoXcWGgynzoGR09B+YAtZQ3y36+cLMRCFsQbnly
+ b9mqN9oOqNvFifLyq5r6q9gy38dLz5jctS49Wh0DAwt65YVe9TzuqrdY+nvmYxev4PBB
+ +/Q+yA8XT7uRkgZdGzQTDczNvG8KdyBictIu7wx8iPm5XmQJuhn+/76mmD9oVqQI4AX4
+ LkmBzNSuu87KQpJYvu522U1/f3BtaaXbNC0UXfsnxezkeCI1t99d+HGuh80NIy3FI4tG
+ zC7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717644455; x=1718249255;
- h=content-transfer-encoding:in-reply-to:content-language:references
- :cc:to:from:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=5+OeKt2GaQAtQiB3F8k0HIb2RVr7xFCltUCSqic68Ww=;
- b=MU7lW73qSvnShvXrxc5fSMjOO3Ef4STBakgwhbjoHhyd19ccRz0RKwvZcuLv1Q0t7J
- YFZYritjBAIAjEkogbmb5QNNOBYVcfU5+inHDcvnz9jUB3BFp0RjbViRb/xVOwrnlXtL
- MT3wY3NynyvgmQvNe8qg/30AHz1zrmoJo05WKABSnunJOjJdYdGvrX9lbEAKJ7gtkyVg
- 3qJ2MRDa5NHwLu+7rTkuODFArA3XMINiHgv+GWwrKy35YpZ2gqrPuXgo+m8rwc51scEi
- mTNL9qmyzgoivcQrEGlYllulzVuCzt2FQ3gmwS5qdfMQMLNpsPqZp3J045ttCaBeLMXE
- iGdA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWcjM3W7MmPcPBEPzZEz6npNTH07BCqL8a2+gVzGH/l8SNzzdRCnvCl1x2ywlTRpat2MzsdvWTcJBZJxoeBvE74S1wP/dk=
-X-Gm-Message-State: AOJu0Yysf7iC3C8T8xgizD8tLmFaCEkGLRb+ygvQnpdDWhM5JnKneTop
- elBgPFxdU4Kika4cikgSWnq8asS62Xu+qkLJSwWcBG07xuxcpdnGyCUppcLMihZPWpLIQa4lDMb
- L
-X-Google-Smtp-Source: AGHT+IF/cX5OEU/77P8quqYIsqWQuKXoI3a3wglkcu0bZqHi1WkTdTR3/bpN1CfdRpdqMDleMwavpQ==
-X-Received: by 2002:a05:6a00:4603:b0:6f8:d499:2d41 with SMTP id
- d2e1a72fcca58-703e59e79f9mr5917006b3a.24.1717644454718; 
- Wed, 05 Jun 2024 20:27:34 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.132.216])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-703fd3b303esm237887b3a.93.2024.06.05.20.27.33
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 05 Jun 2024 20:27:34 -0700 (PDT)
-Message-ID: <d504ffbb-353a-452f-bfb1-2640ee1badc9@linaro.org>
-Date: Wed, 5 Jun 2024 20:27:32 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] util/bufferiszero: Add simd acceleration for
- loongarch64
+ d=1e100.net; s=20230601; t=1717644568; x=1718249368;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=yAhR3pNp27v16bA5nOHMXZRb+BlQPJ5i0gki3Nov2RY=;
+ b=SPpHUL+zxQOycRhiasqZuz5mLJzoYOlLPNxWjjkgmyTUDPXUbKME88ip10g2O3HcON
+ tVEgzkRTM3DjDNSoCaWbRjaDVJPWUNU/JcEe3b4AjOKi6ZV55EY6b3x+xEfMSk+YtldZ
+ Th0ltcTDkXgAN9V/10ik2Kbv88Yj/ADR9UE8OxurpLx5g52rawzTyRYZpypzJpnliOdD
+ R9UDBuE1dfXKSjSCpB6iugAq427HbHIFznF2gdT2R4u4XeBS2LVpcrAMUKRR4piblt5E
+ pvi6GBE625ORJZ2m6tMISKVdOF3YBlt7FGGKpdsWcj1qJuQTgOmVUqQojgSmj376V5Mc
+ /t0g==
+X-Gm-Message-State: AOJu0Ywu+BS4ZnplPQY8yeqdYqmN96DH3zXJryVMFy8GGrd5nb+HJnWW
+ Hq+8momIymffAXV7vGqQpXvYRcJGHM1VEiyhN7e68Hjt19X/Mp7bGKTThaNNy4SUc0WWGp8t1R8
+ 7
+X-Google-Smtp-Source: AGHT+IFYYJ7QDTo19I2yw3H79XsK9boZahz5VtPVrdbFPK8onHVlQDyZLgX4pvzpBMcWlKKCY3aRtQ==
+X-Received: by 2002:a17:90a:9a8:b0:2b9:fc72:547e with SMTP id
+ 98e67ed59e1d1-2c2999d8736mr1971559a91.18.1717644567806; 
+ Wed, 05 Jun 2024 20:29:27 -0700 (PDT)
+Received: from stoup.. ([71.212.132.216]) by smtp.gmail.com with ESMTPSA id
+ 98e67ed59e1d1-2c254a76729sm4826265a91.0.2024.06.05.20.29.27
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 05 Jun 2024 20:29:27 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
-To: maobibo <maobibo@loongson.cn>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Thomas Huth <thuth@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, qemu-devel@nongnu.org
-References: <20240605093213.2191929-1-maobibo@loongson.cn>
- <20240605093213.2191929-3-maobibo@loongson.cn>
- <5d78d82d-a939-4103-8411-507b1a0372ac@linaro.org>
- <7b4c6909-40e8-def7-03e8-18a3303295f1@loongson.cn>
- <58ba9ea7-cc45-47d4-a278-3777b496cb44@linaro.org>
-Content-Language: en-US
-In-Reply-To: <58ba9ea7-cc45-47d4-a278-3777b496cb44@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: qemu-devel@nongnu.org
+Cc: pierrick.bouvier@linaro.org,
+	alex.bennee@linaro.org
+Subject: [PATCH v2 0/9] plugins: Use unwind info for special gdb registers
+Date: Wed,  5 Jun 2024 20:29:17 -0700
+Message-Id: <20240606032926.83599-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x435.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,104 +90,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/5/24 20:18, Richard Henderson wrote:
-> On 6/5/24 19:30, maobibo wrote:
->>
->>
->> On 2024/6/6 上午7:51, Richard Henderson wrote:
->>> On 6/5/24 02:32, Bibo Mao wrote:
->>>> Different gcc versions have different features, macro CONFIG_LSX_OPT
->>>> and CONFIG_LASX_OPT is added here to detect whether gcc supports
->>>> built-in lsx/lasx macro.
->>>>
->>>> Function buffer_zero_lsx() is added for 128bit simd fpu optimization,
->>>> and function buffer_zero_lasx() is for 256bit simd fpu optimization.
->>>>
->>>> Loongarch gcc built-in lsx/lasx macro can be used only when compiler
->>>> option -mlsx/-mlasx is added, and there is no separate compiler option
->>>> for function only. So it is only in effect when qemu is compiled with
->>>> parameter --extra-cflags="-mlasx"
->>>>
->>>> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
->>>> ---
->>>>   meson.build         |  11 +++++
->>>>   util/bufferiszero.c | 103 ++++++++++++++++++++++++++++++++++++++++++++
->>>>   2 files changed, 114 insertions(+)
->>>>
->>>> diff --git a/meson.build b/meson.build
->>>> index 6386607144..29bc362d7a 100644
->>>> --- a/meson.build
->>>> +++ b/meson.build
->>>> @@ -2855,6 +2855,17 @@ config_host_data.set('CONFIG_ARM_AES_BUILTIN', cc.compiles('''
->>>>       void foo(uint8x16_t *p) { *p = vaesmcq_u8(*p); }
->>>>     '''))
->>>> +# For Loongarch64, detect if LSX/LASX are available.
->>>> + config_host_data.set('CONFIG_LSX_OPT', cc.compiles('''
->>>> +    #include "lsxintrin.h"
->>>> +    int foo(__m128i v) { return __lsx_bz_v(v); }
->>>> +  '''))
->>>> +
->>>> +config_host_data.set('CONFIG_LASX_OPT', cc.compiles('''
->>>> +    #include "lasxintrin.h"
->>>> +    int foo(__m256i v) { return __lasx_xbz_v(v); }
->>>> +  '''))
->>>
->>> Both of these are introduced by gcc 14 and llvm 18, so I'm not certain of the utility 
->>> of separate tests.  We might simplify this with
->>>
->>>    config_host_data.set('CONFIG_LSX_LASX_INTRIN_H',
->>>      cc.has_header('lsxintrin.h') && cc.has_header('lasxintrin.h'))
->>>
->>>
->>> As you say, these headers require vector instructions to be enabled at compile-time 
->>> rather than detecting them at runtime.  This is a point where the compilers could be 
->>> improved to support __attribute__((target("xyz"))) and the builtins with that.  The 
->>> i386 port does this, for instance.
->>>
->>> In the meantime, it means that you don't need a runtime test.  Similar to aarch64 and 
->>> the use of __ARM_NEON as a compile-time test for simd support.  Perhaps
->>>
->>> #elif defined(CONFIG_LSX_LASX_INTRIN_H) && \
->>>        (defined(__loongarch_sx) || defined(__loongarch_asx))
->>> # ifdef __loongarch_sx
->>>    ...
->>> # endif
->>> # ifdef __loongarch_asx
->>>    ...
->>> # endif
->> Sure, will do in this way.
->> And also there is runtime check coming from hwcap, such this:
->>
->> unsigned info = cpuinfo_init();
->>    if (info & CPUINFO_LASX)
-> 
-> static biz_accel_fn const accel_table[] = {
->      buffer_is_zero_int_ge256,
-> #ifdef __loongarch_sx
->      buffer_is_zero_lsx,
-> #endif
-> #ifdef __loongarch_asx
->      buffer_is_zero_lasx,
-> #endif
-> };
-> 
-> static unsigned best_accel(void)
-> {
-> #ifdef __loongarch_asx
->      /* lasx may be index 1 or 2, but always last */
->      return ARRAY_SIZE(accel_table) - 1;
-> #else
->      /* lsx is always index 1 */
->      return 1;
-> #endif
-> }
 
-It occurs to me that by accumulating host specific sections to this file, we should split 
-it like the atomics.  Put each portion in host/include/*/host/bufferiszero.h.inc.
+This is an attempt to fix
+https://gitlab.com/qemu-project/qemu/-/issues/2208
+("PC is not updated for each instruction in TCG plugins")
 
-I'll send a patch set handling the existing two hosts.
+I have only updated target/{i386,arm} so far, but basically all
+targets need updating for the new callbacks.  Extra points to
+anyone who sees how to avoid the extra code duplication.  :-)
 
 
 r~
+
+
+Richard Henderson (9):
+  tcg: Introduce INDEX_op_plugin_pc
+  accel/tcg: Set CPUState.plugin_ra before all plugin callbacks
+  accel/tcg: Return the TranslationBlock from cpu_unwind_state_data
+  plugins: Introduce TCGCPUOps callbacks for mid-tb register reads
+  target/i386: Split out gdb-internal.h
+  target/i386: Introduce cpu_compute_eflags_ccop
+  target/i386: Implement TCGCPUOps for plugin register reads
+  target/arm: Add aarch64_tcg_ops
+  target/arm: Implement TCGCPUOps for plugin register reads
+
+ include/exec/cpu-common.h     |  9 +++--
+ include/hw/core/cpu.h         |  4 +-
+ include/hw/core/tcg-cpu-ops.h | 14 +++++++
+ include/tcg/tcg-op-common.h   |  1 +
+ include/tcg/tcg-opc.h         |  1 +
+ target/arm/internals.h        |  8 +++-
+ target/i386/cpu.h             |  2 +
+ target/i386/gdb-internal.h    | 65 +++++++++++++++++++++++++++++++
+ accel/tcg/plugin-gen.c        | 49 +++++++++++++++++++++---
+ accel/tcg/translate-all.c     |  9 +++--
+ plugins/api.c                 | 36 +++++++++++++++++-
+ target/arm/cpu.c              | 40 ++++++++++++++++++-
+ target/arm/cpu64.c            | 55 ++++++++++++++++++++++++++
+ target/arm/tcg/cpu-v7m.c      |  2 +
+ target/i386/gdbstub.c         |  1 +
+ target/i386/helper.c          |  6 ++-
+ target/i386/tcg/cc_helper.c   | 10 +++++
+ target/i386/tcg/tcg-cpu.c     | 72 +++++++++++++++++++++++++++--------
+ tcg/tcg-op.c                  |  5 +++
+ tcg/tcg.c                     | 10 +++++
+ 20 files changed, 360 insertions(+), 39 deletions(-)
+ create mode 100644 target/i386/gdb-internal.h
+
+-- 
+2.34.1
 
 
