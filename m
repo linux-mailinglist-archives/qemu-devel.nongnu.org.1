@@ -2,81 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A5A28FDD7E
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jun 2024 05:30:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A3A68FDD8D
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jun 2024 05:38:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sF3pa-0003lt-Lz; Wed, 05 Jun 2024 23:30:27 -0400
+	id 1sF3vQ-0002ez-K9; Wed, 05 Jun 2024 23:36:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sF3p3-0003Yj-1z
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 23:29:53 -0400
-Received: from mail-pg1-x52d.google.com ([2607:f8b0:4864:20::52d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sF3on-0003n2-HO
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 23:29:45 -0400
-Received: by mail-pg1-x52d.google.com with SMTP id
- 41be03b00d2f7-6c7bf648207so391080a12.0
- for <qemu-devel@nongnu.org>; Wed, 05 Jun 2024 20:29:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1717644576; x=1718249376; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=GDW7+3DHnfg1G/3wUwHLWsAi50ZhEtSDqb4dOB/GcLQ=;
- b=eplmAYXxSI1JxvlUvA9DVtgOalOAN/ZhRj4m1GDCNahBp8ZH8WQ98OtzMLS1wfPmnV
- HcSTRW6eDVSkJzH2vNaL2Dnn1nfBNoN1/eZTPnXZ1474TIgJ10FnVYxN9Q5RuNx6EBRr
- co+qMi7iuIpUY719sOD2Ubm8A4D1LMOjy//LKt8B1AeD1VXInsDPGTSZ373tUwPp+iVo
- Qx2AcZEjGpS5BBnwVLWEZ6BnlTqceZB2skFaZn1irFzhFOBsxM8uhCawYMhaWir/MVig
- MqmEu1dhmN3hJfp2q9pWLWWKAHU8Asu0tnW/IQNoZjaShUa91IMuinuD2JIkul/cMkZX
- 9cjA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717644576; x=1718249376;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=GDW7+3DHnfg1G/3wUwHLWsAi50ZhEtSDqb4dOB/GcLQ=;
- b=bE49Hjmn+FKHapaMPNRwMphAvrm5HhRHnhlkpStW+5OcS/Aqb02THWIuA6DFTN4gE9
- 9OE2BoFxaBTC0uku1DyvBj8aAwPZTubK/1fs/S07TARNA45xUC3irsQRUBwy/G9/QBya
- Ar2XfO7SRPJcuYJiCAXgN/y/Yc4RkYyIABrLVGMQKldUhjC7QC82OwGk3xQhWVxUW1Xe
- NPwpA1RalwI3fsmUgjycgvtCKgA+q3X9/V9dNm6fSGbNzyUOWTTF/eLz6vCKGYm/2Iv+
- kMON9S2Z6iHdxDlwaTcK4MjX4r1PPjkUdJqYKNRsT3ArqhYRPHSnRvqmldhgfPoxxt+o
- AA7Q==
-X-Gm-Message-State: AOJu0YyHDH+eL4Q1K2fRj7gXMDbZFD6jWXK5e2l18j5SP5i/PeS0ZfY6
- 3KEjAbvTHQPR5Petz6nKFBQVQ5xyzdpg13uMDZ+Q1rl1xFMeWnFGjOIeX2hcRXqrmIUxg2MpBI2
- D
-X-Google-Smtp-Source: AGHT+IHE6gno0i3dGtcw+e/PUsM4TckQyPYVb7KW3e2qZJB63xjHyZ8Q7YqNQHRcGSEShQ3Ispan/w==
-X-Received: by 2002:a17:90a:d710:b0:2c0:29d5:350b with SMTP id
- 98e67ed59e1d1-2c27db62f5emr4534293a91.48.1717644576056; 
- Wed, 05 Jun 2024 20:29:36 -0700 (PDT)
-Received: from stoup.. ([71.212.132.216]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2c254a76729sm4826265a91.0.2024.06.05.20.29.35
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 05 Jun 2024 20:29:35 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: pierrick.bouvier@linaro.org,
-	alex.bennee@linaro.org
-Subject: [PATCH v2 9/9] target/arm: Implement TCGCPUOps for plugin register
- reads
-Date: Wed,  5 Jun 2024 20:29:26 -0700
-Message-Id: <20240606032926.83599-10-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240606032926.83599-1-richard.henderson@linaro.org>
-References: <20240606032926.83599-1-richard.henderson@linaro.org>
+ (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
+ id 1sF3vN-0002eT-68
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 23:36:25 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <maobibo@loongson.cn>) id 1sF3vK-00051Z-8k
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 23:36:24 -0400
+Received: from loongson.cn (unknown [10.20.42.62])
+ by gateway (Coremail) with SMTP id _____8AxW+qwLmFmPhEEAA--.17256S3;
+ Thu, 06 Jun 2024 11:36:16 +0800 (CST)
+Received: from [10.20.42.62] (unknown [10.20.42.62])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8CxbcetLmFmnW8WAA--.56324S3; 
+ Thu, 06 Jun 2024 11:36:15 +0800 (CST)
+Subject: Re: [PATCH 2/2] util/bufferiszero: Add simd acceleration for
+ loongarch64
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?Q?Daniel_P_=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?=
+ <philmd@linaro.org>, qemu-devel@nongnu.org
+References: <20240605093213.2191929-1-maobibo@loongson.cn>
+ <20240605093213.2191929-3-maobibo@loongson.cn>
+ <5d78d82d-a939-4103-8411-507b1a0372ac@linaro.org>
+ <7b4c6909-40e8-def7-03e8-18a3303295f1@loongson.cn>
+ <58ba9ea7-cc45-47d4-a278-3777b496cb44@linaro.org>
+ <d504ffbb-353a-452f-bfb1-2640ee1badc9@linaro.org>
+From: maobibo <maobibo@loongson.cn>
+Message-ID: <da613eb1-65f8-b690-4517-04640581261b@loongson.cn>
+Date: Thu, 6 Jun 2024 11:36:12 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
+In-Reply-To: <d504ffbb-353a-452f-bfb1-2640ee1badc9@linaro.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-CM-TRANSID: AQAAf8CxbcetLmFmnW8WAA--.56324S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoWxurW5CF45XF1kWF4kCFWDZFc_yoWrCr18pr
+ ZYkFyYyFW5Jrn3tr9xtw15Xr95tr18X3WDWF43JryUArs0qrn2qr4qgryq9F1Fqw4kJFy2
+ vF4Fq34fuFy7JrXCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUU9ab4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
+ 6r4UJVWxJr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27w
+ Aqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE
+ 14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1c
+ AE67vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMxCIbckI1I0E
+ 14v26r126r1DMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4
+ CE17CEb7AF67AKxVWUAVWUtwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1x
+ MIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF
+ 4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsG
+ vfC2KfnxnUUI43ZEXa7IU8j-e5UUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -58
+X-Spam_score: -5.9
+X-Spam_bar: -----
+X-Spam_report: (-5.9 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-3.975,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,160 +90,127 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- target/arm/internals.h   |  7 +++++--
- target/arm/cpu.c         | 38 ++++++++++++++++++++++++++++++++++++++
- target/arm/cpu64.c       | 25 +++++++++++++++++++++++++
- target/arm/tcg/cpu-v7m.c |  2 ++
- 4 files changed, 70 insertions(+), 2 deletions(-)
 
-diff --git a/target/arm/internals.h b/target/arm/internals.h
-index dc53d86249..fe28937515 100644
---- a/target/arm/internals.h
-+++ b/target/arm/internals.h
-@@ -358,11 +358,14 @@ void init_cpreg_list(ARMCPU *cpu);
- void arm_cpu_register_gdb_regs_for_features(ARMCPU *cpu);
- void arm_translate_init(void);
- 
-+#ifdef CONFIG_TCG
- void arm_restore_state_to_opc(CPUState *cs,
-                               const TranslationBlock *tb,
-                               const uint64_t *data);
--
--#ifdef CONFIG_TCG
-+bool arm_plugin_need_unwind_for_reg(CPUState *cs, int reg);
-+int arm_plugin_unwind_read_reg(CPUState *cs, GByteArray *buf, int reg,
-+                               const TranslationBlock *tb,
-+                               const uint64_t *data);
- void arm_cpu_synchronize_from_tb(CPUState *cs, const TranslationBlock *tb);
- bool arm_cpu_exec_interrupt(CPUState *cs, int interrupt_request);
- #endif /* CONFIG_TCG */
-diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-index 3cd4711064..e8ac3da351 100644
---- a/target/arm/cpu.c
-+++ b/target/arm/cpu.c
-@@ -29,6 +29,7 @@
- #include "cpu.h"
- #ifdef CONFIG_TCG
- #include "hw/core/tcg-cpu-ops.h"
-+#include "gdbstub/helpers.h"
- #endif /* CONFIG_TCG */
- #include "internals.h"
- #include "cpu-features.h"
-@@ -120,6 +121,41 @@ void arm_restore_state_to_opc(CPUState *cs,
-         env->exception.syndrome = data[2] << ARM_INSN_START_WORD2_SHIFT;
-     }
- }
-+
-+bool arm_plugin_need_unwind_for_reg(CPUState *cs, int reg)
-+{
-+    return reg == 15 || reg == 25; /* pc (r15) or cpsr */
-+}
-+
-+int arm_plugin_unwind_read_reg(CPUState *cs, GByteArray *buf, int reg,
-+                               const TranslationBlock *tb,
-+                               const uint64_t *data)
-+{
-+    CPUARMState *env = cpu_env(cs);
-+    uint32_t val, condexec;
-+
-+    switch (reg) {
-+    case 15: /* PC */
-+        val = data[0];
-+        if (tb_cflags(tb) & CF_PCREL) {
-+            val |= env->regs[15] & TARGET_PAGE_MASK;
-+        }
-+        break;
-+    case 25: /* CPSR, or XPSR for M-profile */
-+        if (arm_feature(env, ARM_FEATURE_M)) {
-+            val = xpsr_read(env);
-+        } else {
-+            val = cpsr_read(env);
-+        }
-+        condexec = data[1] & 0xff;
-+        val = (val & ~(3 << 25)) | ((condexec & 3) << 25);
-+        val = (val & ~(0xfc << 8)) | ((condexec & 0xfc) << 8);
-+        break;
-+    default:
-+        g_assert_not_reached();
-+    }
-+    return gdb_get_reg32(buf, val);
-+}
- #endif /* CONFIG_TCG */
- 
- /*
-@@ -2657,6 +2693,8 @@ static const TCGCPUOps arm_tcg_ops = {
-     .synchronize_from_tb = arm_cpu_synchronize_from_tb,
-     .debug_excp_handler = arm_debug_excp_handler,
-     .restore_state_to_opc = arm_restore_state_to_opc,
-+    .plugin_need_unwind_for_reg = arm_plugin_need_unwind_for_reg,
-+    .plugin_unwind_read_reg = arm_plugin_unwind_read_reg,
- 
- #ifdef CONFIG_USER_ONLY
-     .record_sigsegv = arm_cpu_record_sigsegv,
-diff --git a/target/arm/cpu64.c b/target/arm/cpu64.c
-index 7ba80099af..1595be5d8f 100644
---- a/target/arm/cpu64.c
-+++ b/target/arm/cpu64.c
-@@ -33,6 +33,8 @@
- #include "hw/qdev-properties.h"
- #ifdef CONFIG_TCG
- #include "hw/core/tcg-cpu-ops.h"
-+#include "exec/translation-block.h"
-+#include "gdbstub/helpers.h"
- #endif
- #include "internals.h"
- #include "cpu-features.h"
-@@ -797,11 +799,34 @@ static const gchar *aarch64_gdb_arch_name(CPUState *cs)
- }
- 
- #ifdef CONFIG_TCG
-+static bool aarch64_plugin_need_unwind_for_reg(CPUState *cs, int reg)
-+{
-+    return reg == 32; /* pc */
-+}
-+
-+static int aarch64_plugin_unwind_read_reg(CPUState *cs, GByteArray *buf,
-+                                          int reg, const TranslationBlock *tb,
-+                                          const uint64_t *data)
-+{
-+    CPUARMState *env = cpu_env(cs);
-+    uint64_t val;
-+
-+    assert(reg == 32);
-+
-+    val = data[0];
-+    if (tb_cflags(tb) & CF_PCREL) {
-+        val |= env->pc & TARGET_PAGE_MASK;
-+    }
-+    return gdb_get_reg64(buf, val);
-+}
-+
- static const TCGCPUOps aarch64_tcg_ops = {
-     .initialize = arm_translate_init,
-     .synchronize_from_tb = arm_cpu_synchronize_from_tb,
-     .debug_excp_handler = arm_debug_excp_handler,
-     .restore_state_to_opc = arm_restore_state_to_opc,
-+    .plugin_need_unwind_for_reg = aarch64_plugin_need_unwind_for_reg,
-+    .plugin_unwind_read_reg = aarch64_plugin_unwind_read_reg,
- 
- #ifdef CONFIG_USER_ONLY
-     .record_sigsegv = arm_cpu_record_sigsegv,
-diff --git a/target/arm/tcg/cpu-v7m.c b/target/arm/tcg/cpu-v7m.c
-index c059c681e9..47e44f70c7 100644
---- a/target/arm/tcg/cpu-v7m.c
-+++ b/target/arm/tcg/cpu-v7m.c
-@@ -237,6 +237,8 @@ static const TCGCPUOps arm_v7m_tcg_ops = {
-     .synchronize_from_tb = arm_cpu_synchronize_from_tb,
-     .debug_excp_handler = arm_debug_excp_handler,
-     .restore_state_to_opc = arm_restore_state_to_opc,
-+    .plugin_need_unwind_for_reg = arm_plugin_need_unwind_for_reg,
-+    .plugin_unwind_read_reg = arm_plugin_unwind_read_reg,
- 
- #ifdef CONFIG_USER_ONLY
-     .record_sigsegv = arm_cpu_record_sigsegv,
--- 
-2.34.1
+
+On 2024/6/6 上午11:27, Richard Henderson wrote:
+> On 6/5/24 20:18, Richard Henderson wrote:
+>> On 6/5/24 19:30, maobibo wrote:
+>>>
+>>>
+>>> On 2024/6/6 上午7:51, Richard Henderson wrote:
+>>>> On 6/5/24 02:32, Bibo Mao wrote:
+>>>>> Different gcc versions have different features, macro CONFIG_LSX_OPT
+>>>>> and CONFIG_LASX_OPT is added here to detect whether gcc supports
+>>>>> built-in lsx/lasx macro.
+>>>>>
+>>>>> Function buffer_zero_lsx() is added for 128bit simd fpu optimization,
+>>>>> and function buffer_zero_lasx() is for 256bit simd fpu optimization.
+>>>>>
+>>>>> Loongarch gcc built-in lsx/lasx macro can be used only when compiler
+>>>>> option -mlsx/-mlasx is added, and there is no separate compiler option
+>>>>> for function only. So it is only in effect when qemu is compiled with
+>>>>> parameter --extra-cflags="-mlasx"
+>>>>>
+>>>>> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+>>>>> ---
+>>>>>   meson.build         |  11 +++++
+>>>>>   util/bufferiszero.c | 103 
+>>>>> ++++++++++++++++++++++++++++++++++++++++++++
+>>>>>   2 files changed, 114 insertions(+)
+>>>>>
+>>>>> diff --git a/meson.build b/meson.build
+>>>>> index 6386607144..29bc362d7a 100644
+>>>>> --- a/meson.build
+>>>>> +++ b/meson.build
+>>>>> @@ -2855,6 +2855,17 @@ 
+>>>>> config_host_data.set('CONFIG_ARM_AES_BUILTIN', cc.compiles('''
+>>>>>       void foo(uint8x16_t *p) { *p = vaesmcq_u8(*p); }
+>>>>>     '''))
+>>>>> +# For Loongarch64, detect if LSX/LASX are available.
+>>>>> + config_host_data.set('CONFIG_LSX_OPT', cc.compiles('''
+>>>>> +    #include "lsxintrin.h"
+>>>>> +    int foo(__m128i v) { return __lsx_bz_v(v); }
+>>>>> +  '''))
+>>>>> +
+>>>>> +config_host_data.set('CONFIG_LASX_OPT', cc.compiles('''
+>>>>> +    #include "lasxintrin.h"
+>>>>> +    int foo(__m256i v) { return __lasx_xbz_v(v); }
+>>>>> +  '''))
+>>>>
+>>>> Both of these are introduced by gcc 14 and llvm 18, so I'm not 
+>>>> certain of the utility of separate tests.  We might simplify this with
+>>>>
+>>>>    config_host_data.set('CONFIG_LSX_LASX_INTRIN_H',
+>>>>      cc.has_header('lsxintrin.h') && cc.has_header('lasxintrin.h'))
+>>>>
+>>>>
+>>>> As you say, these headers require vector instructions to be enabled 
+>>>> at compile-time rather than detecting them at runtime.  This is a 
+>>>> point where the compilers could be improved to support 
+>>>> __attribute__((target("xyz"))) and the builtins with that.  The i386 
+>>>> port does this, for instance.
+>>>>
+>>>> In the meantime, it means that you don't need a runtime test.  
+>>>> Similar to aarch64 and the use of __ARM_NEON as a compile-time test 
+>>>> for simd support.  Perhaps
+>>>>
+>>>> #elif defined(CONFIG_LSX_LASX_INTRIN_H) && \
+>>>>        (defined(__loongarch_sx) || defined(__loongarch_asx))
+>>>> # ifdef __loongarch_sx
+>>>>    ...
+>>>> # endif
+>>>> # ifdef __loongarch_asx
+>>>>    ...
+>>>> # endif
+>>> Sure, will do in this way.
+>>> And also there is runtime check coming from hwcap, such this:
+>>>
+>>> unsigned info = cpuinfo_init();
+>>>    if (info & CPUINFO_LASX)
+>>
+>> static biz_accel_fn const accel_table[] = {
+>>      buffer_is_zero_int_ge256,
+>> #ifdef __loongarch_sx
+>>      buffer_is_zero_lsx,
+>> #endif
+>> #ifdef __loongarch_asx
+>>      buffer_is_zero_lasx,
+>> #endif
+>> };
+>>
+>> static unsigned best_accel(void)
+>> {
+>> #ifdef __loongarch_asx
+>>      /* lasx may be index 1 or 2, but always last */
+>>      return ARRAY_SIZE(accel_table) - 1;
+>> #else
+>>      /* lsx is always index 1 */
+>>      return 1;
+>> #endif
+>> }
+size of accel_table is decided at compile-time, will it be better if 
+runtime checking is added also?  something like this:
+
+  unsigned info = cpuinfo_init();
+
+  #ifdef __loongarch_asx
+  if (info & CPUINFO_LASX) {
+       /* lasx may be index 1 or 2, but always last */
+       return ARRAY_SIZE(accel_table) - 1;
+  }
+  #endif
+
+> 
+> It occurs to me that by accumulating host specific sections to this 
+> file, we should split it like the atomics.  Put each portion in 
+> host/include/*/host/bufferiszero.h.inc.
+sure, will do.
+
+> 
+> I'll send a patch set handling the existing two hosts.
+> 
+> 
+> r~
+> 
 
 
