@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA0A58FDD80
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jun 2024 05:31:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 67C468FDD79
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jun 2024 05:30:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sF3pV-0003hI-Ed; Wed, 05 Jun 2024 23:30:22 -0400
+	id 1sF3p8-0003cm-90; Wed, 05 Jun 2024 23:29:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sF3ot-0003Xb-H4
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 23:29:44 -0400
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+ id 1sF3ot-0003Xc-TN
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 23:29:45 -0400
+Received: from mail-pj1-x1032.google.com ([2607:f8b0:4864:20::1032])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sF3ol-0003mk-Gp
+ id 1sF3om-0003mu-ON
  for qemu-devel@nongnu.org; Wed, 05 Jun 2024 23:29:43 -0400
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-7024d571d8eso409894b3a.0
- for <qemu-devel@nongnu.org>; Wed, 05 Jun 2024 20:29:35 -0700 (PDT)
+Received: by mail-pj1-x1032.google.com with SMTP id
+ 98e67ed59e1d1-2c1a9b151bcso383491a91.3
+ for <qemu-devel@nongnu.org>; Wed, 05 Jun 2024 20:29:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1717644574; x=1718249374; darn=nongnu.org;
+ d=linaro.org; s=google; t=1717644575; x=1718249375; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=O0va1mHnZfjZEpAwkwYedRlpjIR4vW0RMlDktvC8XHk=;
- b=hxRI3vtG3eYQe7ZslDzJdYctwVrXJTDxkFqhyTf94o8GkvHHBax+8H3hiWu6f9N3ql
- RcUcN9bM/3vs2nthFpe+q7J03SXbfWo6STGFrYIexigANpqvV967aru2sHT97kAyEobe
- WykuNcQXclPqFuoBHeN0sTNnVzZj2zlwYDUcjs61KhAjwcEzQTwdx4tPlX22cd121SE4
- MhXlnssUJ0prGqNkk0knCljpPUs6dHozG01F9iNko5NjMBatvJlv4A9ga2qTbPXOdJ4Q
- Us7BN3jiTp/9DGs3gJP4iTgWF1l7DYXzZq6aAk2Q2dhxYatlKCQ6oz+NcSnSzvPQn3zd
- vgpQ==
+ bh=qk6fRoAsjXUiIOMAFv1hh9xLZybNH+lhJEtz8n7pvqs=;
+ b=A4LWK6yH7bahc2CZ08pB3hgxh1uarBNM099PLRTwIIyAFcmRjrsDxtOswqu8SLIwPf
+ Zft0hSq2Rijiy4gZrlZTYJbN0dptLGzlAP+jEHT4bfIYWEXVsA2BTIn+TD0xTQn4MMZ7
+ FQVax3M3q1BixxiCvR12lk2Gx6mmqXhhKvzC/Ort7leyGsXd+EJyZWgCgA5Qmjqkgk0a
+ WLKfjjQRLKKpGFk1nMnexA8HdyDYDm9H1gBGFdiPC0c1mKkDYVf+8TPJVg43Z13n0C3+
+ gMxJmtjUkzJ0NoIBfMca7Usqbd1CQgEUPLlTaLjRMTZEpOnCDDqMoX8UCycNiKSOpAVB
+ e91A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717644574; x=1718249374;
+ d=1e100.net; s=20230601; t=1717644575; x=1718249375;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=O0va1mHnZfjZEpAwkwYedRlpjIR4vW0RMlDktvC8XHk=;
- b=gxsD24Q2n9jlNTum6p9ni1VznHjWzHPGo/qB942T+gVwqsPrypHbpH9Q6zNVWtVPmB
- 50a//AqxbCC48xW2w0aBL3w6WKWIKDaXuXbbmel7070V+PtMrlKViCVwpX1V2a1eNgxl
- IDmLNEZrrzG0Lbm7GvbH94CAdtqzp1W5pW4IJmjd7rwqzo7KGVauegCwogy5slp+IgHq
- UBjq9l9OWDKZE5upT5/GaBQStXouZm5cZ5Lh1qDwtZkWNPFCmj6YtTWu4Yh6i+HHLrx/
- 7H2LHKdjc56/HtlSZM3p2s4H2R/nPRwM4tgI8dTp6qro8frrJE8UKR+GDmBXPayFydz8
- vwzQ==
-X-Gm-Message-State: AOJu0Yy8dI7Qg8jCAr66E+/+okG9iig4W1m404Y2eqNlQm/DdCMMQ+rM
- GjZhdD+jJg09IKQr1YPDj64T/5c5P7PlKjepU8Z0CyFoLv4RvGKV1zIBct8L3vFRYH2PEAHLGKu
- 9
-X-Google-Smtp-Source: AGHT+IG8QghlIhxlrF3MNixl4/JjrrIYn5B4JAsENBBcnb8o5qcQGWH8toGYXV3Raa1ni9I880K20A==
-X-Received: by 2002:a05:6a20:2588:b0:1ad:999b:de34 with SMTP id
- adf61e73a8af0-1b2b710b89bmr6077641637.38.1717644574142; 
- Wed, 05 Jun 2024 20:29:34 -0700 (PDT)
+ bh=qk6fRoAsjXUiIOMAFv1hh9xLZybNH+lhJEtz8n7pvqs=;
+ b=I2bOgLzOsM/o5dSpjqSQCTxoTvy1coWejdWiqol8/Q2giapugb7fVFY0obs2omTNqs
+ E0Guasan7emCaVxhSgJ1WCTQ0sufZ8waH53uq0psu4+BZuB7Ia3JqYaegGuj8z4yFtIi
+ YloZixJKIG45oudywAFtVDb/nkwpJB1aHixTB9bakjOo8Wj2usqcAegXT/s7jaSUi7IW
+ WFGJPN1HmwzIeDdazj6Q4mq58SMvx0Wcl5FdIjFd1rQ0UyFs5d4rcY17F4rY9Z0g1tNF
+ EPZesbFqPSMdY++yPZ+sVBKKN/7ft1ApzeMIh6yiholnMEUzDxHEKSh3IA3qFaduFiUj
+ diGQ==
+X-Gm-Message-State: AOJu0YxPpoPNZAZcK8dyIm/azN36ak9jRrdgkEizpIAd4eGe37rz0v5O
+ 13zSCUUp796tBsYsw1GQmaBpc9ZESxocSh8EDwrmhi46Qr3rdmhfEMzMGGgMmc61MZ4PF8LDBBe
+ P
+X-Google-Smtp-Source: AGHT+IFayyZxhoM06SdJj+iarV6bhY6fgorrfGcBNa2Ebl5U013LEaIkXAEM3xGk7Y1kNWqICAUNZg==
+X-Received: by 2002:a17:90b:188f:b0:2c1:c648:14d2 with SMTP id
+ 98e67ed59e1d1-2c27db003cdmr4514459a91.1.1717644575042; 
+ Wed, 05 Jun 2024 20:29:35 -0700 (PDT)
 Received: from stoup.. ([71.212.132.216]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2c254a76729sm4826265a91.0.2024.06.05.20.29.33
+ 98e67ed59e1d1-2c254a76729sm4826265a91.0.2024.06.05.20.29.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 05 Jun 2024 20:29:33 -0700 (PDT)
+ Wed, 05 Jun 2024 20:29:34 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: pierrick.bouvier@linaro.org,
 	alex.bennee@linaro.org
-Subject: [PATCH v2 7/9] target/i386: Implement TCGCPUOps for plugin register
- reads
-Date: Wed,  5 Jun 2024 20:29:24 -0700
-Message-Id: <20240606032926.83599-8-richard.henderson@linaro.org>
+Subject: [PATCH v2 8/9] target/arm: Add aarch64_tcg_ops
+Date: Wed,  5 Jun 2024 20:29:25 -0700
+Message-Id: <20240606032926.83599-9-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240606032926.83599-1-richard.henderson@linaro.org>
 References: <20240606032926.83599-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x435.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1032;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1032.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,128 +92,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+For the moment, this is an exact copy of arm_tcg_ops.
+Export arm_cpu_exec_interrupt for the cross-file reference.
+
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/i386/tcg/tcg-cpu.c | 72 ++++++++++++++++++++++++++++++---------
- 1 file changed, 56 insertions(+), 16 deletions(-)
+ target/arm/internals.h |  1 +
+ target/arm/cpu.c       |  2 +-
+ target/arm/cpu64.c     | 30 ++++++++++++++++++++++++++++++
+ 3 files changed, 32 insertions(+), 1 deletion(-)
 
-diff --git a/target/i386/tcg/tcg-cpu.c b/target/i386/tcg/tcg-cpu.c
-index cca19cd40e..2370053df2 100644
---- a/target/i386/tcg/tcg-cpu.c
-+++ b/target/i386/tcg/tcg-cpu.c
-@@ -22,9 +22,11 @@
- #include "helper-tcg.h"
- #include "qemu/accel.h"
- #include "hw/core/accel-cpu.h"
--
-+#include "gdbstub/helpers.h"
-+#include "gdb-internal.h"
- #include "tcg-cpu.h"
+diff --git a/target/arm/internals.h b/target/arm/internals.h
+index 11b5da2562..dc53d86249 100644
+--- a/target/arm/internals.h
++++ b/target/arm/internals.h
+@@ -364,6 +364,7 @@ void arm_restore_state_to_opc(CPUState *cs,
  
-+
- /* Frob eflags into and out of the CPU temporary format.  */
+ #ifdef CONFIG_TCG
+ void arm_cpu_synchronize_from_tb(CPUState *cs, const TranslationBlock *tb);
++bool arm_cpu_exec_interrupt(CPUState *cs, int interrupt_request);
+ #endif /* CONFIG_TCG */
  
- static void x86_cpu_exec_enter(CPUState *cs)
-@@ -61,38 +63,74 @@ static void x86_cpu_synchronize_from_tb(CPUState *cs,
-     }
+ typedef enum ARMFPRounding {
+diff --git a/target/arm/cpu.c b/target/arm/cpu.c
+index 35fa281f1b..3cd4711064 100644
+--- a/target/arm/cpu.c
++++ b/target/arm/cpu.c
+@@ -824,7 +824,7 @@ static inline bool arm_excp_unmasked(CPUState *cs, unsigned int excp_idx,
+     return unmasked || pstate_unmasked;
  }
  
--static void x86_restore_state_to_opc(CPUState *cs,
--                                     const TranslationBlock *tb,
--                                     const uint64_t *data)
-+static uint64_t eip_from_unwind(CPUX86State *env, const TranslationBlock *tb,
-+                                uint64_t data0)
+-static bool arm_cpu_exec_interrupt(CPUState *cs, int interrupt_request)
++bool arm_cpu_exec_interrupt(CPUState *cs, int interrupt_request)
  {
--    X86CPU *cpu = X86_CPU(cs);
--    CPUX86State *env = &cpu->env;
--    int cc_op = data[1];
-     uint64_t new_pc;
- 
-     if (tb_cflags(tb) & CF_PCREL) {
-         /*
--         * data[0] in PC-relative TBs is also a linear address, i.e. an address with
--         * the CS base added, because it is not guaranteed that EIP bits 12 and higher
--         * stay the same across the translation block.  Add the CS base back before
--         * replacing the low bits, and subtract it below just like for !CF_PCREL.
-+         * data[0] in PC-relative TBs is also a linear address,
-+         * i.e. an address with the CS base added, because it is
-+         * not guaranteed that EIP bits 12 and higher stay the
-+         * same across the translation block.  Add the CS base
-+         * back before replacing the low bits, and subtract it
-+         * below just like for !CF_PCREL.
-          */
-         uint64_t pc = env->eip + tb->cs_base;
--        new_pc = (pc & TARGET_PAGE_MASK) | data[0];
-+        new_pc = (pc & TARGET_PAGE_MASK) | data0;
-     } else {
--        new_pc = data[0];
-+        new_pc = data0;
-     }
-     if (tb->flags & HF_CS64_MASK) {
--        env->eip = new_pc;
--    } else {
--        env->eip = (uint32_t)(new_pc - tb->cs_base);
-+        return new_pc;
-     }
-+    return (uint32_t)(new_pc - tb->cs_base);
-+}
- 
-+static void x86_restore_state_to_opc(CPUState *cs,
-+                                     const TranslationBlock *tb,
-+                                     const uint64_t *data)
-+{
-+    CPUX86State *env = cpu_env(cs);
-+    CCOp cc_op;
-+
-+    env->eip = eip_from_unwind(env, tb, data[0]);
-+
-+    cc_op = data[1];
-     if (cc_op != CC_OP_DYNAMIC) {
-         env->cc_op = cc_op;
-     }
+     CPUClass *cc = CPU_GET_CLASS(cs);
+     CPUARMState *env = cpu_env(cs);
+diff --git a/target/arm/cpu64.c b/target/arm/cpu64.c
+index 262a1d6c0b..7ba80099af 100644
+--- a/target/arm/cpu64.c
++++ b/target/arm/cpu64.c
+@@ -31,6 +31,9 @@
+ #include "hvf_arm.h"
+ #include "qapi/visitor.h"
+ #include "hw/qdev-properties.h"
++#ifdef CONFIG_TCG
++#include "hw/core/tcg-cpu-ops.h"
++#endif
+ #include "internals.h"
+ #include "cpu-features.h"
+ #include "cpregs.h"
+@@ -793,6 +796,29 @@ static const gchar *aarch64_gdb_arch_name(CPUState *cs)
+     return "aarch64";
  }
  
-+static bool x86_plugin_need_unwind_for_reg(CPUState *cs, int reg)
-+{
-+    return reg == IDX_IP_REG || reg == IDX_FLAGS_REG;
-+}
++#ifdef CONFIG_TCG
++static const TCGCPUOps aarch64_tcg_ops = {
++    .initialize = arm_translate_init,
++    .synchronize_from_tb = arm_cpu_synchronize_from_tb,
++    .debug_excp_handler = arm_debug_excp_handler,
++    .restore_state_to_opc = arm_restore_state_to_opc,
 +
-+static int x86_plugin_unwind_read_reg(CPUState *cs, GByteArray *buf, int reg,
-+                                      const TranslationBlock *tb,
-+                                      const uint64_t *data)
-+{
-+    CPUX86State *env = cpu_env(cs);
-+    CCOp cc_op;
++#ifdef CONFIG_USER_ONLY
++    .record_sigsegv = arm_cpu_record_sigsegv,
++    .record_sigbus = arm_cpu_record_sigbus,
++#else
++    .tlb_fill = arm_cpu_tlb_fill,
++    .cpu_exec_interrupt = arm_cpu_exec_interrupt,
++    .do_interrupt = arm_cpu_do_interrupt,
++    .do_transaction_failed = arm_cpu_do_transaction_failed,
++    .do_unaligned_access = arm_cpu_do_unaligned_access,
++    .adjust_watchpoint_address = arm_adjust_watchpoint_address,
++    .debug_check_watchpoint = arm_debug_check_watchpoint,
++    .debug_check_breakpoint = arm_debug_check_breakpoint,
++#endif /* !CONFIG_USER_ONLY */
++};
++#endif /* CONFIG_TCG */
 +
-+    switch (reg) {
-+    case IDX_IP_REG:
-+        return gdb_get_regl(buf, eip_from_unwind(env, tb, data[0]));
-+
-+    case IDX_FLAGS_REG:
-+        cc_op = data[1];
-+        if (cc_op == CC_OP_DYNAMIC) {
-+            cc_op = env->cc_op;
-+        }
-+        return gdb_get_reg32(buf, cpu_compute_eflags_ccop(env, cc_op));
-+
-+    default:
-+        g_assert_not_reached();
-+    }
-+}
-+
- #ifndef CONFIG_USER_ONLY
- static bool x86_debug_check_breakpoint(CPUState *cs)
+ static void aarch64_cpu_class_init(ObjectClass *oc, void *data)
  {
-@@ -110,6 +148,8 @@ static const TCGCPUOps x86_tcg_ops = {
-     .initialize = tcg_x86_init,
-     .synchronize_from_tb = x86_cpu_synchronize_from_tb,
-     .restore_state_to_opc = x86_restore_state_to_opc,
-+    .plugin_need_unwind_for_reg = x86_plugin_need_unwind_for_reg,
-+    .plugin_unwind_read_reg = x86_plugin_unwind_read_reg,
-     .cpu_exec_enter = x86_cpu_exec_enter,
-     .cpu_exec_exit = x86_cpu_exec_exit,
- #ifdef CONFIG_USER_ONLY
+     CPUClass *cc = CPU_CLASS(oc);
+@@ -802,6 +828,10 @@ static void aarch64_cpu_class_init(ObjectClass *oc, void *data)
+     cc->gdb_core_xml_file = "aarch64-core.xml";
+     cc->gdb_arch_name = aarch64_gdb_arch_name;
+ 
++#ifdef CONFIG_TCG
++    cc->tcg_ops = &aarch64_tcg_ops;
++#endif
++
+     object_class_property_add_bool(oc, "aarch64", aarch64_cpu_get_aarch64,
+                                    aarch64_cpu_set_aarch64);
+     object_class_property_set_description(oc, "aarch64",
 -- 
 2.34.1
 
