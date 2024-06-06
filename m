@@ -2,53 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18C248FE37C
+	by mail.lfdr.de (Postfix) with ESMTPS id C5E898FE37E
 	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jun 2024 11:53:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sF9oO-0000AP-G9; Thu, 06 Jun 2024 05:53:36 -0400
+	id 1sF9oQ-0000B2-8x; Thu, 06 Jun 2024 05:53:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1sF9oN-00009z-5D
+ id 1sF9oN-0000A8-IY
  for qemu-devel@nongnu.org; Thu, 06 Jun 2024 05:53:35 -0400
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1sF9oK-0002GS-Uj
- for qemu-devel@nongnu.org; Thu, 06 Jun 2024 05:53:34 -0400
+ id 1sF9oM-0002Gw-4x
+ for qemu-devel@nongnu.org; Thu, 06 Jun 2024 05:53:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
- Message-Id:Date:To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:
- Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
- :Resent-Message-ID:In-Reply-To:References;
- bh=V/ohVCg/O3eFdXiCWfSvOJH0uNqMmaBrn20gYrGtWr8=; b=SumT0Qo0I98rUj0S1ToZSCIeo7
- fcYKyWO2Jb0caay6PbKb8DnFqKZ8/xYJjB/dRcmfnPIpRAJvMjSsPq3EtCWUpMfw7qdgqQxAWNzam
- q8IRjCtXMObpinQMqINSCk8p4Lmum0UYV1P7dvU1UbWGxIPScxxtXLrqHcceV27RcqVWbRDMpOGEc
- Bm1vdw6AdpRX3XZua2Qh2peakDdCmyfKic9SBPzULPQUM6hGeYdUGY2e+tt1ZJDFN8i92cG4O1ozp
- FBE6qDfldmiIr5oCQzuytnPiAauUp2TJVDjmtga6FoC998TRHvJDKDTmLJ+/arRVlTSWdR2PkRZ76
- rO6JoBkVy5JDPrTkUw0Cah9x0jAiSYjjr8FC2waS9VXDEvKyA+bX1hZnA5ueWeQsQ8a6jN7yPX34q
- AfdV0uUQc8Il2Gq+6AUawxL3/PeeGD/F4Yow80HfJpT/XNyuaB7H14i+zWCdsg9HWQtNQ2sl6HpwM
- 00WS86iPAWIKLRCQGXpwvbb2Z2/X/FuGxCQEOFL0/XVc4pIWZx8lollBdKoDgUwLXCBUNtNfxn0cB
- IxZZBJ0LRYQMouNc4e+Oi3IzptCd81X791mlC05XLLm4i5oQfh2pRcmDgDie/06d77WWKA3pshbI7
- oWdjJF0RM5deMwjOjlvTkON2YHJ0z8YlhlhCTauAY=;
+ References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
+ Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+ Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+ bh=Nu2pAJRYDWOZ5hIejNAvJsFAvpoE55P+bBs+0I2hTn8=; b=GRm/j1zeSir1rHaQAwR+MyNlfs
+ iKFbbIKUuYJFJ9qJJbQ9dkFsrxCab+zqdfysxXLckTLdovLzbaugWuxf4gDcjEHKVX95R7S+meHsy
+ MQaSIyw39zT9+t4lnmWMx0WYhX9v91dWRqGyvnNkMjBGjr8fLwuz33nJDPESxHtJ1rhBAW1H5KrnO
+ lcT4mPORgY7wC6R+ZJ3vyCqr2CqyIFHQmbtRkUm7dq+310eXMSDAyKJBKA4zv8qpTEGsFA5GNBgMm
+ eaq0WBbIHw4PgEMCy3a1JZklLgcEL7xuNXaOrJTus64kNDDrybFIbIh/So1i1hHJ/pF14M65C4pcE
+ qE4e31UrNbsCI7IxABTlTwBjxZwgYieZAkV04yM38FivBldroGG4/S2EC7hQ5KRWsWUD/YQC3uPKB
+ K+wsVTUZLEBCZJCtmwpTAOZtOb5uyKcxnnHT8RZbj4Ptzv55JkWFEDjsWWTICWxDwnyEkcy0mFV/d
+ o09+n9IiRVlraA7r6Il+eOJD6FKEP7E6I50gpwuHF2RHD2lmCodj3dqtx4GoMbYoszjh3Be4vmajC
+ VHtpAZ1NLTD9jSaRw9IcY3hwZMq3rXFRLpnP4RlfJvYv4n6+IY0EY4VBr/fZ8EhYIEqHtEvhKUxUv
+ qUmjUvOWSe3xb2791BvsjzSoFP9z0R/cr+nXtADCw=;
 Received: from [2a02:8012:c93d:0:260e:bf57:a4e9:8142]
  (helo=cheesecake.fritz.box)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1sF9mz-0004cT-1V; Thu, 06 Jun 2024 10:52:13 +0100
+ id 1sF9n3-0004cT-D1; Thu, 06 Jun 2024 10:52:17 +0100
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: pbonzini@redhat.com,
 	qemu-devel@nongnu.org
-Date: Thu,  6 Jun 2024 10:53:15 +0100
-Message-Id: <20240606095319.229650-1-mark.cave-ayland@ilande.co.uk>
+Date: Thu,  6 Jun 2024 10:53:16 +0100
+Message-Id: <20240606095319.229650-2-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240606095319.229650-1-mark.cave-ayland@ilande.co.uk>
+References: <20240606095319.229650-1-mark.cave-ayland@ilande.co.uk>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a02:8012:c93d:0:260e:bf57:a4e9:8142
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH 0/4] target/i386: fixes for OS/2 Warp
+Subject: [PATCH 1/4] target/i386: use local X86DecodedOp in gen_POP()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -74,26 +76,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series contains two fixes which allow booting OS/2 Warp in QEMU with TCG
-(currently it only boots with KVM).
-
-Patches 1 and 2 are tidy-ups which prepare for the POP SP fix in patch 3, whilst
-patch 4 is the final fix for ENTER that allows my test image to boot
-successfully.
+This will make subsequent changes a little easier to read.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+---
+ target/i386/tcg/emit.c.inc | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-
-Mark Cave-Ayland (4):
-  target/i386: use local X86DecodedOp in gen_POP()
-  target/i386: use gen_writeback() within gen_POP()
-  target/i386: fix SP when taking a memory fault during POP
-  target/i386: fix size of EBP writeback in gen_enter()
-
- target/i386/tcg/emit.c.inc  | 8 +++++---
- target/i386/tcg/translate.c | 2 +-
- 2 files changed, 6 insertions(+), 4 deletions(-)
-
+diff --git a/target/i386/tcg/emit.c.inc b/target/i386/tcg/emit.c.inc
+index e990141454..a89f8e0ebb 100644
+--- a/target/i386/tcg/emit.c.inc
++++ b/target/i386/tcg/emit.c.inc
+@@ -2564,11 +2564,13 @@ static void gen_PMOVMSKB(DisasContext *s, CPUX86State *env, X86DecodedInsn *deco
+ 
+ static void gen_POP(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
+ {
++    X86DecodedOp *op = &decode->op[0];
+     MemOp ot = gen_pop_T0(s);
+-    if (decode->op[0].has_ea) {
++
++    if (op->has_ea) {
+         /* NOTE: order is important for MMU exceptions */
+         gen_op_st_v(s, ot, s->T0, s->A0);
+-        decode->op[0].unit = X86_OP_SKIP;
++        op->unit = X86_OP_SKIP;
+     }
+     /* NOTE: writing back registers after update is important for pop %sp */
+     gen_pop_update(s, ot);
 -- 
 2.39.2
 
