@@ -2,79 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5743D8FE1A2
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jun 2024 10:54:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A68C98FE139
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jun 2024 10:40:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sF8rR-0007S9-6m; Thu, 06 Jun 2024 04:52:41 -0400
+	id 1sF8ei-0002Db-Mt; Thu, 06 Jun 2024 04:39:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lists@philjordan.eu>)
- id 1sF8rI-0007Pt-6i
- for qemu-devel@nongnu.org; Thu, 06 Jun 2024 04:52:32 -0400
-Received: from mail-lf1-x12a.google.com ([2a00:1450:4864:20::12a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <lists@philjordan.eu>)
- id 1sF8rD-0007U4-R3
- for qemu-devel@nongnu.org; Thu, 06 Jun 2024 04:52:31 -0400
-Received: by mail-lf1-x12a.google.com with SMTP id
- 2adb3069b0e04-52b950aa47bso1024792e87.1
- for <qemu-devel@nongnu.org>; Thu, 06 Jun 2024 01:52:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1717663942; x=1718268742;
- darn=nongnu.org; 
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=MAdl9HG0A7SD6J5iLlRnKo1H1NZFxZUyoafYbOzAsuE=;
- b=czoqxu+8GpAYjPZa+SNhrWbiLywuQmiuJtqWtutSLH1eV8YTdv0S8VJsL1hhwUCmp+
- UTPfOzWVFg8l2wcjWRQISk9t6pkYVYJajpCfeJ+iatR+PG3XUcgTS+pSGBL9LMMOUL3U
- qGISr/N5hQhygysso0mhlpRu1uEeWXYXist0EvfbgAr7XZfAc8JD83i03ww44E1XiZIe
- s3KvONjMUkrAOCCqbVDeU1V+Fg/HGNcAlvgVAmgijLcxucMtbmt91TDyuXsRCSlxXQLi
- xyYPlJEd76E2bmJzpwLXQSWrib6jxYdx7Eywl4EcSzLocAzkxdgN0Dq87wO4FvgqYMWS
- UDfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717663942; x=1718268742;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=MAdl9HG0A7SD6J5iLlRnKo1H1NZFxZUyoafYbOzAsuE=;
- b=nlcxilqlvyFSJZoYnSwXDeJefve+vp7nXim7wDw709kLRuqW53tHUTzmC0wNJ8NtVP
- hdHCnQdjm6kIhm/RM81XAi9adFFso2z/tus+AAR7m0Fp1dWaITKmNbM0AJGwQYB4JXE+
- j4+7NzExWcIjFkFbXIVfkkg7gDqGzK8SYZc0IyFjNgD+pyCAjWPS82MSIqoYDqio9yEF
- mftqUam/2gdr01auCrb2txJuhD19r66uAZop2hXNIUPPSteNgV0rPWBhZeGuqg5WGPiR
- C9mL5L94++xAVePUTIiTR3sMew/lpmmPO4At6+BBmIqFpAAFl0lvfnsrjH1U38pGRx4e
- /fPg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUyU3cVQyS0xU/Whx0M0d/1sSIMDpzdxXBipwXlncE7BIm4MH56wGZUd2wYw6QYH3AB4aVk/0kjnEvBmDvgtpg3SzGngUQ=
-X-Gm-Message-State: AOJu0YzzLQNY9XCup+Ldpx5hHzgCnq3wZG21feyP1KyTrZqdBP3V7ZZc
- KV7PFM73y9lbwR05rljiNhzUMZ0/ybP0pq6jyIxiNv+4CX48g9eKyecraRVc08iCrIa24KKEhRw
- oNcWG8UQe/809HZhZDgt94ugK0bCxjLFhpv0b2qmqc22TgWo=
-X-Google-Smtp-Source: AGHT+IGT1IgCHeqhQI2n/zFaBui44Iy6XVK0HwUPkCgYQuH6Dsyv++q/a09sVJUc+QqtXWNr7z97V4ceaN648M18Ej8=
-X-Received: by 2002:ac2:4c1a:0:b0:52b:88ec:b425 with SMTP id
- 2adb3069b0e04-52bab4dd705mr2772891e87.27.1717663941162; Thu, 06 Jun 2024
- 01:52:21 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sF8ee-0002DP-W5
+ for qemu-devel@nongnu.org; Thu, 06 Jun 2024 04:39:29 -0400
+Received: from mgamail.intel.com ([192.198.163.18])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sF8ed-0004nc-2h
+ for qemu-devel@nongnu.org; Thu, 06 Jun 2024 04:39:28 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1717663167; x=1749199167;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=O3uw5Ndb6sbyAdzF8DKyuQuxvsyqDFaZheHCc+LV6cU=;
+ b=lctA5EWK/xz0aLIiLnRrXlZEaxWWUUAUCfuX+ZftA9cT8MfG8G1dL4qo
+ Hox52HjXwrNq3hGAMc9cmMe6/QbVKvZlW8uKVUuiMiDV4pCTrUq6ZYLzx
+ FMFl4jZi6qqw+XBeUpnCTcoTMLaBQjoU8ixjvF7rUB//gwB3T6H6E8r+Q
+ xpP/fMqBirH9hUGNMppOU1qZ77SouRIPK5djny/kLDVgi8y+cLaO0m5zv
+ VFPtmVrRQekH+gbGAFRPi+6YjtsizvGwp9qEWp/dEnWV3RV1LeNnSjhC9
+ MSeU64Ypi3KtKDxmn8Hw8dbP2U5uye4KL3Q7DvTgSXYycMeB0FKiboTa0 g==;
+X-CSE-ConnectionGUID: f1ULOJ3STfG2Bm5zSrbXJg==
+X-CSE-MsgGUID: gv1C6GDwQo+BLD3EDKdo0w==
+X-IronPort-AV: E=McAfee;i="6600,9927,11094"; a="14058982"
+X-IronPort-AV: E=Sophos;i="6.08,218,1712646000"; d="scan'208";a="14058982"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Jun 2024 01:39:24 -0700
+X-CSE-ConnectionGUID: IoVW7Cj+StWAGGtZ7rKWbw==
+X-CSE-MsgGUID: Oygk6NrLS/GfnRYay2UDEg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,218,1712646000"; d="scan'208";a="37956760"
+Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
+ by orviesa009.jf.intel.com with ESMTP; 06 Jun 2024 01:39:22 -0700
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>
+Cc: qemu-devel@nongnu.org,
+	Zhao Liu <zhao1.liu@intel.com>
+Subject: [PATCH] docs: i386: pc: Avoid mentioning limit of maximum vCPUs
+Date: Thu,  6 Jun 2024 16:54:36 +0800
+Message-Id: <20240606085436.2028900-1-zhao1.liu@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20240605112556.43193-1-phil@philjordan.eu>
- <20240606082217.2459102-2-pbonzini@redhat.com>
-In-Reply-To: <20240606082217.2459102-2-pbonzini@redhat.com>
-From: Phil Dennis-Jordan <lists@philjordan.eu>
-Date: Thu, 6 Jun 2024 10:52:09 +0200
-Message-ID: <CAGCz3vsXwbB6Lk6SyKCbUey_fdgD2CGin-X-E1iqgKaHes3CGA@mail.gmail.com>
-Subject: Re: [PATCH v3 0/7] hvf x86 correctness and efficiency improvements
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Phil Dennis-Jordan <phil@philjordan.eu>, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: neutral client-ip=2a00:1450:4864:20::12a;
- envelope-from=lists@philjordan.eu; helo=mail-lf1-x12a.google.com
-X-Spam_score_int: -10
-X-Spam_score: -1.1
-X-Spam_bar: -
-X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NEUTRAL=0.779, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=192.198.163.18; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,28 +82,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 6 Jun 2024 at 10:24, Paolo Bonzini <pbonzini@redhat.com> wrote:
-> Queued, thanks.
+Different versions of PC machine support different maximum vCPUs, and
+even different features have limits on the maximum number of vCPUs (
+For example, if x2apic is not enabled in the TCG case, the maximum of
+255 vCPUs are supported).
 
-Thanks - also for reviewing, etc.!
+It is difficult to list the maximum vCPUs under all restrictions. Thus,
+to avoid confusion, avoid mentioning specific maximum vCPU number
+limitations here.
 
-> Thanks for persisting!  It sucks that the hv_vcpu_interrupt() API docs
-> are not clear, but your tests are great.  The self-interrupt one is
-> the case that I was most worried about, and you're covering it.
-> Sorry for being a pain for nothing, at least retrospectively.
+Suggested-by: Daniel P. Berrangé <berrange@redhat.com>
+Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+---
+ docs/system/target-i386-desc.rst.inc | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-No worries - the concern is understandable, especially in the face of
-the unfortunate apparent regression which turned out to be the dirty
-page tracking bug.
+diff --git a/docs/system/target-i386-desc.rst.inc b/docs/system/target-i386-desc.rst.inc
+index 319e540573d3..ae312b1c1e61 100644
+--- a/docs/system/target-i386-desc.rst.inc
++++ b/docs/system/target-i386-desc.rst.inc
+@@ -36,7 +36,8 @@ The QEMU PC System emulator simulates the following peripherals:
+ -  PCI UHCI, OHCI, EHCI or XHCI USB controller and a virtual USB-1.1
+    hub.
+ 
+-SMP is supported with up to 255 CPUs (and 4096 CPUs for PC Q35 machine).
++SMP is supported with a large number of virtual CPUs (upper limit is
++configuration dependent).
+ 
+ QEMU uses the PC BIOS from the Seabios project and the Plex86/Bochs LGPL
+ VGA BIOS.
+-- 
+2.34.1
 
-And I agree, the hv_vcpu_interrupt docs, along with the rest of
-Hypervisor.framework's, are terrible. There does not appear to have
-been any thought about what a developer using that API might care
-about. I've been working on integrating the HVF APIC/PIC/IOAPIC
-implementations, and there are ambiguities and edge cases galore.
-Unfortunately (?), the perf improvement is worth the trouble of trial
-& error=E2=80=A6
-
-
-Phil
 
