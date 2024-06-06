@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E6D68FDD7D
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jun 2024 05:30:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 595038FDD81
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jun 2024 05:31:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sF3p8-0003cj-3q; Wed, 05 Jun 2024 23:29:58 -0400
+	id 1sF3pZ-0003iN-SK; Wed, 05 Jun 2024 23:30:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sF3or-0003X8-7r
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 23:29:41 -0400
-Received: from mail-pg1-x531.google.com ([2607:f8b0:4864:20::531])
+ id 1sF3os-0003XB-0E
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 23:29:42 -0400
+Received: from mail-pj1-x1033.google.com ([2607:f8b0:4864:20::1033])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sF3ok-0003mU-6r
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 23:29:40 -0400
-Received: by mail-pg1-x531.google.com with SMTP id
- 41be03b00d2f7-6ce533b6409so345279a12.1
- for <qemu-devel@nongnu.org>; Wed, 05 Jun 2024 20:29:33 -0700 (PDT)
+ id 1sF3ok-0003mZ-UP
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 23:29:41 -0400
+Received: by mail-pj1-x1033.google.com with SMTP id
+ 98e67ed59e1d1-2c24115469bso1202063a91.0
+ for <qemu-devel@nongnu.org>; Wed, 05 Jun 2024 20:29:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1717644572; x=1718249372; darn=nongnu.org;
+ d=linaro.org; s=google; t=1717644573; x=1718249373; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=1OdJEwOKA51hh/7jatyHlydDt1TQ7phcNBkbolfhN74=;
- b=CSM/W7SIRu8RNzQ4aHIKpWqNjK6iGijmrnrDw/9SNv6kjVmkzAlfu8aE6+bbsVzl38
- XEFE3Eoi6WOGy4I7BkdIndyARf6kOxC7VVRGAVRtL6LSIl2h9G3QkkxxbAYD+tKpykjU
- T32rwQ66cjAbt1fAUegK5j5FFPXn2SUdfEygm7WgSgXQS98zk51FQnAzhfGWAD1GmfOV
- aQachKpEATxznCXXkguETMqnyNS5MQ474KoFJq4i+GVzssKlSAX5ruaDOUNgKOc+RngY
- 3tkJM8fwAp7VtE360Xl+qHDdnslyr+CuH2Vq4ngKkLSSZ55b9bsgBDrxuRzLKyHqmZa9
- oo6Q==
+ bh=+Ta0pM6KcQt7rsvA3Ju6z7MgKxBm5RGfKrSL9DmIR7Q=;
+ b=yF5Jty6EHL2gesYbeckoTJGLhrPxUYGX4SPSngMw/Wwr3/ZkdHaVVNZPWFgcHUd6Wv
+ EHKV+tCYQ8WRxMALtCYXqCCcED23CwsAz6lYSoXpcZBjimwQV9mUMJa3NQ/CdHneM0Ru
+ lUuNSRUWjwAXI664meIHepiEEcf4t4cC6+daHkBi0yWolnqDto6JotRCtY1LPA5BdmPq
+ YZ6GBiJrF5gVlWz2ZBTZds7QEKjwFbWZuq6Pnp2+FK/3JHb4jckf41ByzoOmSjSYJlY9
+ VnF6yvwd4HadOvHyeqJ/grIXYnJn2oB0xt6mnomL3NVYYVKniUZjaFhxNAeDO8M1RiyH
+ CLRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717644572; x=1718249372;
+ d=1e100.net; s=20230601; t=1717644573; x=1718249373;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=1OdJEwOKA51hh/7jatyHlydDt1TQ7phcNBkbolfhN74=;
- b=m5amh1UJUIQ/W4CH7e2rdr54Yaxh5FWmj+XrGvGz+LuoDWRwfZZmEjknBybZecLjeQ
- Ol6P2RLcfwWplNFTO9hk9Ot0xacGhwxrUcQjHSgD5JJaGUEMwW+D8dMAxuDnzs2M+kbX
- 3TJZeiFBN71udb1d9gn3+FplMds9olbA6M+HjI/MA1xvkn29rM4goezWRmpKjU3WQAbY
- OifZUeBKy7a/Fb2pMfPsOqqGd3jGruiaVb2JfU2H2RT3Zc+0iJGN4uRk4xkB3yBleopU
- ZqHqplIFQKXy3Z0B789QaJ1Z9vAPvQnXe22zWiPzNBnrqRyMnBBmbyiD0n4BSgvS5yiH
- Utcg==
-X-Gm-Message-State: AOJu0YyQiZpLqduw6pNzj9vDwBgfdhfG2Z+OwOHBjtZjcOlgMj2vPVjX
- eAFiLBwGFywxj1xMV9RnrjZdgdyg1zCGY7crq3+XwfcmWqVe5WMEQt6tGR5VQuUbsn31HUZLa5P
- g
-X-Google-Smtp-Source: AGHT+IG3XyaAUyvOg4qgjAL4twei/oxJLiiuUEVrwZHv7dLYA/y42GEIAcJa1YTSqBCilhXOyOMXkQ==
-X-Received: by 2002:a17:90a:e547:b0:2c2:792c:b5c4 with SMTP id
- 98e67ed59e1d1-2c27daf9835mr4356506a91.10.1717644572360; 
- Wed, 05 Jun 2024 20:29:32 -0700 (PDT)
+ bh=+Ta0pM6KcQt7rsvA3Ju6z7MgKxBm5RGfKrSL9DmIR7Q=;
+ b=PoEJFrtzOEQ6XJTSNi0maP8FDKzojVZcVzimE2WaemDOZtAbGrr+uxJPFNk3oFQNrt
+ Pv4ub2U+4lx77NFDZXUlwvV0vyJ4jjHwyhoCNpjiIAMycnAGKZal6YLx/GQZDhiljyrI
+ J6l1tiw+JGS7Z85f6pu4utfHmkAGjVNvHG4AeL/XBg84xXFQRk+xAVzm+r+6c4JiU18H
+ O7jIz2Nu6av8wxZubZZ3+xB+jMuhwJFxfOM8ZA2YslxagH8/J3/7isfgqpb3ZsU85Nj3
+ wwiY6LqDjaWbrws1TgcMY/jddANC36SpSr+NvGnrxNab1VxZcSvh5Zsk/0CJ26gkjOgt
+ eKRw==
+X-Gm-Message-State: AOJu0Yxjjh2R2aYVyrxMdi0NtrSQz8CESar5QsCy/0IG9JTljvg/vIX/
+ 4VfRMFfE/5Odldop1s6tHPges87S18Knr7WBs/C+ORwtkfBqO8+EcLS2ywhhsldcMsuQ+ygPITk
+ K
+X-Google-Smtp-Source: AGHT+IEWvSQsT24ICh++D3LKliJRwg/QrL32ICiA72WqTPwr/Ewe709Ti3q4g0YAxBBOLljPKegXHQ==
+X-Received: by 2002:a17:90a:b014:b0:2bf:9eb3:cea7 with SMTP id
+ 98e67ed59e1d1-2c299a04728mr1839256a91.24.1717644573154; 
+ Wed, 05 Jun 2024 20:29:33 -0700 (PDT)
 Received: from stoup.. ([71.212.132.216]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2c254a76729sm4826265a91.0.2024.06.05.20.29.31
+ 98e67ed59e1d1-2c254a76729sm4826265a91.0.2024.06.05.20.29.32
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 05 Jun 2024 20:29:31 -0700 (PDT)
+ Wed, 05 Jun 2024 20:29:32 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: pierrick.bouvier@linaro.org,
 	alex.bennee@linaro.org
-Subject: [PATCH v2 5/9] target/i386: Split out gdb-internal.h
-Date: Wed,  5 Jun 2024 20:29:22 -0700
-Message-Id: <20240606032926.83599-6-richard.henderson@linaro.org>
+Subject: [PATCH v2 6/9] target/i386: Introduce cpu_compute_eflags_ccop
+Date: Wed,  5 Jun 2024 20:29:23 -0700
+Message-Id: <20240606032926.83599-7-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240606032926.83599-1-richard.henderson@linaro.org>
 References: <20240606032926.83599-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::531;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x531.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1033;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1033.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,98 +92,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+This is a generalization of cpu_compute_eflags, with a dynamic
+value of cc_op, and is thus tcg specific.
+
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/i386/gdb-internal.h | 65 ++++++++++++++++++++++++++++++++++++++
- target/i386/gdbstub.c      |  1 +
- 2 files changed, 66 insertions(+)
- create mode 100644 target/i386/gdb-internal.h
+ target/i386/cpu.h           |  2 ++
+ target/i386/tcg/cc_helper.c | 10 ++++++++++
+ 2 files changed, 12 insertions(+)
 
-diff --git a/target/i386/gdb-internal.h b/target/i386/gdb-internal.h
-new file mode 100644
-index 0000000000..7cf4c1a656
---- /dev/null
-+++ b/target/i386/gdb-internal.h
-@@ -0,0 +1,65 @@
-+/*
-+ * x86 gdb server stub
-+ *
-+ * Copyright (c) 2003-2005 Fabrice Bellard
-+ * Copyright (c) 2013 SUSE LINUX Products GmbH
-+ *
-+ * This library is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU Lesser General Public
-+ * License as published by the Free Software Foundation; either
-+ * version 2.1 of the License, or (at your option) any later version.
-+ *
-+ * This library is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-+ * Lesser General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU Lesser General Public
-+ * License along with this library; if not, see <http://www.gnu.org/licenses/>.
-+ */
-+
-+#ifndef I386_GDB_INTERNAL_H
-+#define I386_GDB_INTERNAL_H
-+
-+/*
-+ * Keep these in sync with assignment to
-+ * gdb_num_core_regs in target/i386/cpu.c
-+ * and with the machine description
-+ */
-+
-+/*
-+ * SEG: 6 segments, plus fs_base, gs_base, kernel_gs_base
-+ */
-+
-+/*
-+ * general regs ----->  8 or 16
-+ */
-+#define IDX_NB_IP       1
-+#define IDX_NB_FLAGS    1
-+#define IDX_NB_SEG      (6 + 3)
-+#define IDX_NB_CTL      6
-+#define IDX_NB_FP       16
-+/*
-+ * fpu regs ----------> 8 or 16
-+ */
-+#define IDX_NB_MXCSR    1
-+/*
-+ *          total ----> 8+1+1+9+6+16+8+1=50 or 16+1+1+9+6+16+16+1=66
-+ */
-+
-+#define IDX_IP_REG      CPU_NB_REGS
-+#define IDX_FLAGS_REG   (IDX_IP_REG + IDX_NB_IP)
-+#define IDX_SEG_REGS    (IDX_FLAGS_REG + IDX_NB_FLAGS)
-+#define IDX_CTL_REGS    (IDX_SEG_REGS + IDX_NB_SEG)
-+#define IDX_FP_REGS     (IDX_CTL_REGS + IDX_NB_CTL)
-+#define IDX_XMM_REGS    (IDX_FP_REGS + IDX_NB_FP)
-+#define IDX_MXCSR_REG   (IDX_XMM_REGS + CPU_NB_REGS)
-+
-+#define IDX_CTL_CR0_REG     (IDX_CTL_REGS + 0)
-+#define IDX_CTL_CR2_REG     (IDX_CTL_REGS + 1)
-+#define IDX_CTL_CR3_REG     (IDX_CTL_REGS + 2)
-+#define IDX_CTL_CR4_REG     (IDX_CTL_REGS + 3)
-+#define IDX_CTL_CR8_REG     (IDX_CTL_REGS + 4)
-+#define IDX_CTL_EFER_REG    (IDX_CTL_REGS + 5)
-+
-+#endif
-diff --git a/target/i386/gdbstub.c b/target/i386/gdbstub.c
-index 4acf485879..96b4382a5d 100644
---- a/target/i386/gdbstub.c
-+++ b/target/i386/gdbstub.c
-@@ -20,6 +20,7 @@
- #include "qemu/osdep.h"
- #include "cpu.h"
- #include "gdbstub/helpers.h"
-+#include "gdb-internal.h"
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index c64ef0c1a2..48ad6f495b 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -2431,6 +2431,8 @@ void cpu_x86_inject_mce(Monitor *mon, X86CPU *cpu, int bank,
  
- #ifdef TARGET_X86_64
- static const int gpr_map[16] = {
+ uint32_t cpu_cc_compute_all(CPUX86State *env1);
+ 
++uint32_t cpu_compute_eflags_ccop(CPUX86State *env, CCOp op);
++
+ static inline uint32_t cpu_compute_eflags(CPUX86State *env)
+ {
+     uint32_t eflags = env->eflags;
+diff --git a/target/i386/tcg/cc_helper.c b/target/i386/tcg/cc_helper.c
+index f76e9cb8cf..8203682ca8 100644
+--- a/target/i386/tcg/cc_helper.c
++++ b/target/i386/tcg/cc_helper.c
+@@ -225,6 +225,16 @@ uint32_t cpu_cc_compute_all(CPUX86State *env)
+     return helper_cc_compute_all(CC_DST, CC_SRC, CC_SRC2, CC_OP);
+ }
+ 
++uint32_t cpu_compute_eflags_ccop(CPUX86State *env, CCOp op)
++{
++    uint32_t eflags;
++
++    eflags = helper_cc_compute_all(CC_DST, CC_SRC, CC_SRC2, op);
++    eflags |= env->df & DF_MASK;
++    eflags |= env->eflags & ~(VM_MASK | RF_MASK);
++    return eflags;
++}
++
+ target_ulong helper_cc_compute_c(target_ulong dst, target_ulong src1,
+                                  target_ulong src2, int op)
+ {
 -- 
 2.34.1
 
