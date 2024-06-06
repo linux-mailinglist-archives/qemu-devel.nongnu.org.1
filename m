@@ -2,89 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E7DB8FE0BF
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jun 2024 10:18:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B32618FE0A8
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jun 2024 10:12:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sF8JY-0002b5-8Q; Thu, 06 Jun 2024 04:17:40 -0400
+	id 1sF8EB-0007tq-J2; Thu, 06 Jun 2024 04:12:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1sF8JW-0002Yy-HU
- for qemu-devel@nongnu.org; Thu, 06 Jun 2024 04:17:38 -0400
-Received: from mail-lj1-x230.google.com ([2a00:1450:4864:20::230])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1sF8JU-0000cy-6C
- for qemu-devel@nongnu.org; Thu, 06 Jun 2024 04:17:38 -0400
-Received: by mail-lj1-x230.google.com with SMTP id
- 38308e7fff4ca-2eacd7e7ad7so8328641fa.3
- for <qemu-devel@nongnu.org>; Thu, 06 Jun 2024 01:17:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1717661853; x=1718266653; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to
- :references:user-agent:subject:cc:to:from:date:from:to:cc:subject
- :date:message-id:reply-to;
- bh=yPskSSs4QP/AmtFrMRW6vALHS2N7oEPdODcqp1a6qso=;
- b=yQBaJH8zGqsWkhtzFRDJZZ1hkt9M5n3yfpO9qTsOSW3ui2f0tRwIPECClL9e9di2Vk
- OV+qRi7sdvrcxWwboo5jHOozdILJ7sEjQUJ8L0Q8FdWdecJAxetthMAawaAlXEwl9iYA
- D91XNm85kB0B3hqx9AbX8g9PurLn1OxXrU5GYxKLuX/6qaLxcOFec5gLyAOCLHOPaNHd
- 7sjR5FQcJDj38DGzWEAXTm6YDizGHRzceYcUKgR7XcyNIgSFLcfHdXxnhwuQ5h50mezc
- YLckqaO9SEeH6Ul3GyAVSWp/IrMJZnY7GxHt51woxcEGzUemKrcS8aZvLFSrUg8MmLTA
- VrRw==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1sF8E7-0007tP-GF
+ for qemu-devel@nongnu.org; Thu, 06 Jun 2024 04:12:03 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1sF8E5-0007uw-MK
+ for qemu-devel@nongnu.org; Thu, 06 Jun 2024 04:12:03 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1717661520;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=nfp19UPOB20xbdbfrYsfsdXmc0VAypqgspHKW+ngL4U=;
+ b=J3DzLyMOI9mrDkuJP2lpJ6gUD3FEF18oa7E6CKGntOa7mYkxq2EeplrI47rTlvq4R7A9Rb
+ l/BwLS4DbhrgGECiyHNsUzWF78B49CxCM/G6f9m/B+WspRnQddjg4xMuVGFFu6WIhXZx/6
+ u+a0UHIVu5ThO+am4OEG6czHYtdbC8E=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-662-4XnAH9q2OyaJpIxvUhVP2w-1; Thu, 06 Jun 2024 04:11:58 -0400
+X-MC-Unique: 4XnAH9q2OyaJpIxvUhVP2w-1
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-a68f654dc69so63344766b.1
+ for <qemu-devel@nongnu.org>; Thu, 06 Jun 2024 01:11:58 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717661853; x=1718266653;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to
- :references:user-agent:subject:cc:to:from:date:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=yPskSSs4QP/AmtFrMRW6vALHS2N7oEPdODcqp1a6qso=;
- b=NV8gLcdDDuT3orBO2IjI09mkNlDZoJoohU58LtNk9PlxSS1YSr3mmwHWy76RbOJMmh
- 8+Ab1T+gBfN/zN/nbQf6L8AoJL7uz2ge5imbP34MCX8hQFdPHJG2zs1YlAOpHcQd9mHN
- NlWmX4Fil9ve4+srrhhBtpWm25J2kIW+ditN8gMJVlUfdx2vywHKNGgpZznU2ItsCMHh
- GaKhNZBc2AwBygbSbekLgbAEiQOH23srT+OqZKdPjZXgoe83APSIMj4ABjNV5r4JUXFp
- KhI005wvxLYO1EJbyVWN/Xbtvxo/pH/PtgHSTsR4gswhPJ57j7T2kqTqfaObxttYECp4
- 3FlQ==
-X-Gm-Message-State: AOJu0YyJc8hqrXqoDgu0QVny3nJhGy8CrBsQJBxiKBhoUmehdbGRL7ac
- guuYmDtKUyvPSAG8VSifj8xqS2pugZ71MX36ewNk+CMz3E6D9NmjQBo0xAZXdJ0eZhhNobPahUQ
- gc38=
-X-Google-Smtp-Source: AGHT+IFt1sUOCnxHNaf7LsmCFO9S9KqZsEifhMkT8IVCN0iRy7eXHXpPF8lurRnwGH4R25hq9iz9tg==
-X-Received: by 2002:a2e:a7d6:0:b0:2ea:ca11:eef3 with SMTP id
- 38308e7fff4ca-2eaca11f015mr28480151fa.4.1717661852709; 
- Thu, 06 Jun 2024 01:17:32 -0700 (PDT)
-Received: from meli-email.org (adsl-33.109.242.225.tellas.gr. [109.242.225.33])
+ d=1e100.net; s=20230601; t=1717661517; x=1718266317;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=nfp19UPOB20xbdbfrYsfsdXmc0VAypqgspHKW+ngL4U=;
+ b=FPWCHz5hLYumlhxIH/hm12TU4yxRbnFv4SiBqjEfubXoAWKJHXMMdmyQiXh8FYV+cI
+ ScR2AvrTl4S6VZ6aNSZrmnMvGEGclh/ohdFsoU712ultoPqxzJF6dTMemyWw8yxuz9md
+ dpZqWjlq3vL8LDDULTedwiw3DiMem9E9wTOITpGL/rhbdCGxct6npDIRrjaBVEYy2R18
+ xdY8bZlvwm5uRPEKGw8Cq24GtjfHMU195grRm1qM6Enmd607D7iiR/izl+RE+RjeJhvC
+ U5aO7ajkzwGiZzCpnAtYQgEdVYhI7/Ic8FfIl1l0gfiG9doVXw3cbzGg+Dbu/Ng4X+pi
+ cSlw==
+X-Gm-Message-State: AOJu0Yy9ongtmTXZ0O620HeHMDeVD1S/xxW7jtN1JXFAIg5W5Lj3bBkf
+ iJc31DoPiav1hYfUebzW9Zu4OE3IEHJEK87w/NqIK1L+wX8Ru6gvDNIjIQ596J0dMbbdvu8rAsr
+ OgyEju1H6t/sYX2RCRKS2WHwqtaa5tmID+zHMVP9yzJcXLWRWDu6knKww+r4PoDR6mAvO0TgK06
+ yGUBiEg+AU6LOtAbbw0iRVocKGJo8iyFjWnP1C
+X-Received: by 2002:a17:906:3650:b0:a69:280:f379 with SMTP id
+ a640c23a62f3a-a699f88c6d8mr370081066b.45.1717661516403; 
+ Thu, 06 Jun 2024 01:11:56 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHlGWGjkenTA70Qm4nG1gz6DmejD1cgJAWiuUSJv8K31825bl+TD/cSr/lVVQk/DMMnCq2dvA==
+X-Received: by 2002:a17:906:3650:b0:a69:280:f379 with SMTP id
+ a640c23a62f3a-a699f88c6d8mr370078366b.45.1717661515831; 
+ Thu, 06 Jun 2024 01:11:55 -0700 (PDT)
+Received: from avogadro.local ([151.81.115.112])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4215c2c690dsm12950475e9.34.2024.06.06.01.17.32
+ a640c23a62f3a-a6c805c9e13sm60544666b.54.2024.06.06.01.11.55
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 06 Jun 2024 01:17:32 -0700 (PDT)
-Date: Thu, 06 Jun 2024 11:08:42 +0300
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-To: qemu-devel@nongnu.org,
- "Daniel P. Berrang=?UTF-8?B?w6k=?= " <berrange@redhat.com>
-Cc: Thomas Huth <thuth@redhat.com>, Konstantin Kostiuk <kkostiuk@redhat.com>,
- Michael Roth <michael.roth@amd.com>,
- Philippe Mathieu-Daud=?UTF-8?B?w6kg?=<philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- "Daniel P. Berrang=?UTF-8?B?w6k=?= " <berrange@redhat.com>,
- Marc-Andr=?UTF-8?B?w6kg?=Lureau <marcandre.lureau@redhat.com>
-Subject: Re: [PATCH 02/20] qga: move linux vcpu command impls to
- commands-linux.c
-User-Agent: meli 0.8.5
-References: <20240604134933.220112-1-berrange@redhat.com>
- <20240604134933.220112-3-berrange@redhat.com>
-In-Reply-To: <20240604134933.220112-3-berrange@redhat.com>
-Message-ID: <engd6.q216wfwyfd8b@linaro.org>
+ Thu, 06 Jun 2024 01:11:55 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Subject: [PATCH 0/2] python: expect a working python3-tomli package for Python
+ <3.11
+Date: Thu,  6 Jun 2024 10:11:51 +0200
+Message-ID: <20240606081153.2457559-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.45.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset=utf-8; format=flowed
-Received-SPF: pass client-ip=2a00:1450:4864:20::230;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-lj1-x230.google.com
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -101,329 +98,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 04 Jun 2024 16:49, "Daniel P. Berrangé" <berrange@redhat.com> wrote:
->The qmp_guest_set_vcpus and qmp_guest_get_vcpus command impls in
->commands-posix.c are surrounded by '#ifdef __linux__' so should
->instead live in commands-linux.c
->
->Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
->---
+pythondeps.toml is parsed using either Python's embedded tomllib parser
+new in Python 3.11, or the external tomli library for older versions.
+The latter however was absent in Ubuntu 20.04, so we include a copy of
+the wheel in python/wheels.  (For Debian bullseye, it is included in
+the backports repository).
 
+Now that Ubuntu 20.04 is not supported anymore, it can be dropped;
+and with it the "ensure" subcommand of mkvenv.py, which was only
+needed to bootstrap the venv with the TOML parser needed by
+"ensuregroup".
 
-Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Back when mkvenv.py was implemented, John and I had an idea of an
+"isolated mode" that does not use any system packages.  With these
+patches this means that, as things stand, the isolated mode can only
+work with Python 3.11+; older versions would need special code in
+mkvenv.py to install tomli from PyPI if system_site_packages==False[1].
+Since the isolated mode does not exist yet, this is left for the future
+comtemplation.
 
-> qga/commands-linux.c | 141 +++++++++++++++++++++++++++++++++++++++++++
-> qga/commands-posix.c | 139 ------------------------------------------
-> 2 files changed, 141 insertions(+), 139 deletions(-)
->
->diff --git a/qga/commands-linux.c b/qga/commands-linux.c
->index 214e408fcd..78580ac39d 100644
->--- a/qga/commands-linux.c
->+++ b/qga/commands-linux.c
->@@ -13,6 +13,7 @@
-> 
-> #include "qemu/osdep.h"
-> #include "qapi/error.h"
->+#include "qga-qapi-commands.h"
-> #include "commands-common.h"
-> #include "cutils.h"
-> #include <mntent.h>
->@@ -284,3 +285,143 @@ int qmp_guest_fsfreeze_do_thaw(Error **errp)
->     return i;
-> }
-> #endif /* CONFIG_FSFREEZE */
->+
->+/* Transfer online/offline status between @vcpu and the guest system.
->+ *
->+ * On input either @errp or *@errp must be NULL.
->+ *
->+ * In system-to-@vcpu direction, the following @vcpu fields are accessed:
->+ * - R: vcpu->logical_id
->+ * - W: vcpu->online
->+ * - W: vcpu->can_offline
->+ *
->+ * In @vcpu-to-system direction, the following @vcpu fields are accessed:
->+ * - R: vcpu->logical_id
->+ * - R: vcpu->online
->+ *
->+ * Written members remain unmodified on error.
->+ */
->+static void transfer_vcpu(GuestLogicalProcessor *vcpu, bool sys2vcpu,
->+                          char *dirpath, Error **errp)
->+{
->+    int fd;
->+    int res;
->+    int dirfd;
->+    static const char fn[] = "online";
->+
->+    dirfd = open(dirpath, O_RDONLY | O_DIRECTORY);
->+    if (dirfd == -1) {
->+        error_setg_errno(errp, errno, "open(\"%s\")", dirpath);
->+        return;
->+    }
->+
->+    fd = openat(dirfd, fn, sys2vcpu ? O_RDONLY : O_RDWR);
->+    if (fd == -1) {
->+        if (errno != ENOENT) {
->+            error_setg_errno(errp, errno, "open(\"%s/%s\")", dirpath, fn);
->+        } else if (sys2vcpu) {
->+            vcpu->online = true;
->+            vcpu->can_offline = false;
->+        } else if (!vcpu->online) {
->+            error_setg(errp, "logical processor #%" PRId64 " can't be "
->+                       "offlined", vcpu->logical_id);
->+        } /* otherwise pretend successful re-onlining */
->+    } else {
->+        unsigned char status;
->+
->+        res = pread(fd, &status, 1, 0);
->+        if (res == -1) {
->+            error_setg_errno(errp, errno, "pread(\"%s/%s\")", dirpath, fn);
->+        } else if (res == 0) {
->+            error_setg(errp, "pread(\"%s/%s\"): unexpected EOF", dirpath,
->+                       fn);
->+        } else if (sys2vcpu) {
->+            vcpu->online = (status != '0');
->+            vcpu->can_offline = true;
->+        } else if (vcpu->online != (status != '0')) {
->+            status = '0' + vcpu->online;
->+            if (pwrite(fd, &status, 1, 0) == -1) {
->+                error_setg_errno(errp, errno, "pwrite(\"%s/%s\")", dirpath,
->+                                 fn);
->+            }
->+        } /* otherwise pretend successful re-(on|off)-lining */
->+
->+        res = close(fd);
->+        g_assert(res == 0);
->+    }
->+
->+    res = close(dirfd);
->+    g_assert(res == 0);
->+}
->+
->+GuestLogicalProcessorList *qmp_guest_get_vcpus(Error **errp)
->+{
->+    GuestLogicalProcessorList *head, **tail;
->+    const char *cpu_dir = "/sys/devices/system/cpu";
->+    const gchar *line;
->+    g_autoptr(GDir) cpu_gdir = NULL;
->+    Error *local_err = NULL;
->+
->+    head = NULL;
->+    tail = &head;
->+    cpu_gdir = g_dir_open(cpu_dir, 0, NULL);
->+
->+    if (cpu_gdir == NULL) {
->+        error_setg_errno(errp, errno, "failed to list entries: %s", cpu_dir);
->+        return NULL;
->+    }
->+
->+    while (local_err == NULL && (line = g_dir_read_name(cpu_gdir)) != NULL) {
->+        GuestLogicalProcessor *vcpu;
->+        int64_t id;
->+        if (sscanf(line, "cpu%" PRId64, &id)) {
->+            g_autofree char *path = g_strdup_printf("/sys/devices/system/cpu/"
->+                                                    "cpu%" PRId64 "/", id);
->+            vcpu = g_malloc0(sizeof *vcpu);
->+            vcpu->logical_id = id;
->+            vcpu->has_can_offline = true; /* lolspeak ftw */
->+            transfer_vcpu(vcpu, true, path, &local_err);
->+            QAPI_LIST_APPEND(tail, vcpu);
->+        }
->+    }
->+
->+    if (local_err == NULL) {
->+        /* there's no guest with zero VCPUs */
->+        g_assert(head != NULL);
->+        return head;
->+    }
->+
->+    qapi_free_GuestLogicalProcessorList(head);
->+    error_propagate(errp, local_err);
->+    return NULL;
->+}
->+
->+int64_t qmp_guest_set_vcpus(GuestLogicalProcessorList *vcpus, Error **errp)
->+{
->+    int64_t processed;
->+    Error *local_err = NULL;
->+
->+    processed = 0;
->+    while (vcpus != NULL) {
->+        char *path = g_strdup_printf("/sys/devices/system/cpu/cpu%" PRId64 "/",
->+                                     vcpus->value->logical_id);
->+
->+        transfer_vcpu(vcpus->value, false, path, &local_err);
->+        g_free(path);
->+        if (local_err != NULL) {
->+            break;
->+        }
->+        ++processed;
->+        vcpus = vcpus->next;
->+    }
->+
->+    if (local_err != NULL) {
->+        if (processed == 0) {
->+            error_propagate(errp, local_err);
->+        } else {
->+            error_free(local_err);
->+        }
->+    }
->+
->+    return processed;
->+}
->diff --git a/qga/commands-posix.c b/qga/commands-posix.c
->index 76af98ba32..a8ef41f175 100644
->--- a/qga/commands-posix.c
->+++ b/qga/commands-posix.c
->@@ -2003,145 +2003,6 @@ void qmp_guest_suspend_hybrid(Error **errp)
->     guest_suspend(SUSPEND_MODE_HYBRID, errp);
-> }
-> 
->-/* Transfer online/offline status between @vcpu and the guest system.
->- *
->- * On input either @errp or *@errp must be NULL.
->- *
->- * In system-to-@vcpu direction, the following @vcpu fields are accessed:
->- * - R: vcpu->logical_id
->- * - W: vcpu->online
->- * - W: vcpu->can_offline
->- *
->- * In @vcpu-to-system direction, the following @vcpu fields are accessed:
->- * - R: vcpu->logical_id
->- * - R: vcpu->online
->- *
->- * Written members remain unmodified on error.
->- */
->-static void transfer_vcpu(GuestLogicalProcessor *vcpu, bool sys2vcpu,
->-                          char *dirpath, Error **errp)
->-{
->-    int fd;
->-    int res;
->-    int dirfd;
->-    static const char fn[] = "online";
->-
->-    dirfd = open(dirpath, O_RDONLY | O_DIRECTORY);
->-    if (dirfd == -1) {
->-        error_setg_errno(errp, errno, "open(\"%s\")", dirpath);
->-        return;
->-    }
->-
->-    fd = openat(dirfd, fn, sys2vcpu ? O_RDONLY : O_RDWR);
->-    if (fd == -1) {
->-        if (errno != ENOENT) {
->-            error_setg_errno(errp, errno, "open(\"%s/%s\")", dirpath, fn);
->-        } else if (sys2vcpu) {
->-            vcpu->online = true;
->-            vcpu->can_offline = false;
->-        } else if (!vcpu->online) {
->-            error_setg(errp, "logical processor #%" PRId64 " can't be "
->-                       "offlined", vcpu->logical_id);
->-        } /* otherwise pretend successful re-onlining */
->-    } else {
->-        unsigned char status;
->-
->-        res = pread(fd, &status, 1, 0);
->-        if (res == -1) {
->-            error_setg_errno(errp, errno, "pread(\"%s/%s\")", dirpath, fn);
->-        } else if (res == 0) {
->-            error_setg(errp, "pread(\"%s/%s\"): unexpected EOF", dirpath,
->-                       fn);
->-        } else if (sys2vcpu) {
->-            vcpu->online = (status != '0');
->-            vcpu->can_offline = true;
->-        } else if (vcpu->online != (status != '0')) {
->-            status = '0' + vcpu->online;
->-            if (pwrite(fd, &status, 1, 0) == -1) {
->-                error_setg_errno(errp, errno, "pwrite(\"%s/%s\")", dirpath,
->-                                 fn);
->-            }
->-        } /* otherwise pretend successful re-(on|off)-lining */
->-
->-        res = close(fd);
->-        g_assert(res == 0);
->-    }
->-
->-    res = close(dirfd);
->-    g_assert(res == 0);
->-}
->-
->-GuestLogicalProcessorList *qmp_guest_get_vcpus(Error **errp)
->-{
->-    GuestLogicalProcessorList *head, **tail;
->-    const char *cpu_dir = "/sys/devices/system/cpu";
->-    const gchar *line;
->-    g_autoptr(GDir) cpu_gdir = NULL;
->-    Error *local_err = NULL;
->-
->-    head = NULL;
->-    tail = &head;
->-    cpu_gdir = g_dir_open(cpu_dir, 0, NULL);
->-
->-    if (cpu_gdir == NULL) {
->-        error_setg_errno(errp, errno, "failed to list entries: %s", cpu_dir);
->-        return NULL;
->-    }
->-
->-    while (local_err == NULL && (line = g_dir_read_name(cpu_gdir)) != NULL) {
->-        GuestLogicalProcessor *vcpu;
->-        int64_t id;
->-        if (sscanf(line, "cpu%" PRId64, &id)) {
->-            g_autofree char *path = g_strdup_printf("/sys/devices/system/cpu/"
->-                                                    "cpu%" PRId64 "/", id);
->-            vcpu = g_malloc0(sizeof *vcpu);
->-            vcpu->logical_id = id;
->-            vcpu->has_can_offline = true; /* lolspeak ftw */
->-            transfer_vcpu(vcpu, true, path, &local_err);
->-            QAPI_LIST_APPEND(tail, vcpu);
->-        }
->-    }
->-
->-    if (local_err == NULL) {
->-        /* there's no guest with zero VCPUs */
->-        g_assert(head != NULL);
->-        return head;
->-    }
->-
->-    qapi_free_GuestLogicalProcessorList(head);
->-    error_propagate(errp, local_err);
->-    return NULL;
->-}
->-
->-int64_t qmp_guest_set_vcpus(GuestLogicalProcessorList *vcpus, Error **errp)
->-{
->-    int64_t processed;
->-    Error *local_err = NULL;
->-
->-    processed = 0;
->-    while (vcpus != NULL) {
->-        char *path = g_strdup_printf("/sys/devices/system/cpu/cpu%" PRId64 "/",
->-                                     vcpus->value->logical_id);
->-
->-        transfer_vcpu(vcpus->value, false, path, &local_err);
->-        g_free(path);
->-        if (local_err != NULL) {
->-            break;
->-        }
->-        ++processed;
->-        vcpus = vcpus->next;
->-    }
->-
->-    if (local_err != NULL) {
->-        if (processed == 0) {
->-            error_propagate(errp, local_err);
->-        } else {
->-            error_free(local_err);
->-        }
->-    }
->-
->-    return processed;
->-}
-> #endif /* __linux__ */
-> 
-> #if defined(__linux__) || defined(__FreeBSD__)
->-- 
->2.45.1
->
->
+Paolo
+
+[1] isolated mode probably would benefit from installing distlib instead
+of using the pip._vendor.distlib hack; therefore, adding tomli would
+not be a huge deal anyway.
+
+Paolo Bonzini (2):
+  Revert "python: use vendored tomli"
+  python: mkvenv: remove ensure command
+
+ docs/devel/build-system.rst                |  13 ++-
+ configure                                  |   4 -
+ python/scripts/mkvenv.py                   | 105 ---------------------
+ python/scripts/vendor.py                   |   3 -
+ python/wheels/tomli-2.0.1-py3-none-any.whl | Bin 12757 -> 0 bytes
+ 5 files changed, 6 insertions(+), 119 deletions(-)
+ delete mode 100644 python/wheels/tomli-2.0.1-py3-none-any.whl
+
+-- 
+2.45.1
+
 
