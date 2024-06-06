@@ -2,78 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85E908FE47B
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jun 2024 12:41:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 275B78FE48B
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jun 2024 12:43:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sFAXi-0003tX-BK; Thu, 06 Jun 2024 06:40:26 -0400
+	id 1sFAaR-0007xM-OL; Thu, 06 Jun 2024 06:43:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sFAXg-0003t0-2C
- for qemu-devel@nongnu.org; Thu, 06 Jun 2024 06:40:24 -0400
-Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1sFAaP-0007vM-5P
+ for qemu-devel@nongnu.org; Thu, 06 Jun 2024 06:43:13 -0400
+Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sFAXd-0002yw-AA
- for qemu-devel@nongnu.org; Thu, 06 Jun 2024 06:40:23 -0400
-Received: by mail-lf1-x136.google.com with SMTP id
- 2adb3069b0e04-52b9af7a01bso980027e87.0
- for <qemu-devel@nongnu.org>; Thu, 06 Jun 2024 03:40:20 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1sFAaK-0003cQ-EL
+ for qemu-devel@nongnu.org; Thu, 06 Jun 2024 06:43:12 -0400
+Received: by mail-ed1-x536.google.com with SMTP id
+ 4fb4d7f45d1cf-57a50ac2ca1so966395a12.0
+ for <qemu-devel@nongnu.org>; Thu, 06 Jun 2024 03:43:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1717670419; x=1718275219; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=BMtQclkfQ+tzZ8PXSD+8zjanVSPJ3R9g60tZMLUUdbU=;
- b=qRop8QgJAGLU5YkbpKacQvzQHmJ8spa5rX0r5jtDwrrPCmqxhFAhLd12OuqtTz8Vkq
- hcTwHlK30dCirJ2BA2UzFxGYSN7SfBdwYJseAktqODEm0bj2KQXrMHCyzClEtoISO5FR
- NJjhePEKngBNPuRMlSbq1ed/pZQO0K9495ecNnpSLxP/FYbdKXZUpNJeHjY52ioc7ufL
- a1UApRxddUcc6mNqiQdMPsGDaa2HlkNRp99pVI2cudfLDWBFdg5LGGW1S2+HvzkuapGm
- VprW+5lafx1ptg3PULfeWyTf7IIsk/GlBYgeDYXEpRqdgjqIiluOX5cmLHmzkTREyhqv
- +Wzw==
+ d=linaro.org; s=google; t=1717670587; x=1718275387; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:references
+ :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=y1+pniKZ8HaPoeUEfkoq2AGSC/ogq1hupfYKEEXZbMo=;
+ b=wXIMii6BYIWpDGiOxFfEM1QKujw1SSozzNZB8GwmSWbaYYvfPUC5mMVTsdck9RUSir
+ x+qHIRnAUlxgjUSueiV0MPTbkPdEl/EwqaBf6EhGBKt6mKzJG0P6i3+g/i9bGGDuP/Ah
+ rrKJWHv8dRtwTrHk9hsfFEGAL22LRgHWREUP9WtxzCHaJEg7c0iiB46GyevU0p6uQFnx
+ cKFYDkvnhzCS3nl3Aa8nLu0pxWmkLNa65c/2dHXSIxhgB18BkayjWfnAAyz9bfUryT4v
+ 7g1pUImws4C1SB62ABDom1KkB5z6sXa6qtJW6Xx/cuL3pgGmVatdJauUG3PqgVFmddcK
+ pIwQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717670419; x=1718275219;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1717670587; x=1718275387;
+ h=content-transfer-encoding:mime-version:message-id:date:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=BMtQclkfQ+tzZ8PXSD+8zjanVSPJ3R9g60tZMLUUdbU=;
- b=hazj2t1Ly6kwZRX/eC1kEzufsL9IzNyVk3EmXwe1SOx8AokANBXEiVRY10R+QXn1uN
- PgGMDAZFEl4u9DCPFRRaEKIaCy72+n5XNJYEdScYC150w4PFEFI/Gl1KuKQC8fFhTfz5
- GCDvkmJqtHa6nqUN14yaKZ+C4/SdVCsnxcI9vBK06DFCK62FuMIUT+fxlU95aQ2XfvjR
- 9xqJZYmOkC1+bw55XKeSoIP4RN6qSo3WPBJ6NHt1DDaJo8EeP+OUiPg1L1MJhB5gGkkj
- jYNhC4Bb9koyGoDSRoEaKKxXHFvtsVIWZkQ+erOlfnCof6tMHKN6M/DnvwI+qrO0e3b0
- Epfw==
-X-Gm-Message-State: AOJu0YzR6qRV5VCUZwP4f+rGXb6b5Ce+kR1pR463wogUjSPNgFaDfcNV
- JDKmZpudYOmqKKHBjOIQyW+AalSTgXEKsK3h+41Aqo+jj0TITvhEaRcYOzj40RdqE/yngBNxMEa
- e77c=
-X-Google-Smtp-Source: AGHT+IEbNR8LHVKrJlckZeaPyQ5urxX7BGDye3sHYKEAxrx9lJ4V2Zb3B85UKbn0B4f10r9v/PG4lw==
-X-Received: by 2002:a05:6512:3f09:b0:52b:9c8a:735a with SMTP id
- 2adb3069b0e04-52bab4dbbdbmr3927067e87.40.1717670419082; 
- Thu, 06 Jun 2024 03:40:19 -0700 (PDT)
-Received: from localhost.localdomain (94.red-88-29-105.staticip.rima-tde.net.
- [88.29.105.94]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4215c19d52dsm17724945e9.8.2024.06.06.03.40.17
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 06 Jun 2024 03:40:18 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Mads Ynddal <mads@ynddal.dk>, Stefan Hajnoczi <stefanha@redhat.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- Stefan Berger <stefanb@linux.vnet.ibm.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 5/5] tracetool: Forbid newline character in event format
-Date: Thu,  6 Jun 2024 12:39:43 +0200
-Message-ID: <20240606103943.79116-6-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20240606103943.79116-1-philmd@linaro.org>
-References: <20240606103943.79116-1-philmd@linaro.org>
+ bh=y1+pniKZ8HaPoeUEfkoq2AGSC/ogq1hupfYKEEXZbMo=;
+ b=pE/mINNqXQDZbysD9GfYqeN7wrL/m/ew/KLkDlLcsoFQ7UgvMRpbbTe6OSSgNNfVhX
+ ZmNB5AI7L88aaaelSUOtYnFUwLnQP2P51fNPr4JcoPRmLgweAivNvgAiEs+xjE0ZwDXv
+ j/U4kit3DHd1qWVixmP7rQupQIQUg8oVbiDWGQ8myijCieAusAkmAvTMnHm/DvcJkBlb
+ u8XFrPdSuJWdjzQnCooTznV2t86MeKWwC6efMGRglC6/cMFesjggrlTV2DM3JnP4g9tw
+ 34TcQ+4n2jYWH8oxcDAtFwUJx6QcbhOojBr2BHy19PolbUzfEIKt1/IbLwp+gxXgrIj2
+ PyAQ==
+X-Gm-Message-State: AOJu0Yz0fHkqIi8yOndfTG/QxarPW14kSefeEWTl5C2gtlakwTc9tGd4
+ rahK/EMN13pxFkCj0ZB/U/rAdg8jgdcy0m2zYe47YOZTSMF7i7j74EO5QGPWOt8=
+X-Google-Smtp-Source: AGHT+IHzStjhq/SaEwxB1lQutgWcsUb5nVSIGedfL3SxHywAHrAAaOHooXZ+lDLI03ktmJwFnbSWKA==
+X-Received: by 2002:a50:ab1c:0:b0:57c:46cb:a984 with SMTP id
+ 4fb4d7f45d1cf-57c46cba9admr397522a12.5.1717670586644; 
+ Thu, 06 Jun 2024 03:43:06 -0700 (PDT)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-57aae0caa1asm882764a12.31.2024.06.06.03.43.06
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 06 Jun 2024 03:43:06 -0700 (PDT)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id B69D95F7AD;
+ Thu,  6 Jun 2024 11:43:05 +0100 (BST)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Weifeng Liu <weifeng.liu.z@gmail.com>
+Cc: qemu-devel@nongnu.org,  Gurchetan Singh <gurchetansingh@chromium.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>,  Gerd Hoffmann
+ <kraxel@redhat.com>,  Antonio Caggiano <antonio.caggiano@collabora.com>,
+ Huang Rui <ray.huang@amd.com>,  Dmitry Osipenko
+ <dmitry.osipenko@collabora.com>,  =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
+ <marcandre.lureau@redhat.com>
+Subject: Re: [PATCH 0/3] virtio-gpu: Enable virglrenderer backend for rutabaga
+In-Reply-To: <20240605152832.11618-1-weifeng.liu.z@gmail.com> (Weifeng Liu's
+ message of "Wed, 5 Jun 2024 23:28:27 +0800")
+References: <20240605152832.11618-1-weifeng.liu.z@gmail.com>
+Date: Thu, 06 Jun 2024 11:43:05 +0100
+Message-ID: <87ikyml5c6.fsf@draig.linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::136;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x136.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::536;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x536.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,29 +98,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Events aren't designed to be multi-lines. Multiple events
-can be used instead. Prevent that format using multi-lines
-by forbidding the newline character.
+Weifeng Liu <weifeng.liu.z@gmail.com> writes:
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- scripts/tracetool/__init__.py | 2 ++
- 1 file changed, 2 insertions(+)
+> Greetings,
+>
+> I'd like to introduce you my attempt to enable virglrenderer backend for
+> rutabaga empowered virtio-gpu device.  I am aware that there have been
+> effort in supporting venus in virtio-gpu-virgl.c [1], but there is no
+> reason to prevent us from leveraging the virglrenderer component in
+> rutabaga_gfx, especially it being not very hard to add this
+> functionality.
+>
+> Generally, the gap is the polling capability, i.e., virglrenderer
+> requires the main thread (namely the GPU command handling thread) to
+> poll virglrenderer at proper moments, which is not yet supported in
+> virtio-gpu-rutabaga device. This patch set try to add this so that
+> virglrenderer backend (including virgl and venus) can work as expected.
+>
+> Slight change to rutabaga_gfx_ffi is also a requirement, which is
+> included in [2].
+>
+> Further effort is required to tune the performance, since copying is
+> present before the rendered images get displayed. But I still think this
+> patch set could be a good starting point for the pending work.
+>
+> For those interested in setting up environment and playing around with
+> this patch set, here is guideline in brief:
+>
+> 1. Clone the master/main branch of virglrenderer, compile and install it.
+>
+> 	git clone https://gitlab.freedesktop.org/virgl/virglrenderer
+> 	cd virglrenderer
+> 	meson setup builddir \
+> 	  --prefix=3D$INSTALL_DIR/virglrenderer \
+> 	  -Dvenus=3Dtrue
+> 	ninja -C builddir install
+>
+> 2. Clone the patched CrosVM, build and install rutabaga_gfx_ffi.
+>
+> 	git clone -b rutabaga_ffi_virgl https://github.com/phreer/crosvm.git
+> 	cd crosvm/rutabaga_gfx/ffi
+> 	export PKG_CONFIG_PATH=3D$INSTALL_DIR/virglrenderer/lib64/pkgconfig/
+> 	meson setup builddir/ \
+> 	  --prefix $HOME/install/rutabaga_gfx/rutabaga_gfx_ffi/ \
+> 	  -Dvirglrenderer=3Dtrue
+> 	ninja -C builddir install
 
-diff --git a/scripts/tracetool/__init__.py b/scripts/tracetool/__init__.py
-index 7237abe0e8..bc03238c0f 100644
---- a/scripts/tracetool/__init__.py
-+++ b/scripts/tracetool/__init__.py
-@@ -301,6 +301,8 @@ def build(line_str, lineno, filename):
-         if fmt.endswith(r'\n"'):
-             raise ValueError("Event format must not end with a newline "
-                              "character")
-+        if '\\n' in fmt:
-+            raise ValueError("Event format must not use new line character")
- 
-         if len(fmt_trans) > 0:
-             fmt = [fmt_trans, fmt]
--- 
-2.41.0
+Is there a PR going in for this? The moving parts for rutabaga are
+complex enough I think we need support upstream before merging this.
 
+Is this branch where I should be getting the poll helpers from?
+
+  cc -m64 @qemu-system-arm.rsp
+  /usr/bin/ld: libcommon.fa.p/hw_display_virtio-gpu-rutabaga.c.o: in functi=
+on `virtio_gpu_fence_poll':
+  /home/alex/lsrc/qemu.git/builds/vulkan/../../hw/display/virtio-gpu-rutaba=
+ga.c:909: undefined reference to `rutabaga_poll'
+  /usr/bin/ld: libcommon.fa.p/hw_display_virtio-gpu-rutabaga.c.o: in functi=
+on `virtio_gpu_rutabaga_init':
+  /home/alex/lsrc/qemu.git/builds/vulkan/../../hw/display/virtio-gpu-rutaba=
+ga.c:1122: undefined reference to `rutabaga_poll_descriptor'
+  collect2: error: ld returned 1 exit status
+  ninja: build stopped: subcommand failed.
+
+
+> 3. Applied this patch set to QEMU, build and install it:
+>
+> 	cd qemu=09
+> 	# Apply this patch set atop main branch ...
+> 	mkdir builddir; cd builddir
+> 	../configure --prefix=3D$INSTALL_DIR/qemu \
+> 	  --target-list=3Dx86_64-softmmu \
+> 	  --disable-virglrenderer \
+> 	  --enable-rutabaga_gfx
+> 	ninja -C builddir install
+>
+> 4. If you are lucky and everything goes fine, you are prepared to launch
+>    VM with virglrenderer backed virtio-gpu-rutabaga device:
+>
+> 	export LD_LIBRARY_PATH=3D$INSTALL_DIR/virglrenderer/lib64/:$LD_LIBRARY_P=
+ATH
+> 	export LD_LIBRARY_PATH=3D$INSTALL_DIR/rutabaga_gfx_ffi/lib64/:$LD_LIBRAR=
+Y_PATH
+> 	$INSTALL_DIR/qemu/bin/qemu-system-x86_64
+> 	$QEMU -d guest_errors -enable-kvm -M q35 -smp 4 -m $MEM \
+> 	  -object memory-backend-memfd,id=3Dmem1,size=3D$MEM \
+> 	  -machine memory-backend=3Dmem1 \
+> 	  -device virtio-vga-rutabaga,venus=3Don,virgl2=3Don,wsi=3Dsurfaceless,h=
+ostmem=3D$MEM \
+>
+
+This should go into docs/system/devices/virtio-gpu.rst with some
+explanation. Is there anything we need on the guest side or does this
+skip the encapsulating requirements of wayland?
+
+> Note:
+>
+> - You might need this patch set [3] to avoid KVM bad address error when
+>   you are running on a GPU using TTM for memory management.
+>
+> [1] https://lore.kernel.org/all/dba6eb97-e1d1-4694-bfb6-e72db95715dd@dayn=
+ix.com/T/
+> [2] https://chromium-review.googlesource.com/c/crosvm/crosvm/+/5599645/1
+> [3] https://lore.kernel.org/kvm/20240229025759.1187910-1-stevensd@google.=
+com/
+>
+> Weifeng Liu (3):
+>   virtio-gpu: rutabaga: Properly set stride when copying resources
+>   virtio-gpu: rutabaga: Poll rutabaga upon events
+>   virtio-gpu: rutabaga: Add options to enable virgl and venus contexts
+>
+>  hw/display/virtio-gpu-rutabaga.c | 104 ++++++++++++++++++++++++++++++-
+>  include/hw/virtio/virtio-gpu.h   |   1 +
+>  2 files changed, 104 insertions(+), 1 deletion(-)
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
