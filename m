@@ -2,91 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DF3D8FDD43
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jun 2024 05:19:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9D4E8FDD21
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jun 2024 05:04:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sF3eM-0001Pv-QR; Wed, 05 Jun 2024 23:18:50 -0400
+	id 1sF3PS-0006gP-Qs; Wed, 05 Jun 2024 23:03:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sF3eL-0001Pk-9O
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 23:18:49 -0400
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sF3eG-000280-VU
- for qemu-devel@nongnu.org; Wed, 05 Jun 2024 23:18:48 -0400
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-7024494f7daso387117b3a.3
- for <qemu-devel@nongnu.org>; Wed, 05 Jun 2024 20:18:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1717643918; x=1718248718; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=UhRX+lEIBZcnZXDfASC+dnhqEh7VMFrCS5B/Ltqgwrs=;
- b=Cz+/DAXs+7alDDkhn+pPrBjSFHlKYRur0+2C67W8X+8S+B3/GBUXIi096niJhgxvs6
- 13WA1FnyGKltSdjP+lV+RgkCN6ZpprfT9c6jwO2/VSBt0LRveBDWpAIOPMZPrmMczssd
- i/fGuSFmHi3wg4fRCLljDEbqPCMWLvS03g4qBu5FH6TqzIDmpVP33BJagKIWpY/+/Ya6
- vxzbxfR7lBqi67UToBWS1BtCB2zQII9XkGylqWdo0y2imc6C0IU7EF/N4Ry4NzlBq15+
- Z9Rn1pENG9ZIWlKduFJE1lrnuwbXOPpVozzf1lY5D8djdlknyvJD7Jgou2gGW5nSth0C
- OVYg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717643918; x=1718248718;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=UhRX+lEIBZcnZXDfASC+dnhqEh7VMFrCS5B/Ltqgwrs=;
- b=BwKrsraUTQMoIv28nAUZKmCsOOZMrWvnMXwiOJllS2jSnSY5s4fM0Bm5nmZH0GEoO/
- LIVOlLHaq9HRk1iCyrg7wj7aVFE43L/53/muMUZAE9d/0Ht3KbZum7LCtw/T73CQ45U9
- J7IsIrcajeRLcTOwOQ2y+loo5LRVtBOkoctz2rXS188l5FpxnuW/7pbM7Sy4BWE2fXt7
- KVxOylsPmrBW7omwXZbSkC43pUDWn8EGOBWyacIFix9izYDSfAsO94nWSufK0NI32MAQ
- CYHUEWuACKBhe4jz3F/c92siFxCPFIPfmItLgH+abu00Uo+o2pJyzuLwJ5kbnyRK4YxH
- FQog==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWXvEyaOafclWmvjte5xXGAEtA5zxV05etI0ctZqAlwSIfc7Rwv2GtLj5WilrIjUXu8tE8VI6eJOQkxp/lTlEuH6L9FqfE=
-X-Gm-Message-State: AOJu0YwmtLC4Shz8oBs3HROPYUc5wlySTBwqYeFBmniEn9s9+6bmGL06
- 7LqARNLs7kimHPw3wkSieARxW8e81CKp33uS5jATtpGaRQ7Wpj9LbSBtUzethpY=
-X-Google-Smtp-Source: AGHT+IEjth56AJIkpB/yvo9flOukBq14gBSehrRTDMKDOI7do9IbaCU+wT0ITg5ZBAUYI3HFXSrCxQ==
-X-Received: by 2002:a05:6a21:3390:b0:1b0:18d1:c46c with SMTP id
- adf61e73a8af0-1b2b6ff5f19mr5412690637.27.1717643917922; 
- Wed, 05 Jun 2024 20:18:37 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.132.216])
- by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2c2806bd7ddsm2279696a91.40.2024.06.05.20.18.36
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 05 Jun 2024 20:18:37 -0700 (PDT)
-Message-ID: <58ba9ea7-cc45-47d4-a278-3777b496cb44@linaro.org>
-Date: Wed, 5 Jun 2024 20:18:35 -0700
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sF3PO-0006ft-NX
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 23:03:22 -0400
+Received: from mgamail.intel.com ([192.198.163.16])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sF3PL-0007xI-Vz
+ for qemu-devel@nongnu.org; Wed, 05 Jun 2024 23:03:22 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1717643000; x=1749179000;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=QLV5xfERdZMAcWHeU/yCzSXNLddso4YYteFuSjcJ76A=;
+ b=eOCkg3bZbEwDwU0z6KyzYPg4ZbCkdEZ53TvTCrvktSNQDrmbquJejsG5
+ Xf3dt7ED02dLxUymqbub4tg4o+uVsR1OvzRoT/tZVp7G5YR4xsNKMKDdS
+ OvS9Cq7XvP/ah2pYPdS7G9IfRfe6fnBMCOPhqhq37NCT0iKSvQb4prh6t
+ tqvNGR9+Jko+yiBNjHIsw17Q81/9MKqtp3t4RzOw+83DuiA05L/WPssV6
+ JD3qAkmySvNbrOjU08CVRTAqTfu+LB8NfJEUgp6GXoOnYS6fyV4D1xH8H
+ VRpGusJr8zuECjwI5gbtUMOK6pcPDW7gGiLC9JR8XnJpsjJC5l2AcDHuL w==;
+X-CSE-ConnectionGUID: ftZQpTEVS2qgryXLggLQhg==
+X-CSE-MsgGUID: bVJN1fFvQJWjCVGQ21dXVg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11094"; a="11932715"
+X-IronPort-AV: E=Sophos;i="6.08,218,1712646000"; d="scan'208";a="11932715"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Jun 2024 20:03:16 -0700
+X-CSE-ConnectionGUID: MzjnbXzWRT+iJbGOxR+z+A==
+X-CSE-MsgGUID: 9l7S5P92SteioprvYvjaDw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,218,1712646000"; d="scan'208";a="38370178"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by orviesa008.jf.intel.com with ESMTP; 05 Jun 2024 20:03:15 -0700
+Date: Thu, 6 Jun 2024 11:18:41 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>,
+ Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>
+Cc: qemu-devel@nongnu.org
+Subject: Re: [PATCH] stubs/meson: Fix qemuutil build when --disable-system
+Message-ID: <ZmEqkYLVIsfP99GH@intel.com>
+References: <20240605152549.1795762-1-zhao1.liu@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] util/bufferiszero: Add simd acceleration for
- loongarch64
-To: maobibo <maobibo@loongson.cn>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Thomas Huth <thuth@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, qemu-devel@nongnu.org
-References: <20240605093213.2191929-1-maobibo@loongson.cn>
- <20240605093213.2191929-3-maobibo@loongson.cn>
- <5d78d82d-a939-4103-8411-507b1a0372ac@linaro.org>
- <7b4c6909-40e8-def7-03e8-18a3303295f1@loongson.cn>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <7b4c6909-40e8-def7-03e8-18a3303295f1@loongson.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x435.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+In-Reply-To: <20240605152549.1795762-1-zhao1.liu@intel.com>
+Received-SPF: pass client-ip=192.198.163.16; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -103,97 +83,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/5/24 19:30, maobibo wrote:
+On Wed, Jun 05, 2024 at 11:25:49PM +0800, Zhao Liu wrote:
+> Date: Wed, 5 Jun 2024 23:25:49 +0800
+> From: Zhao Liu <zhao1.liu@intel.com>
+> Subject: [PATCH] stubs/meson: Fix qemuutil build when --disable-system
+> X-Mailer: git-send-email 2.34.1
 > 
+> Compiling without system, user, tools or guest-agent fails with the
+> following error message:
 > 
-> On 2024/6/6 上午7:51, Richard Henderson wrote:
->> On 6/5/24 02:32, Bibo Mao wrote:
->>> Different gcc versions have different features, macro CONFIG_LSX_OPT
->>> and CONFIG_LASX_OPT is added here to detect whether gcc supports
->>> built-in lsx/lasx macro.
->>>
->>> Function buffer_zero_lsx() is added for 128bit simd fpu optimization,
->>> and function buffer_zero_lasx() is for 256bit simd fpu optimization.
->>>
->>> Loongarch gcc built-in lsx/lasx macro can be used only when compiler
->>> option -mlsx/-mlasx is added, and there is no separate compiler option
->>> for function only. So it is only in effect when qemu is compiled with
->>> parameter --extra-cflags="-mlasx"
->>>
->>> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
->>> ---
->>>   meson.build         |  11 +++++
->>>   util/bufferiszero.c | 103 ++++++++++++++++++++++++++++++++++++++++++++
->>>   2 files changed, 114 insertions(+)
->>>
->>> diff --git a/meson.build b/meson.build
->>> index 6386607144..29bc362d7a 100644
->>> --- a/meson.build
->>> +++ b/meson.build
->>> @@ -2855,6 +2855,17 @@ config_host_data.set('CONFIG_ARM_AES_BUILTIN', cc.compiles('''
->>>       void foo(uint8x16_t *p) { *p = vaesmcq_u8(*p); }
->>>     '''))
->>> +# For Loongarch64, detect if LSX/LASX are available.
->>> + config_host_data.set('CONFIG_LSX_OPT', cc.compiles('''
->>> +    #include "lsxintrin.h"
->>> +    int foo(__m128i v) { return __lsx_bz_v(v); }
->>> +  '''))
->>> +
->>> +config_host_data.set('CONFIG_LASX_OPT', cc.compiles('''
->>> +    #include "lasxintrin.h"
->>> +    int foo(__m256i v) { return __lasx_xbz_v(v); }
->>> +  '''))
->>
->> Both of these are introduced by gcc 14 and llvm 18, so I'm not certain of the utility of 
->> separate tests.  We might simplify this with
->>
->>    config_host_data.set('CONFIG_LSX_LASX_INTRIN_H',
->>      cc.has_header('lsxintrin.h') && cc.has_header('lasxintrin.h'))
->>
->>
->> As you say, these headers require vector instructions to be enabled at compile-time 
->> rather than detecting them at runtime.  This is a point where the compilers could be 
->> improved to support __attribute__((target("xyz"))) and the builtins with that.  The i386 
->> port does this, for instance.
->>
->> In the meantime, it means that you don't need a runtime test.  Similar to aarch64 and 
->> the use of __ARM_NEON as a compile-time test for simd support.  Perhaps
->>
->> #elif defined(CONFIG_LSX_LASX_INTRIN_H) && \
->>        (defined(__loongarch_sx) || defined(__loongarch_asx))
->> # ifdef __loongarch_sx
->>    ...
->> # endif
->> # ifdef __loongarch_asx
->>    ...
->> # endif
-> Sure, will do in this way.
-> And also there is runtime check coming from hwcap, such this:
+> ./configure --disable-system --disable-user --disable-tools \
+> --disable-guest-agent
 > 
-> unsigned info = cpuinfo_init();
->    if (info & CPUINFO_LASX)
+> error message:
+> 
+> /usr/bin/ld: libqemuutil.a.p/util_error-report.c.o: in function `error_printf':
+> /media/liuzhao/data/qemu-cook/build/../util/error-report.c:38: undefined reference to `error_vprintf'
+> /usr/bin/ld: libqemuutil.a.p/util_error-report.c.o: in function `vreport':
+> /media/liuzhao/data/qemu-cook/build/../util/error-report.c:215: undefined reference to `error_vprintf'
+> collect2: error: ld returned 1 exit status
+> 
+> This is because tests/bench and tests/unit both need qemuutil, which
+> requires error_vprintf stub when system is disabled.
+> 
+> Add error_vprintf stub into stub_ss for all cases other than disabling
+> system.
+> 
+> Fixes: 3a15604900c4 ("stubs: include stubs only if needed")
+> Reported-by: Daniel P. Berrang� <berrange@redhat.com>
+> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> ---
+>  stubs/meson.build | 10 +++-------
+>  1 file changed, 3 insertions(+), 7 deletions(-)
+> 
+> diff --git a/stubs/meson.build b/stubs/meson.build
+> index 3b9d42023cb2..a99522ab6bbf 100644
+> --- a/stubs/meson.build
+> +++ b/stubs/meson.build
+> @@ -45,17 +45,10 @@ if have_block or have_ga
+>    stub_ss.add(files('qmp-quit.c'))
+>  endif
+>  
+> -if have_ga
+> -  stub_ss.add(files('error-printf.c'))
+> -endif
+> -
+>  if have_block or have_user
+>    stub_ss.add(files('qtest.c'))
+>    stub_ss.add(files('vm-stop.c'))
+>    stub_ss.add(files('vmstate.c'))
+> -
+> -  # more symbols provided by the monitor
+> -  stub_ss.add(files('error-printf.c'))
+>  endif
+>  
+>  if have_user
+> @@ -76,6 +69,9 @@ if have_system
+>    stub_ss.add(files('target-monitor-defs.c'))
+>    stub_ss.add(files('win32-kbd-hook.c'))
+>    stub_ss.add(files('xen-hw-stub.c'))
+> +else
+> +  # more symbols provided by the monitor
+> +  stub_ss.add(files('error-printf.c'))
+>  endif
 
-static biz_accel_fn const accel_table[] = {
-     buffer_is_zero_int_ge256,
-#ifdef __loongarch_sx
-     buffer_is_zero_lsx,
-#endif
-#ifdef __loongarch_asx
-     buffer_is_zero_lasx,
-#endif
-};
+Oops, it's not a correct fix. error-printf.c should still be added
+unconditionally.
 
-static unsigned best_accel(void)
-{
-#ifdef __loongarch_asx
-     /* lasx may be index 1 or 2, but always last */
-     return ARRAY_SIZE(accel_table) - 1;
-#else
-     /* lsx is always index 1 */
-     return 1;
-#endif
-}
-
-
-r~
+>  
+>  if have_system or have_user
+> -- 
+> 2.34.1
+> 
 
