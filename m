@@ -2,81 +2,123 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 153608FE819
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jun 2024 15:44:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E97228FE833
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jun 2024 15:51:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sFDPI-00079E-Hx; Thu, 06 Jun 2024 09:43:56 -0400
+	id 1sFDWv-0005b1-Vz; Thu, 06 Jun 2024 09:51:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fea.wang@sifive.com>)
- id 1sFDPG-00078p-P2
- for qemu-devel@nongnu.org; Thu, 06 Jun 2024 09:43:54 -0400
-Received: from mail-ua1-x933.google.com ([2607:f8b0:4864:20::933])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sFDWt-0005ae-TI
+ for qemu-devel@nongnu.org; Thu, 06 Jun 2024 09:51:47 -0400
+Received: from smtp-out1.suse.de ([195.135.223.130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <fea.wang@sifive.com>)
- id 1sFDPD-0007YW-PG
- for qemu-devel@nongnu.org; Thu, 06 Jun 2024 09:43:54 -0400
-Received: by mail-ua1-x933.google.com with SMTP id
- a1e0cc1a2514c-80a8770ff33so346704241.0
- for <qemu-devel@nongnu.org>; Thu, 06 Jun 2024 06:43:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1717681430; x=1718286230; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=+fHJazDoWTGv9of061dS7OWhP2xQmWlTXq22diNhG0Q=;
- b=EFabO+ZMwu/h4ECcm4YpaPzhUhFLfNG1poIAhRaU2zWpL3iw5qBS+H1lWrh2moFbZK
- AydWWo6Iy2phnx3R5CTD0J+Kvy1dRVW4mY2hNf2a6bKl+O7ltoQt4kFC4i7l+i+73lhA
- Qs2aWBw8dI2UEFSo/unSWslj6XKKo4Z2VyrhHywf/0LsFwXu/pK52x6oNugi8klSBy8e
- bGoEXoInsi3IoJvy9NrehjYt7TvAdJ+QPsIOm7DLgFwsXUbTrzuVuIS85jer9prW8foc
- WiQkdN7f4NkDvtRt0Hri9vgY749LDxkt6sLfQdghpb9iC84ctL3eP3FZ9d+fWOawHzAL
- qafA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717681430; x=1718286230;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=+fHJazDoWTGv9of061dS7OWhP2xQmWlTXq22diNhG0Q=;
- b=kan/hjrPcw2iDfwu3uskecvZomUpVKNfijuRpPvBUdp9ZuORE2xsVhjvIdlFLP+EDf
- +FtoxnfZklrEjfdAljy2fH/V7XRFhdnXH+JNl1xO8SRLTJE4XDygrLWKzJyGlUBiZbcc
- 2yvQh1OULgPfwAUelQiHlKAK3YR4CHjr3aHAxIrZNi9OG3uF0E14fziMZdH81BtaDn2P
- 0GnN2PZHs4r/xPWDyzfvxyXeUB5kPJ5/uoU1MwnhtjHGEPUXbWRV0xnhq0Ty0o2zfgi5
- gToD4H9DMTvkBkZ9ea+AYp+nRUiLL26YJ6UTJNoYT0Dxn09B676CoOTnupvQFVGszVlv
- Iupg==
-X-Gm-Message-State: AOJu0YygF+KAQG8fdFwU6nDJoaS4RcWKTDcy9zI1Blh4e7lXW57BvTkZ
- CRhcqHT2JuwJ2NoMSxNAwxJA+ucwx5HMZZR6O/1cwwjSSQHbmeWzni+YL59Bu0ZHVvR6wgQ5nPv
- WIXo8Zjg51iPF8PyAZeO+f1xvja5un2WT53IlEg==
-X-Google-Smtp-Source: AGHT+IGBy0ocGscYn4PMfGxm277ayLEmYgzYxeNuhIIizYxFYqCIV7Diw2Xc/F+htmpbXG2L/Pg6zeb1cn4jts9cUNA=
-X-Received: by 2002:a1f:eeca:0:b0:4e4:eda9:ec32 with SMTP id
- 71dfb90a1353d-4eb3a4aafcfmr5935348e0c.10.1717681430122; Thu, 06 Jun 2024
- 06:43:50 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sFDWq-0000bH-6i
+ for qemu-devel@nongnu.org; Thu, 06 Jun 2024 09:51:47 -0400
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 9AC1121AFA;
+ Thu,  6 Jun 2024 13:51:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1717681902; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=lhjLDQXFte4X8FlB15+41tSe3FVCPG7ZGDM5PKC/eLI=;
+ b=BZQGIOkkE6ALhN3ABFkT6ozVcvyDTOo6w5yoes91PChU1FpAFZuGKUsSzoTaiQj/m+jpXd
+ kxfmPI9sCW8tfpWmmq58YdQrGmTtNd9tnIKadHK+W+5VAVNVPV3klxAWkf/1BjiyYzBxT2
+ 2rm5+YAzNwt8b6NIlKjm1rJjwgBt2EI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1717681902;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=lhjLDQXFte4X8FlB15+41tSe3FVCPG7ZGDM5PKC/eLI=;
+ b=Cncll4QCoqIBYs1TekggnzjsfBuYrQUr7n6KPZ36fRe6vV55yheWaQdsEuIjDb4f0QMme1
+ gtkbIOboRXcSieCA==
+Authentication-Results: smtp-out1.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Y14uoFiz;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="u0foE/Q/"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1717681901; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=lhjLDQXFte4X8FlB15+41tSe3FVCPG7ZGDM5PKC/eLI=;
+ b=Y14uoFizLW9F6sLq6BABkvnCur9Kta2NK85c/YvJZgOu68iBaY1EMB0GWrlEZiVh0k2Ds4
+ Ss2sEuw/XK2zmR+HkZvqPEZKXCJ01F7Jvf+a1XkuU8HRvQ7lLPJ5T5KY32ifL+sB2X41zj
+ dF2z1PrQLqbWVqTcz6eyKipQyYjrG80=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1717681901;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=lhjLDQXFte4X8FlB15+41tSe3FVCPG7ZGDM5PKC/eLI=;
+ b=u0foE/Q/VNrk2FLeLxd0DYG0gMjiqy4/Q/OLNSWgUqW1InSulmO6PA4Pj/ZuUnG0VYM8P1
+ Bww4LZSk6XtPTZAg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 20C0013A79;
+ Thu,  6 Jun 2024 13:51:40 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id vWdVNuy+YWYTUAAAD6G6ig
+ (envelope-from <farosas@suse.de>); Thu, 06 Jun 2024 13:51:40 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: "Liu, Yuan1" <yuan1.liu@intel.com>, "peterx@redhat.com"
+ <peterx@redhat.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>,
+ "marcandre.lureau@redhat.com" <marcandre.lureau@redhat.com>,
+ "berrange@redhat.com" <berrange@redhat.com>, "thuth@redhat.com"
+ <thuth@redhat.com>, "philmd@linaro.org" <philmd@linaro.org>
+Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "Zou, Nanhai"
+ <nanhai.zou@intel.com>, "shameerali.kolothum.thodi@huawei.com"
+ <shameerali.kolothum.thodi@huawei.com>
+Subject: RE: [PATCH v7 6/7] migration/multifd: implement qpl compression and
+ decompression
+In-Reply-To: <MW4PR11MB59366D87600EA832A8248F2FA3FA2@MW4PR11MB5936.namprd11.prod.outlook.com>
+References: <20240603154106.764378-1-yuan1.liu@intel.com>
+ <20240603154106.764378-7-yuan1.liu@intel.com> <87plsvni18.fsf@suse.de>
+ <MW4PR11MB59366D87600EA832A8248F2FA3FA2@MW4PR11MB5936.namprd11.prod.outlook.com>
+Date: Thu, 06 Jun 2024 10:51:38 -0300
+Message-ID: <87frtqnpqt.fsf@suse.de>
 MIME-Version: 1.0
-References: <20240604062747.9212-1-fea.wang@sifive.com>
- <20240604062747.9212-4-fea.wang@sifive.com>
- <CAKmqyKM_WQNV2=W=C5xe4wh99sbQUD7AWhYTgOOyqO=0_dW3jA@mail.gmail.com>
-In-Reply-To: <CAKmqyKM_WQNV2=W=C5xe4wh99sbQUD7AWhYTgOOyqO=0_dW3jA@mail.gmail.com>
-From: Fea Wang <fea.wang@sifive.com>
-Date: Thu, 6 Jun 2024 21:43:38 +0800
-Message-ID: <CAKhCfscJf+GikUfQb5XKxqk=+zfRzw1kvF4i4tXuxHEGdV0FQg@mail.gmail.com>
-Subject: Re: [PATCH v3 3/6] target/riscv: Support the version for ss1p13
-To: Alistair Francis <alistair23@gmail.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, 
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>, 
- Bin Meng <bmeng.cn@gmail.com>, Weiwei Li <liwei1518@gmail.com>, 
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, 
- Frank Chang <frank.chang@sifive.com>
-Content-Type: multipart/alternative; boundary="0000000000007aef0d061a38df5e"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::933;
- envelope-from=fea.wang@sifive.com; helo=mail-ua1-x933.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain
+X-Spamd-Result: default: False [-6.51 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+ DWL_DNSWL_MED(-2.00)[suse.de:dkim];
+ NEURAL_HAM_LONG(-1.00)[-1.000];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ MX_GOOD(-0.01)[];
+ SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ MIME_TRACE(0.00)[0:+]; TO_DN_EQ_ADDR_SOME(0.00)[];
+ ARC_NA(0.00)[];
+ RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
+ RCVD_TLS_ALL(0.00)[]; DKIM_TRACE(0.00)[suse.de:+];
+ RCVD_COUNT_TWO(0.00)[2]; FROM_EQ_ENVFROM(0.00)[];
+ FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
+ MID_RHS_MATCH_FROM(0.00)[];
+ RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+ RCPT_COUNT_SEVEN(0.00)[10]; MISSING_XM_UA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim, suse.de:email, linaro.org:email,
+ imap1.dmz-prg2.suse.org:helo, imap1.dmz-prg2.suse.org:rdns]
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: 9AC1121AFA
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spam-Score: -6.51
+Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,185 +135,445 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000007aef0d061a38df5e
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+"Liu, Yuan1" <yuan1.liu@intel.com> writes:
 
-Sure, I will reorder the commits in the next patch series.
-Thank you
-
-Sincerely,
-Fea
-
-On Thu, Jun 6, 2024 at 7:58=E2=80=AFAM Alistair Francis <alistair23@gmail.c=
-om>
-wrote:
-
-> On Tue, Jun 4, 2024 at 4:23=E2=80=AFPM Fea.Wang <fea.wang@sifive.com> wro=
-te:
-> >
-> > Add RISC-V privilege 1.13 support.
-> >
-> > Signed-off-by: Fea.Wang <fea.wang@sifive.com>
-> > Signed-off-by: Fea.Wang <fea.wang@sifive.com>
-> > Reviewed-by: Frank Chang <frank.chang@sifive.com>
-> > Reviewed-by: Weiwei Li <liwei1518@gmail.com>
-> > Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+>> -----Original Message-----
+>> From: Fabiano Rosas <farosas@suse.de>
+>> Sent: Thursday, June 6, 2024 6:26 AM
+>> To: Liu, Yuan1 <yuan1.liu@intel.com>; peterx@redhat.com;
+>> pbonzini@redhat.com; marcandre.lureau@redhat.com; berrange@redhat.com;
+>> thuth@redhat.com; philmd@linaro.org
+>> Cc: qemu-devel@nongnu.org; Liu, Yuan1 <yuan1.liu@intel.com>; Zou, Nanhai
+>> <nanhai.zou@intel.com>; shameerali.kolothum.thodi@huawei.com
+>> Subject: Re: [PATCH v7 6/7] migration/multifd: implement qpl compression
+>> and decompression
+>> 
+>> Yuan Liu <yuan1.liu@intel.com> writes:
+>> 
+>> > QPL compression and decompression will use IAA hardware first.
+>> > If IAA hardware is not available, it will automatically fall
+>> > back to QPL software path, if the software job also fails,
+>> > the uncompressed page is sent directly.
+>> >
+>> > Signed-off-by: Yuan Liu <yuan1.liu@intel.com>
+>> > Reviewed-by: Nanhai Zou <nanhai.zou@intel.com>
+>> > ---
+>> >  migration/multifd-qpl.c | 412 +++++++++++++++++++++++++++++++++++++++-
+>> >  1 file changed, 408 insertions(+), 4 deletions(-)
+>> >
+>> > diff --git a/migration/multifd-qpl.c b/migration/multifd-qpl.c
+>> > index 6791a204d5..18b3384bd5 100644
+>> > --- a/migration/multifd-qpl.c
+>> > +++ b/migration/multifd-qpl.c
+>> > @@ -13,9 +13,14 @@
+>> >  #include "qemu/osdep.h"
+>> >  #include "qemu/module.h"
+>> >  #include "qapi/error.h"
+>> > +#include "qapi/qapi-types-migration.h"
+>> > +#include "exec/ramblock.h"
+>> >  #include "multifd.h"
+>> >  #include "qpl/qpl.h"
+>> >
+>> > +/* Maximum number of retries to resubmit a job if IAA work queues are
+>> full */
+>> > +#define MAX_SUBMIT_RETRY_NUM (3)
+>> > +
+>> >  typedef struct {
+>> >      /* the QPL hardware path job */
+>> >      qpl_job *job;
+>> > @@ -260,6 +265,219 @@ static void
+>> multifd_qpl_send_cleanup(MultiFDSendParams *p, Error **errp)
+>> >      p->iov = NULL;
+>> >  }
+>> >
+>> > +/**
+>> > + * multifd_qpl_prepare_job: prepare the job
+>> > + *
+>> > + * Set the QPL job parameters and properties.
+>> > + *
+>> > + * @job: pointer to the qpl_job structure
+>> > + * @is_compression: indicates compression and decompression
+>> > + * @input: pointer to the input data buffer
+>> > + * @input_len: the length of the input data
+>> > + * @output: pointer to the output data buffer
+>> > + * @output_len: the length of the output data
+>> > + */
+>> > +static void multifd_qpl_prepare_job(qpl_job *job, bool is_compression,
+>> > +                                    uint8_t *input, uint32_t input_len,
+>> > +                                    uint8_t *output, uint32_t
+>> output_len)
+>> > +{
+>> > +    job->op = is_compression ? qpl_op_compress : qpl_op_decompress;
+>> > +    job->next_in_ptr = input;
+>> > +    job->next_out_ptr = output;
+>> > +    job->available_in = input_len;
+>> > +    job->available_out = output_len;
+>> > +    job->flags = QPL_FLAG_FIRST | QPL_FLAG_LAST | QPL_FLAG_OMIT_VERIFY;
+>> > +    /* only supports compression level 1 */
+>> > +    job->level = 1;
+>> > +}
+>> > +
+>> > +/**
+>> > + * multifd_qpl_prepare_job: prepare the compression job
+>> 
+>> function name is wrong
 >
-> This should be the last patch in the series. The idea is that we add
-> support and then let users enable it.
+> Thanks, I will fix this next version.
+>  
+>> > + *
+>> > + * Set the compression job parameters and properties.
+>> > + *
+>> > + * @job: pointer to the qpl_job structure
+>> > + * @input: pointer to the input data buffer
+>> > + * @input_len: the length of the input data
+>> > + * @output: pointer to the output data buffer
+>> > + * @output_len: the length of the output data
+>> > + */
+>> > +static void multifd_qpl_prepare_comp_job(qpl_job *job, uint8_t *input,
+>> > +                                         uint32_t input_len, uint8_t
+>> *output,
+>> > +                                         uint32_t output_len)
+>> > +{
+>> > +    multifd_qpl_prepare_job(job, true, input, input_len, output,
+>> output_len);
+>> > +}
+>> > +
+>> > +/**
+>> > + * multifd_qpl_prepare_job: prepare the decompression job
 >
-> Alistair
+> Thanks, I will fix this next version.
+>  
+>> > + *
+>> > + * Set the decompression job parameters and properties.
+>> > + *
+>> > + * @job: pointer to the qpl_job structure
+>> > + * @input: pointer to the input data buffer
+>> > + * @input_len: the length of the input data
+>> > + * @output: pointer to the output data buffer
+>> > + * @output_len: the length of the output data
+>> > + */
+>> > +static void multifd_qpl_prepare_decomp_job(qpl_job *job, uint8_t
+>> *input,
+>> > +                                           uint32_t input_len, uint8_t
+>> *output,
+>> > +                                           uint32_t output_len)
+>> > +{
+>> > +    multifd_qpl_prepare_job(job, false, input, input_len, output,
+>> output_len);
+>> > +}
+>> > +
+>> > +/**
+>> > + * multifd_qpl_fill_iov: fill in the IOV
+>> > + *
+>> > + * Fill in the QPL packet IOV
+>> > + *
+>> > + * @p: Params for the channel being used
+>> > + * @data: pointer to the IOV data
+>> > + * @len: The length of the IOV data
+>> > + */
+>> > +static void multifd_qpl_fill_iov(MultiFDSendParams *p, uint8_t *data,
+>> > +                                 uint32_t len)
+>> > +{
+>> > +    p->iov[p->iovs_num].iov_base = data;
+>> > +    p->iov[p->iovs_num].iov_len = len;
+>> > +    p->iovs_num++;
+>> > +    p->next_packet_size += len;
+>> > +}
+>> > +
+>> > +/**
+>> > + * multifd_qpl_fill_packet: fill the compressed page into the QPL
+>> packet
+>> > + *
+>> > + * Fill the compressed page length and IOV into the QPL packet
+>> > + *
+>> > + * @idx: The index of the compressed length array
+>> > + * @p: Params for the channel being used
+>> > + * @data: pointer to the compressed page buffer
+>> > + * @len: The length of the compressed page
+>> > + */
+>> > +static void multifd_qpl_fill_packet(uint32_t idx, MultiFDSendParams *p,
+>> > +                                    uint8_t *data, uint32_t len)
+>> > +{
+>> > +    QplData *qpl = p->compress_data;
+>> > +
+>> > +    qpl->zlen[idx] = cpu_to_be32(len);
+>> > +    multifd_qpl_fill_iov(p, data, len);
+>> > +}
+>> > +
+>> > +/**
+>> > + * multifd_qpl_submit_job: submit a job to the hardware
+>> > + *
+>> > + * Submit a QPL hardware job to the IAA device
+>> > + *
+>> > + * Returns true if the job is submitted successfully, otherwise false.
+>> > + *
+>> > + * @job: pointer to the qpl_job structure
+>> > + */
+>> > +static bool multifd_qpl_submit_job(qpl_job *job)
+>> > +{
+>> > +    qpl_status status;
+>> > +    uint32_t num = 0;
+>> > +
+>> > +retry:
+>> > +    status = qpl_submit_job(job);
+>> > +    if (status == QPL_STS_QUEUES_ARE_BUSY_ERR) {
+>> > +        if (num < MAX_SUBMIT_RETRY_NUM) {
+>> > +            num++;
+>> > +            goto retry;
+>> > +        }
+>> > +    }
+>> > +    return (status == QPL_STS_OK);
+>> 
+>> How often do we expect this to fail? Will the queues be busy frequently
+>> or is this an unlikely event? I'm thinking whether we really need to
+>> allow a fallback for the hw path. Sorry if this has been discussed
+>> already, I don't remember.
 >
-> > ---
-> >  target/riscv/cpu.c         | 6 +++++-
-> >  target/riscv/tcg/tcg-cpu.c | 4 ++++
-> >  2 files changed, 9 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> > index e9e69b9863..02c1e12a03 100644
-> > --- a/target/riscv/cpu.c
-> > +++ b/target/riscv/cpu.c
-> > @@ -1775,7 +1775,9 @@ static int priv_spec_from_str(const char
-> *priv_spec_str)
-> >  {
-> >      int priv_version =3D -1;
-> >
-> > -    if (!g_strcmp0(priv_spec_str, PRIV_VER_1_12_0_STR)) {
-> > +    if (!g_strcmp0(priv_spec_str, PRIV_VER_1_13_0_STR)) {
-> > +        priv_version =3D PRIV_VERSION_1_13_0;
-> > +    } else if (!g_strcmp0(priv_spec_str, PRIV_VER_1_12_0_STR)) {
-> >          priv_version =3D PRIV_VERSION_1_12_0;
-> >      } else if (!g_strcmp0(priv_spec_str, PRIV_VER_1_11_0_STR)) {
-> >          priv_version =3D PRIV_VERSION_1_11_0;
-> > @@ -1795,6 +1797,8 @@ const char *priv_spec_to_str(int priv_version)
-> >          return PRIV_VER_1_11_0_STR;
-> >      case PRIV_VERSION_1_12_0:
-> >          return PRIV_VER_1_12_0_STR;
-> > +    case PRIV_VERSION_1_13_0:
-> > +        return PRIV_VER_1_13_0_STR;
-> >      default:
-> >          return NULL;
-> >      }
-> > diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-> > index 60fe0fd060..595d3b5b8f 100644
-> > --- a/target/riscv/tcg/tcg-cpu.c
-> > +++ b/target/riscv/tcg/tcg-cpu.c
-> > @@ -318,6 +318,10 @@ static void
-> riscv_cpu_update_named_features(RISCVCPU *cpu)
-> >          cpu->cfg.has_priv_1_12 =3D true;
-> >      }
-> >
-> > +    if (cpu->env.priv_ver >=3D PRIV_VERSION_1_13_0) {
-> > +        cpu->cfg.has_priv_1_13 =3D true;
-> > +    }
-> > +
-> >      /* zic64b is 1.12 or later */
-> >      cpu->cfg.ext_zic64b =3D cpu->cfg.cbom_blocksize =3D=3D 64 &&
-> >                            cpu->cfg.cbop_blocksize =3D=3D 64 &&
-> > --
-> > 2.34.1
-> >
-> >
+> In some scenarios, this may happen frequently, such as configuring 4 channels 
+> but only one IAA device is available. In the case of insufficient IAA hardware 
+> resources, retry and fallback can help optimize performance.
+> I have a comparison test below
 >
+> 1. Retry + SW fallback:
+>    total time: 14649 ms
+>    downtime: 25 ms
+>    throughput: 17666.57 mbps
+>    pages-per-second: 1509647
+>
+> 2. No fallback, always wait for work queues to become available
+>    total time: 18381 ms
+>    downtime: 25 ms
+>    throughput: 13698.65 mbps
+>    pages-per-second: 859607
 
---0000000000007aef0d061a38df5e
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Thanks for the data, this is helpful. Let's include it in the commit
+message, it's important to let people know you actually did that
+analysis. I put a suggestion below:
 
-<div dir=3D"ltr"><br><div>Sure, I will reorder the commits in the next patc=
-h series.</div><div>Thank you</div><div><br></div><div>Sincerely,</div><div=
->Fea</div></div><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gm=
-ail_attr">On Thu, Jun 6, 2024 at 7:58=E2=80=AFAM Alistair Francis &lt;<a hr=
-ef=3D"mailto:alistair23@gmail.com">alistair23@gmail.com</a>&gt; wrote:<br><=
-/div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;bo=
-rder-left:1px solid rgb(204,204,204);padding-left:1ex">On Tue, Jun 4, 2024 =
-at 4:23=E2=80=AFPM Fea.Wang &lt;<a href=3D"mailto:fea.wang@sifive.com" targ=
-et=3D"_blank">fea.wang@sifive.com</a>&gt; wrote:<br>
-&gt;<br>
-&gt; Add RISC-V privilege 1.13 support.<br>
-&gt;<br>
-&gt; Signed-off-by: Fea.Wang &lt;<a href=3D"mailto:fea.wang@sifive.com" tar=
-get=3D"_blank">fea.wang@sifive.com</a>&gt;<br>
-&gt; Signed-off-by: Fea.Wang &lt;<a href=3D"mailto:fea.wang@sifive.com" tar=
-get=3D"_blank">fea.wang@sifive.com</a>&gt;<br>
-&gt; Reviewed-by: Frank Chang &lt;<a href=3D"mailto:frank.chang@sifive.com"=
- target=3D"_blank">frank.chang@sifive.com</a>&gt;<br>
-&gt; Reviewed-by: Weiwei Li &lt;<a href=3D"mailto:liwei1518@gmail.com" targ=
-et=3D"_blank">liwei1518@gmail.com</a>&gt;<br>
-&gt; Reviewed-by: LIU Zhiwei &lt;<a href=3D"mailto:zhiwei_liu@linux.alibaba=
-.com" target=3D"_blank">zhiwei_liu@linux.alibaba.com</a>&gt;<br>
-<br>
-This should be the last patch in the series. The idea is that we add<br>
-support and then let users enable it.<br>
-<br>
-Alistair<br>
-<br>
-&gt; ---<br>
-&gt;=C2=A0 target/riscv/cpu.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0| 6 +++++-<b=
-r>
-&gt;=C2=A0 target/riscv/tcg/tcg-cpu.c | 4 ++++<br>
-&gt;=C2=A0 2 files changed, 9 insertions(+), 1 deletion(-)<br>
-&gt;<br>
-&gt; diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c<br>
-&gt; index e9e69b9863..02c1e12a03 100644<br>
-&gt; --- a/target/riscv/cpu.c<br>
-&gt; +++ b/target/riscv/cpu.c<br>
-&gt; @@ -1775,7 +1775,9 @@ static int priv_spec_from_str(const char *priv_s=
-pec_str)<br>
-&gt;=C2=A0 {<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 int priv_version =3D -1;<br>
-&gt;<br>
-&gt; -=C2=A0 =C2=A0 if (!g_strcmp0(priv_spec_str, PRIV_VER_1_12_0_STR)) {<b=
-r>
-&gt; +=C2=A0 =C2=A0 if (!g_strcmp0(priv_spec_str, PRIV_VER_1_13_0_STR)) {<b=
-r>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 priv_version =3D PRIV_VERSION_1_13_0;<br>
-&gt; +=C2=A0 =C2=A0 } else if (!g_strcmp0(priv_spec_str, PRIV_VER_1_12_0_ST=
-R)) {<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 priv_version =3D PRIV_VERSION_1_12_0=
-;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 } else if (!g_strcmp0(priv_spec_str, PRIV_VER_1_11=
-_0_STR)) {<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 priv_version =3D PRIV_VERSION_1_11_0=
-;<br>
-&gt; @@ -1795,6 +1797,8 @@ const char *priv_spec_to_str(int priv_version)<b=
-r>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return PRIV_VER_1_11_0_STR;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 case PRIV_VERSION_1_12_0:<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return PRIV_VER_1_12_0_STR;<br>
-&gt; +=C2=A0 =C2=A0 case PRIV_VERSION_1_13_0:<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 return PRIV_VER_1_13_0_STR;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 default:<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return NULL;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 }<br>
-&gt; diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c<b=
-r>
-&gt; index 60fe0fd060..595d3b5b8f 100644<br>
-&gt; --- a/target/riscv/tcg/tcg-cpu.c<br>
-&gt; +++ b/target/riscv/tcg/tcg-cpu.c<br>
-&gt; @@ -318,6 +318,10 @@ static void riscv_cpu_update_named_features(RISCV=
-CPU *cpu)<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 cpu-&gt;cfg.has_priv_1_12 =3D true;<=
-br>
-&gt;=C2=A0 =C2=A0 =C2=A0 }<br>
-&gt;<br>
-&gt; +=C2=A0 =C2=A0 if (cpu-&gt;env.priv_ver &gt;=3D PRIV_VERSION_1_13_0) {=
-<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 cpu-&gt;cfg.has_priv_1_13 =3D true;<br>
-&gt; +=C2=A0 =C2=A0 }<br>
-&gt; +<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 /* zic64b is 1.12 or later */<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 cpu-&gt;cfg.ext_zic64b =3D cpu-&gt;cfg.cbom_blocks=
-ize =3D=3D 64 &amp;&amp;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 cpu-&gt;cfg.cbop_blocksize =3D=3D 64 &amp;&amp;=
-<br>
-&gt; --<br>
-&gt; 2.34.1<br>
-&gt;<br>
-&gt;<br>
-</blockquote></div>
+---
+QPL compression and decompression will use IAA hardware path if the IAA
+hardware is available. Otherwise the QPL library software path is used.
 
---0000000000007aef0d061a38df5e--
+The hardware path will automatically fall back to QPL software path if
+the IAA queues are busy. In some scenarios, this may happen frequently,
+such as configuring 4 channels but only one IAA device is available. In
+the case of insufficient IAA hardware resources, retry and fallback can
+help optimize performance:
+
+ 1. Retry + SW fallback:
+    total time: 14649 ms
+    downtime: 25 ms
+    throughput: 17666.57 mbps
+    pages-per-second: 1509647
+
+ 2. No fallback, always wait for work queues to become available
+    total time: 18381 ms
+    downtime: 25 ms
+    throughput: 13698.65 mbps
+    pages-per-second: 859607
+
+If both the hardware and software paths fail, the uncompressed page is
+sent directly.
+
+>> > +}
+>> > +
+>> > +/**
+>> > + * multifd_qpl_compress_pages_slow_path: compress pages using slow path
+>> > + *
+>> > + * Compress the pages using software. If compression fails, the page
+>> will
+>> > + * be sent directly.
+>> > + *
+>> > + * @p: Params for the channel being used
+>> > + */
+>> > +static void multifd_qpl_compress_pages_slow_path(MultiFDSendParams *p)
+>> > +{
+>> > +    QplData *qpl = p->compress_data;
+>> > +    uint32_t size = p->page_size;
+>> > +    qpl_job *job = qpl->sw_job;
+>> > +    uint8_t *zbuf = qpl->zbuf;
+>> > +    uint8_t *buf;
+>> > +
+>> > +    for (int i = 0; i < p->pages->normal_num; i++) {
+>> > +        buf = p->pages->block->host + p->pages->offset[i];
+>> > +        /* Set output length to less than the page to reduce
+>> decompression */
+>> > +        multifd_qpl_prepare_comp_job(job, buf, size, zbuf, size - 1);
+>> > +        if (qpl_execute_job(job) == QPL_STS_OK) {
+>> > +            multifd_qpl_fill_packet(i, p, zbuf, job->total_out);
+>> > +        } else {
+>> > +            /* send the page directly */
+>> 
+>> s/directly/uncompressed/
+>> 
+>> a bit clearer.
+>
+> Sure, I will fix it next version. 
+>
+>> > +            multifd_qpl_fill_packet(i, p, buf, size);
+>> > +        }
+>> > +        zbuf += size;
+>> > +    }
+>> > +}
+>> > +
+>> > +/**
+>> > + * multifd_qpl_compress_pages: compress pages
+>> > + *
+>> > + * Submit the pages to the IAA hardware for compression. If hardware
+>> > + * compression fails, it falls back to software compression. If
+>> software
+>> > + * compression also fails, the page is sent directly
+>> > + *
+>> > + * @p: Params for the channel being used
+>> > + */
+>> > +static void multifd_qpl_compress_pages(MultiFDSendParams *p)
+>> > +{
+>> > +    QplData *qpl = p->compress_data;
+>> > +    MultiFDPages_t *pages = p->pages;
+>> > +    uint32_t size = p->page_size;
+>> > +    QplHwJob *hw_job;
+>> > +    uint8_t *buf;
+>> > +    uint8_t *zbuf;
+>> > +
+>> 
+>> Let's document the output size choice more explicitly:
+>> 
+>>     /*
+>>      * Set output length to less than the page size to force the job to
+>>      * fail in case it compresses to a larger size. We'll send that page
+>>      * without compression and skip the decompression operation on the
+>>      * destination.
+>>      */
+>>      out_size = size - 1;
+>> 
+>> you can then omit the other comments.
+>
+> Thanks for the comments, I will refine this next version.
+>  
+>> > +    for (int i = 0; i < pages->normal_num; i++) {
+>> > +        buf = pages->block->host + pages->offset[i];
+>> > +        zbuf = qpl->zbuf + (size * i);
+>> > +        hw_job = &qpl->hw_jobs[i];
+>> > +        /* Set output length to less than the page to reduce
+>> decompression */
+>> > +        multifd_qpl_prepare_comp_job(hw_job->job, buf, size, zbuf, size
+>> - 1);
+>> > +        if (multifd_qpl_submit_job(hw_job->job)) {
+>> > +            hw_job->fallback_sw_path = false;
+>> > +        } else {
+>> > +            hw_job->fallback_sw_path = true;
+>> > +            /* Set output length less than page size to reduce
+>> decompression */
+>> > +            multifd_qpl_prepare_comp_job(qpl->sw_job, buf, size, zbuf,
+>> > +                                         size - 1);
+>> > +            if (qpl_execute_job(qpl->sw_job) == QPL_STS_OK) {
+>> > +                hw_job->sw_output = zbuf;
+>> > +                hw_job->sw_output_len = qpl->sw_job->total_out;
+>> > +            } else {
+>> > +                hw_job->sw_output = buf;
+>> > +                hw_job->sw_output_len = size;
+>> > +            }
+>> 
+>> Hmm, these look a bit cumbersome, would it work if we moved the fallback
+>> qpl_execute_job() down into the other loop? We could then avoid the
+>> extra fields. Something like:
+>> 
+>> static void multifd_qpl_compress_pages(MultiFDSendParams *p)
+>> {
+>>     QplData *qpl = p->compress_data;
+>>     MultiFDPages_t *pages = p->pages;
+>>     uint32_t out_size, size = p->page_size;
+>>     uint8_t *buf, *zbuf;
+>> 
+>>     /*
+>>      * Set output length to less than the page size to force the job to
+>>      * fail in case it compresses to a larger size. We'll send that page
+>>      * without compression to skip the decompression operation on the
+>>      * destination.
+>>      */
+>>     out_size = size - 1;
+>> 
+>>     for (int i = 0; i < pages->normal_num; i++) {
+>>         QplHwJob *hw_job = &qpl->hw_jobs[i];
+>> 
+>>         hw_job->fallback_sw_path = false;
+>>         buf = pages->block->host + pages->offset[i];
+>>         zbuf = qpl->zbuf + (size * i);
+>> 
+>>         multifd_qpl_prepare_comp_job(hw_job->job, buf, size, zbuf,
+>> out_size);
+>> 
+>>         if (!multifd_qpl_submit_job(hw_job->job)) {
+>>             hw_job->fallback_sw_path = true;
+>>         }
+>>     }
+>> 
+>>     for (int i = 0; i < pages->normal_num; i++) {
+>>         QplHwJob *hw_job = &qpl->hw_jobs[i];
+>>         qpl_job *job;
+>> 
+>>         buf = pages->block->host + pages->offset[i];
+>>         zbuf = qpl->zbuf + (size * i);
+>> 
+>>         if (hw_job->fallback_sw_path) {
+>>             job = qpl->sw_job;
+>>             multifd_qpl_prepare_comp_job(job, buf, size, zbuf, out_size);
+>>             ret = qpl_execute_job(job);
+>>         } else {
+>>             job = hw_job->job;
+>>             ret = qpl_wait_job(job);
+>>         }
+>> 
+>>         if (ret == QPL_STS_OK) {
+>>             multifd_qpl_fill_packet(i, p, zbuf, job->total_out);
+>>         } else {
+>>             multifd_qpl_fill_packet(i, p, buf, size);
+>>         }
+>>     }
+>> }
+>
+> Very thanks for the reference code, I have test the code and the performance is not good.
+> When the work queue is full, after a hardware job fails to be submitted, the subsequent
+> job submission will most likely fail as well. so my idea is to use software job execution
+> instead immediately, but all subsequent jobs will still give priority to hardware path. 
+
+So let me see if I get this, you're saying that going with the sw path
+immediately after a hw path failure is beneficial because the time it
+takes to call the sw path serves as a backoff time for the hw path?
+
+Do you have an idea on the time difference of waiting for sw path
+vs. introducing a delay to multifd_qpl_submit_job()? Aren't we leaving
+performance on the table by going with a much slower sw path instead of
+waiting for the queues to open up? Or some other strategy, such as going
+once again over the not-submitted pages.
+
+I understand there's a tradeoff here between your effort to investigate
+these things and the amount of performance to be had, so feel free to
+leave this question unanswered. We could choose to simply document this
+with a comment:
+
+    if (multifd_qpl_submit_job(hw_job->job)) {
+        hw_job->fallback_sw_path = false;
+        continue;
+    }
+
+    /* 
+     * The IAA work queue is full, any immediate subsequent job
+     * submission is likely to fail, sending the page via the QPL
+     * software path at this point gives us a better chance of
+     * finding the queue open for the next pages.
+     */
+    hw_job->fallback_sw_path = true;
+    ...
+
+> There is almost no overhead in job submission because Intel uses the new "enqcmd" instruction,
+> which allows the user program to submit the job directly to the hardware.
+>
+> According to the implementation of the reference code, when a job fails to be submitted, there 
+> is a high probability that "ALL" subsequent jobs will fail to be submitted and then use software
+> compression, resulting in the IAA hardware not being fully utilized.
+>
+> For 4 Channel, 1 IAA device test case, using the reference code will reduce IAA throughput 
+> from 3.4GBps to 2.2GBps, thus affecting live migration performance.(total time from 14s to 18s)
+>
 
