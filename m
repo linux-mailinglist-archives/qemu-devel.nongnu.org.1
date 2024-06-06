@@ -2,74 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BFCA8FE5D5
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jun 2024 13:53:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF5918FE5C8
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jun 2024 13:52:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sFBe0-0007i0-CV; Thu, 06 Jun 2024 07:51:00 -0400
+	id 1sFBdw-0007f1-Hl; Thu, 06 Jun 2024 07:50:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sFBdw-0007fG-St
- for qemu-devel@nongnu.org; Thu, 06 Jun 2024 07:50:56 -0400
-Received: from mail-lj1-x22c.google.com ([2a00:1450:4864:20::22c])
+ id 1sFBdt-0007dw-Qx
+ for qemu-devel@nongnu.org; Thu, 06 Jun 2024 07:50:53 -0400
+Received: from mail-lf1-x132.google.com ([2a00:1450:4864:20::132])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sFBdu-0000sV-Mc
- for qemu-devel@nongnu.org; Thu, 06 Jun 2024 07:50:56 -0400
-Received: by mail-lj1-x22c.google.com with SMTP id
- 38308e7fff4ca-2eaad2c673fso11504581fa.3
- for <qemu-devel@nongnu.org>; Thu, 06 Jun 2024 04:50:54 -0700 (PDT)
+ id 1sFBdr-0000s0-1I
+ for qemu-devel@nongnu.org; Thu, 06 Jun 2024 07:50:53 -0400
+Received: by mail-lf1-x132.google.com with SMTP id
+ 2adb3069b0e04-52b93370ad0so1143539e87.2
+ for <qemu-devel@nongnu.org>; Thu, 06 Jun 2024 04:50:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1717674653; x=1718279453; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=ketSUghNepfPOiL/VZXF+Z/GBfbv0GHe9wK13u2WN5A=;
- b=NuHzj7wD2IjBWQ5uI3h4tiUc0zDgKUpoRfvMBWBU2bKU+fdbe/Zg/UKr4dky15hEFl
- NIBhNWf3EmeG7yEFVsvfut8pP5ISb5hVsh21fkrAkV1MRIBYSI/UCl2s3d8cHl1cASSu
- BFFBZKBUTTW45MHrSosCQUXio10awYfSyerluoNSVn0OO20ztuuIx+jwmL17t/XssFTw
- u+7Nsp764rrSK/2D8t1Xdljtlf8TeXp5jycN8Z07yGanssOfmnQ5wtnTKM+Xr5V6yUrZ
- A2gSJuf5QzPh+ag0PqN1fY7dl8DrckXMlfPFO9Z3xTJwYraEhj+HRcJk+yY0lobgVKP3
- SCkA==
+ d=linaro.org; s=google; t=1717674649; x=1718279449; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=pXWdlomnsbuR2dFJ27nGIJWK1MsThS2P51i0jY+0KAU=;
+ b=hLDbF7sVTbXBAVajqL5h4QpaaoZm1Lq6Or0E9lhpexZC573/26n2pvNdbwNzTV1B9T
+ B9GXgleWzw1rPSllVNr3KKu+qQcG/DQfG/U1bMm3ABGemwf1pVCHCd+LAcrNlITrEH54
+ v8Cals1oIumCfQkFV0O/q/Rl2Bvt3eogSCOC46X4uA/4UYL9fkqytKwHw0wA+YNerTln
+ N5CLeBd2LKMLB73RuyLyT6VBwe68mUEndCwQ7mSoPWtRMFwKgWAZo6iBl2jREFAyefQc
+ BzPF3Ja+2NKfBPnFiYxb3JrFZnC/Fkr3/aDxBIs9AYMQgcEyQQxke4iBWwXq/CZwaqca
+ R3vw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717674653; x=1718279453;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=ketSUghNepfPOiL/VZXF+Z/GBfbv0GHe9wK13u2WN5A=;
- b=Uis33gVD4RNDFFE8Yh1X5A6qkewe3g7J0cWAwM5KaT5FfYHZXkL34nJxUhsr1xryP9
- s/8v/w7MeaEpZGu4uw+6Phrqaqw4gfIai19EXCmvjyoZm9eRWLPcB4eKSlNcqGlsBpyD
- a8+8zdtGV5G01tYZPOXFVTImQr0HCNYc1QOUp8cQewZ+2oEX702nkY8TmP2CpiOZb8Sd
- qTN8Se2UwM/s24EjJEU0Ft9OoHkhEy55CQyLDfxZwi0MRAsnOsxF+MoDAhbAeNOcXo7m
- lSATa4dOnapP1YWbcC+I3+GyEaqU6zJcxcB1oKIsn4P3NcXsOPPV67wsSxuTxZZm/Eke
- wE0g==
-X-Gm-Message-State: AOJu0Yx5diyFwmm0NCj0kJ7CcoWuARb2/4BlDxuwlOPNOV/uu3Xvzr7x
- MTWxUU1vx2Z1w9ftT7vbLDs4y3MK9MIk5Ato6OFednMRv9VfqXitJ7wYyCKum0W4nlKOhg/iKVd
- d
-X-Google-Smtp-Source: AGHT+IE48ykZwUeQa6eeupTCCDCO4mWhxkHuHsVOF93jR/ojqv3SB9jKAG2PqJPEyeRvlHU8hAn4AA==
-X-Received: by 2002:a05:651c:1a2a:b0:2de:ca7f:c849 with SMTP id
- 38308e7fff4ca-2eac7a7fcd5mr45373711fa.43.1717674652653; 
- Thu, 06 Jun 2024 04:50:52 -0700 (PDT)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a6c8070f9b4sm87433266b.187.2024.06.06.04.50.48
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ d=1e100.net; s=20230601; t=1717674649; x=1718279449;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=pXWdlomnsbuR2dFJ27nGIJWK1MsThS2P51i0jY+0KAU=;
+ b=mI5eOswuUbmCLakvQqCHcZliNDRhUvskMDxiR16LFDCkwwcM5ETQXpq3leUFJOOsmg
+ EeR8eqyN66Eu+ntRkOcGzbbgQsG/Lbv71YO295fq8U3Vt38prGvX1G2dNTS3T7x22zZG
+ 1mQ4ggDHHv7sDTpOJFUditSie1zs/NE6xtwHoDT2khZSckeJu2bonkH1H38DMLIRIMlj
+ n3E0dAshG/8Y/WUfZYAhPsfhsjLvGVaOM/ngEpEwurpMRC7g9MrCz9wcWP/kXFetMZon
+ dwBKuK8RPU+dB7O/bxdmcZ8QZ29jV/mWMVlolxpiu3cw4SVsiEbZ2AE4pyBUwaVjxYh2
+ bdnw==
+X-Gm-Message-State: AOJu0YzUn50mJifwmbCM9Y3qZmz7z4xU0GSGZYe+0IHa1YX1r+t/xhNS
+ nk5pGZNRxL5wDuvTv1an/rBsnZsy28707+QJYXldmSzq9/T2Ka/VG8tZyyaNm8k=
+X-Google-Smtp-Source: AGHT+IGEvtuP1uv0TezAx/c0k4j8bR6IgghrDKju+u7BPXNsxB6igYzEIEVj6poeE8iVZyDNK6dQ2A==
+X-Received: by 2002:ac2:5592:0:b0:52b:fb4:1283 with SMTP id
+ 2adb3069b0e04-52bab4d8022mr3779436e87.15.1717674649051; 
  Thu, 06 Jun 2024 04:50:49 -0700 (PDT)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-a6c805cbca9sm87311266b.65.2024.06.06.04.50.48
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 06 Jun 2024 04:50:48 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id DB3DF5F7AD;
- Thu,  6 Jun 2024 12:50:47 +0100 (BST)
+ by draig.lan (Postfix) with ESMTP id 011845F8CB;
+ Thu,  6 Jun 2024 12:50:48 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PULL 00/12] testing cleanups (ci, vm, lcitool, ansible)
-Date: Thu,  6 Jun 2024 12:50:35 +0100
-Message-Id: <20240606115047.421045-1-alex.bennee@linaro.org>
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>
+Subject: [PULL 01/12] ci: remove centos-steam-8 customer runner
+Date: Thu,  6 Jun 2024 12:50:36 +0100
+Message-Id: <20240606115047.421045-2-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240606115047.421045-1-alex.bennee@linaro.org>
+References: <20240606115047.421045-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::22c;
- envelope-from=alex.bennee@linaro.org; helo=mail-lj1-x22c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::132;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x132.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,87 +99,460 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit db2feb2df8d19592c9859efb3f682404e0052957:
+This broke since eef0bae3a7 (migration: Remove block migration) but
+even after that was addressed it still fails to complete. As it will
+shortly be EOL lets to remove the runner definition and the related
+ansible setup bits.
 
-  Merge tag 'pull-misc-20240605' of https://gitlab.com/rth7680/qemu into staging (2024-06-05 14:17:01 -0700)
+We still have centos9 docker images build and test.
 
-are available in the Git repository at:
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Message-Id: <20240603175328.3823123-2-alex.bennee@linaro.org>
 
-  https://gitlab.com/stsquad/qemu.git tags/pull-maintainer-june24-060624-1
-
-for you to fetch changes up to c99064d03fc574254ab098562798c937a4761161:
-
-  scripts/ci: drive ubuntu/build-environment.yml from lcitool (2024-06-06 10:26:22 +0100)
-
-----------------------------------------------------------------
-testing cleanups (ci, vm, lcitool, ansible):
-
-  - clean up left over Centos 8 references
-  - use -fno-sanitize=function to avoid non-useful errors
-  - bump lcitool and update images (alpine, fedora)
-  - make sure we have mingw-w64-tools for windows builds
-  - drive ansible scripts with lcitool package lists
-
-----------------------------------------------------------------
-Alex Bennée (8):
-      ci: remove centos-steam-8 customer runner
-      docs/devel: update references to centos to non-versioned container
-      tests/vm: update centos.aarch64 image to 9
-      tests/vm: remove plain centos image
-      scripts/ci: remove CentOS bits from common build-environment
-      docs/ci: clean-up references for consistency
-      tests/lcitool: generate package lists for ansible
-      scripts/ci: drive ubuntu/build-environment.yml from lcitool
-
-Thomas Huth (4):
-      tests/lcitool: Delete obsolete centos-stream-8.yml file
-      .gitlab-ci.d/buildtest.yml: Use -fno-sanitize=function in the clang-system job
-      tests/lcitool: Bump to latest libvirt-ci and update Fedora and Alpine version
-      tests/lcitool: Install mingw-w64-tools for the Windows cross-builds
-
- docs/devel/ci-jobs.rst.inc                         |   7 -
- docs/devel/ci-runners.rst.inc                      |  13 +-
- docs/devel/testing.rst                             |   8 +-
- .gitlab-ci.d/buildtest.yml                         |   1 +
- .gitlab-ci.d/custom-runners.yml                    |   1 -
- .../custom-runners/centos-stream-8-x86_64.yml      |  24 --
- .../custom-runners/ubuntu-22.04-aarch32.yml        |   2 +-
- .../custom-runners/ubuntu-22.04-aarch64.yml        |   2 +-
- .gitlab-ci.d/custom-runners/ubuntu-22.04-s390x.yml |   2 +-
- .../ci/org.centos/stream/8/build-environment.yml   |  82 ------
- scripts/ci/org.centos/stream/8/x86_64/configure    | 198 --------------
- scripts/ci/org.centos/stream/8/x86_64/test-avocado |  65 -----
- scripts/ci/org.centos/stream/README                |  17 --
- scripts/ci/setup/build-environment.yml             | 284 ---------------------
- scripts/ci/setup/ubuntu/build-environment.yml      |  69 +++++
- scripts/ci/setup/ubuntu/ubuntu-2204-aarch64.yaml   | 127 +++++++++
- .../ci/setup/ubuntu/ubuntu-2204-armhf-cross.yml    | 127 +++++++++
- scripts/ci/setup/ubuntu/ubuntu-2204-s390x.yaml     | 125 +++++++++
- tests/docker/dockerfiles/alpine.docker             |   4 +-
- tests/docker/dockerfiles/fedora-win64-cross.docker |   6 +-
- tests/docker/dockerfiles/fedora.docker             |   5 +-
- tests/lcitool/libvirt-ci                           |   2 +-
- tests/lcitool/projects/qemu-win-installer.yml      |   1 +
- tests/lcitool/projects/qemu.yml                    |   1 +
- tests/lcitool/refresh                              |  22 +-
- tests/lcitool/targets/centos-stream-8.yml          |   3 -
- tests/vm/Makefile.include                          |   1 -
- tests/vm/centos                                    |  51 ----
- tests/vm/centos.aarch64                            |  10 +-
- 29 files changed, 497 insertions(+), 763 deletions(-)
- delete mode 100644 .gitlab-ci.d/custom-runners/centos-stream-8-x86_64.yml
- delete mode 100644 scripts/ci/org.centos/stream/8/build-environment.yml
- delete mode 100755 scripts/ci/org.centos/stream/8/x86_64/configure
- delete mode 100755 scripts/ci/org.centos/stream/8/x86_64/test-avocado
- delete mode 100644 scripts/ci/org.centos/stream/README
- delete mode 100644 scripts/ci/setup/build-environment.yml
- create mode 100644 scripts/ci/setup/ubuntu/build-environment.yml
- create mode 100644 scripts/ci/setup/ubuntu/ubuntu-2204-aarch64.yaml
- create mode 100644 scripts/ci/setup/ubuntu/ubuntu-2204-armhf-cross.yml
- create mode 100644 scripts/ci/setup/ubuntu/ubuntu-2204-s390x.yaml
- delete mode 100644 tests/lcitool/targets/centos-stream-8.yml
- delete mode 100755 tests/vm/centos
-
+diff --git a/docs/devel/ci-jobs.rst.inc b/docs/devel/ci-jobs.rst.inc
+index be06322279..3756bbe355 100644
+--- a/docs/devel/ci-jobs.rst.inc
++++ b/docs/devel/ci-jobs.rst.inc
+@@ -182,13 +182,6 @@ If you've got access to an IBM Z host that can be used as a gitlab-CI
+ runner, you can set this variable to enable the tests that require this
+ kind of host. The runner should be tagged with "s390x".
+ 
+-CENTOS_STREAM_8_x86_64_RUNNER_AVAILABLE
+-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-If you've got access to a CentOS Stream 8 x86_64 host that can be
+-used as a gitlab-CI runner, you can set this variable to enable the
+-tests that require this kind of host. The runner should be tagged with
+-both "centos_stream_8" and "x86_64".
+-
+ CCACHE_DISABLE
+ ~~~~~~~~~~~~~~
+ The jobs are configured to use "ccache" by default since this typically
+diff --git a/.gitlab-ci.d/custom-runners.yml b/.gitlab-ci.d/custom-runners.yml
+index 29e52df283..1aa3c60efe 100644
+--- a/.gitlab-ci.d/custom-runners.yml
++++ b/.gitlab-ci.d/custom-runners.yml
+@@ -32,4 +32,3 @@ include:
+   - local: '/.gitlab-ci.d/custom-runners/ubuntu-22.04-s390x.yml'
+   - local: '/.gitlab-ci.d/custom-runners/ubuntu-22.04-aarch64.yml'
+   - local: '/.gitlab-ci.d/custom-runners/ubuntu-22.04-aarch32.yml'
+-  - local: '/.gitlab-ci.d/custom-runners/centos-stream-8-x86_64.yml'
+diff --git a/.gitlab-ci.d/custom-runners/centos-stream-8-x86_64.yml b/.gitlab-ci.d/custom-runners/centos-stream-8-x86_64.yml
+deleted file mode 100644
+index 367424db78..0000000000
+--- a/.gitlab-ci.d/custom-runners/centos-stream-8-x86_64.yml
++++ /dev/null
+@@ -1,24 +0,0 @@
+-# All centos-stream-8 jobs should run successfully in an environment
+-# setup by the scripts/ci/setup/stream/8/build-environment.yml task
+-# "Installation of extra packages to build QEMU"
+-
+-centos-stream-8-x86_64:
+- extends: .custom_runner_template
+- allow_failure: true
+- needs: []
+- stage: build
+- tags:
+- - centos_stream_8
+- - x86_64
+- rules:
+- - if: '$CI_PROJECT_NAMESPACE == "qemu-project" && $CI_COMMIT_BRANCH =~ /^staging/'
+- - if: "$CENTOS_STREAM_8_x86_64_RUNNER_AVAILABLE"
+- before_script:
+- - JOBS=$(expr $(nproc) + 1)
+- script:
+- - mkdir build
+- - cd build
+- - ../scripts/ci/org.centos/stream/8/x86_64/configure
+-   || { cat config.log meson-logs/meson-log.txt; exit 1; }
+- - make -j"$JOBS"
+- - make NINJA=":" check check-avocado
+diff --git a/scripts/ci/org.centos/stream/8/build-environment.yml b/scripts/ci/org.centos/stream/8/build-environment.yml
+deleted file mode 100644
+index 1ead77e2cb..0000000000
+--- a/scripts/ci/org.centos/stream/8/build-environment.yml
++++ /dev/null
+@@ -1,82 +0,0 @@
+----
+-- name: Installation of extra packages to build QEMU
+-  hosts: all
+-  tasks:
+-    - name: Extra check for CentOS Stream 8
+-      lineinfile:
+-        path: /etc/redhat-release
+-        line: CentOS Stream release 8
+-        state: present
+-      check_mode: yes
+-      register: centos_stream_8
+-
+-    - name: Enable EPEL repo on CentOS Stream 8
+-      dnf:
+-        name:
+-          - epel-release
+-        state: present
+-      when:
+-        - centos_stream_8
+-
+-    - name: Enable PowerTools repo on CentOS Stream 8
+-      ini_file:
+-        path: /etc/yum.repos.d/CentOS-Stream-PowerTools.repo
+-        section: powertools
+-        option: enabled
+-        value: "1"
+-      when:
+-        - centos_stream_8
+-
+-    - name: Install basic packages to build QEMU on CentOS Stream 8
+-      dnf:
+-        name:
+-          - bzip2
+-          - bzip2-devel
+-          - capstone-devel
+-          - dbus-daemon
+-          - device-mapper-multipath-devel
+-          - diffutils
+-          - gcc
+-          - gcc-c++
+-          - genisoimage
+-          - gettext
+-          - git
+-          - glib2-devel
+-          - glusterfs-api-devel
+-          - gnutls-devel
+-          - libaio-devel
+-          - libcap-ng-devel
+-          - libcurl-devel
+-          - libepoxy-devel
+-          - libfdt-devel
+-          - libgcrypt-devel
+-          - libiscsi-devel
+-          - libpmem-devel
+-          - librados-devel
+-          - librbd-devel
+-          - libseccomp-devel
+-          - libslirp-devel
+-          - libssh-devel
+-          - libxkbcommon-devel
+-          - lzo-devel
+-          - make
+-          - mesa-libEGL-devel
+-          - nettle-devel
+-          - ninja-build
+-          - nmap-ncat
+-          - numactl-devel
+-          - pixman-devel
+-          - python38
+-          - python3-sphinx
+-          - rdma-core-devel
+-          - redhat-rpm-config
+-          - snappy-devel
+-          - spice-glib-devel
+-          - spice-server-devel
+-          - systemd-devel
+-          - systemtap-sdt-devel
+-          - tar
+-          - zlib-devel
+-        state: present
+-      when:
+-        - centos_stream_8
+diff --git a/scripts/ci/org.centos/stream/8/x86_64/configure b/scripts/ci/org.centos/stream/8/x86_64/configure
+deleted file mode 100755
+index 868db665f6..0000000000
+--- a/scripts/ci/org.centos/stream/8/x86_64/configure
++++ /dev/null
+@@ -1,198 +0,0 @@
+-#!/bin/sh -e
+-#
+-# Configuration for QEMU based on CentOS Stream 8 x86_64 builds
+-#
+-# The "configure" command line is based on:
+-#
+-# https://git.centos.org/rpms/qemu-kvm/blob/c8s-stream-rhel/f/SPECS/qemu-kvm.spec
+-#
+-# But, because the SPEC file contains a number of conditionals and
+-# variable and expansions only available at RPM build time, this version
+-# was initially generated from an actual RPM build on an x86_64 platform.
+-#
+-# From that initial version, options that are required or are a
+-# consequence of non-upstream patches have been adapted.  One example
+-# is "--without-default-devices" which is *not* present here, given
+-# that patches adding downstream specific devices are not available.
+-#
+-../configure \
+---python=/usr/bin/python3.8 \
+---prefix="/usr" \
+---libdir="/usr/lib64" \
+---datadir="/usr/share" \
+---sysconfdir="/etc" \
+---interp-prefix=/usr/qemu-%M \
+---localstatedir="/var" \
+---docdir="/usr/share/doc" \
+---libexecdir="/usr/libexec" \
+---extra-ldflags="-Wl,--build-id -Wl,-z,relro -Wl,-z,now" \
+---extra-cflags="-O2 -g -pipe -Wall -Werror=format-security -Wp,-D_FORTIFY_SOURCE=2 -Wp,-D_GLIBCXX_ASSERTIONS -fexceptions -fstack-protector-strong -grecord-gcc-switches -specs=/usr/lib/rpm/redhat/redhat-hardened-cc1 -specs=/usr/lib/rpm/redhat/redhat-annobin-cc1 -m64 -mtune=generic -fasynchronous-unwind-tables -fstack-clash-protection -fcf-protection" \
+---with-suffix="qemu-kvm" \
+---firmwarepath=/usr/share/qemu-firmware \
+---target-list="x86_64-softmmu" \
+---block-drv-rw-whitelist="qcow2,raw,file,host_device,nbd,iscsi,rbd,blkdebug,luks,null-co,nvme,copy-on-read,throttle,gluster" \
+---audio-drv-list="" \
+---block-drv-ro-whitelist="vmdk,vhdx,vpc,https,ssh" \
+---with-coroutine=ucontext \
+---tls-priority=@QEMU,SYSTEM \
+---disable-af-xdp \
+---disable-attr \
+---disable-auth-pam \
+---disable-avx2 \
+---disable-avx512f \
+---disable-bochs \
+---disable-bpf \
+---disable-brlapi \
+---disable-bsd-user \
+---disable-bzip2 \
+---disable-cap-ng \
+---disable-capstone \
+---disable-cfi \
+---disable-cfi-debug \
+---disable-cloop \
+---disable-cocoa \
+---disable-coroutine-pool \
+---disable-crypto-afalg \
+---disable-curl \
+---disable-curses \
+---disable-debug-info \
+---disable-debug-mutex \
+---disable-debug-tcg \
+---disable-dmg \
+---disable-docs \
+---disable-fuse \
+---disable-fuse-lseek \
+---disable-gcrypt \
+---disable-gio \
+---disable-glusterfs \
+---disable-gnutls \
+---disable-gtk \
+---disable-guest-agent \
+---disable-guest-agent-msi \
+---disable-hvf \
+---disable-iconv \
+---disable-kvm \
+---disable-libdaxctl \
+---disable-libiscsi \
+---disable-libnfs \
+---disable-libpmem \
+---disable-libssh \
+---disable-libudev \
+---disable-libusb \
+---disable-linux-aio \
+---disable-linux-io-uring \
+---disable-linux-user \
+---disable-live-block-migration \
+---disable-lto \
+---disable-lzfse \
+---disable-lzo \
+---disable-malloc-trim \
+---disable-membarrier \
+---disable-modules \
+---disable-module-upgrades \
+---disable-mpath \
+---disable-multiprocess \
+---disable-netmap \
+---disable-nettle \
+---disable-numa \
+---disable-nvmm \
+---disable-opengl \
+---disable-parallels \
+---disable-pie \
+---disable-qcow1 \
+---disable-qed \
+---disable-qom-cast-debug \
+---disable-rbd \
+---disable-rdma \
+---disable-replication \
+---disable-rng-none \
+---disable-safe-stack \
+---disable-sanitizers \
+---disable-sdl \
+---disable-sdl-image \
+---disable-seccomp \
+---disable-slirp-smbd \
+---disable-smartcard \
+---disable-snappy \
+---disable-sparse \
+---disable-spice \
+---disable-strip \
+---disable-system \
+---disable-tcg \
+---disable-tools \
+---disable-tpm \
+---disable-u2f \
+---disable-usb-redir \
+---disable-user \
+---disable-vde \
+---disable-vdi \
+---disable-vhost-crypto \
+---disable-vhost-kernel \
+---disable-vhost-net \
+---disable-vhost-user \
+---disable-vhost-user-blk-server \
+---disable-vhost-vdpa \
+---disable-virglrenderer \
+---disable-virtfs \
+---disable-vnc \
+---disable-vnc-jpeg \
+---disable-png \
+---disable-vnc-sasl \
+---disable-vte \
+---disable-vvfat \
+---disable-werror \
+---disable-whpx \
+---disable-xen \
+---disable-xen-pci-passthrough \
+---disable-xkbcommon \
+---disable-zstd \
+---enable-attr \
+---enable-avx2 \
+---enable-cap-ng \
+---enable-capstone \
+---enable-coroutine-pool \
+---enable-curl \
+---enable-debug-info \
+---enable-docs \
+---enable-fdt \
+---enable-gcrypt \
+---enable-glusterfs \
+---enable-gnutls \
+---enable-guest-agent \
+---enable-iconv \
+---enable-kvm \
+---enable-libiscsi \
+---enable-libpmem \
+---enable-libssh \
+---enable-libusb \
+---enable-libudev \
+---enable-linux-aio \
+---enable-lzo \
+---enable-malloc-trim \
+---enable-modules \
+---enable-mpath \
+---enable-numa \
+---enable-opengl \
+---enable-pie \
+---enable-rbd \
+---enable-rdma \
+---enable-seccomp \
+---enable-snappy \
+---enable-smartcard \
+---enable-spice \
+---enable-system \
+---enable-tcg \
+---enable-tools \
+---enable-tpm \
+---enable-trace-backends=dtrace \
+---enable-usb-redir \
+---enable-vhost-kernel \
+---enable-vhost-net \
+---enable-vhost-user \
+---enable-vhost-user-blk-server \
+---enable-vhost-vdpa \
+---enable-vnc \
+---enable-png \
+---enable-vnc-sasl \
+---enable-werror \
+---enable-xkbcommon
+diff --git a/scripts/ci/org.centos/stream/8/x86_64/test-avocado b/scripts/ci/org.centos/stream/8/x86_64/test-avocado
+deleted file mode 100755
+index 73e7a1a312..0000000000
+--- a/scripts/ci/org.centos/stream/8/x86_64/test-avocado
++++ /dev/null
+@@ -1,65 +0,0 @@
+-#!/bin/sh -e
+-#
+-# Runs a previously vetted list of tests, either marked explicitly for
+-# KVM and x86_64, or tests that are generic enough to be valid for all
+-# targets. Such a test list can be generated with:
+-#
+-# ./pyvenv/bin/avocado list --filter-by-tags-include-empty \
+-#   --filter-by-tags-include-empty-key -t accel:kvm,arch:x86_64 \
+-#   tests/avocado/
+-#
+-# This is almost the complete list of avocado based tests available at
+-# the time this was compile, with the following exceptions:
+-#
+-# * Require machine type "x-remote":
+-#   - tests/avocado/multiprocess.py:Multiprocess.test_multiprocess_x86_64
+-#
+-# * Requires display type "egl-headless":
+-#   - tests/avocado/virtio-gpu.py:VirtioGPUx86.test_virtio_vga_virgl
+-#   - tests/avocado/virtio-gpu.py:VirtioGPUx86.test_vhost_user_vga_virgl
+-#
+-#  * Test is marked (unconditionally) to be skipped:
+-#   - tests/avocado/virtio_check_params.py:VirtioMaxSegSettingsCheck.test_machine_types
+-#
+-make get-vm-images
+-./pyvenv/bin/avocado run \
+-    --job-results-dir=tests/results/ \
+-    tests/avocado/boot_linux.py:BootLinuxX8664.test_pc_i440fx_kvm \
+-    tests/avocado/boot_linux.py:BootLinuxX8664.test_pc_q35_kvm \
+-    tests/avocado/boot_linux_console.py:BootLinuxConsole.test_x86_64_pc \
+-    tests/avocado/cpu_queries.py:QueryCPUModelExpansion.test \
+-    tests/avocado/empty_cpu_model.py:EmptyCPUModel.test \
+-    tests/avocado/hotplug_cpu.py:HotPlugCPU.test \
+-    tests/avocado/netdev-ethtool.py:NetDevEthtool.test_igb \
+-    tests/avocado/netdev-ethtool.py:NetDevEthtool.test_igb_nomsi \
+-    tests/avocado/info_usernet.py:InfoUsernet.test_hostfwd \
+-    tests/avocado/intel_iommu.py:IntelIOMMU.test_intel_iommu \
+-    tests/avocado/intel_iommu.py:IntelIOMMU.test_intel_iommu_pt \
+-    tests/avocado/intel_iommu.py:IntelIOMMU.test_intel_iommu_strict \
+-    tests/avocado/intel_iommu.py:IntelIOMMU.test_intel_iommu_strict_cm \
+-    tests/avocado/linux_initrd.py:LinuxInitrd.test_with_2gib_file_should_exit_error_msg_with_linux_v3_6 \
+-    tests/avocado/linux_initrd.py:LinuxInitrd.test_with_2gib_file_should_work_with_linux_v4_16 \
+-    tests/avocado/migration.py:Migration.test_migration_with_exec \
+-    tests/avocado/migration.py:Migration.test_migration_with_tcp_localhost \
+-    tests/avocado/migration.py:Migration.test_migration_with_unix \
+-    tests/avocado/pc_cpu_hotplug_props.py:OmittedCPUProps.test_no_die_id \
+-    tests/avocado/replay_kernel.py:ReplayKernelNormal.test_x86_64_pc \
+-    tests/avocado/reverse_debugging.py:ReverseDebugging_X86_64.test_x86_64_pc \
+-    tests/avocado/version.py:Version.test_qmp_human_info_version \
+-    tests/avocado/virtio_version.py:VirtioVersionCheck.test_conventional_devs \
+-    tests/avocado/virtio_version.py:VirtioVersionCheck.test_modern_only_devs \
+-    tests/avocado/vnc.py:Vnc.test_change_password \
+-    tests/avocado/vnc.py:Vnc.test_change_password_requires_a_password \
+-    tests/avocado/vnc.py:Vnc.test_no_vnc \
+-    tests/avocado/vnc.py:Vnc.test_no_vnc_change_password \
+-    tests/avocado/x86_cpu_model_versions.py:CascadelakeArchCapabilities.test_4_0 \
+-    tests/avocado/x86_cpu_model_versions.py:CascadelakeArchCapabilities.test_4_1 \
+-    tests/avocado/x86_cpu_model_versions.py:CascadelakeArchCapabilities.test_set_4_0 \
+-    tests/avocado/x86_cpu_model_versions.py:CascadelakeArchCapabilities.test_unset_4_1 \
+-    tests/avocado/x86_cpu_model_versions.py:CascadelakeArchCapabilities.test_v1_4_0 \
+-    tests/avocado/x86_cpu_model_versions.py:CascadelakeArchCapabilities.test_v1_set_4_0 \
+-    tests/avocado/x86_cpu_model_versions.py:CascadelakeArchCapabilities.test_v2_4_0 \
+-    tests/avocado/x86_cpu_model_versions.py:CascadelakeArchCapabilities.test_v2_unset_4_1 \
+-    tests/avocado/x86_cpu_model_versions.py:X86CPUModelAliases.test_4_0_alias_compatibility \
+-    tests/avocado/x86_cpu_model_versions.py:X86CPUModelAliases.test_4_1_alias \
+-    tests/avocado/x86_cpu_model_versions.py:X86CPUModelAliases.test_none_alias
+diff --git a/scripts/ci/org.centos/stream/README b/scripts/ci/org.centos/stream/README
+deleted file mode 100644
+index e3eadfe3ea..0000000000
+--- a/scripts/ci/org.centos/stream/README
++++ /dev/null
+@@ -1,17 +0,0 @@
+-This directory contains scripts for generating a build of QEMU that
+-closely matches the CentOS Stream[1] builds of the qemu-kvm package.
+-
+-To have the environment ready to configure, build QEMU and run tests,
+-please start with a CentOS Stream machine and:
+-
+- * apply the generic "build-environment.yml" playbook located at
+-   scripts/ci/setup
+-
+- * apply the "build-environment.yml" in the directory following the
+-   CentOS Stream version (such as "8").
+-
+-This currently only covers CentOS Stream 8 environments and
+-packages[2].
+-
+-[1] https://www.centos.org/centos-stream/
+-[2] https://git.centos.org/rpms/qemu-kvm/commits/c8s-stream-rhel
 -- 
 2.39.2
 
