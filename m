@@ -2,82 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B29E8FE448
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jun 2024 12:31:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AC748FE47A
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jun 2024 12:41:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sFAOE-0000VF-IF; Thu, 06 Jun 2024 06:30:38 -0400
+	id 1sFAXC-0003lc-DW; Thu, 06 Jun 2024 06:39:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sFAOB-0000UO-UY
- for qemu-devel@nongnu.org; Thu, 06 Jun 2024 06:30:36 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sFAX9-0003ky-SK
+ for qemu-devel@nongnu.org; Thu, 06 Jun 2024 06:39:52 -0400
+Received: from mail-lf1-x132.google.com ([2a00:1450:4864:20::132])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sFAO8-00013n-SS
- for qemu-devel@nongnu.org; Thu, 06 Jun 2024 06:30:35 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-4215ac379fdso8194145e9.3
- for <qemu-devel@nongnu.org>; Thu, 06 Jun 2024 03:30:31 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sFAX6-0002kK-W0
+ for qemu-devel@nongnu.org; Thu, 06 Jun 2024 06:39:51 -0400
+Received: by mail-lf1-x132.google.com with SMTP id
+ 2adb3069b0e04-52961b77655so899211e87.2
+ for <qemu-devel@nongnu.org>; Thu, 06 Jun 2024 03:39:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1717669830; x=1718274630; darn=nongnu.org;
+ d=linaro.org; s=google; t=1717670387; x=1718275187; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=BWK/EfN701oM3pgWDTSDo41JLi2OHCRROtt96Imm5fI=;
- b=K3HSb3SAqUjD85L/oKw/1J69T+Bsq4XZ9/p07H9ZMvmcAfd8ycHLZn+iy/yO7syuKp
- 3oC+VO+FDT3UUWUG4GDkMpdNkdaxqf9TI/RQetL8Vun/gXQ4i6qD/hNp92VcmEGUcS2c
- HESoe4ZmG0ESMR2ju/Tq18sUgxWUAAFQ+iMpR8a/D5JDMtlnEq57cFD/3i78LW1QKuZz
- Y140Um7s8ZbMIQlj5Z/XmMaEawFnmi8ePVyJkEkaR+/i8GtkbfmpiBwBs2MzLIMmT97Y
- G/aBf+Q4frb3Psd8cqPZHLz6kG/h6JKCy1JroEPpGxl5HW7sANfsf7UARhoH0cRZTyna
- zPyA==
+ bh=adDHEXWneXcv52En8RIWLm7+FbdekJO7cHm27ZjigF0=;
+ b=hKs0xap40KO5+KpzMnWFAfz8wXn8yq/a7nfDZSbHVktzhK65wEZkdi+LTcsVsRqMvf
+ fRcuhiQ7q3hom+qnhYqJzLaf+CIftc7G4bIgRHr6boMqX8ZJkCi/+5BgSJwjL0A2FWpE
+ TVxQpt24TpyU+hB+qzC1FFNGlJa8x+PsPUxJm0mLnqxIC7DsbHUSrqdYC6P8dMj6Rcaj
+ fIZf6m71h5i6uKsJYDdoJ3VykmG1Nup58HlvAD7PAhASwmWtRF1RkCPDFQjbs3PRazZG
+ UHOu0ka10XwMTQ76K4bi5+PFLW9ygxVGK673cP76QJGFr0Gl1CUceZIBGOxFRQUbN5a3
+ KOow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717669830; x=1718274630;
+ d=1e100.net; s=20230601; t=1717670387; x=1718275187;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=BWK/EfN701oM3pgWDTSDo41JLi2OHCRROtt96Imm5fI=;
- b=B08EycMm0GYsc8pPMeI4qycbw5cqIVUFKhpkOgWfcQOeFSzug77nsdUXoMf5sG8wjq
- eTnBcntxotN2ECay5/MKSF8yfh+pzKCfLfbuVzoiYgq/Xs937waKpuaO5zSV/TynGmOO
- MlMprERTmF7SHUW1hsQavQA0bFDZfIp5vDcbd5g/iPXlEiNUk7BloYHY9H9cWHwM4b8Y
- 9nczwxOO6RCAXgpKEP4l9AhYGFa3+SEb8cy6NgY2elfjip6ZtRpdS4nDc7qaB++FOibs
- RXPDthoeIWdyoj40eaJJLgcceWuKOmaB/qPFiJXhrurX5RwlrLLlol9aGneWIZXWPdE7
- YoOQ==
-X-Gm-Message-State: AOJu0YznF+bxYPu0lYQPX/7gZJnx3+to295i993KPXqNaE0AxpXVlWEF
- 2dFfSHEMNibYlqQWeHVv/JTQt88fPep/hJ4Zntexib5x3exI2aXp2vwZRNL4yY/zUJUVHsytVWv
- Fc9M=
-X-Google-Smtp-Source: AGHT+IEiF5CiznKx7HVB10fGs7eQdj43ODfPNE4e8852kH+npZRnaTis4fKOZb3FmijnBOEi8kgUnA==
-X-Received: by 2002:a7b:c4d0:0:b0:41f:e959:9053 with SMTP id
- 5b1f17b1804b1-4215634ddc4mr37601455e9.38.1717669829738; 
- Thu, 06 Jun 2024 03:30:29 -0700 (PDT)
+ bh=adDHEXWneXcv52En8RIWLm7+FbdekJO7cHm27ZjigF0=;
+ b=C/mstJl5slp2q+W7ithIbe1Uh1wFq6ERYIh9AmmaV+w5gKOm0DxDt1mMjvufsxFG1o
+ th83DfbHR1DQxH90SFxpQwlUc6xGF09crvqNCDs3jjgN3kt1eRDq/KajKnfAzgPIz6yz
+ nidSf2Wg2oo4KLbbJyH2Q6KuN8RNASZbTocVKeZ5xHiFgUx+w+XFlKTNmzfBswKLlDh8
+ QuzFX7La7UrFs9V7kCaYI7Qg7xjUvgQCjWr5JG8amd7UWgceTCk0j/Qezpr58zBdZ7J/
+ oazzbB+FeLOXQuzqR9OisQbx2pFcYnNa9p/4S2tgFWWK07S7sv6w801JU1Lx2PrmFE7U
+ pyLg==
+X-Gm-Message-State: AOJu0YyJJLpigzWIF0jIt5de/+cpC97hB+FqcIfShJnW3CI80KXWYGnR
+ Lo1APctJob99eHfAqPPH2XkFLiODMgbDDHqwJKWBDhuE9GsJXcYC4kMwFoOoD9j9D4DXKfi2euY
+ STdY=
+X-Google-Smtp-Source: AGHT+IGJjP3dxzGxOV9PbaX4tu8w7sv9RYJ43PXrk5lXllScUL4c5WiaE5kmAQZNSAHAvnwIIlMJyg==
+X-Received: by 2002:a19:6b08:0:b0:52b:8610:a7fd with SMTP id
+ 2adb3069b0e04-52bab510606mr2620388e87.67.1717670386794; 
+ Thu, 06 Jun 2024 03:39:46 -0700 (PDT)
 Received: from localhost.localdomain (94.red-88-29-105.staticip.rima-tde.net.
  [88.29.105.94]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4215c2a6225sm16963035e9.25.2024.06.06.03.30.27
+ 5b1f17b1804b1-42160a19ae5sm4491515e9.18.2024.06.06.03.39.45
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 06 Jun 2024 03:30:29 -0700 (PDT)
+ Thu, 06 Jun 2024 03:39:46 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: qemu-s390x@nongnu.org, Thomas Huth <thuth@redhat.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Stefan Hajnoczi <stefanha@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH] target/s390x: Fix tracing header path in TCG mem_helper.c
-Date: Thu,  6 Jun 2024 12:30:26 +0200
-Message-ID: <20240606103026.78448-1-philmd@linaro.org>
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ Mads Ynddal <mads@ynddal.dk>, Stefan Hajnoczi <stefanha@redhat.com>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Stefan Berger <stefanb@linux.vnet.ibm.com>,
+ Philippe =?unknown-8bit?q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH 0/5] trace: Remove and forbid newline characters in event
+ format
+Date: Thu,  6 Jun 2024 12:39:38 +0200
+Message-ID: <20240606103943.79116-1-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::132;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x132.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,30 +94,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit c9274b6bf0 ("target/s390x: start moving TCG-only code
-to tcg/") moved mem_helper.c, but the trace-events file is
-still in the parent directory, so is the generated trace.h.
+Trace events aren't designed to be multi-lines.
+Few format use the newline character: remove it
+and forbid further uses.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
-Ideally we should only use trace events from current directory.
----
- target/s390x/tcg/mem_helper.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Philippe Mathieu-Daudé (5):
+  backends/tpm: Remove newline character in trace event
+  hw/sh4: Remove newline character in trace events
+  hw/usb: Remove newline character in trace events
+  hw/vfio: Remove newline character in trace events
+  tracetool: Forbid newline character in event format
 
-diff --git a/target/s390x/tcg/mem_helper.c b/target/s390x/tcg/mem_helper.c
-index 6a308c5553..1fb6cbb6cf 100644
---- a/target/s390x/tcg/mem_helper.c
-+++ b/target/s390x/tcg/mem_helper.c
-@@ -30,7 +30,7 @@
- #include "hw/core/tcg-cpu-ops.h"
- #include "qemu/int128.h"
- #include "qemu/atomic128.h"
--#include "trace.h"
-+#include "../trace.h"
- 
- #if !defined(CONFIG_USER_ONLY)
- #include "hw/s390x/storage-keys.h"
+ backends/tpm/tpm_util.c       | 5 +++--
+ backends/tpm/trace-events     | 3 ++-
+ hw/sh4/trace-events           | 4 ++--
+ hw/usb/trace-events           | 6 +++---
+ hw/vfio/trace-events          | 4 ++--
+ scripts/tracetool/__init__.py | 2 ++
+ 6 files changed, 14 insertions(+), 10 deletions(-)
+
 -- 
 2.41.0
 
