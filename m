@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AB588FE37F
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jun 2024 11:53:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A5EC8FE389
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jun 2024 11:54:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sF9oX-0000Cc-Rr; Thu, 06 Jun 2024 05:53:45 -0400
+	id 1sF9oc-0000Iv-4N; Thu, 06 Jun 2024 05:53:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1sF9oW-0000CM-CW
- for qemu-devel@nongnu.org; Thu, 06 Jun 2024 05:53:44 -0400
+ id 1sF9oa-0000D6-2s
+ for qemu-devel@nongnu.org; Thu, 06 Jun 2024 05:53:48 -0400
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1sF9oU-0002HY-Lp
- for qemu-devel@nongnu.org; Thu, 06 Jun 2024 05:53:44 -0400
+ id 1sF9oY-0002Hp-Jy
+ for qemu-devel@nongnu.org; Thu, 06 Jun 2024 05:53:47 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
- bh=0fw8uNour2vCQNrEWKbV/I2YIRMH10+1YFPBwmXuJ3w=; b=DI4f0lIRdxeMGsRtG5iXw18rh5
- bpWSCRtPQXq70NUEyPawJHrr4xBf5j5k/N8ilRfASkuyUSK/foVJb5isbt52O3sdlInkvZXSNmvYx
- XUTN4yYCikHECjVSOO4Z0dbJIcnJziWgU327G5XbRZU9YIlB9o/sTbZF+AjQ8FYYoTTL0DcQvTf4x
- 2DTfbq75TnxyBILipZYiJFIIlH/xZQE7TqDF/s7M/Ygq78FNl/Z4ok1Z6CPi6EoMj5RaWRE2tZDkS
- t1kXu2Qn9l/p/BVnLv8VfdSRPjyOgIgb/rOvoZtx/wIG/hh/H9x3rbQ3i1gPo3PBvRfoMBGU8rsP6
- Uc6Y3YK45m8AmPK4d9TL6z0pdA2gtO22JrGM2PT8OKZgty+PUyrI3X90EYaE09XlIjGjUtJb1ZHVR
- KqW/tmm0xrSjWJP+Qp8A39bl8mO+XQCe6zdt3qo0nlH8ypXtUi+NDsO5Ya3JSqveoASz4yke+C0QY
- 1Hu8zuQFsJ0+wnlBmW23hREhINeGuGQ3S7O7gux0mnFYCjoWdWh001Ahiq+Oug9T1BBgblMgVbGLX
- GY5OCnjNDCTSjYvojt6DXtNVM0HZvZoTARkTZTP2Iz1ycaHDYdj2/XNIbNTWZuGkkAx75qDzn6Fud
- 784bw/eL00GVts/DUDS/IlYJr/0eAT6rebT+/6rgI=;
+ bh=g1XyuWsPbbTNoYfpRGNg+VmdmBlVjoFl9YL7pF0DpnY=; b=tZf+Uq/HAvyiGCjExSc+yrnyqS
+ YqjYKKGE17c8mrxUSdeBfFIwi7naqptP7tUt82Js1iOa7qVgBalqWy1r0fFEA3zDRbF6iCG/gXCAb
+ fN7BVae7EUz9Tn+UkR5a5EsqOKpV+FkrJ3ONm1VA5fKwxjgNRrxpeefEIdJuoX/EThwyE6APvVlJ6
+ 5SNzGqsy+e/Qj1+EaAnSVHqNhu6yvxx0jTivM/a8YHB3FaY+sJjYitpLKq5oZwwTEcoTIlPJ8kX7u
+ bed28VuQwCyLr4dT++Yz/TJf3HwEfv0k4Ba19q03zAeuDh2ZYNTM/PWXrdOenS1vsDLmPl2wIT83h
+ ozP3w8nHwUEpeGupuqqpR20q2rdGKURqzTiLSdcvEx2WM0KhGvYMpmpbU263j/f5qTrHkEu0YvYZB
+ nv4Y7Qc3Pilad7VpE6dcaQakgPteeHdXfuSF9VOvOHrlGjMBr6SHkgKvOeodTV0jhiM/vYrel4VtQ
+ Id3z3FLmWmJP4jbZSmBg1acps5NGofbhcm+6GDZ1rubOa4azof4KrOvP3H9JYMF+8IWYrd/tnvUGF
+ PMrMaB1ixP2NOPhQL24FgbQ9BJmurdARzCGRDBuLz0x/kcuik6yptPX1qfBJBQdQkTZeVRnuFt1Ef
+ Cvq5JxRo4ETMc26dQqkEwcdvocPJKjeuClL7G3Z/I=;
 Received: from [2a02:8012:c93d:0:260e:bf57:a4e9:8142]
  (helo=cheesecake.fritz.box)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1sF9nC-0004cT-03; Thu, 06 Jun 2024 10:52:25 +0100
+ id 1sF9nF-0004cT-Sm; Thu, 06 Jun 2024 10:52:30 +0100
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: pbonzini@redhat.com,
 	qemu-devel@nongnu.org
-Date: Thu,  6 Jun 2024 10:53:18 +0100
-Message-Id: <20240606095319.229650-4-mark.cave-ayland@ilande.co.uk>
+Date: Thu,  6 Jun 2024 10:53:19 +0100
+Message-Id: <20240606095319.229650-5-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240606095319.229650-1-mark.cave-ayland@ilande.co.uk>
 References: <20240606095319.229650-1-mark.cave-ayland@ilande.co.uk>
@@ -50,7 +50,7 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a02:8012:c93d:0:260e:bf57:a4e9:8142
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH 3/4] target/i386: fix SP when taking a memory fault during POP
+Subject: [PATCH 4/4] target/i386: fix size of EBP writeback in gen_enter()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -76,65 +76,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When OS/2 Warp configures its segment descriptors, many of them are configured with
-the P flag clear to allow for a fault-on-demand implementation. In the case where
-the stack value is POPped into the segment registers, the SP is incremented before
-calling gen_helper_load_seg() to validate the segment descriptor:
+The calculation of FrameTemp is done using the size indicated by mo_pushpop()
+before being written back to EBP, but the final writeback to EBP is done using
+the size indicated by mo_stacksize().
 
-IN:
-0xffef2c0c:  66 07                    popl     %es
+In the case where mo_pushpop() is MO_32 and mo_stacksize() is MO_16 then the
+final writeback to EBP is done using MO_16 which can leave junk in the top
+16-bits of EBP after executing ENTER.
 
-OP:
- ld_i32 loc9,env,$0xfffffffffffffff8
- sub_i32 loc9,loc9,$0x1
- brcond_i32 loc9,$0x0,lt,$L0
- st16_i32 loc9,env,$0xfffffffffffffff8
- st8_i32 $0x1,env,$0xfffffffffffffffc
-
- ---- 0000000000000c0c 0000000000000000
- ext16u_i64 loc0,rsp
- add_i64 loc0,loc0,ss_base
- ext32u_i64 loc0,loc0
- qemu_ld_a64_i64 loc0,loc0,noat+un+leul,5
- add_i64 loc3,rsp,$0x4
- deposit_i64 rsp,rsp,loc3,$0x0,$0x10
- extrl_i64_i32 loc5,loc0
- call load_seg,$0x0,$0,env,$0x0,loc5
- add_i64 rip,rip,$0x2
- ext16u_i64 rip,rip
- exit_tb $0x0
- set_label $L0
- exit_tb $0x7fff58000043
-
-If helper_load_seg() generates a fault when validating the segment descriptor then as
-the SP has already been incremented, the topmost word of the stack is overwritten by
-the arguments pushed onto the stack by the CPU before taking the fault handler. As a
-consequence things rapidly go wrong upon return from the fault handler due to the
-corrupted stack.
-
-Update the logic for the existing writeback condition so that a POP into the segment
-registers also calls helper_load_seg() first before incrementing the SP, so that if a
-fault occurs the SP remains unaltered.
+Change the writeback of EBP to use the same size indicated by mo_pushpop() to
+ensure that the full value is written back.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2198
 ---
- target/i386/tcg/emit.c.inc | 2 +-
+ target/i386/tcg/translate.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/i386/tcg/emit.c.inc b/target/i386/tcg/emit.c.inc
-index 2d5dc11548..f905a67380 100644
---- a/target/i386/tcg/emit.c.inc
-+++ b/target/i386/tcg/emit.c.inc
-@@ -2567,7 +2567,7 @@ static void gen_POP(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
-     X86DecodedOp *op = &decode->op[0];
-     MemOp ot = gen_pop_T0(s);
+diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
+index 0486ab6911..0716ca35d5 100644
+--- a/target/i386/tcg/translate.c
++++ b/target/i386/tcg/translate.c
+@@ -2125,7 +2125,7 @@ static void gen_enter(DisasContext *s, int esp_addend, int level)
+     }
  
--    if (op->has_ea) {
-+    if (op->has_ea || op->unit == X86_OP_SEG) {
-         /* NOTE: order is important for MMU exceptions */
-         gen_writeback(s, decode, 0, s->T0);
-         op->unit = X86_OP_SKIP;
+     /* Copy the FrameTemp value to EBP.  */
+-    gen_op_mov_reg_v(s, a_ot, R_EBP, s->T1);
++    gen_op_mov_reg_v(s, d_ot, R_EBP, s->T1);
+ 
+     /* Compute the final value of ESP.  */
+     tcg_gen_subi_tl(s->T1, s->T1, esp_addend + size * level);
 -- 
 2.39.2
 
