@@ -2,78 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 257568FE42D
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jun 2024 12:23:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 681618FE43E
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jun 2024 12:27:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sFAGJ-0004df-BR; Thu, 06 Jun 2024 06:22:27 -0400
+	id 1sFAKQ-0006S8-DR; Thu, 06 Jun 2024 06:26:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sFAG8-0004d9-Jh
- for qemu-devel@nongnu.org; Thu, 06 Jun 2024 06:22:16 -0400
-Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sFAKN-0006RH-Gu
+ for qemu-devel@nongnu.org; Thu, 06 Jun 2024 06:26:39 -0400
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sFAG6-0007j0-NN
- for qemu-devel@nongnu.org; Thu, 06 Jun 2024 06:22:16 -0400
-Received: by mail-ed1-x533.google.com with SMTP id
- 4fb4d7f45d1cf-57a68b0a229so811888a12.3
- for <qemu-devel@nongnu.org>; Thu, 06 Jun 2024 03:22:14 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sFAKL-0000OM-QB
+ for qemu-devel@nongnu.org; Thu, 06 Jun 2024 06:26:39 -0400
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-42121d27861so9008595e9.0
+ for <qemu-devel@nongnu.org>; Thu, 06 Jun 2024 03:26:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1717669333; x=1718274133; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:references
- :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=GhGzkhBwYegKqiYl+X72GQkTdLUuCzB8Q+fHQwcToP0=;
- b=CZK1dj4mCJA7DUKwSF+vFhsBZJj7wQPl1mdGDZSEagO0HbJiCrFgo4B8HCOEI4HBBG
- NcVU1gjCQlUGT+Ot/FOWxfXdbD0JA8Fvgpp7L9dOXggsCrdPN7NgLI9BW9eQjf/4uY9R
- EbxAYNa96eG2bFFd8WRceXcC3uIac9Iyf7sFFSGKeNzf1rW9Dus8rOgtdOlEbEOYO48d
- +0x8FBcUbnh8+Jy1DlHM3ecHnGeRH8R8Md0wrVoVJP7xke1AG9KhaOzt0PZ6E6Hy4/0Y
- 1T76KhcbqwJl1y7mu3+m1ttsuPUr1Xa8ebSRmSdNmON8GyqHdQ85SW5nCP3zrW2BMEaw
- pg0g==
+ d=linaro.org; s=google; t=1717669596; x=1718274396; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=i02CoQslFzum0YZSIl6mR+mSGbtebWVBNoZvi4aXxSU=;
+ b=YAywtvlF5vg/sY2wdMwvBhsSOCHoCMu+51xk6OAxXXamnATvmE3brj/CmUVoH6ZMLq
+ 2hJwD6tX0t3N0W49Q1sQiCh3IS9KVtbB7F8dHd4gQgAJb/uDhWtiNhuI6fDMuYgg3zMv
+ jzbcvv1aEAPhUBTx4rbDhLnh8Q7YDdz/bF4FxX2floEGRXbFOhwueTcK1LFwtXn2vnTV
+ z8VgZjy/QHZnRsc9V9DunTQ79UInl8OSIvHEW31GIHe2x3i0ccV8lpU3DJrBOp7JL9sB
+ ndyd2HkcxSXJZYMRcToOJNYS+H/XfaWPzcB2uzUldvYmDzGDPm7KabwJXklBd/emDRzq
+ xFyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717669333; x=1718274133;
- h=content-transfer-encoding:mime-version:message-id:date:references
- :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=GhGzkhBwYegKqiYl+X72GQkTdLUuCzB8Q+fHQwcToP0=;
- b=XpvDuw0g/OQDtQN6OWQBiCwk7Y+oQcW7OSQqNiu93VvT8zuHCBjzDDz6tym+Q3Uxmh
- UdrcexKylalocHlZgXL0aw1QXGUH6tp36Ke0o/fhTeQtzCelxcwLT7mGIhYBNCUbF4Me
- o6+BqNeJSN8Isk98uKIrOe5sZazFDa9/FfuxcHyw8Aov51j8jRlGNoPIpnw+KI9yxzd/
- 3Z0Q1C9q9gFe+s/bLmkr7/758cf5aesnHOsrBfS9UMBZCV1JFBlqE2Dm6e5fgkUtuRP4
- OVr35v9snmm5LiiM0Pc6grZvD1te7m/Rrl/ZBvMygtHWpCWCqoqQvkaCc+6c++l4e1oc
- aBqw==
-X-Gm-Message-State: AOJu0YxJtt9L5db31Gjtm4fOuaqb0vm5j2/95VehM6EuTBXPYwYnkAqB
- +bcUxKDbpJDE1rJov08ZgkDk+MfPKuGpuoxq7Lgv0wnv/oeOIH8LnW8NuYvDMcw=
-X-Google-Smtp-Source: AGHT+IFdbcj6SkYk5BSHtYFjV+ipl0uNgJyYoJyKJk4BlNbLSNqTzlnrpAFnczayp8xKzYNYfGDzNQ==
-X-Received: by 2002:a50:d5d3:0:b0:57a:7885:433d with SMTP id
- 4fb4d7f45d1cf-57a8bcb617emr3084272a12.38.1717669332708; 
- Thu, 06 Jun 2024 03:22:12 -0700 (PDT)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-57aadfa3c47sm853574a12.16.2024.06.06.03.22.12
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 06 Jun 2024 03:22:12 -0700 (PDT)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id D914F5F7AD;
- Thu,  6 Jun 2024 11:22:11 +0100 (BST)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org,  pierrick.bouvier@linaro.org
-Subject: Re: [PATCH v2 4/9] plugins: Introduce TCGCPUOps callbacks for
- mid-tb register reads
-In-Reply-To: <87y17il7w8.fsf@draig.linaro.org> ("Alex =?utf-8?Q?Benn=C3=A9?=
- =?utf-8?Q?e=22's?= message of "Thu, 06 Jun 2024 10:47:51 +0100")
-References: <20240606032926.83599-1-richard.henderson@linaro.org>
- <20240606032926.83599-5-richard.henderson@linaro.org>
- <87y17il7w8.fsf@draig.linaro.org>
-Date: Thu, 06 Jun 2024 11:22:11 +0100
-Message-ID: <87msnyl6b0.fsf@draig.linaro.org>
+ d=1e100.net; s=20230601; t=1717669596; x=1718274396;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=i02CoQslFzum0YZSIl6mR+mSGbtebWVBNoZvi4aXxSU=;
+ b=YY4/ABujqYQIKKbh0hK/mkO/jy2BNeCezgneYY845QAMn09ZARAmkarJ9S1Z+bAPm6
+ sysnGlW+5kSLev9I6xIC4Xn59sa7162RAROycx14RmkT5bUsMhx3iVP319Puj/wuoJxV
+ 3pZX/BOzerEE9kngTcyw0RRofNnBoYUYP+iraqP834lJzBAyU2TdbGg6i+2S5D3sVohH
+ pt+moFSgDanyyHrRqcrIL4O2Buno3GKJ4aNAc6punqpIMFps9dAlZHQrzw28bIxRkHSc
+ vzrXRj6SMcPiMlFlVZxkfsnz8hEd7Jtvdt7hWQofVW2OougTMP96eIc7CdP+nXOLYJIx
+ aqVg==
+X-Gm-Message-State: AOJu0YxtS/ZqFMuKdHmDj2ly9Nmh528Ky2wTAlSMew5KqRiRoVDuKyYQ
+ zut389N9+F4K5EGjcXk1UE9QjV/A5nzyxybjXK+a53wTBPgcY95H9Ou7KEcq9wLY2+1k8xH9ZkB
+ txKs=
+X-Google-Smtp-Source: AGHT+IF32WnJc/Bqk6NkXNrIVaDQ8Vh6CSYorv3SAs0395rBHwtgeUOC6AIMSWQQsmdwMpXI5ZU6gg==
+X-Received: by 2002:a05:600c:a48:b0:418:f991:713f with SMTP id
+ 5b1f17b1804b1-421562e7046mr42967195e9.23.1717669595766; 
+ Thu, 06 Jun 2024 03:26:35 -0700 (PDT)
+Received: from localhost.localdomain (94.red-88-29-105.staticip.rima-tde.net.
+ [88.29.105.94]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4215814f11csm51460525e9.44.2024.06.06.03.26.33
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Thu, 06 Jun 2024 03:26:35 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Thomas Huth <thuth@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Mads Ynddal <mads@ynddal.dk>
+Subject: [PATCH] tracetool: Remove unused vcpu.py script
+Date: Thu,  6 Jun 2024 12:26:31 +0200
+Message-ID: <20240606102631.78152-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::533;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x533.google.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,27 +94,114 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Alex Benn=C3=A9e <alex.bennee@linaro.org> writes:
+vcpu.py is pointless since commit 89aafcf2a7 ("trace:
+remove code that depends on setting vcpu"), remote it.
 
-> Richard Henderson <richard.henderson@linaro.org> writes:
->
->> Certain target registers are not updated continuously within
->> the translation block.  For normal exception handling we use
->> unwind info to re-generate the correct value when required.
->> Leverage that same info for reading those registers for plugins.
->>
->> All targets will need updating for these new callbacks.
->>
->> Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
->> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
->
-> Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ meson.build                   |  1 -
+ scripts/tracetool/__init__.py |  8 +----
+ scripts/tracetool/vcpu.py     | 59 -----------------------------------
+ 3 files changed, 1 insertion(+), 67 deletions(-)
+ delete mode 100644 scripts/tracetool/vcpu.py
 
-I'll note there is a minor merge conflict coming against:
+diff --git a/meson.build b/meson.build
+index d80203f1cd..0c45c948d0 100644
+--- a/meson.build
++++ b/meson.build
+@@ -3226,7 +3226,6 @@ tracetool_depends = files(
+   'scripts/tracetool/format/log_stap.py',
+   'scripts/tracetool/format/stap.py',
+   'scripts/tracetool/__init__.py',
+-  'scripts/tracetool/vcpu.py'
+ )
+ 
+ qemu_version_cmd = [find_program('scripts/qemu-version.sh'),
+diff --git a/scripts/tracetool/__init__.py b/scripts/tracetool/__init__.py
+index b887540a55..7237abe0e8 100644
+--- a/scripts/tracetool/__init__.py
++++ b/scripts/tracetool/__init__.py
+@@ -306,13 +306,7 @@ def build(line_str, lineno, filename):
+             fmt = [fmt_trans, fmt]
+         args = Arguments.build(groups["args"])
+ 
+-        event = Event(name, props, fmt, args, lineno, filename)
+-
+-        # add implicit arguments when using the 'vcpu' property
+-        import tracetool.vcpu
+-        event = tracetool.vcpu.transform_event(event)
+-
+-        return event
++        return Event(name, props, fmt, args, lineno, filename)
+ 
+     def __repr__(self):
+         """Evaluable string representation for this object."""
+diff --git a/scripts/tracetool/vcpu.py b/scripts/tracetool/vcpu.py
+deleted file mode 100644
+index d232cb1d06..0000000000
+--- a/scripts/tracetool/vcpu.py
++++ /dev/null
+@@ -1,59 +0,0 @@
+-# -*- coding: utf-8 -*-
+-
+-"""
+-Generic management for the 'vcpu' property.
+-
+-"""
+-
+-__author__     = "Lluís Vilanova <vilanova@ac.upc.edu>"
+-__copyright__  = "Copyright 2016, Lluís Vilanova <vilanova@ac.upc.edu>"
+-__license__    = "GPL version 2 or (at your option) any later version"
+-
+-__maintainer__ = "Stefan Hajnoczi"
+-__email__      = "stefanha@redhat.com"
+-
+-
+-from tracetool import Arguments, try_import
+-
+-
+-def transform_event(event):
+-    """Transform event to comply with the 'vcpu' property (if present)."""
+-    if "vcpu" in event.properties:
+-        event.args = Arguments([("void *", "__cpu"), event.args])
+-        fmt = "\"cpu=%p \""
+-        event.fmt = fmt + event.fmt
+-    return event
+-
+-
+-def transform_args(format, event, *args, **kwargs):
+-    """Transforms the arguments to suit the specified format.
+-
+-    The format module must implement function 'vcpu_args', which receives the
+-    implicit arguments added by the 'vcpu' property, and must return suitable
+-    arguments for the given format.
+-
+-    The function is only called for events with the 'vcpu' property.
+-
+-    Parameters
+-    ==========
+-    format : str
+-        Format module name.
+-    event : Event
+-    args, kwargs
+-        Passed to 'vcpu_transform_args'.
+-
+-    Returns
+-    =======
+-    Arguments
+-        The transformed arguments, including the non-implicit ones.
+-
+-    """
+-    if "vcpu" in event.properties:
+-        ok, func = try_import("tracetool.format." + format,
+-                              "vcpu_transform_args")
+-        assert ok
+-        assert func
+-        return Arguments([func(event.args[:1], *args, **kwargs),
+-                          event.args[1:]])
+-    else:
+-        return event.args
+-- 
+2.41.0
 
-  plugins: Ensure register handles are not NULL
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
 
