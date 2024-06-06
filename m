@@ -2,97 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 490F78FE86D
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jun 2024 16:07:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7342E8FEBFC
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jun 2024 16:28:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sFDlq-0001Tz-Uk; Thu, 06 Jun 2024 10:07:14 -0400
+	id 1sFE5f-0007rq-M7; Thu, 06 Jun 2024 10:27:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1sFDln-0001TN-34
- for qemu-devel@nongnu.org; Thu, 06 Jun 2024 10:07:11 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1sFDll-0004DR-D0
- for qemu-devel@nongnu.org; Thu, 06 Jun 2024 10:07:10 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717682827;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=gBHcCC0aOQEbkk/FxhoIR6lpW/jON2WJxquJeI7WZTo=;
- b=GK5MvPTFU73vsdd0WmUJran7gYxz5Oxd9946K0uvos7JtmFwSIz/aDeDEJTqr/xJJ8n2y1
- IwLukieftOoP4Ha7kYDV/u3gq33Z0s52osvLCjKRrFOJYGlwwOqvaaZ+MWMtBoQguUr0/u
- hh7bkj+BuFKKpQFV5F/JZkMCVaJClf8=
-Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
- [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-14-yrT-SXKYNHagaa_mZFy8lQ-1; Thu, 06 Jun 2024 10:07:05 -0400
-X-MC-Unique: yrT-SXKYNHagaa_mZFy8lQ-1
-Received: by mail-lf1-f71.google.com with SMTP id
- 2adb3069b0e04-52b98e99f0eso735059e87.1
- for <qemu-devel@nongnu.org>; Thu, 06 Jun 2024 07:07:05 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sFE5d-0007rF-Mj
+ for qemu-devel@nongnu.org; Thu, 06 Jun 2024 10:27:41 -0400
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sFE5c-0000B2-1H
+ for qemu-devel@nongnu.org; Thu, 06 Jun 2024 10:27:41 -0400
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-70244776719so810305b3a.2
+ for <qemu-devel@nongnu.org>; Thu, 06 Jun 2024 07:27:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1717684058; x=1718288858; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=8iyO4hVGzXQ1gRLfepERlkHU/kNDWRHjPFXCFSwdizA=;
+ b=uBqLLg+NRbRNdvKsTyCREkt/2283eRWuJcwFsN6AYHTPIuL+9vDLgNml5NsbyF4Ay/
+ 5JuWQ7K66XxyTY+2pIv1g3vHhanRByyAbe6tjZHuiKpNBfjmp1h/Tu8pgOYequvc79Tr
+ 3pDvM+rAlMkaomaox+wryQAV+E4bePxyd8OAJCprLLYQvufKNNutw1cek83iEWRkxCeg
+ Z3UGBoxQ2eji2L46Fur12NkHc1RBY7vXIOp0/JUzArHs4P9QjFEmdLW10IFjFvwWehqO
+ 3IbrqUsw5w3xleM0yRCLXkGdaevNfxkVP1tanWFQvv2zscFR5gTFp/i+PY4f2Y5+zW/u
+ cYhg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717682817; x=1718287617;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=gBHcCC0aOQEbkk/FxhoIR6lpW/jON2WJxquJeI7WZTo=;
- b=nRHi1GLHQtpJ93o2HdImzljK+JTYBYg+R0Tbk/foupRYFMRl2yBMMW0Ry+owPebVGP
- u3zCy6myBJCpOfGB4haMdcd0r5exAxSjKljKMYQd7QSMlDLXpEkQSt0XAWTUaN0Gk+P4
- 2FzDurOq6wJoZM8LNctZsnHryQdJVZtDa3jIUQhpZs/EXd6YJHVBNg51xAEqpZjaNMqE
- NDypAzazhwsMRJ9/hk1sgpb1QXdAVg63BjBO8/4Dvk9Rf+/d5hMx3x2Frinrijr1z3xK
- 13nf/wOyQX9pwoBmX+qPUkGEiNCMWIrrWDQLqP+EHhNawW5ktGLgfyCr0VI8HYWzRg9n
- hD5A==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUVd0Dcb3P5G9a1Mcf45Wj+aJa9WvHeKpwSmhkUuW5oD310jLk8CUxJJzflllkcAAHmVUtcQ66sjPN6+1k2Nl1YfuXPteU=
-X-Gm-Message-State: AOJu0Yy/bgh75vemJCTiyk9ecbwX0mTlL8pJxVmlT40ySRNRtXQ1h6LN
- vlN2ZUenDhJ5M/ZTXYMOw3J+t81h3ibS9DKyYbQOxXrVQkKxvT+q5Ae/1kaXsNkzSErXeHa8oMD
- CfNb9LqKCRoOA4zyFdUpiK6EWWeJOFYS/r9zh1/PuBAFQykzVp3OU
-X-Received: by 2002:ac2:4849:0:b0:521:532d:eb38 with SMTP id
- 2adb3069b0e04-52bab4f93dcmr3259536e87.63.1717682816686; 
- Thu, 06 Jun 2024 07:06:56 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFbJAFLjsdBKlNTdAip+7FwWJOQ+9Yin99Uippg7rK0J/TatnJ8UMFE70w9tAEZ7grWCl+WuA==
-X-Received: by 2002:ac2:4849:0:b0:521:532d:eb38 with SMTP id
- 2adb3069b0e04-52bab4f93dcmr3259520e87.63.1717682816251; 
- Thu, 06 Jun 2024 07:06:56 -0700 (PDT)
-Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
- [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-35ef5d66d0esm1647700f8f.51.2024.06.06.07.06.55
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 06 Jun 2024 07:06:55 -0700 (PDT)
-Date: Thu, 6 Jun 2024 16:06:53 +0200
-From: Igor Mammedov <imammedo@redhat.com>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: <mst@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- <qemu-devel@nongnu.org>, <ankita@nvidia.com>, <philmd@linaro.org>, Richard
- Henderson <richard.henderson@linaro.org>, Dave Jiang
- <dave.jiang@intel.com>, Huang Ying <ying.huang@intel.com>, Paolo Bonzini
- <pbonzini@redhat.com>, <eduardo@habkost.net>, <linux-cxl@vger.kernel.org>,
- <linuxarm@huawei.com>, Michael Roth <michael.roth@amd.com>, Ani Sinha
- <anisinha@redhat.com>
-Subject: Re: [PATCH qemu ] hw/acpi: Fix big endian host creation of Generic
- Port Affinity Structures
-Message-ID: <20240606160653.27226def@imammedo.users.ipa.redhat.com>
-In-Reply-To: <20240605180455.18193-1-Jonathan.Cameron@huawei.com>
-References: <20240605180455.18193-1-Jonathan.Cameron@huawei.com>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.42; x86_64-redhat-linux-gnu)
+ d=1e100.net; s=20230601; t=1717684058; x=1718288858;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=8iyO4hVGzXQ1gRLfepERlkHU/kNDWRHjPFXCFSwdizA=;
+ b=TZp1ib0/rOJybQn2K8aWEdckME8DW9ckmYkanMfIashZTLszzlkZrxbWJ0Xz3+RUyJ
+ zdqd/4ak9eEaoLvTDJMJvD/c9pVFx8NzX9A1SJJgw+i0PPO+oOFDai7JUGILfCUn0XCw
+ igQ8828zh1imUmO280hncLUmL8lK0JcsFGrbWSnkWMOIAFO85oVoGYdUaeYfphrddwKt
+ lpCxRV8jflI2gRoEHC0UraRjfTnyFI9IXkx/FsE5q32fTnZ0Uf9McIPfS/x/nBYROGkM
+ BjHVzM8BAYBWSIeM2N2iis9Wc28gYESMP7CLOAxlOsHb+3HsVICjZnX79s9RBR1Jvt7/
+ EipQ==
+X-Gm-Message-State: AOJu0YwZhn3u/BTaC2x+sGTiMQpO1j4eN06Xncfu7cimrsRJoJypxDSA
+ ZOmTBPaZu/zsVCv7Vx/nwcSqGoBN3UeXD4S9h6T8uBOKb0gOd4v4smxxlwAHyHFGEMhOrEepGEq
+ K
+X-Google-Smtp-Source: AGHT+IF42v/vzcKJQ3qQLOveLxEDUiaQbijs325IGU7gOB5LTFKNugHbCprM8b0NMGzpsdOTV2zBug==
+X-Received: by 2002:a05:6a00:4509:b0:6e6:970f:a809 with SMTP id
+ d2e1a72fcca58-703e599ad13mr6237966b3a.20.1717684057999; 
+ Thu, 06 Jun 2024 07:27:37 -0700 (PDT)
+Received: from [192.168.0.4] ([71.212.132.216])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-703fd3b0bbesm1157686b3a.87.2024.06.06.07.27.36
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 06 Jun 2024 07:27:37 -0700 (PDT)
+Message-ID: <06806a86-5568-47ec-b5ac-25414387c59f@linaro.org>
+Date: Thu, 6 Jun 2024 07:27:35 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: linux-user emulation hangs during fork
+To: Andreas Schwab <schwab@suse.de>
+Cc: qemu-devel@nongnu.org
+References: <mvm5xunu4ye.fsf@suse.de>
+ <a0e9ee6b-fbe6-48af-a122-fbf5d31aa476@linaro.org> <mvmv82mscfx.fsf@suse.de>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <mvmv82mscfx.fsf@suse.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -109,92 +95,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 5 Jun 2024 19:04:55 +0100
-Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
-
-> Treating the HID as an integer caused it to get bit reversed
-> on big endian hosts running little endian guests.  Treat it
-> as a character array instead.
+On 6/6/24 01:27, Andreas Schwab wrote:
+> Which ruby?
 > 
-> Fixes hw/acpi: Generic Port Affinity Structure Support
-> Tested-by: Richard Henderson <richard.henderson@linaro.org>
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> $ ruby --version
+> ruby 3.3.1 (2024-04-23 revision c56cd86388) [x86_64-linux-gnu]
 > 
-> ---
-> Richard ran the version posted in the thread on an s390 instance.
-> Thanks for the help!
-> 
-> Difference from version in thread:
-> - Instantiate i in the for loop.
-> 
-> Sending out now so Michael can decide whether to fold this in, or
-> drop the GP series for now from his pull request (in which case
-> I'll do an updated version with this and Markus' docs feedback
-> folded in.)
-> 
-> ---
->  include/hw/acpi/acpi_generic_initiator.h | 2 +-
->  hw/acpi/acpi_generic_initiator.c         | 4 +++-
->  2 files changed, 4 insertions(+), 2 deletions(-)
-> 
-> diff --git a/include/hw/acpi/acpi_generic_initiator.h b/include/hw/acpi/acpi_generic_initiator.h
-> index 1a899af30f..5baefda33a 100644
-> --- a/include/hw/acpi/acpi_generic_initiator.h
-> +++ b/include/hw/acpi/acpi_generic_initiator.h
-> @@ -61,7 +61,7 @@ typedef struct PCIDeviceHandle {
->              uint16_t bdf;
->          };
->          struct {
-> -            uint64_t hid;
-> +            char hid[8];
->              uint32_t uid;
->          };
->      };
 
-not sure on top of what this patch applies but I have some generic comments wrt it
+ruby 3.0.2p107 (2021-07-07 revision 0db68f0233) [x86_64-linux-gnu]
 
-why PCIDeviceHandle is in header file? is there plan for it
-being used outside of acpi_generic_initiator.c?
+That might have been handy to have with your original report.
 
 
-> diff --git a/hw/acpi/acpi_generic_initiator.c b/hw/acpi/acpi_generic_initiator.c
-> index 78b80dcf08..f064753b67 100644
-> --- a/hw/acpi/acpi_generic_initiator.c
-> +++ b/hw/acpi/acpi_generic_initiator.c
-> @@ -151,7 +151,9 @@ build_srat_generic_node_affinity(GArray *table_data, int node,
->          build_append_int_noprefix(table_data, 0, 12);
->      } else {
->          /* Device Handle - ACPI */
-> -        build_append_int_noprefix(table_data, handle->hid, 8);
-> +        for (int i = 0; i < sizeof(handle->hid); i++) {
-> +            build_append_int_noprefix(table_data, handle->hid[i], 1);
-> +        }
->          build_append_int_noprefix(table_data, handle->uid, 4);
->          build_append_int_noprefix(table_data, 0, 4);
-
-instead of open codding structure
-
-it might be better to introduce helper in aml_build.c
-something like 
-  /* proper reference to spec as we do for other ACPI primitives */
-  build_append_srat_acpi_device_handle(GArray *table_data, char* hid, unit32_t uid)
-      assert(strlen(hid) ...
-      for() {
-            build_append_byte()
-      }          
-      ...
-
-the same applies to "Device Handle - PCI" structure
-
-Also get rid of PCI deps in acpi_generic_initiator.c 
-move build_all_acpi_generic_initiators/build_srat_generic_pci_initiator into
-hw/acpi/pci.c file if it has to access PCI code/structures directly
-(which I'm not convinced it should, can we get/expose what it needs as QOM properties?)
-
-btw:
-build_all_acpi_generic_initiators() name doesn't match what it's doing.
-it composes only one initiator entry.
-
->      }
-
+r~
 
