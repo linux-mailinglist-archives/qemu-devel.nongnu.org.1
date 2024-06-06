@@ -2,70 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A6938FEC3D
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jun 2024 16:30:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8ED5B8FEA46
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jun 2024 16:19:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sFE8P-0000zm-GB; Thu, 06 Jun 2024 10:30:33 -0400
+	id 1sFDvv-0004Qd-GW; Thu, 06 Jun 2024 10:17:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1sFE8G-0000nw-I3
- for qemu-devel@nongnu.org; Thu, 06 Jun 2024 10:30:25 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sFDvt-0004PP-8b
+ for qemu-devel@nongnu.org; Thu, 06 Jun 2024 10:17:37 -0400
+Received: from mgamail.intel.com ([198.175.65.11])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1sFE8E-0000dm-Vi
- for qemu-devel@nongnu.org; Thu, 06 Jun 2024 10:30:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717684222;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=hDPgf6aEIIwBxTyK1XZbu26GI1zbXPnF25d6ETE9IBk=;
- b=Ndb2p4h+I3ufqR0cVXu2e4j6kZ17x96tc1+IW75RxV25gNcNHKAwq+sFC7R7pPuy7JJ2MP
- cN3cNeg0ccJTLsbOp8lXHIkjzd8hBkmev0BV/zaxJzZzSJIMcVFQ08oEsibVIltv5XiLYR
- vLQ+l/NISumL4T0XqLy4ilLGY99GABY=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-136-cdMmpptCM0Ojy8tAlhO9ZA-1; Thu, 06 Jun 2024 10:30:16 -0400
-X-MC-Unique: cdMmpptCM0Ojy8tAlhO9ZA-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id ACB1B800074;
- Thu,  6 Jun 2024 14:30:16 +0000 (UTC)
-Received: from sirius.home.kraxel.org (unknown [10.39.192.217])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 49AF8492C27;
- Thu,  6 Jun 2024 14:30:16 +0000 (UTC)
-Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id 1BA801800D65; Thu,  6 Jun 2024 16:30:11 +0200 (CEST)
-From: Gerd Hoffmann <kraxel@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>, Eric Blake <eblake@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v3 4/4] qdev: add device policy [RfC]
-Date: Thu,  6 Jun 2024 16:30:10 +0200
-Message-ID: <20240606143010.1318226-5-kraxel@redhat.com>
-In-Reply-To: <20240606143010.1318226-1-kraxel@redhat.com>
-References: <20240606143010.1318226-1-kraxel@redhat.com>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sFDvq-0006KS-JM
+ for qemu-devel@nongnu.org; Thu, 06 Jun 2024 10:17:37 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1717683455; x=1749219455;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=iFYqS6FaaMagxj2aVkDePpIWRl7AOlMweYXWzmtE8Vo=;
+ b=LisLjuwJCSAY7S16WbpQ64FzFdLYUDsWCY8rZvWn8DApp7AY/yvuAh9g
+ XKC5juAd6Veb+teHDy3pqjB8YDT+j7ironYHAEN9wWICnMBLQjzkRNu5+
+ SNeui2AcoNxxv1AXPsdMTXbfsSxO+AZH13VTMb22lwQ5uLwYkLfEW3z/T
+ XMRj/ukfi7ob3PdEs4Ce2gPY4xyBjdM6vPbwUe6uydRQMv9rCUAmb387e
+ 5zW2dJXFeAfJ8si9Mhxb+ZelyefeXudEJvbMSZdyAUDby974+yOTAp18g
+ VVDxnCKX6r2mhkxkHc/O+ngpprRoOqZ3UF2X+NFuZJcVCp9nZgSH7xvyO A==;
+X-CSE-ConnectionGUID: h0BEKffZTJaty5+vIBREbg==
+X-CSE-MsgGUID: rpUALWxUQrmYYWT/TGZmeQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11095"; a="24925091"
+X-IronPort-AV: E=Sophos;i="6.08,219,1712646000"; d="scan'208";a="24925091"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Jun 2024 07:17:32 -0700
+X-CSE-ConnectionGUID: YCED9OpgS72Mgpnrc4GWrA==
+X-CSE-MsgGUID: ngpK5DE/QnKiBFVsIvqp2A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,219,1712646000"; d="scan'208";a="37838414"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by fmviesa007.fm.intel.com with ESMTP; 06 Jun 2024 07:17:29 -0700
+Date: Thu, 6 Jun 2024 22:32:56 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>,
+ =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+ Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ Mads Ynddal <mads@ynddal.dk>
+Subject: Re: [PATCH] tracetool: Remove unused vcpu.py script
+Message-ID: <ZmHImNd5HIcvrHJd@intel.com>
+References: <20240606102631.78152-1-philmd@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kraxel@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+In-Reply-To: <20240606102631.78152-1-philmd@linaro.org>
+Received-SPF: pass client-ip=198.175.65.11; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -82,116 +86,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add policies for devices which are deprecated or not secure.
-There are three options: allow, warn and deny.
+On Thu, Jun 06, 2024 at 12:26:31PM +0200, Philippe Mathieu-Daudé wrote:
+> Date: Thu,  6 Jun 2024 12:26:31 +0200
+> From: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Subject: [PATCH] tracetool: Remove unused vcpu.py script
+> X-Mailer: git-send-email 2.41.0
+> 
+> vcpu.py is pointless since commit 89aafcf2a7 ("trace:
+> remove code that depends on setting vcpu"), remote it.
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>  meson.build                   |  1 -
+>  scripts/tracetool/__init__.py |  8 +----
+>  scripts/tracetool/vcpu.py     | 59 -----------------------------------
+>  3 files changed, 1 insertion(+), 67 deletions(-)
+>  delete mode 100644 scripts/tracetool/vcpu.py
 
-It's implemented for devices only.  Devices will probably be the main
-user of this.  Also object_new() can't fail as of today so it's a bit
-hard to implement policy checking at object level, especially the 'deny'
-part of it.
-
-TODO: add a command line option to actually set these policies.
-
-Comments are welcome.
-
-Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
----
- hw/core/qdev.c | 60 +++++++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 59 insertions(+), 1 deletion(-)
-
-diff --git a/hw/core/qdev.c b/hw/core/qdev.c
-index f3a996f57dee..0c4e5cec743c 100644
---- a/hw/core/qdev.c
-+++ b/hw/core/qdev.c
-@@ -43,6 +43,15 @@
- static bool qdev_hot_added = false;
- bool qdev_hot_removed = false;
- 
-+enum qdev_policy {
-+    QDEV_ALLOW = 0,
-+    QDEV_WARN  = 1,
-+    QDEV_DENY  = 2,
-+};
-+
-+static enum qdev_policy qdev_deprecated_policy;
-+static enum qdev_policy qdev_not_secure_policy;
-+
- const VMStateDescription *qdev_get_vmsd(DeviceState *dev)
- {
-     DeviceClass *dc = DEVICE_GET_CLASS(dev);
-@@ -144,6 +153,43 @@ bool qdev_set_parent_bus(DeviceState *dev, BusState *bus, Error **errp)
-     return true;
- }
- 
-+static bool qdev_class_check(const char *name, ObjectClass *oc)
-+{
-+    bool allow = true;
-+
-+    if (oc->deprecated) {
-+        switch (qdev_deprecated_policy) {
-+        case QDEV_WARN:
-+            warn_report("device \"%s\" is deprecated", name);
-+            break;
-+        case QDEV_DENY:
-+            error_report("device \"%s\" is deprecated", name);
-+            allow = false;
-+            break;
-+        default:
-+            /* nothing */
-+            break;
-+        }
-+    }
-+
-+    if (oc->not_secure) {
-+        switch (qdev_not_secure_policy) {
-+        case QDEV_WARN:
-+            warn_report("device \"%s\" is not secure", name);
-+            break;
-+        case QDEV_DENY:
-+            error_report("device \"%s\" is not secure", name);
-+            allow = false;
-+            break;
-+        default:
-+            /* nothing */
-+            break;
-+        }
-+    }
-+
-+    return allow;
-+}
-+
- DeviceState *qdev_new(const char *name)
- {
-     ObjectClass *oc = object_class_by_name(name);
-@@ -162,14 +208,26 @@ DeviceState *qdev_new(const char *name)
-         error_report("unknown type '%s'", name);
-         abort();
-     }
-+
-+    if (!qdev_class_check(name, oc)) {
-+        exit(1);
-+    }
-+
-     return DEVICE(object_new(name));
- }
- 
- DeviceState *qdev_try_new(const char *name)
- {
--    if (!module_object_class_by_name(name)) {
-+    ObjectClass *oc = module_object_class_by_name(name);
-+
-+    if (!oc) {
-         return NULL;
-     }
-+
-+    if (!qdev_class_check(name, oc)) {
-+        return NULL;
-+    }
-+
-     return DEVICE(object_new(name));
- }
- 
--- 
-2.45.2
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
 
