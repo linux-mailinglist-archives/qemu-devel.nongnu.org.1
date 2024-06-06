@@ -2,80 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B19178FE619
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jun 2024 14:09:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 787BE8FE65A
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jun 2024 14:18:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sFBvq-0006jc-2C; Thu, 06 Jun 2024 08:09:26 -0400
+	id 1sFC3Y-00088e-OI; Thu, 06 Jun 2024 08:17:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sFBvm-0006iz-Du
- for qemu-devel@nongnu.org; Thu, 06 Jun 2024 08:09:22 -0400
-Received: from mail-lj1-x230.google.com ([2a00:1450:4864:20::230])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sFBvk-0004cT-F2
- for qemu-devel@nongnu.org; Thu, 06 Jun 2024 08:09:22 -0400
-Received: by mail-lj1-x230.google.com with SMTP id
- 38308e7fff4ca-2eacd7e7ad7so11057681fa.3
- for <qemu-devel@nongnu.org>; Thu, 06 Jun 2024 05:09:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1717675758; x=1718280558; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=78IsAC/QOA2ESb5fr8h4If6SS2Kpd2jcnYJc6PkPm7Q=;
- b=T6VQOwsyefhcTHIiJIZKWPcd8z4pO/KxFkdHbVLuZ64F044PMlGP0HB1RB/nrQNFLb
- xc3OmqjnMngCXEhFKYQwIsFkllZBqg4K9UvEtSudM5XOegC7MoO46ygIKpNpur6IsJOL
- d+D/CRxhy8kMO8UvBp/SMtLDsSg2moBgU/Z7ZXrE/IlxhkBXFLgy913mV4UnyTpmgNNf
- naphhU5o7p8kniTSp7Rw8WSwj3nHjLeHi+EXB/Bi42gHzLDmTYxqu+/g6R+vfL+1EIfc
- QjlmpDW6yphcXHxtxvpGWVQqK1E43fM6EmclWTU9KGE+PK7JT60K6vKTnocn1iPzx4yO
- 0How==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717675758; x=1718280558;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=78IsAC/QOA2ESb5fr8h4If6SS2Kpd2jcnYJc6PkPm7Q=;
- b=VciggLw/z9JnYkJZWdXGoEro0QBaICsHy73+Lw4+YbT0CuFmVR7w2LVEr2iiO/IWj0
- ++hdAKAWFhPps/IoMHpDx+sQVU2OoYcVZ+bnJssbyskjEcxaECT3KfO0/z/oSziiqR59
- O8kMY0wiIwMLiFOqXhy+MouvdfbtpZsq4g2owz63jVg/FQe92LeSha+oDcbb7NhJhIXq
- jp/1ldRA9ZxZVX33e/rmlFp4Qn5qqgFgSJ2N/T7LpswCGFDfi+M9T5BSCDsvig+dHbA8
- VDZZrN7Ei+Jrh9gm89MtKEstnkf8ahdFbasctwZ7Vng1YwVLo8dniL5t3dYztioJBczA
- NxGQ==
-X-Gm-Message-State: AOJu0Yyy6GD/KKAx53uxwDoONNILTot3nbs7GKRUTLowr/bzfS6K9Gsp
- eLd0ZZbmJfS/yUTuYePco43x9nxK1Ezn4Syab7F8xT7cTGmRdhPYd9Wl1rudwlv+K3dgYtfHEZF
- 7Ffjr90PWecscUfdItDrJ5k0/1Hkppegguq+Udg==
-X-Google-Smtp-Source: AGHT+IGPqI7BfSgZrQpLAne0Z24i2/YMwiAssIryjUU13tp+oycqBGnckZpdk2fTr+5nG1B+y5RL8G8HDFELYDcaukE=
-X-Received: by 2002:a05:651c:2206:b0:2ea:a382:67bc with SMTP id
- 38308e7fff4ca-2eac7a105famr34037051fa.26.1717675758489; Thu, 06 Jun 2024
- 05:09:18 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
+ id 1sFC3R-00086H-Ez; Thu, 06 Jun 2024 08:17:17 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
+ id 1sFC3O-0006BT-TA; Thu, 06 Jun 2024 08:17:17 -0400
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 456CGt7f022610; Thu, 6 Jun 2024 12:17:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc :
+ content-transfer-encoding : content-type : date : from : message-id :
+ mime-version : subject : to; s=pp1;
+ bh=2+lGhvqox/Kb2uQKCv2a2+KQXSAtySKDJYHvNDCIhSg=;
+ b=E9P50wIMS7NAwni72s+NgnrLfx3LA9sGTczEqzG6uAKwcNvEZ+gkPgn6p2hwP4E1eoOn
+ iV7WAV2HCyQcbYCYfm5/gyNoRj0G8H7IwgAciq2tfHdVIvvgbZ3W1F03SepiT51eMuat
+ nSrnA740sNw4NacnwZKkZkUG1Cu1rZddMIr+q7hpU8q7MjBaDZasWi981jWolEI1tZvJ
+ F6DnEELKGD1InphVzqzQpY33B7kqweROrV1B4x2bgUBi0WaGLXQc+yD+oeGyQwJGfwI6
+ CMmMP6X6EM3Ckfb4O8dMG0abXVWW3uGXnGXi9KIq4UFe7MsO3VmREQCnE4YHeUArfo/n EQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ykaq68csb-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 06 Jun 2024 12:17:08 +0000
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 456CH8nD022888;
+ Thu, 6 Jun 2024 12:17:08 GMT
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ykaq68cs5-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 06 Jun 2024 12:17:07 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 456C9uP8031194; Thu, 6 Jun 2024 12:17:06 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3ygeyptemj-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 06 Jun 2024 12:17:06 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com
+ [10.20.54.102])
+ by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 456CH0XU55968064
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 6 Jun 2024 12:17:02 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CEBB62004B;
+ Thu,  6 Jun 2024 12:17:00 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3259D20040;
+ Thu,  6 Jun 2024 12:16:59 +0000 (GMT)
+Received: from li-3c92a0cc-27cf-11b2-a85c-b804d9ca68fa.in.ibm.com (unknown
+ [9.109.199.72]) by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Thu,  6 Jun 2024 12:16:58 +0000 (GMT)
+From: Aditya Gupta <adityag@linux.ibm.com>
+To: Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>
+Cc: <qemu-devel@nongnu.org>, <qemu-ppc@nongnu.org>
+Subject: [PATCH v5 0/5] Power11 support for QEMU [PSeries]
+Date: Thu,  6 Jun 2024 17:46:52 +0530
+Message-ID: <20240606121657.254308-1-adityag@linux.ibm.com>
+X-Mailer: git-send-email 2.45.1
+Content-Type: text/plain; charset=UTF-8
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: zqPLRMjO8INHt4aYyaS39siOX50TVwVi
+X-Proofpoint-ORIG-GUID: w5C1y_0JnEX4cO2Ra5LjR9xXGYdiaXqr
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-References: <20240606103026.78448-1-philmd@linaro.org>
-In-Reply-To: <20240606103026.78448-1-philmd@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 6 Jun 2024 13:09:07 +0100
-Message-ID: <CAFEAcA_hLYnuwK6PuWv2syJkGFhw70FUUjo--Zd9NuOOLjvMFQ@mail.gmail.com>
-Subject: Re: [PATCH] target/s390x: Fix tracing header path in TCG mem_helper.c
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-s390x@nongnu.org, 
- Thomas Huth <thuth@redhat.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, 
- David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>, 
- Richard Henderson <richard.henderson@linaro.org>,
- Stefan Hajnoczi <stefanha@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::230;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x230.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-06-06_01,2024-06-06_02,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 impostorscore=0
+ spamscore=0 clxscore=1015 lowpriorityscore=0 phishscore=0 suspectscore=0
+ mlxlogscore=999 priorityscore=1501 adultscore=0 mlxscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2405010000
+ definitions=main-2406060090
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=adityag@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -92,23 +113,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 6 Jun 2024 at 11:30, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org=
-> wrote:
->
-> Commit c9274b6bf0 ("target/s390x: start moving TCG-only code
-> to tcg/") moved mem_helper.c, but the trace-events file is
-> still in the parent directory, so is the generated trace.h.
->
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> ---
-> Ideally we should only use trace events from current directory.
+Overview
+============
 
-Mmm, I was wondering if maybe that would be the better approach.
+Split "Power11 support for QEMU" into 2 patch series: pseries & powernv.
 
-A quick grep suggests the only other place doing a "../trace.h"
-include is in include/hw/xen/interface/hvm/hvm_op.h, which is
-unrelated, because it's pulling in the non-autogenerated
-include/hw/xen/interface/trace.h.
+This patch series is for pseries support for Power11.
 
--- PMM
+As Power11 core is same as Power10, hence much of the code has been reused from
+Power10.
+
+Power11 was added in Linux in:
+  commit c2ed087ed35c ("powerpc: Add Power11 architected and raw mode")
+
+Git Tree for Testing
+====================
+
+QEMU: https://github.com/adi-g15-ibm/qemu/tree/p11-v5-pseries
+
+Has been tested with following cases:
+* '-M pseries' / '-M pseries -cpu Power11'
+* '-smp' option tested
+* with compat mode: 'max-cpu-compat=power10' and 'max-cpu-compat=power9'
+* with/without device 'virtio-scsi-pci'
+* with/without -kernel and -drive with qcow_file
+
+Linux with Power11 support: https://github.com/torvalds/linux, since v6.9-rc1
+
+Changelog
+=========
+v5:
+  + split patch series into pseries+powernv
+  + patch #1: apply harsh's patch to reduce duplication
+  + patch #2: simplified, by removing duplication
+  + patch #3: update docs, according to harsh's suggestion
+  + patch #4: no functional change, #define used for P9 & P10 pcr_supported
+  + patch #5: no change
+
+v4:
+  + patch #5: fix memory leak in pnv_chip_power10_quad_realize
+  - no change in other patches
+
+v3:
+  + patch #1: version power11 as power11_v2.0
+  + patch #2: split target hw/pseries code into patch #2
+  + patch #3,#4: fix regression due to Power10 and Power11 having same PCR
+  + patch #5: create pnv_chip_power11_dt_populate and split pnv_chip_power10_common_realize as per review
+  + patch #6-#11: no change
+  - remove commit to make Power11 as default
+
+v2:
+  + split powernv patch into homer,lpc,occ,psi,sbe
+  + reduce code duplication by reusing power10 code
+  + make power11 as default
+  + rebase on qemu upstream/master
+  + add more information in commit descriptions
+  + update docs
+  + update skiboot.lid
+
+
+Aditya Gupta (4):
+  target/ppc: Add Power11 DD2.0 processor
+  ppc/pseries: Add Power11 cpu type
+  target/ppc: Introduce 'PowerPCCPUClass::logical_pvr'
+  target/ppc: Fix regression due to Power10 and Power11 having same PCR
+
+Harsh Prateek Bora (1):
+  target/ppc: reduce code duplication across Power9/10 init code
+
+ docs/system/ppc/pseries.rst |  17 +++-
+ hw/ppc/spapr_cpu_core.c     |   1 +
+ target/ppc/compat.c         |  11 +++
+ target/ppc/cpu-models.c     |   3 +
+ target/ppc/cpu-models.h     |   3 +
+ target/ppc/cpu.h            |   1 +
+ target/ppc/cpu_init.c       | 183 +++++++++++++++---------------------
+ target/ppc/cpu_init.h       |  78 +++++++++++++++
+ 8 files changed, 184 insertions(+), 113 deletions(-)
+ create mode 100644 target/ppc/cpu_init.h
+
+-- 
+2.45.1
+
 
