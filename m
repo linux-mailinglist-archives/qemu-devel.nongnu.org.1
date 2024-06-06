@@ -2,53 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF6B58FF691
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jun 2024 23:19:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D33B8FF9C0
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jun 2024 03:51:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sFKVB-00086a-Sm; Thu, 06 Jun 2024 17:18:29 -0400
+	id 1sFOk7-00069W-TN; Thu, 06 Jun 2024 21:50:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <robin.murphy@arm.com>)
- id 1sFKV8-00085g-QG; Thu, 06 Jun 2024 17:18:26 -0400
-Received: from foss.arm.com ([217.140.110.172])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <robin.murphy@arm.com>)
- id 1sFKV5-0001wM-Cu; Thu, 06 Jun 2024 17:18:26 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CBB5F2F4;
- Thu,  6 Jun 2024 14:18:43 -0700 (PDT)
-Received: from [10.57.70.245] (unknown [10.57.70.245])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8631F3F792;
- Thu,  6 Jun 2024 14:18:17 -0700 (PDT)
-Message-ID: <6e67a59a-7ed6-46c1-b9ba-884800005c81@arm.com>
-Date: Thu, 6 Jun 2024 22:18:11 +0100
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1sFOk5-00069C-RJ
+ for qemu-devel@nongnu.org; Thu, 06 Jun 2024 21:50:09 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1sFOk3-0008RD-Ss
+ for qemu-devel@nongnu.org; Thu, 06 Jun 2024 21:50:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1717725006;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=ic9lQGgoFrYWYtF+u1FC4PF+SFV5H8fSqxQBE8k+O2c=;
+ b=iBXqZe2UfTTclNTWPNKbh0BEFL4dPQbAlxaGkN1VWajFyNZg2Jl5bofox+x+zCfmumEGLl
+ KIzT56IW78K9f74BMYzUV5BzaNYtssz702LP/37+lpmZQZXqqdMMimAG30KvJcHiKOhNxd
+ +WS68g6JY33ZhfiV+gT3XNxSN1sgi2Y=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-523-lEgrEkPiPJ-t0XjnENrCyQ-1; Thu,
+ 06 Jun 2024 21:50:04 -0400
+X-MC-Unique: lEgrEkPiPJ-t0XjnENrCyQ-1
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id BB9671979064; Fri,  7 Jun 2024 01:50:02 +0000 (UTC)
+Received: from localhost (unknown [10.39.192.6])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id ABEBC1955F14; Fri,  7 Jun 2024 01:50:00 +0000 (UTC)
+Date: Thu, 6 Jun 2024 14:36:38 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Fiona Ebner <f.ebner@proxmox.com>
+Cc: qemu-devel@nongnu.org, peterx@redhat.com, farosas@suse.de,
+ pbonzini@redhat.com
+Subject: Re: [RFC PATCH] migration/savevm: do not schedule
+ snapshot_save_job_bh in qemu_aio_context
+Message-ID: <20240606183638.GC198201@fedora.redhat.com>
+References: <20240605120848.358654-1-f.ebner@proxmox.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC] hw/arm/virt: Avoid unexpected warning from Linux
- guest on host with Fujitsu CPUs
-To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
- Peter Maydell <peter.maydell@linaro.org>
-Cc: Zhenyu Zhang <zhenyzha@redhat.com>, qemu-arm@nongnu.org,
- qemu-devel@nongnu.org, gshan@redhat.com, eauger@redhat.com,
- sebott@redhat.com, cohuck@redhat.com, ddutile@redhat.com, shahuang@redhat.com
-References: <20240606104745.291330-1-zhenyzha@redhat.com>
- <CAFEAcA_ovHZWFi8Xn1YdPNkFjNWQ+BGQTA0Oc9oXTNuPD+bmmA@mail.gmail.com>
- <20240606181338.00003336@Huawei.com>
-From: Robin Murphy <robin.murphy@arm.com>
-Content-Language: en-GB
-In-Reply-To: <20240606181338.00003336@Huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=217.140.110.172;
- envelope-from=robin.murphy@arm.com; helo=foss.arm.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="xDmBIJEJkhaDUdiz"
+Content-Disposition: inline
+In-Reply-To: <20240605120848.358654-1-f.ebner@proxmox.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: 28
+X-Spam_score: 2.8
+X-Spam_bar: ++
+X-Spam_report: (2.8 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_06_12=1.543,
+ DKIMWL_WL_HIGH=-0.001, DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
+ DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -64,137 +83,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2024-06-06 6:13 pm, Jonathan Cameron wrote:
-> On Thu, 6 Jun 2024 12:56:59 +0100
-> Peter Maydell <peter.maydell@linaro.org> wrote:
-> 
->> On Thu, 6 Jun 2024 at 11:48, Zhenyu Zhang <zhenyzha@redhat.com> wrote:
->>>
->>> Multiple warning messages and corresponding backtraces are observed when Linux
->>> guest is booted on the host with Fujitsu CPUs. One of them is shown as below.
->>>
->>> [    0.032443] ------------[ cut here ]------------
->>> [    0.032446] uart-pl011 9000000.pl011: ARCH_DMA_MINALIGN smaller than CTR_EL0.CWG (128 < 256)
->>> [    0.032454] WARNING: CPU: 0 PID: 1 at arch/arm64/mm/dma-mapping.c:54 arch_setup_dma_ops+0xbc/0xcc
->>> [    0.032470] Modules linked in:
->>> [    0.032475] CPU: 0 PID: 1 Comm: swapper/0 Not tainted 5.14.0-452.el9.aarch64 #1
->>> [    0.032481] Hardware name: linux,dummy-virt (DT)
->>> [    0.032484] pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
->>> [    0.032490] pc : arch_setup_dma_ops+0xbc/0xcc
->>> [    0.032496] lr : arch_setup_dma_ops+0xbc/0xcc
->>> [    0.032501] sp : ffff80008003b860
->>> [    0.032503] x29: ffff80008003b860 x28: 0000000000000000 x27: ffffaae4b949049c
->>> [    0.032510] x26: 0000000000000000 x25: 0000000000000000 x24: 0000000000000000
->>> [    0.032517] x23: 0000000000000100 x22: 0000000000000000 x21: 0000000000000000
->>> [    0.032523] x20: 0000000100000000 x19: ffff2f06c02ea400 x18: ffffffffffffffff
->>> [    0.032529] x17: 00000000208a5f76 x16: 000000006589dbcb x15: ffffaae4ba071c89
->>> [    0.032535] x14: 0000000000000000 x13: ffffaae4ba071c84 x12: 455f525443206e61
->>> [    0.032541] x11: 68742072656c6c61 x10: 0000000000000029 x9 : ffffaae4b7d21da4
->>> [    0.032547] x8 : 0000000000000029 x7 : 4c414e494d5f414d x6 : 0000000000000029
->>> [    0.032553] x5 : 000000000000000f x4 : ffffaae4b9617a00 x3 : 0000000000000001
->>> [    0.032558] x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff2f06c029be40
->>> [    0.032564] Call trace:
->>> [    0.032566]  arch_setup_dma_ops+0xbc/0xcc
->>> [    0.032572]  of_dma_configure_id+0x138/0x300
->>> [    0.032591]  amba_dma_configure+0x34/0xc0
->>> [    0.032600]  really_probe+0x78/0x3dc
->>> [    0.032614]  __driver_probe_device+0x108/0x160
->>> [    0.032619]  driver_probe_device+0x44/0x114
->>> [    0.032624]  __device_attach_driver+0xb8/0x14c
->>> [    0.032629]  bus_for_each_drv+0x88/0xe4
->>> [    0.032634]  __device_attach+0xb0/0x1e0
->>> [    0.032638]  device_initial_probe+0x18/0x20
->>> [    0.032643]  bus_probe_device+0xa8/0xb0
->>> [    0.032648]  device_add+0x4b4/0x6c0
->>> [    0.032652]  amba_device_try_add.part.0+0x48/0x360
->>> [    0.032657]  amba_device_add+0x104/0x144
->>> [    0.032662]  of_amba_device_create.isra.0+0x100/0x1c4
->>> [    0.032666]  of_platform_bus_create+0x294/0x35c
->>> [    0.032669]  of_platform_populate+0x5c/0x150
->>> [    0.032672]  of_platform_default_populate_init+0xd0/0xec
->>> [    0.032697]  do_one_initcall+0x4c/0x2e0
->>> [    0.032701]  do_initcalls+0x100/0x13c
->>> [    0.032707]  kernel_init_freeable+0x1c8/0x21c
->>> [    0.032712]  kernel_init+0x28/0x140
->>> [    0.032731]  ret_from_fork+0x10/0x20
->>> [    0.032735] ---[ end trace 0000000000000000 ]---
->>>
->>> In Linux, a check is applied to every device which is exposed through device-tree
->>> node. The warning message is raised when the device isn't DMA coherent and the
->>> cache line size is larger than ARCH_DMA_MINALIGN (128 bytes). The cache line is
->>> sorted from CTR_EL0[CWG], which corresponds to 256 bytes on the guest CPUs.
->>> The DMA coherent capability is claimed through 'dma-coherent' in their
->>> device-tree nodes.
->>
->> For QEMU emulated all our DMA is always coherent, so where we
->> have DMA-capable devices we should definitely tell the kernel
->> that that DMA is coherent.
 
-The trick for that is to put the "dma-coherent" property right in the 
-root of the DT so it plausibly communicates "the whole platform is 
-coherent", and is then inherited by all devices, even those which 
-shouldn't technically need it.
+--xDmBIJEJkhaDUdiz
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
->> Our pl011 does not do DMA, though (we do not set the dmas property), so
->> it's kind of bogus for the kernel to complain about that.
+On Wed, Jun 05, 2024 at 02:08:48PM +0200, Fiona Ebner wrote:
+> The fact that the snapshot_save_job_bh() is scheduled in the main
+> loop's qemu_aio_context AioContext means that it might get executed
+> during a vCPU thread's aio_poll(). But saving of the VM state cannot
+> happen while the guest or devices are active and can lead to assertion
+> failures. See issue #2111 for two examples. Avoid the problem by
+> scheduling the snapshot_save_job_bh() in the iohandler AioContext,
+> which is not polled by vCPU threads.
+>=20
+> Solves Issue #2111.
+>=20
+> This change also solves the following issue:
+>=20
+> Since commit effd60c878 ("monitor: only run coroutine commands in
+> qemu_aio_context"), the 'snapshot-save' QMP call would not respond
+> right after starting the job anymore, but only after the job finished,
+> which can take a long time. The reason is, because after commit
+> effd60c878, do_qmp_dispatch_bh() runs in the iohandler AioContext.
+> When do_qmp_dispatch_bh() wakes the qmp_dispatch() coroutine, the
+> coroutine cannot be entered immediately anymore, but needs to be
+> scheduled to the main loop's qemu_aio_context AioContext. But
+> snapshot_save_job_bh() was scheduled first to the same AioContext and
+> thus gets executed first.
+>=20
+> Buglink: https://gitlab.com/qemu-project/qemu/-/issues/2111
+> Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
+> ---
+>=20
+> While initial smoke testing seems fine, I'm not familiar enough with
+> this to rule out any pitfalls with the approach. Any reason why
+> scheduling to the iohandler AioContext could be wrong here?
 
-The issue there is, per the history Jonathan dug up, DT on Arm got the 
-assumption baked into it from day one that "dma-ranges" was implied for 
-simple-bus and similar, and thus there is no easy generic way to 
-indicate that any MMIO device *can't* do DMA. For Linux this means we 
-end up having to assume that everything *might* be DMA-capable, since 
-the only thing which knows for sure is a driver, but we have further 
-legacy in the driver model which means we have to do perform the basic 
-DMA setup for any device *before* its driver probes. Yes, it's a bit 
-rubbish; feel free to shake your fist at the past.
+If something waits for a BlockJob to finish using aio_poll() from
+qemu_aio_context then a deadlock is possible since the iohandler_ctx
+won't get a chance to execute. The only suspicious code path I found was
+job_completed_txn_abort_locked() -> job_finish_sync_locked() but I'm not
+sure whether it triggers this scenario. Please check that code path.
 
-(At least we learned and got it right in ACPI for arm64 by making the 
-_CCA method mandatory for DMA-capable devices...)
+> Should the same be done for the snapshot_load_job_bh and
+> snapshot_delete_job_bh to keep it consistent?
 
->> So I think we should take these changes where they refer to DMA
->> capable devices and ask the kernel folks to fix the warnings
->> where they refer to devices that aren't doing DMA. Looking through
->> the patch, though, my initial impression is that all these are
->> in the latter category...
-> 
-> I was curious and have a very slow test running, so took a look.
-> of_dma_configure() is being passed force_dma = true.
-> https://elixir.bootlin.com/linux/v6.10-rc2/source/drivers/amba/bus.c#L361
-> 
-> The is a comment in of_dma_configure()
-> 		/*
-> 		 * For legacy reasons, we have to assume some devices need
-> 		 * DMA configuration regardless of whether "dma-ranges" is
-> 		 * correctly specified or not.
-> 		 */
-> So this I think this is being triggered by a workaround for broken DT.
-> 
-> This was introduced by Robin Murphy +CC though you may need to ask on
-> kernel list because ARM / QEMU fun.
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=723288836628b
-> 
-> Relevant comment from that patch description:
-> 
-> "Certain bus types have a general expectation of
-> DMA capability and carry a well-established precedent that an absent
-> "dma-ranges" implies the same as the empty property, so we automatically
-> opt those in to DMA configuration regardless, to avoid regressing most
-> existing platforms."
-> 
-> The patch implies that AMBA is one of those.
-> 
-> So not sure this is solveable without a hack such as eliding the warning
-> message if dma_force was set as the situation probably isn't relevant then..
+In the long term it would be cleaner to move away from synchronous APIs
+that rely on nested event loops. They have been a source of bugs for
+years.
 
-Except it absolutely is, because the whole reason for setting force_dma 
-on those buses is that they *do* commonly have DMA-capable devices, and 
-they are also commonly non-coherent such that this condition would be 
-serious. Especially AMBA, given that the things old enough to still be 
-using that abstraction rather than plain platform (PL080, PL111, 
-PL330,...) all predate ACE-Lite so don't even have the *possibility* of 
-being coherent without external trickery in the interconnect.
+If vm_stop() and perhaps other operations in save_snapshot() were
+asynchronous, then it would be safe to run the operation in
+qemu_aio_context without using iohandler_ctx. vm_stop() wouldn't invoke
+its callback until vCPUs were quiesced and outside device emulation
+code.
 
-Thanks,
-Robin.
+I think this patch is fine as a one-line bug fix, but we should be
+careful about falling back on this trick because it makes the codebase
+harder to understand and more fragile.
+
+>=20
+>  migration/savevm.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/migration/savevm.c b/migration/savevm.c
+> index c621f2359b..0086b76ab0 100644
+> --- a/migration/savevm.c
+> +++ b/migration/savevm.c
+> @@ -3459,7 +3459,7 @@ static int coroutine_fn snapshot_save_job_run(Job *=
+job, Error **errp)
+>      SnapshotJob *s =3D container_of(job, SnapshotJob, common);
+>      s->errp =3D errp;
+>      s->co =3D qemu_coroutine_self();
+> -    aio_bh_schedule_oneshot(qemu_get_aio_context(),
+> +    aio_bh_schedule_oneshot(iohandler_get_aio_context(),
+>                              snapshot_save_job_bh, job);
+>      qemu_coroutine_yield();
+>      return s->ret ? 0 : -1;
+> --=20
+> 2.39.2
+
+--xDmBIJEJkhaDUdiz
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmZiAbYACgkQnKSrs4Gr
+c8hljgf9E3lQXx9tCIwhZJaYEzbOXLQ/szQBwhLxALESFqdyerZzrjJehn8CdttA
+5GhPSl7PItMGoV55wxBQJutCi/lt3i4R6HZNM5FawzRgse/y4iMEPvQb1JFa+Btk
+L6DIWpUDYRMCw+YDlBDmckRbHQ7tmlx9EYfqhiLN34yUm7Fn3QVk3cFa5dYTBGaW
+bi0tfiS1GanN+SC050peVfho8ffD5Mxe09x7a+5es5Gd3HD+X+Pl9z4osX25s/fH
+agYCV//tn7MjfIqKvCnNH9w/ypYvh66yA+Yn8MUdThQjkBKMt73WAbJxzfHjDX2P
+gtp206XzoTaOJ76+ZCBcLNNXLCGF5g==
+=29nG
+-----END PGP SIGNATURE-----
+
+--xDmBIJEJkhaDUdiz--
+
 
