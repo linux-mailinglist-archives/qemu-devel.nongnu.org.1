@@ -2,42 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4CAC900E8C
-	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 01:50:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FC7D900E6A
+	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 01:21:55 +0200 (CEST)
 Received: from [::1] (helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sFf50-00028o-0v; Fri, 07 Jun 2024 15:16:50 -0400
+	id 1sFf5Q-00039L-D1; Fri, 07 Jun 2024 15:17:16 -0400
 Received: from [2001:470:142:3::10] (helo=eggs.gnu.org)
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sFf4y-0001z0-BJ; Fri, 07 Jun 2024 15:16:48 -0400
+ id 1sFf5O-00038U-LM; Fri, 07 Jun 2024 15:17:14 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sFf4w-0002z3-NA; Fri, 07 Jun 2024 15:16:48 -0400
+ id 1sFf5M-00032d-Rv; Fri, 07 Jun 2024 15:17:14 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id D3A6F6E564;
- Fri,  7 Jun 2024 22:14:53 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 30D376E568;
+ Fri,  7 Jun 2024 22:14:54 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 15DA1E275E;
+ by tsrv.corpit.ru (Postfix) with SMTP id 6099DE2761;
  Fri,  7 Jun 2024 22:13:59 +0300 (MSK)
-Received: (nullmailer pid 529441 invoked by uid 1000);
+Received: (nullmailer pid 529450 invoked by uid 1000);
  Fri, 07 Jun 2024 19:13:58 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Huang Tao <eric.huang@linux.alibaba.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- LIU Zhiwei <zhiwei_liu@linux.alibaba.com>,
+Cc: qemu-stable@nongnu.org, Max Chou <max.chou@sifive.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.0.1 55/71] target/riscv: Fix the element agnostic function
- problem
-Date: Fri,  7 Jun 2024 22:13:36 +0300
-Message-Id: <20240607191356.529336-11-mjt@tls.msk.ru>
+Subject: [Stable-9.0.1 58/71] target/riscv: rvv: Check single width operator
+ for vector fp widen instructions
+Date: Fri,  7 Jun 2024 22:13:39 +0300
+Message-Id: <20240607191356.529336-14-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-9.0.1-20240607221321@cover.tls.msk.ru>
 References: <qemu-stable-9.0.1-20240607221321@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -62,57 +62,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Huang Tao <eric.huang@linux.alibaba.com>
+From: Max Chou <max.chou@sifive.com>
 
-In RVV and vcrypto instructions, the masked and tail elements are set to 1s
-using vext_set_elems_1s function if the vma/vta bit is set. It is the element
-agnostic policy.
+The require_scale_rvf function only checks the double width operator for
+the vector floating point widen instructions, so most of the widen
+checking functions need to add require_rvf for single width operator.
 
-However, this function can't deal the big endian situation. This patch fixes
-the problem by adding handling of such case.
+The vfwcvt.f.x.v and vfwcvt.f.xu.v instructions convert single width
+integer to double width float, so the opfxv_widen_check function doesn’t
+need require_rvf for the single width operator(integer).
 
-Signed-off-by: Huang Tao <eric.huang@linux.alibaba.com>
-Suggested-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+Signed-off-by: Max Chou <max.chou@sifive.com>
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Cc: qemu-stable <qemu-stable@nongnu.org>
-Message-ID: <20240325021654.6594-1-eric.huang@linux.alibaba.com>
+Message-ID: <20240322092600.1198921-3-max.chou@sifive.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-(cherry picked from commit 75115d880c6d396f8a2d56aab8c12236d85a90e0)
+(cherry picked from commit 7a999d4dd704aa71fe6416871ada69438b56b1e5)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/riscv/vector_internals.c b/target/riscv/vector_internals.c
-index 996c21eb31..05b2d01e58 100644
---- a/target/riscv/vector_internals.c
-+++ b/target/riscv/vector_internals.c
-@@ -30,6 +30,28 @@ void vext_set_elems_1s(void *base, uint32_t is_agnostic, uint32_t cnt,
-     if (tot - cnt == 0) {
-         return ;
-     }
-+
-+    if (HOST_BIG_ENDIAN) {
-+        /*
-+         * Deal the situation when the elements are insdie
-+         * only one uint64 block including setting the
-+         * masked-off element.
-+         */
-+        if (((tot - 1) ^ cnt) < 8) {
-+            memset(base + H1(tot - 1), -1, tot - cnt);
-+            return;
-+        }
-+        /*
-+         * Otherwise, at least cross two uint64_t blocks.
-+         * Set first unaligned block.
-+         */
-+        if (cnt % 8 != 0) {
-+            uint32_t j = ROUND_UP(cnt, 8);
-+            memset(base + H1(j - 1), -1, j - cnt);
-+            cnt = j;
-+        }
-+        /* Set other 64bit aligend blocks */
-+    }
-     memset(base + cnt, -1, tot - cnt);
+diff --git a/target/riscv/insn_trans/trans_rvv.c.inc b/target/riscv/insn_trans/trans_rvv.c.inc
+index ef568e263d..6cb9bc9fde 100644
+--- a/target/riscv/insn_trans/trans_rvv.c.inc
++++ b/target/riscv/insn_trans/trans_rvv.c.inc
+@@ -2331,6 +2331,7 @@ GEN_OPFVF_TRANS(vfrsub_vf,  opfvf_check)
+ static bool opfvv_widen_check(DisasContext *s, arg_rmrr *a)
+ {
+     return require_rvv(s) &&
++           require_rvf(s) &&
+            require_scale_rvf(s) &&
+            (s->sew != MO_8) &&
+            vext_check_isa_ill(s) &&
+@@ -2370,6 +2371,7 @@ GEN_OPFVV_WIDEN_TRANS(vfwsub_vv, opfvv_widen_check)
+ static bool opfvf_widen_check(DisasContext *s, arg_rmrr *a)
+ {
+     return require_rvv(s) &&
++           require_rvf(s) &&
+            require_scale_rvf(s) &&
+            (s->sew != MO_8) &&
+            vext_check_isa_ill(s) &&
+@@ -2402,6 +2404,7 @@ GEN_OPFVF_WIDEN_TRANS(vfwsub_vf)
+ static bool opfwv_widen_check(DisasContext *s, arg_rmrr *a)
+ {
+     return require_rvv(s) &&
++           require_rvf(s) &&
+            require_scale_rvf(s) &&
+            (s->sew != MO_8) &&
+            vext_check_isa_ill(s) &&
+@@ -2441,6 +2444,7 @@ GEN_OPFWV_WIDEN_TRANS(vfwsub_wv)
+ static bool opfwf_widen_check(DisasContext *s, arg_rmrr *a)
+ {
+     return require_rvv(s) &&
++           require_rvf(s) &&
+            require_scale_rvf(s) &&
+            (s->sew != MO_8) &&
+            vext_check_isa_ill(s) &&
+@@ -2941,6 +2945,7 @@ GEN_OPFVV_TRANS(vfredmin_vs, freduction_check)
+ static bool freduction_widen_check(DisasContext *s, arg_rmrr *a)
+ {
+     return reduction_widen_check(s, a) &&
++           require_rvf(s) &&
+            require_scale_rvf(s) &&
+            (s->sew != MO_8);
  }
- 
 -- 
 2.39.2
 
