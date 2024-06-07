@@ -2,42 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23FC0900EE0
-	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 02:27:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 40064900ED9
+	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 02:24:38 +0200 (CEST)
 Received: from [::1] (helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sFf5N-00038H-T2; Fri, 07 Jun 2024 15:17:13 -0400
+	id 1sFf5N-00037T-7o; Fri, 07 Jun 2024 15:17:13 -0400
 Received: from [2001:470:142:3::10] (helo=eggs.gnu.org)
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sFf5L-00036x-Ev; Fri, 07 Jun 2024 15:17:11 -0400
+ id 1sFf5L-00036y-HK; Fri, 07 Jun 2024 15:17:11 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sFf5I-0002zR-At; Fri, 07 Jun 2024 15:17:10 -0400
+ id 1sFf5J-0002zl-PU; Fri, 07 Jun 2024 15:17:11 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id EDC726E565;
- Fri,  7 Jun 2024 22:14:53 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 15CE06E567;
+ Fri,  7 Jun 2024 22:14:54 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 2BA28E275F;
+ by tsrv.corpit.ru (Postfix) with SMTP id 49511E2760;
  Fri,  7 Jun 2024 22:13:59 +0300 (MSK)
-Received: (nullmailer pid 529444 invoked by uid 1000);
+Received: (nullmailer pid 529447 invoked by uid 1000);
  Fri, 07 Jun 2024 19:13:58 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Yangyu Chen <cyy@cyyself.name>,
- LIU Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Alistair Francis <alistair.francis@wdc.com>, Max Chou <max.chou@sifive.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.0.1 56/71] target/riscv/cpu.c: fix Zvkb extension config
-Date: Fri,  7 Jun 2024 22:13:37 +0300
-Message-Id: <20240607191356.529336-12-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Max Chou <max.chou@sifive.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Alistair Francis <alistair.francis@wdc.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.0.1 57/71] target/riscv: rvv: Fix Zvfhmin checking for
+ vfwcvt.f.f.v and vfncvt.f.f.w instructions
+Date: Fri,  7 Jun 2024 22:13:38 +0300
+Message-Id: <20240607191356.529336-13-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-9.0.1-20240607221321@cover.tls.msk.ru>
 References: <qemu-stable-9.0.1-20240607221321@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -62,36 +61,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Yangyu Chen <cyy@cyyself.name>
+From: Max Chou <max.chou@sifive.com>
 
-This code has a typo that writes zvkb to zvkg, causing users can't
-enable zvkb through the config. This patch gets this fixed.
+According v spec 18.4, only the vfwcvt.f.f.v and vfncvt.f.f.w
+instructions will be affected by Zvfhmin extension.
+And the vfwcvt.f.f.v and vfncvt.f.f.w instructions only support the
+conversions of
 
-Signed-off-by: Yangyu Chen <cyy@cyyself.name>
-Fixes: ea61ef7097d0 ("target/riscv: Move vector crypto extensions to riscv_cpu_extensions")
-Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Reviewed-by: Max Chou <max.chou@sifive.com>
-Reviewed-by:  Weiwei Li <liwei1518@gmail.com>
-Message-ID: <tencent_7E34EEF0F90B9A68BF38BEE09EC6D4877C0A@qq.com>
+* From 1*SEW(16/32) to 2*SEW(32/64)
+* From 2*SEW(32/64) to 1*SEW(16/32)
+
+Signed-off-by: Max Chou <max.chou@sifive.com>
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Cc: qemu-stable <qemu-stable@nongnu.org>
+Message-ID: <20240322092600.1198921-2-max.chou@sifive.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-(cherry picked from commit ff33b7a9699e977a050a1014c617a89da1bf8295)
+(cherry picked from commit 17b713c0806e72cd8edc6c2ddd8acc5be0475df6)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 36e3e5fdaf..776f377849 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -1535,7 +1535,7 @@ const RISCVCPUMultiExtConfig riscv_cpu_extensions[] = {
-     /* Vector cryptography extensions */
-     MULTI_EXT_CFG_BOOL("zvbb", ext_zvbb, false),
-     MULTI_EXT_CFG_BOOL("zvbc", ext_zvbc, false),
--    MULTI_EXT_CFG_BOOL("zvkb", ext_zvkg, false),
-+    MULTI_EXT_CFG_BOOL("zvkb", ext_zvkb, false),
-     MULTI_EXT_CFG_BOOL("zvkg", ext_zvkg, false),
-     MULTI_EXT_CFG_BOOL("zvkned", ext_zvkned, false),
-     MULTI_EXT_CFG_BOOL("zvknha", ext_zvknha, false),
+diff --git a/target/riscv/insn_trans/trans_rvv.c.inc b/target/riscv/insn_trans/trans_rvv.c.inc
+index 7d84e7d812..ef568e263d 100644
+--- a/target/riscv/insn_trans/trans_rvv.c.inc
++++ b/target/riscv/insn_trans/trans_rvv.c.inc
+@@ -50,6 +50,22 @@ static bool require_rvf(DisasContext *s)
+     }
+ }
+ 
++static bool require_rvfmin(DisasContext *s)
++{
++    if (s->mstatus_fs == EXT_STATUS_DISABLED) {
++        return false;
++    }
++
++    switch (s->sew) {
++    case MO_16:
++        return s->cfg_ptr->ext_zvfhmin;
++    case MO_32:
++        return s->cfg_ptr->ext_zve32f;
++    default:
++        return false;
++    }
++}
++
+ static bool require_scale_rvf(DisasContext *s)
+ {
+     if (s->mstatus_fs == EXT_STATUS_DISABLED) {
+@@ -75,8 +91,6 @@ static bool require_scale_rvfmin(DisasContext *s)
+     }
+ 
+     switch (s->sew) {
+-    case MO_8:
+-        return s->cfg_ptr->ext_zvfhmin;
+     case MO_16:
+         return s->cfg_ptr->ext_zve32f;
+     case MO_32:
+@@ -2685,6 +2699,7 @@ static bool opxfv_widen_check(DisasContext *s, arg_rmr *a)
+ static bool opffv_widen_check(DisasContext *s, arg_rmr *a)
+ {
+     return opfv_widen_check(s, a) &&
++           require_rvfmin(s) &&
+            require_scale_rvfmin(s) &&
+            (s->sew != MO_8);
+ }
+@@ -2790,6 +2805,7 @@ static bool opfxv_narrow_check(DisasContext *s, arg_rmr *a)
+ static bool opffv_narrow_check(DisasContext *s, arg_rmr *a)
+ {
+     return opfv_narrow_check(s, a) &&
++           require_rvfmin(s) &&
+            require_scale_rvfmin(s) &&
+            (s->sew != MO_8);
+ }
 -- 
 2.39.2
 
