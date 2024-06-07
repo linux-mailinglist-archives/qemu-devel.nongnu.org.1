@@ -2,44 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82F0D900E7B
-	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 01:35:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D31C900E3B
+	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 00:54:36 +0200 (CEST)
 Received: from [::1] (helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sFf15-0004r5-Sz; Fri, 07 Jun 2024 15:12:47 -0400
+	id 1sFf18-0005M3-Cf; Fri, 07 Jun 2024 15:12:50 -0400
 Received: from [2001:470:142:3::10] (helo=eggs.gnu.org)
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sFf0x-0004Pd-IJ; Fri, 07 Jun 2024 15:12:39 -0400
+ id 1sFf14-0004qV-I8; Fri, 07 Jun 2024 15:12:47 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sFf0u-0001g8-Uv; Fri, 07 Jun 2024 15:12:39 -0400
+ id 1sFf12-0001hH-VB; Fri, 07 Jun 2024 15:12:46 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id BB4006E530;
- Fri,  7 Jun 2024 22:13:15 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 19A5E6E534;
+ Fri,  7 Jun 2024 22:13:16 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id F2CC2E2730;
- Fri,  7 Jun 2024 22:12:20 +0300 (MSK)
-Received: (nullmailer pid 528240 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id 51BF7E2734;
+ Fri,  7 Jun 2024 22:12:21 +0300 (MSK)
+Received: (nullmailer pid 528252 invoked by uid 1000);
  Fri, 07 Jun 2024 19:12:20 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Andrey Shumilin <shum.sdl@nppct.ru>,
- Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.12 22/29] hw/intc/arm_gic: Fix handling of NS view of
- GICC_APR<n>
-Date: Fri,  7 Jun 2024 22:12:05 +0300
-Message-Id: <20240607191219.528194-3-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.12 26/29] target/i386: fix xsave.flat from kvm-unit-tests
+Date: Fri,  7 Jun 2024 22:12:09 +0300
+Message-Id: <20240607191219.528194-7-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.12-20240607221018@cover.tls.msk.ru>
 References: <qemu-stable-7.2.12-20240607221018@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -64,55 +59,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Andrey Shumilin <shum.sdl@nppct.ru>
+From: Paolo Bonzini <pbonzini@redhat.com>
 
-In gic_cpu_read() and gic_cpu_write(), we delegate the handling of
-reading and writing the Non-Secure view of the GICC_APR<n> registers
-to functions gic_apr_ns_view() and gic_apr_write_ns_view().
-Unfortunately we got the order of the arguments wrong, swapping the
-CPU number and the register number (which the compiler doesn't catch
-because they're both integers).
-
-Most guests probably didn't notice this bug because directly
-accessing the APR registers is typically something only done by
-firmware when it is doing state save for going into a sleep mode.
-
-Correct the mismatched call arguments.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+xsave.flat checks that "executing the XSETBV instruction causes a general-
+protection fault (#GP) if ECX = 0 and EAX[2:1] has the value 10b".  QEMU allows
+that option, so the test fails.  Add the condition.
 
 Cc: qemu-stable@nongnu.org
-Fixes: 51fd06e0ee ("hw/intc/arm_gic: Fix handling of GICC_APR<n>, GICC_NSAPR<n> registers")
-Signed-off-by: Andrey Shumilin <shum.sdl@nppct.ru>
-[PMM: Rewrote commit message]
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Alex Bennée<alex.bennee@linaro.org>
-(cherry picked from commit daafa78b297291fea36fb4daeed526705fa7c035)
+Fixes: 892544317fe ("target/i386: implement XSAVE and XRSTOR of AVX registers", 2022-10-18)
+Reported-by: Thomas Huth <thuth@redhat.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+(cherry picked from commit 7604bbc2d87d153e65e38cf2d671a5a9a35917b1)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/intc/arm_gic.c b/hw/intc/arm_gic.c
-index 7a34bc0998..47f01e45e3 100644
---- a/hw/intc/arm_gic.c
-+++ b/hw/intc/arm_gic.c
-@@ -1658,7 +1658,7 @@ static MemTxResult gic_cpu_read(GICState *s, int cpu, int offset,
-             *data = s->h_apr[gic_get_vcpu_real_id(cpu)];
-         } else if (gic_cpu_ns_access(s, cpu, attrs)) {
-             /* NS view of GICC_APR<n> is the top half of GIC_NSAPR<n> */
--            *data = gic_apr_ns_view(s, regno, cpu);
-+            *data = gic_apr_ns_view(s, cpu, regno);
-         } else {
-             *data = s->apr[regno][cpu];
-         }
-@@ -1746,7 +1746,7 @@ static MemTxResult gic_cpu_write(GICState *s, int cpu, int offset,
-             s->h_apr[gic_get_vcpu_real_id(cpu)] = value;
-         } else if (gic_cpu_ns_access(s, cpu, attrs)) {
-             /* NS view of GICC_APR<n> is the top half of GIC_NSAPR<n> */
--            gic_apr_write_ns_view(s, regno, cpu, value);
-+            gic_apr_write_ns_view(s, cpu, regno, value);
-         } else {
-             s->apr[regno][cpu] = value;
-         }
+diff --git a/target/i386/tcg/fpu_helper.c b/target/i386/tcg/fpu_helper.c
+index 6f3741b635..68c7058628 100644
+--- a/target/i386/tcg/fpu_helper.c
++++ b/target/i386/tcg/fpu_helper.c
+@@ -3011,6 +3011,11 @@ void helper_xsetbv(CPUX86State *env, uint32_t ecx, uint64_t mask)
+         goto do_gpf;
+     }
+ 
++    /* SSE can be disabled, but only if AVX is disabled too.  */
++    if ((mask & (XSTATE_SSE_MASK | XSTATE_YMM_MASK)) == XSTATE_YMM_MASK) {
++        goto do_gpf;
++    }
++
+     /* Disallow enabling unimplemented features.  */
+     cpu_x86_cpuid(env, 0x0d, 0, &ena_lo, &dummy, &dummy, &ena_hi);
+     ena = ((uint64_t)ena_hi << 32) | ena_lo;
 -- 
 2.39.2
 
