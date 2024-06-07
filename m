@@ -2,93 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C1CC900E31
-	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 00:44:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58A1F900E9E
+	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 02:01:17 +0200 (CEST)
 Received: from [::1] (helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sFcDR-0004uw-MI; Fri, 07 Jun 2024 12:13:21 -0400
+	id 1sFcOx-0005bd-2a; Fri, 07 Jun 2024 12:25:15 -0400
 Received: from [2001:470:142:3::10] (helo=eggs.gnu.org)
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1sFcDQ-0004uo-1W
- for qemu-devel@nongnu.org; Fri, 07 Jun 2024 12:13:20 -0400
-Received: from mail-pj1-x1030.google.com ([2607:f8b0:4864:20::1030])
+ (Exim 4.90_1) (envelope-from <yu.zhang@ionos.com>)
+ id 1sFcOu-0005bC-Px
+ for qemu-devel@nongnu.org; Fri, 07 Jun 2024 12:25:12 -0400
+Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1sFcDO-0003Ve-9l
- for qemu-devel@nongnu.org; Fri, 07 Jun 2024 12:13:19 -0400
-Received: by mail-pj1-x1030.google.com with SMTP id
- 98e67ed59e1d1-2c1ab9e17f6so2067281a91.1
- for <qemu-devel@nongnu.org>; Fri, 07 Jun 2024 09:13:17 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <yu.zhang@ionos.com>)
+ id 1sFcOr-0005v3-RU
+ for qemu-devel@nongnu.org; Fri, 07 Jun 2024 12:25:12 -0400
+Received: by mail-ej1-x633.google.com with SMTP id
+ a640c23a62f3a-a68c5524086so273569166b.3
+ for <qemu-devel@nongnu.org>; Fri, 07 Jun 2024 09:25:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1717776796; x=1718381596; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=+gG5L2LatsOvR+zbcsN7Vfd4DiDO8PJuhwwN1mATZJI=;
- b=vVxwt+cPSpvqllwGORRYEuJqxiHJENOtoWBdEjWezyQpCLbas+Hc7hzmzSNxWXcFPD
- /NM7G/1rTESB73uE/QFQhl3ISIFwkZJHYzystYCoSe9YM48eM6rNQbdpnfPDkC7X6hHG
- AUOthlMD+7uBle/rLz+9S9HQsUMefSg5zCezYDlmpUZk8kI0U/o1TOWxcxT6Oz8nDavs
- p+k2qz9NbZsfKRIpYO2wRekU+3h3qrCuairAEx4onZVFwUL7grL0eANNLLRijgT1SYrp
- RnDE90V7Tjyqm1BMN5sa7TMV1p3+SuAY915cqZZrBMcv+CDHO6K0LIJAlz1nkJifO6LU
- 8AHw==
+ d=ionos.com; s=google; t=1717777504; x=1718382304; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=INlsx8np7RYxS+x/PsMXwLcYpgw9uIOEVBONEyYuKkQ=;
+ b=NXll9MbhBeiRMSk1VEPnZppSTrDiC7Com7zKQyCo93sH19BbWP/r35shanSLbWhMEy
+ lYs0rU2U6KIjms9xjtZNriRbmwxYgxhnhfPdUx9ErfwzBaPzx/Mgqnw7cZx9Y8I2mqK8
+ aKKeuJ8LiwzhrF1zmY+t8sit13Z4GZ7JwO/VuJHSQNWfKjgHTHnqNWdEZQZ4Fsn7lkxm
+ RXrx2q8mgMgcKcyUtRBxISXLJMcu9Re/sglS/N4ZGJ19mabQS1d3EKfikcB7KwSRP3Kf
+ v3PbaOkLjp+eAZixoiJyrTJKa9HDCTFl33ihHCu7+kSCg9RJt5gj9ByX9OI4LE+JtVc8
+ EgYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717776796; x=1718381596;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=+gG5L2LatsOvR+zbcsN7Vfd4DiDO8PJuhwwN1mATZJI=;
- b=kLBYLsTXtB5h/Z1x7ObaDJ53aRh+Rp6X2ve/YNz/RdTCq70ozNkDziqBgW3go2vJAb
- PP0A+zQhR/CkLI13XgdT2hfaqtA1NcJG/MBSvRlf5tRtZTeGULC50t03d+HPv+XUplpZ
- 3eJ+fk5F65vvq3hoIZtpeLOabK03D8tEnp0ZSAmPfpVFJLahxNYrFT57nfsiC2/v/eX9
- +55mS6zbRLHIZcROin4QjaA/7GLEFkxyWXkt5LOjp1LxaG4PMJYD+JbggxCMtitzV2Uu
- ek5Hq6H+5DNoM5hbAmdIPkPQmTzGdk0TJw3W/yQgKHE2hdHzi6lVzq0UEATmLR9makB0
- XaIQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWcIaa/UeGAQBi7BKSWQZGca0kTUfdr/7O3jj/DMitlB+/DIfjQCAUF2WzMuf8u7m2JDAVKmrLOKU4pwJhnGNDG1aZjaxk=
-X-Gm-Message-State: AOJu0YyMXTXKj/3+hOHJqHDyITuu4h1ZLyyVarOfbEWY+mQO1ghrvp1y
- ygn2+F72OsZHsFZz7mmC5EAf1cMsMsOVFRZzCzwskdwkiz43whBDAI0M4Ix5sAg=
-X-Google-Smtp-Source: AGHT+IHZX5XIH7emQ0K9EJDfhsBpeCUb1uq9e9WNQXI0Vh9DDRNBGbyqy2zR01WsraDGs05xKq/PRQ==
-X-Received: by 2002:a17:90b:4b46:b0:2c2:d136:b0fb with SMTP id
- 98e67ed59e1d1-2c2d136b355mr1135500a91.34.1717776796282; 
- Fri, 07 Jun 2024 09:13:16 -0700 (PDT)
-Received: from ?IPV6:2604:3d08:9384:1d00::e697? ([2604:3d08:9384:1d00::e697])
- by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2c2806398easm5686120a91.10.2024.06.07.09.13.15
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 07 Jun 2024 09:13:15 -0700 (PDT)
-Message-ID: <5f3d272c-d6b9-4a7a-8230-fda4eb5be7e2@linaro.org>
-Date: Fri, 7 Jun 2024 09:13:14 -0700
+ d=1e100.net; s=20230601; t=1717777504; x=1718382304;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=INlsx8np7RYxS+x/PsMXwLcYpgw9uIOEVBONEyYuKkQ=;
+ b=d5bnidRO2/ALgBFIUarqY0uit/4nWQ/PMwa1NPRbPLr45twVpi/P5Lee7p2qYJKiWZ
+ +BNa23utnHFgGJ+z58yHWcxwnOcEPfZGadVITdVzoLylHUz4Z1wdpwRh+8WGIA6Sjr5K
+ EuQ1QBcNCoy9wAWkuzvDaWJqJF0tBCV5zBflX+Z+y8ADKPdsEz+Mseg0gf3WgEpT0Mav
+ ZjAUDasUPJ+0v6y5xf1lYMT1r+HzbzZvgXDTlKaHyeSPScjnMQ/hWJRprrvSTxr3CA23
+ f5zcSMRNmEX3g6lScE8CVHPb8+CnInwT4rLliD9brEzmub0TPu9dgoS2Kz2WGHg9DUH+
+ pIGQ==
+X-Gm-Message-State: AOJu0YwFxwAbtG6VfOjmfRUvZnzNFSWe1A3moWofAtPTJVN19WtIMwZP
+ ufOFtp39vJA9wOG6jKVNbR4wkcJogKwuuZPvl/jplSs+xsaTViSAXMDX14G3mH9HkBJbxn5Tpet
+ P3RpCq6w7JX2zkCMITMp1G6OCkJKJQbGZoKWqCg==
+X-Google-Smtp-Source: AGHT+IE/Ku73Ss6uPK9q17BoWHv/wkU+34sP4blf4t8hH4ZwaxZkxEp51MEqwvs2EEl3EW/1Xv9mPNzsyaQX+R5+l4w=
+X-Received: by 2002:a17:906:a5a:b0:a62:b679:3e7b with SMTP id
+ a640c23a62f3a-a6cdb2f94c8mr200111966b.61.1717777504087; Fri, 07 Jun 2024
+ 09:25:04 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/3] plugins: Free CPUPluginState before destroying vCPU
- state
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Alexandre Iooss <erdnaxe@crans.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Eduardo Habkost <eduardo@habkost.net>, Yanan Wang <wangyanan55@huawei.com>,
- Mahmoud Mandour <ma.mandourr@gmail.com>
-References: <20240606124010.2460-1-philmd@linaro.org>
- <20240606124010.2460-3-philmd@linaro.org>
- <26cb32be-d5a6-48b9-98c9-ca94ac6ceafd@linaro.org>
- <cc029923-bd07-4b48-ad8a-b68501a0e54d@linaro.org>
-Content-Language: en-US
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <cc029923-bd07-4b48-ad8a-b68501a0e54d@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1030;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pj1-x1030.google.com
+References: <1717503252-51884-1-git-send-email-arei.gonglei@huawei.com>
+ <20240605035622-mutt-send-email-mst@kernel.org>
+ <e39d065823da4ef9beb5b37c17c9a990@huawei.com>
+In-Reply-To: <e39d065823da4ef9beb5b37c17c9a990@huawei.com>
+From: Yu Zhang <yu.zhang@ionos.com>
+Date: Fri, 7 Jun 2024 18:24:52 +0200
+Message-ID: <CAHEcVy5psqfipiRFkvTyfONfX1b90SJ1iwZK7Tw+XnQvNDKUDQ@mail.gmail.com>
+Subject: Re: [PATCH 0/6] refactor RDMA live migration based on rsocket API
+To: "Gonglei (Arei)" <arei.gonglei@huawei.com>, Peter Xu <peterx@redhat.com>, 
+ Michael Galaxy <mgalaxy@akamai.com>, Jinpu Wang <jinpu.wang@ionos.com>, 
+ Elmar Gerdes <elmar.gerdes@ionos.com>
+Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ zhengchuan <zhengchuan@huawei.com>, 
+ "berrange@redhat.com" <berrange@redhat.com>,
+ "armbru@redhat.com" <armbru@redhat.com>, 
+ "lizhijian@fujitsu.com" <lizhijian@fujitsu.com>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>, 
+ "mst@redhat.com" <mst@redhat.com>, Xiexiangyou <xiexiangyou@huawei.com>, 
+ "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
+ "lixiao (H)" <lixiao91@huawei.com>, 
+ Wangjialin <wangjialin23@huawei.com>, Fabiano Rosas <farosas@suse.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: permerror client-ip=2a00:1450:4864:20::633;
+ envelope-from=yu.zhang@ionos.com; helo=mail-ej1-x633.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_PERMERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,49 +100,137 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-T24gNi82LzI0IDIxOjUzLCBQaGlsaXBwZSBNYXRoaWV1LURhdWTDqSB3cm90ZToNCj4gT24g
-Ni82LzI0IDIzOjE0LCBQaWVycmljayBCb3V2aWVyIHdyb3RlOg0KPj4gT24gNi82LzI0IDA1
-OjQwLCBQaGlsaXBwZSBNYXRoaWV1LURhdWTDqSB3cm90ZToNCj4+PiBjcHU6OnBsdWdpbl9z
-dGF0ZSBpcyBhbGxvY2F0ZWQgaW4gY3B1X2NvbW1vbl9pbml0Zm4oKSB3aGVuDQo+Pj4gdGhl
-IHZDUFUgc3RhdGUgaXMgY3JlYXRlZC4gUmVsZWFzZSBpdCBpbiBjcHVfY29tbW9uX2ZpbmFs
-aXplKCkNCj4+PiB3aGVuIHdlIGFyZSBkb25lLg0KPj4+DQo+Pj4gU2lnbmVkLW9mZi1ieTog
-UGhpbGlwcGUgTWF0aGlldS1EYXVkw6kgPHBoaWxtZEBsaW5hcm8ub3JnPg0KPj4+IC0tLQ0K
-Pj4+ICDCoCBpbmNsdWRlL3FlbXUvcGx1Z2luLmggfCAzICsrKw0KPj4+ICDCoCBody9jb3Jl
-L2NwdS1jb21tb24uY8KgIHwgNSArKysrKw0KPj4+ICDCoCAyIGZpbGVzIGNoYW5nZWQsIDgg
-aW5zZXJ0aW9ucygrKQ0KPj4+DQo+Pj4gZGlmZiAtLWdpdCBhL2luY2x1ZGUvcWVtdS9wbHVn
-aW4uaCBiL2luY2x1ZGUvcWVtdS9wbHVnaW4uaA0KPj4+IGluZGV4IGJjNWFlZjk3OWUuLmFm
-NWY5ZGI0NjkgMTAwNjQ0DQo+Pj4gLS0tIGEvaW5jbHVkZS9xZW11L3BsdWdpbi5oDQo+Pj4g
-KysrIGIvaW5jbHVkZS9xZW11L3BsdWdpbi5oDQo+Pj4gQEAgLTE0OSw2ICsxNDksOSBAQCBz
-dHJ1Y3QgQ1BVUGx1Z2luU3RhdGUgew0KPj4+ICDCoCAvKioNCj4+PiAgwqDCoCAqIHFlbXVf
-cGx1Z2luX2NyZWF0ZV92Y3B1X3N0YXRlOiBhbGxvY2F0ZSBwbHVnaW4gc3RhdGUNCj4+PiAr
-ICoNCj4+PiArICogVGhlIHJldHVybmVkIGRhdGEgbXVzdCBiZSByZWxlYXNlZCB3aXRoIGdf
-ZnJlZSgpDQo+Pj4gKyAqIHdoZW4gbm8gbG9uZ2VyIHJlcXVpcmVkLg0KPj4+ICDCoMKgICov
-DQo+Pj4gIMKgIENQVVBsdWdpblN0YXRlICpxZW11X3BsdWdpbl9jcmVhdGVfdmNwdV9zdGF0
-ZSh2b2lkKTsNCj4+PiBkaWZmIC0tZ2l0IGEvaHcvY29yZS9jcHUtY29tbW9uLmMgYi9ody9j
-b3JlL2NwdS1jb21tb24uYw0KPj4+IGluZGV4IGJmMWE3Yjg4OTIuLmNkMTU0MDI1NTIgMTAw
-NjQ0DQo+Pj4gLS0tIGEvaHcvY29yZS9jcHUtY29tbW9uLmMNCj4+PiArKysgYi9ody9jb3Jl
-L2NwdS1jb21tb24uYw0KPj4+IEBAIC0yODMsNiArMjgzLDExIEBAIHN0YXRpYyB2b2lkIGNw
-dV9jb21tb25fZmluYWxpemUoT2JqZWN0ICpvYmopDQo+Pj4gIMKgIHsNCj4+PiAgwqDCoMKg
-wqDCoCBDUFVTdGF0ZSAqY3B1ID0gQ1BVKG9iaik7DQo+Pj4gKyNpZmRlZiBDT05GSUdfUExV
-R0lODQo+Pj4gK8KgwqDCoCBpZiAodGNnX2VuYWJsZWQoKSkgew0KPj4+ICvCoMKgwqDCoMKg
-wqDCoCBnX2ZyZWUoY3B1LT5wbHVnaW5fc3RhdGUpOw0KPj4+ICvCoMKgwqAgfQ0KPj4+ICsj
-ZW5kaWYNCj4+PiAgwqDCoMKgwqDCoCBnX2FycmF5X2ZyZWUoY3B1LT5nZGJfcmVncywgVFJV
-RSk7DQo+Pj4gIMKgwqDCoMKgwqAgcWVtdV9sb2NrY250X2Rlc3Ryb3koJmNwdS0+aW5faW9j
-dGxfbG9jayk7DQo+Pj4gIMKgwqDCoMKgwqAgcWVtdV9tdXRleF9kZXN0cm95KCZjcHUtPndv
-cmtfbXV0ZXgpOw0KPj4NCj4+IFRvIGVuc3VyZSBJIGdldCBpdCByaWdodCwgb3JkZXIgb2Yg
-Y3B1IGluaXQvZGVpbml0IGlzOg0KPj4gLSBpbml0DQo+PiAtIHJlYWxpemUNCj4+IC0gdW5y
-ZWFsaXplDQo+PiAtIGZpbmFsaXplDQo+PiBJcyB0aGF0IGNvcnJlY3Q/DQo+IA0KPiBZZXMs
-IHRoaXMgaXMgdmFsaWQgZm9yIGFsbCBRRGV2IChDUFUgaXMgYmFzZWQgb24gaXQpLg0KPiAN
-Cj4gKyBpbml0OiBhbGxvY2F0ZSBzdGF0ZSwgZXhwb3NlIGNvbmZpZ3VyYWJsZSBwcm9wZXJ0
-aWVzDQo+IC4gdXNlciBjb25maWd1cmUgcHJvcGVydGllcw0KPiArIHJlYWxpemU6IGNvbnN1
-bWUgcHJvcGVydGllcyB0byB0dW5lIHRoZSBvYmplY3QNCj4gKyByZXNldDogc2V0IGRlZmF1
-bHQgdmFsdWVzDQo+IC4gb2JqZWN0IGlzIHVzZWQNCj4gKyB1bnJlYWxpemU6IHVuZG8gc3R1
-ZmYgZnJvbSByZWFsaXplIGJlY2F1c2UgdGhlIG9iamVjdA0KPiAgICAgbWlnaHQgYmUgcmVh
-bGl6ZWQgYWdhaW4gKHVucGx1ZyAtIHBsdWcpDQo+ICsgZmluYWxpemU6IHJlbGVhc2UgcmVz
-b3VyY2VzDQo+IA0KPiBTZWUNCj4gaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvcWVtdS1kZXZl
-bC8yMDI0MDIwOTEyMzIyNi4zMjU3Ni0xLXBoaWxtZEBsaW5hcm8ub3JnLw0KPiANCj4+IFJl
-dmlld2VkLWJ5OiBQaWVycmljayBCb3V2aWVyIDxwaWVycmljay5ib3V2aWVyQGxpbmFyby5v
-cmc+DQo+IA0KPiBUaGFua3MhDQoNClRoYW5rcywgaXQgZGVmaW5pdGVseSBoYXZlIGl0cyBw
-bGFjZSBpbiB0aGUgb2ZmaWNpYWwgZG9jdW1lbnRhdGlvbiwgaWYgDQp5b3UgZmVlbCBsaWtl
-IGFkZGluZyBpdC4NCg==
+Hello Gonglei,
+
+Jinpu and I have tested your patchset by using our migration test
+cases on the physical RDMA cards. The result is: among 59 migration
+test cases, 10 failed. They are successful when using the original
+RDMA migration coed, but always fail when using the patchset. The
+syslog on the source server shows an error below:
+
+Jun  6 13:35:20 ps402a-43 WARN: Migration failed
+uuid=3D"44449999-3333-48dc-9082-1b6950e74ee1"
+target=3D2a02:247f:401:2:2:0:a:2c error=3DFailed(Unable to write to
+rsocket: Connection reset by peer)
+
+We also tried to compare the migration speed between w/o the patchset.
+Without the patchset, a big VM (with 16 cores, 64 GB memory) stressed
+with heavy memory workload can be migrated successfully. With the
+patchset, only a small idle VM (1-2 cores, 2-4 GB memory) can be
+migrated successfully. In each failed migration, the above error is
+issued on the source server.
+
+Therefore, I assume that this version is not yet quite capable of
+handling heavy load yet. I'm also looking in the code to see if
+anything can be improved. We really appreciate your excellent work!
+
+Best regards,
+Yu Zhang @ IONOS cloud
+
+On Wed, Jun 5, 2024 at 12:00=E2=80=AFPM Gonglei (Arei) <arei.gonglei@huawei=
+.com> wrote:
+>
+>
+>
+> > -----Original Message-----
+> > From: Michael S. Tsirkin [mailto:mst@redhat.com]
+> > Sent: Wednesday, June 5, 2024 3:57 PM
+> > To: Gonglei (Arei) <arei.gonglei@huawei.com>
+> > Cc: qemu-devel@nongnu.org; peterx@redhat.com; yu.zhang@ionos.com;
+> > mgalaxy@akamai.com; elmar.gerdes@ionos.com; zhengchuan
+> > <zhengchuan@huawei.com>; berrange@redhat.com; armbru@redhat.com;
+> > lizhijian@fujitsu.com; pbonzini@redhat.com; Xiexiangyou
+> > <xiexiangyou@huawei.com>; linux-rdma@vger.kernel.org; lixiao (H)
+> > <lixiao91@huawei.com>; jinpu.wang@ionos.com; Wangjialin
+> > <wangjialin23@huawei.com>
+> > Subject: Re: [PATCH 0/6] refactor RDMA live migration based on rsocket =
+API
+> >
+> > On Tue, Jun 04, 2024 at 08:14:06PM +0800, Gonglei wrote:
+> > > From: Jialin Wang <wangjialin23@huawei.com>
+> > >
+> > > Hi,
+> > >
+> > > This patch series attempts to refactor RDMA live migration by
+> > > introducing a new QIOChannelRDMA class based on the rsocket API.
+> > >
+> > > The /usr/include/rdma/rsocket.h provides a higher level rsocket API
+> > > that is a 1-1 match of the normal kernel 'sockets' API, which hides
+> > > the detail of rdma protocol into rsocket and allows us to add support
+> > > for some modern features like multifd more easily.
+> > >
+> > > Here is the previous discussion on refactoring RDMA live migration
+> > > using the rsocket API:
+> > >
+> > > https://lore.kernel.org/qemu-devel/20240328130255.52257-1-philmd@lina=
+r
+> > > o.org/
+> > >
+> > > We have encountered some bugs when using rsocket and plan to submit
+> > > them to the rdma-core community.
+> > >
+> > > In addition, the use of rsocket makes our programming more convenient=
+,
+> > > but it must be noted that this method introduces multiple memory
+> > > copies, which can be imagined that there will be a certain performanc=
+e
+> > > degradation, hoping that friends with RDMA network cards can help ver=
+ify,
+> > thank you!
+> >
+> > So you didn't test it with an RDMA card?
+>
+> Yep, we tested it by Soft-ROCE.
+>
+> > You really should test with an RDMA card though, for correctness as muc=
+h as
+> > performance.
+> >
+> We will, we just don't have RDMA cards environment on hand at the moment.
+>
+> Regards,
+> -Gonglei
+>
+> >
+> > > Jialin Wang (6):
+> > >   migration: remove RDMA live migration temporarily
+> > >   io: add QIOChannelRDMA class
+> > >   io/channel-rdma: support working in coroutine
+> > >   tests/unit: add test-io-channel-rdma.c
+> > >   migration: introduce new RDMA live migration
+> > >   migration/rdma: support multifd for RDMA migration
+> > >
+> > >  docs/rdma.txt                     |  420 ---
+> > >  include/io/channel-rdma.h         |  165 ++
+> > >  io/channel-rdma.c                 |  798 ++++++
+> > >  io/meson.build                    |    1 +
+> > >  io/trace-events                   |   14 +
+> > >  meson.build                       |    6 -
+> > >  migration/meson.build             |    3 +-
+> > >  migration/migration-stats.c       |    5 +-
+> > >  migration/migration-stats.h       |    4 -
+> > >  migration/migration.c             |   13 +-
+> > >  migration/migration.h             |    9 -
+> > >  migration/multifd.c               |   10 +
+> > >  migration/options.c               |   16 -
+> > >  migration/options.h               |    2 -
+> > >  migration/qemu-file.c             |    1 -
+> > >  migration/ram.c                   |   90 +-
+> > >  migration/rdma.c                  | 4205 +--------------------------=
+--
+> > >  migration/rdma.h                  |   67 +-
+> > >  migration/savevm.c                |    2 +-
+> > >  migration/trace-events            |   68 +-
+> > >  qapi/migration.json               |   13 +-
+> > >  scripts/analyze-migration.py      |    3 -
+> > >  tests/unit/meson.build            |    1 +
+> > >  tests/unit/test-io-channel-rdma.c |  276 ++
+> > >  24 files changed, 1360 insertions(+), 4832 deletions(-)  delete mode
+> > > 100644 docs/rdma.txt  create mode 100644 include/io/channel-rdma.h
+> > > create mode 100644 io/channel-rdma.c  create mode 100644
+> > > tests/unit/test-io-channel-rdma.c
+> > >
+> > > --
+> > > 2.43.0
+>
 
