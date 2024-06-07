@@ -2,107 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39F52900E29
-	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 00:39:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88875900E2C
+	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 00:41:49 +0200 (CEST)
 Received: from [::1] (helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sFbJV-0003EW-1z; Fri, 07 Jun 2024 11:15:33 -0400
+	id 1sFbdV-00064A-BP; Fri, 07 Jun 2024 11:36:13 -0400
 Received: from [2001:470:142:3::10] (helo=eggs.gnu.org)
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
- id 1sFbJO-0003EF-FU
- for qemu-devel@nongnu.org; Fri, 07 Jun 2024 11:15:30 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1sFbdT-00063o-R6
+ for qemu-devel@nongnu.org; Fri, 07 Jun 2024 11:36:11 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
- id 1sFbJM-0002Z6-2s
- for qemu-devel@nongnu.org; Fri, 07 Jun 2024 11:15:26 -0400
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 457F7mAX015194; Fri, 7 Jun 2024 15:15:20 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc :
- content-transfer-encoding : content-type : date : from : in-reply-to :
- message-id : mime-version : references : subject : to; s=pp1;
- bh=C6CWfTENGYRCmV/k7AytlZY0P1torzrbKUmdqKzOl3A=;
- b=BTkHdLrav6lJvSBh2+Qv0ArYYlMTCkWa9vDdIQp2hFN1CF39lv+lyjiWnU/+TzAk1hd1
- IquB54grmSFBeEcT5VdaOUsbbrAxH4JqLiBJFPLbyTKdQ3wthf26WKBlua8Lh/13JVfB
- JsqkSU4P/zNQVhJEseIP2aQ+yXdEc4ZrD2QB8jgmK/Yf0OVozSuadiLyF6O2Moif6g4S
- FfoJW/EKEGzRjqKVM1JbuvilTkHhdmfe5NM6sERKFdHTbfaz6DCyPPZPtGjKErytYDuK
- BZE1NRQ0V43ByC7mOnZyEYOFwDsQgbV3HFfi3tOFrWwfrA9wWPpKkjXQB1pIsDcGpfHS GQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ym4jp00nb-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 07 Jun 2024 15:15:20 +0000
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 457FFJgs026065;
- Fri, 7 Jun 2024 15:15:19 GMT
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ym4jp00na-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 07 Jun 2024 15:15:19 +0000
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 457EuO3N000803; Fri, 7 Jun 2024 15:15:18 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3ygdyuhm71-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 07 Jun 2024 15:15:18 +0000
-Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com
- [10.39.53.229])
- by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 457FFGKT17498542
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 7 Jun 2024 15:15:18 GMT
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 773355807A;
- Fri,  7 Jun 2024 15:15:14 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D47F758058;
- Fri,  7 Jun 2024 15:15:13 +0000 (GMT)
-Received: from [9.47.158.152] (unknown [9.47.158.152])
- by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Fri,  7 Jun 2024 15:15:13 +0000 (GMT)
-Message-ID: <b0fb7bf7-b936-4801-a637-42907a59d680@linux.ibm.com>
-Date: Fri, 7 Jun 2024 11:15:11 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1sFbdP-00062S-Gi
+ for qemu-devel@nongnu.org; Fri, 07 Jun 2024 11:36:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1717774566;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=zXvc5N8I22oS7Q9Eo5sFw5nJ7ODWchcLfw1pYvhnrTE=;
+ b=RyZUt2NA2ZejLRQ4v95CVX3WiZx6VIbVLGIb2PhpS6lfnwxmGENSmUBKRY3vcv5ygaTcJ9
+ aMxT6rl7Fgv7EPxKG/dqsgDv2HtCPaG4WBJYOQG4pG2FFhW/OOmm1p7s4jjGiSxrZcrpic
+ E+Il9lhl0ghB6tyu8bnmW67d2QIfHrM=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-163-fdwLvwJDMUea89WlwoKgdw-1; Fri, 07 Jun 2024 11:36:04 -0400
+X-MC-Unique: fdwLvwJDMUea89WlwoKgdw-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-35dca4a8f2dso1304094f8f.3
+ for <qemu-devel@nongnu.org>; Fri, 07 Jun 2024 08:36:04 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1717774563; x=1718379363;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=zXvc5N8I22oS7Q9Eo5sFw5nJ7ODWchcLfw1pYvhnrTE=;
+ b=d5DPwBh6dZW+YCr+YuETv5nO0z8PofKk6Svd4534g41rdHCOB1cmUG/tmikHNVj0mY
+ 137Et5bifvRoZmWJ8U/j0yXURxjJffBFr/MYcumCv8vjf2JJpzXd+92zFWtnGdIsr1co
+ A8UucFCxoLCsBNxAVS6gzpcPOyCI86oIfTpks26GXna6LDqCz3VZSpsAvmrQfGeNdg+N
+ roSQ7RqG7AEb6y3IxQ2UFQpYH53g4huZ9/kleKNY9EDvYEbwq+i3lUs/VXb8WG9x+Dhm
+ D3y0M9hBdmVTXDTiLzEXwKFvnXHRzHkTePP48Cqkntdz8xbDacgqz9ims+aQXM4ZAxWm
+ sdNA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWUl8/sNNlp1KJ7htnANk3abiY0PWmd1eHdZUoNtgWego+zChBQ2/0NNp/W8fHPI7UDGMXIOzlg58ac9lH2oE0wksfC470=
+X-Gm-Message-State: AOJu0Yw2qoSUUOpFm2786eT02FV68TziTPPYk/xyCJfKUHNZujHfbPFI
+ kK6dhWE9e75Ok5WyWOQH7EBUQb45PZzhKtyDys0QMAnKNhjhYRtnVG0174q2i+rNBeJx1bAZrlL
+ 7yv38mBMC0KVHu+y5TT+L+ECKcZnhd6RJO1fOviVIrN472mkmLAYMvmJ62ZLX
+X-Received: by 2002:a5d:5f53:0:b0:35e:7d2b:de73 with SMTP id
+ ffacd0b85a97d-35efedf2870mr2820555f8f.52.1717774563069; 
+ Fri, 07 Jun 2024 08:36:03 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH3fc+FaoJjmng/J9TrLyxXWMLpFj05VaT/KaRvOseo8b6ONMtsBjkthc0DieCYNyAiT0mufg==
+X-Received: by 2002:a5d:5f53:0:b0:35e:7d2b:de73 with SMTP id
+ ffacd0b85a97d-35efedf2870mr2820542f8f.52.1717774562676; 
+ Fri, 07 Jun 2024 08:36:02 -0700 (PDT)
+Received: from avogadro.local ([151.64.122.141])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-35ef5fc6d75sm4227370f8f.110.2024.06.07.08.36.02
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 07 Jun 2024 08:36:02 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Cc: pbonzini@redhat.com,
+	qemu-devel@nongnu.org
+Subject: Re: [PATCH 0/4] target/i386: fixes for OS/2 Warp
+Date: Fri,  7 Jun 2024 17:35:43 +0200
+Message-ID: <20240607153542.2750662-2-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.45.1
+In-Reply-To: <20240606095319.229650-1-mark.cave-ayland@ilande.co.uk>
+References: 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/5] backends/tpm: Remove newline character in trace event
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
- Mads Ynddal <mads@ynddal.dk>, Stefan Hajnoczi <stefanha@redhat.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- Stefan Berger <stefanb@linux.vnet.ibm.com>
-References: <20240606103943.79116-1-philmd@linaro.org>
- <20240606103943.79116-2-philmd@linaro.org>
-Content-Language: en-US
-From: Stefan Berger <stefanb@linux.ibm.com>
-In-Reply-To: <20240606103943.79116-2-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: FtWTxSRjct4Tg8-hPRZaJYzoFf5K2-dV
-X-Proofpoint-ORIG-GUID: oSSSb8dCQ8I2LQ7dLWX5fdRFxIFjf94d
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-06-07_08,2024-06-06_02,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0
- mlxlogscore=999 clxscore=1011 priorityscore=1501 phishscore=0
- impostorscore=0 mlxscore=0 adultscore=0 spamscore=0 lowpriorityscore=0
- suspectscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2405010000 definitions=main-2406070112
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=stefanb@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -119,59 +102,9 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Queued, thanks (with the op->unit assignment removed, to
+answer your question).
 
+Paolo
 
-On 6/6/24 06:39, Philippe Mathieu-Daudé wrote:
-> Split the 'tpm_util_show_buffer' event in two to avoid
-> using a newline character.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->   backends/tpm/tpm_util.c   | 5 +++--
->   backends/tpm/trace-events | 3 ++-
->   2 files changed, 5 insertions(+), 3 deletions(-)
-> 
-> diff --git a/backends/tpm/tpm_util.c b/backends/tpm/tpm_util.c
-> index 1856589c3b..cf138551df 100644
-> --- a/backends/tpm/tpm_util.c
-> +++ b/backends/tpm/tpm_util.c
-> @@ -339,10 +339,11 @@ void tpm_util_show_buffer(const unsigned char *buffer,
->       size_t len, i;
->       char *line_buffer, *p;
-> 
-> -    if (!trace_event_get_state_backends(TRACE_TPM_UTIL_SHOW_BUFFER)) {
-> +    if (!trace_event_get_state_backends(TRACE_TPM_UTIL_SHOW_BUFFER_CONTENT)) {
->           return;
->       }
->       len = MIN(tpm_cmd_get_size(buffer), buffer_size);
-> +    trace_tpm_util_show_buffer_header(string, len);
-> 
->       /*
->        * allocate enough room for 3 chars per buffer entry plus a
-> @@ -356,7 +357,7 @@ void tpm_util_show_buffer(const unsigned char *buffer,
->           }
->           p += sprintf(p, "%.2X ", buffer[i]);
->       }
-> -    trace_tpm_util_show_buffer(string, len, line_buffer);
-> +    trace_tpm_util_show_buffer_content(line_buffer);
-> 
->       g_free(line_buffer);
->   }
-> diff --git a/backends/tpm/trace-events b/backends/tpm/trace-events
-> index 1ecef42a07..cb5cfa6510 100644
-> --- a/backends/tpm/trace-events
-> +++ b/backends/tpm/trace-events
-> @@ -10,7 +10,8 @@ tpm_util_get_buffer_size_len(uint32_t len, size_t expected) "tpm_resp->len = %u,
->   tpm_util_get_buffer_size_hdr_len2(uint32_t len, size_t expected) "tpm2_resp->hdr.len = %u, expected = %zu"
->   tpm_util_get_buffer_size_len2(uint32_t len, size_t expected) "tpm2_resp->len = %u, expected = %zu"
->   tpm_util_get_buffer_size(size_t len) "buffersize of device: %zu"
-> -tpm_util_show_buffer(const char *direction, size_t len, const char *buf) "direction: %s len: %zu\n%s"
-> +tpm_util_show_buffer_header(const char *direction, size_t len) "direction: %s len: %zu"
-> +tpm_util_show_buffer_content(const char *buf) "%s"
-> 
->   # tpm_emulator.c
->   tpm_emulator_set_locality(uint8_t locty) "setting locality to %d"
-
-
-Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
 
