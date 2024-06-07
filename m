@@ -2,74 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32E68900DB2
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jun 2024 23:47:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41AFC900DAE
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jun 2024 23:46:27 +0200 (CEST)
 Received: from [::1] (helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sFakk-0005kT-0y; Fri, 07 Jun 2024 10:39:38 -0400
+	id 1sFbnJ-0007Mq-2Y; Fri, 07 Jun 2024 11:46:21 -0400
 Received: from [2001:470:142:3::10] (helo=eggs.gnu.org)
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1sFaki-0005cy-Ky
- for qemu-devel@nongnu.org; Fri, 07 Jun 2024 10:39:36 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1sFakh-0003Oa-2i
- for qemu-devel@nongnu.org; Fri, 07 Jun 2024 10:39:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717771174;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=sxoYtCwqn6c+3/9Ce6QALKIyPjypJJl1PydGzJDqgAc=;
- b=AkOdpJlvTIHM3limNwW7n7xsOYYOme78iQbY9I1fbWjPYJwCwPajSVHUp5lNl6zdD8UFbB
- KqcNDbNZopG3h3Jqh766mI8o3JQcLV7pn1RRx5Vgqi1nTqd4xYoQJGkQH7x+mMxFt541Up
- ZrfFisQ94u47ZoD0NDjEbVZx2+re8eU=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-611-JNvzNWrMMkeB4zzqKL3pMA-1; Fri,
- 07 Jun 2024 10:39:28 -0400
-X-MC-Unique: JNvzNWrMMkeB4zzqKL3pMA-1
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A7D7D1955F36; Fri,  7 Jun 2024 14:39:26 +0000 (UTC)
-Received: from laptop.redhat.com (unknown [10.39.193.191])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 81D1A1956050; Fri,  7 Jun 2024 14:39:21 +0000 (UTC)
-From: Eric Auger <eric.auger@redhat.com>
-To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
- qemu-arm@nongnu.org, mst@redhat.com, jean-philippe@linaro.org,
- imammedo@redhat.com, peter.maydell@linaro.org, clg@redhat.com,
- yanghliu@redhat.com, zhenzhong.duan@intel.com
-Cc: alex.williamson@redhat.com, jasowang@redhat.com, pbonzini@redhat.com,
- berrange@redhat.com
-Subject: [RFC v2 2/7] virtio-iommu: Implement set|unset]_iommu_device()
- callbacks
-Date: Fri,  7 Jun 2024 16:37:22 +0200
-Message-ID: <20240607143905.765133-3-eric.auger@redhat.com>
-In-Reply-To: <20240607143905.765133-1-eric.auger@redhat.com>
-References: <20240607143905.765133-1-eric.auger@redhat.com>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sFbnG-0007MM-6V
+ for qemu-devel@nongnu.org; Fri, 07 Jun 2024 11:46:18 -0400
+Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sFbnE-0007U1-JE
+ for qemu-devel@nongnu.org; Fri, 07 Jun 2024 11:46:17 -0400
+Received: by mail-pf1-x42b.google.com with SMTP id
+ d2e1a72fcca58-7025ca8bebcso2018356b3a.3
+ for <qemu-devel@nongnu.org>; Fri, 07 Jun 2024 08:46:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1717775175; x=1718379975; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=uac6KoO32L9+6czhV1pDuA7BLZcZKuuVRVkct3+TYlM=;
+ b=ndqnHeub7WbKTOSvIkc8cbXpQzqJV67xwn25GhbpGZWfRpUGiaMcoQ+9pXflf6TPSc
+ sLL03OvHJM/lTEjoTVFr5sP8ufOH0pu9RlEjMGWmJ9Eo9rsatnduzTmFxGW/R1tk6j2m
+ 6ViDPUv+xcoqUaRrkBaVPSYqy53LRlQgQWyNlEWB9nr53hYTjvLYicn8B6IwP0P335ya
+ CUH4jGAPAeLsQ1PCpRdlxkQ50nIJiBucmUvrBA4hKeo4QDnjPUnQKLF2GYe8PCxcVFI3
+ o57oFzWDeKMf9wi1riYheKM8K3c7epPXXdNa/yp0JIh8ROo2LZwlZq8xcnJlncydbXWG
+ zvlw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1717775175; x=1718379975;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=uac6KoO32L9+6czhV1pDuA7BLZcZKuuVRVkct3+TYlM=;
+ b=LAJz99bnOf7/MJPYMri8SmCackOrG64GB3Jp8RmIacD47TJ3opXWcEwqdx2P1/wqow
+ 3U6maLsRQree6VYMZqM3DvT2EBtLCLSIuU8rgMA5avkw7Nh4F9qIcvfbR2M4wmPsXcFL
+ 326lM+LjWu++6DAvIvfxsu3yvuLp1ofyhSZ0UNMvxldtcfPKch9kcuc2aj+mDywwhAVk
+ tGryzk6QLvSlLuvZvgqSojtSQzCaj2EEwa+TbpYjx9AwwXLLVPhAxIKbOjjeXbURzExh
+ L6Lm1pMtWOBasKe+CLEaRVfUGBqGtmUYrQcaGMrOK2HeTMmT+ewH00kczDeNCna/ti08
+ AL6A==
+X-Gm-Message-State: AOJu0Yz1lBsOuBBiIEGLljvmkNMDPNB25JeoLOnJYzFMUFU+jvuO3Z62
+ wnXMIajk7n4NADCZhwJpe5/rIUbm7L8/GOeSmwJNAzQ6o1/lhE3u+EmdYlKop3s=
+X-Google-Smtp-Source: AGHT+IH/IkRv47Uw7bD3fbuFiqA8CtP+MXPdtVSMAXnVbjOFhevKSLsZZ6unYY1ezOD9wVy2I8Tkjg==
+X-Received: by 2002:a05:6a20:f397:b0:1af:f8b5:9c13 with SMTP id
+ adf61e73a8af0-1b2f9c89d16mr2485851637.39.1717775175252; 
+ Fri, 07 Jun 2024 08:46:15 -0700 (PDT)
+Received: from [192.168.223.227] ([75.147.178.105])
+ by smtp.gmail.com with ESMTPSA id
+ 41be03b00d2f7-6de2760b076sm2907550a12.84.2024.06.07.08.46.14
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 07 Jun 2024 08:46:14 -0700 (PDT)
+Message-ID: <28ea359e-fdbf-4a4f-b004-19e558d8d96f@linaro.org>
+Date: Fri, 7 Jun 2024 08:46:12 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/4] target/ppc: Move VSX vector storage access insns to
+ decodetree.
+To: Chinmay Rath <rathc@linux.ibm.com>, qemu-ppc@nongnu.org
+Cc: qemu-devel@nongnu.org, npiggin@gmail.com, danielhb413@gmail.com,
+ harshpb@linux.ibm.com
+References: <20240607144921.726730-1-rathc@linux.ibm.com>
+ <20240607144921.726730-4-rathc@linux.ibm.com>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20240607144921.726730-4-rathc@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,167 +96,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Implement PCIIOMMUOPs [set|unset]_iommu_device() callbacks.
-In set(), a VirtioHostIOMMUDevice is allocated which holds
-a reference to the HostIOMMUDevice. This object is stored in a hash
-table indexed by PCI BDF. The handle to the Host IOMMU device
-will allow to retrieve information related to the physical IOMMU.
+On 6/7/24 07:49, Chinmay Rath wrote:
+> Moving the following instructions to decodetree specification:
+> 
+>    lxv{b16, d2, h8, w4, ds, ws}x   : X-form
+>    stxv{b16, d2, h8, w4}x          : X-form
+> 
+> The changes were verified by validating that the tcg-ops generated for those
+> instructions remain the same, which were captured using the '-d in_asm,op' flag.
+> 
+> Signed-off-by: Chinmay Rath <rathc@linux.ibm.com>
+> ---
+>   target/ppc/insn32.decode            |  10 ++
+>   target/ppc/translate/vsx-impl.c.inc | 199 ++++++++++++----------------
+>   target/ppc/translate/vsx-ops.c.inc  |  12 --
+>   3 files changed, 97 insertions(+), 124 deletions(-)
 
-Signed-off-by: Eric Auger <eric.auger@redhat.com>
----
- include/hw/virtio/virtio-iommu.h |  9 ++++
- hw/virtio/virtio-iommu.c         | 87 ++++++++++++++++++++++++++++++++
- 2 files changed, 96 insertions(+)
+Because the ops are identical,
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-diff --git a/include/hw/virtio/virtio-iommu.h b/include/hw/virtio/virtio-iommu.h
-index 83a52cc446..4f664ea0c4 100644
---- a/include/hw/virtio/virtio-iommu.h
-+++ b/include/hw/virtio/virtio-iommu.h
-@@ -45,6 +45,14 @@ typedef struct IOMMUDevice {
-     bool probe_done;
- } IOMMUDevice;
- 
-+typedef struct VirtioHostIOMMUDevice {
-+    void *viommu;
-+    PCIBus *bus;
-+    uint8_t devfn;
-+    HostIOMMUDevice *dev;
-+    QLIST_ENTRY(VirtioHostIOMMUDevice) next;
-+} VirtioHostIOMMUDevice;
-+
- typedef struct IOMMUPciBus {
-     PCIBus       *bus;
-     IOMMUDevice  *pbdev[]; /* Parent array is sparse, so dynamically alloc */
-@@ -57,6 +65,7 @@ struct VirtIOIOMMU {
-     struct virtio_iommu_config config;
-     uint64_t features;
-     GHashTable *as_by_busptr;
-+    GHashTable *host_iommu_devices;
-     IOMMUPciBus *iommu_pcibus_by_bus_num[PCI_BUS_MAX];
-     PCIBus *primary_bus;
-     ReservedRegion *prop_resv_regions;
-diff --git a/hw/virtio/virtio-iommu.c b/hw/virtio/virtio-iommu.c
-index 1326c6ec41..0680a357f0 100644
---- a/hw/virtio/virtio-iommu.c
-+++ b/hw/virtio/virtio-iommu.c
-@@ -28,6 +28,7 @@
- #include "sysemu/kvm.h"
- #include "sysemu/reset.h"
- #include "sysemu/sysemu.h"
-+#include "sysemu/host_iommu_device.h"
- #include "qemu/reserved-region.h"
- #include "qemu/units.h"
- #include "qapi/error.h"
-@@ -69,6 +70,11 @@ typedef struct VirtIOIOMMUMapping {
-     uint32_t flags;
- } VirtIOIOMMUMapping;
- 
-+struct hiod_key {
-+    PCIBus *bus;
-+    uint8_t devfn;
-+};
-+
- static inline uint16_t virtio_iommu_get_bdf(IOMMUDevice *dev)
- {
-     return PCI_BUILD_BDF(pci_bus_num(dev->bus), dev->devfn);
-@@ -462,8 +468,86 @@ static AddressSpace *virtio_iommu_find_add_as(PCIBus *bus, void *opaque,
-     return &sdev->as;
- }
- 
-+static gboolean hiod_equal(gconstpointer v1, gconstpointer v2)
-+{
-+    const struct hiod_key *key1 = v1;
-+    const struct hiod_key *key2 = v2;
-+
-+    return (key1->bus == key2->bus) && (key1->devfn == key2->devfn);
-+}
-+
-+static guint hiod_hash(gconstpointer v)
-+{
-+    const struct hiod_key *key = v;
-+    guint value = (guint)(uintptr_t)key->bus;
-+
-+    return (guint)(value << 8 | key->devfn);
-+}
-+
-+static VirtioHostIOMMUDevice *
-+get_host_iommu_device(VirtIOIOMMU *viommu, PCIBus *bus, int devfn) {
-+    struct hiod_key key = {
-+        .bus = bus,
-+        .devfn = devfn,
-+    };
-+
-+    return g_hash_table_lookup(viommu->host_iommu_devices, &key);
-+}
-+
-+static bool virtio_iommu_set_iommu_device(PCIBus *bus, void *opaque, int devfn,
-+                                          HostIOMMUDevice *hiod, Error **errp)
-+{
-+    VirtIOIOMMU *viommu = opaque;
-+    VirtioHostIOMMUDevice *vhiod;
-+    struct hiod_key *new_key;
-+
-+    assert(hiod);
-+
-+    vhiod = get_host_iommu_device(viommu, bus, devfn);
-+    if (vhiod) {
-+        error_setg(errp, "VirtioHostIOMMUDevice already exists");
-+        return false;
-+    }
-+
-+    vhiod = g_malloc0(sizeof(VirtioHostIOMMUDevice));
-+    vhiod->bus = bus;
-+    vhiod->devfn = (uint8_t)devfn;
-+    vhiod->viommu = viommu;
-+    vhiod->dev = hiod;
-+
-+    new_key = g_malloc(sizeof(*new_key));
-+    new_key->bus = bus;
-+    new_key->devfn = devfn;
-+
-+    object_ref(hiod);
-+    g_hash_table_insert(viommu->host_iommu_devices, new_key, vhiod);
-+
-+    return true;
-+}
-+
-+static void
-+virtio_iommu_unset_iommu_device(PCIBus *bus, void *opaque, int devfn)
-+{
-+    VirtIOIOMMU *viommu = opaque;
-+    VirtioHostIOMMUDevice *vhiod;
-+    struct hiod_key key = {
-+        .bus = bus,
-+        .devfn = devfn,
-+    };
-+
-+    vhiod = g_hash_table_lookup(viommu->host_iommu_devices, &key);
-+    if (!vhiod) {
-+        return;
-+    }
-+
-+    g_hash_table_remove(viommu->host_iommu_devices, &key);
-+    object_unref(vhiod->dev);
-+}
-+
- static const PCIIOMMUOps virtio_iommu_ops = {
-     .get_address_space = virtio_iommu_find_add_as,
-+    .set_iommu_device = virtio_iommu_set_iommu_device,
-+    .unset_iommu_device = virtio_iommu_unset_iommu_device,
- };
- 
- static int virtio_iommu_attach(VirtIOIOMMU *s,
-@@ -1357,6 +1441,9 @@ static void virtio_iommu_device_realize(DeviceState *dev, Error **errp)
- 
-     s->as_by_busptr = g_hash_table_new_full(NULL, NULL, NULL, g_free);
- 
-+    s->host_iommu_devices = g_hash_table_new_full(hiod_hash, hiod_equal,
-+                                                  g_free, g_free);
-+
-     if (s->primary_bus) {
-         pci_setup_iommu(s->primary_bus, &virtio_iommu_ops, s);
-     } else {
--- 
-2.41.0
+But you really should update these to use tcg_gen_qemu_ld/st_i128 with the proper 
+atomicity flags.  This will fix an existing bug...
+
+> +static bool trans_LXVD2X(DisasContext *ctx, arg_LXVD2X *a)
+>   {
+>       TCGv EA;
+>       TCGv_i64 t0;
+> +
+> +    REQUIRE_VSX(ctx);
+> +    REQUIRE_INSNS_FLAGS2(ctx, VSX);
+> +
+>       t0 = tcg_temp_new_i64();
+>       gen_set_access_type(ctx, ACCESS_INT);
+> +    EA = do_ea_calc(ctx, a->ra, cpu_gpr[a->rb]);
+>       gen_qemu_ld64_i64(ctx, t0, EA);
+> +    set_cpu_vsr(a->rt, t0, true);
+
+where the vector register is partially modified ...
+
+>       tcg_gen_addi_tl(EA, EA, 8);
+>       gen_qemu_ld64_i64(ctx, t0, EA);
+
+before a fault from the second load is recognized.
+Similarly for stores leaving memory partially modified.
+
+
+r~
 
 
