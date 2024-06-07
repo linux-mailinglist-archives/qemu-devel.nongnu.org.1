@@ -2,59 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6254F8FFE87
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jun 2024 11:00:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 828208FFE89
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jun 2024 11:00:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sFVRM-0006pz-OU; Fri, 07 Jun 2024 04:59:16 -0400
+	id 1sFVRN-0006qL-0s; Fri, 07 Jun 2024 04:59:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ribalda@chromium.org>)
- id 1sFVRK-0006pE-Ah
+ id 1sFVRK-0006pQ-KM
  for qemu-devel@nongnu.org; Fri, 07 Jun 2024 04:59:14 -0400
-Received: from mail-yb1-xb32.google.com ([2607:f8b0:4864:20::b32])
+Received: from mail-qv1-xf2e.google.com ([2607:f8b0:4864:20::f2e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <ribalda@chromium.org>)
- id 1sFVRH-00029X-QI
+ id 1sFVRH-00029j-RB
  for qemu-devel@nongnu.org; Fri, 07 Jun 2024 04:59:14 -0400
-Received: by mail-yb1-xb32.google.com with SMTP id
- 3f1490d57ef6-dfaf512483dso794823276.1
- for <qemu-devel@nongnu.org>; Fri, 07 Jun 2024 01:59:08 -0700 (PDT)
+Received: by mail-qv1-xf2e.google.com with SMTP id
+ 6a1803df08f44-6afbf9c9bc0so10459606d6.3
+ for <qemu-devel@nongnu.org>; Fri, 07 Jun 2024 01:59:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=chromium.org; s=google; t=1717750748; x=1718355548; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=3EKBJ8oPgx6RWyKkHBwS8CUXIUj2Ph4UlirUDin8kck=;
- b=Q6vPflOKtu+tZMTuo18tbVzyIpwCPACu5VNgqRc6EPXq3WOCY4DABV3cc4obWdZLpP
- 4BOKbd7jYxsuMWEVPpwq7oFGiBwPPb/Qbep+2kojqzlIONjXFVAGftUuZU8EsLJOY7sR
- odNB+S/MHlZwI0u3EsaCev6NHWj9Aa0CihaJg=
+ d=chromium.org; s=google; t=1717750750; x=1718355550; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=eQ0vskezyjqQHScbgK9S79Fq5chYK0nUmVHKk6BuKqk=;
+ b=F7nyx6kZxfQ7k1/Q6S8/1xIfjJaZbSIutqY2bP5eZ/ogINEIGYcG++XPbzyyUqbDR8
+ be1kEVjgewtbCc8EM1WSxPvdVusIJ0eIfB1+IeRke/38OYajsz0BJDdrPGdEIruDi2Ue
+ qsr6p7FmlHi51nMtimVpQMAlJ5AwirVkJdXcY=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717750748; x=1718355548;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=3EKBJ8oPgx6RWyKkHBwS8CUXIUj2Ph4UlirUDin8kck=;
- b=AY0nn6E5aTxVXtiH8cWeV11MZ5Gh4rXeakwCvVNtsmwfU17J34O5TTGZvcFPw1dhUt
- tfS38JNsN5WkNohPJTYnb8bpQINhcoMyNI2Gf6q/JYtZxI/ufU6elmSQ1VocL0KBCfrb
- ksnyCryBgExFK9MXSFYDsxiO+oU0Atmlx6Q0ZPYVA5umC92s0YGxEqUXtS4EcUlg98ac
- 1Xqe3xk9/lqj0ySFiVmU4kl8i63khyFW38ifERY86MkHjj6w2dxMAqHatwb654cjqrAe
- e0LrlMi6wNsWXjrF5wslJOh/izuYXWEu/wKUa8yBwDJLLWVZ2B9E7LJUkEkS9rUe/wlY
- vwmw==
+ d=1e100.net; s=20230601; t=1717750750; x=1718355550;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=eQ0vskezyjqQHScbgK9S79Fq5chYK0nUmVHKk6BuKqk=;
+ b=shCxa1hD5aODGJNkKpKrml7iEaFvf3oAfeFxTkBX993kNzuym27Jhtl7QcWsF8RoQE
+ U9RK9qCqu0fY/Px5QKNm+NrPdnUWiqSftibt4s3VXWFpX9mX8tsW+dXre1phPdRLwaa6
+ /lJ6oGf+nG+USA3HFFuYdOJsJ1YnxnQ5Qas+1ZeZWjC06X7t9FOC0hBT9lcgks/en3hw
+ KQyI02GKTeRAbIlZqv5Y5XceD7bStZi3cA7IMWih80QMZ0deW/muNCZ+ieCm1x2SWDjk
+ hfkCR11sl6efU/HSlOZ9VIA44qHoOaQXYidukiQeH+jwzEbzDFmccrNY7XBdwZ2Nk6jx
+ liPw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUEs2T+omZBNMlPPND2ZhOOcplp+TBngb3gvPWjXTLNLL4nxTaroii6YdMWPJSPZ5BPe9P4YyOUJulIgbgz5JZZlVsXQRs=
-X-Gm-Message-State: AOJu0Yy7eNkL2qpOZDTOcuQ8gwzNwRWHtZ9J8jZ5eEY9ZRZSdquxqxVV
- /GNWPZS7gCiE5+A0NEKz+/VBQajx3WUnsl/mqcT9vlwDMja20qz59c1e7tiVIg==
-X-Google-Smtp-Source: AGHT+IFxdKKJKFazmAdLmFk3VUfxgFa6MFD52r/5XJWUC7rqjbFnQ2jLlzLnlzF/DrLKU0JiCuZvYA==
-X-Received: by 2002:a25:adc1:0:b0:df7:8dca:1ef2 with SMTP id
- 3f1490d57ef6-dfaf65bfbcemr1785533276.34.1717750747946; 
- Fri, 07 Jun 2024 01:59:07 -0700 (PDT)
+ AJvYcCXOauU3jOEH8CYY1zIArQn20li6ltGHIBH2tIGJlRGj55SLkjfV6PWCiq+GQMg9N8mt0lqMplTiAJSkoOFwm9kmMYwX4Vg=
+X-Gm-Message-State: AOJu0Yw6eT0J0gEN7SiJSQkIMYYUyjf3R38kUQO9VvD8GMlHDtjUa7lF
+ a07zVdB3+EhThyRFbtIflimEf491kxnuU0gw8rZvZxDUzmFsU4eiex7sZ46H3g==
+X-Google-Smtp-Source: AGHT+IF4Ml0RpYL9CLHeoYKBVjts678ZYmdiDjpwDV+36Tg6NtQUqBHh2GGhuFAtktAcVDeRZQVCWw==
+X-Received: by 2002:a05:6214:3f88:b0:6af:bc71:8265 with SMTP id
+ 6a1803df08f44-6b059bd0d91mr24229346d6.17.1717750749457; 
+ Fri, 07 Jun 2024 01:59:09 -0700 (PDT)
 Received: from denia.c.googlers.com.com
  (123.178.145.34.bc.googleusercontent.com. [34.145.178.123])
  by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6b04f989461sm15259936d6.77.2024.06.07.01.59.06
+ 6a1803df08f44-6b04f989461sm15259936d6.77.2024.06.07.01.59.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 07 Jun 2024 01:59:07 -0700 (PDT)
+ Fri, 07 Jun 2024 01:59:08 -0700 (PDT)
 From: Ricardo Ribalda <ribalda@chromium.org>
 To: "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
  Ani Sinha <anisinha@redhat.com>,
@@ -64,14 +65,16 @@ To: "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
  Eduardo Habkost <eduardo@habkost.net>, qemu-devel@nongnu.org,
  Andrea Righi <andrea.righi@canonical.com>
 Cc: Ricardo Ribalda <ribalda@chromium.org>
-Subject: [PATCH v2 1/3] tests/acpi: pc: allow DSDT acpi table changes
-Date: Fri,  7 Jun 2024 08:58:56 +0000
-Message-ID: <20240607085903.1349513-1-ribalda@chromium.org>
+Subject: [PATCH v2 2/3] hw/i386/acpi-build: Return a pre-computed _PRT table
+Date: Fri,  7 Jun 2024 08:58:57 +0000
+Message-ID: <20240607085903.1349513-2-ribalda@chromium.org>
 X-Mailer: git-send-email 2.45.2.505.gda0bf45e8d-goog
+In-Reply-To: <20240607085903.1349513-1-ribalda@chromium.org>
+References: <20240607085903.1349513-1-ribalda@chromium.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b32;
- envelope-from=ribalda@chromium.org; helo=mail-yb1-xb32.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::f2e;
+ envelope-from=ribalda@chromium.org; helo=mail-qv1-xf2e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,18 +97,231 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+When qemu runs without kvm acceleration the ACPI executions take a great
+amount of time. If they take more than the default time (30sec), the
+ACPI calls fail and the system might not behave correctly.
+
+Now the _PRT table is computed on the fly. We can drastically reduce the
+execution of the _PRT method if we return a pre-computed table.
+
+Without this patch:
+[   51.343484] ACPI Error: Aborting method \_SB.PCI0._PRT due to previous error (AE_AML_LOOP_TIMEOUT) (20230628/psparse-529)
+[   51.527032] ACPI Error: Method execution failed \_SB.PCI0._PRT due to previous error (AE_AML_LOOP_TIMEOUT) (20230628/uteval-68)
+[   51.530049] virtio-pci 0000:00:02.0: can't derive routing for PCI INT A
+[   51.530797] virtio-pci 0000:00:02.0: PCI INT A: no GSI
+[   81.922901] ACPI Error: Aborting method \_SB.PCI0._PRT due to previous error (AE_AML_LOOP_TIMEOUT) (20230628/psparse-529)
+[   82.103534] ACPI Error: Method execution failed \_SB.PCI0._PRT due to previous error (AE_AML_LOOP_TIMEOUT) (20230628/uteval-68)
+[   82.106088] virtio-pci 0000:00:04.0: can't derive routing for PCI INT A
+[   82.106761] virtio-pci 0000:00:04.0: PCI INT A: no GSI
+[  112.192568] ACPI Error: Aborting method \_SB.PCI0._PRT due to previous error (AE_AML_LOOP_TIMEOUT) (20230628/psparse-529)
+[  112.486687] ACPI Error: Method execution failed \_SB.PCI0._PRT due to previous error (AE_AML_LOOP_TIMEOUT) (20230628/uteval-68)
+[  112.489554] virtio-pci 0000:00:05.0: can't derive routing for PCI INT A
+[  112.490027] virtio-pci 0000:00:05.0: PCI INT A: no GSI
+[  142.559448] ACPI Error: Aborting method \_SB.PCI0._PRT due to previous error (AE_AML_LOOP_TIMEOUT) (20230628/psparse-529)
+[  142.718596] ACPI Error: Method execution failed \_SB.PCI0._PRT due to previous error (AE_AML_LOOP_TIMEOUT) (20230628/uteval-68)
+[  142.722889] virtio-pci 0000:00:06.0: can't derive routing for PCI INT A
+[  142.724578] virtio-pci 0000:00:06.0: PCI INT A: no GSI
+
+With this patch:
+[   22.938076] ACPI: \_SB_.LNKB: Enabled at IRQ 10
+[   24.214002] ACPI: \_SB_.LNKD: Enabled at IRQ 11
+[   25.465170] ACPI: \_SB_.LNKA: Enabled at IRQ 10
+[   27.944920] ACPI: \_SB_.LNKC: Enabled at IRQ 11
+
+ACPI disassembly:
+        Scope (PCI0)
+        {
+            Method (_PRT, 0, NotSerialized)  // _PRT: PCI Routing Table
+            {
+                Return (Package (0x80)
+                {
+                    Package (0x04)
+                    {
+                        0xFFFF,
+                        Zero,
+                        LNKD,
+                        Zero
+                    },
+
+                    Package (0x04)
+                    {
+                        0xFFFF,
+                        One,
+                        LNKA,
+                        Zero
+                    },
+
+                    Package (0x04)
+                    {
+                        0xFFFF,
+                        0x02,
+                        LNKB,
+                        Zero
+                    },
+
+                    Package (0x04)
+                    {
+                        0xFFFF,
+                        0x03,
+                        LNKC,
+                        Zero
+                    },
+
+                    Package (0x04)
+                    {
+                        0x0001FFFF,
+                        Zero,
+                        LNKS,
+                        Zero
+                    },
+Context: https://lore.kernel.org/virtualization/20240417145544.38d7b482@imammedo.users.ipa.redhat.com/T/#t
+
 Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
 ---
- tests/qtest/bios-tables-test-allowed-diff.h | 1 +
- 1 file changed, 1 insertion(+)
+ hw/i386/acpi-build.c | 118 ++++++++-----------------------------------
+ 1 file changed, 21 insertions(+), 97 deletions(-)
 
-diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
-index dfb8523c8b..b2c2c10cbc 100644
---- a/tests/qtest/bios-tables-test-allowed-diff.h
-+++ b/tests/qtest/bios-tables-test-allowed-diff.h
-@@ -1 +1,2 @@
- /* List of comma-separated changed AML files to ignore */
-+"tests/data/acpi/pc/DSDT",
+diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
+index 53f804ac16..4c14d39173 100644
+--- a/hw/i386/acpi-build.c
++++ b/hw/i386/acpi-build.c
+@@ -725,40 +725,7 @@ static Aml *aml_pci_pdsm(void)
+     return method;
+ }
+ 
+-/**
+- * build_prt_entry:
+- * @link_name: link name for PCI route entry
+- *
+- * build AML package containing a PCI route entry for @link_name
+- */
+-static Aml *build_prt_entry(const char *link_name)
+-{
+-    Aml *a_zero = aml_int(0);
+-    Aml *pkg = aml_package(4);
+-    aml_append(pkg, a_zero);
+-    aml_append(pkg, a_zero);
+-    aml_append(pkg, aml_name("%s", link_name));
+-    aml_append(pkg, a_zero);
+-    return pkg;
+-}
+-
+-/*
+- * initialize_route - Initialize the interrupt routing rule
+- * through a specific LINK:
+- *  if (lnk_idx == idx)
+- *      route using link 'link_name'
+- */
+-static Aml *initialize_route(Aml *route, const char *link_name,
+-                             Aml *lnk_idx, int idx)
+-{
+-    Aml *if_ctx = aml_if(aml_equal(lnk_idx, aml_int(idx)));
+-    Aml *pkg = build_prt_entry(link_name);
+-
+-    aml_append(if_ctx, aml_store(pkg, route));
+-
+-    return if_ctx;
+-}
+-
++#define N_ROUTES 128
+ /*
+  * build_prt - Define interrupt rounting rules
+  *
+@@ -771,74 +738,31 @@ static Aml *initialize_route(Aml *route, const char *link_name,
+  */
+ static Aml *build_prt(bool is_pci0_prt)
+ {
+-    Aml *method, *while_ctx, *pin, *res;
++    Aml *rt_pkg, *method;
++    const char link_name[][2] = {"D", "A", "B", "C"};
++    int i;
+ 
+     method = aml_method("_PRT", 0, AML_NOTSERIALIZED);
+-    res = aml_local(0);
+-    pin = aml_local(1);
+-    aml_append(method, aml_store(aml_package(128), res));
+-    aml_append(method, aml_store(aml_int(0), pin));
++    rt_pkg = aml_varpackage(N_ROUTES);
+ 
+-    /* while (pin < 128) */
+-    while_ctx = aml_while(aml_lless(pin, aml_int(128)));
+-    {
+-        Aml *slot = aml_local(2);
+-        Aml *lnk_idx = aml_local(3);
+-        Aml *route = aml_local(4);
+-
+-        /* slot = pin >> 2 */
+-        aml_append(while_ctx,
+-                   aml_store(aml_shiftright(pin, aml_int(2), NULL), slot));
+-        /* lnk_idx = (slot + pin) & 3 */
+-        aml_append(while_ctx,
+-            aml_store(aml_and(aml_add(pin, slot, NULL), aml_int(3), NULL),
+-                      lnk_idx));
+-
+-        /* route[2] = "LNK[D|A|B|C]", selection based on pin % 3  */
+-        aml_append(while_ctx, initialize_route(route, "LNKD", lnk_idx, 0));
+-        if (is_pci0_prt) {
+-            Aml *if_device_1, *if_pin_4, *else_pin_4;
+-
+-            /* device 1 is the power-management device, needs SCI */
+-            if_device_1 = aml_if(aml_equal(lnk_idx, aml_int(1)));
+-            {
+-                if_pin_4 = aml_if(aml_equal(pin, aml_int(4)));
+-                {
+-                    aml_append(if_pin_4,
+-                        aml_store(build_prt_entry("LNKS"), route));
+-                }
+-                aml_append(if_device_1, if_pin_4);
+-                else_pin_4 = aml_else();
+-                {
+-                    aml_append(else_pin_4,
+-                        aml_store(build_prt_entry("LNKA"), route));
+-                }
+-                aml_append(if_device_1, else_pin_4);
+-            }
+-            aml_append(while_ctx, if_device_1);
+-        } else {
+-            aml_append(while_ctx, initialize_route(route, "LNKA", lnk_idx, 1));
++    for (i = 0; i < N_ROUTES; i++) {
++        Aml *pkg = aml_package(4);
++        const char *name;
++
++        name = link_name[((i >> 2) + i) & 3];
++
++        if (is_pci0_prt && i == 4) {
++            name = "S";
+         }
+-        aml_append(while_ctx, initialize_route(route, "LNKB", lnk_idx, 2));
+-        aml_append(while_ctx, initialize_route(route, "LNKC", lnk_idx, 3));
+-
+-        /* route[0] = 0x[slot]FFFF */
+-        aml_append(while_ctx,
+-            aml_store(aml_or(aml_shiftleft(slot, aml_int(16)), aml_int(0xFFFF),
+-                             NULL),
+-                      aml_index(route, aml_int(0))));
+-        /* route[1] = pin & 3 */
+-        aml_append(while_ctx,
+-            aml_store(aml_and(pin, aml_int(3), NULL),
+-                      aml_index(route, aml_int(1))));
+-        /* res[pin] = route */
+-        aml_append(while_ctx, aml_store(route, aml_index(res, pin)));
+-        /* pin++ */
+-        aml_append(while_ctx, aml_increment(pin));
++
++        aml_append(pkg, aml_int((i << 14) | 0xFFFF));
++        aml_append(pkg, aml_int(i & 3));
++        aml_append(pkg, aml_name("LNK%s", name));
++        aml_append(pkg, aml_int(0));
++        aml_append(rt_pkg, pkg);
+     }
+-    aml_append(method, while_ctx);
+-    /* return res*/
+-    aml_append(method, aml_return(res));
++
++    aml_append(method, aml_return(rt_pkg));
+ 
+     return method;
+ }
 -- 
 2.45.2.505.gda0bf45e8d-goog
 
