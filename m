@@ -2,37 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1319D900E83
-	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 01:40:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA858900E79
+	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 01:35:09 +0200 (CEST)
 Received: from [::1] (helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sFf6f-0007Hq-4h; Fri, 07 Jun 2024 15:18:33 -0400
+	id 1sFf6h-0007J0-TH; Fri, 07 Jun 2024 15:18:35 -0400
 Received: from [2001:470:142:3::10] (helo=eggs.gnu.org)
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sFf6d-0007HY-E8; Fri, 07 Jun 2024 15:18:31 -0400
+ id 1sFf6g-0007IM-1U; Fri, 07 Jun 2024 15:18:34 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sFf6b-0003As-Jl; Fri, 07 Jun 2024 15:18:31 -0400
+ id 1sFf6e-0003BK-FT; Fri, 07 Jun 2024 15:18:33 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 678326E573;
+ by isrv.corpit.ru (Postfix) with ESMTP id 83DE46E574;
  Fri,  7 Jun 2024 22:14:55 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 902C2E276C;
+ by tsrv.corpit.ru (Postfix) with SMTP id B5319E276D;
  Fri,  7 Jun 2024 22:14:00 +0300 (MSK)
-Received: (nullmailer pid 529484 invoked by uid 1000);
+Received: (nullmailer pid 529487 invoked by uid 1000);
  Fri, 07 Jun 2024 19:13:58 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
+Cc: qemu-stable@nongnu.org, Bernhard Beschow <shentey@gmail.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Peter Xu <peterx@redhat.com>, Fiona Ebner <f.ebner@proxmox.com>,
- Fabiano Rosas <farosas@suse.de>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.0.1 69/71] virtio-gpu: fix v2 migration
-Date: Fri,  7 Jun 2024 22:13:50 +0300
-Message-Id: <20240607191356.529336-25-mjt@tls.msk.ru>
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.0.1 70/71] ui/sdl2: Allow host to power down screen
+Date: Fri,  7 Jun 2024 22:13:51 +0300
+Message-Id: <20240607191356.529336-26-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-9.0.1-20240607221321@cover.tls.msk.ru>
 References: <qemu-stable-9.0.1-20240607221321@cover.tls.msk.ru>
@@ -62,105 +61,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Marc-André Lureau <marcandre.lureau@redhat.com>
+From: Bernhard Beschow <shentey@gmail.com>
 
-Commit dfcf74fa ("virtio-gpu: fix scanout migration post-load") broke
-forward/backward version migration. Versioning of nested VMSD structures
-is not straightforward, as the wire format doesn't have nested
-structures versions. Introduce x-scanout-vmstate-version and a field
-test to save/load appropriately according to the machine version.
+By default, SDL disables the screen saver which prevents the host from powering
+down the screen even if the screen is locked. This results in draining the
+battery needlessly when the host isn't connected to a wall charger. Fix that by
+enabling the screen saver.
 
-Fixes: dfcf74fa ("virtio-gpu: fix scanout migration post-load")
-Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Signed-off-by: Peter Xu <peterx@redhat.com>
-Reviewed-by: Fiona Ebner <f.ebner@proxmox.com>
-Tested-by: Fiona Ebner <f.ebner@proxmox.com>
-[fixed long lines]
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
-(cherry picked from commit 40a23ef643664b5c1021a9789f9d680b6294fb50)
+Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+Acked-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Message-ID: <20240512095945.1879-1-shentey@gmail.com>
+(cherry picked from commit 2e701e6785cd8cc048c608751c6e4f6253c67ab6)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/core/machine.c b/hw/core/machine.c
-index 3a5a8d473d..4273de16a0 100644
---- a/hw/core/machine.c
-+++ b/hw/core/machine.c
-@@ -37,6 +37,7 @@ GlobalProperty hw_compat_8_2[] = {
-     { "migration", "zero-page-detection", "legacy"},
-     { TYPE_VIRTIO_IOMMU_PCI, "granule", "4k" },
-     { TYPE_VIRTIO_IOMMU_PCI, "aw-bits", "64" },
-+    { "virtio-gpu-device", "x-scanout-vmstate-version", "1" },
- };
- const size_t hw_compat_8_2_len = G_N_ELEMENTS(hw_compat_8_2);
+diff --git a/ui/sdl2.c b/ui/sdl2.c
+index 4971963f00..0a0eb5a42d 100644
+--- a/ui/sdl2.c
++++ b/ui/sdl2.c
+@@ -874,6 +874,7 @@ static void sdl2_display_init(DisplayState *ds, DisplayOptions *o)
+     SDL_SetHint(SDL_HINT_ALLOW_ALT_TAB_WHILE_GRABBED, "0");
+ #endif
+     SDL_SetHint(SDL_HINT_WINDOWS_NO_CLOSE_ON_ALT_F4, "1");
++    SDL_EnableScreenSaver();
+     memset(&info, 0, sizeof(info));
+     SDL_VERSION(&info.version);
  
-diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
-index ae831b6b3e..d60b1b2973 100644
---- a/hw/display/virtio-gpu.c
-+++ b/hw/display/virtio-gpu.c
-@@ -1166,10 +1166,17 @@ static void virtio_gpu_cursor_bh(void *opaque)
-     virtio_gpu_handle_cursor(&g->parent_obj.parent_obj, g->cursor_vq);
- }
- 
-+static bool scanout_vmstate_after_v2(void *opaque, int version)
-+{
-+    struct VirtIOGPUBase *base = container_of(opaque, VirtIOGPUBase, scanout);
-+    struct VirtIOGPU *gpu = container_of(base, VirtIOGPU, parent_obj);
-+
-+    return gpu->scanout_vmstate_version >= 2;
-+}
-+
- static const VMStateDescription vmstate_virtio_gpu_scanout = {
-     .name = "virtio-gpu-one-scanout",
--    .version_id = 2,
--    .minimum_version_id = 1,
-+    .version_id = 1,
-     .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(resource_id, struct virtio_gpu_scanout),
-         VMSTATE_UINT32(width, struct virtio_gpu_scanout),
-@@ -1181,12 +1188,18 @@ static const VMStateDescription vmstate_virtio_gpu_scanout = {
-         VMSTATE_UINT32(cursor.hot_y, struct virtio_gpu_scanout),
-         VMSTATE_UINT32(cursor.pos.x, struct virtio_gpu_scanout),
-         VMSTATE_UINT32(cursor.pos.y, struct virtio_gpu_scanout),
--        VMSTATE_UINT32_V(fb.format, struct virtio_gpu_scanout, 2),
--        VMSTATE_UINT32_V(fb.bytes_pp, struct virtio_gpu_scanout, 2),
--        VMSTATE_UINT32_V(fb.width, struct virtio_gpu_scanout, 2),
--        VMSTATE_UINT32_V(fb.height, struct virtio_gpu_scanout, 2),
--        VMSTATE_UINT32_V(fb.stride, struct virtio_gpu_scanout, 2),
--        VMSTATE_UINT32_V(fb.offset, struct virtio_gpu_scanout, 2),
-+        VMSTATE_UINT32_TEST(fb.format, struct virtio_gpu_scanout,
-+                            scanout_vmstate_after_v2),
-+        VMSTATE_UINT32_TEST(fb.bytes_pp, struct virtio_gpu_scanout,
-+                            scanout_vmstate_after_v2),
-+        VMSTATE_UINT32_TEST(fb.width, struct virtio_gpu_scanout,
-+                            scanout_vmstate_after_v2),
-+        VMSTATE_UINT32_TEST(fb.height, struct virtio_gpu_scanout,
-+                            scanout_vmstate_after_v2),
-+        VMSTATE_UINT32_TEST(fb.stride, struct virtio_gpu_scanout,
-+                            scanout_vmstate_after_v2),
-+        VMSTATE_UINT32_TEST(fb.offset, struct virtio_gpu_scanout,
-+                            scanout_vmstate_after_v2),
-         VMSTATE_END_OF_LIST()
-     },
- };
-@@ -1659,6 +1672,7 @@ static Property virtio_gpu_properties[] = {
-     DEFINE_PROP_BIT("blob", VirtIOGPU, parent_obj.conf.flags,
-                     VIRTIO_GPU_FLAG_BLOB_ENABLED, false),
-     DEFINE_PROP_SIZE("hostmem", VirtIOGPU, parent_obj.conf.hostmem, 0),
-+    DEFINE_PROP_UINT8("x-scanout-vmstate-version", VirtIOGPU, scanout_vmstate_version, 2),
-     DEFINE_PROP_END_OF_LIST(),
- };
- 
-diff --git a/include/hw/virtio/virtio-gpu.h b/include/hw/virtio/virtio-gpu.h
-index ed44cdad6b..842315d51d 100644
---- a/include/hw/virtio/virtio-gpu.h
-+++ b/include/hw/virtio/virtio-gpu.h
-@@ -177,6 +177,7 @@ typedef struct VGPUDMABuf {
- struct VirtIOGPU {
-     VirtIOGPUBase parent_obj;
- 
-+    uint8_t scanout_vmstate_version;
-     uint64_t conf_max_hostmem;
- 
-     VirtQueue *ctrl_vq;
 -- 
 2.39.2
 
