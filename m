@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF100900EB6
-	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 02:09:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44101900ECA
+	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 02:15:29 +0200 (CEST)
 Received: from [::1] (helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sFf16-0004ve-9f; Fri, 07 Jun 2024 15:12:48 -0400
+	id 1sFf16-00050X-NC; Fri, 07 Jun 2024 15:12:48 -0400
 Received: from [2001:470:142:3::10] (helo=eggs.gnu.org)
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sFf0z-0004Q5-5B; Fri, 07 Jun 2024 15:12:41 -0400
+ id 1sFf11-0004V4-Hg; Fri, 07 Jun 2024 15:12:43 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sFf0x-0001gX-JC; Fri, 07 Jun 2024 15:12:40 -0400
+ id 1sFf0y-0001gm-TH; Fri, 07 Jun 2024 15:12:42 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id CBBFD6E531;
+ by isrv.corpit.ru (Postfix) with ESMTP id DD0DF6E532;
  Fri,  7 Jun 2024 22:13:15 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 10BEBE2731;
+ by tsrv.corpit.ru (Postfix) with SMTP id 215B0E2732;
  Fri,  7 Jun 2024 22:12:21 +0300 (MSK)
-Received: (nullmailer pid 528243 invoked by uid 1000);
+Received: (nullmailer pid 528246 invoked by uid 1000);
  Fri, 07 Jun 2024 19:12:20 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.12 23/29] target/arm: Disable SVE extensions when SVE is
- disabled
-Date: Fri,  7 Jun 2024 22:12:06 +0300
-Message-Id: <20240607191219.528194-4-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, "yang.zhang" <yang.zhang@hexintek.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Alistair Francis <alistair.francis@wdc.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.12 24/29] hw/intc/riscv_aplic: APLICs should add child
+ earlier than realize
+Date: Fri,  7 Jun 2024 22:12:07 +0300
+Message-Id: <20240607191219.528194-5-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.12-20240607221018@cover.tls.msk.ru>
 References: <qemu-stable-7.2.12-20240607221018@cover.tls.msk.ru>
@@ -61,36 +61,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+From: "yang.zhang" <yang.zhang@hexintek.com>
 
-Cc: qemu-stable@nongnu.org
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2304
-Reported-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-Message-id: 20240526204551.553282-1-richard.henderson@linaro.org
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-(cherry picked from commit daf9748ac002ec35258e5986b6257961fd04b565)
+Since only root APLICs can have hw IRQ lines, aplic->parent should
+be initialized first.
+
+Fixes: e8f79343cf ("hw/intc: Add RISC-V AIA APLIC device emulation")
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Signed-off-by: yang.zhang <yang.zhang@hexintek.com>
+Cc: qemu-stable <qemu-stable@nongnu.org>
+Message-ID: <20240409014445.278-1-gaoshanliukou@163.com>
+Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
+(cherry picked from commit c76b121840c6ca79dc6305a5f4bcf17c72217d9c)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/arm/cpu64.c b/target/arm/cpu64.c
-index 3d74f134f5..037e9d9feb 100644
---- a/target/arm/cpu64.c
-+++ b/target/arm/cpu64.c
-@@ -190,7 +190,11 @@ void arm_cpu_sve_finalize(ARMCPU *cpu, Error **errp)
-          * No explicit bits enabled, and no implicit bits from sve-max-vq.
-          */
-         if (!cpu_isar_feature(aa64_sve, cpu)) {
--            /* SVE is disabled and so are all vector lengths.  Good. */
-+            /*
-+             * SVE is disabled and so are all vector lengths.  Good.
-+             * Disable all SVE extensions as well.
-+             */
-+            cpu->isar.id_aa64zfr0 = 0;
-             return;
-         }
+diff --git a/hw/intc/riscv_aplic.c b/hw/intc/riscv_aplic.c
+index cfd007e629..961caff7b6 100644
+--- a/hw/intc/riscv_aplic.c
++++ b/hw/intc/riscv_aplic.c
+@@ -957,13 +957,13 @@ DeviceState *riscv_aplic_create(hwaddr addr, hwaddr size,
+     qdev_prop_set_bit(dev, "msimode", msimode);
+     qdev_prop_set_bit(dev, "mmode", mmode);
  
+-    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
+-    sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, addr);
+-
+     if (parent) {
+         riscv_aplic_add_child(parent, dev);
+     }
+ 
++    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
++    sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, addr);
++
+     if (!msimode) {
+         for (i = 0; i < num_harts; i++) {
+             CPUState *cpu = qemu_get_cpu(hartid_base + i);
 -- 
 2.39.2
 
