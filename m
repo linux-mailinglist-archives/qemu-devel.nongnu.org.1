@@ -2,67 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18670900E02
-	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 00:26:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D8F4900E67
+	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 01:20:51 +0200 (CEST)
 Received: from [::1] (helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sFaaM-0003CJ-GL; Fri, 07 Jun 2024 10:28:54 -0400
+	id 1sFadU-0003k0-Hx; Fri, 07 Jun 2024 10:32:08 -0400
 Received: from [2001:470:142:3::10] (helo=eggs.gnu.org)
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sebastian.huber@embedded-brains.de>)
- id 1sFaaK-0003Bu-Dc; Fri, 07 Jun 2024 10:28:52 -0400
-Received: from dedi548.your-server.de ([85.10.215.148])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sebastian.huber@embedded-brains.de>)
- id 1sFaaI-0001o7-8N; Fri, 07 Jun 2024 10:28:52 -0400
-Received: from sslproxy07.your-server.de ([78.47.199.104])
- by dedi548.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
- (Exim 4.96.2) (envelope-from <sebastian.huber@embedded-brains.de>)
- id 1sFaaD-0004K4-0S; Fri, 07 Jun 2024 16:28:45 +0200
-Received: from [82.100.198.138] (helo=mail.embedded-brains.de)
- by sslproxy07.your-server.de with esmtpsa (TLS1.3) tls TLS_AES_256_GCM_SHA384
- (Exim 4.96) (envelope-from <sebastian.huber@embedded-brains.de>)
- id 1sFaaD-0001sC-1k; Fri, 07 Jun 2024 16:28:45 +0200
-Received: from localhost (localhost [127.0.0.1])
- by mail.embedded-brains.de (Postfix) with ESMTP id BC7A84801B2;
- Fri,  7 Jun 2024 16:28:44 +0200 (CEST)
-Received: from mail.embedded-brains.de ([127.0.0.1])
- by localhost (zimbra.eb.localhost [127.0.0.1]) (amavis, port 10032)
- with ESMTP id ZzJMNP0hNsLq; Fri,  7 Jun 2024 16:28:44 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by mail.embedded-brains.de (Postfix) with ESMTP id 782A2480282;
- Fri,  7 Jun 2024 16:28:44 +0200 (CEST)
-X-Virus-Scanned: amavis at zimbra.eb.localhost
-Received: from mail.embedded-brains.de ([127.0.0.1])
- by localhost (zimbra.eb.localhost [127.0.0.1]) (amavis, port 10026)
- with ESMTP id 3O3w6ZK6WpYH; Fri,  7 Jun 2024 16:28:44 +0200 (CEST)
-Received: from [192.168.96.179] (unknown [192.168.96.179])
- by mail.embedded-brains.de (Postfix) with ESMTPSA id 56F324801B2;
- Fri,  7 Jun 2024 16:28:44 +0200 (CEST)
-Message-ID: <cdfed70e-9dd1-4169-a73d-6a6c98c41ac2@embedded-brains.de>
-Date: Fri, 7 Jun 2024 16:28:44 +0200
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sFadJ-0003jh-LA
+ for qemu-devel@nongnu.org; Fri, 07 Jun 2024 10:31:57 -0400
+Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sFadI-0002JR-6U
+ for qemu-devel@nongnu.org; Fri, 07 Jun 2024 10:31:57 -0400
+Received: by mail-ed1-x52f.google.com with SMTP id
+ 4fb4d7f45d1cf-57c614c57e1so421184a12.3
+ for <qemu-devel@nongnu.org>; Fri, 07 Jun 2024 07:31:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1717770714; x=1718375514; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=e1Benc/rjH1FyVXTSwHETQFHSt8VqWqho7hgWCwYmcM=;
+ b=zEiJZsk6mBdE7aA1YgOM4xgtoT9g/evRC/9amAD8RKxE6fuYTO1zcTtjIYOClxcN4A
+ O2OynlHJjXA38Y0JqIPkUgL/t0hMW3efC3XDigIjNAgqhYlphXIeiEdks1a2m50wy102
+ p09lvjAHS7655gz1IPWURLSiwoYlXqyMnU8SZGzmxMHDtJe6PoG7/wh0Wz6efslPhaGu
+ dtiZYF15w0kozK7eDKv4Dk7gYhs0BCLdDWSxgscoq4DqU6SWZNpaWKKd4/IBTfBQT8gj
+ Hbh+3pr3jmmCqm2N6GoZDZDsslYNnXD33QN0xp/xiwe4SN5oi7SqZVnPqdQFJPXZaj+x
+ cHYw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1717770714; x=1718375514;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=e1Benc/rjH1FyVXTSwHETQFHSt8VqWqho7hgWCwYmcM=;
+ b=PipKzTB+3slqh87bo6D8WuumtE1Hun5F0ygwzEmD7zjeBochvwdTWcPrZ0C7URJafU
+ YY2Cz2s3fPkXP1EUcBeG5quHyzypGUExD04kGE2il2Y6so7tjuK5xnbd4Mt+ygXBK+1w
+ RGG2E8k7xRHD5GRMs98CS9YEavywMf7SgS3okEanClc5q7wXUquyS/yaC1xAHXTMTaGn
+ YiDitqep/3WPyTOC6XLpvbkbKzwk3dtIDVkuK8ZUmEfUsLtDfjWh1TT0ryOXSaWjioxp
+ HqyTHtTbv4eXkv6sU292a8g3uZebMZEkobaXjNdHp79QwB/iF+b14pbleTUwC83a+NvC
+ ubQg==
+X-Gm-Message-State: AOJu0YxyiMoVte4vLnQHaNnaZiQOHFC8TZe9RON60v6I3TmCOvKkvxGo
+ pa/INanIP1tP4B1299XGIwEhAScJ57ZkPxbe2GcZxU2EpvLLOjc3Tazq6pLa3Vt/P+Xooma7KeD
+ 6KhP4pCtdrsSLhUhA5raop3y5umL3p1phWJsbZX9L666iMro+
+X-Google-Smtp-Source: AGHT+IFh1iEWb2np+Hy/sFR/lwMXi687UTmOV4uX/mv4noPUcU+YycFyZDZsSiu0GylYopW4mzcn4De2+8pU4dTqs2Y=
+X-Received: by 2002:a50:d799:0:b0:57a:2fc1:e838 with SMTP id
+ 4fb4d7f45d1cf-57c50928dd9mr1697930a12.22.1717770714081; Fri, 07 Jun 2024
+ 07:31:54 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/2] Zynq 7000 Improvements
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
-References: <20240524120837.10057-1-sebastian.huber@embedded-brains.de>
- <CAFEAcA81fqWKXL_7m6LTi0-zkmtMQC0RY6_ZNP49cdWCVJK+1Q@mail.gmail.com>
-Content-Language: en-US
-From: Sebastian Huber <sebastian.huber@embedded-brains.de>
-In-Reply-To: <CAFEAcA81fqWKXL_7m6LTi0-zkmtMQC0RY6_ZNP49cdWCVJK+1Q@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Authenticated-Sender: smtp-embedded@poldi-networks.de
-X-Virus-Scanned: Clear (ClamAV 1.0.3/27299/Fri Jun  7 10:27:20 2024)
-Received-SPF: pass client-ip=85.10.215.148;
- envelope-from=sebastian.huber@embedded-brains.de; helo=dedi548.your-server.de
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+References: <20240523014637.614872-1-gaosong@loongson.cn>
+ <20240523014637.614872-7-gaosong@loongson.cn>
+In-Reply-To: <20240523014637.614872-7-gaosong@loongson.cn>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 7 Jun 2024 15:31:43 +0100
+Message-ID: <CAFEAcA8AONDHH=zMb6ODoE58=P4BN7+bBKJqzxQWU81STG8q4Q@mail.gmail.com>
+Subject: Re: [PULL 06/10] hw/loongarch: Refine fwcfg memory map
+To: Song Gao <gaosong@loongson.cn>
+Cc: qemu-devel@nongnu.org, richard.henderson@linaro.org, 
+ Bibo Mao <maobibo@loongson.cn>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,65 +87,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 30.05.24 12:30, Peter Maydell wrote:
-> On Fri, 24 May 2024 at 13:08, Sebastian Huber
-> <sebastian.huber@embedded-brains.de> wrote:
->>
->> v2:
->>
->> * Add Kconfig support
->>
->> * Add array of CPUs to ZynqMachineState
->>
->> * Add FIQ support
->>
->> Sebastian Huber (2):
->>    hw/arm/xilinx_zynq: Add cache controller
->>    hw/arm/xilinx_zynq: Support up to two CPU cores
->=20
->=20
->=20
-> Applied to target-arm.next, thanks.
+On Thu, 23 May 2024 at 02:48, Song Gao <gaosong@loongson.cn> wrote:
+>
+> From: Bibo Mao <maobibo@loongson.cn>
+>
+> Memory map table for fwcfg is used for UEFI BIOS, UEFI BIOS uses the first
+> entry from fwcfg memory map as the first memory HOB, the second memory HOB
+> will be used if the first memory HOB is used up.
+>
+> Memory map table for fwcfg does not care about numa node, however in
+> generic the first memory HOB is part of numa node0, so that runtime
+> memory of UEFI which is allocated from the first memory HOB is located
+> at numa node0.
+>
+> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+> Reviewed-by: Song Gao <gaosong@loongson.cn>
+> Message-Id: <20240515093927.3453674-4-maobibo@loongson.cn>
+> Signed-off-by: Song Gao <gaosong@loongson.cn>
 
-Thanks, for the integration. I did some more tests and there is an issue=20
-with the IPI support. My test case worked with this change:
+Hi; Coverity points out a possible issue with this code
+(CID 1546441):
 
-diff --git a/hw/arm/xilinx_zynq.c b/hw/arm/xilinx_zynq.c
-index 7f7a3d23fb..8d84eaf070 100644
---- a/hw/arm/xilinx_zynq.c
-+++ b/hw/arm/xilinx_zynq.c
-@@ -253,9 +253,9 @@ static void zynq_init(MachineState *machine)
-      sysbus_create_varargs("l2x0", MPCORE_PERIPHBASE + 0x2000, NULL);
-      for (n =3D 0; n < smp_cpus; n++) {
-          DeviceState *cpudev =3D DEVICE(zynq_machine->cpu[n]);
--        sysbus_connect_irq(busdev, (2 * n) + 0,
-+        sysbus_connect_irq(busdev, n,
-                             qdev_get_gpio_in(cpudev, ARM_CPU_IRQ));
--        sysbus_connect_irq(busdev, (2 * n) + 1,
-+        sysbus_connect_irq(busdev, smp_cpus + n,
-                             qdev_get_gpio_in(cpudev, ARM_CPU_FIQ));
-      }
+> +static void fw_cfg_add_memory(MachineState *ms)
+> +{
+> +    hwaddr base, size, ram_size, gap;
+> +    int nb_numa_nodes, nodes;
+> +    NodeInfo *numa_info;
+> +
+> +    ram_size = ms->ram_size;
+> +    base = VIRT_LOWMEM_BASE;
+> +    gap = VIRT_LOWMEM_SIZE;
+> +    nodes = nb_numa_nodes = ms->numa_state->num_nodes;
+> +    numa_info = ms->numa_state->nodes;
+> +    if (!nodes) {
+> +        nodes = 1;
+> +    }
+> +
+> +    /* add fw_cfg memory map of node0 */
+> +    if (nb_numa_nodes) {
+> +        size = numa_info[0].node_mem;
+> +    } else {
+> +        size = ram_size;
+> +    }
+> +
+> +    if (size >= gap) {
+> +        memmap_add_entry(base, gap, 1);
+> +        size -= gap;
+> +        base = VIRT_HIGHMEM_BASE;
+> +        gap = ram_size - VIRT_LOWMEM_SIZE;
 
-This is just guess work on my side since I have no idea how the second=20
-parameter relates to the pin.
+In this if() statement we set 'gap'...
 
-Originally I used the hw/arm/realview.c as a reference, but his target=20
-doesn't use the ARM_CPU_FIQ at all.
+> +    }
+> +
+> +    if (size) {
+> +        memmap_add_entry(base, size, 1);
+> +        base += size;
+> +    }
+> +
+> +    if (nodes < 2) {
+> +        return;
+> +    }
+> +
+> +    /* add fw_cfg memory map of other nodes */
+> +    size = ram_size - numa_info[0].node_mem;
+> +    gap  = VIRT_LOWMEM_BASE + VIRT_LOWMEM_SIZE;
 
---=20
-embedded brains GmbH & Co. KG
-Herr Sebastian HUBER
-Dornierstr. 4
-82178 Puchheim
-Germany
-email: sebastian.huber@embedded-brains.de
-phone: +49-89-18 94 741 - 16
-fax:   +49-89-18 94 741 - 08
+...but then later here we unconditionally overwrite 'gap',
+without ever using it in between, making the previous
+assignment useless.
 
-Registergericht: Amtsgericht M=C3=BCnchen
-Registernummer: HRB 157899
-Vertretungsberechtigte Gesch=C3=A4ftsf=C3=BChrer: Peter Rasmussen, Thomas=
- D=C3=B6rfler
-Unsere Datenschutzerkl=C3=A4rung finden Sie hier:
-https://embedded-brains.de/datenschutzerklaerung/
+What was the intention here ?
+
+thanks
+-- PMM
 
