@@ -2,90 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88875900E2C
-	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 00:41:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF921900E78
+	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 01:32:18 +0200 (CEST)
 Received: from [::1] (helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sFbdV-00064A-BP; Fri, 07 Jun 2024 11:36:13 -0400
+	id 1sFbwh-00035U-Bu; Fri, 07 Jun 2024 11:56:03 -0400
 Received: from [2001:470:142:3::10] (helo=eggs.gnu.org)
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sFbdT-00063o-R6
- for qemu-devel@nongnu.org; Fri, 07 Jun 2024 11:36:11 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sFbdP-00062S-Gi
- for qemu-devel@nongnu.org; Fri, 07 Jun 2024 11:36:11 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717774566;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=zXvc5N8I22oS7Q9Eo5sFw5nJ7ODWchcLfw1pYvhnrTE=;
- b=RyZUt2NA2ZejLRQ4v95CVX3WiZx6VIbVLGIb2PhpS6lfnwxmGENSmUBKRY3vcv5ygaTcJ9
- aMxT6rl7Fgv7EPxKG/dqsgDv2HtCPaG4WBJYOQG4pG2FFhW/OOmm1p7s4jjGiSxrZcrpic
- E+Il9lhl0ghB6tyu8bnmW67d2QIfHrM=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-163-fdwLvwJDMUea89WlwoKgdw-1; Fri, 07 Jun 2024 11:36:04 -0400
-X-MC-Unique: fdwLvwJDMUea89WlwoKgdw-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-35dca4a8f2dso1304094f8f.3
- for <qemu-devel@nongnu.org>; Fri, 07 Jun 2024 08:36:04 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sFbwc-0002ls-5x
+ for qemu-devel@nongnu.org; Fri, 07 Jun 2024 11:55:58 -0400
+Received: from mail-pj1-x1035.google.com ([2607:f8b0:4864:20::1035])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sFbwa-0000Y0-GR
+ for qemu-devel@nongnu.org; Fri, 07 Jun 2024 11:55:57 -0400
+Received: by mail-pj1-x1035.google.com with SMTP id
+ 98e67ed59e1d1-2c2c9199568so478441a91.0
+ for <qemu-devel@nongnu.org>; Fri, 07 Jun 2024 08:55:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1717775754; x=1718380554; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=dKQCez3uiZ4tZi33y7W79rxhO03X4Gur/OuJpi2G+uE=;
+ b=eL8q1xrzhXo3wpV0KyOYKV+6jeUeWqRVOZSAVh5mLRmO22HctxthlpSf3XzRlxHBeH
+ u77m02dZTNJQX8L1t55N0y0Zwl3kFKUZNCYpwnqZ3eEZC/zFqPcqlQLKJd3LiInXnMU0
+ uuEeZxKpJQFXV303Z4bWdt9OFZ/iosS+4BirjIqkpQvIoSEZCXczVn/n39vWBlhXgjwI
+ pp7sV/onisFzAAZ7CRZp3ObsvbX2/2VrEL4ZLuzx6nob8nCNYUuOIlw3I1aGr/sJARPf
+ BEbIk2x8dhGlcDezwRc7aNaStquEF5zd9GFeKON93TyyeWqK5QJeodwtmuB7bliywl3s
+ ydtA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717774563; x=1718379363;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=zXvc5N8I22oS7Q9Eo5sFw5nJ7ODWchcLfw1pYvhnrTE=;
- b=d5DPwBh6dZW+YCr+YuETv5nO0z8PofKk6Svd4534g41rdHCOB1cmUG/tmikHNVj0mY
- 137Et5bifvRoZmWJ8U/j0yXURxjJffBFr/MYcumCv8vjf2JJpzXd+92zFWtnGdIsr1co
- A8UucFCxoLCsBNxAVS6gzpcPOyCI86oIfTpks26GXna6LDqCz3VZSpsAvmrQfGeNdg+N
- roSQ7RqG7AEb6y3IxQ2UFQpYH53g4huZ9/kleKNY9EDvYEbwq+i3lUs/VXb8WG9x+Dhm
- D3y0M9hBdmVTXDTiLzEXwKFvnXHRzHkTePP48Cqkntdz8xbDacgqz9ims+aQXM4ZAxWm
- sdNA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWUl8/sNNlp1KJ7htnANk3abiY0PWmd1eHdZUoNtgWego+zChBQ2/0NNp/W8fHPI7UDGMXIOzlg58ac9lH2oE0wksfC470=
-X-Gm-Message-State: AOJu0Yw2qoSUUOpFm2786eT02FV68TziTPPYk/xyCJfKUHNZujHfbPFI
- kK6dhWE9e75Ok5WyWOQH7EBUQb45PZzhKtyDys0QMAnKNhjhYRtnVG0174q2i+rNBeJx1bAZrlL
- 7yv38mBMC0KVHu+y5TT+L+ECKcZnhd6RJO1fOviVIrN472mkmLAYMvmJ62ZLX
-X-Received: by 2002:a5d:5f53:0:b0:35e:7d2b:de73 with SMTP id
- ffacd0b85a97d-35efedf2870mr2820555f8f.52.1717774563069; 
- Fri, 07 Jun 2024 08:36:03 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH3fc+FaoJjmng/J9TrLyxXWMLpFj05VaT/KaRvOseo8b6ONMtsBjkthc0DieCYNyAiT0mufg==
-X-Received: by 2002:a5d:5f53:0:b0:35e:7d2b:de73 with SMTP id
- ffacd0b85a97d-35efedf2870mr2820542f8f.52.1717774562676; 
- Fri, 07 Jun 2024 08:36:02 -0700 (PDT)
-Received: from avogadro.local ([151.64.122.141])
+ d=1e100.net; s=20230601; t=1717775754; x=1718380554;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=dKQCez3uiZ4tZi33y7W79rxhO03X4Gur/OuJpi2G+uE=;
+ b=tfniNnq1E+64O7PbMvD3JxPg6A4gcq0dC9I9wW7H9Z3AZJZyHlrS+vSuOevEHKG7CN
+ Y843Q0Yq6lFYcOUZ0sCXSLDovxHukeJ+1rA4ToV36mNVG01YZ1fatpjRPOKbCybHNB//
+ Wt+ex7U0pCVIzBSn/SPFD3r3sgeA5wFr2f3pC0mKRWswOO+40oyCc9zSV3WHBVil1I3o
+ DZln+hYUhlOtY9iY+KxJBhoN6H56rYPIJZhhUWscmSDQK16i2pUgdRI3iIq9cHWSOhT9
+ mIk8LUcbehMeFk/OAvOxIIi3vk9TopwLQHkgNs2oc4/uRK75yRdFlIS5smjo7mZ8tYXM
+ U3HA==
+X-Gm-Message-State: AOJu0Yyjv9Z4+Zt0thPS7MRi5l70YrXK1h1g8yh4O5H1xZjvVI/DRu5n
+ FGM4LvEyeprAnd8j1zBfKmE0VK3Vp0HFa8mERpgBb87mYwfGjN7pKo4xsBZcVW4=
+X-Google-Smtp-Source: AGHT+IEd0Ng5CKsbZ5dM4kyaLiaPpkIn40S5dqdZO89e93ReEdkXKdycgT9qfUCnGsEPhYDtNty7UA==
+X-Received: by 2002:a17:90b:3544:b0:2ae:6cc7:23d8 with SMTP id
+ 98e67ed59e1d1-2c2bd63ac7bmr2544956a91.41.1717775754451; 
+ Fri, 07 Jun 2024 08:55:54 -0700 (PDT)
+Received: from [192.168.223.227] ([75.147.178.105])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-35ef5fc6d75sm4227370f8f.110.2024.06.07.08.36.02
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 07 Jun 2024 08:36:02 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Cc: pbonzini@redhat.com,
-	qemu-devel@nongnu.org
-Subject: Re: [PATCH 0/4] target/i386: fixes for OS/2 Warp
-Date: Fri,  7 Jun 2024 17:35:43 +0200
-Message-ID: <20240607153542.2750662-2-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240606095319.229650-1-mark.cave-ayland@ilande.co.uk>
-References: 
+ 98e67ed59e1d1-2c29c4a54cesm3770824a91.57.2024.06.07.08.55.53
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 07 Jun 2024 08:55:54 -0700 (PDT)
+Message-ID: <5419796e-f56f-49e6-8094-dd6795866c0b@linaro.org>
+Date: Fri, 7 Jun 2024 08:55:50 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/4] target/ppc: Move VSX fp compare insns to decodetree.
+To: Chinmay Rath <rathc@linux.ibm.com>, qemu-ppc@nongnu.org
+Cc: qemu-devel@nongnu.org, npiggin@gmail.com, danielhb413@gmail.com,
+ harshpb@linux.ibm.com
+References: <20240607144921.726730-1-rathc@linux.ibm.com>
+ <20240607144921.726730-5-rathc@linux.ibm.com>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20240607144921.726730-5-rathc@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1035;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1035.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -102,9 +95,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Queued, thanks (with the op->unit assignment removed, to
-answer your question).
+On 6/7/24 07:49, Chinmay Rath wrote:
+> +static bool do_cmp(DisasContext *ctx, arg_XX3_rc *a,
+> +            void (*helper)(TCGv_i32, TCGv_ptr, TCGv_ptr, TCGv_ptr, TCGv_ptr))
+> +{
+> +    TCGv_i32 ignored;
+> +    TCGv_ptr xt, xa, xb;
+> +    REQUIRE_VSX(ctx);
+> +    xt = gen_vsr_ptr(a->xt);
+> +    xa = gen_vsr_ptr(a->xa);
+> +    xb = gen_vsr_ptr(a->xb);
+> +    if (a->rc) {
+> +        helper(cpu_crf[6], tcg_env, xt, xa, xb);
+> +    } else {
+> +        ignored = tcg_temp_new_i32();
+> +        helper(ignored, tcg_env, xt, xa, xb);
+> +    }
 
-Paolo
+Better to unify the helper call.  E.g.
 
+     dest = a->rc ? cpu_crf[6] : tcg_temp_new_i32();
+     helper(dest, ...)
+
+
+Anyway,
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+
+
+r~
 
