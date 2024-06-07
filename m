@@ -2,75 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B821900DE6
-	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 00:08:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F6DC900E19
+	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 00:32:24 +0200 (CEST)
 Received: from [::1] (helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sFaew-00048A-AJ; Fri, 07 Jun 2024 10:33:38 -0400
+	id 1sFakW-0004qr-SC; Fri, 07 Jun 2024 10:39:24 -0400
 Received: from [2001:470:142:3::10] (helo=eggs.gnu.org)
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sFaeu-00047u-OH
- for qemu-devel@nongnu.org; Fri, 07 Jun 2024 10:33:36 -0400
-Received: from mail-lj1-x22a.google.com ([2a00:1450:4864:20::22a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sFaes-0002Vk-GI
- for qemu-devel@nongnu.org; Fri, 07 Jun 2024 10:33:36 -0400
-Received: by mail-lj1-x22a.google.com with SMTP id
- 38308e7fff4ca-2e78fe9fc2bso31824411fa.3
- for <qemu-devel@nongnu.org>; Fri, 07 Jun 2024 07:33:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1717770812; x=1718375612; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=M1m+3h3ZMpB2qpYFkRUj7JWzswXTd2jyCojOK8qXXe8=;
- b=UL4/SzsCVhkyZzTiLZARtLhZ88SiV/ouImTY/N+cJDI87zLfKon40V5PC9ZQn+VyWP
- 3nWZZ4CWtUAKd5bK9avI+9cF/OGZdhlZc0Gmytv/yYdThX8yR+/NKzB+AQGf7eauOF90
- +LxBu+uxm1SrtWpMdda0Z1i3F/ud5wfJ4hvylXdcZ1sh7tCFbVfZc6zoA/gQ5Q04sW97
- xgqVuwvT3nOkuEQwHivNIyS71Ii2z8+bBL7xC2qjzDWukbGVjdROuncClGMqyQBHc1ca
- 3mWkaVdoZGDRo3PxF8CAKPkMxK0oKuDDMm5TgUJyAoxn0l940+IrtGxCkC16kKnQJKdN
- g7qg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717770812; x=1718375612;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=M1m+3h3ZMpB2qpYFkRUj7JWzswXTd2jyCojOK8qXXe8=;
- b=QbsBS9qHroHcB6c9FIpVxziU57KUIUOb6rBjkuomMG9YrfI4QiCcY3wFSh6YuBAin1
- c76WUCjs1ArDyIKHZwh9OcoL6rG6tAbxFauo6qUcx2fXMhlD6SHkeZ9jjom8GQsgc7s8
- U4eDR8JiuzVCzRrdLohy19w1GduDMhEaE3oZyGwledKK/67XjM1mqqcaq4Wn57WWPrzg
- rNcWIcBunyF8WTLkxBf85vf/58rxzBUzeUXCoE1X9u043m7hPmAJ7SHHY/B5IuFxg1cz
- hfZXWrFN2h66Imu4FfzJz0h+f4XKyARcCznpW0pHxwjPSHKTNzkSIHVR+BaIjqu3nl43
- NmyQ==
-X-Gm-Message-State: AOJu0YzbpfCJOI+hkKrKs4fnf/4h6g2la9NJgAl4+imm2nVqr2LwxclX
- VYFtQosbMly4aNWETwRnRWpOdxWU3XarFgSWstwhZzG4oIKXfBEl02CjUaMaXKHGKNjDGDA34Pt
- F3nksqhapEmpz5MfgtD1O8t+0uvD4Mt/jnh0Elg==
-X-Google-Smtp-Source: AGHT+IEaPk732i0YbUA1nmYbFrFWei9Z0zR1zaf4gbjxSxkJKBMjCD7NvdufuljyiCfTiAGP6iUUzj4yigZzHn70PDk=
-X-Received: by 2002:a2e:880e:0:b0:2ea:e2d2:61ff with SMTP id
- 38308e7fff4ca-2eae2d26485mr10509311fa.23.1717770812457; Fri, 07 Jun 2024
- 07:33:32 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1sFakV-0004qH-0r
+ for qemu-devel@nongnu.org; Fri, 07 Jun 2024 10:39:23 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1sFakT-0003Lp-4Q
+ for qemu-devel@nongnu.org; Fri, 07 Jun 2024 10:39:22 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1717771159;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=BxTfKVR6XiuvvnFaFWRHfE68N8B9f79BM09c2XvFbLo=;
+ b=UW/vA9IRGCn73gfRMSGeAROEqcmz/Ydl+Hi1Kpzybabg8qhqwlVQBkR10Dawp+u45se/7i
+ 0JpxhBTbClSEdfbiuq6gE8KTlMoTt0pMcRN49tDiQOvokrscxizHo+ID1tiA6AwWkEYYgd
+ TId8m6I9YqyoVBxqM9WmVC3ik6IAwHA=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-620-vb_rDz9xM7SRphVBHwRJIg-1; Fri,
+ 07 Jun 2024 10:39:17 -0400
+X-MC-Unique: vb_rDz9xM7SRphVBHwRJIg-1
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 1403F1956095; Fri,  7 Jun 2024 14:39:16 +0000 (UTC)
+Received: from laptop.redhat.com (unknown [10.39.193.191])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 1BD9D1956051; Fri,  7 Jun 2024 14:39:09 +0000 (UTC)
+From: Eric Auger <eric.auger@redhat.com>
+To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
+ qemu-arm@nongnu.org, mst@redhat.com, jean-philippe@linaro.org,
+ imammedo@redhat.com, peter.maydell@linaro.org, clg@redhat.com,
+ yanghliu@redhat.com, zhenzhong.duan@intel.com
+Cc: alex.williamson@redhat.com, jasowang@redhat.com, pbonzini@redhat.com,
+ berrange@redhat.com
+Subject: [RFC v2 0/7] VIRTIO-IOMMU/VFIO: Fix host iommu geometry handling for
+ hotplugged devices
+Date: Fri,  7 Jun 2024 16:37:20 +0200
+Message-ID: <20240607143905.765133-1-eric.auger@redhat.com>
 MIME-Version: 1.0
-References: <20240605143044.2029444-1-edgar.iglesias@gmail.com>
-In-Reply-To: <20240605143044.2029444-1-edgar.iglesias@gmail.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 7 Jun 2024 15:33:21 +0100
-Message-ID: <CAFEAcA_j0d=0y_1Nd9VZDPceHBw7CMpd4N8Vv14KUa+RvOJR6A@mail.gmail.com>
-Subject: Re: [PATCH v1 0/1] hw/intc/arm_gic: Fix deactivation of SPI lines
-To: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, sstabellini@kernel.org, 
- julien@xen.org, bertrand.marquis@arm.com, edgar.iglesias@amd.com
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::22a;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x22a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.133.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,32 +82,114 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 5 Jun 2024 at 15:43, Edgar E. Iglesias <edgar.iglesias@gmail.com> wrote:
->
-> From: "Edgar E. Iglesias" <edgar.iglesias@amd.com>
->
-> Julien reported that he has seen strange behaviour when running
-> Xen on QEMU using GICv2. When Xen migrates a guest's vCPU to
-> another pCPU while the vCPU is handling an interrupt the guest
-> is unable to properly deactivate interrupts.
->
-> It sounds like something rare but in some setups it actually
-> happens all the time.
->
-> Looking at it a little closer, our GICv2 model treats
-> deactivation of SPI lines as if they were PPI's, i.e banked per
-> CPU core. The state for active interrupts should only be banked
-> for PPI lines, not for SPI lines.
->
-> When deactivating SPI lines, I think we need to handle the state
-> as unbanked, similar to how we handle writes to GICD_ICACTIVER.
->
-> This fixes the problem on my side.
+This series is based on Zhenzhong HostIOMMUDevice:
 
-Applied to target-arm.next, thanks.
+[PATCH v7 00/17] Add a host IOMMU device abstraction to check with vIOMMU
+https://lore.kernel.org/all/20240605083043.317831-1-zhenzhong.duan@intel.com/
 
-(I'm surprised anybody's still using GICv2 seriously at
-this point...)
+It allows to convey host IOVA reserved regions to the virtio-iommu and
+uses the HostIOMMUDevice infrastructure. This replaces the usage of
+IOMMU MR ops which fail to satisfy this need for hotplugged devices.
 
--- PMM
+See below for additional background.
+
+In [1] we attempted to fix a case where a VFIO-PCI device protected
+with a virtio-iommu was assigned to an x86 guest. On x86 the physical
+IOMMU may have an address width (gaw) of 39 or 48 bits whereas the
+virtio-iommu used to expose a 64b address space by default.
+Hence the guest was trying to use the full 64b space and we hit
+DMA MAP failures. To work around this issue we managed to pass
+usable IOVA regions (excluding the out of range space) from VFIO
+to the virtio-iommu device. This was made feasible by introducing
+a new IOMMU Memory Region callback dubbed iommu_set_iova_regions().
+This latter gets called when the IOMMU MR is enabled which
+causes the vfio_listener_region_add() to be called.
+
+However with VFIO-PCI hotplug, this technique fails due to the
+race between the call to the callback in the add memory listener
+and the virtio-iommu probe request. Indeed the probe request gets
+called before the attach to the domain. So in that case the usable
+regions are communicated after the probe request and fail to be
+conveyed to the guest. To be honest the problem was hinted by
+Jean-Philippe in [1] and I should have been more careful at
+listening to him and testing with hotplug :-(
+
+Eventually in 9.0 we introduced an aw-bits option which gives
+extra flexibility.
+
+For coldplugged device the technique works because we make sure all
+the IOMMU MR are enabled once on the machine init done: 94df5b2180
+("virtio-iommu: Fix 64kB host page size VFIO device assignment")
+for granule freeze. But I would be keen to get rid of this trick.
+
+Using an IOMMU MR Ops is unpractical because this relies on the IOMMU
+MR to have been enabled and the corresponding vfio_listener_region_add()
+to be executed. Instead this series proposes to replace the usage of this
+API by the recently introduced PCIIOMMUOps: ba7d12eb8c  ("hw/pci: modify
+pci_setup_iommu() to set PCIIOMMUOps"). That way, the callback can be
+called earlier, once the usable IOVA regions have been collected by
+VFIO, without the need for the IOMMU MR to be enabled.
+
+This series also removes the spurious message:
+qemu-system-aarch64: warning: virtio-iommu-memory-region-7-0: Notified about new host reserved regions after probe
+
+In the short term this may also be used for passing the page size
+mask, which would allow to get rid of the hacky transient IOMMU
+MR enablement mentionned above.
+
+[1] [PATCH v4 00/12] VIRTIO-IOMMU/VFIO: Don't assume 64b IOVA space
+    https://lore.kernel.org/all/20231019134651.842175-1-eric.auger@redhat.com/
+
+[2] https://lore.kernel.org/all/20230929161547.GB2957297@myrica/
+
+Extra Notes:
+With that series, the reserved memory regions are communicated on time
+so that the virtio-iommu probe request grabs them. However this is not
+sufficient. In some cases (my case), I still see some DMA MAP failures
+and the guest keeps on using IOVA ranges outside the geometry of the
+physical IOMMU. This is due to the fact the VFIO-PCI device is in the
+same iommu group as the pcie root port. Normally the kernel
+iova_reserve_iommu_regions (dma-iommu.c) is supposed to call reserve_iova()
+for each reserved IOVA, which carves them out of the allocator. When
+iommu_dma_init_domain() gets called for the hotplugged vfio-pci device
+the iova domain is already allocated and set and we don't call
+iova_reserve_iommu_regions() again for the vfio-pci device. So its
+corresponding reserved regions are not properly taken into account.
+
+This is not trivial to fix because theoretically the 1st attached
+devices could already have allocated IOVAs within the reserved regions
+of the second device. Also we are somehow hijacking the reserved
+memory regions to model the geometry of the physical IOMMU so not sure
+any attempt to fix that upstream will be accepted. At the moment one
+solution is to make sure assigned devices end up in singleton group.
+Another solution is to work on a different approach where the gaw
+can be passed as an option to the virtio-iommu device, similarly at
+what is done with intel iommu.
+
+This series can be found at:
+https://github.com/eauger/qemu/tree/iommufd_nesting_preq_v7_resv_regions_v2
+
+
+Eric Auger (7):
+  HostIOMMUDevice: Store the VFIO/VDPA agent
+  virtio-iommu: Implement set|unset]_iommu_device() callbacks
+  HostIOMMUDevice: Introduce get_iova_ranges callback
+  virtio-iommu: Compute host reserved regions
+  virtio-iommu: Remove the implementation of iommu_set_iova_range
+  hw/vfio: Remove memory_region_iommu_set_iova_ranges() call
+  memory: Remove IOMMU MR iommu_set_iova_range API
+
+ include/exec/memory.h              |  32 ---
+ include/hw/virtio/virtio-iommu.h   |   9 +
+ include/sysemu/host_iommu_device.h |   9 +
+ hw/vfio/common.c                   |  10 -
+ hw/vfio/container.c                |  15 ++
+ hw/vfio/iommufd.c                  |  16 ++
+ hw/virtio/virtio-iommu.c           | 305 +++++++++++++++++++----------
+ system/memory.c                    |  13 --
+ 8 files changed, 253 insertions(+), 156 deletions(-)
+
+-- 
+2.41.0
+
 
