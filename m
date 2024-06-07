@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25FC5900E69
-	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 01:21:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2063A900E4D
+	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 01:07:34 +0200 (CEST)
 Received: from [::1] (helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sFf5Q-00039q-S6; Fri, 07 Jun 2024 15:17:16 -0400
+	id 1sFf5U-0003SO-7v; Fri, 07 Jun 2024 15:17:20 -0400
 Received: from [2001:470:142:3::10] (helo=eggs.gnu.org)
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sFf5O-00038S-Hn; Fri, 07 Jun 2024 15:17:14 -0400
+ id 1sFf5R-0003BU-Mb; Fri, 07 Jun 2024 15:17:17 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sFf5N-00032h-0A; Fri, 07 Jun 2024 15:17:14 -0400
+ id 1sFf5P-00033G-Sx; Fri, 07 Jun 2024 15:17:17 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 4B50A6E569;
+ by isrv.corpit.ru (Postfix) with ESMTP id 78F176E56A;
  Fri,  7 Jun 2024 22:14:54 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 816DCE2762;
+ by tsrv.corpit.ru (Postfix) with SMTP id 9908AE2763;
  Fri,  7 Jun 2024 22:13:59 +0300 (MSK)
-Received: (nullmailer pid 529453 invoked by uid 1000);
+Received: (nullmailer pid 529456 invoked by uid 1000);
  Fri, 07 Jun 2024 19:13:58 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Max Chou <max.chou@sifive.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.0.1 59/71] target/riscv: rvv: Check single width operator
- for vfncvt.rod.f.f.w
-Date: Fri,  7 Jun 2024 22:13:40 +0300
-Message-Id: <20240607191356.529336-15-mjt@tls.msk.ru>
+Subject: [Stable-9.0.1 60/71] target/riscv: rvv: Remove redudant SEW checking
+ for vector fp narrow/widen instructions
+Date: Fri,  7 Jun 2024 22:13:41 +0300
+Message-Id: <20240607191356.529336-16-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-9.0.1-20240607221321@cover.tls.msk.ru>
 References: <qemu-stable-9.0.1-20240607221321@cover.tls.msk.ru>
@@ -63,29 +63,93 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Max Chou <max.chou@sifive.com>
 
-The opfv_narrow_check needs to check the single width float operator by
-require_rvf.
+If the checking functions check both the single and double width
+operators at the same time, then the single width operator checking
+functions (require_rvf[min]) will check whether the SEW is 8.
 
 Signed-off-by: Max Chou <max.chou@sifive.com>
 Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Cc: qemu-stable <qemu-stable@nongnu.org>
-Message-ID: <20240322092600.1198921-4-max.chou@sifive.com>
+Message-ID: <20240322092600.1198921-5-max.chou@sifive.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-(cherry picked from commit 692f33a3abcaae789b08623e7cbdffcd2c738c89)
+(cherry picked from commit 93cb52b7a3ccc64e8d28813324818edae07e21d5)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/target/riscv/insn_trans/trans_rvv.c.inc b/target/riscv/insn_trans/trans_rvv.c.inc
-index 6cb9bc9fde..19059fea5f 100644
+index 19059fea5f..08c22f48cb 100644
 --- a/target/riscv/insn_trans/trans_rvv.c.inc
 +++ b/target/riscv/insn_trans/trans_rvv.c.inc
-@@ -2817,6 +2817,7 @@ static bool opffv_narrow_check(DisasContext *s, arg_rmr *a)
+@@ -2333,7 +2333,6 @@ static bool opfvv_widen_check(DisasContext *s, arg_rmrr *a)
+     return require_rvv(s) &&
+            require_rvf(s) &&
+            require_scale_rvf(s) &&
+-           (s->sew != MO_8) &&
+            vext_check_isa_ill(s) &&
+            vext_check_dss(s, a->rd, a->rs1, a->rs2, a->vm);
+ }
+@@ -2373,7 +2372,6 @@ static bool opfvf_widen_check(DisasContext *s, arg_rmrr *a)
+     return require_rvv(s) &&
+            require_rvf(s) &&
+            require_scale_rvf(s) &&
+-           (s->sew != MO_8) &&
+            vext_check_isa_ill(s) &&
+            vext_check_ds(s, a->rd, a->rs2, a->vm);
+ }
+@@ -2406,7 +2404,6 @@ static bool opfwv_widen_check(DisasContext *s, arg_rmrr *a)
+     return require_rvv(s) &&
+            require_rvf(s) &&
+            require_scale_rvf(s) &&
+-           (s->sew != MO_8) &&
+            vext_check_isa_ill(s) &&
+            vext_check_dds(s, a->rd, a->rs1, a->rs2, a->vm);
+ }
+@@ -2446,7 +2443,6 @@ static bool opfwf_widen_check(DisasContext *s, arg_rmrr *a)
+     return require_rvv(s) &&
+            require_rvf(s) &&
+            require_scale_rvf(s) &&
+-           (s->sew != MO_8) &&
+            vext_check_isa_ill(s) &&
+            vext_check_dd(s, a->rd, a->rs2, a->vm);
+ }
+@@ -2704,8 +2700,7 @@ static bool opffv_widen_check(DisasContext *s, arg_rmr *a)
+ {
+     return opfv_widen_check(s, a) &&
+            require_rvfmin(s) &&
+-           require_scale_rvfmin(s) &&
+-           (s->sew != MO_8);
++           require_scale_rvfmin(s);
+ }
+ 
+ #define GEN_OPFV_WIDEN_TRANS(NAME, CHECK, HELPER, FRM)             \
+@@ -2810,16 +2805,14 @@ static bool opffv_narrow_check(DisasContext *s, arg_rmr *a)
+ {
+     return opfv_narrow_check(s, a) &&
+            require_rvfmin(s) &&
+-           require_scale_rvfmin(s) &&
+-           (s->sew != MO_8);
++           require_scale_rvfmin(s);
+ }
+ 
  static bool opffv_rod_narrow_check(DisasContext *s, arg_rmr *a)
  {
      return opfv_narrow_check(s, a) &&
-+           require_rvf(s) &&
-            require_scale_rvf(s) &&
-            (s->sew != MO_8);
+            require_rvf(s) &&
+-           require_scale_rvf(s) &&
+-           (s->sew != MO_8);
++           require_scale_rvf(s);
  }
+ 
+ #define GEN_OPFV_NARROW_TRANS(NAME, CHECK, HELPER, FRM)            \
+@@ -2947,8 +2940,7 @@ static bool freduction_widen_check(DisasContext *s, arg_rmrr *a)
+ {
+     return reduction_widen_check(s, a) &&
+            require_rvf(s) &&
+-           require_scale_rvf(s) &&
+-           (s->sew != MO_8);
++           require_scale_rvf(s);
+ }
+ 
+ GEN_OPFVV_WIDEN_TRANS(vfwredusum_vs, freduction_widen_check)
 -- 
 2.39.2
 
