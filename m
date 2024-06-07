@@ -2,69 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D8F4900E67
-	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 01:20:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B821900DE6
+	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 00:08:57 +0200 (CEST)
 Received: from [::1] (helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sFadU-0003k0-Hx; Fri, 07 Jun 2024 10:32:08 -0400
+	id 1sFaew-00048A-AJ; Fri, 07 Jun 2024 10:33:38 -0400
 Received: from [2001:470:142:3::10] (helo=eggs.gnu.org)
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sFadJ-0003jh-LA
- for qemu-devel@nongnu.org; Fri, 07 Jun 2024 10:31:57 -0400
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+ id 1sFaeu-00047u-OH
+ for qemu-devel@nongnu.org; Fri, 07 Jun 2024 10:33:36 -0400
+Received: from mail-lj1-x22a.google.com ([2a00:1450:4864:20::22a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sFadI-0002JR-6U
- for qemu-devel@nongnu.org; Fri, 07 Jun 2024 10:31:57 -0400
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-57c614c57e1so421184a12.3
- for <qemu-devel@nongnu.org>; Fri, 07 Jun 2024 07:31:55 -0700 (PDT)
+ id 1sFaes-0002Vk-GI
+ for qemu-devel@nongnu.org; Fri, 07 Jun 2024 10:33:36 -0400
+Received: by mail-lj1-x22a.google.com with SMTP id
+ 38308e7fff4ca-2e78fe9fc2bso31824411fa.3
+ for <qemu-devel@nongnu.org>; Fri, 07 Jun 2024 07:33:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1717770714; x=1718375514; darn=nongnu.org;
+ d=linaro.org; s=google; t=1717770812; x=1718375612; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=e1Benc/rjH1FyVXTSwHETQFHSt8VqWqho7hgWCwYmcM=;
- b=zEiJZsk6mBdE7aA1YgOM4xgtoT9g/evRC/9amAD8RKxE6fuYTO1zcTtjIYOClxcN4A
- O2OynlHJjXA38Y0JqIPkUgL/t0hMW3efC3XDigIjNAgqhYlphXIeiEdks1a2m50wy102
- p09lvjAHS7655gz1IPWURLSiwoYlXqyMnU8SZGzmxMHDtJe6PoG7/wh0Wz6efslPhaGu
- dtiZYF15w0kozK7eDKv4Dk7gYhs0BCLdDWSxgscoq4DqU6SWZNpaWKKd4/IBTfBQT8gj
- Hbh+3pr3jmmCqm2N6GoZDZDsslYNnXD33QN0xp/xiwe4SN5oi7SqZVnPqdQFJPXZaj+x
- cHYw==
+ bh=M1m+3h3ZMpB2qpYFkRUj7JWzswXTd2jyCojOK8qXXe8=;
+ b=UL4/SzsCVhkyZzTiLZARtLhZ88SiV/ouImTY/N+cJDI87zLfKon40V5PC9ZQn+VyWP
+ 3nWZZ4CWtUAKd5bK9avI+9cF/OGZdhlZc0Gmytv/yYdThX8yR+/NKzB+AQGf7eauOF90
+ +LxBu+uxm1SrtWpMdda0Z1i3F/ud5wfJ4hvylXdcZ1sh7tCFbVfZc6zoA/gQ5Q04sW97
+ xgqVuwvT3nOkuEQwHivNIyS71Ii2z8+bBL7xC2qjzDWukbGVjdROuncClGMqyQBHc1ca
+ 3mWkaVdoZGDRo3PxF8CAKPkMxK0oKuDDMm5TgUJyAoxn0l940+IrtGxCkC16kKnQJKdN
+ g7qg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717770714; x=1718375514;
+ d=1e100.net; s=20230601; t=1717770812; x=1718375612;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=e1Benc/rjH1FyVXTSwHETQFHSt8VqWqho7hgWCwYmcM=;
- b=PipKzTB+3slqh87bo6D8WuumtE1Hun5F0ygwzEmD7zjeBochvwdTWcPrZ0C7URJafU
- YY2Cz2s3fPkXP1EUcBeG5quHyzypGUExD04kGE2il2Y6so7tjuK5xnbd4Mt+ygXBK+1w
- RGG2E8k7xRHD5GRMs98CS9YEavywMf7SgS3okEanClc5q7wXUquyS/yaC1xAHXTMTaGn
- YiDitqep/3WPyTOC6XLpvbkbKzwk3dtIDVkuK8ZUmEfUsLtDfjWh1TT0ryOXSaWjioxp
- HqyTHtTbv4eXkv6sU292a8g3uZebMZEkobaXjNdHp79QwB/iF+b14pbleTUwC83a+NvC
- ubQg==
-X-Gm-Message-State: AOJu0YxyiMoVte4vLnQHaNnaZiQOHFC8TZe9RON60v6I3TmCOvKkvxGo
- pa/INanIP1tP4B1299XGIwEhAScJ57ZkPxbe2GcZxU2EpvLLOjc3Tazq6pLa3Vt/P+Xooma7KeD
- 6KhP4pCtdrsSLhUhA5raop3y5umL3p1phWJsbZX9L666iMro+
-X-Google-Smtp-Source: AGHT+IFh1iEWb2np+Hy/sFR/lwMXi687UTmOV4uX/mv4noPUcU+YycFyZDZsSiu0GylYopW4mzcn4De2+8pU4dTqs2Y=
-X-Received: by 2002:a50:d799:0:b0:57a:2fc1:e838 with SMTP id
- 4fb4d7f45d1cf-57c50928dd9mr1697930a12.22.1717770714081; Fri, 07 Jun 2024
- 07:31:54 -0700 (PDT)
+ bh=M1m+3h3ZMpB2qpYFkRUj7JWzswXTd2jyCojOK8qXXe8=;
+ b=QbsBS9qHroHcB6c9FIpVxziU57KUIUOb6rBjkuomMG9YrfI4QiCcY3wFSh6YuBAin1
+ c76WUCjs1ArDyIKHZwh9OcoL6rG6tAbxFauo6qUcx2fXMhlD6SHkeZ9jjom8GQsgc7s8
+ U4eDR8JiuzVCzRrdLohy19w1GduDMhEaE3oZyGwledKK/67XjM1mqqcaq4Wn57WWPrzg
+ rNcWIcBunyF8WTLkxBf85vf/58rxzBUzeUXCoE1X9u043m7hPmAJ7SHHY/B5IuFxg1cz
+ hfZXWrFN2h66Imu4FfzJz0h+f4XKyARcCznpW0pHxwjPSHKTNzkSIHVR+BaIjqu3nl43
+ NmyQ==
+X-Gm-Message-State: AOJu0YzbpfCJOI+hkKrKs4fnf/4h6g2la9NJgAl4+imm2nVqr2LwxclX
+ VYFtQosbMly4aNWETwRnRWpOdxWU3XarFgSWstwhZzG4oIKXfBEl02CjUaMaXKHGKNjDGDA34Pt
+ F3nksqhapEmpz5MfgtD1O8t+0uvD4Mt/jnh0Elg==
+X-Google-Smtp-Source: AGHT+IEaPk732i0YbUA1nmYbFrFWei9Z0zR1zaf4gbjxSxkJKBMjCD7NvdufuljyiCfTiAGP6iUUzj4yigZzHn70PDk=
+X-Received: by 2002:a2e:880e:0:b0:2ea:e2d2:61ff with SMTP id
+ 38308e7fff4ca-2eae2d26485mr10509311fa.23.1717770812457; Fri, 07 Jun 2024
+ 07:33:32 -0700 (PDT)
 MIME-Version: 1.0
-References: <20240523014637.614872-1-gaosong@loongson.cn>
- <20240523014637.614872-7-gaosong@loongson.cn>
-In-Reply-To: <20240523014637.614872-7-gaosong@loongson.cn>
+References: <20240605143044.2029444-1-edgar.iglesias@gmail.com>
+In-Reply-To: <20240605143044.2029444-1-edgar.iglesias@gmail.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 7 Jun 2024 15:31:43 +0100
-Message-ID: <CAFEAcA8AONDHH=zMb6ODoE58=P4BN7+bBKJqzxQWU81STG8q4Q@mail.gmail.com>
-Subject: Re: [PULL 06/10] hw/loongarch: Refine fwcfg memory map
-To: Song Gao <gaosong@loongson.cn>
-Cc: qemu-devel@nongnu.org, richard.henderson@linaro.org, 
- Bibo Mao <maobibo@loongson.cn>
+Date: Fri, 7 Jun 2024 15:33:21 +0100
+Message-ID: <CAFEAcA_j0d=0y_1Nd9VZDPceHBw7CMpd4N8Vv14KUa+RvOJR6A@mail.gmail.com>
+Subject: Re: [PATCH v1 0/1] hw/intc/arm_gic: Fix deactivation of SPI lines
+To: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, sstabellini@kernel.org, 
+ julien@xen.org, bertrand.marquis@arm.com, edgar.iglesias@amd.com
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x22a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -87,78 +86,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 23 May 2024 at 02:48, Song Gao <gaosong@loongson.cn> wrote:
+On Wed, 5 Jun 2024 at 15:43, Edgar E. Iglesias <edgar.iglesias@gmail.com> wrote:
 >
-> From: Bibo Mao <maobibo@loongson.cn>
+> From: "Edgar E. Iglesias" <edgar.iglesias@amd.com>
 >
-> Memory map table for fwcfg is used for UEFI BIOS, UEFI BIOS uses the first
-> entry from fwcfg memory map as the first memory HOB, the second memory HOB
-> will be used if the first memory HOB is used up.
+> Julien reported that he has seen strange behaviour when running
+> Xen on QEMU using GICv2. When Xen migrates a guest's vCPU to
+> another pCPU while the vCPU is handling an interrupt the guest
+> is unable to properly deactivate interrupts.
 >
-> Memory map table for fwcfg does not care about numa node, however in
-> generic the first memory HOB is part of numa node0, so that runtime
-> memory of UEFI which is allocated from the first memory HOB is located
-> at numa node0.
+> It sounds like something rare but in some setups it actually
+> happens all the time.
 >
-> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-> Reviewed-by: Song Gao <gaosong@loongson.cn>
-> Message-Id: <20240515093927.3453674-4-maobibo@loongson.cn>
-> Signed-off-by: Song Gao <gaosong@loongson.cn>
+> Looking at it a little closer, our GICv2 model treats
+> deactivation of SPI lines as if they were PPI's, i.e banked per
+> CPU core. The state for active interrupts should only be banked
+> for PPI lines, not for SPI lines.
+>
+> When deactivating SPI lines, I think we need to handle the state
+> as unbanked, similar to how we handle writes to GICD_ICACTIVER.
+>
+> This fixes the problem on my side.
 
-Hi; Coverity points out a possible issue with this code
-(CID 1546441):
+Applied to target-arm.next, thanks.
 
-> +static void fw_cfg_add_memory(MachineState *ms)
-> +{
-> +    hwaddr base, size, ram_size, gap;
-> +    int nb_numa_nodes, nodes;
-> +    NodeInfo *numa_info;
-> +
-> +    ram_size = ms->ram_size;
-> +    base = VIRT_LOWMEM_BASE;
-> +    gap = VIRT_LOWMEM_SIZE;
-> +    nodes = nb_numa_nodes = ms->numa_state->num_nodes;
-> +    numa_info = ms->numa_state->nodes;
-> +    if (!nodes) {
-> +        nodes = 1;
-> +    }
-> +
-> +    /* add fw_cfg memory map of node0 */
-> +    if (nb_numa_nodes) {
-> +        size = numa_info[0].node_mem;
-> +    } else {
-> +        size = ram_size;
-> +    }
-> +
-> +    if (size >= gap) {
-> +        memmap_add_entry(base, gap, 1);
-> +        size -= gap;
-> +        base = VIRT_HIGHMEM_BASE;
-> +        gap = ram_size - VIRT_LOWMEM_SIZE;
+(I'm surprised anybody's still using GICv2 seriously at
+this point...)
 
-In this if() statement we set 'gap'...
-
-> +    }
-> +
-> +    if (size) {
-> +        memmap_add_entry(base, size, 1);
-> +        base += size;
-> +    }
-> +
-> +    if (nodes < 2) {
-> +        return;
-> +    }
-> +
-> +    /* add fw_cfg memory map of other nodes */
-> +    size = ram_size - numa_info[0].node_mem;
-> +    gap  = VIRT_LOWMEM_BASE + VIRT_LOWMEM_SIZE;
-
-...but then later here we unconditionally overwrite 'gap',
-without ever using it in between, making the previous
-assignment useless.
-
-What was the intention here ?
-
-thanks
 -- PMM
 
