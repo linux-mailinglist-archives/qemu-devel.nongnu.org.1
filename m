@@ -2,36 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D91F900DDB
-	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 00:04:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B36C900DDC
+	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 00:04:07 +0200 (CEST)
 Received: from [::1] (helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sFf1X-0007vy-4A; Fri, 07 Jun 2024 15:13:15 -0400
+	id 1sFf2S-0001mk-BV; Fri, 07 Jun 2024 15:14:12 -0400
 Received: from [2001:470:142:3::10] (helo=eggs.gnu.org)
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sFf1U-0007uq-4L; Fri, 07 Jun 2024 15:13:12 -0400
+ id 1sFf2A-00014z-Q5; Fri, 07 Jun 2024 15:13:54 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sFf1S-0001jA-6L; Fri, 07 Jun 2024 15:13:11 -0400
+ id 1sFf28-0001op-S3; Fri, 07 Jun 2024 15:13:54 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 4AE386E53D;
- Fri,  7 Jun 2024 22:14:03 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 07E926E543;
+ Fri,  7 Jun 2024 22:14:04 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 82DEEE273A;
- Fri,  7 Jun 2024 22:13:08 +0300 (MSK)
-Received: (nullmailer pid 528690 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id 2D620E2740;
+ Fri,  7 Jun 2024 22:13:09 +0300 (MSK)
+Received: (nullmailer pid 528709 invoked by uid 1000);
  Fri, 07 Jun 2024 19:13:08 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.5 20/45] gitlab: Update msys2-64bit runner tags
-Date: Fri,  7 Jun 2024 22:12:40 +0300
-Message-Id: <20240607191307.528622-1-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Eric Blake <eblake@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.5 27/45] qio: Inherit follow_coroutine_ctx across TLS
+Date: Fri,  7 Jun 2024 22:12:46 +0300
+Message-Id: <20240607191307.528622-7-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.5-20240607221227@cover.tls.msk.ru>
 References: <qemu-stable-8.2.5-20240607221227@cover.tls.msk.ru>
@@ -61,37 +62,114 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+From: Eric Blake <eblake@redhat.com>
 
-Gitlab has deprecated and removed support for windows-1809
-and shared-windows.  Update to saas-windows-medium-amd64 per
+Since qemu 8.2, the combination of NBD + TLS + iothread crashes on an
+assertion failure:
 
-https://about.gitlab.com/blog/2024/01/22/windows-2022-support-for-gitlab-saas-runners/
+qemu-kvm: ../io/channel.c:534: void qio_channel_restart_read(void *): Assertion `qemu_get_current_aio_context() == qemu_coroutine_get_aio_context(co)' failed.
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Tested-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20240507175356.281618-1-richard.henderson@linaro.org>
-(cherry picked from commit 36fa7c686e9eac490002ffc439c4affaa352c17c)
+It turns out that when we removed AioContext locking, we did so by
+having NBD tell its qio channels that it wanted to opt in to
+qio_channel_set_follow_coroutine_ctx(); but while we opted in on the
+main channel, we did not opt in on the TLS wrapper channel.
+qemu-iotests has coverage of NBD+iothread and NBD+TLS, but apparently
+no coverage of NBD+TLS+iothread, or we would have noticed this
+regression sooner.  (I'll add that in the next patch)
+
+But while we could manually opt in to the TLS channel in nbd/server.c
+(a one-line change), it is more generic if all qio channels that wrap
+other channels inherit the follow status, in the same way that they
+inherit feature bits.
+
+CC: Stefan Hajnoczi <stefanha@redhat.com>
+CC: Daniel P. Berrangé <berrange@redhat.com>
+CC: qemu-stable@nongnu.org
+Fixes: https://issues.redhat.com/browse/RHEL-34786
+Fixes: 06e0f098 ("io: follow coroutine AioContext in qio_channel_yield()", v8.2.0)
+Signed-off-by: Eric Blake <eblake@redhat.com>
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Message-ID: <20240518025246.791593-5-eblake@redhat.com>
+(cherry picked from commit 199e84de1c903ba5aa1f7256310bbc4a20dd930b)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/.gitlab-ci.d/windows.yml b/.gitlab-ci.d/windows.yml
-index 8fc08218d2..c6251ebbb8 100644
---- a/.gitlab-ci.d/windows.yml
-+++ b/.gitlab-ci.d/windows.yml
-@@ -1,9 +1,7 @@
- .shared_msys2_builder:
-   extends: .base_job_template
-   tags:
--  - shared-windows
--  - windows
--  - windows-1809
-+  - saas-windows-medium-amd64
-   cache:
-     key: "$CI_JOB_NAME"
-     paths:
+diff --git a/io/channel-tls.c b/io/channel-tls.c
+index 58fe1aceee..a8ad89c3d1 100644
+--- a/io/channel-tls.c
++++ b/io/channel-tls.c
+@@ -69,37 +69,40 @@ qio_channel_tls_new_server(QIOChannel *master,
+                            const char *aclname,
+                            Error **errp)
+ {
+-    QIOChannelTLS *ioc;
++    QIOChannelTLS *tioc;
++    QIOChannel *ioc;
+ 
+-    ioc = QIO_CHANNEL_TLS(object_new(TYPE_QIO_CHANNEL_TLS));
++    tioc = QIO_CHANNEL_TLS(object_new(TYPE_QIO_CHANNEL_TLS));
++    ioc = QIO_CHANNEL(tioc);
+ 
+-    ioc->master = master;
++    tioc->master = master;
++    ioc->follow_coroutine_ctx = master->follow_coroutine_ctx;
+     if (qio_channel_has_feature(master, QIO_CHANNEL_FEATURE_SHUTDOWN)) {
+-        qio_channel_set_feature(QIO_CHANNEL(ioc), QIO_CHANNEL_FEATURE_SHUTDOWN);
++        qio_channel_set_feature(ioc, QIO_CHANNEL_FEATURE_SHUTDOWN);
+     }
+     object_ref(OBJECT(master));
+ 
+-    ioc->session = qcrypto_tls_session_new(
++    tioc->session = qcrypto_tls_session_new(
+         creds,
+         NULL,
+         aclname,
+         QCRYPTO_TLS_CREDS_ENDPOINT_SERVER,
+         errp);
+-    if (!ioc->session) {
++    if (!tioc->session) {
+         goto error;
+     }
+ 
+     qcrypto_tls_session_set_callbacks(
+-        ioc->session,
++        tioc->session,
+         qio_channel_tls_write_handler,
+         qio_channel_tls_read_handler,
+-        ioc);
++        tioc);
+ 
+-    trace_qio_channel_tls_new_server(ioc, master, creds, aclname);
+-    return ioc;
++    trace_qio_channel_tls_new_server(tioc, master, creds, aclname);
++    return tioc;
+ 
+  error:
+-    object_unref(OBJECT(ioc));
++    object_unref(OBJECT(tioc));
+     return NULL;
+ }
+ 
+@@ -116,6 +119,7 @@ qio_channel_tls_new_client(QIOChannel *master,
+     ioc = QIO_CHANNEL(tioc);
+ 
+     tioc->master = master;
++    ioc->follow_coroutine_ctx = master->follow_coroutine_ctx;
+     if (qio_channel_has_feature(master, QIO_CHANNEL_FEATURE_SHUTDOWN)) {
+         qio_channel_set_feature(ioc, QIO_CHANNEL_FEATURE_SHUTDOWN);
+     }
+diff --git a/io/channel-websock.c b/io/channel-websock.c
+index a12acc27cf..de39f0d182 100644
+--- a/io/channel-websock.c
++++ b/io/channel-websock.c
+@@ -883,6 +883,7 @@ qio_channel_websock_new_server(QIOChannel *master)
+     ioc = QIO_CHANNEL(wioc);
+ 
+     wioc->master = master;
++    ioc->follow_coroutine_ctx = master->follow_coroutine_ctx;
+     if (qio_channel_has_feature(master, QIO_CHANNEL_FEATURE_SHUTDOWN)) {
+         qio_channel_set_feature(ioc, QIO_CHANNEL_FEATURE_SHUTDOWN);
+     }
 -- 
 2.39.2
 
