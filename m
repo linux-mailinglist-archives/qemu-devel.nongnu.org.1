@@ -2,78 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 587BC900654
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jun 2024 16:21:23 +0200 (CEST)
-Received: from localhost ([::1] helo=lists1p.gnu.org)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32E68900DB2
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jun 2024 23:47:58 +0200 (CEST)
+Received: from [::1] (helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sFaSw-0000eL-4W; Fri, 07 Jun 2024 10:21:14 -0400
-Received: from eggs.gnu.org ([2001:470:142:3::10])
+	id 1sFakk-0005kT-0y; Fri, 07 Jun 2024 10:39:38 -0400
+Received: from [2001:470:142:3::10] (helo=eggs.gnu.org)
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sFaSt-0000cu-Kr
- for qemu-devel@nongnu.org; Fri, 07 Jun 2024 10:21:11 -0400
-Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sFaSr-0008Gp-RG
- for qemu-devel@nongnu.org; Fri, 07 Jun 2024 10:21:11 -0400
-Received: by mail-ed1-x535.google.com with SMTP id
- 4fb4d7f45d1cf-57a30dbdb7fso2930662a12.3
- for <qemu-devel@nongnu.org>; Fri, 07 Jun 2024 07:21:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1717770068; x=1718374868; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=Uwa41rkjIFb2siIe1EJT8B7NiKbO2eiLM7ot7b/wWJg=;
- b=kVB9CB1GIHmlf+NTxUg77y76i4V3zu9yNKsyYrSnmft/Bsnboet+tOPIHIKOjw4zFX
- dcAnOQzhbunXuCXbs4UYY8NtxnWP4fSyboob8pU9b1jmpYMT4NyFL5qOEFt+g8pNjUnF
- 5LcHfGTdI9jWRSANgxxquliIM9FjLbGGGL/4ri0hCa4bHTT5s3ql7NcfPEYVCnyJB8sV
- JkUuqbg7dfiTAZH7Mgo83OGFO561xqRk9DHKsy51h7+HvJM7dP2ibk9gu6pWOael3A5S
- hqBb7Nf2PhGFtCfHDN25jH+7dPAqJbMfGdAfwpCqtco4/FMTPo+TAuhpgMFegtJHy0VC
- HtQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717770068; x=1718374868;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Uwa41rkjIFb2siIe1EJT8B7NiKbO2eiLM7ot7b/wWJg=;
- b=kY+iDBEn4DKdknUKF9j6GeEWdcHveonNhP287K+JYJBTz9UsPaPoFKU7r43mdU1xmF
- UpdgywrS9iBAnoX4ogvnV/9CbOW0STS//+rQZM5vN8x7dYOGksN7xmZVg/whbGtrKp3h
- mCzR09wqNfl0MrSPuP12HThgsFXhp+qhAHGIXThMZKmVv9+x7/84sDAyYh2b6jJ+HjLm
- JKNn87lOdwQJc8aZKWuYW/P7NOyA6SLzUBncVbXyD+T6YJ2a9hNvwiL0fvcCyDgt83bJ
- mJNLufsyHgYVuDpPGCFJQpvORSTBUSdhLpiXEIRB2n+Y9X1V+x8brHxza6kTY+3FGhfS
- reqg==
-X-Gm-Message-State: AOJu0Yxvx5gVacuzNqJ6wi+JLFDG1C3VCoN63g7bIYpPlKScGdzWDqFB
- uWvnFSspAlua3WszaaQQtLE9hjdNYzvgLvOYXwekdIwTJk2yZNGhCwqzDuZvYzzoaKgTF84Hspx
- B9iWAgg69M1Xl58AvzIJeUD2oVpJVAq4jzWWXww==
-X-Google-Smtp-Source: AGHT+IG5WoPBgaqu9M5Bsf9j3Pk9qFLWKMPwW0T0psIyCG2LZAC8Cx/0uPNVWsVXiikpLN8cXL1pC3yLYgd2mYhr0+w=
-X-Received: by 2002:a50:8e54:0:b0:57a:2a56:8a37 with SMTP id
- 4fb4d7f45d1cf-57c549edc3dmr1256500a12.13.1717770067982; Fri, 07 Jun 2024
- 07:21:07 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1sFaki-0005cy-Ky
+ for qemu-devel@nongnu.org; Fri, 07 Jun 2024 10:39:36 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1sFakh-0003Oa-2i
+ for qemu-devel@nongnu.org; Fri, 07 Jun 2024 10:39:36 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1717771174;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=sxoYtCwqn6c+3/9Ce6QALKIyPjypJJl1PydGzJDqgAc=;
+ b=AkOdpJlvTIHM3limNwW7n7xsOYYOme78iQbY9I1fbWjPYJwCwPajSVHUp5lNl6zdD8UFbB
+ KqcNDbNZopG3h3Jqh766mI8o3JQcLV7pn1RRx5Vgqi1nTqd4xYoQJGkQH7x+mMxFt541Up
+ ZrfFisQ94u47ZoD0NDjEbVZx2+re8eU=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-611-JNvzNWrMMkeB4zzqKL3pMA-1; Fri,
+ 07 Jun 2024 10:39:28 -0400
+X-MC-Unique: JNvzNWrMMkeB4zzqKL3pMA-1
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id A7D7D1955F36; Fri,  7 Jun 2024 14:39:26 +0000 (UTC)
+Received: from laptop.redhat.com (unknown [10.39.193.191])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 81D1A1956050; Fri,  7 Jun 2024 14:39:21 +0000 (UTC)
+From: Eric Auger <eric.auger@redhat.com>
+To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
+ qemu-arm@nongnu.org, mst@redhat.com, jean-philippe@linaro.org,
+ imammedo@redhat.com, peter.maydell@linaro.org, clg@redhat.com,
+ yanghliu@redhat.com, zhenzhong.duan@intel.com
+Cc: alex.williamson@redhat.com, jasowang@redhat.com, pbonzini@redhat.com,
+ berrange@redhat.com
+Subject: [RFC v2 2/7] virtio-iommu: Implement set|unset]_iommu_device()
+ callbacks
+Date: Fri,  7 Jun 2024 16:37:22 +0200
+Message-ID: <20240607143905.765133-3-eric.auger@redhat.com>
+In-Reply-To: <20240607143905.765133-1-eric.auger@redhat.com>
+References: <20240607143905.765133-1-eric.auger@redhat.com>
 MIME-Version: 1.0
-References: <20240604064409.957105-1-pbonzini@redhat.com>
- <20240604064409.957105-19-pbonzini@redhat.com>
-In-Reply-To: <20240604064409.957105-19-pbonzini@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 7 Jun 2024 15:20:57 +0100
-Message-ID: <CAFEAcA9W4V8o1KstZo5YyDZo9+JZ3uQ9KApnjZ5EOzuSc+ZpfQ@mail.gmail.com>
-Subject: Re: [PULL 18/45] i386/sev: Introduce "sev-common" type to encapsulate
- common SEV state
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, Michael Roth <michael.roth@amd.com>, 
- Dov Murik <dovmurik@linux.ibm.com>, Markus Armbruster <armbru@redhat.com>, 
- Pankaj Gupta <pankaj.gupta@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::535;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x535.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,70 +85,167 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 4 Jun 2024 at 07:47, Paolo Bonzini <pbonzini@redhat.com> wrote:
->
-> From: Michael Roth <michael.roth@amd.com>
->
-> Currently all SEV/SEV-ES functionality is managed through a single
-> 'sev-guest' QOM type. With upcoming support for SEV-SNP, taking this
-> same approach won't work well since some of the properties/state
-> managed by 'sev-guest' is not applicable to SEV-SNP, which will instead
-> rely on a new QOM type with its own set of properties/state.
->
-> To prepare for this, this patch moves common state into an abstract
-> 'sev-common' parent type to encapsulate properties/state that are
-> common to both SEV/SEV-ES and SEV-SNP, leaving only SEV/SEV-ES-specific
-> properties/state in the current 'sev-guest' type. This should not
-> affect current behavior or command-line options.
->
-> As part of this patch, some related changes are also made:
->
->   - a static 'sev_guest' variable is currently used to keep track of
->     the 'sev-guest' instance. SEV-SNP would similarly introduce an
->     'sev_snp_guest' static variable. But these instances are now
->     available via qdev_get_machine()->cgs, so switch to using that
->     instead and drop the static variable.
->
->   - 'sev_guest' is currently used as the name for the static variable
->     holding a pointer to the 'sev-guest' instance. Re-purpose the name
->     as a local variable referring the 'sev-guest' instance, and use
->     that consistently throughout the code so it can be easily
->     distinguished from sev-common/sev-snp-guest instances.
->
->   - 'sev' is generally used as the name for local variables holding a
->     pointer to the 'sev-guest' instance. In cases where that now points
->     to common state, use the name 'sev_common'; in cases where that now
->     points to state specific to 'sev-guest' instance, use the name
->     'sev_guest'
->
-> In order to enable kernel-hashes for SNP, pull it from
-> SevGuestProperties to its parent SevCommonProperties so
-> it will be available for both SEV and SNP.
+Implement PCIIOMMUOPs [set|unset]_iommu_device() callbacks.
+In set(), a VirtioHostIOMMUDevice is allocated which holds
+a reference to the HostIOMMUDevice. This object is stored in a hash
+table indexed by PCI BDF. The handle to the Host IOMMU device
+will allow to retrieve information related to the physical IOMMU.
 
-Hi; Coverity points out a problem in this code (CID 1546885):
+Signed-off-by: Eric Auger <eric.auger@redhat.com>
+---
+ include/hw/virtio/virtio-iommu.h |  9 ++++
+ hw/virtio/virtio-iommu.c         | 87 ++++++++++++++++++++++++++++++++
+ 2 files changed, 96 insertions(+)
 
-> @@ -540,12 +491,21 @@ static SevCapability *sev_get_capabilities(Error **errp)
->          return NULL;
->      }
->
-> -    fd = open(DEFAULT_SEV_DEVICE, O_RDWR);
-> +    sev_common = SEV_COMMON(MACHINE(qdev_get_machine())->cgs);
-> +    if (!sev_common) {
-> +        error_setg(errp, "SEV is not configured");
+diff --git a/include/hw/virtio/virtio-iommu.h b/include/hw/virtio/virtio-iommu.h
+index 83a52cc446..4f664ea0c4 100644
+--- a/include/hw/virtio/virtio-iommu.h
++++ b/include/hw/virtio/virtio-iommu.h
+@@ -45,6 +45,14 @@ typedef struct IOMMUDevice {
+     bool probe_done;
+ } IOMMUDevice;
+ 
++typedef struct VirtioHostIOMMUDevice {
++    void *viommu;
++    PCIBus *bus;
++    uint8_t devfn;
++    HostIOMMUDevice *dev;
++    QLIST_ENTRY(VirtioHostIOMMUDevice) next;
++} VirtioHostIOMMUDevice;
++
+ typedef struct IOMMUPciBus {
+     PCIBus       *bus;
+     IOMMUDevice  *pbdev[]; /* Parent array is sparse, so dynamically alloc */
+@@ -57,6 +65,7 @@ struct VirtIOIOMMU {
+     struct virtio_iommu_config config;
+     uint64_t features;
+     GHashTable *as_by_busptr;
++    GHashTable *host_iommu_devices;
+     IOMMUPciBus *iommu_pcibus_by_bus_num[PCI_BUS_MAX];
+     PCIBus *primary_bus;
+     ReservedRegion *prop_resv_regions;
+diff --git a/hw/virtio/virtio-iommu.c b/hw/virtio/virtio-iommu.c
+index 1326c6ec41..0680a357f0 100644
+--- a/hw/virtio/virtio-iommu.c
++++ b/hw/virtio/virtio-iommu.c
+@@ -28,6 +28,7 @@
+ #include "sysemu/kvm.h"
+ #include "sysemu/reset.h"
+ #include "sysemu/sysemu.h"
++#include "sysemu/host_iommu_device.h"
+ #include "qemu/reserved-region.h"
+ #include "qemu/units.h"
+ #include "qapi/error.h"
+@@ -69,6 +70,11 @@ typedef struct VirtIOIOMMUMapping {
+     uint32_t flags;
+ } VirtIOIOMMUMapping;
+ 
++struct hiod_key {
++    PCIBus *bus;
++    uint8_t devfn;
++};
++
+ static inline uint16_t virtio_iommu_get_bdf(IOMMUDevice *dev)
+ {
+     return PCI_BUILD_BDF(pci_bus_num(dev->bus), dev->devfn);
+@@ -462,8 +468,86 @@ static AddressSpace *virtio_iommu_find_add_as(PCIBus *bus, void *opaque,
+     return &sdev->as;
+ }
+ 
++static gboolean hiod_equal(gconstpointer v1, gconstpointer v2)
++{
++    const struct hiod_key *key1 = v1;
++    const struct hiod_key *key2 = v2;
++
++    return (key1->bus == key2->bus) && (key1->devfn == key2->devfn);
++}
++
++static guint hiod_hash(gconstpointer v)
++{
++    const struct hiod_key *key = v;
++    guint value = (guint)(uintptr_t)key->bus;
++
++    return (guint)(value << 8 | key->devfn);
++}
++
++static VirtioHostIOMMUDevice *
++get_host_iommu_device(VirtIOIOMMU *viommu, PCIBus *bus, int devfn) {
++    struct hiod_key key = {
++        .bus = bus,
++        .devfn = devfn,
++    };
++
++    return g_hash_table_lookup(viommu->host_iommu_devices, &key);
++}
++
++static bool virtio_iommu_set_iommu_device(PCIBus *bus, void *opaque, int devfn,
++                                          HostIOMMUDevice *hiod, Error **errp)
++{
++    VirtIOIOMMU *viommu = opaque;
++    VirtioHostIOMMUDevice *vhiod;
++    struct hiod_key *new_key;
++
++    assert(hiod);
++
++    vhiod = get_host_iommu_device(viommu, bus, devfn);
++    if (vhiod) {
++        error_setg(errp, "VirtioHostIOMMUDevice already exists");
++        return false;
++    }
++
++    vhiod = g_malloc0(sizeof(VirtioHostIOMMUDevice));
++    vhiod->bus = bus;
++    vhiod->devfn = (uint8_t)devfn;
++    vhiod->viommu = viommu;
++    vhiod->dev = hiod;
++
++    new_key = g_malloc(sizeof(*new_key));
++    new_key->bus = bus;
++    new_key->devfn = devfn;
++
++    object_ref(hiod);
++    g_hash_table_insert(viommu->host_iommu_devices, new_key, vhiod);
++
++    return true;
++}
++
++static void
++virtio_iommu_unset_iommu_device(PCIBus *bus, void *opaque, int devfn)
++{
++    VirtIOIOMMU *viommu = opaque;
++    VirtioHostIOMMUDevice *vhiod;
++    struct hiod_key key = {
++        .bus = bus,
++        .devfn = devfn,
++    };
++
++    vhiod = g_hash_table_lookup(viommu->host_iommu_devices, &key);
++    if (!vhiod) {
++        return;
++    }
++
++    g_hash_table_remove(viommu->host_iommu_devices, &key);
++    object_unref(vhiod->dev);
++}
++
+ static const PCIIOMMUOps virtio_iommu_ops = {
+     .get_address_space = virtio_iommu_find_add_as,
++    .set_iommu_device = virtio_iommu_set_iommu_device,
++    .unset_iommu_device = virtio_iommu_unset_iommu_device,
+ };
+ 
+ static int virtio_iommu_attach(VirtIOIOMMU *s,
+@@ -1357,6 +1441,9 @@ static void virtio_iommu_device_realize(DeviceState *dev, Error **errp)
+ 
+     s->as_by_busptr = g_hash_table_new_full(NULL, NULL, NULL, g_free);
+ 
++    s->host_iommu_devices = g_hash_table_new_full(hiod_hash, hiod_equal,
++                                                  g_free, g_free);
++
+     if (s->primary_bus) {
+         pci_setup_iommu(s->primary_bus, &virtio_iommu_ops, s);
+     } else {
+-- 
+2.41.0
 
-Here we check for a NULL pointer, but we forget to "return",
-so execution will continue on...
-
-> +    }
-> +
-> +    sev_device = object_property_get_str(OBJECT(sev_common), "sev-device",
-> +                                         &error_abort);
-
-...and QEMU will crash here when object_property_get_str()
-dereferences the NULL pointer.
-
-Adding a "return NULL;" should fix this.
-
-thanks
--- PMM
 
