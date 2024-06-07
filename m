@@ -2,43 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA408900E8E
-	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 01:51:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1319D900E83
+	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 01:40:25 +0200 (CEST)
 Received: from [::1] (helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sFf6I-0006IY-QG; Fri, 07 Jun 2024 15:18:10 -0400
+	id 1sFf6f-0007Hq-4h; Fri, 07 Jun 2024 15:18:33 -0400
 Received: from [2001:470:142:3::10] (helo=eggs.gnu.org)
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sFf6F-000655-TK; Fri, 07 Jun 2024 15:18:08 -0400
+ id 1sFf6d-0007HY-E8; Fri, 07 Jun 2024 15:18:31 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sFf6D-00038Z-JZ; Fri, 07 Jun 2024 15:18:07 -0400
+ id 1sFf6b-0003As-Jl; Fri, 07 Jun 2024 15:18:31 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 234136E570;
+ by isrv.corpit.ru (Postfix) with ESMTP id 678326E573;
  Fri,  7 Jun 2024 22:14:55 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 4BF6DE2769;
+ by tsrv.corpit.ru (Postfix) with SMTP id 902C2E276C;
  Fri,  7 Jun 2024 22:14:00 +0300 (MSK)
-Received: (nullmailer pid 529475 invoked by uid 1000);
+Received: (nullmailer pid 529484 invoked by uid 1000);
  Fri, 07 Jun 2024 19:13:58 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Alistair Francis <alistair23@gmail.com>,
- Eric DeVolder <eric_devolder@yahoo.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.0.1 66/71] disas/riscv: Decode all of the pmpcfg and
- pmpaddr CSRs
-Date: Fri,  7 Jun 2024 22:13:47 +0300
-Message-Id: <20240607191356.529336-22-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Peter Xu <peterx@redhat.com>, Fiona Ebner <f.ebner@proxmox.com>,
+ Fabiano Rosas <farosas@suse.de>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.0.1 69/71] virtio-gpu: fix v2 migration
+Date: Fri,  7 Jun 2024 22:13:50 +0300
+Message-Id: <20240607191356.529336-25-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-9.0.1-20240607221321@cover.tls.msk.ru>
 References: <qemu-stable-9.0.1-20240607221321@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -63,105 +62,105 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Alistair Francis <alistair23@gmail.com>
+From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Previously we only listed a single pmpcfg CSR and the first 16 pmpaddr
-CSRs. This patch fixes this to list all 16 pmpcfg and all 64 pmpaddr
-CSRs are part of the disassembly.
+Commit dfcf74fa ("virtio-gpu: fix scanout migration post-load") broke
+forward/backward version migration. Versioning of nested VMSD structures
+is not straightforward, as the wire format doesn't have nested
+structures versions. Introduce x-scanout-vmstate-version and a field
+test to save/load appropriately according to the machine version.
 
-Reported-by: Eric DeVolder <eric_devolder@yahoo.com>
-Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-Fixes: ea10325917 ("RISC-V Disassembler")
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-stable <qemu-stable@nongnu.org>
-Message-ID: <20240514051615.330979-1-alistair.francis@wdc.com>
-Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-(cherry picked from commit 915758c537b5fe09575291f4acd87e2d377a93de)
+Fixes: dfcf74fa ("virtio-gpu: fix scanout migration post-load")
+Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Signed-off-by: Peter Xu <peterx@redhat.com>
+Reviewed-by: Fiona Ebner <f.ebner@proxmox.com>
+Tested-by: Fiona Ebner <f.ebner@proxmox.com>
+[fixed long lines]
+Signed-off-by: Fabiano Rosas <farosas@suse.de>
+(cherry picked from commit 40a23ef643664b5c1021a9789f9d680b6294fb50)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/disas/riscv.c b/disas/riscv.c
-index e236c8b5b7..297cfa2f63 100644
---- a/disas/riscv.c
-+++ b/disas/riscv.c
-@@ -2190,7 +2190,22 @@ static const char *csr_name(int csrno)
-     case 0x0383: return "mibound";
-     case 0x0384: return "mdbase";
-     case 0x0385: return "mdbound";
--    case 0x03a0: return "pmpcfg3";
-+    case 0x03a0: return "pmpcfg0";
-+    case 0x03a1: return "pmpcfg1";
-+    case 0x03a2: return "pmpcfg2";
-+    case 0x03a3: return "pmpcfg3";
-+    case 0x03a4: return "pmpcfg4";
-+    case 0x03a5: return "pmpcfg5";
-+    case 0x03a6: return "pmpcfg6";
-+    case 0x03a7: return "pmpcfg7";
-+    case 0x03a8: return "pmpcfg8";
-+    case 0x03a9: return "pmpcfg9";
-+    case 0x03aa: return "pmpcfg10";
-+    case 0x03ab: return "pmpcfg11";
-+    case 0x03ac: return "pmpcfg12";
-+    case 0x03ad: return "pmpcfg13";
-+    case 0x03ae: return "pmpcfg14";
-+    case 0x03af: return "pmpcfg15";
-     case 0x03b0: return "pmpaddr0";
-     case 0x03b1: return "pmpaddr1";
-     case 0x03b2: return "pmpaddr2";
-@@ -2207,6 +2222,54 @@ static const char *csr_name(int csrno)
-     case 0x03bd: return "pmpaddr13";
-     case 0x03be: return "pmpaddr14";
-     case 0x03bf: return "pmpaddr15";
-+    case 0x03c0: return "pmpaddr16";
-+    case 0x03c1: return "pmpaddr17";
-+    case 0x03c2: return "pmpaddr18";
-+    case 0x03c3: return "pmpaddr19";
-+    case 0x03c4: return "pmpaddr20";
-+    case 0x03c5: return "pmpaddr21";
-+    case 0x03c6: return "pmpaddr22";
-+    case 0x03c7: return "pmpaddr23";
-+    case 0x03c8: return "pmpaddr24";
-+    case 0x03c9: return "pmpaddr25";
-+    case 0x03ca: return "pmpaddr26";
-+    case 0x03cb: return "pmpaddr27";
-+    case 0x03cc: return "pmpaddr28";
-+    case 0x03cd: return "pmpaddr29";
-+    case 0x03ce: return "pmpaddr30";
-+    case 0x03cf: return "pmpaddr31";
-+    case 0x03d0: return "pmpaddr32";
-+    case 0x03d1: return "pmpaddr33";
-+    case 0x03d2: return "pmpaddr34";
-+    case 0x03d3: return "pmpaddr35";
-+    case 0x03d4: return "pmpaddr36";
-+    case 0x03d5: return "pmpaddr37";
-+    case 0x03d6: return "pmpaddr38";
-+    case 0x03d7: return "pmpaddr39";
-+    case 0x03d8: return "pmpaddr40";
-+    case 0x03d9: return "pmpaddr41";
-+    case 0x03da: return "pmpaddr42";
-+    case 0x03db: return "pmpaddr43";
-+    case 0x03dc: return "pmpaddr44";
-+    case 0x03dd: return "pmpaddr45";
-+    case 0x03de: return "pmpaddr46";
-+    case 0x03df: return "pmpaddr47";
-+    case 0x03e0: return "pmpaddr48";
-+    case 0x03e1: return "pmpaddr49";
-+    case 0x03e2: return "pmpaddr50";
-+    case 0x03e3: return "pmpaddr51";
-+    case 0x03e4: return "pmpaddr52";
-+    case 0x03e5: return "pmpaddr53";
-+    case 0x03e6: return "pmpaddr54";
-+    case 0x03e7: return "pmpaddr55";
-+    case 0x03e8: return "pmpaddr56";
-+    case 0x03e9: return "pmpaddr57";
-+    case 0x03ea: return "pmpaddr58";
-+    case 0x03eb: return "pmpaddr59";
-+    case 0x03ec: return "pmpaddr60";
-+    case 0x03ed: return "pmpaddr61";
-+    case 0x03ee: return "pmpaddr62";
-+    case 0x03ef: return "pmpaddr63";
-     case 0x0780: return "mtohost";
-     case 0x0781: return "mfromhost";
-     case 0x0782: return "mreset";
+diff --git a/hw/core/machine.c b/hw/core/machine.c
+index 3a5a8d473d..4273de16a0 100644
+--- a/hw/core/machine.c
++++ b/hw/core/machine.c
+@@ -37,6 +37,7 @@ GlobalProperty hw_compat_8_2[] = {
+     { "migration", "zero-page-detection", "legacy"},
+     { TYPE_VIRTIO_IOMMU_PCI, "granule", "4k" },
+     { TYPE_VIRTIO_IOMMU_PCI, "aw-bits", "64" },
++    { "virtio-gpu-device", "x-scanout-vmstate-version", "1" },
+ };
+ const size_t hw_compat_8_2_len = G_N_ELEMENTS(hw_compat_8_2);
+ 
+diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
+index ae831b6b3e..d60b1b2973 100644
+--- a/hw/display/virtio-gpu.c
++++ b/hw/display/virtio-gpu.c
+@@ -1166,10 +1166,17 @@ static void virtio_gpu_cursor_bh(void *opaque)
+     virtio_gpu_handle_cursor(&g->parent_obj.parent_obj, g->cursor_vq);
+ }
+ 
++static bool scanout_vmstate_after_v2(void *opaque, int version)
++{
++    struct VirtIOGPUBase *base = container_of(opaque, VirtIOGPUBase, scanout);
++    struct VirtIOGPU *gpu = container_of(base, VirtIOGPU, parent_obj);
++
++    return gpu->scanout_vmstate_version >= 2;
++}
++
+ static const VMStateDescription vmstate_virtio_gpu_scanout = {
+     .name = "virtio-gpu-one-scanout",
+-    .version_id = 2,
+-    .minimum_version_id = 1,
++    .version_id = 1,
+     .fields = (const VMStateField[]) {
+         VMSTATE_UINT32(resource_id, struct virtio_gpu_scanout),
+         VMSTATE_UINT32(width, struct virtio_gpu_scanout),
+@@ -1181,12 +1188,18 @@ static const VMStateDescription vmstate_virtio_gpu_scanout = {
+         VMSTATE_UINT32(cursor.hot_y, struct virtio_gpu_scanout),
+         VMSTATE_UINT32(cursor.pos.x, struct virtio_gpu_scanout),
+         VMSTATE_UINT32(cursor.pos.y, struct virtio_gpu_scanout),
+-        VMSTATE_UINT32_V(fb.format, struct virtio_gpu_scanout, 2),
+-        VMSTATE_UINT32_V(fb.bytes_pp, struct virtio_gpu_scanout, 2),
+-        VMSTATE_UINT32_V(fb.width, struct virtio_gpu_scanout, 2),
+-        VMSTATE_UINT32_V(fb.height, struct virtio_gpu_scanout, 2),
+-        VMSTATE_UINT32_V(fb.stride, struct virtio_gpu_scanout, 2),
+-        VMSTATE_UINT32_V(fb.offset, struct virtio_gpu_scanout, 2),
++        VMSTATE_UINT32_TEST(fb.format, struct virtio_gpu_scanout,
++                            scanout_vmstate_after_v2),
++        VMSTATE_UINT32_TEST(fb.bytes_pp, struct virtio_gpu_scanout,
++                            scanout_vmstate_after_v2),
++        VMSTATE_UINT32_TEST(fb.width, struct virtio_gpu_scanout,
++                            scanout_vmstate_after_v2),
++        VMSTATE_UINT32_TEST(fb.height, struct virtio_gpu_scanout,
++                            scanout_vmstate_after_v2),
++        VMSTATE_UINT32_TEST(fb.stride, struct virtio_gpu_scanout,
++                            scanout_vmstate_after_v2),
++        VMSTATE_UINT32_TEST(fb.offset, struct virtio_gpu_scanout,
++                            scanout_vmstate_after_v2),
+         VMSTATE_END_OF_LIST()
+     },
+ };
+@@ -1659,6 +1672,7 @@ static Property virtio_gpu_properties[] = {
+     DEFINE_PROP_BIT("blob", VirtIOGPU, parent_obj.conf.flags,
+                     VIRTIO_GPU_FLAG_BLOB_ENABLED, false),
+     DEFINE_PROP_SIZE("hostmem", VirtIOGPU, parent_obj.conf.hostmem, 0),
++    DEFINE_PROP_UINT8("x-scanout-vmstate-version", VirtIOGPU, scanout_vmstate_version, 2),
+     DEFINE_PROP_END_OF_LIST(),
+ };
+ 
+diff --git a/include/hw/virtio/virtio-gpu.h b/include/hw/virtio/virtio-gpu.h
+index ed44cdad6b..842315d51d 100644
+--- a/include/hw/virtio/virtio-gpu.h
++++ b/include/hw/virtio/virtio-gpu.h
+@@ -177,6 +177,7 @@ typedef struct VGPUDMABuf {
+ struct VirtIOGPU {
+     VirtIOGPUBase parent_obj;
+ 
++    uint8_t scanout_vmstate_version;
+     uint64_t conf_max_hostmem;
+ 
+     VirtQueue *ctrl_vq;
 -- 
 2.39.2
 
