@@ -2,75 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8A5E900630
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jun 2024 16:17:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA756900638
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jun 2024 16:18:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sFaO0-0003li-F1; Fri, 07 Jun 2024 10:16:08 -0400
+	id 1sFaQ8-0005Oc-EU; Fri, 07 Jun 2024 10:18:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sFaNh-0003g6-0F
- for qemu-devel@nongnu.org; Fri, 07 Jun 2024 10:15:50 -0400
-Received: from mail-lj1-x236.google.com ([2a00:1450:4864:20::236])
+ (Exim 4.90_1) (envelope-from <ribalda@chromium.org>)
+ id 1sFaQ5-0005Nr-8r
+ for qemu-devel@nongnu.org; Fri, 07 Jun 2024 10:18:17 -0400
+Received: from mail-qk1-x731.google.com ([2607:f8b0:4864:20::731])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sFaNe-0006xT-5W
- for qemu-devel@nongnu.org; Fri, 07 Jun 2024 10:15:48 -0400
-Received: by mail-lj1-x236.google.com with SMTP id
- 38308e7fff4ca-2eab0bc74cdso22813931fa.3
- for <qemu-devel@nongnu.org>; Fri, 07 Jun 2024 07:15:45 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <ribalda@chromium.org>)
+ id 1sFaQ3-0007TP-JE
+ for qemu-devel@nongnu.org; Fri, 07 Jun 2024 10:18:17 -0400
+Received: by mail-qk1-x731.google.com with SMTP id
+ af79cd13be357-7953f1dcb01so55837885a.3
+ for <qemu-devel@nongnu.org>; Fri, 07 Jun 2024 07:18:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1717769742; x=1718374542; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=m1g31EP1QemxA2CTPd0NgNSVIzuF7p1smSJyn7t+l0Y=;
- b=l8W9K5Xe7H9NTbch3svnKGdnTnNNVG6Q+K1uBlLv3y+kuXTuCbIdFOejZJdbgLscGD
- hnvWIF/jJP2aFFaGeTYLj8id17HnBsAPxc0BDctBHag8Yag2Uw+kGa88bEt56dzjq5OP
- noGvcky2nx2FsRnBbQr0osVvSzKyA/DnStoQkExSss8Q8seZUGkaqH2LyOu8P4SS6Nf/
- Sn3cmOO78tldB+FOlh8SOLHoK0DqogmkGRdjGgtJ8ojcvj42LifMD63vTiLJrT5eUzNJ
- LSdPA9pXxHa6eeq8XMZUD9TQoxz9WVXkjCcjj4ghC403yPKcgnVA+miqEJX+O4gitQGU
- TXNg==
+ d=chromium.org; s=google; t=1717769893; x=1718374693; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=GswNpYyzrojMh6Rycvh4hXEO2qJe9DuvUgxafxyx38I=;
+ b=WyTjN9cAwqVWldPFOicCHrdeIcv0JrITbUh5kDMDqPrjdSEDYXKs8cUDtaeHKbC2xv
+ DdMNr7MmMEKGRU3idYWDOIAwJ/MCtOTEodZItnv8+3TYgr0viNDNYmX9FTGdMAPdIQEq
+ ZE+KOfAfcxbi0WcO61B5TrW387H6MhuWRzm/U=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717769742; x=1718374542;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1717769893; x=1718374693;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=m1g31EP1QemxA2CTPd0NgNSVIzuF7p1smSJyn7t+l0Y=;
- b=nwGCkiElKbsTnIELyJGmmOmj7dT7vKDZ9XGgYOKnEkVT2+9uULpFvVQipzUYWy8e/w
- KoASzJxpRqTFVWq5R3iS8mO+D6bRZfwcyMopMrHZl3KC85YihpDqyAE8btc96QCSRD5R
- iBgoFw4qAUIw32QOFbkIsw50Zd1AUuhmOFNASw4C+nw+rtz4+U1uq1EeEg0JPem+zwru
- T1cAtH5KmLieOw6KZEZOs5VqUqiDSmRRY6t3xO6gbOeZj1B2xzmqi9z6fVbhhIHFoF+X
- SvoKev7M+0fTFf1HPqCHVicb5fc1v3Xs1qdCNnixtKpYyTByCtDeNzAKsaQ/hDzwNKkn
- SPsQ==
-X-Gm-Message-State: AOJu0Yx0IwfMp1HZnRsh7VS3RxASzJDNycCBFQ3C9Cd0wqcSIYKl7etv
- T8zd1aNbqwE09AQwsac35fqfEvbY6kti+PMYgrrHl2Zgc0QPc0GfqWQ5eQ9KBsyP2Res0N0SiPP
- ybIfUqxTlILGjUULb1nX1LVs/fEBtVw4KXklHHQ==
-X-Google-Smtp-Source: AGHT+IEpK8+cgKx0YQhHkoTVSsCND18CwFIbQzTgMizc3gercQohyTF9XgODZDaWb5msSE0zmorUN2zMIkGc5aB/vnI=
-X-Received: by 2002:a2e:b177:0:b0:2e5:2c7e:257 with SMTP id
- 38308e7fff4ca-2eadce380damr17803421fa.30.1717769742149; Fri, 07 Jun 2024
- 07:15:42 -0700 (PDT)
+ bh=GswNpYyzrojMh6Rycvh4hXEO2qJe9DuvUgxafxyx38I=;
+ b=UpdFPEeOVzJo94OtuH2bZH8349ikYaUr5yg8SGOMIMqe2LaCpKzTQ/ClgI+2wmiUkQ
+ M3Ef6hLCuBd+CQs3KIsGH94cgTue0ajn9piVJdeM47fiR1Tm/Z1ViS0ViIfgVjIXTjXU
+ +8GZCU5xBH2gOcJ7RWtycff5+MeCE++96Tb9jzLA1fHPNhzxycmMW1IA8T1e81gDKnk6
+ muoT8NKVzAE0w0HZXcX8ySQfi4vPA9AlFvTjtMCoXa512cFQzgIXcLXqPkT9PsQJleq+
+ LtAibGgYCuXJpG7ngMWxHEkU0PaA/cYzdKA2Re2eeztGc+NPN2HpmUVWDt1vcza8xDS5
+ qxJQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCV1i5AVXQaAk5F9zdfi9IbjX1Ln3Z89UTUZiemt5ISNKKzgQm/SnmyqP8mFo6gudmmdhh2qCfqPy5yndJ56ixI9vztrmOY=
+X-Gm-Message-State: AOJu0YxU1gBBPtHBfqOu1WT/BpoWKeCUzg6NLLDD7Sjvuub+8OD04H4z
+ 7X1eP32QKf7cv7qCGsTmCTimqRPTJxDotyTykKUC356r47jKX5nQCmwZeF30vg==
+X-Google-Smtp-Source: AGHT+IEF5m/WEQN+G9SSM+q43DSdMOCP7+EOuarQxwZXqR1ew6jmG7i/S4utZTWlC922HqBqR3kxww==
+X-Received: by 2002:a05:620a:394e:b0:795:4745:df49 with SMTP id
+ af79cd13be357-7954745ed8emr143030285a.65.1717769893498; 
+ Fri, 07 Jun 2024 07:18:13 -0700 (PDT)
+Received: from denia.c.googlers.com.com
+ (123.178.145.34.bc.googleusercontent.com. [34.145.178.123])
+ by smtp.gmail.com with ESMTPSA id
+ af79cd13be357-79532813a2dsm170873885a.20.2024.06.07.07.18.12
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 07 Jun 2024 07:18:13 -0700 (PDT)
+From: Ricardo Ribalda <ribalda@chromium.org>
+To: "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Ani Sinha <anisinha@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, qemu-devel@nongnu.org,
+ Andrea Righi <andrea.righi@canonical.com>
+Cc: Ricardo Ribalda <ribalda@chromium.org>
+Subject: [PATCH v3 0/3] hw/i386/acpi: Pre-compute the _PRT table
+Date: Fri,  7 Jun 2024 14:17:23 +0000
+Message-ID: <20240607141809.1637137-1-ribalda@chromium.org>
+X-Mailer: git-send-email 2.45.2.505.gda0bf45e8d-goog
 MIME-Version: 1.0
-References: <20240604064409.957105-1-pbonzini@redhat.com>
- <20240604064409.957105-22-pbonzini@redhat.com>
-In-Reply-To: <20240604064409.957105-22-pbonzini@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 7 Jun 2024 15:15:30 +0100
-Message-ID: <CAFEAcA9k4YSALNG+mJP7Disox7xm-giAknFzfZ2MxGDkPpsTLw@mail.gmail.com>
-Subject: Re: [PULL 21/45] i386/sev: Introduce 'sev-snp-guest' object
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, Brijesh Singh <brijesh.singh@amd.com>, 
- Michael Roth <michael.roth@amd.com>, Markus Armbruster <armbru@redhat.com>, 
- Pankaj Gupta <pankaj.gupta@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::236;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x236.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::731;
+ envelope-from=ribalda@chromium.org; helo=mail-qk1-x731.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -88,79 +94,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 4 Jun 2024 at 07:45, Paolo Bonzini <pbonzini@redhat.com> wrote:
->
-> From: Brijesh Singh <brijesh.singh@amd.com>
->
-> SEV-SNP support relies on a different set of properties/state than the
-> existing 'sev-guest' object. This patch introduces the 'sev-snp-guest'
-> object, which can be used to configure an SEV-SNP guest. For example,
-> a default-configured SEV-SNP guest with no additional information
-> passed in for use with attestation:
->
->   -object sev-snp-guest,id=sev0
->
-> or a fully-specified SEV-SNP guest where all spec-defined binary
-> blobs are passed in as base64-encoded strings:
->
->   -object sev-snp-guest,id=sev0, \
->     policy=0x30000, \
->     init-flags=0, \
->     id-block=YWFhYWFhYWFhYWFhYWFhCg==, \
->     id-auth=CxHK/OKLkXGn/KpAC7Wl1FSiisWDbGTEKz..., \
->     author-key-enabled=on, \
->     host-data=LNkCWBRC5CcdGXirbNUV1OrsR28s..., \
->     guest-visible-workarounds=AA==, \
->
-> See the QAPI schema updates included in this patch for more usage
-> details.
->
-> In some cases these blobs may be up to 4096 characters, but this is
-> generally well below the default limit for linux hosts where
-> command-line sizes are defined by the sysconf-configurable ARG_MAX
-> value, which defaults to 2097152 characters for Ubuntu hosts, for
-> example.
+Today for x86 the _PRT() table is computed in runtime.
+Under some configurations, computing the _PRT table can take more than
+30 seconds and the ACPI timeout is violated.
 
-Hi; Coverity reports (CID 1546887) an issue in this code:
+This patchset modifies _PRT() to return a pre-computed table.
 
-> +static void
-> +sev_snp_guest_set_id_block(Object *obj, const char *value, Error **errp)
-> +{
-> +    SevSnpGuestState *sev_snp_guest = SEV_SNP_GUEST(obj);
-> +    struct kvm_sev_snp_launch_finish *finish = &sev_snp_guest->kvm_finish_conf;
-> +    gsize len;
-> +
-> +    g_free(sev_snp_guest->id_block);
-> +    g_free((guchar *)finish->id_block_uaddr);
-> +
-> +    /* store the base64 str so we don't need to re-encode in getter */
-> +    sev_snp_guest->id_block = g_strdup(value);
-> +
-> +    finish->id_block_uaddr =
-> +        (uint64_t)qbase64_decode(sev_snp_guest->id_block, -1, &len, errp);
-> +
-> +    if (!finish->id_block_uaddr) {
-> +        return;
-> +    }
-> +
-> +    if (len != KVM_SEV_SNP_ID_BLOCK_SIZE) {
-> +        error_setg(errp, "parameter length of %lu not equal to %u",
-> +                   len, KVM_SEV_SNP_ID_BLOCK_SIZE);
-> +        return;
+Changelog v2 Thanks Michael:
+- Code style
+- Add cover letter
 
-Here if len is not 96 then we return early...
+Ricardo Ribalda (3):
+  tests/acpi: pc: allow DSDT acpi table changes
+  hw/i386/acpi-build: Return a pre-computed _PRT table
+  tests/acpi: pc: update golden masters for DSDT
 
-> +    }
-> +
-> +    finish->id_block_en = (len) ? 1 : 0;
+ hw/i386/acpi-build.c             | 120 ++++++-------------------------
+ tests/data/acpi/pc/DSDT          | Bin 6830 -> 8527 bytes
+ tests/data/acpi/pc/DSDT.acpierst | Bin 6741 -> 8438 bytes
+ tests/data/acpi/pc/DSDT.acpihmat | Bin 8155 -> 9852 bytes
+ tests/data/acpi/pc/DSDT.bridge   | Bin 13701 -> 15398 bytes
+ tests/data/acpi/pc/DSDT.cphp     | Bin 7294 -> 8991 bytes
+ tests/data/acpi/pc/DSDT.dimmpxm  | Bin 8484 -> 10181 bytes
+ tests/data/acpi/pc/DSDT.hpbridge | Bin 6781 -> 8478 bytes
+ tests/data/acpi/pc/DSDT.hpbrroot | Bin 3337 -> 5034 bytes
+ tests/data/acpi/pc/DSDT.ipmikcs  | Bin 6902 -> 8599 bytes
+ tests/data/acpi/pc/DSDT.memhp    | Bin 8189 -> 9886 bytes
+ tests/data/acpi/pc/DSDT.nohpet   | Bin 6688 -> 8385 bytes
+ tests/data/acpi/pc/DSDT.numamem  | Bin 6836 -> 8533 bytes
+ tests/data/acpi/pc/DSDT.roothp   | Bin 10623 -> 12320 bytes
+ tests/data/acpi/q35/DSDT.cxl     | Bin 9714 -> 13148 bytes
+ tests/data/acpi/q35/DSDT.viot    | Bin 9464 -> 14615 bytes
+ 16 files changed, 22 insertions(+), 98 deletions(-)
 
-...but here we check whether len is 0, which it can never be.
+-- 
+2.45.2.505.gda0bf45e8d-goog
 
-What was the intention here?
-
-Side notes: you don't need to cast the argument to g_free(); and
-you don't need to put brackets around a single argument like "len".
-
-thanks
--- PMM
 
