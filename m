@@ -2,85 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F7E6900E2F
-	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 00:43:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CCD5900EDF
+	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 02:26:44 +0200 (CEST)
 Received: from [::1] (helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sFgNY-0008PP-50; Fri, 07 Jun 2024 16:40:04 -0400
+	id 1sFal1-0006rZ-DT; Fri, 07 Jun 2024 10:39:55 -0400
 Received: from [2001:470:142:3::10] (helo=eggs.gnu.org)
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jfehlig@suse.com>) id 1sFgNU-0008On-Fd
- for qemu-devel@nongnu.org; Fri, 07 Jun 2024 16:40:00 -0400
-Received: from mail-lj1-x22c.google.com ([2a00:1450:4864:20::22c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <jfehlig@suse.com>) id 1sFgNQ-0007oS-Go
- for qemu-devel@nongnu.org; Fri, 07 Jun 2024 16:39:58 -0400
-Received: by mail-lj1-x22c.google.com with SMTP id
- 38308e7fff4ca-2eab0bc74cdso26423301fa.3
- for <qemu-devel@nongnu.org>; Fri, 07 Jun 2024 13:39:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=suse.com; s=google; t=1717792794; x=1718397594; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=l52WnzWelLPTDbeOiU1TA3yfGz1uBJsv1xjkrNEb44E=;
- b=ULrrJWuFn1EzJjeuFStZ9l9wd/6KuKTUyb1F5oL5AVyEk0R2DVIsJH8EFaL/+otaMD
- BsrYp0zIOx0u4qOXRxtBXgrTBUgQ9ArrbyNlAIgnk2hasD6yhINBIYiromf12v20Lrti
- yAWSCWMeBS7kp/05bg7sVzLDkE+ao/mC3nT2vhXEgNoKZHSRw9+XrGZvHp+DgzM5IfWt
- V9Ml4ztT2Ta9uN9ajjhTN0m0OIfuBG1CsxD2MjkBiGHTuymzQ6x2FeEnqZ0lSjmvq+qd
- V3MbcJJfpmCpPCDGsVQbWPyCmwxhCfogTB2WaVurUmA2d/CAqdXyPoJnJUuKDxYdPfeD
- QmuQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717792794; x=1718397594;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=l52WnzWelLPTDbeOiU1TA3yfGz1uBJsv1xjkrNEb44E=;
- b=iUdgTfJ4f8jh3S7efT7b4MmABBsHL533LgMrryX0NtBjctsOJNqJh46XK/W/J+KEFF
- m4BQi7TpgADdma7pO8oD6RIlWTSa+0GVmL9zDlp7L4SGwWUuBj7LB58PYLzzz7zMpO5s
- d3LOa97Hdhx1ZgI0b2uhQHIHtDIAAtLtfbw0nKdF0HuIO5Ho1BuNyj9m2NpOjVKueVBc
- zvKZ5s1pprADLk/H4D1jZEm8Bvc6wpALXOhjQRnmHXtpVn1hBuxuySUxP+ZT6peSgt/K
- YcFDFVJUQin7OUKK7yv3pcKC6wNHngenwFfLDbfY2QFJkdakM/2O1qQ8CUj7mVWh57Bz
- 2UZQ==
-X-Gm-Message-State: AOJu0YwfSMDROUzVt9M4VD+ZuNE8CSMFhwWXj4RPJpq3Gnat2uHV80ln
- HgYP/4p7gsr1ZNpYGnN9/TFOvjCVYxOwBWwFZDlnGGMke8TVO5h5j8uCIVJ0UqE=
-X-Google-Smtp-Source: AGHT+IHn0OmKfhHnUepisC7P9SesLiCap7PZ3LMpY+DMmZum3vVU0YvZO9BbDbEHq4+1bo/chHL4mA==
-X-Received: by 2002:a2e:860b:0:b0:2ea:7ccd:10a7 with SMTP id
- 38308e7fff4ca-2eadce7f92dmr20949581fa.45.1717792793656; 
- Fri, 07 Jun 2024 13:39:53 -0700 (PDT)
-Received: from [192.168.1.246] ([192.150.157.228])
- by smtp.gmail.com with ESMTPSA id
- 8926c6da1cb9f-4b7a225b969sm997253173.59.2024.06.07.13.39.52
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 07 Jun 2024 13:39:53 -0700 (PDT)
-Message-ID: <1d2bc62f-421f-416d-9ef2-0536e2fe54bc@suse.com>
-Date: Fri, 7 Jun 2024 14:39:50 -0600
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1sFaky-0006m4-Sp
+ for qemu-devel@nongnu.org; Fri, 07 Jun 2024 10:39:52 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1sFakx-0003Pi-CP
+ for qemu-devel@nongnu.org; Fri, 07 Jun 2024 10:39:52 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1717771190;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=NZxtuEQbwcSWkjTtgaPcpq0g8+TJ5S9KsG5IajnwesQ=;
+ b=ZMEaHJ142OvevFzBmTi+uHvScW70ygBuO33dJqOepZM7xIH2BET9fF62vXW97T425dKKvH
+ N2Udf4pSd+spkOI39qroAIv78Uckz+Ha9yz/Xf8h7z6J+WSH1tvpQSryk4K5c3IsUvKzZi
+ LrBR2dHtp4/CkOpgOF1htP5eYQySav8=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-133-gT1PyPkvOFaDGANimmSrCw-1; Fri,
+ 07 Jun 2024 10:39:46 -0400
+X-MC-Unique: gT1PyPkvOFaDGANimmSrCw-1
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 62E9E19560BB; Fri,  7 Jun 2024 14:39:44 +0000 (UTC)
+Received: from laptop.redhat.com (unknown [10.39.193.191])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 8B99F1956048; Fri,  7 Jun 2024 14:39:38 +0000 (UTC)
+From: Eric Auger <eric.auger@redhat.com>
+To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
+ qemu-arm@nongnu.org, mst@redhat.com, jean-philippe@linaro.org,
+ imammedo@redhat.com, peter.maydell@linaro.org, clg@redhat.com,
+ yanghliu@redhat.com, zhenzhong.duan@intel.com
+Cc: alex.williamson@redhat.com, jasowang@redhat.com, pbonzini@redhat.com,
+ berrange@redhat.com
+Subject: [RFC v2 5/7] virtio-iommu: Remove the implementation of
+ iommu_set_iova_range
+Date: Fri,  7 Jun 2024 16:37:25 +0200
+Message-ID: <20240607143905.765133-6-eric.auger@redhat.com>
+In-Reply-To: <20240607143905.765133-1-eric.auger@redhat.com>
+References: <20240607143905.765133-1-eric.auger@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 18/18] migration/ram: Add direct-io support to precopy
- file migration
-To: Fabiano Rosas <farosas@suse.de>, Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, berrange@redhat.com, armbru@redhat.com,
- Claudio Fontana <cfontana@suse.de>, Thomas Huth <thuth@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-References: <20240523190548.23977-1-farosas@suse.de>
- <20240523190548.23977-19-farosas@suse.de> <Zl9_ZiC6-743ZosG@x1n>
- <87y17gwq5g.fsf@suse.de>
-Content-Language: en-US
-From: Jim Fehlig <jfehlig@suse.com>
-In-Reply-To: <87y17gwq5g.fsf@suse.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: permerror client-ip=2a00:1450:4864:20::22c;
- envelope-from=jfehlig@suse.com; helo=mail-lj1-x22c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,80 +85,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/7/24 12:42 PM, Fabiano Rosas wrote:
-> Peter Xu <peterx@redhat.com> writes:
-> 
->> On Thu, May 23, 2024 at 04:05:48PM -0300, Fabiano Rosas wrote:
->>> We've recently added support for direct-io with multifd, which brings
->>> performance benefits, but creates a non-uniform user interface by
->>> coupling direct-io with the multifd capability. This means that users
->>> cannot keep the direct-io flag enabled while disabling multifd.
->>>
->>> Libvirt in particular already has support for direct-io and parallel
->>> migration separately from each other, so it would be a regression to
->>> now require both options together. It's relatively simple for QEMU to
->>> add support for direct-io migration without multifd, so let's do this
->>> in order to keep both options decoupled.
->>>
->>> We cannot simply enable the O_DIRECT flag, however, because not all IO
->>> performed by the migration thread satisfies the alignment requirements
->>> of O_DIRECT. There are many small read & writes that add headers and
->>> synchronization flags to the stream, which at the moment are required
->>> to always be present.
->>>
->>> Fortunately, due to fixed-ram migration there is a discernible moment
->>> where only RAM pages are written to the migration file. Enable
->>> direct-io during that moment.
->>>
->>> Signed-off-by: Fabiano Rosas <farosas@suse.de>
->>
->> Is anyone going to consume this?  How's the performance?
-> 
-> I don't think we have a pre-determined consumer for this. This came up
-> in an internal discussion about making the interface simpler for libvirt
-> and in a thread on the libvirt mailing list[1] about using O_DIRECT to
-> keep the snapshot data out of the caches to avoid impacting the rest of
-> the system. (I could have described this better in the commit message,
-> sorry).
-> 
-> Quoting Daniel:
-> 
->    "Note the reason for using O_DIRECT is *not* to make saving / restoring
->     the guest VM faster. Rather it is to ensure that saving/restoring a VM
->     does not trash the host I/O / buffer cache, which will negatively impact
->     performance of all the *other* concurrently running VMs."
-> 
-> 1- https://lore.kernel.org/r/87sez86ztq.fsf@suse.de
-> 
-> About performance, a quick test on a stopped 30G guest, shows
-> mapped-ram=on direct-io=on it's 12% slower than mapped-ram=on
-> direct-io=off.
-> 
->>
->> It doesn't look super fast to me if we need to enable/disable dio in each
->> loop.. then it's a matter of whether we should bother, or would it be
->> easier that we simply require multifd when direct-io=on.
-> 
-> AIUI, the issue here that users are already allowed to specify in
-> libvirt the equivalent to direct-io and multifd independent of each
-> other (bypass-cache, parallel). To start requiring both together now in
-> some situations would be a regression. I confess I don't know libvirt
-> code to know whether this can be worked around somehow, but as I said,
-> it's a relatively simple change from the QEMU side.
+Now that we use PCIIOMMUOps to convey information about usable IOVA
+ranges we do not to implement the iommu_set_iova_ranges IOMMU MR
+callback.
 
-Currently, libvirt does not support --parallel with virDomainSave* and 
-virDomainRestore* APIs. I'll work on that after getting support for mapped-ram 
-merged. --parallel is supported in virDomainMigrate* APIs, but obviously those 
-APIs don't accept --bypass-cache.
+Signed-off-by: Eric Auger <eric.auger@redhat.com>
+---
+ hw/virtio/virtio-iommu.c | 67 ----------------------------------------
+ 1 file changed, 67 deletions(-)
 
-Regards,
-Jim
-
-> 
-> Another option which would be for libvirt to keep using multifd, but
-> make it 1 channel only if --parallel is not specified. That might be
-> enough to solve the interface issues. Of course, it's a different code
-> altogether than the usual precopy code that gets executed when
-> multifd=off, I don't know whether that could be an issue somehow.
+diff --git a/hw/virtio/virtio-iommu.c b/hw/virtio/virtio-iommu.c
+index 33e9682b83..643bbb060b 100644
+--- a/hw/virtio/virtio-iommu.c
++++ b/hw/virtio/virtio-iommu.c
+@@ -1360,72 +1360,6 @@ static int virtio_iommu_set_page_size_mask(IOMMUMemoryRegion *mr,
+     return 0;
+ }
+ 
+-/**
+- * virtio_iommu_set_iova_ranges: Conveys the usable IOVA ranges
+- *
+- * The function turns those into reserved ranges. Once some
+- * reserved ranges have been set, new reserved regions cannot be
+- * added outside of the original ones.
+- *
+- * @mr: IOMMU MR
+- * @iova_ranges: list of usable IOVA ranges
+- * @errp: error handle
+- */
+-static int virtio_iommu_set_iova_ranges(IOMMUMemoryRegion *mr,
+-                                        GList *iova_ranges,
+-                                        Error **errp)
+-{
+-    IOMMUDevice *sdev = container_of(mr, IOMMUDevice, iommu_mr);
+-    GList *current_ranges = sdev->host_resv_ranges;
+-    GList *l, *tmp, *new_ranges = NULL;
+-    int ret = -EINVAL;
+-
+-    /* check that each new resv region is included in an existing one */
+-    if (sdev->host_resv_ranges) {
+-        range_inverse_array(iova_ranges,
+-                            &new_ranges,
+-                            0, UINT64_MAX);
+-
+-        for (tmp = new_ranges; tmp; tmp = tmp->next) {
+-            Range *newr = (Range *)tmp->data;
+-            bool included = false;
+-
+-            for (l = current_ranges; l; l = l->next) {
+-                Range * r = (Range *)l->data;
+-
+-                if (range_contains_range(r, newr)) {
+-                    included = true;
+-                    break;
+-                }
+-            }
+-            if (!included) {
+-                goto error;
+-            }
+-        }
+-        /* all new reserved ranges are included in existing ones */
+-        ret = 0;
+-        goto out;
+-    }
+-
+-    if (sdev->probe_done) {
+-        warn_report("%s: Notified about new host reserved regions after probe",
+-                    mr->parent_obj.name);
+-    }
+-
+-    range_inverse_array(iova_ranges,
+-                        &sdev->host_resv_ranges,
+-                        0, UINT64_MAX);
+-    rebuild_resv_regions(sdev);
+-
+-    return 0;
+-error:
+-    error_setg(errp, "IOMMU mr=%s Conflicting host reserved ranges set!",
+-               mr->parent_obj.name);
+-out:
+-    g_list_free_full(new_ranges, g_free);
+-    return ret;
+-}
+-
+ static void virtio_iommu_system_reset(void *opaque)
+ {
+     VirtIOIOMMU *s = opaque;
+@@ -1751,7 +1685,6 @@ static void virtio_iommu_memory_region_class_init(ObjectClass *klass,
+     imrc->replay = virtio_iommu_replay;
+     imrc->notify_flag_changed = virtio_iommu_notify_flag_changed;
+     imrc->iommu_set_page_size_mask = virtio_iommu_set_page_size_mask;
+-    imrc->iommu_set_iova_ranges = virtio_iommu_set_iova_ranges;
+ }
+ 
+ static const TypeInfo virtio_iommu_info = {
+-- 
+2.41.0
 
 
