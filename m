@@ -2,36 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC7AB900E01
-	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 00:23:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1347900E97
+	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 01:56:35 +0200 (CEST)
 Received: from [::1] (helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sFf2M-0001PJ-Ao; Fri, 07 Jun 2024 15:14:06 -0400
+	id 1sFf2f-0002y1-DJ; Fri, 07 Jun 2024 15:14:25 -0400
 Received: from [2001:470:142:3::10] (helo=eggs.gnu.org)
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sFf2G-000185-E7; Fri, 07 Jun 2024 15:14:00 -0400
+ id 1sFf2c-0002dc-1m; Fri, 07 Jun 2024 15:14:22 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sFf2E-0001q0-92; Fri, 07 Jun 2024 15:13:59 -0400
+ id 1sFf2a-0001qC-FC; Fri, 07 Jun 2024 15:14:21 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 60BBD6E546;
+ by isrv.corpit.ru (Postfix) with ESMTP id 807F26E547;
  Fri,  7 Jun 2024 22:14:04 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 97C37E2743;
+ by tsrv.corpit.ru (Postfix) with SMTP id ABCD3E2744;
  Fri,  7 Jun 2024 22:13:09 +0300 (MSK)
-Received: (nullmailer pid 528718 invoked by uid 1000);
+Received: (nullmailer pid 528722 invoked by uid 1000);
  Fri, 07 Jun 2024 19:13:08 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Andrew Jones <ajones@ventanamicro.com>,
+Cc: qemu-stable@nongnu.org, Huang Tao <eric.huang@linux.alibaba.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ LIU Zhiwei <zhiwei_liu@linux.alibaba.com>,
  Alistair Francis <alistair.francis@wdc.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.5 30/45] target/riscv/kvm: tolerate KVM disable ext errors
-Date: Fri,  7 Jun 2024 22:12:49 +0300
-Message-Id: <20240607191307.528622-10-mjt@tls.msk.ru>
+Subject: [Stable-8.2.5 31/45] target/riscv: Fix the element agnostic function
+ problem
+Date: Fri,  7 Jun 2024 22:12:50 +0300
+Message-Id: <20240607191307.528622-11-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.5-20240607221227@cover.tls.msk.ru>
 References: <qemu-stable-8.2.5-20240607221227@cover.tls.msk.ru>
@@ -60,66 +62,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+From: Huang Tao <eric.huang@linux.alibaba.com>
 
-Running a KVM guest using a 6.9-rc3 kernel, in a 6.8 host that has zkr
-enabled, will fail with a kernel oops SIGILL right at the start. The
-reason is that we can't expose zkr without implementing the SEED CSR.
-Disabling zkr in the guest would be a workaround, but if the KVM doesn't
-allow it we'll error out and never boot.
+In RVV and vcrypto instructions, the masked and tail elements are set to 1s
+using vext_set_elems_1s function if the vma/vta bit is set. It is the element
+agnostic policy.
 
-In hindsight this is too strict. If we keep proceeding, despite not
-disabling the extension in the KVM vcpu, we'll not add the extension in
-the riscv,isa. The guest kernel will be unaware of the extension, i.e.
-it doesn't matter if the KVM vcpu has it enabled underneath or not. So
-it's ok to keep booting in this case.
+However, this function can't deal the big endian situation. This patch fixes
+the problem by adding handling of such case.
 
-Change our current logic to not error out if we fail to disable an
-extension in kvm_set_one_reg(), but show a warning and keep booting. It
-is important to throw a warning because we must make the user aware that
-the extension is still available in the vcpu, meaning that an
-ill-behaved guest can ignore the riscv,isa settings and  use the
-extension.
-
-The case we're handling happens with an EINVAL error code. If we fail to
-disable the extension in KVM for any other reason, error out.
-
-We'll also keep erroring out when we fail to enable an extension in KVM,
-since adding the extension in riscv,isa at this point will cause a guest
-malfunction because the extension isn't enabled in the vcpu.
-
-Suggested-by: Andrew Jones <ajones@ventanamicro.com>
-Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Signed-off-by: Huang Tao <eric.huang@linux.alibaba.com>
+Suggested-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
 Cc: qemu-stable <qemu-stable@nongnu.org>
-Message-ID: <20240422171425.333037-2-dbarboza@ventanamicro.com>
+Message-ID: <20240325021654.6594-1-eric.huang@linux.alibaba.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-(cherry picked from commit 1215d45b2aa97512a2867e401aa59f3d0c23cb23)
+(cherry picked from commit 75115d880c6d396f8a2d56aab8c12236d85a90e0)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
-index ddbe820e10..fa00b14269 100644
---- a/target/riscv/kvm/kvm-cpu.c
-+++ b/target/riscv/kvm/kvm-cpu.c
-@@ -379,10 +379,14 @@ static void kvm_riscv_update_cpu_cfg_isa_ext(RISCVCPU *cpu, CPUState *cs)
-         reg = kvm_cpu_cfg_get(cpu, multi_ext_cfg);
-         ret = kvm_set_one_reg(cs, id, &reg);
-         if (ret != 0) {
--            error_report("Unable to %s extension %s in KVM, error %d",
--                         reg ? "enable" : "disable",
--                         multi_ext_cfg->name, ret);
--            exit(EXIT_FAILURE);
-+            if (!reg && ret == -EINVAL) {
-+                warn_report("KVM cannot disable extension %s",
-+                            multi_ext_cfg->name);
-+            } else {
-+                error_report("Unable to enable extension %s in KVM, error %d",
-+                             multi_ext_cfg->name, ret);
-+                exit(EXIT_FAILURE);
-+            }
-         }
+diff --git a/target/riscv/vector_internals.c b/target/riscv/vector_internals.c
+index 40faf3e65b..b077189579 100644
+--- a/target/riscv/vector_internals.c
++++ b/target/riscv/vector_internals.c
+@@ -29,6 +29,28 @@ void vext_set_elems_1s(void *base, uint32_t is_agnostic, uint32_t cnt,
+     if (tot - cnt == 0) {
+         return ;
      }
++
++    if (HOST_BIG_ENDIAN) {
++        /*
++         * Deal the situation when the elements are insdie
++         * only one uint64 block including setting the
++         * masked-off element.
++         */
++        if (((tot - 1) ^ cnt) < 8) {
++            memset(base + H1(tot - 1), -1, tot - cnt);
++            return;
++        }
++        /*
++         * Otherwise, at least cross two uint64_t blocks.
++         * Set first unaligned block.
++         */
++        if (cnt % 8 != 0) {
++            uint32_t j = ROUND_UP(cnt, 8);
++            memset(base + H1(j - 1), -1, j - cnt);
++            cnt = j;
++        }
++        /* Set other 64bit aligend blocks */
++    }
+     memset(base + cnt, -1, tot - cnt);
  }
+ 
 -- 
 2.39.2
 
