@@ -2,59 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84417900118
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jun 2024 12:40:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F00E900127
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jun 2024 12:48:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sFX05-00055o-19; Fri, 07 Jun 2024 06:39:13 -0400
+	id 1sFX7s-0000GZ-Mw; Fri, 07 Jun 2024 06:47:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiongyining1480@phytium.com.cn>)
- id 1sFX00-00054z-Ky; Fri, 07 Jun 2024 06:39:08 -0400
-Received: from sgoci-sdnproxy-4.icoremail.net ([129.150.39.64])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <xiongyining1480@phytium.com.cn>)
- id 1sFWzy-0002aW-L0; Fri, 07 Jun 2024 06:39:08 -0400
-Received: from prodtpl.icoremail.net (unknown [10.12.1.20])
- by hzbj-icmmx-6 (Coremail) with SMTP id AQAAfwBHIMNB42JmK0UNAA--.5824S2;
- Fri, 07 Jun 2024 18:38:57 +0800 (CST)
-Received: from phytium.com.cn (unknown [218.76.62.144])
- by mail (Coremail) with SMTP id AQAAfwA34tc742JmSdwAAA--.1309S4;
- Fri, 07 Jun 2024 18:38:56 +0800 (CST)
-From: Xiong Yining <xiongyining1480@phytium.com.cn>
-To: qemu-arm@nongnu.org,
-	qemu-devel@nongnu.org
-Cc: rad@semihalf.com, peter.maydell@linaro.org, quic_llindhol@quicinc.com,
- marcin.juszkiewicz@linaro.org,
- Xiong Yining <xiongyining1480@phytium.com.cn>
-Subject: [PATCH v5 1/1] hw/arm/sbsa-ref: Enable CPU cluster on ARM sbsa machine
-Date: Fri,  7 Jun 2024 10:38:25 +0000
-Message-Id: <20240607103825.1295328-2-xiongyining1480@phytium.com.cn>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240607103825.1295328-1-xiongyining1480@phytium.com.cn>
-References: <20240607103825.1295328-1-xiongyining1480@phytium.com.cn>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAfwA34tc742JmSdwAAA--.1309S4
-X-CM-SenderInfo: x0lr0wp1lqx0bjrumio6sk53xlxphulrpou0/1tbiAQAJBmZiD2QErQAAsI
-Authentication-Results: hzbj-icmmx-6; spf=neutral smtp.mail=xiongyinin
- g1480@phytium.com.cn;
-X-Coremail-Antispam: 1Uk129KBjvJXoWxZw13Ww1DGF43Zr45tr4UXFb_yoW5Gw1DpF
- 48Cr97CrWxurn0yr43W3WxuFyrJw4Fqw42kw47Gws3u3s8Jw1xWF4Ut34FkF1UWr18uFyY
- vF4DAr9xuFn2vrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
- DUYxn0WfASr-VFAU7a7-sFnT9fnUUIcSsGvfJ3UbIYCTnIWIevJa73UjIFyTuYvj4RJUUU
- UUUUU
-Received-SPF: pass client-ip=129.150.39.64;
- envelope-from=xiongyining1480@phytium.com.cn;
- helo=sgoci-sdnproxy-4.icoremail.net
-X-Spam_score_int: -5
-X-Spam_score: -0.6
-X-Spam_bar: /
-X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_RPBL=1.31,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+ (Exim 4.90_1) (envelope-from <mads@ynddal.dk>) id 1sFX7o-0000G6-Qw
+ for qemu-devel@nongnu.org; Fri, 07 Jun 2024 06:47:12 -0400
+Received: from qs51p00im-qukt01071501.me.com ([17.57.155.4])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mads@ynddal.dk>) id 1sFX7n-0003y4-8K
+ for qemu-devel@nongnu.org; Fri, 07 Jun 2024 06:47:12 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ynddal.dk; s=sig1;
+ t=1717757227; bh=5VPpkxIv4qSeSXjxKk3cVUF/jAopaZ1NdrEr+y+ic10=;
+ h=Content-Type:Mime-Version:Subject:From:Date:Message-Id:To;
+ b=epsljat0wgrZSLBEgqUMKnssyg3MZ4rBto1GU3jqkFk8MTnjMtl+fZ6SDvRbjSQsS
+ tUm/c/LCDWy35B2t4fzQTuTZpjc/iSYmQf2zcuYBIwQ/4oBXksD5DQLc/Il1LYHtbb
+ DTeiu2OffD90qa9pL/AHH6+4YFkHzNIv6DiNaVSBkKGpZeYhF4PR3VlX7cvT5IAWBJ
+ Nq+vLiGdh7tQSwiprNnyfaPiqNhkWK2a3QkrvIRGsP7HiQtaVDqNUwiMKBJ/mmbMVX
+ 4z7E/JIMT/QOzJIUMVd5Th8NmrSOhBcTFJY1fv7PxGVRPeBKoMt5nmOJKV6a2geCWV
+ KMNMdScBJscrQ==
+Received: from smtpclient.apple (qs51p00im-dlb-asmtp-mailmevip.me.com
+ [17.57.155.28])
+ by qs51p00im-qukt01071501.me.com (Postfix) with ESMTPSA id 221D61C402D0;
+ Fri,  7 Jun 2024 10:47:03 +0000 (UTC)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.600.62\))
+Subject: Re: [PATCH 0/5] trace: Remove and forbid newline characters in event
+ format
+From: Mads Ynddal <mads@ynddal.dk>
+In-Reply-To: <20240606103943.79116-1-philmd@linaro.org>
+Date: Fri, 7 Jun 2024 12:46:50 +0200
+Cc: qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>,
+ =?utf-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Stefan Berger <stefanb@linux.vnet.ibm.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <867D16AD-D9FA-42BE-A51F-8CE6274941EC@ynddal.dk>
+References: <20240606103943.79116-1-philmd@linaro.org>
+To: =?utf-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+X-Mailer: Apple Mail (2.3774.600.62)
+X-Proofpoint-GUID: lS6ppaj8x9GvUssqWmQcgKMHpXw4hD9F
+X-Proofpoint-ORIG-GUID: lS6ppaj8x9GvUssqWmQcgKMHpXw4hD9F
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-06-07_05,2024-06-06_02,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
+ malwarescore=0 clxscore=1030
+ spamscore=0 adultscore=0 suspectscore=0 phishscore=0 mlxlogscore=711
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2308100000 definitions=main-2406070078
+Received-SPF: pass client-ip=17.57.155.4; envelope-from=mads@ynddal.dk;
+ helo=qs51p00im-qukt01071501.me.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -70,75 +81,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Enable CPU cluster support on SbsaQemu platform, so that users can
-specify a 4-level CPU hierarchy sockets/clusters/cores/threads. And
-this topology can be passed to the firmware through /cpus/topology 
-Device Tree.
+>=20
+> Trace events aren't designed to be multi-lines.
+> Few format use the newline character: remove it
+> and forbid further uses.
+>=20
+> Philippe Mathieu-Daud=C3=A9 (5):
+>  backends/tpm: Remove newline character in trace event
+>  hw/sh4: Remove newline character in trace events
+>  hw/usb: Remove newline character in trace events
+>  hw/vfio: Remove newline character in trace events
+>  tracetool: Forbid newline character in event format
+>=20
+> backends/tpm/tpm_util.c       | 5 +++--
+> backends/tpm/trace-events     | 3 ++-
+> hw/sh4/trace-events           | 4 ++--
+> hw/usb/trace-events           | 6 +++---
+> hw/vfio/trace-events          | 4 ++--
+> scripts/tracetool/__init__.py | 2 ++
+> 6 files changed, 14 insertions(+), 10 deletions(-)
+>=20
+> --=20
+> 2.41.0
+>=20
 
-Signed-off-by: Xiong Yining <xiongyining1480@phytium.com.cn>
-tested-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-
----
- docs/system/arm/sbsa.rst |  4 ++++
- hw/arm/sbsa-ref.c        | 11 ++++++++++-
- 2 files changed, 14 insertions(+), 1 deletion(-)
-
-diff --git a/docs/system/arm/sbsa.rst b/docs/system/arm/sbsa.rst
-index 2bf22a1d0b..2bf3fc8d59 100644
---- a/docs/system/arm/sbsa.rst
-+++ b/docs/system/arm/sbsa.rst
-@@ -62,6 +62,7 @@ The devicetree reports:
-    - platform version
-    - GIC addresses
-    - NUMA node id for CPUs and memory
-+   - CPU topology information
- 
- Platform version
- ''''''''''''''''
-@@ -88,3 +89,6 @@ Platform version changes:
- 
- 0.3
-   The USB controller is an XHCI device, not EHCI.
-+
-+0.4
-+  CPU topology information is present in devicetree.
-diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
-index e884692f07..9987850fc4 100644
---- a/hw/arm/sbsa-ref.c
-+++ b/hw/arm/sbsa-ref.c
-@@ -223,7 +223,7 @@ static void create_fdt(SBSAMachineState *sms)
-      *                        fw compatibility.
-      */
-     qemu_fdt_setprop_cell(fdt, "/", "machine-version-major", 0);
--    qemu_fdt_setprop_cell(fdt, "/", "machine-version-minor", 3);
-+    qemu_fdt_setprop_cell(fdt, "/", "machine-version-minor", 4);
- 
-     if (ms->numa_state->have_numa_distance) {
-         int size = nb_numa_nodes * nb_numa_nodes * 3 * sizeof(uint32_t);
-@@ -280,6 +280,14 @@ static void create_fdt(SBSAMachineState *sms)
-         g_free(nodename);
-     }
- 
-+    /* Add CPU topology description through fdt node topology. */
-+    qemu_fdt_add_subnode(sms->fdt, "/cpus/topology");
-+
-+    qemu_fdt_setprop_cell(sms->fdt, "/cpus/topology", "sockets", ms->smp.sockets);
-+    qemu_fdt_setprop_cell(sms->fdt, "/cpus/topology", "clusters", ms->smp.clusters);
-+    qemu_fdt_setprop_cell(sms->fdt, "/cpus/topology", "cores", ms->smp.cores);
-+    qemu_fdt_setprop_cell(sms->fdt, "/cpus/topology", "threads", ms->smp.threads);
-+
-     sbsa_fdt_add_gic_node(sms);
- }
- 
-@@ -902,6 +910,7 @@ static void sbsa_ref_class_init(ObjectClass *oc, void *data)
-     mc->default_ram_size = 1 * GiB;
-     mc->default_ram_id = "sbsa-ref.ram";
-     mc->default_cpus = 4;
-+    mc->smp_props.clusters_supported = true;
-     mc->possible_cpu_arch_ids = sbsa_ref_possible_cpu_arch_ids;
-     mc->cpu_index_to_instance_props = sbsa_ref_cpu_index_to_props;
-     mc->get_default_cpu_node_id = sbsa_ref_get_default_cpu_node_id;
--- 
-2.34.1
+Acked-by: Mads Ynddal <mads@ynddal.dk>
 
 
