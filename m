@@ -2,41 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89503900ED7
-	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 02:24:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF100900EB6
+	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 02:09:09 +0200 (CEST)
 Received: from [::1] (helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sFf11-0004PZ-KR; Fri, 07 Jun 2024 15:12:43 -0400
+	id 1sFf16-0004ve-9f; Fri, 07 Jun 2024 15:12:48 -0400
 Received: from [2001:470:142:3::10] (helo=eggs.gnu.org)
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sFf0s-0004Or-Gw; Fri, 07 Jun 2024 15:12:35 -0400
+ id 1sFf0z-0004Q5-5B; Fri, 07 Jun 2024 15:12:41 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sFf0q-0001e2-53; Fri, 07 Jun 2024 15:12:34 -0400
+ id 1sFf0x-0001gX-JC; Fri, 07 Jun 2024 15:12:40 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 950396E52E;
+ by isrv.corpit.ru (Postfix) with ESMTP id CBBFD6E531;
  Fri,  7 Jun 2024 22:13:15 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id C6096E272E;
- Fri,  7 Jun 2024 22:12:20 +0300 (MSK)
-Received: (nullmailer pid 528233 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id 10BEBE2731;
+ Fri,  7 Jun 2024 22:12:21 +0300 (MSK)
+Received: (nullmailer pid 528243 invoked by uid 1000);
  Fri, 07 Jun 2024 19:12:20 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.12 20/29] gitlab: Update msys2-64bit runner tags
-Date: Fri,  7 Jun 2024 22:12:03 +0300
-Message-Id: <20240607191219.528194-1-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.12 23/29] target/arm: Disable SVE extensions when SVE is
+ disabled
+Date: Fri,  7 Jun 2024 22:12:06 +0300
+Message-Id: <20240607191219.528194-4-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.12-20240607221018@cover.tls.msk.ru>
 References: <qemu-stable-7.2.12-20240607221018@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -61,37 +61,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
 
-Gitlab has deprecated and removed support for windows-1809
-and shared-windows.  Update to saas-windows-medium-amd64 per
-
-https://about.gitlab.com/blog/2024/01/22/windows-2022-support-for-gitlab-saas-runners/
-
+Cc: qemu-stable@nongnu.org
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2304
+Reported-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Tested-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20240507175356.281618-1-richard.henderson@linaro.org>
-(cherry picked from commit 36fa7c686e9eac490002ffc439c4affaa352c17c)
+Signed-off-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+Message-id: 20240526204551.553282-1-richard.henderson@linaro.org
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+(cherry picked from commit daf9748ac002ec35258e5986b6257961fd04b565)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/.gitlab-ci.d/windows.yml b/.gitlab-ci.d/windows.yml
-index 0180261b7f..dfa4eb84a7 100644
---- a/.gitlab-ci.d/windows.yml
-+++ b/.gitlab-ci.d/windows.yml
-@@ -1,9 +1,7 @@
- .shared_msys2_builder:
-   extends: .base_job_template
-   tags:
--  - shared-windows
--  - windows
--  - windows-1809
-+  - saas-windows-medium-amd64
-   cache:
-     key: "${CI_JOB_NAME}-cache"
-     paths:
+diff --git a/target/arm/cpu64.c b/target/arm/cpu64.c
+index 3d74f134f5..037e9d9feb 100644
+--- a/target/arm/cpu64.c
++++ b/target/arm/cpu64.c
+@@ -190,7 +190,11 @@ void arm_cpu_sve_finalize(ARMCPU *cpu, Error **errp)
+          * No explicit bits enabled, and no implicit bits from sve-max-vq.
+          */
+         if (!cpu_isar_feature(aa64_sve, cpu)) {
+-            /* SVE is disabled and so are all vector lengths.  Good. */
++            /*
++             * SVE is disabled and so are all vector lengths.  Good.
++             * Disable all SVE extensions as well.
++             */
++            cpu->isar.id_aa64zfr0 = 0;
+             return;
+         }
+ 
 -- 
 2.39.2
 
