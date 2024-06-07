@@ -2,72 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D33B8FF9C0
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jun 2024 03:51:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B30EF8FF88A
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jun 2024 02:08:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sFOk7-00069W-TN; Thu, 06 Jun 2024 21:50:11 -0400
+	id 1sFN8C-0004tk-Kk; Thu, 06 Jun 2024 20:06:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1sFOk5-00069C-RJ
- for qemu-devel@nongnu.org; Thu, 06 Jun 2024 21:50:09 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1sFOk3-0008RD-Ss
- for qemu-devel@nongnu.org; Thu, 06 Jun 2024 21:50:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717725006;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=ic9lQGgoFrYWYtF+u1FC4PF+SFV5H8fSqxQBE8k+O2c=;
- b=iBXqZe2UfTTclNTWPNKbh0BEFL4dPQbAlxaGkN1VWajFyNZg2Jl5bofox+x+zCfmumEGLl
- KIzT56IW78K9f74BMYzUV5BzaNYtssz702LP/37+lpmZQZXqqdMMimAG30KvJcHiKOhNxd
- +WS68g6JY33ZhfiV+gT3XNxSN1sgi2Y=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-523-lEgrEkPiPJ-t0XjnENrCyQ-1; Thu,
- 06 Jun 2024 21:50:04 -0400
-X-MC-Unique: lEgrEkPiPJ-t0XjnENrCyQ-1
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id BB9671979064; Fri,  7 Jun 2024 01:50:02 +0000 (UTC)
-Received: from localhost (unknown [10.39.192.6])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id ABEBC1955F14; Fri,  7 Jun 2024 01:50:00 +0000 (UTC)
-Date: Thu, 6 Jun 2024 14:36:38 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Fiona Ebner <f.ebner@proxmox.com>
-Cc: qemu-devel@nongnu.org, peterx@redhat.com, farosas@suse.de,
- pbonzini@redhat.com
-Subject: Re: [RFC PATCH] migration/savevm: do not schedule
- snapshot_save_job_bh in qemu_aio_context
-Message-ID: <20240606183638.GC198201@fedora.redhat.com>
-References: <20240605120848.358654-1-f.ebner@proxmox.com>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sFN8B-0004tU-2v
+ for qemu-devel@nongnu.org; Thu, 06 Jun 2024 20:06:55 -0400
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sFN89-0004NE-C9
+ for qemu-devel@nongnu.org; Thu, 06 Jun 2024 20:06:54 -0400
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-1f61f775738so13981525ad.2
+ for <qemu-devel@nongnu.org>; Thu, 06 Jun 2024 17:06:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1717718811; x=1718323611; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=5+YFULanMr7Tt9tzFcud5DCd60OHhq/1RFVT64kRORc=;
+ b=TXsbayNHScfDZ2R11rpgdmyMRKPmyVm5hW3onofj6BfFWJZIYjBu98NyMKlhgPyqFi
+ LUcUa0BaJEKzj84p1w6M3P8d8LQ+Q+3GCTTf948ZTmGOKNJKYgkXnTPd05ZishsgYP8K
+ WV/JaAkDnx3jPseist/I4EOBC5r+NpHuEhXpnN+Yml3rHknJRIfwEPPDO7FtrXm1BIUC
+ 1z//P/BCwRsrwBhkDwQiuAPhBT3mxxSPmdmapzF7/3j7zhIkzrCT76tHbtL5PBVXcEOD
+ dy+mrqoHVg6ufB5M/DafGA3RbNr7eFTbRYWcISHs+xdP8SQDcQP4UwyMTcuwKqJ1s7ld
+ oyVg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1717718811; x=1718323611;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=5+YFULanMr7Tt9tzFcud5DCd60OHhq/1RFVT64kRORc=;
+ b=EnG6vgnvsjGGA4Sd3rsS9TbTt4gL3gcKr6YrKJDP39H1U7wOiRb4LbXWvXWDPtwOXZ
+ cCUguHK0lxl/MArQNdmX7CDAK94MUnXQVSTq/GfjUyVn7Nfz4fmnoA+Zp1AGvKyqwlPS
+ k9iT98CJw/W5iBzwFFFByUCHXoeA0WLA9ad4T7f9ebG9P6SEpAfwHstZIbugyFxXcLje
+ IhskTFdk55FDJ6FIAMHN1l838SFw6T8d4e+rl5rBjgSo/GH7oZFCXFlg6oXGQQt9E17V
+ l4nqVwNxykScyDhfVOwf7N8vZdT8P5FPtK6iOoLdVDR1TNz6UCNYI8S/Wi6KyuXV2bsn
+ L1RA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWyCYpeea3ZI1iqbZpPZItQlndeg41Wr8HUu0hKltwumx1KvcpIYxqclkUE4RWXJYerVYAYvRzbw6NB7JOzSuKxO4uK8R8=
+X-Gm-Message-State: AOJu0YxrDT+QCw4m4FhlcKrRs0vbN+yrMNLBnagVRqo3dYeCgPl3CQlV
+ 1yHbw9MMxK1A/09qHEFHrxB9dpW6aemeXfjbZEUYYUYCEKnDdqUBXq5R81buaFqM2j83XdcqLNp
+ z
+X-Google-Smtp-Source: AGHT+IFrphXyfsTcZPQEDXbi2eJbWpS2VGFjxxIFldg9HXvDdUe8mCE8ly3rBCUUp7G3lR4E/AGeYg==
+X-Received: by 2002:a17:902:e742:b0:1f6:5e40:6e30 with SMTP id
+ d9443c01a7336-1f6d03cc26cmr12922705ad.60.1717718811107; 
+ Thu, 06 Jun 2024 17:06:51 -0700 (PDT)
+Received: from [192.168.101.177] ([75.147.178.105])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-1f6bd81bbc1sm21514315ad.302.2024.06.06.17.06.49
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 06 Jun 2024 17:06:50 -0700 (PDT)
+Message-ID: <7c34cb9d-cb2c-4279-a027-c03a224ac551@linaro.org>
+Date: Thu, 6 Jun 2024 17:06:47 -0700
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="xDmBIJEJkhaDUdiz"
-Content-Disposition: inline
-In-Reply-To: <20240605120848.358654-1-f.ebner@proxmox.com>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 28
-X-Spam_score: 2.8
-X-Spam_bar: ++
-X-Spam_report: (2.8 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_06_12=1.543,
- DKIMWL_WL_HIGH=-0.001, DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
- DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PULL 0/6] loongarch-to-apply queue
+To: Song Gao <gaosong@loongson.cn>, qemu-devel@nongnu.org
+References: <20240606040155.2607422-1-gaosong@loongson.cn>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20240606040155.2607422-1-gaosong@loongson.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,103 +95,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 6/5/24 21:01, Song Gao wrote:
+> The following changes since commit db2feb2df8d19592c9859efb3f682404e0052957:
+> 
+>    Merge tag 'pull-misc-20240605' ofhttps://gitlab.com/rth7680/qemu  into staging (2024-06-05 14:17:01 -0700)
+> 
+> are available in the Git repository at:
+> 
+>    https://gitlab.com/gaosong/qemu.git  tags/pull-loongarch-20240606
+> 
+> for you to fetch changes up to 78f932ea1f7b3b9b0ac628dc2a91281318fe51fa:
+> 
+>    target/loongarch: fix a wrong print in cpu dump (2024-06-06 11:58:06 +0800)
+> 
+> ----------------------------------------------------------------
+> pull-loongarch-20240606
 
---xDmBIJEJkhaDUdiz
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/9.1 as appropriate.
 
-On Wed, Jun 05, 2024 at 02:08:48PM +0200, Fiona Ebner wrote:
-> The fact that the snapshot_save_job_bh() is scheduled in the main
-> loop's qemu_aio_context AioContext means that it might get executed
-> during a vCPU thread's aio_poll(). But saving of the VM state cannot
-> happen while the guest or devices are active and can lead to assertion
-> failures. See issue #2111 for two examples. Avoid the problem by
-> scheduling the snapshot_save_job_bh() in the iohandler AioContext,
-> which is not polled by vCPU threads.
->=20
-> Solves Issue #2111.
->=20
-> This change also solves the following issue:
->=20
-> Since commit effd60c878 ("monitor: only run coroutine commands in
-> qemu_aio_context"), the 'snapshot-save' QMP call would not respond
-> right after starting the job anymore, but only after the job finished,
-> which can take a long time. The reason is, because after commit
-> effd60c878, do_qmp_dispatch_bh() runs in the iohandler AioContext.
-> When do_qmp_dispatch_bh() wakes the qmp_dispatch() coroutine, the
-> coroutine cannot be entered immediately anymore, but needs to be
-> scheduled to the main loop's qemu_aio_context AioContext. But
-> snapshot_save_job_bh() was scheduled first to the same AioContext and
-> thus gets executed first.
->=20
-> Buglink: https://gitlab.com/qemu-project/qemu/-/issues/2111
-> Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
-> ---
->=20
-> While initial smoke testing seems fine, I'm not familiar enough with
-> this to rule out any pitfalls with the approach. Any reason why
-> scheduling to the iohandler AioContext could be wrong here?
 
-If something waits for a BlockJob to finish using aio_poll() from
-qemu_aio_context then a deadlock is possible since the iohandler_ctx
-won't get a chance to execute. The only suspicious code path I found was
-job_completed_txn_abort_locked() -> job_finish_sync_locked() but I'm not
-sure whether it triggers this scenario. Please check that code path.
-
-> Should the same be done for the snapshot_load_job_bh and
-> snapshot_delete_job_bh to keep it consistent?
-
-In the long term it would be cleaner to move away from synchronous APIs
-that rely on nested event loops. They have been a source of bugs for
-years.
-
-If vm_stop() and perhaps other operations in save_snapshot() were
-asynchronous, then it would be safe to run the operation in
-qemu_aio_context without using iohandler_ctx. vm_stop() wouldn't invoke
-its callback until vCPUs were quiesced and outside device emulation
-code.
-
-I think this patch is fine as a one-line bug fix, but we should be
-careful about falling back on this trick because it makes the codebase
-harder to understand and more fragile.
-
->=20
->  migration/savevm.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/migration/savevm.c b/migration/savevm.c
-> index c621f2359b..0086b76ab0 100644
-> --- a/migration/savevm.c
-> +++ b/migration/savevm.c
-> @@ -3459,7 +3459,7 @@ static int coroutine_fn snapshot_save_job_run(Job *=
-job, Error **errp)
->      SnapshotJob *s =3D container_of(job, SnapshotJob, common);
->      s->errp =3D errp;
->      s->co =3D qemu_coroutine_self();
-> -    aio_bh_schedule_oneshot(qemu_get_aio_context(),
-> +    aio_bh_schedule_oneshot(iohandler_get_aio_context(),
->                              snapshot_save_job_bh, job);
->      qemu_coroutine_yield();
->      return s->ret ? 0 : -1;
-> --=20
-> 2.39.2
-
---xDmBIJEJkhaDUdiz
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmZiAbYACgkQnKSrs4Gr
-c8hljgf9E3lQXx9tCIwhZJaYEzbOXLQ/szQBwhLxALESFqdyerZzrjJehn8CdttA
-5GhPSl7PItMGoV55wxBQJutCi/lt3i4R6HZNM5FawzRgse/y4iMEPvQb1JFa+Btk
-L6DIWpUDYRMCw+YDlBDmckRbHQ7tmlx9EYfqhiLN34yUm7Fn3QVk3cFa5dYTBGaW
-bi0tfiS1GanN+SC050peVfho8ffD5Mxe09x7a+5es5Gd3HD+X+Pl9z4osX25s/fH
-agYCV//tn7MjfIqKvCnNH9w/ypYvh66yA+Yn8MUdThQjkBKMt73WAbJxzfHjDX2P
-gtp206XzoTaOJ76+ZCBcLNNXLCGF5g==
-=29nG
------END PGP SIGNATURE-----
-
---xDmBIJEJkhaDUdiz--
+r~
 
 
