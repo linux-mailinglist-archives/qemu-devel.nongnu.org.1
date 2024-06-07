@@ -2,39 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2D4D900EC6
-	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 02:12:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55DB0900EA2
+	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 02:06:14 +0200 (CEST)
 Received: from [::1] (helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sFf5v-00051V-54; Fri, 07 Jun 2024 15:17:47 -0400
+	id 1sFf5v-00056i-NZ; Fri, 07 Jun 2024 15:17:47 -0400
 Received: from [2001:470:142:3::10] (helo=eggs.gnu.org)
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sFf5p-0004m2-FN; Fri, 07 Jun 2024 15:17:41 -0400
+ id 1sFf5s-0004nL-3E; Fri, 07 Jun 2024 15:17:44 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sFf5n-00037P-69; Fri, 07 Jun 2024 15:17:41 -0400
+ id 1sFf5q-00037y-7O; Fri, 07 Jun 2024 15:17:43 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id CE3BF6E56D;
+ by isrv.corpit.ru (Postfix) with ESMTP id DF0886E56E;
  Fri,  7 Jun 2024 22:14:54 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 0D558E2766;
+ by tsrv.corpit.ru (Postfix) with SMTP id 232B4E2767;
  Fri,  7 Jun 2024 22:14:00 +0300 (MSK)
-Received: (nullmailer pid 529466 invoked by uid 1000);
+Received: (nullmailer pid 529469 invoked by uid 1000);
  Fri, 07 Jun 2024 19:13:58 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Alistair Francis <alistair23@gmail.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Fabian Thomas <fabian.thomas@cispa.de>,
- Richard Henderson <richard.henderson@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.0.1 63/71] target/riscv: rvzicbo: Fixup CBO extension
- register calculation
-Date: Fri,  7 Jun 2024 22:13:44 +0300
-Message-Id: <20240607191356.529336-19-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Yong-Xuan Wang <yongxuan.wang@sifive.com>,
+ Andrew Jones <ajones@ventanamicro.com>,
+ Alistair Francis <alistair.francis@wdc.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.0.1 64/71] target/riscv/kvm.c: Fix the hart bit setting of
+ AIA
+Date: Fri,  7 Jun 2024 22:13:45 +0300
+Message-Id: <20240607191356.529336-20-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-9.0.1-20240607221321@cover.tls.msk.ru>
 References: <qemu-stable-9.0.1-20240607221321@cover.tls.msk.ru>
@@ -63,86 +61,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Alistair Francis <alistair23@gmail.com>
+From: Yong-Xuan Wang <yongxuan.wang@sifive.com>
 
-When running the instruction
+In AIA spec, each hart (or each hart within a group) has a unique hart
+number to locate the memory pages of interrupt files in the address
+space. The number of bits required to represent any hart number is equal
+to ceil(log2(hmax + 1)), where hmax is the largest hart number among
+groups.
 
-```
-    cbo.flush 0(x0)
-```
+However, if the largest hart number among groups is a power of 2, QEMU
+will pass an inaccurate hart-index-bit setting to Linux. For example, when
+the guest OS has 4 harts, only ceil(log2(3 + 1)) = 2 bits are sufficient
+to represent 4 harts, but we passes 3 to Linux. The code needs to be
+updated to ensure accurate hart-index-bit settings.
 
-QEMU would segfault.
+Additionally, a Linux patch[1] is necessary to correctly recover the hart
+index when the guest OS has only 1 hart, where the hart-index-bit is 0.
 
-The issue was in cpu_gpr[a->rs1] as QEMU does not have cpu_gpr[0]
-allocated.
+[1] https://lore.kernel.org/lkml/20240415064905.25184-1-yongxuan.wang@sifive.com/t/
 
-In order to fix this let's use the existing get_address()
-helper. This also has the benefit of performing pointer mask
-calculations on the address specified in rs1.
-
-The pointer masking specificiation specifically states:
-
-"""
-Cache Management Operations: All instructions in Zicbom, Zicbop and Zicboz
-"""
-
-So this is the correct behaviour and we previously have been incorrectly
-not masking the address.
-
-Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-Reported-by: Fabian Thomas <fabian.thomas@cispa.de>
-Fixes: e05da09b7cfd ("target/riscv: implement Zicbom extension")
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Yong-Xuan Wang <yongxuan.wang@sifive.com>
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
 Cc: qemu-stable <qemu-stable@nongnu.org>
-Message-ID: <20240514023910.301766-1-alistair.francis@wdc.com>
+Message-ID: <20240515091129.28116-1-yongxuan.wang@sifive.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-(cherry picked from commit c5eb8d6336741dbcb98efcc347f8265bf60bc9d1)
+(cherry picked from commit 190b867f28cb5781f3cd01a3deb371e4211595b1)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/riscv/insn_trans/trans_rvzicbo.c.inc b/target/riscv/insn_trans/trans_rvzicbo.c.inc
-index d5d7095903..15711c3140 100644
---- a/target/riscv/insn_trans/trans_rvzicbo.c.inc
-+++ b/target/riscv/insn_trans/trans_rvzicbo.c.inc
-@@ -31,27 +31,35 @@
- static bool trans_cbo_clean(DisasContext *ctx, arg_cbo_clean *a)
- {
-     REQUIRE_ZICBOM(ctx);
--    gen_helper_cbo_clean_flush(tcg_env, cpu_gpr[a->rs1]);
-+    TCGv src = get_address(ctx, a->rs1, 0);
-+
-+    gen_helper_cbo_clean_flush(tcg_env, src);
-     return true;
- }
+diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
+index 5187b88ad9..94b0e393bf 100644
+--- a/target/riscv/kvm/kvm-cpu.c
++++ b/target/riscv/kvm/kvm-cpu.c
+@@ -1671,7 +1671,14 @@ void kvm_riscv_aia_create(MachineState *machine, uint64_t group_shift,
+         }
+     }
  
- static bool trans_cbo_flush(DisasContext *ctx, arg_cbo_flush *a)
- {
-     REQUIRE_ZICBOM(ctx);
--    gen_helper_cbo_clean_flush(tcg_env, cpu_gpr[a->rs1]);
-+    TCGv src = get_address(ctx, a->rs1, 0);
+-    hart_bits = find_last_bit(&max_hart_per_socket, BITS_PER_LONG) + 1;
 +
-+    gen_helper_cbo_clean_flush(tcg_env, src);
-     return true;
- }
- 
- static bool trans_cbo_inval(DisasContext *ctx, arg_cbo_inval *a)
- {
-     REQUIRE_ZICBOM(ctx);
--    gen_helper_cbo_inval(tcg_env, cpu_gpr[a->rs1]);
-+    TCGv src = get_address(ctx, a->rs1, 0);
++    if (max_hart_per_socket > 1) {
++        max_hart_per_socket--;
++        hart_bits = find_last_bit(&max_hart_per_socket, BITS_PER_LONG) + 1;
++    } else {
++        hart_bits = 0;
++    }
 +
-+    gen_helper_cbo_inval(tcg_env, src);
-     return true;
- }
- 
- static bool trans_cbo_zero(DisasContext *ctx, arg_cbo_zero *a)
- {
-     REQUIRE_ZICBOZ(ctx);
--    gen_helper_cbo_zero(tcg_env, cpu_gpr[a->rs1]);
-+    TCGv src = get_address(ctx, a->rs1, 0);
-+
-+    gen_helper_cbo_zero(tcg_env, src);
-     return true;
- }
+     ret = kvm_device_access(aia_fd, KVM_DEV_RISCV_AIA_GRP_CONFIG,
+                             KVM_DEV_RISCV_AIA_CONFIG_HART_BITS,
+                             &hart_bits, true, NULL);
 -- 
 2.39.2
 
