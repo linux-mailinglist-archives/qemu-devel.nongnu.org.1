@@ -2,86 +2,134 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B3BE900E6B
-	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 01:22:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86FB2900E9A
+	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 01:59:15 +0200 (CEST)
 Received: from [::1] (helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sFdcb-0000pP-0L; Fri, 07 Jun 2024 13:43:25 -0400
+	id 1sFeWj-0001Ja-UO; Fri, 07 Jun 2024 14:41:25 -0400
 Received: from [2001:470:142:3::10] (helo=eggs.gnu.org)
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sFdcS-0000pH-Vb
- for qemu-devel@nongnu.org; Fri, 07 Jun 2024 13:43:17 -0400
-Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sFdcQ-0002d8-JA
- for qemu-devel@nongnu.org; Fri, 07 Jun 2024 13:43:15 -0400
-Received: by mail-pf1-x431.google.com with SMTP id
- d2e1a72fcca58-6f4603237e0so1531456b3a.0
- for <qemu-devel@nongnu.org>; Fri, 07 Jun 2024 10:43:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1717782193; x=1718386993; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=IufZoOg872ZanaT4FKVzMcwzhePUO3CySZBDuK9mJ6U=;
- b=kaAAqwb8ylLGCYDe1BqBnR83HtzTKKD1L/JUWq49+rWJDXP6W7UUNmK5TBOd9W7HYh
- Pcu8P8M16H1CeNE/4S/PtOAP0jfDM0qwBN+rJOMw2gqyluh7tdA28cOYW/1XWncs6SA3
- /5ND8KO3jina8gmu0ABKF4z06vkPZlx8h0m0GCHzdmF5gvBCLiv48S3+m3ptixJYCzs6
- i+NgSaxSU6T1Puroh1Z9ajgrw4BbIOEmuBij/bs/++g7LgX8ylD6A5GooJ/dnWNOhqDU
- AMy9wik3SZ1LY3kHRGBgFwNa54qCxO9KxGFGEALtrqAzCrLsMJ+Oc1rZx7uLImrbeC5l
- /B3g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717782193; x=1718386993;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=IufZoOg872ZanaT4FKVzMcwzhePUO3CySZBDuK9mJ6U=;
- b=ditbvHSB+26lRyCZjrg5VTp6xLExBstvCsvLBIQrL/jeod23C44Hy4OBwBOtI4Oxe0
- KYjySbZfTp4tDCCxNRH8fyso+aQsUwd8OEM6WYq2eyWvjotk/yLhritlu4qVU+v4HbNl
- i5WFUjhIdITaJ2nGJfeucUAfklOgsaEjawmCt/u3xROvfIK/Qacj45Qx9mvWNeb/vt0Y
- 94Cz6bpujdwYG7lEa515ilscUw5EtJcXcODWL0UEs5LVnuwTLRekKTkOOBVPbxl7HGCi
- NRXvOlkGEiCfnLPMfv3L717jol9r/yJdqIkXG9N582ebzKytg/Kz/eH86gRxbxVtnGDj
- lrnw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWPHJd9K2tw+J4nFccJ84v7dnRbkVLCKLFTOGQo9w29tXGJKgmfRVROTqKO5+cj4n5riLBHjRz8n/WrOTK+NQQbQ+7i7po=
-X-Gm-Message-State: AOJu0Yx+Ojvq4aLQ2QZ9ivvbIoC3L6QFVHXxH5ju0TpQMc3Ss1s1oPry
- Cm/qxrcZbPx9epAUMSzyARb25oc6+Jhiusj4W1I+yT+1CT+AQVz8O9ig9xG7VDI=
-X-Google-Smtp-Source: AGHT+IEIACjCmoLuTY6u9xtx35jlOC/rnwJKa6lhtf8FxGAw9Tf++0xUgboVIrIrZJ5NNM/LktS7nA==
-X-Received: by 2002:a05:6a00:929a:b0:702:4a1d:c4a4 with SMTP id
- d2e1a72fcca58-703f8836de3mr11046209b3a.10.1717782192803; 
- Fri, 07 Jun 2024 10:43:12 -0700 (PDT)
-Received: from [192.168.223.227] ([75.147.178.105])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-703fd371cc7sm2896155b3a.2.2024.06.07.10.43.11
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 07 Jun 2024 10:43:12 -0700 (PDT)
-Message-ID: <e6e3f493-214b-4fd0-bff2-c9a7b0661a74@linaro.org>
-Date: Fri, 7 Jun 2024 10:43:10 -0700
+ (Exim 4.90_1) (envelope-from <Pankaj.Gupta@amd.com>)
+ id 1sFeWh-0001If-UU
+ for qemu-devel@nongnu.org; Fri, 07 Jun 2024 14:41:23 -0400
+Received: from mail-dm6nam12on2056.outbound.protection.outlook.com
+ ([40.107.243.56] helo=NAM12-DM6-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <Pankaj.Gupta@amd.com>)
+ id 1sFeWf-0004zF-Pj
+ for qemu-devel@nongnu.org; Fri, 07 Jun 2024 14:41:23 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=WArR8IeaHq+2S7PaViXwSVA0QUOUz7F7Hcbh2jfi2tpHAB5Jt20nj5TxBgCFFsSvViSpoK54rE8MPAG2/MTZdscNkGseFO+UL0+YW79s1jllz7GzTqbtMl3iHL9n56PyFLove6iUTbstvYbf5o9kI5UpCvwjUpPJBPBpnmaL28O8FoxN4j+2KRG9LIBKZSBTIISv0oUgFhVSYgN2TNYiLdCLwOF4o9//2j9YXge8APEy5Iz6gDyWgHK1jZJDPnSBXBXabwc4D3F7S+oC7eoRQ+ouJNrnRGbHfitOeGqsWGqjqm9zryn6SEEqttwXR+IHZl71DmfiKJtZjciB2okTNw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Jm9FRw2mXdlD1Bb+kA4qIskbljslgjmNw93RU7OrX8g=;
+ b=MDpmRNh0hHBTeQdhie5rWEFy5XI3nWzdshPgYqETPn67Ca/c7eKIi1/6bolvm4FUBzxQGzjY9QC3zXMP7oEpVo3gh6dNCMawDEQtFuRwuJLHT7j/RxHOnXOwUrH0QpIzd9NWAjwlpEAsPhBsS9E54MqxbQqaL7aYbntfjps4YXCFpesTPa8ToMJF+i0C0y2WVtm9BSXojvUkqdPF1tw2Z5RZlpiwmo1WEaJ2fcOgur6r7qELjaxlelPiFAIbcAVP44ORLogwnpmQw0poWKx5Qygx3fGKqcfr2lYEZcmYDNTqwaPI/knC5e2GoCfFQlUp2JvzAuYWKjHnW4zYLe+c8Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Jm9FRw2mXdlD1Bb+kA4qIskbljslgjmNw93RU7OrX8g=;
+ b=G5zHRk+ZkWLDn7HNQsY1Gdzk+HuVgGpvkHPLGtcMCX8gUtNlEe+C+d7ySK4Dh6QhXIyIxbeRnNA0Pt6hfnOi8KyejMlX/EzxL2BXqf5oEvY7zFEuZ+EPkmo6+8kNyRn6kbuKxqfMY+vE3uPztp+yjjSPuzXLI8vv9QCzS1n6XH0=
+Received: from MW2PR2101CA0014.namprd21.prod.outlook.com (2603:10b6:302:1::27)
+ by LV3PR12MB9356.namprd12.prod.outlook.com (2603:10b6:408:20c::21)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7633.33; Fri, 7 Jun
+ 2024 18:36:13 +0000
+Received: from CO1PEPF000044F6.namprd21.prod.outlook.com
+ (2603:10b6:302:1:cafe::6d) by MW2PR2101CA0014.outlook.office365.com
+ (2603:10b6:302:1::27) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7677.9 via Frontend
+ Transport; Fri, 7 Jun 2024 18:36:13 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CO1PEPF000044F6.mail.protection.outlook.com (10.167.241.196) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7677.0 via Frontend Transport; Fri, 7 Jun 2024 18:36:12 +0000
+Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Fri, 7 Jun
+ 2024 13:36:11 -0500
+Received: from pankaj-M75q.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server id 15.1.2507.35 via Frontend
+ Transport; Fri, 7 Jun 2024 13:36:11 -0500
+From: Pankaj Gupta <pankaj.gupta@amd.com>
+To: <qemu-devel@nongnu.org>
+CC: <brijesh.singh@amd.com>, <dovmurik@linux.ibm.com>, <armbru@redhat.com>,
+ <michael.roth@amd.com>, <pbonzini@redhat.com>, <thomas.lendacky@amd.com>,
+ <peter.maydell@linaro.org>, <pankaj.gupta@amd.com>
+Subject: [PATCH 0/3] snp: fix coverity reported issues 
+Date: Fri, 7 Jun 2024 13:36:08 -0500
+Message-ID: <20240607183611.1111100-1-pankaj.gupta@amd.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/6] Add an "info pg" command that prints the current
- page tables
-To: Don Porter <porter@cs.unc.edu>, qemu-devel@nongnu.org
-Cc: dave@treblig.org, peter.maydell@linaro.org, nadav.amit@gmail.com,
- philmd@linaro.org
-References: <20240606140253.2277760-1-porter@cs.unc.edu>
- <20240606140253.2277760-2-porter@cs.unc.edu>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240606140253.2277760-2-porter@cs.unc.edu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x431.google.com
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+Received-SPF: None (SATLEXMB04.amd.com: pankaj.gupta@amd.com does not
+ designate permitted sender hosts)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1PEPF000044F6:EE_|LV3PR12MB9356:EE_
+X-MS-Office365-Filtering-Correlation-Id: 899f4afe-2a99-43b4-66b0-08dc8720b523
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230031|82310400017|1800799015|376005|36860700004; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?/ru0qU5zuSpfdSGAk5/9awtVfERm9qQhpwlYYgpT9WyOnqI/pweKipy2OzvN?=
+ =?us-ascii?Q?6mEYiXsPYZ+jcUzXEuXP8W4RlTp5jNDnx2N797vx1pan43X09c16PLsth64/?=
+ =?us-ascii?Q?WwoITmMXfloYEzu3zU1llO1xckN2BxH7Cvtf+36WwDI6stVZLaiWvsUQEXO9?=
+ =?us-ascii?Q?CDxIE55+PXvCOf+PDLZPtsoJPEWsXeT1UIPmzPOCe/+sQqkHHhbqCjE9BavE?=
+ =?us-ascii?Q?z65NvY9YCYaCP6TauqWjt6HYSZ+kwNcejPg+KSABAnnQqnGVzPQh+KY1lCE+?=
+ =?us-ascii?Q?dlfYvoBG0SQnMIRPLeTzR2mGJ8MwWCnF2rNIdr1pZfUoMpC/v2ws4be7Utah?=
+ =?us-ascii?Q?tl6ONE8We+A676k15bYSV4lwtpCBsvwmPKHQP4D+PKdql940Gk8Yg0PRokY+?=
+ =?us-ascii?Q?gieKzC3dOJ281R9XHQGrXNtnUxyT6Du7HsFpgVcxYY+tYqgexvuL1aybTqfm?=
+ =?us-ascii?Q?Lvq3wRh7dHh6PX3SFtPt/+o9P/n775bTMmNf9oeOrGNWLZSOPi9bBhfVpcrC?=
+ =?us-ascii?Q?gvuNA1lHQGiPnKO3IEIlA0ibfdYFyR/vy+7RLb9VIQbM8vwiTJKm7DS+bkFp?=
+ =?us-ascii?Q?6YurFMbv8/3X2Nr6KaPtxhigiIAdrMrimHG8LU2NHggP9sBhXi07UNg5i5MS?=
+ =?us-ascii?Q?gJaMf81A80lazV0WmtOzB5jAH7yPktSmIYulsJ4Nbz0Aim14GBH9+c3+FNg1?=
+ =?us-ascii?Q?eD1yB4uzg1CZUvMf2u2Ks7IEDkFq3Yr6pQ6DJAK1iRxM8UMg4kCEUj1DCtky?=
+ =?us-ascii?Q?wdVgkYSbtk5Ahiax4Dt7TaIhvebisfO7RVHghAh4WtW1Kbel5CYpoxvdSJzc?=
+ =?us-ascii?Q?gphok8F7MFRKCwtgwV7F8Iv1pll2dkMxp1IgILNpk9PPgai0lSzT3Lh4URkI?=
+ =?us-ascii?Q?YU4e34oS2agXghdA4yshhClXPFEKZjAgQrBSeLRBclvYwSBt9nL4KUE35v4r?=
+ =?us-ascii?Q?oavHIb463We2BeG8CJdBceVbDIlSqHVfmVqkay508hNCHHSfpMxXYqO1ogoK?=
+ =?us-ascii?Q?DfNyh48aiCEyeB9swjBj4O5MgZZsv9TQeCe3C9ia+OrcETXf0xg6mwa5i+gB?=
+ =?us-ascii?Q?tMlhYK1PQdeCs4L1PrupnpdlxhAb0GIOnc4osgA6TiL9A+4t9RWbgOHV/glQ?=
+ =?us-ascii?Q?phnLZHjFjGMSrAV+jWaAoiYFr6azJdMtHGbk6GiugRQ2q18VJeVXxtNHwGhz?=
+ =?us-ascii?Q?iVSxvo960KPNhQ/Izps8astz3SKprEmC77o7+AZgNGgFPOu1VRsb8FI7F2lR?=
+ =?us-ascii?Q?jutSDB5A8Gl+NqNCNBtlDnAHcwmXhAjpR/ARJ04clqlvYVcQa6qQVw5MAXmo?=
+ =?us-ascii?Q?6YQ2TodvkJfVGtX+HdYBoOiZP+Twj/EgPTCMwbe6NUvwvfdjqh+HqWN4fPCo?=
+ =?us-ascii?Q?tjQCmNjmqGK2qDCcKuXR27ZqewMxERZIilOh9xIoAa8/5YpwJQ=3D=3D?=
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230031)(82310400017)(1800799015)(376005)(36860700004); DIR:OUT;
+ SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jun 2024 18:36:12.4498 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 899f4afe-2a99-43b4-66b0-08dc8720b523
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: CO1PEPF000044F6.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR12MB9356
+Received-SPF: permerror client-ip=40.107.243.56;
+ envelope-from=Pankaj.Gupta@amd.com;
+ helo=NAM12-DM6-obe.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -98,64 +146,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/6/24 07:02, Don Porter wrote:
-> +/**
-> + * get_pte - Copy the contents of the page table entry at node[i] into pt_entry.
-> + *           Optionally, add the relevant bits to the virtual address in
-> + *           vaddr_pte.
-> + *
-> + * @cs - CPU state
-> + * @node - physical address of the current page table node
-> + * @i - index (in page table entries, not bytes) of the page table
-> + *      entry, within node
-> + * @height - height of node within the tree (leaves are 1, not 0)
-> + * @pt_entry - Poiter to a PTE_t, stores the contents of the page table entry
-> + * @vaddr_parent - The virtual address bits already translated in walking the
-> + *                 page table to node.  Optional: only used if vaddr_pte is set.
-> + * @vaddr_pte - Optional pointer to a variable storing the virtual address bits
-> + *              translated by node[i].
-> + * @pte_paddr - Pointer to the physical address of the PTE within node.
-> + *              Optional parameter.
-> + */
-> +void
-> +x86_get_pte(CPUState *cs, hwaddr node, int i, int height,
-> +            PTE_t *pt_entry, vaddr vaddr_parent, vaddr *vaddr_pte,
-> +            hwaddr *pte_paddr)
-> +
-> +{
-> +    X86CPU *cpu = X86_CPU(cs);
-> +    CPUX86State *env = &cpu->env;
-> +    int32_t a20_mask = x86_get_a20_mask(env);
-> +    hwaddr pte;
-> +
-> +    if (env->hflags & HF_LMA_MASK) {
-> +        /* 64 bit */
-> +        int pte_width = 8;
-> +        pte = (node + (i * pte_width)) & a20_mask;
-> +        pt_entry->pte64_t = address_space_ldq(cs->as, pte,
-> +                                              MEMTXATTRS_UNSPECIFIED, NULL);
-> +    } else {
-> +        /* 32 bit */
-> +        int pte_width = 4;
-> +        pte = (node + (i * pte_width)) & a20_mask;
-> +        pt_entry->pte32_t = address_space_ldl(cs->as, pte,
-> +                                              MEMTXATTRS_UNSPECIFIED, NULL);
-> +    }
-> +
-> +    if (vaddr_pte) {
-> +        int shift = 0;
-> +        _mmu_decode_va_parameters(cs, height, &shift, NULL);
-> +        *vaddr_pte = vaddr_parent | ((i & 0x1ffULL) << shift);
-> +    }
-> +
-> +    if (pte_paddr) {
-> +        *pte_paddr = pte;
-> +    }
-> +}
+Pankaj Gupta (3):
+  i386/sev: fix unreachable code coverity issue
+  i386/sev: Move SEV_COMMON null check before dereferencing
+  i386/sev: Return when sev_common is null
 
-This fails to recurse with nested page tables, which definitely breaks the TCG walker.
+ target/i386/sev.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-
-r~
+-- 
+2.34.1
 
 
