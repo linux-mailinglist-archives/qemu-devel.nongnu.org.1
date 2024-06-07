@@ -2,42 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CC4D900EC8
-	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 02:15:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8357A900EDB
+	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 02:25:12 +0200 (CEST)
 Received: from [::1] (helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sFf2i-00033S-Cg; Fri, 07 Jun 2024 15:14:28 -0400
+	id 1sFf3Z-0005ry-T8; Fri, 07 Jun 2024 15:15:21 -0400
 Received: from [2001:470:142:3::10] (helo=eggs.gnu.org)
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sFf2g-0002yp-LR; Fri, 07 Jun 2024 15:14:26 -0400
+ id 1sFf3X-0005rJ-Vt; Fri, 07 Jun 2024 15:15:20 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sFf2e-0001zL-U4; Fri, 07 Jun 2024 15:14:26 -0400
+ id 1sFf3U-0002D1-On; Fri, 07 Jun 2024 15:15:19 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id D4B346E54B;
- Fri,  7 Jun 2024 22:14:04 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id D71B56E551;
+ Fri,  7 Jun 2024 22:14:05 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 12896E2747;
- Fri,  7 Jun 2024 22:13:10 +0300 (MSK)
-Received: (nullmailer pid 528731 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id 14D50E274D;
+ Fri,  7 Jun 2024 22:13:11 +0300 (MSK)
+Received: (nullmailer pid 528749 invoked by uid 1000);
  Fri, 07 Jun 2024 19:13:08 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Max Chou <max.chou@sifive.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+Cc: qemu-stable@nongnu.org, Yong-Xuan Wang <yongxuan.wang@sifive.com>,
+ Andrew Jones <ajones@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.5 34/45] target/riscv: rvv: Check single width operator
- for vector fp widen instructions
-Date: Fri,  7 Jun 2024 22:12:53 +0300
-Message-Id: <20240607191307.528622-14-mjt@tls.msk.ru>
+Subject: [Stable-8.2.5 40/45] target/riscv/kvm.c: Fix the hart bit setting of
+ AIA
+Date: Fri,  7 Jun 2024 22:12:59 +0300
+Message-Id: <20240607191307.528622-20-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.5-20240607221227@cover.tls.msk.ru>
 References: <qemu-stable-8.2.5-20240607221227@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -62,68 +61,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Max Chou <max.chou@sifive.com>
+From: Yong-Xuan Wang <yongxuan.wang@sifive.com>
 
-The require_scale_rvf function only checks the double width operator for
-the vector floating point widen instructions, so most of the widen
-checking functions need to add require_rvf for single width operator.
+In AIA spec, each hart (or each hart within a group) has a unique hart
+number to locate the memory pages of interrupt files in the address
+space. The number of bits required to represent any hart number is equal
+to ceil(log2(hmax + 1)), where hmax is the largest hart number among
+groups.
 
-The vfwcvt.f.x.v and vfwcvt.f.xu.v instructions convert single width
-integer to double width float, so the opfxv_widen_check function doesn’t
-need require_rvf for the single width operator(integer).
+However, if the largest hart number among groups is a power of 2, QEMU
+will pass an inaccurate hart-index-bit setting to Linux. For example, when
+the guest OS has 4 harts, only ceil(log2(3 + 1)) = 2 bits are sufficient
+to represent 4 harts, but we passes 3 to Linux. The code needs to be
+updated to ensure accurate hart-index-bit settings.
 
-Signed-off-by: Max Chou <max.chou@sifive.com>
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Additionally, a Linux patch[1] is necessary to correctly recover the hart
+index when the guest OS has only 1 hart, where the hart-index-bit is 0.
+
+[1] https://lore.kernel.org/lkml/20240415064905.25184-1-yongxuan.wang@sifive.com/t/
+
+Signed-off-by: Yong-Xuan Wang <yongxuan.wang@sifive.com>
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
 Cc: qemu-stable <qemu-stable@nongnu.org>
-Message-ID: <20240322092600.1198921-3-max.chou@sifive.com>
+Message-ID: <20240515091129.28116-1-yongxuan.wang@sifive.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-(cherry picked from commit 7a999d4dd704aa71fe6416871ada69438b56b1e5)
+(cherry picked from commit 190b867f28cb5781f3cd01a3deb371e4211595b1)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/riscv/insn_trans/trans_rvv.c.inc b/target/riscv/insn_trans/trans_rvv.c.inc
-index a5fe92b670..e42f49a6d8 100644
---- a/target/riscv/insn_trans/trans_rvv.c.inc
-+++ b/target/riscv/insn_trans/trans_rvv.c.inc
-@@ -2379,6 +2379,7 @@ GEN_OPFVF_TRANS(vfrsub_vf,  opfvf_check)
- static bool opfvv_widen_check(DisasContext *s, arg_rmrr *a)
- {
-     return require_rvv(s) &&
-+           require_rvf(s) &&
-            require_scale_rvf(s) &&
-            (s->sew != MO_8) &&
-            vext_check_isa_ill(s) &&
-@@ -2421,6 +2422,7 @@ GEN_OPFVV_WIDEN_TRANS(vfwsub_vv, opfvv_widen_check)
- static bool opfvf_widen_check(DisasContext *s, arg_rmrr *a)
- {
-     return require_rvv(s) &&
-+           require_rvf(s) &&
-            require_scale_rvf(s) &&
-            (s->sew != MO_8) &&
-            vext_check_isa_ill(s) &&
-@@ -2453,6 +2455,7 @@ GEN_OPFVF_WIDEN_TRANS(vfwsub_vf)
- static bool opfwv_widen_check(DisasContext *s, arg_rmrr *a)
- {
-     return require_rvv(s) &&
-+           require_rvf(s) &&
-            require_scale_rvf(s) &&
-            (s->sew != MO_8) &&
-            vext_check_isa_ill(s) &&
-@@ -2495,6 +2498,7 @@ GEN_OPFWV_WIDEN_TRANS(vfwsub_wv)
- static bool opfwf_widen_check(DisasContext *s, arg_rmrr *a)
- {
-     return require_rvv(s) &&
-+           require_rvf(s) &&
-            require_scale_rvf(s) &&
-            (s->sew != MO_8) &&
-            vext_check_isa_ill(s) &&
-@@ -3015,6 +3019,7 @@ GEN_OPFVV_TRANS(vfredmin_vs, freduction_check)
- static bool freduction_widen_check(DisasContext *s, arg_rmrr *a)
- {
-     return reduction_widen_check(s, a) &&
-+           require_rvf(s) &&
-            require_scale_rvf(s) &&
-            (s->sew != MO_8);
- }
+diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
+index fa00b14269..aa7444d958 100644
+--- a/target/riscv/kvm/kvm-cpu.c
++++ b/target/riscv/kvm/kvm-cpu.c
+@@ -1455,7 +1455,14 @@ void kvm_riscv_aia_create(MachineState *machine, uint64_t group_shift,
+         }
+     }
+ 
+-    hart_bits = find_last_bit(&max_hart_per_socket, BITS_PER_LONG) + 1;
++
++    if (max_hart_per_socket > 1) {
++        max_hart_per_socket--;
++        hart_bits = find_last_bit(&max_hart_per_socket, BITS_PER_LONG) + 1;
++    } else {
++        hart_bits = 0;
++    }
++
+     ret = kvm_device_access(aia_fd, KVM_DEV_RISCV_AIA_GRP_CONFIG,
+                             KVM_DEV_RISCV_AIA_CONFIG_HART_BITS,
+                             &hart_bits, true, NULL);
 -- 
 2.39.2
 
