@@ -2,36 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27337900EDA
-	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 02:24:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89503900ED7
+	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 02:24:24 +0200 (CEST)
 Received: from [::1] (helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sFf11-0004PY-KL; Fri, 07 Jun 2024 15:12:43 -0400
+	id 1sFf11-0004PZ-KR; Fri, 07 Jun 2024 15:12:43 -0400
 Received: from [2001:470:142:3::10] (helo=eggs.gnu.org)
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sFf0s-0004Oq-Gj; Fri, 07 Jun 2024 15:12:34 -0400
+ id 1sFf0s-0004Or-Gw; Fri, 07 Jun 2024 15:12:35 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sFf0q-0001dz-6j; Fri, 07 Jun 2024 15:12:34 -0400
+ id 1sFf0q-0001e2-53; Fri, 07 Jun 2024 15:12:34 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 9235A6E52D;
- Fri,  7 Jun 2024 22:13:14 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 950396E52E;
+ Fri,  7 Jun 2024 22:13:15 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id C23D9E272D;
- Fri,  7 Jun 2024 22:12:19 +0300 (MSK)
-Received: (nullmailer pid 528227 invoked by uid 1000);
- Fri, 07 Jun 2024 19:12:19 -0000
+ by tsrv.corpit.ru (Postfix) with SMTP id C6096E272E;
+ Fri,  7 Jun 2024 22:12:20 +0300 (MSK)
+Received: (nullmailer pid 528233 invoked by uid 1000);
+ Fri, 07 Jun 2024 19:12:20 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.12 00/29] Patch Round-up for stable 7.2.12,
- frozen at 2024-06-07
-Date: Fri,  7 Jun 2024 22:12:02 +0300
-Message-Id: <qemu-stable-7.2.12-20240607221018@cover.tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.12 20/29] gitlab: Update msys2-64bit runner tags
+Date: Fri,  7 Jun 2024 22:12:03 +0300
+Message-Id: <20240607191219.528194-1-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <qemu-stable-7.2.12-20240607221018@cover.tls.msk.ru>
+References: <qemu-stable-7.2.12-20240607221018@cover.tls.msk.ru>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -58,83 +61,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following patches are queued for QEMU stable v7.2.12:
+From: Richard Henderson <richard.henderson@linaro.org>
 
-  https://gitlab.com/qemu-project/qemu/-/commits/staging-7.2
+Gitlab has deprecated and removed support for windows-1809
+and shared-windows.  Update to saas-windows-medium-amd64 per
 
-Patch freeze is 2024-06-07 (frozen), and the release is planned for 2024-06-09:
+https://about.gitlab.com/blog/2024/01/22/windows-2022-support-for-gitlab-saas-runners/
 
-  https://wiki.qemu.org/Planning/7.2
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Tested-by: Thomas Huth <thuth@redhat.com>
+Message-Id: <20240507175356.281618-1-richard.henderson@linaro.org>
+(cherry picked from commit 36fa7c686e9eac490002ffc439c4affaa352c17c)
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-Please respond here or CC qemu-stable@nongnu.org on any additional notes
-about the planning release.
+diff --git a/.gitlab-ci.d/windows.yml b/.gitlab-ci.d/windows.yml
+index 0180261b7f..dfa4eb84a7 100644
+--- a/.gitlab-ci.d/windows.yml
++++ b/.gitlab-ci.d/windows.yml
+@@ -1,9 +1,7 @@
+ .shared_msys2_builder:
+   extends: .base_job_template
+   tags:
+-  - shared-windows
+-  - windows
+-  - windows-1809
++  - saas-windows-medium-amd64
+   cache:
+     key: "${CI_JOB_NAME}-cache"
+     paths:
+-- 
+2.39.2
 
-The changes which are staging for inclusion, with the original commit hash
-from master branch, are given below the bottom line.
-
-Thanks!
-
-/mjt
-
---------------------------------------
-01* 690ceb71936f Philippe Mathieu-Daudé:
-   gitlab-ci: Remove job building EDK2 firmware binaries
-02* 7bc1286b81d4 Palmer Dabbelt:
-   gitlab/opensbi: Move to docker:stable
-03* 04f6fb897a5a Michael Tokarev:
-   linux-user: do_setsockopt: fix SOL_ALG.ALG_SET_KEY
-04* ae6d91a7e9b7 Zhu Yangyang:
-   nbd/server: do not poll within a coroutine context
-05* 4fa333e08dd9 Eric Blake:
-   nbd/server: Mark negotiation functions as coroutine_fn
-06* 06479dbf3d7d Li Zhijian:
-   backends/cryptodev-builtin: Fix local_error leaks
-07* dcc5c018c7e6 Peter Maydell:
-   tests/avocado: update sunxi kernel from armbian to 6.6.16
-08* a88a04906b96 Thomas Huth:
-   .gitlab-ci.d/cirrus.yml: Shorten the runtime of the macOS and FreeBSD jobs
-09* 4b00855f0ee2 Alexandra Diupina:
-   hw/dmax/xlnx_dpdma: fix handling of address_extension descriptor fields
-10* eb656a60fd93 Philippe Mathieu-Daudé:
-   hw/arm/npcm7xx: Store derivative OTP fuse key in little endian
-11* 6a5a63f74ba5 Ruihan Li:
-   target/i386: Give IRQs a chance when resetting HF_INHIBIT_IRQ_MASK
-12* e6578f1f68a0 Mattias Nissler:
-   hw/remote/vfio-user: Fix config space access byte order
-13* 41c685dc59bb Paolo Bonzini:
-   target/i386: fix operand size for DATA16 REX.W POPCNT
-14* 40a3ec7b5ffd Paolo Bonzini:
-   target/i386: rdpkru/wrpkru are no-prefix instructions
-15* 37e91415018d hikalium:
-   ui/gtk: Fix mouse/motion event scaling issue with GTK display backend
-16* e4e62514e3cc Dongwon Kim:
-   ui/gtk: Check if fence_fd is equal to or greater than 0
-17* 84d4b7285486 donsheng:
-   target-i386: hyper-v: Correct kvm_hv_handle_exit return value
-18* 8225bff7c5db Paolo Bonzini:
-   target/i386: disable jmp_opt if EFLAGS.RF is 1
-19* f0f0136abba6 Paolo Bonzini:
-   target/i386: no single-step exception after MOV or POP SS
-20 36fa7c686e9e Richard Henderson:
-   gitlab: Update msys2-64bit runner tags
-21 19ed42e8adc8 Zenghui Yu:
-   hvf: arm: Fix encodings for ID_AA64PFR1_EL1 and debug System registers
-22 daafa78b2972 Andrey Shumilin:
-   hw/intc/arm_gic: Fix handling of NS view of GICC_APR<n>
-23 daf9748ac002 Marcin Juszkiewicz:
-   target/arm: Disable SVE extensions when SVE is disabled
-24 c76b121840c6 yang.zhang:
-   hw/intc/riscv_aplic: APLICs should add child earlier than realize
-25 915758c537b5 Alistair Francis:
-   disas/riscv: Decode all of the pmpcfg and pmpaddr CSRs
-26 7604bbc2d87d Paolo Bonzini:
-   target/i386: fix xsave.flat from kvm-unit-tests
-27 da7c95920d02 Xinyu Li:
-   target/i386: fix SSE and SSE2 feature check
-28 2e701e6785cd Bernhard Beschow:
-   ui/sdl2: Allow host to power down screen
-29 78f932ea1f7b lanyanzhi:
-   target/loongarch: fix a wrong print in cpu dump
-
-(commit(s) marked with * were in previous series and are not resent)
 
