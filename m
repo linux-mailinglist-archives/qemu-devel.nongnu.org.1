@@ -2,40 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDA05900ED8
-	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 02:24:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11197900ECE
+	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 02:16:19 +0200 (CEST)
 Received: from [::1] (helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sFf42-0007Qd-4x; Fri, 07 Jun 2024 15:15:50 -0400
+	id 1sFf47-0007e4-B1; Fri, 07 Jun 2024 15:15:55 -0400
 Received: from [2001:470:142:3::10] (helo=eggs.gnu.org)
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sFf3z-0007QP-NQ; Fri, 07 Jun 2024 15:15:47 -0400
+ id 1sFf42-0007RK-QB; Fri, 07 Jun 2024 15:15:50 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sFf3y-0002Zp-0Y; Fri, 07 Jun 2024 15:15:47 -0400
+ id 1sFf41-0002is-2b; Fri, 07 Jun 2024 15:15:50 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 4C0EA6E556;
- Fri,  7 Jun 2024 22:14:06 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 02DFC6E55A;
+ Fri,  7 Jun 2024 22:14:53 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 84BBEE2752;
- Fri,  7 Jun 2024 22:13:11 +0300 (MSK)
-Received: (nullmailer pid 528766 invoked by uid 1000);
- Fri, 07 Jun 2024 19:13:08 -0000
+ by tsrv.corpit.ru (Postfix) with SMTP id 3B3C6E2754;
+ Fri,  7 Jun 2024 22:13:58 +0300 (MSK)
+Received: (nullmailer pid 529409 invoked by uid 1000);
+ Fri, 07 Jun 2024 19:13:58 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, lanyanzhi <lanyanzhi22b@ict.ac.cn>,
- Richard Henderson <richard.henderson@linaro.org>,
- Song Gao <gaosong@loongson.cn>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.5 45/45] target/loongarch: fix a wrong print in cpu dump
-Date: Fri,  7 Jun 2024 22:13:04 +0300
-Message-Id: <20240607191307.528622-25-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.0.1 45/71] gitlab: use $MAKE instead of 'make'
+Date: Fri,  7 Jun 2024 22:13:26 +0300
+Message-Id: <20240607191356.529336-1-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <qemu-stable-8.2.5-20240607221227@cover.tls.msk.ru>
-References: <qemu-stable-8.2.5-20240607221227@cover.tls.msk.ru>
+In-Reply-To: <qemu-stable-9.0.1-20240607221321@cover.tls.msk.ru>
+References: <qemu-stable-9.0.1-20240607221321@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -60,35 +63,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: lanyanzhi <lanyanzhi22b@ict.ac.cn>
+From: Daniel P. Berrangé <berrange@redhat.com>
 
-description:
-    loongarch_cpu_dump_state() want to dump all loongarch cpu
-state registers, but there is a tiny typographical error when
-printing "PRCFG2".
+The lcitool generated containers have '$MAKE' set to the path
+of the right 'make' binary. Using the env variable makes it
+possible to override the choice per job.
 
-Cc: qemu-stable@nongnu.org
-Signed-off-by: lanyanzhi <lanyanzhi22b@ict.ac.cn>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Song Gao <gaosong@loongson.cn>
-Message-Id: <20240604073831.666690-1-lanyanzhi22b@ict.ac.cn>
-Signed-off-by: Song Gao <gaosong@loongson.cn>
-(cherry picked from commit 78f932ea1f7b3b9b0ac628dc2a91281318fe51fa)
+Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20240513111551.488088-3-berrange@redhat.com>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+(cherry picked from commit c53f7a107879a2b7e719b07692a05289bf603fde)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
-index 337f04b201..6710ca0016 100644
---- a/target/loongarch/cpu.c
-+++ b/target/loongarch/cpu.c
-@@ -764,7 +764,7 @@ void loongarch_cpu_dump_state(CPUState *cs, FILE *f, int flags)
-     qemu_fprintf(f, "EENTRY=%016" PRIx64 "\n", env->CSR_EENTRY);
-     qemu_fprintf(f, "PRCFG1=%016" PRIx64 ", PRCFG2=%016" PRIx64 ","
-                  " PRCFG3=%016" PRIx64 "\n",
--                 env->CSR_PRCFG1, env->CSR_PRCFG3, env->CSR_PRCFG3);
-+                 env->CSR_PRCFG1, env->CSR_PRCFG2, env->CSR_PRCFG3);
-     qemu_fprintf(f, "TLBRENTRY=%016" PRIx64 "\n", env->CSR_TLBRENTRY);
-     qemu_fprintf(f, "TLBRBADV=%016" PRIx64 "\n", env->CSR_TLBRBADV);
-     qemu_fprintf(f, "TLBRERA=%016" PRIx64 "\n", env->CSR_TLBRERA);
+diff --git a/.gitlab-ci.d/buildtest-template.yml b/.gitlab-ci.d/buildtest-template.yml
+index 22045add80..278a5ea966 100644
+--- a/.gitlab-ci.d/buildtest-template.yml
++++ b/.gitlab-ci.d/buildtest-template.yml
+@@ -26,10 +26,10 @@
+       then
+         pyvenv/bin/meson configure . -Dbackend_max_links="$LD_JOBS" ;
+       fi || exit 1;
+-    - make -j"$JOBS"
++    - $MAKE -j"$JOBS"
+     - if test -n "$MAKE_CHECK_ARGS";
+       then
+-        make -j"$JOBS" $MAKE_CHECK_ARGS ;
++        $MAKE -j"$JOBS" $MAKE_CHECK_ARGS ;
+       fi
+     - ccache --show-stats
+ 
+@@ -60,7 +60,7 @@
+     - cd build
+     - find . -type f -exec touch {} +
+     # Avoid recompiling by hiding ninja with NINJA=":"
+-    - make NINJA=":" $MAKE_CHECK_ARGS
++    - $MAKE NINJA=":" $MAKE_CHECK_ARGS
+ 
+ .native_test_job_template:
+   extends: .common_test_job_template
 -- 
 2.39.2
 
