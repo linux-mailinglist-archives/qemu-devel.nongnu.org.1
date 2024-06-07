@@ -2,37 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40064900ED9
-	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 02:24:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2D4D900EC6
+	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 02:12:09 +0200 (CEST)
 Received: from [::1] (helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sFf5N-00037T-7o; Fri, 07 Jun 2024 15:17:13 -0400
+	id 1sFf5v-00051V-54; Fri, 07 Jun 2024 15:17:47 -0400
 Received: from [2001:470:142:3::10] (helo=eggs.gnu.org)
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sFf5L-00036y-HK; Fri, 07 Jun 2024 15:17:11 -0400
+ id 1sFf5p-0004m2-FN; Fri, 07 Jun 2024 15:17:41 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sFf5J-0002zl-PU; Fri, 07 Jun 2024 15:17:11 -0400
+ id 1sFf5n-00037P-69; Fri, 07 Jun 2024 15:17:41 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 15CE06E567;
+ by isrv.corpit.ru (Postfix) with ESMTP id CE3BF6E56D;
  Fri,  7 Jun 2024 22:14:54 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 49511E2760;
- Fri,  7 Jun 2024 22:13:59 +0300 (MSK)
-Received: (nullmailer pid 529447 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id 0D558E2766;
+ Fri,  7 Jun 2024 22:14:00 +0300 (MSK)
+Received: (nullmailer pid 529466 invoked by uid 1000);
  Fri, 07 Jun 2024 19:13:58 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Max Chou <max.chou@sifive.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Alistair Francis <alistair.francis@wdc.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.0.1 57/71] target/riscv: rvv: Fix Zvfhmin checking for
- vfwcvt.f.f.v and vfncvt.f.f.w instructions
-Date: Fri,  7 Jun 2024 22:13:38 +0300
-Message-Id: <20240607191356.529336-13-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Alistair Francis <alistair23@gmail.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Fabian Thomas <fabian.thomas@cispa.de>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.0.1 63/71] target/riscv: rvzicbo: Fixup CBO extension
+ register calculation
+Date: Fri,  7 Jun 2024 22:13:44 +0300
+Message-Id: <20240607191356.529336-19-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-9.0.1-20240607221321@cover.tls.msk.ru>
 References: <qemu-stable-9.0.1-20240607221321@cover.tls.msk.ru>
@@ -61,75 +63,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Max Chou <max.chou@sifive.com>
+From: Alistair Francis <alistair23@gmail.com>
 
-According v spec 18.4, only the vfwcvt.f.f.v and vfncvt.f.f.w
-instructions will be affected by Zvfhmin extension.
-And the vfwcvt.f.f.v and vfncvt.f.f.w instructions only support the
-conversions of
+When running the instruction
 
-* From 1*SEW(16/32) to 2*SEW(32/64)
-* From 2*SEW(32/64) to 1*SEW(16/32)
+```
+    cbo.flush 0(x0)
+```
 
-Signed-off-by: Max Chou <max.chou@sifive.com>
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-stable <qemu-stable@nongnu.org>
-Message-ID: <20240322092600.1198921-2-max.chou@sifive.com>
+QEMU would segfault.
+
+The issue was in cpu_gpr[a->rs1] as QEMU does not have cpu_gpr[0]
+allocated.
+
+In order to fix this let's use the existing get_address()
+helper. This also has the benefit of performing pointer mask
+calculations on the address specified in rs1.
+
+The pointer masking specificiation specifically states:
+
+"""
+Cache Management Operations: All instructions in Zicbom, Zicbop and Zicboz
+"""
+
+So this is the correct behaviour and we previously have been incorrectly
+not masking the address.
+
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-(cherry picked from commit 17b713c0806e72cd8edc6c2ddd8acc5be0475df6)
+Reported-by: Fabian Thomas <fabian.thomas@cispa.de>
+Fixes: e05da09b7cfd ("target/riscv: implement Zicbom extension")
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-stable <qemu-stable@nongnu.org>
+Message-ID: <20240514023910.301766-1-alistair.francis@wdc.com>
+Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
+(cherry picked from commit c5eb8d6336741dbcb98efcc347f8265bf60bc9d1)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/riscv/insn_trans/trans_rvv.c.inc b/target/riscv/insn_trans/trans_rvv.c.inc
-index 7d84e7d812..ef568e263d 100644
---- a/target/riscv/insn_trans/trans_rvv.c.inc
-+++ b/target/riscv/insn_trans/trans_rvv.c.inc
-@@ -50,6 +50,22 @@ static bool require_rvf(DisasContext *s)
-     }
+diff --git a/target/riscv/insn_trans/trans_rvzicbo.c.inc b/target/riscv/insn_trans/trans_rvzicbo.c.inc
+index d5d7095903..15711c3140 100644
+--- a/target/riscv/insn_trans/trans_rvzicbo.c.inc
++++ b/target/riscv/insn_trans/trans_rvzicbo.c.inc
+@@ -31,27 +31,35 @@
+ static bool trans_cbo_clean(DisasContext *ctx, arg_cbo_clean *a)
+ {
+     REQUIRE_ZICBOM(ctx);
+-    gen_helper_cbo_clean_flush(tcg_env, cpu_gpr[a->rs1]);
++    TCGv src = get_address(ctx, a->rs1, 0);
++
++    gen_helper_cbo_clean_flush(tcg_env, src);
+     return true;
  }
  
-+static bool require_rvfmin(DisasContext *s)
-+{
-+    if (s->mstatus_fs == EXT_STATUS_DISABLED) {
-+        return false;
-+    }
-+
-+    switch (s->sew) {
-+    case MO_16:
-+        return s->cfg_ptr->ext_zvfhmin;
-+    case MO_32:
-+        return s->cfg_ptr->ext_zve32f;
-+    default:
-+        return false;
-+    }
-+}
-+
- static bool require_scale_rvf(DisasContext *s)
+ static bool trans_cbo_flush(DisasContext *ctx, arg_cbo_flush *a)
  {
-     if (s->mstatus_fs == EXT_STATUS_DISABLED) {
-@@ -75,8 +91,6 @@ static bool require_scale_rvfmin(DisasContext *s)
-     }
- 
-     switch (s->sew) {
--    case MO_8:
--        return s->cfg_ptr->ext_zvfhmin;
-     case MO_16:
-         return s->cfg_ptr->ext_zve32f;
-     case MO_32:
-@@ -2685,6 +2699,7 @@ static bool opxfv_widen_check(DisasContext *s, arg_rmr *a)
- static bool opffv_widen_check(DisasContext *s, arg_rmr *a)
- {
-     return opfv_widen_check(s, a) &&
-+           require_rvfmin(s) &&
-            require_scale_rvfmin(s) &&
-            (s->sew != MO_8);
+     REQUIRE_ZICBOM(ctx);
+-    gen_helper_cbo_clean_flush(tcg_env, cpu_gpr[a->rs1]);
++    TCGv src = get_address(ctx, a->rs1, 0);
++
++    gen_helper_cbo_clean_flush(tcg_env, src);
+     return true;
  }
-@@ -2790,6 +2805,7 @@ static bool opfxv_narrow_check(DisasContext *s, arg_rmr *a)
- static bool opffv_narrow_check(DisasContext *s, arg_rmr *a)
+ 
+ static bool trans_cbo_inval(DisasContext *ctx, arg_cbo_inval *a)
  {
-     return opfv_narrow_check(s, a) &&
-+           require_rvfmin(s) &&
-            require_scale_rvfmin(s) &&
-            (s->sew != MO_8);
+     REQUIRE_ZICBOM(ctx);
+-    gen_helper_cbo_inval(tcg_env, cpu_gpr[a->rs1]);
++    TCGv src = get_address(ctx, a->rs1, 0);
++
++    gen_helper_cbo_inval(tcg_env, src);
+     return true;
+ }
+ 
+ static bool trans_cbo_zero(DisasContext *ctx, arg_cbo_zero *a)
+ {
+     REQUIRE_ZICBOZ(ctx);
+-    gen_helper_cbo_zero(tcg_env, cpu_gpr[a->rs1]);
++    TCGv src = get_address(ctx, a->rs1, 0);
++
++    gen_helper_cbo_zero(tcg_env, src);
+     return true;
  }
 -- 
 2.39.2
