@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65E90901041
-	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 10:36:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 924F5901048
+	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 10:36:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sFrY2-0001Ti-2c; Sat, 08 Jun 2024 04:35:38 -0400
+	id 1sFrY0-0001Gp-HR; Sat, 08 Jun 2024 04:35:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sFrXz-0001GN-JL
- for qemu-devel@nongnu.org; Sat, 08 Jun 2024 04:35:35 -0400
+ id 1sFrXy-00018q-RU
+ for qemu-devel@nongnu.org; Sat, 08 Jun 2024 04:35:34 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sFrXx-0000Du-VK
- for qemu-devel@nongnu.org; Sat, 08 Jun 2024 04:35:35 -0400
+ id 1sFrXx-0000Dk-Cv
+ for qemu-devel@nongnu.org; Sat, 08 Jun 2024 04:35:34 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717835733;
+ s=mimecast20190719; t=1717835732;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=gbOzsuorb9Pd+45fc2ZCOTvf1efxLkBGGt4FyFc06tc=;
- b=VHyrpJQ+IbhjGMZJfWvYm7cH1dJvysJ0kjOYPXaa/8iq+N2HSc8B0xz2HSDThRyEFldjjz
- 8ChU4jtaSs7KpKmcYMHAFY/j0kAOtHmlSn2CoADyvSh6wpT/VDwJLDRwkLhPW2NyD2MiUj
- CHhaI/ZrXs+GOrW7WfIsZPfQY9jfuEE=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=tJL4G6DZbP63BxtynbmGzzcFW/nfu3SZI/XSGkVfEGk=;
+ b=iK+5JkS2f26Bm24fHSUcX5T2U+FB44ZR1fsf7uiUpW6ookIHDYn4dj2FPT44ybpr2eatmM
+ vaafiu5e/K8b3wWu6qrynl2xUL2ASfQED99ryaQn0m+nxY3CN9IWg8z++a8goUbbSYe6k7
+ wo5L4Vpug6EjCbwRtPsA3yD3VtNAdws=
+Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
+ [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-587-Ydf2XdZsOyC5HW8EBY43gQ-1; Sat, 08 Jun 2024 04:35:28 -0400
-X-MC-Unique: Ydf2XdZsOyC5HW8EBY43gQ-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-a6ef729b465so44595366b.1
- for <qemu-devel@nongnu.org>; Sat, 08 Jun 2024 01:35:28 -0700 (PDT)
+ us-mta-83-Nq563lP9NiuvzgHEUCCfww-1; Sat, 08 Jun 2024 04:35:31 -0400
+X-MC-Unique: Nq563lP9NiuvzgHEUCCfww-1
+Received: by mail-lj1-f199.google.com with SMTP id
+ 38308e7fff4ca-2ea9aeae4e6so25100001fa.0
+ for <qemu-devel@nongnu.org>; Sat, 08 Jun 2024 01:35:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717835727; x=1718440527;
+ d=1e100.net; s=20230601; t=1717835729; x=1718440529;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=gbOzsuorb9Pd+45fc2ZCOTvf1efxLkBGGt4FyFc06tc=;
- b=IL4+GaXUThX5DN634s5gDO+h89ta4F2tK5oRdP+lF2mzNUCmmWt/F8401/elbNvoVS
- TDpzbj/a6f1H5SUHFSwLGKUQAF2Eaz0OFiH9A0TWNnhfDgwX+cWkeRMtigAQJH9cezdA
- qyP6UTGxRVV4qAlnjE5omJVUMsuuPbHXBJRnGZQyYSkPqpiYoa4gffzeKIOgt5Fckkgd
- BnzWGhkhDvaeJGkHTuzBs2Y3W5CYP7sPKRitdrFRw5+QYMSxPxptLbAwW+MWxH+lX5oE
- ZJHCK2dtBEqnJA9NKz+ZIX74zb7Cv3D/sFwNoq2y/KyslUGweCuzDnOVdd8epO74fVmn
- W1iA==
-X-Gm-Message-State: AOJu0Ywd6g4UJRoVrcXAGpcl6U1GycJVOfxSkHfjEAl7kKpF77m+PbBb
- SYqzb5/7/CMV1VWVJA9D7hqu42kLDEO8YxveiKSZTJvtleiwYHSM1GLqCa8cc88ngM29dfn4KSA
- EqoBicwFmEOfKALnSM1YNxmq52DiQ7ds78YujVEr1UKyQKDVg/y02x3Hs76hOzEMKj2xs2tGF+P
- 6QNqow8QdbQFgbQM0leBhj/kal6eTSWJqtzvwV
-X-Received: by 2002:a17:906:f10:b0:a6c:6f0a:e146 with SMTP id
- a640c23a62f3a-a6cd5616bd5mr310145566b.1.1717835727276; 
- Sat, 08 Jun 2024 01:35:27 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHweymnykigqlbOgJfK1QYei1niqOJxji225vD2eohSRkv+fFu3vIRvlea0yv62fMjWaB0JaQ==
-X-Received: by 2002:a17:906:f10:b0:a6c:6f0a:e146 with SMTP id
- a640c23a62f3a-a6cd5616bd5mr310144066b.1.1717835726751; 
- Sat, 08 Jun 2024 01:35:26 -0700 (PDT)
+ bh=tJL4G6DZbP63BxtynbmGzzcFW/nfu3SZI/XSGkVfEGk=;
+ b=W+enkNi3KaDJTlN/1P2mBLvs33hx/t3/pJppe79eNhorQdNv4DNRjWK4jZVlPpPb1Z
+ 2fM1PGlX4VvXNcs+/kSbUVqNlefmm5fBOYqlm7dL0g6Uf2EBWzBdOWJPHWBFj/ftWG81
+ qTMydeaCEbLiBXjia0KvfeB9HKCJsnOGbYKZp+mhMAiPyUZJlgtHlI4z0DSdsfjrBraY
+ zMaPdSY8bBHqZoH8/Y1dsQM595q+BL7hwzWiu09reHil9BbwlRQtpo/F3u3DlXpi2dCH
+ yryDVLllaMfT05I7nacQAbNJc/HRJzdBjRA2iNpBr9foPspvnh1BdIa4YeimpUXICavW
+ Yw8Q==
+X-Gm-Message-State: AOJu0YyHAglQBd2E6vE/Q6KUjEodKfbJf6R+Q/uixPcaZJ8KU4XsJe3p
+ KapS6lOvrTF9ZbowzZp/lBNIzQ5Yo2NpEdUIXVO/r27RA56aTguYILXsFUDAKATj6iIqAA4d9CI
+ 56EWXdCLMq+fijZjx0P1GDZ7h843N97TaxKUe8yilsAXNcnAb8mFigW4cS9rXQprey1oXZG0kBf
+ MEGh89TlD7KhbCfd9p9Wc3UYKsHSmzjAE7bFCr
+X-Received: by 2002:a05:6512:104e:b0:52b:fb4:1283 with SMTP id
+ 2adb3069b0e04-52bb9f775ccmr4608711e87.15.1717835729474; 
+ Sat, 08 Jun 2024 01:35:29 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGAL4Nq0kxJzAORqtSRfKtyeHQxPgJR77T4oF9k9E0XQnZk/1o0IeFtuM4JTsBJWuLfU95g3A==
+X-Received: by 2002:a05:6512:104e:b0:52b:fb4:1283 with SMTP id
+ 2adb3069b0e04-52bb9f775ccmr4608697e87.15.1717835729147; 
+ Sat, 08 Jun 2024 01:35:29 -0700 (PDT)
 Received: from avogadro.local ([151.81.115.112])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a6c805c969asm354491466b.55.2024.06.08.01.35.25
+ a640c23a62f3a-a6c8070e2fcsm352999966b.154.2024.06.08.01.35.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 08 Jun 2024 01:35:25 -0700 (PDT)
+ Sat, 08 Jun 2024 01:35:27 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Phil Dennis-Jordan <phil@philjordan.eu>,
  Roman Bolshakov <roman@roolebo.dev>
-Subject: [PULL 26/42] i386/hvf: Fixes some compilation warnings
-Date: Sat,  8 Jun 2024 10:33:59 +0200
-Message-ID: <20240608083415.2769160-27-pbonzini@redhat.com>
+Subject: [PULL 27/42] hvf: Consistent types for vCPU handles
+Date: Sat,  8 Jun 2024 10:34:00 +0200
+Message-ID: <20240608083415.2769160-28-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240608083415.2769160-1-pbonzini@redhat.com>
 References: <20240608083415.2769160-1-pbonzini@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
@@ -104,74 +105,57 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Phil Dennis-Jordan <phil@philjordan.eu>
 
-A bunch of function definitions used empty parentheses instead of (void) syntax, yielding the following warning when building with clang on macOS:
+macOS Hypervisor.framework uses different types for identifying vCPUs, hv_vcpu_t or hv_vcpuid_t, depending on host architecture. They are not just differently named typedefs for the same primitive type, but reference different-width integers.
 
-warning: a function declaration without a prototype is deprecated in all versions of C [-Wstrict-prototypes]
-
-In addition to fixing these function headers, it also fixes what appears to be a typo causing a variable to be unused after initialisation.
-
-warning: variable 'entry_ctls' set but not used [-Wunused-but-set-variable]
+Instead of using an integer type and casting where necessary, this change introduces a typedef which resolves the active architecture’s hvf typedef. It also removes a now-unnecessary cast.
 
 Signed-off-by: Phil Dennis-Jordan <phil@philjordan.eu>
 Reviewed-by: Roman Bolshakov <roman@roolebo.dev>
 Tested-by: Roman Bolshakov <roman@roolebo.dev>
-Message-ID: <20240605112556.43193-3-phil@philjordan.eu>
+Message-ID: <20240605112556.43193-4-phil@philjordan.eu>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/hvf/vmx.h        | 3 +--
- target/i386/hvf/x86_decode.c | 2 +-
- target/i386/hvf/x86_emu.c    | 4 ++--
- 3 files changed, 4 insertions(+), 5 deletions(-)
+ include/sysemu/hvf_int.h  | 4 +++-
+ accel/hvf/hvf-accel-ops.c | 2 +-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/target/i386/hvf/vmx.h b/target/i386/hvf/vmx.h
-index 0fffcfa46ce..3954ef883df 100644
---- a/target/i386/hvf/vmx.h
-+++ b/target/i386/hvf/vmx.h
-@@ -95,8 +95,7 @@ static void enter_long_mode(hv_vcpuid_t vcpu, uint64_t cr0, uint64_t efer)
-     efer |= MSR_EFER_LMA;
-     wvmcs(vcpu, VMCS_GUEST_IA32_EFER, efer);
-     entry_ctls = rvmcs(vcpu, VMCS_ENTRY_CTLS);
--    wvmcs(vcpu, VMCS_ENTRY_CTLS, rvmcs(vcpu, VMCS_ENTRY_CTLS) |
--          VM_ENTRY_GUEST_LMA);
-+    wvmcs(vcpu, VMCS_ENTRY_CTLS, entry_ctls | VM_ENTRY_GUEST_LMA);
+diff --git a/include/sysemu/hvf_int.h b/include/sysemu/hvf_int.h
+index 4a327fd5260..30e739a2b52 100644
+--- a/include/sysemu/hvf_int.h
++++ b/include/sysemu/hvf_int.h
+@@ -13,8 +13,10 @@
  
-     uint64_t guest_tr_ar = rvmcs(vcpu, VMCS_GUEST_TR_ACCESS_RIGHTS);
-     if ((efer & MSR_EFER_LME) &&
-diff --git a/target/i386/hvf/x86_decode.c b/target/i386/hvf/x86_decode.c
-index 3728d7705e2..a4a28f113fd 100644
---- a/target/i386/hvf/x86_decode.c
-+++ b/target/i386/hvf/x86_decode.c
-@@ -2111,7 +2111,7 @@ uint32_t decode_instruction(CPUX86State *env, struct x86_decode *decode)
-     return decode->len;
- }
+ #ifdef __aarch64__
+ #include <Hypervisor/Hypervisor.h>
++typedef hv_vcpu_t hvf_vcpuid;
+ #else
+ #include <Hypervisor/hv.h>
++typedef hv_vcpuid_t hvf_vcpuid;
+ #endif
  
--void init_decoder()
-+void init_decoder(void)
- {
-     int i;
-     
-diff --git a/target/i386/hvf/x86_emu.c b/target/i386/hvf/x86_emu.c
-index 3a3f0a50d0b..38c782b8e3b 100644
---- a/target/i386/hvf/x86_emu.c
-+++ b/target/i386/hvf/x86_emu.c
-@@ -1409,7 +1409,7 @@ static struct cmd_handler {
+ /* hvf_slot flags */
+@@ -50,7 +52,7 @@ struct HVFState {
+ extern HVFState *hvf_state;
  
- static struct cmd_handler _cmd_handler[X86_DECODE_CMD_LAST];
- 
--static void init_cmd_handler()
-+static void init_cmd_handler(void)
- {
-     int i;
-     for (i = 0; i < ARRAY_SIZE(handlers); i++) {
-@@ -1481,7 +1481,7 @@ bool exec_instruction(CPUX86State *env, struct x86_decode *ins)
-     return true;
- }
- 
--void init_emu()
-+void init_emu(void)
- {
-     init_cmd_handler();
- }
+ struct AccelCPUState {
+-    uint64_t fd;
++    hvf_vcpuid fd;
+     void *exit;
+     bool vtimer_masked;
+     sigset_t unblock_ipi_mask;
+diff --git a/accel/hvf/hvf-accel-ops.c b/accel/hvf/hvf-accel-ops.c
+index 6f1e27ef469..b2a37a2229f 100644
+--- a/accel/hvf/hvf-accel-ops.c
++++ b/accel/hvf/hvf-accel-ops.c
+@@ -400,7 +400,7 @@ static int hvf_init_vcpu(CPUState *cpu)
+     r = hv_vcpu_create(&cpu->accel->fd,
+                        (hv_vcpu_exit_t **)&cpu->accel->exit, NULL);
+ #else
+-    r = hv_vcpu_create((hv_vcpuid_t *)&cpu->accel->fd, HV_VCPU_DEFAULT);
++    r = hv_vcpu_create(&cpu->accel->fd, HV_VCPU_DEFAULT);
+ #endif
+     cpu->accel->dirty = true;
+     assert_hvf_ok(r);
 -- 
 2.45.1
 
