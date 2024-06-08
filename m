@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99CB190104F
-	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 10:38:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A8E7901059
+	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 10:39:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sFrYe-0004T7-40; Sat, 08 Jun 2024 04:36:16 -0400
+	id 1sFrYd-0004Hx-9Y; Sat, 08 Jun 2024 04:36:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sFrYT-0003dv-Ok
- for qemu-devel@nongnu.org; Sat, 08 Jun 2024 04:36:08 -0400
+ id 1sFrYT-0003Zu-3K
+ for qemu-devel@nongnu.org; Sat, 08 Jun 2024 04:36:07 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sFrYS-0000LI-3e
- for qemu-devel@nongnu.org; Sat, 08 Jun 2024 04:36:05 -0400
+ id 1sFrYR-0000LE-Fq
+ for qemu-devel@nongnu.org; Sat, 08 Jun 2024 04:36:04 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1717835763;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=8pQ5Er/NEdCVoAtuU67mW13Q59cMmGe2/F/7mqRXaRo=;
- b=S172ECvQi6p8netse9ypS/oMG27kDbQPbrUdNdxMU8ygZDyCAVRr3GJ0Ym9MOKavwMTGYQ
- EsBX48ukdVHaoGsvbLN3NQRx2thD3HOkph0pAPI+bfPUSTJHXnwKByUvEgQX0CHRSgJsGW
- mFZvT6Es4Ggbwaf9WqVNZ5gCwirH6pI=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=HFPWQHzz5XsC/hwHCF9kGKW2QA2c0A/x+5S2uKUsipI=;
+ b=R2FUiRgY5qFefslZ0kZHI4kiqKayugHR4nBA8ydCFk/d3HmoskKql1TNVQn/F/D7GbUhxp
+ D+RX7Rr8OXzaXmmVTL3JkWz6USc1UAd2dgsKCq90P84bXLOtUnhyzzO80IxK602RXNqS7y
+ K/5BZBgLPyY87DZeKHvLLFqDk37sF8k=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-8-wf7FL_ZkN2irI2zx4_p_Zw-1; Sat, 08 Jun 2024 04:35:57 -0400
-X-MC-Unique: wf7FL_ZkN2irI2zx4_p_Zw-1
-Received: by mail-ed1-f72.google.com with SMTP id
- 4fb4d7f45d1cf-57c70b484c5so78497a12.0
- for <qemu-devel@nongnu.org>; Sat, 08 Jun 2024 01:35:57 -0700 (PDT)
+ us-mta-518-OosyhZ6NPge7cwvwPC_HWA-1; Sat, 08 Jun 2024 04:36:00 -0400
+X-MC-Unique: OosyhZ6NPge7cwvwPC_HWA-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-a6ef6ac6e0aso46502966b.0
+ for <qemu-devel@nongnu.org>; Sat, 08 Jun 2024 01:36:00 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717835755; x=1718440555;
+ d=1e100.net; s=20230601; t=1717835758; x=1718440558;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=8pQ5Er/NEdCVoAtuU67mW13Q59cMmGe2/F/7mqRXaRo=;
- b=Ix8451EeQkz/Xe5GbVv7NDJ+mQbEZQU9CAqHkujLdTr+mL/C9xYdS5MARB2klsCUJS
- 4GzlkB5e6wLgK7o3WmHFLlzDlVzIVSNdB5mrxnRfdudM4kHIWxwARPrnwhEZCLMA02vn
- 6XgbWwX3unD4WD4cpZTM4zkJIbKXemJatzyLLLZ65I607n2elgNJ1FIWast3iiN+P2rT
- PkHxk6HYf2296CMoDISa8YjZXDmMdfI974OREpJIW2P1CCQC+gouFY2EfPUtU3TEroqi
- MVJEWxEsMBNEPkKA5QK1AWcZGMsyQIUIcS1xWP0gVkKuJxJVKANkyrlhUxnukYCZI+jK
- buPg==
-X-Gm-Message-State: AOJu0YwLWcknZvtr36efVD4CYkB1dKtGOufINsJyvOG492dF4N9VIhSc
- 9GHQhGsnIQnrVA1uIvtwRo1tGD3kOkTjNpWdwaVTc5Rs4AJR3T9gpJFHT2DkY9HN5NzEXR+7VYB
- FOm7WF3zkhabHlX3nrt3XtI0lUHRXFCFeNLhQ7Y0ExnsSamfs9IaXlKunanw2ska2OyCbDfoBWe
- xi4imAzaAwMpnA/wN22HGv7ktXrIjpzGdDUsvB
-X-Received: by 2002:a50:9f25:0:b0:57a:6ed5:b327 with SMTP id
- 4fb4d7f45d1cf-57c508e1f3dmr3112986a12.12.1717835754964; 
- Sat, 08 Jun 2024 01:35:54 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFhxrJpMz4UWUDt1yNq0Po5homi6nU35ddzjCl9/U7XRjPDOxNT2e+KLPzXVRWAkY9Bx9y0Gg==
-X-Received: by 2002:a50:9f25:0:b0:57a:6ed5:b327 with SMTP id
- 4fb4d7f45d1cf-57c508e1f3dmr3112974a12.12.1717835754597; 
- Sat, 08 Jun 2024 01:35:54 -0700 (PDT)
+ bh=HFPWQHzz5XsC/hwHCF9kGKW2QA2c0A/x+5S2uKUsipI=;
+ b=ZwvdKFEOKNY8wBo+tAfyD/Zyu8zurXlHlVMGwFj1Pz6eGZ3JeoErHU/8Yxxrl1DThu
+ 4kagTSbogkpnAXplVdqQ73FuFxfCVvnelRP/2CNlf+HE3rCCHcU4DUA/kd80ZrwK9Mms
+ f67G4iuudi09BEcWW51HQ04lSu5g42HRGP+/5ZydTAS5gVSkhL2W2slXx5Iiq1Hczqet
+ VsmOfwVEZrrBNshDfUl6LhgDGxjkmi65Ex3wurMxEK1ygUaeVA/03QnKeciutkUY2rFn
+ kwSTfza6lOkAS6Qb9IHFoZR7sRmEPHmxTfQgXb6RXVXjDo0cxQU1z6e7XaBAbZA5NinT
+ Jr/w==
+X-Gm-Message-State: AOJu0Yw1Ja78nSIm9HnGQ1g1qmoBAK3kIjag8Khlc773Zt9eQ3ov/0V8
+ l/2F0FXBWccBe79GTHnwpvoGWpffOgxMxcWIXFaNlZFit84gKYMCxwX4doGxQ0VdIb64lJ9PAJ9
+ uyXbSET9gEoTPMV6liWhomNgPzInZdMac6fkuEcoDT8dsq0py3KXVxELw180Ag3I+1JuDkpHWN0
+ adb/PwUSf75ahzl6RzRuBuhVPLAF49ljZj6SU6
+X-Received: by 2002:a50:d70d:0:b0:57c:5e65:1ff7 with SMTP id
+ 4fb4d7f45d1cf-57c5e652ca9mr2386990a12.39.1717835758238; 
+ Sat, 08 Jun 2024 01:35:58 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGnQNvjFC2z9Cv7Ps2zLc7yc+rPO9/zUaGuXMJT5wwDeVfGj8ZQqEVGFOqB1oGrlXzAL1p+9A==
+X-Received: by 2002:a50:d70d:0:b0:57c:5e65:1ff7 with SMTP id
+ 4fb4d7f45d1cf-57c5e652ca9mr2386979a12.39.1717835757859; 
+ Sat, 08 Jun 2024 01:35:57 -0700 (PDT)
 Received: from avogadro.local ([151.81.115.112])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-57aae0cc355sm4015571a12.33.2024.06.08.01.35.53
+ 4fb4d7f45d1cf-57aadf9d296sm3946967a12.7.2024.06.08.01.35.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 08 Jun 2024 01:35:53 -0700 (PDT)
+ Sat, 08 Jun 2024 01:35:55 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: John Allen <john.allen@amd.com>, William Roche <william.roche@oracle.com>
-Subject: [PULL 38/42] i386: Fix MCE support for AMD hosts
-Date: Sat,  8 Jun 2024 10:34:11 +0200
-Message-ID: <20240608083415.2769160-39-pbonzini@redhat.com>
+Cc: John Allen <john.allen@amd.com>, William Roche <william.roche@oracle.com>,
+ Joao Martins <joao.m.martins@oracle.com>
+Subject: [PULL 39/42] i386: Add support for SUCCOR feature
+Date: Sat,  8 Jun 2024 10:34:12 +0200
+Message-ID: <20240608083415.2769160-40-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240608083415.2769160-1-pbonzini@redhat.com>
 References: <20240608083415.2769160-1-pbonzini@redhat.com>
@@ -103,103 +104,97 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: John Allen <john.allen@amd.com>
 
-For the most part, AMD hosts can use the same MCE injection code as Intel, but
-there are instances where the qemu implementation is Intel specific. First, MCE
-delivery works differently on AMD and does not support broadcast. Second,
-kvm_mce_inject generates MCEs that include a number of Intel specific status
-bits. Modify kvm_mce_inject to properly generate MCEs on AMD platforms.
+Add cpuid bit definition for the SUCCOR feature. This cpuid bit is required to
+be exposed to guests to allow them to handle machine check exceptions on AMD
+hosts.
+
+----
+v2:
+  - Add "succor" feature word.
+  - Add case to kvm_arch_get_supported_cpuid for the SUCCOR feature.
 
 Reported-by: William Roche <william.roche@oracle.com>
+Reviewed-by: Joao Martins <joao.m.martins@oracle.com>
 Signed-off-by: John Allen <john.allen@amd.com>
-Message-ID: <20240603193622.47156-2-john.allen@amd.com>
+Message-ID: <20240603193622.47156-3-john.allen@amd.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/cpu.h     |  2 ++
- target/i386/helper.c  |  4 ++++
- target/i386/kvm/kvm.c | 39 +++++++++++++++++++++++++++++++--------
- 3 files changed, 37 insertions(+), 8 deletions(-)
+ target/i386/cpu.h     |  4 ++++
+ target/i386/cpu.c     | 18 +++++++++++++++++-
+ target/i386/kvm/kvm.c |  2 ++
+ 3 files changed, 23 insertions(+), 1 deletion(-)
 
 diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index 29d799adfd6..e6d5d1b483c 100644
+index e6d5d1b483c..6786055ec6b 100644
 --- a/target/i386/cpu.h
 +++ b/target/i386/cpu.h
-@@ -377,6 +377,8 @@ typedef enum X86Seg {
- #define MCI_STATUS_PCC   (1ULL<<57)  /* processor context corrupt */
- #define MCI_STATUS_S     (1ULL<<56)  /* Signaled machine check */
- #define MCI_STATUS_AR    (1ULL<<55)  /* Action required */
-+#define MCI_STATUS_DEFERRED    (1ULL<<44)  /* Deferred error */
-+#define MCI_STATUS_POISON      (1ULL<<43)  /* Poisoned data consumed */
+@@ -630,6 +630,7 @@ typedef enum FeatureWord {
+     FEAT_7_1_EAX,       /* CPUID[EAX=7,ECX=1].EAX */
+     FEAT_8000_0001_EDX, /* CPUID[8000_0001].EDX */
+     FEAT_8000_0001_ECX, /* CPUID[8000_0001].ECX */
++    FEAT_8000_0007_EBX, /* CPUID[8000_0007].EBX */
+     FEAT_8000_0007_EDX, /* CPUID[8000_0007].EDX */
+     FEAT_8000_0008_EBX, /* CPUID[8000_0008].EBX */
+     FEAT_8000_0021_EAX, /* CPUID[8000_0021].EAX */
+@@ -982,6 +983,9 @@ uint64_t x86_cpu_get_supported_feature_word(FeatureWord w,
+ /* Packets which contain IP payload have LIP values */
+ #define CPUID_14_0_ECX_LIP              (1U << 31)
  
- /* MISC register defines */
- #define MCM_ADDR_SEGOFF  0      /* segment offset */
-diff --git a/target/i386/helper.c b/target/i386/helper.c
-index f9d1381f90b..01a268a30bb 100644
---- a/target/i386/helper.c
-+++ b/target/i386/helper.c
-@@ -91,6 +91,10 @@ int cpu_x86_support_mca_broadcast(CPUX86State *env)
-     int family = 0;
-     int model = 0;
- 
-+    if (IS_AMD_CPU(env)) {
-+        return 0;
-+    }
++/* RAS Features */
++#define CPUID_8000_0007_EBX_SUCCOR      (1U << 1)
 +
-     cpu_x86_version(env, &family, &model);
-     if ((family == 6 && model >= 14) || family > 6) {
-         return 1;
+ /* CLZERO instruction */
+ #define CPUID_8000_0008_EBX_CLZERO      (1U << 0)
+ /* Always save/restore FP error pointers */
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 383230fa479..c5a532a254e 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -1180,6 +1180,22 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
+         .tcg_features = TCG_APM_FEATURES,
+         .unmigratable_flags = CPUID_APM_INVTSC,
+     },
++    [FEAT_8000_0007_EBX] = {
++        .type = CPUID_FEATURE_WORD,
++        .feat_names = {
++            NULL, "succor", NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++        },
++        .cpuid = { .eax = 0x80000007, .reg = R_EBX, },
++        .tcg_features = 0,
++        .unmigratable_flags = 0,
++    },
+     [FEAT_8000_0008_EBX] = {
+         .type = CPUID_FEATURE_WORD,
+         .feat_names = {
+@@ -6887,7 +6903,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+         break;
+     case 0x80000007:
+         *eax = 0;
+-        *ebx = 0;
++        *ebx = env->features[FEAT_8000_0007_EBX];
+         *ecx = 0;
+         *edx = env->features[FEAT_8000_0007_EDX];
+         break;
 diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index b5635209812..55a9e8a70cf 100644
+index 55a9e8a70cf..56d8e2a89ec 100644
 --- a/target/i386/kvm/kvm.c
 +++ b/target/i386/kvm/kvm.c
-@@ -638,17 +638,40 @@ static void kvm_mce_inject(X86CPU *cpu, hwaddr paddr, int code)
- {
-     CPUState *cs = CPU(cpu);
-     CPUX86State *env = &cpu->env;
--    uint64_t status = MCI_STATUS_VAL | MCI_STATUS_UC | MCI_STATUS_EN |
--                      MCI_STATUS_MISCV | MCI_STATUS_ADDRV | MCI_STATUS_S;
--    uint64_t mcg_status = MCG_STATUS_MCIP;
-+    uint64_t status = MCI_STATUS_VAL | MCI_STATUS_EN | MCI_STATUS_MISCV |
-+                      MCI_STATUS_ADDRV;
-+    uint64_t mcg_status = MCG_STATUS_MCIP | MCG_STATUS_RIPV;
-     int flags = 0;
- 
--    if (code == BUS_MCEERR_AR) {
--        status |= MCI_STATUS_AR | 0x134;
--        mcg_status |= MCG_STATUS_RIPV | MCG_STATUS_EIPV;
-+    if (!IS_AMD_CPU(env)) {
-+        status |= MCI_STATUS_S | MCI_STATUS_UC;
-+        if (code == BUS_MCEERR_AR) {
-+            status |= MCI_STATUS_AR | 0x134;
-+            mcg_status |= MCG_STATUS_EIPV;
-+        } else {
-+            status |= 0xc0;
-+        }
-     } else {
--        status |= 0xc0;
--        mcg_status |= MCG_STATUS_RIPV;
-+        if (code == BUS_MCEERR_AR) {
-+            status |= MCI_STATUS_UC | MCI_STATUS_POISON;
-+            mcg_status |= MCG_STATUS_EIPV;
-+        } else {
-+            /* Setting the POISON bit for deferred errors indicates to the
-+             * guest kernel that the address provided by the MCE is valid
-+             * and usable which will ensure that the guest kernel will send
-+             * a SIGBUS_AO signal to the guest process. This allows for
-+             * more desirable behavior in the case that the guest process
-+             * with poisoned memory has set the MCE_KILL_EARLY prctl flag
-+             * which indicates that the process would prefer to handle or
-+             * shutdown due to the poisoned memory condition before the
-+             * memory has been accessed.
-+             *
-+             * While the POISON bit would not be set in a deferred error
-+             * sent from hardware, the bit is not meaningful for deferred
-+             * errors and can be reused in this scenario.
-+             */
-+            status |= MCI_STATUS_DEFERRED | MCI_STATUS_POISON;
-+        }
-     }
- 
-     flags = cpu_x86_support_mca_broadcast(env) ? MCE_INJECT_BROADCAST : 0;
+@@ -532,6 +532,8 @@ uint32_t kvm_arch_get_supported_cpuid(KVMState *s, uint32_t function,
+          */
+         cpuid_1_edx = kvm_arch_get_supported_cpuid(s, 1, 0, R_EDX);
+         ret |= cpuid_1_edx & CPUID_EXT2_AMD_ALIASES;
++    } else if (function == 0x80000007 && reg == R_EBX) {
++        ret |= CPUID_8000_0007_EBX_SUCCOR;
+     } else if (function == KVM_CPUID_FEATURES && reg == R_EAX) {
+         /* kvm_pv_unhalt is reported by GET_SUPPORTED_CPUID, but it can't
+          * be enabled without the in-kernel irqchip
 -- 
 2.45.1
 
