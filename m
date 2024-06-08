@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0ADE390103E
-	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 10:35:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8A4A90103C
+	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 10:35:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sFrWv-0000T1-TQ; Sat, 08 Jun 2024 04:34:29 -0400
+	id 1sFrX0-0000TZ-TG; Sat, 08 Jun 2024 04:34:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sFrWu-0000Sd-17
- for qemu-devel@nongnu.org; Sat, 08 Jun 2024 04:34:28 -0400
+ id 1sFrWv-0000T2-JU
+ for qemu-devel@nongnu.org; Sat, 08 Jun 2024 04:34:29 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sFrWs-0008FH-E7
- for qemu-devel@nongnu.org; Sat, 08 Jun 2024 04:34:27 -0400
+ id 1sFrWt-0008FS-Vq
+ for qemu-devel@nongnu.org; Sat, 08 Jun 2024 04:34:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717835665;
+ s=mimecast20190719; t=1717835667;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=kSWUo4sCXjrNOR0yu+FmZCYBkQr0GiAN238dsmBJ6yo=;
- b=FYGavq9m3MdOzp8O/weLd+HnZN3rKnccpFbzCsKEdHh75e4iJc7Bg7xKHnXyCMpWxfEcgR
- Rp4VS/ZujcEtrFk8cJWS9zK1Tw5B/+R+nKDTT0XoKF6oP3hJ/hbKUjwlfRHOCQFcY6gcbt
- t/o5Pd38D53p4F5M7d24VmBrjLeTS8w=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=LS/wITdYZ/lsQjy8bD9YvoyCGUgNIB1fvmjbJmhZtYY=;
+ b=FYFZxyacvhPSnGqvMMyPBuWZbV/bWC1I7HYvPJfZzOf5JPrPUIxTmCErSHSaEP6Gel6TjB
+ 6fZgQarg4fPpxDU3hFLzOZvWM7ON+dmQdf0MnCOGD6lxlDLIIe9RiNvxUnAfxJj6ZFW8Y4
+ Xk+g9HSo3yr/f6AP1g5fZvsAa7VqqIs=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-79-LYpYqYWWPZKtM5wR-Njg1A-1; Sat, 08 Jun 2024 04:34:23 -0400
-X-MC-Unique: LYpYqYWWPZKtM5wR-Njg1A-1
-Received: by mail-ed1-f72.google.com with SMTP id
- 4fb4d7f45d1cf-57a52cb6d86so1724299a12.1
- for <qemu-devel@nongnu.org>; Sat, 08 Jun 2024 01:34:23 -0700 (PDT)
+ us-mta-299-UrAZZ7Z9PvWxK5UTe38WWg-1; Sat, 08 Jun 2024 04:34:25 -0400
+X-MC-Unique: UrAZZ7Z9PvWxK5UTe38WWg-1
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-a6f0d8b466dso8082166b.2
+ for <qemu-devel@nongnu.org>; Sat, 08 Jun 2024 01:34:25 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717835662; x=1718440462;
+ d=1e100.net; s=20230601; t=1717835663; x=1718440463;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=kSWUo4sCXjrNOR0yu+FmZCYBkQr0GiAN238dsmBJ6yo=;
- b=FDc+JIIP+hN9yjJ8sTFwha3fqijWc/uiqw1jDqdjVQf5CwNOuV6nBE2J6ROl9ITK/7
- or6BAami9xqc0PjT7VMeulBG+54Jn3v4ce3hjw3dUX8HaR0TUsSLMdzY0Ivk6k9MFEkS
- BcKuoHJbWlr76K0jKJaSvRZGr2U0erCHFgf7GktW1yk73DSvsdlG3qBW9LhCcm6aim2l
- 0MYToca+Vv2+5zzXx6IS0AGDkBHzrmGdjyq3bltdO6gY9EvUKGk2rPw+SIBPmeNu3MG6
- 7vHXJ2XlRsRb3v9R5wAhn+hThj5XD/GrcHSX+4Dyrw/gT0xUe5gz9+/anrAeOuxKx/zU
- RdGA==
-X-Gm-Message-State: AOJu0Yw+t7C4JEpkpek5aQWZKSZ0VayFj/4WgMri23Uu0w6EfA3VHIhG
- 7w0W+VqMTs2R8dGaglH1ZQhzJrpshWMeAq7gxHhmoqPYogIl9SfqibW9xUVNG3CQj1UsFUfQxNo
- WVzESAyb1zEi/8a81vTxgnmemfcz9N/qbPvPAHuizQCfYOkeHxvA6R0iF5Q5ZADRflB1rqq7z08
- 5Nex8e1m0PUXOnUArS27jCQsfDEgRrBrkNltER
-X-Received: by 2002:a50:f619:0:b0:57c:5503:940b with SMTP id
- 4fb4d7f45d1cf-57c6f45ffcfmr445844a12.15.1717835661946; 
- Sat, 08 Jun 2024 01:34:21 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEOnkUwXAuR96ptCvBrFbsFxz/BDthb6XFmSRWHlrOSu4hdRQRnlTMGsTNDU6YwnwA4hAGQ4Q==
-X-Received: by 2002:a50:f619:0:b0:57c:5503:940b with SMTP id
- 4fb4d7f45d1cf-57c6f45ffcfmr445831a12.15.1717835661430; 
- Sat, 08 Jun 2024 01:34:21 -0700 (PDT)
+ bh=LS/wITdYZ/lsQjy8bD9YvoyCGUgNIB1fvmjbJmhZtYY=;
+ b=n6SI9nK2sRwd9E43PZ6L+mssTZxpWUf2erh55fCWvv5oosAEyWlYMHXqUQawBqQ/le
+ 2c2heqFRAkz9Jp+neaqDFcK/7zgOeXZUqwWVlYyTY3WTFk0Eh9i8XKLb3dt645gzeF/M
+ YjHhFP4Yda8+vHCM54MwFpDvYLK2Dy1/wui9lgRmztkPEPO2Ky6lIiKD99P9GsVELfPY
+ PmZUFT3ff24422D7fshW2gvdImaDNATTJlu+sZW/6Rq88g98Fg1RgNkv2vwNOMgZTXOv
+ HUkp3o2LzsTAsen0krmCY6K4Mt2HF5BL58Ar2lfDjFbWrAx0b+2PArT9ybvEYey31Elj
+ 2/fg==
+X-Gm-Message-State: AOJu0YwktXayxjjO3neZl9GxrBWtqQ/rolN+XfMggOBP+stTjph1myne
+ Q7A9U4aPn9kE9DnbJ2tMBKdrsXJJTVd2Wb0SVk8XcjA5vA2cNzQs2KkotA8YAk4edysfPUJb1By
+ +x5YcOU4IbeJI/t3qbPkEL1406QhcveBLRRzo7B4+t21bFhp7opiRun+SlKeRGZzBVYUMrupbwV
+ h8i3ArsCYoEDIY/Ws4dYplHE8Q0bwz34vR/qLe
+X-Received: by 2002:a50:8d07:0:b0:57c:6338:328a with SMTP id
+ 4fb4d7f45d1cf-57c6338371dmr1924784a12.30.1717835663532; 
+ Sat, 08 Jun 2024 01:34:23 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFA0saavFD8HanITQ106HeeMkOVMh3ZfY+DCsl9vfzPkMzrxwSi8ImQ6dT1Ctkj12C7Z7NEqA==
+X-Received: by 2002:a50:8d07:0:b0:57c:6338:328a with SMTP id
+ 4fb4d7f45d1cf-57c6338371dmr1924770a12.30.1717835663183; 
+ Sat, 08 Jun 2024 01:34:23 -0700 (PDT)
 Received: from avogadro.local ([151.81.115.112])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-57aae0ffbf8sm3972416a12.39.2024.06.08.01.34.20
- for <qemu-devel@nongnu.org>
+ 4fb4d7f45d1cf-57aae12ce21sm3964992a12.49.2024.06.08.01.34.22
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 08 Jun 2024 01:34:20 -0700 (PDT)
+ Sat, 08 Jun 2024 01:34:22 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 01/42] target/i386: fix pushed value of EFLAGS.RF
-Date: Sat,  8 Jun 2024 10:33:34 +0200
-Message-ID: <20240608083415.2769160-2-pbonzini@redhat.com>
+Cc: Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 02/42] target/i386: fix implementation of ICEBP
+Date: Sat,  8 Jun 2024 10:33:35 +0200
+Message-ID: <20240608083415.2769160-3-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240608083415.2769160-1-pbonzini@redhat.com>
 References: <20240608083415.2769160-1-pbonzini@redhat.com>
@@ -101,160 +101,126 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When preparing an exception stack frame for a fault exception, the value
-pushed for RF is 1.  Take that into account.  The same should be true
-of interrupts for repeated string instructions, but the situation there
-is complicated.
+ICEBP generates a trap-like exception, while gen_exception() produces
+a fault.  Resurrect gen_update_eip_next() to implement the desired
+semantics.
 
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/tcg/seg_helper.c | 49 ++++++++++++++++++++++++++++++++----
- target/i386/tcg/translate.c  |  8 ++++++
- 2 files changed, 52 insertions(+), 5 deletions(-)
+ target/i386/helper.h          |  1 +
+ target/i386/tcg/helper-tcg.h  | 12 +++++++++++-
+ target/i386/tcg/excp_helper.c | 20 ++++++++++++++++++++
+ target/i386/tcg/translate.c   | 13 +++++++++++++
+ target/i386/tcg/emit.c.inc    |  5 ++++-
+ 5 files changed, 49 insertions(+), 2 deletions(-)
 
-diff --git a/target/i386/tcg/seg_helper.c b/target/i386/tcg/seg_helper.c
-index 0301459004e..715db1f2326 100644
---- a/target/i386/tcg/seg_helper.c
-+++ b/target/i386/tcg/seg_helper.c
-@@ -526,6 +526,24 @@ static inline unsigned int get_sp_mask(unsigned int e2)
+diff --git a/target/i386/helper.h b/target/i386/helper.h
+index a52a1bf0f21..8f291a5f66f 100644
+--- a/target/i386/helper.h
++++ b/target/i386/helper.h
+@@ -56,6 +56,7 @@ DEF_HELPER_2(sysret, void, env, int)
+ DEF_HELPER_FLAGS_2(pause, TCG_CALL_NO_WG, noreturn, env, int)
+ DEF_HELPER_FLAGS_3(raise_interrupt, TCG_CALL_NO_WG, noreturn, env, int, int)
+ DEF_HELPER_FLAGS_2(raise_exception, TCG_CALL_NO_WG, noreturn, env, int)
++DEF_HELPER_FLAGS_1(icebp, TCG_CALL_NO_WG, noreturn, env)
+ DEF_HELPER_3(boundw, void, env, tl, int)
+ DEF_HELPER_3(boundl, void, env, tl, int)
+ 
+diff --git a/target/i386/tcg/helper-tcg.h b/target/i386/tcg/helper-tcg.h
+index 85957943bf3..eb6a4926a43 100644
+--- a/target/i386/tcg/helper-tcg.h
++++ b/target/i386/tcg/helper-tcg.h
+@@ -111,7 +111,17 @@ int exception_has_error_code(int intno);
+ /* smm_helper.c */
+ void do_smm_enter(X86CPU *cpu);
+ 
+-/* bpt_helper.c */
++/* sysemu/bpt_helper.c */
+ bool check_hw_breakpoints(CPUX86State *env, bool force_dr6_update);
+ 
++/*
++ * Do the tasks usually performed by gen_eob().  Callers of this function
++ * should also handle TF as appropriate.
++ */
++static inline void do_end_instruction(CPUX86State *env)
++{
++    /* needed if sti is just before */
++    env->hflags &= ~HF_INHIBIT_IRQ_MASK;
++    env->eflags &= ~HF_RF_MASK;
++}
+ #endif /* I386_HELPER_TCG_H */
+diff --git a/target/i386/tcg/excp_helper.c b/target/i386/tcg/excp_helper.c
+index 65e37ae2a0c..72387aac24f 100644
+--- a/target/i386/tcg/excp_helper.c
++++ b/target/i386/tcg/excp_helper.c
+@@ -140,6 +140,26 @@ G_NORETURN void raise_exception_ra(CPUX86State *env, int exception_index,
+     raise_interrupt2(env, exception_index, 0, 0, 0, retaddr);
+ }
+ 
++G_NORETURN void helper_icebp(CPUX86State *env)
++{
++    CPUState *cs = env_cpu(env);
++
++    do_end_instruction(env);
++
++    /*
++     * INT1 aka ICEBP generates a trap-like #DB, but it is pretty special.
++     *
++     * "Although the ICEBP instruction dispatches through IDT vector 1,
++     * that event is not interceptable by means of the #DB exception
++     * intercept".  Instead there is a separate fault-like ICEBP intercept.
++     */
++    cs->exception_index = EXCP01_DB;
++    env->error_code = 0;
++    env->exception_is_int = 0;
++    env->exception_next_eip = env->eip;
++    cpu_loop_exit(cs);
++}
++
+ G_NORETURN void handle_unaligned_access(CPUX86State *env, vaddr vaddr,
+                                         MMUAccessType access_type,
+                                         uintptr_t retaddr)
+diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
+index d438f8f76f7..77ed9c1db47 100644
+--- a/target/i386/tcg/translate.c
++++ b/target/i386/tcg/translate.c
+@@ -549,6 +549,19 @@ static inline void gen_op_st_rm_T0_A0(DisasContext *s, int idx, int d)
      }
  }
  
-+static int exception_is_fault(int intno)
++static void gen_update_eip_next(DisasContext *s)
 +{
-+    switch (intno) {
-+        /*
-+         * #DB can be both fault- and trap-like, but it never sets RF=1
-+         * in the RFLAGS value pushed on the stack.
-+         */
-+    case EXCP01_DB:
-+    case EXCP03_INT3:
-+    case EXCP04_INTO:
-+    case EXCP08_DBLE:
-+    case EXCP12_MCHK:
-+        return 0;
++    assert(s->pc_save != -1);
++    if (tb_cflags(s->base.tb) & CF_PCREL) {
++        tcg_gen_addi_tl(cpu_eip, cpu_eip, s->pc - s->pc_save);
++    } else if (CODE64(s)) {
++        tcg_gen_movi_tl(cpu_eip, s->pc);
++    } else {
++        tcg_gen_movi_tl(cpu_eip, (uint32_t)(s->pc - s->cs_base));
 +    }
-+    /* Everything else including reserved exception is a fault.  */
-+    return 1;
++    s->pc_save = s->pc;
 +}
 +
- int exception_has_error_code(int intno)
+ static void gen_update_eip_cur(DisasContext *s)
  {
-     switch (intno) {
-@@ -605,8 +623,9 @@ static void do_interrupt_protected(CPUX86State *env, int intno, int is_int,
-     int type, dpl, selector, ss_dpl, cpl;
-     int has_error_code, new_stack, shift;
-     uint32_t e1, e2, offset, ss = 0, esp, ss_e1 = 0, ss_e2 = 0;
--    uint32_t old_eip, sp_mask;
-+    uint32_t old_eip, sp_mask, eflags;
-     int vm86 = env->eflags & VM_MASK;
-+    bool set_rf;
+     assert(s->pc_save != -1);
+diff --git a/target/i386/tcg/emit.c.inc b/target/i386/tcg/emit.c.inc
+index e990141454b..36127d99943 100644
+--- a/target/i386/tcg/emit.c.inc
++++ b/target/i386/tcg/emit.c.inc
+@@ -1858,7 +1858,10 @@ static void gen_INT(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
  
-     has_error_code = 0;
-     if (!is_int && !is_hw) {
-@@ -614,8 +633,10 @@ static void do_interrupt_protected(CPUX86State *env, int intno, int is_int,
-     }
-     if (is_int) {
-         old_eip = next_eip;
-+        set_rf = false;
-     } else {
-         old_eip = env->eip;
-+        set_rf = exception_is_fault(intno);
-     }
+ static void gen_INT1(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
+ {
+-    gen_exception(s, EXCP01_DB);
++    gen_update_cc_op(s);
++    gen_update_eip_next(s);
++    gen_helper_icebp(tcg_env);
++    s->base.is_jmp = DISAS_NORETURN;
+ }
  
-     dt = &env->idt;
-@@ -748,6 +769,15 @@ static void do_interrupt_protected(CPUX86State *env, int intno, int is_int,
-     }
-     push_size <<= shift;
- #endif
-+    eflags = cpu_compute_eflags(env);
-+    /*
-+     * AMD states that code breakpoint #DBs clear RF=0, Intel leaves it
-+     * as is.  AMD behavior could be implemented in check_hw_breakpoints().
-+     */
-+    if (set_rf) {
-+        eflags |= RF_MASK;
-+    }
-+
-     if (shift == 1) {
-         if (new_stack) {
-             if (vm86) {
-@@ -759,7 +789,7 @@ static void do_interrupt_protected(CPUX86State *env, int intno, int is_int,
-             PUSHL(ssp, esp, sp_mask, env->segs[R_SS].selector);
-             PUSHL(ssp, esp, sp_mask, env->regs[R_ESP]);
-         }
--        PUSHL(ssp, esp, sp_mask, cpu_compute_eflags(env));
-+        PUSHL(ssp, esp, sp_mask, eflags);
-         PUSHL(ssp, esp, sp_mask, env->segs[R_CS].selector);
-         PUSHL(ssp, esp, sp_mask, old_eip);
-         if (has_error_code) {
-@@ -776,7 +806,7 @@ static void do_interrupt_protected(CPUX86State *env, int intno, int is_int,
-             PUSHW(ssp, esp, sp_mask, env->segs[R_SS].selector);
-             PUSHW(ssp, esp, sp_mask, env->regs[R_ESP]);
-         }
--        PUSHW(ssp, esp, sp_mask, cpu_compute_eflags(env));
-+        PUSHW(ssp, esp, sp_mask, eflags);
-         PUSHW(ssp, esp, sp_mask, env->segs[R_CS].selector);
-         PUSHW(ssp, esp, sp_mask, old_eip);
-         if (has_error_code) {
-@@ -868,8 +898,9 @@ static void do_interrupt64(CPUX86State *env, int intno, int is_int,
-     target_ulong ptr;
-     int type, dpl, selector, cpl, ist;
-     int has_error_code, new_stack;
--    uint32_t e1, e2, e3, ss;
-+    uint32_t e1, e2, e3, ss, eflags;
-     target_ulong old_eip, esp, offset;
-+    bool set_rf;
- 
-     has_error_code = 0;
-     if (!is_int && !is_hw) {
-@@ -877,8 +908,10 @@ static void do_interrupt64(CPUX86State *env, int intno, int is_int,
-     }
-     if (is_int) {
-         old_eip = next_eip;
-+        set_rf = false;
-     } else {
-         old_eip = env->eip;
-+        set_rf = exception_is_fault(intno);
-     }
- 
-     dt = &env->idt;
-@@ -950,9 +983,15 @@ static void do_interrupt64(CPUX86State *env, int intno, int is_int,
-     }
-     esp &= ~0xfLL; /* align stack */
- 
-+    /* See do_interrupt_protected.  */
-+    eflags = cpu_compute_eflags(env);
-+    if (set_rf) {
-+        eflags |= RF_MASK;
-+    }
-+
-     PUSHQ(esp, env->segs[R_SS].selector);
-     PUSHQ(esp, env->regs[R_ESP]);
--    PUSHQ(esp, cpu_compute_eflags(env));
-+    PUSHQ(esp, eflags);
-     PUSHQ(esp, env->segs[R_CS].selector);
-     PUSHQ(esp, old_eip);
-     if (has_error_code) {
-diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-index 0486ab69112..d438f8f76f7 100644
---- a/target/i386/tcg/translate.c
-+++ b/target/i386/tcg/translate.c
-@@ -4630,6 +4630,14 @@ static void i386_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cpu)
-      * If jmp_opt, we want to handle each string instruction individually.
-      * For icount also disable repz optimization so that each iteration
-      * is accounted separately.
-+     *
-+     * FIXME: this is messy; it makes REP string instructions a lot less
-+     * efficient than they should be and it gets in the way of correct
-+     * handling of RF (interrupts or traps arriving after any iteration
-+     * of a repeated string instruction but the last should set RF to 1).
-+     * Perhaps it would be more efficient if REP string instructions were
-+     * always at the beginning of the TB, or even their own TB?  That
-+     * would even allow accounting up to 64k iterations at once for icount.
-      */
-     dc->repz_opt = !dc->jmp_opt && !(cflags & CF_USE_ICOUNT);
- 
+ static void gen_INT3(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
 -- 
 2.45.1
 
