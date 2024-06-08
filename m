@@ -2,75 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D438B90103B
-	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 10:35:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0ADE390103E
+	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 10:35:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sFrWu-0000Sf-ON; Sat, 08 Jun 2024 04:34:28 -0400
+	id 1sFrWv-0000T1-TQ; Sat, 08 Jun 2024 04:34:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sFrWs-0000SN-A6
- for qemu-devel@nongnu.org; Sat, 08 Jun 2024 04:34:26 -0400
+ id 1sFrWu-0000Sd-17
+ for qemu-devel@nongnu.org; Sat, 08 Jun 2024 04:34:28 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sFrWq-0008F2-9L
- for qemu-devel@nongnu.org; Sat, 08 Jun 2024 04:34:26 -0400
+ id 1sFrWs-0008FH-E7
+ for qemu-devel@nongnu.org; Sat, 08 Jun 2024 04:34:27 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717835663;
+ s=mimecast20190719; t=1717835665;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:  content-type:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=DnPUGHSIvUF3O0xr1nlthjeGPXLFnE9nFl/zQ9utt1s=;
- b=IjR0Km40ui1y9WhDhHNHFSMJSMJXKBjh2Cgt5nAD/o8A525VDZEgvAxfd95aPJfQJmoxIy
- WX96WitlJ5jOjuVv95ywAFhrilGOZScvNXIJIlETCQM1bLkBPdtk4XYAQ/Dlh7nMDWjfXM
- 60MFjcmFc2uyQ/DVo4zaKalBj87gyR8=
-Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
- [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=kSWUo4sCXjrNOR0yu+FmZCYBkQr0GiAN238dsmBJ6yo=;
+ b=FYGavq9m3MdOzp8O/weLd+HnZN3rKnccpFbzCsKEdHh75e4iJc7Bg7xKHnXyCMpWxfEcgR
+ Rp4VS/ZujcEtrFk8cJWS9zK1Tw5B/+R+nKDTT0XoKF6oP3hJ/hbKUjwlfRHOCQFcY6gcbt
+ t/o5Pd38D53p4F5M7d24VmBrjLeTS8w=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-589-VQcx22zFPkulxYUPNKDj8g-1; Sat, 08 Jun 2024 04:34:21 -0400
-X-MC-Unique: VQcx22zFPkulxYUPNKDj8g-1
-Received: by mail-lf1-f72.google.com with SMTP id
- 2adb3069b0e04-52c091e4413so570752e87.2
- for <qemu-devel@nongnu.org>; Sat, 08 Jun 2024 01:34:20 -0700 (PDT)
+ us-mta-79-LYpYqYWWPZKtM5wR-Njg1A-1; Sat, 08 Jun 2024 04:34:23 -0400
+X-MC-Unique: LYpYqYWWPZKtM5wR-Njg1A-1
+Received: by mail-ed1-f72.google.com with SMTP id
+ 4fb4d7f45d1cf-57a52cb6d86so1724299a12.1
+ for <qemu-devel@nongnu.org>; Sat, 08 Jun 2024 01:34:23 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717835659; x=1718440459;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=DnPUGHSIvUF3O0xr1nlthjeGPXLFnE9nFl/zQ9utt1s=;
- b=O5HWx2An51OIOV3YqXBpxgakO4MMp+YCzWvsDmp3ABafIoO3psCPoZlJgr8kVYwXWJ
- hK9xLCDfZOdkZExgCf5siomB3NA2QtK44rBu1OeJrt1nhDS5rCIiQBkm4l8cGEMyJHjj
- 4ThoA6H6VmlnmaD0azHiDVDxXUlKVCBRTEQy1baO9HG9q2lv4fOFk3s0vzhKTWmBM8B9
- EaK9jTyuidGQVJJfTCPOLPorAdv54a33vQv4yvxKhC49foL13hX07rcXyK3nkmw8TsLx
- 3Ri1mdjAzzx6qXLMLZBx8APvF14/3IU16UuDdjNFgHq2fFLD0pXpT9YJUBMogJ+Hbo9r
- 6Zug==
-X-Gm-Message-State: AOJu0Yx9Z1CySLNcaDUvIzTYteFiOpzjshV91Gapn94regAlgj/Kh37W
- G5fsJYe+FAF8iCl91lyu9Z+BU58mQ4JgK9pmE98EaEgOMJAncsmPCB74MoXZgKGJIzlB2AiJ5+J
- G68abxyPm4fqZZ8kBlDk4aKL8WBJPIgF+j3XahQixpwhVkItD7sIU1VwQ8WtP3wIoe/D+4CewiT
- QhBS0s+yAShUSAoU7Q5rTnVnfCbqB8mr3YmJXv
-X-Received: by 2002:a05:6512:2f1:b0:52b:798f:cd7e with SMTP id
- 2adb3069b0e04-52bb9f62696mr3661137e87.12.1717835659144; 
- Sat, 08 Jun 2024 01:34:19 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG7NRz7Trij5Q+lgCj5rpq5Ch5HDdeHSJgAIHJJW4IzYsW82sxMq1QhmnfDTT6IA8uuboqlSQ==
-X-Received: by 2002:a05:6512:2f1:b0:52b:798f:cd7e with SMTP id
- 2adb3069b0e04-52bb9f62696mr3661121e87.12.1717835658530; 
- Sat, 08 Jun 2024 01:34:18 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1717835662; x=1718440462;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=kSWUo4sCXjrNOR0yu+FmZCYBkQr0GiAN238dsmBJ6yo=;
+ b=FDc+JIIP+hN9yjJ8sTFwha3fqijWc/uiqw1jDqdjVQf5CwNOuV6nBE2J6ROl9ITK/7
+ or6BAami9xqc0PjT7VMeulBG+54Jn3v4ce3hjw3dUX8HaR0TUsSLMdzY0Ivk6k9MFEkS
+ BcKuoHJbWlr76K0jKJaSvRZGr2U0erCHFgf7GktW1yk73DSvsdlG3qBW9LhCcm6aim2l
+ 0MYToca+Vv2+5zzXx6IS0AGDkBHzrmGdjyq3bltdO6gY9EvUKGk2rPw+SIBPmeNu3MG6
+ 7vHXJ2XlRsRb3v9R5wAhn+hThj5XD/GrcHSX+4Dyrw/gT0xUe5gz9+/anrAeOuxKx/zU
+ RdGA==
+X-Gm-Message-State: AOJu0Yw+t7C4JEpkpek5aQWZKSZ0VayFj/4WgMri23Uu0w6EfA3VHIhG
+ 7w0W+VqMTs2R8dGaglH1ZQhzJrpshWMeAq7gxHhmoqPYogIl9SfqibW9xUVNG3CQj1UsFUfQxNo
+ WVzESAyb1zEi/8a81vTxgnmemfcz9N/qbPvPAHuizQCfYOkeHxvA6R0iF5Q5ZADRflB1rqq7z08
+ 5Nex8e1m0PUXOnUArS27jCQsfDEgRrBrkNltER
+X-Received: by 2002:a50:f619:0:b0:57c:5503:940b with SMTP id
+ 4fb4d7f45d1cf-57c6f45ffcfmr445844a12.15.1717835661946; 
+ Sat, 08 Jun 2024 01:34:21 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEOnkUwXAuR96ptCvBrFbsFxz/BDthb6XFmSRWHlrOSu4hdRQRnlTMGsTNDU6YwnwA4hAGQ4Q==
+X-Received: by 2002:a50:f619:0:b0:57c:5503:940b with SMTP id
+ 4fb4d7f45d1cf-57c6f45ffcfmr445831a12.15.1717835661430; 
+ Sat, 08 Jun 2024 01:34:21 -0700 (PDT)
 Received: from avogadro.local ([151.81.115.112])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a6c805c8c09sm355375966b.59.2024.06.08.01.34.17
+ 4fb4d7f45d1cf-57aae0ffbf8sm3972416a12.39.2024.06.08.01.34.20
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 08 Jun 2024 01:34:17 -0700 (PDT)
+ Sat, 08 Jun 2024 01:34:20 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 00/42] i386, scsi. hostmem fixes for 2024-06-08
-Date: Sat,  8 Jun 2024 10:33:33 +0200
-Message-ID: <20240608083415.2769160-1-pbonzini@redhat.com>
+Subject: [PULL 01/42] target/i386: fix pushed value of EFLAGS.RF
+Date: Sat,  8 Jun 2024 10:33:34 +0200
+Message-ID: <20240608083415.2769160-2-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.1
+In-Reply-To: <20240608083415.2769160-1-pbonzini@redhat.com>
+References: <20240608083415.2769160-1-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
@@ -98,133 +101,160 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit f1572ab94738bd5787b7badcd4bd93a3657f0680:
+When preparing an exception stack frame for a fault exception, the value
+pushed for RF is 1.  Take that into account.  The same should be true
+of interrupts for repeated string instructions, but the situation there
+is complicated.
 
-  Merge tag 'for-upstream' of https://gitlab.com/bonzini/qemu into staging (2024-06-05 07:45:23 -0700)
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ target/i386/tcg/seg_helper.c | 49 ++++++++++++++++++++++++++++++++----
+ target/i386/tcg/translate.c  |  8 ++++++
+ 2 files changed, 52 insertions(+), 5 deletions(-)
 
-are available in the Git repository at:
-
-  https://gitlab.com/bonzini/qemu.git tags/for-upstream
-
-for you to fetch changes up to fc00123f3abeb027cd51eb58ea8845377794b3bc:
-
-  python: mkvenv: remove ensure command (2024-06-08 10:33:39 +0200)
-
-----------------------------------------------------------------
-* scsi-disk: Don't silently truncate serial number
-* backends/hostmem: Report error on unavailable qemu_madvise() features or unaligned memory sizes
-* target/i386: fixes and documentation for INHIBIT_IRQ/TF/RF and debugging
-* i386/hvf: Adds support for INVTSC cpuid bit
-* i386/hvf: Fixes for dirty memory tracking
-* i386/hvf: Use hv_vcpu_interrupt() and hv_vcpu_run_until()
-* hvf: Cleanups
-* stubs: fixes for --disable-system build
-* i386/kvm: support for FRED
-* i386/kvm: fix MCE handling on AMD hosts
-
-----------------------------------------------------------------
-John Allen (3):
-      i386: Fix MCE support for AMD hosts
-      i386: Add support for SUCCOR feature
-      i386: Add support for overflow recovery
-
-Kevin Wolf (1):
-      scsi-disk: Don't silently truncate serial number
-
-Mark Cave-Ayland (4):
-      target/i386: use local X86DecodedOp in gen_POP()
-      target/i386: use gen_writeback() within gen_POP()
-      target/i386: fix SP when taking a memory fault during POP
-      target/i386: fix size of EBP writeback in gen_enter()
-
-Michal Privoznik (4):
-      meson: Don't even detect posix_madvise() on Darwin
-      osdep: Make qemu_madvise() to set errno in all cases
-      osdep: Make qemu_madvise() return ENOSYS on unsupported OSes
-      backends/hostmem: Report error when memory size is unaligned
-
-Paolo Bonzini (16):
-      target/i386: fix pushed value of EFLAGS.RF
-      target/i386: fix implementation of ICEBP
-      target/i386: cleanup HLT helpers
-      target/i386: cleanup PAUSE helpers
-      target/i386: implement DR7.GD
-      target/i386: disable/enable breakpoints on vmentry/vmexit
-      target/i386: fix INHIBIT_IRQ/TF/RF handling for VMRUN
-      target/i386: fix INHIBIT_IRQ/TF/RF handling for PAUSE
-      target/i386: fix TF/RF handling for HLT
-      target/i386: document incorrect semantics of watchpoint following MOV/POP SS
-      target/i386: document use of DISAS_NORETURN
-      machine: default -M mem-merge to off is QEMU_MADV_MERGEABLE is not available
-      machine, hostmem: improve error messages for unsupported features
-      hostmem: simplify the code for merge and dump properties
-      Revert "python: use vendored tomli"
-      python: mkvenv: remove ensure command
-
-Phil Dennis-Jordan (7):
-      i386/hvf: Adds support for INVTSC cpuid bit
-      i386/hvf: Fixes some compilation warnings
-      hvf: Consistent types for vCPU handles
-      i386/hvf: Fixes dirty memory tracking by page granularity RX->RWX change
-      i386/hvf: In kick_vcpu use hv_vcpu_interrupt to force exit
-      i386/hvf: Updates API usage to use modern vCPU run function
-      hvf: Makes assert_hvf_ok report failed expression
-
-Xin Li (5):
-      target/i386: add support for FRED in CPUID enumeration
-      target/i386: mark CR4.FRED not reserved
-      vmxcap: add support for VMX FRED controls
-      target/i386: enumerate VMX nested-exception support
-      target/i386: Add get/set/migrate support for FRED MSRs
-
-Zhao Liu (2):
-      stubs/meson: Fix qemuutil build when --disable-system
-      docs: i386: pc: Avoid mentioning limit of maximum vCPUs
-
- docs/devel/build-system.rst                |  13 ++--
- docs/system/target-i386-desc.rst.inc       |   3 +-
- configure                                  |   4 --
- meson.build                                |  14 ++--
- include/sysemu/hostmem.h                   |   2 +-
- include/sysemu/hvf_int.h                   |   9 ++-
- target/i386/cpu.h                          |  53 ++++++++++++++-
- target/i386/helper.h                       |   5 +-
- target/i386/hvf/vmx.h                      |   3 +-
- target/i386/tcg/helper-tcg.h               |  13 +++-
- accel/hvf/hvf-accel-ops.c                  |   2 +-
- accel/hvf/hvf-all.c                        |  51 ++++++--------
- backends/hostmem-epc.c                     |   1 +
- backends/hostmem-file.c                    |   1 +
- backends/hostmem-memfd.c                   |   1 +
- backends/hostmem.c                         |  36 +++++++---
- hw/core/machine.c                          |  11 ++-
- hw/scsi/scsi-disk.c                        |  20 +++++-
- target/i386/cpu.c                          |  33 ++++++++-
- target/i386/helper.c                       |   4 ++
- target/i386/hvf/hvf.c                      |  47 ++++++++++++-
- target/i386/hvf/x86_cpuid.c                |   4 ++
- target/i386/hvf/x86_decode.c               |   2 +-
- target/i386/hvf/x86_emu.c                  |   4 +-
- target/i386/kvm/kvm.c                      |  90 ++++++++++++++++++++++---
- target/i386/machine.c                      |  28 ++++++++
- target/i386/tcg/excp_helper.c              |  20 ++++++
- target/i386/tcg/misc_helper.c              |  14 ++--
- target/i386/tcg/seg_helper.c               |  49 ++++++++++++--
- target/i386/tcg/sysemu/bpt_helper.c        |  18 +++++
- target/i386/tcg/sysemu/misc_helper.c       |  17 ++---
- target/i386/tcg/sysemu/seg_helper.c        |  17 ++++-
- target/i386/tcg/sysemu/svm_helper.c        |  71 ++++++++++++-------
- target/i386/tcg/translate.c                |  39 ++++++++++-
- util/osdep.c                               |   9 ++-
- target/i386/tcg/decode-new.c.inc           |  19 +++++-
- target/i386/tcg/emit.c.inc                 |  37 +++++-----
- python/scripts/mkvenv.py                   | 105 -----------------------------
- python/scripts/vendor.py                   |   3 -
- python/wheels/tomli-2.0.1-py3-none-any.whl | Bin 12757 -> 0 bytes
- scripts/kvm/vmxcap                         |  13 ++++
- stubs/meson.build                          |   8 +--
- 42 files changed, 617 insertions(+), 276 deletions(-)
- delete mode 100644 python/wheels/tomli-2.0.1-py3-none-any.whl
+diff --git a/target/i386/tcg/seg_helper.c b/target/i386/tcg/seg_helper.c
+index 0301459004e..715db1f2326 100644
+--- a/target/i386/tcg/seg_helper.c
++++ b/target/i386/tcg/seg_helper.c
+@@ -526,6 +526,24 @@ static inline unsigned int get_sp_mask(unsigned int e2)
+     }
+ }
+ 
++static int exception_is_fault(int intno)
++{
++    switch (intno) {
++        /*
++         * #DB can be both fault- and trap-like, but it never sets RF=1
++         * in the RFLAGS value pushed on the stack.
++         */
++    case EXCP01_DB:
++    case EXCP03_INT3:
++    case EXCP04_INTO:
++    case EXCP08_DBLE:
++    case EXCP12_MCHK:
++        return 0;
++    }
++    /* Everything else including reserved exception is a fault.  */
++    return 1;
++}
++
+ int exception_has_error_code(int intno)
+ {
+     switch (intno) {
+@@ -605,8 +623,9 @@ static void do_interrupt_protected(CPUX86State *env, int intno, int is_int,
+     int type, dpl, selector, ss_dpl, cpl;
+     int has_error_code, new_stack, shift;
+     uint32_t e1, e2, offset, ss = 0, esp, ss_e1 = 0, ss_e2 = 0;
+-    uint32_t old_eip, sp_mask;
++    uint32_t old_eip, sp_mask, eflags;
+     int vm86 = env->eflags & VM_MASK;
++    bool set_rf;
+ 
+     has_error_code = 0;
+     if (!is_int && !is_hw) {
+@@ -614,8 +633,10 @@ static void do_interrupt_protected(CPUX86State *env, int intno, int is_int,
+     }
+     if (is_int) {
+         old_eip = next_eip;
++        set_rf = false;
+     } else {
+         old_eip = env->eip;
++        set_rf = exception_is_fault(intno);
+     }
+ 
+     dt = &env->idt;
+@@ -748,6 +769,15 @@ static void do_interrupt_protected(CPUX86State *env, int intno, int is_int,
+     }
+     push_size <<= shift;
+ #endif
++    eflags = cpu_compute_eflags(env);
++    /*
++     * AMD states that code breakpoint #DBs clear RF=0, Intel leaves it
++     * as is.  AMD behavior could be implemented in check_hw_breakpoints().
++     */
++    if (set_rf) {
++        eflags |= RF_MASK;
++    }
++
+     if (shift == 1) {
+         if (new_stack) {
+             if (vm86) {
+@@ -759,7 +789,7 @@ static void do_interrupt_protected(CPUX86State *env, int intno, int is_int,
+             PUSHL(ssp, esp, sp_mask, env->segs[R_SS].selector);
+             PUSHL(ssp, esp, sp_mask, env->regs[R_ESP]);
+         }
+-        PUSHL(ssp, esp, sp_mask, cpu_compute_eflags(env));
++        PUSHL(ssp, esp, sp_mask, eflags);
+         PUSHL(ssp, esp, sp_mask, env->segs[R_CS].selector);
+         PUSHL(ssp, esp, sp_mask, old_eip);
+         if (has_error_code) {
+@@ -776,7 +806,7 @@ static void do_interrupt_protected(CPUX86State *env, int intno, int is_int,
+             PUSHW(ssp, esp, sp_mask, env->segs[R_SS].selector);
+             PUSHW(ssp, esp, sp_mask, env->regs[R_ESP]);
+         }
+-        PUSHW(ssp, esp, sp_mask, cpu_compute_eflags(env));
++        PUSHW(ssp, esp, sp_mask, eflags);
+         PUSHW(ssp, esp, sp_mask, env->segs[R_CS].selector);
+         PUSHW(ssp, esp, sp_mask, old_eip);
+         if (has_error_code) {
+@@ -868,8 +898,9 @@ static void do_interrupt64(CPUX86State *env, int intno, int is_int,
+     target_ulong ptr;
+     int type, dpl, selector, cpl, ist;
+     int has_error_code, new_stack;
+-    uint32_t e1, e2, e3, ss;
++    uint32_t e1, e2, e3, ss, eflags;
+     target_ulong old_eip, esp, offset;
++    bool set_rf;
+ 
+     has_error_code = 0;
+     if (!is_int && !is_hw) {
+@@ -877,8 +908,10 @@ static void do_interrupt64(CPUX86State *env, int intno, int is_int,
+     }
+     if (is_int) {
+         old_eip = next_eip;
++        set_rf = false;
+     } else {
+         old_eip = env->eip;
++        set_rf = exception_is_fault(intno);
+     }
+ 
+     dt = &env->idt;
+@@ -950,9 +983,15 @@ static void do_interrupt64(CPUX86State *env, int intno, int is_int,
+     }
+     esp &= ~0xfLL; /* align stack */
+ 
++    /* See do_interrupt_protected.  */
++    eflags = cpu_compute_eflags(env);
++    if (set_rf) {
++        eflags |= RF_MASK;
++    }
++
+     PUSHQ(esp, env->segs[R_SS].selector);
+     PUSHQ(esp, env->regs[R_ESP]);
+-    PUSHQ(esp, cpu_compute_eflags(env));
++    PUSHQ(esp, eflags);
+     PUSHQ(esp, env->segs[R_CS].selector);
+     PUSHQ(esp, old_eip);
+     if (has_error_code) {
+diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
+index 0486ab69112..d438f8f76f7 100644
+--- a/target/i386/tcg/translate.c
++++ b/target/i386/tcg/translate.c
+@@ -4630,6 +4630,14 @@ static void i386_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cpu)
+      * If jmp_opt, we want to handle each string instruction individually.
+      * For icount also disable repz optimization so that each iteration
+      * is accounted separately.
++     *
++     * FIXME: this is messy; it makes REP string instructions a lot less
++     * efficient than they should be and it gets in the way of correct
++     * handling of RF (interrupts or traps arriving after any iteration
++     * of a repeated string instruction but the last should set RF to 1).
++     * Perhaps it would be more efficient if REP string instructions were
++     * always at the beginning of the TB, or even their own TB?  That
++     * would even allow accounting up to 64k iterations at once for icount.
+      */
+     dc->repz_opt = !dc->jmp_opt && !(cflags & CF_USE_ICOUNT);
+ 
 -- 
 2.45.1
 
