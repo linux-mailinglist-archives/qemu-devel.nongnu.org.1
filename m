@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03EAA901046
-	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 10:36:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D31A1901052
+	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 10:38:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sFrXJ-0000ZV-PN; Sat, 08 Jun 2024 04:34:53 -0400
+	id 1sFrXL-0000Zu-Ab; Sat, 08 Jun 2024 04:34:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sFrXG-0000Yf-Hi
+ id 1sFrXG-0000Ya-CC
  for qemu-devel@nongnu.org; Sat, 08 Jun 2024 04:34:50 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sFrXE-0008JC-Ve
+ id 1sFrXE-0008J6-Ap
  for qemu-devel@nongnu.org; Sat, 08 Jun 2024 04:34:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717835688;
+ s=mimecast20190719; t=1717835687;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=7QRT7KodLZb3R6daWVQofmOuNLtzn1249htY3GzAkRw=;
- b=VlA+k3oGEoBSa9ezrWKoi4K/O1tCwnOANXShE5QD28Q4kgtJw5k9pbJPT2uIAhgJm7OoO1
- tkwlNpnipGQQmBuUFihxfPs3Qig/pKTpfb3kF+fodcvXfC3zxcnqjWd3VxsZi/UoLKJStk
- qP6A9GSfynwjGWytDWjqZ7q2N8h6otY=
+ bh=JE1l3mnnViu2bSu14FqFVuNS+di8GAj9jPlWPGLObPQ=;
+ b=i5Ah6Ailm2eFK3+7R4QXvNo9Om/xQwfQh4E4imHi3Gdjsy1b1TK6WlDK6O/Artdg619llT
+ C2HaHU7sOZusvxmwx7VqKbQY/cp7IBqThfW/ZIoW5wwwqkDksSg6LuUfh10EciKjBQpDaQ
+ My7ySWDRIuy2cIp3p46R/zBD9mhjckk=
 Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
  [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-113-19gZZLT0Mtmwl_X_BbxmbA-1; Sat, 08 Jun 2024 04:34:43 -0400
-X-MC-Unique: 19gZZLT0Mtmwl_X_BbxmbA-1
+ us-mta-594-7ePzo6xOPZGqGpS51nTd1A-1; Sat, 08 Jun 2024 04:34:45 -0400
+X-MC-Unique: 7ePzo6xOPZGqGpS51nTd1A-1
 Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-a68e0faf0e6so155734566b.2
- for <qemu-devel@nongnu.org>; Sat, 08 Jun 2024 01:34:42 -0700 (PDT)
+ a640c23a62f3a-a6efac81377so29294966b.2
+ for <qemu-devel@nongnu.org>; Sat, 08 Jun 2024 01:34:45 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717835681; x=1718440481;
+ d=1e100.net; s=20230601; t=1717835683; x=1718440483;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=7QRT7KodLZb3R6daWVQofmOuNLtzn1249htY3GzAkRw=;
- b=MO16e/6P1HgXr7Aus+5qP+mmUfGce8h5xCF9sMPX20C9+CUm5wNvTeIslcEMBWWgf/
- IOLncD+WGzNCMLazdx8iusyyLODMf8nAovbVWBvRB1J1W2ry4FI7Ietdvi6WggUIQrsE
- H0mkn9e4T0DDWEeJd2pGRtC11XyOq0409aeiXccp2pWFVzqP7LKywCJktxhpXDADygX/
- q0ryKDj4MRPFOx4N/Tpwp0BjN1wplvZP4+89iEZ4GNtybgRcrPzLQuOKoDV8RM/bSRqt
- hQkGKyzRIYQwHIHa9XQo1rhRSvuAph8pznYxqRFznyYKbEnL02J5uxabLt3mFCls7rHt
- JKnA==
-X-Gm-Message-State: AOJu0YyJ8gsaBJigSQ7WV/rcpRLaFPzPpGh5qVM/BtJ+7P4R9sv+PiZg
- EAt1R45exc4m7rYxUY1g0RlcW0aHQGZ0CUgY9IBj6BRP+KNRMnTA8ZUpRVtwHtkLv+0yA+T93wB
- hJLpDx/IX9VnmPK8XMSEM98XFMHgMZPqC/uYWZielhB8sWuoTmMzBT0B8CEMOuU7nTcBr8WCjGh
- sQM8ZAKFYZZiuXh+/vJGs0CESg0lC552T1qIDb
-X-Received: by 2002:a17:906:f80c:b0:a62:2cae:c02 with SMTP id
- a640c23a62f3a-a6cdacfeda4mr259062266b.61.1717835681551; 
- Sat, 08 Jun 2024 01:34:41 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE2lCXgoJZK38vpiGsgHiKgizCtuUfWY163cD5BIrCmnKgrDyXfI04MFo7Odf81SKSsJmKqMw==
-X-Received: by 2002:a17:906:f80c:b0:a62:2cae:c02 with SMTP id
- a640c23a62f3a-a6cdacfeda4mr259061166b.61.1717835681124; 
- Sat, 08 Jun 2024 01:34:41 -0700 (PDT)
+ bh=JE1l3mnnViu2bSu14FqFVuNS+di8GAj9jPlWPGLObPQ=;
+ b=AlZLD/f5JyfKYDAMJghwKrJwNsAXhX67hd57+SlZjCS7RsyICjl7/1qpYKq8t/8nD4
+ JylKJhPnraqzrJOEJqsiJyHtUySOwJ8BfhNu4+x9SeV4LLSuD42qkWhSw8wb30ZVlHpu
+ g9Rwdn3aVC7JOVs+NduMNmYxFF8DVCG7y1yryIW5GAucUPR4WHG900dkSAkMSwkOgpT0
+ j2GDOEl6VGRXK9SeujFNXywK74sypaC+BzHVMmY9RkMK18bvasDW0fP4NV3nYitn6Fro
+ a9+aJ/ZP5ufkl0iV4uTlpgnSq4dhrrVHwvT5GmGTISI98DvXAbsoXEkHMFRdwijuH3I+
+ Fxsw==
+X-Gm-Message-State: AOJu0YwOqYMWsVtSxE6p+3eglE2Dv3qPXWb/l1g962ynsrgEGG+3/V/U
+ iJelMgLZo99vnqXVNTU/j2DP6QQGQYunoEE4zCZOxbAq2oRQP2f2omdj6NcVcSNtYOr7zGPf5Jz
+ wyiVK/jj6mvwjTjRWBcYKkLF/Cuybz4cPhNBMs/JBgFjUpDa/HIl0pwlxwyauJysaU/VrwdQQy1
+ zWivtEZz54vlajH/aH3LKE+uOcMjdBKgCLiAli
+X-Received: by 2002:a17:906:f5a9:b0:a6f:2c2:9e98 with SMTP id
+ a640c23a62f3a-a6f02c2a0demr81619066b.12.1717835683496; 
+ Sat, 08 Jun 2024 01:34:43 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFx6qcKV/fspAlFFotHRSBQv3y5tyl/j9n9WpvReQoYBLRuxdozhPqC9x5OQDTR59AZsUrcFA==
+X-Received: by 2002:a17:906:f5a9:b0:a6f:2c2:9e98 with SMTP id
+ a640c23a62f3a-a6f02c2a0demr81618166b.12.1717835683090; 
+ Sat, 08 Jun 2024 01:34:43 -0700 (PDT)
 Received: from avogadro.local ([151.81.115.112])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a6efacd2958sm93215966b.106.2024.06.08.01.34.39
+ a640c23a62f3a-a6ef64a75b7sm131819166b.191.2024.06.08.01.34.41
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 08 Jun 2024 01:34:39 -0700 (PDT)
+ Sat, 08 Jun 2024 01:34:42 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 08/42] target/i386: fix INHIBIT_IRQ/TF/RF handling for PAUSE
-Date: Sat,  8 Jun 2024 10:33:41 +0200
-Message-ID: <20240608083415.2769160-9-pbonzini@redhat.com>
+Subject: [PULL 09/42] target/i386: fix TF/RF handling for HLT
+Date: Sat,  8 Jun 2024 10:33:42 +0200
+Message-ID: <20240608083415.2769160-10-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240608083415.2769160-1-pbonzini@redhat.com>
 References: <20240608083415.2769160-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -101,33 +101,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-PAUSE uses DISAS_NORETURN because the corresponding helper
-calls cpu_loop_exit().  However, while HLT clear HF_INHIBIT_IRQ_MASK
-to correctly handle "STI; HLT", the same is missing from PAUSE.
-And also gen_eob() clears HF_RF_MASK and synthesizes a #DB exception
-if single-step is active; none of this is done by HLT and PAUSE.
-Start fixing PAUSE, HLT will follow.
+HLT uses DISAS_NORETURN because the corresponding helper calls
+cpu_loop_exit().  However, while gen_eob() clears HF_RF_MASK and
+synthesizes a #DB exception if single-step is active, none of this is
+done by HLT.  Note that the single-step trap is generated after the halt
+is finished.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/tcg/misc_helper.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ target/i386/tcg/sysemu/misc_helper.c |  2 +-
+ target/i386/tcg/sysemu/seg_helper.c  | 17 ++++++++++++++---
+ 2 files changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/target/i386/tcg/misc_helper.c b/target/i386/tcg/misc_helper.c
-index 8316d42ffcd..ed4cda8001e 100644
---- a/target/i386/tcg/misc_helper.c
-+++ b/target/i386/tcg/misc_helper.c
-@@ -92,6 +92,10 @@ G_NORETURN void helper_pause(CPUX86State *env)
+diff --git a/target/i386/tcg/sysemu/misc_helper.c b/target/i386/tcg/sysemu/misc_helper.c
+index 093cc2d0f90..7fa0c5a06de 100644
+--- a/target/i386/tcg/sysemu/misc_helper.c
++++ b/target/i386/tcg/sysemu/misc_helper.c
+@@ -520,7 +520,7 @@ G_NORETURN void helper_hlt(CPUX86State *env)
  {
      CPUState *cs = env_cpu(env);
  
-+    /* Do gen_eob() tasks before going back to the main loop.  */
+-    env->hflags &= ~HF_INHIBIT_IRQ_MASK; /* needed if sti is just before */
 +    do_end_instruction(env);
-+    helper_rechecking_single_step(env);
-+
-     /* Just let another CPU run.  */
-     cs->exception_index = EXCP_INTERRUPT;
+     cs->halted = 1;
+     cs->exception_index = EXCP_HLT;
      cpu_loop_exit(cs);
+diff --git a/target/i386/tcg/sysemu/seg_helper.c b/target/i386/tcg/sysemu/seg_helper.c
+index 9ba94deb3aa..05174a79e73 100644
+--- a/target/i386/tcg/sysemu/seg_helper.c
++++ b/target/i386/tcg/sysemu/seg_helper.c
+@@ -130,15 +130,26 @@ void x86_cpu_do_interrupt(CPUState *cs)
+ 
+ bool x86_cpu_exec_halt(CPUState *cpu)
+ {
+-    if (cpu->interrupt_request & CPU_INTERRUPT_POLL) {
+-        X86CPU *x86_cpu = X86_CPU(cpu);
++    X86CPU *x86_cpu = X86_CPU(cpu);
++    CPUX86State *env = &x86_cpu->env;
+ 
++    if (cpu->interrupt_request & CPU_INTERRUPT_POLL) {
+         bql_lock();
+         apic_poll_irq(x86_cpu->apic_state);
+         cpu_reset_interrupt(cpu, CPU_INTERRUPT_POLL);
+         bql_unlock();
+     }
+-    return cpu_has_work(cpu);
++
++    if (!cpu_has_work(cpu)) {
++        return false;
++    }
++
++    /* Complete HLT instruction.  */
++    if (env->eflags & TF_MASK) {
++        env->dr[6] |= DR6_BS;
++        do_interrupt_all(x86_cpu, EXCP01_DB, 0, 0, env->eip, 0);
++    }
++    return true;
+ }
+ 
+ bool x86_need_replay_interrupt(int interrupt_request)
 -- 
 2.45.1
 
