@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A8E7901059
-	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 10:39:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18A6E90105B
+	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 10:39:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sFrYd-0004Hx-9Y; Sat, 08 Jun 2024 04:36:15 -0400
+	id 1sFrYb-0003y3-7u; Sat, 08 Jun 2024 04:36:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sFrYT-0003Zu-3K
- for qemu-devel@nongnu.org; Sat, 08 Jun 2024 04:36:07 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1sFrYW-0003fq-9P
+ for qemu-devel@nongnu.org; Sat, 08 Jun 2024 04:36:09 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sFrYR-0000LE-Fq
- for qemu-devel@nongnu.org; Sat, 08 Jun 2024 04:36:04 -0400
+ id 1sFrYT-0000LQ-Hi
+ for qemu-devel@nongnu.org; Sat, 08 Jun 2024 04:36:07 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717835763;
+ s=mimecast20190719; t=1717835764;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=HFPWQHzz5XsC/hwHCF9kGKW2QA2c0A/x+5S2uKUsipI=;
- b=R2FUiRgY5qFefslZ0kZHI4kiqKayugHR4nBA8ydCFk/d3HmoskKql1TNVQn/F/D7GbUhxp
- D+RX7Rr8OXzaXmmVTL3JkWz6USc1UAd2dgsKCq90P84bXLOtUnhyzzO80IxK602RXNqS7y
- K/5BZBgLPyY87DZeKHvLLFqDk37sF8k=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=YizZQkddmGp9IpJqiTCvsXVhloyDqW3nyR8ZMHT+G4E=;
+ b=T3g/a11d/ROQcN4BB60UHvS+3+mJRwJU3xUtUMWx7y+D6wKScqyKP1pyyhZPFVwv+kVr5X
+ 2PHxcjUqgGEt2aFtc6DoM/ri4f6XLMKPGEFT+6+lMh8WM2/uTHRNhr0aZUG6gHBrVIf8N8
+ iUA5rElDk84CZV5RHgly+ByraMh5N7M=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-518-OosyhZ6NPge7cwvwPC_HWA-1; Sat, 08 Jun 2024 04:36:00 -0400
-X-MC-Unique: OosyhZ6NPge7cwvwPC_HWA-1
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-a6ef6ac6e0aso46502966b.0
- for <qemu-devel@nongnu.org>; Sat, 08 Jun 2024 01:36:00 -0700 (PDT)
+ us-mta-433-m9EpFyoYOSO_BdvOaw9dWQ-1; Sat, 08 Jun 2024 04:36:02 -0400
+X-MC-Unique: m9EpFyoYOSO_BdvOaw9dWQ-1
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-a6efe58a1aeso25651966b.0
+ for <qemu-devel@nongnu.org>; Sat, 08 Jun 2024 01:36:02 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717835758; x=1718440558;
+ d=1e100.net; s=20230601; t=1717835761; x=1718440561;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=HFPWQHzz5XsC/hwHCF9kGKW2QA2c0A/x+5S2uKUsipI=;
- b=ZwvdKFEOKNY8wBo+tAfyD/Zyu8zurXlHlVMGwFj1Pz6eGZ3JeoErHU/8Yxxrl1DThu
- 4kagTSbogkpnAXplVdqQ73FuFxfCVvnelRP/2CNlf+HE3rCCHcU4DUA/kd80ZrwK9Mms
- f67G4iuudi09BEcWW51HQ04lSu5g42HRGP+/5ZydTAS5gVSkhL2W2slXx5Iiq1Hczqet
- VsmOfwVEZrrBNshDfUl6LhgDGxjkmi65Ex3wurMxEK1ygUaeVA/03QnKeciutkUY2rFn
- kwSTfza6lOkAS6Qb9IHFoZR7sRmEPHmxTfQgXb6RXVXjDo0cxQU1z6e7XaBAbZA5NinT
- Jr/w==
-X-Gm-Message-State: AOJu0Yw1Ja78nSIm9HnGQ1g1qmoBAK3kIjag8Khlc773Zt9eQ3ov/0V8
- l/2F0FXBWccBe79GTHnwpvoGWpffOgxMxcWIXFaNlZFit84gKYMCxwX4doGxQ0VdIb64lJ9PAJ9
- uyXbSET9gEoTPMV6liWhomNgPzInZdMac6fkuEcoDT8dsq0py3KXVxELw180Ag3I+1JuDkpHWN0
- adb/PwUSf75ahzl6RzRuBuhVPLAF49ljZj6SU6
-X-Received: by 2002:a50:d70d:0:b0:57c:5e65:1ff7 with SMTP id
- 4fb4d7f45d1cf-57c5e652ca9mr2386990a12.39.1717835758238; 
- Sat, 08 Jun 2024 01:35:58 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGnQNvjFC2z9Cv7Ps2zLc7yc+rPO9/zUaGuXMJT5wwDeVfGj8ZQqEVGFOqB1oGrlXzAL1p+9A==
-X-Received: by 2002:a50:d70d:0:b0:57c:5e65:1ff7 with SMTP id
- 4fb4d7f45d1cf-57c5e652ca9mr2386979a12.39.1717835757859; 
- Sat, 08 Jun 2024 01:35:57 -0700 (PDT)
+ bh=YizZQkddmGp9IpJqiTCvsXVhloyDqW3nyR8ZMHT+G4E=;
+ b=d1yL87I8zPb11f6MLKCSNcnG6o8lLPK165wzQ9aULbTZRInStHzAkw8I4/VG91BLBI
+ tTTfa+E/dlLa6yABuy/fVsbGEA/xIDcj22fPa5zYciiei25f3NCXmvZeIX6F8W/YNu8j
+ tl/jYx11Kz9Nnmg63FzIX3K7sInjVsQ1UxibrFEdyv+9xJDEK9w8nFxp6k3uwn3uQBbg
+ ugJnLH9LzzG7e9qv43vOAvwxCgVceOkrDOfuk7yHyQdWEJtCpJzOCJm/3KTFVLc+EHI3
+ eN/rSXznITVDi8VTkcbWrElY9RsBHUaU+tFiFbHJIIWF20ESsfr2+2wNz49WH4fnlppY
+ BMBg==
+X-Gm-Message-State: AOJu0YwwjqsmJi+j/cMgfZRwXHXs10MKMIEWoLfYYoCtBC9fIn5/hD5t
+ 9eTAnuHpy2a0+fxWwsFv7SWiVt/6a6yEy0gLMNj0/lgo7e7sCU8QTqY2EtgaEcu3jeMWpJeD76J
+ CZSGVg0AqNlHYsp0QpEiboqjiegrckZmvEyoiVJvxpeO+moxbUv3759QshC7ZG7zklTAxDdRJro
+ dAl0xytJb9EXLKjcyiWyoSl2WFUUUKV/9GW0CW
+X-Received: by 2002:a50:9e43:0:b0:57c:677a:a941 with SMTP id
+ 4fb4d7f45d1cf-57c677aaadbmr896753a12.40.1717835761123; 
+ Sat, 08 Jun 2024 01:36:01 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFY6enENoTDab7tJPuSMOA7BKFnYvlFXgaiLV5/WNNjmd40ozLzJw8i016ncUe3chUmu4FckQ==
+X-Received: by 2002:a50:9e43:0:b0:57c:677a:a941 with SMTP id
+ 4fb4d7f45d1cf-57c677aaadbmr896744a12.40.1717835760684; 
+ Sat, 08 Jun 2024 01:36:00 -0700 (PDT)
 Received: from avogadro.local ([151.81.115.112])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-57aadf9d296sm3946967a12.7.2024.06.08.01.35.55
+ 4fb4d7f45d1cf-57aae13d1aesm3992928a12.55.2024.06.08.01.35.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 08 Jun 2024 01:35:55 -0700 (PDT)
+ Sat, 08 Jun 2024 01:35:58 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: John Allen <john.allen@amd.com>, William Roche <william.roche@oracle.com>,
- Joao Martins <joao.m.martins@oracle.com>
-Subject: [PULL 39/42] i386: Add support for SUCCOR feature
-Date: Sat,  8 Jun 2024 10:34:12 +0200
-Message-ID: <20240608083415.2769160-40-pbonzini@redhat.com>
+Cc: John Allen <john.allen@amd.com>
+Subject: [PULL 40/42] i386: Add support for overflow recovery
+Date: Sat,  8 Jun 2024 10:34:13 +0200
+Message-ID: <20240608083415.2769160-41-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240608083415.2769160-1-pbonzini@redhat.com>
 References: <20240608083415.2769160-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -104,94 +103,60 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: John Allen <john.allen@amd.com>
 
-Add cpuid bit definition for the SUCCOR feature. This cpuid bit is required to
-be exposed to guests to allow them to handle machine check exceptions on AMD
-hosts.
+Add cpuid bit definition for overflow recovery. This is needed in the case
+where a deferred error has been sent to the guest, a guest process accesses the
+poisoned memory, but the machine_check_poll function has not yet handled the
+original deferred error. If overflow recovery is not set in this case, when we
+handle the uncorrected error from the poisoned memory access, the overflow bit
+will be set and will result in the guest being shut down.
 
-----
-v2:
-  - Add "succor" feature word.
-  - Add case to kvm_arch_get_supported_cpuid for the SUCCOR feature.
+By the time the MCE reaches the guest, the overflow has been handled
+by the host and has not caused a shutdown, so include the bit unconditionally.
 
-Reported-by: William Roche <william.roche@oracle.com>
-Reviewed-by: Joao Martins <joao.m.martins@oracle.com>
 Signed-off-by: John Allen <john.allen@amd.com>
-Message-ID: <20240603193622.47156-3-john.allen@amd.com>
+Message-ID: <20240603193622.47156-4-john.allen@amd.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/cpu.h     |  4 ++++
- target/i386/cpu.c     | 18 +++++++++++++++++-
- target/i386/kvm/kvm.c |  2 ++
- 3 files changed, 23 insertions(+), 1 deletion(-)
+ target/i386/cpu.h     | 1 +
+ target/i386/cpu.c     | 2 +-
+ target/i386/kvm/kvm.c | 2 +-
+ 3 files changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index e6d5d1b483c..6786055ec6b 100644
+index 6786055ec6b..8fe28b67e0f 100644
 --- a/target/i386/cpu.h
 +++ b/target/i386/cpu.h
-@@ -630,6 +630,7 @@ typedef enum FeatureWord {
-     FEAT_7_1_EAX,       /* CPUID[EAX=7,ECX=1].EAX */
-     FEAT_8000_0001_EDX, /* CPUID[8000_0001].EDX */
-     FEAT_8000_0001_ECX, /* CPUID[8000_0001].ECX */
-+    FEAT_8000_0007_EBX, /* CPUID[8000_0007].EBX */
-     FEAT_8000_0007_EDX, /* CPUID[8000_0007].EDX */
-     FEAT_8000_0008_EBX, /* CPUID[8000_0008].EBX */
-     FEAT_8000_0021_EAX, /* CPUID[8000_0021].EAX */
-@@ -982,6 +983,9 @@ uint64_t x86_cpu_get_supported_feature_word(FeatureWord w,
- /* Packets which contain IP payload have LIP values */
+@@ -984,6 +984,7 @@ uint64_t x86_cpu_get_supported_feature_word(FeatureWord w,
  #define CPUID_14_0_ECX_LIP              (1U << 31)
  
-+/* RAS Features */
-+#define CPUID_8000_0007_EBX_SUCCOR      (1U << 1)
-+
+ /* RAS Features */
++#define CPUID_8000_0007_EBX_OVERFLOW_RECOV    (1U << 0)
+ #define CPUID_8000_0007_EBX_SUCCOR      (1U << 1)
+ 
  /* CLZERO instruction */
- #define CPUID_8000_0008_EBX_CLZERO      (1U << 0)
- /* Always save/restore FP error pointers */
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 383230fa479..c5a532a254e 100644
+index c5a532a254e..7466217d5ea 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -1180,6 +1180,22 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
-         .tcg_features = TCG_APM_FEATURES,
-         .unmigratable_flags = CPUID_APM_INVTSC,
-     },
-+    [FEAT_8000_0007_EBX] = {
-+        .type = CPUID_FEATURE_WORD,
-+        .feat_names = {
-+            NULL, "succor", NULL, NULL,
-+            NULL, NULL, NULL, NULL,
-+            NULL, NULL, NULL, NULL,
-+            NULL, NULL, NULL, NULL,
-+            NULL, NULL, NULL, NULL,
-+            NULL, NULL, NULL, NULL,
-+            NULL, NULL, NULL, NULL,
-+            NULL, NULL, NULL, NULL,
-+        },
-+        .cpuid = { .eax = 0x80000007, .reg = R_EBX, },
-+        .tcg_features = 0,
-+        .unmigratable_flags = 0,
-+    },
-     [FEAT_8000_0008_EBX] = {
+@@ -1183,7 +1183,7 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
+     [FEAT_8000_0007_EBX] = {
          .type = CPUID_FEATURE_WORD,
          .feat_names = {
-@@ -6887,7 +6903,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-         break;
-     case 0x80000007:
-         *eax = 0;
--        *ebx = 0;
-+        *ebx = env->features[FEAT_8000_0007_EBX];
-         *ecx = 0;
-         *edx = env->features[FEAT_8000_0007_EDX];
-         break;
+-            NULL, "succor", NULL, NULL,
++            "overflow-recov", "succor", NULL, NULL,
+             NULL, NULL, NULL, NULL,
+             NULL, NULL, NULL, NULL,
+             NULL, NULL, NULL, NULL,
 diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 55a9e8a70cf..56d8e2a89ec 100644
+index 56d8e2a89ec..912f5d5a6be 100644
 --- a/target/i386/kvm/kvm.c
 +++ b/target/i386/kvm/kvm.c
-@@ -532,6 +532,8 @@ uint32_t kvm_arch_get_supported_cpuid(KVMState *s, uint32_t function,
-          */
+@@ -533,7 +533,7 @@ uint32_t kvm_arch_get_supported_cpuid(KVMState *s, uint32_t function,
          cpuid_1_edx = kvm_arch_get_supported_cpuid(s, 1, 0, R_EDX);
          ret |= cpuid_1_edx & CPUID_EXT2_AMD_ALIASES;
-+    } else if (function == 0x80000007 && reg == R_EBX) {
-+        ret |= CPUID_8000_0007_EBX_SUCCOR;
+     } else if (function == 0x80000007 && reg == R_EBX) {
+-        ret |= CPUID_8000_0007_EBX_SUCCOR;
++        ret |= CPUID_8000_0007_EBX_OVERFLOW_RECOV | CPUID_8000_0007_EBX_SUCCOR;
      } else if (function == KVM_CPUID_FEATURES && reg == R_EAX) {
          /* kvm_pv_unhalt is reported by GET_SUPPORTED_CPUID, but it can't
           * be enabled without the in-kernel irqchip
