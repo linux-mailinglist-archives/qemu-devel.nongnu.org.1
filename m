@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE8FC90104C
-	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 10:37:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1976190105E
+	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 10:39:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sFrXZ-0000fZ-NP; Sat, 08 Jun 2024 04:35:09 -0400
+	id 1sFrXc-0000gE-Dr; Sat, 08 Jun 2024 04:35:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sFrXX-0000fE-2m
- for qemu-devel@nongnu.org; Sat, 08 Jun 2024 04:35:07 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1sFrXa-0000fq-8T
+ for qemu-devel@nongnu.org; Sat, 08 Jun 2024 04:35:10 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sFrXV-0008WA-K7
- for qemu-devel@nongnu.org; Sat, 08 Jun 2024 04:35:06 -0400
+ id 1sFrXY-00004t-La
+ for qemu-devel@nongnu.org; Sat, 08 Jun 2024 04:35:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717835705;
+ s=mimecast20190719; t=1717835708;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=rjEoegWfDNY+Lc7QINoZm6Kl3jY2Ro+dU3R8pgO2/MA=;
- b=HEr4nD4Ein4CiqnW9uOpqlEO1cgCIxhPvsynGFn6a76FAj0lXMIDY48y/YoaApHpah8NsS
- QyUrNj/GVQoMKTgn4c/7nJmmPwqPpFwA5+kazugrBPVDOo5FaBy+aAWd0FcdTfNRbKlkEa
- ObCYuSIIWDrGSaf0T1760oPSd8ABGv4=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=H3Z1uEV2vKX54vq7GANVQvFh33xm6QoUk8aodvBPmZQ=;
+ b=BeLuE2yjBTsFSc6EPQ4d59gUpbneFlaFu6oT9C3YYDb4JAIxo0omGuV07YkMiUg0fZKYDl
+ boPqZQd4BfKFAgIMrOcusmX+OPehcQXZFaTFsvFaVQjDRMhZMuAmTgEvOtamK5zfH+mHmM
+ rlu6rrwY/dHpCbVimeMGyBrYe9MwCi8=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-650-KCklGU2yPdSqA6QTS-gLGw-1; Sat, 08 Jun 2024 04:35:03 -0400
-X-MC-Unique: KCklGU2yPdSqA6QTS-gLGw-1
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-a6f0f008f9aso2312966b.3
- for <qemu-devel@nongnu.org>; Sat, 08 Jun 2024 01:35:03 -0700 (PDT)
+ us-mta-139-b4ZLNAaEP3aEVNn_BV75lw-1; Sat, 08 Jun 2024 04:35:06 -0400
+X-MC-Unique: b4ZLNAaEP3aEVNn_BV75lw-1
+Received: by mail-ed1-f70.google.com with SMTP id
+ 4fb4d7f45d1cf-57c5d26a2d4so612038a12.3
+ for <qemu-devel@nongnu.org>; Sat, 08 Jun 2024 01:35:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717835702; x=1718440502;
+ d=1e100.net; s=20230601; t=1717835704; x=1718440504;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=rjEoegWfDNY+Lc7QINoZm6Kl3jY2Ro+dU3R8pgO2/MA=;
- b=IzNzoniVQiHp++7g4rORG8xe0relwzPQTTTx8v7iTL2Zp1T9CTb18GXJevda6TVXQ+
- ESGZC0V5Imo0HuMJ3qm2UQo9J/pf02vA1PSJd1VVmNrHp7ErxxuB47dBd061uBBKxr7T
- dhuyuozA9ng6eYNeDEe/soMLK24EXMlBGLz8qaIJgAqL+a7TaXOq0prevY/fYEKt5+42
- 9Dz+qzQMaKK++UI03m+jq+8llAF8/mpm3oBa3fiy7VHxa95fZ1qUM5t/EXVxw871PjzB
- SQy6EMt3gOxYw7L5XwyieoYaZaioN9kr2dGvXC55Azt94VJx0UQ86DOHOJPciFh3YDXQ
- QIlw==
-X-Gm-Message-State: AOJu0Yzn1udg0+ZLdYcWxS/j8hqNheBfKEEzbCdxnJwF4+3LErtTHpHt
- S3QgpeNUgdsw+AgWn5W3IjIj4dKnChlEwLyJd81hPDI+C1+k+W1pmpnhs/MeV1OnUcl3/VFdtuo
- bBNR8e9+a2ZFRiLBy1OjuuF8p7F6daP7JZhGGeR6u/CFmr9wGs0ZAy4v80Fsz8WDzlr5mP+KvB0
- ECjgG2dRSUhIY0zEaHDLgKwosZ3ZTL8sCUfePh
-X-Received: by 2002:a50:9550:0:b0:57c:5bdd:178d with SMTP id
- 4fb4d7f45d1cf-57c5bdd19acmr3048200a12.6.1717835701806; 
- Sat, 08 Jun 2024 01:35:01 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH6C5KTAHB0MulmqpcXAQBmnvfiPQ2QVFcnjYKTDgC/YwOpWYZeAmnIKNxchFDM1xawiPZcsg==
-X-Received: by 2002:a50:9550:0:b0:57c:5bdd:178d with SMTP id
- 4fb4d7f45d1cf-57c5bdd19acmr3048184a12.6.1717835701495; 
- Sat, 08 Jun 2024 01:35:01 -0700 (PDT)
+ bh=H3Z1uEV2vKX54vq7GANVQvFh33xm6QoUk8aodvBPmZQ=;
+ b=NTwwPowAFSqO8b5o70Syo8kTdKZHFBWoeLjjcUBNdkf3Yuq6PP4zoYhuP0dY2cWuZk
+ cXQ7dJ4+/IuQAHMcMMhEdosjHZsM/vmkE4HyDFShWR7rJyoGdYBgNI4n7+qnegP2hIVl
+ WXZBE3SJBekJiD1t8BeTFO+Zvf8Z228tXi6Y2LFP66/VNQ37VQKS4XTcOcHQPE43AQs3
+ 7VgWu+hFRdPLch8tThuYXym7l1BXWL6d/g/scus76ujsyxh0m/udV1G9jybasyXiaAhu
+ Wbk4GZPgxokXDTXyrv9PVdfKF2n8Cwy08pYCN8yzcPV/tjVikPS9uQx1vwlNJFf8CG7X
+ z2jg==
+X-Gm-Message-State: AOJu0Yza5F/70hlvYMeetn8RIytR0ycUMpUv1XDME5Vca6B/J+Fk0fJa
+ 9Jcz+YoRxokD8dGmmEm0XsOXtK4s4BJaX5jgsALpZEF8AGSGucRoQ4gcgGXoZF7Mc7YgTQ1Me40
+ KfGxoPoDqWQQRvW5LztW8nE+7XqPcrIItS0MaHVJpFZT/YRBkSwOgJ/T5irFakNUpVPrqvjk2AK
+ Jpt2yC7OKpbH5AJAoFhfm3Hr5QZ/BDo36/88wr
+X-Received: by 2002:a50:c347:0:b0:57a:9405:786a with SMTP id
+ 4fb4d7f45d1cf-57c5084faa5mr2729945a12.5.1717835704377; 
+ Sat, 08 Jun 2024 01:35:04 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFklPSQNTUKJcCSyYdZ7sYzBJxjnl6ofsHEFQEZUE39acSWehbXfVqDdQvZCZ5wHf3AEc4YzA==
+X-Received: by 2002:a50:c347:0:b0:57a:9405:786a with SMTP id
+ 4fb4d7f45d1cf-57c5084faa5mr2729936a12.5.1717835704004; 
+ Sat, 08 Jun 2024 01:35:04 -0700 (PDT)
 Received: from avogadro.local ([151.81.115.112])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-57aae202965sm3974372a12.77.2024.06.08.01.34.59
+ 4fb4d7f45d1cf-57aae202396sm3970434a12.74.2024.06.08.01.35.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 08 Jun 2024 01:34:59 -0700 (PDT)
+ Sat, 08 Jun 2024 01:35:02 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Michal Privoznik <mprivozn@redhat.com>
-Subject: [PULL 16/42] machine: default -M mem-merge to off is
- QEMU_MADV_MERGEABLE is not available
-Date: Sat,  8 Jun 2024 10:33:49 +0200
-Message-ID: <20240608083415.2769160-17-pbonzini@redhat.com>
+Subject: [PULL 17/42] meson: Don't even detect posix_madvise() on Darwin
+Date: Sat,  8 Jun 2024 10:33:50 +0200
+Message-ID: <20240608083415.2769160-18-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240608083415.2769160-1-pbonzini@redhat.com>
 References: <20240608083415.2769160-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -102,37 +101,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Otherwise, starting any guest on a non-Linux guests results in
+From: Michal Privoznik <mprivozn@redhat.com>
 
-qemu-system-arm: Couldn't set property 'merge' on 'memory-backend-ram': Invalid argument
+On Darwin, posix_madvise() has the same return semantics as plain
+madvise() [1]. That's not really what our usage expects.
+Fortunately, madvise() is available and preferred anyways so we
+may stop detecting posix_madvise() on Darwin.
 
-Cc: Michal Privoznik <mprivozn@redhat.com>
+1: https://opensource.apple.com/source/xnu/xnu-7195.81.3/bsd/man/man2/madvise.2.auto.html
+
+Signed-off-by: Michal Privoznik <mprivozn@redhat.com>
+Message-ID: <00f71753bdeb8c0f049fda05fb63b84bb5502fb3.1717584048.git.mprivozn@redhat.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- hw/core/machine.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ meson.build | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/hw/core/machine.c b/hw/core/machine.c
-index 77a356f232f..a0ee43ca5c0 100644
---- a/hw/core/machine.c
-+++ b/hw/core/machine.c
-@@ -17,6 +17,7 @@
- #include "hw/loader.h"
- #include "qapi/error.h"
- #include "qapi/qapi-visit-machine.h"
-+#include "qemu/madvise.h"
- #include "qom/object_interfaces.h"
- #include "sysemu/cpus.h"
- #include "sysemu/sysemu.h"
-@@ -1129,7 +1130,7 @@ static void machine_initfn(Object *obj)
-     container_get(obj, "/peripheral-anon");
+diff --git a/meson.build b/meson.build
+index d80203f1cde..ec59effca26 100644
+--- a/meson.build
++++ b/meson.build
+@@ -2556,10 +2556,16 @@ config_host_data.set('CONFIG_OPEN_BY_HANDLE', cc.links(gnu_source_prefix + '''
+   #else
+   int main(void) { struct file_handle fh; return open_by_handle_at(0, &fh, 0); }
+   #endif'''))
+-config_host_data.set('CONFIG_POSIX_MADVISE', cc.links(gnu_source_prefix + '''
+-  #include <sys/mman.h>
+-  #include <stddef.h>
+-  int main(void) { return posix_madvise(NULL, 0, POSIX_MADV_DONTNEED); }'''))
++
++# On Darwin posix_madvise() has the same return semantics as plain madvise(),
++# i.e. errno is set and -1 is returned. That's not really how POSIX defines the
++# function. On the flip side, it has madvise() which is preferred anyways.
++if host_os != 'darwin'
++  config_host_data.set('CONFIG_POSIX_MADVISE', cc.links(gnu_source_prefix + '''
++    #include <sys/mman.h>
++    #include <stddef.h>
++    int main(void) { return posix_madvise(NULL, 0, POSIX_MADV_DONTNEED); }'''))
++endif
  
-     ms->dump_guest_core = true;
--    ms->mem_merge = true;
-+    ms->mem_merge = (QEMU_MADV_MERGEABLE != QEMU_MADV_INVALID);
-     ms->enable_graphics = true;
-     ms->kernel_cmdline = g_strdup("");
-     ms->ram_size = mc->default_ram_size;
+ config_host_data.set('CONFIG_PTHREAD_SETNAME_NP_W_TID', cc.links(gnu_source_prefix + '''
+   #include <pthread.h>
 -- 
 2.45.1
 
