@@ -2,77 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE486901053
-	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 10:38:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7346C901066
+	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 10:41:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sFrYc-00045y-8w; Sat, 08 Jun 2024 04:36:14 -0400
+	id 1sFrdd-0001Ic-GS; Sat, 08 Jun 2024 04:41:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sFrYZ-0003lg-8C
- for qemu-devel@nongnu.org; Sat, 08 Jun 2024 04:36:11 -0400
+ id 1sFrdb-0001IT-GU
+ for qemu-devel@nongnu.org; Sat, 08 Jun 2024 04:41:23 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sFrYX-0000Lx-Jk
- for qemu-devel@nongnu.org; Sat, 08 Jun 2024 04:36:11 -0400
+ id 1sFrdZ-0001Lc-V4
+ for qemu-devel@nongnu.org; Sat, 08 Jun 2024 04:41:23 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717835769;
+ s=mimecast20190719; t=1717836081;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=n5zvmcvef8pRBAw9VrXIyPOYRYeCWBajLWVRPej6rGM=;
- b=BN+pnwR0r19L8eGpEaKIoPcaU/rnSmd2qnfmuvo6OoIc8AdUo9Yk9/CaB0RSk2V/xCqSpb
- nIJKjVq97hr3oq7sC4v+P70Se3yqUjAFvEtaOyX8UfBPL/et9FyyW+wAtWhgv04oGjt8vq
- 7HzzFsqc0u2e6ZeLC3dOEDrxl+8U6g8=
+ content-transfer-encoding:content-transfer-encoding;
+ bh=giCTeqY3gQkDNV2az+kH9seHEypnYBSwo6Omj3a2xfc=;
+ b=ASYOGS0A0HZDQRVXkDiyVg5BRLmc1tCnN49At8/VMGxHlOrr68bwyhm6/OCxpGwddSr9Aw
+ 68PZwwW2F/Nkz5sJPv49tMt06IITje1d/JaqJ1CQ33/6M2bFsdX9i9F/CpenjYYQ838dgq
+ 5XFtvZ03Ily1YDmm0du3q1H3Eb9hqg0=
 Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
  [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-548-hBgYYYArMRmvGTM9iO8Zew-1; Sat, 08 Jun 2024 04:36:07 -0400
-X-MC-Unique: hBgYYYArMRmvGTM9iO8Zew-1
+ us-mta-678-2-TaFgZfNQ6yIIag02pQcw-1; Sat, 08 Jun 2024 04:41:19 -0400
+X-MC-Unique: 2-TaFgZfNQ6yIIag02pQcw-1
 Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-a6efbb08949so31694666b.0
- for <qemu-devel@nongnu.org>; Sat, 08 Jun 2024 01:36:06 -0700 (PDT)
+ a640c23a62f3a-a6def6e9ef2so114212466b.0
+ for <qemu-devel@nongnu.org>; Sat, 08 Jun 2024 01:41:18 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717835765; x=1718440565;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=n5zvmcvef8pRBAw9VrXIyPOYRYeCWBajLWVRPej6rGM=;
- b=XX9d7JA+Jw7dEaxCmhTdBDZE3SFfl2bHs9FY0mL68VHcWmCne3W23CUnU6GJkw600w
- IpzVAdbjsjuYg0Ln7RDRW1ddub7Zp/uYRQTA1mxZOMep2/IAZ1YEk7u0pFF16jxSuzCG
- NhHZhbvl96F+OFBhBQWM5fXLgRHxOj0JY83MUw8LhPxx36E443ypdoa0QvuEjXEXpK9f
- Yep2LX6WYX/L/y/ZJSAIdA+PKyGCAhh5DXtoYbEq/yma57/LvnVounrm39HyQp8zFad8
- 5lV4kt68gKI9hO8MC9IfSpc2WGzXYgUYXS/H9jKsbJPUXbkEVG2tbGzmzVJE2wA9t21P
- uRrA==
-X-Gm-Message-State: AOJu0YzE+XkS/nuwFKfZaOdvx0HR4MB1XIJbIic9Tlie9leyPF0iNHHe
- g+HuxNgxxPo0xaDkZxWHeEAXJXWKWGyWmWFwsm+U52NPtT6q3nnhfZN80wEEnfG7PG1ehCkV4qj
- MuJPAjeC7Y7yy9cDEdirgOVRoZ51a+jNhOcxNDOXOzv7fY4QTTsnf3F8+KGWcoHYNb3XkXgrPDl
- C0WSxo9gWfycjW4hKN4BaHUPsn2oc/hOq1P736
-X-Received: by 2002:a17:906:f34d:b0:a5c:fd35:df3d with SMTP id
- a640c23a62f3a-a6cdad22eeamr242822066b.61.1717835764977; 
- Sat, 08 Jun 2024 01:36:04 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGbgjO+GPOWl9QQ3i7UzQ46v6qqUnJTOta7AuUgfmTz99JpHFujPLyY8tuz7kHwW9XJwYIcDw==
-X-Received: by 2002:a17:906:f34d:b0:a5c:fd35:df3d with SMTP id
- a640c23a62f3a-a6cdad22eeamr242821366b.61.1717835764483; 
- Sat, 08 Jun 2024 01:36:04 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1717836077; x=1718440877;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=giCTeqY3gQkDNV2az+kH9seHEypnYBSwo6Omj3a2xfc=;
+ b=tTG/adKMAAfFU0HmH/h6MmFm7dFH9KxtjfDsqaTXQdhc0Ze4sAwtvFFW9BCghY/Ewz
+ EFUkA6t3lCl2hiBbYlRjWMWthggBfMoM8/oIyEA8Zf0CzgIUnJHB+TuYcLbw7ARnxsg7
+ OoPmxjzPrVRMAbETtcEblNHYNAs058DcrGXR7wYy4FPgb3AcpR1xJj+WONwL3FCC4edq
+ c/UUggfjOHcr+N9LByCwlgtQ9cvumk9C5PqulIGm+kUnaWsed2Lz8aMLjy/mClsj2KIP
+ neIm7uv0ct1TcoRNKBF4Sb+4UOVZ1gdsAx/YXW5onzA4YKzrXtHe4Z1YECAXuLHsUDCh
+ rnIQ==
+X-Gm-Message-State: AOJu0YyfOPZlkpm+Vl8O17XnIZpj05+rKfrlzCHEm7SnBQdXwrRXZg03
+ AjJucIGWFhSGA1YfxSJhSg1URjAXHGVDfGwU+KPLyzxxNSCXnAOuEukyvvlt4cz7Grh7GUoFIB5
+ KoS8C66SaPj6tXpRYP26vpDTgvVhZ9J7WB2Shdh8FXkuekUn7Z8EgCOUk0+L03aFvPaJyD1nsq1
+ Opjqgb7s7Lj4jzXRqfkYw+Soc8lFxLbmUPVyMi
+X-Received: by 2002:a17:906:2543:b0:a68:b159:11ee with SMTP id
+ a640c23a62f3a-a6c760a4d46mr565430666b.12.1717836076687; 
+ Sat, 08 Jun 2024 01:41:16 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH+12KZ8Qf9UZ9ljtmujrv8Qti3ImHudbts4Se6dnNOGF1rAQIYb/z+0JCNXIgJFRaGLE4juw==
+X-Received: by 2002:a17:906:2543:b0:a68:b159:11ee with SMTP id
+ a640c23a62f3a-a6c760a4d46mr565429466b.12.1717836076183; 
+ Sat, 08 Jun 2024 01:41:16 -0700 (PDT)
 Received: from avogadro.local ([151.81.115.112])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a6c8070e7fesm357927266b.183.2024.06.08.01.36.03
+ a640c23a62f3a-a6c806eab0asm354075066b.134.2024.06.08.01.41.14
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 08 Jun 2024 01:36:04 -0700 (PDT)
+ Sat, 08 Jun 2024 01:41:14 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 42/42] python: mkvenv: remove ensure command
-Date: Sat,  8 Jun 2024 10:34:15 +0200
-Message-ID: <20240608083415.2769160-43-pbonzini@redhat.com>
+Subject: [PATCH 00/25] target/i386: more progress towards new decoder
+Date: Sat,  8 Jun 2024 10:40:48 +0200
+Message-ID: <20240608084113.2770363-1-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240608083415.2769160-1-pbonzini@redhat.com>
-References: <20240608083415.2769160-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -101,171 +97,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This was used to bootstrap the venv with a TOML parser, after which
-ensuregroup is used.  Now that we expect it to be present as a system
-package (either tomli or, for Python 3.11, tomllib), it is not needed
-anymore.
+Just like in previous installments, this series ends with a specific
+thing that is now done entirely in the new decoder.  After removing
+the legacy prefix decoding in the previous series, now it's _all_ decoding
+that is done by decode-new.c.inc.  Most two byte opcodes are converted,
+leaving out only five plus the x87 instructions, but even those only
+use the X86DecodedInsn; they do not use anymore the CPUX86State (env)
+to fetch bytes from the instruction stream.
 
-Note that this means that, when implemented, the hypothetical "isolated"
-mode that does not use any system packages will only work with Python
-3.11+.
+The only reason why those five are left behind is that the decoding is a
+bit gnarly and, having little or no commonality with the other opcodes,
+there isn't much duplication between translate.c and emit.c.inc that
+supports them.
 
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- python/scripts/mkvenv.py | 105 ---------------------------------------
- 1 file changed, 105 deletions(-)
+It's nothing that's particularly hard, but this is just a nice place
+to stop for now; and also I think it's enough to implement APX's 32
+GPRs and REX2 prefix without the legacy translator getting in the way.
+Of course APX quite some more work---there's all the EVEX special cases
+and flags, and the new conditional instructions (CFCMOV, CCMP, CTEST)
+to consider---but it's a start.
 
-diff --git a/python/scripts/mkvenv.py b/python/scripts/mkvenv.py
-index d0b9c215ca2..f2526af0a04 100644
---- a/python/scripts/mkvenv.py
-+++ b/python/scripts/mkvenv.py
-@@ -13,7 +13,6 @@
-     create    create a venv
-     post_init
-               post-venv initialization
--    ensure    Ensure that the specified package is installed.
-     ensuregroup
-               Ensure that the specified package group is installed.
- 
-@@ -36,18 +35,6 @@
- 
- --------------------------------------------------
- 
--usage: mkvenv ensure [-h] [--online] [--dir DIR] dep_spec...
--
--positional arguments:
--  dep_spec    PEP 508 Dependency specification, e.g. 'meson>=0.61.5'
--
--options:
--  -h, --help  show this help message and exit
--  --online    Install packages from PyPI, if necessary.
--  --dir DIR   Path to vendored packages where we may install from.
--
----------------------------------------------------
--
- usage: mkvenv ensuregroup [-h] [--online] [--dir DIR] file group...
- 
- positional arguments:
-@@ -726,57 +713,6 @@ def _do_ensure(
-     return None
- 
- 
--def ensure(
--    dep_specs: Sequence[str],
--    online: bool = False,
--    wheels_dir: Optional[Union[str, Path]] = None,
--    prog: Optional[str] = None,
--) -> None:
--    """
--    Use pip to ensure we have the package specified by @dep_specs.
--
--    If the package is already installed, do nothing. If online and
--    wheels_dir are both provided, prefer packages found in wheels_dir
--    first before connecting to PyPI.
--
--    :param dep_specs:
--        PEP 508 dependency specifications. e.g. ['meson>=0.61.5'].
--    :param online: If True, fall back to PyPI.
--    :param wheels_dir: If specified, search this path for packages.
--    :param prog:
--        If specified, use this program name for error diagnostics that will
--        be presented to the user. e.g., 'sphinx-build' can be used as a
--        bellwether for the presence of 'sphinx'.
--    """
--
--    if not HAVE_DISTLIB:
--        raise Ouch("a usable distlib could not be found, please install it")
--
--    # Convert the depspecs to a dictionary, as if they came
--    # from a section in a pythondeps.toml file
--    group: Dict[str, Dict[str, str]] = {}
--    for spec in dep_specs:
--        name = distlib.version.LegacyMatcher(spec).name
--        group[name] = {}
--
--        spec = spec.strip()
--        pos = len(name)
--        ver = spec[pos:].strip()
--        if ver:
--            group[name]["accepted"] = ver
--
--        if prog:
--            group[name]["canary"] = prog
--            prog = None
--
--    result = _do_ensure(group, online, wheels_dir)
--    if result:
--        # Well, that's not good.
--        if result[1]:
--            raise Ouch(result[0])
--        raise SystemExit(f"\n{result[0]}\n\n")
--
--
- def _parse_groups(file: str) -> Dict[str, Dict[str, Any]]:
-     if not HAVE_TOMLLIB:
-         if sys.version_info < (3, 11):
-@@ -888,39 +824,6 @@ def _add_ensuregroup_subcommand(subparsers: Any) -> None:
-     )
- 
- 
--def _add_ensure_subcommand(subparsers: Any) -> None:
--    subparser = subparsers.add_parser(
--        "ensure", help="Ensure that the specified package is installed."
--    )
--    subparser.add_argument(
--        "--online",
--        action="store_true",
--        help="Install packages from PyPI, if necessary.",
--    )
--    subparser.add_argument(
--        "--dir",
--        type=str,
--        action="store",
--        help="Path to vendored packages where we may install from.",
--    )
--    subparser.add_argument(
--        "--diagnose",
--        type=str,
--        action="store",
--        help=(
--            "Name of a shell utility to use for "
--            "diagnostics if this command fails."
--        ),
--    )
--    subparser.add_argument(
--        "dep_specs",
--        type=str,
--        action="store",
--        help="PEP 508 Dependency specification, e.g. 'meson>=0.61.5'",
--        nargs="+",
--    )
--
--
- def main() -> int:
-     """CLI interface to make_qemu_venv. See module docstring."""
-     if os.environ.get("DEBUG") or os.environ.get("GITLAB_CI"):
-@@ -944,7 +847,6 @@ def main() -> int:
- 
-     _add_create_subcommand(subparsers)
-     _add_post_init_subcommand(subparsers)
--    _add_ensure_subcommand(subparsers)
-     _add_ensuregroup_subcommand(subparsers)
- 
-     args = parser.parse_args()
-@@ -957,13 +859,6 @@ def main() -> int:
-             )
-         if args.command == "post_init":
-             post_venv_setup()
--        if args.command == "ensure":
--            ensure(
--                dep_specs=args.dep_specs,
--                online=args.online,
--                wheels_dir=args.dir,
--                prog=args.diagnose,
--            )
-         if args.command == "ensuregroup":
-             ensure_group(
-                 file=args.file,
+As in previous installments, there is some reduction in the total number
+of lines of code, which is a bit surprising; but then again many of these
+opcodes have modrm bytes for which there a lot of repeated lines, and
+also it's possible to share some existing emit.c.inc code (for example
+SHLD/SHRD mostly reuse the flag computations of SHL/SHR).
+
+Patches 1-7: simplifications/cleanups in decode-new.c.inc
+
+Patches 8-20: move all two-byte opcodes except for 00/01/1A/1B/C7
+to new decoder.
+
+Patches 21-25: move decoding of modrm bytes entirely to new decoder,
+and cleanup.
+
+Paolo Bonzini (25):
+  target/i386: remove CPUX86State argument from generator functions
+  target/i386: rewrite flags writeback for ADCX/ADOX
+  target/i386: put BLS* input in T1, use generic flag writeback
+  target/i386: change X86_ENTRYr to use T0
+  target/i386: change X86_ENTRYwr to use T0, use it for moves
+  target/i386: replace NoSeg special with NoLoadEA
+  target/i386: fix processing of intercept 0 (read CR0)
+  target/i386: convert MOV from/to CR and DR to new decoder
+  target/i386: fix bad sorting of entries in the 0F table
+  target/i386: finish converting 0F AE to the new decoder
+  target/i386: replace read_crN helper with read_cr8
+  target/i386: split X86_CHECK_prot into PE and VM86 checks
+  target/i386: convert non-grouped, helper-based 2-byte opcodes
+  target/i386: convert bit test instructions to new decoder
+  target/i386: pull load/writeback out of gen_shiftd_rm_T1
+  target/i386: adapt gen_shift_count for SHLD/SHRD
+  target/i386: convert SHLD/SHRD to new decoder
+  target/i386: convert LZCNT/TZCNT/BSF/BSR/POPCNT to new decoder
+  target/i386: convert XADD to new decoder
+  target/i386: convert CMPXCHG to new decoder
+  target/i386: decode address before going back to translate.c
+  target/i386: list instructions still in translate.c
+  target/i386: assert that cc_op* and pc_save are preserved
+  target/i386: do not check PREFIX_LOCK in old-style decoder
+  target/i386: remove gen_ext_tl
+
+ target/i386/cpu.h                    |    9 +-
+ target/i386/helper.h                 |    2 +-
+ target/i386/tcg/decode-new.h         |   46 +-
+ target/i386/tcg/seg_helper.c         |   16 +-
+ target/i386/tcg/sysemu/misc_helper.c |   20 +-
+ target/i386/tcg/translate.c          | 1089 ++--------------------
+ target/i386/tcg/decode-new.c.inc     |  473 +++++++---
+ target/i386/tcg/emit.c.inc           | 1290 +++++++++++++++++++-------
+ 8 files changed, 1417 insertions(+), 1528 deletions(-)
+
 -- 
 2.45.1
 
