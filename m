@@ -2,69 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7FF690136E
-	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 22:21:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06BF6901371
+	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 22:22:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sG2Yr-0000kN-Qm; Sat, 08 Jun 2024 16:21:13 -0400
+	id 1sG2Ys-0000lA-Tz; Sat, 08 Jun 2024 16:21:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
- id 1sG2Yp-0000jX-4X
- for qemu-devel@nongnu.org; Sat, 08 Jun 2024 16:21:11 -0400
+ id 1sG2Yq-0000k4-Oo
+ for qemu-devel@nongnu.org; Sat, 08 Jun 2024 16:21:12 -0400
 Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
- id 1sG2Ym-0006To-K8
- for qemu-devel@nongnu.org; Sat, 08 Jun 2024 16:21:10 -0400
+ id 1sG2Yp-0006Vv-5v
+ for qemu-devel@nongnu.org; Sat, 08 Jun 2024 16:21:12 -0400
 Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-354be94c874so2441802f8f.3
- for <qemu-devel@nongnu.org>; Sat, 08 Jun 2024 13:21:07 -0700 (PDT)
+ ffacd0b85a97d-35f188e09a8so376309f8f.2
+ for <qemu-devel@nongnu.org>; Sat, 08 Jun 2024 13:21:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1717878066; x=1718482866;
+ d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1717878069; x=1718482869;
  darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=B9zXy62U/i/GPhaOCkWS7JnbtEA8aZVV+oCWEQAna0s=;
- b=agMNl9aVnjDdLdLdZRrmb9wBbzoaxy3b/SVdcoxYZbxLrj+C0a++uu6jQbkcn8tU+0
- pihRZjysMUSFY1/bhEo7a+vZzu335kt3KILDRxID6FSDbLzHsruggwrxG/2ZRPZfxnFv
- jbi9DVDy9YBlT+sKdf2BgQP0nmtAzpnmmzDyHzJE3hjn/2QPHih+xRj4AmF7THfBMZk+
- lPhy1yYP1UV/Jwqnrr5wJUTuAeW9NK76GXLjrohgkDNrkwmT+79RGqhlbE+ypDxp0Gtk
- sqoxXyJ7MtMkjoH0TRehnwPrytRm0G0d62/WgOuglQ2Ao5NMUh6qWTZ/CSAf1qQALkgN
- 3WqQ==
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=5RqSz/egwUoLX36Oqb4G2UnTOgtv4z+/AsIJrjeRIuk=;
+ b=0Bu6jdxJnYH+OGEIMQCM467CT/5OrXdefT3XyeI3sQ88AtIPkZDQtSCGAynUTLPZHm
+ Xks81JYR3W/vrBaOD1Yg6hkMNvbmMvUvX4Cqk2cRfQuwM3XspcmJ70UkbJ14FSMOB+8b
+ 8wl6axvw8KKesnIA8uwIiv4ugvxOXKYxpiPbVAYzDTPZfVHT+xxMZJsHBbrLBVbM260A
+ VjvyzJ8wVOmWF6PMEWlbnRq+m/zmlcRqn+pLVCqsiTZ/KZ+FW5U3D52THek+Wyw0U221
+ j5Yw4TU3y2khjLW0sHFCVfviuCKVlnUZVhGvC/WTOIPehB+kb6XsByoMKL7QxAWN+l8j
+ G4JA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717878066; x=1718482866;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=B9zXy62U/i/GPhaOCkWS7JnbtEA8aZVV+oCWEQAna0s=;
- b=mk9UKBLfKIsz55wRY+PWs0qjHCca+v1nMO+tklhonbLQJ/KS6YRYALaIkEG6sciLNd
- zniivdm/SAb0o0JkV89MYms6vkBF7o+vOla94OTTc4q+w4XBfxQTncc+mzLZ5dQIR2av
- HnCT2njeuMSSiNEdjKRlmLgI6/sRCFkj5bI+vWpYNUNeub0+15F19N7pvtuUDY8UxAU7
- FvIFbfpYle3dOLcbBNgkaoUPWSZHT+bOTR61o5N+SR3tOyjQspcsrErYIDaLeKGK6V67
- 8T6zTt7fWN6vVF4BXBW9tTirko8IsvMAE4GDNqUE1IKZIdIuQPas73uhHfR6Xwhtcudo
- 1Tbw==
-X-Gm-Message-State: AOJu0YxryEkKPDKvjdNeVOHnjxbukLUt3Pu1UIdJ6oHZi4W2zJUZZPFN
- iM2rKwCMoqxABTsvt8jhCfrLD4zXLIAA096YOP+KMvbzzGmmOkTEMksYr0ORG8/KsUFnN5zxg5o
+ d=1e100.net; s=20230601; t=1717878069; x=1718482869;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=5RqSz/egwUoLX36Oqb4G2UnTOgtv4z+/AsIJrjeRIuk=;
+ b=DJQUkVzBQKU0iyk6QxOOyzpglel5w9qZBk3IhT0BbUUC0/3Iy7TOQ+P8k2coh/C5Hf
+ qkM4Jv5FM6dnGXc6Z+36AvBB9hzodkKscpaRFRKaYjjDK6HNQfXuMl4kcuaE/mG/YKto
+ xPn41m8kdWQn8vBXIFBtcsg6IDyZfA5AspIkQlpL0rL1yHEJszTJ6ToUBek6O5CqUQT0
+ tVF6jz1GyUutVcYK/JLSYOAqoQZ3yTb20jy7I7v3qNM/CKALtEDBdqIOTcZMgHE/d++Z
+ Y34G8VQhBjWigsWigrqRFJwwNk4uFNbk0loLitMNDT9cyYp3/mbDv9z0y+EMKcHmkYPl
+ vOTQ==
+X-Gm-Message-State: AOJu0YznlOOAya/HZmX+t99qnhJ8R/4ZXGqdr49L1RY2ZPZptODYeqbf
+ 4jkMaYxxZQ/OAespsGkGxkT2WhZkbyl4HGNP7jq//hOVLEmMPNN3iaIF4ZgDKj6+yDdWUhosFRk
  =
-X-Google-Smtp-Source: AGHT+IFEahbfl52L063ZyCGRCyQYNUY0UT8wdBCLbwfdhANMExSBEYTgxNNFhSIna/3xQSUgRKNCoQ==
-X-Received: by 2002:a5d:5f4a:0:b0:35d:be9a:3e6a with SMTP id
- ffacd0b85a97d-35efedca59fmr6347303f8f.53.1717878065942; 
- Sat, 08 Jun 2024 13:21:05 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHJgNwAAZiMYxz/nmPYcxHXlfgs2Cv3Ym386VHzGBgJF/Bg3JUEy07EUrhSWJJzx/qot/zd5Q==
+X-Received: by 2002:a5d:56c2:0:b0:35f:d70:6193 with SMTP id
+ ffacd0b85a97d-35f0d7062c0mr2341623f8f.41.1717878069442; 
+ Sat, 08 Jun 2024 13:21:09 -0700 (PDT)
 Received: from localhost.localdomain (89-104-8-17.customer.bnet.at.
  [89.104.8.17]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-35f0ccc5f03sm3803845f8f.88.2024.06.08.13.21.04
+ ffacd0b85a97d-35f0ccc5f03sm3803845f8f.88.2024.06.08.13.21.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 08 Jun 2024 13:21:05 -0700 (PDT)
+ Sat, 08 Jun 2024 13:21:09 -0700 (PDT)
 From: Phil Dennis-Jordan <phil@philjordan.eu>
 To: qemu-devel@nongnu.org
 Cc: peter.maydell@linaro.org, philmd@linaro.org, akihiko.odaki@daynix.com,
  marcandre.lureau@redhat.com, Phil Dennis-Jordan <phil@philjordan.eu>
-Subject: [PATCH 0/3] Mouse cursor improvements on macOS and VNC
-Date: Sat,  8 Jun 2024 22:20:42 +0200
-Message-Id: <20240608202045.2815-1-phil@philjordan.eu>
+Subject: [PATCH 1/3] Cursor: 8 -> 1 bit alpha downsampling improvement
+Date: Sat,  8 Jun 2024 22:20:43 +0200
+Message-Id: <20240608202045.2815-2-phil@philjordan.eu>
 X-Mailer: git-send-email 2.36.1
+In-Reply-To: <20240608202045.2815-1-phil@philjordan.eu>
+References: <20240608202045.2815-1-phil@philjordan.eu>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: neutral client-ip=2a00:1450:4864:20::431;
@@ -90,45 +93,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series of loosely related changes provides some minor improvements
-in mouse cursor usability.
+Mouse cursors with 8 bit alpha were downsampled to 1-bit opacity maps by
+turning alpha values of 255 into 1 and everything else into 0. This
+means that mostly-opaque pixels ended up completely invisible.
 
- 1. This one-liner changes alpha downsampling when using a UI frontend
-    which does not support alpha-blended mouse cursors. Previously,
-    any pixel with an alpha value other than 255 was treated as fully
-    transparent in this context. This looks pretty bad when the guest
-    OS uses anti-aliased cursors. (e.g. macOS) This occurs with some
-    VNC clients, for example.
- 2. This change has nothing to do with cursors: there are two
-    functionally identical implementations of an int_clamp() inline
-    function in the Qemu codebase. This unifies them in the shared
-    cutils.h header, as I'm about to use it in a third location in
-    patch number 3.
- 3. This sizeable patch implements cursor support in the (macOS) Cocoa
-    UI frontend. This fixes the issue of no mouse pointer showing up
-    when using virtio-vga on a macOS host, for example.
-    It unfortunately introduces some complexity to the mouse movement
-    event handling when using a relative pointing device in the guest,
-    as teleporting the cursor on the host offsets the next mouse event
-    delta by a corresponding amount. We therefore need to track this
-    offset and counteract it when processing the event. For details,
-    see the commit message and inline comments.
+This patch changes the behaviour so that only pixels with less than 50%
+alpha (0-127) are treated as transparent when converted to 1-bit alpha.
 
-This work was sponsored by Sauce Labs Inc.
+This greatly improves the subjective appearance of anti-aliased mouse
+cursors, such as those used by macOS, when using a front-end UI without
+support for alpha-blended cursors, such as some VNC clients.
 
-Phil Dennis-Jordan (3):
-  Cursor: 8 -> 1 bit alpha downsampling improvement
-  hw: Moves int_clamp() implementations to header
-  ui/cocoa: Adds support for mouse cursors
+Signed-off-by: Phil Dennis-Jordan <phil@philjordan.eu>
+---
+ ui/cursor.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- hw/input/hid.c        |  12 +--
- hw/usb/dev-wacom.c    |  11 +--
- include/qemu/cutils.h |  11 +++
- ui/cocoa.m            | 167 +++++++++++++++++++++++++++++++++++++++++-
- ui/cursor.c           |   2 +-
- ui/trace-events       |   7 ++
- 6 files changed, 185 insertions(+), 25 deletions(-)
-
+diff --git a/ui/cursor.c b/ui/cursor.c
+index 29717b3ecb..4c05e5555c 100644
+--- a/ui/cursor.c
++++ b/ui/cursor.c
+@@ -232,7 +232,7 @@ void cursor_get_mono_mask(QEMUCursor *c, int transparent, uint8_t *mask)
+     for (y = 0; y < c->height; y++) {
+         bit = 0x80;
+         for (x = 0; x < c->width; x++, data++) {
+-            if ((*data & 0xff000000) != 0xff000000) {
++            if ((*data & 0xff000000) < 0x80000000) {
+                 if (transparent != 0) {
+                     mask[x/8] |= bit;
+                 }
 -- 
 2.36.1
 
