@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0123901074
-	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 10:42:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68D5E901081
+	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 10:44:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sFrf4-0006Hf-Kb; Sat, 08 Jun 2024 04:42:54 -0400
+	id 1sFrff-0002BI-PA; Sat, 08 Jun 2024 04:43:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sFrex-00064z-F5
- for qemu-devel@nongnu.org; Sat, 08 Jun 2024 04:42:47 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1sFrfd-00028Q-NB
+ for qemu-devel@nongnu.org; Sat, 08 Jun 2024 04:43:29 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sFrev-0001an-NZ
- for qemu-devel@nongnu.org; Sat, 08 Jun 2024 04:42:47 -0400
+ id 1sFrfc-0001hL-3u
+ for qemu-devel@nongnu.org; Sat, 08 Jun 2024 04:43:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717836164;
+ s=mimecast20190719; t=1717836207;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=dsXxfg6KJYeTLs0rcYYWAUKjN6thGDY6LKdrDrsYTIE=;
- b=dJPjDTPMUtU2m3nNJk0BKWC0qZNiCf9xH6cEMorVrCOgjamLg0wM2Dx1p8ezQ+zO8heOGF
- YFaAMvxvviyX6/Azfr2hXDSiyFwsXWZGZ9SEdCtvvaIil/rsk8iEiTmqTbl5XDj8hx5XYk
- gbpo2oQU2m7GfryIA+bq+ruFI5WESJw=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=4qJBuQ9HZXGNf8JTO/g0NQ+CxbpXs5W1hSQD+PtrFIA=;
+ b=BIO24zOXk1O4+LYu1cFD5omnClP+MH3QFRRhR9Qrx8zzjM0coR+kWHyoMJ1GLHfyTDFf89
+ oyIxEtC24H90IJR/BcNrBoeMw8+UGDpVgddkEWROGzeUW9Ndz2mA/qfjdriwq8VvXqzs1E
+ ifvRs20/VUI8waSpPuNgV5quYCy26vs=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-185-y0htr_QWPbCxYaIjNf6FOQ-1; Sat, 08 Jun 2024 04:42:40 -0400
-X-MC-Unique: y0htr_QWPbCxYaIjNf6FOQ-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-a6efac81377so29411366b.2
- for <qemu-devel@nongnu.org>; Sat, 08 Jun 2024 01:42:39 -0700 (PDT)
+ us-mta-438-j8tSaxubMjiOAI1KdZdmGw-1; Sat, 08 Jun 2024 04:42:45 -0400
+X-MC-Unique: j8tSaxubMjiOAI1KdZdmGw-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-a6f0d8b466dso8390166b.2
+ for <qemu-devel@nongnu.org>; Sat, 08 Jun 2024 01:42:41 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717836156; x=1718440956;
+ d=1e100.net; s=20230601; t=1717836160; x=1718440960;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=dsXxfg6KJYeTLs0rcYYWAUKjN6thGDY6LKdrDrsYTIE=;
- b=Sb/GvHrckHhK7x3qt9uQH6h9wBsnQ8rPWw4aOI9Du3MtnRlqL0z0I6JpsQTDu1ZQh0
- yyodp0T/7SX9e3BMk5gjrnVIUn+KynX3jeRNC+dR+4ZASiHJx08OxStDziVo1/6FY884
- BzTbL9UE0HRjD0jk3k/8GW1fS+S19hwbIujemUlxtrm+Mp9dY+iHPkG8VI+txEdQPbUq
- BbEA5+sOxql+wlXDo/49Rb1rWQicRf0Suimzl6nvmbwLlpZL1FFNzDGK1rdRaIuYSmII
- UamagCaz7WdxmLkPi2+lkTEJq9RiYwwPkOPcGhXgvFR7nKdf/Iu5V09+XaRVmThQyB/f
- HmRA==
-X-Gm-Message-State: AOJu0YwNbt3QZ14vZBbJtgmKL01hviLnFmM/PQIrvk1PFE4uPvJgcYL8
- p7CKsKYMlYvIdZe5GEf/0JnHBG+VlbCARu5xlyvnjDFe/Ykv0fSGp5F3cx8CxHvAX0MfeSCLuBa
- mUOlERR+vgZ++PqZC6zz90NkPIO01QlJdP1pgNzhlFJ95/6GtcLYjZp9L3p6gSm604pDU5MFt0L
- SMtgtre32nnQ0OnrGHmmuk9VUfyZYV8NAJjbsB
-X-Received: by 2002:a50:999d:0:b0:57c:6ae2:abda with SMTP id
- 4fb4d7f45d1cf-57c6ae2ac5emr959964a12.5.1717836156152; 
- Sat, 08 Jun 2024 01:42:36 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGH6lacvikIHqBfLWvLSsEWT/BDDFmbD2D/kbm8esJfiKG5YkEFOu4raCmDMaiSkBq1Q+JSSQ==
-X-Received: by 2002:a50:999d:0:b0:57c:6ae2:abda with SMTP id
- 4fb4d7f45d1cf-57c6ae2ac5emr959951a12.5.1717836155811; 
- Sat, 08 Jun 2024 01:42:35 -0700 (PDT)
+ bh=4qJBuQ9HZXGNf8JTO/g0NQ+CxbpXs5W1hSQD+PtrFIA=;
+ b=WxIcNLjWlRyzCzjTK2EoV+h+Lp0MQDlGB3nDXjthci0G9UtPA6irkwWjGPCIQD1heo
+ 1YQRdNVaArTZp/E84Zn6UQHQjqy+wIoTheH7456gugVarOxdJLKJk/Uuj/ypLM7cL+tr
+ mES8z1+wJ+l7ArvBg/jKdz0rpGHdq/eCAHXNBJMDRe4sQwosVXkSEDV4oeoc43pTZtR2
+ 6DKnzvTEXYNJ1DKAGMjNi7QviAf4NatLIoJuIpxKoM7x/0f4Go9JOnsA3IV94YxWtZBJ
+ FlzTJtOnp5Pr/vb63yiBB16A7laQZedQeUlL4FfOZPmEYLoMNMt5zgHwPwcOzZj8e3oY
+ 2qIA==
+X-Gm-Message-State: AOJu0YxzmZTfjb7yvDohpC4ld/tY2+fDBh2oqJlT0ZS6Fump5c4DIb4s
+ Htbr23d7mlEq/HpXLD4NBH7okt9dySCsFwJKR6jotXl0nHYBmca/LAwnkzAgA7zgshTixsEK9aQ
+ ZkTvWE0tJ7z2BoQI8GomxSO0289JKLFKvRPSh/n7wBOHgCmxXwx/HuQBtpWbISyfpIAWO6D6GBY
+ HEYSLt0rvJ6lMWbd/TXZPDM5RDCJlUEJ5M1MRK
+X-Received: by 2002:a50:9550:0:b0:57c:5bdd:178d with SMTP id
+ 4fb4d7f45d1cf-57c5bdd19acmr3061172a12.6.1717836159943; 
+ Sat, 08 Jun 2024 01:42:39 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGLIH0PdmDrQu7GMBeGfQYbTcjKXaoBUIsNl1AJk7gwZrfL/Aw3PZNkWkPRdOSgtXbmchuKdQ==
+X-Received: by 2002:a50:9550:0:b0:57c:5bdd:178d with SMTP id
+ 4fb4d7f45d1cf-57c5bdd19acmr3061155a12.6.1717836159471; 
+ Sat, 08 Jun 2024 01:42:39 -0700 (PDT)
 Received: from avogadro.local ([151.81.115.112])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-57aae0db916sm3950555a12.35.2024.06.08.01.42.33
+ a640c23a62f3a-a6c80581cd9sm359603566b.16.2024.06.08.01.42.36
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 08 Jun 2024 01:42:33 -0700 (PDT)
+ Sat, 08 Jun 2024 01:42:36 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 23/25] target/i386: assert that cc_op* and pc_save are
- preserved
-Date: Sat,  8 Jun 2024 10:41:11 +0200
-Message-ID: <20240608084113.2770363-24-pbonzini@redhat.com>
+Subject: [PATCH 24/25] target/i386: do not check PREFIX_LOCK in old-style
+ decoder
+Date: Sat,  8 Jun 2024 10:41:12 +0200
+Message-ID: <20240608084113.2770363-25-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240608084113.2770363-1-pbonzini@redhat.com>
 References: <20240608084113.2770363-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -102,39 +102,141 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now all decoding has been done before any code generation.
-There is no need anymore to save and restore cc_op* and
-pc_save but, for the time being, assert that this is indeed
-the case.
+It is already checked before getting there.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/tcg/translate.c | 12 +++---------
- 1 file changed, 3 insertions(+), 9 deletions(-)
+ target/i386/tcg/translate.c | 26 ++++++++------------------
+ 1 file changed, 8 insertions(+), 18 deletions(-)
 
 diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-index 1bca4043a5c..67f2e792166 100644
+index 67f2e792166..ee5ef3ccbc6 100644
 --- a/target/i386/tcg/translate.c
 +++ b/target/i386/tcg/translate.c
-@@ -3834,15 +3834,9 @@ static void i386_tr_translate_insn(DisasContextBase *dcbase, CPUState *cpu)
-     case 2:
-         /* Restore state that may affect the next instruction. */
-         dc->pc = dc->base.pc_next;
--        /*
--         * TODO: These save/restore can be removed after the table-based
--         * decoder is complete; we will be decoding the insn completely
--         * before any code generation that might affect these variables.
--         */
--        dc->cc_op_dirty = orig_cc_op_dirty;
--        dc->cc_op = orig_cc_op;
--        dc->pc_save = orig_pc_save;
--        /* END TODO */
-+        assert(dc->cc_op_dirty == orig_cc_op_dirty);
-+        assert(dc->cc_op == orig_cc_op);
-+        assert(dc->pc_save == orig_pc_save);
-         dc->base.num_insns--;
-         tcg_remove_ops_after(dc->prev_insn_end);
-         dc->base.insn_start = dc->prev_insn_start;
+@@ -2993,7 +2993,7 @@ static void gen_multi0F(DisasContext *s, X86DecodedInsn *decode)
+ 
+         case 7: /* RDSEED, RDPID with f3 prefix */
+             if (mod != 3 ||
+-                (s->prefix & (PREFIX_LOCK | PREFIX_REPNZ))) {
++                (s->prefix & PREFIX_REPNZ)) {
+                 goto illegal_op;
+             }
+             if (s->prefix & PREFIX_REPZ) {
+@@ -3013,7 +3013,7 @@ static void gen_multi0F(DisasContext *s, X86DecodedInsn *decode)
+ 
+         case 6: /* RDRAND */
+             if (mod != 3 ||
+-                (s->prefix & (PREFIX_LOCK | PREFIX_REPZ | PREFIX_REPNZ)) ||
++                (s->prefix & (PREFIX_REPZ | PREFIX_REPNZ)) ||
+                 !(s->cpuid_ext_features & CPUID_EXT_RDRAND)) {
+                 goto illegal_op;
+             }
+@@ -3173,8 +3173,7 @@ static void gen_multi0F(DisasContext *s, X86DecodedInsn *decode)
+ 
+         case 0xd0: /* xgetbv */
+             if ((s->cpuid_ext_features & CPUID_EXT_XSAVE) == 0
+-                || (s->prefix & (PREFIX_LOCK | PREFIX_DATA
+-                                 | PREFIX_REPZ | PREFIX_REPNZ))) {
++                || (s->prefix & (PREFIX_DATA | PREFIX_REPZ | PREFIX_REPNZ))) {
+                 goto illegal_op;
+             }
+             tcg_gen_trunc_tl_i32(s->tmp2_i32, cpu_regs[R_ECX]);
+@@ -3184,8 +3183,7 @@ static void gen_multi0F(DisasContext *s, X86DecodedInsn *decode)
+ 
+         case 0xd1: /* xsetbv */
+             if ((s->cpuid_ext_features & CPUID_EXT_XSAVE) == 0
+-                || (s->prefix & (PREFIX_LOCK | PREFIX_DATA
+-                                 | PREFIX_REPZ | PREFIX_REPNZ))) {
++                || (s->prefix & (PREFIX_DATA | PREFIX_REPZ | PREFIX_REPNZ))) {
+                 goto illegal_op;
+             }
+             gen_svm_check_intercept(s, SVM_EXIT_XSETBV);
+@@ -3352,8 +3350,7 @@ static void gen_multi0F(DisasContext *s, X86DecodedInsn *decode)
+             gen_st_modrm(s, decode, ot);
+             break;
+         case 0xee: /* rdpkru */
+-            if (s->prefix & (PREFIX_LOCK | PREFIX_DATA
+-                             | PREFIX_REPZ | PREFIX_REPNZ)) {
++            if (s->prefix & (PREFIX_DATA | PREFIX_REPZ | PREFIX_REPNZ)) {
+                 goto illegal_op;
+             }
+             tcg_gen_trunc_tl_i32(s->tmp2_i32, cpu_regs[R_ECX]);
+@@ -3361,8 +3358,7 @@ static void gen_multi0F(DisasContext *s, X86DecodedInsn *decode)
+             tcg_gen_extr_i64_tl(cpu_regs[R_EAX], cpu_regs[R_EDX], s->tmp1_i64);
+             break;
+         case 0xef: /* wrpkru */
+-            if (s->prefix & (PREFIX_LOCK | PREFIX_DATA
+-                             | PREFIX_REPZ | PREFIX_REPNZ)) {
++            if (s->prefix & (PREFIX_DATA | PREFIX_REPZ | PREFIX_REPNZ)) {
+                 goto illegal_op;
+             }
+             tcg_gen_concat_tl_i64(s->tmp1_i64, cpu_regs[R_EAX],
+@@ -3438,7 +3434,6 @@ static void gen_multi0F(DisasContext *s, X86DecodedInsn *decode)
+             if (prefixes & PREFIX_REPZ) {
+                 /* bndcl */
+                 if (reg >= 4
+-                    || (prefixes & PREFIX_LOCK)
+                     || s->aflag == MO_16) {
+                     goto illegal_op;
+                 }
+@@ -3446,7 +3441,6 @@ static void gen_multi0F(DisasContext *s, X86DecodedInsn *decode)
+             } else if (prefixes & PREFIX_REPNZ) {
+                 /* bndcu */
+                 if (reg >= 4
+-                    || (prefixes & PREFIX_LOCK)
+                     || s->aflag == MO_16) {
+                     goto illegal_op;
+                 }
+@@ -3460,7 +3454,7 @@ static void gen_multi0F(DisasContext *s, X86DecodedInsn *decode)
+                 }
+                 if (mod == 3) {
+                     int reg2 = (modrm & 7) | REX_B(s);
+-                    if (reg2 >= 4 || (prefixes & PREFIX_LOCK)) {
++                    if (reg2 >= 4) {
+                         goto illegal_op;
+                     }
+                     if (s->flags & HF_MPX_IU_MASK) {
+@@ -3489,7 +3483,6 @@ static void gen_multi0F(DisasContext *s, X86DecodedInsn *decode)
+                 /* bndldx */
+                 AddressParts a = decode->mem;
+                 if (reg >= 4
+-                    || (prefixes & PREFIX_LOCK)
+                     || s->aflag == MO_16
+                     || a.base < -1) {
+                     goto illegal_op;
+@@ -3525,7 +3518,6 @@ static void gen_multi0F(DisasContext *s, X86DecodedInsn *decode)
+             if (mod != 3 && (prefixes & PREFIX_REPZ)) {
+                 /* bndmk */
+                 if (reg >= 4
+-                    || (prefixes & PREFIX_LOCK)
+                     || s->aflag == MO_16) {
+                     goto illegal_op;
+                 }
+@@ -3553,7 +3545,6 @@ static void gen_multi0F(DisasContext *s, X86DecodedInsn *decode)
+             } else if (prefixes & PREFIX_REPNZ) {
+                 /* bndcn */
+                 if (reg >= 4
+-                    || (prefixes & PREFIX_LOCK)
+                     || s->aflag == MO_16) {
+                     goto illegal_op;
+                 }
+@@ -3565,7 +3556,7 @@ static void gen_multi0F(DisasContext *s, X86DecodedInsn *decode)
+                 }
+                 if (mod == 3) {
+                     int reg2 = (modrm & 7) | REX_B(s);
+-                    if (reg2 >= 4 || (prefixes & PREFIX_LOCK)) {
++                    if (reg2 >= 4) {
+                         goto illegal_op;
+                     }
+                     if (s->flags & HF_MPX_IU_MASK) {
+@@ -3592,7 +3583,6 @@ static void gen_multi0F(DisasContext *s, X86DecodedInsn *decode)
+                 /* bndstx */
+                 AddressParts a = decode->mem;
+                 if (reg >= 4
+-                    || (prefixes & PREFIX_LOCK)
+                     || s->aflag == MO_16
+                     || a.base < -1) {
+                     goto illegal_op;
 -- 
 2.45.1
 
