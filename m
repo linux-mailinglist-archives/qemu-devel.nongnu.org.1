@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0864790104D
-	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 10:38:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D775490105C
+	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 10:39:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sFrXx-00014t-KE; Sat, 08 Jun 2024 04:35:33 -0400
+	id 1sFrXy-000168-OT; Sat, 08 Jun 2024 04:35:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sFrXs-0000sT-MM
- for qemu-devel@nongnu.org; Sat, 08 Jun 2024 04:35:29 -0400
+ id 1sFrXw-0000zx-Gr
+ for qemu-devel@nongnu.org; Sat, 08 Jun 2024 04:35:32 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sFrXr-0000AV-8R
- for qemu-devel@nongnu.org; Sat, 08 Jun 2024 04:35:28 -0400
+ id 1sFrXu-0000Co-1i
+ for qemu-devel@nongnu.org; Sat, 08 Jun 2024 04:35:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717835726;
+ s=mimecast20190719; t=1717835729;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Jl7+qZ8Lq0CXcPMg6Cgj2G+ARy4KWfNqMA1f/i5w8wQ=;
- b=i0RTgBWn36t3poDEMJWrxpKBYjfeFAUsAhOZJ8lR8Y8wcIeU5Nu26HubIZQQz0Fl5Lx1Ds
- 2lKhXzlhlMeNfme3o/xJhvZozlnp7c1vJpl96eXOqWAHdcXhUotZX6g9XZ9D2aHipDsdmm
- TxWr0wThIP2IzU61dGVSoQMh00rbqt8=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=rZe7m0sNl8cnSTMcFIO8cbNkZImcjv4/nnfXwPS5Fc8=;
+ b=F+LouFVw9MyWWzRemwkLGQTiqnb2s52+Un5HHZAvV2wCEX87nmBD4Ii9czCV2GQoIFiwye
+ bjvMXQQ49MlqJ6UEDWgp0S/rNpC5deFksNEU6zP4xX5t3yuCKb01DcGIMbn9VX7OrMduiZ
+ mnIN64buPaaDKdAKFQAt1kg443g+BsA=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-404-YamLbM2NNrSUT88Kts6STw-1; Sat, 08 Jun 2024 04:35:24 -0400
-X-MC-Unique: YamLbM2NNrSUT88Kts6STw-1
-Received: by mail-ed1-f72.google.com with SMTP id
- 4fb4d7f45d1cf-57c602f0125so1047075a12.0
- for <qemu-devel@nongnu.org>; Sat, 08 Jun 2024 01:35:24 -0700 (PDT)
+ us-mta-446-UCtxJmbDPKq8WIxtHSS67w-1; Sat, 08 Jun 2024 04:35:26 -0400
+X-MC-Unique: UCtxJmbDPKq8WIxtHSS67w-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-a6ef729b8a7so44967966b.1
+ for <qemu-devel@nongnu.org>; Sat, 08 Jun 2024 01:35:26 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717835722; x=1718440522;
+ d=1e100.net; s=20230601; t=1717835725; x=1718440525;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Jl7+qZ8Lq0CXcPMg6Cgj2G+ARy4KWfNqMA1f/i5w8wQ=;
- b=kOkv+yFllCXKN2KOnNY5nQ8HaLq/c4oOXy/DQgqDJhio+FxE8NRbpeajlS/qk9C1bt
- a64w2N0U8bKip0rRW9og4EeGsxwm1gAshYncvyP5aeg8XVNt4f6A5YEPkxHu/jZPagjG
- +yo4MQNLcG+TBL1dJJhR/Rk8XvXUjF134NOpuqJYMKkKn6H0ylWX3V5iyUozl+KJwH5M
- RAaI6tIb//rY+3nm8Qu0RQ8a8rsMMH7n+0bgIqyQ8zyI7x+gH2bUzLcPWEt72hUeTPFD
- gda9vs7M9Pr8PcFSpjJtHFu0NykuE+UL56AThXkP01EVkvnFpJFaz3+GECJ4CqsywX4A
- JdHg==
-X-Gm-Message-State: AOJu0YymBEMvw1BxMruW/SNpNeFDsyd0p/dG9LlpRf6Z9CBU3wzfsq3j
- C+hIzzFevlmu9qdT1gqKmXq67y6h0sun3ns+H0UA1ISfoSTknPf0h9U6Zo01WgTZBdt/+l1z/6V
- bOLx/zwXJqNptjuxXc5MEjiSu884vLXPcaX+3k/0OOc1Y/R2rJDfeHhDlVZu3JOBh9nuwgWmcNk
- mRhqIuOUTE5p/qF9pn4mELHFWKOa1GmmHehBFP
-X-Received: by 2002:a50:8d1a:0:b0:579:eb77:6d83 with SMTP id
- 4fb4d7f45d1cf-57c4e3f6decmr3638011a12.13.1717835722676; 
- Sat, 08 Jun 2024 01:35:22 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEU4nQuEPGdY2JTi52BVxeezKOm6ky6zrjRks5lo8yie/9IH1VnJaCkbZr3N5sx2wN7zuqZ4w==
-X-Received: by 2002:a50:8d1a:0:b0:579:eb77:6d83 with SMTP id
- 4fb4d7f45d1cf-57c4e3f6decmr3638001a12.13.1717835722335; 
- Sat, 08 Jun 2024 01:35:22 -0700 (PDT)
+ bh=rZe7m0sNl8cnSTMcFIO8cbNkZImcjv4/nnfXwPS5Fc8=;
+ b=FzqcT5r4hMgSkqAU8VuxGACX1j9P1rlHD3XFilcm1u32UiY7FCdGK7tFwrEZIrb7s+
+ thJULM1ZZtzbOJkGj1goPSurIt7a1vxwwq+46tmNLpF3uqg8W+u2rrsKSMqQFFFQliRq
+ AkhjZRtbXuuqQPbdZ1sABacW+h2sfgLZ0DTnTqngwK8EjNevmZ8OHZQxKRIc0jMx9FBe
+ k1/1OJLSMNi99HVLROMQcD1TYIQBA8FnNWkhqQzwOhwLhOW0ULFAabYl8iEGM2p8wPoc
+ pVeJuOQMJOhwcHsWrnNW9OfkP/3/vT7tcWYa7La7cf3aCLZp4pFFuV+fvDU/tfcqy7Wj
+ rouw==
+X-Gm-Message-State: AOJu0Yx5uiGbGrH3jap+q5x5GL2OE7Mg0iVQyORV6DNJAh4auYu7PeTF
+ GO/PJqg7X5fHtz/F1Li7TAoXDnfUHNQJXONIus9W6zZAMqBzcmy4liAY8c9IO8G2P6+Rf5gOWRV
+ MT9zVrMXjHPRP24s1yBrn5pX6Do83FD/Wokev9M+hqfOsYshz70DE3b4HEeapwels9ijAYVba2I
+ YrNDQmA0H9ze23Jsd2lm/aVIcRrY/AS3W97/jJ
+X-Received: by 2002:a50:8d01:0:b0:57c:61a3:54c with SMTP id
+ 4fb4d7f45d1cf-57c61a30661mr1605705a12.0.1717835725120; 
+ Sat, 08 Jun 2024 01:35:25 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF2ZuUZX650Pn7jZKBJkQKcfPQ3FPeDPLEc7r9MB9xc2eYJkLVqjR9uplLvNwr8xAiMv9FfWg==
+X-Received: by 2002:a50:8d01:0:b0:57c:61a3:54c with SMTP id
+ 4fb4d7f45d1cf-57c61a30661mr1605684a12.0.1717835724650; 
+ Sat, 08 Jun 2024 01:35:24 -0700 (PDT)
 Received: from avogadro.local ([151.81.115.112])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-57aae229729sm3960517a12.79.2024.06.08.01.35.20
+ 4fb4d7f45d1cf-57aae201a79sm3949782a12.59.2024.06.08.01.35.22
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 08 Jun 2024 01:35:20 -0700 (PDT)
+ Sat, 08 Jun 2024 01:35:23 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Zhao Liu <zhao1.liu@intel.com>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 24/42] stubs/meson: Fix qemuutil build when --disable-system
-Date: Sat,  8 Jun 2024 10:33:57 +0200
-Message-ID: <20240608083415.2769160-25-pbonzini@redhat.com>
+Cc: Phil Dennis-Jordan <phil@philjordan.eu>,
+ Roman Bolshakov <roman@roolebo.dev>
+Subject: [PULL 25/42] i386/hvf: Adds support for INVTSC cpuid bit
+Date: Sat,  8 Jun 2024 10:33:58 +0200
+Message-ID: <20240608083415.2769160-26-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240608083415.2769160-1-pbonzini@redhat.com>
 References: <20240608083415.2769160-1-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
@@ -103,68 +102,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhao Liu <zhao1.liu@intel.com>
+From: Phil Dennis-Jordan <phil@philjordan.eu>
 
-Compiling without system, user, tools or guest-agent fails with the
-following error message:
+This patch adds the INVTSC bit to the Hypervisor.framework accelerator's
+CPUID bit passthrough allow-list. Previously, specifying +invtsc in the CPU
+configuration would fail with the following warning despite the host CPU
+advertising the feature:
 
-./configure --disable-system --disable-user --disable-tools \
---disable-guest-agent
+qemu-system-x86_64: warning: host doesn't support requested feature:
+CPUID.80000007H:EDX.invtsc [bit 8]
 
-error message:
+x86 macOS itself relies on a fixed rate TSC for its own Mach absolute time
+timestamp mechanism, so there's no reason we can't enable this bit for guests.
+When the feature is enabled, a migration blocker is installed.
 
-/usr/bin/ld: libqemuutil.a.p/util_error-report.c.o: in function `error_printf':
-/media/liuzhao/data/qemu-cook/build/../util/error-report.c:38: undefined reference to `error_vprintf'
-/usr/bin/ld: libqemuutil.a.p/util_error-report.c.o: in function `vreport':
-/media/liuzhao/data/qemu-cook/build/../util/error-report.c:215: undefined reference to `error_vprintf'
-collect2: error: ld returned 1 exit status
-
-This is because tests/bench and tests/unit both need qemuutil, which
-requires error_vprintf stub when system is disabled.
-
-Add error_vprintf stub into stub_ss for all cases other than disabling
-system.
-
-Fixes: 3a15604900c4 ("stubs: include stubs only if needed")
-Reported-by: Daniel P. Berrangé <berrange@redhat.com>
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Message-ID: <20240605152549.1795762-1-zhao1.liu@intel.com>
-[Include error-printf.c unconditionally. - Paolo]
+Signed-off-by: Phil Dennis-Jordan <phil@philjordan.eu>
+Reviewed-by: Roman Bolshakov <roman@roolebo.dev>
+Tested-by: Roman Bolshakov <roman@roolebo.dev>
+Message-ID: <20240605112556.43193-2-phil@philjordan.eu>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- stubs/meson.build | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ target/i386/hvf/hvf.c       | 18 ++++++++++++++++++
+ target/i386/hvf/x86_cpuid.c |  4 ++++
+ 2 files changed, 22 insertions(+)
 
-diff --git a/stubs/meson.build b/stubs/meson.build
-index 3b9d42023cb..f15b48d01f0 100644
---- a/stubs/meson.build
-+++ b/stubs/meson.build
-@@ -3,6 +3,7 @@
- # below, so that it is clear who needs the stubbed functionality.
+diff --git a/target/i386/hvf/hvf.c b/target/i386/hvf/hvf.c
+index e493452acb9..e6e916225bf 100644
+--- a/target/i386/hvf/hvf.c
++++ b/target/i386/hvf/hvf.c
+@@ -49,6 +49,8 @@
+ #include "qemu/osdep.h"
+ #include "qemu/error-report.h"
+ #include "qemu/memalign.h"
++#include "qapi/error.h"
++#include "migration/blocker.h"
  
- stub_ss.add(files('cpu-get-clock.c'))
-+stub_ss.add(files('error-printf.c'))
- stub_ss.add(files('fdset.c'))
- stub_ss.add(files('iothread-lock.c'))
- stub_ss.add(files('is-daemonized.c'))
-@@ -45,17 +46,10 @@ if have_block or have_ga
-   stub_ss.add(files('qmp-quit.c'))
- endif
+ #include "sysemu/hvf.h"
+ #include "sysemu/hvf_int.h"
+@@ -74,6 +76,8 @@
+ #include "qemu/accel.h"
+ #include "target/i386/cpu.h"
  
--if have_ga
--  stub_ss.add(files('error-printf.c'))
--endif
--
- if have_block or have_user
-   stub_ss.add(files('qtest.c'))
-   stub_ss.add(files('vm-stop.c'))
-   stub_ss.add(files('vmstate.c'))
--
--  # more symbols provided by the monitor
--  stub_ss.add(files('error-printf.c'))
- endif
++static Error *invtsc_mig_blocker;
++
+ void vmx_update_tpr(CPUState *cpu)
+ {
+     /* TODO: need integrate APIC handling */
+@@ -221,6 +225,8 @@ int hvf_arch_init_vcpu(CPUState *cpu)
+ {
+     X86CPU *x86cpu = X86_CPU(cpu);
+     CPUX86State *env = &x86cpu->env;
++    Error *local_err = NULL;
++    int r;
+     uint64_t reqCap;
  
- if have_user
+     init_emu();
+@@ -238,6 +244,18 @@ int hvf_arch_init_vcpu(CPUState *cpu)
+         }
+     }
+ 
++    if ((env->features[FEAT_8000_0007_EDX] & CPUID_APM_INVTSC) &&
++        invtsc_mig_blocker == NULL) {
++        error_setg(&invtsc_mig_blocker,
++                   "State blocked by non-migratable CPU device (invtsc flag)");
++        r = migrate_add_blocker(&invtsc_mig_blocker, &local_err);
++        if (r < 0) {
++            error_report_err(local_err);
++            return r;
++        }
++    }
++
++
+     if (hv_vmx_read_capability(HV_VMX_CAP_PINBASED,
+         &hvf_state->hvf_caps->vmx_cap_pinbased)) {
+         abort();
+diff --git a/target/i386/hvf/x86_cpuid.c b/target/i386/hvf/x86_cpuid.c
+index 9380b90496e..e56cd8411ba 100644
+--- a/target/i386/hvf/x86_cpuid.c
++++ b/target/i386/hvf/x86_cpuid.c
+@@ -146,6 +146,10 @@ uint32_t hvf_get_supported_cpuid(uint32_t func, uint32_t idx,
+                 CPUID_EXT3_3DNOWPREFETCH | CPUID_EXT3_OSVW | CPUID_EXT3_XOP |
+                 CPUID_EXT3_FMA4 | CPUID_EXT3_TBM;
+         break;
++    case 0x80000007:
++        edx &= CPUID_APM_INVTSC;
++        eax = ebx = ecx = 0;
++        break;
+     default:
+         return 0;
+     }
 -- 
 2.45.1
 
