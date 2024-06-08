@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57857901071
-	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 10:42:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 12DC3901080
+	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 10:43:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sFreT-0003Vv-K1; Sat, 08 Jun 2024 04:42:17 -0400
+	id 1sFreZ-0003lX-Ab; Sat, 08 Jun 2024 04:42:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sFreR-0003Rz-Hl
- for qemu-devel@nongnu.org; Sat, 08 Jun 2024 04:42:15 -0400
+ id 1sFreX-0003iI-QW
+ for qemu-devel@nongnu.org; Sat, 08 Jun 2024 04:42:21 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sFreP-0001Rw-Vo
- for qemu-devel@nongnu.org; Sat, 08 Jun 2024 04:42:15 -0400
+ id 1sFreW-0001Vi-2U
+ for qemu-devel@nongnu.org; Sat, 08 Jun 2024 04:42:21 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717836133;
+ s=mimecast20190719; t=1717836139;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=rJcH5tshX4nsRNYSBtlqLleRQ0annTdItK+uyAnqpkA=;
- b=SFhKFP5wO+UzBjHMIys3plweRuDFQR1XzUPWry5s0srjBmvvPepKUjK7HxaSlqablQeL1Z
- n0FZIEbqG8dctkFornIrksZDCvX2ZeZPIf/gogOGSsdQDDtCXgCMf7NSHrqahp3XReU++T
- VyJqF6bUkc25N6xpPmBD0Tgg5ySPK2U=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=e54zIwB4ZotLZ75Nya5oaHP5znOGdXyOL0dXOi/s3BY=;
+ b=OAfe4r1d29QgFMGiFzaMpID9OL+ls99iC+kcjt28N76YWbHKi1aBOsaPzzKgbU3BttkHee
+ KRr4886po6JUxB6fHr81zds5/27CEbfPHTpr6g+4L/H0trSAPXNIIBrZCjwXqb1CSYKziL
+ DBO+/81052tqn5OluF62R3fT6sXcY7g=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-628-hd9OSoOaNtetRTmTr5zVGQ-1; Sat, 08 Jun 2024 04:42:11 -0400
-X-MC-Unique: hd9OSoOaNtetRTmTr5zVGQ-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-a6ef8d9d3efso16457466b.2
- for <qemu-devel@nongnu.org>; Sat, 08 Jun 2024 01:42:11 -0700 (PDT)
+ us-mta-618-pJgg61V4PwCiUZPLE0re_w-1; Sat, 08 Jun 2024 04:42:14 -0400
+X-MC-Unique: pJgg61V4PwCiUZPLE0re_w-1
+Received: by mail-ed1-f70.google.com with SMTP id
+ 4fb4d7f45d1cf-57c6979daf7so180439a12.1
+ for <qemu-devel@nongnu.org>; Sat, 08 Jun 2024 01:42:14 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717836129; x=1718440929;
+ d=1e100.net; s=20230601; t=1717836132; x=1718440932;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=rJcH5tshX4nsRNYSBtlqLleRQ0annTdItK+uyAnqpkA=;
- b=XuQfpzGsYQI028tSKQNqbGV/gAHB7WJf27wzDVbOZ3mCJOlIiiL/2+MksWFLYOZhJH
- iP7EtIyYWyNxNboG6Oi25TaOHKeFM5WUKNO+OMZxxHOJqt990+VX5l1UxXwnjlStfhXW
- fwhp4CUNOgL2ZUznkL/f0abjHNGW2M9fhYUMB0EEWFOYP3/QX9ssBHztHI+/vVJFIYSu
- nqBm0ioXlxK9QzAYcYOuLRUCi9GdMxNqWPittF2VzTQKWHBHWj4otx4o04Hb2KPKOQ9J
- TdwfTmMDOd1uCSSNA2gEeBTjEq0PJq9FNYFiZY7740LXYsopYrNLryM3+WqrFQBbTUd3
- u+Nw==
-X-Gm-Message-State: AOJu0YwpMC/mKtKDZrGJDpKG81WB9p63aKVlJT9COlPDuFtwHv0U0XQj
- W9WP4SNaO1ZEZA5+avvfZ/bs+ccductnQt7jVDry35I/s1TILoQj4VjWzx8iB4qkZ34dKVcGhmJ
- oZPqOC06fgmGs0G7yqVG52ii6KiImN9jnMl+tiFcS+gPmiFZgJvC0kM6f5pC7u+Xl4Cfw6zMssh
- F8Mi5Mfx9zdVK6jN4vy9L+UN0b5h+S5BnCqTVO
-X-Received: by 2002:a17:906:b313:b0:a6e:2a67:789f with SMTP id
- a640c23a62f3a-a6e2a677a24mr215074966b.40.1717836129144; 
- Sat, 08 Jun 2024 01:42:09 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG84wibuR6pFAitspADx3et4dNex5WEK3nOdESsZCnSIZWhzYRDua5Xuc+GARVjWEaZowtYZQ==
-X-Received: by 2002:a17:906:b313:b0:a6e:2a67:789f with SMTP id
- a640c23a62f3a-a6e2a677a24mr215073466b.40.1717836128611; 
- Sat, 08 Jun 2024 01:42:08 -0700 (PDT)
+ bh=e54zIwB4ZotLZ75Nya5oaHP5znOGdXyOL0dXOi/s3BY=;
+ b=tfaK6V4Rl4iV+gAgGasN7GqAHAYMP5/XpcslD5/4AyQqc+1Lz0E+ueRYfwgld2r2mp
+ 11HnKfN5Grzn5sXdnMc0OfTyFAtllf4bsJ2cWMPH86Yfxnb9Jjxvcur6W455OQrbYE9v
+ pmH8rZqKgTjB6GVp6JB/smgTMFF+8SVEeTyBh4GJqY/9WCmRdrJLw/ckXuRRs/q9d7CJ
+ 4v1aMleSajKNnCp4E0IyHhiDxmGDOyosS31o8VtTyhkqFrOykDdxA6zRqSqc1Y0je9Uq
+ GpdjYa4MMX644n1bfjZZp2bbU1a8dm8bifvlG+Hs7wThd9RW7tLLKaAri6LCipGze9DN
+ sTGQ==
+X-Gm-Message-State: AOJu0YxflcqbS2cnomy/2ctvbLlAv3w0dBeQ862RlJ/nN2H0pdiWtQUk
+ RSvaXRsss9BKGPiSmk+oa1HxUbk0/BadI0M9i/1m/k6TR+yDyxGxkN72FO+hYslkGcLdt/UYPCF
+ pUPdP4jFR6GMwD3PtcLSta9cCap+7Yl7TJN1NuglUEBCqWRKvE4gBNFb8h143TZWfOrNwyLJGyz
+ c4bBe1pa47O35uCyeV5bayi3qonN8oQxuvvWaw
+X-Received: by 2002:a50:cd56:0:b0:57a:31c6:69cf with SMTP id
+ 4fb4d7f45d1cf-57c50990d57mr2461490a12.28.1717836132329; 
+ Sat, 08 Jun 2024 01:42:12 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFoEa/m+uBJrPOHWW9ztTd/5V4IWDSpV3aUNNXUADrJAueF/31IVE3psJdy5ZIldLel4XBZHw==
+X-Received: by 2002:a50:cd56:0:b0:57a:31c6:69cf with SMTP id
+ 4fb4d7f45d1cf-57c50990d57mr2461481a12.28.1717836131850; 
+ Sat, 08 Jun 2024 01:42:11 -0700 (PDT)
 Received: from avogadro.local ([151.81.115.112])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a6c805d0ba8sm352223766b.85.2024.06.08.01.42.05
+ 4fb4d7f45d1cf-57aae0ffbf8sm3981249a12.39.2024.06.08.01.42.09
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 08 Jun 2024 01:42:05 -0700 (PDT)
+ Sat, 08 Jun 2024 01:42:09 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 15/25] target/i386: pull load/writeback out of gen_shiftd_rm_T1
-Date: Sat,  8 Jun 2024 10:41:03 +0200
-Message-ID: <20240608084113.2770363-16-pbonzini@redhat.com>
+Subject: [PATCH 16/25] target/i386: adapt gen_shift_count for SHLD/SHRD
+Date: Sat,  8 Jun 2024 10:41:04 +0200
+Message-ID: <20240608084113.2770363-17-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240608084113.2770363-1-pbonzini@redhat.com>
 References: <20240608084113.2770363-1-pbonzini@redhat.com>
@@ -101,130 +101,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use gen_ld_modrm/gen_st_modrm, moving them and gen_shift_flags to the
-caller.  This way, gen_shiftd_rm_T1 becomes something that the new
-decoder can call.
+SHLD/SHRD can have 3 register operands - s->T0, s->T1 and either
+1 or CL - and therefore decode->op[2] is taken by the low part
+of the register being shifted.  Pass X86_OP_* to gen_shift_count
+from its current callers and hardcode cpu_regs[R_ECX] as the
+shift count.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/tcg/translate.c | 55 ++++++++++---------------------------
- 1 file changed, 14 insertions(+), 41 deletions(-)
+ target/i386/tcg/emit.c.inc | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-index c3843092350..416db2f3b0e 100644
---- a/target/i386/tcg/translate.c
-+++ b/target/i386/tcg/translate.c
-@@ -535,15 +535,6 @@ static inline void gen_op_st_v(DisasContext *s, int idx, TCGv t0, TCGv a0)
-     tcg_gen_qemu_st_tl(t0, a0, s->mem_index, idx | MO_LE);
+diff --git a/target/i386/tcg/emit.c.inc b/target/i386/tcg/emit.c.inc
+index 41398e5130c..2e73b41cd3e 100644
+--- a/target/i386/tcg/emit.c.inc
++++ b/target/i386/tcg/emit.c.inc
+@@ -2998,16 +2998,16 @@ static void gen_PUSHF(DisasContext *s, X86DecodedInsn *decode)
  }
  
--static inline void gen_op_st_rm_T0_A0(DisasContext *s, int idx, int d)
--{
--    if (d == OR_TMP0) {
--        gen_op_st_v(s, idx, s->T0, s->A0);
--    } else {
--        gen_op_mov_reg_v(s, idx, d, s->T0);
--    }
--}
--
- static void gen_update_eip_next(DisasContext *s)
+ static MemOp gen_shift_count(DisasContext *s, X86DecodedInsn *decode,
+-                             bool *can_be_zero, TCGv *count)
++                             bool *can_be_zero, TCGv *count, int unit)
  {
-     assert(s->pc_save != -1);
-@@ -1481,19 +1472,12 @@ static void gen_shift_flags(DisasContext *s, MemOp ot, TCGv result,
- }
+     MemOp ot = decode->op[0].ot;
+     int mask = (ot <= MO_32 ? 0x1f : 0x3f);
  
- /* XXX: add faster immediate case */
--static void gen_shiftd_rm_T1(DisasContext *s, MemOp ot, int op1,
-+static TCGv gen_shiftd_rm_T1(DisasContext *s, MemOp ot,
-                              bool is_right, TCGv count_in)
- {
-     target_ulong mask = (ot == MO_64 ? 63 : 31);
+     *can_be_zero = false;
+-    switch (decode->op[2].unit) {
++    switch (unit) {
+     case X86_OP_INT:
+         *count = tcg_temp_new();
+-        tcg_gen_andi_tl(*count, s->T1, mask);
++        tcg_gen_andi_tl(*count, cpu_regs[R_ECX], mask);
+         *can_be_zero = true;
+         break;
+ 
+@@ -3192,7 +3192,7 @@ static void gen_RCL(DisasContext *s, X86DecodedInsn *decode)
+     bool have_1bit_cin, can_be_zero;
      TCGv count;
+     TCGLabel *zero_label = NULL;
+-    MemOp ot = gen_shift_count(s, decode, &can_be_zero, &count);
++    MemOp ot = gen_shift_count(s, decode, &can_be_zero, &count, decode->op[2].unit);
+     TCGv low, high, low_count;
  
--    /* load */
--    if (op1 == OR_TMP0) {
--        gen_op_ld_v(s, ot, s->T0, s->A0);
--    } else {
--        gen_op_mov_v_reg(s, ot, s->T0, op1);
--    }
--
-     count = tcg_temp_new();
-     tcg_gen_andi_tl(count, count_in, mask);
+     if (!count) {
+@@ -3244,7 +3244,7 @@ static void gen_RCR(DisasContext *s, X86DecodedInsn *decode)
+     bool have_1bit_cin, can_be_zero;
+     TCGv count;
+     TCGLabel *zero_label = NULL;
+-    MemOp ot = gen_shift_count(s, decode, &can_be_zero, &count);
++    MemOp ot = gen_shift_count(s, decode, &can_be_zero, &count, decode->op[2].unit);
+     TCGv low, high, high_count;
  
-@@ -1558,10 +1542,7 @@ static void gen_shiftd_rm_T1(DisasContext *s, MemOp ot, int op1,
-         break;
-     }
+     if (!count) {
+@@ -3422,7 +3422,7 @@ static void gen_ROL(DisasContext *s, X86DecodedInsn *decode)
+ {
+     bool can_be_zero;
+     TCGv count;
+-    MemOp ot = gen_shift_count(s, decode, &can_be_zero, &count);
++    MemOp ot = gen_shift_count(s, decode, &can_be_zero, &count, decode->op[2].unit);
+     TCGv_i32 temp32, count32;
+     TCGv old = tcg_temp_new();
  
--    /* store */
--    gen_op_st_rm_T0_A0(s, ot, op1);
--
--    gen_shift_flags(s, ot, s->T0, s->tmp0, count, is_right);
-+    return count;
- }
+@@ -3450,7 +3450,7 @@ static void gen_ROR(DisasContext *s, X86DecodedInsn *decode)
+ {
+     bool can_be_zero;
+     TCGv count;
+-    MemOp ot = gen_shift_count(s, decode, &can_be_zero, &count);
++    MemOp ot = gen_shift_count(s, decode, &can_be_zero, &count, decode->op[2].unit);
+     TCGv_i32 temp32, count32;
+     TCGv old = tcg_temp_new();
  
- #define X86_MAX_INSN_LENGTH 15
-@@ -3071,9 +3052,9 @@ static void disas_insn_old(DisasContext *s, CPUState *cpu, int b)
-     CPUX86State *env = cpu_env(cpu);
-     int prefixes = s->prefix;
-     MemOp dflag = s->dflag;
--    int shift;
-+    TCGv shift;
-     MemOp ot;
--    int modrm, reg, rm, mod, op, opreg;
-+    int modrm, reg, rm, mod, op;
+@@ -3562,7 +3562,7 @@ static void gen_SAR(DisasContext *s, X86DecodedInsn *decode)
+ {
+     bool can_be_zero;
+     TCGv count;
+-    MemOp ot = gen_shift_count(s, decode, &can_be_zero, &count);
++    MemOp ot = gen_shift_count(s, decode, &can_be_zero, &count, decode->op[2].unit);
  
-     /* now check op code */
-     switch (b) {
-@@ -3239,39 +3220,31 @@ static void disas_insn_old(DisasContext *s, CPUState *cpu, int b)
-         /* shifts */
-     case 0x1a4: /* shld imm */
-         op = 0;
--        shift = 1;
-+        shift = NULL;
-         goto do_shiftd;
-     case 0x1a5: /* shld cl */
-         op = 0;
--        shift = 0;
-+        shift = cpu_regs[R_ECX];
-         goto do_shiftd;
-     case 0x1ac: /* shrd imm */
-         op = 1;
--        shift = 1;
-+        shift = NULL;
-         goto do_shiftd;
-     case 0x1ad: /* shrd cl */
-         op = 1;
--        shift = 0;
-+        shift = cpu_regs[R_ECX];
-     do_shiftd:
-         ot = dflag;
-         modrm = x86_ldub_code(env, s);
--        mod = (modrm >> 6) & 3;
--        rm = (modrm & 7) | REX_B(s);
-         reg = ((modrm >> 3) & 7) | REX_R(s);
--        if (mod != 3) {
--            gen_lea_modrm(env, s, modrm);
--            opreg = OR_TMP0;
--        } else {
--            opreg = rm;
-+        gen_ld_modrm(env, s, modrm, ot);
-+        if (!shift) {
-+            shift = tcg_constant_tl(x86_ldub_code(env, s));
-         }
-         gen_op_mov_v_reg(s, ot, s->T1, reg);
--
--        if (shift) {
--            TCGv imm = tcg_constant_tl(x86_ldub_code(env, s));
--            gen_shiftd_rm_T1(s, ot, opreg, op, imm);
--        } else {
--            gen_shiftd_rm_T1(s, ot, opreg, op, cpu_regs[R_ECX]);
--        }
-+        shift = gen_shiftd_rm_T1(s, ot, op, shift);
-+        gen_st_modrm(env, s, modrm, ot);
-+        gen_shift_flags(s, ot, s->T0, s->tmp0, shift, op);
-         break;
-     case 0x1bc: /* bsf / tzcnt */
-     case 0x1bd: /* bsr / lzcnt */
+     if (!count) {
+         return;
+@@ -3690,7 +3690,7 @@ static void gen_SHL(DisasContext *s, X86DecodedInsn *decode)
+ {
+     bool can_be_zero;
+     TCGv count;
+-    MemOp ot = gen_shift_count(s, decode, &can_be_zero, &count);
++    MemOp ot = gen_shift_count(s, decode, &can_be_zero, &count, decode->op[2].unit);
+ 
+     if (!count) {
+         return;
+@@ -3722,7 +3722,7 @@ static void gen_SHR(DisasContext *s, X86DecodedInsn *decode)
+ {
+     bool can_be_zero;
+     TCGv count;
+-    MemOp ot = gen_shift_count(s, decode, &can_be_zero, &count);
++    MemOp ot = gen_shift_count(s, decode, &can_be_zero, &count, decode->op[2].unit);
+ 
+     if (!count) {
+         return;
 -- 
 2.45.1
 
