@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABD1E901070
-	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 10:42:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF76F901075
+	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 10:43:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sFreg-00042X-7q; Sat, 08 Jun 2024 04:42:30 -0400
+	id 1sFreg-00045j-Sz; Sat, 08 Jun 2024 04:42:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sFred-0003vL-Oa
- for qemu-devel@nongnu.org; Sat, 08 Jun 2024 04:42:27 -0400
+ id 1sFref-00040O-6J
+ for qemu-devel@nongnu.org; Sat, 08 Jun 2024 04:42:29 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sFreZ-0001Xo-RV
- for qemu-devel@nongnu.org; Sat, 08 Jun 2024 04:42:25 -0400
+ id 1sFred-0001Y7-Gl
+ for qemu-devel@nongnu.org; Sat, 08 Jun 2024 04:42:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717836143;
+ s=mimecast20190719; t=1717836147;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=X99Zvon7rz5LxH+M+wyJV2JT9phIGzq0GVfDGJaCxAQ=;
- b=Q3194lInO9oOytAv/bG7qUPzeNfCo0nJK4thyD2BjuOARgNkwOb5d9dYXJX97SeAqRZVzx
- 2YNJpGhUX7rYOojdpytGrKjhZNqKC+iHHaAQU2IMnZipM4h8MhDLUcRwdB4knFBG2w6cIt
- ZmXLZJ5+iwPSQP/7Xrmp/5cQWWi5yy0=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=jYrEQWcxDBQQFmBcc6ABlYJsEPy9UqCkZtpsfzq2g7k=;
+ b=Yppwdqq3YG9RvfR0wIfs9D+2/nDtXH4Vzj6NHCdawshFEEcI6odIPOw+VWIerh/P02NXkn
+ h3+J/rEBLEA5GH15jH43YIKcyaVFwHQxK//oCflwFWkH6n9pboH7vS2H8N7XDNCONj6AHn
+ 5FCgOuAn0nz6pCOYrCA+dsmbmPU+jpk=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-610-jMCKSKB6Mj2YyyyhjP4Ebw-1; Sat, 08 Jun 2024 04:42:21 -0400
-X-MC-Unique: jMCKSKB6Mj2YyyyhjP4Ebw-1
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-a6efe561b04so24448366b.3
- for <qemu-devel@nongnu.org>; Sat, 08 Jun 2024 01:42:21 -0700 (PDT)
+ us-mta-114-Y2g9pHlCOtmnxatd-RnypA-1; Sat, 08 Jun 2024 04:42:24 -0400
+X-MC-Unique: Y2g9pHlCOtmnxatd-RnypA-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-a6f0ed4c213so4378466b.3
+ for <qemu-devel@nongnu.org>; Sat, 08 Jun 2024 01:42:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717836139; x=1718440939;
+ d=1e100.net; s=20230601; t=1717836143; x=1718440943;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=X99Zvon7rz5LxH+M+wyJV2JT9phIGzq0GVfDGJaCxAQ=;
- b=CU75hT3JD5NitApgl0wf4wE0cBKiTzo/r115TPeQyjWc+FfsvXjtbmYpuZ2HdlDewj
- XkHoGxuTiTksBE1l3c3BAsQjdt5B/+/YVIAnYaKdo4tb3ua3PUSJzcnnkT2OrXOdYkBf
- ld8Y6uCGlfyjvchAsg0mWQpjHBJF5SsjHKiCh5PHt/ml9ggnZjv6sI8aLUjDKUPiY0SN
- tgFAqOb2ps26OiIWAjoSOKNmO3UBs2K5e2coZIaL5GtznGdvBNRWzB45GqKgq7rm/Aw6
- HVXbf6TTTWgvW+8ZvaxFgVV8CtBTaNi7SUvqkvOxKuNdgcO8DtiGffonsmNVIWpHOGH+
- T0Dg==
-X-Gm-Message-State: AOJu0YzkbMGKfZV0IEBhu1j/ZfCkU5iHP86cf/m2AvDU8AzqvvUQkBno
- BNw5bldc1ZElEImA4WMiOJ/oHEpoaLmmiIg0sTLNJtbblc5LezBiBe9/J4KF8Q2eH1IoOH3jq05
- PMZ5kICEHLbI+cHN3v7fGl5GCsUXcqynj1+HGkY3DD1HeIjJN/FYsuNkoSVSF48lzNju3+q9yBK
- R4/JRBX5snDqv7aWjqL3lOPPtMno3Od/HaxkD7
-X-Received: by 2002:a17:907:1006:b0:a6e:f52a:c34f with SMTP id
- a640c23a62f3a-a6ef52ac3fbmr181944366b.18.1717836139068; 
- Sat, 08 Jun 2024 01:42:19 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGcHin+7WqEcc/9cbTaCaCCUP4hiN0rNNa1Zdx310nIUnaA3PuflJ8f52OeIfbwzGl2s44yKQ==
-X-Received: by 2002:a17:907:1006:b0:a6e:f52a:c34f with SMTP id
- a640c23a62f3a-a6ef52ac3fbmr181943166b.18.1717836138448; 
- Sat, 08 Jun 2024 01:42:18 -0700 (PDT)
+ bh=jYrEQWcxDBQQFmBcc6ABlYJsEPy9UqCkZtpsfzq2g7k=;
+ b=q9EMEdq9l0dw8CDtumoPFtwm2vrXILImcrGnDlZRFNYE2NuQgWVM8iNPrmgSSL1VIr
+ iu9keBr7Af7einzSix9KoNUe+tjFP1InFeqMYbFFVC34Qj9PZbYAQ5VRVvU2S5wKTFKW
+ NyCEhew6D3Ilwe5KsAU08vi0XOabSdm32WEzbgkJB7Y6A2DJtF3lU3EzmB3UpbEq0bTu
+ mdTlPKClL7TGnGKm0meY27nesPC5+5eTAWO3uLul0QPPL4m6x++ZU4oRf3DnfyYKn2sv
+ D+xpdj9QfF/TOYdleV0TYikx2J5jr6wNAHjWig3c02tqgBkA+pCcSaFbzHK50M0aUszf
+ m46Q==
+X-Gm-Message-State: AOJu0Yx1/7E6jXfR5rZMB1ZdXWvna36WjkFE40rznEYRZoBlPmy49+LV
+ QaT5YxVZ/bxnqSjKstWtVpVW3GVSr/qAf7ESfZSzBNIerX8rnaVoY4pcfIdLy3Qk+gJ5rkmiC2w
+ 57CAEKAcuajsBMtCfAC2DN3iDJCz7/1iBeHUrfznJNKyRkls10fahAL3WjzZ4UgrikSDnxws74Y
+ Bc4BV+0ZdZrNff/EEkN1zSeeUkHPNwYeuNNZTM
+X-Received: by 2002:a17:906:4914:b0:a62:c238:b229 with SMTP id
+ a640c23a62f3a-a6cdb9d57c7mr383519366b.74.1717836142683; 
+ Sat, 08 Jun 2024 01:42:22 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG/VDKWBzglee1m31xUtXloBLGDKmFs0mY/XTPCtZ72wbUsby1MpQ3SY7ezvuYek6GQTl/ypQ==
+X-Received: by 2002:a17:906:4914:b0:a62:c238:b229 with SMTP id
+ a640c23a62f3a-a6cdb9d57c7mr383518066b.74.1717836142077; 
+ Sat, 08 Jun 2024 01:42:22 -0700 (PDT)
 Received: from avogadro.local ([151.81.115.112])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a6ef53f789esm145589166b.165.2024.06.08.01.42.16
+ a640c23a62f3a-a6efae62543sm92067466b.187.2024.06.08.01.42.19
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 08 Jun 2024 01:42:16 -0700 (PDT)
+ Sat, 08 Jun 2024 01:42:19 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 18/25] target/i386: convert LZCNT/TZCNT/BSF/BSR/POPCNT to new
- decoder
-Date: Sat,  8 Jun 2024 10:41:06 +0200
-Message-ID: <20240608084113.2770363-19-pbonzini@redhat.com>
+Subject: [PATCH 19/25] target/i386: convert XADD to new decoder
+Date: Sat,  8 Jun 2024 10:41:07 +0200
+Message-ID: <20240608084113.2770363-20-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240608084113.2770363-1-pbonzini@redhat.com>
 References: <20240608084113.2770363-1-pbonzini@redhat.com>
@@ -104,324 +103,120 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/tcg/decode-new.h     |  1 +
- target/i386/tcg/translate.c      | 74 ----------------------------
- target/i386/tcg/decode-new.c.inc | 51 +++++++++++++++++++-
- target/i386/tcg/emit.c.inc       | 82 ++++++++++++++++++++++++++++++++
- 4 files changed, 132 insertions(+), 76 deletions(-)
+ target/i386/tcg/translate.c      | 35 --------------------------------
+ target/i386/tcg/decode-new.c.inc |  3 ++-
+ target/i386/tcg/emit.c.inc       | 24 ++++++++++++++++++++++
+ 3 files changed, 26 insertions(+), 36 deletions(-)
 
-diff --git a/target/i386/tcg/decode-new.h b/target/i386/tcg/decode-new.h
-index f781bb5bbec..13be23145a8 100644
---- a/target/i386/tcg/decode-new.h
-+++ b/target/i386/tcg/decode-new.h
-@@ -119,6 +119,7 @@ typedef enum X86CPUIDFeature {
-     X86_FEAT_FXSR,
-     X86_FEAT_MOVBE,
-     X86_FEAT_PCLMULQDQ,
-+    X86_FEAT_POPCNT,
-     X86_FEAT_SHA_NI,
-     X86_FEAT_SSE,
-     X86_FEAT_SSE2,
 diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-index 1e9036eb6e3..a9cf1332b43 100644
+index a9cf1332b43..7a63c927c1f 100644
 --- a/target/i386/tcg/translate.c
 +++ b/target/i386/tcg/translate.c
-@@ -818,11 +818,6 @@ static void gen_movs(DisasContext *s, MemOp ot)
+@@ -818,12 +818,6 @@ static void gen_movs(DisasContext *s, MemOp ot)
      gen_op_add_reg(s, s->aflag, R_EDI, dshift);
  }
  
--static void gen_op_update1_cc(DisasContext *s)
+-static void gen_op_update2_cc(DisasContext *s)
 -{
+-    tcg_gen_mov_tl(cpu_cc_src, s->T1);
 -    tcg_gen_mov_tl(cpu_cc_dst, s->T0);
 -}
 -
- static void gen_op_update2_cc(DisasContext *s)
+ /* compute all eflags to reg */
+ static void gen_mov_eflags(DisasContext *s, TCGv reg)
  {
-     tcg_gen_mov_tl(cpu_cc_src, s->T1);
-@@ -3167,56 +3162,6 @@ static void disas_insn_old(DisasContext *s, CPUState *cpu, int b)
-         }
-         break;
- 
--    case 0x1bc: /* bsf / tzcnt */
--    case 0x1bd: /* bsr / lzcnt */
--        ot = dflag;
+@@ -3006,35 +3000,6 @@ static void disas_insn_old(DisasContext *s, CPUState *cpu, int b)
+     switch (b) {
+         /**************************/
+         /* arith & logic */
+-    case 0x1c0:
+-    case 0x1c1: /* xadd Ev, Gv */
+-        ot = mo_b_d(b, dflag);
 -        modrm = x86_ldub_code(env, s);
 -        reg = ((modrm >> 3) & 7) | REX_R(s);
--        gen_ld_modrm(env, s, modrm, ot);
--        gen_extu(ot, s->T0);
--
--        /* Note that lzcnt and tzcnt are in different extensions.  */
--        if ((prefixes & PREFIX_REPZ)
--            && (b & 1
--                ? s->cpuid_ext3_features & CPUID_EXT3_ABM
--                : s->cpuid_7_0_ebx_features & CPUID_7_0_EBX_BMI1)) {
--            int size = 8 << ot;
--            /* For lzcnt/tzcnt, C bit is defined related to the input. */
--            tcg_gen_mov_tl(cpu_cc_src, s->T0);
--            if (b & 1) {
--                /* For lzcnt, reduce the target_ulong result by the
--                   number of zeros that we expect to find at the top.  */
--                tcg_gen_clzi_tl(s->T0, s->T0, TARGET_LONG_BITS);
--                tcg_gen_subi_tl(s->T0, s->T0, TARGET_LONG_BITS - size);
--            } else {
--                /* For tzcnt, a zero input must return the operand size.  */
--                tcg_gen_ctzi_tl(s->T0, s->T0, size);
--            }
--            /* For lzcnt/tzcnt, Z bit is defined related to the result.  */
--            gen_op_update1_cc(s);
--            set_cc_op(s, CC_OP_BMILGB + ot);
+-        mod = (modrm >> 6) & 3;
+-        gen_op_mov_v_reg(s, ot, s->T0, reg);
+-        if (mod == 3) {
+-            rm = (modrm & 7) | REX_B(s);
+-            gen_op_mov_v_reg(s, ot, s->T1, rm);
+-            tcg_gen_add_tl(s->T0, s->T0, s->T1);
+-            gen_op_mov_reg_v(s, ot, reg, s->T1);
+-            gen_op_mov_reg_v(s, ot, rm, s->T0);
 -        } else {
--            /* For bsr/bsf, only the Z bit is defined and it is related
--               to the input and not the result.  */
--            tcg_gen_mov_tl(cpu_cc_dst, s->T0);
--            set_cc_op(s, CC_OP_LOGICB + ot);
--
--            /* ??? The manual says that the output is undefined when the
--               input is zero, but real hardware leaves it unchanged, and
--               real programs appear to depend on that.  Accomplish this
--               by passing the output as the value to return upon zero.  */
--            if (b & 1) {
--                /* For bsr, return the bit index of the first 1 bit,
--                   not the count of leading zeros.  */
--                tcg_gen_xori_tl(s->T1, cpu_regs[reg], TARGET_LONG_BITS - 1);
--                tcg_gen_clz_tl(s->T0, s->T0, s->T1);
--                tcg_gen_xori_tl(s->T0, s->T0, TARGET_LONG_BITS - 1);
+-            gen_lea_modrm(env, s, modrm);
+-            if (s->prefix & PREFIX_LOCK) {
+-                tcg_gen_atomic_fetch_add_tl(s->T1, s->A0, s->T0,
+-                                            s->mem_index, ot | MO_LE);
+-                tcg_gen_add_tl(s->T0, s->T0, s->T1);
 -            } else {
--                tcg_gen_ctz_tl(s->T0, s->T0, cpu_regs[reg]);
+-                gen_op_ld_v(s, ot, s->T1, s->A0);
+-                tcg_gen_add_tl(s->T0, s->T0, s->T1);
+-                gen_op_st_v(s, ot, s->T0, s->A0);
 -            }
+-            gen_op_mov_reg_v(s, ot, reg, s->T1);
 -        }
--        gen_op_mov_reg_v(s, ot, reg, s->T0);
+-        gen_op_update2_cc(s);
+-        set_cc_op(s, CC_OP_ADDB + ot);
 -        break;
-     case 0x100:
-         modrm = x86_ldub_code(env, s);
-         mod = (modrm >> 6) & 3;
-@@ -3811,25 +3756,6 @@ static void disas_insn_old(DisasContext *s, CPUState *cpu, int b)
-         }
-         gen_nop_modrm(env, s, modrm);
-         break;
--    case 0x1b8: /* SSE4.2 popcnt */
--        if ((prefixes & (PREFIX_REPZ | PREFIX_LOCK | PREFIX_REPNZ)) !=
--             PREFIX_REPZ)
--            goto illegal_op;
--        if (!(s->cpuid_ext_features & CPUID_EXT_POPCNT))
--            goto illegal_op;
--
--        modrm = x86_ldub_code(env, s);
--        reg = ((modrm >> 3) & 7) | REX_R(s);
--
--        ot = dflag;
--        gen_ld_modrm(env, s, modrm, ot);
--        gen_extu(ot, s->T0);
--        tcg_gen_mov_tl(cpu_cc_src, s->T0);
--        tcg_gen_ctpop_tl(s->T0, s->T0);
--        gen_op_mov_reg_v(s, ot, reg, s->T0);
--
--        set_cc_op(s, CC_OP_POPCNT);
--        break;
-     default:
-         g_assert_not_reached();
-     }
+     case 0x1b0:
+     case 0x1b1: /* cmpxchg Ev, Gv */
+         {
 diff --git a/target/i386/tcg/decode-new.c.inc b/target/i386/tcg/decode-new.c.inc
-index bd9e7cd4df9..64ec731bf4a 100644
+index 64ec731bf4a..11ecd1c6c1d 100644
 --- a/target/i386/tcg/decode-new.c.inc
 +++ b/target/i386/tcg/decode-new.c.inc
-@@ -469,6 +469,50 @@ static void decode_0F7F(DisasContext *s, CPUX86State *env, X86OpEntry *entry, ui
-     *entry = *decode_by_prefix(s, opcodes_0F7F);
- }
+@@ -1188,6 +1188,8 @@ static const X86OpEntry opcodes_0F[256] = {
+     [0xb6] = X86_OP_ENTRY3(MOV,    G,v, E,b, None, None, zextT0), /* MOVZX */
+     [0xb7] = X86_OP_ENTRY3(MOV,    G,v, E,w, None, None, zextT0), /* MOVZX */
  
-+static void decode_0FB8(DisasContext *s, CPUX86State *env, X86OpEntry *entry, uint8_t *b)
-+{
-+    static const X86OpEntry popcnt =
-+        X86_OP_ENTRYwr(POPCNT,    G,v, E,v,  cpuid(POPCNT) zextT0);
-+
-+    if (s->prefix & PREFIX_REPZ) {
-+        *entry = popcnt;
-+    } else {
-+        memset(entry, 0, sizeof(*entry));
-+    }
-+}
-+
-+static void decode_0FBC(DisasContext *s, CPUX86State *env, X86OpEntry *entry, uint8_t *b)
-+{
-+    /* For BSF, pass 2op as the third operand so that we can use zextT0 */
-+    static const X86OpEntry opcodes_0FBC[4] = {
-+        X86_OP_ENTRY3(BSF,    G,v, E,v, 2op,v, zextT0),
-+        X86_OP_ENTRY3(BSF,    G,v, E,v, 2op,v, zextT0), /* 0x66 */
-+        X86_OP_ENTRYwr(TZCNT, G,v, E,v,        zextT0), /* 0xf3 */
-+        X86_OP_ENTRY3(BSF,    G,v, E,v, 2op,v, zextT0), /* 0xf2 */
-+    };
-+    if (!(s->cpuid_ext3_features & CPUID_EXT3_ABM)) {
-+        *entry = opcodes_0FBC[0];
-+    } else {
-+        *entry = *decode_by_prefix(s, opcodes_0FBC);
-+    }
-+}
-+
-+static void decode_0FBD(DisasContext *s, CPUX86State *env, X86OpEntry *entry, uint8_t *b)
-+{
-+    /* For BSR, pass 2op as the third operand so that we can use zextT0 */
-+    static const X86OpEntry opcodes_0FBD[4] = {
-+        X86_OP_ENTRY3(BSR,    G,v, E,v, 2op,v, zextT0),
-+        X86_OP_ENTRY3(BSR,    G,v, E,v, 2op,v, zextT0), /* 0x66 */
-+        X86_OP_ENTRYwr(LZCNT, G,v, E,v,        zextT0), /* 0xf3 */
-+        X86_OP_ENTRY3(BSR,    G,v, E,v, 2op,v, zextT0), /* 0xf2 */
-+    };
-+    if (!(s->cpuid_7_0_ebx_features & CPUID_7_0_EBX_BMI1)) {
-+        *entry = opcodes_0FBD[0];
-+    } else {
-+        *entry = *decode_by_prefix(s, opcodes_0FBD);
-+    }
-+}
-+
- static void decode_0FD6(DisasContext *s, CPUX86State *env, X86OpEntry *entry, uint8_t *b)
- {
-     static const X86OpEntry movq[4] = {
-@@ -1273,10 +1317,13 @@ static const X86OpEntry opcodes_0F[256] = {
-      */
-     [0xaf] = X86_OP_ENTRY3(IMUL3,  G,v, E,v, 2op,v, sextT0),
- 
-+    [0xb8] = X86_OP_GROUP0(0FB8),
-     /* decoded as modrm, which is visible as a difference between page fault and #UD */
-     [0xb9] = X86_OP_ENTRYr(UD,     nop,v),                        /* UD1 */
-     [0xba] = X86_OP_GROUP2(group8, E,v, I,b),
-     [0xbb] = X86_OP_ENTRY2(BTC,    E,v, G,v,             btEvGv),
-+    [0xbc] = X86_OP_GROUP0(0FBC),
-+    [0xbd] = X86_OP_GROUP0(0FBD),
-     [0xbe] = X86_OP_ENTRY3(MOV,    G,v, E,b, None, None, sextT0), /* MOVSX */
-     [0xbf] = X86_OP_ENTRY3(MOV,    G,v, E,w, None, None, sextT0), /* MOVSX */
- 
-@@ -2174,6 +2221,8 @@ static bool has_cpuid_feature(DisasContext *s, X86CPUIDFeature cpuid)
-         return (s->cpuid_ext_features & CPUID_EXT_MOVBE);
-     case X86_FEAT_PCLMULQDQ:
-         return (s->cpuid_ext_features & CPUID_EXT_PCLMULQDQ);
-+    case X86_FEAT_POPCNT:
-+        return (s->cpuid_ext_features & CPUID_EXT_POPCNT);
-     case X86_FEAT_SSE:
-         return (s->cpuid_features & CPUID_SSE);
-     case X86_FEAT_SSE2:
-@@ -2562,8 +2611,6 @@ static void disas_insn(DisasContext *s, CPUState *cpu)
++    [0xc0] = X86_OP_ENTRY2(XADD,       E,b, G,b,            lock),
++    [0xc1] = X86_OP_ENTRY2(XADD,       E,v, G,v,            lock),
+     [0xc2] = X86_OP_ENTRY4(VCMP,       V,x, H,x, W,x,       vex2_rep3 p_00_66_f3_f2),
+     [0xc3] = X86_OP_ENTRY3(MOV,        EM,y,G,y, None,None, cpuid(SSE2)), /* MOVNTI */
+     [0xc4] = X86_OP_ENTRY4(PINSRW,     V,dq,H,dq,E,w,       vex5 mmx p_00_66),
+@@ -2611,7 +2613,6 @@ static void disas_insn(DisasContext *s, CPUState *cpu)
              case 0x00 ... 0x01: /* mostly privileged instructions */
              case 0x1a ... 0x1b: /* MPX */
              case 0xb0 ... 0xb1: /* cmpxchg */
--            case 0xb8:          /* POPCNT */
--            case 0xbc ... 0xbd: /* LZCNT/TZCNT */
-             case 0xc0 ... 0xc1: /* xadd */
+-            case 0xc0 ... 0xc1: /* xadd */
              case 0xc7:          /* grp9 */
                  disas_insn_old(s, cpu, b + 0x100);
+                 return;
 diff --git a/target/i386/tcg/emit.c.inc b/target/i386/tcg/emit.c.inc
-index aabc86669c2..2fbf2a5ce8c 100644
+index 2fbf2a5ce8c..42e41a7a87c 100644
 --- a/target/i386/tcg/emit.c.inc
 +++ b/target/i386/tcg/emit.c.inc
-@@ -1345,6 +1345,47 @@ static void gen_BOUND(DisasContext *s, X86DecodedInsn *decode)
-     }
+@@ -4492,6 +4492,30 @@ static void gen_WRxxBASE(DisasContext *s, X86DecodedInsn *decode)
+     tcg_gen_mov_tl(base, s->T0);
  }
  
-+/* Non-standard convention - on entry T0 is zero-extended input, T1 is the output.  */
-+static void gen_BSF(DisasContext *s, X86DecodedInsn *decode)
++static void gen_XADD(DisasContext *s, X86DecodedInsn *decode)
 +{
-+    MemOp ot = decode->op[0].ot;
++    MemOp ot = decode->op[1].ot;
 +
-+    /* Only the Z bit is defined and it is related to the input.  */
 +    decode->cc_dst = tcg_temp_new();
-+    decode->cc_op = CC_OP_LOGICB + ot;
-+    tcg_gen_mov_tl(decode->cc_dst, s->T0);
++    decode->cc_src = s->T1;
++    decode->cc_op = CC_OP_ADDB + ot;
 +
-+    /*
-+     * The manual says that the output is undefined when the
-+     * input is zero, but real hardware leaves it unchanged, and
-+     * real programs appear to depend on that.  Accomplish this
-+     * by passing the output as the value to return upon zero.
-+     */
-+    tcg_gen_ctz_tl(s->T0, s->T0, s->T1);
++    if (s->prefix & PREFIX_LOCK) {
++        tcg_gen_atomic_fetch_add_tl(s->T0, s->A0, s->T1, s->mem_index, ot | MO_LE);
++        tcg_gen_add_tl(decode->cc_dst, s->T0, s->T1);
++    } else {
++        tcg_gen_add_tl(decode->cc_dst, s->T0, s->T1);
++        /*
++         * NOTE: writing memory first is important for MMU exceptions,
++         * but "new result" wins for XADD AX, AX.
++         */
++        gen_writeback(s, decode, 0, decode->cc_dst);
++    }
++    if (decode->op[0].has_ea || decode->op[2].n != decode->op[0].n) {
++        gen_writeback(s, decode, 2, s->T0);
++    }
 +}
 +
-+/* Non-standard convention - on entry T0 is zero-extended input, T1 is the output.  */
-+static void gen_BSR(DisasContext *s, X86DecodedInsn *decode)
-+{
-+    MemOp ot = decode->op[0].ot;
-+
-+    /* Only the Z bit is defined and it is related to the input.  */
-+    decode->cc_dst = tcg_temp_new();
-+    decode->cc_op = CC_OP_LOGICB + ot;
-+    tcg_gen_mov_tl(decode->cc_dst, s->T0);
-+
-+    /*
-+     * The manual says that the output is undefined when the
-+     * input is zero, but real hardware leaves it unchanged, and
-+     * real programs appear to depend on that.  Accomplish this
-+     * by passing the output as the value to return upon zero.
-+     * Plus, return the bit index of the first 1 bit.
-+     */
-+    tcg_gen_xori_tl(s->T1, s->T1, TARGET_LONG_BITS - 1);
-+    tcg_gen_clz_tl(s->T0, s->T0, s->T1);
-+    tcg_gen_xori_tl(s->T0, s->T0, TARGET_LONG_BITS - 1);
-+}
-+
- static void gen_BSWAP(DisasContext *s, X86DecodedInsn *decode)
+ static void gen_XCHG(DisasContext *s, X86DecodedInsn *decode)
  {
- #ifdef TARGET_X86_64
-@@ -2254,6 +2295,24 @@ static void gen_LSS(DisasContext *s, X86DecodedInsn *decode)
-     gen_lxx_seg(s, decode, R_SS);
- }
- 
-+static void gen_LZCNT(DisasContext *s, X86DecodedInsn *decode)
-+{
-+    MemOp ot = decode->op[0].ot;
-+
-+    /* C bit (cc_src) is defined related to the input.  */
-+    decode->cc_src = tcg_temp_new();
-+    decode->cc_dst = s->T0;
-+    decode->cc_op = CC_OP_BMILGB + ot;
-+    tcg_gen_mov_tl(decode->cc_src, s->T0);
-+
-+    /*
-+     * Reduce the target_ulong result by the number of zeros that
-+     * we expect to find at the top.
-+     */
-+    tcg_gen_clzi_tl(s->T0, s->T0, TARGET_LONG_BITS);
-+    tcg_gen_subi_tl(s->T0, s->T0, TARGET_LONG_BITS - (8 << ot));
-+}
-+
- static void gen_MFENCE(DisasContext *s, X86DecodedInsn *decode)
- {
-     tcg_gen_mb(TCG_MO_ALL | TCG_BAR_SC);
-@@ -2812,6 +2871,15 @@ static void gen_POPA(DisasContext *s, X86DecodedInsn *decode)
-     gen_popa(s);
- }
- 
-+static void gen_POPCNT(DisasContext *s, X86DecodedInsn *decode)
-+{
-+    decode->cc_src = tcg_temp_new();
-+    decode->cc_op = CC_OP_POPCNT;
-+
-+    tcg_gen_mov_tl(decode->cc_src, s->T0);
-+    tcg_gen_ctpop_tl(s->T0, s->T0);
-+}
-+
- static void gen_POPF(DisasContext *s, X86DecodedInsn *decode)
- {
-     MemOp ot;
-@@ -3893,6 +3961,20 @@ static void gen_SYSRET(DisasContext *s, X86DecodedInsn *decode)
-     s->base.is_jmp = DISAS_EOB_RECHECK_TF;
- }
- 
-+static void gen_TZCNT(DisasContext *s, X86DecodedInsn *decode)
-+{
-+    MemOp ot = decode->op[0].ot;
-+
-+    /* C bit (cc_src) is defined related to the input.  */
-+    decode->cc_src = tcg_temp_new();
-+    decode->cc_dst = s->T0;
-+    decode->cc_op = CC_OP_BMILGB + ot;
-+    tcg_gen_mov_tl(decode->cc_src, s->T0);
-+
-+    /* A zero input returns the operand size.  */
-+    tcg_gen_ctzi_tl(s->T0, s->T0, 8 << ot);
-+}
-+
- static void gen_UD(DisasContext *s, X86DecodedInsn *decode)
- {
-     gen_illegal_opcode(s);
+     if (s->prefix & PREFIX_LOCK) {
 -- 
 2.45.1
 
