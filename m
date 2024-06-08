@@ -2,21 +2,21 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1F5D901043
-	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 10:36:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5992B90104A
+	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 10:37:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sFrYF-0002yo-J0; Sat, 08 Jun 2024 04:35:51 -0400
+	id 1sFrYF-0002yd-Im; Sat, 08 Jun 2024 04:35:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sFrYC-0002wN-TW
+ id 1sFrYC-0002wO-Tz
  for qemu-devel@nongnu.org; Sat, 08 Jun 2024 04:35:48 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sFrYB-0000Hb-4u
+ id 1sFrYB-0000Hd-55
  for qemu-devel@nongnu.org; Sat, 08 Jun 2024 04:35:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1717835746;
@@ -24,53 +24,53 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=+1SSoXnODbA0T267ExP4EpxDHUPMe33TEy/vs7sS7iM=;
- b=fDAJ5TH1WePVMIxispbhOatDSJncNYQCmeUJFEFq1HwcyOh6MhXQjM/zuw84VzVMiBPVAj
- zIpapQfNCF6hVZiHK3kJ0gpFypbWiom24ZxYxbnOhVPRqVBHZSaWPBVWF7xvTOENRUt4rr
- huhL4s9BHBR1p/4XtYQNK/1xZ7osyfI=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=lU92WHU8/0hwuwFkPavK7qpX2CZtM/+YFrjH0hKOPvU=;
+ b=XGpgi+37kI1zIfBog/XXcDYv+BVRiLtl4J6xiZ4ScFIMmw3KmeZVpRYV1mzfp0LLFN2WB/
+ doTKDPMiSK+88rukVbNhM+FBYS1MLnFvm7RUiTuW0j+AMM2sDIxhYShIw86XkYn22hFgIb
+ rpuFau75uGfuOop/GxLJwUzHWf3Clw8=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-252-PASeM3s4PFyHLv1Pzc_vQg-1; Sat, 08 Jun 2024 04:35:42 -0400
-X-MC-Unique: PASeM3s4PFyHLv1Pzc_vQg-1
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-a68e85d466dso181937666b.1
- for <qemu-devel@nongnu.org>; Sat, 08 Jun 2024 01:35:42 -0700 (PDT)
+ us-mta-460-VVAAyuwSOLSds2Pd3PfVdw-1; Sat, 08 Jun 2024 04:35:44 -0400
+X-MC-Unique: VVAAyuwSOLSds2Pd3PfVdw-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-a6912c4ddb1so160009166b.1
+ for <qemu-devel@nongnu.org>; Sat, 08 Jun 2024 01:35:44 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717835740; x=1718440540;
+ d=1e100.net; s=20230601; t=1717835742; x=1718440542;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+1SSoXnODbA0T267ExP4EpxDHUPMe33TEy/vs7sS7iM=;
- b=n5xkVu0INcHqqGaISz9R+xyUL9CWnoXFmfKpN3WzBRtKfY2JxpKyUIuEKqTC4d0VhU
- Ff37FC5Lh4pQ6S0Ln7eEOYwJ2lVV6hRUH55Id8aZjGmvI4becyKqQi0CSwT9ejV49B1K
- 7sjnhmkcHJfmPep3qMeR3AINqobfm59GG4y8eFjSexwSvlIZzEQ1XuJjvjQsPtyHJ6sX
- 82v9gHtbTqnUw1HY5y1CB+Y0WJgPokci9JromKKh4xVD4bVL8Y6EIVYtNc1ODuR61ld4
- YEho8FRoV5CMAmG//RAAfSRqgxNMwTtS3/iLcQSJ9ZOpAUvWnLBdDEnU08bZD/3bXO6K
- v5sg==
-X-Gm-Message-State: AOJu0YyF9Wyx6O/japlIbCGXcQL8s/wQPw0jJvoR5TC5uBtkbpU72Cuk
- 3IT2dOMhG2bhBjxWrtl2zkkn7fii4xm03xXaE7p8d33ijC/DbbD2IN7py5LK/cFvLKGjCh59Hvx
- 1wd+kUdfNm4WfIqP1s7+K/G0rLr/Q8YMlzOdzauH9TkUdDvlWoYSsDo3135+rpUGQxjxMEUqRdJ
- YFKBoCmz/y1hTFxn78MiCg5Gk/7St8RtCBWutc
-X-Received: by 2002:a17:906:6a29:b0:a6e:a97c:fc97 with SMTP id
- a640c23a62f3a-a6ea97cfd15mr247901266b.7.1717835740355; 
- Sat, 08 Jun 2024 01:35:40 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG77+T0UOs7vENqNuYG26yUrIvmXn/Ba7V2fvC3E7zGyEBUsO5o6jwEAf4oC4PGCr+GtNs04A==
-X-Received: by 2002:a17:906:6a29:b0:a6e:a97c:fc97 with SMTP id
- a640c23a62f3a-a6ea97cfd15mr247899666b.7.1717835739976; 
- Sat, 08 Jun 2024 01:35:39 -0700 (PDT)
+ bh=lU92WHU8/0hwuwFkPavK7qpX2CZtM/+YFrjH0hKOPvU=;
+ b=TJrA3y24hZfVMUiZsz6YgyfrgKYUzO8//FV0oE872kcfXo1BaHbRqPHFyJ0sxJaDG+
+ uLD0+JtiFecU5z8Zl9hJd3+y54XPutIW4hvBcnCwM2McYElPLCilr/7XAUqEzYFw1kOV
+ 6L/xZD41/fbtXdq4f6yB9Bny1UF2oRzpIPGJFnf/tnhRr2TP/m2XDTm30rcoZbnpnjKp
+ ozZhDhPQcMHEvDOpHkXNRgjNV+973HplAmhdBqbsO1sF0FS9vVVeWwLxGKP0vRri5mKH
+ 9czpwQOOHAfdKJk8A5Ad6zMnoW6ggVxB73I5PrbAlJ+m4ZitxJriVputlhZJwS0BXX/2
+ taHw==
+X-Gm-Message-State: AOJu0YyuIuWQxb+MCmkFigW5eWIZZsO2abYxGslc/5c4eHNqASnK2r+m
+ YLQo6S0+EJF3qD/VBvD5WPDcfcWJ3z9MA5Lwe2rLsTsJE6d72wvadkPym/NJKuuh4VR59a6J8qn
+ BG0fafFoHuWraXbnJo6Lc/WVGav3K+Uu+57/n9u8yBGurdejy8RwHMb1O5Z5qtcg5Znx0FjHDrm
+ nC33oZyLjdjMRcvozqOwXBOVqShzY1/5rgAmNK
+X-Received: by 2002:a17:906:7f8b:b0:a6c:7221:60e6 with SMTP id
+ a640c23a62f3a-a6cdb201bbamr307893066b.57.1717835742615; 
+ Sat, 08 Jun 2024 01:35:42 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHhl+R63wbPSRWQQwJjtYGobuW7rmYL3PYpEGXJZMU0E5lY29FZQvuRHXA5kJbP3/nIqWdUCw==
+X-Received: by 2002:a17:906:7f8b:b0:a6c:7221:60e6 with SMTP id
+ a640c23a62f3a-a6cdb201bbamr307892066b.57.1717835742156; 
+ Sat, 08 Jun 2024 01:35:42 -0700 (PDT)
 Received: from avogadro.local ([151.81.115.112])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a6c806eaa4dsm354422166b.110.2024.06.08.01.35.38
+ a640c23a62f3a-a6f01a060dcsm48869266b.182.2024.06.08.01.35.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 08 Jun 2024 01:35:38 -0700 (PDT)
+ Sat, 08 Jun 2024 01:35:41 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Xin Li <xin3.li@intel.com>,
-	Shan Kang <shan.kang@intel.com>
-Subject: [PULL 32/42] target/i386: add support for FRED in CPUID enumeration
-Date: Sat,  8 Jun 2024 10:34:05 +0200
-Message-ID: <20240608083415.2769160-33-pbonzini@redhat.com>
+Cc: Xin Li <xin3.li@intel.com>, Shan Kang <shan.kang@intel.com>,
+ Zhao Liu <zhao1.liu@intel.com>
+Subject: [PULL 33/42] target/i386: mark CR4.FRED not reserved
+Date: Sat,  8 Jun 2024 10:34:06 +0200
+Message-ID: <20240608083415.2769160-34-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240608083415.2769160-1-pbonzini@redhat.com>
 References: <20240608083415.2769160-1-pbonzini@redhat.com>
@@ -104,101 +104,60 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Xin Li <xin3.li@intel.com>
 
-FRED, i.e., the Intel flexible return and event delivery architecture,
-defines simple new transitions that change privilege level (ring
-transitions).
-
-The new transitions defined by the FRED architecture are FRED event
-delivery and, for returning from events, two FRED return instructions.
-FRED event delivery can effect a transition from ring 3 to ring 0, but
-it is used also to deliver events incident to ring 0.  One FRED
-instruction (ERETU) effects a return from ring 0 to ring 3, while the
-other (ERETS) returns while remaining in ring 0.  Collectively, FRED
-event delivery and the FRED return instructions are FRED transitions.
-
-In addition to these transitions, the FRED architecture defines a new
-instruction (LKGS) for managing the state of the GS segment register.
-The LKGS instruction can be used by 64-bit operating systems that do
-not use the new FRED transitions.
-
-WRMSRNS is an instruction that behaves exactly like WRMSR, with the
-only difference being that it is not a serializing instruction by
-default.  Under certain conditions, WRMSRNS may replace WRMSR to improve
-performance.  FRED uses it to switch RSP0 in a faster manner.
-
-Search for the latest FRED spec in most search engines with this search
-pattern:
-
-  site:intel.com FRED (flexible return and event delivery) specification
-
-The CPUID feature flag CPUID.(EAX=7,ECX=1):EAX[17] enumerates FRED, and
-the CPUID feature flag CPUID.(EAX=7,ECX=1):EAX[18] enumerates LKGS, and
-the CPUID feature flag CPUID.(EAX=7,ECX=1):EAX[19] enumerates WRMSRNS.
-
-Add CPUID definitions for FRED/LKGS/WRMSRNS, and expose them to KVM guests.
-
-Because FRED relies on LKGS and WRMSRNS, add that to feature dependency
-map.
+The CR4.FRED bit, i.e., CR4[32], is no longer a reserved bit when FRED
+is exposed to guests, otherwise it is still a reserved bit.
 
 Tested-by: Shan Kang <shan.kang@intel.com>
 Signed-off-by: Xin Li <xin3.li@intel.com>
-Message-ID: <20231109072012.8078-2-xin3.li@intel.com>
-[Fix order of dependencies, add dependencies from LM to FRED. - Paolo]
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Message-ID: <20231109072012.8078-3-xin3.li@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/cpu.h |  6 ++++++
- target/i386/cpu.c | 14 +++++++++++++-
- 2 files changed, 19 insertions(+), 1 deletion(-)
+ target/i386/cpu.h | 17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
 
 diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index c64ef0c1a28..ad3577056da 100644
+index ad3577056da..9a582218f43 100644
 --- a/target/i386/cpu.h
 +++ b/target/i386/cpu.h
-@@ -941,6 +941,12 @@ uint64_t x86_cpu_get_supported_feature_word(FeatureWord w,
- #define CPUID_7_1_EDX_AMX_COMPLEX       (1U << 8)
- /* PREFETCHIT0/1 Instructions */
- #define CPUID_7_1_EDX_PREFETCHITI       (1U << 14)
-+/* Flexible return and event delivery (FRED) */
-+#define CPUID_7_1_EAX_FRED              (1U << 17)
-+/* Load into IA32_KERNEL_GS_BASE (LKGS) */
-+#define CPUID_7_1_EAX_LKGS              (1U << 18)
-+/* Non-Serializing Write to Model Specific Register (WRMSRNS) */
-+#define CPUID_7_1_EAX_WRMSRNS           (1U << 19)
+@@ -261,6 +261,18 @@ typedef enum X86Seg {
+ #define CR4_PKS_MASK   (1U << 24)
+ #define CR4_LAM_SUP_MASK (1U << 28)
  
- /* Do not exhibit MXCSR Configuration Dependent Timing (MCDT) behavior */
- #define CPUID_7_2_EDX_MCDT_NO           (1U << 5)
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 914bef442c7..bfb5a25e596 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -1114,7 +1114,7 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
-             "avx-vnni", "avx512-bf16", NULL, "cmpccxadd",
-             NULL, NULL, "fzrm", "fsrs",
-             "fsrc", NULL, NULL, NULL,
--            NULL, NULL, NULL, NULL,
-+            NULL, "fred", "lkgs", "wrmsrns",
-             NULL, "amx-fp16", NULL, "avx-ifma",
-             NULL, NULL, "lam", NULL,
-             NULL, NULL, NULL, NULL,
-@@ -1701,6 +1701,18 @@ static FeatureDep feature_dependencies[] = {
-         .from = { FEAT_7_0_ECX,             CPUID_7_0_ECX_WAITPKG },
-         .to = { FEAT_VMX_SECONDARY_CTLS,    VMX_SECONDARY_EXEC_ENABLE_USER_WAIT_PAUSE },
-     },
-+    {
-+        .from = { FEAT_8000_0001_EDX,       CPUID_EXT2_LM },
-+        .to = { FEAT_7_1_EAX,               CPUID_7_1_EAX_FRED },
-+    },
-+    {
-+        .from = { FEAT_7_1_EAX,             CPUID_7_1_EAX_LKGS },
-+        .to = { FEAT_7_1_EAX,               CPUID_7_1_EAX_FRED },
-+    },
-+    {
-+        .from = { FEAT_7_1_EAX,             CPUID_7_1_EAX_WRMSRNS },
-+        .to = { FEAT_7_1_EAX,               CPUID_7_1_EAX_FRED },
-+    },
- };
++#ifdef TARGET_X86_64
++#define CR4_FRED_MASK   (1ULL << 32)
++#else
++#define CR4_FRED_MASK   0
++#endif
++
++#ifdef TARGET_X86_64
++#define CR4_FRED_MASK   (1ULL << 32)
++#else
++#define CR4_FRED_MASK   0
++#endif
++
+ #define CR4_RESERVED_MASK \
+ (~(target_ulong)(CR4_VME_MASK | CR4_PVI_MASK | CR4_TSD_MASK \
+                 | CR4_DE_MASK | CR4_PSE_MASK | CR4_PAE_MASK \
+@@ -269,7 +281,7 @@ typedef enum X86Seg {
+                 | CR4_LA57_MASK \
+                 | CR4_FSGSBASE_MASK | CR4_PCIDE_MASK | CR4_OSXSAVE_MASK \
+                 | CR4_SMEP_MASK | CR4_SMAP_MASK | CR4_PKE_MASK | CR4_PKS_MASK \
+-                | CR4_LAM_SUP_MASK))
++                | CR4_LAM_SUP_MASK | CR4_FRED_MASK))
  
- typedef struct X86RegisterInfo32 {
+ #define DR6_BD          (1 << 13)
+ #define DR6_BS          (1 << 14)
+@@ -2613,6 +2625,9 @@ static inline uint64_t cr4_reserved_bits(CPUX86State *env)
+     if (!(env->features[FEAT_7_1_EAX] & CPUID_7_1_EAX_LAM)) {
+         reserved_bits |= CR4_LAM_SUP_MASK;
+     }
++    if (!(env->features[FEAT_7_1_EAX] & CPUID_7_1_EAX_FRED)) {
++        reserved_bits |= CR4_FRED_MASK;
++    }
+     return reserved_bits;
+ }
+ 
 -- 
 2.45.1
 
