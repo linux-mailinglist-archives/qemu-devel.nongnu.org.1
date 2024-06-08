@@ -2,81 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1928E901085
-	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 10:44:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70DC190107A
+	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jun 2024 10:43:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sFrdr-0001PF-05; Sat, 08 Jun 2024 04:41:39 -0400
+	id 1sFrdv-0001Wu-BK; Sat, 08 Jun 2024 04:41:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sFrdp-0001O0-In
- for qemu-devel@nongnu.org; Sat, 08 Jun 2024 04:41:37 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1sFrds-0001St-Ql
+ for qemu-devel@nongnu.org; Sat, 08 Jun 2024 04:41:40 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sFrdn-0001NW-Uf
- for qemu-devel@nongnu.org; Sat, 08 Jun 2024 04:41:37 -0400
+ id 1sFrdr-0001Ng-4u
+ for qemu-devel@nongnu.org; Sat, 08 Jun 2024 04:41:40 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717836095;
+ s=mimecast20190719; t=1717836098;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=XQBZ8GvZ/crfzzxMzVV9Zyom9WUbzygMuYT9aDLTYug=;
- b=M4okDIz44bRiS4jXa77mEkLy+GrJHKNoDaZC63Ikzqn6Z1nV+Hg1RYWC0k48Iu2wO3xZra
- 0nnvGHt/3aJnjL7RxTNsrcqlZhZ+PvEutjyMgqoFZnzLnOjj6UMkgGV9c9Xui60whBfEy5
- WHswO+7RYE1rKAN+2obUbdwHyShqXNY=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=uMwm5EoQWR8WwwQOBghJk+ePxHBVZNeMzC33/BhJzSI=;
+ b=V7xXG90ZFcpP40DRzZXKtupjGY/Ko6Kli/+FF3B7G5CbyY3Si38+7i5KazxzTzv1qCVvNu
+ ywE4sw7U60Qm3jNw4yambFUG2zZ/0/72t7rk4N9qDwP37qOGPVXKcSuqCxLSNjDLpXxzre
+ tUq53NZKno8a1ExgtITYzgiHVxkm3aQ=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-136-CFlBGzS6NQKKwd7NKX5d3Q-1; Sat, 08 Jun 2024 04:41:33 -0400
-X-MC-Unique: CFlBGzS6NQKKwd7NKX5d3Q-1
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-a6ef6ac6e0aso46643366b.0
- for <qemu-devel@nongnu.org>; Sat, 08 Jun 2024 01:41:33 -0700 (PDT)
+ us-mta-463-COt33wvdOqWvKEDzA5UGqQ-1; Sat, 08 Jun 2024 04:41:36 -0400
+X-MC-Unique: COt33wvdOqWvKEDzA5UGqQ-1
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-a6f0f008f9aso2540166b.3
+ for <qemu-devel@nongnu.org>; Sat, 08 Jun 2024 01:41:36 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717836091; x=1718440891;
+ d=1e100.net; s=20230601; t=1717836095; x=1718440895;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=XQBZ8GvZ/crfzzxMzVV9Zyom9WUbzygMuYT9aDLTYug=;
- b=bDYt/8D2BHsXkhgEp1C5iLH9Tc6gYmnqg4vNqikz7wffl49vrb3ZyhFjZwtonN+fe5
- +1mAd6yW/j4dwkTStPbSAzemqAqf9CPzMN9+0KQu1/sDMoKFqTW6RiHS/Cn6KCy/4k4a
- WzcZ6BHS8NXny3DlDI8ipY9G69CZc+wjtVswZd/8CYqy7/23h1JN2PfBts5z97rDERVh
- R040E14XsCGxQLtgHTT249u2Hu4LQTxTaSBDrfXpn94+yTSdMpPmsKNqjZfLNKbcQxcU
- 21H9l3HO74wfDxsMjuvgyOUq8dlo4UCOjGczowW6sMjTfhPf5dN+Yz6WCKCT7+LoVj4w
- eFIw==
-X-Gm-Message-State: AOJu0YzlC6InM6jmiWxwG/PKhZmIZOCLx+2hyYoaNQ5SHLK23BE6GyiW
- pce/vZasM75QIF8D42iV+628DaasQtLa+HDPPOH4n9vzG4lAp5ZF2GyQFRyRvu1lm+5ODL1h6eO
- VnO0LgiOfepyFRqS5xJwnH7QOY7qY0ieD7nVEtzo/+0zof1ySDo6rvIfPbFdSZTwRmdXbkYtz+n
- QVwmrndXYoP0FjBl66DA9Z2z4lIxdu5dGvxspc
-X-Received: by 2002:a17:906:f58b:b0:a55:8f2a:950d with SMTP id
- a640c23a62f3a-a6cd56111d7mr379509966b.16.1717836091244; 
- Sat, 08 Jun 2024 01:41:31 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGOo9Fj/DJGoiKps1F1sFyEpY1f/8rp/5ACPDRLIVfaYCiOcYFJlaYI9wwSHhc8MoalsYMHdQ==
-X-Received: by 2002:a17:906:f58b:b0:a55:8f2a:950d with SMTP id
- a640c23a62f3a-a6cd56111d7mr379508866b.16.1717836090803; 
- Sat, 08 Jun 2024 01:41:30 -0700 (PDT)
+ bh=uMwm5EoQWR8WwwQOBghJk+ePxHBVZNeMzC33/BhJzSI=;
+ b=Dwx4jBNmg9iYYJ7vFmR7xEQKE4APNXVZZPdojKiSUsitguzDQWxVMmiHTfh4Y9hnyD
+ GgHPzpJzgKI2JhtqhSs7X5yyAxi5Vd3CBEZmQHZ1YCq0VKeQjnFfA3UafK2PWPBGKZpu
+ QQ1zJJqAjcxfiLMT7muGOeHllNJz99Fg4+UOAoPNHYnfuQgYit2Waqb42xznmQZG/erL
+ 5TXLWkjZgGtGryRGANu+z4xA/U//HCIkhje7kQQEL2dPXxmrBlTemr+SLkWmDBc6ZSEb
+ mZ+GzDEVlkmzSi1EdeEuL6sM85uO/6r2PANtWSztHiww43sMDOWS7h7CPEFSe/DLvt1s
+ 8u0w==
+X-Gm-Message-State: AOJu0YyBl/ZjhMVhog/TtdONa+jF+vOiqzA5DGBa1qYcmGnKtjjz8Gts
+ RPFOzfBeXqoZdVR5tjAfSxhxLghNaZiPnCdJiy77n4w2NvVdT913MpcK0mlkYRy2N/2Whuynb2T
+ 9vwF41TklkYoyfaYiYLTSuKAK2qMdUr8Nl7Aig/y7tvg2rS+bo6w+3pg3ouEEU60/cywOVID9A7
+ A9y4DUZR8S2iQRrUm+czGlmUONyuNjQ62rsw0O
+X-Received: by 2002:a50:d7ca:0:b0:578:638e:3683 with SMTP id
+ 4fb4d7f45d1cf-57c50861ae8mr3510745a12.5.1717836094823; 
+ Sat, 08 Jun 2024 01:41:34 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHLQ+iKIHvNgnv55Yco+FipE5yyOJ/2Pz4LC+niCyi2r1u6X7QaSd0tbDEz7YxulKizGSQ9kg==
+X-Received: by 2002:a50:d7ca:0:b0:578:638e:3683 with SMTP id
+ 4fb4d7f45d1cf-57c50861ae8mr3510740a12.5.1717836094394; 
+ Sat, 08 Jun 2024 01:41:34 -0700 (PDT)
 Received: from avogadro.local ([151.81.115.112])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a6c805c9662sm355893066b.51.2024.06.08.01.41.27
+ 4fb4d7f45d1cf-57aae0ca5e3sm3937038a12.25.2024.06.08.01.41.31
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 08 Jun 2024 01:41:28 -0700 (PDT)
+ Sat, 08 Jun 2024 01:41:31 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 04/25] target/i386: change X86_ENTRYr to use T0
-Date: Sat,  8 Jun 2024 10:40:52 +0200
-Message-ID: <20240608084113.2770363-5-pbonzini@redhat.com>
+Subject: [PATCH 05/25] target/i386: change X86_ENTRYwr to use T0,
+ use it for moves
+Date: Sat,  8 Jun 2024 10:40:53 +0200
+Message-ID: <20240608084113.2770363-6-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240608084113.2770363-1-pbonzini@redhat.com>
 References: <20240608084113.2770363-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -101,165 +102,124 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-I am not sure why I made it use T1.  It is a bit more symmetric with
-respect to X86_ENTRYwr (which uses T0 for the "w"ritten operand
-and T1 for the "r"ead operand), but it is also less flexible because it
-does not let you apply zextT0/sextT0.
+Just like X86_ENTRYr, X86_ENTRYwr is easily changed to use only T0.
+In this case, the motivation is to use it for the MOV instruction
+family.  The case when you need to preserve the input value is the
+odd one, as it is used basically only for BLS* instructions.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/tcg/decode-new.c.inc |  6 +++---
- target/i386/tcg/emit.c.inc       | 34 ++++++++++++++++----------------
- 2 files changed, 20 insertions(+), 20 deletions(-)
+ target/i386/tcg/decode-new.c.inc | 48 ++++++++++++++++----------------
+ target/i386/tcg/emit.c.inc       |  2 +-
+ 2 files changed, 25 insertions(+), 25 deletions(-)
 
 diff --git a/target/i386/tcg/decode-new.c.inc b/target/i386/tcg/decode-new.c.inc
-index 380fb793531..f9d3e2577b2 100644
+index f9d3e2577b2..d41002e2f5c 100644
 --- a/target/i386/tcg/decode-new.c.inc
 +++ b/target/i386/tcg/decode-new.c.inc
-@@ -186,7 +186,7 @@
+@@ -180,7 +180,7 @@
+ #define X86_OP_ENTRYrr(op, op0, s0, op1, s1, ...)                 \
+     X86_OP_ENTRY3(op, None, None, op0, s0, op1, s1, ## __VA_ARGS__)
+ #define X86_OP_ENTRYwr(op, op0, s0, op1, s1, ...)                 \
+-    X86_OP_ENTRY3(op, op0, s0, None, None, op1, s1, ## __VA_ARGS__)
++    X86_OP_ENTRY3(op, op0, s0, op1, s1, None, None, ## __VA_ARGS__)
+ #define X86_OP_ENTRY2(op, op0, s0, op1, s1, ...)                  \
+     X86_OP_ENTRY3(op, op0, s0, 2op, s0, op1, s1, ## __VA_ARGS__)
  #define X86_OP_ENTRYw(op, op0, s0, ...)                           \
-     X86_OP_ENTRY3(op, op0, s0, None, None, None, None, ## __VA_ARGS__)
- #define X86_OP_ENTRYr(op, op0, s0, ...)                           \
--    X86_OP_ENTRY3(op, None, None, None, None, op0, s0, ## __VA_ARGS__)
-+    X86_OP_ENTRY3(op, None, None, op0, s0, None, None, ## __VA_ARGS__)
- #define X86_OP_ENTRY1(op, op0, s0, ...)                           \
-     X86_OP_ENTRY3(op, op0, s0, 2op, s0, None, None, ## __VA_ARGS__)
- #define X86_OP_ENTRY0(op, ...)                                    \
-@@ -1335,9 +1335,9 @@ static void decode_group4_5(DisasContext *s, CPUX86State *env, X86OpEntry *entry
-         /* 0xff */
-         [0x08] = X86_OP_ENTRY1(INC,     E,v,                           lock),
-         [0x09] = X86_OP_ENTRY1(DEC,     E,v,                           lock),
--        [0x0a] = X86_OP_ENTRY3(CALL_m,  None, None, E,f64, None, None, zextT0),
-+        [0x0a] = X86_OP_ENTRYr(CALL_m,  E,f64,                         zextT0),
-         [0x0b] = X86_OP_ENTRYr(CALLF_m, M,p),
--        [0x0c] = X86_OP_ENTRY3(JMP_m,   None, None, E,f64, None, None, zextT0),
-+        [0x0c] = X86_OP_ENTRYr(JMP_m,   E,f64,                         zextT0),
-         [0x0d] = X86_OP_ENTRYr(JMPF_m,  M,p),
-         [0x0e] = X86_OP_ENTRYr(PUSH,    E,f64),
-     };
+@@ -612,15 +612,15 @@ static const X86OpEntry opcodes_0F38_00toEF[240] = {
+ /* five rows for no prefix, 66, F3, F2, 66+F2  */
+ static const X86OpEntry opcodes_0F38_F0toFF[16][5] = {
+     [0] = {
+-        X86_OP_ENTRY3(MOVBE, G,y, M,y, None,None, cpuid(MOVBE)),
+-        X86_OP_ENTRY3(MOVBE, G,w, M,w, None,None, cpuid(MOVBE)),
++        X86_OP_ENTRYwr(MOVBE, G,y, M,y, cpuid(MOVBE)),
++        X86_OP_ENTRYwr(MOVBE, G,w, M,w, cpuid(MOVBE)),
+         {},
+         X86_OP_ENTRY2(CRC32, G,d, E,b, cpuid(SSE42)),
+         X86_OP_ENTRY2(CRC32, G,d, E,b, cpuid(SSE42)),
+     },
+     [1] = {
+-        X86_OP_ENTRY3(MOVBE, M,y, G,y, None,None, cpuid(MOVBE)),
+-        X86_OP_ENTRY3(MOVBE, M,w, G,w, None,None, cpuid(MOVBE)),
++        X86_OP_ENTRYwr(MOVBE, M,y, G,y, cpuid(MOVBE)),
++        X86_OP_ENTRYwr(MOVBE, M,w, G,w, cpuid(MOVBE)),
+         {},
+         X86_OP_ENTRY2(CRC32, G,d, E,y, cpuid(SSE42)),
+         X86_OP_ENTRY2(CRC32, G,d, E,w, cpuid(SSE42)),
+@@ -1586,18 +1586,18 @@ static const X86OpEntry opcodes_root[256] = {
+     [0x7E] = X86_OP_ENTRYr(Jcc, J,b),
+     [0x7F] = X86_OP_ENTRYr(Jcc, J,b),
+ 
+-    [0x88] = X86_OP_ENTRY3(MOV, E,b, G,b, None, None),
+-    [0x89] = X86_OP_ENTRY3(MOV, E,v, G,v, None, None),
+-    [0x8A] = X86_OP_ENTRY3(MOV, G,b, E,b, None, None),
+-    [0x8B] = X86_OP_ENTRY3(MOV, G,v, E,v, None, None),
+-    /* Missing in Table A-2: memory destination is always 16-bit.  */
+-    [0x8C] = X86_OP_ENTRY3(MOV, E,v, S,w, None, None, op0_Mw),
+-    [0x8D] = X86_OP_ENTRY3(LEA, G,v, M,v, None, None, noseg),
+-    [0x8E] = X86_OP_ENTRY3(MOV, S,w, E,w, None, None),
++    [0x88] = X86_OP_ENTRYwr(MOV, E,b, G,b),
++    [0x89] = X86_OP_ENTRYwr(MOV, E,v, G,v),
++    [0x8A] = X86_OP_ENTRYwr(MOV, G,b, E,b),
++    [0x8B] = X86_OP_ENTRYwr(MOV, G,v, E,v),
++     /* Missing in Table A-2: memory destination is always 16-bit.  */
++    [0x8C] = X86_OP_ENTRYwr(MOV, E,v, S,w, op0_Mw),
++    [0x8D] = X86_OP_ENTRYwr(LEA, G,v, M,v, noseg),
++    [0x8E] = X86_OP_ENTRYwr(MOV, S,w, E,w),
+     [0x8F] = X86_OP_GROUPw(group1A, E,v),
+ 
+     [0x98] = X86_OP_ENTRY1(CBW,    0,v), /* rAX */
+-    [0x99] = X86_OP_ENTRY3(CWD,    2,v, 0,v, None, None), /* rDX, rAX */
++    [0x99] = X86_OP_ENTRYwr(CWD,   2,v, 0,v), /* rDX, rAX */
+     [0x9A] = X86_OP_ENTRYrr(CALLF, I_unsigned,p, I_unsigned,w, chk(i64)),
+     [0x9B] = X86_OP_ENTRY0(WAIT),
+     [0x9C] = X86_OP_ENTRY0(PUSHF,  chk(vm86_iopl) svm(PUSHF)),
+@@ -1607,22 +1607,22 @@ static const X86OpEntry opcodes_root[256] = {
+ 
+     [0xA8] = X86_OP_ENTRYrr(AND, 0,b, I,b),   /* AL, Ib */
+     [0xA9] = X86_OP_ENTRYrr(AND, 0,v, I,z),   /* rAX, Iz */
+-    [0xAA] = X86_OP_ENTRY3(STOS, Y,b, 0,b, None, None),
+-    [0xAB] = X86_OP_ENTRY3(STOS, Y,v, 0,v, None, None),
++    [0xAA] = X86_OP_ENTRYwr(STOS, Y,b, 0,b),
++    [0xAB] = X86_OP_ENTRYwr(STOS, Y,v, 0,v),
+     /* Manual writeback because REP LODS (!) has to write EAX/RAX after every LODS.  */
+     [0xAC] = X86_OP_ENTRYr(LODS, X,b),
+     [0xAD] = X86_OP_ENTRYr(LODS, X,v),
+     [0xAE] = X86_OP_ENTRYrr(SCAS, 0,b, Y,b),
+     [0xAF] = X86_OP_ENTRYrr(SCAS, 0,v, Y,v),
+ 
+-    [0xB8] = X86_OP_ENTRY3(MOV, LoBits,v, I,v, None, None),
+-    [0xB9] = X86_OP_ENTRY3(MOV, LoBits,v, I,v, None, None),
+-    [0xBA] = X86_OP_ENTRY3(MOV, LoBits,v, I,v, None, None),
+-    [0xBB] = X86_OP_ENTRY3(MOV, LoBits,v, I,v, None, None),
+-    [0xBC] = X86_OP_ENTRY3(MOV, LoBits,v, I,v, None, None),
+-    [0xBD] = X86_OP_ENTRY3(MOV, LoBits,v, I,v, None, None),
+-    [0xBE] = X86_OP_ENTRY3(MOV, LoBits,v, I,v, None, None),
+-    [0xBF] = X86_OP_ENTRY3(MOV, LoBits,v, I,v, None, None),
++    [0xB8] = X86_OP_ENTRYwr(MOV, LoBits,v, I,v),
++    [0xB9] = X86_OP_ENTRYwr(MOV, LoBits,v, I,v),
++    [0xBA] = X86_OP_ENTRYwr(MOV, LoBits,v, I,v),
++    [0xBB] = X86_OP_ENTRYwr(MOV, LoBits,v, I,v),
++    [0xBC] = X86_OP_ENTRYwr(MOV, LoBits,v, I,v),
++    [0xBD] = X86_OP_ENTRYwr(MOV, LoBits,v, I,v),
++    [0xBE] = X86_OP_ENTRYwr(MOV, LoBits,v, I,v),
++    [0xBF] = X86_OP_ENTRYwr(MOV, LoBits,v, I,v),
+ 
+     [0xC8] = X86_OP_ENTRYrr(ENTER, I,w, I,b),
+     [0xC9] = X86_OP_ENTRY1(LEAVE, A,d64),
 diff --git a/target/i386/tcg/emit.c.inc b/target/i386/tcg/emit.c.inc
-index a25b3dfc6b5..797e6e81406 100644
+index 797e6e81406..78d89db57cd 100644
 --- a/target/i386/tcg/emit.c.inc
 +++ b/target/i386/tcg/emit.c.inc
-@@ -1363,7 +1363,7 @@ static void gen_CALLF(DisasContext *s, X86DecodedInsn *decode)
+@@ -1796,7 +1796,7 @@ static void gen_IN(DisasContext *s, X86DecodedInsn *decode)
+     MemOp ot = decode->op[0].ot;
+     TCGv_i32 port = tcg_temp_new_i32();
  
- static void gen_CALLF_m(DisasContext *s, X86DecodedInsn *decode)
- {
--    MemOp ot = decode->op[2].ot;
-+    MemOp ot = decode->op[1].ot;
- 
-     gen_op_ld_v(s, ot, s->T0, s->A0);
-     gen_add_A0_im(s, 1 << ot);
-@@ -1593,22 +1593,22 @@ static void gen_DEC(DisasContext *s, X86DecodedInsn *decode)
- 
- static void gen_DIV(DisasContext *s, X86DecodedInsn *decode)
- {
--    MemOp ot = decode->op[2].ot;
-+    MemOp ot = decode->op[1].ot;
- 
-     switch(ot) {
-     case MO_8:
--        gen_helper_divb_AL(tcg_env, s->T1);
-+        gen_helper_divb_AL(tcg_env, s->T0);
-         break;
-     case MO_16:
--        gen_helper_divw_AX(tcg_env, s->T1);
-+        gen_helper_divw_AX(tcg_env, s->T0);
-         break;
-     default:
-     case MO_32:
--        gen_helper_divl_EAX(tcg_env, s->T1);
-+        gen_helper_divl_EAX(tcg_env, s->T0);
-         break;
- #ifdef TARGET_X86_64
-     case MO_64:
--        gen_helper_divq_EAX(tcg_env, s->T1);
-+        gen_helper_divq_EAX(tcg_env, s->T0);
-         break;
- #endif
-     }
-@@ -1649,22 +1649,22 @@ static void gen_HLT(DisasContext *s, X86DecodedInsn *decode)
- 
- static void gen_IDIV(DisasContext *s, X86DecodedInsn *decode)
- {
--    MemOp ot = decode->op[2].ot;
-+    MemOp ot = decode->op[1].ot;
- 
-     switch(ot) {
-     case MO_8:
--        gen_helper_idivb_AL(tcg_env, s->T1);
-+        gen_helper_idivb_AL(tcg_env, s->T0);
-         break;
-     case MO_16:
--        gen_helper_idivw_AX(tcg_env, s->T1);
-+        gen_helper_idivw_AX(tcg_env, s->T0);
-         break;
-     default:
-     case MO_32:
--        gen_helper_idivl_EAX(tcg_env, s->T1);
-+        gen_helper_idivl_EAX(tcg_env, s->T0);
-         break;
- #ifdef TARGET_X86_64
-     case MO_64:
--        gen_helper_idivq_EAX(tcg_env, s->T1);
-+        gen_helper_idivq_EAX(tcg_env, s->T0);
-         break;
- #endif
-     }
-@@ -1926,7 +1926,7 @@ static void gen_JMPF(DisasContext *s, X86DecodedInsn *decode)
- 
- static void gen_JMPF_m(DisasContext *s, X86DecodedInsn *decode)
- {
--    MemOp ot = decode->op[2].ot;
-+    MemOp ot = decode->op[1].ot;
- 
-     gen_op_ld_v(s, ot, s->T0, s->A0);
-     gen_add_A0_im(s, 1 << ot);
-@@ -1947,7 +1947,7 @@ static void gen_LAHF(DisasContext *s, X86DecodedInsn *decode)
- 
- static void gen_LDMXCSR(DisasContext *s, X86DecodedInsn *decode)
- {
--    tcg_gen_trunc_tl_i32(s->tmp2_i32, s->T1);
-+    tcg_gen_trunc_tl_i32(s->tmp2_i32, s->T0);
-     gen_helper_ldmxcsr(tcg_env, s->tmp2_i32);
- }
- 
-@@ -1995,7 +1995,7 @@ static void gen_LGS(DisasContext *s, X86DecodedInsn *decode)
- 
- static void gen_LODS(DisasContext *s, X86DecodedInsn *decode)
- {
--    MemOp ot = decode->op[2].ot;
-+    MemOp ot = decode->op[1].ot;
-     if (s->prefix & (PREFIX_REPZ | PREFIX_REPNZ)) {
-         gen_repz(s, ot, gen_lods);
-     } else {
-@@ -2765,7 +2765,7 @@ static void gen_PSLLDQ_i(DisasContext *s, X86DecodedInsn *decode)
- 
- static void gen_PUSH(DisasContext *s, X86DecodedInsn *decode)
- {
--    gen_push_v(s, s->T1);
-+    gen_push_v(s, s->T0);
- }
- 
- static void gen_PUSHA(DisasContext *s, X86DecodedInsn *decode)
-@@ -3077,7 +3077,7 @@ static void gen_RCR(DisasContext *s, X86DecodedInsn *decode)
- 
- static void gen_RET(DisasContext *s, X86DecodedInsn *decode)
- {
--    int16_t adjust = decode->e.op2 == X86_TYPE_I ? decode->immediate : 0;
-+    int16_t adjust = decode->e.op1 == X86_TYPE_I ? decode->immediate : 0;
- 
-     MemOp ot = gen_pop_T0(s);
-     gen_stack_update(s, adjust + (1 << ot));
-@@ -3088,7 +3088,7 @@ static void gen_RET(DisasContext *s, X86DecodedInsn *decode)
- 
- static void gen_RETF(DisasContext *s, X86DecodedInsn *decode)
- {
--    int16_t adjust = decode->e.op2 == X86_TYPE_I ? decode->immediate : 0;
-+    int16_t adjust = decode->e.op1 == X86_TYPE_I ? decode->immediate : 0;
- 
-     if (!PE(s) || VM86(s)) {
-         gen_lea_ss_ofs(s, s->A0, cpu_regs[R_ESP], 0);
+-    tcg_gen_trunc_tl_i32(port, s->T1);
++    tcg_gen_trunc_tl_i32(port, s->T0);
+     tcg_gen_ext16u_i32(port, port);
+     if (!gen_check_io(s, ot, port, SVM_IOIO_TYPE_MASK)) {
+         return;
 -- 
 2.45.1
 
