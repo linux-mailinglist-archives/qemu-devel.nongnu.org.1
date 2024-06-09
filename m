@@ -2,73 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88BAA901710
+	by mail.lfdr.de (Postfix) with ESMTPS id BC6F3901711
 	for <lists+qemu-devel@lfdr.de>; Sun,  9 Jun 2024 18:57:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sGLqQ-0002ur-QY; Sun, 09 Jun 2024 12:56:38 -0400
+	id 1sGLqP-0002uD-V5; Sun, 09 Jun 2024 12:56:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1sGLqO-0002ts-BC
+ (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1sGLqO-0002tr-93
  for qemu-devel@nongnu.org; Sun, 09 Jun 2024 12:56:36 -0400
-Received: from mail-il1-x12c.google.com ([2607:f8b0:4864:20::12c])
+Received: from mail-il1-x136.google.com ([2607:f8b0:4864:20::136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1sGLqM-0000vP-2W
+ (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1sGLqM-0000vQ-1a
  for qemu-devel@nongnu.org; Sun, 09 Jun 2024 12:56:36 -0400
-Received: by mail-il1-x12c.google.com with SMTP id
- e9e14a558f8ab-3759a6423efso2671215ab.0
+Received: by mail-il1-x136.google.com with SMTP id
+ e9e14a558f8ab-3759a6423a6so3981145ab.1
  for <qemu-devel@nongnu.org>; Sun, 09 Jun 2024 09:56:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1717952191; x=1718556991;
+ d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1717952192; x=1718556992;
  darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=1JUE/g4ebvpIHWoAmH1FKrzbhNlZWzvxo4KSx+uHc00=;
- b=SNVIVYhfV+aXMMFBL/FQL2wFWJFlL0MLIrQjFRS5XSj8aj4E2CeztIdf6wZjJ10RJk
- 2YGsCiVsrGr1a25uYJQLa3rhuKVXAM+fH4qxC0hMsJZZN3JLco9G9QC1pReFiu5YVZF5
- uJk9O/cMUTaJbrmnwx6dDR/GopUGIIq7dI4TG2Av9MYCrvQebiVGPcD7TyLw4L8aKoEV
- 9kCatHqHsrsFQJXRlSZDbPf1PWkVkiA573+F0wRQCLa+V+HNkdeYATFfhRepUASaqjsF
- eULXLxZaVJ2mv+XyJU6pB+23vkTOu2xsqVTBYazeYPHObPPZhaXBLkiDrxPtt1d8uEss
- IxNg==
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=tZ41jQOZIrAJPpWZ/KQuq7bouGxwk1FqF78+aO7+wdo=;
+ b=pzkAiMdd4uCmXs5Qkm/Gy0NwnwJRyuduEycE8Xa9nv/PM38SehdoUhAHT+W9Iw7KxI
+ vsUHCglDAXi1clXOln47pNrkP1jyzd888KKDrJD2XZN0jqvc5rAbn9A9P94pkrnXLQ02
+ UnM7fiy2wGicOF693TaYANy7MH63ReC3T/laeSWwFOG8pm7FhpZ5BPY4zxgbYjJ3ka/f
+ FKQyfmWDk13baSdIsR15C7wSfiEWmX6hzAy4QWnQkoQigMRKzP032otYVUWNjgY6Ccpj
+ kPtbCXBmYfHSsZISSkwFQqsl257jukyuLgDHu+T1jzW2eOVptnFv4DLWAzHLt2/eo7PP
+ IYcQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717952191; x=1718556991;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=1JUE/g4ebvpIHWoAmH1FKrzbhNlZWzvxo4KSx+uHc00=;
- b=N08iF58D0qnxjIco0iM8B90rQYCq+EcJf/EBCRd3xJ82ooZD41mDCSovr3pZmEORjo
- CIOr13NppgFiNRFpCap3gUy3JUsIQw3svvI+rjO0cjN5Kk9fbnUo9q1aa05fdAUA9HCd
- ZY6MhAGO5gr2PEyD3DNpj33ZFISwY1FQjy5DwSHx2W8jNWskYA8TsElyr6nBx38s6PXX
- 6ZDBgXwQMUTLags3o0lz1y5T6QNBfbAOzxpMVjp8F5711fQ9fPfo5I/usJPVTpyYZuv8
- vHakRomV8z/3eDbf72g7TujbMYktgfWxCPLi4eAtne8FWhP7WZwlpZMO81KvNiLhpWDc
- +jkA==
-X-Gm-Message-State: AOJu0YyoKXMz/sU6d+wUOeQJjjexobEG9bWYu4Oittqw2Ps4eA1IXiHr
- PXnlq2cFA/tTcohU8CkWilscRHig2rpypnSsQuQNcGJl7+XrMX2fWF7oPzq0ga50a3vS5VXU6I8
- yZoo=
-X-Google-Smtp-Source: AGHT+IGcv+IE6eeIeBCQXK0ah1zY2/nTRkhucezO27ksvJXpeG6nHnwiHm+ljwHOttEfJ0b2Cf5EmA==
-X-Received: by 2002:a05:6e02:1a45:b0:374:b252:243f with SMTP id
- e9e14a558f8ab-3758030d58dmr43181305ab.5.1717952191232; 
+ d=1e100.net; s=20230601; t=1717952192; x=1718556992;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=tZ41jQOZIrAJPpWZ/KQuq7bouGxwk1FqF78+aO7+wdo=;
+ b=LUN/CiA7Y29p/21HzLDfgvGyn0y0NnugSr584Kd/0E3KS+4l5rUrdCjB5qpvinjWvh
+ VJWLQ0ojlO2dwcgP8d+fEfrX2QrdVvFuB9nwY1Y57UWoDHrpbk1XYu8DM57WWzgIWL0d
+ d6a36BO1a+xsULWIe69TboeYtTFwLbZTTPX8oaThUlkTWNPdvwwDir3LnQVmjLzQfu0b
+ vvw01v10dP9ADxMPCZ2xkb2Yv8deHPfkb7Xb0AdQ863FuVNfu02S8eEpbrBxmFbZhVJx
+ HIiJk9xMIe8E9yBY2C7PkGpVx5JOv7l+EtRluI8UF9FUQc60kTH7FORhvqQwqrgDbCTy
+ 5PgA==
+X-Gm-Message-State: AOJu0YyoK9uBVX0GAt6p+eRnxJ2WhNz5SDFlRAqRnKZ4emwUTUvJNOoj
+ rYDaBh/jrcN0ZBXyvUXcYh2uOOsYloEkR1Audg4UnwpYffGFEtaqMaUzB1ijmodcdSfRvNE5agM
+ RrX0=
+X-Google-Smtp-Source: AGHT+IG37uBZW3PpabHaHDmI97lPKkCBR4534TOf/myvIf6uFhBU8ABkn8Ik0H1p8zgZL+wkEZYWjA==
+X-Received: by 2002:a05:6e02:b27:b0:374:aa87:bcaa with SMTP id
+ e9e14a558f8ab-37580314d52mr91161615ab.14.1717952191884; 
  Sun, 09 Jun 2024 09:56:31 -0700 (PDT)
 Received: from dune.bsdimp.com ([50.253.99.174])
  by smtp.gmail.com with ESMTPSA id
- e9e14a558f8ab-374bc1c82d4sm18891715ab.80.2024.06.09.09.56.30
+ e9e14a558f8ab-374bc1c82d4sm18891715ab.80.2024.06.09.09.56.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 09 Jun 2024 09:56:30 -0700 (PDT)
+ Sun, 09 Jun 2024 09:56:31 -0700 (PDT)
 From: Warner Losh <imp@bsdimp.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  Laurent Vivier <laurent@vivier.eu>, Warner Losh <imp@bsdimp.com>,
  Kyle Evans <kevans@freebsd.org>
-Subject: [PULL 0/3] Bsd user misc 2024q2 patches
-Date: Sun,  9 Jun 2024 10:55:54 -0600
-Message-ID: <20240609165557.52555-1-imp@bsdimp.com>
+Subject: [PULL 1/3] linux-user: Adjust comment to reflect the code.
+Date: Sun,  9 Jun 2024 10:55:55 -0600
+Message-ID: <20240609165557.52555-2-imp@bsdimp.com>
 X-Mailer: git-send-email 2.43.0
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20240609165557.52555-1-imp@bsdimp.com>
+References: <20240609165557.52555-1-imp@bsdimp.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::12c;
- envelope-from=imp@bsdimp.com; helo=mail-il1-x12c.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::136;
+ envelope-from=imp@bsdimp.com; helo=mail-il1-x136.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -90,52 +92,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 3e246da2c3f85298b52f8a1154b832acf36aa656:
+If the user didn't specify reserved_va, there's an else for 64-bit host
+32-bit (or fewer) target to reserve 32-bits of address space. Update the
+comments to reflect this, and rejustify comment to 80 columns.
 
-  Merge tag 'for-upstream' of https://gitlab.com/bonzini/qemu into staging (2024-06-08 07:40:08 -0700)
+Signed-off-by: Warner Losh <imp@bsdimp.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ linux-user/main.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-are available in the Git repository at:
-
-  git@gitlab.com:bsdimp/qemu.git tags/bsd-user-misc-2024q2-pull-request
-
-for you to fetch changes up to cb4c259052cbc5dd04c17d963c789360cb8fe340:
-
-  bsd-user: Catch up to run-time reserved_va math (2024-06-09 10:30:25 -0600)
-
-----------------------------------------------------------------
-bsd-user: Baby Steps towards eliminating qemu_host_page_size, et al
-
-First baby-steps towards eliminating qemu_host_page_size: tackle the reserve_va
-calculation (which is easier to copy from linux-user than to fix).
------BEGIN PGP SIGNATURE-----
-Comment: GPGTools - https://gpgtools.org
-
-iQIzBAABCgAdFiEEIDX4lLAKo898zeG3bBzRKH2wEQAFAmZl3pgACgkQbBzRKH2w
-EQBfpg//U4YdJAA0H4okwPtowP1wIK1gpWvVd5FIN17pCXLKT4FR4efhWeEnQh8U
-+dXvkCpX/MnhBkStYoGZBmYe1rNKkEAn8BPCsQqX4y3af5RzKyKWo0gZXOjN3L9e
-ixmeFcg/7BTwnSbcO02xd9BOPPaRiFBDSidh28gr/1sxpXRxlbQHzIUpTBncDaN6
-4w5DnF+b1RFHCz05ytrP517cj7E32Ig9S/cVMmBd1pGJiLnHiOp/peMprCL6tnI+
-YNBzttCbRPNH2z0zVd9En/hDnVirGPYX+LXg0Djkw3I+stJj4jwbJTuDG+5Lzghp
-YrYfiU6x7OG9ywjFJgY1/pExVT1cwkNjuGCXL+F4R49R5LfIEHq5/MlQp+tjpYYO
-g5WmpiLnFpFosmXIPJmxr16zqm2sLD+P0Jr/kdIz58fTWmIQeKwi/Vu/73h4kxST
-vjBbhC3eg56lQDaospc4h8+RehmI6LdSWYx0kxv2JKpXH3lQPqsDSrOcm9hEbWYS
-DeV++vkyQcXrbCnwomfxG1U+dVYBlJ1L1wClxc/1WD9KxXXJIwlvGmIu3o3c2+xj
-BM6eRe3evWioqdqhc2lY+XxATwbIUxiect6ml+F6E0KJxlm3Ajqy6qw49G+uhZxa
-XWUEIYGDd6/xHMlBeo6FKUpe/Ez/i3eCFXr4AD4iO7AtTuukrO4=
-=3EaH
------END PGP SIGNATURE-----
-
-----------------------------------------------------------------
-
-Warner Losh (3):
-  linux-user: Adjust comment to reflect the code.
-  bsd-user: port linux-user:ff8a8bbc2ad1 for variable page sizes
-  bsd-user: Catch up to run-time reserved_va math
-
- bsd-user/main.c   | 51 ++++++++++++++++++++++++++++++++++++-----------
- linux-user/main.c |  8 ++++----
- 2 files changed, 43 insertions(+), 16 deletions(-)
-
+diff --git a/linux-user/main.c b/linux-user/main.c
+index 94e4c47f052..94c99a1366f 100644
+--- a/linux-user/main.c
++++ b/linux-user/main.c
+@@ -814,10 +814,10 @@ int main(int argc, char **argv, char **envp)
+     thread_cpu = cpu;
+ 
+     /*
+-     * Reserving too much vm space via mmap can run into problems
+-     * with rlimits, oom due to page table creation, etc.  We will
+-     * still try it, if directed by the command-line option, but
+-     * not by default.
++     * Reserving too much vm space via mmap can run into problems with rlimits,
++     * oom due to page table creation, etc.  We will still try it, if directed
++     * by the command-line option, but not by default. Unless we're running a
++     * target address space of 32 or fewer bits on a host with 64 bits.
+      */
+     max_reserved_va = MAX_RESERVED_VA(cpu);
+     if (reserved_va != 0) {
 -- 
 2.43.0
 
