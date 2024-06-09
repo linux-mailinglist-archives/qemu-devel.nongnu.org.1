@@ -2,81 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9424901712
-	for <lists+qemu-devel@lfdr.de>; Sun,  9 Jun 2024 18:57:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF1C490175D
+	for <lists+qemu-devel@lfdr.de>; Sun,  9 Jun 2024 20:12:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sGLqT-0002vw-VA; Sun, 09 Jun 2024 12:56:41 -0400
+	id 1sGN0m-0006a7-LS; Sun, 09 Jun 2024 14:11:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1sGLqP-0002uP-N5
- for qemu-devel@nongnu.org; Sun, 09 Jun 2024 12:56:37 -0400
-Received: from mail-il1-x12f.google.com ([2607:f8b0:4864:20::12f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1sGLqN-0000vg-Rb
- for qemu-devel@nongnu.org; Sun, 09 Jun 2024 12:56:37 -0400
-Received: by mail-il1-x12f.google.com with SMTP id
- e9e14a558f8ab-3758fdbd2daso6928675ab.3
- for <qemu-devel@nongnu.org>; Sun, 09 Jun 2024 09:56:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1717952194; x=1718556994;
- darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=DEhu8GM1157Qc3Msyh5LPqHzer+V664PIF9A9S8sV0c=;
- b=sBLQ6/KdWVphCHCHUybiUBldhGzNYz9ikZ4OZYHpU0UvE4EL8onrEAZ//rj2PjSh/n
- k5OPZbiGhxqhe5GMSHsx4QckWtRp7LMQe3KGNbtL+mJF+NgrEHgwWQ8UAm3D0V75pNSl
- b+fym0Pi7nVV/Gp38lH3Jns2rGSr6mkN2bZpP7QOKN5tPRwSZyLjrV47fZ4bsvJJYHZB
- emx0uLvuCRn+V3E2zwpqlqFA7mSMzW8GJWdTVkLHbPyWZXkOk1thnwV0ifpDZiN8haQj
- K0H3br8Md4otE44f46ee6GbYIoD//TPnokHt832xTqQpL4sm5l3aqR5JGHCWoX0IjgKR
- uRMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717952194; x=1718556994;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=DEhu8GM1157Qc3Msyh5LPqHzer+V664PIF9A9S8sV0c=;
- b=VnomH/11Bd5QNVPZmTy0uKT4hzIQb1siM0E7e7FPxkz3Qz7qsde6Kt3Un1i+uDbkjZ
- LJlCvnJ0C0oJBdN+ftbRIHpz7vsHQzMnq4LLKZHfWU+Jj3tihedTYudxhNhLLqG1lwon
- vxsVBDTzA8hf/jyfQz+ckvrMNBjQrS/lbE0INTg5NiNacIEXiuZL/a6/ihi9yzBfH76r
- TQKnX/CQ0oMe2me156UtRwtCKmCe+Fuutq+opMQTU8rCNDaSVuSMDBX9d7r5gZgD0iX9
- iA1NNPIL3NC2zr6pIxjC7S4jogOdFv5ln3S/MdD+ZR5qeS7astG81mkjh28kF2xE2HYj
- cqlQ==
-X-Gm-Message-State: AOJu0Yxt7XBZFYy8jczzI33B/qJmbHseIeOjpFYty7ABLoZQM2Fq+DGB
- 0VmMz6h43QTxjIGwFzUdfDS+eT+wikmSg6ErCAO/AP5xPLaIDk2VLRtReJtVF+Ii9PrxMCV/9On
- 3oo0=
-X-Google-Smtp-Source: AGHT+IECiRnsti1SWZU3P63wwX1+HGDEo6b9gPoGrL2luIk/ntqm5uDwxjXbcpBpqQpsKr3Vm0IZng==
-X-Received: by 2002:a92:cd81:0:b0:374:aa60:a5c3 with SMTP id
- e9e14a558f8ab-375803bf248mr88838905ab.28.1717952194395; 
- Sun, 09 Jun 2024 09:56:34 -0700 (PDT)
-Received: from dune.bsdimp.com ([50.253.99.174])
- by smtp.gmail.com with ESMTPSA id
- e9e14a558f8ab-374bc1c82d4sm18891715ab.80.2024.06.09.09.56.33
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 09 Jun 2024 09:56:33 -0700 (PDT)
-From: Warner Losh <imp@bsdimp.com>
-To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Laurent Vivier <laurent@vivier.eu>, Warner Losh <imp@bsdimp.com>,
- Kyle Evans <kevans@freebsd.org>
-Subject: [PULL 3/3] bsd-user: Catch up to run-time reserved_va math
-Date: Sun,  9 Jun 2024 10:55:57 -0600
-Message-ID: <20240609165557.52555-4-imp@bsdimp.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240609165557.52555-1-imp@bsdimp.com>
-References: <20240609165557.52555-1-imp@bsdimp.com>
+ (Exim 4.90_1) (envelope-from <rathc@linux.vnet.ibm.com>)
+ id 1sGN0j-0006ZB-3e; Sun, 09 Jun 2024 14:11:21 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <rathc@linux.vnet.ibm.com>)
+ id 1sGN0h-0005g9-2L; Sun, 09 Jun 2024 14:11:20 -0400
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 459HvdsX021589;
+ Sun, 9 Jun 2024 18:11:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+ message-id:date:mime-version:subject:to:cc:references:from
+ :in-reply-to:content-type:content-transfer-encoding; s=pp1; bh=k
+ S0OgA1WV6qQTgqDIja3tD6mv69tsPjOplogpJ05p8A=; b=dseOpxPKrmB4bta28
+ LnJtXtpAnXOgQKF76waSs9pSZv8YWYknG8fanT+PN5n/Da60Lgvip8sI7j7ugpIe
+ OYXv2PPWTxOTfBv9uL5aQjWL9PTBKHyj/4l1qoxw3wNuuT2G6BhNqEwKjRS9Kg0W
+ y8NpdsZW+MOlZFqgavtebNdaKgljvlBqEBwnOv8eG1lC1BQtC7sGrMwbVoXKOpcg
+ BFxc/7gGkp92+8ywdI7StPYmkatS9lLcmuomld+/Juimwn8BIOg34v3vrPH9n6co
+ Q1h6lOAV3wdYoY4wdODiQw7Rju+4hwIFgfXFXQAwNK4DRXQfsOIbiMkQvtpBhPk8
+ T9VZA==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ynh8br111-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sun, 09 Jun 2024 18:11:15 +0000 (GMT)
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 459IBENw010168;
+ Sun, 9 Jun 2024 18:11:14 GMT
+Received: from ppma11.dal12v.mail.ibm.com
+ (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ynh8br110-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sun, 09 Jun 2024 18:11:14 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 459H5pRK008716; Sun, 9 Jun 2024 18:11:14 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3yn4b2tv8t-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sun, 09 Jun 2024 18:11:14 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
+ [10.20.54.105])
+ by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 459IB85c52560252
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Sun, 9 Jun 2024 18:11:10 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 79AB020040;
+ Sun,  9 Jun 2024 18:11:08 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3662820049;
+ Sun,  9 Jun 2024 18:11:06 +0000 (GMT)
+Received: from [9.171.49.220] (unknown [9.171.49.220])
+ by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Sun,  9 Jun 2024 18:11:05 +0000 (GMT)
+Message-ID: <d027b594-6fcc-49f6-a179-25b479be2be7@linux.vnet.ibm.com>
+Date: Sun, 9 Jun 2024 23:41:04 +0530
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/4] target/ppc: Move VSX vector with length storage
+ access insns to decodetree.
+To: Richard Henderson <richard.henderson@linaro.org>,
+ Chinmay Rath <rathc@linux.ibm.com>, qemu-ppc@nongnu.org
+Cc: qemu-devel@nongnu.org, npiggin@gmail.com, danielhb413@gmail.com,
+ harshpb@linux.ibm.com
+References: <20240607144921.726730-1-rathc@linux.ibm.com>
+ <20240607144921.726730-3-rathc@linux.ibm.com>
+ <91e78fa4-f844-4b79-ba09-46c722f35df8@linaro.org>
+Content-Language: en-US
+From: Chinmay Rath <rathc@linux.vnet.ibm.com>
+In-Reply-To: <91e78fa4-f844-4b79-ba09-46c722f35df8@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::12f;
- envelope-from=imp@bsdimp.com; helo=mail-il1-x12f.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: k6aoxcLzTrbrpBLobzaCOJlT3IvOCwmp
+X-Proofpoint-GUID: UU52eo8CIHOHQaUiuQ_oeJwA8Z95yQLn
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-06-09_14,2024-06-06_02,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ lowpriorityscore=0 impostorscore=0 suspectscore=0 malwarescore=0
+ spamscore=0 mlxscore=0 bulkscore=0 adultscore=0 clxscore=1011
+ mlxlogscore=705 phishscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2405170001 definitions=main-2406090141
+Received-SPF: none client-ip=148.163.158.5;
+ envelope-from=rathc@linux.vnet.ibm.com; helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=-0.01,
+ RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,93 +117,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Catch up to linux-user's 8f67b9c694d0, 13c13397556a, 2f7828b57293, and
-95059f9c313a by Richard Henderson which made reserved_va a run-time
-calculation, defaulting to nothing except in the case of 64-bit host
-32-bit target. Also include the adjustment of the comment heading that
-work submitted in the same patch stream. Since this is a direct copy,
-squash it into one patch rather than follow the Linux evolution since
-breaking this down further at this point doesn't make sense for this
-"new code".
 
-Signed-off-by: Warner Losh <imp@bsdimp.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
----
- bsd-user/main.c | 39 +++++++++++++++++++++++++++------------
- 1 file changed, 27 insertions(+), 12 deletions(-)
+Hi Richard,
 
-diff --git a/bsd-user/main.c b/bsd-user/main.c
-index d685734d087..dcad266c2c9 100644
---- a/bsd-user/main.c
-+++ b/bsd-user/main.c
-@@ -77,25 +77,16 @@ bool have_guest_base;
- # if HOST_LONG_BITS > TARGET_VIRT_ADDR_SPACE_BITS
- #  if TARGET_VIRT_ADDR_SPACE_BITS == 32 && \
-       (TARGET_LONG_BITS == 32 || defined(TARGET_ABI32))
--#   define MAX_RESERVED_VA  0xfffffffful
-+#   define MAX_RESERVED_VA(CPU)  0xfffffffful
- #  else
--#   define MAX_RESERVED_VA  ((1ul << TARGET_VIRT_ADDR_SPACE_BITS) - 1)
-+#   define MAX_RESERVED_VA(CPU)  ((1ul << TARGET_VIRT_ADDR_SPACE_BITS) - 1)
- #  endif
- # else
--#  define MAX_RESERVED_VA  0
-+#  define MAX_RESERVED_VA(CPU)  0
- # endif
- #endif
- 
--/*
-- * That said, reserving *too* much vm space via mmap can run into problems
-- * with rlimits, oom due to page table creation, etc.  We will still try it,
-- * if directed by the command-line option, but not by default.
-- */
--#if HOST_LONG_BITS == 64 && TARGET_VIRT_ADDR_SPACE_BITS <= 32
--unsigned long reserved_va = MAX_RESERVED_VA;
--#else
- unsigned long reserved_va;
--#endif
- 
- const char *interp_prefix = CONFIG_QEMU_INTERP_PREFIX;
- const char *qemu_uname_release;
-@@ -293,6 +284,7 @@ int main(int argc, char **argv)
-     envlist_t *envlist = NULL;
-     char *argv0 = NULL;
-     int host_page_size;
-+    unsigned long max_reserved_va;
- 
-     adjust_ssize();
- 
-@@ -493,6 +485,29 @@ int main(int argc, char **argv)
-     cpu_reset(cpu);
-     thread_cpu = cpu;
- 
-+    /*
-+     * Reserving too much vm space via mmap can run into problems with rlimits,
-+     * oom due to page table creation, etc.  We will still try it, if directed
-+     * by the command-line option, but not by default. Unless we're running a
-+     * target address space of 32 or fewer bits on a host with 64 bits.
-+     */
-+    max_reserved_va = MAX_RESERVED_VA(cpu);
-+    if (reserved_va != 0) {
-+        if ((reserved_va + 1) % host_page_size) {
-+            char *s = size_to_str(host_page_size);
-+            fprintf(stderr, "Reserved virtual address not aligned mod %s\n", s);
-+            g_free(s);
-+            exit(EXIT_FAILURE);
-+        }
-+        if (max_reserved_va && reserved_va > max_reserved_va) {
-+            fprintf(stderr, "Reserved virtual address too big\n");
-+            exit(EXIT_FAILURE);
-+        }
-+    } else if (HOST_LONG_BITS == 64 && TARGET_VIRT_ADDR_SPACE_BITS <= 32) {
-+        /* MAX_RESERVED_VA + 1 is a large power of 2, so is aligned. */
-+        reserved_va = max_reserved_va;
-+    }
-+
-     if (getenv("QEMU_STRACE")) {
-         do_strace = 1;
-     }
--- 
-2.43.0
+On 6/7/24 21:11, Richard Henderson wrote:
+> On 6/7/24 07:49, Chinmay Rath wrote:
+>> +static bool do_ld_st_vl(DisasContext *ctx, arg_X *a,
+>> +                        void (*helper)(TCGv_ptr, TCGv, TCGv_ptr, TCGv))
+>> +{
+>> +    TCGv EA;
+>> +    TCGv_ptr xt;
+>> +    if (a->rt < 32) {
+>> +        REQUIRE_VSX(ctx);
+>> +    } else {
+>> +        REQUIRE_VECTOR(ctx);
+>> +    }
+>> +    xt = gen_vsr_ptr(a->rt);
+>> +    gen_set_access_type(ctx, ACCESS_INT);
+>> +
+>> +    if (a->ra) {
+>> +        EA = tcg_temp_new();
+>> +        tcg_gen_mov_tl(EA, cpu_gpr[a->ra]);
+>> +    } else {
+>> +        EA = tcg_constant_tl(0);
+>> +    }
+>> +    if (NARROW_MODE(ctx)) {
+>> +        tcg_gen_ext32u_tl(EA, EA);
+>
+> ra == 0, narrow mode, will crash, due to write into constant 0.
+> Obviously 0 does not need extending, so this could be
+>
+>     if (!a->ra) {
+>         ea = constant 0;
+>     } else if (narrow mode) {
+>         ea = tcg_temp_new();
+>         tcg_gen_ext32u_tl(ea, cpu_gpr[a->ra]);
+>     } else {
+>         ra = cpu_gpr[a->ra];
+>     }
+>
+^ Thank you Richard, will take care in v2.
+>
+> Aren't there existing helper functions for computing this address?
+> And if not, better to create one.
+^
+The calculation of effective address in these instructions is slightly 
+different than the others,
+for which helper function exist :
+
+EA for these insns : EA ← (RA=0) ? 0 : GPR[RA]
+EA for rest storage access insns : EA ← ((RA=0) ? 0 : GPR[RA]) + GPR[RB]
+
+This is why I could not reuse that function. Also, this calculation of 
+EA is limited to these
+4 insns above, and only 2 others (prefixed insns), which is why I did 
+not create a new function
+for this, considering it won't be reused for any other insn.
+
+Please let me know if I should create a new function in this case as well.
+
+Thanks and Regards,
+Chinmay
+>
+>
+> r~
+>
 
 
