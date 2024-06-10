@@ -2,57 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22AAE90349C
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jun 2024 10:01:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17861903496
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jun 2024 10:01:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sGwQw-0008Ao-9a; Tue, 11 Jun 2024 04:00:46 -0400
+	id 1sGwQz-0008CZ-6h; Tue, 11 Jun 2024 04:00:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yuan1.liu@intel.com>)
- id 1sGwQu-00089z-GC
- for qemu-devel@nongnu.org; Tue, 11 Jun 2024 04:00:44 -0400
+ id 1sGwQw-0008BT-CE
+ for qemu-devel@nongnu.org; Tue, 11 Jun 2024 04:00:46 -0400
 Received: from mgamail.intel.com ([192.198.163.18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yuan1.liu@intel.com>)
- id 1sGwQr-0006l9-P3
- for qemu-devel@nongnu.org; Tue, 11 Jun 2024 04:00:44 -0400
+ id 1sGwQu-0006lp-KM
+ for qemu-devel@nongnu.org; Tue, 11 Jun 2024 04:00:46 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1718092842; x=1749628842;
+ t=1718092845; x=1749628845;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=XL3qUJ/s4JKxW1z/Q1moGl6f6RxBIByPE7Pu6LcLU94=;
- b=Q92XVMt63PSf5Dbu026+jDj8FgKH3mY6/XBM7e8zt9E+FlhDXppnmiRt
- tsY4E4pKO2ZfsL/lGikGJD8NVHjL3Nh+Fxfy9vqVYk8MDpO5zkJTvpEJk
- YtTal00CpN+JV+hWv/83IfUsIW9BUIlLpK8DiQSBDLH5Zropsq/YyTxSr
- 91uz1TpWsaGLX/DREVzifuSlH8lCPNSoztZypa1uLzVk0Ye6OrIonNQaE
- ZT5pCUVIKHAedcErMLX4dsZAJeqGt9j5V2wX9w5AQuAd+7CCq3v7rSqYp
- WgMXPLGg3jhsC/9Z2V5Dx9z6rzHchL8YUhPV2EVDB3tye902DvQ1BJZsx w==;
-X-CSE-ConnectionGUID: KXLGkQJZSniSDVO1UfX2HQ==
-X-CSE-MsgGUID: gzNh1/GdRO2iJyUzGSvkGg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11099"; a="14510014"
-X-IronPort-AV: E=Sophos;i="6.08,229,1712646000"; d="scan'208";a="14510014"
+ bh=LOkAr6o97zLVwWYMK4M28np6yAyG6953SoDn1P7ED0w=;
+ b=lz0uyEsteveE4ReANmej6qcsDSy4G6SrFUn74J2PmQP3KaQg0sBRO+KR
+ y5sh2hyEMYcnUccSWac1kSVoQV/GlCMWdDEHdMZN0+BPRqZ+FUdBIonIa
+ mDJbgnbYaaO8zYuKfAk2IG3CXwP9ppLi0JrEjVZL8wJj4KhUG2zgF46M8
+ V2PlOPV2a0o/seVj+fSgakoM2xS86kKVXecdt+hzPIJfJoVO1kaBm0+wT
+ GwChgQKQHapaGghFEu3x+cQS9603KxD1VRvdDFiVWKfUkwfcQhNpPzXBW
+ DqT9NRB1U/ihf3NoSTMmyLY6YM+GfsvyowA82pSuDpaVnz7jvNv/3zpLr w==;
+X-CSE-ConnectionGUID: Xt21gwtMR1S82QVZRH4VPQ==
+X-CSE-MsgGUID: bWRgwMSyTteO1+211G1TEw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11099"; a="14510025"
+X-IronPort-AV: E=Sophos;i="6.08,229,1712646000"; d="scan'208";a="14510025"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Jun 2024 01:00:40 -0700
-X-CSE-ConnectionGUID: 1hO77vkqRuaHSkN5OMn+Lg==
-X-CSE-MsgGUID: +iiORHKoSDSUpnBjyVmkKQ==
+ 11 Jun 2024 01:00:43 -0700
+X-CSE-ConnectionGUID: ABpeTSbfR+O8ZkPCBIaYHw==
+X-CSE-MsgGUID: Kv/OpcjeS8SLA8DP+m6bgw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,229,1712646000"; d="scan'208";a="39184817"
+X-IronPort-AV: E=Sophos;i="6.08,229,1712646000"; d="scan'208";a="39184822"
 Received: from sae-gw02.sh.intel.com (HELO localhost) ([10.239.45.110])
- by fmviesa007.fm.intel.com with ESMTP; 11 Jun 2024 01:00:37 -0700
+ by fmviesa007.fm.intel.com with ESMTP; 11 Jun 2024 01:00:40 -0700
 From: Yuan Liu <yuan1.liu@intel.com>
 To: peterx@redhat.com, farosas@suse.de, pbonzini@redhat.com,
  marcandre.lureau@redhat.com, berrange@redhat.com, thuth@redhat.com,
  philmd@linaro.org
 Cc: qemu-devel@nongnu.org, yuan1.liu@intel.com, nanhai.zou@intel.com,
  shameerali.kolothum.thodi@huawei.com
-Subject: [PATCH v8 2/7] migration/multifd: put IOV initialization into
- compression method
-Date: Mon, 10 Jun 2024 18:21:05 +0800
-Message-ID: <20240610102110.900410-3-yuan1.liu@intel.com>
+Subject: [PATCH v8 3/7] configure: add --enable-qpl build option
+Date: Mon, 10 Jun 2024 18:21:06 +0800
+Message-ID: <20240610102110.900410-4-yuan1.liu@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240610102110.900410-1-yuan1.liu@intel.com>
 References: <20240610102110.900410-1-yuan1.liu@intel.com>
@@ -82,161 +81,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Different compression methods may require different numbers of IOVs.
-Based on streaming compression of zlib and zstd, all pages will be
-compressed to a data block, so two IOVs are needed for packet header
-and compressed data block.
+add --enable-qpl and --disable-qpl options to enable and disable
+the QPL compression method for multifd migration.
+
+The Query Processing Library (QPL) is an open-source library
+that supports data compression and decompression features. It
+is based on the deflate compression algorithm and use Intel
+In-Memory Analytics Accelerator(IAA) hardware for compression
+and decompression acceleration.
+
+For more live migration with IAA, please refer to the document
+docs/devel/migration/qpl-compression.rst
 
 Signed-off-by: Yuan Liu <yuan1.liu@intel.com>
 Reviewed-by: Nanhai Zou <nanhai.zou@intel.com>
 Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Reviewed-by: Peter Xu <peterx@redhat.com>
 ---
- migration/multifd-zlib.c |  7 +++++++
- migration/multifd-zstd.c |  8 +++++++-
- migration/multifd.c      | 22 ++++++++++++----------
- 3 files changed, 26 insertions(+), 11 deletions(-)
+ meson.build                   | 8 ++++++++
+ meson_options.txt             | 2 ++
+ scripts/meson-buildoptions.sh | 3 +++
+ 3 files changed, 13 insertions(+)
 
-diff --git a/migration/multifd-zlib.c b/migration/multifd-zlib.c
-index 737a9645d2..2ced69487e 100644
---- a/migration/multifd-zlib.c
-+++ b/migration/multifd-zlib.c
-@@ -70,6 +70,10 @@ static int zlib_send_setup(MultiFDSendParams *p, Error **errp)
-         goto err_free_zbuff;
-     }
-     p->compress_data = z;
-+
-+    /* Needs 2 IOVs, one for packet header and one for compressed data */
-+    p->iov = g_new0(struct iovec, 2);
-+
-     return 0;
+diff --git a/meson.build b/meson.build
+index ec59effca2..43f260f9eb 100644
+--- a/meson.build
++++ b/meson.build
+@@ -1201,6 +1201,12 @@ if not get_option('zstd').auto() or have_block
+                     required: get_option('zstd'),
+                     method: 'pkg-config')
+ endif
++qpl = not_found
++if not get_option('qpl').auto() or have_system
++  qpl = dependency('qpl', version: '>=1.5.0',
++                    required: get_option('qpl'),
++                    method: 'pkg-config')
++endif
+ virgl = not_found
  
- err_free_zbuff:
-@@ -101,6 +105,9 @@ static void zlib_send_cleanup(MultiFDSendParams *p, Error **errp)
-     z->buf = NULL;
-     g_free(p->compress_data);
-     p->compress_data = NULL;
-+
-+    g_free(p->iov);
-+    p->iov = NULL;
+ have_vhost_user_gpu = have_tools and host_os == 'linux' and pixman.found()
+@@ -2335,6 +2341,7 @@ config_host_data.set('CONFIG_MALLOC_TRIM', has_malloc_trim)
+ config_host_data.set('CONFIG_STATX', has_statx)
+ config_host_data.set('CONFIG_STATX_MNT_ID', has_statx_mnt_id)
+ config_host_data.set('CONFIG_ZSTD', zstd.found())
++config_host_data.set('CONFIG_QPL', qpl.found())
+ config_host_data.set('CONFIG_FUSE', fuse.found())
+ config_host_data.set('CONFIG_FUSE_LSEEK', fuse_lseek.found())
+ config_host_data.set('CONFIG_SPICE_PROTOCOL', spice_protocol.found())
+@@ -4449,6 +4456,7 @@ summary_info += {'snappy support':    snappy}
+ summary_info += {'bzip2 support':     libbzip2}
+ summary_info += {'lzfse support':     liblzfse}
+ summary_info += {'zstd support':      zstd}
++summary_info += {'Query Processing Library support': qpl}
+ summary_info += {'NUMA host support': numa}
+ summary_info += {'capstone':          capstone}
+ summary_info += {'libpmem support':   libpmem}
+diff --git a/meson_options.txt b/meson_options.txt
+index 4c1583eb40..dd680a5faf 100644
+--- a/meson_options.txt
++++ b/meson_options.txt
+@@ -259,6 +259,8 @@ option('xkbcommon', type : 'feature', value : 'auto',
+        description: 'xkbcommon support')
+ option('zstd', type : 'feature', value : 'auto',
+        description: 'zstd compression support')
++option('qpl', type : 'feature', value : 'auto',
++       description: 'Query Processing Library support')
+ option('fuse', type: 'feature', value: 'auto',
+        description: 'FUSE block device export')
+ option('fuse_lseek', type : 'feature', value : 'auto',
+diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
+index 6ce5a8b72a..73ae8cedfc 100644
+--- a/scripts/meson-buildoptions.sh
++++ b/scripts/meson-buildoptions.sh
+@@ -220,6 +220,7 @@ meson_options_help() {
+   printf "%s\n" '                  Xen PCI passthrough support'
+   printf "%s\n" '  xkbcommon       xkbcommon support'
+   printf "%s\n" '  zstd            zstd compression support'
++  printf "%s\n" '  qpl             Query Processing Library support'
  }
- 
- /**
-diff --git a/migration/multifd-zstd.c b/migration/multifd-zstd.c
-index 256858df0a..ca17b7e310 100644
---- a/migration/multifd-zstd.c
-+++ b/migration/multifd-zstd.c
-@@ -52,7 +52,6 @@ static int zstd_send_setup(MultiFDSendParams *p, Error **errp)
-     struct zstd_data *z = g_new0(struct zstd_data, 1);
-     int res;
- 
--    p->compress_data = z;
-     z->zcs = ZSTD_createCStream();
-     if (!z->zcs) {
-         g_free(z);
-@@ -77,6 +76,10 @@ static int zstd_send_setup(MultiFDSendParams *p, Error **errp)
-         error_setg(errp, "multifd %u: out of memory for zbuff", p->id);
-         return -1;
-     }
-+    p->compress_data = z;
-+
-+    /* Needs 2 IOVs, one for packet header and one for compressed data */
-+    p->iov = g_new0(struct iovec, 2);
-     return 0;
+ _meson_option_parse() {
+   case $1 in
+@@ -558,6 +559,8 @@ _meson_option_parse() {
+     --disable-xkbcommon) printf "%s" -Dxkbcommon=disabled ;;
+     --enable-zstd) printf "%s" -Dzstd=enabled ;;
+     --disable-zstd) printf "%s" -Dzstd=disabled ;;
++    --enable-qpl) printf "%s" -Dqpl=enabled ;;
++    --disable-qpl) printf "%s" -Dqpl=disabled ;;
+     *) return 1 ;;
+   esac
  }
- 
-@@ -98,6 +101,9 @@ static void zstd_send_cleanup(MultiFDSendParams *p, Error **errp)
-     z->zbuff = NULL;
-     g_free(p->compress_data);
-     p->compress_data = NULL;
-+
-+    g_free(p->iov);
-+    p->iov = NULL;
- }
- 
- /**
-diff --git a/migration/multifd.c b/migration/multifd.c
-index f317bff077..d82885fdbb 100644
---- a/migration/multifd.c
-+++ b/migration/multifd.c
-@@ -137,6 +137,13 @@ static int nocomp_send_setup(MultiFDSendParams *p, Error **errp)
-         p->write_flags |= QIO_CHANNEL_WRITE_FLAG_ZERO_COPY;
-     }
- 
-+    if (multifd_use_packets()) {
-+        /* We need one extra place for the packet header */
-+        p->iov = g_new0(struct iovec, p->page_count + 1);
-+    } else {
-+        p->iov = g_new0(struct iovec, p->page_count);
-+    }
-+
-     return 0;
- }
- 
-@@ -150,6 +157,8 @@ static int nocomp_send_setup(MultiFDSendParams *p, Error **errp)
-  */
- static void nocomp_send_cleanup(MultiFDSendParams *p, Error **errp)
- {
-+    g_free(p->iov);
-+    p->iov = NULL;
-     return;
- }
- 
-@@ -228,6 +237,7 @@ static int nocomp_send_prepare(MultiFDSendParams *p, Error **errp)
-  */
- static int nocomp_recv_setup(MultiFDRecvParams *p, Error **errp)
- {
-+    p->iov = g_new0(struct iovec, p->page_count);
-     return 0;
- }
- 
-@@ -240,6 +250,8 @@ static int nocomp_recv_setup(MultiFDRecvParams *p, Error **errp)
-  */
- static void nocomp_recv_cleanup(MultiFDRecvParams *p)
- {
-+    g_free(p->iov);
-+    p->iov = NULL;
- }
- 
- /**
-@@ -783,8 +795,6 @@ static bool multifd_send_cleanup_channel(MultiFDSendParams *p, Error **errp)
-     p->packet_len = 0;
-     g_free(p->packet);
-     p->packet = NULL;
--    g_free(p->iov);
--    p->iov = NULL;
-     multifd_send_state->ops->send_cleanup(p, errp);
- 
-     return *errp == NULL;
-@@ -1179,11 +1189,6 @@ bool multifd_send_setup(void)
-             p->packet = g_malloc0(p->packet_len);
-             p->packet->magic = cpu_to_be32(MULTIFD_MAGIC);
-             p->packet->version = cpu_to_be32(MULTIFD_VERSION);
--
--            /* We need one extra place for the packet header */
--            p->iov = g_new0(struct iovec, page_count + 1);
--        } else {
--            p->iov = g_new0(struct iovec, page_count);
-         }
-         p->name = g_strdup_printf("multifdsend_%d", i);
-         p->page_size = qemu_target_page_size();
-@@ -1353,8 +1358,6 @@ static void multifd_recv_cleanup_channel(MultiFDRecvParams *p)
-     p->packet_len = 0;
-     g_free(p->packet);
-     p->packet = NULL;
--    g_free(p->iov);
--    p->iov = NULL;
-     g_free(p->normal);
-     p->normal = NULL;
-     g_free(p->zero);
-@@ -1602,7 +1605,6 @@ int multifd_recv_setup(Error **errp)
-             p->packet = g_malloc0(p->packet_len);
-         }
-         p->name = g_strdup_printf("multifdrecv_%d", i);
--        p->iov = g_new0(struct iovec, page_count);
-         p->normal = g_new0(ram_addr_t, page_count);
-         p->zero = g_new0(ram_addr_t, page_count);
-         p->page_count = page_count;
 -- 
 2.43.0
 
