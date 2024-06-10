@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF0F1901B37
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jun 2024 08:25:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D194F901B27
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jun 2024 08:24:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sGYR4-0007xZ-MS; Mon, 10 Jun 2024 02:23:18 -0400
+	id 1sGYRB-0000bp-5N; Mon, 10 Jun 2024 02:23:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sGYR2-0007gU-IW
- for qemu-devel@nongnu.org; Mon, 10 Jun 2024 02:23:16 -0400
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sGYR8-0000I7-Oe
+ for qemu-devel@nongnu.org; Mon, 10 Jun 2024 02:23:22 -0400
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sGYR0-0004hZ-P6
- for qemu-devel@nongnu.org; Mon, 10 Jun 2024 02:23:16 -0400
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-35f14af40c2so1092484f8f.0
- for <qemu-devel@nongnu.org>; Sun, 09 Jun 2024 23:23:14 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sGYR6-0004iX-EU
+ for qemu-devel@nongnu.org; Mon, 10 Jun 2024 02:23:22 -0400
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-35f1a7386d5so1022377f8f.3
+ for <qemu-devel@nongnu.org>; Sun, 09 Jun 2024 23:23:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1718000593; x=1718605393; darn=nongnu.org;
+ d=linaro.org; s=google; t=1718000598; x=1718605398; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=4n9OOqL7M+4IkKSuwlfUH4OM5K7RDG2/fYwnLrV93N8=;
- b=D0FM79fc2UXMYFo088bpazc4Gp+Ah9m0pvNrZmA/Fk3Ga+hNrVwaxU9RbPYUn7UWOb
- uxWqUUl5iED3ozQTkDKzTLrXOvww9gkZEjgPYq59T/dYB1ZfuAVSyRuY4DvaB80a2TyN
- v9lfKnZ8XLrzO92NtoueAFu/kWdPmN1Gw6QCQeJOCG67auCqLzL1V1g0w3e/Xczo3d7h
- PDmcVeFfIqxc+ZtXPw8NN2Vx9K/V3T293hegHoNjp8OI8bJRmJkO3L6613mZaaPamKe6
- RRmG1m7Yyu7co+kMt9PSmM84hcJslXhZ1f0MZpQLa9vb+Rg162PCwLwE6I1+tqhuLx+/
- s1Dg==
+ bh=jTFNp75u/pYhIEl6kZFuCvdor3PDAS+uCnAKSx/B1Hc=;
+ b=ZPfDM5hRm2u+SIPJapOsFbLVybOqWeXxOzwqk5cz99toE7JeBAF1PQ7AWFFCH+X80B
+ mr8/I6OgcUF0VilzkRaXj9QQsI4W1ou3NDc/hNU1n75ehGHNILlsLQjy+vWJuggZYa7+
+ L0tePqiEzkIaMOzX7owwm+MHVb+jbtM0sTutlC8WBIU77917gfVuYHH4wklJv1GHAYrR
+ hmKFl8D7qRiOuHfQYhPvIy/53QMLmdYUq8FPmCgzU6irhxS3WqGfGVIR1jTpILJ50eTG
+ HganRqWuMZgXqQbvE21tY1VMecZoRbDKiFHBtrwlbWBdu6huP10U+2ezjkSEvB/l0cnL
+ CfkQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718000593; x=1718605393;
+ d=1e100.net; s=20230601; t=1718000598; x=1718605398;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=4n9OOqL7M+4IkKSuwlfUH4OM5K7RDG2/fYwnLrV93N8=;
- b=Bo6fAOcY9mhgFQOj6IUyxcyIE0O8cWWYl+Du9oBliIiv1LawhC9CK7XyB5Lx+DvDWC
- Wvo/0ILAjZ59TRjNHvAjZgqhY+rl2+zcMnlRU4YrRNpuTHH5ePPKNuELdhydmhlJYBDS
- Ne8N6Nw14WO5kppPhXj4u0CzM40WKHG/A41srqrB04oIV7RwyH9RxAgKurOIOyp2GVoe
- xKXbvGh46DtHsTvkMAik7BtJxORg1sr9R1sGA0RzNkWqk22oS6OIjDB/O7BCmSIMOrtV
- DJm8/+5I0ok7i8JM5/4Zr4GcItuJeIV7CzuwddEBLTgtAi0EA1BGPJbPTJdCP7M26qjw
- LOJA==
-X-Gm-Message-State: AOJu0YxqFvU9LlZ5K+Bk1ZtCw/p20c0FAWpY2jY8ZHLDFKdEIIr+6N6I
- 4jv0j7QgxhLMtXwvUsLcffVtxS32rl8tcQaEtKQauo40hevrgbuHiMYnmhXJToucTT/ABUBmefC
- Z
-X-Google-Smtp-Source: AGHT+IEZMgsqPxoaoTMQn7Afhc9ajwmbTN6xdejJd5pwa18p5UP/4Uj0MXBFV/hwj1aaOg9BDHgSpA==
-X-Received: by 2002:a05:6000:22f:b0:35f:caa:1eb9 with SMTP id
- ffacd0b85a97d-35f0caa1f21mr3378081f8f.4.1718000593001; 
- Sun, 09 Jun 2024 23:23:13 -0700 (PDT)
+ bh=jTFNp75u/pYhIEl6kZFuCvdor3PDAS+uCnAKSx/B1Hc=;
+ b=Xvu8TccQmZcskAPDAXKUdlT79Q1bejzXKPZ/4m9VIyTgknfcuvZQiqDyrn1/dA0Xay
+ sUs7ap5X6ToqvK4LaAJ6KvKNpbiEVRDuMHk9cwsLOXmAaV3yixOf5dLVDPu9JGSBeCxz
+ uzItVAOPq01yqPhJz98APICKJ/6sQl8y2MgJFdLQE3lh+I/JGVN1iCN2TKBb69PJfyaC
+ IxtFi0ZccANbJBtFX5us02yjAPmdhEWFF+GWcF7K4vMRorPoe0ON4CyXvAgtRG3RMcIi
+ n32uSJM1dBT9cb1+QpFxPkWCerDCPvm5bPALRuldp7CMP/3+SlJxRkOX/EOgq1/sFvnx
+ d9Nw==
+X-Gm-Message-State: AOJu0Yy2lD7kHMAtgNp6pyQvmcDRvf8I1k4pnkqSB2xSEzn1zdW3c6a0
+ MHBdtJ1OEZcuCqTAzTMY8ou2Nx66Qk8KtPmPF+9LLzI5r0WmiRJfrD32KAXJ/vB2sIoyJ/lEGk8
+ o
+X-Google-Smtp-Source: AGHT+IHXQWSUUv5/Ocvx+KuF6OEZYbUesNp/A7N7qv2V0d+wAN7h9Xhg9qru1zBzFN4TGnwytx34qQ==
+X-Received: by 2002:a05:6000:18a2:b0:35f:1bcd:8e53 with SMTP id
+ ffacd0b85a97d-35f1bcd8ec6mr3241468f8f.55.1718000598595; 
+ Sun, 09 Jun 2024 23:23:18 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.129.242])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-35f224d5151sm2527449f8f.3.2024.06.09.23.23.11
+ ffacd0b85a97d-35ef5d2da31sm10071613f8f.14.2024.06.09.23.23.17
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sun, 09 Jun 2024 23:23:12 -0700 (PDT)
+ Sun, 09 Jun 2024 23:23:18 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-ppc@nongnu.org,
@@ -65,18 +65,18 @@ Cc: Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-ppc@nongnu.org,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 22/26] hw/ppc: Avoid using Monitor in
- pnv_xive2_pic_print_info()
-Date: Mon, 10 Jun 2024 08:21:00 +0200
-Message-ID: <20240610062105.49848-23-philmd@linaro.org>
+Subject: [PATCH 23/26] hw/ppc: Avoid using Monitor in
+ SpaprInterruptControllerClass::print_info()
+Date: Mon, 10 Jun 2024 08:21:01 +0200
+Message-ID: <20240610062105.49848-24-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240610062105.49848-1-philmd@linaro.org>
 References: <20240610062105.49848-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,78 +103,138 @@ Replace Monitor API by HumanReadableText one.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/ppc/pnv_xive.h | 2 +-
- hw/intc/pnv_xive2.c       | 9 +--------
- hw/ppc/pnv.c              | 2 +-
- 3 files changed, 3 insertions(+), 10 deletions(-)
+ include/hw/ppc/spapr_irq.h | 2 +-
+ hw/intc/spapr_xive.c       | 9 +--------
+ hw/intc/xics_spapr.c       | 9 +--------
+ hw/ppc/spapr_irq.c         | 8 +++++++-
+ 4 files changed, 10 insertions(+), 18 deletions(-)
 
-diff --git a/include/hw/ppc/pnv_xive.h b/include/hw/ppc/pnv_xive.h
-index 7d634e469c..5b4cb4167b 100644
---- a/include/hw/ppc/pnv_xive.h
-+++ b/include/hw/ppc/pnv_xive.h
-@@ -163,6 +163,6 @@ typedef struct PnvXive2Class {
-     DeviceRealize parent_realize;
- } PnvXive2Class;
+diff --git a/include/hw/ppc/spapr_irq.h b/include/hw/ppc/spapr_irq.h
+index 4fd2d5853d..6e50470cff 100644
+--- a/include/hw/ppc/spapr_irq.h
++++ b/include/hw/ppc/spapr_irq.h
+@@ -73,7 +73,7 @@ struct SpaprInterruptControllerClass {
  
--void pnv_xive2_pic_print_info(PnvXive2 *xive, Monitor *mon);
-+void pnv_xive2_pic_print_info(PnvXive2 *xive, GString *buf);
- 
- #endif /* PPC_PNV_XIVE_H */
-diff --git a/hw/intc/pnv_xive2.c b/hw/intc/pnv_xive2.c
-index 10914b04df..2fb4fa29d4 100644
---- a/hw/intc/pnv_xive2.c
-+++ b/hw/intc/pnv_xive2.c
-@@ -10,11 +10,9 @@
- #include "qemu/osdep.h"
+     /* These methods should only be called on the active intc */
+     void (*set_irq)(SpaprInterruptController *intc, int irq, int val);
+-    void (*print_info)(SpaprInterruptController *intc, Monitor *mon);
++    void (*print_info)(SpaprInterruptController *intc, GString *buf);
+     void (*dt)(SpaprInterruptController *intc, uint32_t nr_servers,
+                void *fdt, uint32_t phandle);
+     int (*post_load)(SpaprInterruptController *intc, int version_id);
+diff --git a/hw/intc/spapr_xive.c b/hw/intc/spapr_xive.c
+index 9d0d5948ff..283a6b8fd2 100644
+--- a/hw/intc/spapr_xive.c
++++ b/hw/intc/spapr_xive.c
+@@ -11,13 +11,11 @@
  #include "qemu/log.h"
+ #include "qemu/module.h"
  #include "qapi/error.h"
 -#include "qapi/type-helpers.h"
+ #include "qemu/error-report.h"
  #include "target/ppc/cpu.h"
  #include "sysemu/cpus.h"
- #include "sysemu/dma.h"
+ #include "sysemu/reset.h"
+ #include "migration/vmstate.h"
 -#include "monitor/monitor.h"
  #include "hw/ppc/fdt.h"
- #include "hw/ppc/pnv.h"
- #include "hw/ppc/pnv_chip.h"
-@@ -2105,7 +2103,7 @@ static uint64_t pnv_xive2_vst_per_subpage(PnvXive2 *xive, uint32_t type)
-     return (1ull << page_shift) / info->size;
+ #include "hw/ppc/spapr.h"
+ #include "hw/ppc/spapr_cpu_core.h"
+@@ -701,12 +699,10 @@ static void spapr_xive_set_irq(SpaprInterruptController *intc, int irq, int val)
+     }
  }
  
--void pnv_xive2_pic_print_info(PnvXive2 *xive, Monitor *mon)
-+void pnv_xive2_pic_print_info(PnvXive2 *xive, GString *buf)
+-static void spapr_xive_print_info(SpaprInterruptController *intc, Monitor *mon)
++static void spapr_xive_print_info(SpaprInterruptController *intc, GString *buf)
  {
-     Xive2Router *xrtr = XIVE2_ROUTER(xive);
-     uint8_t blk = pnv_xive2_block_id(xive);
-@@ -2117,8 +2115,6 @@ void pnv_xive2_pic_print_info(PnvXive2 *xive, Monitor *mon)
-     Xive2Nvp nvp;
-     int i;
-     uint64_t xive_nvp_per_subpage;
+     SpaprXive *xive = SPAPR_XIVE(intc);
+     CPUState *cs;
 -    g_autoptr(GString) buf = g_string_new("");
 -    g_autoptr(HumanReadableText) info = NULL;
  
-     g_string_append_printf(buf, "XIVE[%x] Source %08x .. %08x\n",
-                            blk, srcno0, srcno0 + nr_esbs - 1);
-@@ -2156,7 +2152,4 @@ void pnv_xive2_pic_print_info(PnvXive2 *xive, Monitor *mon)
-             xive2_nvp_pic_print_info(&nvp, i++, buf);
-         }
+     CPU_FOREACH(cs) {
+         PowerPCCPU *cpu = POWERPC_CPU(cs);
+@@ -714,9 +710,6 @@ static void spapr_xive_print_info(SpaprInterruptController *intc, Monitor *mon)
+         xive_tctx_pic_print_info(spapr_cpu_state(cpu)->tctx, buf);
      }
+     spapr_xive_pic_print_info(xive, buf);
 -
 -    info = human_readable_text_from_str(buf);
 -    monitor_puts(mon, info->human_readable_text);
  }
-diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
-index 4a1a302a25..5b9dbff754 100644
---- a/hw/ppc/pnv.c
-+++ b/hw/ppc/pnv.c
-@@ -864,7 +864,7 @@ static void pnv_chip_power10_pic_print_info(PnvChip *chip, Monitor *mon)
-     g_autoptr(GString) buf = g_string_new("");
-     g_autoptr(HumanReadableText) info = NULL;
  
--    pnv_xive2_pic_print_info(&chip10->xive, mon);
-+    pnv_xive2_pic_print_info(&chip10->xive, buf);
+ static void spapr_xive_dt(SpaprInterruptController *intc, uint32_t nr_servers,
+diff --git a/hw/intc/xics_spapr.c b/hw/intc/xics_spapr.c
+index 1926373ebd..a0d97bdefe 100644
+--- a/hw/intc/xics_spapr.c
++++ b/hw/intc/xics_spapr.c
+@@ -34,8 +34,6 @@
+ #include "hw/ppc/xics_spapr.h"
+ #include "hw/ppc/fdt.h"
+ #include "qapi/visitor.h"
+-#include "qapi/type-helpers.h"
+-#include "monitor/monitor.h"
  
-     pnv_psi_pic_print_info(&chip10->psi, buf);
-     info = human_readable_text_from_str(buf);
+ /*
+  * Guest interfaces
+@@ -397,12 +395,10 @@ static void xics_spapr_set_irq(SpaprInterruptController *intc, int irq, int val)
+     ics_set_irq(ics, srcno, val);
+ }
+ 
+-static void xics_spapr_print_info(SpaprInterruptController *intc, Monitor *mon)
++static void xics_spapr_print_info(SpaprInterruptController *intc, GString *buf)
+ {
+     ICSState *ics = ICS_SPAPR(intc);
+     CPUState *cs;
+-    g_autoptr(GString) buf = g_string_new("");
+-    g_autoptr(HumanReadableText) info = NULL;
+ 
+     CPU_FOREACH(cs) {
+         PowerPCCPU *cpu = POWERPC_CPU(cs);
+@@ -410,9 +406,6 @@ static void xics_spapr_print_info(SpaprInterruptController *intc, Monitor *mon)
+         icp_pic_print_info(spapr_cpu_state(cpu)->icp, buf);
+     }
+     ics_pic_print_info(ics, buf);
+-
+-    info = human_readable_text_from_str(buf);
+-    monitor_puts(mon, info->human_readable_text);
+ }
+ 
+ static int xics_spapr_post_load(SpaprInterruptController *intc, int version_id)
+diff --git a/hw/ppc/spapr_irq.c b/hw/ppc/spapr_irq.c
+index 97b2fc42ab..b43917e7fe 100644
+--- a/hw/ppc/spapr_irq.c
++++ b/hw/ppc/spapr_irq.c
+@@ -11,6 +11,7 @@
+ #include "qemu/log.h"
+ #include "qemu/error-report.h"
+ #include "qapi/error.h"
++#include "qapi/type-helpers.h"
+ #include "hw/irq.h"
+ #include "hw/ppc/spapr.h"
+ #include "hw/ppc/spapr_cpu_core.h"
+@@ -18,6 +19,7 @@
+ #include "hw/ppc/xics.h"
+ #include "hw/ppc/xics_spapr.h"
+ #include "hw/qdev-properties.h"
++#include "monitor/monitor.h"
+ #include "cpu-models.h"
+ #include "sysemu/kvm.h"
+ 
+@@ -269,8 +271,12 @@ void spapr_irq_print_info(SpaprMachineState *spapr, Monitor *mon)
+ {
+     SpaprInterruptControllerClass *sicc
+         = SPAPR_INTC_GET_CLASS(spapr->active_intc);
++    g_autoptr(GString) buf = g_string_new("");
++    g_autoptr(HumanReadableText) info = NULL;
+ 
+-    sicc->print_info(spapr->active_intc, mon);
++    sicc->print_info(spapr->active_intc, buf);
++    info = human_readable_text_from_str(buf);
++    monitor_puts(mon, info->human_readable_text);
+ }
+ 
+ void spapr_irq_dt(SpaprMachineState *spapr, uint32_t nr_servers,
 -- 
 2.41.0
 
