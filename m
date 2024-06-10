@@ -2,78 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60F139024D1
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jun 2024 16:59:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36F3F902503
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jun 2024 17:09:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sGgTx-0008Ta-6x; Mon, 10 Jun 2024 10:58:49 -0400
+	id 1sGgcy-0005cD-0B; Mon, 10 Jun 2024 11:08:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sGgTu-0008PS-Jj
- for qemu-devel@nongnu.org; Mon, 10 Jun 2024 10:58:46 -0400
-Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sGgcv-0005aF-Eh
+ for qemu-devel@nongnu.org; Mon, 10 Jun 2024 11:08:05 -0400
+Received: from mail-lf1-x131.google.com ([2a00:1450:4864:20::131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sGgTt-0004Xt-4b
- for qemu-devel@nongnu.org; Mon, 10 Jun 2024 10:58:46 -0400
-Received: by mail-ed1-x530.google.com with SMTP id
- 4fb4d7f45d1cf-57c6011d75dso3195155a12.3
- for <qemu-devel@nongnu.org>; Mon, 10 Jun 2024 07:58:44 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sGgct-0006WO-GH
+ for qemu-devel@nongnu.org; Mon, 10 Jun 2024 11:08:05 -0400
+Received: by mail-lf1-x131.google.com with SMTP id
+ 2adb3069b0e04-52bc335e49aso11419e87.3
+ for <qemu-devel@nongnu.org>; Mon, 10 Jun 2024 08:08:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1718031522; x=1718636322; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=S4LCP0TPUvNWs+1AuzrihN13r1C08nRA9emJSD2ibmQ=;
- b=OiXeQr0De52RwGjKI17FzULjfri1/75yR+aLdPzLLwgGnzzKZBpgw8Bwj0NiJnmP1X
- eZjFKg1CiBGY7ntl8Mdp+bg5/vPCvKlxCsVjEH8I6JaOphH+va4FPQyvtYuFY4G+0GXO
- vs83zKFfVvX2WPgb35tL6B8IJgPZPb1tMxzFyHoC1ji/yYCaZwr7WaEPJ2ZsUKXi8kOD
- Np29nyNn7lPDR5jxjyI8mFhfeB26InWj8SimwoAwocB22lsZNFB4xyjI/Q3whhHiNLeW
- 45pf98i72+uS2Pj9IQ/9CUEoTNgxYzKffZ2N16FZ0u221ZiQhpmcrDeV/CMDf0paS9yb
- QRYg==
+ d=linaro.org; s=google; t=1718032081; x=1718636881; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=+MeNMbQoUt5UPGUX5PZCY5d/IlWBTMDhLjyRmqnhkuA=;
+ b=JER9O+aQPDqEKBpx27EN+F7VWEFInYQzurjge/jD8UsiX6KtxcId9YZEHPkERBkpWk
+ A+pg9HgLMrq5lV9zKfrEFb/osc9Y4MTQo5IO1aDcrnISK8hEZH+SA0Xe+pmyBZQdqZ1w
+ 4kLA88Xxsr2DTfhE15ZaF/i3BJf0ySeLPfu1CMAFZxmRKVEDAz0XjscuhwytS7MQQ0u/
+ JDd0JRXw82cTYjQkX1qdY4qnkuu0mbYa5P2TwniqKPRHYeSVprVvO/yXuuj/JhyTcu6r
+ f0Icct5vXordHWoM+QwPUcxw15P7HNSTTMrXmCSVOPlZzrNBznnce8lfH3tG26Nm8kVp
+ 3nPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718031522; x=1718636322;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=S4LCP0TPUvNWs+1AuzrihN13r1C08nRA9emJSD2ibmQ=;
- b=QQbpLKU5byq5jYoMyT+NZK8QdTRxIKFn9yNKmjDwb0B+tB8w3nST3CAV/kO2XduwEz
- XNpVR8gbRTNH+ppNj1XEMMPSKojmWrmHDLXQv8VGMdrmFL7h9eTCGBt9UbL1rrENsolb
- nS2vnAsm/Rix06cxVqHLiRj90AWqLQlfChyBRPbJVLHIe95qxpDidGUsDcfVAcevGzJp
- UYDp6Or2kPV0P0BiMiwI2W0wfkWwFbE151trbcgZ1qO0vb6HGV803wSTDYLefh/bZIIX
- pdcYkkZRJS33sbydLmQVNbLQwHdvj6EWjKNjXw4qqsn8QhUf1QS8ICY4C6bw/N+ljJ2J
- 34zQ==
-X-Gm-Message-State: AOJu0Ywux0G2BtTFcPwwVyx87fhKimHTWlYoaYIPCg9bwzSHWh4jdDrv
- F0VCPZkpeT6qh+E6JVK6MTZt8qRRjz9YUFsg4m5M9E0NUp/mFfSGhgIb0EyHklJEVqdPmuXhyCt
- +
-X-Google-Smtp-Source: AGHT+IH4HJsSXFGnFDCizr8fk02btolheHJgtXgnqLae1ceZ0GjeDAaYMQG6S41rN3379jQxpbLq5A==
-X-Received: by 2002:a17:906:50e:b0:a6e:f6b0:c4a4 with SMTP id
- a640c23a62f3a-a6ef6b0cd21mr470828766b.57.1718031522420; 
- Mon, 10 Jun 2024 07:58:42 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1718032081; x=1718636881;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=+MeNMbQoUt5UPGUX5PZCY5d/IlWBTMDhLjyRmqnhkuA=;
+ b=SBDXE1M4QaLfunaFVtJXkd0pY7s44Aiq9ebQXBVoO9jbZOb24o+ktVU80xs/w5Z7Uq
+ +EV+lWYZoloO/mRbrfGqfR7m0QeMuCywOJi+NLyYnQZa14j2PNhE2K3u0fxi9Wm5245a
+ Mka9dN9IWTQfW3iWYqianmJvzGEVg77dOHlcIouq3M5gLNWMUfCK/HiguQ5x3LOL3yF0
+ INOuJ2XJa/VuK1rYzFRJFFHKocDIqu1YIviwRji3crannHKKCbhqAQkeM0ie9q3328Pe
+ FS8eTbDLr1RpZ1aUt3gUQqX/IBhkX5h1DsaFSeFAp47upKgvk+IXoEnZEoJOEKq9BOE5
+ T5xQ==
+X-Gm-Message-State: AOJu0YyXF3IpbjgGy30IR4v52f47yqGO3nbiRkJilE+JB+iahLWk2WuC
+ wuyhtNQfcNsMY02PO84TRu6PF7uxHh2FURT0otW0bSm6Uvq9tTWHrlH7M2Gf/zunalyO1YF2agM
+ A
+X-Google-Smtp-Source: AGHT+IHP+wsMAU6AJW+SrjECnziGh5Cz1id9zRadMBJwxxiOXdTtdzTBZvLd/sId9cLs6fsZRmjR/w==
+X-Received: by 2002:a05:6512:282a:b0:52c:85d1:6eb3 with SMTP id
+ 2adb3069b0e04-52c85d16fcdmr3965799e87.30.1718032081062; 
+ Mon, 10 Jun 2024 08:08:01 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.129.242])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a6ef4581827sm439647166b.215.2024.06.10.07.58.40
+ 5b1f17b1804b1-421e91c46e4sm30514475e9.9.2024.06.10.08.07.59
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 10 Jun 2024 07:58:41 -0700 (PDT)
+ Mon, 10 Jun 2024 08:08:00 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Anton Johansson <anjo@rev.ng>,
- Richard Henderson <richard.henderson@linaro.org>,
- Max Filippov <jcmvbkbc@gmail.com>, Laurent Vivier <laurent@vivier.eu>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v3 5/5] semihosting: Restrict to TCG
-Date: Mon, 10 Jun 2024 16:58:07 +0200
-Message-ID: <20240610145808.2267-6-philmd@linaro.org>
+Cc: "Dr. David Alan Gilbert" <dave@treblig.org>,
+ Markus Armbruster <armbru@redhat.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ qemu-ppc@nongnu.org,
+ Philippe =?unknown-8bit?q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH 0/2] hw/misc/mos6522: Do not open-code
+ hmp_info_human_readable_text()
+Date: Mon, 10 Jun 2024 17:07:56 +0200
+Message-ID: <20240610150758.2827-1-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20240610145808.2267-1-philmd@linaro.org>
-References: <20240610145808.2267-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::530;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x530.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::131;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x131.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,27 +94,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Semihosting currently uses the TCG probe_access API.
-It is pointless to have it in the binary when TCG isn't.
+Officialise the QMP command, use the existing
+hmp_info_human_readable_text() helper.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
----
- semihosting/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+Philippe Mathieu-Daudé (2):
+  hw/misc/mos6522: Expose x-query-mos6522-devices QMP command
+  hw/misc/mos6522: Do not open-code hmp_info_human_readable_text()
 
-diff --git a/semihosting/Kconfig b/semihosting/Kconfig
-index eaf3a20ef5..fbe6ac87f9 100644
---- a/semihosting/Kconfig
-+++ b/semihosting/Kconfig
-@@ -1,6 +1,7 @@
- 
- config SEMIHOSTING
-        bool
-+       depends on TCG
- 
- config ARM_COMPATIBLE_SEMIHOSTING
-        bool
+ MAINTAINERS                  |  2 +-
+ qapi/machine.json            | 17 +++++++++++++++++
+ include/hw/misc/mos6522.h    |  2 --
+ include/monitor/hmp-target.h |  1 -
+ hw/misc/mos6522-stubs.c      | 18 ++++++++++++++++++
+ hw/misc/mos6522.c            | 16 ++--------------
+ hmp-commands-info.hx         |  2 +-
+ hw/misc/meson.build          |  3 ++-
+ 8 files changed, 41 insertions(+), 20 deletions(-)
+ create mode 100644 hw/misc/mos6522-stubs.c
+
 -- 
 2.41.0
 
