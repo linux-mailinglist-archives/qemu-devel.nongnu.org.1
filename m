@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D194F901B27
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jun 2024 08:24:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 657EB901B28
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jun 2024 08:24:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sGYRB-0000bp-5N; Mon, 10 Jun 2024 02:23:25 -0400
+	id 1sGYRG-0001SH-Su; Mon, 10 Jun 2024 02:23:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sGYR8-0000I7-Oe
- for qemu-devel@nongnu.org; Mon, 10 Jun 2024 02:23:22 -0400
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sGYRE-0001Iu-LC
+ for qemu-devel@nongnu.org; Mon, 10 Jun 2024 02:23:28 -0400
+Received: from mail-lf1-x12c.google.com ([2a00:1450:4864:20::12c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sGYR6-0004iX-EU
- for qemu-devel@nongnu.org; Mon, 10 Jun 2024 02:23:22 -0400
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-35f1a7386d5so1022377f8f.3
- for <qemu-devel@nongnu.org>; Sun, 09 Jun 2024 23:23:20 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sGYRC-0004jY-Cy
+ for qemu-devel@nongnu.org; Mon, 10 Jun 2024 02:23:28 -0400
+Received: by mail-lf1-x12c.google.com with SMTP id
+ 2adb3069b0e04-52c6f381434so2311493e87.2
+ for <qemu-devel@nongnu.org>; Sun, 09 Jun 2024 23:23:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1718000598; x=1718605398; darn=nongnu.org;
+ d=linaro.org; s=google; t=1718000604; x=1718605404; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=jTFNp75u/pYhIEl6kZFuCvdor3PDAS+uCnAKSx/B1Hc=;
- b=ZPfDM5hRm2u+SIPJapOsFbLVybOqWeXxOzwqk5cz99toE7JeBAF1PQ7AWFFCH+X80B
- mr8/I6OgcUF0VilzkRaXj9QQsI4W1ou3NDc/hNU1n75ehGHNILlsLQjy+vWJuggZYa7+
- L0tePqiEzkIaMOzX7owwm+MHVb+jbtM0sTutlC8WBIU77917gfVuYHH4wklJv1GHAYrR
- hmKFl8D7qRiOuHfQYhPvIy/53QMLmdYUq8FPmCgzU6irhxS3WqGfGVIR1jTpILJ50eTG
- HganRqWuMZgXqQbvE21tY1VMecZoRbDKiFHBtrwlbWBdu6huP10U+2ezjkSEvB/l0cnL
- CfkQ==
+ bh=UCDgKLBaeeDvn2QqbIauKDYEeh4Bef/zoBzza2n2iFc=;
+ b=C8tPthBnRiLirn5ZC4CF08Rs63uO5ltvd+Dh5jFoLz7kL1j/YCToXbZOLN1IMzxBlN
+ eRyHcTCykKTLUvKXXJwUpeYkomQ6rqj36crqg0VYWeVd1DZilq7khsxFXvAAO/EQIgl8
+ z4j77fqNNzxWvGv/VYzME7FuYTFWCC049HtaybGeCkzgNhZ7iDA1ZnBuroYARGmcBpS7
+ 8y+t9kQvJw1VJu67ZEq2T3Jj1Q+pM2EEnvk5WKtYUpp6j4RH6blnsSoIsi8gucoyItT1
+ Bis8T+qOiFNeyQ+jNei9N4rC7mckpgzuSLbpdjOpsBE0N93GYoZOUg8XQaUwhrGaNYCp
+ 4eUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718000598; x=1718605398;
+ d=1e100.net; s=20230601; t=1718000604; x=1718605404;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=jTFNp75u/pYhIEl6kZFuCvdor3PDAS+uCnAKSx/B1Hc=;
- b=Xvu8TccQmZcskAPDAXKUdlT79Q1bejzXKPZ/4m9VIyTgknfcuvZQiqDyrn1/dA0Xay
- sUs7ap5X6ToqvK4LaAJ6KvKNpbiEVRDuMHk9cwsLOXmAaV3yixOf5dLVDPu9JGSBeCxz
- uzItVAOPq01yqPhJz98APICKJ/6sQl8y2MgJFdLQE3lh+I/JGVN1iCN2TKBb69PJfyaC
- IxtFi0ZccANbJBtFX5us02yjAPmdhEWFF+GWcF7K4vMRorPoe0ON4CyXvAgtRG3RMcIi
- n32uSJM1dBT9cb1+QpFxPkWCerDCPvm5bPALRuldp7CMP/3+SlJxRkOX/EOgq1/sFvnx
- d9Nw==
-X-Gm-Message-State: AOJu0Yy2lD7kHMAtgNp6pyQvmcDRvf8I1k4pnkqSB2xSEzn1zdW3c6a0
- MHBdtJ1OEZcuCqTAzTMY8ou2Nx66Qk8KtPmPF+9LLzI5r0WmiRJfrD32KAXJ/vB2sIoyJ/lEGk8
- o
-X-Google-Smtp-Source: AGHT+IHXQWSUUv5/Ocvx+KuF6OEZYbUesNp/A7N7qv2V0d+wAN7h9Xhg9qru1zBzFN4TGnwytx34qQ==
-X-Received: by 2002:a05:6000:18a2:b0:35f:1bcd:8e53 with SMTP id
- ffacd0b85a97d-35f1bcd8ec6mr3241468f8f.55.1718000598595; 
- Sun, 09 Jun 2024 23:23:18 -0700 (PDT)
+ bh=UCDgKLBaeeDvn2QqbIauKDYEeh4Bef/zoBzza2n2iFc=;
+ b=uUwW7wAKQSY/6gGU8ZQ5EY+H8Vkosv1HnUp9JQvKtdgk7PV+KaBCAjUkaw+Ia5vcHv
+ rX46n/ALwV7tNqNISHBAUqrr84PXdAkbsYV8j8Y7O6yLYpA0A87m0vv+26dUSPGjvNbU
+ ll4ifVXPIC9gYY6vr2hxEfTriCSJIYRejJPoZGtyyzk2syFAhzlWfCP2uhj25vi6ew8H
+ wZOG97MRRjUqwlzmMM1e822hI9DKFnc/Foijev91I1yQ6CQ99mt7/RXHGst0e5hCcb/3
+ tEUrdqAcLPOvkxTUHVqzDf2XbDPjjQLfztkshRYjgBOrWrCLFne051zF79pLeiBcGk9Q
+ B2Tw==
+X-Gm-Message-State: AOJu0YzBQ2rIf5Fxxq9tpK5WQ/FrHFOA17bBKOp67PsNYp2Kp58K+Cv0
+ +1clpoLEUl03VjOlcFV5VLu40J8Sv/oOMfR6vSPXwPV+X3dxjpfMfPU5o1srMooMAS+aP0Rc9/7
+ f
+X-Google-Smtp-Source: AGHT+IFZYOdPk2s41eJ44i4k91hhXV+iMO7bqcrzGyfooTGWbKYjI2cMVFU3AKOh/V7IWUan99oUmA==
+X-Received: by 2002:a05:6512:1285:b0:51b:1e76:4ea9 with SMTP id
+ 2adb3069b0e04-52bb9f663f0mr8935766e87.4.1718000604159; 
+ Sun, 09 Jun 2024 23:23:24 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.129.242])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-35ef5d2da31sm10071613f8f.14.2024.06.09.23.23.17
+ ffacd0b85a97d-35f1ed08253sm3424416f8f.24.2024.06.09.23.23.22
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sun, 09 Jun 2024 23:23:18 -0700 (PDT)
+ Sun, 09 Jun 2024 23:23:23 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-ppc@nongnu.org,
@@ -65,18 +65,17 @@ Cc: Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-ppc@nongnu.org,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 23/26] hw/ppc: Avoid using Monitor in
- SpaprInterruptControllerClass::print_info()
-Date: Mon, 10 Jun 2024 08:21:01 +0200
-Message-ID: <20240610062105.49848-24-philmd@linaro.org>
+Subject: [PATCH 24/26] hw/ppc: Avoid using Monitor in spapr_irq_print_info()
+Date: Mon, 10 Jun 2024 08:21:02 +0200
+Message-ID: <20240610062105.49848-25-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240610062105.49848-1-philmd@linaro.org>
 References: <20240610062105.49848-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12c;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x12c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,135 +102,89 @@ Replace Monitor API by HumanReadableText one.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/ppc/spapr_irq.h | 2 +-
- hw/intc/spapr_xive.c       | 9 +--------
- hw/intc/xics_spapr.c       | 9 +--------
- hw/ppc/spapr_irq.c         | 8 +++++++-
- 4 files changed, 10 insertions(+), 18 deletions(-)
+ include/hw/ppc/spapr_irq.h |  2 +-
+ hw/ppc/spapr.c             | 11 ++++++++---
+ hw/ppc/spapr_irq.c         |  8 +-------
+ 3 files changed, 10 insertions(+), 11 deletions(-)
 
 diff --git a/include/hw/ppc/spapr_irq.h b/include/hw/ppc/spapr_irq.h
-index 4fd2d5853d..6e50470cff 100644
+index 6e50470cff..cb9a85f657 100644
 --- a/include/hw/ppc/spapr_irq.h
 +++ b/include/hw/ppc/spapr_irq.h
-@@ -73,7 +73,7 @@ struct SpaprInterruptControllerClass {
+@@ -85,7 +85,7 @@ int spapr_irq_cpu_intc_create(struct SpaprMachineState *spapr,
+                               PowerPCCPU *cpu, Error **errp);
+ void spapr_irq_cpu_intc_reset(struct SpaprMachineState *spapr, PowerPCCPU *cpu);
+ void spapr_irq_cpu_intc_destroy(struct SpaprMachineState *spapr, PowerPCCPU *cpu);
+-void spapr_irq_print_info(struct SpaprMachineState *spapr, Monitor *mon);
++void spapr_irq_print_info(struct SpaprMachineState *spapr, GString *buf);
+ void spapr_irq_dt(struct SpaprMachineState *spapr, uint32_t nr_servers,
+                   void *fdt, uint32_t phandle);
  
-     /* These methods should only be called on the active intc */
-     void (*set_irq)(SpaprInterruptController *intc, int irq, int val);
--    void (*print_info)(SpaprInterruptController *intc, Monitor *mon);
-+    void (*print_info)(SpaprInterruptController *intc, GString *buf);
-     void (*dt)(SpaprInterruptController *intc, uint32_t nr_servers,
-                void *fdt, uint32_t phandle);
-     int (*post_load)(SpaprInterruptController *intc, int version_id);
-diff --git a/hw/intc/spapr_xive.c b/hw/intc/spapr_xive.c
-index 9d0d5948ff..283a6b8fd2 100644
---- a/hw/intc/spapr_xive.c
-+++ b/hw/intc/spapr_xive.c
-@@ -11,13 +11,11 @@
- #include "qemu/log.h"
- #include "qemu/module.h"
+diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+index 81a187f126..cd9b811ac6 100644
+--- a/hw/ppc/spapr.c
++++ b/hw/ppc/spapr.c
+@@ -31,6 +31,7 @@
  #include "qapi/error.h"
--#include "qapi/type-helpers.h"
- #include "qemu/error-report.h"
- #include "target/ppc/cpu.h"
- #include "sysemu/cpus.h"
- #include "sysemu/reset.h"
- #include "migration/vmstate.h"
--#include "monitor/monitor.h"
- #include "hw/ppc/fdt.h"
- #include "hw/ppc/spapr.h"
- #include "hw/ppc/spapr_cpu_core.h"
-@@ -701,12 +699,10 @@ static void spapr_xive_set_irq(SpaprInterruptController *intc, int irq, int val)
-     }
- }
- 
--static void spapr_xive_print_info(SpaprInterruptController *intc, Monitor *mon)
-+static void spapr_xive_print_info(SpaprInterruptController *intc, GString *buf)
- {
-     SpaprXive *xive = SPAPR_XIVE(intc);
-     CPUState *cs;
--    g_autoptr(GString) buf = g_string_new("");
--    g_autoptr(HumanReadableText) info = NULL;
- 
-     CPU_FOREACH(cs) {
-         PowerPCCPU *cpu = POWERPC_CPU(cs);
-@@ -714,9 +710,6 @@ static void spapr_xive_print_info(SpaprInterruptController *intc, Monitor *mon)
-         xive_tctx_pic_print_info(spapr_cpu_state(cpu)->tctx, buf);
-     }
-     spapr_xive_pic_print_info(xive, buf);
--
--    info = human_readable_text_from_str(buf);
--    monitor_puts(mon, info->human_readable_text);
- }
- 
- static void spapr_xive_dt(SpaprInterruptController *intc, uint32_t nr_servers,
-diff --git a/hw/intc/xics_spapr.c b/hw/intc/xics_spapr.c
-index 1926373ebd..a0d97bdefe 100644
---- a/hw/intc/xics_spapr.c
-+++ b/hw/intc/xics_spapr.c
-@@ -34,8 +34,6 @@
- #include "hw/ppc/xics_spapr.h"
- #include "hw/ppc/fdt.h"
- #include "qapi/visitor.h"
--#include "qapi/type-helpers.h"
--#include "monitor/monitor.h"
- 
- /*
-  * Guest interfaces
-@@ -397,12 +395,10 @@ static void xics_spapr_set_irq(SpaprInterruptController *intc, int irq, int val)
-     ics_set_irq(ics, srcno, val);
- }
- 
--static void xics_spapr_print_info(SpaprInterruptController *intc, Monitor *mon)
-+static void xics_spapr_print_info(SpaprInterruptController *intc, GString *buf)
- {
-     ICSState *ics = ICS_SPAPR(intc);
-     CPUState *cs;
--    g_autoptr(GString) buf = g_string_new("");
--    g_autoptr(HumanReadableText) info = NULL;
- 
-     CPU_FOREACH(cs) {
-         PowerPCCPU *cpu = POWERPC_CPU(cs);
-@@ -410,9 +406,6 @@ static void xics_spapr_print_info(SpaprInterruptController *intc, Monitor *mon)
-         icp_pic_print_info(spapr_cpu_state(cpu)->icp, buf);
-     }
-     ics_pic_print_info(ics, buf);
--
--    info = human_readable_text_from_str(buf);
--    monitor_puts(mon, info->human_readable_text);
- }
- 
- static int xics_spapr_post_load(SpaprInterruptController *intc, int version_id)
-diff --git a/hw/ppc/spapr_irq.c b/hw/ppc/spapr_irq.c
-index 97b2fc42ab..b43917e7fe 100644
---- a/hw/ppc/spapr_irq.c
-+++ b/hw/ppc/spapr_irq.c
-@@ -11,6 +11,7 @@
- #include "qemu/log.h"
- #include "qemu/error-report.h"
- #include "qapi/error.h"
+ #include "qapi/qapi-events-machine.h"
+ #include "qapi/qapi-events-qdev.h"
 +#include "qapi/type-helpers.h"
- #include "hw/irq.h"
- #include "hw/ppc/spapr.h"
- #include "hw/ppc/spapr_cpu_core.h"
-@@ -18,6 +19,7 @@
- #include "hw/ppc/xics.h"
- #include "hw/ppc/xics_spapr.h"
- #include "hw/qdev-properties.h"
-+#include "monitor/monitor.h"
- #include "cpu-models.h"
- #include "sysemu/kvm.h"
- 
-@@ -269,8 +271,12 @@ void spapr_irq_print_info(SpaprMachineState *spapr, Monitor *mon)
+ #include "qapi/visitor.h"
+ #include "sysemu/sysemu.h"
+ #include "sysemu/hostmem.h"
+@@ -4530,10 +4531,14 @@ static void spapr_pic_print_info(InterruptStatsProvider *obj,
+                                  Monitor *mon)
  {
-     SpaprInterruptControllerClass *sicc
-         = SPAPR_INTC_GET_CLASS(spapr->active_intc);
+     SpaprMachineState *spapr = SPAPR_MACHINE(obj);
 +    g_autoptr(GString) buf = g_string_new("");
 +    g_autoptr(HumanReadableText) info = NULL;
  
--    sicc->print_info(spapr->active_intc, mon);
-+    sicc->print_info(spapr->active_intc, buf);
+-    spapr_irq_print_info(spapr, mon);
+-    monitor_printf(mon, "irqchip: %s\n",
+-                   kvm_irqchip_in_kernel() ? "in-kernel" : "emulated");
++    spapr_irq_print_info(spapr, buf);
++    g_string_append_printf(buf, "irqchip: %s\n",
++                           kvm_irqchip_in_kernel() ? "in-kernel" : "emulated");
 +    info = human_readable_text_from_str(buf);
 +    monitor_puts(mon, info->human_readable_text);
+ }
+ 
+ /*
+diff --git a/hw/ppc/spapr_irq.c b/hw/ppc/spapr_irq.c
+index b43917e7fe..aebd7eaabb 100644
+--- a/hw/ppc/spapr_irq.c
++++ b/hw/ppc/spapr_irq.c
+@@ -11,7 +11,6 @@
+ #include "qemu/log.h"
+ #include "qemu/error-report.h"
+ #include "qapi/error.h"
+-#include "qapi/type-helpers.h"
+ #include "hw/irq.h"
+ #include "hw/ppc/spapr.h"
+ #include "hw/ppc/spapr_cpu_core.h"
+@@ -19,7 +18,6 @@
+ #include "hw/ppc/xics.h"
+ #include "hw/ppc/xics_spapr.h"
+ #include "hw/qdev-properties.h"
+-#include "monitor/monitor.h"
+ #include "cpu-models.h"
+ #include "sysemu/kvm.h"
+ 
+@@ -267,16 +265,12 @@ static void spapr_set_irq(void *opaque, int irq, int level)
+     sicc->set_irq(spapr->active_intc, irq, level);
+ }
+ 
+-void spapr_irq_print_info(SpaprMachineState *spapr, Monitor *mon)
++void spapr_irq_print_info(SpaprMachineState *spapr, GString *buf)
+ {
+     SpaprInterruptControllerClass *sicc
+         = SPAPR_INTC_GET_CLASS(spapr->active_intc);
+-    g_autoptr(GString) buf = g_string_new("");
+-    g_autoptr(HumanReadableText) info = NULL;
+ 
+     sicc->print_info(spapr->active_intc, buf);
+-    info = human_readable_text_from_str(buf);
+-    monitor_puts(mon, info->human_readable_text);
  }
  
  void spapr_irq_dt(SpaprMachineState *spapr, uint32_t nr_servers,
