@@ -2,31 +2,31 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7CA5901CC6
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jun 2024 10:18:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDB50901CD2
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jun 2024 10:20:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sGaDN-0007AC-Um; Mon, 10 Jun 2024 04:17:17 -0400
+	id 1sGaGC-0000Bf-VE; Mon, 10 Jun 2024 04:20:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=l9v5=NM=kaod.org=clg@ozlabs.org>)
- id 1sGaDL-00079O-7Z; Mon, 10 Jun 2024 04:17:15 -0400
+ id 1sGaGA-00009c-7d; Mon, 10 Jun 2024 04:20:10 -0400
 Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=l9v5=NM=kaod.org=clg@ozlabs.org>)
- id 1sGaDI-0000DB-Au; Mon, 10 Jun 2024 04:17:14 -0400
+ id 1sGaG6-0000cX-DO; Mon, 10 Jun 2024 04:20:09 -0400
 Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4VyPm86flvz4wc3;
- Mon, 10 Jun 2024 18:16:56 +1000 (AEST)
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4VyPqk635Fz4x4T;
+ Mon, 10 Jun 2024 18:20:02 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits))
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4VyPm521V2z4wc1;
- Mon, 10 Jun 2024 18:16:52 +1000 (AEST)
-Message-ID: <88d4798b-d9a6-4dcc-86bd-0385a5ec4503@kaod.org>
-Date: Mon, 10 Jun 2024 10:16:48 +0200
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4VyPqg3QmJz4wc1;
+ Mon, 10 Jun 2024 18:19:59 +1000 (AEST)
+Message-ID: <cd48f836-3017-4559-b509-9945d041a327@kaod.org>
+Date: Mon, 10 Jun 2024 10:19:56 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 00/26] hw/ppc: Prefer HumanReadableText over Monitor
@@ -74,20 +74,18 @@ On 6/10/24 8:20 AM, Philippe Mathieu-Daudé wrote:
 > replacing by the more generic HumanReadableText.
 > Care is taken to keep the commit bisectables by
 > updating functions one by one, also easing review.
-> 
-> For rationale see previous series from Daniel:
-> https://lore.kernel.org/qemu-devel/20211028155457.967291-1-berrange@redhat.com/
 
-This looks OK to me but I think there are patches in the ppc queue
-that will conflict. I would wait for Nick to send a PR first and
-then rebase.
+Did you do any testing ? POWER[8-10] CPUs on pseries and powernv machines
+should be checked. A bit tedious I agree but not that long.
 
 Thanks,
 
 C.
 
 
-
+> 
+> For rationale see previous series from Daniel:
+> https://lore.kernel.org/qemu-devel/20211028155457.967291-1-berrange@redhat.com/
 > 
 > Regards,
 > 
