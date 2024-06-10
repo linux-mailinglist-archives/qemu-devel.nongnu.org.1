@@ -2,72 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 165B5902189
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jun 2024 14:22:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0319C902198
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jun 2024 14:26:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sGe1o-0006QC-RH; Mon, 10 Jun 2024 08:21:36 -0400
+	id 1sGe5g-00006e-9H; Mon, 10 Jun 2024 08:25:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1sGe1m-0006OY-QU
- for qemu-devel@nongnu.org; Mon, 10 Jun 2024 08:21:34 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1sGe1l-0005uk-68
- for qemu-devel@nongnu.org; Mon, 10 Jun 2024 08:21:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1718022092;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=NTSVzBm+Wp3x/Oovz18OvsEn024m4Po5w4K0laXhIMM=;
- b=LmAgf/SAdv7M5jaNlxN1wT5Bh01wy8MCchdk5XabtEqJgg+tco0iajKkXSVZ+NgCM9LPMY
- HtSgnPzgsdOCzV+WDm0Za4vwUdVRCMTwRsqqdlf7K0cWYn82s5tgdiov8aHnxNI8PHhgQF
- Cryd+BvqNH4zZJnKuyz/aS07VJd5bLg=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-587-doP2WjSVNUi20M3C675ieA-1; Mon,
- 10 Jun 2024 08:21:28 -0400
-X-MC-Unique: doP2WjSVNUi20M3C675ieA-1
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 02109195608B; Mon, 10 Jun 2024 12:21:26 +0000 (UTC)
-Received: from redhat.com (unknown [10.2.16.45])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 67B8F1956087; Mon, 10 Jun 2024 12:21:23 +0000 (UTC)
-Date: Mon, 10 Jun 2024 07:21:20 -0500
-From: Eric Blake <eblake@redhat.com>
-To: Michael Tokarev <mjt@tls.msk.ru>
-Cc: qemu-devel@nongnu.org, qemu-stable@nongnu.org
-Subject: Re: [Stable-7.2.12 00/29] Patch Round-up for stable 7.2.12, frozen
- at 2024-06-07
-Message-ID: <536dngabqf2dul6gdv6eqlj7w2duofxjtj5bql7x3pmv3okbsu@hdn4duc2tych>
-References: <qemu-stable-7.2.12-20240607221018@cover.tls.msk.ru>
- <l6jbovskcivkkog7lkvazwn4f4vqflbilgo63lfgwecunsb4al@iak6kurhbl57>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sGe5c-00005p-Ns
+ for qemu-devel@nongnu.org; Mon, 10 Jun 2024 08:25:33 -0400
+Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sGe5Z-0006XF-Em
+ for qemu-devel@nongnu.org; Mon, 10 Jun 2024 08:25:31 -0400
+Received: by mail-ej1-x633.google.com with SMTP id
+ a640c23a62f3a-a6269885572so944314566b.1
+ for <qemu-devel@nongnu.org>; Mon, 10 Jun 2024 05:25:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1718022327; x=1718627127; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=Eq3w4yME0O1jAdNW/jpjg0o+JmuZ3WFbHzjkXW5Jx4k=;
+ b=Yb9XGufVYtyKcrv4EN6E4zTBGfz+Khgm3ZA8HK8746I95GyH105aWzITjzydR9yDKM
+ eFrhFnVdWpIwpWJ+IeNeJF5tsQjQyLhYFAiysjkelGu3KBRPOuJQUhvLytVjyXd/BBYf
+ 6YepZg4TXsz9X87fnYOOJAKENn3xYMr6T+XUUAbsVfLBW0a6m+6fzwfX5mb6rPHvitNt
+ czOBnnceK3D6W8QZPuwFPfQfwrIoSkjEVVXdOqL6Nhhv7cd6AMNlGUmiNq2gwjJ/h3jz
+ 3+RjovGtt1elQp46StEq/oEZAsEg9nkuqv7R4EAiVzeQn1IpjzPIW31DkpOtQhpnCzEY
+ /kjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1718022327; x=1718627127;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Eq3w4yME0O1jAdNW/jpjg0o+JmuZ3WFbHzjkXW5Jx4k=;
+ b=miaJJMfLWaNnA28lihRRZ2v2dtw/m7pBRXF3SzVwYNRTX1/sPuh/w38uvAt3lny6sT
+ g+OU03KI/8DL/YeUoA70iPDqi/M2BPJM1GXBQucY8Kh2CiDe9TIsgbYgHZdG67bRAXp7
+ k8N3YvVn+SAC0aLGY0sP7fnQyzN1BisojEfZFWPfHgdxIbq/nstIb9kveHtB8R8fXsjm
+ ocJ5K/QzjnwLaDbMlUc0bSPPKk/IgyVguGtsUgxqjz869xt9znSX7qUwUPyNbU8R+c6+
+ m2OfbL+paPohZLtt/H/nW+Lpu+0LsvDFWYBQ1U9kGm1XfewzDcjIWxPvlDGvvgMtMsv0
+ K+nA==
+X-Gm-Message-State: AOJu0YyzWz96Uq4ssG3CbDqDVCegIG0jb8tKU+nLMYpmtcww0Y9uY+gF
+ /0zluOTNFfFdV5qZflyJCxVjN5JzDeBv2WYf16dJIDjKzD7DGaxqFw7GecQ2A0QwhTxNCtw+zOs
+ niSGEaMuH8F6bis1IEnF7X1WcKoTupSNvifF+vfqY/BIVvhO3
+X-Google-Smtp-Source: AGHT+IG2o4KvidVJ8BYnYQmO74fW6p4IuUlt0NFsqG5NAVZ91eJUc+fm45BgVu0hDSoz7NDiJYcH6sqns1bri3Kzrwg=
+X-Received: by 2002:a17:907:84c:b0:a65:2b64:f84a with SMTP id
+ a640c23a62f3a-a6c7650a2f4mr1229562566b.25.1718022327231; Mon, 10 Jun 2024
+ 05:25:27 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <l6jbovskcivkkog7lkvazwn4f4vqflbilgo63lfgwecunsb4al@iak6kurhbl57>
-User-Agent: NeoMutt/20240425
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 11
-X-Spam_score: 1.1
-X-Spam_bar: +
-X-Spam_report: (1.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.143,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+References: <20240604145934.1230583-1-peter.maydell@linaro.org>
+In-Reply-To: <20240604145934.1230583-1-peter.maydell@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 10 Jun 2024 13:25:15 +0100
+Message-ID: <CAFEAcA8D-33hFsw2T40ygkjsFDj7a7=v8iupskkrptzZ-L5vqA@mail.gmail.com>
+Subject: Re: [PATCH v2 0/5] scrips/coverity-scan: COMPONENTS.md updates
+To: qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::633;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ej1-x633.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,55 +86,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jun 10, 2024 at 07:17:53AM GMT, Eric Blake wrote:
-> On Fri, Jun 07, 2024 at 10:12:02PM GMT, Michael Tokarev wrote:
-> > The following patches are queued for QEMU stable v7.2.12:
-> > 
-> >   https://gitlab.com/qemu-project/qemu/-/commits/staging-7.2
-> > 
-> > Patch freeze is 2024-06-07 (frozen), and the release is planned for 2024-06-09:
-> > 
-> >   https://wiki.qemu.org/Planning/7.2
-> > 
-> > Please respond here or CC qemu-stable@nongnu.org on any additional notes
-> > about the planning release.
-> > 
-> > The changes which are staging for inclusion, with the original commit hash
-> > from master branch, are given below the bottom line.
-> > 
-> > Thanks!
-> > 
-> > /mjt
-> > 
-> > --------------------------------------
-> > 01* 690ceb71936f Philippe Mathieu-Daudé:
-> >    gitlab-ci: Remove job building EDK2 firmware binaries
-> > 02* 7bc1286b81d4 Palmer Dabbelt:
-> >    gitlab/opensbi: Move to docker:stable
-> > 03* 04f6fb897a5a Michael Tokarev:
-> >    linux-user: do_setsockopt: fix SOL_ALG.ALG_SET_KEY
-> > 04* ae6d91a7e9b7 Zhu Yangyang:
-> >    nbd/server: do not poll within a coroutine context
-> > 05* 4fa333e08dd9 Eric Blake:
-> >    nbd/server: Mark negotiation functions as coroutine_fn
-> 
-> In addition to these two, we also need the following for NBD:
-> 
->  14ddea7e3c81 Eric Blake:
->   qio: Inherit follow_coroutine_ctx across TLS
-> 
-> and optionally:
->  5905c09466f4 Eric Blake:
->   iotests: test NBD+TLS+iothread
+On Tue, 4 Jun 2024 at 15:59, Peter Maydell <peter.maydell@linaro.org> wrote:
+>
+> Since commit 83aa1baa069c we have been running the build for Coverity
+> Scan as a Gitlab CI job, rather than the old setup where it was run
+> on a local developer's machine.  This is working well, but the
+> absolute paths of files are different for the Gitlab CI job, which
+> means that the regexes we use to identify Coverity components no
+> longer work. With Gitlab CI builds the file paths are of the form
+>  /builds/qemu-project/qemu/accel/kvm/kvm-all.c
+>
+> rather than the old
+>  /qemu/accel/kvm/kvm-all.c
+>
+> and our regexes all don't match.
+>
+> The main aim of this series is to fix that, which is what patch 1 does.
+>
+> Patches 2-5 are minor updates where we were missing files in some
+> components because we hadn't updated them when we moved things around
+> or added new files. They're worth doing now since handling patch 1
+> will require a manual deletion of all components in the coverity
+> web GUI and re-adding them. (There is, alas, no automated API for this.)
 
-Hmm; I see you did include them for the 8.2.x branch; and the
-regression they fix was only introduced in 8.2.  Unless we backported
-the work of removing AioContext to 7.2.x, then not backporting these
-two that far should not be an issue, after all.
+I'll take this via target-arm.next and do the web GUI update
+at some point too.
 
--- 
-Eric Blake, Principal Software Engineer
-Red Hat, Inc.
-Virtualization:  qemu.org | libguestfs.org
-
+thanks
+-- PMM
 
