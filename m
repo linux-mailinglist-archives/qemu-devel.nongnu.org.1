@@ -2,79 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C75C901B35
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jun 2024 08:25:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E223901B55
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jun 2024 08:36:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sGYSo-000109-TW; Mon, 10 Jun 2024 02:25:06 -0400
+	id 1sGYcq-0006GZ-7L; Mon, 10 Jun 2024 02:35:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sGYSm-0000xE-I6
- for qemu-devel@nongnu.org; Mon, 10 Jun 2024 02:25:04 -0400
-Received: from mail-lf1-x12a.google.com ([2a00:1450:4864:20::12a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sGYco-0006Eq-4z
+ for qemu-devel@nongnu.org; Mon, 10 Jun 2024 02:35:26 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sGYSk-0005Gw-Kf
- for qemu-devel@nongnu.org; Mon, 10 Jun 2024 02:25:04 -0400
-Received: by mail-lf1-x12a.google.com with SMTP id
- 2adb3069b0e04-52c525257feso2085523e87.1
- for <qemu-devel@nongnu.org>; Sun, 09 Jun 2024 23:25:02 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sGYcl-0007Hw-D4
+ for qemu-devel@nongnu.org; Mon, 10 Jun 2024 02:35:25 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-421798185f0so14895285e9.1
+ for <qemu-devel@nongnu.org>; Sun, 09 Jun 2024 23:35:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1718000700; x=1718605500; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=+0GdibTRrJ+MB0GA2hbpLcO8vpDArVCG67e5p9bW9aI=;
- b=zicOMflkBJhxSs+gpcxP/ZCHc5Pu9EYUsUGm6n3yoXGx2iV3qMr1E/4elTQxOkJc3Z
- d4Am3kZclmvAyCr03+0lG1AZVQFKgd9jughSvjTqe1bJb0TZalMPTbfSdJOweSWHInR5
- B9pRQ8LxLdV5jK9XSwQYlP3Ca69VWPr5sYnmpA1nPjGMtcltX1ZCEgn0jIdV7o7JTAkJ
- X5iutc980hM2lnSfdWLvGlXkZEihib39zZSDe+hM3l0s/pNFPkzCAAjPQaa6SaMQxFZR
- qhq0k91njT7WEZS10Bjj7006AcKdz77ZMsNsbALU2IQSnUVO6awfsTIn9aRj2K21HqM5
- lF1w==
+ d=linaro.org; s=google; t=1718001321; x=1718606121; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=nfSilvdfrEKWoWt9H1THfJIQcnGzklXjLBwkyIQq6ws=;
+ b=KczG6KScGO0C+EMA/Z0XZmMo+zorsO/Mh33Y/Q4dPg0Z4ypKSnMkNT0+Hk+FjnhC9s
+ BZhnYrGAqn5hylRF1mvnXfMRs90eWSKB+SmstBivOu+6XS2YS0Q1ffL+tyK/D8umyaTK
+ Qp4YmnPXUgtRZ4i3/BPjc5/hX7iU+1eCCr2Bjn6n3MOBejfX0AlCJ07VQZEzxxjCo70E
+ CU7rcaQY6Gbbf83lBIZIiQXY/TYKfArwvjY/I6is0NmDh+rAP+loR34eoYYyhIdGZJeO
+ BqL8nUOZmvNZ9P03DfnAqkhuTWMefMfN0WYWUj30NWiQPYZcpjgaYsrLm0MV0lvpeGxd
+ es3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718000700; x=1718605500;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=+0GdibTRrJ+MB0GA2hbpLcO8vpDArVCG67e5p9bW9aI=;
- b=Mu26Hy9ScgFze7g2FxD+6rJb5WA9O57kbrShCj6zGXpBfiC+ATZjUx6jZUc5f/U6lu
- fYKbPcCdBwBhZLuIIb8RbiFOkeJVkcRgcTl3QidZZrBOPu+e4QlqrB3NiDIITabgZ0L3
- ijRntIMz0lpS6d0W7gvNBkTO3cwj23+Kqg3wAXze1dqhbtU2Z3jiFtXzvPrSzABQ/HNR
- wJsh9SNQKv5KHRAFHc8DyMNvKZwZ2YfIPVNLMKWIGmfUqlQ/8SHeOSxHewG/2fjil+Sq
- Pfn+gmxusc+8BS5K9A0i2j28S2sOznLuVml3v3yXjMEQiF/R3+BO0bJLMtCWStB35O1M
- 7b3Q==
-X-Gm-Message-State: AOJu0YxVK4MpA2h0DWLrNNNqeKJbhawBdS8EuFwk4P3AmVQTiw0Lr0tv
- 4ypI3DnlKT2tTBRDStCuED7uRdIkCAX5RZOGy7T3fkJ/kkQM7JbttqEZxmSZLdi7Sm4cTRIbXos
- 2
-X-Google-Smtp-Source: AGHT+IEZ0CnKd8Y22E5FnKtCDVogfFH7/PQPhc67cZdyC9Kpn9bfsst8hzh9+Bpz87X/UG3rXUnkyw==
-X-Received: by 2002:a19:8c41:0:b0:52c:8c57:2d04 with SMTP id
- 2adb3069b0e04-52c8c572d54mr548345e87.47.1718000700115; 
- Sun, 09 Jun 2024 23:25:00 -0700 (PDT)
-Received: from [192.168.69.100] ([176.176.129.242])
+ d=1e100.net; s=20230601; t=1718001321; x=1718606121;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=nfSilvdfrEKWoWt9H1THfJIQcnGzklXjLBwkyIQq6ws=;
+ b=RP9HSMvPml0oEE23m+or7Y4+pmtK2990HI2yBVAtIHxjMGWa3a+KFMa8C0e0uZNZAs
+ mQbUE1jEJIFIc62m6tsVJjHt0p1Q4Ef6ryCuss6/bHlluWKit8Vj4jUCdtepI5ie+RTo
+ rteAPECWhKEmv4pKu6QX4QO+zkFzd76StszU2rLe5svD/JzObfcqueIeulazztvib0gB
+ wtdCbcqo2602GfC0o3zkETVNfcD2RJ2AX3CP2BIFmTjT5yszJDEibP8LYXUQVLM18rTN
+ DUxqod3A5+m2EF5NvWCJ9VRVSe0r39no5/q0LMnpSpQvKlSprgHCfBWQrtxOfw9HRxeI
+ 8iCA==
+X-Gm-Message-State: AOJu0YxZEWoKBhbbVbknAOpnmFa2XpzZw7rkAO/QC9EddOOJXkZc/nY7
+ yeFuDeaOIa1lcpj3IlXYm1XqJUaJejM9L5Iw47Ai2WauaT1ZZwsfpuS7lkeKzN6H+tj4QfKx9P5
+ T
+X-Google-Smtp-Source: AGHT+IFjvF3PijKU4jrk+8sWSpcoqq7ogYu5FKxZMA70n4WSOOUP8azQM2w+hGtvt97enW54c+AtEg==
+X-Received: by 2002:a5d:6982:0:b0:35f:1dcb:724c with SMTP id
+ ffacd0b85a97d-35f1dcb73c8mr2081415f8f.68.1718001321427; 
+ Sun, 09 Jun 2024 23:35:21 -0700 (PDT)
+Received: from m1x-phil.lan ([176.176.129.242])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42183c08f49sm36331295e9.6.2024.06.09.23.24.58
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 09 Jun 2024 23:24:59 -0700 (PDT)
-Message-ID: <79d16330-79ff-410f-b9ae-e1d4db6524ed@linaro.org>
-Date: Mon, 10 Jun 2024 08:24:58 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/26] hw/ppc: Prefer HumanReadableText over Monitor
+ ffacd0b85a97d-35ef5fc12e0sm10178493f8f.100.2024.06.09.23.35.19
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Sun, 09 Jun 2024 23:35:20 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-ppc@nongnu.org,
- Nicholas Piggin <npiggin@gmail.com>, =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?=
- <fbarrat@linux.ibm.com>, David Gibson <david@gibson.dropbear.id.au>,
- =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+Cc: "Michael S. Tsirkin" <mst@redhat.com>,
+ "Dr. David Alan Gilbert" <dave@treblig.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Laurent Vivier <laurent@vivier.eu>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-References: <20240610062105.49848-1-philmd@linaro.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240610062105.49848-1-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ Eric Blake <eblake@redhat.com>, Yanan Wang <wangyanan55@huawei.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Nicholas Piggin <npiggin@gmail.com>, Don Porter <porter@cs.unc.edu>,
+ =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>,
+ qemu-ppc@nongnu.org, Markus Armbruster <armbru@redhat.com>
+Subject: [PATCH 0/2] hw/intc: Introduce x-query-interrupt-controllers QMP
+ command
+Date: Mon, 10 Jun 2024 08:35:15 +0200
+Message-ID: <20240610063518.50680-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12a;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x12a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,23 +104,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/6/24 08:20, Philippe Mathieu-Daudé wrote:
-> Hi,
-> 
-> This series remove uses of Monitor in hw/ppc/,
-> replacing by the more generic HumanReadableText.
-> Care is taken to keep the commit bisectables by
-> updating functions one by one, also easing review.
-> 
-> For rationale see previous series from Daniel:
-> https://lore.kernel.org/qemu-devel/20211028155457.967291-1-berrange@redhat.com/
+Continuing previous work from Daniel:
+https://lore.kernel.org/qemu-devel/20211028155457.967291-1-berrange@redhat.com/
 
-Or more specifically commit f2de406f29 ("docs/devel: document
-expectations for QAPI data modelling for QMP").
+- Prefer HumanReadableText over Monitor in hw/intc/
+- Introduce x-query-interrupt-controllers QMP command
 
-> 
-> Regards,
-> 
-> Phil.
+See commits f2de406f29 ("docs/devel: document expectations for
+QAPI data modelling for QMP") and 3d312f417d ("docs/devel: document
+expectations for HMP commands in the future") for rationale.
+
+Based-on: <20240610062105.49848-1-philmd@linaro.org>
+
+Philippe Mathieu-Daudé (2):
+  hw/intc: Avoid using Monitor in INTERRUPT_STATS_PROVIDER::print_info()
+  hw/intc: Introduce x-query-interrupt-controllers QMP command
+
+ qapi/machine.json          | 17 ++++++++++++
+ include/hw/intc/intc.h     |  2 +-
+ hw/core/machine-qmp-cmds.c | 29 +++++++++++++++++++
+ hw/intc/goldfish_pic.c     |  8 +++---
+ hw/intc/i8259_common.c     | 14 +++++-----
+ hw/intc/ioapic_common.c    | 57 +++++++++++++++++++-------------------
+ hw/intc/m68k_irqc.c        |  5 ++--
+ hw/intc/slavio_intctl.c    | 11 ++++----
+ hw/ppc/pnv.c               | 10 +------
+ hw/ppc/spapr.c             | 10 +------
+ monitor/hmp-cmds.c         | 27 ------------------
+ hmp-commands-info.hx       |  2 +-
+ 12 files changed, 97 insertions(+), 95 deletions(-)
+
+-- 
+2.41.0
 
 
