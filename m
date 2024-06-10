@@ -2,93 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B45F3902890
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jun 2024 20:24:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 574F59028A9
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jun 2024 20:27:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sGjgY-0000sY-I2; Mon, 10 Jun 2024 14:24:02 -0400
+	id 1sGjje-0005hq-Jg; Mon, 10 Jun 2024 14:27:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1sGjgW-0000nm-Gj
- for qemu-devel@nongnu.org; Mon, 10 Jun 2024 14:24:00 -0400
-Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1sGjgU-0006HB-N4
- for qemu-devel@nongnu.org; Mon, 10 Jun 2024 14:24:00 -0400
-Received: by mail-lf1-x12b.google.com with SMTP id
- 2adb3069b0e04-52bc1acb9f0so272742e87.2
- for <qemu-devel@nongnu.org>; Mon, 10 Jun 2024 11:23:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1718043836; x=1718648636; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=+lhD8SNX4mHL3omulyjAcCiMBXUceKEOKSRtwr2WCRs=;
- b=NabVEPjDhd16BG2F+evLiSiHmLBSo3W/ad+rk0jrel+xtt9NW3ivuslcbZrNNxtpp2
- 8h4EjOl1kmNSb66GXq5VQTuhUsVhw9ARjwJ5cuLRZN2oFamILfyIEJqUHwBA3vxFic1a
- TsRn3XDuzVF13n0d/pNWQBbhtwq9F1Ax+sDRp3U1EH2ao+F+oR7PWxuxM6XnDL4Gl6HB
- fZyBTPdIXs1dk3Bsr9XJopzdLHCwgyVv/XuoorKOiVAaCU0kKnS9B6fqEUiEaOXEDNsl
- jf/j996sBrR4eiD5PzI3zYyk1b00TSVWWxWdyHw0+QWdWcKt4r59vwVauJABVflG854e
- hCzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718043836; x=1718648636;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=+lhD8SNX4mHL3omulyjAcCiMBXUceKEOKSRtwr2WCRs=;
- b=TkDbFYVXR6VT31rfDl0qxjyEiHFU0cUK8Jv72h56z5IqDYgDwbtiSYjqjiRqpOxK82
- 2xABvhvUcavInqUOCyQcB2nEdMOvhseop4FY9WWYo51tpa5axU6V/Hwka0dDoQoVb4cR
- NcPYUhZrGxnBJozBiozYrA9EndpEbWhyvY6HYcbTxFNjPobiFN1bXRJAVI4EsLAhKRF8
- PHce6yjtbj20107lRNspHjEAN3qQe3uvHJ8i6XiG8JjW2gTGlLsFJ3WtPBlzThjLuNwr
- LJHl77Qmj1cRWHnTRD6QvIPSnWl9X/0Dt2tyLCQPo2hMpie2N8V5fJ6rFeh5Vk/Euugo
- T2XA==
-X-Gm-Message-State: AOJu0YwV5Bg+4VBynJriP1cTj6c6mSfsXQSB+ntdlmP0gPDtnMVHGoqf
- atkeD68NU34dCbwtUkzN8wj8xyNPboWPll1vE9qcqBEd2qcWvMOUBKIt1wr6FQMpCOkoD8UFtZN
- 73Kc=
-X-Google-Smtp-Source: AGHT+IHmlaFpFdYWBT6jRh+DNxm11tZDrrW04oy/HlK0TpVt/p1gaz8KcgSrpaY3JS4b51ZgWD+l8w==
-X-Received: by 2002:ac2:5f64:0:b0:52c:8ea2:9a82 with SMTP id
- 2adb3069b0e04-52c8ea29cf8mr1035558e87.35.1718043836078; 
- Mon, 10 Jun 2024 11:23:56 -0700 (PDT)
-Received: from localhost.localdomain (adsl-33.37.6.162.tellas.gr.
- [37.6.162.33]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42161147811sm135487395e9.18.2024.06.10.11.23.53
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 10 Jun 2024 11:23:55 -0700 (PDT)
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, Mads Ynddal <mads@ynddal.dk>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Zhao Liu <zhao1.liu@intel.com>, Gustavo Romero <gustavo.romero@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>
-Subject: [RFC PATCH v1 6/6] DO NOT MERGE: update rustdoc gitlab pages gen
-Date: Mon, 10 Jun 2024 21:22:41 +0300
-Message-ID: <de81929e0e9d470deac2c6b449b7a5183325e7ee.1718040303.git.manos.pitsidianakis@linaro.org>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <cover.rust-pl011-rfc-v1.git.manos.pitsidianakis@linaro.org>
-References: <cover.rust-pl011-rfc-v1.git.manos.pitsidianakis@linaro.org>
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1sGjjI-0005gO-1L
+ for qemu-devel@nongnu.org; Mon, 10 Jun 2024 14:26:52 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1sGjjG-0006pw-8f
+ for qemu-devel@nongnu.org; Mon, 10 Jun 2024 14:26:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1718044008;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=wDKPwfTMvPEdBysezOfWfcB12MRhGMTru7l7+W2DslE=;
+ b=eqSujr7FN7QKFSnrHEACOYlk7nVIO/8xaGH9NcizKKoV6URFoM6s+bth1ci4rcu9KPR24Y
+ ODkHgeI6vMSst028j1kHZEm1//0fQwiQSTqmU0l77LgNGFtAnHB6Do3UDuwUXyfW4TDDLp
+ ZPMA85AAoYxG4Gam7Vk9cwic9w1yRwg=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-136-XQutqeZXOk-Dq7aiGw_Y0A-1; Mon,
+ 10 Jun 2024 14:26:45 -0400
+X-MC-Unique: XQutqeZXOk-Dq7aiGw_Y0A-1
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id A17AE19560A2; Mon, 10 Jun 2024 18:26:42 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.32])
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 9DDE619560AA; Mon, 10 Jun 2024 18:26:36 +0000 (UTC)
+Date: Mon, 10 Jun 2024 19:26:33 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: Markus Armbruster <armbru@redhat.com>,
+ "Dr. David Alan Gilbert" <dave@treblig.org>, qemu-devel@nongnu.org,
+ Yanan Wang <wangyanan55@huawei.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eric Farman <farman@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
+ Eric Blake <eblake@redhat.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ qemu-s390x@nongnu.org, Eduardo Habkost <eduardo@habkost.net>,
+ Ilya Leoshkevich <iii@linux.ibm.com>, Halil Pasic <pasic@linux.ibm.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ David Hildenbrand <david@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [RFC PATCH 2/3] monitor: Allow passing HMP arguments to QMP
+ HumanReadableText API
+Message-ID: <ZmdFWdtTyhqoRREK@redhat.com>
+References: <20240610175852.21215-1-philmd@linaro.org>
+ <20240610175852.21215-3-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-lf1-x12b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+In-Reply-To: <20240610175852.21215-3-philmd@linaro.org>
+User-Agent: Mutt/2.2.12 (2023-09-09)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: 11
+X-Spam_score: 1.1
+X-Spam_bar: +
+X-Spam_report: (1.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.143,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,42 +93,82 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
----
- .gitlab-ci.d/buildtest.yml | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+On Mon, Jun 10, 2024 at 07:58:51PM +0200, Philippe Mathieu-Daudé wrote:
+> Allow HMP commands implemented using the HumanReadableText API
+> (via the HMPCommand::cmd_info_hrt handler) to pass arguments
+> to the QMP equivalent command. The arguments are serialized as
+> a JSON dictionary.
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>  docs/devel/writing-monitor-commands.rst | 15 ++++++++++++++-
+>  qapi/machine.json                       | 24 ++++++++++++++++++++++++
+>  include/monitor/monitor.h               |  3 ++-
+>  monitor/monitor-internal.h              |  2 +-
+>  accel/tcg/monitor.c                     |  4 ++--
+>  hw/core/loader.c                        |  2 +-
+>  hw/core/machine-qmp-cmds.c              |  9 +++++----
+>  hw/usb/bus.c                            |  2 +-
+>  monitor/hmp-target.c                    |  3 ++-
+>  monitor/hmp.c                           | 11 +++++++----
+>  10 files changed, 59 insertions(+), 16 deletions(-)
+> 
+> diff --git a/docs/devel/writing-monitor-commands.rst b/docs/devel/writing-monitor-commands.rst
+> index 930da5cd06..843458e52c 100644
+> --- a/docs/devel/writing-monitor-commands.rst
+> +++ b/docs/devel/writing-monitor-commands.rst
+> @@ -561,6 +561,7 @@ returns a ``HumanReadableText``::
+>   # Since: 6.2
+>   ##
+>   { 'command': 'x-query-roms',
+> +   'data': { 'json-args': 'str'},
+>     'returns': 'HumanReadableText',
+>     'features': [ 'unstable' ] }
+>  
+> @@ -578,7 +579,7 @@ Implementing the QMP command
+>  The QMP implementation will typically involve creating a ``GString``
+>  object and printing formatted data into it, like this::
+>  
+> - HumanReadableText *qmp_x_query_roms(Error **errp)
+> + HumanReadableText *qmp_x_query_roms(const char *json_args, Error **errp)
+>   {
+>       g_autoptr(GString) buf = g_string_new("");
+>       Rom *rom;
+> @@ -596,6 +597,18 @@ object and printing formatted data into it, like this::
+>  The actual implementation emits more information.  You can find it in
+>  hw/core/loader.c.
+>  
+> +For QMP command taking (optional) parameters, these parameters are
+> +serialized as a JSON dictionary, and can be retrieved using the QDict
+> +API. If the previous ``x-query-roms`` command were taking a "index"
+> +argument, it could be retrieved as::
+> +
+> + HumanReadableText *qmp_x_query_roms(const char *json_args, Error **errp)
+> + {
+> +     g_autoptr(GString) buf = g_string_new("");
+> +     QDict *qdict = qobject_to(QDict, qobject_from_json(json_args, &error_abort));
+> +     uint64_t index = qdict_get_int(qdict, "index");
+> +     ...
+> + }
 
-diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index 1cd6519506..da882813b8 100644
---- a/.gitlab-ci.d/buildtest.yml
-+++ b/.gitlab-ci.d/buildtest.yml
-@@ -744,11 +744,20 @@ build-tools-and-docs-debian:
- pages:
-   image: rust:latest
-   script:
--    - cd ./rust/pl011/
-+    - rustup component add rustfmt
-+    - DEBIAN_FRONTEND=noninteractive apt-get update -y
-+    - DEBIAN_FRONTEND=noninteractive apt-get install -y python3-venv meson libgcrypt20-dev zlib1g-dev autoconf automake libtool bison flex git libglib2.0-dev libfdt-dev libpixman-1-dev ninja-build make libclang-14-dev
-+    - cargo install bindgen-cli
-+    - mkdir ./build/
-+    - cd ./build/
-+    - ../configure --enable-system --disable-kvm --target-list=aarch64-softmmu --enable-with-rust
-+    - ninja "generated.rs"
-+    - cp ./generated.rs ../rust/pl011/src/generated.rs.inc
-+    - cd ../rust/pl011/
-     - cargo tree --depth 1 -e normal --prefix none | cut -d' ' -f1  | xargs
-       printf -- '-p %s\n'  | xargs cargo doc --no-deps --document-private-items --target x86_64-unknown-linux-gnu
-     - cd ./../..
--    - mv ./rust/pl011/target/doc ./public
-+    - mv ./rust/pl011/target/x86_64-unknown-linux-gnu/doc ./public
-   artifacts:
-     when: on_success
-     paths:
+Passing json inside json is pretty gross, and throwing away a key
+benefit of QAPI - that it de-serializes the JSON into the actual
+data types that you need, avoiding manual & error prone code for
+unpacking args from a QDict.
+
+IMHO if a commend requires arguments, they should be modelled
+explicitly, and not use the  cmd_info_hrt convenience handler
+which was only ever intended simple for no-arg 'info' commands.
+
+With regards,
+Daniel
 -- 
-γαῖα πυρί μιχθήτω
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
