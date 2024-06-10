@@ -2,58 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98889901B1A
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jun 2024 08:22:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 779ED901B17
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jun 2024 08:22:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sGYP4-0002EI-MK; Mon, 10 Jun 2024 02:21:14 -0400
+	id 1sGYPA-0002GQ-Et; Mon, 10 Jun 2024 02:21:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sGYP2-0002Db-2X
- for qemu-devel@nongnu.org; Mon, 10 Jun 2024 02:21:12 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sGYP8-0002F8-3q
+ for qemu-devel@nongnu.org; Mon, 10 Jun 2024 02:21:18 -0400
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sGYP0-0004Ha-9G
- for qemu-devel@nongnu.org; Mon, 10 Jun 2024 02:21:11 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-4218180a122so5513615e9.1
- for <qemu-devel@nongnu.org>; Sun, 09 Jun 2024 23:21:09 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sGYP6-0004Iy-AM
+ for qemu-devel@nongnu.org; Mon, 10 Jun 2024 02:21:17 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-35e5604abdcso3012911f8f.0
+ for <qemu-devel@nongnu.org>; Sun, 09 Jun 2024 23:21:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1718000468; x=1718605268; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=lEW/qFqRvf1Ue1gQbjp7+E0dqhff+FhZ7GMHEsEvvbU=;
- b=SJgZTpRQKVft4j3nS86xWbJrNy3xJ/DUknrdLW/vpzGs4nlq1e0/HncyrudpGkqyrj
- BohFPQTrZPiQ21BJ4pSSMD+hJ7M2E2WWcSEtZCGZUYE2inzneeLpoHhDC5s56gYNaHZ4
- DT0qtszFyMVr+gGUDFsHWfhRfmmDo82aL/CPq7hCie5lYXSdvnIqL6z2+EDKu0wP6vPG
- s57g6/UILAU+1X2a04v6DUeza19ecUoLBRZ/rf/ZEaBEx6ADaaOdUiVGpvL7kAwl+NtO
- PTaShPCZCHXg4rOnvBV7ENNW6wDYoND6C0693Ykh/XMRUZgORjqDHBXw9L6u0lz3gqPQ
- n52g==
+ d=linaro.org; s=google; t=1718000474; x=1718605274; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=AVbnHAOwxyh5BXz5KtV5BYAwaSvMfBTicRK4fg5tgIw=;
+ b=SWp31WF48przDB7ggWxz5F0h/5Hs4cAWlO4gw9/D4Ew82+S2k6KpZ1jT9yHq05xIcU
+ 70al6mHq1hkESfeNvmQi8RFml0owHg36kR/VrqMel3Md/ujqspfZXerpcXTwvDOI05wY
+ MmZmEK7VCkG6GrVDn7jIeV5El3Vp3t/NcjLIAUNoE6Syeo1cvDSyyyyujri/U5kdw+cF
+ 18Ug8/xdgxOffxoE1CGbt8xhwFteVk/s0Te05W7xf28JG2Rfyf9L6icYD1byCSKqVY+g
+ +3X6a1uUyZbSfLPWi0/oXXzyZ8erLKy/Cv56vNtiEcJYeU4bbrfyp2vV1rdu967RbIL8
+ X9CQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718000468; x=1718605268;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=lEW/qFqRvf1Ue1gQbjp7+E0dqhff+FhZ7GMHEsEvvbU=;
- b=G3JDmZSt0IbZov4wmJxdTY1uprd2To2r1lkf5FzJI2Ew093qxtcRxBMMQBADBIra1T
- UQ3xNfb1qLxqlFzIZsEqIwWWX0mBAm/HlmDq8jpp0ASsa2cKV/G490HlpozM5q++lrHF
- XZhoqN0WTslFkCWd1K1Bdw7mvKct+JfgRYehJZ+mV5R28fkfbELsB6vKSTqz2vHy9N1H
- OKXIjr+qvr0q4glo+MmKclxFn2p6OXmPyggliT1V8hCmvVRS2Aq90y3t3zjEFBBe6WjY
- cJvDBzMqXIqDTC+xLhGF2L3FH7Aie7HL4+Daufbp0JiATy9ek4EfT7P4vE0c92D7zEvI
- s/ng==
-X-Gm-Message-State: AOJu0Yy/Nr89c6NjRf3meQMnzRdkgmj9r0RnrMWAZvwrbYjwMa5jBzH6
- rBoGnJXcnlCBRf8Jefsn5cDABrpdk4VWEiIPmzYPKHAU93dTymG7KG+wvyMB+ABLYsa/q3wAYRy
- J
-X-Google-Smtp-Source: AGHT+IGYRRKYE3AFgsqbOocvqvtAJWxVGyBzDPNQaCzfSsjg9Yi4oNyntDs9BCkuWxj1qj/IKjpR/Q==
-X-Received: by 2002:a05:600c:4e88:b0:421:7aa1:439 with SMTP id
- 5b1f17b1804b1-4217aa108c9mr49703805e9.30.1718000468092; 
- Sun, 09 Jun 2024 23:21:08 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1718000474; x=1718605274;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=AVbnHAOwxyh5BXz5KtV5BYAwaSvMfBTicRK4fg5tgIw=;
+ b=SHG8eyzwSPT3nqISoILE7pt6HbFDabaX9EQVo9Cel5686FJyK7F+u14QNJFxHoZrqZ
+ pMa7+be1363uzd3/kTV5IJ5MXO2yZpoe2s1aDbZISpxrSxA63g/tQmQU9NkddjhrVXqC
+ UyqCqY0RZ2Lr6biSPv7efcf11E06wOllmnGPaACtwmKxsTSF4V1e4t5fOSR44bWVx4nw
+ DrxmX+9mdBq/uTDpGBfIoK+HYMl0qziCvN2okFoa/YsLILHppX43+UykJUNLaOO71lzv
+ H71tT8aenXh9g8ajpGdHUWxta2AZPsPrSV91ncnCspdhRfG1adRCfAXYSHDIdVfiVrUk
+ 9fFw==
+X-Gm-Message-State: AOJu0YzKG+Z6HvzwPcYrbN5G3wtDmJZM960ak7d1mDTB5oDQ3i/e64jU
+ tJkzG25/2WCbf389pXYZ+0xRElz30x5nD6+U8fEHg+z8WzqqyIV57YmCaHXYCi29mt32EEAhEa1
+ 8
+X-Google-Smtp-Source: AGHT+IHtSZj3tg6m3/bsuHoH5/qnLqErnfICEhdOkfVIaJ3/85YW8rYN/ExJ+baQj6DqOFvgD6lNVw==
+X-Received: by 2002:a5d:4dce:0:b0:35f:9ab:d06c with SMTP id
+ ffacd0b85a97d-35f09abd1c7mr6504377f8f.5.1718000473976; 
+ Sun, 09 Jun 2024 23:21:13 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.129.242])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-421818907b6sm44823455e9.27.2024.06.09.23.21.06
+ ffacd0b85a97d-35f1f109346sm3338253f8f.27.2024.06.09.23.21.12
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sun, 09 Jun 2024 23:21:07 -0700 (PDT)
+ Sun, 09 Jun 2024 23:21:13 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-ppc@nongnu.org,
@@ -63,16 +64,19 @@ Cc: Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-ppc@nongnu.org,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Philippe =?unknown-8bit?q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 00/26] hw/ppc: Prefer HumanReadableText over Monitor
-Date: Mon, 10 Jun 2024 08:20:38 +0200
-Message-ID: <20240610062105.49848-1-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH 01/26] hw/ppc: Avoid using Monitor in
+ pnv_phb3_msi_pic_print_info()
+Date: Mon, 10 Jun 2024 08:20:39 +0200
+Message-ID: <20240610062105.49848-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20240610062105.49848-1-philmd@linaro.org>
+References: <20240610062105.49848-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,74 +99,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+Replace Monitor API by HumanReadableText one.
 
-This series remove uses of Monitor in hw/ppc/,
-replacing by the more generic HumanReadableText.
-Care is taken to keep the commit bisectables by
-updating functions one by one, also easing review.
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ include/hw/pci-host/pnv_phb3.h |  2 +-
+ hw/pci-host/pnv_phb3_msi.c     | 21 ++++++++++-----------
+ hw/ppc/pnv.c                   |  8 +++++++-
+ 3 files changed, 18 insertions(+), 13 deletions(-)
 
-For rationale see previous series from Daniel:
-https://lore.kernel.org/qemu-devel/20211028155457.967291-1-berrange@redhat.com/
-
-Regards,
-
-Phil.
-
-Philippe Mathieu-Daudé (26):
-  hw/ppc: Avoid using Monitor in pnv_phb3_msi_pic_print_info()
-  hw/ppc: Avoid using Monitor in icp_pic_print_info()
-  hw/ppc: Avoid using Monitor in xive_tctx_pic_print_info()
-  hw/ppc: Avoid using Monitor in ics_pic_print_info()
-  hw/ppc: Avoid using Monitor in PnvChipClass::intc_print_info()
-  hw/ppc: Avoid using Monitor in xive_end_queue_pic_print_info()
-  hw/ppc: Avoid using Monitor in spapr_xive_end_pic_print_info()
-  hw/ppc: Avoid using Monitor in spapr_xive_pic_print_info()
-  hw/ppc: Avoid using Monitor in xive_source_pic_print_info()
-  hw/ppc: Avoid using Monitor in pnv_phb4_pic_print_info()
-  hw/ppc: Avoid using Monitor in xive_eas_pic_print_info()
-  hw/ppc: Avoid using Monitor in xive_end_pic_print_info()
-  hw/ppc: Avoid using Monitor in xive_end_eas_pic_print_info()
-  hw/ppc: Avoid using Monitor in xive_nvt_pic_print_info()
-  hw/ppc: Avoid using Monitor in pnv_xive_pic_print_info()
-  hw/ppc: Avoid using Monitor in pnv_psi_pic_print_info()
-  hw/ppc: Avoid using Monitor in xive2_eas_pic_print_info()
-  hw/ppc: Avoid using Monitor in xive2_end_eas_pic_print_info()
-  hw/ppc: Avoid using Monitor in xive2_end_queue_pic_print_info()
-  hw/ppc: Avoid using Monitor in xive2_end_pic_print_info()
-  hw/ppc: Avoid using Monitor in xive2_nvp_pic_print_info()
-  hw/ppc: Avoid using Monitor in pnv_xive2_pic_print_info()
-  hw/ppc: Avoid using Monitor in
-    SpaprInterruptControllerClass::print_info()
-  hw/ppc: Avoid using Monitor in spapr_irq_print_info()
-  hw/ppc: Avoid using Monitor in pnv_chip_power9_pic_print_info_child()
-  hw/ppc: Avoid using Monitor in pic_print_info()
-
- include/hw/pci-host/pnv_phb3.h |   2 +-
- include/hw/pci-host/pnv_phb4.h |   2 +-
- include/hw/ppc/pnv_chip.h      |   4 +-
- include/hw/ppc/pnv_psi.h       |   2 +-
- include/hw/ppc/pnv_xive.h      |   4 +-
- include/hw/ppc/spapr_irq.h     |   4 +-
- include/hw/ppc/xics.h          |   4 +-
- include/hw/ppc/xive.h          |   4 +-
- include/hw/ppc/xive2_regs.h    |   8 +--
- include/hw/ppc/xive_regs.h     |   8 +--
- hw/intc/pnv_xive.c             |  38 ++++++------
- hw/intc/pnv_xive2.c            |  48 +++++++--------
- hw/intc/spapr_xive.c           |  41 ++++++-------
- hw/intc/xics.c                 |  25 ++++----
- hw/intc/xics_spapr.c           |   7 +--
- hw/intc/xive.c                 | 108 ++++++++++++++++-----------------
- hw/intc/xive2.c                |  87 +++++++++++++-------------
- hw/pci-host/pnv_phb3_msi.c     |  21 +++----
- hw/pci-host/pnv_phb4.c         |  17 +++---
- hw/ppc/pnv.c                   |  52 ++++++++--------
- hw/ppc/pnv_psi.c               |   9 ++-
- hw/ppc/spapr.c                 |  11 +++-
- hw/ppc/spapr_irq.c             |   4 +-
- 23 files changed, 256 insertions(+), 254 deletions(-)
-
+diff --git a/include/hw/pci-host/pnv_phb3.h b/include/hw/pci-host/pnv_phb3.h
+index d62b3091ac..24ca3dddaa 100644
+--- a/include/hw/pci-host/pnv_phb3.h
++++ b/include/hw/pci-host/pnv_phb3.h
+@@ -40,7 +40,7 @@ void pnv_phb3_msi_update_config(Phb3MsiState *msis, uint32_t base,
+ void pnv_phb3_msi_send(Phb3MsiState *msis, uint64_t addr, uint16_t data,
+                        int32_t dev_pe);
+ void pnv_phb3_msi_ffi(Phb3MsiState *msis, uint64_t val);
+-void pnv_phb3_msi_pic_print_info(Phb3MsiState *msis, Monitor *mon);
++void pnv_phb3_msi_pic_print_info(Phb3MsiState *msis, GString *buf);
+ 
+ 
+ /*
+diff --git a/hw/pci-host/pnv_phb3_msi.c b/hw/pci-host/pnv_phb3_msi.c
+index a6d827f903..77d673da54 100644
+--- a/hw/pci-host/pnv_phb3_msi.c
++++ b/hw/pci-host/pnv_phb3_msi.c
+@@ -13,7 +13,6 @@
+ #include "hw/pci-host/pnv_phb3.h"
+ #include "hw/ppc/pnv.h"
+ #include "hw/pci/msi.h"
+-#include "monitor/monitor.h"
+ #include "hw/irq.h"
+ #include "hw/qdev-properties.h"
+ #include "sysemu/reset.h"
+@@ -316,13 +315,13 @@ static void pnv_phb3_msi_register_types(void)
+ 
+ type_init(pnv_phb3_msi_register_types);
+ 
+-void pnv_phb3_msi_pic_print_info(Phb3MsiState *msi, Monitor *mon)
++void pnv_phb3_msi_pic_print_info(Phb3MsiState *msi, GString *buf)
+ {
+     ICSState *ics = ICS(msi);
+     int i;
+ 
+-    monitor_printf(mon, "ICS %4x..%4x %p\n",
+-                   ics->offset, ics->offset + ics->nr_irqs - 1, ics);
++    g_string_append_printf(buf, "ICS %4x..%4x %p\n",
++                           ics->offset, ics->offset + ics->nr_irqs - 1, ics);
+ 
+     for (i = 0; i < ics->nr_irqs; i++) {
+         uint64_t ive;
+@@ -335,12 +334,12 @@ void pnv_phb3_msi_pic_print_info(Phb3MsiState *msi, Monitor *mon)
+             continue;
+         }
+ 
+-        monitor_printf(mon, "  %4x %c%c server=%04x prio=%02x gen=%d\n",
+-                       ics->offset + i,
+-                       GETFIELD(IODA2_IVT_P, ive) ? 'P' : '-',
+-                       GETFIELD(IODA2_IVT_Q, ive) ? 'Q' : '-',
+-                       (uint32_t) GETFIELD(IODA2_IVT_SERVER, ive) >> 2,
+-                       (uint32_t) GETFIELD(IODA2_IVT_PRIORITY, ive),
+-                       (uint32_t) GETFIELD(IODA2_IVT_GEN, ive));
++        g_string_append_printf(buf, "  %4x %c%c server=%04x prio=%02x gen=%d\n",
++                               ics->offset + i,
++                               GETFIELD(IODA2_IVT_P, ive) ? 'P' : '-',
++                               GETFIELD(IODA2_IVT_Q, ive) ? 'Q' : '-',
++                               (uint32_t) GETFIELD(IODA2_IVT_SERVER, ive) >> 2,
++                               (uint32_t) GETFIELD(IODA2_IVT_PRIORITY, ive),
++                               (uint32_t) GETFIELD(IODA2_IVT_GEN, ive));
+     }
+ }
+diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
+index 6e3a5ccdec..5356a4e295 100644
+--- a/hw/ppc/pnv.c
++++ b/hw/ppc/pnv.c
+@@ -38,6 +38,7 @@
+ #include "hw/loader.h"
+ #include "hw/nmi.h"
+ #include "qapi/visitor.h"
++#include "qapi/type-helpers.h"
+ #include "monitor/monitor.h"
+ #include "hw/intc/intc.h"
+ #include "hw/ipmi/ipmi.h"
+@@ -774,8 +775,13 @@ static void pnv_chip_power8_pic_print_info(PnvChip *chip, Monitor *mon)
+     for (i = 0; i < chip8->num_phbs; i++) {
+         PnvPHB *phb = chip8->phbs[i];
+         PnvPHB3 *phb3 = PNV_PHB3(phb->backend);
++        g_autoptr(GString) buf = g_string_new("");
++        g_autoptr(HumanReadableText) info = NULL;
++
++        pnv_phb3_msi_pic_print_info(&phb3->msis, buf);
++        info = human_readable_text_from_str(buf);
++        monitor_puts(mon, info->human_readable_text);
+ 
+-        pnv_phb3_msi_pic_print_info(&phb3->msis, mon);
+         ics_pic_print_info(&phb3->lsis, mon);
+     }
+ }
 -- 
 2.41.0
 
