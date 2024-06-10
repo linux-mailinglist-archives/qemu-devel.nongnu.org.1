@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DE5E901B1E
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jun 2024 08:22:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B4B9901B2D
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jun 2024 08:25:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sGYQH-0003nh-1d; Mon, 10 Jun 2024 02:22:29 -0400
+	id 1sGYQT-00044b-5j; Mon, 10 Jun 2024 02:22:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sGYQ0-00038N-ER
- for qemu-devel@nongnu.org; Mon, 10 Jun 2024 02:22:12 -0400
-Received: from mail-lj1-x233.google.com ([2a00:1450:4864:20::233])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sGYQ5-0003Mw-H8
+ for qemu-devel@nongnu.org; Mon, 10 Jun 2024 02:22:20 -0400
+Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sGYPv-0004RP-3u
- for qemu-devel@nongnu.org; Mon, 10 Jun 2024 02:22:08 -0400
-Received: by mail-lj1-x233.google.com with SMTP id
- 38308e7fff4ca-2ebe40673e8so8307361fa.3
- for <qemu-devel@nongnu.org>; Sun, 09 Jun 2024 23:22:06 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sGYQ0-0004Tk-NV
+ for qemu-devel@nongnu.org; Mon, 10 Jun 2024 02:22:14 -0400
+Received: by mail-lf1-x136.google.com with SMTP id
+ 2adb3069b0e04-52c85a7f834so1086080e87.0
+ for <qemu-devel@nongnu.org>; Sun, 09 Jun 2024 23:22:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1718000525; x=1718605325; darn=nongnu.org;
+ d=linaro.org; s=google; t=1718000531; x=1718605331; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=rw+kbtFvGBPcHZTq2AbRKqK9FSuZ88ZupuV0Vb6iIFg=;
- b=HMRgfTPKDDN0uDnu2JRqbAYfQHKSWUfrxFiyyOQyi7OEWdDf7U1u3qs/wH8pjZTWLO
- J1+Dwxrt4GsLH/I+eI2jdNRq+TU32dj5a/bGJL9s5bilsNmo908x0qgHqbhu2GSEFkJv
- 4AV4b8fQh5LYZMahma590DBE7rD1edCP7NWoRWVRn/sNLKDTUx2NX5Mhp9aqh4ayaBAW
- nUReXEDNoPFWRluLFrSSGaGhHqPunkthmiLBLN5jYoHw9r5wZ6qdDrdqBvkup0Z88FJj
- FrPuoQCksM7a5y01BPUQMv7yUM/zDi4/xuGVxqmZDl8Zn3bkIEEWoKJeya+DvLyTKJtr
- kteg==
+ bh=O4OQnqhZPPe0S3e5bkGivQbSupbVDgnVRofBomnV0rI=;
+ b=ovp38pmPvo3JYc//WTmyxUARhTc8Y/k+Mp9QN/lIU7oq+oZTKk+gPlVMDZP4+RgK42
+ AUQgtGKZ1dHCPfGYOhUBnu11D+N1N6nFriPIXKZbDR1BMuqRgtFhfCd7zgM1DucpV3CU
+ 7irXbMcK8uDOH33O2xEPavH6JGUBFCCEPmbIUIQoFtdjyiE8v1Zz+0m9RbGp99gZ3t8y
+ OQ6ezaMcx2P+d/MIjoWr4Nv/w7bOg9sk+JmIRrLKxBAjJA5vzsPt2QSVJjfBMgspNadT
+ xQh+WRbZGpiCCv/l7bx1zEN+48H6E/9Yrweh+v5VXBsNJQKZYM3aBAPnc1M/9yKk08n7
+ hEqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718000525; x=1718605325;
+ d=1e100.net; s=20230601; t=1718000531; x=1718605331;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=rw+kbtFvGBPcHZTq2AbRKqK9FSuZ88ZupuV0Vb6iIFg=;
- b=Ij3e2aejzOx14PmzKUVws0w5WXHiWRp+tboLlRCCHgQk4hik0eokY15cz9Uy8ut2JE
- Y0L7WKG0VnfVPm1bCQRhSOWslHAoj7zuKFgG7ievI9yk7zdY65JkAJyRG9lSxQ9hlkk9
- zG1AUW26PT2S7LJSXAsBPES6oc5Qcag5oHBhOq1r9EqfYMgbVVnkXpQCnAoPImQ/71eS
- 36Ay/Jrw9H1hzg+UVFbA1gFovnyJmdMIZOY4z4bHUfoGisLgCotVIZDe2Dh16cDfh489
- 1ZRKrr3mkRTC/BLIR+MpeuOSNtgrmAxTRUOUfwiDugO5kLsfCiaROj1x5sUemnwDK00g
- N36g==
-X-Gm-Message-State: AOJu0YyM1icJdOVQpKvfPRPGzHgUoAefrz4RKkbPO+YFLP4Ov6yJ3hU/
- sS4S8eTqVAtquHp/dW5u21EwaCp3qo7Bkf28h/c7BwmuMYzTXIs1TIE0VQkIwFXJVrUCW2bZtoJ
- V
-X-Google-Smtp-Source: AGHT+IHtUh3X2HHYnzq5x7bFVBXacxvAUoY7IlDTqnQBtlNWWdoigQZouMOu9jMm1vhAg7VPJiYWyg==
-X-Received: by 2002:a05:6512:3b09:b0:523:91af:12d9 with SMTP id
- 2adb3069b0e04-52bb9f66a7bmr7170529e87.9.1718000525125; 
- Sun, 09 Jun 2024 23:22:05 -0700 (PDT)
+ bh=O4OQnqhZPPe0S3e5bkGivQbSupbVDgnVRofBomnV0rI=;
+ b=YnC9jUohdDQsYxMkOcHoCOQmXgxAioNN3yY6BS51aNaULaG6E2DT0Ewx6oF33bnYTM
+ l+MBrOIT9OyfASkgzrpbtnDcMFCPuaKFvLQle4C+KlSyu2KzBUt86e+iOVSoYZ9hUYqi
+ WYPHyfNjnhu88TP/ceKCD9h+CNlwLGL09FvgCD+AxAhmw5rGeUmt7yzFxu2CX6jllIEA
+ NkogqkdUALg7aIj+ldJlqbfW1qq7Z8isp4RX6NgaLhZ6I02WLsOgdnqEiSrbjzCKtrLf
+ QZbeZIew7YihtgK9nHhu/jCahEQI1/YXXDSb24M/s22WX3zYsGbCcSOKy58Czh0EHF1m
+ T1HQ==
+X-Gm-Message-State: AOJu0YzqUScYbyYLi7Utk10GYv5AZbNT3mPxoEfVqnmZunOAkDElaBpv
+ lYY/ldPMbIxutLaSmDTRvhb3NyF3Upq+baWthmNIfbs68QhsjhaysOn7nkWThhs7pw3eLDnHFeR
+ /
+X-Google-Smtp-Source: AGHT+IEq4HokXUpYB+gjsJGWe8mB8izk5nVKQiRCsvOnq3busMeOb+amL0uIo8QnI2rBrISOjm7FdQ==
+X-Received: by 2002:ac2:4d1b:0:b0:52b:84bd:345e with SMTP id
+ 2adb3069b0e04-52bb9fc46fcmr4392918e87.43.1718000530791; 
+ Sun, 09 Jun 2024 23:22:10 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.129.242])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-35f23fe7a64sm1839557f8f.89.2024.06.09.23.22.03
+ ffacd0b85a97d-35f25907f15sm1290544f8f.45.2024.06.09.23.22.09
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sun, 09 Jun 2024 23:22:04 -0700 (PDT)
+ Sun, 09 Jun 2024 23:22:10 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-ppc@nongnu.org,
@@ -65,17 +65,17 @@ Cc: Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-ppc@nongnu.org,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 10/26] hw/ppc: Avoid using Monitor in pnv_phb4_pic_print_info()
-Date: Mon, 10 Jun 2024 08:20:48 +0200
-Message-ID: <20240610062105.49848-11-philmd@linaro.org>
+Subject: [PATCH 11/26] hw/ppc: Avoid using Monitor in xive_eas_pic_print_info()
+Date: Mon, 10 Jun 2024 08:20:49 +0200
+Message-ID: <20240610062105.49848-12-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240610062105.49848-1-philmd@linaro.org>
 References: <20240610062105.49848-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::233;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x233.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::136;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x136.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,83 +102,81 @@ Replace Monitor API by HumanReadableText one.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/pci-host/pnv_phb4.h | 2 +-
- hw/pci-host/pnv_phb4.c         | 9 +--------
- hw/ppc/pnv.c                   | 6 +++++-
- 3 files changed, 7 insertions(+), 10 deletions(-)
+ include/hw/ppc/xive_regs.h |  2 +-
+ hw/intc/pnv_xive.c         | 10 +++++-----
+ hw/intc/xive.c             | 12 ++++++------
+ 3 files changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/include/hw/pci-host/pnv_phb4.h b/include/hw/pci-host/pnv_phb4.h
-index 3212e68160..8abee78e4d 100644
---- a/include/hw/pci-host/pnv_phb4.h
-+++ b/include/hw/pci-host/pnv_phb4.h
-@@ -155,7 +155,7 @@ struct PnvPHB4 {
-     QLIST_HEAD(, PnvPhb4DMASpace) dma_spaces;
- };
+diff --git a/include/hw/ppc/xive_regs.h b/include/hw/ppc/xive_regs.h
+index 51e9a2152e..dd4a76bcf0 100644
+--- a/include/hw/ppc/xive_regs.h
++++ b/include/hw/ppc/xive_regs.h
+@@ -167,7 +167,7 @@ typedef struct XiveEAS {
+ #define xive_eas_is_valid(eas)   (be64_to_cpu((eas)->w) & EAS_VALID)
+ #define xive_eas_is_masked(eas)  (be64_to_cpu((eas)->w) & EAS_MASKED)
  
--void pnv_phb4_pic_print_info(PnvPHB4 *phb, Monitor *mon);
-+void pnv_phb4_pic_print_info(PnvPHB4 *phb, GString *buf);
- int pnv_phb4_pec_get_phb_id(PnvPhb4PecState *pec, int stack_index);
- PnvPhb4PecState *pnv_pec_add_phb(PnvChip *chip, PnvPHB *phb, Error **errp);
- void pnv_phb4_bus_init(DeviceState *dev, PnvPHB4 *phb);
-diff --git a/hw/pci-host/pnv_phb4.c b/hw/pci-host/pnv_phb4.c
-index 4b453997e7..99991008c1 100644
---- a/hw/pci-host/pnv_phb4.c
-+++ b/hw/pci-host/pnv_phb4.c
-@@ -10,8 +10,6 @@
- #include "qemu/log.h"
- #include "qapi/visitor.h"
- #include "qapi/error.h"
--#include "qapi/type-helpers.h"
--#include "monitor/monitor.h"
- #include "target/ppc/cpu.h"
- #include "hw/pci-host/pnv_phb4_regs.h"
- #include "hw/pci-host/pnv_phb4.h"
-@@ -1802,14 +1800,12 @@ static void pnv_phb4_register_types(void)
+-void xive_eas_pic_print_info(XiveEAS *eas, uint32_t lisn, Monitor *mon);
++void xive_eas_pic_print_info(XiveEAS *eas, uint32_t lisn, GString *buf);
  
- type_init(pnv_phb4_register_types);
- 
--void pnv_phb4_pic_print_info(PnvPHB4 *phb, Monitor *mon)
-+void pnv_phb4_pic_print_info(PnvPHB4 *phb, GString *buf)
+ static inline uint64_t xive_get_field64(uint64_t mask, uint64_t word)
  {
-     uint64_t notif_port =
-         phb->regs[PHB_INT_NOTIFY_ADDR >> 3] & ~PHB_INT_NOTIFY_ADDR_64K;
-     uint32_t offset = phb->regs[PHB_INT_NOTIFY_INDEX >> 3];
-     bool abt = !!(phb->regs[PHB_CTRLR >> 3] & PHB_CTRLR_IRQ_ABT_MODE);
--    g_autoptr(GString) buf = g_string_new("");
--    g_autoptr(HumanReadableText) info = NULL;
- 
-     g_string_append_printf(buf,
-                            "PHB4[%x:%x] Source %08x .. %08x "
-@@ -1819,7 +1815,4 @@ void pnv_phb4_pic_print_info(PnvPHB4 *phb, Monitor *mon)
-                            abt ? "ABT" : "",
-                            notif_port);
-     xive_source_pic_print_info(&phb->xsrc, 0, buf);
--
+diff --git a/hw/intc/pnv_xive.c b/hw/intc/pnv_xive.c
+index 520d7e0acd..c377823522 100644
+--- a/hw/intc/pnv_xive.c
++++ b/hw/intc/pnv_xive.c
+@@ -1864,19 +1864,19 @@ void pnv_xive_pic_print_info(PnvXive *xive, Monitor *mon)
+     g_string_append_printf(buf, "XIVE[%x] #%d Source %08x .. %08x\n",
+                            chip_id, blk, srcno0, srcno0 + nr_ipis - 1);
+     xive_source_pic_print_info(&xive->ipi_source, srcno0, buf);
 -    info = human_readable_text_from_str(buf);
 -    monitor_puts(mon, info->human_readable_text);
- }
-diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
-index aed6767c8d..df187c5180 100644
---- a/hw/ppc/pnv.c
-+++ b/hw/ppc/pnv.c
-@@ -791,12 +791,16 @@ static int pnv_chip_power9_pic_print_info_child(Object *child, void *opaque)
- {
-     Monitor *mon = opaque;
-     PnvPHB *phb =  (PnvPHB *) object_dynamic_cast(child, TYPE_PNV_PHB);
-+    g_autoptr(GString) buf = g_string_new("");
-+    g_autoptr(HumanReadableText) info = NULL;
  
-     if (!phb) {
-         return 0;
+-    monitor_printf(mon, "XIVE[%x] #%d EAT %08x .. %08x\n", chip_id, blk,
+-                   srcno0, srcno0 + nr_ipis - 1);
++    g_string_append_printf(buf, "XIVE[%x] #%d EAT %08x .. %08x\n",
++                           chip_id, blk, srcno0, srcno0 + nr_ipis - 1);
+     for (i = 0; i < nr_ipis; i++) {
+         if (xive_router_get_eas(xrtr, blk, i, &eas)) {
+             break;
+         }
+         if (!xive_eas_is_masked(&eas)) {
+-            xive_eas_pic_print_info(&eas, i, mon);
++            xive_eas_pic_print_info(&eas, i, buf);
+         }
      }
- 
--    pnv_phb4_pic_print_info(PNV_PHB4(phb->backend), mon);
-+    pnv_phb4_pic_print_info(PNV_PHB4(phb->backend), buf);
 +    info = human_readable_text_from_str(buf);
 +    monitor_puts(mon, info->human_readable_text);
  
-     return 0;
+     monitor_printf(mon, "XIVE[%x] #%d ENDT\n", chip_id, blk);
+     i = 0;
+diff --git a/hw/intc/xive.c b/hw/intc/xive.c
+index 1adb0439c5..b2203b721b 100644
+--- a/hw/intc/xive.c
++++ b/hw/intc/xive.c
+@@ -1921,17 +1921,17 @@ static const TypeInfo xive_router_info = {
+     }
+ };
+ 
+-void xive_eas_pic_print_info(XiveEAS *eas, uint32_t lisn, Monitor *mon)
++void xive_eas_pic_print_info(XiveEAS *eas, uint32_t lisn, GString *buf)
+ {
+     if (!xive_eas_is_valid(eas)) {
+         return;
+     }
+ 
+-    monitor_printf(mon, "  %08x %s end:%02x/%04x data:%08x\n",
+-                   lisn, xive_eas_is_masked(eas) ? "M" : " ",
+-                   (uint8_t)  xive_get_field64(EAS_END_BLOCK, eas->w),
+-                   (uint32_t) xive_get_field64(EAS_END_INDEX, eas->w),
+-                   (uint32_t) xive_get_field64(EAS_END_DATA, eas->w));
++    g_string_append_printf(buf, "  %08x %s end:%02x/%04x data:%08x\n",
++                           lisn, xive_eas_is_masked(eas) ? "M" : " ",
++                           (uint8_t)  xive_get_field64(EAS_END_BLOCK, eas->w),
++                           (uint32_t) xive_get_field64(EAS_END_INDEX, eas->w),
++                           (uint32_t) xive_get_field64(EAS_END_DATA, eas->w));
  }
+ 
+ /*
 -- 
 2.41.0
 
