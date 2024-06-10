@@ -2,57 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A219D901E1B
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jun 2024 11:25:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 550BB901E33
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jun 2024 11:30:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sGbGS-0003Jm-C0; Mon, 10 Jun 2024 05:24:32 -0400
+	id 1sGbLN-0006xy-Pc; Mon, 10 Jun 2024 05:29:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=l9v5=NM=kaod.org=clg@ozlabs.org>)
- id 1sGbGP-0003Ix-55
- for qemu-devel@nongnu.org; Mon, 10 Jun 2024 05:24:29 -0400
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=l9v5=NM=kaod.org=clg@ozlabs.org>)
- id 1sGbGN-0003ZH-HK
- for qemu-devel@nongnu.org; Mon, 10 Jun 2024 05:24:28 -0400
-Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4VyRG145xpz4x4T;
- Mon, 10 Jun 2024 19:24:25 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4VyRFy1vzsz4xFB;
- Mon, 10 Jun 2024 19:24:21 +1000 (AEST)
-Message-ID: <5e3e934c-fe10-4bb7-ac30-50e838a52104@kaod.org>
-Date: Mon, 10 Jun 2024 11:24:19 +0200
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1sGbLL-0006xj-Ng
+ for qemu-devel@nongnu.org; Mon, 10 Jun 2024 05:29:35 -0400
+Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1sGbLK-0004WY-67
+ for qemu-devel@nongnu.org; Mon, 10 Jun 2024 05:29:35 -0400
+Received: by mail-ed1-x529.google.com with SMTP id
+ 4fb4d7f45d1cf-57c83100bd6so746795a12.3
+ for <qemu-devel@nongnu.org>; Mon, 10 Jun 2024 02:29:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1718011772; x=1718616572; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:references
+ :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=SgeVwZV3Py5E4X6cJdtDiUm/oqLKRGwhomy9+/s6+A0=;
+ b=PapxTeaGF+CRE2IREw+Ey5fjYZsZiKwmAmkRX+dBQP8KZbeTSFNfSgNuz5qMyyC0Fm
+ 2uQZymUjOcVslFNiw/kZBHKXZSTG5X+Hv8ZjypsLfrhUxk0j4oW3fxSZbhL+2tLQTC0e
+ 8IrVyrh6sNMUkmVAKXAcvTvH75B0nDoNWrAY3KkJmAYnvfKsJlQSg8pcuM/swEAzlhh+
+ knCpyvuSmXDz+feOI7gc+4AoM1d3LQ4uCzE0Ca0/p1XGWwp/qTSUPWbvcR8mzu30+Ecu
+ YdZ7p7Scxe6BI1glZ+5QipjOb4ds2ra0MbpdFsdL/tUeFbieaBD/HYnOR6/TvbktfxqA
+ SEWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1718011772; x=1718616572;
+ h=content-transfer-encoding:mime-version:message-id:date:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=SgeVwZV3Py5E4X6cJdtDiUm/oqLKRGwhomy9+/s6+A0=;
+ b=mGpO36YWPzZqeRwuLTyP6gL46psHJrEw8rzVOvjROFAa1pi1o/2MSUj+7F3JbNjYM0
+ QG9E0V6fg1oL5bkRi7MGvCUCJu1CWVjXlwophZwLajWuCSTJ8nktgbxRmWoDLc3flBjM
+ lV852sKtOmIAFGwm4ljPw+r+ifuIpw+Q0qS3lIdrCfNPxuPTvp7pVaTAcpYUbVQJ9FSX
+ NKFkkyIEBxFXrG5cYe8S9n5jgrZ1Jy0I1khfEoASzhugNsm38YQPIyPvg+UPRxmbSyos
+ BneNvFhlXC8nJhKVhQ1uuTLahz6fL3MrUxK7CNe7YYWUopdsCfS7iAlYWfeZ9I11ktM3
+ HFsQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUC+4dEorWF930lRRKkQDDg4vjN/HGOll94tkWZ/KFqs7lZI8ye/vFaiChnJA6XcGjK8ZMXBjXg0SsnP0fktp+vvNxy0Aw=
+X-Gm-Message-State: AOJu0YyhTEeRrhMpnEIL4BfXdByGBnQwPoiuoRckDDyCBmNU/iwZcY3h
+ 6L9hqrLuODw0U4e0VUAKeLslqOlV9GxcjB4hQczTTuHnrh8D7dsgLnBo1pURm3M=
+X-Google-Smtp-Source: AGHT+IH+eljsqd0wVgSnZFIxdoR2z54Fr//heh3ojr2mT9EpEBGiM6rerJF1b3jfG5TA5b3AZjQzrw==
+X-Received: by 2002:a50:9314:0:b0:57c:7ed7:897a with SMTP id
+ 4fb4d7f45d1cf-57c7ed78a37mr1431057a12.27.1718011772022; 
+ Mon, 10 Jun 2024 02:29:32 -0700 (PDT)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-57c75ab6297sm2736432a12.14.2024.06.10.02.29.31
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 10 Jun 2024 02:29:31 -0700 (PDT)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 0CE915F860;
+ Mon, 10 Jun 2024 10:29:31 +0100 (BST)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: Anton Johansson <anjo@rev.ng>,  qemu-devel@nongnu.org,  Richard
+ Henderson <richard.henderson@linaro.org>,  Paolo Bonzini
+ <pbonzini@redhat.com>
+Subject: Re: [PATCH v2 1/3] target/mips: Restrict semihosting to TCG
+In-Reply-To: <aea6bd27-6c59-4257-ab89-18809444f8a8@linaro.org> ("Philippe
+ =?utf-8?Q?Mathieu-Daud=C3=A9=22's?= message of "Fri, 7 Jun 2024 15:48:57
+ +0200")
+References: <20240530145349.41309-1-philmd@linaro.org>
+ <20240530145349.41309-2-philmd@linaro.org>
+ <c2kx2jt43pcujrfx3szs3wztny7i5bvb3gypmw73dpcf5izvbo@3ahkvdtgrfl5>
+ <aea6bd27-6c59-4257-ab89-18809444f8a8@linaro.org>
+Date: Mon, 10 Jun 2024 10:29:30 +0100
+Message-ID: <877cex16yt.fsf@draig.linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] MAINTAINERS: Add reviewers for ASPEED BMCs
-To: Jamin Lin <jamin_lin@aspeedtech.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- "open list:All patches CC here" <qemu-devel@nongnu.org>
-Cc: steven_lee@aspeedtech.com, troy_lee@aspeedtech.com
-References: <20240605060310.1946803-1-jamin_lin@aspeedtech.com>
-Content-Language: en-US, fr
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20240605060310.1946803-1-jamin_lin@aspeedtech.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=l9v5=NM=kaod.org=clg@ozlabs.org; helo=mail.ozlabs.org
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::529;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x529.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -69,24 +101,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/5/24 8:03 AM, Jamin Lin wrote:
-> Add ASPEED members "Steven Lee", "Troy Lee" and "Jamin Lin"
-> to be reviewers of ASPEED BMCs.
-> 
-> Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
-> Signed-off-by: Troy Lee <troy_lee@aspeedtech.com>
-> Signed-off-by: Steven Lee <steven_lee@aspeedtech.com>
-> ---
->   MAINTAINERS | 3 +++
->   1 file changed, 3 insertions(+)
+Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
 
-Applied to aspeed-next.
+> On 7/6/24 13:08, Anton Johansson wrote:
+>> On 30/05/24, Philippe Mathieu-Daud=C3=A9 wrote:
+>>> Semihosting currently uses the TCG probe_access API. To prepare for
+>>> encoding the TCG dependency in Kconfig, do not enable it unless TCG
+>>> is available.
+>>>
+>>> Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
+>>> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+>>> ---
+>>>   target/mips/Kconfig | 2 +-
+>>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>> xtensa and m68k also `select SEMIHOSTING`, were these missed?
+>
+> TCG is the only accelerator they use, so it is kinda implicit,
+> but you are right, I'll update for completeness.
 
-Thanks,
+So I'll wait for a v3?
 
-C.
+>
+>> Otherwise for patch 1 & 2:
+>> Reviewed-by: Anton Johansson <anjo@rev.ng>
+>
+> Thanks!
 
-
-
-
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
