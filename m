@@ -2,72 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D27B901E7D
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jun 2024 11:41:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DBE48901E8F
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jun 2024 11:45:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sGbWU-0000sd-6Y; Mon, 10 Jun 2024 05:41:06 -0400
+	id 1sGbaI-0003FU-MY; Mon, 10 Jun 2024 05:45:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sGbWS-0000s9-7b
- for qemu-devel@nongnu.org; Mon, 10 Jun 2024 05:41:04 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sGbWQ-0006g6-Qr
- for qemu-devel@nongnu.org; Mon, 10 Jun 2024 05:41:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1718012462;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=8RgAG7w9rR08cyfdDveILRgszvGjShq/rsPofql0Dgo=;
- b=E5123+wsUXpH1GJQFkpOudIVUbhOm3ngZS/E/6VJ/lnEnZsbuL6YiL82bau7JA1AZkwt6V
- 1DzHMoknPGBABzbaubnT001s25drjGshKOnS4KgrwU411ba4KUUkj07t1uG0ai3h3jBvCr
- npLhWjEvDO8JcoNecS1ehSkRusvdr7I=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-180-t0qa8bf8ND2OiuK3ce4ovg-1; Mon,
- 10 Jun 2024 05:40:55 -0400
-X-MC-Unique: t0qa8bf8ND2OiuK3ce4ovg-1
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id BB50C1956094; Mon, 10 Jun 2024 09:40:54 +0000 (UTC)
-Received: from toolbox.redhat.com (unknown [10.42.28.32])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 936E630000C3; Mon, 10 Jun 2024 09:40:53 +0000 (UTC)
-From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH 2/2] crypto: use consistent error reporting pattern for
- unsupported cipher modes
-Date: Mon, 10 Jun 2024 10:40:49 +0100
-Message-ID: <20240610094049.851127-3-berrange@redhat.com>
-In-Reply-To: <20240610094049.851127-1-berrange@redhat.com>
-References: <20240610094049.851127-1-berrange@redhat.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sGbaG-0003Em-It
+ for qemu-devel@nongnu.org; Mon, 10 Jun 2024 05:45:00 -0400
+Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sGbaF-00078D-68
+ for qemu-devel@nongnu.org; Mon, 10 Jun 2024 05:45:00 -0400
+Received: by mail-ej1-x636.google.com with SMTP id
+ a640c23a62f3a-a6efacd25ecso113185366b.1
+ for <qemu-devel@nongnu.org>; Mon, 10 Jun 2024 02:44:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1718012696; x=1718617496; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=O0NFYCIKqTZgwbQIGQ/4PJbgTlziDtsWEZQH+G8HZYc=;
+ b=XDQDqTuxGnPjl6/hQGDpqm2iGg0+KzRBv2Jo1aRr5Vg29K6A5UHslzmBP47qOok4Ra
+ kQD/+RTtyI4R6mdEqcbn8DmAjKmgQ0H0vND1TTH5CPrf8/ykxjHXz5kKjKeLlYmWOb/H
+ 5whXNSTkyQewHwdJsu6wmiJEkdeSRNhN9Ia8eloB9aMN26bhkk+ZaZdcXeAwtTHifLa5
+ Ic2/S+YfbUirQjzZlP9RoxwXRyolrsIUjnEd7Y2fvjcSIqoxYpJAt4VKYemEHkTmjBJ7
+ v7rqvvU9rUlf757C6xFPmjD91xWP36CcmZq7G+KMb1bnEjiW6FqxQ3OpovgL3oycjzeN
+ L/Xw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1718012696; x=1718617496;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=O0NFYCIKqTZgwbQIGQ/4PJbgTlziDtsWEZQH+G8HZYc=;
+ b=JB6nljSVp+UHBRndn+Fx5eqkf2r9iRRoAcLKtqUt8QkwIYN3LzLtQEupHmqBRfBJqY
+ xuFzRGrjCpWNBtjiYTsuJUBE1LKm5ZPu/q5Qf44HCO/LEchdNT1Z+RD9j/PjuM6GO8a2
+ EDfMqdYT8+J9iHmxHonh02KNqJCHJvL8Bc6SV0/3e9mcS5jbiITwHP+m7jWsXx5EKEth
+ 2cxMBM3grNixACQisUcmAL4rhwaGTG7BDuPFrElowp1vYic+4Es/hklLKif0LZVNFA42
+ vkYLaVF4MB2BKkWvSfsaEMjaIQAYciYFzTej9gHuhPmIPjVhwP8Fi4+gqFazC3zN6dv0
+ F5Tw==
+X-Gm-Message-State: AOJu0YyvfOCoAkotZxmqv2ANWvo5MaAO4/UnDmef7LnfzdRpiJPY1lvZ
+ EHgl1e2jmEtTXxJxzsCN/K6ZZyBwhon+HKTc0AJfRuk2A5IdVQSPaZyeqNRexXIfZ5rKzbzpdjU
+ whl5qUEzffaD6EZc4j4zeAWPxZ2Jyns8TrrHGMg==
+X-Google-Smtp-Source: AGHT+IERwIuRrjbVPEb1ym5Xm3fIUD+rdCuar13TjIIxoeVYirGlQUGbQcI36Q+yQN+I8YUFfhAqJ+yIdl9q6k7rmlA=
+X-Received: by 2002:a50:bb28:0:b0:57a:4c22:b3 with SMTP id
+ 4fb4d7f45d1cf-57c5085e6ecmr7783108a12.1.1718012696391; 
+ Mon, 10 Jun 2024 02:44:56 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 11
-X-Spam_score: 1.1
-X-Spam_bar: +
-X-Spam_report: (1.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+References: <20240610094049.851127-1-berrange@redhat.com>
+ <20240610094049.851127-2-berrange@redhat.com>
+In-Reply-To: <20240610094049.851127-2-berrange@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 10 Jun 2024 10:44:44 +0100
+Message-ID: <CAFEAcA-d3ZRLY24p_LGw0_WvqZaNYgQbR8s_1f_tK7y159TYqw@mail.gmail.com>
+Subject: Re: [PATCH 1/2] crypto: avoid leak of ctx when bad cipher mode is
+ given
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::636;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ej1-x636.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,71 +89,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Not all paths in qcrypto_cipher_ctx_new() were correctly distinguishing
-between valid user input for cipher mode (which should report a user
-facing error), vs program logic errors (which should assert).
+On Mon, 10 Jun 2024 at 10:42, Daniel P. Berrang=C3=A9 <berrange@redhat.com>=
+ wrote:
+>
+> This fixes Coverity CID-1546884
+>
+> Signed-off-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
 
-Reported-by: Peter Maydell <peter.maydell@linaro.org>
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
----
- crypto/cipher-nettle.c.inc | 18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
-diff --git a/crypto/cipher-nettle.c.inc b/crypto/cipher-nettle.c.inc
-index 766de036ba..2654b439c1 100644
---- a/crypto/cipher-nettle.c.inc
-+++ b/crypto/cipher-nettle.c.inc
-@@ -525,8 +525,10 @@ static QCryptoCipher *qcrypto_cipher_ctx_new(QCryptoCipherAlgorithm alg,
-             case QCRYPTO_CIPHER_MODE_CTR:
-                 drv = &qcrypto_nettle_des_driver_ctr;
-                 break;
--            default:
-+            case QCRYPTO_CIPHER_MODE_XTS:
-                 goto bad_cipher_mode;
-+            default:
-+                g_assert_not_reached();
-             }
- 
-             ctx = g_new0(QCryptoNettleDES, 1);
-@@ -551,8 +553,10 @@ static QCryptoCipher *qcrypto_cipher_ctx_new(QCryptoCipherAlgorithm alg,
-             case QCRYPTO_CIPHER_MODE_CTR:
-                 drv = &qcrypto_nettle_des3_driver_ctr;
-                 break;
--            default:
-+            case QCRYPTO_CIPHER_MODE_XTS:
-                 goto bad_cipher_mode;
-+            default:
-+                g_assert_not_reached();
-             }
- 
-             ctx = g_new0(QCryptoNettleDES3, 1);
-@@ -663,8 +667,10 @@ static QCryptoCipher *qcrypto_cipher_ctx_new(QCryptoCipherAlgorithm alg,
-             case QCRYPTO_CIPHER_MODE_CTR:
-                 drv = &qcrypto_nettle_cast128_driver_ctr;
-                 break;
--            default:
-+            case QCRYPTO_CIPHER_MODE_XTS:
-                 goto bad_cipher_mode;
-+            default:
-+                g_assert_not_reached();
-             }
- 
-             ctx = g_new0(QCryptoNettleCAST128, 1);
-@@ -741,8 +747,12 @@ static QCryptoCipher *qcrypto_cipher_ctx_new(QCryptoCipherAlgorithm alg,
-             case QCRYPTO_CIPHER_MODE_ECB:
-                 drv = &qcrypto_nettle_sm4_driver_ecb;
-                 break;
--            default:
-+            case QCRYPTO_CIPHER_MODE_CBC:
-+            case QCRYPTO_CIPHER_MODE_CTR:
-+            case QCRYPTO_CIPHER_MODE_XTS:
-                 goto bad_cipher_mode;
-+            default:
-+                g_assert_not_reached();
-             }
- 
-             ctx = g_new0(QCryptoNettleSm4, 1);
--- 
-2.45.1
-
+thanks
+-- PMM
 
