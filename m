@@ -2,90 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68522902652
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jun 2024 18:11:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21B099026A5
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jun 2024 18:25:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sGhb2-0000W4-Jn; Mon, 10 Jun 2024 12:10:12 -0400
+	id 1sGhoG-00045h-2u; Mon, 10 Jun 2024 12:23:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sGhaz-0000Vb-GN
- for qemu-devel@nongnu.org; Mon, 10 Jun 2024 12:10:09 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sGhax-00026k-Aa
- for qemu-devel@nongnu.org; Mon, 10 Jun 2024 12:10:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1718035804;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=g+bhupLrgx4ArV/OJQmP0KB4AgM5JV8BkrXqxjjJ3ac=;
- b=Ex6XkG+3+kDzwN9fP8T4uZf6F/bQ5no4B01mmGNPJod1UrBMCJUinAC8LqRsyxGRgveNS8
- K0yFwwlvMmpgd+kwciJzpoGvOGIRm1IIJkEjmdNx8LCGTTP+bOkDhnkFb4cJwN70QGdfxe
- Te4YCosXayO1g8dmv7xMd5scXHCCXhc=
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
- [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-135-gL5Y94CCOOq8PAi9hxqmxg-1; Mon, 10 Jun 2024 12:10:02 -0400
-X-MC-Unique: gL5Y94CCOOq8PAi9hxqmxg-1
-Received: by mail-qt1-f197.google.com with SMTP id
- d75a77b69052e-44026f38681so512571cf.3
- for <qemu-devel@nongnu.org>; Mon, 10 Jun 2024 09:10:02 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sGhoD-00044N-8G
+ for qemu-devel@nongnu.org; Mon, 10 Jun 2024 12:23:49 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sGhoB-0005kv-8w
+ for qemu-devel@nongnu.org; Mon, 10 Jun 2024 12:23:48 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-4218180a122so1272435e9.1
+ for <qemu-devel@nongnu.org>; Mon, 10 Jun 2024 09:23:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1718036625; x=1718641425; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=MmJqXEo/cvQTcJBBQgnUyi4Q/sMvVbORelXofEHlP2E=;
+ b=TUBsaGmXCXRKSGFInEc+G5T0yUrTQMJ3KD/LhfYzeigk9ieRDBY46cr0QqaTjdAqUP
+ jEmVYhvG4yZ5RiSXV33LOW4NRcjmOx9OpMyjaT+RsrLMeqwdmRnLGICcFXAn5NjvCE8N
+ 2mh5mrOFUZx0tCKa2FIHAGYHuMGbaKqvwPMArXP9k+PosqKtQTQvprXu1/5u5EHIPQIM
+ 4F1B7eFkzXZeha6DWo7q3+WKkVqKKeLHUao12+ZGFlap2aNlOrhaWZUuKSE1yhUgMsep
+ U4wl90k599LFWwCFvDMNKTCnQaE0twqTak0h8x1Cd6soQwDo1dbZY9qsUWrKDGV9QUVB
+ 8JUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718035802; x=1718640602;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=g+bhupLrgx4ArV/OJQmP0KB4AgM5JV8BkrXqxjjJ3ac=;
- b=gjAtVAYdBUw9Wqry1AidVQwsdv2PfHlMhlyI3x+APHLwl15VICE/iduV1HT6PVsDMz
- mA+N9lQBYLqgANaDndZciWlgmxQh8lyiqxnL0Lq4yREbBs5W0rWDeB1YjvNnhPObNGU3
- MdGyTsuq61zlONwnChxhNARbZUxmpzhY0iMArMRVvycs9EgrZE9f+iZkmsqTfTjEbSgQ
- VrRrFW6zVJmfvadHe9Lt+L7/oZc4Jxc1Hr0dVQNRC/emGHcL1wdgJSaz/4F2/2q7ReSG
- 1LRqhKa9fW3MMtha43n7AEnpLsY/RZwIhHHHUYyToFInBbPgHncRhlXtWyfLy0nldT7r
- 3HpA==
-X-Gm-Message-State: AOJu0YyQqGJwf599UW11yl3nfwAgILMmTTRnDj8xOBjz8OEmaG/A+Zc8
- TcgTL1Z+10/Gv9gKBLNnMHzIvuQRSWTjqFBNMGOQRmUszU8LfJUBJ4hUtRocucvZE9LPMckcQmV
- zd0Z7WuJXvxi7ZYxnksAsZbPIlec1CN9Z91Ycn07DFSfunsxjm8Nc
-X-Received: by 2002:a05:620a:261c:b0:797:adf9:b33f with SMTP id
- af79cd13be357-797adf9b5c3mr118822985a.4.1718035801316; 
- Mon, 10 Jun 2024 09:10:01 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHqK31yZjSvmGT+n2R5ASeQnLDlQZd7b5QiMkAg5DZGKO8uI3cO1FvffhCPD1l4U0qFWlwzyA==
-X-Received: by 2002:a05:620a:261c:b0:797:adf9:b33f with SMTP id
- af79cd13be357-797adf9b5c3mr118810585a.4.1718035799792; 
- Mon, 10 Jun 2024 09:09:59 -0700 (PDT)
-Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com.
- [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- af79cd13be357-79555a58ca7sm222158985a.32.2024.06.10.09.09.58
+ d=1e100.net; s=20230601; t=1718036625; x=1718641425;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=MmJqXEo/cvQTcJBBQgnUyi4Q/sMvVbORelXofEHlP2E=;
+ b=nLl8Gmr6l6TLizOeWZg8ZfEgodFPD2dG85vnh89mS3p91oAIVqYBANjp7VQF2rJj9Q
+ YcxvBTD7SAoWPqbAc/XxFEUJAhPCu3XXsOgROD1z53CV+iC5AuRJlI/4yQDmr92PxHMR
+ jXaaxKgNrM/Csmfail2jH48oTsAEkbke1UAXhczDPnyMR5L+/EYJfZTl1voSPf7YXemd
+ GMZKGG/mwdpgojPPBs2zYC8P4y/ZurbaEMwuo/MNAmJKLaGYwr8Q+SWY4bMnM5Wkk6gJ
+ VWsC3UrAdRi7qmaeTz+NSFD1f3jZTGTATcwsINdjZgxLPFeusN4k1LKoW0HUNUOelUY2
+ jRrw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCW0ujl9Zzkc1ohurk6plXL8tq0ElgIUb42Z5lt4m2u8CTAFzAoyWnjEPedWAoPWmJU2Si6/6pDtxaCtate0rXLVzPAxCJY=
+X-Gm-Message-State: AOJu0Yw1r3cVt1+vyguy/ebNXOeCWnO7qv6/LyjIp5n546fHkmePb6ov
+ wxwDth1zhPp3QAlIKBRMT7HQu2oUrivjFKUIaVQDeLg5OjPHBrj9bjMlyGgEjmk=
+X-Google-Smtp-Source: AGHT+IGzVnQ/niUpJVG8O37nBThXlWypkVF3WQzftlOup8tlm+ZU1BX4gs1RLV6DgznkvJN2I+ls2w==
+X-Received: by 2002:a05:600c:3d86:b0:421:81c1:65fa with SMTP id
+ 5b1f17b1804b1-42181c1661cmr42193745e9.13.1718036625372; 
+ Mon, 10 Jun 2024 09:23:45 -0700 (PDT)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4215c2a6225sm147250405e9.25.2024.06.10.09.23.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 10 Jun 2024 09:09:59 -0700 (PDT)
-Date: Mon, 10 Jun 2024 12:09:57 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org, berrange@redhat.com, armbru@redhat.com,
- Claudio Fontana <cfontana@suse.de>, Jim Fehlig <jfehlig@suse.com>,
- Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH v2 18/18] migration/ram: Add direct-io support to precopy
- file migration
-Message-ID: <ZmclVQw0x7KKLxmF@x1n>
-References: <20240523190548.23977-1-farosas@suse.de>
- <20240523190548.23977-19-farosas@suse.de> <Zl9_ZiC6-743ZosG@x1n>
- <87y17gwq5g.fsf@suse.de>
+ Mon, 10 Jun 2024 09:23:45 -0700 (PDT)
+From: Peter Maydell <peter.maydell@linaro.org>
+To: qemu-arm@nongnu.org,
+	qemu-devel@nongnu.org
+Subject: [PATCH v2 0/3] hw/arm: Create second NonSecure UART for virt board
+Date: Mon, 10 Jun 2024 17:23:40 +0100
+Message-Id: <20240610162343.2131524-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <87y17gwq5g.fsf@suse.de>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -22
-X-Spam_score: -2.3
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x329.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.143,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -102,133 +90,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jun 07, 2024 at 03:42:35PM -0300, Fabiano Rosas wrote:
-> Peter Xu <peterx@redhat.com> writes:
-> 
-> > On Thu, May 23, 2024 at 04:05:48PM -0300, Fabiano Rosas wrote:
-> >> We've recently added support for direct-io with multifd, which brings
-> >> performance benefits, but creates a non-uniform user interface by
-> >> coupling direct-io with the multifd capability. This means that users
-> >> cannot keep the direct-io flag enabled while disabling multifd.
-> >> 
-> >> Libvirt in particular already has support for direct-io and parallel
-> >> migration separately from each other, so it would be a regression to
-> >> now require both options together. It's relatively simple for QEMU to
-> >> add support for direct-io migration without multifd, so let's do this
-> >> in order to keep both options decoupled.
-> >> 
-> >> We cannot simply enable the O_DIRECT flag, however, because not all IO
-> >> performed by the migration thread satisfies the alignment requirements
-> >> of O_DIRECT. There are many small read & writes that add headers and
-> >> synchronization flags to the stream, which at the moment are required
-> >> to always be present.
-> >> 
-> >> Fortunately, due to fixed-ram migration there is a discernible moment
-> >> where only RAM pages are written to the migration file. Enable
-> >> direct-io during that moment.
-> >> 
-> >> Signed-off-by: Fabiano Rosas <farosas@suse.de>
-> >
-> > Is anyone going to consume this?  How's the performance?
-> 
-> I don't think we have a pre-determined consumer for this. This came up
-> in an internal discussion about making the interface simpler for libvirt
-> and in a thread on the libvirt mailing list[1] about using O_DIRECT to
-> keep the snapshot data out of the caches to avoid impacting the rest of
-> the system. (I could have described this better in the commit message,
-> sorry).
-> 
-> Quoting Daniel:
-> 
->   "Note the reason for using O_DIRECT is *not* to make saving / restoring
->    the guest VM faster. Rather it is to ensure that saving/restoring a VM
->    does not trash the host I/O / buffer cache, which will negatively impact
->    performance of all the *other* concurrently running VMs."
-> 
-> 1- https://lore.kernel.org/r/87sez86ztq.fsf@suse.de
-> 
-> About performance, a quick test on a stopped 30G guest, shows
-> mapped-ram=on direct-io=on it's 12% slower than mapped-ram=on
-> direct-io=off.
+This is v2 of a series I posted back in October last year:
+ https://patchew.org/QEMU/20231023161532.2729084-1-peter.maydell@linaro.org/
+At the time I wanted to wait until EDK2 had been updated so it
+didn't behave weirdly in the presence of a second UART. That
+happened at the tail end of last year, but I'd forgotten that
+we never committed the QEMU side of things until Laszlo kindly
+reminded me a few days ago. So there are now no blockers to
+getting this patchset into QEMU.
 
-Yes, this makes sense.
 
-> 
-> >
-> > It doesn't look super fast to me if we need to enable/disable dio in each
-> > loop.. then it's a matter of whether we should bother, or would it be
-> > easier that we simply require multifd when direct-io=on.
-> 
-> AIUI, the issue here that users are already allowed to specify in
-> libvirt the equivalent to direct-io and multifd independent of each
-> other (bypass-cache, parallel). To start requiring both together now in
-> some situations would be a regression. I confess I don't know libvirt
-> code to know whether this can be worked around somehow, but as I said,
-> it's a relatively simple change from the QEMU side.
+For some use-cases, it is helpful to have more than one UART available
+to the guest, but the Arm 'virt' board only creates one.  If the
+second UART slot is not already used for a TrustZone Secure-World-only
+UART, create it as a NonSecure UART if the user provides a serial
+backend for it (e.g. via a second -serial command line option).
 
-Firstly, I definitely want to already avoid all the calls to either
-migration_direct_io_start() or *_finish(), now we already need to
-explicitly call them in three paths, and that's not intuitive and less
-readable, just like the hard coded rdma codes.
+We've wanted this for literally years; my first attempt at it
+was this series in 2017:
+https://lore.kernel.org/all/1512745328-5109-1-git-send-email-peter.maydell@linaro.org/
+More recently Axel Heider revived the idea with a patchset in 2022:
+https://lore.kernel.org/qemu-devel/166990501232.22022.16582561244534011083-0@git.sr.ht/
 
-I also worry we may overlook the complexity here, and pinning buffers
-definitely need more thoughts on its own.  It's easier to digest when using
-multifd and when QEMU only pins guest pages just like tcp-zerocopy does,
-which are naturally host page size aligned, and also guaranteed to not be
-freed (while reused / modified is fine here, as dirty tracking guarantees a
-new page will be migrated soon again).
+However it has previously foundered on the problem that EDK2 does
+odd things when presented with multiple UARTs in the DTB. (Specifically,
+it will send the guest GRUB bootloader output to UART1, debug output
+to both UARTs 0 and 1 depending on how far through boot it is, and the
+guest kernel will use UART0 since that's what the ACPI tables say.)
 
-IMHO here the "not be freed / modified" is even more important than
-"alignment": the latter is about perf, the former is about correctness.
-When we do directio on random buffers, AFAIU we don't want to have the
-buffer modified before flushed to disk, and that's IMHO not easy to
-guarantee.
+Several things here I think mean we can finally get over this issue:
+ * I learnt about the device tree "aliases" node; this allows us to
+   explicitly say "this node is the first UART and this node is the
+   second UART". So guests like Linux that follow this part of the
+   DTB spec will always get the UART order correct; and if there are
+   obscure guests that turn out to misbehave, we can point at the
+   spec and say "this is how you should fix this on your end"...
+ * This patch, like Axel's patch, only creates the second UART if
+   the user asks for it on the command line, so any pre-existing
+   command lines will not change behaviour.
+ * Laszlo Ersek has kindly written some EDK2 patches that rationalise
+   what it does when it finds more than one UART. This means that
+   we can tell any users who do want to use two UARTs with EDK2
+   "you should upgrade your EDK2 blobs to version NNN if you want to
+   do that". These are now in a released EDK2 and QEMU's EDK2
+   blobs have been updated to a version including these changes.
 
-E.g., I don't think this guarantees a flush on the buffer usages:
+Changes since v2:
+ * rebased (the search-n-replace patch 2 needed some minor tweaks)
+ * updated commit message to patch 3 with details of which EDK2
+   release you need for second-uart support
 
-  migration_direct_io_start()
-    /* flush any potentially unaligned IO before setting O_DIRECT */
-    qemu_fflush(file);
+Patches 1 and 2 have been reviewed; patch 3 needs review.
 
-qemu_fflush() internally does writev(), and that "flush" is about "flushing
-qemufile iov[] to fd", not "flushing buffers to disk".  I think it means
-if we do qemu_fflush() then we modify QEMUFile.buf[IO_BUF_SIZE] we're
-doomed: we will never know whether dio has happened, and which version of
-buffer will be sent; I don't think it's guaranteed it will always be the
-old version of the buffer.
+thanks
+-- PMM
 
-However the issue is, QEMUFile defines qemu_fflush() as: after call, the
-buf[] can be reused!  It suggests breaking things I guess in dio context.
+Peter Maydell (3):
+  hw/arm/virt: Add serial aliases in DTB
+  hw/arm/virt: Rename VIRT_UART and VIRT_SECURE_UART to VIRT_UART[01]
+  hw/arm/virt: allow creation of a second NonSecure UART
 
-IIUC currently mapped-ram is ok because mapped-ram is just special that it
-doesn't have page headers, so it doesn't use the buf[] during iterations;
-while for zeropage it uses file_bmap bitmap and that's separate too and
-does not generate any byte on the wire either.
-
-xbzrle could use that buf[], but maybe mapped-ram doesn't work anyway with
-xbzrle.
-
-Everything is just very not obvious and tricky to me.  This still looks
-pretty dangerous to me.  Would migration_direct_io_finish() guarantee
-something like a fdatasync()?  If so it looks safer, but still within the
-start() and finish() if someone calls qemu_fflush() and reuse the buffer we
-can still get hard to debug issues (as the outcome would be that we saw
-corrupted migration files).
-
-> 
-> Another option which would be for libvirt to keep using multifd, but
-> make it 1 channel only if --parallel is not specified. That might be
-> enough to solve the interface issues. Of course, it's a different code
-> altogether than the usual precopy code that gets executed when
-> multifd=off, I don't know whether that could be an issue somehow.
-
-Would there be any comment from Libvirt side?  This sounds like a good
-solution if my above concern is real; as long as we always stick dio with
-guest pages we'll be all fine.
-
-Thanks,
+ docs/system/arm/virt.rst |  6 ++++-
+ include/hw/arm/virt.h    |  5 ++--
+ hw/arm/virt-acpi-build.c | 22 ++++++++++-------
+ hw/arm/virt.c            | 52 +++++++++++++++++++++++++++++++++-------
+ 4 files changed, 65 insertions(+), 20 deletions(-)
 
 -- 
-Peter Xu
+2.34.1
 
 
