@@ -2,62 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF81B9027F7
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jun 2024 19:48:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4EB290282A
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jun 2024 20:00:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sGj7m-000249-N8; Mon, 10 Jun 2024 13:48:06 -0400
+	id 1sGjIM-0005GN-Tz; Mon, 10 Jun 2024 13:59:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1sGj7k-00023k-IE
- for qemu-devel@nongnu.org; Mon, 10 Jun 2024 13:48:04 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1sGj7h-00087s-2C
- for qemu-devel@nongnu.org; Mon, 10 Jun 2024 13:48:03 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.231])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VyfKC0PBNz6K5sk;
- Tue, 11 Jun 2024 01:42:55 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
- by mail.maildlp.com (Postfix) with ESMTPS id EC8F81404F5;
- Tue, 11 Jun 2024 01:47:46 +0800 (CST)
-Received: from localhost (10.122.247.231) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Mon, 10 Jun
- 2024 18:47:46 +0100
-Date: Mon, 10 Jun 2024 18:47:45 +0100
-To: Igor Mammedov <imammedo@redhat.com>
-CC: <mst@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- <qemu-devel@nongnu.org>, <ankita@nvidia.com>, <philmd@linaro.org>, "Richard
- Henderson" <richard.henderson@linaro.org>, Dave Jiang <dave.jiang@intel.com>, 
- Huang Ying <ying.huang@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
- <eduardo@habkost.net>, <linux-cxl@vger.kernel.org>, <linuxarm@huawei.com>,
- Michael Roth <michael.roth@amd.com>, Ani Sinha <anisinha@redhat.com>
-Subject: Re: [PATCH qemu ] hw/acpi: Fix big endian host creation of Generic
- Port Affinity Structures
-Message-ID: <20240610184745.00006683@huawei.com>
-In-Reply-To: <20240606184716.00000708@Huawei.com>
-References: <20240605180455.18193-1-Jonathan.Cameron@huawei.com>
- <20240606160653.27226def@imammedo.users.ipa.redhat.com>
- <20240606184716.00000708@Huawei.com>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sGjIK-0005Fo-N6
+ for qemu-devel@nongnu.org; Mon, 10 Jun 2024 13:59:00 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sGjII-0001Zp-3l
+ for qemu-devel@nongnu.org; Mon, 10 Jun 2024 13:59:00 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-4217926991fso22680755e9.3
+ for <qemu-devel@nongnu.org>; Mon, 10 Jun 2024 10:58:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1718042336; x=1718647136; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=/MMfDTHbOeqWhvwxfA43olAt6Wf8BeX3AAZr81nVQes=;
+ b=xPHdeFJ1Foc2fan3BIQ78EKmMyeNf4X03EVjbr0Nt2lx6Y/QqfjCoqPluoSB+Qc/vn
+ Tr9gj/MSR0zBN0Y8oWivIJzXjfUi1z3epCt5KVJjNxfILEF7lYzVr+ZLBoBdSMpeCAty
+ qUBxQNPPle/BEY/sEnoSCG+t+t9ajFjMEhXNwDGJgls6rpvKXGljWnVsdUYKdtFij5ET
+ pckq9OKUSQNTY4HKqqS8KDjn8e7yPpE+hiooct70kgZp2UMCJQrDsUhrlPG3BapRK5Dw
+ /ENajMPwCuIU/UEzwSOh1P07+uCD8vjH0osjCAce8PqXBpaaUNtCCSiW5eHLNbqQXMIg
+ 4s8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1718042336; x=1718647136;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=/MMfDTHbOeqWhvwxfA43olAt6Wf8BeX3AAZr81nVQes=;
+ b=ST0b8MW7d/zhm1Q12gg2VsOMeYRLAI4DmESekoesNs0X2Y0CNdYOm2OTFafHRflWwO
+ Bvx61WmsIkDeNTBqiJEvJ+XkKlPiPt6vciPj66EoWxQcZlVIwmdB6Rsz9m2uChXZ178K
+ H7us5+jLQdwYFHLDVE8ZtwszgZnG8TqJDzX/nhBz3m7qRLvuXElEvbIqlJMoRYaa5Ij7
+ cqJMXcxRzHIE+9+YMEqtYHO6qS6fNUM4ib96mFEE6H0x8hUW7cWadtHwnOWyYdPcLggV
+ ySUi/KhqMJlBM4Y9F8OWfpjZg1N/MXqZ+mWTGwfbk90JtfflB2Uz4MxVfF6tzAXjum2K
+ FHzg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCU7W0w574NmRtb4vqRGTrtI0BSkCKZrosYJfaZMvUI8F73P4Dqp3qYgt7U8BnENtxK0MvlgoJW60zqJy2buA87OpHzPDHM=
+X-Gm-Message-State: AOJu0YzL38mEku46GqQu89mdpZtrewVCEKcUi5fmy1Eeb1uU8WewfRGW
+ Y9KT8NzjO9I0Qh90cn4JT+nJuf3lfTFwSUMupE2gCCJEYMMK64M/03tGtwNx+r8=
+X-Google-Smtp-Source: AGHT+IEtZ1DrK3RPSKW3HnT8LgMjCfherVZCHXe3V3jvkZ/MqB4cffCxrLiTxBdmtIB5460Qd2unDA==
+X-Received: by 2002:a05:600c:4f96:b0:421:80e3:dc8d with SMTP id
+ 5b1f17b1804b1-42180e3dd32mr41601985e9.24.1718042335802; 
+ Mon, 10 Jun 2024 10:58:55 -0700 (PDT)
+Received: from m1x-phil.lan ([176.176.129.242])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-42158102af1sm183741885e9.16.2024.06.10.10.58.53
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Mon, 10 Jun 2024 10:58:55 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ "Dr. David Alan Gilbert" <dave@treblig.org>, qemu-devel@nongnu.org
+Cc: Yanan Wang <wangyanan55@huawei.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eric Farman <farman@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
+ Eric Blake <eblake@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>, qemu-s390x@nongnu.org,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Ilya Leoshkevich <iii@linux.ibm.com>, Halil Pasic <pasic@linux.ibm.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ David Hildenbrand <david@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
+Subject: [RFC PATCH 0/3] monitor: Pass HMP arguments to QMP HumanReadableText
+ API as JSON
+Date: Mon, 10 Jun 2024 19:58:49 +0200
+Message-ID: <20240610175852.21215-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.122.247.231]
-X-ClientProxiedBy: lhrpeml100002.china.huawei.com (7.191.160.241) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -70,203 +98,43 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Current HMPCommand::cmd_info_hrt() handlers don't allow
+passing arguments from the monitor. This series pass them
+to the underlying QMP commands as a JSON dictionary,
+easily deserialized as QDict, similarly to how current
+HMP commands receive their arguments. Thus very few
+changes are required to port to the new API. As an
+example, the @x-query-s390x-cmma command is ported.
 
-Hi Igor,
+Based-on: <20240610063518.50680-1-philmd@linaro.org>
 
-Some code snippets below to try and see if I'm on the correct track
-for what you had in mind.
+Philippe Mathieu-Daudé (3):
+  hw/s390x: Declare target specific monitor commands in hmp-target.h
+  monitor: Allow passing HMP arguments to QMP HumanReadableText API
+  hw/s390x: Introduce x-query-s390x-cmma QMP command
 
-> >   
-> > > diff --git a/hw/acpi/acpi_generic_initiator.c b/hw/acpi/acpi_generic_initiator.c
-> > > index 78b80dcf08..f064753b67 100644
-> > > --- a/hw/acpi/acpi_generic_initiator.c
-> > > +++ b/hw/acpi/acpi_generic_initiator.c
-> > > @@ -151,7 +151,9 @@ build_srat_generic_node_affinity(GArray *table_data, int node,
-> > >          build_append_int_noprefix(table_data, 0, 12);
-> > >      } else {
-> > >          /* Device Handle - ACPI */
-> > > -        build_append_int_noprefix(table_data, handle->hid, 8);
-> > > +        for (int i = 0; i < sizeof(handle->hid); i++) {
-> > > +            build_append_int_noprefix(table_data, handle->hid[i], 1);
-> > > +        }
-> > >          build_append_int_noprefix(table_data, handle->uid, 4);
-> > >          build_append_int_noprefix(table_data, 0, 4);    
-> > 
-> > instead of open codding structure
-> > 
-> > it might be better to introduce helper in aml_build.c
-> > something like 
-> >   /* proper reference to spec as we do for other ACPI primitives */
-> >   build_append_srat_acpi_device_handle(GArray *table_data, char* hid, unit32_t uid)
-> >       assert(strlen(hid) ...
-> >       for() {
-> >             build_append_byte()
-> >       }          
-> >       ...
-> > 
-> > the same applies to "Device Handle - PCI" structure  
-> 
-> I'll look at moving that stuff and the affinity structure creation
-> code themselves in there. I think they ended up in this file because
-> of the other infrastructure needed to create these nodes and it
-> will have felt natural to keep this together.
-> 
-> Putting it in aml_build.c will put it with similar code though
-> which makes sense to me.
+ docs/devel/writing-monitor-commands.rst | 15 ++++++++-
+ qapi/machine.json                       | 44 +++++++++++++++++++++++++
+ include/hw/s390x/storage-attributes.h   |  4 ---
+ include/hw/s390x/storage-keys.h         |  4 ---
+ include/monitor/hmp-target.h            |  5 +++
+ include/monitor/monitor.h               |  3 +-
+ monitor/monitor-internal.h              |  2 +-
+ accel/tcg/monitor.c                     |  4 +--
+ hw/core/loader.c                        |  2 +-
+ hw/core/machine-qmp-cmds.c              |  9 ++---
+ hw/s390x/s390-skeys.c                   |  2 ++
+ hw/s390x/s390-stattrib.c                | 30 +++++++++++------
+ hw/usb/bus.c                            |  2 +-
+ monitor/hmp-target.c                    |  8 ++---
+ monitor/hmp.c                           | 11 ++++---
+ hmp-commands-info.hx                    |  2 +-
+ 16 files changed, 107 insertions(+), 40 deletions(-)
 
-This all works out fine, though there is less reason to keep a
-ACPI_GENERIC_NODE base under GENERIC_PORT and GENERIC_INITIATOR
-so I may drop that and just have a small amount of code duplication.
-
-> 
-> > 
-> > Also get rid of PCI deps in acpi_generic_initiator.c 
-> > move build_all_acpi_generic_initiators/build_srat_generic_pci_initiator into
-> > hw/acpi/pci.c  
-> 
-> Today it's used only for PCI devices, but that's partly an artifact
-> of how we get to the root complex via the bus below it.
-> 
-> Spec wise, it's just as applicable to platform devices etc, but maybe
-> we can move it to pci.c for now and move it out again if it gains other
-> users. Or leave it in acpi_generic_initiator.c but have all the aml
-> stuff in aml_build.c as you suggest. 
-> 
-> > file if it has to access PCI code/structures directly
-> > (which I'm not convinced it should, can we get/expose what it needs as QOM properties?)  
-> 
-> Maybe. I'll see what I can come up with.  This feels involved
-> however so I'm more doubtful about this as a precursor.
-
-This is a little messy and tricky to get the right level of generic.
-For the bdf, were you thinking something along the lines of the following?
-
-diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-index 324c1302d2..75366491b7 100644
---- a/hw/pci/pci.c
-+++ b/hw/pci/pci.c
-@@ -67,6 +67,19 @@ static char *pcibus_get_fw_dev_path(DeviceState *dev);
- static void pcibus_reset_hold(Object *obj, ResetType type);
- static bool pcie_has_upstream_port(PCIDevice *dev);
-
-+static void prop_pci_bdf_get(Object *obj, Visitor *v, const char *name,
-+                             void *opaque, Error **errp)
-+{
-+    uint16_t bdf = pci_get_bdf(PCI_DEVICE(obj));
-+
-+    visit_type_uint16(v, name, &bdf, errp);
-+}
-+
-+static const PropertyInfo prop_pci_bdf = {
-+    .name = "bdf",
-+    .get = prop_pci_bdf_get,
-+};
-+
- static Property pci_props[] = {
-     DEFINE_PROP_PCI_DEVFN("addr", PCIDevice, devfn, -1),
-     DEFINE_PROP_STRING("romfile", PCIDevice, romfile),
-@@ -85,6 +98,7 @@ static Property pci_props[] = {
-                     QEMU_PCIE_ERR_UNC_MASK_BITNR, true),
-     DEFINE_PROP_BIT("x-pcie-ari-nextfn-1", PCIDevice, cap_present,
-                     QEMU_PCIE_ARI_NEXTFN_1_BITNR, false),
-+    { .name = "bdf", .info = &prop_pci_bdf },
-     DEFINE_PROP_END_OF_LIST()
- };
-
-
-The other case is where I need to get the ACPI UID associate with a
-root complex. Now that has to be matched to the appropriate HID and so
-far the only one of those is ACPI0016 which is the HID for
-TYPE_PXB_CXL_DEV. That happens to the bus number of the
-TYPE_PXB_CXL_BUS but that connection should probably not be explicit
-outside of the PXB specific code.
-
-I can add a property like: 
-
-diff --git a/hw/pci-bridge/pci_expander_bridge.c b/hw/pci-bridge/pci_expander_bridge.c
-index f5431443b9..1c51f3f5b6 100644
---- a/hw/pci-bridge/pci_expander_bridge.c
-+++ b/hw/pci-bridge/pci_expander_bridge.c
-@@ -92,6 +92,21 @@ static void pxb_bus_class_init(ObjectClass *class, void *data)
-     pbc->numa_node = pxb_bus_numa_node;
- }
-
-+static void prop_pxb_cxl_uid_get(Object *obj, Visitor *v, const char *name,
-+                             void *opaque, Error **errp)
-+{
-+    uint32_t uid = pci_bus_num(PCI_BUS(obj));
-+
-+    visit_type_uint32(v, name, &uid, errp);
-+}
-+
-+static void pxb_cxl_bus_class_init(ObjectClass *class, void *data)
-+{
-+    pxb_bus_class_init(class, data);
-+    object_class_property_add(class, "acpi_uid", "uint32",
-+                              prop_pxb_cxl_uid_get, NULL, NULL, NULL);
-+}
-+
- static const TypeInfo pxb_bus_info = {
-     .name          = TYPE_PXB_BUS,
-     .parent        = TYPE_PCI_BUS,
-@@ -110,7 +125,7 @@ static const TypeInfo pxb_cxl_bus_info = {
-     .name          = TYPE_PXB_CXL_BUS,
-     .parent        = TYPE_CXL_BUS,
-     .instance_size = sizeof(PXBBus),
--    .class_init    = pxb_bus_class_init,
-+    .class_init    = pxb_cxl_bus_class_init,
- };
-
- static const char *pxb_host_root_bus_path(PCIHostState *host_bridge,
-
-and query it when setting up the generic port with
-
-        const char *hid = "ACPI0016";
-        uint32_t uid;
-
-        if (gn->node >= ms->numa_state->num_nodes) {
-            error_printf("%s: node %d is invalid.\n",
-                         TYPE_ACPI_GENERIC_PORT, gn->node);
-            exit(1);
-        }
-
-        o = object_resolve_path_type(gn->pci_dev, TYPE_PXB_CXL_BUS, NULL);
-        if (!o) {
-            error_printf("%s: device must be a CXL host bridge.\n",
-                         TYPE_ACPI_GENERIC_PORT);
-            exit(1);
-        }
-
-        uid = object_property_get_uint(o, "acpi_uid", &error_fatal);
-        build_srat_acpi_generic_port(table_data, gn->node, hid, uid);
-
-        return 0;
-
-Thanks,
-
-Jonathan
-
-> 
-> > 
-> > btw:
-> > build_all_acpi_generic_initiators() name doesn't match what it's doing.
-> > it composes only one initiator entry.  
-> 
-> I'll look at tidying up all the relevant naming.
-> 
-> Jonathan
-> 
-> >   
-> > >      }    
-> > 
-> >   
-> 
-> 
-> 
+-- 
+2.41.0
 
 
