@@ -2,74 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C11C8903E5B
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jun 2024 16:06:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 269E9903E63
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jun 2024 16:08:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sH27j-0006Dc-QO; Tue, 11 Jun 2024 10:05:19 -0400
+	id 1sH2Aa-0008NX-9n; Tue, 11 Jun 2024 10:08:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1sH27g-00064I-85
- for qemu-devel@nongnu.org; Tue, 11 Jun 2024 10:05:16 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1sH27e-0001hG-F8
- for qemu-devel@nongnu.org; Tue, 11 Jun 2024 10:05:15 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1718114713;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=L4wPH+4tgj0Trt7UaPXNbwmTIK+vrVNtZc/zIVlAkvo=;
- b=JpB0u6pTAZBtJ4KRHklMkU2BqZUgrTXINjeYNGfkkPcdEPYf1zp2jz8ZHWWOtRQHj0LTsw
- 58EUZ+iHZf5w71EE1bDAN8Xpy+FFMuv6dwyaIMMLzKEUe7ihlhJHLub3SmfGfEJ5tuHVJ1
- z03N3sZd2uogfbkqbTDhQFqHHGzuwhk=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-403-09iZCzLwNIG93VKrkoHQXg-1; Tue,
- 11 Jun 2024 10:05:07 -0400
-X-MC-Unique: 09iZCzLwNIG93VKrkoHQXg-1
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 7E2641954204; Tue, 11 Jun 2024 14:05:03 +0000 (UTC)
-Received: from localhost (unknown [10.39.193.36])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id E4534196B8C2; Tue, 11 Jun 2024 14:04:51 +0000 (UTC)
-Date: Tue, 11 Jun 2024 10:04:49 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Fiona Ebner <f.ebner@proxmox.com>
-Cc: qemu-devel@nongnu.org, peterx@redhat.com, farosas@suse.de,
- pbonzini@redhat.com
-Subject: Re: [RFC PATCH] migration/savevm: do not schedule
- snapshot_save_job_bh in qemu_aio_context
-Message-ID: <20240611140449.GA366375@fedora.redhat.com>
-References: <20240605120848.358654-1-f.ebner@proxmox.com>
- <20240606183638.GC198201@fedora.redhat.com>
- <6d64f07d-1638-44dc-848b-b307c0ebd0ad@proxmox.com>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1sH2AX-0008Mo-Uo
+ for qemu-devel@nongnu.org; Tue, 11 Jun 2024 10:08:14 -0400
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1sH2AW-0002LI-0B
+ for qemu-devel@nongnu.org; Tue, 11 Jun 2024 10:08:13 -0400
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-354b722fe81so4925706f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 11 Jun 2024 07:08:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1718114890; x=1718719690; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:references
+ :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=xa41lpxo6b+pt6sjExRmhHRcck8PBqAPB8RIER/pVAc=;
+ b=t5VZzpvTJIXt7SkI6jEOjvTf8qWBAuySiawo5Yfx+oJGv+mSKKoGM2vATBFXvJO2ci
+ a+0HdYReqwSIJ0mTUsPhOesq0Ioz0lP5wzBP4/tv2TK/22G8Rd7wzdx0+gNtfSxiJwuQ
+ 6Tiss6/sRNEa6yrrvcFgK1uwNi5zkviZv8ex1clFAJbSxVr2/D8EL1vpdP8OR9Ycg48p
+ AedcspOaTCkffNTnvZqB5HcFvp8BrILy71MsZ5iYMgnFLI4qM2PduIB+ESCrdlFSbLQo
+ dgyIuz4oC9I+GGWXppfUl8/l2AtU3UTwxMdwQiEbnalZU9oTjSV9qiXF6ceQwinVWzRE
+ FTuw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1718114890; x=1718719690;
+ h=content-transfer-encoding:mime-version:message-id:date:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=xa41lpxo6b+pt6sjExRmhHRcck8PBqAPB8RIER/pVAc=;
+ b=WupdOdrxmsBiledDb36jBaEW/lTh5w2YGcBFkigUY1BEJkVTouCUFSBJVYDolHfwb1
+ 479TOt8G7MeoeIpbFDGeRYunIpkHG2I6Prxme+oHH/E0/qNo5+2KeBT2qO30XvX1ywJp
+ SOC/XFlZBsYRvJ/k1V4kGSKDeSo7CjmOarmLoaMs3jQAAsg0WdzkxW2TwoILoVi3lFc1
+ GKS6mV+BQO30Fqecurg96ZcLdFCt4Cm1iUqvKdxKzNHDv0zpux9Qn1cgzo7iV90aJ/tk
+ n0S6FhyluorYSiCCIZxqgKg1x0rJcr1RbjQ6s01yl19nsXrHGKB4kC2dqCpzkeQxPSzS
+ +4iA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUFK8A8mKncMkNeGG39ZaUy/+uI/qYGYbLyutU+KzDTO4GdUJ0rOQq/WqikjRqafepYrvrQBCf8i3bCHGRzIHHeZKBsUsA=
+X-Gm-Message-State: AOJu0YylWbccvOsYjCvo5PYsdddm1cAJFoQ8PyxERjukIA/yFBK71GCO
+ WOQeF7PjfcgqWdjYQi996uho6dbQ+x25qPVQo2IiEdSjLFsRTyFoVDDwtxkyQ/Y=
+X-Google-Smtp-Source: AGHT+IGeeJfsQXuipgVvy2R05QEs3sgsB6lvEA0cRC5a/iNYDlZrmx4GOgD7ZaFib3cj4383aOFzqg==
+X-Received: by 2002:a5d:50ce:0:b0:35f:f24:c276 with SMTP id
+ ffacd0b85a97d-35f0f24c302mr6181718f8f.55.1718114889999; 
+ Tue, 11 Jun 2024 07:08:09 -0700 (PDT)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-35f24fb3fa4sm5380462f8f.102.2024.06.11.07.08.09
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 11 Jun 2024 07:08:09 -0700 (PDT)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id AE06A5F898;
+ Tue, 11 Jun 2024 15:08:08 +0100 (BST)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: =?utf-8?B?0JTQvNC40YLRgNC40Lkg0KTRgNC+0LvQvtCy?= <frolov@swemel.ru>
+Cc: mst@redhat.com,  sdl.qemu@linuxtesting.org,  qemu-devel@nongnu.org
+Subject: Re: [PATCH] hw/net/virtio-net.c: fix crash in iov_copy()
+In-Reply-To: <a2a6e83e-fb47-4de1-a807-81843092c3fa@swemel.ru>
+ (=?utf-8?B?ItCU0LzQuNGC0YDQuNC5CdCk0YDQvtC70L7QsiIncw==?= message of "Tue,
+ 11 Jun 2024 15:33:12 +0300")
+References: <20240527133140.218300-2-frolov@swemel.ru>
+ <a2a6e83e-fb47-4de1-a807-81843092c3fa@swemel.ru>
+Date: Tue, 11 Jun 2024 15:08:08 +0100
+Message-ID: <871q53zi5z.fsf@draig.linaro.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="7QKAj/CNm8MP71bq"
-Content-Disposition: inline
-In-Reply-To: <6d64f07d-1638-44dc-848b-b307c0ebd0ad@proxmox.com>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 11
-X-Spam_score: 1.1
-X-Spam_bar: +
-X-Spam_report: (1.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.141,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,82 +97,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+=D0=94=D0=BC=D0=B8=D1=82=D1=80=D0=B8=D0=B9 =D0=A4=D1=80=D0=BE=D0=BB=D0=BE=
+=D0=B2 <frolov@swemel.ru> writes:
 
---7QKAj/CNm8MP71bq
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> ping
+>
+> https://patchew.org/QEMU/20240527133140.218300-2-frolov@swemel.ru/
+>
+> On 27.05.2024 16:31, Dmitry Frolov wrote:
+>> A crash found while fuzzing device virtio-net-socket-check-used.
+>> Assertion "offset =3D=3D 0" in iov_copy() fails if less than guest_hdr_l=
+en bytes
+>> were transmited.
+>>
+>> Signed-off-by: Dmitry Frolov <frolov@swemel.ru>
+>> ---
+>>   hw/net/virtio-net.c | 6 ++++++
+>>   1 file changed, 6 insertions(+)
+>>
+>> diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
+>> index 24e5e7d347..603b80a50a 100644
+>> --- a/hw/net/virtio-net.c
+>> +++ b/hw/net/virtio-net.c
+>> @@ -2783,6 +2783,12 @@ static int32_t virtio_net_flush_tx(VirtIONetQueue=
+ *q)
+>>            */
+>>           assert(n->host_hdr_len <=3D n->guest_hdr_len);
+>>           if (n->host_hdr_len !=3D n->guest_hdr_len) {
+>> +            if (iov_size(out_sg, out_num) < n->guest_hdr_len) {
+>> +                virtio_error(vdev, "virtio-net header is invalid");
+>> +                virtqueue_detach_element(q->tx_vq, elem, 0);
+>> +                g_free(elem);
+>> +                return -EINVAL;
+>> +            }
 
-On Tue, Jun 11, 2024 at 02:08:49PM +0200, Fiona Ebner wrote:
-> Am 06.06.24 um 20:36 schrieb Stefan Hajnoczi:
-> > On Wed, Jun 05, 2024 at 02:08:48PM +0200, Fiona Ebner wrote:
-> >> The fact that the snapshot_save_job_bh() is scheduled in the main
-> >> loop's qemu_aio_context AioContext means that it might get executed
-> >> during a vCPU thread's aio_poll(). But saving of the VM state cannot
-> >> happen while the guest or devices are active and can lead to assertion
-> >> failures. See issue #2111 for two examples. Avoid the problem by
-> >> scheduling the snapshot_save_job_bh() in the iohandler AioContext,
-> >> which is not polled by vCPU threads.
-> >>
-> >> Solves Issue #2111.
-> >>
-> >> This change also solves the following issue:
-> >>
-> >> Since commit effd60c878 ("monitor: only run coroutine commands in
-> >> qemu_aio_context"), the 'snapshot-save' QMP call would not respond
-> >> right after starting the job anymore, but only after the job finished,
-> >> which can take a long time. The reason is, because after commit
-> >> effd60c878, do_qmp_dispatch_bh() runs in the iohandler AioContext.
-> >> When do_qmp_dispatch_bh() wakes the qmp_dispatch() coroutine, the
-> >> coroutine cannot be entered immediately anymore, but needs to be
-> >> scheduled to the main loop's qemu_aio_context AioContext. But
-> >> snapshot_save_job_bh() was scheduled first to the same AioContext and
-> >> thus gets executed first.
-> >>
-> >> Buglink: https://gitlab.com/qemu-project/qemu/-/issues/2111
-> >> Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
-> >> ---
-> >>
-> >> While initial smoke testing seems fine, I'm not familiar enough with
-> >> this to rule out any pitfalls with the approach. Any reason why
-> >> scheduling to the iohandler AioContext could be wrong here?
-> >=20
-> > If something waits for a BlockJob to finish using aio_poll() from
-> > qemu_aio_context then a deadlock is possible since the iohandler_ctx
-> > won't get a chance to execute. The only suspicious code path I found was
-> > job_completed_txn_abort_locked() -> job_finish_sync_locked() but I'm not
-> > sure whether it triggers this scenario. Please check that code path.
-> >=20
->=20
-> Sorry, I don't understand. Isn't executing the scheduled BH the only
-> additional progress that the iohandler_ctx needs to make compared to
-> before the patch? How exactly would that cause issues when waiting for a
-> BlockJob?
->=20
-> Or do you mean something waiting for the SnapshotJob from
-> qemu_aio_context before snapshot_save_job_bh had the chance to run?
+Isn't this basically another case for goto detach?
 
-Yes, exactly. job_finish_sync_locked() will hang since iohandler_ctx has
-no chance to execute. But I haven't audited the code to understand
-whether this can happen.
+Although the use of goto's here is a bit of a code smell. I wonder if
+there is any way to better structure this function and take care of the
+auto-freeing of elements?
 
-Stefan
+>>               unsigned sg_num =3D iov_copy(sg, ARRAY_SIZE(sg),
+>>                                          out_sg, out_num,
+>>                                          0, n->host_hdr_len);
 
---7QKAj/CNm8MP71bq
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmZoWYEACgkQnKSrs4Gr
-c8i4AwgAnAL1eJuFcov15YSTg5//ZuNkgdSB6MJDbK2RS+dm0woILRJTkEuQiBJw
-GamN4FRQFXX48fFTk1Ww7ACRoiSQ9QIe9V3m5+ZeMneF6KMSqrvDV7qjrlduBT5a
-MQLC7+2oWv8dg7j+hcbgTo6kzOnDwrX06R4qdyrCLAmK/oe70bR04CiRNPXKar/v
-iHUr5H/N7gUwiSfs1JnrundGvlasu+xtVz7nJ+LLO1gRdLYfOb0UEk94Oe3r1A1I
-at7y8kJG1BoVPeC1cWFuBpmYVlvu3ZAEYQTh621/vqn7BTRh8Gk3SILfrDKBy/4u
-wU0n0QyRmZ2yV1gflu1x9F13WM5dIA==
-=Ln32
------END PGP SIGNATURE-----
-
---7QKAj/CNm8MP71bq--
-
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
