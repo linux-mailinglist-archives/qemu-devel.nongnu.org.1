@@ -2,84 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7610903EAC
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jun 2024 16:26:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B94A903EBB
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jun 2024 16:28:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sH2RR-0006vw-5Z; Tue, 11 Jun 2024 10:25:41 -0400
+	id 1sH2RN-0006uI-RK; Tue, 11 Jun 2024 10:25:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sH2RO-0006uU-3W
- for qemu-devel@nongnu.org; Tue, 11 Jun 2024 10:25:38 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1sH2RL-0006sz-VI
+ for qemu-devel@nongnu.org; Tue, 11 Jun 2024 10:25:35 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sH2RM-0005yQ-IX
- for qemu-devel@nongnu.org; Tue, 11 Jun 2024 10:25:37 -0400
+ id 1sH2RK-0005y5-IO
+ for qemu-devel@nongnu.org; Tue, 11 Jun 2024 10:25:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1718115935;
+ s=mimecast20190719; t=1718115934;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=/cM7wXV2F0pH6OJZLvvHOAgJSjTxfrcPSVlPgLYx7Pc=;
- b=G47aFxthQq82QGX7Q/QrpSeiK1qmNhUASkNomB04/LQGHzTvA/zT/rWuLL8gN1wqrFKNkb
- ZP5u8e3GyPlkil+9FFN6JF+axnSfRMVQC6dbyM5DtgG8kMf0WRrfDO6YeoFVV4dPdNdzuj
- 1q85YVs0z+0mZLjjSyp7uDa9W5szUwE=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=uPch0uxETyXrwagH2Qpo9vfE2jSSoRJkvCU9KTWsNF0=;
+ b=dNT1kY43TxMs9cS9RrNqsgmZ5vwRBqtMya+FB2kRkSmywK6oddP/GbsJaEb2aLemjORdG3
+ gdf8Ie1nAcxW95IRVDZGV2WZKVJgJDFmxGW0EO1bdOajxhemftJZx/6Q0f/+ddnFj3c77/
+ LjFxYK92nDR03GVQcNkeSWf2oYQbNi4=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-146-YPzCvkvjOF6GZwt-7QjeIg-1; Tue, 11 Jun 2024 10:25:29 -0400
-X-MC-Unique: YPzCvkvjOF6GZwt-7QjeIg-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-a6f2af30793so47500666b.2
- for <qemu-devel@nongnu.org>; Tue, 11 Jun 2024 07:25:29 -0700 (PDT)
+ us-mta-611-39AxKCaAOd6acOvMm4p7bQ-1; Tue, 11 Jun 2024 10:25:32 -0400
+X-MC-Unique: 39AxKCaAOd6acOvMm4p7bQ-1
+Received: by mail-ed1-f72.google.com with SMTP id
+ 4fb4d7f45d1cf-57c82112f15so1626372a12.3
+ for <qemu-devel@nongnu.org>; Tue, 11 Jun 2024 07:25:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718115928; x=1718720728;
+ d=1e100.net; s=20230601; t=1718115930; x=1718720730;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/cM7wXV2F0pH6OJZLvvHOAgJSjTxfrcPSVlPgLYx7Pc=;
- b=sdro15VJVAetaO4pQY/aaC8OUxJVJXn6fyAYFieWoaaXCyvYWOts0fKYn8jaSn0de1
- eUoa6ZwmnDD0pnqY5Yhi7kBpJdqx9a8uoCog6YXI1hAF7G9Q3ejri+ssj7b7KAX1zgS9
- LmwEhnzM8e4k0Co/9dE0h1iQmV9mP79h0sOXv5bVp8hJHafViPnz8QeyS+8Mo3hqItAi
- I0yx5Y9VglPBFyb2X9ICUDiMDU4Xd4+cGfm1RvvGfqVB4ifbuRHYcQ1hiPf9IzF4X0P3
- rDCNOXi4dE2vQLJNFfIyddUEMERTLFMPXObY+R0EqjHGu8M2bVohjsRWMAV16LiVzSv4
- dd7g==
-X-Gm-Message-State: AOJu0Yy37JM2oCUAtjpM+m/ik5LYKpm886aTsLhgGG2EPlxulyeFUYRX
- xEEfBjjKJm0jfLMAfcFUA3ky96iAeo16WhxzWoSJkoAl0Pj+KWu0CwTaJDw5kImUCAE7Lbc1Gwy
- 7LhwMjuyFMqLHyYUoHdBvJtMuEYFMs+rWQivBc2bHdabGANGgI8jy4ktagKj67L8D+vSt/8mUz0
- wYnQoLf/aIaTNxcJQY3mCTa3QzNOauNxbjJgsB
-X-Received: by 2002:a17:906:2844:b0:a6f:1d3e:d1af with SMTP id
- a640c23a62f3a-a6f1d3ed202mr440176966b.5.1718115927811; 
- Tue, 11 Jun 2024 07:25:27 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH+720WuYCmxgP7HJp9rCt/R4ioMgMDddeTijxEo80Vhf33ZpxBt0UimL2bwY8sRLGqaqgtXA==
-X-Received: by 2002:a17:906:2844:b0:a6f:1d3e:d1af with SMTP id
- a640c23a62f3a-a6f1d3ed202mr440174966b.5.1718115927490; 
- Tue, 11 Jun 2024 07:25:27 -0700 (PDT)
+ bh=uPch0uxETyXrwagH2Qpo9vfE2jSSoRJkvCU9KTWsNF0=;
+ b=hISUF2pwt5e4pWfbT35bQsDl9ekW31ESJX/VXbP26orNkOXVHms2Yl+SE5j0e2rOfO
+ K1LfMHNXRDpOyUVDTXMtRsbpTPHQR8J/qTc67wEXb0c9BO9yiZX3lL41DMcC3YlMz1gP
+ aUSump9sA9rsp+1CMvXzhfYocMaLSFO7hdFWeVn4mAwObrLzJFeccgQHzjX7UNFpusSn
+ p0Me0lTJyB5zNyaIQRd+i7CF4fq4Fb64qZfg2Se+Fi23WlQSAH1Fs+FVc961YjDvlstK
+ L4Rn6gNnMYqYsvzB+c6TBy7Mc+xBw4TdqVkm8Sp0ftCNuGQjUlBd85yJ1xczB/cmxRoJ
+ YWSg==
+X-Gm-Message-State: AOJu0YwW5uVfHUL7OukEACgg6y20o+wFrNxcGolfhQS7lei8K0k/JVsA
+ /M7BwQqwH5jEQu6r2e/IUNfthmh+PPhIA5ctwX7JwnSw4VQsvlr1+G7ikZfkSwPuyjZgSvjXx/p
+ ZJPvfPBicV88eULPpCgT+ee/vql+dnyL79BGzYNC+hMLqCT6HGP/md3X8K+lIFzS7d2pf+E2MKK
+ g+48i13U3N2l1NWoJf0jhojmq5AQWI1f5HpHE/
+X-Received: by 2002:a17:906:57cc:b0:a6e:fd41:6315 with SMTP id
+ a640c23a62f3a-a6efd416449mr550070766b.69.1718115930627; 
+ Tue, 11 Jun 2024 07:25:30 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEQlRu30n2VyiLe18psoofrVjKIFvaMHgw79XBORkgBIJBbuXkuTS0x/RgzedHH+pDsvvSgNA==
+X-Received: by 2002:a17:906:57cc:b0:a6e:fd41:6315 with SMTP id
+ a640c23a62f3a-a6efd416449mr550069366b.69.1718115930167; 
+ Tue, 11 Jun 2024 07:25:30 -0700 (PDT)
 Received: from avogadro.local ([151.62.196.71])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a6f3672d1efsm102920766b.224.2024.06.11.07.25.26
+ a640c23a62f3a-a6f41a25e9asm11023866b.90.2024.06.11.07.25.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 11 Jun 2024 07:25:27 -0700 (PDT)
+ Tue, 11 Jun 2024 07:25:28 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Chuang Xu <xuchuangxclwt@bytedance.com>,
- Guixiong Wei <weiguixiong@bytedance.com>,
- Yipeng Yin <yinyipeng@bytedance.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 02/25] i386/cpu: fixup number of addressable IDs for processor
- cores in the physical package
-Date: Tue, 11 Jun 2024 16:25:00 +0200
-Message-ID: <20240611142524.83762-3-pbonzini@redhat.com>
+Cc: Pankaj Gupta <pankaj.gupta@amd.com>
+Subject: [PULL 03/25] i386/sev: fix unreachable code coverity issue
+Date: Tue, 11 Jun 2024 16:25:01 +0200
+Message-ID: <20240611142524.83762-4-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240611142524.83762-1-pbonzini@redhat.com>
 References: <20240611142524.83762-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -104,51 +101,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Chuang Xu <xuchuangxclwt@bytedance.com>
+From: Pankaj Gupta <pankaj.gupta@amd.com>
 
-When QEMU is started with:
--cpu host,host-cache-info=on,l3-cache=off \
--smp 2,sockets=1,dies=1,cores=1,threads=2
-Guest can't acquire maximum number of addressable IDs for processor cores in
-the physical package from CPUID[04H].
+Set 'finish->id_block_en' early, so that it is properly reset.
 
-When creating a CPU topology of 1 core per package, host-cache-info only
-uses the Host's addressable core IDs field (CPUID.04H.EAX[bits 31-26]),
-resulting in a conflict (on the multicore Host) between the Guest core
-topology information in this field and the Guest's actual cores number.
+Fixes coverity CID 1546887.
 
-Fix it by removing the unnecessary condition to cover 1 core per package
-case. This is safe because cores_per_pkg will not be 0 and will be at
-least 1.
-
-Fixes: d7caf13b5fcf ("x86: cpu: fixup number of addressable IDs for logical processors sharing cache")
-Signed-off-by: Guixiong Wei <weiguixiong@bytedance.com>
-Signed-off-by: Yipeng Yin <yinyipeng@bytedance.com>
-Signed-off-by: Chuang Xu <xuchuangxclwt@bytedance.com>
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Message-ID: <20240611032314.64076-1-xuchuangxclwt@bytedance.com>
+Fixes: 7b34df4426 ("i386/sev: Introduce 'sev-snp-guest' object")
+Signed-off-by: Pankaj Gupta <pankaj.gupta@amd.com>
+Message-ID: <20240607183611.1111100-2-pankaj.gupta@amd.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/cpu.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ target/i386/sev.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 7466217d5ea..365852cb99e 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -6455,10 +6455,8 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-             if (*eax & 31) {
-                 int host_vcpus_per_cache = 1 + ((*eax & 0x3FFC000) >> 14);
+diff --git a/target/i386/sev.c b/target/i386/sev.c
+index 004c667ac14..7c9df621de1 100644
+--- a/target/i386/sev.c
++++ b/target/i386/sev.c
+@@ -2165,6 +2165,7 @@ sev_snp_guest_set_id_block(Object *obj, const char *value, Error **errp)
+     struct kvm_sev_snp_launch_finish *finish = &sev_snp_guest->kvm_finish_conf;
+     gsize len;
  
--                if (cores_per_pkg > 1) {
--                    *eax &= ~0xFC000000;
--                    *eax |= max_core_ids_in_package(&topo_info) << 26;
--                }
-+                *eax &= ~0xFC000000;
-+                *eax |= max_core_ids_in_package(&topo_info) << 26;
-                 if (host_vcpus_per_cache > threads_per_pkg) {
-                     *eax &= ~0x3FFC000;
++    finish->id_block_en = 0;
+     g_free(sev_snp_guest->id_block);
+     g_free((guchar *)finish->id_block_uaddr);
  
+@@ -2184,7 +2185,7 @@ sev_snp_guest_set_id_block(Object *obj, const char *value, Error **errp)
+         return;
+     }
+ 
+-    finish->id_block_en = (len) ? 1 : 0;
++    finish->id_block_en = 1;
+ }
+ 
+ static char *
 -- 
 2.45.1
 
