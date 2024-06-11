@@ -2,70 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63117903481
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jun 2024 09:59:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0084A9034AE
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jun 2024 10:02:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sGwNv-0006af-Rk; Tue, 11 Jun 2024 03:57:39 -0400
+	id 1sGwSq-0004gE-TR; Tue, 11 Jun 2024 04:02:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sGwNt-0006Zc-SL
- for qemu-devel@nongnu.org; Tue, 11 Jun 2024 03:57:37 -0400
+ id 1sGwSl-0004YH-95
+ for qemu-devel@nongnu.org; Tue, 11 Jun 2024 04:02:39 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sGwNr-0005tt-R4
- for qemu-devel@nongnu.org; Tue, 11 Jun 2024 03:57:37 -0400
+ id 1sGwSj-000779-4y
+ for qemu-devel@nongnu.org; Tue, 11 Jun 2024 04:02:39 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1718092654;
+ s=mimecast20190719; t=1718092953;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=r29jY8/CvOZhQNtgIaa6K5Pz82njmKyoBXzKAWEhWPE=;
- b=PTlF0yDV4pPqo0RfS+jhp/u5aSlk8FLXbpToTLI2gQ857G5oChYhsEWOFnhRP6n4x2wvtX
- JsjmLq4KZARSjwxL+RRrbw3uesDXlZhBFehCIcECI2h+jjVXcZLPBqq3oe4hJbI58mQsUv
- WYIPcqfcsoulW1pzJHPsQtTsFo+YoBI=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=gOIMo7agRsQ1q9S/U/C6xOuQiN0B0LBlbYxEE6Uqm3g=;
+ b=c9VDw5bp4k9Bn6hgao1kJZhhBq+5eP4jfyidyxTgdTNo3nnA2N+uxSJokVQI8D/GI9NfJP
+ DjnNTemEOszVRfSughrDbECLNzSjzDkz54IoVaRH1Cq/2a11J/xHhRidpetRVNRylKw3yN
+ Cp3wRwcVMpEzXCuyX9Z5RTFAPGDaf7M=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-449-fwaTdqGXMxWbvB-nZF7V_A-1; Tue,
- 11 Jun 2024 03:57:26 -0400
-X-MC-Unique: fwaTdqGXMxWbvB-nZF7V_A-1
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-93-r0Hf-Q0JNBq9g-Sqkf0Z5w-1; Tue,
+ 11 Jun 2024 04:02:27 -0400
+X-MC-Unique: r0Hf-Q0JNBq9g-Sqkf0Z5w-1
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5E3AA1955F2F; Tue, 11 Jun 2024 07:57:24 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 07D5519560B4; Tue, 11 Jun 2024 08:02:26 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.73])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id DC3A730000C3; Tue, 11 Jun 2024 07:57:19 +0000 (UTC)
-Date: Tue, 11 Jun 2024 08:57:16 +0100
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 3C44719560AA; Tue, 11 Jun 2024 08:02:21 +0000 (UTC)
+Date: Tue, 11 Jun 2024 09:02:18 +0100
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org, "Dr. David Alan Gilbert" <dave@treblig.org>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- qemu-ppc@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Peter Maydell <peter.maydell@linaro.org>
-Subject: Re: Examining device state via monitor for debugging (was: [PATCH
- 0/2] hw/misc/mos6522: Do not open-code hmp_info_human_readable_text())
-Message-ID: <ZmgDXJ7Zt9AI2Z_7@redhat.com>
-References: <20240610150758.2827-1-philmd@linaro.org>
- <87h6e0uizr.fsf@pond.sub.org>
+To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org,
+ Stefan Hajnoczi <stefanha@redhat.com>, Mads Ynddal <mads@ynddal.dk>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Alex =?utf-8?B?QmVubsOp?= e <alex.bennee@linaro.org>,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Zhao Liu <zhao1.liu@intel.com>, Gustavo Romero <gustavo.romero@linaro.org>
+Subject: Re: [RFC PATCH v1 0/6] Implement ARM PL011 in Rust
+Message-ID: <ZmgEiiyLbxVgjitc@redhat.com>
+References: <cover.rust-pl011-rfc-v1.git.manos.pitsidianakis@linaro.org>
+ <d910708f-ed55-4eee-8f66-8703cb45081c@linaro.org>
+ <evt7n.ggoypj31l14q@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <87h6e0uizr.fsf@pond.sub.org>
+In-Reply-To: <evt7n.ggoypj31l14q@linaro.org>
 User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: 11
@@ -92,37 +92,31 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jun 11, 2024 at 07:49:12AM +0200, Markus Armbruster wrote:
-> Philippe Mathieu-Daudé <philmd@linaro.org> writes:
+On Mon, Jun 10, 2024 at 11:29:36PM +0300, Manos Pitsidianakis wrote:
+> On Mon, 10 Jun 2024 22:37, Pierrick Bouvier <pierrick.bouvier@linaro.org> wrote:
+> > > The staticlib artifact contains a bunch of mangled .o objects?
+> > > ==============================================================
+> > > [staticlibmangledobjects] Back to [TOC]
+> > > 
+> > > Yes, until we compile without the `std` module library or we compile it
+> > > manually instead of linking it, we will have some junk in it.
+> > > 
+> > 
+> > Besides the size aspect, which potential advantage would there be to
+> > switch to no_std?
+> > We don't build a bare metal or kernel binary here, so why introduce this
+> > restriction willingly?
 > 
-> > Officialise the QMP command, use the existing
-> > hmp_info_human_readable_text() helper.
-> 
-> I'm not sure "officialise" is a word :)
-> 
-> Taking a step back...  "info via" and its new QMP counterpart
-> x-query-mos6522-devices dump device state.  I understand why examining
-> device state via monitor can be useful for debugging.  However, we have
-> more than 2000 devices in the tree.  Clearly, we don't want 2000 device
-> state queries.  Not even 100.  Could we have more generic means instead?
-> 
-> We could use QOM (read-only) properties to expose device state.
-> 
-> If we use one QOM property per "thing", examining device state becomes
-> quite tedious.  Also, you'd have to stop the guest to get a consistent
-> view, and adding lots of QOM properties bloats the code.
-> 
-> If we use a single, object-valued property for the entire state, we get
-> to define the objects in QAPI.  Differently tedious, and bloats the
-> generated code.
-> 
-> We could use a single string-valued property.  Too much of an abuse of
-> QOM?
+> We'll see that as we progress. Might enable more platform support, for
+> example. I have no definite answers here. Also, I know binary bloat is a big
+> complaint from people with dislike of Rust, so I pre-emptively addressed it.
 
-Yeah, I'd suggest we just keep it dumb and free form, adding a
-callback like this to the QOM base class:
+Requiring 'no_std' would significantly limit what 3rd party crates QEMU
+can make use of, and thus would put more burden on QEMU maintainers.
+I don't find "binary bloat" a credible technical argument on its own
+either, so certainly not sufficient justification to take on the pain
+of 'no_std'.
 
-  HumanReadableText (*debug_state)(Error **errp);
 
 With regards,
 Daniel
