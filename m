@@ -2,79 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FC5E903E89
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jun 2024 16:18:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B79B903F08
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jun 2024 16:44:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sH2JV-0003y1-6V; Tue, 11 Jun 2024 10:17:29 -0400
+	id 1sH2iA-0002xk-RX; Tue, 11 Jun 2024 10:42:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sH2JQ-0003xA-DK
- for qemu-devel@nongnu.org; Tue, 11 Jun 2024 10:17:25 -0400
-Received: from mgamail.intel.com ([198.175.65.15])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sH2JN-0004Kj-UR
- for qemu-devel@nongnu.org; Tue, 11 Jun 2024 10:17:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1718115442; x=1749651442;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=jqDDKMRFFi6HkBd6s3niITdbCbZfM15NbjMG5/evPQc=;
- b=V8jXnVd6dMXdzzAE1aru514JP0t4VTlup7tf6nLt9zx/dC3XV/0cHHTQ
- DhKcaXTutqW/GaXeI/zz9ydosgGMv/ix7qOPt/yM2LxZ/seQHh9QXi6cb
- VkH03MJkmf8GS1Z7QVG90ycq7foifzdog6qiHvVFZHWQgVhmNMzaOJjDV
- U3dgDX+RpkDBtiSZyy9rwfjUPg2mMuUW2IKwRP5rbPOsqe993dOEBQ+U1
- HsofkKD7yLAVyrjh8ATZtyZPpmwTV8nVPGijqUyEeFX5q1ixSH96w5AiA
- TKeUHQXr7Ni8h8yMCSoOcdcPHPGivauqQddtxuWhA7hZCRStSLA3oW1NX g==;
-X-CSE-ConnectionGUID: boe/NNcOScCBgNeGQUH87A==
-X-CSE-MsgGUID: M9GbmfVWSw687IPqECdUtg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11099"; a="18610017"
-X-IronPort-AV: E=Sophos;i="6.08,230,1712646000"; d="scan'208";a="18610017"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Jun 2024 07:17:19 -0700
-X-CSE-ConnectionGUID: yV+QtZNsRPCgZkXWmXhC6A==
-X-CSE-MsgGUID: EcRAVimzQVu+MxHq7Kt+IQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,230,1712646000"; d="scan'208";a="39535649"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orviesa009.jf.intel.com with ESMTP; 11 Jun 2024 07:17:16 -0700
-Date: Tue, 11 Jun 2024 22:32:44 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Cc: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?=  <berrange@redhat.com>,
- qemu-devel@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
- Mads Ynddal <mads@ynddal.dk>, Paolo Bonzini <pbonzini@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Alex =?iso-8859-1?Q?Benn=E9?= e <alex.bennee@linaro.org>,
- =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Gustavo Romero <gustavo.romero@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: Re: [RFC PATCH v1 0/6] Implement ARM PL011 in Rust
-Message-ID: <ZmhgDBbsdHn35otx@intel.com>
-References: <cover.rust-pl011-rfc-v1.git.manos.pitsidianakis@linaro.org>
- <ZmgJVGMx81aHjg5f@redhat.com> <ZmgcrSYHwA0Z8Asq@intel.com>
- <ewwqb.egyl58j8s5u@linaro.org>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sH2i8-0002w4-UH
+ for qemu-devel@nongnu.org; Tue, 11 Jun 2024 10:42:56 -0400
+Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sH2i6-0001nC-Nb
+ for qemu-devel@nongnu.org; Tue, 11 Jun 2024 10:42:56 -0400
+Received: by mail-ej1-x636.google.com with SMTP id
+ a640c23a62f3a-a6ef64b092cso409543166b.1
+ for <qemu-devel@nongnu.org>; Tue, 11 Jun 2024 07:42:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1718116973; x=1718721773; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=PWXCS/ShO1VjkwkUPxbHgZ97GAoGArUOIrXRzfQrIu0=;
+ b=W0G3vyZAQ3HSKjFC/sM748zvWWfnCuf/jz6bH6ikLVSYmMAVjPbtlNcRfoZh8BytZU
+ j9IlkbUJ2d/HtBaHT7BVB4AhnvJsObN0m+yg9FNVh9IIKFxAAUClEzLmiaSHOPK/u5GX
+ mavd9sFQaH+jWPjf7EntLFf4ylk3QZJSUnqVJxsp/KRhXhNRWIdei8QFMMnO4Aj/lNCz
+ 4J3zUxZ9sYuewEga/q0XmFm1zfYycq57ig30CitknMFD73SIaUKH2yu22e3P+lg4zmZU
+ aRn/IoqKYm+/NgWjHGjqxPtG6ofpOpfvY9OM1Fxwc46lUNMK8NccNR+mZfMsvKbqVUe9
+ EtLg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1718116973; x=1718721773;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=PWXCS/ShO1VjkwkUPxbHgZ97GAoGArUOIrXRzfQrIu0=;
+ b=XzhRnO8edztOk4MxIGvNH+UCzvQEHDuH4Df7hgp7jKtzEXUlAyFss68pVWOkn/P9/+
+ H1kkx5KLgOwQsM+ZK7eqsQCn8b3f7rWjO3PzKMQEhJ/DmauUqDx3YWVQ1C01T4Ui0Dl+
+ BZ8wjHtfu5aOKYi94x01AJBdqbneFEIcG4ZdsXGWOV4DAOBOfzLH3rS5O+5fKjNNM3cO
+ UIQ0qxuocGmSqUq2cnbQsdHPp65lsbvOSrI1VXHpCE1cW7gD+lPRg9FGzgXWUQntivrc
+ R97kgrTxHh/Lhe0sos7FtuQ9PK7aN2AHUllcexpA4WIQJgWpbqO+bfcUl8N1hA6B39II
+ rrjQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUFgQavIsuKNZtXiFlAbjPxIPtbQnuOrSpF+7T6ZhMsY181iu316oVvCZvZvwrZWWp2xELPLNGAz7Gp/Gd7ns3M99l0qnI=
+X-Gm-Message-State: AOJu0YxvEZNU9PlZaZHZKQyy8QRg+Un5dA8vNMo/s8+InqeqDOSzZejo
+ rNvm6UjrcrricYFGYh0Vgwmj9xbDEpDs5QmcUTkUaFwyzQ9Rol7V64diYchGgxo=
+X-Google-Smtp-Source: AGHT+IFFnhpeWZcCHn8NFM9GqQ6tJIyRdhZUXyXTqSiM2Y5YS+B4d8PLL87QO/+5Yj8/s+pfYLxTDQ==
+X-Received: by 2002:a17:906:3410:b0:a6f:3f75:41ac with SMTP id
+ a640c23a62f3a-a6f3f754297mr67268666b.63.1718116972977; 
+ Tue, 11 Jun 2024 07:42:52 -0700 (PDT)
+Received: from [192.168.69.100] (rsa59-h02-176-184-32-6.dsl.sta.abo.bbox.fr.
+ [176.184.32.6]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-a6f1244180bsm376451966b.116.2024.06.11.07.42.51
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 11 Jun 2024 07:42:52 -0700 (PDT)
+Message-ID: <01dce86d-9644-4a97-b066-0496398b3c56@linaro.org>
+Date: Tue, 11 Jun 2024 16:42:50 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ewwqb.egyl58j8s5u@linaro.org>
-Received-SPF: pass client-ip=198.175.65.15; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -45
-X-Spam_score: -4.6
-X-Spam_bar: ----
-X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.141,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 3/3] hw/arm/virt: allow creation of a second NonSecure
+ UART
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org
+References: <20240610162343.2131524-1-peter.maydell@linaro.org>
+ <20240610162343.2131524-4-peter.maydell@linaro.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240610162343.2131524-4-peter.maydell@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::636;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x636.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,46 +95,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jun 11, 2024 at 01:41:57PM +0300, Manos Pitsidianakis wrote:
-> Date: Tue, 11 Jun 2024 13:41:57 +0300
-> From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-> Subject: Re: [RFC PATCH v1 0/6] Implement ARM PL011 in Rust
+On 10/6/24 18:23, Peter Maydell wrote:
+> For some use-cases, it is helpful to have more than one UART
+> available to the guest.  If the second UART slot is not already used
+> for a TrustZone Secure-World-only UART, create it as a NonSecure UART
+> only when the user provides a serial backend (e.g.  via a second
+> -serial command line option).
 > 
-> > Currently, pl011 exclusively occupies a cargo as a package. In the
-> > future, will other Rust implementations utilize the workspace mechanism
-> > to act as a second package in the same cargo? Or will new cargo be created
-> > again?
+> This avoids problems where existing guest software only expects a
+> single UART, and gets confused by the second UART in the DTB.  The
+> major example of this is older EDK2 firmware, which will send the
+> GRUB bootloader output to UART1 and the guest serial output to UART0.
+> Users who want to use both UARTs with a guest setup including EDK2
+> are advised to update to EDK2 release edk2-stable202311 or newer.
+> (The prebuilt EDK2 blobs QEMU upstream provides are new enough.)
+> The relevant EDK2 changes are the ones described here:
+> https://bugzilla.tianocore.org/show_bug.cgi?id=4577
 > 
-> What do you mean by "new cargo"? I didn't catch that :(
-> 
-> A workspace would make sense if we have "general" crate libraries that
-> hardware crates depend on.
+> Inspired-by: Axel Heider <axel.heider@hensoldt.net>
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> Tested-by: Laszlo Ersek <lersek@redhat.com>
+> ---
+>   docs/system/arm/virt.rst |  6 +++++-
+>   include/hw/arm/virt.h    |  1 +
+>   hw/arm/virt-acpi-build.c | 12 ++++++++----
+>   hw/arm/virt.c            | 38 +++++++++++++++++++++++++++++++++++---
+>   4 files changed, 49 insertions(+), 8 deletions(-)
 
-Thanks Manos!
-
-I mean if we spread the rust device across the QEMU submodules, wouldn't
-we have to create their own cargo directories (aka single-package cargo)
-for each rust device?
-
-However, if the Rust code is all centralized under the /Rust directory,
-then it can be managed by multiple-packages in cargo workspace. 
-
-About the "general" crate, I'm not sure whether a base lib to manage
-external crates is a good idea, like I replied in [1].
-
-[1]: https://lore.kernel.org/qemu-devel/CAJSP0QWLe6yPDE3rPztx=oS0g+vKT9W3GykrNU0EQZcaW06sog@mail.gmail.com/T/#mfaf9abf06ed82dd7f8ce5e7520bbb4447083b550
-
-> > 
-> > Under a unified Rust directory, using a workspace to manage multiple
-> > packages looks as if it would be easier to maintain. Decentralized to an
-> > existing directory, they're all separate cargos, and external dependencies
-> > tend to become fragmented?
-> 
-> Hmm potentially yes, but that's a "what if" scenario. Let's worry about that
-> bridge when we cross it!
->
-
-Yes!
-
-
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
