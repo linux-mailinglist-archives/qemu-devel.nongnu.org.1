@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAAA6904289
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jun 2024 19:39:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A496904284
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jun 2024 19:38:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sH5Qn-0008VX-FZ; Tue, 11 Jun 2024 13:37:13 -0400
+	id 1sH5Qo-0008W5-Tj; Tue, 11 Jun 2024 13:37:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1sH5Ql-0008UU-BL
- for qemu-devel@nongnu.org; Tue, 11 Jun 2024 13:37:11 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1sH5Qn-0008Vd-Bn
+ for qemu-devel@nongnu.org; Tue, 11 Jun 2024 13:37:13 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1sH5Qj-0008Ri-MB
- for qemu-devel@nongnu.org; Tue, 11 Jun 2024 13:37:11 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1sH5Ql-0008SC-Pt
+ for qemu-devel@nongnu.org; Tue, 11 Jun 2024 13:37:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1718127429;
+ s=mimecast20190719; t=1718127431;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=GI9aEThs+cRVwRm5YK4mlwGuoe8zKLuRigi6QSO8Qvs=;
- b=Ef/ESZxeCFwB8XBqYmDgDSux1xb9MIRWaAuGMvxoXUBt+arrRFaOKLjGZ7ZFXpXNXq07p2
- 5DnGftiiPGgqMk6m/9ehySkIrs2DZROUPLVbod+tUiWWWl/ig15k3cNsLyOG3u6eZDTts8
- Lmjl/4iLwZ8z8mdjDSIAAIfHVSIIMiM=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=EDPviX5iCZw8qqN1UwxNpLLXgI2B2YRvbWcSGkLKba0=;
+ b=OOlZGsIYps3RdC9RNaZumOl6lJ4RK2EDZv7hzzEiQBPyP+LqeuTcv00e7/rJZS+Osru7P7
+ OYm/vXf5ndJtPt5GCm9eFetcvTnsHpq9av7GurUpM944EGYad0ek0lqP5qtpFmod7DCIQq
+ y9Y4vJV1kTZoFQMCTecHmaZvJLCes1o=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-615-Aqw7AMyHP32jO7VECNKMUw-1; Tue,
- 11 Jun 2024 13:37:06 -0400
-X-MC-Unique: Aqw7AMyHP32jO7VECNKMUw-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-128-gAvFlpdHNGCL709YToLZjg-1; Tue,
+ 11 Jun 2024 13:37:09 -0400
+X-MC-Unique: gAvFlpdHNGCL709YToLZjg-1
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B25A219560B9; Tue, 11 Jun 2024 17:37:05 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 781C11956094; Tue, 11 Jun 2024 17:37:08 +0000 (UTC)
 Received: from merkur.fritz.box (unknown [10.39.192.130])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id D01AD19560AB; Tue, 11 Jun 2024 17:37:03 +0000 (UTC)
+ id D813F19560AB; Tue, 11 Jun 2024 17:37:05 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com,
 	qemu-devel@nongnu.org
-Subject: [PULL 1/8] block: drop force_dup parameter of raw_reconfigure_getfd()
-Date: Tue, 11 Jun 2024 19:36:51 +0200
-Message-ID: <20240611173658.231831-2-kwolf@redhat.com>
+Subject: [PULL 2/8] Revert "monitor: use aio_co_reschedule_self()"
+Date: Tue, 11 Jun 2024 19:36:52 +0200
+Message-ID: <20240611173658.231831-3-kwolf@redhat.com>
 In-Reply-To: <20240611173658.231831-1-kwolf@redhat.com>
 References: <20240611173658.231831-1-kwolf@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: 11
 X-Spam_score: 1.1
@@ -79,55 +79,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: "Denis V. Lunev via" <qemu-block@nongnu.org>
+From: Stefan Hajnoczi <stefanha@redhat.com>
 
-Since commit 72373e40fbc, this parameter is always passed as 'false'
-from the caller.
+Commit 1f25c172f837 ("monitor: use aio_co_reschedule_self()") was a code
+cleanup that uses aio_co_reschedule_self() instead of open coding
+coroutine rescheduling.
 
-Signed-off-by: Denis V. Lunev <den@openvz.org>
-CC: Andrey Zhadchenko <andrey.zhadchenko@virtuozzo.com>
-CC: Kevin Wolf <kwolf@redhat.com>
-CC: Hanna Reitz <hreitz@redhat.com>
-Message-ID: <20240430170213.148558-1-den@openvz.org>
+Bug RHEL-34618 was reported and Kevin Wolf <kwolf@redhat.com> identified
+the root cause. I missed that aio_co_reschedule_self() ->
+qemu_get_current_aio_context() only knows about
+qemu_aio_context/IOThread AioContexts and not about iohandler_ctx. It
+does not function correctly when going back from the iohandler_ctx to
+qemu_aio_context.
+
+Go back to open coding the AioContext transitions to avoid this bug.
+
+This reverts commit 1f25c172f83704e350c0829438d832384084a74d.
+
+Cc: qemu-stable@nongnu.org
+Buglink: https://issues.redhat.com/browse/RHEL-34618
+Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+Message-ID: <20240506190622.56095-2-stefanha@redhat.com>
 Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- block/file-posix.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ qapi/qmp-dispatch.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/block/file-posix.c b/block/file-posix.c
-index 35684f7e21..5c46938936 100644
---- a/block/file-posix.c
-+++ b/block/file-posix.c
-@@ -1039,8 +1039,7 @@ static int fcntl_setfl(int fd, int flag)
- }
+diff --git a/qapi/qmp-dispatch.c b/qapi/qmp-dispatch.c
+index f3488afeef..176b549473 100644
+--- a/qapi/qmp-dispatch.c
++++ b/qapi/qmp-dispatch.c
+@@ -212,7 +212,8 @@ QDict *coroutine_mixed_fn qmp_dispatch(const QmpCommandList *cmds, QObject *requ
+              * executing the command handler so that it can make progress if it
+              * involves an AIO_WAIT_WHILE().
+              */
+-            aio_co_reschedule_self(qemu_get_aio_context());
++            aio_co_schedule(qemu_get_aio_context(), qemu_coroutine_self());
++            qemu_coroutine_yield();
+         }
  
- static int raw_reconfigure_getfd(BlockDriverState *bs, int flags,
--                                 int *open_flags, uint64_t perm, bool force_dup,
--                                 Error **errp)
-+                                 int *open_flags, uint64_t perm, Error **errp)
- {
-     BDRVRawState *s = bs->opaque;
-     int fd = -1;
-@@ -1068,7 +1067,7 @@ static int raw_reconfigure_getfd(BlockDriverState *bs, int flags,
-     assert((s->open_flags & O_ASYNC) == 0);
- #endif
- 
--    if (!force_dup && *open_flags == s->open_flags) {
-+    if (*open_flags == s->open_flags) {
-         /* We're lucky, the existing fd is fine */
-         return s->fd;
-     }
-@@ -3748,8 +3747,7 @@ static int raw_check_perm(BlockDriverState *bs, uint64_t perm, uint64_t shared,
-     int ret;
- 
-     /* We may need a new fd if auto-read-only switches the mode */
--    ret = raw_reconfigure_getfd(bs, input_flags, &open_flags, perm,
--                                false, errp);
-+    ret = raw_reconfigure_getfd(bs, input_flags, &open_flags, perm, errp);
-     if (ret < 0) {
-         return ret;
-     } else if (ret != s->fd) {
+         monitor_set_cur(qemu_coroutine_self(), cur_mon);
+@@ -226,7 +227,9 @@ QDict *coroutine_mixed_fn qmp_dispatch(const QmpCommandList *cmds, QObject *requ
+              * Move back to iohandler_ctx so that nested event loops for
+              * qemu_aio_context don't start new monitor commands.
+              */
+-            aio_co_reschedule_self(iohandler_get_aio_context());
++            aio_co_schedule(iohandler_get_aio_context(),
++                            qemu_coroutine_self());
++            qemu_coroutine_yield();
+         }
+     } else {
+        /*
 -- 
 2.45.2
 
