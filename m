@@ -2,56 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0530C904287
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jun 2024 19:39:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB579904282
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jun 2024 19:38:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sH5Qw-00008T-9H; Tue, 11 Jun 2024 13:37:22 -0400
+	id 1sH5Qw-00008O-3O; Tue, 11 Jun 2024 13:37:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1sH5Qu-000078-GW
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1sH5Qu-000074-BE
  for qemu-devel@nongnu.org; Tue, 11 Jun 2024 13:37:20 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1sH5Qs-0008Ua-NE
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1sH5Qs-0008UW-H4
  for qemu-devel@nongnu.org; Tue, 11 Jun 2024 13:37:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1718127438;
+ s=mimecast20190719; t=1718127437;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=FJaqIGhVpINR8HgGtOg7iThzOx8v1LlBfHCauXsWLWw=;
- b=Iuh9DGiFcPz5A5kK+yeR1de8Hcmo2DtmRBs3Kn4qpQ+vQCTxgv/yP/LxkBHH0suhRlZZZp
- ZoWHl1TL6+0yMnkq+wh2Elwv8G2VgEuLPVUqOOJtskj601lBqBnli7Vv4ydvpuzgRsTlej
- vVkrhs8tPemIgeohty9vmVSOflHOq2E=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ bh=193HeBPP9dVSfVwQtrX9rCBKDVSTtth8L3GESbEZ8WA=;
+ b=Af0kIeAUGxV4dSuDCBd3jkjPYsjZTeGBmR3sTXe4IRB0ESig6htcl4/N263OM4ofmiCwqS
+ HjZEvSH6daIo0XeRbzDSHGTbA6AenVimqOL8HpellmduxCDIpdekANx/d37qgsEQZ/HT6J
+ G1JNtIEb/svSRuzL8ivJ1zXzllZhw9M=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-421-Mwc_56U2NX-uHg2rhw68ZA-1; Tue,
- 11 Jun 2024 13:37:13 -0400
-X-MC-Unique: Mwc_56U2NX-uHg2rhw68ZA-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-653-rGRZfUjHPkW7X0pr_WDx0A-1; Tue,
+ 11 Jun 2024 13:37:15 -0400
+X-MC-Unique: rGRZfUjHPkW7X0pr_WDx0A-1
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 4DFA31956086; Tue, 11 Jun 2024 17:37:12 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 56FFB19560BD; Tue, 11 Jun 2024 17:37:14 +0000 (UTC)
 Received: from merkur.fritz.box (unknown [10.39.192.130])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 0123E19560AF; Tue, 11 Jun 2024 17:37:10 +0000 (UTC)
+ id 91B2319560B4; Tue, 11 Jun 2024 17:37:12 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com,
 	qemu-devel@nongnu.org
-Subject: [PULL 4/8] qemu-io: add cvtnum() error handling for zone commands
-Date: Tue, 11 Jun 2024 19:36:54 +0200
-Message-ID: <20240611173658.231831-5-kwolf@redhat.com>
+Subject: [PULL 5/8] block/copy-before-write: use uint64_t for timeout in
+ nanoseconds
+Date: Tue, 11 Jun 2024 19:36:55 +0200
+Message-ID: <20240611173658.231831-6-kwolf@redhat.com>
 In-Reply-To: <20240611173658.231831-1-kwolf@redhat.com>
 References: <20240611173658.231831-1-kwolf@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
@@ -79,125 +81,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Stefan Hajnoczi <stefanha@redhat.com>
+From: Fiona Ebner <f.ebner@proxmox.com>
 
-cvtnum() parses positive int64_t values and returns a negative errno on
-failure. Print errors and return early when cvtnum() fails.
+rather than the uint32_t for which the maximum is slightly more than 4
+seconds and larger values would overflow. The QAPI interface allows
+specifying the number of seconds, so only values 0 to 4 are safe right
+now, other values lead to a much lower timeout than a user expects.
 
-While we're at it, also reject nr_zones values greater or equal to 2^32
-since they cannot be represented.
+The block_copy() call where this is used already takes a uint64_t for
+the timeout, so no change required there.
 
-Reported-by: Peter Maydell <peter.maydell@linaro.org>
-Cc: Sam Li <faithilikerun@gmail.com>
-Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-Message-ID: <20240507180558.377233-1-stefanha@redhat.com>
-Reviewed-by: Sam Li <faithilikerun@gmail.com>
+Fixes: 6db7fd1ca9 ("block/copy-before-write: implement cbw-timeout option")
+Reported-by: Friedrich Weber <f.weber@proxmox.com>
+Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
+Message-ID: <20240429141934.442154-1-f.ebner@proxmox.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- qemu-io-cmds.c | 48 +++++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 47 insertions(+), 1 deletion(-)
+ block/copy-before-write.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/qemu-io-cmds.c b/qemu-io-cmds.c
-index f5d7202a13..e2fab57183 100644
---- a/qemu-io-cmds.c
-+++ b/qemu-io-cmds.c
-@@ -1739,12 +1739,26 @@ static int zone_report_f(BlockBackend *blk, int argc, char **argv)
- {
-     int ret;
-     int64_t offset;
-+    int64_t val;
-     unsigned int nr_zones;
+diff --git a/block/copy-before-write.c b/block/copy-before-write.c
+index cd65524e26..853e01a1eb 100644
+--- a/block/copy-before-write.c
++++ b/block/copy-before-write.c
+@@ -43,7 +43,7 @@ typedef struct BDRVCopyBeforeWriteState {
+     BlockCopyState *bcs;
+     BdrvChild *target;
+     OnCbwError on_cbw_error;
+-    uint32_t cbw_timeout_ns;
++    uint64_t cbw_timeout_ns;
+     bool discard_source;
  
-     ++optind;
-     offset = cvtnum(argv[optind]);
-+    if (offset < 0) {
-+        print_cvtnum_err(offset, argv[optind]);
-+        return offset;
-+    }
-     ++optind;
--    nr_zones = cvtnum(argv[optind]);
-+    val = cvtnum(argv[optind]);
-+    if (val < 0) {
-+        print_cvtnum_err(val, argv[optind]);
-+        return val;
-+    }
-+    if (val > UINT_MAX) {
-+        printf("Number of zones must be less than 2^32\n");
-+        return -ERANGE;
-+    }
-+    nr_zones = val;
- 
-     g_autofree BlockZoneDescriptor *zones = NULL;
-     zones = g_new(BlockZoneDescriptor, nr_zones);
-@@ -1780,8 +1794,16 @@ static int zone_open_f(BlockBackend *blk, int argc, char **argv)
-     int64_t offset, len;
-     ++optind;
-     offset = cvtnum(argv[optind]);
-+    if (offset < 0) {
-+        print_cvtnum_err(offset, argv[optind]);
-+        return offset;
-+    }
-     ++optind;
-     len = cvtnum(argv[optind]);
-+    if (len < 0) {
-+        print_cvtnum_err(len, argv[optind]);
-+        return len;
-+    }
-     ret = blk_zone_mgmt(blk, BLK_ZO_OPEN, offset, len);
-     if (ret < 0) {
-         printf("zone open failed: %s\n", strerror(-ret));
-@@ -1805,8 +1827,16 @@ static int zone_close_f(BlockBackend *blk, int argc, char **argv)
-     int64_t offset, len;
-     ++optind;
-     offset = cvtnum(argv[optind]);
-+    if (offset < 0) {
-+        print_cvtnum_err(offset, argv[optind]);
-+        return offset;
-+    }
-     ++optind;
-     len = cvtnum(argv[optind]);
-+    if (len < 0) {
-+        print_cvtnum_err(len, argv[optind]);
-+        return len;
-+    }
-     ret = blk_zone_mgmt(blk, BLK_ZO_CLOSE, offset, len);
-     if (ret < 0) {
-         printf("zone close failed: %s\n", strerror(-ret));
-@@ -1830,8 +1860,16 @@ static int zone_finish_f(BlockBackend *blk, int argc, char **argv)
-     int64_t offset, len;
-     ++optind;
-     offset = cvtnum(argv[optind]);
-+    if (offset < 0) {
-+        print_cvtnum_err(offset, argv[optind]);
-+        return offset;
-+    }
-     ++optind;
-     len = cvtnum(argv[optind]);
-+    if (len < 0) {
-+        print_cvtnum_err(len, argv[optind]);
-+        return len;
-+    }
-     ret = blk_zone_mgmt(blk, BLK_ZO_FINISH, offset, len);
-     if (ret < 0) {
-         printf("zone finish failed: %s\n", strerror(-ret));
-@@ -1855,8 +1893,16 @@ static int zone_reset_f(BlockBackend *blk, int argc, char **argv)
-     int64_t offset, len;
-     ++optind;
-     offset = cvtnum(argv[optind]);
-+    if (offset < 0) {
-+        print_cvtnum_err(offset, argv[optind]);
-+        return offset;
-+    }
-     ++optind;
-     len = cvtnum(argv[optind]);
-+    if (len < 0) {
-+        print_cvtnum_err(len, argv[optind]);
-+        return len;
-+    }
-     ret = blk_zone_mgmt(blk, BLK_ZO_RESET, offset, len);
-     if (ret < 0) {
-         printf("zone reset failed: %s\n", strerror(-ret));
+     /*
 -- 
 2.45.2
 
