@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85EA590395B
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jun 2024 12:55:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A65CF90395D
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jun 2024 12:55:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sGz9G-0004P0-Jh; Tue, 11 Jun 2024 06:54:42 -0400
+	id 1sGz9I-0004Ql-H0; Tue, 11 Jun 2024 06:54:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pizhenwei@bytedance.com>)
- id 1sGz9E-0004Oj-7K
- for qemu-devel@nongnu.org; Tue, 11 Jun 2024 06:54:40 -0400
-Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
+ id 1sGz9F-0004P4-V8
+ for qemu-devel@nongnu.org; Tue, 11 Jun 2024 06:54:41 -0400
+Received: from mail-pg1-x52c.google.com ([2607:f8b0:4864:20::52c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pizhenwei@bytedance.com>)
- id 1sGz9C-0006HK-IV
- for qemu-devel@nongnu.org; Tue, 11 Jun 2024 06:54:39 -0400
-Received: by mail-pf1-x42f.google.com with SMTP id
- d2e1a72fcca58-705959a2dfbso1582486b3a.1
- for <qemu-devel@nongnu.org>; Tue, 11 Jun 2024 03:54:38 -0700 (PDT)
+ id 1sGz9D-0006In-Vl
+ for qemu-devel@nongnu.org; Tue, 11 Jun 2024 06:54:41 -0400
+Received: by mail-pg1-x52c.google.com with SMTP id
+ 41be03b00d2f7-6c5bcb8e8edso4425874a12.2
+ for <qemu-devel@nongnu.org>; Tue, 11 Jun 2024 03:54:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bytedance.com; s=google; t=1718103277; x=1718708077; darn=nongnu.org;
+ d=bytedance.com; s=google; t=1718103278; x=1718708078; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=zBdgPgKkmgZSuf9w2O/T649Zg5uKBaf7W90uQ0iAef0=;
- b=a/rA+aPuY7c8amEz4XjQUGMqy/LjSArRInEK1Fg9lR6RpEH42+7xCjXfQOwx7vTeYh
- rMK4UaiLxjULTGyj6Rm+O5ITBwxBVZZfgFp3liYkm7qvj8OcLz4rqyNIt6o25gAFFbLr
- VmM0JAJQ/19W2H7RgVaSTat2PDxxVOlPkiN6sI/qYjb9zeb/pxEansEsaYOTlwOb9utL
- vovJtXu+jTupAfdqt71Kf9kmJ43WlPf3rbVPBxhB6l5RARcaxW/zwbVv1K9hZ3qiYKiF
- K3Pw+uPedgqkonoo2lnp0qrTJVx/oEsiB0PXSzIPNP94DXbg+LNorwyDxZ7KO72abExR
- nygw==
+ bh=yp4qcVgbomRF1I+d8YgrO8KMq/PZjFleULs4t/yYhDk=;
+ b=GAjq+LVPHPVzI/jGdRukMWLWZXZIixe7NxzGBAAbdOC30Pws2k+pWD5m0uYRRx3u2f
+ KD02ZV78SSyU/E+0k6SePdxXBNCIo6d2KWGRIg7F9qMTHJ6lftoofnGVUcpbMf0s/+E+
+ n9rHgNu7NqM2HQE+06yIGjGdkT2LZxCYL083dPc0X2gJelClDbY+RLGPP+Br2Ta+usuy
+ 3mxf0riT2MPhUghkcFW/MNj4nDMuRRtCpJE9uVnvuAInTVqDBrJZA9jUrISQ6SuCHi3x
+ DWwf9L7dnyMaD1zf2fKgwSrMfdFnrW3CBAsP2PhXQLRRiw1/X7dpAHZObSDqVI0FWogW
+ DfZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718103277; x=1718708077;
+ d=1e100.net; s=20230601; t=1718103278; x=1718708078;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=zBdgPgKkmgZSuf9w2O/T649Zg5uKBaf7W90uQ0iAef0=;
- b=mEjwW3JeK5qVJPTq45c1PhAiwO5iuCUjS5bOyCFRf7La4TPbAHoGSJFtqmqbinADjP
- P336hKLsJUOu6st+J9EQSMfih6a5o/MtxCzLg7kViFgE2t2i20GKawr6mA7+3lqoJshZ
- ocjaj90k5LpkbNCd6avipGpfA7WMjIo08jTuEO6jHJM89E5IP5UHTiItmROeCSMqrJ4t
- xegi/HZGI6pJFbhh/G/Nsn9Ia2ACjUugiodyjQcUoBHVgkVA8axJNEGjhoeLuX1w/Eoh
- 0tB/UjIkFs8V0qYrDt3WwcMO3qx324b9PWLgx6fRjTqkbDgSqmS+d1Ff8SfEEgpW3tsh
- 0jfA==
-X-Gm-Message-State: AOJu0YySjX2ICD2crFk0D1n0Dn7m9JXndJqEIZxj9xq3M0J4qc/5Hwso
- G/9cvxq2tk6FBgxjklcOoGDOAfkxKODSe20NLFxIWcBMouxxg5SL9lhrxrc5LY4qc7E5gWzckpw
- iqnA=
-X-Google-Smtp-Source: AGHT+IHrd3MUJFxEj6cdUqJj62K91vJSNAR77pyi8jnopSqmpAbJftj0I1A4yt+pSapSs0ogiDC/pw==
-X-Received: by 2002:a05:6a20:4321:b0:1ac:dead:68 with SMTP id
- adf61e73a8af0-1b86bdb579amr2921607637.24.1718103275578; 
- Tue, 11 Jun 2024 03:54:35 -0700 (PDT)
+ bh=yp4qcVgbomRF1I+d8YgrO8KMq/PZjFleULs4t/yYhDk=;
+ b=K1pBd4YBW+WGxHZmOuc5bhts7/eliGY5OT8OY7lL5pAjtBaQUgfh4jf1Fd87F917nR
+ /QuB4EM4NpNsrCIS6FkQC65M3WHPlL1Is2PuTiMnhcua4A9P0DXATvxkYSki1fLidGb+
+ qdIT9zGLZALjKwWmN+3TbKjWd2YKTwHnAvVz2vacynN5OquksEc8IShHUxAfggenTOLO
+ uUgnOBogLF1AOiiu8SVcVlK3tZ1mQhN8x8CG7Z4A/h2ldiK8wLHO/IpKDj6E8o+SDvZA
+ sUnhufMtNZV6jnTiGaMfYK/i1W6bEmw6zVvXZ5veIgxrkRhoU7174uwDsPZ3ATKjDLfF
+ bmgw==
+X-Gm-Message-State: AOJu0YyvZz5byP1Ka3W/mxDAAE61ED4mdOTsy5ZMoQbSijpmtgORbxGD
+ NsXfFqv5kWt3eq/NL0Rtr9+t2k5qDT3ogAr2ZZYLYx6e1cIn5uj1oGFzotc+BUez7x0+eq2DsZl
+ vF0Y=
+X-Google-Smtp-Source: AGHT+IGZk66rgpvU3KD2iYIJ7JXd/esIByvlYjFu8zuZKJtEVOR+ipvIxl5gmFJpTnGFU5mPRsujfg==
+X-Received: by 2002:a05:6a20:a125:b0:1b7:577c:7177 with SMTP id
+ adf61e73a8af0-1b7577c72e0mr6114071637.16.1718103278301; 
+ Tue, 11 Jun 2024 03:54:38 -0700 (PDT)
 Received: from libai.bytedance.net ([61.213.176.12])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7042488212dsm5605381b3a.15.2024.06.11.03.54.33
+ d2e1a72fcca58-7042488212dsm5605381b3a.15.2024.06.11.03.54.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 11 Jun 2024 03:54:35 -0700 (PDT)
+ Tue, 11 Jun 2024 03:54:37 -0700 (PDT)
 From: zhenwei pi <pizhenwei@bytedance.com>
 To: qemu-devel@nongnu.org
 Cc: pbonzini@redhat.com, marcandre.lureau@redhat.com, berrange@redhat.com,
  thuth@redhat.com, zhenwei pi <pizhenwei@bytedance.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v3 1/2] meson: Remove libibumad dependence
-Date: Tue, 11 Jun 2024 18:54:26 +0800
-Message-Id: <20240611105427.61395-2-pizhenwei@bytedance.com>
+Subject: [PATCH v3 2/2] test: Remove libibumad dependence
+Date: Tue, 11 Jun 2024 18:54:27 +0800
+Message-Id: <20240611105427.61395-3-pizhenwei@bytedance.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240611105427.61395-1-pizhenwei@bytedance.com>
 References: <20240611105427.61395-1-pizhenwei@bytedance.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
- envelope-from=pizhenwei@bytedance.com; helo=mail-pf1-x42f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52c;
+ envelope-from=pizhenwei@bytedance.com; helo=mail-pg1-x52c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,35 +95,195 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-RDMA based migration has no dependence on libumad. libibverbs and
-librdmacm are enough.
-libumad was used by rdmacm-mux which has been already removed. It's
-remained mistakenly.
+Remove libibumad dependence from the test environment.
 
-Fixes: 1dfd42c4264b ("hw/rdma: Remove deprecated pvrdma device and rdmacm-mux helper")
-Cc: Philippe Mathieu-Daudé <philmd@linaro.org>
+Suggested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: zhenwei pi <pizhenwei@bytedance.com>
 ---
- meson.build | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ scripts/ci/setup/ubuntu/ubuntu-2204-aarch64.yaml      | 1 -
+ scripts/ci/setup/ubuntu/ubuntu-2204-s390x.yaml        | 1 -
+ tests/docker/dockerfiles/debian-amd64-cross.docker    | 1 -
+ tests/docker/dockerfiles/debian-arm64-cross.docker    | 1 -
+ tests/docker/dockerfiles/debian-armel-cross.docker    | 1 -
+ tests/docker/dockerfiles/debian-armhf-cross.docker    | 1 -
+ tests/docker/dockerfiles/debian-i686-cross.docker     | 1 -
+ tests/docker/dockerfiles/debian-mips64el-cross.docker | 1 -
+ tests/docker/dockerfiles/debian-mipsel-cross.docker   | 1 -
+ tests/docker/dockerfiles/debian-ppc64el-cross.docker  | 1 -
+ tests/docker/dockerfiles/debian-s390x-cross.docker    | 1 -
+ tests/docker/dockerfiles/debian.docker                | 1 -
+ tests/docker/dockerfiles/ubuntu2204.docker            | 1 -
+ tests/lcitool/projects/qemu.yml                       | 1 -
+ 14 files changed, 14 deletions(-)
 
-diff --git a/meson.build b/meson.build
-index ec59effca2..226b97ea26 100644
---- a/meson.build
-+++ b/meson.build
-@@ -1885,11 +1885,9 @@ endif
- 
- rdma = not_found
- if not get_option('rdma').auto() or have_system
--  libumad = cc.find_library('ibumad', required: get_option('rdma'))
-   rdma_libs = [cc.find_library('rdmacm', has_headers: ['rdma/rdma_cma.h'],
-                                required: get_option('rdma')),
--               cc.find_library('ibverbs', required: get_option('rdma')),
--               libumad]
-+               cc.find_library('ibverbs', required: get_option('rdma'))]
-   rdma = declare_dependency(dependencies: rdma_libs)
-   foreach lib: rdma_libs
-     if not lib.found()
+diff --git a/scripts/ci/setup/ubuntu/ubuntu-2204-aarch64.yaml b/scripts/ci/setup/ubuntu/ubuntu-2204-aarch64.yaml
+index 8d7d8725fb..fd5489cd82 100644
+--- a/scripts/ci/setup/ubuntu/ubuntu-2204-aarch64.yaml
++++ b/scripts/ci/setup/ubuntu/ubuntu-2204-aarch64.yaml
+@@ -49,7 +49,6 @@ packages:
+   - libglusterfs-dev
+   - libgnutls28-dev
+   - libgtk-3-dev
+-  - libibumad-dev
+   - libibverbs-dev
+   - libiscsi-dev
+   - libjemalloc-dev
+diff --git a/scripts/ci/setup/ubuntu/ubuntu-2204-s390x.yaml b/scripts/ci/setup/ubuntu/ubuntu-2204-s390x.yaml
+index 16050a5058..afa04502cf 100644
+--- a/scripts/ci/setup/ubuntu/ubuntu-2204-s390x.yaml
++++ b/scripts/ci/setup/ubuntu/ubuntu-2204-s390x.yaml
+@@ -49,7 +49,6 @@ packages:
+   - libglusterfs-dev
+   - libgnutls28-dev
+   - libgtk-3-dev
+-  - libibumad-dev
+   - libibverbs-dev
+   - libiscsi-dev
+   - libjemalloc-dev
+diff --git a/tests/docker/dockerfiles/debian-amd64-cross.docker b/tests/docker/dockerfiles/debian-amd64-cross.docker
+index f8c61d1191..8058695979 100644
+--- a/tests/docker/dockerfiles/debian-amd64-cross.docker
++++ b/tests/docker/dockerfiles/debian-amd64-cross.docker
+@@ -105,7 +105,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       libglusterfs-dev:amd64 \
+                       libgnutls28-dev:amd64 \
+                       libgtk-3-dev:amd64 \
+-                      libibumad-dev:amd64 \
+                       libibverbs-dev:amd64 \
+                       libiscsi-dev:amd64 \
+                       libjemalloc-dev:amd64 \
+diff --git a/tests/docker/dockerfiles/debian-arm64-cross.docker b/tests/docker/dockerfiles/debian-arm64-cross.docker
+index 6510872279..15457d7657 100644
+--- a/tests/docker/dockerfiles/debian-arm64-cross.docker
++++ b/tests/docker/dockerfiles/debian-arm64-cross.docker
+@@ -105,7 +105,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       libglusterfs-dev:arm64 \
+                       libgnutls28-dev:arm64 \
+                       libgtk-3-dev:arm64 \
+-                      libibumad-dev:arm64 \
+                       libibverbs-dev:arm64 \
+                       libiscsi-dev:arm64 \
+                       libjemalloc-dev:arm64 \
+diff --git a/tests/docker/dockerfiles/debian-armel-cross.docker b/tests/docker/dockerfiles/debian-armel-cross.docker
+index f227d42987..c26ffc2e9e 100644
+--- a/tests/docker/dockerfiles/debian-armel-cross.docker
++++ b/tests/docker/dockerfiles/debian-armel-cross.docker
+@@ -108,7 +108,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       libglusterfs-dev:armel \
+                       libgnutls28-dev:armel \
+                       libgtk-3-dev:armel \
+-                      libibumad-dev:armel \
+                       libibverbs-dev:armel \
+                       libiscsi-dev:armel \
+                       libjemalloc-dev:armel \
+diff --git a/tests/docker/dockerfiles/debian-armhf-cross.docker b/tests/docker/dockerfiles/debian-armhf-cross.docker
+index 58bdf07223..8f87656d89 100644
+--- a/tests/docker/dockerfiles/debian-armhf-cross.docker
++++ b/tests/docker/dockerfiles/debian-armhf-cross.docker
+@@ -105,7 +105,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       libglusterfs-dev:armhf \
+                       libgnutls28-dev:armhf \
+                       libgtk-3-dev:armhf \
+-                      libibumad-dev:armhf \
+                       libibverbs-dev:armhf \
+                       libiscsi-dev:armhf \
+                       libjemalloc-dev:armhf \
+diff --git a/tests/docker/dockerfiles/debian-i686-cross.docker b/tests/docker/dockerfiles/debian-i686-cross.docker
+index 9f4102be8f..f1e5b0b877 100644
+--- a/tests/docker/dockerfiles/debian-i686-cross.docker
++++ b/tests/docker/dockerfiles/debian-i686-cross.docker
+@@ -108,7 +108,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       libglusterfs-dev:i386 \
+                       libgnutls28-dev:i386 \
+                       libgtk-3-dev:i386 \
+-                      libibumad-dev:i386 \
+                       libibverbs-dev:i386 \
+                       libiscsi-dev:i386 \
+                       libjemalloc-dev:i386 \
+diff --git a/tests/docker/dockerfiles/debian-mips64el-cross.docker b/tests/docker/dockerfiles/debian-mips64el-cross.docker
+index c861c3bd5b..59c4c68dce 100644
+--- a/tests/docker/dockerfiles/debian-mips64el-cross.docker
++++ b/tests/docker/dockerfiles/debian-mips64el-cross.docker
+@@ -107,7 +107,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       libglusterfs-dev:mips64el \
+                       libgnutls28-dev:mips64el \
+                       libgtk-3-dev:mips64el \
+-                      libibumad-dev:mips64el \
+                       libibverbs-dev:mips64el \
+                       libiscsi-dev:mips64el \
+                       libjemalloc-dev:mips64el \
+diff --git a/tests/docker/dockerfiles/debian-mipsel-cross.docker b/tests/docker/dockerfiles/debian-mipsel-cross.docker
+index fe9415395e..880c774f1c 100644
+--- a/tests/docker/dockerfiles/debian-mipsel-cross.docker
++++ b/tests/docker/dockerfiles/debian-mipsel-cross.docker
+@@ -107,7 +107,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       libglusterfs-dev:mipsel \
+                       libgnutls28-dev:mipsel \
+                       libgtk-3-dev:mipsel \
+-                      libibumad-dev:mipsel \
+                       libibverbs-dev:mipsel \
+                       libiscsi-dev:mipsel \
+                       libjemalloc-dev:mipsel \
+diff --git a/tests/docker/dockerfiles/debian-ppc64el-cross.docker b/tests/docker/dockerfiles/debian-ppc64el-cross.docker
+index 35c8ff0864..1d55b9514c 100644
+--- a/tests/docker/dockerfiles/debian-ppc64el-cross.docker
++++ b/tests/docker/dockerfiles/debian-ppc64el-cross.docker
+@@ -105,7 +105,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       libglusterfs-dev:ppc64el \
+                       libgnutls28-dev:ppc64el \
+                       libgtk-3-dev:ppc64el \
+-                      libibumad-dev:ppc64el \
+                       libibverbs-dev:ppc64el \
+                       libiscsi-dev:ppc64el \
+                       libjemalloc-dev:ppc64el \
+diff --git a/tests/docker/dockerfiles/debian-s390x-cross.docker b/tests/docker/dockerfiles/debian-s390x-cross.docker
+index bef9dff17a..62ccda6ab1 100644
+--- a/tests/docker/dockerfiles/debian-s390x-cross.docker
++++ b/tests/docker/dockerfiles/debian-s390x-cross.docker
+@@ -105,7 +105,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       libglusterfs-dev:s390x \
+                       libgnutls28-dev:s390x \
+                       libgtk-3-dev:s390x \
+-                      libibumad-dev:s390x \
+                       libibverbs-dev:s390x \
+                       libiscsi-dev:s390x \
+                       libjemalloc-dev:s390x \
+diff --git a/tests/docker/dockerfiles/debian.docker b/tests/docker/dockerfiles/debian.docker
+index 63d7aac616..0d1d401eb8 100644
+--- a/tests/docker/dockerfiles/debian.docker
++++ b/tests/docker/dockerfiles/debian.docker
+@@ -55,7 +55,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       libglusterfs-dev \
+                       libgnutls28-dev \
+                       libgtk-3-dev \
+-                      libibumad-dev \
+                       libibverbs-dev \
+                       libiscsi-dev \
+                       libjemalloc-dev \
+diff --git a/tests/docker/dockerfiles/ubuntu2204.docker b/tests/docker/dockerfiles/ubuntu2204.docker
+index febd25b320..beeb44fc28 100644
+--- a/tests/docker/dockerfiles/ubuntu2204.docker
++++ b/tests/docker/dockerfiles/ubuntu2204.docker
+@@ -55,7 +55,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       libglusterfs-dev \
+                       libgnutls28-dev \
+                       libgtk-3-dev \
+-                      libibumad-dev \
+                       libibverbs-dev \
+                       libiscsi-dev \
+                       libjemalloc-dev \
+diff --git a/tests/lcitool/projects/qemu.yml b/tests/lcitool/projects/qemu.yml
+index 070d7f4706..0c85784259 100644
+--- a/tests/lcitool/projects/qemu.yml
++++ b/tests/lcitool/projects/qemu.yml
+@@ -47,7 +47,6 @@ packages:
+  - libfdt
+  - libffi
+  - libgcrypt
+- - libibumad
+  - libibverbs
+  - libiscsi
+  - libjemalloc
 -- 
 2.34.1
 
