@@ -2,77 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6E269037C8
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jun 2024 11:28:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6ED029037D2
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jun 2024 11:31:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sGxnL-0003uB-Lt; Tue, 11 Jun 2024 05:27:59 -0400
+	id 1sGxpw-0006As-VE; Tue, 11 Jun 2024 05:30:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pizhenwei@bytedance.com>)
- id 1sGxnJ-0003tc-6H
- for qemu-devel@nongnu.org; Tue, 11 Jun 2024 05:27:57 -0400
-Received: from mail-oi1-x22d.google.com ([2607:f8b0:4864:20::22d])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1sGxpu-00068Y-RX
+ for qemu-devel@nongnu.org; Tue, 11 Jun 2024 05:30:38 -0400
+Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pizhenwei@bytedance.com>)
- id 1sGxnG-0007LX-5X
- for qemu-devel@nongnu.org; Tue, 11 Jun 2024 05:27:56 -0400
-Received: by mail-oi1-x22d.google.com with SMTP id
- 5614622812f47-3c9c36db8eeso433985b6e.0
- for <qemu-devel@nongnu.org>; Tue, 11 Jun 2024 02:27:53 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1sGxps-0007qi-ND
+ for qemu-devel@nongnu.org; Tue, 11 Jun 2024 05:30:38 -0400
+Received: by mail-ed1-x535.google.com with SMTP id
+ 4fb4d7f45d1cf-57a52dfd081so991110a12.2
+ for <qemu-devel@nongnu.org>; Tue, 11 Jun 2024 02:30:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bytedance.com; s=google; t=1718098072; x=1718702872; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=GVuScrtvPF/iWEyJKjrN4nergyjN2l8nKSdK5qVeQXg=;
- b=IVQV8LxxfhliT9uus5vp9gGd33JM6/o4vNdRvE7MRKjpadhLU2Xq2BWwY90sWsHhe/
- 2uthpJ7Uovw/10Zpa/IMPmpjnU7aH/1D1VV2QFTW4jZYnehD1YLv94XaH/6mXc95rrpB
- bf7MkZZDoUPQl/LmByPfkX3gBRk4HPbpljjVWzYsFYwE385sLwZ2eP07PfUER9gnSkk6
- wHuP7ZnLkzTkXpsOqX7xCIZLozJXqevLKI9b2pX1F3vgdyPTF+stolrkkay22z43IEZq
- Wv9Vwy1ONO9wSF9EJzCYsK3w4Bf70hL3Zwas2+vaS9X1wkKVlYzixtzlHp2xrjrLacAi
- Meag==
+ d=linaro.org; s=google; t=1718098235; x=1718703035; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:references
+ :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=AbcuUhK3LaL0JvHiBlPX7mdsWHxijm/AB7JI39XtzRM=;
+ b=pRyyNw7K+WGjRF2JvDiMJ2QQTeUED+4HOB4qrN3fs8DwHOU+z5mHkLPIqNEJLht2S/
+ Ka1DBCzlVQy2FlbbOIp3F/gwzf5Orl5C49ebOvg0RCbXExEwogMVNm1rhz77LJFbUFTP
+ NFa8FAZYILFokM8cqk6xafLNYlpeKwNe+g/nV9FsRfLs9HOXkO1Bxr5v5s2FbT7CXQsN
+ hkOYZt8Fhg0nOqu6Umokga5oRoQzloSFV8Q1VmONHJOSbk8Tn8mSIzHaNpoZ8hlgSDrX
+ MSyFjaSnaHWM2bHjcMOP9R2lo8wpzSpdzAAdHzJ8SoppY56EgpF0+QhUHwxh5q57q28n
+ jz4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718098072; x=1718702872;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1718098235; x=1718703035;
+ h=content-transfer-encoding:mime-version:message-id:date:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=GVuScrtvPF/iWEyJKjrN4nergyjN2l8nKSdK5qVeQXg=;
- b=c87GDP6vHU5uFYO59+09hVsSZn1ou9mdD9X6ky4LSSfoc+2ATKMYP8ukG0d0fmO+Ld
- 8Etsd7NizJ8s9aRmLxycHvnsGbQqr7YS2hFwTV3HsGfdegRaJHr6CPdKHsxln7fJKoa6
- yMZn+rG+oMNMZX5R6Z7GpRI8r9fzDm00+zct/Mm/bCDIJ3itso/dXX6PUVbOZx2ah/u1
- doeiNuW2qvr9oMsJG1VvG2iAd1J5FuXwFjEn82T9CjWvWWSY78VR6vRUjeHDzxjMqFAW
- /TxOEeeS7tAPwY///192Boc+zptCBr3jvSq9hUK3AZALiI6RP6OcWeTk9xRS6jKxB9uD
- hFqQ==
-X-Gm-Message-State: AOJu0YwhvV5VDcEaw4UG+Jmta15jrcbz6ltkEbp8lTJZteIMeaeEQXlg
- U/2JC82AstylV/n2JELKmmq+0rnDDyoMei4ON7q03/ON8FUpZ3Lg/dfJzqIpMZZyJqBGPDAKKgJ
- to8o=
-X-Google-Smtp-Source: AGHT+IHZ/YZS58CyiB9yf8noA5DGwn3LYMw4csyOx9OQzIP/sHz3t0K/l/orsLUuie0X4D3yKq6orw==
-X-Received: by 2002:a05:6870:638e:b0:254:affe:5a09 with SMTP id
- 586e51a60fabf-254affea8a0mr7723769fac.3.1718098072285; 
- Tue, 11 Jun 2024 02:27:52 -0700 (PDT)
-Received: from libai.bytedance.net ([61.213.176.8])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7041cda06f4sm5871153b3a.75.2024.06.11.02.27.49
+ bh=AbcuUhK3LaL0JvHiBlPX7mdsWHxijm/AB7JI39XtzRM=;
+ b=hYkVd7Y73cKkHmiYTmwYLJSeMrqVf23X1tAshAjXX37NMVke5xZuWRf4saAi7gVTQp
+ TLjveJkFom3AV2zPve4jLChUCNpmgcV205WFZY5VLID4Be/0lQgzCGb7ZwBgxAKDR8Ap
+ 3FOfN95/DfWKEqeg0IBloKgvaFR2bpYLdy4sm7QQjyOOgpUCWNwGQ0MdaISj0VJzBlSz
+ WlE9fvdqtmEb1dvhCJsUkCcin9AQF5xXi6bzCPfjqXGpxOBbdJgulGrMi354ei3KqBKh
+ vYQ8UXbeLYOpqk9nAzGnFNvMXvj6LV4Jz6VgvpVfu18U2R3oqARS6Gan0CHFypIhShk5
+ gPIQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVS/yikCSUVR1dBYWN+133qi3HPo5+42YYZrqhCSvtodc9K6uW35RfWsEn6f3y4JeX82cPsMIcmmUUoWbw8P3trIhxrhGA=
+X-Gm-Message-State: AOJu0Yx4jXApg7G3+yPe+sD0IouWNoiUsS8WfjkLZy2gxWGBbjHs9g5B
+ RF3z276ZeduUM4UPBKt/hyMW7tLeK3L7J+5toLzfmK3mZOq0wGjkIM4zz60QXbk=
+X-Google-Smtp-Source: AGHT+IEy2rcJefxKoB28N+t5SJINbIKN6BVs8Alk6Bg/oWVosz6ceWXvSZEEnedJWEdlBFdwQId+/A==
+X-Received: by 2002:a17:906:bc4e:b0:a6f:20ed:8b3d with SMTP id
+ a640c23a62f3a-a6f20ed8c4cmr334263566b.33.1718098234737; 
+ Tue, 11 Jun 2024 02:30:34 -0700 (PDT)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-a6f1c99d8f1sm272401966b.175.2024.06.11.02.30.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 11 Jun 2024 02:27:51 -0700 (PDT)
-From: zhenwei pi <pizhenwei@bytedance.com>
-To: qemu-devel@nongnu.org
-Cc: pbonzini@redhat.com, marcandre.lureau@redhat.com, berrange@redhat.com,
- thuth@redhat.com, zhenwei pi <pizhenwei@bytedance.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 1/1] meson: Remove libibumad dependence
-Date: Tue, 11 Jun 2024 17:27:43 +0800
-Message-Id: <20240611092743.59255-2-pizhenwei@bytedance.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240611092743.59255-1-pizhenwei@bytedance.com>
-References: <20240611092743.59255-1-pizhenwei@bytedance.com>
+ Tue, 11 Jun 2024 02:30:34 -0700 (PDT)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 6C1B45F898;
+ Tue, 11 Jun 2024 10:30:33 +0100 (BST)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Stefan Hajnoczi <stefanha@gmail.com>
+Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ qemu-devel@nongnu.org,  Stefan Hajnoczi <stefanha@redhat.com>,  Mads
+ Ynddal <mads@ynddal.dk>,  Paolo Bonzini <pbonzini@redhat.com>,  Peter
+ Maydell <peter.maydell@linaro.org>,  Daniel P. =?utf-8?Q?Berrang=C3=A9?=
+ <berrange@redhat.com>,  =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
+ <marcandre.lureau@redhat.com>,
+ Thomas Huth <thuth@redhat.com>,  Markus Armbruster <armbru@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Zhao Liu
+ <zhao1.liu@intel.com>,  Gustavo Romero <gustavo.romero@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: Re: [RFC PATCH v1 0/6] Implement ARM PL011 in Rust
+In-Reply-To: <CAJSP0QWLe6yPDE3rPztx=oS0g+vKT9W3GykrNU0EQZcaW06sog@mail.gmail.com>
+ (Stefan Hajnoczi's message of "Mon, 10 Jun 2024 16:47:33 -0400")
+References: <cover.rust-pl011-rfc-v1.git.manos.pitsidianakis@linaro.org>
+ <CAJSP0QU2Y_mNtYQtPbahnvj1eLLTu2Z-f4z-6VZgSSxqgVnPbQ@mail.gmail.com>
+ <evsu7.aus3yo6r56i@linaro.org>
+ <CAJSP0QWLe6yPDE3rPztx=oS0g+vKT9W3GykrNU0EQZcaW06sog@mail.gmail.com>
+Date: Tue, 11 Jun 2024 10:30:33 +0100
+Message-ID: <87jzivzv0m.fsf@draig.linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::22d;
- envelope-from=pizhenwei@bytedance.com; helo=mail-oi1-x22d.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::535;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x535.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,49 +107,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-RDMA based migration has no dependence on libumad. libibverbs and
-librdmacm are enough.
-libumad was used by rdmacm-mux which has been already removed. It's
-remained mistakenly.
+Stefan Hajnoczi <stefanha@gmail.com> writes:
 
-Fixes: 1dfd42c4264b ("hw/rdma: Remove deprecated pvrdma device and rdmacm-mux helper")
-Cc: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: zhenwei pi <pizhenwei@bytedance.com>
----
- meson.build                     | 4 +---
- tests/lcitool/projects/qemu.yml | 1 -
- 2 files changed, 1 insertion(+), 4 deletions(-)
+> On Mon, 10 Jun 2024 at 16:27, Manos Pitsidianakis
+> <manos.pitsidianakis@linaro.org> wrote:
+>>
+>> On Mon, 10 Jun 2024 22:59, Stefan Hajnoczi <stefanha@gmail.com> wrote:
+<snip>
+>> >>
+>> >> 1. Tooling
+>> >>    Mostly writing up the build-sys tooling to do so. Ideally we'd
+>> >>    compile everything without cargo but rustc directly.
+>> >
+>> >Why would that be ideal?
+>>
+>> It remove the indirection level of meson<->cargo<->rustc. I don't have a
+>> concrete idea on how to tackle this, but if cargo ends up not strictly
+>> necessary, I don't see why we cannot use one build system.
+>
+> The convenience of being able to use cargo dependencies without
+> special QEMU meson build system effort seems worth the overhead of
+> meson<->cargo<->rustc to me. There is a blog post that explores using
+> cargo crates using meson's wrap dependencies here, and it seems like
+> extra work:
+> https://coaxion.net/blog/2023/04/building-a-gstreamer-plugin-in-rust-with=
+-meson-instead-of-cargo/
+>
+> It's possible to use just meson today, but I don't think it's
+> practical when using cargo dependencies.
 
-diff --git a/meson.build b/meson.build
-index ec59effca2..226b97ea26 100644
---- a/meson.build
-+++ b/meson.build
-@@ -1885,11 +1885,9 @@ endif
- 
- rdma = not_found
- if not get_option('rdma').auto() or have_system
--  libumad = cc.find_library('ibumad', required: get_option('rdma'))
-   rdma_libs = [cc.find_library('rdmacm', has_headers: ['rdma/rdma_cma.h'],
-                                required: get_option('rdma')),
--               cc.find_library('ibverbs', required: get_option('rdma')),
--               libumad]
-+               cc.find_library('ibverbs', required: get_option('rdma'))]
-   rdma = declare_dependency(dependencies: rdma_libs)
-   foreach lib: rdma_libs
-     if not lib.found()
-diff --git a/tests/lcitool/projects/qemu.yml b/tests/lcitool/projects/qemu.yml
-index 070d7f4706..0c85784259 100644
---- a/tests/lcitool/projects/qemu.yml
-+++ b/tests/lcitool/projects/qemu.yml
-@@ -47,7 +47,6 @@ packages:
-  - libfdt
-  - libffi
-  - libgcrypt
-- - libibumad
-  - libibverbs
-  - libiscsi
-  - libjemalloc
--- 
-2.34.1
+I did find the wrap approach very useful in giving a useful checkout
+with --download that I can edit and tweak but is still integrated into
+the build. This is helpful when working with very new libraries that
+haven't been widely packaged yet. Distro's can choose or not choose to
+use --download as they wish.
 
+<snip>
+>> >
+>> >Do you mean vendoring by committing them to qemu.git or just the
+>> >practice of running `cargo vendor` locally for users who decide they
+>> >want to keep a copy of the dependencies?
+>>
+>>
+>> Committing, with an option to opt-out. They are generally not big in
+>> size. I am not of strong opinion on this one, I'm very open to
+>> alternatives.
+
+I think we generally host stuff we explicitly need in separate mirrors
+or even a little light forking (testfloat does this).
+
+> Fedora and Debian want Rust applications to use distro-packaged
+> crates. No vendoring and no crates.io online access. It's a bit of a
+> pain because Rust developers need to make sure their code works with
+> whatever version of crates Fedora and Debian provide.
+>
+> The `cargo vendor` command makes it easy for anyone wishing to collect
+> the required dependencies for offline builds (something I've used for
+> CentOS builds where vendoring is allowed).
+>
+> I suggest not vendoring packages in qemu.git. Users can still run
+> `cargo vendor` for easy offline builds.
+>
+<snip>
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
