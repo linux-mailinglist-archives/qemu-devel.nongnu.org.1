@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1C01903ED7
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jun 2024 16:30:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2F49903EAD
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jun 2024 16:26:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sH2RV-0006wE-4U; Tue, 11 Jun 2024 10:25:45 -0400
+	id 1sH2RZ-0006yI-4j; Tue, 11 Jun 2024 10:25:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sH2RP-0006v7-Hf
- for qemu-devel@nongnu.org; Tue, 11 Jun 2024 10:25:39 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1sH2RU-0006wV-JH
+ for qemu-devel@nongnu.org; Tue, 11 Jun 2024 10:25:45 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sH2RO-0005yc-36
- for qemu-devel@nongnu.org; Tue, 11 Jun 2024 10:25:39 -0400
+ id 1sH2RT-0005zn-75
+ for qemu-devel@nongnu.org; Tue, 11 Jun 2024 10:25:44 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1718115937;
+ s=mimecast20190719; t=1718115941;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ftFLj961lY1sH71EgKyVbgD5orNrRVyY99cZHuM258U=;
- b=WqlJ98Sm955ORUI43FekqV7P+kYVya1243gAIXWapfmeGx9dc7wBoeyc5YMzWadHOJsUQg
- Q3Fy9tIfW95hrNV74aXxqGQ2rPdE/9J432BCfazKPwxY0W3EFNXFlYrCJaDBAu8kIfjogu
- uDZga04UuPWwwiQEpHTkXcKF2vB0Q6I=
-Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
- [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=UESLOAT8c4Zm/qHI35z4dw0wDSvB6GAFl5eoxqQcv7g=;
+ b=QQwFK8uKJyXP0U+fhDAC+oAPdpyeV8vNtqdb5nwwW9QzZ73M35kBMnJyuClFZTQIT1/Rsy
+ 74QJiXHhh5UcelaPvri90yuiMhSwjTRBh3Kgsl5PgsEs0bEml7BigYphMb/FlyTeDj/wlv
+ TT2Ty2EQbPJdqtMyHM4hQSPY3v1+lsk=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-77-O6q5I1MeMRmKXlDWMuMLzg-1; Tue, 11 Jun 2024 10:25:35 -0400
-X-MC-Unique: O6q5I1MeMRmKXlDWMuMLzg-1
-Received: by mail-lf1-f70.google.com with SMTP id
- 2adb3069b0e04-52c8ddc2ef9so1672919e87.1
- for <qemu-devel@nongnu.org>; Tue, 11 Jun 2024 07:25:35 -0700 (PDT)
+ us-mta-8-1y18heDKOaWXzXP0x4G3zw-1; Tue, 11 Jun 2024 10:25:38 -0400
+X-MC-Unique: 1y18heDKOaWXzXP0x4G3zw-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-a6f2662d050so80394366b.3
+ for <qemu-devel@nongnu.org>; Tue, 11 Jun 2024 07:25:37 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718115933; x=1718720733;
+ d=1e100.net; s=20230601; t=1718115936; x=1718720736;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ftFLj961lY1sH71EgKyVbgD5orNrRVyY99cZHuM258U=;
- b=m8F0N5KT/HQjOly129sRPteEzH4/30JHP6cx59Jg3Zkqm7fFWEiEmPFI9krpYsR9Um
- Zxhf0qEIe+vUoYXo+GUWUx6K2dIGreQ28xF/J4X5ctAGKCG0nG/ERepVw7VEPAvxP9fk
- /DOVgGHmH7HuyYokVJ1K9MQDhqDj0SnRDu+Eku/FQX4N7lNv3iVca+qmhfs/+ACgOIvO
- SsZdM7CkR7aTjF1Zn9+p6+/ofJDAF0+zjSSzfu9/NRRZhbtsewMmTENF2fks2oweanre
- RXp2iPzU3zu8CsxGqSB6Nn6jcUUaibWhc2WVGMAroPDyLQwI90ahHCL74bbuyXPGjuHi
- V9Mw==
-X-Gm-Message-State: AOJu0YwsHZjC0XZXcVoA8yG4PkjYPZSpqVARduVvwKYFtsObrn9JVc8O
- J4lC+csMPvxaYYgBunaSzzvlIOeETjuHwdepv66keDaZysINIrLtm6OLm/iUGswCSND2TYhy8oD
- bf6021nggtlabNRAJEkqav8xPygtaAnA/zOQrmnxPVKnAtXTZyx2KkRyjgkaT+vvZBa1ZmWfPlE
- G3V6pEJAiFHN/566hfEo6zzbHEnTzmv+mh+gFv
-X-Received: by 2002:ac2:498d:0:b0:52b:c2b9:d988 with SMTP id
- 2adb3069b0e04-52bc2b9da42mr8322386e87.40.1718115933419; 
- Tue, 11 Jun 2024 07:25:33 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFR2pZlck7RRAw0TqD/I3kay/JF8gooucdcgPmJqn+heHK3/lVymr0o81TL12vsMxVxYW8wtg==
-X-Received: by 2002:ac2:498d:0:b0:52b:c2b9:d988 with SMTP id
- 2adb3069b0e04-52bc2b9da42mr8322363e87.40.1718115932950; 
- Tue, 11 Jun 2024 07:25:32 -0700 (PDT)
+ bh=UESLOAT8c4Zm/qHI35z4dw0wDSvB6GAFl5eoxqQcv7g=;
+ b=nvXyrqnzas0L0jx5lIGRx8p/wOADotX+wo2q+zmhZgZsc3LPC+geP2gMorBVBRaqdR
+ JdqnDSrOhlTam3qztiUXd3i4zJ4v4VkxIbn94ep1ySbHL9WVAhWP3G3UlVKa7+7oiRvT
+ nsdGTn66H05wsLkpqLXZOfevpC6H3t4toCDxrMkFFWv/fyVUCNu9Xwl3xlNXsW+uAflU
+ b9r1/O420yMZv1wYhetRbP2K2+Knbpk6MMpjkhSIGi+Ljwc1k//pPEF1/sY0Zll8IvHr
+ a7JjFggS8jPT6cMRtV5g+pZKdPxMLKM0Yvf8DbbXP16neWUT0545VrKc1FTIym/gYuD3
+ Jyjg==
+X-Gm-Message-State: AOJu0Yx3Ar6wOGx6H4/FC6TNfatPWTI1GTKI3yfBeACdAhp0g4U+4ZvZ
+ vTzwlPR1kz+e/r3dpojwoF/XSd40q4Iw6kydsIRy7kC42+ZKgAjPzIPMV/iVKWuaYTyP2jHKoDG
+ /7Fpb9i8lC7VSLQ8i4tNgPBcxQFMRmHefbzJjbpiRpAIVaNhRlSJVwwh+di9g97BekNH/GMKb/o
+ uHjQlJcttwv4qIApTI4faGKBraws4zWxsov2bU
+X-Received: by 2002:a17:906:a243:b0:a6f:3e5a:881c with SMTP id
+ a640c23a62f3a-a6f3e5a8a44mr80818466b.5.1718115936461; 
+ Tue, 11 Jun 2024 07:25:36 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGDgF0p2D0HoeUesqSBpjIIMyBuwZ//HT7u7d76U6wqgIkOQR1wDRCY0PhfNtPcn0lbpV3ygQ==
+X-Received: by 2002:a17:906:a243:b0:a6f:3e5a:881c with SMTP id
+ a640c23a62f3a-a6f3e5a8a44mr80813366b.5.1718115935241; 
+ Tue, 11 Jun 2024 07:25:35 -0700 (PDT)
 Received: from avogadro.local ([151.62.196.71])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a6f17a103ccsm334886966b.136.2024.06.11.07.25.30
+ a640c23a62f3a-a6f1ec85a74sm265976166b.56.2024.06.11.07.25.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 11 Jun 2024 07:25:30 -0700 (PDT)
+ Tue, 11 Jun 2024 07:25:33 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Pankaj Gupta <pankaj.gupta@amd.com>
-Subject: [PULL 04/25] i386/sev: Move SEV_COMMON null check before dereferencing
-Date: Tue, 11 Jun 2024 16:25:02 +0200
-Message-ID: <20240611142524.83762-5-pbonzini@redhat.com>
+Subject: [PULL 05/25] i386/sev: Return when sev_common is null
+Date: Tue, 11 Jun 2024 16:25:03 +0200
+Message-ID: <20240611142524.83762-6-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240611142524.83762-1-pbonzini@redhat.com>
 References: <20240611142524.83762-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -103,34 +103,28 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Pankaj Gupta <pankaj.gupta@amd.com>
 
-Fixes Coverity CID 1546886.
+Fixes Coverity CID 1546885.
 
-Fixes: 9861405a8f ("i386/sev: Invoke launch_updata_data() for SEV class")
+Fixes: 16dcf200dc ("i386/sev: Introduce "sev-common" type to encapsulate common SEV state")
 Signed-off-by: Pankaj Gupta <pankaj.gupta@amd.com>
-Message-ID: <20240607183611.1111100-3-pankaj.gupta@amd.com>
+Message-ID: <20240607183611.1111100-4-pankaj.gupta@amd.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/sev.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ target/i386/sev.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/target/i386/sev.c b/target/i386/sev.c
-index 7c9df621de1..f18432f58e2 100644
+index f18432f58e2..c40562dce31 100644
 --- a/target/i386/sev.c
 +++ b/target/i386/sev.c
-@@ -1529,11 +1529,12 @@ int
- sev_encrypt_flash(hwaddr gpa, uint8_t *ptr, uint64_t len, Error **errp)
- {
-     SevCommonState *sev_common = SEV_COMMON(MACHINE(qdev_get_machine())->cgs);
--    SevCommonStateClass *klass = SEV_COMMON_GET_CLASS(sev_common);
-+    SevCommonStateClass *klass;
- 
+@@ -587,6 +587,7 @@ static SevCapability *sev_get_capabilities(Error **errp)
+     sev_common = SEV_COMMON(MACHINE(qdev_get_machine())->cgs);
      if (!sev_common) {
-         return 0;
+         error_setg(errp, "SEV is not configured");
++        return NULL;
      }
-+    klass = SEV_COMMON_GET_CLASS(sev_common);
  
-     /* if SEV is in update state then encrypt the data else do nothing */
-     if (sev_check_state(sev_common, SEV_STATE_LAUNCH_UPDATE)) {
+     sev_device = object_property_get_str(OBJECT(sev_common), "sev-device",
 -- 
 2.45.1
 
