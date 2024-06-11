@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A941F9038CA
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jun 2024 12:24:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C14009038C9
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jun 2024 12:24:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sGyet-0006QS-Em; Tue, 11 Jun 2024 06:23:19 -0400
+	id 1sGyf0-0006TJ-2l; Tue, 11 Jun 2024 06:23:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sGyer-0006Q1-HA
- for qemu-devel@nongnu.org; Tue, 11 Jun 2024 06:23:17 -0400
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sGyey-0006Sj-51
+ for qemu-devel@nongnu.org; Tue, 11 Jun 2024 06:23:24 -0400
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sGyep-0000Xu-TQ
- for qemu-devel@nongnu.org; Tue, 11 Jun 2024 06:23:17 -0400
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-35f1c490c13so2913708f8f.3
- for <qemu-devel@nongnu.org>; Tue, 11 Jun 2024 03:23:15 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sGyew-0000Yw-5y
+ for qemu-devel@nongnu.org; Tue, 11 Jun 2024 06:23:23 -0400
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-35f1bc2ab37so2167752f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 11 Jun 2024 03:23:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1718101394; x=1718706194; darn=nongnu.org;
+ d=linaro.org; s=google; t=1718101400; x=1718706200; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=R+Nzh48rBgkECIQzn+94+NuX+YcHJey5MBlADXTE7iY=;
- b=KJG+p6Gaep7ZeyuhRNWXlqahgUstN7Qde79a8RV7DIzA6FNaiLIAZYb6CmX3kKBHGJ
- 2YL+azEkUXMQva5OMZkOFdLNnz1n/jMZs6kzUlipUL6QwrT5cIjdKf52auS6tSq/zn9i
- 7PkZZPMYF0zJwAnsO+gSdNYYNDrNo7aG6DIOWNzK1QqobX64Tm0xF/qcpw6IuDVW7gtq
- JWvIvzCzQCqa/41a2zwkT4aDpBpkfDFtVnIgDDTSuX7lOXusEkH26ow2Ju2CtZOmBALd
- zq3lqvy4LjFm/Wl9G+9IDOo1ftLygM8oIL/zs7+6YbLHsQjfEKUqmwIRR9UXBqyK+u6n
- 8Fiw==
+ bh=D5kxM32IuNmuEBUfifZgDrwNVCiJKoR9GZCW1cb30w8=;
+ b=HSzYvDD1CZItkK+k6C6NOM6SkI2S62X34nFkv6+KfbW+OXxbYea+MRLR8d85LkrVbP
+ 60RZWTbqdO4Ykqml/2vv50tywv56JCIoDE9lHpAvP3nIsY8W5w0if5VUogZDIGZZtBz/
+ S4bsRA2ViPggTsRxojoMsKbd78P83EcJfl9VvupEORi+ZxamWLg7t6fL68mgt19PhV+q
+ HgRE05/2k1NDNnErxLPqhNDbsfIFiRDHxB8US5AlKvBheqIaCh5V604BYsWgo6JQPkbm
+ FgNifivEb+AyjhxLtTy71Ozs/OzxGgpCzc9J+BEC5exf0WhP4kRvWa828Xpct/wNRC7c
+ OlBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718101394; x=1718706194;
+ d=1e100.net; s=20230601; t=1718101400; x=1718706200;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=R+Nzh48rBgkECIQzn+94+NuX+YcHJey5MBlADXTE7iY=;
- b=gKT6ffwLbuSEPAbOBHGEx2OLDAUHWLTBuz1WSJExMex1fqrIuyyBDZbglqGaUYpEgU
- BoB0/kPTTBpVc3w+MqaW1Bi+LqLEySa13zaI/AdO8ABH6Eods6EWwgdCFKvhPgxgaLMv
- +x5QMk1HKEWzgQNlJSw+oxON4pbRgzxYm76x6LYcSV4JiDwjyRDVu20eFVEXTAmteJx+
- JQsp6JULQCL+7Exo0KqPbTTbCBqbMyEoG1Bov3WvEQIYxtbae9FMSYRoIiMFqpEAlerJ
- KoxaEnbj+WhB4czhspWeCynI5gaJD0eA2/H4AFGgnZC69L4iqtzDblTS4Ay7AcG2mMpZ
- U6Fg==
+ bh=D5kxM32IuNmuEBUfifZgDrwNVCiJKoR9GZCW1cb30w8=;
+ b=CRFMoBvRgLc9q72DFv91+SO/B4bweLO6yglujKM3MrGpyWdzpU94TeOVvrCuhmb0qD
+ oQfloW/QyCKaSw3m99ZRFNouW1ZL0NXSMq9b4D1MUpD5ZVXk7tRey3SELHqeGDrb0CZg
+ FAUwB5BUKJeFvdneGutIqJDnLKesBtv25FXyoh8liQB1SOAZEJdjqZzgOGqFPy5lUgCC
+ JWyOxOY4uHTWaNoliTJ26jaYRdNsSIjvFxcQxrLQ4GJ2rEAuz75tVvivONuIckOe2oTk
+ Pr3nGpKvIgycUN5eAPcyy0F633JBAgkufgiUqUammEd89c/H/H/LK5i84FdjUUcWYyfo
+ Ej6g==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWlj5CP/qiia0bSI7SNDlrbQsAYsYkWcu0rVP12gZ86rE78ysRkSgmkXvjzrrC3eRPbBsorAYKRT3UtoOEEGnBpSFZkwpU=
-X-Gm-Message-State: AOJu0YwGvE3bIRa1FcUZ1e1LRHInyhfDg1r5Xc7K5tKINqiwUY/970Va
- lG5j315wxH3fOffAGIo2A7mBYm7NfwRhE7VGS5YolreQP4m/APpYy0eUO6GmZjY=
-X-Google-Smtp-Source: AGHT+IHNfP3UR6zjAE83/iqUWBf5IOF6zOgXT2KlPLC63mfj5HJvT36bApcL52OSte322BYej6+iPQ==
-X-Received: by 2002:a05:6000:b43:b0:35f:900:4e6 with SMTP id
- ffacd0b85a97d-35f090005famr9425893f8f.60.1718101394184; 
- Tue, 11 Jun 2024 03:23:14 -0700 (PDT)
+ AJvYcCWX7FlV6z9vR1ji3liHWAO6LEi0xr1+rGuUYKxY5rUwGTD/EAr82bsoC7fj8/vAXK5C24q9Gk8xetpzF6FJaH3kSXpPEbI=
+X-Gm-Message-State: AOJu0Yw9QnAmbRyOWfgH/K40ECISzNbXP71Nj8DAGclo/MsuXXt3NG0L
+ s9ubkZgEtpkpJNbQuoQDFdWCspJSnhFkBFCx1GA9fwh3b9ZUXSnJetQ4PI0sDko=
+X-Google-Smtp-Source: AGHT+IHa2AqmF/k3/t0zkFSupVbR5B8Yj5Z1o/Z4zBjj8b2ly6GB6OoCw+B5TS7y0gOA28qd3RuDfA==
+X-Received: by 2002:a05:6000:a84:b0:35f:1f3c:b62a with SMTP id
+ ffacd0b85a97d-35f1f3cb667mr4366867f8f.58.1718101400331; 
+ Tue, 11 Jun 2024 03:23:20 -0700 (PDT)
 Received: from m1x-phil.lan (rsa59-h02-176-184-32-6.dsl.sta.abo.bbox.fr.
  [176.184.32.6]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-35f24d67093sm4999971f8f.96.2024.06.11.03.23.12
+ ffacd0b85a97d-35f27600519sm3907640f8f.32.2024.06.11.03.23.18
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 11 Jun 2024 03:23:13 -0700 (PDT)
+ Tue, 11 Jun 2024 03:23:19 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  qemu-devel@nongnu.org
@@ -63,17 +63,17 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
  "Dr. David Alan Gilbert" <dave@treblig.org>,
  Markus Armbruster <armbru@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 1/3] hw/usb: Remove unused 'host.h' header
-Date: Tue, 11 Jun 2024 12:23:03 +0200
-Message-ID: <20240611102305.60735-2-philmd@linaro.org>
+Subject: [PATCH v2 2/3] hw/usb: Introduce x-query-usbhost QMP command
+Date: Tue, 11 Jun 2024 12:23:04 +0200
+Message-ID: <20240611102305.60735-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240611102305.60735-1-philmd@linaro.org>
 References: <20240611102305.60735-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,68 +96,310 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since commit 99761176ee ("usb: Remove legacy -usbdevice options
-(host, serial, disk and net)") hw/usb/host.h is not used, remove
-it.
+This is a counterpart to the HMP "info usbhost" command. It is being
+added with an "x-" prefix because this QMP command is intended as an
+adhoc debugging tool and will thus not be modelled in QAPI as fully
+structured data, nor will it have long term guaranteed stability.
+The existing HMP command is rewritten to call the QMP command.
 
+Since host-libusb.c can be built as part of the 'hw-usb' module,
+we introduce the libusb_register_hmp_info_hrt() helper to allow late
+registration when the module is loaded.
+
+Suggested-by: Daniel P. Berrangé <berrange@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
-Cc: Thomas Huth <thuth@redhat.com>
----
- hw/usb/host.h | 44 --------------------------------------------
- 1 file changed, 44 deletions(-)
- delete mode 100644 hw/usb/host.h
+ qapi/machine.json           | 18 ++++++++++++++++
+ hw/usb/host-libusb.h        | 16 ++++++++++++++
+ include/hw/usb.h            |  3 ---
+ hw/usb/bus-stub.c           |  7 +++++-
+ hw/usb/host-libusb-common.c | 31 ++++++++++++++++++++++++++
+ hw/usb/host-libusb.c        | 43 +++++++++++++++++++++++++------------
+ tests/qtest/qmp-cmd-test.c  |  3 +++
+ hmp-commands-info.hx        |  2 ++
+ hw/usb/meson.build          |  1 +
+ 9 files changed, 106 insertions(+), 18 deletions(-)
+ create mode 100644 hw/usb/host-libusb.h
+ create mode 100644 hw/usb/host-libusb-common.c
 
-diff --git a/hw/usb/host.h b/hw/usb/host.h
-deleted file mode 100644
-index 048ff3b482..0000000000
---- a/hw/usb/host.h
-+++ /dev/null
-@@ -1,44 +0,0 @@
--/*
+diff --git a/qapi/machine.json b/qapi/machine.json
+index 1283d14493..1b428f29d4 100644
+--- a/qapi/machine.json
++++ b/qapi/machine.json
+@@ -1813,6 +1813,24 @@
+   'returns': 'HumanReadableText',
+   'features': [ 'unstable' ] }
+ 
++##
++# @x-query-usbhost:
++#
++# Query information on host USB devices
++#
++# Features:
++#
++# @unstable: This command is meant for debugging.
++#
++# Returns: Host USB device information
++#
++# Since: 9.1
++##
++{ 'command': 'x-query-usbhost',
++  'returns': 'HumanReadableText',
++  'features': [ 'unstable' ],
++  'if': 'CONFIG_USB_LIBUSB' }
++
+ ##
+ # @SmbiosEntryPointType:
+ #
+diff --git a/hw/usb/host-libusb.h b/hw/usb/host-libusb.h
+new file mode 100644
+index 0000000000..eaada081a5
+--- /dev/null
++++ b/hw/usb/host-libusb.h
+@@ -0,0 +1,16 @@
++/*
++ * QEMU USB host redirector
++ *
++ * SPDX-FileContributor: Philippe Mathieu-Daudé <philmd@linaro.org>
++ * SPDX-FileCopyrightText: 2024 Linaro Ltd.
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#ifndef HW_USB_HOST_LIBUSB_H
++#define HW_USB_HOST_LIBUSB_H
++
++#include "qapi/qapi-types-common.h"
++
++void libusb_register_hmp_info_hrt(HumanReadableText *(*handler)(Error **errp));
++
++#endif
+diff --git a/include/hw/usb.h b/include/hw/usb.h
+index d46d96779a..c0b34af518 100644
+--- a/include/hw/usb.h
++++ b/include/hw/usb.h
+@@ -465,9 +465,6 @@ void usb_device_reset(USBDevice *dev);
+ void usb_wakeup(USBEndpoint *ep, unsigned int stream);
+ void usb_generic_async_ctrl_complete(USBDevice *s, USBPacket *p);
+ 
+-/* usb-linux.c */
+-void hmp_info_usbhost(Monitor *mon, const QDict *qdict);
+-
+ /* usb ports of the VM */
+ 
+ #define VM_USB_HUB_SIZE 8
+diff --git a/hw/usb/bus-stub.c b/hw/usb/bus-stub.c
+index fcabe8429e..948429bb33 100644
+--- a/hw/usb/bus-stub.c
++++ b/hw/usb/bus-stub.c
+@@ -11,7 +11,6 @@
+ #include "qapi/error.h"
+ #include "qapi/qapi-commands-machine.h"
+ #include "sysemu/sysemu.h"
+-#include "monitor/monitor.h"
+ #include "hw/usb.h"
+ 
+ USBDevice *usbdevice_create(const char *driver)
+@@ -26,3 +25,9 @@ HumanReadableText *qmp_x_query_usb(Error **errp)
+     error_setg(errp, "Support for USB devices not built-in");
+     return NULL;
+ }
++
++HumanReadableText *qmp_x_query_usbhost(Error **errp)
++{
++    error_setg(errp, "Support for USB devices not built-in");
++    return NULL;
++}
+diff --git a/hw/usb/host-libusb-common.c b/hw/usb/host-libusb-common.c
+new file mode 100644
+index 0000000000..406a2b25be
+--- /dev/null
++++ b/hw/usb/host-libusb-common.c
+@@ -0,0 +1,31 @@
++/*
++ * QEMU USB host redirector helpers
++ *
++ * SPDX-FileContributor: Philippe Mathieu-Daudé <philmd@linaro.org>
++ * SPDX-FileCopyrightText: 2024 Linaro Ltd.
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#include "qemu/osdep.h"
++#include "qemu/module.h"
++#include "qapi/error.h"
++#include "qapi/qapi-commands-machine.h"
++#include "monitor/monitor.h"
++#include "host-libusb.h"
++
++static HumanReadableText *(*qmp_x_query_usbhost_handler)(Error **errp);
++
++void libusb_register_hmp_info_hrt(HumanReadableText *(*handler)(Error **errp))
++{
++    qmp_x_query_usbhost_handler = handler;
++    monitor_register_hmp_info_hrt("usbhost", handler);
++}
++
++HumanReadableText *qmp_x_query_usbhost(Error **errp)
++{
++    if (module_load("hw-usb-", "host", errp) <= 0) {
++        return NULL;
++    }
++    assert(qmp_x_query_usbhost_handler);
++    return qmp_x_query_usbhost_handler(errp);
++}
+diff --git a/hw/usb/host-libusb.c b/hw/usb/host-libusb.c
+index 80122b4125..b3e1443794 100644
+--- a/hw/usb/host-libusb.c
++++ b/hw/usb/host-libusb.c
+@@ -1,5 +1,5 @@
+ /*
 - * Linux host USB redirector
-- *
-- * Copyright (c) 2005 Fabrice Bellard
-- *
-- * Copyright (c) 2008 Max Krasnyansky
-- *      Support for host device auto connect & disconnect
-- *      Major rewrite to support fully async operation
-- *
-- * Copyright 2008 TJ <linux@tjworld.net>
-- *      Added flexible support for /dev/bus/usb /sys/bus/usb/devices in addition
-- *      to the legacy /proc/bus/usb USB device discovery and handling
-- *
-- * Permission is hereby granted, free of charge, to any person obtaining a copy
-- * of this software and associated documentation files (the "Software"), to deal
-- * in the Software without restriction, including without limitation the rights
-- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-- * copies of the Software, and to permit persons to whom the Software is
-- * furnished to do so, subject to the following conditions:
-- *
-- * The above copyright notice and this permission notice shall be included in
-- * all copies or substantial portions of the Software.
-- *
-- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-- * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-- * THE SOFTWARE.
-- */
--
--#ifndef QEMU_USB_HOST_H
--#define QEMU_USB_HOST_H
--
--struct USBAutoFilter {
--    uint32_t bus_num;
--    uint32_t addr;
--    char     *port;
--    uint32_t vendor_id;
--    uint32_t product_id;
--};
--
--#endif /* QEMU_USB_HOST_H */
++ * QEMU USB host redirector
+  *
+  * Copyright (c) 2005 Fabrice Bellard
+  *
+@@ -46,6 +46,8 @@
+ #endif
+ 
+ #include "qapi/error.h"
++#include "qapi/qapi-commands-machine.h"
++#include "qapi/type-helpers.h"
+ #include "migration/vmstate.h"
+ #include "monitor/monitor.h"
+ #include "qemu/error-report.h"
+@@ -57,6 +59,7 @@
+ 
+ #include "hw/qdev-properties.h"
+ #include "hw/usb.h"
++#include "host-libusb.h"
+ 
+ /* ------------------------------------------------------------------------ */
+ 
+@@ -1813,10 +1816,12 @@ static const TypeInfo usb_host_dev_info = {
+ module_obj(TYPE_USB_HOST_DEVICE);
+ module_kconfig(USB);
+ 
++static HumanReadableText *qmp_mod_query_usbhost(Error **errp);
++
+ static void usb_host_register_types(void)
+ {
+     type_register_static(&usb_host_dev_info);
+-    monitor_register_hmp("usbhost", true, hmp_info_usbhost);
++    libusb_register_hmp_info_hrt(qmp_mod_query_usbhost);
+ }
+ 
+ type_init(usb_host_register_types)
+@@ -1921,18 +1926,25 @@ static void usb_host_auto_check(void *unused)
+     timer_mod(usb_auto_timer, qemu_clock_get_ms(QEMU_CLOCK_REALTIME) + 2000);
+ }
+ 
+-void hmp_info_usbhost(Monitor *mon, const QDict *qdict)
++static HumanReadableText *qmp_mod_query_usbhost(Error **errp)
+ {
++    g_autoptr(GString) buf = g_string_new("");
+     libusb_device **devs = NULL;
+     struct libusb_device_descriptor ddesc;
+     char port[16];
+     int i, n;
+ 
+     if (usb_host_init() != 0) {
+-        return;
++        error_setg(errp, "Failed to init libusb");
++        return NULL;
+     }
+ 
+     n = libusb_get_device_list(ctx, &devs);
++    if (!n) {
++        error_setg(errp, "No host USB device");
++        return NULL;
++    }
++
+     for (i = 0; i < n; i++) {
+         if (libusb_get_device_descriptor(devs[i], &ddesc) != 0) {
+             continue;
+@@ -1941,14 +1953,15 @@ void hmp_info_usbhost(Monitor *mon, const QDict *qdict)
+             continue;
+         }
+         usb_host_get_port(devs[i], port, sizeof(port));
+-        monitor_printf(mon, "  Bus %d, Addr %d, Port %s, Speed %s Mb/s\n",
+-                       libusb_get_bus_number(devs[i]),
+-                       libusb_get_device_address(devs[i]),
+-                       port,
+-                       speed_name[libusb_get_device_speed(devs[i])]);
+-        monitor_printf(mon, "    Class %02x:", ddesc.bDeviceClass);
+-        monitor_printf(mon, " USB device %04x:%04x",
+-                       ddesc.idVendor, ddesc.idProduct);
++        g_string_append_printf(buf,
++                               "  Bus %d, Addr %d, Port %s, Speed %s Mb/s\n",
++                               libusb_get_bus_number(devs[i]),
++                               libusb_get_device_address(devs[i]),
++                               port,
++                               speed_name[libusb_get_device_speed(devs[i])]);
++        g_string_append_printf(buf, "    Class %02x:", ddesc.bDeviceClass);
++        g_string_append_printf(buf, " USB device %04x:%04x",
++                               ddesc.idVendor, ddesc.idProduct);
+         if (ddesc.iProduct) {
+             libusb_device_handle *handle;
+             if (libusb_open(devs[i], &handle) == 0) {
+@@ -1957,10 +1970,12 @@ void hmp_info_usbhost(Monitor *mon, const QDict *qdict)
+                                                    ddesc.iProduct,
+                                                    name, sizeof(name));
+                 libusb_close(handle);
+-                monitor_printf(mon, ", %s", name);
++                g_string_append_printf(buf, ", %s", name);
+             }
+         }
+-        monitor_printf(mon, "\n");
++        g_string_append_c(buf, '\n');
+     }
+     libusb_free_device_list(devs, 1);
++
++    return human_readable_text_from_str(buf);
+ }
+diff --git a/tests/qtest/qmp-cmd-test.c b/tests/qtest/qmp-cmd-test.c
+index 2c15f60958..731d3c6c59 100644
+--- a/tests/qtest/qmp-cmd-test.c
++++ b/tests/qtest/qmp-cmd-test.c
+@@ -49,6 +49,9 @@ static int query_error_class(const char *cmd)
+         { "query-vm-generation-id", ERROR_CLASS_GENERIC_ERROR },
+         /* Only valid with a USB bus added */
+         { "x-query-usb", ERROR_CLASS_GENERIC_ERROR },
++#ifdef CONFIG_USB_LIBUSB
++        { "x-query-usbhost", ERROR_CLASS_GENERIC_ERROR },
++#endif
+         /* Only valid with accel=tcg */
+         { "x-query-jit", ERROR_CLASS_GENERIC_ERROR },
+         { "x-query-opcount", ERROR_CLASS_GENERIC_ERROR },
+diff --git a/hmp-commands-info.hx b/hmp-commands-info.hx
+index cfd4ad5651..134f970584 100644
+--- a/hmp-commands-info.hx
++++ b/hmp-commands-info.hx
+@@ -335,12 +335,14 @@ SRST
+     Show guest USB devices.
+ ERST
+ 
++#ifdef CONFIG_USB_LIBUSB
+     {
+         .name       = "usbhost",
+         .args_type  = "",
+         .params     = "",
+         .help       = "show host USB devices",
+     },
++#endif
+ 
+ SRST
+   ``info usbhost``
+diff --git a/hw/usb/meson.build b/hw/usb/meson.build
+index d7de1003e3..af92b504fd 100644
+--- a/hw/usb/meson.build
++++ b/hw/usb/meson.build
+@@ -7,6 +7,7 @@ system_ss.add(when: 'CONFIG_USB', if_true: files(
+   'core.c',
+   'desc.c',
+   'desc-msos.c',
++  'host-libusb-common.c',
+   'libhw.c',
+   'pcap.c',
+ ), if_false: files('bus-stub.c'))
 -- 
 2.41.0
 
