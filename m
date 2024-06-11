@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD007903EB7
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jun 2024 16:27:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8256E903EB0
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jun 2024 16:26:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sH2S3-0007hH-S5; Tue, 11 Jun 2024 10:26:19 -0400
+	id 1sH2Ry-0007ff-D0; Tue, 11 Jun 2024 10:26:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sH2S0-0007gW-Oh
- for qemu-devel@nongnu.org; Tue, 11 Jun 2024 10:26:16 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1sH2Rv-0007et-Um
+ for qemu-devel@nongnu.org; Tue, 11 Jun 2024 10:26:11 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sH2Rp-00069D-DD
- for qemu-devel@nongnu.org; Tue, 11 Jun 2024 10:26:16 -0400
+ id 1sH2Rr-00069X-Al
+ for qemu-devel@nongnu.org; Tue, 11 Jun 2024 10:26:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1718115963;
+ s=mimecast20190719; t=1718115965;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Zcn+DdHrcRw78M6P0mtW8fRKfJRYnrPP3Kt3DJstS+4=;
- b=M2hMc0MJMtI8jxbmFHmoYuYP21AiYD7WQw7fq5G0QEQ3yo4XG0/8UrDbRIiT/l8rDvXtYS
- CSOWcvkl/Wv8dokF47gqQlneMvvdVPRqqcvlXskNo9p3XqlyIogy43BgqgIcGseX6tuN+z
- NFrzrGPt5eOLH/HuAq8CTaKaXI2J8gU=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=rQnhyJHOYc6PbobfpSJAuqarcSa0epwhWillMHhZ5N0=;
+ b=AqaHaMQOZeYPoMAsPYhaLIBMblDUi+SSACqzItfN+RXGfonk9j7DrWwAKacRhTxygjLoND
+ KTjseAHCnX/jfIN6e8g9pfpgRtsw/Uj1NiBOdztHZmupneFGHO2+wLE16Rb0nE1ArDWfGk
+ 0Q+91pXmAu6UARp1vf5cYeQPMgkZEB0=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-421-y2X5sL8tMuuPDDu_3-t1kA-1; Tue, 11 Jun 2024 10:26:01 -0400
-X-MC-Unique: y2X5sL8tMuuPDDu_3-t1kA-1
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-a6ef729b465so201600366b.1
- for <qemu-devel@nongnu.org>; Tue, 11 Jun 2024 07:26:01 -0700 (PDT)
+ us-mta-422-tbZP321RM4Ghl7a3W669Zw-1; Tue, 11 Jun 2024 10:26:03 -0400
+X-MC-Unique: tbZP321RM4Ghl7a3W669Zw-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-a6f2d98f41fso58627966b.2
+ for <qemu-devel@nongnu.org>; Tue, 11 Jun 2024 07:26:03 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718115960; x=1718720760;
+ d=1e100.net; s=20230601; t=1718115962; x=1718720762;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Zcn+DdHrcRw78M6P0mtW8fRKfJRYnrPP3Kt3DJstS+4=;
- b=pBQccrZLHpNaxD+i/QvwjWywAZXixzVl7X3KYsF5R+HsmbuKXvY01MHlJvrC/qcAPD
- djyYzFm/Zg5SIht+r9jMcfMTKjFy0b5Ta20zYscd3niNqLux6ed8yMxGhaxV2PRRjDvN
- iuCKkzfczTmN9bkbBL3jK4MqQOFnWrvH45oDzvZQ0VZDOoNvFsCRb/xCAWBwBfocANc5
- aiztlOqrtL02z6915LYMttcXUmY5icyJQQVB9BWB2L1fbyP84ZtxeBWHpdXO5U6qFJp+
- AA4WjcKwQAgUsBSLqLHjAcDSoI2mGnQlByh/lpmgAC/LwpmcB0xrbzTuixbwchGhyhrf
- imlw==
-X-Gm-Message-State: AOJu0YzKGrq7bwcclNGcCO2ztcCSasGNVdHtr7qTq87Ea4h77AW7AKzw
- JUWA6qy6JQz3ODF0a6RrbyYrVQmJLA65OHQlLmMbaCyLa6p6VXxg9rtIyo/16uKRtkf8jB1Z7NY
- jJM2hZrk6Usfud4BUPhE4ouNXeyHQN1LRlx6xHRbt+sNYXBpgWuMq0WcwQqzxot5g3evgnFUL8p
- HDocWQkl1x2E0wmv9a2CbY9/qWVcU7CMMQJLj8
-X-Received: by 2002:a17:906:4356:b0:a6f:23e5:c112 with SMTP id
- a640c23a62f3a-a6f23e5c1b9mr310325966b.43.1718115959743; 
- Tue, 11 Jun 2024 07:25:59 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFivEskUKBZT7vXIguKxmkiyw8kuDGE1FgJl1P05InnahmupoE+4+g3m+amykAQeOknod60iw==
-X-Received: by 2002:a17:906:4356:b0:a6f:23e5:c112 with SMTP id
- a640c23a62f3a-a6f23e5c1b9mr310324666b.43.1718115959356; 
- Tue, 11 Jun 2024 07:25:59 -0700 (PDT)
+ bh=rQnhyJHOYc6PbobfpSJAuqarcSa0epwhWillMHhZ5N0=;
+ b=DcG+e7G/pF2o10vlbCA52wNImnescIrwyjtPRDZA0xN/zAZYz0WCkSPjLmpl9ZeUuN
+ tU0mhim8LO2zW6hulEdQ+PqlfrFr+W9e48qhxKDOG94EB3DqFjJAG5AS9/y4TLGkDlKX
+ FNBV9vmb+Y20124TD9v+zilA12IvbDy9IcosLjP5FhXPozYTpBF7/imIn5GXVGSQQl87
+ sLfW+0X+1FW9gmqvlATDzQ3MoBTrjwCI0ykk0StRwna4lDN2rKtl4MuHVYQLEk+iUhyx
+ PDO3efMITSqH+iVyLxStb23MJUIm+I7KpmFMtW7S/wJ2dJtcj4cOCaI9gjx8oYs9cwlP
+ a4Ug==
+X-Gm-Message-State: AOJu0YyEHMmKO6rfSxq5oEjWRL7oHlLHA8MgW2Jj6Et0tNSjbWjkQPaz
+ c0QmF8f5xHOFBPn9Vp1ttwrZAF6Ecwm1qvLa9+Yv11FTyJhwV/u3hmK4ixj7X9aZhEF1aHcGZoK
+ GIHDYVX51x9hwatEI6O/SqUlO0/60MZx6JwPzIBA4/3da3C4U1eFENO21Gq+5HU0ZfnIx+g92Al
+ E4uJnwWDO/6bOPP9OHeF0Xc9U5Eb/bbO4UzNHN
+X-Received: by 2002:a17:906:378b:b0:a6e:fe2b:7d2c with SMTP id
+ a640c23a62f3a-a6efe2b7fa4mr588943266b.23.1718115962299; 
+ Tue, 11 Jun 2024 07:26:02 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEjjWbrqJ6yT/Z5oAje+0rNZUZhSN10UkYorx/rKv3V4TdlK5dgvbcTZNzqmEFGF8ds8FONqw==
+X-Received: by 2002:a17:906:378b:b0:a6e:fe2b:7d2c with SMTP id
+ a640c23a62f3a-a6efe2b7fa4mr588941766b.23.1718115961979; 
+ Tue, 11 Jun 2024 07:26:01 -0700 (PDT)
 Received: from avogadro.local ([151.62.196.71])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a6ef6a512f0sm530445366b.198.2024.06.11.07.25.58
+ a640c23a62f3a-a6f1c69b15csm294942566b.168.2024.06.11.07.25.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 11 Jun 2024 07:25:59 -0700 (PDT)
+ Tue, 11 Jun 2024 07:26:00 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 16/25] target/i386: replace read_crN helper with read_cr8
-Date: Tue, 11 Jun 2024 16:25:14 +0200
-Message-ID: <20240611142524.83762-17-pbonzini@redhat.com>
+Subject: [PULL 17/25] target/i386: split X86_CHECK_prot into PE and VM86 checks
+Date: Tue, 11 Jun 2024 16:25:15 +0200
+Message-ID: <20240611142524.83762-18-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240611142524.83762-1-pbonzini@redhat.com>
 References: <20240611142524.83762-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -101,74 +101,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-All other control registers are stored plainly in CPUX86State.
+SYSENTER is allowed in VM86 mode, but not in real mode.  Split the check
+so that PE and !VM86 are covered by separate bits.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/helper.h                 |  2 +-
- target/i386/tcg/sysemu/misc_helper.c | 20 +++++---------------
- target/i386/tcg/emit.c.inc           |  2 +-
- 3 files changed, 7 insertions(+), 17 deletions(-)
+ target/i386/tcg/decode-new.h     | 8 ++++++--
+ target/i386/tcg/decode-new.c.inc | 9 +++++++--
+ 2 files changed, 13 insertions(+), 4 deletions(-)
 
-diff --git a/target/i386/helper.h b/target/i386/helper.h
-index 2f46cffabd8..eeb8df56eaa 100644
---- a/target/i386/helper.h
-+++ b/target/i386/helper.h
-@@ -95,7 +95,7 @@ DEF_HELPER_FLAGS_2(monitor, TCG_CALL_NO_WG, void, env, tl)
- DEF_HELPER_FLAGS_2(mwait, TCG_CALL_NO_WG, noreturn, env, int)
- DEF_HELPER_1(rdmsr, void, env)
- DEF_HELPER_1(wrmsr, void, env)
--DEF_HELPER_FLAGS_2(read_crN, TCG_CALL_NO_RWG, tl, env, int)
-+DEF_HELPER_FLAGS_1(read_cr8, TCG_CALL_NO_RWG, tl, env)
- DEF_HELPER_FLAGS_3(write_crN, TCG_CALL_NO_RWG, void, env, int, tl)
- #endif /* !CONFIG_USER_ONLY */
+diff --git a/target/i386/tcg/decode-new.h b/target/i386/tcg/decode-new.h
+index 5577f7509aa..b46a9a0ccb3 100644
+--- a/target/i386/tcg/decode-new.h
++++ b/target/i386/tcg/decode-new.h
+@@ -149,8 +149,8 @@ typedef enum X86InsnCheck {
+     X86_CHECK_i64 = 1,
+     X86_CHECK_o64 = 2,
  
-diff --git a/target/i386/tcg/sysemu/misc_helper.c b/target/i386/tcg/sysemu/misc_helper.c
-index 7fa0c5a06de..094aa56a20d 100644
---- a/target/i386/tcg/sysemu/misc_helper.c
-+++ b/target/i386/tcg/sysemu/misc_helper.c
-@@ -63,23 +63,13 @@ target_ulong helper_inl(CPUX86State *env, uint32_t port)
-                              cpu_get_mem_attrs(env), NULL);
- }
+-    /* Fault outside protected mode */
+-    X86_CHECK_prot = 4,
++    /* Fault in vm86 mode */
++    X86_CHECK_no_vm86 = 4,
  
--target_ulong helper_read_crN(CPUX86State *env, int reg)
-+target_ulong helper_read_cr8(CPUX86State *env)
- {
--    target_ulong val;
--
--    switch (reg) {
--    default:
--        val = env->cr[reg];
--        break;
--    case 8:
--        if (!(env->hflags2 & HF2_VINTR_MASK)) {
--            val = cpu_get_apic_tpr(env_archcpu(env)->apic_state);
--        } else {
--            val = env->int_ctl & V_TPR_MASK;
--        }
--        break;
-+    if (!(env->hflags2 & HF2_VINTR_MASK)) {
-+        return cpu_get_apic_tpr(env_archcpu(env)->apic_state);
-+    } else {
-+        return env->int_ctl & V_TPR_MASK;
-     }
--    return val;
- }
+     /* Privileged instruction checks */
+     X86_CHECK_cpl0 = 8,
+@@ -166,6 +166,10 @@ typedef enum X86InsnCheck {
  
- void helper_write_crN(CPUX86State *env, int reg, target_ulong t0)
-diff --git a/target/i386/tcg/emit.c.inc b/target/i386/tcg/emit.c.inc
-index 5ca3764e006..709ef7b0cb2 100644
---- a/target/i386/tcg/emit.c.inc
-+++ b/target/i386/tcg/emit.c.inc
-@@ -245,7 +245,7 @@ static void gen_load(DisasContext *s, X86DecodedInsn *decode, int opn, TCGv v)
- #ifndef CONFIG_USER_ONLY
-     case X86_OP_CR:
-         if (op->n == 8) {
--            gen_helper_read_crN(v, tcg_env, tcg_constant_i32(op->n));
-+            gen_helper_read_cr8(v, tcg_env);
-         } else {
-             tcg_gen_ld_tl(v, tcg_env, offsetof(CPUX86State, cr[op->n]));
+     /* Fault if VEX.W=0 */
+     X86_CHECK_W1 = 256,
++
++    /* Fault outside protected mode, possibly including vm86 mode */
++    X86_CHECK_prot_or_vm86 = 512,
++    X86_CHECK_prot = X86_CHECK_prot_or_vm86 | X86_CHECK_no_vm86,
+ } X86InsnCheck;
+ 
+ typedef enum X86InsnSpecial {
+diff --git a/target/i386/tcg/decode-new.c.inc b/target/i386/tcg/decode-new.c.inc
+index 1c6fa39c3eb..f02f7c62647 100644
+--- a/target/i386/tcg/decode-new.c.inc
++++ b/target/i386/tcg/decode-new.c.inc
+@@ -2558,8 +2558,13 @@ static void disas_insn(DisasContext *s, CPUState *cpu)
+                 goto illegal_op;
+             }
+         }
+-        if (decode.e.check & X86_CHECK_prot) {
+-            if (!PE(s) || VM86(s)) {
++        if (decode.e.check & X86_CHECK_prot_or_vm86) {
++            if (!PE(s)) {
++                goto illegal_op;
++            }
++        }
++        if (decode.e.check & X86_CHECK_no_vm86) {
++            if (VM86(s)) {
+                 goto illegal_op;
+             }
          }
 -- 
 2.45.1
