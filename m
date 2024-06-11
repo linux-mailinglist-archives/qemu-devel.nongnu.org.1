@@ -2,69 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B14C90325B
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jun 2024 08:20:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F471903325
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jun 2024 09:00:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sGuqt-0000HF-Ts; Tue, 11 Jun 2024 02:19:28 -0400
+	id 1sGvSk-0002a4-S0; Tue, 11 Jun 2024 02:58:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sGuqg-0000GO-H9; Tue, 11 Jun 2024 02:19:14 -0400
-Received: from mgamail.intel.com ([192.198.163.15])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sGuqd-0003mx-DJ; Tue, 11 Jun 2024 02:19:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1718086751; x=1749622751;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=XHJof9KHIGlQUK8G+y0OIiHckY7ViqyWin/79YCmlT8=;
- b=Xvi/pCMnkoa23fUW1daJEazmAnr2UdqVs2KpZv2GT1ctAZF+/uTIHP9l
- tY7f0YHb+cEG0rPBLaRzByiOY1Z2wJLQzxSoHJauR7jHES6DetJX+7Wcr
- jIhv/Te2j0EF9X2A8b3T4yGULTPcLteQGAMXG9K5DP392Ox5I8A+lffqp
- o+a+yC+esqkgtRTGtLe9OfM4j6hp38JmvtIYOBN34XsIXarg2IB/45jzV
- Vi4tOIBO81QDAmP27gBTqHrMFjxAaqeT6Yrt4a4xaZ/O7ijTV1BW9qysO
- RCgjLpxhRg1yVxarYJmZfhGwiGybSaDeWn7LivZ0kv7E4uYINf+DgK3wa w==;
-X-CSE-ConnectionGUID: IzeEOoJATmSW+rk68i9JeQ==
-X-CSE-MsgGUID: 44LNSObLR5We/bJX84QKvA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11099"; a="14946705"
-X-IronPort-AV: E=Sophos;i="6.08,229,1712646000"; d="scan'208";a="14946705"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Jun 2024 23:19:06 -0700
-X-CSE-ConnectionGUID: 5ve7Y1uDQwW7TiqL7a9GxA==
-X-CSE-MsgGUID: RFUv8XI6TDG1xJ7tkB4Zhw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,229,1712646000"; d="scan'208";a="39421515"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by fmviesa009.fm.intel.com with ESMTP; 10 Jun 2024 23:19:04 -0700
-Date: Tue, 11 Jun 2024 14:34:32 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Chuang Xu <xuchuangxclwt@bytedance.com>
-Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, xieyongji@bytedance.com,
- imammedo@redhat.com, qemu-stable@nongnu.org,
- Guixiong Wei <weiguixiong@bytedance.com>,
- Yipeng Yin <yinyipeng@bytedance.com>
-Subject: Re: [PATCH v3] i386/cpu: fixup number of addressable IDs for
- processor cores in the physical package
-Message-ID: <Zmfv+Ce+3sAiNJLL@intel.com>
-References: <20240611032314.64076-1-xuchuangxclwt@bytedance.com>
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1sGvSj-0002ZU-7v
+ for qemu-devel@nongnu.org; Tue, 11 Jun 2024 02:58:33 -0400
+Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1sGvSh-0002mc-Ey
+ for qemu-devel@nongnu.org; Tue, 11 Jun 2024 02:58:32 -0400
+Received: by mail-ed1-x52d.google.com with SMTP id
+ 4fb4d7f45d1cf-579fa270e53so881611a12.3
+ for <qemu-devel@nongnu.org>; Mon, 10 Jun 2024 23:58:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1718089109; x=1718693909; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=IoCxk8AHZFyOyb4xLAvrTvADVC+mMY0zdmcNIFMmLH0=;
+ b=pi1aVHNCsNllP7wGR95QW6C0BGXj8jZSvIv5ZooyZOR+qdPzk8Z/UqeDPoJYT0BS5k
+ BA2gLCQUc78eOSIBwBt+U1JQP1MR3VJlK4lxWeoGn2Zkhbm0puZjNeb5wv9HWu0rZ0Th
+ g9ZXJZhJQgopL1vhc/tHwizlAqhxbowa0Kq621+TB0BQMHxsu7kQKHuVnLaudNmN6wkN
+ PgSbqDe/OR71Sz3au9v0aNJqTJAcctnIlPf7uQITptx1tY64/ZlWxKte60xb6a/mpMge
+ QbpU6MLFDsijc2fLa3CZh7Nbd5sjd+4J0UX9X2QS91CB+EiNMawZMzliwHfHXz8/O14g
+ wYwg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1718089109; x=1718693909;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=IoCxk8AHZFyOyb4xLAvrTvADVC+mMY0zdmcNIFMmLH0=;
+ b=TkBKAGv2M729KkxXhTprLT/eWwJvQK64nlHPtlgr/qt3uV2LteD3Ys3+3vZt3Je+mH
+ Kuv68ZvqAzLrsxoEZNy17pOhuDnNyyydvF+Mt8BYmyWEhnnKL/EyiWPatE3ajhelS22M
+ Q/rw3hmCOcTGzOmdT+OJWpLRS+4u410w5jnoYzanWdMCemu6XXBEBeOfNDoNn4bJ+9KF
+ q/1hkTZ1UsyYmGE0tpZQqXDcMKa1igW215tb/E/BPcy6UMmEZBJafzghs3F4gHcBbC5Q
+ q8X7jw8hvZf6k6J7zTLi+Qe3DlFZ3+21/4hQBpFXFBA+ZMq2G8AeYVxkHKHPkw65fYBG
+ 6VWg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXPK5hAFsSl//CCvmdZHGtwPno2ZaFn1o9qSnnDW91niMt/WIUfm+TBpFDBizdMVrkHVRGhtRW2UbeE+9epbd0pmR9KI/o=
+X-Gm-Message-State: AOJu0YyT7Yuwj41BZpfoCVw8sgccdPrQh6omWQJk52TD2NdUf33+Xy+3
+ QFanKnQG2qbPeAenK2uuL/bLU49Fibgym1UqIJraEXhujzn9Ki8IASl8+uHhTK0a2EUeOGoN+V2
+ KdjIMpxTIUHJgVFknni+WV97SjYDH0HMBu8WYtQ==
+X-Google-Smtp-Source: AGHT+IESjMI+oIlI8k9sm1ZUTc0CjnxNqXl/Q9v2Q3kpKBEO4EzmtEsI57LNPbs+FnhLdKdJN2PTaNuLAVafCVJlxWg=
+X-Received: by 2002:a50:bb03:0:b0:57a:72fc:c515 with SMTP id
+ 4fb4d7f45d1cf-57c50972f4emr9623199a12.29.1718089108932; Mon, 10 Jun 2024
+ 23:58:28 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240611032314.64076-1-xuchuangxclwt@bytedance.com>
-Received-SPF: pass client-ip=192.198.163.15; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -45
-X-Spam_score: -4.6
-X-Spam_bar: ----
-X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.143,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+References: <20240610150758.2827-1-philmd@linaro.org>
+ <87h6e0uizr.fsf@pond.sub.org>
+ <e0d03597-a9d1-4386-83b4-519aae23f679@ilande.co.uk>
+In-Reply-To: <e0d03597-a9d1-4386-83b4-519aae23f679@ilande.co.uk>
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Date: Tue, 11 Jun 2024 09:58:12 +0300
+Message-ID: <CAAjaMXad7b7SvAkAmvt+4RuLqZoTGCpELN0YMoVu7xGazwPRug@mail.gmail.com>
+Subject: Re: Examining device state via monitor for debugging
+To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Cc: Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ qemu-devel@nongnu.org, "Dr. David Alan Gilbert" <dave@treblig.org>, 
+ =?UTF-8?B?RGFuaWVsIFAuQmVycmFuZ8Op?= <berrange@redhat.com>, 
+ qemu-ppc@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
+ Eduardo Habkost <eduardo@habkost.net>, Peter Maydell <peter.maydell@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ed1-x52d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -81,38 +96,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jun 11, 2024 at 11:23:14AM +0800, Chuang Xu wrote:
-> Date: Tue, 11 Jun 2024 11:23:14 +0800
-> From: Chuang Xu <xuchuangxclwt@bytedance.com>
-> Subject: [PATCH v3] i386/cpu: fixup number of addressable IDs for processor
->  cores in the physical package
-> X-Mailer: git-send-email 2.24.3 (Apple Git-128)
-> 
-> When QEMU is started with:
-> -cpu host,host-cache-info=on,l3-cache=off \
-> -smp 2,sockets=1,dies=1,cores=1,threads=2
-> Guest can't acquire maximum number of addressable IDs for processor cores in
-> the physical package from CPUID[04H].
-> 
-> When creating a CPU topology of 1 core per package, host-cache-info only
-> uses the Host's addressable core IDs field (CPUID.04H.EAX[bits 31-26]),
-> resulting in a conflict (on the multicore Host) between the Guest core
-> topology information in this field and the Guest's actual cores number.
-> 
-> Fix it by removing the unnecessary condition to cover 1 core per package
-> case. This is safe because cores_per_pkg will not be 0 and will be at
-> least 1.
-> 
-> Fixes: d7caf13b5fcf ("x86: cpu: fixup number of addressable IDs for logical processors sharing cache")
-> Signed-off-by: Guixiong Wei <weiguixiong@bytedance.com>
-> Signed-off-by: Yipeng Yin <yinyipeng@bytedance.com>
-> Signed-off-by: Chuang Xu <xuchuangxclwt@bytedance.com>
-> ---
->  target/i386/cpu.c | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
+On Tue, 11 Jun 2024 at 09:11, Mark Cave-Ayland
+<mark.cave-ayland@ilande.co.uk> wrote:
+>
+> On 11/06/2024 06:49, Markus Armbruster wrote:
+>
+> > Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
+> >
+> >> Officialise the QMP command, use the existing
+> >> hmp_info_human_readable_text() helper.
+> >
+> > I'm not sure "officialise" is a word :)
+> >
+> > Taking a step back...  "info via" and its new QMP counterpart
+> > x-query-mos6522-devices dump device state.  I understand why examining
+> > device state via monitor can be useful for debugging.  However, we have
+> > more than 2000 devices in the tree.  Clearly, we don't want 2000 device
+> > state queries.  Not even 100.  Could we have more generic means instead=
+?
+> >
+> > We could use QOM (read-only) properties to expose device state.
+> >
+> > If we use one QOM property per "thing", examining device state becomes
+> > quite tedious.  Also, you'd have to stop the guest to get a consistent
+> > view, and adding lots of QOM properties bloats the code.
+> >
+> > If we use a single, object-valued property for the entire state, we get
+> > to define the objects in QAPI.  Differently tedious, and bloats the
+> > generated code.
+> >
+> > We could use a single string-valued property.  Too much of an abuse of
+> > QOM?
+> >
+> > We could add an optional "dump state for debugging" method to QOM, and
+> > have a single query command that calls it if present.
+> >
+> > Thoughts?
+>
+> I agree that there should be a better way of doing things here. The aim o=
+f the
+> original "info via" series was to allow the command to be contained compl=
+etely within
+> mos6522.c, but unfortunately due to the way that qemu-options.hx works th=
+en you end
+> up with #ifdef-fery or stubs to make all configuration combinations work.
+>
+> As you point out ideally there should be a way for a QOM object to dynami=
+cally
+> register its own monitor commands, which I think should help with this.
+>
+> IIRC in the original thread Daniel or David proposed a new "debug" monito=
+r command
+> such that a device could register its own debug <foo> commands either via=
+ DeviceClass
+> or a function called during realize that would return a HumanReadableText=
+ via QMP.
 
-Thanks! LGTM,
-
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-
+This is starting to sound like OOP: A Monitor interface defines
+monitor commands, and QOM type classes can implement/define their own.
+A Debug interface would do this.
 
