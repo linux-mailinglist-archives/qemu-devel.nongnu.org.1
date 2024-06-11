@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EC68903EC2
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jun 2024 16:28:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04941903EB2
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jun 2024 16:27:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sH2Ri-0007C3-NT; Tue, 11 Jun 2024 10:25:58 -0400
+	id 1sH2Rk-0007CV-9W; Tue, 11 Jun 2024 10:26:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sH2Rf-00078A-UL
- for qemu-devel@nongnu.org; Tue, 11 Jun 2024 10:25:56 -0400
+ id 1sH2Ri-0007Bt-1b
+ for qemu-devel@nongnu.org; Tue, 11 Jun 2024 10:25:58 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sH2Re-00066a-AY
- for qemu-devel@nongnu.org; Tue, 11 Jun 2024 10:25:55 -0400
+ id 1sH2Rg-00066u-EZ
+ for qemu-devel@nongnu.org; Tue, 11 Jun 2024 10:25:57 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1718115953;
+ s=mimecast20190719; t=1718115955;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=r53vxid38JkbalFZ2GcX310E1spILyRXBqF8wFBK08I=;
- b=M/ZtUlcwVwip859FOb88+5jsVfm6Kp/mLsO4t/cNfaR6TUzk6+YycFXpTY7FUeEo7adLmn
- 1uki7uNkTgdtc/ztzLi49KPoUJsmersQMyFHhPwk0aOCJUBalqc+yzDHtsdt5gloLz/M5k
- xWn8QCYLPINaZgjJmkwBkB7unGAYEE0=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=GKBj3BIae3wLKWizif0rfYzzEINy6nl8RdXecFWJYa8=;
+ b=FXVp/BLMfUXUSycPTYoQEtWfCtZSKLSTwZE+hP8sCaW/YCzK6fN6WraS63Cu686f+MKpV5
+ 0XTNU7LPFH6saoEq4ae3mtdIbQCqetsgTQI0VY4Yuv0gfxBm/KpezSDTUrH06eUngLo5fH
+ KrzKjdhQyKXhOzXSxvpMwKjPAx5LqsY=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-156-S2l6TIKANNmTkIkCNaSQNQ-1; Tue, 11 Jun 2024 10:25:51 -0400
-X-MC-Unique: S2l6TIKANNmTkIkCNaSQNQ-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-a6f3f614e58so26546066b.0
- for <qemu-devel@nongnu.org>; Tue, 11 Jun 2024 07:25:50 -0700 (PDT)
+ us-mta-634-kK6OmpU3NBGzS-KC2Pa4Yw-1; Tue, 11 Jun 2024 10:25:53 -0400
+X-MC-Unique: kK6OmpU3NBGzS-KC2Pa4Yw-1
+Received: by mail-ed1-f70.google.com with SMTP id
+ 4fb4d7f45d1cf-57c738349baso901502a12.1
+ for <qemu-devel@nongnu.org>; Tue, 11 Jun 2024 07:25:53 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718115949; x=1718720749;
+ d=1e100.net; s=20230601; t=1718115952; x=1718720752;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=r53vxid38JkbalFZ2GcX310E1spILyRXBqF8wFBK08I=;
- b=V1s/98l7zbXXyRW021FOiEd27oFSewOqssHMxi5GJFRiWQxcUH7PNUx4gpmOU/YMsj
- Mpn0ExH+HqZzf3b0sxTVKM0ZGZaFTPb53NXqNz2cxtteRs2LbdfUrEdwVYDG7XmHyuEH
- GEmScnIqZ1Dfx8KVL/cFtQeFwpaRATXjHU8bK+l3jIEw4XPD2hNxH0SZeaWJxWzr9Ru/
- smreaOP7kiFyfxeFADYmDKkuMMW4Mf6Y5F+kTDHAcAG1zvMt3Ysv82gEj7VUvv8+e2xO
- 8FfJIu2QhQ5x4e6p7eLxpnOGXzhSCYToRTcTWJOEsBr7o/ogeR98WjPWn9TV5EfCovg/
- cfbw==
-X-Gm-Message-State: AOJu0YzB1b2x1sKVlvOIiYKf9BoXEpPtCNm2rhAquYXAnZLJmyKmKebo
- n2wjN9xhbPegc/Pwk06/W7FMT0jGp8OX2wUyNkxUlW1HpcxEsqWMgwZ45oVzf0/OLegXUvUX1xJ
- J9l1zv+LFWmt7CtBEvYAbwmMunSv4zQCn8qMkis435a0nDu6OMcKW56hW0vDfDVB7n2uqMN7jPI
- rLOPUTexH3AmdiF+GYGa+b7jHDj1qWu5oFtqen
-X-Received: by 2002:a17:907:72cc:b0:a6f:18e4:1871 with SMTP id
- a640c23a62f3a-a6f18e43821mr697883966b.56.1718115949647; 
- Tue, 11 Jun 2024 07:25:49 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGGIqbN+/KwITOIRLXuMnGSZLVayFpRsZq5KKv9OMLomLRuga3oIvPiss//a+nFaXpbe88Y7Q==
-X-Received: by 2002:a17:907:72cc:b0:a6f:18e4:1871 with SMTP id
- a640c23a62f3a-a6f18e43821mr697882066b.56.1718115949258; 
- Tue, 11 Jun 2024 07:25:49 -0700 (PDT)
+ bh=GKBj3BIae3wLKWizif0rfYzzEINy6nl8RdXecFWJYa8=;
+ b=oFnjC6rSlpfTuabcShdQgrBqKf56bMIVcsagUPzsOHKHwo7p/Thw2bPMlIAlWwa2hb
+ 31ppFPNorn1FQaUwVpwm1l6JALFeULSGp4Ujftpl2GsreBKVYv7iLEmyaG08ExnGlLrz
+ opfPN2ShtGmiqVkbW8jSFKj+30LX/S1azP0vzPEQ+Q2Ai85uESU5CvxckF3l8ZdOiI0L
+ gUmYsw/LOCn5DJ+uwQhlGOtsyk5I9dMxe1vVlaQBuxtvd4D0ePRH+qZsGPxZXF/KNjFd
+ 4LE6s4IFCzthAEjvL2sgfHYpAMBzdNmKBJRIrFH7FjjDjPjMwoW0CAApmSQ1Nmkz0Aw/
+ P4ZQ==
+X-Gm-Message-State: AOJu0Yxylm9oSMA/Hb1IbJJ00ox0vE+kRgk/JW5AMB2SjtDehlx7gp6B
+ AwczK0WfXSQU1VB5Q4TE2S2Ld79Z0dSWGWe0DF2KhxlIUg6yFzllThp2YZLkqJ4YPX/5LfmIcj/
+ 6Jz7AU/Ehe65Fdzu85lTAvvskFFiHEWVqWzgKs1frj/9EVy3MgyPVtK8UZ1d7mVsKOZbcuiaycR
+ nHAPyhrfHfJmRzqf5LdMDDrXPq38/HlXhNb3qD
+X-Received: by 2002:a17:906:d105:b0:a6f:132a:8212 with SMTP id
+ a640c23a62f3a-a6f132a8616mr598655066b.35.1718115952072; 
+ Tue, 11 Jun 2024 07:25:52 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGWlXL4MeIoUowS48fBJRRQPzJNwP718kI2sH7I22WV2vEegTvvHmbrkbSrCwO1WDp5XCafdw==
+X-Received: by 2002:a17:906:d105:b0:a6f:132a:8212 with SMTP id
+ a640c23a62f3a-a6f132a8616mr598653466b.35.1718115951604; 
+ Tue, 11 Jun 2024 07:25:51 -0700 (PDT)
 Received: from avogadro.local ([151.62.196.71])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a6f1c2b1e80sm304707166b.145.2024.06.11.07.25.47
+ a640c23a62f3a-a6f127398c4sm371566066b.202.2024.06.11.07.25.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 11 Jun 2024 07:25:47 -0700 (PDT)
+ Tue, 11 Jun 2024 07:25:49 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 11/25] target/i386: replace NoSeg special with NoLoadEA
-Date: Tue, 11 Jun 2024 16:25:09 +0200
-Message-ID: <20240611142524.83762-12-pbonzini@redhat.com>
+Subject: [PULL 12/25] target/i386: fix processing of intercept 0 (read CR0)
+Date: Tue, 11 Jun 2024 16:25:10 +0200
+Message-ID: <20240611142524.83762-13-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240611142524.83762-1-pbonzini@redhat.com>
 References: <20240611142524.83762-1-pbonzini@redhat.com>
@@ -101,90 +101,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is a bit more generic, as it can be applied to MPX as well.
-
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/tcg/decode-new.h     |  5 +++--
- target/i386/tcg/decode-new.c.inc | 12 ++++--------
- target/i386/tcg/emit.c.inc       |  3 ++-
- 3 files changed, 9 insertions(+), 11 deletions(-)
+ target/i386/tcg/decode-new.h     | 1 +
+ target/i386/tcg/decode-new.c.inc | 4 ++--
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/target/i386/tcg/decode-new.h b/target/i386/tcg/decode-new.h
-index f704698575f..46a96b220d0 100644
+index 46a96b220d0..8465717ea21 100644
 --- a/target/i386/tcg/decode-new.h
 +++ b/target/i386/tcg/decode-new.h
-@@ -170,8 +170,9 @@ typedef enum X86InsnSpecial {
-     /* Always locked if it has a memory operand (XCHG) */
-     X86_SPECIAL_Locked,
+@@ -272,6 +272,7 @@ struct X86OpEntry {
+     unsigned     valid_prefix:16;
+     unsigned     check:16;
+     unsigned     intercept:8;
++    bool         has_intercept:1;
+     bool         is_decode:1;
+ };
  
--    /* Do not apply segment base to effective address */
--    X86_SPECIAL_NoSeg,
-+    /* Do not load effective address in s->A0 */
-+    X86_SPECIAL_NoLoadEA,
-+
-     /*
-      * Rd/Mb or Rd/Mw in the manual: register operand 0 is treated as 32 bits
-      * (and writeback zero-extends it to 64 bits if applicable).  PREFIX_DATA
 diff --git a/target/i386/tcg/decode-new.c.inc b/target/i386/tcg/decode-new.c.inc
-index d41002e2f5c..4f5fcdb88dd 100644
+index 4f5fcdb88dd..cd925fe3589 100644
 --- a/target/i386/tcg/decode-new.c.inc
 +++ b/target/i386/tcg/decode-new.c.inc
-@@ -193,7 +193,7 @@
-     X86_OP_ENTRY3(op, None, None, None, None, None, None, ## __VA_ARGS__)
+@@ -221,7 +221,7 @@
+ #define vex13 .vex_class = 13,
  
- #define cpuid(feat) .cpuid = X86_FEAT_##feat,
--#define noseg .special = X86_SPECIAL_NoSeg,
-+#define nolea .special = X86_SPECIAL_NoLoadEA,
- #define xchg .special = X86_SPECIAL_Locked,
- #define lock .special = X86_SPECIAL_HasLock,
- #define mmx .special = X86_SPECIAL_MMX,
-@@ -1592,7 +1592,7 @@ static const X86OpEntry opcodes_root[256] = {
-     [0x8B] = X86_OP_ENTRYwr(MOV, G,v, E,v),
-      /* Missing in Table A-2: memory destination is always 16-bit.  */
-     [0x8C] = X86_OP_ENTRYwr(MOV, E,v, S,w, op0_Mw),
--    [0x8D] = X86_OP_ENTRYwr(LEA, G,v, M,v, noseg),
-+    [0x8D] = X86_OP_ENTRYwr(LEA, G,v, M,v, nolea),
-     [0x8E] = X86_OP_ENTRYwr(MOV, S,w, E,w),
-     [0x8F] = X86_OP_GROUPw(group1A, E,v),
+ #define chk(a) .check = X86_CHECK_##a,
+-#define svm(a) .intercept = SVM_EXIT_##a,
++#define svm(a) .intercept = SVM_EXIT_##a, .has_intercept = true,
  
-@@ -2524,11 +2524,6 @@ static void disas_insn(DisasContext *s, CPUState *cpu)
-         assert(decode.op[1].unit == X86_OP_INT);
-         break;
+ #define avx2_256 .vex_special = X86_VEX_AVX2_256,
  
--    case X86_SPECIAL_NoSeg:
--        decode.mem.def_seg = -1;
--        s->override = -1;
--        break;
--
-     case X86_SPECIAL_Op0_Mw:
-         assert(decode.op[0].unit == X86_OP_INT);
-         if (decode.op[0].has_ea) {
-@@ -2585,7 +2580,8 @@ static void disas_insn(DisasContext *s, CPUState *cpu)
-         gen_helper_enter_mmx(tcg_env);
+@@ -2559,7 +2559,7 @@ static void disas_insn(DisasContext *s, CPUState *cpu)
+             goto gp_fault;
+         }
      }
- 
--    if (decode.op[0].has_ea || decode.op[1].has_ea || decode.op[2].has_ea) {
-+    if (decode.e.special != X86_SPECIAL_NoLoadEA &&
-+        (decode.op[0].has_ea || decode.op[1].has_ea || decode.op[2].has_ea)) {
-         gen_load_ea(s, &decode.mem, decode.e.vex_class == 12);
+-    if (decode.e.intercept && unlikely(GUEST(s))) {
++    if (decode.e.has_intercept && unlikely(GUEST(s))) {
+         gen_helper_svm_check_intercept(tcg_env,
+                                        tcg_constant_i32(decode.e.intercept));
      }
-     if (s->prefix & PREFIX_LOCK) {
-diff --git a/target/i386/tcg/emit.c.inc b/target/i386/tcg/emit.c.inc
-index 78d89db57cd..e6521632edd 100644
---- a/target/i386/tcg/emit.c.inc
-+++ b/target/i386/tcg/emit.c.inc
-@@ -1970,7 +1970,8 @@ static void gen_LDS(DisasContext *s, X86DecodedInsn *decode)
- 
- static void gen_LEA(DisasContext *s, X86DecodedInsn *decode)
- {
--    tcg_gen_mov_tl(s->T0, s->A0);
-+    TCGv ea = gen_lea_modrm_1(s, decode->mem, false);
-+    gen_lea_v_seg_dest(s, s->aflag, s->T0, ea, -1, -1);
- }
- 
- static void gen_LEAVE(DisasContext *s, X86DecodedInsn *decode)
 -- 
 2.45.1
 
