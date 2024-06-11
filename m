@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A496904284
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jun 2024 19:38:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 335FB904281
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jun 2024 19:38:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sH5Qo-0008W5-Tj; Tue, 11 Jun 2024 13:37:14 -0400
+	id 1sH5Qv-00007x-O7; Tue, 11 Jun 2024 13:37:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1sH5Qn-0008Vd-Bn
- for qemu-devel@nongnu.org; Tue, 11 Jun 2024 13:37:13 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1sH5Qt-00006t-Sq
+ for qemu-devel@nongnu.org; Tue, 11 Jun 2024 13:37:19 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1sH5Ql-0008SC-Pt
- for qemu-devel@nongnu.org; Tue, 11 Jun 2024 13:37:13 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1sH5Qs-0008UT-Gr
+ for qemu-devel@nongnu.org; Tue, 11 Jun 2024 13:37:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1718127431;
+ s=mimecast20190719; t=1718127437;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=EDPviX5iCZw8qqN1UwxNpLLXgI2B2YRvbWcSGkLKba0=;
- b=OOlZGsIYps3RdC9RNaZumOl6lJ4RK2EDZv7hzzEiQBPyP+LqeuTcv00e7/rJZS+Osru7P7
- OYm/vXf5ndJtPt5GCm9eFetcvTnsHpq9av7GurUpM944EGYad0ek0lqP5qtpFmod7DCIQq
- y9Y4vJV1kTZoFQMCTecHmaZvJLCes1o=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ bh=ekDyI0XrbGkORk/+Y7DVMqIWcACoq55sA4lf/J9YDMA=;
+ b=RnIB1mEXWpT7SomabiltiMKd2L5cLuvVdal/YvYqEt8tDzEA0T5Yx+AXVVGHNv7gu3V0ra
+ UXolKcQunMBIja73cLbCr21Qcmkz2Ni8JjK2E//dlw3r2soon8yxleog8ad/Y73/cmYr08
+ aPwnVObMt/doI+UEru9XruWLKg5lorc=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-128-gAvFlpdHNGCL709YToLZjg-1; Tue,
- 11 Jun 2024 13:37:09 -0400
-X-MC-Unique: gAvFlpdHNGCL709YToLZjg-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-90-4Nn3CKfaPj-wGpzR5HfSNQ-1; Tue,
+ 11 Jun 2024 13:37:11 -0400
+X-MC-Unique: 4Nn3CKfaPj-wGpzR5HfSNQ-1
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 781C11956094; Tue, 11 Jun 2024 17:37:08 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 2E5A619560BD; Tue, 11 Jun 2024 17:37:10 +0000 (UTC)
 Received: from merkur.fritz.box (unknown [10.39.192.130])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id D813F19560AB; Tue, 11 Jun 2024 17:37:05 +0000 (UTC)
+ id D2B5619560AB; Tue, 11 Jun 2024 17:37:08 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com,
 	qemu-devel@nongnu.org
-Subject: [PULL 2/8] Revert "monitor: use aio_co_reschedule_self()"
-Date: Tue, 11 Jun 2024 19:36:52 +0200
-Message-ID: <20240611173658.231831-3-kwolf@redhat.com>
+Subject: [PULL 3/8] aio: warn about iohandler_ctx special casing
+Date: Tue, 11 Jun 2024 19:36:53 +0200
+Message-ID: <20240611173658.231831-4-kwolf@redhat.com>
 In-Reply-To: <20240611173658.231831-1-kwolf@redhat.com>
 References: <20240611173658.231831-1-kwolf@redhat.com>
 MIME-Version: 1.0
@@ -81,56 +81,53 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Stefan Hajnoczi <stefanha@redhat.com>
 
-Commit 1f25c172f837 ("monitor: use aio_co_reschedule_self()") was a code
-cleanup that uses aio_co_reschedule_self() instead of open coding
-coroutine rescheduling.
+The main loop has two AioContexts: qemu_aio_context and iohandler_ctx.
+The main loop runs them both, but nested aio_poll() calls on
+qemu_aio_context exclude iohandler_ctx.
 
-Bug RHEL-34618 was reported and Kevin Wolf <kwolf@redhat.com> identified
-the root cause. I missed that aio_co_reschedule_self() ->
-qemu_get_current_aio_context() only knows about
-qemu_aio_context/IOThread AioContexts and not about iohandler_ctx. It
-does not function correctly when going back from the iohandler_ctx to
-qemu_aio_context.
+Which one should qemu_get_current_aio_context() return when called from
+the main loop? Document that it's always qemu_aio_context.
 
-Go back to open coding the AioContext transitions to avoid this bug.
+This has subtle effects on functions that use
+qemu_get_current_aio_context(). For example, aio_co_reschedule_self()
+does not work when moving from iohandler_ctx to qemu_aio_context because
+qemu_get_current_aio_context() does not differentiate these two
+AioContexts.
 
-This reverts commit 1f25c172f83704e350c0829438d832384084a74d.
+Document this in order to reduce the chance of future bugs.
 
-Cc: qemu-stable@nongnu.org
-Buglink: https://issues.redhat.com/browse/RHEL-34618
 Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-Message-ID: <20240506190622.56095-2-stefanha@redhat.com>
+Message-ID: <20240506190622.56095-3-stefanha@redhat.com>
 Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- qapi/qmp-dispatch.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ include/block/aio.h | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/qapi/qmp-dispatch.c b/qapi/qmp-dispatch.c
-index f3488afeef..176b549473 100644
---- a/qapi/qmp-dispatch.c
-+++ b/qapi/qmp-dispatch.c
-@@ -212,7 +212,8 @@ QDict *coroutine_mixed_fn qmp_dispatch(const QmpCommandList *cmds, QObject *requ
-              * executing the command handler so that it can make progress if it
-              * involves an AIO_WAIT_WHILE().
-              */
--            aio_co_reschedule_self(qemu_get_aio_context());
-+            aio_co_schedule(qemu_get_aio_context(), qemu_coroutine_self());
-+            qemu_coroutine_yield();
-         }
+diff --git a/include/block/aio.h b/include/block/aio.h
+index 8378553eb9..4ee81936ed 100644
+--- a/include/block/aio.h
++++ b/include/block/aio.h
+@@ -629,6 +629,9 @@ void aio_co_schedule(AioContext *ctx, Coroutine *co);
+  *
+  * Move the currently running coroutine to new_ctx. If the coroutine is already
+  * running in new_ctx, do nothing.
++ *
++ * Note that this function cannot reschedule from iohandler_ctx to
++ * qemu_aio_context.
+  */
+ void coroutine_fn aio_co_reschedule_self(AioContext *new_ctx);
  
-         monitor_set_cur(qemu_coroutine_self(), cur_mon);
-@@ -226,7 +227,9 @@ QDict *coroutine_mixed_fn qmp_dispatch(const QmpCommandList *cmds, QObject *requ
-              * Move back to iohandler_ctx so that nested event loops for
-              * qemu_aio_context don't start new monitor commands.
-              */
--            aio_co_reschedule_self(iohandler_get_aio_context());
-+            aio_co_schedule(iohandler_get_aio_context(),
-+                            qemu_coroutine_self());
-+            qemu_coroutine_yield();
-         }
-     } else {
-        /*
+@@ -661,6 +664,9 @@ void aio_co_enter(AioContext *ctx, Coroutine *co);
+  * If called from an IOThread this will be the IOThread's AioContext.  If
+  * called from the main thread or with the "big QEMU lock" taken it
+  * will be the main loop AioContext.
++ *
++ * Note that the return value is never the main loop's iohandler_ctx and the
++ * return value is the main loop AioContext instead.
+  */
+ AioContext *qemu_get_current_aio_context(void);
+ 
 -- 
 2.45.2
 
