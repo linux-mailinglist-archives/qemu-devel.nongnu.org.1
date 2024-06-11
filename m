@@ -2,89 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D93CE9037BB
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jun 2024 11:22:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DBBF39037C7
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jun 2024 11:28:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sGxhf-00027U-6g; Tue, 11 Jun 2024 05:22:07 -0400
+	id 1sGxnM-0003uI-Tj; Tue, 11 Jun 2024 05:28:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sGxhd-00027G-Fd
- for qemu-devel@nongnu.org; Tue, 11 Jun 2024 05:22:05 -0400
-Received: from mail-lj1-x22b.google.com ([2a00:1450:4864:20::22b])
+ (Exim 4.90_1) (envelope-from <pizhenwei@bytedance.com>)
+ id 1sGxnJ-0003tb-8E
+ for qemu-devel@nongnu.org; Tue, 11 Jun 2024 05:27:57 -0400
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sGxhY-0005wl-SO
- for qemu-devel@nongnu.org; Tue, 11 Jun 2024 05:22:05 -0400
-Received: by mail-lj1-x22b.google.com with SMTP id
- 38308e7fff4ca-2ebeefb9b56so10053761fa.0
- for <qemu-devel@nongnu.org>; Tue, 11 Jun 2024 02:22:00 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <pizhenwei@bytedance.com>)
+ id 1sGxnF-0007LI-CU
+ for qemu-devel@nongnu.org; Tue, 11 Jun 2024 05:27:56 -0400
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-7041a7d4beeso3085682b3a.2
+ for <qemu-devel@nongnu.org>; Tue, 11 Jun 2024 02:27:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1718097719; x=1718702519; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:references
- :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=HJ8ZB0M6228iVYGDBJHTxKD5uJyM/zEz2/HvUMQDVpA=;
- b=PLLjggz30C4zx8Q48p7NccSFw0w7BG6VS9ohuvbiJJj7u9cilbkxib0NZRCVFUh6y4
- n8GDM2dv2F8dU4T/0Jo4N+CY97WptKAwpAc9M2lbLdn8cFXIC9/OXpLOREO91JG/5utv
- 89mXfWPVreIbZUXRTawxFUJ6yO6qWXLgBjmCcg9qnufhir/i9jUHQdN898d//qJtMieu
- 04okOfYa5eaCpgkqP26FTkSdPvrjmI/2JDSrSSNOVuujAGqKppGEuViN12QkO7dA+Ctk
- n5Wt0lQqw7R2S+1JrQlqmDANwbdRQhvqT97RuSTq6T7nOOvW4fUPbq/xpuHu0P5QN8kb
- gFKA==
+ d=bytedance.com; s=google; t=1718098069; x=1718702869; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=I8rhoRcSZADjEYlUb6+R/HBzxDupQrGRHiMqOwPQjO4=;
+ b=CNv53EmfLp2LWDwlHrEUXSNjWQe6BgiZdb6FvAc7gUoMPgZNbStdYaov1/rJ4qtOG2
+ 1CCMO5KuWnpGSklBuOM+MfcA7mvgp4lgDgIT1d4+xcT+kmJZJg4WqhQu/cDhKOFCY7Ob
+ jn/BInq0GrFspgBkc4VbOf/XkiRJlA/OrYh+nJ54PZ64rpjwydOyjwEbJofPPu7a/eQG
+ VopuzTGla3+aZ3y2f+u2i5KeuGp7nj1dKYOdI3DG+R5FA+YJPLmOlw5dVYVBieFLlO6x
+ 41qpGkmsViZqmOKNAMHMZ2U+uYdi3/ZEplUHrOyoUE7A+wXBG5qq23/4TttIRcCGXQCS
+ RsSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718097719; x=1718702519;
- h=content-transfer-encoding:mime-version:message-id:date:references
- :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=HJ8ZB0M6228iVYGDBJHTxKD5uJyM/zEz2/HvUMQDVpA=;
- b=DMx15kH6nNPL1vXM1Ls0lz2tav8n2OpHDRL+wMdm7DLxFpa/yynlc+aCX3bl94hI5H
- 9rug/p9ksR6bKv6wbkK6kEPcqE3TnXXA4KaH1/gs3rGVE6/kqOT+oxtYK8+VspPLPmUO
- kZs6NrTL5X1l1GBdAiJLXF9ZwgqsVoV1F4ZNwpXl2S+H8fXJO5rJQXL8DrORtRIea1t/
- THrg17PlRU/MyABso1xIMb5O+/LjwrLmjKLpwnZhO7Pf11n8PqWBsgabkcrroPnQrRfu
- UMFF7deBYjSQSteGNycq/DJ+FMXOfuGoYnAbk8ESgqVqzJSzLqXU4m5pxKsbcgnLuRgZ
- ZUpg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUhApc7Ws/JjZOI2JUMsG0f1xdazLOBEpYgq66xYYkG7bcH2ncUA2sJrK7P4Owh68ZgyxUqkltK5SCRX9zCUphsOsa15dw=
-X-Gm-Message-State: AOJu0YxnPSbHyMhKuM8dzV4TYVWTkcE6qyWEMc+K4b5pFQDguO4qD/JQ
- wK+B/9vsXlNDfBNcVJ1qsyUq1t6hOO1MApmUWy9mmhrnKwSEBUpYxq+24Ql47LPisUqKWMhJVah
- u
-X-Google-Smtp-Source: AGHT+IESE0SNnm6QlbKLvxm8UQlt9x1evHZ6KoLPbBvXbUFedfo0Mb0yF54ksH0cNW6hpwE6Or2xEw==
-X-Received: by 2002:a5d:6da8:0:b0:35f:22e3:1e0c with SMTP id
- ffacd0b85a97d-35f22e31ef8mr5836655f8f.69.1718097698392; 
- Tue, 11 Jun 2024 02:21:38 -0700 (PDT)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-35f24d67093sm4830172f8f.96.2024.06.11.02.21.37
+ d=1e100.net; s=20230601; t=1718098069; x=1718702869;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=I8rhoRcSZADjEYlUb6+R/HBzxDupQrGRHiMqOwPQjO4=;
+ b=AOkThNS+9by5iQ/+gABcKeSY4Lhn2/3L/gsir8m0q5R3M9GovK9g0cwUmOSdPBTY9l
+ PWef2an7dW6YPwtwJXkc3DTfDLxASIccsgYva4PYibbgvwB3GPwHn4QvXK+hp0KFarUH
+ +GmlAFC8YKSpv3qjBeiHRvApPeB6X5OJYvtJ3aV2AxmqvZnSywRcPweE5ja6DQJ4Qudw
+ gOLz6CHLByq3KPH8N6n2UDNjJ/CXRwTbPP4+VbCRMxxv98jVHZGk784sTfsN3own3R9A
+ HlQnZVhgiLxetlVjvSMvaJXUCKX2eXTRW8Dxd0aCLP7tcUelHuiogHVw7k4de78iOvW9
+ cSbA==
+X-Gm-Message-State: AOJu0YwsIIRk+RYhXYy6uzw88ZYRJuty8fY2MvD0GBS8MpCOP5xPjmZd
+ gU07dWOr9QgfxtEN4JqC0nGTgYZKeiKOZXysOW9d6uBDU3jcfRRj/C4z+Cnn2eqUefFAAABJuAH
+ AI/Y=
+X-Google-Smtp-Source: AGHT+IGHOSO6HB+XkL0ulVQRENAIJozBuNONcpD35ivsqf6cgamdKKwHl/JKgnxTp1MyqqTr+cXlyQ==
+X-Received: by 2002:a05:6a00:230b:b0:705:9cf6:bc21 with SMTP id
+ d2e1a72fcca58-7059cf6fa8bmr4056121b3a.12.1718098069493; 
+ Tue, 11 Jun 2024 02:27:49 -0700 (PDT)
+Received: from libai.bytedance.net ([61.213.176.8])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-7041cda06f4sm5871153b3a.75.2024.06.11.02.27.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 11 Jun 2024 02:21:37 -0700 (PDT)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 0EFB65F898;
- Tue, 11 Jun 2024 10:21:37 +0100 (BST)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- qemu-devel@nongnu.org,  Stefan Hajnoczi <stefanha@redhat.com>,  Mads
- Ynddal <mads@ynddal.dk>,  Paolo Bonzini <pbonzini@redhat.com>,  Peter
- Maydell <peter.maydell@linaro.org>,  Daniel P. =?utf-8?Q?Berrang=C3=A9?=
- <berrange@redhat.com>,  Marc-Andr =?utf-8?Q?=C3=A9?= Lureau
- <marcandre.lureau@redhat.com>,
- Thomas Huth <thuth@redhat.com>,  Markus Armbruster <armbru@redhat.com>,
- Philippe Mathieu-Daud =?utf-8?Q?=C3=A9?= <philmd@linaro.org>,  Zhao Liu
- <zhao1.liu@intel.com>,  Gustavo Romero <gustavo.romero@linaro.org>
-Subject: Re: [RFC PATCH v1 0/6] Implement ARM PL011 in Rust
-In-Reply-To: <6e7a14a1-8727-4ce5-ae67-797323704464@linaro.org> (Pierrick
- Bouvier's message of "Mon, 10 Jun 2024 14:38:18 -0700")
-References: <cover.rust-pl011-rfc-v1.git.manos.pitsidianakis@linaro.org>
- <d910708f-ed55-4eee-8f66-8703cb45081c@linaro.org>
- <evt7n.ggoypj31l14q@linaro.org>
- <6e7a14a1-8727-4ce5-ae67-797323704464@linaro.org>
-Date: Tue, 11 Jun 2024 10:21:37 +0100
-Message-ID: <87o787zvfi.fsf@draig.linaro.org>
+ Tue, 11 Jun 2024 02:27:49 -0700 (PDT)
+From: zhenwei pi <pizhenwei@bytedance.com>
+To: qemu-devel@nongnu.org
+Cc: pbonzini@redhat.com, marcandre.lureau@redhat.com, berrange@redhat.com,
+ thuth@redhat.com, zhenwei pi <pizhenwei@bytedance.com>
+Subject: [PATCH v2 0/1] meson: Remove libibumad dependence
+Date: Tue, 11 Jun 2024 17:27:42 +0800
+Message-Id: <20240611092743.59255-1-pizhenwei@bytedance.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::22b;
- envelope-from=alex.bennee@linaro.org; helo=mail-lj1-x22b.google.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=pizhenwei@bytedance.com; helo=mail-pf1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -107,54 +91,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Pierrick Bouvier <pierrick.bouvier@linaro.org> writes:
+v1 -> v2: remove libibumad from tests/lcitool/projects/qemu.yml
 
-> On 6/10/24 13:29, Manos Pitsidianakis wrote:
->> On Mon, 10 Jun 2024 22:37, Pierrick Bouvier <pierrick.bouvier@linaro.org=
-> wrote:
->>> Hello Manos,
->>>
-<snip>
->>> Excellent work, and thanks for posting this RFC!
->>>
->>> IMHO, having patches 2 and 5 splitted is a bit confusing, and exposing
->>> (temporarily) the generated.rs file in patches is not a good move.
->>> Any reason you kept it this way?
->> That was my first approach, I will rework it on the second version.
->> The
->> generated code should not exist in committed code at all.
->> It was initally tricky setting up the dependency orders correctly,
->> so I
->> first committed it and then made it a dependency.
->>=20
->>>
->>> Maybe it could be better if build.rs file was *not* needed for new
->>> devices/folders, and could be abstracted as a detail of the python
->>> wrapper script instead of something that should be committed.
->> That'd mean you cannot work on the rust files with a LanguageServer,
->> you
->> cannot run cargo build or cargo check or cargo clippy, etc. That's why I
->> left the alternative choice of including a manually generated bindings
->> file (generated.rs.inc)
->>=20
->
-> Maybe I missed something, but it seems like it just checks/copies the
-> generated.rs file where it's expected. Definitely something that could
-> be done as part of the rust build.
->
-> Having to run the build before getting completion does not seem to be
-> a huge compromise.
->
-<snip>
+v1: remove libibumad dependence
 
-As long as the Language Server can kick in after a first build. Rust
-definitely leans in to the concept of the tooling helping you out while
-coding.
+Zhenwei Pi (1):
+  meson: Remove libibumad dependence
 
-I think for the C LSPs compile_commands.json is generated during the
-configure step but I could be wrong.
+ meson.build                     | 4 +---
+ tests/lcitool/projects/qemu.yml | 1 -
+ 2 files changed, 1 insertion(+), 4 deletions(-)
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+-- 
+2.34.1
+
 
