@@ -2,56 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 252A1905321
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jun 2024 15:02:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71B2F905341
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jun 2024 15:06:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sHNbn-000358-Vd; Wed, 12 Jun 2024 09:01:48 -0400
+	id 1sHNbn-00034u-4v; Wed, 12 Jun 2024 09:01:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sHNbk-00034B-Qs
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sHNbk-000346-Et
  for qemu-devel@nongnu.org; Wed, 12 Jun 2024 09:01:44 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sHNbh-0007lo-EP
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sHNbh-0007kD-Dz
  for qemu-devel@nongnu.org; Wed, 12 Jun 2024 09:01:44 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1718197297;
+ s=mimecast20190719; t=1718197295;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=80UiQ6GEHogTpKZyXdTxaFHGnmMR0uKIi2Wc/ALYM8Y=;
- b=AfqmX4OHAgAK/vTxPFGV8GQwpRoAHDThzHVPJXozcDZWg4aYmqwm4OYhGcMdpSbm3ws8RW
- Sdyzi2Q90Qda38za/dthklFxadviWDrLeBlTrZ5gJ8njYwrFZ2XHYBMbkbrWHRRa/zJ3O1
- dzMJ/3VVypHPXOaA5wOOx3w73NOn7+Y=
+ bh=qlJFtZJjwq8+p7ez8aklM5DrH5iXcuxwqEn8YjmMP1Y=;
+ b=abOCsPLUQ/eQXjMfWuGhzv0wakkfQ0JCwmaaSRFShD9GTIZdqiezDHjA0TSkwv6frtVQI+
+ 4nLxz7Dy3YPCvCb81FzOCmsliZVIIyyOhZH35vGiiF2MI53v9mCzSAeBSgcpctKxSxbubW
+ eK+BZ2a/iS7b1neD+y9S/n8x5MJLXmM=
 Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-630-hO4xi5BgOy6Mirris-3uSw-1; Wed,
- 12 Jun 2024 09:01:30 -0400
-X-MC-Unique: hO4xi5BgOy6Mirris-3uSw-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-132-52M5Ycy2PKiwgNtut0PQJA-1; Wed,
+ 12 Jun 2024 09:01:33 -0400
+X-MC-Unique: 52M5Ycy2PKiwgNtut0PQJA-1
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 40CEB1955D75; Wed, 12 Jun 2024 13:01:29 +0000 (UTC)
+ id 65A3A1955D6A; Wed, 12 Jun 2024 13:01:31 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.192.49])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 3C6371956053; Wed, 12 Jun 2024 13:01:27 +0000 (UTC)
+ id 8400D1956056; Wed, 12 Jun 2024 13:01:29 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Eric Auger <eric.auger@redhat.com>,
  Zhenzhong Duan <zhenzhong.duan@intel.com>,
  Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH v1 01/16] vfio: Make vfio_devices_dma_logging_start() return
- bool
-Date: Wed, 12 Jun 2024 15:01:07 +0200
-Message-ID: <20240612130122.813935-2-clg@redhat.com>
+Subject: [PATCH v1 02/16] vfio: Remove unused declarations from vfio-common.h
+Date: Wed, 12 Jun 2024 15:01:08 +0200
+Message-ID: <20240612130122.813935-3-clg@redhat.com>
 In-Reply-To: <20240612130122.813935-1-clg@redhat.com>
 References: <20240612130122.813935-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -83,73 +82,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since vfio_devices_dma_logging_start() takes an 'Error **' argument,
-best practices suggest to return a bool. See the api/error.h Rules
-section. It will simplify potential changes coming after.
-
-vfio_container_set_dirty_page_tracking() could be modified in the same
-way but the errno value can be saved in the migration stream when
-called from vfio_listener_log_global_stop().
+These were forgotten in the recent cleanups.
 
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/vfio/common.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ include/hw/vfio/vfio-common.h | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-index 9e4c0cc95ff90209d3e8184035af0806a2bf890b..d48cd9b9361a92d184e423ffc60aabaff40fb487 100644
---- a/hw/vfio/common.c
-+++ b/hw/vfio/common.c
-@@ -1020,7 +1020,7 @@ static void vfio_device_feature_dma_logging_start_destroy(
-     g_free(feature);
- }
+diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
+index 776de8064f740784f95cab0311c5f15f50d60ffe..c19572f90b277193491020af28e8b5587f15bfd1 100644
+--- a/include/hw/vfio/vfio-common.h
++++ b/include/hw/vfio/vfio-common.h
+@@ -207,10 +207,6 @@ typedef struct VFIODisplay {
+ VFIOAddressSpace *vfio_get_address_space(AddressSpace *as);
+ void vfio_put_address_space(VFIOAddressSpace *space);
  
--static int vfio_devices_dma_logging_start(VFIOContainerBase *bcontainer,
-+static bool vfio_devices_dma_logging_start(VFIOContainerBase *bcontainer,
-                                           Error **errp)
- {
-     struct vfio_device_feature *feature;
-@@ -1033,7 +1033,7 @@ static int vfio_devices_dma_logging_start(VFIOContainerBase *bcontainer,
-                                                            &ranges);
-     if (!feature) {
-         error_setg_errno(errp, errno, "Failed to prepare DMA logging");
--        return -errno;
-+        return false;
-     }
- 
-     QLIST_FOREACH(vbasedev, &bcontainer->device_list, container_next) {
-@@ -1058,7 +1058,7 @@ out:
- 
-     vfio_device_feature_dma_logging_start_destroy(feature);
- 
--    return ret;
-+    return ret == 0;
- }
- 
- static bool vfio_listener_log_global_start(MemoryListener *listener,
-@@ -1067,18 +1067,18 @@ static bool vfio_listener_log_global_start(MemoryListener *listener,
-     ERRP_GUARD();
-     VFIOContainerBase *bcontainer = container_of(listener, VFIOContainerBase,
-                                                  listener);
--    int ret;
-+    bool ret;
- 
-     if (vfio_devices_all_device_dirty_tracking(bcontainer)) {
-         ret = vfio_devices_dma_logging_start(bcontainer, errp);
-     } else {
--        ret = vfio_container_set_dirty_page_tracking(bcontainer, true, errp);
-+        ret = vfio_container_set_dirty_page_tracking(bcontainer, true, errp) == 0;
-     }
- 
--    if (ret) {
-+    if (!ret) {
-         error_prepend(errp, "vfio: Could not start dirty page tracking - ");
-     }
--    return !ret;
-+    return ret;
- }
- 
- static void vfio_listener_log_global_stop(MemoryListener *listener)
+-/* SPAPR specific */
+-int vfio_spapr_container_init(VFIOContainer *container, Error **errp);
+-void vfio_spapr_container_deinit(VFIOContainer *container);
+-
+ void vfio_disable_irqindex(VFIODevice *vbasedev, int index);
+ void vfio_unmask_single_irqindex(VFIODevice *vbasedev, int index);
+ void vfio_mask_single_irqindex(VFIODevice *vbasedev, int index);
 -- 
 2.45.2
 
