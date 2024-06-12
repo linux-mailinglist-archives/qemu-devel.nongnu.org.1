@@ -2,68 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F19369052CE
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jun 2024 14:44:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5DFF9052E0
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jun 2024 14:49:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sHNKd-0000fH-4V; Wed, 12 Jun 2024 08:44:03 -0400
+	id 1sHNOy-0005OU-D0; Wed, 12 Jun 2024 08:48:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sHNKa-0000f4-OG
- for qemu-devel@nongnu.org; Wed, 12 Jun 2024 08:44:00 -0400
-Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sHNOv-0005OB-O7
+ for qemu-devel@nongnu.org; Wed, 12 Jun 2024 08:48:29 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sHNKY-0004w2-JS
- for qemu-devel@nongnu.org; Wed, 12 Jun 2024 08:43:59 -0400
-Received: by mail-ed1-x536.google.com with SMTP id
- 4fb4d7f45d1cf-57a44c2ce80so2918699a12.0
- for <qemu-devel@nongnu.org>; Wed, 12 Jun 2024 05:43:57 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sHNOu-0005oo-3v
+ for qemu-devel@nongnu.org; Wed, 12 Jun 2024 08:48:29 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-4210aa012e5so21800505e9.0
+ for <qemu-devel@nongnu.org>; Wed, 12 Jun 2024 05:48:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1718196236; x=1718801036; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=a6Z9l4OM12s+y3i5qYzl3jFyyWGAXUxR/En1lgW6sh8=;
- b=SVhOCSLSG9MCe6If1hbZeC2qOIIsVmIstatskSKfWuVK0JG1R4vzML846Mb9IkARvQ
- 2XNrwnOjCdbDYcrbaJXSJZFnYh8DJUtNvTe9h9+qulldaieei+m9z9ugBYexJBRKRGom
- WJGhtEYeJ63OU9obvWmVZyUJ0tGH08xU7HSeJaD6i/eqzYqj0+HtCL8pfVl0GJp9JtxY
- c5IDClnRW6/vz8xBf6+8s8/tDJ0CQkEhXbHFyC33bjlTIy33IkMeQJf5gVJIz6J+UOe0
- 7QRfy+kFPMURd3adZjQxHmTxyiS1Lv8dEZER3xBuM/bASSYuGx1lzH9Id6AXLMpQ1fHv
- m2wQ==
+ d=linaro.org; s=google; t=1718196506; x=1718801306; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Y/3y/8JIIGuT9LIu6BrhKkuGg4jsQO4e/xe3DbBKrik=;
+ b=ZEO/n1t5J984atQc80DZEaXwB666qRG88XoWXiOno0alYP2buIca1u9GI6CzDNJFmV
+ Te5zc6L9aCWNuJFZydy0FCoNd3Jt+UPGG2FGR+yjLa2WRLLKUUywhO8Rh/SorJWksdi5
+ R0BbuXTkBphq1XSG+jxhuGeoltRk1EewCYOUYKEyQyJY4DY2rRAKuW+34aq7EDcPjRWV
+ +Gk6ObzhAdMsBZHDi5LMIqVJ+mleLd7+oy1EH4dHM4t6GTc2M9QxeKkx22k9LB5jwmlP
+ MXHvQV4RM089rETAKcSIr59ttGVULvJHVty7VY2j5fYkscR0CGyUYfpKAv/b91Dj0UuR
+ UVIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718196236; x=1718801036;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=a6Z9l4OM12s+y3i5qYzl3jFyyWGAXUxR/En1lgW6sh8=;
- b=kMG+AqVVssfI6J1tGH3GezJE5aFgn7EP+H87Sxf6DdqgfJTx7Y18HYEuV20QVdshyb
- eSbKJVw1UoW7mqnIb4xBdwhBa2zTsV4m/wJpmB0N/K0lSszNoPn7nQcGqyoxS8QyJiJ7
- em/GL6Mf1MnncBvYBPOCp7ja9GgcNNgiWIIjF0QwVDVShFaLw7QBlVeG4l3f/BVur74X
- 2IHrX5B5m0JIP0qbi/L0Ei7Xu6cN/44/W3jJreY8qzTeeJHdvoZy0erkq+KdWtqa7RWQ
- yjHZIyoJ3ouuKlyVL44/roUxl5rPPjJeUeojREGRWnEFcJjHz5l/R5y+89+yjIikmCaS
- H7Gg==
-X-Gm-Message-State: AOJu0YzGZmbTESbgc83pZpb2ZEjrQaeU0xhZjBknA2aJGhFCXiYr7ftK
- DVtlAzpzTaOrNh2NUUPWlto22XjyVknSus6Ui23IU0ODB6gwvbahbrXbWTn6MNZo2mPZZXdwge8
- L3CvuiXyqwC5TL0C2jqhKU2HQtSldEyaBysnHvw==
-X-Google-Smtp-Source: AGHT+IEVFTa0J7FzA8z/q1yfEDiaYFIx4zsP4w4sphAGh0Dl2jGlloudNK8e3pOgBhMHWNgXCCNWrQlSlrmkC1klAvk=
-X-Received: by 2002:a50:9348:0:b0:57c:8105:b9a7 with SMTP id
- 4fb4d7f45d1cf-57caaaba16bmr1044406a12.29.1718196235879; Wed, 12 Jun 2024
- 05:43:55 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1718196506; x=1718801306;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Y/3y/8JIIGuT9LIu6BrhKkuGg4jsQO4e/xe3DbBKrik=;
+ b=uCOaz8dvjVE6xhcmE335jus7g50UjWelN5cXfCAniW9jHwX0x0kQSZOXUvR7g1MR9Y
+ OeSou65WHICH/rXOw/pQxr7nCWpoYTJoi7dpK/N6+96mzgMSgTeTdOAO+J8dGnOTxNUx
+ EpgZK4nlCNdA/5+oo/XeBSzrNdf2Gpomw56DsOxvcimSB2lytBG657Dhk+mBQqExESwq
+ JCABFqtSIoEQNiBuEBSLVgpwEQk7kzT/qlkW9Avvwoqo7vO/Yi3IIqXpGNewPTSKT3Ln
+ bDW6+toypnxvqUz157WnVVVSExNhL0JcGS/hajM3MdxW1n5nkIlMCRFNkOCnK5ksLESY
+ JPkg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCU0U8V1DGtYEJHrKIhfkOmf510lCOwYjwIRvqcJ8Nt05LWPbtTv82/p944Aa+AGRclVpUce67dJo0C/pSPwEHocDQJRfxU=
+X-Gm-Message-State: AOJu0YwmnI55ASIZqAGLheaTerGUV2YEkuZF1Z1i70JkziRMSC1Vi1go
+ Msn10AQe5fSVMVwUufeK8TyVv/4u9Cfy8MC06mK2YbMkUCXbJarCsE2ux4bxhlmiOcCkZkH2SUo
+ 9
+X-Google-Smtp-Source: AGHT+IELaLfMxIlQ3ua+N50C57vHt/QvgvPJpfE4/pEIP/z6b73HIY4+01TA3F/TWWmoagIeb4zHJA==
+X-Received: by 2002:adf:dd91:0:b0:35f:1dcd:131d with SMTP id
+ ffacd0b85a97d-35fdf7acb54mr1172234f8f.30.1718196506592; 
+ Wed, 12 Jun 2024 05:48:26 -0700 (PDT)
+Received: from [192.168.69.100] (ram94-h02-176-184-0-172.dsl.sta.abo.bbox.fr.
+ [176.184.0.172]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-422874e73e8sm26542105e9.43.2024.06.12.05.48.25
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 12 Jun 2024 05:48:26 -0700 (PDT)
+Message-ID: <6e00233e-63ab-4513-aa0f-c55ab4ef0747@linaro.org>
+Date: Wed, 12 Jun 2024 14:48:24 +0200
 MIME-Version: 1.0
-References: <20240612090132.3522566-1-ethan84@andestech.com>
-In-Reply-To: <20240612090132.3522566-1-ethan84@andestech.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Wed, 12 Jun 2024 13:43:41 +0100
-Message-ID: <CAFEAcA9W1EN7eO+qa6s9a870s8Zm-mD3T0mxRUY5hjY_-ZE4bQ@mail.gmail.com>
-Subject: Re: [RFC PATCH] memory: Introduce memory region fetch operation
-To: Ethan Chen <ethan84@andestech.com>
-Cc: qemu-devel@nongnu.org, richard.henderson@linaro.org, pbonzini@redhat.com, 
- peterx@redhat.com, david@redhat.com, philmd@linaro.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::536;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x536.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 1/1] qga/linux: Add new api 'guest-network-get-route'
+To: Dehan Meng <demeng@redhat.com>, qemu-devel@nongnu.org
+Cc: kkostiuk@redhat.com, michael.roth@amd.com
+References: <20240612103105.301456-1-demeng@redhat.com>
+ <20240612103105.301456-2-demeng@redhat.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240612103105.301456-2-demeng@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -86,22 +95,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 12 Jun 2024 at 10:02, Ethan Chen via <qemu-devel@nongnu.org> wrote:
->
-> Allow the memory region to have different behaviors for read and fetch
-> operations.
->
-> For example RISCV IOPMP will raise interrupt when cpu try to fetch a
-> non-excutable region.
+Hi Dehan,
 
-It actually raises an interrupt rather than it being a permissions fault?
+On 12/6/24 12:31, Dehan Meng wrote:
+> The Route information of the Linux VM needs to be used
+> by administrators and users when debugging network problems
+> and troubleshooting.
+> 
+> Signed-off-by: Dehan Meng <demeng@redhat.com>
+> ---
+>   qga/commands-posix.c | 81 ++++++++++++++++++++++++++++++++++++++++++++
+>   qga/commands-win32.c |  6 ++++
+>   qga/qapi-schema.json | 56 ++++++++++++++++++++++++++++++
+>   3 files changed, 143 insertions(+)
 
-> If fetch operation of a memory region is not implemented, it still uses the
-> read operation for fetch.
 
-This patch should probably be part of the series with the device that
-needs it.
+> diff --git a/qga/qapi-schema.json b/qga/qapi-schema.json
+> index b3de1fb6b3..58f51aecbb 100644
+> --- a/qga/qapi-schema.json
+> +++ b/qga/qapi-schema.json
+> @@ -1800,3 +1800,59 @@
+>   { 'command': 'guest-get-cpustats',
+>     'returns': ['GuestCpuStats']
+>   }
+> +
+> +##
+> +# @GuestNetworkRoute:
+> +#
+> +# Route information, currently, only linux supported.
+> +#
+> +# @iface: The destination network or host's egress network interface in the routing table
+> +#
+> +# @destination: The IP address of the target network or host, The final destination of the packet
 
-thanks
--- PMM
+Maybe clearer to start naming this @ipv4 in case you plan @ipv6
+support later (see @NetdevUserOptions structure in qapi/net.json).
+
+> +#
+> +# @gateway: The IP address of the next hop router
+> +#
+> +# @mask: Subnet Mask
+> +#
+> +# @metric: Route metric
+> +#
+> +# @flags: Route flags (not for windows)
+> +#
+> +# @irtt: Initial round-trip delay (not for windows)
+> +#
+> +# @refcnt: The route's reference count (not for windows)
+> +#
+> +# @use: Route usage count (not for windows)
+> +#
+> +# @window: TCP window size, used for flow control (not for windows)
+> +#
+> +# @mtu: Data link layer maximum packet size (not for windows)
+> +#
+> +# Since: 9.1
+> +
+> +##
+> +{ 'struct': 'GuestNetworkRoute',
+> +  'data': {'iface': 'str',
+> +           'destination': 'str',
+> +           'gateway': 'str',
+> +           'metric': 'int',
+> +           'mask': 'str',
+> +           '*irtt': 'int',
+> +           '*flags': 'uint64',
+> +           '*refcnt': 'int',
+> +           '*use': 'int',
+> +           '*window': 'int',
+> +           '*mtu': 'int'
+> +           }}
+> +
+> +##
+> +# @guest-network-get-route:
+> +#
+> +# Retrieve information about route of network.
+> +# Returns: List of route info of guest.
+> +#
+> +# Since: 9.1
+> +##
+> +{ 'command': 'guest-network-get-route',
+> +  'returns': ['GuestNetworkRoute']
+> +}
+
 
