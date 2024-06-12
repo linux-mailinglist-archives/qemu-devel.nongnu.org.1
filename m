@@ -2,75 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6402B90515A
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jun 2024 13:26:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A6E990515C
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jun 2024 13:26:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sHM6O-0007pQ-Ky; Wed, 12 Jun 2024 07:25:16 -0400
+	id 1sHM7M-0000uC-LE; Wed, 12 Jun 2024 07:26:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sHM6J-0007ol-Mt
- for qemu-devel@nongnu.org; Wed, 12 Jun 2024 07:25:11 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sHM6H-00071u-Ep
- for qemu-devel@nongnu.org; Wed, 12 Jun 2024 07:25:11 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1718191508;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=oJpK17ekPHy/08AgdBkFlqxStkcVYvPDXzQ7uyyl7Xw=;
- b=HBzTA+4noVFUmJp1/XRCCFg6PGVCD/pqwp/dIosVbYA30GIL7iuf5+jbK8iq9gnApnYslR
- q07b78dnovxiREXzfqJH9yOEW3m6oDwOh0j95rXUxXQ74wqFwpU8HZFE1FPP9zVYYsKy8p
- V+nhY2jwwhNXP8Wd7EUVe+K0mnQlRds=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-522-HLTSDRGLMJaIem5wJs7y4Q-1; Wed,
- 12 Jun 2024 07:25:05 -0400
-X-MC-Unique: HLTSDRGLMJaIem5wJs7y4Q-1
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5C9B41955E74; Wed, 12 Jun 2024 11:25:02 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.115])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id CD7931956053; Wed, 12 Jun 2024 11:24:59 +0000 (UTC)
-Date: Wed, 12 Jun 2024 12:24:56 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: Gerd Hoffmann <kraxel@redhat.com>, qemu-devel@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- Eric Blake <eblake@redhat.com>
-Subject: Re: [PATCH v3 1/4] qom: allow to mark objects as deprecated or not
- secure.
-Message-ID: <ZmmFiJY4gBTk8kKk@redhat.com>
-References: <20240606143010.1318226-1-kraxel@redhat.com>
- <20240606143010.1318226-2-kraxel@redhat.com>
- <8734pifmgv.fsf@pond.sub.org>
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1sHM7L-0000sx-7f
+ for qemu-devel@nongnu.org; Wed, 12 Jun 2024 07:26:15 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1sHM7J-0007LL-J7
+ for qemu-devel@nongnu.org; Wed, 12 Jun 2024 07:26:15 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-42121d27861so56811945e9.0
+ for <qemu-devel@nongnu.org>; Wed, 12 Jun 2024 04:26:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1718191572; x=1718796372; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=L8pc7m38cemVR3cNvvaLhXXHuPXIWAzk05wEHMQjZ8U=;
+ b=XIg8pVEH4qExN+zILewhTymO3QeOn6JSH52dzX/FHmcDYARwSO/743vYc5GH56zYpS
+ +8ekznmtTTHSY6Xt82Ryzb7E6gikqyIFkM+IHiKLy3pJl6OjlQx5RbOZlVUorhCXL3qF
+ D17V/mwj0ARWznL2Vrg8OGSNzxPOUWM0AGkjmc1Gr4Zhvo9Kmll5wFk271wXGy9smfW2
+ 9MdQMu1saMe+Q1zY2VRqO5q/vfHhn6zTA+BBe2deKqcXicI2oZMH4exBjyBZGuqJY/XQ
+ zqqqOC5A13TEHlEgGk571giV7cu5Mpk1jMnYfP2k5zzF7uZLKRa/nhKEHZV5DOZCSkAS
+ bEVw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1718191572; x=1718796372;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=L8pc7m38cemVR3cNvvaLhXXHuPXIWAzk05wEHMQjZ8U=;
+ b=TU5/768JptdjEfGRuLQKWJ/1MGY7U+Ian4NImNnjso7JfcUMabsxPNzsx49mfz4T6f
+ 8oMHm4msb1fBzJvGKfUc9Wm+RBtsUANxUKxqcBd1qdhV6fwAVQXO8niVV3s5uriUhLC5
+ K2/PZUE2rQHlejiOjb4GQvOJBAPpHfbiy8bsg8vdticvTE/bP/OmCG6zRZ8h0UhJ4hRe
+ mbZaQ4E4wQpUpJ+mYzxPdwD0fiVMTud3J0TLQThY4LVGLsRxNbcW2DhhINdiV3iiOJzH
+ om2wYWjCDQZCvIQfEHjrDtgHg7jdk7sKCJ3SYWE5S8Qk7DAQLNCwG5IqoDmUYQD0j6an
+ BI/w==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVYg+mAMTTLu29YjxA5ttp2w1cuTkzeKGMLsEt/EWdcKRAog/bLwZAZqlfGqbGbc41Oi7bn2xc6JRP2EZf+hoxo6zpBPgY=
+X-Gm-Message-State: AOJu0YyyI2mrxtKkE8iYi3j6VzgXUxa2FZWgAvGtFXNS6z/VuAZudcoc
+ 59ZF6N1d+7/J85IB5LFh4K1WFrODn4YkIyNGS0BChDe9jeNHH8y8LtdKaWHcEZs=
+X-Google-Smtp-Source: AGHT+IGOzTbZygtbZWPgwJdxR4YtIZ0FNcEtFnnJSjEP3tdUqdq7g1sjKHU0BKdcxNJCu2fBvMIJyg==
+X-Received: by 2002:a05:600c:310f:b0:421:b79:93fd with SMTP id
+ 5b1f17b1804b1-422863b875amr12425695e9.21.1718191571909; 
+ Wed, 12 Jun 2024 04:26:11 -0700 (PDT)
+Received: from meli-email.org (adsl-33.37.6.162.tellas.gr. [37.6.162.33])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-422871f8eb4sm22327355e9.39.2024.06.12.04.26.11
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 12 Jun 2024 04:26:11 -0700 (PDT)
+Date: Wed, 12 Jun 2024 14:25:20 +0300
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+To: Alberto Garcia <berto@igalia.com>, qemu-devel@nongnu.org,
+ qemu-block@nongnu.org
+Cc: qemu-block@nongnu.org, Eric Blake <eblake@redhat.com>,
+ Kevin Wolf <kwolf@redhat.com>, Hanna Czenczek <hreitz@redhat.com>,
+ Madeeha Javed <javed@igalia.com>
+Subject: Re: [PATCH] scripts/qcow2-to-stdout.py: Add script to write qcow2
+ images to stdout
+User-Agent: meli 0.8.6
+References: <20240610144708.81351-1-berto@igalia.com>
+ <eye51.7m7tedycfrgc@linaro.org> <w511q52ms83.fsf@igalia.com>
+In-Reply-To: <w511q52ms83.fsf@igalia.com>
+Message-ID: <eyt3m.ivfg6ce1i6n6@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <8734pifmgv.fsf@pond.sub.org>
-User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 11
-X-Spam_score: 1.1
-X-Spam_bar: +
-X-Spam_report: (1.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.143,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8; format=flowed
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x330.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,117 +96,48 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jun 12, 2024 at 01:07:44PM +0200, Markus Armbruster wrote:
-> Gerd Hoffmann <kraxel@redhat.com> writes:
-> 
-> > Add flags to ObjectClass for objects which are deprecated or not secure.
-> > Add 'deprecated' and 'not-secure' bools to ObjectTypeInfo, report in
-> > 'qom-list-types'.  Print the flags when listing devices via '-device
-> > help'.
-> >
-> > Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
-> > ---
-> >  include/qom/object.h  | 3 +++
-> >  qom/qom-qmp-cmds.c    | 8 ++++++++
-> >  system/qdev-monitor.c | 8 ++++++++
-> >  qapi/qom.json         | 8 +++++++-
-> >  4 files changed, 26 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/include/qom/object.h b/include/qom/object.h
-> > index 13d3a655ddf9..419bd9a4b219 100644
-> > --- a/include/qom/object.h
-> > +++ b/include/qom/object.h
-> > @@ -136,6 +136,9 @@ struct ObjectClass
-> >      ObjectUnparent *unparent;
-> >  
-> >      GHashTable *properties;
-> > +
-> > +    bool deprecated;
-> > +    bool not_secure;
-> >  };
-> 
-> Ignorant question: should this be in struct TypeImpl instead?
-> 
-> >  
-> >  /**
-> > diff --git a/qom/qom-qmp-cmds.c b/qom/qom-qmp-cmds.c
-> > index e91a2353472a..325ff0ba2a25 100644
-> > --- a/qom/qom-qmp-cmds.c
-> > +++ b/qom/qom-qmp-cmds.c
-> > @@ -101,6 +101,14 @@ static void qom_list_types_tramp(ObjectClass *klass, void *data)
-> >      if (parent) {
-> >          info->parent = g_strdup(object_class_get_name(parent));
-> >      }
-> > +    if (klass->deprecated) {
-> > +        info->has_deprecated = true;
-> > +        info->deprecated = true;
-> > +    }
-> > +    if (klass->not_secure) {
-> > +        info->has_not_secure = true;
-> > +        info->not_secure = true;
-> > +    }
-> >  
-> >      QAPI_LIST_PREPEND(*pret, info);
-> >  }
-> > diff --git a/system/qdev-monitor.c b/system/qdev-monitor.c
-> > index 6af6ef7d667f..effdc95d21d3 100644
-> > --- a/system/qdev-monitor.c
-> > +++ b/system/qdev-monitor.c
-> > @@ -144,6 +144,8 @@ static bool qdev_class_has_alias(DeviceClass *dc)
-> >  
-> >  static void qdev_print_devinfo(DeviceClass *dc)
-> >  {
-> > +    ObjectClass *klass = OBJECT_CLASS(dc);
-> > +
-> >      qemu_printf("name \"%s\"", object_class_get_name(OBJECT_CLASS(dc)));
-> >      if (dc->bus_type) {
-> >          qemu_printf(", bus %s", dc->bus_type);
-> > @@ -157,6 +159,12 @@ static void qdev_print_devinfo(DeviceClass *dc)
-> >      if (!dc->user_creatable) {
-> >          qemu_printf(", no-user");
-> >      }
-> > +    if (klass->deprecated) {
-> > +        qemu_printf(", deprecated");
-> > +    }
-> > +    if (klass->not_secure) {
-> > +        qemu_printf(", not-secure");
-> > +    }
-> >      qemu_printf("\n");
-> >  }
-> >  
-> > diff --git a/qapi/qom.json b/qapi/qom.json
-> > index 8bd299265e39..3f20d4c6413b 100644
-> > --- a/qapi/qom.json
-> > +++ b/qapi/qom.json
-> > @@ -163,10 +163,16 @@
-> >  #
-> >  # @parent: Name of parent type, if any (since 2.10)
-> >  #
-> > +# @deprecated: the type is deprecated (since 9.1)
-> > +#
-> > +# @not-secure: the type (typically a device) is not considered
-> > +#     a security boundary (since 9.1)
-> 
-> What does this mean?  Does it mean "do not add an instance of this
-> device the guest unless you trust the guest"?
+On Wed, 12 Jun 2024 12:21, Alberto Garcia <berto@igalia.com> wrote:
+>On Wed 12 Jun 2024 09:01:01 AM +03, Manos Pitsidianakis wrote:
+>> Hello Alberto,
+>
+>Hello Manos!
+>
+>> > This is equivalent to using qemu-img to convert a file to qcow2 and
+>> > then writing the result to stdout, with the difference that this
+>> > tool does not need to create this temporary qcow2 file and therefore
+>> > does not need any additional disk space.
+>>
+>> Can you expand on this a little bit? Would modifying qemu-img to write
+>> to stdout if given, say, - instead of a file output path be enough to
+>> make this script unnecessary?
+>
+>Yes, it would be enough. Allowing qemu-img convert to write to stdout
+>would indeed be very nice for the end user but it's a bit of a niche use
+>case and it's also not a trivial task so I don't think that it's worth
+>the effort. The output files that you pass to qemu-img convert need to
+>be seekable because the only way to produce a qcow2 file without doing
+>that is by precalculating all the metadata in advance before starting to
+>write anything (that's why this script reads the input file twice).
+>
+>This is fundamentally different to what qemu-img convert does, which is
+>to read the input file from start to finish and write it to the output
+>file, relying on the relevant driver's existing write operations. All
+>those assume random access to the output file.
+>
+>qemu-img is also much more generic in the sense that it supports many
+>different output formats and image options.
+>
+>In contrast, writing the algorithm for a basic subset of qcow2 is quite
+>simple and that's why I think that it makes sense to do it in a separate
+>tool.
+>
+>Berto
 
-Essentially yes. This ties to our security doc where we declare
-we won't consider non-virtualization use cases as being security
-bugs (CVEs) as large parts of QEMU haven't been designed to
-provide a guest security boundary
+Thanks for the complete explanation! It makes sense. Maybe add it to the 
+commit message as well, it's informative.
 
-  https://www.qemu.org/docs/master/system/security.html
-
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-
+Manos
 
