@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 092CC9053A7
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jun 2024 15:23:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A9EF9053A4
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jun 2024 15:22:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sHNva-0001GP-8X; Wed, 12 Jun 2024 09:22:14 -0400
+	id 1sHNvp-00020p-AH; Wed, 12 Jun 2024 09:22:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sHNvA-0000mn-Ts
- for qemu-devel@nongnu.org; Wed, 12 Jun 2024 09:21:50 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sHNvH-00010X-FF
+ for qemu-devel@nongnu.org; Wed, 12 Jun 2024 09:21:56 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sHNv5-00040b-DW
- for qemu-devel@nongnu.org; Wed, 12 Jun 2024 09:21:45 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sHNv9-00041A-T9
+ for qemu-devel@nongnu.org; Wed, 12 Jun 2024 09:21:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1718198502;
+ s=mimecast20190719; t=1718198506;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=4cUKmPgrHxOvdyn6AxHRIzYDAEU26KLGZwsf7oV2h70=;
- b=HSTiwQ+q5GXx0l8e9aXg7j6/RtL8QG/Yi2ExzgLC0Qx4aGEdZpnxhlL9GVbOmk6XeOFsMs
- MVRPHEln8ghMs39nA0zHtrug2Mi9mr1nqNTKCaHoZc/94ItCt1F84eK3hifFeBMFxDbqhq
- Y8jfUIXAVFqQzXWkTGgHZm+5bsn5v+M=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ bh=fOfjBdntAepIxFZzZ7peqwPdszRHHDJUcIIq7tm5rMg=;
+ b=L25CN6wzsRaA9J4o4dBnN/mCREIx0dB4pTjNIElnmOE6WkP0qHV/gxPMlOQ0jl6Qo+BBFN
+ yBk7NMe3QIIWAKGbCn0r92ho85K2rszUxDerAG0QXrRnh9mKd91p7G99uZHRJeyrMwA0hB
+ 3lHnhQx2wKG23JLksJFiMbm6nv+W4gA=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-588-GZ47Zw3HO6W4-gDRsVpZlQ-1; Wed,
- 12 Jun 2024 09:21:37 -0400
-X-MC-Unique: GZ47Zw3HO6W4-gDRsVpZlQ-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-497-I9YzEPqgNhuNvN_X8U9f0g-1; Wed,
+ 12 Jun 2024 09:21:42 -0400
+X-MC-Unique: I9YzEPqgNhuNvN_X8U9f0g-1
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 12149195DE0C; Wed, 12 Jun 2024 13:21:36 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 4E8331955D64; Wed, 12 Jun 2024 13:21:38 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.194.236])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 501441956087; Wed, 12 Jun 2024 13:21:32 +0000 (UTC)
+ id 704C8196BE8C; Wed, 12 Jun 2024 13:21:35 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org,
 	Richard Henderson <richard.henderson@linaro.org>
 Cc: Zhao Liu <zhao1.liu@intel.com>,
 	Yongwei Ma <yongwei.ma@intel.com>
-Subject: [PULL 13/15] tests/unit/test-smp-parse: Test "modules" and "dies"
- combination case
-Date: Wed, 12 Jun 2024 15:20:53 +0200
-Message-ID: <20240612132055.326889-14-thuth@redhat.com>
+Subject: [PULL 14/15] tests/unit/test-smp-parse: Test the full 8-levels
+ topology hierarchy
+Date: Wed, 12 Jun 2024 15:20:54 +0200
+Message-ID: <20240612132055.326889-15-thuth@redhat.com>
 In-Reply-To: <20240612132055.326889-1-thuth@redhat.com>
 References: <20240612132055.326889-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: 11
 X-Spam_score: 1.1
@@ -83,160 +83,313 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhao Liu <zhao1.liu@intel.com>
 
-Since i386 PC machine supports both "modules" and "dies" in -smp, add the
-"modules" and "dies" combination test case to match the actual topology
-usage scenario.
+With module level, QEMU now support 8-levels topology hierarchy.
+Cover "modules" in SMP_CONFIG_WITH_FULL_TOPO related cases.
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 Tested-by: Yongwei Ma <yongwei.ma@intel.com>
-Message-ID: <20240529061925.350323-8-zhao1.liu@intel.com>
+Message-ID: <20240529061925.350323-9-zhao1.liu@intel.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/unit/test-smp-parse.c | 103 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 103 insertions(+)
+ tests/unit/test-smp-parse.c | 129 ++++++++++++++++++++++++------------
+ 1 file changed, 85 insertions(+), 44 deletions(-)
 
 diff --git a/tests/unit/test-smp-parse.c b/tests/unit/test-smp-parse.c
-index 01832e5eda..2ca8530e93 100644
+index 2ca8530e93..f9bccb56ab 100644
 --- a/tests/unit/test-smp-parse.c
 +++ b/tests/unit/test-smp-parse.c
-@@ -445,6 +445,33 @@ static const struct SMPTestData data_with_dies_invalid[] = {
+@@ -94,11 +94,11 @@
+         }
+ 
+ /*
+- * Currently QEMU supports up to a 7-level topology hierarchy, which is the
++ * Currently QEMU supports up to a 8-level topology hierarchy, which is the
+  * QEMU's unified abstract representation of CPU topology.
+- *  -drawers/books/sockets/dies/clusters/cores/threads
++ *  -drawers/books/sockets/dies/clusters/modules/cores/threads
+  */
+-#define SMP_CONFIG_WITH_FULL_TOPO(a, b, c, d, e, f, g, h, i)    \
++#define SMP_CONFIG_WITH_FULL_TOPO(a, b, c, d, e, f, g, h, i, j) \
+         {                                                       \
+             .has_cpus     = true, .cpus     = a,                \
+             .has_drawers  = true, .drawers  = b,                \
+@@ -106,9 +106,10 @@
+             .has_sockets  = true, .sockets  = d,                \
+             .has_dies     = true, .dies     = e,                \
+             .has_clusters = true, .clusters = f,                \
+-            .has_cores    = true, .cores    = g,                \
+-            .has_threads  = true, .threads  = h,                \
+-            .has_maxcpus  = true, .maxcpus  = i,                \
++            .has_modules  = true, .modules  = g,                \
++            .has_cores    = true, .cores    = h,                \
++            .has_threads  = true, .threads  = i,                \
++            .has_maxcpus  = true, .maxcpus  = j,                \
+         }
+ 
+ /**
+@@ -336,10 +337,10 @@ static const struct SMPTestData data_generic_valid[] = {
+         /*
+          * Unsupported parameters are always allowed to be set to '1'
+          * config:
+-         *   -smp 8,drawers=1,books=1,sockets=2,dies=1,clusters=1,cores=2,\
+-         *        threads=2,maxcpus=8
++         *   -smp 8,drawers=1,books=1,sockets=2,dies=1,clusters=1,modules=1,\
++         *        cores=2,threads=2,maxcpus=8
+          * expect: cpus=8,sockets=2,cores=2,threads=2,maxcpus=8 */
+-        .config = SMP_CONFIG_WITH_FULL_TOPO(8, 1, 1, 2, 1, 1, 2, 2, 8),
++        .config = SMP_CONFIG_WITH_FULL_TOPO(8, 1, 1, 2, 1, 1, 1, 2, 2, 8),
+         .expect_prefer_sockets = CPU_TOPOLOGY_GENERIC(8, 2, 2, 2, 8),
+         .expect_prefer_cores   = CPU_TOPOLOGY_GENERIC(8, 2, 2, 2, 8),
+     },
+@@ -561,32 +562,37 @@ static const struct SMPTestData data_full_topo_invalid[] = {
+     {
+         /*
+          * config: -smp 200,drawers=3,books=5,sockets=2,dies=4,\
+-         *              clusters=2,cores=7,threads=2,maxcpus=200
++         *              clusters=2,modules=3,cores=7,threads=2,\
++         *              maxcpus=200
+          */
+-        .config = SMP_CONFIG_WITH_FULL_TOPO(200, 3, 5, 2, 4, 2, 7, 2, 200),
++        .config = SMP_CONFIG_WITH_FULL_TOPO(200, 3, 5, 2, 4, 2, 3, 7, 2, 200),
+         .expect_error = "Invalid CPU topology: "
+                         "product of the hierarchy must match maxcpus: "
+                         "drawers (3) * books (5) * sockets (2) * dies (4) * "
+-                        "clusters (2) * cores (7) * threads (2) "
++                        "clusters (2) * modules (3) * cores (7) * threads (2) "
+                         "!= maxcpus (200)",
+     }, {
+         /*
+-         * config: -smp 3361,drawers=3,books=5,sockets=2,dies=4,\
+-         *              clusters=2,cores=7,threads=2,maxcpus=3360
++         * config: -smp 2881,drawers=3,books=5,sockets=2,dies=4,\
++         *              clusters=2,modules=3,cores=2,threads=2,
++         *              maxcpus=2880
+          */
+-        .config = SMP_CONFIG_WITH_FULL_TOPO(3361, 3, 5, 2, 4, 2, 7, 2, 3360),
++        .config = SMP_CONFIG_WITH_FULL_TOPO(2881, 3, 5, 2, 4,
++                                            2, 3, 2, 2, 2880),
+         .expect_error = "Invalid CPU topology: "
+                         "maxcpus must be equal to or greater than smp: "
+-                        "drawers (3) * books (5) * sockets (2) * dies (4) * "
+-                        "clusters (2) * cores (7) * threads (2) "
+-                        "== maxcpus (3360) < smp_cpus (3361)",
++                        "drawers (3) * books (5) * sockets (2) * "
++                        "dies (4) * clusters (2) * modules (3) * "
++                        "cores (2) * threads (2) == maxcpus (2880) "
++                        "< smp_cpus (2881)",
+     }, {
+         /*
+          * config: -smp 1,drawers=3,books=5,sockets=2,dies=4,\
+-         *              clusters=2,cores=7,threads=3,maxcpus=5040
++         *              clusters=2,modules=3,cores=3,threads=3,\
++         *              maxcpus=6480
+          */
+-        .config = SMP_CONFIG_WITH_FULL_TOPO(1, 3, 5, 2, 4, 2, 7, 3, 5040),
+-        .expect_error = "Invalid SMP CPUs 5040. The max CPUs supported "
++        .config = SMP_CONFIG_WITH_FULL_TOPO(1, 3, 5, 2, 4, 2, 3, 3, 3, 6480),
++        .expect_error = "Invalid SMP CPUs 6480. The max CPUs supported "
+                         "by machine '" SMP_MACHINE_NAME "' is 4096",
      },
  };
- 
-+static const struct SMPTestData data_with_modules_dies_invalid[] = {
-+    {
-+        /*
-+         * config: -smp 200,sockets=3,dies=5,modules=2,cores=4,\
-+         * threads=2,maxcpus=200
-+         */
-+        .config = SMP_CONFIG_WITH_MODS_DIES(T, 200, T, 3, T, 5, T,
-+                                            2, T, 4, T, 2, T, 200),
-+        .expect_error = "Invalid CPU topology: "
-+                        "product of the hierarchy must match maxcpus: "
-+                        "sockets (3) * dies (5) * modules (2) * "
-+                        "cores (4) * threads (2) != maxcpus (200)",
-+    }, {
-+        /*
-+         * config: -smp 242,sockets=3,dies=5,modules=2,cores=4,\
-+         * threads=2,maxcpus=240
-+         */
-+        .config = SMP_CONFIG_WITH_MODS_DIES(T, 242, T, 3, T, 5, T,
-+                                            2, T, 4, T, 2, T, 240),
-+        .expect_error = "Invalid CPU topology: "
-+                        "maxcpus must be equal to or greater than smp: "
-+                        "sockets (3) * dies (5) * modules (2) * "
-+                        "cores (4) * threads (2) "
-+                        "== maxcpus (240) < smp_cpus (242)",
-+    },
-+};
-+
- static const struct SMPTestData data_with_clusters_invalid[] = {
-     {
-         /* config: -smp 16,sockets=2,clusters=2,cores=4,threads=2,maxcpus=16 */
-@@ -905,6 +932,14 @@ static void machine_with_dies_class_init(ObjectClass *oc, void *data)
-     mc->smp_props.dies_supported = true;
- }
- 
-+static void machine_with_modules_dies_class_init(ObjectClass *oc, void *data)
-+{
-+    MachineClass *mc = MACHINE_CLASS(oc);
-+
-+    mc->smp_props.modules_supported = true;
-+    mc->smp_props.dies_supported = true;
-+}
-+
- static void machine_with_clusters_class_init(ObjectClass *oc, void *data)
- {
-     MachineClass *mc = MACHINE_CLASS(oc);
-@@ -1082,6 +1117,67 @@ static void test_with_dies(const void *opaque)
-     object_unref(obj);
- }
- 
-+static void test_with_modules_dies(const void *opaque)
-+{
-+    const char *machine_type = opaque;
-+    Object *obj = object_new(machine_type);
-+    MachineState *ms = MACHINE(obj);
-+    MachineClass *mc = MACHINE_GET_CLASS(obj);
-+    SMPTestData data = {};
-+    unsigned int num_modules = 5, num_dies = 3;
-+    int i;
-+
-+    for (i = 0; i < ARRAY_SIZE(data_generic_valid); i++) {
-+        data = data_generic_valid[i];
-+        unsupported_params_init(mc, &data);
-+
-+        /*
-+         * when modules and dies parameters are omitted, they will
-+         * be both set as 1.
-+         */
-+        data.expect_prefer_sockets.modules = 1;
-+        data.expect_prefer_sockets.dies = 1;
-+        data.expect_prefer_cores.modules = 1;
-+        data.expect_prefer_cores.dies = 1;
-+
-+        smp_parse_test(ms, &data, true);
-+
-+        /* when modules and dies parameters are both specified */
-+        data.config.has_modules = true;
-+        data.config.modules = num_modules;
-+        data.config.has_dies = true;
-+        data.config.dies = num_dies;
-+
-+        if (data.config.has_cpus) {
-+            data.config.cpus *= num_modules * num_dies;
-+        }
-+        if (data.config.has_maxcpus) {
-+            data.config.maxcpus *= num_modules * num_dies;
-+        }
-+
-+        data.expect_prefer_sockets.modules = num_modules;
-+        data.expect_prefer_sockets.dies = num_dies;
-+        data.expect_prefer_sockets.cpus *= num_modules * num_dies;
-+        data.expect_prefer_sockets.max_cpus *= num_modules * num_dies;
-+
-+        data.expect_prefer_cores.modules = num_modules;
-+        data.expect_prefer_cores.dies = num_dies;
-+        data.expect_prefer_cores.cpus *= num_modules * num_dies;
-+        data.expect_prefer_cores.max_cpus *= num_modules * num_dies;
-+
-+        smp_parse_test(ms, &data, true);
-+    }
-+
-+    for (i = 0; i < ARRAY_SIZE(data_with_modules_dies_invalid); i++) {
-+        data = data_with_modules_dies_invalid[i];
-+        unsupported_params_init(mc, &data);
-+
-+        smp_parse_test(ms, &data, false);
-+    }
-+
-+    object_unref(obj);
-+}
-+
- static void test_with_clusters(const void *opaque)
- {
-     const char *machine_type = opaque;
-@@ -1398,6 +1494,10 @@ static const TypeInfo smp_machine_types[] = {
-         .name           = MACHINE_TYPE_NAME("smp-with-dies"),
-         .parent         = TYPE_MACHINE,
-         .class_init     = machine_with_dies_class_init,
-+    }, {
-+        .name           = MACHINE_TYPE_NAME("smp-with-modules-dies"),
-+        .parent         = TYPE_MACHINE,
-+        .class_init     = machine_with_modules_dies_class_init,
+@@ -596,81 +602,100 @@ static const struct SMPTestData data_zero_topo_invalid[] = {
+         /*
+          * Test "cpus=0".
+          * config: -smp 0,drawers=1,books=1,sockets=1,dies=1,\
+-         *              clusters=1,cores=1,threads=1,maxcpus=1
++         *              clusters=1,modules=1,cores=1,threads=1,\
++         *              maxcpus=1
+          */
+-        .config = SMP_CONFIG_WITH_FULL_TOPO(0, 1, 1, 1, 1, 1, 1, 1, 1),
++        .config = SMP_CONFIG_WITH_FULL_TOPO(0, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+         .expect_error = "Invalid CPU topology: CPU topology parameters must "
+                         "be greater than zero",
      }, {
-         .name           = MACHINE_TYPE_NAME("smp-with-clusters"),
-         .parent         = TYPE_MACHINE,
-@@ -1441,6 +1541,9 @@ int main(int argc, char *argv[])
-     g_test_add_data_func("/test-smp-parse/with_dies",
-                          MACHINE_TYPE_NAME("smp-with-dies"),
-                          test_with_dies);
-+    g_test_add_data_func("/test-smp-parse/with_modules_dies",
-+                         MACHINE_TYPE_NAME("smp-with-modules-dies"),
-+                         test_with_modules_dies);
-     g_test_add_data_func("/test-smp-parse/with_clusters",
-                          MACHINE_TYPE_NAME("smp-with-clusters"),
-                          test_with_clusters);
+         /*
+          * Test "drawers=0".
+          * config: -smp 1,drawers=0,books=1,sockets=1,dies=1,\
+-         *              clusters=1,cores=1,threads=1,maxcpus=1
++         *              clusters=1,modules=1,cores=1,threads=1,\
++         *              maxcpus=1
+          */
+-        .config = SMP_CONFIG_WITH_FULL_TOPO(1, 0, 1, 1, 1, 1, 1, 1, 1),
++        .config = SMP_CONFIG_WITH_FULL_TOPO(1, 0, 1, 1, 1, 1, 1, 1, 1, 1),
+         .expect_error = "Invalid CPU topology: CPU topology parameters must "
+                         "be greater than zero",
+     }, {
+         /*
+          * Test "books=0".
+          * config: -smp 1,drawers=1,books=0,sockets=1,dies=1,\
+-         *              clusters=1,cores=1,threads=1,maxcpus=1
++         *              clusters=1,modules=1,cores=1,threads=1,\
++         *              maxcpus=1
+          */
+-        .config = SMP_CONFIG_WITH_FULL_TOPO(1, 1, 0, 1, 1, 1, 1, 1, 1),
++        .config = SMP_CONFIG_WITH_FULL_TOPO(1, 1, 0, 1, 1, 1, 1, 1, 1, 1),
+         .expect_error = "Invalid CPU topology: CPU topology parameters must "
+                         "be greater than zero",
+     }, {
+         /*
+          * Test "sockets=0".
+          * config: -smp 1,drawers=1,books=1,sockets=0,dies=1,\
+-         *              clusters=1,cores=1,threads=1,maxcpus=1
++         *              clusters=1,modules=1,cores=1,threads=1,
++         *              maxcpus=1
+          */
+-        .config = SMP_CONFIG_WITH_FULL_TOPO(1, 1, 1, 0, 1, 1, 1, 1, 1),
++        .config = SMP_CONFIG_WITH_FULL_TOPO(1, 1, 1, 0, 1, 1, 1, 1, 1, 1),
+         .expect_error = "Invalid CPU topology: CPU topology parameters must "
+                         "be greater than zero",
+     }, {
+         /*
+          * Test "dies=0".
+          * config: -smp 1,drawers=1,books=1,sockets=1,dies=0,\
+-         *              clusters=1,cores=1,threads=1,maxcpus=1
++         *              clusters=1,modules=1,cores=1,threads=1,\
++         *              maxcpus=1
+          */
+-        .config = SMP_CONFIG_WITH_FULL_TOPO(1, 1, 1, 1, 0, 1, 1, 1, 1),
++        .config = SMP_CONFIG_WITH_FULL_TOPO(1, 1, 1, 1, 0, 1, 1, 1, 1, 1),
+         .expect_error = "Invalid CPU topology: CPU topology parameters must "
+                         "be greater than zero",
+     }, {
+         /*
+          * Test "clusters=0".
+          * config: -smp 1,drawers=1,books=1,sockets=1,dies=1,\
+-         *              clusters=0,cores=1,threads=1,maxcpus=1
++         *              clusters=0,modules=1,cores=1,threads=1,\
++         *              maxcpus=1
++         */
++        .config = SMP_CONFIG_WITH_FULL_TOPO(1, 1, 1, 1, 1, 0, 1, 1, 1, 1),
++        .expect_error = "Invalid CPU topology: CPU topology parameters must "
++                        "be greater than zero",
++    }, {
++        /*
++         * Test "modules=0".
++         * config: -smp 1,drawers=1,books=1,sockets=1,dies=1,\
++         *              clusters=1,modules=0,cores=1,threads=1,\
++         *              maxcpus=1
+          */
+-        .config = SMP_CONFIG_WITH_FULL_TOPO(1, 1, 1, 1, 1, 0, 1, 1, 1),
++        .config = SMP_CONFIG_WITH_FULL_TOPO(1, 1, 1, 1, 1, 1, 0, 1, 1, 1),
+         .expect_error = "Invalid CPU topology: CPU topology parameters must "
+                         "be greater than zero",
+     }, {
+         /*
+          * Test "cores=0".
+          * config: -smp 1,drawers=1,books=1,sockets=1,dies=1,\
+-         *              clusters=1,cores=0,threads=1,maxcpus=1
++         *              clusters=1,modules=1,cores=0,threads=1,
++         *              maxcpus=1
+          */
+-        .config = SMP_CONFIG_WITH_FULL_TOPO(1, 1, 1, 1, 1, 1, 0, 1, 1),
++        .config = SMP_CONFIG_WITH_FULL_TOPO(1, 1, 1, 1, 1, 1, 1, 0, 1, 1),
+         .expect_error = "Invalid CPU topology: CPU topology parameters must "
+                         "be greater than zero",
+     }, {
+         /*
+          * Test "threads=0".
+          * config: -smp 1,drawers=1,books=1,sockets=1,dies=1,\
+-         *              clusters=1,cores=1,threads=0,maxcpus=1
++         *              clusters=1,modules=1,cores=1,threads=0,\
++         *              maxcpus=1
+          */
+-        .config = SMP_CONFIG_WITH_FULL_TOPO(1, 1, 1, 1, 1, 1, 1, 0, 1),
++        .config = SMP_CONFIG_WITH_FULL_TOPO(1, 1, 1, 1, 1, 1, 1, 1, 0, 1),
+         .expect_error = "Invalid CPU topology: CPU topology parameters must "
+                         "be greater than zero",
+     }, {
+         /*
+          * Test "maxcpus=0".
+          * config: -smp 1,drawers=1,books=1,sockets=1,dies=1,\
+-         *              clusters=1,cores=1,threads=1,maxcpus=0
++         *              clusters=1,modules=1,cores=1,threads=1,\
++         *              maxcpus=0
+          */
+-        .config = SMP_CONFIG_WITH_FULL_TOPO(1, 1, 1, 1, 1, 1, 1, 1, 0),
++        .config = SMP_CONFIG_WITH_FULL_TOPO(1, 1, 1, 1, 1, 1, 1, 1, 1, 0),
+         .expect_error = "Invalid CPU topology: CPU topology parameters must "
+                         "be greater than zero",
+     },
+@@ -977,6 +1002,7 @@ static void machine_full_topo_class_init(ObjectClass *oc, void *data)
+     mc->smp_props.books_supported = true;
+     mc->smp_props.dies_supported = true;
+     mc->smp_props.clusters_supported = true;
++    mc->smp_props.modules_supported = true;
+ }
+ 
+ static void test_generic_valid(const void *opaque)
+@@ -1396,30 +1422,41 @@ static void test_full_topo(const void *opaque)
+     MachineState *ms = MACHINE(obj);
+     MachineClass *mc = MACHINE_GET_CLASS(obj);
+     SMPTestData data = {};
+-    unsigned int drawers = 5, books = 3, dies = 2, clusters = 7, multiplier;
++    unsigned int drawers, books, dies, clusters, modules, multiplier;
+     int i;
+ 
+-    multiplier = drawers * books * dies * clusters;
++    drawers = 5;
++    books = 3;
++    dies = 2;
++    clusters = 3;
++    modules = 2;
++
++    multiplier = drawers * books * dies * clusters * modules;
+     for (i = 0; i < ARRAY_SIZE(data_generic_valid); i++) {
+         data = data_generic_valid[i];
+         unsupported_params_init(mc, &data);
+ 
+         /*
+-         * when drawers, books, dies and clusters parameters are omitted,
+-         * they will be set as 1.
++         * when drawers, books, dies, clusters and modules parameters are
++         * omitted, they will be set as 1.
+          */
+         data.expect_prefer_sockets.drawers = 1;
+         data.expect_prefer_sockets.books = 1;
+         data.expect_prefer_sockets.dies = 1;
+         data.expect_prefer_sockets.clusters = 1;
++        data.expect_prefer_sockets.modules = 1;
+         data.expect_prefer_cores.drawers = 1;
+         data.expect_prefer_cores.books = 1;
+         data.expect_prefer_cores.dies = 1;
+         data.expect_prefer_cores.clusters = 1;
++        data.expect_prefer_cores.modules = 1;
+ 
+         smp_parse_test(ms, &data, true);
+ 
+-        /* when drawers, books, dies and clusters parameters are specified. */
++        /*
++         * when drawers, books, dies, clusters and modules parameters
++         * are specified.
++         */
+         data.config.has_drawers = true;
+         data.config.drawers = drawers;
+         data.config.has_books = true;
+@@ -1428,6 +1465,8 @@ static void test_full_topo(const void *opaque)
+         data.config.dies = dies;
+         data.config.has_clusters = true;
+         data.config.clusters = clusters;
++        data.config.has_modules = true;
++        data.config.modules = modules;
+ 
+         if (data.config.has_cpus) {
+             data.config.cpus *= multiplier;
+@@ -1440,6 +1479,7 @@ static void test_full_topo(const void *opaque)
+         data.expect_prefer_sockets.books = books;
+         data.expect_prefer_sockets.dies = dies;
+         data.expect_prefer_sockets.clusters = clusters;
++        data.expect_prefer_sockets.modules = modules;
+         data.expect_prefer_sockets.cpus *= multiplier;
+         data.expect_prefer_sockets.max_cpus *= multiplier;
+ 
+@@ -1447,6 +1487,7 @@ static void test_full_topo(const void *opaque)
+         data.expect_prefer_cores.books = books;
+         data.expect_prefer_cores.dies = dies;
+         data.expect_prefer_cores.clusters = clusters;
++        data.expect_prefer_cores.modules = modules;
+         data.expect_prefer_cores.cpus *= multiplier;
+         data.expect_prefer_cores.max_cpus *= multiplier;
+ 
 -- 
 2.45.2
 
