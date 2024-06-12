@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F134A904DD3
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jun 2024 10:16:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1A3B904DE8
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jun 2024 10:17:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sHJ9D-0004jv-2l; Wed, 12 Jun 2024 04:15:59 -0400
+	id 1sHJ9J-000531-4W; Wed, 12 Jun 2024 04:16:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jim.shu@sifive.com>)
- id 1sHJ9A-0004eY-EX
- for qemu-devel@nongnu.org; Wed, 12 Jun 2024 04:15:56 -0400
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ id 1sHJ9G-0004xO-99
+ for qemu-devel@nongnu.org; Wed, 12 Jun 2024 04:16:02 -0400
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <jim.shu@sifive.com>)
- id 1sHJ97-0006b4-6d
- for qemu-devel@nongnu.org; Wed, 12 Jun 2024 04:15:55 -0400
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-1f70fdc9644so5366015ad.0
- for <qemu-devel@nongnu.org>; Wed, 12 Jun 2024 01:15:52 -0700 (PDT)
+ id 1sHJ9C-0006ns-Ud
+ for qemu-devel@nongnu.org; Wed, 12 Jun 2024 04:16:01 -0400
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-6ff6fe215c6so5783297b3a.3
+ for <qemu-devel@nongnu.org>; Wed, 12 Jun 2024 01:15:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1718180151; x=1718784951; darn=nongnu.org;
+ d=sifive.com; s=google; t=1718180157; x=1718784957; darn=nongnu.org;
  h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
  :cc:subject:date:message-id:reply-to;
- bh=jYeeLmPdyr50rNmzKWawNIJPiKXGVFWI+GFbsjjtyoU=;
- b=JXxyEB4mvDeHcNIraBpzFnpsTVRCeQ0HA0qgJLS8JfDllSEcqox0xFtlOt4uy4aUzy
- R2I8u8ymwu5tJGmebYpVzMujpsBoI0QJ2SAp5mz8EUStzTQyG5X22Xui7wixU5xP0FLS
- hQwvQn5v2R7Wt3tAxjHBBRDNjQDOxJtLnbgvUgfQP0vN1jd30wFe3UcBkHbQNLEqpfId
- yUD0vQSLWbRNE1DR0DyQLIAhQkldxOstmfJJmDEq303TIAOjaj8aIaAlrKJ2EMaRbP0k
- QgEkUlShe/3mtcYJuYYHwdCT10rrfIliTzGRoKXLiLBuerr4FXtUY97KN2/7s1f6ixEZ
- GH6Q==
+ bh=TqErKBJ8Vh4RlMrfEtbYlUxbkO7H6dBIl2WlaEw920Y=;
+ b=iz9JaB2W2WiNUN/e/jKLOGxrTc63KGmEhpvAVgwkGRM40dq5MAWLV5c7cu3c0D5jWb
+ pB1lps0zPtqbyMPe5bjNuq8+1x6BIgrAXt5L6Hsg7ePYrYNeUhlF8KmoIyTrJ12MlDgm
+ CF7HRNzehr9a/xUM+fUi6WGZobVCeUGml+4nJVvy+IZ6YaTyJ+KUKhiS/lV2pM3kabFz
+ 7lRn442kSZEtJaTFpXeQD4wCHtyb5ZRTeeV7qUNjjPfJ49GDS/rZIyYX/1hOw73rjbpw
+ SUH+0A1oYLJsMwN26UxQn5j2oPkiW8gyhodcaND2k/05V0Jx1DFV7Tpl8nzKKtkuhsmY
+ n4ug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718180151; x=1718784951;
+ d=1e100.net; s=20230601; t=1718180157; x=1718784957;
  h=references:in-reply-to:message-id:date:subject:cc:to:from
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=jYeeLmPdyr50rNmzKWawNIJPiKXGVFWI+GFbsjjtyoU=;
- b=u26lRNBCco1S08gWejzTPZGd6ifBMw6tf51yTuAuT5Ssq8oDzmlU2s9Melv75zh9+i
- /vPLow7LxalaJmfPrqidvV/FzLGcyONVkTCaIgm7PokPE+7vBVQpc96Eobx2GFMl6MID
- Bmc2VSsKuTKUjxxJ/LmdhTxvGTV9rcpy9/R0Xa/Om0VfHFlRXkwNb0Ypxdwwl+HFQG/6
- 57cjpqi9EAfMQSzWjqxFD9XiwwzjnCZrrKbAvj9VouJmeuAkubzEjHEJvGQCNjQgNG14
- 9z/PIAulF2kdTljlYIHCLodMP9pBrVwO7cnncp3HqMUSYcMGRmhxQZhvX4vRsW/7rdAG
- nahQ==
-X-Gm-Message-State: AOJu0YzZYvsoOs6g5Vh+cd+MWCwuUInP3EZEvKYvFtKfag/8uFBQSmlP
- Y9nrdQHvR3PPJ6GV7HEJkdC4BZadS9SWgf44SxDVLS+9gzYw96Xxc07JJ9fg0ueeOq6n73f+4pl
- VSa3RjypLzOGniSzKRd/Kl22nvjqck/QqDyp1s6T6mO+0EPS4d6mVBHVj5HMSamrGChryzXThpc
- JQ/KYOOwGnCDZr7xn5GE1FmQXKHgNwptXQY6rYW8jHCw==
-X-Google-Smtp-Source: AGHT+IFm+FAU4+aHW/gmxVcFuim3vQHDOe0Yw75lv5loukaVymKlXe5Qw07gGHClyl1ak5dZ640tGQ==
-X-Received: by 2002:a17:902:e80e:b0:1f6:1a86:37ba with SMTP id
- d9443c01a7336-1f83ae5eccemr21552635ad.2.1718180150977; 
- Wed, 12 Jun 2024 01:15:50 -0700 (PDT)
+ bh=TqErKBJ8Vh4RlMrfEtbYlUxbkO7H6dBIl2WlaEw920Y=;
+ b=TfA0XVvh3WKX3fHxYA6xfoq6VB0a1DzcwadyVVWXuxCQmSUkpYwq3QVc83YwNJNFrg
+ kroutUuLjjGel3JrS4HQ1+okLp4BGWgWZl5sqgphlASvp6Td4OXtZU61iDalhzTjkz9S
+ Q0Yp1LNu4vEZOMqnxEp3m8VreR2MYSfLsXhB8NcFrv6DgvZovCUWUeQ+5kgTsLXCzZQu
+ hX5dhTBE5Cd2k1Rdnqs5kSLFOQxfmo7Uk9gehd3cFemGvNyazU6LRa8YejTNYyiJxmAx
+ j51xK9VJW27bRMmHhBRRkGfHBDPfbJ0s636zLDPnVg3GKOdReRfw316x/jRSX1P8/PTL
+ 2qgQ==
+X-Gm-Message-State: AOJu0YxhiFwXINg+yau/ghAhXpaUKO83iRir7Jp+l0UiG5XDGvyTgPQJ
+ +TbCcLwk4J6lJIGrYsiuoWZDgMexcBNeIJI0RN8z42eMIei4Tes+1RppxKjTlBcHizIKk0PMuZW
+ kWEYVm+qryCxjNdmMEDkwuugyZY8NXSPGPqrsB+1o8Me0ZnIeh4M2LWI0aRKRGNOE/zRk1aPosG
+ BlAM1b/4X5g2vAkmeR1gjtNsexlrOmuvEPUsNdgkMtxQ==
+X-Google-Smtp-Source: AGHT+IGI/5JvgYhd7bnfcYyzI14T/qSQRiDtfGNIcfKqV4gEjKNytZJRly7oswdpyjJJkJsgXTgLEw==
+X-Received: by 2002:a05:6a21:611:b0:1b5:d00e:98e1 with SMTP id
+ adf61e73a8af0-1b8a9b78d1fmr1292108637.15.1718180156907; 
+ Wed, 12 Jun 2024 01:15:56 -0700 (PDT)
 Received: from hsinchu26.internal.sifive.com
  (59-124-168-89.hinet-ip.hinet.net. [59.124.168.89])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1f8393e8e53sm11363875ad.16.2024.06.12.01.15.45
+ d9443c01a7336-1f8393e8e53sm11363875ad.16.2024.06.12.01.15.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 12 Jun 2024 01:15:50 -0700 (PDT)
+ Wed, 12 Jun 2024 01:15:56 -0700 (PDT)
 From: Jim Shu <jim.shu@sifive.com>
 To: qemu-devel@nongnu.org,
 	qemu-riscv@nongnu.org
@@ -89,15 +89,15 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  qemu-ppc@nongnu.org (open list:PowerPC TCG CPUs),
  qemu-s390x@nongnu.org (open list:S390 TCG CPUs),
  Jim Shu <jim.shu@sifive.com>
-Subject: [RFC PATCH 13/16] hw/misc: riscv_wgchecker: Implement wgchecker slot
- registers
-Date: Wed, 12 Jun 2024 16:14:13 +0800
-Message-Id: <20240612081416.29704-14-jim.shu@sifive.com>
+Subject: [RFC PATCH 14/16] hw/misc: riscv_wgchecker: Implement correct
+ block-access behavior
+Date: Wed, 12 Jun 2024 16:14:14 +0800
+Message-Id: <20240612081416.29704-15-jim.shu@sifive.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20240612081416.29704-1-jim.shu@sifive.com>
 References: <20240612081416.29704-1-jim.shu@sifive.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=jim.shu@sifive.com; helo=mail-pl1-x62e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=jim.shu@sifive.com; helo=mail-pf1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -120,450 +120,217 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-wgChecker slot is similar to PMP region. SW could program each slot to
-configure the permission of address range.
+The wgChecker is configurable for whether blocked accesses:
+* should cause a bus error or just read return zero and write ignore
+* should generate the interrupt or not
 
 Signed-off-by: Jim Shu <jim.shu@sifive.com>
 ---
- hw/misc/riscv_wgchecker.c          | 330 +++++++++++++++++++++++++++++
- hw/misc/riscv_worldguard.c         |   3 +
- include/hw/misc/riscv_worldguard.h |   4 +
- 3 files changed, 337 insertions(+)
+ hw/misc/riscv_wgchecker.c | 169 +++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 167 insertions(+), 2 deletions(-)
 
 diff --git a/hw/misc/riscv_wgchecker.c b/hw/misc/riscv_wgchecker.c
-index 2421b1438c..ab03fd671f 100644
+index ab03fd671f..55e5e8127f 100644
 --- a/hw/misc/riscv_wgchecker.c
 +++ b/hw/misc/riscv_wgchecker.c
-@@ -53,6 +53,52 @@ REG64(ERRCAUSE,             0x010)
-      R_ERRCAUSE_IP_MASK)
+@@ -100,6 +100,169 @@ REG32(SLOT_CFG,             0x010)
+ #define P_READ                  (1 << 0)
+ #define P_WRITE                 (1 << 1)
  
- REG64(ERRADDR,              0x018)
-+REG64(WGC_SLOT,             0x020)
-+
-+/* wgChecker slots */
-+REG64(SLOT_ADDR,            0x000)
-+REG64(SLOT_PERM,            0x008)
-+REG32(SLOT_CFG,             0x010)
-+    FIELD(SLOT_CFG, A,          0,  2)
-+    FIELD(SLOT_CFG, ER,         8,  1)
-+    FIELD(SLOT_CFG, EW,         9,  1)
-+    FIELD(SLOT_CFG, IR,         10, 1)
-+    FIELD(SLOT_CFG, IW,         11, 1)
-+    FIELD(SLOT_CFG, LOCK,       31, 1)
-+
-+#define SLOT_SIZE               0x020
-+
-+#define SLOT0_CFG_MASK \
-+    (R_SLOT_CFG_ER_MASK | \
-+     R_SLOT_CFG_EW_MASK | \
-+     R_SLOT_CFG_IR_MASK | \
-+     R_SLOT_CFG_IW_MASK | \
-+     R_SLOT_CFG_LOCK_MASK)
-+
-+#define SLOT_CFG_MASK \
-+    (R_SLOT_CFG_A_MASK  | (SLOT0_CFG_MASK))
-+
-+#define WGC_SLOT_END(nslots) \
-+    (A_WGC_SLOT + SLOT_SIZE * (nslots + 1))
-+
-+/* wgChecker slot is 4K alignment */
-+#define WG_ALIGNED_SIZE         (1 << 12)
-+#define WG_ALIGNED_MASK         MAKE_64BIT_MASK(0, 12)
-+
-+/* wgChecker slot address is (addr / 4). */
-+#define TO_SLOT_ADDR(addr)      ((addr) >> 2)
-+#define FROM_SLOT_ADDR(addr)    ((addr) << 2)
-+
-+/* wgChecker slot cfg.A[1:0] */
-+#define A_OFF                   0
-+#define A_TOR                   1
-+#define A_NA4                   2
-+#define A_NAPOT                 3
-+
-+/* wgChecker slot perm */
-+#define WGC_PERM(wid, perm)     ((uint64_t)(perm) << (2 * (wid)))
-+#define P_READ                  (1 << 0)
-+#define P_WRITE                 (1 << 1)
- 
- /*
-  * Accesses only reach these read and write functions if the wgChecker
-@@ -146,6 +192,28 @@ static uint64_t riscv_wgchecker_readq(void *opaque, hwaddr addr)
-     RISCVWgCheckerState *s = RISCV_WGCHECKER(opaque);
-     uint64_t val = 0;
- 
-+    if ((addr >= A_WGC_SLOT) && (addr < WGC_SLOT_END(s->slot_count))) {
-+        /* Read from WGC slot */
-+        int slot_id = (addr - A_WGC_SLOT) / SLOT_SIZE;
-+        int slot_offset = (addr - A_WGC_SLOT) % SLOT_SIZE;
-+
-+        switch (slot_offset) {
-+        case A_SLOT_ADDR:
-+            val = s->slots[slot_id].addr;
-+            break;
-+        case A_SLOT_PERM:
-+            val = s->slots[slot_id].perm;
-+            break;
-+        default:
-+            qemu_log_mask(LOG_GUEST_ERROR,
-+                          "%s: Unexpected memory access to (0x%" HWADDR_PRIX ", %u) \n",
-+                          __func__, addr, 8);
-+            break;
-+        }
-+
-+        return val;
-+    }
-+
-     switch (addr) {
-     case A_ERRCAUSE:
-         val = s->errcause & ERRCAUSE_MASK;
-@@ -171,6 +239,37 @@ static uint64_t riscv_wgchecker_readl(void *opaque, hwaddr addr)
-     RISCVWgCheckerState *s = RISCV_WGCHECKER(opaque);
-     uint64_t val = 0;
- 
-+    if ((addr >= A_WGC_SLOT) && (addr < WGC_SLOT_END(s->slot_count))) {
-+        /* Read from WGC slot */
-+        int slot_id = (addr - A_WGC_SLOT) / SLOT_SIZE;
-+        int slot_offset = (addr - A_WGC_SLOT) % SLOT_SIZE;
-+
-+        switch (slot_offset) {
-+        case A_SLOT_ADDR:
-+            val = extract64(s->slots[slot_id].addr, 0, 32);
-+            break;
-+        case A_SLOT_ADDR + 4:
-+            val = extract64(s->slots[slot_id].addr, 32, 32);
-+            break;
-+        case A_SLOT_PERM:
-+            val = extract64(s->slots[slot_id].perm, 0, 32);
-+            break;
-+        case A_SLOT_PERM + 4:
-+            val = extract64(s->slots[slot_id].perm, 32, 32);
-+            break;
-+        case A_SLOT_CFG:
-+            val = s->slots[slot_id].cfg & SLOT_CFG_MASK;
-+            break;
-+        default:
-+            qemu_log_mask(LOG_GUEST_ERROR,
-+                          "%s: Unexpected memory access to (0x%" HWADDR_PRIX ", %u) \n",
-+                          __func__, addr, 4);
-+            break;
-+        }
-+
-+        return val;
-+    }
-+
-     switch (addr) {
-     case A_VENDOR:
-         val = 0;
-@@ -228,11 +327,121 @@ static uint64_t riscv_wgchecker_read(void *opaque, hwaddr addr, unsigned size)
-     return val;
- }
- 
-+/*
-+ * Validate the WGC slot address is between address range.
-+ *
-+ * Fix the slot address to the start address if it's not within the address range.
-+ * We need validation when changing "slot address" or "TOR/NAPOT mode (cfg.A)"
-+ */
-+static void validate_slot_address(void *opaque, int slot_id)
-+{
-+    RISCVWgCheckerState *s = RISCV_WGCHECKER(opaque);
-+    uint64_t start = TO_SLOT_ADDR(s->addr_range_start);
-+    uint64_t end = TO_SLOT_ADDR(s->addr_range_start + s->addr_range_size);
-+    uint32_t cfg_a = FIELD_EX32(s->slots[slot_id].cfg, SLOT_CFG, A);
-+
-+    /* First and last slot address are hard-coded. */
-+    if ((slot_id == 0) || (slot_id == s->slot_count)) {
-+        return;
-+    }
-+
-+    /* Check WGC slot address is between address range. */
-+    if ((s->slots[slot_id].addr < start) || (s->slots[slot_id].addr >= end)) {
-+        s->slots[slot_id].addr = start;
-+    }
-+
-+    /* Check WGC slot is 4k-aligned. */
-+    if (cfg_a == A_TOR) {
-+        s->slots[slot_id].addr &= ~TO_SLOT_ADDR(WG_ALIGNED_MASK);
-+    } else if (cfg_a == A_NAPOT) {
-+        s->slots[slot_id].addr |= TO_SLOT_ADDR(WG_ALIGNED_MASK >> 1);
-+    } else if (cfg_a == A_NA4) {
-+        /* Forcely replace NA4 slot with 4K-aligned NAPOT slot. */
-+        FIELD_DP32(s->slots[slot_id].cfg, SLOT_CFG, A, A_NAPOT);
-+        s->slots[slot_id].addr |= TO_SLOT_ADDR(WG_ALIGNED_MASK >> 1);
-+    }
-+}
-+
-+static bool slots_reg_is_ro(int slot_id, int slot_offset, uint32_t nslots)
++static void decode_napot(hwaddr a, hwaddr *sa, hwaddr *ea)
 +{
 +    /*
-+     * Special slots:
-+     *   - slot[0]:
-+     *     - addr is RO
-+     *     - perm is RO
-+     *     - cfg.A is OFF
-+     *
-+     *   - slot[nslots]:
-+     *     - addr is RO
-+     *     - cfg.A is OFF or TOR
++     * aaaa...aaa0   8-byte NAPOT range
++     * aaaa...aa01   16-byte NAPOT range
++     * aaaa...a011   32-byte NAPOT range
++     * ...
++     * aa01...1111   2^XLEN-byte NAPOT range
++     * a011...1111   2^(XLEN+1)-byte NAPOT range
++     * 0111...1111   2^(XLEN+2)-byte NAPOT range
++     * 1111...1111   Reserved
 +     */
-+    if (slot_id == 0) {
-+        switch (slot_offset) {
-+        case A_SLOT_ADDR:
-+        case A_SLOT_ADDR + 4:
-+        case A_SLOT_PERM:
-+        case A_SLOT_PERM + 4:
-+            return true;
-+        default:
-+            break;
-+        }
-+    } else if (slot_id == nslots) {
-+        switch (slot_offset) {
-+        case A_SLOT_ADDR:
-+        case A_SLOT_ADDR + 4:
-+            return true;
-+        default:
-+            break;
-+        }
-+    }
 +
-+    return false;
++    a = FROM_SLOT_ADDR(a) | 0x3;
++
++    if (sa) {
++        *sa = a & (a + 1);
++    }
++    if (ea) {
++        *ea = a | (a + 1);
++    }
 +}
 +
- static void riscv_wgchecker_writeq(void *opaque, hwaddr addr,
-                                     uint64_t value)
- {
-     RISCVWgCheckerState *s = RISCV_WGCHECKER(opaque);
- 
-+    if ((addr >= A_WGC_SLOT) && (addr < WGC_SLOT_END(s->slot_count))) {
-+        /* Read from WGC slot */
-+        int slot_id = (addr - A_WGC_SLOT) / SLOT_SIZE;
-+        int slot_offset = (addr - A_WGC_SLOT) % SLOT_SIZE;
-+        bool locked = FIELD_EX32(s->slots[slot_id].cfg, SLOT_CFG, LOCK);
++typedef struct WgAccessResult WgAccessResult;
++struct WgAccessResult {
++    bool is_success;
++    bool has_bus_error;
++    bool has_interrupt;
++    uint8_t perm:2;
++};
 +
-+        if (locked) {
-+            qemu_log_mask(LOG_GUEST_ERROR,
-+                          "%s: Couldn't write access to locked wgChecker Slot: "
-+                          "slot = %d, offset = %d\n", __func__, slot_id,
-+                          slot_offset);
-+            return;
-+        }
++static WgAccessResult wgc_check_access(
++    RISCVWgCheckerState *s, hwaddr phys_addr, uint32_t wid, bool is_write)
++{
++    WgCheckerSlot *slot, *prev_slot;
++    uint32_t cfg_a, prev_cfg_a;
++    uint64_t start, end;
++    int slot_id, wgc_perm = 0;
++    WgAccessResult result = { 0 };
 +
-+        if (slots_reg_is_ro(slot_id, slot_offset, s->slot_count)) {
-+            qemu_log_mask(LOG_GUEST_ERROR,
-+                          "%s: Unexpected memory access to (0x%" HWADDR_PRIX ", %u) \n",
-+                          __func__, addr, 8);
-+        }
++    bool is_matching = false;
++    bool slot0_be, slot0_ip;
++    bool matched_slot_be = false, matched_slot_ip = false;
 +
-+        switch (slot_offset) {
-+        case A_SLOT_ADDR:
-+            s->slots[slot_id].addr = value;
-+            validate_slot_address(s, slot_id);
-+            break;
-+        case A_SLOT_PERM:
-+            value &= wgc_slot_perm_mask;
-+            s->slots[slot_id].perm = value;
-+            break;
-+        default:
-+            qemu_log_mask(LOG_GUEST_ERROR,
-+                          "%s: Unexpected memory access to (0x%" HWADDR_PRIX ", %u) \n",
-+                          __func__, addr, 8);
-+            break;
-+        }
++    for (slot_id = 0; slot_id < s->slot_count; slot_id++) {
++        slot = &s->slots[slot_id + 1];
++        cfg_a = FIELD_EX32(slot->cfg, SLOT_CFG, A);
 +
-+        return;
-+    }
++        if (cfg_a == A_TOR) {
++            prev_slot = &s->slots[slot_id];
 +
-     switch (addr) {
-     case A_ERRCAUSE:
-         s->errcause = value & ERRCAUSE_MASK;
-@@ -253,6 +462,81 @@ static void riscv_wgchecker_writel(void *opaque, hwaddr addr,
- {
-     RISCVWgCheckerState *s = RISCV_WGCHECKER(opaque);
- 
-+    if ((addr >= A_WGC_SLOT) && (addr < WGC_SLOT_END(s->slot_count))) {
-+        /* Write to WGC slot */
-+        int slot_id = (addr - A_WGC_SLOT) / SLOT_SIZE;
-+        int slot_offset = (addr - A_WGC_SLOT) % SLOT_SIZE;
-+        bool locked = FIELD_EX32(s->slots[slot_id].cfg, SLOT_CFG, LOCK);
-+        int cfg_a, old_cfg_a;
-+
-+        if (locked) {
-+            qemu_log_mask(LOG_GUEST_ERROR,
-+                          "%s: Couldn't write access to locked wgChecker Slot: "
-+                          "slot = %d, offset = %d\n", __func__, slot_id,
-+                          slot_offset);
-+            return;
-+        }
-+
-+        if (slots_reg_is_ro(slot_id, slot_offset, s->slot_count)) {
-+            qemu_log_mask(LOG_GUEST_ERROR,
-+                          "%s: Unexpected memory access to (0x%" HWADDR_PRIX ", %u) \n",
-+                          __func__, addr, 4);
-+        }
-+
-+        switch (slot_offset) {
-+        case A_SLOT_ADDR:
-+            s->slots[slot_id].addr = deposit64(
-+                s->slots[slot_id].addr, 0, 32, value);
-+            validate_slot_address(s, slot_id);
-+            break;
-+        case A_SLOT_ADDR + 4:
-+            s->slots[slot_id].addr = deposit64(
-+                s->slots[slot_id].addr, 32, 32, value);
-+            validate_slot_address(s, slot_id);
-+            break;
-+        case A_SLOT_PERM:
-+            value &= wgc_slot_perm_mask;
-+            s->slots[slot_id].perm = deposit64(
-+                s->slots[slot_id].perm, 0, 32, value);
-+            break;
-+        case A_SLOT_PERM + 4:
-+            value &= extract64(wgc_slot_perm_mask, 32, 32);
-+            s->slots[slot_id].perm = deposit64(
-+                s->slots[slot_id].perm, 32, 32, value);
-+            break;
-+        case A_SLOT_CFG:
-+            if (slot_id == 0) {
-+                value &= SLOT0_CFG_MASK;
-+                s->slots[0].cfg = value;
-+            } else if (slot_id == s->slot_count) {
-+                old_cfg_a = FIELD_EX32(s->slots[s->slot_count].cfg, SLOT_CFG, A);
-+                cfg_a = FIELD_EX32(value, SLOT_CFG, A);
-+
-+                value &= SLOT0_CFG_MASK;
-+                if ((cfg_a == A_OFF) || (cfg_a == A_TOR)) {
-+                    value |= cfg_a;
-+                } else {
-+                    /* slot[nslots] could only use OFF or TOR config. */
-+                    value |= old_cfg_a;
-+                }
-+                s->slots[s->slot_count].cfg = value;
-+
-+                validate_slot_address(s, slot_id);
-+            } else {
-+                value &= SLOT_CFG_MASK;
-+                s->slots[slot_id].cfg = value;
++            prev_cfg_a = FIELD_EX32(prev_slot->cfg, SLOT_CFG, A);
++            if (prev_cfg_a == A_NA4) {
++                start = FROM_SLOT_ADDR(prev_slot->addr) + 4;
++            } else if (prev_cfg_a == A_NAPOT) {
++                decode_napot(prev_slot->addr, NULL, &start);
++                start += 1;
++            } else { /* A_TOR or A_OFF */
++                start = FROM_SLOT_ADDR(prev_slot->addr);
 +            }
-+            break;
-+        default:
-+            qemu_log_mask(LOG_GUEST_ERROR,
-+                          "%s: Unexpected memory access to (0x%" HWADDR_PRIX ", %u) \n",
-+                          __func__, addr, 4);
-+            break;
++            end = FROM_SLOT_ADDR(slot->addr);
++        } else if (cfg_a == A_NA4) {
++            start = FROM_SLOT_ADDR(slot->addr);
++            end = start + 4;
++        } else if (cfg_a == A_NAPOT) {
++            decode_napot(slot->addr, &start, &end);
++            end += 1;
++        } else {
++            /* A_OFF: not in slot range. */
++            continue;
 +        }
 +
-+        return;
++        /* wgChecker slot range is between start to (end - 1). */
++        if ((start <= phys_addr) && (phys_addr < end)) {
++            /* Match the wgC slot */
++            int perm = ((slot->perm >> (wid * 2)) & 0x3);
++
++            /* If any matching rule permits access, the access is permitted. */
++            wgc_perm |= perm;
++
++            /*
++             * If any matching rule wants to report error (IRQ or Bus Error),
++             * the denied access should report error.
++             */
++            is_matching = true;
++            if (is_write) {
++                matched_slot_be |= FIELD_EX64(slot->cfg, SLOT_CFG, EW);
++                matched_slot_ip |= FIELD_EX64(slot->cfg, SLOT_CFG, IW);
++            } else {
++                matched_slot_be |= FIELD_EX64(slot->cfg, SLOT_CFG, ER);
++                matched_slot_ip |= FIELD_EX64(slot->cfg, SLOT_CFG, IR);
++            }
++        }
 +    }
 +
-     switch (addr) {
-     case A_ERRCAUSE:
-         value &= extract64(ERRCAUSE_MASK, 0, 32);
-@@ -461,6 +745,8 @@ static void riscv_wgchecker_realize(DeviceState *dev, Error **errp)
-         return;
-     }
- 
-+    s->slots = g_new0(WgCheckerSlot, s->slot_count + 1);
-+
-     memory_region_init_io(&s->mmio, OBJECT(dev), &riscv_wgchecker_ops, s,
-                           TYPE_RISCV_WGCHECKER, s->mmio_size);
-     sysbus_init_mmio(SYS_BUS_DEVICE(dev), &s->mmio);
-@@ -524,6 +810,37 @@ static void riscv_wgchecker_reset_enter(Object *obj, ResetType type)
- 
-     s->errcause = 0;
-     s->erraddr = 0;
-+
-+    for (int i = 0; i < nslots; i++) {
-+        s->slots[i].addr = TO_SLOT_ADDR(start);
-+        s->slots[i].perm = 0;
-+        s->slots[i].cfg = 0;
++    /* If no matching rule, error reporting depends on the slot0's config. */
++    if (is_write) {
++        slot0_be = FIELD_EX64(s->slots[0].cfg, SLOT_CFG, EW);
++        slot0_ip = FIELD_EX64(s->slots[0].cfg, SLOT_CFG, IW);
++    } else {
++        slot0_be = FIELD_EX64(s->slots[0].cfg, SLOT_CFG, ER);
++        slot0_ip = FIELD_EX64(s->slots[0].cfg, SLOT_CFG, IR);
 +    }
-+    s->slots[nslots].addr = TO_SLOT_ADDR(end);
-+    s->slots[nslots].perm = 0;
-+    s->slots[nslots].cfg = 0;
 +
-+    if (s->num_default_slots != 0) {
++    result.is_success = is_write ? (wgc_perm & P_WRITE) : (wgc_perm & P_READ);
++    result.perm = wgc_perm;
++    if (!result.is_success) {
++        if (is_matching) {
++            result.has_bus_error = matched_slot_be;
++            result.has_interrupt = matched_slot_ip;
++        } else {
++            result.has_bus_error = slot0_be;
++            result.has_interrupt = slot0_ip;
++        }
++    }
++
++    return result;
++}
++
++static MemTxResult riscv_wgc_handle_blocked_access(
++    WgCheckerRegion *region, hwaddr addr, uint32_t wid, bool is_write)
++{
++    RISCVWgCheckerState *s = RISCV_WGCHECKER(region->wgchecker);
++    bool be, ip;
++    WgAccessResult result;
++    hwaddr phys_addr;
++
++    be = FIELD_EX64(s->errcause, ERRCAUSE, BE);
++    ip = FIELD_EX64(s->errcause, ERRCAUSE, IP);
++    phys_addr = addr + region->region_offset;
++
++    /*
++     * Check if this blocked access trigger IRQ (Bus Error) or not.
++     * It depends on wgChecker slot config (cfg.IR/IW/ER/EW bits).
++     */
++    result = wgc_check_access(s, phys_addr, wid, is_write);
++
++    if (!be && !ip) {
 +        /*
-+         * Use default slots:
-+         *   slot[0] is hard-coded to start address, so the default slots
-+         *   start from slot[1].
++         * With either of the be or ip bits is set, further violations do not
++         * update the errcause or erraddr registers. Also, new interrupts
++         * cannot be generated until the be and ip fields are cleared.
 +         */
-+        memcpy(&s->slots[1], s->default_slots,
-+               sizeof(WgCheckerSlot) * s->num_default_slots);
-+    } else if ((s->hw_bypass) ||
-+               ((worldguard_config != NULL) && worldguard_config->hw_bypass)) {
-+        /* HW bypass mode */
-+        uint32_t trustedwid = worldguard_config->trustedwid;
-+
-+        if (trustedwid == NO_TRUSTEDWID) {
-+            trustedwid = worldguard_config->nworlds - 1;
++        if (result.has_interrupt || result.has_bus_error) {
++            s->errcause = FIELD_DP64(s->errcause, ERRCAUSE, WID, wid);
++            s->errcause = FIELD_DP64(s->errcause, ERRCAUSE, R, !is_write);
++            s->errcause = FIELD_DP64(s->errcause, ERRCAUSE, W, is_write);
++            s->erraddr = TO_SLOT_ADDR(phys_addr);
 +        }
 +
-+        s->slots[nslots].perm = WGC_PERM(trustedwid, P_READ | P_WRITE);
-+        s->slots[nslots].perm &= wgc_slot_perm_mask;
-+        s->slots[nslots].cfg = A_TOR;
++        if (result.has_interrupt) {
++            s->errcause = FIELD_DP64(s->errcause, ERRCAUSE, IP, 1);
++            qemu_irq_raise(s->irq);
++        }
++
++        if (result.has_bus_error) {
++            s->errcause = FIELD_DP64(s->errcause, ERRCAUSE, BE, 1);
++        }
 +    }
++
++    return result.has_bus_error ? MEMTX_ERROR : MEMTX_OK;
++}
++
+ /*
+  * Accesses only reach these read and write functions if the wgChecker
+  * is blocking them; non-blocked accesses go directly to the downstream
+@@ -109,23 +272,25 @@ static MemTxResult riscv_wgc_mem_blocked_read(void *opaque, hwaddr addr,
+                                                uint64_t *pdata,
+                                                unsigned size, MemTxAttrs attrs)
+ {
++    WgCheckerRegion *region = opaque;
+     uint32_t wid = mem_attrs_to_wid(attrs);
+ 
+     trace_riscv_wgc_mem_blocked_read(addr, size, wid);
+ 
+     *pdata = 0;
+-    return MEMTX_OK;
++    return riscv_wgc_handle_blocked_access(region, addr, wid, false);
  }
  
- static void riscv_wgchecker_class_init(ObjectClass *klass, void *data)
-@@ -597,6 +914,19 @@ DeviceState *riscv_wgchecker_create(hwaddr addr, uint32_t size,
-         qdev_prop_set_uint64(dev, name_offset, region_offset[i]);
-     }
+ static MemTxResult riscv_wgc_mem_blocked_write(void *opaque, hwaddr addr,
+                                                uint64_t value,
+                                                unsigned size, MemTxAttrs attrs)
+ {
++    WgCheckerRegion *region = opaque;
+     uint32_t wid = mem_attrs_to_wid(attrs);
  
-+    if (num_default_slots > slot_count) {
-+        num_default_slots = slot_count;
-+    }
-+
-+    s->num_default_slots = num_default_slots;
-+    if (s->num_default_slots) {
-+        s->default_slots = g_new0(WgCheckerSlot, s->num_default_slots);
-+        memcpy(s->default_slots, default_slots,
-+               sizeof(WgCheckerSlot) * s->num_default_slots);
-+    } else {
-+        s->default_slots = NULL;
-+    }
-+
-     sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
-     sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, addr);
-     sysbus_connect_irq(SYS_BUS_DEVICE(dev), 0, irq);
-diff --git a/hw/misc/riscv_worldguard.c b/hw/misc/riscv_worldguard.c
-index 836ba43239..d3a4b23dae 100644
---- a/hw/misc/riscv_worldguard.c
-+++ b/hw/misc/riscv_worldguard.c
-@@ -38,6 +38,9 @@
-  */
- struct RISCVWorldGuardState *worldguard_config = NULL;
+     trace_riscv_wgc_mem_blocked_write(addr, value, size, wid);
  
-+/* perm field bitmask of wgChecker slot, it's depends on NWorld. */
-+uint64_t wgc_slot_perm_mask = 0;
-+
- static Property riscv_worldguard_properties[] = {
-     DEFINE_PROP_UINT32("nworlds", RISCVWorldGuardState, nworlds, 0),
+-    return MEMTX_OK;
++    return riscv_wgc_handle_blocked_access(region, addr, wid, true);
+ }
  
-diff --git a/include/hw/misc/riscv_worldguard.h b/include/hw/misc/riscv_worldguard.h
-index 7b5aae866a..f53202524c 100644
---- a/include/hw/misc/riscv_worldguard.h
-+++ b/include/hw/misc/riscv_worldguard.h
-@@ -45,6 +45,7 @@ struct RISCVWorldGuardState {
- };
- 
- extern struct RISCVWorldGuardState *worldguard_config;
-+extern uint64_t wgc_slot_perm_mask;
- 
- DeviceState *riscv_worldguard_create(uint32_t nworlds, uint32_t trustedwid,
-                                      bool hw_bypass, bool tz_compat);
-@@ -86,9 +87,12 @@ struct WgCheckerRegion {
- struct RISCVWgCheckerState {
-     /*< private >*/
-     SysBusDevice parent_obj;
-+    uint32_t num_default_slots;
-+    WgCheckerSlot *default_slots;
- 
-     /*< public >*/
-     MemoryRegion mmio;
-+    WgCheckerSlot *slots;
-     qemu_irq irq;
- 
-     /* error reg */
+ static const MemoryRegionOps riscv_wgc_mem_blocked_ops = {
 -- 
 2.17.1
 
