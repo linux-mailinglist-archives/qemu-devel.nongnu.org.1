@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43E1E904DEF
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jun 2024 10:18:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AE02904DEA
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jun 2024 10:17:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sHJ8W-0002YJ-Jl; Wed, 12 Jun 2024 04:15:16 -0400
+	id 1sHJ8c-0002iu-L3; Wed, 12 Jun 2024 04:15:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jim.shu@sifive.com>)
- id 1sHJ8U-0002TN-Lm
- for qemu-devel@nongnu.org; Wed, 12 Jun 2024 04:15:14 -0400
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ id 1sHJ8a-0002hO-LG
+ for qemu-devel@nongnu.org; Wed, 12 Jun 2024 04:15:20 -0400
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <jim.shu@sifive.com>)
- id 1sHJ8R-0006Oq-V8
- for qemu-devel@nongnu.org; Wed, 12 Jun 2024 04:15:14 -0400
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-1f6b0a40721so47263005ad.2
- for <qemu-devel@nongnu.org>; Wed, 12 Jun 2024 01:15:11 -0700 (PDT)
+ id 1sHJ8X-0006Pm-Um
+ for qemu-devel@nongnu.org; Wed, 12 Jun 2024 04:15:20 -0400
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-1f44b45d6abso52242005ad.0
+ for <qemu-devel@nongnu.org>; Wed, 12 Jun 2024 01:15:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1718180110; x=1718784910; darn=nongnu.org;
+ d=sifive.com; s=google; t=1718180116; x=1718784916; darn=nongnu.org;
  h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
  :cc:subject:date:message-id:reply-to;
- bh=el4zPCh6MA7yt0wMvmZSek8pCRQ+TGyMHlmrAHD52rE=;
- b=IyjLIFnLWBqQEQf0CjX9WVC+1vXR0OLkkwm45PpzJnTG/iMacunwHpv+GTV9Y7VXoj
- H3SXzR2zfJp03hd7ZayRWZmJrGJkWAJfprb0FQSWBcyzNF2qw/tfd6xSLaMdMIziEWt0
- Bzfy/7Y3IRbUBj7/6A4fa+aZE42kP74izi88UGUrClJ7d/7RhPJ5DteHGOhsFSyvyLH0
- XysDDdbcvlFCODE4cH8mHHAaT4TKHJlX6ylaOYwSbVNUyydtQNn+b7RPmkBMJpNF3PGO
- R01+n7lKu5UmTvLBP+mE51DpEFW/yrschOtSJBL19lJUQu7iXbrtYAVFnyHP5DBXtV+a
- UnIA==
+ bh=UcDgwLrJ/vJ0LXvTIFwEowSYV1ch13n/xdEVQi7gzwg=;
+ b=V7dqK03Yx9eDJ3inOzyA/GRofWPe86ycGZze/x7o1MqaYfSnRQ27RosOKXOm7X8w61
+ kL82GgTUK2R/E4OWvIKDjWS96Jdsd1zASo1DYLJHF9uJIhS2ImYvPEMHc663zFovoQgo
+ rkse+eQbcAgM7WJCFkTopP5Gt8cKm68U+ddhJI+LyEp3fStn6HAk5mj3SVMwSkPmG4EL
+ YSk2JOQ0y8Zs5zfQd6O69xE9lner7k+6MkT3lBRZI1pJIVmiGry9FBdMW44wohXtRs26
+ qA8fkLSWXZIdd2ouL3axajUpPW1NfQdHqs1Uhl6nChoCqw1Zvoo/KV7oX57Hg52bxxML
+ YA2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718180110; x=1718784910;
+ d=1e100.net; s=20230601; t=1718180116; x=1718784916;
  h=references:in-reply-to:message-id:date:subject:cc:to:from
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=el4zPCh6MA7yt0wMvmZSek8pCRQ+TGyMHlmrAHD52rE=;
- b=rYrhayyx3NcQZZUsGbk3/hRq64WHUvVO+0v9wFYUW/dKOTOr5C+T+jmyEKpob2eEsQ
- n3r5B6+d3Il/Fsp8zDmUE+gARiRzZAmiR1aUtGYBWJ64hxZRxrueEIU4fXsOwyA+3/dG
- q4aXufMqxBU2wYp3gzC2CitTcpNxyabhzr8gfMX0+tJ2v5R5ELkR7/qpxW09SzP3DZcI
- QnxaH3ERbbZ3dDad8cOTWyv8RwHaD0qBs9nXtXGO596QaGFFKmDL3j9TnQdZv1T387H0
- wXTviC4XIwewb/15rS0vxzIMpMHig1BSo6vvYIArG3BSNGrZaZZq3pRDjYlzcFKrMFSr
- 2/iw==
-X-Gm-Message-State: AOJu0YyQ5US3plRfQ9c06SHuCiFC8jfnjFSrK0zlldgmd3HXK7/Hsu2G
- qFP/qACurIjwHpA0cyZKi5vF5jIqveQRd25DLTF72WPeFCJldwi50qbKjMVAnoJbQbRAWR+mPPT
- /XhweKbNRD+Q5/zYQDeI6bATPTJcdMJOFT3NWNnGymyBGxJ9oUSJJcRIlZ1WrRpNLHrcHEl5Y4R
- /0KH5zqJn9VkRYIdZo1J0xtDRoE3dR8y1FdWAIgx6AWA==
-X-Google-Smtp-Source: AGHT+IFnhn4/AVuIA7BK0PPox1Lg0y+LEUdi4+TqzWjD8p+wIF7opIsUWNHMprWx0xcNxlpH593RHg==
-X-Received: by 2002:a17:903:983:b0:1f6:39d8:dc4f with SMTP id
- d9443c01a7336-1f83b55f8ccmr14197785ad.10.1718180110071; 
- Wed, 12 Jun 2024 01:15:10 -0700 (PDT)
+ bh=UcDgwLrJ/vJ0LXvTIFwEowSYV1ch13n/xdEVQi7gzwg=;
+ b=aRfywJf4jueamut6o6HFj18OeIRZqmWdA33dZFdA1FAPTfzlKs5Q8vlBqIdiGWZEEJ
+ LKo2A3Pz7j99ogjD1lvGrq+NKCH9NLpL31Yd4oD/puGf6agn/Lma2NzOwvwS709Zh4vJ
+ RFsB3AKFKPGDg4CVxrksnKNhnKro65YD0MMkq0tKsEgLzooJNoueYFXvHbjZfyE91nbs
+ cc2z8sp8EYtovajv9qckd6oqJ/+SQh8hdvoiy83ZA2jg8rVEYviJIB4DhC6F2q5PEWD+
+ QdE4gdEnC2dghD6oRrtaSYNZDyZfBSEUPGCQ2ztCIg1F+tvoF3JDiLejHTrBtqwD+Fsm
+ J9qg==
+X-Gm-Message-State: AOJu0Yzj991Oh9EzAkoEvA6Y84h5EdThUubKJ2N0j7qGmk5dvwOIOjVI
+ 5rCXrx+KXzh5UC7xJEcd2wxiRZnrdGmhi4WVrCGRmVaWYMZEkIMIcVEnpbHP2CIzuC53I4BDJ+0
+ vUsVCZkf9Y1xRaJjhe7h3wnSWiWfOxWyVXQ4p2IXIGXZ83aR+q8BnT6Q/GHpMOO4L7sub3jfGEH
+ SX6urmogj08+kJKVv1JN2AWWHfhThvGBBelC4BNnGgGw==
+X-Google-Smtp-Source: AGHT+IFJgYDmFtlEPz+ZdnPNMvTRVXP2I6U3BKMOCznksrq2qjqXVGEPeamRrREJOhgaIl3R3IbUDA==
+X-Received: by 2002:a17:902:db04:b0:1f7:17e4:b57b with SMTP id
+ d9443c01a7336-1f83b6abc85mr13533535ad.23.1718180115817; 
+ Wed, 12 Jun 2024 01:15:15 -0700 (PDT)
 Received: from hsinchu26.internal.sifive.com
  (59-124-168-89.hinet-ip.hinet.net. [59.124.168.89])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1f8393e8e53sm11363875ad.16.2024.06.12.01.15.04
+ d9443c01a7336-1f8393e8e53sm11363875ad.16.2024.06.12.01.15.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 12 Jun 2024 01:15:09 -0700 (PDT)
+ Wed, 12 Jun 2024 01:15:15 -0700 (PDT)
 From: Jim Shu <jim.shu@sifive.com>
 To: qemu-devel@nongnu.org,
 	qemu-riscv@nongnu.org
@@ -89,15 +89,14 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  qemu-ppc@nongnu.org (open list:PowerPC TCG CPUs),
  qemu-s390x@nongnu.org (open list:S390 TCG CPUs),
  Jim Shu <jim.shu@sifive.com>
-Subject: [RFC PATCH 06/16] target/riscv: Add hard-coded CPU state of WG
- extension
-Date: Wed, 12 Jun 2024 16:14:06 +0800
-Message-Id: <20240612081416.29704-7-jim.shu@sifive.com>
+Subject: [RFC PATCH 07/16] target/riscv: Add defines for WorldGuard CSRs
+Date: Wed, 12 Jun 2024 16:14:07 +0800
+Message-Id: <20240612081416.29704-8-jim.shu@sifive.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20240612081416.29704-1-jim.shu@sifive.com>
 References: <20240612081416.29704-1-jim.shu@sifive.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=jim.shu@sifive.com; helo=mail-pl1-x62d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=jim.shu@sifive.com; helo=mail-pl1-x629.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -120,89 +119,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add hard-coded state of WG extension. 'mwid' is the M-mode WID of CPU.
-'mwidlist' is the list of allowed WID value of 'mlwid' CSR.
-
-These CPU states can be set by CPU option, or can be set by machine code
-via newly added APIs. If we want different WG configs of CPUs, we should
-set it by machine code.
+Add CSRs for 3 WG extensions: Smwg, Smwgd, and Sswg.
 
 Signed-off-by: Jim Shu <jim.shu@sifive.com>
 ---
- target/riscv/cpu.c        |  2 ++
- target/riscv/cpu.h        |  2 ++
- target/riscv/cpu_cfg.h    |  2 ++
- target/riscv/cpu_helper.c | 18 ++++++++++++++++++
- 4 files changed, 24 insertions(+)
+ target/riscv/cpu_bits.h | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index d70eedf957..4e87fa4d5b 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -2291,6 +2291,8 @@ static Property riscv_cpu_properties[] = {
-      * it with -x and default to 'false'.
-      */
-     DEFINE_PROP_BOOL("x-misa-w", RISCVCPU, cfg.misa_w, false),
-+    DEFINE_PROP_UINT32("mwid", RISCVCPU, cfg.mwid, UINT32_MAX),
-+    DEFINE_PROP_UINT32("mwidlist", RISCVCPU, cfg.mwidlist, UINT32_MAX),
-     DEFINE_PROP_END_OF_LIST(),
- };
+diff --git a/target/riscv/cpu_bits.h b/target/riscv/cpu_bits.h
+index 74318a925c..3ea8a8e9a0 100644
+--- a/target/riscv/cpu_bits.h
++++ b/target/riscv/cpu_bits.h
+@@ -360,6 +360,11 @@
+ #define CSR_DPC             0x7b1
+ #define CSR_DSCRATCH        0x7b2
  
-diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index 6fe0d712b4..2d3bfedbba 100644
---- a/target/riscv/cpu.h
-+++ b/target/riscv/cpu.h
-@@ -540,6 +540,8 @@ void riscv_cpu_set_aia_ireg_rmw_fn(CPURISCVState *env, uint32_t priv,
-                                    void *rmw_fn_arg);
- 
- RISCVException smstateen_acc_ok(CPURISCVState *env, int index, uint64_t bit);
-+void riscv_cpu_set_wg_mwid(CPURISCVState *env, uint32_t mwid);
-+void riscv_cpu_set_wg_mwidlist(CPURISCVState *env, uint32_t mwidlist);
- #endif /* !CONFIG_USER_ONLY */
- 
- void riscv_cpu_set_mode(CPURISCVState *env, target_ulong newpriv);
-diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
-index 23e779ae08..de9c134b15 100644
---- a/target/riscv/cpu_cfg.h
-+++ b/target/riscv/cpu_cfg.h
-@@ -166,6 +166,8 @@ struct RISCVCPUConfig {
-     bool pmp;
-     bool debug;
-     bool misa_w;
-+    uint32_t mwid;
-+    uint32_t mwidlist;
- 
-     bool short_isa_string;
- 
-diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-index 161df34626..ff20ab6ab8 100644
---- a/target/riscv/cpu_helper.c
-+++ b/target/riscv/cpu_helper.c
-@@ -149,6 +149,24 @@ void cpu_get_tb_cpu_state(CPURISCVState *env, vaddr *pc,
-     *pflags = flags;
- }
- 
-+#ifndef CONFIG_USER_ONLY
-+void riscv_cpu_set_wg_mwid(CPURISCVState *env, uint32_t mwid)
-+{
-+    CPUState *cs = env_cpu(env);
-+    RISCVCPU *cpu = RISCV_CPU(cs);
++/* RISC-V WorldGuard */
++#define CSR_MLWID           0x390
++#define CSR_SLWID           0x190
++#define CSR_MWIDDELEG       0x748
 +
-+    cpu->cfg.mwid = mwid;
-+}
-+
-+void riscv_cpu_set_wg_mwidlist(CPURISCVState *env, uint32_t mwidlist)
-+{
-+    CPUState *cs = env_cpu(env);
-+    RISCVCPU *cpu = RISCV_CPU(cs);
-+
-+    cpu->cfg.mwidlist = mwidlist;
-+}
-+#endif /* CONFIG_USER_ONLY */
-+
- void riscv_cpu_update_mask(CPURISCVState *env)
- {
-     target_ulong mask = 0, base = 0;
+ /* Performance Counters */
+ #define CSR_MHPMCOUNTER3    0xb03
+ #define CSR_MHPMCOUNTER4    0xb04
 -- 
 2.17.1
 
