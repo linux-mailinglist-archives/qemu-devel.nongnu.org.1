@@ -2,75 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AB8B90539C
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jun 2024 15:22:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 603849053A2
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jun 2024 15:22:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sHNuO-0007w2-Gg; Wed, 12 Jun 2024 09:21:00 -0400
+	id 1sHNvE-0000bp-VS; Wed, 12 Jun 2024 09:21:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sHNuL-0007pw-Qn
- for qemu-devel@nongnu.org; Wed, 12 Jun 2024 09:20:58 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sHNuw-0000OC-8e
+ for qemu-devel@nongnu.org; Wed, 12 Jun 2024 09:21:34 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sHNuK-0003qK-5G
- for qemu-devel@nongnu.org; Wed, 12 Jun 2024 09:20:57 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sHNur-0003x3-LL
+ for qemu-devel@nongnu.org; Wed, 12 Jun 2024 09:21:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1718198455;
+ s=mimecast20190719; t=1718198488;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=dUYG9QxIMIQ5uhr++x6WgjmKQdaajBC/IgrrKluYzDs=;
- b=d9xz4gtMtpmYZ8sMgEITshwGIPfZnlgTXLbEj8ovAPXeuOVhTyVGvY44BD3XChCVlwPvQf
- 7/OBFgCt7BfTfYWz2R5txEvdrT7/iT198NptdgdT3KK2FgQeNRYmtUyChcYn+gIwCK2JvM
- hdbtDrEnKabDa7U/NOKYyP5nfNTgreI=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ bh=dOt6/vHV+92jo7OA0/inuOqUXayabXwf6bIcdaIVBuE=;
+ b=MyS3kel72xveROgAOoCsR12IgqouFTIA00A+FNkToDkhMkLnQkL3SZAstKFeihXxsVQ0N1
+ FXVmwavHPr6m9/zlgqhN1JU6l19lHfqf55X7JYp+4GgzXdrJxIhOJHTvcsbpZG5vlYlAHx
+ 2MyncAMHs4IgSH9OhRdhVcgHtL53YMg=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-175-LvY2leuXMDSTmD8JM9HH8g-1; Wed,
- 12 Jun 2024 09:20:52 -0400
-X-MC-Unique: LvY2leuXMDSTmD8JM9HH8g-1
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-12-PFEw8ceUNuCVQC5_mUJQLg-1; Wed,
+ 12 Jun 2024 09:21:26 -0400
+X-MC-Unique: PFEw8ceUNuCVQC5_mUJQLg-1
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 21DD81955D9E; Wed, 12 Jun 2024 13:20:51 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.93])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 6DADA1956059; Wed, 12 Jun 2024 13:20:50 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 4FB9521E66E5; Wed, 12 Jun 2024 15:20:48 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: mst@redhat.com,  qemu-devel@nongnu.org,  qemu-block@nongnu.org,  Hanna
- Reitz <hreitz@redhat.com>,  Brad Smith <brad@comstyle.com>,  Daniel P.
- =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,  =?utf-8?Q?Marc-Andr?=
- =?utf-8?Q?=C3=A9?= Lureau
- <marcandre.lureau@redhat.com>,  Laurent Vivier <lvivier@redhat.com>,
- gmaglione@redhat.com,  stefanha@redhat.com,  Coiby Xu
- <Coiby.Xu@gmail.com>,  Gerd Hoffmann <kraxel@redhat.com>,  slp@redhat.com,
- Igor Mammedov <imammedo@redhat.com>,  Raphael Norwitz
- <raphael@enfabrica.net>,  Thomas Huth <thuth@redhat.com>,  Eduardo Habkost
- <eduardo@habkost.net>,  David Hildenbrand <david@redhat.com>,  Kevin Wolf
- <kwolf@redhat.com>,  Paolo Bonzini <pbonzini@redhat.com>,  Philippe
- =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Jason Wang
- <jasowang@redhat.com>, Eric Blake <eblake@redhat.com>
-Subject: Re: [PATCH RESEND v7 10/12] hostmem: add a new memory backend based
- on POSIX shm_open()
-In-Reply-To: <20240612130140.63004-11-sgarzare@redhat.com> (Stefano
- Garzarella's message of "Wed, 12 Jun 2024 15:01:38 +0200")
-References: <20240612130140.63004-1-sgarzare@redhat.com>
- <20240612130140.63004-11-sgarzare@redhat.com>
-Date: Wed, 12 Jun 2024 15:20:48 +0200
-Message-ID: <87frtifgb3.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 7D95D1956094; Wed, 12 Jun 2024 13:21:25 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.39.194.236])
+ by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 936861956087; Wed, 12 Jun 2024 13:21:22 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: qemu-devel@nongnu.org,
+	Richard Henderson <richard.henderson@linaro.org>
+Cc: Zhao Liu <zhao1.liu@intel.com>,
+	Yongwei Ma <yongwei.ma@intel.com>
+Subject: [PULL 09/15] tests/unit/test-smp-parse: Fix an invalid topology case
+Date: Wed, 12 Jun 2024 15:20:49 +0200
+Message-ID: <20240612132055.326889-10-thuth@redhat.com>
+In-Reply-To: <20240612132055.326889-1-thuth@redhat.com>
+References: <20240612132055.326889-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: 11
 X-Spam_score: 1.1
@@ -95,98 +80,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Stefano Garzarella <sgarzare@redhat.com> writes:
+From: Zhao Liu <zhao1.liu@intel.com>
 
-> shm_open() creates and opens a new POSIX shared memory object.
-> A POSIX shared memory object allows creating memory backend with an
-> associated file descriptor that can be shared with external processes
-> (e.g. vhost-user).
->
-> The new `memory-backend-shm` can be used as an alternative when
-> `memory-backend-memfd` is not available (Linux only), since shm_open()
-> should be provided by any POSIX-compliant operating system.
->
-> This backend mimics memfd, allocating memory that is practically
-> anonymous. In theory shm_open() requires a name, but this is allocated
-> for a short time interval and shm_unlink() is called right after
-> shm_open(). After that, only fd is shared with external processes
-> (e.g., vhost-user) as if it were associated with anonymous memory.
->
-> In the future we may also allow the user to specify the name to be
-> passed to shm_open(), but for now we keep the backend simple, mimicking
-> anonymous memory such as memfd.
->
-> Acked-by: David Hildenbrand <david@redhat.com>
-> Acked-by: Stefan Hajnoczi <stefanha@redhat.com>
-> Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+Adjust the "cpus" parameter to match the comment configuration.
 
-[...]
+Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Tested-by: Yongwei Ma <yongwei.ma@intel.com>
+Message-ID: <20240529061925.350323-4-zhao1.liu@intel.com>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ tests/unit/test-smp-parse.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> diff --git a/qapi/qom.json b/qapi/qom.json
-> index 9b8f6a7ab5..94e4458288 100644
-> --- a/qapi/qom.json
-> +++ b/qapi/qom.json
-> @@ -601,8 +601,8 @@
->  #
->  # @share: if false, the memory is private to QEMU; if true, it is
->  #     shared (default false for backends memory-backend-file and
-> -#     memory-backend-ram, true for backends memory-backend-epc and
-> -#     memory-backend-memfd)
-> +#     memory-backend-ram, true for backends memory-backend-epc,
-> +#     memory-backend-memfd, and memory-backend-shm)
->  #
->  # @reserve: if true, reserve swap space (or huge pages) if applicable
->  #     (default: true) (since 6.1)
-> @@ -721,6 +721,22 @@
->              '*hugetlbsize': 'size',
->              '*seal': 'bool' } }
->  
-> +##
-> +# @MemoryBackendShmProperties:
-> +#
-> +# Properties for memory-backend-shm objects.
-> +#
-> +# Setting @share boolean option (defined in the base type) to false
-> +# will cause a failure during allocation because it is not
-> +# supported by this backend.
-
-This is QMP reference documentation.  "Failure during allocation" feels
-like unnecessary detail there.  Maybe "This memory backend support only
-shared memory, which is the default."
-
-> +#
-> +# Since: 9.1
-> +##
-> +{ 'struct': 'MemoryBackendShmProperties',
-> +  'base': 'MemoryBackendProperties',
-> +  'data': { },
-> +  'if': 'CONFIG_POSIX' }
-> +
->  ##
->  # @MemoryBackendEpcProperties:
->  #
-> @@ -1049,6 +1065,8 @@
->      { 'name': 'memory-backend-memfd',
->        'if': 'CONFIG_LINUX' },
->      'memory-backend-ram',
-> +    { 'name': 'memory-backend-shm',
-> +      'if': 'CONFIG_POSIX' },
->      'pef-guest',
->      { 'name': 'pr-manager-helper',
->        'if': 'CONFIG_LINUX' },
-> @@ -1121,6 +1139,8 @@
->        'memory-backend-memfd':       { 'type': 'MemoryBackendMemfdProperties',
->                                        'if': 'CONFIG_LINUX' },
->        'memory-backend-ram':         'MemoryBackendProperties',
-> +      'memory-backend-shm':         { 'type': 'MemoryBackendShmProperties',
-> +                                      'if': 'CONFIG_POSIX' },
->        'pr-manager-helper':          { 'type': 'PrManagerHelperProperties',
->                                        'if': 'CONFIG_LINUX' },
->        'qtest':                      'QtestProperties',
-
-[...]
-
-Other than that, QAPI schema
-Acked-by: Markus Armbruster <armbru@redhat.com>
+diff --git a/tests/unit/test-smp-parse.c b/tests/unit/test-smp-parse.c
+index c9cbc89c21..5d99e0d923 100644
+--- a/tests/unit/test-smp-parse.c
++++ b/tests/unit/test-smp-parse.c
+@@ -528,7 +528,7 @@ static const struct SMPTestData data_full_topo_invalid[] = {
+          * config: -smp 1,drawers=3,books=5,sockets=2,dies=4,\
+          *              clusters=2,cores=7,threads=3,maxcpus=5040
+          */
+-        .config = SMP_CONFIG_WITH_FULL_TOPO(3361, 3, 5, 2, 4, 2, 7, 3, 5040),
++        .config = SMP_CONFIG_WITH_FULL_TOPO(1, 3, 5, 2, 4, 2, 7, 3, 5040),
+         .expect_error = "Invalid SMP CPUs 5040. The max CPUs supported "
+                         "by machine '" SMP_MACHINE_NAME "' is 4096",
+     },
+-- 
+2.45.2
 
 
