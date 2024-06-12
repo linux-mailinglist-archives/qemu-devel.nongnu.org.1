@@ -2,60 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCCA7905C54
+	by mail.lfdr.de (Postfix) with ESMTPS id D0447905C55
 	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jun 2024 21:52:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sHU0w-0001V2-Fw; Wed, 12 Jun 2024 15:52:10 -0400
+	id 1sHU0w-0001V1-Fn; Wed, 12 Jun 2024 15:52:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1sHU0q-0001UT-Ob
+ id 1sHU0q-0001UU-TM
  for qemu-devel@nongnu.org; Wed, 12 Jun 2024 15:52:06 -0400
-Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
+Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1sHU0o-0001hh-Kt
+ id 1sHU0p-0001hm-GA
  for qemu-devel@nongnu.org; Wed, 12 Jun 2024 15:52:04 -0400
-Received: by mail-pf1-x432.google.com with SMTP id
- d2e1a72fcca58-70109d34a16so201704b3a.2
- for <qemu-devel@nongnu.org>; Wed, 12 Jun 2024 12:52:02 -0700 (PDT)
+Received: by mail-pf1-x434.google.com with SMTP id
+ d2e1a72fcca58-70436048c25so179295b3a.0
+ for <qemu-devel@nongnu.org>; Wed, 12 Jun 2024 12:52:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1718221920; x=1718826720; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=ZCFt+tldr1rW+0NreK8qY40FuQCSjQhtCWx/uKeVdGY=;
- b=J7tZ6yME1FKeDUN2jg23lgI16Gjbij4Yf9byHcurW1D6gABwZ7oN3wHXBVT69BsSQt
- YER9gCqNZ64kFl9/kkFmSfIEmS/R5HS6/+4Uw51GDkP1wiFrYjVx1WkFLfqn4zRnxW52
- xKFSEcJYO+8y1yjlt+IUWz3zTKBLQsZXcuTyBiq53o3h5FEhSSksHklXsMftG2EM3MV5
- f/B0CNl4J7nrm9zzM+vHa1i+ZxnxinsBL34jFK8UOaDOQeG27Ra9RrlVyswsGQp4Pyc4
- xC8PPuiuCKKEtrrOI8HkzsxvF1UFe6JZ902t6frlRZwnRHxqx9OS59QOlVdljQhiaojv
- 3rRA==
+ d=linaro.org; s=google; t=1718221922; x=1718826722; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=vPN2j3d8Uxe6THZhv7lreo3SEMvYCFajl10m+bHCIeY=;
+ b=A7ArQWLLsVc29Q7cXVekrsltOsPwnk68Lbef9szzmRIdpr2s/a+rni8U/tljst0S94
+ Yy3aRQzWUjzI+lLrg1MePRpyG6aB/Q8t0uuMaVkY37yLhmkpSIhO6kTE64DOH5GSfagt
+ smbnElUMzprK2GzOl9OwpsPPLW7sO8U7AQ7CcREAAiTSR3td2w2oqKchAExRni92EEo4
+ WNQjckxIxrKqv0ZhzDJKggvN+UYpqGI0Tt3eXPxIFIH56otPNyIFHLeoKVuW7hOBsr9J
+ 9rFRNhjmuHWaykLru+swjH9BQF82bCrCzrEKLUYk9/NNY158IsZc0nJFJaYpvvYvGIKZ
+ gCbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718221920; x=1718826720;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=ZCFt+tldr1rW+0NreK8qY40FuQCSjQhtCWx/uKeVdGY=;
- b=Pya6NvWE8gE8CnEYB59lq56Xc6OVee4K3/yUoTw3j2J8GffPsBEfxQc7rscDXwmAl5
- qTckJOL+4ExPTD4NLe4dZZ3KhcAyji6iFrPKobm5g2FscRMRFRwBPlyvS1q9ppMDn32d
- NzAZCsOQPpulL6akw9UQ1gUOGUvc5xDH1yVBIC1D6RymtOQYDUFrWezqOcWpP/MEP4Kb
- cR1wqNpZW5iZyXsZ6CLnDNyO8eK6wbInnKiiOBPe5euHFfBSzEjso6CwPDUoUtUAlrRs
- udYWKOKjLeOl8WC5N0RweOZOzNO/Gt34Pb8EUl2JhPps52E+brRCi/L2j/GF7mleRbxx
- Ulbw==
-X-Gm-Message-State: AOJu0YwNIhTE2Au+aiRrIrKW4YsDA7wgWUS+ojJvbsuMH25IhJIJPxY1
- FkOxhbYXTeWufPKjm8GWX6beR6bRKAtWIt+ajODFLlRwcvWyjm66WkwHEkOs7qFtRkzuY5N3ZWs
- g
-X-Google-Smtp-Source: AGHT+IHEjpoqzT1K53MYa00GcBzaGroJRiJFyPEvwwiRaxrbdAWO8qnl5hsoT2BEsTb9DYeCSf4rBw==
-X-Received: by 2002:a05:6a20:3d8a:b0:1b8:54f8:3856 with SMTP id
- adf61e73a8af0-1b8a9b3514amr3611704637.5.1718221920425; 
- Wed, 12 Jun 2024 12:52:00 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1718221922; x=1718826722;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=vPN2j3d8Uxe6THZhv7lreo3SEMvYCFajl10m+bHCIeY=;
+ b=G9aTt3MmkBGKTcGbMdZcdXs5a5bqOjJbvKrh4+Z4RS06PUYc5NtGNCZRTSnu1r5IK/
+ 5wVUBY4JJZAR7TZuwfs6NwhD7eEhunZ90U+OZ9d7SvDG3PjA8HS3qwrPETlfz7hWTmo2
+ 0i4m6hVNo4u2w4EPWZugJ2gimvVJdfQjI17VIo4O74337nsruatPdgr2duCDCWPfTXV2
+ 21k3weFCs8nSDZauUfM0V4HYpR4fTJvOv46lsHfDsV2Bb9vzWXI3sKdW8iq5rblzc6pa
+ qSKbXYd1Ws1Z9+3k/0BnI7cP84Gsp4JUVWwK8W5239oRy6lv4XD+WzoqSoIvRhGan/m7
+ nwMg==
+X-Gm-Message-State: AOJu0Yy+WntQS4Q9agqTE8OJgNokrxDS9fkWajZUtVzGNK9QAe2p7MM8
+ MscICjZkBZdmpyep1yffFFwrSmp+7kv+AaTU/BmzefCccKQxiR+OIo3ietQwH9MS2gEb6V1P5l1
+ 7
+X-Google-Smtp-Source: AGHT+IHE1MJIat//Ww4gGPbOdoPRQdtlYUDw1BM9kWVaPUwA9zT8PJHv8osUpZJMra6L10A5BuPnlA==
+X-Received: by 2002:a05:6a20:da9a:b0:1b7:406c:107d with SMTP id
+ adf61e73a8af0-1b8a9c42286mr3038420637.27.1718221921704; 
+ Wed, 12 Jun 2024 12:52:01 -0700 (PDT)
 Received: from linaro.vn.shawcable.net ([2604:3d08:9384:1d00::2193])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-70424c7fc99sm8009927b3a.157.2024.06.12.12.51.59
+ d2e1a72fcca58-70424c7fc99sm8009927b3a.157.2024.06.12.12.52.00
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 12 Jun 2024 12:52:00 -0700 (PDT)
+ Wed, 12 Jun 2024 12:52:01 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
@@ -64,15 +65,16 @@ Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Alexandre Iooss <erdnaxe@crans.org>,
  Mahmoud Mandour <ma.mandourr@gmail.com>
-Subject: [PATCH 0/2] Bug fixes for plugins
-Date: Wed, 12 Jun 2024 12:51:45 -0700
-Message-Id: <20240612195147.93121-1-pierrick.bouvier@linaro.org>
+Subject: [PATCH 1/2] plugins: missing QEMU_PLUGIN_API for time control
+Date: Wed, 12 Jun 2024 12:51:46 -0700
+Message-Id: <20240612195147.93121-2-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.39.2
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20240612195147.93121-1-pierrick.bouvier@linaro.org>
+References: <20240612195147.93121-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x432.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,21 +97,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Those two commits are meant to be applied on top of current series
-<20240612153508.1532940-1-alex.bennee@linaro.org>
-
-The first fixes issue with windows plugins, while the second is a bug that
-concerns memory callbacks, and due to a previous refactoring.
-
-Pierrick Bouvier (2):
-  plugins: missing QEMU_PLUGIN_API for time control
-  plugins: fix inject_mem_cb rw masking
-
+Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+---
  include/qemu/qemu-plugin.h | 2 ++
- accel/tcg/plugin-gen.c     | 4 ++--
- plugins/core.c             | 4 ++--
- 3 files changed, 6 insertions(+), 4 deletions(-)
+ 1 file changed, 2 insertions(+)
 
+diff --git a/include/qemu/qemu-plugin.h b/include/qemu/qemu-plugin.h
+index 80b1637cede..310ee10f301 100644
+--- a/include/qemu/qemu-plugin.h
++++ b/include/qemu/qemu-plugin.h
+@@ -670,6 +670,7 @@ void qemu_plugin_register_vcpu_mem_inline_per_vcpu(
+  *
+  * Returns an opaque handle or NULL if fails
+  */
++QEMU_PLUGIN_API
+ const void *qemu_plugin_request_time_control(void);
+ 
+ /**
+@@ -682,6 +683,7 @@ const void *qemu_plugin_request_time_control(void);
+  *
+  * Start time is 0.
+  */
++QEMU_PLUGIN_API
+ void qemu_plugin_update_ns(const void *handle, int64_t time);
+ 
+ typedef void
 -- 
 2.39.2
 
