@@ -2,85 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BD3B9052BB
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jun 2024 14:42:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3236A9052CF
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jun 2024 14:45:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sHNI6-00082p-8X; Wed, 12 Jun 2024 08:41:26 -0400
+	id 1sHNLM-0000sH-N9; Wed, 12 Jun 2024 08:44:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sHNI3-00082B-RK
- for qemu-devel@nongnu.org; Wed, 12 Jun 2024 08:41:23 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ (Exim 4.90_1) (envelope-from <amjadsharafi10@gmail.com>)
+ id 1sHNL8-0000ob-7T; Wed, 12 Jun 2024 08:44:35 -0400
+Received: from mail-oi1-x22b.google.com ([2607:f8b0:4864:20::22b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sHNI1-0004Zv-UF
- for qemu-devel@nongnu.org; Wed, 12 Jun 2024 08:41:23 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-4217c7eb6b4so34248925e9.2
- for <qemu-devel@nongnu.org>; Wed, 12 Jun 2024 05:41:21 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <amjadsharafi10@gmail.com>)
+ id 1sHNL5-0004xQ-Oa; Wed, 12 Jun 2024 08:44:33 -0400
+Received: by mail-oi1-x22b.google.com with SMTP id
+ 5614622812f47-3d23db75f5cso416451b6e.0; 
+ Wed, 12 Jun 2024 05:44:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1718196080; x=1718800880; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=jWHUKg/zjYNtmU/Lg/9RbL6pFprhOQ5VObmPARBdPVA=;
- b=voSipf0/cqpOy564bqbHQ2aJ4eT6mCYRc9kg+IZO2xjIPAbXg7O4Ifk0o2FvvwuLfv
- uLp+BNyLgAmbTVhtwS9yPN8bCLFUnejayj5KN/L24VlIZVYA0a1AV1Iu0lB93X+liJiT
- JYPFLCGGrJ7IJ1FUDZyoEU0sBkeZMwOKT6lLqVM9WM53j2IHByuHVYYhra4aU1ZUdvCN
- +tRxbLrCSNKx8FHVrm7j40gBD5G1LeCPtXWAobaJ1mw+N/9giKdMiKidrUO8R/LmqKL6
- tbYHjztFVBVukG1M2/m1DWtMaEvIJbAYaJxYK4Wa2d8dHzFtkgvdlqW7DXoe1gB2uu04
- ZBVA==
+ d=gmail.com; s=20230601; t=1718196269; x=1718801069; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=yHr9lNUj2ZTKyx95ZV/zYEXckRvIr3hVApTDr938oqw=;
+ b=C/38VVfasKrbzf2OS3lcLTPtkLsuOqJi3h85QeRFg773A2Sh1E13oypDvpf6Tom7q5
+ gIHGVyv0l0sVbNxeNi1IG0sbt3CiLiMeaBZsOZoMUbDUrpvbTJL18ycm7Tid02VPsI2E
+ XD2LyhxFyjkwDbCFxaOW+ZkUsyYiKauaokVbpCZOYIA/nnh6Kj4K9/A3jKjMhp7bGHoV
+ 2lIm4vAhb4wk7MsNVdAEz0Il6wG+Mmtpm6B0BzPcWyfQ+Q2L6HbJDZPnEzaUqjNWk/sX
+ Xept5b2AuxClfnLOpHartTSaL2RJpMGNfY0a4OzEbedTq1epYl57zngBHaiNsyx9lzSy
+ yIlA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718196080; x=1718800880;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=jWHUKg/zjYNtmU/Lg/9RbL6pFprhOQ5VObmPARBdPVA=;
- b=JFPQKv/d6biSjmhaf1j3oJR8koww/7xT7eZHSPU5uQhafwQuk0bfO9Or82vMfmW8Aj
- gFta+dcHk74VDGmAbWCI/kogKK6SmkNWspeJ/72Qk/LRDnmvNQtWBQadGbT9oBtTvouX
- 8oG8ATnyn+JjaVKX05x+8qDlbCi/bREWKETdDbxog9Zqu+XHtBP2gxxR+WKPaIp9vEue
- IzYbpcEyNt+68O4ONinpNHt+PQP5bBvKu3tGJ/k/pGsH9XPquCvX5+lNj/8AHT0TEW1J
- Nw6APHJ4gjteQnlROMJYjoBWFkFrHGJiPekEcuSHqBzhLgQwHklvwhAia+VvlcQ57kkP
- HEUA==
-X-Gm-Message-State: AOJu0Yy8RTrbCnThfnuBMhclImy+DaaBOc8mR5jO/o7y1iGom47hrd64
- sKQWE3gecmd0p1eP3l3+Qv4rEt2vCKdf+EsqT0J1peGJqD1BCtWbIxjWUyAWr4BiSn0WTn07zjH
- T
-X-Google-Smtp-Source: AGHT+IGOEUeFaddceCgNfObA82oeV7XuFprLKyqmCD4u/BAlfUkwCpVyZZEXo52HeeSzD2Q09LY+vQ==
-X-Received: by 2002:a05:600c:3b87:b0:422:123f:4b15 with SMTP id
- 5b1f17b1804b1-422867bec5fmr14832375e9.37.1718196080127; 
- Wed, 12 Jun 2024 05:41:20 -0700 (PDT)
-Received: from [192.168.69.100] (ram94-h02-176-184-0-172.dsl.sta.abo.bbox.fr.
- [176.184.0.172]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-422871f98bfsm25005075e9.45.2024.06.12.05.41.18
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 12 Jun 2024 05:41:19 -0700 (PDT)
-Message-ID: <b0b49b1b-6877-487c-9f4d-b29ae54c5ab0@linaro.org>
-Date: Wed, 12 Jun 2024 14:41:17 +0200
+ d=1e100.net; s=20230601; t=1718196269; x=1718801069;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=yHr9lNUj2ZTKyx95ZV/zYEXckRvIr3hVApTDr938oqw=;
+ b=wqiWFyUZq3LYbIHnZ8pQTPVHsCoasRf5TUMkJNwVh5LflbRGGijJG9YYY1XXlrd7C+
+ 5mVm67VhIU8qqZhaLQYVstNOHtwImJRstEl4pOuYxnrAeGLyh9dPQdm7yfJInM8mu/5M
+ 2ViRkWCrUEgq3yQ4WxH+yoqnCNl2OZNmnD/dbiEaqXDdOnHx99pQOVElksogzeyD1sQf
+ bVo6wm2YjXFRoWf+kT5Q2JUtzeN2Ap/SeHedQ5QIx6wWN9BRUs4/VlrjmHzlpdRx5wCs
+ TB+quPcOCHYwpjEReh+ingJwTLgalQFqLJL0pi7Q4DUOqkBZp13Hp8httacss4LYAFoc
+ ZQ1w==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUDRklMfH5sqQEjuOWFsKEO5id9j8lybFksQ4WGiZwf2N4U4EbTp5j+GiShI4MsXtnGoImqzShB5i8empcWNRXS0PCTOQc=
+X-Gm-Message-State: AOJu0YxlmoB9sLra8uzKO5Y6RoJa1Df6+5+sV3q8uT3HPtImEnwqA5N5
+ 6CahoAuVatEl/jSB00TOwE23vgyi2TP+WaZ0BQjQvgGQh+19DqdILGshLpRggS0=
+X-Google-Smtp-Source: AGHT+IH91EVZT4hDMJsRmKkJh7MOV5pa45va9oM9Dkf3PgwhKqeDXqCP1eAQH6ZIj3wicajYrtBvVw==
+X-Received: by 2002:a05:6808:3a09:b0:3d2:278d:8ae7 with SMTP id
+ 5614622812f47-3d23dfde5abmr2150768b6e.19.1718196268648; 
+ Wed, 12 Jun 2024 05:44:28 -0700 (PDT)
+Received: from amjad-pc.. ([202.185.212.207]) by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-7042dff35fdsm6928961b3a.131.2024.06.12.05.44.26
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 12 Jun 2024 05:44:28 -0700 (PDT)
+From: Amjad Alsharafi <amjadsharafi10@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: Hanna Reitz <hreitz@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
+ "open list:vvfat" <qemu-block@nongnu.org>,
+ Amjad Alsharafi <amjadsharafi10@gmail.com>
+Subject: [PATCH v5 0/5] vvfat: Fix write bugs for large files and add iotests
+Date: Wed, 12 Jun 2024 20:43:21 +0800
+Message-ID: <cover.1718195956.git.amjadsharafi10@gmail.com>
+X-Mailer: git-send-email 2.45.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: assert fails in s390x TCG
-To: Richard Henderson <richard.henderson@linaro.org>,
- Claudio Fontana <cfontana@suse.de>, Cornelia Huck <cohuck@redhat.com>
-Cc: qemu-devel <qemu-devel@nongnu.org>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, Anton Johansson <anjo@rev.ng>
-References: <eaec32e3-d56a-e6a7-fcbe-860948e79658@suse.de>
- <def2df0d-fb58-8e67-a0eb-7d646da3be42@linaro.org>
- <0e06f694-7aeb-66d1-48d8-317a93f8f741@suse.de>
- <6a3e8443-2d0a-451e-a481-cc26575d8211@linaro.org>
- <14787dc3-66ae-e15e-0bdf-14ca53bff17d@linaro.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <14787dc3-66ae-e15e-0bdf-14ca53bff17d@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::22b;
+ envelope-from=amjadsharafi10@gmail.com; helo=mail-oi1-x22b.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -98,17 +90,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 28/7/23 18:43, Richard Henderson wrote:
-> On 7/28/23 09:05, Richard Henderson wrote:
->> It's the page containing both code and a page table entry that 
->> concerns me.  It seems like a kernel bug, though obviously we 
->> shouldn't crash.  I'm not sure what to do about it.
-> 
-> Bah.  Of course it's not a kernel bug, since the store is to LowCore.
-> And of course LowCore is part of a larger page, which easily has other 
-> stuff.
+These patches fix some bugs found when modifying files in vvfat.
+First, there was a bug when writing to the cluster 2 or above of a file, it
+will copy the cluster before it instead, so, when writing to cluster=2, the
+content of cluster=1 will be copied into disk instead in its place.
 
-Maybe related to
-https://lore.kernel.org/qemu-devel/20240611215814.32752-1-anjo@rev.ng/
+Another issue was modifying the clusters of a file and adding new
+clusters, this showed 2 issues:
+- If the new cluster is not immediately after the last cluster, it will
+cause issues when reading from this file in the future.
+- Generally, the usage of info.file.offset was incorrect, and the
+system would crash on abort() when the file is modified and a new
+cluster was added.
+
+Also, added some iotests for vvfat, covering the this fix and also
+general behavior such as reading, writing, and creating files on the filesystem.
+Including tests for reading/writing the first cluster which
+would pass even before this patch.
+
+v5:
+  - Fix a bug in reading non-contiguous clusters in vvfat for more than 2 mappings.
+  - Added a test for adding more clusters where they are non-contiguous and
+    result in 3 mappings (for the above fix).
+  - Split PATCH 2/4 into 2 patches and a better fix for the `abort` issue (now in PATCH 3/5).
+  - Other fixes and improvements in `fat16.py` module used for iotests.
+
+v4:
+  Applied some suggestions from Kevin Wolf <kwolf@redhat.com>:
+  - Fixed code formatting by following the coding style in `scripts/checkpatch.pl`
+  - Reduced changes related to `iotests` by setting `vvfat` format as non-generic.
+  - Added another test to cover the fix done in `PATCH 2/4` and `PATCH 3/4` for 
+    handling reading/writing files with non-continuous clusters.
+
+v3:
+  Added test for creating new files in vvfat.
+
+v2:
+  Added iotests for `vvfat` driver along with a simple `fat16` module to run the tests.
+
+v1:
+  https://patchew.org/QEMU/20240327201231.31046-1-amjadsharafi10@gmail.com/
+  Fix the issue of writing to the middle of the file in vvfat
+
+Amjad Alsharafi (5):
+  vvfat: Fix bug in writing to middle of file
+  vvfat: Fix usage of `info.file.offset`
+  vvfat: Fix wrong checks for cluster mappings invariant
+  vvfat: Fix reading files with non-continuous clusters
+  iotests: Add `vvfat` tests
+
+ block/vvfat.c                      |  47 +-
+ tests/qemu-iotests/check           |   2 +-
+ tests/qemu-iotests/fat16.py        | 673 +++++++++++++++++++++++++++++
+ tests/qemu-iotests/testenv.py      |   2 +-
+ tests/qemu-iotests/tests/vvfat     | 457 ++++++++++++++++++++
+ tests/qemu-iotests/tests/vvfat.out |   5 +
+ 6 files changed, 1164 insertions(+), 22 deletions(-)
+ create mode 100644 tests/qemu-iotests/fat16.py
+ create mode 100755 tests/qemu-iotests/tests/vvfat
+ create mode 100755 tests/qemu-iotests/tests/vvfat.out
+
+-- 
+2.45.1
 
 
