@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5370D90539A
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jun 2024 15:22:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5979E9053A0
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jun 2024 15:22:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sHNvX-0000vG-9g; Wed, 12 Jun 2024 09:22:12 -0400
+	id 1sHNvl-0001kx-Mk; Wed, 12 Jun 2024 09:22:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sHNux-0000Ou-QB
- for qemu-devel@nongnu.org; Wed, 12 Jun 2024 09:21:36 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sHNv3-0000XT-1L
+ for qemu-devel@nongnu.org; Wed, 12 Jun 2024 09:21:42 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sHNuu-0003xc-4w
- for qemu-devel@nongnu.org; Wed, 12 Jun 2024 09:21:34 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sHNuy-0003yT-Jn
+ for qemu-devel@nongnu.org; Wed, 12 Jun 2024 09:21:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1718198490;
+ s=mimecast20190719; t=1718198495;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=W2ti5MdYPaT8sRVI8LbSwShzQk9KoHPKLbkpjkZs45g=;
- b=GNVETZCJICESylYYABdVadvUnZkgr8IPCu01C6bxt80cXNVUbOvf9426ymuH5+Qm5nkrB+
- go29Sb09lJjIe+RGqCEHoE6b+utRKeWVO7nD+DsnUPIwzKL2myjGYGp+rQsP8I3WxpfDIY
- hEs3WoI7/EwkcYJpEWIMVJt9qP/H7tw=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ bh=UrBycxmXKZRJrolXCFLanmpcSgTCZTkm0Z2V99WJj/s=;
+ b=EvxsG7k5hxax972W5opcqp9BkmuR/kqIrxchvIsNqsj7oHHnzMtuP0qDt/HEWZR7MCcj5l
+ 94XL9CCmjR4Zl2+o0oUB0MBDZYUVGN5Zc9++C/8zo4ih3ZNdSc77V1yOITky8iipNfJn1R
+ 9m2WlzVAOSGWyY67NxEmKPwOuCwkRYw=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-528-pgY8wELfON2cUdHWwdQftw-1; Wed,
- 12 Jun 2024 09:21:28 -0400
-X-MC-Unique: pgY8wELfON2cUdHWwdQftw-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-479-6FCLyDMsNJmfylXjVtynBA-1; Wed,
+ 12 Jun 2024 09:21:32 -0400
+X-MC-Unique: 6FCLyDMsNJmfylXjVtynBA-1
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9F16A1955E7D; Wed, 12 Jun 2024 13:21:27 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C68951955E89; Wed, 12 Jun 2024 13:21:29 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.194.236])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id ED2B91956087; Wed, 12 Jun 2024 13:21:25 +0000 (UTC)
+ id EDA741956087; Wed, 12 Jun 2024 13:21:27 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org,
 	Richard Henderson <richard.henderson@linaro.org>
 Cc: Zhao Liu <zhao1.liu@intel.com>,
 	Yongwei Ma <yongwei.ma@intel.com>
-Subject: [PULL 10/15] tests/unit/test-smp-parse: Use default parameters=0 when
- not set in -smp
-Date: Wed, 12 Jun 2024 15:20:50 +0200
-Message-ID: <20240612132055.326889-11-thuth@redhat.com>
+Subject: [PULL 11/15] tests/unit/test-smp-parse: Make test cases aware of
+ module level
+Date: Wed, 12 Jun 2024 15:20:51 +0200
+Message-ID: <20240612132055.326889-12-thuth@redhat.com>
 In-Reply-To: <20240612132055.326889-1-thuth@redhat.com>
 References: <20240612132055.326889-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: 11
 X-Spam_score: 1.1
@@ -83,60 +83,80 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhao Liu <zhao1.liu@intel.com>
 
-Since -smp allows parameters=1 whether the level is supported by
-machine, to avoid the test scenarios where the parameter defaults to 1
-cause some errors to be masked, explicitly set undesired parameters to
-0.
+Currently, -smp supports module level.
+
+It is necessary to consider the effects of module in the test cases to
+ensure that the calculations are correct. This is also the preparation
+to add module test cases.
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 Tested-by: Yongwei Ma <yongwei.ma@intel.com>
-Message-ID: <20240529061925.350323-5-zhao1.liu@intel.com>
+Message-ID: <20240529061925.350323-6-zhao1.liu@intel.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/unit/test-smp-parse.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ tests/unit/test-smp-parse.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
 diff --git a/tests/unit/test-smp-parse.c b/tests/unit/test-smp-parse.c
-index 5d99e0d923..e3a0a9d12d 100644
+index e3a0a9d12d..2214e47ba9 100644
 --- a/tests/unit/test-smp-parse.c
 +++ b/tests/unit/test-smp-parse.c
-@@ -436,7 +436,7 @@ static const struct SMPTestData data_with_clusters_invalid[] = {
- static const struct SMPTestData data_with_books_invalid[] = {
-     {
-         /* config: -smp 16,books=2,sockets=2,cores=4,threads=2,maxcpus=16 */
--        .config = SMP_CONFIG_WITH_BOOKS_DRAWERS(T, 16, F, 1, T, 2, T,
-+        .config = SMP_CONFIG_WITH_BOOKS_DRAWERS(T, 16, F, 0, T, 2, T,
-                                                 2, T, 4, T, 2, T, 16),
-         .expect_error = "Invalid CPU topology: "
-                         "product of the hierarchy must match maxcpus: "
-@@ -444,7 +444,7 @@ static const struct SMPTestData data_with_books_invalid[] = {
-                         "!= maxcpus (16)",
-     }, {
-         /* config: -smp 34,books=2,sockets=2,cores=4,threads=2,maxcpus=32 */
--        .config = SMP_CONFIG_WITH_BOOKS_DRAWERS(T, 34, F, 1, T, 2, T,
-+        .config = SMP_CONFIG_WITH_BOOKS_DRAWERS(T, 34, F, 0, T, 2, T,
-                                                 2, T, 4, T, 2, T, 32),
-         .expect_error = "Invalid CPU topology: "
-                         "maxcpus must be equal to or greater than smp: "
-@@ -456,7 +456,7 @@ static const struct SMPTestData data_with_books_invalid[] = {
- static const struct SMPTestData data_with_drawers_invalid[] = {
-     {
-         /* config: -smp 16,drawers=2,sockets=2,cores=4,threads=2,maxcpus=16 */
--        .config = SMP_CONFIG_WITH_BOOKS_DRAWERS(T, 16, T, 2, F, 1, T,
-+        .config = SMP_CONFIG_WITH_BOOKS_DRAWERS(T, 16, T, 2, F, 0, T,
-                                                 2, T, 4, T, 2, T, 16),
-         .expect_error = "Invalid CPU topology: "
-                         "product of the hierarchy must match maxcpus: "
-@@ -464,7 +464,7 @@ static const struct SMPTestData data_with_drawers_invalid[] = {
-                         "!= maxcpus (16)",
-     }, {
-         /* config: -smp 34,drawers=2,sockets=2,cores=4,threads=2,maxcpus=32 */
--        .config = SMP_CONFIG_WITH_BOOKS_DRAWERS(T, 34, T, 2, F, 1, T,
-+        .config = SMP_CONFIG_WITH_BOOKS_DRAWERS(T, 34, T, 2, F, 0, T,
-                                                 2, T, 4, T, 2, T, 32),
-         .expect_error = "Invalid CPU topology: "
-                         "maxcpus must be equal to or greater than smp: "
+@@ -629,6 +629,7 @@ static char *smp_config_to_string(const SMPConfiguration *config)
+         "    .has_sockets  = %5s, sockets  = %" PRId64 ",\n"
+         "    .has_dies     = %5s, dies     = %" PRId64 ",\n"
+         "    .has_clusters = %5s, clusters = %" PRId64 ",\n"
++        "    .has_modules  = %5s, modules  = %" PRId64 ",\n"
+         "    .has_cores    = %5s, cores    = %" PRId64 ",\n"
+         "    .has_threads  = %5s, threads  = %" PRId64 ",\n"
+         "    .has_maxcpus  = %5s, maxcpus  = %" PRId64 ",\n"
+@@ -639,6 +640,7 @@ static char *smp_config_to_string(const SMPConfiguration *config)
+         config->has_sockets ? "true" : "false", config->sockets,
+         config->has_dies ? "true" : "false", config->dies,
+         config->has_clusters ? "true" : "false", config->clusters,
++        config->has_modules ? "true" : "false", config->modules,
+         config->has_cores ? "true" : "false", config->cores,
+         config->has_threads ? "true" : "false", config->threads,
+         config->has_maxcpus ? "true" : "false", config->maxcpus);
+@@ -679,6 +681,7 @@ static char *cpu_topology_to_string(const CpuTopology *topo,
+         "    .sockets            = %u,\n"
+         "    .dies               = %u,\n"
+         "    .clusters           = %u,\n"
++        "    .modules            = %u,\n"
+         "    .cores              = %u,\n"
+         "    .threads            = %u,\n"
+         "    .max_cpus           = %u,\n"
+@@ -688,8 +691,8 @@ static char *cpu_topology_to_string(const CpuTopology *topo,
+         "}",
+         topo->cpus, topo->drawers, topo->books,
+         topo->sockets, topo->dies, topo->clusters,
+-        topo->cores, topo->threads, topo->max_cpus,
+-        threads_per_socket, cores_per_socket,
++        topo->modules, topo->cores, topo->threads,
++        topo->max_cpus, threads_per_socket, cores_per_socket,
+         has_clusters ? "true" : "false");
+ }
+ 
+@@ -732,6 +735,7 @@ static void check_parse(MachineState *ms, const SMPConfiguration *config,
+             (ms->smp.sockets == expect_topo->sockets) &&
+             (ms->smp.dies == expect_topo->dies) &&
+             (ms->smp.clusters == expect_topo->clusters) &&
++            (ms->smp.modules == expect_topo->modules) &&
+             (ms->smp.cores == expect_topo->cores) &&
+             (ms->smp.threads == expect_topo->threads) &&
+             (ms->smp.max_cpus == expect_topo->max_cpus) &&
+@@ -812,6 +816,11 @@ static void smp_parse_test(MachineState *ms, SMPTestData *data, bool is_valid)
+ /* The parsed results of the unsupported parameters should be 1 */
+ static void unsupported_params_init(const MachineClass *mc, SMPTestData *data)
+ {
++    if (!mc->smp_props.modules_supported) {
++        data->expect_prefer_sockets.modules = 1;
++        data->expect_prefer_cores.modules = 1;
++    }
++
+     if (!mc->smp_props.dies_supported) {
+         data->expect_prefer_sockets.dies = 1;
+         data->expect_prefer_cores.dies = 1;
 -- 
 2.45.2
 
