@@ -2,69 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D1E190534E
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jun 2024 15:09:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4ECC90535A
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jun 2024 15:11:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sHNcO-0003Pt-0k; Wed, 12 Jun 2024 09:02:24 -0400
+	id 1sHNcQ-0003Td-Bk; Wed, 12 Jun 2024 09:02:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1sHNcH-0003E9-0i
- for qemu-devel@nongnu.org; Wed, 12 Jun 2024 09:02:19 -0400
+ id 1sHNcN-0003RE-HM
+ for qemu-devel@nongnu.org; Wed, 12 Jun 2024 09:02:23 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1sHNcC-00081J-OO
- for qemu-devel@nongnu.org; Wed, 12 Jun 2024 09:02:15 -0400
+ id 1sHNcL-00082k-TQ
+ for qemu-devel@nongnu.org; Wed, 12 Jun 2024 09:02:23 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1718197328;
+ s=mimecast20190719; t=1718197341;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=eYivD0Oj8DZaeGa3x1w3lr0EcGpbXryh/Rf51uyXwz4=;
- b=I65DlcJETzLir7+clst40ZMnfg2cU4df8ZddcsK6u1MjcbxgYq181MsFUi8GB7Rz7zfz03
- LxzGN3hjs2DfTB3qkA3VVxxEof0fPPqryASSv/3VPI7SCqd42MjyX9F21y1fgJUV9rXkom
- kR29MNVuCipL7HMUlUTYDpLfgnevsC0=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Su7ClX2VsFIEko0OXJVvgHI4Li50SabFJTO7o/P9fMs=;
+ b=g/Jjp/MUT9cmEymAuu1oTMstFVioDCArQ905CPOg/xCIWPiVO4kqfop+5hIe5DWU/a4O0p
+ cLd5+EPPM/qZQQEYc5MpIeUZBoH8sVkETse+Eqp6cuLMCt+M8lp7cI/8yTTD+qy91vp5OQ
+ +JU47zf5fn94goL6XumAL+q80qvNoUE=
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-145-jsxu35nMMYmewaa1_-fouA-1; Wed, 12 Jun 2024 09:02:06 -0400
-X-MC-Unique: jsxu35nMMYmewaa1_-fouA-1
-Received: by mail-qk1-f198.google.com with SMTP id
- af79cd13be357-7955f448a2dso318725585a.0
- for <qemu-devel@nongnu.org>; Wed, 12 Jun 2024 06:02:06 -0700 (PDT)
+ us-mta-681-otdwcqrwNoeLinQ4Gj14OA-1; Wed, 12 Jun 2024 09:02:19 -0400
+X-MC-Unique: otdwcqrwNoeLinQ4Gj14OA-1
+Received: by mail-qt1-f200.google.com with SMTP id
+ d75a77b69052e-4406476507cso20626791cf.3
+ for <qemu-devel@nongnu.org>; Wed, 12 Jun 2024 06:02:19 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718197326; x=1718802126;
+ d=1e100.net; s=20230601; t=1718197339; x=1718802139;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=eYivD0Oj8DZaeGa3x1w3lr0EcGpbXryh/Rf51uyXwz4=;
- b=IthXSICLH4SmHGKM2wo23cJoVT3qE1gU67cst2UN8OpzI4a87XQ7EcHDeqR0onAwD/
- FMlgs66egces+CzqFJdBrzTk1gj3Pbq2WxFkjCcwyoZ9sJ23/n7IRp/gr0Wg8zCMoiKU
- Jekgo3xVFuxk9Yf6ME2cG9OkagtsWJ0S+Mf5Hju3XOeVeevuzL8iZbChCxcndSmEKRVD
- 4YdjOz0hEdaVhaeabZHtk8D84TKIZMLnzvkfq/qtaeP1JM8HNWaLqGC+rxkH3aDB3F1u
- 7y40lyxOyPzDmooebHBGu1EzQPKPyOewFtWAU66oL3aCQi8CxlTwL48ZX7xSHYNvVpUi
- T90w==
+ bh=Su7ClX2VsFIEko0OXJVvgHI4Li50SabFJTO7o/P9fMs=;
+ b=UB6PqWib4hJuOVuxNe1wEWEPVe8u8w0iu4Oqr26OBAC3IUr33md37MF496kg+Rd7P+
+ IUvSzHG/+ETlxN/IyJWnHyoWx+DAfiRBLmbdgskdQPt1Lb7vRMA/Vj63ICf31NG7gmw7
+ ZRy07zPv1GskjSmpaYrWhyZFxMFRQkAcEiXq5GLf7o506cFVb6klN6O5V145lqTsD34a
+ bp539VWUVTEp4oMQPAecbTCxYWt8i2F7RpFAIqk1ct0CmMEqfXnUmuqnSyWM2mituwE3
+ aMTtfiiLXLQiYjB42gbGXICKpwhHdm4ShHNKOTHPgHTutEiKb9ioUELTKgFLWJBTkRVa
+ KBGA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUEOm0zIKVS+Elu3M68XSUMF/HDi4KAHzR7Sr79cSEKYSFtbz0qbPoj3m4rlkETbjyOwehhgMCurRhMSs4jhgM9X95c54Y=
-X-Gm-Message-State: AOJu0Yxor2nxJ1N7RoTLMLU8zf7HbUF1jISJZKJUivK0FtMiPxotkAX5
- B1hJRDTYp6CSnfYJfUZIpuQVBhZp2TZQxvufHjrx9fcmycVPjBimbOFLg5CV0LgzWcjtVqvUOT5
- QyxXrgXeLE/tj7hFFht1TBlU0HMBsJm+NWgxGUOpNEodMbhVLolH9
-X-Received: by 2002:a05:6214:448e:b0:6ae:116b:ef6a with SMTP id
- 6a1803df08f44-6b1a7ebb170mr17694556d6.60.1718197325604; 
- Wed, 12 Jun 2024 06:02:05 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFRitwQKscCqag0PsLNFeOtfDq3MX8L34TOG54quvOa1DAibTb69ENOFsIyuxrR3KqtkY8ySQ==
-X-Received: by 2002:a05:6214:448e:b0:6ae:116b:ef6a with SMTP id
- 6a1803df08f44-6b1a7ebb170mr17694036d6.60.1718197325178; 
- Wed, 12 Jun 2024 06:02:05 -0700 (PDT)
+ AJvYcCVfZnz/Gk9fImFCbbZcLWB4U6bYWPq4BpWJ3y8Qb79qks268l3kokhySLvNFMxpfqULPW+7+2uabWLtEZx/ILFOCgovBrc=
+X-Gm-Message-State: AOJu0YwFaGqMp4YWVtf/zmKTkjbnSWIwhZvnmFgGCd5ODD66GN+rUpDG
+ gUy0qMF3QgZH8ZPfAcGZRsn7sHRKxY+aPHuIIsImu8y1PgW108AaooNvmWUYZmL3lbszZv6ozS0
+ LL9f7qJU1jES6R0/17arvAvlyg9027wPTOUwWaaVZadTdgs00WAyC
+X-Received: by 2002:a05:6214:3291:b0:6b0:8b40:c7e0 with SMTP id
+ 6a1803df08f44-6b1a731b7d6mr18097986d6.44.1718197338850; 
+ Wed, 12 Jun 2024 06:02:18 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEderl/MfePzFiHQ2ncxEuElJrm+4BKYlXdhuE/JLFmI8+4UqTQNNgTmOVLm1w6aUl87AC0UQ==
+X-Received: by 2002:a05:6214:3291:b0:6b0:8b40:c7e0 with SMTP id
+ 6a1803df08f44-6b1a731b7d6mr18097576d6.44.1718197338326; 
+ Wed, 12 Jun 2024 06:02:18 -0700 (PDT)
 Received: from step1.redhat.com ([193.207.132.52])
  by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6b04f69adeasm67464446d6.44.2024.06.12.06.01.55
+ 6a1803df08f44-6b07a727eb8sm33527016d6.9.2024.06.12.06.02.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 12 Jun 2024 06:02:00 -0700 (PDT)
+ Wed, 12 Jun 2024 06:02:16 -0700 (PDT)
 From: Stefano Garzarella <sgarzare@redhat.com>
 To: mst@redhat.com,
 	qemu-devel@nongnu.org
@@ -83,10 +83,10 @@ Cc: qemu-block@nongnu.org, Hanna Reitz <hreitz@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Jason Wang <jasowang@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  Eric Blake <eblake@redhat.com>, Stefano Garzarella <sgarzare@redhat.com>
-Subject: [PATCH RESEND v7 01/12] libvhost-user: set msg.msg_control to NULL
- when it is empty
-Date: Wed, 12 Jun 2024 15:01:29 +0200
-Message-ID: <20240612130140.63004-2-sgarzare@redhat.com>
+Subject: [PATCH RESEND v7 02/12] libvhost-user: fail vu_message_write() if
+ sendmsg() is failing
+Date: Wed, 12 Jun 2024 15:01:30 +0200
+Message-ID: <20240612130140.63004-3-sgarzare@redhat.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240612130140.63004-1-sgarzare@redhat.com>
 References: <20240612130140.63004-1-sgarzare@redhat.com>
@@ -118,32 +118,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On some OS (e.g. macOS) sendmsg() returns -1 (errno EINVAL) if
-the `struct msghdr` has the field `msg_controllen` set to 0, but
-`msg_control` is not NULL.
+In vu_message_write() we use sendmsg() to send the message header,
+then a write() to send the payload.
 
-Reviewed-by: Eric Blake <eblake@redhat.com>
-Reviewed-by: David Hildenbrand <david@redhat.com>
+If sendmsg() fails we should avoid sending the payload, since we
+were unable to send the header.
+
+Discovered before fixing the issue with the previous patch, where
+sendmsg() failed on macOS due to wrong parameters, but the frontend
+still sent the payload which the backend incorrectly interpreted
+as a wrong header.
+
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Acked-by: Stefan Hajnoczi <stefanha@redhat.com>
+Reviewed-by: David Hildenbrand <david@redhat.com>
 Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
 ---
- subprojects/libvhost-user/libvhost-user.c | 1 +
- 1 file changed, 1 insertion(+)
+ subprojects/libvhost-user/libvhost-user.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
 diff --git a/subprojects/libvhost-user/libvhost-user.c b/subprojects/libvhost-user/libvhost-user.c
-index a879149fef..22bea0c775 100644
+index 22bea0c775..a11afd1960 100644
 --- a/subprojects/libvhost-user/libvhost-user.c
 +++ b/subprojects/libvhost-user/libvhost-user.c
-@@ -632,6 +632,7 @@ vu_message_write(VuDev *dev, int conn_fd, VhostUserMsg *vmsg)
-         memcpy(CMSG_DATA(cmsg), vmsg->fds, fdsize);
-     } else {
-         msg.msg_controllen = 0;
-+        msg.msg_control = NULL;
-     }
+@@ -639,6 +639,11 @@ vu_message_write(VuDev *dev, int conn_fd, VhostUserMsg *vmsg)
+         rc = sendmsg(conn_fd, &msg, 0);
+     } while (rc < 0 && (errno == EINTR || errno == EAGAIN));
  
-     do {
++    if (rc <= 0) {
++        vu_panic(dev, "Error while writing: %s", strerror(errno));
++        return false;
++    }
++
+     if (vmsg->size) {
+         do {
+             if (vmsg->data) {
 -- 
 2.45.2
 
