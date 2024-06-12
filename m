@@ -2,58 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B7689053BF
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jun 2024 15:26:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 653469053BE
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jun 2024 15:26:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sHNyx-0003X4-Ri; Wed, 12 Jun 2024 09:25:43 -0400
+	id 1sHNz2-0003YF-H0; Wed, 12 Jun 2024 09:25:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sHNyv-0003Wj-1x
- for qemu-devel@nongnu.org; Wed, 12 Jun 2024 09:25:41 -0400
-Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sHNz0-0003Xa-GO
+ for qemu-devel@nongnu.org; Wed, 12 Jun 2024 09:25:46 -0400
+Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sHNyt-0004x5-DB
- for qemu-devel@nongnu.org; Wed, 12 Jun 2024 09:25:40 -0400
-Received: by mail-ed1-x530.google.com with SMTP id
- 4fb4d7f45d1cf-57a1fe6392eso10219823a12.0
- for <qemu-devel@nongnu.org>; Wed, 12 Jun 2024 06:25:38 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sHNyy-0004xK-Rs
+ for qemu-devel@nongnu.org; Wed, 12 Jun 2024 09:25:46 -0400
+Received: by mail-ed1-x533.google.com with SMTP id
+ 4fb4d7f45d1cf-579fa270e53so3704827a12.3
+ for <qemu-devel@nongnu.org>; Wed, 12 Jun 2024 06:25:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1718198736; x=1718803536; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=z0QNuBoacjhHLlQFHetj58LfpHzHR+p7NA8aWZ0RQNQ=;
- b=gI36jYsLVxXX1FCuD2XTum0svKv9suarYCaQ0R2lZKIgtFtghC7jv+DHe0LDMD+3e+
- vUJQJIRNSyG5nTkCdtElDgZbCvwdS0nS/WmGKPHYy+XmQHxiVD3PjakYbbLKrlHcnLef
- ccqgMvf59cvhaa3XOWfp8jzpWquWB0GTwzZSeIqIlR8s+e8MyRTHcC9NYtqcPMjWlGVa
- n3Yh23YzZlcdn63gUYkOdQaBIHP0Xql6/CTVObBH8pZ415V2W6G1bHsW22AP1xzlsBf/
- EOzeEtp5exQs6xlueJjtQZMouF0f0BzpbVW6gEiPLhQm6PyBQ+FIZoJoDv6MQHLqRLrR
- qKGw==
+ d=linaro.org; s=google; t=1718198743; x=1718803543; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=JM/gzg6Fck9TlOnDm2ZflmX6hvT5QMqxJafFp7HjnSg=;
+ b=aqC9typcPzjbBDUqGAhWTBc0rZSCGq2yG7J0RWpWK9Ju8QPos3LJ6WWHLxaOLp9eFb
+ ZACJlHLps03K/sJ5po8kyqpYUzGjXE+CP5VAUmfVwSeuYnNHcxAlm9hfQtlGpPizcVTD
+ EUrzno7XZJFeJ0tffIp5CQ3ChkLLCrDatVRdy8tmYwuxfcyTEYtP1eNsV4eL56Ap0Dnw
+ 5SfG9lqccC+Tes4GsOjVTlIZjpQFgvzTolZjs038SQqQ9eG4ROdo9MpGXiFpNGFZtBnK
+ FBNSbQgvEvxAauMpigd6Cp7AvlscWcxXvFQe7QvKvlp2tba4b987nxxjDH8axqTGoCnw
+ bfOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718198736; x=1718803536;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=z0QNuBoacjhHLlQFHetj58LfpHzHR+p7NA8aWZ0RQNQ=;
- b=kEL3gpOiL+tY+8xOH/My+WeRuj9enpur0FSvXs9DAxoXvc1gEe4OQMIv/MiVXgUmLu
- 2rnBVmNzq3ZL1zrSmR/I8nr5H+b8DFwuC9i4NlAMfswBwroBLwC7Nq55Pzx5X/7vB4Jd
- dpJ0WplA2KjCiN/4QV18b6ykj39KYDL43uC+qojPZLBOYWMCCy20g80z040LCidx7G2g
- ms4dMnmz0T5Jakdly6Z0q1610rlwaJRq8FQVOHXrRmvO+14A6i6h/CFfeaMoDANkaY1K
- /FVlXJ0p7Zvz5CFMbPqO7ohB9bVWLxwu6yt2VGTW2dD4W/uinUx0i8GLjVBTBz2UU9Xw
- 32BA==
-X-Gm-Message-State: AOJu0YwL9g45QzgIj4V+AKKmm0ntXOrm2c8A7qou7C17rZ0bZER7CLnd
- miB+N/pnU7x+0lir6ICu4L7Y2qElS8vwAc5SNGbL7hn2o5ThNe31JL5mCFmSSE2JVvNf1T9gmn1
- k
-X-Google-Smtp-Source: AGHT+IFiPegmEauMovQ1UdwwsE9nwBaC4MXJQ1SzF/TqIMYTQETkeSQ/McmVOu3C9huuk6OD68Cp/g==
-X-Received: by 2002:a17:907:868c:b0:a6f:481f:77eb with SMTP id
- a640c23a62f3a-a6f481f7b7amr134294266b.20.1718198736520; 
- Wed, 12 Jun 2024 06:25:36 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1718198743; x=1718803543;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=JM/gzg6Fck9TlOnDm2ZflmX6hvT5QMqxJafFp7HjnSg=;
+ b=lmE/Q/75hZv3Csuy+/Pmyo3F5r9Ui+dUjGHgDOUssJ+F7iZLPPPFpwPVhZ4lKMHQl7
+ rc17udksndB8wdcJ/qGJ6L2dWa7r4+nTp+3RDfbtWcBOBqcxs+xx9oto4aK6NJGc0J6y
+ 2QMCfK2ObdV/tmqBG0Guaf4COc7f1c4Uc1vElE+AmcTYlF2duJ4F3aqmA3j8Byl4wEiZ
+ L5tiZ9edyDDyXLAkqmsHh/YaK79zzpWen+EUXLiW6kivDS2y0ucuViSiohmvPKmtTUsI
+ dD4QfDTP+OIAXdvxKjszjDuztstzSJ5YnmdU3WW3e/o68t7sChZjTTCOhGJZnkXwSoUv
+ s1rQ==
+X-Gm-Message-State: AOJu0YwCHwwxXJvU/IpI31pVKLz7IZVrcYIqtBSAN/SPxsQfCe/kwlP1
+ nxEpMzuj44AAUIgUtGPu7w9ZwAe/WHIkHgPbaHJ/8YEggUBkKPVPNCOr4BW1gkYSzjT2GjmvVGd
+ G
+X-Google-Smtp-Source: AGHT+IH5GtYMxgT2ufbi5rKE0o4I/odKrmSH6CP9+MR44R06RXitlsqOLM99JWQ3IqfNgjeJnkJlTA==
+X-Received: by 2002:a50:951e:0:b0:57c:6004:4375 with SMTP id
+ 4fb4d7f45d1cf-57ca97513b7mr1433782a12.15.1718198742823; 
+ Wed, 12 Jun 2024 06:25:42 -0700 (PDT)
 Received: from m1x-phil.lan (ram94-h02-176-184-0-172.dsl.sta.abo.bbox.fr.
  [176.184.0.172]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a6f408b814esm154946066b.10.2024.06.12.06.25.34
+ 4fb4d7f45d1cf-57c6c95bb33sm7851525a12.8.2024.06.12.06.25.41
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 12 Jun 2024 06:25:36 -0700 (PDT)
+ Wed, 12 Jun 2024 06:25:42 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -61,16 +62,18 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  David Hildenbrand <david@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  "Michael S. Tsirkin" <mst@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH 0/3] memory: Constify IOMMUTLBEvent in
- memory_region_notify_iommu*()
-Date: Wed, 12 Jun 2024 15:25:28 +0200
-Message-ID: <20240612132532.85928-1-philmd@linaro.org>
+Subject: [PATCH 1/3] memory: Constify IOMMUTLBEvent in
+ memory_region_notify_iommu_one()
+Date: Wed, 12 Jun 2024 15:25:29 +0200
+Message-ID: <20240612132532.85928-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20240612132532.85928-1-philmd@linaro.org>
+References: <20240612132532.85928-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::530;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x530.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::533;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x533.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,18 +96,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Trivial patches using const IOMMUTLBEvent.
+@event access is read-only.
 
-Philippe Mathieu-Daudé (3):
-  memory: Constify IOMMUTLBEvent in memory_region_notify_iommu_one()
-  memory: Constify IOMMUTLBEvent in memory_region_notify_iommu()
-  hw/i386/iommu: Constify IOMMUTLBEvent in vtd_page_walk_hook prototype
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ include/exec/memory.h | 2 +-
+ system/memory.c       | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
- include/exec/memory.h | 4 ++--
- hw/i386/intel_iommu.c | 8 ++++----
- system/memory.c       | 6 +++---
- 3 files changed, 9 insertions(+), 9 deletions(-)
-
+diff --git a/include/exec/memory.h b/include/exec/memory.h
+index 1be58f694c..2bf5e23b6a 100644
+--- a/include/exec/memory.h
++++ b/include/exec/memory.h
+@@ -1852,7 +1852,7 @@ void memory_region_notify_iommu(IOMMUMemoryRegion *iommu_mr,
+  *         range.
+  */
+ void memory_region_notify_iommu_one(IOMMUNotifier *notifier,
+-                                    IOMMUTLBEvent *event);
++                                    const IOMMUTLBEvent *event);
+ 
+ /**
+  * memory_region_unmap_iommu_notifier_range: notify a unmap for an IOMMU
+diff --git a/system/memory.c b/system/memory.c
+index 74cd73ebc7..f3a37c97c1 100644
+--- a/system/memory.c
++++ b/system/memory.c
+@@ -2006,9 +2006,9 @@ void memory_region_unregister_iommu_notifier(MemoryRegion *mr,
+ }
+ 
+ void memory_region_notify_iommu_one(IOMMUNotifier *notifier,
+-                                    IOMMUTLBEvent *event)
++                                    const IOMMUTLBEvent *event)
+ {
+-    IOMMUTLBEntry *entry = &event->entry;
++    const IOMMUTLBEntry *entry = &event->entry;
+     hwaddr entry_end = entry->iova + entry->addr_mask;
+     IOMMUTLBEntry tmp = *entry;
+ 
 -- 
 2.41.0
 
