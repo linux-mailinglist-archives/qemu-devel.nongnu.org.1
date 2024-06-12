@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2847F904DE9
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jun 2024 10:17:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43E1E904DEF
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jun 2024 10:18:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sHJ8Q-0002QT-Rk; Wed, 12 Jun 2024 04:15:10 -0400
+	id 1sHJ8W-0002YJ-Jl; Wed, 12 Jun 2024 04:15:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jim.shu@sifive.com>)
- id 1sHJ8P-0002Q3-I1
- for qemu-devel@nongnu.org; Wed, 12 Jun 2024 04:15:09 -0400
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ id 1sHJ8U-0002TN-Lm
+ for qemu-devel@nongnu.org; Wed, 12 Jun 2024 04:15:14 -0400
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <jim.shu@sifive.com>)
- id 1sHJ8N-0006Mr-8p
- for qemu-devel@nongnu.org; Wed, 12 Jun 2024 04:15:09 -0400
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-1f68834bfdfso48623545ad.3
- for <qemu-devel@nongnu.org>; Wed, 12 Jun 2024 01:15:06 -0700 (PDT)
+ id 1sHJ8R-0006Oq-V8
+ for qemu-devel@nongnu.org; Wed, 12 Jun 2024 04:15:14 -0400
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-1f6b0a40721so47263005ad.2
+ for <qemu-devel@nongnu.org>; Wed, 12 Jun 2024 01:15:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1718180105; x=1718784905; darn=nongnu.org;
+ d=sifive.com; s=google; t=1718180110; x=1718784910; darn=nongnu.org;
  h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
  :cc:subject:date:message-id:reply-to;
- bh=t/AUOAInjkFfC7EhRiJBRMiTPdQ2lCm4ch6BlghBPuU=;
- b=aX6MP6oDirKKIplRDKeNZtxcVMIAo9p5Z1/F6DMVPKMte12z8pyX5h5YXaawEhAOnB
- NELYJRlkQy0sscSUAvsggWIdTD6pOANS2/+Tf6xwH3Vtu0oLmPvPieAvP0QHoDTcDMK6
- kfjJcxpENdHZ9Xcw2SxjvrqIz2caErFVNyQkVVUJnx3lcQP9hooU55OGGbtGsAOJ3Of8
- 0SwJIrmLnByEUhCI+hqizlSemZrJLl0ZlhBSjK2Eh/KfPSLIX2AS7l2UGqgx9r8GC2LG
- mgRUN6k6BVWgPkpj2LXDZfOHOnYtnNCjWjXCp5Z0vdJDXkftyr9YdIBmW5FTKlx/cMhx
- nxtQ==
+ bh=el4zPCh6MA7yt0wMvmZSek8pCRQ+TGyMHlmrAHD52rE=;
+ b=IyjLIFnLWBqQEQf0CjX9WVC+1vXR0OLkkwm45PpzJnTG/iMacunwHpv+GTV9Y7VXoj
+ H3SXzR2zfJp03hd7ZayRWZmJrGJkWAJfprb0FQSWBcyzNF2qw/tfd6xSLaMdMIziEWt0
+ Bzfy/7Y3IRbUBj7/6A4fa+aZE42kP74izi88UGUrClJ7d/7RhPJ5DteHGOhsFSyvyLH0
+ XysDDdbcvlFCODE4cH8mHHAaT4TKHJlX6ylaOYwSbVNUyydtQNn+b7RPmkBMJpNF3PGO
+ R01+n7lKu5UmTvLBP+mE51DpEFW/yrschOtSJBL19lJUQu7iXbrtYAVFnyHP5DBXtV+a
+ UnIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718180105; x=1718784905;
+ d=1e100.net; s=20230601; t=1718180110; x=1718784910;
  h=references:in-reply-to:message-id:date:subject:cc:to:from
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=t/AUOAInjkFfC7EhRiJBRMiTPdQ2lCm4ch6BlghBPuU=;
- b=kbS0tTgadsgjiHizjkkwSyYKmcpl5zlxpStZMR1iPotILSMJV+GqNpQJyu2ZgUWvo/
- jm6gVP4BZLG9bwelCkeY8SrIByEnUMmmyhIycIk7OFkYAQllahCmRJw4nEA8Mi6VZqcl
- GZ8YBVUErbrV3DEySbklAShXe4Fke/kQdA1orR+I0FZnYoSUZKEDJOZFxG/uXAHRLcQz
- 0jjKJRnrNxd7tSw+HtnmCbarFfn9yCbHDVWLh5FwVWlCeL4q4VHN/iw7a1AqZfDOz/10
- CjVyTrzOohjnWM88MztfYj0ma3Bmd6kexExf3NO4hvoFnph7yop2LrPR4YwwCOdsutWa
- 9Lug==
-X-Gm-Message-State: AOJu0YwtWeQGOMKJTgTbi64GFy4Od5nD6D0h0BqTN9QHvk8QM7o1GuBk
- NjAzhy5HYkH9x5+qLQd2Z8SS1JIvByNnScV0PJdE06rNjLbya+Wd6FMjATDEwlivfkPS87NB+Vu
- hahiuwqtt6LhFZjrv2FIHNQh76dbBlig+dVhc+y/5DPRHzOQ9mCfnY4ycvPSqJGg6izErm8ZQs3
- KTYL5btVNMvBxRQ6EICFdpwUNJVroqnI+ARZ/tbJsaGQ==
-X-Google-Smtp-Source: AGHT+IG5wJthYOfktPwpbknyCYAna1CFTxUI/ODaFFZ95fOwIwfQ0NUj0LE3JyOUAyDJz83FyZgtZw==
-X-Received: by 2002:a17:902:d48b:b0:1f7:345a:e23d with SMTP id
- d9443c01a7336-1f83b6f6b61mr11145425ad.31.1718180104409; 
- Wed, 12 Jun 2024 01:15:04 -0700 (PDT)
+ bh=el4zPCh6MA7yt0wMvmZSek8pCRQ+TGyMHlmrAHD52rE=;
+ b=rYrhayyx3NcQZZUsGbk3/hRq64WHUvVO+0v9wFYUW/dKOTOr5C+T+jmyEKpob2eEsQ
+ n3r5B6+d3Il/Fsp8zDmUE+gARiRzZAmiR1aUtGYBWJ64hxZRxrueEIU4fXsOwyA+3/dG
+ q4aXufMqxBU2wYp3gzC2CitTcpNxyabhzr8gfMX0+tJ2v5R5ELkR7/qpxW09SzP3DZcI
+ QnxaH3ERbbZ3dDad8cOTWyv8RwHaD0qBs9nXtXGO596QaGFFKmDL3j9TnQdZv1T387H0
+ wXTviC4XIwewb/15rS0vxzIMpMHig1BSo6vvYIArG3BSNGrZaZZq3pRDjYlzcFKrMFSr
+ 2/iw==
+X-Gm-Message-State: AOJu0YyQ5US3plRfQ9c06SHuCiFC8jfnjFSrK0zlldgmd3HXK7/Hsu2G
+ qFP/qACurIjwHpA0cyZKi5vF5jIqveQRd25DLTF72WPeFCJldwi50qbKjMVAnoJbQbRAWR+mPPT
+ /XhweKbNRD+Q5/zYQDeI6bATPTJcdMJOFT3NWNnGymyBGxJ9oUSJJcRIlZ1WrRpNLHrcHEl5Y4R
+ /0KH5zqJn9VkRYIdZo1J0xtDRoE3dR8y1FdWAIgx6AWA==
+X-Google-Smtp-Source: AGHT+IFnhn4/AVuIA7BK0PPox1Lg0y+LEUdi4+TqzWjD8p+wIF7opIsUWNHMprWx0xcNxlpH593RHg==
+X-Received: by 2002:a17:903:983:b0:1f6:39d8:dc4f with SMTP id
+ d9443c01a7336-1f83b55f8ccmr14197785ad.10.1718180110071; 
+ Wed, 12 Jun 2024 01:15:10 -0700 (PDT)
 Received: from hsinchu26.internal.sifive.com
  (59-124-168-89.hinet-ip.hinet.net. [59.124.168.89])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1f8393e8e53sm11363875ad.16.2024.06.12.01.14.59
+ d9443c01a7336-1f8393e8e53sm11363875ad.16.2024.06.12.01.15.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 12 Jun 2024 01:15:04 -0700 (PDT)
+ Wed, 12 Jun 2024 01:15:09 -0700 (PDT)
 From: Jim Shu <jim.shu@sifive.com>
 To: qemu-devel@nongnu.org,
 	qemu-riscv@nongnu.org
@@ -89,15 +89,15 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  qemu-ppc@nongnu.org (open list:PowerPC TCG CPUs),
  qemu-s390x@nongnu.org (open list:S390 TCG CPUs),
  Jim Shu <jim.shu@sifive.com>
-Subject: [RFC PATCH 05/16] target/riscv: Add CPU options of WorldGuard CPU
+Subject: [RFC PATCH 06/16] target/riscv: Add hard-coded CPU state of WG
  extension
-Date: Wed, 12 Jun 2024 16:14:05 +0800
-Message-Id: <20240612081416.29704-6-jim.shu@sifive.com>
+Date: Wed, 12 Jun 2024 16:14:06 +0800
+Message-Id: <20240612081416.29704-7-jim.shu@sifive.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20240612081416.29704-1-jim.shu@sifive.com>
 References: <20240612081416.29704-1-jim.shu@sifive.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=jim.shu@sifive.com; helo=mail-pl1-x62e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=jim.shu@sifive.com; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -120,79 +120,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We define CPU options for WG CSR support in RISC-V CPUs which
-can be set by machine/device emulation. The RISC-V CSR emulation
-will also check this feature for emulating WG CSRs.
+Add hard-coded state of WG extension. 'mwid' is the M-mode WID of CPU.
+'mwidlist' is the list of allowed WID value of 'mlwid' CSR.
+
+These CPU states can be set by CPU option, or can be set by machine code
+via newly added APIs. If we want different WG configs of CPUs, we should
+set it by machine code.
 
 Signed-off-by: Jim Shu <jim.shu@sifive.com>
 ---
- target/riscv/cpu.c         |  8 ++++++++
- target/riscv/cpu_cfg.h     |  3 +++
- target/riscv/tcg/tcg-cpu.c | 11 +++++++++++
- 3 files changed, 22 insertions(+)
+ target/riscv/cpu.c        |  2 ++
+ target/riscv/cpu.h        |  2 ++
+ target/riscv/cpu_cfg.h    |  2 ++
+ target/riscv/cpu_helper.c | 18 ++++++++++++++++++
+ 4 files changed, 24 insertions(+)
 
 diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 69a08e8c2c..d70eedf957 100644
+index d70eedf957..4e87fa4d5b 100644
 --- a/target/riscv/cpu.c
 +++ b/target/riscv/cpu.c
-@@ -204,6 +204,9 @@ const RISCVIsaExtData isa_edata_arr[] = {
-     ISA_EXT_DATA_ENTRY(xtheadmempair, PRIV_VERSION_1_11_0, ext_xtheadmempair),
-     ISA_EXT_DATA_ENTRY(xtheadsync, PRIV_VERSION_1_11_0, ext_xtheadsync),
-     ISA_EXT_DATA_ENTRY(xventanacondops, PRIV_VERSION_1_12_0, ext_XVentanaCondOps),
-+    ISA_EXT_DATA_ENTRY(smwg, PRIV_VERSION_1_12_0, ext_smwg),
-+    ISA_EXT_DATA_ENTRY(smwgd, PRIV_VERSION_1_12_0, ext_smwgd),
-+    ISA_EXT_DATA_ENTRY(sswg, PRIV_VERSION_1_12_0, ext_sswg),
- 
-     DEFINE_PROP_END_OF_LIST(),
- };
-@@ -1595,6 +1598,11 @@ const RISCVCPUMultiExtConfig riscv_cpu_experimental_exts[] = {
- const RISCVCPUMultiExtConfig riscv_cpu_named_features[] = {
-     MULTI_EXT_CFG_BOOL("zic64b", ext_zic64b, true),
- 
-+    /* RISC-V WorldGuard v0.4 */
-+    MULTI_EXT_CFG_BOOL("x-smwg", ext_smwg, false),
-+    MULTI_EXT_CFG_BOOL("x-smwgd", ext_smwgd, false),
-+    MULTI_EXT_CFG_BOOL("x-sswg", ext_sswg, false),
-+
+@@ -2291,6 +2291,8 @@ static Property riscv_cpu_properties[] = {
+      * it with -x and default to 'false'.
+      */
+     DEFINE_PROP_BOOL("x-misa-w", RISCVCPU, cfg.misa_w, false),
++    DEFINE_PROP_UINT32("mwid", RISCVCPU, cfg.mwid, UINT32_MAX),
++    DEFINE_PROP_UINT32("mwidlist", RISCVCPU, cfg.mwidlist, UINT32_MAX),
      DEFINE_PROP_END_OF_LIST(),
  };
  
+diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+index 6fe0d712b4..2d3bfedbba 100644
+--- a/target/riscv/cpu.h
++++ b/target/riscv/cpu.h
+@@ -540,6 +540,8 @@ void riscv_cpu_set_aia_ireg_rmw_fn(CPURISCVState *env, uint32_t priv,
+                                    void *rmw_fn_arg);
+ 
+ RISCVException smstateen_acc_ok(CPURISCVState *env, int index, uint64_t bit);
++void riscv_cpu_set_wg_mwid(CPURISCVState *env, uint32_t mwid);
++void riscv_cpu_set_wg_mwidlist(CPURISCVState *env, uint32_t mwidlist);
+ #endif /* !CONFIG_USER_ONLY */
+ 
+ void riscv_cpu_set_mode(CPURISCVState *env, target_ulong newpriv);
 diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
-index e1e4f32698..23e779ae08 100644
+index 23e779ae08..de9c134b15 100644
 --- a/target/riscv/cpu_cfg.h
 +++ b/target/riscv/cpu_cfg.h
-@@ -120,6 +120,9 @@ struct RISCVCPUConfig {
-     bool ext_ssaia;
-     bool ext_sscofpmf;
-     bool ext_smepmp;
-+    bool ext_smwg;
-+    bool ext_smwgd;
-+    bool ext_sswg;
-     bool rvv_ta_all_1s;
-     bool rvv_ma_all_1s;
+@@ -166,6 +166,8 @@ struct RISCVCPUConfig {
+     bool pmp;
+     bool debug;
+     bool misa_w;
++    uint32_t mwid;
++    uint32_t mwidlist;
  
-diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-index 683f604d9f..dc86e6e1d5 100644
---- a/target/riscv/tcg/tcg-cpu.c
-+++ b/target/riscv/tcg/tcg-cpu.c
-@@ -726,6 +726,17 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
-         cpu->pmu_avail_ctrs = 0;
-     }
+     bool short_isa_string;
  
-+    /* RISC-V WorldGuard */
-+    if (cpu->cfg.ext_sswg && !cpu->cfg.ext_smwg) {
-+        error_setg(errp, "Sswg extension requires Smwg extension");
-+        return;
-+    }
+diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
+index 161df34626..ff20ab6ab8 100644
+--- a/target/riscv/cpu_helper.c
++++ b/target/riscv/cpu_helper.c
+@@ -149,6 +149,24 @@ void cpu_get_tb_cpu_state(CPURISCVState *env, vaddr *pc,
+     *pflags = flags;
+ }
+ 
++#ifndef CONFIG_USER_ONLY
++void riscv_cpu_set_wg_mwid(CPURISCVState *env, uint32_t mwid)
++{
++    CPUState *cs = env_cpu(env);
++    RISCVCPU *cpu = RISCV_CPU(cs);
 +
-+    if (cpu->cfg.ext_smwgd != cpu->cfg.ext_sswg) {
-+        error_setg(errp, "Smwgd/Sswg extensions should be enabled together");
-+        return;
-+    }
++    cpu->cfg.mwid = mwid;
++}
 +
-     /*
-      * Disable isa extensions based on priv spec after we
-      * validated and set everything we need.
++void riscv_cpu_set_wg_mwidlist(CPURISCVState *env, uint32_t mwidlist)
++{
++    CPUState *cs = env_cpu(env);
++    RISCVCPU *cpu = RISCV_CPU(cs);
++
++    cpu->cfg.mwidlist = mwidlist;
++}
++#endif /* CONFIG_USER_ONLY */
++
+ void riscv_cpu_update_mask(CPURISCVState *env)
+ {
+     target_ulong mask = 0, base = 0;
 -- 
 2.17.1
 
