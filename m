@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3685090557E
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jun 2024 16:43:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF4A890557D
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jun 2024 16:43:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sHPBV-00087i-85; Wed, 12 Jun 2024 10:42:45 -0400
+	id 1sHPBT-00086n-3o; Wed, 12 Jun 2024 10:42:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sHPBT-000879-4T
- for qemu-devel@nongnu.org; Wed, 12 Jun 2024 10:42:43 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sHPBR-00085r-Gf
+ for qemu-devel@nongnu.org; Wed, 12 Jun 2024 10:42:41 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sHPBR-0002nV-Ev
- for qemu-devel@nongnu.org; Wed, 12 Jun 2024 10:42:42 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sHPBP-0002lq-Sa
+ for qemu-devel@nongnu.org; Wed, 12 Jun 2024 10:42:41 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1718203360;
+ s=mimecast20190719; t=1718203359;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=EhSChAN7rRoGGaUSPSWCzV7QQQImNhxehyAptMysuXo=;
- b=DufqvculMUpqGcNTGtk3dPs0e3tfoGiVoan8XqEQM9UKa6LHaWzA5VyUIK+xwPBKiyZVsB
- ccFygWb8DSCFBKDbIpkq/HHNRrsiaC5nKeWMijk3FK9U2u5OvtHXVKieO1RfKrLpbT1UAz
- M0ibPmJP9v3WZLTZu5wJhjZcHw2KVpw=
-Received: from mail-yb1-f198.google.com (mail-yb1-f198.google.com
- [209.85.219.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=9Y1IDYkI+aUDRc+MKkp3+DSunQulfjkQ0w9dXYr1Xhs=;
+ b=OzpYiwvrZzIB4xrzIMYojcl+hP3f8FlqUF8dP16aF+SWWb5Y/RiNwGT7eLmJo9SO4EHWX8
+ LMqbfjkNAHSPEx/i1N9kh9gL/tD+BGlhVZTg0vu8UWFp1sKI+boKQ8l/AyNTbn/8X3/DoA
+ pQeF+FYQ3Xgf+Bue7c5vRc4iSoVJfeA=
+Received: from mail-yb1-f197.google.com (mail-yb1-f197.google.com
+ [209.85.219.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-120-wXBTEOKFPbaj2KMvqegU8Q-1; Wed, 12 Jun 2024 10:42:36 -0400
-X-MC-Unique: wXBTEOKFPbaj2KMvqegU8Q-1
-Received: by mail-yb1-f198.google.com with SMTP id
- 3f1490d57ef6-dfef58530cdso50927276.3
- for <qemu-devel@nongnu.org>; Wed, 12 Jun 2024 07:42:36 -0700 (PDT)
+ us-mta-679-HsOLga9hNCyy0-Hflst8vw-1; Wed, 12 Jun 2024 10:42:37 -0400
+X-MC-Unique: HsOLga9hNCyy0-Hflst8vw-1
+Received: by mail-yb1-f197.google.com with SMTP id
+ 3f1490d57ef6-dfefde6c84dso8222276.1
+ for <qemu-devel@nongnu.org>; Wed, 12 Jun 2024 07:42:37 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718203355; x=1718808155;
+ d=1e100.net; s=20230601; t=1718203356; x=1718808156;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=EhSChAN7rRoGGaUSPSWCzV7QQQImNhxehyAptMysuXo=;
- b=Txtgb4S1KkNdu3iKpZWwwpNxdta5fXlnFZ575IyhNuIIfUbaDnZSUIpGvu2gDk5ALA
- NZsEbMunXo5ds7mCpW7EK47hrPLh2SvC3hnqVZ/+JR4t8qBF8h/x17j9YSGbd/GBLATO
- QThJKISEwgS78Uba+NMGN4ejDyfDsnw5h1zmwgUyFdq0tfStPfw4h8VDtZAUILEQb5zz
- xWfI9SdAEl80ujDQDnBeDH8GZM6RJQxgL6Hah7YgTDeX1G+pNqRxFaHQ3gl860dAnxna
- VToq7HFzZI4Z3ha2FsQJwi58G8yLOb33j/yMEBB/MTNgT8E5RzpmKsz7sfCq7ncxxhPc
- w+Lw==
-X-Gm-Message-State: AOJu0YzD4p6/LgpU4NekwA1yyNMStxdWjvhA71WFWcRMOD79bNrBCzMT
- lqxnmegq7lvBEFvxCykq3tnMiybR/lsrUSeRJn26aIqpR2rJkl00IZyrgxGkWIfO5hDxLTxYCJw
- C3lShsOoqF8aY05mGELSzfP3BrRRrpXwxyKNi80WeLuQZORnIsyRYzXIbr67Ims5sjn1u9lyj1C
- 2tCx+CJdaL1lqTiSr2axxQOyYHfvgdcbpd1g==
-X-Received: by 2002:a25:aac1:0:b0:df8:3484:770f with SMTP id
- 3f1490d57ef6-dfe6a3c48cdmr1628047276.5.1718203355193; 
+ bh=9Y1IDYkI+aUDRc+MKkp3+DSunQulfjkQ0w9dXYr1Xhs=;
+ b=QEekkh2/FUtrjs17oSfGKkfL4JJgjoVJCm8x1N7n/l0CO0ii4gNn+t1lnPl+s89DAg
+ OqyLhJAgYnwqBsQRnxdcBCtye2Ut0w8gSOPz9Rooe01ZfSA0PEQck9CZZQe64ZsCuM8V
+ 3JzSEdoosreuA03/HfWP/OhxqZsmEidF31DKEucMk8NtJt8jKUJuCh/PB1o7z/Jqw55k
+ te9e0l0w2Ky1YaecT6Ojao93lHPzQ9ToGHp6I2S0OJftQasd7+pN9OmflPzISYWoLem1
+ ZamaIsC4x3G+EDPBIVLQ81Igyi0WA6L8wQeN9GBN7oRrO8/l6+zDP6M7M9s4TCJFaV8S
+ BRTQ==
+X-Gm-Message-State: AOJu0Yx4MWTx5bVst5fnm9dEW1T3eGYcUBC64depX0Sr86+8ygcMTxpU
+ xptslyeFRdOqadwxFAxBHafueqC7bKPXb/OrYkMSx49s2lwJYyXDZYLEakIA2aYkSmt/E5WG0vL
+ LE5VK8os52ok0uANymhoy4txA9o0ftjPVtZL1c0PGa95yOcPq5B+HPi5aAN+TFRLBYfVLN2YRD+
+ QGjJLJV8HOqo31JQNuv4SYaNZ3H/Sv/WY9+w==
+X-Received: by 2002:a25:b125:0:b0:dfb:a69:5fdb with SMTP id
+ 3f1490d57ef6-dfe65e7f385mr1601036276.1.1718203356300; 
+ Wed, 12 Jun 2024 07:42:36 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFbE23xXFoaTC++Qr5ltR678XTsJh4jnpx9rYp7eUsxdlZq2JkL3dtljImwuEB/k8wumKoLXg==
+X-Received: by 2002:a25:b125:0:b0:dfb:a69:5fdb with SMTP id
+ 3f1490d57ef6-dfe65e7f385mr1600992276.1.1718203355525; 
  Wed, 12 Jun 2024 07:42:35 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFXuFYYrHpwSclU/HZVpITEarM/IvEfihEypfKC02ucdu7kFmB0yXS4hLJlNTkaiCCIPYeSaA==
-X-Received: by 2002:a25:aac1:0:b0:df8:3484:770f with SMTP id
- 3f1490d57ef6-dfe6a3c48cdmr1627999276.5.1718203354597; 
- Wed, 12 Jun 2024 07:42:34 -0700 (PDT)
 Received: from x1n.redhat.com (pool-99-254-121-117.cpe.net.cable.rogers.com.
  [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-4405e3ded65sm37581681cf.87.2024.06.12.07.42.33
+ d75a77b69052e-4405e3ded65sm37581681cf.87.2024.06.12.07.42.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 12 Jun 2024 07:42:34 -0700 (PDT)
+ Wed, 12 Jun 2024 07:42:35 -0700 (PDT)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Jiri Denemark <jdenemar@redhat.com>, Prasad Pandit <ppandit@redhat.com>,
  Fabiano Rosas <farosas@suse.de>, Bandan Das <bdas@redhat.com>,
  peterx@redhat.com
-Subject: [PATCH 2/4] migration: Rename thread debug names
-Date: Wed, 12 Jun 2024 10:42:26 -0400
-Message-ID: <20240612144228.1179240-3-peterx@redhat.com>
+Subject: [PATCH 3/4] migration: Use MigrationStatus instead of int
+Date: Wed, 12 Jun 2024 10:42:27 -0400
+Message-ID: <20240612144228.1179240-4-peterx@redhat.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20240612144228.1179240-1-peterx@redhat.com>
 References: <20240612144228.1179240-1-peterx@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -22
 X-Spam_score: -2.3
@@ -100,137 +100,114 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The postcopy thread names on dest QEMU are slightly confusing, partly I'll
-need to blame myself on 36f62f11e4 ("migration: Postcopy preemption
-preparation on channel creation").  E.g., "fault-fast" reads like a fast
-version of "fault-default", but it's actually the fast version of
-"postcopy/listen".
-
-Taking this chance, rename all the migration threads with proper rules.
-Considering we only have 15 chars usable, prefix all threads with "mig/",
-meanwhile identify src/dst threads properly this time.  So now most thread
-names will look like "mig/DIR/xxx", where DIR will be "src"/"dst", except
-the bg-snapshot thread which doesn't have a direction.
-
-For multifd threads, making them "mig/{src|dst}/{send|recv}_%d".
-
-We used to have "live_migration" thread for a very long time, now it's
-called "mig/src/main".  We may hope to have "mig/dst/main" soon but not
-yet.
+QEMU uses "int" in most cases even if it stores MigrationStatus.  I don't
+know why, so let's try to do that right and see what blows up..
 
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- migration/colo.c         | 2 +-
- migration/migration.c    | 6 +++---
- migration/multifd.c      | 6 +++---
- migration/postcopy-ram.c | 4 ++--
- migration/savevm.c       | 2 +-
- 5 files changed, 10 insertions(+), 10 deletions(-)
+ migration/migration.h |  9 +++++----
+ migration/migration.c | 13 +++++++------
+ 2 files changed, 12 insertions(+), 10 deletions(-)
 
-diff --git a/migration/colo.c b/migration/colo.c
-index f96c2ee069..6449490221 100644
---- a/migration/colo.c
-+++ b/migration/colo.c
-@@ -935,7 +935,7 @@ void coroutine_fn colo_incoming_co(void)
-     assert(bql_locked());
-     assert(migration_incoming_colo_enabled());
+diff --git a/migration/migration.h b/migration/migration.h
+index 6af01362d4..38aa1402d5 100644
+--- a/migration/migration.h
++++ b/migration/migration.h
+@@ -160,7 +160,7 @@ struct MigrationIncomingState {
+     /* PostCopyFD's for external userfaultfds & handlers of shared memory */
+     GArray   *postcopy_remote_fds;
  
--    qemu_thread_create(&th, "COLO incoming", colo_process_incoming_thread,
-+    qemu_thread_create(&th, "mig/dst/colo", colo_process_incoming_thread,
-                        mis, QEMU_THREAD_JOINABLE);
+-    int state;
++    MigrationStatus state;
  
-     mis->colo_incoming_co = qemu_coroutine_self();
+     /*
+      * The incoming migration coroutine, non-NULL during qemu_loadvm_state().
+@@ -301,7 +301,7 @@ struct MigrationState {
+     /* params from 'migrate-set-parameters' */
+     MigrationParameters parameters;
+ 
+-    int state;
++    MigrationStatus state;
+ 
+     /* State related to return path */
+     struct {
+@@ -459,7 +459,8 @@ struct MigrationState {
+     bool rdma_migration;
+ };
+ 
+-void migrate_set_state(int *state, int old_state, int new_state);
++void migrate_set_state(MigrationStatus *state, MigrationStatus old_state,
++                       MigrationStatus new_state);
+ 
+ void migration_fd_process_incoming(QEMUFile *f);
+ void migration_ioc_process_incoming(QIOChannel *ioc, Error **errp);
+@@ -479,7 +480,7 @@ int migrate_init(MigrationState *s, Error **errp);
+ bool migration_is_blocked(Error **errp);
+ /* True if outgoing migration has entered postcopy phase */
+ bool migration_in_postcopy(void);
+-bool migration_postcopy_is_alive(int state);
++bool migration_postcopy_is_alive(MigrationStatus state);
+ MigrationState *migrate_get_current(void);
+ bool migration_has_failed(MigrationState *);
+ bool migrate_mode_is_cpr(MigrationState *);
 diff --git a/migration/migration.c b/migration/migration.c
-index e1b269624c..d41e00ed4c 100644
+index d41e00ed4c..bfbd657035 100644
 --- a/migration/migration.c
 +++ b/migration/migration.c
-@@ -2408,7 +2408,7 @@ static int open_return_path_on_source(MigrationState *ms)
+@@ -390,7 +390,7 @@ void migration_incoming_state_destroy(void)
+     yank_unregister_instance(MIGRATION_YANK_INSTANCE);
+ }
  
-     trace_open_return_path_on_source();
- 
--    qemu_thread_create(&ms->rp_state.rp_thread, "return path",
-+    qemu_thread_create(&ms->rp_state.rp_thread, "mig/src/rp-thr",
-                        source_return_path_thread, ms, QEMU_THREAD_JOINABLE);
-     ms->rp_state.rp_thread_created = true;
- 
-@@ -3747,10 +3747,10 @@ void migrate_fd_connect(MigrationState *s, Error *error_in)
+-static void migrate_generate_event(int new_state)
++static void migrate_generate_event(MigrationStatus new_state)
+ {
+     if (migrate_events()) {
+         qapi_event_send_migration(new_state);
+@@ -1273,8 +1273,6 @@ static void fill_destination_migration_info(MigrationInfo *info)
      }
  
-     if (migrate_background_snapshot()) {
--        qemu_thread_create(&s->thread, "bg_snapshot",
-+        qemu_thread_create(&s->thread, "mig/snapshot",
-                 bg_migration_thread, s, QEMU_THREAD_JOINABLE);
-     } else {
--        qemu_thread_create(&s->thread, "live_migration",
-+        qemu_thread_create(&s->thread, "mig/src/main",
-                 migration_thread, s, QEMU_THREAD_JOINABLE);
+     switch (mis->state) {
+-    case MIGRATION_STATUS_NONE:
+-        return;
+     case MIGRATION_STATUS_SETUP:
+     case MIGRATION_STATUS_CANCELLING:
+     case MIGRATION_STATUS_CANCELLED:
+@@ -1290,6 +1288,8 @@ static void fill_destination_migration_info(MigrationInfo *info)
+         info->has_status = true;
+         fill_destination_postcopy_migration_info(info);
+         break;
++    default:
++        return;
      }
-     s->migration_thread_running = true;
-diff --git a/migration/multifd.c b/migration/multifd.c
-index f317bff077..7afc0965f6 100644
---- a/migration/multifd.c
-+++ b/migration/multifd.c
-@@ -1059,7 +1059,7 @@ static bool multifd_tls_channel_connect(MultiFDSendParams *p,
-     args->p = p;
+     info->status = mis->state;
  
-     p->tls_thread_created = true;
--    qemu_thread_create(&p->tls_thread, "multifd-tls-handshake-worker",
-+    qemu_thread_create(&p->tls_thread, "mig/src/tls",
-                        multifd_tls_handshake_thread, args,
-                        QEMU_THREAD_JOINABLE);
-     return true;
-@@ -1185,7 +1185,7 @@ bool multifd_send_setup(void)
-         } else {
-             p->iov = g_new0(struct iovec, page_count);
-         }
--        p->name = g_strdup_printf("multifdsend_%d", i);
-+        p->name = g_strdup_printf("mig/src/send_%d", i);
-         p->page_size = qemu_target_page_size();
-         p->page_count = page_count;
-         p->write_flags = 0;
-@@ -1601,7 +1601,7 @@ int multifd_recv_setup(Error **errp)
-                 + sizeof(uint64_t) * page_count;
-             p->packet = g_malloc0(p->packet_len);
-         }
--        p->name = g_strdup_printf("multifdrecv_%d", i);
-+        p->name = g_strdup_printf("mig/dst/recv_%d", i);
-         p->iov = g_new0(struct iovec, page_count);
-         p->normal = g_new0(ram_addr_t, page_count);
-         p->zero = g_new0(ram_addr_t, page_count);
-diff --git a/migration/postcopy-ram.c b/migration/postcopy-ram.c
-index 3419779548..97701e6bb2 100644
---- a/migration/postcopy-ram.c
-+++ b/migration/postcopy-ram.c
-@@ -1238,7 +1238,7 @@ int postcopy_ram_incoming_setup(MigrationIncomingState *mis)
-         return -1;
+@@ -1337,7 +1337,8 @@ void qmp_migrate_start_postcopy(Error **errp)
+ 
+ /* shared migration helpers */
+ 
+-void migrate_set_state(int *state, int old_state, int new_state)
++void migrate_set_state(MigrationStatus *state, MigrationStatus old_state,
++                       MigrationStatus new_state)
+ {
+     assert(new_state < MIGRATION_STATUS__MAX);
+     if (qatomic_cmpxchg(state, old_state, new_state) == old_state) {
+@@ -1544,7 +1545,7 @@ bool migration_in_postcopy(void)
      }
+ }
  
--    postcopy_thread_create(mis, &mis->fault_thread, "fault-default",
-+    postcopy_thread_create(mis, &mis->fault_thread, "mig/dst/fault",
-                            postcopy_ram_fault_thread, QEMU_THREAD_JOINABLE);
-     mis->have_fault_thread = true;
- 
-@@ -1258,7 +1258,7 @@ int postcopy_ram_incoming_setup(MigrationIncomingState *mis)
-          * This thread needs to be created after the temp pages because
-          * it'll fetch RAM_CHANNEL_POSTCOPY PostcopyTmpPage immediately.
-          */
--        postcopy_thread_create(mis, &mis->postcopy_prio_thread, "fault-fast",
-+        postcopy_thread_create(mis, &mis->postcopy_prio_thread, "mig/dst/preempt",
-                                postcopy_preempt_thread, QEMU_THREAD_JOINABLE);
-         mis->preempt_thread_status = PREEMPT_THREAD_CREATED;
+-bool migration_postcopy_is_alive(int state)
++bool migration_postcopy_is_alive(MigrationStatus state)
+ {
+     switch (state) {
+     case MIGRATION_STATUS_POSTCOPY_ACTIVE:
+@@ -1598,7 +1599,7 @@ bool migration_is_idle(void)
+     case MIGRATION_STATUS_DEVICE:
+     case MIGRATION_STATUS_WAIT_UNPLUG:
+         return false;
+-    case MIGRATION_STATUS__MAX:
++    default:
+         g_assert_not_reached();
      }
-diff --git a/migration/savevm.c b/migration/savevm.c
-index c621f2359b..e71410d8c1 100644
---- a/migration/savevm.c
-+++ b/migration/savevm.c
-@@ -2129,7 +2129,7 @@ static int loadvm_postcopy_handle_listen(MigrationIncomingState *mis)
-     }
- 
-     mis->have_listen_thread = true;
--    postcopy_thread_create(mis, &mis->listen_thread, "postcopy/listen",
-+    postcopy_thread_create(mis, &mis->listen_thread, "mig/dst/listen",
-                            postcopy_ram_listen_thread, QEMU_THREAD_DETACHED);
-     trace_loadvm_postcopy_handle_listen("return");
  
 -- 
 2.45.0
