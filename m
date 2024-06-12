@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 515DC904DE1
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jun 2024 10:16:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DACE904DDE
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jun 2024 10:16:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sHJ8w-0003Ob-DN; Wed, 12 Jun 2024 04:15:42 -0400
+	id 1sHJ8x-0003Uu-UZ; Wed, 12 Jun 2024 04:15:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jim.shu@sifive.com>)
- id 1sHJ8n-00035B-6F
+ id 1sHJ8s-00037V-PC
  for qemu-devel@nongnu.org; Wed, 12 Jun 2024 04:15:38 -0400
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <jim.shu@sifive.com>)
- id 1sHJ8k-0006TC-NS
- for qemu-devel@nongnu.org; Wed, 12 Jun 2024 04:15:32 -0400
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-1f6da06ba24so40419335ad.2
- for <qemu-devel@nongnu.org>; Wed, 12 Jun 2024 01:15:30 -0700 (PDT)
+ id 1sHJ8p-0006Va-Q8
+ for qemu-devel@nongnu.org; Wed, 12 Jun 2024 04:15:38 -0400
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-1f70131063cso16957485ad.2
+ for <qemu-devel@nongnu.org>; Wed, 12 Jun 2024 01:15:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1718180128; x=1718784928; darn=nongnu.org;
+ d=sifive.com; s=google; t=1718180134; x=1718784934; darn=nongnu.org;
  h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
  :cc:subject:date:message-id:reply-to;
- bh=h0z/gLbV7H1AqreyjOU1SY6iFOr0/svp6XKbzOXxi3c=;
- b=fZpfN0rHuApg4517dvvFDaqtyc2VL/WAYAVrGBUz1VY1pYp5M/JXPz1hBRHOP4ho3E
- uwggaaHmfWYx6ElduZ/7VpurwzLvN/eXe0MEqBwtgCAhh7Upt6zajTIcDME800Y4OnFg
- 6jOgbPqOm54xENl3cNCPv+gXqsh8HpHnNnTB/XswzOOMcytGxCLNo3bH2fG0dhGR225f
- hJF2LKysnl7klEFx8+9gJowyBnb2CcQUA9LMBVBSd8G6MINMAAbagAFI6zRcjMqIcEDa
- X6wDGCjkypXzOfNa93iHwN/ahnhiQ1X6bSpr/tlPTpRE3S21HwOQtxdXOGv3nrKcERic
- tJvA==
+ bh=6oKmkxCufFR9XMY0JlGHXgLRvtGXtLT9oX2X0hjPKqA=;
+ b=gMteCJB8dR+rodlZp4gDWzHDxC0ahE0Oz5DtNKvQQjWa4xbnd1el/i7oDudVHgVYY5
+ GlMKc8Nh1F0DodV+Ge7nw6mT0VXMKC3yA/Tkq9DyabObtckU+IrVJ+smvNauVORR/Zlq
+ PqoSWH+NvBKJc+ODCsNkGarYo4NVsUrKKvUKlCTBKdqki2xZYbtq5+mEeXwi3hh2P67d
+ uKfiuFHuP7GFlj0AKydOUlJDVWFdGi5q+z8FciyJcrOMIJdmz9RAgrYibQaa/FpfhpdS
+ R+lPx6mOYcd9X1VFRk/FLb0DdubOEVDdSxbp8JC37h4KGWroI8Yx1TuB1bWGN5PpqEjL
+ xVVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718180128; x=1718784928;
+ d=1e100.net; s=20230601; t=1718180134; x=1718784934;
  h=references:in-reply-to:message-id:date:subject:cc:to:from
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=h0z/gLbV7H1AqreyjOU1SY6iFOr0/svp6XKbzOXxi3c=;
- b=aItvzi3rbcVnEwMcy54Ukaf14pHWEodac1i+7BcmRDq8Q73aZXJRe2up6yc/rL1AcX
- XD8XqfFpIhGmlV5Whea4ZNRy33G2xLZMQwjarEvUko8GQynLsQJ7ZdDEX65iyZn51UpH
- 1abU7E82GA2OM/vDiQHFKV1PF+af6pbhzrE5o47tf6rT8DEI9ZnVNQqaf/j/210fP+D9
- E3VBVYoXjkFVJDpQ9xWI5iYCsMkwCQE1T44KZlYkSMFdEMLjLlBcPWri3JPuXI6Lp2aH
- 2WERYgM3cO8nQ94YloG6zUXtw8jUdmBOd7wjPW5whUahxCCosv6ojW1Xzjtk2ya1oFlA
- qK0w==
-X-Gm-Message-State: AOJu0YxpMLENpl91q6MmdJxSSyqFKwujqqTA/NgZwIvIK/aBEaIlPQZk
- 4vVq4bU+Z/AI307/2eJAee0fpo00Ad4hbhFjMRjsIGXbanD1tpYTTXj58UC6q2ZGmrcJYKpD3FV
- YWSDPk+D8IQTPPLedYvgA6uYz0NaBqtniv7fUPSlJ+iX2zeXLkLvpTsMuJ6kJD8FSSUgtIvmZI7
- eooL5aVD5BNotJloU4D57WIt1bp5Cy4Lf1LkiH22ZGlw==
-X-Google-Smtp-Source: AGHT+IElBXpniJAtgpcO8h7wvvvpFvELLrYUqd6ldIz07LJ9f8BCphhJY5JR+yJoS8Eo7TnfJ1dFrA==
-X-Received: by 2002:a17:902:e80a:b0:1f7:1931:7a9c with SMTP id
- d9443c01a7336-1f83b5df346mr14898975ad.15.1718180127879; 
- Wed, 12 Jun 2024 01:15:27 -0700 (PDT)
+ bh=6oKmkxCufFR9XMY0JlGHXgLRvtGXtLT9oX2X0hjPKqA=;
+ b=iZyBPMFQu7+4MGw1kzoV6MCdQuBJ8mXFXwAyfQ2j8BttjiToSPRPsq4/XkMwt9MTM1
+ BKiOB3mFCkHRGGSCey9mTAx4ipnLlY+bcLh/dQrkas7ijGKk1issWrLhFFcfMz7sFAB3
+ XqAWRlZbg0YcHtRW/e+LPmcBXom7HutyyfMweUBkFEkix8zugUM9f53p7f4QCN+z8LkJ
+ RUijaEwkNpOaAbpsZeJQXZU3/WeNC+PwTtiwT+HFEETBy8IfnIfZOOsMei2/MJaWR+/z
+ ZEY4Oyhol6Lg0Yoe2MXFg0PXhNaGexE4R/eZdxPm3hjQLuKY3nsA7LwcKok3k96eB/8c
+ LWlg==
+X-Gm-Message-State: AOJu0YwlVOSMklRyR9tUF1g8rbT+1+clpZeIB+2Oz+tpCc+xvgHzMZqL
+ wvNOssBMsfAvOK1/WvKTweWDYPzlBoLWIfuh6hvOo4OaqhurPATRE+2ExGX3pj9y19BbgzBCGHt
+ QOTPaRy3iok+XAdtaTy0zLQ0bWz4YIb4oxlHtDLUnK8AZsozl000C8bhoqirzSmSVTrN3xbKnM5
+ A1eqyHCGfolCaggZQreOu6UMTp58EQOHyuomfFtye2fQ==
+X-Google-Smtp-Source: AGHT+IFcBMkrmaVMmlAZ6KNUw/nrjfXog9dmzxGNuZ94hP0C/vFGMp/6JrjpvmX5ycJgAapkG3mqPA==
+X-Received: by 2002:a17:903:40c1:b0:1f4:aa72:1db with SMTP id
+ d9443c01a7336-1f83b5e4b50mr14099615ad.22.1718180133624; 
+ Wed, 12 Jun 2024 01:15:33 -0700 (PDT)
 Received: from hsinchu26.internal.sifive.com
  (59-124-168-89.hinet-ip.hinet.net. [59.124.168.89])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1f8393e8e53sm11363875ad.16.2024.06.12.01.15.22
+ d9443c01a7336-1f8393e8e53sm11363875ad.16.2024.06.12.01.15.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 12 Jun 2024 01:15:27 -0700 (PDT)
+ Wed, 12 Jun 2024 01:15:33 -0700 (PDT)
 From: Jim Shu <jim.shu@sifive.com>
 To: qemu-devel@nongnu.org,
 	qemu-riscv@nongnu.org
@@ -89,14 +89,15 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  qemu-ppc@nongnu.org (open list:PowerPC TCG CPUs),
  qemu-s390x@nongnu.org (open list:S390 TCG CPUs),
  Jim Shu <jim.shu@sifive.com>
-Subject: [RFC PATCH 09/16] target/riscv: Implement WorldGuard CSRs
-Date: Wed, 12 Jun 2024 16:14:09 +0800
-Message-Id: <20240612081416.29704-10-jim.shu@sifive.com>
+Subject: [RFC PATCH 10/16] target/riscv: Add WID to MemTxAttrs of CPU memory
+ transactions
+Date: Wed, 12 Jun 2024 16:14:10 +0800
+Message-Id: <20240612081416.29704-11-jim.shu@sifive.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20240612081416.29704-1-jim.shu@sifive.com>
 References: <20240612081416.29704-1-jim.shu@sifive.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=jim.shu@sifive.com; helo=mail-pl1-x633.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=jim.shu@sifive.com; helo=mail-pl1-x62a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -119,175 +120,137 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The WG v0.4 specification adds 3 CSRs to configure S/U/HS/VS-mode WIDs
-of CPUs in the higher privileged modes.
-
-The Smwg extension at least requires a RISC-V HART to have M/U-mode, and
-the Sswg/Smwgd extension at least requires a RISC-V HART to have
-M/S/U-mode.
+When a RISC-V HART has WG extension, their memory transactions will
+contain WID. Support MemTxAttrs in RISC-V target and add WID inside if
+a HART has WG extension.
 
 Signed-off-by: Jim Shu <jim.shu@sifive.com>
 ---
- target/riscv/cpu.c |   4 ++
- target/riscv/cpu.h |   5 +++
- target/riscv/csr.c | 107 +++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 116 insertions(+)
+ target/riscv/cpu.c        |  2 +-
+ target/riscv/cpu.h        |  1 +
+ target/riscv/cpu_helper.c | 51 ++++++++++++++++++++++++++++++++++++---
+ 3 files changed, 50 insertions(+), 4 deletions(-)
 
 diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 4e87fa4d5b..ff1c22c71c 100644
+index ff1c22c71c..55d980ff4b 100644
 --- a/target/riscv/cpu.c
 +++ b/target/riscv/cpu.c
-@@ -1022,6 +1022,10 @@ static void riscv_cpu_reset_hold(Object *obj, ResetType type)
-         riscv_trigger_reset_hold(env);
-     }
+@@ -2343,7 +2343,7 @@ static int64_t riscv_get_arch_id(CPUState *cs)
+ #include "hw/core/sysemu-cpu-ops.h"
  
-+    if (riscv_cpu_cfg(env)->ext_smwg && env->wg_reset) {
-+        env->wg_reset(env);
-+    }
-+
-     if (kvm_enabled()) {
-         kvm_riscv_reset_vcpu(cpu);
-     }
+ static const struct SysemuCPUOps riscv_sysemu_ops = {
+-    .get_phys_page_debug = riscv_cpu_get_phys_page_debug,
++    .get_phys_page_attrs_debug = riscv_cpu_get_phys_page_attrs_debug,
+     .write_elf64_note = riscv_cpu_write_elf64_note,
+     .write_elf32_note = riscv_cpu_write_elf32_note,
+     .legacy_vmsd = &vmstate_riscv_cpu,
 diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index 50a0fba127..43ab558111 100644
+index 43ab558111..588f5de7f7 100644
 --- a/target/riscv/cpu.h
 +++ b/target/riscv/cpu.h
-@@ -432,6 +432,11 @@ struct CPUArchState {
-     uint64_t kvm_timer_frequency;
- #endif /* CONFIG_KVM */
- 
-+    /* RISC-V WorldGuard */
-+    target_ulong mlwid;
-+    target_ulong slwid;
-+    target_ulong mwiddeleg;
-+
-     /* machine specific WorldGuard callback */
-     void (*wg_reset)(CPURISCVState *env);
-     void (*wid_to_mem_attrs)(MemTxAttrs *attrs, uint32_t wid);
-diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-index 58ef7079dc..f3536e9e5d 100644
---- a/target/riscv/csr.c
-+++ b/target/riscv/csr.c
-@@ -4264,6 +4264,109 @@ static RISCVException write_upmbase(CPURISCVState *env, int csrno,
-     return RISCV_EXCP_NONE;
+@@ -512,6 +512,7 @@ void riscv_cpu_set_geilen(CPURISCVState *env, target_ulong geilen);
+ bool riscv_cpu_vector_enabled(CPURISCVState *env);
+ void riscv_cpu_set_virt_enabled(CPURISCVState *env, bool enable);
+ int riscv_env_mmu_index(CPURISCVState *env, bool ifetch);
++hwaddr riscv_cpu_get_phys_page_attrs_debug(CPUState *cpu, vaddr addr, MemTxAttrs *attrs);
+ G_NORETURN void  riscv_cpu_do_unaligned_access(CPUState *cs, vaddr addr,
+                                                MMUAccessType access_type,
+                                                int mmu_idx, uintptr_t retaddr);
+diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
+index ff20ab6ab8..afdccdd672 100644
+--- a/target/riscv/cpu_helper.c
++++ b/target/riscv/cpu_helper.c
+@@ -150,6 +150,34 @@ void cpu_get_tb_cpu_state(CPURISCVState *env, vaddr *pc,
  }
  
-+/* RISC-V Worldguard */
-+static RISCVException worldguard_umode(CPURISCVState *env, int csrno)
-+{
-+    if (!riscv_cpu_cfg(env)->ext_smwg) {
-+        return RISCV_EXCP_ILLEGAL_INST;
-+    }
-+
-+    return umode(env, csrno);
-+}
-+
-+static RISCVException worldguard_sumode(CPURISCVState *env, int csrno)
-+{
-+    RISCVException ret;
-+
-+    if (!riscv_cpu_cfg(env)->ext_sswg) {
-+        return RISCV_EXCP_ILLEGAL_INST;
-+    }
-+
-+    ret = smode(env, csrno);
-+
-+    if (ret != RISCV_EXCP_NONE) {
-+        return ret;
-+    }
-+
-+    return umode(env, csrno);
-+}
-+
-+static RISCVException rmw_mlwid(CPURISCVState *env, int csrno,
-+                                target_ulong *ret_val,
-+                                target_ulong new_val, target_ulong wr_mask)
+ #ifndef CONFIG_USER_ONLY
++static uint32_t riscv_cpu_wg_get_wid(CPURISCVState *env, int mode)
 +{
 +    CPUState *cs = env_cpu(env);
 +    RISCVCPU *cpu = RISCV_CPU(cs);
-+    target_ulong new_mlwid = (env->mlwid & ~wr_mask) | (new_val & wr_mask);
++    bool virt = env->virt_enabled;
 +
-+    if (ret_val) {
-+        *ret_val = env->mlwid;
++    if (mode == PRV_M) {
++        return cpu->cfg.mwid;
++    } else if (mode == PRV_S) {
++        if (!virt || !env->mwiddeleg) {
++            /* HS-mode, S-mode w/o RVH, or VS-mode but mwiddeleg = 0 */
++            return env->mlwid;
++        } else {
++            /* VS-mode */
++            return env->slwid;
++        }
++    } else if (mode == PRV_U) {
++        if (!riscv_has_ext(env, RVS) || !env->mwiddeleg) {
++            /* M/U mode CPU or mwiddeleg = 0 */
++            return env->mlwid;
++        } else {
++            return env->slwid;
++        }
 +    }
 +
-+    g_assert(cpu->cfg.mwidlist);
-+    if (!(BIT(new_mlwid) & cpu->cfg.mwidlist)) {
-+        /* Set WID to lowest legal value if writing illegal value (WARL) */
-+        new_mlwid = find_first_bit((unsigned long *)&cpu->cfg.mwidlist, 32);
-+    }
-+
-+    if (env->mlwid != new_mlwid) {
-+        env->mlwid = new_mlwid;
-+        tlb_flush(cs);
-+    }
-+
-+    return RISCV_EXCP_NONE;
++    return cpu->cfg.mwid;
 +}
 +
-+static RISCVException rmw_slwid(CPURISCVState *env, int csrno,
-+                                target_ulong *ret_val,
-+                                target_ulong new_val, target_ulong wr_mask)
-+{
-+    target_ulong new_slwid = (env->slwid & ~wr_mask) | (new_val & wr_mask);
-+
-+    if (!env->mwiddeleg) {
-+        /*
-+         * When mwiddeleg CSR is zero, access to slwid raises an illegal
-+         * instruction exception.
-+         */
-+        return RISCV_EXCP_ILLEGAL_INST;
-+    }
-+
-+    if (ret_val) {
-+        *ret_val = env->slwid;
-+    }
-+
-+    if (!(BIT(new_slwid) & env->mwiddeleg)) {
-+        /* Set WID to lowest legal value if writing illegal value (WARL) */
-+        new_slwid = find_first_bit(
-+            (unsigned long *)&env->mwiddeleg, TARGET_LONG_BITS);
-+    }
-+
-+    if (env->slwid != new_slwid) {
-+        env->slwid = new_slwid;
-+        tlb_flush(env_cpu(env));
-+    }
-+
-+    return RISCV_EXCP_NONE;
-+}
-+
-+static RISCVException rmw_mwiddeleg(CPURISCVState *env, int csrno,
-+                                    target_ulong *ret_val,
-+                                    target_ulong new_val, target_ulong wr_mask)
-+{
-+    CPUState *cs = env_cpu(env);
-+    RISCVCPU *cpu = RISCV_CPU(cs);
-+
-+    if (ret_val) {
-+        *ret_val = env->mwiddeleg;
-+    }
-+
-+    env->mwiddeleg = (env->mwiddeleg & ~wr_mask) | (new_val & wr_mask);
-+
-+    /* Core wgMarker can only have WID value in mwidlist. */
-+    env->mwiddeleg &= cpu->cfg.mwidlist;
-+
-+    return RISCV_EXCP_NONE;
-+}
- #endif
+ void riscv_cpu_set_wg_mwid(CPURISCVState *env, uint32_t mwid)
+ {
+     CPUState *cs = env_cpu(env);
+@@ -1229,13 +1257,22 @@ static void raise_mmu_exception(CPURISCVState *env, target_ulong address,
+     env->two_stage_indirect_lookup = two_stage_indirect;
+ }
  
- /* Crypto Extension */
-@@ -5230,5 +5333,9 @@ riscv_csr_operations csr_ops[CSR_TABLE_SIZE] = {
-     [CSR_SCOUNTOVF]      = { "scountovf", sscofpmf,  read_scountovf,
-                              .min_priv_ver = PRIV_VERSION_1_12_0 },
+-hwaddr riscv_cpu_get_phys_page_debug(CPUState *cs, vaddr addr)
++hwaddr riscv_cpu_get_phys_page_attrs_debug(CPUState *cs, vaddr addr, MemTxAttrs *attrs)
+ {
+     RISCVCPU *cpu = RISCV_CPU(cs);
+     CPURISCVState *env = &cpu->env;
+     hwaddr phys_addr;
+     int prot;
+     int mmu_idx = riscv_env_mmu_index(&cpu->env, false);
++    int mode = mmuidx_priv(mmu_idx);
++    uint32_t wid;
++
++    if (riscv_cpu_cfg(env)->ext_smwg && env->wid_to_mem_attrs) {
++        wid = riscv_cpu_wg_get_wid(env, mode);
++        env->wid_to_mem_attrs(attrs, wid);
++    } else {
++        *attrs = MEMTXATTRS_UNSPECIFIED;
++    }
  
-+    /* RISC-V WorldGuard */
-+    [CSR_MLWID]     = { "mlwid",     worldguard_umode,  NULL, NULL, rmw_mlwid },
-+    [CSR_SLWID]     = { "slwid",     worldguard_sumode, NULL, NULL, rmw_slwid },
-+    [CSR_MWIDDELEG] = { "mwiddeleg", worldguard_sumode, NULL, NULL, rmw_mwiddeleg },
- #endif /* !CONFIG_USER_ONLY */
- };
+     if (get_physical_address(env, &phys_addr, &prot, addr, NULL, 0, mmu_idx,
+                              true, env->virt_enabled, true)) {
+@@ -1339,12 +1376,20 @@ bool riscv_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
+     int mode = mmuidx_priv(mmu_idx);
+     /* default TLB page size */
+     target_ulong tlb_size = TARGET_PAGE_SIZE;
++    uint32_t wid;
++    MemTxAttrs attrs = MEMTXATTRS_UNSPECIFIED;
+ 
+     env->guest_phys_fault_addr = 0;
+ 
+     qemu_log_mask(CPU_LOG_MMU, "%s ad %" VADDR_PRIx " rw %d mmu_idx %d\n",
+                   __func__, address, access_type, mmu_idx);
+ 
++    if (riscv_cpu_cfg(env)->ext_smwg && env->wid_to_mem_attrs) {
++        mode = mmuidx_priv(mmu_idx);
++        wid = riscv_cpu_wg_get_wid(env, mode);
++        env->wid_to_mem_attrs(&attrs, wid);
++    }
++
+     pmu_tlb_fill_incr_ctr(cpu, access_type);
+     if (two_stage_lookup) {
+         /* Two stage lookup */
+@@ -1436,8 +1481,8 @@ bool riscv_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
+     }
+ 
+     if (ret == TRANSLATE_SUCCESS) {
+-        tlb_set_page(cs, address & ~(tlb_size - 1), pa & ~(tlb_size - 1),
+-                     prot, access_type, mmu_idx, tlb_size);
++        tlb_set_page_with_attrs(cs, address & ~(tlb_size - 1), pa & ~(tlb_size - 1),
++                                attrs, prot, access_type, mmu_idx, tlb_size);
+         return true;
+     } else if (probe) {
+         return false;
 -- 
 2.17.1
 
