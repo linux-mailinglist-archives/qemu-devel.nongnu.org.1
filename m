@@ -2,102 +2,132 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C15E905BA3
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jun 2024 21:05:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 705E7905BD5
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jun 2024 21:19:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sHTGh-0003XT-Ec; Wed, 12 Jun 2024 15:04:23 -0400
+	id 1sHTTc-0008CP-Lj; Wed, 12 Jun 2024 15:17:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sHTGe-0003Wn-Lx
- for qemu-devel@nongnu.org; Wed, 12 Jun 2024 15:04:20 -0400
-Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sHTGd-0001UF-3y
- for qemu-devel@nongnu.org; Wed, 12 Jun 2024 15:04:20 -0400
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id A7A2C347D9;
- Wed, 12 Jun 2024 19:04:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1718219057; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=iAptmcXZtmSxvMQBZM9N2BjMVQAxr/zt/7gwmY5LSSQ=;
- b=iNpOm7CRDM1dPLmc2eAQ/2Rpce51hgcUX/YyTugi/IWiQccoBtDULbROZoD07Y2PAvYrCj
- JoGsyS1yJ9IpUY1pARqE6gCY0HUqW+o2I9YVq1+0TTdxPL5yAJ4kO7+s7SC/+8rgKr8qTj
- aJehIu5OPd6gO2UUvX2jh+5gxn6Q1fo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1718219057;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=iAptmcXZtmSxvMQBZM9N2BjMVQAxr/zt/7gwmY5LSSQ=;
- b=Fv074oBsBFFIhzXx/AjKmDxyVbe31uii1Umsa/NJpKhudW6JuFAp04c7VvIZQhVM7yIOAg
- GXOcrNqd0wyThaDA==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1718219057; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=iAptmcXZtmSxvMQBZM9N2BjMVQAxr/zt/7gwmY5LSSQ=;
- b=iNpOm7CRDM1dPLmc2eAQ/2Rpce51hgcUX/YyTugi/IWiQccoBtDULbROZoD07Y2PAvYrCj
- JoGsyS1yJ9IpUY1pARqE6gCY0HUqW+o2I9YVq1+0TTdxPL5yAJ4kO7+s7SC/+8rgKr8qTj
- aJehIu5OPd6gO2UUvX2jh+5gxn6Q1fo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1718219057;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=iAptmcXZtmSxvMQBZM9N2BjMVQAxr/zt/7gwmY5LSSQ=;
- b=Fv074oBsBFFIhzXx/AjKmDxyVbe31uii1Umsa/NJpKhudW6JuFAp04c7VvIZQhVM7yIOAg
- GXOcrNqd0wyThaDA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 31B8B132FF;
- Wed, 12 Jun 2024 19:04:16 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id +NchOjDxaWZDFwAAD6G6ig
- (envelope-from <farosas@suse.de>); Wed, 12 Jun 2024 19:04:16 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org
-Cc: Jiri Denemark <jdenemar@redhat.com>, Prasad Pandit <ppandit@redhat.com>,
- Bandan Das <bdas@redhat.com>, peterx@redhat.com
-Subject: Re: [PATCH 2/4] migration: Rename thread debug names
-In-Reply-To: <20240612144228.1179240-3-peterx@redhat.com>
-References: <20240612144228.1179240-1-peterx@redhat.com>
- <20240612144228.1179240-3-peterx@redhat.com>
-Date: Wed, 12 Jun 2024 16:04:14 -0300
-Message-ID: <878qzac79t.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <Babu.Moger@amd.com>)
+ id 1sHTTb-0008CG-IE
+ for qemu-devel@nongnu.org; Wed, 12 Jun 2024 15:17:43 -0400
+Received: from mail-co1nam11on2081.outbound.protection.outlook.com
+ ([40.107.220.81] helo=NAM11-CO1-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <Babu.Moger@amd.com>)
+ id 1sHTTZ-0003pX-7H
+ for qemu-devel@nongnu.org; Wed, 12 Jun 2024 15:17:43 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=j/b8idCyKe+G4Y3PEImnl3LDEVbQhwTeutT/V0dU+243WEWeRpnQ4IfNIL5gD5G9a41sQcW4FwUD2kjGPszzeKsFah2wzo10h0/ibA+hmaxmhseMy26dgxiHP6X/oPm90Ef2NGTI8eN5FrL2ebP4YsyVWt3fjS8xGDjC55/CgjzPKJQsDMkupIGWtGllEIq0LJ/HTc+eLGjdnEoeNY3X4iiP8uAiEpVlmdYwgV7HtlK7TErrnVxEI3J1FDYIuievrs2g/Hw1w9eOhySXnSXQbR0tPveymlpEqMRKBfbuvOIWKAXH0s5nfjYzbbNlpZ1wQtnqEgxQbw6Z6wCR9Z6xKw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=abdutjUGx5kavoiZQufXrbHrlCnwFwMKoGFc6jW2ToM=;
+ b=HR470JINO0yJxZlkzBilu/56xw+Biw4NBrTHjn5GrICZdbFQRKiFMIdEDs9dkQ+dlSQblA5pe22GemIp+jNWVh7YXgeDcddLku+r8zY7IkGMzzRjDsbJGy/fPex6KtvV58OlxnIF9OLT+1fukN1kT94rzimIC3YN29/Oz4NGtb4iA5i2G7awtyjYJ9xWSmp3Dp23+ksnXVUlK6sNMtRyuqo9EOWhHAltPwpsP19SfdAA1ldg5phrJ8EYe3hGBaTma+DP6VpwWjI8Fn7lrBzwqpNH/snxr503POk5R9HG1x1mRfJI9u/VwMA+yZDeeZTvDPWmGU9GAuHEFLtgXjDMCQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=abdutjUGx5kavoiZQufXrbHrlCnwFwMKoGFc6jW2ToM=;
+ b=S0BmO7yKaUm/T7MKwpLHwpddoitudPa8ZW8w+oHnrlP2D1Uskjkz4hKDy0NFJZeOkqyo77/jKLgfy0oq+sC5V2CWvJGWEtglF0xlnBn5hiWvRRWWQdGd0dzK/3rQzdhUh0zVxzKujBa5LXwONSxQMeQl82kU7zA6a7O9PyrK/oE=
+Received: from BYAPR05CA0102.namprd05.prod.outlook.com (2603:10b6:a03:e0::43)
+ by PH7PR12MB7453.namprd12.prod.outlook.com (2603:10b6:510:20a::10)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7633.36; Wed, 12 Jun
+ 2024 19:12:28 +0000
+Received: from SJ1PEPF00002315.namprd03.prod.outlook.com
+ (2603:10b6:a03:e0:cafe::6) by BYAPR05CA0102.outlook.office365.com
+ (2603:10b6:a03:e0::43) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7677.20 via Frontend
+ Transport; Wed, 12 Jun 2024 19:12:27 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ SJ1PEPF00002315.mail.protection.outlook.com (10.167.242.169) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7677.15 via Frontend Transport; Wed, 12 Jun 2024 19:12:27 +0000
+Received: from bmoger-ubuntu.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 12 Jun
+ 2024 14:12:25 -0500
+From: Babu Moger <babu.moger@amd.com>
+To: <pbonzini@redhat.com>
+CC: <qemu-devel@nongnu.org>, <babu.moger@amd.com>, <kvm@vger.kernel.org>
+Subject: [PATCH 0/4] i386/cpu: Add support for perfmon-v2,
+ RAS bits and EPYC-Turin CPU model
+Date: Wed, 12 Jun 2024 14:12:16 -0500
+Message-ID: <cover.1718218999.git.babu.moger@amd.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Spam-Score: -4.28
-X-Spamd-Result: default: False [-4.28 / 50.00]; BAYES_HAM(-2.98)[99.89%];
- NEURAL_HAM_LONG(-1.00)[-1.000];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
- MIME_TRACE(0.00)[0:+]; MISSING_XM_UA(0.00)[];
- TO_DN_SOME(0.00)[]; MID_RHS_MATCH_FROM(0.00)[];
- RCVD_TLS_ALL(0.00)[];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
- RCPT_COUNT_FIVE(0.00)[6]; RCVD_COUNT_TWO(0.00)[2];
- FUZZY_BLOCKED(0.00)[rspamd.com]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:email]
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
- envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ1PEPF00002315:EE_|PH7PR12MB7453:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6afec269-a446-4da6-6bb1-08dc8b1399bb
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230034|376008|1800799018|82310400020|36860700007; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?50Y3YFQSUEbTEkGA2p+8wdMzCRxWSqbFCzgzlJlRMrd4/zmtmIZKuEePxqC4?=
+ =?us-ascii?Q?wLTI1WOf0GHeIJ7bNJyWj8iQXKsQfUCiSm8FR+ViQpgwtupXEQFofbpgrWIO?=
+ =?us-ascii?Q?quvGvwXph2+pdD3DCD3eF+QZDJg3AOnrDel3YgS5Gv63wshm7yYiCN2i96OS?=
+ =?us-ascii?Q?D4JkeW9e0nO+VpRVBLUrCZuNeJocW3wGOpwrE+J1148cZ9EBK3ZopNFH7QMq?=
+ =?us-ascii?Q?qqLG9rJRJZwuemQJaMaB8w0y2mfT9iLaG4tthtu58Aa9AwCuAu45oXwXsw9q?=
+ =?us-ascii?Q?q+o9RObV+urqFGCFbRMTSt6A/XffungR+EqZiPdcoD9/Vpq7DmL4Jw+9fzTU?=
+ =?us-ascii?Q?7eIkLkqHpDmlpaZ4MHzmawh5ZkUH8wwUZcmJrx8KjUEhB+cGdNg4BTTptYBl?=
+ =?us-ascii?Q?Xpq8f0OFeiCoZgr4hwHc46mwzODzeDFpxxmgUyOsQWzq6lso8+S7DQiWFkeo?=
+ =?us-ascii?Q?2dbJiuBOwP9Ux4bGB7T/ak+eBORVV4r4Z1af4B5HIYM66v2Blun5q1w9gFKs?=
+ =?us-ascii?Q?hkRkxhSbax2JGA1bw20uoB1joesdu9L9scCZsEmblWkR+YvKnMDdQvIJ9tZo?=
+ =?us-ascii?Q?o6EyAAGgrZg2rx9Fzqqc+ZrH9QooeVVHx7wLtdKP2ZAuru2X7Of3KQIHd1sf?=
+ =?us-ascii?Q?80xIsqYfDYl8eJXKFspgZOywKWBJbBHdQ8tVe/M4iNFk26Gp9Sxkle/0N9Hz?=
+ =?us-ascii?Q?vEzmpIYwmfBExmu2nWo31Y/6ip4ALoDh8a+nKKnN3jjR7KeDt/zZz4JID8nw?=
+ =?us-ascii?Q?3x2UxU2gmL18V/1jSuYjq/9n36LQZzpUZecWR/j6CnO67ZEQZXbQRyvYsXts?=
+ =?us-ascii?Q?pYx3OP+pEETyTulIu9ldXvIDY7rUQ5bT5qcatV+OkFmJIpXJlKaXq7K21RNz?=
+ =?us-ascii?Q?usG2LJwjD3gn6ETADDkKTX5tEEWJ992HUPdcTSUFiDaJ3zANYJgTjrqL+jeY?=
+ =?us-ascii?Q?31746HS2ZjY5/k5VJIdgWz8eLbKk6IkleL4+OD1/uOhDpL5YkT+IjzJkpWDX?=
+ =?us-ascii?Q?B+TKlrzOrYb4818TxrDkCrO2rBPTtkPuiAipWsIbJHnrD9hSh73Gpn1ef8dV?=
+ =?us-ascii?Q?KyC8mKcuhxKyJaKE05KwjqSrsQu/5Vla7oV2R9QDFCOkhNMRDo/Az7T40Khb?=
+ =?us-ascii?Q?H2NvV+Dx4pAo1uoksRYnYU2dZCdfgr+ktMFrTUI1MsQ9BAMjrW2MHaQpHXx8?=
+ =?us-ascii?Q?/Kj4VpudEmEg0F7f741LYgpZKWoX/l8cv1dWxFHqT681A+SJcyeXr3YDRS/x?=
+ =?us-ascii?Q?ap5qp5MPyiXJDYZtgQ5Rmrn6DO4W48mIQzRMr4ZxIRqgUDnYFEuiXG5Llkd9?=
+ =?us-ascii?Q?0W9YNVvkab/UXrQWa+28ReVARRAKCpnf6x79RuMaQV9h/WPG6U8gPj3EqCqJ?=
+ =?us-ascii?Q?gkGsXkjo7viX5ZipjyObqzWav2ajBHC6HGpuTnoHd6vg7KtEHg=3D=3D?=
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230034)(376008)(1800799018)(82310400020)(36860700007); DIR:OUT;
+ SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jun 2024 19:12:27.5229 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6afec269-a446-4da6-6bb1-08dc8b1399bb
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: SJ1PEPF00002315.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7453
+Received-SPF: permerror client-ip=40.107.220.81;
+ envelope-from=Babu.Moger@amd.com;
+ helo=NAM11-CO1-obe.outbound.protection.outlook.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.143,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -113,27 +143,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Xu <peterx@redhat.com> writes:
 
-> The postcopy thread names on dest QEMU are slightly confusing, partly I'll
-> need to blame myself on 36f62f11e4 ("migration: Postcopy preemption
-> preparation on channel creation").  E.g., "fault-fast" reads like a fast
-> version of "fault-default", but it's actually the fast version of
-> "postcopy/listen".
->
-> Taking this chance, rename all the migration threads with proper rules.
-> Considering we only have 15 chars usable, prefix all threads with "mig/",
-> meanwhile identify src/dst threads properly this time.  So now most thread
-> names will look like "mig/DIR/xxx", where DIR will be "src"/"dst", except
-> the bg-snapshot thread which doesn't have a direction.
->
-> For multifd threads, making them "mig/{src|dst}/{send|recv}_%d".
->
-> We used to have "live_migration" thread for a very long time, now it's
-> called "mig/src/main".  We may hope to have "mig/dst/main" soon but not
-> yet.
->
-> Signed-off-by: Peter Xu <peterx@redhat.com>
+This series adds the support for following features in qemu.
+1. RAS feature bits (SUCCOR, McaOverflowRecov)
+2. perfmon-v2
+3. Update EPYC-Genoa to support perfmon-v2 and RAS bits
+4. Add support for EPYC-Turin
 
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
+
+Babu Moger (3):
+  i386/cpu: Add RAS feature bits on EPYC CPU models
+  i386/cpu: Enable perfmon-v2 and RAS feature bits on EPYC-Genoa
+  i386/cpu: Add support for EPYC-Turin model
+
+Sandipan Das (1):
+  i386/cpu: Add PerfMonV2 feature bit
+
+ target/i386/cpu.c | 202 ++++++++++++++++++++++++++++++++++++++++++++++
+ target/i386/cpu.h |   4 +
+ 2 files changed, 206 insertions(+)
+
+-- 
+2.34.1
+
 
