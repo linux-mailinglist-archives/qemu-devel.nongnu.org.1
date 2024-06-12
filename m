@@ -2,79 +2,127 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B931905351
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jun 2024 15:10:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60CBD905352
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jun 2024 15:10:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sHNhI-0007zw-K6; Wed, 12 Jun 2024 09:07:28 -0400
+	id 1sHNid-0001qz-1g; Wed, 12 Jun 2024 09:08:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sHNhF-0007tk-I7
- for qemu-devel@nongnu.org; Wed, 12 Jun 2024 09:07:26 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sHNhE-0000ZF-1d
- for qemu-devel@nongnu.org; Wed, 12 Jun 2024 09:07:25 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1718197643;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ (Exim 4.90_1) (envelope-from <cfontana@suse.de>) id 1sHNib-0001pz-Hw
+ for qemu-devel@nongnu.org; Wed, 12 Jun 2024 09:08:49 -0400
+Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <cfontana@suse.de>) id 1sHNiZ-0000ns-Pc
+ for qemu-devel@nongnu.org; Wed, 12 Jun 2024 09:08:49 -0400
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 64C3221B11;
+ Wed, 12 Jun 2024 13:08:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1718197723; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=BBfd6Z86Wbhg9+axntpREHq05oibhQASjFKI6YkK6pw=;
- b=b2Tq1MR0NBAfX/HnvXxamMg0a1/7Hb2S/SAfrp6tv/kFwtrk7ULamIXLN4wnDPgqT7/Iof
- /drNere/bdW6GBpUd7JjdAXmBxkXo7jDpDIvLPOeqX0UNnODg9EtY8Ol3e4D/qeTdG446F
- ODyfNmnvC9s0SmKPjdydQKWilYFiY1E=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-84-BV-LNF3yOTOUy7iEhDe-LQ-1; Wed,
- 12 Jun 2024 09:07:17 -0400
-X-MC-Unique: BV-LNF3yOTOUy7iEhDe-LQ-1
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ bh=7sLti1x2WHTPUgx+9FLUr6UUrzyE/h8D8CGPHkGLyBs=;
+ b=lXlxS/9RqQXjv6BuJitJALq0QFqd8NxvLeZiYn3TEHiofKviiK7aaR3GUE09S2Z3AM0SBV
+ q8wd7OzYp8RHXoSklA6f/jUFMeA5YROkuC+tEZRzIPO8xTmF46ljmvyS/5aztCG+RH+2MX
+ rEfd7+g93EGhtQ9nqFrJfb9tsPMk+EY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1718197723;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=7sLti1x2WHTPUgx+9FLUr6UUrzyE/h8D8CGPHkGLyBs=;
+ b=gWLa7XthLeSfDqrUW74OWVuU9lAAgd2vAs7J6MOjEfeoTD7QLXxZif83c0rZQ9nPRznheE
+ 43LR7bq9j/Jb3QBQ==
+Authentication-Results: smtp-out1.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=cX2cEdVE;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ttvlMp9V
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1718197721; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=7sLti1x2WHTPUgx+9FLUr6UUrzyE/h8D8CGPHkGLyBs=;
+ b=cX2cEdVEqFjnINK5ATAoz1pMBr+ojbcdwKikokD62jAHcsRna8PNkVzQe7+7NmWECVHkx1
+ yBJ+tM8zan1nnTBXHzmhOtmJ0QQ+uCrpbqns9E4We7p86ECmBOFAF/+gGu7XwkuLDo4zzg
+ TTl/95WFhDz0RqTopHYBAbps6h6l2SE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1718197721;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=7sLti1x2WHTPUgx+9FLUr6UUrzyE/h8D8CGPHkGLyBs=;
+ b=ttvlMp9VLpKNSNKtNeKJThL6b5uFoSle4XZIKbZQ9gzD76OI9Rncn4VX/oMXq7nPlYde/u
+ zo+r2qoLT8QDkzCQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 8566F1954B0B; Wed, 12 Jun 2024 13:07:16 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.93])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id EEA4730000C4; Wed, 12 Jun 2024 13:07:15 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id C30B721E66E5; Wed, 12 Jun 2024 15:07:13 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: Konstantin Kostiuk <kkostiuk@redhat.com>,  Michael Roth
- <michael.roth@amd.com>,  qemu-devel@nongnu.org,  qemu-arm@nongnu.org,
- qemu-ppc@nongnu.org,  qemu-block@nongnu.org,  qemu-s390x@nongnu.org
-Subject: Re: [RFC PATCH v2 21/22] qapi: Inline and remove QERR_UNSUPPORTED
- definition
-In-Reply-To: <18739a67-84bb-4fd3-adb6-0db0f0eb7af1@linaro.org> ("Philippe
- =?utf-8?Q?Mathieu-Daud=C3=A9=22's?= message of "Wed, 12 Jun 2024 14:23:09
- +0200")
-References: <20231005045041.52649-1-philmd@linaro.org>
- <20231005045041.52649-22-philmd@linaro.org>
- <87mswx5n63.fsf@pond.sub.org>
- <18739a67-84bb-4fd3-adb6-0db0f0eb7af1@linaro.org>
-Date: Wed, 12 Jun 2024 15:07:13 +0200
-Message-ID: <87plsmfgxq.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 301A3132FF;
+ Wed, 12 Jun 2024 13:08:41 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id r5o0CtmdaWYEMwAAD6G6ig
+ (envelope-from <cfontana@suse.de>); Wed, 12 Jun 2024 13:08:41 +0000
+Message-ID: <1a8cd52a-6c3e-47b4-89c8-d0254ba452e7@suse.de>
+Date: Wed, 12 Jun 2024 15:08:40 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 11
-X-Spam_score: 1.1
-X-Spam_bar: +
-X-Spam_report: (1.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.143,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: assert fails in s390x TCG
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Cornelia Huck <cohuck@redhat.com>
+Cc: qemu-devel <qemu-devel@nongnu.org>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, Anton Johansson <anjo@rev.ng>
+References: <eaec32e3-d56a-e6a7-fcbe-860948e79658@suse.de>
+ <def2df0d-fb58-8e67-a0eb-7d646da3be42@linaro.org>
+ <0e06f694-7aeb-66d1-48d8-317a93f8f741@suse.de>
+ <6a3e8443-2d0a-451e-a481-cc26575d8211@linaro.org>
+ <14787dc3-66ae-e15e-0bdf-14ca53bff17d@linaro.org>
+ <b0b49b1b-6877-487c-9f4d-b29ae54c5ab0@linaro.org>
+Content-Language: en-US
+From: Claudio Fontana <cfontana@suse.de>
+In-Reply-To: <b0b49b1b-6877-487c-9f4d-b29ae54c5ab0@linaro.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-6.50 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+ DWL_DNSWL_MED(-2.00)[suse.de:dkim];
+ NEURAL_HAM_LONG(-1.00)[-1.000];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ MX_GOOD(-0.01)[]; XM_UA_NO_VERSION(0.01)[];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
+ ARC_NA(0.00)[]; FUZZY_BLOCKED(0.00)[rspamd.com];
+ MIME_TRACE(0.00)[0:+]; FROM_HAS_DN(0.00)[];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; RCPT_COUNT_FIVE(0.00)[6];
+ MID_RHS_MATCH_FROM(0.00)[]; RCVD_COUNT_TWO(0.00)[2];
+ FROM_EQ_ENVFROM(0.00)[]; TO_DN_ALL(0.00)[];
+ RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+ DKIM_TRACE(0.00)[suse.de:+]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ RCVD_TLS_ALL(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[nongnu.org:email, imap1.dmz-prg2.suse.org:helo,
+ imap1.dmz-prg2.suse.org:rdns, gnu.org:url, suse.de:email, suse.de:dkim]
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Queue-Id: 64C3221B11
+X-Spam-Score: -6.50
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
+ envelope-from=cfontana@suse.de; helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,23 +138,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
+On 6/12/24 14:41, Philippe Mathieu-Daudé wrote:
+> On 28/7/23 18:43, Richard Henderson wrote:
+>> On 7/28/23 09:05, Richard Henderson wrote:
+>>> It's the page containing both code and a page table entry that 
+>>> concerns me.  It seems like a kernel bug, though obviously we 
+>>> shouldn't crash.  I'm not sure what to do about it.
+>>
+>> Bah.  Of course it's not a kernel bug, since the store is to LowCore.
+>> And of course LowCore is part of a larger page, which easily has other 
+>> stuff.
+> 
+> Maybe related to
+> https://lore.kernel.org/qemu-devel/20240611215814.32752-1-anjo@rev.ng/
+> 
 
-> Michael, Konstantin, QERR_UNSUPPORTED is only used by QGA.
->
-> Do you mind giving our maintainer's position on Markus
-> analysis so we can know how to proceed with this definition?
+Hi philippe,
 
-Daniel Berrang=C3=A9 recently posted patches that get rid of most instances
-of QERR_UNSUPPORTED:
+this was already fixed by Ilya's commit:
 
-    [PATCH 00/20] qga: clean up command source locations and conditionals
-    https://lore.kernel.org/qemu-devel/20240604134933.220112-1-berrange@red=
-hat.com/
+commit 791b2b6a930273db694b9ba48bbb406e78715927
+Author: Ilya Leoshkevich <iii@linux.ibm.com>
+Date:   Sat Aug 5 01:03:18 2023 +0200
 
-I pointed out a possible opportunity to remove even more.
+    target/s390x: Fix the "ignored match" case in VSTRS
+    
+    Currently the emulation of VSTRS recognizes partial matches in presence
+    of \0 in the haystack, which, according to PoP, is not correct:
+    
+        If the ZS flag is one and a zero byte was detected
+        in the second operand, then there can not be a
+        partial match ...
+    
+    Add a check for this. While at it, fold a number of explicitly handled
+    special cases into the generic logic.
+    
+    Cc: qemu-stable@nongnu.org
+    Reported-by: Claudio Fontana <cfontana@suse.de>
+    Closes: https://lists.gnu.org/archive/html/qemu-devel/2023-08/msg00633.html
+    Fixes: 1d706f314191 ("target/s390x: vxeh2: vector string search")
+    Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+    Message-Id: <20230804233748.218935-3-iii@linux.ibm.com>
+    Tested-by: Claudio Fontana <cfontana@suse.de>
+    Acked-by: David Hildenbrand <david@redhat.com>
+    Signed-off-by: Thomas Huth <thuth@redhat.com>
 
-I think we should let the dust settle there, then figure out how to
-eliminate remaining QERR_UNSUPPORTED, if any.
+Ciao,
 
+Claudio
 
