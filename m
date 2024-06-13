@@ -2,81 +2,115 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9807D9079B4
+	by mail.lfdr.de (Postfix) with ESMTPS id 314739079B2
 	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jun 2024 19:22:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sHo92-0000kc-F4; Thu, 13 Jun 2024 13:21:52 -0400
+	id 1sHo8P-0000Y1-Jq; Thu, 13 Jun 2024 13:21:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1sHo90-0000k7-8J
- for qemu-devel@nongnu.org; Thu, 13 Jun 2024 13:21:50 -0400
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sHo8N-0000XZ-Qg
+ for qemu-devel@nongnu.org; Thu, 13 Jun 2024 13:21:11 -0400
+Received: from smtp-out2.suse.de ([195.135.223.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1sHo8y-0005rh-4g
- for qemu-devel@nongnu.org; Thu, 13 Jun 2024 13:21:50 -0400
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-1f7028196f2so11157565ad.2
- for <qemu-devel@nongnu.org>; Thu, 13 Jun 2024 10:21:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1718299306; x=1718904106; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=PquiuMp1JH1T0sH0/rv5hP1UkVOfgmDk9Oiumx90w18=;
- b=bkH+qrw7Lk/StkKFrgJvx7QYmA/d6qH0anJ/h6klr6a1+sirm3aJl/z8kDK4c4aXth
- 4rxSzdc06aDzviFyV3a8TPMx6opgXU7yxFwMfwZJ3kMOmkoWDuTNlnxEPJ/YHUGbJVrf
- nR3TyQes9hvxChp8luyK1PjBZ1rdFWbAEHx8VRU62AUgmn6QlfeTGu8yOMCgjzasJSkX
- 7qFik2y7TUeifDU7+WD49xoIwO+KxfEpmrawOYwp5sH03HT0a14BJLmbQ0KcwL/CxkDd
- ZMP+LE7p3eT6K/+QdkcCZ8iSqg27RxMOABQ2lLc9OB5m1uhzq30ISor2xbUGbeOEd5EG
- qS2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718299306; x=1718904106;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=PquiuMp1JH1T0sH0/rv5hP1UkVOfgmDk9Oiumx90w18=;
- b=BcVIa9OR2daJbXUbYhS921K/LsPWc8goHQn4LXx1/VQkan9kOdf0pTEcN1luHcQG7F
- e3kvpKFReRrMHBfiGFr+aE4LJ9M477BeTNGpdRe4GdBOoqvwGVE/c9dSxoF96YX7heN7
- zDQDUupDLR+0hNe1GH6pCFO0aeZd8EEd52Z4g9+H5uXxBgS2ccnYMdm1fW6LPA2+I2qL
- wO5r3+yQrVNmhcDm0xCDwMCKBOEN03PVVOGL3o7Z1T4aYGsQJISMWX2iEXatp2rB+vs7
- 2eHNyJZMNuX6Kj4q2X4JDMJKnawV1r7XDsVtRCgrjjJGZohvuRTP/hHPwpj2y+z6Ox+c
- V3sA==
-X-Gm-Message-State: AOJu0YzXTEsLM3zxeJwrlnoOwmHZtJ5Bwrh94fsNlrhjbQ1q4Jseq89V
- KYuPTBka8F41wVYQn5YP9OaNR0/g7l9NpTWItEdsIwdzvA4doFCl6P0h44m8p4iWPrxQhlE9CDR
- W
-X-Google-Smtp-Source: AGHT+IHwnWXARqUHIY2AZcW4+VPaOi0tuovceA1R1hFlgoDlEuCmUyEKDSa//ApjJplGtovmgsRtsw==
-X-Received: by 2002:a17:902:f545:b0:1f7:1ba5:85ff with SMTP id
- d9443c01a7336-1f8629fee71mr2807435ad.57.1718299306474; 
- Thu, 13 Jun 2024 10:21:46 -0700 (PDT)
-Received: from amd.. ([2804:7f0:b400:8dcb:3e7c:3fff:fe7a:e83b])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1f855e5b85bsm16443885ad.32.2024.06.13.10.21.44
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 13 Jun 2024 10:21:46 -0700 (PDT)
-From: Gustavo Romero <gustavo.romero@linaro.org>
-To: qemu-devel@nongnu.org, philmd@linaro.org, peter.maydell@linaro.org,
- alex.bennee@linaro.org, richard.henderson@linaro.org
-Cc: gustavo.romero@linaro.org
-Subject: [PATCH v2 9/9] tests/tcg/aarch64: Add MTE gdbstub tests
-Date: Thu, 13 Jun 2024 17:21:03 +0000
-Message-Id: <20240613172103.2987519-10-gustavo.romero@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240613172103.2987519-1-gustavo.romero@linaro.org>
-References: <20240613172103.2987519-1-gustavo.romero@linaro.org>
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sHo8K-0005hh-LB
+ for qemu-devel@nongnu.org; Thu, 13 Jun 2024 13:21:11 -0400
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 171191FCFB;
+ Thu, 13 Jun 2024 17:21:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1718299267; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=ahM9ZulMfAXOHQSBkXrBnMIOtmtqddIDrrwWJl2l0i8=;
+ b=DddtJQuzWByQ6EraUrE08tf2KVY/sVURedYK7CiQlfPa1jjPofwxn12cZtT8HieQcviw3z
+ fztZsygNmbkGl0eVdB0x7+OKgTY4S1NaFOKm6sxRXdWjucHDEPMLhD+z6y3yjOvoja5yW7
+ gy4pvcV9m0fXQGuhPz1K70HlQS2MTnw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1718299267;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=ahM9ZulMfAXOHQSBkXrBnMIOtmtqddIDrrwWJl2l0i8=;
+ b=C1YpaWVcIvW0Pimfb38Rr7YTIWhVs2HHD75qFqqyo7dG+WXw9e5RLxkOOCU67NxJFZi5IW
+ ZZsHs35eyuyKAPCA==
+Authentication-Results: smtp-out2.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=DddtJQuz;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=C1YpaWVc
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1718299267; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=ahM9ZulMfAXOHQSBkXrBnMIOtmtqddIDrrwWJl2l0i8=;
+ b=DddtJQuzWByQ6EraUrE08tf2KVY/sVURedYK7CiQlfPa1jjPofwxn12cZtT8HieQcviw3z
+ fztZsygNmbkGl0eVdB0x7+OKgTY4S1NaFOKm6sxRXdWjucHDEPMLhD+z6y3yjOvoja5yW7
+ gy4pvcV9m0fXQGuhPz1K70HlQS2MTnw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1718299267;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=ahM9ZulMfAXOHQSBkXrBnMIOtmtqddIDrrwWJl2l0i8=;
+ b=C1YpaWVcIvW0Pimfb38Rr7YTIWhVs2HHD75qFqqyo7dG+WXw9e5RLxkOOCU67NxJFZi5IW
+ ZZsHs35eyuyKAPCA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8CB7913A87;
+ Thu, 13 Jun 2024 17:21:06 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id rpbsFIIqa2ZtBAAAD6G6ig
+ (envelope-from <farosas@suse.de>); Thu, 13 Jun 2024 17:21:06 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, Jiri Denemark <jdenemar@redhat.com>, Prasad
+ Pandit <ppandit@redhat.com>, Bandan Das <bdas@redhat.com>
+Subject: Re: [PATCH 4/4] migration/postcopy: Add postcopy-recover-setup phase
+In-Reply-To: <Zmsc5pXGs4dLfiLB@x1n>
+References: <20240612144228.1179240-1-peterx@redhat.com>
+ <20240612144228.1179240-5-peterx@redhat.com> <8734pgdhf5.fsf@suse.de>
+ <Zmsc5pXGs4dLfiLB@x1n>
+Date: Thu, 13 Jun 2024 14:21:04 -0300
+Message-ID: <87tthwbvy7.fsf@suse.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=gustavo.romero@linaro.org; helo=mail-pl1-x631.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain
+X-Rspamd-Queue-Id: 171191FCFB
+X-Spam-Score: -6.51
+X-Spamd-Result: default: False [-6.51 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+ DWL_DNSWL_MED(-2.00)[suse.de:dkim];
+ NEURAL_HAM_LONG(-1.00)[-1.000];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ MX_GOOD(-0.01)[]; TO_DN_SOME(0.00)[];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+ FUZZY_BLOCKED(0.00)[rspamd.com];
+ RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
+ MIME_TRACE(0.00)[0:+]; ARC_NA(0.00)[]; FROM_HAS_DN(0.00)[];
+ RCPT_COUNT_FIVE(0.00)[5]; MID_RHS_MATCH_FROM(0.00)[];
+ RCVD_COUNT_TWO(0.00)[2]; FROM_EQ_ENVFROM(0.00)[];
+ TO_MATCH_ENVRCPT_ALL(0.00)[];
+ RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+ MISSING_XM_UA(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ RCVD_TLS_ALL(0.00)[]; DKIM_TRACE(0.00)[suse.de:+];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email, suse.de:dkim,
+ imap1.dmz-prg2.suse.org:helo, imap1.dmz-prg2.suse.org:rdns]
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,247 +127,435 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add tests to exercise the MTE stubs.
+Peter Xu <peterx@redhat.com> writes:
 
-Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
----
- tests/tcg/aarch64/Makefile.target     |  11 ++-
- tests/tcg/aarch64/gdbstub/test-mte.py |  86 ++++++++++++++++++++++
- tests/tcg/aarch64/mte-8.c             | 102 ++++++++++++++++++++++++++
- 3 files changed, 197 insertions(+), 2 deletions(-)
- create mode 100644 tests/tcg/aarch64/gdbstub/test-mte.py
- create mode 100644 tests/tcg/aarch64/mte-8.c
+> On Thu, Jun 13, 2024 at 11:51:58AM -0300, Fabiano Rosas wrote:
+>> Peter Xu <peterx@redhat.com> writes:
+>> 
+>> > This patch adds a migration state on src called "postcopy-recover-setup".
+>> > The new state will describe the intermediate step starting from when the
+>> > src QEMU started an postcopy recovery request, until the migration channels
+>> > are properly established, but before the recovery process take place.
+>> >
+>> > The request came from Libvirt where Libvirt currently rely on the migration
+>> > state events to detect migration state changes.  That works for most of the
+>> > migration process but except postcopy recovery failures at the beginning.
+>> >
+>> > Currently postcopy recovery only has two major states:
+>> >
+>> >   - postcopy-paused: this is the state that both sides of QEMU will be in
+>> >     for a long time as long as the migration channel was interrupted.
+>> >
+>> >   - postcopy-recover: this is the state where both sides of QEMU handshake
+>> >     with each other, preparing for a continuation of postcopy which used to
+>> >     be interrupted.
+>> >
+>> > The issue here is when the recovery port is invalid, the src QEMU will take
+>> > the URI/channels, noticing the ports are not valid, and it'll silently keep
+>> > in the postcopy-paused state, with no event sent to Libvirt.  In this case,
+>> > the only thing Libvirt can do is to poll the migration status with a proper
+>> > interval, however that's less optimal.
+>> >
+>> > Considering that this is the only case where Libvirt won't get a
+>> > notification from QEMU on such events, let's add postcopy-recover-setup
+>> > state to mimic what we used to have with the "setup" state of a newly
+>> 
+>> s/used to //
+>
+> Fixed.
+>
+>> 
+>> > initialized migration, describing the phase of connection establishment.
+>> >
+>> > With that, postcopy recovery will have two paths to go now, and either path
+>> > will guarantee an event generated.  Now the events will look like this
+>> > during a recovery process on src QEMU:
+>> >
+>> >   - Initially when the recovery is initiated on src, QEMU will go from
+>> >     "postcopy-paused" -> "postcopy-recover-setup".  Old QEMUs don't have
+>> >     this event.
+>> >
+>> >   - Depending on whether the channel re-establishment is succeeded:
+>> >
+>> >     - In succeeded case, src QEMU will move from "postcopy-recover-setup"
+>> >       to "postcopy-recover".  Old QEMUs also have this event.
+>> >
+>> >     - In failure case, src QEMU will move from "postcopy-recover-setup" to
+>> >       "postcopy-paused" again.  Old QEMUs don't have this event.
+>> >
+>> > This guarantees that Libvirt will always receive a notification for
+>> > recovery process properly.
+>> >
+>> > One thing to mention is, such new status is only needed on src QEMU not
+>> > both.  On dest QEMU, the state machine doesn't change.  Hence the events
+>> > don't change either.  It's done like so because dest QEMU may not have an
+>> > explicit point of setup start.  E.g., it can happen that when dest QEMUs
+>> > doesn't use migrate-recover command to use a new URI/channel, but the old
+>> > URI/channels can be reused in recovery, in which case the old ports simply
+>> > can work again after the network routes are fixed up.
+>> >
+>> > The patch has some touch-ups in the dest path too, but it's because there's
+>> > some unclearness on using migrate_set_state(), so the change should make it
+>> > crystal clear now by checking current status always.  The next step from
+>> 
+>> Can we get a separate patch for these cleanups?
+>
+> We can, and I'll do.
+>
+>> 
+>> > that POV would be making migrate_set_state() not using cmpxchg() but always
+>> > update the status, but that's for later.
+>> >
+>> > Cc: Jiri Denemark <jdenemar@redhat.com>
+>> > Cc: Fabiano Rosas <farosas@suse.de>
+>> > Cc: Prasad Pandit <ppandit@redhat.com>
+>> > Buglink: https://issues.redhat.com/browse/RHEL-38485
+>> > Signed-off-by: Peter Xu <peterx@redhat.com>
+>> > ---
+>> >  qapi/migration.json      |  4 +++
+>> >  migration/postcopy-ram.h |  3 ++
+>> >  migration/migration.c    | 66 +++++++++++++++++++++++++++++++++++-----
+>> >  migration/postcopy-ram.c |  6 ++++
+>> >  migration/savevm.c       |  4 +--
+>> >  5 files changed, 73 insertions(+), 10 deletions(-)
+>> >
+>> > diff --git a/qapi/migration.json b/qapi/migration.json
+>> > index a351fd3714..a135bbcd96 100644
+>> > --- a/qapi/migration.json
+>> > +++ b/qapi/migration.json
+>> > @@ -142,6 +142,9 @@
+>> >  #
+>> >  # @postcopy-paused: during postcopy but paused.  (since 3.0)
+>> >  #
+>> > +# @postcopy-recover-setup: setup phase for a postcopy recover process,
+>> > +#     preparing for a recover phase to start.  (since 9.1)
+>> 
+>> recover*y* process
+>> recover*y* phase
+>
+> OK.
+>
+>> 
+>> > +#
+>> >  # @postcopy-recover: trying to recover from a paused postcopy.  (since
+>> >  #     3.0)
+>> >  #
+>> > @@ -166,6 +169,7 @@
+>> >  { 'enum': 'MigrationStatus',
+>> >    'data': [ 'none', 'setup', 'cancelling', 'cancelled',
+>> >              'active', 'postcopy-active', 'postcopy-paused',
+>> > +            'postcopy-recover-setup',
+>> >              'postcopy-recover', 'completed', 'failed', 'colo',
+>> >              'pre-switchover', 'device', 'wait-unplug' ] }
+>> >  ##
+>> > diff --git a/migration/postcopy-ram.h b/migration/postcopy-ram.h
+>> > index ecae941211..a6df1b2811 100644
+>> > --- a/migration/postcopy-ram.h
+>> > +++ b/migration/postcopy-ram.h
+>> > @@ -13,6 +13,8 @@
+>> >  #ifndef QEMU_POSTCOPY_RAM_H
+>> >  #define QEMU_POSTCOPY_RAM_H
+>> >  
+>> > +#include "qapi/qapi-types-migration.h"
+>> > +
+>> >  /* Return true if the host supports everything we need to do postcopy-ram */
+>> >  bool postcopy_ram_supported_by_host(MigrationIncomingState *mis,
+>> >                                      Error **errp);
+>> > @@ -193,5 +195,6 @@ enum PostcopyChannels {
+>> >  void postcopy_preempt_new_channel(MigrationIncomingState *mis, QEMUFile *file);
+>> >  void postcopy_preempt_setup(MigrationState *s);
+>> >  int postcopy_preempt_establish_channel(MigrationState *s);
+>> > +bool postcopy_is_paused(MigrationStatus status);
+>> >  
+>> >  #endif
+>> > diff --git a/migration/migration.c b/migration/migration.c
+>> > index bfbd657035..9475dce7dc 100644
+>> > --- a/migration/migration.c
+>> > +++ b/migration/migration.c
+>> > @@ -595,6 +595,26 @@ bool migrate_uri_parse(const char *uri, MigrationChannel **channel,
+>> >      return true;
+>> >  }
+>> >  
+>> > +static bool
+>> > +migration_incoming_state_setup(MigrationIncomingState *mis, Error **errp)
+>> > +{
+>> > +    MigrationStatus current = mis->state;
+>> > +
+>> > +    if (current == MIGRATION_STATUS_POSTCOPY_PAUSED) {
+>> > +        /* Postcopy paused state doesn't change when setup new ports */
+>> 
+>> The "setup new ports" part is a bit vague. Maybe:
+>> 
+>> /*
+>>  * The SETUP state only happens at the start of migration. A postcopy
+>>  * migration recovery migration stays in POSTCOPY_PAUSED.
+>>  */
+>
+> Mentioning SETUP in this if clause might be slightly confusing?  How about
+> I only keep the latter sentence (and change it a bit; there's one extra
+> "migration")?
+>
+>   /*
+>    * Postcopy migration stays in POSTCOPY_PAUSED even if reconnection
+>    * happens.
+>    */
 
-diff --git a/tests/tcg/aarch64/Makefile.target b/tests/tcg/aarch64/Makefile.target
-index 70d728ae9a..d2e3f251eb 100644
---- a/tests/tcg/aarch64/Makefile.target
-+++ b/tests/tcg/aarch64/Makefile.target
-@@ -62,7 +62,7 @@ AARCH64_TESTS += bti-2
- 
- # MTE Tests
- ifneq ($(CROSS_CC_HAS_ARMV8_MTE),)
--AARCH64_TESTS += mte-1 mte-2 mte-3 mte-4 mte-5 mte-6 mte-7
-+AARCH64_TESTS += mte-1 mte-2 mte-3 mte-4 mte-5 mte-6 mte-7 mte-8
- mte-%: CFLAGS += -march=armv8.5-a+memtag
- endif
- 
-@@ -127,7 +127,14 @@ run-gdbstub-sve-ioctls: sve-ioctls
- 		--bin $< --test $(AARCH64_SRC)/gdbstub/test-sve-ioctl.py, \
- 	basic gdbstub SVE ZLEN support)
- 
--EXTRA_RUNS += run-gdbstub-sysregs run-gdbstub-sve-ioctls
-+run-gdbstub-mte: mte-8
-+	$(call run-test, $@, $(GDB_SCRIPT) \
-+		--gdb $(GDB) \
-+		--qemu $(QEMU) --qargs "$(QEMU_OPTS)" \
-+		--bin "$< -s" --test $(AARCH64_SRC)/gdbstub/test-mte.py, \
-+	gdbstub MTE support)
-+
-+EXTRA_RUNS += run-gdbstub-sysregs run-gdbstub-sve-ioctls run-gdbstub-mte
- endif
- endif
- 
-diff --git a/tests/tcg/aarch64/gdbstub/test-mte.py b/tests/tcg/aarch64/gdbstub/test-mte.py
-new file mode 100644
-index 0000000000..ec49eb8d2b
---- /dev/null
-+++ b/tests/tcg/aarch64/gdbstub/test-mte.py
-@@ -0,0 +1,86 @@
-+from __future__ import print_function
-+#
-+# Test GDB memory-tag commands that exercise the stubs for the qIsAddressTagged,
-+# qMemTag, and QMemTag packets. Logical tag-only commands rely on local
-+# operations, hence don't exercise any stub.
-+#
-+# The test consists in breaking just after a atag() call (which sets the
-+# allocation tag -- see mte-8.c for details) and setting/getting tags in
-+# different memory locations and ranges starting at the address of the array
-+# 'a'.
-+#
-+# This is launched via tests/guest-debug/run-test.py
-+#
-+
-+
-+import gdb
-+import re
-+from test_gdbstub import main, report
-+
-+
-+PATTERN_0 = "Memory tags for address 0x[0-9a-f]+ match \(0x[0-9a-f]+\)."
-+PATTERN_1 = ".*(0x[0-9a-f]+)"
-+
-+
-+def run_test():
-+    gdb.execute("break 99", False, True)
-+    gdb.execute("continue", False, True)
-+    try:
-+        # Test if we can check correctly that the allocation tag for
-+        # array 'a' matches the logical tag after atag() is called.
-+        co = gdb.execute("memory-tag check a", False, True)
-+        tags_match = re.findall(PATTERN_0, co, re.MULTILINE)
-+        if tags_match:
-+            report(True, f"{tags_match[0]}")
-+        else:
-+            report(False, "Logical and allocation tags don't match!")
-+
-+        # Test allocation tag 'set and print' commands. Commands on logical
-+        # tags rely on local operation and so don't exercise any stub.
-+
-+        # Set the allocation tag for the first granule (16 bytes) of
-+        # address starting at 'a' address to a known value, i.e. 0x04.
-+        gdb.execute("memory-tag set-allocation-tag a 1 04", False, True)
-+
-+        # Then set the allocation tag for the second granule to a known
-+        # value, i.e. 0x06. This tests that contiguous tag granules are
-+        # set correct and don't run over each other.
-+        gdb.execute("memory-tag set-allocation-tag a+16 1 06", False, True)
-+
-+        # Read the known values back and check if they remain the same.
-+
-+        co = gdb.execute("memory-tag print-allocation-tag a", False, True)
-+        first_tag = re.match(PATTERN_1, co)[1]
-+
-+        co = gdb.execute("memory-tag print-allocation-tag a+16", False, True)
-+        second_tag = re.match(PATTERN_1, co)[1]
-+
-+        if first_tag == "0x4" and second_tag == "0x6":
-+            report(True, "Allocation tags are correctly set/printed.")
-+        else:
-+            report(False, "Can't set/print allocation tags!")
-+
-+        # Now test fill pattern by setting a whole page with a pattern.
-+        gdb.execute("memory-tag set-allocation-tag a 4096 0a0b", False, True)
-+
-+        # And read back the tags of the last two granules in page so
-+        # we also test if the pattern is set correctly up to the end of
-+        # the page.
-+        co = gdb.execute("memory-tag print-allocation-tag a+4096-32", False, True)
-+        tag = re.match(PATTERN_1, co)[1]
-+
-+        co = gdb.execute("memory-tag print-allocation-tag a+4096-16", False, True)
-+        last_tag = re.match(PATTERN_1, co)[1]
-+
-+        if tag == "0xa" and last_tag == "0xb":
-+            report(True, "Fill pattern is ok.")
-+        else:
-+            report(False, "Fill pattern failed!")
-+
-+    except gdb.error:
-+        # This usually happens because a GDB version that does not
-+        # support memory tagging was used to run the test.
-+        report(False, "'memory-tag' command failed!")
-+
-+
-+main(run_test, expected_arch="aarch64")
-diff --git a/tests/tcg/aarch64/mte-8.c b/tests/tcg/aarch64/mte-8.c
-new file mode 100644
-index 0000000000..367768e6b6
---- /dev/null
-+++ b/tests/tcg/aarch64/mte-8.c
-@@ -0,0 +1,102 @@
-+/*
-+ * To be compiled with -march=armv8.5-a+memtag
-+ *
-+ * This test is adapted from a Linux test. Please see:
-+ *
-+ * https://www.kernel.org/doc/html/next/arch/arm64/memory-tagging-extension.html#example-of-correct-usage
-+ */
-+#include <errno.h>
-+#include <stdint.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <unistd.h>
-+#include <sys/auxv.h>
-+#include <sys/mman.h>
-+#include <sys/prctl.h>
-+#include <string.h>
-+/*
-+ * From arch/arm64/include/uapi/asm/hwcap.h
-+ */
-+#define HWCAP2_MTE              (1 << 18)
-+
-+/*
-+ * From arch/arm64/include/uapi/asm/mman.h
-+ */
-+#define PROT_MTE                 0x20
-+
-+/*
-+ * Insert a random logical tag into the given pointer.
-+ */
-+#define insert_random_tag(ptr) ({                   \
-+    uint64_t __val;                                 \
-+    asm("irg %0, %1" : "=r" (__val) : "r" (ptr));   \
-+    __val;                                          \
-+})
-+
-+/*
-+ * Set the allocation tag on the destination address.
-+ */
-+#define set_tag(tagged_addr) do {                                      \
-+        asm volatile("stg %0, [%0]" : : "r" (tagged_addr) : "memory"); \
-+} while (0)
-+
-+
-+int main(int argc, char *argv[])
-+{
-+    unsigned char *a;
-+    unsigned long page_sz = sysconf(_SC_PAGESIZE);
-+    unsigned long hwcap2 = getauxval(AT_HWCAP2);
-+
-+    if (!(argc == 2 && strcmp(argv[1], "-s") == 0)) {
-+        return 0;
-+    }
-+
-+    /* check if MTE is present */
-+    if (!(hwcap2 & HWCAP2_MTE))
-+            return EXIT_FAILURE;
-+
-+    /*
-+     * Enable the tagged address ABI, synchronous or asynchronous MTE
-+     * tag check faults (based on per-CPU preference) and allow all
-+     * non-zero tags in the randomly generated set.
-+     */
-+    if (prctl(PR_SET_TAGGED_ADDR_CTRL,
-+              PR_TAGGED_ADDR_ENABLE | PR_MTE_TCF_SYNC | PR_MTE_TCF_ASYNC |
-+              (0xfffe << PR_MTE_TAG_SHIFT),
-+              0, 0, 0)) {
-+        perror("prctl() failed");
-+        return EXIT_FAILURE;
-+    }
-+
-+    a = mmap(0, page_sz, PROT_READ | PROT_WRITE,
-+             MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-+    if (a == MAP_FAILED) {
-+        perror("mmap() failed");
-+        return EXIT_FAILURE;
-+    }
-+
-+    printf("a[] address is %p\n", a);
-+
-+    /*
-+     * Enable MTE on the above anonymous mmap. The flag could be passed
-+     * directly to mmap() and skip this step.
-+     */
-+    if (mprotect(a, page_sz, PROT_READ | PROT_WRITE | PROT_MTE)) {
-+        perror("mprotect() failed");
-+        return EXIT_FAILURE;
-+    }
-+
-+    /* access with the default tag (0) */
-+    a[0] = 1;
-+    a[1] = 2;
-+
-+    printf("a[0] = %hhu a[1] = %hhu\n", a[0], a[1]);
-+
-+    /* set the logical and allocation tags */
-+    a = (unsigned char *)insert_random_tag(a);
-+    set_tag(a);
-+
-+    printf("%p\n", a);
-+
-+    return 0;
-+}
--- 
-2.34.1
+Yep.
 
+>
+>> 
+>> > +        return true;
+>> > +    }
+>> > +
+>> > +    if (current != MIGRATION_STATUS_NONE) {
+>> > +        error_setg(errp, "Illegal migration incoming state: %s",
+>> > +                   MigrationStatus_str(current));
+>> > +        return false;
+>> > +    }
+>> 
+>> This is a good candidate for a separate patch due to the extra change in
+>> behavior not necessarily related to postcopy.
+>
+> I'll split that, but just to mention, I think there should have no
+> functional change, or we're doomed.
+
+Right, but it's technically not impossible, so better to have it
+separate anyway.
+
+>
+> The old code worked the same by ignoring migrate_set_state() when PAUSED in
+> the cmpxchg(), which is implicit and unclear.
+>
+
+Agreed.
+
+>> 
+>> > +
+>> > +    migrate_set_state(&mis->state, current, MIGRATION_STATUS_SETUP);
+>> > +    return true;
+>> > +}
+>> > +
+>> >  static void qemu_start_incoming_migration(const char *uri, bool has_channels,
+>> >                                            MigrationChannelList *channels,
+>> >                                            Error **errp)
+>> > @@ -633,8 +653,9 @@ static void qemu_start_incoming_migration(const char *uri, bool has_channels,
+>> >          return;
+>> >      }
+>> >  
+>> > -    migrate_set_state(&mis->state, MIGRATION_STATUS_NONE,
+>> > -                      MIGRATION_STATUS_SETUP);
+>> > +    if (!migration_incoming_state_setup(mis, errp)) {
+>> > +        return;
+>> > +    }
+>> >  
+>> >      if (addr->transport == MIGRATION_ADDRESS_TYPE_SOCKET) {
+>> >          SocketAddress *saddr = &addr->u.socket;
+>> > @@ -1070,6 +1091,7 @@ bool migration_is_setup_or_active(void)
+>> >      case MIGRATION_STATUS_ACTIVE:
+>> >      case MIGRATION_STATUS_POSTCOPY_ACTIVE:
+>> >      case MIGRATION_STATUS_POSTCOPY_PAUSED:
+>> > +    case MIGRATION_STATUS_POSTCOPY_RECOVER_SETUP:
+>> >      case MIGRATION_STATUS_POSTCOPY_RECOVER:
+>> >      case MIGRATION_STATUS_SETUP:
+>> >      case MIGRATION_STATUS_PRE_SWITCHOVER:
+>> > @@ -1092,6 +1114,7 @@ bool migration_is_running(void)
+>> >      case MIGRATION_STATUS_ACTIVE:
+>> >      case MIGRATION_STATUS_POSTCOPY_ACTIVE:
+>> >      case MIGRATION_STATUS_POSTCOPY_PAUSED:
+>> > +    case MIGRATION_STATUS_POSTCOPY_RECOVER_SETUP:
+>> >      case MIGRATION_STATUS_POSTCOPY_RECOVER:
+>> >      case MIGRATION_STATUS_SETUP:
+>> >      case MIGRATION_STATUS_PRE_SWITCHOVER:
+>> > @@ -1229,6 +1252,7 @@ static void fill_source_migration_info(MigrationInfo *info)
+>> >      case MIGRATION_STATUS_PRE_SWITCHOVER:
+>> >      case MIGRATION_STATUS_DEVICE:
+>> >      case MIGRATION_STATUS_POSTCOPY_PAUSED:
+>> > +    case MIGRATION_STATUS_POSTCOPY_RECOVER_SETUP:
+>> >      case MIGRATION_STATUS_POSTCOPY_RECOVER:
+>> >          /* TODO add some postcopy stats */
+>> >          populate_time_info(info, s);
+>> > @@ -1279,6 +1303,7 @@ static void fill_destination_migration_info(MigrationInfo *info)
+>> >      case MIGRATION_STATUS_ACTIVE:
+>> >      case MIGRATION_STATUS_POSTCOPY_ACTIVE:
+>> >      case MIGRATION_STATUS_POSTCOPY_PAUSED:
+>> > +    case MIGRATION_STATUS_POSTCOPY_RECOVER_SETUP:
+>> 
+>> Does this need to be here? We don't reach this state on destination, right?
+>
+> Right, it won't hurt having that here, but let me drop it.
+>
+>> 
+>> >      case MIGRATION_STATUS_POSTCOPY_RECOVER:
+>> >      case MIGRATION_STATUS_FAILED:
+>> >      case MIGRATION_STATUS_COLO:
+>> > @@ -1435,9 +1460,30 @@ static void migrate_error_free(MigrationState *s)
+>> >  
+>> >  static void migrate_fd_error(MigrationState *s, const Error *error)
+>> >  {
+>> 
+>> The default case of the swtich below is a bit surprising to me. Why
+>> wouldn't we allow this function to be called from other places to set
+>> STATUS_FAILED?
+>> 
+>> ...unless this is only mean for the connection phase, so:
+>> 
+>> just to check your understanding here because it seems we've drifted a
+>> bit from the original definition on those, specially with
+>> migrate_fd_cleanup(), but does this _fd_ in the function name implies
+>> something like a "connection phase"? As in, "connect to the fd", "the fd
+>> connection errored out" and "cleanup the fd connection". Maybe it's time
+>> to switch this "fd" to something clearer...
+>
+> IIUC it's just that many functions around this area used to be called
+> migrate_fd_*().  Let me know if you have some suggestions, though.
+>
+
+At some other point I think we need to rename those. Very little going
+on in these functions that relates directly to an fd. It needs a closer
+inspection, however.
+
+>> 
+>> > +    MigrationStatus current = s->state;
+>> > +    MigrationStatus next;
+>> > +
+>> >      assert(s->to_dst_file == NULL);
+>> > -    migrate_set_state(&s->state, MIGRATION_STATUS_SETUP,
+>> > -                      MIGRATION_STATUS_FAILED);
+>> > +
+>> > +    switch (current) {
+>> > +    case MIGRATION_STATUS_SETUP:
+>> > +        next = MIGRATION_STATUS_FAILED;
+>> > +        break;
+>> > +    case MIGRATION_STATUS_POSTCOPY_RECOVER_SETUP:
+>> > +        /* Never fail a postcopy migration; switch back to PAUSED instead */
+>> > +        next = MIGRATION_STATUS_POSTCOPY_PAUSED;
+>> 
+>> So presumably we can keep recovering the migration indefinitely?
+>
+> Yes, that's by design.
+>
+
+ok
+
+>> 
+>> > +        break;
+>> > +    default:
+>> > +        /*
+>> > +         * This really shouldn't happen. Just be careful to not crash a VM
+>> > +         * just for this.  Instead, dump something.
+>> > +         */
+>> > +        error_report("%s: Illegal migration status (%s) detected",
+>> > +                     __func__, MigrationStatus_str(current));
+>> > +        return;
+>> > +    }
+>> > +
+>> > +    migrate_set_state(&s->state, current, next);
+>> >      migrate_set_error(s, error);
+>> >  }
+>> >  
+>> > @@ -1538,6 +1584,7 @@ bool migration_in_postcopy(void)
+>> >      switch (s->state) {
+>> >      case MIGRATION_STATUS_POSTCOPY_ACTIVE:
+>> >      case MIGRATION_STATUS_POSTCOPY_PAUSED:
+>> > +    case MIGRATION_STATUS_POSTCOPY_RECOVER_SETUP:
+>> >      case MIGRATION_STATUS_POSTCOPY_RECOVER:
+>> >          return true;
+>> >      default:
+>> > @@ -1936,6 +1983,9 @@ static bool migrate_prepare(MigrationState *s, bool resume, Error **errp)
+>> >              return false;
+>> >          }
+>> >  
+>> > +        migrate_set_state(&s->state, MIGRATION_STATUS_POSTCOPY_PAUSED,
+>> > +                          MIGRATION_STATUS_POSTCOPY_RECOVER_SETUP);
+>> > +
+>> >          /* This is a resume, skip init status */
+>> >          return true;
+>> >      }
+>> > @@ -2968,9 +3018,9 @@ static MigThrError postcopy_pause(MigrationState *s)
+>> >           * We wait until things fixed up. Then someone will setup the
+>> >           * status back for us.
+>> >           */
+>> > -        while (s->state == MIGRATION_STATUS_POSTCOPY_PAUSED) {
+>> > +        do {
+>> >              qemu_sem_wait(&s->postcopy_pause_sem);
+>> > -        }
+>> > +        } while (postcopy_is_paused(s->state));
+>> 
+>> Is there a particular reason to go from while() to do{}while()?
+>
+> It'll be the same AFAICT, the 1st check should mostly be meaningless as the
+> sem must be posted at least once.  Yes I should have had a comment
+> somewhere but I didn't.. if you want me to keep the old way it's also fine,
+> isn't a big deal here to check first either, just save some cycles when I
+> worked on these lines.
+>
+
+That's fine. Just making sure there wasn't some hidden purpose here.
+
+>> 
+>> >  
+>> >          if (s->state == MIGRATION_STATUS_POSTCOPY_RECOVER) {
+>> >              /* Woken up by a recover procedure. Give it a shot */
+>> > @@ -3666,7 +3716,7 @@ void migrate_fd_connect(MigrationState *s, Error *error_in)
+>> >  {
+>> >      Error *local_err = NULL;
+>> >      uint64_t rate_limit;
+>> > -    bool resume = s->state == MIGRATION_STATUS_POSTCOPY_PAUSED;
+>> > +    bool resume = migration_in_postcopy();
+>> 
+>> Here you're expecting just PAUSED or RECOVER_SETUP, right? We'll not
+>> reach here in any of the other postcopy states.
+>
+> I think here it must be RECOVER_SETUP after this patch.  I changed it to
+> use the helper as I think that's cleaner (precopy doesn't allow resume),
+> and we don't need such change if the state machine trivially changes again.
+>
+
+Intent matters for anyone reading the code in the future. I would use
+the state explicitly, but I don't have a strong opinion, feel free to
+ignore.
+
+>> 
+>> >      int ret;
+>> >  
+>> >      /*
+>> > @@ -3733,7 +3783,7 @@ void migrate_fd_connect(MigrationState *s, Error *error_in)
+>> >  
+>> >      if (resume) {
+>> >          /* Wakeup the main migration thread to do the recovery */
+>> > -        migrate_set_state(&s->state, MIGRATION_STATUS_POSTCOPY_PAUSED,
+>> > +        migrate_set_state(&s->state, MIGRATION_STATUS_POSTCOPY_RECOVER_SETUP,
+>> >                            MIGRATION_STATUS_POSTCOPY_RECOVER);
+>> >          qemu_sem_post(&s->postcopy_pause_sem);
+>> >          return;
+>> > diff --git a/migration/postcopy-ram.c b/migration/postcopy-ram.c
+>> > index 97701e6bb2..1c374b7ea1 100644
+>> > --- a/migration/postcopy-ram.c
+>> > +++ b/migration/postcopy-ram.c
+>> > @@ -1770,3 +1770,9 @@ void *postcopy_preempt_thread(void *opaque)
+>> >  
+>> >      return NULL;
+>> >  }
+>> > +
+>> > +bool postcopy_is_paused(MigrationStatus status)
+>> > +{
+>> > +    return status == MIGRATION_STATUS_POSTCOPY_PAUSED ||
+>> > +        status == MIGRATION_STATUS_POSTCOPY_RECOVER_SETUP;
+>> > +}
+>> > diff --git a/migration/savevm.c b/migration/savevm.c
+>> > index e71410d8c1..deb57833f8 100644
+>> > --- a/migration/savevm.c
+>> > +++ b/migration/savevm.c
+>> > @@ -2864,9 +2864,9 @@ static bool postcopy_pause_incoming(MigrationIncomingState *mis)
+>> >      error_report("Detected IO failure for postcopy. "
+>> >                   "Migration paused.");
+>> >  
+>> > -    while (mis->state == MIGRATION_STATUS_POSTCOPY_PAUSED) {
+>> > +    do {
+>> >          qemu_sem_wait(&mis->postcopy_pause_sem_dst);
+>> > -    }
+>> > +    } while (postcopy_is_paused(mis->state));
+>> >  
+>> >      trace_postcopy_pause_incoming_continued();
+>> 
 
