@@ -2,88 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BEF69079FF
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jun 2024 19:37:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE98B907A41
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jun 2024 19:52:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sHoNt-0002dt-FL; Thu, 13 Jun 2024 13:37:13 -0400
+	id 1sHobm-00072e-0C; Thu, 13 Jun 2024 13:51:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sHoNq-0002co-Cc
- for qemu-devel@nongnu.org; Thu, 13 Jun 2024 13:37:10 -0400
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
+ id 1sHobk-00072N-28
+ for qemu-devel@nongnu.org; Thu, 13 Jun 2024 13:51:32 -0400
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sHoNo-0008Kj-6w
- for qemu-devel@nongnu.org; Thu, 13 Jun 2024 13:37:10 -0400
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-35f236a563cso1103358f8f.2
- for <qemu-devel@nongnu.org>; Thu, 13 Jun 2024 10:37:07 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
+ id 1sHobh-0002bU-Sl
+ for qemu-devel@nongnu.org; Thu, 13 Jun 2024 13:51:31 -0400
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-1f32a3b9491so12758525ad.0
+ for <qemu-devel@nongnu.org>; Thu, 13 Jun 2024 10:51:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1718300227; x=1718905027; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=5rkNZOjcM2GBbUnYIP3hYAO4lu0rMYpRjuQ80g/Ed/U=;
- b=QdlGWoSX6fDDo44g/1CnLdUU52Tr6tLKYLdvo1240otbTg4OESisM45DciM3Cc7EJw
- gz0KkxNq7YIt6Z+1YjMO3huMLQwCIb4gdyetyRiMq86SVvaNAyrZk3gWza4nnOccUwOi
- h1QnoZtsL0XuX/Z14U+dRJxRj77E5woHQ8Yr10dr5eLBpPLD3ny3pO8WLXMjEk2w2mC3
- c6QFjhawWAT6aFTsM+f4r8o0wJYidvgEw+dyeWh1ZIykShm0az6PMe7yMlxORMt1MeLs
- c1Z3lfzirLMfHBGOvGA1JLvZJX7xyHYa2i8kbDlvIiecgq6CZRByN7WFWLl181YFVVAJ
- BbBQ==
+ d=sifive.com; s=google; t=1718301088; x=1718905888; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=8autl19bVxJ1EmNApzpMe0+seS7D389FfkBNh56MRQ4=;
+ b=TlWLCpmu8Z0Fun7C4oRUVc3MjM1aqUyj034vGJnVZWevweKCpdubceq7Zx12ybqydu
+ qTF57Tnzc5CYJdSjhukysOuR/8s9se6/ZLmwSrArpV4jsy65IWNXXy0/V3cGRTfHA6cO
+ p/2/RJ09pmOtEvKMDjaJqaMFpg9j0XZJYZZVOOlw0knOwSvszU9Juwex2XQrDF9rIq4k
+ 44T0xYmS7pYeJTl4Q3ki80ln0d/HbL7DvZsKgqEYCBoVxf3S1EX8MdZYg2RuwSgGK90J
+ VbHAsKpy37JXX1aAb+7KKnc3edsdLsgwoZ/KDRgyXEij+GHntee/KdifKzi76e3Rh0UR
+ frEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718300227; x=1718905027;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=5rkNZOjcM2GBbUnYIP3hYAO4lu0rMYpRjuQ80g/Ed/U=;
- b=CecCU66TIDK5H8E099EQGiCaILZPC2LaIiwtdQ7kl37MoZKGyd71iHeIjPGFEuGoh7
- Sh3+OgWjKM726g432ERURWriN4OrFrmRFq2bm7JJN4FKlBlYsADCyhje+Wu0x/LLYekE
- moYs42gWrzjHwZxg5oVaZyuTzb51cuMB494hFXW/8t6mXszVllPENUI7Hiqz0aFK0R+H
- Gr2kS/S2hANATsSNjGkrqiueR3oSd4E+nWnUL/jBnNkbDJ+0ObzttyeefKz07JC+nSKv
- fcfQAaVd+a3v54Z6+buW5y9gBq5NQBNUphwFkOobbigjt3QqhA828Q9kaqPw7doInacC
- x48g==
-X-Gm-Message-State: AOJu0Yzxbzdp2TzpfLF5A0OB73gDG4xj5v2eLK0VbtomAimisR2J6c6H
- QtjcvdocHsgjSypYAGIQSS6YVVYK35E1ScVfcRraeAcZaaLSLlr15tsT+c9tk1/xkxrfvKj5L/g
- d
-X-Google-Smtp-Source: AGHT+IGqlstRyJ+VxqkYBrD/+dkt2YmQQy+L+EWtEc/hLFZN0GzS1+wFBNp4/+NL4QoIY6Tv1WNkjQ==
-X-Received: by 2002:a05:6000:1362:b0:35f:444:8715 with SMTP id
- ffacd0b85a97d-3607a77fa1fmr222465f8f.45.1718300226658; 
- Thu, 13 Jun 2024 10:37:06 -0700 (PDT)
-Received: from [192.168.69.100] ([176.176.148.226])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3607509346asm2315664f8f.20.2024.06.13.10.37.05
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 13 Jun 2024 10:37:06 -0700 (PDT)
-Message-ID: <339a9024-f1ae-4520-90bb-ef71196fc8c0@linaro.org>
-Date: Thu, 13 Jun 2024 19:37:04 +0200
+ d=1e100.net; s=20230601; t=1718301088; x=1718905888;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=8autl19bVxJ1EmNApzpMe0+seS7D389FfkBNh56MRQ4=;
+ b=w/R6NC+SVkPhvJvROGupI8aPQz7+ImRIdomuwWSV8LO4E8yh/Vf7Fn7FVgdBb8U201
+ 4JGdOEPCoK4y8uElkrhWkjHRNz/FVeQuJwJVKo6QzTnZKpWOLox48Tp97b7YWNsa5Rzv
+ ELp+LLQWv0WMs1msvp2FarN0PPwWKVADH2XzB9Mn9XKrI4ttxlBJiE9m3r8cJdKfApf4
+ EtuH10aTQiSWO9TDNbOHMVhd0vwmu4olD5K19oNe7a68GcbV/53tT6Vekn12oHoJnGQH
+ Z/cajGLulJNId2Cw3pXlk6KDvKQi8/kxbS2t1aaCMtsfQbcXbZctYTvaUHGlsZa8zYx9
+ 91nw==
+X-Gm-Message-State: AOJu0Yytw40u6ah4xfyumPIpsKGtat1dCQiXe6OpvPaOni/EtUdpI8KE
+ iUF+XRlzz8S6R+xcrHgQs2g5I89MeLSEOcf2aKbdsSRfoh2DGPVWQvQq8dzfXq6slJGIiXZ8Jpl
+ DMk9O8TASm5wCI65uPxYE0yIu0+TXwvTWu87JK4ubm1LvMyfy0yalv0tjwTOOPqGdS4KQ0FAmqE
+ E3xOQcsFDD+W8SO+BIh0KDG/23Njrh4hMobgf/Yw==
+X-Google-Smtp-Source: AGHT+IHVwF2x0AzJbT8r6OD3FiGli4d4zXZyCjdK4Y3v3vUto3NO1y5AjoRK2Vqz0UVd12bmDKXMUg==
+X-Received: by 2002:a17:902:b18b:b0:1f7:3a4:f669 with SMTP id
+ d9443c01a7336-1f862a13d03mr3186495ad.69.1718301088193; 
+ Thu, 13 Jun 2024 10:51:28 -0700 (PDT)
+Received: from duncan.localdomain (114-35-142-126.hinet-ip.hinet.net.
+ [114.35.142.126]) by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-1f855e55d7dsm16780865ad.14.2024.06.13.10.51.26
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 13 Jun 2024 10:51:27 -0700 (PDT)
+From: Max Chou <max.chou@sifive.com>
+To: qemu-devel@nongnu.org,
+	qemu-riscv@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bmeng.cn@gmail.com>,
+ Weiwei Li <liwei1518@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Max Chou <max.chou@sifive.com>
+Subject: [RFC PATCH v4 0/5] Improve the performance of RISC-V vector
+ unit-stride/whole register ld/st instructions
+Date: Fri, 14 Jun 2024 01:51:17 +0800
+Message-Id: <20240613175122.1299212-1-max.chou@sifive.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] target/s390x: Add a CONFIG switch to disable legacy CPUs
-To: Thomas Huth <thuth@redhat.com>, qemu-s390x@nongnu.org,
- Halil Pasic <pasic@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Eric Farman <farman@linux.ibm.com>, David Hildenbrand <david@redhat.com>,
- "Daniel P. Berrange" <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>,
- Ani Sinha <anisinha@redhat.com>
-References: <20240613170702.523591-1-thuth@redhat.com>
- <856c9c4e-8e8b-4d63-a897-ee80fb7ed92a@linaro.org>
- <feaa5adc-01ed-45fa-9a13-e66836f33ef9@redhat.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <feaa5adc-01ed-45fa-9a13-e66836f33ef9@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=max.chou@sifive.com; helo=mail-pl1-x62f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,132 +97,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 13/6/24 19:22, Thomas Huth wrote:
-> On 13/06/2024 19.17, Philippe Mathieu-Daudé wrote:
->> Hi Thomas,
->>
->> On 13/6/24 19:07, Thomas Huth wrote:
->>> Old CPU models are not officially supported anymore by IBM, and for
->>> downstream builds of QEMU, we would like to be able to disable these
->>> CPUs in the build. Thus add a CONFIG switch that can be used to
->>> disable these CPUs (and old machine types that use them by default).
->>>
->>> Signed-off-by: Thomas Huth <thuth@redhat.com>
->>> ---
->>>   If you're interested, the PDF that can be downloaded from
->>>   https://www.ibm.com/support/pages/ibm-mainframe-life-cycle-history
->>>   shows the supported CPUs in a nice diagram
->>
->> I'd add this link ...
->>
->>>   hw/s390x/s390-virtio-ccw.c | 9 +++++++++
->>>   target/s390x/cpu_models.c  | 3 +++
->>>   target/s390x/Kconfig       | 5 +++++
->>>   3 files changed, 17 insertions(+)
->>>
->>> diff --git a/target/s390x/Kconfig b/target/s390x/Kconfig
->>> index d886be48b4..8a95f2bc3f 100644
->>> --- a/target/s390x/Kconfig
->>> +++ b/target/s390x/Kconfig
->>> @@ -2,3 +2,8 @@ config S390X
->>>       bool
->>>       select PCI
->>>       select S390_FLIC
->>> +
->>> +config S390X_LEGACY_CPUS
->>> +    bool
->>> +    default y
->>> +    depends on S390X
->>> diff --git a/target/s390x/cpu_models.c b/target/s390x/cpu_models.c
->>> index efb508cd2e..ffae95dcb3 100644
->>> --- a/target/s390x/cpu_models.c
->>> +++ b/target/s390x/cpu_models.c
->>> @@ -22,6 +22,7 @@
->>>   #include "qemu/module.h"
->>>   #include "qemu/hw-version.h"
->>>   #include "qemu/qemu-print.h"
->>> +#include CONFIG_DEVICES
->>>   #ifndef CONFIG_USER_ONLY
->>>   #include "sysemu/sysemu.h"
->>>   #include "target/s390x/kvm/pv.h"
->>> @@ -47,6 +48,7 @@
->>>    * generation 15 one base feature and one optional feature have 
->>> been deprecated.
->>>    */
->>>   static S390CPUDef s390_cpu_defs[] = {
->>> +#ifdef CONFIG_S390X_LEGACY_CPUS
->>
->> ... here :)
-> 
-> Can do ... let's just hope that the link is stable in the course of time!
+Hi,
 
-Else we'll use an archived version.
+Sorry for the quick update the version, this version fixes the
+cross-page probe checking bug that I forgot to apply to the v3 version.
 
->>>       CPUDEF_INIT(0x2064, 7, 1, 38, 0x00000000U, "z900", "IBM zSeries 
->>> 900 GA1"),
->>>       CPUDEF_INIT(0x2064, 7, 2, 38, 0x00000000U, "z900.2", "IBM 
->>> zSeries 900 GA2"),
->>>       CPUDEF_INIT(0x2064, 7, 3, 38, 0x00000000U, "z900.3", "IBM 
->>> zSeries 900 GA3"),
->>> @@ -78,6 +80,7 @@ static S390CPUDef s390_cpu_defs[] = {
->>>       CPUDEF_INIT(0x2964, 13, 1, 47, 0x08000000U, "z13", "IBM z13 GA1"),
->>>       CPUDEF_INIT(0x2964, 13, 2, 47, 0x08000000U, "z13.2", "IBM z13 
->>> GA2"),
->>>       CPUDEF_INIT(0x2965, 13, 2, 47, 0x08000000U, "z13s", "IBM z13s 
->>> GA1"),
->>> +#endif
->>>       CPUDEF_INIT(0x3906, 14, 1, 47, 0x08000000U, "z14", "IBM z14 GA1"),
->>>       CPUDEF_INIT(0x3906, 14, 2, 47, 0x08000000U, "z14.2", "IBM z14 
->>> GA2"),
->>>       CPUDEF_INIT(0x3907, 14, 1, 47, 0x08000000U, "z14ZR1", "IBM z14 
->>> Model ZR1 GA1"),
->>> diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
->>> index 3d0bc3e7f2..7529d2fba8 100644
->>> --- a/hw/s390x/s390-virtio-ccw.c
->>> +++ b/hw/s390x/s390-virtio-ccw.c
->>> @@ -47,6 +47,7 @@
->>>   #include "migration/blocker.h"
->>>   #include "qapi/visitor.h"
->>>   #include "hw/s390x/cpu-topology.h"
->>> +#include CONFIG_DEVICES
->>>   static Error *pv_mig_blocker;
->>> @@ -603,6 +604,8 @@ static void s390_nmi(NMIState *n, int cpu_index, 
->>> Error **errp)
->>>       s390_cpu_restart(S390_CPU(cs));
->>>   }
->>> +#ifdef CONFIG_S390X_LEGACY_CPUS
->>> +
->>>   static ram_addr_t s390_fixup_ram_size(ram_addr_t sz)
->>>   {
->>>       /* same logic as in sclp.c */
->>> @@ -623,6 +626,8 @@ static ram_addr_t s390_fixup_ram_size(ram_addr_t sz)
->>>       return newsz;
->>>   }
->>> +#endif
->>> +
->>>   static inline bool machine_get_aes_key_wrap(Object *obj, Error **errp)
->>>   {
->>>       S390CcwMachineState *ms = S390_CCW_MACHINE(obj);
->>> @@ -989,6 +994,8 @@ static void 
->>> ccw_machine_6_1_class_options(MachineClass *mc)
->>>   }
->>>   DEFINE_CCW_MACHINE(6_1, "6.1", false);
->>> +#ifdef CONFIG_S390X_LEGACY_CPUS
->>> +
->>>   static void ccw_machine_6_0_instance_options(MachineState *machine)
->>>   {
->>>       static const S390FeatInit qemu_cpu_feat = { 
->>> S390_FEAT_LIST_QEMU_V6_0 };
->>
->> Should we deprecate machines up to v6.0?
-> 
-> I'm still hoping that Daniel will be able to get his auto-deprecation 
-> patches merged in this cycle - then we shouldn't derive from that, I think.
+This RFC patch set tries to fix the issue of
+https://gitlab.com/qemu-project/qemu/-/issues/2137.
 
-OK.
+In this RFC, we added patches that
+1. Provide a fast path to direct access the host ram for some vector
+   load/store instructions (e.g. unmasked vector unit-stride load/store
+   instructions) and perform virtual address resolution once for the
+   entire vector at beginning of helper function. (Thanks for Richard
+   Henderson's suggestion)
+2. Replace the group elements load/store TCG ops by the group element
+   load/store flow in helper functions with some assumption (e.g. no
+   masking, continuous memory load/store, the endian of host and guest
+   architecture are the same). (Thanks for Richard Henderson's
+   suggestion)
+3. Try inline the vector load/store related functions that corresponding
+   most of the execution time.
 
-> By the way, what's up with your i440fx removal series? ... it would be 
-> good to get this finally merged now...?
+This version can improve the performance of the test case provided in
+https://gitlab.com/qemu-project/qemu/-/issues/2137#note_1757501369
+- QEMU user mode (vlen=512): from ~51.8 sec. to ~4.5 sec.
+- QEMU system mode (vlen=512): from ~125.6 sec to ~6.6 sec.
 
-Igor made some comments that I need to address before respining :/
+This RFC is tested with SPEC CPU2006 with test input.
+We will try to measure the performance on SPEC CPU2006 benchmarks.
+
+Series based on riscv-to-apply.next branch (commit d82f37f).
+
+Changes from v3:
+- patch 2
+    - Modify vext_cont_ldst_pages for corss-page checking
+- patch 3
+    - Modify vext_ldst_whole for vext_cont_ldst_pages
+
+Previous version:
+- v1: https://lore.kernel.org/all/20240215192823.729209-1-max.chou@sifive.com/
+- v2: https://lore.kernel.org/all/20240531174504.281461-1-max.chou@sifive.com/
+- v3: https://lore.kernel.org/all/20240613141906.1276105-1-max.chou@sifive.com/
+
+Max Chou (5):
+  accel/tcg: Avoid unnecessary call overhead from
+    qemu_plugin_vcpu_mem_cb
+  target/riscv: rvv: Provide a fast path using direct access to host ram
+    for unmasked unit-stride load/store
+  target/riscv: rvv: Provide a fast path using direct access to host ram
+    for unit-stride whole register load/store
+  target/riscv: rvv: Provide group continuous ld/st flow for unit-stride
+    ld/st instructions
+  target/riscv: Inline unit-stride ld/st and corresponding functions for
+    performance
+
+ accel/tcg/ldst_common.c.inc             |   8 +-
+ target/riscv/insn_trans/trans_rvv.c.inc |   3 +
+ target/riscv/vector_helper.c            | 854 +++++++++++++++++++-----
+ target/riscv/vector_internals.h         |  48 ++
+ 4 files changed, 745 insertions(+), 168 deletions(-)
+
+-- 
+2.34.1
+
 
