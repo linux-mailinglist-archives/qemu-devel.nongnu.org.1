@@ -2,85 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8C1590675D
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jun 2024 10:47:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A876D906739
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jun 2024 10:43:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sHg6c-0001YH-JT; Thu, 13 Jun 2024 04:46:52 -0400
+	id 1sHg24-0008Lo-Hw; Thu, 13 Jun 2024 04:42:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1sHg6R-0001Y0-SX
- for qemu-devel@nongnu.org; Thu, 13 Jun 2024 04:46:42 -0400
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sHg22-0008LR-Px
+ for qemu-devel@nongnu.org; Thu, 13 Jun 2024 04:42:06 -0400
+Received: from mail-lj1-x236.google.com ([2a00:1450:4864:20::236])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1sHg6P-0006kF-43
- for qemu-devel@nongnu.org; Thu, 13 Jun 2024 04:46:39 -0400
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-35e1fcd0c0fso657060f8f.0
- for <qemu-devel@nongnu.org>; Thu, 13 Jun 2024 01:46:36 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sHg20-0005wW-MI
+ for qemu-devel@nongnu.org; Thu, 13 Jun 2024 04:42:06 -0400
+Received: by mail-lj1-x236.google.com with SMTP id
+ 38308e7fff4ca-2eaafda3b5cso8142031fa.3
+ for <qemu-devel@nongnu.org>; Thu, 13 Jun 2024 01:42:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1718268395; x=1718873195; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to
- :references:user-agent:subject:cc:to:from:date:from:to:cc:subject
- :date:message-id:reply-to;
- bh=FMSlVwRCDPbsieYEYVIGAiP75H/g8EUlPmOhTqo+iuY=;
- b=ig4naBKl3De9dq40J3mJ32evwR9NmicO7u3W8cKkkhzRJf3oz03Kr4Qrs2Ui8HiAlW
- 29uKJeGEmHfQr6m83HilufiRAzaWT0QCZO6S1PcKl8XIB1S1iSQHVOyf39LpH6fF3HgU
- l6Gmw6yI40Dk5jNvwWyJ8EJbSJnn4mE+cKZG2R9kGnTtIt53Hd6IEQwCGR6hl5Q4EJzr
- cqGrb6eGidmyOrxyrF0cK7fy89aTJD0isGbaMSRxi4yyx+fofpbqi9Vd9XdwIZ0y0OJp
- d9uufw/6hUpt6aNTc388U/IB8+kgsbv81gIW5/0Rw/VWDHQStIw01n8nPfb+JDLFiTqa
- ydFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718268395; x=1718873195;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to
- :references:user-agent:subject:cc:to:from:date:x-gm-message-state
+ d=linaro.org; s=google; t=1718268122; x=1718872922; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=FMSlVwRCDPbsieYEYVIGAiP75H/g8EUlPmOhTqo+iuY=;
- b=dc8aZQod2BwuVLht7GhHKwPvQNiOePfg6yXb770vGp/AnUnuDjQesKUAq3L7IhMhKf
- rbybf/pDQGFq9cP+PR5F+e0KDSwJchUiu64et+fYy7OjK4/JPtu/EEIEBAXjMbs41G6h
- Ylsx0KlinCR6/JIErqefUc8+ARC7HWeL4qvxhPo1YHVdXc4Wj/0YG02kva2C+u9dqs1S
- 8Smnbg6YYGOmDMsvxn0yGEtm0fgFzidsFWQm7zCgSTeG/84H4Pss46QgTeVApGQxPnmp
- vmmr03xkVtRjWEStwDS1g7ddWLMchiOKj7cHJPYRbDpqrO3KdgYLsuzNgpaMQwnHsQh/
- 5Ckw==
-X-Gm-Message-State: AOJu0Yx7iw8ZGYwgqBEhZeCUdvubY7l5vcMXf0oXK7dclswr8IUkCK4k
- 3dkl6KPm3HA+2j5VfgqINNue0q0eJ9jmMTXhQ70ItsiEoPablwX0WlHjoR0y48k=
-X-Google-Smtp-Source: AGHT+IH03dDfrq+8McBUuNBclJw3CHQRWtxUflkq2KxRtXFNy7hKBMAvi165HUS+69uiisccFLEZAg==
-X-Received: by 2002:a5d:6d87:0:b0:35f:18be:2275 with SMTP id
- ffacd0b85a97d-35fdf779da7mr3950689f8f.6.1718268395056; 
- Thu, 13 Jun 2024 01:46:35 -0700 (PDT)
-Received: from meli-email.org (adsl-105.37.6.1.tellas.gr. [37.6.1.105])
+ bh=TBBYI4Z1ffe5PmxZgsGFv6Z2Up/NWIII1ukQdHVgO34=;
+ b=mq+BBeOw/SabKH+mrVHAr0xq9u8bUL9Vb3m7Xma9eHPSfDjzuvv4oGM+yYS8J2O0Lp
+ X3HAGSmV9CTrY5zJ9wnXKfW6QEV5gmu5m4RLNFQ/NxrezlBttDnDi7ezdlZW5xR2cN/o
+ Po/IqJVVQJEVZ/mnx2Gtw8gJoeYG8Ks6XK3dWZFrhbLhZszPW8ic6l6dbTNJvP54qjEo
+ tSmtKAx6k+bxkeZNjZgVu7mta4tyHNxGh0ZUXG4VQqGMufYhekrPmx36EJT2JMd3jJL6
+ jFOAKRvD3rueo/3MpYDw7HW8dQw/+8+6csG19Q5LPFGgUF8jjiNJmmlWiwMpvW44SCGu
+ EOGg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1718268122; x=1718872922;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=TBBYI4Z1ffe5PmxZgsGFv6Z2Up/NWIII1ukQdHVgO34=;
+ b=XGt/02nmyRYCBfq4EjyeJ2VFeF4bRqy0do/hxvb9DP6hEVfAdyHbYjrcPTBs22PkN8
+ q6B5kW3mpTKEb2ev/QP97oSi5vV+iHa6mrFtn1fdvpms5FE3pCArBOoXTrKbeLSDXyUj
+ uMR6J91wPOLENRQGgnso3OVsd7qbQw2lfHRlCikeMwVlnsNwhpr4xbDLsQ9fyGiJslMZ
+ 2a07xvZq1bCPcD9CO9lSB56THcWga9F0ehDJT338XcEG4N+Q/X+FsNv+X5E5PyL9Oefl
+ dJfAyYth1R7mlkDzW0dMXu+S5UX/0eTynkjvxHJIR9qQmmyY/DYKIX/R7iZVDRubnH5A
+ RgBw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXjQR2YtmquugcIuGPxuW+hszh8+SXI6g7S9tq0a7qQI+MsQvk7/UQ2LookzYhkSO5OSaY3XjCaocnPTuf9q1Xmn1VNRrc=
+X-Gm-Message-State: AOJu0YyeWVgGFJoe7s1SjeZW2CWQywsMwq6vUXTr/k8cnFiMAxGElK9l
+ xM04CzTmiMNxZTZ4y2FBfRMr9mzs79CK2Z6agjnpMD/YAmoQfNcVu0JtC9rRENQ=
+X-Google-Smtp-Source: AGHT+IHL0IhAGPUkUa1rEqF2KWWEnR9FHKJONGG42wvuQMf/nhtSJ93YnZzr3gCrWl9400gYJXPXww==
+X-Received: by 2002:a2e:954f:0:b0:2eb:ea9e:648c with SMTP id
+ 38308e7fff4ca-2ebfc948831mr23804071fa.31.1718268122222; 
+ Thu, 13 Jun 2024 01:42:02 -0700 (PDT)
+Received: from [192.168.69.100] ([176.176.148.226])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-36075093a29sm1031899f8f.12.2024.06.13.01.46.34
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 13 Jun 2024 01:46:34 -0700 (PDT)
-Date: Thu, 13 Jun 2024 11:41:38 +0300
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-To: Zhao Liu <zhao1.liu@intel.com>
-Cc: qemu-devel@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
- Mads Ynddal <mads@ynddal.dk>, Paolo Bonzini <pbonzini@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Alex Benn=?UTF-8?B?w6k=?= e <alex.bennee@linaro.org>,
- "Daniel P. Berrang=?UTF-8?B?w6k=?= " <berrange@redhat.com>,
- Marc-Andr=?UTF-8?B?w6kg?=Lureau <marcandre.lureau@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Philippe Mathieu-Daud=?UTF-8?B?w6kg?=<philmd@linaro.org>,
- Gustavo Romero <gustavo.romero@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: Re: [RFC PATCH v2 3/5] rust: add PL011 device model
-User-Agent: meli 0.8.6
-References: <rust-pl011-rfc-v2.git.manos.pitsidianakis@linaro.org>
- <0fde311846394e9f7633be5d72cc30b25587d7a1.1718101832.git.manos.pitsidianakis@linaro.org>
- <ZmquNSnnVSdOe0Z3@intel.com>
-In-Reply-To: <ZmquNSnnVSdOe0Z3@intel.com>
-Message-ID: <f0gdl.ugeo9rfbpd5e@linaro.org>
+ 5b1f17b1804b1-42286fe9263sm52479675e9.15.2024.06.13.01.42.00
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 13 Jun 2024 01:42:01 -0700 (PDT)
+Message-ID: <57d7f1ae-e499-4859-a74e-53ba29ba0be3@linaro.org>
+Date: Thu, 13 Jun 2024 10:41:59 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 21/32] hw/sd: Add mmc switch function support
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, qemu-devel@nongnu.org
+Cc: Bin Meng <bin.meng@windriver.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Lucien Murray-Pitts <lucienmp.qemu@gmail.com>,
+ Sai Pavan Boddu <sai.pavan.boddu@xilinx.com>,
+ "Edgar E . Iglesias" <edgar.iglesias@xilinx.com>
+References: <20230703132509.2474225-1-clg@kaod.org>
+ <20230703132509.2474225-22-clg@kaod.org>
+ <d9a20624-1813-4a29-b819-1de3961cc3cf@linaro.org>
+ <4d1777d6-0195-4ecb-a85f-09964268533d@kaod.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <4d1777d6-0195-4ecb-a85f-09964268533d@kaod.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset=utf-8; format=flowed
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wr1-x433.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::236;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x236.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,140 +100,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello Zhao :)
+On 13/6/24 09:44, Cédric Le Goater wrote:
+> On 6/13/24 12:49 AM, Philippe Mathieu-Daudé wrote:
+>> On 3/7/23 15:24, Cédric Le Goater wrote:
+>>> From: Sai Pavan Boddu <sai.pavan.boddu@xilinx.com>
+>>>
+>>> switch operation in mmc cards, updated the ext_csd register to
+>>> request changes in card operations. Here we implement similar
+>>> sequence but requests are mostly dummy and make no change.
+>>>
+>>> Implement SWITCH_ERROR if the write operation offset goes beyond length
+>>> of ext_csd.
+>>>
+>>> Signed-off-by: Sai Pavan Boddu <sai.pavan.boddu@xilinx.com>
+>>> Signed-off-by: Edgar E. Iglesias <edgar.iglesias@xilinx.com>
+>>> [ clg: - ported on SDProto framework ]
+>>> Signed-off-by: Cédric Le Goater <clg@kaod.org>
+>>> ---
+>>>   hw/sd/sd.c | 52 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+>>>   1 file changed, 52 insertions(+)
+>>
+>>
+>>> +static void mmc_function_switch(SDState *sd, uint32_t arg)
+>>> +{
+>>> +    uint32_t access = extract32(arg, 24, 2);
+>>> +    uint32_t index = extract32(arg, 16, 8);
+>>> +    uint32_t value = extract32(arg, 8, 8);
+>>> +    uint8_t b = sd->ext_csd[index];
+>>
+>> This field is added in the next patch :)
+>>
+>> ../../hw/sd/sd.c:927:21: error: no member named 'ext_csd' in 'struct 
+>> SDState'
+>>      uint8_t b = sd->ext_csd[index];
+>>                  ~~  ^
+>> ../../hw/sd/sd.c:949:9: error: no member named 'ext_csd' in 'struct 
+>> SDState'
+>>      sd->ext_csd[index] = b;
+>>      ~~  ^
+>>
+>> No need to respin, as I'm integrating your work.
+> 
+> 
+> Ah good !
+> 
+> There are 3 main parts :
+> 
+>    * Base eMMC support:
+>      hw/sd: Basis for eMMC support
+>      hw/sd: Add emmc_cmd_SEND_OP_CMD() handler
+>      hw/sd: Add emmc_cmd_ALL_SEND_CID() handler
+>      hw/sd: Add emmc_cmd_SET_RELATIVE_ADDR() handler
+>      hw/sd: Add emmc_cmd_APP_CMD() handler
+>      hw/sd: add emmc_cmd_SEND_TUNING_BLOCK() handler
+>      hw/sd: Add CMD21 tuning sequence
+>      hw/sd: Add mmc switch function support
+>      hw/sd: Add emmc_cmd_SEND_EXT_CSD() handler
+> 
+ >      hw/sd: Fix SET_BLOCK_COUNT command argument
+ >      hw/sd: Update CMD1 definition for MMC
 
-On Thu, 13 Jun 2024 11:30, Zhao Liu <zhao1.liu@intel.com> wrote:
->On Tue, Jun 11, 2024 at 01:33:32PM +0300, Manos Pitsidianakis wrote:
->> Date: Tue, 11 Jun 2024 13:33:32 +0300
->> From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
->> Subject: [RFC PATCH v2 3/5] rust: add PL011 device model
->> X-Mailer: git-send-email 2.44.0
->> 
->> This commit adds a re-implementation of hw/char/pl011.c in Rust.
->> 
->> It uses generated Rust bindings (produced by `ninja
->> aarch64-softmmu-generated.rs`) to
->> register itself as a QOM type/class.
->> 
->> How to build:
->> 
->> 1. Make sure rust, cargo and bindgen (cargo install bindgen-cli) are
->>    installed
->> 2. Configure a QEMU build with:
->>    --enable-system --target-list=aarch64-softmmu --enable-with-rust
->> 3. Launching a VM with qemu-system-aarch64 should use the Rust version
->>    of the pl011 device (unless it is not set up so in hw/arm/virt.c; the
->>    type of the UART device is hardcoded).
->> 
->>    To confirm, inspect `info qom-tree` in the monitor and look for an
->>    `x-pl011-rust` device.
->> 
->> Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
->> ---
->
->Hi Manos,
->
->Thanks for your example!
->
->> diff --git a/rust/pl011/Cargo.toml b/rust/pl011/Cargo.toml
->> new file mode 100644
->> index 0000000000..db74f2b59f
->> --- /dev/null
->> +++ b/rust/pl011/Cargo.toml
->> @@ -0,0 +1,66 @@
->
->...
->
->> +[lints]
->> +[lints.rustdoc]
->> +broken_intra_doc_links = "deny"
->> +redundant_explicit_links = "deny"
->> +[lints.clippy]
->> +# lint groups
->> +correctness = { level = "deny", priority = -1 }
->> +suspicious = { level = "deny", priority = -1 }
->> +complexity = { level = "deny", priority = -1 }
->> +perf = { level = "deny", priority = -1 }
->> +cargo = { level = "deny", priority = -1 }
->> +nursery = { level = "deny", priority = -1 }
->> +style = { level = "deny", priority = -1 }
->> +# restriction group
->> +dbg_macro = "deny"
->> +rc_buffer = "deny"
->> +as_underscore = "deny"
->> +assertions_on_result_states = "deny"
->> +# pedantic group
->> +doc_markdown = "deny"
->> +expect_fun_call = "deny"
->> +borrow_as_ptr = "deny"
->> +case_sensitive_file_extension_comparisons = "deny"
->> +cast_lossless = "deny"
->> +cast_ptr_alignment = "allow"
->> +large_futures = "deny"
->> +waker_clone_wake = "deny"
->> +unused_enumerate_index = "deny"
->> +unnecessary_fallible_conversions = "deny"
->> +struct_field_names = "deny"
->> +manual_hash_one = "deny"
->> +into_iter_without_iter = "deny"
->> +option_if_let_else = "deny"
->> +missing_const_for_fn = "deny"
->> +significant_drop_tightening = "deny"
->> +multiple_crate_versions = "deny"
->> +significant_drop_in_scrutinee = "deny"
->> +cognitive_complexity = "deny"
->> +missing_safety_doc = "allow"
->
->...
->
->> diff --git a/rust/pl011/rustfmt.toml b/rust/pl011/rustfmt.toml
->> new file mode 120000
->> index 0000000000..39f97b043b
->> --- /dev/null
->> +++ b/rust/pl011/rustfmt.toml
->> @@ -0,0 +1 @@
->> +../rustfmt.toml
->
->...
->
->> diff --git a/rust/rustfmt.toml b/rust/rustfmt.toml
->> new file mode 100644
->> index 0000000000..ebecb99fe0
->> --- /dev/null
->> +++ b/rust/rustfmt.toml
->> @@ -0,0 +1,7 @@
->> +edition = "2021"
->> +format_generated_files = false
->> +format_code_in_doc_comments = true
->> +format_strings = true
->> +imports_granularity = "Crate"
->> +group_imports = "StdExternalCrate"
->> +wrap_comments = true
->> 
->
->About the Rust style, inspired from the discussion on my previous
->simpletrace-rust [1], it looks like people prefer the default rust style
->and use the default check without custom configurations.
->
->More style requirements are also an open, especially for unstable ones,
->and it would be better to split this part into a separate patch, so that
->the discussion about style doesn't overshadow the focus on your example.
->
->[1]: https://lore.kernel.org/qemu-devel/ZlnBGwk29Ds9FjUA@redhat.com/
->
+I am focusing on these for now and should include them
+in the next SD pull request, but I'll repost them with
+more patches to be reviewed first.
 
-I had read that discussion and had that in mind. There's no need to 
-worry about format inconsistencies; these options are unstable  -nightly 
-only- format options and they don't affect the default rust style (they 
-actually follow it). If you run a stable cargo fmt you will see the code 
-won't change (but might complain that these settings are nightly only).
+>    * Boot area support
+>      hw/sd: Support boot area in emmc image
+>      hw/sd: Subtract bootarea size from blk
+>      hw/sd: Add boot config support
 
-What they do is extra work on top of the default style. If anything ends 
-up incompatible with stable I agree it must be removed, there's no sense 
-in having a custom Rust style when the defaults are so reasonable.
+I haven't studied them yet and plan to look at them
+after mentioned repost. I'll try to also include them
+in the PR.
 
-To sum it up, the style is essentially the default one, so there's no 
-problem here!
+>    * Aspeed eMMC support :
+>      hw/arm/aspeed: Add eMMC device
+>      hw/arm/aspeed: Load eMMC first boot area as a boot rom
+>      hw/arm/aspeed: Set boot device to emmc
+>      aspeed: Set bootconfig
+>      aspeed: Introduce a 'boot-emmc' property for AST2600 based machines
 
-Manos
+Once my PR posted I'll review them and let you merge them.
+Then I'll invite you a beer at the next KVM forum :)
+
+> and I can rework the aspeed part if needed.
+> 
+> Here is an image you can try boot on :
+> 
+>    https://www.kaod.org/qemu/aspeed/rainier/mmc-p10bmc.qcow2
+> 
+> Run with :
+> 
+>    qemu-system-arm -M rainier-bmc -net nic,netdev=net0 -netdev 
+> user,id=net0 -drive 
+> file=./mmc-p10bmc.qcow2,format=qcow2,if=sd,id=sd2,index=2 -nographic 
+> -serial mon:stdio
+> 
+> Thanks,
+> 
+> C.
+
 
