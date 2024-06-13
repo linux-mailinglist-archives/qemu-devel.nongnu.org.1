@@ -2,83 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EEA8906364
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jun 2024 07:17:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2801990636D
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jun 2024 07:27:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sHcq9-00052D-6V; Thu, 13 Jun 2024 01:17:37 -0400
+	id 1sHczA-0008Hb-GB; Thu, 13 Jun 2024 01:26:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1sHcq7-000522-OJ
- for qemu-devel@nongnu.org; Thu, 13 Jun 2024 01:17:35 -0400
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ id 1sHcz7-0008H8-Qg
+ for qemu-devel@nongnu.org; Thu, 13 Jun 2024 01:26:53 -0400
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1sHcq3-0003y7-NB
- for qemu-devel@nongnu.org; Thu, 13 Jun 2024 01:17:35 -0400
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-421bb51d81aso5311905e9.3
- for <qemu-devel@nongnu.org>; Wed, 12 Jun 2024 22:17:31 -0700 (PDT)
+ id 1sHcz5-0005Wm-MK
+ for qemu-devel@nongnu.org; Thu, 13 Jun 2024 01:26:53 -0400
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-35f27eed98aso608760f8f.2
+ for <qemu-devel@nongnu.org>; Wed, 12 Jun 2024 22:26:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1718255850; x=1718860650; darn=nongnu.org;
+ d=linaro.org; s=google; t=1718256410; x=1718861210; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:in-reply-to
  :references:user-agent:subject:cc:to:from:date:from:to:cc:subject
  :date:message-id:reply-to;
- bh=K8SgNh1nDkEGD8LRgiuvMKUwRwWKuQzAh0qghPT0lbs=;
- b=fb/a0sWATWsoUaDB9qFXxOIJWjqppuXdgks1hqy+QtomVdiOp4XDgjlZaAgH510h/8
- hrZ4eWT/WQ14I8Pv9xs8ZM525HEWc3fEqhs4RhPU5QmJvlk2NPwyEvkfQjYIHq5upkXQ
- UzNOUotInRtTxGHm+hxVHgCZOePuJdgS6SI4uZqfZYgdyHW3yVdze8LR2LamB15twzEe
- ca2SXaTQuYzhRJIqXXQl9xgaWjyEkEG8O5ufy1ljlUxa7+It2utDg2RyiF2utRHl1XTo
- frlDkrLU1d1FQgZSVOsVDP6A22HsKfpjmjKehRmwk2CeJGPGx54I+nS2eq11r66Nni/i
- W0cw==
+ bh=yobwlrOkHR9+DqmoMVp71TUqw6XdoejQY6Yh/RxW3Io=;
+ b=s2clC5KXku8YZKXVUqw7NCWFoEYD+mnwxf7jLmyI0lR5uz70zorj7Zu82ICHWiOTte
+ c6X/2fnSvNfkXflSDIcphgCH2eLwXDnjZN94ichxQoKDYlUNuzUl2Vcn8wJyUkx3PxW1
+ eQQjyFe+GmylheS8dK4U6bYHdGQCzkH0mktqqBZsTnFkaENJ/+4nxjBWvc06Z8cWraJd
+ 6pM0BkIiqZR0zLyXHjaIyPGmA6nVYcpCUhON9PEMqUN9qcFhnMuxFPPuOx73eXNpKJIF
+ kzDq0Z0opSmlxIG2nbZHRVNmJXqbsJVpjxfkLI2lMDlpwMqWyzyiHkpAaZkXQI3s3Pip
+ tSnw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718255850; x=1718860650;
+ d=1e100.net; s=20230601; t=1718256410; x=1718861210;
  h=content-transfer-encoding:mime-version:message-id:in-reply-to
  :references:user-agent:subject:cc:to:from:date:x-gm-message-state
  :from:to:cc:subject:date:message-id:reply-to;
- bh=K8SgNh1nDkEGD8LRgiuvMKUwRwWKuQzAh0qghPT0lbs=;
- b=a/OBb8Z8KhgOSN2Cd1VuhfokwG74uPEUuJPxVP83AjhXI0xKT3hE59oaTYHicaMOam
- FJGEprmygEWl3nGt8Ex8iqnWrPVMsBOZhW6c4zOVPJ8kYbi4BKIxJPRSO6Ob7kbfYvZe
- mQZIlKngt7HC7Ip+dGuDWrXEU417RSaejDp9YBaf0ot5P0Vke2RXpSMknbrGh0v8bNEx
- SIork9Kg7cZzh4h1V2vhcl5leD1pFlmrrkEqoLlIeUuJdkgvrGngpc+3/+gvX8OGqejQ
- fTWAnWUi82umebUP1/EB4ITieKgKkk/tPRAY49BYqL/IuzAoPFCD0aBXi2VRn71/hmpp
- cBwA==
-X-Gm-Message-State: AOJu0Yyikd0tPAlnQhFgCzDq1KbcUWSEnyentWZsiu4aji5Mmvqscq5a
- 6lw99q7F2eCYVQSbUIXRVi4V9RbBFHzuIDWsxmuuYNZavf+L/MU4bEjNm96Bl9U=
-X-Google-Smtp-Source: AGHT+IFTqOFbZeRaYD7oKUiA9Kv2gAvnTWzUOY5OpzsIiCG9ABWbR/BG1xQj+0pnxdLHgnKgtc+Mow==
-X-Received: by 2002:a05:600c:4f4a:b0:421:1dde:cb5a with SMTP id
- 5b1f17b1804b1-422865c302cmr32139415e9.35.1718255849650; 
- Wed, 12 Jun 2024 22:17:29 -0700 (PDT)
-Received: from meli-email.org (adsl-33.109.242.225.tellas.gr. [109.242.225.33])
+ bh=yobwlrOkHR9+DqmoMVp71TUqw6XdoejQY6Yh/RxW3Io=;
+ b=UWcfwL1cB0JjV+vy9w0o3/m8fCz52LPZhhUZdm2Vifkk68TH8A3a0ie9VrXLcxM8PS
+ 9A1Uh2UaqeD/Ij/t6DslJBhhZULMYPnmWDoXq8bzyjA06ad2XT5XQ3Byg9YuyICkEYby
+ mAdLYUU3zsmrlQDj4WRcIIBrzabJ8tjiRPhqgp7vdL4xmd4oKEdFu9F7Y5+9AurR2tqF
+ 35T6xA85ykjIYd+CtGW98Kt4ub2yiKB9Xvk23GDmf2yHmM9JZcLNFFdsMaU7VUPjfP4b
+ RS0Rw9o/ULkn97El/VTmwLlS+p7YW6SwmuSazuOIdY0sx/4xIP88FT7OW8cLS1Na89Q5
+ 8Veg==
+X-Gm-Message-State: AOJu0YxPfyhBbWDU/HqFOO15QYeg8fimOT0lR82WFcu92TK+DoS1B2Fa
+ UBwfpQmxhFoPmWxeQE5l9lgOA5NyyQvfLCQB0Q/epeFRCK6j3LzZHXgr00JjAE8=
+X-Google-Smtp-Source: AGHT+IFY3lA5BqKYWj4i/bMnSOd3WuVytTq8IQ40FbIbhdHtfe4eWNytlDDp0ogdMnukytq+WiRoUw==
+X-Received: by 2002:a5d:66d1:0:b0:35f:1bc5:6127 with SMTP id
+ ffacd0b85a97d-35fdf79b273mr2416892f8f.23.1718256409741; 
+ Wed, 12 Jun 2024 22:26:49 -0700 (PDT)
+Received: from meli-email.org (adsl-105.37.6.1.tellas.gr. [37.6.1.105])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-422d0be1424sm14244815e9.12.2024.06.12.22.17.28
+ ffacd0b85a97d-360750f23cdsm597850f8f.77.2024.06.12.22.26.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 12 Jun 2024 22:17:29 -0700 (PDT)
-Date: Thu, 13 Jun 2024 08:13:01 +0300
+ Wed, 12 Jun 2024 22:26:49 -0700 (PDT)
+Date: Thu, 13 Jun 2024 08:20:57 +0300
 From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-To: "Daniel P. Berrang=?UTF-8?B?w6k=?= " <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
- Mads Ynddal <mads@ynddal.dk>, Paolo Bonzini <pbonzini@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Alex Benn=?UTF-8?B?w6k=?= e <alex.bennee@linaro.org>,
- Marc-Andr=?UTF-8?B?w6kg?=Lureau <marcandre.lureau@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Philippe Mathieu-Daud=?UTF-8?B?w6kg?=<philmd@linaro.org>,
- Zhao Liu <zhao1.liu@intel.com>, Gustavo Romero <gustavo.romero@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: Re: [RFC PATCH v2 0/5] Implement ARM PL011 in Rust
+To: Alex Benn=?UTF-8?B?w6k=?= e <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, Zheyu Ma <zheyuma97@gmail.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Eric Auger <eric.auger@redhat.com>,
+ Philippe Mathieu-Daud=?UTF-8?B?w6kg?=<philmd@linaro.org>
+Subject: Re: [PATCH v1] virtio-iommu: add error check before assert
 User-Agent: meli 0.8.6
-References: <rust-pl011-rfc-v2.git.manos.pitsidianakis@linaro.org>
- <ZmleLH1dQvPqPBAY@redhat.com>
-In-Reply-To: <ZmleLH1dQvPqPBAY@redhat.com>
-Message-ID: <f06p3.rb3vk3rb2kt4@linaro.org>
+References: <20240611122348.3613272-1-manos.pitsidianakis@linaro.org>
+ <87o786xzma.fsf@draig.linaro.org>
+In-Reply-To: <87o786xzma.fsf@draig.linaro.org>
+Message-ID: <f074n.97fxykl1pml@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset=utf-8; format=flowed
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,90 +95,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Good morning Daniel,
-
-On Wed, 12 Jun 2024 11:37, "Daniel P. Berrangé" <berrange@redhat.com> wrote:
->On Tue, Jun 11, 2024 at 01:33:29PM +0300, Manos Pitsidianakis wrote:
+On Wed, 12 Jun 2024 12:46, Alex Bennée <alex.bennee@linaro.org> wrote:
+>Manos Pitsidianakis <manos.pitsidianakis@linaro.org> writes:
 >
->> 
->>  .gitignore                     |   2 +
->>  .gitlab-ci.d/buildtest.yml     |  64 ++--
->>  MAINTAINERS                    |  13 +
->>  configure                      |  12 +
->>  hw/arm/virt.c                  |   4 +
->>  meson.build                    | 102 ++++++
->>  meson_options.txt              |   4 +
->>  rust/meson.build               |  93 ++++++
->>  rust/pl011/.cargo/config.toml  |   2 +
->>  rust/pl011/.gitignore          |   2 +
->>  rust/pl011/Cargo.lock          | 120 +++++++
->>  rust/pl011/Cargo.toml          |  66 ++++
->>  rust/pl011/README.md           |  42 +++
->>  rust/pl011/build.rs            |  44 +++
->>  rust/pl011/deny.toml           |  57 ++++
->>  rust/pl011/meson.build         |   7 +
->>  rust/pl011/rustfmt.toml        |   1 +
->>  rust/pl011/src/definitions.rs  |  95 ++++++
->>  rust/pl011/src/device.rs       | 531 ++++++++++++++++++++++++++++++
->>  rust/pl011/src/device_class.rs |  95 ++++++
->>  rust/pl011/src/generated.rs    |   5 +
->>  rust/pl011/src/lib.rs          | 581 +++++++++++++++++++++++++++++++++
->>  rust/pl011/src/memory_ops.rs   |  38 +++
->>  rust/rustfmt.toml              |   7 +
->>  rust/wrapper.h                 |  39 +++
->>  scripts/cargo_wrapper.py       | 221 +++++++++++++
->>  scripts/meson-buildoptions.sh  |   6 +
+>> A fuzzer case discovered by Zheyu Ma causes an assert failure.
+>>
+>> Add a check before the assert, and respond with an error before moving
+>> on to the next queue element.
+>>
+>> To reproduce the failure:
+>>
+>> cat << EOF | \
+>> qemu-system-x86_64 \
+>> -display none -machine accel=qtest -m 512M -machine q35 -nodefaults \
+>> -device virtio-iommu -qtest stdio
+>> outl 0xcf8 0x80000804
+>> outw 0xcfc 0x06
+>> outl 0xcf8 0x80000820
+>> outl 0xcfc 0xe0004000
+>> write 0x10000e 0x1 0x01
+>> write 0xe0004020 0x4 0x00001000
+>> write 0xe0004028 0x4 0x00101000
+>> write 0xe000401c 0x1 0x01
+>> write 0x106000 0x1 0x05
+>> write 0x100001 0x1 0x60
+>> write 0x100002 0x1 0x10
+>> write 0x100009 0x1 0x04
+>> write 0x10000c 0x1 0x01
+>> write 0x100018 0x1 0x04
+>> write 0x10001c 0x1 0x02
+>> write 0x101003 0x1 0x01
+>> write 0xe0007001 0x1 0x00
+>> EOF
+>>
+>> Reported-by: Zheyu Ma <zheyuma97@gmail.com>
+>> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2359
+>> Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+>> ---
+>>  hw/virtio/virtio-iommu.c | 12 ++++++++++++
+>>  1 file changed, 12 insertions(+)
+>>
+>> diff --git a/hw/virtio/virtio-iommu.c b/hw/virtio/virtio-iommu.c
+>> index 1326c6ec41..9b99def39f 100644
+>> --- a/hw/virtio/virtio-iommu.c
+>> +++ b/hw/virtio/virtio-iommu.c
+>> @@ -818,6 +818,18 @@ static void virtio_iommu_handle_command(VirtIODevice *vdev, VirtQueue *vq)
+>>  out:
+>>          sz = iov_from_buf(elem->in_sg, elem->in_num, 0,
+>>                            buf ? buf : &tail, output_size);
+>> +        if (unlikely(sz != output_size)) {
+>> +            tail.status = VIRTIO_IOMMU_S_DEVERR;
+>> +            /* We checked that tail can fit earlier */
+>> +            output_size = sizeof(tail);
+>> +            g_free(buf);
+>> +            buf = NULL;
 >
->Given the priority of getting the build system correct, what's missing
->here is updates/integration into our standard GitLab CI pipeline. If
->that can be shown to be working, that'll give alot more confidence in
->the overall solution.
+>Hmm this is a similar pattern I noticed yesterday in:
 >
->Ideally this should not require anything more than updating the docker
->container definitions to add in the rust toolchain, plus the appropriate
->std library build for the given target - we cross compiler for every
->arch we officially care about.
+>  Message-ID: <20240527133140.218300-2-frolov@swemel.ru>
+>  Date: Mon, 27 May 2024 16:31:41 +0300
+>  Subject: [PATCH] hw/net/virtio-net.c: fix crash in iov_copy()
+>  From: Dmitry Frolov <frolov@swemel.ru>
 >
->Most of our dockerfiles these days are managed by lcitool, and it has
->nearly sufficient support for cross compiling with the rust std library.
->So to start with, this series should modify tests/lcitool/projects/qemu.yml
->to add
->
->  - rust
->  - rust-std
->
->to the package list, and run 'make lcitool-refresh' to re-create the
->dockerfiles - see the docs/devel/testing.rst for more info about
->lcitool if needed.
->
->Assuming these 2 rust packages are in the container, I would then
->expect QEMU to just "do the right thing" when building this rust
->code. If it does not, then that's a sign of gaps that need closing.
->
->Getting rid of the need to use --rust-target-triple will be the
->immediate gap that needs fixing, as CI just passes --cross-prefix
->for cross-builds and expects everything to be set from that.
->
->The main gap we have is that for Windows I need to update lcitool
->to pull in the mingw std lib target for rust, which I something I
->missed when adding rust cross compiler support.
->
+>And I wonder if the same comment applies. Could we clean-up the loop
+>with autofrees to avoid making sure all the g_free() calls are properly
+>lined up?
 
 
-Thanks very much for the pointers! I will start dealing with this in the 
-next RFC version.
+The virtio-net.c patch adds an iov_size check for the virt queue element 
+to make sure it can fit a header len. In this function, 
+virtio_iommu_handle_command, a similar check is performed after popping 
+the element after the queue. That's what the "we checked that tail can 
+fit earlier" comment refers to.  Is this what you were referring to by 
+any chance?
 
-Re: the target triple, I agree 100%. In fact it wasn't my addition, I 
-kept it from the previous rust RFC patchset that was posted on the list 
-some years ago. It should be possible to construct the triplets 
-ourselves and let the user override if they want to as mentioned in 
-another email.
+>
+>> +            sz = iov_from_buf(elem->in_sg,
+>> +                              elem->in_num,
+>> +                              0,
+>> +                              &tail,
+>> +                              output_size);
+>> +        }
+>
+>Isn't this the next element? Could we continue; instead?
 
-The rust project has official Docker images, do you think it's something 
-we could use or is it unnecessary? 
+It's not, the element is popped on the beginning of the for loop. I 
+think we should not continue because we have written a VIRTIO error 
+value for the guest and have to give it back as a response.
 
-https://github.com/rust-lang/docker-rust
 
-Thanks,
-Manos
+>
+>>          assert(sz == output_size);
+>>  
+>>          virtqueue_push(vq, elem, sz);
+>>
+>> base-commit: 80e8f0602168f451a93e71cbb1d59e93d745e62e
+>
+>-- 
+>Alex Bennée
+>Virtualisation Tech Lead @ Linaro
 
