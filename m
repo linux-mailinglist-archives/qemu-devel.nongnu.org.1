@@ -2,54 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E466906D48
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jun 2024 13:59:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2AD89073BC
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jun 2024 15:30:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sHj6p-0004nw-6W; Thu, 13 Jun 2024 07:59:15 -0400
+	id 1sHkVz-0004cj-Jz; Thu, 13 Jun 2024 09:29:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <frolov@swemel.ru>)
- id 1sHj6m-0004mi-Cz; Thu, 13 Jun 2024 07:59:12 -0400
-Received: from mx.swemel.ru ([95.143.211.150])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <frolov@swemel.ru>)
- id 1sHj6k-0001QF-4s; Thu, 13 Jun 2024 07:59:12 -0400
-Message-ID: <ee6ee73c-9714-40b2-9a0a-3f835bcf0c95@swemel.ru>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=swemel.ru; s=mail;
- t=1718279942;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=oGrJtclYJDvgqE+5CVk0pr8PPkeG5i5OfPYP1FU9Cr8=;
- b=QP3J/tPlbgsRHA/DSImu8oo+O8uCNDgW9zaf14Pcv4m4UPrzDoMchp2WUIe1pb9T0TvRPo
- U5i9QG+t4F870QAYKf3DfrF9MY0O6/H8GmPS48n1+epL22ecvYF+yq6HBTn2mR69868xdx
- u/ZWSHwSkMYpfmXmKbY69cBLlNdoHQI=
-Date: Thu, 13 Jun 2024 14:59:02 +0300
-MIME-Version: 1.0
-Subject: Re: [PATCH] tests/qtest/fuzz/virtio_net_fuzz.c: fix
- virtio_net_fuzz_multi
-Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
-Cc: alxndr@bu.edu, sdl.qemu@linuxtesting.org,
- QEMU Trivial <qemu-trivial@nongnu.org>, Jason Wang <jasowang@redhat.com>
-References: <20240523102813.396750-2-frolov@swemel.ru>
- <2982b9c8-1325-4ca7-9e91-b1a94178c9d9@redhat.com>
-From: =?UTF-8?B?0JTQvNC40YLRgNC40Lkg0KTRgNC+0LvQvtCy?= <frolov@swemel.ru>
-In-Reply-To: <2982b9c8-1325-4ca7-9e91-b1a94178c9d9@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=95.143.211.150; envelope-from=frolov@swemel.ru;
- helo=mx.swemel.ru
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ (Exim 4.90_1) (envelope-from <xiangwencheng@dayudpu.com>)
+ id 1sHeJj-0001MT-Qz
+ for qemu-devel@nongnu.org; Thu, 13 Jun 2024 02:52:15 -0400
+Received: from va-1-16.ptr.blmpb.com ([209.127.230.16])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <xiangwencheng@dayudpu.com>)
+ id 1sHeJd-0003J3-27
+ for qemu-devel@nongnu.org; Thu, 13 Jun 2024 02:52:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=s1; d=dayudpu-com.20200927.dkim.feishu.cn; t=1718261515;
+ h=from:subject:mime-version:from:date:message-id:subject:to:cc:
+ reply-to:content-type:mime-version:in-reply-to:message-id;
+ bh=P49yGcNT0MCnPT2bpjKgFMHgiI0ZB1XEpIXUNLmlRo0=;
+ b=3F8VHDEsHUUK/fV+nZdQ+2BmicJpqwh8G4T9JkeQ7r5l15rr3aK0t0EAjA3inn0i0u7vej
+ 5PqGhsWU2lcdUXxXb3w3Ieik+W2Mv44P8asWngQZ4G4mY8tACm0TThfSHssMshhHYCi/HO
+ oEvzFh0cE02xV80aRLzbW31YXjjxJw+pqo5oakHKk20GTAuY95fkPdfMVSjDmB1l9Zxt5U
+ 7+6nWjOH7wxOw9tFJMY5m+MNE3lBPfLxhpMUzZbPmMwa24O/3aR9Ug+AQ/A8pSwRAhvX1w
+ 8OChI2pycxRuRFX/YI6zrbeTrDHLaHJdgHwG0qrtzpHfWjVVinnfT/TGsfCWMw==
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Message-Id: <20240613065150.3100-1-xiangwencheng@dayudpu.com>
+X-Mailer: git-send-email 2.30.0
+Received: from localhost.localdomain ([117.133.51.44]) by smtp.feishu.cn with
+ ESMTPS; Thu, 13 Jun 2024 14:51:54 +0800
+X-Original-From: xiangwencheng@dayudpu.com
+To: <qemu-devel@nongnu.org>
+From: =?utf-8?q?=E9=A1=B9=E6=96=87=E6=88=90?= <xiangwencheng@dayudpu.com>
+Subject: [PATCH] vhost-user: Skip unnecessary duplicated
+ VHOST_USER_SET_LOG_BASE requests
+X-Lms-Return-Path: <lba+2666a970b+30c3b6+nongnu.org+xiangwencheng@dayudpu.com>
+Cc: <mst@redhat.com>, "BillXiang" <xiangwencheng@dayudpu.com>
+Date: Thu, 13 Jun 2024 14:51:50 +0800
+Mime-Version: 1.0
+Received-SPF: pass client-ip=209.127.230.16;
+ envelope-from=xiangwencheng@dayudpu.com; helo=va-1-16.ptr.blmpb.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, MSGID_FROM_MTA_HEADER=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Thu, 13 Jun 2024 09:29:14 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,43 +67,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+From: BillXiang <xiangwencheng@dayudpu.com>
 
+The VHOST_USER_SET_LOG_BASE requests should be categorized into
+non-vring specific messages, and should be sent only once.
+If send more than once, dpdk will munmap old log_addr which may has been used and cause segmentation fault.
 
-On 13.06.2024 13:08, Thomas Huth wrote:
-> On 23/05/2024 12.28, Dmitry Frolov wrote:
->> If QTestState was already CLOSED due to error, calling 
->> qtest_clock_step()
->> afterwards makes no sense and only raises false-crash with message:
->> "assertion timer != NULL failed".
->>
->> Signed-off-by: Dmitry Frolov <frolov@swemel.ru>
->> ---
->>   tests/qtest/fuzz/virtio_net_fuzz.c | 3 +++
->>   1 file changed, 3 insertions(+)
->>
->> diff --git a/tests/qtest/fuzz/virtio_net_fuzz.c 
->> b/tests/qtest/fuzz/virtio_net_fuzz.c
->> index e239875e3b..2f57a8ddd8 100644
->> --- a/tests/qtest/fuzz/virtio_net_fuzz.c
->> +++ b/tests/qtest/fuzz/virtio_net_fuzz.c
->> @@ -81,6 +81,9 @@ static void virtio_net_fuzz_multi(QTestState *s,
->>           /* Run the main loop */
->>           qtest_clock_step(s, 100);
->>           flush_events(s);
->> +        if (!qtest_probe_child(s)) {
->> +            return;
->> +        }
->
-> According to your patch description, it rather sounds like the check 
-> should be done before the qtest_clock_step() ? ... or where does the 
-> QTestState get closed? During flush_events() ?
-To my understanding, the main loop is executed during flush_events(), 
-where an error may occur. This behavior is legit and should not produce 
-any crash report.
-Without the check, the test continues to wait on used descriptors, and 
-finally fails with message: "assertion timer != NULL failed".
-Thus, any invalid input data produces a meaningless crash report.
->  Thomas
->
+Signed-off-by: BillXiang <xiangwencheng@dayudpu.com>
+---
+ hw/virtio/vhost-user.c | 1 +
+ 1 file changed, 1 insertion(+)
 
+diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
+index cdf9af4a4b..41e34edd49 100644
+--- a/hw/virtio/vhost-user.c
++++ b/hw/virtio/vhost-user.c
+@@ -371,6 +371,7 @@ static bool vhost_user_per_device_request(VhostUserRequest request)
+     case VHOST_USER_RESET_DEVICE:
+     case VHOST_USER_ADD_MEM_REG:
+     case VHOST_USER_REM_MEM_REG:
++    case VHOST_USER_SET_LOG_BASE:
+         return true;
+     default:
+         return false;
+-- 
+2.30.0
 
