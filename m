@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDFF290750A
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jun 2024 16:20:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27B3B90750D
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jun 2024 16:20:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sHlId-0000IE-4B; Thu, 13 Jun 2024 10:19:35 -0400
+	id 1sHlIe-0000Kk-OF; Thu, 13 Jun 2024 10:19:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
- id 1sHlIa-0000GV-1N
- for qemu-devel@nongnu.org; Thu, 13 Jun 2024 10:19:32 -0400
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ id 1sHlIc-0000J9-KA
+ for qemu-devel@nongnu.org; Thu, 13 Jun 2024 10:19:34 -0400
+Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
- id 1sHlIX-0003eY-Hf
- for qemu-devel@nongnu.org; Thu, 13 Jun 2024 10:19:31 -0400
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-1f44b441b08so9353645ad.0
- for <qemu-devel@nongnu.org>; Thu, 13 Jun 2024 07:19:29 -0700 (PDT)
+ id 1sHlIa-0003gC-UK
+ for qemu-devel@nongnu.org; Thu, 13 Jun 2024 10:19:34 -0400
+Received: by mail-pl1-x630.google.com with SMTP id
+ d9443c01a7336-1f70131063cso10527965ad.2
+ for <qemu-devel@nongnu.org>; Thu, 13 Jun 2024 07:19:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1718288368; x=1718893168; darn=nongnu.org;
+ d=sifive.com; s=google; t=1718288371; x=1718893171; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=0t/vM91+T27b2ItOvv7gvzbpNEbYUWQGcMzSk8/eXH0=;
- b=ESWxfWuVNrPIqOiDnbrs5jzodi5LuYmuNQ8XGp2E2ZP09bMPOT6tTa79crlHsE/L9I
- AVKtZNSTusRQyhu+jffKxQPThJoxwiRfYVckZC7SBb3ii0fp6JVoD2kkFocwMlU3jKCo
- Tx53/RW7X/AhuAThnhcbUUVSvB9qinrX4qD+R7yG54EZ5YRfY5wVFkb59s0xFtX7Nt7s
- zPmGgYO3XkrDgvuI4apR6lpV2UUMLNn3RL1FDekefz0NLDiPbg5SOq896S/I/uJKrcpq
- kLaNRGmcQrD1VPepK8yWzfx+2sruumW6TUde48dZO3LmHcvY0QvHHfEENllD6V+Czr79
- 5ejA==
+ bh=oaOaaoMmlyje8Yi3g2JX3kO1iEufFu1UTGhlSxPfEi8=;
+ b=BXUH4f7pCPV5ORvQIwND5KBbsQW7iiXimzaQPCYfzpaAwXoNw6ktnXkI2ThLZcp3e5
+ DMLHE1qa+AxJu66Apz2nmRArWSmsoSLrlo17w+aOIQs/eSemNJFNCXVkD5B//CehN94D
+ ACxk9/JDwt38jj3krmhT8Pxfdftv+bCUEvUblOgER9GTTwRAQOOLa/uvds4bi2aVRVNZ
+ UvgCEeDQivmlzg/RFiXfQeQnpGzIOBfGWP4FLo6F4zll7zi5h8FmrfRYlK8gdg2BDDvC
+ Qqz7+48HlFYcbj+4FuM4prR70NdnrDo/V0oTYcTy3owYznt/7ou9W7R5K80pCtxuyMa6
+ N3tQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718288368; x=1718893168;
+ d=1e100.net; s=20230601; t=1718288371; x=1718893171;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0t/vM91+T27b2ItOvv7gvzbpNEbYUWQGcMzSk8/eXH0=;
- b=X0IO21eUrrmA6jtoRBc9fHpNjQViwkBM6pBtQUFAau95MGt3DZ0E9+MrPCzyxXegBI
- tPT4y4/Ac8Xe4Xk/fyeVMakk/68guWx3RUER/wRs1e3q4IQap/czCQJAaJkmnJK65tMZ
- foZbrEVPk318LCG3nXVOHwVhGeAkeh0RNAU9sxlasSJAimAZM7B4uSIndvbNmNVNTbzZ
- C7RyJpgM2mo8Ic8F6IKAndlsl7JrD916ViY2Jgqg+OP44kyjnmqJQ91LNgqR0CqOvuTb
- 1Oxly569jO+NsG6u904s9gbmsvcd7ztdp4Ao9oMSMGCXYn8fm4wc6ganmBeXvB4AZtT0
- pXiA==
-X-Gm-Message-State: AOJu0YxC9leNwXH7NCCOhNPCK8b/JOS5Mn0pclx1FRayd8qJWmDZHkWm
- 05zqjLu1MYIi7YegOsojUKoG2N/TX1K32fXlxIaYFe64SDyFERx8SEuyrfMc69BpZhAN9Nau6Z1
- 089lAX+uU6YJnFgUmx764W+MHROaJpwKETaSEbyjHByt6SLio+AfOjeLIuAMT0u/Swvd1pzACBb
- pQ/P2NucT6DcR37rzl3G4dKNLwX3fUkopT4XLu6A==
-X-Google-Smtp-Source: AGHT+IHTc7SkCHacsADXbEx9P5Jfok/j+Ul9NpfoqGJDsqNmRmezeu/FSSocddUD0wTZ5H1uWhD5qg==
-X-Received: by 2002:a17:902:ced0:b0:1f8:44f8:a384 with SMTP id
- d9443c01a7336-1f844f8a5aamr43848675ad.30.1718288367822; 
- Thu, 13 Jun 2024 07:19:27 -0700 (PDT)
+ bh=oaOaaoMmlyje8Yi3g2JX3kO1iEufFu1UTGhlSxPfEi8=;
+ b=TN3kMZ7p354FAkRSrBzWdigbPeXbafmmZKylCT1TZ311ldf5dh2uGKztRXYUePp37Q
+ +V9MRGw6kP973o0+u0q8azJx9XYDIVjT1xxuQ58fvYS8Prb4Ak/1CzlirtYMAhrZaQZg
+ P/KUe07YPEt38UVUmAFzGoqVNvOac+Qy/1HDrifO+UTz7nWIadMrOK/H+Sx4kiNFQeM6
+ nwuuCFwCa7SpfkBAR2neKVn9mdkkThPCPt022kmfkXq/76IPiD7YA424M7L32jERBdif
+ V1+jEMyml0m9Y8HjfOVOICirUeRFs6BcZj1fkeJGpKtHNItK81gHQyU3XHInF0DO+ipa
+ 7nFA==
+X-Gm-Message-State: AOJu0Yws1s0FHEv//DPKbCYhLrXLBzXeW/iZrXIwuST3Qsmo6z8MrdwY
+ IoKx1IV4JLPuupxQVPpsF5BDSnAw4flEdW6rAcPZZO6rEnXzFSEm6USkT3lwm2jrjNzRWYi+NDx
+ UL6yh+/sbEppislppAUH+/8PI3ftRwuhQCbaavjanJp02h3XnOzTUwKoFMc/8k2stE8XFUKEfWa
+ W4zOksCDYSK5veJNCubpdhZZEhBPvNkxD8NqkPvw==
+X-Google-Smtp-Source: AGHT+IFb068M+3tGjZBVSOt48c82I/e4QkTdKcx/eWMOAvHzhk3dZqkQ1V+tWEOwKFGawG8kclytpQ==
+X-Received: by 2002:a17:902:d4cb:b0:1f7:3763:5ffb with SMTP id
+ d9443c01a7336-1f83b74d134mr52952515ad.59.1718288371270; 
+ Thu, 13 Jun 2024 07:19:31 -0700 (PDT)
 Received: from duncan.localdomain (114-35-142-126.hinet-ip.hinet.net.
  [114.35.142.126]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1f855f2fe6dsm14386975ad.257.2024.06.13.07.19.25
+ d9443c01a7336-1f855f2fe6dsm14386975ad.257.2024.06.13.07.19.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 13 Jun 2024 07:19:27 -0700 (PDT)
+ Thu, 13 Jun 2024 07:19:31 -0700 (PDT)
 From: Max Chou <max.chou@sifive.com>
 To: qemu-devel@nongnu.org,
 	qemu-riscv@nongnu.org
@@ -67,17 +67,17 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  Weiwei Li <liwei1518@gmail.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Max Chou <max.chou@sifive.com>
-Subject: [RFC PATCH v3 4/5] target/riscv: rvv: Provide group continuous ld/st
- flow for unit-stride ld/st instructions
-Date: Thu, 13 Jun 2024 22:19:05 +0800
-Message-Id: <20240613141906.1276105-5-max.chou@sifive.com>
+Subject: [RFC PATCH v3 5/5] target/riscv: Inline unit-stride ld/st and
+ corresponding functions for performance
+Date: Thu, 13 Jun 2024 22:19:06 +0800
+Message-Id: <20240613141906.1276105-6-max.chou@sifive.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240613141906.1276105-1-max.chou@sifive.com>
 References: <20240613141906.1276105-1-max.chou@sifive.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=max.chou@sifive.com; helo=mail-pl1-x635.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
+ envelope-from=max.chou@sifive.com; helo=mail-pl1-x630.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,257 +100,112 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The vector unmasked unit-stride and whole register load/store
-instructions will load/store continuous memory. If the endian of both
-the host and guest architecture are the same, then we can group the
-element load/store to load/store more data at a time.
+In the vector unit-stride load/store helper functions. the vext_ldst_us
+& vext_ldst_whole functions corresponding most of the execution time.
+Inline the functions can avoid the function call overhead to improve the
+helper function performance.
 
 Signed-off-by: Max Chou <max.chou@sifive.com>
 ---
- target/riscv/vector_helper.c | 160 +++++++++++++++++++++++++----------
- 1 file changed, 117 insertions(+), 43 deletions(-)
+ target/riscv/vector_helper.c | 64 +++++++++++++++++++-----------------
+ 1 file changed, 34 insertions(+), 30 deletions(-)
 
 diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
-index b34d10b1b5d..09c9b231c3f 100644
+index 09c9b231c3f..4a21064a366 100644
 --- a/target/riscv/vector_helper.c
 +++ b/target/riscv/vector_helper.c
-@@ -450,6 +450,69 @@ GEN_VEXT_ST_ELEM(ste_h, uint16_t, H2, stw)
- GEN_VEXT_ST_ELEM(ste_w, uint32_t, H4, stl)
- GEN_VEXT_ST_ELEM(ste_d, uint64_t, H8, stq)
+@@ -408,20 +408,22 @@ typedef void vext_ldst_elem_fn_tlb(CPURISCVState *env, abi_ptr addr,
+                                    uint32_t idx, void *vd, uintptr_t retaddr);
+ typedef void vext_ldst_elem_fn_host(void *vd, uint32_t idx, void *host);
  
-+static inline uint32_t
-+vext_group_ldst_host(CPURISCVState *env, void *vd, uint32_t byte_end,
-+                     uint32_t byte_offset, void *host, uint32_t esz,
-+                     bool is_load)
-+{
-+    uint32_t group_size;
-+    static vext_ldst_elem_fn_host * const fns[2][4] = {
-+        /* Store */
-+        { ste_b_host, ste_h_host, ste_w_host, ste_d_host },
-+        /* Load */
-+        { lde_b_host, lde_h_host, lde_w_host, lde_d_host }
-+    };
-+    vext_ldst_elem_fn_host *fn;
-+
-+    if (byte_offset + 8 < byte_end) {
-+        group_size = MO_64;
-+    } else if (byte_offset + 4 < byte_end) {
-+        group_size = MO_32;
-+    } else if (byte_offset + 2 < byte_end) {
-+        group_size = MO_16;
-+    } else {
-+        group_size = MO_8;
-+    }
-+
-+    fn = fns[is_load][group_size];
-+    fn(vd, byte_offset, host + byte_offset);
-+
-+    return 1 << group_size;
-+}
-+
-+static inline void
-+vext_continus_ldst_tlb(CPURISCVState *env, vext_ldst_elem_fn_tlb *ldst_tlb,
-+                       void *vd, uint32_t evl, target_ulong addr,
-+                       uint32_t reg_start, uintptr_t ra, uint32_t esz,
-+                       bool is_load)
-+{
-+    for (; reg_start < evl; reg_start++, addr += esz) {
-+        ldst_tlb(env, adjust_addr(env, addr), reg_start * esz, vd, ra);
-+    }
-+}
-+
-+static inline void
-+vext_continus_ldst_host(CPURISCVState *env, vext_ldst_elem_fn_host *ldst_host,
-+                        void *vd, uint32_t evl, uint32_t reg_start, void *host,
-+                        uint32_t esz, bool is_load)
-+{
-+#if TARGET_BIG_ENDIAN != HOST_BIG_ENDIAN
-+    for (; reg_start < evl; reg_start++) {
-+        uint32_t byte_off = reg_start * esz;
-+        ldst_host(vd, byte_off, host + byte_off);
-+    }
-+#else
-+    uint32_t group_byte;
-+    uint32_t byte_start = reg_start * esz;
-+    uint32_t byte_end = evl * esz;
-+    while (byte_start < byte_end) {
-+        group_byte = vext_group_ldst_host(env, vd, byte_end, byte_start, host,
-+                                          esz, is_load);
-+        byte_start += group_byte;
-+    }
-+#endif
-+}
-+
- static void vext_set_tail_elems_1s(target_ulong vl, void *vd,
-                                    uint32_t desc, uint32_t nf,
-                                    uint32_t esz, uint32_t max_elems)
-@@ -548,6 +611,7 @@ vext_ldst_us(void *vd, target_ulong base, CPURISCVState *env, uint32_t desc,
-              uint32_t evl, uintptr_t ra, bool is_load)
- {
-     RVVContLdSt info;
-+    target_ulong addr;
-     void *host;
-     int flags;
-     intptr_t reg_start, reg_last;
-@@ -580,13 +644,19 @@ vext_ldst_us(void *vd, target_ulong base, CPURISCVState *env, uint32_t desc,
-         }
-         reg_last += 1;
+-#define GEN_VEXT_LD_ELEM(NAME, ETYPE, H, LDSUF)                         \
+-static void NAME##_tlb(CPURISCVState *env, abi_ptr addr,                \
+-                       uint32_t byte_off, void *vd, uintptr_t retaddr)  \
+-{                                                                       \
+-    uint8_t *reg = ((uint8_t *)vd + byte_off);                          \
+-    ETYPE *cur = ((ETYPE *)reg);                                        \
+-    *cur = cpu_##LDSUF##_data_ra(env, addr, retaddr);                   \
+-}                                                                       \
+-                                                                        \
+-static void NAME##_host(void *vd, uint32_t byte_off, void *host)        \
+-{                                                                       \
+-    ETYPE val = LDSUF##_p(host);                                        \
+-    uint8_t *reg = (uint8_t *)(vd + byte_off);                          \
+-    *(ETYPE *)(reg) = val;                                              \
++#define GEN_VEXT_LD_ELEM(NAME, ETYPE, H, LDSUF)                 \
++static inline QEMU_ALWAYS_INLINE                                \
++void NAME##_tlb(CPURISCVState *env, abi_ptr addr,               \
++                uint32_t byte_off, void *vd, uintptr_t retaddr) \
++{                                                               \
++    uint8_t *reg = ((uint8_t *)vd + byte_off);                  \
++    ETYPE *cur = ((ETYPE *)reg);                                \
++    *cur = cpu_##LDSUF##_data_ra(env, addr, retaddr);           \
++}                                                               \
++                                                                \
++static inline QEMU_ALWAYS_INLINE                                \
++void NAME##_host(void *vd, uint32_t byte_off, void *host)       \
++{                                                               \
++    ETYPE val = LDSUF##_p(host);                                \
++    uint8_t *reg = (uint8_t *)(vd + byte_off);                  \
++    *(ETYPE *)(reg) = val;                                      \
+ }
  
--        for (i = reg_start; i < reg_last; ++i) {
--            k = 0;
--            while (k < nf) {
--                target_ulong addr = base + ((i * nf + k) << log2_esz);
--                ldst_tlb(env, adjust_addr(env, addr),
--                         (i + k * max_elems) << log2_esz, vd, ra);
--                k++;
-+        if (nf == 1) {
-+            addr = base + reg_start * esz;
-+            vext_continus_ldst_tlb(env, ldst_tlb, vd, reg_last, addr,
-+                                   reg_start, ra, esz, is_load);
-+        } else {
-+            for (i = reg_start; i < reg_last; ++i) {
-+                k = 0;
-+                while (k < nf) {
-+                    addr = base + ((i * nf + k) * esz);
-+                    ldst_tlb(env, adjust_addr(env, addr),
-+                             (i + k * max_elems) << log2_esz, vd, ra);
-+                    k++;
-+                }
-             }
-         }
+ GEN_VEXT_LD_ELEM(lde_b, uint8_t,  H1, ldub)
+@@ -429,20 +431,22 @@ GEN_VEXT_LD_ELEM(lde_h, uint16_t, H2, lduw)
+ GEN_VEXT_LD_ELEM(lde_w, uint32_t, H4, ldl)
+ GEN_VEXT_LD_ELEM(lde_d, uint64_t, H8, ldq)
  
-@@ -600,12 +670,17 @@ vext_ldst_us(void *vd, target_ulong base, CPURISCVState *env, uint32_t desc,
-     reg_last = info.reg_idx_last[0] + 1;
-     host = info.page[0].host;
+-#define GEN_VEXT_ST_ELEM(NAME, ETYPE, H, STSUF)                         \
+-static void NAME##_tlb(CPURISCVState *env, abi_ptr addr,                \
+-                       uint32_t byte_off, void *vd, uintptr_t retaddr)  \
+-{                                                                       \
+-    uint8_t *reg = ((uint8_t *)vd + byte_off);                          \
+-    ETYPE data = *((ETYPE *)reg);                                       \
+-    cpu_##STSUF##_data_ra(env, addr, data, retaddr);                    \
+-}                                                                       \
+-                                                                        \
+-static void NAME##_host(void *vd, uint32_t byte_off, void *host)        \
+-{                                                                       \
+-    uint8_t *reg = ((uint8_t *)vd + byte_off);                          \
+-    ETYPE val = *(ETYPE *)(reg);                                        \
+-    STSUF##_p(host, val);                                               \
++#define GEN_VEXT_ST_ELEM(NAME, ETYPE, H, STSUF)                 \
++static inline QEMU_ALWAYS_INLINE                                \
++void NAME##_tlb(CPURISCVState *env, abi_ptr addr,               \
++                uint32_t byte_off, void *vd, uintptr_t retaddr) \
++{                                                               \
++    uint8_t *reg = ((uint8_t *)vd + byte_off);                  \
++    ETYPE data = *((ETYPE *)reg);                               \
++    cpu_##STSUF##_data_ra(env, addr, data, retaddr);            \
++}                                                               \
++                                                                \
++static inline QEMU_ALWAYS_INLINE                                \
++void NAME##_host(void *vd, uint32_t byte_off, void *host)       \
++{                                                               \
++    uint8_t *reg = ((uint8_t *)vd + byte_off);                  \
++    ETYPE val = *(ETYPE *)(reg);                                \
++    STSUF##_p(host, val);                                       \
+ }
  
--    for (i = reg_start; i < reg_last; ++i) {
--        k = 0;
--        while (k < nf) {
--            ldst_host(vd, (i + k * max_elems) << log2_esz,
--                      host + ((i * nf + k) << log2_esz));
--            k++;
-+    if (nf == 1) {
-+        vext_continus_ldst_host(env, ldst_host, vd, reg_last, reg_start, host,
-+                                esz, is_load);
-+    } else {
-+        for (i = reg_start; i < reg_last; ++i) {
-+            k = 0;
-+            while (k < nf) {
-+                ldst_host(vd, (i + k * max_elems) << log2_esz,
-+                          host + ((i * nf + k) * esz));
-+                k++;
-+            }
-         }
-     }
+ GEN_VEXT_ST_ELEM(ste_b, uint8_t,  H1, stb)
+@@ -604,7 +608,7 @@ GEN_VEXT_ST_STRIDE(vsse64_v, int64_t, ste_d_tlb)
+  */
  
-@@ -617,7 +692,7 @@ vext_ldst_us(void *vd, target_ulong base, CPURISCVState *env, uint32_t desc,
-         reg_start = info.reg_idx_split;
-         k = 0;
-         while (k < nf) {
--            target_ulong addr = base + ((reg_start * nf + k) << log2_esz);
-+            addr = base + ((reg_start * nf + k) << log2_esz);
-             ldst_tlb(env, adjust_addr(env, addr),
-                      (reg_start + k * max_elems) << log2_esz, vd, ra);
-             k++;
-@@ -629,12 +704,17 @@ vext_ldst_us(void *vd, target_ulong base, CPURISCVState *env, uint32_t desc,
-         reg_last = info.reg_idx_last[1] + 1;
-         host = info.page[1].host;
- 
--        for (i = reg_start; i < reg_last; ++i) {
--            k = 0;
--            while (k < nf) {
--                ldst_host(vd, (i + k * max_elems) << log2_esz,
--                          host + ((i * nf + k) << log2_esz));
--                k++;
-+        if (nf == 1) {
-+            vext_continus_ldst_host(env, ldst_host, vd, reg_last, reg_start,
-+                                    host, esz, is_load);
-+        } else {
-+            for (i = reg_start; i < reg_last; ++i) {
-+                k = 0;
-+                while (k < nf) {
-+                    ldst_host(vd, (i + k * max_elems) << log2_esz,
-+                              host + ((i * nf + k) << log2_esz));
-+                    k++;
-+                }
-             }
-         }
-     }
-@@ -967,20 +1047,17 @@ vext_ldst_whole(void *vd, target_ulong base, CPURISCVState *env, uint32_t desc,
-              * load/store rest of elements of current segment pointed by vstart
-              */
-             addr = base + (reg_start << log2_esz);
--            for (; reg_start < evl; reg_start++, addr += esz) {
--                ldst_tlb(env, adjust_addr(env, addr), reg_start << log2_esz,
--                         vd, ra);
--            }
-+            vext_continus_ldst_tlb(env, ldst_tlb, vd, evl, addr, reg_start, ra,
-+                                   esz, is_load);
-             idx_nf++;
-         }
- 
-         /* load/store elements for rest of segments */
-         evl = nf * max_elems;
-         addr = base + (reg_start << log2_esz);
--        for (; reg_start < evl; reg_start++, addr += esz) {
--            ldst_tlb(env, adjust_addr(env, addr), reg_start << log2_esz, vd,
--                     ra);
--        }
-+        reg_start = idx_nf * max_elems;
-+        vext_continus_ldst_tlb(env, ldst_tlb, vd, evl, addr, reg_start, ra,
-+                               esz, is_load);
- 
-         env->vstart = 0;
-         return;
-@@ -996,17 +1073,16 @@ vext_ldst_whole(void *vd, target_ulong base, CPURISCVState *env, uint32_t desc,
- 
-     if (off) {
-         /* load/store rest of elements of current segment pointed by vstart */
--        for (; reg_start < evl; reg_start++) {
--            ldst_host(vd, reg_start << log2_esz,
--                      host + (reg_start << log2_esz));
--        }
-+        vext_continus_ldst_host(env, ldst_host, vd, evl, reg_start, host, esz,
-+                                is_load);
-         idx_nf++;
-     }
- 
-     /* load/store elements for rest of segments */
--    for (; reg_start < reg_last; reg_start++) {
--        ldst_host(vd, reg_start << log2_esz, host + (reg_start << log2_esz));
--    }
-+    evl = reg_last;
-+    reg_start = idx_nf * max_elems;
-+    vext_continus_ldst_host(env, ldst_host, vd, evl, reg_start, host, esz,
-+                            is_load);
- 
-     /*
-      * Use the slow path to manage the cross-page misalignment.
-@@ -1030,18 +1106,16 @@ vext_ldst_whole(void *vd, target_ulong base, CPURISCVState *env, uint32_t desc,
-             /*
-              * load/store rest of elements of current segment pointed by vstart
-              */
--            for (; reg_start < evl; reg_start++) {
--                ldst_host(vd, reg_start << log2_esz,
--                          host + (reg_start << log2_esz));
--            }
-+            vext_continus_ldst_host(env, ldst_host, vd, evl, reg_start, host,
-+                                    esz, is_load);
-             idx_nf++;
-         }
- 
-         /* load/store elements for rest of segments */
--        for (; reg_start < reg_last; reg_start++) {
--            ldst_host(vd, reg_start << log2_esz,
--                      host + (reg_start << log2_esz));
--        }
-+        evl = reg_last;
-+        reg_start = idx_nf * max_elems;
-+        vext_continus_ldst_host(env, ldst_host, vd, evl, reg_start, host, esz,
-+                                is_load);
-     }
- 
-     env->vstart = 0;
+ /* unmasked unit-stride load and store operation */
+-static void
++static inline QEMU_ALWAYS_INLINE void
+ vext_ldst_us(void *vd, target_ulong base, CPURISCVState *env, uint32_t desc,
+              vext_ldst_elem_fn_tlb *ldst_tlb,
+              vext_ldst_elem_fn_host *ldst_host, uint32_t log2_esz,
+@@ -1006,7 +1010,7 @@ GEN_VEXT_LDFF(vle64ff_v, int64_t, lde_d_tlb)
+ /*
+  * load and store whole register instructions
+  */
+-static void
++static inline QEMU_ALWAYS_INLINE void
+ vext_ldst_whole(void *vd, target_ulong base, CPURISCVState *env, uint32_t desc,
+                 vext_ldst_elem_fn_tlb *ldst_tlb,
+                 vext_ldst_elem_fn_host *ldst_host, uint32_t log2_esz,
 -- 
 2.34.1
 
