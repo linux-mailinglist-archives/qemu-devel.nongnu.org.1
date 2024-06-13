@@ -2,30 +2,30 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FBAC907F93
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jun 2024 01:40:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C51E907F90
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jun 2024 01:40:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sHu1s-0005CS-Qk; Thu, 13 Jun 2024 19:38:52 -0400
+	id 1sHu2B-0005JY-NQ; Thu, 13 Jun 2024 19:39:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1sHu1l-00057j-97; Thu, 13 Jun 2024 19:38:45 -0400
+ id 1sHu27-0005Il-IL; Thu, 13 Jun 2024 19:39:07 -0400
 Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1sHu1h-0002zT-No; Thu, 13 Jun 2024 19:38:44 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.31])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4W0f4D540Wz6K6Bt;
- Fri, 14 Jun 2024 07:38:36 +0800 (CST)
+ id 1sHu25-00031Q-LD; Thu, 13 Jun 2024 19:39:07 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4W0dzJ075Cz6HJTn;
+ Fri, 14 Jun 2024 07:34:20 +0800 (CST)
 Received: from lhrpeml500001.china.huawei.com (unknown [7.191.163.213])
- by mail.maildlp.com (Postfix) with ESMTPS id 8C601140594;
- Fri, 14 Jun 2024 07:38:39 +0800 (CST)
+ by mail.maildlp.com (Postfix) with ESMTPS id 526FF140B63;
+ Fri, 14 Jun 2024 07:39:02 +0800 (CST)
 Received: from 00293818-MRGF.china.huawei.com (10.195.245.24) by
  lhrpeml500001.china.huawei.com (7.191.163.213) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Fri, 14 Jun 2024 00:38:17 +0100
+ 15.1.2507.39; Fri, 14 Jun 2024 00:38:39 +0100
 To: <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>, <mst@redhat.com>
 CC: <salil.mehta@huawei.com>, <maz@kernel.org>, <jean-philippe@linaro.org>,
  <jonathan.cameron@huawei.com>, <lpieralisi@kernel.org>,
@@ -42,10 +42,10 @@ CC: <salil.mehta@huawei.com>, <maz@kernel.org>, <jean-philippe@linaro.org>,
  <wangxiongfeng2@huawei.com>, <wangyanan55@huawei.com>,
  <jiakernel2@gmail.com>, <maobibo@loongson.cn>, <lixianglai@loongson.cn>,
  <shahuang@redhat.com>, <zhao1.liu@intel.com>, <linuxarm@huawei.com>
-Subject: [PATCH RFC V3 02/29] cpu-common: Add common CPU utility for possible
- vCPUs
-Date: Fri, 14 Jun 2024 00:36:12 +0100
-Message-ID: <20240613233639.202896-3-salil.mehta@huawei.com>
+Subject: [PATCH RFC V3 03/29] hw/arm/virt: Limit number of possible vCPUs for
+ unsupported Accel or GIC Type
+Date: Fri, 14 Jun 2024 00:36:13 +0100
+Message-ID: <20240613233639.202896-4-salil.mehta@huawei.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240613233639.202896-1-salil.mehta@huawei.com>
 References: <20240613233639.202896-1-salil.mehta@huawei.com>
@@ -80,141 +80,113 @@ From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch adds various utility functions that may be required to fetch or check
-the state of possible vCPUs. It also introduces the concept of *disabled* vCPUs,
-which are part of the *possible* vCPUs but are not enabled. This state will be
-used during machine initialization and later during the plugging or unplugging
-of vCPUs. We release the QOM CPU objects for all disabled vCPUs.
+If Virtual CPU Hotplug support does not exist on a particular Accel platform or
+ARM GIC version, we should limit the possible vCPUs to those available during
+boot time (i.e SMP CPUs) and explicitly disable Virtual CPU Hotplug support.
 
-Co-developed-by: Keqian Zhu <zhukeqian1@huawei.com>
-Signed-off-by: Keqian Zhu <zhukeqian1@huawei.com>
 Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
 ---
- cpu-common.c          | 31 +++++++++++++++++++++++++
- include/hw/core/cpu.h | 54 +++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 85 insertions(+)
+ hw/arm/virt.c | 66 +++++++++++++++++++++++++++++----------------------
+ 1 file changed, 38 insertions(+), 28 deletions(-)
 
-diff --git a/cpu-common.c b/cpu-common.c
-index ce78273af5..49d2a50835 100644
---- a/cpu-common.c
-+++ b/cpu-common.c
-@@ -24,6 +24,7 @@
- #include "sysemu/cpus.h"
- #include "qemu/lockable.h"
- #include "trace/trace-root.h"
-+#include "hw/boards.h"
+diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+index 11fc7fc318..3e1c4d2d2f 100644
+--- a/hw/arm/virt.c
++++ b/hw/arm/virt.c
+@@ -2082,8 +2082,6 @@ static void machvirt_init(MachineState *machine)
+     unsigned int smp_cpus = machine->smp.cpus;
+     unsigned int max_cpus = machine->smp.max_cpus;
  
- QemuMutex qemu_cpu_list_lock;
- static QemuCond exclusive_cond;
-@@ -107,6 +108,36 @@ void cpu_list_remove(CPUState *cpu)
-     cpu_list_generation_id++;
- }
+-    possible_cpus = mc->possible_cpu_arch_ids(machine);
+-
+     /*
+      * In accelerated mode, the memory map is computed earlier in kvm_type()
+      * to create a VM with the right number of IPA bits.
+@@ -2098,7 +2096,7 @@ static void machvirt_init(MachineState *machine)
+          * we are about to deal with. Once this is done, get rid of
+          * the object.
+          */
+-        cpuobj = object_new(possible_cpus->cpus[0].type);
++        cpuobj = object_new(machine->cpu_type);
+         armcpu = ARM_CPU(cpuobj);
  
-+CPUState *qemu_get_possible_cpu(int index)
-+{
-+    MachineState *ms = MACHINE(qdev_get_machine());
-+    const CPUArchIdList *possible_cpus = ms->possible_cpus;
-+
-+    assert((index >= 0) && (index < possible_cpus->len));
-+
-+    return CPU(possible_cpus->cpus[index].cpu);
-+}
-+
-+bool qemu_present_cpu(CPUState *cpu)
-+{
-+    return cpu;
-+}
-+
-+bool qemu_enabled_cpu(CPUState *cpu)
-+{
-+    return cpu && !cpu->disabled;
-+}
-+
-+uint64_t qemu_get_cpu_archid(int cpu_index)
-+{
-+    MachineState *ms = MACHINE(qdev_get_machine());
-+    const CPUArchIdList *possible_cpus = ms->possible_cpus;
-+
-+    assert((cpu_index >= 0) && (cpu_index < possible_cpus->len));
-+
-+    return possible_cpus->cpus[cpu_index].arch_id;
-+}
-+
- CPUState *qemu_get_cpu(int index)
- {
-     CPUState *cpu;
-diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index 60b160d0b4..60b4778da9 100644
---- a/include/hw/core/cpu.h
-+++ b/include/hw/core/cpu.h
-@@ -528,6 +528,18 @@ struct CPUState {
-     CPUPluginState *plugin_state;
- #endif
+         pa_bits = arm_pamax(armcpu);
+@@ -2113,6 +2111,43 @@ static void machvirt_init(MachineState *machine)
+      */
+     finalize_gic_version(vms);
  
 +    /*
-+     * Some architectures do not allow the *presence* of vCPUs to be changed
-+     * after the guest has booted, based on information specified by the
-+     * VMM/firmware via ACPI MADT at boot time. Thus, to enable vCPU hotplug on
-+     * these architectures, possible vCPUs can have a CPUState object in a
-+     * 'disabled' state or may not have a CPUState object at all. This is
-+     * possible when vCPU hotplug is supported, and vCPUs are
-+     * 'yet-to-be-plugged' in the QOM or have been hot-unplugged. By default,
-+     * every CPUState is enabled across all architectures.
++     * The maximum number of CPUs depends on the GIC version, or on how
++     * many redistributors we can fit into the memory map (which in turn
++     * depends on whether this is a GICv3 or v4).
 +     */
-+    bool disabled;
++    if (vms->gic_version == VIRT_GIC_VERSION_2) {
++        virt_max_cpus = GIC_NCPU;
++    } else {
++        virt_max_cpus = virt_redist_capacity(vms, VIRT_GIC_REDIST);
++        if (vms->highmem_redists) {
++            virt_max_cpus += virt_redist_capacity(vms, VIRT_HIGH_GIC_REDIST2);
++        }
++    }
 +
-     /* TODO Move common fields from CPUArchState here. */
-     int cpu_index;
-     int cluster_index;
-@@ -914,6 +926,48 @@ static inline bool cpu_in_exclusive_context(const CPUState *cpu)
-  */
- CPUState *qemu_get_cpu(int index);
++    if (tcg_enabled() || hvf_enabled() || qtest_enabled() ||
++        (vms->gic_version < VIRT_GIC_VERSION_3)) {
++        max_cpus = machine->smp.max_cpus = smp_cpus;
++        mc->has_hotpluggable_cpus = false;
++        if (vms->gic_version >= VIRT_GIC_VERSION_3) {
++            warn_report("cpu hotplug feature has been disabled");
++        }
++    }
++
++    if (max_cpus > virt_max_cpus) {
++        error_report("Number of SMP CPUs requested (%d) exceeds max CPUs "
++                     "supported by machine 'mach-virt' (%d)",
++                     max_cpus, virt_max_cpus);
++        if (vms->gic_version != VIRT_GIC_VERSION_2 && !vms->highmem_redists) {
++            error_printf("Try 'highmem-redists=on' for more CPUs\n");
++        }
++
++        exit(1);
++    }
++
++    /* uses smp.max_cpus to initialize all possible vCPUs */
++    possible_cpus = mc->possible_cpu_arch_ids(machine);
++
+     if (vms->secure) {
+         /*
+          * The Secure view of the world is the same as the NonSecure,
+@@ -2147,31 +2182,6 @@ static void machvirt_init(MachineState *machine)
+         vms->psci_conduit = QEMU_PSCI_CONDUIT_HVC;
+     }
  
-+/**
-+ * qemu_get_possible_cpu:
-+ * @index: The CPUState@cpu_index value of the CPU to obtain.
-+ *         Input index MUST be in range [0, Max Possible CPUs)
-+ *
-+ * If CPUState object exists,then it gets a CPU matching
-+ * @index in the possible CPU array.
-+ *
-+ * Returns: The possible CPU or %NULL if CPU does not exist.
-+ */
-+CPUState *qemu_get_possible_cpu(int index);
-+
-+/**
-+ * qemu_present_cpu:
-+ * @cpu: The vCPU to check
-+ *
-+ * Checks if the vCPU is amongst the present possible vcpus.
-+ *
-+ * Returns: True if it is present possible vCPU else false
-+ */
-+bool qemu_present_cpu(CPUState *cpu);
-+
-+/**
-+ * qemu_enabled_cpu:
-+ * @cpu: The vCPU to check
-+ *
-+ * Checks if the vCPU is enabled.
-+ *
-+ * Returns: True if it is 'enabled' else false
-+ */
-+bool qemu_enabled_cpu(CPUState *cpu);
-+
-+/**
-+ * qemu_get_cpu_archid:
-+ * @cpu_index: possible vCPU for which arch-id needs to be retreived
-+ *
-+ * Fetches the vCPU arch-id from the present possible vCPUs.
-+ *
-+ * Returns: arch-id of the possible vCPU
-+ */
-+uint64_t qemu_get_cpu_archid(int cpu_index);
-+
- /**
-  * cpu_exists:
-  * @id: Guest-exposed CPU ID to lookup.
+-    /*
+-     * The maximum number of CPUs depends on the GIC version, or on how
+-     * many redistributors we can fit into the memory map (which in turn
+-     * depends on whether this is a GICv3 or v4).
+-     */
+-    if (vms->gic_version == VIRT_GIC_VERSION_2) {
+-        virt_max_cpus = GIC_NCPU;
+-    } else {
+-        virt_max_cpus = virt_redist_capacity(vms, VIRT_GIC_REDIST);
+-        if (vms->highmem_redists) {
+-            virt_max_cpus += virt_redist_capacity(vms, VIRT_HIGH_GIC_REDIST2);
+-        }
+-    }
+-
+-    if (max_cpus > virt_max_cpus) {
+-        error_report("Number of SMP CPUs requested (%d) exceeds max CPUs "
+-                     "supported by machine 'mach-virt' (%d)",
+-                     max_cpus, virt_max_cpus);
+-        if (vms->gic_version != VIRT_GIC_VERSION_2 && !vms->highmem_redists) {
+-            error_printf("Try 'highmem-redists=on' for more CPUs\n");
+-        }
+-
+-        exit(1);
+-    }
+-
+     if (vms->secure && (kvm_enabled() || hvf_enabled())) {
+         error_report("mach-virt: %s does not support providing "
+                      "Security extensions (TrustZone) to the guest CPU",
 -- 
 2.34.1
 
