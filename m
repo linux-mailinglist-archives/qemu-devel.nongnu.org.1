@@ -2,80 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66721906484
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jun 2024 08:57:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B0AE906470
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jun 2024 08:52:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sHeOA-0002OW-A0; Thu, 13 Jun 2024 02:56:50 -0400
+	id 1sHeIq-00014S-2N; Thu, 13 Jun 2024 02:51:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1sHeNz-0002LH-MF
- for qemu-devel@nongnu.org; Thu, 13 Jun 2024 02:56:40 -0400
-Received: from mail-qk1-x72f.google.com ([2607:f8b0:4864:20::72f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1sHeNx-00045J-Fv
- for qemu-devel@nongnu.org; Thu, 13 Jun 2024 02:56:39 -0400
-Received: by mail-qk1-x72f.google.com with SMTP id
- af79cd13be357-797a7f9b52eso41387585a.2
- for <qemu-devel@nongnu.org>; Wed, 12 Jun 2024 23:56:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1718261796; x=1718866596; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=GTD52IR0wubc3Sdt6b1ZbOCffpjz6fWRvZ8uBXbwUEY=;
- b=K1f/2OHN1vMA8gLk7tB7pKmpUpG2zywmDWXp0rjxYZMnTWJ/pHFeyKCpaLyQqXHD0P
- ocVZ6x9uwRMXsUC2G6ECh9WlmJWi2CDsJ3I6hiPbwaNGh6qtYJRPq9MsYYol1o0vnpk0
- qeelJ2I7P8N46UUZM5wJ2MwquTQYN8niQLtFBIeF/T9E/sgNe3E9vusJShuTNdQqQD9/
- Q3ATr/U4GYi3ZtOeBwKOuDji40I/z69HXdIFEKVh2AHbFf/8lX9FIeiYeYzLC9+mTBtC
- q94MjZulTd6BQKjE+b4iTANOHY5+C30pj8Thee/ALzPjxOvcY48Dt0O4rpx7iJtcoXPC
- RdyQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718261796; x=1718866596;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=GTD52IR0wubc3Sdt6b1ZbOCffpjz6fWRvZ8uBXbwUEY=;
- b=XkkIUpRDM1VqoSuz0zxObEbqwO1PMg4c1zQ0HM52cqv37S6tvZMzFLqEBcecQF5qef
- QsQZDSO2DF8hUn6rx7xkG8hSQ7dZlO2RhyCLr0BL65iXE8HJUIJV3pA1UtLSN0n3xaoW
- fnkMilhHld2e9AsiiQS6P4S5lLe9ihRnY2NUbeVnALapcBxe9fxXLRTahPkkLyy/ptsn
- BhL0ACUsDOmzBGzVp4q7ZTncGckNjXgikdZ5GDfT8EOMmI6fMyQ8ec6zvZDXn2MAbufD
- NBb2nmxvlvYZAcOaEz7EVrfZDgGor6xzRlUwfFTTwzrA1r/QJb9IHsfQFpJQ3rbhrpsZ
- I2cw==
-X-Gm-Message-State: AOJu0Yx+7CRCruydbMB9XnYQyojjkQHrJ3kDN65ZDAjr4DDhuV+zDLj8
- 4xx20I+QikynXaBBVFY9xDPPgBi87J6yoGY47fWgojvUlLBk6iZ9NNABmRtv6BPieJdxYaY1TxY
- wM115LxckPl9OhNmQ36LDlx7k5+A=
-X-Google-Smtp-Source: AGHT+IHL4JsMlklrMUvQyzl+U/f3fLvwEeCMKt8yTpF+2NJkh0MMuphxhjDar4Py22+z13ySuhh5qmbMe9dyOVEFvyM=
-X-Received: by 2002:a05:620a:4042:b0:792:9482:a9a7 with SMTP id
- af79cd13be357-797f605d90amr371695385a.44.1718261795799; Wed, 12 Jun 2024
- 23:56:35 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sHeIn-00014K-Rm
+ for qemu-devel@nongnu.org; Thu, 13 Jun 2024 02:51:17 -0400
+Received: from mgamail.intel.com ([192.198.163.15])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sHeIk-0003Fi-ST
+ for qemu-devel@nongnu.org; Thu, 13 Jun 2024 02:51:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1718261475; x=1749797475;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=OqkYxmUOfBSzzH178ecuVkjIRH9iD616/PR4kw4x0iI=;
+ b=ECOnRKW6iT2C93TngyKuR/hO2TBIopJ9dnEQHEBjpW6SAfwCtUYMz2sC
+ mftfJx3co2P/EOPVwXb78aJnSsVhd2c+lYd3XBPnsd6dTIbHYD+5wewog
+ E3oZFLYsWkfS/t10ep8b1eZVLKaSbYHNbd+Uk9BzKSOY4mJkzt4G4Ny5K
+ g1mfZ0TuKi+KgtSSEb54y+YtcHX8xafo1Z+wDpUtfWpV/KSY+wp6roA9A
+ kIY7t8lxdpUUUNtxvIRVHUKbmtWfMUxaAgAP7YlTkdIwfbYoC1tKZjDcv
+ WFFCiiWIYHogOD9n09Ak9KinUrgi5wr/xrU/QFqcwXfkGymBmWWT4P0iR A==;
+X-CSE-ConnectionGUID: 29H3EtBjTPeFBqd+M8oz6w==
+X-CSE-MsgGUID: 2WdUA3xmTqSxnLNMgfQd8g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11101"; a="15230005"
+X-IronPort-AV: E=Sophos;i="6.08,234,1712646000"; d="scan'208";a="15230005"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Jun 2024 23:50:58 -0700
+X-CSE-ConnectionGUID: u7wbnEIlSLav0AoIrtpXEw==
+X-CSE-MsgGUID: GjJuT3mXT66W7daApdG84w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,234,1712646000"; d="scan'208";a="40106244"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by fmviesa010.fm.intel.com with ESMTP; 12 Jun 2024 23:50:56 -0700
+Date: Thu, 13 Jun 2024 15:06:25 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Babu Moger <babu.moger@amd.com>
+Cc: pbonzini@redhat.com, qemu-devel@nongnu.org, kvm@vger.kernel.org
+Subject: Re: [PATCH 2/4] i386/cpu: Add PerfMonV2 feature bit
+Message-ID: <Zmqace8eCFHPq8ZK@intel.com>
+References: <cover.1718218999.git.babu.moger@amd.com>
+ <6f83528b78d31eb2543aa09966e1d9bcfd7ec8a2.1718218999.git.babu.moger@amd.com>
 MIME-Version: 1.0
-References: <20240531185804.119557-1-dongwon.kim@intel.com>
- <CAJ+F1C+PG-Tf-ADFTgBGq5nvJSCEVhFW0Pk6a2Pf7gVurbJeuw@mail.gmail.com>
- <a89b283a-24e3-4117-b465-ab8d79252625@intel.com>
- <CAJ+F1CJ-4cWV81_YTit5jTEoY6FPTeu7u177pZzb61FhXw_j0Q@mail.gmail.com>
- <fa43009f-1292-49f5-bab0-618028c16045@intel.com>
- <CAJ+F1CLAJTZLHKa9_zVo=-GLRw8JHnzJT=G4fdLLsaS1sK2HUg@mail.gmail.com>
- <0fe76150-c347-40df-8d69-18a5d132d8bc@intel.com>
-In-Reply-To: <0fe76150-c347-40df-8d69-18a5d132d8bc@intel.com>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Thu, 13 Jun 2024 10:56:24 +0400
-Message-ID: <CAJ+F1CKsboFZ-fWUXrf5BSMKCY6boRAoTMVRLaHgGja2Eppx8g@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 0/2] ui/gtk: Introduce new param - Connectors
-To: "Kim, Dongwon" <dongwon.kim@intel.com>
-Cc: qemu-devel@nongnu.org
-Content-Type: multipart/alternative; boundary="000000000000f84d44061abfff83"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::72f;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-qk1-x72f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=gb2312
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <6f83528b78d31eb2543aa09966e1d9bcfd7ec8a2.1718218999.git.babu.moger@amd.com>
+Received-SPF: pass client-ip=192.198.163.15; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -45
+X-Spam_score: -4.6
+X-Spam_bar: ----
+X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.143,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,244 +81,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000f84d44061abfff83
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On Wed, Jun 12, 2024 at 02:12:18PM -0500, Babu Moger wrote:
+> Date: Wed, 12 Jun 2024 14:12:18 -0500
+> From: Babu Moger <babu.moger@amd.com>
+> Subject: [PATCH 2/4] i386/cpu: Add PerfMonV2 feature bit
+> X-Mailer: git-send-email 2.34.1
+> 
+> From: Sandipan Das <sandipan.das@amd.com>
+> 
+> CPUID leaf 0x80000022, i.e. ExtPerfMonAndDbg, advertises new performance
+> monitoring features for AMD processors. Bit 0 of EAX indicates support
+> for Performance Monitoring Version 2 (PerfMonV2) features. If found to
+> be set during PMU initialization, the EBX bits can be used to determine
+> the number of available counters for different PMUs. It also denotes the
+> availability of global control and status registers.
+> 
+> Add the required CPUID feature word and feature bit to allow guests to
+> make use of the PerfMonV2 features.
+> 
+> Signed-off-by: Sandipan Das <sandipan.das@amd.com>
+> Signed-off-by: Babu Moger <babu.moger@amd.com>
+> ---
+>  target/i386/cpu.c | 26 ++++++++++++++++++++++++++
+>  target/i386/cpu.h |  4 ++++
+>  2 files changed, 30 insertions(+)
+> 
+> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+> index 86a90b1405..7f1837cdc9 100644
+> --- a/target/i386/cpu.c
+> +++ b/target/i386/cpu.c
+> @@ -1228,6 +1228,22 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
+>          .tcg_features = 0,
+>          .unmigratable_flags = 0,
+>      },
+> +    [FEAT_8000_0022_EAX] = {
+> +        .type = CPUID_FEATURE_WORD,
+> +        .feat_names = {
+> +            "perfmon-v2", NULL, NULL, NULL,
+> +            NULL, NULL, NULL, NULL,
+> +            NULL, NULL, NULL, NULL,
+> +            NULL, NULL, NULL, NULL,
+> +            NULL, NULL, NULL, NULL,
+> +            NULL, NULL, NULL, NULL,
+> +            NULL, NULL, NULL, NULL,
+> +            NULL, NULL, NULL, NULL,
+> +        },
+> +        .cpuid = { .eax = 0x80000022, .reg = R_EAX, },
+> +        .tcg_features = 0,
+> +        .unmigratable_flags = 0,
+> +    },
+>      [FEAT_XSAVE] = {
+>          .type = CPUID_FEATURE_WORD,
+>          .feat_names = {
+> @@ -6998,6 +7014,16 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+>              *edx = 0;
+>          }
+>          break;
+> +    case 0x80000022:
+> +        *eax = *ebx = *ecx = *edx = 0;
+> +        /* AMD Extended Performance Monitoring and Debug */
+> +        if (kvm_enabled() && cpu->enable_pmu &&
+> +            (env->features[FEAT_8000_0022_EAX] & CPUID_8000_0022_EAX_PERFMON_V2)) {
+> +            *eax = CPUID_8000_0022_EAX_PERFMON_V2;
+> +            *ebx = kvm_arch_get_supported_cpuid(cs->kvm_state, index, count,
+> +                                                R_EBX) & 0xf;
 
-Hi
+Although only EAX[bit 0] and EBX[bits 0-3] are supported right now, I
+think it's better to use ¡°|=¡± rather than just override the
+original *eax and *ebx, which will prevent future mistakes or omissions.
 
-On Thu, Jun 13, 2024 at 3:34=E2=80=AFAM Kim, Dongwon <dongwon.kim@intel.com=
-> wrote:
+Otherwise,
 
-> On 6/11/2024 11:42 PM, Marc-Andr=C3=A9 Lureau wrote:
-> > Hi
-> >
-> > On Tue, Jun 11, 2024 at 10:28=E2=80=AFPM Kim, Dongwon <dongwon.kim@inte=
-l.com
-> > <mailto:dongwon.kim@intel.com>> wrote:
-> >
-> >     Hi Marc-Andr=C3=A9,
-> >
-> >     On 6/5/2024 12:26 AM, Marc-Andr=C3=A9 Lureau wrote:
-> >      > Hi
-> >      >
-> >      > On Tue, Jun 4, 2024 at 9:59=E2=80=AFPM Kim, Dongwon
-> >     <dongwon.kim@intel.com <mailto:dongwon.kim@intel.com>
-> >      > <mailto:dongwon.kim@intel.com <mailto:dongwon.kim@intel.com>>>
-> wrote:
-> >
-> >      > Xorg may not be going away soon, but it's used less and less. As
-> >     one of
-> >      > the developers, I am no longer running/testing it for a long
-> time. I
-> >      > wish we would just drop its support tbh.
-> >
-> >     There are features offered by Xorg that are not offered by Wayland
-> >     compositors and again, we have customers that rely on these feature=
-s.
-> >     One of them is the ability to position the window via
-> >     gtk_window_set_position(). There are strong arguments
-> >     made on either side when it comes to window positioning:
-> >
-> https://gitlab.freedesktop.org/wayland/wayland-protocols/-/merge_requests=
-/247
-> <
-> https://gitlab.freedesktop.org/wayland/wayland-protocols/-/merge_requests=
-/247
-> >
-> >
-> >     Until there is a way to do this with Wayland compositors, we have t=
-o
-> >     unfortunately rely on Gnome + Xorg.
-> >
-> >
-> > It's a smaller and smaller number of users. The potential/future users
-> > are greater if we focus on Wayland.
->
-> Right, but until Gtk + Wayland offers the same feature parity and
-> customization as that of Gtk + Xorg, there will be distros/users that
-> will keep it alive.
-> >
-> > Fwiw, GNOME (and RHEL) is set to drop Xorg support
-> > (https://gitlab.gnome.org/GNOME/gnome-session/-/merge_requests/98
-> > <https://gitlab.gnome.org/GNOME/gnome-session/-/merge_requests/98>)
->
-> Doesn't look like it is going to happen anytime soon given the massive
-> pushback.
->
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
-The plan is there, GNOME has made bold moves in the past. There is not much
-left in the TODO. But yes, it takes a bit longer than expected.
-
-
->
-> >
-> > Btw, there is a similar monitor-mapping functionality implemented in
-> > virt-viewer/remote-viewer:
-> > https://www.mankier.com/1/virt-viewer#Configuration
-> > <https://www.mankier.com/1/virt-viewer#Configuration>. Is this
-> something
-> > that those users could use instead?
->
-> It looks a bit similar and interesting but one difference is that our
-> feature uses monitor labels such as DP-1, HDMI-2 which is a bit more
-> intuitive. And, the other key difference is that our feature includes
->
-
-Intuitive, perhaps. Discoverable and portable?
-
-"hotplug" functionality where a Guest display/window is deeply tied to a
-> physical monitor to make it appear to the guest that it is dealing with
-> a real physical monitor.
->
-In other words, when the physical monitor is unplugged, the associated
-> guest display/window gets destroyed/hidden and gets recreated/shown when
-> the monitor is hotplugged again.
->
->
-Interesting case that could be added to virt-viewer if it's necessary.
-
->
-The subject is sufficiently complex that there is already additional
-documentation/specification in:
-https://gitlab.com/virt-viewer/virt-viewer/-/tree/master/docs?ref_type=3Dhe=
-ads
-
-Honestly, I don't support the idea of duplicating this effort in QEMU.
-
---=20
-Marc-Andr=C3=A9 Lureau
-
---000000000000f84d44061abfff83
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div dir=3D"ltr">Hi<br></div><br><div class=3D"gmail_quote=
-"><div dir=3D"ltr" class=3D"gmail_attr">On Thu, Jun 13, 2024 at 3:34=E2=80=
-=AFAM Kim, Dongwon &lt;<a href=3D"mailto:dongwon.kim@intel.com">dongwon.kim=
-@intel.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=
-=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding=
--left:1ex">On 6/11/2024 11:42 PM, Marc-Andr=C3=A9 Lureau wrote:<br>
-&gt; Hi<br>
-&gt; <br>
-&gt; On Tue, Jun 11, 2024 at 10:28=E2=80=AFPM Kim, Dongwon &lt;<a href=3D"m=
-ailto:dongwon.kim@intel.com" target=3D"_blank">dongwon.kim@intel.com</a> <b=
-r>
-&gt; &lt;mailto:<a href=3D"mailto:dongwon.kim@intel.com" target=3D"_blank">=
-dongwon.kim@intel.com</a>&gt;&gt; wrote:<br>
-&gt; <br>
-&gt;=C2=A0 =C2=A0 =C2=A0Hi Marc-Andr=C3=A9,<br>
-&gt; <br>
-&gt;=C2=A0 =C2=A0 =C2=A0On 6/5/2024 12:26 AM, Marc-Andr=C3=A9 Lureau wrote:=
-<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; Hi<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; On Tue, Jun 4, 2024 at 9:59=E2=80=AFPM Kim, D=
-ongwon<br>
-&gt;=C2=A0 =C2=A0 =C2=A0&lt;<a href=3D"mailto:dongwon.kim@intel.com" target=
-=3D"_blank">dongwon.kim@intel.com</a> &lt;mailto:<a href=3D"mailto:dongwon.=
-kim@intel.com" target=3D"_blank">dongwon.kim@intel.com</a>&gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; &lt;mailto:<a href=3D"mailto:dongwon.kim@inte=
-l.com" target=3D"_blank">dongwon.kim@intel.com</a> &lt;mailto:<a href=3D"ma=
-ilto:dongwon.kim@intel.com" target=3D"_blank">dongwon.kim@intel.com</a>&gt;=
-&gt;&gt; wrote:<br>
-&gt; <br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; Xorg may not be going away soon, but it&#39;s=
- used less and less. As<br>
-&gt;=C2=A0 =C2=A0 =C2=A0one of<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; the developers, I am no longer running/testin=
-g it for a long time. I<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; wish we would just drop its support tbh.<br>
-&gt; <br>
-&gt;=C2=A0 =C2=A0 =C2=A0There are features offered by Xorg that are not off=
-ered by Wayland<br>
-&gt;=C2=A0 =C2=A0 =C2=A0compositors and again, we have customers that rely =
-on these features.<br>
-&gt;=C2=A0 =C2=A0 =C2=A0One of them is the ability to position the window v=
-ia<br>
-&gt;=C2=A0 =C2=A0 =C2=A0gtk_window_set_position(). There are strong argumen=
-ts<br>
-&gt;=C2=A0 =C2=A0 =C2=A0made on either side when it comes to window positio=
-ning:<br>
-&gt;=C2=A0 =C2=A0 =C2=A0<a href=3D"https://gitlab.freedesktop.org/wayland/w=
-ayland-protocols/-/merge_requests/247" rel=3D"noreferrer" target=3D"_blank"=
->https://gitlab.freedesktop.org/wayland/wayland-protocols/-/merge_requests/=
-247</a> &lt;<a href=3D"https://gitlab.freedesktop.org/wayland/wayland-proto=
-cols/-/merge_requests/247" rel=3D"noreferrer" target=3D"_blank">https://git=
-lab.freedesktop.org/wayland/wayland-protocols/-/merge_requests/247</a>&gt;<=
-br>
-&gt; <br>
-&gt;=C2=A0 =C2=A0 =C2=A0Until there is a way to do this with Wayland compos=
-itors, we have to<br>
-&gt;=C2=A0 =C2=A0 =C2=A0unfortunately rely on Gnome + Xorg.<br>
-&gt; <br>
-&gt; <br>
-&gt; It&#39;s a smaller and smaller number of users. The potential/future u=
-sers <br>
-&gt; are greater if we focus on Wayland.<br>
-<br>
-Right, but until Gtk + Wayland offers the same feature parity and <br>
-customization as that of Gtk + Xorg, there will be distros/users that <br>
-will keep it alive.<br>
-&gt; <br>
-&gt; Fwiw, GNOME (and RHEL) is set to drop Xorg support <br>
-&gt; (<a href=3D"https://gitlab.gnome.org/GNOME/gnome-session/-/merge_reque=
-sts/98" rel=3D"noreferrer" target=3D"_blank">https://gitlab.gnome.org/GNOME=
-/gnome-session/-/merge_requests/98</a> <br>
-&gt; &lt;<a href=3D"https://gitlab.gnome.org/GNOME/gnome-session/-/merge_re=
-quests/98" rel=3D"noreferrer" target=3D"_blank">https://gitlab.gnome.org/GN=
-OME/gnome-session/-/merge_requests/98</a>&gt;)<br>
-<br>
-Doesn&#39;t look like it is going to happen anytime soon given the massive =
-<br>
-pushback.<br></blockquote><div><br></div><div>The plan is there, GNOME has =
-made bold moves in the past. There is not much left in the TODO. But yes, i=
-t takes a bit longer than expected.<br></div><div>=C2=A0<br></div><blockquo=
-te class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px =
-solid rgb(204,204,204);padding-left:1ex">
-<br>
-&gt; <br>
-&gt; Btw, there is a similar monitor-mapping functionality implemented in <=
-br>
-&gt; virt-viewer/remote-viewer: <br>
-&gt; <a href=3D"https://www.mankier.com/1/virt-viewer#Configuration" rel=3D=
-"noreferrer" target=3D"_blank">https://www.mankier.com/1/virt-viewer#Config=
-uration</a> <br>
-&gt; &lt;<a href=3D"https://www.mankier.com/1/virt-viewer#Configuration" re=
-l=3D"noreferrer" target=3D"_blank">https://www.mankier.com/1/virt-viewer#Co=
-nfiguration</a>&gt;. Is this something <br>
-&gt; that those users could use instead?<br>
-<br>
-It looks a bit similar and interesting but one difference is that our <br>
-feature uses monitor labels such as DP-1, HDMI-2 which is a bit more <br>
-intuitive. And, the other key difference is that our feature includes <br><=
-/blockquote><div><br></div><div>Intuitive, perhaps. Discoverable and portab=
-le? <br></div><div><br></div><blockquote class=3D"gmail_quote" style=3D"mar=
-gin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1=
-ex">
-&quot;hotplug&quot; functionality where a Guest display/window is deeply ti=
-ed to a<br>
-physical monitor to make it appear to the guest that it is dealing with <br=
->
-a real physical monitor.<br></blockquote><blockquote class=3D"gmail_quote" =
-style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);pa=
-dding-left:1ex">
-In other words, when the physical monitor is unplugged, the associated <br>
-guest display/window gets destroyed/hidden and gets recreated/shown when <b=
-r>
-the monitor is hotplugged again.<br>
-<br></blockquote><div><br></div><div><div>Interesting case that could be ad=
-ded to virt-viewer if it&#39;s necessary. <br></div><blockquote class=3D"gm=
-ail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,=
-204,204);padding-left:1ex">
-</blockquote>=C2=A0</div><div>The subject is sufficiently complex that ther=
-e is already additional documentation/specification in:</div><div><a href=
-=3D"https://gitlab.com/virt-viewer/virt-viewer/-/tree/master/docs?ref_type=
-=3Dheads">https://gitlab.com/virt-viewer/virt-viewer/-/tree/master/docs?ref=
-_type=3Dheads</a></div><div><br></div><div>Honestly, I don&#39;t support th=
-e idea of duplicating this effort in QEMU.<br></div><div><br></div></div><s=
-pan class=3D"gmail_signature_prefix">-- </span><br><div dir=3D"ltr" class=
-=3D"gmail_signature">Marc-Andr=C3=A9 Lureau<br></div></div>
-
---000000000000f84d44061abfff83--
 
