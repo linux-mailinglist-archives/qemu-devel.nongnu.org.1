@@ -2,114 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CCC19075E2
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jun 2024 16:59:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD5BB9075ED
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jun 2024 17:02:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sHlvG-0007jQ-0n; Thu, 13 Jun 2024 10:59:30 -0400
+	id 1sHlxX-0000rL-7D; Thu, 13 Jun 2024 11:01:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sHlvE-0007jG-HL
- for qemu-devel@nongnu.org; Thu, 13 Jun 2024 10:59:28 -0400
-Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sHlvC-0002zq-Nd
- for qemu-devel@nongnu.org; Thu, 13 Jun 2024 10:59:28 -0400
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1sHlxP-0000qy-M1
+ for qemu-devel@nongnu.org; Thu, 13 Jun 2024 11:01:44 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1sHlxN-0003aB-MA
+ for qemu-devel@nongnu.org; Thu, 13 Jun 2024 11:01:43 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1718290900;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=6v0AbF25kQFhvXxYRgfTPcRg0rb0aMvln0dyIZJL+zs=;
+ b=GFAZPQOQVcNd+WWJif8X8lp6LLmgS1qDp8HZSjRxaIN+XjG2HzFSiWCdci8o/tsL0ImWS5
+ W1enpM7zcbGgIuIzEmYtYGVNi/7RA7/eB+9+zGaNIo5vnvbf+6NmAadbo/Z4zmPqH41f/m
+ sNb5yla8lpQCv4OH/b0KxXszbS8aU4g=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-624-a210Q-X3OxirdNomf-EM_Q-1; Thu,
+ 13 Jun 2024 11:01:35 -0400
+X-MC-Unique: a210Q-X3OxirdNomf-EM_Q-1
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id D5F2B372DC;
- Thu, 13 Jun 2024 14:59:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1718290764; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=v9hvnwyvHl+LnE2STZGuAO8anxVKLaWZ1pj5R+R9aO0=;
- b=eBrj+xq/BSbThGcCJx8l/p6ECZuy60GitR9CXPi11vzA5Xiv7RcKCWQpatiCHlSV7mx21V
- 5aHN6w2RlZ8GT5dRhaASbF5waxXnBfgF2kTjmj+2jdniBjSUnnlKpjg7nf/v+7pALtAUaO
- W+OHOMMwr9/ygy48QYg8x033DDFOIQM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1718290764;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=v9hvnwyvHl+LnE2STZGuAO8anxVKLaWZ1pj5R+R9aO0=;
- b=WDekGdD8pVu9aU6mDNfnWJtZ3+UFX+pqJh5c8nlKdGLnRcL2ER/+6vAIvUX3dXYMMjw/9r
- SCTWvb6dquDtviAg==
-Authentication-Results: smtp-out1.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=DsUBDo9o;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=WqWW8hEu
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1718290763; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=v9hvnwyvHl+LnE2STZGuAO8anxVKLaWZ1pj5R+R9aO0=;
- b=DsUBDo9oJaB9x8wL9k1G4a3RpQ371/bgjEtwDrfIvi8ce8DF8yBOB8YC2XwJQXn6GWaSia
- KB36f7y+GgFPihiNo0sX4teVlJqBzMa8A9A2/Y6TEZ3wi6KXlbniVyKlTeXluP83uvLxPU
- uLfCfXxeGMg4o1DgxOIN62pJgBnpkio=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1718290763;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=v9hvnwyvHl+LnE2STZGuAO8anxVKLaWZ1pj5R+R9aO0=;
- b=WqWW8hEuS4BnmvhlnBLJyXomQd9dP5bvHwG7qhMxrwv0nDiyJovcRJjyhiclK7EAT2XNT1
- a+RcG4WpUXrA0zCQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 607D713A7F;
- Thu, 13 Jun 2024 14:59:23 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id +6g7CksJa2Z0WQAAD6G6ig
- (envelope-from <farosas@suse.de>); Thu, 13 Jun 2024 14:59:23 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org
-Cc: Jiri Denemark <jdenemar@redhat.com>, Prasad Pandit <ppandit@redhat.com>,
- Bandan Das <bdas@redhat.com>
-Subject: Re: [PATCH 3/4] migration: Use MigrationStatus instead of int
-In-Reply-To: <Zmm4z0qbv8H39pC0@x1n>
-References: <20240612144228.1179240-1-peterx@redhat.com>
- <20240612144228.1179240-4-peterx@redhat.com> <Zmm4z0qbv8H39pC0@x1n>
-Date: Thu, 13 Jun 2024 11:59:20 -0300
-Message-ID: <87wmmsc2if.fsf@suse.de>
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C005A1955F24; Thu, 13 Jun 2024 15:01:31 +0000 (UTC)
+Received: from toolbox.redhat.com (unknown [10.42.28.52])
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 0EF6B19560AA; Thu, 13 Jun 2024 15:01:28 +0000 (UTC)
+From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Michael Roth <michael.roth@amd.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Konstantin Kostiuk <kkostiuk@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PATCH v2 00/22] qga: clean up command source locations and
+ conditionals
+Date: Thu, 13 Jun 2024 16:01:05 +0100
+Message-ID: <20240613150127.1361931-1-berrange@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spamd-Result: default: False [-4.51 / 50.00]; BAYES_HAM(-3.00)[100.00%];
- NEURAL_HAM_LONG(-1.00)[-1.000];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- MX_GOOD(-0.01)[]; RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
- RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
- RCVD_TLS_ALL(0.00)[]; MIME_TRACE(0.00)[0:+];
- MISSING_XM_UA(0.00)[];
- SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
- TO_DN_SOME(0.00)[];
- RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
- MID_RHS_MATCH_FROM(0.00)[]; FUZZY_BLOCKED(0.00)[rspamd.com];
- FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
- RCPT_COUNT_FIVE(0.00)[5]; RCVD_COUNT_TWO(0.00)[2];
- TO_MATCH_ENVRCPT_ALL(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.de:dkim];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- DKIM_TRACE(0.00)[suse.de:+]
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Queue-Id: D5F2B372DC
-X-Spam-Score: -4.51
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
- envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: 11
+X-Spam_score: 1.1
+X-Spam_bar: +
+X-Spam_report: (1.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.145,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -125,74 +84,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Xu <peterx@redhat.com> writes:
+This series is a side effect of other work I started, to attempt to
+make the QGA safe to use in confidential VMs by automatically
+restricting the permitted commands. Since this cleanup stands on
+its own, I'm sending it now.
 
-> On Wed, Jun 12, 2024 at 10:42:27AM -0400, Peter Xu wrote:
->> @@ -1544,7 +1545,7 @@ bool migration_in_postcopy(void)
->>      }
->>  }
->>  
->> -bool migration_postcopy_is_alive(int state)
->> +bool migration_postcopy_is_alive(MigrationStatus state)
->>  {
->>      switch (state) {
->>      case MIGRATION_STATUS_POSTCOPY_ACTIVE:
->> @@ -1598,7 +1599,7 @@ bool migration_is_idle(void)
->>      case MIGRATION_STATUS_DEVICE:
->>      case MIGRATION_STATUS_WAIT_UNPLUG:
->>          return false;
->> -    case MIGRATION_STATUS__MAX:
->> +    default:
->>          g_assert_not_reached();
->>      }
->
-> This survives the tests, but I just found that it's risky, as it's not
-> covering all the states..
->
-> I'll squash below when I send v2 instead.
->
-> ===8<===
-> From 1fc42c76294044c0ccca8841e482472486de5459 Mon Sep 17 00:00:00 2001
-> From: Peter Xu <peterx@redhat.com>
-> Date: Wed, 12 Jun 2024 10:57:26 -0400
-> Subject: [PATCH] fixup! migration: Use MigrationStatus instead of int
->
-> Signed-off-by: Peter Xu <peterx@redhat.com>
-> ---
->  migration/migration.c | 13 +------------
->  1 file changed, 1 insertion(+), 12 deletions(-)
->
-> diff --git a/migration/migration.c b/migration/migration.c
-> index 9475dce7dc..706cee1b69 100644
-> --- a/migration/migration.c
-> +++ b/migration/migration.c
-> @@ -1637,20 +1637,9 @@ bool migration_is_idle(void)
->      case MIGRATION_STATUS_COMPLETED:
->      case MIGRATION_STATUS_FAILED:
->          return true;
-> -    case MIGRATION_STATUS_SETUP:
-> -    case MIGRATION_STATUS_CANCELLING:
-> -    case MIGRATION_STATUS_ACTIVE:
-> -    case MIGRATION_STATUS_POSTCOPY_ACTIVE:
-> -    case MIGRATION_STATUS_COLO:
-> -    case MIGRATION_STATUS_PRE_SWITCHOVER:
-> -    case MIGRATION_STATUS_DEVICE:
-> -    case MIGRATION_STATUS_WAIT_UNPLUG:
-> -        return false;
->      default:
-> -        g_assert_not_reached();
-> +        return false;
->      }
+The QGA codebase has a very complicated maze of #ifdefs to create
+stubs for the various commands that cannot be implemented on certain
+platforms. It then has further logic to dynamically disable the stub
+commands at runtime, except this is not consistently applied, so
+some commands remain enabled despite being merely stubs.
 
-Unrelated, but should we consider POSTCOPY_PAUSED as idle?
+The resulting code is hard to follow, when trying to understand exactly
+what commands are available under what circumstances, and when changing
+impls it is easy to get the #ifdefs wrong, resulting in stubs getting
+missed on platforms without a real impl. In some cases, we have multiple
+stubs for the same command, due to the maze of #ifdefs.
 
-> -
-> -    return false;
->  }
->  
->  bool migration_is_active(void)
-> -- 
-> 2.45.0
->
-> ===8<===
+The QAPI schema language has support for many years for expressing
+conditions against commands when declaring them. This results in the
+QAPI code generator omitting their implementation entirely at build
+time. This has mutliple benefits
+
+ * The unsupported commands are guaranteed to not exist at runtime
+ * No stubs need ever be defined in the code
+ * The generated QAPI reference manual documents the build conditions
+
+This series is broadly split into three parts
+
+ * Moving tonnes of Linux only commands out of commands-posix.c
+   into commands-linux.c to remove many #ifdefs.
+ * Adding 'if' conditions in the QAPI schema to reflect the
+   build conditions, removing many more #ifdefs
+ * Sanitizing the logic for disabling/enabling commands at
+   runtime to guarantee consistency
+
+Changed in v2:
+
+ - Make FSFreeze error reporting distinguish inability to enable
+   VSS from user config choice
+
+ - Fully remove ga_command_init_blockedrpcs() methods. No more
+   special case disabling of commands. Either they're disabled
+   at build time, or disabled by user config, or by well defined
+   rule ie not permitted during FS freeze.
+
+ - Apply rules later in startup to avoid crash from NULL config
+   pointer
+
+ - Document changed error messages in commit messages
+
+ - Add -c / --config command line parameter
+
+ - Fix mistaken enabling of fsfreeze hooks on win32
+
+ - Remove pointless 'blockrpcs_key' variable
+
+ - Allow concurrent setting of allow and block lists for
+   RPC commands
+
+Daniel P. Berrangé (22):
+  qga: drop blocking of guest-get-memory-block-size command
+  qga: move linux vcpu command impls to commands-linux.c
+  qga: move linux suspend command impls to commands-linux.c
+  qga: move linux fs/disk command impls to commands-linux.c
+  qga: move linux disk/cpu stats command impls to commands-linux.c
+  qga: move linux memory block command impls to commands-linux.c
+  qga: move CONFIG_FSFREEZE/TRIM to be meson defined options
+  qga: conditionalize schema for commands unsupported on Windows
+  qga: conditionalize schema for commands unsupported on non-Linux POSIX
+  qga: conditionalize schema for commands requiring getifaddrs
+  qga: conditionalize schema for commands requiring linux/win32
+  qga: conditionalize schema for commands only supported on Windows
+  qga: conditionalize schema for commands requiring fsfreeze
+  qga: conditionalize schema for commands requiring fstrim
+  qga: conditionalize schema for commands requiring libudev
+  qga: conditionalize schema for commands requiring utmpx
+  qga: conditionalize schema for commands not supported on other UNIX
+  qga: don't disable fsfreeze commands if vss_init fails
+  qga: move declare of QGAConfig struct to top of file
+  qga: remove pointless 'blockrpcs_key' variable
+  qga: allow configuration file path via the cli
+  qga: centralize logic for disabling/enabling commands
+
+ docs/interop/qemu-ga.rst |   19 +
+ meson.build              |   16 +
+ qga/commands-bsd.c       |   24 -
+ qga/commands-common.h    |    9 -
+ qga/commands-linux.c     | 1805 +++++++++++++++++++++++++++++
+ qga/commands-posix.c     | 2373 +++-----------------------------------
+ qga/commands-win32.c     |   78 +-
+ qga/main.c               |  216 ++--
+ qga/qapi-schema.json     |  153 ++-
+ 9 files changed, 2234 insertions(+), 2459 deletions(-)
+
+-- 
+2.45.1
+
 
