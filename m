@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D81309079E1
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jun 2024 19:30:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18D879079E7
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jun 2024 19:31:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sHoHL-0004co-4a; Thu, 13 Jun 2024 13:30:27 -0400
+	id 1sHoHK-0004ca-OB; Thu, 13 Jun 2024 13:30:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1sHoHI-0004bs-8l
+ id 1sHoHI-0004c2-Nt
  for qemu-devel@nongnu.org; Thu, 13 Jun 2024 13:30:24 -0400
-Received: from fout1-smtp.messagingengine.com ([103.168.172.144])
+Received: from fhigh7-smtp.messagingengine.com ([103.168.172.158])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1sHoHF-0007ET-Gc
+ id 1sHoHG-0007Fj-EV
  for qemu-devel@nongnu.org; Thu, 13 Jun 2024 13:30:24 -0400
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
- by mailfout.nyi.internal (Postfix) with ESMTP id 7873D13800E5;
- Thu, 13 Jun 2024 13:30:19 -0400 (EDT)
+Received: from compute7.internal (compute7.nyi.internal [10.202.2.48])
+ by mailfhigh.nyi.internal (Postfix) with ESMTP id 59AC91140157;
+ Thu, 13 Jun 2024 13:30:21 -0400 (EDT)
 Received: from mailfrontend1 ([10.202.2.162])
- by compute4.internal (MEProxy); Thu, 13 Jun 2024 13:30:19 -0400
+ by compute7.internal (MEProxy); Thu, 13 Jun 2024 13:30:21 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
  cc:cc:content-transfer-encoding:content-type:content-type:date
- :date:from:from:in-reply-to:message-id:mime-version:reply-to
- :subject:subject:to:to; s=fm2; t=1718299819; x=1718386219; bh=2Y
- lomw0G04tS9jeu4S2jeUUKBm1VnFhpe0L3Kiu/arQ=; b=srYAd6OkMGBdRUG8x/
- ZqbvAPDbPZAHneyPqVgB/1105fqDyo0yqqyzZjDbLW9wUdkKp3OHRCx8GK6rdEw0
- BjWSFjWGNk4BU7o4IrCBKSqloi4bbu0t/5ROl4jj4tWLR+Lm84GUd2mJCUB7D9PD
- PWSfoQR870qkusDKWhIDPMapz2XOhg1PfIgqUp93Sx9Tfy2DXQ3y0jpmDsJ5s+M1
- M76i49rpLtgRsPg0J5lcEpJTYE2X9KaNrY4ZhX9jN3shfbdZSsRQI8rldn2WTnbe
- suG80UIauK+S2noaMCZgiPJXhz7Rk9KP/fOtoCfjHCt0mNtEd8+W2tva9uww1wJ7
- ib1w==
+ :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+ :references:reply-to:subject:subject:to:to; s=fm2; t=1718299821;
+ x=1718386221; bh=+JwncMEIhPA0LQany3Z1qAPP2WyhtQ9mhBkYNm40cuk=; b=
+ DG7YKO83HuJfSC/XMdNeLBnjn5SfH4CRhuOf3nyuFMy1hdSiivuzTO9pHirqakVy
+ Zb3FFZosZB0YNgd99ggnGA9DfUeSdt9od+tJwv9mFGt/MQikGPiHmEO7/kXV6kGm
+ 2Fojh+DlCslxOYrMh9smowoZlnAHF2xLaNfAiQuU8uH0Qh9vSMZErKC1lmbju0XD
+ h6XfUawAYCmdlgfKnDoUUQgqIt/QSuKi+9V/ZObvrF7f9lI+sp1oqH13QZ1/Dzad
+ PpoH+XPyxV54tfjIBUdckHIQoI89hHAOunrHNQG7fxvgXAuTpwl4Dt2il9nZLJvh
+ epRq2m6iBp/VC5zBFd8+OQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
  messagingengine.com; h=cc:cc:content-transfer-encoding
  :content-type:content-type:date:date:feedback-id:feedback-id
- :from:from:in-reply-to:message-id:mime-version:reply-to:subject
- :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
- :x-sasl-enc; s=fm1; t=1718299819; x=1718386219; bh=2Ylomw0G04tS9
- jeu4S2jeUUKBm1VnFhpe0L3Kiu/arQ=; b=LWJJ6MPLtN/+Zcuqv+D1mrU/Kg3bP
- MtegnnqxCwnDTvgQ+39XrCbus/kFhvP7ml02fZXGGvUBQgHwCdAJ3IlFXtFQlFVY
- NdJoLapkT2CJQY67HsDBMJFLSE9IkYoD5w4KbBVp8EUHVAIsB/ej9gdihf02GU26
- tKckObYl8864c95XUhC0EAg+49SkDaFKiP4SJ0bszI9gMVK9TG5Vu+9kIVVipjha
- BK5AXBDt90w8Vxfivnvz7t+SFRdncCLE/g1XKlN7eLoKDBb4xv1LOekyqz21jGKA
- C9vDE33FOvIfvO7jWtbx/vBLDx0q3I0y6l161TZA0PWpnB8vHBPzE+lTg==
-X-ME-Sender: <xms:qixrZjWc7mroBqOXVB-acadTI8sKxSD9B2LkcUaBXz4owWihHfNZfw>
- <xme:qixrZrk8wiZGFdZ-3i4f3Fd2jMPlP6vq0VIZZWCx70W6IWHO3tJEgmYyzfRqQxnxv
- Sg3gb6HYZCZMU7GJbM>
-X-ME-Received: <xmr:qixrZvZoLmNpy3Lp2wLoWgHWG_TDj_bQhdVjamusuezpUkrNn5I5ipM>
+ :from:from:in-reply-to:in-reply-to:message-id:mime-version
+ :references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
+ :x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1718299821; x=
+ 1718386221; bh=+JwncMEIhPA0LQany3Z1qAPP2WyhtQ9mhBkYNm40cuk=; b=E
+ QLoqaHA2TMNJeCXaPtg1EF9U1CenD4GlgGAhqfammyjZSF8Gt2UBfT/x09OkG6ge
+ Q7sUVvyG6WyvyF2lWyq+5NnHci8N8xmHxPQD6tg0PfMEQDkei7d9ip2Pyay3Y0G0
+ +vDlSYYUupKM+R9CA4klwaJyMt21LHwjHZ+CXo4EhDCgoisrKM7ti5TvYvWD+kTl
+ XnlZhDy8xVJW6VZVO7UmjbtU2BQDNbYj8cjU0jHRVP3xYKC364n4/x7fGb3ofQ7o
+ 1ttdf5kacGRqtAvFu5N/6qKF28FJ3VxgFQv4zjwUhJgO3u3EXQ1LQvSXbY2YJd/f
+ c21Zc7s+g8Ye2KS+qIyPQ==
+X-ME-Sender: <xms:rSxrZpKPF46JrT8KwUA44D5CrzT6MifjdVujVwS8xTn40_uJtUVRZw>
+ <xme:rSxrZlJpk-kw8-BKA6NcpgeD-mlyMMmMQqbGCPpVQg-t4HD8L-XvhbhRyTkUeNbU_
+ BGNdhsisNBvjnmTe6o>
+X-ME-Received: <xmr:rSxrZhvcWw8Hz8RGuF1RTmvylTKbzLv6P-mKfX3NQUY6Qkm1YYBsLeE>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrfedujedgudduudcutefuodetggdotefrod
  ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
  necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
- enucfjughrpefhufffkfggtgfgvfevofesthejredtredtjeenucfhrhhomheplfhirgig
- uhhnucgjrghnghcuoehjihgrgihunhdrhigrnhhgsehflhihghhorghtrdgtohhmqeenuc
- ggtffrrghtthgvrhhnpefgveffjeetgeejfeelgfekteelkefhuefggedvueeujeekjeet
- keekvdffffefudenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrh
- fuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepjhhirgiguhhnrdihrghnghes
- fhhlhihgohgrthdrtghomh
-X-ME-Proxy: <xmx:qixrZuUgu0igV9ZGKb8KdnQZwhG9GYyP37gGqDDHRIa3or1j5A5idQ>
- <xmx:qixrZtmDmjxTH1heLN5eRJJnNas1Zn533lzTzGPPs2OakP-HjzLdMw>
- <xmx:qixrZre1MduTBlxwGo8gUH0DReP1Vgeyy6-7_NJaMLNy_A2O8jogGQ>
- <xmx:qixrZnFavqZS2uS366Jg-NaGUnzIkwHvuJRPbMvC1WhpuWL50XnfsA>
- <xmx:qyxrZjekjEAvAKtwh9ZvsdVOVv97wd8ExtjDYQmJmpDvcq937UV0eJ1u>
+ enucfjughrpefhfffugggtgffkfhgjvfevofesthejredtredtjeenucfhrhhomheplfhi
+ rgiguhhnucgjrghnghcuoehjihgrgihunhdrhigrnhhgsehflhihghhorghtrdgtohhmqe
+ enucggtffrrghtthgvrhhnpedvkeeihfefveekueevteefleffkeegudeghfdtuddugefh
+ ueevgeffgedukeejleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrih
+ hlfhhrohhmpehjihgrgihunhdrhigrnhhgsehflhihghhorghtrdgtohhm
+X-ME-Proxy: <xmx:rSxrZqZlpKkt2XuYm-tlhgD_m-ztbyuJo5kfv5W5TUqArLE58B2mVA>
+ <xmx:rSxrZgYwntM0l1QqnsCOO7ll4hchqchnmE___fcMHq9tsFlrcaoBGg>
+ <xmx:rSxrZuBy7jP_dSEMAeYNGkmoEX_S-TgJNnGxuKhWYuW0YiNUaOeXIQ>
+ <xmx:rSxrZua62fCwEytIPBhbbWBm--RUIYpB-27ALhsy5yYVj--L8ZJRWg>
+ <xmx:rSxrZqD9hliXH0rwk_JXRPf8y_bU69Vl2H79wD7XbC-R2ThBYK1-vBjq>
 Feedback-ID: ifd894703:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 13 Jun 2024 13:30:16 -0400 (EDT)
+ 13 Jun 2024 13:30:19 -0400 (EDT)
 From: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Subject: [PATCH 0/3] S3 and S4 sleep for loongarch/virt & microvm
-Date: Thu, 13 Jun 2024 18:30:14 +0100
-Message-Id: <20240613-loongarch64-sleep-v1-0-d2ef0aaa543a@flygoat.com>
+Date: Thu, 13 Jun 2024 18:30:15 +0100
+Subject: [PATCH 1/3] acpi/ged: Implement S3 and S4 sleep
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAKYsa2YC/x3MQQqAIBBA0avIrBPMZIquEi1KJxsIFYUIpLsnL
- d/i/wqFMlOBWVTIdHPhGBr6ToA9t+BJsmsGrbRR2A/yijH4LdsTjSwXUZLDuGuDuE9uRGhdynT
- w8z+X9X0/HDhfsGMAAAA=
+Message-Id: <20240613-loongarch64-sleep-v1-1-d2ef0aaa543a@flygoat.com>
+References: <20240613-loongarch64-sleep-v1-0-d2ef0aaa543a@flygoat.com>
+In-Reply-To: <20240613-loongarch64-sleep-v1-0-d2ef0aaa543a@flygoat.com>
 To: qemu-devel@nongnu.org, Ani Sinha <anisinha@redhat.com>
 Cc: "Michael S. Tsirkin" <mst@redhat.com>, 
  Igor Mammedov <imammedo@redhat.com>, Song Gao <gaosong@loongson.cn>, 
@@ -86,17 +85,17 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
  Sergio Lopez <slp@redhat.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1065;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6486;
  i=jiaxun.yang@flygoat.com; h=from:subject:message-id;
- bh=XAnJmJpbuvqPjFRZcGPddcmvCUgokVhu06na45ZpMZ0=;
- b=owGbwMvMwCXmXMhTe71c8zDjabUkhrRsnVUdsqkMElzy/Wsv3xORnv3qpUak1oYnl81ebhLvu
- v5yA0NjRykLgxgXg6yYIkuIgFLfhsaLC64/yPoDM4eVCWQIAxenAExkrzbDf//t7ie3H18mWnj1
- 5utr5c8/68yO3rmHadKykmq276rPXj9k+O93L4rLXe7KGhk9ofVl5z6fMXj60+jHjjcH3fyLv20
- 4Mo0fAA==
+ bh=f76BG7HPJrfWMHtI/gS8gAZiuID/iiQb3Z0RGRIo27o=;
+ b=owGbwMvMwCXmXMhTe71c8zDjabUkhrRsnVXZTq1S+k73T2itXJglb1rw0Gq70cXsmAD2j9a36
+ 5eyMfl3lLIwiHExyIopsoQIKPVtaLy44PqDrD8wc1iZQIYwcHEKwE2ezMhwa3IPA5/qjacb+56b
+ d7HcXPxo16uNOaUM7pL//qzzW/ZdjZFhoc9aoUfrZjJe3Lt1ehbLNiv1sC5X5kRHHaEX87T0ihb
+ xAAA=
 X-Developer-Key: i=jiaxun.yang@flygoat.com; a=openpgp;
  fpr=980379BEFEBFBF477EA04EF9C111949073FC0F67
-Received-SPF: pass client-ip=103.168.172.144;
- envelope-from=jiaxun.yang@flygoat.com; helo=fout1-smtp.messagingengine.com
+Received-SPF: pass client-ip=103.168.172.158;
+ envelope-from=jiaxun.yang@flygoat.com; helo=fhigh7-smtp.messagingengine.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
 X-Spam_bar: --
@@ -119,38 +118,200 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi all,
+Implement S3 and S4 sleep with ACPI_GED_REG_SLEEP_CTL.SLP_TYP
+writes.
 
-This series implemented S3 and S4 sleep for loongarch virt machine
-and microvm.
+Implement wakeup callback and WAK_STS register to inform guest
+about current states.
 
-For loongarch/virt a kernel patch is requried [1].
-
-[1]: https://lore.kernel.org/loongarch/20240613-loongarch64-sleep-v1-0-a245232af5e4@flygoat.com/
-
-Please review.
-Thanks
+All new functions are gated by "slp-typs" property, it is defaulted
+to S5 only and machines can opt-in for S3 and S4.
 
 Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
 ---
-Jiaxun Yang (3):
-      acpi/ged: Implement S3 and S4 sleep
-      hw/loongarch/virt: Wire up S3 and S4 sleep
-      hw/i386/microvm: Wire up S3 and S4 sleep
-
  hw/acpi/generic_event_device.c         | 70 ++++++++++++++++++++++++++++++----
- hw/i386/acpi-microvm.c                 | 18 +++++++++
- hw/i386/microvm.c                      |  3 ++
- hw/loongarch/acpi-build.c              | 18 +++++++++
- hw/loongarch/virt.c                    |  3 ++
  include/hw/acpi/generic_event_device.h | 12 +++++-
- 6 files changed, 115 insertions(+), 9 deletions(-)
----
-base-commit: f3e8cc47de2bc537d4991e883a85208e4e1c0f98
-change-id: 20240613-loongarch64-sleep-37b2466b8d76
+ 2 files changed, 73 insertions(+), 9 deletions(-)
 
-Best regards,
+diff --git a/hw/acpi/generic_event_device.c b/hw/acpi/generic_event_device.c
+index 2d6e91b124e5..f1fc99c04011 100644
+--- a/hw/acpi/generic_event_device.c
++++ b/hw/acpi/generic_event_device.c
+@@ -11,6 +11,7 @@
+ 
+ #include "qemu/osdep.h"
+ #include "qapi/error.h"
++#include "qapi/qapi-events-run-state.h"
+ #include "hw/acpi/acpi.h"
+ #include "hw/acpi/generic_event_device.h"
+ #include "hw/irq.h"
+@@ -186,24 +187,53 @@ static const MemoryRegionOps ged_evt_ops = {
+ 
+ static uint64_t ged_regs_read(void *opaque, hwaddr addr, unsigned size)
+ {
++    GEDState *ged_st = opaque;
++
++    switch (addr) {
++    case ACPI_GED_REG_SLEEP_STS:
++        return ged_st->sleep_sts;
++    default:
++        break;
++    }
++
+     return 0;
+ }
+ 
+ static void ged_regs_write(void *opaque, hwaddr addr, uint64_t data,
+                            unsigned int size)
+ {
+-    bool slp_en;
+-    int slp_typ;
++    GEDState *ged_st = opaque;
++    AcpiGedState *s = container_of(ged_st, AcpiGedState, ged_state);
+ 
+     switch (addr) {
+     case ACPI_GED_REG_SLEEP_CTL:
+-        slp_typ = (data >> 2) & 0x07;
+-        slp_en  = (data >> 5) & 0x01;
+-        if (slp_en && slp_typ == 5) {
+-            qemu_system_shutdown_request(SHUTDOWN_CAUSE_GUEST_SHUTDOWN);
++        if (data & ACPI_GED_SLP_EN) {
++            switch (extract8(data, 2, 3)) {
++            case ACPI_GED_SLP_TYP_S3:
++                if (s->slp_typs_bitmap & (1 << ACPI_GED_SLP_TYP_S3)) {
++                    qemu_system_suspend_request();
++                }
++                break;
++            case ACPI_GED_SLP_TYP_S4:
++                if (s->slp_typs_bitmap & (1 << ACPI_GED_SLP_TYP_S4)) {
++                    qapi_event_send_suspend_disk();
++                    qemu_system_shutdown_request(SHUTDOWN_CAUSE_GUEST_SHUTDOWN);
++                }
++                break;
++            case ACPI_GED_SLP_TYP_S5:
++                if (s->slp_typs_bitmap & (1 << ACPI_GED_SLP_TYP_S5)) {
++                    qemu_system_shutdown_request(SHUTDOWN_CAUSE_GUEST_SHUTDOWN);
++                }
++                break;
++            default:
++                break;
++            }
+         }
+         return;
+     case ACPI_GED_REG_SLEEP_STS:
++        if (data & ACPI_GED_WAK_STS) {
++            ged_st->sleep_sts &= ~ACPI_GED_WAK_STS;
++        }
+         return;
+     case ACPI_GED_REG_RESET:
+         if (data == ACPI_GED_RESET_VALUE) {
+@@ -223,6 +253,14 @@ static const MemoryRegionOps ged_regs_ops = {
+     },
+ };
+ 
++static void acpi_ged_notify_wakeup(Notifier *notifier, void *data)
++{
++    GEDState *ged_st = container_of(notifier, GEDState, wakeup);
++
++    ged_st->sleep_sts |= ACPI_GED_WAK_STS;
++}
++
++
+ static void acpi_ged_device_plug_cb(HotplugHandler *hotplug_dev,
+                                     DeviceState *dev, Error **errp)
+ {
+@@ -305,6 +343,8 @@ static void acpi_ged_send_event(AcpiDeviceIf *adev, AcpiEventStatusBits ev)
+ 
+ static Property acpi_ged_properties[] = {
+     DEFINE_PROP_UINT32("ged-event", AcpiGedState, ged_event_bitmap, 0),
++    DEFINE_PROP_UINT32("slp-typs", AcpiGedState, slp_typs_bitmap,
++                        (1 << ACPI_GED_SLP_TYP_S5)),
+     DEFINE_PROP_END_OF_LIST(),
+ };
+ 
+@@ -320,10 +360,11 @@ static const VMStateDescription vmstate_memhp_state = {
+ 
+ static const VMStateDescription vmstate_ged_state = {
+     .name = "acpi-ged-state",
+-    .version_id = 1,
+-    .minimum_version_id = 1,
++    .version_id = 2,
++    .minimum_version_id = 2,
+     .fields = (const VMStateField[]) {
+         VMSTATE_UINT32(sel, GEDState),
++        VMSTATE_UINT8(sleep_sts, GEDState),
+         VMSTATE_END_OF_LIST()
+     }
+ };
+@@ -371,6 +412,18 @@ static const VMStateDescription vmstate_acpi_ged = {
+     }
+ };
+ 
++static void acpi_ged_realize(DeviceState *dev, Error **errp)
++{
++    AcpiGedState *s = ACPI_GED(dev);
++    GEDState *ged_st = &s->ged_state;
++
++    if (s->slp_typs_bitmap & (1 << ACPI_GED_SLP_TYP_S3)) {
++        ged_st->wakeup.notify = acpi_ged_notify_wakeup;
++        qemu_register_wakeup_notifier(&ged_st->wakeup);
++        qemu_register_wakeup_support();
++    }
++}
++
+ static void acpi_ged_initfn(Object *obj)
+ {
+     DeviceState *dev = DEVICE(obj);
+@@ -409,6 +462,7 @@ static void acpi_ged_class_init(ObjectClass *class, void *data)
+     AcpiDeviceIfClass *adevc = ACPI_DEVICE_IF_CLASS(class);
+ 
+     dc->desc = "ACPI Generic Event Device";
++    dc->realize = acpi_ged_realize;
+     device_class_set_props(dc, acpi_ged_properties);
+     dc->vmsd = &vmstate_acpi_ged;
+ 
+diff --git a/include/hw/acpi/generic_event_device.h b/include/hw/acpi/generic_event_device.h
+index ba84ce021477..1ea3cb848679 100644
+--- a/include/hw/acpi/generic_event_device.h
++++ b/include/hw/acpi/generic_event_device.h
+@@ -80,9 +80,16 @@ OBJECT_DECLARE_SIMPLE_TYPE(AcpiGedState, ACPI_GED)
+ /* ACPI_GED_REG_RESET value for reset*/
+ #define ACPI_GED_RESET_VALUE       0x42
+ 
+-/* ACPI_GED_REG_SLEEP_CTL.SLP_TYP value for S5 (aka poweroff) */
++/* ACPI_GED_REG_SLEEP_CTL.SLP_EN bit */
++#define ACPI_GED_SLP_EN            (1 << 5)
++
++/* ACPI_GED_REG_SLEEP_CTL.SLP_TYP values */
++#define ACPI_GED_SLP_TYP_S3        0x03
++#define ACPI_GED_SLP_TYP_S4        0x04
+ #define ACPI_GED_SLP_TYP_S5        0x05
+ 
++#define ACPI_GED_WAK_STS           (1 << 7)
++
+ #define GED_DEVICE      "GED"
+ #define AML_GED_EVT_REG "EREG"
+ #define AML_GED_EVT_SEL "ESEL"
+@@ -99,7 +106,9 @@ OBJECT_DECLARE_SIMPLE_TYPE(AcpiGedState, ACPI_GED)
+ typedef struct GEDState {
+     MemoryRegion evt;
+     MemoryRegion regs;
++    Notifier     wakeup;
+     uint32_t     sel;
++    uint8_t      sleep_sts;
+ } GEDState;
+ 
+ struct AcpiGedState {
+@@ -108,6 +117,7 @@ struct AcpiGedState {
+     MemoryRegion container_memhp;
+     GEDState ged_state;
+     uint32_t ged_event_bitmap;
++    uint32_t slp_typs_bitmap;
+     qemu_irq irq;
+     AcpiGhesState ghes_state;
+ };
+
 -- 
-Jiaxun Yang <jiaxun.yang@flygoat.com>
+2.43.0
 
 
