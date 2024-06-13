@@ -2,107 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DE109079E5
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jun 2024 19:31:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 712A09079EB
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jun 2024 19:32:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sHoHN-0004eO-7r; Thu, 13 Jun 2024 13:30:29 -0400
+	id 1sHoJI-0008Ke-Lj; Thu, 13 Jun 2024 13:32:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1sHoHL-0004df-ES
- for qemu-devel@nongnu.org; Thu, 13 Jun 2024 13:30:27 -0400
-Received: from fhigh7-smtp.messagingengine.com ([103.168.172.158])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1sHoJG-0008KR-PW
+ for qemu-devel@nongnu.org; Thu, 13 Jun 2024 13:32:26 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1sHoHJ-0007J2-Q8
- for qemu-devel@nongnu.org; Thu, 13 Jun 2024 13:30:27 -0400
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
- by mailfhigh.nyi.internal (Postfix) with ESMTP id 5631A11401D6;
- Thu, 13 Jun 2024 13:30:25 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
- by compute6.internal (MEProxy); Thu, 13 Jun 2024 13:30:25 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
- cc:cc:content-transfer-encoding:content-type:content-type:date
- :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
- :references:reply-to:subject:subject:to:to; s=fm2; t=1718299825;
- x=1718386225; bh=dAn6RhZVBQ411UgnvLVvJtB4CrT4+mRlgv05oQIOfNw=; b=
- FyTzrtxLN6H8iNyN85boyM1JcsxEpzxbQw8GwtXT2p2wJJEj8CLhjaFL3F0hyquc
- wi7yN9OVEvzYTvUpwqTXzTyjV9yKFYf4lxfWIud38Kcxo5Qf/WGvxYdJ/cF/MXGw
- 2qstueL9y8cEX6NRUJjr04lwdwB9Fhy+oDvPRzc0dFr5lOgGeFpfSBwbtodTK+S5
- DbCnXOfSHz3tpyH6wfynHO/BkhyFuY0JZzITx6MxIyWMLbyPVfQ+Tg886lUm6JSP
- FsMAs1beB1pR/z6ovTA4qj8XZiuwUfoOzr5fIhIxdOiHKAOaMHi26I8xtqUkrmnR
- khBYTMUkfvu6J97MrYC5MQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-transfer-encoding
- :content-type:content-type:date:date:feedback-id:feedback-id
- :from:from:in-reply-to:in-reply-to:message-id:mime-version
- :references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
- :x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1718299825; x=
- 1718386225; bh=dAn6RhZVBQ411UgnvLVvJtB4CrT4+mRlgv05oQIOfNw=; b=G
- MCGZjPVOhR/36xPUW4nlLi0RCJEtm/x1x7vUfZ2bmeQF1H5w2ik941HmAibl0gRo
- yMKQWZpPBYJq+Tbmb1gixW+B0bYFqSBs133tcDp1ct8KeKBjcRM9JkHSWWJMZL7c
- yE1NrTSCRLoeWB9M9TcARaZB2Pn8plKZbEu+OqMbKKy2zNwU2TESOuugFEvd3iVL
- zCcXILMnEhCfMmXP2qmsOpn4Iv696KPp33d7j9wvKAH/susGvYTGwlWJV9/t8OTD
- QAvkWcZ2a0gi2CoZqMcwxchxv1/PqaR+59H5xvPbHiPuCnJTwsFokRWGV7XfjO4f
- ekXk+BdvN8ncVe1IVSYyg==
-X-ME-Sender: <xms:sSxrZrCorMHitQrX2CnEjMJz0Rp3UU_Sl4GqjIdYLL6H6zcb2D8ELA>
- <xme:sSxrZhgPSABPNWCyzNEEd91bbKnGQEsqEvdMqjjM_g6Bz_BtxrHCFuvNH-ZmnHbLt
- F8rHgcCpdCV2XzyemY>
-X-ME-Received: <xmr:sSxrZmlVvo22zrRvC4gHOGfCgfXxu4qnK23I87PEDm7Xuu1fhmdB1Zw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrfedujedgudduudcutefuodetggdotefrod
- ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
- necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
- enucfjughrpefhfffugggtgffkfhgjvfevofesthejredtredtjeenucfhrhhomheplfhi
- rgiguhhnucgjrghnghcuoehjihgrgihunhdrhigrnhhgsehflhihghhorghtrdgtohhmqe
- enucggtffrrghtthgvrhhnpedvkeeihfefveekueevteefleffkeegudeghfdtuddugefh
- ueevgeffgedukeejleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrih
- hlfhhrohhmpehjihgrgihunhdrhigrnhhgsehflhihghhorghtrdgtohhm
-X-ME-Proxy: <xmx:sSxrZtwfdmpY7G1vAg76Lguc3LqL72KC5uHRApALMtRpuAbtRemQxA>
- <xmx:sSxrZgT9_tcrgnf1hPqTuk5LNHdX2Im6OfC1alW3hLvbjRVUlpWN_g>
- <xmx:sSxrZgbveUcvRk9a2KrDTw2hTACmRx2bWi7FcRmyOiI5uSqn8jrgjw>
- <xmx:sSxrZhS7z_spRbzTk9lPywmUQnKkA4to356Jw397r1wkxuB69QI5zg>
- <xmx:sSxrZkbPIed5TKUfPsrxjE086vn14BepMC7i55sjG0cq5lmuA_cx8V-O>
-Feedback-ID: ifd894703:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 13 Jun 2024 13:30:23 -0400 (EDT)
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Date: Thu, 13 Jun 2024 18:30:17 +0100
-Subject: [PATCH 3/3] hw/i386/microvm: Wire up S3 and S4 sleep
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1sHoJF-0007cj-5k
+ for qemu-devel@nongnu.org; Thu, 13 Jun 2024 13:32:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1718299944;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=zKh/P7RJPSG/d8nE1bOm8cMkIcdgv0hpKYhA/Hxxt24=;
+ b=eAcL0gBYeyG2F6QO8rkBSge4zigc0SyjqSw9WDOa2QIP+mGYgu3HjlzTFA/tigPSnfbwtg
+ A2GLsQ7QozLNPI3rgoWd2PzzYmipjzs7Rzh7jpjhynU7Ay5h14ok6vdxkX+KAIv/nPir2Q
+ FYeykB5o+upgLWE7b6fZV9/m2Xo8wBE=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-544-qHCjcgd6OZuX-A8yVbrqfw-1; Thu,
+ 13 Jun 2024 13:32:20 -0400
+X-MC-Unique: qHCjcgd6OZuX-A8yVbrqfw-1
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 3ED9719560B8; Thu, 13 Jun 2024 17:32:19 +0000 (UTC)
+Received: from redhat.com (unknown [10.39.192.41])
+ by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id A9B371955E82; Thu, 13 Jun 2024 17:32:17 +0000 (UTC)
+Date: Thu, 13 Jun 2024 19:32:15 +0200
+From: Kevin Wolf <kwolf@redhat.com>
+To: Amjad Alsharafi <amjadsharafi10@gmail.com>
+Cc: Hanna Reitz <hreitz@redhat.com>, qemu-devel@nongnu.org,
+ "open list:vvfat" <qemu-block@nongnu.org>
+Subject: Re: [PATCH v5 5/5] iotests: Add `vvfat` tests
+Message-ID: <ZmstH_zGvS-HKtUn@redhat.com>
+References: <cover.1718195956.git.amjadsharafi10@gmail.com>
+ <0aa2f5704890e20e3dcb4f33ce68a8fb7393e2f2.1718195956.git.amjadsharafi10@gmail.com>
+ <Zmr9M3lw_xLcy2ok@amjad-pc>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240613-loongarch64-sleep-v1-3-d2ef0aaa543a@flygoat.com>
-References: <20240613-loongarch64-sleep-v1-0-d2ef0aaa543a@flygoat.com>
-In-Reply-To: <20240613-loongarch64-sleep-v1-0-d2ef0aaa543a@flygoat.com>
-To: qemu-devel@nongnu.org, Ani Sinha <anisinha@redhat.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, 
- Igor Mammedov <imammedo@redhat.com>, Song Gao <gaosong@loongson.cn>, 
- Paolo Bonzini <pbonzini@redhat.com>, 
- Richard Henderson <richard.henderson@linaro.org>, 
- Eduardo Habkost <eduardo@habkost.net>, 
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
- Sergio Lopez <slp@redhat.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2255;
- i=jiaxun.yang@flygoat.com; h=from:subject:message-id;
- bh=9KDYfgTpJCYj+JrfLXnzk6WDZ9WRBqry0iqBAZw11Ms=;
- b=owGbwMvMwCXmXMhTe71c8zDjabUkhrRsnVV377SYNxgqmzY33PkVl75r5vfcbT5bNlds/xLh7
- /Ta1sG2o5SFQYyLQVZMkSVEQKlvQ+PFBdcfZP2BmcPKBDKEgYtTACbSvInhn3p50SOt2b1T/i86
- PFVapvP2wU439pLvAWJuK3VWvcoM/8Pwm/3+xmnv43n6fiwV8NKWl5y7o+m444Gtz6MXRnh2bP6
- 3gwcA
-X-Developer-Key: i=jiaxun.yang@flygoat.com; a=openpgp;
- fpr=980379BEFEBFBF477EA04EF9C111949073FC0F67
-Received-SPF: pass client-ip=103.168.172.158;
- envelope-from=jiaxun.yang@flygoat.com; helo=fhigh7-smtp.messagingengine.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Zmr9M3lw_xLcy2ok@amjad-pc>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: 11
+X-Spam_score: 1.1
+X-Spam_bar: +
+X-Spam_report: (1.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.145,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -118,60 +81,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Wire up S3 and S4 sleep by setting relevant slp-typs bits for
-GED and generate _S3 and _S4 methods in acpi table.
+Am 13.06.2024 um 16:07 hat Amjad Alsharafi geschrieben:
+> On Wed, Jun 12, 2024 at 08:43:26PM +0800, Amjad Alsharafi wrote:
+> > Added several tests to verify the implementation of the vvfat driver.
+> > 
+> > We needed a way to interact with it, so created a basic `fat16.py` driver
+> > that handled writing correct sectors for us.
+> > 
+> > Added `vvfat` to the non-generic formats, as its not a normal image format.
+> > 
+> > Signed-off-by: Amjad Alsharafi <amjadsharafi10@gmail.com>
+> > ---
+> >  tests/qemu-iotests/check           |   2 +-
+> >  tests/qemu-iotests/fat16.py        | 673 +++++++++++++++++++++++++++++
+> >  tests/qemu-iotests/testenv.py      |   2 +-
+> >  tests/qemu-iotests/tests/vvfat     | 457 ++++++++++++++++++++
+> >  tests/qemu-iotests/tests/vvfat.out |   5 +
+> >  5 files changed, 1137 insertions(+), 2 deletions(-)
+> >  create mode 100644 tests/qemu-iotests/fat16.py
+> >  create mode 100755 tests/qemu-iotests/tests/vvfat
+> >  create mode 100755 tests/qemu-iotests/tests/vvfat.out
+> 
+> Btw Kevin, I'm not sure if I should add myself to the MAINTAINERS file
+> for the new files (fat16.py and vvfat) or not
 
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
----
- hw/i386/acpi-microvm.c | 18 ++++++++++++++++++
- hw/i386/microvm.c      |  3 +++
- 2 files changed, 21 insertions(+)
+You can if you really want to, but there is no need.
 
-diff --git a/hw/i386/acpi-microvm.c b/hw/i386/acpi-microvm.c
-index 279da6b4aa2f..7564de2b343b 100644
---- a/hw/i386/acpi-microvm.c
-+++ b/hw/i386/acpi-microvm.c
-@@ -129,6 +129,24 @@ build_dsdt_microvm(GArray *table_data, BIOSLinker *linker,
-     aml_append(dsdt, sb_scope);
- 
-     /* ACPI 5.0: Table 7-209 System State Package */
-+    scope = aml_scope("\\");
-+    pkg = aml_package(4);
-+    aml_append(pkg, aml_int(ACPI_GED_SLP_TYP_S3));
-+    aml_append(pkg, aml_int(0)); /* ignored */
-+    aml_append(pkg, aml_int(0)); /* reserved */
-+    aml_append(pkg, aml_int(0)); /* reserved */
-+    aml_append(scope, aml_name_decl("_S3", pkg));
-+    aml_append(dsdt, scope);
-+
-+    scope = aml_scope("\\");
-+    pkg = aml_package(4);
-+    aml_append(pkg, aml_int(ACPI_GED_SLP_TYP_S4));
-+    aml_append(pkg, aml_int(0)); /* ignored */
-+    aml_append(pkg, aml_int(0)); /* reserved */
-+    aml_append(pkg, aml_int(0)); /* reserved */
-+    aml_append(scope, aml_name_decl("_S4", pkg));
-+    aml_append(dsdt, scope);
-+
-     scope = aml_scope("\\");
-     pkg = aml_package(4);
-     aml_append(pkg, aml_int(ACPI_GED_SLP_TYP_S5));
-diff --git a/hw/i386/microvm.c b/hw/i386/microvm.c
-index fec63cacfa88..b9fb2d28e570 100644
---- a/hw/i386/microvm.c
-+++ b/hw/i386/microvm.c
-@@ -206,6 +206,9 @@ static void microvm_devices_init(MicrovmMachineState *mms)
-     if (x86_machine_is_acpi_enabled(x86ms)) {
-         DeviceState *dev = qdev_new(TYPE_ACPI_GED);
-         qdev_prop_set_uint32(dev, "ged-event", ACPI_GED_PWR_DOWN_EVT);
-+        qdev_prop_set_uint32(dev, "slp-typs", (1 << ACPI_GED_SLP_TYP_S3) |
-+                             (1 << ACPI_GED_SLP_TYP_S4) |
-+                             (1 << ACPI_GED_SLP_TYP_S5));
-         sysbus_realize(SYS_BUS_DEVICE(dev), &error_fatal);
-         sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, GED_MMIO_BASE);
-         /* sysbus_mmio_map(SYS_BUS_DEVICE(dev), 1, GED_MMIO_BASE_MEMHP); */
+Basically if you see yourself maintaining these files for a long time
+instead of just contributing them now and you want to be contacted
+when they are changed in the future, that's when you could consider it.
+But the patches will still go through my or Hanna's tree and we already
+cover all of qemu-iotests, so we don't have to have a formal
+maintainership definition for these files specifically.
 
--- 
-2.43.0
+Kevin
 
 
