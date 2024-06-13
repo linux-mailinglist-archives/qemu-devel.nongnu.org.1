@@ -2,80 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E60EC906368
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jun 2024 07:22:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41C7B906351
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jun 2024 07:10:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sHctn-00060X-FL; Thu, 13 Jun 2024 01:21:23 -0400
+	id 1sHchf-00009N-PX; Thu, 13 Jun 2024 01:08:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <east.moutain.yang@gmail.com>)
- id 1sHa6e-0006Oq-Jk
- for qemu-devel@nongnu.org; Wed, 12 Jun 2024 22:22:28 -0400
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1sHchd-000090-KQ
+ for qemu-devel@nongnu.org; Thu, 13 Jun 2024 01:08:49 -0400
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <east.moutain.yang@gmail.com>)
- id 1sHa6d-0000Lo-4q
- for qemu-devel@nongnu.org; Wed, 12 Jun 2024 22:22:28 -0400
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-7046e87e9afso438505b3a.0
- for <qemu-devel@nongnu.org>; Wed, 12 Jun 2024 19:22:26 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1sHchb-0002W2-Lo
+ for qemu-devel@nongnu.org; Thu, 13 Jun 2024 01:08:49 -0400
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-35f27eed98aso601847f8f.2
+ for <qemu-devel@nongnu.org>; Wed, 12 Jun 2024 22:08:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1718245344; x=1718850144; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=VVRjRXdInkrNhgtrZkzcikgyiKaWkYOFgYpR9Y90K9w=;
- b=A0qBoT6EYzeI6sySnKKNNSXZOwsrUiR+EiJ2tbVR37XfUHpmDBjqYZvKGtJUmTd2FL
- msDEAmXSx9pAJ60WkjESr6JzQfcc37oHjNemkTQryAbJhTfOe+3nyFFNyqPyPU2/6RZE
- RU1lHYJzuzKwG3wY4I4FiArsCjtgCds9j3blwN3Tini3k//i4sMsW/WQWh5eu3Wiens4
- Sd37z/sdHJ65UOjOWKxpcRV29eeHOcjK5iZee1lTQq8mu/T5xnaCxPG0zPjGnF0jQza1
- q9J/hdGVXBhHN1y5dwQ0NKbGfaLRl9v8+0OUDm/EzupBcufbC1giukdm+0BCHhZQTPXT
- nEAA==
+ d=linaro.org; s=google; t=1718255324; x=1718860124; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=gTXaqNSSsDYAEPUjrpC/YF3hm4eaFDRtbINcjV/Jorw=;
+ b=VjF9xAoNeszp8rx8RW9/yaGS8w3KNVaIefqakAYKWqvINCuACQJzP7KSpOSNU3kMrK
+ r3MqXbfZ3MLkDvkzgSG81k2+SSzFVHhayov7eXH6ZUbQ76GQygZPVK7RiUvo2l0xIADF
+ SWVwuCwtLfXi2oTnBcpgxwNX7rs/6EQ92x5DRA0uAeO+CHf+IFVFP5rTh6A8SCcFUHqf
+ zqZLoISuVD08P2zmUZ6jYQ2MnnNy7rtuGd0lIpICU5hwzxmWye6sLwXk+yGcvEBgu2Qf
+ vQ3se1OJS4Xpfuih1S1QFidP/thjRKumSNx0xqZ9q1lEMtz7sn5mFZEmnt5jqW8H1no3
+ F5Ow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718245344; x=1718850144;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=VVRjRXdInkrNhgtrZkzcikgyiKaWkYOFgYpR9Y90K9w=;
- b=pfSit76z4gohAiWViG6xPazWlrQ5Bnuie4BHRmGgUmEFmyEKFVwrb1OS/wqOreOYGL
- kwBqE4pj/tc+cVK9rq45wnxXG8TlzqSE0qtx/WqtpKll+nAyhp97reuNUFlX+EjxUcpb
- 9nT85pwMdz5+oS8I5Fhzl5hXEjOOw9ZMBUnUqmhOBw1HROJ4QboklwHewHft7R69UK0L
- weIyX/GfD/GUGs+vYcfNmz90hrISiIhlHamtJg4ADi3ZGlRI9qBRex2tAzKrAdwoAOgy
- z00Q8VUSSsVyW4iLZGjTVfqWvGQUJrpyCQ+YF8sh9gAajPMcMsZ3dlkhr0NoQfLg5osJ
- Vkaw==
-X-Gm-Message-State: AOJu0YzkMa3yfygA4hkR0Q/N+D8tiM7/S2zSjgZPT9euOOFDEon6BoC0
- B92LRlYzX79wVDxYZT2gouycgu8Ezh85aAj2ieqIhBvnJT/Ci6fkDbzatKdJbtc=
-X-Google-Smtp-Source: AGHT+IF5U+SXFit98Q6rJiQxZRrlIZ8GhZvc98iGDiQOtCdOfyg+3JmtD/kKmF6S143UqUIMdr3Drg==
-X-Received: by 2002:a05:6a20:96cb:b0:1b7:dd1f:b7fe with SMTP id
- adf61e73a8af0-1b8a9b8754dmr3171663637.29.1718245343979; 
- Wed, 12 Jun 2024 19:22:23 -0700 (PDT)
-Received: from localhost.localdomain ([118.242.3.34])
+ d=1e100.net; s=20230601; t=1718255324; x=1718860124;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=gTXaqNSSsDYAEPUjrpC/YF3hm4eaFDRtbINcjV/Jorw=;
+ b=feAhEMtJ4Oj1d7AsrWyipzlu5WM+e3Hlq/x5Q5oM7rPjv3KiEICiZuslrvCgPjSWCx
+ XmDxBc6HVVnsEqsFWA91P4hr+a73q7blRLVOt3fOkNOpzZ1OQGpF4NAOkwybIDJ0m3yj
+ hVd6wkHw8k2g9O5AVdbr/atxvK0wKHn4ZZlmugkiMWc5Nl0oZ8FgRpEnM21AHBY0uNl+
+ 5Muuah9VPx5+BecwOHT/nVYBAjs+rtd87C9RQ0vnd1ccUAfVooaVFJLEdvxDoNWlIKrI
+ NuFJEFVuuRxNO84ONGLoOdYhnXsdZaToqCya3vmskbi7HZAg+3Nc7qrIuLEx3turP7uS
+ E6Mw==
+X-Gm-Message-State: AOJu0YwavcbCiaZK499a5ToFkVd2qEfP9PGILqecEGMkgMI2sZxC9HOq
+ pkJzRWgYfpJ2lPu5LGSU3afcQq3/ozI8uewN2TUNyESBB6Qtf6k5KgPkMDLSTtUyWeUvcLxIuJ8
+ 6v78=
+X-Google-Smtp-Source: AGHT+IH2eg3aeeGzWUSODdEoIOi8fO7tS8K5zuZ/z+4LnawJto/eJQBQRd0zxGHnt509F5Wzmf/KIw==
+X-Received: by 2002:a05:6000:104b:b0:35f:30cf:b4bd with SMTP id
+ ffacd0b85a97d-35fdf79a736mr2535569f8f.20.1718255324525; 
+ Wed, 12 Jun 2024 22:08:44 -0700 (PDT)
+Received: from meli-email.org (adsl-105.37.6.1.tellas.gr. [37.6.1.105])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1f855e80eebsm1731175ad.117.2024.06.12.19.22.21
+ ffacd0b85a97d-3607509c8d8sm573554f8f.32.2024.06.12.22.08.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 12 Jun 2024 19:22:23 -0700 (PDT)
-From: thomas <east.moutain.yang@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: mst@redhat.com, jasowang@redhat.com, thomas <east.moutain.yang@gmail.com>
-Subject: [PATCH] Update event idx if guest has made extra buffers during
- double check
-Date: Thu, 13 Jun 2024 10:21:47 +0800
-Message-Id: <20240613022147.5886-1-east.moutain.yang@gmail.com>
-X-Mailer: git-send-email 2.39.0
+ Wed, 12 Jun 2024 22:08:44 -0700 (PDT)
+Date: Thu, 13 Jun 2024 08:06:09 +0300
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+To: qemu-devel@nongnu.org, Peng Fan <peng.fan@nxp.com>,
+ "alex.bennee@linaro.org" <alex.bennee@linaro.org>,
+ "peter.maydell@linaro.org" <peter.maydell@linaro.org>,
+ "stefanha@redhat.com" <stefanha@redhat.com>
+Cc: 
+Subject: Re: Qemu License question
+User-Agent: meli 0.8.6
+References: <AM6PR04MB5941BDF756878B3CA208D07D88C12@AM6PR04MB5941.eurprd04.prod.outlook.com>
+In-Reply-To: <AM6PR04MB5941BDF756878B3CA208D07D88C12@AM6PR04MB5941.eurprd04.prod.outlook.com>
+Message-ID: <f06ai.hy2gx5h8080@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
- envelope-from=east.moutain.yang@gmail.com; helo=mail-pf1-x42e.google.com
+Content-Type: text/plain; charset=utf-8; format=flowed
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wr1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Thu, 13 Jun 2024 01:21:21 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,29 +96,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fixes: 06b12970174 ("virtio-net: fix network stall under load")
+On Thu, 13 Jun 2024 06:26, Peng Fan <peng.fan@nxp.com> wrote:
+>Hi All,
+>
+>The following files are marked as GPL-3.0-or-later. Will these
+>Conflict with Qemu LICENSE?
+>
+>Should we update the files to GPL-2.0?
+>
+>./tests/tcg/aarch64/semicall.h:7: * SPDX-License-Identifier: GPL-3.0-or-later
+>./tests/tcg/x86_64/system/boot.S:13: * SPDX-License-Identifier: GPL-3.0-or-later
+>./tests/tcg/riscv64/semicall.h:7: * SPDX-License-Identifier: GPL-3.0-or-later
+>./tests/tcg/multiarch/float_convs.c:6: * SPDX-License-Identifier: GPL-3.0-or-later
+>./tests/tcg/multiarch/float_helpers.h:6: * SPDX-License-Identifier: GPL-3.0-or-later
+>./tests/tcg/multiarch/libs/float_helpers.c:10: * SPDX-License-Identifier: GPL-3.0-or-later
+>./tests/tcg/multiarch/arm-compat-semi/semihosting.c:7: * SPDX-License-Identifier: GPL-3.0-or-later
+>./tests/tcg/multiarch/arm-compat-semi/semiconsole.c:7: * SPDX-License-Identifier: GPL-3.0-or-later
+>./tests/tcg/multiarch/float_convd.c:6: * SPDX-License-Identifier: GPL-3.0-or-later
+>./tests/tcg/multiarch/float_madds.c:6: * SPDX-License-Identifier: GPL-3.0-or-later
+>./tests/tcg/i386/system/boot.S:10: * SPDX-License-Identifier: GPL-3.0-or-later
+>./tests/tcg/arm/semicall.h:7: * SPDX-License-Identifier: GPL-3.0-or-later
+>
+>Thanks,
+>Peng.
 
-If guest has made some buffers available during double check,
-but the total buffer size available is lower than @bufsize,
-notify the guest with the latest available idx(event idx)
-seen by the host.
----
- hw/net/virtio-net.c | 1 +
- 1 file changed, 1 insertion(+)
 
-diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-index 9c7e85caea..23c6c8c898 100644
---- a/hw/net/virtio-net.c
-+++ b/hw/net/virtio-net.c
-@@ -1654,6 +1654,7 @@ static int virtio_net_has_buffers(VirtIONetQueue *q, int bufsize)
-         if (virtio_queue_empty(q->rx_vq) ||
-             (n->mergeable_rx_bufs &&
-              !virtqueue_avail_bytes(q->rx_vq, bufsize, 0))) {
-+            virtio_queue_set_notification(q->rx_vq, 1);
-             return 0;
-         }
-     }
--- 
-2.39.0
+Hello Peng,
 
+These are all actually GPL-2.0-or-later, in fact I can't find the string 
+GPL-3.0-or-later in the current master at all.
+
+Manos
 
