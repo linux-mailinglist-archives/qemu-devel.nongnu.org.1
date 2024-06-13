@@ -2,87 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1F3490693F
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jun 2024 11:49:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB1F3906945
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jun 2024 11:50:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sHh4I-0004S2-5H; Thu, 13 Jun 2024 05:48:30 -0400
+	id 1sHh66-0005oT-PT; Thu, 13 Jun 2024 05:50:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sHh4E-0004Rc-7f
- for qemu-devel@nongnu.org; Thu, 13 Jun 2024 05:48:26 -0400
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sHh4C-0001fh-KI
- for qemu-devel@nongnu.org; Thu, 13 Jun 2024 05:48:25 -0400
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-35f0d6255bdso799173f8f.1
- for <qemu-devel@nongnu.org>; Thu, 13 Jun 2024 02:48:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1718272101; x=1718876901; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=xGhk/spDP89wS2ZNe2S7gyQIoX1ZGRST+KHMCay608w=;
- b=TcmCuvBgtwtW/1OmVl9g/KbgoyErR1u4GY67Roli63JcfrTmsca37cotoZNl1Qe5G7
- 6y4gBEOONXtrQS/l0r/YNBAiSmHe5esTKii5pWFMtrv8K+nfjhrJMIi67aMgx/1GXUf7
- 9rQ9vITIQ0QeGnPbc9JrHy/xffknLKkTQZtaSE0wZtGiF07BrpIsXTTZOjhSJMGGp2jN
- xsBZXlx7neh4DV0gVPtIveQAFq5XkP2yX8WacB+YOIDJg++2vWa+v50ONG4jk2tCbO8j
- Htaxz3FW4PwYEFP98WqihrJ/Bo2et7H+lDJ9o9CFaDob9y0Gta11FfqKiikBnmMjsIMh
- FWRQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718272101; x=1718876901;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=xGhk/spDP89wS2ZNe2S7gyQIoX1ZGRST+KHMCay608w=;
- b=jR9w9oi2+Kn8KgEO+kwvfKfYXEIbkuxeUSnp0F5BDIDwhd/pWhUSwha53d/81uJNAV
- U9m2U5Fk1TcA07FJ5pjRBzRVNI5jFQ9BLtQH4lGQ5KRC8YRcR8usjqKCicH/h0B5gW2S
- cyWvomgqXKTWM3pxVDlr3miTxJ5VQdhklf6nE/O0Aki5E+mDcYU+FlRysCCyM01v+HRI
- yfMDWDic7oLS3BXZWsmErcI/gHTPwHFtV/V+e8XEZiRMmtbdMCrAHqhVe/PXnBOGZe/n
- 6ImrCbXmaNUBzA3MQeaPuB0jaP5ChRlhi2FaC00oQWFVX85zY3ansJq3R/uKRs7sjTQY
- UQcg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWGMZcFZXqhiwNZaNc+q8brgfQl403ABmZDZ2uZu9aIgO/k5X7hMgtZk597yzLPDcRE4AKlM9Kt7JZBYRR3XAbXaFMsmDs=
-X-Gm-Message-State: AOJu0Yz3miyQdntqwunT+4I90yVUf7J0Pu99/zkrDNgXLNoohBz3MZEk
- I2f1KfE/pKLBPD2Qac+g7wNgcRrbe6n5rAjWbZE4j0uN5/H4YAgIm5fgG73mIHw=
-X-Google-Smtp-Source: AGHT+IHtjgQTe2IQDtIMBIABZMxKQjtjTUoPz/1QICH4eFhaT1N7pwGoXBStReN3MRQl+BKpHb63XA==
-X-Received: by 2002:a5d:5308:0:b0:35f:1e30:f69a with SMTP id
- ffacd0b85a97d-35fe88c91f6mr3301679f8f.42.1718272101107; 
- Thu, 13 Jun 2024 02:48:21 -0700 (PDT)
-Received: from [192.168.69.100] ([176.176.148.226])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-36075104c17sm1174740f8f.106.2024.06.13.02.48.19
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 13 Jun 2024 02:48:20 -0700 (PDT)
-Message-ID: <c44dcf6c-3e99-4a32-888d-3c7dfc305a01@linaro.org>
-Date: Thu, 13 Jun 2024 11:48:18 +0200
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1sHh63-0005o3-SO
+ for qemu-devel@nongnu.org; Thu, 13 Jun 2024 05:50:19 -0400
+Received: from mgamail.intel.com ([192.198.163.19])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1sHh61-00027G-Rs
+ for qemu-devel@nongnu.org; Thu, 13 Jun 2024 05:50:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1718272218; x=1749808218;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=6y4QQC9OFuWGXJq4CbQWs+OveQI9h7vXDqnwywuumfo=;
+ b=DeX0C/lIG0VhhNkjrLhEiguHoZ/lllgIHuaSLgSCUkEYxB9HbiITpaOn
+ 4eu112pb5/v2oJx8+P7IlxRAIObuWYB2AfjJ84PkjAGXi642pQLENiUj8
+ Vx+0H1HtqP/4B+9bRASZUsgSNy08TX1ynmu7B/jQBdjr/g3AjyOAK02TM
+ Vsu/MaAdy5MuKzYFXYvvwuDs80qcs/WWdQ5yoXrTxKfEPiqsWTrd3GynM
+ /YWbt2HV4vUOlO+GO+NyOWXaM1Qad8ZdnWSfegIpcMLyGUhHJzJ5RepFu
+ wBByRRxzX51G9IL6bpCvTnzoB92BSd+jW1QBZLe9wq+MUsmCkQiV5FRiV Q==;
+X-CSE-ConnectionGUID: 1y4H1KqBQEKo4y7seN13uA==
+X-CSE-MsgGUID: 833X7oQ9RASvHXjl909HKw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11101"; a="14878963"
+X-IronPort-AV: E=Sophos;i="6.08,234,1712646000"; d="scan'208";a="14878963"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Jun 2024 02:50:13 -0700
+X-CSE-ConnectionGUID: 6IiplG3QTDCj3YxYhuStCg==
+X-CSE-MsgGUID: KWnptnc6SR2LQm1USBa9pQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,234,1712646000"; d="scan'208";a="70877989"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.227.51])
+ ([10.124.227.51])
+ by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Jun 2024 02:50:12 -0700
+Message-ID: <c54d5f72-ecfd-46e0-baf9-324fdedd2ed3@intel.com>
+Date: Thu, 13 Jun 2024 17:50:08 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/26] hw/ppc: Prefer HumanReadableText over Monitor
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, qemu-devel@nongnu.org
-Cc: Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-ppc@nongnu.org,
- Nicholas Piggin <npiggin@gmail.com>, =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?=
- <fbarrat@linux.ibm.com>, David Gibson <david@gibson.dropbear.id.au>,
- =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>
-References: <20240610062105.49848-1-philmd@linaro.org>
- <cd48f836-3017-4559-b509-9945d041a327@kaod.org>
+Subject: Re: [PULL 39/42] i386: Add support for SUCCOR feature
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+Cc: John Allen <john.allen@amd.com>, William Roche
+ <william.roche@oracle.com>, Joao Martins <joao.m.martins@oracle.com>
+References: <20240608083415.2769160-1-pbonzini@redhat.com>
+ <20240608083415.2769160-40-pbonzini@redhat.com>
 Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <cd48f836-3017-4559-b509-9945d041a327@kaod.org>
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20240608083415.2769160-40-pbonzini@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=192.198.163.19; envelope-from=xiaoyao.li@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -45
+X-Spam_score: -4.6
+X-Spam_bar: ----
+X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.143,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.001, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,91 +85,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/6/24 10:19, Cédric Le Goater wrote:
-> On 6/10/24 8:20 AM, Philippe Mathieu-Daudé wrote:
->> Hi,
->>
->> This series remove uses of Monitor in hw/ppc/,
->> replacing by the more generic HumanReadableText.
->> Care is taken to keep the commit bisectables by
->> updating functions one by one, also easing review.
+On 6/8/2024 4:34 PM, Paolo Bonzini wrote:
+> From: John Allen <john.allen@amd.com>
 > 
-> Did you do any testing ? POWER[8-10] CPUs on pseries and powernv machines
-> should be checked. A bit tedious I agree but not that long.
+> Add cpuid bit definition for the SUCCOR feature. This cpuid bit is required to
+> be exposed to guests to allow them to handle machine check exceptions on AMD
+> hosts.
+> 
+> ----
+> v2:
+>    - Add "succor" feature word.
+>    - Add case to kvm_arch_get_supported_cpuid for the SUCCOR feature.
+> 
+> Reported-by: William Roche <william.roche@oracle.com>
+> Reviewed-by: Joao Martins <joao.m.martins@oracle.com>
+> Signed-off-by: John Allen <john.allen@amd.com>
+> Message-ID: <20240603193622.47156-3-john.allen@amd.com>
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 
-I ran these smoke tests comparing monitor output with baseline:
+[snip]
+...
 
-$ ./qemu-system-ppc64 -M powernv8 -S -monitor stdio
-QEMU 9.0.50 monitor - type 'help' for more information
-(qemu) info pic
-CPU 0 XIRR=00000000 (0x0) PP=ff MFRR=ff
-ICS 1000..1005 0x14c03d9c0
-   1000 LSI ff 00
-   1001 LSI ff 00
-   1002 LSI ff 00
-   1003 LSI ff 00
-   1004 LSI ff 00
-   1005 LSI ff 00
-ICS    0.. 7ff 0x14c0e93e8
-ICS    0..   7 0x14c0e9328
-      0 LSI ff 00
-      1 LSI ff 00
-      2 LSI ff 00
-      3 LSI ff 00
-      4 LSI ff 00
-      5 LSI ff 00
-      6 LSI ff 00
-      7 LSI ff 00
-ICS    0.. 7ff 0x14c16ffe8
-ICS    0..   7 0x14c16ff28
-      0 LSI ff 00
-      1 LSI ff 00
-      2 LSI ff 00
-      3 LSI ff 00
-      4 LSI ff 00
-      5 LSI ff 00
-      6 LSI ff 00
-      7 LSI ff 00
-ICS    0.. 7ff 0x14c2177e8
-ICS    0..   7 0x14c217728
-      0 LSI ff 00
-      1 LSI ff 00
-      2 LSI ff 00
-      3 LSI ff 00
-      4 LSI ff 00
-      5 LSI ff 00
-      6 LSI ff 00
-      7 LSI ff 00
-Interrupt controller information not available for 
-power8_v2.0-powerpc64-cpu.
-(qemu) q
+> diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+> index 55a9e8a70cf..56d8e2a89ec 100644
+> --- a/target/i386/kvm/kvm.c
+> +++ b/target/i386/kvm/kvm.c
+> @@ -532,6 +532,8 @@ uint32_t kvm_arch_get_supported_cpuid(KVMState *s, uint32_t function,
+>            */
+>           cpuid_1_edx = kvm_arch_get_supported_cpuid(s, 1, 0, R_EDX);
+>           ret |= cpuid_1_edx & CPUID_EXT2_AMD_ALIASES;
+> +    } else if (function == 0x80000007 && reg == R_EBX) {
+> +        ret |= CPUID_8000_0007_EBX_SUCCOR;
 
-$ ./qemu-system-ppc64 -M pseries -cpu power10 -S -monitor stdio
-QEMU 9.0.50 monitor - type 'help' for more information
-qemu-system-ppc64: warning: TCG doesn't support requested feature, 
-cap-cfpc=workaround
-qemu-system-ppc64: warning: TCG doesn't support requested feature, 
-cap-sbbc=workaround
-qemu-system-ppc64: warning: TCG doesn't support requested feature, 
-cap-ibs=workaround
-qemu-system-ppc64: warning: TCG doesn't support requested feature, 
-cap-ccf-assist=on
-(qemu) info pic
-CPU 0 XIRR=00000000 (0x0) PP=ff MFRR=ff
-ICS 1000..1fff 0x600003b05b00
-   1000 MSI ff 00
-   1001 MSI ff 00
-   1100 MSI ff 00
-   1101 MSI ff 00
-   1102 MSI ff 00
-   1103 MSI ff 00
-   1200 LSI ff 00
-   1201 LSI ff 00
-   1202 LSI ff 00
-   1203 LSI ff 00
-irqchip: emulated
-Interrupt controller information not available for 
-power10_v2.0-powerpc64-cpu.
-(qemu) q
+IMO, this is incorrect.
+
+Why make it supported unconditionally? Shouldn't there be a KVM patch to 
+report it in KVM_GET_SUPPORTED_CPUID?
+
+If make it supported unconditionally, all VMs boot with "-cpu host/max" 
+will see the CPUID bits, even if it is Intel VMs.
+
+
+>       } else if (function == KVM_CPUID_FEATURES && reg == R_EAX) {
+>           /* kvm_pv_unhalt is reported by GET_SUPPORTED_CPUID, but it can't
+>            * be enabled without the in-kernel irqchip
 
 
