@@ -2,103 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 047D29075BD
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jun 2024 16:52:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 146159075CF
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jun 2024 16:56:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sHloB-0002QY-Vs; Thu, 13 Jun 2024 10:52:12 -0400
+	id 1sHlqv-0004WU-FD; Thu, 13 Jun 2024 10:55:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sHlo8-0002QL-A1
- for qemu-devel@nongnu.org; Thu, 13 Jun 2024 10:52:08 -0400
-Received: from smtp-out1.suse.de ([195.135.223.130])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sHlo5-0001U0-G2
- for qemu-devel@nongnu.org; Thu, 13 Jun 2024 10:52:08 -0400
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1sHlqj-0004Tl-By
+ for qemu-devel@nongnu.org; Thu, 13 Jun 2024 10:54:50 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1sHlqg-000246-82
+ for qemu-devel@nongnu.org; Thu, 13 Jun 2024 10:54:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1718290476;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=EJFGVpauEUC7aWOyT+tk2DAUOZNN0ZL0c+nEaK6E6ko=;
+ b=TZkXHhuA7d63cTu3YlkpvGwX7ed3RVAMRaEwPzHJq3AAsyR6Ch20ouB7F0Zs7hZP7TclSb
+ Qw+8T/6uffPPE1LrnXvmz46Pte/EyIrdH0C/YueUVLAmKvOfcdLPzbBrQFvUNI6+tRQnX5
+ JttNVoTE8eC1hfXJSEnGPd2ujAkosTU=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-609-b1igJXsfNU6m6ZpRfcpUZQ-1; Thu,
+ 13 Jun 2024 10:54:34 -0400
+X-MC-Unique: b1igJXsfNU6m6ZpRfcpUZQ-1
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id B8C5D372C8;
- Thu, 13 Jun 2024 14:52:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1718290322; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=He2mZQkyYjbAkGhXADqABDXfDheG0C2pfPiD5g6Uf7M=;
- b=XoMAZdmkJt9j+D9kfkJsAwq65yex8f7kZN3KWS+zBPEcc3f+Bx9ws4pCg+kVmJ1h+nFB+1
- 2RA91upGuGV2UQTM2eZftmaHCQaX2kxhVTQdMsZWPiOQwSorxbm69TPrdmW9jpjkr4BAhT
- tZBxOm+uwV60CnEc2lkp2qX210ovo6k=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1718290322;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=He2mZQkyYjbAkGhXADqABDXfDheG0C2pfPiD5g6Uf7M=;
- b=Yep+Psqw5T0AyQW/AmN8z5xGV8YT3aNDUUUMyZDUkYhQ3hqXK9V8gLvF/nZUwomXRgYl4z
- dnXl2DK3MF4Ha6Dg==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1718290321; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=He2mZQkyYjbAkGhXADqABDXfDheG0C2pfPiD5g6Uf7M=;
- b=kSt8eq32KY3Mpy5CSNo/a3fjbHuYhkog6vwhH2IdtD0NVs/Awb0oR5IQyjz+jBEfISwtUy
- 6sowZbxMSXok53lSb1PNPb59XBMX+kp10vI4/agIOaoXOJM7YUYDK7FrhNSA7AHU532hID
- kXzHooRT0qcV+dzkc6kEiGr/MZsoEmk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1718290321;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=He2mZQkyYjbAkGhXADqABDXfDheG0C2pfPiD5g6Uf7M=;
- b=HRil+k/9yVG7VRimhFDcfyWGWNJG/PsmvYXmyrd6p/tzas+yXVh0gA+UhkUJr7yXdmb+ZM
- gqvAMM/dmu/5LVCg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4321213A7F;
- Thu, 13 Jun 2024 14:52:01 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id OnL1ApEHa2YCVwAAD6G6ig
- (envelope-from <farosas@suse.de>); Thu, 13 Jun 2024 14:52:01 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org
-Cc: Jiri Denemark <jdenemar@redhat.com>, Prasad Pandit <ppandit@redhat.com>,
- Bandan Das <bdas@redhat.com>, peterx@redhat.com
-Subject: Re: [PATCH 4/4] migration/postcopy: Add postcopy-recover-setup phase
-In-Reply-To: <20240612144228.1179240-5-peterx@redhat.com>
-References: <20240612144228.1179240-1-peterx@redhat.com>
- <20240612144228.1179240-5-peterx@redhat.com>
-Date: Thu, 13 Jun 2024 11:51:58 -0300
-Message-ID: <8734pgdhf5.fsf@suse.de>
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 9AB97195608D
+ for <qemu-devel@nongnu.org>; Thu, 13 Jun 2024 14:54:33 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.52])
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 34C8E19560AD; Thu, 13 Jun 2024 14:54:31 +0000 (UTC)
+Date: Thu, 13 Jun 2024 15:54:28 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: John Snow <jsnow@redhat.com>
+Cc: Markus Armbruster <armbru@redhat.com>, qemu-devel <qemu-devel@nongnu.org>
+Subject: Re: Sample 'qapi-schema-diff' output for v9.0.0 vs origin/master
+Message-ID: <ZmsIJPlnGcXD_p_R@redhat.com>
+References: <CAFn=p-a4MOZGDd7nj_gEf0fT7nvwa40pLJ1GiGOTj3uNhSq1tg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Score: -4.30
-X-Spamd-Result: default: False [-4.30 / 50.00]; BAYES_HAM(-3.00)[100.00%];
- NEURAL_HAM_LONG(-1.00)[-1.000];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
- MIME_TRACE(0.00)[0:+]; MISSING_XM_UA(0.00)[];
- TO_DN_SOME(0.00)[]; MID_RHS_MATCH_FROM(0.00)[];
- RCVD_TLS_ALL(0.00)[];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
- RCPT_COUNT_FIVE(0.00)[6]; RCVD_COUNT_TWO(0.00)[2];
- FUZZY_BLOCKED(0.00)[rspamd.com]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:email]
-Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAFn=p-a4MOZGDd7nj_gEf0fT7nvwa40pLJ1GiGOTj3uNhSq1tg@mail.gmail.com>
+User-Agent: Mutt/2.2.12 (2023-09-09)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: 11
+X-Spam_score: 1.1
+X-Spam_bar: +
+X-Spam_report: (1.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.145,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -111,360 +82,227 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Xu <peterx@redhat.com> writes:
+On Wed, Jun 12, 2024 at 02:40:40PM -0400, John Snow wrote:
+> Hiya, here's some draft output of a script I'm working on to summarize QMP
+> wire format differences between QEMU versions.
+> 
+> This script works in terms of the QMP *wire format*, not the QAPI
+> *specification*. As a consequence, *almost* all type names are stripped
+> from this output and all nested structures are fully inlined - so changes
+> to shared data structures, enums, etc will manifest as many independent
+> changes. Similarly, changes to type names and type factorings that do not
+> change the wire format will not appear in this report at all.
+> 
+> This is still a WIP: if conditionals and features may not be fully
+> represented in this summary report.
+> 
+> Here's today's diff output, see if you think this format is "intuitive" or
+> makes sense to some extent; or, if you're feeling bored, if you believe
+> it's fully accurate:
+> 
+> jsnow@scv ~/s/qemu (master)> qapi-schema-diff qapi-compiled-v9.0.0.json
+> qapi-compiled-v9.0.0-1388-g80e8f060216.json
+> ###################################
+> v9.0.0 ==> v9.0.0-1388-g80e8f060216
+> ###################################
+> 
+> ********
+> commands
+> ********
+> 
+> Removed
+> =======
+> x-query-rdma
 
-> This patch adds a migration state on src called "postcopy-recover-setup".
-> The new state will describe the intermediate step starting from when the
-> src QEMU started an postcopy recovery request, until the migration channels
-> are properly established, but before the recovery process take place.
->
-> The request came from Libvirt where Libvirt currently rely on the migration
-> state events to detect migration state changes.  That works for most of the
-> migration process but except postcopy recovery failures at the beginning.
->
-> Currently postcopy recovery only has two major states:
->
->   - postcopy-paused: this is the state that both sides of QEMU will be in
->     for a long time as long as the migration channel was interrupted.
->
->   - postcopy-recover: this is the state where both sides of QEMU handshake
->     with each other, preparing for a continuation of postcopy which used to
->     be interrupted.
->
-> The issue here is when the recovery port is invalid, the src QEMU will take
-> the URI/channels, noticing the ports are not valid, and it'll silently keep
-> in the postcopy-paused state, with no event sent to Libvirt.  In this case,
-> the only thing Libvirt can do is to poll the migration status with a proper
-> interval, however that's less optimal.
->
-> Considering that this is the only case where Libvirt won't get a
-> notification from QEMU on such events, let's add postcopy-recover-setup
-> state to mimic what we used to have with the "setup" state of a newly
+I'd probably suggest that added/removed commands and
+events liste the full set of properties too, as you
+could conceptually say we're adding/removing each
+property, plus the command itself.
 
-s/used to //
 
-> initialized migration, describing the phase of connection establishment.
->
-> With that, postcopy recovery will have two paths to go now, and either path
-> will guarantee an event generated.  Now the events will look like this
-> during a recovery process on src QEMU:
->
->   - Initially when the recovery is initiated on src, QEMU will go from
->     "postcopy-paused" -> "postcopy-recover-setup".  Old QEMUs don't have
->     this event.
->
->   - Depending on whether the channel re-establishment is succeeded:
->
->     - In succeeded case, src QEMU will move from "postcopy-recover-setup"
->       to "postcopy-recover".  Old QEMUs also have this event.
->
->     - In failure case, src QEMU will move from "postcopy-recover-setup" to
->       "postcopy-paused" again.  Old QEMUs don't have this event.
->
-> This guarantees that Libvirt will always receive a notification for
-> recovery process properly.
->
-> One thing to mention is, such new status is only needed on src QEMU not
-> both.  On dest QEMU, the state machine doesn't change.  Hence the events
-> don't change either.  It's done like so because dest QEMU may not have an
-> explicit point of setup start.  E.g., it can happen that when dest QEMUs
-> doesn't use migrate-recover command to use a new URI/channel, but the old
-> URI/channels can be reused in recovery, in which case the old ports simply
-> can work again after the network routes are fixed up.
->
-> The patch has some touch-ups in the dest path too, but it's because there's
-> some unclearness on using migrate_set_state(), so the change should make it
-> crystal clear now by checking current status always.  The next step from
+> 
+> Modified
+> ========
+> blockdev-backup (arguments)
+>     ++ arguments.discard-source: Optional<boolean>
+> drive-backup (arguments)
+>     ++ arguments.discard-source: Optional<boolean>
+> migrate (arguments)
+>     -- arguments.blk: Optional<boolean>
+>     -- arguments.inc: Optional<boolean>
 
-Can we get a separate patch for these cleanups?
+With the headings groupings and indentation this feels like
+we're targetting humans with this file, but at the same time
+it is also kind of a raw machine feeling. The '(arguments)'
+suffix feels redundant given the lines that follow.
 
-> that POV would be making migrate_set_state() not using cmpxchg() but always
-> update the status, but that's for later.
->
-> Cc: Jiri Denemark <jdenemar@redhat.com>
-> Cc: Fabiano Rosas <farosas@suse.de>
-> Cc: Prasad Pandit <ppandit@redhat.com>
-> Buglink: https://issues.redhat.com/browse/RHEL-38485
-> Signed-off-by: Peter Xu <peterx@redhat.com>
-> ---
->  qapi/migration.json      |  4 +++
->  migration/postcopy-ram.h |  3 ++
->  migration/migration.c    | 66 +++++++++++++++++++++++++++++++++++-----
->  migration/postcopy-ram.c |  6 ++++
->  migration/savevm.c       |  4 +--
->  5 files changed, 73 insertions(+), 10 deletions(-)
->
-> diff --git a/qapi/migration.json b/qapi/migration.json
-> index a351fd3714..a135bbcd96 100644
-> --- a/qapi/migration.json
-> +++ b/qapi/migration.json
-> @@ -142,6 +142,9 @@
->  #
->  # @postcopy-paused: during postcopy but paused.  (since 3.0)
->  #
-> +# @postcopy-recover-setup: setup phase for a postcopy recover process,
-> +#     preparing for a recover phase to start.  (since 9.1)
+I'm inclined to say this is mostly considered machine
+and/or patch reviewer, targetted plain text. Consumer
+human targetted would be something added to the QMP
+ref, as an appendix with more structured RST format.
 
-recover*y* process
-recover*y* phase
+Does it make sense to group into added/removed/modified
+for commands, if we then just mix added/removed properties
+in the same place ?
 
-> +#
->  # @postcopy-recover: trying to recover from a paused postcopy.  (since
->  #     3.0)
->  #
-> @@ -166,6 +169,7 @@
->  { 'enum': 'MigrationStatus',
->    'data': [ 'none', 'setup', 'cancelling', 'cancelled',
->              'active', 'postcopy-active', 'postcopy-paused',
-> +            'postcopy-recover-setup',
->              'postcopy-recover', 'completed', 'failed', 'colo',
->              'pre-switchover', 'device', 'wait-unplug' ] }
->  ##
-> diff --git a/migration/postcopy-ram.h b/migration/postcopy-ram.h
-> index ecae941211..a6df1b2811 100644
-> --- a/migration/postcopy-ram.h
-> +++ b/migration/postcopy-ram.h
-> @@ -13,6 +13,8 @@
->  #ifndef QEMU_POSTCOPY_RAM_H
->  #define QEMU_POSTCOPY_RAM_H
->  
-> +#include "qapi/qapi-types-migration.h"
-> +
->  /* Return true if the host supports everything we need to do postcopy-ram */
->  bool postcopy_ram_supported_by_host(MigrationIncomingState *mis,
->                                      Error **errp);
-> @@ -193,5 +195,6 @@ enum PostcopyChannels {
->  void postcopy_preempt_new_channel(MigrationIncomingState *mis, QEMUFile *file);
->  void postcopy_preempt_setup(MigrationState *s);
->  int postcopy_preempt_establish_channel(MigrationState *s);
-> +bool postcopy_is_paused(MigrationStatus status);
->  
->  #endif
-> diff --git a/migration/migration.c b/migration/migration.c
-> index bfbd657035..9475dce7dc 100644
-> --- a/migration/migration.c
-> +++ b/migration/migration.c
-> @@ -595,6 +595,26 @@ bool migrate_uri_parse(const char *uri, MigrationChannel **channel,
->      return true;
->  }
->  
-> +static bool
-> +migration_incoming_state_setup(MigrationIncomingState *mis, Error **errp)
-> +{
-> +    MigrationStatus current = mis->state;
-> +
-> +    if (current == MIGRATION_STATUS_POSTCOPY_PAUSED) {
-> +        /* Postcopy paused state doesn't change when setup new ports */
+We could just show it all together, by prefixing '+' or '-'
+or '.' on the command names too. eg.
 
-The "setup new ports" part is a bit vague. Maybe:
+ - x-query-rdma
+ -     returns.human-readable-text: str
+ . blockdev-backup
+ +     arguments.discard-source: Optional<boolean>
+ . migrate
+ -    arguments.blk: Optional<boolean>
+ -    arguments.inc: Optional<boolean>
+ . object-add
+ .    arguments.qom-type: enum
+ +        'sev-snp-guest'
+ +    arguments[sev-guest].legacy-vm-type: Optional<boolean>
+ +    arguments[sev-snp-guest].author-key-enabled: Optional<boolean>
+ +    arguments[sev-snp-guest].cbitpos: Optional<integer>
 
-/*
- * The SETUP state only happens at the start of migration. A postcopy
- * migration recovery migration stays in POSTCOPY_PAUSED.
- */
+> migrate-incoming (arguments)
+>     ++ arguments.exit-on-error: Optional<boolean>
+> migrate-set-capabilities (arguments)
+>     ·· arguments.capabilities[].capability: enum
+>     --     'block'
+>     --     'compress'
+> migrate-set-parameters (arguments)
+>     -- arguments.block-incremental: Optional<boolean>
+>     -- arguments.compress-level: Optional<integer>
+>     -- arguments.compress-threads: Optional<integer>
+>     -- arguments.compress-wait-thread: Optional<boolean>
+>     -- arguments.decompress-threads: Optional<integer>
+> object-add (arguments)
+>     ·· arguments.qom-type: enum
+>     ++     'sev-snp-guest'
+>     ++ arguments<qom-type=sev-guest>.legacy-vm-type: Optional<boolean>
+>     ++ arguments<qom-type=sev-snp-guest>.author-key-enabled: Optional<boolean>
+>     ++ arguments<qom-type=sev-snp-guest>.cbitpos: Optional<integer>
+>     ++ arguments<qom-type=sev-snp-guest>.guest-visible-workarounds: Optional<string>
+>     ++ arguments<qom-type=sev-snp-guest>.host-data: Optional<string>
+>     ++ arguments<qom-type=sev-snp-guest>.id-auth: Optional<string>
+>     ++ arguments<qom-type=sev-snp-guest>.id-block: Optional<string>
+>     ++ arguments<qom-type=sev-snp-guest>.kernel-hashes: Optional<boolean>
+>     ++ arguments<qom-type=sev-snp-guest>.policy: Optional<integer>
+>     ++ arguments<qom-type=sev-snp-guest>.reduced-phys-bits: integer
+>     ++ arguments<qom-type=sev-snp-guest>.sev-device: Optional<string>
+>     ++ arguments<qom-type=sev-snp-guest>.vcek-disabled: Optional<boolean>
+> query-cpu-model-baseline (returns, arguments)
+>     ++ arguments.modela.deprecated-props: Optional<array>
+>     ++ arguments.modela.deprecated-props[]: string
+>     ++ arguments.modelb.deprecated-props: Optional<array>
+>     ++ arguments.modelb.deprecated-props[]: string
+>     ++ returns.model.deprecated-props: Optional<array>
+>     ++ returns.model.deprecated-props[]: string
+> query-cpu-model-comparison (arguments)
+>     ++ arguments.modela.deprecated-props: Optional<array>
+>     ++ arguments.modela.deprecated-props[]: string
+>     ++ arguments.modelb.deprecated-props: Optional<array>
+>     ++ arguments.modelb.deprecated-props[]: string
+> query-cpu-model-expansion (returns, arguments)
+>     ++ arguments.model.deprecated-props: Optional<array>
+>     ++ arguments.model.deprecated-props[]: string
+>     ++ returns.model.deprecated-props: Optional<array>
+>     ++ returns.model.deprecated-props[]: string
+> query-cpus-fast (returns)
+>     ++ returns[].props.module-id: Optional<integer>
+>     ·· returns[].target: enum
+>     --     'nios2'
+> query-hotpluggable-cpus (returns)
+>     ++ returns[].props.module-id: Optional<integer>
+> query-machines (returns, arguments)
+>     ++ arguments.compat-props: Optional<boolean>
+>     ++ returns[].compat-props: Optional<array>
+>     ++ returns[].compat-props[]: object
+>     ++ returns[].compat-props[].property: string
+>     ++ returns[].compat-props[].qom-type: string
+>     ++ returns[].compat-props[].value: string
+> query-migrate (returns)
+>     -- returns.compression: Optional<object>
+>     -- returns.compression.busy: integer
+>     -- returns.compression.busy-rate: number
+>     -- returns.compression.compressed-size: integer
+>     -- returns.compression.compression-rate: number
+>     -- returns.compression.pages: integer
+>     -- returns.disk: Optional<object>
+>     -- returns.disk.dirty-pages-rate: integer
+>     -- returns.disk.dirty-sync-count: integer
+>     -- returns.disk.dirty-sync-missed-zero-copy: integer
+>     -- returns.disk.downtime-bytes: integer
+>     -- returns.disk.duplicate: integer
+>     -- returns.disk.mbps: number
+>     -- returns.disk.multifd-bytes: integer
+>     -- returns.disk.normal: integer
+>     -- returns.disk.normal-bytes: integer
+>     -- returns.disk.page-size: integer
+>     -- returns.disk.pages-per-second: integer
+>     -- returns.disk.postcopy-bytes: integer
+>     -- returns.disk.postcopy-requests: integer
+>     -- returns.disk.precopy-bytes: integer
+>     -- returns.disk.remaining: integer
+>     -- returns.disk.skipped: integer
+>     -- returns.disk.total: integer
+>     -- returns.disk.transferred: integer
+>     -- returns.ram.skipped: integer
+> query-migrate-capabilities (returns)
+>     ·· returns[].capability: enum
+>     --     'block'
+>     --     'compress'
+> query-migrate-parameters (returns)
+>     -- returns.block-incremental: Optional<boolean>
+>     -- returns.compress-level: Optional<integer>
+>     -- returns.compress-threads: Optional<integer>
+>     -- returns.compress-wait-thread: Optional<boolean>
+>     -- returns.decompress-threads: Optional<integer>
+> query-sev (returns)
+>     -- returns.handle: integer
+>     -- returns.policy: integer
+>     ++ returns.sev-type: enum
+>     ++ returns<sev-type=sev-snp>.snp-policy: integer
+>     ++ returns<sev-type=sev>.handle: integer
+>     ++ returns<sev-type=sev>.policy: integer
+> query-target (returns)
+>     ·· returns.arch: enum
+>     --     'nios2'
+> set-numa-node (arguments)
+>     ++ arguments<type=cpu>.module-id: Optional<integer>
+> trace-event-get-state (returns, arguments)
+>     -- arguments.vcpu: Optional<integer>
+>     -- returns[].vcpu: boolean
+> trace-event-set-state (arguments)
+>     -- arguments.vcpu: Optional<integer>
+> transaction (arguments)
+>     ++ arguments.actions[]<type=blockdev-backup>.data.discard-source:
+> Optional<boolean>
+>     ++ arguments.actions[]<type=drive-backup>.data.discard-source:
+> Optional<boolean>
+> 
+> ******
+> events
+> ******
+> 
+> Added
+> =====
+> VFIO_MIGRATION
+> 
+> Removed
+> =======
+> MEM_UNPLUG_ERROR
+> RDMA_GID_STATUS_CHANGED
 
-> +        return true;
-> +    }
-> +
-> +    if (current != MIGRATION_STATUS_NONE) {
-> +        error_setg(errp, "Illegal migration incoming state: %s",
-> +                   MigrationStatus_str(current));
-> +        return false;
-> +    }
 
-This is a good candidate for a separate patch due to the extra change in
-behavior not necessarily related to postcopy.
 
-> +
-> +    migrate_set_state(&mis->state, current, MIGRATION_STATUS_SETUP);
-> +    return true;
-> +}
-> +
->  static void qemu_start_incoming_migration(const char *uri, bool has_channels,
->                                            MigrationChannelList *channels,
->                                            Error **errp)
-> @@ -633,8 +653,9 @@ static void qemu_start_incoming_migration(const char *uri, bool has_channels,
->          return;
->      }
->  
-> -    migrate_set_state(&mis->state, MIGRATION_STATUS_NONE,
-> -                      MIGRATION_STATUS_SETUP);
-> +    if (!migration_incoming_state_setup(mis, errp)) {
-> +        return;
-> +    }
->  
->      if (addr->transport == MIGRATION_ADDRESS_TYPE_SOCKET) {
->          SocketAddress *saddr = &addr->u.socket;
-> @@ -1070,6 +1091,7 @@ bool migration_is_setup_or_active(void)
->      case MIGRATION_STATUS_ACTIVE:
->      case MIGRATION_STATUS_POSTCOPY_ACTIVE:
->      case MIGRATION_STATUS_POSTCOPY_PAUSED:
-> +    case MIGRATION_STATUS_POSTCOPY_RECOVER_SETUP:
->      case MIGRATION_STATUS_POSTCOPY_RECOVER:
->      case MIGRATION_STATUS_SETUP:
->      case MIGRATION_STATUS_PRE_SWITCHOVER:
-> @@ -1092,6 +1114,7 @@ bool migration_is_running(void)
->      case MIGRATION_STATUS_ACTIVE:
->      case MIGRATION_STATUS_POSTCOPY_ACTIVE:
->      case MIGRATION_STATUS_POSTCOPY_PAUSED:
-> +    case MIGRATION_STATUS_POSTCOPY_RECOVER_SETUP:
->      case MIGRATION_STATUS_POSTCOPY_RECOVER:
->      case MIGRATION_STATUS_SETUP:
->      case MIGRATION_STATUS_PRE_SWITCHOVER:
-> @@ -1229,6 +1252,7 @@ static void fill_source_migration_info(MigrationInfo *info)
->      case MIGRATION_STATUS_PRE_SWITCHOVER:
->      case MIGRATION_STATUS_DEVICE:
->      case MIGRATION_STATUS_POSTCOPY_PAUSED:
-> +    case MIGRATION_STATUS_POSTCOPY_RECOVER_SETUP:
->      case MIGRATION_STATUS_POSTCOPY_RECOVER:
->          /* TODO add some postcopy stats */
->          populate_time_info(info, s);
-> @@ -1279,6 +1303,7 @@ static void fill_destination_migration_info(MigrationInfo *info)
->      case MIGRATION_STATUS_ACTIVE:
->      case MIGRATION_STATUS_POSTCOPY_ACTIVE:
->      case MIGRATION_STATUS_POSTCOPY_PAUSED:
-> +    case MIGRATION_STATUS_POSTCOPY_RECOVER_SETUP:
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
-Does this need to be here? We don't reach this state on destination, right?
-
->      case MIGRATION_STATUS_POSTCOPY_RECOVER:
->      case MIGRATION_STATUS_FAILED:
->      case MIGRATION_STATUS_COLO:
-> @@ -1435,9 +1460,30 @@ static void migrate_error_free(MigrationState *s)
->  
->  static void migrate_fd_error(MigrationState *s, const Error *error)
->  {
-
-The default case of the swtich below is a bit surprising to me. Why
-wouldn't we allow this function to be called from other places to set
-STATUS_FAILED?
-
-...unless this is only mean for the connection phase, so:
-
-just to check your understanding here because it seems we've drifted a
-bit from the original definition on those, specially with
-migrate_fd_cleanup(), but does this _fd_ in the function name implies
-something like a "connection phase"? As in, "connect to the fd", "the fd
-connection errored out" and "cleanup the fd connection". Maybe it's time
-to switch this "fd" to something clearer...
-
-> +    MigrationStatus current = s->state;
-> +    MigrationStatus next;
-> +
->      assert(s->to_dst_file == NULL);
-> -    migrate_set_state(&s->state, MIGRATION_STATUS_SETUP,
-> -                      MIGRATION_STATUS_FAILED);
-> +
-> +    switch (current) {
-> +    case MIGRATION_STATUS_SETUP:
-> +        next = MIGRATION_STATUS_FAILED;
-> +        break;
-> +    case MIGRATION_STATUS_POSTCOPY_RECOVER_SETUP:
-> +        /* Never fail a postcopy migration; switch back to PAUSED instead */
-> +        next = MIGRATION_STATUS_POSTCOPY_PAUSED;
-
-So presumably we can keep recovering the migration indefinitely?
-
-> +        break;
-> +    default:
-> +        /*
-> +         * This really shouldn't happen. Just be careful to not crash a VM
-> +         * just for this.  Instead, dump something.
-> +         */
-> +        error_report("%s: Illegal migration status (%s) detected",
-> +                     __func__, MigrationStatus_str(current));
-> +        return;
-> +    }
-> +
-> +    migrate_set_state(&s->state, current, next);
->      migrate_set_error(s, error);
->  }
->  
-> @@ -1538,6 +1584,7 @@ bool migration_in_postcopy(void)
->      switch (s->state) {
->      case MIGRATION_STATUS_POSTCOPY_ACTIVE:
->      case MIGRATION_STATUS_POSTCOPY_PAUSED:
-> +    case MIGRATION_STATUS_POSTCOPY_RECOVER_SETUP:
->      case MIGRATION_STATUS_POSTCOPY_RECOVER:
->          return true;
->      default:
-> @@ -1936,6 +1983,9 @@ static bool migrate_prepare(MigrationState *s, bool resume, Error **errp)
->              return false;
->          }
->  
-> +        migrate_set_state(&s->state, MIGRATION_STATUS_POSTCOPY_PAUSED,
-> +                          MIGRATION_STATUS_POSTCOPY_RECOVER_SETUP);
-> +
->          /* This is a resume, skip init status */
->          return true;
->      }
-> @@ -2968,9 +3018,9 @@ static MigThrError postcopy_pause(MigrationState *s)
->           * We wait until things fixed up. Then someone will setup the
->           * status back for us.
->           */
-> -        while (s->state == MIGRATION_STATUS_POSTCOPY_PAUSED) {
-> +        do {
->              qemu_sem_wait(&s->postcopy_pause_sem);
-> -        }
-> +        } while (postcopy_is_paused(s->state));
-
-Is there a particular reason to go from while() to do{}while()?
-
->  
->          if (s->state == MIGRATION_STATUS_POSTCOPY_RECOVER) {
->              /* Woken up by a recover procedure. Give it a shot */
-> @@ -3666,7 +3716,7 @@ void migrate_fd_connect(MigrationState *s, Error *error_in)
->  {
->      Error *local_err = NULL;
->      uint64_t rate_limit;
-> -    bool resume = s->state == MIGRATION_STATUS_POSTCOPY_PAUSED;
-> +    bool resume = migration_in_postcopy();
-
-Here you're expecting just PAUSED or RECOVER_SETUP, right? We'll not
-reach here in any of the other postcopy states.
-
->      int ret;
->  
->      /*
-> @@ -3733,7 +3783,7 @@ void migrate_fd_connect(MigrationState *s, Error *error_in)
->  
->      if (resume) {
->          /* Wakeup the main migration thread to do the recovery */
-> -        migrate_set_state(&s->state, MIGRATION_STATUS_POSTCOPY_PAUSED,
-> +        migrate_set_state(&s->state, MIGRATION_STATUS_POSTCOPY_RECOVER_SETUP,
->                            MIGRATION_STATUS_POSTCOPY_RECOVER);
->          qemu_sem_post(&s->postcopy_pause_sem);
->          return;
-> diff --git a/migration/postcopy-ram.c b/migration/postcopy-ram.c
-> index 97701e6bb2..1c374b7ea1 100644
-> --- a/migration/postcopy-ram.c
-> +++ b/migration/postcopy-ram.c
-> @@ -1770,3 +1770,9 @@ void *postcopy_preempt_thread(void *opaque)
->  
->      return NULL;
->  }
-> +
-> +bool postcopy_is_paused(MigrationStatus status)
-> +{
-> +    return status == MIGRATION_STATUS_POSTCOPY_PAUSED ||
-> +        status == MIGRATION_STATUS_POSTCOPY_RECOVER_SETUP;
-> +}
-> diff --git a/migration/savevm.c b/migration/savevm.c
-> index e71410d8c1..deb57833f8 100644
-> --- a/migration/savevm.c
-> +++ b/migration/savevm.c
-> @@ -2864,9 +2864,9 @@ static bool postcopy_pause_incoming(MigrationIncomingState *mis)
->      error_report("Detected IO failure for postcopy. "
->                   "Migration paused.");
->  
-> -    while (mis->state == MIGRATION_STATUS_POSTCOPY_PAUSED) {
-> +    do {
->          qemu_sem_wait(&mis->postcopy_pause_sem_dst);
-> -    }
-> +    } while (postcopy_is_paused(mis->state));
->  
->      trace_postcopy_pause_incoming_continued();
 
