@@ -2,69 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 314FB906483
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jun 2024 08:57:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A83749064B0
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jun 2024 09:15:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sHeNt-0002JB-Op; Thu, 13 Jun 2024 02:56:34 -0400
+	id 1sHeea-0007Rz-SG; Thu, 13 Jun 2024 03:13:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sHeNk-0002Ir-W4
- for qemu-devel@nongnu.org; Thu, 13 Jun 2024 02:56:25 -0400
-Received: from mgamail.intel.com ([198.175.65.18])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sHeNi-00043Q-Jp
- for qemu-devel@nongnu.org; Thu, 13 Jun 2024 02:56:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1718261783; x=1749797783;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=aCam3PViCpM8DdraXfcSgE9gy+VAs4Jbi/oYNCofGWI=;
- b=DbdfYizQsKAYUX1/iTS4+uhB3A2hQ1s+r28sF6mbMzz8VATc3Sten8V2
- 2mSZnjn3WjiubsN3mZbK0gfWvnJlGS6ijXnHvP2ePSlieZ+nM+By9yJGw
- KFCwHzWzPeiX7N0oDq9gygUVxiallget3bufAMuVc8MhO7bed2W6qPib4
- 1oG197epUhW6Grmjj9kkBtqQu3vfAxcbmfOq3HrskCbMKlUP9Yk7dxLRL
- dUojO+5tywBnkQgAqTqZ2VbnmQHMGsfTBo2vhxZtWmDM2yFpxDg8vi+Yt
- NE+V0oHxDaAkxfRatAEUoWeUScz1yOjEO+QAzco+mDUL4H75k83r8hwzl A==;
-X-CSE-ConnectionGUID: Daaq4V6VSDCGayI0YxEoHA==
-X-CSE-MsgGUID: iTiNsd+tS36nWDiKffnGsg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11101"; a="15214405"
-X-IronPort-AV: E=Sophos;i="6.08,234,1712646000"; d="scan'208";a="15214405"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Jun 2024 23:56:20 -0700
-X-CSE-ConnectionGUID: fNLFrMJhTzC1k/HYhUz84g==
-X-CSE-MsgGUID: ydyVExa1TXaD/U4j79RDKg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,234,1712646000"; d="scan'208";a="39902419"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by fmviesa007.fm.intel.com with ESMTP; 12 Jun 2024 23:56:18 -0700
-Date: Thu, 13 Jun 2024 15:11:48 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Babu Moger <babu.moger@amd.com>
-Cc: pbonzini@redhat.com, qemu-devel@nongnu.org, kvm@vger.kernel.org
-Subject: Re: [PATCH 3/4] i386/cpu: Enable perfmon-v2 and RAS feature bits on
- EPYC-Genoa
-Message-ID: <ZmqbtLToD1ac7VO+@intel.com>
-References: <cover.1718218999.git.babu.moger@amd.com>
- <1dc29da3f04b4639a3f0b36d0e97d391da9802a0.1718218999.git.babu.moger@amd.com>
+ (Exim 4.90_1) (envelope-from <luchangqi.123@bytedance.com>)
+ id 1sHeeY-0007RY-3c
+ for qemu-devel@nongnu.org; Thu, 13 Jun 2024 03:13:46 -0400
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <luchangqi.123@bytedance.com>)
+ id 1sHeeV-00071Z-KR
+ for qemu-devel@nongnu.org; Thu, 13 Jun 2024 03:13:45 -0400
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-1f8395a530dso7012085ad.0
+ for <qemu-devel@nongnu.org>; Thu, 13 Jun 2024 00:13:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=bytedance.com; s=google; t=1718262816; x=1718867616; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=VEapZkZteW4qeme8HOj8a7YKtrOu1VtdYrrvlphJVHo=;
+ b=EujvQEmG/6xAFIQ0l2yfPwxzsVX4xHmR/9eqsKnXJHqs5zmDUNtUL36jDogmGNoTjb
+ FdjSW5FiwCDC9N3poSw6Lzg13REngcS28rRZF1TuOIoMpzDsuxoZjmtUNKjp4WssaiWm
+ v0fOpp/859ESKlibjO7NJO6l8aJ5l9AevPlsTNV/QTj8VP/O/M2ivWDg+aFahTOtphva
+ nGIIkf+nFGwdkB0rgbw93x1damiyBHSh++PZqEUycbAZYjbnuoVvMwurM5J02Nc+YroO
+ BArqUeGTq9LVp8oigYj13kOKVY/iPXPrhyvGfPmY9y+8MimB6jgKV+AFmADrK+eGmq2d
+ /VJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1718262816; x=1718867616;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=VEapZkZteW4qeme8HOj8a7YKtrOu1VtdYrrvlphJVHo=;
+ b=EeXq2uyVjH1fdEw9uMzKePWUJp2zuZzl1RlujieCUq/8vBIyUFF8pOz/Sxh0OjsuoS
+ w2cH3dLy9XJ8eENPGjvzhiq0zEXBd/t2qSUbembZC43kJXUzvYie0FgSr9+IR+MM7sHw
+ ERPX9MLdASuCmggBgctaHfHxwdkRdncVnfVaQ/W6yy0MM1HsLiB0Svaoy+oncjf3YkN+
+ MvDP0nD1FDicaYWWP5B3/w4wWmNsiNGxEUF/56l5aZG6ks1HIW7BS6UjOQkFQ+M/fEbM
+ AQR2VAvaAk3ZjBMZf44dcnvOnN/YbwCp69br0Ft1hCGQNoiak+yrAJOOEgIq1UVL2zTg
+ GWZg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWqp229P0ZTKrNq3T91V5apqS3q5H8zG/kzePauMLZNGyyEiajEehwpxC+NT/98sZlvBjPHRxnu/1wjwv87uq3Er03priQ=
+X-Gm-Message-State: AOJu0Yy0BXzNEL6apcXzloKPGKHLYIKjz3x4qCBs+JwmTcTJzNsd6sJQ
+ uw2RzjoDd1/qXJ2yMDCWAEvcAjN0xrl0iZ1eF2tdZvXYeL35ULP5KA4mPZWwUrI=
+X-Google-Smtp-Source: AGHT+IGkW+wkgaTZ/6CMQsZUYnsgp93HOMCC6/jyYjYLy+l6/ZzzKbJuJg4jfNO8nziau2W+uhFBgQ==
+X-Received: by 2002:a17:902:f541:b0:1f7:21fd:ab83 with SMTP id
+ d9443c01a7336-1f83b710598mr42153655ad.54.1718262815896; 
+ Thu, 13 Jun 2024 00:13:35 -0700 (PDT)
+Received: from n37-006-243.byted.org ([180.184.84.173])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-1f855ee6e7esm6378345ad.139.2024.06.13.00.13.32
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 13 Jun 2024 00:13:35 -0700 (PDT)
+From: Changqi Lu <luchangqi.123@bytedance.com>
+To: qemu-block@nongnu.org,
+	qemu-devel@nongnu.org
+Cc: kwolf@redhat.com, hreitz@redhat.com, stefanha@redhat.com, fam@euphon.net,
+ ronniesahlberg@gmail.com, pbonzini@redhat.com, pl@dlhnet.de,
+ kbusch@kernel.org, its@irrelevant.dk, foss@defmacro.it, philmd@linaro.org,
+ pizhenwei@bytedance.com, Changqi Lu <luchangqi.123@bytedance.com>
+Subject: [PATCH v6 00/10] Support persistent reservation operations
+Date: Thu, 13 Jun 2024 15:13:17 +0800
+Message-Id: <20240613071327.2498953-1-luchangqi.123@bytedance.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1dc29da3f04b4639a3f0b36d0e97d391da9802a0.1718218999.git.babu.moger@amd.com>
-Received-SPF: pass client-ip=198.175.65.18; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -45
-X-Spam_score: -4.6
-X-Spam_bar: ----
-X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.143,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=luchangqi.123@bytedance.com; helo=mail-pl1-x631.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -81,36 +94,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jun 12, 2024 at 02:12:19PM -0500, Babu Moger wrote:
-> Date: Wed, 12 Jun 2024 14:12:19 -0500
-> From: Babu Moger <babu.moger@amd.com>
-> Subject: [PATCH 3/4] i386/cpu: Enable perfmon-v2 and RAS feature bits on
->  EPYC-Genoa
-> X-Mailer: git-send-email 2.34.1
-> 
-> Following feature bits are added on EPYC-Genoa-v2 model.
-> 
-> perfmon-v2: Allows guests to make use of the PerfMonV2 features.
+Hi,
 
-nit s/Allows/Allow/
+patch v6 has been modified.
 
-> SUCCOR: Software uncorrectable error containment and recovery capability.
->             The processor supports software containment of uncorrectable errors
->             through context synchronizing data poisoning and deferred error
->             interrupts.
-> 
-> McaOverflowRecov: MCA overflow recovery support.
-> 
-> The feature details are available in APM listed below [1].
-> [1] AMD64 Architecture Programmer's Manual Volume 2: System Programming
-> Publication # 24593 Revision 3.41.
-> 
-> Signed-off-by: Babu Moger <babu.moger@amd.com>
-> Link: https://bugzilla.kernel.org/show_bug.cgi?id=206537
-> ---
->  target/i386/cpu.c | 15 +++++++++++++++
->  1 file changed, 15 insertions(+)
+v5->v6:
+- Add relevant comments in the io layer.
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+v4->v5:
+- Fixed a memory leak bug at hw/nvme/ctrl.c.
+
+v3->v4:
+- At the nvme layer, the two patches of enabling the ONCS
+  function and enabling rescap are combined into one.
+- At the nvme layer, add helper functions for pr capacity
+  conversion between the block layer and the nvme layer.
+
+v2->v3:
+In v2 Persist Through Power Loss(PTPL) is enable default.
+In v3 PTPL is supported, which is passed as a parameter.
+
+v1->v2:
+- Add sg_persist --report-capabilities for SCSI protocol and enable
+  oncs and rescap for NVMe protocol.
+- Add persistent reservation capabilities constants and helper functions for
+  SCSI and NVMe protocol.
+- Add comments for necessary APIs.
+
+v1:
+- Add seven APIs about persistent reservation command for block layer.
+  These APIs including reading keys, reading reservations, registering,
+  reserving, releasing, clearing and preempting.
+- Add the necessary pr-related operation APIs for both the
+  SCSI protocol and NVMe protocol at the device layer.
+- Add scsi driver at the driver layer to verify the functions
+
+Changqi Lu (10):
+  block: add persistent reservation in/out api
+  block/raw: add persistent reservation in/out driver
+  scsi/constant: add persistent reservation in/out protocol constants
+  scsi/util: add helper functions for persistent reservation types
+    conversion
+  hw/scsi: add persistent reservation in/out api for scsi device
+  block/nvme: add reservation command protocol constants
+  hw/nvme: add helper functions for converting reservation types
+  hw/nvme: enable ONCS and rescap function
+  hw/nvme: add reservation protocal command
+  block/iscsi: add persistent reservation in/out driver
+
+ block/block-backend.c             | 403 +++++++++++++++++++++++++++
+ block/io.c                        | 163 +++++++++++
+ block/iscsi.c                     | 443 ++++++++++++++++++++++++++++++
+ block/raw-format.c                |  56 ++++
+ hw/nvme/ctrl.c                    | 326 +++++++++++++++++++++-
+ hw/nvme/ns.c                      |   5 +
+ hw/nvme/nvme.h                    |  84 ++++++
+ hw/scsi/scsi-disk.c               | 352 ++++++++++++++++++++++++
+ include/block/block-common.h      |  40 +++
+ include/block/block-io.h          |  20 ++
+ include/block/block_int-common.h  |  84 ++++++
+ include/block/nvme.h              |  98 +++++++
+ include/scsi/constants.h          |  52 ++++
+ include/scsi/utils.h              |   8 +
+ include/sysemu/block-backend-io.h |  24 ++
+ scsi/utils.c                      |  81 ++++++
+ 16 files changed, 2237 insertions(+), 2 deletions(-)
+
+-- 
+2.20.1
 
 
