@@ -2,92 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBD6B9067E4
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jun 2024 10:58:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB00690680E
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jun 2024 11:04:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sHgGw-0006ee-AC; Thu, 13 Jun 2024 04:57:30 -0400
+	id 1sHgMb-00054m-I3; Thu, 13 Jun 2024 05:03:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sHgGu-0006dt-Qq
- for qemu-devel@nongnu.org; Thu, 13 Jun 2024 04:57:28 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1sHgMa-00053p-45
+ for qemu-devel@nongnu.org; Thu, 13 Jun 2024 05:03:20 -0400
+Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sHgGt-0000HK-5m
- for qemu-devel@nongnu.org; Thu, 13 Jun 2024 04:57:28 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-4217a96de38so6592665e9.1
- for <qemu-devel@nongnu.org>; Thu, 13 Jun 2024 01:57:26 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1sHgMY-0001UJ-7v
+ for qemu-devel@nongnu.org; Thu, 13 Jun 2024 05:03:19 -0400
+Received: by mail-lf1-x134.google.com with SMTP id
+ 2adb3069b0e04-52c525257feso1001011e87.1
+ for <qemu-devel@nongnu.org>; Thu, 13 Jun 2024 02:03:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1718269045; x=1718873845; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=O/Oay0j96x/9xQhPy6qZtNnk5WwDamzkfYnPefMdxU4=;
- b=BdFKmTvSWlgp+5Rra3BLrTfiCZfj0m5pcUzMQzBw4EOauTtYIzRoIzL1CA0HR/lSiY
- DtsDjPScJPIJ2q8VNWNuMq43ErACZJt/sJgqK+0yGtTHwzjx+wDhOWjC0I3SO0AUHVf8
- dJe/5tVTxeLWLy4ZdjyNMXDx+/ec7gLc/QvFDnk32rql2MBUPgQ4a0l2KBNJsp8NrFlF
- GcT5gFlOkj1jjUgrgUXDP01pmutHPuJJwOAt6/3q7JI471zsm89qzBDVyKWuCuOk68t6
- zyp9CxbaVroFRe5ki/NzUlf7jiXPB/gFeyykWrMl9naui609OSYriGNXTW+EiWIscM3/
- 4EIw==
+ d=linaro.org; s=google; t=1718269396; x=1718874196; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=GTAPDQeK2ZImkEJxib9lQbC2uJGHaVZxjtpPbnSaY98=;
+ b=QlT/tLKO16Q2qtifnKAx/aZ0zONA8bOiUlNdtBlCq0glntBiHjkqpZqy3C3xv2tYer
+ zzcOnV5VRkf2ypxPsog1SR88Y+F+ER2X6zk/QXpgGk2FwQzROB1NM3ksxW1xJLyrbLVJ
+ REAP6mVR2T85wmpKTBmVy+/3BYQgOUcQKbwQoJcWp2aYkA0Wx/YOi3K9fIdIF2UM3vtf
+ FCCosh0bfGdw1ncPO8PLLPlEWciMRuX8wtxDpkl/0RW6Js9EQEPmLzRj+Cyqr276Ji5v
+ V1r/eVGci9pP57PA4B+imrI9ByE+2wZeutNZ01fzIERm0TLlvqoKBrZdtB3WAx4kY/i2
+ TkPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718269045; x=1718873845;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=O/Oay0j96x/9xQhPy6qZtNnk5WwDamzkfYnPefMdxU4=;
- b=fRwJpH+49suo3qXUi25xeyCoe10Wny14XJobEf3EjnYtrlqCcJ2hYuCwzfmM6MVE1J
- aKlm8eP6o/92qTKzngGl2In7hmsi2GAAVO6tj9opfpdSi1NI+fX9lySKrEfmLh4dxbwo
- 93vY4tDpoFIP5BwV3ynHfpDzyZr7lbuY3lZsn+4gEqEv8OHZorL4jiZ8ev9HJ3ZrDmhP
- EdlxZotSEijitSNBGUGQ6WpNPkDDM9/8KPijLZ1l7wzLEE2ir7huU4uxIidlljehzhPp
- GrUHXs5IPNsm22xhAeplbR/mIAiPwWqsj98GHlBpCoDNOvEtXgW7fy2e98uDgPe75qV9
- z07Q==
+ d=1e100.net; s=20230601; t=1718269396; x=1718874196;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=GTAPDQeK2ZImkEJxib9lQbC2uJGHaVZxjtpPbnSaY98=;
+ b=xE5jLDZ55twCjxcBOT5knYRC9Hnoc/w3TJD3DfsgyB61vQjdrOWgF4RLvzXnL/XKWB
+ TwOcc2umwfdwJ5hEUv1yPNo8RJmRbv8ucjwNLBtMB/9gpVvt6/JZY91jLPssV58UrRwi
+ NgSc/MYskns3JLRtwW+utLKlypI6uYVl5cScAZi4o30C8U7/NnIPcUnLHZhkwXHF9nw5
+ l07lY+LY1Ryu2vSgVP+wlQAYA5ZepprnvfJIxzkkC0K4ia5A+Eomix3ToT1UxUaQRmtD
+ 894dPBZVBojOR1y70WKMwAxG5YLozSupfHKV4uzhU3iZWVCKsWTNJ91shmz2k/1hELvR
+ ukbg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUACpQHrhXrRbSPSxPgCtCwdPuLhyrXoxXfV05spYxYc7RWRXIVzvFp99TvKDwvreYI65ktVDIgJGblcHUDZl8AL380R2o=
-X-Gm-Message-State: AOJu0Yx0Hlb9AcK21FTRcrK4xBS8vmVb0QM9u91QxYxwik868ar0FskP
- 2hFUAh5szUMBnd3zhud+yfrvfTPp/6vpcsgB8K7cWfY0z0T4WVHpLWn89vGkUzA=
-X-Google-Smtp-Source: AGHT+IHqQKUydYMvnGx+8GuVXjDzbY5BbQSW9D4GkL9kXgAEi3BIQ6dHiOFa9P8ziL+HL52DDW4cpg==
-X-Received: by 2002:a05:600c:310a:b0:422:5b78:1c8f with SMTP id
- 5b1f17b1804b1-422863a8b77mr33946525e9.8.1718269045561; 
- Thu, 13 Jun 2024 01:57:25 -0700 (PDT)
-Received: from [192.168.69.100] ([176.176.148.226])
+ AJvYcCVTDMG6j60eR5gPpPsGhzB3Pgr6XvxVzii+F1P1nGwifL3M/EFLsrpcWL2TNRVAs91SPDvagMVUnuakwVxe1/vBJK0OGTM=
+X-Gm-Message-State: AOJu0Yy1arYj7uYEYqEDH5+WfwdDcjAwoPkc0re5ds0RQbh2C0QY/JMQ
+ s92YA2P9z5yK5gXw9IDawJaCMnVEpar5MfUjIkpbwfPDWpi9NAFC4kLq0Vir4lo=
+X-Google-Smtp-Source: AGHT+IG7X7YYLBKJkmgjedIF9gnzp3DU0GppNNd5qp3JF8IuuqwJn5ZXsZzYMrP1SGqg53OomLnQwA==
+X-Received: by 2002:a05:6512:2098:b0:52c:8051:5799 with SMTP id
+ 2adb3069b0e04-52c9a3b7a0fmr2121133e87.11.1718269396352; 
+ Thu, 13 Jun 2024 02:03:16 -0700 (PDT)
+Received: from meli-email.org (adsl-33.109.242.225.tellas.gr. [109.242.225.33])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42286fe8fb8sm53929895e9.11.2024.06.13.01.57.22
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 13 Jun 2024 01:57:24 -0700 (PDT)
-Message-ID: <c4d36875-c70d-4e2c-b3a8-c50459c9db0f@linaro.org>
-Date: Thu, 13 Jun 2024 10:57:22 +0200
+ 5b1f17b1804b1-42286fe9230sm53155675e9.17.2024.06.13.02.03.15
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 13 Jun 2024 02:03:16 -0700 (PDT)
+Date: Thu, 13 Jun 2024 11:59:12 +0300
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+To: "Daniel P. Berrang=?UTF-8?B?w6k=?= " <berrange@redhat.com>
+Cc: Zhao Liu <zhao1.liu@intel.com>, qemu-devel@nongnu.org,
+ Stefan Hajnoczi <stefanha@redhat.com>, Mads Ynddal <mads@ynddal.dk>,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
+ Alex Benn=?UTF-8?B?w6kg?=e <alex.bennee@linaro.org>,
+ Marc-Andr=?UTF-8?B?w6kg?=Lureau <marcandre.lureau@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Philippe Mathieu-Daud=?UTF-8?B?w6kg?=<philmd@linaro.org>,
+ Gustavo Romero <gustavo.romero@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: Re: [RFC PATCH v2 3/5] rust: add PL011 device model
+User-Agent: meli 0.8.6
+References: <rust-pl011-rfc-v2.git.manos.pitsidianakis@linaro.org>
+ <0fde311846394e9f7633be5d72cc30b25587d7a1.1718101832.git.manos.pitsidianakis@linaro.org>
+ <ZmquNSnnVSdOe0Z3@intel.com> <f0gdl.ugeo9rfbpd5e@linaro.org>
+ <Zmqzf6C9QyacG0Fn@redhat.com>
+In-Reply-To: <Zmqzf6C9QyacG0Fn@redhat.com>
+Message-ID: <f0h5e.89ncc7cio1kx@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 8/9] plugins: add time control API
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org
-Cc: David Hildenbrand <david@redhat.com>, Ilya Leoshkevich
- <iii@linux.ibm.com>, Daniel Henrique Barboza <danielhb413@gmail.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Mark Burton <mburton@qti.qualcomm.com>, qemu-s390x@nongnu.org,
- Peter Maydell <peter.maydell@linaro.org>, kvm@vger.kernel.org,
- Laurent Vivier <lvivier@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Alexandre Iooss <erdnaxe@crans.org>, qemu-arm@nongnu.org,
- Alexander Graf <agraf@csgraf.de>, Nicholas Piggin <npiggin@gmail.com>,
- Marco Liebel <mliebel@qti.qualcomm.com>, Thomas Huth <thuth@redhat.com>,
- Roman Bolshakov <rbolshakov@ddn.com>, qemu-ppc@nongnu.org,
- Mahmoud Mandour <ma.mandourr@gmail.com>, Cameron Esfahani <dirty@apple.com>,
- Jamie Iles <quic_jiles@quicinc.com>,
- "Dr. David Alan Gilbert" <dave@treblig.org>,
- Richard Henderson <richard.henderson@linaro.org>
-References: <20240612153508.1532940-1-alex.bennee@linaro.org>
- <20240612153508.1532940-9-alex.bennee@linaro.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240612153508.1532940-9-alex.bennee@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+Content-Type: text/plain; charset=utf-8; format=flowed
+Received-SPF: pass client-ip=2a00:1450:4864:20::134;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-lf1-x134.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -110,27 +105,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/6/24 17:35, Alex Bennée wrote:
-> Expose the ability to control time through the plugin API. Only one
-> plugin can control time so it has to request control when loaded.
-> There are probably more corner cases to catch here.
-> 
-> From: Alex Bennée <alex.bennee@linaro.org>
+On Thu, 13 Jun 2024 11:53, "Daniel P. Berrangé" <berrange@redhat.com> wrote:
+>On Thu, Jun 13, 2024 at 11:41:38AM +0300, Manos Pitsidianakis wrote:
+>> > > diff --git a/rust/rustfmt.toml b/rust/rustfmt.toml
+>> > > new file mode 100644
+>> > > index 0000000000..ebecb99fe0
+>> > > --- /dev/null
+>> > > +++ b/rust/rustfmt.toml
+>> > > @@ -0,0 +1,7 @@
+>> > > +edition = "2021"
+>> > > +format_generated_files = false
+>> > > +format_code_in_doc_comments = true
+>> > > +format_strings = true
+>> > > +imports_granularity = "Crate"
+>> > > +group_imports = "StdExternalCrate"
+>> > > +wrap_comments = true
+>> > > 
+>> > 
+>> > About the Rust style, inspired from the discussion on my previous
+>> > simpletrace-rust [1], it looks like people prefer the default rust style
+>> > and use the default check without custom configurations.
+>> > 
+>> > More style requirements are also an open, especially for unstable ones,
+>> > and it would be better to split this part into a separate patch, so that
+>> > the discussion about style doesn't overshadow the focus on your example.
+>> > 
+>> > [1]: https://lore.kernel.org/qemu-devel/ZlnBGwk29Ds9FjUA@redhat.com/
+>> > 
+>> 
+>> I had read that discussion and had that in mind. There's no need to worry
+>> about format inconsistencies; these options are unstable  -nightly only-
+>> format options and they don't affect the default rust style (they actually
+>> follow it). If you run a stable cargo fmt you will see the code won't change
+>> (but might complain that these settings are nightly only).
+>> 
+>> What they do is extra work on top of the default style. If anything ends up
+>> incompatible with stable I agree it must be removed, there's no sense in
+>> having a custom Rust style when the defaults are so reasonable.
+>
+>This doesn't make sense. One the one hand you're saying the rules don't
+>have any effect on the code style vs the default, but on the otherhand
+>saying they do "extra work" on top of the default style. Those can't
+>both be true.
 
-Some of your patches include this dubious From: header, maybe strip?
+No, I fear there's a confusion here. It means that if you run the stable 
+rustfmt with the default options the code doesn't change. I.e. it does 
+not conflict with the default style.
 
-> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-> [AJB: tweaked user-mode handling]
-> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-> Message-Id: <20240530220610.1245424-6-pierrick.bouvier@linaro.org>
-> 
-> ---
-> plugins/next
->    - make qemu_plugin_update_ns a NOP in user-mode
-> ---
->   include/qemu/qemu-plugin.h   | 25 +++++++++++++++++++++++++
->   plugins/api.c                | 35 +++++++++++++++++++++++++++++++++++
->   plugins/qemu-plugins.symbols |  2 ++
->   3 files changed, 62 insertions(+)
+What it does is group imports, format text in doc comments (which stable 
+rustfmt doesn't touch at all) and also splits long strings into several 
+lines, which are all helpful for e-mail patch reviews.
 
+Thanks,
+Manos
 
