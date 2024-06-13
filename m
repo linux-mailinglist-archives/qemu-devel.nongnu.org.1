@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0551F90774D
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jun 2024 17:46:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E491907755
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jun 2024 17:46:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sHmeK-0006iA-Hc; Thu, 13 Jun 2024 11:46:05 -0400
+	id 1sHmeT-0007qH-K4; Thu, 13 Jun 2024 11:46:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sHmdC-0005jl-JN
- for qemu-devel@nongnu.org; Thu, 13 Jun 2024 11:44:55 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1sHmdG-0005n4-7Z
+ for qemu-devel@nongnu.org; Thu, 13 Jun 2024 11:45:00 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sHmdA-0003e8-Pt
- for qemu-devel@nongnu.org; Thu, 13 Jun 2024 11:44:54 -0400
+ id 1sHmdE-0003fn-Hb
+ for qemu-devel@nongnu.org; Thu, 13 Jun 2024 11:44:57 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1718293492;
+ s=mimecast20190719; t=1718293495;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=/cP5eDyTferRyEVAqRT0l6V4VNtRugYzuhl1jpEpHhE=;
- b=AI11ABxPUNS2XBl12DFHvTSM1o3HV1ybodRpm7De1Ipfgaw9xsEAupt5Z+baJyit/uzhfg
- EnMccaYd4A6Li8n4CDeeT/t1X4DSu833AN8gRnQ5n1CM+7r2b+7DSMq8HgtOyHSly2v0WC
- lSZ6/h6CwLwzheTUp4kLVj6Bu8WmgRM=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=fw+EUSefrLQYR4Pt9zAi8xCDTyMlsgn8/0GbEjmPjes=;
+ b=gllxsyUfqgUwRKAnDHwOvw2wQdrRQO5Byd923s7rs6bk/PAFJz/iyTe+DA4ly6Ulg+AJB/
+ KVqKQmBjOP8HEqkCKok8yxbGIu0LxGhArAb6fJgjYNVYEycZtlYGUgOlSY4jJigLcr/u20
+ qj25zXrA0RkftPgMEYqKzjCq8lLydy4=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-526-pDKzFwFbNHCIm3ypF_2f9w-1; Thu,
- 13 Jun 2024 11:44:48 -0400
-X-MC-Unique: pDKzFwFbNHCIm3ypF_2f9w-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-475-ydjwUTf5MLSg8Ouwnkm8Vw-1; Thu,
+ 13 Jun 2024 11:44:51 -0400
+X-MC-Unique: ydjwUTf5MLSg8Ouwnkm8Vw-1
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 70B5919560B3; Thu, 13 Jun 2024 15:44:47 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 7E82E19560BB; Thu, 13 Jun 2024 15:44:50 +0000 (UTC)
 Received: from toolbox.redhat.com (unknown [10.42.28.52])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id B08813000219; Thu, 13 Jun 2024 15:44:44 +0000 (UTC)
+ id C19D93000219; Thu, 13 Jun 2024 15:44:47 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
@@ -52,10 +52,10 @@ Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Thomas Huth <thuth@redhat.com>, Michael Roth <michael.roth@amd.com>,
  Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v2 16/22] qga: conditionalize schema for commands requiring
- utmpx
-Date: Thu, 13 Jun 2024 16:44:00 +0100
-Message-ID: <20240613154406.1365469-11-berrange@redhat.com>
+Subject: [PATCH v2 17/22] qga: conditionalize schema for commands not
+ supported on other UNIX
+Date: Thu, 13 Jun 2024 16:44:01 +0100
+Message-ID: <20240613154406.1365469-12-berrange@redhat.com>
 In-Reply-To: <20240613154406.1365469-1-berrange@redhat.com>
 References: <20240613150127.1361931-1-berrange@redhat.com>
  <20240613154406.1365469-1-berrange@redhat.com>
@@ -63,7 +63,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: 11
 X-Spam_score: 1.1
@@ -89,9 +89,8 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Rather than creating stubs for every command that just return
-QERR_UNSUPPORTED, use 'if' conditions in the QAPI schema to
-fully exclude generation of the get-users command on POSIX
-platforms lacking required APIs.
+QERR_UNSUPPORTED, use 'if' conditions in the QAPI schema  to
+fully exclude generation of the commands on other UNIX.
 
 The command will be rejected at QMP dispatch time instead,
 avoiding reimplementing rejection by blocking the stub commands.
@@ -108,55 +107,56 @@ now documents what conditions enable use of the command.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- qga/commands-posix.c | 10 +---------
- qga/qapi-schema.json |  6 ++++--
- 2 files changed, 5 insertions(+), 11 deletions(-)
+ meson.build          | 1 +
+ qga/commands-posix.c | 8 --------
+ qga/qapi-schema.json | 3 ++-
+ 3 files changed, 3 insertions(+), 9 deletions(-)
 
+diff --git a/meson.build b/meson.build
+index d9f3349b0a..92b8c02582 100644
+--- a/meson.build
++++ b/meson.build
+@@ -2234,6 +2234,7 @@ config_host_data.set('CONFIG_ATTR', libattr.found())
+ config_host_data.set('CONFIG_BDRV_WHITELIST_TOOLS', get_option('block_drv_whitelist_in_tools'))
+ config_host_data.set('CONFIG_BRLAPI', brlapi.found())
+ config_host_data.set('CONFIG_BSD', host_os in bsd_oses)
++config_host_data.set('CONFIG_FREEBSD', host_os == 'freebsd')
+ config_host_data.set('CONFIG_CAPSTONE', capstone.found())
+ config_host_data.set('CONFIG_COCOA', cocoa.found())
+ config_host_data.set('CONFIG_DARWIN', host_os == 'darwin')
 diff --git a/qga/commands-posix.c b/qga/commands-posix.c
-index d92fa0ec87..a353f64ae6 100644
+index a353f64ae6..f4104f2760 100644
 --- a/qga/commands-posix.c
 +++ b/qga/commands-posix.c
-@@ -1212,15 +1212,7 @@ GuestUserList *qmp_guest_get_users(Error **errp)
-     return head;
+@@ -877,14 +877,6 @@ void qmp_guest_set_user_password(const char *username,
+         return;
+     }
  }
- 
--#else
--
--GuestUserList *qmp_guest_get_users(Error **errp)
+-#else /* __linux__ || __FreeBSD__ */
+-void qmp_guest_set_user_password(const char *username,
+-                                 const char *password,
+-                                 bool crypted,
+-                                 Error **errp)
 -{
 -    error_setg(errp, QERR_UNSUPPORTED);
--    return NULL;
 -}
--
--#endif
-+#endif /* HAVE_UTMPX */
+ #endif /* __linux__ || __FreeBSD__ */
  
- /* Replace escaped special characters with their real values. The replacement
-  * is done in place -- returned value is in the original string.
+ #ifdef HAVE_GETIFADDRS
 diff --git a/qga/qapi-schema.json b/qga/qapi-schema.json
-index 0b7f911ca5..70d4f173ad 100644
+index 70d4f173ad..571be3a914 100644
 --- a/qga/qapi-schema.json
 +++ b/qga/qapi-schema.json
-@@ -1413,7 +1413,8 @@
- # Since: 2.10
+@@ -1108,7 +1108,8 @@
+ # Since: 2.3
  ##
- { 'struct': 'GuestUser',
--  'data': { 'user': 'str', 'login-time': 'number', '*domain': 'str' } }
-+  'data': { 'user': 'str', 'login-time': 'number', '*domain': 'str' },
-+  'if': { 'any': ['CONFIG_WIN32', 'HAVE_UTMPX' ] } }
+ { 'command': 'guest-set-user-password',
+-  'data': { 'username': 'str', 'password': 'str', 'crypted': 'bool' } }
++  'data': { 'username': 'str', 'password': 'str', 'crypted': 'bool' },
++  'if': { 'any': [ 'CONFIG_WIN32', 'CONFIG_LINUX', 'CONFIG_FREEBSD'] } }
  
  ##
- # @guest-get-users:
-@@ -1425,7 +1426,8 @@
- # Since: 2.10
- ##
- { 'command': 'guest-get-users',
--  'returns': ['GuestUser'] }
-+  'returns': ['GuestUser'],
-+  'if': { 'any': ['CONFIG_WIN32', 'HAVE_UTMPX' ] } }
- 
- ##
- # @GuestTimezone:
+ # @GuestMemoryBlock:
 -- 
 2.45.1
 
