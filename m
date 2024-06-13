@@ -2,190 +2,120 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9ABE990698B
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jun 2024 12:02:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94E8A906A3A
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jun 2024 12:42:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sHhHa-0000EW-31; Thu, 13 Jun 2024 06:02:14 -0400
+	id 1sHhty-0003W7-G5; Thu, 13 Jun 2024 06:41:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1sHhHX-0000DJ-0q; Thu, 13 Jun 2024 06:02:11 -0400
-Received: from mgamail.intel.com ([198.175.65.21])
+ (Exim 4.90_1) (envelope-from <arun.kka@samsung.com>)
+ id 1sHhtv-0003Tg-W9
+ for qemu-devel@nongnu.org; Thu, 13 Jun 2024 06:41:52 -0400
+Received: from mailout1.samsung.com ([203.254.224.24])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1sHhHV-0004QH-1k; Thu, 13 Jun 2024 06:02:10 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1718272929; x=1749808929;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=TrQYqubW/01FdfTg5JdTt+H2hitxBMM+gDVoDsY0Yzs=;
- b=mdrqogtZYKOZpIvgzlcmNZvr4ZL9PLFLvKiH5KW7s0E57gHMOMnjo8er
- yZhmG/3/8RP1MX/vkLsR92wLCgjpAz+zUptWJN6ShwMy/caSEf9XwSphV
- YD5aA9eON+cIKi1i3hdRmud4QMGTAICN+wPYaWIOu0Nn5LFsFLx8LZF0q
- Fm2Y1fMaOiU/d6wZH8A9sCuo2eqUtYldnOQTt6kDvAg12B4fQ9qjnxA7T
- nSbzEgCVF4r+L3aqCz7w5fCwVuX7/g5ot1J9knRQq8T3FgZrm82CblbhE
- P5VNe3Ng0xVTrl535EWoRiCRWca9CyyEoG7gcp1lI8/nFiZUl5hPa+Ds5 A==;
-X-CSE-ConnectionGUID: FJx34vNpQq6k3/Dt5iC0hg==
-X-CSE-MsgGUID: pmUJYvUFRqe8sgk8ptDpuw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11101"; a="15048230"
-X-IronPort-AV: E=Sophos;i="6.08,234,1712646000"; d="scan'208";a="15048230"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Jun 2024 03:02:06 -0700
-X-CSE-ConnectionGUID: EXYlUZDXTW2BlOuuuLpZYg==
-X-CSE-MsgGUID: JiNYFyd8QUSbZedE8LOMjA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,234,1712646000"; d="scan'208";a="71300833"
-Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
- by fmviesa001.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 13 Jun 2024 03:01:53 -0700
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Thu, 13 Jun 2024 03:01:53 -0700
-Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Thu, 13 Jun 2024 03:01:52 -0700
-Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
- fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Thu, 13 Jun 2024 03:01:52 -0700
-Received: from NAM02-SN1-obe.outbound.protection.outlook.com (104.47.57.41) by
- edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Thu, 13 Jun 2024 03:01:52 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=TZbYAEAQ7WqWrj3QT2Zaa9Aqp3dQk16CVl4FWLkOO2VGR603UITiesTqz4/JJ/3CDbKQUKFGt+lQaTprhNm89Ez46zVqLSVeIpPF92oejqr1qlutp30+1ma5BS/kzh7PCo7dMxdepMJR2uh/HdWAIUOb7/mxKzHrOv8YIQJetWfq9LlbpmYq8ONGahlh3QBUMQ+901pIdZtoMBPD4zn/cUjyXDGLSGy/hRFHW2cD4q6Q3/PH+rt6MLQm006mEeuB0BUOY3+NCNVubHDED4QcXAkkRKTbd9pKZ3/aNVU9ZhixPTbrYXD6uGPUjsazOF5EZNQPfTyoK/GBzQ/MqhYhaA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YOzivNajAX41wefKp5Ia8fPMOuIs0FhDkXnrlQ2OgMQ=;
- b=n/2Kkg6BMFHarmlzwV7Cyl8N4SGa4TvsBFkYo4W27LYqYsL1+KOmaM79IpcLh2bTVGlUd/PKFFqvdOaDs4nX8paEi1Z/wl9Ipyty2nUAr3NyAWx4kuMY6tEQgucbnw9JxaWwc3/zIujYfCvWCwh0Xulip11qpAA9SkLWQOp/ZLMqjvtnsB0x7W3LvVsabqWETcsOJiEnjjg1tnAD5JQ4H7Swf67B9eKiZFDLH8yQIA6ZdNDirmvAeUZZ99CXXX16pSLfuSI5YRHwGX6rkS5pcBmLlZGLxMOTE6eIeBWHEcxjp2IudZz3DlJjPgYQQF6e1433Pyv1xQHJne/iokYcXw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from SJ0PR11MB6744.namprd11.prod.outlook.com (2603:10b6:a03:47d::10)
- by SA0PR11MB4767.namprd11.prod.outlook.com (2603:10b6:806:97::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7633.37; Thu, 13 Jun
- 2024 10:01:50 +0000
-Received: from SJ0PR11MB6744.namprd11.prod.outlook.com
- ([fe80::fe49:d628:48b1:6091]) by SJ0PR11MB6744.namprd11.prod.outlook.com
- ([fe80::fe49:d628:48b1:6091%7]) with mapi id 15.20.7677.019; Thu, 13 Jun 2024
- 10:01:50 +0000
-From: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>
-To: Eric Auger <eric.auger@redhat.com>, "eric.auger.pro@gmail.com"
- <eric.auger.pro@gmail.com>, "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>, "mst@redhat.com"
- <mst@redhat.com>, "jean-philippe@linaro.org" <jean-philippe@linaro.org>,
- "peter.maydell@linaro.org" <peter.maydell@linaro.org>, "clg@redhat.com"
- <clg@redhat.com>, "yanghliu@redhat.com" <yanghliu@redhat.com>
-CC: "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
- "jasowang@redhat.com" <jasowang@redhat.com>, "pbonzini@redhat.com"
- <pbonzini@redhat.com>, "berrange@redhat.com" <berrange@redhat.com>
-Subject: RE: [PATCH v3 3/7] HostIOMMUDevice: Introduce get_iova_ranges callback
-Thread-Topic: [PATCH v3 3/7] HostIOMMUDevice: Introduce get_iova_ranges
- callback
-Thread-Index: AQHavXOCkqyXXtMZokG2alB1INTlmbHFdlnA
-Date: Thu, 13 Jun 2024 10:01:50 +0000
-Message-ID: <SJ0PR11MB674422E6AFBE0E09BAF2926B92C12@SJ0PR11MB6744.namprd11.prod.outlook.com>
-References: <20240613092359.847145-1-eric.auger@redhat.com>
- <20240613092359.847145-4-eric.auger@redhat.com>
-In-Reply-To: <20240613092359.847145-4-eric.auger@redhat.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SJ0PR11MB6744:EE_|SA0PR11MB4767:EE_
-x-ms-office365-filtering-correlation-id: 1ce66ee8-93db-4883-102e-08dc8b8fd865
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
- ARA:13230034|366010|1800799018|7416008|376008|38070700012; 
-x-microsoft-antispam-message-info: =?us-ascii?Q?3BIDz/cTIx3435gaw1wknw+8+ylCSouQe7o0Aatn4f0SrupyFu6dEAI9P7Fa?=
- =?us-ascii?Q?q34rua8XrVvdoo5Hn+yisSv8/HsuicgRP8rEVO/MY/28tm0SpgO3y6Z6uqlq?=
- =?us-ascii?Q?EeAA53p+AFLyIoSFmAFmqDtbmh6+VrwvFwNY1bQ/GEgrBlmbA+RINlxjDJ6B?=
- =?us-ascii?Q?sqLkZ2cjoMaj8zvw0CGojnZeN5on703QUaUfWyealMYBUTTnfRi560WzNLxy?=
- =?us-ascii?Q?PtXHgOI8QnhhLyMBqE4ZDLyIeFxXoyV0GXxOEkFufp27hR0qDOSog0EpJezQ?=
- =?us-ascii?Q?Ywyc6XBU2ByJSFYGzzu0sduoM4TiMLD5l9Y1qg/aPdws2m4wWpwNDjv14p9b?=
- =?us-ascii?Q?8Avf2A3nwlAicGN4YZsM4S6VNrvoJ5qfH+T0jUd4VDQ/j5hA1B/sYrZ3UxUs?=
- =?us-ascii?Q?FdFNW2LF28/3fAx3eP06MLmrFSbf1E6sB2j4oFscUvx6vauPhApESHkePsHm?=
- =?us-ascii?Q?0au20q3KwtHURebkMXrHhpfRg48H1lu57bdHK9IF51xZ5JDQrQX7UQwYIfMv?=
- =?us-ascii?Q?m2sqhxosXUz9ButgkUWRHTieqUsiahkWDYOamiRKPtCrkMp63bs87RWgTye7?=
- =?us-ascii?Q?Mws3YPRhyYIhv+RnhJkHdNhrw3HYZJYNZbr9TaoKFa1CsFERFAmwy5A+NFsW?=
- =?us-ascii?Q?ZesXpvVmsyZ7Cu5QxpmdJDAKu6SchIC/ZXZCvj+2zOuIoMlq23WXbS0FTQ5F?=
- =?us-ascii?Q?J5UI7usTLS6/iAuY/aLasPsT6QutUzPjOJFQGnaOBTwXNTorex+QFUu44Gr9?=
- =?us-ascii?Q?JvOKaU5n/x5LYTFY48Az8S7ti0bANBk8oX0OQv8AgMSYkbcnTMxmtA08Ymuh?=
- =?us-ascii?Q?URROfCIxlQLf0G2sOYq8QfqhNAEajvU2ujSA7TZZxTkbK8Bpbm/atUj22lxX?=
- =?us-ascii?Q?jAKndCBBIeZlyuRQ8t7owZqXcA+ukC1jgVNarIILj89lTN8mkd+3qYLVVYDN?=
- =?us-ascii?Q?gOg7mHNU4K6wS8dgUvbD9SLTJv0vKRXFLgP0yml+7EV0OuhEWuCGCyAyXC9h?=
- =?us-ascii?Q?lbwO96R376iDOLjPIQMDX6WyCSLsVuKf0zL+QtMFYnN1q1CyoBL73IiOAQD9?=
- =?us-ascii?Q?tKY/q1oj2XazoRpqj9vnj21TIph2y9MZxkFpR3o0LOD0MCDIF2jPZoCLbZ7R?=
- =?us-ascii?Q?pYjLBQw66ke2zeK8spf7ZAx10CKVVu82hThRtgukiceYXyPVAPTKIniKriqX?=
- =?us-ascii?Q?fXLL3IpB5LmDQsr3EoNELwlMdITX8sCffjxJg9ocqgsJkxP0WXRG+i0Y1Wn8?=
- =?us-ascii?Q?c+pCbTEQ3q8vmk/96wNOLQUSyU5z9WPmNVgIWg8IA2VZ+i/ncMUU75790LoC?=
- =?us-ascii?Q?b19mNqKzoj1PlCnqjWu/889lSjDAJ/1qFB+UEud130hltxwSDGe8mfeUu6OU?=
- =?us-ascii?Q?KGiy8yA=3D?=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SJ0PR11MB6744.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230034)(366010)(1800799018)(7416008)(376008)(38070700012); DIR:OUT;
- SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?IB0CroNsm8Z/5asGO7CeiX9026MkD7HfAlyOZNgxh9OVH8Yv+aJGEt48KGXi?=
- =?us-ascii?Q?BQWr11X7M6VVoiBXxL4OhQTZVV1s2PCFAh4hZHcCfWp2r2BQ6twdZqGN3vOM?=
- =?us-ascii?Q?OpvujbczPay4tiyec16Ivav2dOG0OMbQXmf9ZG1ecb9ei6eEVftwkrQZnEkb?=
- =?us-ascii?Q?Z/5NhqznZMNKNk2933NNkbICvcUZVicrEvWPyxH/ezpU0qYvUlfdSQjc8sFB?=
- =?us-ascii?Q?y/kcNS7XHhhRdmweJd6gcDS7hTfiOg2Uh2Xj20ZGBKkrb2At36Z7cWLRRsKv?=
- =?us-ascii?Q?PWEoXpqAhIyIW4OK9xCmG2r9te02+cIzXHrIwmU/dasEkrzaIVkEpRwbzNXl?=
- =?us-ascii?Q?ugMW1v9wLilNQbDMdjMuvrOBhD+YMVqB2Os7AeaRnLcKnflUte4ZQGaGf4bx?=
- =?us-ascii?Q?X0/YN49CvB5RJxyCkJTXOZri4S4bM1swLtdfNuLLoBV+BCXdUOotxivPFtCu?=
- =?us-ascii?Q?L2wM+c/uIe430svh1HlMfub+Ax2Jh0mjDoODjXtv4BWag3IeZv1709hCgYwS?=
- =?us-ascii?Q?N9ftZnNr33+2VDa3FPdjTrk8gqajmyc48/RlPhZ0l0A5RboQG9gaUxiO2XEL?=
- =?us-ascii?Q?DWb1oiuVMU+BAAkjDDyZGJbfz+Fd+r3K3wWuQq4PBvL9JvT+0ldB7RcR1s0u?=
- =?us-ascii?Q?y/8HkwifB3G+HmbKn864aBd8/oAArkbXSzN8TqqeoWIhF/fuVHUoBpwAzzy6?=
- =?us-ascii?Q?AEjkMPG1QvUKjw2ifDraMgw3a1paV9m1s0kscR1a2IxuWAwVSLZKNb6GqGE8?=
- =?us-ascii?Q?PoDnXBiX5OTPzdjSixAtmNiQPWJ/DlzQUeoAo0ih1P3YRNsc/7I8tU1FmLpX?=
- =?us-ascii?Q?GvrRJVWRTTRIydNg+eJTd3VQXjBJEplLsmSjaeWmtZ5epEKSpJA5qvut/e/U?=
- =?us-ascii?Q?TcKo/uz5cvEbHx1TdjpH2WyFfciYfkvAYpzFyZkiWhzfYgfBraAPQLEqDPRC?=
- =?us-ascii?Q?ATKnai31F5xcAwhAZAq+Uts/le0O7fMs7dsiP1lznhbR3Qqb23aVRjwHs7Yq?=
- =?us-ascii?Q?Jv9kHer0VqbYQUFQOuJYOkT/E2f8a880oDSdqFf335io4tOwR6uDe+StIPZJ?=
- =?us-ascii?Q?bxOp22ODs1/51FZapNLnOVwnD5OPkc0K1f9do0hDNkD5rNEgMFInHJ/cb2dX?=
- =?us-ascii?Q?kvGRtY9mQaOmywzXx7cfRbTgCZcLV89k5a+xIVuL4vI6KwGegPQvZoJMB+bP?=
- =?us-ascii?Q?7dlNHQd/4V+DA723nddcusYtmXw+1tff2XDlKKa3z+ly23CC0CV+YX9pvyL+?=
- =?us-ascii?Q?r7VLp3geZZNK+FVP3ccUuNuY2j/9VUFg3VSm4VHSCrxf4zcAvvYiBhLWVbX6?=
- =?us-ascii?Q?RB1HmyORX3cHvCgrLN8fxDNL7Hx6iPA8n6fxDHEos4s7JLyQvwFWUhk+l0nH?=
- =?us-ascii?Q?s4hs94dGolqxnpc2/aDdNZWdrvstOjSZSrH9BVpUkAOcpIbLh3x9hj327y6p?=
- =?us-ascii?Q?r6DRxa2VhJ/H9ggelGBcTz2ZGjaki7VzYTcHM+rCeqfMPRvdoXjEckgL58No?=
- =?us-ascii?Q?RndJijivhMulJ0z+yNmfBJJhLEvEIIUeU82+s7kVonMXUgAD7C7j7SiUKgxe?=
- =?us-ascii?Q?kLx6lbapLndu0r84Q/EEqEBODjPB4cyV6+TFUkNd?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ (Exim 4.90_1) (envelope-from <arun.kka@samsung.com>)
+ id 1sHhtn-0003Yp-GX
+ for qemu-devel@nongnu.org; Thu, 13 Jun 2024 06:41:51 -0400
+Received: from epcas5p3.samsung.com (unknown [182.195.41.41])
+ by mailout1.samsung.com (KnoxPortal) with ESMTP id
+ 20240613104135epoutp01758e488fb6f86a4f8bf51ab32c8c7a9f~YikcOUB4E3249632496epoutp011
+ for <qemu-devel@nongnu.org>; Thu, 13 Jun 2024 10:41:35 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com
+ 20240613104135epoutp01758e488fb6f86a4f8bf51ab32c8c7a9f~YikcOUB4E3249632496epoutp011
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+ s=mail20170921; t=1718275295;
+ bh=+MDpyHSoj1eq3DBtYblTsTNr5Yjvtpnjv6AIrthL3/0=;
+ h=From:To:Cc:Subject:Date:References:From;
+ b=JgRCcjnEncrK+miFpMDi9tcdwX1ni+AH/PSNcT4zm4Zn/Dcfh8tKLfPJACdWfWhuD
+ BlB+y36hLuHGtKn+xqNbO13QjthqQPURfuYxuAKksiBlquiKOKOJ84Bgzo6FPjOqyS
+ 0lMK0xb7FvLGRNOUVJxBIAvPKlz5//uNqF71TDSI=
+Received: from epsnrtp4.localdomain (unknown [182.195.42.165]) by
+ epcas5p4.samsung.com (KnoxPortal) with ESMTP id
+ 20240613104134epcas5p43ae4593f929b58efeeeb4fbf352c7be2~YikbcvIsA2364123641epcas5p4x;
+ Thu, 13 Jun 2024 10:41:34 +0000 (GMT)
+Received: from epsmges5p2new.samsung.com (unknown [182.195.38.174]) by
+ epsnrtp4.localdomain (Postfix) with ESMTP id 4W0Jqd3kwLz4x9Pv; Thu, 13 Jun
+ 2024 10:41:33 +0000 (GMT)
+Received: from epcas5p2.samsung.com ( [182.195.41.40]) by
+ epsmges5p2new.samsung.com (Symantec Messaging Gateway) with SMTP id
+ 75.B0.09989.4DCCA666; Thu, 13 Jun 2024 19:41:24 +0900 (KST)
+Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
+ epcas5p1.samsung.com (KnoxPortal) with ESMTPA id
+ 20240613103252epcas5p164032f94c4e84343e88703ec8877383e~Yic1YqeFr1831918319epcas5p1D;
+ Thu, 13 Jun 2024 10:32:52 +0000 (GMT)
+Received: from epsmgms1p2new.samsung.com (unknown [182.195.42.42]) by
+ epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
+ 20240613103252epsmtrp26f830f5a0aba8fcf248d3630d8ef241d~Yic1XKzoE1440314403epsmtrp2s;
+ Thu, 13 Jun 2024 10:32:52 +0000 (GMT)
+X-AuditID: b6c32a4a-e57f970000002705-6a-666accd4e8b6
+Received: from epsmtip1.samsung.com ( [182.195.34.30]) by
+ epsmgms1p2new.samsung.com (Symantec Messaging Gateway) with SMTP id
+ 63.D7.08622.4DACA666; Thu, 13 Jun 2024 19:32:52 +0900 (KST)
+Received: from localhost.sa.corp.samsungelectronics.net (unknown
+ [107.99.41.223]) by epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
+ 20240613103251epsmtip1fd9666f4603053a62db792cf7e0f0a70~Yic0ZfPYy1554315543epsmtip1e;
+ Thu, 13 Jun 2024 10:32:51 +0000 (GMT)
+From: Arun Kumar <arun.kka@samsung.com>
+To: qemu-devel@nongnu.org
+Cc: kbusch@kernel.org, its@irrelevant.dk, foss@defmacro.it, Arun Kumar
+ <arun.kka@samsung.com>
+Subject: [PATCH] adding corss namespace copy support (tp-4130)
+Date: Thu, 13 Jun 2024 10:33:54 +0530
+Message-ID: <20240613050354.716451-1-arun.kka@samsung.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB6744.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1ce66ee8-93db-4883-102e-08dc8b8fd865
-X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Jun 2024 10:01:50.6516 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: eJvpQd+X4fAP4Kj7MIg59eb6kHZDroO+3+TA5/oAgMfWAi4mHN2pAvxNKtPfTMQojcaD/UnZhemDNeil+HBQosrziHIVuPdsgrpvypBQGgc=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR11MB4767
-X-OriginatorOrg: intel.com
-Received-SPF: pass client-ip=198.175.65.21;
- envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -45
-X-Spam_score: -4.6
-X-Spam_bar: ----
-X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.143,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Transfer-Encoding: 8bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrOKsWRmVeSWpSXmKPExsWy7bCmhu6VM1lpBs+Xi1jMuW9hcWJKmMX+
+ g99YLSYdusZocbx3B4sDq8eUadfYPc7tOM/usWlVJ5vHk2ubmTz6tqxiDGCNyrbJSE1MSS1S
+ SM1Lzk/JzEu3VfIOjneONzUzMNQ1tLQwV1LIS8xNtVVy8QnQdcvMAdqtpFCWmFMKFApILC5W
+ 0rezKcovLUlVyMgvLrFVSi1IySkwKdArTswtLs1L18tLLbEyNDAwMgUqTMjOOPRTteDBbcaK
+ Uxu/sDcw/pnI2MXIySEhYCJx89pH5i5GLg4hgd2MEtuef2SFcD4xSvx4ewLK+cYo0XX+IFAL
+ B1jLnUdQ8b2MEhMX/mQCGSUk0MYk8ficEIjNJqAusXbmDrC4iICkxO+u08wgNrNAvMS3RUtZ
+ QGxhATuJT69/MYPMZBFQlZh4hAMkzCtgJfH43Xd2iOvkJRbvWM4MEReUODnzCQvEGHmJ5q2z
+ wa6WEDjELrFu8RYmiAYXiQn9R5khbGGJV8e3QA2Skvj8bi8bhF0vcWbmHqj6DkaJpzDL7CUu
+ 7vnLBHIPs4CmxPpd+hBhWYmpp9YxQezlk+j9/QSqlVdixzwYW0ni3tafUGMkJOZc+Q4NXQ+J
+ HTf72CDBEytx7/ZjlgmM8rOQvDMLyTuzEDYvYGRexSiZWlCcm55abFpglJdaDo/X5PzcTYzg
+ FKjltYPx4YMPeocYmTgYDzFKcDArifDOWpiVJsSbklhZlVqUH19UmpNafIjRFBjEE5mlRJPz
+ gUk4ryTe0MTSwMTMzMzE0tjMUEmc93Xr3BQhgfTEktTs1NSC1CKYPiYOTqkGppSz/xwflUTs
+ c95z+n/rKwXeY3rzrST5lvtPDlyg/MVnk+xhrvpVVhkeZX/+FCRb9wrd+bRzemiBCP+vlp57
+ ZTd82/aetkiQTFm7+eqNtV9ZFq+YXBHOnx84RSbtBYfp3bmrg2ufqPW1zy6P7ZtZwJ4fPNun
+ aAP/paTvuaY38zbLLasXS798tD1VYqVIjP+nUC41BolnmismX9fPMuOS3bz1QmEYv2vMxfAn
+ cZFvjqtu/T8t6JnGxSVq7GkX522+9SJ3Qz+384OcFQc2FAnfuBQXFdrE9+FacnRq0eafKveq
+ D5qJHYnNENRgCd3NvtPi0RaOawuLdj9ssjvDVSDSkiGVKRm2e0d7UDJ/qVWxEktxRqKhFnNR
+ cSIADJ91RQoEAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrELMWRmVeSWpSXmKPExsWy7bCSnO6VU1lpBr93alnMuW9hcWJKmMX+
+ g99YLSYdusZocbx3B4sDq8eUadfYPc7tOM/usWlVJ5vHk2ubmTz6tqxiDGCN4rJJSc3JLEst
+ 0rdL4Mo49FO14MFtxopTG7+wNzD+mcjYxcjBISFgInHnEWsXIxeHkMBuRokt5zaxdzFyAsUl
+ JH58+cYIYQtLrPz3nB2iqIVJYumtpawgCTYBdYm1M3cwgdgiApISv7tOM4MMZRZIlnj9wxck
+ LCxgJ/Hp9S+wMIuAqsTEIxwgYV4BK4nH775DrZKXWLxjOTNEXFDi5MwnLCA2M1C8eets5gmM
+ fLOQpGYhSS1gZFrFKJlaUJybnltsWGCUl1quV5yYW1yal66XnJ+7iREcjFpaOxj3rPqgd4iR
+ iYPxEKMEB7OSCO+shVlpQrwpiZVVqUX58UWlOanFhxilOViUxHm/ve5NERJITyxJzU5NLUgt
+ gskycXBKNTDFr/7cHb38wWshP5N+XYZJx/9KPzr8eUmQ6YNoDiad6IBlc6XC/7e7HTr9a5d7
+ zk+p+Pd1Fl5XZ67bp+n8ULVdLEdtof/RVVwf7vtMe6ui2xP16MviHpb3GtzXj228+Hp/yWcj
+ /ddn23lfXymuT9YWanWL+fphWsUxxtI36UpTmpJ+1F59/zT3LYvSRvZl9SUHjO1j5mrfCHU5
+ WsbOdOzAjlktsyrjJj66tzvgpKSxWbJdnpRNXtkui30Rs5VXezLW+LI5syZ0S+an6whVvvmx
+ 5NzxGHk7g+MXK385yGfb7DSfXJX1NunR88C9ai+aduqKPbn8sfDK1a/Cc5TCM3xr8hjmlGoH
+ tSbsvJljtVqJpTgj0VCLuag4EQDrnRKYtQIAAA==
+X-CMS-MailID: 20240613103252epcas5p164032f94c4e84343e88703ec8877383e
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-Sendblock-Type: REQ_APPROVE
+CMS-TYPE: 105P
+DLP-Filter: Pass
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20240613103252epcas5p164032f94c4e84343e88703ec8877383e
+References: <CGME20240613103252epcas5p164032f94c4e84343e88703ec8877383e@epcas5p1.samsung.com>
+Received-SPF: pass client-ip=203.254.224.24; envelope-from=arun.kka@samsung.com;
+ helo=mailout1.samsung.com
+X-Spam_score_int: -29
+X-Spam_score: -3.0
+X-Spam_bar: ---
+X-Spam_report: (-3.0 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_03_06=1.592,
+ DKIMWL_WL_HIGH=-0.145, DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
+ DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -202,127 +132,752 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Signed-off-by: Arun Kumar <arun.kka@samsung.com>
+---
+ hw/nvme/ctrl.c       | 355 ++++++++++++++++++++++++++++++++-----------
+ include/block/nvme.h |  37 +++--
+ 2 files changed, 289 insertions(+), 103 deletions(-)
 
-
->-----Original Message-----
->From: Eric Auger <eric.auger@redhat.com>
->Subject: [PATCH v3 3/7] HostIOMMUDevice: Introduce get_iova_ranges
->callback
->
->Introduce a new HostIOMMUDevice callback that allows to
->retrieve the usable IOVA ranges.
->
->Implement this callback in the legacy VFIO and IOMMUFD VFIO
->host iommu devices. This relies on the VFIODevice agent's
->base container iova_ranges resource.
->
->Signed-off-by: Eric Auger <eric.auger@redhat.com>
-
-Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-
-Thanks
-Zhenzhong
-
->
->---
->
->v2 -> v3:
->- add g_assert(vdev)
->---
-> include/sysemu/host_iommu_device.h |  8 ++++++++
-> hw/vfio/container.c                | 16 ++++++++++++++++
-> hw/vfio/iommufd.c                  | 16 ++++++++++++++++
-> 3 files changed, 40 insertions(+)
->
->diff --git a/include/sysemu/host_iommu_device.h
->b/include/sysemu/host_iommu_device.h
->index 3e5f058e7b..40e0fa13ef 100644
->--- a/include/sysemu/host_iommu_device.h
->+++ b/include/sysemu/host_iommu_device.h
->@@ -80,6 +80,14 @@ struct HostIOMMUDeviceClass {
->      * i.e., HOST_IOMMU_DEVICE_CAP_AW_BITS.
->      */
->     int (*get_cap)(HostIOMMUDevice *hiod, int cap, Error **errp);
->+    /**
->+     * @get_iova_ranges: Return the list of usable iova_ranges along with
->+     * @hiod Host IOMMU device
->+     *
->+     * @hiod: handle to the host IOMMU device
->+     * @errp: error handle
->+     */
->+    GList* (*get_iova_ranges)(HostIOMMUDevice *hiod, Error **errp);
-> };
->
-> /*
->diff --git a/hw/vfio/container.c b/hw/vfio/container.c
->index b728b978a2..c48749c089 100644
->--- a/hw/vfio/container.c
->+++ b/hw/vfio/container.c
->@@ -1164,12 +1164,28 @@ static int
->hiod_legacy_vfio_get_cap(HostIOMMUDevice *hiod, int cap,
->     }
-> }
->
->+static GList *
->+hiod_legacy_vfio_get_iova_ranges(HostIOMMUDevice *hiod, Error **errp)
->+{
->+    VFIODevice *vdev =3D hiod->agent;
->+    GList *l =3D NULL;
->+
->+    g_assert(vdev);
->+
->+    if (vdev->bcontainer) {
->+        l =3D g_list_copy(vdev->bcontainer->iova_ranges);
->+    }
->+
->+    return l;
->+}
->+
-> static void hiod_legacy_vfio_class_init(ObjectClass *oc, void *data)
-> {
->     HostIOMMUDeviceClass *hioc =3D HOST_IOMMU_DEVICE_CLASS(oc);
->
->     hioc->realize =3D hiod_legacy_vfio_realize;
->     hioc->get_cap =3D hiod_legacy_vfio_get_cap;
->+    hioc->get_iova_ranges =3D hiod_legacy_vfio_get_iova_ranges;
-> };
->
-> static const TypeInfo types[] =3D {
->diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
->index dbdae1adbb..e502081c2a 100644
->--- a/hw/vfio/iommufd.c
->+++ b/hw/vfio/iommufd.c
->@@ -645,11 +645,27 @@ static bool
->hiod_iommufd_vfio_realize(HostIOMMUDevice *hiod, void *opaque,
->     return true;
-> }
->
->+static GList *
->+hiod_iommufd_vfio_get_iova_ranges(HostIOMMUDevice *hiod, Error
->**errp)
->+{
->+    VFIODevice *vdev =3D hiod->agent;
->+    GList *l =3D NULL;
->+
->+    g_assert(vdev);
->+
->+    if (vdev->bcontainer) {
->+        l =3D g_list_copy(vdev->bcontainer->iova_ranges);
->+    }
->+
->+    return l;
->+}
->+
-> static void hiod_iommufd_vfio_class_init(ObjectClass *oc, void *data)
-> {
->     HostIOMMUDeviceClass *hiodc =3D HOST_IOMMU_DEVICE_CLASS(oc);
->
->     hiodc->realize =3D hiod_iommufd_vfio_realize;
->+    hiodc->get_iova_ranges =3D hiod_iommufd_vfio_get_iova_ranges;
-> };
->
-> static const TypeInfo types[] =3D {
->--
->2.41.0
+diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
+index 127c3d2383..c181caae38 100644
+--- a/hw/nvme/ctrl.c
++++ b/hw/nvme/ctrl.c
+@@ -2696,6 +2696,7 @@ typedef struct NvmeCopyAIOCB {
+     BlockAIOCB common;
+     BlockAIOCB *aiocb;
+     NvmeRequest *req;
++    NvmeCtrl *n;
+     int ret;
+ 
+     void *ranges;
+@@ -2714,6 +2715,8 @@ typedef struct NvmeCopyAIOCB {
+     uint64_t slba;
+ 
+     NvmeZone *zone;
++    NvmeNamespace *sns;
++    uint32_t tcl;
+ } NvmeCopyAIOCB;
+ 
+ static void nvme_copy_cancel(BlockAIOCB *aiocb)
+@@ -2760,13 +2763,19 @@ static void nvme_copy_done(NvmeCopyAIOCB *iocb)
+ 
+ static void nvme_do_copy(NvmeCopyAIOCB *iocb);
+ 
+-static void nvme_copy_source_range_parse_format0(void *ranges, int idx,
+-                                                 uint64_t *slba, uint32_t *nlb,
+-                                                 uint16_t *apptag,
+-                                                 uint16_t *appmask,
+-                                                 uint64_t *reftag)
++static void nvme_copy_source_range_parse_format0_2(void *ranges,
++                                                   int idx, uint64_t *slba,
++                                                   uint32_t *nlb,
++                                                   uint32_t *snsid,
++                                                   uint16_t *apptag,
++                                                   uint16_t *appmask,
++                                                   uint64_t *reftag)
+ {
+-    NvmeCopySourceRangeFormat0 *_ranges = ranges;
++    NvmeCopySourceRangeFormat0_2 *_ranges = ranges;
++
++    if (snsid) {
++        *snsid = le32_to_cpu(_ranges[idx].sparams);
++    }
+ 
+     if (slba) {
+         *slba = le64_to_cpu(_ranges[idx].slba);
+@@ -2789,13 +2798,19 @@ static void nvme_copy_source_range_parse_format0(void *ranges, int idx,
+     }
+ }
+ 
+-static void nvme_copy_source_range_parse_format1(void *ranges, int idx,
+-                                                 uint64_t *slba, uint32_t *nlb,
+-                                                 uint16_t *apptag,
+-                                                 uint16_t *appmask,
+-                                                 uint64_t *reftag)
++static void nvme_copy_source_range_parse_format1_3(void *ranges, int idx,
++                                                   uint64_t *slba,
++                                                   uint32_t *nlb,
++                                                   uint32_t *snsid,
++                                                   uint16_t *apptag,
++                                                   uint16_t *appmask,
++                                                   uint64_t *reftag)
+ {
+-    NvmeCopySourceRangeFormat1 *_ranges = ranges;
++    NvmeCopySourceRangeFormat1_3 *_ranges = ranges;
++
++    if (snsid) {
++        *snsid = le32_to_cpu(_ranges[idx].sparams);
++    }
+ 
+     if (slba) {
+         *slba = le64_to_cpu(_ranges[idx].slba);
+@@ -2827,18 +2842,20 @@ static void nvme_copy_source_range_parse_format1(void *ranges, int idx,
+ 
+ static void nvme_copy_source_range_parse(void *ranges, int idx, uint8_t format,
+                                          uint64_t *slba, uint32_t *nlb,
+-                                         uint16_t *apptag, uint16_t *appmask,
+-                                         uint64_t *reftag)
++                                         uint32_t *snsid, uint16_t *apptag,
++                                         uint16_t *appmask, uint64_t *reftag)
+ {
+     switch (format) {
+     case NVME_COPY_FORMAT_0:
+-        nvme_copy_source_range_parse_format0(ranges, idx, slba, nlb, apptag,
+-                                             appmask, reftag);
++    case NVME_COPY_FORMAT_2:
++        nvme_copy_source_range_parse_format0_2(ranges, idx, slba, nlb, snsid,
++                                               apptag, appmask, reftag);
+         break;
+ 
+     case NVME_COPY_FORMAT_1:
+-        nvme_copy_source_range_parse_format1(ranges, idx, slba, nlb, apptag,
+-                                             appmask, reftag);
++    case NVME_COPY_FORMAT_3:
++        nvme_copy_source_range_parse_format1_3(ranges, idx, slba, nlb, snsid,
++                                               apptag, appmask, reftag);
+         break;
+ 
+     default:
+@@ -2854,10 +2871,10 @@ static inline uint16_t nvme_check_copy_mcl(NvmeNamespace *ns,
+     for (int idx = 0; idx < nr; idx++) {
+         uint32_t nlb;
+         nvme_copy_source_range_parse(iocb->ranges, idx, iocb->format, NULL,
+-                                     &nlb, NULL, NULL, NULL);
++                                     &nlb, NULL, NULL, NULL, NULL);
+         copy_len += nlb;
+     }
+-
++    iocb->tcl = copy_len;
+     if (copy_len > ns->id_ns.mcl) {
+         return NVME_CMD_SIZE_LIMIT | NVME_DNR;
+     }
+@@ -2869,11 +2886,11 @@ static void nvme_copy_out_completed_cb(void *opaque, int ret)
+ {
+     NvmeCopyAIOCB *iocb = opaque;
+     NvmeRequest *req = iocb->req;
+-    NvmeNamespace *ns = req->ns;
++    NvmeNamespace *dns = req->ns;
+     uint32_t nlb;
+ 
+     nvme_copy_source_range_parse(iocb->ranges, iocb->idx, iocb->format, NULL,
+-                                 &nlb, NULL, NULL, NULL);
++                                 &nlb, NULL, NULL, NULL, NULL);
+ 
+     if (ret < 0) {
+         iocb->ret = ret;
+@@ -2882,8 +2899,8 @@ static void nvme_copy_out_completed_cb(void *opaque, int ret)
+         goto out;
+     }
+ 
+-    if (ns->params.zoned) {
+-        nvme_advance_zone_wp(ns, iocb->zone, nlb);
++    if (dns->params.zoned) {
++        nvme_advance_zone_wp(dns, iocb->zone, nlb);
+     }
+ 
+     iocb->idx++;
+@@ -2896,25 +2913,25 @@ static void nvme_copy_out_cb(void *opaque, int ret)
+ {
+     NvmeCopyAIOCB *iocb = opaque;
+     NvmeRequest *req = iocb->req;
+-    NvmeNamespace *ns = req->ns;
++    NvmeNamespace *dns = req->ns;
+     uint32_t nlb;
+     size_t mlen;
+     uint8_t *mbounce;
+ 
+-    if (ret < 0 || iocb->ret < 0 || !ns->lbaf.ms) {
++    if (ret < 0 || iocb->ret < 0 || !dns->lbaf.ms) {
+         goto out;
+     }
+ 
+     nvme_copy_source_range_parse(iocb->ranges, iocb->idx, iocb->format, NULL,
+-                                 &nlb, NULL, NULL, NULL);
++                                 &nlb, NULL, NULL, NULL, NULL);
+ 
+-    mlen = nvme_m2b(ns, nlb);
+-    mbounce = iocb->bounce + nvme_l2b(ns, nlb);
++    mlen = nvme_m2b(dns, nlb);
++    mbounce = iocb->bounce + nvme_l2b(dns, nlb);
+ 
+     qemu_iovec_reset(&iocb->iov);
+     qemu_iovec_add(&iocb->iov, mbounce, mlen);
+ 
+-    iocb->aiocb = blk_aio_pwritev(ns->blkconf.blk, nvme_moff(ns, iocb->slba),
++    iocb->aiocb = blk_aio_pwritev(dns->blkconf.blk, nvme_moff(dns, iocb->slba),
+                                   &iocb->iov, 0, nvme_copy_out_completed_cb,
+                                   iocb);
+ 
+@@ -2928,12 +2945,15 @@ static void nvme_copy_in_completed_cb(void *opaque, int ret)
+ {
+     NvmeCopyAIOCB *iocb = opaque;
+     NvmeRequest *req = iocb->req;
+-    NvmeNamespace *ns = req->ns;
++    NvmeNamespace *sns = iocb->sns;
++    NvmeNamespace *dns = req->ns;
++    NvmeCopyCmd *copy = NULL;
++    uint8_t *mbounce = NULL;
+     uint32_t nlb;
+     uint64_t slba;
+     uint16_t apptag, appmask;
+     uint64_t reftag;
+-    size_t len;
++    size_t len, mlen;
+     uint16_t status;
+ 
+     if (ret < 0) {
+@@ -2944,43 +2964,51 @@ static void nvme_copy_in_completed_cb(void *opaque, int ret)
+     }
+ 
+     nvme_copy_source_range_parse(iocb->ranges, iocb->idx, iocb->format, &slba,
+-                                 &nlb, &apptag, &appmask, &reftag);
+-    len = nvme_l2b(ns, nlb);
++                                 &nlb, NULL, &apptag, &appmask, &reftag);
+ 
+     trace_pci_nvme_copy_out(iocb->slba, nlb);
+ 
+-    if (NVME_ID_NS_DPS_TYPE(ns->id_ns.dps)) {
+-        NvmeCopyCmd *copy = (NvmeCopyCmd *)&req->cmd;
++    len = nvme_l2b(sns, nlb);
++
++    if (NVME_ID_NS_DPS_TYPE(sns->id_ns.dps)) {
++        copy = (NvmeCopyCmd *)&req->cmd;
+ 
+         uint16_t prinfor = ((copy->control[0] >> 4) & 0xf);
+-        uint16_t prinfow = ((copy->control[2] >> 2) & 0xf);
+ 
+-        size_t mlen = nvme_m2b(ns, nlb);
+-        uint8_t *mbounce = iocb->bounce + nvme_l2b(ns, nlb);
++        mlen = nvme_m2b(sns, nlb);
++        mbounce = iocb->bounce + nvme_l2b(sns, nlb);
+ 
+-        status = nvme_dif_mangle_mdata(ns, mbounce, mlen, slba);
++        status = nvme_dif_mangle_mdata(sns, mbounce, mlen, slba);
+         if (status) {
+             goto invalid;
+         }
+-        status = nvme_dif_check(ns, iocb->bounce, len, mbounce, mlen, prinfor,
++        status = nvme_dif_check(sns, iocb->bounce, len, mbounce, mlen, prinfor,
+                                 slba, apptag, appmask, &reftag);
+         if (status) {
+             goto invalid;
+         }
++    }
++
++    if (NVME_ID_NS_DPS_TYPE(dns->id_ns.dps)) {
++        copy = (NvmeCopyCmd *)&req->cmd;
++        uint16_t prinfow = ((copy->control[2] >> 2) & 0xf);
++
++        mlen = nvme_m2b(dns, nlb);
++        mbounce = iocb->bounce + nvme_l2b(dns, nlb);
+ 
+         apptag = le16_to_cpu(copy->apptag);
+         appmask = le16_to_cpu(copy->appmask);
+ 
+         if (prinfow & NVME_PRINFO_PRACT) {
+-            status = nvme_check_prinfo(ns, prinfow, iocb->slba, iocb->reftag);
++            status = nvme_check_prinfo(dns, prinfow, iocb->slba, iocb->reftag);
+             if (status) {
+                 goto invalid;
+             }
+ 
+-            nvme_dif_pract_generate_dif(ns, iocb->bounce, len, mbounce, mlen,
++            nvme_dif_pract_generate_dif(dns, iocb->bounce, len, mbounce, mlen,
+                                         apptag, &iocb->reftag);
+         } else {
+-            status = nvme_dif_check(ns, iocb->bounce, len, mbounce, mlen,
++            status = nvme_dif_check(dns, iocb->bounce, len, mbounce, mlen,
+                                     prinfow, iocb->slba, apptag, appmask,
+                                     &iocb->reftag);
+             if (status) {
+@@ -2989,13 +3017,13 @@ static void nvme_copy_in_completed_cb(void *opaque, int ret)
+         }
+     }
+ 
+-    status = nvme_check_bounds(ns, iocb->slba, nlb);
++    status = nvme_check_bounds(dns, iocb->slba, nlb);
+     if (status) {
+         goto invalid;
+     }
+ 
+-    if (ns->params.zoned) {
+-        status = nvme_check_zone_write(ns, iocb->zone, iocb->slba, nlb);
++    if (dns->params.zoned) {
++        status = nvme_check_zone_write(dns, iocb->zone, iocb->slba, nlb);
+         if (status) {
+             goto invalid;
+         }
+@@ -3008,7 +3036,10 @@ static void nvme_copy_in_completed_cb(void *opaque, int ret)
+     qemu_iovec_reset(&iocb->iov);
+     qemu_iovec_add(&iocb->iov, iocb->bounce, len);
+ 
+-    iocb->aiocb = blk_aio_pwritev(ns->blkconf.blk, nvme_l2b(ns, iocb->slba),
++    block_acct_start(blk_get_stats(dns->blkconf.blk), &iocb->acct.write, 0,
++                     BLOCK_ACCT_WRITE);
++
++    iocb->aiocb = blk_aio_pwritev(dns->blkconf.blk, nvme_l2b(dns, iocb->slba),
+                                   &iocb->iov, 0, nvme_copy_out_cb, iocb);
+ 
+     return;
+@@ -3023,23 +3054,22 @@ out:
+ static void nvme_copy_in_cb(void *opaque, int ret)
+ {
+     NvmeCopyAIOCB *iocb = opaque;
+-    NvmeRequest *req = iocb->req;
+-    NvmeNamespace *ns = req->ns;
++    NvmeNamespace *sns = iocb->sns;
+     uint64_t slba;
+     uint32_t nlb;
+ 
+-    if (ret < 0 || iocb->ret < 0 || !ns->lbaf.ms) {
++    if (ret < 0 || iocb->ret < 0 || !sns->lbaf.ms) {
+         goto out;
+     }
+ 
+     nvme_copy_source_range_parse(iocb->ranges, iocb->idx, iocb->format, &slba,
+-                                 &nlb, NULL, NULL, NULL);
++                                 &nlb, NULL, NULL, NULL, NULL);
+ 
+     qemu_iovec_reset(&iocb->iov);
+-    qemu_iovec_add(&iocb->iov, iocb->bounce + nvme_l2b(ns, nlb),
+-                   nvme_m2b(ns, nlb));
++    qemu_iovec_add(&iocb->iov, iocb->bounce + nvme_l2b(sns, nlb),
++                   nvme_m2b(sns, nlb));
+ 
+-    iocb->aiocb = blk_aio_preadv(ns->blkconf.blk, nvme_moff(ns, slba),
++    iocb->aiocb = blk_aio_preadv(sns->blkconf.blk, nvme_moff(sns, slba),
+                                  &iocb->iov, 0, nvme_copy_in_completed_cb,
+                                  iocb);
+     return;
+@@ -3048,14 +3078,78 @@ out:
+     nvme_copy_in_completed_cb(iocb, ret);
+ }
+ 
++static inline bool nvme_csi_supports_copy(uint8_t csi)
++{
++    return csi == NVME_CSI_NVM || csi == NVME_CSI_ZONED;
++}
++
++static inline bool nvme_copy_ns_format_match(NvmeNamespace *sns,
++                                             NvmeNamespace *dns)
++{
++    return sns->lbaf.ds == dns->lbaf.ds && sns->lbaf.ms == dns->lbaf.ms;
++}
++
++static bool nvme_copy_matching_ns_format(NvmeNamespace *sns, NvmeNamespace *dns,
++                                         bool pi_enable)
++{
++    if (!nvme_csi_supports_copy(sns->csi) ||
++        !nvme_csi_supports_copy(dns->csi)) {
++        return false;
++    }
++
++    if (!pi_enable && !nvme_copy_ns_format_match(sns, dns)) {
++            return false;
++    }
++
++    if (pi_enable && (!nvme_copy_ns_format_match(sns, dns) ||
++        sns->id_ns.dps != dns->id_ns.dps)) {
++            return false;
++    }
++
++    return true;
++}
++
++static inline bool nvme_copy_corresp_pi_match(NvmeNamespace *sns,
++                                              NvmeNamespace *dns)
++{
++    return sns->lbaf.ms == 0 &&
++           ((dns->lbaf.ms == 8 && dns->pif == 0) ||
++           (dns->lbaf.ms == 16 && dns->pif == 1));
++}
++
++static bool nvme_copy_corresp_pi_format(NvmeNamespace *sns, NvmeNamespace *dns,
++                                        bool sns_pi_en)
++{
++    if (!nvme_csi_supports_copy(sns->csi) ||
++        !nvme_csi_supports_copy(dns->csi)) {
++        return false;
++    }
++
++    if (!sns_pi_en && !nvme_copy_corresp_pi_match(sns, dns)) {
++        return false;
++    }
++
++    if (sns_pi_en && !nvme_copy_corresp_pi_match(dns, sns)) {
++        return false;
++    }
++
++    return true;
++}
++
+ static void nvme_do_copy(NvmeCopyAIOCB *iocb)
+ {
+     NvmeRequest *req = iocb->req;
+-    NvmeNamespace *ns = req->ns;
++    NvmeNamespace *sns;
++    NvmeNamespace *dns = req->ns;
++    NvmeCopyCmd *copy = (NvmeCopyCmd *)&req->cmd;
++    uint16_t prinfor = ((copy->control[0] >> 4) & 0xf);
++    uint16_t prinfow = ((copy->control[2] >> 2) & 0xf);
+     uint64_t slba;
+     uint32_t nlb;
+     size_t len;
+     uint16_t status;
++    uint32_t dnsid = le32_to_cpu(req->cmd.nsid);
++    uint32_t snsid = dnsid;
+ 
+     if (iocb->ret < 0) {
+         goto done;
+@@ -3065,40 +3159,124 @@ static void nvme_do_copy(NvmeCopyAIOCB *iocb)
+         goto done;
+     }
+ 
+-    nvme_copy_source_range_parse(iocb->ranges, iocb->idx, iocb->format, &slba,
+-                                 &nlb, NULL, NULL, NULL);
+-    len = nvme_l2b(ns, nlb);
++    if (iocb->format == 2 || iocb->format == 3) {
++        nvme_copy_source_range_parse(iocb->ranges, iocb->idx, iocb->format,
++                                     &slba, &nlb, &snsid, NULL, NULL, NULL);
++        if (snsid != dnsid) {
++            if (snsid == NVME_NSID_BROADCAST ||
++                !nvme_nsid_valid(iocb->n, snsid)) {
++                status = NVME_INVALID_NSID | NVME_DNR;
++                goto invalid;
++            }
++            iocb->sns = nvme_ns(iocb->n, snsid);
++            if (unlikely(!iocb->sns)) {
++                status = NVME_INVALID_FIELD | NVME_DNR;
++                goto invalid;
++            }
++        } else {
++            if (((slba + nlb) > iocb->slba) &&
++                ((slba + nlb) < (iocb->slba + iocb->tcl))) {
++                status = NVME_CMD_OVERLAP_IO_RANGE | NVME_DNR;
++                goto invalid;
++            }
++        }
++    } else if (iocb->format == 0 || iocb->format == 1) {
++        nvme_copy_source_range_parse(iocb->ranges, iocb->idx, iocb->format,
++                                     &slba, &nlb, NULL, NULL, NULL, NULL);
++    }
++
++    sns = iocb->sns;
++    if ((snsid == dnsid) && NVME_ID_NS_DPS_TYPE(sns->id_ns.dps) &&
++        ((prinfor & NVME_PRINFO_PRACT) != (prinfow & NVME_PRINFO_PRACT))) {
++        status = NVME_INVALID_FIELD | NVME_DNR;
++        goto invalid;
++    } else if (snsid != dnsid) {
++        if (!NVME_ID_NS_DPS_TYPE(sns->id_ns.dps) &&
++            !NVME_ID_NS_DPS_TYPE(dns->id_ns.dps)) {
++            if (!nvme_copy_matching_ns_format(sns, dns, false)) {
++                status = NVME_CMD_INCOMP_NS_OR_FMT | NVME_DNR;
++                goto invalid;
++            }
++        }
++        if (NVME_ID_NS_DPS_TYPE(sns->id_ns.dps) &&
++            NVME_ID_NS_DPS_TYPE(dns->id_ns.dps)) {
++            if ((prinfor & NVME_PRINFO_PRACT) !=
++                (prinfow & NVME_PRINFO_PRACT)) {
++                status = NVME_CMD_INCOMP_NS_OR_FMT | NVME_DNR;
++                goto invalid;
++            } else {
++                if (!nvme_copy_matching_ns_format(sns, dns, true)) {
++                    status = NVME_CMD_INCOMP_NS_OR_FMT | NVME_DNR;
++                    goto invalid;
++                }
++            }
++        }
++
++        if (!NVME_ID_NS_DPS_TYPE(sns->id_ns.dps) &&
++            NVME_ID_NS_DPS_TYPE(dns->id_ns.dps)) {
++            if (!(prinfow & NVME_PRINFO_PRACT)) {
++                status = NVME_CMD_INCOMP_NS_OR_FMT | NVME_DNR;
++                goto invalid;
++            } else {
++                if (!nvme_copy_corresp_pi_format(sns, dns, false)) {
++                    status = NVME_CMD_INCOMP_NS_OR_FMT | NVME_DNR;
++                    goto invalid;
++                }
++            }
++        }
++
++        if (NVME_ID_NS_DPS_TYPE(sns->id_ns.dps) &&
++            !NVME_ID_NS_DPS_TYPE(dns->id_ns.dps)) {
++            if (!(prinfor & NVME_PRINFO_PRACT)) {
++                status = NVME_CMD_INCOMP_NS_OR_FMT | NVME_DNR;
++                goto invalid;
++            } else {
++                if (!nvme_copy_corresp_pi_format(sns, dns, true)) {
++                    status = NVME_CMD_INCOMP_NS_OR_FMT | NVME_DNR;
++                    goto invalid;
++                }
++            }
++        }
++    }
++    len = nvme_l2b(sns, nlb);
+ 
+     trace_pci_nvme_copy_source_range(slba, nlb);
+ 
+-    if (nlb > le16_to_cpu(ns->id_ns.mssrl)) {
++    if (nlb > le16_to_cpu(sns->id_ns.mssrl)) {
+         status = NVME_CMD_SIZE_LIMIT | NVME_DNR;
+         goto invalid;
+     }
+ 
+-    status = nvme_check_bounds(ns, slba, nlb);
++    status = nvme_check_bounds(sns, slba, nlb);
+     if (status) {
+         goto invalid;
+     }
+ 
+-    if (NVME_ERR_REC_DULBE(ns->features.err_rec)) {
+-        status = nvme_check_dulbe(ns, slba, nlb);
++    if (NVME_ERR_REC_DULBE(sns->features.err_rec)) {
++        status = nvme_check_dulbe(sns, slba, nlb);
+         if (status) {
+             goto invalid;
+         }
+     }
+ 
+-    if (ns->params.zoned) {
+-        status = nvme_check_zone_read(ns, slba, nlb);
++    if (sns->params.zoned) {
++        status = nvme_check_zone_read(sns, slba, nlb);
+         if (status) {
+             goto invalid;
+         }
+     }
+ 
++    g_free(iocb->bounce);
++    iocb->bounce = g_malloc_n(le16_to_cpu(sns->id_ns.mssrl),
++                              sns->lbasz + sns->lbaf.ms);
++
+     qemu_iovec_reset(&iocb->iov);
+     qemu_iovec_add(&iocb->iov, iocb->bounce, len);
+ 
+-    iocb->aiocb = blk_aio_preadv(ns->blkconf.blk, nvme_l2b(ns, slba),
++    block_acct_start(blk_get_stats(sns->blkconf.blk), &iocb->acct.read, 0,
++                     BLOCK_ACCT_READ);
++
++    iocb->aiocb = blk_aio_preadv(sns->blkconf.blk, nvme_l2b(sns, slba),
+                                  &iocb->iov, 0, nvme_copy_in_cb, iocb);
+     return;
+ 
+@@ -3117,9 +3295,7 @@ static uint16_t nvme_copy(NvmeCtrl *n, NvmeRequest *req)
+                                       nvme_misc_cb, req);
+     uint16_t nr = copy->nr + 1;
+     uint8_t format = copy->control[0] & 0xf;
+-    uint16_t prinfor = ((copy->control[0] >> 4) & 0xf);
+-    uint16_t prinfow = ((copy->control[2] >> 2) & 0xf);
+-    size_t len = sizeof(NvmeCopySourceRangeFormat0);
++    size_t len = sizeof(NvmeCopySourceRangeFormat0_2);
+ 
+     uint16_t status;
+ 
+@@ -3128,13 +3304,9 @@ static uint16_t nvme_copy(NvmeCtrl *n, NvmeRequest *req)
+     iocb->ranges = NULL;
+     iocb->zone = NULL;
+ 
+-    if (NVME_ID_NS_DPS_TYPE(ns->id_ns.dps) &&
+-        ((prinfor & NVME_PRINFO_PRACT) != (prinfow & NVME_PRINFO_PRACT))) {
+-        status = NVME_INVALID_FIELD | NVME_DNR;
+-        goto invalid;
+-    }
+-
+-    if (!(n->id_ctrl.ocfs & (1 << format))) {
++    if (!(n->id_ctrl.ocfs & (1 << format)) ||
++        ((format == 2 || format == 3) &&
++         !(n->features.hbs.cdfe & (1 << format)))) {
+         trace_pci_nvme_err_copy_invalid_format(format);
+         status = NVME_INVALID_FIELD | NVME_DNR;
+         goto invalid;
+@@ -3145,14 +3317,14 @@ static uint16_t nvme_copy(NvmeCtrl *n, NvmeRequest *req)
+         goto invalid;
+     }
+ 
+-    if ((ns->pif == 0x0 && format != 0x0) ||
+-        (ns->pif != 0x0 && format != 0x1)) {
++    if ((ns->pif == 0x0 && (format != 0x0 && format != 0x2)) ||
++        (ns->pif != 0x0 && (format != 0x1 && format != 0x3))) {
+         status = NVME_INVALID_FORMAT | NVME_DNR;
+         goto invalid;
+     }
+ 
+     if (ns->pif) {
+-        len = sizeof(NvmeCopySourceRangeFormat1);
++        len = sizeof(NvmeCopySourceRangeFormat1_3);
+     }
+ 
+     iocb->format = format;
+@@ -3188,17 +3360,13 @@ static uint16_t nvme_copy(NvmeCtrl *n, NvmeRequest *req)
+     iocb->idx = 0;
+     iocb->reftag = le32_to_cpu(copy->reftag);
+     iocb->reftag |= (uint64_t)le32_to_cpu(copy->cdw3) << 32;
+-    iocb->bounce = g_malloc_n(le16_to_cpu(ns->id_ns.mssrl),
+-                              ns->lbasz + ns->lbaf.ms);
+ 
+     qemu_iovec_init(&iocb->iov, 1);
+ 
+-    block_acct_start(blk_get_stats(ns->blkconf.blk), &iocb->acct.read, 0,
+-                     BLOCK_ACCT_READ);
+-    block_acct_start(blk_get_stats(ns->blkconf.blk), &iocb->acct.write, 0,
+-                     BLOCK_ACCT_WRITE);
+-
+     req->aiocb = &iocb->common;
++    iocb->sns = req->ns;
++    iocb->n = n;
++    iocb->bounce = NULL;
+     nvme_do_copy(iocb);
+ 
+     return NVME_NO_COMPLETE;
+@@ -4407,10 +4575,6 @@ static uint16_t nvme_io_cmd(NvmeCtrl *n, NvmeRequest *req)
+     trace_pci_nvme_io_cmd(nvme_cid(req), nsid, nvme_sqid(req),
+                           req->cmd.opcode, nvme_io_opc_str(req->cmd.opcode));
+ 
+-    if (!nvme_nsid_valid(n, nsid)) {
+-        return NVME_INVALID_NSID | NVME_DNR;
+-    }
+-
+     /*
+      * In the base NVM command set, Flush may apply to all namespaces
+      * (indicated by NSID being set to FFFFFFFFh). But if that feature is used
+@@ -4430,10 +4594,15 @@ static uint16_t nvme_io_cmd(NvmeCtrl *n, NvmeRequest *req)
+      * device only supports namespace types that includes the NVM Flush command
+      * (NVM and Zoned), so always do an NVM Flush.
+      */
++
+     if (req->cmd.opcode == NVME_CMD_FLUSH) {
+         return nvme_flush(n, req);
+     }
+ 
++    if (!nvme_nsid_valid(n, nsid) || nsid == NVME_NSID_BROADCAST) {
++        return NVME_INVALID_NSID | NVME_DNR;
++    }
++
+     ns = nvme_ns(n, nsid);
+     if (unlikely(!ns)) {
+         return NVME_INVALID_FIELD | NVME_DNR;
+@@ -8248,7 +8417,8 @@ static void nvme_init_ctrl(NvmeCtrl *n, PCIDevice *pci_dev)
+     id->nn = cpu_to_le32(NVME_MAX_NAMESPACES);
+     id->oncs = cpu_to_le16(NVME_ONCS_WRITE_ZEROES | NVME_ONCS_TIMESTAMP |
+                            NVME_ONCS_FEATURES | NVME_ONCS_DSM |
+-                           NVME_ONCS_COMPARE | NVME_ONCS_COPY);
++                           NVME_ONCS_COMPARE | NVME_ONCS_COPY |
++                           NVME_ONCS_NVMCSA | NVME_ONCS_NVMAFC);
+ 
+     /*
+      * NOTE: If this device ever supports a command set that does NOT use 0x0
+@@ -8259,7 +8429,8 @@ static void nvme_init_ctrl(NvmeCtrl *n, PCIDevice *pci_dev)
+      */
+     id->vwc = NVME_VWC_NSID_BROADCAST_SUPPORT | NVME_VWC_PRESENT;
+ 
+-    id->ocfs = cpu_to_le16(NVME_OCFS_COPY_FORMAT_0 | NVME_OCFS_COPY_FORMAT_1);
++    id->ocfs = cpu_to_le16(NVME_OCFS_COPY_FORMAT_0 | NVME_OCFS_COPY_FORMAT_1 |
++                            NVME_OCFS_COPY_FORMAT_2 | NVME_OCFS_COPY_FORMAT_3);
+     id->sgls = cpu_to_le32(NVME_CTRL_SGLS_SUPPORT_NO_ALIGN);
+ 
+     nvme_init_subnqn(n);
+diff --git a/include/block/nvme.h b/include/block/nvme.h
+index bb231d0b9a..706e32d0f4 100644
+--- a/include/block/nvme.h
++++ b/include/block/nvme.h
+@@ -799,6 +799,8 @@ typedef struct QEMU_PACKED NvmeDsmRange {
+ enum {
+     NVME_COPY_FORMAT_0 = 0x0,
+     NVME_COPY_FORMAT_1 = 0x1,
++    NVME_COPY_FORMAT_2 = 0x2,
++    NVME_COPY_FORMAT_3 = 0x3,
+ };
+ 
+ typedef struct QEMU_PACKED NvmeCopyCmd {
+@@ -820,25 +822,30 @@ typedef struct QEMU_PACKED NvmeCopyCmd {
+     uint16_t    appmask;
+ } NvmeCopyCmd;
+ 
+-typedef struct QEMU_PACKED NvmeCopySourceRangeFormat0 {
+-    uint8_t  rsvd0[8];
++typedef struct QEMU_PACKED NvmeCopySourceRangeFormat0_2 {
++    uint32_t sparams;
++    uint8_t  rsvd4[4];
+     uint64_t slba;
+     uint16_t nlb;
+-    uint8_t  rsvd18[6];
++    uint8_t  rsvd18[4];
++    uint16_t sopt;
+     uint32_t reftag;
+     uint16_t apptag;
+     uint16_t appmask;
+-} NvmeCopySourceRangeFormat0;
++} NvmeCopySourceRangeFormat0_2;
+ 
+-typedef struct QEMU_PACKED NvmeCopySourceRangeFormat1 {
+-    uint8_t  rsvd0[8];
++typedef struct QEMU_PACKED NvmeCopySourceRangeFormat1_3 {
++    uint32_t sparams;
++    uint8_t  rsvd4[4];
+     uint64_t slba;
+     uint16_t nlb;
+-    uint8_t  rsvd18[8];
++    uint8_t  rsvd18[4];
++    uint16_t sopt;
++    uint8_t  rsvd24[2];
+     uint8_t  sr[10];
+     uint16_t apptag;
+     uint16_t appmask;
+-} NvmeCopySourceRangeFormat1;
++} NvmeCopySourceRangeFormat1_3;
+ 
+ enum NvmeAsyncEventRequest {
+     NVME_AER_TYPE_ERROR                     = 0,
+@@ -937,6 +944,8 @@ enum NvmeStatusCodes {
+     NVME_INVALID_PROT_INFO      = 0x0181,
+     NVME_WRITE_TO_RO            = 0x0182,
+     NVME_CMD_SIZE_LIMIT         = 0x0183,
++    NVME_CMD_INCOMP_NS_OR_FMT   = 0x0185,
++    NVME_CMD_OVERLAP_IO_RANGE   = 0x0187,
+     NVME_INVALID_ZONE_OP        = 0x01b6,
+     NVME_NOZRWA                 = 0x01b7,
+     NVME_ZONE_BOUNDARY_ERROR    = 0x01b8,
+@@ -1194,11 +1203,15 @@ enum NvmeIdCtrlOncs {
+     NVME_ONCS_TIMESTAMP     = 1 << 6,
+     NVME_ONCS_VERIFY        = 1 << 7,
+     NVME_ONCS_COPY          = 1 << 8,
++    NVME_ONCS_NVMCSA        = 1 << 9,
++    NVME_ONCS_NVMAFC        = 1 << 10,
+ };
+ 
+ enum NvmeIdCtrlOcfs {
+     NVME_OCFS_COPY_FORMAT_0 = 1 << NVME_COPY_FORMAT_0,
+     NVME_OCFS_COPY_FORMAT_1 = 1 << NVME_COPY_FORMAT_1,
++    NVME_OCFS_COPY_FORMAT_2 = 1 << NVME_COPY_FORMAT_2,
++    NVME_OCFS_COPY_FORMAT_3 = 1 << NVME_COPY_FORMAT_3,
+ };
+ 
+ enum NvmeIdctrlVwc {
+@@ -1332,7 +1345,9 @@ typedef struct NvmeHostBehaviorSupport {
+     uint8_t     acre;
+     uint8_t     etdas;
+     uint8_t     lbafee;
+-    uint8_t     rsvd3[509];
++    uint8_t     rsvd3;
++    uint16_t    cdfe;
++    uint8_t     rsvd6[506];
+ } NvmeHostBehaviorSupport;
+ 
+ typedef struct QEMU_PACKED NvmeLBAF {
+@@ -1832,8 +1847,8 @@ static inline void _nvme_check_size(void)
+     QEMU_BUILD_BUG_ON(sizeof(NvmeZonedResult) != 8);
+     QEMU_BUILD_BUG_ON(sizeof(NvmeCqe) != 16);
+     QEMU_BUILD_BUG_ON(sizeof(NvmeDsmRange) != 16);
+-    QEMU_BUILD_BUG_ON(sizeof(NvmeCopySourceRangeFormat0) != 32);
+-    QEMU_BUILD_BUG_ON(sizeof(NvmeCopySourceRangeFormat1) != 40);
++    QEMU_BUILD_BUG_ON(sizeof(NvmeCopySourceRangeFormat0_2) != 32);
++    QEMU_BUILD_BUG_ON(sizeof(NvmeCopySourceRangeFormat1_3) != 40);
+     QEMU_BUILD_BUG_ON(sizeof(NvmeCmd) != 64);
+     QEMU_BUILD_BUG_ON(sizeof(NvmeDeleteQ) != 64);
+     QEMU_BUILD_BUG_ON(sizeof(NvmeCreateCq) != 64);
+-- 
+2.43.0
 
 
