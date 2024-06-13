@@ -2,89 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93D95907A47
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jun 2024 19:53:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B378A907A60
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jun 2024 19:57:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sHoc1-00079M-D5; Thu, 13 Jun 2024 13:51:49 -0400
+	id 1sHohI-0004U4-Le; Thu, 13 Jun 2024 13:57:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
- id 1sHobz-00078Q-MT
- for qemu-devel@nongnu.org; Thu, 13 Jun 2024 13:51:47 -0400
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
- id 1sHobx-0002g6-Bd
- for qemu-devel@nongnu.org; Thu, 13 Jun 2024 13:51:47 -0400
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-1f717ee193fso10133605ad.0
- for <qemu-devel@nongnu.org>; Thu, 13 Jun 2024 10:51:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1718301104; x=1718905904; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=xcioUVXfeL3EIHP7AWKsep1C5ehKcEX649P/Ggmw2I4=;
- b=nM9MaIqO6fN/IVxS9VeevFze5gxYngXA92D+UftJSkJ24l1Ml8AcojXuN8HeCrQWHQ
- pz+yzusOci1kPQmo9GwMOjkizRo/LTNtClhhJmEJ5xrTrFShtvR28jPNjJ4wzXU6C+sT
- GMn7KWQjCogs6gqNp0I/hyW1Xt2iWUKC1KTDYCgDV7hC7JDLBbAsWLpSAB+XXrzfXOEc
- 7XNHcq9MMrbGrLf7cqYFu9k66Gw501AXeuvbgTQZEHu47/JcBxUBKJuwFzoIzsiF5iq3
- wmTFjXlpf6iY/754KK0T0JRJ4ifmXzkPwPVhIhOE/TVhzZOTbyLeZY3ibB63MGqEb2qs
- z1Kg==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1sHohH-0004Se-5E
+ for qemu-devel@nongnu.org; Thu, 13 Jun 2024 13:57:15 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1sHohF-0003UZ-Hf
+ for qemu-devel@nongnu.org; Thu, 13 Jun 2024 13:57:14 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1718301430;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Zb6pqNxI74iToge51ry0W/CKz8UHzczmMRz/HpWjWok=;
+ b=WZa5TpwIkCdkOk1CICEnoSRhtLQozAmRP+NwihXLbReaw31XXaE6utTJkCaE7rmkIIj89J
+ 7WeDix6MosO0F18dg9h7qwv8qSwW1DeL9RVl5um6W+cc+WInROPdo+VKvTn9y+jzc34gVu
+ ZbM8RQnNnmLgFzaeMGBVC79eFIe46uM=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-627-79bRkHCfNCy1GM0hZ-VL4A-1; Thu, 13 Jun 2024 13:57:09 -0400
+X-MC-Unique: 79bRkHCfNCy1GM0hZ-VL4A-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-421179fd82bso8490175e9.1
+ for <qemu-devel@nongnu.org>; Thu, 13 Jun 2024 10:57:08 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718301104; x=1718905904;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1718301428; x=1718906228;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=xcioUVXfeL3EIHP7AWKsep1C5ehKcEX649P/Ggmw2I4=;
- b=bA3b6t9UpVvmod9YCplp4T8wB6pNqThXZvrsINqQUokt1rgGKHNyNJCxiSg5qAkrs+
- trwVSDoUYAAWyJ3IMtFUbMqqZjnQMdi041qyoPeDM44fQkKy1X7B9N1UCzVworSqE7/y
- YiqWrRGlQ/icBQs8UgOQbAphW7w4TZVp9jPjByqpsGMRBIGIn18kKQfqrI5sFlZr80Lm
- tEW2Iz5Bh2O1uokeQnwdGOOUoTyiqppi1OhRBVDfIbOKPvv9Rcs9iER09u18QxcbGiCw
- rXuAFu5MGmYskOFpk+BFAK1sgbXATZCxZxWfKypOv3+J2yXNZVWexUsh9gsYtx3DFGxH
- H6dg==
-X-Gm-Message-State: AOJu0Yxwz4vUsQw+dl4JgaSNqRCpwLqsc5LoXsvrG0wJhQicmAKdnyPB
- mjuDBUb+PHa1OD7B87/hFUvegpsLmxsfa9wMf71Zra93DfY7pv0PmlTjUAg83m8du/d9R7eQBka
- J1h4ivxfN1RAm+ybVxCh2whsTeodm8vnZuqT+hiVSNfTTe2pQEwjLXhZ2mnSwnFXBbhtz/Odn/c
- IihMDFEokpKHctDxFcVDnyO3kW2CSyvX4iZtq2+Q==
-X-Google-Smtp-Source: AGHT+IGMHYyk29K31R4i7vYqjqj2qwXYzzK3m/8F9PTUHUZgOGZNi6aA/LsLXYH09ohNMR6iC7ghJA==
-X-Received: by 2002:a17:902:64c9:b0:1f7:1640:cef4 with SMTP id
- d9443c01a7336-1f8629fea9bmr3947895ad.59.1718301103855; 
- Thu, 13 Jun 2024 10:51:43 -0700 (PDT)
-Received: from duncan.localdomain (114-35-142-126.hinet-ip.hinet.net.
- [114.35.142.126]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1f855e55d7dsm16780865ad.14.2024.06.13.10.51.41
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 13 Jun 2024 10:51:43 -0700 (PDT)
-From: Max Chou <max.chou@sifive.com>
-To: qemu-devel@nongnu.org,
-	qemu-riscv@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bmeng.cn@gmail.com>,
- Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Max Chou <max.chou@sifive.com>
-Subject: [RFC PATCH v4 5/5] target/riscv: Inline unit-stride ld/st and
- corresponding functions for performance
-Date: Fri, 14 Jun 2024 01:51:22 +0800
-Message-Id: <20240613175122.1299212-6-max.chou@sifive.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240613175122.1299212-1-max.chou@sifive.com>
-References: <20240613175122.1299212-1-max.chou@sifive.com>
+ bh=Zb6pqNxI74iToge51ry0W/CKz8UHzczmMRz/HpWjWok=;
+ b=E0UwOVz10s16LptOvLiCmsI7R/FqxOrtrYvU5a4LIhKNedJGE9kEN/+RzxwWRk00F4
+ IeFDYoAULwNI0t/+E6vZg2KPi0HP1thUj4WVz3Bk5fxgV3O219c0zK1E55pt0SxpQCDU
+ b5fV7pt9RkWyL4za9rrGNGZH6yYTRycmyBODC90G2XdfM10VG/6TXGRL4TWBgiJS98bd
+ nOj8H9/4Pp/ugJdtTHZ+1EAVFkmehQ8UbNuOns2iqz4yMlatVD1W8Nb+zwiRLbnWFQaJ
+ 2sPd2l8lweS6x5jRhte0pPYbVxyHHQb4CkzAEl6MjE9kBCKt9P8HwnuuwTfZOSTzRPJE
+ d8tw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWCOTs9zfWj5Mn/W6aelfw8ilIOZ1EWe47MZzJUBrBnG2Dgt620udKcnwU50bN7VcOVRf10HRrzSrZkduNbNJ4bR8yAtFs=
+X-Gm-Message-State: AOJu0YymSK8jmot7sbdsBGiU6gKuyirr0P12aU4+7cw4Z18HOOnJme8+
+ W8kyNwCL5bN2qar/gNVInCgTyWzw39PEb/rJ2YK2gec00EXl6gRYBpRe+hTpswpJh1eQYVvqlyQ
+ kW0T6JZ65NnFaY7Z5ZQKgter0OPgXk3jMOHQunnaB6wWI1pZsLqvwRNsRloN6ieoSox6WQXynpN
+ SqcwUmeXd/2oUXdOIRg9X4P0F7pSI=
+X-Received: by 2002:a5d:6187:0:b0:35f:44c:b3ef with SMTP id
+ ffacd0b85a97d-3607a781a05mr313825f8f.52.1718301427989; 
+ Thu, 13 Jun 2024 10:57:07 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGkhNaE3sJeI86A7DFYHW824xATcwyuO08K8XCPG7mWVQu3KZeD6PiAHGzz/fIdiP+VorcSf148hz6Sfg1jmHk=
+X-Received: by 2002:a5d:6187:0:b0:35f:44c:b3ef with SMTP id
+ ffacd0b85a97d-3607a781a05mr313804f8f.52.1718301427582; Thu, 13 Jun 2024
+ 10:57:07 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=max.chou@sifive.com; helo=mail-pl1-x62a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+References: <rust-pl011-rfc-v2.git.manos.pitsidianakis@linaro.org>
+ <0fde311846394e9f7633be5d72cc30b25587d7a1.1718101832.git.manos.pitsidianakis@linaro.org>
+ <CABgObfY8BS0yCw2CxgDQTBA4np9BZgGJF3N=t6eoBcdACAE=NA@mail.gmail.com>
+ <ez270.x96k6aeu0rpw@linaro.org> <ZmnHoajecti472mi@redhat.com>
+ <ezjl0.qx0tmsp6d6t@linaro.org>
+ <CABgObfbGwKc0RYBcDPzNkE8HOSouFj4D15Oh7TuiKOC+D7raaA@mail.gmail.com>
+ <ZmqcFf0xB9m4WkA3@redhat.com>
+ <CABgObfb4+FSsadFTVg6Dc1zehQV2Vei2_kSRd5CfxsGBLPN6Eg@mail.gmail.com>
+ <ZmscPKyuK7RVgrMo@intel.com>
+In-Reply-To: <ZmscPKyuK7RVgrMo@intel.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Thu, 13 Jun 2024 19:56:55 +0200
+Message-ID: <CABgObfYnCQu9_yqL=CwO-O8qKqhXqnkZ0JGdZpTy23TX1AuHkw@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 3/5] rust: add PL011 device model
+To: Zhao Liu <zhao1.liu@intel.com>
+Cc: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ qemu-devel <qemu-devel@nongnu.org>, 
+ Stefan Hajnoczi <stefanha@redhat.com>, Mads Ynddal <mads@ynddal.dk>, 
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?Q?Alex_Benn=C3=A9_e?= <alex.bennee@linaro.org>, 
+ =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
+ Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Gustavo Romero <gustavo.romero@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.145,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,113 +115,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In the vector unit-stride load/store helper functions. the vext_ldst_us
-& vext_ldst_whole functions corresponding most of the execution time.
-Inline the functions can avoid the function call overhead to improve the
-helper function performance.
+On Thu, Jun 13, 2024 at 6:06=E2=80=AFPM Zhao Liu <zhao1.liu@intel.com> wrot=
+e:
+> I think deeper and higher level bindings will have more opens and will
+> likely require more discussion and exploration. So could we explore this
+> direction on another reference Rust device?
+>
+> I also think there won=E2=80=99t be too many Rust devices in the short te=
+rm.
+> Going back to tweak or enhance existing Rust devices may not require too
+> much effort, once we have a definitive answer.
+>
+> I wonder if x86 could also implement a rust device (like the x86 timer
+> you mentioned before, hw/i386/kvm/i8254.c or hw/timer/i8254.c IIRC) to
+> try this? Or would you recommend another x86 device? :-)
 
-Signed-off-by: Max Chou <max.chou@sifive.com>
----
- target/riscv/vector_helper.c | 64 +++++++++++++++++++-----------------
- 1 file changed, 34 insertions(+), 30 deletions(-)
+A timer device is a good idea, just because it's another pretty stable
+low-level QEMU API.
 
-diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
-index cba46ef16a5..29849a8b66f 100644
---- a/target/riscv/vector_helper.c
-+++ b/target/riscv/vector_helper.c
-@@ -415,20 +415,22 @@ typedef void vext_ldst_elem_fn_tlb(CPURISCVState *env, abi_ptr addr,
-                                    uint32_t idx, void *vd, uintptr_t retaddr);
- typedef void vext_ldst_elem_fn_host(void *vd, uint32_t idx, void *host);
- 
--#define GEN_VEXT_LD_ELEM(NAME, ETYPE, H, LDSUF)                         \
--static void NAME##_tlb(CPURISCVState *env, abi_ptr addr,                \
--                       uint32_t byte_off, void *vd, uintptr_t retaddr)  \
--{                                                                       \
--    uint8_t *reg = ((uint8_t *)vd + byte_off);                          \
--    ETYPE *cur = ((ETYPE *)reg);                                        \
--    *cur = cpu_##LDSUF##_data_ra(env, addr, retaddr);                   \
--}                                                                       \
--                                                                        \
--static void NAME##_host(void *vd, uint32_t byte_off, void *host)        \
--{                                                                       \
--    ETYPE val = LDSUF##_p(host);                                        \
--    uint8_t *reg = (uint8_t *)(vd + byte_off);                          \
--    *(ETYPE *)(reg) = val;                                              \
-+#define GEN_VEXT_LD_ELEM(NAME, ETYPE, H, LDSUF)                 \
-+static inline QEMU_ALWAYS_INLINE                                \
-+void NAME##_tlb(CPURISCVState *env, abi_ptr addr,               \
-+                uint32_t byte_off, void *vd, uintptr_t retaddr) \
-+{                                                               \
-+    uint8_t *reg = ((uint8_t *)vd + byte_off);                  \
-+    ETYPE *cur = ((ETYPE *)reg);                                \
-+    *cur = cpu_##LDSUF##_data_ra(env, addr, retaddr);           \
-+}                                                               \
-+                                                                \
-+static inline QEMU_ALWAYS_INLINE                                \
-+void NAME##_host(void *vd, uint32_t byte_off, void *host)       \
-+{                                                               \
-+    ETYPE val = LDSUF##_p(host);                                \
-+    uint8_t *reg = (uint8_t *)(vd + byte_off);                  \
-+    *(ETYPE *)(reg) = val;                                      \
- }
- 
- GEN_VEXT_LD_ELEM(lde_b, uint8_t,  H1, ldub)
-@@ -436,20 +438,22 @@ GEN_VEXT_LD_ELEM(lde_h, uint16_t, H2, lduw)
- GEN_VEXT_LD_ELEM(lde_w, uint32_t, H4, ldl)
- GEN_VEXT_LD_ELEM(lde_d, uint64_t, H8, ldq)
- 
--#define GEN_VEXT_ST_ELEM(NAME, ETYPE, H, STSUF)                         \
--static void NAME##_tlb(CPURISCVState *env, abi_ptr addr,                \
--                       uint32_t byte_off, void *vd, uintptr_t retaddr)  \
--{                                                                       \
--    uint8_t *reg = ((uint8_t *)vd + byte_off);                          \
--    ETYPE data = *((ETYPE *)reg);                                       \
--    cpu_##STSUF##_data_ra(env, addr, data, retaddr);                    \
--}                                                                       \
--                                                                        \
--static void NAME##_host(void *vd, uint32_t byte_off, void *host)        \
--{                                                                       \
--    uint8_t *reg = ((uint8_t *)vd + byte_off);                          \
--    ETYPE val = *(ETYPE *)(reg);                                        \
--    STSUF##_p(host, val);                                               \
-+#define GEN_VEXT_ST_ELEM(NAME, ETYPE, H, STSUF)                 \
-+static inline QEMU_ALWAYS_INLINE                                \
-+void NAME##_tlb(CPURISCVState *env, abi_ptr addr,               \
-+                uint32_t byte_off, void *vd, uintptr_t retaddr) \
-+{                                                               \
-+    uint8_t *reg = ((uint8_t *)vd + byte_off);                  \
-+    ETYPE data = *((ETYPE *)reg);                               \
-+    cpu_##STSUF##_data_ra(env, addr, data, retaddr);            \
-+}                                                               \
-+                                                                \
-+static inline QEMU_ALWAYS_INLINE                                \
-+void NAME##_host(void *vd, uint32_t byte_off, void *host)       \
-+{                                                               \
-+    uint8_t *reg = ((uint8_t *)vd + byte_off);                  \
-+    ETYPE val = *(ETYPE *)(reg);                                \
-+    STSUF##_p(host, val);                                       \
- }
- 
- GEN_VEXT_ST_ELEM(ste_b, uint8_t,  H1, stb)
-@@ -611,7 +615,7 @@ GEN_VEXT_ST_STRIDE(vsse64_v, int64_t, ste_d_tlb)
-  */
- 
- /* unmasked unit-stride load and store operation */
--static void
-+static inline QEMU_ALWAYS_INLINE void
- vext_ldst_us(void *vd, target_ulong base, CPURISCVState *env, uint32_t desc,
-              vext_ldst_elem_fn_tlb *ldst_tlb,
-              vext_ldst_elem_fn_host *ldst_host, uint32_t log2_esz,
-@@ -1013,7 +1017,7 @@ GEN_VEXT_LDFF(vle64ff_v, int64_t, lde_d_tlb)
- /*
-  * load and store whole register instructions
-  */
--static void
-+static inline QEMU_ALWAYS_INLINE void
- vext_ldst_whole(void *vd, target_ulong base, CPURISCVState *env, uint32_t desc,
-                 vext_ldst_elem_fn_tlb *ldst_tlb,
-                 vext_ldst_elem_fn_host *ldst_host, uint32_t log2_esz,
--- 
-2.34.1
+The problem with hw/timer/i8254.c is that it has the KVM version, as
+you found. The HPET is an alternative though.
+
+
+Paolo
 
 
