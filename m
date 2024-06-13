@@ -2,96 +2,107 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12DFF9075CE
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jun 2024 16:56:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CCC19075E2
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jun 2024 16:59:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sHlr1-0004Y0-3R; Thu, 13 Jun 2024 10:55:07 -0400
+	id 1sHlvG-0007jQ-0n; Thu, 13 Jun 2024 10:59:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sHlqy-0004XY-Pp
- for qemu-devel@nongnu.org; Thu, 13 Jun 2024 10:55:04 -0400
-Received: from smtp-out1.suse.de ([195.135.223.130])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sHlvE-0007jG-HL
+ for qemu-devel@nongnu.org; Thu, 13 Jun 2024 10:59:28 -0400
+Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sHlqx-00028c-4E
- for qemu-devel@nongnu.org; Thu, 13 Jun 2024 10:55:04 -0400
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sHlvC-0002zq-Nd
+ for qemu-devel@nongnu.org; Thu, 13 Jun 2024 10:59:28 -0400
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 7C81E372D0;
- Thu, 13 Jun 2024 14:55:01 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id D5F2B372DC;
+ Thu, 13 Jun 2024 14:59:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1718290501; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1718290764; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=J+7V6bmBhY7mW/1T6gfzdWZ0edUIHaEhd7sKG0vpZA8=;
- b=cjcz3STXGVfenG2HqhTk12AN87Fo90eIFoq4Shek1m9C8IvLpjRm4kU+8iOibHU1ggiCKo
- YI398HREbeToSeklm9BY1/0iHxcuVQXpbYubiy+ALVTU3SKaXxbAEhy4CAupFCr1tKrFS8
- vSVEDL5scd3yQVUGpAu4ThwDbW2/cYQ=
+ bh=v9hvnwyvHl+LnE2STZGuAO8anxVKLaWZ1pj5R+R9aO0=;
+ b=eBrj+xq/BSbThGcCJx8l/p6ECZuy60GitR9CXPi11vzA5Xiv7RcKCWQpatiCHlSV7mx21V
+ 5aHN6w2RlZ8GT5dRhaASbF5waxXnBfgF2kTjmj+2jdniBjSUnnlKpjg7nf/v+7pALtAUaO
+ W+OHOMMwr9/ygy48QYg8x033DDFOIQM=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1718290501;
+ s=susede2_ed25519; t=1718290764;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=J+7V6bmBhY7mW/1T6gfzdWZ0edUIHaEhd7sKG0vpZA8=;
- b=S+564JTQXdmihCYDfEOGpgsOkHL6jXiY/aNbwCIcnRkZQ2hQuI1t2JcCQVrHiOUJweGp55
- TcLqCSruOCUO7yAg==
+ bh=v9hvnwyvHl+LnE2STZGuAO8anxVKLaWZ1pj5R+R9aO0=;
+ b=WDekGdD8pVu9aU6mDNfnWJtZ3+UFX+pqJh5c8nlKdGLnRcL2ER/+6vAIvUX3dXYMMjw/9r
+ SCTWvb6dquDtviAg==
 Authentication-Results: smtp-out1.suse.de;
-	none
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=DsUBDo9o;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=WqWW8hEu
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1718290501; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1718290763; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=J+7V6bmBhY7mW/1T6gfzdWZ0edUIHaEhd7sKG0vpZA8=;
- b=cjcz3STXGVfenG2HqhTk12AN87Fo90eIFoq4Shek1m9C8IvLpjRm4kU+8iOibHU1ggiCKo
- YI398HREbeToSeklm9BY1/0iHxcuVQXpbYubiy+ALVTU3SKaXxbAEhy4CAupFCr1tKrFS8
- vSVEDL5scd3yQVUGpAu4ThwDbW2/cYQ=
+ bh=v9hvnwyvHl+LnE2STZGuAO8anxVKLaWZ1pj5R+R9aO0=;
+ b=DsUBDo9oJaB9x8wL9k1G4a3RpQ371/bgjEtwDrfIvi8ce8DF8yBOB8YC2XwJQXn6GWaSia
+ KB36f7y+GgFPihiNo0sX4teVlJqBzMa8A9A2/Y6TEZ3wi6KXlbniVyKlTeXluP83uvLxPU
+ uLfCfXxeGMg4o1DgxOIN62pJgBnpkio=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1718290501;
+ s=susede2_ed25519; t=1718290763;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=J+7V6bmBhY7mW/1T6gfzdWZ0edUIHaEhd7sKG0vpZA8=;
- b=S+564JTQXdmihCYDfEOGpgsOkHL6jXiY/aNbwCIcnRkZQ2hQuI1t2JcCQVrHiOUJweGp55
- TcLqCSruOCUO7yAg==
+ bh=v9hvnwyvHl+LnE2STZGuAO8anxVKLaWZ1pj5R+R9aO0=;
+ b=WqWW8hEuS4BnmvhlnBLJyXomQd9dP5bvHwG7qhMxrwv0nDiyJovcRJjyhiclK7EAT2XNT1
+ a+RcG4WpUXrA0zCQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0725113A7F;
- Thu, 13 Jun 2024 14:55:00 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 607D713A7F;
+ Thu, 13 Jun 2024 14:59:23 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id G73ZL0QIa2b3VwAAD6G6ig
- (envelope-from <farosas@suse.de>); Thu, 13 Jun 2024 14:55:00 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id +6g7CksJa2Z0WQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Thu, 13 Jun 2024 14:59:23 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org
 Cc: Jiri Denemark <jdenemar@redhat.com>, Prasad Pandit <ppandit@redhat.com>,
- Bandan Das <bdas@redhat.com>, peterx@redhat.com
-Subject: Re: [PATCH 1/4] migration/multifd: Avoid the final FLUSH in complete()
-In-Reply-To: <875xudc5pv.fsf@suse.de>
+ Bandan Das <bdas@redhat.com>
+Subject: Re: [PATCH 3/4] migration: Use MigrationStatus instead of int
+In-Reply-To: <Zmm4z0qbv8H39pC0@x1n>
 References: <20240612144228.1179240-1-peterx@redhat.com>
- <20240612144228.1179240-2-peterx@redhat.com> <875xudc5pv.fsf@suse.de>
-Date: Thu, 13 Jun 2024 11:54:58 -0300
-Message-ID: <87zfroc2pp.fsf@suse.de>
+ <20240612144228.1179240-4-peterx@redhat.com> <Zmm4z0qbv8H39pC0@x1n>
+Date: Thu, 13 Jun 2024 11:59:20 -0300
+Message-ID: <87wmmsc2if.fsf@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Spam-Score: -4.20
-X-Spamd-Result: default: False [-4.20 / 50.00]; BAYES_HAM(-2.90)[99.56%];
+X-Spamd-Result: default: False [-4.51 / 50.00]; BAYES_HAM(-3.00)[100.00%];
  NEURAL_HAM_LONG(-1.00)[-1.000];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
  NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
- MIME_TRACE(0.00)[0:+]; MISSING_XM_UA(0.00)[];
- TO_DN_SOME(0.00)[]; MID_RHS_MATCH_FROM(0.00)[];
- RCVD_TLS_ALL(0.00)[];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ MX_GOOD(-0.01)[]; RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
+ RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
+ RCVD_TLS_ALL(0.00)[]; MIME_TRACE(0.00)[0:+];
+ MISSING_XM_UA(0.00)[];
+ SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+ TO_DN_SOME(0.00)[];
+ RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+ MID_RHS_MATCH_FROM(0.00)[]; FUZZY_BLOCKED(0.00)[rspamd.com];
  FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
- RCPT_COUNT_FIVE(0.00)[6]; RCVD_COUNT_TWO(0.00)[2];
- FUZZY_BLOCKED(0.00)[rspamd.com]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:email]
-Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
+ RCPT_COUNT_FIVE(0.00)[5]; RCVD_COUNT_TWO(0.00)[2];
+ TO_MATCH_ENVRCPT_ALL(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.de:dkim];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ DKIM_TRACE(0.00)[suse.de:+]
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Queue-Id: D5F2B372DC
+X-Spam-Score: -4.51
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
+ envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -114,23 +125,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fabiano Rosas <farosas@suse.de> writes:
+Peter Xu <peterx@redhat.com> writes:
 
-> Peter Xu <peterx@redhat.com> writes:
+> On Wed, Jun 12, 2024 at 10:42:27AM -0400, Peter Xu wrote:
+>> @@ -1544,7 +1545,7 @@ bool migration_in_postcopy(void)
+>>      }
+>>  }
+>>  
+>> -bool migration_postcopy_is_alive(int state)
+>> +bool migration_postcopy_is_alive(MigrationStatus state)
+>>  {
+>>      switch (state) {
+>>      case MIGRATION_STATUS_POSTCOPY_ACTIVE:
+>> @@ -1598,7 +1599,7 @@ bool migration_is_idle(void)
+>>      case MIGRATION_STATUS_DEVICE:
+>>      case MIGRATION_STATUS_WAIT_UNPLUG:
+>>          return false;
+>> -    case MIGRATION_STATUS__MAX:
+>> +    default:
+>>          g_assert_not_reached();
+>>      }
 >
->> We always do the flush when finishing one round of scan, and during
->> complete() phase we should scan one more round making sure no dirty page
->> existed.  In that case we shouldn't need one explicit FLUSH at the end of
->> complete(), as when reaching there all pages should have been flushed.
->>
->> Signed-off-by: Peter Xu <peterx@redhat.com>
+> This survives the tests, but I just found that it's risky, as it's not
+> covering all the states..
 >
-> Reviewed-by: Fabiano Rosas <farosas@suse.de>
+> I'll squash below when I send v2 instead.
+>
+> ===8<===
+> From 1fc42c76294044c0ccca8841e482472486de5459 Mon Sep 17 00:00:00 2001
+> From: Peter Xu <peterx@redhat.com>
+> Date: Wed, 12 Jun 2024 10:57:26 -0400
+> Subject: [PATCH] fixup! migration: Use MigrationStatus instead of int
+>
+> Signed-off-by: Peter Xu <peterx@redhat.com>
+> ---
+>  migration/migration.c | 13 +------------
+>  1 file changed, 1 insertion(+), 12 deletions(-)
+>
+> diff --git a/migration/migration.c b/migration/migration.c
+> index 9475dce7dc..706cee1b69 100644
+> --- a/migration/migration.c
+> +++ b/migration/migration.c
+> @@ -1637,20 +1637,9 @@ bool migration_is_idle(void)
+>      case MIGRATION_STATUS_COMPLETED:
+>      case MIGRATION_STATUS_FAILED:
+>          return true;
+> -    case MIGRATION_STATUS_SETUP:
+> -    case MIGRATION_STATUS_CANCELLING:
+> -    case MIGRATION_STATUS_ACTIVE:
+> -    case MIGRATION_STATUS_POSTCOPY_ACTIVE:
+> -    case MIGRATION_STATUS_COLO:
+> -    case MIGRATION_STATUS_PRE_SWITCHOVER:
+> -    case MIGRATION_STATUS_DEVICE:
+> -    case MIGRATION_STATUS_WAIT_UNPLUG:
+> -        return false;
+>      default:
+> -        g_assert_not_reached();
+> +        return false;
+>      }
 
-Actually, let's be more clear and make this a:
+Unrelated, but should we consider POSTCOPY_PAUSED as idle?
 
-Tested-by: Fabiano Rosas <farosas@suse.de>
-
-That way I'll remember this went through the same tests as the other
-multifd sync changes we made.
+> -
+> -    return false;
+>  }
+>  
+>  bool migration_is_active(void)
+> -- 
+> 2.45.0
+>
+> ===8<===
 
