@@ -2,75 +2,137 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4304A9075F1
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jun 2024 17:02:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 646639076CA
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jun 2024 17:38:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sHly2-0001Gu-7L; Thu, 13 Jun 2024 11:02:22 -0400
+	id 1sHmVc-0000cp-JZ; Thu, 13 Jun 2024 11:37:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sHlxp-0001BW-TK
- for qemu-devel@nongnu.org; Thu, 13 Jun 2024 11:02:13 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <sai.pavan.boddu@amd.com>)
+ id 1sHmVa-0000bn-Dd; Thu, 13 Jun 2024 11:37:02 -0400
+Received: from mail-dm3nam02on20600.outbound.protection.outlook.com
+ ([2a01:111:f403:2405::600]
+ helo=NAM02-DM3-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sHlxn-0003eV-PK
- for qemu-devel@nongnu.org; Thu, 13 Jun 2024 11:02:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1718290927;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=YF4Tr2vYM9PIGmA0EYLKAkgGXhIMkxzWAPZz1BH/h8o=;
- b=DFZ8loZa7UOAaxkQc4TjVS5SFPNJRdgPM/EWWhT26EzUsLFhZ6kcCyuv0o58K9HMhl+aik
- P43C3ba6ia0HgXhRvqN2AwavieeqAc208T4Qah0zc8dtV++H0HeIlYZ7NUH9D/tzlIr2p0
- 6PlwP3VFt0bxdFNLCD+XrzNmOKZMNac=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-178-Bhk_Qc73NLSiJm09rSG7_Q-1; Thu,
- 13 Jun 2024 11:02:03 -0400
-X-MC-Unique: Bhk_Qc73NLSiJm09rSG7_Q-1
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 716E41955D8F; Thu, 13 Jun 2024 15:02:01 +0000 (UTC)
-Received: from toolbox.redhat.com (unknown [10.42.28.52])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 42BB6197904E; Thu, 13 Jun 2024 15:01:50 +0000 (UTC)
-From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Michael Roth <michael.roth@amd.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Konstantin Kostiuk <kkostiuk@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v2 05/22] qga: move linux disk/cpu stats command impls to
- commands-linux.c
-Date: Thu, 13 Jun 2024 16:01:10 +0100
-Message-ID: <20240613150127.1361931-6-berrange@redhat.com>
-In-Reply-To: <20240613150127.1361931-1-berrange@redhat.com>
-References: <20240613150127.1361931-1-berrange@redhat.com>
+ (Exim 4.90_1) (envelope-from <sai.pavan.boddu@amd.com>)
+ id 1sHmVW-0001yR-93; Thu, 13 Jun 2024 11:37:02 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=XubbGdUKZ9TLxjTn35PbA9Je0a0MwCtMqHpr02ICO4DnFOgTEdYFOZaNP/oJTi1H7smrbfX/bSj+qc0E3BCUDMOoIi4qhhBPsscxxcE+QnL3NtqUk0p4crBDDfwTTTCTZ9Csa1Yp55vp4PV8i7BC13B8vYUxqB0JSH7akYjV40yaSOtYO5AHE6Y+kMNtvj14WjxgJfqGlUTqCw+B4Nps1xG+ias8PZzx0GINVqejjd6MldM1AjkwKnmVoGIvbDxVyIf7IlYzdMtCDVvk4jFrMdGyy+SON19nLlMj92FHubXDjllbYpTKPZpEH0I90x1kRx1gI1f8+n/FyvV3ukXOEA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=sx+87Euc8K6Ro+2KOhGWrVzLRMbpMKS5YOVkOwn9+Jw=;
+ b=hhqRwSAtAfUfmMjl5nyGmvrAz7QUH6MfQBCMMuli5mAM6GFinEJ59RadvteT6a6U9rs4u3FJp2HylMRd29XkOkWadUw0baRBbJE2d/O7OKk5SYTr7qkRDJLdmGxtYGzoZiR8e4H06ThQgj1jaJJLskA835CLic56MS+aKsKMEZYrnM+IlTduBVoWX82wPegKPn27/czb4W+JhXI/wPkhY6ICnzLBW9FnVZ7S29EdK/M/xitjUBH1b9Wcxfx4qoG9dsGRMAbAfEfqS9uKJYS96C+vRDJBrtV1XkNSgmdWwmUT0nLZxc5O1ckRKhXuo0XZKUSipm7gC2WywGzLroWKig==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=sx+87Euc8K6Ro+2KOhGWrVzLRMbpMKS5YOVkOwn9+Jw=;
+ b=qWM4Ul2rTpFLQs5skG6ljkXQAOsgAPOeJhZFSwTnJLMwX3ygjLqKEpjYc2kFAjTUPQ0v3vXtLqFIM8LO/Nk7zt4NCRD8UKygyFD93U1ax8W7O7JMXbh2vZYxyMibZKKgaeAEFx0U1kEX58T5Frac+oQ3PUjuZZTGiDKZwdcP3G8=
+Received: from SA9P221CA0010.NAMP221.PROD.OUTLOOK.COM (2603:10b6:806:25::15)
+ by SA1PR12MB6678.namprd12.prod.outlook.com (2603:10b6:806:251::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7633.36; Thu, 13 Jun
+ 2024 15:36:50 +0000
+Received: from SA2PEPF00003F62.namprd04.prod.outlook.com
+ (2603:10b6:806:25:cafe::59) by SA9P221CA0010.outlook.office365.com
+ (2603:10b6:806:25::15) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7677.25 via Frontend
+ Transport; Thu, 13 Jun 2024 15:36:50 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
+Received: from SATLEXMB03.amd.com (165.204.84.17) by
+ SA2PEPF00003F62.mail.protection.outlook.com (10.167.248.37) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7677.15 via Frontend Transport; Thu, 13 Jun 2024 15:36:49 +0000
+Received: from SATLEXMB05.amd.com (10.181.40.146) by SATLEXMB03.amd.com
+ (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 13 Jun
+ 2024 10:36:48 -0500
+Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB05.amd.com
+ (10.181.40.146) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 13 Jun
+ 2024 10:36:47 -0500
+Received: from xhdsaipava41.xilinx.com (10.180.168.240) by SATLEXMB03.amd.com
+ (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.39 via
+ Frontend Transport; Thu, 13 Jun 2024 10:36:46 -0500
+From: Sai Pavan Boddu <sai.pavan.boddu@amd.com>
+To: <qemu-arm@nongnu.org>, <qemu-devel@nongnu.org>
+CC: "'Edgar E . Iglesias'" <edgar.iglesias@gmail.com>, Alistair Francis
+ <alistair@alistair23.me>, Peter Maydell <peter.maydell@linaro.org>,
+ <francisco.iglesias@amd.com>
+Subject: [PATCH 0/2] Add boot-mode property for zynq
+Date: Thu, 13 Jun 2024 21:06:36 +0530
+Message-ID: <20240613153638.3858853-1-sai.pavan.boddu@amd.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 11
-X-Spam_score: 1.1
-X-Spam_bar: +
-X-Spam_report: (1.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.145,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain
+Received-SPF: None (SATLEXMB05.amd.com: sai.pavan.boddu@amd.com does not
+ designate permitted sender hosts)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA2PEPF00003F62:EE_|SA1PR12MB6678:EE_
+X-MS-Office365-Filtering-Correlation-Id: f1c17267-c426-459f-00ed-08dc8bbea455
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230035|36860700008|82310400021|1800799019|376009; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?uaCRBjtD8mygvHSPm3JmV2JRSedWK4qNK91WRAaNXN4RfsVZVaDnlQGlPI+h?=
+ =?us-ascii?Q?CxWIgjRAjvJ0KCVxBGI79pIB2dXiPn+e5TAav95tltcmV3Mf39zHB9ul1l9a?=
+ =?us-ascii?Q?NNE004m0B1s5cXNRR51dcVssKliBmoZzSdsdiHPJpVIlfs7fQJeGP1cr0BJN?=
+ =?us-ascii?Q?2OMsXb/055vqvhAOtIJAGjJjnG0jC2h4SLt3Cs9RQNJ6ADmKWLf5cJpEV6UL?=
+ =?us-ascii?Q?7OC6FjZRmUE1aEUrjeSs6Uz99uPn5dpoWdvEwDNpJjCsE92M1eak6ULD1ZeT?=
+ =?us-ascii?Q?wJ5AeXx6bxB+UYE4hlo/yqxsaEsK4IlkMsTLffFklv1fFpDnWEoqvSSAo2dz?=
+ =?us-ascii?Q?vlCyyk5yJoNDImjP8wlU44t4+zewiHw8vOemygG1oZz52y2F6QqUPOpNxc+k?=
+ =?us-ascii?Q?vgC8Y0kg0HS7pNDQ5ZIUz4tPDGe6VKrKb/r+8knlKlvbpFsNMHlxSVvbMVuX?=
+ =?us-ascii?Q?oF9jHyFP7no/kDTKD/WzxArsLJYV3r0Qsv2MBkrMJ3cXEoJgd6+ClUSUumXP?=
+ =?us-ascii?Q?UgeAAcreOEAj2/P2aGjf44abd43PS2MBRv+miSilL4VTqbL9nihTF55QAyVA?=
+ =?us-ascii?Q?GG5EZWnyxGmJHVmyok+Ia6vUcupeCC6gMNiW5df/wlxN0cLmhcVUspojsLWH?=
+ =?us-ascii?Q?suhgJHq8Ek1+md76LKcC+GoeXMiJ7BUQPdVRkuxLClxxSZR4wGAP0W6DcAVe?=
+ =?us-ascii?Q?R33IwJ3tUCkV8n8ivDV6P+vuRq6BtNRS/sjPtga2HQZ50vJuDQwvY1uYmPbB?=
+ =?us-ascii?Q?THEA14ISvnDW8zYdD/lyy7eaMKgGJhWl3NkLo7SaqLCAjOD5gg+WP+S8QnAf?=
+ =?us-ascii?Q?lOI1DsiTIH3XvPUZ06Sf3peMcn8Xyffrwxyco8+j51BHqYD5jfwMkGVWH2DH?=
+ =?us-ascii?Q?rDFxQ4BnrATc4H6f95D/nhqgn1w8NFegrkAhQuLo3EtA7oCOtUOUoWgXbckE?=
+ =?us-ascii?Q?+crXyzk2V7R+ZFIdOmJhiF4JqS0mvXgQ+y3QxRva91vjS6obi8Sg8TQvm714?=
+ =?us-ascii?Q?PyIIIdCyrlG8kgDTgOhdHX6Xg0h7vSVsB0/CCaOgS4WTWqSDpscZJR2K15+z?=
+ =?us-ascii?Q?nS9V7EcPMQgFOBcAmiGb4qRzAaACkjdeCDPcJ4NYhLr/RYR5Ld2P9m9XpsIL?=
+ =?us-ascii?Q?1puBr5kRHO1M7sT65tkqMgIrG2pN50VBqNsod6BXmKvIQ6A2eau9PZN5XvKv?=
+ =?us-ascii?Q?Sor5ohSorcDEXiqhf/4kJeDXsXyM7xuEpkI0+AhtGhl9qa/afptWCbCk9Twr?=
+ =?us-ascii?Q?LAyvkzt3T0BFwUz/BKK1YIg7OuFkj3CLLQe0BwFonhrPosUZcvaucihF4Q6u?=
+ =?us-ascii?Q?zjPkFVPm12UxMntQwjQQqtbeGl9Gv5s4aLK5U4gPG3LdWSVFzYv8N84B7eFy?=
+ =?us-ascii?Q?E3oEHUNAWlqv3V1nLZ3uTAEya/uUkvgycUomiBNfi1pTQFxmyQ=3D=3D?=
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB03.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230035)(36860700008)(82310400021)(1800799019)(376009); DIR:OUT;
+ SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jun 2024 15:36:49.4349 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: f1c17267-c426-459f-00ed-08dc8bbea455
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB03.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: SA2PEPF00003F62.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB6678
+Received-SPF: permerror client-ip=2a01:111:f403:2405::600;
+ envelope-from=sai.pavan.boddu@amd.com;
+ helo=NAM02-DM3-obe.outbound.protection.outlook.com
+X-Spam_score_int: 2
+X-Spam_score: 0.2
+X-Spam_bar: /
+X-Spam_report: (0.2 / 5.0 requ) AC_FROM_MANY_DOTS=2.499, BAYES_00=-1.9,
+ DKIMWL_WL_HIGH=-0.145, DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
+ DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -87,433 +149,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The qmp_guest_{diskstats,cpustats} command impls in
-commands-posix.c are surrounded by '#ifdef __linux__' so should
-instead live in commands-linux.c
+Add a way to update the boot-mode via machine properties.
 
-This also removes a "#ifdef CONFIG_LINUX" that was nested inside
-a "#ifdef __linux__".
+Sai Pavan Boddu (2):
+  hw/misc/zynq_slcr: Add BootMode property
+  hw/arm/xilinx_zynq: Add boot-mode property
 
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
----
- qga/commands-linux.c | 195 ++++++++++++++++++++++++++++++++++++++++++
- qga/commands-posix.c | 199 -------------------------------------------
- 2 files changed, 195 insertions(+), 199 deletions(-)
+ hw/arm/xilinx_zynq.c | 22 ++++++++++++++++++++++
+ hw/misc/zynq_slcr.c  | 11 ++++++++++-
+ 2 files changed, 32 insertions(+), 1 deletion(-)
 
-diff --git a/qga/commands-linux.c b/qga/commands-linux.c
-index 084e6c9e85..c0e8bd4062 100644
---- a/qga/commands-linux.c
-+++ b/qga/commands-linux.c
-@@ -1594,3 +1594,198 @@ int64_t qmp_guest_set_vcpus(GuestLogicalProcessorList *vcpus, Error **errp)
- 
-     return processed;
- }
-+
-+#define MAX_NAME_LEN 128
-+static GuestDiskStatsInfoList *guest_get_diskstats(Error **errp)
-+{
-+    GuestDiskStatsInfoList *head = NULL, **tail = &head;
-+    const char *diskstats = "/proc/diskstats";
-+    FILE *fp;
-+    size_t n;
-+    char *line = NULL;
-+
-+    fp = fopen(diskstats, "r");
-+    if (fp  == NULL) {
-+        error_setg_errno(errp, errno, "open(\"%s\")", diskstats);
-+        return NULL;
-+    }
-+
-+    while (getline(&line, &n, fp) != -1) {
-+        g_autofree GuestDiskStatsInfo *diskstatinfo = NULL;
-+        g_autofree GuestDiskStats *diskstat = NULL;
-+        char dev_name[MAX_NAME_LEN];
-+        unsigned int ios_pgr, tot_ticks, rq_ticks, wr_ticks, dc_ticks, fl_ticks;
-+        unsigned long rd_ios, rd_merges_or_rd_sec, rd_ticks_or_wr_sec, wr_ios;
-+        unsigned long wr_merges, rd_sec_or_wr_ios, wr_sec;
-+        unsigned long dc_ios, dc_merges, dc_sec, fl_ios;
-+        unsigned int major, minor;
-+        int i;
-+
-+        i = sscanf(line, "%u %u %s %lu %lu %lu"
-+                   "%lu %lu %lu %lu %u %u %u %u"
-+                   "%lu %lu %lu %u %lu %u",
-+                   &major, &minor, dev_name,
-+                   &rd_ios, &rd_merges_or_rd_sec, &rd_sec_or_wr_ios,
-+                   &rd_ticks_or_wr_sec, &wr_ios, &wr_merges, &wr_sec,
-+                   &wr_ticks, &ios_pgr, &tot_ticks, &rq_ticks,
-+                   &dc_ios, &dc_merges, &dc_sec, &dc_ticks,
-+                   &fl_ios, &fl_ticks);
-+
-+        if (i < 7) {
-+            continue;
-+        }
-+
-+        diskstatinfo = g_new0(GuestDiskStatsInfo, 1);
-+        diskstatinfo->name = g_strdup(dev_name);
-+        diskstatinfo->major = major;
-+        diskstatinfo->minor = minor;
-+
-+        diskstat = g_new0(GuestDiskStats, 1);
-+        if (i == 7) {
-+            diskstat->has_read_ios = true;
-+            diskstat->read_ios = rd_ios;
-+            diskstat->has_read_sectors = true;
-+            diskstat->read_sectors = rd_merges_or_rd_sec;
-+            diskstat->has_write_ios = true;
-+            diskstat->write_ios = rd_sec_or_wr_ios;
-+            diskstat->has_write_sectors = true;
-+            diskstat->write_sectors = rd_ticks_or_wr_sec;
-+        }
-+        if (i >= 14) {
-+            diskstat->has_read_ios = true;
-+            diskstat->read_ios = rd_ios;
-+            diskstat->has_read_sectors = true;
-+            diskstat->read_sectors = rd_sec_or_wr_ios;
-+            diskstat->has_read_merges = true;
-+            diskstat->read_merges = rd_merges_or_rd_sec;
-+            diskstat->has_read_ticks = true;
-+            diskstat->read_ticks = rd_ticks_or_wr_sec;
-+            diskstat->has_write_ios = true;
-+            diskstat->write_ios = wr_ios;
-+            diskstat->has_write_sectors = true;
-+            diskstat->write_sectors = wr_sec;
-+            diskstat->has_write_merges = true;
-+            diskstat->write_merges = wr_merges;
-+            diskstat->has_write_ticks = true;
-+            diskstat->write_ticks = wr_ticks;
-+            diskstat->has_ios_pgr = true;
-+            diskstat->ios_pgr = ios_pgr;
-+            diskstat->has_total_ticks = true;
-+            diskstat->total_ticks = tot_ticks;
-+            diskstat->has_weight_ticks = true;
-+            diskstat->weight_ticks = rq_ticks;
-+        }
-+        if (i >= 18) {
-+            diskstat->has_discard_ios = true;
-+            diskstat->discard_ios = dc_ios;
-+            diskstat->has_discard_merges = true;
-+            diskstat->discard_merges = dc_merges;
-+            diskstat->has_discard_sectors = true;
-+            diskstat->discard_sectors = dc_sec;
-+            diskstat->has_discard_ticks = true;
-+            diskstat->discard_ticks = dc_ticks;
-+        }
-+        if (i >= 20) {
-+            diskstat->has_flush_ios = true;
-+            diskstat->flush_ios = fl_ios;
-+            diskstat->has_flush_ticks = true;
-+            diskstat->flush_ticks = fl_ticks;
-+        }
-+
-+        diskstatinfo->stats = g_steal_pointer(&diskstat);
-+        QAPI_LIST_APPEND(tail, diskstatinfo);
-+        diskstatinfo = NULL;
-+    }
-+    free(line);
-+    fclose(fp);
-+    return head;
-+}
-+
-+GuestDiskStatsInfoList *qmp_guest_get_diskstats(Error **errp)
-+{
-+    return guest_get_diskstats(errp);
-+}
-+
-+GuestCpuStatsList *qmp_guest_get_cpustats(Error **errp)
-+{
-+    GuestCpuStatsList *head = NULL, **tail = &head;
-+    const char *cpustats = "/proc/stat";
-+    int clk_tck = sysconf(_SC_CLK_TCK);
-+    FILE *fp;
-+    size_t n;
-+    char *line = NULL;
-+
-+    fp = fopen(cpustats, "r");
-+    if (fp  == NULL) {
-+        error_setg_errno(errp, errno, "open(\"%s\")", cpustats);
-+        return NULL;
-+    }
-+
-+    while (getline(&line, &n, fp) != -1) {
-+        GuestCpuStats *cpustat = NULL;
-+        GuestLinuxCpuStats *linuxcpustat;
-+        int i;
-+        unsigned long user, system, idle, iowait, irq, softirq, steal, guest;
-+        unsigned long nice, guest_nice;
-+        char name[64];
-+
-+        i = sscanf(line, "%s %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu",
-+                   name, &user, &nice, &system, &idle, &iowait, &irq, &softirq,
-+                   &steal, &guest, &guest_nice);
-+
-+        /* drop "cpu 1 2 3 ...", get "cpuX 1 2 3 ..." only */
-+        if ((i == EOF) || strncmp(name, "cpu", 3) || (name[3] == '\0')) {
-+            continue;
-+        }
-+
-+        if (i < 5) {
-+            slog("Parsing cpu stat from %s failed, see \"man proc\"", cpustats);
-+            break;
-+        }
-+
-+        cpustat = g_new0(GuestCpuStats, 1);
-+        cpustat->type = GUEST_CPU_STATS_TYPE_LINUX;
-+
-+        linuxcpustat = &cpustat->u.q_linux;
-+        linuxcpustat->cpu = atoi(&name[3]);
-+        linuxcpustat->user = user * 1000 / clk_tck;
-+        linuxcpustat->nice = nice * 1000 / clk_tck;
-+        linuxcpustat->system = system * 1000 / clk_tck;
-+        linuxcpustat->idle = idle * 1000 / clk_tck;
-+
-+        if (i > 5) {
-+            linuxcpustat->has_iowait = true;
-+            linuxcpustat->iowait = iowait * 1000 / clk_tck;
-+        }
-+
-+        if (i > 6) {
-+            linuxcpustat->has_irq = true;
-+            linuxcpustat->irq = irq * 1000 / clk_tck;
-+            linuxcpustat->has_softirq = true;
-+            linuxcpustat->softirq = softirq * 1000 / clk_tck;
-+        }
-+
-+        if (i > 8) {
-+            linuxcpustat->has_steal = true;
-+            linuxcpustat->steal = steal * 1000 / clk_tck;
-+        }
-+
-+        if (i > 9) {
-+            linuxcpustat->has_guest = true;
-+            linuxcpustat->guest = guest * 1000 / clk_tck;
-+        }
-+
-+        if (i > 10) {
-+            linuxcpustat->has_guest = true;
-+            linuxcpustat->guest = guest * 1000 / clk_tck;
-+            linuxcpustat->has_guestnice = true;
-+            linuxcpustat->guestnice = guest_nice * 1000 / clk_tck;
-+        }
-+
-+        QAPI_LIST_APPEND(tail, cpustat);
-+    }
-+
-+    free(line);
-+    fclose(fp);
-+    return head;
-+}
-diff --git a/qga/commands-posix.c b/qga/commands-posix.c
-index 98aafc45f3..5da60e65ab 100644
---- a/qga/commands-posix.c
-+++ b/qga/commands-posix.c
-@@ -1195,205 +1195,6 @@ GuestMemoryBlockInfo *qmp_guest_get_memory_block_info(Error **errp)
-     return info;
- }
- 
--#define MAX_NAME_LEN 128
--static GuestDiskStatsInfoList *guest_get_diskstats(Error **errp)
--{
--#ifdef CONFIG_LINUX
--    GuestDiskStatsInfoList *head = NULL, **tail = &head;
--    const char *diskstats = "/proc/diskstats";
--    FILE *fp;
--    size_t n;
--    char *line = NULL;
--
--    fp = fopen(diskstats, "r");
--    if (fp  == NULL) {
--        error_setg_errno(errp, errno, "open(\"%s\")", diskstats);
--        return NULL;
--    }
--
--    while (getline(&line, &n, fp) != -1) {
--        g_autofree GuestDiskStatsInfo *diskstatinfo = NULL;
--        g_autofree GuestDiskStats *diskstat = NULL;
--        char dev_name[MAX_NAME_LEN];
--        unsigned int ios_pgr, tot_ticks, rq_ticks, wr_ticks, dc_ticks, fl_ticks;
--        unsigned long rd_ios, rd_merges_or_rd_sec, rd_ticks_or_wr_sec, wr_ios;
--        unsigned long wr_merges, rd_sec_or_wr_ios, wr_sec;
--        unsigned long dc_ios, dc_merges, dc_sec, fl_ios;
--        unsigned int major, minor;
--        int i;
--
--        i = sscanf(line, "%u %u %s %lu %lu %lu"
--                   "%lu %lu %lu %lu %u %u %u %u"
--                   "%lu %lu %lu %u %lu %u",
--                   &major, &minor, dev_name,
--                   &rd_ios, &rd_merges_or_rd_sec, &rd_sec_or_wr_ios,
--                   &rd_ticks_or_wr_sec, &wr_ios, &wr_merges, &wr_sec,
--                   &wr_ticks, &ios_pgr, &tot_ticks, &rq_ticks,
--                   &dc_ios, &dc_merges, &dc_sec, &dc_ticks,
--                   &fl_ios, &fl_ticks);
--
--        if (i < 7) {
--            continue;
--        }
--
--        diskstatinfo = g_new0(GuestDiskStatsInfo, 1);
--        diskstatinfo->name = g_strdup(dev_name);
--        diskstatinfo->major = major;
--        diskstatinfo->minor = minor;
--
--        diskstat = g_new0(GuestDiskStats, 1);
--        if (i == 7) {
--            diskstat->has_read_ios = true;
--            diskstat->read_ios = rd_ios;
--            diskstat->has_read_sectors = true;
--            diskstat->read_sectors = rd_merges_or_rd_sec;
--            diskstat->has_write_ios = true;
--            diskstat->write_ios = rd_sec_or_wr_ios;
--            diskstat->has_write_sectors = true;
--            diskstat->write_sectors = rd_ticks_or_wr_sec;
--        }
--        if (i >= 14) {
--            diskstat->has_read_ios = true;
--            diskstat->read_ios = rd_ios;
--            diskstat->has_read_sectors = true;
--            diskstat->read_sectors = rd_sec_or_wr_ios;
--            diskstat->has_read_merges = true;
--            diskstat->read_merges = rd_merges_or_rd_sec;
--            diskstat->has_read_ticks = true;
--            diskstat->read_ticks = rd_ticks_or_wr_sec;
--            diskstat->has_write_ios = true;
--            diskstat->write_ios = wr_ios;
--            diskstat->has_write_sectors = true;
--            diskstat->write_sectors = wr_sec;
--            diskstat->has_write_merges = true;
--            diskstat->write_merges = wr_merges;
--            diskstat->has_write_ticks = true;
--            diskstat->write_ticks = wr_ticks;
--            diskstat->has_ios_pgr = true;
--            diskstat->ios_pgr = ios_pgr;
--            diskstat->has_total_ticks = true;
--            diskstat->total_ticks = tot_ticks;
--            diskstat->has_weight_ticks = true;
--            diskstat->weight_ticks = rq_ticks;
--        }
--        if (i >= 18) {
--            diskstat->has_discard_ios = true;
--            diskstat->discard_ios = dc_ios;
--            diskstat->has_discard_merges = true;
--            diskstat->discard_merges = dc_merges;
--            diskstat->has_discard_sectors = true;
--            diskstat->discard_sectors = dc_sec;
--            diskstat->has_discard_ticks = true;
--            diskstat->discard_ticks = dc_ticks;
--        }
--        if (i >= 20) {
--            diskstat->has_flush_ios = true;
--            diskstat->flush_ios = fl_ios;
--            diskstat->has_flush_ticks = true;
--            diskstat->flush_ticks = fl_ticks;
--        }
--
--        diskstatinfo->stats = g_steal_pointer(&diskstat);
--        QAPI_LIST_APPEND(tail, diskstatinfo);
--        diskstatinfo = NULL;
--    }
--    free(line);
--    fclose(fp);
--    return head;
--#else
--    g_debug("disk stats reporting available only for Linux");
--    return NULL;
--#endif
--}
--
--GuestDiskStatsInfoList *qmp_guest_get_diskstats(Error **errp)
--{
--    return guest_get_diskstats(errp);
--}
--
--GuestCpuStatsList *qmp_guest_get_cpustats(Error **errp)
--{
--    GuestCpuStatsList *head = NULL, **tail = &head;
--    const char *cpustats = "/proc/stat";
--    int clk_tck = sysconf(_SC_CLK_TCK);
--    FILE *fp;
--    size_t n;
--    char *line = NULL;
--
--    fp = fopen(cpustats, "r");
--    if (fp  == NULL) {
--        error_setg_errno(errp, errno, "open(\"%s\")", cpustats);
--        return NULL;
--    }
--
--    while (getline(&line, &n, fp) != -1) {
--        GuestCpuStats *cpustat = NULL;
--        GuestLinuxCpuStats *linuxcpustat;
--        int i;
--        unsigned long user, system, idle, iowait, irq, softirq, steal, guest;
--        unsigned long nice, guest_nice;
--        char name[64];
--
--        i = sscanf(line, "%s %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu",
--                   name, &user, &nice, &system, &idle, &iowait, &irq, &softirq,
--                   &steal, &guest, &guest_nice);
--
--        /* drop "cpu 1 2 3 ...", get "cpuX 1 2 3 ..." only */
--        if ((i == EOF) || strncmp(name, "cpu", 3) || (name[3] == '\0')) {
--            continue;
--        }
--
--        if (i < 5) {
--            slog("Parsing cpu stat from %s failed, see \"man proc\"", cpustats);
--            break;
--        }
--
--        cpustat = g_new0(GuestCpuStats, 1);
--        cpustat->type = GUEST_CPU_STATS_TYPE_LINUX;
--
--        linuxcpustat = &cpustat->u.q_linux;
--        linuxcpustat->cpu = atoi(&name[3]);
--        linuxcpustat->user = user * 1000 / clk_tck;
--        linuxcpustat->nice = nice * 1000 / clk_tck;
--        linuxcpustat->system = system * 1000 / clk_tck;
--        linuxcpustat->idle = idle * 1000 / clk_tck;
--
--        if (i > 5) {
--            linuxcpustat->has_iowait = true;
--            linuxcpustat->iowait = iowait * 1000 / clk_tck;
--        }
--
--        if (i > 6) {
--            linuxcpustat->has_irq = true;
--            linuxcpustat->irq = irq * 1000 / clk_tck;
--            linuxcpustat->has_softirq = true;
--            linuxcpustat->softirq = softirq * 1000 / clk_tck;
--        }
--
--        if (i > 8) {
--            linuxcpustat->has_steal = true;
--            linuxcpustat->steal = steal * 1000 / clk_tck;
--        }
--
--        if (i > 9) {
--            linuxcpustat->has_guest = true;
--            linuxcpustat->guest = guest * 1000 / clk_tck;
--        }
--
--        if (i > 10) {
--            linuxcpustat->has_guest = true;
--            linuxcpustat->guest = guest * 1000 / clk_tck;
--            linuxcpustat->has_guestnice = true;
--            linuxcpustat->guestnice = guest_nice * 1000 / clk_tck;
--        }
--
--        QAPI_LIST_APPEND(tail, cpustat);
--    }
--
--    free(line);
--    fclose(fp);
--    return head;
--}
- 
- #else /* defined(__linux__) */
- 
 -- 
-2.45.1
+2.34.1
 
 
