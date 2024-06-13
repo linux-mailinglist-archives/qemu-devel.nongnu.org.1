@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1F8D906630
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jun 2024 10:07:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4461906634
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jun 2024 10:08:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sHfUA-0000WL-N1; Thu, 13 Jun 2024 04:07:06 -0400
+	id 1sHfUD-0000Xx-FA; Thu, 13 Jun 2024 04:07:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1sHfU8-0000UG-0R
- for qemu-devel@nongnu.org; Thu, 13 Jun 2024 04:07:04 -0400
-Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
+ id 1sHfUB-0000Wb-5I
+ for qemu-devel@nongnu.org; Thu, 13 Jun 2024 04:07:07 -0400
+Received: from mail-lf1-x131.google.com ([2a00:1450:4864:20::131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1sHfU6-0008IO-Ek
- for qemu-devel@nongnu.org; Thu, 13 Jun 2024 04:07:03 -0400
-Received: by mail-lf1-x129.google.com with SMTP id
- 2adb3069b0e04-52bd48cf36bso983380e87.3
- for <qemu-devel@nongnu.org>; Thu, 13 Jun 2024 01:07:02 -0700 (PDT)
+ id 1sHfU9-0008Ib-I1
+ for qemu-devel@nongnu.org; Thu, 13 Jun 2024 04:07:06 -0400
+Received: by mail-lf1-x131.google.com with SMTP id
+ 2adb3069b0e04-52b7ffd9f6eso795841e87.3
+ for <qemu-devel@nongnu.org>; Thu, 13 Jun 2024 01:07:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1718266020; x=1718870820; darn=nongnu.org;
+ d=linaro.org; s=google; t=1718266023; x=1718870823; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=31cNCR2mzBLKID4O2IUSTWgxKOCqpW5ErAleu4fDPAI=;
- b=hJ3qTq6V4EdDSLboMb23SlJnwVw8zW/hmDcpSaGYvyFn21zUqzvc4W+1xLyqYWZ2Kw
- zhl/gIJD+MQiylQA/prxSIVQM7XYAyPcHrhMiszR+cnuR2N8tFflW3Ehf3noifp6xD+Z
- dB8Ucr7Xh6Y1WB1E17o0SgewR8ibir479lUMA5uTcXpp9vObdjyrHGVBpHosOaw5tlY6
- 0b/CpHs8Qlb3cxJ8PzoEf2TtBUPwM16GbGe/xzmKQe4RSMPv+IPfTYFobtu2yO6y+7PY
- BFoi1o2eZ31wKGSg9oX9ZqaXQVGkCvzJ5OKPjWa+Z49yxi5rijh9zWS1XgQgeAaUrUH7
- Wrpg==
+ bh=H0HL0/tVcV9enNc0XY8fXI7wJenL+7Z2ycjUc8zKtd4=;
+ b=UKIzJfAtTRn8uv/Yg42EQfM9RaCJH0L9K3IS0aH0ESnBBaLWMUMgyDIWAm18NO4yOk
+ FcDei4LRbYMwqc20dwJWDWhnXXgxrWShXqgy42U0SWE3+DVEAStFIAKii+mYitMBy5Q0
+ +sVoCyxf5iu5X755mCWKWnr654XnTT1ylkKBi1yxh2K3GKcR4vRCr8S9FGTDh4rPQwVM
+ T3uUjmU5Ky5Op3q2hBFxm1zI5isz+fOaK4J6hYYRBOeDsZL2VKCUiDvVMkq5trQBgC1F
+ fRyYWg9gHSIhhOaiciP5voOA8mhi+9ve83TYeTM/JoD0PofK4zKBkGW6dGxNoOkxtqsP
+ qytQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718266020; x=1718870820;
+ d=1e100.net; s=20230601; t=1718266023; x=1718870823;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=31cNCR2mzBLKID4O2IUSTWgxKOCqpW5ErAleu4fDPAI=;
- b=gxXw2Me+1tuOOkf5DQDqMVnrNTWRxYLz7YxM0zJFZSya1d4npm1IrFWlTBs2ws4hiK
- gRrDMzbV8CQoB4vTZLt1+SK3oErfFYFLuFOYIaV6+m0D3BaSicwIJXzRx5j4WszS8cwT
- HFr606fWi+HW7ffp9tS8DgMYfYX+3j8qq7WSiAUv1nOA1yMsn23M9Qv3TYsbdVCtQ3Fz
- g/jPtA5qhX9YKU78pBvOyebU+HfXlaj2d4xqX0k8Og1pBFWJ5AyrOoTP7lUoQZmEi+l1
- 8o1vMUNYmytbKPD2vw39Y/38hs0I35JYnaSlQqCdZY3SWItiHNMpyUbpFY/DOltNFA02
- pu9w==
-X-Gm-Message-State: AOJu0YxH7MLpI+X4MMBMH5W8zgfKjTEa0bHAHfZy3VSgH4Vk+pwnanqG
- lS208qtWyxHPTsbHYIw9BXcbP4U4YXh4IJ2N0qR3DCzyu9Df6tjPs7Gn1A2xxF4Ng/S0ELwayDr
- 9s38=
-X-Google-Smtp-Source: AGHT+IHZnsu0Q+oMiLFXGRzAgK3YLxw4QZYh3CCVVjQfWIn+iYI/JPMAZEP5PibTw3RyoJ/+sL9FVA==
-X-Received: by 2002:a05:6512:3083:b0:52b:c88f:b107 with SMTP id
- 2adb3069b0e04-52c9a3d9747mr3245894e87.33.1718266020460; 
- Thu, 13 Jun 2024 01:07:00 -0700 (PDT)
+ bh=H0HL0/tVcV9enNc0XY8fXI7wJenL+7Z2ycjUc8zKtd4=;
+ b=HazOsSGA2KkwCtqr0zEYE/58dWF3nFqKrjGdhvBzytLaRJrtIgQLAwITAbE5Gt0ek+
+ 1MxK1Gh/D1x+XsFxHlKnE9DBBftwEmWuXwt5CexDBHhGEm277RNtSqEvgeHOG7qLVAzq
+ CHszOzrllA7o4HEJ1CjoxSr3u92fXhkmf5WqguN42IlLMphRCsQi/ATCsFV+TSqjw+Go
+ pUwBrchN3oKrYDv+Yxnvmx6a9/6OCGiAScEROk9FODAmN3fpf/H23EAkY9w5yZVVEf4F
+ k3YQ4Edc0bq6+mBcmEJ0Ns3QXBQt8ElJm+ce0G/LjGl4TkbYzS6tYMGNlPH42kVLvJi7
+ zjxw==
+X-Gm-Message-State: AOJu0YzIrYrPmTf9LSfkFt1/fIZxlRdhZhrnwBUPkjVE+c4m/iN+Uzrt
+ 99TH1oCwXyKiYJCe7OuK43U3UPxfL16Nfl0u0m01SsmPu3CVtlpjymgQ+rziNmeyHIZ2ITIVOv7
+ OsII=
+X-Google-Smtp-Source: AGHT+IFruD4qHGal+kOkwGFXynZZ6VzLjNsVBDoNtj9Wx6s9l7aUVTeuodBnamQmuHhtx6+B8e1yOA==
+X-Received: by 2002:a05:6512:6d1:b0:52b:c29a:7493 with SMTP id
+ 2adb3069b0e04-52c9a3dd87cmr2987858e87.33.1718266023524; 
+ Thu, 13 Jun 2024 01:07:03 -0700 (PDT)
 Received: from localhost.localdomain (adsl-105.37.6.1.tellas.gr. [37.6.1.105])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-36075104d88sm910811f8f.104.2024.06.13.01.06.59
+ ffacd0b85a97d-36075104d88sm910811f8f.104.2024.06.13.01.07.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 13 Jun 2024 01:07:00 -0700 (PDT)
+ Thu, 13 Jun 2024 01:07:03 -0700 (PDT)
 From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v1 2/3] util/readline.c: add C-n, C-p shortcuts
-Date: Thu, 13 Jun 2024 11:06:12 +0300
-Message-ID: <9876594132d1f2e7210ab3f7ca01a82f95206447.1718265822.git.manos.pitsidianakis@linaro.org>
+Subject: [PATCH v1 3/3] util/readline.c: add C-u shortcut
+Date: Thu, 13 Jun 2024 11:06:13 +0300
+Message-ID: <6772067e1c0d4b1c5310e5446e9e3e1c6b3b5bc0.1718265822.git.manos.pitsidianakis@linaro.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <readline-shortcuts-v1.1718265822.manos.pitsidianakis@linaro.org>
 References: <readline-shortcuts-v1.1718265822.manos.pitsidianakis@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::129;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-lf1-x129.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::131;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-lf1-x131.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,30 +93,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-C-n and C-p are the default bindings for readline's next-history and
-previous-history respectively. They have the same functionality as the
-Down and Up arrow keys.
+Add support for the unix-line-discard readline action, which erases from
+the cursor position up to the beginning of the line. The default
+binding, C-u, was chosen.
+
+This is useful to quickly erase command input while working on the
+monitor interface.
 
 Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 ---
- util/readline.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ util/readline.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
 diff --git a/util/readline.c b/util/readline.c
-index ded31b04b7..0b627d62ad 100644
+index 0b627d62ad..0f19674f52 100644
 --- a/util/readline.c
 +++ b/util/readline.c
-@@ -418,6 +418,14 @@ void readline_handle_byte(ReadLineState *rs, int ch)
-             rs->last_cmd_buf_size = 0;
-             rs->readline_func(rs->opaque, rs->cmd_buf, rs->readline_opaque);
+@@ -271,6 +271,14 @@ static void readline_hist_add(ReadLineState *rs, const char *cmdline)
+     rs->hist_entry = -1;
+ }
+ 
++static void readline_kill_line(ReadLineState *rs)
++{
++    while (rs->cmd_buf_index > 0) {
++        readline_backward_char(rs);
++        readline_delete_char(rs);
++    }
++}
++
+ /* completion support */
+ 
+ void readline_add_completion(ReadLineState *rs, const char *str)
+@@ -426,6 +434,10 @@ void readline_handle_byte(ReadLineState *rs, int ch)
+             /* ^P Prev line in history */
+             readline_up_char(rs);
              break;
-+        case 14:
-+            /* ^N Next line in history */
-+            readline_down_char(rs);
-+            break;
-+        case 16:
-+            /* ^P Prev line in history */
-+            readline_up_char(rs);
++        case 21:
++            /* ^U Kill backward from point to the beginning of the line. */
++            readline_kill_line(rs);
 +            break;
          case 23:
              /* ^W */
