@@ -2,137 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60FB99076C9
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jun 2024 17:38:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E898F907738
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jun 2024 17:44:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sHmVc-0000cq-Lu; Thu, 13 Jun 2024 11:37:04 -0400
+	id 1sHmbN-0003y4-3m; Thu, 13 Jun 2024 11:43:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sai.pavan.boddu@amd.com>)
- id 1sHmVa-0000c0-UT; Thu, 13 Jun 2024 11:37:02 -0400
-Received: from mail-mw2nam10on20602.outbound.protection.outlook.com
- ([2a01:111:f403:2412::602]
- helo=NAM10-MW2-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sai.pavan.boddu@amd.com>)
- id 1sHmVY-000201-S2; Thu, 13 Jun 2024 11:37:02 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=VY8ks2INJA1ZhxAWNaOyRpLmJ5TRJsIMfGev9Md1N7V1zvPCG896enECXDBkB7JsLoygg+jK4W2AmCoM99j49wcBD9usHeZtddtRvdtFhAEKpJc3HKZM1LGdvnNVsw3jHgm0fMbj0eEdK/1Stg2dRLt5nE6KygfqImVSuh/vNNaQIik+kaLYFQ3MZG7T5spo3vy4gBa4eC2LWcnBeVspc0eXhnVYP9OQrBa7CF2WtCsTkx0LagbbkhZnSuCnrGdVLZDAIh0m1GWMt9d2RdSi29MCgK3Y1fjhM7Gk/vwQwvYRWsbcWrKUra2uzqCb/mq4v87TzKiUxuSWjn2qjEwtmA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=H2LdwskvTbmP1FBwAGD1nVT/m+pLU06a3gII7S2/xOk=;
- b=b4aWT7Uv6xiQHVBSPM9i3zCBHNte/2HrV7g011XSGsqD/HzUVA0Rv8Bc7rm8WHxkd4fuGZRQqsisLXcxHYtVCRnAKSEbhiPfXPq+BLeZO5uS84I96NW7G4Mpg/AXT5g/+FSdgpo1KKRIDqu8nrJ5ly475mlrUdLV74tQfdJSkS8EeP2Z7vv4DlG1JXo5mJ36PZaaNZWqXoqgAvA0qEeUJVTmxD6BuVPZLi1nvBIf8OcZuX7Kl8gO0hBqCWta6FnHC81BBM8NhERYveU4G5bNFy/HFXKH54o/vmCeqa/+5yNk3jTxHISfNQq5zRaoFWjpUSza77pvqUUsEtKM+/PcqQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=H2LdwskvTbmP1FBwAGD1nVT/m+pLU06a3gII7S2/xOk=;
- b=fdZngdwRE2kCavYO3PRLkxS0GRZ96np66GvziNpXThRtYG5dlwltCZbZTwBOxN0uaSTjGptPa3smTAz0PXQRfCyB2L8LIzImBE8vBcro3XU5GGNHSW3ed5sBYqdK56S+SushbxEsc/wV5kZk79Bt/gDQ1O2XWloNV5ZmQRwaN6o=
-Received: from SN7PR04CA0035.namprd04.prod.outlook.com (2603:10b6:806:120::10)
- by PH7PR12MB5688.namprd12.prod.outlook.com (2603:10b6:510:130::9)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7677.25; Thu, 13 Jun
- 2024 15:36:55 +0000
-Received: from SA2PEPF00003F63.namprd04.prod.outlook.com
- (2603:10b6:806:120:cafe::18) by SN7PR04CA0035.outlook.office365.com
- (2603:10b6:806:120::10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7677.24 via Frontend
- Transport; Thu, 13 Jun 2024 15:36:55 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
-Received: from SATLEXMB03.amd.com (165.204.84.17) by
- SA2PEPF00003F63.mail.protection.outlook.com (10.167.248.38) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7677.15 via Frontend Transport; Thu, 13 Jun 2024 15:36:53 +0000
-Received: from SATLEXMB06.amd.com (10.181.40.147) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 13 Jun
- 2024 10:36:52 -0500
-Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB06.amd.com
- (10.181.40.147) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 13 Jun
- 2024 10:36:52 -0500
-Received: from xhdsaipava41.xilinx.com (10.180.168.240) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.39 via
- Frontend Transport; Thu, 13 Jun 2024 10:36:50 -0500
-From: Sai Pavan Boddu <sai.pavan.boddu@amd.com>
-To: <qemu-arm@nongnu.org>, <qemu-devel@nongnu.org>
-CC: "'Edgar E . Iglesias'" <edgar.iglesias@gmail.com>, Alistair Francis
- <alistair@alistair23.me>, Peter Maydell <peter.maydell@linaro.org>,
- <francisco.iglesias@amd.com>
-Subject: [PATCH 2/2] hw/arm/xilinx_zynq: Add boot-mode property
-Date: Thu, 13 Jun 2024 21:06:38 +0530
-Message-ID: <20240613153638.3858853-3-sai.pavan.boddu@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240613153638.3858853-1-sai.pavan.boddu@amd.com>
-References: <20240613153638.3858853-1-sai.pavan.boddu@amd.com>
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1sHmbL-0003xb-Fa
+ for qemu-devel@nongnu.org; Thu, 13 Jun 2024 11:42:59 -0400
+Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1sHmbJ-0003D9-Et
+ for qemu-devel@nongnu.org; Thu, 13 Jun 2024 11:42:59 -0400
+Received: by mail-pf1-x42c.google.com with SMTP id
+ d2e1a72fcca58-6f4603237e0so878896b3a.0
+ for <qemu-devel@nongnu.org>; Thu, 13 Jun 2024 08:42:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1718293375; x=1718898175; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=shu4rCk418oF8rBuMNy0AUA60H5cVAf9u8s2a0NUHxQ=;
+ b=mlmhK1UjOiVoqG/vfNBeAUEjyJMupA2v55RkxjHo2xUHT4JI9mptBUPMfEsDeITSwp
+ lZuYC06Gbu8q9QoFsWpW8mGC1sVWQsMx3v6Vuxm7TUioIljIIT4EPNqcXpmjzoLx4GMn
+ 1JipsS/KOtuiNUFvHqXhYHvA+F85FrwwmY6BaUsuiC/Ne4eUnYH38o0GqjuPOcUW1DsQ
+ QZMuaXAaVRgtie/ODBghqHfzJEe0FOs6O77TnP1KAZVvJn+PxRm2gAZwWzPqiwctuwV5
+ SnIraDK2BpRV/g657DWYAfp+Ap4lvB0sHn+TuKzd8qcuXZBMT0+a6fREyvafVJ9fcKup
+ Gvdw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1718293375; x=1718898175;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=shu4rCk418oF8rBuMNy0AUA60H5cVAf9u8s2a0NUHxQ=;
+ b=tW6xwACK87LU9eyG6XRHph6YFLlGPzuAlDBtOW7EZmA7eFTVoagol5bYsOXtlAzT5c
+ N++JAetifiLKM0ZzNpdInga012QSpET8Zpqk/RMUp7vkM8gRcQU27EeRNVKWd61lvYOe
+ QQ0HCacQfb72R3k+HueLizjNypNziv7xM/YNH6iFhzxfDHPMkqBTm3ZDkM6KZb3tTBnY
+ BOWqJwVkDQJjyEVXeXSNWO4OGaJBWfBPWtPX6WBdiq+58/SZzuPPcDqU21y4Ux9kyrVC
+ 9hzKOSDx8lb50rxtlbhRWGTDqo4lXS0vOOssjxZhoQ9Vc8qTtRaNVb+17u2etoGG5ZOL
+ vy3w==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCX3kU4/bpMIVkV6QqRmj935i53YULQe8kS1vp0zcgc+d8P72N6UlBnzI8JHk9YhESMEcH2ET1LRvu/ncFo8zbuy9hdEWLI=
+X-Gm-Message-State: AOJu0YxL0gsby3I4PJjgcBKXzrWgOmwyzTzXoWOhIuHlS+MQS7iNOYiT
+ qdFqjpJ9wgUTCcB/x9BpLB0ZSLhbY7zoJgCpS6webS4RpViLYqCxDb71dEmMhniQ/eM1SJkF3xG
+ Q
+X-Google-Smtp-Source: AGHT+IFj6t1qXQ3QvuV6KYQEWThAniPvZQLvVw5hb++fxxfuPMJj3jEGyHIaQ4kTwXb2jZMlzQhoqA==
+X-Received: by 2002:a05:6a20:918d:b0:1b5:977d:439 with SMTP id
+ adf61e73a8af0-1bae7d82b84mr338395637.5.1718293375550; 
+ Thu, 13 Jun 2024 08:42:55 -0700 (PDT)
+Received: from [192.168.68.109] ([179.193.8.43])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-705ccb70f4asm1511664b3a.174.2024.06.13.08.42.52
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 13 Jun 2024 08:42:55 -0700 (PDT)
+Message-ID: <d1c27d07-7c01-48b5-866e-de8af327c8c4@ventanamicro.com>
+Date: Thu, 13 Jun 2024 12:42:50 -0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA2PEPF00003F63:EE_|PH7PR12MB5688:EE_
-X-MS-Office365-Filtering-Correlation-Id: e4838393-654a-44aa-8d60-08dc8bbea6fc
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230035|36860700008|82310400021|1800799019|376009; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?l1iBFITsVQ+sozwHRiYWTPyAIaJ1Kb1s03duK8/HZZSl8/yRnWWi6Hwklgqf?=
- =?us-ascii?Q?PLyPnBhif6hQyIgGB4qBaa1bJUiZ7huUoqHEokOXxGeN11xtvZ8bQoPvdlFd?=
- =?us-ascii?Q?DVloWzCy0H2vUycgqVjp7WWhjkJjAA8QtdxJjRE8tnNC9DmAaqnfq1xABhIL?=
- =?us-ascii?Q?2UjHdLXxJ2F0YtJxmnzfQczqzKfFgoaM1WE3djIfztNSx03jlf/Yzyt6d+8P?=
- =?us-ascii?Q?3NlhRQG01CsBs5ypde/Lnb3ocqNusgEkSK54IxAofnYAMtfWJmiLmKVGe5zL?=
- =?us-ascii?Q?h8cYmCYle1WSAVCNwbEmV2y+vxVT0VMYAwDMTCftcWKuR9EV7FJFBv+bOUNH?=
- =?us-ascii?Q?B7b48mzwPm9LFP9Ogh8KqB5p6Q0M8AM/oj35Fj0qgrn98CB0wuRLObwwuV6L?=
- =?us-ascii?Q?oUB9MfDzkEFN5RkVfpN4CFMBVdlNhpkPtezVwKy5BcfABtKyXuwNuI9a+Xvg?=
- =?us-ascii?Q?487HATsSwtuH7z/193Ifd00YR5Q9CV+il9ohi49Pa65mOwqWfKjyMG0eRSIP?=
- =?us-ascii?Q?J0dDZn9pWrFFzU4IpZQfAJDQNmSTub7DukA7dB+ygxUvaaUdYZ21q7KfFzZr?=
- =?us-ascii?Q?rjNCpHZNJanf2WJRDMqlfwbWajLYclD5x88i+S6aRuq+y6ep7GLLg+L3Dvtm?=
- =?us-ascii?Q?42BvmQ1b38DKg9VTvTCvZWwzopaJDDpd9Qe8AbcmSv9oXjmoURTfYgZXmU2t?=
- =?us-ascii?Q?iaUlHnilPjLfJYQU7nTN10b04xYtsVHdOTKi1B+tb+TlCFRdx7iX5wpjW/PM?=
- =?us-ascii?Q?sKRTk/K6/bo4zG36xdnjxKuXO99T+EunKi+ZAcIqZQzTS0Z35gxaE3NfQpVF?=
- =?us-ascii?Q?xdDbfWEjctwYfVc0ohZS43QzXjAKoTOMat/VoDhZBlRn8wLnPUAshjwB7aSt?=
- =?us-ascii?Q?ylhR+3spaUnQ0sUMZgHsSJl0nMi+NfaBoP8O+P4kTWNQlq9KWPgYS3JJ052t?=
- =?us-ascii?Q?INWwV9sgDUXBkJ+xYMesAdiPPrcWwKXDvRxe9PlRW4Sa/Qj6N8f5PB/woOkc?=
- =?us-ascii?Q?B/aTo3G8XxcdQHy8ruiRptaHjzgX2vusO+79Wm7ONZTIFffumlHwsTV6CCE1?=
- =?us-ascii?Q?/hRHEV1J+9ML7YiM5tPCbHTRU+zbJLA91cn31lik5EQStvusb0zsLOAhhQXF?=
- =?us-ascii?Q?fYn1IpcyXT9yd0GXEx2Hvnh1GXMBzlsDZeZtrZcEbxoMeB+Am8g4XcTw9wIP?=
- =?us-ascii?Q?jkVMhax1j3Gbqx/SSAfxj/xnH2MnMJU0WKuz8L9FmOLoCxHGAScPaRZAFroo?=
- =?us-ascii?Q?KNDNko6erHmwhoxM6axBT9TqaXNGnAZCyQQVeHAY3DDkkYwXKO7Vl9yheDF0?=
- =?us-ascii?Q?odL3jcMecxBEKVUeenrtZR4ujUt7VUmfif+CjZ2pw+tqg7zyxDr+LLtLM7sM?=
- =?us-ascii?Q?/F+7YnOhkI0mEHIje0AWFLD5zUMaRMROAXVsBsfgggOllMg+rg=3D=3D?=
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB03.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230035)(36860700008)(82310400021)(1800799019)(376009); DIR:OUT;
- SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jun 2024 15:36:53.8259 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: e4838393-654a-44aa-8d60-08dc8bbea6fc
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB03.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: SA2PEPF00003F63.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB5688
-Received-SPF: permerror client-ip=2a01:111:f403:2412::602;
- envelope-from=sai.pavan.boddu@amd.com;
- helo=NAM10-MW2-obe.outbound.protection.outlook.com
-X-Spam_score_int: -22
-X-Spam_score: -2.3
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v3 0/5] Improve the performance of RISC-V vector
+ unit-stride/whole register ld/st instructions
+To: Max Chou <max.chou@sifive.com>, qemu-devel@nongnu.org,
+ qemu-riscv@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bmeng.cn@gmail.com>,
+ Weiwei Li <liwei1518@gmail.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+References: <20240613141906.1276105-1-max.chou@sifive.com>
+Content-Language: en-US
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <20240613141906.1276105-1-max.chou@sifive.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x42c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.145,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -149,83 +101,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Read boot-mode value as machine property and propagate that to
-SLCR.BOOT_MODE register.
+Richard,
 
-Signed-off-by: Sai Pavan Boddu <sai.pavan.boddu@amd.com>
----
- hw/arm/xilinx_zynq.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+On 6/13/24 11:19 AM, Max Chou wrote:
+> Hi,
+> 
+> This RFC patch set tries to fix the issue of
+> https://gitlab.com/qemu-project/qemu/-/issues/2137.
 
-diff --git a/hw/arm/xilinx_zynq.c b/hw/arm/xilinx_zynq.c
-index 7f7a3d23fb..4dfa9184ac 100644
---- a/hw/arm/xilinx_zynq.c
-+++ b/hw/arm/xilinx_zynq.c
-@@ -38,6 +38,7 @@
- #include "qom/object.h"
- #include "exec/tswap.h"
- #include "target/arm/cpu-qom.h"
-+#include "qapi/visitor.h"
- 
- #define TYPE_ZYNQ_MACHINE MACHINE_TYPE_NAME("xilinx-zynq-a9")
- OBJECT_DECLARE_SIMPLE_TYPE(ZynqMachineState, ZYNQ_MACHINE)
-@@ -90,6 +91,7 @@ struct ZynqMachineState {
-     MachineState parent;
-     Clock *ps_clk;
-     ARMCPU *cpu[ZYNQ_MAX_CPUS];
-+    uint8_t BootMode;
- };
- 
- static void zynq_write_board_setup(ARMCPU *cpu,
-@@ -176,6 +178,19 @@ static inline int zynq_init_spi_flashes(uint32_t base_addr, qemu_irq irq,
-     return unit;
- }
- 
-+static void zynq_set_boot_mode(Object *obj, Visitor *v,
-+                               const char *name, void *opaque,
-+                               Error **errp)
-+{
-+    ZynqMachineState *m = ZYNQ_MACHINE(obj);
-+    uint8_t val;
-+
-+    if (!visit_type_uint8(v, name, &val, errp)) {
-+        return;
-+    }
-+    m->BootMode = val;
-+}
-+
- static void zynq_init(MachineState *machine)
- {
-     ZynqMachineState *zynq_machine = ZYNQ_MACHINE(machine);
-@@ -241,6 +256,7 @@ static void zynq_init(MachineState *machine)
-     /* Create slcr, keep a pointer to connect clocks */
-     slcr = qdev_new("xilinx-zynq_slcr");
-     qdev_connect_clock_in(slcr, "ps_clk", zynq_machine->ps_clk);
-+    qdev_prop_set_uint8(slcr, "boot-mode", zynq_machine->BootMode);
-     sysbus_realize_and_unref(SYS_BUS_DEVICE(slcr), &error_fatal);
-     sysbus_mmio_map(SYS_BUS_DEVICE(slcr), 0, 0xF8000000);
- 
-@@ -372,6 +388,7 @@ static void zynq_machine_class_init(ObjectClass *oc, void *data)
-         NULL
-     };
-     MachineClass *mc = MACHINE_CLASS(oc);
-+    ObjectProperty *prop;
-     mc->desc = "Xilinx Zynq Platform Baseboard for Cortex-A9";
-     mc->init = zynq_init;
-     mc->max_cpus = ZYNQ_MAX_CPUS;
-@@ -379,6 +396,11 @@ static void zynq_machine_class_init(ObjectClass *oc, void *data)
-     mc->ignore_memory_transaction_failures = true;
-     mc->valid_cpu_types = valid_cpu_types;
-     mc->default_ram_id = "zynq.ext_ram";
-+    prop = object_class_property_add(oc, "boot-mode", "uint8_t", NULL,
-+                              zynq_set_boot_mode, NULL, NULL);
-+    object_class_property_set_description(oc, "boot-mode",
-+                                          "Update SLCR.BOOT_MODE register");
-+    object_property_set_default_uint(prop, 1);
- }
- 
- static const TypeInfo zynq_machine_type = {
--- 
-2.34.1
+To avoid confusion on what we're doing here: this series is another optimization
+effort that Max is doing for RISC-V vector. We're also working into optimizing
+the front-end load/store ops like we discussed in this bug a few months ago.
 
+This series is not meant to be some sort of replacement/alternative of the approach
+we've discussed. We're aiming for both.
+
+
+Thanks,
+
+Daniel
+
+> 
+> In this new version, we added patches that
+> 1. Provide a fast path to direct access the host ram for some vector
+>     load/store instructions (e.g. unmasked vector unit-stride load/store
+>     instructions) and perform virtual address resolution once for the
+>     entire vector at beginning of helper function. (Thanks for Richard
+>     Henderson's suggestion)
+> 2. Replace the group elements load/store TCG ops by the group element
+>     load/store flow in helper functions with some assumption (e.g. no
+>     masking, continuous memory load/store, the endian of host and guest
+>     architecture are the same). (Thanks for Richard Henderson's
+>     suggestion)
+> 3. Try inline the vector load/store related functions that corresponding
+>     most of the execution time.
+> 
+> This version can improve the performance of the test case provided in
+> https://gitlab.com/qemu-project/qemu/-/issues/2137#note_1757501369
+> - QEMU user mode (vlen=512): from ~51.8 sec. to ~4.5 sec.
+> - QEMU system mode (vlen=512): from ~125.6 sec to ~6.6 sec.
+> 
+> Series based on riscv-to-apply.next branch (commit d82f37f).
+> 
+> Changes from v2:
+> - Drop v2 patches 1/4/5/6
+> - patch 2
+>      - Provide direct access host ram flow for vector unit-stride ld/st
+> - patch 3
+>      - Provide direct access host ram flow for vector whole reg ld/st
+> - patch 4
+>      - Provide group element load/store flow for vector continuous ld/st
+> - patch 5
+>      - Extend v2 patch 3 to more vector ld/st functions
+> 
+> Previous version:
+> - v1: https://lore.kernel.org/all/20240215192823.729209-1-max.chou@sifive.com/
+> - v2: https://lore.kernel.org/all/20240531174504.281461-1-max.chou@sifive.com/
+> 
+> Max Chou (5):
+>    accel/tcg: Avoid unnecessary call overhead from
+>      qemu_plugin_vcpu_mem_cb
+>    target/riscv: rvv: Provide a fast path using direct access to host ram
+>      for unmasked unit-stride load/store
+>    target/riscv: rvv: Provide a fast path using direct access to host ram
+>      for unit-stride whole register load/store
+>    target/riscv: rvv: Provide group continuous ld/st flow for unit-stride
+>      ld/st instructions
+>    target/riscv: Inline unit-stride ld/st and corresponding functions for
+>      performance
+> 
+>   accel/tcg/ldst_common.c.inc             |   8 +-
+>   target/riscv/insn_trans/trans_rvv.c.inc |   3 +
+>   target/riscv/vector_helper.c            | 847 +++++++++++++++++++-----
+>   target/riscv/vector_internals.h         |  48 ++
+>   4 files changed, 738 insertions(+), 168 deletions(-)
+> 
 
