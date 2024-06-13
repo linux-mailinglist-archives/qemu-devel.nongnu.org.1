@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C20689064C1
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jun 2024 09:16:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AAC59064BE
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jun 2024 09:16:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sHeed-0007Tr-VB; Thu, 13 Jun 2024 03:13:51 -0400
+	id 1sHeeg-0007UV-EO; Thu, 13 Jun 2024 03:13:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <luchangqi.123@bytedance.com>)
- id 1sHeeZ-0007Rx-J7
- for qemu-devel@nongnu.org; Thu, 13 Jun 2024 03:13:47 -0400
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+ id 1sHeed-0007Tu-4a
+ for qemu-devel@nongnu.org; Thu, 13 Jun 2024 03:13:51 -0400
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <luchangqi.123@bytedance.com>)
- id 1sHeeX-00072x-Ed
- for qemu-devel@nongnu.org; Thu, 13 Jun 2024 03:13:47 -0400
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-1f6da06ba24so6704355ad.2
- for <qemu-devel@nongnu.org>; Thu, 13 Jun 2024 00:13:45 -0700 (PDT)
+ id 1sHeeb-00073w-8T
+ for qemu-devel@nongnu.org; Thu, 13 Jun 2024 03:13:50 -0400
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-1f6b0a40721so5113025ad.2
+ for <qemu-devel@nongnu.org>; Thu, 13 Jun 2024 00:13:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bytedance.com; s=google; t=1718262824; x=1718867624; darn=nongnu.org;
+ d=bytedance.com; s=google; t=1718262828; x=1718867628; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=LEuUjUzQAGNW2bFbTYz8h5s7RYYUBYzAO9/VPokyqDk=;
- b=DJOORG46ssDwNyxuW7sG98+Pz1UFwRslqNy3pHhoYbDdTK092bwvbVORosz2HdBJwj
- Vu4iQOUko0B8QEZCC4OdmZh1dBQaWMdjW7PNrCAiLdljYAGe6+fMkPLzw4JFLGstyKXe
- 5rw4V9Da072t22bsbrqTjkSs0FSXiY/WPGLWitiy5zSTLqP+1rVA8IBhQtdCf/Dgv9/V
- fLI6i5TgdgAZoW8debg9gReBeJtv8bRwHaYkYOKiNmrmeyDApAdaOzLtn/TXFwbXMj1O
- Zz3RnpbP7QUNuXuifs/ywixHMNFr9dqhtseGMTmVA4fcv8HSXEiiULUvO9t/skMHE2JS
- 2slw==
+ bh=GBe1c4jIkfsliWme3g4HTOmn9856JIh7QYN+Y7HLgGY=;
+ b=ZjDuXeqHM3/hqj7I3JaVxhzT3RARDq1gPmvYYpP1/M7H0VNZyMTLvrkeaOnmx2vwj5
+ VmwJ47CX8BNDnJ9XwmDAcfqToVCTfhKS3yc45J+Z38358yxQVpu6HUp5A5VqnR70j7lO
+ urrvvW+mp5e+2irqukDEFxieqlfcUfENjaPWWRoJPQICzD6E25Cfd+m6gr7/1gsVWaHY
+ yK+OXOBuCoPvdKMQ6DWgMOlz/E3kVnG67m9YP3136uGBn/nbrKrDMSpAZJT6enlKABGn
+ bZVJtf0R4VgD/dVr27jqv/dosl6131bzZ9m4d66UxO5mHuo49a61s40Qh+XozuLnkB5Y
+ klXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718262824; x=1718867624;
+ d=1e100.net; s=20230601; t=1718262828; x=1718867628;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LEuUjUzQAGNW2bFbTYz8h5s7RYYUBYzAO9/VPokyqDk=;
- b=dAL23gxLzJ7/vO2R8Oki7WKGeesEK2I0F5yL9MslNHEnimDoMWgTRiGq3STJN4xWBf
- 3INQXFlRyDU18zX9q74oKpmTy3GAKqcvG9Cjfqv4/NmQF7yA4NZsyjIF5dg/rAHbaAkG
- j+9BxUvG4X8JD8Do681eTX94kYWXzWSYi5qE1MWY60sW2w/fSew+uIC/yqIhvMbEY2hw
- 6/DPJMYtXFBxNd/cj89XDD0ZXlHMEs9/Ab+zsWurnb4J8sLlW16tBxIAXC2AWOyXNXxa
- jT+TpeM4RkV4LhB08ykVpIekvOjRHjuONILsIVFTMJ8+4ZX6M+omFvb1s07/D7s+V5uj
- MJqg==
+ bh=GBe1c4jIkfsliWme3g4HTOmn9856JIh7QYN+Y7HLgGY=;
+ b=Nd/Snbi6GvMqk3jzxc1fn4crVis2qSjKnapDL5CS8zF5ZpRvIcQrNEMkIh/N6MeLdB
+ ZcoyN6fpjFspvDTV3nsZVCg1p3eOSJLFTJFin2DmjOh10VJdlCsK/s61dimLH9Fn8mwb
+ M2TibkLRQpZdcX/DCz7Zz7XW+BKsw3ySGQvyEn3seU3saAhHh6VYGhFYKIuUO7oRPhs1
+ 3ZIqFjQlf2dszneXZgDbLadEYaMJDLYd3/lYZ9GWJ4uwmvwa7zX5BqASKk1fSaWM0A13
+ na0uiH7fmg0RSP+zULCN6BiXyPzFcmWC6LlFBniYMrlkpDAjqAr2BzGxPq+xgE+zIRGG
+ lb8Q==
 X-Forwarded-Encrypted: i=1;
- AJvYcCX1NprjmXdxgrWRZehCLgUuITkewzCe2Mosq/SrVydEXONogeJPII4RMRFuZaQFZVKj32gYbzSWg62tn1mD0OJuz9gAkY0=
-X-Gm-Message-State: AOJu0YwHeoQClSmHmW+QbfBYyJMl4PO/UF69oUNDlZ/ZgDmRR91tGEZI
- /VmNnHVXQpEulNYJGOCGt2AazYoWyUq3ArUeCz4AAa9IUCLTnO7Vi8prra6dTpE=
-X-Google-Smtp-Source: AGHT+IFawuQXAPHcKSTatwQ7x/cokB3cw2en19qsA2N3N9uCO6XNF+VTTbK/utnasCX2sRXguI18FA==
-X-Received: by 2002:a17:902:db02:b0:1f6:ff48:1cdb with SMTP id
- d9443c01a7336-1f83b7002a2mr45163765ad.52.1718262823926; 
- Thu, 13 Jun 2024 00:13:43 -0700 (PDT)
+ AJvYcCV/DMToJ+GHFs2ohziqaIygIYXoTw22X2fjoFbpPV6y20ZqPOM/4UFDtOgq41gnQ0j3xVF93SgiYx6P4fxj8DJjwhBylD4=
+X-Gm-Message-State: AOJu0YzU3TqFMNeKQH8r3WbfINLs6UJRYKpztH9kePNIE1E/xagbLuXF
+ ELADeS2cvfHVE82gKjGmtMMlocnq2C/pyt097HF7Hgg5AHV+8bWvPkTRZe2+o1k=
+X-Google-Smtp-Source: AGHT+IGFILRovtezFAtcnKYtXW81eeEO0CbVBlsS8YaTgf8Q75fpu6GEr+y5PMe3O65dpzw180934A==
+X-Received: by 2002:a17:903:983:b0:1f6:39d8:dc4f with SMTP id
+ d9443c01a7336-1f83b55f8ccmr46620145ad.10.1718262827862; 
+ Thu, 13 Jun 2024 00:13:47 -0700 (PDT)
 Received: from n37-006-243.byted.org ([180.184.84.173])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1f855ee6e7esm6378345ad.139.2024.06.13.00.13.40
+ d9443c01a7336-1f855ee6e7esm6378345ad.139.2024.06.13.00.13.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 13 Jun 2024 00:13:43 -0700 (PDT)
+ Thu, 13 Jun 2024 00:13:47 -0700 (PDT)
 From: Changqi Lu <luchangqi.123@bytedance.com>
 To: qemu-block@nongnu.org,
 	qemu-devel@nongnu.org
@@ -65,16 +65,17 @@ Cc: kwolf@redhat.com, hreitz@redhat.com, stefanha@redhat.com, fam@euphon.net,
  ronniesahlberg@gmail.com, pbonzini@redhat.com, pl@dlhnet.de,
  kbusch@kernel.org, its@irrelevant.dk, foss@defmacro.it, philmd@linaro.org,
  pizhenwei@bytedance.com, Changqi Lu <luchangqi.123@bytedance.com>
-Subject: [PATCH v6 02/10] block/raw: add persistent reservation in/out driver
-Date: Thu, 13 Jun 2024 15:13:19 +0800
-Message-Id: <20240613071327.2498953-3-luchangqi.123@bytedance.com>
+Subject: [PATCH v6 03/10] scsi/constant: add persistent reservation in/out
+ protocol constants
+Date: Thu, 13 Jun 2024 15:13:20 +0800
+Message-Id: <20240613071327.2498953-4-luchangqi.123@bytedance.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20240613071327.2498953-1-luchangqi.123@bytedance.com>
 References: <20240613071327.2498953-1-luchangqi.123@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=luchangqi.123@bytedance.com; helo=mail-pl1-x629.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=luchangqi.123@bytedance.com; helo=mail-pl1-x62a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,91 +98,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add persistent reservation in/out operations for raw driver.
-The following methods are implemented: bdrv_co_pr_read_keys,
-bdrv_co_pr_read_reservation, bdrv_co_pr_register, bdrv_co_pr_reserve,
-bdrv_co_pr_release, bdrv_co_pr_clear and bdrv_co_pr_preempt.
+Add constants for the persistent reservation in/out protocol
+in the scsi/constant module. The constants include the persistent
+reservation command, type, and scope values defined in sections
+6.13 and 6.14 of the SCSI Primary Commands-4 (SPC-4) specification.
 
 Signed-off-by: Changqi Lu <luchangqi.123@bytedance.com>
 Signed-off-by: zhenwei pi <pizhenwei@bytedance.com>
 ---
- block/raw-format.c | 56 ++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 56 insertions(+)
+ include/scsi/constants.h | 52 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 52 insertions(+)
 
-diff --git a/block/raw-format.c b/block/raw-format.c
-index ac7e8495f6..3746bc1bd3 100644
---- a/block/raw-format.c
-+++ b/block/raw-format.c
-@@ -454,6 +454,55 @@ raw_co_ioctl(BlockDriverState *bs, unsigned long int req, void *buf)
-     return bdrv_co_ioctl(bs->file->bs, req, buf);
- }
+diff --git a/include/scsi/constants.h b/include/scsi/constants.h
+index 9b98451912..922a314535 100644
+--- a/include/scsi/constants.h
++++ b/include/scsi/constants.h
+@@ -319,4 +319,56 @@
+ #define IDENT_DESCR_TGT_DESCR_SIZE 32
+ #define XCOPY_BLK2BLK_SEG_DESC_SIZE 28
  
-+static int coroutine_fn GRAPH_RDLOCK
-+raw_co_pr_read_keys(BlockDriverState *bs, uint32_t *generation,
-+                    uint32_t num_keys, uint64_t *keys)
-+{
++typedef enum {
++    SCSI_PR_WRITE_EXCLUSIVE                 = 0x01,
++    SCSI_PR_EXCLUSIVE_ACCESS                = 0x03,
++    SCSI_PR_WRITE_EXCLUSIVE_REGS_ONLY       = 0x05,
++    SCSI_PR_EXCLUSIVE_ACCESS_REGS_ONLY      = 0x06,
++    SCSI_PR_WRITE_EXCLUSIVE_ALL_REGS        = 0x07,
++    SCSI_PR_EXCLUSIVE_ACCESS_ALL_REGS       = 0x08,
++} SCSIPrType;
 +
-+    return bdrv_co_pr_read_keys(bs->file->bs, generation, num_keys, keys);
-+}
++typedef enum {
++    SCSI_PR_LU_SCOPE          = 0x00,
++} SCSIPrScope;
 +
-+static int coroutine_fn GRAPH_RDLOCK
-+raw_co_pr_read_reservation(BlockDriverState *bs, uint32_t *generation,
-+                           uint64_t *key, BlockPrType *type)
-+{
-+    return bdrv_co_pr_read_reservation(bs->file->bs, generation, key, type);
-+}
++typedef enum {
++    SCSI_PR_OUT_REGISTER                 = 0x0,
++    SCSI_PR_OUT_RESERVE                  = 0x1,
++    SCSI_PR_OUT_RELEASE                  = 0x2,
++    SCSI_PR_OUT_CLEAR                    = 0x3,
++    SCSI_PR_OUT_PREEMPT                  = 0x4,
++    SCSI_PR_OUT_PREEMPT_AND_ABORT        = 0x5,
++    SCSI_PR_OUT_REG_AND_IGNORE_KEY       = 0x6,
++    SCSI_PR_OUT_REG_AND_MOVE             = 0x7,
++} SCSIPrOutAction;
 +
-+static int coroutine_fn GRAPH_RDLOCK
-+raw_co_pr_register(BlockDriverState *bs, uint64_t old_key,
-+                   uint64_t new_key, BlockPrType type,
-+                   bool ptpl, bool ignore_key)
-+{
-+    return bdrv_co_pr_register(bs->file->bs, old_key, new_key,
-+                               type, ptpl, ignore_key);
-+}
++typedef enum {
++    SCSI_PR_IN_READ_KEYS                 = 0x0,
++    SCSI_PR_IN_READ_RESERVATION          = 0x1,
++    SCSI_PR_IN_REPORT_CAPABILITIES       = 0x2,
++} SCSIPrInAction;
 +
-+static int coroutine_fn GRAPH_RDLOCK
-+raw_co_pr_reserve(BlockDriverState *bs, uint64_t key, BlockPrType type)
-+{
-+    return bdrv_co_pr_reserve(bs->file->bs, key, type);
-+}
++typedef enum {
++    /* Exclusive Access All Registrants reservation type */
++    SCSI_PR_CAP_EX_AC_AR = 1 << 0,
++    /* Write Exclusive reservation type */
++    SCSI_PR_CAP_WR_EX = 1 << 9,
++    /* Exclusive Access reservation type */
++    SCSI_PR_CAP_EX_AC = 1 << 11,
++    /* Write Exclusive Registrants Only reservation type */
++    SCSI_PR_CAP_WR_EX_RO = 1 << 13,
++    /* Exclusive Access Registrants Only reservation type */
++    SCSI_PR_CAP_EX_AC_RO = 1 << 14,
++    /* Write Exclusive All Registrants reservation type */
++    SCSI_PR_CAP_WR_EX_AR = 1 << 15,
 +
-+static int coroutine_fn GRAPH_RDLOCK
-+raw_co_pr_release(BlockDriverState *bs, uint64_t key, BlockPrType type)
-+{
-+    return bdrv_co_pr_release(bs->file->bs, key, type);
-+}
++    SCSI_PR_CAP_ALL = (SCSI_PR_CAP_EX_AC_AR |
++                      SCSI_PR_CAP_WR_EX |
++                      SCSI_PR_CAP_EX_AC |
++                      SCSI_PR_CAP_WR_EX_RO |
++                      SCSI_PR_CAP_EX_AC_RO |
++                      SCSI_PR_CAP_WR_EX_AR),
++} SCSIPrCap;
 +
-+static int coroutine_fn GRAPH_RDLOCK
-+raw_co_pr_clear(BlockDriverState *bs, uint64_t key)
-+{
-+    return bdrv_co_pr_clear(bs->file->bs, key);
-+}
-+
-+static int coroutine_fn GRAPH_RDLOCK
-+raw_co_pr_preempt(BlockDriverState *bs, uint64_t old_key,
-+                  uint64_t new_key, BlockPrType type, bool abort)
-+{
-+    return bdrv_co_pr_preempt(bs->file->bs, old_key, new_key, type, abort);
-+}
-+
- static int GRAPH_RDLOCK raw_has_zero_init(BlockDriverState *bs)
- {
-     return bdrv_has_zero_init(bs->file->bs);
-@@ -672,6 +721,13 @@ BlockDriver bdrv_raw = {
-     .strong_runtime_opts  = raw_strong_runtime_opts,
-     .mutable_opts         = mutable_opts,
-     .bdrv_cancel_in_flight = raw_cancel_in_flight,
-+    .bdrv_co_pr_read_keys    = raw_co_pr_read_keys,
-+    .bdrv_co_pr_read_reservation = raw_co_pr_read_reservation,
-+    .bdrv_co_pr_register     = raw_co_pr_register,
-+    .bdrv_co_pr_reserve      = raw_co_pr_reserve,
-+    .bdrv_co_pr_release      = raw_co_pr_release,
-+    .bdrv_co_pr_clear        = raw_co_pr_clear,
-+    .bdrv_co_pr_preempt      = raw_co_pr_preempt,
- };
- 
- static void bdrv_raw_init(void)
+ #endif
 -- 
 2.20.1
 
