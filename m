@@ -2,65 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4A7990674D
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jun 2024 10:45:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A512906768
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jun 2024 10:48:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sHg4x-0000o6-Ii; Thu, 13 Jun 2024 04:45:07 -0400
+	id 1sHg7z-0002LG-48; Thu, 13 Jun 2024 04:48:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sHg4w-0000nv-3t
- for qemu-devel@nongnu.org; Thu, 13 Jun 2024 04:45:06 -0400
+ id 1sHg7x-0002Ka-Fo
+ for qemu-devel@nongnu.org; Thu, 13 Jun 2024 04:48:13 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sHg4t-0006Lo-6s
- for qemu-devel@nongnu.org; Thu, 13 Jun 2024 04:45:05 -0400
+ id 1sHg7v-0007J0-SQ
+ for qemu-devel@nongnu.org; Thu, 13 Jun 2024 04:48:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1718268301;
+ s=mimecast20190719; t=1718268491;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=CxqMQGq92Xwwnv3EpYXW5u/8xaVhPtkkusQHbb5hspk=;
- b=SjOB7D5T/iqdW0D8gl2LlXlBYPzdVSP8OgoFQeYepy/wx5BymCW+JHdOtjqwph/1LRWleF
- lPKzt0FhFSvM1jXXTWPgIXhMrgun9jS3jGUfNtl+Qn82PI0W2RlkszEwEJsuc6uH2wciQV
- 1rwl8sqjmwx8id4amYppwlbAHk3oYPA=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=93ylkh3amxuY1ED6z+lzcYCkeppGFUlu183RpXkMdtY=;
+ b=Bx+3ZRFdsS+fX0cOf1xThqVAcyrnKzufpvHYTZiXD4VVA4jP/+lllMJ+8IjhdqOEGVim0B
+ nk8C8DumxS3fMA3IRESEfgKq43bDYj37qaBA4PF6tS3nOP2ryPvB6x7SJkBgw75RrXGKLU
+ u7OMuKLPelLJCnqRxlf+BWowqah86Mw=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-197--VChXxsgOjmYAUK8cS4GAA-1; Thu,
- 13 Jun 2024 04:44:56 -0400
-X-MC-Unique: -VChXxsgOjmYAUK8cS4GAA-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-403-C48Z3ilTMiyUUESKWea_7A-1; Thu,
+ 13 Jun 2024 04:48:09 -0400
+X-MC-Unique: C48Z3ilTMiyUUESKWea_7A-1
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 7743C19560B2; Thu, 13 Jun 2024 08:44:54 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 294CD1955EF5; Thu, 13 Jun 2024 08:48:05 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.52])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 16C7119560BF; Thu, 13 Jun 2024 08:44:51 +0000 (UTC)
-Date: Thu, 13 Jun 2024 09:44:48 +0100
+ id 625C31955E72; Thu, 13 Jun 2024 08:48:01 +0000 (UTC)
+Date: Thu, 13 Jun 2024 09:47:58 +0100
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-Cc: Gerd Hoffmann <kraxel@redhat.com>, qemu-devel@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>, Eric Blake <eblake@redhat.com>
-Subject: Re: [PATCH v3 2/4] usb/hub: mark as deprecated
-Message-ID: <ZmqxgAh1v6-Y8zjH@redhat.com>
-References: <20240606143010.1318226-1-kraxel@redhat.com>
- <20240606143010.1318226-3-kraxel@redhat.com>
- <ZmHKotWS7ywfIvOj@redhat.com> <87r0d2w431.fsf@draig.linaro.org>
+To: Thomas Huth <thuth@redhat.com>
+Cc: Markus Armbruster <armbru@redhat.com>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ qemu-devel@nongnu.org, Peng Fan <peng.fan@nxp.com>,
+ "alex.bennee@linaro.org" <alex.bennee@linaro.org>,
+ "peter.maydell@linaro.org" <peter.maydell@linaro.org>,
+ "stefanha@redhat.com" <stefanha@redhat.com>,
+ qemu-stable <qemu-stable@nongnu.org>
+Subject: Re: Qemu License question
+Message-ID: <ZmqyPje6_9I1YeTT@redhat.com>
+References: <AM6PR04MB5941BDF756878B3CA208D07D88C12@AM6PR04MB5941.eurprd04.prod.outlook.com>
+ <f06ai.hy2gx5h8080@linaro.org> <87h6dxct8g.fsf@pond.sub.org>
+ <2624ae07-f61d-4c07-9510-ebbd243670a3@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <87r0d2w431.fsf@draig.linaro.org>
+In-Reply-To: <2624ae07-f61d-4c07-9510-ebbd243670a3@redhat.com>
 User-Agent: Mutt/2.2.12 (2023-09-09)
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
@@ -89,52 +90,50 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jun 12, 2024 at 04:52:50PM +0100, Alex Bennée wrote:
-> Daniel P. Berrangé <berrange@redhat.com> writes:
+On Thu, Jun 13, 2024 at 10:31:50AM +0200, Thomas Huth wrote:
+> On 13/06/2024 07.22, Markus Armbruster wrote:
+> > Manos Pitsidianakis <manos.pitsidianakis@linaro.org> writes:
+> > 
+> > > On Thu, 13 Jun 2024 06:26, Peng Fan <peng.fan@nxp.com> wrote:
+> > > > Hi All,
+> > > > 
+> > > > The following files are marked as GPL-3.0-or-later. Will these
+> > > > Conflict with Qemu LICENSE?
+> > > > 
+> > > > Should we update the files to GPL-2.0?
+> > > > 
+> > > > ./tests/tcg/aarch64/semicall.h:7: * SPDX-License-Identifier: GPL-3.0-or-later
+> > > > ./tests/tcg/x86_64/system/boot.S:13: * SPDX-License-Identifier: GPL-3.0-or-later
+> > > > ./tests/tcg/riscv64/semicall.h:7: * SPDX-License-Identifier: GPL-3.0-or-later
+> > > > ./tests/tcg/multiarch/float_convs.c:6: * SPDX-License-Identifier: GPL-3.0-or-later
+> > > > ./tests/tcg/multiarch/float_helpers.h:6: * SPDX-License-Identifier: GPL-3.0-or-later
+> > > > ./tests/tcg/multiarch/libs/float_helpers.c:10: * SPDX-License-Identifier: GPL-3.0-or-later
+> > > > ./tests/tcg/multiarch/arm-compat-semi/semihosting.c:7: * SPDX-License-Identifier: GPL-3.0-or-later
+> > > > ./tests/tcg/multiarch/arm-compat-semi/semiconsole.c:7: * SPDX-License-Identifier: GPL-3.0-or-later
+> > > > ./tests/tcg/multiarch/float_convd.c:6: * SPDX-License-Identifier: GPL-3.0-or-later
+> > > > ./tests/tcg/multiarch/float_madds.c:6: * SPDX-License-Identifier: GPL-3.0-or-later
+> > > > ./tests/tcg/i386/system/boot.S:10: * SPDX-License-Identifier: GPL-3.0-or-later
+> > > > ./tests/tcg/arm/semicall.h:7: * SPDX-License-Identifier: GPL-3.0-or-later
+> > > > 
+> > > > Thanks,
+> > > > Peng.
+> > > 
+> > > Hello Peng,
+> > > 
+> > > These are all actually GPL-2.0-or-later, in fact I can't find the string GPL-3.0-or-later in the current master at all.
+> > 
+> > See commit 542b10bd148a (tests/tcg: update licenses to GPLv2 as intended).
 > 
-> > On Thu, Jun 06, 2024 at 04:30:08PM +0200, Gerd Hoffmann wrote:
-> >> The hub supports only USB 1.1.  When running out of usb ports it is in
-> >> almost all cases the much better choice to add another usb host adapter
-> >> (or increase the number of root ports when using xhci) instead of using
-> >> the usb hub.
-> >
-> > Is that actually a strong enough reason to delete this device though ?
-> > This reads like its merely something we don't expect to be commonly
-> > used, rather than something we would actively want to delete.
-> 
-> This does seem quite aggressive because there may be cases when users
-> explicitly want to use old devices. Maybe there is need for a third
-> state (better_alternatives?) so we can steer users away from old command
-> lines they may have picked up from the web to the modern alternative?
+> Maybe it could be included in the stable releases before 9.0, too?
+> CC:-ing qemu-stable for this now.
 
-We've got 2 flags proposed in patch 1 - "deprecated" and "not_secure" -
-which we formally expose to mgmt apps/users. Both of these are actionable
-in an unambiguous way. An application can query this info, and can also
-tell QEMU to enforce policy on this. Both are good.
+IMHO this is largely a non-issue from a licensing compatibility POV, and
+thus not neccessary for stable.
 
-The "better alternatives" conceptable, however, is an inherantly fuzzy
-concept, because "better" is very much a use-case depedent / eye of the
-beholder concept. This would makes it difficult/impractical for an
-application to take action based on such a "better-alternatives' schema
-marker. It would imply the application has to understands the better
-alternatives ahead of time, as well as understanding the end users'
-intent and that's not really viable.
+This is self-contained test code that, IIUC, is not linking to the bits of
+QEMU that are GPLv-2-only, so is valid to have any license. GPL-2.0+ is
+just "nice to have" for consistency of the codebase.
 
-
-
-This is a long winded way of saying that while "better alternatives"
-is certainly a concept that is relevant, I'm not convinced it belongs
-in the schema, as opposed to being a documentation task.
-
-We haven't consistently provided documentation in the manual for every
-device, so in many cases '-device help' is all that exists, but in the
-case of USB we do actually have docs:
-
-  https://www.qemu.org/docs/master/system/devices/usb.html
-
-and those docs give little guidance to users about 'usb-hub', so IMHO
-that's where we should be documenting the tradeoffs of the different
-USB config scenarios.
 
 With regards,
 Daniel
