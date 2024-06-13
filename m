@@ -2,82 +2,162 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6C209074A7
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jun 2024 16:09:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E1499074D4
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jun 2024 16:13:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sHl7q-0001sE-QF; Thu, 13 Jun 2024 10:08:26 -0400
+	id 1sHlC3-0005U5-P3; Thu, 13 Jun 2024 10:12:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1sHl7o-0001rp-Mt
- for qemu-devel@nongnu.org; Thu, 13 Jun 2024 10:08:24 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <Babu.Moger@amd.com>)
+ id 1sHlC1-0005Td-7f
+ for qemu-devel@nongnu.org; Thu, 13 Jun 2024 10:12:45 -0400
+Received: from mail-sn1nam02on20608.outbound.protection.outlook.com
+ ([2a01:111:f400:7ea9::608]
+ helo=NAM02-SN1-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1sHl7m-0001Ri-Le
- for qemu-devel@nongnu.org; Thu, 13 Jun 2024 10:08:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1718287700;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=GflUhjBJ3vugqG+lco5DL6CeTRnjho+pyybikhpHSEw=;
- b=cDND/0hQj6yqa9kahSF/HYahZyHWjuxGa+to927Y/84ycSvQgKVHMXDSObM/TJd4eMxSZV
- ZWGHYGE1Ipb8djKfcIWLGUHl8WiOOnGL84PZ4siuO0tyOWwk9vA7B7z6cO8Engd4a9EerW
- jaFAc80RoNbL6lppu2RWrx/N6OTbkJU=
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com
- [209.85.215.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-306-3iEqGhcNNGu319j8Prh86Q-1; Thu, 13 Jun 2024 10:08:10 -0400
-X-MC-Unique: 3iEqGhcNNGu319j8Prh86Q-1
-Received: by mail-pg1-f199.google.com with SMTP id
- 41be03b00d2f7-6716094a865so891302a12.0
- for <qemu-devel@nongnu.org>; Thu, 13 Jun 2024 07:08:10 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718287689; x=1718892489;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=GflUhjBJ3vugqG+lco5DL6CeTRnjho+pyybikhpHSEw=;
- b=TjkgxEvd+Ib5m0ORZU8C9MId5u6G98qmQymI6lDjtEsgZ38P8xYhtUROwTIG2FDceh
- NlH2H3+rH9JFBTEjVtNiDNr680ugcpA6Ccoaiy1C8StjaO08LtWqvLGB+l6Z4t1ZZ4xY
- 2rDHueMTUJBliR0lSUcs64plJAjadvOnGWx7mDbyAv9svZBnY15miVV9azm3wVl54n7O
- 5nG/kxHfZ6u0X2+4xYglKiuFAMikJKJZAJ3WPYjih3Bm0l9FaGsN0v/w0P66ybtMaP7K
- kYxt5ohtd19j3crnLqPCEkVhlGJU/gIk7T03xkLRQgYva/blb3c1nXkxJVkknTkE+cDy
- 00zA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXTn5nwP0WrIm7UnIV3RSVqZMXB59E8vmrwEw3B3ibqxgWkdzcftYU9PwTc6oHKj4uVngOZ9PbfaPgSUHg1y5z1gADCjzQ=
-X-Gm-Message-State: AOJu0YwuHy3fR7wsFDNlX56r5VyoTph0WLQwAFeguVgSoQkWI93npgL2
- YCOrHLu3XaJtnL3ruoAZo17OQToo6K70juwS+zifyjT7dbvBcybMJiu/XAgvp8h79pH5PaaopDR
- KTeRHmjHkb8HmCXt9DiRtgtjWtv/gR98ZXferapDPVWdv8lIjE+u8FShwtORjUfCgRFlgZ7D2KL
- i1HGrtx0hoG0ZDoRcDrpxYbOJ3d8A=
-X-Received: by 2002:a17:902:e808:b0:1f7:3163:831d with SMTP id
- d9443c01a7336-1f83b626324mr59549645ad.14.1718287689293; 
- Thu, 13 Jun 2024 07:08:09 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEaNap7Rp5ai94Vzed+8oKoX6fevt7GiBKViDN0Xgmz4RyH+FPXm1ctH6xrI96VPywVJdIdDYpCa0Yv2NoksgE=
-X-Received: by 2002:a17:902:e808:b0:1f7:3163:831d with SMTP id
- d9443c01a7336-1f83b626324mr59548805ad.14.1718287688531; Thu, 13 Jun 2024
- 07:08:08 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <Babu.Moger@amd.com>)
+ id 1sHlBy-0002FD-Vw
+ for qemu-devel@nongnu.org; Thu, 13 Jun 2024 10:12:44 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=W3fy3Q/iNbj5RSTRlp7MaDJcPPC9htMgHCX4msq/k6TKkG9XNHVqDtTcVxIzD/SuXKxnqqClGum7TlPAr/fGtg3jJ40LPI6lbdf2RlXIZ8wJuKAjQel8Ozr5u3DOtPfWlJDhibG6SPY0J4wZ6TOFTBv9W2NLzRpIL5j4+MQ11/twa0gHLZiiAkCbe8qDVtkuUGTZ8TgDADUsHo6C6dJ9MPAjXngcyfeSQ50NWw7/yp6l+DhX9XIH2l69KYliZnpOoPtFKYKSZby1oOPBk/Ai5h68ggHfWrp7tJ/eH5terrFm9rFA0a+F9EObexZ0IRF06B8QNmR8/qsm0eP95KWjcw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=a5fVKnoY+Ji1Z+wp3ZFMl7JAGvf9mxXQQSqvejy0lkc=;
+ b=AxXjvDXjJORFDd53FBD8bhiYyPk/IdlEARCkv9C3sYGe3D23e2s66utbLlLd8ehj6wIdLAKHH97Jk18NGjc3J9R9ph1FMrLF4E+dKIRSLtM7k2hSnoDPjfivKAqISQitGQ+QdhGHtDHlvrqH938gvGDshEnjlT6Yn/yg4anjXRbvUqYLJcRbEXBrI1cyboaiQHkVRTo4nWkFoRF7DFvvafpq1g42uaABQbrS+vIpDJl8xEoqcZr+N/fYkyz9XvfMGwv6K6Cfm8KzQUKXV3fEmIR20OhnDctEDI0APl5TYr4PglNeQEmtiRJGXvH2F5tYxJ996Rc5ogXxu81UIZiv4w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=a5fVKnoY+Ji1Z+wp3ZFMl7JAGvf9mxXQQSqvejy0lkc=;
+ b=BPmDFSbIwaDWWSOuNRt94mB4oi6pHcHh3xBDxOVLizjTsr9cJFLT1xJz0iCT3rnTb/DNXo426/lJIYkI0EeMsjnEc8u9kyLFBUA548swgj4rBLgIdhh0w4JjgBEY+MCDZnZ2cM3SCT9taFZLzFfhKRexyhRl+DzK2yi+Icb9cBA=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from MW3PR12MB4553.namprd12.prod.outlook.com (2603:10b6:303:2c::19)
+ by MN0PR12MB6029.namprd12.prod.outlook.com (2603:10b6:208:3cf::21)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7677.20; Thu, 13 Jun
+ 2024 14:12:35 +0000
+Received: from MW3PR12MB4553.namprd12.prod.outlook.com
+ ([fe80::b0ef:2936:fec1:3a87]) by MW3PR12MB4553.namprd12.prod.outlook.com
+ ([fe80::b0ef:2936:fec1:3a87%5]) with mapi id 15.20.7633.037; Thu, 13 Jun 2024
+ 14:12:35 +0000
+Message-ID: <07923673-5f99-4895-907d-a84a0db98fa2@amd.com>
+Date: Thu, 13 Jun 2024 09:12:33 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/4] i386/cpu: Add PerfMonV2 feature bit
+To: Zhao Liu <zhao1.liu@intel.com>
+Cc: pbonzini@redhat.com, qemu-devel@nongnu.org, kvm@vger.kernel.org
+References: <cover.1718218999.git.babu.moger@amd.com>
+ <6f83528b78d31eb2543aa09966e1d9bcfd7ec8a2.1718218999.git.babu.moger@amd.com>
+ <Zmqace8eCFHPq8ZK@intel.com>
+Content-Language: en-US
+From: "Moger, Babu" <babu.moger@amd.com>
+In-Reply-To: <Zmqace8eCFHPq8ZK@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: DS7PR03CA0106.namprd03.prod.outlook.com
+ (2603:10b6:5:3b7::21) To MW3PR12MB4553.namprd12.prod.outlook.com
+ (2603:10b6:303:2c::19)
 MIME-Version: 1.0
-References: <CAFn=p-a4MOZGDd7nj_gEf0fT7nvwa40pLJ1GiGOTj3uNhSq1tg@mail.gmail.com>
- <c826b3dc-2a49-493f-8e6d-efffbfc74f70@linaro.org>
-In-Reply-To: <c826b3dc-2a49-493f-8e6d-efffbfc74f70@linaro.org>
-From: John Snow <jsnow@redhat.com>
-Date: Thu, 13 Jun 2024 10:07:56 -0400
-Message-ID: <CAFn=p-bhiN1ig1t++6FWNc5waYdGvgr_iL3TSHOSUcmwO9GDpA@mail.gmail.com>
-Subject: Re: Sample 'qapi-schema-diff' output for v9.0.0 vs origin/master
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: Markus Armbruster <armbru@redhat.com>, qemu-devel <qemu-devel@nongnu.org>
-Content-Type: multipart/alternative; boundary="0000000000004c1c76061ac6077e"
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MW3PR12MB4553:EE_|MN0PR12MB6029:EE_
+X-MS-Office365-Filtering-Correlation-Id: 20c3b433-9219-465f-114c-08dc8bb2dfd7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230035|1800799019|366011|376009;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?WTM2cE9LUTg0N2ErSlFGMlNTTmRVQnRqdldMQklhcjFKM3dkK3lZdTgzeEpY?=
+ =?utf-8?B?VDVId3VPSVBTdFlYOEtCR21yTWdBQ2UwZXdiV2tHN0RoMmY3Z1d5anBUdXIy?=
+ =?utf-8?B?Z2RwZUZKWmEvb2Y4ZmVIdkxueSs1bDB3di8rZGF0bnVrM2xVVWR0Qkg1WWRx?=
+ =?utf-8?B?TFdNelg0QzBWM1p5YjVCSXh2bkY3cVhjbFFuRWlqN2xnejB6c045eElSNGw0?=
+ =?utf-8?B?OU9rWTRKUWtHNUI1dEswUGRScEdZM09qZS9uZ3BkWDNNcXFyN1YyZkw3OXRy?=
+ =?utf-8?B?cnZXZDhMYkI1MUhKMlRjeDJFRzlZWFdmZHY4VmJKU1d1eU42Z0cxNGxMSUdo?=
+ =?utf-8?B?ZlNVQVVOYnc4d3ZtTkVWQnNWRmlZZEhpWGl2SFVVNXFzV0dackpnSE5SdDNB?=
+ =?utf-8?B?SWw3RDEzZkt1SDFIK2h0SENPNFk1ZWNxcFYrVVI4cVh3SEw5ZWFBcDQ4b3dk?=
+ =?utf-8?B?SVRQSVp5eGdUczJnaERDVFJzaEREZ2Y1bkR2U3UzU3JacmU0MXVOelJKdmkv?=
+ =?utf-8?B?N3FLNlo2MkU0NEwvVUpUVXhDN2EzU1pZa3pUMGcvVkJlYzc3SkY4aUhZWHhQ?=
+ =?utf-8?B?N0IxekxneXpEMmhSM0NPMncyd2h1SjB6RGhweXBqMGdYdm8ycU8vVnlzNFVr?=
+ =?utf-8?B?dHk3MlZhUnJlZzdXc3ZFcXlyQjR6MnlLbURialE3d2pPT2ZjU2p3aU83c0ND?=
+ =?utf-8?B?cENVUXpFK1IzVFQzOUVIa0ptS0NvYkM0RXJwUWN0SnZtM1ZWaUkwbjBXNUJx?=
+ =?utf-8?B?MGFpZmlOYmJrTVNUMVJ6TFdUOHVjalNGOEZyL0Fyb1NkcTNpYUFzYXVRTTJY?=
+ =?utf-8?B?cEFZM25xSlVTdFdHMWx5VEE1NnAvbHJQL2hRRDBqS1E0VlVySlVSKy83ZXhM?=
+ =?utf-8?B?WStvbFZSd3B5SFFBRXRycXpXekEzclNqazlpbEY5S0NNdVZjR1YxcHo3cHpV?=
+ =?utf-8?B?RXkzQTRVT2VlcXNZWHUyV1FPSmR0aW1DdjllcUZnRVpyWCtUcUt4SGhkbmdN?=
+ =?utf-8?B?VU5TNG1xQTUrVExGR1czdC9jSWIvdU95Uks0a3JlL2FHVHVlQ0RvSzdnNXB0?=
+ =?utf-8?B?eDZjZUxVeWg0Nm5ZSWJWcXArWG9VaWE3K2FiQmpCUlF3OFpSU0lIYWRsRjF5?=
+ =?utf-8?B?Q0RlYisrTGtuL2hmSld0QXNPYzM4ZndNWlVLcjhWR3V0UCttN0hQWFViU01Q?=
+ =?utf-8?B?K2g4ZnVPTllwVVA2ZnoxUWRjYVhSTFJGQ2ErZDR2UWsrek1oazYyY0VBZ0Ey?=
+ =?utf-8?B?U1lDc01RanVpRDZUTXZDL0IxaVlnSHdqc1pMaTZ0d09VRGlUM2pSQ0dIRGZi?=
+ =?utf-8?B?emxHaHlsdEdpbU1FMkgybnRRalhWT2JnM3kzUlJiSFNzSk1oMUt2T2hPaW9h?=
+ =?utf-8?B?aDJIcDVGbjlUQjRMV2JnWXRNd29LbEI3WkxXSWsyaTd3ZUc5bjlNWHhpbzNT?=
+ =?utf-8?B?TU1LbWZUZGw3VjhYbGFRS0lEUWJKMmFuSHVOanpNTEthSjUzb1Q3NHRmSStl?=
+ =?utf-8?B?T3VaUXdHR1FGeW5Dbm9Wc0E5WE8xSXVYN3R3NU5YUnV1bUs2VGorQnQySVBk?=
+ =?utf-8?B?ZHdHUlJvUmk2eGFZWjhMUVV3UE9JTGJoVjN4WVF6L1FqQmptRWhQa0I3QVl3?=
+ =?utf-8?B?dEtlN2FJNkYxRldvb0JLN1RtNUZ1eHdRRzJVRGJZZlRHV3BHc280Zjh2WVRQ?=
+ =?utf-8?B?YVNzM2N3NkxPTkx4ZlpPMU5FOWpDWTdoaWhEVE5aSW1jMndkdWRySWFNNXNo?=
+ =?utf-8?Q?3F89XpBTcYeQwLu3cuXwt3e2vN/Sfd135S/ROZJ?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:MW3PR12MB4553.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230035)(1800799019)(366011)(376009); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?WE5BQ1ZFQzFCZHozb3p6Slc4cFFVM3E1QkpPTHNLQS9YSlhpS3k0a0dsT0di?=
+ =?utf-8?B?V3BRcE40dGNTTWM2cTIrMThCb2wzRzhRNDJ6VFI0Q2dkVHZRdGhpQngxTHk1?=
+ =?utf-8?B?dFNCME0xVHJmMHNHbHEyN005Y2pTSXpaUU1PWjVRSjVMeHFZTnczQUdnRmFt?=
+ =?utf-8?B?dnBXM21Mb3dBSCtXclY1Rjc2Y3B6MmZMaVA3bnFTYjQrOUhKWVora0dXdkM1?=
+ =?utf-8?B?MWJQR09JZzBSbkxPa0NsZmxNUEUzSE03L3FjVmRiOFhCWGVsOE0rbkpYZ1B3?=
+ =?utf-8?B?UXQvU1pxWHpaaC9NQjZzSnRFT3l3Y2ZkbnJRYS9iVlZKTkxFa1VOUUpXaTNl?=
+ =?utf-8?B?RVR3N2E5cHFwMXFvSEpDRG1RMHBUejBRL2svN0pSWHU1NnBXTVg1enAwTWpq?=
+ =?utf-8?B?Tm8zbXptK0Eyb3J5TTdwVERqUXZvSEZiVVJhZVJ1aEM1QmhEcW9VbjRJbEZt?=
+ =?utf-8?B?Sm1NaEI2cVp2dmpxWlo0QlJGckVuRVJmQjllZ05oelR5QmcwK0NMM0d4cGNz?=
+ =?utf-8?B?cVhnNExwK0kwQ2MxUzJuQUI1YUpDZW9BNTBhclg1QlNjUDJiOGxvQ2M1bGdZ?=
+ =?utf-8?B?aVVZbmNKYWN0ek42dGZ4RlRBcUR3UXVpdUJRR1Nid1p6THhnNmNLZTFDbUxw?=
+ =?utf-8?B?b3BlSTNteFRvWlo0M1E4bE0xSkNLYURydHZoWVhYZVZlS0F6alpoU1hNSVpt?=
+ =?utf-8?B?VWl2a2JXOUFZTkRKakY4ZGhCZVRhN2FDTm5FUlArbmIwQldmTW5iZU5pa1ZC?=
+ =?utf-8?B?RzdUd2s3bXBGSFBJajNvTUlJSWlHOW5MT3c2ZEp6VHR0eW9wNW0rOFQ3ZGF6?=
+ =?utf-8?B?TWUyR2ZFSXVKdXY2K2hxMk9ENkRQV1V1a0ZLNUtNdEJOOGZTeEVjQVYrU3Rj?=
+ =?utf-8?B?dkZubUV6UCtKakRIYjF0SHVTcDBWWnRydnBFVlBkbXNJSHZxM2Y3M0l3eHMr?=
+ =?utf-8?B?OGpvWGlMd2h1NFRqSjhZUCtxQjRKbWtjWHRkd0RheEJXRXdYckdxdDFPdXV3?=
+ =?utf-8?B?RHQ3SStwSFFhbC8yTHZDRWVnSC9NQmxZdEgvWk5ocGpoL1J5eHlCR2VFejNs?=
+ =?utf-8?B?T2t5TFE0QjBwOTNmUnNjTXNGWnR3WXFFVVIrZkRscHdNTytYQjV2VXJEWTBp?=
+ =?utf-8?B?L3pUVm4ralRwM2tka3RJc2luM2pwb2xDQkFEUHVuZStCR04rUnpKNWFTM0h0?=
+ =?utf-8?B?VzNUbis4eFZRR2xsWmxBajA4RFM4bzFBaUEwZEtsWUUxSUUwZjJsNkVMOTJC?=
+ =?utf-8?B?ZG5TQkRDNVRNNDk3UG1mb3ZwWWYwSFVyY20vbTVjaXdWY1dpUzJUSGttT05s?=
+ =?utf-8?B?NnY5ME1HS01YK2JicWlVQUowMTJMcVY5NXROTExjVWVWd0J1ckhVc1hoTlIz?=
+ =?utf-8?B?eE5BSUhjSklyTlJEWFlkSFM1T294U0M0NDdvUEwxaGkrejFTbld1OExHOWd4?=
+ =?utf-8?B?Q3A0MHVXRkcrc3hIUjNFMnJ4VkRMckVlZGU1Y1IxOXVMM0E5V3dFR2ZCYmJ0?=
+ =?utf-8?B?aENFMy9OMUw2R2FKems4em1FbWtKLzBDUTZXelhXS0lrdytudkVsckIrVHlh?=
+ =?utf-8?B?UzdBdW9saUZhN2owS01kdkpqeGVaOHlIZ2I0WEt3dk9QajZyM3NLeld6SWUw?=
+ =?utf-8?B?R3RBZFIrYm9aRUdQMUJxcUV4aFQ0L2c4OTZER1lvN2J6RC9PTk4wcEFGSGRL?=
+ =?utf-8?B?a3hiYnQ0NGpoZFl6aFlTNlR1dzhyY1ZEaEVSeHZPWlJuZGdjc2pnRVRuQzdL?=
+ =?utf-8?B?ZDM1M2VDMTBTMmc5WlMwa3VoUXJ4ZDY3THp0MlltSnBjU2ZPa1lzNlh0VGht?=
+ =?utf-8?B?bEVYZWJWYWVaK0JxcHdyNFI5eWl3RmxBNlV5Umlwc1RYMWRRSDI0bUpVNytY?=
+ =?utf-8?B?MUZzdVNuam9BRkltaHpTZ2hqY0tsNzBOMXc0Tnk1TkNSUTN0VTloQ2w5UGIz?=
+ =?utf-8?B?UDM5ZE9QemZkQ2xwRloxRXhnVFcxM0ZuWGYyUTFiZUZQOS9HdlNZMmpvTDBw?=
+ =?utf-8?B?RVc2UEpIZ2tnRnAyVExkaWFOWDBQdXZvY2F3V2xxQ2sySk94dlFiNVdDQmFk?=
+ =?utf-8?B?NERSaTlCNGk4YmpHYXNnUWlWdkFSK3g0cDR2TmtGUVYzVE0rU1JaSjJ0Z3Bp?=
+ =?utf-8?Q?nsPA=3D?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 20c3b433-9219-465f-114c-08dc8bb2dfd7
+X-MS-Exchange-CrossTenant-AuthSource: MW3PR12MB4553.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jun 2024 14:12:35.7177 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: rWe/utw/1paD8mZcFYUXeUrNOlv9kXYBtUBXkb+c3NPqAaI7ORbL+hbtzXecyYYt
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB6029
+Received-SPF: permerror client-ip=2a01:111:f400:7ea9::608;
+ envelope-from=Babu.Moger@amd.com;
+ helo=NAM02-SN1-obe.outbound.protection.outlook.com
 X-Spam_score_int: -22
 X-Spam_score: -2.3
 X-Spam_bar: --
 X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.145,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -91,158 +171,91 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: babu.moger@amd.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000004c1c76061ac6077e
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Hi Zhao,
 
-On Thu, Jun 13, 2024, 4:50=E2=80=AFAM Philippe Mathieu-Daud=C3=A9 <philmd@l=
-inaro.org>
-wrote:
+On 6/13/24 02:06, Zhao Liu wrote:
+> On Wed, Jun 12, 2024 at 02:12:18PM -0500, Babu Moger wrote:
+>> Date: Wed, 12 Jun 2024 14:12:18 -0500
+>> From: Babu Moger <babu.moger@amd.com>
+>> Subject: [PATCH 2/4] i386/cpu: Add PerfMonV2 feature bit
+>> X-Mailer: git-send-email 2.34.1
+>>
+>> From: Sandipan Das <sandipan.das@amd.com>
+>>
+>> CPUID leaf 0x80000022, i.e. ExtPerfMonAndDbg, advertises new performance
+>> monitoring features for AMD processors. Bit 0 of EAX indicates support
+>> for Performance Monitoring Version 2 (PerfMonV2) features. If found to
+>> be set during PMU initialization, the EBX bits can be used to determine
+>> the number of available counters for different PMUs. It also denotes the
+>> availability of global control and status registers.
+>>
+>> Add the required CPUID feature word and feature bit to allow guests to
+>> make use of the PerfMonV2 features.
+>>
+>> Signed-off-by: Sandipan Das <sandipan.das@amd.com>
+>> Signed-off-by: Babu Moger <babu.moger@amd.com>
+>> ---
+>>  target/i386/cpu.c | 26 ++++++++++++++++++++++++++
+>>  target/i386/cpu.h |  4 ++++
+>>  2 files changed, 30 insertions(+)
+>>
+>> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+>> index 86a90b1405..7f1837cdc9 100644
+>> --- a/target/i386/cpu.c
+>> +++ b/target/i386/cpu.c
+>> @@ -1228,6 +1228,22 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
+>>          .tcg_features = 0,
+>>          .unmigratable_flags = 0,
+>>      },
+>> +    [FEAT_8000_0022_EAX] = {
+>> +        .type = CPUID_FEATURE_WORD,
+>> +        .feat_names = {
+>> +            "perfmon-v2", NULL, NULL, NULL,
+>> +            NULL, NULL, NULL, NULL,
+>> +            NULL, NULL, NULL, NULL,
+>> +            NULL, NULL, NULL, NULL,
+>> +            NULL, NULL, NULL, NULL,
+>> +            NULL, NULL, NULL, NULL,
+>> +            NULL, NULL, NULL, NULL,
+>> +            NULL, NULL, NULL, NULL,
+>> +        },
+>> +        .cpuid = { .eax = 0x80000022, .reg = R_EAX, },
+>> +        .tcg_features = 0,
+>> +        .unmigratable_flags = 0,
+>> +    },
+>>      [FEAT_XSAVE] = {
+>>          .type = CPUID_FEATURE_WORD,
+>>          .feat_names = {
+>> @@ -6998,6 +7014,16 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+>>              *edx = 0;
+>>          }
+>>          break;
+>> +    case 0x80000022:
+>> +        *eax = *ebx = *ecx = *edx = 0;
+>> +        /* AMD Extended Performance Monitoring and Debug */
+>> +        if (kvm_enabled() && cpu->enable_pmu &&
+>> +            (env->features[FEAT_8000_0022_EAX] & CPUID_8000_0022_EAX_PERFMON_V2)) {
+>> +            *eax = CPUID_8000_0022_EAX_PERFMON_V2;
+>> +            *ebx = kvm_arch_get_supported_cpuid(cs->kvm_state, index, count,
+>> +                                                R_EBX) & 0xf;
+> 
+> Although only EAX[bit 0] and EBX[bits 0-3] are supported right now, I
+> think it's better to use “|=” rather than just override the
+> original *eax and *ebx, which will prevent future mistakes or omissions.
 
-> Hi John,
->
+Sure. Will do.  Thanks for the review.
 
-Hi Phil!
+> 
+> Otherwise,
+> 
+> Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+> 
 
-
-> On 12/6/24 20:40, John Snow wrote:
-> > Hiya, here's some draft output of a script I'm working on to summarize
-> > QMP wire format differences between QEMU versions.
-> >
-> > This script works in terms of the QMP *wire format*, not the QAPI
-> > *specification*. As a consequence, *almost* all type names are stripped
-> > from this output and all nested structures are fully inlined - so
-> > changes to shared data structures, enums, etc will manifest as many
-> > independent changes. Similarly, changes to type names and type
-> > factorings that do not change the wire format will not appear in this
-> > report at all.
->
-> Do you include changes on unstable features or are you skipping them?
->
-> Possible feature request: skip them by default until a --unstable
-> CLI option is used.
->
-
-In this early draft, I do include such changes. I might want to /opt-in/ to
-hiding them (maybe: --hide-unstable), but it can be done.
-
-(A summary mode that hides itemized changes may also be useful for
-observing broad-changes-at-a-glance and might be worth adding, too.
---no-detail or --brief or some such.)
-
-I assume we want to hide anything that has the unstable feature flag at the
-command *root* and any command or event named with the x- prefix. (unstable
-fields on stable commands ... tbd.)
-
-I still need to implement full support for if/features, so this idea can
-come along for the ride when I flesh out those details.
-
-(features/if for top-level definitions are recorded, but are likely missing
-for various nested fields. The diff output will remark on what changed on
-the summary line where it says "(arguments)" or "(arguments, returns)" with
-the tokens "if" or "features", but it doesn't break it out into discrete
-elements like everything else does, yet - and it still likely only catches
-those differences when they occur at the definition root.)
-
-
-> >
-> > This is still a WIP: if conditionals and features may not be fully
-> > represented in this summary report.
->
-> Regards,
->
-> Phil.
->
-
-Thanks for the suggestion!
-
-BTW, I sent a new mail out to the list with a link to gitlab for source and
-sample output for this tool and other goodies; the URL is
-https://gitlab.com/jsnow/externalized-qapi - see the other mail for details
-on what's in here, if curious.
-
---js
-
->
-
---0000000000004c1c76061ac6077e
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
-class=3D"gmail_attr">On Thu, Jun 13, 2024, 4:50=E2=80=AFAM Philippe Mathieu=
--Daud=C3=A9 &lt;<a href=3D"mailto:philmd@linaro.org" rel=3D"noreferrer nore=
-ferrer" target=3D"_blank">philmd@linaro.org</a>&gt; wrote:<br></div><blockq=
-uote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc =
-solid;padding-left:1ex">Hi John,<br></blockquote></div></div><div dir=3D"au=
-to"><br></div><div dir=3D"auto">Hi Phil!</div><div dir=3D"auto"><br></div><=
-div dir=3D"auto"><div class=3D"gmail_quote"><blockquote class=3D"gmail_quot=
-e" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">
-<br>
-On 12/6/24 20:40, John Snow wrote:<br>
-&gt; Hiya, here&#39;s some draft output of a script I&#39;m working on to s=
-ummarize <br>
-&gt; QMP wire format differences between QEMU versions.<br>
-&gt; <br>
-&gt; This script works in terms of the QMP *wire format*, not the QAPI <br>
-&gt; *specification*. As a consequence, *almost* all type names are strippe=
-d <br>
-&gt; from this output and all nested structures are fully inlined - so <br>
-&gt; changes to shared data structures, enums, etc will manifest as many <b=
-r>
-&gt; independent changes. Similarly, changes to type names and type <br>
-&gt; factorings that do not change the wire format will not appear in this =
-<br>
-&gt; report at all.<br>
-<br>
-Do you include changes on unstable features or are you skipping them?<br>
-<br>
-Possible feature request: skip them by default until a --unstable<br>
-CLI option is used.<br></blockquote></div></div><div dir=3D"auto"><br></div=
-><div dir=3D"auto">In this early draft, I do include such changes. I might =
-want to /opt-in/ to hiding them (maybe: --hide-unstable), but it can be don=
-e.<br></div><div dir=3D"auto"><br></div><div dir=3D"auto">(A summary mode t=
-hat hides itemized changes may also be useful for observing broad-changes-a=
-t-a-glance and might be worth adding, too. --no-detail or --brief or some s=
-uch.)</div><div dir=3D"auto"><br></div><div dir=3D"auto">I assume we want t=
-o hide anything that has the unstable feature flag at the command *root* an=
-d any command or event named with the x- prefix. (unstable fields on stable=
- commands ... tbd.)</div><div dir=3D"auto"><br></div><div dir=3D"auto">I st=
-ill need to implement full support for if/features, so this idea can come a=
-long for the ride when I flesh out those details.</div><div dir=3D"auto"><b=
-r></div><div dir=3D"auto">(features/if for top-level definitions are record=
-ed, but are likely missing for various nested fields. The diff output will =
-remark on what changed on the summary line where it says &quot;(arguments)&=
-quot; or &quot;(arguments, returns)&quot; with the tokens &quot;if&quot; or=
- &quot;features&quot;, but it doesn&#39;t break it out into discrete elemen=
-ts like everything else does, yet - and it still likely only catches those =
-differences when they occur at the definition root.)</div><div dir=3D"auto"=
-><br></div><div dir=3D"auto"><div class=3D"gmail_quote"><blockquote class=
-=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;padd=
-ing-left:1ex">
-<br>
-&gt; <br>
-&gt; This is still a WIP: if conditionals and features may not be fully <br=
->
-&gt; represented in this summary report.<br>
-<br>
-Regards,<br>
-<br>
-Phil.<br></blockquote></div></div><div dir=3D"auto"><br></div><div dir=3D"a=
-uto">Thanks for the suggestion!</div><div dir=3D"auto"><br></div><div dir=
-=3D"auto">BTW, I sent a new mail out to the list with a link to gitlab for =
-source and sample output for this tool and other goodies; the URL is <a hre=
-f=3D"https://gitlab.com/jsnow/externalized-qapi">https://gitlab.com/jsnow/e=
-xternalized-qapi</a> - see the other mail for details on what&#39;s in here=
-, if curious.</div><div dir=3D"auto"><br></div><div dir=3D"auto">--js</div>=
-<div dir=3D"auto"><div class=3D"gmail_quote"><blockquote class=3D"gmail_quo=
-te" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex"=
->
-</blockquote></div></div></div>
-
---0000000000004c1c76061ac6077e--
-
+-- 
+Thanks
+Babu Moger
 
