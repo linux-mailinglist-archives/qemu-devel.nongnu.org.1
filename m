@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA2899088B6
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jun 2024 11:55:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E38D59088BA
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jun 2024 11:55:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sI3dz-0006IU-J5; Fri, 14 Jun 2024 05:54:51 -0400
+	id 1sI3e5-0006LA-9L; Fri, 14 Jun 2024 05:54:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1sI3dx-0006Gy-5J
- for qemu-devel@nongnu.org; Fri, 14 Jun 2024 05:54:49 -0400
+ id 1sI3e4-0006Kw-9k
+ for qemu-devel@nongnu.org; Fri, 14 Jun 2024 05:54:56 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1sI3dv-0003e0-Hq
- for qemu-devel@nongnu.org; Fri, 14 Jun 2024 05:54:48 -0400
+ id 1sI3e2-0003h7-VH
+ for qemu-devel@nongnu.org; Fri, 14 Jun 2024 05:54:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1718358886;
+ s=mimecast20190719; t=1718358894;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=chQAASCdJMVJpwPeCfLJqL1+p+AwMmYdve8qkSRIxgs=;
- b=C1yaVUJ1/V0+9QaZfC/Uv0A+R1S3kGQF7H71lJ741salnnWhh8ZhyNgaCwkcExkDNcaj32
- OrkW+2XgkxNIps2M4pfmZp1BR87/eD/xZdAVfsO6Q7IrkP1s7MazOriCtlTykSze9IlYUU
- YESax89MAgjBY9nAZBGgsQ0KMaGCWbo=
+ bh=VJxQB3J/KK3J2NcdJlm9ObpzgS8HDFxzvPOt034qunE=;
+ b=a+Vwp8/s74U0bsAoOL2Mev0aJrBowWONvJ7wP1GKqVeFqOBZYiWwj88lGJFMYdmIto+TNB
+ NwDh9/fwGLBXvrDYkxlq3T/OARBmVYv4WZpVjabToTpfl+uYu1Db8UAeqjO+zVMVJASex4
+ Gx0kAAAkN2mT5AQut+QFUg9pSKGV0Aw=
 Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-385-JHbAOESMNcKgA_Em8MzUYQ-1; Fri,
- 14 Jun 2024 05:54:45 -0400
-X-MC-Unique: JHbAOESMNcKgA_Em8MzUYQ-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-219-8rGDq9O5O06-q1ERIpOezQ-1; Fri,
+ 14 Jun 2024 05:54:50 -0400
+X-MC-Unique: 8rGDq9O5O06-q1ERIpOezQ-1
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C9DDC195608B; Fri, 14 Jun 2024 09:54:43 +0000 (UTC)
+ id A352F1956089; Fri, 14 Jun 2024 09:54:49 +0000 (UTC)
 Received: from laptop.redhat.com (unknown [10.39.193.191])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 7B2AB3000219; Fri, 14 Jun 2024 09:54:39 +0000 (UTC)
+ id 292AD3000219; Fri, 14 Jun 2024 09:54:43 +0000 (UTC)
 From: Eric Auger <eric.auger@redhat.com>
 To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
  qemu-arm@nongnu.org, mst@redhat.com, jean-philippe@linaro.org,
@@ -51,10 +51,10 @@ To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
  zhenzhong.duan@intel.com
 Cc: alex.williamson@redhat.com, jasowang@redhat.com, pbonzini@redhat.com,
  berrange@redhat.com
-Subject: [PATCH v4 6/8] virtio-iommu: Remove the implementation of
- iommu_set_iova_range
-Date: Fri, 14 Jun 2024 11:52:56 +0200
-Message-ID: <20240614095402.904691-7-eric.auger@redhat.com>
+Subject: [PATCH v4 7/8] hw/vfio: Remove memory_region_iommu_set_iova_ranges()
+ call
+Date: Fri, 14 Jun 2024 11:52:57 +0200
+Message-ID: <20240614095402.904691-8-eric.auger@redhat.com>
 In-Reply-To: <20240614095402.904691-1-eric.auger@redhat.com>
 References: <20240614095402.904691-1-eric.auger@redhat.com>
 MIME-Version: 1.0
@@ -85,101 +85,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that we use PCIIOMMUOps to convey information about usable IOVA
-ranges we do not to implement the iommu_set_iova_ranges IOMMU MR
-callback.
+As we have just removed the only implementation of
+iommu_set_iova_ranges IOMMU MR callback in the virtio-iommu,
+let's remove the call to the memory wrapper. Usable IOVA ranges
+are now conveyed through the PCIIOMMUOps in VFIO-PCI.
 
 Signed-off-by: Eric Auger <eric.auger@redhat.com>
 Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- hw/virtio/virtio-iommu.c | 67 ----------------------------------------
- 1 file changed, 67 deletions(-)
+ hw/vfio/common.c | 10 ----------
+ 1 file changed, 10 deletions(-)
 
-diff --git a/hw/virtio/virtio-iommu.c b/hw/virtio/virtio-iommu.c
-index a4c0cceb65..b9a7ddcd14 100644
---- a/hw/virtio/virtio-iommu.c
-+++ b/hw/virtio/virtio-iommu.c
-@@ -1351,72 +1351,6 @@ static int virtio_iommu_set_page_size_mask(IOMMUMemoryRegion *mr,
-     return 0;
- }
+diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+index f20a7b5bba..9e4c0cc95f 100644
+--- a/hw/vfio/common.c
++++ b/hw/vfio/common.c
+@@ -630,16 +630,6 @@ static void vfio_listener_region_add(MemoryListener *listener,
+             goto fail;
+         }
  
--/**
-- * virtio_iommu_set_iova_ranges: Conveys the usable IOVA ranges
-- *
-- * The function turns those into reserved ranges. Once some
-- * reserved ranges have been set, new reserved regions cannot be
-- * added outside of the original ones.
-- *
-- * @mr: IOMMU MR
-- * @iova_ranges: list of usable IOVA ranges
-- * @errp: error handle
-- */
--static int virtio_iommu_set_iova_ranges(IOMMUMemoryRegion *mr,
--                                        GList *iova_ranges,
--                                        Error **errp)
--{
--    IOMMUDevice *sdev = container_of(mr, IOMMUDevice, iommu_mr);
--    GList *current_ranges = sdev->host_resv_ranges;
--    GList *l, *tmp, *new_ranges = NULL;
--    int ret = -EINVAL;
--
--    /* check that each new resv region is included in an existing one */
--    if (sdev->host_resv_ranges) {
--        range_inverse_array(iova_ranges,
--                            &new_ranges,
--                            0, UINT64_MAX);
--
--        for (tmp = new_ranges; tmp; tmp = tmp->next) {
--            Range *newr = (Range *)tmp->data;
--            bool included = false;
--
--            for (l = current_ranges; l; l = l->next) {
--                Range * r = (Range *)l->data;
--
--                if (range_contains_range(r, newr)) {
--                    included = true;
--                    break;
--                }
--            }
--            if (!included) {
--                goto error;
+-        if (bcontainer->iova_ranges) {
+-            ret = memory_region_iommu_set_iova_ranges(giommu->iommu_mr,
+-                                                      bcontainer->iova_ranges,
+-                                                      &err);
+-            if (ret) {
+-                g_free(giommu);
+-                goto fail;
 -            }
 -        }
--        /* all new reserved ranges are included in existing ones */
--        ret = 0;
--        goto out;
--    }
 -
--    if (sdev->probe_done) {
--        warn_report("%s: Notified about new host reserved regions after probe",
--                    mr->parent_obj.name);
--    }
--
--    range_inverse_array(iova_ranges,
--                        &sdev->host_resv_ranges,
--                        0, UINT64_MAX);
--    rebuild_resv_regions(sdev);
--
--    return 0;
--error:
--    error_setg(errp, "IOMMU mr=%s Conflicting host reserved ranges set!",
--               mr->parent_obj.name);
--out:
--    g_list_free_full(new_ranges, g_free);
--    return ret;
--}
--
- static void virtio_iommu_system_reset(void *opaque)
- {
-     VirtIOIOMMU *s = opaque;
-@@ -1742,7 +1676,6 @@ static void virtio_iommu_memory_region_class_init(ObjectClass *klass,
-     imrc->replay = virtio_iommu_replay;
-     imrc->notify_flag_changed = virtio_iommu_notify_flag_changed;
-     imrc->iommu_set_page_size_mask = virtio_iommu_set_page_size_mask;
--    imrc->iommu_set_iova_ranges = virtio_iommu_set_iova_ranges;
- }
- 
- static const TypeInfo virtio_iommu_info = {
+         ret = memory_region_register_iommu_notifier(section->mr, &giommu->n,
+                                                     &err);
+         if (ret) {
 -- 
 2.41.0
 
