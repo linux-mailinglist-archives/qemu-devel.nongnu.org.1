@@ -2,101 +2,111 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCF7D909150
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jun 2024 19:20:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EB0290914A
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jun 2024 19:19:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sIAZ3-0000zW-Mf; Fri, 14 Jun 2024 13:18:13 -0400
+	id 1sIAZ3-0000zS-NE; Fri, 14 Jun 2024 13:18:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sIAZ1-0000yp-LC
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sIAZ1-0000yu-Rx
  for qemu-devel@nongnu.org; Fri, 14 Jun 2024 13:18:11 -0400
 Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sIAYz-00042K-Ln
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sIAZ0-00042g-60
  for qemu-devel@nongnu.org; Fri, 14 Jun 2024 13:18:11 -0400
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
  [IPv6:2a07:de40:b281:104:10:150:64:97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id EB298339FA;
- Fri, 14 Jun 2024 17:18:05 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 0398C339FB;
+ Fri, 14 Jun 2024 17:18:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1718385486; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=XtmapDCJXY1KXQq00vMKMZxcoJp1mbQebTbvKQRF1AI=;
- b=0Yn1GDO4su32qQ/LFRytnrQw8/0/RV6Q4Jt4k9nElUi7JkZziXICC9KhQ5Hic0UsybKt7z
- 0pD5ymo9228cGffzYsxbHRnWdziOojX55Jn6fF66QqNDHND3ca7IGG1ovSfGFEgqEhfZFB
- nZFiZyWMnn3pkYl/WIaHQ1WEoI9XmQQ=
+ t=1718385488; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=yx7Tw7BVV5ItBj54IuIkXhOV34oE+O0rjeGv2yRXDDI=;
+ b=Wf1xm8vZOrNSShDsYf6584GlMatTQAq6aia+gI3XBWIy+JQy1WZ1/e4xIO52vjh7jWRwbp
+ Bi4Lyuu978gkJnjTSwWeFiYnzYNa9vxV3FIS0gf5peS6VR8/0N7Hd7JvaT9VFAo5JoWbQG
+ bHesqZFjQ79QYs16wf2IQn9udvpyjw0=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1718385486;
+ s=susede2_ed25519; t=1718385488;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=XtmapDCJXY1KXQq00vMKMZxcoJp1mbQebTbvKQRF1AI=;
- b=rmgBSREWP8NYGkMwmGIJZWWgWIun5MITUBKIMTx0o3AV+xe4Cn6RRYD4Gs8+EP4/e6yhsm
- RHa9fyP7ZFYhgSDQ==
+ mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=yx7Tw7BVV5ItBj54IuIkXhOV34oE+O0rjeGv2yRXDDI=;
+ b=aFqbeu0rUOkIXTbTEvCsH3vmXeWyKSe9LGSUgLySgftOBijAjczLpIWRb4G88o77JUho1d
+ m3e3CScoVASrkOCg==
 Authentication-Results: smtp-out1.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=puN1MTem;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=a7IRWfsa
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Wf1xm8vZ;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=aFqbeu0r
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1718385485; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=XtmapDCJXY1KXQq00vMKMZxcoJp1mbQebTbvKQRF1AI=;
- b=puN1MTem2/b/3WRBKET0Mpu8xQmjqEniBzq6YDFNPyY11X1kwOq7ANxdWdnFJgvmc8zxLx
- I73YkTuYZTSd4x9QDUeDikIiOEGGDSUPWvK4hwugcdMqxYHgVkC+38j2eGOUOzXsKBdXel
- HTBSVFIYjFbqo0Rbs/ZC28aUsQvQ+Ko=
+ t=1718385488; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=yx7Tw7BVV5ItBj54IuIkXhOV34oE+O0rjeGv2yRXDDI=;
+ b=Wf1xm8vZOrNSShDsYf6584GlMatTQAq6aia+gI3XBWIy+JQy1WZ1/e4xIO52vjh7jWRwbp
+ Bi4Lyuu978gkJnjTSwWeFiYnzYNa9vxV3FIS0gf5peS6VR8/0N7Hd7JvaT9VFAo5JoWbQG
+ bHesqZFjQ79QYs16wf2IQn9udvpyjw0=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1718385485;
+ s=susede2_ed25519; t=1718385488;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=XtmapDCJXY1KXQq00vMKMZxcoJp1mbQebTbvKQRF1AI=;
- b=a7IRWfsaaKNG79Cv0bD0sUzcSJI/f6JMKYSL88R7JnbDJbMYr/TZFjz9J+1aC0sbcgJjDo
- faVjw5OeXQ3ZC8Dg==
+ mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=yx7Tw7BVV5ItBj54IuIkXhOV34oE+O0rjeGv2yRXDDI=;
+ b=aFqbeu0rUOkIXTbTEvCsH3vmXeWyKSe9LGSUgLySgftOBijAjczLpIWRb4G88o77JUho1d
+ m3e3CScoVASrkOCg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C309F13AB1;
- Fri, 14 Jun 2024 17:18:04 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6181713AB1;
+ Fri, 14 Jun 2024 17:18:06 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id tgIjIkx7bGaVAgAAD6G6ig
- (envelope-from <farosas@suse.de>); Fri, 14 Jun 2024 17:18:04 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id kCAOCk57bGaVAgAAD6G6ig
+ (envelope-from <farosas@suse.de>); Fri, 14 Jun 2024 17:18:06 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 00/18] Migration patches for 2024-06-14
-Date: Fri, 14 Jun 2024 14:17:44 -0300
-Message-Id: <20240614171802.28451-1-farosas@suse.de>
+ Richard Henderson <richard.henderson@linaro.org>,
+ Nicholas Piggin <npiggin@gmail.com>, Thomas Huth <thuth@redhat.com>
+Subject: [PULL 01/18] tests/qtest: Move common define from libqos-spapr.h to
+ new ppc-util.h
+Date: Fri, 14 Jun 2024 14:17:45 -0300
+Message-Id: <20240614171802.28451-2-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
+In-Reply-To: <20240614171802.28451-1-farosas@suse.de>
+References: <20240614171802.28451-1-farosas@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: EB298339FA
-X-Spam-Score: -3.51
-X-Spamd-Result: default: False [-3.51 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+X-Rspamd-Queue-Id: 0398C339FB
+X-Spam-Score: -3.01
+X-Spamd-Result: default: False [-3.01 / 50.00]; BAYES_HAM(-3.00)[100.00%];
  MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-1.000];
  R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- MX_GOOD(-0.01)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
- RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
- RCVD_TLS_ALL(0.00)[]; MIME_TRACE(0.00)[0:+]; ARC_NA(0.00)[];
+ MIME_GOOD(-0.10)[text/plain]; MX_GOOD(-0.01)[];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; MIME_TRACE(0.00)[0:+];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; TO_DN_SOME(0.00)[];
+ ARC_NA(0.00)[];
  SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
- TO_DN_SOME(0.00)[];
+ RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
+ FREEMAIL_CC(0.00)[redhat.com,linaro.org,gmail.com];
+ RCVD_TLS_ALL(0.00)[]; RCVD_COUNT_TWO(0.00)[2];
+ FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
+ RCPT_COUNT_FIVE(0.00)[5];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:dkim];
  RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
  DWL_DNSWL_BLOCKED(0.00)[suse.de:dkim];
- RCPT_COUNT_THREE(0.00)[3]; FROM_EQ_ENVFROM(0.00)[];
- FROM_HAS_DN(0.00)[]; FUZZY_BLOCKED(0.00)[rspamd.com];
- RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,gitlab.com:url];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- DKIM_TRACE(0.00)[suse.de:+]
+ DKIM_TRACE(0.00)[suse.de:+]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ FREEMAIL_ENVRCPT(0.00)[gmail.com]
 X-Rspamd-Action: no action
 X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
 Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
@@ -123,87 +133,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 046a64b9801343e2e89eef10c7a48eec8d8c0d4f:
+From: Nicholas Piggin <npiggin@gmail.com>
 
-  Merge tag 'pull-request-2024-06-12' of https://gitlab.com/thuth/qemu into staging (2024-06-13 07:51:58 -0700)
+The spapr QEMU machine defaults is useful outside libqos, so create a
+new header for ppc specific qtests and move it there.
 
-are available in the Git repository at:
-
-  https://gitlab.com/farosas/qemu.git tags/migration-20240614-pull-request
-
-for you to fetch changes up to c519caa825f5eba6e204bed5a464df167a5421d0:
-
-  tests/migration-test: add uadk compression test (2024-06-14 14:01:30 -0300)
-
-----------------------------------------------------------------
-Migration pull request
-
-- Nick's reenabling of ppc64 tests + speed improvements
-- Yuan's IAA/QPL compression support for multifd
-- Shameer's UADK compression support for multifd
-
-----------------------------------------------------------------
-
-Nicholas Piggin (4):
-  tests/qtest: Move common define from libqos-spapr.h to new ppc-util.h
-  tests/qtest/migration-test: Quieten ppc64 QEMU warnings
-  tests/qtest/migration-test: Enable on ppc64 TCG
-  tests/qtest/migration-test: Use custom asm bios for ppc64
-
-Shameer Kolothum (7):
-  docs/migration: add uadk compression feature
-  configure: Add uadk option
-  migration/multifd: add uadk compression framework
-  migration/multifd: Add UADK initialization
-  migration/multifd: Add UADK based compression and decompression
-  migration/multifd: Switch to no compression when no hardware support
-  tests/migration-test: add uadk compression test
-
-Yuan Liu (7):
-  docs/migration: add qpl compression feature
-  migration/multifd: put IOV initialization into compression method
-  configure: add --enable-qpl build option
-  migration/multifd: add qpl compression method
-  migration/multifd: implement initialization of qpl compression
-  migration/multifd: implement qpl compression and decompression
-  tests/migration-test: add qpl compression test
-
- docs/devel/migration/features.rst         |   2 +
- docs/devel/migration/qpl-compression.rst  | 260 ++++++++
- docs/devel/migration/uadk-compression.rst | 144 ++++
- hw/core/qdev-properties-system.c          |   2 +-
- meson.build                               |  22 +
- meson_options.txt                         |   4 +
- migration/meson.build                     |   2 +
- migration/multifd-qpl.c                   | 762 ++++++++++++++++++++++
- migration/multifd-uadk.c                  | 369 +++++++++++
- migration/multifd-zlib.c                  |   7 +
- migration/multifd-zstd.c                  |   8 +-
- migration/multifd.c                       |  22 +-
- migration/multifd.h                       |   6 +-
- qapi/migration.json                       |  11 +-
- scripts/meson-buildoptions.sh             |   6 +
- tests/migration/Makefile                  |   2 +-
- tests/migration/migration-test.h          |   1 +
- tests/migration/ppc64/Makefile            |  15 +
- tests/migration/ppc64/a-b-kernel.S        |  66 ++
- tests/migration/ppc64/a-b-kernel.h        |  42 ++
- tests/qtest/boot-serial-test.c            |   2 +-
- tests/qtest/libqos/libqos-spapr.h         |   7 -
- tests/qtest/migration-test.c              | 100 +--
- tests/qtest/ppc-util.h                    |  19 +
- tests/qtest/prom-env-test.c               |   2 +-
- tests/qtest/pxe-test.c                    |   2 +-
- 26 files changed, 1816 insertions(+), 69 deletions(-)
- create mode 100644 docs/devel/migration/qpl-compression.rst
- create mode 100644 docs/devel/migration/uadk-compression.rst
- create mode 100644 migration/multifd-qpl.c
- create mode 100644 migration/multifd-uadk.c
- create mode 100644 tests/migration/ppc64/Makefile
- create mode 100644 tests/migration/ppc64/a-b-kernel.S
- create mode 100644 tests/migration/ppc64/a-b-kernel.h
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Signed-off-by: Fabiano Rosas <farosas@suse.de>
+---
+ tests/qtest/boot-serial-test.c    |  2 +-
+ tests/qtest/libqos/libqos-spapr.h |  7 -------
+ tests/qtest/ppc-util.h            | 19 +++++++++++++++++++
+ tests/qtest/prom-env-test.c       |  2 +-
+ tests/qtest/pxe-test.c            |  2 +-
+ 5 files changed, 22 insertions(+), 10 deletions(-)
  create mode 100644 tests/qtest/ppc-util.h
 
+diff --git a/tests/qtest/boot-serial-test.c b/tests/qtest/boot-serial-test.c
+index df389adeeb..3b92fa5d50 100644
+--- a/tests/qtest/boot-serial-test.c
++++ b/tests/qtest/boot-serial-test.c
+@@ -15,7 +15,7 @@
+ 
+ #include "qemu/osdep.h"
+ #include "libqtest.h"
+-#include "libqos/libqos-spapr.h"
++#include "ppc-util.h"
+ 
+ static const uint8_t bios_avr[] = {
+     0x88, 0xe0,             /* ldi r24, 0x08   */
+diff --git a/tests/qtest/libqos/libqos-spapr.h b/tests/qtest/libqos/libqos-spapr.h
+index e4483c14f8..a446276416 100644
+--- a/tests/qtest/libqos/libqos-spapr.h
++++ b/tests/qtest/libqos/libqos-spapr.h
+@@ -9,11 +9,4 @@ QOSState *qtest_spapr_boot(const char *cmdline_fmt, ...)
+     G_GNUC_PRINTF(1, 2);
+ void qtest_spapr_shutdown(QOSState *qs);
+ 
+-/* List of capabilities needed to silence warnings with TCG */
+-#define PSERIES_DEFAULT_CAPABILITIES             \
+-    "cap-cfpc=broken,"                           \
+-    "cap-sbbc=broken,"                           \
+-    "cap-ibs=broken,"                            \
+-    "cap-ccf-assist=off,"
+-
+ #endif
+diff --git a/tests/qtest/ppc-util.h b/tests/qtest/ppc-util.h
+new file mode 100644
+index 0000000000..f68ee93520
+--- /dev/null
++++ b/tests/qtest/ppc-util.h
+@@ -0,0 +1,19 @@
++/*
++ * PowerPC misc useful things
++ *
++ * Copyright (c) 2024, IBM Corporation.
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#ifndef PPC_UTIL_H
++#define PPC_UTIL_H
++
++/* List of capabilities needed to silence warnings with TCG */
++#define PSERIES_DEFAULT_CAPABILITIES             \
++    "cap-cfpc=broken,"                           \
++    "cap-sbbc=broken,"                           \
++    "cap-ibs=broken,"                            \
++    "cap-ccf-assist=off,"
++
++#endif /* PPC_UTIL_H */
+diff --git a/tests/qtest/prom-env-test.c b/tests/qtest/prom-env-test.c
+index 39ccb59797..14705105ad 100644
+--- a/tests/qtest/prom-env-test.c
++++ b/tests/qtest/prom-env-test.c
+@@ -21,7 +21,7 @@
+ 
+ #include "qemu/osdep.h"
+ #include "libqtest.h"
+-#include "libqos/libqos-spapr.h"
++#include "ppc-util.h"
+ 
+ #define MAGIC   0xcafec0de
+ #define ADDRESS 0x4000
+diff --git a/tests/qtest/pxe-test.c b/tests/qtest/pxe-test.c
+index e4b48225a5..a3f900fbea 100644
+--- a/tests/qtest/pxe-test.c
++++ b/tests/qtest/pxe-test.c
+@@ -16,7 +16,7 @@
+ #include <glib/gstdio.h>
+ #include "libqtest.h"
+ #include "boot-sector.h"
+-#include "libqos/libqos-spapr.h"
++#include "ppc-util.h"
+ 
+ #define NETNAME "net0"
+ 
 -- 
 2.35.3
 
