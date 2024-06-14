@@ -2,104 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27D4E908389
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jun 2024 08:09:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8ACEF90842F
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jun 2024 09:05:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sI065-0004lR-Hz; Fri, 14 Jun 2024 02:07:37 -0400
+	id 1sI0yy-0004HC-Ck; Fri, 14 Jun 2024 03:04:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <borntraeger@linux.ibm.com>)
- id 1sI063-0004ky-1o; Fri, 14 Jun 2024 02:07:35 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <borntraeger@linux.ibm.com>)
- id 1sI060-0000HD-7M; Fri, 14 Jun 2024 02:07:34 -0400
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45E4U1hu026778;
- Fri, 14 Jun 2024 06:07:29 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
- message-id:date:subject:to:cc:references:from:in-reply-to
- :content-type:content-transfer-encoding:mime-version; s=pp1; bh=
- JXrsJKstxKq8wswjFJ1S5wxfQ/Iy5jkfmrcpg5jrMv0=; b=aoWHnVUx9+uPWnuM
- xPVxlMUdtJtY+l3EiUN/l96TNsm2yf6p1HGhivjAwOc+xpJWiIOqxC1JPWI2YL5d
- Nfx0uhZy6WsqXJ1l3P5+NGywlofUORDUfmD71ieXcBuD8xAVQJ1ey1D3YRYMR6Iu
- QBv7IPQdHUE4WI6yzZWL8wD0p0GT7n2RM+de68oOuHcg/TR5YC44eVyMRw/aOoGi
- C3/RyzK3Cu8qeJ5762SB/qJmyG8Pdxo6zp+VYZW9aUbVhVyoLf3Vf3jkGbPgqQc7
- hJ+DFpkIIGKQf1giGYyEGwuPUtwk7XvTDhwUotQyA6c+sYzoVnC1SpOFQi0HSvaF
- SNY89Q==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yrev687v6-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 14 Jun 2024 06:07:28 +0000 (GMT)
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 45E67ST5012187;
- Fri, 14 Jun 2024 06:07:28 GMT
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yrev687v3-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 14 Jun 2024 06:07:28 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 45E5DI7P023566; Fri, 14 Jun 2024 06:07:27 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3yn3un6d6t-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 14 Jun 2024 06:07:27 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
- [10.20.54.103])
- by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 45E67MNV14221706
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 14 Jun 2024 06:07:24 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 25D792006C;
- Fri, 14 Jun 2024 06:07:22 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8E0222004E;
- Fri, 14 Jun 2024 06:07:21 +0000 (GMT)
-Received: from [9.171.17.142] (unknown [9.171.17.142])
- by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Fri, 14 Jun 2024 06:07:21 +0000 (GMT)
-Message-ID: <3c138eeb-83df-4953-bdc9-3cf8343a0533@linux.ibm.com>
-Date: Fri, 14 Jun 2024 08:07:21 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] target/s390x: Add a CONFIG switch to disable legacy CPUs
-To: Thomas Huth <thuth@redhat.com>, qemu-s390x@nongnu.org,
- Halil Pasic <pasic@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>,
- David Hildenbrand <david@redhat.com>
-Cc: qemu-devel@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>,
- Ani Sinha <anisinha@redhat.com>
-References: <20240613170702.523591-1-thuth@redhat.com>
-Content-Language: en-US
-From: Christian Borntraeger <borntraeger@linux.ibm.com>
-In-Reply-To: <20240613170702.523591-1-thuth@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: QwNcGeXX-jNnop0UYdYY1Kry352u6Sti
-X-Proofpoint-ORIG-GUID: an5o5ve2EebZ3LrJQq13zFFZPy9gn0-S
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1sI0yw-0004Gf-84
+ for qemu-devel@nongnu.org; Fri, 14 Jun 2024 03:04:18 -0400
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1sI0yu-00059p-E1
+ for qemu-devel@nongnu.org; Fri, 14 Jun 2024 03:04:18 -0400
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-35e1fcd0c0fso1486254f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 14 Jun 2024 00:04:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1718348654; x=1718953454; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=ELcYFfboRwhxj6i36xhUJqb2REz8NmqDEdgnN2O4J5M=;
+ b=BIKhVZnLQknt64bPXeIX28ChBUtsXIyoNX20qbg15nlD1EWsVxK4uAv1dlomeXf01O
+ LHamhw4amVn27XHKxXrARH8cu0Za+S2YEfOkDh2ek5AJ2OjLuClQSL4nmS5YBCbQyJey
+ 8ylYMjDrn4rZVHLaqMBcljwq8/JOO9QdtUYB++3THZ7tcnDDi0nhjX3t7UNe4s6Hjn6P
+ S7fkTOF7ATHharTpoVgr7zyTBtnb7AO7cm5lMu3dU/uH7H+K7kWu/FvYadBbBMw4BNUm
+ qk3IVawpErOeV1w3WlJBIM6XgRcohVmd1MWWSugKYOL6ME2sJy3EZpZ2PRitKaBkwxFZ
+ ss/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1718348654; x=1718953454;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=ELcYFfboRwhxj6i36xhUJqb2REz8NmqDEdgnN2O4J5M=;
+ b=fwBOh8hyOkddq4cyDmc1A8yxq+3/BgUU4NeD/6tuPSm8B+NB7ijMe896WEJdJAASWS
+ iwinXmOlRrUJf2ZemSPAc8Wms2M7B/XjU7yeAisrn8xB7hyaIN/3PRpARSRrhzinF1tM
+ IQuIMsd0vhne1YVbDK+xK8zQ6sgry/RWsxQ775LzGY6TAdv/wSQhVrD8dKWVu6lAE9SZ
+ 4S4F3Zj0KXE4THiDFTMVQmeguWzfYXur/rQp5te/w4ITbsTzXsBkLLRK+Nd5oLmKYI0Y
+ LxuFFud7T2+wFKEHg+7DrXIBMogXySPCc3PmeIWHLQI/XAiUtA1l45O2odWGkt+55qIp
+ 3dnQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUmi3eNYloaPXyoMWTEP5MDgmxnKTk5Z9RYxsvEJwuWESlO1PhQQqcLLbRab+tbkCythyXzwxRoxKpP1vsiAKscZs95UlU=
+X-Gm-Message-State: AOJu0YwjWk5DVMStZ2NW8L6BiKkEVN8Rejn4BPiHPgUkij6Zbrj8M8nb
+ U5Wcmvw055jXt/U82/T5ZceKhN5P9FX3LW11zzeM81yfHZ3Y6c0N/tvt1uKo2Lg=
+X-Google-Smtp-Source: AGHT+IFbhwUhTYw3Uqws0hI72DXsEcLeSB4s0EieSx9DHdoUvcqn8yk+DJRo/U64iXuOY49Zr3Uo3A==
+X-Received: by 2002:adf:fe90:0:b0:35f:28e1:501f with SMTP id
+ ffacd0b85a97d-3607a788c70mr1128317f8f.66.1718348654465; 
+ Fri, 14 Jun 2024 00:04:14 -0700 (PDT)
+Received: from meli-email.org (adsl-33.109.242.225.tellas.gr. [109.242.225.33])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-36075c6fa4esm3380861f8f.67.2024.06.14.00.04.13
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 14 Jun 2024 00:04:14 -0700 (PDT)
+Date: Fri, 14 Jun 2024 09:38:01 +0300
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+To: Paolo Bonzini <pbonzini@redhat.com>,
+ "Daniel P. Berrang=?UTF-8?B?w6k=?= " <berrange@redhat.com>
+Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ qemu-devel <qemu-devel@nongnu.org>, Stefan Hajnoczi <stefanha@redhat.com>,
+ Mads Ynddal <mads@ynddal.dk>, Peter Maydell <peter.maydell@linaro.org>,
+ Alex Benn=?UTF-8?B?w6kg?=e <alex.bennee@linaro.org>,
+ Marc-Andr=?UTF-8?B?w6kg?=Lureau <marcandre.lureau@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Philippe Mathieu-Daud=?UTF-8?B?w6kg?=<philmd@linaro.org>,
+ Zhao Liu <zhao1.liu@intel.com>, Gustavo Romero <gustavo.romero@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: Re: [RFC PATCH v2 3/5] rust: add PL011 device model
+User-Agent: meli 0.8.6
+References: <rust-pl011-rfc-v2.git.manos.pitsidianakis@linaro.org>
+ <0fde311846394e9f7633be5d72cc30b25587d7a1.1718101832.git.manos.pitsidianakis@linaro.org>
+ <CABgObfY8BS0yCw2CxgDQTBA4np9BZgGJF3N=t6eoBcdACAE=NA@mail.gmail.com>
+ <ez270.x96k6aeu0rpw@linaro.org> <ZmnHoajecti472mi@redhat.com>
+ <ezjl0.qx0tmsp6d6t@linaro.org>
+ <CABgObfbGwKc0RYBcDPzNkE8HOSouFj4D15Oh7TuiKOC+D7raaA@mail.gmail.com>
+ <ZmqcFf0xB9m4WkA3@redhat.com>
+ <CABgObfb4+FSsadFTVg6Dc1zehQV2Vei2_kSRd5CfxsGBLPN6Eg@mail.gmail.com>
+ <Zmq47yQV-sQ0hGMy@redhat.com>
+ <CABgObfYaxBxc8GS3=YU=EwNLEihEoD4ikZ595P4m_KTZCAAaBw@mail.gmail.com>
+In-Reply-To: <CABgObfYaxBxc8GS3=YU=EwNLEihEoD4ikZ595P4m_KTZCAAaBw@mail.gmail.com>
+Message-ID: <f26b0.f15017t08v16@linaro.org>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-06-13_15,2024-06-13_02,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0
- lowpriorityscore=0 malwarescore=0 bulkscore=0 phishscore=0 mlxlogscore=902
- impostorscore=0 suspectscore=0 clxscore=1011 spamscore=0 mlxscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2405170001 definitions=main-2406140038
-Received-SPF: pass client-ip=148.163.158.5;
- envelope-from=borntraeger@linux.ibm.com; helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8; format=flowed
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wr1-x42c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -116,23 +112,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Thu, 13 Jun 2024 23:57, Paolo Bonzini <pbonzini@redhat.com> wrote:
+>On Thu, Jun 13, 2024 at 11:16 AM Daniel P. Berrangé <berrange@redhat.com> wrote:
+>> I guess there's a balance to be had somewhere on the spectrum between doing
+>> everything against the raw C binding, vs everything against a perfectly
+>> idiomatic Rust API wrapping the C bniding. The latter might be the ideal,
+>> but from a pragmmatic POV I doubt we want the barrier to entry to be that
+>> high.
+>
+>Yes, I agree. I guess we could make things work step by step, even
+>committing something that only focuses on the build system like
+>Manos's work (I'll review it).
+>
+>I can try to look at the basic QOM interface.
+>
+>Manos, can you create a page on the wiki? Something like
+>https://wiki.qemu.org/Features/Meson.
 
 
-Am 13.06.24 um 19:07 schrieb Thomas Huth:
-> Old CPU models are not officially supported anymore by IBM, and for
-> downstream builds of QEMU, we would like to be able to disable these
-> CPUs in the build. Thus add a CONFIG switch that can be used to
-> disable these CPUs (and old machine types that use them by default).
-> 
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-> ---
->   If you're interested, the PDF that can be downloaded from
->   https://www.ibm.com/support/pages/ibm-mainframe-life-cycle-history
->   shows the supported CPUs in a nice diagram
+Certainly! Just to make sure I understood correctly, you mean a wiki 
+page describing how things work and tracking the progress?
 
-z13 is still supported so the patch needs to be fixed at least.
-Furthermore, z14 has the IBC/VAL cabability to behave like a z13,
-same for z15. (we do support VAL to N-2)
+I added https://wiki.qemu.org/Features/Meson/Rust
 
-I fail to see the value of this given how stable this code is.
+And a Meson category https://wiki.qemu.org/Category:Meson
+
+Thanks,
+Manos
 
