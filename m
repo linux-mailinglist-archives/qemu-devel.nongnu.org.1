@@ -2,82 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB14A9087F0
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jun 2024 11:46:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02CB79088B7
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jun 2024 11:55:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sI3VW-0002mZ-Ny; Fri, 14 Jun 2024 05:46:06 -0400
+	id 1sI3dY-00067s-Md; Fri, 14 Jun 2024 05:54:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sI3VV-0002ly-4X
- for qemu-devel@nongnu.org; Fri, 14 Jun 2024 05:46:05 -0400
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1sI3dW-00066q-9y
+ for qemu-devel@nongnu.org; Fri, 14 Jun 2024 05:54:22 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sI3VT-0001iW-If
- for qemu-devel@nongnu.org; Fri, 14 Jun 2024 05:46:04 -0400
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1sI3dU-0003Rw-5x
+ for qemu-devel@nongnu.org; Fri, 14 Jun 2024 05:54:22 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1718358362;
+ s=mimecast20190719; t=1718358859;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=l1u0TV69+cUzaR1ed4t6cfxWYAi6miyO4GiySt4yFa8=;
- b=VOWSmhIo4ghwa6/RK06IhBevwXWg8HnuNJ01O+PiIdlU0TU/WoJY1ubT1l+Sz/ttm6Ej6e
- RS0VA99lQxLwKHiIZpWm6Z6Z4L4GhyYKvinqdZILPtfVMDIklDk647oPom/XYD/S7Kw8S9
- xsmMCFeHkDtezpDh8JtCOo6dXpt6tRI=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=xSMsGWiIDaWBh/1sOWutFdLDNKll+hfjQCTOA1Gx6t4=;
+ b=IY6WmjNehM+SxSjsVUe/ZgvtOcsP1qiG4B7I5LD7a8RfVbyPTY7L48UCbcAh1tKmmAz5xF
+ +Ye1T2VD0kh0tGv5QxlsB1KUFB3cpLG86buPuGVLWYEXNtMm0HIJS+LG0nylP7mYnzlwa/
+ qz1S4gFc5CA2d5YiqHvqnev8YtM1A4U=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-574-MuT_urGnMnCZDuEUv5E9GA-1; Fri,
- 14 Jun 2024 05:45:58 -0400
-X-MC-Unique: MuT_urGnMnCZDuEUv5E9GA-1
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-428-daRnIyRIP6WC9EAvuZ0VOA-1; Fri,
+ 14 Jun 2024 05:54:15 -0400
+X-MC-Unique: daRnIyRIP6WC9EAvuZ0VOA-1
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id EE8701955DCD; Fri, 14 Jun 2024 09:45:55 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.93])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9F77B19560BF; Fri, 14 Jun 2024 09:45:48 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 13E7C21E6682; Fri, 14 Jun 2024 11:45:46 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: John Snow <jsnow@redhat.com>
-Cc: qemu-devel@nongnu.org,  Peter Xu <peterx@redhat.com>,  Marcel Apfelbaum
- <marcel.apfelbaum@gmail.com>,  Gerd Hoffmann <kraxel@redhat.com>,  Fabiano
- Rosas <farosas@suse.de>,  Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,  Ani
- Sinha <anisinha@redhat.com>,  Michael Roth <michael.roth@amd.com>,  Kevin
- Wolf <kwolf@redhat.com>,  Jiri Pirko <jiri@resnulli.us>,  Mads Ynddal
- <mads@ynddal.dk>,  Jason Wang <jasowang@redhat.com>,  Igor Mammedov
- <imammedo@redhat.com>,  Peter Maydell <peter.maydell@linaro.org>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
- <marcandre.lureau@redhat.com>,  Stefan Hajnoczi <stefanha@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,  Eduardo Habkost
- <eduardo@habkost.net>,  "Michael S. Tsirkin" <mst@redhat.com>,
- qemu-block@nongnu.org,  Stefan Berger <stefanb@linux.vnet.ibm.com>,
- Victor Toso de Carvalho <victortoso@redhat.com>,  Eric Blake
- <eblake@redhat.com>,  Daniel P. =?utf-8?Q?Berrang=C3=A9?=
- <berrange@redhat.com>,
- Konstantin Kostiuk <kkostiuk@redhat.com>,  Lukas Straub
- <lukasstraub2@web.de>,  Yanan Wang <wangyanan55@huawei.com>,  Hanna Reitz
- <hreitz@redhat.com>
-Subject: Re: [PATCH 13/20] docs/qapidoc: fix nested parsing under untagged
- sections
-In-Reply-To: <20240514215740.940155-14-jsnow@redhat.com> (John Snow's message
- of "Tue, 14 May 2024 17:57:32 -0400")
-References: <20240514215740.940155-1-jsnow@redhat.com>
- <20240514215740.940155-14-jsnow@redhat.com>
-Date: Fri, 14 Jun 2024 11:45:46 +0200
-Message-ID: <871q4z5039.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B308819560B2; Fri, 14 Jun 2024 09:54:13 +0000 (UTC)
+Received: from laptop.redhat.com (unknown [10.39.193.191])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 36C593000219; Fri, 14 Jun 2024 09:54:07 +0000 (UTC)
+From: Eric Auger <eric.auger@redhat.com>
+To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
+ qemu-arm@nongnu.org, mst@redhat.com, jean-philippe@linaro.org,
+ peter.maydell@linaro.org, clg@redhat.com, yanghliu@redhat.com,
+ zhenzhong.duan@intel.com
+Cc: alex.williamson@redhat.com, jasowang@redhat.com, pbonzini@redhat.com,
+ berrange@redhat.com
+Subject: [PATCH v4 0/8] VIRTIO-IOMMU/VFIO: Fix host iommu geometry handling
+ for hotplugged devices
+Date: Fri, 14 Jun 2024 11:52:50 +0200
+Message-ID: <20240614095402.904691-1-eric.auger@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.133.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: 11
 X-Spam_score: 1.1
 X-Spam_bar: +
@@ -101,61 +82,120 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-John Snow <jsnow@redhat.com> writes:
+This series is based on Zhenzhong HostIOMMUDevice: 
 
-> Sphinx does not like sections without titles, because it wants to
-> convert every section into a reference. When there is no title, it
-> struggles to do this and transforms the tree inproperly.
->
-> Depending on the rST used, this may result in an assertion error deep in
-> the docutils HTMLWriter.
+[PATCH v7 00/17] Add a host IOMMU device abstraction to check with vIOMMU
+https://lore.kernel.org/all/20240605083043.317831-1-zhenzhong.duan@intel.com/
 
-I'm getting vibes of someone having had hours of "fun" with Sphinx...
+It allows to convey host IOVA reserved regions to the virtio-iommu and
+uses the HostIOMMUDevice infrastructure. This replaces the usage of
+IOMMU MR ops which fail to satisfy this need for hotplugged devices.
 
-Can you give you an idea of how a reproducer would look like?
+See below for additional background.
 
-> When parsing an untagged section (free paragraphs), skip making a hollow
-> section and instead append the parse results to the prior section.
->
-> Many Bothans died to bring us this information.
+In [1] we attempted to fix a case where a VFIO-PCI device protected
+with a virtio-iommu was assigned to an x86 guest. On x86 the physical
+IOMMU may have an address width (gaw) of 39 or 48 bits whereas the
+virtio-iommu used to expose a 64b address space by default.
+Hence the guest was trying to use the full 64b space and we hit
+DMA MAP failures. To work around this issue we managed to pass
+usable IOVA regions (excluding the out of range space) from VFIO
+to the virtio-iommu device. This was made feasible by introducing
+a new IOMMU Memory Region callback dubbed iommu_set_iova_regions().
+This latter gets called when the IOMMU MR is enabled which
+causes the vfio_listener_region_add() to be called.
 
-Terribly sad.
+For coldplugged devices the technique works because we make sure all
+the IOMMU MR are enabled once on the machine init done: 94df5b2180
+("virtio-iommu: Fix 64kB host page size VFIO device assignment")
+for granule freeze. But I would be keen to get rid of this trick.
 
-> Signed-off-by: John Snow <jsnow@redhat.com>
-> ---
->  docs/sphinx/qapidoc.py | 16 +++++++++++-----
->  1 file changed, 11 insertions(+), 5 deletions(-)
->
-> diff --git a/docs/sphinx/qapidoc.py b/docs/sphinx/qapidoc.py
-> index 34e95bd168d..cfc0cf169ef 100644
-> --- a/docs/sphinx/qapidoc.py
-> +++ b/docs/sphinx/qapidoc.py
-> @@ -286,14 +286,20 @@ def _nodes_for_sections(self, doc):
->              if section.tag and section.tag == 'TODO':
->                  # Hide TODO: sections
->                  continue
-> +
-> +            if not section.tag:
-> +                # Sphinx cannot handle sectionless titles;
-> +                # Instead, just append the results to the prior section.
-> +                container = nodes.container()
-> +                self._parse_text_into_node(section.text, container)
-> +                nodelist += container.children
-> +                continue
-> +
->              snode = self._make_section(section.tag)
-> -            if section.tag and section.tag.startswith('Example'):
-> +            if section.tag.startswith('Example'):
->                  snode += self._nodes_for_example(dedent(section.text))
->              else:
-> -                self._parse_text_into_node(
-> -                    dedent(section.text) if section.tag else section.text,
-> -                    snode,
-> -                )
-> +                self._parse_text_into_node(dedent(section.text), snode)
->              nodelist.append(snode)
->          return nodelist
+However with VFIO-PCI hotplug, this technique fails due to the
+race between the call to the callback in the add memory listener
+and the virtio-iommu probe request. Indeed the probe request gets
+called before the attach to the domain. So in that case the usable
+regions are communicated after the probe request and fail to be
+conveyed to the guest.
 
-Looks plausible.  I lack the Sphinx-fu to say more.
+Using an IOMMU MR Ops is unpractical because this relies on the IOMMU
+MR to have been enabled and the corresponding vfio_listener_region_add()
+to be executed. Instead this series proposes to replace the usage of this
+API by the recently introduced PCIIOMMUOps: ba7d12eb8c  ("hw/pci: modify
+pci_setup_iommu() to set PCIIOMMUOps"). That way, the callback can be
+called earlier, once the usable IOVA regions have been collected by
+VFIO, without the need for the IOMMU MR to be enabled.
+
+This series also removes the spurious message:
+qemu-system-aarch64: warning: virtio-iommu-memory-region-7-0: Notified about new host reserved regions after probe
+
+In the short term this may also be used for passing the page size
+mask, which would allow to get rid of the hacky transient IOMMU
+MR enablement mentionned above.
+
+[1] [PATCH v4 00/12] VIRTIO-IOMMU/VFIO: Don't assume 64b IOVA space
+    https://lore.kernel.org/all/20231019134651.842175-1-eric.auger@redhat.com/
+
+Extra Notes:
+With that series, the reserved memory regions are communicated on time
+so that the virtio-iommu probe request grabs them. However this is not
+sufficient. In some cases (my case), I still see some DMA MAP failures
+and the guest keeps on using IOVA ranges outside the geometry of the
+physical IOMMU. This is due to the fact the VFIO-PCI device is in the
+same iommu group as the pcie root port. Normally the kernel
+iova_reserve_iommu_regions (dma-iommu.c) is supposed to call reserve_iova()
+for each reserved IOVA, which carves them out of the allocator. When
+iommu_dma_init_domain() gets called for the hotplugged vfio-pci device
+the iova domain is already allocated and set and we don't call
+iova_reserve_iommu_regions() again for the vfio-pci device. So its
+corresponding reserved regions are not properly taken into account.
+
+This is not trivial to fix because theoretically the 1st attached
+devices could already have allocated IOVAs within the reserved regions
+of the second device. Also we are somehow hijacking the reserved
+memory regions to model the geometry of the physical IOMMU so not sure
+any attempt to fix that upstream will be accepted. At the moment one
+solution is to make sure assigned devices end up in singleton group.
+Another solution is to work on a different approach where the gaw
+can be passed as an option to the virtio-iommu device, similarly at
+what is done with intel iommu.
+
+This series can be found at:
+https://github.com/eauger/qemu/tree/iommufd_nesting_preq_v7_resv_regions_v4
+
+History:
+v3 -> v4:
+- add one patch to add aliased pci bus and devfn in the HostIOMMUDevice
+- Use those for resv regions computation
+- Remove VirtioHostIOMMUDevice and simply use the base object
+
+v2 -> v3:
+- moved the series from RFC to patch
+- collected Zhenzhong's R-bs and took into account most of his comments
+  (see replies on v2)
+
+
+Eric Auger (8):
+  HostIOMMUDevice: Store the VFIO/VDPA agent
+  virtio-iommu: Implement set|unset]_iommu_device() callbacks
+  HostIOMMUDevice: Introduce get_iova_ranges callback
+  HostIOMMUDevice: Store the aliased bus and devfn
+  virtio-iommu: Compute host reserved regions
+  virtio-iommu: Remove the implementation of iommu_set_iova_range
+  hw/vfio: Remove memory_region_iommu_set_iova_ranges() call
+  memory: Remove IOMMU MR iommu_set_iova_range API
+
+ include/exec/memory.h              |  32 ----
+ include/hw/virtio/virtio-iommu.h   |   2 +
+ include/sysemu/host_iommu_device.h |  11 ++
+ hw/pci/pci.c                       |   8 +-
+ hw/vfio/common.c                   |  10 -
+ hw/vfio/container.c                |  17 ++
+ hw/vfio/iommufd.c                  |  18 ++
+ hw/virtio/virtio-iommu.c           | 296 +++++++++++++++++++----------
+ system/memory.c                    |  13 --
+ 9 files changed, 249 insertions(+), 158 deletions(-)
+
+-- 
+2.41.0
 
 
