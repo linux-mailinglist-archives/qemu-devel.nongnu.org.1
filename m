@@ -2,54 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C50E9084E9
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jun 2024 09:29:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E9919084F8
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jun 2024 09:30:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sI1MC-0004Ji-R1; Fri, 14 Jun 2024 03:28:20 -0400
+	id 1sI1MA-0004Ea-1W; Fri, 14 Jun 2024 03:28:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sI1M9-0004Dg-0O
- for qemu-devel@nongnu.org; Fri, 14 Jun 2024 03:28:17 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sI1M7-0004Br-Lc
+ for qemu-devel@nongnu.org; Fri, 14 Jun 2024 03:28:15 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sI1M7-0000sM-94
- for qemu-devel@nongnu.org; Fri, 14 Jun 2024 03:28:16 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sI1M6-0000rx-9h
+ for qemu-devel@nongnu.org; Fri, 14 Jun 2024 03:28:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1718350094;
+ s=mimecast20190719; t=1718350093;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=+aHLk7nwr1ukJ4voNXZNsv4nvrC5BSxbI4+G89eCwJ4=;
- b=XvdadcurmScwe3ZoSYcbcviCPMKPMd0J1286IHtZmL4FYBSULxiU37ZUMZPjDXA/mK+QTl
- jUz3yC1QrViUomslTyz/GwiGPfFIgkmoBXyqOUQNKT4R+HfnpDBmHFKPk1ogyj8VeNt/5p
- vBe3b375q6P2/TDqLgS9LhIsBjG8rhY=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=bpcuwxjalIJ0QJAmlthQ2zrRXoFKbmpEf1OqfPzxvQE=;
+ b=HiSVbksPd4Yi+FKdpxdxKIlHPygoGxmlr72W1KIHHVSxzNPrz/xJd4lBzwhqi7TVRcdGs8
+ w/QjqcALY/bM4a4I5bcT2TG/4tGCZ86yMMorfvS//Y2esdsX5M2Ke4ceQnGL7fPwL2Ik+k
+ a7WbZ15CVRMDGh623+VfCCbbQ4rU818=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-198-5ulapZ1FNUKx_HNa_MglrQ-1; Fri,
- 14 Jun 2024 03:28:07 -0400
-X-MC-Unique: 5ulapZ1FNUKx_HNa_MglrQ-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-148-QTXTrMYiMAWpI4Wq7KXJzA-1; Fri,
+ 14 Jun 2024 03:28:09 -0400
+X-MC-Unique: QTXTrMYiMAWpI4Wq7KXJzA-1
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 1BFF919560B8; Fri, 14 Jun 2024 07:28:05 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 35ABA195608C; Fri, 14 Jun 2024 07:28:08 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.192.49])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 6E21B3000219; Fri, 14 Jun 2024 07:28:03 +0000 (UTC)
+ id 7CE653000222; Fri, 14 Jun 2024 07:28:05 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: Jamin Lin <jamin_lin@aspeedtech.com>, Troy Lee <troy_lee@aspeedtech.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [PULL 18/19] docs:aspeed: Add AST2700 Evaluation board
-Date: Fri, 14 Jun 2024 09:26:19 +0200
-Message-ID: <20240614072620.1262053-19-clg@redhat.com>
+ Steven Lee <steven_lee@aspeedtech.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Andrew Jeffery <andrew@codeconstruct.com.au>
+Subject: [PULL 19/19] MAINTAINERS: Add reviewers for ASPEED BMCs
+Date: Fri, 14 Jun 2024 09:26:20 +0200
+Message-ID: <20240614072620.1262053-20-clg@redhat.com>
 In-Reply-To: <20240614072620.1262053-1-clg@redhat.com>
 References: <20240614072620.1262053-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -83,94 +86,33 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jamin Lin <jamin_lin@aspeedtech.com>
 
-Add AST2700 Evaluation board and its boot command.
+Add ASPEED members "Steven Lee", "Troy Lee" and "Jamin Lin"
+to be reviewers of ASPEED BMCs.
 
-Signed-off-by: Troy Lee <troy_lee@aspeedtech.com>
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
+Signed-off-by: Troy Lee <troy_lee@aspeedtech.com>
+Signed-off-by: Steven Lee <steven_lee@aspeedtech.com>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Andrew Jeffery <andrew@codeconstruct.com.au>
 ---
- docs/system/arm/aspeed.rst | 39 ++++++++++++++++++++++++++++++++++----
- 1 file changed, 35 insertions(+), 4 deletions(-)
+ MAINTAINERS | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/docs/system/arm/aspeed.rst b/docs/system/arm/aspeed.rst
-index b2dea54eedad..cd9559e3e291 100644
---- a/docs/system/arm/aspeed.rst
-+++ b/docs/system/arm/aspeed.rst
-@@ -1,11 +1,12 @@
--Aspeed family boards (``*-bmc``, ``ast2500-evb``, ``ast2600-evb``)
--==================================================================
-+Aspeed family boards (``*-bmc``, ``ast2500-evb``, ``ast2600-evb``, ``ast2700-evb``)
-+===================================================================================
- 
- The QEMU Aspeed machines model BMCs of various OpenPOWER systems and
- Aspeed evaluation boards. They are based on different releases of the
- Aspeed SoC : the AST2400 integrating an ARM926EJ-S CPU (400MHz), the
--AST2500 with an ARM1176JZS CPU (800MHz) and more recently the AST2600
--with dual cores ARM Cortex-A7 CPUs (1.2GHz).
-+AST2500 with an ARM1176JZS CPU (800MHz), the AST2600
-+with dual cores ARM Cortex-A7 CPUs (1.2GHz) and more recently the AST2700
-+with quad cores ARM Cortex-A35 64 bits CPUs (1.6GHz)
- 
- The SoC comes with RAM, Gigabit ethernet, USB, SD/MMC, USB, SPI, I2C,
- etc.
-@@ -38,6 +39,10 @@ AST2600 SoC based machines :
- - ``qcom-dc-scm-v1-bmc``   Qualcomm DC-SCM V1 BMC
- - ``qcom-firework-bmc``    Qualcomm Firework BMC
- 
-+AST2700 SoC based machines :
-+
-+- ``ast2700-evb``          Aspeed AST2700 Evaluation board (Cortex-A35)
-+
- Supported devices
- -----------------
- 
-@@ -66,6 +71,7 @@ Supported devices
-  * eMMC Boot Controller (dummy)
-  * PECI Controller (minimal)
-  * I3C Controller
-+ * Internal Bridge Controller (SLI dummy)
- 
- 
- Missing devices
-@@ -95,6 +101,10 @@ or directly from the OpenBMC GitHub release repository :
- 
-    https://github.com/openbmc/openbmc/releases
- 
-+or directly from the ASPEED Forked OpenBMC GitHub release repository :
-+
-+   https://github.com/AspeedTech-BMC/openbmc/releases
-+
- To boot a kernel directly from a Linux build tree:
- 
- .. code-block:: bash
-@@ -164,6 +174,27 @@ under Linux), use :
- 
-   -M ast2500-evb,bmc-console=uart3
- 
-+
-+Boot the AST2700 machine from the flash image, use an MTD drive :
-+
-+.. code-block:: bash
-+
-+  IMGDIR=ast2700-default
-+  UBOOT_SIZE=$(stat --format=%s -L ${IMGDIR}/u-boot-nodtb.bin)
-+
-+  $ qemu-system-aarch64 -M ast2700-evb \
-+       -device loader,force-raw=on,addr=0x400000000,file=${IMGDIR}/u-boot-nodtb.bin \
-+       -device loader,force-raw=on,addr=$((0x400000000 + ${UBOOT_SIZE})),file=${IMGDIR}/u-boot.dtb \
-+       -device loader,force-raw=on,addr=0x430000000,file=${IMGDIR}/bl31.bin \
-+       -device loader,force-raw=on,addr=0x430080000,file=${IMGDIR}/optee/tee-raw.bin \
-+       -device loader,cpu-num=0,addr=0x430000000 \
-+       -device loader,cpu-num=1,addr=0x430000000 \
-+       -device loader,cpu-num=2,addr=0x430000000 \
-+       -device loader,cpu-num=3,addr=0x430000000 \
-+       -smp 4 \
-+       -drive file=${IMGDIR}/image-bmc,format=raw,if=mtd \
-+       -nographic
-+
- Aspeed minibmc family boards (``ast1030-evb``)
- ==================================================================
- 
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 951556224a1b..0f63bcdc7dc7 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -1158,6 +1158,9 @@ F: docs/system/arm/emcraft-sf2.rst
+ ASPEED BMCs
+ M: Cédric Le Goater <clg@kaod.org>
+ M: Peter Maydell <peter.maydell@linaro.org>
++R: Steven Lee <steven_lee@aspeedtech.com>
++R: Troy Lee <leetroy@gmail.com>
++R: Jamin Lin <jamin_lin@aspeedtech.com>
+ R: Andrew Jeffery <andrew@codeconstruct.com.au>
+ R: Joel Stanley <joel@jms.id.au>
+ L: qemu-arm@nongnu.org
 -- 
 2.45.2
 
