@@ -2,105 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EB0290914A
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jun 2024 19:19:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C62A909149
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jun 2024 19:19:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sIAZ3-0000zS-NE; Fri, 14 Jun 2024 13:18:13 -0400
+	id 1sIAZ5-00010M-AQ; Fri, 14 Jun 2024 13:18:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sIAZ1-0000yu-Rx
- for qemu-devel@nongnu.org; Fri, 14 Jun 2024 13:18:11 -0400
-Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sIAZ3-0000zb-AE
+ for qemu-devel@nongnu.org; Fri, 14 Jun 2024 13:18:13 -0400
+Received: from smtp-out2.suse.de ([195.135.223.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sIAZ0-00042g-60
- for qemu-devel@nongnu.org; Fri, 14 Jun 2024 13:18:11 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sIAZ1-00042p-Iz
+ for qemu-devel@nongnu.org; Fri, 14 Jun 2024 13:18:13 -0400
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
  [IPv6:2a07:de40:b281:104:10:150:64:97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 0398C339FB;
- Fri, 14 Jun 2024 17:18:08 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 0E9A020724;
+ Fri, 14 Jun 2024 17:18:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1718385488; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1718385490; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=yx7Tw7BVV5ItBj54IuIkXhOV34oE+O0rjeGv2yRXDDI=;
- b=Wf1xm8vZOrNSShDsYf6584GlMatTQAq6aia+gI3XBWIy+JQy1WZ1/e4xIO52vjh7jWRwbp
- Bi4Lyuu978gkJnjTSwWeFiYnzYNa9vxV3FIS0gf5peS6VR8/0N7Hd7JvaT9VFAo5JoWbQG
- bHesqZFjQ79QYs16wf2IQn9udvpyjw0=
+ bh=7j5PnkuOsB2uZytqvjcjkx4Y/pW+wy8yTMFINUWLAhQ=;
+ b=0axxg9YBCTupt30hYBvZcJelXnkio1myLRwp4VFunvBNYIadvwt44QmtrMRUOgnnur1PTh
+ EmUCzOa5DshLf4C/1DEJ0KdzAz+iHokgkaY2D7iLGLy93lMIghGm2dAvWrMvITcrYyFpQo
+ bnFcKCCNMu4rLxqRyTwYsUmDeJgjgxA=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1718385488;
+ s=susede2_ed25519; t=1718385490;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=yx7Tw7BVV5ItBj54IuIkXhOV34oE+O0rjeGv2yRXDDI=;
- b=aFqbeu0rUOkIXTbTEvCsH3vmXeWyKSe9LGSUgLySgftOBijAjczLpIWRb4G88o77JUho1d
- m3e3CScoVASrkOCg==
-Authentication-Results: smtp-out1.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Wf1xm8vZ;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=aFqbeu0r
+ bh=7j5PnkuOsB2uZytqvjcjkx4Y/pW+wy8yTMFINUWLAhQ=;
+ b=pIhX9Qfhnpp0K+7/S5B/ffO9Qe/NeKn9tHb2V3R5G4GT6oUVoZwkRG9HnEW72dFuAtLHek
+ RJfVrRqpQs6jFPCw==
+Authentication-Results: smtp-out2.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=0axxg9YB;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=pIhX9Qfh
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1718385488; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1718385490; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=yx7Tw7BVV5ItBj54IuIkXhOV34oE+O0rjeGv2yRXDDI=;
- b=Wf1xm8vZOrNSShDsYf6584GlMatTQAq6aia+gI3XBWIy+JQy1WZ1/e4xIO52vjh7jWRwbp
- Bi4Lyuu978gkJnjTSwWeFiYnzYNa9vxV3FIS0gf5peS6VR8/0N7Hd7JvaT9VFAo5JoWbQG
- bHesqZFjQ79QYs16wf2IQn9udvpyjw0=
+ bh=7j5PnkuOsB2uZytqvjcjkx4Y/pW+wy8yTMFINUWLAhQ=;
+ b=0axxg9YBCTupt30hYBvZcJelXnkio1myLRwp4VFunvBNYIadvwt44QmtrMRUOgnnur1PTh
+ EmUCzOa5DshLf4C/1DEJ0KdzAz+iHokgkaY2D7iLGLy93lMIghGm2dAvWrMvITcrYyFpQo
+ bnFcKCCNMu4rLxqRyTwYsUmDeJgjgxA=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1718385488;
+ s=susede2_ed25519; t=1718385490;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=yx7Tw7BVV5ItBj54IuIkXhOV34oE+O0rjeGv2yRXDDI=;
- b=aFqbeu0rUOkIXTbTEvCsH3vmXeWyKSe9LGSUgLySgftOBijAjczLpIWRb4G88o77JUho1d
- m3e3CScoVASrkOCg==
+ bh=7j5PnkuOsB2uZytqvjcjkx4Y/pW+wy8yTMFINUWLAhQ=;
+ b=pIhX9Qfhnpp0K+7/S5B/ffO9Qe/NeKn9tHb2V3R5G4GT6oUVoZwkRG9HnEW72dFuAtLHek
+ RJfVrRqpQs6jFPCw==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6181713AB1;
- Fri, 14 Jun 2024 17:18:06 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6E6FD13AB1;
+ Fri, 14 Jun 2024 17:18:08 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id kCAOCk57bGaVAgAAD6G6ig
- (envelope-from <farosas@suse.de>); Fri, 14 Jun 2024 17:18:06 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id AExMDVB7bGaVAgAAD6G6ig
+ (envelope-from <farosas@suse.de>); Fri, 14 Jun 2024 17:18:08 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Nicholas Piggin <npiggin@gmail.com>, Thomas Huth <thuth@redhat.com>
-Subject: [PULL 01/18] tests/qtest: Move common define from libqos-spapr.h to
- new ppc-util.h
-Date: Fri, 14 Jun 2024 14:17:45 -0300
-Message-Id: <20240614171802.28451-2-farosas@suse.de>
+Subject: [PULL 02/18] tests/qtest/migration-test: Quieten ppc64 QEMU warnings
+Date: Fri, 14 Jun 2024 14:17:46 -0300
+Message-Id: <20240614171802.28451-3-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20240614171802.28451-1-farosas@suse.de>
 References: <20240614171802.28451-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 0398C339FB
-X-Spam-Score: -3.01
 X-Spamd-Result: default: False [-3.01 / 50.00]; BAYES_HAM(-3.00)[100.00%];
  MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
  R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-1.000];
  R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
  MIME_GOOD(-0.10)[text/plain]; MX_GOOD(-0.01)[];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; MIME_TRACE(0.00)[0:+];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; TO_DN_SOME(0.00)[];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FUZZY_BLOCKED(0.00)[rspamd.com]; TO_DN_SOME(0.00)[];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; MIME_TRACE(0.00)[0:+];
  ARC_NA(0.00)[];
  SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
  RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
  FREEMAIL_CC(0.00)[redhat.com,linaro.org,gmail.com];
- RCVD_TLS_ALL(0.00)[]; RCVD_COUNT_TWO(0.00)[2];
- FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
+ RCVD_TLS_ALL(0.00)[]; FROM_EQ_ENVFROM(0.00)[];
+ RCVD_COUNT_TWO(0.00)[2]; FROM_HAS_DN(0.00)[];
  RCPT_COUNT_FIVE(0.00)[5];
  DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:dkim];
  RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
@@ -108,9 +105,11 @@ X-Spamd-Result: default: False [-3.01 / 50.00]; BAYES_HAM(-3.00)[100.00%];
  DKIM_TRACE(0.00)[suse.de:+]; RCVD_VIA_SMTP_AUTH(0.00)[];
  FREEMAIL_ENVRCPT(0.00)[gmail.com]
 X-Rspamd-Action: no action
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
- envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Queue-Id: 0E9A020724
+X-Spam-Score: -3.01
+Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -135,101 +134,35 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Nicholas Piggin <npiggin@gmail.com>
 
-The spapr QEMU machine defaults is useful outside libqos, so create a
-new header for ppc specific qtests and move it there.
-
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- tests/qtest/boot-serial-test.c    |  2 +-
- tests/qtest/libqos/libqos-spapr.h |  7 -------
- tests/qtest/ppc-util.h            | 19 +++++++++++++++++++
- tests/qtest/prom-env-test.c       |  2 +-
- tests/qtest/pxe-test.c            |  2 +-
- 5 files changed, 22 insertions(+), 10 deletions(-)
- create mode 100644 tests/qtest/ppc-util.h
+ tests/qtest/migration-test.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/tests/qtest/boot-serial-test.c b/tests/qtest/boot-serial-test.c
-index df389adeeb..3b92fa5d50 100644
---- a/tests/qtest/boot-serial-test.c
-+++ b/tests/qtest/boot-serial-test.c
-@@ -15,7 +15,7 @@
- 
- #include "qemu/osdep.h"
- #include "libqtest.h"
--#include "libqos/libqos-spapr.h"
+diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
+index b7e3406471..48f59822f4 100644
+--- a/tests/qtest/migration-test.c
++++ b/tests/qtest/migration-test.c
+@@ -21,6 +21,7 @@
+ #include "chardev/char.h"
+ #include "crypto/tlscredspsk.h"
+ #include "qapi/qmp/qlist.h"
 +#include "ppc-util.h"
  
- static const uint8_t bios_avr[] = {
-     0x88, 0xe0,             /* ldi r24, 0x08   */
-diff --git a/tests/qtest/libqos/libqos-spapr.h b/tests/qtest/libqos/libqos-spapr.h
-index e4483c14f8..a446276416 100644
---- a/tests/qtest/libqos/libqos-spapr.h
-+++ b/tests/qtest/libqos/libqos-spapr.h
-@@ -9,11 +9,4 @@ QOSState *qtest_spapr_boot(const char *cmdline_fmt, ...)
-     G_GNUC_PRINTF(1, 2);
- void qtest_spapr_shutdown(QOSState *qs);
- 
--/* List of capabilities needed to silence warnings with TCG */
--#define PSERIES_DEFAULT_CAPABILITIES             \
--    "cap-cfpc=broken,"                           \
--    "cap-sbbc=broken,"                           \
--    "cap-ibs=broken,"                            \
--    "cap-ccf-assist=off,"
--
- #endif
-diff --git a/tests/qtest/ppc-util.h b/tests/qtest/ppc-util.h
-new file mode 100644
-index 0000000000..f68ee93520
---- /dev/null
-+++ b/tests/qtest/ppc-util.h
-@@ -0,0 +1,19 @@
-+/*
-+ * PowerPC misc useful things
-+ *
-+ * Copyright (c) 2024, IBM Corporation.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#ifndef PPC_UTIL_H
-+#define PPC_UTIL_H
-+
-+/* List of capabilities needed to silence warnings with TCG */
-+#define PSERIES_DEFAULT_CAPABILITIES             \
-+    "cap-cfpc=broken,"                           \
-+    "cap-sbbc=broken,"                           \
-+    "cap-ibs=broken,"                            \
-+    "cap-ccf-assist=off,"
-+
-+#endif /* PPC_UTIL_H */
-diff --git a/tests/qtest/prom-env-test.c b/tests/qtest/prom-env-test.c
-index 39ccb59797..14705105ad 100644
---- a/tests/qtest/prom-env-test.c
-+++ b/tests/qtest/prom-env-test.c
-@@ -21,7 +21,7 @@
- 
- #include "qemu/osdep.h"
- #include "libqtest.h"
--#include "libqos/libqos-spapr.h"
-+#include "ppc-util.h"
- 
- #define MAGIC   0xcafec0de
- #define ADDRESS 0x4000
-diff --git a/tests/qtest/pxe-test.c b/tests/qtest/pxe-test.c
-index e4b48225a5..a3f900fbea 100644
---- a/tests/qtest/pxe-test.c
-+++ b/tests/qtest/pxe-test.c
-@@ -16,7 +16,7 @@
- #include <glib/gstdio.h>
- #include "libqtest.h"
- #include "boot-sector.h"
--#include "libqos/libqos-spapr.h"
-+#include "ppc-util.h"
- 
- #define NETNAME "net0"
- 
+ #include "migration-helpers.h"
+ #include "tests/migration/migration-test.h"
+@@ -742,7 +743,8 @@ static int test_migrate_start(QTestState **from, QTestState **to,
+                                       "until'", end_address, start_address);
+         machine_alias = "pseries";
+         machine_opts = "vsmt=8";
+-        arch_opts = g_strdup("-nodefaults");
++        arch_opts = g_strdup("-nodefaults "
++                             "-machine " PSERIES_DEFAULT_CAPABILITIES);
+     } else if (strcmp(arch, "aarch64") == 0) {
+         memory_size = "150M";
+         machine_alias = "virt";
 -- 
 2.35.3
 
