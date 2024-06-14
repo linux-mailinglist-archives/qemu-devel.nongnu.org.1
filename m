@@ -2,111 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1E1C909141
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jun 2024 19:19:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 081BD909142
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jun 2024 19:19:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sIAZE-00015D-V2; Fri, 14 Jun 2024 13:18:24 -0400
+	id 1sIAZI-000169-4t; Fri, 14 Jun 2024 13:18:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sIAZD-00013K-5o
- for qemu-devel@nongnu.org; Fri, 14 Jun 2024 13:18:23 -0400
-Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sIAZF-00015U-DP
+ for qemu-devel@nongnu.org; Fri, 14 Jun 2024 13:18:25 -0400
+Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sIAZB-00043m-H8
- for qemu-devel@nongnu.org; Fri, 14 Jun 2024 13:18:22 -0400
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sIAZD-00043y-ML
+ for qemu-devel@nongnu.org; Fri, 14 Jun 2024 13:18:25 -0400
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 50E41339FB;
- Fri, 14 Jun 2024 17:18:20 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 6200320724;
+ Fri, 14 Jun 2024 17:18:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1718385500; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1718385502; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=/oUUxkja25yKI5x3Xf7VoUaogDWc4vwbKUzr6RmUlPM=;
- b=Mrq+fztzuP/4wlaDaI32hQUxIyMvXFsMNALoHNlRBSBBmS2enOoAV3zmk85eu5D/TzK9db
- WOdyHV3pdW3CHj3vXg2Lbiv/WnShu5TVDwHRijma+XIuiseMedYrvRIa3Y2f9g/WY303eS
- WJ2bnHUp/okUhgaCO6tMtUdZyMXJ51I=
+ bh=TrBSPx3LSmG3AYZQqHnKCZnzkS8srk2opnauqCWnh+w=;
+ b=cGDEBWxyJ1RogZKRxBLMlnGi8rLNq6qClVN8Z0EL4OxAtkUtOg/KzbCUbppg80qv5N6NrS
+ qiMlMGZJlYzluBJOxkWQB70B3yIBQK3AVFvTS+zRAijDl1Ghva1LbvqdMt94ARoxhvmFe6
+ bmB0Coqda+pZP5JpcsdNwC3z5Crth3k=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1718385500;
+ s=susede2_ed25519; t=1718385502;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=/oUUxkja25yKI5x3Xf7VoUaogDWc4vwbKUzr6RmUlPM=;
- b=j7Ph3lAEQdAeAjA6c9I/V1dhgQ1uM+Z/6gOZ1NiLdON168p4Ayvlj/cFelUPLm1nUnFAvs
- 4cO5uR3sfvux1oDg==
-Authentication-Results: smtp-out1.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Mrq+fztz;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=j7Ph3lAE
+ bh=TrBSPx3LSmG3AYZQqHnKCZnzkS8srk2opnauqCWnh+w=;
+ b=u18y6pblX/I9vNPVAcC5nuGIjZzWbRw1N6kqaq+1qSgl2Q9dCyJIsGFWQ3fQOdf1hv0cmd
+ aZsy/eFLeJ6nVpBg==
+Authentication-Results: smtp-out2.suse.de;
+	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1718385500; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1718385502; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=/oUUxkja25yKI5x3Xf7VoUaogDWc4vwbKUzr6RmUlPM=;
- b=Mrq+fztzuP/4wlaDaI32hQUxIyMvXFsMNALoHNlRBSBBmS2enOoAV3zmk85eu5D/TzK9db
- WOdyHV3pdW3CHj3vXg2Lbiv/WnShu5TVDwHRijma+XIuiseMedYrvRIa3Y2f9g/WY303eS
- WJ2bnHUp/okUhgaCO6tMtUdZyMXJ51I=
+ bh=TrBSPx3LSmG3AYZQqHnKCZnzkS8srk2opnauqCWnh+w=;
+ b=cGDEBWxyJ1RogZKRxBLMlnGi8rLNq6qClVN8Z0EL4OxAtkUtOg/KzbCUbppg80qv5N6NrS
+ qiMlMGZJlYzluBJOxkWQB70B3yIBQK3AVFvTS+zRAijDl1Ghva1LbvqdMt94ARoxhvmFe6
+ bmB0Coqda+pZP5JpcsdNwC3z5Crth3k=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1718385500;
+ s=susede2_ed25519; t=1718385502;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=/oUUxkja25yKI5x3Xf7VoUaogDWc4vwbKUzr6RmUlPM=;
- b=j7Ph3lAEQdAeAjA6c9I/V1dhgQ1uM+Z/6gOZ1NiLdON168p4Ayvlj/cFelUPLm1nUnFAvs
- 4cO5uR3sfvux1oDg==
+ bh=TrBSPx3LSmG3AYZQqHnKCZnzkS8srk2opnauqCWnh+w=;
+ b=u18y6pblX/I9vNPVAcC5nuGIjZzWbRw1N6kqaq+1qSgl2Q9dCyJIsGFWQ3fQOdf1hv0cmd
+ aZsy/eFLeJ6nVpBg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AF46413AB1;
- Fri, 14 Jun 2024 17:18:18 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BB76A13AB1;
+ Fri, 14 Jun 2024 17:18:20 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id GLpWHVp7bGaVAgAAD6G6ig
- (envelope-from <farosas@suse.de>); Fri, 14 Jun 2024 17:18:18 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id kBgyIFx7bGaVAgAAD6G6ig
+ (envelope-from <farosas@suse.de>); Fri, 14 Jun 2024 17:18:20 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Yuan Liu <yuan1.liu@intel.com>, Nanhai Zou <nanhai.zou@intel.com>
-Subject: [PULL 07/18] configure: add --enable-qpl build option
-Date: Fri, 14 Jun 2024 14:17:51 -0300
-Message-Id: <20240614171802.28451-8-farosas@suse.de>
+Subject: [PULL 08/18] migration/multifd: add qpl compression method
+Date: Fri, 14 Jun 2024 14:17:52 -0300
+Message-Id: <20240614171802.28451-9-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20240614171802.28451-1-farosas@suse.de>
 References: <20240614171802.28451-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 50E41339FB
-X-Spam-Score: -3.01
-X-Spamd-Result: default: False [-3.01 / 50.00]; BAYES_HAM(-3.00)[100.00%];
- MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
+X-Spam-Score: -2.80
+X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+ NEURAL_HAM_LONG(-1.00)[-1.000]; MID_CONTAINS_FROM(1.00)[];
  R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-1.000];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- MIME_GOOD(-0.10)[text/plain]; MX_GOOD(-0.01)[];
- MIME_TRACE(0.00)[0:+]; FUZZY_BLOCKED(0.00)[rspamd.com];
+ MIME_GOOD(-0.10)[text/plain]; MIME_TRACE(0.00)[0:+];
+ TO_DN_SOME(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- TO_DN_SOME(0.00)[];
- RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
- SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
- ARC_NA(0.00)[]; RCVD_COUNT_TWO(0.00)[2];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; FROM_HAS_DN(0.00)[];
- RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
- DWL_DNSWL_BLOCKED(0.00)[suse.de:dkim]; FROM_EQ_ENVFROM(0.00)[];
- RCVD_VIA_SMTP_AUTH(0.00)[]; RCVD_TLS_ALL(0.00)[];
- DKIM_TRACE(0.00)[suse.de:+]; RCPT_COUNT_FIVE(0.00)[5];
- DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,suse.de:email,suse.de:dkim]
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
- envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
+ FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
+ FROM_HAS_DN(0.00)[]; RCPT_COUNT_FIVE(0.00)[5];
+ RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,suse.de:email];
+ RCVD_TLS_ALL(0.00)[]
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
+ envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -131,95 +120,120 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Yuan Liu <yuan1.liu@intel.com>
 
-add --enable-qpl and --disable-qpl options to enable and disable
-the QPL compression method for multifd migration.
+add the Query Processing Library (QPL) compression method
 
-The Query Processing Library (QPL) is an open-source library
-that supports data compression and decompression features. It
-is based on the deflate compression algorithm and use Intel
-In-Memory Analytics Accelerator(IAA) hardware for compression
-and decompression acceleration.
+Introduce the qpl as a new multifd migration compression method, it can
+use In-Memory Analytics Accelerator(IAA) to accelerate compression and
+decompression, which can not only reduce network bandwidth requirement
+but also reduce host compression and decompression CPU overhead.
 
-For more live migration with IAA, please refer to the document
-docs/devel/migration/qpl-compression.rst
+How to enable qpl compression during migration:
+migrate_set_parameter multifd-compression qpl
+
+There is no qpl compression level parameter added since it only supports
+level one, users do not need to specify the qpl compression level.
 
 Signed-off-by: Yuan Liu <yuan1.liu@intel.com>
 Reviewed-by: Nanhai Zou <nanhai.zou@intel.com>
+Reviewed-by: Peter Xu <peterx@redhat.com>
 Reviewed-by: Fabiano Rosas <farosas@suse.de>
+[fixed docs spacing in migration.json]
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- meson.build                   | 8 ++++++++
- meson_options.txt             | 2 ++
- scripts/meson-buildoptions.sh | 3 +++
- 3 files changed, 13 insertions(+)
+ hw/core/qdev-properties-system.c |  2 +-
+ migration/meson.build            |  1 +
+ migration/multifd-qpl.c          | 20 ++++++++++++++++++++
+ migration/multifd.h              |  1 +
+ qapi/migration.json              |  8 +++++++-
+ 5 files changed, 30 insertions(+), 2 deletions(-)
+ create mode 100644 migration/multifd-qpl.c
 
-diff --git a/meson.build b/meson.build
-index 3a2f126490..c16574710c 100644
---- a/meson.build
-+++ b/meson.build
-@@ -1201,6 +1201,12 @@ if not get_option('zstd').auto() or have_block
-                     required: get_option('zstd'),
-                     method: 'pkg-config')
- endif
-+qpl = not_found
-+if not get_option('qpl').auto() or have_system
-+  qpl = dependency('qpl', version: '>=1.5.0',
-+                    required: get_option('qpl'),
-+                    method: 'pkg-config')
-+endif
- virgl = not_found
+diff --git a/hw/core/qdev-properties-system.c b/hw/core/qdev-properties-system.c
+index d79d6f4b53..6ccd7224f6 100644
+--- a/hw/core/qdev-properties-system.c
++++ b/hw/core/qdev-properties-system.c
+@@ -659,7 +659,7 @@ const PropertyInfo qdev_prop_fdc_drive_type = {
+ const PropertyInfo qdev_prop_multifd_compression = {
+     .name = "MultiFDCompression",
+     .description = "multifd_compression values, "
+-                   "none/zlib/zstd",
++                   "none/zlib/zstd/qpl",
+     .enum_table = &MultiFDCompression_lookup,
+     .get = qdev_propinfo_get_enum,
+     .set = qdev_propinfo_set_enum,
+diff --git a/migration/meson.build b/migration/meson.build
+index bdc3244bce..5f146fe8a9 100644
+--- a/migration/meson.build
++++ b/migration/meson.build
+@@ -39,6 +39,7 @@ endif
  
- have_vhost_user_gpu = have_tools and host_os == 'linux' and pixman.found()
-@@ -2333,6 +2339,7 @@ config_host_data.set('CONFIG_MALLOC_TRIM', has_malloc_trim)
- config_host_data.set('CONFIG_STATX', has_statx)
- config_host_data.set('CONFIG_STATX_MNT_ID', has_statx_mnt_id)
- config_host_data.set('CONFIG_ZSTD', zstd.found())
-+config_host_data.set('CONFIG_QPL', qpl.found())
- config_host_data.set('CONFIG_FUSE', fuse.found())
- config_host_data.set('CONFIG_FUSE_LSEEK', fuse_lseek.found())
- config_host_data.set('CONFIG_SPICE_PROTOCOL', spice_protocol.found())
-@@ -4446,6 +4453,7 @@ summary_info += {'snappy support':    snappy}
- summary_info += {'bzip2 support':     libbzip2}
- summary_info += {'lzfse support':     liblzfse}
- summary_info += {'zstd support':      zstd}
-+summary_info += {'Query Processing Library support': qpl}
- summary_info += {'NUMA host support': numa}
- summary_info += {'capstone':          capstone}
- summary_info += {'libpmem support':   libpmem}
-diff --git a/meson_options.txt b/meson_options.txt
-index 4c1583eb40..dd680a5faf 100644
---- a/meson_options.txt
-+++ b/meson_options.txt
-@@ -259,6 +259,8 @@ option('xkbcommon', type : 'feature', value : 'auto',
-        description: 'xkbcommon support')
- option('zstd', type : 'feature', value : 'auto',
-        description: 'zstd compression support')
-+option('qpl', type : 'feature', value : 'auto',
-+       description: 'Query Processing Library support')
- option('fuse', type: 'feature', value: 'auto',
-        description: 'FUSE block device export')
- option('fuse_lseek', type : 'feature', value : 'auto',
-diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
-index 6ce5a8b72a..73ae8cedfc 100644
---- a/scripts/meson-buildoptions.sh
-+++ b/scripts/meson-buildoptions.sh
-@@ -220,6 +220,7 @@ meson_options_help() {
-   printf "%s\n" '                  Xen PCI passthrough support'
-   printf "%s\n" '  xkbcommon       xkbcommon support'
-   printf "%s\n" '  zstd            zstd compression support'
-+  printf "%s\n" '  qpl             Query Processing Library support'
- }
- _meson_option_parse() {
-   case $1 in
-@@ -558,6 +559,8 @@ _meson_option_parse() {
-     --disable-xkbcommon) printf "%s" -Dxkbcommon=disabled ;;
-     --enable-zstd) printf "%s" -Dzstd=enabled ;;
-     --disable-zstd) printf "%s" -Dzstd=disabled ;;
-+    --enable-qpl) printf "%s" -Dqpl=enabled ;;
-+    --disable-qpl) printf "%s" -Dqpl=disabled ;;
-     *) return 1 ;;
-   esac
- }
+ system_ss.add(when: rdma, if_true: files('rdma.c'))
+ system_ss.add(when: zstd, if_true: files('multifd-zstd.c'))
++system_ss.add(when: qpl, if_true: files('multifd-qpl.c'))
+ 
+ specific_ss.add(when: 'CONFIG_SYSTEM_ONLY',
+                 if_true: files('ram.c',
+diff --git a/migration/multifd-qpl.c b/migration/multifd-qpl.c
+new file mode 100644
+index 0000000000..056a68a060
+--- /dev/null
++++ b/migration/multifd-qpl.c
+@@ -0,0 +1,20 @@
++/*
++ * Multifd qpl compression accelerator implementation
++ *
++ * Copyright (c) 2023 Intel Corporation
++ *
++ * Authors:
++ *  Yuan Liu<yuan1.liu@intel.com>
++ *
++ * This work is licensed under the terms of the GNU GPL, version 2 or later.
++ * See the COPYING file in the top-level directory.
++ */
++#include "qemu/osdep.h"
++#include "qemu/module.h"
++
++static void multifd_qpl_register(void)
++{
++    /* noop */
++}
++
++migration_init(multifd_qpl_register);
+diff --git a/migration/multifd.h b/migration/multifd.h
+index c9d9b09239..5b7d9b15f8 100644
+--- a/migration/multifd.h
++++ b/migration/multifd.h
+@@ -40,6 +40,7 @@ MultiFDRecvData *multifd_get_recv_data(void);
+ #define MULTIFD_FLAG_NOCOMP (0 << 1)
+ #define MULTIFD_FLAG_ZLIB (1 << 1)
+ #define MULTIFD_FLAG_ZSTD (2 << 1)
++#define MULTIFD_FLAG_QPL (4 << 1)
+ 
+ /* This value needs to be a multiple of qemu_target_page_size() */
+ #define MULTIFD_PACKET_SIZE (512 * 1024)
+diff --git a/qapi/migration.json b/qapi/migration.json
+index a351fd3714..a35d0b5b83 100644
+--- a/qapi/migration.json
++++ b/qapi/migration.json
+@@ -554,11 +554,17 @@
+ #
+ # @zstd: use zstd compression method.
+ #
++# @qpl: use qpl compression method.  Query Processing Library(qpl) is
++#       based on the deflate compression algorithm and use the Intel
++#       In-Memory Analytics Accelerator(IAA) accelerated compression
++#       and decompression.  (Since 9.1)
++#
+ # Since: 5.0
+ ##
+ { 'enum': 'MultiFDCompression',
+   'data': [ 'none', 'zlib',
+-            { 'name': 'zstd', 'if': 'CONFIG_ZSTD' } ] }
++            { 'name': 'zstd', 'if': 'CONFIG_ZSTD' },
++            { 'name': 'qpl', 'if': 'CONFIG_QPL' } ] }
+ 
+ ##
+ # @MigMode:
 -- 
 2.35.3
 
