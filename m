@@ -2,99 +2,112 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1438F909146
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jun 2024 19:19:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06E2D909156
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jun 2024 19:20:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sIAZV-00019j-3q; Fri, 14 Jun 2024 13:18:41 -0400
+	id 1sIAZW-0001AF-Ie; Fri, 14 Jun 2024 13:18:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sIAZQ-00018G-Ro
- for qemu-devel@nongnu.org; Fri, 14 Jun 2024 13:18:37 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sIAZS-00018u-I7
+ for qemu-devel@nongnu.org; Fri, 14 Jun 2024 13:18:38 -0400
 Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sIAZO-00047K-PN
- for qemu-devel@nongnu.org; Fri, 14 Jun 2024 13:18:36 -0400
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sIAZQ-00047g-KM
+ for qemu-devel@nongnu.org; Fri, 14 Jun 2024 13:18:38 -0400
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id A65D620726;
- Fri, 14 Jun 2024 17:18:32 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 0017220728;
+ Fri, 14 Jun 2024 17:18:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1718385513; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1718385515; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=DB7SLOs6gcfqpQZjc/YzZDAovxQaY2aowoNpB52Z6PU=;
- b=uelrg4jwjHZhDixuP4vudq4N0m6Qn63BWdVT1J6jdy5Jf6BpO3QdWqD3cEeQ4m2PrVrI4g
- kW1p8eoHpV4kc+bgZxvf1wUciNyQ6BMTSFmXFRsFNEIBfFeXm2ItXTe1bYMOh3BH/iMlWY
- BAHyGRMQ8Aumdpg1+RIIU3rq9V9agXI=
+ bh=QraaRodgcIYNu8jkrWwRQj/dxHjZULEGFRoh2RfEryk=;
+ b=KHY/b444rPNGff9q5EDmIo5AZSyBwI1hYkp0eyN/5KiSoI/2wzzL3AUi8xbQshDCyz+lK4
+ FMXI+dm3QHf90DNk4t501XKoXMguXmpfKS3QAO009sNb3unaC65V0HwU3dvFcsoyUZo0pQ
+ 48Lb3bZWXmZRRar9MklpiV5TPAxPHVA=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1718385513;
+ s=susede2_ed25519; t=1718385515;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=DB7SLOs6gcfqpQZjc/YzZDAovxQaY2aowoNpB52Z6PU=;
- b=IyritM7CsEKBjXggskb9LRu/r9XRsBpSjFvuwOoVKs3K/+QqHzR4l6mMuqV1tTK5yKTXpy
- vFamTWQo4+t4PLCA==
+ bh=QraaRodgcIYNu8jkrWwRQj/dxHjZULEGFRoh2RfEryk=;
+ b=WP4jw/PkHiAuphfR6s62H5V9jNXGokKy1+DPUF4GcqVngJwPOzWDLB/epBN2EpWFChIdWO
+ fQH3kFrD92oCXLCw==
 Authentication-Results: smtp-out2.suse.de;
-	none
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b="KHY/b444";
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="WP4jw/Pk"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1718385512; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1718385515; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=DB7SLOs6gcfqpQZjc/YzZDAovxQaY2aowoNpB52Z6PU=;
- b=qaShqWFY9jOO3hNSR2zZFAVny71n70hnbbkYbSzxB68axfKcymobMOidYAvBx7qhxFf73L
- vPQXyBCiM9SgcCwS+gaX0kdtnEng5k92x/MNxn/Igssb18YluTUNGhTNTLlyojWXwAx3xD
- xUQl7Wfz5A/uRBbh1m1KFASKJ+HQdHM=
+ bh=QraaRodgcIYNu8jkrWwRQj/dxHjZULEGFRoh2RfEryk=;
+ b=KHY/b444rPNGff9q5EDmIo5AZSyBwI1hYkp0eyN/5KiSoI/2wzzL3AUi8xbQshDCyz+lK4
+ FMXI+dm3QHf90DNk4t501XKoXMguXmpfKS3QAO009sNb3unaC65V0HwU3dvFcsoyUZo0pQ
+ 48Lb3bZWXmZRRar9MklpiV5TPAxPHVA=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1718385512;
+ s=susede2_ed25519; t=1718385515;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=DB7SLOs6gcfqpQZjc/YzZDAovxQaY2aowoNpB52Z6PU=;
- b=nHGBm5z2Mkgcxzj1Mazj9SY63NBR3gqnbx4UhSyQvXyinwNGuLG1Ew/RhddmyfsYl9C09I
- F45k17BO9sokjZDA==
+ bh=QraaRodgcIYNu8jkrWwRQj/dxHjZULEGFRoh2RfEryk=;
+ b=WP4jw/PkHiAuphfR6s62H5V9jNXGokKy1+DPUF4GcqVngJwPOzWDLB/epBN2EpWFChIdWO
+ fQH3kFrD92oCXLCw==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 10A8813AB1;
- Fri, 14 Jun 2024 17:18:30 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1B9F513AB5;
+ Fri, 14 Jun 2024 17:18:32 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id WIc5MmZ7bGaVAgAAD6G6ig
- (envelope-from <farosas@suse.de>); Fri, 14 Jun 2024 17:18:30 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id UEn6NGh7bGaVAgAAD6G6ig
+ (envelope-from <farosas@suse.de>); Fri, 14 Jun 2024 17:18:32 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+ Markus Armbruster <armbru@redhat.com>,
  Zhangfei Gao <zhangfei.gao@linaro.org>
-Subject: [PULL 13/18] configure: Add uadk option
-Date: Fri, 14 Jun 2024 14:17:57 -0300
-Message-Id: <20240614171802.28451-14-farosas@suse.de>
+Subject: [PULL 14/18] migration/multifd: add uadk compression framework
+Date: Fri, 14 Jun 2024 14:17:58 -0300
+Message-Id: <20240614171802.28451-15-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20240614171802.28451-1-farosas@suse.de>
 References: <20240614171802.28451-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Score: -2.80
-X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[100.00%];
- NEURAL_HAM_LONG(-1.00)[-1.000]; MID_CONTAINS_FROM(1.00)[];
- R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-1.000];
- MIME_GOOD(-0.10)[text/plain]; MIME_TRACE(0.00)[0:+];
- TO_DN_SOME(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
+X-Rspamd-Queue-Id: 0017220728
+X-Spam-Score: -3.01
+X-Spamd-Result: default: False [-3.01 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+ MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ R_MISSING_CHARSET(0.50)[];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ MX_GOOD(-0.01)[]; MIME_TRACE(0.00)[0:+];
+ FUZZY_BLOCKED(0.00)[rspamd.com];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
- FROM_HAS_DN(0.00)[]; RCPT_COUNT_FIVE(0.00)[5];
- RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,linaro.org:email];
- RCVD_TLS_ALL(0.00)[]
+ TO_DN_SOME(0.00)[];
+ RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
+ SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+ ARC_NA(0.00)[]; RCVD_COUNT_TWO(0.00)[2];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; FROM_HAS_DN(0.00)[];
+ RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+ DWL_DNSWL_BLOCKED(0.00)[suse.de:dkim]; FROM_EQ_ENVFROM(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; RCVD_TLS_ALL(0.00)[];
+ DKIM_TRACE(0.00)[suse.de:+]; RCPT_COUNT_FIVE(0.00)[6];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:dkim,linaro.org:email]
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
 Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
  envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
 X-Spam_score_int: -43
@@ -121,93 +134,116 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
 
-Add --enable-uadk and --disable-uadk options to enable and disable
-UADK compression accelerator. This is for using UADK based hardware
-accelerators for live migration.
+Adds the skeleton to support uadk compression method.
+Complete functionality will be added in subsequent patches.
 
+Acked-by: Markus Armbruster <armbru@redhat.com>
 Reviewed-by: Fabiano Rosas <farosas@suse.de>
 Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
 Reviewed-by: Zhangfei Gao <zhangfei.gao@linaro.org>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- meson.build                   | 14 ++++++++++++++
- meson_options.txt             |  2 ++
- scripts/meson-buildoptions.sh |  3 +++
- 3 files changed, 19 insertions(+)
+ hw/core/qdev-properties-system.c |  2 +-
+ migration/meson.build            |  1 +
+ migration/multifd-uadk.c         | 20 ++++++++++++++++++++
+ migration/multifd.h              |  5 +++--
+ qapi/migration.json              |  5 ++++-
+ 5 files changed, 29 insertions(+), 4 deletions(-)
+ create mode 100644 migration/multifd-uadk.c
 
-diff --git a/meson.build b/meson.build
-index c16574710c..97e00d6f59 100644
---- a/meson.build
-+++ b/meson.build
-@@ -1207,6 +1207,18 @@ if not get_option('qpl').auto() or have_system
-                     required: get_option('qpl'),
-                     method: 'pkg-config')
- endif
-+uadk = not_found
-+if not get_option('uadk').auto() or have_system
-+  libwd = dependency('libwd', version: '>=2.6',
-+                      required: get_option('uadk'),
-+                      method: 'pkg-config')
-+  libwd_comp = dependency('libwd_comp', version: '>=2.6',
-+                           required: get_option('uadk'),
-+                           method: 'pkg-config')
-+  if libwd.found() and libwd_comp.found()
-+     uadk = declare_dependency(dependencies: [libwd, libwd_comp])
-+  endif
-+endif
- virgl = not_found
+diff --git a/hw/core/qdev-properties-system.c b/hw/core/qdev-properties-system.c
+index 6ccd7224f6..f13350b4fb 100644
+--- a/hw/core/qdev-properties-system.c
++++ b/hw/core/qdev-properties-system.c
+@@ -659,7 +659,7 @@ const PropertyInfo qdev_prop_fdc_drive_type = {
+ const PropertyInfo qdev_prop_multifd_compression = {
+     .name = "MultiFDCompression",
+     .description = "multifd_compression values, "
+-                   "none/zlib/zstd/qpl",
++                   "none/zlib/zstd/qpl/uadk",
+     .enum_table = &MultiFDCompression_lookup,
+     .get = qdev_propinfo_get_enum,
+     .set = qdev_propinfo_set_enum,
+diff --git a/migration/meson.build b/migration/meson.build
+index 5f146fe8a9..5ce2acb41e 100644
+--- a/migration/meson.build
++++ b/migration/meson.build
+@@ -40,6 +40,7 @@ endif
+ system_ss.add(when: rdma, if_true: files('rdma.c'))
+ system_ss.add(when: zstd, if_true: files('multifd-zstd.c'))
+ system_ss.add(when: qpl, if_true: files('multifd-qpl.c'))
++system_ss.add(when: uadk, if_true: files('multifd-uadk.c'))
  
- have_vhost_user_gpu = have_tools and host_os == 'linux' and pixman.found()
-@@ -2340,6 +2352,7 @@ config_host_data.set('CONFIG_STATX', has_statx)
- config_host_data.set('CONFIG_STATX_MNT_ID', has_statx_mnt_id)
- config_host_data.set('CONFIG_ZSTD', zstd.found())
- config_host_data.set('CONFIG_QPL', qpl.found())
-+config_host_data.set('CONFIG_UADK', uadk.found())
- config_host_data.set('CONFIG_FUSE', fuse.found())
- config_host_data.set('CONFIG_FUSE_LSEEK', fuse_lseek.found())
- config_host_data.set('CONFIG_SPICE_PROTOCOL', spice_protocol.found())
-@@ -4454,6 +4467,7 @@ summary_info += {'bzip2 support':     libbzip2}
- summary_info += {'lzfse support':     liblzfse}
- summary_info += {'zstd support':      zstd}
- summary_info += {'Query Processing Library support': qpl}
-+summary_info += {'UADK Library support': uadk}
- summary_info += {'NUMA host support': numa}
- summary_info += {'capstone':          capstone}
- summary_info += {'libpmem support':   libpmem}
-diff --git a/meson_options.txt b/meson_options.txt
-index dd680a5faf..7a79dd8970 100644
---- a/meson_options.txt
-+++ b/meson_options.txt
-@@ -261,6 +261,8 @@ option('zstd', type : 'feature', value : 'auto',
-        description: 'zstd compression support')
- option('qpl', type : 'feature', value : 'auto',
-        description: 'Query Processing Library support')
-+option('uadk', type : 'feature', value : 'auto',
-+       description: 'UADK Library support')
- option('fuse', type: 'feature', value: 'auto',
-        description: 'FUSE block device export')
- option('fuse_lseek', type : 'feature', value : 'auto',
-diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
-index 73ae8cedfc..58d49a447d 100644
---- a/scripts/meson-buildoptions.sh
-+++ b/scripts/meson-buildoptions.sh
-@@ -221,6 +221,7 @@ meson_options_help() {
-   printf "%s\n" '  xkbcommon       xkbcommon support'
-   printf "%s\n" '  zstd            zstd compression support'
-   printf "%s\n" '  qpl             Query Processing Library support'
-+  printf "%s\n" '  uadk            UADK Library support'
- }
- _meson_option_parse() {
-   case $1 in
-@@ -561,6 +562,8 @@ _meson_option_parse() {
-     --disable-zstd) printf "%s" -Dzstd=disabled ;;
-     --enable-qpl) printf "%s" -Dqpl=enabled ;;
-     --disable-qpl) printf "%s" -Dqpl=disabled ;;
-+    --enable-uadk) printf "%s" -Duadk=enabled ;;
-+    --disable-uadk) printf "%s" -Duadk=disabled ;;
-     *) return 1 ;;
-   esac
- }
+ specific_ss.add(when: 'CONFIG_SYSTEM_ONLY',
+                 if_true: files('ram.c',
+diff --git a/migration/multifd-uadk.c b/migration/multifd-uadk.c
+new file mode 100644
+index 0000000000..c2bb07535b
+--- /dev/null
++++ b/migration/multifd-uadk.c
+@@ -0,0 +1,20 @@
++/*
++ * Multifd UADK compression accelerator implementation
++ *
++ * Copyright (c) 2024 Huawei Technologies R & D (UK) Ltd
++ *
++ * Authors:
++ *  Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
++ *
++ * This work is licensed under the terms of the GNU GPL, version 2 or later.
++ * See the COPYING file in the top-level directory.
++ */
++
++#include "qemu/osdep.h"
++#include "qemu/module.h"
++
++static void multifd_uadk_register(void)
++{
++    /* noop for now */
++}
++migration_init(multifd_uadk_register);
+diff --git a/migration/multifd.h b/migration/multifd.h
+index 5b7d9b15f8..0ecd6f47d7 100644
+--- a/migration/multifd.h
++++ b/migration/multifd.h
+@@ -34,13 +34,14 @@ MultiFDRecvData *multifd_get_recv_data(void);
+ /* Multifd Compression flags */
+ #define MULTIFD_FLAG_SYNC (1 << 0)
+ 
+-/* We reserve 3 bits for compression methods */
+-#define MULTIFD_FLAG_COMPRESSION_MASK (7 << 1)
++/* We reserve 4 bits for compression methods */
++#define MULTIFD_FLAG_COMPRESSION_MASK (0xf << 1)
+ /* we need to be compatible. Before compression value was 0 */
+ #define MULTIFD_FLAG_NOCOMP (0 << 1)
+ #define MULTIFD_FLAG_ZLIB (1 << 1)
+ #define MULTIFD_FLAG_ZSTD (2 << 1)
+ #define MULTIFD_FLAG_QPL (4 << 1)
++#define MULTIFD_FLAG_UADK (8 << 1)
+ 
+ /* This value needs to be a multiple of qemu_target_page_size() */
+ #define MULTIFD_PACKET_SIZE (512 * 1024)
+diff --git a/qapi/migration.json b/qapi/migration.json
+index a35d0b5b83..470f746cc5 100644
+--- a/qapi/migration.json
++++ b/qapi/migration.json
+@@ -559,12 +559,15 @@
+ #       In-Memory Analytics Accelerator(IAA) accelerated compression
+ #       and decompression.  (Since 9.1)
+ #
++# @uadk: use UADK library compression method.  (Since 9.1)
++#
+ # Since: 5.0
+ ##
+ { 'enum': 'MultiFDCompression',
+   'data': [ 'none', 'zlib',
+             { 'name': 'zstd', 'if': 'CONFIG_ZSTD' },
+-            { 'name': 'qpl', 'if': 'CONFIG_QPL' } ] }
++            { 'name': 'qpl', 'if': 'CONFIG_QPL' },
++            { 'name': 'uadk', 'if': 'CONFIG_UADK' } ] }
+ 
+ ##
+ # @MigMode:
 -- 
 2.35.3
 
