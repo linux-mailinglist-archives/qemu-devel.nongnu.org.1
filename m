@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A66DA9088B3
+	by mail.lfdr.de (Postfix) with ESMTPS id D6D019088B5
 	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jun 2024 11:55:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sI3dl-0006DH-8H; Fri, 14 Jun 2024 05:54:37 -0400
+	id 1sI3do-0006EY-Fx; Fri, 14 Jun 2024 05:54:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1sI3df-0006At-7I
- for qemu-devel@nongnu.org; Fri, 14 Jun 2024 05:54:31 -0400
+ id 1sI3dm-0006Dq-Bd
+ for qemu-devel@nongnu.org; Fri, 14 Jun 2024 05:54:38 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1sI3dd-0003XD-IP
- for qemu-devel@nongnu.org; Fri, 14 Jun 2024 05:54:30 -0400
+ id 1sI3dk-0003ag-KH
+ for qemu-devel@nongnu.org; Fri, 14 Jun 2024 05:54:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1718358868;
+ s=mimecast20190719; t=1718358876;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=TYVDyBaXbId670jhHS4RsXy3i9UaSll07aLmdQKxZ4M=;
- b=DnQNUaLPgK5oIIaQ1lQBNtOwy76La8Y6p0jEHSO+p4y+Gt4kDu6i65iOgq+pEHNlnrYTG+
- nKRVv1oi0y5TkJ3K+PPJWHjpPTQbLEKpIx9CwqVpvR6PjpGs3rrkeCHf9UKsk3kjtnjSWv
- 9hwi4kiwkMPWJ9hqtPMpzvQti3CbM5c=
+ bh=jSRIdmiUClQ9pX7X/Y3xsraO5rrerhKvl7FyHzAs9PE=;
+ b=bnbc2AbyOS6P3PEvtGWYRsPXkx3Yfkz3w+PBAEJ8XUkKIRVJUBdQGTwf5K10uKuOBQu3VF
+ Uh0DECv+iJCYagvoLBNjWA4Bsj/kw5zgeMRES4t/ZXu9ewy4MeLYEjK3nnx5HBBiKHE2jt
+ Fzx6VTK7I6Z2XbR3Nd3HF04sN0MfTmM=
 Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-577-krIfCD_2NC-8vCAhyz746g-1; Fri,
- 14 Jun 2024 05:54:24 -0400
-X-MC-Unique: krIfCD_2NC-8vCAhyz746g-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-531-EWmWORHBOCu96nOiAfpaFg-1; Fri,
+ 14 Jun 2024 05:54:30 -0400
+X-MC-Unique: EWmWORHBOCu96nOiAfpaFg-1
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 8220119560A2; Fri, 14 Jun 2024 09:54:23 +0000 (UTC)
+ id 8ABD719560B0; Fri, 14 Jun 2024 09:54:29 +0000 (UTC)
 Received: from laptop.redhat.com (unknown [10.39.193.191])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 2CFE4300021A; Fri, 14 Jun 2024 09:54:18 +0000 (UTC)
+ id F13E33000222; Fri, 14 Jun 2024 09:54:23 +0000 (UTC)
 From: Eric Auger <eric.auger@redhat.com>
 To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
  qemu-arm@nongnu.org, mst@redhat.com, jean-philippe@linaro.org,
@@ -51,10 +51,9 @@ To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
  zhenzhong.duan@intel.com
 Cc: alex.williamson@redhat.com, jasowang@redhat.com, pbonzini@redhat.com,
  berrange@redhat.com
-Subject: [PATCH v4 2/8] virtio-iommu: Implement set|unset]_iommu_device()
- callbacks
-Date: Fri, 14 Jun 2024 11:52:52 +0200
-Message-ID: <20240614095402.904691-3-eric.auger@redhat.com>
+Subject: [PATCH v4 3/8] HostIOMMUDevice: Introduce get_iova_ranges callback
+Date: Fri, 14 Jun 2024 11:52:53 +0200
+Message-ID: <20240614095402.904691-4-eric.auger@redhat.com>
 In-Reply-To: <20240614095402.904691-1-eric.auger@redhat.com>
 References: <20240614095402.904691-1-eric.auger@redhat.com>
 MIME-Version: 1.0
@@ -85,155 +84,110 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Implement PCIIOMMUOPs [set|unset]_iommu_device() callbacks.
-In set(), the HostIOMMUDevice handle is stored in a hash
-table indexed by PCI BDF. The object will allow to retrieve
-information related to the physical IOMMU.
+Introduce a new HostIOMMUDevice callback that allows to
+retrieve the usable IOVA ranges.
+
+Implement this callback in the legacy VFIO and IOMMUFD VFIO
+host iommu devices. This relies on the VFIODevice agent's
+base container iova_ranges resource.
 
 Signed-off-by: Eric Auger <eric.auger@redhat.com>
+Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 
 ---
-v3 -> v4:
-- Simply use native HostIOMMUDevice instead of VirtioHostIOMMUDevice
 
 v2 -> v3:
-- include host_iommu_device.h in virtio-iommu.h header
-- introduce hiod_destroy() and fix UAF in
-  virtio_iommu_unset_iommu_device()
+- add g_assert(vdev)
 ---
- include/hw/virtio/virtio-iommu.h |  2 +
- hw/virtio/virtio-iommu.c         | 82 ++++++++++++++++++++++++++++++++
- 2 files changed, 84 insertions(+)
+ include/sysemu/host_iommu_device.h |  8 ++++++++
+ hw/vfio/container.c                | 16 ++++++++++++++++
+ hw/vfio/iommufd.c                  | 16 ++++++++++++++++
+ 3 files changed, 40 insertions(+)
 
-diff --git a/include/hw/virtio/virtio-iommu.h b/include/hw/virtio/virtio-iommu.h
-index 83a52cc446..bdb3da72d0 100644
---- a/include/hw/virtio/virtio-iommu.h
-+++ b/include/hw/virtio/virtio-iommu.h
-@@ -25,6 +25,7 @@
- #include "hw/pci/pci.h"
- #include "qom/object.h"
- #include "qapi/qapi-types-virtio.h"
-+#include "sysemu/host_iommu_device.h"
- 
- #define TYPE_VIRTIO_IOMMU "virtio-iommu-device"
- #define TYPE_VIRTIO_IOMMU_PCI "virtio-iommu-pci"
-@@ -57,6 +58,7 @@ struct VirtIOIOMMU {
-     struct virtio_iommu_config config;
-     uint64_t features;
-     GHashTable *as_by_busptr;
-+    GHashTable *host_iommu_devices;
-     IOMMUPciBus *iommu_pcibus_by_bus_num[PCI_BUS_MAX];
-     PCIBus *primary_bus;
-     ReservedRegion *prop_resv_regions;
-diff --git a/hw/virtio/virtio-iommu.c b/hw/virtio/virtio-iommu.c
-index 1326c6ec41..16c8ec3ca4 100644
---- a/hw/virtio/virtio-iommu.c
-+++ b/hw/virtio/virtio-iommu.c
-@@ -69,6 +69,11 @@ typedef struct VirtIOIOMMUMapping {
-     uint32_t flags;
- } VirtIOIOMMUMapping;
- 
-+struct hiod_key {
-+    PCIBus *bus;
-+    uint8_t devfn;
-+};
-+
- static inline uint16_t virtio_iommu_get_bdf(IOMMUDevice *dev)
- {
-     return PCI_BUILD_BDF(pci_bus_num(dev->bus), dev->devfn);
-@@ -462,8 +467,82 @@ static AddressSpace *virtio_iommu_find_add_as(PCIBus *bus, void *opaque,
-     return &sdev->as;
- }
- 
-+static gboolean hiod_equal(gconstpointer v1, gconstpointer v2)
-+{
-+    const struct hiod_key *key1 = v1;
-+    const struct hiod_key *key2 = v2;
-+
-+    return (key1->bus == key2->bus) && (key1->devfn == key2->devfn);
-+}
-+
-+static guint hiod_hash(gconstpointer v)
-+{
-+    const struct hiod_key *key = v;
-+    guint value = (guint)(uintptr_t)key->bus;
-+
-+    return (guint)(value << 8 | key->devfn);
-+}
-+
-+static void hiod_destroy(gpointer v)
-+{
-+    object_unref(v);
-+}
-+
-+static HostIOMMUDevice *
-+get_host_iommu_device(VirtIOIOMMU *viommu, PCIBus *bus, int devfn) {
-+    struct hiod_key key = {
-+        .bus = bus,
-+        .devfn = devfn,
-+    };
-+
-+    return g_hash_table_lookup(viommu->host_iommu_devices, &key);
-+}
-+
-+static bool virtio_iommu_set_iommu_device(PCIBus *bus, void *opaque, int devfn,
-+                                          HostIOMMUDevice *hiod, Error **errp)
-+{
-+    VirtIOIOMMU *viommu = opaque;
-+    struct hiod_key *new_key;
-+
-+    assert(hiod);
-+
-+    if (get_host_iommu_device(viommu, bus, devfn)) {
-+        error_setg(errp, "Host IOMMU device already exists");
-+        return false;
-+    }
-+
-+    new_key = g_malloc(sizeof(*new_key));
-+    new_key->bus = bus;
-+    new_key->devfn = devfn;
-+
-+    object_ref(hiod);
-+    g_hash_table_insert(viommu->host_iommu_devices, new_key, hiod);
-+
-+    return true;
-+}
-+
-+static void
-+virtio_iommu_unset_iommu_device(PCIBus *bus, void *opaque, int devfn)
-+{
-+    VirtIOIOMMU *viommu = opaque;
-+    HostIOMMUDevice *hiod;
-+    struct hiod_key key = {
-+        .bus = bus,
-+        .devfn = devfn,
-+    };
-+
-+    hiod = g_hash_table_lookup(viommu->host_iommu_devices, &key);
-+    if (!hiod) {
-+        return;
-+    }
-+
-+    g_hash_table_remove(viommu->host_iommu_devices, &key);
-+}
-+
- static const PCIIOMMUOps virtio_iommu_ops = {
-     .get_address_space = virtio_iommu_find_add_as,
-+    .set_iommu_device = virtio_iommu_set_iommu_device,
-+    .unset_iommu_device = virtio_iommu_unset_iommu_device,
+diff --git a/include/sysemu/host_iommu_device.h b/include/sysemu/host_iommu_device.h
+index 3e5f058e7b..40e0fa13ef 100644
+--- a/include/sysemu/host_iommu_device.h
++++ b/include/sysemu/host_iommu_device.h
+@@ -80,6 +80,14 @@ struct HostIOMMUDeviceClass {
+      * i.e., HOST_IOMMU_DEVICE_CAP_AW_BITS.
+      */
+     int (*get_cap)(HostIOMMUDevice *hiod, int cap, Error **errp);
++    /**
++     * @get_iova_ranges: Return the list of usable iova_ranges along with
++     * @hiod Host IOMMU device
++     *
++     * @hiod: handle to the host IOMMU device
++     * @errp: error handle
++     */
++    GList* (*get_iova_ranges)(HostIOMMUDevice *hiod, Error **errp);
  };
  
- static int virtio_iommu_attach(VirtIOIOMMU *s,
-@@ -1357,6 +1436,9 @@ static void virtio_iommu_device_realize(DeviceState *dev, Error **errp)
+ /*
+diff --git a/hw/vfio/container.c b/hw/vfio/container.c
+index b728b978a2..c48749c089 100644
+--- a/hw/vfio/container.c
++++ b/hw/vfio/container.c
+@@ -1164,12 +1164,28 @@ static int hiod_legacy_vfio_get_cap(HostIOMMUDevice *hiod, int cap,
+     }
+ }
  
-     s->as_by_busptr = g_hash_table_new_full(NULL, NULL, NULL, g_free);
- 
-+    s->host_iommu_devices = g_hash_table_new_full(hiod_hash, hiod_equal,
-+                                                  g_free, hiod_destroy);
++static GList *
++hiod_legacy_vfio_get_iova_ranges(HostIOMMUDevice *hiod, Error **errp)
++{
++    VFIODevice *vdev = hiod->agent;
++    GList *l = NULL;
 +
-     if (s->primary_bus) {
-         pci_setup_iommu(s->primary_bus, &virtio_iommu_ops, s);
-     } else {
++    g_assert(vdev);
++
++    if (vdev->bcontainer) {
++        l = g_list_copy(vdev->bcontainer->iova_ranges);
++    }
++
++    return l;
++}
++
+ static void hiod_legacy_vfio_class_init(ObjectClass *oc, void *data)
+ {
+     HostIOMMUDeviceClass *hioc = HOST_IOMMU_DEVICE_CLASS(oc);
+ 
+     hioc->realize = hiod_legacy_vfio_realize;
+     hioc->get_cap = hiod_legacy_vfio_get_cap;
++    hioc->get_iova_ranges = hiod_legacy_vfio_get_iova_ranges;
+ };
+ 
+ static const TypeInfo types[] = {
+diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
+index dbdae1adbb..e502081c2a 100644
+--- a/hw/vfio/iommufd.c
++++ b/hw/vfio/iommufd.c
+@@ -645,11 +645,27 @@ static bool hiod_iommufd_vfio_realize(HostIOMMUDevice *hiod, void *opaque,
+     return true;
+ }
+ 
++static GList *
++hiod_iommufd_vfio_get_iova_ranges(HostIOMMUDevice *hiod, Error **errp)
++{
++    VFIODevice *vdev = hiod->agent;
++    GList *l = NULL;
++
++    g_assert(vdev);
++
++    if (vdev->bcontainer) {
++        l = g_list_copy(vdev->bcontainer->iova_ranges);
++    }
++
++    return l;
++}
++
+ static void hiod_iommufd_vfio_class_init(ObjectClass *oc, void *data)
+ {
+     HostIOMMUDeviceClass *hiodc = HOST_IOMMU_DEVICE_CLASS(oc);
+ 
+     hiodc->realize = hiod_iommufd_vfio_realize;
++    hiodc->get_iova_ranges = hiod_iommufd_vfio_get_iova_ranges;
+ };
+ 
+ static const TypeInfo types[] = {
 -- 
 2.41.0
 
