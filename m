@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B17629084E5
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jun 2024 09:29:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AF7D9084E0
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jun 2024 09:29:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sI1LT-0003CB-43; Fri, 14 Jun 2024 03:27:35 -0400
+	id 1sI1La-0003ET-Sx; Fri, 14 Jun 2024 03:27:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sI1LR-0003BX-J6
- for qemu-devel@nongnu.org; Fri, 14 Jun 2024 03:27:33 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sI1LY-0003Dp-O8
+ for qemu-devel@nongnu.org; Fri, 14 Jun 2024 03:27:40 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sI1LQ-0000kK-5I
- for qemu-devel@nongnu.org; Fri, 14 Jun 2024 03:27:33 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sI1LW-0000ke-Um
+ for qemu-devel@nongnu.org; Fri, 14 Jun 2024 03:27:40 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1718350051;
+ s=mimecast20190719; t=1718350057;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=JxbWMx16HGQpOdBAfmbUiIqd5HPEH8JtjB2wrwjzgZ0=;
- b=dyx0vdV4ewi8WSUr5jBKdYACp6skmuwqN0tEQc2IelrSUgbGzbFlNP/BX3Bjrc6p2l4lg3
- 4naIIpsDbHI5XsBQa/pOGFKSFgGceOfxaUlgdmsvkLwLGYVEAOaGxd501fCXp9bqF9bK6v
- r5ZOjZVlu9ouAuvXFGZhW8iIuKf60+k=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=AYWGjfqdWTHN73mpwY5Vg/n4nswDcBeE67iGIGD6bgk=;
+ b=gHSmv0/VsOk2lrBKD9ekG+SLki0YPWNHb1J2ry/um6xSkmKEaG08+T2014MK4jWVROCp2E
+ Uf4YJ9lBE6L8F/MIiHuXW1wQI7wuTFCbJwPLC77BcDKnm+vstFNFQIFUWdJHyPcgYsoMyn
+ LJXNxduzBYq3ugmyVMXeB9uRI5R2yBQ=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-633-wf7NeazrNFa9fm1fJeajkQ-1; Fri,
- 14 Jun 2024 03:27:24 -0400
-X-MC-Unique: wf7NeazrNFa9fm1fJeajkQ-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-671-bFlG5q9YMfGOxBAEzY7hWA-1; Fri,
+ 14 Jun 2024 03:27:31 -0400
+X-MC-Unique: bFlG5q9YMfGOxBAEzY7hWA-1
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 3B57D19560B5; Fri, 14 Jun 2024 07:27:23 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id AAA9019560AB; Fri, 14 Jun 2024 07:27:30 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.192.49])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 5A93E3000219; Fri, 14 Jun 2024 07:27:19 +0000 (UTC)
+ id 815DB300021A; Fri, 14 Jun 2024 07:27:23 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: Jamin Lin <jamin_lin@aspeedtech.com>, Troy Lee <troy_lee@aspeedtech.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [PULL 02/19] aspeed/wdt: Add AST2700 support
-Date: Fri, 14 Jun 2024 09:26:03 +0200
-Message-ID: <20240614072620.1262053-3-clg@redhat.com>
+Subject: [PULL 03/19] aspeed/sli: Add AST2700 support
+Date: Fri, 14 Jun 2024 09:26:04 +0200
+Message-ID: <20240614072620.1262053-4-clg@redhat.com>
 In-Reply-To: <20240614072620.1262053-1-clg@redhat.com>
 References: <20240614072620.1262053-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -83,76 +83,269 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jamin Lin <jamin_lin@aspeedtech.com>
 
-AST2700 wdt controller is similiar to AST2600's wdt, but
-the AST2700 has 8 watchdogs, and they each have 0x80 of registers.
-Introduce ast2700 object class and increase the number of regs(offset) of
-ast2700 model.
+AST2700 SLI engine is designed to accelerate the
+throughput between cross-die connections.
+It have CPU_SLI at CPU die and IO_SLI at IO die.
+
+Introduce dummy AST2700 SLI and SLIIO models.
 
 Signed-off-by: Troy Lee <troy_lee@aspeedtech.com>
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 Reviewed-by: Cédric Le Goater <clg@kaod.org>
 ---
- include/hw/watchdog/wdt_aspeed.h |  3 ++-
- hw/watchdog/wdt_aspeed.c         | 24 ++++++++++++++++++++++++
- 2 files changed, 26 insertions(+), 1 deletion(-)
+ include/hw/misc/aspeed_sli.h |  27 ++++++
+ hw/misc/aspeed_sli.c         | 177 +++++++++++++++++++++++++++++++++++
+ hw/misc/meson.build          |   3 +-
+ hw/misc/trace-events         |   7 ++
+ 4 files changed, 213 insertions(+), 1 deletion(-)
+ create mode 100644 include/hw/misc/aspeed_sli.h
+ create mode 100644 hw/misc/aspeed_sli.c
 
-diff --git a/include/hw/watchdog/wdt_aspeed.h b/include/hw/watchdog/wdt_aspeed.h
-index e90ef86651e8..830b0a79368a 100644
---- a/include/hw/watchdog/wdt_aspeed.h
-+++ b/include/hw/watchdog/wdt_aspeed.h
-@@ -19,9 +19,10 @@ OBJECT_DECLARE_TYPE(AspeedWDTState, AspeedWDTClass, ASPEED_WDT)
- #define TYPE_ASPEED_2400_WDT TYPE_ASPEED_WDT "-ast2400"
- #define TYPE_ASPEED_2500_WDT TYPE_ASPEED_WDT "-ast2500"
- #define TYPE_ASPEED_2600_WDT TYPE_ASPEED_WDT "-ast2600"
-+#define TYPE_ASPEED_2700_WDT TYPE_ASPEED_WDT "-ast2700"
- #define TYPE_ASPEED_1030_WDT TYPE_ASPEED_WDT "-ast1030"
- 
--#define ASPEED_WDT_REGS_MAX        (0x30 / 4)
-+#define ASPEED_WDT_REGS_MAX        (0x80 / 4)
- 
- struct AspeedWDTState {
-     /*< private >*/
-diff --git a/hw/watchdog/wdt_aspeed.c b/hw/watchdog/wdt_aspeed.c
-index d70b656f8e75..75685c56470d 100644
---- a/hw/watchdog/wdt_aspeed.c
-+++ b/hw/watchdog/wdt_aspeed.c
-@@ -422,12 +422,36 @@ static const TypeInfo aspeed_1030_wdt_info = {
-     .class_init = aspeed_1030_wdt_class_init,
- };
- 
-+static void aspeed_2700_wdt_class_init(ObjectClass *klass, void *data)
-+{
-+    DeviceClass *dc = DEVICE_CLASS(klass);
-+    AspeedWDTClass *awc = ASPEED_WDT_CLASS(klass);
+diff --git a/include/hw/misc/aspeed_sli.h b/include/hw/misc/aspeed_sli.h
+new file mode 100644
+index 000000000000..23f346ab934b
+--- /dev/null
++++ b/include/hw/misc/aspeed_sli.h
+@@ -0,0 +1,27 @@
++/*
++ * ASPEED SLI Controller
++ *
++ * Copyright (C) 2024 ASPEED Technology Inc.
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++#ifndef ASPEED_SLI_H
++#define ASPEED_SLI_H
 +
-+    dc->desc = "ASPEED 2700 Watchdog Controller";
-+    awc->iosize = 0x80;
-+    awc->ext_pulse_width_mask = 0xfffff; /* TODO */
-+    awc->reset_ctrl_reg = AST2600_SCU_RESET_CONTROL1;
-+    awc->reset_pulse = aspeed_2500_wdt_reset_pulse;
-+    awc->wdt_reload = aspeed_wdt_reload_1mhz;
-+    awc->sanitize_ctrl = aspeed_2600_sanitize_ctrl;
-+    awc->default_status = 0x014FB180;
-+    awc->default_reload_value = 0x014FB180;
-+}
++#include "hw/sysbus.h"
 +
-+static const TypeInfo aspeed_2700_wdt_info = {
-+    .name = TYPE_ASPEED_2700_WDT,
-+    .parent = TYPE_ASPEED_WDT,
-+    .instance_size = sizeof(AspeedWDTState),
-+    .class_init = aspeed_2700_wdt_class_init,
++#define TYPE_ASPEED_SLI "aspeed.sli"
++#define TYPE_ASPEED_2700_SLI TYPE_ASPEED_SLI "-ast2700"
++#define TYPE_ASPEED_2700_SLIIO TYPE_ASPEED_SLI "io" "-ast2700"
++OBJECT_DECLARE_SIMPLE_TYPE(AspeedSLIState, ASPEED_SLI)
++
++#define ASPEED_SLI_NR_REGS  (0x500 >> 2)
++
++struct AspeedSLIState {
++    SysBusDevice parent;
++    MemoryRegion iomem;
++
++    uint32_t regs[ASPEED_SLI_NR_REGS];
 +};
 +
- static void wdt_aspeed_register_types(void)
- {
-     type_register_static(&aspeed_wdt_info);
-     type_register_static(&aspeed_2400_wdt_info);
-     type_register_static(&aspeed_2500_wdt_info);
-     type_register_static(&aspeed_2600_wdt_info);
-+    type_register_static(&aspeed_2700_wdt_info);
-     type_register_static(&aspeed_1030_wdt_info);
- }
++#endif /* ASPEED_SLI_H */
+diff --git a/hw/misc/aspeed_sli.c b/hw/misc/aspeed_sli.c
+new file mode 100644
+index 000000000000..fe720ead5094
+--- /dev/null
++++ b/hw/misc/aspeed_sli.c
+@@ -0,0 +1,177 @@
++/*
++ * ASPEED SLI Controller
++ *
++ * Copyright (C) 2024 ASPEED Technology Inc.
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#include "qemu/osdep.h"
++#include "qemu/log.h"
++#include "qemu/error-report.h"
++#include "hw/qdev-properties.h"
++#include "hw/misc/aspeed_sli.h"
++#include "qapi/error.h"
++#include "migration/vmstate.h"
++#include "trace.h"
++
++#define SLI_REGION_SIZE 0x500
++#define TO_REG(addr) ((addr) >> 2)
++
++static uint64_t aspeed_sli_read(void *opaque, hwaddr addr, unsigned int size)
++{
++    AspeedSLIState *s = ASPEED_SLI(opaque);
++    int reg = TO_REG(addr);
++
++    if (reg >= ARRAY_SIZE(s->regs)) {
++        qemu_log_mask(LOG_GUEST_ERROR,
++                      "%s: Out-of-bounds read at offset 0x%" HWADDR_PRIx "\n",
++                      __func__, addr);
++        return 0;
++    }
++
++    trace_aspeed_sli_read(addr, size, s->regs[reg]);
++    return s->regs[reg];
++}
++
++static void aspeed_sli_write(void *opaque, hwaddr addr, uint64_t data,
++                              unsigned int size)
++{
++    AspeedSLIState *s = ASPEED_SLI(opaque);
++    int reg = TO_REG(addr);
++
++    if (reg >= ARRAY_SIZE(s->regs)) {
++        qemu_log_mask(LOG_GUEST_ERROR,
++                      "%s: Out-of-bounds write at offset 0x%" HWADDR_PRIx "\n",
++                      __func__, addr);
++        return;
++    }
++
++    trace_aspeed_sli_write(addr, size, data);
++    s->regs[reg] = data;
++}
++
++static uint64_t aspeed_sliio_read(void *opaque, hwaddr addr, unsigned int size)
++{
++    AspeedSLIState *s = ASPEED_SLI(opaque);
++    int reg = TO_REG(addr);
++
++    if (reg >= ARRAY_SIZE(s->regs)) {
++        qemu_log_mask(LOG_GUEST_ERROR,
++                      "%s: Out-of-bounds read at offset 0x%" HWADDR_PRIx "\n",
++                      __func__, addr);
++        return 0;
++    }
++
++    trace_aspeed_sliio_read(addr, size, s->regs[reg]);
++    return s->regs[reg];
++}
++
++static void aspeed_sliio_write(void *opaque, hwaddr addr, uint64_t data,
++                              unsigned int size)
++{
++    AspeedSLIState *s = ASPEED_SLI(opaque);
++    int reg = TO_REG(addr);
++
++    if (reg >= ARRAY_SIZE(s->regs)) {
++        qemu_log_mask(LOG_GUEST_ERROR,
++                      "%s: Out-of-bounds write at offset 0x%" HWADDR_PRIx "\n",
++                      __func__, addr);
++        return;
++    }
++
++    trace_aspeed_sliio_write(addr, size, data);
++    s->regs[reg] = data;
++}
++
++static const MemoryRegionOps aspeed_sli_ops = {
++    .read = aspeed_sli_read,
++    .write = aspeed_sli_write,
++    .endianness = DEVICE_LITTLE_ENDIAN,
++    .valid = {
++        .min_access_size = 1,
++        .max_access_size = 4,
++    },
++};
++
++static const MemoryRegionOps aspeed_sliio_ops = {
++    .read = aspeed_sliio_read,
++    .write = aspeed_sliio_write,
++    .endianness = DEVICE_LITTLE_ENDIAN,
++    .valid = {
++        .min_access_size = 1,
++        .max_access_size = 4,
++    },
++};
++
++static void aspeed_sli_realize(DeviceState *dev, Error **errp)
++{
++    AspeedSLIState *s = ASPEED_SLI(dev);
++    SysBusDevice *sbd = SYS_BUS_DEVICE(dev);
++
++    memory_region_init_io(&s->iomem, OBJECT(s), &aspeed_sli_ops, s,
++                          TYPE_ASPEED_SLI, SLI_REGION_SIZE);
++    sysbus_init_mmio(sbd, &s->iomem);
++}
++
++static void aspeed_sliio_realize(DeviceState *dev, Error **errp)
++{
++    AspeedSLIState *s = ASPEED_SLI(dev);
++    SysBusDevice *sbd = SYS_BUS_DEVICE(dev);
++
++    memory_region_init_io(&s->iomem, OBJECT(s), &aspeed_sliio_ops, s,
++                          TYPE_ASPEED_SLI, SLI_REGION_SIZE);
++    sysbus_init_mmio(sbd, &s->iomem);
++}
++
++static void aspeed_sli_class_init(ObjectClass *klass, void *data)
++{
++    DeviceClass *dc = DEVICE_CLASS(klass);
++
++    dc->desc = "Aspeed SLI Controller";
++    dc->realize = aspeed_sli_realize;
++}
++
++static const TypeInfo aspeed_sli_info = {
++    .name          = TYPE_ASPEED_SLI,
++    .parent        = TYPE_SYS_BUS_DEVICE,
++    .instance_size = sizeof(AspeedSLIState),
++    .class_init    = aspeed_sli_class_init,
++    .abstract      = true,
++};
++
++static void aspeed_2700_sli_class_init(ObjectClass *klass, void *data)
++{
++    DeviceClass *dc = DEVICE_CLASS(klass);
++
++    dc->desc = "AST2700 SLI Controller";
++}
++
++static void aspeed_2700_sliio_class_init(ObjectClass *klass, void *data)
++{
++    DeviceClass *dc = DEVICE_CLASS(klass);
++
++    dc->desc = "AST2700 I/O SLI Controller";
++    dc->realize = aspeed_sliio_realize;
++}
++
++static const TypeInfo aspeed_2700_sli_info = {
++    .name           = TYPE_ASPEED_2700_SLI,
++    .parent         = TYPE_ASPEED_SLI,
++    .class_init     = aspeed_2700_sli_class_init,
++};
++
++static const TypeInfo aspeed_2700_sliio_info = {
++    .name           = TYPE_ASPEED_2700_SLIIO,
++    .parent         = TYPE_ASPEED_SLI,
++    .class_init     = aspeed_2700_sliio_class_init,
++};
++
++static void aspeed_sli_register_types(void)
++{
++    type_register_static(&aspeed_sli_info);
++    type_register_static(&aspeed_2700_sli_info);
++    type_register_static(&aspeed_2700_sliio_info);
++}
++
++type_init(aspeed_sli_register_types);
+diff --git a/hw/misc/meson.build b/hw/misc/meson.build
+index 86596a388812..2ca8717be286 100644
+--- a/hw/misc/meson.build
++++ b/hw/misc/meson.build
+@@ -136,7 +136,8 @@ system_ss.add(when: 'CONFIG_ASPEED_SOC', if_true: files(
+   'aspeed_sbc.c',
+   'aspeed_sdmc.c',
+   'aspeed_xdma.c',
+-  'aspeed_peci.c'))
++  'aspeed_peci.c',
++  'aspeed_sli.c'))
  
+ system_ss.add(when: 'CONFIG_MSF2', if_true: files('msf2-sysreg.c'))
+ system_ss.add(when: 'CONFIG_NRF51_SOC', if_true: files('nrf51_rng.c'))
+diff --git a/hw/misc/trace-events b/hw/misc/trace-events
+index 5d241cb40aab..e13b64822110 100644
+--- a/hw/misc/trace-events
++++ b/hw/misc/trace-events
+@@ -351,3 +351,10 @@ djmemc_write(int reg, uint64_t value, unsigned int size) "reg=0x%x value=0x%"PRI
+ # iosb.c
+ iosb_read(int reg, uint64_t value, unsigned int size) "reg=0x%x value=0x%"PRIx64" size=%u"
+ iosb_write(int reg, uint64_t value, unsigned int size) "reg=0x%x value=0x%"PRIx64" size=%u"
++
++# aspeed_sli.c
++aspeed_sli_write(uint64_t offset, unsigned int size, uint32_t data) "To 0x%" PRIx64 " of size %u: 0x%" PRIx32
++aspeed_sli_read(uint64_t offset, unsigned int size, uint32_t data) "To 0x%" PRIx64 " of size %u: 0x%" PRIx32
++aspeed_sliio_write(uint64_t offset, unsigned int size, uint32_t data) "To 0x%" PRIx64 " of size %u: 0x%" PRIx32
++aspeed_sliio_read(uint64_t offset, unsigned int size, uint32_t data) "To 0x%" PRIx64 " of size %u: 0x%" PRIx32
++
 -- 
 2.45.2
 
