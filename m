@@ -2,112 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C62A909149
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jun 2024 19:19:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E5A0909151
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jun 2024 19:20:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sIAZ5-00010M-AQ; Fri, 14 Jun 2024 13:18:15 -0400
+	id 1sIAZ8-00011I-89; Fri, 14 Jun 2024 13:18:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sIAZ3-0000zb-AE
- for qemu-devel@nongnu.org; Fri, 14 Jun 2024 13:18:13 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sIAZ6-00010m-06
+ for qemu-devel@nongnu.org; Fri, 14 Jun 2024 13:18:16 -0400
 Received: from smtp-out2.suse.de ([195.135.223.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sIAZ1-00042p-Iz
- for qemu-devel@nongnu.org; Fri, 14 Jun 2024 13:18:13 -0400
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sIAZ4-000436-AX
+ for qemu-devel@nongnu.org; Fri, 14 Jun 2024 13:18:15 -0400
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 0E9A020724;
- Fri, 14 Jun 2024 17:18:10 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 5753B20725;
+ Fri, 14 Jun 2024 17:18:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1718385490; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1718385492; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=7j5PnkuOsB2uZytqvjcjkx4Y/pW+wy8yTMFINUWLAhQ=;
- b=0axxg9YBCTupt30hYBvZcJelXnkio1myLRwp4VFunvBNYIadvwt44QmtrMRUOgnnur1PTh
- EmUCzOa5DshLf4C/1DEJ0KdzAz+iHokgkaY2D7iLGLy93lMIghGm2dAvWrMvITcrYyFpQo
- bnFcKCCNMu4rLxqRyTwYsUmDeJgjgxA=
+ bh=Zz5zC2gQSW95yYPjIKbEysWkbNjNXmIWq7dvZuw2xEI=;
+ b=P5835Ly8ibstZ8JtsD/CceM1tq9rAO9qS+0YAmp8vM9JjwlB+EMGmco9eNUlnwvzongCzK
+ XiPx3LiOWLmj4CUkNTSnb4Xs1BV2M0sBxao5dvpcF88sfRwY/MvaIQORSfZTzqs+LwPeFH
+ 3pBSepqPjLw5ggyLbi2gKQiNwIPsyZk=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1718385490;
+ s=susede2_ed25519; t=1718385492;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=7j5PnkuOsB2uZytqvjcjkx4Y/pW+wy8yTMFINUWLAhQ=;
- b=pIhX9Qfhnpp0K+7/S5B/ffO9Qe/NeKn9tHb2V3R5G4GT6oUVoZwkRG9HnEW72dFuAtLHek
- RJfVrRqpQs6jFPCw==
+ bh=Zz5zC2gQSW95yYPjIKbEysWkbNjNXmIWq7dvZuw2xEI=;
+ b=be4PUfEz23Ozb1ahQJ1LAbkAGe/ku7syTTEMch4d8H2Jky8u29N3NiEPUljhKJeE8NhK5r
+ 2UmIPPwvLVuDk9Bw==
 Authentication-Results: smtp-out2.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=0axxg9YB;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=pIhX9Qfh
+	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1718385490; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1718385492; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=7j5PnkuOsB2uZytqvjcjkx4Y/pW+wy8yTMFINUWLAhQ=;
- b=0axxg9YBCTupt30hYBvZcJelXnkio1myLRwp4VFunvBNYIadvwt44QmtrMRUOgnnur1PTh
- EmUCzOa5DshLf4C/1DEJ0KdzAz+iHokgkaY2D7iLGLy93lMIghGm2dAvWrMvITcrYyFpQo
- bnFcKCCNMu4rLxqRyTwYsUmDeJgjgxA=
+ bh=Zz5zC2gQSW95yYPjIKbEysWkbNjNXmIWq7dvZuw2xEI=;
+ b=P5835Ly8ibstZ8JtsD/CceM1tq9rAO9qS+0YAmp8vM9JjwlB+EMGmco9eNUlnwvzongCzK
+ XiPx3LiOWLmj4CUkNTSnb4Xs1BV2M0sBxao5dvpcF88sfRwY/MvaIQORSfZTzqs+LwPeFH
+ 3pBSepqPjLw5ggyLbi2gKQiNwIPsyZk=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1718385490;
+ s=susede2_ed25519; t=1718385492;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=7j5PnkuOsB2uZytqvjcjkx4Y/pW+wy8yTMFINUWLAhQ=;
- b=pIhX9Qfhnpp0K+7/S5B/ffO9Qe/NeKn9tHb2V3R5G4GT6oUVoZwkRG9HnEW72dFuAtLHek
- RJfVrRqpQs6jFPCw==
+ bh=Zz5zC2gQSW95yYPjIKbEysWkbNjNXmIWq7dvZuw2xEI=;
+ b=be4PUfEz23Ozb1ahQJ1LAbkAGe/ku7syTTEMch4d8H2Jky8u29N3NiEPUljhKJeE8NhK5r
+ 2UmIPPwvLVuDk9Bw==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6E6FD13AB1;
- Fri, 14 Jun 2024 17:18:08 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7A9D713AB1;
+ Fri, 14 Jun 2024 17:18:10 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id AExMDVB7bGaVAgAAD6G6ig
- (envelope-from <farosas@suse.de>); Fri, 14 Jun 2024 17:18:08 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id 2Ks5EFJ7bGaVAgAAD6G6ig
+ (envelope-from <farosas@suse.de>); Fri, 14 Jun 2024 17:18:10 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Nicholas Piggin <npiggin@gmail.com>, Thomas Huth <thuth@redhat.com>
-Subject: [PULL 02/18] tests/qtest/migration-test: Quieten ppc64 QEMU warnings
-Date: Fri, 14 Jun 2024 14:17:46 -0300
-Message-Id: <20240614171802.28451-3-farosas@suse.de>
+ Nicholas Piggin <npiggin@gmail.com>, Thomas Huth <thuth@redhat.com>,
+ Prasad Pandit <pjp@fedoraproject.org>
+Subject: [PULL 03/18] tests/qtest/migration-test: Enable on ppc64 TCG
+Date: Fri, 14 Jun 2024 14:17:47 -0300
+Message-Id: <20240614171802.28451-4-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20240614171802.28451-1-farosas@suse.de>
 References: <20240614171802.28451-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-3.01 / 50.00]; BAYES_HAM(-3.00)[100.00%];
- MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
+X-Spam-Score: -2.80
+X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+ NEURAL_HAM_LONG(-1.00)[-1.000]; MID_CONTAINS_FROM(1.00)[];
  R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-1.000];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- MIME_GOOD(-0.10)[text/plain]; MX_GOOD(-0.01)[];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; TO_DN_SOME(0.00)[];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FUZZY_BLOCKED(0.00)[rspamd.com]; MIME_TRACE(0.00)[0:+];
- ARC_NA(0.00)[];
- SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
- RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
- FREEMAIL_CC(0.00)[redhat.com,linaro.org,gmail.com];
+ MIME_GOOD(-0.10)[text/plain]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ ARC_NA(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ FREEMAIL_CC(0.00)[redhat.com,linaro.org,gmail.com,fedoraproject.org];
+ TO_DN_SOME(0.00)[]; MIME_TRACE(0.00)[0:+];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email];
  RCVD_TLS_ALL(0.00)[]; FROM_EQ_ENVFROM(0.00)[];
  RCVD_COUNT_TWO(0.00)[2]; FROM_HAS_DN(0.00)[];
- RCPT_COUNT_FIVE(0.00)[5];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:dkim];
- RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
- DWL_DNSWL_BLOCKED(0.00)[suse.de:dkim];
- DKIM_TRACE(0.00)[suse.de:+]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; RCPT_COUNT_FIVE(0.00)[6];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
  FREEMAIL_ENVRCPT(0.00)[gmail.com]
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Queue-Id: 0E9A020724
-X-Spam-Score: -3.01
 Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
  helo=smtp-out2.suse.de
 X-Spam_score_int: -43
@@ -134,35 +123,51 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Nicholas Piggin <npiggin@gmail.com>
 
+ppc64 with TCG seems to no longer be failing this test, perhaps since
+commit 03bfc2188f061 ("physmem: Fix migration dirty bitmap coherency
+with TCG memory access") which is not ppc specific but was seen to hit
+ppc64 quite easily.
+
+Let's enable it again.
+
+The s390x problem has been identified so mention it while we are
+adjusting the comment.
+
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Reviewed-by: Prasad Pandit <pjp@fedoraproject.org>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- tests/qtest/migration-test.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ tests/qtest/migration-test.c | 16 +++-------------
+ 1 file changed, 3 insertions(+), 13 deletions(-)
 
 diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index b7e3406471..48f59822f4 100644
+index 48f59822f4..ef9ddef1c8 100644
 --- a/tests/qtest/migration-test.c
 +++ b/tests/qtest/migration-test.c
-@@ -21,6 +21,7 @@
- #include "chardev/char.h"
- #include "crypto/tlscredspsk.h"
- #include "qapi/qmp/qlist.h"
-+#include "ppc-util.h"
+@@ -3454,19 +3454,9 @@ int main(int argc, char **argv)
+ #endif
  
- #include "migration-helpers.h"
- #include "tests/migration/migration-test.h"
-@@ -742,7 +743,8 @@ static int test_migrate_start(QTestState **from, QTestState **to,
-                                       "until'", end_address, start_address);
-         machine_alias = "pseries";
-         machine_opts = "vsmt=8";
--        arch_opts = g_strdup("-nodefaults");
-+        arch_opts = g_strdup("-nodefaults "
-+                             "-machine " PSERIES_DEFAULT_CAPABILITIES);
-     } else if (strcmp(arch, "aarch64") == 0) {
-         memory_size = "150M";
-         machine_alias = "virt";
+     /*
+-     * On ppc64, the test only works with kvm-hv, but not with kvm-pr and TCG
+-     * is touchy due to race conditions on dirty bits (especially on PPC for
+-     * some reason)
+-     */
+-    if (g_str_equal(arch, "ppc64") &&
+-        (!has_kvm || access("/sys/module/kvm_hv", F_OK))) {
+-        g_test_message("Skipping tests: kvm_hv not available");
+-        goto test_add_done;
+-    }
+-
+-    /*
+-     * Similar to ppc64, s390x seems to be touchy with TCG, so disable it
+-     * there until the problems are resolved
++     * On s390x with TCG, migration is observed to hang due to the 'pending'
++     * state of the flic interrupt controller not being migrated or
++     * reconstructed post-migration. Disable it until the problem is resolved.
+      */
+     if (g_str_equal(arch, "s390x") && !has_kvm) {
+         g_test_message("Skipping tests: s390x host with KVM is required");
 -- 
 2.35.3
 
