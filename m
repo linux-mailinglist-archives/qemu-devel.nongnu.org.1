@@ -2,90 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F27D6908077
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jun 2024 03:06:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E653A9080A0
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jun 2024 03:30:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sHvNT-0005Ly-5B; Thu, 13 Jun 2024 21:05:15 -0400
+	id 1sHvkb-0003IC-NR; Thu, 13 Jun 2024 21:29:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1sHvND-0005G5-T6
- for qemu-devel@nongnu.org; Thu, 13 Jun 2024 21:05:01 -0400
-Received: from mgamail.intel.com ([198.175.65.10])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1sHvN2-0002CH-3C
- for qemu-devel@nongnu.org; Thu, 13 Jun 2024 21:04:50 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1718327088; x=1749863088;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=D53EUNtisD/7B6C3C/nJAv5wz7xFtVP26feE2TvDBds=;
- b=SlNfTSKJMifkGqqmkAAJvP3xdpYjfD9v/CQ0CCB1RPmGvZse9vtv+ouk
- 4tDaY4mHvWNw7QfI4liyIYpL85mMGJtO7obZSFIfkCXVDiDKtZK0UQoXV
- gKgYo5F04W21eKlDN2f4e1vukLWEnN/yapai3l4u2dnUuxZXdb+aT25BD
- tGMHrfCAS6/XTG5XHpSA+wFfmQrNZZ3kGTat2NHafoqHJGBOxVBWMxSnw
- 6pXVIAA9bpR7LpA/lBN0JARHIRqmsBFw5LREEcVZQ7Bnd42XxHQu5lOJ8
- lfIctdTWISK8QwOx53GYQ5KyqdjJJ+oWm/x4pMJ4ku/ApZw7ofgukkF1n g==;
-X-CSE-ConnectionGUID: OgrrC7DIQmS5ELLeT6Pqbw==
-X-CSE-MsgGUID: 6BbKmeCBQuShu2dsw0rPUw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11102"; a="32672788"
-X-IronPort-AV: E=Sophos;i="6.08,236,1712646000"; d="scan'208";a="32672788"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Jun 2024 18:04:47 -0700
-X-CSE-ConnectionGUID: +I0WkiJ3R+GhmvqUMIPdUA==
-X-CSE-MsgGUID: BEMWjHzIRbaZx8vlix0PJA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,236,1712646000"; d="scan'208";a="71547836"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.227.51])
- ([10.124.227.51])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Jun 2024 18:04:35 -0700
-Message-ID: <a5d434b5-c1c2-451c-9181-3c9eacbc2999@intel.com>
-Date: Fri, 14 Jun 2024 09:04:33 +0800
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1sHvkT-0003He-P7; Thu, 13 Jun 2024 21:29:03 -0400
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1sHvkR-00060h-Vf; Thu, 13 Jun 2024 21:29:01 -0400
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-1f65a3abd01so15250075ad.3; 
+ Thu, 13 Jun 2024 18:28:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1718328536; x=1718933336; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=DJWOYb4zi0IN06txnnmo5DHAi3kk0Ao/Sh+mCQwN/eA=;
+ b=AJ5Be6t2Cbr3/jky/OB6AF4Rx8E+8ku2a18JVXwud1shjqBMGk4QR8gWSpfmdyBM6p
+ L7QxLLbZoPXIFrBoxVroBFx05C0s5yWgQ/S4v0W1s2epyUvqbzOQk1CsFw/lDMXQfhRH
+ iWZZ8FnKHmy8VmSiKdlmJOc0/SUC+eb0xRARgbDBXW+77eL7Q1CAKcHu4ROCQD8mYMgW
+ klVBA18uRpAOT57VpLsNZ5N0jOMAtiXdgCJMYamAJtMnkRd3WdCtwJUdugcareq13r3f
+ yMn7Vb9t+1j7baUbfYdvgiaFED69xs5l++DXJSAkYQe4k8tBE2mQOOjK48ixYvY0G37e
+ p6lg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1718328536; x=1718933336;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=DJWOYb4zi0IN06txnnmo5DHAi3kk0Ao/Sh+mCQwN/eA=;
+ b=Z7eX0IqBN544Y6g23P1JHTAYvgcOfCtoUTB3hFYQmghPHpMmJ3vUwsiCT2XQb1nT2Q
+ RF0t+E7OKzhfXKfs0Ci1iWmKTjvWV5F+NF2Tr5QhIaMIhER6487t6NKng79s249ZzvYT
+ 6ed2Gv6O6BCz//UjkgAPsPvWmFqTT1evpGjq2/hwQwUQ2mkMGMHSlb0bYevuTX0YR31t
+ Gzl9lTjc+1vNKej2plEBfy1JhyKicoLBPWJQlgCaSS5Ko1e3dH5f73C370qYsxGCpinp
+ 1vstRQRjAIwGrBTt8SyMwaEXEdjqSwMG3FV5ec1HpEVtCaFvOoUdrGHbMPcbCRW1s2SV
+ X6QQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXGzSOMaWSYf4C72NPndiz1c5WlZ4rUW/hRE5qLJiP48YEJtkWG5G0gHAZeOZpMeAchWxC3mSVFSPUmXM1LAq/TMJIa3tu5wFeGLW4m4/dCmWFUWHC77real3W9sg==
+X-Gm-Message-State: AOJu0YzlUYsdrIIiSRMfLu8r6VlkIItw8m2eN8WhFlFsLsU/IzDtTwpv
+ C+MP97IRLhJX2d3kxwXjB2jvTEphaCCJVCKXVlyqqrw0i5vnz0HwY6+3XA==
+X-Google-Smtp-Source: AGHT+IEZaqYDsJxE3EOleIDFXqe6sazG/WVzrl3FGgF2DTJvoBY1vEpH/b+jma2Tl/tUaQMJ4L0ihg==
+X-Received: by 2002:a17:902:a381:b0:1f6:a96f:225c with SMTP id
+ d9443c01a7336-1f8625db53cmr11198055ad.28.1718328536201; 
+ Thu, 13 Jun 2024 18:28:56 -0700 (PDT)
+Received: from toolbox.alistair23.me
+ (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
+ [2403:580b:97e8:0:82ce:f179:8a79:69f4])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-1f855f13562sm20757255ad.212.2024.06.13.18.28.50
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 13 Jun 2024 18:28:55 -0700 (PDT)
+From: Alistair Francis <alistair23@gmail.com>
+X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
+To: wilfred.mallawa@wdc.com, marcel.apfelbaum@gmail.com, lukas@wunner.de,
+ qemu-devel@nongnu.org, mst@redhat.com, Jonathan.Cameron@Huawei.com,
+ kbusch@kernel.org, hchkuo@avery-design.com.tw, cbrowy@avery-design.com,
+ its@irrelevant.dk, jiewen.yao@intel.com
+Cc: Alistair Francis <alistair.francis@wdc.com>, qemu-block@nongnu.org,
+ Paolo Bonzini <pbonzini@redhat.com>, alistair23@gmail.com,
+ Jesper Devantier <foss@defmacro.it>
+Subject: [PATCH v7 0/3] Initial support for SPDM Responders
+Date: Fri, 14 Jun 2024 11:28:43 +1000
+Message-ID: <20240614012846.1016856-1-alistair.francis@wdc.com>
+X-Mailer: git-send-email 2.45.2
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 25/65] i386/tdx: Add property sept-ve-disable for
- tdx-guest object
-To: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand
- <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Ani Sinha <anisinha@redhat.com>, Peter Xu <peterx@redhat.com>,
- Cornelia Huck <cohuck@redhat.com>, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>, Marcelo Tosatti
- <mtosatti@redhat.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- Michael Roth <michael.roth@amd.com>, Claudio Fontana <cfontana@suse.de>,
- Gerd Hoffmann <kraxel@redhat.com>, Isaku Yamahata
- <isaku.yamahata@gmail.com>, "Qiang, Chenyi" <chenyi.qiang@intel.com>
-References: <20240229063726.610065-1-xiaoyao.li@intel.com>
- <20240229063726.610065-26-xiaoyao.li@intel.com> <ZmGTXP36B76IRalJ@redhat.com>
- <90739246-f008-4cf2-bcf5-8a243e2b13d4@intel.com>
- <SJ0PR11MB674430CD121A9F91D818A67092C12@SJ0PR11MB6744.namprd11.prod.outlook.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <SJ0PR11MB674430CD121A9F91D818A67092C12@SJ0PR11MB6744.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=198.175.65.10; envelope-from=xiaoyao.li@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -45
-X-Spam_score: -4.6
-X-Spam_bar: ----
-X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.145,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.001, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x62d.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -102,183 +98,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/13/2024 4:35 PM, Duan, Zhenzhong wrote:
-> 
-> 
->> -----Original Message-----
->> From: Li, Xiaoyao <xiaoyao.li@intel.com>
->> Subject: Re: [PATCH v5 25/65] i386/tdx: Add property sept-ve-disable for
->> tdx-guest object
->>
->> On 6/6/2024 6:45 PM, Daniel P. Berrangé wrote:
->>> Copying  Zhenzhong Duan as my point relates to the proposed libvirt
->>> TDX patches.
->>>
->>> On Thu, Feb 29, 2024 at 01:36:46AM -0500, Xiaoyao Li wrote:
->>>> Bit 28 of TD attribute, named SEPT_VE_DISABLE. When set to 1, it
->> disables
->>>> EPT violation conversion to #VE on guest TD access of PENDING pages.
->>>>
->>>> Some guest OS (e.g., Linux TD guest) may require this bit as 1.
->>>> Otherwise refuse to boot.
->>>>
->>>> Add sept-ve-disable property for tdx-guest object, for user to configure
->>>> this bit.
->>>>
->>>> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
->>>> Acked-by: Gerd Hoffmann <kraxel@redhat.com>
->>>> Acked-by: Markus Armbruster <armbru@redhat.com>
->>>> ---
->>>> Changes in v4:
->>>> - collect Acked-by from Markus
->>>>
->>>> Changes in v3:
->>>> - update the comment of property @sept-ve-disable to make it more
->>>>     descriptive and use new format. (Daniel and Markus)
->>>> ---
->>>>    qapi/qom.json         |  7 ++++++-
->>>>    target/i386/kvm/tdx.c | 24 ++++++++++++++++++++++++
->>>>    2 files changed, 30 insertions(+), 1 deletion(-)
->>>>
->>>> diff --git a/qapi/qom.json b/qapi/qom.json
->>>> index 220cc6c98d4b..89ed89b9b46e 100644
->>>> --- a/qapi/qom.json
->>>> +++ b/qapi/qom.json
->>>> @@ -900,10 +900,15 @@
->>>>    #
->>>>    # Properties for tdx-guest objects.
->>>>    #
->>>> +# @sept-ve-disable: toggle bit 28 of TD attributes to control disabling
->>>> +#     of EPT violation conversion to #VE on guest TD access of PENDING
->>>> +#     pages.  Some guest OS (e.g., Linux TD guest) may require this to
->>>> +#     be set, otherwise they refuse to boot.
->>>> +#
->>>>    # Since: 9.0
->>>>    ##
->>>>    { 'struct': 'TdxGuestProperties',
->>>> -  'data': { }}
->>>> +  'data': { '*sept-ve-disable': 'bool' } }
->>>
->>> So this exposes a single boolean property that gets mapped into one
->>> specific bit in the TD attributes:
->>>
->>>> +
->>>> +static void tdx_guest_set_sept_ve_disable(Object *obj, bool value, Error
->> **errp)
->>>> +{
->>>> +    TdxGuest *tdx = TDX_GUEST(obj);
->>>> +
->>>> +    if (value) {
->>>> +        tdx->attributes |= TDX_TD_ATTRIBUTES_SEPT_VE_DISABLE;
->>>> +    } else {
->>>> +        tdx->attributes &= ~TDX_TD_ATTRIBUTES_SEPT_VE_DISABLE;
->>>> +    }
->>>> +}
->>>
->>> If I look at the documentation for TD attributes
->>>
->>>     https://download.01.org/intel-sgx/latest/dcap-
->> latest/linux/docs/Intel_TDX_DCAP_Quoting_Library_API.pdf
->>>
->>> Section "A.3.4. TD Attributes"
->>>
->>> I see "TD attributes" is a 64-bit int, with 5 bits currently
->>> defined "DEBUG", "SEPT_VE_DISABLE", "PKS", "PL", "PERFMON",
->>> and the rest currently reserved for future use. This makes me
->>> wonder about our modelling approach into the future ?
->>>
->>> For the AMD SEV equivalent we've just directly exposed the whole
->>> field as an int:
->>>
->>>        'policy' : 'uint32',
->>>
->>> For the proposed SEV-SNP patches, the same has been done again
->>>
->>> https://lists.nongnu.org/archive/html/qemu-devel/2024-
->> 06/msg00536.html
->>>
->>>        '*policy': 'uint64',
->>>
->>>
->>> The advantage of exposing individual booleans is that it is
->>> self-documenting at the QAPI level, but the disadvantage is
->>> that every time we want to expose ability to control a new
->>> bit in the policy we have to modify QEMU, libvirt, the mgmt
->>> app above libvirt, and whatever tools the end user has to
->>> talk to the mgmt app.
->>>
->>> If we expose a policy int, then newly defined bits only require
->>> a change in QEMU, and everything above QEMU will already be
->>> capable of setting it.
->>>
->>> In fact if I look at the proposed libvirt patches, they have
->>> proposed just exposing a policy "int" field in the XML, which
->>> then has to be unpacked to set the individual QAPI booleans
->>>
->>>
->> https://lists.libvirt.org/archives/list/devel@lists.libvirt.org/message/WXWX
->> EESYUA77DP7YIBP55T2OPSVKV5QW/
->>>
->>> On balance, I think it would be better if QEMU just exposed
->>> the raw TD attributes policy as an uint64 at QAPI, instead
->>> of trying to unpack it to discrete bool fields. This gives
->>> consistency with SEV and SEV-SNP, and with what's proposed
->>> at the libvirt level, and minimizes future changes when
->>> more policy bits are defined.
->>
->> The reasons why introducing individual bit of sept-ve-disable instead of
->> a raw TD attribute as a whole are that
->>
->> 1. other bits like perfmon, PKS, KL are associated with cpu properties,
->> e.g.,
->>
->> 	perfmon -> pmu,
->> 	pks -> pks,
->> 	kl -> keylokcer feature that QEMU currently doesn't support
->>
->> If allowing configuring attribute directly, we need to deal with the
->> inconsistence between attribute vs cpu property.
-> 
-> What about defining those bits associated with cpu properties reserved
-> But other bits work as Daniel suggested way.
+The Security Protocol and Data Model (SPDM) Specification defines
+messages, data objects, and sequences for performing message exchanges
+over a variety of transport and physical media.
+ - https://www.dmtf.org/sites/default/files/standards/documents/DSP0274_1.3.0.pdf
 
-I don't understand. Do you mean we provide the interface to configure 
-raw 64 bit attributes while some bits of it are reserved?
+SPDM currently supports PCIe DOE and MCTP transports, but it can be
+extended to support others in the future. This series adds
+support to QEMU to connect to an external SPDM instance.
 
-> Thanks
-> Zhenzhong
-> 
->>
->> 2. people need to know the exact bit position of each attribute. I don't
->> think it is a user-friendly interface to require user to be aware of
->> such details.
->>
->> For example, if user wants to create a Debug TD, user just needs to set
->> 'debug=on' for tdx-guest object. It's much more friendly than that user
->> needs to set the bit 0 of the attribute.
->>
->>
->>>> +
->>>>    /* tdx guest */
->>>>    OBJECT_DEFINE_TYPE_WITH_INTERFACES(TdxGuest,
->>>>                                       tdx_guest,
->>>> @@ -529,6 +549,10 @@ static void tdx_guest_init(Object *obj)
->>>>        qemu_mutex_init(&tdx->lock);
->>>>
->>>>        tdx->attributes = 0;
->>>> +
->>>> +    object_property_add_bool(obj, "sept-ve-disable",
->>>> +                             tdx_guest_get_sept_ve_disable,
->>>> +                             tdx_guest_set_sept_ve_disable);
->>>>    }
->>>>
->>>>    static void tdx_guest_finalize(Object *obj)
->>>> --
->>>> 2.34.1
->>>>
->>>
->>> With regards,
->>> Daniel
-> 
+SPDM support can be added to any QEMU device by exposing a
+TCP socket to a SPDM server. The server can then implement the SPDM
+decoding/encoding support, generally using libspdm [1].
+
+This is similar to how the current TPM implementation works and means
+that the heavy lifting of setting up certificate chains, capabilities,
+measurements and complex crypto can be done outside QEMU by a well
+supported and tested library.
+
+This series implements socket support and exposes SPDM for a NVMe device.
+
+1: https://github.com/DMTF/libspdm
+
+v7:
+ - Fixup checkpatch failures
+ - Fixup test failures
+ - Rename port name to be clearer
+v6:
+ - Add documentation to public functions
+ - Rename socket variable to spdm_socket
+ - Don't override errp
+ - Correctly return false from nvme_init_pci() on error
+v5:
+ - Update MAINTAINERS
+v4:
+ - Rebase
+v3:
+ - Spelling fixes
+ - Support for SPDM-Utils
+v2:
+ - Add cover letter
+ - A few code fixes based on comments
+ - Document SPDM-Utils
+ - A few tweaks and clarifications to the documentation
+
+Alistair Francis (1):
+  hw/pci: Add all Data Object Types defined in PCIe r6.0
+
+Huai-Cheng Kuo (1):
+  backends: Initial support for SPDM socket support
+
+Wilfred Mallawa (1):
+  hw/nvme: Add SPDM over DOE support
+
+ MAINTAINERS                  |   6 +
+ docs/specs/index.rst         |   1 +
+ docs/specs/spdm.rst          | 134 ++++++++++++++++++++++
+ include/hw/pci/pci_device.h  |   7 ++
+ include/hw/pci/pcie_doe.h    |   5 +
+ include/sysemu/spdm-socket.h |  74 ++++++++++++
+ backends/spdm-socket.c       | 216 +++++++++++++++++++++++++++++++++++
+ hw/nvme/ctrl.c               |  60 ++++++++++
+ backends/Kconfig             |   4 +
+ backends/meson.build         |   2 +
+ 10 files changed, 509 insertions(+)
+ create mode 100644 docs/specs/spdm.rst
+ create mode 100644 include/sysemu/spdm-socket.h
+ create mode 100644 backends/spdm-socket.c
+
+-- 
+2.45.2
 
 
