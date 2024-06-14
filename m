@@ -2,91 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F09E19080A1
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jun 2024 03:30:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB567908129
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jun 2024 03:56:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sHvkn-0003Uk-VX; Thu, 13 Jun 2024 21:29:21 -0400
+	id 1sHwAs-0007h6-Dr; Thu, 13 Jun 2024 21:56:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sHvkm-0003Sp-12; Thu, 13 Jun 2024 21:29:20 -0400
-Received: from mail-pg1-x52d.google.com ([2607:f8b0:4864:20::52d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sHvkj-00061g-JN; Thu, 13 Jun 2024 21:29:19 -0400
-Received: by mail-pg1-x52d.google.com with SMTP id
- 41be03b00d2f7-6eab07ae82bso1260316a12.3; 
- Thu, 13 Jun 2024 18:29:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1718328556; x=1718933356; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=pOmIOFJ+Ks7rYZcRM9ff5EJIYsYQMlrnEbZ+IAV+qn4=;
- b=fdduBTWfG9nbaAc18PkEjnCO0OwfyaAIuHOz0MfhX+LMWKYCxtUun4vdu93kLMIal/
- p/n8v3oBVe/zqehGi6xeyP0+8gPlF3EeQn6cVvgcOXzXD8Vbu449RHizawNzfJdQ4mu4
- gcl4UcoBZy8tZZrGjYPZ5emlfTT9xFC8c8EcuyCq2PL8Do/pswkskAIDTetMgYTuPv7D
- IwwmUxzqphUnZCUAFwNv+9FpjHFooRqV9fq7K5C9x2zPOzBbXS6n2Dl3oRx29oiF2pxK
- 5GUxhL7Gu5uoNZ+JpJeq676u/JT3j8fdjIjBB1bd7GeBcD7lxlaGd42b8q3/gNDz265P
- OAXg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718328556; x=1718933356;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=pOmIOFJ+Ks7rYZcRM9ff5EJIYsYQMlrnEbZ+IAV+qn4=;
- b=pwUms0LO7grkKZKrGqqQZX3aPyjqL+3qBNu/2JLYy6EQHK72d51WTRz5EyJlyergat
- hA1xIYQGrsczx9JHFqj06kqG4bodi7qq0SW5+hPLi27+BSRE9lRDtFnDBLZ8FUJOarDw
- 3lkT+znONSu030HfEef7O6g3D0NleidzulZLOq6XNIgDUPXuWFliwLTiNjur0kCzG5GB
- aOtwyJV8rYdfXPRvdrnQGK2qp2lYaYVgKs3AajnCF+YR6nQaqliDdvbJCGoXWMRrHgqB
- QuuLIr2vyUDW2s/BHRa28Jciux7OBI/7UTBfG7V4s71ikKc0aldARYxnaMwLh/D+vwU9
- h8gA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUQzGUmuCRZfVCHlbUbhsjXbSaULL63dYJP6j5DPBKGI1o9yqK5dyORjUbZvZU++qguodfSoCvN0vafHehrqmVt/wZF4GwSMe9iCioCSYUAjHTjM2aOThuH0f4NpA==
-X-Gm-Message-State: AOJu0YzObdVDnRzNL5Q3G4Ex9Vo+aYHqHheFT0DNXxLiTIWj8DXC4Thx
- su34ndevM3YFhZknlkw9zGAOf7OcHtdb/tUWyZECUDdTsH0cpsuyemuIDw==
-X-Google-Smtp-Source: AGHT+IE7P+5CKLZxNSRwholjIMU8qx4IvyXEk/K4nWaHQGnEKgTr17FJvSqDOfo1bHhxUEIl1zQwrQ==
-X-Received: by 2002:a05:6a20:2d14:b0:1b6:d91c:6453 with SMTP id
- adf61e73a8af0-1bae7f0f0a4mr1798584637.36.1718328555568; 
- Thu, 13 Jun 2024 18:29:15 -0700 (PDT)
-Received: from toolbox.alistair23.me
- (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
- [2403:580b:97e8:0:82ce:f179:8a79:69f4])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1f855f13562sm20757255ad.212.2024.06.13.18.29.09
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 13 Jun 2024 18:29:15 -0700 (PDT)
-From: Alistair Francis <alistair23@gmail.com>
-X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
-To: wilfred.mallawa@wdc.com, marcel.apfelbaum@gmail.com, lukas@wunner.de,
- qemu-devel@nongnu.org, mst@redhat.com, Jonathan.Cameron@Huawei.com,
- kbusch@kernel.org, hchkuo@avery-design.com.tw, cbrowy@avery-design.com,
- its@irrelevant.dk, jiewen.yao@intel.com
-Cc: Alistair Francis <alistair.francis@wdc.com>, qemu-block@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>, alistair23@gmail.com,
- Jesper Devantier <foss@defmacro.it>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Klaus Jensen <k.jensen@samsung.com>
-Subject: [PATCH v7 3/3] hw/nvme: Add SPDM over DOE support
-Date: Fri, 14 Jun 2024 11:28:46 +1000
-Message-ID: <20240614012846.1016856-4-alistair.francis@wdc.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240614012846.1016856-1-alistair.francis@wdc.com>
-References: <20240614012846.1016856-1-alistair.francis@wdc.com>
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1sHwAp-0007eG-SG
+ for qemu-devel@nongnu.org; Thu, 13 Jun 2024 21:56:15 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>) id 1sHwAm-0001tW-1c
+ for qemu-devel@nongnu.org; Thu, 13 Jun 2024 21:56:15 -0400
+Received: from loongson.cn (unknown [10.2.5.185])
+ by gateway (Coremail) with SMTP id _____8DxFPAxo2tmX70GAA--.27376S3;
+ Fri, 14 Jun 2024 09:56:01 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.185])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8AxRcUwo2tmE5cfAA--.700S2; 
+ Fri, 14 Jun 2024 09:56:00 +0800 (CST)
+From: Song Gao <gaosong@loongson.cn>
+To: qemu-devel@nongnu.org
+Cc: maobibo@loongson.cn, pbonzini@redhat.com, peter.maydell@linaro.org,
+ richard.henderson@linaro.org, philmd@linaro.org, zhaotianrui@loongson.cn
+Subject: [RFC PATCH v3] target/loongarch/kvm: Implement LoongArch PMU
+ extension.
+Date: Fri, 14 Jun 2024 09:38:48 +0800
+Message-Id: <20240614013848.53474-1-gaosong@loongson.cn>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52d;
- envelope-from=alistair23@gmail.com; helo=mail-pg1-x52d.google.com
+X-CM-TRANSID: AQAAf8AxRcUwo2tmE5cfAA--.700S2
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+ ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+ nUUI43ZEXa7xR_UUUUUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=mail.loongson.cn
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,334 +62,226 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Wilfred Mallawa <wilfred.mallawa@wdc.com>
+Implement PMU extension for LoongArch kvm mode. Use OnOffAuto type
+variable pmu to check the PMU feature. If the PMU Feature is not supported
+with KVM host, it reports error if there is pmu=on command line.
 
-Setup Data Object Exchance (DOE) as an extended capability for the NVME
-controller and connect SPDM to it (CMA) to it.
+If there is no any command line about pmu parameter, it checks whether
+KVM host supports the PMU Feature and set the corresponding value in cpucfg.
 
-Signed-off-by: Wilfred Mallawa <wilfred.mallawa@wdc.com>
-Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Acked-by: Klaus Jensen <k.jensen@samsung.com>
+Signed-off-by: Song Gao <gaosong@loongson.cn>
 ---
- docs/specs/index.rst        |   1 +
- docs/specs/spdm.rst         | 134 ++++++++++++++++++++++++++++++++++++
- include/hw/pci/pci_device.h |   7 ++
- include/hw/pci/pcie_doe.h   |   3 +
- hw/nvme/ctrl.c              |  60 ++++++++++++++++
- 5 files changed, 205 insertions(+)
- create mode 100644 docs/specs/spdm.rst
+v3:
+ - Use OnOffAuto type variable pmu to check the PMU feature.
+ - Link to v2: https://patchew.org/QEMU/20240515040611.998507-1-gaosong@loongson.cn/
 
-diff --git a/docs/specs/index.rst b/docs/specs/index.rst
-index 1484e3e760..e2d907959a 100644
---- a/docs/specs/index.rst
-+++ b/docs/specs/index.rst
-@@ -29,6 +29,7 @@ guest hardware that is specific to QEMU.
-    edu
-    ivshmem-spec
-    pvpanic
-+   spdm
-    standard-vga
-    virt-ctlr
-    vmcoreinfo
-diff --git a/docs/specs/spdm.rst b/docs/specs/spdm.rst
-new file mode 100644
-index 0000000000..f7de080ff0
---- /dev/null
-+++ b/docs/specs/spdm.rst
-@@ -0,0 +1,134 @@
-+======================================================
-+QEMU Security Protocols and Data Models (SPDM) Support
-+======================================================
-+
-+SPDM enables authentication, attestation and key exchange to assist in
-+providing infrastructure security enablement. It's a standard published
-+by the `DMTF`_.
-+
-+QEMU supports connecting to a SPDM responder implementation. This allows an
-+external application to emulate the SPDM responder logic for an SPDM device.
-+
-+Setting up a SPDM server
-+========================
-+
-+When using QEMU with SPDM devices QEMU will connect to a server which
-+implements the SPDM functionality.
-+
-+SPDM-Utils
-+----------
-+
-+You can use `SPDM Utils`_ to emulate a responder. This is the simplest method.
-+
-+SPDM-Utils is a Linux applications to manage, test and develop devices
-+supporting DMTF Security Protocol and Data Model (SPDM). It is written in Rust
-+and utilises libspdm.
-+
-+To use SPDM-Utils you will need to do the following steps. Details are included
-+in the SPDM-Utils README.
-+
-+ 1. `Build libspdm`_
-+ 2. `Build SPDM Utils`_
-+ 3. `Run it as a server`_
-+
-+spdm-emu
-+--------
-+
-+You can use `spdm emu`_ to model the
-+SPDM responder.
-+
-+.. code-block:: shell
-+
-+    $ cd spdm-emu
-+    $ git submodule init; git submodule update --recursive
-+    $ mkdir build; cd build
-+    $ cmake -DARCH=x64 -DTOOLCHAIN=GCC -DTARGET=Debug -DCRYPTO=openssl ..
-+    $ make -j32
-+    $ make copy_sample_key # Build certificates, required for SPDM authentication.
-+
-+It is worth noting that the certificates should be in compliance with
-+PCIe r6.1 sec 6.31.3. This means you will need to add the following to
-+openssl.cnf
-+
-+.. code-block::
-+
-+    subjectAltName = otherName:2.23.147;UTF8:Vendor=1b36:Device=0010:CC=010802:REV=02:SSVID=1af4:SSID=1100
-+    2.23.147 = ASN1:OID:2.23.147
-+
-+and then manually regenerate some certificates with:
-+
-+.. code-block:: shell
-+
-+    $ openssl req -nodes -newkey ec:param.pem -keyout end_responder.key \
-+        -out end_responder.req -sha384 -batch \
-+        -subj "/CN=DMTF libspdm ECP384 responder cert"
-+
-+    $ openssl x509 -req -in end_responder.req -out end_responder.cert \
-+        -CA inter.cert -CAkey inter.key -sha384 -days 3650 -set_serial 3 \
-+        -extensions v3_end -extfile ../openssl.cnf
-+
-+    $ openssl asn1parse -in end_responder.cert -out end_responder.cert.der
-+
-+    $ cat ca.cert.der inter.cert.der end_responder.cert.der > bundle_responder.certchain.der
-+
-+You can use SPDM-Utils instead as it will generate the correct certificates
-+automatically.
-+
-+The responder can then be launched with
-+
-+.. code-block:: shell
-+
-+    $ cd bin
-+    $ ./spdm_responder_emu --trans PCI_DOE
-+
-+Connecting an SPDM NVMe device
-+==============================
-+
-+Once a SPDM server is running we can start QEMU and connect to the server.
-+
-+For an NVMe device first let's setup a block we can use
-+
-+.. code-block:: shell
-+
-+    $ cd qemu-spdm/linux/image
-+    $ dd if=/dev/zero of=blknvme bs=1M count=2096 # 2GB NNMe Drive
-+
-+Then you can add this to your QEMU command line:
-+
-+.. code-block:: shell
-+
-+    -drive file=blknvme,if=none,id=mynvme,format=raw \
-+        -device nvme,drive=mynvme,serial=deadbeef,spdm_port=2323
-+
-+At which point QEMU will try to connect to the SPDM server.
-+
-+Note that if using x64-64 you will want to use the q35 machine instead
-+of the default. So the entire QEMU command might look like this
-+
-+.. code-block:: shell
-+
-+    qemu-system-x86_64 -M q35 \
-+        --kernel bzImage \
-+        -drive file=rootfs.ext2,if=virtio,format=raw \
-+        -append "root=/dev/vda console=ttyS0" \
-+        -net none -nographic \
-+        -drive file=blknvme,if=none,id=mynvme,format=raw \
-+        -device nvme,drive=mynvme,serial=deadbeef,spdm_port=2323
-+
-+.. _DMTF:
-+   https://www.dmtf.org/standards/SPDM
-+
-+.. _SPDM Utils:
-+   https://github.com/westerndigitalcorporation/spdm-utils
-+
-+.. _spdm emu:
-+   https://github.com/dmtf/spdm-emu
-+
-+.. _Build libspdm:
-+   https://github.com/westerndigitalcorporation/spdm-utils?tab=readme-ov-file#build-libspdm
-+
-+.. _Build SPDM Utils:
-+   https://github.com/westerndigitalcorporation/spdm-utils?tab=readme-ov-file#build-the-binary
-+
-+.. _Run it as a server:
-+   https://github.com/westerndigitalcorporation/spdm-utils#qemu-spdm-device-emulation
-diff --git a/include/hw/pci/pci_device.h b/include/hw/pci/pci_device.h
-index d3dd0f64b2..15694f2489 100644
---- a/include/hw/pci/pci_device.h
-+++ b/include/hw/pci/pci_device.h
-@@ -3,6 +3,7 @@
+v2:
+ - Drop the property 'pmnum'.
+ - Link to v1: https://patchew.org/QEMU/20240514094630.988617-1-gaosong@loongson.cn/
+
+This patch adds the 'RFC' heading because it requires
+the kernel to merge into patch[1] first
+
+[1]:https://lore.kernel.org/all/20240613120539.41021-1-gaosong@loongson.cn/
+
+ linux-headers/asm-loongarch/kvm.h     |  3 ++
+ target/loongarch/cpu.c                | 56 +++++++++++++++++++++++++++
+ target/loongarch/cpu.h                |  5 +++
+ target/loongarch/kvm/kvm.c            | 16 ++++++++
+ target/loongarch/kvm/kvm_loongarch.h  | 16 ++++++++
+ target/loongarch/loongarch-qmp-cmds.c |  2 +-
+ 6 files changed, 97 insertions(+), 1 deletion(-)
+
+diff --git a/linux-headers/asm-loongarch/kvm.h b/linux-headers/asm-loongarch/kvm.h
+index f9abef3823..afe604d301 100644
+--- a/linux-headers/asm-loongarch/kvm.h
++++ b/linux-headers/asm-loongarch/kvm.h
+@@ -83,6 +83,9 @@ struct kvm_fpu {
+ #define KVM_IOC_CPUCFG(REG)		LOONGARCH_REG_64(KVM_REG_LOONGARCH_CPUCFG, REG)
+ #define KVM_LOONGARCH_VCPU_CPUCFG	0
  
- #include "hw/pci/pci.h"
- #include "hw/pci/pcie.h"
-+#include "hw/pci/pcie_doe.h"
- 
- #define TYPE_PCI_DEVICE "pci-device"
- typedef struct PCIDeviceClass PCIDeviceClass;
-@@ -157,6 +158,12 @@ struct PCIDevice {
-     MSIVectorReleaseNotifier msix_vector_release_notifier;
-     MSIVectorPollNotifier msix_vector_poll_notifier;
- 
-+    /* SPDM */
-+    uint16_t spdm_port;
++#define KVM_LOONGARCH_VM_FEAT_CTRL 	0
++#define  KVM_LOONGARCH_VM_FEAT_PMU 	0
 +
-+    /* DOE */
-+    DOECap doe_spdm;
-+
-     /* ID of standby device in net_failover pair */
-     char *failover_pair_id;
-     uint32_t acpi_index;
-diff --git a/include/hw/pci/pcie_doe.h b/include/hw/pci/pcie_doe.h
-index 15d94661f9..9e1275db8a 100644
---- a/include/hw/pci/pcie_doe.h
-+++ b/include/hw/pci/pcie_doe.h
-@@ -108,6 +108,9 @@ struct DOECap {
-     /* Protocols and its callback response */
-     DOEProtocol *protocols;
-     uint16_t protocol_num;
-+
-+    /* Used for spdm-socket */
-+    int spdm_socket;
+ struct kvm_debug_exit_arch {
  };
  
- void pcie_doe_init(PCIDevice *pdev, DOECap *doe_cap, uint16_t offset,
-diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
-index 127c3d2383..db41f7c8d0 100644
---- a/hw/nvme/ctrl.c
-+++ b/hw/nvme/ctrl.c
-@@ -203,6 +203,7 @@
- #include "sysemu/hostmem.h"
- #include "hw/pci/msix.h"
- #include "hw/pci/pcie_sriov.h"
-+#include "sysemu/spdm-socket.h"
- #include "migration/vmstate.h"
- 
- #include "nvme.h"
-@@ -8087,6 +8088,27 @@ static int nvme_add_pm_capability(PCIDevice *pci_dev, uint8_t offset)
-     return 0;
+diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
+index 270f711f11..e973f611e5 100644
+--- a/target/loongarch/cpu.c
++++ b/target/loongarch/cpu.c
+@@ -571,6 +571,35 @@ static void loongarch_cpu_disas_set_info(CPUState *s, disassemble_info *info)
+     info->print_insn = print_insn_loongarch;
  }
  
-+static bool pcie_doe_spdm_rsp(DOECap *doe_cap)
++static void loongarch_cpu_check_pmu(CPUState *cs, Error **errp)
 +{
-+    void *req = pcie_doe_get_write_mbox_ptr(doe_cap);
-+    uint32_t req_len = pcie_doe_get_obj_len(req) * 4;
-+    void *rsp = doe_cap->read_mbox;
-+    uint32_t rsp_len = SPDM_SOCKET_MAX_MESSAGE_BUFFER_SIZE;
++    LoongArchCPU *cpu = LOONGARCH_CPU(cs);
++    bool kvm_supported;
 +
-+    uint32_t recvd = spdm_socket_rsp(doe_cap->spdm_socket,
-+                             SPDM_SOCKET_TRANSPORT_TYPE_PCI_DOE,
-+                             req, req_len, rsp, rsp_len);
-+    doe_cap->read_mbox_len += DIV_ROUND_UP(recvd, 4);
-+
-+    return recvd != 0;
++    kvm_supported = kvm_feature_supported(cs, LOONGARCH_FEATURE_PMU);
++    if (cpu->pmu == ON_OFF_AUTO_ON) {
++        if (kvm_supported) {
++            cpu->env.cpucfg[6] = FIELD_DP32(cpu->env.cpucfg[6], CPUCFG6, PMP, 1);
++            cpu->env.cpucfg[6] = FIELD_DP32(cpu->env.cpucfg[6], CPUCFG6, PMNUM, 3);
++            cpu->env.cpucfg[6] = FIELD_DP32(cpu->env.cpucfg[6], CPUCFG6, PMBITS, 63);
++            cpu->env.cpucfg[6] = FIELD_DP32(cpu->env.cpucfg[6], CPUCFG6, UPM, 1);
++        } else {
++            error_setg(errp, "'pmu' feature not supported by KVM on this host.");
++            return;
++        }
++    } else if ((cpu->pmu == ON_OFF_AUTO_AUTO) && kvm_supported) {
++        cpu->env.cpucfg[6] = FIELD_DP32(cpu->env.cpucfg[6], CPUCFG6, PMP, 1);
++        cpu->env.cpucfg[6] = FIELD_DP32(cpu->env.cpucfg[6], CPUCFG6, PMNUM, 3);
++        cpu->env.cpucfg[6] = FIELD_DP32(cpu->env.cpucfg[6], CPUCFG6, PMBITS, 63);
++        cpu->env.cpucfg[6] = FIELD_DP32(cpu->env.cpucfg[6], CPUCFG6, UPM, 1);
++    }
 +}
 +
-+static DOEProtocol doe_spdm_prot[] = {
-+    { PCI_VENDOR_ID_PCI_SIG, PCI_SIG_DOE_CMA, pcie_doe_spdm_rsp },
-+    { PCI_VENDOR_ID_PCI_SIG, PCI_SIG_DOE_SECURED_CMA, pcie_doe_spdm_rsp },
-+    { }
++static void loongarch_cpu_feature_realize(CPUState *cs, Error **errp)
++{
++    loongarch_cpu_check_pmu(cs, errp);
++}
++
+ static void loongarch_cpu_realizefn(DeviceState *dev, Error **errp)
+ {
+     CPUState *cs = CPU(dev);
+@@ -584,6 +613,11 @@ static void loongarch_cpu_realizefn(DeviceState *dev, Error **errp)
+     }
+ 
+     loongarch_cpu_register_gdb_regs_for_features(cs);
++    loongarch_cpu_feature_realize(cs, &local_err);
++    if (local_err != NULL) {
++        error_propagate(errp, local_err);
++        return;
++    }
+ 
+     cpu_reset(cs);
+     qemu_init_vcpu(cs);
+@@ -643,12 +677,34 @@ static void loongarch_set_lasx(Object *obj, bool value, Error **errp)
+     }
+ }
+ 
++static bool loongarch_get_pmu(Object *obj, Error **errp)
++{
++    return LOONGARCH_CPU(obj)->pmu != ON_OFF_AUTO_OFF;
++}
++
++static void loongarch_set_pmu(Object *obj, bool value, Error **errp)
++{
++    LoongArchCPU *cpu = LOONGARCH_CPU(obj);
++
++    cpu->pmu = value ? ON_OFF_AUTO_ON : ON_OFF_AUTO_OFF;
++}
++
+ void loongarch_cpu_post_init(Object *obj)
+ {
++    LoongArchCPU *cpu = LOONGARCH_CPU(obj);
++
+     object_property_add_bool(obj, "lsx", loongarch_get_lsx,
+                              loongarch_set_lsx);
+     object_property_add_bool(obj, "lasx", loongarch_get_lasx,
+                              loongarch_set_lasx);
++
++    if (kvm_enabled()) {
++        cpu->pmu = ON_OFF_AUTO_AUTO;
++        object_property_add_bool(obj, "pmu", loongarch_get_pmu,
++                                 loongarch_set_pmu);
++    } else {
++        cpu->pmu = ON_OFF_AUTO_OFF;
++    }
+ }
+ 
+ static void loongarch_cpu_init(Object *obj)
+diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
+index 6c41fafb70..cfc87f7f09 100644
+--- a/target/loongarch/cpu.h
++++ b/target/loongarch/cpu.h
+@@ -281,6 +281,10 @@ struct LoongArchTLB {
+ typedef struct LoongArchTLB LoongArchTLB;
+ #endif
+ 
++enum loongarch_features {
++    LOONGARCH_FEATURE_PMU,
 +};
 +
- static bool nvme_init_pci(NvmeCtrl *n, PCIDevice *pci_dev, Error **errp)
- {
-     ERRP_GUARD();
-@@ -8157,6 +8179,25 @@ static bool nvme_init_pci(NvmeCtrl *n, PCIDevice *pci_dev, Error **errp)
+ typedef struct CPUArchState {
+     uint64_t gpr[32];
+     uint64_t pc;
+@@ -381,6 +385,7 @@ struct ArchCPU {
+     CPULoongArchState env;
+     QEMUTimer timer;
+     uint32_t  phy_id;
++    OnOffAuto pmu;
  
-     nvme_update_msixcap_ts(pci_dev, n->conf_msix_qsize);
- 
-+    pcie_cap_deverr_init(pci_dev);
-+
-+    /* DOE Initialisation */
-+    if (pci_dev->spdm_port) {
-+        uint16_t doe_offset = n->params.sriov_max_vfs ?
-+                                  PCI_CONFIG_SPACE_SIZE + PCI_ARI_SIZEOF
-+                                  : PCI_CONFIG_SPACE_SIZE;
-+
-+        pcie_doe_init(pci_dev, &pci_dev->doe_spdm, doe_offset,
-+                      doe_spdm_prot, true, 0);
-+
-+        pci_dev->doe_spdm.spdm_socket = spdm_socket_connect(pci_dev->spdm_port,
-+                                                            errp);
-+
-+        if (pci_dev->doe_spdm.spdm_socket < 0) {
-+            return false;
-+        }
-+    }
-+
-     if (n->params.cmb_size_mb) {
-         nvme_init_cmb(n, pci_dev);
-     }
-@@ -8407,6 +8448,11 @@ static void nvme_exit(PCIDevice *pci_dev)
-         g_free(n->cmb.buf);
-     }
- 
-+    if (pci_dev->doe_spdm.spdm_socket > 0) {
-+        spdm_socket_close(pci_dev->doe_spdm.spdm_socket,
-+                          SPDM_SOCKET_TRANSPORT_TYPE_PCI_DOE);
-+    }
-+
-     if (n->pmr.dev) {
-         host_memory_backend_set_mapped(n->pmr.dev, false);
-     }
-@@ -8451,6 +8497,7 @@ static Property nvme_props[] = {
-                       params.sriov_max_vq_per_vf, 0),
-     DEFINE_PROP_BOOL("msix-exclusive-bar", NvmeCtrl, params.msix_exclusive_bar,
-                      false),
-+    DEFINE_PROP_UINT16("spdm_port", PCIDevice, spdm_port, 0),
-     DEFINE_PROP_END_OF_LIST(),
- };
- 
-@@ -8522,11 +8569,23 @@ static void nvme_pci_write_config(PCIDevice *dev, uint32_t address,
- {
-     uint16_t old_num_vfs = pcie_sriov_num_vfs(dev);
- 
-+    pcie_doe_write_config(&dev->doe_spdm, address, val, len);
-     pci_default_write_config(dev, address, val, len);
-     pcie_cap_flr_write_config(dev, address, val, len);
-     nvme_sriov_post_write_config(dev, old_num_vfs);
+     /* 'compatible' string for this CPU for Linux device trees */
+     const char *dtb_compatible;
+diff --git a/target/loongarch/kvm/kvm.c b/target/loongarch/kvm/kvm.c
+index 8e6e27c8bf..89f438ec95 100644
+--- a/target/loongarch/kvm/kvm.c
++++ b/target/loongarch/kvm/kvm.c
+@@ -780,6 +780,22 @@ int kvm_loongarch_set_interrupt(LoongArchCPU *cpu, int irq, int level)
+     return kvm_vcpu_ioctl(cs, KVM_INTERRUPT, &intr);
  }
  
-+static uint32_t nvme_pci_read_config(PCIDevice *dev, uint32_t address, int len)
++bool kvm_feature_supported(CPUState *cs, enum loongarch_features feature)
 +{
-+    uint32_t val;
-+    if (dev->spdm_port) {
-+        if (pcie_doe_read_config(&dev->doe_spdm, address, len, &val)) {
-+            return val;
-+        }
++    struct kvm_device_attr attr;
++    int ret;
++
++    switch (feature) {
++    case LOONGARCH_FEATURE_PMU:
++        attr.group = KVM_LOONGARCH_VM_FEAT_CTRL;
++        attr.attr = KVM_LOONGARCH_VM_FEAT_PMU;
++        ret = kvm_vm_ioctl(kvm_state, KVM_HAS_DEVICE_ATTR, &attr);
++        return (ret == 0);
++    default:
++        return false;
 +    }
-+    return pci_default_read_config(dev, address, len);
 +}
 +
- static const VMStateDescription nvme_vmstate = {
-     .name = "nvme",
-     .unmigratable = 1,
-@@ -8539,6 +8598,7 @@ static void nvme_class_init(ObjectClass *oc, void *data)
+ void kvm_arch_accel_class_init(ObjectClass *oc)
+ {
+ }
+diff --git a/target/loongarch/kvm/kvm_loongarch.h b/target/loongarch/kvm/kvm_loongarch.h
+index d945b6bb82..bdb4f180eb 100644
+--- a/target/loongarch/kvm/kvm_loongarch.h
++++ b/target/loongarch/kvm/kvm_loongarch.h
+@@ -13,4 +13,20 @@
+ int  kvm_loongarch_set_interrupt(LoongArchCPU *cpu, int irq, int level);
+ void kvm_arch_reset_vcpu(CPULoongArchState *env);
  
-     pc->realize = nvme_realize;
-     pc->config_write = nvme_pci_write_config;
-+    pc->config_read = nvme_pci_read_config;
-     pc->exit = nvme_exit;
-     pc->class_id = PCI_CLASS_STORAGE_EXPRESS;
-     pc->revision = 2;
++#ifdef CONFIG_KVM
++/*
++ * kvm_feature_supported:
++ *
++ * Returns: true if KVM supports specified feature
++ * and false otherwise.
++ */
++bool kvm_feature_supported(CPUState *cs, enum loongarch_features feature);
++#else
++static inline bool kvm_feature_supported(CPUState *cs,
++                                         enum loongarch_features feature)
++{
++    return false;
++}
++#endif
++
+ #endif
+diff --git a/target/loongarch/loongarch-qmp-cmds.c b/target/loongarch/loongarch-qmp-cmds.c
+index 8721a5eb13..7e1a6fd734 100644
+--- a/target/loongarch/loongarch-qmp-cmds.c
++++ b/target/loongarch/loongarch-qmp-cmds.c
+@@ -40,7 +40,7 @@ CpuDefinitionInfoList *qmp_query_cpu_definitions(Error **errp)
+ }
+ 
+ static const char *cpu_model_advertised_features[] = {
+-    "lsx", "lasx", NULL
++    "lsx", "lasx", "pmu", NULL
+ };
+ 
+ CpuModelExpansionInfo *qmp_query_cpu_model_expansion(CpuModelExpansionType type,
 -- 
-2.45.2
+2.33.0
 
 
