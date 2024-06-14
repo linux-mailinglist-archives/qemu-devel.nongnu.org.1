@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D78349084F2
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jun 2024 09:30:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 380AE9084EE
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jun 2024 09:30:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sI1LY-0003DS-2X; Fri, 14 Jun 2024 03:27:40 -0400
+	id 1sI1Li-0003IA-Rn; Fri, 14 Jun 2024 03:27:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sI1LW-0003Cf-7G
- for qemu-devel@nongnu.org; Fri, 14 Jun 2024 03:27:38 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sI1Lg-0003HN-IO
+ for qemu-devel@nongnu.org; Fri, 14 Jun 2024 03:27:48 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sI1LU-0000ka-Qn
- for qemu-devel@nongnu.org; Fri, 14 Jun 2024 03:27:38 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sI1Le-0000ll-VR
+ for qemu-devel@nongnu.org; Fri, 14 Jun 2024 03:27:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1718350056;
+ s=mimecast20190719; t=1718350066;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=7J6U16qrXeLb/asNfTGBlt6h0s0DAuaM230HKBqvUWQ=;
- b=ZshNH0QAA/Z9xntcSD2rpqk5NotTWJ38FtWMHS8ZUx514wK+hu467Cu2SngDWYOgtyGykM
- wz314usfIK25w6+GBu60wSBpy1a+JdYIrxU3vKdHKrIBfz1WW7++oVPQ0yK1v/ml/MT2uH
- UsWhdsZ2ACDNSv7a/+ABxPL+3NC9FKc=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=GG/7nIx9q8EFSXqOPcSvBh4zIHq/fXW6byZ08I1yz/Y=;
+ b=bqiVRdbBrTuD5pMDHwBQ0FE0BBRBOgKRgEFFdc8iryCu7ISVGQ5Q3v+XYmoGmaR9Q9ytNQ
+ NiN/nP+H3V8C7mdSMnCzzOHAGeUgzbKvxxHGGayu3XCt+BNYG4Th/NIP5nFA25vamf3AXe
+ Zm9R5H6ayq4VzIFC79P8O0OIlI1vi+4=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-135-cYX1J6iCP3eRQgpTECFXXg-1; Fri,
- 14 Jun 2024 03:27:34 -0400
-X-MC-Unique: cYX1J6iCP3eRQgpTECFXXg-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-384-LzW7ZURgPWeI16W83EmJXg-1; Fri,
+ 14 Jun 2024 03:27:37 -0400
+X-MC-Unique: LzW7ZURgPWeI16W83EmJXg-1
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 0FFD219560B0; Fri, 14 Jun 2024 07:27:33 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 146D5195609D; Fri, 14 Jun 2024 07:27:36 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.192.49])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id F103B3000219; Fri, 14 Jun 2024 07:27:30 +0000 (UTC)
+ id 37FC73000219; Fri, 14 Jun 2024 07:27:32 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: Jamin Lin <jamin_lin@aspeedtech.com>, Troy Lee <troy_lee@aspeedtech.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [PULL 04/19] aspeed/sdmc: remove redundant macros
-Date: Fri, 14 Jun 2024 09:26:05 +0200
-Message-ID: <20240614072620.1262053-5-clg@redhat.com>
+Subject: [PULL 05/19] aspeed/sdmc: fix coding style
+Date: Fri, 14 Jun 2024 09:26:06 +0200
+Message-ID: <20240614072620.1262053-6-clg@redhat.com>
 In-Reply-To: <20240614072620.1262053-1-clg@redhat.com>
 References: <20240614072620.1262053-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: 11
 X-Spam_score: 1.1
@@ -83,48 +83,54 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jamin Lin <jamin_lin@aspeedtech.com>
 
-These macros are no longer used for ASPEED SOCs, so removes them.
+Fix coding style issues from checkpatch.pl
+
+Test command:
+scripts/checkpatch.pl --no-tree -f hw/misc/aspeed_sdmc.c
 
 Signed-off-by: Troy Lee <troy_lee@aspeedtech.com>
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 Reviewed-by: Cédric Le Goater <clg@kaod.org>
 ---
- hw/misc/aspeed_sdmc.c | 15 ---------------
- 1 file changed, 15 deletions(-)
+ hw/misc/aspeed_sdmc.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
 diff --git a/hw/misc/aspeed_sdmc.c b/hw/misc/aspeed_sdmc.c
-index 64cd1a81dcd2..74279bbe8ee7 100644
+index 74279bbe8ee7..873d67c592d8 100644
 --- a/hw/misc/aspeed_sdmc.c
 +++ b/hw/misc/aspeed_sdmc.c
-@@ -76,10 +76,6 @@
- #define     ASPEED_SDMC_VGA_32MB            0x2
- #define     ASPEED_SDMC_VGA_64MB            0x3
- #define ASPEED_SDMC_DRAM_SIZE(x)        (x & 0x3)
--#define     ASPEED_SDMC_DRAM_64MB           0x0
--#define     ASPEED_SDMC_DRAM_128MB          0x1
--#define     ASPEED_SDMC_DRAM_256MB          0x2
--#define     ASPEED_SDMC_DRAM_512MB          0x3
+@@ -296,7 +296,8 @@ static void aspeed_2400_sdmc_write(AspeedSDMCState *s, uint32_t reg,
+                                    uint32_t data)
+ {
+     if (reg == R_PROT) {
+-        s->regs[reg] = (data == PROT_KEY_UNLOCK) ? PROT_UNLOCKED : PROT_SOFTLOCKED;
++        s->regs[reg] =
++            (data == PROT_KEY_UNLOCK) ? PROT_UNLOCKED : PROT_SOFTLOCKED;
+         return;
+     }
  
- #define ASPEED_SDMC_READONLY_MASK                       \
-     (ASPEED_SDMC_RESERVED | ASPEED_SDMC_VGA_COMPAT |    \
-@@ -100,17 +96,6 @@
- #define ASPEED_SDMC_CACHE_ENABLE        (1 << 10) /* differs from AST2400 */
- #define ASPEED_SDMC_DRAM_TYPE           (1 << 4)  /* differs from AST2400 */
+@@ -354,7 +355,8 @@ static void aspeed_2500_sdmc_write(AspeedSDMCState *s, uint32_t reg,
+                                    uint32_t data)
+ {
+     if (reg == R_PROT) {
+-        s->regs[reg] = (data == PROT_KEY_UNLOCK) ? PROT_UNLOCKED : PROT_SOFTLOCKED;
++        s->regs[reg] =
++            (data == PROT_KEY_UNLOCK) ? PROT_UNLOCKED : PROT_SOFTLOCKED;
+         return;
+     }
  
--/* DRAM size definitions differs */
--#define     ASPEED_SDMC_AST2500_128MB       0x0
--#define     ASPEED_SDMC_AST2500_256MB       0x1
--#define     ASPEED_SDMC_AST2500_512MB       0x2
--#define     ASPEED_SDMC_AST2500_1024MB      0x3
--
--#define     ASPEED_SDMC_AST2600_256MB       0x0
--#define     ASPEED_SDMC_AST2600_512MB       0x1
--#define     ASPEED_SDMC_AST2600_1024MB      0x2
--#define     ASPEED_SDMC_AST2600_2048MB      0x3
--
- #define ASPEED_SDMC_AST2500_READONLY_MASK                               \
-     (ASPEED_SDMC_HW_VERSION(0xf) | ASPEED_SDMC_CACHE_INITIAL_DONE |     \
-      ASPEED_SDMC_AST2500_RESERVED | ASPEED_SDMC_VGA_COMPAT |            \
+@@ -434,8 +436,9 @@ static void aspeed_2600_sdmc_write(AspeedSDMCState *s, uint32_t reg,
+     }
+ 
+     if (s->regs[R_PROT] == PROT_HARDLOCKED) {
+-        qemu_log_mask(LOG_GUEST_ERROR, "%s: SDMC is locked until system reset!\n",
+-                __func__);
++        qemu_log_mask(LOG_GUEST_ERROR,
++                      "%s: SDMC is locked until system reset!\n",
++                      __func__);
+         return;
+     }
+ 
 -- 
 2.45.2
 
