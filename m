@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D3A3909558
-	for <lists+qemu-devel@lfdr.de>; Sat, 15 Jun 2024 03:47:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB7AD909886
+	for <lists+qemu-devel@lfdr.de>; Sat, 15 Jun 2024 15:29:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sIIUV-0002QH-84; Fri, 14 Jun 2024 21:46:03 -0400
+	id 1sITS4-0008MP-TE; Sat, 15 Jun 2024 09:28:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1sIIUT-0002Q8-34
- for qemu-devel@nongnu.org; Fri, 14 Jun 2024 21:46:01 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1sIIUQ-0005K9-4I
- for qemu-devel@nongnu.org; Fri, 14 Jun 2024 21:46:00 -0400
-Received: from loongson.cn (unknown [10.20.42.62])
- by gateway (Coremail) with SMTP id _____8DxzOpO8mxmmBAHAA--.28631S3;
- Sat, 15 Jun 2024 09:45:50 +0800 (CST)
-Received: from [10.20.42.62] (unknown [10.20.42.62])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8Bx28ZM8mxm30whAA--.15932S3; 
- Sat, 15 Jun 2024 09:45:50 +0800 (CST)
-Subject: Re: [PATCH 0/3] S3 and S4 sleep for loongarch/virt & microvm
-To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>
-Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>, QEMU devel
- <qemu-devel@nongnu.org>, Ani Sinha <anisinha@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Song Gao <gaosong@loongson.cn>, Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Sergio Lopez <slp@redhat.com>
-References: <20240613-loongarch64-sleep-v1-0-d2ef0aaa543a@flygoat.com>
- <002b6625-9fed-beeb-700c-93438023d873@loongson.cn>
- <ac2dbd67-97f7-4748-b545-3d05cb1d9a36@app.fastmail.com>
- <b1aacf5a-382f-99fc-9901-fdbce07c8381@loongson.cn>
- <ZmxNx81Hr9u53_Hs@redhat.com>
-From: maobibo <maobibo@loongson.cn>
-Message-ID: <d331a79a-0b4e-4146-ea9c-16e3a36e55cf@loongson.cn>
-Date: Sat, 15 Jun 2024 09:45:48 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <martin.joerg@gmail.com>)
+ id 1sIRpV-0006Gd-CG; Sat, 15 Jun 2024 07:44:21 -0400
+Received: from mail-io1-xd34.google.com ([2607:f8b0:4864:20::d34])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <martin.joerg@gmail.com>)
+ id 1sIRpT-0000Ur-6Z; Sat, 15 Jun 2024 07:44:20 -0400
+Received: by mail-io1-xd34.google.com with SMTP id
+ ca18e2360f4ac-7eb77b1d2fcso128163739f.0; 
+ Sat, 15 Jun 2024 04:44:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1718451857; x=1719056657; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=0ux8Dm5lIBUr4VOu/ulNgfoar5Iom7WwzWnL/JaR/fY=;
+ b=WKY+vLb4E5K41Db+9h4wVsQE36IdNLlP8kURlvbwp1SRN85ye0M65B3ztbJEHYSRP0
+ +ItQ4O6E0a/dEYkteW68fnrdxH8+uD6bSjPQ7MGcUlDR+E0uEkvNIvCxJbTHa8jk4dD7
+ KIMThmUV+GUU1+WJR5WlG8djUppoxjprAC9BjpxU0+6LCbvoTGg3q8bfPryLbsVgnTdR
+ 2XXN6QWR8PdhybuLcuQg0hweIOcJpiRxrmpXqiNj43vkIJlJzuDsOpvhakLABc+qthi7
+ Ee4huqUrybNFybfj6CLaTECkSYrAr65JOBKx52LBEGOt+ubNiwtnhC7ytnYDTlU+yL9L
+ NuPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1718451857; x=1719056657;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=0ux8Dm5lIBUr4VOu/ulNgfoar5Iom7WwzWnL/JaR/fY=;
+ b=bdVIz2kow2sp6bmWNv48keBk0Q4wEksjJSAmuaK0dCBexgP83pIsfCv2skMFOXpJO+
+ Iej7KF+uPDzZFUfMvYC9f1LzqWeXJcWY61QsWaffNNGND/Mm+VBzf6hzMUrqZFAtdIRW
+ wLG71LYV9EbqjPHOjSuXsVofkC2lBYNaNJS+F/oQPPkgU4lpZqgrVAB9pC8gpWj6BcEL
+ 7dR8wLnOKdFOVueVWt2KtKrKtVbfyUVo1XdXsefc2BafjUshHVXdM9hisI+QXe/zRwDi
+ ppTYFmpHLP2ZYiaJ10hfck8/8hmetvLTfQAv2i7jHvkTFGWCsd9YeQunH5DM791jI3fB
+ /KDg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXo4uWHjecOHpbvX17WtmFCOYn5hYim3mrKwlu+v5wPGI83L/kS/8o0HZio72RRoHFpqZfeB+Nqm5tMAChFLIT54JmRZazv5A==
+X-Gm-Message-State: AOJu0Ywt1nMyyBdcCgaZY6ByUQEsE6C5crb7gf4uMJjhvDPRTtYxXWPM
+ Gmc2Iu310EvOl2OPH4Dvaklh1vdb0A/0j5RX5LINsQAUFoHgIEqwno/3SaE2uW7gwg==
+X-Google-Smtp-Source: AGHT+IGwVuMq0sCZcYl4fEC99vqFdFsDxMSxSN1ub8iFD8j41hdU01eR3IPOU4ammf1f99OLVrEyvw==
+X-Received: by 2002:a05:6602:3426:b0:7eb:9864:410b with SMTP id
+ ca18e2360f4ac-7ebeb4b4633mr568297439f.5.1718451856695; 
+ Sat, 15 Jun 2024 04:44:16 -0700 (PDT)
+Received: from boondocks.. (18.205.134.34.bc.googleusercontent.com.
+ [34.134.205.18]) by smtp.gmail.com with ESMTPSA id
+ ca18e2360f4ac-7ebdbaf1edbsm128182339f.55.2024.06.15.04.44.15
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 15 Jun 2024 04:44:16 -0700 (PDT)
+From: Martin Joerg <martin.joerg@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: dave@treblig.org, qemu-trivial@nongnu.org,
+ Martin Joerg <martin.joerg@gmail.com>
+Subject: [PATCH] hmp-commands-info.hx: Add missing info command for stats
+ subcommand
+Date: Sat, 15 Jun 2024 13:43:23 +0200
+Message-ID: <20240615114323.30550-1-martin.joerg@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <ZmxNx81Hr9u53_Hs@redhat.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8Bx28ZM8mxm30whAA--.15932S3
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj9xXoWrKF1kXF47CF47tFy8Xr4DWrX_yoWkXFXEyr
- s7ZrnYyFs8Xay7K3yktFWfXr9xWw4jgws5J348X342kwn2y397Cr4vgrZ2v3409FyxArZx
- Crn8ua4Sy343AosvyTuYvTs0mTUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUj1kv1TuYvT
- s0mT0YCTnIWjqI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUI
- cSsGvfJTRUUUbxxYFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20x
- vaj40_Wr0E3s1l1IIY67AEw4v_JrI_Jryl8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxS
- w2x7M28EF7xvwVC0I7IYx2IY67AKxVWUJVWUCwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxV
- WUJVW8JwA2z4x0Y4vEx4A2jsIE14v26r4j6F4UM28EF7xvwVC2z280aVCY1x0267AKxVW8
- JVW8Jr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27wAqx4
- xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v2
- 6r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1cAE67
- vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAF
- wI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc4
- 0Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AK
- xVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr
- 1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxUzZ2-UUUU
- U
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -38
-X-Spam_score: -3.9
-X-Spam_bar: ---
-X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-2.018,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::d34;
+ envelope-from=martin.joerg@gmail.com; helo=mail-io1-xd34.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Sat, 15 Jun 2024 09:28:12 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,46 +90,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Signed-off-by: Martin Joerg <martin.joerg@gmail.com>
+---
+ hmp-commands-info.hx | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-
-On 2024/6/14 下午10:03, Daniel P. Berrangé wrote:
-> On Fri, Jun 14, 2024 at 01:17:39PM +0800, maobibo wrote:
->>
->>
->> On 2024/6/14 下午12:27, Jiaxun Yang wrote:
->>>
->>>
->>> 在2024年6月14日六月 上午4:32，maobibo写道：
->>>> It is interesting.
->>>>
->>>> How to wakeup VM if it sleeps in S3/S4, from emulated keyboard or
->>>> ethernet magic packet or qemu monitor command in background?
->>>
->>> Hi Bibo,
->>>
->>> The best way to wake the guest is system_wakeup command in monitor.
->> Ok, I see.
->>
->> It is useful and it can be used to test S3/S4 in TCG mode at least.
->>
->> Can we add feature capability, enabled in TCG mode, disabled in KVM mode by
->> default? If vm deploys in cloud, users in general help it is power-on
->> always.
-> 
-> Please avoid creating differing defaults between TCG and KVM where
-> practical.
-There is bad experience for me, remote VM suddenly freezes and all 
-network connection are lost if virt-machine does not support S3/S4 on 
-LoongArch machines.
-
-However it does not happen on x86 machine, how does x86 KVM VM machine 
-stop this?
-
-Regards
-Bibo Mao
-> 
-> With regards,
-> Daniel
-> 
-
+diff --git a/hmp-commands-info.hx b/hmp-commands-info.hx
+index 20a9835ea8..f5639af517 100644
+--- a/hmp-commands-info.hx
++++ b/hmp-commands-info.hx
+@@ -892,7 +892,7 @@ ERST
+     },
+ 
+ SRST
+-  ``stats``
++  ``info stats``
+     Show runtime-collected statistics
+ ERST
+ 
 
