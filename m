@@ -2,76 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D21B8909AE8
-	for <lists+qemu-devel@lfdr.de>; Sun, 16 Jun 2024 03:06:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36077909B53
+	for <lists+qemu-devel@lfdr.de>; Sun, 16 Jun 2024 04:48:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sIeKL-0005PH-Pf; Sat, 15 Jun 2024 21:05:01 -0400
+	id 1sIfvK-0007Og-33; Sat, 15 Jun 2024 22:47:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1sIeKJ-0005Op-T5
- for qemu-devel@nongnu.org; Sat, 15 Jun 2024 21:04:59 -0400
-Received: from madrid.collaboradmins.com ([2a00:1098:ed:100::25])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1sIeKI-00033x-8u
- for qemu-devel@nongnu.org; Sat, 15 Jun 2024 21:04:59 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
- s=mail; t=1718499897;
- bh=Z6MjLbiKooZYqlLdMDZ0uN10TxmA9WpuEPuquaL7vQw=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=OokfGiTyOhChuCiD7y6c32FjS18Qdx5I/ytGCqey3EHElHri/YB7VZp1kTE5VEcB6
- C4qm8EfrayJZcPMwbvbFbbkTc4uTJT5jDuHE+T74Z8aHp4sL4qc5wVtzpS8uq43Lxl
- SNxh344UU+Tcn/mQHi7UGe/U1yUSoOPvfse4dm+ntaMKATtycP3oG53JB0epmmPDcB
- 1r7tOWxQkF5dlyTZiYVgMnxz2ueiRqfIRvwU7Cm1zhAEzgCcWwIWObeMoyMmtV7Iqn
- 5WoDPIhxfWAhJgzgynBBlHwrmk3acCiG6eY95a73JoCO3Uzt8oPuiFvPRDyiHXsBIZ
- fpIYD6oelOLCQ==
-Received: from workpc.. (cola.collaboradmins.com [195.201.22.229])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- (Authenticated sender: dmitry.osipenko)
- by madrid.collaboradmins.com (Postfix) with ESMTPSA id 4BCDC3782163;
- Sun, 16 Jun 2024 01:04:55 +0000 (UTC)
-From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-To: Akihiko Odaki <akihiko.odaki@daynix.com>, Huang Rui <ray.huang@amd.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Antonio Caggiano <quic_acaggian@quicinc.com>,
- "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
- Robert Beckett <bob.beckett@collabora.com>,
- Gert Wollny <gert.wollny@collabora.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org, Gurchetan Singh <gurchetansingh@chromium.org>,
- ernunes@redhat.com, Alyssa Ross <hi@alyssa.is>,
- =?UTF-8?q?Roger=20Pau=20Monn=C3=A9?= <roger.pau@citrix.com>,
- Alex Deucher <alexander.deucher@amd.com>,
- Stefano Stabellini <stefano.stabellini@amd.com>,
- =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
- Xenia Ragiadakou <xenia.ragiadakou@amd.com>,
- Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
- Honglei Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
- Chen Jiqian <Jiqian.Chen@amd.com>, Yiwei Zhang <zzyiwei@chromium.org>
-Subject: [PATCH v14 14/14] virtio-gpu: Support Venus context
-Date: Sun, 16 Jun 2024 04:03:57 +0300
-Message-ID: <20240616010357.2874662-15-dmitry.osipenko@collabora.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240616010357.2874662-1-dmitry.osipenko@collabora.com>
-References: <20240616010357.2874662-1-dmitry.osipenko@collabora.com>
+ (Exim 4.90_1) (envelope-from <frank.chang@sifive.com>)
+ id 1sIfvB-0007Mn-3Z
+ for qemu-devel@nongnu.org; Sat, 15 Jun 2024 22:47:09 -0400
+Received: from mail-oo1-xc31.google.com ([2607:f8b0:4864:20::c31])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <frank.chang@sifive.com>)
+ id 1sIfv9-0001gu-Eu
+ for qemu-devel@nongnu.org; Sat, 15 Jun 2024 22:47:08 -0400
+Received: by mail-oo1-xc31.google.com with SMTP id
+ 006d021491bc7-5bb041514c1so1939554eaf.0
+ for <qemu-devel@nongnu.org>; Sat, 15 Jun 2024 19:47:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=sifive.com; s=google; t=1718506025; x=1719110825; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=IxUHaAMwbJsA105BAP7W4CBk7gREFUPLGQwqLSMI7L8=;
+ b=fzRIGoETV2Eu6a80cCRa3giCimGLPsKztzxtdAVXjcgp9yHOoORoWjvYJcTwvn9lSG
+ 0QIlUwESG/iU3tkc05U3jQ1rOPBuCiYzWeHDWAbXvnmR2hfJzDINun80co0bTPBn8OBt
+ SGz3/tWUeDUPiENQOfPp5MW22onh1gGxbbEIXiRKiwciA71e+kxd6tZFAxGabjlK1/8/
+ PsZt+fYsPNGyK8nwsVAo3YgqtJ9GWn+RK/QRt6ISOjuM6yO6xsOqEVT/F88VBbNPHKlV
+ kaBjq8tuS+3anAANpJvCF/7bK2zkTvaMj3U+e1x62xt2H+K5OXjBnMxQKVL0rwDEeJCV
+ fNFQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1718506025; x=1719110825;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=IxUHaAMwbJsA105BAP7W4CBk7gREFUPLGQwqLSMI7L8=;
+ b=tTgr2URICj0yQz11zy4ouZUNgSPJcf82Zc01vFbneYGRcCk0exu+kFC+R8CsKOQyt0
+ /xOAD+1LsHwoKKsmcs4yL0Z84ePd7hpwMgUofWmw625qUhbtpdG0ZiaFpdk3hh9A5YAh
+ O9HVwb41GX4BRfR304LPTKVtoYzhFvQliusVCyCrgKn6gAIKguigssa0vV8UfN8a8Sqs
+ ha3r/BUIO4OyWTdjk6w3nIRgh5qxzjIQHk/iVegWoWYud9msd3ieHJIo4uFMishGWINO
+ wTdyvZoL1bQes3O2LXTKfqcbXONisTNlVrEDeEvcK5kh+8w25WZ9DbuERQ7ZM4odUvUj
+ awcQ==
+X-Gm-Message-State: AOJu0Yy8fhFC+31qhlV3292aZedNCG0XlQ/qx4bcbhzaMaEYH72hRV4U
+ 5XZ24eIDXe+6RSHvtS0Y2eGKxQDnjBK1m7PZmne7om5U5CjsyumzGoHkgqDMYDvy+hEbiVJXJGi
+ 5OZgaP49YEfsuoQgfUeXgu962G7eqhhigNSiJV/Woj2hBa+hNgZI1SdGaeXsDKncLsFpLlouPGY
+ B+onGDQps4zZtdPVces924Cc17zz8T2VLJ3mCabWU=
+X-Google-Smtp-Source: AGHT+IFbqJxpn2/9bv7/7sI1lGNCApHDGvPj9M0Qn7LvjRy8HKlRShDXLIX1rgh8iEPSL9R8cDM7sQ==
+X-Received: by 2002:a05:6358:249b:b0:19f:4691:7db9 with SMTP id
+ e5c5f4694b2df-19fa9ddbf10mr789102755d.5.1718506024664; 
+ Sat, 15 Jun 2024 19:47:04 -0700 (PDT)
+Received: from hsinchu16.internal.sifive.com
+ (59-124-168-89.hinet-ip.hinet.net. [59.124.168.89])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-1f855e7ca78sm56258705ad.106.2024.06.15.19.47.02
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 15 Jun 2024 19:47:04 -0700 (PDT)
+From: frank.chang@sifive.com
+To: qemu-devel@nongnu.org
+Cc: Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bmeng.cn@gmail.com>,
+ Weiwei Li <liwei1518@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ qemu-riscv@nongnu.org (open list:RISC-V TCG CPUs),
+ Frank Chang <frank.chang@sifive.com>
+Subject: [PATCH v2 0/6] Introduce extension implied rules
+Date: Sun, 16 Jun 2024 10:46:51 +0800
+Message-ID: <20240616024657.17948-1-frank.chang@sifive.com>
+X-Mailer: git-send-email 2.43.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1098:ed:100::25;
- envelope-from=dmitry.osipenko@collabora.com; helo=madrid.collaboradmins.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c31;
+ envelope-from=frank.chang@sifive.com; helo=mail-oo1-xc31.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,131 +97,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Antonio Caggiano <antonio.caggiano@collabora.com>
+From: Frank Chang <frank.chang@sifive.com>
 
-Request Venus when initializing VirGL and if venus=true flag is set for
-virtio-gpu-gl device.
+Currently, the implied extensions are enabled and checked in
+riscv_cpu_validate_set_extensions(). However, the order of enabling the
+implied extensions must follow a strict sequence, which is error-prone.
 
-Signed-off-by: Antonio Caggiano <antonio.caggiano@collabora.com>
-Signed-off-by: Huang Rui <ray.huang@amd.com>
-Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
----
- hw/display/virtio-gpu-gl.c     |  2 ++
- hw/display/virtio-gpu-virgl.c  | 22 ++++++++++++++++++----
- hw/display/virtio-gpu.c        | 15 +++++++++++++++
- include/hw/virtio/virtio-gpu.h |  3 +++
- 4 files changed, 38 insertions(+), 4 deletions(-)
+This patchset introduce extension implied rule helpers to enable the
+implied extensions. This also eliminates the old-fashioned ordering
+requirement. For example, Zvksg implies Zvks, Zvks implies Zvksed, etc.,
+removing the need to check the implied rules of Zvksg before Zvks.
 
-diff --git a/hw/display/virtio-gpu-gl.c b/hw/display/virtio-gpu-gl.c
-index 20a7c316bb23..9be452547322 100644
---- a/hw/display/virtio-gpu-gl.c
-+++ b/hw/display/virtio-gpu-gl.c
-@@ -151,6 +151,8 @@ static void virtio_gpu_gl_device_realize(DeviceState *qdev, Error **errp)
- static Property virtio_gpu_gl_properties[] = {
-     DEFINE_PROP_BIT("stats", VirtIOGPU, parent_obj.conf.flags,
-                     VIRTIO_GPU_FLAG_STATS_ENABLED, false),
-+    DEFINE_PROP_BIT("venus", VirtIOGPU, parent_obj.conf.flags,
-+                    VIRTIO_GPU_FLAG_VENUS_ENABLED, false),
-     DEFINE_PROP_END_OF_LIST(),
- };
- 
-diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
-index 8f3920800517..ec923cf36ef7 100644
---- a/hw/display/virtio-gpu-virgl.c
-+++ b/hw/display/virtio-gpu-virgl.c
-@@ -1132,6 +1132,11 @@ int virtio_gpu_virgl_init(VirtIOGPU *g)
-         flags |= VIRGL_RENDERER_D3D11_SHARE_TEXTURE;
-     }
- #endif
-+#if VIRGL_VERSION_MAJOR >= 1
-+    if (virtio_gpu_venus_enabled(g->parent_obj.conf)) {
-+        flags |= VIRGL_RENDERER_VENUS | VIRGL_RENDERER_RENDER_SERVER;
-+    }
-+#endif
- 
-     ret = virgl_renderer_init(g, flags, &virtio_gpu_3d_cbs);
-     if (ret != 0) {
-@@ -1165,7 +1170,7 @@ static void virtio_gpu_virgl_add_capset(GArray *capset_ids, uint32_t capset_id)
- 
- GArray *virtio_gpu_virgl_get_capsets(VirtIOGPU *g)
- {
--    uint32_t capset2_max_ver, capset2_max_size;
-+    uint32_t capset_max_ver, capset_max_size;
-     GArray *capset_ids;
- 
-     capset_ids = g_array_new(false, false, sizeof(uint32_t));
-@@ -1174,11 +1179,20 @@ GArray *virtio_gpu_virgl_get_capsets(VirtIOGPU *g)
-     virtio_gpu_virgl_add_capset(capset_ids, VIRTIO_GPU_CAPSET_VIRGL);
- 
-     virgl_renderer_get_cap_set(VIRTIO_GPU_CAPSET_VIRGL2,
--                              &capset2_max_ver,
--                              &capset2_max_size);
--    if (capset2_max_ver) {
-+                               &capset_max_ver,
-+                               &capset_max_size);
-+    if (capset_max_ver) {
-         virtio_gpu_virgl_add_capset(capset_ids, VIRTIO_GPU_CAPSET_VIRGL2);
-     }
- 
-+    if (virtio_gpu_venus_enabled(g->parent_obj.conf)) {
-+        virgl_renderer_get_cap_set(VIRTIO_GPU_CAPSET_VENUS,
-+                                   &capset_max_ver,
-+                                   &capset_max_size);
-+        if (capset_max_size) {
-+            virtio_gpu_virgl_add_capset(capset_ids, VIRTIO_GPU_CAPSET_VENUS);
-+        }
-+    }
-+
-     return capset_ids;
- }
-diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
-index a5db2256a4bb..50b5634af13f 100644
---- a/hw/display/virtio-gpu.c
-+++ b/hw/display/virtio-gpu.c
-@@ -1507,6 +1507,21 @@ void virtio_gpu_device_realize(DeviceState *qdev, Error **errp)
- #endif
-     }
- 
-+    if (virtio_gpu_venus_enabled(g->parent_obj.conf)) {
-+#ifdef VIRGL_VERSION_MAJOR
-+    #if VIRGL_VERSION_MAJOR >= 1
-+        if (!virtio_gpu_blob_enabled(g->parent_obj.conf) ||
-+            !virtio_gpu_hostmem_enabled(g->parent_obj.conf)) {
-+            error_setg(errp, "venus requires enabled blob and hostmem options");
-+            return;
-+        }
-+    #else
-+        error_setg(errp, "old virglrenderer, venus unsupported");
-+        return;
-+    #endif
-+#endif
-+    }
-+
-     if (!virtio_gpu_base_device_realize(qdev,
-                                         virtio_gpu_handle_ctrl_cb,
-                                         virtio_gpu_handle_cursor_cb,
-diff --git a/include/hw/virtio/virtio-gpu.h b/include/hw/virtio/virtio-gpu.h
-index 83232f4b4bfa..230fa0c4ee0a 100644
---- a/include/hw/virtio/virtio-gpu.h
-+++ b/include/hw/virtio/virtio-gpu.h
-@@ -99,6 +99,7 @@ enum virtio_gpu_base_conf_flags {
-     VIRTIO_GPU_FLAG_BLOB_ENABLED,
-     VIRTIO_GPU_FLAG_CONTEXT_INIT_ENABLED,
-     VIRTIO_GPU_FLAG_RUTABAGA_ENABLED,
-+    VIRTIO_GPU_FLAG_VENUS_ENABLED,
- };
- 
- #define virtio_gpu_virgl_enabled(_cfg) \
-@@ -117,6 +118,8 @@ enum virtio_gpu_base_conf_flags {
-     (_cfg.flags & (1 << VIRTIO_GPU_FLAG_RUTABAGA_ENABLED))
- #define virtio_gpu_hostmem_enabled(_cfg) \
-     (_cfg.hostmem > 0)
-+#define virtio_gpu_venus_enabled(_cfg) \
-+    (_cfg.flags & (1 << VIRTIO_GPU_FLAG_VENUS_ENABLED))
- 
- struct virtio_gpu_base_conf {
-     uint32_t max_outputs;
--- 
-2.44.0
+The idea [1] and the implied rules [2] are referenced from LLVM.
+
+[1] https://github.com/llvm/llvm-project/blob/main/llvm/lib/TargetParser/RISCVISAInfo.cpp#L875
+[2] https://github.com/llvm/llvm-project/blob/main/llvm/lib/Target/RISCV/RISCVFeatures.td
+
+Changelog:
+
+v2:
+  - Remove enabled bitmask from user-mode QEMU as there's no good way
+    (e.g. mhartid) to distinguish the SMP cores in user-mode QEMU.
+  - Use qatomic API to access the enabled bitmask to prevent the
+    potential enabled bit from being cleared by another hart.
+
+Frank Chang (6):
+  target/riscv: Introduce extension implied rules definition
+  target/riscv: Introduce extension implied rule helpers
+  target/riscv: Add MISA implied rules
+  target/riscv: Add standard extension implied rules
+  target/riscv: Add Zc extension implied rule
+  target/riscv: Remove extension auto-update check statements
+
+ target/riscv/cpu.c         | 396 +++++++++++++++++++++++++++++++++++++
+ target/riscv/cpu.h         |  25 +++
+ target/riscv/tcg/tcg-cpu.c | 244 ++++++++++++-----------
+ 3 files changed, 546 insertions(+), 119 deletions(-)
+
+--
+2.43.2
 
 
