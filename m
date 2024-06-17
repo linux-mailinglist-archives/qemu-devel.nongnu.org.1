@@ -2,85 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F3AB90B43C
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C3BE90B43B
 	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jun 2024 17:28:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sJEG9-0008Se-6R; Mon, 17 Jun 2024 11:27:05 -0400
+	id 1sJEGR-0000hX-1a; Mon, 17 Jun 2024 11:27:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1sJEG6-0008SL-MB
- for qemu-devel@nongnu.org; Mon, 17 Jun 2024 11:27:02 -0400
+ id 1sJEGP-0000e5-18
+ for qemu-devel@nongnu.org; Mon, 17 Jun 2024 11:27:21 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1sJEG4-0006xC-Vu
- for qemu-devel@nongnu.org; Mon, 17 Jun 2024 11:27:02 -0400
+ id 1sJEGN-0006zz-Gg
+ for qemu-devel@nongnu.org; Mon, 17 Jun 2024 11:27:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1718638020;
+ s=mimecast20190719; t=1718638037;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=rmcuE/UT0JOVmE6BA03aKlXgP76GZeiwh8vE0x45aoQ=;
- b=cQPKWcaL1AQknNDeBX87DFlKmbJ1qDWAF1vQlmilSGe4fG7+OshC6AP0xnPrvjKxp4UegR
- hfV1JlCt9EIx92vcJ4rWUPu/ZlntZclvKya/Z+ljgAhooqrhe/VFdjRlu2dKqpg45d0QPI
- RcA11R4VhlqEtk71ScQDIIgtYdxyQgs=
-Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com
- [209.85.167.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=B75N52/Zuz5zvoVADxuka7xygfObk/zfNnVRPqPyskk=;
+ b=aNlDZxj9Tv8vnWmHhvcXgJX1SDB2TymzLKl6IPKoNIisemyuaGdr9IrXc1j5SF1ekRFCxO
+ yy7zAWmORqLkHlI1sZXIPG3MsdyrbAEkq8wkxWGQzphCyzbknI4jFEqO80OWdUu21FPdu4
+ YVpSqfNxJmbG9LwroEraoeOb6Sh3TA4=
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-626-cI2_nH-SPlGtz4vZphs2RQ-1; Mon, 17 Jun 2024 11:26:57 -0400
-X-MC-Unique: cI2_nH-SPlGtz4vZphs2RQ-1
-Received: by mail-oi1-f198.google.com with SMTP id
- 5614622812f47-3d282e7887aso4169499b6e.0
- for <qemu-devel@nongnu.org>; Mon, 17 Jun 2024 08:26:57 -0700 (PDT)
+ us-mta-596-EQZx_6opNWOLbThMAzNgxQ-1; Mon, 17 Jun 2024 11:27:15 -0400
+X-MC-Unique: EQZx_6opNWOLbThMAzNgxQ-1
+Received: by mail-qt1-f200.google.com with SMTP id
+ d75a77b69052e-4404d05602eso52307171cf.1
+ for <qemu-devel@nongnu.org>; Mon, 17 Jun 2024 08:27:15 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718638017; x=1719242817;
+ d=1e100.net; s=20230601; t=1718638035; x=1719242835;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:reply-to:user-agent:mime-version:date
  :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=rmcuE/UT0JOVmE6BA03aKlXgP76GZeiwh8vE0x45aoQ=;
- b=OdZOKMja0kImqLXNMchxOJHDUv03wezR2oLZ26GGVIM2WR3sq/p80h+QgkI2vtGOkQ
- V4Do6tguH51CQF/tNQKUvjxxmb8ypzXfA5RAdDHVM7KkG65xQTG0yC4YNVqu1RiIh417
- whwArT2gngVJABW0MeOf7+OAGKplFowdTh8emzHDWj5r4lkxRpxvdV/KUh7NHAtTvdpX
- OjY1s6dWHmmMjUFI5GZA/0PIoJ5JDa9Izu42JxGWkj+oCWVur45cy+yIJSZkBoZjEmhs
- aoYgpiAhGClAk7O1wYHaLEjDBwczkRmwW4HfowNyCle7LVWK2K9uoA0KOVGQyS6k0W6v
- LWuQ==
+ bh=B75N52/Zuz5zvoVADxuka7xygfObk/zfNnVRPqPyskk=;
+ b=nKY2Lnb/BITQeDzk7G0uP8xiI4RKUGYEn6GQQxixBX4tHlxHK5J1GHEcoQviOI1WN+
+ Gi/4o8slZVIjPdDxJPhJheDSHQba7Z9M1SIWs9n11I0l36PycUoaeRFlrSZnvWt+qS7S
+ QSLylO2q/WNDgYUUEpHgCIrz6VRR8iAsFSOTT8J7Fhmo4irbDgq9tmiTUK2AwownmGmi
+ /p+5boOAlPDbT0RA6iknjVmDwAY3O0VjWa2aNabHMXX/31OGf0Ld6ouDENvuFNyvFmBj
+ jrOmAAG16qATx/GC+HtnR/LJaVBMvc6FDoVFZl63u+eo7SWVhhBfn1f+WjTrIqfJ1xgn
+ 1Xyg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWKAJvvTPeDIQVFXSZCP1/MzNUeYRido4X3wQu7Ou4q6jZadOKFg9F/Lk+/NWjfs7k1gxwfhPMJeBvVIVmw7wrA9tC8490=
-X-Gm-Message-State: AOJu0Yyf8OlBB+hccVysPa6tZrqArljkxuxr9RfWj/ABXg35O0AQk8gF
- dxNBpeEvJIUHsq98wRFnqPUQjYBHKFbLC81ixmJ/oeK77h1R1pZSUBPXYSUdCRmDw3ZTBDGGDrh
- tx6UmYr6om1n9J6OyYUFNrKU75yAPxBdtFgFIP8moy723+WU0imOG
-X-Received: by 2002:a05:6808:10cc:b0:3d2:2a2a:40d5 with SMTP id
- 5614622812f47-3d24e9085f2mr13105199b6e.34.1718638017069; 
- Mon, 17 Jun 2024 08:26:57 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEyiAWMFLLL4xNiWIeH2hnVX0jTrFwegJcSS9WTYk7hs5UuR67l4A+BPYtFYI2990Esq1rx6g==
-X-Received: by 2002:a05:6808:10cc:b0:3d2:2a2a:40d5 with SMTP id
- 5614622812f47-3d24e9085f2mr13105179b6e.34.1718638016746; 
- Mon, 17 Jun 2024 08:26:56 -0700 (PDT)
+ AJvYcCWwyAqZvjvC+rUQxG/uFVcVKQT6qBOboNApOmuci9M6afcwliXaYFiL26pGRD5GdWSsFe7ouP7mqQqgY3F+rljVh+37bs0=
+X-Gm-Message-State: AOJu0YxuCjcwVQ8Q8q/FEvUBFXNmsc7qM5onES0b7wJudnCbEE+m+n59
+ 60pMBjpWD4Rm1MQ5EH/IaozqpiGxVxzxfQeER6ySL91uHXa5wOeFQ8Ufb+d8wSAaqBtp1bYOWhR
+ gV+TljRgBJB7ydMRaXUKPoe26gAD8gm2F+Yb95pKl1GQUy1SoCMu/
+X-Received: by 2002:a05:622a:20f:b0:440:f54d:1bb3 with SMTP id
+ d75a77b69052e-442168bf216mr77561811cf.23.1718638034513; 
+ Mon, 17 Jun 2024 08:27:14 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHkZlV/v3GQdiq3frxfgOcquyCCGGTlDbNTY9R/OVBUuf/mOx5Ls5w7pM4nJr5j/MRyrknY/Q==
+X-Received: by 2002:a05:622a:20f:b0:440:f54d:1bb3 with SMTP id
+ d75a77b69052e-442168bf216mr77561681cf.23.1718638034130; 
+ Mon, 17 Jun 2024 08:27:14 -0700 (PDT)
 Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
  ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
  by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-441ef3d89c7sm47256291cf.20.2024.06.17.08.26.55
+ d75a77b69052e-441ef3d89c7sm47256291cf.20.2024.06.17.08.27.12
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 17 Jun 2024 08:26:56 -0700 (PDT)
-Message-ID: <0c1c4c1a-d950-4b9f-a5a3-e2d11cd676ec@redhat.com>
-Date: Mon, 17 Jun 2024 17:26:54 +0200
+ Mon, 17 Jun 2024 08:27:13 -0700 (PDT)
+Message-ID: <da52879f-62b6-438e-9cb1-b74466d80fbb@redhat.com>
+Date: Mon, 17 Jun 2024 17:27:12 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 12/17] vfio/container: Switch to QOM
+Subject: Re: [PATCH v2 13/17] vfio/container: Introduce an instance_init()
+ handler
 Content-Language: en-US
 To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, qemu-devel@nongnu.org
 Cc: Zhenzhong Duan <zhenzhong.duan@intel.com>,
  Alex Williamson <alex.williamson@redhat.com>
 References: <20240617063409.34393-1-clg@redhat.com>
- <20240617063409.34393-13-clg@redhat.com>
+ <20240617063409.34393-14-clg@redhat.com>
 From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <20240617063409.34393-13-clg@redhat.com>
+In-Reply-To: <20240617063409.34393-14-clg@redhat.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124;
@@ -112,71 +113,58 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 On 6/17/24 08:34, Cédric Le Goater wrote:
-> Instead of allocating the container struct, create a QOM object of the
-> appropriate type.
+> This allows us to move the initialization code from vfio_container_init(),
+> which we will soon remove.
 >
 > Signed-off-by: Cédric Le Goater <clg@redhat.com>
 > Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 Reviewed-by: Eric Auger <eric.auger@redhat.com>
-Eric
 
+Eric
 > ---
->  hw/vfio/container.c | 6 +++---
->  hw/vfio/iommufd.c   | 4 ++--
->  2 files changed, 5 insertions(+), 5 deletions(-)
+>  hw/vfio/container-base.c | 19 +++++++++++++------
+>  1 file changed, 13 insertions(+), 6 deletions(-)
 >
-> diff --git a/hw/vfio/container.c b/hw/vfio/container.c
-> index 3ae52530a9b500bd53ec9f9e66c73253d97c9aba..ff3a6831da83c0fe11060cd57918c4d87b10197c 100644
-> --- a/hw/vfio/container.c
-> +++ b/hw/vfio/container.c
-> @@ -435,7 +435,7 @@ static VFIOContainer *vfio_create_container(int fd, VFIOGroup *group,
->      vioc_name = vfio_get_iommu_class_name(iommu_type);
->      vioc = VFIO_IOMMU_CLASS(object_class_by_name(vioc_name));
->  
-> -    container = g_malloc0(sizeof(*container));
-> +    container = VFIO_IOMMU_LEGACY(object_new(vioc_name));
->      container->fd = fd;
->      container->iommu_type = iommu_type;
->      vfio_container_init(&container->bcontainer, vioc);
-> @@ -674,7 +674,7 @@ unregister_container_exit:
->      vfio_cpr_unregister_container(bcontainer);
->  
->  free_container_exit:
-> -    g_free(container);
-> +    object_unref(container);
->  
->  close_fd_exit:
->      close(fd);
-> @@ -718,7 +718,7 @@ static void vfio_disconnect_container(VFIOGroup *group)
->          trace_vfio_disconnect_container(container->fd);
->          vfio_cpr_unregister_container(bcontainer);
->          close(container->fd);
-> -        g_free(container);
-> +        object_unref(container);
->  
->          vfio_put_address_space(space);
->      }
-> diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
-> index 3e9d642034c2d2234ea701952c94a78ab32e9147..d59df858407f3cadb9405386ad673c99cdad61d0 100644
-> --- a/hw/vfio/iommufd.c
-> +++ b/hw/vfio/iommufd.c
-> @@ -239,7 +239,7 @@ static void iommufd_cdev_container_destroy(VFIOIOMMUFDContainer *container)
->      memory_listener_unregister(&bcontainer->listener);
->      vfio_container_destroy(bcontainer);
->      iommufd_backend_free_id(container->be, container->ioas_id);
-> -    g_free(container);
-> +    object_unref(container);
+> diff --git a/hw/vfio/container-base.c b/hw/vfio/container-base.c
+> index 98c15e174dd78df5146ee83c05c98f3ea9c1e52c..3858f5ab1d68e897f9013161d7c5c20c0553029d 100644
+> --- a/hw/vfio/container-base.c
+> +++ b/hw/vfio/container-base.c
+> @@ -75,12 +75,6 @@ void vfio_container_init(VFIOContainerBase *bcontainer,
+>                           const VFIOIOMMUClass *ops)
+>  {
+>      bcontainer->ops = ops;
+> -    bcontainer->error = NULL;
+> -    bcontainer->dirty_pages_supported = false;
+> -    bcontainer->dma_max_mappings = 0;
+> -    bcontainer->iova_ranges = NULL;
+> -    QLIST_INIT(&bcontainer->giommu_list);
+> -    QLIST_INIT(&bcontainer->vrdl_list);
 >  }
 >  
->  static int iommufd_cdev_ram_block_discard_disable(bool state)
-> @@ -352,7 +352,7 @@ static bool iommufd_cdev_attach(const char *name, VFIODevice *vbasedev,
+>  void vfio_container_destroy(VFIOContainerBase *bcontainer)
+> @@ -99,10 +93,23 @@ void vfio_container_destroy(VFIOContainerBase *bcontainer)
+>      g_list_free_full(bcontainer->iova_ranges, g_free);
+>  }
 >  
->      trace_iommufd_cdev_alloc_ioas(vbasedev->iommufd->fd, ioas_id);
->  
-> -    container = g_malloc0(sizeof(*container));
-> +    container = VFIO_IOMMU_IOMMUFD(object_new(TYPE_VFIO_IOMMU_IOMMUFD));
->      container->be = vbasedev->iommufd;
->      container->ioas_id = ioas_id;
->  
+> +static void vfio_container_instance_init(Object *obj)
+> +{
+> +    VFIOContainerBase *bcontainer = VFIO_IOMMU(obj);
+> +
+> +    bcontainer->error = NULL;
+> +    bcontainer->dirty_pages_supported = false;
+> +    bcontainer->dma_max_mappings = 0;
+> +    bcontainer->iova_ranges = NULL;
+> +    QLIST_INIT(&bcontainer->giommu_list);
+> +    QLIST_INIT(&bcontainer->vrdl_list);
+> +}
+> +
+>  static const TypeInfo types[] = {
+>      {
+>          .name = TYPE_VFIO_IOMMU,
+>          .parent = TYPE_OBJECT,
+> +        .instance_init = vfio_container_instance_init,
+>          .instance_size = sizeof(VFIOContainerBase),
+>          .class_size = sizeof(VFIOIOMMUClass),
+>          .abstract = true,
 
 
