@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C57EC90B971
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jun 2024 20:17:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16ACF90B970
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jun 2024 20:17:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sJGti-0000Ha-Dp; Mon, 17 Jun 2024 14:16:06 -0400
+	id 1sJGti-0000KU-Vy; Mon, 17 Jun 2024 14:16:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sJGta-0000Dw-RG
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sJGta-0000Du-Bp
  for qemu-devel@nongnu.org; Mon, 17 Jun 2024 14:16:00 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sJGtX-0006Ir-La
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sJGtX-0006Ic-By
  for qemu-devel@nongnu.org; Mon, 17 Jun 2024 14:15:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1718648154;
+ s=mimecast20190719; t=1718648153;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=nEHrtQENt0LFtN0vcvE5nOEIasmLrG79F51JvU/6ieg=;
- b=bmkuCIRWL2qTVG+zPosi944rk4GWkuW0SuIOp7mQhqDJW127a2qw6C3SIL7Xp3OODW7cRX
- dfgrWHXd4enEJUnESTdzQ5QAsD1UyK/jxeCCY52/RmavKu3S/apnlL04A4tliDnHntv9uj
- WYq40jT+QddolKNwGgQwXvdw0ZQ4Faw=
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
- [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=tz8mAzBKLZeeLf11HYzcmc5ZaFjBtDHCXl7INRqRcO0=;
+ b=cKw1qHDT/HVXqr7pWjlDlsqGIrzB3CswvtjP3KJKH4VMLAyBOjb2lzyJNlx9mHmGX3HDG/
+ oEc5DEIXXgL0vIC2fGu90mLC0l58sv3pbPzg7JQycgkdzuDo+pbONOila213rbM20Xo67A
+ evO+3MzIPZHLm7ZCe1ivlUXXpk1SYmU=
+Received: from mail-il1-f198.google.com (mail-il1-f198.google.com
+ [209.85.166.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-320-WKtl73LcNF6pTtNzhaRqaw-1; Mon, 17 Jun 2024 14:15:50 -0400
-X-MC-Unique: WKtl73LcNF6pTtNzhaRqaw-1
-Received: by mail-qv1-f71.google.com with SMTP id
- 6a1803df08f44-6b07a472e83so3991916d6.1
- for <qemu-devel@nongnu.org>; Mon, 17 Jun 2024 11:15:50 -0700 (PDT)
+ us-mta-139-JdCNRSCiMQi51s2HSTKBng-1; Mon, 17 Jun 2024 14:15:51 -0400
+X-MC-Unique: JdCNRSCiMQi51s2HSTKBng-1
+Received: by mail-il1-f198.google.com with SMTP id
+ e9e14a558f8ab-375938907fbso6495385ab.2
+ for <qemu-devel@nongnu.org>; Mon, 17 Jun 2024 11:15:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718648149; x=1719252949;
+ d=1e100.net; s=20230601; t=1718648150; x=1719252950;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=nEHrtQENt0LFtN0vcvE5nOEIasmLrG79F51JvU/6ieg=;
- b=s4GMdVi+wEiEjcyx+IFg5JBkmylryZkN7JAKmrhxROj28ZlksoXstCHukNE6AdzUs5
- aZXdXzLGFHRJNwVFZ0Vn7FrgEsFAL445wWAXES+i+/4nKG3Xcnd8dM5IeR8FlP4qkGYV
- 3I3sUzkKO6vvlTFUPbWEMEUrnyQYQo5KmLjiBwSQjcZgkn6CrFujB6PJfBi0E8FGVsbq
- xkGlPXD5XPCpM8cn+zsYAu8hoNzAPnPAn6vq5FrPVET0nnoP7uXL6jcxESH53M7c/mTF
- a44q9PgW/ZAfAjk9SUnWNTkL+ftgTIfMdY1F004ZP+Xc5vNbrzhDE+0jnTenxcfcEURM
- PZTA==
-X-Gm-Message-State: AOJu0YzyV6FywRrNa6q576Bw0cyZ9P7bFF4shKeGFqh4duw3Yxi8L+1U
- E/qOt8JDvrQB1LNZj7Y6UU4/IQFf/8uHzVrm2vINpfGIn74LbZgvSRFJq7oaQlaFgozjeG+R2+i
- 5TX1UjcKjEb+MIRR5GOVMCRbGciTs7oDII/jHgH2zyw4w70iMfeV3hzUbYeNwuMVC0Cs+AbaNNq
- +5iz20R6jwNCVNM9DVCMQEwJMHOBhnVvop7A==
-X-Received: by 2002:a05:620a:4893:b0:797:74ba:8b8 with SMTP id
- af79cd13be357-798d23e0698mr1366899485a.2.1718648148811; 
- Mon, 17 Jun 2024 11:15:48 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHFasbENddxnm/6ekdse/p/TgRpfH51FOrKDEuAZV6APu5bsFDqKlxS7FDarb4wTo0k8DjXoQ==
-X-Received: by 2002:a05:620a:4893:b0:797:74ba:8b8 with SMTP id
- af79cd13be357-798d23e0698mr1366894685a.2.1718648147973; 
- Mon, 17 Jun 2024 11:15:47 -0700 (PDT)
+ bh=tz8mAzBKLZeeLf11HYzcmc5ZaFjBtDHCXl7INRqRcO0=;
+ b=dAe1A+LKKU+tq036a+Mj/uU1VtCGu4ytTu/XNzyremDx3OYscUU5//XQ/TZGhfBZb7
+ LJESN4rbTGgO1X78LynFdqDkeZpxeYEj1UENur2Ff3qyB+QMoBUT5OcESSAcSLQZdWDS
+ mvv6DbS9ZEotAjmU+yy+z4Hxkbmg0k7aXRC8l5HPL8k0adyxDWB+HsUT5nAm8eodvtt7
+ Uwq+JZOlhT6SHdtC5L1I28hBigg9LGfWBWq7IJJTTdVInnwU6+7Hwgy1LW+O/LXTaual
+ X31TVVEyEB/8ipXFHGohdBrQ0JphUPovFszgBVTiN8G++QM9bhnDE/kvkXzZZSmh2/Ce
+ iNSg==
+X-Gm-Message-State: AOJu0YyRQhXJKE8/QJ0UaqyMcWjPCIqYCgaoUt34j45OAepPPjSV/8LB
+ ABNtHfVG1XV4CdmFs05kSF2v958hYdnzXvdDKl6iE3wEqnEd4gP1Id0iBkBwis90XQZXdeaI17h
+ xhkWIqfwJ0eQJPuUSA+GyKn9u5HRmvHnDv3915saYEwNWIO7rG1EfDFBs4FyExtwTd9lDJln9sr
+ RxmURg+P1FAlB6hebBAtTc6QF1E+ZWw5DMQw==
+X-Received: by 2002:a92:b707:0:b0:375:ca48:75e9 with SMTP id
+ e9e14a558f8ab-375e0dfb7a1mr104926535ab.1.1718648149903; 
+ Mon, 17 Jun 2024 11:15:49 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGsdpZwwufKvv9xaiXPMQn4/OiydT5swjg2BC61HW1ns9+5wQhZNDmup98t4nik66MpxjpovQ==
+X-Received: by 2002:a92:b707:0:b0:375:ca48:75e9 with SMTP id
+ e9e14a558f8ab-375e0dfb7a1mr104926225ab.1.1718648149313; 
+ Mon, 17 Jun 2024 11:15:49 -0700 (PDT)
 Received: from x1n.redhat.com (pool-99-254-121-117.cpe.net.cable.rogers.com.
  [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- af79cd13be357-798abc07501sm449643685a.89.2024.06.17.11.15.46
+ af79cd13be357-798abc07501sm449643685a.89.2024.06.17.11.15.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 17 Jun 2024 11:15:47 -0700 (PDT)
+ Mon, 17 Jun 2024 11:15:48 -0700 (PDT)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>,
@@ -69,16 +69,16 @@ Cc: Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  Eric Blake <eblake@redhat.com>, Prasad Pandit <ppandit@redhat.com>,
  peterx@redhat.com, Jiri Denemark <jdenemar@redhat.com>,
  Bandan Das <bdas@redhat.com>
-Subject: [PATCH v2 06/10] migration/docs: Update postcopy recover session for
- SETUP phase
-Date: Mon, 17 Jun 2024 14:15:30 -0400
-Message-ID: <20240617181534.1425179-7-peterx@redhat.com>
+Subject: [PATCH v2 07/10] tests/migration-tests: Drop most WIN32 ifdefs for
+ postcopy failure tests
+Date: Mon, 17 Jun 2024 14:15:31 -0400
+Message-ID: <20240617181534.1425179-8-peterx@redhat.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20240617181534.1425179-1-peterx@redhat.com>
 References: <20240617181534.1425179-1-peterx@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -22
 X-Spam_score: -2.3
@@ -103,74 +103,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Firstly, the "Paused" state was added in the wrong place before. The state
-machine section was describing PostcopyState, rather than MigrationStatus.
-Drop the Paused state descriptions.
-
-Then in the postcopy recover session, add more information on the state
-machine for MigrationStatus in the lines.  Add the new RECOVER_SETUP phase.
+Most of them are not needed, we can stick with one ifdef inside
+postcopy_recover_fail() so as to cover the scm right tricks only.
+The tests won't run on windows anyway due to has_uffd always false.
 
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- docs/devel/migration/postcopy.rst | 31 ++++++++++++++++---------------
- 1 file changed, 16 insertions(+), 15 deletions(-)
+ tests/qtest/migration-test.c | 10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
 
-diff --git a/docs/devel/migration/postcopy.rst b/docs/devel/migration/postcopy.rst
-index 6c51e96d79..a15594e11f 100644
---- a/docs/devel/migration/postcopy.rst
-+++ b/docs/devel/migration/postcopy.rst
-@@ -99,17 +99,6 @@ ADVISE->DISCARD->LISTEN->RUNNING->END
-     (although it can't do the cleanup it would do as it
-     finishes a normal migration).
+diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
+index b7e3406471..13b59d4c10 100644
+--- a/tests/qtest/migration-test.c
++++ b/tests/qtest/migration-test.c
+@@ -1353,9 +1353,9 @@ static void wait_for_postcopy_status(QTestState *one, const char *status)
+                                                   "completed", NULL });
+ }
  
-- - Paused
--
--    Postcopy can run into a paused state (normally on both sides when
--    happens), where all threads will be temporarily halted mostly due to
--    network errors.  When reaching paused state, migration will make sure
--    the qemu binary on both sides maintain the data without corrupting
--    the VM.  To continue the migration, the admin needs to fix the
--    migration channel using the QMP command 'migrate-recover' on the
--    destination node, then resume the migration using QMP command 'migrate'
--    again on source node, with resume=true flag set.
--
-  - End
+-#ifndef _WIN32
+ static void postcopy_recover_fail(QTestState *from, QTestState *to)
+ {
++#ifndef _WIN32
+     int ret, pair1[2], pair2[2];
+     char c;
  
-     The listen thread can now quit, and perform the cleanup of migration
-@@ -221,7 +210,8 @@ paused postcopy migration.
+@@ -1417,8 +1417,8 @@ static void postcopy_recover_fail(QTestState *from, QTestState *to)
+     close(pair1[1]);
+     close(pair2[0]);
+     close(pair2[1]);
++#endif
+ }
+-#endif /* _WIN32 */
  
- The recovery phase normally contains a few steps:
+ static void test_postcopy_recovery_common(MigrateCommon *args)
+ {
+@@ -1458,7 +1458,6 @@ static void test_postcopy_recovery_common(MigrateCommon *args)
+     wait_for_postcopy_status(to, "postcopy-paused");
+     wait_for_postcopy_status(from, "postcopy-paused");
  
--  - When network issue occurs, both QEMU will go into PAUSED state
-+  - When network issue occurs, both QEMU will go into **POSTCOPY_PAUSED**
-+    migration state.
+-#ifndef _WIN32
+     if (args->postcopy_recovery_test_fail) {
+         /*
+          * Test when a wrong socket specified for recover, and then the
+@@ -1467,7 +1466,6 @@ static void test_postcopy_recovery_common(MigrateCommon *args)
+         postcopy_recover_fail(from, to);
+         /* continue with a good recovery */
+     }
+-#endif /* _WIN32 */
  
-   - When the network is recovered (or a new network is provided), the admin
-     can setup the new channel for migration using QMP command
-@@ -229,9 +219,20 @@ The recovery phase normally contains a few steps:
+     /*
+      * Create a new socket to emulate a new channel that is different
+@@ -1496,7 +1494,6 @@ static void test_postcopy_recovery(void)
+     test_postcopy_recovery_common(&args);
+ }
  
-   - On source host, the admin can continue the interrupted postcopy
-     migration using QMP command 'migrate' with resume=true flag set.
--
--  - After the connection is re-established, QEMU will continue the postcopy
--    migration on both sides.
-+    Source QEMU will go into **POSTCOPY_RECOVER_SETUP** state trying to
-+    re-establish the channels.
-+
-+  - When both sides of QEMU successfully reconnects using a new or fixed up
-+    channel, they will go into **POSTCOPY_RECOVER** state, some handshake
-+    procedure will be needed to properly synchronize the VM states between
-+    the two QEMUs to continue the postcopy migration.  For example, there
-+    can be pages sent right during the window when the network is
-+    interrupted, then the handshake will guarantee pages lost in-flight
-+    will be resent again.
-+
-+  - After a proper handshake synchronization, QEMU will continue the
-+    postcopy migration on both sides and go back to **POSTCOPY_ACTIVE**
-+    state.  Postcopy migration will continue.
+-#ifndef _WIN32
+ static void test_postcopy_recovery_double_fail(void)
+ {
+     MigrateCommon args = {
+@@ -1505,7 +1502,6 @@ static void test_postcopy_recovery_double_fail(void)
  
- During a paused postcopy migration, the VM can logically still continue
- running, and it will not be impacted from any page access to pages that
+     test_postcopy_recovery_common(&args);
+ }
+-#endif /* _WIN32 */
+ 
+ #ifdef CONFIG_GNUTLS
+ static void test_postcopy_recovery_tls_psk(void)
+@@ -3486,10 +3482,8 @@ int main(int argc, char **argv)
+                            test_postcopy_preempt);
+         migration_test_add("/migration/postcopy/preempt/recovery/plain",
+                            test_postcopy_preempt_recovery);
+-#ifndef _WIN32
+         migration_test_add("/migration/postcopy/recovery/double-failures",
+                            test_postcopy_recovery_double_fail);
+-#endif /* _WIN32 */
+         if (is_x86) {
+             migration_test_add("/migration/postcopy/suspend",
+                                test_postcopy_suspend);
 -- 
 2.45.0
 
