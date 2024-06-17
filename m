@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7353790A5FB
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jun 2024 08:36:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF08890A5F5
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jun 2024 08:35:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sJ5xT-0003pS-Qf; Mon, 17 Jun 2024 02:35:16 -0400
+	id 1sJ5xP-0003bs-3J; Mon, 17 Jun 2024 02:35:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sJ5xD-00030B-TT
- for qemu-devel@nongnu.org; Mon, 17 Jun 2024 02:35:03 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sJ5xH-00036T-8K
+ for qemu-devel@nongnu.org; Mon, 17 Jun 2024 02:35:04 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sJ5xB-0004Qj-FP
- for qemu-devel@nongnu.org; Mon, 17 Jun 2024 02:34:58 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sJ5xF-0004SG-Gj
+ for qemu-devel@nongnu.org; Mon, 17 Jun 2024 02:35:02 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1718606096;
+ s=mimecast20190719; t=1718606100;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=xaw3HaZRkfAZwir3xOelvorwksL9vPSgFnrYprPUuis=;
- b=PcgJDsDSjhqk4bHsDcEPXbyIyGh6hQve1OYXmmiCvv13Mw/R2RpUrAxtUgqbnXhjYf09H+
- Ot3RnpVFv7lG6f4ijoEWzU2b+8eSoOuLnjvZTBVbUsqKbSPLDhyndSLRSBuJZKOUhCwPY3
- rJocF/8GndVRGR12+1ifq6iCkdCPneE=
+ bh=PuOQd7/PcJe9eHoS20W1qnfjGztZnm9mwbjQ+Eqjxvs=;
+ b=fJAhsIe8E/HAlNAhFE1gK0aqZmD6/UWdG1TBTXYNix2uGgW/Ksx8P9gka+m3HRg/BATD9Y
+ cAGFSfnE/In8XTOd99CSN4fP/iJ9r88GAqs6K3VhFgAhLXGFzNBYG5mGjBjC+c+WZZIUB5
+ Z/mraXrVa753e0Fu6DrVkFnOLkxYapw=
 Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-689-NUcjKopHMeOyKPHKmTss_A-1; Mon,
- 17 Jun 2024 02:34:54 -0400
-X-MC-Unique: NUcjKopHMeOyKPHKmTss_A-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-571-tGjKw_zzO7KAf-QmrocSnQ-1; Mon,
+ 17 Jun 2024 02:34:56 -0400
+X-MC-Unique: tGjKw_zzO7KAf-QmrocSnQ-1
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A9CD919560A2; Mon, 17 Jun 2024 06:34:53 +0000 (UTC)
+ id 9DF8619560AB; Mon, 17 Jun 2024 06:34:55 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.192.49])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id DEF413000222; Mon, 17 Jun 2024 06:34:51 +0000 (UTC)
+ id EDD003000218; Mon, 17 Jun 2024 06:34:53 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Eric Auger <eric.auger@redhat.com>,
  Zhenzhong Duan <zhenzhong.duan@intel.com>,
  Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH v2 16/17] vfio/container: Introduce
- vfio_iommu_legacy_instance_init()
-Date: Mon, 17 Jun 2024 08:34:08 +0200
-Message-ID: <20240617063409.34393-17-clg@redhat.com>
+Subject: [PATCH v2 17/17] vfio/container: Move vfio_container_destroy() to an
+ instance_finalize() handler
+Date: Mon, 17 Jun 2024 08:34:09 +0200
+Message-ID: <20240617063409.34393-18-clg@redhat.com>
 In-Reply-To: <20240617063409.34393-1-clg@redhat.com>
 References: <20240617063409.34393-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -83,50 +83,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Just as we did for the VFIOContainerBase object, introduce an
-instance_init() handler for the legacy VFIOContainer object and do the
-specific initialization there.
+vfio_container_destroy() clears the resources allocated
+VFIOContainerBase object. Now that VFIOContainerBase is a QOM object,
+add an instance_finalize() handler to do the cleanup. It will be
+called through object_unref().
 
+Suggested-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
-Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- hw/vfio/container.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ include/hw/vfio/vfio-container-base.h | 3 ---
+ hw/vfio/container-base.c              | 4 +++-
+ hw/vfio/container.c                   | 2 --
+ hw/vfio/iommufd.c                     | 1 -
+ 4 files changed, 3 insertions(+), 7 deletions(-)
 
-diff --git a/hw/vfio/container.c b/hw/vfio/container.c
-index 3f2032d5c496de078c277ebacc49d7db89f4cc65..45123acbdd6a681f4ce7cae7aa2509100ea225ab 100644
---- a/hw/vfio/container.c
-+++ b/hw/vfio/container.c
-@@ -639,7 +639,6 @@ static bool vfio_connect_container(VFIOGroup *group, AddressSpace *as,
+diff --git a/include/hw/vfio/vfio-container-base.h b/include/hw/vfio/vfio-container-base.h
+index 6242a62771caa8cf19440a53ad6f4db862ca12d7..419e45ee7a5ac960dae4a993127fc9ee66d48db2 100644
+--- a/include/hw/vfio/vfio-container-base.h
++++ b/include/hw/vfio/vfio-container-base.h
+@@ -86,9 +86,6 @@ int vfio_container_set_dirty_page_tracking(VFIOContainerBase *bcontainer,
+ int vfio_container_query_dirty_bitmap(const VFIOContainerBase *bcontainer,
+                    VFIOBitmap *vbmap, hwaddr iova, hwaddr size, Error **errp);
  
-     vfio_kvm_device_add_group(group);
- 
--    QLIST_INIT(&container->group_list);
-     vfio_address_space_insert(space, bcontainer);
- 
-     group->container = container;
-@@ -1183,6 +1182,13 @@ hiod_legacy_vfio_get_iova_ranges(HostIOMMUDevice *hiod, Error **errp)
-     return l;
+-void vfio_container_destroy(VFIOContainerBase *bcontainer);
+-
+-
+ #define TYPE_VFIO_IOMMU "vfio-iommu"
+ #define TYPE_VFIO_IOMMU_LEGACY TYPE_VFIO_IOMMU "-legacy"
+ #define TYPE_VFIO_IOMMU_SPAPR TYPE_VFIO_IOMMU "-spapr"
+diff --git a/hw/vfio/container-base.c b/hw/vfio/container-base.c
+index 970ae2356a92f87df44e1dd58ff8c67045a24ef1..50b1664f89a8192cf4021498e59f2a92cd2f6e89 100644
+--- a/hw/vfio/container-base.c
++++ b/hw/vfio/container-base.c
+@@ -83,8 +83,9 @@ int vfio_container_query_dirty_bitmap(const VFIOContainerBase *bcontainer,
+                                                errp);
  }
  
-+static void vfio_iommu_legacy_instance_init(Object *obj)
-+{
-+    VFIOContainer *container = VFIO_IOMMU_LEGACY(obj);
-+
-+    QLIST_INIT(&container->group_list);
-+}
-+
- static void hiod_legacy_vfio_class_init(ObjectClass *oc, void *data)
+-void vfio_container_destroy(VFIOContainerBase *bcontainer)
++static void vfio_container_instance_finalize(Object *obj)
  {
-     HostIOMMUDeviceClass *hioc = HOST_IOMMU_DEVICE_CLASS(oc);
-@@ -1196,6 +1202,7 @@ static const TypeInfo types[] = {
-     {
-         .name = TYPE_VFIO_IOMMU_LEGACY,
-         .parent = TYPE_VFIO_IOMMU,
-+        .instance_init = vfio_iommu_legacy_instance_init,
-         .instance_size = sizeof(VFIOContainer),
-         .class_init = vfio_iommu_legacy_class_init,
-     }, {
++    VFIOContainerBase *bcontainer = VFIO_IOMMU(obj);
+     VFIOGuestIOMMU *giommu, *tmp;
+ 
+     QLIST_REMOVE(bcontainer, next);
+@@ -116,6 +117,7 @@ static const TypeInfo types[] = {
+         .name = TYPE_VFIO_IOMMU,
+         .parent = TYPE_OBJECT,
+         .instance_init = vfio_container_instance_init,
++        .instance_finalize = vfio_container_instance_finalize,
+         .instance_size = sizeof(VFIOContainerBase),
+         .class_size = sizeof(VFIOIOMMUClass),
+         .abstract = true,
+diff --git a/hw/vfio/container.c b/hw/vfio/container.c
+index 45123acbdd6a681f4ce7cae7aa2509100ea225ab..2e7ecdf10edc4d84963a45ae9507096965da64fc 100644
+--- a/hw/vfio/container.c
++++ b/hw/vfio/container.c
+@@ -712,8 +712,6 @@ static void vfio_disconnect_container(VFIOGroup *group)
+     if (QLIST_EMPTY(&container->group_list)) {
+         VFIOAddressSpace *space = bcontainer->space;
+ 
+-        vfio_container_destroy(bcontainer);
+-
+         trace_vfio_disconnect_container(container->fd);
+         vfio_cpr_unregister_container(bcontainer);
+         close(container->fd);
+diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
+index 09b71a6617807c621275c74b924cfd39eb643961..c2f158e60386502eef267769ac9bce1effb67033 100644
+--- a/hw/vfio/iommufd.c
++++ b/hw/vfio/iommufd.c
+@@ -237,7 +237,6 @@ static void iommufd_cdev_container_destroy(VFIOIOMMUFDContainer *container)
+         return;
+     }
+     memory_listener_unregister(&bcontainer->listener);
+-    vfio_container_destroy(bcontainer);
+     iommufd_backend_free_id(container->be, container->ioas_id);
+     object_unref(container);
+ }
 -- 
 2.45.2
 
