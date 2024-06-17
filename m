@@ -2,99 +2,107 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B12E890BCEC
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jun 2024 23:28:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8BBB90BDA8
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jun 2024 00:31:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sJJtB-0004g8-GO; Mon, 17 Jun 2024 17:27:45 -0400
+	id 1sJKrY-0005ky-EG; Mon, 17 Jun 2024 18:30:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1sJJt9-0004f9-4l
- for qemu-devel@nongnu.org; Mon, 17 Jun 2024 17:27:43 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1sJJt6-0005HV-22
- for qemu-devel@nongnu.org; Mon, 17 Jun 2024 17:27:42 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1718659659;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=4DTWjsqdHEquLooRH0GDqMV2SmhYU/0+qmRD4imGA4g=;
- b=OIMDG5u5BhTtLM0hXmp5zk0UK7guSOx1Ny63vQU4arDUylLSUFaq5wWWDIlsOWsNv0gi5T
- Y8aa43Ix5q+TsLyorRCgIkQtHKadJHDBOT3gdyhEsXCKqzHXU87F9Jg2t+a5LWp3SCR6zm
- IqX8t7MPdsf45ZCOQhV53V7ZItWJKi4=
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com
- [209.85.214.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-121-cXrZIDMhPZ2WhlTSUJfIog-1; Mon, 17 Jun 2024 17:27:35 -0400
-X-MC-Unique: cXrZIDMhPZ2WhlTSUJfIog-1
-Received: by mail-pl1-f199.google.com with SMTP id
- d9443c01a7336-1f98f733043so1898345ad.2
- for <qemu-devel@nongnu.org>; Mon, 17 Jun 2024 14:27:35 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1sJKrT-0005jn-P9
+ for qemu-devel@nongnu.org; Mon, 17 Jun 2024 18:30:03 -0400
+Received: from mail-pj1-x1035.google.com ([2607:f8b0:4864:20::1035])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1sJKrR-0007xt-1H
+ for qemu-devel@nongnu.org; Mon, 17 Jun 2024 18:30:03 -0400
+Received: by mail-pj1-x1035.google.com with SMTP id
+ 98e67ed59e1d1-2c3050f4c50so3805212a91.0
+ for <qemu-devel@nongnu.org>; Mon, 17 Jun 2024 15:30:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1718663399; x=1719268199; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=mEW7vn/4dsaFpbBk2s36APsH/DtHlGLDW59HE0PKkA0=;
+ b=oC6ZR821tFTrFQRC9N65182vflnAo3Eu1Q40qKaavlA6HmLDDAhxYzjM5TLuOqGN0v
+ lJkWkQFbsnN2+vhMtxd2WR14EBWtT8z7fqY49RF9TqFO8qzeY2A6dyn3HUdyCNrhir/x
+ TDxtvHX64U7C7dA8jZY15vXrWNalGP8lXVGd3ZWYvczSQnvkbDKF5s+tuDi0LyJX7CEQ
+ VlI4x8OzyAAa0SjxmjfT+I65p9ukbQH2EF5LqsOmoWHuOUuo5hA8DGWVgyXo4LhIcxMG
+ kS/QQRVJJSh+CoQTv/J983DnL0wxuCaB9uEEXFKXdMs21210VI5g+o/XXzCx9q0Pbquw
+ lilA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718659649; x=1719264449;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=4DTWjsqdHEquLooRH0GDqMV2SmhYU/0+qmRD4imGA4g=;
- b=ANQtk/gjLAFAhOxqaaeTE0Gnbh2lx+lIAELLlDzUedErMy0o8cUMdnANrHXCFdZFJn
- HB7LQNpgaGBYRdquWS55kyAJ1EuiEko9JGlMQEE7HI6jSGdMdYhXkSOvfmxETPZINa30
- A8PEeslMvfnN2lUu1LyKD5dPOUm6Z/5gow5TvA5sgpB3U7veI0QTaejx1U2iKu2Ic09V
- IINUGElH/2HnCyOsG3CgGYPhbhpDglvkNJaOdHEsGi1BpsyLRXw/EJbWAVefiwLkSvV4
- so04aM+3/MuZ6624Kj9W9S6tmk6GP95uoz1MUjO1Fj3DIveFd5VtjCGVx6o4f6m34m3b
- TN/A==
-X-Gm-Message-State: AOJu0Yz0341Tndw5KnTf3pCAziBJVy2DkZ63Kj/2bwpnxcDX61r4bBzm
- 6rHgdRQ40h0bFZeh9qJ+tPWccp/H3p6nvQCCWPdgX5HJDPRIJQtTPQ1HkOzDDO8T9CeGdhUa0Gk
- 3W9OUOwq/XBQ7VoD/g0OiLkKZ+eT2oE/e/qHXSE8fLzgSVybXEcV6P/x/05w0ISZPJDd+DYwngg
- eUbPcelItP8LvhYr+rlAB2abNT6jo=
-X-Received: by 2002:a17:902:eccb:b0:1f7:19b7:98c6 with SMTP id
- d9443c01a7336-1f8625c065fmr136572685ad.12.1718659648868; 
- Mon, 17 Jun 2024 14:27:28 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHO+6bnc7DNKvWCXWDpD74erYaPEMLNvQlzXGvTM54UwwX60UxDSGVGiUFfiQunOCcNlV9drcD9cYO7RJ18qcA=
-X-Received: by 2002:a17:902:eccb:b0:1f7:19b7:98c6 with SMTP id
- d9443c01a7336-1f8625c065fmr136572275ad.12.1718659648223; Mon, 17 Jun 2024
- 14:27:28 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1718663399; x=1719268199;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=mEW7vn/4dsaFpbBk2s36APsH/DtHlGLDW59HE0PKkA0=;
+ b=YT6TGm7YzzcVTgsoVX6b7a/7t57FSq5CvdrevZHkvYCOt9BImvB+sGt7bWVGVMS3we
+ H93qhDJkFUn5047cARHTTNhbreGKKuwUs2oI20SV6gUgpAlOcLU35Ip1hlO74WnNJOx7
+ IM6D2DOuz4dkJ0VQHJ7wOU2vfE8mvqPNKk3PprknmRl0EHiO4mTjue5we5lRO5vJJ7zB
+ rXHbDLft1NKqdfRTf1kFL5FZaXmBvCHRof1m29JiOazZG+StFk+gGHGKoHAIpq6WjYQ3
+ agatEBhRFbUrzCAtJEjkx6Mq7uIYZquXgXVlesrJJ4hv91dVJHcJoHOqQ5MpPefIsEfW
+ S2ww==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXjOhBKFU0eV+WNCVrfdNbi//Hk5/OpH+QsRF3MuGLMoXNHuyVOSn3y/NvqPuzXPZ1g7f+VoewAlPZQjqaGMgRpfmQX+Fw=
+X-Gm-Message-State: AOJu0Yz02YS2aYpWei9gjZCwVchPm1mHlsYW/6KrIaQNKPjAa38s5fRz
+ 7YaYHtLJs6TMyzPLcNIgqX9qma3p7ty0aGnMq1CX3aZ5UMWbTSzUC5bg8utKvu8=
+X-Google-Smtp-Source: AGHT+IEnonn6tWEH6av80skFRQP0uZdzEh16bb2UyB4+OWP8vlwHYcyLpCozwkDaKJ9pKR2kuIICdA==
+X-Received: by 2002:a17:90a:e693:b0:2c4:aa69:c4bc with SMTP id
+ 98e67ed59e1d1-2c4db24d1efmr9974955a91.19.1718663398778; 
+ Mon, 17 Jun 2024 15:29:58 -0700 (PDT)
+Received: from ?IPV6:2604:3d08:9384:1d00::2193? ([2604:3d08:9384:1d00::2193])
+ by smtp.gmail.com with ESMTPSA id
+ 98e67ed59e1d1-2c53d95c103sm1121789a91.32.2024.06.17.15.29.57
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 17 Jun 2024 15:29:58 -0700 (PDT)
+Message-ID: <4e5fded0-d1a9-4494-a66d-6488ce1bcb33@linaro.org>
+Date: Mon, 17 Jun 2024 15:29:56 -0700
 MIME-Version: 1.0
-References: <20240514215740.940155-1-jsnow@redhat.com>
- <20240514215740.940155-21-jsnow@redhat.com>
- <87r0czy4gz.fsf@pond.sub.org>
-In-Reply-To: <87r0czy4gz.fsf@pond.sub.org>
-From: John Snow <jsnow@redhat.com>
-Date: Mon, 17 Jun 2024 17:27:16 -0400
-Message-ID: <CAFn=p-bdRZZtZMpN12JktjtA+tyx1wag_zdErpvEo=UXPoKa=g@mail.gmail.com>
-Subject: Re: [PATCH 20/20] qapi: convert "Example" sections to rST
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>, 
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Gerd Hoffmann <kraxel@redhat.com>, 
- Fabiano Rosas <farosas@suse.de>, Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>, 
- Ani Sinha <anisinha@redhat.com>, Michael Roth <michael.roth@amd.com>, 
- Kevin Wolf <kwolf@redhat.com>, Jiri Pirko <jiri@resnulli.us>,
- Mads Ynddal <mads@ynddal.dk>, 
- Jason Wang <jasowang@redhat.com>, Igor Mammedov <imammedo@redhat.com>, 
- Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
- Stefan Hajnoczi <stefanha@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
- Eduardo Habkost <eduardo@habkost.net>, "Michael S. Tsirkin" <mst@redhat.com>,
- qemu-block@nongnu.org, Stefan Berger <stefanb@linux.vnet.ibm.com>, 
- Victor Toso de Carvalho <victortoso@redhat.com>, Eric Blake <eblake@redhat.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Konstantin Kostiuk <kkostiuk@redhat.com>, Lukas Straub <lukasstraub2@web.de>, 
- Yanan Wang <wangyanan55@huawei.com>, Hanna Reitz <hreitz@redhat.com>
-Content-Type: multipart/alternative; boundary="000000000000d290b4061b1ca1b6"
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -22
-X-Spam_score: -2.3
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 9/9] contrib/plugins: add ips plugin example for cost
+ modeling
+To: "Dr. David Alan Gilbert" <dave@treblig.org>
+Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org, David Hildenbrand <david@redhat.com>,
+ Ilya Leoshkevich <iii@linux.ibm.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Mark Burton <mburton@qti.qualcomm.com>, qemu-s390x@nongnu.org,
+ Peter Maydell <peter.maydell@linaro.org>, kvm@vger.kernel.org,
+ Laurent Vivier <lvivier@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Alexandre Iooss <erdnaxe@crans.org>, qemu-arm@nongnu.org,
+ Alexander Graf <agraf@csgraf.de>, Nicholas Piggin <npiggin@gmail.com>,
+ Marco Liebel <mliebel@qti.qualcomm.com>, Thomas Huth <thuth@redhat.com>,
+ Roman Bolshakov <rbolshakov@ddn.com>, qemu-ppc@nongnu.org,
+ Mahmoud Mandour <ma.mandourr@gmail.com>, Cameron Esfahani <dirty@apple.com>,
+ Jamie Iles <quic_jiles@quicinc.com>,
+ Richard Henderson <richard.henderson@linaro.org>
+References: <20240612153508.1532940-1-alex.bennee@linaro.org>
+ <20240612153508.1532940-10-alex.bennee@linaro.org>
+ <ZmoM2Sac97PdXWcC@gallifrey>
+ <777e1b13-9a4f-4c32-9ff7-9cedf7417695@linaro.org>
+ <Zmy9g1U1uP1Vhx9N@gallifrey>
+ <616df287-a167-4a05-8f08-70a78a544929@linaro.org>
+ <ZnCi4hcyR8wMMnK4@gallifrey>
+Content-Language: en-US
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <ZnCi4hcyR8wMMnK4@gallifrey>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1035;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pj1-x1035.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.148,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,919 +118,242 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000d290b4061b1ca1b6
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Fri, Jun 14, 2024 at 10:39=E2=80=AFAM Markus Armbruster <armbru@redhat.c=
-om>
-wrote:
-
-> John Snow <jsnow@redhat.com> writes:
->
-> > Eliminate the "Example" sections in QAPI doc blocks, converting them
-> > into QMP example code blocks. This is generally done by converting
-> > "Example:" or "Examples:" lines into ".. code-block:: QMP" lines.
-> >
-> > This patch does also allow for the use of the rST syntax "Example::" by
-> > exempting double-colon syntax from the QAPI doc parser, but that form i=
-s
-> > not used by this conversion patch. The phrase "Example" here is not
-> > special, it is the double-colon syntax that transforms the following
-> > block into a code-block. By default, *this* form does not apply QMP
-> > highlighting.
-> >
-> > This patch has several benefits:
-> >
-> > 1. Example sections can now be written more arbitrarily, mixing
-> >    explanatory paragraphs and code blocks however desired.
-> >
-> > 2. Example sections can now use fully arbitrary rST.
-> >
-> > 3. All code blocks are now lexed and validated as QMP; increasing
-> >    usability of the docs and ensuring validity of example snippets.
-> >
-> > 4. Each code-block can be captioned independently without bypassing the
-> >    QMP lexer/validator.
-> >
-> > For any sections with more than one example, examples are split up into
-> > multiple code-block regions. If annotations are present, those
-> > annotations are converted into code-block captions instead, e.g.
-> >
-> > ```
-> > Examples:
-> >
-> >    1. Lorem Ipsum
-> >
-> >    -> { "foo": "bar" }
-> > ```
-> >
-> > Is rewritten as:
-> >
-> > ```
-> > .. code-block:: QMP
-> >    :caption: Example: Lorem Ipsum
-> >
-> >    -> { "foo": "bar" }
-> > ```
-> >
-> > This process was only semi-automated:
-> >
-> > 1. Replace "Examples?:" sections with sed:
-> >
-> > sed -i 's|# Example:|# .. code-block:: QMP|' *.json
-> > sed -i 's|# Examples:|# .. code-block:: QMP|' *.json
-> >
-> > 2. Identify sections that no longer parse successfully by attempting th=
-e
-> >    doc build, convert annotations into captions manually.
-> >    (Tedious, oh well.)
-> >
-> > 3. Add captions where still needed:
-> >
-> > sed -zi 's|# .. code-block:: QMP\n#\n|# .. code-block:: QMP\n#
-> :caption: Example\n#\n|g' *.json
-> >
-> > Not fully ideal, but hopefully not something that has to be done very
-> > often. (Or ever again.)
-> >
-> > Signed-off-by: John Snow <jsnow@redhat.com>
-> > ---
-> >  qapi/acpi.json                  |   6 +-
-> >  qapi/block-core.json            | 120 ++++++++++++++++----------
-> >  qapi/block.json                 |  60 +++++++------
-> >  qapi/char.json                  |  36 ++++++--
-> >  qapi/control.json               |  16 ++--
-> >  qapi/dump.json                  |  12 ++-
-> >  qapi/machine-target.json        |   3 +-
-> >  qapi/machine.json               |  79 ++++++++++-------
-> >  qapi/migration.json             | 145 +++++++++++++++++++++++---------
-> >  qapi/misc-target.json           |  33 +++++---
-> >  qapi/misc.json                  |  48 +++++++----
-> >  qapi/net.json                   |  30 +++++--
-> >  qapi/pci.json                   |   6 +-
-> >  qapi/qapi-schema.json           |   6 +-
-> >  qapi/qdev.json                  |  15 +++-
-> >  qapi/qom.json                   |  20 +++--
-> >  qapi/replay.json                |  12 ++-
-> >  qapi/rocker.json                |  12 ++-
-> >  qapi/run-state.json             |  45 ++++++----
-> >  qapi/tpm.json                   |   9 +-
-> >  qapi/trace.json                 |   6 +-
-> >  qapi/transaction.json           |   3 +-
-> >  qapi/ui.json                    |  62 +++++++++-----
-> >  qapi/virtio.json                |  38 +++++----
-> >  qapi/yank.json                  |   6 +-
-> >  scripts/qapi/parser.py          |  15 +++-
-> >  tests/qapi-schema/doc-good.json |  12 +--
-> >  tests/qapi-schema/doc-good.out  |  17 ++--
-> >  tests/qapi-schema/doc-good.txt  |  17 +---
-> >  29 files changed, 574 insertions(+), 315 deletions(-)
->
-> Missing: update of docs/devel/qapi-code-gen.rst.
->
-> > diff --git a/qapi/acpi.json b/qapi/acpi.json
-> > index aa4dbe57943..3da01f1b7fc 100644
-> > --- a/qapi/acpi.json
-> > +++ b/qapi/acpi.json
-> > @@ -111,7 +111,8 @@
-> >  #
-> >  # Since: 2.1
-> >  #
-> > -# Example:
-> > +# .. code-block:: QMP
-> > +#    :caption: Example
->
-> I wish this was a bit less verbose.  Oh well, we'll live.
->
-
-We can create a custom directive that assumes a default caption; e.g.
-
-.. qapi:example::
-
-    ... blah blah blah ...
-
-And if you want to override it, you'd just
-
-.. qapi:example::
-    :caption: Lorem Ipsum ...
-
-    ... blah blah blah ...
-
-Interested? (I kept this patch vanilla to avoid getting fancy, but there
-are fanciness options available if you'd like them.)
-
-
->
-> >  #
-> >  #     -> { "execute": "query-acpi-ospm-status" }
-> >  #     <- { "return": [ { "device": "d1", "slot": "0", "slot-type":
-> "DIMM", "source": 1, "status": 0},
->
-> This is rendered as a light green box with the caption on top, in
-> italics and centered.  I'm not sure I like the use of the caption.  The
-> previous patch's Note boxes look nicer.
->
-
-We can change that with styling - my dedicated CSS intern was busy with
-finals when I wrote this patch ;)
-
-
->
-> The contents of the box is highlighted.  I am sure I like that.
->
-
-Yes.
-
-[...]
-
-> -# Example:
-> > -#
-> > -#     Set new histograms for all io types with intervals
-> > -#     [0, 10), [10, 50), [50, 100), [100, +inf):
-> > +# .. code-block:: QMP
-> > +#    :caption: Example:
-> > +#      Set new histograms for all io types with intervals
-> > +#      [0, 10), [10, 50), [50, 100), [100, +inf):
->
-> Captions long enough to be rendered as multiple lines look particularly
-> bad to me.  The centering...
->
-
-Will attempt to address it with CSS. I do agree, just wasn't time to hammer
-it out.
-
-[...]
-
-
-> > @@ -134,7 +136,8 @@
-> >  #
-> >  # Since: 0.14
-> >  #
-> > -# Example:
-> > +# .. code-block:: QMP
-> > +#    :caption: Example
-> >  #
-> >  #     -> { "execute": "query-commands" }
-> >  #     <- {
-> > @@ -149,8 +152,8 @@
-> >  #          ]
-> >  #        }
-> >  #
-> > -#     Note: This example has been shortened as the real response is to=
-o
-> > -#     long.
-> > +# This example has been shortened as the real response is too long.
->
-> Squash into the previous patch?
->
-
-OK
-
-[...]
-
-
-> > diff --git a/qapi/pci.json b/qapi/pci.json
-> > index f51159a2c4c..9192212661b 100644
-> > --- a/qapi/pci.json
-> > +++ b/qapi/pci.json
-> > @@ -182,7 +182,8 @@
-> >  #
-> >  # Since: 0.14
-> >  #
-> > -# Example:
-> > +# .. code-block:: QMP
-> > +#    :caption: Example
-> >  #
-> >  #     -> { "execute": "query-pci" }
-> >  #     <- { "return": [
-> > @@ -311,8 +312,7 @@
-> >  #           ]
-> >  #        }
-> >  #
-> > -#     Note: This example has been shortened as the real response is to=
-o
-> > -#     long.
-> > +# This example has been shortened as the real response is too long.
->
-> Squash into the previous patch?
->
-
-OK
-
-
->
-> >  #
-> >  ##
-> >  { 'command': 'query-pci', 'returns': ['PciInfo'] }
-> > diff --git a/qapi/qapi-schema.json b/qapi/qapi-schema.json
-> > index 5e33da7228f..66fbcbd3619 100644
-> > --- a/qapi/qapi-schema.json
-> > +++ b/qapi/qapi-schema.json
-> > @@ -20,11 +20,7 @@
-> >  # understand.  However, in real protocol usage, they're emitted as a
-> >  # single line.
-> >  #
-> > -# Also, the following notation is used to denote data flow:
-> > -#
-> > -# Example:
-> > -#
-> > -# ::
-> > +# Also, the following notation is used to denote data flow::
-> >  #
-> >  #   -> data issued by the Client
-> >  #   <- Server data response
->
-> No use of caption here.  Looks better, I think.
->
-
-OK - Let me play around with the styling, because I do want to have some
-kind of form option available for cargo-culting to add captions or an
-explanation of some kind. If I can't make it look good with CSS, I'll
-capitulate and mark them up as alternating normal paragraphs and examples.
-
-Forbidding "Examples?:" was just an easy way to make sure I converted
-everything; and especially to catch any late merges ... I am hesitant to go
-that route for maintainability. But, if you want to volunteer to play
-whack-a-mole for the next few releases, then...
-
-(Also, this example doesn't use the QMP lexer, because it's not real QMP.
-It could be cajoled by making the lines string values, for example - or
-making it a more representative example that actually resembles QMP.)
-
-
->
-> > diff --git a/qapi/qdev.json b/qapi/qdev.json
-> > index d031fc3590d..cfe403fea20 100644
-> > --- a/qapi/qdev.json
-> > +++ b/qapi/qdev.json
-> > @@ -62,7 +62,8 @@
-> >  #        the ``-device DEVICE,help`` command-line argument, where DEVI=
-CE
-> >  #        is the device's name.
-> >  #
-> > -# Example:
-> > +# .. code-block:: QMP
-> > +#    :caption: Example
-> >  #
-> >  #     -> { "execute": "device_add",
-> >  #          "arguments": { "driver": "e1000", "id": "net1",
->
-> How does
->
->    # Example:
->   +# .. code-block:: QMP
->    #
->    #     -> { "execute": "device_add",
->    #          "arguments": { "driver": "e1000", "id": "net1",
->
-> look?  Requires nerfing the error you add to parser.py.
->
-
-Undesirable, IMO -- but "Example::" alongside an option to choose the QMP
-lexer by default for QMP docs may be acceptable. I can demo some choices
-for you on a screenshare call if you'd like to workshop this aesthetic
-choice out together.
-
-[...]
-
-
-> > diff --git a/scripts/qapi/parser.py b/scripts/qapi/parser.py
-> > index 8b1da96124e..afc0b444034 100644
-> > --- a/scripts/qapi/parser.py
-> > +++ b/scripts/qapi/parser.py
-> > @@ -554,9 +554,12 @@ def get_doc(self) -> 'QAPIDoc':
-> >                      no_more_args =3D True
-> >                      intro =3D False
-> >                  elif match :=3D re.match(
-> > -                        r'(Returns|Errors|Since|Notes?|Examples?|TODO)=
-:
-> *',
-> > +
-> r'(Returns|Errors|Since|Notes?|Examples?(?!::)|TODO)'
-> > +                        r': *',
-> >                          line):
->
-> Hmm, I wonder...
->
->
-> https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html#l=
-iteral-blocks
-> has:
->
->     Literal code blocks (ref) are introduced by ending a paragraph with
->     the special marker ::.
->
-> Not capturing regular rST markup like
->
->     Example::
->
->         mumble mumble
->
-> for our own purposes makes sense.  But it makes exactly as much sense
-> for any of the tags, doesn'it?
->
-> Should we instead change the regexp to match only when there's a
-> *single* colon?
->
-
-OK. My regexp-fu is maybe weak, but I think I can just put (?!::): at the
-end of this regex without tying it to Examples, and I'll move that into its
-own patch.
-
->
->
-> > -                    # tagged section
-> > +                    # tagged section.
->
-> Spurious comment change.
->
-
-A *beautiful* comment change. An *inspired* comment change.
-
-(OK, removing it...)
-
-
->
-> > +                    # Examples sections followed by two colons are
-> excluded;
-> > +                    # those are raw rST syntax!
-> >
-> >                      if 'Note' in match.group(1):
-> >                          emsg =3D (
-> > @@ -566,6 +569,14 @@ def get_doc(self) -> 'QAPIDoc':
-> >                          )
-> >                          raise QAPIParseError(self, emsg)
-> >
-> > +                    if match.group(1).startswith("Example"):
-> > +                        emsg =3D (
-> > +                            f"The '{match.group(1)}' section is
-> deprecated. "
-> > +                            "Please use rST's '.. code-block:: QMP'
-> directive,"
-> > +                            " 'Example::', or other suitable markup
-> instead."
-> > +                        )
-> > +                        raise QAPIParseError(self, emsg)
-> > +
->
-> I guess this will be helpful while people get used to the changed
-> syntax.  Once they are, I'd like to get rid of it.  Same for "Note"
-> right above.
->
-
-Yeah - the thinking was that it would help buffer the transitional period
-and could be removed after a release or two. I'll update the phrasing to
-not use "deprecated", also.
-
-
->
-> >                      doc.new_tagged_section(self.info, match.group(1))
-> >                      text =3D line[match.end():]
-> >                      if text:
-> > diff --git a/tests/qapi-schema/doc-good.json
-> b/tests/qapi-schema/doc-good.json
-> > index 0a294eb324e..57e2e591938 100644
-> > --- a/tests/qapi-schema/doc-good.json
-> > +++ b/tests/qapi-schema/doc-good.json
-> > @@ -46,11 +46,12 @@
-> >  #
-> >  # Duis aute irure dolor
-> >  #
-> > -# Example:
-> > +# .. code-block:: QMP
->
-> No captions here?
->
-
-They aren't *required*, I just liked having a dedicated place to put 'em in
-the rendered output for our real docs.
-
-[...]
-
-
-> I want this just as much as the previous patch.
->
->
-okie-dokey, I'll include it in the mini-fork of the pre-req series.
-
---000000000000d290b4061b1ca1b6
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
-<div dir=3D"ltr" class=3D"gmail_attr">On Fri, Jun 14, 2024 at 10:39=E2=80=
-=AFAM Markus Armbruster &lt;<a href=3D"mailto:armbru@redhat.com">armbru@red=
-hat.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"=
-margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-lef=
-t:1ex">John Snow &lt;<a href=3D"mailto:jsnow@redhat.com" target=3D"_blank">=
-jsnow@redhat.com</a>&gt; writes:<br>
-<br>
-&gt; Eliminate the &quot;Example&quot; sections in QAPI doc blocks, convert=
-ing them<br>
-&gt; into QMP example code blocks. This is generally done by converting<br>
-&gt; &quot;Example:&quot; or &quot;Examples:&quot; lines into &quot;.. code=
--block:: QMP&quot; lines.<br>
-&gt;<br>
-&gt; This patch does also allow for the use of the rST syntax &quot;Example=
-::&quot; by<br>
-&gt; exempting double-colon syntax from the QAPI doc parser, but that form =
-is<br>
-&gt; not used by this conversion patch. The phrase &quot;Example&quot; here=
- is not<br>
-&gt; special, it is the double-colon syntax that transforms the following<b=
-r>
-&gt; block into a code-block. By default, *this* form does not apply QMP<br=
->
-&gt; highlighting.<br>
-&gt;<br>
-&gt; This patch has several benefits:<br>
-&gt;<br>
-&gt; 1. Example sections can now be written more arbitrarily, mixing<br>
-&gt;=C2=A0 =C2=A0 explanatory paragraphs and code blocks however desired.<b=
-r>
-&gt;<br>
-&gt; 2. Example sections can now use fully arbitrary rST.<br>
-&gt;<br>
-&gt; 3. All code blocks are now lexed and validated as QMP; increasing<br>
-&gt;=C2=A0 =C2=A0 usability of the docs and ensuring validity of example sn=
-ippets.<br>
-&gt;<br>
-&gt; 4. Each code-block can be captioned independently without bypassing th=
-e<br>
-&gt;=C2=A0 =C2=A0 QMP lexer/validator.<br>
-&gt;<br>
-&gt; For any sections with more than one example, examples are split up int=
-o<br>
-&gt; multiple code-block regions. If annotations are present, those<br>
-&gt; annotations are converted into code-block captions instead, e.g.<br>
-&gt;<br>
-&gt; ```<br>
-&gt; Examples:<br>
-&gt;<br>
-&gt;=C2=A0 =C2=A0 1. Lorem Ipsum<br>
-&gt;<br>
-&gt;=C2=A0 =C2=A0 -&gt; { &quot;foo&quot;: &quot;bar&quot; }<br>
-&gt; ```<br>
-&gt;<br>
-&gt; Is rewritten as:<br>
-&gt;<br>
-&gt; ```<br>
-&gt; .. code-block:: QMP<br>
-&gt;=C2=A0 =C2=A0 :caption: Example: Lorem Ipsum<br>
-&gt;<br>
-&gt;=C2=A0 =C2=A0 -&gt; { &quot;foo&quot;: &quot;bar&quot; }<br>
-&gt; ```<br>
-&gt;<br>
-&gt; This process was only semi-automated:<br>
-&gt;<br>
-&gt; 1. Replace &quot;Examples?:&quot; sections with sed:<br>
-&gt;<br>
-&gt; sed -i &#39;s|# Example:|# .. code-block:: QMP|&#39; *.json<br>
-&gt; sed -i &#39;s|# Examples:|# .. code-block:: QMP|&#39; *.json<br>
-&gt;<br>
-&gt; 2. Identify sections that no longer parse successfully by attempting t=
-he<br>
-&gt;=C2=A0 =C2=A0 doc build, convert annotations into captions manually.<br=
->
-&gt;=C2=A0 =C2=A0 (Tedious, oh well.)<br>
-&gt;<br>
-&gt; 3. Add captions where still needed:<br>
-&gt;<br>
-&gt; sed -zi &#39;s|# .. code-block:: QMP\n#\n|# .. code-block:: QMP\n#=C2=
-=A0 =C2=A0 :caption: Example\n#\n|g&#39; *.json<br>
-&gt;<br>
-&gt; Not fully ideal, but hopefully not something that has to be done very<=
-br>
-&gt; often. (Or ever again.)<br>
-&gt;<br>
-&gt; Signed-off-by: John Snow &lt;<a href=3D"mailto:jsnow@redhat.com" targe=
-t=3D"_blank">jsnow@redhat.com</a>&gt;<br>
-&gt; ---<br>
-&gt;=C2=A0 qapi/acpi.json=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 |=C2=A0 =C2=A06 +-<br>
-&gt;=C2=A0 qapi/block-core.json=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 | =
-120 ++++++++++++++++----------<br>
-&gt;=C2=A0 qapi/block.json=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0|=C2=A0 60 +++++++------<br>
-&gt;=C2=A0 qapi/char.json=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 |=C2=A0 36 ++++++--<br>
-&gt;=C2=A0 qapi/control.json=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0|=C2=A0 16 ++--<br>
-&gt;=C2=A0 qapi/dump.json=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 |=C2=A0 12 ++-<br>
-&gt;=C2=A0 qapi/machine-target.json=C2=A0 =C2=A0 =C2=A0 =C2=A0 |=C2=A0 =C2=
-=A03 +-<br>
-&gt;=C2=A0 qapi/machine.json=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0|=C2=A0 79 ++++++++++-------<br>
-&gt;=C2=A0 qapi/migration.json=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0| 145 +++++++++++++++++++++++---------<br>
-&gt;=C2=A0 qapi/misc-target.json=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0|=
-=C2=A0 33 +++++---<br>
-&gt;=C2=A0 qapi/misc.json=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 |=C2=A0 48 +++++++----<br>
-&gt;=C2=A0 qapi/net.json=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0|=C2=A0 30 +++++--<br>
-&gt;=C2=A0 qapi/pci.json=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0|=C2=A0 =C2=A06 +-<br>
-&gt;=C2=A0 qapi/qapi-schema.json=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0|=
-=C2=A0 =C2=A06 +-<br>
-&gt;=C2=A0 qapi/qdev.json=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 |=C2=A0 15 +++-<br>
-&gt;=C2=A0 qapi/qom.json=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0|=C2=A0 20 +++--<br>
-&gt;=C2=A0 qapi/replay.json=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 |=C2=A0 12 ++-<br>
-&gt;=C2=A0 qapi/rocker.json=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 |=C2=A0 12 ++-<br>
-&gt;=C2=A0 qapi/run-state.json=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0|=C2=A0 45 ++++++----<br>
-&gt;=C2=A0 qapi/tpm.json=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0|=C2=A0 =C2=A09 +-<br>
-&gt;=C2=A0 qapi/trace.json=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0|=C2=A0 =C2=A06 +-<br>
-&gt;=C2=A0 qapi/transaction.json=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0|=
-=C2=A0 =C2=A03 +-<br>
-&gt;=C2=A0 qapi/ui.json=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 |=C2=A0 62 +++++++++-----<br>
-&gt;=C2=A0 qapi/virtio.json=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 |=C2=A0 38 +++++----<br>
-&gt;=C2=A0 qapi/yank.json=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 |=C2=A0 =C2=A06 +-<br>
-&gt;=C2=A0 scripts/qapi/parser.py=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 |=C2=A0=
- 15 +++-<br>
-&gt;=C2=A0 tests/qapi-schema/doc-good.json |=C2=A0 12 +--<br>
-&gt;=C2=A0 tests/qapi-schema/doc-good.out=C2=A0 |=C2=A0 17 ++--<br>
-&gt;=C2=A0 tests/qapi-schema/doc-good.txt=C2=A0 |=C2=A0 17 +---<br>
-&gt;=C2=A0 29 files changed, 574 insertions(+), 315 deletions(-)<br>
-<br>
-Missing: update of docs/devel/qapi-code-gen.rst.<br>
-<br>
-&gt; diff --git a/qapi/acpi.json b/qapi/acpi.json<br>
-&gt; index aa4dbe57943..3da01f1b7fc 100644<br>
-&gt; --- a/qapi/acpi.json<br>
-&gt; +++ b/qapi/acpi.json<br>
-&gt; @@ -111,7 +111,8 @@<br>
-&gt;=C2=A0 #<br>
-&gt;=C2=A0 # Since: 2.1<br>
-&gt;=C2=A0 #<br>
-&gt; -# Example:<br>
-&gt; +# .. code-block:: QMP<br>
-&gt; +#=C2=A0 =C2=A0 :caption: Example<br>
-<br>
-I wish this was a bit less verbose.=C2=A0 Oh well, we&#39;ll live.<br></blo=
-ckquote><div><br></div><div>We can create a custom directive that assumes a=
- default caption; e.g.</div><div><br></div><div>.. qapi:example::</div><div=
-><br></div><div>=C2=A0=C2=A0=C2=A0 ... blah blah blah ...</div><div><br></d=
-iv><div>And if you want to override it, you&#39;d just</div><div><br></div>=
-<div>.. qapi:example::</div><div>=C2=A0=C2=A0=C2=A0 :caption: Lorem Ipsum .=
-..</div><div><br></div><div>=C2=A0=C2=A0=C2=A0 ... blah blah blah ...</div>=
-<div><br></div><div>Interested? (I kept this patch vanilla to avoid getting=
- fancy, but there are fanciness options available if you&#39;d like them.)<=
-/div><div>=C2=A0<br></div><blockquote class=3D"gmail_quote" style=3D"margin=
-:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex"=
->
-<br>
-&gt;=C2=A0 #<br>
-&gt;=C2=A0 #=C2=A0 =C2=A0 =C2=A0-&gt; { &quot;execute&quot;: &quot;query-ac=
-pi-ospm-status&quot; }<br>
-&gt;=C2=A0 #=C2=A0 =C2=A0 =C2=A0&lt;- { &quot;return&quot;: [ { &quot;devic=
-e&quot;: &quot;d1&quot;, &quot;slot&quot;: &quot;0&quot;, &quot;slot-type&q=
-uot;: &quot;DIMM&quot;, &quot;source&quot;: 1, &quot;status&quot;: 0},<br>
-<br>
-This is rendered as a light green box with the caption on top, in<br>
-italics and centered.=C2=A0 I&#39;m not sure I like the use of the caption.=
-=C2=A0 The<br>
-previous patch&#39;s Note boxes look nicer.<br></blockquote><div><br></div>=
-<div>We can change that with styling - my dedicated CSS intern was busy wit=
-h finals when I wrote this patch ;)<br></div><div>=C2=A0</div><blockquote c=
-lass=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px soli=
-d rgb(204,204,204);padding-left:1ex">
-<br>
-The contents of the box is highlighted.=C2=A0 I am sure I like that.<br></b=
-lockquote><div><br></div><div>Yes.<br></div><div>=C2=A0</div><div>[...]</di=
-v><div><br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px =
-0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
-&gt; -# Example:<br>
-&gt; -#<br>
-&gt; -#=C2=A0 =C2=A0 =C2=A0Set new histograms for all io types with interva=
-ls<br>
-&gt; -#=C2=A0 =C2=A0 =C2=A0[0, 10), [10, 50), [50, 100), [100, +inf):<br>
-&gt; +# .. code-block:: QMP<br>
-&gt; +#=C2=A0 =C2=A0 :caption: Example:<br>
-&gt; +#=C2=A0 =C2=A0 =C2=A0 Set new histograms for all io types with interv=
-als<br>
-&gt; +#=C2=A0 =C2=A0 =C2=A0 [0, 10), [10, 50), [50, 100), [100, +inf):<br>
-<br>
-Captions long enough to be rendered as multiple lines look particularly<br>
-bad to me.=C2=A0 The centering...<br></blockquote><div><br></div><div>Will =
-attempt to address it with CSS. I do agree, just wasn&#39;t time to hammer =
-it out.<br></div><div><br></div><div>[...] <br></div><div>=C2=A0</div><bloc=
-kquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:=
-1px solid rgb(204,204,204);padding-left:1ex">
-&gt; @@ -134,7 +136,8 @@<br>
-&gt;=C2=A0 #<br>
-&gt;=C2=A0 # Since: 0.14<br>
-&gt;=C2=A0 #<br>
-&gt; -# Example:<br>
-&gt; +# .. code-block:: QMP<br>
-&gt; +#=C2=A0 =C2=A0 :caption: Example<br>
-&gt;=C2=A0 #<br>
-&gt;=C2=A0 #=C2=A0 =C2=A0 =C2=A0-&gt; { &quot;execute&quot;: &quot;query-co=
-mmands&quot; }<br>
-&gt;=C2=A0 #=C2=A0 =C2=A0 =C2=A0&lt;- {<br>
-&gt; @@ -149,8 +152,8 @@<br>
-&gt;=C2=A0 #=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 ]<br>
-&gt;=C2=A0 #=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
-&gt;=C2=A0 #<br>
-&gt; -#=C2=A0 =C2=A0 =C2=A0Note: This example has been shortened as the rea=
-l response is too<br>
-&gt; -#=C2=A0 =C2=A0 =C2=A0long.<br>
-&gt; +# This example has been shortened as the real response is too long.<b=
-r>
-<br>
-Squash into the previous patch?<br></blockquote><div><br></div><div>OK</div=
-><div><br></div><div>[...]<br></div><div>=C2=A0<br></div><blockquote class=
-=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rg=
-b(204,204,204);padding-left:1ex">
-&gt; diff --git a/qapi/pci.json b/qapi/pci.json<br>
-&gt; index f51159a2c4c..9192212661b 100644<br>
-&gt; --- a/qapi/pci.json<br>
-&gt; +++ b/qapi/pci.json<br>
-&gt; @@ -182,7 +182,8 @@<br>
-&gt;=C2=A0 #<br>
-&gt;=C2=A0 # Since: 0.14<br>
-&gt;=C2=A0 #<br>
-&gt; -# Example:<br>
-&gt; +# .. code-block:: QMP<br>
-&gt; +#=C2=A0 =C2=A0 :caption: Example<br>
-&gt;=C2=A0 #<br>
-&gt;=C2=A0 #=C2=A0 =C2=A0 =C2=A0-&gt; { &quot;execute&quot;: &quot;query-pc=
-i&quot; }<br>
-&gt;=C2=A0 #=C2=A0 =C2=A0 =C2=A0&lt;- { &quot;return&quot;: [<br>
-&gt; @@ -311,8 +312,7 @@<br>
-&gt;=C2=A0 #=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0]<br>
-&gt;=C2=A0 #=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
-&gt;=C2=A0 #<br>
-&gt; -#=C2=A0 =C2=A0 =C2=A0Note: This example has been shortened as the rea=
-l response is too<br>
-&gt; -#=C2=A0 =C2=A0 =C2=A0long.<br>
-&gt; +# This example has been shortened as the real response is too long.<b=
-r>
-<br>
-Squash into the previous patch?<br></blockquote><div><br></div><div>OK<br><=
-/div><div>=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"margin:0px=
- 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
-<br>
-&gt;=C2=A0 #<br>
-&gt;=C2=A0 ##<br>
-&gt;=C2=A0 { &#39;command&#39;: &#39;query-pci&#39;, &#39;returns&#39;: [&#=
-39;PciInfo&#39;] }<br>
-&gt; diff --git a/qapi/qapi-schema.json b/qapi/qapi-schema.json<br>
-&gt; index 5e33da7228f..66fbcbd3619 100644<br>
-&gt; --- a/qapi/qapi-schema.json<br>
-&gt; +++ b/qapi/qapi-schema.json<br>
-&gt; @@ -20,11 +20,7 @@<br>
-&gt;=C2=A0 # understand.=C2=A0 However, in real protocol usage, they&#39;re=
- emitted as a<br>
-&gt;=C2=A0 # single line.<br>
-&gt;=C2=A0 #<br>
-&gt; -# Also, the following notation is used to denote data flow:<br>
-&gt; -#<br>
-&gt; -# Example:<br>
-&gt; -#<br>
-&gt; -# ::<br>
-&gt; +# Also, the following notation is used to denote data flow::<br>
-&gt;=C2=A0 #<br>
-&gt;=C2=A0 #=C2=A0 =C2=A0-&gt; data issued by the Client<br>
-&gt;=C2=A0 #=C2=A0 =C2=A0&lt;- Server data response<br>
-<br>
-No use of caption here.=C2=A0 Looks better, I think.<br></blockquote><div><=
-br></div><div>OK - Let me play around with the styling, because I do want t=
-o have some kind of form option available for cargo-culting to add captions=
- or an explanation of some kind. If I can&#39;t make it look good with CSS,=
- I&#39;ll capitulate and mark them up as alternating normal paragraphs and =
-examples.</div><div><br></div><div>Forbidding &quot;Examples?:&quot; was ju=
-st an easy way to make sure I converted everything; and especially to catch=
- any late merges ... I am hesitant to go that route for maintainability. Bu=
-t, if you want to volunteer to play whack-a-mole for the next few releases,=
- then...<br></div><div><br></div><div>(Also, this example doesn&#39;t use t=
-he QMP lexer, because it&#39;s not real QMP. It could be cajoled by making =
-the lines string values, for example - or making it a more representative e=
-xample that actually resembles QMP.)<br></div><div>=C2=A0</div><blockquote =
-class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px sol=
-id rgb(204,204,204);padding-left:1ex">
-<br>
-&gt; diff --git a/qapi/qdev.json b/qapi/qdev.json<br>
-&gt; index d031fc3590d..cfe403fea20 100644<br>
-&gt; --- a/qapi/qdev.json<br>
-&gt; +++ b/qapi/qdev.json<br>
-&gt; @@ -62,7 +62,8 @@<br>
-&gt;=C2=A0 #=C2=A0 =C2=A0 =C2=A0 =C2=A0 the ``-device DEVICE,help`` command=
--line argument, where DEVICE<br>
-&gt;=C2=A0 #=C2=A0 =C2=A0 =C2=A0 =C2=A0 is the device&#39;s name.<br>
-&gt;=C2=A0 #<br>
-&gt; -# Example:<br>
-&gt; +# .. code-block:: QMP<br>
-&gt; +#=C2=A0 =C2=A0 :caption: Example<br>
-&gt;=C2=A0 #<br>
-&gt;=C2=A0 #=C2=A0 =C2=A0 =C2=A0-&gt; { &quot;execute&quot;: &quot;device_a=
-dd&quot;,<br>
-&gt;=C2=A0 #=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 &quot;arguments&quot;: { &qu=
-ot;driver&quot;: &quot;e1000&quot;, &quot;id&quot;: &quot;net1&quot;,<br>
-<br>
-How does<br>
-<br>
-=C2=A0 =C2=A0# Example:<br>
-=C2=A0 +# .. code-block:: QMP<br>
-=C2=A0 =C2=A0#<br>
-=C2=A0 =C2=A0#=C2=A0 =C2=A0 =C2=A0-&gt; { &quot;execute&quot;: &quot;device=
-_add&quot;,<br>
-=C2=A0 =C2=A0#=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 &quot;arguments&quot;: { &=
-quot;driver&quot;: &quot;e1000&quot;, &quot;id&quot;: &quot;net1&quot;,<br>
-<br>
-look?=C2=A0 Requires nerfing the error you add to parser.py.<br></blockquot=
-e><div><br></div><div>Undesirable, IMO -- but &quot;Example::&quot; alongsi=
-de an option to choose the QMP lexer by default for QMP docs may be accepta=
-ble. I can demo some choices for you on a screenshare call if you&#39;d lik=
-e to workshop this aesthetic choice out together.</div><div><br></div><div>=
-[...]<br></div><div>=C2=A0<br></div><blockquote class=3D"gmail_quote" style=
-=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding=
--left:1ex">
-&gt; diff --git a/scripts/qapi/parser.py b/scripts/qapi/parser.py<br>
-&gt; index 8b1da96124e..afc0b444034 100644<br>
-&gt; --- a/scripts/qapi/parser.py<br>
-&gt; +++ b/scripts/qapi/parser.py<br>
-&gt; @@ -554,9 +554,12 @@ def get_doc(self) -&gt; &#39;QAPIDoc&#39;:<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 no_more_args =3D True<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 intro =3D False<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 elif mat=
-ch :=3D re.match(<br>
-&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 r&#39;(Returns|Errors|Since|Notes?|Examples?|TODO): *&#39;,<=
-br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 r&#39;(Returns|Errors|Since|Notes?|Examples?(?!::)|TODO)&#39=
-;<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 r&#39;: *&#39;,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 line):<br>
-<br>
-Hmm, I wonder...<br>
-<br>
-<a href=3D"https://www.sphinx-doc.org/en/master/usage/restructuredtext/basi=
-cs.html#literal-blocks" rel=3D"noreferrer" target=3D"_blank">https://www.sp=
-hinx-doc.org/en/master/usage/restructuredtext/basics.html#literal-blocks</a=
-> has:<br>
-<br>
-=C2=A0 =C2=A0 Literal code blocks (ref) are introduced by ending a paragrap=
-h with<br>
-=C2=A0 =C2=A0 the special marker ::.<br>
-<br>
-Not capturing regular rST markup like<br>
-<br>
-=C2=A0 =C2=A0 Example::<br>
-<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 mumble mumble<br>
-<br>
-for our own purposes makes sense.=C2=A0 But it makes exactly as much sense<=
-br>
-for any of the tags, doesn&#39;it?<br>
-<br>
-Should we instead change the regexp to match only when there&#39;s a<br>
-*single* colon?<br></blockquote><div><br></div><div>OK. My regexp-fu is may=
-be weak, but I think I can just put (?!::): at the end of this regex withou=
-t tying it to Examples, and I&#39;ll move that into its own patch.<br></div=
->=C2=A0<blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;=
-border-left:1px solid rgb(204,204,204);padding-left:1ex">
-<br>
-&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- # tagged section<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- # tagged section.<br>
-<br>
-Spurious comment change.<br></blockquote><div><br></div><div>A *beautiful* =
-comment change. An *inspired* comment change.</div><div><br></div><div>(OK,=
- removing it...)<br></div><div>=C2=A0</div><blockquote class=3D"gmail_quote=
-" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);=
-padding-left:1ex">
-<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- # Examples sections followed by two colons are excluded;<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- # those are raw rST syntax!<br>
-&gt;=C2=A0 <br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 if &#39;Note&#39; in match.group(1):<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 emsg =3D (<br>
-&gt; @@ -566,6 +569,14 @@ def get_doc(self) -&gt; &#39;QAPIDoc&#39;:<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 )<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 raise QAPIParseError(self, emsg)<br>
-&gt;=C2=A0 <br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- if match.group(1).startswith(&quot;Example&quot;):<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 emsg =3D (<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 f&quot;The &#39;{match.group(1)}&#39; section =
-is deprecated. &quot;<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 &quot;Please use rST&#39;s &#39;.. code-block:=
-: QMP&#39; directive,&quot;<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 &quot; &#39;Example::&#39;, or other suitable =
-markup instead.&quot;<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 )<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 raise QAPIParseError(self, emsg)<br>
-&gt; +<br>
-<br>
-I guess this will be helpful while people get used to the changed<br>
-syntax.=C2=A0 Once they are, I&#39;d like to get rid of it.=C2=A0 Same for =
-&quot;Note&quot;<br>
-right above.<br></blockquote><div><br></div><div>Yeah - the thinking was th=
-at it would help buffer the transitional period and could be removed after =
-a release or two. I&#39;ll update the phrasing to not use &quot;deprecated&=
-quot;, also.<br></div><div>=C2=A0</div><blockquote class=3D"gmail_quote" st=
-yle=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padd=
-ing-left:1ex">
-<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 doc.new_tagged_section(<a href=3D"http://self.info" rel=3D"noreferre=
-r" target=3D"_blank">self.info</a>, match.group(1))<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 text =3D line[match.end():]<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 if text:<br>
-&gt; diff --git a/tests/qapi-schema/doc-good.json b/tests/qapi-schema/doc-g=
-ood.json<br>
-&gt; index 0a294eb324e..57e2e591938 100644<br>
-&gt; --- a/tests/qapi-schema/doc-good.json<br>
-&gt; +++ b/tests/qapi-schema/doc-good.json<br>
-&gt; @@ -46,11 +46,12 @@<br>
-&gt;=C2=A0 #<br>
-&gt;=C2=A0 # Duis aute irure dolor<br>
-&gt;=C2=A0 #<br>
-&gt; -# Example:<br>
-&gt; +# .. code-block:: QMP<br>
-<br>
-No captions here?<br></blockquote><div><br></div><div>They aren&#39;t *requ=
-ired*, I just liked having a dedicated place to put &#39;em in the rendered=
- output for our real docs.<br></div><div>=C2=A0</div><div>[...]</div><div><=
-br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8e=
-x;border-left:1px solid rgb(204,204,204);padding-left:1ex">
-<br>
-I want this just as much as the previous patch.<br>
-<br></blockquote><div><br></div><div>okie-dokey, I&#39;ll include it in the=
- mini-fork of the pre-req series. <br></div></div></div>
-
---000000000000d290b4061b1ca1b6--
-
+T24gNi8xNy8yNCAxMzo1NiwgRHIuIERhdmlkIEFsYW4gR2lsYmVydCB3cm90ZToNCj4gKiBQ
+aWVycmljayBCb3V2aWVyIChwaWVycmljay5ib3V2aWVyQGxpbmFyby5vcmcpIHdyb3RlOg0K
+Pj4gT24gNi8xNC8yNCAxNTowMCwgRHIuIERhdmlkIEFsYW4gR2lsYmVydCB3cm90ZToNCj4+
+PiAqIFBpZXJyaWNrIEJvdXZpZXIgKHBpZXJyaWNrLmJvdXZpZXJAbGluYXJvLm9yZykgd3Jv
+dGU6DQo+Pj4+IEhpIERhdmUsDQo+Pj4+DQo+Pj4+IE9uIDYvMTIvMjQgMTQ6MDIsIERyLiBE
+YXZpZCBBbGFuIEdpbGJlcnQgd3JvdGU6DQo+Pj4+PiAqIEFsZXggQmVubsOpZSAoYWxleC5i
+ZW5uZWVAbGluYXJvLm9yZykgd3JvdGU6DQo+Pj4+Pj4gRnJvbTogUGllcnJpY2sgQm91dmll
+ciA8cGllcnJpY2suYm91dmllckBsaW5hcm8ub3JnPg0KPj4+Pj4+DQo+Pj4+Pj4gVGhpcyBw
+bHVnaW4gdXNlcyB0aGUgbmV3IHRpbWUgY29udHJvbCBpbnRlcmZhY2UgdG8gbWFrZSBkZWNp
+c2lvbnMNCj4+Pj4+PiBhYm91dCB0aGUgc3RhdGUgb2YgdGltZSBkdXJpbmcgdGhlIGVtdWxh
+dGlvbi4gVGhlIGFsZ29yaXRobSBpcw0KPj4+Pj4+IGN1cnJlbnRseSB2ZXJ5IHNpbXBsZS4g
+VGhlIHVzZXIgc3BlY2lmaWVzIGFuIGlwcyByYXRlIHdoaWNoIGFwcGxpZXMNCj4+Pj4+PiBw
+ZXIgY29yZS4gSWYgdGhlIGNvcmUgcnVucyBhaGVhZCBvZiBpdHMgYWxsb2NhdGVkIGV4ZWN1
+dGlvbiB0aW1lIHRoZQ0KPj4+Pj4+IHBsdWdpbiBzbGVlcHMgZm9yIGEgYml0IHRvIGxldCBy
+ZWFsIHRpbWUgY2F0Y2ggdXAuIEVpdGhlciB3YXkgdGltZSBpcw0KPj4+Pj4+IHVwZGF0ZWQg
+Zm9yIHRoZSBlbXVsYXRpb24gYXMgYSBmdW5jdGlvbiBvZiB0b3RhbCBleGVjdXRlZCBpbnN0
+cnVjdGlvbnMNCj4+Pj4+PiB3aXRoIHNvbWUgYWRqdXN0bWVudHMgZm9yIGNvcmVzIHRoYXQg
+aWRsZS4NCj4+Pj4+DQo+Pj4+PiBBIGZldyByYW5kb20gdGhvdWdodHM6DQo+Pj4+PiAgICAg
+IGEpIEFyZSB0aGVyZSBhbnkgZGVmaW5pdGlvbnMgb2Ygd2hhdCBhIHBsdWdpbiB0aGF0IGNv
+bnRyb2xzIHRpbWUNCj4+Pj4+ICAgICAgICAgc2hvdWxkIGRvIHdpdGggYSBsaXZlIG1pZ3Jh
+dGlvbj8NCj4+Pj4NCj4+Pj4gSXQncyBub3Qgc29tZXRoaW5nIHRoYXQgd2FzIGNvbnNpZGVy
+ZWQgYXMgcGFydCBvZiB0aGlzIHdvcmsuDQo+Pj4NCj4+PiBUaGF0J3MgT0ssIHRoZSBvbmx5
+IHRoaW5nIGlzIHdlIG5lZWQgdG8gc3RvcCBhbnlvbmUgZnJvbSBoaXR0aW5nIHByb2JsZW1z
+DQo+Pj4gd2hlbiB0aGV5IGRvbid0IHJlYWxpc2UgaXQncyBub3QgYmVlbiBhZGRyZXNzZWQu
+DQo+Pj4gT25lIHdheSBtaWdodCBiZSB0byBhZGQgYSBtaWdyYXRpb24gYmxvY2tlcjsgc2Vl
+IGluY2x1ZGUvbWlncmF0aW9uL2Jsb2NrZXIuaA0KPj4+IHRoZW4geW91IG1pZ2h0IHByaW50
+IHNvbWV0aGluZyBsaWtlICdNaWdyYXRpb24gbm90IGF2YWlsYWJsZSBkdWUgdG8gcGx1Z2lu
+IC4uLi4nDQo+Pj4NCj4+DQo+PiBTbyBiYXNpY2FsbHksIHdlIGNvdWxkIG1ha2UgYSBjYWxs
+IHRvIG1pZ3JhdGVfYWRkX2Jsb2NrZXIoKSwgd2hlbiBzb21lb25lDQo+PiByZXF1ZXN0IHRp
+bWVfY29udHJvbCB0aHJvdWdoIHBsdWdpbiBBUEk/DQo+Pg0KPj4gSU1ITywgaXQncyBzb21l
+dGhpbmcgdGhhdCBzaG91bGQgYmUgcGFydCBvZiBwbHVnaW4gQVBJIChpZiBhbnkgcGx1Z2lu
+IGNhbGxzDQo+PiBxZW11X3BsdWdpbl9yZXF1ZXN0X3RpbWVfY29udHJvbCgpKSwgaW5zdGVh
+ZCBvZiB0aGUgcGx1Z2luIGNvZGUgaXRzZWxmLiBUaGlzDQo+PiB3YXksIGFueSBwbHVnaW4g
+Z2V0dGluZyB0aW1lIGNvbnRyb2wgYXV0b21hdGljYWxseSBibG9ja3MgYW55IHBvdGVudGlh
+bA0KPj4gbWlncmF0aW9uLg0KPiANCj4gTm90ZSBteSBxdWVzdGlvbiBhc2tlZCBmb3IgYSAn
+YW55IGRlZmluaXRpb25zIG9mIHdoYXQgYSBwbHVnaW4gLi4nIC0gc28NCj4geW91IGNvdWxk
+IGRlZmluZSBpdCB0aGF0IHdheSwgYW5vdGhlciBvbmUgaXMgdG8gdGhpbmsgdGhhdCBpbiB0
+aGUgZnV0dXJlDQo+IHlvdSBtYXkgYWxsb3cgaXQgYW5kIHRoZSBwbHVnaW4gc29tZWhvdyBp
+bnRlcmFjdHMgd2l0aCBtaWdyYXRpb24gbm90IHRvDQo+IGNoYW5nZSB0aW1lIGF0IGNlcnRh
+aW4gbWlncmF0aW9uIHBoYXNlcy4NCj4gDQoNCkkgd291bGQgYmUgaW4gZmF2b3IgdG8gZm9y
+YmlkIHVzYWdlIGZvciBub3cgaW4gdGhpcyBjb250ZXh0LiBJJ20gbm90IA0Kc3VyZSB3aHkg
+cGVvcGxlIHdvdWxkIHBsYXkgd2l0aCBtaWdyYXRpb24gYW5kIHBsdWdpbnMgZ2VuZXJhbGx5
+IGF0IHRoaXMgDQp0aW1lICh0aGVyZSBtaWdodCBiZSBleHBlcmltZW50cyBvciB1c2UgY2Fz
+ZXMgSSdtIG5vdCBhd2FyZSBvZiksIHNvIGEgDQpzaW1wbGUgYmFycmllciBwcmV2ZW50aW5n
+IHRoYXQgc2VlbXMgb2suDQoNClRoaXMgcGx1Z2luIGlzIHBhcnQgb2YgYW4gZXhwZXJpbWVu
+dCB3aGVyZSB3ZSBpbXBsZW1lbnQgYSBxZW11IGZlYXR1cmUgDQooaWNvdW50PWF1dG8gaW4g
+dGhpcyBjYXNlKSBieSB1c2luZyBwbHVnaW5zLiBJZiBpdCB0dXJucyBpbnRvIGEgDQpzdWNj
+ZXNzZnVsIHVzYWdlIGFuZCB0aGlzIHBsdWdpbiBiZWNvbWVzIHBvcHVsYXIsIHdlIGNhbiBh
+bHdheXMgbGlmdCB0aGUgDQpsaW1pdGF0aW9uIGxhdGVyLg0KDQpAQWxleCwgd291bGQgeW91
+IGxpa2UgdG8gYWRkIHRoaXMgbm93IChpY291bnQ9YXV0byBpcyBzdGlsbCBub3QgcmVtb3Zl
+ZCANCmZyb20gcWVtdSksIG9yIHdhaXQgZm9yIGludGVncmF0aW9uLCBhbmQgYWRkIHRoaXMg
+YXMgYW5vdGhlciBwYXRjaD8NCg0KPj4+Pj4gICAgICBiKSBUaGUgc2xlZXAgaW4gbWlncmF0
+aW9uL2RpcnR5cmF0ZS5jIHBvaW50cyBvdXQgZ191c2xlZXAgbWlnaHQNCj4+Pj4+ICAgICAg
+ICAgc2xlZXAgZm9yIGxvbmdlciwgc28gcmVhZHMgdGhlIGFjdHVhbCB3YWxsIGNsb2NrIHRp
+bWUgdG8NCj4+Pj4+ICAgICAgICAgZmlndXJlIG91dCBhIG5ldyAnbm93Jy4NCj4+Pj4NCj4+
+Pj4gVGhlIGN1cnJlbnQgQVBJIG1lbnRpb25zIHRpbWUgc3RhcnRzIGF0IDAgZnJvbSBxZW11
+IHN0YXJ0dXAuIE1heWJlIHdlIGNvdWxkDQo+Pj4+IGNvbnNpZGVyIGluIHRoZSBmdXR1cmUg
+dG8gY2hhbmdlIHRoaXMgYmVoYXZpb3IgdG8gcmV0cmlldmUgdGltZSBmcm9tIGFuDQo+Pj4+
+IGV4aXN0aW5nIG1pZ3JhdGVkIG1hY2hpbmUuDQo+Pj4NCj4+PiBBaCwgSSBtZWFudCBmb3Ig
+KGIpIHRvIGJlIGluZGVwZW5kZW50IG9mIChhKSAtIG5vdCByZWxhdGVkIHRvIG1pZ3JhdGlv
+bjsganVzdA0KPj4+IGRvd24gdG8gdGhlIGZhY3QgeW91IHVzZWQgZ191c2xlZXAgaW4gdGhl
+IHBsdWdpbiBhbmQgYSBnX3VzbGVlcCBtaWdodCBzbGVlcA0KPj4+IGZvciBhIGRpZmZlcmVu
+dCBhbW91bnQgb2YgdGltZSB0aGFuIHlvdSBhc2tlZC4NCj4+Pg0KPj4NCj4+IFdlIGtub3cg
+dGhhdCwgYW5kIHRoZSBwbHVnaW4gaXMgbm90IG1lYW50IHRvIGJlICJjeWNsZSBhY2N1cmF0
+ZSIgaW4gZ2VuZXJhbCwNCj4+IHdlIGp1c3Qgc2V0IGEgdXBwZXIgYm91bmQgZm9yIG51bWJl
+ciBvZiBpbnN0cnVjdGlvbnMgd2UgY2FuIGV4ZWN1dGUgaW4gYQ0KPj4gZ2l2ZW4gYW1vdW50
+IG9mIHRpbWUgKDEvMTAgc2Vjb25kIGZvciBub3cpLg0KPj4NCj4+IFdlIGNvbXB1dGUgdGhl
+IG5ldyB0aW1lIGJhc2VkIG9uIGhvdyBtYW55IGluc3RydWN0aW9ucyBlZmZlY3RpdmVseSBy
+YW4gb24NCj4+IHRoZSBtb3N0IHVzZWQgY3B1LCBzbyBldmVuIGlmIHdlIHNsZXB0IGEgYml0
+IG1vcmUgdGhhbiBleHBlY3RlZCwgaXQncw0KPj4gY29ycmVjdC4NCj4gDQo+IEFoIE9LLg0K
+PiANCj4gRGF2ZQ0KPiANCj4+Pj4+ICAgICAgYykgQSBmdW4gdGhpbmcgdG8gZG8gd2l0aCB0
+aGlzIHdvdWxkIGJlIHRvIGZvbGxvdyBhbiBleHRlcm5hbCBzaW11bGF0aW9uDQo+Pj4+PiAg
+ICAgICAgIG9yIDJuZCBxZW11LCB0cnlpbmcgdG8ga2VlcCB0aGUgdHdvIGZyb20gcnVubmlu
+ZyB0b28gZmFyIHBhc3QNCj4+Pj4+ICAgICAgICAgZWFjaCBvdGhlci4NCj4+Pj4+DQo+Pj4+
+DQo+Pj4+IEJhc2ljYWxseSwgdG8gc2xvdyB0aGUgZmlyc3Qgb25lLCB3YWl0aW5nIGZvciB0
+aGUgcmVwbGljYXRlZCBvbmUgdG8gY2F0Y2gNCj4+Pj4gdXA/DQo+Pj4NCj4+PiBZZXMsIHNv
+bWV0aGluZyBsaWtlIHRoYXQuDQo+Pj4NCj4+PiBEYXZlDQo+Pj4NCj4+Pj4+IERhdmUgPg0K
+Pj4+Pj4+IEV4YW1wbGVzDQo+Pj4+Pj4gLS0tLS0tLS0NCj4+Pj4+Pg0KPj4+Pj4+IFNsb3cg
+ZG93biBleGVjdXRpb24gb2YgL2Jpbi90cnVlOg0KPj4+Pj4+ICQgbnVtX2luc249JCguL2J1
+aWxkL3FlbXUteDg2XzY0IC1wbHVnaW4gLi9idWlsZC90ZXN0cy9wbHVnaW4vbGliaW5zbi5z
+byAtZCBwbHVnaW4gL2Jpbi90cnVlIHwmIGdyZXAgdG90YWwgfCBzZWQgLWUgJ3MvLio6IC8v
+JykNCj4+Pj4+PiAkIHRpbWUgLi9idWlsZC9xZW11LXg4Nl82NCAtcGx1Z2luIC4vYnVpbGQv
+Y29udHJpYi9wbHVnaW5zL2xpYmlwcy5zbyxpcHM9JCgoJG51bV9pbnNuLzQpKSAvYmluL3Ry
+dWUNCj4+Pj4+PiByZWFsIDQuMDAwcw0KPj4+Pj4+DQo+Pj4+Pj4gQm9vdCBhIExpbnV4IGtl
+cm5lbCBzaW11bGF0aW5nIGEgMjUwTUh6IGNwdToNCj4+Pj4+PiAkIC9idWlsZC9xZW11LXN5
+c3RlbS14ODZfNjQgLWtlcm5lbCAvYm9vdC92bWxpbnV6LTYuMS4wLTIxLWFtZDY0IC1hcHBl
+bmQgImNvbnNvbGU9dHR5UzAiIC1wbHVnaW4gLi9idWlsZC9jb250cmliL3BsdWdpbnMvbGli
+aXBzLnNvLGlwcz0kKCgyNTAqMTAwMCoxMDAwKSkgLXNtcCAxIC1tIDUxMg0KPj4+Pj4+IGNo
+ZWNrIHRpbWUgdW50aWwga2VybmVsIHBhbmljIG9uIHNlcmlhbDANCj4+Pj4+Pg0KPj4+Pj4+
+IFRlc3RlZCBpbiBzeXN0ZW0gbW9kZSBieSBib290aW5nIGEgZnVsbCBkZWJpYW4gc3lzdGVt
+LCBhbmQgdXNpbmc6DQo+Pj4+Pj4gJCBzeXNiZW5jaCBjcHUgcnVuDQo+Pj4+Pj4gUGVyZm9y
+bWFuY2UgZGVjcmVhc2UgbGluZWFybHkgd2l0aCB0aGUgZ2l2ZW4gbnVtYmVyIG9mIGlwcy4N
+Cj4+Pj4+Pg0KPj4+Pj4+IFNpZ25lZC1vZmYtYnk6IFBpZXJyaWNrIEJvdXZpZXIgPHBpZXJy
+aWNrLmJvdXZpZXJAbGluYXJvLm9yZz4NCj4+Pj4+PiBNZXNzYWdlLUlkOiA8MjAyNDA1MzAy
+MjA2MTAuMTI0NTQyNC03LXBpZXJyaWNrLmJvdXZpZXJAbGluYXJvLm9yZz4NCj4+Pj4+PiAt
+LS0NCj4+Pj4+PiAgICAgY29udHJpYi9wbHVnaW5zL2lwcy5jICAgIHwgMTY0ICsrKysrKysr
+KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKw0KPj4+Pj4+ICAgICBjb250cmliL3Bs
+dWdpbnMvTWFrZWZpbGUgfCAgIDEgKw0KPj4+Pj4+ICAgICAyIGZpbGVzIGNoYW5nZWQsIDE2
+NSBpbnNlcnRpb25zKCspDQo+Pj4+Pj4gICAgIGNyZWF0ZSBtb2RlIDEwMDY0NCBjb250cmli
+L3BsdWdpbnMvaXBzLmMNCj4+Pj4+Pg0KPj4+Pj4+IGRpZmYgLS1naXQgYS9jb250cmliL3Bs
+dWdpbnMvaXBzLmMgYi9jb250cmliL3BsdWdpbnMvaXBzLmMNCj4+Pj4+PiBuZXcgZmlsZSBt
+b2RlIDEwMDY0NA0KPj4+Pj4+IGluZGV4IDAwMDAwMDAwMDAuLmRiNzc3MjkyNjQNCj4+Pj4+
+PiAtLS0gL2Rldi9udWxsDQo+Pj4+Pj4gKysrIGIvY29udHJpYi9wbHVnaW5zL2lwcy5jDQo+
+Pj4+Pj4gQEAgLTAsMCArMSwxNjQgQEANCj4+Pj4+PiArLyoNCj4+Pj4+PiArICogaXBzIHJh
+dGUgbGltaXRpbmcgcGx1Z2luLg0KPj4+Pj4+ICsgKg0KPj4+Pj4+ICsgKiBUaGlzIHBsdWdp
+biBjYW4gYmUgdXNlZCB0byByZXN0cmljdCB0aGUgZXhlY3V0aW9uIG9mIGEgc3lzdGVtIHRv
+IGENCj4+Pj4+PiArICogcGFydGljdWxhciBudW1iZXIgb2YgSW5zdHJ1Y3Rpb25zIFBlciBT
+ZWNvbmQgKGlwcykuIFRoaXMgY29udHJvbHMNCj4+Pj4+PiArICogdGltZSBhcyBzZWVuIGJ5
+IHRoZSBndWVzdCBzbyB3aGlsZSB3YWxsLWNsb2NrIHRpbWUgbWF5IGJlIGxvbmdlcg0KPj4+
+Pj4+ICsgKiBmcm9tIHRoZSBndWVzdHMgcG9pbnQgb2YgdmlldyB0aW1lIHdpbGwgcGFzcyBh
+dCB0aGUgbm9ybWFsIHJhdGUuDQo+Pj4+Pj4gKyAqDQo+Pj4+Pj4gKyAqIFRoaXMgdXNlcyB0
+aGUgbmV3IHBsdWdpbiBBUEkgd2hpY2ggYWxsb3dzIHRoZSBwbHVnaW4gdG8gY29udHJvbA0K
+Pj4+Pj4+ICsgKiBzeXN0ZW0gdGltZS4NCj4+Pj4+PiArICoNCj4+Pj4+PiArICogQ29weXJp
+Z2h0IChjKSAyMDIzIExpbmFybyBMdGQNCj4+Pj4+PiArICoNCj4+Pj4+PiArICogU1BEWC1M
+aWNlbnNlLUlkZW50aWZpZXI6IEdQTC0yLjAtb3ItbGF0ZXINCj4+Pj4+PiArICovDQo+Pj4+
+Pj4gKw0KPj4+Pj4+ICsjaW5jbHVkZSA8c3RkaW8uaD4NCj4+Pj4+PiArI2luY2x1ZGUgPGds
+aWIuaD4NCj4+Pj4+PiArI2luY2x1ZGUgPHFlbXUtcGx1Z2luLmg+DQo+Pj4+Pj4gKw0KPj4+
+Pj4+ICtRRU1VX1BMVUdJTl9FWFBPUlQgaW50IHFlbXVfcGx1Z2luX3ZlcnNpb24gPSBRRU1V
+X1BMVUdJTl9WRVJTSU9OOw0KPj4+Pj4+ICsNCj4+Pj4+PiArLyogaG93IG1hbnkgdGltZXMg
+ZG8gd2UgdXBkYXRlIHRpbWUgcGVyIHNlYyAqLw0KPj4+Pj4+ICsjZGVmaW5lIE5VTV9USU1F
+X1VQREFURV9QRVJfU0VDIDEwDQo+Pj4+Pj4gKyNkZWZpbmUgTlNFQ19JTl9PTkVfU0VDICgx
+MDAwICogMTAwMCAqIDEwMDApDQo+Pj4+Pj4gKw0KPj4+Pj4+ICtzdGF0aWMgR011dGV4IGds
+b2JhbF9zdGF0ZV9sb2NrOw0KPj4+Pj4+ICsNCj4+Pj4+PiArc3RhdGljIHVpbnQ2NF90IG1h
+eF9pbnNuX3Blcl9zZWNvbmQgPSAxMDAwICogMTAwMCAqIDEwMDA7IC8qIGlwcyBwZXIgY29y
+ZSwgcGVyIHNlY29uZCAqLw0KPj4+Pj4+ICtzdGF0aWMgdWludDY0X3QgbWF4X2luc25fcGVy
+X3F1YW50dW07IC8qIHRyYXAgZXZlcnkgTiBpbnN0cnVjdGlvbnMgKi8NCj4+Pj4+PiArc3Rh
+dGljIGludDY0X3QgdmlydHVhbF90aW1lX25zOyAvKiBsYXN0IHNldCB2aXJ0dWFsIHRpbWUg
+Ki8NCj4+Pj4+PiArDQo+Pj4+Pj4gK3N0YXRpYyBjb25zdCB2b2lkICp0aW1lX2hhbmRsZTsN
+Cj4+Pj4+PiArDQo+Pj4+Pj4gK3R5cGVkZWYgc3RydWN0IHsNCj4+Pj4+PiArICAgIHVpbnQ2
+NF90IHRvdGFsX2luc247DQo+Pj4+Pj4gKyAgICB1aW50NjRfdCBxdWFudHVtX2luc247IC8q
+IGluc24gaW4gbGFzdCBxdWFudHVtICovDQo+Pj4+Pj4gKyAgICBpbnQ2NF90IGxhc3RfcXVh
+bnR1bV90aW1lOyAvKiB0aW1lIHdoZW4gbGFzdCBxdWFudHVtIHN0YXJ0ZWQgKi8NCj4+Pj4+
+PiArfSB2Q1BVVGltZTsNCj4+Pj4+PiArDQo+Pj4+Pj4gK3N0cnVjdCBxZW11X3BsdWdpbl9z
+Y29yZWJvYXJkICp2Y3B1czsNCj4+Pj4+PiArDQo+Pj4+Pj4gKy8qIHJldHVybiBlcG9jaCB0
+aW1lIGluIG5zICovDQo+Pj4+Pj4gK3N0YXRpYyBpbnQ2NF90IG5vd19ucyh2b2lkKQ0KPj4+
+Pj4+ICt7DQo+Pj4+Pj4gKyAgICByZXR1cm4gZ19nZXRfcmVhbF90aW1lKCkgKiAxMDAwOw0K
+Pj4+Pj4+ICt9DQo+Pj4+Pj4gKw0KPj4+Pj4+ICtzdGF0aWMgdWludDY0X3QgbnVtX2luc25f
+ZHVyaW5nKGludDY0X3QgZWxhcHNlZF9ucykNCj4+Pj4+PiArew0KPj4+Pj4+ICsgICAgZG91
+YmxlIG51bV9zZWNzID0gZWxhcHNlZF9ucyAvIChkb3VibGUpIE5TRUNfSU5fT05FX1NFQzsN
+Cj4+Pj4+PiArICAgIHJldHVybiBudW1fc2VjcyAqIChkb3VibGUpIG1heF9pbnNuX3Blcl9z
+ZWNvbmQ7DQo+Pj4+Pj4gK30NCj4+Pj4+PiArDQo+Pj4+Pj4gK3N0YXRpYyBpbnQ2NF90IHRp
+bWVfZm9yX2luc24odWludDY0X3QgbnVtX2luc24pDQo+Pj4+Pj4gK3sNCj4+Pj4+PiArICAg
+IGRvdWJsZSBudW1fc2VjcyA9IChkb3VibGUpIG51bV9pbnNuIC8gKGRvdWJsZSkgbWF4X2lu
+c25fcGVyX3NlY29uZDsNCj4+Pj4+PiArICAgIHJldHVybiBudW1fc2VjcyAqIChkb3VibGUp
+IE5TRUNfSU5fT05FX1NFQzsNCj4+Pj4+PiArfQ0KPj4+Pj4+ICsNCj4+Pj4+PiArc3RhdGlj
+IHZvaWQgdXBkYXRlX3N5c3RlbV90aW1lKHZDUFVUaW1lICp2Y3B1KQ0KPj4+Pj4+ICt7DQo+
+Pj4+Pj4gKyAgICBpbnQ2NF90IGVsYXBzZWRfbnMgPSBub3dfbnMoKSAtIHZjcHUtPmxhc3Rf
+cXVhbnR1bV90aW1lOw0KPj4+Pj4+ICsgICAgdWludDY0X3QgbWF4X2luc24gPSBudW1faW5z
+bl9kdXJpbmcoZWxhcHNlZF9ucyk7DQo+Pj4+Pj4gKw0KPj4+Pj4+ICsgICAgaWYgKHZjcHUt
+PnF1YW50dW1faW5zbiA+PSBtYXhfaW5zbikgew0KPj4+Pj4+ICsgICAgICAgIC8qIHRoaXMg
+dmNwdSByYW4gZmFzdGVyIHRoYW4gZXhwZWN0ZWQsIHNvIGl0IGhhcyB0byBzbGVlcCAqLw0K
+Pj4+Pj4+ICsgICAgICAgIHVpbnQ2NF90IGluc25fYWR2YW5jZSA9IHZjcHUtPnF1YW50dW1f
+aW5zbiAtIG1heF9pbnNuOw0KPj4+Pj4+ICsgICAgICAgIHVpbnQ2NF90IHRpbWVfYWR2YW5j
+ZV9ucyA9IHRpbWVfZm9yX2luc24oaW5zbl9hZHZhbmNlKTsNCj4+Pj4+PiArICAgICAgICBp
+bnQ2NF90IHNsZWVwX3VzID0gdGltZV9hZHZhbmNlX25zIC8gMTAwMDsNCj4+Pj4+PiArICAg
+ICAgICBnX3VzbGVlcChzbGVlcF91cyk7DQo+Pj4+Pj4gKyAgICB9DQo+Pj4+Pj4gKw0KPj4+
+Pj4+ICsgICAgdmNwdS0+dG90YWxfaW5zbiArPSB2Y3B1LT5xdWFudHVtX2luc247DQo+Pj4+
+Pj4gKyAgICB2Y3B1LT5xdWFudHVtX2luc24gPSAwOw0KPj4+Pj4+ICsgICAgdmNwdS0+bGFz
+dF9xdWFudHVtX3RpbWUgPSBub3dfbnMoKTsNCj4+Pj4+PiArDQo+Pj4+Pj4gKyAgICAvKiBi
+YXNlZCBvbiB0b3RhbCBudW1iZXIgb2YgaW5zdHJ1Y3Rpb25zLCB3aGF0IHNob3VsZCBiZSB0
+aGUgbmV3IHRpbWU/ICovDQo+Pj4+Pj4gKyAgICBpbnQ2NF90IG5ld192aXJ0dWFsX3RpbWUg
+PSB0aW1lX2Zvcl9pbnNuKHZjcHUtPnRvdGFsX2luc24pOw0KPj4+Pj4+ICsNCj4+Pj4+PiAr
+ICAgIGdfbXV0ZXhfbG9jaygmZ2xvYmFsX3N0YXRlX2xvY2spOw0KPj4+Pj4+ICsNCj4+Pj4+
+PiArICAgIC8qIFRpbWUgb25seSBtb3ZlcyBmb3J3YXJkLiBBbm90aGVyIHZjcHUgbWlnaHQg
+aGF2ZSB1cGRhdGVkIGl0IGFscmVhZHkuICovDQo+Pj4+Pj4gKyAgICBpZiAobmV3X3ZpcnR1
+YWxfdGltZSA+IHZpcnR1YWxfdGltZV9ucykgew0KPj4+Pj4+ICsgICAgICAgIHFlbXVfcGx1
+Z2luX3VwZGF0ZV9ucyh0aW1lX2hhbmRsZSwgbmV3X3ZpcnR1YWxfdGltZSk7DQo+Pj4+Pj4g
+KyAgICAgICAgdmlydHVhbF90aW1lX25zID0gbmV3X3ZpcnR1YWxfdGltZTsNCj4+Pj4+PiAr
+ICAgIH0NCj4+Pj4+PiArDQo+Pj4+Pj4gKyAgICBnX211dGV4X3VubG9jaygmZ2xvYmFsX3N0
+YXRlX2xvY2spOw0KPj4+Pj4+ICt9DQo+Pj4+Pj4gKw0KPj4+Pj4+ICtzdGF0aWMgdm9pZCB2
+Y3B1X2luaXQocWVtdV9wbHVnaW5faWRfdCBpZCwgdW5zaWduZWQgaW50IGNwdV9pbmRleCkN
+Cj4+Pj4+PiArew0KPj4+Pj4+ICsgICAgdkNQVVRpbWUgKnZjcHUgPSBxZW11X3BsdWdpbl9z
+Y29yZWJvYXJkX2ZpbmQodmNwdXMsIGNwdV9pbmRleCk7DQo+Pj4+Pj4gKyAgICB2Y3B1LT50
+b3RhbF9pbnNuID0gMDsNCj4+Pj4+PiArICAgIHZjcHUtPnF1YW50dW1faW5zbiA9IDA7DQo+
+Pj4+Pj4gKyAgICB2Y3B1LT5sYXN0X3F1YW50dW1fdGltZSA9IG5vd19ucygpOw0KPj4+Pj4+
+ICt9DQo+Pj4+Pj4gKw0KPj4+Pj4+ICtzdGF0aWMgdm9pZCB2Y3B1X2V4aXQocWVtdV9wbHVn
+aW5faWRfdCBpZCwgdW5zaWduZWQgaW50IGNwdV9pbmRleCkNCj4+Pj4+PiArew0KPj4+Pj4+
+ICsgICAgdkNQVVRpbWUgKnZjcHUgPSBxZW11X3BsdWdpbl9zY29yZWJvYXJkX2ZpbmQodmNw
+dXMsIGNwdV9pbmRleCk7DQo+Pj4+Pj4gKyAgICB1cGRhdGVfc3lzdGVtX3RpbWUodmNwdSk7
+DQo+Pj4+Pj4gK30NCj4+Pj4+PiArDQo+Pj4+Pj4gK3N0YXRpYyB2b2lkIGV2ZXJ5X3F1YW50
+dW1faW5zbih1bnNpZ25lZCBpbnQgY3B1X2luZGV4LCB2b2lkICp1ZGF0YSkNCj4+Pj4+PiAr
+ew0KPj4+Pj4+ICsgICAgdkNQVVRpbWUgKnZjcHUgPSBxZW11X3BsdWdpbl9zY29yZWJvYXJk
+X2ZpbmQodmNwdXMsIGNwdV9pbmRleCk7DQo+Pj4+Pj4gKyAgICBnX2Fzc2VydCh2Y3B1LT5x
+dWFudHVtX2luc24gPj0gbWF4X2luc25fcGVyX3F1YW50dW0pOw0KPj4+Pj4+ICsgICAgdXBk
+YXRlX3N5c3RlbV90aW1lKHZjcHUpOw0KPj4+Pj4+ICt9DQo+Pj4+Pj4gKw0KPj4+Pj4+ICtz
+dGF0aWMgdm9pZCB2Y3B1X3RiX3RyYW5zKHFlbXVfcGx1Z2luX2lkX3QgaWQsIHN0cnVjdCBx
+ZW11X3BsdWdpbl90YiAqdGIpDQo+Pj4+Pj4gK3sNCj4+Pj4+PiArICAgIHNpemVfdCBuX2lu
+c25zID0gcWVtdV9wbHVnaW5fdGJfbl9pbnNucyh0Yik7DQo+Pj4+Pj4gKyAgICBxZW11X3Bs
+dWdpbl91NjQgcXVhbnR1bV9pbnNuID0NCj4+Pj4+PiArICAgICAgICBxZW11X3BsdWdpbl9z
+Y29yZWJvYXJkX3U2NF9pbl9zdHJ1Y3QodmNwdXMsIHZDUFVUaW1lLCBxdWFudHVtX2luc24p
+Ow0KPj4+Pj4+ICsgICAgLyogY291bnQgKGFuZCBldmVudHVhbGx5IHRyYXApIG9uY2UgcGVy
+IHRiICovDQo+Pj4+Pj4gKyAgICBxZW11X3BsdWdpbl9yZWdpc3Rlcl92Y3B1X3RiX2V4ZWNf
+aW5saW5lX3Blcl92Y3B1KA0KPj4+Pj4+ICsgICAgICAgIHRiLCBRRU1VX1BMVUdJTl9JTkxJ
+TkVfQUREX1U2NCwgcXVhbnR1bV9pbnNuLCBuX2luc25zKTsNCj4+Pj4+PiArICAgIHFlbXVf
+cGx1Z2luX3JlZ2lzdGVyX3ZjcHVfdGJfZXhlY19jb25kX2NiKA0KPj4+Pj4+ICsgICAgICAg
+IHRiLCBldmVyeV9xdWFudHVtX2luc24sDQo+Pj4+Pj4gKyAgICAgICAgUUVNVV9QTFVHSU5f
+Q0JfTk9fUkVHUywgUUVNVV9QTFVHSU5fQ09ORF9HRSwNCj4+Pj4+PiArICAgICAgICBxdWFu
+dHVtX2luc24sIG1heF9pbnNuX3Blcl9xdWFudHVtLCBOVUxMKTsNCj4+Pj4+PiArfQ0KPj4+
+Pj4+ICsNCj4+Pj4+PiArc3RhdGljIHZvaWQgcGx1Z2luX2V4aXQocWVtdV9wbHVnaW5faWRf
+dCBpZCwgdm9pZCAqdWRhdGEpDQo+Pj4+Pj4gK3sNCj4+Pj4+PiArICAgIHFlbXVfcGx1Z2lu
+X3Njb3JlYm9hcmRfZnJlZSh2Y3B1cyk7DQo+Pj4+Pj4gK30NCj4+Pj4+PiArDQo+Pj4+Pj4g
+K1FFTVVfUExVR0lOX0VYUE9SVCBpbnQgcWVtdV9wbHVnaW5faW5zdGFsbChxZW11X3BsdWdp
+bl9pZF90IGlkLA0KPj4+Pj4+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgY29uc3QgcWVtdV9pbmZvX3QgKmluZm8sIGludCBhcmdjLA0KPj4+Pj4+ICsg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgY2hhciAqKmFyZ3Yp
+DQo+Pj4+Pj4gK3sNCj4+Pj4+PiArICAgIGZvciAoaW50IGkgPSAwOyBpIDwgYXJnYzsgaSsr
+KSB7DQo+Pj4+Pj4gKyAgICAgICAgY2hhciAqb3B0ID0gYXJndltpXTsNCj4+Pj4+PiArICAg
+ICAgICBnX2F1dG8oR1N0cnYpIHRva2VucyA9IGdfc3Ryc3BsaXQob3B0LCAiPSIsIDIpOw0K
+Pj4+Pj4+ICsgICAgICAgIGlmIChnX3N0cmNtcDAodG9rZW5zWzBdLCAiaXBzIikgPT0gMCkg
+ew0KPj4+Pj4+ICsgICAgICAgICAgICBtYXhfaW5zbl9wZXJfc2Vjb25kID0gZ19hc2NpaV9z
+dHJ0b3VsbCh0b2tlbnNbMV0sIE5VTEwsIDEwKTsNCj4+Pj4+PiArICAgICAgICAgICAgaWYg
+KCFtYXhfaW5zbl9wZXJfc2Vjb25kICYmIGVycm5vKSB7DQo+Pj4+Pj4gKyAgICAgICAgICAg
+ICAgICBmcHJpbnRmKHN0ZGVyciwgIiVzOiBjb3VsZG4ndCBwYXJzZSAlcyAoJXMpXG4iLA0K
+Pj4+Pj4+ICsgICAgICAgICAgICAgICAgICAgICAgICBfX2Z1bmNfXywgdG9rZW5zWzFdLCBn
+X3N0cmVycm9yKGVycm5vKSk7DQo+Pj4+Pj4gKyAgICAgICAgICAgICAgICByZXR1cm4gLTE7
+DQo+Pj4+Pj4gKyAgICAgICAgICAgIH0NCj4+Pj4+PiArICAgICAgICB9IGVsc2Ugew0KPj4+
+Pj4+ICsgICAgICAgICAgICBmcHJpbnRmKHN0ZGVyciwgIm9wdGlvbiBwYXJzaW5nIGZhaWxl
+ZDogJXNcbiIsIG9wdCk7DQo+Pj4+Pj4gKyAgICAgICAgICAgIHJldHVybiAtMTsNCj4+Pj4+
+PiArICAgICAgICB9DQo+Pj4+Pj4gKyAgICB9DQo+Pj4+Pj4gKw0KPj4+Pj4+ICsgICAgdmNw
+dXMgPSBxZW11X3BsdWdpbl9zY29yZWJvYXJkX25ldyhzaXplb2YodkNQVVRpbWUpKTsNCj4+
+Pj4+PiArICAgIG1heF9pbnNuX3Blcl9xdWFudHVtID0gbWF4X2luc25fcGVyX3NlY29uZCAv
+IE5VTV9USU1FX1VQREFURV9QRVJfU0VDOw0KPj4+Pj4+ICsNCj4+Pj4+PiArICAgIHRpbWVf
+aGFuZGxlID0gcWVtdV9wbHVnaW5fcmVxdWVzdF90aW1lX2NvbnRyb2woKTsNCj4+Pj4+PiAr
+ICAgIGdfYXNzZXJ0KHRpbWVfaGFuZGxlKTsNCj4+Pj4+PiArDQo+Pj4+Pj4gKyAgICBxZW11
+X3BsdWdpbl9yZWdpc3Rlcl92Y3B1X3RiX3RyYW5zX2NiKGlkLCB2Y3B1X3RiX3RyYW5zKTsN
+Cj4+Pj4+PiArICAgIHFlbXVfcGx1Z2luX3JlZ2lzdGVyX3ZjcHVfaW5pdF9jYihpZCwgdmNw
+dV9pbml0KTsNCj4+Pj4+PiArICAgIHFlbXVfcGx1Z2luX3JlZ2lzdGVyX3ZjcHVfZXhpdF9j
+YihpZCwgdmNwdV9leGl0KTsNCj4+Pj4+PiArICAgIHFlbXVfcGx1Z2luX3JlZ2lzdGVyX2F0
+ZXhpdF9jYihpZCwgcGx1Z2luX2V4aXQsIE5VTEwpOw0KPj4+Pj4+ICsNCj4+Pj4+PiArICAg
+IHJldHVybiAwOw0KPj4+Pj4+ICt9DQo+Pj4+Pj4gZGlmZiAtLWdpdCBhL2NvbnRyaWIvcGx1
+Z2lucy9NYWtlZmlsZSBiL2NvbnRyaWIvcGx1Z2lucy9NYWtlZmlsZQ0KPj4+Pj4+IGluZGV4
+IDBiNjRkMmMxZTMuLjQ0OWVhZDExMzAgMTAwNjQ0DQo+Pj4+Pj4gLS0tIGEvY29udHJpYi9w
+bHVnaW5zL01ha2VmaWxlDQo+Pj4+Pj4gKysrIGIvY29udHJpYi9wbHVnaW5zL01ha2VmaWxl
+DQo+Pj4+Pj4gQEAgLTI3LDYgKzI3LDcgQEAgZW5kaWYNCj4+Pj4+PiAgICAgTkFNRVMgKz0g
+aHdwcm9maWxlDQo+Pj4+Pj4gICAgIE5BTUVTICs9IGNhY2hlDQo+Pj4+Pj4gICAgIE5BTUVT
+ICs9IGRyY292DQo+Pj4+Pj4gK05BTUVTICs9IGlwcw0KPj4+Pj4+ICAgICBpZmVxICgkKENP
+TkZJR19XSU4zMikseSkNCj4+Pj4+PiAgICAgU09fU1VGRklYIDo9IC5kbGwNCj4+Pj4+PiAt
+LSANCj4+Pj4+PiAyLjM5LjINCj4+Pj4+Pg0K
 
