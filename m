@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 789EB90A6B2
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jun 2024 09:14:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C3C590A6AA
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jun 2024 09:14:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sJ6X3-0003us-3s; Mon, 17 Jun 2024 03:12:01 -0400
+	id 1sJ6X8-0003vP-Gi; Mon, 17 Jun 2024 03:12:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sJ6X0-0003uD-PP
- for qemu-devel@nongnu.org; Mon, 17 Jun 2024 03:11:58 -0400
-Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sJ6X5-0003v4-W0
+ for qemu-devel@nongnu.org; Mon, 17 Jun 2024 03:12:04 -0400
+Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sJ6Wz-0002Cr-4x
- for qemu-devel@nongnu.org; Mon, 17 Jun 2024 03:11:58 -0400
-Received: by mail-ed1-x531.google.com with SMTP id
- 4fb4d7f45d1cf-57c61165af6so5213390a12.2
- for <qemu-devel@nongnu.org>; Mon, 17 Jun 2024 00:11:56 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sJ6X4-0002Gc-9P
+ for qemu-devel@nongnu.org; Mon, 17 Jun 2024 03:12:03 -0400
+Received: by mail-ej1-x631.google.com with SMTP id
+ a640c23a62f3a-a6ef8bf500dso440838966b.0
+ for <qemu-devel@nongnu.org>; Mon, 17 Jun 2024 00:12:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1718608315; x=1719213115; darn=nongnu.org;
+ d=linaro.org; s=google; t=1718608320; x=1719213120; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ZanXSYwPxQjKnLjTcwqew9kPvqMmq1FF1wpubY0qEhg=;
- b=AnPlV5Tt++/50AIVqZdudO22KTKi4UkrdaQhvM8V+Ux7mPiUagpSyYLREYWtkRBklV
- 9PHFOfmWX4S4nBPdNCSrZskvtqwWELRqfYQ/9tC/M3bLtVvyj2dkwzchz+fgOy6xEbrN
- xBcV4Mjm6sVebIFZtOeCBy67KISGeXL6J1bkYAho0YG5k8A6aauEBRTp/P6VaYPpfws1
- uQtQX5jwlnLFLH7LeRT1paSXvZFLw8stLvB3e5u/b5JcuHIjkWLZv2MhTcO47j1hQKgW
- 275GxVfWR4ubznddz5BFm8Z9wFFpjN6vQzCg7XaGO5a3Tyhzp2brJ8ky3ZgEroPfOIWZ
- hsPA==
+ bh=Fo4VTlbzmKiFjWTqqGA/K+jod2OTNQzIeBbnSnkCnAI=;
+ b=zep3ty3n/NIlVtUWX6KP7fEdCfNKBZFMenLtmXtFsxir1ZgjIFMHxsWzqdB+1Wb+3D
+ 514bM8kAQjJVw5QSLHCwFkyujIPT027YcmUxC5zvBKpCDwCF5teclFay84clZpZqkL/o
+ aNJqyvUjgbS+bMK045/HheuB0491YtB3aq1Jw3U5F0aQuj91Q+4nqYM7ZS4PPmle+xPU
+ sg+EXTM95FYPNkJiUjbGAca7YazhW1HzTu0IxHv3FCU966aBE6WtodXz/gAOhyIwfYes
+ 4Mh1zGkQBVYn24IdfyrHILA8F3Kmv5hzmJkVtiNvjdGPf7GKeW9l8pyjIRne6v4jauKo
+ 3i6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718608315; x=1719213115;
+ d=1e100.net; s=20230601; t=1718608320; x=1719213120;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ZanXSYwPxQjKnLjTcwqew9kPvqMmq1FF1wpubY0qEhg=;
- b=j0Oztr0QY/G8GD3HoONir02DUNyAaw+jWrPxJ4+UgiVw0nlAc0suDwHlUUmquvpz8Y
- RV1HJeuxh4VXUN5NKtL3PRqRJQ7+l7L7QkAfglfUy6PswChjDWigUZwqdvEoEVfw1gSO
- Q6Ar3Aeb0zl/sGmzAVkeKeFrJ7deg6GYCSotgB9CFYgTcKhDTZe+/UyaL0Mz2rIv0fKF
- NXpNKxZ2ijJ98btAJGJ/7DfJ12WMXvUFwPEI+6OO7W9p9maaEj20Epl2PHsx9hvkOTdN
- 6xdtf7vE0nkPNFRgqaa5SxoGIDtIzgnmnR9uyETr718cb8tHltTMVuemUIqOjSEOwkVn
- mojQ==
-X-Gm-Message-State: AOJu0YzZomWaa1+UlDCQfT/U2xUG8krkNk7gg0cvpcwWestzJDupwWyQ
- TD4pPMV7AIJ5UlJgJ7D0uacYnbKlWF56anX52yYQhm+ARyjR1qypa71OiDIkHOOaEw77zw9jCyY
- HFEE=
-X-Google-Smtp-Source: AGHT+IHJ+Urf/Kpnspz2yO522d7E4b5eRX69N3SdWiDQoybAbZImCEgfqHSllec5eJ5wOXBAaNez/w==
-X-Received: by 2002:a50:cd51:0:b0:57c:4875:10a9 with SMTP id
- 4fb4d7f45d1cf-57cbd6ab5d4mr5141895a12.24.1718608314804; 
- Mon, 17 Jun 2024 00:11:54 -0700 (PDT)
+ bh=Fo4VTlbzmKiFjWTqqGA/K+jod2OTNQzIeBbnSnkCnAI=;
+ b=sbON/GwISS8poc3ajZQuMKEdfe2x9zYwvBoj5XU7YxQbZq2Dvz0DA5T8J8Es95ZNsg
+ Z+87VVKTB9geAr9/1Q01HmYdvygLXjqyo7xxHlA4lNHkdUbxZfVdxkUGxoTXMTL+Q4/a
+ ZWp4IrmuOLq4L6pthQV09QtQWde4CSO2cWoa+nql7xHfjctl+jZMTyIhvdJq/UzNArnM
+ /jdY6Zce+0nN7r0zLagynBt3iKU77QvCKUxOLlvibSSOotQ5yG6X8ED1fvqxhQkC36Ew
+ /dTIKiwsZZx0Dch+IUAzzERwVoIISW89ADUHawmRxjSk9W4atldYgkqVLKC+jrmktW0+
+ 9dhg==
+X-Gm-Message-State: AOJu0Yz+sILqtjqBcZ1lrdtDhFlBG+yi4mo9N8wD02T2MZKnUx6Imy5P
+ ToTVOp7MYnctw4Dh1Y2o+/yyfLqOHrdp/tVkayufBBYepvcgiTS6z/MqdT4/4S7A16azvHyZN+c
+ 8ofo=
+X-Google-Smtp-Source: AGHT+IGQIO1FDzbsXBlb92mUYvU0/22/866AMzQPGcUMlcuwCuY1PjF4xlow7jq3JbwsnUYtqz77xQ==
+X-Received: by 2002:a17:907:7f26:b0:a6f:50ae:e09 with SMTP id
+ a640c23a62f3a-a6f60cefc4emr819615966b.4.1718608320319; 
+ Mon, 17 Jun 2024 00:12:00 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.169.90])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-57cbc4f5870sm5221203a12.4.2024.06.17.00.11.53
+ a640c23a62f3a-a6f88522f42sm85258866b.110.2024.06.17.00.11.59
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 17 Jun 2024 00:11:54 -0700 (PDT)
+ Mon, 17 Jun 2024 00:11:59 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
  "Michael S. Tsirkin" <mst@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v6 06/23] hw/acpi/ich9: Remove 'memory-hotplug-support'
- property
-Date: Mon, 17 Jun 2024 09:11:01 +0200
-Message-ID: <20240617071118.60464-7-philmd@linaro.org>
+ Zhao Liu <zhao1.liu@intel.com>
+Subject: [PATCH v6 07/23] hw/acpi/ich9: Remove dead code related to
+ 'acpi_memory_hotplug'
+Date: Mon, 17 Jun 2024 09:11:02 +0200
+Message-ID: <20240617071118.60464-8-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240617071118.60464-1-philmd@linaro.org>
 References: <20240617071118.60464-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::531;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x531.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::631;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,53 +95,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-No external code sets the 'memory-hotplug-support'
-property, remove it.
+acpi_memory_hotplug::is_enabled is set to %true once via
+ich9_lpc_initfn() -> ich9_pm_add_properties(). No need to
+check it, so remove now dead code.
 
-Suggested-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Reviewed-by: Igor Mammedov <imammedo@redhat.com>
 ---
- hw/acpi/ich9.c | 18 ------------------
- 1 file changed, 18 deletions(-)
+ hw/acpi/ich9.c | 28 ++++++----------------------
+ 1 file changed, 6 insertions(+), 22 deletions(-)
 
 diff --git a/hw/acpi/ich9.c b/hw/acpi/ich9.c
-index 573d032e8e..9b605af21a 100644
+index 9b605af21a..02d8546bd3 100644
 --- a/hw/acpi/ich9.c
 +++ b/hw/acpi/ich9.c
-@@ -351,21 +351,6 @@ static void ich9_pm_get_gpe0_blk(Object *obj, Visitor *v, const char *name,
-     visit_type_uint32(v, name, &value, errp);
+@@ -153,17 +153,10 @@ static int ich9_pm_post_load(void *opaque, int version_id)
+      .offset     = vmstate_offset_pointer(_state, _field, uint8_t),  \
+  }
+ 
+-static bool vmstate_test_use_memhp(void *opaque)
+-{
+-    ICH9LPCPMRegs *s = opaque;
+-    return s->acpi_memory_hotplug.is_enabled;
+-}
+-
+ static const VMStateDescription vmstate_memhp_state = {
+     .name = "ich9_pm/memhp",
+     .version_id = 1,
+     .minimum_version_id = 1,
+-    .needed = vmstate_test_use_memhp,
+     .fields = (const VMStateField[]) {
+         VMSTATE_MEMORY_HOTPLUG(acpi_memory_hotplug, ICH9LPCPMRegs),
+         VMSTATE_END_OF_LIST()
+@@ -335,11 +328,9 @@ void ich9_pm_init(PCIDevice *lpc_pci, ICH9LPCPMRegs *pm, qemu_irq sci_irq)
+     legacy_acpi_cpu_hotplug_init(pci_address_space_io(lpc_pci),
+         OBJECT(lpc_pci), &pm->gpe_cpu, ICH9_CPU_HOTPLUG_IO_BASE);
+ 
+-    if (pm->acpi_memory_hotplug.is_enabled) {
+-        acpi_memory_hotplug_init(pci_address_space_io(lpc_pci), OBJECT(lpc_pci),
+-                                 &pm->acpi_memory_hotplug,
+-                                 ACPI_MEMORY_HOTPLUG_BASE);
+-    }
++    acpi_memory_hotplug_init(pci_address_space_io(lpc_pci), OBJECT(lpc_pci),
++                             &pm->acpi_memory_hotplug,
++                             ACPI_MEMORY_HOTPLUG_BASE);
  }
  
--static bool ich9_pm_get_memory_hotplug_support(Object *obj, Error **errp)
--{
--    ICH9LPCState *s = ICH9_LPC_DEVICE(obj);
--
--    return s->pm.acpi_memory_hotplug.is_enabled;
--}
--
--static void ich9_pm_set_memory_hotplug_support(Object *obj, bool value,
--                                               Error **errp)
--{
--    ICH9LPCState *s = ICH9_LPC_DEVICE(obj);
--
--    s->pm.acpi_memory_hotplug.is_enabled = value;
--}
--
- static bool ich9_pm_get_cpu_hotplug_legacy(Object *obj, Error **errp)
+ static void ich9_pm_get_gpe0_blk(Object *obj, Visitor *v, const char *name,
+@@ -460,12 +451,7 @@ void ich9_pm_device_pre_plug_cb(HotplugHandler *hotplug_dev, DeviceState *dev,
+         return;
+     }
+ 
+-    if (object_dynamic_cast(OBJECT(dev), TYPE_PC_DIMM) &&
+-        !lpc->pm.acpi_memory_hotplug.is_enabled) {
+-        error_setg(errp,
+-                   "memory hotplug is not enabled: %s.memory-hotplug-support "
+-                   "is not set", object_get_typename(OBJECT(lpc)));
+-    } else if (object_dynamic_cast(OBJECT(dev), TYPE_CPU)) {
++    if (object_dynamic_cast(OBJECT(dev), TYPE_CPU)) {
+         uint64_t negotiated = lpc->smi_negotiated_features;
+ 
+         if (negotiated & BIT_ULL(ICH9_LPC_SMI_F_BROADCAST_BIT) &&
+@@ -509,8 +495,7 @@ void ich9_pm_device_unplug_request_cb(HotplugHandler *hotplug_dev,
  {
-     ICH9LPCState *s = ICH9_LPC_DEVICE(obj);
-@@ -445,9 +430,6 @@ void ich9_pm_add_properties(Object *obj, ICH9LPCPMRegs *pm)
-                         NULL, NULL, pm);
-     object_property_add_uint32_ptr(obj, ACPI_PM_PROP_GPE0_BLK_LEN,
-                                    &gpe0_len, OBJ_PROP_FLAG_READ);
--    object_property_add_bool(obj, "memory-hotplug-support",
--                             ich9_pm_get_memory_hotplug_support,
--                             ich9_pm_set_memory_hotplug_support);
-     object_property_add_bool(obj, "cpu-hotplug-legacy",
-                              ich9_pm_get_cpu_hotplug_legacy,
-                              ich9_pm_set_cpu_hotplug_legacy);
+     ICH9LPCState *lpc = ICH9_LPC_DEVICE(hotplug_dev);
+ 
+-    if (lpc->pm.acpi_memory_hotplug.is_enabled &&
+-        object_dynamic_cast(OBJECT(dev), TYPE_PC_DIMM)) {
++    if (object_dynamic_cast(OBJECT(dev), TYPE_PC_DIMM)) {
+         acpi_memory_unplug_request_cb(hotplug_dev,
+                                       &lpc->pm.acpi_memory_hotplug, dev,
+                                       errp);
+@@ -545,8 +530,7 @@ void ich9_pm_device_unplug_cb(HotplugHandler *hotplug_dev, DeviceState *dev,
+ {
+     ICH9LPCState *lpc = ICH9_LPC_DEVICE(hotplug_dev);
+ 
+-    if (lpc->pm.acpi_memory_hotplug.is_enabled &&
+-        object_dynamic_cast(OBJECT(dev), TYPE_PC_DIMM)) {
++    if (object_dynamic_cast(OBJECT(dev), TYPE_PC_DIMM)) {
+         acpi_memory_unplug_cb(&lpc->pm.acpi_memory_hotplug, dev, errp);
+     } else if (object_dynamic_cast(OBJECT(dev), TYPE_CPU) &&
+                !lpc->pm.cpu_hotplug_legacy) {
 -- 
 2.41.0
 
