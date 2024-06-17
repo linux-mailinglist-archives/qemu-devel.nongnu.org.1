@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF9C390BA52
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jun 2024 20:59:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A76690BA84
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jun 2024 21:03:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sJHZB-0004jv-UA; Mon, 17 Jun 2024 14:58:57 -0400
+	id 1sJHZE-0005am-5H; Mon, 17 Jun 2024 14:59:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <itachis6234@gmail.com>)
- id 1sJHYt-0004RN-1Q
- for qemu-devel@nongnu.org; Mon, 17 Jun 2024 14:58:39 -0400
+ id 1sJHYv-0004aw-2U
+ for qemu-devel@nongnu.org; Mon, 17 Jun 2024 14:58:43 -0400
 Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <itachis6234@gmail.com>)
- id 1sJHYr-0004yQ-B9
- for qemu-devel@nongnu.org; Mon, 17 Jun 2024 14:58:38 -0400
+ id 1sJHYt-0004zr-Bx
+ for qemu-devel@nongnu.org; Mon, 17 Jun 2024 14:58:40 -0400
 Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-705b9a89e08so4054948b3a.1
- for <qemu-devel@nongnu.org>; Mon, 17 Jun 2024 11:58:36 -0700 (PDT)
+ d2e1a72fcca58-705c739b878so3731839b3a.1
+ for <qemu-devel@nongnu.org>; Mon, 17 Jun 2024 11:58:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1718650716; x=1719255516; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1718650718; x=1719255518; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=BKxS0/De0h1OuVT3aoFJuagPA3gXdMM1tQtaPW9ssyc=;
- b=DWl1C3y7+cJD2iq0nAY8eXr8cymqcRF06S3OxfL4Y8Muym2pCXbm4NGRZyvQVBIPvN
- rxR5fNhII6yqybwoFonpwko2J2jUgbDwPkY3ikO7POkg+bHEgdr/MsDH0rzw5v1YVTxW
- RnI6tJYPxfDDUz1g36s3/l3yzBOT34Ek/RVpCJ/5VRtoBTdSWYSFiLb7h0o12FmRbimy
- zejsmW9C/1D7UepvnvZeVs6qWcwS+szdPxSyf9S0Mshs9ZuJwataR5RY8XFtzk8TLNHW
- cW0sFjvpTd4MGxk8aY/rZTOyArxWYaswYhQRck9QX3R/+x1AOXuK3KMFiuPclm8/ie5C
- MC5w==
+ bh=CFGck5ZAtQivWI4UcF8No9idstaPGejMMjqzgwxQWSo=;
+ b=jU9HNdRQVM/6WGGdnaJ1H0gzeSgy5ixX9XhISONvogun2Y7s/0dmEcqkAMCl5taeq7
+ wCLdM643SUKeOS348ON9SnC3mHRALTWoVSkxzKK7+DAqxmrzJvmCD3U2gNtRPRpjY/15
+ LckdCMAkayXKpOphnKmxjEgEleFaa6/m9nWbOYXTB6DUYN9lOweMUOEU+4Q+vKrr/zm2
+ zFbp1VEhaUzLCuT8I2kTYpGGr5Rj202O7Eq3lJcs8CvGln4hsS9I/1mH4f0QlhIOSxsO
+ 6+9OOpWm3ORFSnpb8czKpGbO88+MNncWURFc7sbhJLCT0xRn7Ar+1dsrMcaD42QSm+lZ
+ rnUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718650716; x=1719255516;
+ d=1e100.net; s=20230601; t=1718650718; x=1719255518;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=BKxS0/De0h1OuVT3aoFJuagPA3gXdMM1tQtaPW9ssyc=;
- b=NtqbQF9K1i6CRtF7NnIQis2utIt+15VLsYGZv9gGfUwj7PmCQchailyAav/a2L761K
- aokIZlvb2aSm2oqt93DL7zuxriqZxIZ9gRVs+dU21ClivZ8pF8SVpFWik6A6FhN9GFuu
- yPtOBEerZMi2BHCq6M7hSVHbeZzdEj71Exq7CMU6MA7g5ja2ycPiGiehdYJVWJ+8oukS
- rSvksUR2PQRs8EOYvyA3YaiQ1yZ3IV0XhdwN+ev2pu75v6795thU3IJqvFKN5SpYI4ck
- LWTwy0O8bAuJ4SmoQfYHS3Rh1B2VYZvmqWnPT2t9ve56CCz12sSMSdc6LEq47lJtU/nM
- 7Bvw==
-X-Gm-Message-State: AOJu0YzbOSQ6JjngDIEcas/4d6YRyEpOut3IFpOe0P+e4COVRwYDTZCz
- DQ1xS6GrWZ5MVfrIE/Es/zn4gFhON9kt1XH9ii1Bcq0rmE/XScqfH29WmMOBs0M=
-X-Google-Smtp-Source: AGHT+IFXPx9+NnaJ12o3LRv0Xz/+IIYcKeMMRBkz8ZkjeebPlQdTK5wiL/yH2MRlsiT/OSRULEb2cw==
-X-Received: by 2002:aa7:91cc:0:b0:705:c310:60b0 with SMTP id
- d2e1a72fcca58-705d719331cmr10467354b3a.25.1718650715747; 
- Mon, 17 Jun 2024 11:58:35 -0700 (PDT)
+ bh=CFGck5ZAtQivWI4UcF8No9idstaPGejMMjqzgwxQWSo=;
+ b=Fce38joghTlIAP2NzHLzsOrRIEH/QygunOzpcIf4jN9wGVLPIDX5oppLBYMkBuTbj4
+ n/FTeArrxWCJtoorR9mWCvxERp0yPGrW13oGpF+8dl1eYzekORei6KaJclpJtVgWPZES
+ oyx18AiKmaAxhJDpdpreBnUrMKyuh5t9mPZuwevXJueUBmVDF7M39FjGoWuqeXSuX8jY
+ RcEoaQsxF2ocfzeBIwn1PIK6nitssDGqUtuQf3CzdlFLAjXMKM7uFUuNJtKP0GkzNF6y
+ 70gaFCCIDw606EmSOEQ4GF7rLOMxdc8XwiUC04D5CS6ORM7FC8/ee3X6hAD20/5uhnQT
+ fpMg==
+X-Gm-Message-State: AOJu0YxEsxcu34JndOi9nnvUxH9TWIpVTt8lIwcvesmbY/WnFokN/Dqn
+ VAkE0N3bxq9y+T/KOEvtu3WoOpi132Y83ZLN5ThHA9UELJZobNqYRE996kO1tqs=
+X-Google-Smtp-Source: AGHT+IHICLmSRbKJLVYswBzwTbT1DC+Xy3kjeUSZxPKppfHbgt4tqPbp5cGP22gTyTfyYP3rHZ8zMA==
+X-Received: by 2002:a05:6a20:dc90:b0:1b4:a478:2275 with SMTP id
+ adf61e73a8af0-1bcab0a6537mr660857637.29.1718650717808; 
+ Mon, 17 Jun 2024 11:58:37 -0700 (PDT)
 Received: from localhost.localdomain ([106.222.222.115])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-705ccb4aa4fsm7660637b3a.131.2024.06.17.11.58.34
+ d2e1a72fcca58-705ccb4aa4fsm7660637b3a.131.2024.06.17.11.58.36
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 17 Jun 2024 11:58:35 -0700 (PDT)
+ Mon, 17 Jun 2024 11:58:37 -0700 (PDT)
 From: Ajeet Singh <itachis6234@gmail.com>
 X-Google-Original-From: Ajeet Singh <itachis@FreeBSD.org>
 To: qemu-devel@nongnu.org
 Cc: Warner Losh <imp@bsdimp.com>, Ajeet Singh <itachis@freebsd.org>,
  Stacey Son <sson@FreeBSD.org>, Ajeet Singh <itachis@FreeBSD.org>
-Subject: [PATCH 07/23] Add ARM AArch64 TLS Management Prototypes for BSD-User
-Date: Tue, 18 Jun 2024 00:27:48 +0530
-Message-Id: <20240617185804.25075-8-itachis@FreeBSD.org>
+Subject: [PATCH 08/23] Add Aarch64 sysarch() system call emulation for BSD-USER
+Date: Tue, 18 Jun 2024 00:27:49 +0530
+Message-Id: <20240617185804.25075-9-itachis@FreeBSD.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240617185804.25075-1-itachis@FreeBSD.org>
 References: <20240617185804.25075-1-itachis@FreeBSD.org>
@@ -96,25 +96,25 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Stacey Son <sson@FreeBSD.org>
 
-Prototypes for setting and getting TLS( thread local storage)
+Initial implementation of sysarch() syscall and a printing function
 
 Signed-off-by: Stacey Son <sson@FreeBSD.org>
 Signed-off-by: Ajeet Singh <itachis@FreeBSD.org>
 ---
- bsd-user/aarch64/target_arch.h | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
- create mode 100644 bsd-user/aarch64/target_arch.h
+ bsd-user/aarch64/target_arch_sysarch.h | 42 ++++++++++++++++++++++++++
+ 1 file changed, 42 insertions(+)
+ create mode 100644 bsd-user/aarch64/target_arch_sysarch.h
 
-diff --git a/bsd-user/aarch64/target_arch.h b/bsd-user/aarch64/target_arch.h
+diff --git a/bsd-user/aarch64/target_arch_sysarch.h b/bsd-user/aarch64/target_arch_sysarch.h
 new file mode 100644
-index 0000000000..27f47de8eb
+index 0000000000..b003015daf
 --- /dev/null
-+++ b/bsd-user/aarch64/target_arch.h
-@@ -0,0 +1,28 @@
++++ b/bsd-user/aarch64/target_arch_sysarch.h
+@@ -0,0 +1,42 @@
 +/*
-+ * ARM AArch64 specific prototypes for bsd-user
++ * ARM AArch64 sysarch() system call emulation for bsd-user.
 + *
-+ * Copyright (c) 2015 Stacey D. Son <sson at FreeBSD>
++ * Copyright (c) 2015 <sson at FreeBSD>
 + *
 + * This library is free software; you can redistribute it and/or
 + * modify it under the terms of the GNU Lesser General Public
@@ -130,15 +130,29 @@ index 0000000000..27f47de8eb
 + * License along with this library; if not, see <http://www.gnu.org/licenses/>.
 + */
 +
-+#ifndef TARGET_ARCH_H
-+#define TARGET_ARCH_H
++#ifndef TARGET_ARCH_SYSARCH_H
++#define TARGET_ARCH_SYSARCH_H
 +
-+#include "qemu.h"
++#include "target_syscall.h"
++#include "target_arch.h"
 +
-+void target_cpu_set_tls(CPUARMState *env, target_ulong newtls);
-+target_ulong target_cpu_get_tls(CPUARMState *env);
++/* See sysarch() in sys/arm64/arm64/sys_machdep.c */
++static inline abi_long do_freebsd_arch_sysarch(CPUARMState *env, int op,
++        abi_ulong parms)
++{
++    int ret = -TARGET_EOPNOTSUPP;
 +
-+#endif /* TARGET_ARCH_H */
++    fprintf(stderr, "sysarch");
++    return ret;
++}
++
++static inline void do_freebsd_arch_print_sysarch(
++        const struct syscallname *name, abi_long arg1, abi_long arg2,
++        abi_long arg3, abi_long arg4, abi_long arg5, abi_long arg6)
++{
++}
++
++#endif /* TARGET_ARCH_SYSARCH_H */
 -- 
 2.34.1
 
