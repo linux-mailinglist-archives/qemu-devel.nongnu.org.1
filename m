@@ -2,77 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35D5690A6B1
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jun 2024 09:14:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 233E590A6A8
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jun 2024 09:14:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sJ6Y3-00080k-3Z; Mon, 17 Jun 2024 03:13:03 -0400
+	id 1sJ6YT-0000Vb-HY; Mon, 17 Jun 2024 03:13:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sJ6Y0-0007rg-Mz
- for qemu-devel@nongnu.org; Mon, 17 Jun 2024 03:13:00 -0400
-Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sJ6Y6-0000D9-HO
+ for qemu-devel@nongnu.org; Mon, 17 Jun 2024 03:13:07 -0400
+Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sJ6Xy-0002Qn-Qd
- for qemu-devel@nongnu.org; Mon, 17 Jun 2024 03:13:00 -0400
-Received: by mail-ej1-x636.google.com with SMTP id
- a640c23a62f3a-a6f85f82ffeso85996466b.0
- for <qemu-devel@nongnu.org>; Mon, 17 Jun 2024 00:12:58 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sJ6Y4-0002R6-0w
+ for qemu-devel@nongnu.org; Mon, 17 Jun 2024 03:13:06 -0400
+Received: by mail-ej1-x62e.google.com with SMTP id
+ a640c23a62f3a-a63359aaaa6so605308466b.2
+ for <qemu-devel@nongnu.org>; Mon, 17 Jun 2024 00:13:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1718608376; x=1719213176; darn=nongnu.org;
+ d=linaro.org; s=google; t=1718608382; x=1719213182; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=eGcfGHDvtroaYyz+NeEr2C8tnUxSYTqOW0jpLqEw7ts=;
- b=X+R2aPmidusnCur9j8KPwn22af2bW3wDLnFXUN3TR2cAxUGuJ7l5k4WoHZ5bu28R7v
- vshSB7UE714nmx5vGqSftmqfGxqMIYA4MLXKSFNgp3u/Ce1zANcmg/VC7k1uiS8tEiFL
- T1+oTI9A4kAQyYYZNFJEwtSEDXDOfv+j2TySslycJFpYWNyyurClswqDBlQIQfTdUTs+
- 62GLYdLwchDjMt1XDQQOIHg6p/Qj10y782UXbVJ+oQoeCi08F+PrcSAeyXamURCnm0qx
- ViqxOiTXR1dNTAOXHV8dmU5hiL4sNmdHnc26NjqN13Ge0FfVRNQrxx6PfpHAqLHSU4Sm
- w/HQ==
+ bh=CICPp7ONNms071FlcjYp5y+HRs28YYfuYPm/XCkTbls=;
+ b=OQGehU/HlwVela+C/fj5zzegrQ8Xfsmr/F3QIICMcSCf6nvMS+WJ7FWkcA81Iu/kTf
+ drVsJI81yXZD0f/YktEwJgswpafLhs50n97PJikMwYQ4+y07Iy4Btx64CRsJhJne8gwK
+ aO5DspOplx5YyaBNNwIHak2OWSvpB6aHqGn4i2dZYKXVYt6zcCKqGoyL8F6uEy8fZOQL
+ R11IyKKzhY4DcFdpzhKxkqexwN+613BFf2Sy7svl431JelNwjzxVRKiYqZPN1gjmPiTB
+ NM+pwKGKSPdl3yIZ6nxUkj3mq9nQikY6LyPCENN0L43rV2g/qMt+V0VNoYrx5qknkGDc
+ Gb4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718608376; x=1719213176;
+ d=1e100.net; s=20230601; t=1718608382; x=1719213182;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=eGcfGHDvtroaYyz+NeEr2C8tnUxSYTqOW0jpLqEw7ts=;
- b=r2CR3mxZQjF2y5ziwFsCtQvieYTqzSziSrfZIkWarpa+yZhACZ/O79aDFW5tcgMkFS
- QVCYZX3abbQJPG/CralPBMCfyZ2H0Uh04MMvv6ZBI4pTTXpGKMOqUfBQNxLZoXklYD5y
- kwo+Egd/ibeAa6/Uoga+1GaPMQ9+Qe4Ssa+6MuHF/PkDmHxjHWm1J9tV3uCsdqJ3YP3v
- BuFXTCsszS1VzlVU1VApukAXJ3sUYmRQqES1MbggjaWu7fzL2k3YiFc612s3yuyowziY
- Xl7ceg8ooI1xQH4syrb5rJqW/KSvASi3uYBqjK9nTDYsC7fPIQvmE96n3RWJzHt44Inn
- +vLQ==
-X-Gm-Message-State: AOJu0Yz9y9oSnJrv2q97LD78ELILwtBDmWNm3ihGLjfxMPF+ZGSi7o3W
- yB0J67byrA8nwWFaEPCQ1ZVg6IxrChqWeNOjTtc7ojAhBG2OuTG0wiscOipDZZjoeF3RwKCTUC8
- shP0=
-X-Google-Smtp-Source: AGHT+IHcDXYu46bFL6JGRCnTxIpQxbkMYaHSwt82MauMVVYk8aHDGbwFMzAIMINEuDLcmVaTr3flMA==
-X-Received: by 2002:a17:906:bf45:b0:a6f:7826:41ea with SMTP id
- a640c23a62f3a-a6f78264e1amr399158066b.39.1718608376562; 
- Mon, 17 Jun 2024 00:12:56 -0700 (PDT)
+ bh=CICPp7ONNms071FlcjYp5y+HRs28YYfuYPm/XCkTbls=;
+ b=I51IBNr23SJ6188XX5CT+VkDeSb3EUHlE86m+HafxcFHOpbogt5rxahs+LiD0TXFs/
+ t7r3s/wQN96uSnd5wzrUcgIZxPJC9V2OqSuJ7n3uyVeNRnTeASfNpqjgB4ncW92xwv8a
+ XjyXy9GEqNIValc34mzRlBsaGnPZY6iwzgAxFK0KrLzNvdMkKZnG3jQIQoqPfKFLFD9s
+ DS9fQ74QB/pOGhnrJMRYAYZnnpK/B8SMom0rcxTXmY+nen9wYAXDgiSv7SM66JhjbqZH
+ CjwCyV96lRt9WF/uVt3r4gahbfj6eosZDky2yYVtEixJ0Zo+Xo2BLXzCjcWWPcG3Q1Hd
+ 0F+g==
+X-Gm-Message-State: AOJu0YzDamRN9bOX0iWHb7x9kP9y4aONgR+fzZcsmQKWjzG6XseFzIqs
+ BqaLGRTBe3M7IR+ZsL6PhTaR467sxUuXJbcF/uRGms8ASkfHsc2Q+BH7yBQPuCvII58mA+3QFS8
+ UF2Y=
+X-Google-Smtp-Source: AGHT+IFlmEPlLpKa1wGxWh0Un3RD8E9rgDcrDtOKg+RS8ealq9zOGvBvSV43sik3y3kiSqu1x67vGw==
+X-Received: by 2002:a17:906:607:b0:a6f:39e3:3265 with SMTP id
+ a640c23a62f3a-a6f60dc56ccmr556900166b.62.1718608382144; 
+ Mon, 17 Jun 2024 00:13:02 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.169.90])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a6f56da32c3sm493440566b.13.2024.06.17.00.12.55
+ a640c23a62f3a-a6f881fbdfcsm88545666b.121.2024.06.17.00.13.00
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 17 Jun 2024 00:12:56 -0700 (PDT)
+ Mon, 17 Jun 2024 00:13:01 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
  "Michael S. Tsirkin" <mst@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v6 17/23] hw/i386/pc: Remove
- PCMachineClass::resizable_acpi_blob
-Date: Mon, 17 Jun 2024 09:11:12 +0200
-Message-ID: <20240617071118.60464-18-philmd@linaro.org>
+ Thomas Huth <thuth@redhat.com>, Zhao Liu <zhao1.liu@intel.com>
+Subject: [PATCH v6 18/23] hw/i386/pc: Remove PCMachineClass::rsdp_in_ram
+Date: Mon, 17 Jun 2024 09:11:13 +0200
+Message-ID: <20240617071118.60464-19-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240617071118.60464-1-philmd@linaro.org>
 References: <20240617071118.60464-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::636;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x636.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,66 +94,111 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-PCMachineClass::resizable_acpi_blob was only used by the
-pc-i440fx-2.2 machine, which got removed. It is now always
-true. Remove it, simplifying acpi_build().
+PCMachineClass::rsdp_in_ram was only used by the
+pc-i440fx-2.2 machine, which got removed. It is
+now always true. Remove it, simplifying acpi_setup().
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Reviewed-by: Igor Mammedov <imammedo@redhat.com>
 ---
- include/hw/i386/pc.h |  3 ---
- hw/i386/acpi-build.c | 10 ----------
+ include/hw/i386/pc.h |  1 -
+ hw/i386/acpi-build.c | 35 ++++-------------------------------
  hw/i386/pc.c         |  1 -
- 3 files changed, 14 deletions(-)
+ 3 files changed, 4 insertions(+), 33 deletions(-)
 
 diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
-index 155a02b1b5..d01ddc4618 100644
+index d01ddc4618..0b7a18a882 100644
 --- a/include/hw/i386/pc.h
 +++ b/include/hw/i386/pc.h
-@@ -125,9 +125,6 @@ struct PCMachineClass {
-     /* create kvmclock device even when KVM PV features are not exposed */
-     bool kvmclock_create_always;
+@@ -100,7 +100,6 @@ struct PCMachineClass {
  
--    /* resizable acpi blob compat */
--    bool resizable_acpi_blob;
--
-     /*
-      * whether the machine type implements broken 32-bit address space bound
-      * check for memory.
+     /* ACPI compat: */
+     bool has_acpi_build;
+-    bool rsdp_in_ram;
+     unsigned acpi_data_size;
+     int pci_root_uid;
+ 
 diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
-index f5d74e2b4b..eafc3761c8 100644
+index eafc3761c8..158e74f64a 100644
 --- a/hw/i386/acpi-build.c
 +++ b/hw/i386/acpi-build.c
-@@ -2687,16 +2687,6 @@ void acpi_build(AcpiBuildTables *tables, MachineState *machine)
-      * keep the table size stable for all (max_cpus, max_memory_slots)
-      * combinations.
-      */
--    /* Make sure we have a buffer in case we need to resize the tables. */
--    if ((tables_blob->len > ACPI_BUILD_TABLE_SIZE / 2) &&
--        !pcmc->resizable_acpi_blob) {
--        /* As of QEMU 2.1, this fires with 160 VCPUs and 255 memory slots.  */
--        warn_report("ACPI table size %u exceeds %d bytes,"
--                    " migration may not work",
--                    tables_blob->len, ACPI_BUILD_TABLE_SIZE / 2);
--        error_printf("Try removing CPUs, NUMA nodes, memory slots"
--                     " or PCI bridges.\n");
--    }
-     acpi_align_size(tables_blob, ACPI_BUILD_TABLE_SIZE);
+@@ -2494,7 +2494,6 @@ static
+ void acpi_build(AcpiBuildTables *tables, MachineState *machine)
+ {
+     PCMachineState *pcms = PC_MACHINE(machine);
+-    PCMachineClass *pcmc = PC_MACHINE_GET_CLASS(pcms);
+     X86MachineState *x86ms = X86_MACHINE(machine);
+     DeviceState *iommu = pcms->iommu;
+     GArray *table_offsets;
+@@ -2666,16 +2665,6 @@ void acpi_build(AcpiBuildTables *tables, MachineState *machine)
+             .rsdt_tbl_offset = &rsdt,
+         };
+         build_rsdp(tables->rsdp, tables->linker, &rsdp_data);
+-        if (!pcmc->rsdp_in_ram) {
+-            /* We used to allocate some extra space for RSDP revision 2 but
+-             * only used the RSDP revision 0 space. The extra bytes were
+-             * zeroed out and not used.
+-             * Here we continue wasting those extra 16 bytes to make sure we
+-             * don't break migration for machine types 2.2 and older due to
+-             * RSDP blob size mismatch.
+-             */
+-            build_append_int_noprefix(tables->rsdp, 0, 16);
+-        }
+     }
  
-     acpi_align_size(tables->linker->cmd_blob, ACPI_BUILD_ALIGN_SIZE);
+     /* We'll expose it all to Guest so we want to reduce
+@@ -2754,7 +2743,6 @@ static const VMStateDescription vmstate_acpi_build = {
+ void acpi_setup(void)
+ {
+     PCMachineState *pcms = PC_MACHINE(qdev_get_machine());
+-    PCMachineClass *pcmc = PC_MACHINE_GET_CLASS(pcms);
+     X86MachineState *x86ms = X86_MACHINE(pcms);
+     AcpiBuildTables tables;
+     AcpiBuildState *build_state;
+@@ -2816,25 +2804,10 @@ void acpi_setup(void)
+                            tables.vmgenid);
+     }
+ 
+-    if (!pcmc->rsdp_in_ram) {
+-        /*
+-         * Keep for compatibility with old machine types.
+-         * Though RSDP is small, its contents isn't immutable, so
+-         * we'll update it along with the rest of tables on guest access.
+-         */
+-        uint32_t rsdp_size = acpi_data_len(tables.rsdp);
+-
+-        build_state->rsdp = g_memdup(tables.rsdp->data, rsdp_size);
+-        fw_cfg_add_file_callback(x86ms->fw_cfg, ACPI_BUILD_RSDP_FILE,
+-                                 acpi_build_update, NULL, build_state,
+-                                 build_state->rsdp, rsdp_size, true);
+-        build_state->rsdp_mr = NULL;
+-    } else {
+-        build_state->rsdp = NULL;
+-        build_state->rsdp_mr = acpi_add_rom_blob(acpi_build_update,
+-                                                 build_state, tables.rsdp,
+-                                                 ACPI_BUILD_RSDP_FILE);
+-    }
++    build_state->rsdp = NULL;
++    build_state->rsdp_mr = acpi_add_rom_blob(acpi_build_update,
++                                             build_state, tables.rsdp,
++                                             ACPI_BUILD_RSDP_FILE);
+ 
+     qemu_register_reset(acpi_build_reset, build_state);
+     acpi_build_reset(build_state);
 diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index 21a9b7a5ae..a6d50df500 100644
+index a6d50df500..b0fc8686d8 100644
 --- a/hw/i386/pc.c
 +++ b/hw/i386/pc.c
-@@ -1774,7 +1774,6 @@ static void pc_machine_class_init(ObjectClass *oc, void *data)
-     pcmc->acpi_data_size = 0x20000 + 0x8000;
-     pcmc->pvh_enabled = true;
-     pcmc->kvmclock_create_always = true;
--    pcmc->resizable_acpi_blob = true;
-     x86mc->apic_xrupt_override = true;
-     assert(!mc->get_hotplug_handler);
-     mc->get_hotplug_handler = pc_get_hotplug_handler;
+@@ -1763,7 +1763,6 @@ static void pc_machine_class_init(ObjectClass *oc, void *data)
+ 
+     pcmc->pci_enabled = true;
+     pcmc->has_acpi_build = true;
+-    pcmc->rsdp_in_ram = true;
+     pcmc->smbios_defaults = true;
+     pcmc->gigabyte_align = true;
+     pcmc->has_reserved_memory = true;
 -- 
 2.41.0
 
