@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CCAC90BA82
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jun 2024 21:03:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCF2790BA83
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jun 2024 21:03:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sJHZP-0007MA-S0; Mon, 17 Jun 2024 14:59:11 -0400
+	id 1sJHZR-0007c4-Jv; Mon, 17 Jun 2024 14:59:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <itachis6234@gmail.com>)
- id 1sJHZN-00076O-Io
- for qemu-devel@nongnu.org; Mon, 17 Jun 2024 14:59:09 -0400
-Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
+ id 1sJHZP-0007Oc-Kt
+ for qemu-devel@nongnu.org; Mon, 17 Jun 2024 14:59:11 -0400
+Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <itachis6234@gmail.com>)
- id 1sJHZL-00053B-Vn
- for qemu-devel@nongnu.org; Mon, 17 Jun 2024 14:59:09 -0400
-Received: by mail-pf1-x433.google.com with SMTP id
- d2e1a72fcca58-6f6a045d476so3601428b3a.1
- for <qemu-devel@nongnu.org>; Mon, 17 Jun 2024 11:59:07 -0700 (PDT)
+ id 1sJHZO-00053U-55
+ for qemu-devel@nongnu.org; Mon, 17 Jun 2024 14:59:11 -0400
+Received: by mail-pf1-x429.google.com with SMTP id
+ d2e1a72fcca58-705cffc5bcfso4140877b3a.3
+ for <qemu-devel@nongnu.org>; Mon, 17 Jun 2024 11:59:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1718650746; x=1719255546; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1718650748; x=1719255548; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=e0dzrd+ciGxDD70aSvLklNlGUxbQ7sp9bKeESCi0z6s=;
- b=ZgLXrQHe+kBKAnv0yVYDf8+3M4VcxEakv+QB0BXfBXK9n0E0+eaz4LFP03lFqx69q2
- BdGBRlQQkUzeKE1YIsHQAtbGANgoiMH2/uoOSwY/lzjTj9y9H9DP6OOQFgoQmc275CzZ
- ohI2CDnHDrYEMrKNLLAUmBTaeP4Fky45a5m9ro9+6r5kY6SbJrYg/Imai2X1LPmnZXmD
- Nn+WLz/tqMzDxj/LdUE8ACyZuQNeSLgj5BjDmz009JKB9ZmbTpfvKVjPI4Ui2PG6deH/
- LAVxKGPXg0KdrPPmV/U2OG0KL7ueszxYimffZBI5ugpl8popAMtrd11ZEPK7s/kLUsKg
- ol5A==
+ bh=ZCkbHRdTwhc461NzNM6M57ey0Qv/rYSZmL7pQTY6Emk=;
+ b=CRSuF4lX3V+2w0F6WQiY7PInPi0BvdzWLSS9u5t3lRFYCGkheWw6BVnEFUsmxz6MHZ
+ 4W4XdcHsWtRWqD+ZVJxCvJu4qb3wmHaj/vHK9NQGPBAXIxUuMV3u+GHC2ObrLC3LqoOz
+ YA8cTnjf/UU++fAksTWuL1TvPE3Sc9pUJF8d8lfeDgMiaPxTkScrx5ru+vtRmUl7wB8S
+ 8sAmyUbqtxMKZNA7trBQ18A8bHpVwyRhKhQ+AyUmfXpFw/9mRfJfWMu1xc5UbG7T0Ile
+ 8v5ew8iDtidjAfJf0HNIbNxrCtIOH/kYscNSDcsrBiJYz78q5ruco69+F1Z+Pth+S27r
+ B+Pg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718650746; x=1719255546;
+ d=1e100.net; s=20230601; t=1718650748; x=1719255548;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=e0dzrd+ciGxDD70aSvLklNlGUxbQ7sp9bKeESCi0z6s=;
- b=eA6l3suF6gv4Na3CNjbaUzBHi5yMIRWBJsA+PiHW+X2QKQdwZibRxd4LRzULqU0D+/
- 9TrILj3ShckbQ4qzgrfgIWGnPsEZ0cHnegt7MRYmPIN13pIJs2KGC3d2xrXED9VEtCa6
- 8t1NuLGN0HepOsP23hv+AABDmdGpaKbWgNdISsHubPEI4EhTGGFxryYmHkVM3l0NG90x
- J3AbifoLH50Os4pIJNtgyA9JwRJZ2uAd70YjybY9dqhStlmgIyfQrgcbLKtrpwUPzM0E
- odvZzjyAuaDDxvZyzcmU81rig2nF3Sm1fLu9K0MptFWeD+KxvxYtQCr8KFZE9AT4n7DV
- vc0g==
-X-Gm-Message-State: AOJu0YxBqpO5ZNMreRoqxNRoUanvMqJ3oMVUBpHFcydKn3+828nOaAHs
- Df6Xxf1iR6UJ+wsJJQzhl21QIbHcjvgbd8uljesJdH8V6YeNVUirs+VrpifmGyc=
-X-Google-Smtp-Source: AGHT+IHbZvh05bXQRENKWWwIc+1eTP/T+hYJlk6yj29WGdDosCvzL6U+y0BZ64OOeQz0Eh9BLag8oQ==
-X-Received: by 2002:a05:6a20:4327:b0:1b7:406c:1081 with SMTP id
- adf61e73a8af0-1bae7e293e1mr10756463637.7.1718650746452; 
- Mon, 17 Jun 2024 11:59:06 -0700 (PDT)
+ bh=ZCkbHRdTwhc461NzNM6M57ey0Qv/rYSZmL7pQTY6Emk=;
+ b=Vqa/LmH9JFj4ytMivSPYhyf223QOdVJsxx1gSnFvsMWSPE/zjPvU8kDbv0zuZJc/VU
+ 3hcqiDc6nwqi1It3JmCb1O3gYYPLbi/zCWo/qVJGn159OpU1Lc5dhukA4mKuucTZ+O/c
+ ZuF0BIYCCPCSAj/p0PxhFaB9lJt+0bSst88Zj5opUx1xyi4ZfORNFIeeijzGSu4cbaRc
+ 0B5BLzMKIi7xZh5lLUJqTqzv7H0JoyMtOPMs3Yx+tVmeHhQYZEcCw5NMotMEdkXrgb/q
+ 0cgRR21NUhzyghItlUxNXokZUexV92KRo7wbmVEQ9jrwxvSMTUV8YtKgjXrn56OK5V86
+ +vGQ==
+X-Gm-Message-State: AOJu0YwAJ+Us+ZnaqbtUnA/BQI2Jdwjncvl4bcMy77Ae/aCVW38pjGqt
+ rVvweU+KO21UUpiU6i7djQJeQOO9XJRPcvnSthdGZkZUsM5W2TxxoNbZJmVrk7E=
+X-Google-Smtp-Source: AGHT+IFKZJvGXHGMopQTrmrydALK/e3vBu0P0zekshvTkWMZHZtxIxb6W2RUDjeoLBQa7uoU5gN1DQ==
+X-Received: by 2002:a05:6a20:1595:b0:1af:f514:6d96 with SMTP id
+ adf61e73a8af0-1bae7ddafe4mr14498289637.16.1718650748527; 
+ Mon, 17 Jun 2024 11:59:08 -0700 (PDT)
 Received: from localhost.localdomain ([106.222.222.115])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-705ccb4aa4fsm7660637b3a.131.2024.06.17.11.59.04
+ d2e1a72fcca58-705ccb4aa4fsm7660637b3a.131.2024.06.17.11.59.06
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 17 Jun 2024 11:59:06 -0700 (PDT)
+ Mon, 17 Jun 2024 11:59:08 -0700 (PDT)
 From: Ajeet Singh <itachis6234@gmail.com>
 X-Google-Original-From: Ajeet Singh <itachis@FreeBSD.org>
 To: qemu-devel@nongnu.org
 Cc: Warner Losh <imp@bsdimp.com>, Ajeet Singh <itachis@freebsd.org>,
  Stacey Son <sson@FreeBSD.org>, Ajeet Singh <itachis@FreeBSD.org>
-Subject: [PATCH 22/23] Add set_mcontext function for ARM AArch64 in bsd-user
-Date: Tue, 18 Jun 2024 00:28:03 +0530
-Message-Id: <20240617185804.25075-23-itachis@FreeBSD.org>
+Subject: [PATCH 23/23] Add get_ucontext_sigreturn function
+Date: Tue, 18 Jun 2024 00:28:04 +0530
+Message-Id: <20240617185804.25075-24-itachis@FreeBSD.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240617185804.25075-1-itachis@FreeBSD.org>
 References: <20240617185804.25075-1-itachis@FreeBSD.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
- envelope-from=itachis6234@gmail.com; helo=mail-pf1-x433.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
+ envelope-from=itachis6234@gmail.com; helo=mail-pf1-x429.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -96,44 +96,41 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Stacey Son <sson@FreeBSD.org>
 
-The function copies register values from the provided target_mcontext_t
-structure to the CPUARMState registers
+Function checks the processor state to ensure that the current
+execution mode is EL0 and no flags indicating interrupts or
+exceptions are set
 
 Signed-off-by: Stacey Son <sson@FreeBSD.org>
 Signed-off-by: Ajeet Singh <itachis@FreeBSD.org>
 ---
- bsd-user/aarch64/signal.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ bsd-user/aarch64/signal.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
 diff --git a/bsd-user/aarch64/signal.c b/bsd-user/aarch64/signal.c
-index 43c886e603..13faac8ce6 100644
+index 13faac8ce6..ad81531ec5 100644
 --- a/bsd-user/aarch64/signal.c
 +++ b/bsd-user/aarch64/signal.c
-@@ -95,3 +95,25 @@ abi_long setup_sigframe_arch(CPUARMState *env, abi_ulong frame_addr,
-     return 0;
- }
+@@ -117,3 +117,21 @@ abi_long set_mcontext(CPUARMState *regs, target_mcontext_t *mcp, int srflag)
  
-+/*
-+ * Compare to set_mcontext() in arm64/arm64/machdep.c
-+ * Assumes that the memory is locked if frame points to user memory.
-+ */
-+abi_long set_mcontext(CPUARMState *regs, target_mcontext_t *mcp, int srflag)
-+{
-+    int err = 0, i;
-+    const uint64_t *gr = mcp->mc_gpregs.gp_x;
+     return err;
+ }
 +
-+    for (i = 0; i < 30; i++) {
-+        regs->xregs[i] = tswap64(gr[i]);
++/* Compare to sys_sigreturn() in  arm64/arm64/machdep.c */
++abi_long get_ucontext_sigreturn(CPUARMState *regs, abi_ulong target_sf,
++                                abi_ulong *target_uc)
++{
++    uint32_t pstate = pstate_read(regs);
++
++    *target_uc = 0;
++
++    if ((pstate & PSTATE_M) != PSTATE_MODE_EL0t  ||
++        (pstate & (PSTATE_F | PSTATE_I | PSTATE_A | PSTATE_D)) != 0) {
++        return -TARGET_EINVAL;
 +    }
 +
-+    regs->xregs[TARGET_REG_SP] = tswap64(mcp->mc_gpregs.gp_sp);
-+    regs->xregs[TARGET_REG_LR] = tswap64(mcp->mc_gpregs.gp_lr);
-+    regs->pc = mcp->mc_gpregs.gp_elr;
-+    pstate_write(regs, mcp->mc_gpregs.gp_spsr);
++    *target_uc = target_sf;
 +
-+    /* XXX FP? */
-+
-+    return err;
++    return 0;
 +}
 -- 
 2.34.1
