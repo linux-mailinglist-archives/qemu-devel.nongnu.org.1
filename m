@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A00FB90BA5C
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jun 2024 20:59:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 502B590BA86
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jun 2024 21:03:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sJHZJ-0006ex-BY; Mon, 17 Jun 2024 14:59:05 -0400
+	id 1sJHZE-0005nQ-TI; Mon, 17 Jun 2024 14:59:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <itachis6234@gmail.com>)
- id 1sJHZ3-00053M-Lw
+ id 1sJHZ3-00053N-Lw
  for qemu-devel@nongnu.org; Mon, 17 Jun 2024 14:58:49 -0400
-Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <itachis6234@gmail.com>)
- id 1sJHZ0-00050s-KZ
- for qemu-devel@nongnu.org; Mon, 17 Jun 2024 14:58:48 -0400
-Received: by mail-pf1-x42b.google.com with SMTP id
- d2e1a72fcca58-70599522368so3239788b3a.2
- for <qemu-devel@nongnu.org>; Mon, 17 Jun 2024 11:58:46 -0700 (PDT)
+ id 1sJHZ1-000511-Vd
+ for qemu-devel@nongnu.org; Mon, 17 Jun 2024 14:58:49 -0400
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-705c0115192so4002569b3a.1
+ for <qemu-devel@nongnu.org>; Mon, 17 Jun 2024 11:58:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1718650725; x=1719255525; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1718650726; x=1719255526; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=BAd8HJ17iktB7tRhvtL5nkQqb3WYzbcst6424yQv9pA=;
- b=m3KXzpR1ApjwfOGUeJ+Q7Ua702rZZqJNhE0YhYYdfEvRI4jjNR58EkHb4gHBJysuuB
- qFp8jVyrx9V/q93YaPwVJGql3t6nPyRCiil79nak/YbnkHIsfSpZPnbYmZMYe/+WcsSq
- 3BlNitaenkTLzmSESTDTTm7XiZeu69c9ro9WAXphjaQ2rLpaP2vd+Z/uWjIbl+iGnqjQ
- JKGYyKUHe53mRM6V5D9bddh9WAGOeVrzW11vXFBqCHLF/ETYyMOcWLGl9KUU0W+EbUfA
- D1GM+9GmgiPUnBrD+C2WwMZQ+wGJTF2VO2wczMrHCZqxjdP8OfFDXS6XdE7m5x9V8OK8
- IXKg==
+ bh=mSb4ge/oi7N04tkudfzAy1LJjUNLVfIVt+fkT6uQ/zo=;
+ b=Vd8txHPTe5/dEI8YHWunZU1tTMsFciwVKGp8jLPnDyT8LacA6FZ1Z+nlqOFbaiV5IB
+ 7lhUYk4VQ7NoPNnMcrg+BvHFw2Ar9FKMrhi6P0v/G5Z9/1g5M6dN7MSXVFxHQJwCiCGW
+ h6yqD+JaL6S6hRqQlt+dERf2UgJWh6DMC3MNa+0FzUoFX5lQuCn2LR+KoEyeje/HcuzC
+ GBlZSGd/jraTylrhZiWYvKLXSNfAyVtUjPsSwuNOKCoOh7PE5ncRFXSWqjX2ZYK1yFJK
+ li9731JpqFoycaVLAkSmBFr+aGt0E7Q0gZPCE88cfTygJwKbM86VN+7fMrSGjIGFYvJ1
+ JCoQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718650725; x=1719255525;
+ d=1e100.net; s=20230601; t=1718650726; x=1719255526;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=BAd8HJ17iktB7tRhvtL5nkQqb3WYzbcst6424yQv9pA=;
- b=MoHdx375U1dVcl63VtHY6zwGood7LVcEncKIFmfKEwMqOW8IQG/K3ppsj/2SrJNSN5
- q9iWM6ihsNT5sECBV4hziMKLtiOOG/ydTj5V77fbG32SeaDoSZLNlolkA5LaIyJ/6Zfa
- yyes1n4ccnutffDjINaMRkm/g4YVmo+pkirVJr4N7EjUV5rTxRd0Qgfe85eyb9eHmjRc
- AVI6D8un1VBYqQwFTnH8uymZzf9oaV9xpn3LZ0WucDinZIbiIAn+fBA76K406VuTTGUA
- RWTRBQG/5yz3tyRR4LapaXaYd88e0sMOig1TBrojxS39qNXqPWbRcH/sUEMhLCw3ohtw
- uQWA==
-X-Gm-Message-State: AOJu0YzOsQFxB/cgqW6LofRD1ay/dwSWnj4gYFVJnOvacyQPpqwL8iOZ
- zi53QLL2JD/GC1a3rrzSaH5q897RqZv8xuFsxOlmPRvW1yfRlD76961Yk7n6uEo=
-X-Google-Smtp-Source: AGHT+IHWUFWvbNiCzT9J2QIDgji/4PIdsFY1BYIQgFWTTXCdfdhCCOiJcYTTvFt2CW6aGJZdg9jx5w==
-X-Received: by 2002:a05:6a21:78a8:b0:1b8:14aa:b594 with SMTP id
- adf61e73a8af0-1bae7ba33c9mr10481320637.0.1718650724595; 
- Mon, 17 Jun 2024 11:58:44 -0700 (PDT)
+ bh=mSb4ge/oi7N04tkudfzAy1LJjUNLVfIVt+fkT6uQ/zo=;
+ b=bPe65eCwfjsBTSBITPOoWDLiRl+2QRUtWRlpcB/G2ntTiRfiuAnSre2QwVF+5f5888
+ l+tJOzUb3JmuoaBXh4uZCQOSIEm3AY1jfdNBB1TuotHMem1l1mbqoNGbLgcqJ1kYbPic
+ ukLRPnyCVFelJtNEI4a7Lb1x+nm8izZVmVuBOMQwV4m3157JxuVJjDRgnsEyY/Qya+fa
+ 6nMELSrY5l5xiWuwfbSC/3k6g+YKNmqQX1HZaIH0ccnw6K9sF7t79u26NRB1ZhqsmjYl
+ Jx+DeXH200hrSJ3OvLNc+bRhNyQyhHLsymEhR332RzGphyPOkFuT6VcHHQR2SB489CL/
+ EHYQ==
+X-Gm-Message-State: AOJu0Yxu//LHuGAmypGzYDnoffVNmyRnpryWRM3DLtv4HgCDph+Dc3hK
+ tt/wN3bGV3Nx68kxZ2o4A7ChpWzjlRo3LUeM7SBVtjHdmrVQF6ey1RGD2OTRbmI=
+X-Google-Smtp-Source: AGHT+IHiXp1QbDanXfoL1XJhppOzPqy3C5996vD1ONIrkyBLaTMCD8wrWZnQOIG7gy/pIkw4Hu+Ivg==
+X-Received: by 2002:a05:6a21:3a4b:b0:1b4:82eb:61b8 with SMTP id
+ adf61e73a8af0-1bae8002278mr14043670637.45.1718650726438; 
+ Mon, 17 Jun 2024 11:58:46 -0700 (PDT)
 Received: from localhost.localdomain ([106.222.222.115])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-705ccb4aa4fsm7660637b3a.131.2024.06.17.11.58.42
+ d2e1a72fcca58-705ccb4aa4fsm7660637b3a.131.2024.06.17.11.58.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 17 Jun 2024 11:58:44 -0700 (PDT)
+ Mon, 17 Jun 2024 11:58:46 -0700 (PDT)
 From: Ajeet Singh <itachis6234@gmail.com>
 X-Google-Original-From: Ajeet Singh <itachis@FreeBSD.org>
 To: qemu-devel@nongnu.org
 Cc: Warner Losh <imp@bsdimp.com>, Ajeet Singh <itachis@freebsd.org>,
- Stacey Son <sson@FreeBSD.org>, Ajeet Singh <itachis@FreeBSD.org>,
- Sean Bruno <sbruno@freebsd.org>
-Subject: [PATCH 11/23] Update ARM AArch64 VM parameter definitions for bsd-user
-Date: Tue, 18 Jun 2024 00:27:52 +0530
-Message-Id: <20240617185804.25075-12-itachis@FreeBSD.org>
+ Ajeet Singh <itachis@FreeBSD.org>
+Subject: [PATCH 12/23] Add ability to get rval2
+Date: Tue, 18 Jun 2024 00:27:53 +0530
+Message-Id: <20240617185804.25075-13-itachis@FreeBSD.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240617185804.25075-1-itachis@FreeBSD.org>
 References: <20240617185804.25075-1-itachis@FreeBSD.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
- envelope-from=itachis6234@gmail.com; helo=mail-pf1-x42b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
+ envelope-from=itachis6234@gmail.com; helo=mail-pf1-x435.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -95,95 +94,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Stacey Son <sson@FreeBSD.org>
+From: Warner Losh <imp@bsdimp.com>
 
-Defined address spaces for FreeBSD/arm64 and added function for
-getting stack pointer from CPU and setting a return value.
+Function accesses the x1 register which holds the value
 
-Signed-off-by: Stacey Son <sson@FreeBSD.org>
 Signed-off-by: Warner Losh <imp@bsdimp.com>
 Signed-off-by: Ajeet Singh <itachis@FreeBSD.org>
-Co-authored-by: Sean Bruno <sbruno@freebsd.org>
-Co-authored-by: Warner Losh <imp@bsdimp.com>
 ---
- bsd-user/aarch64/target_arch_vmparam.h | 68 ++++++++++++++++++++++++++
- 1 file changed, 68 insertions(+)
- create mode 100644 bsd-user/aarch64/target_arch_vmparam.h
+ bsd-user/aarch64/target_arch_vmparam.h | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
 diff --git a/bsd-user/aarch64/target_arch_vmparam.h b/bsd-user/aarch64/target_arch_vmparam.h
-new file mode 100644
-index 0000000000..dc66e1289b
---- /dev/null
+index dc66e1289b..0c35491970 100644
+--- a/bsd-user/aarch64/target_arch_vmparam.h
 +++ b/bsd-user/aarch64/target_arch_vmparam.h
-@@ -0,0 +1,68 @@
-+/*
-+ * ARM AArch64 VM parameters definitions for bsd-user.
-+ *
-+ * Copyright (c) 2015 Stacey D. Son <sson at FreeBSD>
-+ *
-+ * This library is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU Lesser General Public
-+ * License as published by the Free Software Foundation; either
-+ * version 2 of the License, or (at your option) any later version.
-+ *
-+ * This library is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-+ * Lesser General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU Lesser General Public
-+ * License along with this library; if not, see <http://www.gnu.org/licenses/>.
-+ */
+@@ -65,4 +65,10 @@ static inline void set_second_rval(CPUARMState *state, abi_ulong retval2)
+ {
+     state->xregs[1] = retval2; /* XXX not really used on 64-bit arch */
+ }
 +
-+#ifndef TARGET_ARCH_VMPARAM_H
-+#define TARGET_ARCH_VMPARAM_H
-+
-+#include "cpu.h"
-+
-+/**
-+ * FreeBSD/arm64 Address space layout.
-+ *
-+ * ARMv8 implements up to a 48 bit virtual address space. The address space is
-+ * split into 2 regions at each end of the 64 bit address space, with an
-+ * out of range "hole" in the middle.
-+ *
-+ * We limit the size of the two spaces to 39 bits each.
-+ *
-+ * Upper region:        0xffffffffffffffff
-+ *                      0xffffff8000000000
-+ *
-+ * Hole:                0xffffff7fffffffff
-+ *                      0x0000008000000000
-+ *
-+ * Lower region:        0x0000007fffffffff
-+ *                      0x0000000000000000
-+ *
-+ * The upper region for the kernel, and the lower region for userland.
-+ */
-+
-+
-+/* compare to sys/arm64/include/vmparam.h */
-+#define TARGET_MAXTSIZ      (1 * GiB)           /* max text size */
-+#define TARGET_DFLDSIZ      (128 * MiB)         /* initial data size limit */
-+#define TARGET_MAXDSIZ      (1 * GiB)           /* max data size */
-+#define TARGET_DFLSSIZ      (128 * MiB)         /* initial stack size limit */
-+#define TARGET_MAXSSIZ      (1 * GiB)           /* max stack size */
-+#define TARGET_SGROWSIZ     (128 * KiB)         /* amount to grow stack */
-+
-+                /* KERNBASE - 512 MB */
-+#define TARGET_VM_MAXUSER_ADDRESS   (0x00007fffff000000ULL - (512 * MiB))
-+#define TARGET_USRSTACK             TARGET_VM_MAXUSER_ADDRESS
-+
-+static inline abi_ulong get_sp_from_cpustate(CPUARMState *state)
++static inline abi_ulong get_second_rval(CPUARMState *state)
 +{
-+    return state->xregs[31]; /* sp */
++    return state->xregs[1];
 +}
 +
-+static inline void set_second_rval(CPUARMState *state, abi_ulong retval2)
-+{
-+    state->xregs[1] = retval2; /* XXX not really used on 64-bit arch */
-+}
-+#endif /* TARGET_ARCH_VMPARAM_H */
+ #endif /* TARGET_ARCH_VMPARAM_H */
 -- 
 2.34.1
 
