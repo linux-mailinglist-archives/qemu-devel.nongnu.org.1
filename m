@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B0B290A5C6
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jun 2024 08:30:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 722DA90A5DB
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jun 2024 08:30:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sJ5s2-0003pD-MR; Mon, 17 Jun 2024 02:29:38 -0400
+	id 1sJ5s5-0003wv-Rk; Mon, 17 Jun 2024 02:29:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1sJ5s0-0003p1-Nk
- for qemu-devel@nongnu.org; Mon, 17 Jun 2024 02:29:36 -0400
-Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
+ id 1sJ5s2-0003pC-3R
+ for qemu-devel@nongnu.org; Mon, 17 Jun 2024 02:29:38 -0400
+Received: from mail-pj1-x102d.google.com ([2607:f8b0:4864:20::102d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1sJ5ry-0003Tx-DT
- for qemu-devel@nongnu.org; Mon, 17 Jun 2024 02:29:36 -0400
-Received: by mail-pf1-x430.google.com with SMTP id
- d2e1a72fcca58-70109d34a16so3542680b3a.2
- for <qemu-devel@nongnu.org>; Sun, 16 Jun 2024 23:29:33 -0700 (PDT)
+ id 1sJ5rz-0003U7-UB
+ for qemu-devel@nongnu.org; Mon, 17 Jun 2024 02:29:37 -0400
+Received: by mail-pj1-x102d.google.com with SMTP id
+ 98e67ed59e1d1-2c2e31d319eso3276516a91.1
+ for <qemu-devel@nongnu.org>; Sun, 16 Jun 2024 23:29:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1718605771; x=1719210571; darn=nongnu.org;
+ d=linaro.org; s=google; t=1718605774; x=1719210574; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=MS31PBh9kytr9SgobPJ6M5BYzekU30VYtxk+7KFtYPA=;
- b=aTCJv789FHe0LFI7RUc8t23nk1fi1C56AbHgbWkCcI5rOJi/MSxITZCYrry8pNf0sW
- zyjNsCZEVfJxPIq9rG/zpgb2FeJlRa3NC6aPKtTwU0lyi78pomHQW8jOa5JZWH4hWQcw
- 4x3EZ+swpfRCybDMhNeF9adwAwpSLo2sB0OYDfbC5s3188MsGPIDftb17LYom9TRYU4T
- td7ooVdX7qzOvqIdyATgXdxTPn5fB9uP0kK7s9WxCEUP1yfBX/uZD9VoGf7hMrGsU43Z
- LfkK7sj9dZFgACmyc9ltI0ezY3OqWMh/f7wvERBfCoT7VD3x+gMCYGBBhnvVSOA1CcaN
- eSig==
+ bh=GKMLRqEaGMi/2Mej7Bv8/NGqGmoUYZ4V+5iy4rtT/G4=;
+ b=IrMRwCPoq5aIbLUuHg6WhPaaiB8vZr6mGEp/J0ZSicbGVC8RbfZ6Cx80MtTph1x/uu
+ 7gwIiJBbX5MCnqeE0tIHtLmM64B4yrtrmRuPX7EOFs4N0UL/U7z38E3ohGF4q5/1ugqn
+ YdrkmCGQPjycJCQwi+wkDIZO9ztb7dkE52Pp3hNRFHubjtjRwNbr++QwLyKHCbOfhE5n
+ pYFoCWGVMMPTk4Ta0LSfd60knDUBvcGGkiQXHutjRS81kND7uWTceRtbVLb7DQJg8MMp
+ Bwerj4Kqn58jd4hkQNbeTVk9D35MjW3JGk36IUe8ElXPQ1H8klmb42AYVt9S5fKC9uPZ
+ rLpg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718605771; x=1719210571;
+ d=1e100.net; s=20230601; t=1718605774; x=1719210574;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=MS31PBh9kytr9SgobPJ6M5BYzekU30VYtxk+7KFtYPA=;
- b=M5WD/JAQ+zFpdJ7m2SiiLEk0SypK1v7SaDReN+JBsI8W9NbV0OxguIVsQbnd//4J2r
- KlsFnu+CgCL6Vm3npCwEVbuZU9wJbyS9n++VBz2zWmkmXzSF1snnvLZjs//qC4rFaJGZ
- hofS+00qMN8Ug0FzccCtyI7Lx/Mnv9UREt29JqMZyEkuaLqQEXAuRgKnNt9g8j4NhF0B
- reXB/rhPNrOlQTR2whpRDOUZoX0XEnvOboaHAlDU9lqJYyTQfMDfvNPJijn5bshjMlv3
- IobSmeGJjV/f4PReax/11t3U9lrkQkXMnxE6TpFq8kytAAhRPrrMNAR+rIDNcD/L0Sqb
- FRUQ==
-X-Gm-Message-State: AOJu0YxEieKAakUBWnsRlQS/74mPvE/lmlYCfeN/Ma3oxQAiH768Gp6k
- ErHsGB8pjIUXhg9hrf1KPP6AReLz1ZKXpk3ynzcNaTYZPx0f7kijnEJiTO4/6brWoL+6lJp+i+n
- f
-X-Google-Smtp-Source: AGHT+IHZFU97JqpJaJu1AG57hUzXkPgM5TTmjCvARqv9uxV6DeHdKeOng6Zf+Jmh5CaxcdOrbQeQuw==
-X-Received: by 2002:a05:6a20:f3a8:b0:1b6:1a81:5dad with SMTP id
- adf61e73a8af0-1bae7e9c52bmr8449871637.14.1718605771395; 
- Sun, 16 Jun 2024 23:29:31 -0700 (PDT)
+ bh=GKMLRqEaGMi/2Mej7Bv8/NGqGmoUYZ4V+5iy4rtT/G4=;
+ b=SVSYc3TA/2FTINZagFYVC2QpXSnIFJRWSO2knvSVG40SRQM7Y7gCg8sW8jYx56cRUx
+ 3O/viIfcyyjvL1cYDEhcPeLwWwJqbJDqaI7vxIrUYg/vnKyCRJneSRUXboGVSqbbcIgM
+ I6QBTmvGwC2EjViSg5nEfvn8kjmIOuuvKcR1985JpGMLR2MFcwOAdjVjPycwtGdeTZz+
+ 4RqWmLmpAz7IGFp9sJCpqPOXUeuJXQVRx2Ar1buQdURL7oIJ2NDIN0ND/l0dXMlihjPW
+ FkDvd93KGnLIX/Sz2iXFYpUzpdsx6dqzNVIwjZhh7h/j2irYXI/isU60y9vyNz4+sR7o
+ MKmA==
+X-Gm-Message-State: AOJu0YyPO3wTCyQfP2gbSU1IrGMvbRDbSZj1bA67rZvBI7Zmdi0m62af
+ +kMYBAzDsS5ZmrYo341N9WX0D2bAiOLTiHXsuFm950AdcK7VeQBwiT+EL5namV6Yh0K+tR0m2I0
+ Z
+X-Google-Smtp-Source: AGHT+IGbONHuDmzEh2A3rv54punXW1vrfU/DbrVzXNzQwy1qCfeNys24YFnoL+FPvXyyBvXqWQDkQQ==
+X-Received: by 2002:a17:90a:6b07:b0:2c2:fd13:b4ff with SMTP id
+ 98e67ed59e1d1-2c4dbb43dfemr7415966a91.39.1718605774265; 
+ Sun, 16 Jun 2024 23:29:34 -0700 (PDT)
 Received: from amd.. ([2804:7f0:b400:8dcb:3e7c:3fff:fe7a:e83b])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2c4a75ed69csm10641863a91.14.2024.06.16.23.29.29
+ 98e67ed59e1d1-2c4a75ed69csm10641863a91.14.2024.06.16.23.29.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 16 Jun 2024 23:29:31 -0700 (PDT)
+ Sun, 16 Jun 2024 23:29:33 -0700 (PDT)
 From: Gustavo Romero <gustavo.romero@linaro.org>
 To: qemu-devel@nongnu.org, philmd@linaro.org, peter.maydell@linaro.org,
  alex.bennee@linaro.org, richard.henderson@linaro.org
 Cc: gustavo.romero@linaro.org
-Subject: [PATCH v3 8/9] gdbstub: Add support for MTE in user mode
-Date: Mon, 17 Jun 2024 06:28:48 +0000
-Message-Id: <20240617062849.3531745-9-gustavo.romero@linaro.org>
+Subject: [PATCH v3 9/9] tests/tcg/aarch64: Add MTE gdbstub tests
+Date: Mon, 17 Jun 2024 06:28:49 +0000
+Message-Id: <20240617062849.3531745-10-gustavo.romero@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240617062849.3531745-1-gustavo.romero@linaro.org>
 References: <20240617062849.3531745-1-gustavo.romero@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
- envelope-from=gustavo.romero@linaro.org; helo=mail-pf1-x430.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102d;
+ envelope-from=gustavo.romero@linaro.org; helo=mail-pj1-x102d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,391 +93,242 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This commit implements the stubs to handle the qIsAddressTagged,
-qMemTag, and QMemTag GDB packets, allowing all GDB 'memory-tag'
-subcommands to work with QEMU gdbstub on aarch64 user mode. It also
-implements the get/set functions for the special GDB MTE register
-'tag_ctl', used to control the MTE fault type at runtime.
+Add tests to exercise the MTE stubs.
 
 Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
 ---
- configs/targets/aarch64-linux-user.mak |   2 +-
- gdb-xml/aarch64-mte.xml                |  11 ++
- target/arm/cpu.c                       |   1 +
- target/arm/gdbstub.c                   |  46 ++++++
- target/arm/gdbstub64.c                 | 217 +++++++++++++++++++++++++
- target/arm/internals.h                 |   6 +
- 6 files changed, 282 insertions(+), 1 deletion(-)
- create mode 100644 gdb-xml/aarch64-mte.xml
+ tests/tcg/aarch64/Makefile.target     | 11 ++-
+ tests/tcg/aarch64/gdbstub/test-mte.py | 86 +++++++++++++++++++++++
+ tests/tcg/aarch64/mte-8.c             | 98 +++++++++++++++++++++++++++
+ 3 files changed, 193 insertions(+), 2 deletions(-)
+ create mode 100644 tests/tcg/aarch64/gdbstub/test-mte.py
+ create mode 100644 tests/tcg/aarch64/mte-8.c
 
-diff --git a/configs/targets/aarch64-linux-user.mak b/configs/targets/aarch64-linux-user.mak
-index ba8bc5fe3f..8f0ed21d76 100644
---- a/configs/targets/aarch64-linux-user.mak
-+++ b/configs/targets/aarch64-linux-user.mak
-@@ -1,6 +1,6 @@
- TARGET_ARCH=aarch64
- TARGET_BASE_ARCH=arm
--TARGET_XML_FILES= gdb-xml/aarch64-core.xml gdb-xml/aarch64-fpu.xml gdb-xml/aarch64-pauth.xml
-+TARGET_XML_FILES= gdb-xml/aarch64-core.xml gdb-xml/aarch64-fpu.xml gdb-xml/aarch64-pauth.xml gdb-xml/aarch64-mte.xml
- TARGET_HAS_BFLT=y
- CONFIG_SEMIHOSTING=y
- CONFIG_ARM_COMPATIBLE_SEMIHOSTING=y
-diff --git a/gdb-xml/aarch64-mte.xml b/gdb-xml/aarch64-mte.xml
+diff --git a/tests/tcg/aarch64/Makefile.target b/tests/tcg/aarch64/Makefile.target
+index 70d728ae9a..2b3fd636be 100644
+--- a/tests/tcg/aarch64/Makefile.target
++++ b/tests/tcg/aarch64/Makefile.target
+@@ -62,7 +62,7 @@ AARCH64_TESTS += bti-2
+ 
+ # MTE Tests
+ ifneq ($(CROSS_CC_HAS_ARMV8_MTE),)
+-AARCH64_TESTS += mte-1 mte-2 mte-3 mte-4 mte-5 mte-6 mte-7
++AARCH64_TESTS += mte-1 mte-2 mte-3 mte-4 mte-5 mte-6 mte-7 mte-8
+ mte-%: CFLAGS += -march=armv8.5-a+memtag
+ endif
+ 
+@@ -127,7 +127,14 @@ run-gdbstub-sve-ioctls: sve-ioctls
+ 		--bin $< --test $(AARCH64_SRC)/gdbstub/test-sve-ioctl.py, \
+ 	basic gdbstub SVE ZLEN support)
+ 
+-EXTRA_RUNS += run-gdbstub-sysregs run-gdbstub-sve-ioctls
++run-gdbstub-mte: mte-8
++	$(call run-test, $@, $(GDB_SCRIPT) \
++		--gdb $(GDB) \
++		--qemu $(QEMU) --qargs "$(QEMU_OPTS)" \
++		--bin $< --test $(AARCH64_SRC)/gdbstub/test-mte.py, \
++	gdbstub MTE support)
++
++EXTRA_RUNS += run-gdbstub-sysregs run-gdbstub-sve-ioctls run-gdbstub-mte
+ endif
+ endif
+ 
+diff --git a/tests/tcg/aarch64/gdbstub/test-mte.py b/tests/tcg/aarch64/gdbstub/test-mte.py
 new file mode 100644
-index 0000000000..4b70b4f17a
+index 0000000000..2db0663c1a
 --- /dev/null
-+++ b/gdb-xml/aarch64-mte.xml
-@@ -0,0 +1,11 @@
-+<?xml version="1.0"?>
-+<!-- Copyright (C) 2021-2023 Free Software Foundation, Inc.
++++ b/tests/tcg/aarch64/gdbstub/test-mte.py
+@@ -0,0 +1,86 @@
++from __future__ import print_function
++#
++# Test GDB memory-tag commands that exercise the stubs for the qIsAddressTagged,
++# qMemTag, and QMemTag packets. Logical tag-only commands rely on local
++# operations, hence don't exercise any stub.
++#
++# The test consists in breaking just after a atag() call (which sets the
++# allocation tag -- see mte-8.c for details) and setting/getting tags in
++# different memory locations and ranges starting at the address of the array
++# 'a'.
++#
++# This is launched via tests/guest-debug/run-test.py
++#
 +
-+     Copying and distribution of this file, with or without modification,
-+     are permitted in any medium without royalty provided the copyright
-+     notice and this notice are preserved.  -->
 +
-+<!DOCTYPE feature SYSTEM "gdb-target.dtd">
-+<feature name="org.gnu.gdb.aarch64.mte">
-+  <reg name="tag_ctl" bitsize="64" type="uint64" group="system" save-restore="no"/>
-+</feature>
-diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-index 35fa281f1b..14d4eca127 100644
---- a/target/arm/cpu.c
-+++ b/target/arm/cpu.c
-@@ -2518,6 +2518,7 @@ static void arm_cpu_realizefn(DeviceState *dev, Error **errp)
- 
-     register_cp_regs_for_features(cpu);
-     arm_cpu_register_gdb_regs_for_features(cpu);
-+    arm_cpu_register_gdb_commands(cpu);
- 
-     init_cpreg_list(cpu);
- 
-diff --git a/target/arm/gdbstub.c b/target/arm/gdbstub.c
-index a3bb73cfa7..c3a9b5eb1e 100644
---- a/target/arm/gdbstub.c
-+++ b/target/arm/gdbstub.c
-@@ -21,6 +21,7 @@
- #include "cpu.h"
- #include "exec/gdbstub.h"
- #include "gdbstub/helpers.h"
-+#include "gdbstub/commands.h"
- #include "sysemu/tcg.h"
- #include "internals.h"
- #include "cpu-features.h"
-@@ -474,6 +475,41 @@ static GDBFeature *arm_gen_dynamic_m_secextreg_feature(CPUState *cs,
- #endif
- #endif /* CONFIG_TCG */
- 
-+void arm_cpu_register_gdb_commands(ARMCPU *cpu)
++import gdb
++import re
++from test_gdbstub import main, report
++
++
++PATTERN_0 = "Memory tags for address 0x[0-9a-f]+ match \(0x[0-9a-f]+\)."
++PATTERN_1 = ".*(0x[0-9a-f]+)"
++
++
++def run_test():
++    gdb.execute("break 95", False, True)
++    gdb.execute("continue", False, True)
++    try:
++        # Test if we can check correctly that the allocation tag for
++        # array 'a' matches the logical tag after atag() is called.
++        co = gdb.execute("memory-tag check a", False, True)
++        tags_match = re.findall(PATTERN_0, co, re.MULTILINE)
++        if tags_match:
++            report(True, f"{tags_match[0]}")
++        else:
++            report(False, "Logical and allocation tags don't match!")
++
++        # Test allocation tag 'set and print' commands. Commands on logical
++        # tags rely on local operation and so don't exercise any stub.
++
++        # Set the allocation tag for the first granule (16 bytes) of
++        # address starting at 'a' address to a known value, i.e. 0x04.
++        gdb.execute("memory-tag set-allocation-tag a 1 04", False, True)
++
++        # Then set the allocation tag for the second granule to a known
++        # value, i.e. 0x06. This tests that contiguous tag granules are
++        # set correct and don't run over each other.
++        gdb.execute("memory-tag set-allocation-tag a+16 1 06", False, True)
++
++        # Read the known values back and check if they remain the same.
++
++        co = gdb.execute("memory-tag print-allocation-tag a", False, True)
++        first_tag = re.match(PATTERN_1, co)[1]
++
++        co = gdb.execute("memory-tag print-allocation-tag a+16", False, True)
++        second_tag = re.match(PATTERN_1, co)[1]
++
++        if first_tag == "0x4" and second_tag == "0x6":
++            report(True, "Allocation tags are correctly set/printed.")
++        else:
++            report(False, "Can't set/print allocation tags!")
++
++        # Now test fill pattern by setting a whole page with a pattern.
++        gdb.execute("memory-tag set-allocation-tag a 4096 0a0b", False, True)
++
++        # And read back the tags of the last two granules in page so
++        # we also test if the pattern is set correctly up to the end of
++        # the page.
++        co = gdb.execute("memory-tag print-allocation-tag a+4096-32", False, True)
++        tag = re.match(PATTERN_1, co)[1]
++
++        co = gdb.execute("memory-tag print-allocation-tag a+4096-16", False, True)
++        last_tag = re.match(PATTERN_1, co)[1]
++
++        if tag == "0xa" and last_tag == "0xb":
++            report(True, "Fill pattern is ok.")
++        else:
++            report(False, "Fill pattern failed!")
++
++    except gdb.error:
++        # This usually happens because a GDB version that does not
++        # support memory tagging was used to run the test.
++        report(False, "'memory-tag' command failed!")
++
++
++main(run_test, expected_arch="aarch64")
+diff --git a/tests/tcg/aarch64/mte-8.c b/tests/tcg/aarch64/mte-8.c
+new file mode 100644
+index 0000000000..9fffd7b737
+--- /dev/null
++++ b/tests/tcg/aarch64/mte-8.c
+@@ -0,0 +1,98 @@
++/*
++ * To be compiled with -march=armv8.5-a+memtag
++ *
++ * This test is adapted from a Linux test. Please see:
++ *
++ * https://www.kernel.org/doc/html/next/arch/arm64/memory-tagging-extension.html#example-of-correct-usage
++ */
++#include <errno.h>
++#include <stdint.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <unistd.h>
++#include <sys/auxv.h>
++#include <sys/mman.h>
++#include <sys/prctl.h>
++#include <string.h>
++/*
++ * From arch/arm64/include/uapi/asm/hwcap.h
++ */
++#define HWCAP2_MTE              (1 << 18)
++
++/*
++ * From arch/arm64/include/uapi/asm/mman.h
++ */
++#define PROT_MTE                 0x20
++
++/*
++ * Insert a random logical tag into the given pointer.
++ */
++#define insert_random_tag(ptr) ({                   \
++    uint64_t __val;                                 \
++    asm("irg %0, %1" : "=r" (__val) : "r" (ptr));   \
++    __val;                                          \
++})
++
++/*
++ * Set the allocation tag on the destination address.
++ */
++#define set_tag(tagged_addr) do {                                      \
++        asm volatile("stg %0, [%0]" : : "r" (tagged_addr) : "memory"); \
++} while (0)
++
++
++int main(int argc, char *argv[])
 +{
-+    GArray *query_table =
-+        g_array_new(FALSE, FALSE, sizeof(GdbCmdParseEntry));
-+    GArray *set_table =
-+        g_array_new(FALSE, FALSE, sizeof(GdbCmdParseEntry));
-+    GString *qsupported_features = g_string_new(NULL);
++    unsigned char *a;
++    unsigned long page_sz = sysconf(_SC_PAGESIZE);
++    unsigned long hwcap2 = getauxval(AT_HWCAP2);
 +
-+    if (arm_feature(&cpu->env, ARM_FEATURE_AARCH64)) {
-+    #ifdef TARGET_AARCH64
-+        aarch64_cpu_register_gdb_commands(cpu, qsupported_features, query_table,
-+                                          set_table);
-+    #endif
-+    }
-+
-+    /* Set arch-specific handlers for 'q' commands. */
-+    if (query_table->len) {
-+        gdb_extend_query_table(&g_array_index(query_table,
-+                                              GdbCmdParseEntry, 0),
-+                                              query_table->len);
-+    }
-+
-+    /* Set arch-specific handlers for 'Q' commands. */
-+    if (set_table->len) {
-+        gdb_extend_set_table(&g_array_index(set_table,
-+                             GdbCmdParseEntry, 0),
-+                             set_table->len);
-+    }
-+
-+    /* Set arch-specific qSupported feature. */
-+    if (qsupported_features->len) {
-+        gdb_extend_qsupported_features(qsupported_features->str);
-+    }
-+}
-+
- void arm_cpu_register_gdb_regs_for_features(ARMCPU *cpu)
- {
-     CPUState *cs = CPU(cpu);
-@@ -507,6 +543,16 @@ void arm_cpu_register_gdb_regs_for_features(ARMCPU *cpu)
-                                      gdb_find_static_feature("aarch64-pauth.xml"),
-                                      0);
-         }
-+
-+#ifdef CONFIG_USER_ONLY
-+        /* Memory Tagging Extension (MTE) 'tag_ctl' pseudo-register. */
-+        if (cpu_isar_feature(aa64_mte, cpu)) {
-+            gdb_register_coprocessor(cs, aarch64_gdb_get_tag_ctl_reg,
-+                                     aarch64_gdb_set_tag_ctl_reg,
-+                                     gdb_find_static_feature("aarch64-mte.xml"),
-+                                     0);
-+        }
-+#endif
- #endif
-     } else {
-         if (arm_feature(env, ARM_FEATURE_NEON)) {
-diff --git a/target/arm/gdbstub64.c b/target/arm/gdbstub64.c
-index caa31ff3fa..f94a416836 100644
---- a/target/arm/gdbstub64.c
-+++ b/target/arm/gdbstub64.c
-@@ -21,6 +21,9 @@
- #include "cpu.h"
- #include "internals.h"
- #include "gdbstub/helpers.h"
-+#include "gdbstub/commands.h"
-+#include "tcg/mte_helper.h"
-+#include "tcg/mte_user_helper.h"
- 
- int aarch64_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
- {
-@@ -381,3 +384,217 @@ GDBFeature *arm_gen_dynamic_svereg_feature(CPUState *cs, int base_reg)
- 
-     return &cpu->dyn_svereg_feature.desc;
- }
-+
-+#ifdef CONFIG_USER_ONLY
-+int aarch64_gdb_get_tag_ctl_reg(CPUState *cs, GByteArray *buf, int reg)
-+{
-+    ARMCPU *cpu = ARM_CPU(cs);
-+    CPUARMState *env = &cpu->env;
-+    uint64_t tcf0;
-+
-+    assert(reg == 0);
-+
-+    tcf0 = extract64(env->cp15.sctlr_el[1], 38, 2);
-+
-+    return gdb_get_reg64(buf, tcf0);
-+}
-+
-+int aarch64_gdb_set_tag_ctl_reg(CPUState *cs, uint8_t *buf, int reg)
-+{
-+    ARMCPU *cpu = ARM_CPU(cs);
-+    CPUARMState *env = &cpu->env;
-+
-+    uint8_t tcf;
-+
-+    assert(reg == 0);
-+
-+    tcf = *buf << PR_MTE_TCF_SHIFT;
-+
-+    if (!tcf) {
-+        return 0;
-+    }
++    /* check if MTE is present */
++    if (!(hwcap2 & HWCAP2_MTE))
++            return EXIT_FAILURE;
 +
 +    /*
-+     * 'tag_ctl' register is actually a "pseudo-register" provided by GDB to
-+     * expose options regarding the type of MTE fault that can be controlled at
-+     * runtime.
++     * Enable the tagged address ABI, synchronous or asynchronous MTE
++     * tag check faults (based on per-CPU preference) and allow all
++     * non-zero tags in the randomly generated set.
 +     */
-+    arm_set_mte_tcf0(env, tcf);
++    if (prctl(PR_SET_TAGGED_ADDR_CTRL,
++              PR_TAGGED_ADDR_ENABLE | PR_MTE_TCF_SYNC | PR_MTE_TCF_ASYNC |
++              (0xfffe << PR_MTE_TAG_SHIFT),
++              0, 0, 0)) {
++        perror("prctl() failed");
++        return EXIT_FAILURE;
++    }
 +
-+    return 1;
-+}
++    a = mmap(0, page_sz, PROT_READ | PROT_WRITE,
++             MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
++    if (a == MAP_FAILED) {
++        perror("mmap() failed");
++        return EXIT_FAILURE;
++    }
 +
-+static void handle_q_memtag(GArray *params, G_GNUC_UNUSED void *user_ctx)
-+{
-+    ARMCPU *cpu = ARM_CPU(gdb_first_attached_cpu());
-+    CPUARMState *env = &cpu->env;
-+
-+    uint64_t addr = gdb_get_cmd_param(params, 0)->val_ull;
-+    uint64_t len = gdb_get_cmd_param(params, 1)->val_ul;
-+    int type = gdb_get_cmd_param(params, 2)->val_ul;
-+
-+    uint8_t *tags;
-+    uint8_t addr_tag;
-+
-+    g_autoptr(GString) str_buf = g_string_new(NULL);
++    printf("a[] address is %p\n", a);
 +
 +    /*
-+     * GDB does not query multiple tags for a memory range on remote targets, so
-+     * that's not supported either by gdbstub.
++     * Enable MTE on the above anonymous mmap. The flag could be passed
++     * directly to mmap() and skip this step.
 +     */
-+    if (len != 1) {
-+        gdb_put_packet("E02");
++    if (mprotect(a, page_sz, PROT_READ | PROT_WRITE | PROT_MTE)) {
++        perror("mprotect() failed");
++        return EXIT_FAILURE;
 +    }
 +
-+    /* GDB never queries a tag different from an allocation tag (type 1). */
-+    if (type != 1) {
-+        gdb_put_packet("E03");
-+    }
++    /* access with the default tag (0) */
++    a[0] = 1;
++    a[1] = 2;
 +
-+    /* Note that tags are packed here (2 tags packed in one byte). */
-+    tags = allocation_tag_mem_probe(env, 0, addr, MMU_DATA_LOAD, 8 /* 64-bit */,
-+                                    MMU_DATA_LOAD, true, 0);
-+    if (!tags) {
-+        /* Address is not in a tagged region. */
-+        gdb_put_packet("E04");
-+        return;
-+    }
++    printf("a[0] = %hhu a[1] = %hhu\n", a[0], a[1]);
 +
-+    /* Unpack tag from byte. */
-+    addr_tag = load_tag1(addr, tags);
-+    g_string_printf(str_buf, "m%.2x", addr_tag);
++    /* set the logical and allocation tags */
++    a = (unsigned char *)insert_random_tag(a);
++    set_tag(a);
 +
-+    gdb_put_packet(str_buf->str);
++    printf("%p\n", a);
++
++    return 0;
 +}
-+
-+static void handle_q_isaddresstagged(GArray *params, G_GNUC_UNUSED void *user_ctx)
-+{
-+    ARMCPU *cpu = ARM_CPU(gdb_first_attached_cpu());
-+    CPUARMState *env = &cpu->env;
-+
-+    uint64_t addr = gdb_get_cmd_param(params, 0)->val_ull;
-+
-+    uint8_t *tags;
-+    const char *reply;
-+
-+    tags = allocation_tag_mem_probe(env, 0, addr, MMU_DATA_LOAD, 8 /* 64-bit */,
-+                                    MMU_DATA_LOAD, true, 0);
-+    reply = tags ? "01" : "00";
-+
-+    gdb_put_packet(reply);
-+}
-+
-+static void handle_Q_memtag(GArray *params, G_GNUC_UNUSED void *user_ctx)
-+{
-+    ARMCPU *cpu = ARM_CPU(gdb_first_attached_cpu());
-+    CPUARMState *env = &cpu->env;
-+
-+    uint64_t start_addr = gdb_get_cmd_param(params, 0)->val_ull;
-+    uint64_t len = gdb_get_cmd_param(params, 1)->val_ul;
-+    int type = gdb_get_cmd_param(params, 2)->val_ul;
-+    char const *new_tags_str = gdb_get_cmd_param(params, 3)->data;
-+
-+    uint64_t end_addr;
-+
-+    int num_new_tags;
-+    uint8_t *tags;
-+
-+    g_autoptr(GByteArray) new_tags = g_byte_array_new();
-+
-+    /*
-+     * Only the allocation tag (i.e. type 1) can be set at the stub side.
-+     */
-+    if (type != 1) {
-+        gdb_put_packet("E02");
-+        return;
-+    }
-+
-+    end_addr = start_addr + (len - 1); /* 'len' is always >= 1 */
-+    /* Check if request's memory range does not cross page boundaries. */
-+    if ((start_addr ^ end_addr) & TARGET_PAGE_MASK) {
-+        gdb_put_packet("E03");
-+        return;
-+    }
-+
-+    /*
-+     * Get all tags in the page starting from the tag of the start address.
-+     * Note that there are two tags packed into a single byte here.
-+     */
-+    tags = allocation_tag_mem_probe(env, 0, start_addr, MMU_DATA_STORE,
-+                                    8 /* 64-bit */, MMU_DATA_STORE, true, 0);
-+    if (!tags) {
-+        /* Address is not in a tagged region. */
-+        gdb_put_packet("E04");
-+        return;
-+    }
-+
-+    /* Convert tags provided by GDB, 2 hex digits per tag. */
-+    num_new_tags = strlen(new_tags_str) / 2;
-+    gdb_hextomem(new_tags, new_tags_str, num_new_tags);
-+
-+    uint64_t address = start_addr;
-+    int new_tag_index = 0;
-+    while (address <= end_addr) {
-+        uint8_t new_tag;
-+        int packed_index;
-+
-+        /*
-+         * Find packed tag index from unpacked tag index. There are two tags
-+         * in one packed index (one tag per nibble).
-+         */
-+        packed_index = new_tag_index / 2;
-+
-+        new_tag = new_tags->data[new_tag_index % num_new_tags];
-+        store_tag1(address, tags + packed_index, new_tag);
-+
-+        address += TAG_GRANULE;
-+        new_tag_index++;
-+    }
-+
-+    gdb_put_packet("OK");
-+}
-+
-+enum Command {
-+    qMemTags,
-+    qIsAddressTagged,
-+    QMemTags,
-+    NUM_CMDS
-+};
-+
-+static GdbCmdParseEntry cmd_handler_table[NUM_CMDS] = {
-+    [qMemTags] = {
-+        .handler = handle_q_memtag,
-+        .cmd_startswith = 1,
-+        .cmd = "MemTags:",
-+        .schema = "L,l:l0"
-+    },
-+    [qIsAddressTagged] = {
-+        .handler = handle_q_isaddresstagged,
-+        .cmd_startswith = 1,
-+        .cmd = "IsAddressTagged:",
-+        .schema = "L0"
-+    },
-+    [QMemTags] = {
-+        .handler = handle_Q_memtag,
-+        .cmd_startswith = 1,
-+        .cmd = "MemTags:",
-+        .schema = "L,l:l:s0"
-+    },
-+};
-+#endif /* CONFIG_USER_ONLY */
-+
-+void aarch64_cpu_register_gdb_commands(ARMCPU *cpu, GString *qsupported,
-+                                       GArray *qtable, GArray *stable)
-+{
-+#ifdef CONFIG_USER_ONLY
-+    /* MTE */
-+    if (cpu_isar_feature(aa64_mte, cpu)) {
-+        g_string_append(qsupported, ";memory-tagging+");
-+
-+        g_array_append_val(qtable, cmd_handler_table[qMemTags]);
-+        g_array_append_val(qtable, cmd_handler_table[qIsAddressTagged]);
-+
-+        g_array_append_val(stable, cmd_handler_table[QMemTags]);
-+    }
-+#endif
-+}
-diff --git a/target/arm/internals.h b/target/arm/internals.h
-index 11b5da2562..e1aa1a63b9 100644
---- a/target/arm/internals.h
-+++ b/target/arm/internals.h
-@@ -358,6 +358,10 @@ void init_cpreg_list(ARMCPU *cpu);
- void arm_cpu_register_gdb_regs_for_features(ARMCPU *cpu);
- void arm_translate_init(void);
- 
-+void arm_cpu_register_gdb_commands(ARMCPU *cpu);
-+void aarch64_cpu_register_gdb_commands(ARMCPU *cpu, GString *, GArray *,
-+                                       GArray *);
-+
- void arm_restore_state_to_opc(CPUState *cs,
-                               const TranslationBlock *tb,
-                               const uint64_t *data);
-@@ -1640,6 +1644,8 @@ int aarch64_gdb_get_fpu_reg(CPUState *cs, GByteArray *buf, int reg);
- int aarch64_gdb_set_fpu_reg(CPUState *cs, uint8_t *buf, int reg);
- int aarch64_gdb_get_pauth_reg(CPUState *cs, GByteArray *buf, int reg);
- int aarch64_gdb_set_pauth_reg(CPUState *cs, uint8_t *buf, int reg);
-+int aarch64_gdb_get_tag_ctl_reg(CPUState *cs, GByteArray *buf, int reg);
-+int aarch64_gdb_set_tag_ctl_reg(CPUState *cs, uint8_t *buf, int reg);
- void arm_cpu_sve_finalize(ARMCPU *cpu, Error **errp);
- void arm_cpu_sme_finalize(ARMCPU *cpu, Error **errp);
- void arm_cpu_pauth_finalize(ARMCPU *cpu, Error **errp);
 -- 
 2.34.1
 
