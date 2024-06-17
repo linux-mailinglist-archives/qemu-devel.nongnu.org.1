@@ -2,119 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CBA390BA5E
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jun 2024 21:00:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64A9890BA7F
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jun 2024 21:03:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sJHYd-0003x3-Nz; Mon, 17 Jun 2024 14:58:23 -0400
+	id 1sJHYg-0003xx-G2; Mon, 17 Jun 2024 14:58:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sJHYb-0003we-Lh
- for qemu-devel@nongnu.org; Mon, 17 Jun 2024 14:58:21 -0400
-Received: from smtp-out1.suse.de ([195.135.223.130])
+ (Exim 4.90_1) (envelope-from <itachis6234@gmail.com>)
+ id 1sJHYe-0003xY-Ci
+ for qemu-devel@nongnu.org; Mon, 17 Jun 2024 14:58:24 -0400
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sJHYZ-0004vU-M6
- for qemu-devel@nongnu.org; Mon, 17 Jun 2024 14:58:21 -0400
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 440F221AD5;
- Mon, 17 Jun 2024 18:58:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1718650698; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=e7+I+YqymBBSdik7DLw05Z9r+gdDjzbBZ4qUANuFuc8=;
- b=h/s4ngmtgY/9LFJ5qjM98BzFAfntmpDzIsjgkKkJVOw1psvQ43rir+1/kUP6czdKmZURAc
- vhE3cllxhY4gF0WH+aI9Ut0j1erxqr77f2E+PhIFhgg025DuKO68EnDYMfSl2r9XJGThxL
- oc6NNuIM7eOUKee5tUW3dUe2gjM+UyQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1718650698;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=e7+I+YqymBBSdik7DLw05Z9r+gdDjzbBZ4qUANuFuc8=;
- b=u5E1C5d4userhCuDN9EQBn2k+9/Q+HHH/88ZwpS4C+eFYH4kCdQO/7dZT0dD1NQkC0XYcK
- +WAqKlpWI/x5u6Bw==
-Authentication-Results: smtp-out1.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=kE6bkKjq;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=rg4xYjx3
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1718650697; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=e7+I+YqymBBSdik7DLw05Z9r+gdDjzbBZ4qUANuFuc8=;
- b=kE6bkKjqQs14gvkH8qMuiT2jv7nMM23O9LcbKHYHiBilRzkrh7akaePCY34C3b8Uv5q8Ym
- 2nHnkGyTqSiHkJSbg3kBYQXqqsjSGGelN/pipMe8w1XHBD0bF9c0p6yTbd0j0NrPihVMNe
- VX6+oDaC5jUihleFqBPV/x5k6vEklBc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1718650697;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=e7+I+YqymBBSdik7DLw05Z9r+gdDjzbBZ4qUANuFuc8=;
- b=rg4xYjx395vnElNDVIpzE27TilBEbCvnRMdXtLnwJwcukbNdEF27l8ImWSgrSidY+uT8iQ
- 29KbXl5VgaS6mpBg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B400F139AB;
- Mon, 17 Jun 2024 18:58:14 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id QIleHkaHcGYJKAAAD6G6ig
- (envelope-from <farosas@suse.de>); Mon, 17 Jun 2024 18:58:14 +0000
-From: Fabiano Rosas <farosas@suse.de>
+ (Exim 4.90_1) (envelope-from <itachis6234@gmail.com>)
+ id 1sJHYc-0004vn-OY
+ for qemu-devel@nongnu.org; Mon, 17 Jun 2024 14:58:24 -0400
+Received: by mail-pf1-x42d.google.com with SMTP id
+ d2e1a72fcca58-70435f4c330so3765201b3a.1
+ for <qemu-devel@nongnu.org>; Mon, 17 Jun 2024 11:58:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1718650700; x=1719255500; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=2lue1NYs8pzYvkVM8I+Vf9elZ0KvTkfQjkhNGZa4vlA=;
+ b=UZZolZNlBVDALp+f7G0XEVvFRHyo7LHwSZCU4KYGU+CyWk1dzJxkBF56YgCKb25LFz
+ 9/Z5/B7IPLsOtDfx7AN3eZzY34BKrXvq4dnCJ6DPG/wLmdlyEj95WErcQ5sjJ1pOugrW
+ WT0OJW5KDhsyh+l0e0PoDWz8QVrFtjVioOnG+QKb19+pIbq5gb0O7Wa5hJU8NlrfMF3X
+ oH8jQcn/+5C5z1BEG5CEDGV+SCX7pBNnLUd1IHZjva/lbhLMadrcHNytPbyJ/PFVhk8m
+ 2mMCF3xzM2eJ9IOcgBEneik5N3rr3970HkZUb9bZqo+Y5K6AlrMM+hBS8/KRreQmUDl3
+ nJwQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1718650700; x=1719255500;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=2lue1NYs8pzYvkVM8I+Vf9elZ0KvTkfQjkhNGZa4vlA=;
+ b=dRCBqwGsOU9h6tru2qusRFlK9LOaGHWWHE6ZhHut1Gf/e76iH1ChUwHUaDVoJJ591z
+ rXx9HyEHBPdLA/Kwa1AdilJ2aZVs9Br8VjM2wCEEuG4kILU/ofq5aEyZ3Dh3zd3QJ1Sf
+ 5EP0/genT+JwWqmhZfc/88S6vCSdR+Mymp+j8IZhPb/OjMffzm9ZRQU/MbGjVByaqoUR
+ tF++8fv7Vr38lBnbWY8D0nM8HJKnMbN7AOaXudIuJzgZz2GYUGBEcGU7aDTKnu6QwnEb
+ cfEmCqbLbF6yWj41krBugM9FJUBcqppD97Ks2kbkrnBDXYpOipqxtOlU608w5C3Rv922
+ OvKA==
+X-Gm-Message-State: AOJu0YwZlEQwaavxjtWGsbPd/oaAwFFyxOzH8vPeazAzCEiYYB1pzE9Y
+ Y+JIQENX/i4TmrmEs1DwkTwiJCSMdJ66P5uuRrHWSXHOJuM5/7vBFpJceVOFCik=
+X-Google-Smtp-Source: AGHT+IE0rOOemu0InWND8vW9CAm87ESOdH2Dc3rNpuW+SLCbiXyViu/dkHyHSIeXL8LxeoJMSW1KQA==
+X-Received: by 2002:a05:6a20:9148:b0:1b2:cf6c:d5a4 with SMTP id
+ adf61e73a8af0-1bae82ecde1mr11046839637.61.1718650700311; 
+ Mon, 17 Jun 2024 11:58:20 -0700 (PDT)
+Received: from localhost.localdomain ([106.222.222.115])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-705ccb4aa4fsm7660637b3a.131.2024.06.17.11.58.18
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 17 Jun 2024 11:58:20 -0700 (PDT)
+From: Ajeet Singh <itachis6234@gmail.com>
+X-Google-Original-From: Ajeet Singh <itachis@FreeBSD.org>
 To: qemu-devel@nongnu.org
-Cc: berrange@redhat.com, armbru@redhat.com, Peter Xu <peterx@redhat.com>,
- Claudio Fontana <cfontana@suse.de>, Jim Fehlig <jfehlig@suse.com>,
- Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v3 16/16] tests/qtest/migration: Add a test for mapped-ram
- with passing of fds
-Date: Mon, 17 Jun 2024 15:57:31 -0300
-Message-Id: <20240617185731.9725-17-farosas@suse.de>
-X-Mailer: git-send-email 2.35.3
-In-Reply-To: <20240617185731.9725-1-farosas@suse.de>
-References: <20240617185731.9725-1-farosas@suse.de>
+Cc: Warner Losh <imp@bsdimp.com>, Ajeet Singh <itachis@freebsd.org>,
+ Ajeet Singh <itachis@FreeBSD.org>
+Subject: [PATCH 00/23] ARM AArch64 Support for BSD
+Date: Tue, 18 Jun 2024 00:27:41 +0530
+Message-Id: <20240617185804.25075-1-itachis@FreeBSD.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-3.01 / 50.00]; BAYES_HAM(-3.00)[100.00%];
- NEURAL_HAM_LONG(-1.00)[-1.000]; MID_CONTAINS_FROM(1.00)[];
- R_MISSING_CHARSET(0.50)[];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- MX_GOOD(-0.01)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
- RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
- RCVD_COUNT_TWO(0.00)[2]; ARC_NA(0.00)[]; MIME_TRACE(0.00)[0:+];
- FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
- RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
- FUZZY_BLOCKED(0.00)[rspamd.com]; RCPT_COUNT_SEVEN(0.00)[9];
- TO_MATCH_ENVRCPT_ALL(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:dkim];
- RCVD_TLS_ALL(0.00)[]; FROM_EQ_ENVFROM(0.00)[];
- SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- DKIM_TRACE(0.00)[suse.de:+]
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Queue-Id: 440F221AD5
-X-Spam-Score: -3.01
-Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
+ envelope-from=itachis6234@gmail.com; helo=mail-pf1-x42d.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -131,168 +91,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a multifd test for mapped-ram with passing of fds into QEMU. This
-is how libvirt will consume the feature.
+making sure to credit all the authors correctly
 
-There are a couple of details to the fdset mechanism:
+Stacey Son (18):
+  Add CPU initialization function
+  Added CPU loop function
+  Added function to clone CPU state
+  AArch64 specific CPU for bsd-user
+  Managing CPU register for BSD-USER
+  Add Aarch64 register handling
+  Add ARM AArch64 TLS Management Prototypes for BSD-User
+  Add Aarch64 sysarch() system call emulation for BSD-USER
+  Add thread setup for BSD-USER
+  Add thread initialization for BSD-USER
+  Update ARM AArch64 VM parameter definitions for bsd-user
+  Add ARM AArch64 ELF definitions for bsd-user
+  Add ARM AArch64 sigcode setup function for bsd-user
+  Add ARM AArch64 specific signal definitions for bsd-user
+  Add ARM AArch64 signal trampoline argument setup for bsd-user
+  Add get_mcontext function for ARM AArch64 in bsd-user
+  Add set_mcontext function for ARM AArch64 in bsd-user
+  Add get_ucontext_sigreturn function
 
-- multifd needs two distinct file descriptors (not duplicated with
-  dup()) so it can enable O_DIRECT only on the channels that do
-  aligned IO. The dup() system call creates file descriptors that
-  share status flags, of which O_DIRECT is one.
+Warner Losh (5):
+  Add ability to get rval2
+  Add ARM AArch64 hardware capability definitions
+  Add function to retrieve ARM AArch64 hardware capabilities
+  Add function to retrieve additional ARM AArch64 hwcap
+  Add setup_sigframe_arch function for ARM AArch64 in bsd-user
 
-- the open() access mode flags used for the fds passed into QEMU need
-  to match the flags QEMU uses to open the file. Currently O_WRONLY
-  for src and O_RDONLY for dst.
+ bsd-user/aarch64/signal.c               | 137 +++++++++++++++++
+ bsd-user/aarch64/target_arch.h          |  28 ++++
+ bsd-user/aarch64/target_arch_cpu.c      |  34 +++++
+ bsd-user/aarch64/target_arch_cpu.h      | 191 ++++++++++++++++++++++++
+ bsd-user/aarch64/target_arch_elf.h      | 165 ++++++++++++++++++++
+ bsd-user/aarch64/target_arch_reg.h      |  56 +++++++
+ bsd-user/aarch64/target_arch_signal.h   |  80 ++++++++++
+ bsd-user/aarch64/target_arch_sigtramp.h |  48 ++++++
+ bsd-user/aarch64/target_arch_sysarch.h  |  42 ++++++
+ bsd-user/aarch64/target_arch_thread.h   |  61 ++++++++
+ bsd-user/aarch64/target_arch_vmparam.h  |  74 +++++++++
+ bsd-user/aarch64/target_syscall.h       |  51 +++++++
+ 12 files changed, 967 insertions(+)
+ create mode 100644 bsd-user/aarch64/signal.c
+ create mode 100644 bsd-user/aarch64/target_arch.h
+ create mode 100644 bsd-user/aarch64/target_arch_cpu.c
+ create mode 100644 bsd-user/aarch64/target_arch_cpu.h
+ create mode 100644 bsd-user/aarch64/target_arch_elf.h
+ create mode 100644 bsd-user/aarch64/target_arch_reg.h
+ create mode 100644 bsd-user/aarch64/target_arch_signal.h
+ create mode 100644 bsd-user/aarch64/target_arch_sigtramp.h
+ create mode 100644 bsd-user/aarch64/target_arch_sysarch.h
+ create mode 100644 bsd-user/aarch64/target_arch_thread.h
+ create mode 100644 bsd-user/aarch64/target_arch_vmparam.h
+ create mode 100644 bsd-user/aarch64/target_syscall.h
 
-Note that fdset code goes under _WIN32 because fd passing is not
-supported on Windows.
-
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
----
-- dropped Peter's r-b
-
-- stopped removing the fdset at the end of the tests. The migration
-code should always cleanup after itself.
----
- tests/qtest/migration-test.c | 98 ++++++++++++++++++++++++++++++++++--
- 1 file changed, 95 insertions(+), 3 deletions(-)
-
-diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index 928f0ca6ce..85a21ff5e9 100644
---- a/tests/qtest/migration-test.c
-+++ b/tests/qtest/migration-test.c
-@@ -2024,11 +2024,18 @@ static void test_precopy_file(void)
- 
- #ifndef _WIN32
- static void fdset_add_fds(QTestState *qts, const char *file, int flags,
--                          int num_fds)
-+                          int num_fds, bool direct_io)
- {
-     for (int i = 0; i < num_fds; i++) {
-         int fd;
- 
-+#ifdef O_DIRECT
-+        /* only secondary channels can use direct-io */
-+        if (direct_io && i != 0) {
-+            flags |= O_DIRECT;
-+        }
-+#endif
-+
-         fd = open(file, flags, 0660);
-         assert(fd != -1);
- 
-@@ -2042,8 +2049,8 @@ static void *file_offset_fdset_start_hook(QTestState *from, QTestState *to)
- {
-     g_autofree char *file = g_strdup_printf("%s/%s", tmpfs, FILE_TEST_FILENAME);
- 
--    fdset_add_fds(from, file, O_WRONLY, 1);
--    fdset_add_fds(to, file, O_RDONLY, 1);
-+    fdset_add_fds(from, file, O_WRONLY, 1, false);
-+    fdset_add_fds(to, file, O_RDONLY, 1, false);
- 
-     return NULL;
- }
-@@ -2215,6 +2222,84 @@ static void test_multifd_file_mapped_ram_dio(void)
-     test_file_common(&args, true);
- }
- 
-+#ifndef _WIN32
-+static void multifd_mapped_ram_fdset_end(QTestState *from, QTestState *to,
-+                                         void *opaque)
-+{
-+    QDict *resp;
-+    QList *fdsets;
-+
-+    /*
-+     * Make sure no fdsets are left after migration, otherwise a
-+     * second migration would fail due fdset reuse.
-+     */
-+    resp = qtest_qmp(from, "{'execute': 'query-fdsets', "
-+                     "'arguments': {}}");
-+    g_assert(qdict_haskey(resp, "return"));
-+    fdsets = qdict_get_qlist(resp, "return");
-+    g_assert(fdsets && qlist_empty(fdsets));
-+}
-+
-+static void *multifd_mapped_ram_fdset_dio(QTestState *from, QTestState *to)
-+{
-+    g_autofree char *file = g_strdup_printf("%s/%s", tmpfs, FILE_TEST_FILENAME);
-+
-+    fdset_add_fds(from, file, O_WRONLY, 2, true);
-+    fdset_add_fds(to, file, O_RDONLY, 2, true);
-+
-+    migrate_multifd_mapped_ram_start(from, to);
-+    migrate_set_parameter_bool(from, "direct-io", true);
-+    migrate_set_parameter_bool(to, "direct-io", true);
-+
-+    return NULL;
-+}
-+
-+static void *multifd_mapped_ram_fdset(QTestState *from, QTestState *to)
-+{
-+    g_autofree char *file = g_strdup_printf("%s/%s", tmpfs, FILE_TEST_FILENAME);
-+
-+    fdset_add_fds(from, file, O_WRONLY, 2, false);
-+    fdset_add_fds(to, file, O_RDONLY, 2, false);
-+
-+    migrate_multifd_mapped_ram_start(from, to);
-+
-+    return NULL;
-+}
-+
-+static void test_multifd_file_mapped_ram_fdset(void)
-+{
-+    g_autofree char *uri = g_strdup_printf("file:/dev/fdset/1,offset=%d",
-+                                           FILE_TEST_OFFSET);
-+    MigrateCommon args = {
-+        .connect_uri = uri,
-+        .listen_uri = "defer",
-+        .start_hook = multifd_mapped_ram_fdset,
-+        .finish_hook = multifd_mapped_ram_fdset_end,
-+    };
-+
-+    test_file_common(&args, true);
-+}
-+
-+static void test_multifd_file_mapped_ram_fdset_dio(void)
-+{
-+    g_autofree char *uri = g_strdup_printf("file:/dev/fdset/1,offset=%d",
-+                                           FILE_TEST_OFFSET);
-+    MigrateCommon args = {
-+        .connect_uri = uri,
-+        .listen_uri = "defer",
-+        .start_hook = multifd_mapped_ram_fdset_dio,
-+        .finish_hook = multifd_mapped_ram_fdset_end,
-+    };
-+
-+    if (!probe_o_direct_support(tmpfs)) {
-+        g_test_skip("Filesystem does not support O_DIRECT");
-+        return;
-+    }
-+
-+    test_file_common(&args, true);
-+}
-+#endif /* !_WIN32 */
-+
- static void test_precopy_tcp_plain(void)
- {
-     MigrateCommon args = {
-@@ -3654,6 +3739,13 @@ int main(int argc, char **argv)
-     migration_test_add("/migration/multifd/file/mapped-ram/dio",
-                        test_multifd_file_mapped_ram_dio);
- 
-+#ifndef _WIN32
-+    migration_test_add("/migration/multifd/file/mapped-ram/fdset",
-+                       test_multifd_file_mapped_ram_fdset);
-+    migration_test_add("/migration/multifd/file/mapped-ram/fdset/dio",
-+                       test_multifd_file_mapped_ram_fdset_dio);
-+#endif
-+
- #ifdef CONFIG_GNUTLS
-     migration_test_add("/migration/precopy/unix/tls/psk",
-                        test_precopy_unix_tls_psk);
 -- 
-2.35.3
+2.34.1
 
 
