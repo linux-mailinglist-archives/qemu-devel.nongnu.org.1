@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DDF990B969
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jun 2024 20:17:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BC8390B973
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jun 2024 20:18:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sJGtj-0000NO-VQ; Mon, 17 Jun 2024 14:16:07 -0400
+	id 1sJGtm-0000QO-VQ; Mon, 17 Jun 2024 14:16:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sJGtb-0000E4-N8
- for qemu-devel@nongnu.org; Mon, 17 Jun 2024 14:16:00 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sJGtd-0000EH-6Q
+ for qemu-devel@nongnu.org; Mon, 17 Jun 2024 14:16:01 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sJGtY-0006Iw-Oh
- for qemu-devel@nongnu.org; Mon, 17 Jun 2024 14:15:59 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sJGtb-0006JN-6G
+ for qemu-devel@nongnu.org; Mon, 17 Jun 2024 14:16:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1718648155;
+ s=mimecast20190719; t=1718648158;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=eGE+LgWMbS91EIDfvnLwsxRRHX55rP0Vg3VR2s70yow=;
- b=jJRFBbF/OaDlLjuISOaw0DOqa1h2xd1QlK+xYdQ/OCZjT6ilnQytHfEA9VF1kmcuLH3w29
- 88lXoIzsNZhw+7+toVXTrE7qJf+6yG2JY3YR788+gYZOCfw9W5QnlAwyrbqSwfzD9EhszF
- 673JOnGQBTlvwYAEttpL105Q6qUhEA4=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=HAnuiEXSF9coRI1TVtgqNjLkt+KmjbXV8lGXJ3b5PMs=;
+ b=YTmSO1AWCUEFNAw7veBapQDVZladyd2NBHzYrx5NbXqdv7yS0gbyXz+/UNAQN6NJOMhsa7
+ AQ5i4iYYwvuTLb12UstgQwEWIubkK1kZ5P3FcvxsUoxr91oSw9YtFqiIg8y2JhhmL+8CWO
+ PhzNMK6IDfx7bU7z1aUws/YSTPO0SfE=
+Received: from mail-oa1-f72.google.com (mail-oa1-f72.google.com
+ [209.85.160.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-541-Crk093aFOryObvx0_g-Ugg-1; Mon, 17 Jun 2024 14:15:53 -0400
-X-MC-Unique: Crk093aFOryObvx0_g-Ugg-1
-Received: by mail-qk1-f197.google.com with SMTP id
- af79cd13be357-794fa90409eso2870285a.3
- for <qemu-devel@nongnu.org>; Mon, 17 Jun 2024 11:15:53 -0700 (PDT)
+ us-mta-116-tLB3RpMQP0mmo4Xn8IrPdA-1; Mon, 17 Jun 2024 14:15:54 -0400
+X-MC-Unique: tLB3RpMQP0mmo4Xn8IrPdA-1
+Received: by mail-oa1-f72.google.com with SMTP id
+ 586e51a60fabf-254ca2a8e97so1213379fac.0
+ for <qemu-devel@nongnu.org>; Mon, 17 Jun 2024 11:15:54 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718648152; x=1719252952;
+ d=1e100.net; s=20230601; t=1718648153; x=1719252953;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=eGE+LgWMbS91EIDfvnLwsxRRHX55rP0Vg3VR2s70yow=;
- b=wQIJu3nae4eLlS+WDzZOm4bUB1YWDO7c6KVKo4n8q8/cftwfgcNm+9w/ng+n4X7O2c
- XW/dzxrKNkgOEfujCqlc/GO487X4ovOsJsppW8LwmAFsUMH27an2u8AgsmquZSbyRrq1
- pLCEYel9DlqVc5yTUlj+pDlF4Jnb4R8HbzDl98/dUNf+3mFGcQt0t21h8umk0f/8N3N5
- 73xrRvp4veDd5bkJoixMlwJByeS0L73v0ZqhQ0GZD5OmKpFCxtMPFC0373gq6mWnA7D/
- bwL+3xBBgykhKJOJ3/AGzj625KPyV1b9rLbQsoseij3hCqEQ3zeNcWSX72EdJNOnNDoF
- /hYw==
-X-Gm-Message-State: AOJu0YyDUC31dnTTPc1sDO8Cao7rx7zBgYHHTsqJlUUO/nPwEunYIp5V
- /ZuxCKGXcO8hbIStlCwCkFQVZqszVdam/xifXXDbSZo5eBS9Tk4mK7IQ5KojChPU6gzUlJf3iGr
- AbObou9jtPWLhaCJkdPIfw5V6mz9u/bTJGJacRXLvXE+1jROpUCQOa9gJtyD7zQDvV+BIn1q82p
- oDG+QMcoK8B/zPh5UK1tpptFGUdyw4hJoI6g==
-X-Received: by 2002:a05:620a:272a:b0:795:493f:9f3f with SMTP id
- af79cd13be357-798d269f370mr1142520885a.4.1718648152261; 
+ bh=HAnuiEXSF9coRI1TVtgqNjLkt+KmjbXV8lGXJ3b5PMs=;
+ b=eDLpggMVPd91bfw5CscVUdhjNkwH79XpI9uMVJ5aMmnDNbApfNGZ2rDHndv2toR4t/
+ Z1bJpDllKmP6dRGVHSnxULwOOaTh8G2PoydwfB6BJrKGmWWm9zCSzyTqmNblHTGKiCv1
+ kVV2602birUOd4TVEa+0TDZ3cXz0q94D+3Es4rlA15Ih0/pSQmvYlt/qDX1wXfYxLiUX
+ 5+75/HkNz4TfHY9KkdfbGq7+aqK/m9A2jB2nCFbmhjZXdZla8COEkd3LLVs/sOq1iC9H
+ q4tutyW20Gz/w7l0mB5eBuRazkrwoWt1nXL9/4S4AwY9S7y0aSdqfYKcBk2slDUHBsx4
+ hEPg==
+X-Gm-Message-State: AOJu0Ywnl52muoqYlz182zsVj3yN3EBwuwTyzSEcXjTnOisxLuTnR5SS
+ Y9IbMsnKIstzyh0SLoALT7aZYmmLs0ang80/CX7456Cv+SuPJvEB4nSkUg1vb+UETplfMnzy5jK
+ pS02jAVpGdmhcumDFQYuvTWyzKNIzFKTeSVDkpxEeDy/IKElrpIEN9T9tZ5DoFHMpGIVPSYNwkZ
+ Td+09bBOvCaMKVgWPIggguhtcFb40vVFOlMg==
+X-Received: by 2002:a05:6808:1a03:b0:3d2:199b:63dc with SMTP id
+ 5614622812f47-3d24eace698mr12638674b6e.5.1718648153464; 
+ Mon, 17 Jun 2024 11:15:53 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFcAeO8jXXRBbhyU/4+58cdWQulRUkGrQw0VQClMfhb9z9TDqPrWvRGYogZMT2B/eHHUVHtKw==
+X-Received: by 2002:a05:6808:1a03:b0:3d2:199b:63dc with SMTP id
+ 5614622812f47-3d24eace698mr12638643b6e.5.1718648152924; 
  Mon, 17 Jun 2024 11:15:52 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGO5xIs0uWkac8wmMuslSAq5i21szSRTWc65eVf0Kuqaq+1dlWGdGdzxvWiCqpDXZFGsj3wyg==
-X-Received: by 2002:a05:620a:272a:b0:795:493f:9f3f with SMTP id
- af79cd13be357-798d269f370mr1142516585a.4.1718648151541; 
- Mon, 17 Jun 2024 11:15:51 -0700 (PDT)
 Received: from x1n.redhat.com (pool-99-254-121-117.cpe.net.cable.rogers.com.
  [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- af79cd13be357-798abc07501sm449643685a.89.2024.06.17.11.15.49
+ af79cd13be357-798abc07501sm449643685a.89.2024.06.17.11.15.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 17 Jun 2024 11:15:50 -0700 (PDT)
+ Mon, 17 Jun 2024 11:15:52 -0700 (PDT)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>,
@@ -69,15 +69,16 @@ Cc: Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  Eric Blake <eblake@redhat.com>, Prasad Pandit <ppandit@redhat.com>,
  peterx@redhat.com, Jiri Denemark <jdenemar@redhat.com>,
  Bandan Das <bdas@redhat.com>
-Subject: [PATCH v2 08/10] tests/migration-tests: Always enable migration events
-Date: Mon, 17 Jun 2024 14:15:32 -0400
-Message-ID: <20240617181534.1425179-9-peterx@redhat.com>
+Subject: [PATCH v2 09/10] tests/migration-tests: Verify postcopy-recover-setup
+ status
+Date: Mon, 17 Jun 2024 14:15:33 -0400
+Message-ID: <20240617181534.1425179-10-peterx@redhat.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20240617181534.1425179-1-peterx@redhat.com>
 References: <20240617181534.1425179-1-peterx@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -22
 X-Spam_score: -2.3
@@ -102,33 +103,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Libvirt should always enable it, so it'll be nice qtest also cover that for
-all tests.  Though this patch only enables it, no extra tests are done on
-these events yet.
+Making sure the postcopy-recover-setup status is present in the postcopy
+failure unit test.  Note that it only applies to src QEMU not dest.
+
+This also introduces the tiny but helpful migration_event_wait() helper.
 
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- tests/qtest/migration-test.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ tests/qtest/migration-helpers.h |  2 ++
+ tests/qtest/migration-helpers.c | 20 ++++++++++++++++++++
+ tests/qtest/migration-test.c    |  6 ++++++
+ 3 files changed, 28 insertions(+)
 
+diff --git a/tests/qtest/migration-helpers.h b/tests/qtest/migration-helpers.h
+index 1339835698..356057b4a0 100644
+--- a/tests/qtest/migration-helpers.h
++++ b/tests/qtest/migration-helpers.h
+@@ -55,4 +55,6 @@ char *find_common_machine_version(const char *mtype, const char *var1,
+ char *resolve_machine_version(const char *alias, const char *var1,
+                               const char *var2);
+ void migration_test_add(const char *path, void (*fn)(void));
++void migration_event_wait(QTestState *s, const char *target);
++
+ #endif /* MIGRATION_HELPERS_H */
+diff --git a/tests/qtest/migration-helpers.c b/tests/qtest/migration-helpers.c
+index ce6d6615b5..c0e2066270 100644
+--- a/tests/qtest/migration-helpers.c
++++ b/tests/qtest/migration-helpers.c
+@@ -473,3 +473,23 @@ void migration_test_add(const char *path, void (*fn)(void))
+     qtest_add_data_func_full(path, test, migration_test_wrapper,
+                              migration_test_destroy);
+ }
++
++/*
++ * Wait for a "MIGRATION" event.  This is what Libvirt uses to track
++ * migration status changes.
++ */
++void migration_event_wait(QTestState *s, const char *target)
++{
++    QDict *response, *data;
++    const char *status;
++    bool found;
++
++    do {
++        response = qtest_qmp_eventwait_ref(s, "MIGRATION");
++        data = qdict_get_qdict(response, "data");
++        g_assert(data);
++        status = qdict_get_str(data, "status");
++        found = (strcmp(status, target) == 0);
++        qobject_unref(response);
++    } while (!found);
++}
 diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index 13b59d4c10..9ae8892e26 100644
+index 9ae8892e26..a16b1a4824 100644
 --- a/tests/qtest/migration-test.c
 +++ b/tests/qtest/migration-test.c
-@@ -841,6 +841,13 @@ static int test_migrate_start(QTestState **from, QTestState **to,
-         unlink(shmem_path);
-     }
+@@ -1402,6 +1402,12 @@ static void postcopy_recover_fail(QTestState *from, QTestState *to)
+     migrate_recover(to, "fd:fd-mig");
+     migrate_qmp(from, to, "fd:fd-mig", NULL, "{'resume': true}");
  
 +    /*
-+     * Always enable migration events.  Libvirt always uses it, let's try
-+     * to mimic as closer as that.
++     * Source QEMU has an extra RECOVER_SETUP phase, dest doesn't have it.
++     * Make sure it appears along the way.
 +     */
-+    migrate_set_capability(*from, "events", true);
-+    migrate_set_capability(*to, "events", true);
++    migration_event_wait(from, "postcopy-recover-setup");
 +
-     return 0;
- }
- 
+     /*
+      * Make sure both QEMU instances will go into RECOVER stage, then test
+      * kicking them out using migrate-pause.
 -- 
 2.45.0
 
