@@ -2,72 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF08890A5F5
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jun 2024 08:35:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C39CA90A608
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jun 2024 08:37:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sJ5xP-0003bs-3J; Mon, 17 Jun 2024 02:35:11 -0400
+	id 1sJ5zU-0004cM-DY; Mon, 17 Jun 2024 02:37:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sJ5xH-00036T-8K
- for qemu-devel@nongnu.org; Mon, 17 Jun 2024 02:35:04 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sJ5xF-0004SG-Gj
- for qemu-devel@nongnu.org; Mon, 17 Jun 2024 02:35:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1718606100;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=PuOQd7/PcJe9eHoS20W1qnfjGztZnm9mwbjQ+Eqjxvs=;
- b=fJAhsIe8E/HAlNAhFE1gK0aqZmD6/UWdG1TBTXYNix2uGgW/Ksx8P9gka+m3HRg/BATD9Y
- cAGFSfnE/In8XTOd99CSN4fP/iJ9r88GAqs6K3VhFgAhLXGFzNBYG5mGjBjC+c+WZZIUB5
- Z/mraXrVa753e0Fu6DrVkFnOLkxYapw=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-571-tGjKw_zzO7KAf-QmrocSnQ-1; Mon,
- 17 Jun 2024 02:34:56 -0400
-X-MC-Unique: tGjKw_zzO7KAf-QmrocSnQ-1
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9DF8619560AB; Mon, 17 Jun 2024 06:34:55 +0000 (UTC)
-Received: from corto.redhat.com (unknown [10.39.192.49])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id EDD003000218; Mon, 17 Jun 2024 06:34:53 +0000 (UTC)
-From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Eric Auger <eric.auger@redhat.com>,
- Zhenzhong Duan <zhenzhong.duan@intel.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH v2 17/17] vfio/container: Move vfio_container_destroy() to an
- instance_finalize() handler
-Date: Mon, 17 Jun 2024 08:34:09 +0200
-Message-ID: <20240617063409.34393-18-clg@redhat.com>
-In-Reply-To: <20240617063409.34393-1-clg@redhat.com>
-References: <20240617063409.34393-1-clg@redhat.com>
+ (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
+ id 1sJ5zR-0004bn-EX
+ for qemu-devel@nongnu.org; Mon, 17 Jun 2024 02:37:17 -0400
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
+ id 1sJ5zP-0005GX-Ia
+ for qemu-devel@nongnu.org; Mon, 17 Jun 2024 02:37:17 -0400
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-1f6fd08e0f2so27825015ad.3
+ for <qemu-devel@nongnu.org>; Sun, 16 Jun 2024 23:37:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1718606234; x=1719211034; darn=nongnu.org;
+ h=content-transfer-encoding:content-language:in-reply-to:mime-version
+ :user-agent:date:message-id:from:references:to:subject:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=BFVoLJ7X2OYIKujX9dD2WqeGSE+k5lfHpQNK/dtVK/A=;
+ b=XHvgNPW6Ux+iLmHn88Z7znsFHaaAr69CGmaEuyCxjhjn0kA+M4i/SrCHWqOTPNOqXJ
+ UFTjC3al6TZxznzDWn2L5eiUaYMsX+26aKDUiBUm22SB2vlWR88hHfNuFBL0G2+a4QX7
+ D47Zh+oDd/W0oCMDHk19wDNPIrZR+IopTt+8KClYDMu8Qx+uOUIdXGN2o6HzJLgJ+bJn
+ 1nd6c210OQP/mKEDhkpdb6hFkGkL+YZ1EC1KDRywLx8huO5aQ2+DB3w9dhDHdnGUK5An
+ J/DgPKkaQ26BK0sWR5xgJuYndgXl3DuvEjXK+dR2hQQGH7ozPTlZ+ZbUW0zDZIsUzAmL
+ p5GQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1718606234; x=1719211034;
+ h=content-transfer-encoding:content-language:in-reply-to:mime-version
+ :user-agent:date:message-id:from:references:to:subject
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=BFVoLJ7X2OYIKujX9dD2WqeGSE+k5lfHpQNK/dtVK/A=;
+ b=c0McNKXhbUttkatbyqGXRFPNnvmsS7NaV+A/yJ8XQFZhV0NOk6j5lKNvj7XRXVfuDJ
+ OGzCHZIhcqHt/i+P0GSz9JOfiJYcHCIHKIN0C+/LpiHx9A0bEzUjFUYMkxpC8aTbxqBX
+ ydLqEnikIljdfNblL1sVGTn6/nBpM0wFGlKqKdPQ/BrT7lsrj22h46Yk4+99qfAKe9MJ
+ rhIr4wsgSJpif2d5HtRDKLFUoRVCcqmGyQLzV60im4S9uMCHihgTAEPeX/75FnvLS6CZ
+ tVYBlWg7NydBL+oiPY4iYWIsT3ozGbEPBCc4wZn0KLMnlHt0HspPE2nc/q44nC/e5rfI
+ 59hA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWPumDF8bU4GP5Nb1zxp31QYYFOl8MaJMHTBCxmik3Qtj9ywEie/TyMW5HlPPtw0j+CVpd9EO0mVfvMjAmw9G8DWtNnVUk=
+X-Gm-Message-State: AOJu0YyWuQeG4TPZCp1lzm1VT8L36q6ORkOyINIsjVNA7cgnFYlt5D2o
+ eQCnvCDUYaAMc7XRuLpGFB6Fymh2lf7fhh3omQfkQy5f68MAjOONWd9ALrX4xvX0RV6Y20JyrTL
+ a
+X-Google-Smtp-Source: AGHT+IGYHFf61Kxgyb0MsCB7BZ2eUqlNrSO/Npbb38Wo0Yed3KP0B8AVs+Gr/LEtxY1OvUssYrV7fw==
+X-Received: by 2002:a17:903:41c8:b0:1f7:1edf:4404 with SMTP id
+ d9443c01a7336-1f8629006d9mr100992345ad.43.1718606233836; 
+ Sun, 16 Jun 2024 23:37:13 -0700 (PDT)
+Received: from ?IPv6:2804:7f0:b400:8dcb:db2a:52bb:5a8e:66c5?
+ ([2804:7f0:b400:8dcb:db2a:52bb:5a8e:66c5])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-1f855ee9e3csm73480085ad.169.2024.06.16.23.37.11
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 16 Jun 2024 23:37:13 -0700 (PDT)
+Subject: Re: [PATCH v2 5/9] target/arm: Make some MTE helpers widely available
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, peter.maydell@linaro.org, alex.bennee@linaro.org,
+ richard.henderson@linaro.org
+References: <20240613172103.2987519-1-gustavo.romero@linaro.org>
+ <20240613172103.2987519-6-gustavo.romero@linaro.org>
+ <49457f87-2b07-4e62-98ee-893f57a3ca2a@linaro.org>
+ <e1a79665-62c3-5511-b7ad-baf8e72a17b1@linaro.org>
+ <18b942c0-ffc9-48c6-aded-cd68fd54384a@linaro.org>
+From: Gustavo Romero <gustavo.romero@linaro.org>
+Message-ID: <5baa478d-5e52-2431-0131-1d25c9600e2a@linaro.org>
+Date: Mon, 17 Jun 2024 03:37:10 -0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+In-Reply-To: <18b942c0-ffc9-48c6-aded-cd68fd54384a@linaro.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 11
-X-Spam_score: 1.1
-X-Spam_bar: +
-X-Spam_report: (1.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.148,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=gustavo.romero@linaro.org; helo=mail-pl1-x631.google.com
+X-Spam_score_int: -47
+X-Spam_score: -4.8
+X-Spam_bar: ----
+X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-2.677,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,83 +103,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-vfio_container_destroy() clears the resources allocated
-VFIOContainerBase object. Now that VFIOContainerBase is a QOM object,
-add an instance_finalize() handler to do the cleanup. It will be
-called through object_unref().
+Hi Phil,
 
-Suggested-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Signed-off-by: Cédric Le Goater <clg@redhat.com>
----
- include/hw/vfio/vfio-container-base.h | 3 ---
- hw/vfio/container-base.c              | 4 +++-
- hw/vfio/container.c                   | 2 --
- hw/vfio/iommufd.c                     | 1 -
- 4 files changed, 3 insertions(+), 7 deletions(-)
+On 6/14/24 9:34 AM, Philippe Mathieu-Daudé wrote:
+> On 13/6/24 20:13, Gustavo Romero wrote:
+>> Hi Phil!
+>>
+>> On 6/13/24 2:32 PM, Philippe Mathieu-Daudé wrote:
+>>> Hi Gustavo,
+>>>
+>>> On 13/6/24 19:20, Gustavo Romero wrote:
+>>>> Make the MTE helpers allocation_tag_mem_probe, load_tag1, and store_tag1
+>>>> available to other subsystems by moving them from mte_helper.c to a new
+>>>> header file, mte_helper.h.
+>>>>
+>>>> Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
+>>>> ---
+>>>>   target/arm/tcg/mte_helper.c | 184 +------------------------------
+>>>>   target/arm/tcg/mte_helper.h | 211 ++++++++++++++++++++++++++++++++++++
+>>>>   2 files changed, 212 insertions(+), 183 deletions(-)
+>>>>   create mode 100644 target/arm/tcg/mte_helper.h
+> 
+> 
+>>>> + */
+>>>> +
+>>>> +#ifndef TARGET_ARM_MTE_H
+>>>> +#define TARGET_ARM_MTE_H
+>>>> +
+>>>> +#include "exec/exec-all.h"
+>>>
+>>> Why do you need "exec/exec-all.h"?
+>>
+>> Otherwise one gets:
+>>
+>> In file included from ../target/arm/gdbstub.c:30:
+>> ../target/arm/tcg/mte_helper.h: In function ‘allocation_tag_mem_probe’:
+>> ../target/arm/tcg/mte_helper.h:77:9: error: implicit declaration of function ‘cpu_loop_exit_sigsegv’; did you mean ‘cpu_loop_exit_noexc’? [-Werror=implicit-function-declaration]
+>>     77 |         cpu_loop_exit_sigsegv(env_cpu(env), ptr, ptr_access,
+>>        |         ^~~~~~~~~~~~~~~~~~~~~
+>>        |         cpu_loop_exit_noexc
+>> ../target/arm/tcg/mte_helper.h:77:9: error: nested extern declaration of ‘cpu_loop_exit_sigsegv’ [-Werror=nested-externs]
+>>
+>> Any other idea on how to satisfy it?
+> 
+> OK, I'll fix once I get my include/exec/ rework merged.
+> 
+>>>> +#include "exec/ram_addr.h"
+>>>> +#include "hw/core/tcg-cpu-ops.h"
+>>>> +#include "qemu/log.h"
+>>>> +
+>>>> +/**
+>>>> + * allocation_tag_mem_probe:
+>>>> + * @env: the cpu environment
+>>>> + * @ptr_mmu_idx: the addressing regime to use for the virtual address
+>>>> + * @ptr: the virtual address for which to look up tag memory
+>>>> + * @ptr_access: the access to use for the virtual address
+>>>> + * @ptr_size: the number of bytes in the normal memory access
+>>>> + * @tag_access: the access to use for the tag memory
+>>>> + * @probe: true to merely probe, never taking an exception
+>>>> + * @ra: the return address for exception handling
+>>>> + *
+>>>> + * Our tag memory is formatted as a sequence of little-endian nibbles.
+>>>> + * That is, the byte at (addr >> (LOG2_TAG_GRANULE + 1)) contains two
+>>>> + * tags, with the tag at [3:0] for the lower addr and the tag at [7:4]
+>>>> + * for the higher addr.
+>>>> + *
+>>>> + * Here, resolve the physical address from the virtual address, and return
+>>>> + * a pointer to the corresponding tag byte.
+>>>> + *
+>>>> + * If there is no tag storage corresponding to @ptr, return NULL.
+>>>> + *
+>>>> + * If the page is inaccessible for @ptr_access, or has a watchpoint, there are
+>>>> + * three options:
+>>>> + * (1) probe = true, ra = 0 : pure probe -- we return NULL if the page is not
+>>>> + *     accessible, and do not take watchpoint traps. The calling code must
+>>>> + *     handle those cases in the right priority compared to MTE traps.
+>>>> + * (2) probe = false, ra = 0 : probe, no fault expected -- the caller guarantees
+>>>> + *     that the page is going to be accessible. We will take watchpoint traps.
+>>>> + * (3) probe = false, ra != 0 : non-probe -- we will take both memory access
+>>>> + *     traps and watchpoint traps.
+>>>> + * (probe = true, ra != 0 is invalid and will assert.)
+>>>> + */
+>>>> +static inline uint8_t *allocation_tag_mem_probe(CPUARMState *env, int ptr_mmu_idx,
+>>>> +                                         uint64_t ptr, MMUAccessType ptr_access,
+>>>> +                                         int ptr_size, MMUAccessType tag_access,
+>>>> +                                         bool probe, uintptr_t ra)
+>>>
+>>> Do we really need an inlined function? Since it calls non-inlined
+>>> methods, I don't really see the point.
+>>
+>> inline is just a hint and I think that in general at least the overhead
+>> for calling this function is reduced, but it's hard to say what the
+>> compile heuristics will do exactly without looking at the compiled code.
+> 
+> My question is about having the function definition in an header,
+> instead of its prototype (and the definition in a .c source file).
 
-diff --git a/include/hw/vfio/vfio-container-base.h b/include/hw/vfio/vfio-container-base.h
-index 6242a62771caa8cf19440a53ad6f4db862ca12d7..419e45ee7a5ac960dae4a993127fc9ee66d48db2 100644
---- a/include/hw/vfio/vfio-container-base.h
-+++ b/include/hw/vfio/vfio-container-base.h
-@@ -86,9 +86,6 @@ int vfio_container_set_dirty_page_tracking(VFIOContainerBase *bcontainer,
- int vfio_container_query_dirty_bitmap(const VFIOContainerBase *bcontainer,
-                    VFIOBitmap *vbmap, hwaddr iova, hwaddr size, Error **errp);
- 
--void vfio_container_destroy(VFIOContainerBase *bcontainer);
--
--
- #define TYPE_VFIO_IOMMU "vfio-iommu"
- #define TYPE_VFIO_IOMMU_LEGACY TYPE_VFIO_IOMMU "-legacy"
- #define TYPE_VFIO_IOMMU_SPAPR TYPE_VFIO_IOMMU "-spapr"
-diff --git a/hw/vfio/container-base.c b/hw/vfio/container-base.c
-index 970ae2356a92f87df44e1dd58ff8c67045a24ef1..50b1664f89a8192cf4021498e59f2a92cd2f6e89 100644
---- a/hw/vfio/container-base.c
-+++ b/hw/vfio/container-base.c
-@@ -83,8 +83,9 @@ int vfio_container_query_dirty_bitmap(const VFIOContainerBase *bcontainer,
-                                                errp);
- }
- 
--void vfio_container_destroy(VFIOContainerBase *bcontainer)
-+static void vfio_container_instance_finalize(Object *obj)
- {
-+    VFIOContainerBase *bcontainer = VFIO_IOMMU(obj);
-     VFIOGuestIOMMU *giommu, *tmp;
- 
-     QLIST_REMOVE(bcontainer, next);
-@@ -116,6 +117,7 @@ static const TypeInfo types[] = {
-         .name = TYPE_VFIO_IOMMU,
-         .parent = TYPE_OBJECT,
-         .instance_init = vfio_container_instance_init,
-+        .instance_finalize = vfio_container_instance_finalize,
-         .instance_size = sizeof(VFIOContainerBase),
-         .class_size = sizeof(VFIOIOMMUClass),
-         .abstract = true,
-diff --git a/hw/vfio/container.c b/hw/vfio/container.c
-index 45123acbdd6a681f4ce7cae7aa2509100ea225ab..2e7ecdf10edc4d84963a45ae9507096965da64fc 100644
---- a/hw/vfio/container.c
-+++ b/hw/vfio/container.c
-@@ -712,8 +712,6 @@ static void vfio_disconnect_container(VFIOGroup *group)
-     if (QLIST_EMPTY(&container->group_list)) {
-         VFIOAddressSpace *space = bcontainer->space;
- 
--        vfio_container_destroy(bcontainer);
--
-         trace_vfio_disconnect_container(container->fd);
-         vfio_cpr_unregister_container(bcontainer);
-         close(container->fd);
-diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
-index 09b71a6617807c621275c74b924cfd39eb643961..c2f158e60386502eef267769ac9bce1effb67033 100644
---- a/hw/vfio/iommufd.c
-+++ b/hw/vfio/iommufd.c
-@@ -237,7 +237,6 @@ static void iommufd_cdev_container_destroy(VFIOIOMMUFDContainer *container)
-         return;
-     }
-     memory_listener_unregister(&bcontainer->listener);
--    vfio_container_destroy(bcontainer);
-     iommufd_backend_free_id(container->be, container->ioas_id);
-     object_unref(container);
- }
--- 
-2.45.2
+Got it. I've moved the definition back to .c file and used only the
+protypes in .h. I removed the inline for this function but kept the
+inline for {load,store}_tag1 because I understand they can be easily
+inline by the compiler. Please see v3.
 
+
+Cheers,
+Gustavo
 
