@@ -2,141 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9393390B6FE
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jun 2024 18:49:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3872D90B71F
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jun 2024 18:56:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sJFWx-0006Fc-G1; Mon, 17 Jun 2024 12:48:31 -0400
+	id 1sJFdF-00082d-TT; Mon, 17 Jun 2024 12:55:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nicolinc@nvidia.com>)
- id 1sJFWu-0006Et-7q; Mon, 17 Jun 2024 12:48:28 -0400
-Received: from mail-bn8nam11on20613.outbound.protection.outlook.com
- ([2a01:111:f403:2414::613]
- helo=NAM11-BN8-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <chalapathi.v@linux.ibm.com>)
+ id 1sJFd5-000804-Oo; Mon, 17 Jun 2024 12:54:53 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nicolinc@nvidia.com>)
- id 1sJFWs-0007yH-AO; Mon, 17 Jun 2024 12:48:28 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=hZqqlnPWSH/LnS5kejlDcDnU5krbVzixOKrlO8/KQDIHuO+H2pA88449rWMjjYR+ORBo+JauRxFsLBz0S1xGsU7dXp2yF/ynhcvTjKeBdIq2Cd6sDsQuUnLfyXs41ljSSOn/PJAvqt0YQhCnYPDPYqqp5BBPKoyu6d8O5gbK2d5KDKHpuj/7Ll86NuX3pOJ7vl946mBPdaowr0BGStn0sNDepwLW98mcaVaVmiXZxJFQZjTbeTcZ14chcmjJzTzEG5DXUA1Pgu7lXOYPYkcXZwvPQRHETsQwqNYPhLUmF80pROu1gvrBf9bp9Anrg8PS+5SwI3UilqXq5Q870O15wQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jeS6IFN8PylkDH5q5x0lxMpA5EQv1fXDb2PwjCo8rzs=;
- b=jR85zl6N89bq0RbGgjLEaS+YTwsnLKcnzI2X8WcezwKsbTK5pqZxp61aKJtTK/W9O2960LDNEFF0kT+jGmgmumPYG3JS2QC08T29TwTN1d+Z1wnSIEOQVpEF9yEKDNqUUPEPSDzo2VjdDObthpWaEfMteDQUU5JojdDSM0ixY9UyDNS9JGykKRkHl0406wWrWjEpMA7YKVniM3bTTzApFrzJPSd0jXgNcJvR+xswvwUF8gyEBaZ+/LgqnEiPhNStv4wDFq62K09POo75PhhdVpaBvji4HfV3g/MNsIYEdnQOhkGQuyF/IDgJqxn38d9V1J/vu6ogyYFb2C9ZvJxF3w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=redhat.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jeS6IFN8PylkDH5q5x0lxMpA5EQv1fXDb2PwjCo8rzs=;
- b=HZJj+RPP/SktxWE111NTiaP8JGLnspscg6pNs1+LAJYzHoJiNkrst2j5xhbvLbmYOKoizi7OfUIsNGpPU9OA+fmhhkR5yDhmlbtUwwEZyqBL63zvYvH1QlyGeTOU49m17e6hBnPxEChYOQTcVnEx3ikyufV+gyHXrZSfB5N0hJfXzr3pB5c2CuE1v8lMtBBmp9Xyh/DX9IicubrGD4W02oEtCMTZay7BbW9mjoL9n7l1A7FfDcq8wzbWMmz+T9ICQ3KDlWAs9gXTpSFtE/OXTVq49s2khU2OAHhjLsehi9Ez4JQOEckNsTSF0PJTDfd9bV+XbhOtuEaNVPKj1hx42g==
-Received: from SA1P222CA0054.NAMP222.PROD.OUTLOOK.COM (2603:10b6:806:2d0::29)
- by CH2PR12MB4293.namprd12.prod.outlook.com (2603:10b6:610:7e::19)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7677.30; Mon, 17 Jun
- 2024 16:48:17 +0000
-Received: from SN1PEPF000397B2.namprd05.prod.outlook.com
- (2603:10b6:806:2d0:cafe::cd) by SA1P222CA0054.outlook.office365.com
- (2603:10b6:806:2d0::29) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7677.30 via Frontend
- Transport; Mon, 17 Jun 2024 16:48:17 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com;
- dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- SN1PEPF000397B2.mail.protection.outlook.com (10.167.248.56) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7677.15 via Frontend Transport; Mon, 17 Jun 2024 16:48:16 +0000
-Received: from rnnvmail202.nvidia.com (10.129.68.7) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Mon, 17 Jun
- 2024 09:48:03 -0700
-Received: from rnnvmail203.nvidia.com (10.129.68.9) by rnnvmail202.nvidia.com
- (10.129.68.7) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Mon, 17 Jun
- 2024 09:48:03 -0700
-Received: from Asurada-Nvidia (10.127.8.13) by mail.nvidia.com (10.129.68.9)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4 via Frontend
- Transport; Mon, 17 Jun 2024 09:48:02 -0700
-Date: Mon, 17 Jun 2024 09:48:01 -0700
-From: Nicolin Chen <nicolinc@nvidia.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-CC: <peter.maydell@linaro.org>, <wangxingang5@huawei.com>,
- <shannon.zhaosl@gmail.com>, <imammedo@redhat.com>, <anisinha@redhat.com>,
- <qemu-arm@nongnu.org>, <qemu-devel@nongnu.org>
-Subject: Re: [PATCH] hw/arm/virt-acpi-build: Fix IORT id_count
-Message-ID: <ZnBowWr2UVUD9x3Q@Asurada-Nvidia>
-References: <20240613234802.828265-1-nicolinc@nvidia.com>
- <20240617063156-mutt-send-email-mst@kernel.org>
+ (Exim 4.90_1) (envelope-from <chalapathi.v@linux.ibm.com>)
+ id 1sJFd2-0000bG-9A; Mon, 17 Jun 2024 12:54:51 -0400
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45HGaPPM002028;
+ Mon, 17 Jun 2024 16:54:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
+ :to:cc:subject:date:message-id:mime-version:content-type
+ :content-transfer-encoding; s=pp1; bh=pxYChU6mAZ/I2vESvvTIwLyGMz
+ TnrcZfUZ4poCH+QoA=; b=AdMIAArOi7WjdaVehigx8FcmQ6BE7Mhc9NSzbvGniq
+ +crKY73HPBgykGYXWpS+8eMl0AFf2leU9QiihDjNEQI7E9VmDZhLvG9EhVSlisW1
+ veyaWWY7p6UsgqU7oOh4Iwb+dY4OVH9oUK5eLfK/wlqzFC3i6j9ZM/81cNQILQXH
+ aQQB13Xnv7RKjk8oNHmUjzbB9O3xUhLIhicMdWhGynDK6s85RzXfJOMD23iKXdt2
+ 9anMUcXXvAdx6UMaI/GQNLwCFGELM2D6KD7rj80fOOOjH6f5uaU+wH7Bz9kZ7PED
+ r8PpKN2QA0DNao5ornl6lSw2Bh+g8sa0jrGrUknt8pGw==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ytrpyg2m6-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 17 Jun 2024 16:54:37 +0000 (GMT)
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 45HGrO1x031664;
+ Mon, 17 Jun 2024 16:54:37 GMT
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ytrpyg2m2-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 17 Jun 2024 16:54:37 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 45HFHxSJ019670; Mon, 17 Jun 2024 16:54:36 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3ysnp0v2y9-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 17 Jun 2024 16:54:36 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
+ [10.20.54.105])
+ by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 45HGsUVo41681326
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 17 Jun 2024 16:54:32 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A3E4920040;
+ Mon, 17 Jun 2024 16:54:30 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C9ECC20049;
+ Mon, 17 Jun 2024 16:54:28 +0000 (GMT)
+Received: from gfwr527.rchland.ibm.com (unknown [9.10.239.127])
+ by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Mon, 17 Jun 2024 16:54:28 +0000 (GMT)
+From: Chalapathi V <chalapathi.v@linux.ibm.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-ppc@nongnu.org, fbarrat@linux.ibm.com, npiggin@gmail.com,
+ clg@kaod.org, calebs@us.ibm.com, chalapathi.v@ibm.com,
+ chalapathi.v@linux.ibm.com, saif.abrar@linux.ibm.com,
+ dantan@us.ibm.com, milesg@linux.ibm.com
+Subject: [PATCH v4 0/5] hw/ppc: SPI model
+Date: Mon, 17 Jun 2024 11:54:14 -0500
+Message-Id: <20240617165419.8388-1-chalapathi.v@linux.ibm.com>
+X-Mailer: git-send-email 2.39.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20240617063156-mutt-send-email-mst@kernel.org>
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN1PEPF000397B2:EE_|CH2PR12MB4293:EE_
-X-MS-Office365-Filtering-Correlation-Id: 22b9739d-8d6e-4c68-5146-08dc8eed496a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230037|82310400023|1800799021|376011|36860700010; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?qzDQ7XF4HtYoIsKmgRmhUKVM6nJkX/bnSekt9dnKS8LFvpebhJgJl+QY2L5l?=
- =?us-ascii?Q?Yuzi+C6N5Fk5Hlzdn2lFLoMbe/MAREAKNRo7Bp1Mfpsaiy5yPOfl2mIACHDp?=
- =?us-ascii?Q?DtZ/kQDiLbDyvVFKamtTXHLnw6DRSPhxKzwCRpNTfdX2GzbmCCAybRNSra8h?=
- =?us-ascii?Q?LFWxBEKckVMA77BzZZ76lkbpuae1JBoVP3GWKOQ6v25sGpBiebCEMhk4fB42?=
- =?us-ascii?Q?oGg2tjdPpvAFzBZhg0HE4u1XMBXn1YTaNVnEDZ0jJ2yggiDOLYbJrix3NVq1?=
- =?us-ascii?Q?mp8NOFqqPohc8VepSCDF0Kgt+JyckkbrSy0R4Fxrg+1nXP1zOMYNGpcYPXU2?=
- =?us-ascii?Q?aFvqcJVS6dEx8ffkdF+DIeKAuejp3UsAdla3n9YbgwZBjNeUo6Q0B7PlxDDH?=
- =?us-ascii?Q?p9h/RwkDGUGO2qLJQyHQ66YEQb5y775HDNJAiQypeIYq7nP6nrtcoolOS1dt?=
- =?us-ascii?Q?yXW6NE0A+7zIpgFiXhAinixnpS8Mou8KjPDGd0WTb/13l2t8XMSx2zzWGYBq?=
- =?us-ascii?Q?S1vlCAwH0l4Si7dkrn4GhapaJZbWeAOPuAPeWKnOar05C07hlNszM1u8pRJd?=
- =?us-ascii?Q?CPsgOnGg53fq6c2vfWBSuHsXZtMAFrVi5VI2ABW86GpmjHr/B4NM2zdgkj31?=
- =?us-ascii?Q?kZSpx4jQFK7hZeqIAA9UhA+IfrsXSRojEmX/HPJ1/eRipRKaFmMglY8rtBxc?=
- =?us-ascii?Q?qNTt2kZ9bMAsU2wG6I8I5U7LGZsOZ/pK3nwFDcAnZHtsVoyLK4ca4C6mppEx?=
- =?us-ascii?Q?pyt1hGsytJalTt8VS0XkY6MjsjQPm3/kYHzrpkBgTCKo0bG+7vG81I29E7zv?=
- =?us-ascii?Q?YM+/x/xm+ybgIxSnJ4HoFwa5lE034QqFcnTMwyxnZXp+x+Aq0B3KN6lP2QWY?=
- =?us-ascii?Q?IQRX+hUA1bAqUt34zNZtdC1vAyUaX9DzsQNED0RWx3zxR/kTDcMV44GeeQzk?=
- =?us-ascii?Q?hLrMQ15ClswY/hu62lR1FbVFA+dunmVBQE5zIlGuvcG9Ng+Y20HxCQgNf9vk?=
- =?us-ascii?Q?7H8ICM5ERaNSi3Lnz0ameIrSUJOgqHgp1abU4xiCNQHPNykJx/+csCgs5I3O?=
- =?us-ascii?Q?wKv4TMA/mXERMNASu+M3xb5Klh8ryDnbF5U9LuINpTNRifTJdUuzJFKmx3VT?=
- =?us-ascii?Q?Ijq9q76k4WrpkzrPI6ZLGkqut3lXh+6oQN26nGcMn2ju8Vp3VdLZSagks8bW?=
- =?us-ascii?Q?esbRu0EOaQr6aPX2uqAxYiFdCqWWvOvUwN46tDhoddn+GNz7wSfftTW5V/If?=
- =?us-ascii?Q?/oaPMSqTAtEPdlex5kUXqjfKDkhbsPXZJQzO9HQyKIWSzC+SRlt0yfJPMHQM?=
- =?us-ascii?Q?6swFbFKTpYVkTb7L12w+Ljk8v2cPnNYfnRflzRGe4ZHqWYiecN6bub4o4LRe?=
- =?us-ascii?Q?K1LmfpaXpayit44BXEt/oQbMhkgijX8Ko1iTfGh6YdKorrv+NA=3D=3D?=
-X-Forefront-Antispam-Report: CIP:216.228.117.161; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc6edge2.nvidia.com; CAT:NONE;
- SFS:(13230037)(82310400023)(1800799021)(376011)(36860700010); DIR:OUT;
- SFP:1101; 
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2024 16:48:16.8303 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 22b9739d-8d6e-4c68-5146-08dc8eed496a
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.117.161];
- Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource: SN1PEPF000397B2.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4293
-Received-SPF: softfail client-ip=2a01:111:f403:2414::613;
- envelope-from=nicolinc@nvidia.com;
- helo=NAM11-BN8-obe.outbound.protection.outlook.com
-X-Spam_score_int: -22
-X-Spam_score: -2.3
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: R1FlyxAWin6xSXwZFS0TaYxT08ZyUS9T
+X-Proofpoint-GUID: 9oTh7EYIUPtEtqpdgXen1Ay9yNw3OpPN
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-06-17_14,2024-06-17_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 bulkscore=0
+ clxscore=1015 mlxlogscore=603 spamscore=0 impostorscore=0 phishscore=0
+ priorityscore=1501 adultscore=0 mlxscore=0 suspectscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2405170001 definitions=main-2406170131
+Received-SPF: pass client-ip=148.163.158.5;
+ envelope-from=chalapathi.v@linux.ibm.com; helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.148,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -153,94 +111,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jun 17, 2024 at 06:41:55AM -0400, Michael S. Tsirkin wrote:
-> On Thu, Jun 13, 2024 at 04:48:02PM -0700, Nicolin Chen wrote:
-> > The IORT doc defines "Number of IDs" ("id_count" in the virt-acpi-build)
-> > to be "the number of IDs in the range minus one". Otherwise, Linux kernel
-> > reports "conflicting mapping for input ID" FW_BUG at the overlapped ID.
-> >
-> > Fixes: 42e0f050e3a5 ("hw/arm/virt-acpi-build: Add IORT support to bypass SMMUv3")
-> > Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
-> > ---
-> >  hw/arm/virt-acpi-build.c | 5 ++++-
-> >  1 file changed, 4 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
-> > index c3ccfef026..b9343dde0f 100644
-> > --- a/hw/arm/virt-acpi-build.c
-> > +++ b/hw/arm/virt-acpi-build.c
-> > @@ -243,7 +243,8 @@ iort_host_bridges(Object *obj, void *opaque)
-> >
-> >              AcpiIortIdMapping idmap = {
-> >                  .input_base = min_bus << 8,
-> > -                .id_count = (max_bus - min_bus + 1) << 8,
-> > +                /* id_count is the number of IDs in the range minus one */
-> > +                .id_count = ((max_bus - min_bus + 1) << 8) - 1,
-> >              };
-> >              g_array_append_val(idmap_blob, idmap);
-> >          }
-> > @@ -298,7 +299,9 @@ build_iort(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
-> >              idmap = &g_array_index(smmu_idmaps, AcpiIortIdMapping, i);
-> >
-> >              if (next_range.input_base < idmap->input_base) {
-> > +                /* id_count is the number of IDs in the range minus one */
-> >                  next_range.id_count = idmap->input_base - next_range.input_base;
-> > +                next_range.id_count -= 1;
-> 
-> I would just add - 1 on the previous line, instead of making it
-> incorrect then correcting it.
+Hello,
 
-OK. Let's do this then:
--                next_range.id_count = idmap->input_base - next_range.input_base;
-+                /* id_count is the number of IDs in the range minus one */
-+                next_range.id_count = idmap->input_base -
-+                                      next_range.input_base - 1;
+Thank You so much for reviewing patch v3.
+In patch v4, 
+- Renamed hw/ppc/pnv_spi_controller.c to /hw/ssi/pnv_spi.c
+- To improve the readability register/field names is shortened.
+- SPI registers are put in array to simplify read/write method.
+- In seeprom qtest generated the tmp_image to test SPI transactions
+  between spi controller and seeprom device
 
-> 
-> >                  g_array_append_val(its_idmaps, next_range);
-> >              }
-> 
-> 
-> But the value is used later:
-> 
->             next_range.input_base = idmap->input_base + idmap->id_count;
-> 
-> Wouldn't that make next_range incorrect?
+The new qom-tree looks like below.
+(qemu) info qom-tree 
+/machine (powernv10-machine)
+  /chip[0] (power10_v2.0-pnv-chip)
+    /pib_spic[0] (pnv-spi)
+      /pnv-spi-bus.0 (SSI)
+      /xscom-spi-regs[0] (memory-region)
+    /pib_spic[1] (pnv-spi)
+      /pnv-spi-bus.1 (SSI)
+      /xscom-spi-regs[0] (memory-region)
+    /pib_spic[2] (pnv-spi)
+      /pnv-spi-bus.2 (SSI)
+      /xscom-spi-regs[0] (memory-region)
+    /pib_spic[3] (pnv-spi)
+      /pnv-spi-bus.3 (SSI)
+      /xscom-spi-regs[0] (memory-region)
+    /pib_spic[4] (pnv-spi)
+      /pnv-spi-bus.4 (SSI)
+      /xscom-spi-regs[0] (memory-region)
+    /pib_spic[5] (pnv-spi)
+      /pnv-spi-bus.5 (SSI)
+      /xscom-spi-regs[0] (memory-region)
 
-Ah, missed that. Thanks!
+(qemu) info qom-tree 
+/machine (powernv10-machine)
+  /peripheral-anon (container)
+    /device[0] (25csm04)
+      /WP#[0] (irq)
+      /ssi-gpio-cs[0] (irq)
 
--            next_range.input_base = idmap->input_base + idmap->id_count;
-+            next_range.input_base = idmap->input_base + idmap->id_count + 1;
+Patches overview in v4.
+PATCH1: Create a PNV SPI model and implement configuration unit
+        to model SCOM registers.
+PATCH2: Extend PNV SPI model: implement sequencer FSM and shift engine.
+PATCH3: Add Microchip's SEEPROM 25csm04 model on top of m25p80.
+PATCH4: Connect SPI controllers to p10 chip and connect cs lines.
+PATCH5: Write a qtest pnv-spi-seeprom-test to check the SPI transactions
+        between spi controller and seeprom device.
 
-> 
-> I also note that
-> 
-> static void build_iort_id_mapping(GArray *table_data, uint32_t input_base,
->                                   uint32_t id_count, uint32_t out_ref)
-> {
->     /* Table 4 ID mapping format */
->     build_append_int_noprefix(table_data, input_base, 4); /* Input base */
->     build_append_int_noprefix(table_data, id_count, 4); /* Number of IDs */
->     build_append_int_noprefix(table_data, input_base, 4); /* Output base */
->     build_append_int_noprefix(table_data, out_ref, 4); /* Output Reference */
->     /* Flags */
->     build_append_int_noprefix(table_data, 0 /* Single mapping (disabled) */, 4);
-> }
-> 
-> 
-> That comment
->     /* Table 4 ID mapping format */
-> 
-> really should be before the function and it should mention the spec
-> it's from - specifically the earliest spec including the relevant table.
+Test covered:
+make check
+make check-avocado
 
-Well, it's an inline-like function called by build_iort() only,
-where there is a function header mentioning the doc.
+Thank You,
+Chalapathi
 
-Should this function have to repeat?
+Chalapathi V (5):
+  ppc/pnv: Add SPI model
+  ppc/pnv: Extend SPI model
+  hw/block: Add Microchip's 25CSM04 to m25p80
+  hw/ppc: SPI controller wiring to P10 chip
+  tests/qtest: Add pnv-spi-seeprom qtest
 
-Anyway, that would be a different patch. I'll submit a v2 first.
+ include/hw/ppc/pnv_chip.h          |    3 +
+ include/hw/ppc/pnv_xscom.h         |    5 +-
+ include/hw/ssi/pnv_spi.h           |   86 ++
+ include/hw/ssi/pnv_spi_regs.h      |  114 +++
+ hw/block/m25p80.c                  |    3 +
+ hw/ppc/pnv.c                       |   21 +-
+ hw/ssi/pnv_spi.c                   | 1249 ++++++++++++++++++++++++++++
+ tests/qtest/pnv-spi-seeprom-test.c |  110 +++
+ hw/ppc/Kconfig                     |    3 +
+ hw/ssi/Kconfig                     |    4 +
+ hw/ssi/meson.build                 |    1 +
+ hw/ssi/trace-events                |   21 +
+ tests/qtest/meson.build            |    1 +
+ 13 files changed, 1619 insertions(+), 2 deletions(-)
+ create mode 100644 include/hw/ssi/pnv_spi.h
+ create mode 100644 include/hw/ssi/pnv_spi_regs.h
+ create mode 100644 hw/ssi/pnv_spi.c
+ create mode 100644 tests/qtest/pnv-spi-seeprom-test.c
 
-Thank you
-Nicolin
+-- 
+2.39.3
+
 
