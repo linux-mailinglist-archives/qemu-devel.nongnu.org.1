@@ -2,68 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64A9890BA7F
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jun 2024 21:03:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CDCEF90BA6B
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jun 2024 21:01:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sJHYg-0003xx-G2; Mon, 17 Jun 2024 14:58:26 -0400
+	id 1sJHYi-0003yI-46; Mon, 17 Jun 2024 14:58:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <itachis6234@gmail.com>)
- id 1sJHYe-0003xY-Ci
- for qemu-devel@nongnu.org; Mon, 17 Jun 2024 14:58:24 -0400
+ id 1sJHYg-0003y4-B9
+ for qemu-devel@nongnu.org; Mon, 17 Jun 2024 14:58:26 -0400
 Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <itachis6234@gmail.com>)
- id 1sJHYc-0004vn-OY
- for qemu-devel@nongnu.org; Mon, 17 Jun 2024 14:58:24 -0400
+ id 1sJHYe-0004vt-J8
+ for qemu-devel@nongnu.org; Mon, 17 Jun 2024 14:58:26 -0400
 Received: by mail-pf1-x42d.google.com with SMTP id
- d2e1a72fcca58-70435f4c330so3765201b3a.1
- for <qemu-devel@nongnu.org>; Mon, 17 Jun 2024 11:58:22 -0700 (PDT)
+ d2e1a72fcca58-705e9e193caso1749147b3a.2
+ for <qemu-devel@nongnu.org>; Mon, 17 Jun 2024 11:58:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1718650700; x=1719255500; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=2lue1NYs8pzYvkVM8I+Vf9elZ0KvTkfQjkhNGZa4vlA=;
- b=UZZolZNlBVDALp+f7G0XEVvFRHyo7LHwSZCU4KYGU+CyWk1dzJxkBF56YgCKb25LFz
- 9/Z5/B7IPLsOtDfx7AN3eZzY34BKrXvq4dnCJ6DPG/wLmdlyEj95WErcQ5sjJ1pOugrW
- WT0OJW5KDhsyh+l0e0PoDWz8QVrFtjVioOnG+QKb19+pIbq5gb0O7Wa5hJU8NlrfMF3X
- oH8jQcn/+5C5z1BEG5CEDGV+SCX7pBNnLUd1IHZjva/lbhLMadrcHNytPbyJ/PFVhk8m
- 2mMCF3xzM2eJ9IOcgBEneik5N3rr3970HkZUb9bZqo+Y5K6AlrMM+hBS8/KRreQmUDl3
- nJwQ==
+ d=gmail.com; s=20230601; t=1718650703; x=1719255503; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=/RYBeS7YMWG5zCOUP6t7XOOwmqZaXoAkyXHOLEzgJdI=;
+ b=bV5RjFcq7BBUkxSZ1ezRBHzcKCsRjQfW8Q0GV4OtZCAcFYaU7eGMCkT4+wWNjhBaZ3
+ U22x4XD0vDrlWD1JOvQRFkw2pLg8HXuXhhA/javLI+MPwklZELTqeIYJbWjTKFL3mjoG
+ 4gzxzBVDiWvOIfakKMguRAUQGZoqC1E+hk1Oa9UhMYwTK2T7EVEfAQRE28vB8WRY3Yrs
+ 0+h4mvGLhmnUIsjrM+9llpbX+EBylIDxRxhyIFqbiCjNzkxjQlHxhBpPRJ3rYYhKSHo3
+ ZJTrz5MN9+Sa81Vw/fgzDCl0m1AUnmkncONxNbNedkOIem5wsTtc62Z4yHalvsj8Z1QJ
+ aO2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718650700; x=1719255500;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=2lue1NYs8pzYvkVM8I+Vf9elZ0KvTkfQjkhNGZa4vlA=;
- b=dRCBqwGsOU9h6tru2qusRFlK9LOaGHWWHE6ZhHut1Gf/e76iH1ChUwHUaDVoJJ591z
- rXx9HyEHBPdLA/Kwa1AdilJ2aZVs9Br8VjM2wCEEuG4kILU/ofq5aEyZ3Dh3zd3QJ1Sf
- 5EP0/genT+JwWqmhZfc/88S6vCSdR+Mymp+j8IZhPb/OjMffzm9ZRQU/MbGjVByaqoUR
- tF++8fv7Vr38lBnbWY8D0nM8HJKnMbN7AOaXudIuJzgZz2GYUGBEcGU7aDTKnu6QwnEb
- cfEmCqbLbF6yWj41krBugM9FJUBcqppD97Ks2kbkrnBDXYpOipqxtOlU608w5C3Rv922
- OvKA==
-X-Gm-Message-State: AOJu0YwZlEQwaavxjtWGsbPd/oaAwFFyxOzH8vPeazAzCEiYYB1pzE9Y
- Y+JIQENX/i4TmrmEs1DwkTwiJCSMdJ66P5uuRrHWSXHOJuM5/7vBFpJceVOFCik=
-X-Google-Smtp-Source: AGHT+IE0rOOemu0InWND8vW9CAm87ESOdH2Dc3rNpuW+SLCbiXyViu/dkHyHSIeXL8LxeoJMSW1KQA==
-X-Received: by 2002:a05:6a20:9148:b0:1b2:cf6c:d5a4 with SMTP id
- adf61e73a8af0-1bae82ecde1mr11046839637.61.1718650700311; 
- Mon, 17 Jun 2024 11:58:20 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1718650703; x=1719255503;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=/RYBeS7YMWG5zCOUP6t7XOOwmqZaXoAkyXHOLEzgJdI=;
+ b=JTlZ+DDftKBBbLLXRvrJEYInVzu4BD+5PRtvbPA7AUbnAnrEe6hljw7Ownl8CtLX3J
+ MA59IlPo87ScTQg9uZYg+PDlHYh/yhIPQnupnMUjkjb1jqOfoaMMZoSr+/tFwkHnGfNO
+ i0UgWy4nwO/P5gyAD9mitYwokB0FTgx+kFR9zoywDaL2Ar4AEmoUjdazNz6/H4Pugo2e
+ RHrnyoJTUzLExPMJWEgQ6Tl/Pi2cjYflXHgo8PzMaD6wRBjenZ4qMmyQIImeAYXUTvys
+ 2sKP29Ieis+ey3apzh+rao4R00jx8Ar5EoRFvSzhKBINL1EvuBAS9AUoJGKRTXhXoSBn
+ vRtg==
+X-Gm-Message-State: AOJu0Ywv+a7M9Lw/sVt1/gbelfkJAgNg4MuMnTGhNYzB0PkP3EClit5z
+ be5vhZqHi5H7RTr1dGaH+6iINQvxMyfxdta2WYOPbFkgBvMaDEFRVagQ2VzHufE=
+X-Google-Smtp-Source: AGHT+IF5LB5NTjbLsChGJTJVAn6dQkh1KOyI3qYI/CPKzkhkA4UbiluEtO7/wRCxmPq7juRzYBf1rw==
+X-Received: by 2002:a05:6a00:cc:b0:705:9cf6:bc21 with SMTP id
+ d2e1a72fcca58-705d70f7276mr9973918b3a.12.1718650702418; 
+ Mon, 17 Jun 2024 11:58:22 -0700 (PDT)
 Received: from localhost.localdomain ([106.222.222.115])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-705ccb4aa4fsm7660637b3a.131.2024.06.17.11.58.18
+ d2e1a72fcca58-705ccb4aa4fsm7660637b3a.131.2024.06.17.11.58.20
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 17 Jun 2024 11:58:20 -0700 (PDT)
+ Mon, 17 Jun 2024 11:58:22 -0700 (PDT)
 From: Ajeet Singh <itachis6234@gmail.com>
 X-Google-Original-From: Ajeet Singh <itachis@FreeBSD.org>
 To: qemu-devel@nongnu.org
 Cc: Warner Losh <imp@bsdimp.com>, Ajeet Singh <itachis@freebsd.org>,
- Ajeet Singh <itachis@FreeBSD.org>
-Subject: [PATCH 00/23] ARM AArch64 Support for BSD
-Date: Tue, 18 Jun 2024 00:27:41 +0530
-Message-Id: <20240617185804.25075-1-itachis@FreeBSD.org>
+ Stacey Son <sson@FreeBSD.org>, Ajeet Singh <itachis@FreeBSD.org>
+Subject: [PATCH 01/23] Add CPU initialization function
+Date: Tue, 18 Jun 2024 00:27:42 +0530
+Message-Id: <20240617185804.25075-2-itachis@FreeBSD.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240617185804.25075-1-itachis@FreeBSD.org>
+References: <20240617185804.25075-1-itachis@FreeBSD.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
@@ -91,61 +94,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-making sure to credit all the authors correctly
+From: Stacey Son <sson@FreeBSD.org>
 
-Stacey Son (18):
-  Add CPU initialization function
-  Added CPU loop function
-  Added function to clone CPU state
-  AArch64 specific CPU for bsd-user
-  Managing CPU register for BSD-USER
-  Add Aarch64 register handling
-  Add ARM AArch64 TLS Management Prototypes for BSD-User
-  Add Aarch64 sysarch() system call emulation for BSD-USER
-  Add thread setup for BSD-USER
-  Add thread initialization for BSD-USER
-  Update ARM AArch64 VM parameter definitions for bsd-user
-  Add ARM AArch64 ELF definitions for bsd-user
-  Add ARM AArch64 sigcode setup function for bsd-user
-  Add ARM AArch64 specific signal definitions for bsd-user
-  Add ARM AArch64 signal trampoline argument setup for bsd-user
-  Add get_mcontext function for ARM AArch64 in bsd-user
-  Add set_mcontext function for ARM AArch64 in bsd-user
-  Add get_ucontext_sigreturn function
+Addded function to initialize ARM CPU
+and to check if it supports 64 bit mode
 
-Warner Losh (5):
-  Add ability to get rval2
-  Add ARM AArch64 hardware capability definitions
-  Add function to retrieve ARM AArch64 hardware capabilities
-  Add function to retrieve additional ARM AArch64 hwcap
-  Add setup_sigframe_arch function for ARM AArch64 in bsd-user
-
- bsd-user/aarch64/signal.c               | 137 +++++++++++++++++
- bsd-user/aarch64/target_arch.h          |  28 ++++
- bsd-user/aarch64/target_arch_cpu.c      |  34 +++++
- bsd-user/aarch64/target_arch_cpu.h      | 191 ++++++++++++++++++++++++
- bsd-user/aarch64/target_arch_elf.h      | 165 ++++++++++++++++++++
- bsd-user/aarch64/target_arch_reg.h      |  56 +++++++
- bsd-user/aarch64/target_arch_signal.h   |  80 ++++++++++
- bsd-user/aarch64/target_arch_sigtramp.h |  48 ++++++
- bsd-user/aarch64/target_arch_sysarch.h  |  42 ++++++
- bsd-user/aarch64/target_arch_thread.h   |  61 ++++++++
- bsd-user/aarch64/target_arch_vmparam.h  |  74 +++++++++
- bsd-user/aarch64/target_syscall.h       |  51 +++++++
- 12 files changed, 967 insertions(+)
- create mode 100644 bsd-user/aarch64/signal.c
- create mode 100644 bsd-user/aarch64/target_arch.h
- create mode 100644 bsd-user/aarch64/target_arch_cpu.c
+Signed-off-by: Ajeet Singh <itachis@FreeBSD.org>
+Signed-off-by: Stacey Son <sson@FreeBSD.org>
+---
+ bsd-user/aarch64/target_arch_cpu.h | 42 ++++++++++++++++++++++++++++++
+ 1 file changed, 42 insertions(+)
  create mode 100644 bsd-user/aarch64/target_arch_cpu.h
- create mode 100644 bsd-user/aarch64/target_arch_elf.h
- create mode 100644 bsd-user/aarch64/target_arch_reg.h
- create mode 100644 bsd-user/aarch64/target_arch_signal.h
- create mode 100644 bsd-user/aarch64/target_arch_sigtramp.h
- create mode 100644 bsd-user/aarch64/target_arch_sysarch.h
- create mode 100644 bsd-user/aarch64/target_arch_thread.h
- create mode 100644 bsd-user/aarch64/target_arch_vmparam.h
- create mode 100644 bsd-user/aarch64/target_syscall.h
 
+diff --git a/bsd-user/aarch64/target_arch_cpu.h b/bsd-user/aarch64/target_arch_cpu.h
+new file mode 100644
+index 0000000000..db5c7062b9
+--- /dev/null
++++ b/bsd-user/aarch64/target_arch_cpu.h
+@@ -0,0 +1,42 @@
++/*
++ *  ARM AArch64 cpu init and loop
++ *
++ * Copyright (c) 2015 Stacey Son
++ *
++ * This library is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU Lesser General Public
++ * License as published by the Free Software Foundation; either
++ * version 2 of the License, or (at your option) any later version.
++ *
++ * This library is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ * Lesser General Public License for more details.
++ *
++ * You should have received a copy of the GNU Lesser General Public
++ * License along with this library; if not, see <http://www.gnu.org/licenses/>.
++ */
++
++#ifndef TARGET_ARCH_CPU_H
++#define TARGET_ARCH_CPU_H
++
++#include "target_arch.h"
++#include "target/arm/syndrome.h"
++
++#define TARGET_DEFAULT_CPU_MODEL "any"
++
++static inline void target_cpu_init(CPUARMState *env,
++    struct target_pt_regs *regs)
++{
++    int i;
++
++    if (!(arm_feature(env, ARM_FEATURE_AARCH64))) {
++        fprintf(stderr, "The selected ARM CPU does not support 64 bit mode\n");
++        exit(1);
++    }
++    for (i = 0; i < 31; i++) {
++        env->xregs[i] = regs->regs[i];
++    }
++    env->pc = regs->pc;
++    env->xregs[31] = regs->sp;
++}
 -- 
 2.34.1
 
