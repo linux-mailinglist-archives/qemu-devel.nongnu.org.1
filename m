@@ -2,75 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDCEF90BA6B
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jun 2024 21:01:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E000190BA58
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jun 2024 20:59:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sJHYi-0003yI-46; Mon, 17 Jun 2024 14:58:28 -0400
+	id 1sJHYk-00044W-G8; Mon, 17 Jun 2024 14:58:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <itachis6234@gmail.com>)
- id 1sJHYg-0003y4-B9
- for qemu-devel@nongnu.org; Mon, 17 Jun 2024 14:58:26 -0400
-Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
+ id 1sJHYj-00042K-2d
+ for qemu-devel@nongnu.org; Mon, 17 Jun 2024 14:58:29 -0400
+Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <itachis6234@gmail.com>)
- id 1sJHYe-0004vt-J8
- for qemu-devel@nongnu.org; Mon, 17 Jun 2024 14:58:26 -0400
-Received: by mail-pf1-x42d.google.com with SMTP id
- d2e1a72fcca58-705e9e193caso1749147b3a.2
- for <qemu-devel@nongnu.org>; Mon, 17 Jun 2024 11:58:24 -0700 (PDT)
+ id 1sJHYh-0004wP-8M
+ for qemu-devel@nongnu.org; Mon, 17 Jun 2024 14:58:28 -0400
+Received: by mail-pf1-x42e.google.com with SMTP id
+ d2e1a72fcca58-704189f1225so4131483b3a.0
+ for <qemu-devel@nongnu.org>; Mon, 17 Jun 2024 11:58:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1718650703; x=1719255503; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1718650705; x=1719255505; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=/RYBeS7YMWG5zCOUP6t7XOOwmqZaXoAkyXHOLEzgJdI=;
- b=bV5RjFcq7BBUkxSZ1ezRBHzcKCsRjQfW8Q0GV4OtZCAcFYaU7eGMCkT4+wWNjhBaZ3
- U22x4XD0vDrlWD1JOvQRFkw2pLg8HXuXhhA/javLI+MPwklZELTqeIYJbWjTKFL3mjoG
- 4gzxzBVDiWvOIfakKMguRAUQGZoqC1E+hk1Oa9UhMYwTK2T7EVEfAQRE28vB8WRY3Yrs
- 0+h4mvGLhmnUIsjrM+9llpbX+EBylIDxRxhyIFqbiCjNzkxjQlHxhBpPRJ3rYYhKSHo3
- ZJTrz5MN9+Sa81Vw/fgzDCl0m1AUnmkncONxNbNedkOIem5wsTtc62Z4yHalvsj8Z1QJ
- aO2Q==
+ bh=cXJTs0J9+UWD2AkXsLlcdFj04Dwj/u1B6kCGoJ8H+e8=;
+ b=D5zkQnmuYOaXmsFgffK3pY2E7kvLCYl6bdTjhztEPNfY7ci3jfpHMqpcR2GGHFblUi
+ 3E3bito/vmQ99yc4Rshpj/3TzOVPbDpy5cFpVgv35ABRgSVmkCsHQ3SXXJyAEfABtUS4
+ KNuBgRc9Th3cg+c+pLSQKVbTYXgw+xBbac/Df6vvulX8Sf3gI/YGtlNwYHmuOpCgj83H
+ oUdW/27c3GcvR5z8Ks8hXCYWtVhyPPE2eYtFYgGUAkgeXv5Z/xFeeSsupxwQe3D3gsvW
+ olFXdRuNJFOad/1XW5uJZRCndrxOXFZpd9NGM/ha59AdTwBu4vnBlj9Yw4oANrT+J+wH
+ ZgSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718650703; x=1719255503;
+ d=1e100.net; s=20230601; t=1718650705; x=1719255505;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/RYBeS7YMWG5zCOUP6t7XOOwmqZaXoAkyXHOLEzgJdI=;
- b=JTlZ+DDftKBBbLLXRvrJEYInVzu4BD+5PRtvbPA7AUbnAnrEe6hljw7Ownl8CtLX3J
- MA59IlPo87ScTQg9uZYg+PDlHYh/yhIPQnupnMUjkjb1jqOfoaMMZoSr+/tFwkHnGfNO
- i0UgWy4nwO/P5gyAD9mitYwokB0FTgx+kFR9zoywDaL2Ar4AEmoUjdazNz6/H4Pugo2e
- RHrnyoJTUzLExPMJWEgQ6Tl/Pi2cjYflXHgo8PzMaD6wRBjenZ4qMmyQIImeAYXUTvys
- 2sKP29Ieis+ey3apzh+rao4R00jx8Ar5EoRFvSzhKBINL1EvuBAS9AUoJGKRTXhXoSBn
- vRtg==
-X-Gm-Message-State: AOJu0Ywv+a7M9Lw/sVt1/gbelfkJAgNg4MuMnTGhNYzB0PkP3EClit5z
- be5vhZqHi5H7RTr1dGaH+6iINQvxMyfxdta2WYOPbFkgBvMaDEFRVagQ2VzHufE=
-X-Google-Smtp-Source: AGHT+IF5LB5NTjbLsChGJTJVAn6dQkh1KOyI3qYI/CPKzkhkA4UbiluEtO7/wRCxmPq7juRzYBf1rw==
-X-Received: by 2002:a05:6a00:cc:b0:705:9cf6:bc21 with SMTP id
- d2e1a72fcca58-705d70f7276mr9973918b3a.12.1718650702418; 
- Mon, 17 Jun 2024 11:58:22 -0700 (PDT)
+ bh=cXJTs0J9+UWD2AkXsLlcdFj04Dwj/u1B6kCGoJ8H+e8=;
+ b=ZB8G1SaMVwTKJtRX8ae+6ykA2c2Kp3qhIzC8IF3K4JkbKCsGf5+l63nLMjIboY9a2Z
+ GkE/uuhUqPBtSnbFYGXzfjtld2xFb67ve2DUZvytUaxzxVeRw/g9m0NPSr75kEpicOHL
+ ZHdBo0oxKd7kOxhkK3W8GtII5+I8abCyL/rrng24PR96EEFVm/DiPg5ZXSXDVqM5Klrc
+ 6GFtvZjB//5xR30RqX9C/ZjJKyWrZD6KmL5PAjdSQ5Sofbui37vGBMCRmpwU5SHMbGnK
+ J/heFHaQGYILGRbd/6bBPC0UerovEAybYV/qA/QmOM7VNqyIHnla7ilokbGP/gMZmH0U
+ B6lg==
+X-Gm-Message-State: AOJu0Yx2wG3uRr/gGufx19THYh9jYxYJHn3hOU23tqJ7YGzgn7XCSuK7
+ o4gPHoXiwsRh33wy7qI7YiU2/WtROXL/TblydyRuczOIM2VEp1Aa9swCdhAk4Gc=
+X-Google-Smtp-Source: AGHT+IF9YCPk869H7ThvJc0nHDnSauwHqFWHmlzQDT8wBpY6zC6pDQldExWTVNIpbwmLdyTx/1mzHA==
+X-Received: by 2002:aa7:8e92:0:b0:705:a450:a9a9 with SMTP id
+ d2e1a72fcca58-705d70e3e1emr10489681b3a.1.1718650705172; 
+ Mon, 17 Jun 2024 11:58:25 -0700 (PDT)
 Received: from localhost.localdomain ([106.222.222.115])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-705ccb4aa4fsm7660637b3a.131.2024.06.17.11.58.20
+ d2e1a72fcca58-705ccb4aa4fsm7660637b3a.131.2024.06.17.11.58.22
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 17 Jun 2024 11:58:22 -0700 (PDT)
+ Mon, 17 Jun 2024 11:58:24 -0700 (PDT)
 From: Ajeet Singh <itachis6234@gmail.com>
 X-Google-Original-From: Ajeet Singh <itachis@FreeBSD.org>
 To: qemu-devel@nongnu.org
 Cc: Warner Losh <imp@bsdimp.com>, Ajeet Singh <itachis@freebsd.org>,
- Stacey Son <sson@FreeBSD.org>, Ajeet Singh <itachis@FreeBSD.org>
-Subject: [PATCH 01/23] Add CPU initialization function
-Date: Tue, 18 Jun 2024 00:27:42 +0530
-Message-Id: <20240617185804.25075-2-itachis@FreeBSD.org>
+ Stacey Son <sson@FreeBSD.org>, Ajeet Singh <itachis@FreeBSD.org>,
+ Kyle Evans <kevans@freebsd.org>, Sean Bruno <sbruno@freebsd.org>,
+ Jessica Clarke <jrtc27@jrtc27.com>
+Subject: [PATCH 02/23] Added CPU loop function
+Date: Tue, 18 Jun 2024 00:27:43 +0530
+Message-Id: <20240617185804.25075-3-itachis@FreeBSD.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240617185804.25075-1-itachis@FreeBSD.org>
 References: <20240617185804.25075-1-itachis@FreeBSD.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
- envelope-from=itachis6234@gmail.com; helo=mail-pf1-x42d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
+ envelope-from=itachis6234@gmail.com; helo=mail-pf1-x42e.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -96,64 +98,158 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Stacey Son <sson@FreeBSD.org>
 
-Addded function to initialize ARM CPU
-and to check if it supports 64 bit mode
+CPU loop function to handle exceptions
+and emulate execution of instructions
 
-Signed-off-by: Ajeet Singh <itachis@FreeBSD.org>
 Signed-off-by: Stacey Son <sson@FreeBSD.org>
+Signed-off-by: Ajeet Singh <itachis@FreeBSD.org>
+Co-authored-by: Kyle Evans <kevans@freebsd.org>
+Co-authored-by: Sean Bruno <sbruno@freebsd.org>
+Co-authored-by: Jessica Clarke <jrtc27@jrtc27.com>
 ---
- bsd-user/aarch64/target_arch_cpu.h | 42 ++++++++++++++++++++++++++++++
- 1 file changed, 42 insertions(+)
- create mode 100644 bsd-user/aarch64/target_arch_cpu.h
+ bsd-user/aarch64/target_arch_cpu.h | 132 +++++++++++++++++++++++++++++
+ 1 file changed, 132 insertions(+)
 
 diff --git a/bsd-user/aarch64/target_arch_cpu.h b/bsd-user/aarch64/target_arch_cpu.h
-new file mode 100644
-index 0000000000..db5c7062b9
---- /dev/null
+index db5c7062b9..1962d2c99b 100644
+--- a/bsd-user/aarch64/target_arch_cpu.h
 +++ b/bsd-user/aarch64/target_arch_cpu.h
-@@ -0,0 +1,42 @@
-+/*
-+ *  ARM AArch64 cpu init and loop
-+ *
-+ * Copyright (c) 2015 Stacey Son
-+ *
-+ * This library is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU Lesser General Public
-+ * License as published by the Free Software Foundation; either
-+ * version 2 of the License, or (at your option) any later version.
-+ *
-+ * This library is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-+ * Lesser General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU Lesser General Public
-+ * License along with this library; if not, see <http://www.gnu.org/licenses/>.
-+ */
+@@ -40,3 +40,135 @@ static inline void target_cpu_init(CPUARMState *env,
+     env->pc = regs->pc;
+     env->xregs[31] = regs->sp;
+ }
 +
-+#ifndef TARGET_ARCH_CPU_H
-+#define TARGET_ARCH_CPU_H
 +
-+#include "target_arch.h"
-+#include "target/arm/syndrome.h"
-+
-+#define TARGET_DEFAULT_CPU_MODEL "any"
-+
-+static inline void target_cpu_init(CPUARMState *env,
-+    struct target_pt_regs *regs)
++static inline void target_cpu_loop(CPUARMState *env)
 +{
-+    int i;
++    CPUState *cs = env_cpu(env);
++    int trapnr, ec, fsc, si_code, si_signo;
++    uint64_t code, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8;
++    uint32_t pstate;
++    abi_long ret;
 +
-+    if (!(arm_feature(env, ARM_FEATURE_AARCH64))) {
-+        fprintf(stderr, "The selected ARM CPU does not support 64 bit mode\n");
-+        exit(1);
-+    }
-+    for (i = 0; i < 31; i++) {
-+        env->xregs[i] = regs->regs[i];
-+    }
-+    env->pc = regs->pc;
-+    env->xregs[31] = regs->sp;
++    for (;;) {
++        cpu_exec_start(cs);
++        trapnr = cpu_exec(cs);
++        cpu_exec_end(cs);
++        process_queued_cpu_work(cs);
++
++        switch (trapnr) {
++        case EXCP_SWI:
++            /* See arm64/arm64/trap.c cpu_fetch_syscall_args() */
++            code = env->xregs[8];
++            if (code == TARGET_FREEBSD_NR_syscall ||
++                code == TARGET_FREEBSD_NR___syscall) {
++                code = env->xregs[0];
++                arg1 = env->xregs[1];
++                arg2 = env->xregs[2];
++                arg3 = env->xregs[3];
++                arg4 = env->xregs[4];
++                arg5 = env->xregs[5];
++                arg6 = env->xregs[6];
++                arg7 = env->xregs[7];
++                arg8 = 0;
++            } else {
++                arg1 = env->xregs[0];
++                arg2 = env->xregs[1];
++                arg3 = env->xregs[2];
++                arg4 = env->xregs[3];
++                arg5 = env->xregs[4];
++                arg6 = env->xregs[5];
++                arg7 = env->xregs[6];
++                arg8 = env->xregs[7];
++            }
++            ret = do_freebsd_syscall(env, code, arg1, arg2, arg3,
++                    arg4, arg5, arg6, arg7, arg8);
++            /*
++             * The carry bit is cleared for no error; set for error.
++             * See arm64/arm64/vm_machdep.c cpu_set_syscall_retval()
++             */
++            pstate = pstate_read(env);
++            if (ret >= 0) {
++                pstate &= ~PSTATE_C;
++                env->xregs[0] = ret;
++            } else if (ret == -TARGET_ERESTART) {
++                env->pc -= 4;
++                break;
++            } else if (ret != -TARGET_EJUSTRETURN) {
++                pstate |= PSTATE_C;
++                env->xregs[0] = -ret;
++            }
++            pstate_write(env, pstate);
++            break;
++
++        case EXCP_INTERRUPT:
++            /* Just indicate that signals should be handle ASAP. */
++            break;
++
++        case EXCP_UDEF:
++            force_sig_fault(TARGET_SIGILL, TARGET_ILL_ILLOPN, env->pc);
++            break;
++
++
++        case EXCP_PREFETCH_ABORT:
++        case EXCP_DATA_ABORT:
++            /* We should only arrive here with EC in {DATAABORT, INSNABORT}. */
++            ec = syn_get_ec(env->exception.syndrome);
++            assert(ec == EC_DATAABORT || ec == EC_INSNABORT);
++
++            /* Both EC have the same format for FSC, or close enough. */
++            fsc = extract32(env->exception.syndrome, 0, 6);
++            switch (fsc) {
++            case 0x04 ... 0x07: /* Translation fault, level {0-3} */
++                si_signo = TARGET_SIGSEGV;
++                si_code = TARGET_SEGV_MAPERR;
++                break;
++            case 0x09 ... 0x0b: /* Access flag fault, level {1-3} */
++            case 0x0d ... 0x0f: /* Permission fault, level {1-3} */
++                si_signo = TARGET_SIGSEGV;
++                si_code = TARGET_SEGV_ACCERR;
++                break;
++            case 0x11: /* Synchronous Tag Check Fault */
++                si_signo = TARGET_SIGSEGV;
++                si_code = /* TARGET_SEGV_MTESERR; */ TARGET_SEGV_ACCERR;
++                break;
++            case 0x21: /* Alignment fault */
++                si_signo = TARGET_SIGBUS;
++                si_code = TARGET_BUS_ADRALN;
++                break;
++            default:
++                g_assert_not_reached();
++            }
++            force_sig_fault(si_signo, si_code, env->exception.vaddress);
++            break;
++
++        case EXCP_DEBUG:
++        case EXCP_BKPT:
++            force_sig_fault(TARGET_SIGTRAP, TARGET_TRAP_BRKPT, env->pc);
++            break;
++
++        case EXCP_ATOMIC:
++            cpu_exec_step_atomic(cs);
++            break;
++
++        case EXCP_YIELD:
++            /* nothing to do here for user-mode, just resume guest code */
++            break;
++        default:
++            fprintf(stderr, "qemu: unhandled CPU exception 0x%x - aborting\n",
++                    trapnr);
++            cpu_dump_state(cs, stderr, 0);
++            abort();
++        } /* switch() */
++        process_pending_signals(env);
++        /*
++         * Exception return on AArch64 always clears the exclusive
++         * monitor, so any return to running guest code implies this.
++         * A strex (successful or otherwise) also clears the monitor, so
++         * we don't need to specialcase EXCP_STREX.
++         */
++        env->exclusive_addr = -1;
++    } /* for (;;) */
 +}
++
++#endif /* TARGET_ARCH_CPU_H */
 -- 
 2.34.1
 
