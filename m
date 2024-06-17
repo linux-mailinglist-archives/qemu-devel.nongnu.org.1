@@ -2,83 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AEDD90AB3E
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jun 2024 12:36:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BAF7A90AB62
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jun 2024 12:39:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sJ9iP-0006GQ-Sx; Mon, 17 Jun 2024 06:35:58 -0400
+	id 1sJ9lG-0007m3-UH; Mon, 17 Jun 2024 06:38:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sJ9iN-0006G1-Dk
- for qemu-devel@nongnu.org; Mon, 17 Jun 2024 06:35:55 -0400
-Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sJ9lD-0007lq-Qn
+ for qemu-devel@nongnu.org; Mon, 17 Jun 2024 06:38:51 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sJ9iL-0001xG-CY
- for qemu-devel@nongnu.org; Mon, 17 Jun 2024 06:35:55 -0400
-Received: by mail-lf1-x12b.google.com with SMTP id
- 2adb3069b0e04-52bc035a7ccso4498955e87.2
- for <qemu-devel@nongnu.org>; Mon, 17 Jun 2024 03:35:52 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sJ9lB-0002iA-Uy
+ for qemu-devel@nongnu.org; Mon, 17 Jun 2024 06:38:51 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-42138eadf64so33789605e9.3
+ for <qemu-devel@nongnu.org>; Mon, 17 Jun 2024 03:38:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1718620551; x=1719225351; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:references
- :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=OpocPjb9gqadAYpSkBRkoanu+g/ChaASk4sUnI1LJuU=;
- b=vlyRJt4sC5H89+FWP+IsuzTS7HMk8UmUm6P2dIAjXbjDc3WmnljsJhM97gg4ROVW14
- gRMt76bk7b/mg2+9wzB9ZcK1po4OSik7MWsywwvBfjNgvLwLpYNpYjLO+DzpDhnnOYV0
- 5HKG/bU1AjcWlHKUP3Fi7OXikmRFBL3qt+XAXagHbpg0JoSGOwWihfjw3haWHP8uoJqG
- bO2weeLCPE380fv7uxSqqRUQ2K6HEodNIHx6yIDt+YupaCpE/sfoMi5jST2rRQf5OG4T
- iZiarkIh4lryZmWkSuRPYHQ4M6YIZXx8YBndtXtC9bayJ8H6vgdGziAl6qgAgcDLcEaz
- /1Bw==
+ d=linaro.org; s=google; t=1718620728; x=1719225528; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=CVVO/1598h8Z2p3HhSIIrqk5+1c5V6kWItLt96BvEy4=;
+ b=qWZKAD7I6LZEUzOP7dXIFkhFvGgC61c0GLMgEAt36f1yPbS04yXzOVP13D4OJo9U1M
+ m58xjEcBpOP0RHCp5KaDn5BRgTjMFuhdF2lk7fPSqCl5Uvs29uchdL3cb+72/WVX/um2
+ Ui5mRCql4u9PpnEAl0f76xYrPl3EMjw3BxhDhHn40Fwh/hTbvFFEiZ54M3NmU/IDHpVm
+ Y4zA4oAr/cI7pBhmEyUN/aLQxzCzG6L01+7AbtYZvWoHx0fmVD0eiJoVHfLYmLxiKjJp
+ fQUdRwgMr1xZp+8xzdQQmsd4S1GomuGHoE8wQtmtn09ud32htUYruS7qlpeejUnvsYEr
+ GhbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718620551; x=1719225351;
- h=content-transfer-encoding:mime-version:message-id:date:references
- :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=OpocPjb9gqadAYpSkBRkoanu+g/ChaASk4sUnI1LJuU=;
- b=MRpJRDfuODh6y0+oasSSR74i4qZ7O53pCl4RqSXy68X7jmHbJ55AbZgJAvT7LfC+aH
- IKndQ404z9fi6S0MJvdY2WqCmUPEkca1B3+hoqDeFSuGXW8Pq9x1NEhF27ajXozzeALx
- EWhu+Im73+R1bbVk9sflM2mVlgoJbMC6wGgUpIYOPglWD7yciD9cFaPSdIS6dJ4ez19L
- VKG1aBwUfPJPlkpytA7cRWnrgam+9+SudN2WuNnO2d/LILE8mNwGNbqsKYAb75i0eOI4
- WTnZlyBfcqJS0fX8ELvZ/XEAOXKz7E0WyHl0ILNG+GcpvHY4rCh2jZT3tin07LSoinuR
- l+sw==
-X-Gm-Message-State: AOJu0Yw9PZ1/NTSbdB33KLlq546M5hZTpMgewJBtNdAqY5ScwUbQEBmH
- iG63EW/9+YrCs1JfX4Sg6Z8vElroiWq5zZ8xpyYIXetSXEwr0pGuLJt5djjrDrc=
-X-Google-Smtp-Source: AGHT+IFIbviRgHljjMjZRmIfkCWrACLnSj1Vy0drp3Ry3WStr8/sWTYnvsWobFl5yAqkIfwUyzRGOg==
-X-Received: by 2002:a05:6512:2309:b0:52c:a723:bda3 with SMTP id
- 2adb3069b0e04-52ca723be09mr6332592e87.69.1718620551219; 
- Mon, 17 Jun 2024 03:35:51 -0700 (PDT)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3607509c8b7sm11520173f8f.26.2024.06.17.03.35.50
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 17 Jun 2024 03:35:50 -0700 (PDT)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id D54085F78B;
- Mon, 17 Jun 2024 11:35:49 +0100 (BST)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: qemu-devel@nongnu.org,  Manos Pitsidianakis
- <manos.pitsidianakis@linaro.org>,  Dmitry Osipenko
- <dmitry.osipenko@collabora.com>,  "Michael S. Tsirkin" <mst@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>,  Paolo Bonzini <pbonzini@redhat.com>,
- =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,  Daniel
- P. =?utf-8?Q?Berrang=C3=A9?=
- <berrange@redhat.com>,  Thomas Huth <thuth@redhat.com>,  Philippe
- =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: Re: [RFC PATCH] subprojects: add a wrapper for libvirglrenderer
-In-Reply-To: <43f3ae5f-4bb8-4330-a79d-b0a50d2e397a@daynix.com> (Akihiko
- Odaki's message of "Thu, 6 Jun 2024 05:05:46 +0900")
-References: <20240605133527.529950-1-alex.bennee@linaro.org>
- <43f3ae5f-4bb8-4330-a79d-b0a50d2e397a@daynix.com>
-Date: Mon, 17 Jun 2024 11:35:49 +0100
-Message-ID: <87cyofeu0q.fsf@draig.linaro.org>
+ d=1e100.net; s=20230601; t=1718620728; x=1719225528;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=CVVO/1598h8Z2p3HhSIIrqk5+1c5V6kWItLt96BvEy4=;
+ b=Zrs7wkHiwiXIoivskJAiWs9mbocUOUuxXrby6rD+YihbY92kFsoT5vvgXzKhLhJJnq
+ e9x5iEsH2/aUXFV0M8/kDgeCMuSdsO0BPv4txSgsLsloEkFdvmF0YQJvEoNssnuKQnih
+ wJ/zoMptI+AYubsn+iE/3D9DQzDQ1cNAfSBZWoUtHT4lR/3qfd2+MyXCOpTUzUzt6ATA
+ JLb2AtttnkaIEgwcT6Bs8UqKU1YQevZZyvjN8MLCPBBJr86bkn0atlzwhSl1KaNBVPLu
+ Mgc1Liz4gzJrMr/JqLvMBXvYvpxol5wfZK2f/zq6471jgHi9IZfv8HTTNAQ6o7TNMUA5
+ llLA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXhnMgvtZ1DM+NiLSNP1XGOlpBb7fuy9paPlm6UeuN1Xw1/c2YeIOHfu9JJaEjJaJFpgOHLKe96hmHEpYJl4o4fqFOJzrA=
+X-Gm-Message-State: AOJu0Yy8ewJpiqEpW5WBURdvXg9W6+rUI65gfGxKnCiC2cAbGfTdIftd
+ 4BW2zfRIiReKjHRq8mOxW4jpnqdT8g1J44JWpnNEiSSS82fCQMykoaBUCf8I0I8=
+X-Google-Smtp-Source: AGHT+IGg4cyYNk8vdYbIuLzBE45XuZL2/KD+cYXzXmS7VWZ8KglSI/Ew+x7cfDcJRVR/BkFu65UT2g==
+X-Received: by 2002:a05:600c:5251:b0:421:c211:a57e with SMTP id
+ 5b1f17b1804b1-4230485a5c6mr74161415e9.35.1718620728091; 
+ Mon, 17 Jun 2024 03:38:48 -0700 (PDT)
+Received: from [192.168.69.100] ([176.176.169.90])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-422f5f33c38sm157023065e9.9.2024.06.17.03.38.46
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 17 Jun 2024 03:38:47 -0700 (PDT)
+Message-ID: <d68aeb35-3e31-48f1-81df-d85ed8d8381c@linaro.org>
+Date: Mon, 17 Jun 2024 12:38:45 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
- envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x12b.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] virtio-pci: Fix the use of an uninitialized irqfd.
+To: Cindy Lu <lulu@redhat.com>, mst@redhat.com, jasowang@redhat.com,
+ qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org
+References: <20240617095529.115046-1-lulu@redhat.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240617095529.115046-1-lulu@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,159 +94,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Akihiko Odaki <akihiko.odaki@daynix.com> writes:
+Hi Cindy,
 
-> On 2024/06/05 22:35, Alex Benn=C3=A9e wrote:
->> As the latest features for virtio-gpu need a pretty recent version of
->> libvirglrenderer. When it is not available on the system we can use a
->> meson wrapper and provide it when --download is specified in
->> configure.
->> We have to take some additional care as currently QEMU will hang
->> libvirglrenderer fails to exec the render server. As the error isn't
->> back propagated we make sure we at least test we have a path to an
->> executable before tweaking the environment.
->
-> Hi,
->
-> The intent of this patch sounds good to me. It is the responsibility
-> of users to set up virglrenderer in principle, but we can just be kind
-> for them.
->
->> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
->> Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
->> Cc: Dmitry Osipenko <dmitry.osipenko@collabora.com>
->> Cc: Akihiko Odaki <akihiko.odaki@daynix.com>
->> ---
->>   meson.build                    |  7 ++++++-
->>   hw/display/virtio-gpu-virgl.c  | 24 ++++++++++++++++++++++++
->>   subprojects/virglrenderer.wrap |  6 ++++++
->>   3 files changed, 36 insertions(+), 1 deletion(-)
->>   create mode 100644 subprojects/virglrenderer.wrap
->> diff --git a/meson.build b/meson.build
->> index 1d7346b703..e4e270df78 100644
->> --- a/meson.build
->> +++ b/meson.build
->> @@ -1203,7 +1203,8 @@ have_vhost_user_gpu =3D have_tools and host_os =3D=
-=3D 'linux' and pixman.found()
->>   if not get_option('virglrenderer').auto() or have_system or have_vhost=
-_user_gpu
->>     virgl =3D dependency('virglrenderer',
->>                        method: 'pkg-config',
->> -                     required: get_option('virglrenderer'))
->> +                     required: get_option('virglrenderer'),
->> +                     default_options: ['default_library=3Dstatic', 'ren=
-der-server=3Dtrue', 'venus=3Dtrue'])
->
-> meson_options.txt of virglrenderer says:
->> DEPRECATED: render server is enabled by venus automatically
->
-> I'm also a bit concerned to enable Venus by default when the upstream
-> virglrenderer doesn't. Why is it disabled by the upstream? Perhaps is
-> it time for upstream to enable it by default?
->
->>   endif
->>   rutabaga =3D not_found
->>   if not get_option('rutabaga_gfx').auto() or have_system or have_vhost_=
-user_gpu
->> @@ -2314,6 +2315,10 @@ if virgl.version().version_compare('>=3D1.0.0')
->>     config_host_data.set('HAVE_VIRGL_RESOURCE_BLOB', 1)
->>     config_host_data.set('HAVE_VIRGL_VENUS', 1)
->>   endif
->> +if virgl.type_name().contains('internal')
->> +  config_host_data.set('HAVE_BUNDLED_VIRGL_SERVER', 1)
->> +endif
->> +
->>   config_host_data.set('CONFIG_VIRTFS', have_virtfs)
->>   config_host_data.set('CONFIG_VTE', vte.found())
->>   config_host_data.set('CONFIG_XKBCOMMON', xkbcommon.found())
->> diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl=
-.c
->> index c9d20a8a60..53d6742e79 100644
->> --- a/hw/display/virtio-gpu-virgl.c
->> +++ b/hw/display/virtio-gpu-virgl.c
->> @@ -14,6 +14,7 @@
->>   #include "qemu/osdep.h"
->>   #include "qemu/error-report.h"
->>   #include "qemu/iov.h"
->> +#include "qemu/cutils.h"
->>   #include "trace.h"
->>   #include "hw/virtio/virtio.h"
->>   #include "hw/virtio/virtio-gpu.h"
->> @@ -1122,6 +1123,26 @@ void virtio_gpu_virgl_reset(VirtIOGPU *g)
->>       virgl_renderer_reset();
->>   }
->>   +/*
->> + * If we fail to spawn the render server things tend to hang so it is
->> + * important to do our due diligence before then. If QEMU has bundled
->> + * the virgl server we want to ensure we can run it from the build
->> + * directory and if installed.
->
-> This comment sounds a bit misleading. The following code does not
-> ensure the render server exists; it just opportunistically sets the
-> path to the bundled render server or let it fail otherwise.
->
-> It also sounds like virgl_set_render_env() does an extra step to
-> prevent hangs, but it is actually mandatory for relocated scenarios;
-> the lack of render server always results in a non-functional Venus
-> setup even if the hang is fixed.
->
-> The hang is better to be noted in subprojects/virglrenderer.wrap since
-> that is the reason we would want to wrap the project.
->
->> + *
->> + * The principle way we can override the libvirglrenders behaviour is
->> + * by setting environment variables.
->> + */
->> +static void virgl_set_render_env(void)
->> +{
->> +#ifdef HAVE_BUNDLED_VIRGL_SERVER
->> +    g_autofree char *file =3D get_relocated_path(CONFIG_QEMU_HELPERDIR =
-"/virgl_render_server");
->> +    if (g_file_test(file, G_FILE_TEST_EXISTS | G_FILE_TEST_IS_EXECUTABL=
-E)) {
->
-> I think this g_file_test() should be removed; we would not want to let
-> virglrenderer pick a random render server when the bundled server
-> exists since the ABI between them can be different in theory.
+On 17/6/24 11:55, Cindy Lu wrote:
+> The crash was reported in MAC OS and NixOS, here is the link for this bug
+> https://gitlab.com/qemu-project/qemu/-/issues/2334
+> https://gitlab.com/qemu-project/qemu/-/issues/2321
+> 
+> The root cause is the function virtio_pci_set_guest_notifiers() was not called
+> in the virtio_input device.So the vector_irqfd was not initialized
+> 
+> So the fix is to add the check for vector_irqfd.
+> 
+> This fix is verified in vyatta,MacOS,NixOS,fedora system.
+> 
+> The bt tree for this bug is:
+> Thread 6 "CPU 0/KVM" received signal SIGSEGV, Segmentation fault.
+> [Switching to Thread 0x7c817be006c0 (LWP 1269146)]
+> kvm_virtio_pci_vq_vector_use () at ../qemu-9.0.0/hw/virtio/virtio-pci.c:817
+> 817	    if (irqfd->users == 0) {
+> (gdb) thread apply all bt
+> ...
+> Thread 6 (Thread 0x7c817be006c0 (LWP 1269146) "CPU 0/KVM"):
+> 0  kvm_virtio_pci_vq_vector_use () at ../qemu-9.0.0/hw/virtio/virtio-pci.c:817
+> 1  kvm_virtio_pci_vector_use_one () at ../qemu-9.0.0/hw/virtio/virtio-pci.c:893
+> 2  0x00005983657045e2 in memory_region_write_accessor () at ../qemu-9.0.0/system/memory.c:497
+> 3  0x0000598365704ba6 in access_with_adjusted_size () at ../qemu-9.0.0/system/memory.c:573
+> 4  0x0000598365705059 in memory_region_dispatch_write () at ../qemu-9.0.0/system/memory.c:1528
+> 5  0x00005983659b8e1f in flatview_write_continue_step.isra.0 () at ../qemu-9.0.0/system/physmem.c:2713
+> 6  0x000059836570ba7d in flatview_write_continue () at ../qemu-9.0.0/system/physmem.c:2743
+> 7  flatview_write () at ../qemu-9.0.0/system/physmem.c:2774
+> 8  0x000059836570bb76 in address_space_write () at ../qemu-9.0.0/system/physmem.c:2894
+> 9  0x0000598365763afe in address_space_rw () at ../qemu-9.0.0/system/physmem.c:2904
+> 10 kvm_cpu_exec () at ../qemu-9.0.0/accel/kvm/kvm-all.c:2917
+> 11 0x000059836576656e in kvm_vcpu_thread_fn () at ../qemu-9.0.0/accel/kvm/kvm-accel-ops.c:50
+> 12 0x0000598365926ca8 in qemu_thread_start () at ../qemu-9.0.0/util/qemu-thread-posix.c:541
+> 13 0x00007c8185bcd1cf in ??? () at /usr/lib/libc.so.6
+> 14 0x00007c8185c4e504 in clone () at /usr/lib/libc.so.6
+> 
+> Fixes: 2ce6cff94d ("virtio-pci: fix use of a released vector")
+> Cc: qemu-stable@nongnu.org
+> 
+> Signed-off-by: Cindy Lu <lulu@redhat.com>
+> ---
+>   hw/virtio/virtio-pci.c | 8 ++++++--
+>   1 file changed, 6 insertions(+), 2 deletions(-)
+> 
+> diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
+> index b1d02f4b3d..502aad28b2 100644
+> --- a/hw/virtio/virtio-pci.c
+> +++ b/hw/virtio/virtio-pci.c
+> @@ -1442,7 +1442,9 @@ static void virtio_pci_set_vector(VirtIODevice *vdev,
+>        * Otherwise just need to set the new vector on the device.
+>        */
+>       if (kvm_irqfd && old_vector != VIRTIO_NO_VECTOR) {
+> -        kvm_virtio_pci_vector_release_one(proxy, queue_no);
+> +        if (proxy->vector_irqfd) {
 
-I was thinking mainly of validating it was built, maybe that should be
-an assert instead because if we failed to build the server we got the
-bundling wrong?
+Shouldn't this go into called virtio_pci_get_notifier()?
 
->
->> +        g_setenv("RENDER_SERVER_EXEC_PATH", file, false);
->> +    }
->> +#endif
->> +}
->> +
->> +
->>   int virtio_gpu_virgl_init(VirtIOGPU *g)
->>   {
->>       int ret;
->> @@ -1145,6 +1166,9 @@ int virtio_gpu_virgl_init(VirtIOGPU *g)
->>       }
->>   #endif
->>   +    /* Ensure we can find the render server */
->> +    virgl_set_render_env();
->> +
->>       ret =3D virgl_renderer_init(g, flags, &virtio_gpu_3d_cbs);
->>       if (ret !=3D 0) {
->>           error_report("virgl could not be initialized: %d", ret);
->> diff --git a/subprojects/virglrenderer.wrap b/subprojects/virglrenderer.=
-wrap
->> new file mode 100644
->> index 0000000000..3656a478c4
->> --- /dev/null
->> +++ b/subprojects/virglrenderer.wrap
->> @@ -0,0 +1,6 @@
->> +[wrap-git]
->> +url =3D https://gitlab.freedesktop.org/virgl/virglrenderer.git
->> +revision =3D virglrenderer-1.0.1
->> +
->> +[provide]
->> +virglrenderer =3D libvirglrenderer_dep
+> +            kvm_virtio_pci_vector_release_one(proxy, queue_no);
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+We ignore this function return value, is it safe/expected?
+
+> +        }
+>       }
+
+
 
