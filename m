@@ -2,83 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BBC890B926
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jun 2024 20:11:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D31690B96D
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jun 2024 20:17:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sJGnL-0005cS-8p; Mon, 17 Jun 2024 14:09:31 -0400
+	id 1sJGth-0000Gl-OU; Mon, 17 Jun 2024 14:16:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sJGnJ-0005bU-9c
- for qemu-devel@nongnu.org; Mon, 17 Jun 2024 14:09:29 -0400
-Received: from mail-il1-x12d.google.com ([2607:f8b0:4864:20::12d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sJGnH-0005Kd-Ik
- for qemu-devel@nongnu.org; Mon, 17 Jun 2024 14:09:29 -0400
-Received: by mail-il1-x12d.google.com with SMTP id
- e9e14a558f8ab-3758fdbd2daso17396245ab.3
- for <qemu-devel@nongnu.org>; Mon, 17 Jun 2024 11:09:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1718647765; x=1719252565; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=7dsu1XooSzrb6x0CJBujnOuFInarnMS9PJAttPcHzk0=;
- b=igpo4ucFJaVYhWsSwreXZghCj9d+XkqV0222AaqnDs0JXeb/uqsDX0rKswCVNPhu9x
- B3MA51SufKQYSZSPbbJib1im+R+WCakMLmAWyBbg6t3KInbGvg0BWDQVGJ94QYJBDCQz
- sPLWWlKJNL/zIAPGEBW2zqfQn5bXhabP/b5RByI+NyvQ0D9DGen2/XpMZFmOhzZjL+58
- NFPOyjlMLnF04/MaUCpnVS4MDessyWsKy0mjxg2DiFNNN5nwuI0u8pTOJPYF0OGMGdWo
- ZMdK0MBftCvC4xyh/BNY6J7nl0DQci8ZB+XFfYY8/dQsM2lgU006PSa3oxQWtxiTAJG/
- H4Ow==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sJGtV-0000CZ-Nx
+ for qemu-devel@nongnu.org; Mon, 17 Jun 2024 14:15:53 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sJGtN-0006Hx-In
+ for qemu-devel@nongnu.org; Mon, 17 Jun 2024 14:15:47 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1718648141;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=OZx3RDBPKVVhAKOuoTfczOFnKvOvgl7AGFwqYvU/uPI=;
+ b=PYLl2dJLchzkyiAYTb5tsqUvx3aqdocWL49BLJKGA5ELTf+K6vAYqI024M5FpiLl/iTvXq
+ t2MrXOaxClaFeYgPRNBF+wHdZx2+sWrdqUqZ0yMvzkBCsc1fAd1bmmDhDW9+Qb7clnM3ir
+ M8qrwdHdjaWe0mp/JxGQd2/o71YvhV0=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-340-kpMjgFhhOsy9ctdDWnGmuQ-1; Mon, 17 Jun 2024 14:15:38 -0400
+X-MC-Unique: kpMjgFhhOsy9ctdDWnGmuQ-1
+Received: by mail-qk1-f200.google.com with SMTP id
+ af79cd13be357-797cde3c2f8so87855485a.1
+ for <qemu-devel@nongnu.org>; Mon, 17 Jun 2024 11:15:38 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718647765; x=1719252565;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=7dsu1XooSzrb6x0CJBujnOuFInarnMS9PJAttPcHzk0=;
- b=YmCGRbBau5vZpRZ26FF3ynRD/lPQVxhoPp7H2D7bHzTBzaSfaRaC33kk1M9BIOPlXS
- 3Tr8fyEb5gpwRNSoy2ACOw+mMBMQxWQv929ZTqx6P+17IZw5fZToabkouQFFywd/i8+W
- elbg6yQu6G07DpMLeh66VoVel/iZpma0IHltYRdS3fRDtvvKb0fhRVxpYbteCDjp33Q4
- F52ZsL6fyJ7YB/Hztf+ZkxrH5pG7VwyrU/CI+r5C/ahFtY6lNuL8BRHoF1n8y3BUJga8
- iwpCi1p1ZcYgLPvMdXATZQhw0DnV9zi6GoFEV7mHASYp3pUokmTITwOb+OJu4AVXurNf
- XG6g==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWEGGqnaG+KHBzgSDyxcSrotE5QRgax20bnvV6oMQYJNiFJLYb8LNp4dxmcu/NdMWHX702X3JxBmaTwug6wc8DNVwCUGA8=
-X-Gm-Message-State: AOJu0YyePpgX8bNIgNogeJnq69YYYtIpnzZxGqayVT6iwOBvgZgOceA8
- MyTpl6GPKERnovjYIb6tct+tpMV+8YvQkKFJzvpXbMr+w7OrU9+hb6pK+Jjt9mE=
-X-Google-Smtp-Source: AGHT+IFIQM0bue+8AMxi7pRfv9ua3GaW0BG2qQxhPH8mQrSLrSWwrAY0guWo6NXof9AQf4ntwGQ6bg==
-X-Received: by 2002:a92:ca4a:0:b0:375:a50d:7f45 with SMTP id
- e9e14a558f8ab-375e0e149cdmr124863475ab.1.1718647764649; 
- Mon, 17 Jun 2024 11:09:24 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.132.216])
- by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-6fee3baa908sm6856160a12.90.2024.06.17.11.09.23
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 17 Jun 2024 11:09:24 -0700 (PDT)
-Message-ID: <3afda005-7184-4378-be7d-5ffa0e1ca1dd@linaro.org>
-Date: Mon, 17 Jun 2024 11:09:22 -0700
+ d=1e100.net; s=20230601; t=1718648138; x=1719252938;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=OZx3RDBPKVVhAKOuoTfczOFnKvOvgl7AGFwqYvU/uPI=;
+ b=hFhPm3AL5QKWQdcZDT3F4prpqx1scEnQzg8VRr5FNGiEx8d1dUsHf1XOKkMOsPCTXj
+ KQr+O5k3GlVScoyA8iSdrK7sTDvpr/jGezVRnnyUXVV+Ll+yCtqJuMMBfOFpZzf+k33B
+ g2k3Jk0P4HCMZJHeqCojjP6DnxzHLuSHdYxVrfpcHqgEYymh0nBv4m7Wm5bae1aaNyvl
+ YPa4g4zUDg3zpnKnbNcxCnI50WFnexPuS1CxXBTojTjkvbtnILhcqOI/ttEFPvHcm72/
+ 8rQOpY9lkdF/vY6KO7lXaEoH6h1RreN+fEhH9KmNW1BSRp4hfoqddGQIG5gWseNw1yTC
+ wLAQ==
+X-Gm-Message-State: AOJu0YwIi1ZqzUtuJqM13n/pt2SVReq6YKLtVm5uhWWEqKfaWxMjxN+g
+ 3vyZpnB4uSgjRth6XWdB+M7q+8nYzT2vhP5XtmJsl1hfgOvUF4h5IZpZtxzFuwyq+jWYMqJ5kay
+ boRkIS8tXjiEpPbdWRAdrH0Kq9yNyUfE8x3p/RbD8HgiNT6jewaIh8zmx7I/WhClAhzQp5djFM1
+ z9rsrFK/9utw11OrPeugbMJWt2+phESx5cqQ==
+X-Received: by 2002:a05:620a:260e:b0:795:c5a1:cbac with SMTP id
+ af79cd13be357-798d26fa8bamr1154421085a.5.1718648137721; 
+ Mon, 17 Jun 2024 11:15:37 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFiJGbkS7EMWtE/1VFl+mK8g7XYo0w2+Fu3slplT/XXUDraXSrF0KkRZ8OuDBry/5GShpGA1Q==
+X-Received: by 2002:a05:620a:260e:b0:795:c5a1:cbac with SMTP id
+ af79cd13be357-798d26fa8bamr1154416485a.5.1718648136998; 
+ Mon, 17 Jun 2024 11:15:36 -0700 (PDT)
+Received: from x1n.redhat.com (pool-99-254-121-117.cpe.net.cable.rogers.com.
+ [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
+ af79cd13be357-798abc07501sm449643685a.89.2024.06.17.11.15.35
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 17 Jun 2024 11:15:36 -0700 (PDT)
+From: Peter Xu <peterx@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Eric Blake <eblake@redhat.com>, Prasad Pandit <ppandit@redhat.com>,
+ peterx@redhat.com, Jiri Denemark <jdenemar@redhat.com>,
+ Bandan Das <bdas@redhat.com>
+Subject: [PATCH v2 00/10] migration: New postcopy state, and some cleanups
+Date: Mon, 17 Jun 2024 14:15:24 -0400
+Message-ID: <20240617181534.1425179-1-peterx@redhat.com>
+X-Mailer: git-send-email 2.45.0
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] target/loongarch: Remove avail_64 in trans_srai_w()
-To: Feiyang Chen <chris.chenfeiyang@gmail.com>, gaosong@loongson.cn
-Cc: c@jia.je, qemu-devel@nongnu.org
-References: <20240617130732.40183-1-chris.chenfeiyang@gmail.com>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240617130732.40183-1-chris.chenfeiyang@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::12d;
- envelope-from=richard.henderson@linaro.org; helo=mail-il1-x12d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.148,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,45 +100,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/17/24 06:07, Feiyang Chen wrote:
-> Since srai.w is a valid instruction on la32, simply remove the avail_64 check.
-> 
-> Fixes: c0c0461e3a06 ("target/loongarch: Add avail_64 to check la64-only instructions")
-> Signed-off-by: Feiyang Chen <chris.chenfeiyang@gmail.com>
-> ---
->   target/loongarch/tcg/insn_trans/trans_shift.c.inc | 4 ----
->   1 file changed, 4 deletions(-)
-> 
-> diff --git a/target/loongarch/tcg/insn_trans/trans_shift.c.inc b/target/loongarch/tcg/insn_trans/trans_shift.c.inc
-> index 2f4bd6ff28..8bcf341b22 100644
-> --- a/target/loongarch/tcg/insn_trans/trans_shift.c.inc
-> +++ b/target/loongarch/tcg/insn_trans/trans_shift.c.inc
-> @@ -72,10 +72,6 @@ static bool trans_srai_w(DisasContext *ctx, arg_srai_w *a)
->       TCGv dest = gpr_dst(ctx, a->rd, EXT_NONE);
->       TCGv src1 = gpr_src(ctx, a->rj, EXT_ZERO);
->   
-> -    if (!avail_64(ctx)) {
-> -        return false;
-> -    }
-> -
->       tcg_gen_sextract_tl(dest, src1, a->imm, 32 - a->imm);
->       gen_set_gpr(a->rd, dest, EXT_NONE);
->   
+v2:
+- Collect tags
+- Patch 3
+  - cover all states in migration_postcopy_is_alive()
+- Patch 4 (old)
+  - English changes [Fabiano]
+  - Split the migration_incoming_state_setup() cleanup into a new patch
+    [Fabiano]
+  - Drop RECOVER_SETUP in fill_destination_migration_info() [Fabiano]
+  - Keep using explicit state check in migrate_fd_connect() for resume
+    [Fabiano]
+- New patches
+  - New doc update: "migration/docs: Update postcopy recover session for
+    SETUP phase"
+  - New test case: last four patches
 
-For the bug fix alone:
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+v1: https://lore.kernel.org/r/20240612144228.1179240-1-peterx@redhat.com
 
+The major goal of this patchset is patch 5, which introduced a new postcopy
+state so that we will send an event in postcopy reconnect failures that
+Libvirt would prefer to have.  There's more information for that issue in
+the commit message alone.
 
-I'm not sure why this trans function is handled specially.
-I think this would be better as
+Patch 1-2 are cleanups that are not directly relevant but I found/stored
+that could be good to have.  I made it simple by putting them together in
+one thread to make patch management easier, but I can send them separately
+when necessary.
 
-static void gen_sari_w(TCGv dest, TCGv src1, target_long imm)
-{
-     tcg_gen_sextract_tl(dest, src1, imm, 32 - imm);
-}
+Patch 3 is also a cleanup, but will be needed for patch 4 as dependency.
 
-TRANS(sari_w, ALL, gen_rri_c, EXT_NONE, EXT_NONE, gen_sari_w)
+Patch 4-5 is the core patches.
 
+Patch 6 updates doc for the new state.
 
-r~
+Patch 7-10 adds a new test for the new state.
+
+Comments welcomed, thanks.
+
+CI: https://gitlab.com/peterx/qemu/-/pipelines/1335604588
+    (check-dco & check-patch fail to git-fetch, but doesn't look relevant)
+
+Peter Xu (10):
+  migration/multifd: Avoid the final FLUSH in complete()
+  migration: Rename thread debug names
+  migration: Use MigrationStatus instead of int
+  migration: Cleanup incoming migration setup state change
+  migration/postcopy: Add postcopy-recover-setup phase
+  migration/docs: Update postcopy recover session for SETUP phase
+  tests/migration-tests: Drop most WIN32 ifdefs for postcopy failure
+    tests
+  tests/migration-tests: Always enable migration events
+  tests/migration-tests: Verify postcopy-recover-setup status
+  tests/migration-tests: Cover postcopy failure on reconnect
+
+ docs/devel/migration/postcopy.rst |  31 +++++----
+ qapi/migration.json               |   4 ++
+ migration/migration.h             |   9 +--
+ migration/postcopy-ram.h          |   3 +
+ tests/qtest/migration-helpers.h   |   2 +
+ migration/colo.c                  |   2 +-
+ migration/migration.c             |  98 ++++++++++++++++++--------
+ migration/multifd.c               |   6 +-
+ migration/postcopy-ram.c          |  10 ++-
+ migration/ram.c                   |   4 --
+ migration/savevm.c                |   6 +-
+ tests/qtest/migration-helpers.c   |  20 ++++++
+ tests/qtest/migration-test.c      | 110 ++++++++++++++++++++++++------
+ 13 files changed, 223 insertions(+), 82 deletions(-)
+
+-- 
+2.45.0
+
 
