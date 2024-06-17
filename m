@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C39A190A69B
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BE8D90A69A
 	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jun 2024 09:13:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sJ6Wf-0003p3-7b; Mon, 17 Jun 2024 03:11:37 -0400
+	id 1sJ6Wi-0003pd-Ev; Mon, 17 Jun 2024 03:11:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sJ6WZ-0003oL-Ae
- for qemu-devel@nongnu.org; Mon, 17 Jun 2024 03:11:33 -0400
-Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sJ6We-0003pN-9c
+ for qemu-devel@nongnu.org; Mon, 17 Jun 2024 03:11:36 -0400
+Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sJ6WX-00025B-3l
- for qemu-devel@nongnu.org; Mon, 17 Jun 2024 03:11:30 -0400
-Received: by mail-ej1-x630.google.com with SMTP id
- a640c23a62f3a-a6f85f82ffeso85815966b.0
- for <qemu-devel@nongnu.org>; Mon, 17 Jun 2024 00:11:28 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sJ6Wc-00027C-FZ
+ for qemu-devel@nongnu.org; Mon, 17 Jun 2024 03:11:36 -0400
+Received: by mail-ej1-x62a.google.com with SMTP id
+ a640c23a62f3a-a6266ffdba8so396776766b.1
+ for <qemu-devel@nongnu.org>; Mon, 17 Jun 2024 00:11:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1718608287; x=1719213087; darn=nongnu.org;
+ d=linaro.org; s=google; t=1718608292; x=1719213092; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=E1BUqr0x4kt4aFRFtfYLYMLx4wG1cR940xtgFYntRhc=;
- b=rYLXiZbAZnr8nNj8R9QCmoK5RW4E+o56x4X6wEt6mNJHYeG2VRAjvTYMwXpE9wxhVQ
- IXY6vWfgU2G4LSLPkkDDdYO17vB/AMItPTGVg8iumjwGzN0zQk0b1I1CpG31wi4DFjLy
- TGG4u6dnKHi2Fxvv8mmcu855SkT3SmwWIIx1BTpoYuvQm2DN42+yB0ZIYYFqExgj6UKs
- Lkqs2wcBgvTlFt6dVQcRpHyf68rX2vj+FKokDhr19f5zfAv1emHuK670cK85IfdvHH3K
- 1IRzEtRpu73IF+g0qzfNwPiisB2ndKwLHTvIs0E8yme+J18qpJX9igL7p7cQwn5bmf02
- ED0g==
+ bh=GkUlGRbmAJqlvNHXX7Tr9hS4i1gAChf6oNxF2co2Y1s=;
+ b=hZlASQxDYGGYwRemsqhkhqbJfwo/9DrOcWIrUxnr0GdrO3K7WbFj896gRSGovRE5ur
+ GYIp/6xKZf1gZvDXATreNYjvy+TAcCLPtAx0K1lLakuMtAm6IE+n2R1XquAmzbhCoND2
+ OsDnKHvYnQbB5HRaHHO8srQLOoHY31Ny0zZ1gyOUN7ZR7TXvWwoj4LaaD4JlhHJcSQTK
+ cfb2qEfNNPaMEULNsEEek84iYxGRZ+B59UdySVrB4NxABx37gwYyp09FxyQyJDkW92r+
+ KcgPpjf/m5K75ZB9htKt0iMMgeP1WoengG4uE3QtD2dv03m/1EdVBhxIv0egwRBFaHdJ
+ Z7ww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718608287; x=1719213087;
+ d=1e100.net; s=20230601; t=1718608292; x=1719213092;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=E1BUqr0x4kt4aFRFtfYLYMLx4wG1cR940xtgFYntRhc=;
- b=llN++vOB2a7+4q5Wi6CwL2bPAcPgyxjUAvz9LryOwq1IBT+r8sHvKfDe+kr9jAtCRO
- Ahf9x3p5SRM9N1mXUgw9SeD03ZgN2vkg9DQSqzQ5JhQIFm0wbNNof1vTF3LrkXqdXgDh
- O3/eSTu+5MDQLePn+B2U70u62P9NZbZIWI27beFr5enc0VXwd7c6B9RnLfGNzMciHcRh
- ChecMQkXLd0rRcrPV8PBysshUcIqrLPJY66CwjtPByxQza71KAQ3HlnhNgZXPhuU1Ekb
- Nt0imuGIuu6qfMbiTOUnIAimX2iUxq5jXFuxdZbmG9ePxsdXDyLG8BorzDmqm2rL3V+b
- XSPA==
-X-Gm-Message-State: AOJu0YxPqfdlnjojzSUX6MDSvktp3DETGTr30J7NhTyQq8eRBJAqfzGm
- tjzJWQOavjwETSnEMzDzz7bVsnrBVNpAL+aqvTjyXF8Yw9FVru6qnHMPZzx4FGDZPgkJb9p4VLG
- a6nw=
-X-Google-Smtp-Source: AGHT+IEotawJ7bkSqaY5TFgE8YohWHNj2Fbpt3k/XRF3cfF+ysZU+eIRZ/6xe5B9QYbPtruOiiGqwA==
-X-Received: by 2002:a17:906:5f9a:b0:a6f:4fc8:266b with SMTP id
- a640c23a62f3a-a6f60cefc59mr499552966b.3.1718608286855; 
- Mon, 17 Jun 2024 00:11:26 -0700 (PDT)
+ bh=GkUlGRbmAJqlvNHXX7Tr9hS4i1gAChf6oNxF2co2Y1s=;
+ b=egN4HCMbhJsNX04DSRXbp5fcK+31B8NmpEABrjpI7DmUQLklt5Tg8tzO9EohdQ7za5
+ QQKJEI6PU8lJqXXIUteEgclYBA5MKFYLhAI9Nk1tv6KKeVxyGky6pcSF064hKCfMhAKj
+ mWe6XMlHu5sTosUTrIP4JguJhwPE+shQz2rKGSLSizNKKj183xctW0dSfAI8kLDU/0IN
+ nuP2eTE8WdQqP6LJ999v3B214L6cPV39GoeIrt4o0eAL1MhurJFax+4CMC/mKIzqeu7r
+ Te3iNvZH5YETRaeUWIZf2W2wG34Nh9PC5/ag8f9OXQAcv+u0aOvZSsbmFg6WVIxNKuGH
+ jiBA==
+X-Gm-Message-State: AOJu0Ywu+FWmWw3PUsZfX98tYfZOLhUf6IC+YPFWsmr+5UhSf2yh59Sk
+ 8jervewOjWnXQIfrjv2sMaVzbFyGgaLZ4URYdS4BMvqjCyxl0cPpieWurXhxsBgaQsB/FJ0DYGc
+ gAX4=
+X-Google-Smtp-Source: AGHT+IH6PyOc3m9JNyw3nledtLiG/EAEJCP9GEeBIAXC1nuRTRdfwhx0I8DN5vpz1Lut24SFk2vzgg==
+X-Received: by 2002:a17:906:b7da:b0:a6f:4b5b:4ba7 with SMTP id
+ a640c23a62f3a-a6f60de2641mr591537366b.67.1718608292381; 
+ Mon, 17 Jun 2024 00:11:32 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.169.90])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a6f56dd2dcesm484695466b.93.2024.06.17.00.11.25
+ a640c23a62f3a-a6f599a7035sm467833866b.27.2024.06.17.00.11.31
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 17 Jun 2024 00:11:26 -0700 (PDT)
+ Mon, 17 Jun 2024 00:11:31 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
  "Michael S. Tsirkin" <mst@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Thomas Huth <thuth@redhat.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v6 01/23] hw/i386/pc: Deprecate 2.4 to 2.12 pc-i440fx machines
-Date: Mon, 17 Jun 2024 09:10:56 +0200
-Message-ID: <20240617071118.60464-2-philmd@linaro.org>
+Subject: [PATCH v6 02/23] hw/i386/pc: Remove deprecated pc-i440fx-2.0 machine
+Date: Mon, 17 Jun 2024 09:10:57 +0200
+Message-ID: <20240617071118.60464-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240617071118.60464-1-philmd@linaro.org>
 References: <20240617071118.60464-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::630;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x630.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,55 +94,144 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Similarly to the commit c7437f0ddb "docs/about: Mark the
-old pc-i440fx-2.0 - 2.3 machine types as deprecated",
-deprecate the 2.4 to 2.12 machines.
+The pc-i440fx-2.0 machine was deprecated for the 8.2
+release (see commit c7437f0ddb "docs/about: Mark the
+old pc-i440fx-2.0 - 2.3 machine types as deprecated"),
+time to remove it.
 
-Suggested-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Reviewed-by: Igor Mammedov <imammedo@redhat.com>
 ---
- docs/about/deprecated.rst | 4 ++--
- hw/i386/pc_piix.c         | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ docs/about/deprecated.rst       |  2 +-
+ docs/about/removed-features.rst |  2 +-
+ include/hw/i386/pc.h            |  3 ---
+ hw/i386/pc.c                    | 15 -------------
+ hw/i386/pc_piix.c               | 37 ---------------------------------
+ 5 files changed, 2 insertions(+), 57 deletions(-)
 
 diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-index b62877e51c..66a5f43626 100644
+index 66a5f43626..e12eab1f72 100644
 --- a/docs/about/deprecated.rst
 +++ b/docs/about/deprecated.rst
-@@ -212,8 +212,8 @@ deprecated; use the new name ``dtb-randomness`` instead. The new name
+@@ -212,7 +212,7 @@ deprecated; use the new name ``dtb-randomness`` instead. The new name
  better reflects the way this property affects all random data within
  the device tree blob, not just the ``kaslr-seed`` node.
  
--``pc-i440fx-2.0`` up to ``pc-i440fx-2.3`` (since 8.2)
--'''''''''''''''''''''''''''''''''''''''''''''''''''''
-+``pc-i440fx-2.0`` up to ``pc-i440fx-2.3`` (since 8.2) and ``pc-i440fx-2.4`` up to ``pc-i440fx-2.12`` (since 9.1)
-+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+-``pc-i440fx-2.0`` up to ``pc-i440fx-2.3`` (since 8.2) and ``pc-i440fx-2.4`` up to ``pc-i440fx-2.12`` (since 9.1)
++``pc-i440fx-2.1`` up to ``pc-i440fx-2.3`` (since 8.2) and ``pc-i440fx-2.4`` up to ``pc-i440fx-2.12`` (since 9.1)
+ ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
  
  These old machine types are quite neglected nowadays and thus might have
- various pitfalls with regards to live migration. Use a newer machine type
+diff --git a/docs/about/removed-features.rst b/docs/about/removed-features.rst
+index eaae82b8a5..f84bfaf2b6 100644
+--- a/docs/about/removed-features.rst
++++ b/docs/about/removed-features.rst
+@@ -948,7 +948,7 @@ mips ``fulong2e`` machine alias (removed in 6.0)
+ 
+ This machine has been renamed ``fuloong2e``.
+ 
+-``pc-0.10`` up to ``pc-i440fx-1.7`` (removed in 4.0 up to 8.2)
++``pc-0.10`` up to ``pc-i440fx-2.0`` (removed in 4.0 up to 9.0)
+ ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+ 
+ These machine types were very old and likely could not be used for live
+diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
+index ca7904ac2c..3e606949fb 100644
+--- a/include/hw/i386/pc.h
++++ b/include/hw/i386/pc.h
+@@ -318,9 +318,6 @@ extern const size_t pc_compat_2_2_len;
+ extern GlobalProperty pc_compat_2_1[];
+ extern const size_t pc_compat_2_1_len;
+ 
+-extern GlobalProperty pc_compat_2_0[];
+-extern const size_t pc_compat_2_0_len;
+-
+ #define DEFINE_PC_MACHINE(suffix, namestr, initfn, optsfn) \
+     static void pc_machine_##suffix##_class_init(ObjectClass *oc, void *data) \
+     { \
+diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+index 0469af00a7..d0f2628d46 100644
+--- a/hw/i386/pc.c
++++ b/hw/i386/pc.c
+@@ -320,21 +320,6 @@ GlobalProperty pc_compat_2_1[] = {
+ };
+ const size_t pc_compat_2_1_len = G_N_ELEMENTS(pc_compat_2_1);
+ 
+-GlobalProperty pc_compat_2_0[] = {
+-    PC_CPU_MODEL_IDS("2.0.0")
+-    { "virtio-scsi-pci", "any_layout", "off" },
+-    { "PIIX4_PM", "memory-hotplug-support", "off" },
+-    { "apic", "version", "0x11" },
+-    { "nec-usb-xhci", "superspeed-ports-first", "off" },
+-    { "nec-usb-xhci", "force-pcie-endcap", "on" },
+-    { "pci-serial", "prog_if", "0" },
+-    { "pci-serial-2x", "prog_if", "0" },
+-    { "pci-serial-4x", "prog_if", "0" },
+-    { "virtio-net-pci", "guest_announce", "off" },
+-    { "ICH9-LPC", "memory-hotplug-support", "off" },
+-};
+-const size_t pc_compat_2_0_len = G_N_ELEMENTS(pc_compat_2_0);
+-
+ GSIState *pc_gsi_create(qemu_irq **irqs, bool pci_enabled)
+ {
+     GSIState *s;
 diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-index ebb51de380..02878060d0 100644
+index 02878060d0..a750a0e6ab 100644
 --- a/hw/i386/pc_piix.c
 +++ b/hw/i386/pc_piix.c
-@@ -742,6 +742,7 @@ DEFINE_I440FX_MACHINE(v3_0, "pc-i440fx-3.0", NULL,
- static void pc_i440fx_2_12_machine_options(MachineClass *m)
- {
-     pc_i440fx_3_0_machine_options(m);
-+    m->deprecation_reason = "old and unattended - use a newer version instead";
-     compat_props_add(m->compat_props, hw_compat_2_12, hw_compat_2_12_len);
-     compat_props_add(m->compat_props, pc_compat_2_12, pc_compat_2_12_len);
+@@ -441,11 +441,6 @@ static void pc_compat_2_1_fn(MachineState *machine)
+     x86_cpu_change_kvm_default("svm", NULL);
  }
-@@ -847,7 +848,6 @@ static void pc_i440fx_2_3_machine_options(MachineClass *m)
+ 
+-static void pc_compat_2_0_fn(MachineState *machine)
+-{
+-    pc_compat_2_1_fn(machine);
+-}
+-
+ #ifdef CONFIG_ISAPC
+ static void pc_init_isa(MachineState *machine)
  {
-     pc_i440fx_2_4_machine_options(m);
-     m->hw_version = "2.3.0";
--    m->deprecation_reason = "old and unattended - use a newer version instead";
-     compat_props_add(m->compat_props, hw_compat_2_3, hw_compat_2_3_len);
-     compat_props_add(m->compat_props, pc_compat_2_3, pc_compat_2_3_len);
- }
+@@ -887,38 +882,6 @@ static void pc_i440fx_2_1_machine_options(MachineClass *m)
+ DEFINE_I440FX_MACHINE(v2_1, "pc-i440fx-2.1", pc_compat_2_1_fn,
+                       pc_i440fx_2_1_machine_options);
+ 
+-static void pc_i440fx_2_0_machine_options(MachineClass *m)
+-{
+-    PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
+-
+-    pc_i440fx_2_1_machine_options(m);
+-    m->hw_version = "2.0.0";
+-    compat_props_add(m->compat_props, pc_compat_2_0, pc_compat_2_0_len);
+-    pcmc->smbios_legacy_mode = true;
+-    pcmc->has_reserved_memory = false;
+-    /* This value depends on the actual DSDT and SSDT compiled into
+-     * the source QEMU; unfortunately it depends on the binary and
+-     * not on the machine type, so we cannot make pc-i440fx-1.7 work on
+-     * both QEMU 1.7 and QEMU 2.0.
+-     *
+-     * Large variations cause migration to fail for more than one
+-     * consecutive value of the "-smp" maxcpus option.
+-     *
+-     * For small variations of the kind caused by different iasl versions,
+-     * the 4k rounding usually leaves slack.  However, there could be still
+-     * one or two values that break.  For QEMU 1.7 and QEMU 2.0 the
+-     * slack is only ~10 bytes before one "-smp maxcpus" value breaks!
+-     *
+-     * 6652 is valid for QEMU 2.0, the right value for pc-i440fx-1.7 on
+-     * QEMU 1.7 it is 6414.  For RHEL/CentOS 7.0 it is 6418.
+-     */
+-    pcmc->legacy_acpi_table_size = 6652;
+-    pcmc->acpi_data_size = 0x10000;
+-}
+-
+-DEFINE_I440FX_MACHINE(v2_0, "pc-i440fx-2.0", pc_compat_2_0_fn,
+-                      pc_i440fx_2_0_machine_options);
+-
+ #ifdef CONFIG_ISAPC
+ static void isapc_machine_options(MachineClass *m)
+ {
 -- 
 2.41.0
 
