@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C3F690A603
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jun 2024 08:36:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC9D490A5FC
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jun 2024 08:36:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sJ5xK-000300-BB; Mon, 17 Jun 2024 02:35:06 -0400
+	id 1sJ5xM-0003Kk-05; Mon, 17 Jun 2024 02:35:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sJ5wv-0002gG-OO
- for qemu-devel@nongnu.org; Mon, 17 Jun 2024 02:34:41 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sJ5wz-0002of-F3
+ for qemu-devel@nongnu.org; Mon, 17 Jun 2024 02:34:46 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sJ5wu-0004K2-8z
- for qemu-devel@nongnu.org; Mon, 17 Jun 2024 02:34:41 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sJ5wy-0004Kc-48
+ for qemu-devel@nongnu.org; Mon, 17 Jun 2024 02:34:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1718606079;
+ s=mimecast20190719; t=1718606083;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=EaOs2rdjYEbfdfvzizxWxpzc/UjX+8+G4xQcx7UC+l4=;
- b=FDJ9AyIm9gfCGW41/z24uZRXCp7NukXhpSFK/9ma5XbuIv/uP/FOlcLThvjH1v6WQz4BcU
- QZ26q2Ja+Em5G2GaEi30ivtwCWSvR3JFFclp2w+nw8Oj2viwhhSL3uGGWD8HlzinJzX2wN
- fPPh46PstlonUyWdocVtGNxgwkvgNBI=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=t+ZlnHpoqmn8UbH3ohZv7dm51VU+Y4DvKqpKwq5RXNY=;
+ b=D8n9la1wIl4kZJBpqpUX0pvbd4fslfhIUuV/qNixSd9YJXgpDeMcnK7/SG9LJxyfVCgfWV
+ GhyU2tPyc0ISQcyBlFz+smJvuVe3ZLLgKSV/6HarsxhY2seDdIx1ZA8GmEcXWiWntjsxZL
+ EOKKcl/DXvJNOkzz2S6ReOfxRhXVsAQ=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-569-YzOB5uj9PJ2yHcEBp4MtSw-1; Mon,
- 17 Jun 2024 02:34:37 -0400
-X-MC-Unique: YzOB5uj9PJ2yHcEBp4MtSw-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-487-3hvxaS7xOiOnyYoyhLra-A-1; Mon,
+ 17 Jun 2024 02:34:39 -0400
+X-MC-Unique: 3hvxaS7xOiOnyYoyhLra-A-1
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 37D9E1955D77; Mon, 17 Jun 2024 06:34:35 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 6E27019560B1; Mon, 17 Jun 2024 06:34:38 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.192.49])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 5BCD3300022A; Mon, 17 Jun 2024 06:34:33 +0000 (UTC)
+ id 7AFCC3000227; Mon, 17 Jun 2024 06:34:35 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Eric Auger <eric.auger@redhat.com>,
  Zhenzhong Duan <zhenzhong.duan@intel.com>,
  Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH v2 08/17] vfio/container: Introduce vfio_get_iommu_class_name()
-Date: Mon, 17 Jun 2024 08:34:00 +0200
-Message-ID: <20240617063409.34393-9-clg@redhat.com>
+Subject: [PATCH v2 09/17] vfio/container: Introduce vfio_create_container()
+Date: Mon, 17 Jun 2024 08:34:01 +0200
+Message-ID: <20240617063409.34393-10-clg@redhat.com>
 In-Reply-To: <20240617063409.34393-1-clg@redhat.com>
 References: <20240617063409.34393-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -82,71 +82,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Rework vfio_get_iommu_class() to return a literal class name instead
-of a class object. We will need this name to instantiate the object
-later on. Since the default case asserts, remove the error report as
-QEMU will simply abort before.
+This routine allocates the QEMU struct type representing the VFIO
+container. It is minimal currently and future changes will do more
+initialization.
 
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- hw/vfio/container.c | 18 ++++++------------
- 1 file changed, 6 insertions(+), 12 deletions(-)
+ hw/vfio/container.c | 19 +++++++++++++++----
+ 1 file changed, 15 insertions(+), 4 deletions(-)
 
 diff --git a/hw/vfio/container.c b/hw/vfio/container.c
-index 589f37bc6d68dae18f9e46371f14d6952b2240c0..bb6abe60ee29d5b69b494523c9002f53e1b2a3c8 100644
+index bb6abe60ee29d5b69b494523c9002f53e1b2a3c8..a8691942791006f44f7a3c34b32c67ca51766182 100644
 --- a/hw/vfio/container.c
 +++ b/hw/vfio/container.c
-@@ -373,24 +373,20 @@ static int vfio_get_iommu_type(int container_fd,
- /*
-  * vfio_get_iommu_ops - get a VFIOIOMMUClass associated with a type
-  */
--static const VFIOIOMMUClass *vfio_get_iommu_class(int iommu_type, Error **errp)
-+static const char *vfio_get_iommu_class_name(int iommu_type)
- {
--    ObjectClass *klass = NULL;
--
-     switch (iommu_type) {
-     case VFIO_TYPE1v2_IOMMU:
-     case VFIO_TYPE1_IOMMU:
--        klass = object_class_by_name(TYPE_VFIO_IOMMU_LEGACY);
-+        return TYPE_VFIO_IOMMU_LEGACY;
-         break;
-     case VFIO_SPAPR_TCE_v2_IOMMU:
-     case VFIO_SPAPR_TCE_IOMMU:
--        klass = object_class_by_name(TYPE_VFIO_IOMMU_SPAPR);
-+        return TYPE_VFIO_IOMMU_SPAPR;
-         break;
-     default:
-         g_assert_not_reached();
-     };
--
--    return VFIO_IOMMU_CLASS(klass);
+@@ -430,6 +430,16 @@ static bool vfio_set_iommu(VFIOContainer *container, int group_fd,
+     return true;
  }
  
- static bool vfio_set_iommu(VFIOContainer *container, int group_fd,
-@@ -398,6 +394,7 @@ static bool vfio_set_iommu(VFIOContainer *container, int group_fd,
++static VFIOContainer *vfio_create_container(int fd, VFIOGroup *group,
++                                            Error **errp)
++{
++    VFIOContainer *container;
++
++    container = g_malloc0(sizeof(*container));
++    container->fd = fd;
++    return container;
++}
++
+ static int vfio_get_iommu_info(VFIOContainer *container,
+                                struct vfio_iommu_type1_info **info)
  {
-     int iommu_type;
-     const VFIOIOMMUClass *vioc;
-+    const char *vioc_name;
+@@ -604,13 +614,14 @@ static bool vfio_connect_container(VFIOGroup *group, AddressSpace *as,
+         goto close_fd_exit;
+     }
  
-     iommu_type = vfio_get_iommu_type(container->fd, errp);
-     if (iommu_type < 0) {
-@@ -426,11 +423,8 @@ static bool vfio_set_iommu(VFIOContainer *container, int group_fd,
+-    container = g_malloc0(sizeof(*container));
+-    container->fd = fd;
+-    bcontainer = &container->bcontainer;
+-
++    container = vfio_create_container(fd, group, errp);
++    if (!container) {
++        goto close_fd_exit;
++    }
+     if (!vfio_set_iommu(container, group->fd, errp)) {
+         goto free_container_exit;
+     }
++    bcontainer = &container->bcontainer;
  
-     container->iommu_type = iommu_type;
- 
--    vioc = vfio_get_iommu_class(iommu_type, errp);
--    if (!vioc) {
--        error_setg(errp, "No available IOMMU models");
--        return false;
--    }
-+    vioc_name = vfio_get_iommu_class_name(iommu_type);
-+    vioc = VFIO_IOMMU_CLASS(object_class_by_name(vioc_name));
- 
-     vfio_container_init(&container->bcontainer, vioc);
-     return true;
+     if (!vfio_cpr_register_container(bcontainer, errp)) {
+         goto free_container_exit;
 -- 
 2.45.2
 
