@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6F4090A6A0
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jun 2024 09:13:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A50DF90A6AB
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jun 2024 09:14:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sJ6Xa-0005ke-DA; Mon, 17 Jun 2024 03:12:34 -0400
+	id 1sJ6Xg-0006II-60; Mon, 17 Jun 2024 03:12:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sJ6XY-0005U9-GP
- for qemu-devel@nongnu.org; Mon, 17 Jun 2024 03:12:32 -0400
-Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sJ6Xe-0006HB-G1
+ for qemu-devel@nongnu.org; Mon, 17 Jun 2024 03:12:38 -0400
+Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sJ6XW-0002IS-Kn
- for qemu-devel@nongnu.org; Mon, 17 Jun 2024 03:12:32 -0400
-Received: by mail-ej1-x629.google.com with SMTP id
- a640c23a62f3a-a6f7720e6e8so105252866b.3
- for <qemu-devel@nongnu.org>; Mon, 17 Jun 2024 00:12:30 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sJ6Xb-0002Is-Jz
+ for qemu-devel@nongnu.org; Mon, 17 Jun 2024 03:12:38 -0400
+Received: by mail-ej1-x62a.google.com with SMTP id
+ a640c23a62f3a-a6ef793f4b8so420379866b.1
+ for <qemu-devel@nongnu.org>; Mon, 17 Jun 2024 00:12:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1718608348; x=1719213148; darn=nongnu.org;
+ d=linaro.org; s=google; t=1718608354; x=1719213154; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=FtFU7s0OE9g+HVGgtXqebVqKRLtvfz7dny9VpSwM+gI=;
- b=Z+8SL2uyAsnQXzhc4fvB8KC84Fg83RTEVzqAwNo10dmDt/Nvc/SHDDeFlHPbpqZZ+F
- LuCzaYrnqHVMDTqSWjnpyUPPqRIDIqWDZvXLEaMjic8ypAl/axT0wvKjSnjYfgBT8uTJ
- sjx4SUFfD4+/CyvLXYE/Lv5UBOGqxj3F+nQ2rxBoh+O0yQis+qTGHhdTqA66leh79f9D
- 3KamfgdBjXSXeQByDk2eT5TrLvWlF+5+4+JQ9obmqG8tllMPMK6MjT7rh5vTcFwOWr42
- B0fsR85GvMdFbZVp/G1hno8R0BZ5WKdJX6cvkRqN0GeSErznbBXXbIEyZJBgCv5S9vy/
- LlIQ==
+ bh=S4GxrLrwuscCW965PEoGdFuOYAiJgmw5yLVhtIAV2tE=;
+ b=QW5Dzbw/JCz9dzRCjVhTYvYnzSC+QiTcKXb/dEzQyzTIC78M25EAUKx5niImWOKVQB
+ tW74pnWTXE1Ein8B/zFB2s5hmKtt3hKaWYQI0HLVjCkpHU/dGJIIyJ5mwT6NrrkSTNLs
+ E/NUNG+Z9myOaOtbHX5N+KIyT4+WMIQwYxgdXqvTXkrum7QEhnOqY5wclpUcbb05ZZfZ
+ SfcL8MoUTAJBfE+zfHwd84sUR4aqE3xMeJICuqX0KptO6KmqaUJjwAdlmdMCKQvsBegI
+ ptYW/mXonRtT6172B6S/49CmOCM7iNt4JioXGumPsMPlwiQ8Y9V380RH3tPpy03h65/0
+ fqsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718608348; x=1719213148;
+ d=1e100.net; s=20230601; t=1718608354; x=1719213154;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=FtFU7s0OE9g+HVGgtXqebVqKRLtvfz7dny9VpSwM+gI=;
- b=Nltmn0cnxC6NjIB08p9mhnmwab4tF5SzyUGd6r+Vfsjqsnql3RDhrzB8o2qRUnXnNf
- GDBMVsLzV8fT4oS4RJDvx+EgGhjKIJw2tOVOJL4EF6nwYdKrY9CG/5sAV7ndjoNNylfU
- kCmQ820wYN9+g9bCC2A87dMoQAJuvrs+j+D6YHe+VH9/TpAL0qtFktMpxiMpsmATacB1
- JxThXM+StdhA7MVuJa757f6uvLWXA1S/2ci2QaU5oM3fkbPVW+gKH3RbWesZw+HW0DOX
- I2AIsv74O/DTkd93JdEiDK/m77QMWtjFvsxZUOP9HvAI8ASBLxGu5KLqKJdSdv6HFQ/e
- cEMg==
-X-Gm-Message-State: AOJu0YywdTdITGjRhT2WoR0n3I857ZPq20KV0Dn7sXXXGznjqrj/I1lE
- O4YukWZlcn/vXDQtrA6Ed2VClh0e2n5Enw5WGHLpC4XDWAvc9jWmYuJfBKvStYRuhFgSVP87Mc0
- nXQI=
-X-Google-Smtp-Source: AGHT+IFrY+HYWd0dtm47EYlprOKdaBcmwiP/hHo45VQlTbTCbIUsZZVQ97KkWLS15Fh89T56sLvKxA==
-X-Received: by 2002:a17:906:710f:b0:a6f:5120:3a30 with SMTP id
- a640c23a62f3a-a6f60dc4ffamr707532566b.60.1718608348266; 
- Mon, 17 Jun 2024 00:12:28 -0700 (PDT)
+ bh=S4GxrLrwuscCW965PEoGdFuOYAiJgmw5yLVhtIAV2tE=;
+ b=FAKxnZ8FGdvLO8QIIn3XxObpFtjGeR/NVEN/oGyFEc3HrIdLfu1RgbazGVJ3xiEcST
+ Zhr05/kYTQ8glYoEFjiYP4n4S44YvUj9NfRdVU2aAL1eb8Q7oGgLzTjiKfbj07HqdYFg
+ jYvpLFu4yc5ISHZRsnYpnnXO13/ovqGz8LYmo0uAF1GSsM/r3Wj0CVMZ2E6q9iv9aSFW
+ QCCXirSYfPr1prYMdeWRPf3TqkwkaTa1/LtfqSsGgl8IJ+wa/b/l6luog86ELsC7kjSp
+ SDoMNrWw7dbcv6H3dE7Hqypv2yDdNdZwjDaxIe8OyeIT4L0CDwvtJ7o4M00KTz+g6PKl
+ AWQQ==
+X-Gm-Message-State: AOJu0YxY70Mk7A1muDyCw06wnkuBhb+jz5hixBcOe9qpYoZ2X0h/TEbn
+ ly8I+b/kO1kEVN3ozV0DHNVIYoT694vz5/LDB5oamJYwFAJyoFdAHKg3PyXXVQOie5ztmCJlryv
+ d4fk=
+X-Google-Smtp-Source: AGHT+IGoAuzOPScfuNRmCwG3jHowMVU4uvvGEJMdGIsQ3F1CfOLt8K4ivMBmj38k2nYw9G36t0miSw==
+X-Received: by 2002:a17:906:ca0d:b0:a6f:fbc:b3f3 with SMTP id
+ a640c23a62f3a-a6f60dc89cbmr530751566b.47.1718608353929; 
+ Mon, 17 Jun 2024 00:12:33 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.169.90])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a6f56ed379esm491850466b.139.2024.06.17.00.12.27
+ a640c23a62f3a-a6f56f41a91sm492762466b.172.2024.06.17.00.12.32
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 17 Jun 2024 00:12:27 -0700 (PDT)
+ Mon, 17 Jun 2024 00:12:33 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
  "Michael S. Tsirkin" <mst@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v6 12/23] hw/smbios: Remove 'smbios_uuid_encoded',
- simplify smbios_encode_uuid()
-Date: Mon, 17 Jun 2024 09:11:07 +0200
-Message-ID: <20240617071118.60464-13-philmd@linaro.org>
+Subject: [PATCH v6 13/23] hw/i386/pc: Remove
+ PCMachineClass::enforce_aligned_dimm
+Date: Mon, 17 Jun 2024 09:11:08 +0200
+Message-ID: <20240617071118.60464-14-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240617071118.60464-1-philmd@linaro.org>
 References: <20240617071118.60464-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::629;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x629.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,43 +95,117 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-'smbios_encode_uuid' is always true, remove it,
-simplifying smbios_encode_uuid().
+PCMachineClass::enforce_aligned_dimm was only used by the
+pc-i440fx-2.1 machine, which got removed. It is now always
+true. Remove it, simplifying pc_get_device_memory_range().
+Update the comment in Avocado test_phybits_low_pse36().
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Igor Mammedov <imammedo@redhat.com>
 ---
- hw/smbios/smbios.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ include/hw/i386/pc.h                  |  3 ---
+ hw/i386/pc.c                          | 14 +++-----------
+ tests/avocado/mem-addr-space-check.py |  9 ++++-----
+ 3 files changed, 7 insertions(+), 19 deletions(-)
 
-diff --git a/hw/smbios/smbios.c b/hw/smbios/smbios.c
-index 8261eb716f..3b7703489d 100644
---- a/hw/smbios/smbios.c
-+++ b/hw/smbios/smbios.c
-@@ -30,7 +30,6 @@
- #include "hw/pci/pci_device.h"
- #include "smbios_build.h"
- 
--static const bool smbios_uuid_encoded = true;
- /*
-  * SMBIOS tables provided by user with '-smbios file=<foo>' option
-  */
-@@ -600,11 +599,9 @@ static void smbios_build_type_0_table(void)
- static void smbios_encode_uuid(struct smbios_uuid *uuid, QemuUUID *in)
+diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
+index 5667b87ed0..ca72f8cab8 100644
+--- a/include/hw/i386/pc.h
++++ b/include/hw/i386/pc.h
+@@ -74,8 +74,6 @@ typedef struct PCMachineState {
+  *
+  * Compat fields:
+  *
+- * @enforce_aligned_dimm: check that DIMM's address/size is aligned by
+- *                        backend's alignment value if provided
+  * @acpi_data_size: Size of the chunk of memory at the top of RAM
+  *                  for the BIOS ACPI tables and other BIOS
+  *                  datastructures.
+@@ -114,7 +112,6 @@ struct PCMachineClass {
+     /* RAM / address space compat: */
+     bool gigabyte_align;
+     bool has_reserved_memory;
+-    bool enforce_aligned_dimm;
+     bool broken_reserved_end;
+     bool enforce_amd_1tb_hole;
+     bool isa_bios_alias;
+diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+index 215462e861..ff5683a8ee 100644
+--- a/hw/i386/pc.c
++++ b/hw/i386/pc.c
+@@ -728,7 +728,6 @@ static void pc_get_device_memory_range(PCMachineState *pcms,
+                                        hwaddr *base,
+                                        ram_addr_t *device_mem_size)
  {
-     memcpy(uuid, in, 16);
--    if (smbios_uuid_encoded) {
--        uuid->time_low = bswap32(uuid->time_low);
--        uuid->time_mid = bswap16(uuid->time_mid);
--        uuid->time_hi_and_version = bswap16(uuid->time_hi_and_version);
+-    PCMachineClass *pcmc = PC_MACHINE_GET_CLASS(pcms);
+     MachineState *machine = MACHINE(pcms);
+     ram_addr_t size;
+     hwaddr addr;
+@@ -736,10 +735,8 @@ static void pc_get_device_memory_range(PCMachineState *pcms,
+     size = machine->maxram_size - machine->ram_size;
+     addr = ROUND_UP(pc_above_4g_end(pcms), 1 * GiB);
+ 
+-    if (pcmc->enforce_aligned_dimm) {
+-        /* size device region assuming 1G page max alignment per slot */
+-        size += (1 * GiB) * machine->ram_slots;
 -    }
-+    uuid->time_low = bswap32(uuid->time_low);
-+    uuid->time_mid = bswap16(uuid->time_mid);
-+    uuid->time_hi_and_version = bswap16(uuid->time_hi_and_version);
++    /* size device region assuming 1G page max alignment per slot */
++    size += (1 * GiB) * machine->ram_slots;
+ 
+     *base = addr;
+     *device_mem_size = size;
+@@ -1303,12 +1300,9 @@ void pc_i8259_create(ISABus *isa_bus, qemu_irq *i8259_irqs)
+ static void pc_memory_pre_plug(HotplugHandler *hotplug_dev, DeviceState *dev,
+                                Error **errp)
+ {
+-    const PCMachineState *pcms = PC_MACHINE(hotplug_dev);
+     const X86MachineState *x86ms = X86_MACHINE(hotplug_dev);
+-    const PCMachineClass *pcmc = PC_MACHINE_GET_CLASS(pcms);
+     const MachineState *ms = MACHINE(hotplug_dev);
+     const bool is_nvdimm = object_dynamic_cast(OBJECT(dev), TYPE_NVDIMM);
+-    const uint64_t legacy_align = TARGET_PAGE_SIZE;
+     Error *local_err = NULL;
+ 
+     /*
+@@ -1333,8 +1327,7 @@ static void pc_memory_pre_plug(HotplugHandler *hotplug_dev, DeviceState *dev,
+         return;
+     }
+ 
+-    pc_dimm_pre_plug(PC_DIMM(dev), MACHINE(hotplug_dev),
+-                     pcmc->enforce_aligned_dimm ? NULL : &legacy_align, errp);
++    pc_dimm_pre_plug(PC_DIMM(dev), MACHINE(hotplug_dev), NULL, errp);
  }
  
- static void smbios_build_type_1_table(void)
+ static void pc_memory_plug(HotplugHandler *hotplug_dev,
+@@ -1798,7 +1791,6 @@ static void pc_machine_class_init(ObjectClass *oc, void *data)
+     pcmc->smbios_defaults = true;
+     pcmc->gigabyte_align = true;
+     pcmc->has_reserved_memory = true;
+-    pcmc->enforce_aligned_dimm = true;
+     pcmc->enforce_amd_1tb_hole = true;
+     pcmc->isa_bios_alias = true;
+     /* BIOS ACPI tables: 128K. Other BIOS datastructures: less than 4K reported
+diff --git a/tests/avocado/mem-addr-space-check.py b/tests/avocado/mem-addr-space-check.py
+index af019969c0..85541ea051 100644
+--- a/tests/avocado/mem-addr-space-check.py
++++ b/tests/avocado/mem-addr-space-check.py
+@@ -31,11 +31,10 @@ def test_phybits_low_pse36(self):
+         at 4 GiB boundary when "above_4g_mem_size" is 0 (this would be true when
+         we have 0.5 GiB of VM memory, see pc_q35_init()). This means total
+         hotpluggable memory size is 60 GiB. Per slot, we reserve 1 GiB of memory
+-        for dimm alignment for all newer machines (see enforce_aligned_dimm
+-        property for pc machines and pc_get_device_memory_range()). That leaves
+-        total hotpluggable actual memory size of 59 GiB. If the VM is started
+-        with 0.5 GiB of memory, maxmem should be set to a maximum value of
+-        59.5 GiB to ensure that the processor can address all memory directly.
++        for dimm alignment for all machines. That leaves total hotpluggable
++        actual memory size of 59 GiB. If the VM is started with 0.5 GiB of
++        memory, maxmem should be set to a maximum value of 59.5 GiB to ensure
++        that the processor can address all memory directly.
+         Note that 64-bit pci hole size is 0 in this case. If maxmem is set to
+         59.6G, QEMU should fail to start with a message "phy-bits are too low".
+         If maxmem is set to 59.5G with all other QEMU parameters identical, QEMU
 -- 
 2.41.0
 
