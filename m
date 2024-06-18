@@ -2,83 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2207690C8E7
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jun 2024 13:18:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 286D890C919
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jun 2024 13:23:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sJWps-0006A6-UZ; Tue, 18 Jun 2024 07:17:12 -0400
+	id 1sJWv0-00082I-Al; Tue, 18 Jun 2024 07:22:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sJWpr-00069w-8q
- for qemu-devel@nongnu.org; Tue, 18 Jun 2024 07:17:11 -0400
-Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sJWpp-0005vB-Do
- for qemu-devel@nongnu.org; Tue, 18 Jun 2024 07:17:10 -0400
-Received: by mail-ed1-x52b.google.com with SMTP id
- 4fb4d7f45d1cf-57cc1c00ba6so4631591a12.1
- for <qemu-devel@nongnu.org>; Tue, 18 Jun 2024 04:17:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1718709427; x=1719314227; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=5JO6aPU/rvXapwUpsJxQBr9hEa+bvufxHl0XhUOqEiU=;
- b=sbdq6qMqFA8IB2qyUl07p3fbiy11YO7i+jg64CoNNDidNLxTnGpSE1fd4xxiQ2PCZP
- RRHlElCp0Dg8KG2mXIs+oeXiJKv4vj/zxJvCBv8JkuMAE2cfGefL0gF/AkS6R3oqbFwP
- R9lgxoQ3g/9pLe0f+/ZqukurYmUvNqhTM/9W57//pz5Ga0ZBLFqrwFt03772sIXRHY6C
- Jta/nf8iX4UWdMhBqm9j2thpQr+Zb/ZqW9byqXhTDWOr9wSUI5yKKQFucm15cFZc5TYd
- 9TKoHCf52aY5vn6YCZhTW+WTg19FdUFCTTfqo2Uqw3+e7oOCCGaCMrGErHBbXwvBDDkl
- Xqtw==
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sJWuw-00081y-Ul
+ for qemu-devel@nongnu.org; Tue, 18 Jun 2024 07:22:26 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sJWuv-0006ky-23
+ for qemu-devel@nongnu.org; Tue, 18 Jun 2024 07:22:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1718709743;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=PKyT5iAXzsXt/u3rp0WLy5M6y+SEhTxaicjtOp6Xay8=;
+ b=DD0lzhXPApc7w0exnu8h+Ce+iAjuLQcm+hyhKXEs0YmUcqi2AUPYs6AnyKHm3Boxw/vZva
+ Qo8lebd/AEzV9wpVy+UovxErBrnKL3S3CJfV2GVKaIuV19bdHjNvM3prJJdqRqS9l3/cI/
+ 6exMWw+GOEiEMamd+IYajo4oRUegMqg=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-232-7dXdNpjcOTi5k1nyUEgsyg-1; Tue, 18 Jun 2024 07:22:20 -0400
+X-MC-Unique: 7dXdNpjcOTi5k1nyUEgsyg-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-35f27bfa618so2765586f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 18 Jun 2024 04:22:20 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718709427; x=1719314227;
+ d=1e100.net; s=20230601; t=1718709739; x=1719314539;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=5JO6aPU/rvXapwUpsJxQBr9hEa+bvufxHl0XhUOqEiU=;
- b=pzZ4eop89GI1hd5XXzqd33eavFyUqFUdEyZ0ggGTgwuxz55S05HJ3KYViumhiYlIHB
- bdcA1a5NM+tKs6QJLEbhUIn46I9kDDb/ofOP1n0zndlBPyFnHrqrTtOHd8eZoHGOEuie
- D02SvETMQ9XGu//5iRk61CsJJxF+RtdgW1KiLO4KRoK1oL2yg6OytIw8hsLwGy2QPCSR
- vYFCQyGoagdzAUL7dOfH2rDvV3aobRYMGtRL4EzWTzNa4B3lnIEiAaGIz5bVhPY0sKiB
- syUySuPqhQByruDucmu6O8VJA2asarJv8WSeOTlVXebBMKVbSG4D8FrYnHGNeIhD9KlW
- cKkw==
+ bh=PKyT5iAXzsXt/u3rp0WLy5M6y+SEhTxaicjtOp6Xay8=;
+ b=oRO8rxdDaOErsLLXqO2Qrtwi6bLINnroXZvS1m3znioOiRdSWELqVAJLuS904Bs5p/
+ jTlCq32IZ2OBsUCerOhYdzGqyps0MlnphY1uooBQm1i7N1nsgsi3JdLZSRWX0JaLKniP
+ ZmICDDWAl5a5MPJwwxl00+GJm0z/wBg5Hb5dBTmX44GoVKYh8Jnalpcnfv1Pvwlw7XR4
+ yyhzajICRD5gifUzi7TVsSEsTpxOUv0vsJ82OLIw+iwQ+UeGIwgaVDLi+ynTHf8PW1Wa
+ pDoxkxVa8r30IMc6sOZ0f4ByyIn/3iNSCeZ7ZVtZoDqxmBlxTxSoTxv4RBXHe7n28IYw
+ 6dqA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCU9oo8eURIAd+BvlHezia4ROtEe6GgpngJaWRfo8ZqVG6feRLX9gMARqt9AXUq8eqKIeFwC8i6uzfmDu632U/0/ud4Zzvw=
-X-Gm-Message-State: AOJu0YyrAk/n7dYZpWE6gfv8vQUdOG+5UZ5jpHG/3NfxauHRNjGLVZfU
- 1eKS9slFtL9If5jn4Eb1GfOAvDn8AIkdpzToCFIH6rsfA90oaNTckxJ+fdVNT0RjoQrqK7vhEbY
- yKNo=
-X-Google-Smtp-Source: AGHT+IFvrMu4x5jlYviV3dcRyo6qP3TmgNvYVpo5oxeQgHYIfGQCqBEk2GsbWq7i8HcImNrAXVIPGg==
-X-Received: by 2002:a50:ccc4:0:b0:579:c3f8:591c with SMTP id
- 4fb4d7f45d1cf-57cbd687a0amr8390144a12.18.1718709427231; 
- Tue, 18 Jun 2024 04:17:07 -0700 (PDT)
-Received: from [192.168.69.100] ([176.187.212.55])
+ AJvYcCUlhUtyk0FWsSf8N2Kd9Nw41CcgOGoWjF95uLaHsgdfawgDxlDtjJOFykXV6BD3DCSOzvNY0IPRZi1PvZQ1fQ3yQEe9GPE=
+X-Gm-Message-State: AOJu0Ywuv0OpHr3HnWhJLwLpx8MwP+p/OebeKjy9fwbcm+O8QbUyz6iI
+ 23/mpWjJOjoRM6gYlTx4/lP4EgwiNZf0Ti6DPzAyzuZ3pJvb1ApbFJlZ8J9mtkmFKymqwYuh3j+
+ FEq88EPuNw4qJhoDsaQ1DfFt8SLNNu+aJ+JnAUfHhtmXbD3wKCg2Z
+X-Received: by 2002:adf:cd09:0:b0:35f:d6e:f7bd with SMTP id
+ ffacd0b85a97d-3607a76ae7emr7825274f8f.29.1718709739421; 
+ Tue, 18 Jun 2024 04:22:19 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IENywWz9o9O59DwNgBz8MOb9ZUfHnhgxW1bdbmaD/obRa14HPmfZkyIS4fsM+IV5TpP6i/DyQ==
+X-Received: by 2002:adf:cd09:0:b0:35f:d6e:f7bd with SMTP id
+ ffacd0b85a97d-3607a76ae7emr7825261f8f.29.1718709739034; 
+ Tue, 18 Jun 2024 04:22:19 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
+ ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-57cbdfe1428sm6540673a12.27.2024.06.18.04.17.06
+ ffacd0b85a97d-36289a4faeasm490251f8f.95.2024.06.18.04.22.18
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 18 Jun 2024 04:17:06 -0700 (PDT)
-Message-ID: <3561837a-895b-4e5f-bc40-bdf101cb38cb@linaro.org>
-Date: Tue, 18 Jun 2024 13:17:04 +0200
+ Tue, 18 Jun 2024 04:22:18 -0700 (PDT)
+Message-ID: <9fa557c2-ad9f-47f0-ab40-17332badcb15@redhat.com>
+Date: Tue, 18 Jun 2024 13:22:17 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/4] hw/mips/loongson3_virt: Wire up loongson_ipi device
-To: Jiaxun Yang <jiaxun.yang@flygoat.com>, qemu-devel@nongnu.org
-Cc: Huacai Chen <chenhuacai@kernel.org>, Song Gao <gaosong@loongson.cn>
-References: <20240605-loongson3-ipi-v3-0-ddd2c0e03fa3@flygoat.com>
- <20240605-loongson3-ipi-v3-3-ddd2c0e03fa3@flygoat.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240605-loongson3-ipi-v3-3-ddd2c0e03fa3@flygoat.com>
+Subject: Re: [PATCH v2 03/17] vfio/common: Move dirty tracking ranges update
+ to helper
+To: eric.auger@redhat.com, qemu-devel@nongnu.org
+Cc: Zhenzhong Duan <zhenzhong.duan@intel.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Joao Martins <joao.m.martins@oracle.com>
+References: <20240617063409.34393-1-clg@redhat.com>
+ <20240617063409.34393-4-clg@redhat.com>
+ <81fa58ce-a4e6-41f1-8d9a-75ad674fe472@redhat.com>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <81fa58ce-a4e6-41f1-8d9a-75ad674fe472@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.148,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,91 +107,106 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/6/24 04:15, Jiaxun Yang wrote:
-> Wire up loongson_ipi device for loongson3_virt machine, so we
-> can have SMP support for TCG backend as well.
+On 6/17/24 1:39 PM, Eric Auger wrote:
+> Hi Cédric,
+> On 6/17/24 08:33, Cédric Le Goater wrote:
+>> From: Joao Martins <joao.m.martins@oracle.com>
+>>
+>> Separate the changes that updates the ranges from the listener, to
+> s/updates/update
+
+fixed.
+
+>> make it reusable in preparation to expand its use to vIOMMU support.
+>>
+>> [ clg: - Rebased on upstream
+>>         - Introduced vfio_dirty_tracking_update_range() ]
+>>
+>> Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
+>> Signed-off-by: Cédric Le Goater <clg@redhat.com>
+>> Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+>> ---
+>>   hw/vfio/common.c | 38 ++++++++++++++++++++++----------------
+>>   1 file changed, 22 insertions(+), 16 deletions(-)
+>>
+>> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+>> index d48cd9b9361a92d184e423ffc60aabaff40fb487..fe215918bdf66ddbe3c5db803e10ce1aa9756b90 100644
+>> --- a/hw/vfio/common.c
+>> +++ b/hw/vfio/common.c
+>> @@ -839,20 +839,11 @@ static bool vfio_section_is_vfio_pci(MemoryRegionSection *section,
+>>       return false;
+>>   }
+>>   
+>> -static void vfio_dirty_tracking_update(MemoryListener *listener,
+>> -                                       MemoryRegionSection *section)
+>> +static void vfio_dirty_tracking_update_range(VFIODirtyRanges *range,
+>> +                                             hwaddr iova, hwaddr end,
+>> +                                             bool update_pci)
+>>   {
+>> -    VFIODirtyRangesListener *dirty = container_of(listener,
+>> -                                                  VFIODirtyRangesListener,
+>> -                                                  listener);
+>> -    VFIODirtyRanges *range = &dirty->ranges;
+>> -    hwaddr iova, end, *min, *max;
+>> -
+>> -    if (!vfio_listener_valid_section(section, "tracking_update") ||
+>> -        !vfio_get_section_iova_range(dirty->bcontainer, section,
+>> -                                     &iova, &end, NULL)) {
+>> -        return;
+>> -    }
+>> +    hwaddr *min, *max;
+>>   
+>>       /*
+>>        * The address space passed to the dirty tracker is reduced to three ranges:
+>> @@ -873,8 +864,7 @@ static void vfio_dirty_tracking_update(MemoryListener *listener,
+>>        * The alternative would be an IOVATree but that has a much bigger runtime
+>>        * overhead and unnecessary complexity.
+>>        */
+>> -    if (vfio_section_is_vfio_pci(section, dirty->bcontainer) &&
+>> -        iova >= UINT32_MAX) {
+>> +    if (update_pci && iova >= UINT32_MAX) {
+>>           min = &range->minpci64;
+>>           max = &range->maxpci64;
+>>       } else {
+>> @@ -889,7 +879,23 @@ static void vfio_dirty_tracking_update(MemoryListener *listener,
+>>       }
+>>   
+>>       trace_vfio_device_dirty_tracking_update(iova, end, *min, *max);
+> don't you want to update the name of the trace point?
+
+There is only one caller. Let's reconsider when there are more users of this
+routine.
+
+Thanks,
+
+C.
+
+  
+>> -    return;
+>> +}
+>> +
+>> +static void vfio_dirty_tracking_update(MemoryListener *listener,
+>> +                                       MemoryRegionSection *section)
+>> +{
+>> +    VFIODirtyRangesListener *dirty =
+>> +        container_of(listener, VFIODirtyRangesListener, listener);
+>> +    hwaddr iova, end;
+>> +
+>> +    if (!vfio_listener_valid_section(section, "tracking_update") ||
+>> +        !vfio_get_section_iova_range(dirty->bcontainer, section,
+>> +                                     &iova, &end, NULL)) {
+>> +        return;
+>> +    }
+>> +
+>> +    vfio_dirty_tracking_update_range(&dirty->ranges, iova, end,
+>> +                      vfio_section_is_vfio_pci(section, dirty->bcontainer));
+>>   }
+>>   
+>>   static const MemoryListener vfio_dirty_tracking_listener = {
+> Besides
+> Reviewed-by: Eric Auger <eric.auger@redhat.com>
 > 
-> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-> ---
->   hw/mips/Kconfig           |  1 +
->   hw/mips/loongson3_bootp.c |  2 --
->   hw/mips/loongson3_bootp.h |  3 +++
->   hw/mips/loongson3_virt.c  | 39 +++++++++++++++++++++++++++++++++++++--
->   4 files changed, 41 insertions(+), 4 deletions(-)
-
-
-> @@ -527,6 +531,19 @@ static void mips_loongson3_virt_init(MachineState *machine)
->       create_unimplemented_device("mmio fallback 0", 0x10000000, 256 * MiB);
->       create_unimplemented_device("mmio fallback 1", 0x30000000, 256 * MiB);
->   
-> +    memory_region_init(iocsr, OBJECT(machine), "loongson3.iocsr", UINT32_MAX);
-> +
-> +    /* IPI controller is in kernel for KVM */
-> +    if (!kvm_enabled()) {
-
-Generically one could come with another hypervisor support, so better
-to check for what you are expecting. You could see some uses of:
-
-   if (tcg) ... else if (kvm) ... else abort().
-
-> +        ipi = qdev_new(TYPE_LOONGSON_IPI);
-> +        qdev_prop_set_uint32(ipi, "num-cpu", machine->smp.cpus);
-> +        sysbus_realize_and_unref(SYS_BUS_DEVICE(ipi), &error_fatal);
-> +        memory_region_add_subregion(iocsr, SMP_IPI_MAILBOX,
-> +            sysbus_mmio_get_region(SYS_BUS_DEVICE(ipi), 0));
-> +        memory_region_add_subregion(iocsr, MAIL_SEND_ADDR,
-> +            sysbus_mmio_get_region(SYS_BUS_DEVICE(ipi), 1));
-> +    }
-> +
->       liointc = qdev_new("loongson.liointc");
->       sysbus_realize_and_unref(SYS_BUS_DEVICE(liointc), &error_fatal);
->   
-> @@ -543,6 +560,8 @@ static void mips_loongson3_virt_init(MachineState *machine)
->       clock_set_hz(cpuclk, DEF_LOONGSON3_FREQ);
->   
->       for (i = 0; i < machine->smp.cpus; i++) {
-> +        int node = i / LOONGSON3_CORE_PER_NODE;
-> +        int core = i % LOONGSON3_CORE_PER_NODE;
->           int ip;
->   
->           /* init CPUs */
-> @@ -553,12 +572,28 @@ static void mips_loongson3_virt_init(MachineState *machine)
->           cpu_mips_clock_init(cpu);
->           qemu_register_reset(main_cpu_reset, cpu);
->   
-> -        if (i >= 4) {
-> +        if (ipi) {
-> +            hwaddr base = ((hwaddr)node << 44) + virt_memmap[VIRT_IPI].base;
-> +            base += core * 0x100;
-> +            qdev_connect_gpio_out(ipi, i, cpu->env.irq[6]);
-> +            sysbus_mmio_map(SYS_BUS_DEVICE(ipi), i + 2, base);
-> +        }
-> +
-> +        if (ase_lcsr_available(&MIPS_CPU(cpu)->env)) {
-> +            MemoryRegion *core_iocsr = g_new(MemoryRegion, 1);
-> +            g_autofree char *name = g_strdup_printf("loongson3.core%d_iocsr", i);
-> +            memory_region_init_alias(core_iocsr, OBJECT(cpu), name,
-> +                                     iocsr, 0, UINT32_MAX);
-> +            memory_region_add_subregion(&MIPS_CPU(cpu)->env.iocsr.mr,
-> +                                        0, core_iocsr);
-> +        }
-> +
-> +        if (node > 0) {
->               continue; /* Only node-0 can be connected to LIOINTC */
->           }
-
-Pre-existing, but the logic appears clearer as:
-
-           if (node == 0) {
->   
->           for (ip = 0; ip < 4 ; ip++) {
-> -            int pin = i * 4 + ip;
-> +            int pin = core * LOONGSON3_CORE_PER_NODE + ip;
->               sysbus_connect_irq(SYS_BUS_DEVICE(liointc),
->                                  pin, cpu->env.irq[ip + 2]);
->           }
+> Eric
 > 
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
