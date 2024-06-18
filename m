@@ -2,104 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A6DE90CBCE
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jun 2024 14:36:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D688190CD37
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jun 2024 15:08:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sJY31-0004ks-Km; Tue, 18 Jun 2024 08:34:51 -0400
+	id 1sJYZL-0002tE-3g; Tue, 18 Jun 2024 09:08:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1sJY2u-0004ja-G1
- for qemu-devel@nongnu.org; Tue, 18 Jun 2024 08:34:46 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1sJY2s-0003LI-TH
- for qemu-devel@nongnu.org; Tue, 18 Jun 2024 08:34:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1718714081;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=soFDg/JDY7uG8Ly+ZcdmlCyJ+aAaVEHDj25czzys79w=;
- b=DdotZgxKfWkdO0a+dnKMV35DG7MaSQYUhbhym3FOq7pq3IcmiMML0qKMZvAZbEVyWoKJoG
- EebICDm65zVWxJ2RvhT5SwGlgNQ9k5zZGvCq+twBCl6w7bB8m9VnUjkof40+UQwhXIzmyM
- /pYFudXCYqB7RG2Bhy4mqMTg8vM+RFw=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-46-ix1CtFEhMNSmHkkR108B5Q-1; Tue, 18 Jun 2024 08:34:39 -0400
-X-MC-Unique: ix1CtFEhMNSmHkkR108B5Q-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-421759c3556so32272805e9.1
- for <qemu-devel@nongnu.org>; Tue, 18 Jun 2024 05:34:39 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718714078; x=1719318878;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=soFDg/JDY7uG8Ly+ZcdmlCyJ+aAaVEHDj25czzys79w=;
- b=abil5f29xCm2AEzVXQOnZ8S0cTpHcUi4b/1DQSGJlh/tVVZEe/ZPmFi5Pxdpbt5l9x
- mQFRHaogrKLLUg3pPBON/FGkyy4Eupy3i6WIwy0kdrgNu+Am/E05awKuuKCRbwZY45S+
- p3msQ9UsPBB8wAlp/VoCTrELRSKJaGoyLP+SHSY22EMRLdMAI57830UIIkzYHoBpEe+i
- wSKM1H0VkSDrRBVgaeRiCr1lMBqpP7QNG7zqVrW8bmzuj9Q38FdrNA/Gi7H69uCjklMz
- 7Y0UozHLsQZgbpYaYJ2hYbdpLNjw8qQyBMmCGLCz7yBK+BoAtrKEujqHYC0w8kDpK14V
- FAgQ==
-X-Gm-Message-State: AOJu0YyUdjDFdg6reaT0io3Y13HsrO65oj0fS/LFH3axTNZQeaimbqJB
- aZkx0nLQicRIT1oJDENI80GdEEEyKtWZQV5NzN+3XH8tWFXGFdqdOzHeqLcLVeaaG8UfWPveeTp
- ELOumTY2rwaixpmgMAMFUA7qzUXxzAOI/EzUgZRfm6u7V8enIgigm
-X-Received: by 2002:a05:600c:54e4:b0:41b:d6ca:eefa with SMTP id
- 5b1f17b1804b1-4246f5ae5famr21873705e9.16.1718714078005; 
- Tue, 18 Jun 2024 05:34:38 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEHDBDQ190fyaiWWB2k2IcuL9V4oRkfhwdsETDW0ZM5CJpKksrTkvybipLzjV2sLzb4n3mmog==
-X-Received: by 2002:a05:600c:54e4:b0:41b:d6ca:eefa with SMTP id
- 5b1f17b1804b1-4246f5ae5famr21873415e9.16.1718714077589; 
- Tue, 18 Jun 2024 05:34:37 -0700 (PDT)
-Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
- [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4246bddc59bsm50478065e9.5.2024.06.18.05.34.36
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 18 Jun 2024 05:34:37 -0700 (PDT)
-Date: Tue, 18 Jun 2024 14:34:36 +0200
-From: Igor Mammedov <imammedo@redhat.com>
-To: Sunil V L <sunilvl@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-riscv@nongnu.org, Paolo
- Bonzini <pbonzini@redhat.com>, =?UTF-8?B?TWFyYy1BbmRyw6k=?= Lureau
- <marcandre.lureau@redhat.com>, "Daniel P . =?UTF-8?B?QmVycmFuZ8Op?="
- <berrange@redhat.com>, Thomas Huth <thuth@redhat.com>, Philippe
- =?UTF-8?B?TWF0aGlldS1EYXVkw6k=?= <philmd@linaro.org>, "Michael S . Tsirkin"
- <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>, Laurent Vivier
- <lvivier@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>, Alistair Francis
- <alistair23@gmail.com>, Sia Jee Heng <jeeheng.sia@starfivetech.com>, Haibo1
- Xu <haibo1.xu@intel.com>, Anup Patel <apatel@ventanamicro.com>, Andrew
- Jones <ajones@ventanamicro.com>, Daniel Henrique Barboza
- <dbarboza@ventanamicro.com>, Peter Maydell <peter.maydell@linaro.org>,
- Palmer Dabbelt <palmer@dabbelt.com>, Bin Meng <bmeng.cn@gmail.com>, Weiwei
- Li <liwei1518@gmail.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Alistair Francis <alistair.francis@wdc.com>
-Subject: Re: [PATCH v2 04/12] qtest: bios-tables-test: Rename aarch64 tests
- with aarch64 in them
-Message-ID: <20240618143436.0981cb2c@imammedo.users.ipa.redhat.com>
-In-Reply-To: <20240524061411.341599-5-sunilvl@ventanamicro.com>
-References: <20240524061411.341599-1-sunilvl@ventanamicro.com>
- <20240524061411.341599-5-sunilvl@ventanamicro.com>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.42; x86_64-redhat-linux-gnu)
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1sJYZI-0002so-BT; Tue, 18 Jun 2024 09:08:12 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>)
+ id 1sJYZF-0000sv-C6; Tue, 18 Jun 2024 09:08:12 -0400
+Received: from loongson.cn (unknown [10.2.5.185])
+ by gateway (Coremail) with SMTP id _____8CxL_CvhnFma+oHAA--.31871S3;
+ Tue, 18 Jun 2024 21:07:59 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.185])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8CxJMWuhnFmkYcnAA--.19305S2; 
+ Tue, 18 Jun 2024 21:07:59 +0800 (CST)
+From: Song Gao <gaosong@loongson.cn>
+To: qemu-devel@nongnu.org
+Cc: richard.henderson@linaro.org, git@xen0n.name, maobibo@loongson.cn,
+ yijun@loongson.cn, qemu-stable@nongnu.org
+Subject: [PATCH] tcg/loongarch64: Fix tcg_out_movi tcg_debug_assert() error
+Date: Tue, 18 Jun 2024 20:50:44 +0800
+Message-Id: <20240618125044.687443-1-gaosong@loongson.cn>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -22
-X-Spam_score: -2.3
-X-Spam_bar: --
-X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.148,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: AQAAf8CxJMWuhnFmkYcnAA--.19305S2
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+ ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+ nUUI43ZEXa7xR_UUUUUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -115,125 +61,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 24 May 2024 11:44:03 +0530
-Sunil V L <sunilvl@ventanamicro.com> wrote:
+On Loongnix 20.5 systems, QEMU configure with option '--enable-debug'
+or '--enable-debug-tcg ', booting the Loongnix 20.5 VM in tcg mode
+will get an assertion error.
 
-> Existing AARCH64 virt test functions do not have AARCH64 in their name.
-> To add RISC-V virt related test cases, better to rename existing
-> functions to indicate they are ARM only.
-> 
-> Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
-> Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+    "...
+    [   31.484992] [drm] Initialized virtio_gpu 0.0.1 0 for virtio1 on minor 0
+    qemu-system-loongarch64: /home1/gaosong/code/github/clean/qemu/tcg/loongarch64/tcg-target.c.inc:394：tcg_out_movi: 假设 ‘offset_hi == sextreg(offset_hi, 0, 20)’ 失败。
+    ./start.sh: 行 14: 2433006 已放弃               (核心已转储)./build/qemu-system-loongarch64 --accel tcg -m 8G -cpu la464 -machine virt -smp 8 -serial stdio -bios ./QEMU_EFI.fd -monitor telnet:localhost:4498,server,nowait -device virtio-gpu-pci -net nic, -net user -device nec-usb-xhci,id=xhci,addr=0x1b -device usb-tablet,id=tablet,bus=xhci.0,port=1 -device usb-kbd,id=keyboard,bus=xhci.0,port=2 -device virtio-blk-pci,drive=test -drive if=none,id=test,file=./Loongnix-20.5.cartoon.mini.loongarch64.cn.qcow2 "
 
-Reviewed-by: Igor Mammedov <imammedo@redhat.com>
+The values of offset_hi and sextreg(offset_hi, 0, 20) are:
 
-> ---
->  tests/qtest/bios-tables-test.c | 35 ++++++++++++++++++----------------
->  1 file changed, 19 insertions(+), 16 deletions(-)
-> 
-> diff --git a/tests/qtest/bios-tables-test.c b/tests/qtest/bios-tables-test.c
-> index d1ff4db7a2..c4a4d1c7bf 100644
-> --- a/tests/qtest/bios-tables-test.c
-> +++ b/tests/qtest/bios-tables-test.c
-> @@ -1570,7 +1570,7 @@ static void test_acpi_piix4_tcg_dimm_pxm(void)
->      test_acpi_tcg_dimm_pxm(MACHINE_PC);
->  }
->  
-> -static void test_acpi_virt_tcg_memhp(void)
-> +static void test_acpi_aarch64_virt_tcg_memhp(void)
->  {
->      test_data data = {
->          .machine = "virt",
-> @@ -1663,7 +1663,7 @@ static void test_acpi_microvm_ioapic2_tcg(void)
->      free_test_data(&data);
->  }
->  
-> -static void test_acpi_virt_tcg_numamem(void)
-> +static void test_acpi_aarch64_virt_tcg_numamem(void)
->  {
->      test_data data = {
->          .machine = "virt",
-> @@ -1685,7 +1685,7 @@ static void test_acpi_virt_tcg_numamem(void)
->  
->  }
->  
-> -static void test_acpi_virt_tcg_pxb(void)
-> +static void test_acpi_aarch64_virt_tcg_pxb(void)
->  {
->      test_data data = {
->          .machine = "virt",
-> @@ -1758,7 +1758,7 @@ static void test_acpi_piix4_tcg_acpi_hmat(void)
->      test_acpi_tcg_acpi_hmat(MACHINE_PC);
->  }
->  
-> -static void test_acpi_virt_tcg_acpi_hmat(void)
-> +static void test_acpi_aarch64_virt_tcg_acpi_hmat(void)
->  {
->      test_data data = {
->          .machine = "virt",
-> @@ -1914,7 +1914,7 @@ static void test_acpi_microvm_acpi_erst(void)
->  }
->  #endif /* CONFIG_POSIX */
->  
-> -static void test_acpi_virt_tcg(void)
-> +static void test_acpi_aarch64_virt_tcg(void)
->  {
->      test_data data = {
->          .machine = "virt",
-> @@ -1933,7 +1933,7 @@ static void test_acpi_virt_tcg(void)
->      free_test_data(&data);
->  }
->  
-> -static void test_acpi_virt_tcg_topology(void)
-> +static void test_acpi_aarch64_virt_tcg_topology(void)
->  {
->      test_data data = {
->          .machine = "virt",
-> @@ -2016,7 +2016,7 @@ static void test_acpi_q35_cxl(void)
->  }
->  #endif /* CONFIG_POSIX */
->  
-> -static void test_acpi_virt_viot(void)
-> +static void test_acpi_aarch64_virt_viot(void)
->  {
->      test_data data = {
->          .machine = "virt",
-> @@ -2192,7 +2192,7 @@ static void test_acpi_microvm_oem_fields(void)
->      g_free(args);
->  }
->  
-> -static void test_acpi_virt_oem_fields(void)
-> +static void test_acpi_aarch64_virt_oem_fields(void)
->  {
->      test_data data = {
->          .machine = "virt",
-> @@ -2364,16 +2364,19 @@ int main(int argc, char *argv[])
->          }
->      } else if (strcmp(arch, "aarch64") == 0) {
->          if (has_tcg && qtest_has_device("virtio-blk-pci")) {
-> -            qtest_add_func("acpi/virt", test_acpi_virt_tcg);
-> +            qtest_add_func("acpi/virt", test_acpi_aarch64_virt_tcg);
->              qtest_add_func("acpi/virt/acpihmatvirt",
-> -                            test_acpi_virt_tcg_acpi_hmat);
-> -            qtest_add_func("acpi/virt/topology", test_acpi_virt_tcg_topology);
-> -            qtest_add_func("acpi/virt/numamem", test_acpi_virt_tcg_numamem);
-> -            qtest_add_func("acpi/virt/memhp", test_acpi_virt_tcg_memhp);
-> -            qtest_add_func("acpi/virt/pxb", test_acpi_virt_tcg_pxb);
-> -            qtest_add_func("acpi/virt/oem-fields", test_acpi_virt_oem_fields);
-> +                           test_acpi_aarch64_virt_tcg_acpi_hmat);
-> +            qtest_add_func("acpi/virt/topology",
-> +                           test_acpi_aarch64_virt_tcg_topology);
-> +            qtest_add_func("acpi/virt/numamem",
-> +                           test_acpi_aarch64_virt_tcg_numamem);
-> +            qtest_add_func("acpi/virt/memhp", test_acpi_aarch64_virt_tcg_memhp);
-> +            qtest_add_func("acpi/virt/pxb", test_acpi_aarch64_virt_tcg_pxb);
-> +            qtest_add_func("acpi/virt/oem-fields",
-> +                           test_acpi_aarch64_virt_oem_fields);
->              if (qtest_has_device("virtio-iommu-pci")) {
-> -                qtest_add_func("acpi/virt/viot", test_acpi_virt_viot);
-> +                qtest_add_func("acpi/virt/viot", test_acpi_aarch64_virt_viot);
->              }
->          }
->      }
+    "[   29.975240] virtio_gpu virtio1: fb0: virtiodrmfb frame buffer device
+    offset_hi is 80000
+    sextreg(offset_hi, 0, 20) is fffffffffff80000
+    offset_hi is 80000
+    sextreg(offset_hi, 0, 20) is fffffffffff80000
+    offset_hi is 80000
+    sextreg(offset_hi, 0, 20) is fffffffffff80000
+    ..."
+
+When pcalau12i + ori is not satisfied, we should use other methods instead,
+instead of generating an assertion error.
+
+Cc: qemu-stable@nongnu.org
+Reported-by: yijun <yijun@loongson.cn>
+Signed-off-by: Song Gao <gaosong@loongson.cn>
+---
+ tcg/loongarch64/tcg-target.c.inc | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/tcg/loongarch64/tcg-target.c.inc b/tcg/loongarch64/tcg-target.c.inc
+index 06ca1ab11c..592494c48d 100644
+--- a/tcg/loongarch64/tcg-target.c.inc
++++ b/tcg/loongarch64/tcg-target.c.inc
+@@ -391,7 +391,9 @@ static void tcg_out_movi(TCGContext *s, TCGType type, TCGReg rd,
+         pc_hi = (val - pc_offset) >> 12;
+         offset_hi = val_hi - pc_hi;
+ 
+-        tcg_debug_assert(offset_hi == sextreg(offset_hi, 0, 20));
++        if (offset_hi != sextreg(offset_hi, 0, 20)) {
++            goto out;
++        }
+         tcg_out_opc_pcalau12i(s, rd, offset_hi);
+         if (val_lo != 0) {
+             tcg_out_opc_ori(s, rd, rd, val_lo & 0xfff);
+@@ -399,6 +401,7 @@ static void tcg_out_movi(TCGContext *s, TCGType type, TCGReg rd,
+         return;
+     }
+ 
++out:
+     hi12 = sextreg(val, 12, 20);
+     hi32 = sextreg(val, 32, 20);
+     hi52 = sextreg(val, 52, 12);
+-- 
+2.39.3
 
 
