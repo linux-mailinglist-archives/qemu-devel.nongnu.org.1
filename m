@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDE1A90C5B3
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jun 2024 12:02:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 452D490C5B5
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jun 2024 12:02:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sJVeS-0006Uo-8p; Tue, 18 Jun 2024 06:01:20 -0400
+	id 1sJVee-0006bv-Mp; Tue, 18 Jun 2024 06:01:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1sJVeO-0006T0-JD
- for qemu-devel@nongnu.org; Tue, 18 Jun 2024 06:01:16 -0400
+ id 1sJVea-0006YK-G1
+ for qemu-devel@nongnu.org; Tue, 18 Jun 2024 06:01:29 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1sJVeM-0000nO-Vd
- for qemu-devel@nongnu.org; Tue, 18 Jun 2024 06:01:16 -0400
+ id 1sJVeY-0000pP-Jk
+ for qemu-devel@nongnu.org; Tue, 18 Jun 2024 06:01:27 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1718704874;
+ s=mimecast20190719; t=1718704885;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Su7ClX2VsFIEko0OXJVvgHI4Li50SabFJTO7o/P9fMs=;
- b=h0msHDIrYr9ABL3a2TY5xt3PAlN28S6sJtMWlKyHo0Zu+j7yQfvzSjYVFM0o1MZ5kJvlfb
- FJzp15cBXlClwHSVZk5I2Z5WZ0Rt7DyMn0apRoCHJJX4TOZ30RhIko78ZQk/EafBA6QJew
- n5YSFeIfxryqRe5Oh9dcSbzV10B55rM=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=lCSYM/hkoNpk10raw3aulgVh0FcgzvIKh+wFjcoj8Zs=;
+ b=F5hg5InnEARCDFDb+AKcFpNOz4G7hmLhz8Egp592KSFza7YrCbnk/9K/Rnr9TNz4e/rFZp
+ OET7Rnpb6JsrMD68BtJ7Y+L8KuFI9XN/WwmxR/GD5RAbKrfrTvqKew+TtoxElRFmTSlXWu
+ aBgQ/Qr2fJqFAO8YeKAejzo1tKiA8B8=
+Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
+ [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-637-hii3cQ5FOR-kNP5R8G8LbQ-1; Tue, 18 Jun 2024 06:01:13 -0400
-X-MC-Unique: hii3cQ5FOR-kNP5R8G8LbQ-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-4217a6a00d8so34761745e9.0
- for <qemu-devel@nongnu.org>; Tue, 18 Jun 2024 03:01:12 -0700 (PDT)
+ us-mta-623-7fJrjY_POYaEYalwh7U8AA-1; Tue, 18 Jun 2024 06:01:24 -0400
+X-MC-Unique: 7fJrjY_POYaEYalwh7U8AA-1
+Received: by mail-lj1-f200.google.com with SMTP id
+ 38308e7fff4ca-2eaec29f8e3so41808581fa.1
+ for <qemu-devel@nongnu.org>; Tue, 18 Jun 2024 03:01:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718704871; x=1719309671;
+ d=1e100.net; s=20230601; t=1718704882; x=1719309682;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Su7ClX2VsFIEko0OXJVvgHI4Li50SabFJTO7o/P9fMs=;
- b=HrkPAlcaSRjGtnwiJbiCanvcw6Q3f/JPBzi8bWDsGhS0vm326EVvRHfpa2ztfKGrCD
- R21BsMaF6vNosOZfcWAix0coazci2OPahP9El4DiRHVD9B1KnADijzTBJhDGUBHRsT25
- XOu9TzDtPMqpXAXgHX6TyYdQ6y8hWDhEb56cUns1+NUPGlic3myL+lfQZev/db+741tB
- QqgMosa7GCQpXkFUBlAECObaWd5RbKhZLZEgctb0UJOR3cVhgry5sAm1LtvttrvAJ2UQ
- Zwb77XTfwuPKfESDk8eH4vgsPWhGfoT3bsmHXyxuIgTuRZCOuJCq7VkVIuvdDvcgTxbr
- 6DnA==
-X-Gm-Message-State: AOJu0YxNRJ2YXhXsr74UZ0rbQLDs0T9+Yfvnejj1qCG+YcaSmTosO7wZ
- 2cjj5i8ceIGdw0iX/P5OBIZQ3hkfWwDdxfPT2xrhniR0Nq6LU+g6WwWrne387q8mskgljL5DUBv
- eJamn4HkkGA0tvur/4IfQBIL5LcsNYgU9lVtoCWH3LZgXan9E9Trx3IelkmLanlDyD3ryYkTuBt
- Hay1Gyj/dUYmmcG5v4CCKON9DaFTn7NR0jgKAU
-X-Received: by 2002:a5d:678a:0:b0:360:7829:bb93 with SMTP id
- ffacd0b85a97d-3607a759cadmr9333683f8f.21.1718704871317; 
- Tue, 18 Jun 2024 03:01:11 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGwb7KX/o+IDXnpfK9XhGo2Pf+0iOdH/yhEnjTmDxufGt/jJUMMca+XHPdNilpVwZ2l3BRTKQ==
-X-Received: by 2002:a5d:678a:0:b0:360:7829:bb93 with SMTP id
- ffacd0b85a97d-3607a759cadmr9333643f8f.21.1718704870995; 
- Tue, 18 Jun 2024 03:01:10 -0700 (PDT)
+ bh=lCSYM/hkoNpk10raw3aulgVh0FcgzvIKh+wFjcoj8Zs=;
+ b=RKmpm8riGvhjxo88JqDkMFAUqlEyAAYUnBN2z+jDcZd+Qrkgv/a2wE9MSTWmz5Xl11
+ tzui9qx1wcrwrFceKDrEQAY1vSlE7u21WUted37gyqBCTdLZwaAzrlOo6/Dee4gNOzWS
+ kCbYx6jc5lZRX5g0IZD7etzP5KEitL8jzqZ3klk+5qJzx1NsLSk6hbpzBcvHfcsVHFCJ
+ q/lXZRuEU9UgKtaF0Hp79F/Ut5uAjuIVm64BpjLDloYAYrnzAbfaI3mGwe/BCTODd4ZY
+ znP58YHQnhPfjl5pbi8pGYfjz6Rbxs1VkNfvAPoUhhuGoxpv+i0c4H/ijhqEFblOhqtB
+ Hp+A==
+X-Gm-Message-State: AOJu0YwKXxhN4DcRTQPlcVGQ8ARx3NiGuJpgFMl0RDXKN/RH5P/FqTkh
+ uBfEJko7SwYykIc+p44MEI8JIQH2O0Rdperszz3QW3rXQSN+q78DkaHDdSzDVCw8RryrQJUi+yW
+ W07I1yRwedBdwunQst54OuKZGi2Fns++Qf38gdbeiFIaEgzgwsli2IrJyFRpDYHjTagBtp/YdNR
+ rnQ0WL11sDOQhG9T5w8huhuG6PsW3VBrEtWJb+
+X-Received: by 2002:a2e:a603:0:b0:2ec:1b9a:6981 with SMTP id
+ 38308e7fff4ca-2ec1b9a6a5amr66199711fa.7.1718704881775; 
+ Tue, 18 Jun 2024 03:01:21 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHmtXszET61iFbPQN51P1efzJtKtJvKWlDgM6gA6jKyWAFKYbF2w3oZEwnOgXPh4rlS/UKAyA==
+X-Received: by 2002:a2e:a603:0:b0:2ec:1b9a:6981 with SMTP id
+ 38308e7fff4ca-2ec1b9a6a5amr66199201fa.7.1718704881259; 
+ Tue, 18 Jun 2024 03:01:21 -0700 (PDT)
 Received: from step1.redhat.com ([193.207.160.125])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3607509c688sm13814617f8f.42.2024.06.18.03.01.06
+ 5b1f17b1804b1-422874de623sm222365115e9.31.2024.06.18.03.01.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 18 Jun 2024 03:01:08 -0700 (PDT)
+ Tue, 18 Jun 2024 03:01:18 -0700 (PDT)
 From: Stefano Garzarella <sgarzare@redhat.com>
 To: qemu-devel@nongnu.org,
 	mst@redhat.com
@@ -82,10 +82,10 @@ Cc: Coiby Xu <Coiby.Xu@gmail.com>, Kevin Wolf <kwolf@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>, Jason Wang <jasowang@redhat.com>,
  Laurent Vivier <lvivier@redhat.com>,
  Stefano Garzarella <sgarzare@redhat.com>
-Subject: [PATCH v8 03/13] libvhost-user: fail vu_message_write() if sendmsg()
- is failing
-Date: Tue, 18 Jun 2024 12:00:33 +0200
-Message-ID: <20240618100043.144657-4-sgarzare@redhat.com>
+Subject: [PATCH v8 04/13] libvhost-user: mask F_INFLIGHT_SHMFD if memfd is not
+ supported
+Date: Tue, 18 Jun 2024 12:00:34 +0200
+Message-ID: <20240618100043.144657-5-sgarzare@redhat.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240618100043.144657-1-sgarzare@redhat.com>
 References: <20240618100043.144657-1-sgarzare@redhat.com>
@@ -101,7 +101,7 @@ X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.148,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -117,43 +117,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In vu_message_write() we use sendmsg() to send the message header,
-then a write() to send the payload.
+libvhost-user will panic when receiving VHOST_USER_GET_INFLIGHT_FD
+message if MFD_ALLOW_SEALING is not defined, since it's not able
+to create a memfd.
 
-If sendmsg() fails we should avoid sending the payload, since we
-were unable to send the header.
+VHOST_USER_GET_INFLIGHT_FD is used only if
+VHOST_USER_PROTOCOL_F_INFLIGHT_SHMFD is negotiated. So, let's mask
+that feature if the backend is not able to properly handle these
+messages.
 
-Discovered before fixing the issue with the previous patch, where
-sendmsg() failed on macOS due to wrong parameters, but the frontend
-still sent the payload which the backend incorrectly interpreted
-as a wrong header.
-
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Acked-by: Stefan Hajnoczi <stefanha@redhat.com>
 Reviewed-by: David Hildenbrand <david@redhat.com>
 Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
 ---
- subprojects/libvhost-user/libvhost-user.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ subprojects/libvhost-user/libvhost-user.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
 diff --git a/subprojects/libvhost-user/libvhost-user.c b/subprojects/libvhost-user/libvhost-user.c
-index 22bea0c775..a11afd1960 100644
+index a11afd1960..2c20cdc16e 100644
 --- a/subprojects/libvhost-user/libvhost-user.c
 +++ b/subprojects/libvhost-user/libvhost-user.c
-@@ -639,6 +639,11 @@ vu_message_write(VuDev *dev, int conn_fd, VhostUserMsg *vmsg)
-         rc = sendmsg(conn_fd, &msg, 0);
-     } while (rc < 0 && (errno == EINTR || errno == EAGAIN));
+@@ -1674,6 +1674,17 @@ vu_get_protocol_features_exec(VuDev *dev, VhostUserMsg *vmsg)
+         features |= dev->iface->get_protocol_features(dev);
+     }
  
-+    if (rc <= 0) {
-+        vu_panic(dev, "Error while writing: %s", strerror(errno));
-+        return false;
-+    }
++#ifndef MFD_ALLOW_SEALING
++    /*
++     * If MFD_ALLOW_SEALING is not defined, we are not able to handle
++     * VHOST_USER_GET_INFLIGHT_FD messages, since we can't create a memfd.
++     * Those messages are used only if VHOST_USER_PROTOCOL_F_INFLIGHT_SHMFD
++     * is negotiated. A device implementation can enable it, so let's mask
++     * it to avoid a runtime panic.
++     */
++    features &= ~(1ULL << VHOST_USER_PROTOCOL_F_INFLIGHT_SHMFD);
++#endif
 +
-     if (vmsg->size) {
-         do {
-             if (vmsg->data) {
+     vmsg_set_reply_u64(vmsg, features);
+     return true;
+ }
 -- 
 2.45.2
 
