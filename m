@@ -2,83 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F15EF90D7BF
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jun 2024 17:50:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B2D290D7D4
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jun 2024 17:52:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sJb5k-0003DG-2W; Tue, 18 Jun 2024 11:49:52 -0400
+	id 1sJb87-0006Ey-4F; Tue, 18 Jun 2024 11:52:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
- id 1sJb5h-0003Ct-Pw; Tue, 18 Jun 2024 11:49:49 -0400
-Received: from mail-lf1-x12c.google.com ([2a00:1450:4864:20::12c])
+ (Exim 4.90_1) (envelope-from <zheyuma97@gmail.com>)
+ id 1sJb85-0006Eg-UB; Tue, 18 Jun 2024 11:52:17 -0400
+Received: from mail-lf1-x12d.google.com ([2a00:1450:4864:20::12d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
- id 1sJb5f-0004st-2R; Tue, 18 Jun 2024 11:49:49 -0400
-Received: by mail-lf1-x12c.google.com with SMTP id
- 2adb3069b0e04-52cc9b887f1so246816e87.3; 
- Tue, 18 Jun 2024 08:49:46 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <zheyuma97@gmail.com>)
+ id 1sJb84-0005NU-86; Tue, 18 Jun 2024 11:52:17 -0400
+Received: by mail-lf1-x12d.google.com with SMTP id
+ 2adb3069b0e04-52cc129c78fso1535821e87.2; 
+ Tue, 18 Jun 2024 08:52:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1718725784; x=1719330584; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=oPLZtK0QeERyzwGrC6JZXHapbKvTNkLQ3lh1zZectkY=;
- b=buszedKbezBEYyFs6Ul7GIxWkaM1cjUsVzZUxDkV+N4ezlmaBCps6Mu1f//J2L+8IY
- sWeptqhrlu3oINXf+QVo3RMZ8Z3WOl5zZvidvBtfBonrPAO9KWyvxH3P9/zTYbEpBO7y
- ko40U7KBpvugWhg9MAbnMe7BGYrSi6Uuu3wWf6WMmEMLMoqYBOtU+aoCKFUAFu7FggRY
- BA/iNmKNWyE/5lV0kL10mx3HE6vpkwVXP16rzoNj6hhsyZE1nykKj00cVOezTZ764AGs
- Crmy1XLLhAqA2Hc9vyk3EqDTcafMgV7piDg/owQq0iDdJzN6d/6U+t++JWAxNjbChLVm
- Yo4Q==
+ d=gmail.com; s=20230601; t=1718725934; x=1719330734; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=R47u/FZXyOroD489vwpfSVxxMCbbmGOXkx4mZjG/Eno=;
+ b=LNHeuw3cfuqxTprHN4miKYANmPdfeoAMsVvBIt3JuMAMrnAhqd2goXrCSGkssRxmuh
+ iDraT5d1HPyCVBeHhVKyD/LUBZ3iH0IqUXqc5jLQG8BhXJIQNnSP6byVwU+RB1n1RIhS
+ gXzIoraRqLdV0ipFSVbURa/LuATh82yrl+J6M/eVNX4wxJ+UC3F27V/wHaYOmUxQ6iAr
+ 6CdPRStFBHcGF43wAmuUGmf4b8bqpwBJHyUQhKzMpVQJ3zqqARvQ7yAXrN5bEeN5+d0J
+ TFUHqdyBoV0cxhOVm5uZGeTuQ1r6z30I3I23a3kunTmuwLFO2jBtiPUyMFGYvmYIoT9d
+ RxGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718725784; x=1719330584;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=oPLZtK0QeERyzwGrC6JZXHapbKvTNkLQ3lh1zZectkY=;
- b=P8+wRtMyeiw93Go8zTalDP9RK21LWHHHbrQfRAAON3cFiMn1RhV1spsj+3hN/OzBXK
- vrcCyc0EBqcj73wdvutOP7GTaRVULNZ0zOLEsnmS8S+RlDNfo/GvWypfs85iifBI0nSZ
- ELl5VBS3eagbSkPxUJ2FzzgeGyZBJMAg0XZu+AgtYuKCupDW2QlZ4xqQKDPXIMUkfWdx
- nO0h0v2qL03nX/VJRtve26IMbnZKwuK6VyptlwaFx873bXgJ1Dx3fO2OioPnc6PLxuta
- 6RDmTB8bh2YOP5OsSJrdTd30GVzzZygaAiOG/9OVs2TdIG3tmetbVcGZfFk1qk4oyUk2
- EBXQ==
+ d=1e100.net; s=20230601; t=1718725934; x=1719330734;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=R47u/FZXyOroD489vwpfSVxxMCbbmGOXkx4mZjG/Eno=;
+ b=Tc1faEnUnPzDNWxGYwlLGY5HX0KrfyTX20jLc+9RPCwglaC4Pr7OYIOPaE0+1u45JV
+ z8GkOHsDtXc8muvcuA1WB37V3vt8PqCsP759FaJ4bITUBovFexG+xORXaHkGbC8mgGX0
+ ajh7MfLrz2dWcxff9h2AiX1mlF4Nr0vW0sQWtVSyLx1aGW0Xs8iC8ciHHW6SFLa/QTyX
+ mUCampJgVf8yzU4GWQvvjUwR8BM0iRiJ9vQW/KXxpjLXVwZbpwpLBbQ8jx3nJlljPJZt
+ 7qfMqWWGs5EY76E0dW9rNnc3y8pFg0wbJ2rbQI1gcWJ8Xs9+zJNLSlGjHgfmTn2orca3
+ t1ZQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCX6yx3w//KLhlL/lnEWB+mQPBpxRKLhIUQymVhasL3xQ1+bywA2sK+ZWKW0Km/F0AMKui7htd6nt4our/WEyFyT5vAg
-X-Gm-Message-State: AOJu0YxRwQBKDlT10FbNxE0mJXV7LqSDDQK7OlaFRyAd60bda+XHzWZ4
- 3F8uE4xjS80LEfo/U0qvHnacRtEfHnJgf5YERVbKuHwIiftwP8L1rTwb2SNimrx3AQ==
-X-Google-Smtp-Source: AGHT+IG7YEzuWGosWrlq3mMTt+qdW7+EvYK3ZdhAEPYYxDL0nm+l9m7R5Pvno2weHZ6KQrhGvBAVtw==
-X-Received: by 2002:a05:6512:3d0b:b0:52c:a8d8:4519 with SMTP id
- 2adb3069b0e04-52ccaa92680mr5441e87.53.1718725784051; 
- Tue, 18 Jun 2024 08:49:44 -0700 (PDT)
-Received: from gmail.com (213-67-3-247-no600.tbcn.telia.com. [213.67.3.247])
+ AJvYcCVlS9ek2bi3IeQzbH3qbgltBOwORK96jtCsaV7IC5E/f0rJHLTI8sXLCk4/Q6Icven9IYZfX+AARyJqtcH9uMGJodkl8GREdf3YOTwmhz+hExrVhbIuWug0TqE=
+X-Gm-Message-State: AOJu0Yxe6i8cz3F64cmVfjdOfVx2pkOHA0kpAU1UzHLZ2Af/nnzga0IM
+ UJOkYmJo3D5t5FUgpCSY8CEJ6745x3i2Rt2hg4rwAoVEpRZ+IpLqWfhOT/nAQQ==
+X-Google-Smtp-Source: AGHT+IEKomsC24o6wWv19PojPc/fmT3QAu3Q3ocTtnhFSrp/8kIOgwPZzsRFKacIxcQwXYY58qqlcA==
+X-Received: by 2002:ac2:4e0b:0:b0:52c:90aa:444c with SMTP id
+ 2adb3069b0e04-52ccaa5f1a7mr23692e87.28.1718725933860; 
+ Tue, 18 Jun 2024 08:52:13 -0700 (PDT)
+Received: from wing.epfl.ch (dhcp-122-dist-b-021.epfl.ch. [128.178.122.21])
  by smtp.gmail.com with ESMTPSA id
- 2adb3069b0e04-52ca287240asm1543182e87.177.2024.06.18.08.49.43
+ 5b1f17b1804b1-422870e9145sm229217205e9.22.2024.06.18.08.52.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 18 Jun 2024 08:49:43 -0700 (PDT)
-From: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org, edgar.iglesias@amd.com,
- "Fea.Wang" <fea.wang@sifive.com>, Frank Chang <frank.chang@sifive.com>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Alistair Francis <alistair@alistair23.me>,
- Peter Maydell <peter.maydell@linaro.org>, Jason Wang <jasowang@redhat.com>,
- qemu-arm@nongnu.org
-Subject: [PULL v1 3/3] hw/net: Fix the transmission return size
-Date: Tue, 18 Jun 2024 17:49:35 +0200
-Message-ID: <20240618154935.203544-4-edgar.iglesias@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240618154935.203544-1-edgar.iglesias@gmail.com>
-References: <20240618154935.203544-1-edgar.iglesias@gmail.com>
+ Tue, 18 Jun 2024 08:52:13 -0700 (PDT)
+From: Zheyu Ma <zheyuma97@gmail.com>
+To: Igor Mitsyanko <i.mitsyanko@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>
+Cc: Zheyu Ma <zheyuma97@gmail.com>, qemu-arm@nongnu.org, qemu-devel@nongnu.org
+Subject: [PATCH v2] hw/misc: Set valid access size for Exynos4210 RNG
+Date: Tue, 18 Jun 2024 17:51:59 +0200
+Message-Id: <20240618155159.3183256-1-zheyuma97@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12c;
- envelope-from=edgar.iglesias@gmail.com; helo=mail-lf1-x12c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+Received-SPF: pass client-ip=2a00:1450:4864:20::12d;
+ envelope-from=zheyuma97@gmail.com; helo=mail-lf1-x12d.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -96,34 +90,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: "Fea.Wang" <fea.wang@sifive.com>
+This commit ensures that accesses to the RNG memory region are properly
+validated and align with expected access sizes.
 
-Fix the transmission return size because not all bytes could be
-transmitted successfully. So, return a successful length instead of a
-constant value.
+Reproducer:
+cat << EOF | qemu-system-aarch64 -display none \
+-machine accel=qtest, -m 512M -machine smdkc210 -qtest stdio
+readb 0x10830454
+EOF
 
-Signed-off-by: Fea.Wang <fea.wang@sifive.com>
-Reviewed-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
-Reviewed-by: Frank Chang <frank.chang@sifive.com>
-Signed-off-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
+Signed-off-by: Zheyu Ma <zheyuma97@gmail.com>
 ---
- hw/net/xilinx_axienet.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/misc/exynos4210_rng.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/hw/net/xilinx_axienet.c b/hw/net/xilinx_axienet.c
-index 7d1fd37b4a..05d41bd548 100644
---- a/hw/net/xilinx_axienet.c
-+++ b/hw/net/xilinx_axienet.c
-@@ -847,7 +847,7 @@ static ssize_t eth_rx(NetClientState *nc, const uint8_t *buf, size_t size)
-     axienet_eth_rx_notify(s);
+diff --git a/hw/misc/exynos4210_rng.c b/hw/misc/exynos4210_rng.c
+index 0756bd3205..674d8eece5 100644
+--- a/hw/misc/exynos4210_rng.c
++++ b/hw/misc/exynos4210_rng.c
+@@ -217,6 +217,8 @@ static const MemoryRegionOps exynos4210_rng_ops = {
+     .read = exynos4210_rng_read,
+     .write = exynos4210_rng_write,
+     .endianness = DEVICE_NATIVE_ENDIAN,
++    .valid.min_access_size = 4,
++    .valid.max_access_size = 4,
+ };
  
-     enet_update_irq(s);
--    return size;
-+    return s->rxpos;
- }
- 
- static size_t
+ static void exynos4210_rng_reset(DeviceState *dev)
 -- 
-2.43.0
+2.34.1
 
 
