@@ -2,91 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD54090C89C
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jun 2024 13:11:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 766C990C8EC
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jun 2024 13:18:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sJWjk-0004Jd-Qv; Tue, 18 Jun 2024 07:10:52 -0400
+	id 1sJWql-0006WP-BD; Tue, 18 Jun 2024 07:18:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quic_llindhol@quicinc.com>)
- id 1sJWji-0004It-JF; Tue, 18 Jun 2024 07:10:50 -0400
-Received: from mx0a-0031df01.pphosted.com ([205.220.168.131])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quic_llindhol@quicinc.com>)
- id 1sJWjg-0004eg-LE; Tue, 18 Jun 2024 07:10:50 -0400
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45I8XPkb009648;
- Tue, 18 Jun 2024 11:10:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
- cc:content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
- 36VNmTBYbYSpscGByUwpUqBFLQBKIZzuAeq7wwrd8nM=; b=j0xJB7EG82gJ+Lfn
- imTl2JDfMDwFODuYmMjt74iao6ueewsttj9Eg8C+9eSrzZ3F4aQ+C4x5vW5qzu3y
- nyTxuj2pPFLLghqlGGy0kMA1gaw/KAskScsOzVvsOhFnC6whGv2p2SpeVwXH53DE
- KL4I5oHwJsD/UVaKgcQX/tHEibwwJ0XfwEZYzF89VUXzcrdtytueuria4hDjsyCA
- ALEgWCasrC0C4yr6CEecEqCWckj/HKEIeuGc7EAhs3BGHberG5WM5r19CK+Th4Us
- 8FRoxJ16aLzNwFuGvjwdno0fWBF6S7w/4c1nXxrnELUKTHaFhMRH4QGC7Dn0dEf4
- yW55DQ==
-Received: from nasanppmta03.qualcomm.com (i-global254.qualcomm.com
- [199.106.103.254])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ytuav9su8-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 18 Jun 2024 11:10:43 +0000 (GMT)
-Received: from nasanex01c.na.qualcomm.com (nasanex01c.na.qualcomm.com
- [10.45.79.139])
- by NASANPPMTA03.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id
- 45IBAgkU031790
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 18 Jun 2024 11:10:42 GMT
-Received: from [10.111.137.217] (10.80.80.8) by nasanex01c.na.qualcomm.com
- (10.45.79.139) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 18 Jun
- 2024 04:10:40 -0700
-Message-ID: <e22d46d3-9a83-41bb-ad69-fec3a135880c@quicinc.com>
-Date: Tue, 18 Jun 2024 12:10:38 +0100
+ (Exim 4.90_1) (envelope-from <cleger@rivosinc.com>)
+ id 1sJWqb-0006RM-1r
+ for qemu-devel@nongnu.org; Tue, 18 Jun 2024 07:17:57 -0400
+Received: from mail-lj1-x232.google.com ([2a00:1450:4864:20::232])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <cleger@rivosinc.com>)
+ id 1sJWqX-0005xu-Jv
+ for qemu-devel@nongnu.org; Tue, 18 Jun 2024 07:17:56 -0400
+Received: by mail-lj1-x232.google.com with SMTP id
+ 38308e7fff4ca-2ec3b282fedso598801fa.3
+ for <qemu-devel@nongnu.org>; Tue, 18 Jun 2024 04:17:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1718709471; x=1719314271;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=0v7uteVDRSl1sGyj9u/oI9Vuada/Ql0A0kiqrgdJeqs=;
+ b=mnspmBi0Anu1zFxbNwIKdtstLiaX9N4zne5PM69Jd4LXMjjvViYYUZwjbjqcac3C0A
+ X7hStAG+iCNWXgBf3UISIoQHomoXnj6R+y9zgmliGlk3+TJgtmJ3dEwEX2hSAus8U2po
+ x6q8zBWX4PUX/ClfN7OVIFsQEu8iK0ol1dSWnx5KJBL1dsGVN9JCxZBSVFcy0JWmxf6o
+ KCszksEXc8bOLwbh045bkFOgMfkkUPCe0cumMPNWOuwt7nQLppY702BAcBQ02X8YJlId
+ 6FxGYIHWRUCHCrb9iESb7E9Zob1phRAD9tHq496j+j40zS8dlHwfdh1uF2MaVFwqe3b+
+ hetQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1718709471; x=1719314271;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=0v7uteVDRSl1sGyj9u/oI9Vuada/Ql0A0kiqrgdJeqs=;
+ b=AoEtosz7emIVh+1OCph8IhUodgsZgcM7n9/lktEGJbuLJMnxugrt+5EE7iodzMaYbN
+ /n905e/6vwv7Bsx8qFGOYRh6/Ldb4XcC+B7r5sVVp7O1hHlm0hkUFww4Nkqh93/94G5W
+ D+5x3eGQwAReklfPF4nFQipsAbGyDXGXw57abOvAtttsenFf+LuknZ1Bi9Bng/uMrZKP
+ pv3VGeGg/ttcght5UOVusH3b4dzJXyPRtBjuwCNsHMF5kX9RowRlHrVKS1579eEkJPVi
+ eGDJ/gJG8V5MDUI1Pj9J+drwCII4ci0FqLQRjLeCVcaTZZlwCVhrcO34G3uE233p9L68
+ hRjg==
+X-Gm-Message-State: AOJu0Yz1Xjtg38J7zPW+Hdi3HiKJFvOI2dMmYVRGY78F3RiH3poJdy81
+ 3MqlFA2qetpem3pS4rKDazMXyEo9OqU/4UmZrrBB7t+CRAibJe4SrL0jfgEY0DECvMT1oakp9pY
+ 1MIM=
+X-Google-Smtp-Source: AGHT+IHJhzfdRXObyvyABps8k3QmuRbwQEV7jTQFTwOaYg7gf4pd38aGjCmqdbUWA8lV9haNh9Aejw==
+X-Received: by 2002:a05:651c:1a1e:b0:2ea:8442:2096 with SMTP id
+ 38308e7fff4ca-2ec0e47f142mr76313541fa.2.1718709470899; 
+ Tue, 18 Jun 2024 04:17:50 -0700 (PDT)
+Received: from carbon-x1.. ([2a01:e0a:999:a3a0:45f5:4d94:4aa8:def4])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-422f61277fesm187080885e9.21.2024.06.18.04.17.50
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 18 Jun 2024 04:17:50 -0700 (PDT)
+From: =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Jason Wang <jasowang@redhat.com>
+Subject: [PATCH v2] osdep: add a qemu_close_all_open_fd() helper
+Date: Tue, 18 Jun 2024 13:17:03 +0200
+Message-ID: <20240618111704.63092-1-cleger@rivosinc.com>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 1/1] hw/arm/sbsa-ref: Enable CPU cluster on ARM sbsa
- machine
-To: Xiong Yining <xiongyining1480@phytium.com.cn>, <qemu-arm@nongnu.org>,
- <qemu-devel@nongnu.org>
-CC: <rad@semihalf.com>, <peter.maydell@linaro.org>,
- <marcin.juszkiewicz@linaro.org>
-References: <20240607103825.1295328-1-xiongyining1480@phytium.com.cn>
- <20240607103825.1295328-2-xiongyining1480@phytium.com.cn>
-Content-Language: en-GB
-From: Leif Lindholm <quic_llindhol@quicinc.com>
-In-Reply-To: <20240607103825.1295328-2-xiongyining1480@phytium.com.cn>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nasanex01c.na.qualcomm.com (10.45.79.139)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
- signatures=585085
-X-Proofpoint-GUID: 11aIyDuZNUJn5F9IdFVCufJFo5yoog1t
-X-Proofpoint-ORIG-GUID: 11aIyDuZNUJn5F9IdFVCufJFo5yoog1t
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-06-18_02,2024-06-17_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=999
- suspectscore=0 mlxscore=0 phishscore=0 adultscore=0 clxscore=1011
- spamscore=0 impostorscore=0 lowpriorityscore=0 priorityscore=1501
- bulkscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2405170001 definitions=main-2406180083
-Received-SPF: pass client-ip=205.220.168.131;
- envelope-from=quic_llindhol@quicinc.com; helo=mx0a-0031df01.pphosted.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::232;
+ envelope-from=cleger@rivosinc.com; helo=mail-lj1-x232.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,79 +92,295 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2024-06-07 11:38, Xiong Yining wrote:
-> Enable CPU cluster support on SbsaQemu platform, so that users can
-> specify a 4-level CPU hierarchy sockets/clusters/cores/threads. And
-> this topology can be passed to the firmware through /cpus/topology
-> Device Tree.
-> 
-> Signed-off-by: Xiong Yining <xiongyining1480@phytium.com.cn>
-> tested-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+Since commit 03e471c41d8b ("qemu_init: increase NOFILE soft limit on
+POSIX"), the maximum number of file descriptors that can be opened are
+raised to nofile.rlim_max. On recent debian distro, this yield a maximum
+of 1073741816 file descriptors. Now, when forking to start
+qemu-bridge-helper, this actually calls close() on the full possible file
+descriptor range (more precisely [3 - sysconf(_SC_OPEN_MAX)]) which
+takes a considerable amount of time. In order to reduce that time,
+factorize existing code to close all open files descriptors in a new
+qemu_close_all_open_fd() function. This function uses various methods
+to close all the open file descriptors ranging from the most efficient
+one to the least one. It also accepts an ordered array of file
+descriptors that should not be closed since this is required by the
+callers that calls it after forking.
 
-Reviewed-by: Leif Lindholm <quic_llindhol@quicinc.com>
+Signed-off-by: Clément Léger <cleger@rivosinc.com>
 
-Thanks!
+----
 
-> 
-> ---
->   docs/system/arm/sbsa.rst |  4 ++++
->   hw/arm/sbsa-ref.c        | 11 ++++++++++-
->   2 files changed, 14 insertions(+), 1 deletion(-)
-> 
-> diff --git a/docs/system/arm/sbsa.rst b/docs/system/arm/sbsa.rst
-> index 2bf22a1d0b..2bf3fc8d59 100644
-> --- a/docs/system/arm/sbsa.rst
-> +++ b/docs/system/arm/sbsa.rst
-> @@ -62,6 +62,7 @@ The devicetree reports:
->      - platform version
->      - GIC addresses
->      - NUMA node id for CPUs and memory
-> +   - CPU topology information
->   
->   Platform version
->   ''''''''''''''''
-> @@ -88,3 +89,6 @@ Platform version changes:
->   
->   0.3
->     The USB controller is an XHCI device, not EHCI.
-> +
-> +0.4
-> +  CPU topology information is present in devicetree.
-> diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
-> index e884692f07..9987850fc4 100644
-> --- a/hw/arm/sbsa-ref.c
-> +++ b/hw/arm/sbsa-ref.c
-> @@ -223,7 +223,7 @@ static void create_fdt(SBSAMachineState *sms)
->        *                        fw compatibility.
->        */
->       qemu_fdt_setprop_cell(fdt, "/", "machine-version-major", 0);
-> -    qemu_fdt_setprop_cell(fdt, "/", "machine-version-minor", 3);
-> +    qemu_fdt_setprop_cell(fdt, "/", "machine-version-minor", 4);
->   
->       if (ms->numa_state->have_numa_distance) {
->           int size = nb_numa_nodes * nb_numa_nodes * 3 * sizeof(uint32_t);
-> @@ -280,6 +280,14 @@ static void create_fdt(SBSAMachineState *sms)
->           g_free(nodename);
->       }
->   
-> +    /* Add CPU topology description through fdt node topology. */
-> +    qemu_fdt_add_subnode(sms->fdt, "/cpus/topology");
-> +
-> +    qemu_fdt_setprop_cell(sms->fdt, "/cpus/topology", "sockets", ms->smp.sockets);
-> +    qemu_fdt_setprop_cell(sms->fdt, "/cpus/topology", "clusters", ms->smp.clusters);
-> +    qemu_fdt_setprop_cell(sms->fdt, "/cpus/topology", "cores", ms->smp.cores);
-> +    qemu_fdt_setprop_cell(sms->fdt, "/cpus/topology", "threads", ms->smp.threads);
-> +
->       sbsa_fdt_add_gic_node(sms);
->   }
->   
-> @@ -902,6 +910,7 @@ static void sbsa_ref_class_init(ObjectClass *oc, void *data)
->       mc->default_ram_size = 1 * GiB;
->       mc->default_ram_id = "sbsa-ref.ram";
->       mc->default_cpus = 4;
-> +    mc->smp_props.clusters_supported = true;
->       mc->possible_cpu_arch_ids = sbsa_ref_possible_cpu_arch_ids;
->       mc->cpu_index_to_instance_props = sbsa_ref_cpu_index_to_props;
->       mc->get_default_cpu_node_id = sbsa_ref_get_default_cpu_node_id;
+v2:
+ - Factorize async_teardown.c close_fds implementation as well as tap.c ones
+ - Apply checkpatch
+ - v1: https://lore.kernel.org/qemu-devel/20240617162520.4045016-1-cleger@rivosinc.com/
+
+---
+ include/qemu/osdep.h    |   8 +++
+ net/tap.c               |  31 ++++++-----
+ system/async-teardown.c |  37 +------------
+ util/osdep.c            | 115 ++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 141 insertions(+), 50 deletions(-)
+
+diff --git a/include/qemu/osdep.h b/include/qemu/osdep.h
+index f61edcfdc2..9369a97d3d 100644
+--- a/include/qemu/osdep.h
++++ b/include/qemu/osdep.h
+@@ -755,6 +755,14 @@ static inline void qemu_reset_optind(void)
+ 
+ int qemu_fdatasync(int fd);
+ 
++/**
++ * Close all open file descriptors except the ones supplied in the @skip array
++ *
++ * @skip: ordered array of distinct file descriptors that should not be closed
++ * @nskip: number of entries in the @skip array.
++ */
++void qemu_close_all_open_fd(const int *skip, unsigned int nskip);
++
+ /**
+  * Sync changes made to the memory mapped file back to the backing
+  * storage. For POSIX compliant systems this will fallback
+diff --git a/net/tap.c b/net/tap.c
+index 51f7aec39d..6fc3939078 100644
+--- a/net/tap.c
++++ b/net/tap.c
+@@ -385,6 +385,21 @@ static TAPState *net_tap_fd_init(NetClientState *peer,
+     return s;
+ }
+ 
++static void close_all_fds_after_fork(int excluded_fd)
++{
++        const int skip_fd[] = {0, 1, 2, 3, excluded_fd};
++        unsigned int nskip = ARRAY_SIZE(skip_fd);
++
++        /*
++         * skip_fd must be an ordered array of distinct fds, exclude
++         * excluded_fd if already included in the [0 - 3] range
++         */
++        if (excluded_fd <= 3) {
++            nskip--;
++        }
++        qemu_close_all_open_fd(skip_fd, nskip);
++}
++
+ static void launch_script(const char *setup_script, const char *ifname,
+                           int fd, Error **errp)
+ {
+@@ -400,13 +415,7 @@ static void launch_script(const char *setup_script, const char *ifname,
+         return;
+     }
+     if (pid == 0) {
+-        int open_max = sysconf(_SC_OPEN_MAX), i;
+-
+-        for (i = 3; i < open_max; i++) {
+-            if (i != fd) {
+-                close(i);
+-            }
+-        }
++        close_all_fds_after_fork(fd);
+         parg = args;
+         *parg++ = (char *)setup_script;
+         *parg++ = (char *)ifname;
+@@ -490,17 +499,11 @@ static int net_bridge_run_helper(const char *helper, const char *bridge,
+         return -1;
+     }
+     if (pid == 0) {
+-        int open_max = sysconf(_SC_OPEN_MAX), i;
+         char *fd_buf = NULL;
+         char *br_buf = NULL;
+         char *helper_cmd = NULL;
+ 
+-        for (i = 3; i < open_max; i++) {
+-            if (i != sv[1]) {
+-                close(i);
+-            }
+-        }
+-
++        close_all_fds_after_fork(sv[1]);
+         fd_buf = g_strdup_printf("%s%d", "--fd=", sv[1]);
+ 
+         if (strrchr(helper, ' ') || strrchr(helper, '\t')) {
+diff --git a/system/async-teardown.c b/system/async-teardown.c
+index 396963c091..9148ee8d04 100644
+--- a/system/async-teardown.c
++++ b/system/async-teardown.c
+@@ -26,40 +26,6 @@
+ 
+ static pid_t the_ppid;
+ 
+-/*
+- * Close all open file descriptors.
+- */
+-static void close_all_open_fd(void)
+-{
+-    struct dirent *de;
+-    int fd, dfd;
+-    DIR *dir;
+-
+-#ifdef CONFIG_CLOSE_RANGE
+-    int r = close_range(0, ~0U, 0);
+-    if (!r) {
+-        /* Success, no need to try other ways. */
+-        return;
+-    }
+-#endif
+-
+-    dir = opendir("/proc/self/fd");
+-    if (!dir) {
+-        /* If /proc is not mounted, there is nothing that can be done. */
+-        return;
+-    }
+-    /* Avoid closing the directory. */
+-    dfd = dirfd(dir);
+-
+-    for (de = readdir(dir); de; de = readdir(dir)) {
+-        fd = atoi(de->d_name);
+-        if (fd != dfd) {
+-            close(fd);
+-        }
+-    }
+-    closedir(dir);
+-}
+-
+ static void hup_handler(int signal)
+ {
+     /* Check every second if this process has been reparented. */
+@@ -85,9 +51,8 @@ static int async_teardown_fn(void *arg)
+     /*
+      * Close all file descriptors that might have been inherited from the
+      * main qemu process when doing clone, needed to make libvirt happy.
+-     * Not using close_range for increased compatibility with older kernels.
+      */
+-    close_all_open_fd();
++    qemu_close_all_open_fd(NULL, 0);
+ 
+     /* Set up a handler for SIGHUP and unblock SIGHUP. */
+     sigaction(SIGHUP, &sa, NULL);
+diff --git a/util/osdep.c b/util/osdep.c
+index 5d23bbfbec..f3710710e3 100644
+--- a/util/osdep.c
++++ b/util/osdep.c
+@@ -625,3 +625,118 @@ int qemu_fdatasync(int fd)
+     return fsync(fd);
+ #endif
+ }
++
++#ifdef CONFIG_LINUX
++static bool qemu_close_all_open_fd_proc(const int *skip, unsigned int nskip)
++{
++    struct dirent *de;
++    int fd, dfd;
++    bool close_fd;
++    DIR *dir;
++    int i;
++
++    dir = opendir("/proc/self/fd");
++    if (!dir) {
++        /* If /proc is not mounted, there is nothing that can be done. */
++        return false;
++    }
++    /* Avoid closing the directory. */
++    dfd = dirfd(dir);
++
++    for (de = readdir(dir); de; de = readdir(dir)) {
++        fd = atoi(de->d_name);
++        close_fd = true;
++        if (fd == dfd) {
++            close_fd = false;
++        } else {
++            for (i = 0; i < nskip; i++) {
++                if (fd == skip[i]) {
++                    close_fd = false;
++                    break;
++                }
++            }
++        }
++        if (close_fd) {
++            close(fd);
++        }
++    }
++    closedir(dir);
++
++    return true;
++}
++#else
++static bool qemu_close_all_open_fd_proc(const int *skip, unsigned int nskip)
++{
++    return false;
++}
++#endif
++
++#ifdef CONFIG_CLOSE_RANGE
++static bool qemu_close_all_open_fd_close_range(const int *skip,
++                                               unsigned int nskip)
++{
++    int max_fd = sysconf(_SC_OPEN_MAX) - 1;
++    int first = 0, last = max_fd;
++    int cur_skip = 0, ret;
++
++    do {
++        if (nskip) {
++            while (first == skip[cur_skip]) {
++                cur_skip++;
++                first++;
++            }
++            if (cur_skip < nskip) {
++                last = skip[cur_skip] - 1;
++            }
++            if (last > max_fd) {
++                last = max_fd;
++                /*
++                 * We can directly skip the remaining skip fds since the current
++                 * one is already above the maximum supported one.
++                 */
++                cur_skip = nskip;
++            }
++            if (first > last) {
++                break;
++            }
++        }
++        ret = close_range(first, last, 0);
++        if (ret < 0) {
++            return false;
++        }
++        first = last + 1;
++        last = max_fd;
++    } while (cur_skip < nskip);
++
++    return true;
++}
++#else
++static bool qemu_close_all_open_fd_close_range(const int *skip,
++                                               unsigned int nskip)
++{
++    return false;
++}
++#endif
++
++void qemu_close_all_open_fd(const int *skip, unsigned int nskip)
++{
++    int open_max = sysconf(_SC_OPEN_MAX);
++    int cur_skip = 0, i;
++
++    if (qemu_close_all_open_fd_close_range(skip, nskip)) {
++        return;
++    }
++
++    if (qemu_close_all_open_fd_proc(skip, nskip)) {
++        return;
++    }
++
++    /* Fallback */
++    for (i = 0; i < open_max; i++) {
++        if (i == skip[cur_skip]) {
++            cur_skip++;
++            continue;
++        }
++        close(i);
++    }
++}
+-- 
+2.45.2
 
 
