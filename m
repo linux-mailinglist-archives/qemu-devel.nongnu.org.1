@@ -2,26 +2,26 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9030290D8B3
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jun 2024 18:14:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F38590D8B0
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jun 2024 18:13:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sJbSP-0002o4-Qt; Tue, 18 Jun 2024 12:13:17 -0400
+	id 1sJbSQ-0002q0-Hm; Tue, 18 Jun 2024 12:13:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1sJbSN-0002ha-6M
- for qemu-devel@nongnu.org; Tue, 18 Jun 2024 12:13:15 -0400
+ id 1sJbSO-0002ml-N3
+ for qemu-devel@nongnu.org; Tue, 18 Jun 2024 12:13:16 -0400
 Received: from vps-vb.mhejs.net ([37.28.154.113])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1sJbSL-0000nm-0P
- for qemu-devel@nongnu.org; Tue, 18 Jun 2024 12:13:14 -0400
+ id 1sJbSN-0000ou-6L
+ for qemu-devel@nongnu.org; Tue, 18 Jun 2024 12:13:16 -0400
 Received: from MUA by vps-vb.mhejs.net with esmtps (TLS1.2) tls
  TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.94.2)
  (envelope-from <mail@maciej.szmigiero.name>)
- id 1sJbRv-0001aK-VL; Tue, 18 Jun 2024 18:12:48 +0200
+ id 1sJbS1-0001aT-BC; Tue, 18 Jun 2024 18:12:53 +0200
 From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
 To: Peter Xu <peterx@redhat.com>,
 	Fabiano Rosas <farosas@suse.de>
@@ -31,12 +31,14 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Avihai Horon <avihaih@nvidia.com>,
  Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
-Subject: =?UTF-8?q?=5BPATCH=20v1=2000/13=5D=20Multifd=20=F0=9F=94=80=20device=20state=20transfer=20support=20with=20VFIO=20consumer?=
-Date: Tue, 18 Jun 2024 18:12:18 +0200
-Message-ID: <cover.1718717584.git.maciej.szmigiero@oracle.com>
+Subject: [PATCH v1 01/13] vfio/migration: Add save_{iterate,
+ complete_precopy}_started trace events
+Date: Tue, 18 Jun 2024 18:12:19 +0200
+Message-ID: <8a5b0ed0530bfbecdc1a1a908da7dd7b2eb2687a.1718717584.git.maciej.szmigiero@oracle.com>
 X-Mailer: git-send-email 2.45.1
+In-Reply-To: <cover.1718717584.git.maciej.szmigiero@oracle.com>
+References: <cover.1718717584.git.maciej.szmigiero@oracle.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=37.28.154.113;
  envelope-from=mail@maciej.szmigiero.name; helo=vps-vb.mhejs.net
@@ -62,122 +64,88 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
 
-This is an updated v1 patch series of the RFC (v0) series located here:
-https://lore.kernel.org/qemu-devel/cover.1713269378.git.maciej.szmigiero@oracle.com/
+This way both the start and end points of migrating a particular VFIO
+device are known.
 
+Add also a vfio_save_iterate_empty_hit trace event so it is known when
+there's no more data to send for that device.
 
-Changes from the RFC (v0):
-* Extend the existing multifd packet format instead of introducing a new
-migration channel header.
+Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
+---
+ hw/vfio/migration.c           | 13 +++++++++++++
+ hw/vfio/trace-events          |  3 +++
+ include/hw/vfio/vfio-common.h |  3 +++
+ 3 files changed, 19 insertions(+)
 
-* As the replacement of switching the migration channel header on or off
-introduce "x-migration-multifd-transfer" VFIO device property instead that
-allows configuring at runtime whether to send the particular device state
-via multifd channels when live migrating that device.
-
-This property defaults to "false" for bit stream compatibility with older
-QEMU versions.
-
-* Remove the support for having dedicated device state transfer multifd
-channels since the same downtime performance can be attained by simply
-reducing the total number of multifd channels in a shared channel
-configuration to the number of channels available for RAM transfer in
-the dedicated device state channels configuration.
-
-For example, the best downtime from the dedicated device state config
-on my setup (achieved in configuration of 10 total multifd channels /
-4 dedicated device state channels) can also be achieved in the
-shared RAM/device state channel configuration by reducing the total
-multifd channel count to 6.
-
-It looks like not having too many RAM transfer multifd channels is
-key to having a good downtime since the results are reproducibly
-worse with 15 shared channels total, while they are as good as with
-6 shared channels if there are 15 total channels but 4 of them are
-dedicated to transferring device state (leaving 11 for RAM transfer).
-
-* Make the next multifd channel selection more fair when converting
-multifd_send_pages::next_channel to atomic.
-
-* Convert the code to use QEMU thread sync primitives (QemuMutex with
-QemuLockable, QemuCond) instead of their Glib equivalents (GMutex,
-GMutexLocker and GCond).
-
-* Rename complete_precopy_async{,_wait} to complete_precopy_{begin,_end} as
-suggested.
-
-* Rebase onto the last week's QEMU git master and retest.
-
-
-When working on the updated patch set version I also investigated the
-possibility of refactoring VM live phase (non-downtime) transfers to
-happen via multifd channels.
-
-However, the VM live phase transfer works differently: it happens
-opportunistically until the remaining data drops below the switchover
-threshold, rather that transferring always the whole device state data
-until their exhaustion.
-
-For this reason, there would need to be some way in the migration
-framework to update the remaining data estimate from per-device
-saving/transfer queuing thread and then stop these threads when the
-decision has been reached in the migration core to stop the VM and
-switch over. Such functionality would need to be introduced first.
-
-There would also need to be some fairness guarantees so every device
-gets similar access to multifd channels - otherwise there could be a
-situation that the remaining data never drops below switchover
-threshold because some devices are starved with respect to access to
-the multifd transfer channels - as in the VM live phase additional
-device data is constantly being generated.
-
-Moreover, there's nothing stopping a QEMU device driver from requiring
-different handling (loading, etc.) of VM live phase data from the
-post-switchover data.
-For cases like this some kind of a new device VM live phase incoming
-data load handler would need to be introduced too.
-
-For the above reasons, the VM live phase multifd transfer functionality
-isn't a simple extension of the functionality introduced by this patch
-set.
-
-
-For convenience, this patch set is also available as a git tree:
-https://github.com/maciejsszmigiero/qemu/tree/multifd-device-state-transfer-vfio
-
-
-Maciej S. Szmigiero (13):
-  vfio/migration: Add save_{iterate,complete_precopy}_started trace
-    events
-  migration/ram: Add load start trace event
-  migration/multifd: Zero p->flags before starting filling a packet
-  migration: Add save_live_complete_precopy_{begin,end} handlers
-  migration: Add qemu_loadvm_load_state_buffer() and its handler
-  migration: Add load_finish handler and associated functions
-  migration/multifd: Device state transfer support - receive side
-  migration/multifd: Convert multifd_send_pages::next_channel to atomic
-  migration/multifd: Device state transfer support - send side
-  migration/multifd: Add migration_has_device_state_support()
-  vfio/migration: Multifd device state transfer support - receive side
-  vfio/migration: Add x-migration-multifd-transfer VFIO property
-  vfio/migration: Multifd device state transfer support - send side
-
- hw/vfio/migration.c           | 545 +++++++++++++++++++++++++++++++++-
- hw/vfio/pci.c                 |   7 +
- hw/vfio/trace-events          |  15 +-
- include/hw/vfio/vfio-common.h |  27 ++
- include/migration/misc.h      |   5 +
- include/migration/register.h  |  70 +++++
- migration/migration.c         |   6 +
- migration/migration.h         |   3 +
- migration/multifd-zlib.c      |   2 +-
- migration/multifd-zstd.c      |   2 +-
- migration/multifd.c           | 336 +++++++++++++++++----
- migration/multifd.h           |  57 +++-
- migration/ram.c               |   1 +
- migration/savevm.c            | 112 +++++++
- migration/savevm.h            |   7 +
- migration/trace-events        |   1 +
- 16 files changed, 1132 insertions(+), 64 deletions(-)
-
+diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
+index 34d4be2ce1b1..93f767e3c2dd 100644
+--- a/hw/vfio/migration.c
++++ b/hw/vfio/migration.c
+@@ -472,6 +472,9 @@ static int vfio_save_setup(QEMUFile *f, void *opaque, Error **errp)
+         return -ENOMEM;
+     }
+ 
++    migration->save_iterate_run = false;
++    migration->save_iterate_empty_hit = false;
++
+     if (vfio_precopy_supported(vbasedev)) {
+         switch (migration->device_state) {
+         case VFIO_DEVICE_STATE_RUNNING:
+@@ -605,9 +608,17 @@ static int vfio_save_iterate(QEMUFile *f, void *opaque)
+     VFIOMigration *migration = vbasedev->migration;
+     ssize_t data_size;
+ 
++    if (!migration->save_iterate_run) {
++        trace_vfio_save_iterate_started(vbasedev->name);
++        migration->save_iterate_run = true;
++    }
++
+     data_size = vfio_save_block(f, migration);
+     if (data_size < 0) {
+         return data_size;
++    } else if (data_size == 0 && !migration->save_iterate_empty_hit) {
++        trace_vfio_save_iterate_empty_hit(vbasedev->name);
++        migration->save_iterate_empty_hit = true;
+     }
+ 
+     vfio_update_estimated_pending_data(migration, data_size);
+@@ -633,6 +644,8 @@ static int vfio_save_complete_precopy(QEMUFile *f, void *opaque)
+     int ret;
+     Error *local_err = NULL;
+ 
++    trace_vfio_save_complete_precopy_started(vbasedev->name);
++
+     /* We reach here with device state STOP or STOP_COPY only */
+     ret = vfio_migration_set_state(vbasedev, VFIO_DEVICE_STATE_STOP_COPY,
+                                    VFIO_DEVICE_STATE_STOP, &local_err);
+diff --git a/hw/vfio/trace-events b/hw/vfio/trace-events
+index 64161bf6f44c..814000796687 100644
+--- a/hw/vfio/trace-events
++++ b/hw/vfio/trace-events
+@@ -158,8 +158,11 @@ vfio_migration_state_notifier(const char *name, int state) " (%s) state %d"
+ vfio_save_block(const char *name, int data_size) " (%s) data_size %d"
+ vfio_save_cleanup(const char *name) " (%s)"
+ vfio_save_complete_precopy(const char *name, int ret) " (%s) ret %d"
++vfio_save_complete_precopy_started(const char *name) " (%s)"
+ vfio_save_device_config_state(const char *name) " (%s)"
+ vfio_save_iterate(const char *name, uint64_t precopy_init_size, uint64_t precopy_dirty_size) " (%s) precopy initial size 0x%"PRIx64" precopy dirty size 0x%"PRIx64
++vfio_save_iterate_started(const char *name) " (%s)"
++vfio_save_iterate_empty_hit(const char *name) " (%s)"
+ vfio_save_setup(const char *name, uint64_t data_buffer_size) " (%s) data buffer size 0x%"PRIx64
+ vfio_state_pending_estimate(const char *name, uint64_t precopy, uint64_t postcopy, uint64_t precopy_init_size, uint64_t precopy_dirty_size) " (%s) precopy 0x%"PRIx64" postcopy 0x%"PRIx64" precopy initial size 0x%"PRIx64" precopy dirty size 0x%"PRIx64
+ vfio_state_pending_exact(const char *name, uint64_t precopy, uint64_t postcopy, uint64_t stopcopy_size, uint64_t precopy_init_size, uint64_t precopy_dirty_size) " (%s) precopy 0x%"PRIx64" postcopy 0x%"PRIx64" stopcopy size 0x%"PRIx64" precopy initial size 0x%"PRIx64" precopy dirty size 0x%"PRIx64
+diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
+index 4cb1ab8645dc..510818f4dae3 100644
+--- a/include/hw/vfio/vfio-common.h
++++ b/include/hw/vfio/vfio-common.h
+@@ -71,6 +71,9 @@ typedef struct VFIOMigration {
+     uint64_t precopy_init_size;
+     uint64_t precopy_dirty_size;
+     bool initial_data_sent;
++
++    bool save_iterate_run;
++    bool save_iterate_empty_hit;
+ } VFIOMigration;
+ 
+ struct VFIOGroup;
 
