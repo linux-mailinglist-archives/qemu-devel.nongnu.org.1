@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99CE690D886
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jun 2024 18:11:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4499790D88C
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jun 2024 18:11:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sJbLd-0006j5-4S; Tue, 18 Jun 2024 12:06:17 -0400
+	id 1sJbLj-0007At-O5; Tue, 18 Jun 2024 12:06:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sJbLZ-0006dL-9P
- for qemu-devel@nongnu.org; Tue, 18 Jun 2024 12:06:13 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sJbLd-0006v5-LN
+ for qemu-devel@nongnu.org; Tue, 18 Jun 2024 12:06:17 -0400
+Received: from mail-lj1-x230.google.com ([2a00:1450:4864:20::230])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sJbLX-0007k2-7n
- for qemu-devel@nongnu.org; Tue, 18 Jun 2024 12:06:12 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-4218008c613so42804085e9.2
- for <qemu-devel@nongnu.org>; Tue, 18 Jun 2024 09:06:08 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sJbLa-0007kX-Q5
+ for qemu-devel@nongnu.org; Tue, 18 Jun 2024 12:06:17 -0400
+Received: by mail-lj1-x230.google.com with SMTP id
+ 38308e7fff4ca-2ec0f3b9cfeso51060771fa.0
+ for <qemu-devel@nongnu.org>; Tue, 18 Jun 2024 09:06:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1718726767; x=1719331567; darn=nongnu.org;
+ d=linaro.org; s=google; t=1718726773; x=1719331573; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=bnMf30zvDwvxbd6Rx2qugerMz4GF67L/Ogj3GpoZRCs=;
- b=M/4m5+4lCsT9kwLPYf4cRncvvu4lwXQSlSXq4I5OfUFz8ne2XylcilG0e00hSeMtRY
- Lm+ULQZEDvVUttbXAmJ5Mx0mT0tlQMt1HpspogSZQPgS817DN5sQ6q7zvEb0qNOWLnF4
- nykq9tEz/LmDmq9ygOauLFjJhyWYo2pMmGQZ4d3dQQCHy8y2ESt7S84zsFd/sDeC3Ly/
- t8rD9lvHoJd2O0NPuuTVIo/dIE2x6a0e6kjEN5m75OQeae9dtRC+GmjKu7R+/1tiO/MJ
- Gy7vSARBPba+0nWGURyeC1/OPLtqFHrPbr8R092eTCxeZiGh5+DFS9/zYJsxFSa6a6c9
- 8V8A==
+ bh=HtmX+S2yK/Vz8/u+qz4/0UFgu+q37Y7br+Oj/kr8kUw=;
+ b=gRVUg5s53KnJZxK1be+9I6jBVj5BXXJT2lzVkc/g4F34OB4u7ltoblPZ8T3QydS8Ks
+ rGc520bYIv7QegJPI4fjFZm4USKp+fAo/BFmcVRsi13XX3uwHVJFvpG7ZBZzIoFp1byp
+ Sjfzd40iP4onk9I0qymIgbEc6sv4XrzKYfl/navj05D8nEdp8GKcuT06IDKc6+5lw6pU
+ NSa6FZkoqwbnCVXzdiOk/SrTKTdfyn71BzQ3ACLWRAxcKy96eEGIP0gs4Q4l4TVu5jOY
+ QRmTBz0gb++qwqvA/fcqSRYYKW3nFuEbsVeqpfKjyu3ySpi49XTpFEizHfo/g1vzFH8i
+ m8Ww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718726767; x=1719331567;
+ d=1e100.net; s=20230601; t=1718726773; x=1719331573;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=bnMf30zvDwvxbd6Rx2qugerMz4GF67L/Ogj3GpoZRCs=;
- b=u9/tviXzzoe5NesMxLvLScTgryb9QXNdsH5LXV3csm8LZjU6wucksi+IUMNtavkoza
- 6acaSDZzbYYnoMS/ubUBaMUZhX1lKeCM18ibanOD0X20VfGoHlVYX8i31T08d281JZkN
- lYIeIN3b68ZjQWydH5XknG73RLuN/9qot3w7i6PyJG2J4mVw8sATvUwPnbk2CdWg7TLn
- 8ILS0YpSVrStUV3eu27vtRbcIKWTDf1dYVPMqejboQt12xVkWRdUZO7gcA5pfMLjwo7m
- 8YVS0KfVOgw0h0iANx49dl2qtYqZWCyXmvzfZRiFhENzN6RFUxflXbyW3VhG5cQWAsu+
- goTA==
-X-Gm-Message-State: AOJu0YwzyQDWjBVKNFhdSja+wq8A346uTHdrTGK1PvlG2WCoAnmoRfQE
- aSur5WwbvXZuxBl9p4TV/7BsKDlZrME3M090TVXw2vuspDuHUQTv4PYk1POnwCGSFj3/ROBvpJD
- 4
-X-Google-Smtp-Source: AGHT+IGJW5qMOb6Sr9bGHXvch1hmGOZSir4EArLdqcguG3NefJAYwYc/Nvwaf7MB96D49AqE45Rzzw==
-X-Received: by 2002:a05:600c:3b05:b0:421:565b:e71a with SMTP id
- 5b1f17b1804b1-4230482278emr88215265e9.5.1718726767490; 
- Tue, 18 Jun 2024 09:06:07 -0700 (PDT)
+ bh=HtmX+S2yK/Vz8/u+qz4/0UFgu+q37Y7br+Oj/kr8kUw=;
+ b=USpCl9k0lcGiD/+lur6KHHVGrfFgFbPDPI5tXsWEaUjk9K169OOyW+i/tbGj4QQ1jX
+ P+EMq9UuF46SsTv6wUYJMgXZT1blpqtLNhCi4JrNQ/VRp8inMzn8zl7UeUHP+1xTDVft
+ LUqR3iq1YUsZXwI8DxjDOPr0YeUEuKbhfjfCkK/KM47ljl3nizeumiad6twRqJ127PzH
+ PqM3sGmgYixDnW7Bux3ghyAgM3wEFoE4+oz1fuS6MztikhS2OQtFC+todJ5/01bspfvx
+ MYWQ82OG5iWXAUPPoNSW5auKSXktEDlBkGOUBBaOdZ5p9FUyinR8H9Oc0eQ6MHtrUwy8
+ Xscg==
+X-Gm-Message-State: AOJu0Yya14Korn/FMIiY4xDb3rc8cywIA34828ds47jtCAwZExxSvPZJ
+ mPmwHQUh9fCJyXKtWXAOcs2y8xM3WdR68DNutHGkcOplRW6LWhivMZUBUX1maIvqT4AZdN5dSop
+ P
+X-Google-Smtp-Source: AGHT+IEe8oYfAdlFyt5kVJ7sBV/Lue6VT8XWBolDxnqQ7WCgjkFS8bWYgt1UxlgmE38en2OxBPajkQ==
+X-Received: by 2002:a2e:9694:0:b0:2ea:91cf:a5f0 with SMTP id
+ 38308e7fff4ca-2ec3ceb6a0cmr1879591fa.19.1718726772788; 
+ Tue, 18 Jun 2024 09:06:12 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.212.55])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-360750f22absm14649703f8f.79.2024.06.18.09.06.06
+ 5b1f17b1804b1-422f6320bd8sm191966715e9.32.2024.06.18.09.06.11
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 18 Jun 2024 09:06:07 -0700 (PDT)
+ Tue, 18 Jun 2024 09:06:12 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 56/76] accel/tcg: Make TCGCPUOps::cpu_exec_halt mandatory
-Date: Tue, 18 Jun 2024 18:00:18 +0200
-Message-ID: <20240618160039.36108-57-philmd@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Peter Xu <peterx@redhat.com>
+Subject: [PULL 57/76] memory: Constify IOMMUTLBEvent in
+ memory_region_notify_iommu_one()
+Date: Tue, 18 Jun 2024 18:00:19 +0200
+Message-ID: <20240618160039.36108-58-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240618160039.36108-1-philmd@linaro.org>
 References: <20240618160039.36108-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::230;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x230.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,74 +93,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+@event access is read-only.
 
-Now that all targets set TCGCPUOps::cpu_exec_halt, we can make it
-mandatory and remove the fallback handling that calls cpu_has_work.
-
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20240603160933.1141717-4-peter.maydell@linaro.org>
-[PMD: Add assert(cpu_exec_halt) call in tcg_exec_realizefn]
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Peter Xu <peterx@redhat.com>
+Message-Id: <20240612132532.85928-2-philmd@linaro.org>
 ---
- include/hw/core/tcg-cpu-ops.h |  9 ++++++---
- accel/tcg/cpu-exec.c          | 12 ++++++------
- 2 files changed, 12 insertions(+), 9 deletions(-)
+ include/exec/memory.h | 2 +-
+ system/memory.c       | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/include/hw/core/tcg-cpu-ops.h b/include/hw/core/tcg-cpu-ops.h
-index 099de3375e..34318cf0e6 100644
---- a/include/hw/core/tcg-cpu-ops.h
-+++ b/include/hw/core/tcg-cpu-ops.h
-@@ -122,10 +122,13 @@ struct TCGCPUOps {
-      * to do when the CPU is in the halted state.
-      *
-      * Return true to indicate that the CPU should now leave halt, false
--     * if it should remain in the halted state.
-+     * if it should remain in the halted state. (This should generally
-+     * be the same value that cpu_has_work() would return.)
-      *
--     * If this method is not provided, the default is to do nothing, and
--     * to leave halt if cpu_has_work() returns true.
-+     * This method must be provided. If the target does not need to
-+     * do anything special for halt, the same function used for its
-+     * CPUClass::has_work method can be used here, as they have the
-+     * same function signature.
-      */
-     bool (*cpu_exec_halt)(CPUState *cpu);
-     /**
-diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
-index 6711b58e0b..f7f8683a1b 100644
---- a/accel/tcg/cpu-exec.c
-+++ b/accel/tcg/cpu-exec.c
-@@ -682,13 +682,8 @@ static inline bool cpu_handle_halt(CPUState *cpu)
- #ifndef CONFIG_USER_ONLY
-     if (cpu->halted) {
-         const TCGCPUOps *tcg_ops = cpu->cc->tcg_ops;
--        bool leave_halt;
-+        bool leave_halt = tcg_ops->cpu_exec_halt(cpu);
+diff --git a/include/exec/memory.h b/include/exec/memory.h
+index 1be58f694c..2bf5e23b6a 100644
+--- a/include/exec/memory.h
++++ b/include/exec/memory.h
+@@ -1852,7 +1852,7 @@ void memory_region_notify_iommu(IOMMUMemoryRegion *iommu_mr,
+  *         range.
+  */
+ void memory_region_notify_iommu_one(IOMMUNotifier *notifier,
+-                                    IOMMUTLBEvent *event);
++                                    const IOMMUTLBEvent *event);
  
--        if (tcg_ops->cpu_exec_halt) {
--            leave_halt = tcg_ops->cpu_exec_halt(cpu);
--        } else {
--            leave_halt = cpu_has_work(cpu);
--        }
-         if (!leave_halt) {
-             return true;
-         }
-@@ -1082,6 +1077,11 @@ bool tcg_exec_realizefn(CPUState *cpu, Error **errp)
-     static bool tcg_target_initialized;
+ /**
+  * memory_region_unmap_iommu_notifier_range: notify a unmap for an IOMMU
+diff --git a/system/memory.c b/system/memory.c
+index 74cd73ebc7..f3a37c97c1 100644
+--- a/system/memory.c
++++ b/system/memory.c
+@@ -2006,9 +2006,9 @@ void memory_region_unregister_iommu_notifier(MemoryRegion *mr,
+ }
  
-     if (!tcg_target_initialized) {
-+        /* Check mandatory TCGCPUOps handlers */
-+#ifndef CONFIG_USER_ONLY
-+        assert(cpu->cc->tcg_ops->cpu_exec_halt);
-+#endif /* !CONFIG_USER_ONLY */
-+
-         cpu->cc->tcg_ops->initialize();
-         tcg_target_initialized = true;
-     }
+ void memory_region_notify_iommu_one(IOMMUNotifier *notifier,
+-                                    IOMMUTLBEvent *event)
++                                    const IOMMUTLBEvent *event)
+ {
+-    IOMMUTLBEntry *entry = &event->entry;
++    const IOMMUTLBEntry *entry = &event->entry;
+     hwaddr entry_end = entry->iova + entry->addr_mask;
+     IOMMUTLBEntry tmp = *entry;
+ 
 -- 
 2.41.0
 
