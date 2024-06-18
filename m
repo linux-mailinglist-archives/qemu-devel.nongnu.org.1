@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EBE090D841
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jun 2024 18:08:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06C5890D84C
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jun 2024 18:09:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sJbMR-0001Bz-IS; Tue, 18 Jun 2024 12:07:07 -0400
+	id 1sJbMU-0001ac-5I; Tue, 18 Jun 2024 12:07:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sJbMF-0000UT-FF
- for qemu-devel@nongnu.org; Tue, 18 Jun 2024 12:06:56 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sJbMM-0000ZR-2N
+ for qemu-devel@nongnu.org; Tue, 18 Jun 2024 12:07:02 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sJbMD-0007pI-RY
- for qemu-devel@nongnu.org; Tue, 18 Jun 2024 12:06:55 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-42281d8cd2dso39992775e9.3
- for <qemu-devel@nongnu.org>; Tue, 18 Jun 2024 09:06:53 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sJbMJ-0007qe-Tr
+ for qemu-devel@nongnu.org; Tue, 18 Jun 2024 12:07:01 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-42108856c33so41031105e9.1
+ for <qemu-devel@nongnu.org>; Tue, 18 Jun 2024 09:06:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1718726812; x=1719331612; darn=nongnu.org;
+ d=linaro.org; s=google; t=1718726817; x=1719331617; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=hte3egNIkJ/sFzULQkXNn/TRVVq6KAGN1byrZgRqcoo=;
- b=RkTVKHrP8jQnl4Moe7m8vNYOoYo8ZyAOE468q+ciVzgKtYF1F4N2AHxubiO9z3OOA/
- uRdWng9uIgv6K9rzFLY7mxWiiczgykk7W/n0bza0JLzt3kkIoBpQX51LTbTMm1NZQKUd
- z9W4gLhnn0YYQKdjCI9+GT3Fuzq5TshCVNyEU41VR2y/HJpocS0jjIDZWknVNssmQMCL
- K+SX1q8xCYBM1xIvdUyC1TIeQQYUTLzN59/mooJoc6jalG6qB4j9vH5LXHGXno5qTLdF
- YRYUl+6AtHfwWA4Z/iIqnOWEogQj72Im31nEDk2Lx7Rap+z9NRDhiDIsDuRDjOgi14ge
- 1W2g==
+ bh=UdyOIVb0kwKldvxXufDtNTljWmLNSVsoqAXvT0XU1zs=;
+ b=QV2SMnwkbqvLOU0cMEnRZf1RrdKfoDXzUX+utuWZXVEDhGExHLIS6cDe3xV0h9P/iO
+ XeWJLdCRkJi6cuc+OQOjjqckGxvLtUIe2p23vAM4sY9GD2q2FrEFb+2Utxw/qRhUiGPp
+ 6jy9eotntk9IpyhYnm1HRJ1MPBNEgWk3PbNxoWrYCV2leR3dZXllphkhd1gqThwGWGAl
+ PVfWmpNJqmw9KIIQhHoyUQqt8oWKmcITMJPTZUkPXizHe0I3UZ4TzgSVYnYM1nUZCdho
+ 7qEkN8mpdKNIbnuZ5pIjtEocA3I4Dv4ehdzt3YiQ8FuTHzPc2v+lcpCyHsR/di0xbMgb
+ glRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718726812; x=1719331612;
+ d=1e100.net; s=20230601; t=1718726817; x=1719331617;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=hte3egNIkJ/sFzULQkXNn/TRVVq6KAGN1byrZgRqcoo=;
- b=jXXed5dQrqsalNEmpkbdepz2JW2qAErkOsZYQx9uzc5yhgVTXo0VLzgFferH56PI9P
- OmHlVTWxijp3YDzgwSKvvK/CpWgm9HlqLd+9VvSnM+eB10UDZYm/prYmDN+Op1ynomXC
- 1gGIfM5vL4k7kmY5x4cRCy6f3SAV/u5z0TD/GG2K8opkc4EV+nnelzr+myy7K4ffCVQv
- DUK08SI/QIDW6o+SoTTZTb/FVz+2ZTrHFnNId5Jn8bpCsbGZu4+X84ZOKx59a9TzTVdm
- tVrMtTqV5LuLN9r67qEppSfS6oClMQcSGReIq7nIp0cTzMkBCcp1vqzteYG6KWVtn/QH
- HS0g==
-X-Gm-Message-State: AOJu0YxzNBvEXvjMMC8th5KPCVQ1GIEro9y7eG4t6OilKxrS1WxlbbSk
- 7dhR0iRtqQoaruVjzqNDuJSoG6Mr+xgEeg1CD1j39s3Z5uMvC615OziWN0+wozgkPBgKhddECbw
- L
-X-Google-Smtp-Source: AGHT+IGJqS56tduJSATqOY7HymER6vn43KQQTpHXgf6SwaZb4ZfIcnncCc4bHIauy9Cz0P7HtIrobQ==
-X-Received: by 2002:a05:600c:2e51:b0:41b:f979:e19b with SMTP id
- 5b1f17b1804b1-42304854eeamr106019825e9.39.1718726812035; 
- Tue, 18 Jun 2024 09:06:52 -0700 (PDT)
+ bh=UdyOIVb0kwKldvxXufDtNTljWmLNSVsoqAXvT0XU1zs=;
+ b=ekf8vBvSwt/vhw8GSlaiTCu2pDMplMQEzsqBkHuWv1TQaHoeft8IWhmBzOI8moaLmS
+ NUlhQ315cWVil5R6HV/TVRRk9J8dax3qXfZ26ipcJC/Ehs1V6X6cTAm5fSCGBWgU1Pmr
+ /vPVGlaxBjKMFObxE6nuvTd696yRqblD1kvLeHFAcddruu/p8//3EnWI9oJyNQZA1Uph
+ lNocO4UKUOg+jApZrBKoLOq1PV5f/wgSD5nkKeo/qwNeC/sr+hQw/0LWz6hacCusZ8ua
+ OhGpSaUhQVkuSudy6i95HmZ7sOMzhh9Ez9hcH3tI6W7rU0Mvz/cb4JsbAtlwAUTSJVKG
+ eqcQ==
+X-Gm-Message-State: AOJu0YxaiLI3QqmKDdg5PRQLIBgss1Uo6OqZiw/O4AGBBgsVnXK+yz6Z
+ UAbECklgCIAlJNm9PYmmGj675AouNVjd7QLROfhykrdGfOKKNii6/Z/o9evq5PPTEz45Tx0rcNc
+ b
+X-Google-Smtp-Source: AGHT+IFibVDKmiDkSMlmxr8f4oxJe9zgYyeONm/UmO4LMRhmXkS+PKP6NS9heNVlyyH9gsQX4Obtgw==
+X-Received: by 2002:adf:fa81:0:b0:362:8f0f:1c7c with SMTP id
+ ffacd0b85a97d-3630191cb58mr322903f8f.33.1718726817413; 
+ Tue, 18 Jun 2024 09:06:57 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.212.55])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-422f641a633sm193554665e9.43.2024.06.18.09.06.51
+ ffacd0b85a97d-3631488c450sm49823f8f.60.2024.06.18.09.06.56
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 18 Jun 2024 09:06:51 -0700 (PDT)
+ Tue, 18 Jun 2024 09:06:57 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>, Song Gao <gaosong@loongson.cn>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 64/76] hw/intc/loongson_ipi: Replace ipi_getcpu with
- cpu_by_arch_id
-Date: Tue, 18 Jun 2024 18:00:26 +0200
-Message-ID: <20240618160039.36108-65-philmd@linaro.org>
+Subject: [PULL 65/76] hw/mips/loongson3_virt: Wire up loongson_ipi device
+Date: Tue, 18 Jun 2024 18:00:27 +0200
+Message-ID: <20240618160039.36108-66-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240618160039.36108-1-philmd@linaro.org>
 References: <20240618160039.36108-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,87 +94,163 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jiaxun Yang <jiaxun.yang@flygoat.com>
 
-cpu_by_arch_id is doing the same thing as our ipi_getcpu logic.
+Wire up loongson_ipi device for loongson3_virt machine, so we
+can have SMP support for TCG backend as well.
 
 Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Reviewed-by: Song Gao <gaosong@loongson.cn>
-Message-ID: <20240605-loongson3-ipi-v3-4-ddd2c0e03fa3@flygoat.com>
+Acked-by: Song Gao <gaosong@loongson.cn>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20240605-loongson3-ipi-v3-3-ddd2c0e03fa3@flygoat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/intc/loongson_ipi.c | 39 +++------------------------------------
- 1 file changed, 3 insertions(+), 36 deletions(-)
+ hw/mips/loongson3_bootp.h |  3 +++
+ hw/mips/loongson3_bootp.c |  2 --
+ hw/mips/loongson3_virt.c  | 39 +++++++++++++++++++++++++++++++++++++--
+ hw/mips/Kconfig           |  1 +
+ 4 files changed, 41 insertions(+), 4 deletions(-)
 
-diff --git a/hw/intc/loongson_ipi.c b/hw/intc/loongson_ipi.c
-index 08a74a0b4f..e6a7142480 100644
---- a/hw/intc/loongson_ipi.c
-+++ b/hw/intc/loongson_ipi.c
-@@ -118,39 +118,6 @@ static MemTxResult send_ipi_data(CPUState *cpu, uint64_t val, hwaddr addr,
-     return MEMTX_OK;
- }
+diff --git a/hw/mips/loongson3_bootp.h b/hw/mips/loongson3_bootp.h
+index 1b0dd3b591..9091265df7 100644
+--- a/hw/mips/loongson3_bootp.h
++++ b/hw/mips/loongson3_bootp.h
+@@ -200,6 +200,8 @@ struct boot_params {
+     struct efi_reset_system_t reset_system;
+ };
  
--static int archid_cmp(const void *a, const void *b)
--{
--   CPUArchId *archid_a = (CPUArchId *)a;
--   CPUArchId *archid_b = (CPUArchId *)b;
++#define LOONGSON3_CORE_PER_NODE 4
++
+ /* Overall MMIO & Memory layout */
+ enum {
+     VIRT_LOWMEM,
+@@ -211,6 +213,7 @@ enum {
+     VIRT_BIOS_ROM,
+     VIRT_UART,
+     VIRT_LIOINTC,
++    VIRT_IPI,
+     VIRT_PCIE_MMIO,
+     VIRT_HIGHMEM
+ };
+diff --git a/hw/mips/loongson3_bootp.c b/hw/mips/loongson3_bootp.c
+index 03a10b63c1..b97b81903b 100644
+--- a/hw/mips/loongson3_bootp.c
++++ b/hw/mips/loongson3_bootp.c
+@@ -25,8 +25,6 @@
+ #include "hw/boards.h"
+ #include "hw/mips/loongson3_bootp.h"
+ 
+-#define LOONGSON3_CORE_PER_NODE 4
 -
--   return archid_a->arch_id - archid_b->arch_id;
--}
--
--static CPUArchId *find_cpu_by_archid(MachineState *ms, uint32_t id)
--{
--    CPUArchId apic_id, *found_cpu;
--
--    apic_id.arch_id = id;
--    found_cpu = bsearch(&apic_id, ms->possible_cpus->cpus,
--        ms->possible_cpus->len, sizeof(*ms->possible_cpus->cpus),
--        archid_cmp);
--
--    return found_cpu;
--}
--
--static CPUState *ipi_getcpu(int arch_id)
--{
--    MachineState *machine = MACHINE(qdev_get_machine());
--    CPUArchId *archid;
--
--    archid = find_cpu_by_archid(machine, arch_id);
--    if (archid) {
--        return CPU(archid->cpu);
--    }
--
--    return NULL;
--}
--
- static MemTxResult mail_send(uint64_t val, MemTxAttrs attrs)
+ static void init_cpu_info(void *g_cpuinfo, uint64_t cpu_freq)
  {
-     uint32_t cpuid;
-@@ -158,7 +125,7 @@ static MemTxResult mail_send(uint64_t val, MemTxAttrs attrs)
-     CPUState *cs;
+     struct efi_cpuinfo_loongson *c = g_cpuinfo;
+diff --git a/hw/mips/loongson3_virt.c b/hw/mips/loongson3_virt.c
+index 440268a074..4ad36f0c5b 100644
+--- a/hw/mips/loongson3_virt.c
++++ b/hw/mips/loongson3_virt.c
+@@ -36,6 +36,7 @@
+ #include "hw/mips/loongson3_bootp.h"
+ #include "hw/misc/unimp.h"
+ #include "hw/intc/i8259.h"
++#include "hw/intc/loongson_ipi.h"
+ #include "hw/loader.h"
+ #include "hw/isa/superio.h"
+ #include "hw/pci/msi.h"
+@@ -74,6 +75,7 @@ const MemMapEntry virt_memmap[] = {
+     [VIRT_PCIE_ECAM] =   { 0x1a000000,     0x2000000 },
+     [VIRT_BIOS_ROM] =    { 0x1fc00000,      0x200000 },
+     [VIRT_UART] =        { 0x1fe001e0,           0x8 },
++    [VIRT_IPI] =         { 0x3ff01000,         0x400 },
+     [VIRT_LIOINTC] =     { 0x3ff01400,          0x64 },
+     [VIRT_PCIE_MMIO] =   { 0x40000000,    0x40000000 },
+     [VIRT_HIGHMEM] =     { 0x80000000,           0x0 }, /* Variable */
+@@ -485,6 +487,7 @@ static void mips_loongson3_virt_init(MachineState *machine)
+     Clock *cpuclk;
+     CPUMIPSState *env;
+     DeviceState *liointc;
++    DeviceState *ipi = NULL;
+     char *filename;
+     const char *kernel_cmdline = machine->kernel_cmdline;
+     const char *kernel_filename = machine->kernel_filename;
+@@ -494,6 +497,7 @@ static void mips_loongson3_virt_init(MachineState *machine)
+     MemoryRegion *ram = g_new(MemoryRegion, 1);
+     MemoryRegion *bios = g_new(MemoryRegion, 1);
+     MemoryRegion *iomem = g_new(MemoryRegion, 1);
++    MemoryRegion *iocsr = g_new(MemoryRegion, 1);
  
-     cpuid = extract32(val, 16, 10);
--    cs = ipi_getcpu(cpuid);
-+    cs = cpu_by_arch_id(cpuid);
-     if (cs == NULL) {
-         return MEMTX_DECODE_ERROR;
-     }
-@@ -176,7 +143,7 @@ static MemTxResult any_send(uint64_t val, MemTxAttrs attrs)
-     CPUState *cs;
+     /* TODO: TCG will support all CPU types */
+     if (!kvm_enabled()) {
+@@ -527,6 +531,19 @@ static void mips_loongson3_virt_init(MachineState *machine)
+     create_unimplemented_device("mmio fallback 0", 0x10000000, 256 * MiB);
+     create_unimplemented_device("mmio fallback 1", 0x30000000, 256 * MiB);
  
-     cpuid = extract32(val, 16, 10);
--    cs = ipi_getcpu(cpuid);
-+    cs = cpu_by_arch_id(cpuid);
-     if (cs == NULL) {
-         return MEMTX_DECODE_ERROR;
-     }
-@@ -227,7 +194,7 @@ static MemTxResult loongson_ipi_core_writel(void *opaque, hwaddr addr,
-         cpuid = extract32(val, 16, 10);
-         /* IPI status vector */
-         vector = extract8(val, 0, 5);
--        cs = ipi_getcpu(cpuid);
-+        cs = cpu_by_arch_id(cpuid);
-         if (cs == NULL || cs->cpu_index >= ipi->num_cpu) {
-             return MEMTX_DECODE_ERROR;
++    memory_region_init(iocsr, OBJECT(machine), "loongson3.iocsr", UINT32_MAX);
++
++    /* IPI controller is in kernel for KVM */
++    if (!kvm_enabled()) {
++        ipi = qdev_new(TYPE_LOONGSON_IPI);
++        qdev_prop_set_uint32(ipi, "num-cpu", machine->smp.cpus);
++        sysbus_realize_and_unref(SYS_BUS_DEVICE(ipi), &error_fatal);
++        memory_region_add_subregion(iocsr, SMP_IPI_MAILBOX,
++                                sysbus_mmio_get_region(SYS_BUS_DEVICE(ipi), 0));
++        memory_region_add_subregion(iocsr, MAIL_SEND_ADDR,
++                                sysbus_mmio_get_region(SYS_BUS_DEVICE(ipi), 1));
++    }
++
+     liointc = qdev_new("loongson.liointc");
+     sysbus_realize_and_unref(SYS_BUS_DEVICE(liointc), &error_fatal);
+ 
+@@ -543,6 +560,8 @@ static void mips_loongson3_virt_init(MachineState *machine)
+     clock_set_hz(cpuclk, DEF_LOONGSON3_FREQ);
+ 
+     for (i = 0; i < machine->smp.cpus; i++) {
++        int node = i / LOONGSON3_CORE_PER_NODE;
++        int core = i % LOONGSON3_CORE_PER_NODE;
+         int ip;
+ 
+         /* init CPUs */
+@@ -553,12 +572,28 @@ static void mips_loongson3_virt_init(MachineState *machine)
+         cpu_mips_clock_init(cpu);
+         qemu_register_reset(main_cpu_reset, cpu);
+ 
+-        if (i >= 4) {
++        if (ipi) {
++            hwaddr base = ((hwaddr)node << 44) + virt_memmap[VIRT_IPI].base;
++            base += core * 0x100;
++            qdev_connect_gpio_out(ipi, i, cpu->env.irq[6]);
++            sysbus_mmio_map(SYS_BUS_DEVICE(ipi), i + 2, base);
++        }
++
++        if (ase_lcsr_available(&MIPS_CPU(cpu)->env)) {
++            MemoryRegion *core_iocsr = g_new(MemoryRegion, 1);
++            g_autofree char *name = g_strdup_printf("core%d_iocsr", i);
++            memory_region_init_alias(core_iocsr, OBJECT(cpu), name,
++                                     iocsr, 0, UINT32_MAX);
++            memory_region_add_subregion(&MIPS_CPU(cpu)->env.iocsr.mr,
++                                        0, core_iocsr);
++        }
++
++        if (node > 0) {
+             continue; /* Only node-0 can be connected to LIOINTC */
          }
+ 
+         for (ip = 0; ip < 4 ; ip++) {
+-            int pin = i * 4 + ip;
++            int pin = core * LOONGSON3_CORE_PER_NODE + ip;
+             sysbus_connect_irq(SYS_BUS_DEVICE(liointc),
+                                pin, cpu->env.irq[ip + 2]);
+         }
+diff --git a/hw/mips/Kconfig b/hw/mips/Kconfig
+index a7f26edebe..692bede538 100644
+--- a/hw/mips/Kconfig
++++ b/hw/mips/Kconfig
+@@ -67,6 +67,7 @@ config LOONGSON3V
+     imply USB_OHCI_PCI
+     select SERIAL
+     select GOLDFISH_RTC
++    select LOONGSON_IPI
+     select LOONGSON_LIOINTC
+     select PCI_EXPRESS_GENERIC_BRIDGE
+     select MSI_NONBROKEN
 -- 
 2.41.0
 
