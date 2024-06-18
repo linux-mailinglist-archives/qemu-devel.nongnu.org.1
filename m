@@ -2,72 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7B0D90DA89
+	by mail.lfdr.de (Postfix) with ESMTPS id BB9E190DA87
 	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jun 2024 19:25:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sJcYt-0005hb-M7; Tue, 18 Jun 2024 13:24:03 -0400
+	id 1sJcZd-0006le-Pq; Tue, 18 Jun 2024 13:24:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <3rcJxZgwKCjQdQRYXUijUVQdWeeWbU.SecgUck-TUlUbdedWdk.ehW@flex--nabihestefan.bounces.google.com>)
- id 1sJcYq-0005h1-Uz
- for qemu-devel@nongnu.org; Tue, 18 Jun 2024 13:24:00 -0400
+ <33cJxZgwKCmQPCDKJGUVGHCPIQQING.EQOSGOW-FGXGNPQPIPW.QTI@flex--nabihestefan.bounces.google.com>)
+ id 1sJcZc-0006gh-97
+ for qemu-devel@nongnu.org; Tue, 18 Jun 2024 13:24:48 -0400
 Received: from mail-yb1-xb4a.google.com ([2607:f8b0:4864:20::b4a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from
- <3rcJxZgwKCjQdQRYXUijUVQdWeeWbU.SecgUck-TUlUbdedWdk.ehW@flex--nabihestefan.bounces.google.com>)
- id 1sJcYp-0003e9-BG
- for qemu-devel@nongnu.org; Tue, 18 Jun 2024 13:24:00 -0400
+ <33cJxZgwKCmQPCDKJGUVGHCPIQQING.EQOSGOW-FGXGNPQPIPW.QTI@flex--nabihestefan.bounces.google.com>)
+ id 1sJcZa-0003jg-Q6
+ for qemu-devel@nongnu.org; Tue, 18 Jun 2024 13:24:48 -0400
 Received: by mail-yb1-xb4a.google.com with SMTP id
- 3f1490d57ef6-dfeff072f65so9665201276.3
- for <qemu-devel@nongnu.org>; Tue, 18 Jun 2024 10:23:58 -0700 (PDT)
+ 3f1490d57ef6-dfdfe3d9fc8so11618807276.3
+ for <qemu-devel@nongnu.org>; Tue, 18 Jun 2024 10:24:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1718731437; x=1719336237; darn=nongnu.org;
- h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
- :date:from:to:cc:subject:date:message-id:reply-to;
+ d=google.com; s=20230601; t=1718731485; x=1719336285; darn=nongnu.org;
+ h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+ :date:message-id:reply-to;
  bh=mIz+uBMleWspMGOXrthG2m3FtkYnjCAe7akkH5AGnWM=;
- b=x2zDHnilQj07o/AAtGTF5aqnl2AJOT6FWZnKTwX/YXJVx8GEm4516V6uKfujBSBGfL
- foAMbnw0IH5qbm6iBrELOyX9kNlnKeods3uN9vwlk/Yb1IFtJK9YEzrh5FDL2ilzryFx
- 8JJ3lTEFQN4dgD+0NJf4b64vf8vV2h/pUqQJt+LctKOZfkjSuUTpyuzbMJv/2Jl04rMv
- y2UDdIMuWojnD/bDw0qYIjZ4LSiqT35d5/ingH9FHhdVI6b1uABBd83oE4e3A+3iBwH8
- mL66bz+i1VXiXl3hX16zmOyQG++eDrum4L5EHiFMZxuno+r5MfNIE9bEXTzHM8viNzhR
- MiKQ==
+ b=NZvO4POqm3dOP3hzSMt9Q4BNMOc9I70qtyRyOJ2gAsPfYmd9gN5gmWVkGgSiEyg3WL
+ NIlsnk7LqLGHfR6qc1h7i1wKxnNyp9zuN16vObqaE2CL/91XdBZUSPzVbI1ihT0FSflL
+ a6oSxAFt/by8KWNHwerQJQe+vPJfAyYizZLur/1H1s6/OkoRAlFhU5E4QIFryjPGAE5q
+ MBwtBnoO6A8j1Dnz+u0fP3xni1Mrx+yFn529I6FHkkt908VIPk/a3lQnDZ8q3EH2JqFo
+ OqJPfvyBsF+OW/MUCuaLvWsVq0DOkBePpjqKjzRAlQ8QDCm8BK70H5utL0rz8gAdBeTA
+ RHmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718731437; x=1719336237;
- h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
- :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ d=1e100.net; s=20230601; t=1718731485; x=1719336285;
+ h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
  bh=mIz+uBMleWspMGOXrthG2m3FtkYnjCAe7akkH5AGnWM=;
- b=AG02MFDx7SV0osKSdRc2/6CFQNuN5kKkfGYHqKfDrH+UEp8JGeJjGHYZRV5ThynL57
- Ylw+LQ615X7WJ3slVfYgNPr7w3aNfSmstO10rmtRP3oAP2Iim6CtaDusJfw/fGH4XcOz
- FZhtgXtfUnvmGIsD5L2i7zHLBIpgE/OPcmNAuEiL0EWJnGRo1mEqeJxYxdJCoIUBtYdf
- L4Uxcq3kArPv4UTyUi0mX3jyemKAs9INkIR3Okv62JaVs5EmP32BYsiuG3IYK79bifLs
- AaEycmy+gSQ8j85nfpABP7fJUe/l18vIPbAMFUE4keLvMQMtkb87BtaetLEFm0zu79Dk
- i2qA==
-X-Gm-Message-State: AOJu0YyUDO9wOVsuUhMiA+R7jGUB6ndzQtnyLTHuI4wmjvTuPkTTXqg5
- x+oPgOOlxS4pWbbngfBbw6URioK2gAL5c/N8ddMgJrJpWM9lKwkGoNMXSSE2iI3ud5Rr2SPR0Ov
- siDW9eiIWilzTUIiioR5s+OQQpA==
-X-Google-Smtp-Source: AGHT+IEQiOggCm23YdIlilTZI7HkDqJe9gOvFBnRSRF+k9wFA/yuWZKuoCmISCH00m/Hixpf9dJLqZ+oHdYXwo87ZP8=
+ b=Hx9CcV2E5qWBxymC+6zlmwKaifv/GZuPTOx0c8C284PR9aryEUY8XNgw2Pwbzu9wsT
+ m3CpucMMvdLh6DSkIMxB6HsJyopSqalNlAyQyH6CIwIzp5ZJHoiD6i9CNe7UnBgo9uu9
+ OZnZ7k9eWHq0vY/oTta9LgWDzcB+Y+uIA42km3+NsWslJb1nRAmcxmmahHHwy4uCasQy
+ fuOVK3vvkx8MfPVd/4wZ4WeSZtrbTuDO8lyHAVWJBPMvuUJkWcxgqZo3sdN30JENsa73
+ RVIHe0dfCnma1H6KFPtZbBD6CeCNr4XjhatAGVYHBhnQWa6jV9tiUMsduEOmjjdH7TjZ
+ tHEA==
+X-Gm-Message-State: AOJu0Yx77pf7bc7oBMGzJMcjGYCSg0Tix3mLUIcPBb3S4CW/AQT5Be4n
+ TUN1/g/KeZ79fnxp8xE+QBUYk9FNstLDugl1Ed1Fejnme0D7GS3lY4bfL7Pkj58bm25EtswXA5s
+ HxmDg+164XIsbShD8ot551SFHtQ==
+X-Google-Smtp-Source: AGHT+IGRp4Ay58e/c525IPweLS64hY6oueuf/bUPVoRO9t0gQUZo/6uiyAg0aFku8ru4mqwGp9Z9Es3iwVOgI4/I/08=
 X-Received: from nabihestefan.c.googlers.com
  ([fda3:e722:ac3:cc00:20:ed76:c0a8:2737])
- (user=nabihestefan job=sendgmr) by 2002:a05:6902:18c8:b0:df4:8ecb:ae57 with
- SMTP id 3f1490d57ef6-e02be1dc849mr96548276.10.1718731437433; Tue, 18 Jun 2024
- 10:23:57 -0700 (PDT)
-Date: Tue, 18 Jun 2024 17:23:44 +0000
-In-Reply-To: <20240618172344.3448375-1-nabihestefan@google.com>
+ (user=nabihestefan job=sendgmr) by 2002:a05:6902:114b:b0:dff:3a30:472b with
+ SMTP id 3f1490d57ef6-e02be18d4c7mr149028276.5.1718731485390; Tue, 18 Jun 2024
+ 10:24:45 -0700 (PDT)
+Date: Tue, 18 Jun 2024 17:24:41 +0000
 Mime-Version: 1.0
-References: <20240618172344.3448375-1-nabihestefan@google.com>
 X-Mailer: git-send-email 2.45.2.627.g7a2c4fd464-goog
-Message-ID: <20240618172344.3448375-2-nabihestefan@google.com>
-Subject: [PATCH] hw/net: Fix Coverity Issue for npcm-gmac
+Message-ID: <20240618172442.3449262-1-nabihestefan@google.com>
+Subject: [PATCH] hw/net: Fix Coverity Issue for nocm-gmac
 From: Nabih Estefan <nabihestefan@google.com>
 To: peter.maydell@linaro.org
-Cc: qemu-devel@nongnu.org, kfting@nuvoton.org, wuhaotsh@google.com, 
+Cc: qemu-devel@nongnu.org, kfting@nuvoton.com, wuhaotsh@google.com, 
  jasowang@redhat.org, nabihestefan@google.com
 Content-Type: text/plain; charset="UTF-8"
 Received-SPF: pass client-ip=2607:f8b0:4864:20::b4a;
- envelope-from=3rcJxZgwKCjQdQRYXUijUVQdWeeWbU.SecgUck-TUlUbdedWdk.ehW@flex--nabihestefan.bounces.google.com;
+ envelope-from=33cJxZgwKCmQPCDKJGUVGHCPIQQING.EQOSGOW-FGXGNPQPIPW.QTI@flex--nabihestefan.bounces.google.com;
  helo=mail-yb1-xb4a.google.com
 X-Spam_score_int: -95
 X-Spam_score: -9.6
