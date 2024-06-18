@@ -2,79 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACEE090DF7C
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jun 2024 00:56:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B648490DF87
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jun 2024 01:00:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sJhkN-0007NH-86; Tue, 18 Jun 2024 18:56:15 -0400
+	id 1sJhnf-0001MR-HL; Tue, 18 Jun 2024 18:59:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sJhkL-0007Mz-7U
- for qemu-devel@nongnu.org; Tue, 18 Jun 2024 18:56:13 -0400
-Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
+ id 1sJhnd-0001M6-IR
+ for qemu-devel@nongnu.org; Tue, 18 Jun 2024 18:59:37 -0400
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sJhkJ-0002lN-L8
- for qemu-devel@nongnu.org; Tue, 18 Jun 2024 18:56:12 -0400
-Received: by mail-pf1-x42d.google.com with SMTP id
- d2e1a72fcca58-705c739b878so264801b3a.1
- for <qemu-devel@nongnu.org>; Tue, 18 Jun 2024 15:56:11 -0700 (PDT)
+ id 1sJhnc-00032j-3p
+ for qemu-devel@nongnu.org; Tue, 18 Jun 2024 18:59:37 -0400
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-1f6559668e1so48420065ad.3
+ for <qemu-devel@nongnu.org>; Tue, 18 Jun 2024 15:59:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1718751370; x=1719356170; darn=nongnu.org;
+ d=linaro.org; s=google; t=1718751574; x=1719356374; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=a4WkmOnchR+WyvyTYuT8IH8WGNbX83h72ql6PMaM/dw=;
- b=BNE+55st9VWanyyDIgfnHVhsUd42+rLmcKYkKfbYBc+I8u6ihAJQbXtb9k/t7FkmnH
- YbwJRFocT1cxMxmBx1PgFHf2on3GmhhNLFgsq+PCJiGNkJo32CbwiRaXOcY8U5TsMYhY
- AVkXyLzTK12YYr3ILrFjYd7Z8O+2PyPy0c/2eDqwAYt17Gv3eilKCiBqSPdo0OfNUrNf
- ifStzI0HIWSznd61qmHEtXsVyTqwh4AdWdgsunNTPUFRknuS9/P/h6oTj85MsKhutgBH
- CNeQvqYLq9Ode0N0uBsx5hhSDmZqeeV3Z5iRDoN+mmvc2uQ9eJZpRAghiyb9wcJgvCTa
- ZcvQ==
+ bh=gRnAC/XlLLwM3K/rBqx/EfC7ZcFF1T3Kef1kH3AqPPQ=;
+ b=R2Mx4pCCRinteh2HNq0kRhzI/28O9J8f5mSMTJuej9H1M4jlcU3XnAzGyaf0aVig8E
+ ENlA57PKIP+kXxL/lhD6aaaWO/mFkF1eRrbq4un9pJaAp8G+rnfK4sDYw2h031U3UJJ6
+ PnGAZM8QjUSJuQAK9d37K5jsaWCt8LCLNPYpNypf9JiMUZ5DthSAicpphwDE7+k6QYeV
+ R8UtgMdSyHLgLeS+fCAM0jjztdN2HW6GlQOrFxePATfcIiKPeeQCawwp2GXtL0OLlNs/
+ 3hd16EoatP0ueVNz1PhQ8VBvccoPNLTAw3Ri5l0QE6S3swJifmkY/pGtfEj8QC6tBrZd
+ FylA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718751370; x=1719356170;
+ d=1e100.net; s=20230601; t=1718751574; x=1719356374;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=a4WkmOnchR+WyvyTYuT8IH8WGNbX83h72ql6PMaM/dw=;
- b=cMkNYJ9HmydF/XMxSw0qAXhGdgm7W3xp10sken+2x0V4cKDu8/MJWlSSU898BjOJQG
- s7qj+qfFNYQ0DNa49oOdRWsHTdFy2KlqrCAbfUmVgSCPolm6AiIMQqSAtpDWDTyRnPnw
- MZifq+tYLTAETpIpOV3+wquhcO2EmEFEBMzYc6OFavSea+BVF0PJoRJIIJ0/fL28h4KZ
- uLQynIa59GWm0niiJ6g+5rY++hQ/ioFngz9m6mMf3XFVNhuoMOvCYyNynE7c38QA9jCw
- HEofFr5HLJyau6IhvPuHuHFcHPs2QwMLEyClqxZiSS6GbQBkH1Rw/9prjvfIOqijcJYs
- gFYA==
+ bh=gRnAC/XlLLwM3K/rBqx/EfC7ZcFF1T3Kef1kH3AqPPQ=;
+ b=WeAXmrlLNs8GaBtBnXU3Y19WG90GfE36jhUTtBRQ80OErFn6Xxq4AXTVQT4dJzF3Ws
+ ZxRQQKfMNXcn6LJYwBWfES+qAU5+t3b+MpUufdtp7ddSp4bbslzFdnnu4ETWI8unz12P
+ ErgbPeFqie5litRagXoUTmLmjhehR08obeAsW8qVxJjn7/8oCAiSpbhJ5OJZHdWISacf
+ 6O7utORkpFf383xWsn+GuMseknbw1pgYzJdK/TfpANXyBawo/wu9OV9uT/159wopT/TB
+ 4EBvkp6YWicAmolhlmj/84ZcrjZmCYQTZkwM8q5V/Cnj+aNwOkF1pmBjxn7WXlfRmPQV
+ kIkA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWmocGVzIfE7NJXeRd9KcNaLCHg8E4cz93rxN5bjLMHTLPXfpppHDTXUtp2ULNgZyYc/FkfC1GaTLRJrKD+Lu6ElWM9sp0=
-X-Gm-Message-State: AOJu0YxiMw8tfhqIf+A8r8dmWacVBI+a2GQGwjr9LU39TG4Kz4DKyW1Z
- /UpBGNavU0rbJaI+NC8X0qy9aO5QfQn4cZjOFyIrtjW+UBG1QnPeeeOT3W08BN4=
-X-Google-Smtp-Source: AGHT+IGFaoXCfMOuRyMsHpSzG9aTN98nFM8SrZVidnZQ70wGI2acmUOMTag/OPvIw5rkx3RjvyMEiw==
-X-Received: by 2002:a05:6a20:4c09:b0:1af:b89b:a7f1 with SMTP id
- adf61e73a8af0-1bcba22f73emr1255026637.27.1718751369816; 
- Tue, 18 Jun 2024 15:56:09 -0700 (PDT)
+ AJvYcCWAseGYlYrrhkxD+4lwPCVaAdaqi6zSlvkMSPY06ujxDVm77vWNuFgNq48qolOxjyuDVp/+upkYcvbcesO/a0ru1rgqezw=
+X-Gm-Message-State: AOJu0Yy48FMeCBA42Xc2o9wcvi6wzrWMXlZ66+GiiiNBc/XcLW4H951h
+ OG+ygCy+eijsw6v4nyhLb+hvl0u8z90Og63h7X0EUZGh9sILcjdPKva8VcP9SS4=
+X-Google-Smtp-Source: AGHT+IGyqQ9ozE5imqUYkWIunvzYLu3DGc+um+Dle5iqzHgOAZUK74NZtg1sHGscsmD/c9KrnSTBfw==
+X-Received: by 2002:a17:903:234a:b0:1f7:1d9d:f97f with SMTP id
+ d9443c01a7336-1f9aa3bc760mr12033005ad.9.1718751574330; 
+ Tue, 18 Jun 2024 15:59:34 -0700 (PDT)
 Received: from [192.168.0.4] ([71.212.132.216])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7062bf76540sm255077b3a.151.2024.06.18.15.56.09
+ d9443c01a7336-1f855f5ad14sm102834735ad.303.2024.06.18.15.59.33
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 18 Jun 2024 15:56:09 -0700 (PDT)
-Message-ID: <60ca952d-35c8-43dc-aba7-1b077867a7aa@linaro.org>
-Date: Tue, 18 Jun 2024 15:56:07 -0700
+ Tue, 18 Jun 2024 15:59:33 -0700 (PDT)
+Message-ID: <d5f66c67-8a2b-4a68-8a96-ef0e4ffb49f7@linaro.org>
+Date: Tue, 18 Jun 2024 15:59:32 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 23/23] Add get_ucontext_sigreturn function
-To: Ajeet Singh <itachis6234@gmail.com>, qemu-devel@nongnu.org
-Cc: Warner Losh <imp@bsdimp.com>, Ajeet Singh <itachis@freebsd.org>,
- Stacey Son <sson@FreeBSD.org>
-References: <20240617185804.25075-1-itachis@FreeBSD.org>
- <20240617185804.25075-24-itachis@FreeBSD.org>
+Subject: Re: [PATCH 1/3] exec: Make the MemOp enum cast explicit
+To: Roman Kiryanov <rkir@google.com>, qemu-devel@nongnu.org
+Cc: jansene@google.com, mett@google.com, jpcottin@google.com
+References: <20240618224528.878425-1-rkir@google.com>
 Content-Language: en-US
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240617185804.25075-24-itachis@FreeBSD.org>
+In-Reply-To: <20240618224528.878425-1-rkir@google.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,45 +95,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/17/24 11:58, Ajeet Singh wrote:
-> From: Stacey Son <sson@FreeBSD.org>
+On 6/18/24 15:45, Roman Kiryanov wrote:
+> to use the QEMU headers with a C++ compiler.
 > 
-> Function checks the processor state to ensure that the current
-> execution mode is EL0 and no flags indicating interrupts or
-> exceptions are set
-> 
-> Signed-off-by: Stacey Son <sson@FreeBSD.org>
-> Signed-off-by: Ajeet Singh <itachis@FreeBSD.org>
+> Google-Bug-Id: 331190993
+> Change-Id: I785f2e65d192287f1f964d2840131b653755648c
+> Signed-off-by: Roman Kiryanov <rkir@google.com>
 > ---
->   bsd-user/aarch64/signal.c | 18 ++++++++++++++++++
->   1 file changed, 18 insertions(+)
+>   include/exec/memop.h | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/bsd-user/aarch64/signal.c b/bsd-user/aarch64/signal.c
-> index 13faac8ce6..ad81531ec5 100644
-> --- a/bsd-user/aarch64/signal.c
-> +++ b/bsd-user/aarch64/signal.c
-> @@ -117,3 +117,21 @@ abi_long set_mcontext(CPUARMState *regs, target_mcontext_t *mcp, int srflag)
->   
->       return err;
+> diff --git a/include/exec/memop.h b/include/exec/memop.h
+> index 06417ff361..f881fe7af4 100644
+> --- a/include/exec/memop.h
+> +++ b/include/exec/memop.h
+> @@ -161,7 +161,7 @@ static inline MemOp size_memop(unsigned size)
+>       /* Power of 2 up to 8.  */
+>       assert((size & (size - 1)) == 0 && size >= 1 && size <= 8);
+>   #endif
+> -    return ctz32(size);
+> +    return (MemOp)ctz32(size);
 >   }
-> +
-> +/* Compare to sys_sigreturn() in  arm64/arm64/machdep.c */
-> +abi_long get_ucontext_sigreturn(CPUARMState *regs, abi_ulong target_sf,
-> +                                abi_ulong *target_uc)
-> +{
-> +    uint32_t pstate = pstate_read(regs);
-> +
-> +    *target_uc = 0;
-> +
-> +    if ((pstate & PSTATE_M) != PSTATE_MODE_EL0t  ||
-> +        (pstate & (PSTATE_F | PSTATE_I | PSTATE_A | PSTATE_D)) != 0) {
-> +        return -TARGET_EINVAL;
-> +    }
-> +
-> +    *target_uc = target_sf;
+>   
 
-Why delay this store?  I don't see why you're assigning 0 above.
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
 
 r~
+
 
