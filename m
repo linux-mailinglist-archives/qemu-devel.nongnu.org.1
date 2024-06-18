@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1F6E90D86C
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jun 2024 18:10:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A21FE90D858
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jun 2024 18:10:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sJbN3-0004Gu-UN; Tue, 18 Jun 2024 12:07:46 -0400
+	id 1sJbN4-0004IV-Dz; Tue, 18 Jun 2024 12:07:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sJbMl-0003kl-Sm
- for qemu-devel@nongnu.org; Tue, 18 Jun 2024 12:07:31 -0400
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sJbMr-0003ot-0S
+ for qemu-devel@nongnu.org; Tue, 18 Jun 2024 12:07:35 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sJbMk-0007x9-0z
- for qemu-devel@nongnu.org; Tue, 18 Jun 2024 12:07:27 -0400
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-35f27eed98aso4572035f8f.2
- for <qemu-devel@nongnu.org>; Tue, 18 Jun 2024 09:07:25 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sJbMp-0007y7-DW
+ for qemu-devel@nongnu.org; Tue, 18 Jun 2024 12:07:32 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-421bb51d81aso42791895e9.3
+ for <qemu-devel@nongnu.org>; Tue, 18 Jun 2024 09:07:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1718726844; x=1719331644; darn=nongnu.org;
+ d=linaro.org; s=google; t=1718726849; x=1719331649; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=PS+Ds4Sxagrc7IIxNg9ZZud7Od1JFilSTGGm4uz6pIM=;
- b=VFY+lOI7zzf0/XZQybqtM3JpQ6DtCRlgf2AOnKK+kfgWfajTzrVDA/joRvWpOYpknX
- 1/w65l8As+IbXLEqrsvUQh99BEvNT4MblfyxXTDgYt8goYR1oslGMxNrPd1oG/m+ePkZ
- JzhKM11nJK+X0ecSI4rP37RZ4wY1EAlAsjGrwVIlMAutWwjC+EKixlBzz8ZVZduOKYRJ
- 9UDHladWGcPYO6EbNToEAYGVWRKRupEF0zYj9VtFdGR1CcPFqYWTUeFwIeaAqqNKYZBC
- tEZICAlwazTidHgeMipXD1r7YoffjT9xz5cLUGq9TmtFXGNVqp5lPAPyNgb+/jOMDkwW
- +DRg==
+ bh=o9oK3hagVT3DDExa4pE11FCGGKWewTtrkZCXKVX3HNA=;
+ b=yKu6cDhJQ9Dv+ixnNd+8nXWJCnM0uOr+D8HdVZMKcIEnEIwOFjvMR6u9Gcr9L579ku
+ KIPduuwd6WmaljwkD0Z4kHxilTJ8KNSnUSZpHjEAEZyWSqARFzBy2uytlxWVmQKCn0wR
+ N9SNlEueQ3Aa/Bsh7M7gVzT9D5LUCwthpriyISmPO7T66lB29YauOFHbA5YHaFulizGc
+ KT+nvuea+aH6xWbXt55HY+qOw72NIazZqkfd7jyaq/KWXWBTYETWjkHX7oG1IdG6mqdY
+ 6XjhnGTTDGI9SAYJxBasyZx3Uds91IQkslsWYXrlgUSsSs+fFOuyJP50uClG8o9xAazo
+ L00g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718726844; x=1719331644;
+ d=1e100.net; s=20230601; t=1718726849; x=1719331649;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=PS+Ds4Sxagrc7IIxNg9ZZud7Od1JFilSTGGm4uz6pIM=;
- b=XSQKh5KeXCXsEw+DA2UehkpuYM2LrOkn1p+73rjD+ZN2vyvOispT5o18SACp7OSWrM
- MwOCZjbG4x/QgP+yMMtVsJT63UbvgMrLx4BB1duiesBDzIN/K1zIF9HfXyREyh3bu06M
- zxqpSD+zQ2bXPE28piyIpbyfITbVkK3JUBXQdruUMkSEyxOUJJTUySggzrG840bvQ+ix
- 4c0h3gq6WNYmlLLgKeFhguwifclXfmY6jxLkSEjPblC8kHqrIVqlXOyZfRhjwrQ1ETb9
- qaLNqCDW471LqnwSmPfA6Rv/R3LdN97xuJsEu0k5fJW7yiDd1dlDGf4Ngmat+oshQgeo
- xURw==
-X-Gm-Message-State: AOJu0YwPMsd2BDLfSTm6I7quVJCaHUVUu9vVQYuTh46g4KtEAeBZeaCx
- aTf4z3fYKwzg//UiKt6DB1UYxDiy3WqgUwr0e1mTDgUS6zp5RdeB5odtS+Vdc3fGuWzEYOOgcvd
- 7
-X-Google-Smtp-Source: AGHT+IGi3VzVcvL6ex49fTwXCvHpveX6tnI8uRX6liAzQLeRBpi/A70gdNZ6IQReoMYj3ER30bCMzw==
-X-Received: by 2002:adf:9789:0:b0:361:d3ec:1031 with SMTP id
- ffacd0b85a97d-36317b7d4e1mr28270f8f.31.1718726844276; 
- Tue, 18 Jun 2024 09:07:24 -0700 (PDT)
+ bh=o9oK3hagVT3DDExa4pE11FCGGKWewTtrkZCXKVX3HNA=;
+ b=rnqlEjaxlJZSHBtSI6h0Bytfc5ofTYO4XweyKYwT+amWNQVe9SfZFKzL62BT9iCcUQ
+ 9w59sNBhKsUFMwj1N5O3iTd7qLihJbx2FDSh+mf78hCySmghPHnZJtadmhN304hr/3WG
+ lKSvC/P36Hh1aj01sIrxlL9BWm1aF7FXu54IZV/GQzY+owUyy8w5DSV7OQPNdVScdFQW
+ SuiF8LWfv4pXOyxTe1zFjWFgtlmF8qUWySGlmHylJp2T7Y8Xdi2a/qTKmrEwnEHlEngb
+ er981XHqCt/w5bvq/cDmJMCHfoxPZJ9JBu9ZCCcs66FLjb8J99zsK4cOwMC3UMLhxSZS
+ nIlQ==
+X-Gm-Message-State: AOJu0Yxv8Ctgrf3vsYZmw8fSCK151GTxSRvolAnYnvXzpF9nhOjleffc
+ Tg3q8/qtETKS2J9zqosbVPh5CSTPKjgDTCODZIBFLgdJsCLFjbLIEw21iMWaOmAqoZva6eQzJew
+ T
+X-Google-Smtp-Source: AGHT+IF/VRRkeIaeBFZ2iccBSWrPEzd0ZdtGozsL3RSYotladdhpEhXkUdiFyqsCgmbheoOd0xUWPA==
+X-Received: by 2002:a05:600c:5349:b0:421:1dde:cb5a with SMTP id
+ 5b1f17b1804b1-42304859dcfmr106905045e9.35.1718726849608; 
+ Tue, 18 Jun 2024 09:07:29 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.212.55])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3607509c9a0sm14398446f8f.27.2024.06.18.09.07.23
+ 5b1f17b1804b1-422870e986asm233111365e9.27.2024.06.18.09.07.28
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 18 Jun 2024 09:07:23 -0700 (PDT)
+ Tue, 18 Jun 2024 09:07:29 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+Cc: Gerd Hoffmann <kraxel@redhat.com>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 70/76] util/readline: Add C-u shortcut
-Date: Tue, 18 Jun 2024 18:00:32 +0200
-Message-ID: <20240618160039.36108-71-philmd@linaro.org>
+Subject: [PULL 71/76] MAINTAINERS: drop virtio-gpu maintainership
+Date: Tue, 18 Jun 2024 18:00:33 +0200
+Message-ID: <20240618160039.36108-72-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240618160039.36108-1-philmd@linaro.org>
 References: <20240618160039.36108-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,53 +93,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+From: Gerd Hoffmann <kraxel@redhat.com>
 
-Add support for the unix-line-discard readline action, which erases from
-the cursor position up to the beginning of the line. The default
-binding, C-u, was chosen.
+Remove myself from virtio-gpu entries.
+Flip status to "Orphan" for entries which have nobody else listed.
 
-This is useful to quickly erase command input while working on the
-monitor interface.
-
-Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Message-ID: <6772067e1c0d4b1c5310e5446e9e3e1c6b3b5bc0.1718265822.git.manos.pitsidianakis@linaro.org>
+Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
+Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Message-ID: <20240528083858.836262-4-kraxel@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- util/readline.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ MAINTAINERS | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/util/readline.c b/util/readline.c
-index 0b627d62ad..0f19674f52 100644
---- a/util/readline.c
-+++ b/util/readline.c
-@@ -271,6 +271,14 @@ static void readline_hist_add(ReadLineState *rs, const char *cmdline)
-     rs->hist_entry = -1;
- }
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 0f63bcdc7d..7cc6421e3b 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -2579,8 +2579,7 @@ F: hw/display/ramfb*.c
+ F: include/hw/display/ramfb.h
  
-+static void readline_kill_line(ReadLineState *rs)
-+{
-+    while (rs->cmd_buf_index > 0) {
-+        readline_backward_char(rs);
-+        readline_delete_char(rs);
-+    }
-+}
-+
- /* completion support */
+ virtio-gpu
+-M: Gerd Hoffmann <kraxel@redhat.com>
+-S: Odd Fixes
++S: Orphan
+ F: hw/display/virtio-gpu*
+ F: hw/display/virtio-vga.*
+ F: include/hw/virtio/virtio-gpu.h
+@@ -2602,7 +2601,6 @@ F: include/hw/virtio/virtio-blk-common.h
  
- void readline_add_completion(ReadLineState *rs, const char *str)
-@@ -426,6 +434,10 @@ void readline_handle_byte(ReadLineState *rs, int ch)
-             /* ^P Prev line in history */
-             readline_up_char(rs);
-             break;
-+        case 21:
-+            /* ^U Kill backward from point to the beginning of the line. */
-+            readline_kill_line(rs);
-+            break;
-         case 23:
-             /* ^W */
-             readline_backword(rs);
+ vhost-user-gpu
+ M: Marc-André Lureau <marcandre.lureau@redhat.com>
+-R: Gerd Hoffmann <kraxel@redhat.com>
+ S: Maintained
+ F: docs/interop/vhost-user-gpu.rst
+ F: contrib/vhost-user-gpu
 -- 
 2.41.0
 
