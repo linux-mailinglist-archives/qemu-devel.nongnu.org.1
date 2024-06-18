@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8125C90DAE7
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jun 2024 19:46:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 28CCE90DAEA
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jun 2024 19:46:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sJctQ-0004ZH-Sf; Tue, 18 Jun 2024 13:45:18 -0400
+	id 1sJcuL-0005Ve-5H; Tue, 18 Jun 2024 13:46:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=Of75=NU=kaod.org=clg@ozlabs.org>)
- id 1sJctA-0004W9-Sa; Tue, 18 Jun 2024 13:45:04 -0400
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3])
+ id 1sJcu6-0005Qt-Hn; Tue, 18 Jun 2024 13:46:09 -0400
+Received: from gandalf.ozlabs.org ([150.107.74.76] helo=mail.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=Of75=NU=kaod.org=clg@ozlabs.org>)
- id 1sJct9-0007md-7m; Tue, 18 Jun 2024 13:45:00 -0400
+ id 1sJcu3-00089T-Vy; Tue, 18 Jun 2024 13:45:57 -0400
 Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4W3Yzr6D4hz4wyl;
- Wed, 19 Jun 2024 03:44:56 +1000 (AEST)
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4W3Z0w4RRjz4wyg;
+ Wed, 19 Jun 2024 03:45:52 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits))
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4W3Yzp4NRRz4wc8;
- Wed, 19 Jun 2024 03:44:54 +1000 (AEST)
-Message-ID: <b8fdf56b-f5b1-49d0-873d-9d9ed9b2d5a1@kaod.org>
-Date: Tue, 18 Jun 2024 19:44:54 +0200
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4W3Z0t296jz4x0v;
+ Wed, 19 Jun 2024 03:45:49 +1000 (AEST)
+Message-ID: <6cc4a21e-ffc0-4ead-a08c-e7cd30c55da2@kaod.org>
+Date: Tue, 18 Jun 2024 19:45:47 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/5] pnv/xive2: Set Translation Table for the NVC port
- space
+Subject: Re: [PATCH 4/5] pnv/xive2: Fail VST entry address computation if
+ table has no VSD
 To: Michael Kowal <kowal@linux.vnet.ibm.com>, qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, fbarrat@linux.ibm.com, npiggin@gmail.com,
  milesg@linux.ibm.com
 References: <20240617204302.12323-1-kowal@linux.vnet.ibm.com>
- <20240617204302.12323-4-kowal@linux.vnet.ibm.com>
+ <20240617204302.12323-5-kowal@linux.vnet.ibm.com>
 Content-Language: en-US, fr
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20240617204302.12323-4-kowal@linux.vnet.ibm.com>
+In-Reply-To: <20240617204302.12323-5-kowal@linux.vnet.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+Received-SPF: pass client-ip=150.107.74.76;
  envelope-from=SRS0=Of75=NU=kaod.org=clg@ozlabs.org; helo=mail.ozlabs.org
 X-Spam_score_int: -39
 X-Spam_score: -4.0
@@ -68,10 +68,13 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On 6/17/24 10:43 PM, Michael Kowal wrote:
 > From: Frederic Barrat <fbarrat@linux.ibm.com>
 > 
-> Set Translation Table for the NVC port space is missing.  The xive model
-> doesn't take into account the remapping of IO operations via the Set
-> Translation Table but firmware is allowed to define it for the Notify
-> Virtual Crowd (NVC), like it's already done for the other VST tables.
+> Fail VST entry address computatio if firmware doesn't define a descriptor
+
+computation
+
+> for one of the Virtualization Structure Tables (VST), there's no point in
+> trying to compute the address of its entry.  Abort the operation and log
+> an error.
 > 
 > Signed-off-by: Michael Kowal <kowal@linux.vnet.ibm.com>
 
@@ -84,20 +87,24 @@ C.
 
 
 > ---
->   hw/intc/pnv_xive2.c | 1 +
->   1 file changed, 1 insertion(+)
+>   hw/intc/pnv_xive2.c | 5 +++++
+>   1 file changed, 5 insertions(+)
 > 
 > diff --git a/hw/intc/pnv_xive2.c b/hw/intc/pnv_xive2.c
-> index ff3d2d9c7b..a1146311a3 100644
+> index a1146311a3..e473109196 100644
 > --- a/hw/intc/pnv_xive2.c
 > +++ b/hw/intc/pnv_xive2.c
-> @@ -724,6 +724,7 @@ static int pnv_xive2_stt_set_data(PnvXive2 *xive, uint64_t val)
->       case CQ_TAR_NVPG:
->       case CQ_TAR_ESB:
->       case CQ_TAR_END:
-> +    case CQ_TAR_NVC:
->           xive->tables[tsel][entry] = val;
->           break;
->       default:
+> @@ -244,6 +244,11 @@ static uint64_t pnv_xive2_vst_addr(PnvXive2 *xive, uint32_t type, uint8_t blk,
+>       }
+>   
+>       vsd = xive->vsds[type][blk];
+> +    if (vsd == 0) {
+> +        xive2_error(xive, "VST: vsd == 0 block id %d for VST %s %d !?",
+> +                   blk, info->name, idx);
+> +        return 0;
+> +    }
+>   
+>       /* Remote VST access */
+>       if (GETFIELD(VSD_MODE, vsd) == VSD_MODE_FORWARD) {
 
 
