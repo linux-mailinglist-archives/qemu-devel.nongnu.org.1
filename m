@@ -2,94 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D02B290C50C
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jun 2024 10:54:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E175890C51D
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jun 2024 11:00:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sJUZn-0001xx-7M; Tue, 18 Jun 2024 04:52:27 -0400
+	id 1sJUgV-0004rE-Fa; Tue, 18 Jun 2024 04:59:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sJUZk-0001ws-Th
- for qemu-devel@nongnu.org; Tue, 18 Jun 2024 04:52:24 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <rathc@linux.ibm.com>)
+ id 1sJUgS-0004ol-Ky; Tue, 18 Jun 2024 04:59:20 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sJUZh-0005yq-8c
- for qemu-devel@nongnu.org; Tue, 18 Jun 2024 04:52:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1718700740;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=X/wmm3mTVVIuP2VQMN2ZLr2pno8AYLh61gUw7Wn1BBY=;
- b=URV6fylMhBf4QbZPaBHP5wHtJS8R6ng3i33lMJmdoplba/tulSuDJyHmCc3ZxH0yGLbPh1
- dH+5lyJaYL+cdemqujcq32OVWMTCdvV291rOlD5OY6pEIUxfT6gOG72IeJ+mHfBf329gmO
- INQDj7il6Ey0QJFYX0dxDfC5ZqGYoFM=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-130-thoBp1K3N12KqmEB7u0H8g-1; Tue,
- 18 Jun 2024 04:52:13 -0400
-X-MC-Unique: thoBp1K3N12KqmEB7u0H8g-1
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 4E7D419560BC; Tue, 18 Jun 2024 08:52:10 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.93])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 68A8A19560AE; Tue, 18 Jun 2024 08:52:08 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 3892D21E66E5; Tue, 18 Jun 2024 10:52:06 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: John Snow <jsnow@redhat.com>
-Cc: qemu-devel <qemu-devel@nongnu.org>,  Peter Xu <peterx@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,  Gerd Hoffmann
- <kraxel@redhat.com>,  Fabiano Rosas <farosas@suse.de>,  Pavel Dovgalyuk
- <pavel.dovgaluk@ispras.ru>,  Ani Sinha <anisinha@redhat.com>,  Michael
- Roth <michael.roth@amd.com>,  Kevin Wolf <kwolf@redhat.com>,  Jiri Pirko
- <jiri@resnulli.us>,  Mads Ynddal <mads@ynddal.dk>,  Jason Wang
- <jasowang@redhat.com>,  Igor Mammedov <imammedo@redhat.com>,  Peter
- Maydell <peter.maydell@linaro.org>,  Philippe =?utf-8?Q?Mathieu-Daud?=
- =?utf-8?Q?=C3=A9?= <philmd@linaro.org>,  =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
- <marcandre.lureau@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>,  Paolo Bonzini
- <pbonzini@redhat.com>,  Eduardo Habkost <eduardo@habkost.net>,  "Michael
- S. Tsirkin" <mst@redhat.com>,  Qemu-block <qemu-block@nongnu.org>,  Stefan
- Berger <stefanb@linux.vnet.ibm.com>,  Victor Toso de Carvalho
- <victortoso@redhat.com>,  Eric Blake <eblake@redhat.com>,  Daniel P.
- =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,  Konstantin Kostiuk
- <kkostiuk@redhat.com>,
- Lukas Straub <lukasstraub2@web.de>,  Yanan Wang <wangyanan55@huawei.com>,
- Hanna Reitz <hreitz@redhat.com>
-Subject: Re: [PATCH 18/20] qapi: ensure all errors sections are uniformly
- typset
-In-Reply-To: <CAFn=p-Y2BgKLx5gN2++DQ_dj_hQzfYLw=MGKwNEHB6vFWeh7GQ@mail.gmail.com>
- (John Snow's message of "Mon, 17 Jun 2024 13:56:36 -0400")
-References: <20240514215740.940155-1-jsnow@redhat.com>
- <20240514215740.940155-19-jsnow@redhat.com>
- <87a5jn3gyd.fsf@pond.sub.org>
- <CAFn=p-Y2BgKLx5gN2++DQ_dj_hQzfYLw=MGKwNEHB6vFWeh7GQ@mail.gmail.com>
-Date: Tue, 18 Jun 2024 10:52:06 +0200
-Message-ID: <87bk3yab0p.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <rathc@linux.ibm.com>)
+ id 1sJUgQ-0006kU-Uf; Tue, 18 Jun 2024 04:59:20 -0400
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45I8rmSY010165;
+ Tue, 18 Jun 2024 08:58:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
+ :to:cc:subject:date:message-id:content-transfer-encoding
+ :mime-version; s=pp1; bh=mqTT+Ygafz8WcBnb2Ws2WlXTOOUtu0UYbjikxtk
+ mGOk=; b=FJw2juGXyXRWrV3ql7v5Aau1A31YFRjEi0XGNDg3ZrlPIFZbquAqbQ5
+ OjiUvhjRnKXySjTVMCPO+PEJF+7nERNoPIk/0lYh7ajQS0fAKFeITvdc+Fn1MMrq
+ 8JF7hKp9L5wH+B8/0zrT6noVRRJjO+f3r+QYXEZ6LBW0sCM1inpQeQsIk9HR43fa
+ 2eZUHs8HKTvFVvEi0qWLWJt0cFF8QAqvDbgUXie/FeYeOWmkL3sArSTRUMLKVQ9I
+ 20UjvsAEg7tbjG0MSYvnsajfawdpisn9Vi3AZQGqwqBgnR/EDjtJyisGfdZNpRyl
+ 0LV+ROS1tkU5glBu9K/vsWqACkgWw6Q==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yu5vp08bt-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 18 Jun 2024 08:58:47 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 45I8wleQ017828;
+ Tue, 18 Jun 2024 08:58:47 GMT
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yu5vp08bq-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 18 Jun 2024 08:58:47 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 45I78iwQ023963; Tue, 18 Jun 2024 08:58:44 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3ysp9q1e87-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 18 Jun 2024 08:58:44 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
+ [10.20.54.106])
+ by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 45I8we1929885120
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 18 Jun 2024 08:58:42 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CD1FA20040;
+ Tue, 18 Jun 2024 08:58:40 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8EF6A2004B;
+ Tue, 18 Jun 2024 08:58:39 +0000 (GMT)
+Received: from localhost.in.ibm.com (unknown [9.199.192.140])
+ by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Tue, 18 Jun 2024 08:58:39 +0000 (GMT)
+From: Chinmay Rath <rathc@linux.ibm.com>
+To: qemu-ppc@nongnu.org
+Cc: qemu-devel@nongnu.org, npiggin@gmail.com, danielhb413@gmail.com,
+ richard.henderson@linaro.org, harshpb@linux.ibm.com
+Subject: [PATCH v3 0/4] target/ppc: Move VSX storage access and compare
+Date: Tue, 18 Jun 2024 14:28:27 +0530
+Message-Id: <20240618085831.546883-1-rathc@linux.ibm.com>
+X-Mailer: git-send-email 2.39.3
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: PjoTVZ1gESPuTRrWOKaFY12mlQDcWPY2
+X-Proofpoint-GUID: LXSu_7G3ixMX1p2UnESPLdyJJmKAgtDA
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 11
-X-Spam_score: 1.1
-X-Spam_bar: +
-X-Spam_report: (1.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.148,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-06-18_02,2024-06-17_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 mlxlogscore=737
+ priorityscore=1501 mlxscore=0 clxscore=1015 malwarescore=0 suspectscore=0
+ lowpriorityscore=0 impostorscore=0 spamscore=0 phishscore=0 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2405170001
+ definitions=main-2406180065
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=rathc@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,46 +109,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-John Snow <jsnow@redhat.com> writes:
+Moving all remaining VSX storage access instructions and all VSX compare
+instructions of XX3 form with RC field, to decodetree specification.
 
-> On Fri, Jun 14, 2024, 7:24=E2=80=AFAM Markus Armbruster <armbru@redhat.co=
-m> wrote:
->
->> John Snow <jsnow@redhat.com> writes:
->>
->> > Transactions have the only instance of an Errors section that isn't a
->> > rST list; turn it into one.
->>
->> Just for consistency?  Or do you have other shenanigans up your sleeve?
->
-> Just consistency at this precise moment in time, but it's *possible* I may
-> introduce shenanigans for visual consistency in the rendered output, for
-> which having a uniform format would make mechanical conversions in the
-> generator easier/possible.
->
-> It's an idea I had but didn't implement yet. I figured I'd write this pat=
-ch
-> anyway because it isn't wrong, and you yourself seemed to believe it would
-> *always* be a RST list, when that isn't strictly true.
->
->
->> If we want the Errors sections to remain all rST lists, we should update
->> docs/devel/qapi-code-gen.rst to say so.
->>
->
-> OK, will do.
+Change log :
 
-With such an update, we could perhaps sell the patch like
+v3:
+- Patch 2/4 : Updated the added function do_ea_calc_ra to return
+  modifiable EA, after discussions with Richard.
 
-    qapi: Nail down convention that Errors sections are lists
+v2: https://lore.kernel.org/qemu-devel/20240613093318.314913-1-rathc@linux.ibm.com/
+ - Addressed comments by Richard in v1 :
+   - Patch 2/4 : Handled proper ea calculation in narrow mode.
+     Also created a new function for ea calculation instead of inlining,
+     for later use by (p){lx,stx}vp insns.
+   - Patch 4/4 : Unified helper calls.
+ - Retained Richard's "Reviewed-by" in patches 1, 3 and 4.
 
-    By unstated convention, Errors sections are rST lists.  Document the
-    convention, and make the one exception conform.
+v1: https://lore.kernel.org/qemu-devel/20240607144921.726730-1-rathc@linux.ibm.com/
 
->
->
->> > Signed-off-by: John Snow <jsnow@redhat.com>
->>
->>
+Chinmay Rath (4):
+  target/ppc: Moving VSX scalar storage access insns to decodetree.
+  target/ppc: Move VSX vector with length storage access insns to
+    decodetree.
+  target/ppc: Move VSX vector storage access insns to decodetree.
+  target/ppc: Move VSX fp compare insns to decodetree.
+
+ target/ppc/helper.h                 |  24 +-
+ target/ppc/insn32.decode            |  41 +++
+ target/ppc/fpu_helper.c             |  16 +-
+ target/ppc/mem_helper.c             |   8 +-
+ target/ppc/translate.c              |  15 +
+ target/ppc/translate/vsx-impl.c.inc | 416 ++++++++++++++--------------
+ target/ppc/translate/vsx-ops.c.inc  |  49 ----
+ 7 files changed, 287 insertions(+), 282 deletions(-)
+
+-- 
+2.39.3
 
 
