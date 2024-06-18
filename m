@@ -2,86 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA13990D2FE
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jun 2024 15:57:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C9CB90D37B
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jun 2024 16:06:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sJZJt-0008Lb-U8; Tue, 18 Jun 2024 09:56:21 -0400
+	id 1sJZSR-0005K6-NX; Tue, 18 Jun 2024 10:05:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sJZJs-0008K9-2f
- for qemu-devel@nongnu.org; Tue, 18 Jun 2024 09:56:20 -0400
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sJZSN-0005JQ-Bj
+ for qemu-devel@nongnu.org; Tue, 18 Jun 2024 10:05:09 -0400
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sJZJp-00029O-MK
- for qemu-devel@nongnu.org; Tue, 18 Jun 2024 09:56:19 -0400
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-354b722fe81so4849497f8f.3
- for <qemu-devel@nongnu.org>; Tue, 18 Jun 2024 06:56:16 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sJZSK-0003Ru-Kr
+ for qemu-devel@nongnu.org; Tue, 18 Jun 2024 10:05:06 -0400
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-35f225ac23bso5402463f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 18 Jun 2024 07:05:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1718718975; x=1719323775; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:references
- :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=QDK180+org5a+/a7Y9YHyMQ+UVON0MoKX7CNLCnvKXw=;
- b=mJXQntludAlN5nh/sfvT6x57bAjToFLcHu0jiDNuXK+y99bszvRfpnhlKAPcUurVA5
- eNYScIJzujkW5nEsnJ+rMbNf/Kqcj0PY8F7u5WqrUcViwrMxn6K1m2nfbRqeuNjQoxSN
- yAnBSbDzX22fV4kzBw2Bejqz2buPhgIhjzb49ivALkUACHnvX83IQObsKldfgnwFa/j5
- QV0Tcx/PPSp9W288e9T6dTWuKUg7fh5e2ZDQc0zObGOM8ukjwJAbRasPE9OilnOMD4eF
- LwRiJcbh4QLpXKX1g8nEdGabtfe+VQCUbP754+w3myhqc9qm6e9Z8FqQCO9Fvxa2hejJ
- B2AQ==
+ d=linaro.org; s=google; t=1718719500; x=1719324300; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=cx7NBo/uziFpbQFcQsV1wyuyuUt+7AcfH2mrNHWJziA=;
+ b=mlcRIiunWgviSc6mph08k9RVxmPqi/ngQ+dbAwuVcXttM1T3kd8xETWYfZgky2ojKn
+ 1SYSufLZWLHKjhayRD715DiB4/Za6DD6mVCLB6KlNF3ahkoSrDuVNOqcVP6zEZziOvUP
+ VlMfmFCZNJSg10Z629s4tlLzxHpRctrYtSHvxh/2daCWRNo4uXrMLk+QDcph2dzs7BoB
+ YXfSB3c2IP2bm0qeV8Lpng2i74FqvuoA2WLJI8cWyBnzIkvNuSj6/HsSHkYy4RirFpE0
+ lA6h4EwW6v+zWWTY5Yj+4QZkW1WHAP7WCvkYGtK+ohntvoLU+2k4DDWSaVppYjraJZvf
+ KmEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718718975; x=1719323775;
- h=content-transfer-encoding:mime-version:message-id:date:references
- :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=QDK180+org5a+/a7Y9YHyMQ+UVON0MoKX7CNLCnvKXw=;
- b=aJ719pVn9RBaDU3SYEuw3glO94iv5OzmNeXOTdHjTIlfWJLRl7+nYBWDzMeQ6dJSfY
- ESUVmnsGMOLViYFuiBZ6Qf3N2+5D08L1VXdDsrpr/PqWvu1knJQ6aAedeFFrG/IRhr/M
- a73C4jEEU90WtA/H0h3MTk/CmDaWEdw/lGeobGjiDg2/wN2m/FUeJ9R4p3z9fuKg9pMA
- R1OKeYyO/5zRt7CJgjCtACvtnz2UZ9jhr3NzvnXdTVxkmWR8WeGPDythko6SrbU84RbF
- N1zGqOiBsRE+q8w83u8jUw19tLblMWPF+v9aa+RjabjBf8uyqGBMPzRNzXs4AxSnaLzc
- i1wg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWHlCZCWE3s9QNhMHskue/K/dZSl75bW0Qv9mXHD5PtLqbnbLUl4QtLxKN17cJ7gN8ta2ZzqMMTsSlmq01lVwOrL/7MkRw=
-X-Gm-Message-State: AOJu0YzEJC9Drv1bwUAUqL+10rzJ6i3MSJKnYDC9YEqrbtwZ7BncQ3xJ
- 37zrsyV9b7nzklZRoVzuJb0qNDYF9smQ8GLeChWclfs+nyri5+WbypT2xPf0yaI=
-X-Google-Smtp-Source: AGHT+IHodjDPzRHe8lpJMNl3knVerb3iUvdPPenDTrxGsPx20UAG0gIzCxeptmDOxnUy23B/hWBSJA==
-X-Received: by 2002:adf:edc5:0:b0:362:f291:6f97 with SMTP id
- ffacd0b85a97d-362f291710emr59540f8f.18.1718718975438; 
- Tue, 18 Jun 2024 06:56:15 -0700 (PDT)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-362c7c2dffdsm353934f8f.35.2024.06.18.06.56.15
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 18 Jun 2024 06:56:15 -0700 (PDT)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 99DDB5F8AC;
- Tue, 18 Jun 2024 14:56:14 +0100 (BST)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,  qemu-devel@nongnu.org,  Anton
- Johansson <anjo@rev.ng>
-Subject: Re: [PATCH 3/3] semihosting: Restrict to TCG
-In-Reply-To: <8a22ada3-34e6-4d6d-aebe-67bc07d0f38f@linaro.org> ("Philippe
- =?utf-8?Q?Mathieu-Daud=C3=A9=22's?= message of "Tue, 18 Jun 2024 13:33:28
- +0200")
-References: <20240529155548.5878-1-philmd@linaro.org>
- <20240529155548.5878-4-philmd@linaro.org>
- <CABgObfYmuvMq80Xz0ZBZQiHmKgoiSTVVqio8FmmpttT8rg64kA@mail.gmail.com>
- <7ce86375-779d-43d6-9871-7f9587c95ba6@linaro.org>
- <CABgObfbvjG9bBgCwM-kL+YhjhMw1qLnQdQToCEkKW+V3trskoA@mail.gmail.com>
- <d2b81c56-a57c-4fbe-a65e-86e9755e7c48@linaro.org>
- <5c913504-d917-4fd1-86d5-85d3bc293623@linaro.org>
- <8a22ada3-34e6-4d6d-aebe-67bc07d0f38f@linaro.org>
-Date: Tue, 18 Jun 2024 14:56:14 +0100
-Message-ID: <87zfricq2p.fsf@draig.linaro.org>
+ d=1e100.net; s=20230601; t=1718719500; x=1719324300;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=cx7NBo/uziFpbQFcQsV1wyuyuUt+7AcfH2mrNHWJziA=;
+ b=aQDW7Y3xAlUeD1kXFz+j22shfrm1o3aEGYAWz3fcuZPSM7OdEZK00t1lHFbssAZfcT
+ d4RFHAT1UzSVcyKQWwswZe0W0L2TKQPOZcLHyQ9lgNbLpBDwtkTJDxZX17N4AZMGbPJp
+ CZa1UfhzEW3ANkK54r4QjMqzjE+EXodEoUvwetD9glr0delo7YK/zmifn5Sfjz6n7g74
+ a6RwSJaGUF2kloV5Xv998Y1Y9sYdAeAf9XakvdMuJ/SZQPoRmDeYUT0Hwv5rUWtoy9Ng
+ SNi+qxb3VkP30aS+M3OwOJ4xEywfXF0SEqbAa8MvEsqZMEFe7JQRCIZg8yxuPj4n7uv4
+ tXgQ==
+X-Gm-Message-State: AOJu0Yz5Vacc9DSKXK50cgLy4laQzo2JTc7pkC4wFxhgzogdsa+St5/S
+ WvAqKvcBifghZ2xj5T9oqGTaJOoF5aTaowLLZJ93ZTDshsvr+pTCsTUO4dbXPMdpkLIcLwwACb6
+ u
+X-Google-Smtp-Source: AGHT+IH+AAG1xAGXSBQR2gi4fyqHmXSnqNszQYjYBr5OExtSRzlY3wuTfPrVfBEk/fHjhioWQ77a3g==
+X-Received: by 2002:adf:fe12:0:b0:35f:2f14:b98 with SMTP id
+ ffacd0b85a97d-3607a783420mr12141858f8f.48.1718719500309; 
+ Tue, 18 Jun 2024 07:05:00 -0700 (PDT)
+Received: from [192.168.69.100] ([176.187.212.55])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3607509c9a0sm14164508f8f.27.2024.06.18.07.04.59
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 18 Jun 2024 07:04:59 -0700 (PDT)
+Message-ID: <ef0941df-ab08-4e1b-ade4-843a46356112@linaro.org>
+Date: Tue, 18 Jun 2024 16:04:57 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x429.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] hw/usb/hcd-dwc2: Handle invalid address access in read
+ and write functions
+To: Zheyu Ma <zheyuma97@gmail.com>, Paul Zimmerman <pauldzim@gmail.com>
+Cc: qemu-devel@nongnu.org
+References: <20240618135610.3109175-1-zheyuma97@gmail.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240618135610.3109175-1-zheyuma97@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,282 +93,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
+Cc'ing Paul.
 
-> ping :)
->
-> On 12/6/24 15:12, Philippe Mathieu-Daud=C3=A9 wrote:
->> Hi Paolo,
->> On 30/5/24 15:58, Philippe Mathieu-Daud=C3=A9 wrote:
->>> On 30/5/24 09:31, Paolo Bonzini wrote:
->>>> On Thu, May 30, 2024 at 9:22=E2=80=AFAM Philippe Mathieu-Daud=C3=A9
->>>> <philmd@linaro.org> wrote:
->>>>>
->>>>> On 30/5/24 08:02, Paolo Bonzini wrote:
->>>>>> On Wed, May 29, 2024 at 5:56=E2=80=AFPM Philippe Mathieu-Daud=C3=A9
->>>>>> <philmd@linaro.org> wrote:
->>>>>>> It is pointless to build semihosting when TCG is not available.
->>>>>>
->>>>>> Why? I would have naively assumed that a suitable semihosting API
->>>>>> could be implemented by KVM. The justification (and thus the commit
->>>>>> message) needs to be different for each architecture if it's a matter
->>>>>> of instruction set or insufficient KVM userspace API.
->>>>>
->>>>> I wasn't sure where semihosting could be used so asked on IRC and
->>>>> Alex told me TCG only. Maybe the current implementation is TCG
->>>>> only, and I can reword. It certainly need some refactor to work
->>>>> on KVM, because currently semihosting end calling the TCG probe_access
->>>>> API, which I'm trying to restrict to TCG in order to ease linking
->>>>> multiple libtcg for the single binary (see
->>>>> https://lore.kernel.org/qemu-devel/20240529155918.6221-1-philmd@linar=
-o.org/).
->>>>
->>>> Ok, that goes in the commit message though.
->>>>
->>>> "Semihosting currently uses the TCG probe_access API. It is pointless
->>>> to have it in the binary when TCG isn't".
->>>>
->>>> and in the first two patches:
->>>>
->>>> "Semihosting currently uses the TCG probe_access API. To prepare for
->>>> encoding the TCG dependency in Kconfig, do not enable it unless TCG is
->>>> available".
->>>>
->>>> But then, "select FOO if TCG" mean that it can be compiled out; so
->>>> perhaps "imply SEMIHOSTING if TCG" is better? Same for RISC-V's
->>>> "select ARM_COMPATIBLE_SEMIHOSTING if TCG".
->> Building qemu-system-mips configured with --without-default-devices:
->> Undefined symbols for architecture arm64:
->>  =C2=A0 "_qemu_semihosting_console_write", referenced from:
->>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 _mips_semihosting in target_mips_tcg_sys=
-emu_mips-semi.c.o
->>  =C2=A0 "_semihost_sys_close", referenced from:
->>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 _mips_semihosting in target_mips_tcg_sys=
-emu_mips-semi.c.o
->>  =C2=A0 "_uaccess_strlen_user", referenced from:
->>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 _mips_semihosting in target_mips_tcg_sys=
-emu_mips-semi.c.o
->>  =C2=A0 ...
->> So this one has to use "select".
->> Similarly m68k:
->> Undefined symbols for architecture arm64:
->>  =C2=A0 "_semihost_sys_close", referenced from:
->>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 _do_m68k_semihosting in target_m68k_m68k=
--semi.c.o
->>  =C2=A0 ...
->> I can link m68k using semihosting stubs but I'm not sure it is
->> right:
->> -- >8 --
->> diff --git a/semihosting/stubs-target-all.c
->> b/semihosting/stubs-target-all.c
->> new file mode 100644
->> index 0000000000..1f33173f43
->> --- /dev/null
->> +++ b/semihosting/stubs-target-all.c
->> @@ -0,0 +1,97 @@
->> +/*
->> + * Semihosting Stubs
->> + *
->> + * Copyright (c) 2024 Linaro Ltd
->> + *
->> + * Stubs for semihosting targets that don't actually do semihosting.
->> + *
->> + * SPDX-License-Identifier: GPL-2.0-or-later
->> + */
->> +
->> +#include "qemu/osdep.h"
->> +#include "exec/exec-all.h"
->> +#include "semihosting/syscalls.h"
->> +
->> +void semihost_sys_open(CPUState *cs, gdb_syscall_complete_cb complete,
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 target_ulon=
-g fname, target_ulong fname_len,
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 int gdb_fla=
-gs, int mode)
->> +{
->> +}
->> +
->> +void semihost_sys_close(CPUState *cs, gdb_syscall_complete_cb
->> complete, int fd)
->> +{
->> +}
->> +
->> +void semihost_sys_read_gf(CPUState *cs, gdb_syscall_complete_cb complet=
-e,
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 GuestFD *gf, target_ulong buf, target_ulong len)
->> +{
->> +}
->> +
->> +void semihost_sys_read(CPUState *cs, gdb_syscall_complete_cb complete,
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 int fd, tar=
-get_ulong buf, target_ulong len)
->> +{
->> +}
->> +
->> +void semihost_sys_write_gf(CPUState *cs, gdb_syscall_complete_cb comple=
-te,
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0 GuestFD *gf, target_ulong buf,
->> target_ulong len)
->> +{
->> +}
->> +
->> +void semihost_sys_write(CPUState *cs, gdb_syscall_complete_cb complete,
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 int f=
-d, target_ulong buf, target_ulong len)
->> +{
->> +}
->> +
->> +void semihost_sys_lseek(CPUState *cs, gdb_syscall_complete_cb complete,
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 int f=
-d, int64_t off, int gdb_whence)
->> +{
->> +}
->> +
->> +void semihost_sys_isatty(CPUState *cs, gdb_syscall_complete_cb
->> complete, int fd)
->> +{
->> +}
->> +
->> +void semihost_sys_flen(CPUState *cs, gdb_syscall_complete_cb fstat_cb,
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 gdb_syscall=
-_complete_cb flen_cb, int fd,
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 target_ulon=
-g fstat_addr)
->> +{
->> +}
->> +
->> +void semihost_sys_fstat(CPUState *cs, gdb_syscall_complete_cb complete,
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 int f=
-d, target_ulong addr)
->> +{
->> +}
->> +
->> +void semihost_sys_stat(CPUState *cs, gdb_syscall_complete_cb complete,
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 target_ulon=
-g fname, target_ulong fname_len,
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 target_ulon=
-g addr)
->> +{
->> +}
->> +
->> +void semihost_sys_remove(CPUState *cs, gdb_syscall_complete_cb complete,
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
- target_ulong fname, target_ulong fname_len)
->> +{
->> +}
->> +
->> +void semihost_sys_rename(CPUState *cs, gdb_syscall_complete_cb complete,
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
- target_ulong oname, target_ulong oname_len,
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
- target_ulong nname, target_ulong nname_len)
->> +{
->> +}
->> +
->> +void semihost_sys_system(CPUState *cs, gdb_syscall_complete_cb complete,
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
- target_ulong cmd, target_ulong cmd_len)
->> +{
->> +}
->> +
->> +void semihost_sys_gettimeofday(CPUState *cs,
->> gdb_syscall_complete_cb complete,
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 target_ulong tv_addr, target_ulong tz_=
-addr)
->> +{
->> +}
->> +
->> +#ifndef CONFIG_USER_ONLY
->> +void semihost_sys_poll_one(CPUState *cs, gdb_syscall_complete_cb comple=
-te,
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0 int fd, GIOCondition cond, int timeout)
->> +{
->> +}
->> +#endif
->> diff --git a/semihosting/meson.build b/semihosting/meson.build
->> index 34933e5a19..aa8b7a9913 100644
->> --- a/semihosting/meson.build
->> +++ b/semihosting/meson.build
->> @@ -7,7 +7,7 @@ specific_ss.add(when: ['CONFIG_SEMIHOSTING',
->> 'CONFIG_SYSTEM_ONLY'], if_true: fil
->>  =C2=A0=C2=A0 'config.c',
->>  =C2=A0=C2=A0 'console.c',
->>  =C2=A0=C2=A0 'uaccess.c',
->> -))
->> +), if_false: files('stubs-target-all.c'))
->>  =C2=A0common_ss.add(when: ['CONFIG_SEMIHOSTING', 'CONFIG_SYSTEM_ONLY'],
->> if_false: files('stubs-all.c'))
->>  =C2=A0system_ss.add(when: ['CONFIG_SEMIHOSTING'], if_false:
->> files('stubs-system.c'))
->> ---
->> For mips more stubs are needed:
->> Undefined symbols for architecture arm64:
->>  =C2=A0 "_qemu_semihosting_console_write", referenced from:
->>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 _mips_semihosting in target_mips_tcg_sys=
-emu_mips-semi.c.o
->>  =C2=A0 "_uaccess_lock_user", referenced from:
->>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 _mips_semihosting in target_mips_tcg_sys=
-emu_mips-semi.c.o
->>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 _mips_semihosting in target_mips_tcg_sys=
-emu_mips-semi.c.o
->>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 _mips_semihosting in target_mips_tcg_sys=
-emu_mips-semi.c.o
->>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 _uhi_fstat_cb in target_mips_tcg_sysemu_=
-mips-semi.c.o
->>  =C2=A0 "_uaccess_lock_user_string", referenced from:
->>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 _mips_semihosting in target_mips_tcg_sys=
-emu_mips-semi.c.o
->>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 _mips_semihosting.cold.6 in target_mips_=
-tcg_sysemu_mips-semi.c.o
->>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 _mips_semihosting.cold.6 in target_mips_=
-tcg_sysemu_mips-semi.c.o
->>  =C2=A0 "_uaccess_strlen_user", referenced from:
->>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 _mips_semihosting in target_mips_tcg_sys=
-emu_mips-semi.c.o
->>  =C2=A0 "_uaccess_unlock_user", referenced from:
->>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 _mips_semihosting in target_mips_tcg_sys=
-emu_mips-semi.c.o
->>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 _mips_semihosting in target_mips_tcg_sys=
-emu_mips-semi.c.o
->>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 _mips_semihosting in target_mips_tcg_sys=
-emu_mips-semi.c.o
->>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 _mips_semihosting in target_mips_tcg_sys=
-emu_mips-semi.c.o
->>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 _mips_semihosting in target_mips_tcg_sys=
-emu_mips-semi.c.o
->>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 _mips_semihosting in target_mips_tcg_sys=
-emu_mips-semi.c.o
->>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 _uhi_fstat_cb in target_mips_tcg_sysemu_=
-mips-semi.c.o
->>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ...
->>=20
+On 18/6/24 15:56, Zheyu Ma wrote:
+> This commit modifies the dwc2_hsotg_read() and dwc2_hsotg_write() functions
+> to handle invalid address access gracefully. Instead of using
+> g_assert_not_reached(), which causes the program to abort, the functions
+> now log an error message and return a default value for reads or do
+> nothing for writes.
+> 
+> This change prevents the program from aborting and provides clear log
+> messages indicating when an invalid memory address is accessed.
+> 
+> Reproducer:
+> cat << EOF | qemu-system-aarch64 -display none \
+> -machine accel=qtest, -m 512M -machine raspi2b -m 1G -nodefaults \
+> -usb -drive file=null-co://,if=none,format=raw,id=disk0 -device \
+> usb-storage,port=1,drive=disk0 -qtest stdio
+> readl 0x3f980dfb
+> EOF
+> 
+> Signed-off-by: Zheyu Ma <zheyuma97@gmail.com>
+> ---
+>   hw/usb/hcd-dwc2.c | 9 +++++++--
+>   1 file changed, 7 insertions(+), 2 deletions(-)
+> 
+> diff --git a/hw/usb/hcd-dwc2.c b/hw/usb/hcd-dwc2.c
+> index 8cac9c0a06..b4f0652c7d 100644
+> --- a/hw/usb/hcd-dwc2.c
+> +++ b/hw/usb/hcd-dwc2.c
+> @@ -1128,7 +1128,10 @@ static uint64_t dwc2_hsotg_read(void *ptr, hwaddr addr, unsigned size)
+>           val = dwc2_pcgreg_read(ptr, addr, (addr - HSOTG_REG(0xe00)) >> 2, size);
+>           break;
+>       default:
+> -        g_assert_not_reached();
+> +        qemu_log_mask(LOG_GUEST_ERROR, "%s: Bad offset 0x%"HWADDR_PRIx"\n",
+> +                      __func__, addr);
+> +        val = 0;
+> +        break;
+>       }
+>   
+>       return val;
+> @@ -1160,7 +1163,9 @@ static void dwc2_hsotg_write(void *ptr, hwaddr addr, uint64_t val,
+>           dwc2_pcgreg_write(ptr, addr, (addr - HSOTG_REG(0xe00)) >> 2, val, size);
+>           break;
+>       default:
+> -        g_assert_not_reached();
+> +        qemu_log_mask(LOG_GUEST_ERROR, "%s: Bad offset 0x%"HWADDR_PRIx"\n",
+> +                      __func__, addr);
+> +        break;
+>       }
+>   }
+>   
 
-Oh sorry I was waiting for a re-spin. I should just apply the above to
-3/3?
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
 
