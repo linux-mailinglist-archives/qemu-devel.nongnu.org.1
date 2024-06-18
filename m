@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A765390D815
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jun 2024 18:04:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07AAE90D893
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jun 2024 18:12:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sJbIY-0006wN-Vz; Tue, 18 Jun 2024 12:03:07 -0400
+	id 1sJbIa-0006yP-8k; Tue, 18 Jun 2024 12:03:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sJbIO-0006W6-Ew
- for qemu-devel@nongnu.org; Tue, 18 Jun 2024 12:02:59 -0400
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sJbIU-0006kR-Mk
+ for qemu-devel@nongnu.org; Tue, 18 Jun 2024 12:03:02 -0400
+Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sJbIM-00074L-4S
- for qemu-devel@nongnu.org; Tue, 18 Jun 2024 12:02:55 -0400
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-57c6011d75dso6891785a12.3
- for <qemu-devel@nongnu.org>; Tue, 18 Jun 2024 09:02:53 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sJbIS-00077J-2s
+ for qemu-devel@nongnu.org; Tue, 18 Jun 2024 12:03:02 -0400
+Received: by mail-ej1-x62a.google.com with SMTP id
+ a640c23a62f3a-a6e43dad8ecso975497066b.1
+ for <qemu-devel@nongnu.org>; Tue, 18 Jun 2024 09:02:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1718726572; x=1719331372; darn=nongnu.org;
+ d=linaro.org; s=google; t=1718726578; x=1719331378; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=NeFHpBJtgKcbbwJwJ5FK7MJMvna/CViY1T2wLMd8oks=;
- b=YZ0Vn4A1qhF8MQPYbQiBD8v4Y6HYYUwXnCJDRXrfNQjOR5CD/i5kTx0JKTBGYLtZ4C
- ldKiD98SNc9emxL9af6UNGWK5L8x78lCnbsEMu2PG1nmY0kGhpY1sN50vBOuaV/svLfz
- drlZe6PVCEDN25g6+Ii85ffyI/uY14RdiOLGbkPgMXSxy7bW46khKhjpZNquhfEEdP2M
- XKYJIsJTP0lSADLAzxfVDxktuJQoqI9LXsRejzSuufdVbVTzivcB6G4E+yFQKLG+q8IF
- A4L34ICaEhHSSOcWgGuqsfjkufNItL9sWwqD4TkRFHZ6TBN986sGR7DrpvZxV7797fiJ
- 65iw==
+ bh=5yi1+oyDOeGjldJpCtaWr7mKsqw3FoNEfWgLcD7ET3s=;
+ b=VCtRLuQvq5lPNdFmCU78KEZ2Ly1ippGfOwmEBl2k+4+o//MZEjsKkKXgsAYTLzvtgr
+ lEVR5hHEseduYlxu5h1/U0R1J52fbvHFaSzjgX0eJ1uk1wNeOJtd3ch2gGgzbu5ntDCK
+ K6JTjsfT6nEW8ZZHqbnnu+1+Ze6bVF8CkOfZYNpV8GmEydOSY8BLGTqQ3wtRRs4sn9cM
+ d0wYA/4yM0aMvwZnxXc1QkGKx3NsjmxJZoN2+FjHP62k+6Cp7BSmmqsPh/W4YRz/TCcG
+ yvnn8JU8U5b05qOpK/18JW4P+5n0hxAmvgh7e/ruKAon4t6E0BEF7s3j0KYLZhHekWd/
+ wGBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718726572; x=1719331372;
+ d=1e100.net; s=20230601; t=1718726578; x=1719331378;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=NeFHpBJtgKcbbwJwJ5FK7MJMvna/CViY1T2wLMd8oks=;
- b=qLF9KdLPDIcU/s888trHaPoa9wcIS1g8Wu9g/VMkOTHv2SPuHKKTa5W1aREJExzRME
- 9BzrgmWwB9zSgtJQ2p8SaDaMCx2It8HuxfpJzoN7dPHUypDQZQUVRmaj6yBDXFqz+313
- 1x77ip3zpbpHOWImL6xRXx+AcgzO18o/0BnQhZT1aD2j8DkoSwqgLmsDNTYMVGbOsTVD
- Sto3G/KY1AJkZuGDj2adfWiVakBjmqZfJGHAJdWbvJ9ffSrKhnAGBCV1LWmfHQLb0JmI
- hU44AbR+j6vg82GyEp+8vGl/+mD7jnpbgDNSHuRqm1nBs07S52EqdqbOJlAxmb6rmpzs
- oaPg==
-X-Gm-Message-State: AOJu0Yym0IHELddiBc9UVzqyftkQ3YndcZfPp+PLYCmmNW/qrWBjPDT1
- YAKqTMlDIzrHu0RRE9+DIQLwt6Yk40q4uP245vm3JG5A7kOkIe/Vsih6PdIA9aGmyvP7uDGOQ+2
- J
-X-Google-Smtp-Source: AGHT+IHZWDrKmmEQtw86+Gr6WJxpuLrmN1NUK/Tz8EyoZY4fFYddAYht+1XYN5/ZR3LiSXte3h74aA==
-X-Received: by 2002:a50:d515:0:b0:57a:2e8d:c308 with SMTP id
- 4fb4d7f45d1cf-57cbd8b9befmr7763559a12.40.1718726572391; 
- Tue, 18 Jun 2024 09:02:52 -0700 (PDT)
+ bh=5yi1+oyDOeGjldJpCtaWr7mKsqw3FoNEfWgLcD7ET3s=;
+ b=qeB0uum5wU0qeXabt2/IJYJeA9k73wTQFT40vaj3fl+9EShlanmo0ajVv9ww7F8IbF
+ F90oPAimfzEOZ5mSWKth37q9Lng12/WRvH4Uhcb685ZFCKQ6Dkn3zuDVNW1v8JNMUggE
+ JDcLlI6Wr8fZ1WmQv0abRxAjy8yj9iMq/0b3R80pBe0YBc4KPA2C2cCWOOf+rPfzEXr2
+ zZWdwtMF1atmRkQ0bVJ5JIzz2WnzqDjoIrE7/vv+MeYnueitnbd3Qm4CHzSXHpWqJgBl
+ a+I++KnmkqzuC4ojc3KlnF9JyOW1Nhbh0PTnr5BQ/HUFIKdH+kkK0W8A7DogXClPd6mr
+ MyPA==
+X-Gm-Message-State: AOJu0Yy6tpNTFn/CT0QcE6et9bvDHyfuVSmxtWkaL2SVmFpttxIl6kMY
+ 9o9tLopNne2IgV1e7QDL6p+EQY8WpQoBGAeFkY4U7YZRxq2iJReTzgOjelYRhGTr3Pvx50SstTF
+ E
+X-Google-Smtp-Source: AGHT+IE6RNdi8m100eE6quoOpWpgLD+m7dnLz1ckXVMLmnjyRRI5rzV3gHJ/EGwNHgrusVUpHzSY8Q==
+X-Received: by 2002:a17:907:cbc5:b0:a6f:996f:23ea with SMTP id
+ a640c23a62f3a-a6fa4109cdfmr14068466b.15.1718726578053; 
+ Tue, 18 Jun 2024 09:02:58 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.212.55])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-57cddba1a17sm3598763a12.43.2024.06.18.09.02.51
+ a640c23a62f3a-a6f56f9802csm627137066b.189.2024.06.18.09.02.56
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 18 Jun 2024 09:02:52 -0700 (PDT)
+ Tue, 18 Jun 2024 09:02:57 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Zhao Liu <zhao1.liu@intel.com>, Thomas Huth <thuth@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Zhao Liu <zhao1.liu@intel.com>,
  Igor Mammedov <imammedo@redhat.com>
-Subject: [PULL 22/76] target/i386: Remove X86CPU::kvm_no_smi_migration field
-Date: Tue, 18 Jun 2024 17:59:44 +0200
-Message-ID: <20240618160039.36108-23-philmd@linaro.org>
+Subject: [PULL 23/76] hw/i386/pc: Replace PCMachineClass::acpi_data_size by
+ PC_ACPI_DATA_SIZE
+Date: Tue, 18 Jun 2024 17:59:45 +0200
+Message-ID: <20240618160039.36108-24-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240618160039.36108-1-philmd@linaro.org>
 References: <20240618160039.36108-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,73 +94,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-X86CPU::kvm_no_smi_migration was only used by the
-pc-i440fx-2.3 machine, which got removed. Remove it
-and simplify kvm_put_vcpu_events().
+PCMachineClass::acpi_data_size was only used by the pc-i440fx-2.0
+machine, which got removed. Since it is constant, replace the class
+field by a definition (local to hw/i386/pc.c, since not used
+elsewhere).
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Reviewed-by: Igor Mammedov <imammedo@redhat.com>
-Message-Id: <20240617071118.60464-23-philmd@linaro.org>
+Message-Id: <20240617071118.60464-24-philmd@linaro.org>
 ---
- target/i386/cpu.h     | 3 ---
- target/i386/cpu.c     | 2 --
- target/i386/kvm/kvm.c | 7 +------
- 3 files changed, 1 insertion(+), 11 deletions(-)
+ include/hw/i386/pc.h |  4 ----
+ hw/i386/pc.c         | 19 ++++++++++++-------
+ 2 files changed, 12 insertions(+), 11 deletions(-)
 
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index 7e2a9b56ae..52571ababe 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -2108,9 +2108,6 @@ struct ArchCPU {
-     /* if set, limit maximum value for phys_bits when host_phys_bits is true */
-     uint8_t host_phys_bits_limit;
+diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
+index 0b7a18a882..46bc411063 100644
+--- a/include/hw/i386/pc.h
++++ b/include/hw/i386/pc.h
+@@ -74,9 +74,6 @@ typedef struct PCMachineState {
+  *
+  * Compat fields:
+  *
+- * @acpi_data_size: Size of the chunk of memory at the top of RAM
+- *                  for the BIOS ACPI tables and other BIOS
+- *                  datastructures.
+  * @gigabyte_align: Make sure that guest addresses aligned at
+  *                  1Gbyte boundaries get mapped to host
+  *                  addresses aligned at 1Gbyte boundaries. This
+@@ -100,7 +97,6 @@ struct PCMachineClass {
  
--    /* Stop SMI delivery for migration compatibility with old machines */
--    bool kvm_no_smi_migration;
--
-     /* Forcefully disable KVM PV features not exposed in guest CPUIDs */
-     bool kvm_pv_enforce_cpuid;
+     /* ACPI compat: */
+     bool has_acpi_build;
+-    unsigned acpi_data_size;
+     int pci_root_uid;
  
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 365852cb99..4c2e6f3a71 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -8281,8 +8281,6 @@ static Property x86_cpu_properties[] = {
-     DEFINE_PROP_BOOL("x-vendor-cpuid-only", X86CPU, vendor_cpuid_only, true),
-     DEFINE_PROP_BOOL("lmce", X86CPU, enable_lmce, false),
-     DEFINE_PROP_BOOL("l3-cache", X86CPU, enable_l3_cache, true),
--    DEFINE_PROP_BOOL("kvm-no-smi-migration", X86CPU, kvm_no_smi_migration,
--                     false),
-     DEFINE_PROP_BOOL("kvm-pv-enforce-cpuid", X86CPU, kvm_pv_enforce_cpuid,
-                      false),
-     DEFINE_PROP_BOOL("vmware-cpuid-freq", X86CPU, vmware_cpuid_freq, true),
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 912f5d5a6b..7ad8072748 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -4474,6 +4474,7 @@ static int kvm_put_vcpu_events(X86CPU *cpu, int level)
-     events.sipi_vector = env->sipi_vector;
+     /* SMBIOS compat: */
+diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+index 819a164373..77415064c6 100644
+--- a/hw/i386/pc.c
++++ b/hw/i386/pc.c
+@@ -265,6 +265,16 @@ GlobalProperty pc_compat_2_4[] = {
+ };
+ const size_t pc_compat_2_4_len = G_N_ELEMENTS(pc_compat_2_4);
  
-     if (has_msr_smbase) {
-+        events.flags |= KVM_VCPUEVENT_VALID_SMM;
-         events.smi.smm = !!(env->hflags & HF_SMM_MASK);
-         events.smi.smm_inside_nmi = !!(env->hflags2 & HF2_SMM_INSIDE_NMI_MASK);
-         if (kvm_irqchip_in_kernel()) {
-@@ -4488,12 +4489,6 @@ static int kvm_put_vcpu_events(X86CPU *cpu, int level)
-             events.smi.pending = 0;
-             events.smi.latched_init = 0;
-         }
--        /* Stop SMI delivery on old machine types to avoid a reboot
--         * on an inward migration of an old VM.
--         */
--        if (!cpu->kvm_no_smi_migration) {
--            events.flags |= KVM_VCPUEVENT_VALID_SMM;
--        }
++/*
++ * @PC_FW_DATA:
++ * Size of the chunk of memory at the top of RAM for the BIOS ACPI tables
++ * and other BIOS datastructures.
++ *
++ * BIOS ACPI tables: 128K. Other BIOS datastructures: less than 4K
++ * reported to be used at the moment, 32K should be enough for a while.
++ */
++#define PC_FW_DATA (0x20000 + 0x8000)
++
+ GSIState *pc_gsi_create(qemu_irq **irqs, bool pci_enabled)
+ {
+     GSIState *s;
+@@ -646,8 +656,7 @@ void xen_load_linux(PCMachineState *pcms)
+     fw_cfg_add_i16(fw_cfg, FW_CFG_NB_CPUS, x86ms->boot_cpus);
+     rom_set_fw(fw_cfg);
+ 
+-    x86_load_linux(x86ms, fw_cfg, pcmc->acpi_data_size,
+-                   pcmc->pvh_enabled);
++    x86_load_linux(x86ms, fw_cfg, PC_FW_DATA, pcmc->pvh_enabled);
+     for (i = 0; i < nb_option_roms; i++) {
+         assert(!strcmp(option_rom[i].name, "linuxboot.bin") ||
+                !strcmp(option_rom[i].name, "linuxboot_dma.bin") ||
+@@ -986,8 +995,7 @@ void pc_memory_init(PCMachineState *pcms,
      }
  
-     if (level >= KVM_PUT_RESET_STATE) {
+     if (linux_boot) {
+-        x86_load_linux(x86ms, fw_cfg, pcmc->acpi_data_size,
+-                       pcmc->pvh_enabled);
++        x86_load_linux(x86ms, fw_cfg, PC_FW_DATA, pcmc->pvh_enabled);
+     }
+ 
+     for (i = 0; i < nb_option_roms; i++) {
+@@ -1743,9 +1751,6 @@ static void pc_machine_class_init(ObjectClass *oc, void *data)
+     pcmc->has_reserved_memory = true;
+     pcmc->enforce_amd_1tb_hole = true;
+     pcmc->isa_bios_alias = true;
+-    /* BIOS ACPI tables: 128K. Other BIOS datastructures: less than 4K reported
+-     * to be used at the moment, 32K should be enough for a while.  */
+-    pcmc->acpi_data_size = 0x20000 + 0x8000;
+     pcmc->pvh_enabled = true;
+     pcmc->kvmclock_create_always = true;
+     x86mc->apic_xrupt_override = true;
 -- 
 2.41.0
 
