@@ -2,77 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2026490D824
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jun 2024 18:06:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7710790D89B
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jun 2024 18:12:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sJbIr-0007Nn-GJ; Tue, 18 Jun 2024 12:03:25 -0400
+	id 1sJbIt-0007an-FG; Tue, 18 Jun 2024 12:03:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sJbIf-0007Cf-Bq
- for qemu-devel@nongnu.org; Tue, 18 Jun 2024 12:03:14 -0400
-Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sJbIk-0007Ly-Uk
+ for qemu-devel@nongnu.org; Tue, 18 Jun 2024 12:03:20 -0400
+Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sJbId-00078I-CF
- for qemu-devel@nongnu.org; Tue, 18 Jun 2024 12:03:12 -0400
-Received: by mail-ed1-x535.google.com with SMTP id
- 4fb4d7f45d1cf-57cad452f8bso6398504a12.2
- for <qemu-devel@nongnu.org>; Tue, 18 Jun 2024 09:03:10 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sJbIi-00078m-Vc
+ for qemu-devel@nongnu.org; Tue, 18 Jun 2024 12:03:18 -0400
+Received: by mail-ej1-x636.google.com with SMTP id
+ a640c23a62f3a-a6f9fe791f8so65682066b.0
+ for <qemu-devel@nongnu.org>; Tue, 18 Jun 2024 09:03:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1718726589; x=1719331389; darn=nongnu.org;
+ d=linaro.org; s=google; t=1718726595; x=1719331395; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=qA5Ge8ZtgAa4V9zb3xBkrJO7P0viojUBuVQA89Wmlaw=;
- b=mmpgc3qscMeX33sSISLRWxVI6CMrUo9Qk9QPYcFgWBmwl4IvqJBPb7Y7xhr/9toVZk
- 4PGhu8xVEhdup/VIfJbjlu0h9kffXeeliSNpVy8yubXCrYtxG3DFkVo8ltoqkeOpWu4m
- M7Zv4jJxleuA6WuMmLxHCvlg0g/50mLXivomcuMzh7+YAwyxgDh9rsxFqkaM7n/s0aLI
- M5HCLqNYrQJ+gvODsUZ3+kDAJrTXQzUoLpvmGc8lrYKuVCCkis//O1qr+wiIS4g3LWMm
- O+qkTdsho3gyGJr/kj4e8oDbSsufyLryixaEuNDhI05PGq+h73z7Dhi3RRBfPhCPKkgW
- 70cw==
+ bh=2h5hZc6LXMjCThYre/XODwbhy/fDBZZML+oz5gALLWA=;
+ b=d1EXL3myi9i9PZt9+kVwyP9RdCN6V+FdpXCPAhlpWaJJTv6S8VuCOEekepdbhdS+0r
+ whDH7V4hb7unkRDM5LzU+cejFPsRncVjS4P5C9Wu4EHXrYC55DNRNoQMnQN+tUjw1oTm
+ JrBgTI09AoOb9FQoD+G/IRpZV8YliPv1pRYRJKQPacBXk3u0X9DEYRZcivP7H5HI6dVX
+ xse6T7VIH6KRJWjxxMkbr4X9dnG1AfuggFabCIZ/vAicNXqxcNwZpnLpttO+3PrEXNPj
+ MUiqUOaiAxce2aKq4dHwwRUud7MsjcZi/hbdGFz321czFEbEokXakgFLbAeyppNpyfPV
+ oKMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718726589; x=1719331389;
+ d=1e100.net; s=20230601; t=1718726595; x=1719331395;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=qA5Ge8ZtgAa4V9zb3xBkrJO7P0viojUBuVQA89Wmlaw=;
- b=oHH5pDKUwcj9wY/sTbG9gRGPqMIM2cvelwZ5NeHokOvztXcSZCGN8adUqxKf62CEwf
- 7chgegV4C141zWhQXuuEFV3j41Jg+wHgUCAgKD1zk9VgOEQLp+0Dq2ZyPxmLXMBqxjzB
- VI+8fBXFXzarO2TOSaYKUB5hMUJclIsafzZIF1C3M9Hw5w6Yk+z/1SU+jbAiXJI7A2TW
- XukqgwFXLsvE6Y3uMUHWRhJ1w9eYAtgY8VRw5EILoMRLgHEtABUhmWeV5fap6RE4vDvI
- WIBH5Wa6bxiaJec4DVyWicU4RAjJkZfawEYlh9fukt1BYR2bqMMik5Rn6n6aajUiovMo
- T6UA==
-X-Gm-Message-State: AOJu0YwC/+HkxDI1jnhTjfwojlN7FVkooYXkj1xSv0LLAtt1nVuo+2qg
- Gy2mXSKqmXaEA1w/lYIGswT0PRBu2sqOmYkrBmNDlLCdrGr7o/2XX7fAXjyN3o/mUzNpQeXDkU1
- 0
-X-Google-Smtp-Source: AGHT+IFy0oiue5Dz/DCvSfhpx294G2YRBwMeQIqgbCN1v/b8zf5gfz/K0Wez1T8ZHhd7/RjhUURJkg==
-X-Received: by 2002:a50:d681:0:b0:57d:579:3ca8 with SMTP id
- 4fb4d7f45d1cf-57d05793e00mr449766a12.22.1718726589417; 
- Tue, 18 Jun 2024 09:03:09 -0700 (PDT)
+ bh=2h5hZc6LXMjCThYre/XODwbhy/fDBZZML+oz5gALLWA=;
+ b=nGjoX2H7btaGEACO9Ra5T1fKVMbGS5FH2wRCifO1oyXQDX6BTyFW0A/nGE0lvx+YNS
+ YfYS+7ba0K0NQscXFBAEfh5Uf3l38MVmDPrmVrwQXHOjEmpF8nQ2UAz5dgu02G39LiLR
+ Tp6qSGyuNL7J1CCSHstvV86C5M8WYPuq+vffHHXm3QAIRqWxwaBq0LhpNc6syRIh17yU
+ 7OKf6e0/fyzTRiy4KlNPv0VIs+HwPSP/FxYHmLgGfQp+dbCME9nAWt3R0lwkJ+886kfH
+ GoWoAgkOoHYBx7enwzxzuf11Qvts8MwyEeC17POxWzo7z3P60l0BTdT1Q/+DZPfFsw2x
+ Mt4g==
+X-Gm-Message-State: AOJu0YyUM3UGzS5f8+wxkhOppIln6TM6olayez4tzlhRNpIJ/t6ZDayN
+ dfLyxxjlUICMqVIsnaKGvK442KPm40Z/owptmQone9KzxGdf7jE40mISDCh6/eHSJDumNPtHUYq
+ B
+X-Google-Smtp-Source: AGHT+IGFHLkAzXgnMVF953doTFT7+WsvM3vKWHZEFWE3fwourM4SYc8AkG8sUsdruwNlTNXVkfAdIQ==
+X-Received: by 2002:a17:906:370a:b0:a6f:a262:2f89 with SMTP id
+ a640c23a62f3a-a6fa26234b5mr34753666b.12.1718726595178; 
+ Tue, 18 Jun 2024 09:03:15 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.212.55])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-57cb743ade6sm7856056a12.95.2024.06.18.09.03.08
+ a640c23a62f3a-a6f56db618dsm626220166b.75.2024.06.18.09.03.13
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 18 Jun 2024 09:03:09 -0700 (PDT)
+ Tue, 18 Jun 2024 09:03:14 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>
-Subject: [PULL 25/76] hw/ppc: Avoid using Monitor in
- pnv_phb3_msi_pic_print_info()
-Date: Tue, 18 Jun 2024 17:59:47 +0200
-Message-ID: <20240618160039.36108-26-philmd@linaro.org>
+Subject: [PULL 26/76] hw/ppc: Avoid using Monitor in icp_pic_print_info()
+Date: Tue, 18 Jun 2024 17:59:48 +0200
+Message-ID: <20240618160039.36108-27-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240618160039.36108-1-philmd@linaro.org>
 References: <20240618160039.36108-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::535;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x535.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::636;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x636.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,102 +100,103 @@ Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 Reviewed-by: Cédric Le Goater <clg@kaod.org>
 Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
-Message-Id: <20240610062105.49848-2-philmd@linaro.org>
+Message-Id: <20240610062105.49848-3-philmd@linaro.org>
 ---
- include/hw/pci-host/pnv_phb3.h |  2 +-
- hw/pci-host/pnv_phb3_msi.c     | 21 ++++++++++-----------
- hw/ppc/pnv.c                   |  8 +++++++-
- 3 files changed, 18 insertions(+), 13 deletions(-)
+ include/hw/ppc/xics.h | 2 +-
+ hw/intc/xics.c        | 8 ++++----
+ hw/intc/xics_spapr.c  | 8 +++++++-
+ hw/ppc/pnv.c          | 8 +++++++-
+ 4 files changed, 19 insertions(+), 7 deletions(-)
 
-diff --git a/include/hw/pci-host/pnv_phb3.h b/include/hw/pci-host/pnv_phb3.h
-index d62b3091ac..24ca3dddaa 100644
---- a/include/hw/pci-host/pnv_phb3.h
-+++ b/include/hw/pci-host/pnv_phb3.h
-@@ -40,7 +40,7 @@ void pnv_phb3_msi_update_config(Phb3MsiState *msis, uint32_t base,
- void pnv_phb3_msi_send(Phb3MsiState *msis, uint64_t addr, uint16_t data,
-                        int32_t dev_pe);
- void pnv_phb3_msi_ffi(Phb3MsiState *msis, uint64_t val);
--void pnv_phb3_msi_pic_print_info(Phb3MsiState *msis, Monitor *mon);
-+void pnv_phb3_msi_pic_print_info(Phb3MsiState *msis, GString *buf);
- 
- 
- /*
-diff --git a/hw/pci-host/pnv_phb3_msi.c b/hw/pci-host/pnv_phb3_msi.c
-index a6d827f903..77d673da54 100644
---- a/hw/pci-host/pnv_phb3_msi.c
-+++ b/hw/pci-host/pnv_phb3_msi.c
-@@ -13,7 +13,6 @@
- #include "hw/pci-host/pnv_phb3.h"
- #include "hw/ppc/pnv.h"
- #include "hw/pci/msi.h"
--#include "monitor/monitor.h"
- #include "hw/irq.h"
- #include "hw/qdev-properties.h"
- #include "sysemu/reset.h"
-@@ -316,13 +315,13 @@ static void pnv_phb3_msi_register_types(void)
- 
- type_init(pnv_phb3_msi_register_types);
- 
--void pnv_phb3_msi_pic_print_info(Phb3MsiState *msi, Monitor *mon)
-+void pnv_phb3_msi_pic_print_info(Phb3MsiState *msi, GString *buf)
- {
-     ICSState *ics = ICS(msi);
-     int i;
- 
--    monitor_printf(mon, "ICS %4x..%4x %p\n",
--                   ics->offset, ics->offset + ics->nr_irqs - 1, ics);
-+    g_string_append_printf(buf, "ICS %4x..%4x %p\n",
-+                           ics->offset, ics->offset + ics->nr_irqs - 1, ics);
- 
-     for (i = 0; i < ics->nr_irqs; i++) {
-         uint64_t ive;
-@@ -335,12 +334,12 @@ void pnv_phb3_msi_pic_print_info(Phb3MsiState *msi, Monitor *mon)
-             continue;
-         }
- 
--        monitor_printf(mon, "  %4x %c%c server=%04x prio=%02x gen=%d\n",
--                       ics->offset + i,
--                       GETFIELD(IODA2_IVT_P, ive) ? 'P' : '-',
--                       GETFIELD(IODA2_IVT_Q, ive) ? 'Q' : '-',
--                       (uint32_t) GETFIELD(IODA2_IVT_SERVER, ive) >> 2,
--                       (uint32_t) GETFIELD(IODA2_IVT_PRIORITY, ive),
--                       (uint32_t) GETFIELD(IODA2_IVT_GEN, ive));
-+        g_string_append_printf(buf, "  %4x %c%c server=%04x prio=%02x gen=%d\n",
-+                               ics->offset + i,
-+                               GETFIELD(IODA2_IVT_P, ive) ? 'P' : '-',
-+                               GETFIELD(IODA2_IVT_Q, ive) ? 'Q' : '-',
-+                               (uint32_t) GETFIELD(IODA2_IVT_SERVER, ive) >> 2,
-+                               (uint32_t) GETFIELD(IODA2_IVT_PRIORITY, ive),
-+                               (uint32_t) GETFIELD(IODA2_IVT_GEN, ive));
-     }
+diff --git a/include/hw/ppc/xics.h b/include/hw/ppc/xics.h
+index 95ead0dd7c..1116aa6953 100644
+--- a/include/hw/ppc/xics.h
++++ b/include/hw/ppc/xics.h
+@@ -171,7 +171,7 @@ static inline bool ics_irq_free(ICSState *ics, uint32_t srcno)
  }
-diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
-index 6e3a5ccdec..5356a4e295 100644
---- a/hw/ppc/pnv.c
-+++ b/hw/ppc/pnv.c
-@@ -38,6 +38,7 @@
- #include "hw/loader.h"
- #include "hw/nmi.h"
+ 
+ void ics_set_irq_type(ICSState *ics, int srcno, bool lsi);
+-void icp_pic_print_info(ICPState *icp, Monitor *mon);
++void icp_pic_print_info(ICPState *icp, GString *buf);
+ void ics_pic_print_info(ICSState *ics, Monitor *mon);
+ 
+ void ics_resend(ICSState *ics);
+diff --git a/hw/intc/xics.c b/hw/intc/xics.c
+index 9b3b7abaea..039e10a0e4 100644
+--- a/hw/intc/xics.c
++++ b/hw/intc/xics.c
+@@ -42,7 +42,7 @@
+ #include "sysemu/reset.h"
+ #include "target/ppc/cpu.h"
+ 
+-void icp_pic_print_info(ICPState *icp, Monitor *mon)
++void icp_pic_print_info(ICPState *icp, GString *buf)
+ {
+     int cpu_index;
+ 
+@@ -63,9 +63,9 @@ void icp_pic_print_info(ICPState *icp, Monitor *mon)
+         icp_synchronize_state(icp);
+     }
+ 
+-    monitor_printf(mon, "CPU %d XIRR=%08x (%p) PP=%02x MFRR=%02x\n",
+-                   cpu_index, icp->xirr, icp->xirr_owner,
+-                   icp->pending_priority, icp->mfrr);
++    g_string_append_printf(buf, "CPU %d XIRR=%08x (%p) PP=%02x MFRR=%02x\n",
++                           cpu_index, icp->xirr, icp->xirr_owner,
++                           icp->pending_priority, icp->mfrr);
+ }
+ 
+ void ics_pic_print_info(ICSState *ics, Monitor *mon)
+diff --git a/hw/intc/xics_spapr.c b/hw/intc/xics_spapr.c
+index 37b2d99977..bab9d88218 100644
+--- a/hw/intc/xics_spapr.c
++++ b/hw/intc/xics_spapr.c
+@@ -34,6 +34,8 @@
+ #include "hw/ppc/xics_spapr.h"
+ #include "hw/ppc/fdt.h"
  #include "qapi/visitor.h"
 +#include "qapi/type-helpers.h"
- #include "monitor/monitor.h"
- #include "hw/intc/intc.h"
- #include "hw/ipmi/ipmi.h"
-@@ -774,8 +775,13 @@ static void pnv_chip_power8_pic_print_info(PnvChip *chip, Monitor *mon)
-     for (i = 0; i < chip8->num_phbs; i++) {
-         PnvPHB *phb = chip8->phbs[i];
-         PnvPHB3 *phb3 = PNV_PHB3(phb->backend);
-+        g_autoptr(GString) buf = g_string_new("");
-+        g_autoptr(HumanReadableText) info = NULL;
-+
-+        pnv_phb3_msi_pic_print_info(&phb3->msis, buf);
-+        info = human_readable_text_from_str(buf);
-+        monitor_puts(mon, info->human_readable_text);
++#include "monitor/monitor.h"
  
--        pnv_phb3_msi_pic_print_info(&phb3->msis, mon);
-         ics_pic_print_info(&phb3->lsis, mon);
+ /*
+  * Guest interfaces
+@@ -399,12 +401,16 @@ static void xics_spapr_print_info(SpaprInterruptController *intc, Monitor *mon)
+ {
+     ICSState *ics = ICS_SPAPR(intc);
+     CPUState *cs;
++    g_autoptr(GString) buf = g_string_new("");
++    g_autoptr(HumanReadableText) info = NULL;
+ 
+     CPU_FOREACH(cs) {
+         PowerPCCPU *cpu = POWERPC_CPU(cs);
+ 
+-        icp_pic_print_info(spapr_cpu_state(cpu)->icp, mon);
++        icp_pic_print_info(spapr_cpu_state(cpu)->icp, buf);
      }
++    info = human_readable_text_from_str(buf);
++    monitor_puts(mon, info->human_readable_text);
+ 
+     ics_pic_print_info(ics, mon);
  }
+diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
+index 5356a4e295..fa23b27a2b 100644
+--- a/hw/ppc/pnv.c
++++ b/hw/ppc/pnv.c
+@@ -1130,7 +1130,13 @@ static void pnv_chip_power8_intc_destroy(PnvChip *chip, PowerPCCPU *cpu)
+ static void pnv_chip_power8_intc_print_info(PnvChip *chip, PowerPCCPU *cpu,
+                                             Monitor *mon)
+ {
+-    icp_pic_print_info(ICP(pnv_cpu_state(cpu)->intc), mon);
++    g_autoptr(GString) buf = g_string_new("");
++    g_autoptr(HumanReadableText) info = NULL;
++
++    icp_pic_print_info(ICP(pnv_cpu_state(cpu)->intc), buf);
++
++    info = human_readable_text_from_str(buf);
++    monitor_puts(mon, info->human_readable_text);
+ }
+ 
+ /*
 -- 
 2.41.0
 
