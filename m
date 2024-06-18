@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2ECB90D814
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jun 2024 18:04:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8241190D816
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jun 2024 18:04:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sJbGb-0003OC-Pk; Tue, 18 Jun 2024 12:01:05 -0400
+	id 1sJbHH-0003rZ-8L; Tue, 18 Jun 2024 12:01:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sJbGZ-0003MC-8d
- for qemu-devel@nongnu.org; Tue, 18 Jun 2024 12:01:03 -0400
-Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sJbH4-0003gV-6q
+ for qemu-devel@nongnu.org; Tue, 18 Jun 2024 12:01:37 -0400
+Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sJbGX-0006kD-Jh
- for qemu-devel@nongnu.org; Tue, 18 Jun 2024 12:01:03 -0400
-Received: by mail-ej1-x631.google.com with SMTP id
- a640c23a62f3a-a6ef8bf500dso636675366b.0
- for <qemu-devel@nongnu.org>; Tue, 18 Jun 2024 09:01:01 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sJbH0-0006mH-Ra
+ for qemu-devel@nongnu.org; Tue, 18 Jun 2024 12:01:33 -0400
+Received: by mail-ej1-x636.google.com with SMTP id
+ a640c23a62f3a-a6f253a06caso672301366b.1
+ for <qemu-devel@nongnu.org>; Tue, 18 Jun 2024 09:01:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1718726459; x=1719331259; darn=nongnu.org;
+ d=linaro.org; s=google; t=1718726489; x=1719331289; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=LOG7Q1advPZZqyRZ93ugLO8dtsxdIWVJ2ikNItPvt4U=;
- b=HU91M5IEkIVB2QmgmMoUunm+3f+8KtyF5nI11KWpIv6vghsMobam9Y12+6kwFajLzW
- 3+wVP6+191U4blcNuxdBrFFPNeLVZ92e5Slnk2GGtFu9SlLRPbfKbTOgcXzQnYvgwyUr
- d+rP5t3UCZHVsKaIEQY/4IebixoTKHnizdpKNXspTMJVrgMMBZ0SZwzZM8uzMlL08P3M
- H2M1eyaxrK1XOUKGYSUBe8WiS1/F6EXgbKUMe2spuylvZ6d8EfxBLGlEQ6NiVlRJel2u
- D0lWbEI6KIw5ExWcOC39v1kzfQfYt7Ic/N6w/SsPhyLoLM7Zrrbk4ue1VutT9dAlAYk/
- qCIQ==
+ bh=GKwfCk465sr7WgOHafBJgyo22SuG659wATLOZz6Tx48=;
+ b=oEJUch4Dc/caW6XAjaleA1rEpatNBqm53C76Iw0TZQSduwVuzdyc6m6+FbwdzZ+lef
+ Yw0qxKXpK1ePsD0olMUoTvKNBw9AA6GEVccXGC3G6LqwqhukLfDGda6gPTW8n99L8wUj
+ pDAoQeLaaXja8jlLKf1XrGUB66poVhJrZp2S6bUspJhbGZPWIMYCbjwtYLN6GWrApZ5+
+ zlYN/Nk6+LNHnavDFRsYJmk+upuqF+Rw6LUdpEkA5dVtz9Ux3Z9OtXnC2UuJtgnrnYIW
+ Z05o6y6HB0mKc3X5n5Fi9+/sM9ExnwJNdvd5O+jDECJyGS1uSXfYIGVLQUdV/vxhGufO
+ ue4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718726459; x=1719331259;
+ d=1e100.net; s=20230601; t=1718726489; x=1719331289;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LOG7Q1advPZZqyRZ93ugLO8dtsxdIWVJ2ikNItPvt4U=;
- b=wP8tzSrjj3Mn5BDe6I8Hw19a6U7+wYvsF3UA6ul6QTh4B9X7YG0qTOXBbg409LBbf+
- NA0U6ea5hatXsqfWhgRqNUbHPmUjVlDaOT1ROCe8l2jPKuKhMf3ab04d8F6oPuqgK7UP
- xOorSJejywI4S4GwIbg/6sr5Z6HX3zTXuhG54kx1PK0BLgO+9Cp90cEXGFXCZZ1IMz7w
- ZboreuuH8zNiPHwv4WF+s1pvrcMd26E0cxFuQfIAUNQelNSgxHwhbbF4q4mw3dXLmCaC
- e93KK7MWtxb5AeFXrXHlou8QKB4LYpOH4D6WpGPpE3a/hTmNKyjjxBY9/cy3G5hwpess
- l3Jg==
-X-Gm-Message-State: AOJu0YzZE/7prxAs24tAHXazn4y51I298BVKeawU0SL3J8B2l2sqw+jL
- E6urkRlr87oB9TtWQafMsUdAP4b2gg92/QjM4VPs1IlfZQv7ZbfqEYugmw/EqdGMxxfG3zuiYqI
+ bh=GKwfCk465sr7WgOHafBJgyo22SuG659wATLOZz6Tx48=;
+ b=mPOQNP59bPVEA6iicOWp7VrDf2cCdrQmz6LYzdqcekz12foPm1cZz16XXI1kvDz9ts
+ 9I+rarTKICvJf8RhvFHqAJxdc+eEnFc1gzY9wpL71j2bPZp1XoSit7I1mf4ZWJ/JDoDQ
+ NWjkKEfo0jFnVOFjavUa0BFAUOb58V5Y4y9FzxsxHhVBEwXjHbXPKPY+S3ZJLLheqSJY
+ WXYhNCsX4hlfdpD8fCAcY5XNAtjuJiMMY4XPf7auIWDBA/5TdD3qJWLFPTNj92OoIdg2
+ O6FE8elQdnXm4H1EN107l40qCYrm1aKYGhPyDgmk8huFmbFxsaY7GRghGQtmuP52vgff
+ 2eyg==
+X-Gm-Message-State: AOJu0Yw0c3z8k9glS9Ab1J4lH7hMLrLGhGfv9IkHlgAYDQYsz+uhRWjo
+ ef5FWOztiot7qFMJeZpGPq+FzRaADV1hwcZW3y+i8ml+lswSIHBRyQcRsuhEFLqQFqdk4gFqEY1
  T
-X-Google-Smtp-Source: AGHT+IENuU80d+9DAX1EYYkYVpeOpJoWtqP7He8grXC4AvTm0xIbKkG6GPStFo/yFlk59Cm7/4Pm6Q==
-X-Received: by 2002:a17:907:bb94:b0:a6f:2a43:e956 with SMTP id
- a640c23a62f3a-a6f60de6a0emr832989766b.74.1718726459399; 
- Tue, 18 Jun 2024 09:00:59 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGQQiYMDvRO71dvEcFEJctaLix1l9htSjRP2+coMaY+M/7vaQi9rR7exoCUmatmhjG38T3VTg==
+X-Received: by 2002:a17:906:fb8f:b0:a6f:49bc:e858 with SMTP id
+ a640c23a62f3a-a6f60dc5110mr1012212966b.53.1718726489107; 
+ Tue, 18 Jun 2024 09:01:29 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.212.55])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a6f56fa67ecsm621213766b.215.2024.06.18.09.00.58
+ a640c23a62f3a-a6f57552633sm625781966b.191.2024.06.18.09.01.27
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 18 Jun 2024 09:00:59 -0700 (PDT)
+ Tue, 18 Jun 2024 09:01:28 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Thomas Huth <thuth@redhat.com>, Zhao Liu <zhao1.liu@intel.com>,
  Igor Mammedov <imammedo@redhat.com>
-Subject: [PULL 03/76] hw/usb/hcd-xhci: Remove XHCI_FLAG_FORCE_PCIE_ENDCAP flag
-Date: Tue, 18 Jun 2024 17:59:25 +0200
-Message-ID: <20240618160039.36108-4-philmd@linaro.org>
+Subject: [PULL 08/76] hw/i386/pc: Remove deprecated pc-i440fx-2.1 machine
+Date: Tue, 18 Jun 2024 17:59:30 +0200
+Message-ID: <20240618160039.36108-9-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240618160039.36108-1-philmd@linaro.org>
 References: <20240618160039.36108-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::631;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x631.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::636;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x636.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,60 +93,130 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-XHCI_FLAG_FORCE_PCIE_ENDCAP was only used by the
-pc-i440fx-2.0 machine, which got removed. Remove it
-and simplify usb_xhci_pci_realize().
+The pc-i440fx-2.1 machine was deprecated for the 8.2
+release (see commit c7437f0ddb "docs/about: Mark the
+old pc-i440fx-2.0 - 2.3 machine types as deprecated"),
+time to remove it.
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Reviewed-by: Igor Mammedov <imammedo@redhat.com>
-Message-Id: <20240617071118.60464-4-philmd@linaro.org>
+Message-Id: <20240617071118.60464-9-philmd@linaro.org>
 ---
- hw/usb/hcd-xhci.h     | 1 -
- hw/usb/hcd-xhci-nec.c | 2 --
- hw/usb/hcd-xhci-pci.c | 3 +--
- 3 files changed, 1 insertion(+), 5 deletions(-)
+ docs/about/deprecated.rst       |  2 +-
+ docs/about/removed-features.rst |  2 +-
+ include/hw/i386/pc.h            |  3 ---
+ hw/i386/pc.c                    |  7 -------
+ hw/i386/pc_piix.c               | 23 -----------------------
+ 5 files changed, 2 insertions(+), 35 deletions(-)
 
-diff --git a/hw/usb/hcd-xhci.h b/hw/usb/hcd-xhci.h
-index 98f598382a..1efa4858fb 100644
---- a/hw/usb/hcd-xhci.h
-+++ b/hw/usb/hcd-xhci.h
-@@ -37,7 +37,6 @@ typedef struct XHCIEPContext XHCIEPContext;
+diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+index e12eab1f72..e332eb46e9 100644
+--- a/docs/about/deprecated.rst
++++ b/docs/about/deprecated.rst
+@@ -212,7 +212,7 @@ deprecated; use the new name ``dtb-randomness`` instead. The new name
+ better reflects the way this property affects all random data within
+ the device tree blob, not just the ``kaslr-seed`` node.
  
- enum xhci_flags {
-     XHCI_FLAG_SS_FIRST = 1,
--    XHCI_FLAG_FORCE_PCIE_ENDCAP,
-     XHCI_FLAG_ENABLE_STREAMS,
+-``pc-i440fx-2.1`` up to ``pc-i440fx-2.3`` (since 8.2) and ``pc-i440fx-2.4`` up to ``pc-i440fx-2.12`` (since 9.1)
++``pc-i440fx-2.2`` up to ``pc-i440fx-2.3`` (since 8.2) and ``pc-i440fx-2.4`` up to ``pc-i440fx-2.12`` (since 9.1)
+ ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+ 
+ These old machine types are quite neglected nowadays and thus might have
+diff --git a/docs/about/removed-features.rst b/docs/about/removed-features.rst
+index f84bfaf2b6..347e04e50e 100644
+--- a/docs/about/removed-features.rst
++++ b/docs/about/removed-features.rst
+@@ -948,7 +948,7 @@ mips ``fulong2e`` machine alias (removed in 6.0)
+ 
+ This machine has been renamed ``fuloong2e``.
+ 
+-``pc-0.10`` up to ``pc-i440fx-2.0`` (removed in 4.0 up to 9.0)
++``pc-0.10`` up to ``pc-i440fx-2.1`` (removed in 4.0 up to 9.0)
+ ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+ 
+ These machine types were very old and likely could not be used for live
+diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
+index 434e531160..0d730318fe 100644
+--- a/include/hw/i386/pc.h
++++ b/include/hw/i386/pc.h
+@@ -314,9 +314,6 @@ extern const size_t pc_compat_2_3_len;
+ extern GlobalProperty pc_compat_2_2[];
+ extern const size_t pc_compat_2_2_len;
+ 
+-extern GlobalProperty pc_compat_2_1[];
+-extern const size_t pc_compat_2_1_len;
+-
+ #define DEFINE_PC_MACHINE(suffix, namestr, initfn, optsfn) \
+     static void pc_machine_##suffix##_class_init(ObjectClass *oc, void *data) \
+     { \
+diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+index d0f2628d46..b0b8ecd64d 100644
+--- a/hw/i386/pc.c
++++ b/hw/i386/pc.c
+@@ -313,13 +313,6 @@ GlobalProperty pc_compat_2_2[] = {
  };
+ const size_t pc_compat_2_2_len = G_N_ELEMENTS(pc_compat_2_2);
  
-diff --git a/hw/usb/hcd-xhci-nec.c b/hw/usb/hcd-xhci-nec.c
-index 328e5bfe7c..5d5b069cf9 100644
---- a/hw/usb/hcd-xhci-nec.c
-+++ b/hw/usb/hcd-xhci-nec.c
-@@ -43,8 +43,6 @@ static Property nec_xhci_properties[] = {
-     DEFINE_PROP_ON_OFF_AUTO("msix", XHCIPciState, msix, ON_OFF_AUTO_AUTO),
-     DEFINE_PROP_BIT("superspeed-ports-first", XHCINecState, flags,
-                     XHCI_FLAG_SS_FIRST, true),
--    DEFINE_PROP_BIT("force-pcie-endcap", XHCINecState, flags,
--                    XHCI_FLAG_FORCE_PCIE_ENDCAP, false),
-     DEFINE_PROP_UINT32("intrs", XHCINecState, intrs, XHCI_MAXINTRS),
-     DEFINE_PROP_UINT32("slots", XHCINecState, slots, XHCI_MAXSLOTS),
-     DEFINE_PROP_END_OF_LIST(),
-diff --git a/hw/usb/hcd-xhci-pci.c b/hw/usb/hcd-xhci-pci.c
-index 4423983308..cbad96f393 100644
---- a/hw/usb/hcd-xhci-pci.c
-+++ b/hw/usb/hcd-xhci-pci.c
-@@ -148,8 +148,7 @@ static void usb_xhci_pci_realize(struct PCIDevice *dev, Error **errp)
-                      PCI_BASE_ADDRESS_MEM_TYPE_64,
-                      &s->xhci.mem);
+-GlobalProperty pc_compat_2_1[] = {
+-    PC_CPU_MODEL_IDS("2.1.0")
+-    { "coreduo" "-" TYPE_X86_CPU, "vmx", "on" },
+-    { "core2duo" "-" TYPE_X86_CPU, "vmx", "on" },
+-};
+-const size_t pc_compat_2_1_len = G_N_ELEMENTS(pc_compat_2_1);
+-
+ GSIState *pc_gsi_create(qemu_irq **irqs, bool pci_enabled)
+ {
+     GSIState *s;
+diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
+index a750a0e6ab..e0b421dd51 100644
+--- a/hw/i386/pc_piix.c
++++ b/hw/i386/pc_piix.c
+@@ -66,7 +66,6 @@
+ #include "hw/hyperv/vmbus-bridge.h"
+ #include "hw/mem/nvdimm.h"
+ #include "hw/i386/acpi-build.h"
+-#include "kvm/kvm-cpu.h"
+ #include "target/i386/cpu.h"
  
--    if (pci_bus_is_express(pci_get_bus(dev)) ||
--        xhci_get_flag(&s->xhci, XHCI_FLAG_FORCE_PCIE_ENDCAP)) {
-+    if (pci_bus_is_express(pci_get_bus(dev))) {
-         ret = pcie_endpoint_cap_init(dev, 0xa0);
-         assert(ret > 0);
-     }
+ #define XEN_IOAPIC_NUM_PIRQS 128ULL
+@@ -435,12 +434,6 @@ static void pc_compat_2_2_fn(MachineState *machine)
+     pc_compat_2_3_fn(machine);
+ }
+ 
+-static void pc_compat_2_1_fn(MachineState *machine)
+-{
+-    pc_compat_2_2_fn(machine);
+-    x86_cpu_change_kvm_default("svm", NULL);
+-}
+-
+ #ifdef CONFIG_ISAPC
+ static void pc_init_isa(MachineState *machine)
+ {
+@@ -866,22 +859,6 @@ static void pc_i440fx_2_2_machine_options(MachineClass *m)
+ DEFINE_I440FX_MACHINE(v2_2, "pc-i440fx-2.2", pc_compat_2_2_fn,
+                       pc_i440fx_2_2_machine_options);
+ 
+-static void pc_i440fx_2_1_machine_options(MachineClass *m)
+-{
+-    PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
+-
+-    pc_i440fx_2_2_machine_options(m);
+-    m->hw_version = "2.1.0";
+-    m->default_display = NULL;
+-    compat_props_add(m->compat_props, hw_compat_2_1, hw_compat_2_1_len);
+-    compat_props_add(m->compat_props, pc_compat_2_1, pc_compat_2_1_len);
+-    pcmc->smbios_uuid_encoded = false;
+-    pcmc->enforce_aligned_dimm = false;
+-}
+-
+-DEFINE_I440FX_MACHINE(v2_1, "pc-i440fx-2.1", pc_compat_2_1_fn,
+-                      pc_i440fx_2_1_machine_options);
+-
+ #ifdef CONFIG_ISAPC
+ static void isapc_machine_options(MachineClass *m)
+ {
 -- 
 2.41.0
 
