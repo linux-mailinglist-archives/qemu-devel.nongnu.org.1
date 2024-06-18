@@ -2,26 +2,26 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F38590D8B0
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jun 2024 18:13:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 659FC90D8AC
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jun 2024 18:13:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sJbSQ-0002q0-Hm; Tue, 18 Jun 2024 12:13:18 -0400
+	id 1sJbSR-0002tf-Ni; Tue, 18 Jun 2024 12:13:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1sJbSO-0002ml-N3
- for qemu-devel@nongnu.org; Tue, 18 Jun 2024 12:13:16 -0400
+ id 1sJbSP-0002oU-6J
+ for qemu-devel@nongnu.org; Tue, 18 Jun 2024 12:13:17 -0400
 Received: from vps-vb.mhejs.net ([37.28.154.113])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1sJbSN-0000ou-6L
+ id 1sJbSN-0000p4-O6
  for qemu-devel@nongnu.org; Tue, 18 Jun 2024 12:13:16 -0400
 Received: from MUA by vps-vb.mhejs.net with esmtps (TLS1.2) tls
  TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.94.2)
  (envelope-from <mail@maciej.szmigiero.name>)
- id 1sJbS1-0001aT-BC; Tue, 18 Jun 2024 18:12:53 +0200
+ id 1sJbS6-0001al-Mz; Tue, 18 Jun 2024 18:12:58 +0200
 From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
 To: Peter Xu <peterx@redhat.com>,
 	Fabiano Rosas <farosas@suse.de>
@@ -31,10 +31,9 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Avihai Horon <avihaih@nvidia.com>,
  Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
-Subject: [PATCH v1 01/13] vfio/migration: Add save_{iterate,
- complete_precopy}_started trace events
-Date: Tue, 18 Jun 2024 18:12:19 +0200
-Message-ID: <8a5b0ed0530bfbecdc1a1a908da7dd7b2eb2687a.1718717584.git.maciej.szmigiero@oracle.com>
+Subject: [PATCH v1 02/13] migration/ram: Add load start trace event
+Date: Tue, 18 Jun 2024 18:12:20 +0200
+Message-ID: <c398fb5cace9472b4700657a762c48f5ffdc9d65.1718717584.git.maciej.szmigiero@oracle.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <cover.1718717584.git.maciej.szmigiero@oracle.com>
 References: <cover.1718717584.git.maciej.szmigiero@oracle.com>
@@ -64,88 +63,36 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
 
-This way both the start and end points of migrating a particular VFIO
-device are known.
-
-Add also a vfio_save_iterate_empty_hit trace event so it is known when
-there's no more data to send for that device.
+There's a RAM load complete trace event but there wasn't its start equivalent.
 
 Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
 ---
- hw/vfio/migration.c           | 13 +++++++++++++
- hw/vfio/trace-events          |  3 +++
- include/hw/vfio/vfio-common.h |  3 +++
- 3 files changed, 19 insertions(+)
+ migration/ram.c        | 1 +
+ migration/trace-events | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
-index 34d4be2ce1b1..93f767e3c2dd 100644
---- a/hw/vfio/migration.c
-+++ b/hw/vfio/migration.c
-@@ -472,6 +472,9 @@ static int vfio_save_setup(QEMUFile *f, void *opaque, Error **errp)
-         return -ENOMEM;
+diff --git a/migration/ram.c b/migration/ram.c
+index ceea586b06ba..87b0cf86db0c 100644
+--- a/migration/ram.c
++++ b/migration/ram.c
+@@ -4129,6 +4129,7 @@ static int ram_load_precopy(QEMUFile *f)
+                           RAM_SAVE_FLAG_ZERO);
      }
  
-+    migration->save_iterate_run = false;
-+    migration->save_iterate_empty_hit = false;
-+
-     if (vfio_precopy_supported(vbasedev)) {
-         switch (migration->device_state) {
-         case VFIO_DEVICE_STATE_RUNNING:
-@@ -605,9 +608,17 @@ static int vfio_save_iterate(QEMUFile *f, void *opaque)
-     VFIOMigration *migration = vbasedev->migration;
-     ssize_t data_size;
- 
-+    if (!migration->save_iterate_run) {
-+        trace_vfio_save_iterate_started(vbasedev->name);
-+        migration->save_iterate_run = true;
-+    }
-+
-     data_size = vfio_save_block(f, migration);
-     if (data_size < 0) {
-         return data_size;
-+    } else if (data_size == 0 && !migration->save_iterate_empty_hit) {
-+        trace_vfio_save_iterate_empty_hit(vbasedev->name);
-+        migration->save_iterate_empty_hit = true;
-     }
- 
-     vfio_update_estimated_pending_data(migration, data_size);
-@@ -633,6 +644,8 @@ static int vfio_save_complete_precopy(QEMUFile *f, void *opaque)
-     int ret;
-     Error *local_err = NULL;
- 
-+    trace_vfio_save_complete_precopy_started(vbasedev->name);
-+
-     /* We reach here with device state STOP or STOP_COPY only */
-     ret = vfio_migration_set_state(vbasedev, VFIO_DEVICE_STATE_STOP_COPY,
-                                    VFIO_DEVICE_STATE_STOP, &local_err);
-diff --git a/hw/vfio/trace-events b/hw/vfio/trace-events
-index 64161bf6f44c..814000796687 100644
---- a/hw/vfio/trace-events
-+++ b/hw/vfio/trace-events
-@@ -158,8 +158,11 @@ vfio_migration_state_notifier(const char *name, int state) " (%s) state %d"
- vfio_save_block(const char *name, int data_size) " (%s) data_size %d"
- vfio_save_cleanup(const char *name) " (%s)"
- vfio_save_complete_precopy(const char *name, int ret) " (%s) ret %d"
-+vfio_save_complete_precopy_started(const char *name) " (%s)"
- vfio_save_device_config_state(const char *name) " (%s)"
- vfio_save_iterate(const char *name, uint64_t precopy_init_size, uint64_t precopy_dirty_size) " (%s) precopy initial size 0x%"PRIx64" precopy dirty size 0x%"PRIx64
-+vfio_save_iterate_started(const char *name) " (%s)"
-+vfio_save_iterate_empty_hit(const char *name) " (%s)"
- vfio_save_setup(const char *name, uint64_t data_buffer_size) " (%s) data buffer size 0x%"PRIx64
- vfio_state_pending_estimate(const char *name, uint64_t precopy, uint64_t postcopy, uint64_t precopy_init_size, uint64_t precopy_dirty_size) " (%s) precopy 0x%"PRIx64" postcopy 0x%"PRIx64" precopy initial size 0x%"PRIx64" precopy dirty size 0x%"PRIx64
- vfio_state_pending_exact(const char *name, uint64_t precopy, uint64_t postcopy, uint64_t stopcopy_size, uint64_t precopy_init_size, uint64_t precopy_dirty_size) " (%s) precopy 0x%"PRIx64" postcopy 0x%"PRIx64" stopcopy size 0x%"PRIx64" precopy initial size 0x%"PRIx64" precopy dirty size 0x%"PRIx64
-diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
-index 4cb1ab8645dc..510818f4dae3 100644
---- a/include/hw/vfio/vfio-common.h
-+++ b/include/hw/vfio/vfio-common.h
-@@ -71,6 +71,9 @@ typedef struct VFIOMigration {
-     uint64_t precopy_init_size;
-     uint64_t precopy_dirty_size;
-     bool initial_data_sent;
-+
-+    bool save_iterate_run;
-+    bool save_iterate_empty_hit;
- } VFIOMigration;
- 
- struct VFIOGroup;
++    trace_ram_load_start();
+     while (!ret && !(flags & RAM_SAVE_FLAG_EOS)) {
+         ram_addr_t addr;
+         void *host = NULL, *host_bak = NULL;
+diff --git a/migration/trace-events b/migration/trace-events
+index 0b7c3324fb5e..43dfe4a4bc03 100644
+--- a/migration/trace-events
++++ b/migration/trace-events
+@@ -115,6 +115,7 @@ colo_flush_ram_cache_end(void) ""
+ save_xbzrle_page_skipping(void) ""
+ save_xbzrle_page_overflow(void) ""
+ ram_save_iterate_big_wait(uint64_t milliconds, int iterations) "big wait: %" PRIu64 " milliseconds, %d iterations"
++ram_load_start(void) ""
+ ram_load_complete(int ret, uint64_t seq_iter) "exit_code %d seq iteration %" PRIu64
+ ram_write_tracking_ramblock_start(const char *block_id, size_t page_size, void *addr, size_t length) "%s: page_size: %zu addr: %p length: %zu"
+ ram_write_tracking_ramblock_stop(const char *block_id, size_t page_size, void *addr, size_t length) "%s: page_size: %zu addr: %p length: %zu"
 
