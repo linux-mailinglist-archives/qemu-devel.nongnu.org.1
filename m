@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6293D90D859
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jun 2024 18:10:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EBE090D841
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jun 2024 18:08:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sJbMO-0000g2-Pr; Tue, 18 Jun 2024 12:07:04 -0400
+	id 1sJbMR-0001Bz-IS; Tue, 18 Jun 2024 12:07:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sJbMB-0000RW-VD
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sJbMF-0000UT-FF
  for qemu-devel@nongnu.org; Tue, 18 Jun 2024 12:06:56 -0400
-Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sJbM8-0007oq-OY
- for qemu-devel@nongnu.org; Tue, 18 Jun 2024 12:06:51 -0400
-Received: by mail-ej1-x62f.google.com with SMTP id
- a640c23a62f3a-a6f11a2d18aso739220666b.2
- for <qemu-devel@nongnu.org>; Tue, 18 Jun 2024 09:06:48 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sJbMD-0007pI-RY
+ for qemu-devel@nongnu.org; Tue, 18 Jun 2024 12:06:55 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-42281d8cd2dso39992775e9.3
+ for <qemu-devel@nongnu.org>; Tue, 18 Jun 2024 09:06:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1718726806; x=1719331606; darn=nongnu.org;
+ d=linaro.org; s=google; t=1718726812; x=1719331612; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=rOeXVUMAZHBjW9XDQ/kaolb4y+LTzn2/7YBfwTD0b4w=;
- b=gneVIZUT5bC/wIv8I8GHGXueWGc1wTmDYrUT3uknGan6hQHrd0kuegJP6JxMKj+Ieh
- 0dLJ60RZ0jhKM4HFG6jj0FO4nugQwOTUbacuGoMQjgxf+ks9Gg07OMCCcIJ8tcvWknza
- hKocRA1r+G9brw5pb1Z5JcMsSoHoZedPdYtgsTkwlyfgi8Q/BtDedZqB6pFPp1ZsjRmf
- nQi6zEPKAKxqihSIK0LFVgWDhUipAyFM7NuXaXRQRqhSOBo8sdwannGgs0Tr/pUFasgK
- 0NwoZgKsQYYAVXSGmIWrW1XrrmTwcKZTedrLsGBtsoHq5rwXOIMituhmCcFc0JIKYpHt
- dDTA==
+ bh=hte3egNIkJ/sFzULQkXNn/TRVVq6KAGN1byrZgRqcoo=;
+ b=RkTVKHrP8jQnl4Moe7m8vNYOoYo8ZyAOE468q+ciVzgKtYF1F4N2AHxubiO9z3OOA/
+ uRdWng9uIgv6K9rzFLY7mxWiiczgykk7W/n0bza0JLzt3kkIoBpQX51LTbTMm1NZQKUd
+ z9W4gLhnn0YYQKdjCI9+GT3Fuzq5TshCVNyEU41VR2y/HJpocS0jjIDZWknVNssmQMCL
+ K+SX1q8xCYBM1xIvdUyC1TIeQQYUTLzN59/mooJoc6jalG6qB4j9vH5LXHGXno5qTLdF
+ YRYUl+6AtHfwWA4Z/iIqnOWEogQj72Im31nEDk2Lx7Rap+z9NRDhiDIsDuRDjOgi14ge
+ 1W2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718726806; x=1719331606;
+ d=1e100.net; s=20230601; t=1718726812; x=1719331612;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=rOeXVUMAZHBjW9XDQ/kaolb4y+LTzn2/7YBfwTD0b4w=;
- b=gB6a8IN1KSlJ8P9w4W3tBMM+7RwiFtK8V6Hdrhtlb/hQwVJ9RAXRGVTpcBYoHGGWKF
- wP4+VF10Yni+84K3gH5Lhn7lJzflaHlNP+PdI2Q5q07K/hZfDcSisPnPz6nFfNP/gehg
- OEVYd6AXJt6T71sLC6G03D98/AoPb6kHcwcGuriPkRReFoxRcUvLoN0bTgFPnhj+EcYj
- VmjZi/9x2f6pnd3bfVgezHnnopYQ8/JXXUjCBl6RowG5mH6vmNbdfjZ0qOX4RoAFaWVt
- kD9A7jEQJJQDVbfE2rzTTwIdflugTqy/1zLIfoIxMi/kWaHGeLlMX1V3FCDOacU/nIAZ
- ZNJg==
-X-Gm-Message-State: AOJu0YyPgvSxDyIWRXFanuMOL9F41DP9HBpN5v5GkEyx2s934yejB+Ug
- 6PDzYRP3NcM5JC8msptODAGlcP9CoacDoTMiQp5AnKwce54AyAEvzHiPGKtnnaDDkRe9rIWHwA+
- 4
-X-Google-Smtp-Source: AGHT+IE5aW6MS7RXRscOH+XeeUKpXp3cuqnyI91Z/DoFv8ql3WRCtb/DxvvL8QMcfkpoEFbcq5YaQA==
-X-Received: by 2002:a17:906:3890:b0:a6f:4fc8:265f with SMTP id
- a640c23a62f3a-a6f60d41459mr745614766b.42.1718726806557; 
- Tue, 18 Jun 2024 09:06:46 -0700 (PDT)
+ bh=hte3egNIkJ/sFzULQkXNn/TRVVq6KAGN1byrZgRqcoo=;
+ b=jXXed5dQrqsalNEmpkbdepz2JW2qAErkOsZYQx9uzc5yhgVTXo0VLzgFferH56PI9P
+ OmHlVTWxijp3YDzgwSKvvK/CpWgm9HlqLd+9VvSnM+eB10UDZYm/prYmDN+Op1ynomXC
+ 1gGIfM5vL4k7kmY5x4cRCy6f3SAV/u5z0TD/GG2K8opkc4EV+nnelzr+myy7K4ffCVQv
+ DUK08SI/QIDW6o+SoTTZTb/FVz+2ZTrHFnNId5Jn8bpCsbGZu4+X84ZOKx59a9TzTVdm
+ tVrMtTqV5LuLN9r67qEppSfS6oClMQcSGReIq7nIp0cTzMkBCcp1vqzteYG6KWVtn/QH
+ HS0g==
+X-Gm-Message-State: AOJu0YxzNBvEXvjMMC8th5KPCVQ1GIEro9y7eG4t6OilKxrS1WxlbbSk
+ 7dhR0iRtqQoaruVjzqNDuJSoG6Mr+xgEeg1CD1j39s3Z5uMvC615OziWN0+wozgkPBgKhddECbw
+ L
+X-Google-Smtp-Source: AGHT+IGJqS56tduJSATqOY7HymER6vn43KQQTpHXgf6SwaZb4ZfIcnncCc4bHIauy9Cz0P7HtIrobQ==
+X-Received: by 2002:a05:600c:2e51:b0:41b:f979:e19b with SMTP id
+ 5b1f17b1804b1-42304854eeamr106019825e9.39.1718726812035; 
+ Tue, 18 Jun 2024 09:06:52 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.212.55])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-360917c264bsm7145160f8f.56.2024.06.18.09.06.45
+ 5b1f17b1804b1-422f641a633sm193554665e9.43.2024.06.18.09.06.51
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 18 Jun 2024 09:06:46 -0700 (PDT)
+ Tue, 18 Jun 2024 09:06:51 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>, Song Gao <gaosong@loongson.cn>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 63/76] hw/intc/loongson_ipi: Provide per core MMIO address
- spaces
-Date: Tue, 18 Jun 2024 18:00:25 +0200
-Message-ID: <20240618160039.36108-64-philmd@linaro.org>
+Subject: [PULL 64/76] hw/intc/loongson_ipi: Replace ipi_getcpu with
+ cpu_by_arch_id
+Date: Tue, 18 Jun 2024 18:00:26 +0200
+Message-ID: <20240618160039.36108-65-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240618160039.36108-1-philmd@linaro.org>
 References: <20240618160039.36108-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,190 +95,87 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jiaxun Yang <jiaxun.yang@flygoat.com>
 
-The real IPI hardware have dedicated MMIO registers mapped into
-memory address space for every core. This is not used by LoongArch
-guest software but it is essential for CPU without IOCSR such as
-Loongson-3A1000.
+cpu_by_arch_id is doing the same thing as our ipi_getcpu logic.
 
-Implement it with existing infrastructure.
-
-Acked-by: Song Gao <gaosong@loongson.cn>
 Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Message-ID: <20240605-loongson3-ipi-v3-2-ddd2c0e03fa3@flygoat.com>
+Reviewed-by: Song Gao <gaosong@loongson.cn>
+Message-ID: <20240605-loongson3-ipi-v3-4-ddd2c0e03fa3@flygoat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/intc/loongson_ipi.h |  2 +
- hw/intc/loongson_ipi.c         | 86 +++++++++++++++++++++++++---------
- 2 files changed, 67 insertions(+), 21 deletions(-)
+ hw/intc/loongson_ipi.c | 39 +++------------------------------------
+ 1 file changed, 3 insertions(+), 36 deletions(-)
 
-diff --git a/include/hw/intc/loongson_ipi.h b/include/hw/intc/loongson_ipi.h
-index 2c0e8820f5..3f795edbf3 100644
---- a/include/hw/intc/loongson_ipi.h
-+++ b/include/hw/intc/loongson_ipi.h
-@@ -34,6 +34,8 @@
- OBJECT_DECLARE_SIMPLE_TYPE(LoongsonIPI, LOONGSON_IPI)
- 
- typedef struct IPICore {
-+    LoongsonIPI *ipi;
-+    MemoryRegion *ipi_mmio_mem;
-     uint32_t status;
-     uint32_t en;
-     uint32_t set;
 diff --git a/hw/intc/loongson_ipi.c b/hw/intc/loongson_ipi.c
-index 93cc50a37a..08a74a0b4f 100644
+index 08a74a0b4f..e6a7142480 100644
 --- a/hw/intc/loongson_ipi.c
 +++ b/hw/intc/loongson_ipi.c
-@@ -23,16 +23,14 @@
- #endif
- #include "trace.h"
- 
--static MemTxResult loongson_ipi_readl(void *opaque, hwaddr addr,
--                                       uint64_t *data,
--                                       unsigned size, MemTxAttrs attrs)
-+static MemTxResult loongson_ipi_core_readl(void *opaque, hwaddr addr,
-+                                           uint64_t *data,
-+                                           unsigned size, MemTxAttrs attrs)
- {
--    IPICore *s;
--    LoongsonIPI *ipi = opaque;
-+    IPICore *s = opaque;
-     uint64_t ret = 0;
-     int index = 0;
- 
--    s = &ipi->cpu[attrs.requester_id];
-     addr &= 0xff;
-     switch (addr) {
-     case CORE_STATUS_OFF:
-@@ -61,6 +59,21 @@ static MemTxResult loongson_ipi_readl(void *opaque, hwaddr addr,
+@@ -118,39 +118,6 @@ static MemTxResult send_ipi_data(CPUState *cpu, uint64_t val, hwaddr addr,
      return MEMTX_OK;
  }
  
-+static MemTxResult loongson_ipi_iocsr_readl(void *opaque, hwaddr addr,
-+                                            uint64_t *data,
-+                                            unsigned size, MemTxAttrs attrs)
-+{
-+    LoongsonIPI *ipi = opaque;
-+    IPICore *s;
-+
-+    if (attrs.requester_id >= ipi->num_cpu) {
-+        return MEMTX_DECODE_ERROR;
-+    }
-+
-+    s = &ipi->cpu[attrs.requester_id];
-+    return loongson_ipi_core_readl(s, addr, data, size, attrs);
-+}
-+
- static AddressSpace *get_cpu_iocsr_as(CPUState *cpu)
+-static int archid_cmp(const void *a, const void *b)
+-{
+-   CPUArchId *archid_a = (CPUArchId *)a;
+-   CPUArchId *archid_b = (CPUArchId *)b;
+-
+-   return archid_a->arch_id - archid_b->arch_id;
+-}
+-
+-static CPUArchId *find_cpu_by_archid(MachineState *ms, uint32_t id)
+-{
+-    CPUArchId apic_id, *found_cpu;
+-
+-    apic_id.arch_id = id;
+-    found_cpu = bsearch(&apic_id, ms->possible_cpus->cpus,
+-        ms->possible_cpus->len, sizeof(*ms->possible_cpus->cpus),
+-        archid_cmp);
+-
+-    return found_cpu;
+-}
+-
+-static CPUState *ipi_getcpu(int arch_id)
+-{
+-    MachineState *machine = MACHINE(qdev_get_machine());
+-    CPUArchId *archid;
+-
+-    archid = find_cpu_by_archid(machine, arch_id);
+-    if (archid) {
+-        return CPU(archid->cpu);
+-    }
+-
+-    return NULL;
+-}
+-
+ static MemTxResult mail_send(uint64_t val, MemTxAttrs attrs)
  {
- #ifdef TARGET_LOONGARCH64
-@@ -174,17 +187,17 @@ static MemTxResult any_send(uint64_t val, MemTxAttrs attrs)
-     return send_ipi_data(cs, val, addr, attrs);
- }
- 
--static MemTxResult loongson_ipi_writel(void *opaque, hwaddr addr, uint64_t val,
--                                        unsigned size, MemTxAttrs attrs)
-+static MemTxResult loongson_ipi_core_writel(void *opaque, hwaddr addr,
-+                                            uint64_t val, unsigned size,
-+                                            MemTxAttrs attrs)
- {
--    LoongsonIPI *ipi = opaque;
--    IPICore *s;
-+    IPICore *s = opaque;
-+    LoongsonIPI *ipi = s->ipi;
-     int index = 0;
      uint32_t cpuid;
-     uint8_t vector;
+@@ -158,7 +125,7 @@ static MemTxResult mail_send(uint64_t val, MemTxAttrs attrs)
      CPUState *cs;
  
--    s = &ipi->cpu[attrs.requester_id];
-     addr &= 0xff;
-     trace_loongson_ipi_write(size, (uint64_t)addr, val);
-     switch (addr) {
-@@ -215,13 +228,11 @@ static MemTxResult loongson_ipi_writel(void *opaque, hwaddr addr, uint64_t val,
+     cpuid = extract32(val, 16, 10);
+-    cs = ipi_getcpu(cpuid);
++    cs = cpu_by_arch_id(cpuid);
+     if (cs == NULL) {
+         return MEMTX_DECODE_ERROR;
+     }
+@@ -176,7 +143,7 @@ static MemTxResult any_send(uint64_t val, MemTxAttrs attrs)
+     CPUState *cs;
+ 
+     cpuid = extract32(val, 16, 10);
+-    cs = ipi_getcpu(cpuid);
++    cs = cpu_by_arch_id(cpuid);
+     if (cs == NULL) {
+         return MEMTX_DECODE_ERROR;
+     }
+@@ -227,7 +194,7 @@ static MemTxResult loongson_ipi_core_writel(void *opaque, hwaddr addr,
+         cpuid = extract32(val, 16, 10);
          /* IPI status vector */
          vector = extract8(val, 0, 5);
-         cs = ipi_getcpu(cpuid);
--        if (cs == NULL) {
-+        if (cs == NULL || cs->cpu_index >= ipi->num_cpu) {
+-        cs = ipi_getcpu(cpuid);
++        cs = cpu_by_arch_id(cpuid);
+         if (cs == NULL || cs->cpu_index >= ipi->num_cpu) {
              return MEMTX_DECODE_ERROR;
          }
--
--        /* override requester_id */
--        attrs.requester_id = cs->cpu_index;
--        loongson_ipi_writel(ipi, CORE_SET_OFF, BIT(vector), 4, attrs);
-+        loongson_ipi_core_writel(&ipi->cpu[cs->cpu_index], CORE_SET_OFF,
-+                                 BIT(vector), 4, attrs);
-         break;
-     default:
-         qemu_log_mask(LOG_UNIMP, "invalid write: %x", (uint32_t)addr);
-@@ -231,9 +242,34 @@ static MemTxResult loongson_ipi_writel(void *opaque, hwaddr addr, uint64_t val,
-     return MEMTX_OK;
- }
- 
--static const MemoryRegionOps loongson_ipi_ops = {
--    .read_with_attrs = loongson_ipi_readl,
--    .write_with_attrs = loongson_ipi_writel,
-+static MemTxResult loongson_ipi_iocsr_writel(void *opaque, hwaddr addr,
-+                                            uint64_t val, unsigned size,
-+                                            MemTxAttrs attrs)
-+{
-+    LoongsonIPI *ipi = opaque;
-+    IPICore *s;
-+
-+    if (attrs.requester_id >= ipi->num_cpu) {
-+        return MEMTX_DECODE_ERROR;
-+    }
-+
-+    s = &ipi->cpu[attrs.requester_id];
-+    return loongson_ipi_core_writel(s, addr, val, size, attrs);
-+}
-+
-+static const MemoryRegionOps loongson_ipi_core_ops = {
-+    .read_with_attrs = loongson_ipi_core_readl,
-+    .write_with_attrs = loongson_ipi_core_writel,
-+    .impl.min_access_size = 4,
-+    .impl.max_access_size = 4,
-+    .valid.min_access_size = 4,
-+    .valid.max_access_size = 8,
-+    .endianness = DEVICE_LITTLE_ENDIAN,
-+};
-+
-+static const MemoryRegionOps loongson_ipi_iocsr_ops = {
-+    .read_with_attrs = loongson_ipi_iocsr_readl,
-+    .write_with_attrs = loongson_ipi_iocsr_writel,
-     .impl.min_access_size = 4,
-     .impl.max_access_size = 4,
-     .valid.min_access_size = 4,
-@@ -282,7 +318,8 @@ static void loongson_ipi_realize(DeviceState *dev, Error **errp)
-         return;
-     }
- 
--    memory_region_init_io(&s->ipi_iocsr_mem, OBJECT(dev), &loongson_ipi_ops,
-+    memory_region_init_io(&s->ipi_iocsr_mem, OBJECT(dev),
-+                          &loongson_ipi_iocsr_ops,
-                           s, "loongson_ipi_iocsr", 0x48);
- 
-     /* loongson_ipi_iocsr performs re-entrant IO through ipi_send */
-@@ -297,11 +334,18 @@ static void loongson_ipi_realize(DeviceState *dev, Error **errp)
- 
-     s->cpu = g_new0(IPICore, s->num_cpu);
-     if (s->cpu == NULL) {
--        error_setg(errp, "Memory allocation for ExtIOICore faile");
-+        error_setg(errp, "Memory allocation for IPICore faile");
-         return;
-     }
- 
-     for (i = 0; i < s->num_cpu; i++) {
-+        s->cpu[i].ipi = s;
-+        s->cpu[i].ipi_mmio_mem = g_new0(MemoryRegion, 1);
-+        g_autofree char *name = g_strdup_printf("loongson_ipi_cpu%d_mmio", i);
-+        memory_region_init_io(s->cpu[i].ipi_mmio_mem, OBJECT(dev),
-+                              &loongson_ipi_core_ops, &s->cpu[i], name, 0x48);
-+        sysbus_init_mmio(sbd, s->cpu[i].ipi_mmio_mem);
-+
-         qdev_init_gpio_out(dev, &s->cpu[i].irq, 1);
-     }
- }
 -- 
 2.41.0
 
