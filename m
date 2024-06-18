@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B16C90C5B0
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E66790C5B1
 	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jun 2024 12:02:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sJVeG-0006Q4-Ug; Tue, 18 Jun 2024 06:01:08 -0400
+	id 1sJVeP-0006St-1R; Tue, 18 Jun 2024 06:01:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1sJVeD-0006Ov-7I
- for qemu-devel@nongnu.org; Tue, 18 Jun 2024 06:01:06 -0400
+ id 1sJVeH-0006Qx-Is
+ for qemu-devel@nongnu.org; Tue, 18 Jun 2024 06:01:13 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1sJVeB-0000m9-GS
- for qemu-devel@nongnu.org; Tue, 18 Jun 2024 06:01:04 -0400
+ id 1sJVeG-0000mn-63
+ for qemu-devel@nongnu.org; Tue, 18 Jun 2024 06:01:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1718704862;
+ s=mimecast20190719; t=1718704867;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=OZzF4vYQ9JKiaNwEPTfXs/7RsEVvYmnAzAweasViLfU=;
- b=Vt1SSP+k9g5jkUjzvTzeJ+UAJ/LdpjUMV+Rpn0zC9VVV5Smg7RYUXEeYUrCcJccMIkhWz4
- x5k5xaa3Wo8tnQR4RVf2pmUU7lH2oglXMeC20kNkf5ZSAr+maOLmbB8OI/F9yhff0csYCg
- zh5OzSkh6/O0FpXGPC8y3+DD+6mXyLY=
+ bh=eYivD0Oj8DZaeGa3x1w3lr0EcGpbXryh/Rf51uyXwz4=;
+ b=d3xuxWIr2xWn1Fz3g78CQC+AKaRxR4KAxbaZRc05NTd4vQUbFTpkntOdWo8jHcOVst47PS
+ LOjOk/EVTgFk+erXgMYNpdDlMLpljBdLiDbEqmfw3pgPdzVTO2SgfSd0aFwniPVFWs7/5C
+ 7s/vqCmfC6n88BBE/NEOpg0muRBZ8fw=
 Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
  [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-448-3yaBzg8POmanToADcECiMA-1; Tue, 18 Jun 2024 06:01:00 -0400
-X-MC-Unique: 3yaBzg8POmanToADcECiMA-1
+ us-mta-44-Wpz5d1NdPRCKETkRsMs6gw-1; Tue, 18 Jun 2024 06:01:06 -0400
+X-MC-Unique: Wpz5d1NdPRCKETkRsMs6gw-1
 Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-4246e5fd996so6350875e9.0
- for <qemu-devel@nongnu.org>; Tue, 18 Jun 2024 03:01:00 -0700 (PDT)
+ 5b1f17b1804b1-4212e2a3a1bso34589945e9.3
+ for <qemu-devel@nongnu.org>; Tue, 18 Jun 2024 03:01:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718704856; x=1719309656;
+ d=1e100.net; s=20230601; t=1718704863; x=1719309663;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=OZzF4vYQ9JKiaNwEPTfXs/7RsEVvYmnAzAweasViLfU=;
- b=eCavaAe7ZB5xaer5hufk37/KVqbgn+8CSrUOMotb2F1wQI94Ckhbx4YFcAnYWV7KH5
- 5iJScNif7PXaAfVfltMEOffLqrOwC9TyuEo710tHl2mnLEhLvmeBr/cXbCrG/KCu2BN9
- NJSGh/fN+NkGq8cngFoVKx7oTqWzX26/3qd/Fks3mjCIwISMMKV2MWT+iQX0i9lZAVt4
- d1Jv6GSPKPWohwAVKQ0+jJEDSBW78Nu4FiWPxOKPJGZjScW5lHNPnxRX5PZY0qJn4uIG
- jS8do0JZKo4xwLoX/8CME96me5R1UGusaUKIopzIhUb6hB2io103Ii+rPsTGX7JkgZBj
- nBlA==
-X-Gm-Message-State: AOJu0YydCE5jXjxkjx5cFUq64p5mLnNyyAcZDiMaqTFP0TgJzDsXITUE
- I9wflgWiE8XSq2giYqFDYYDZsK+mYlErjRYObXD2aRuMYewqftmpPpYx7dg0Vzw9OeJk98Uu+v/
- bdYhcVrpAcByZ+NC8N8wUMyOHI6BVL4ZoiSISOEA0qROXw+WzJThz09TjEuQCxjcWQmZTdInlNU
- X7/pTDXLO3tv/jCTdSaGSaQ5/y4I5QfjYI3MMh
-X-Received: by 2002:adf:fe50:0:b0:360:6fd3:6f07 with SMTP id
- ffacd0b85a97d-3607a7e202cmr8526818f8f.45.1718704856065; 
- Tue, 18 Jun 2024 03:00:56 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE1lsSX7kKh2TJovAJCG+VHlfHrsAIaxyKZ2c2cTga1XjtS6ZcevWp0ayACAQn4ku/+qrnAjA==
-X-Received: by 2002:adf:fe50:0:b0:360:6fd3:6f07 with SMTP id
- ffacd0b85a97d-3607a7e202cmr8526784f8f.45.1718704855658; 
- Tue, 18 Jun 2024 03:00:55 -0700 (PDT)
+ bh=eYivD0Oj8DZaeGa3x1w3lr0EcGpbXryh/Rf51uyXwz4=;
+ b=aJbOTzVrvWgsJpDCUgbpRk4XEqTA5bEI2i09wd6xMLAHDm1HJRgqouoHhsL4guZuAG
+ LG4u0BlNA/8dsWCMF2qt72ue39NiPZuEVzRgpyHnGPPpHsCF3ijD7fZSllv006Z2NVLe
+ nJPHxOwgYHJme/+qTRNwC1QjZS9eReQuc5bOxpYOQffHog+BJNKHGFOOookFoRvZN/VH
+ s5W4FmoHRyONIKxHYWq7JotCB8VMrgz3TMGUbwgg5Gfm1malpQJdAAvcuAzFqB3wG8xn
+ YWzpXhZgtoxxRgDUcoV3oSqn6cUQ66W5tvwmSv0MnCMKfvHKghaFxQIno5jrXrB+OZQc
+ wdYw==
+X-Gm-Message-State: AOJu0YwyffHbXioYxWgVw6uErQm2H+RtMF05SA5SiEw/QquekN4RWnH4
+ QjkYiy57Gc9RBrzJCoHzP35rln2erlpmur0+ZpG+/r2L6nh+56/vlTJ7V2VOuJYND2r5PG5MeTe
+ e/lzL1wDwYg8V5Va91mpcGsHYENBF9xECbwluB/S3XXm8KpV9XCVTKd+CfyeOHH8eNZLVWH1l2L
+ FTEfwrxVIDkILLnaRD2PecVvJopw6xFOc4ukAh
+X-Received: by 2002:a05:600c:3492:b0:422:720a:1bef with SMTP id
+ 5b1f17b1804b1-42304825b7amr83208035e9.24.1718704863550; 
+ Tue, 18 Jun 2024 03:01:03 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHQ+vAj6lu23qAiopYx9ERsQ1Lgp25YRq6ksq8ZfSPrx1enqhTSTiTcPr8D1YTQX3ncN22zMg==
+X-Received: by 2002:a05:600c:3492:b0:422:720a:1bef with SMTP id
+ 5b1f17b1804b1-42304825b7amr83207605e9.24.1718704863097; 
+ Tue, 18 Jun 2024 03:01:03 -0700 (PDT)
 Received: from step1.redhat.com ([193.207.160.125])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-36094fa7ea8sm5206343f8f.80.2024.06.18.03.00.51
+ 5b1f17b1804b1-422874de5d5sm221194775e9.33.2024.06.18.03.00.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 18 Jun 2024 03:00:53 -0700 (PDT)
+ Tue, 18 Jun 2024 03:01:00 -0700 (PDT)
 From: Stefano Garzarella <sgarzare@redhat.com>
 To: qemu-devel@nongnu.org,
 	mst@redhat.com
@@ -82,13 +82,15 @@ Cc: Coiby Xu <Coiby.Xu@gmail.com>, Kevin Wolf <kwolf@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>, Jason Wang <jasowang@redhat.com>,
  Laurent Vivier <lvivier@redhat.com>,
  Stefano Garzarella <sgarzare@redhat.com>
-Subject: [PATCH v8 01/13] qapi: clarify that the default is backend dependent
-Date: Tue, 18 Jun 2024 12:00:31 +0200
-Message-ID: <20240618100043.144657-2-sgarzare@redhat.com>
+Subject: [PATCH v8 02/13] libvhost-user: set msg.msg_control to NULL when it
+ is empty
+Date: Tue, 18 Jun 2024 12:00:32 +0200
+Message-ID: <20240618100043.144657-3-sgarzare@redhat.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240618100043.144657-1-sgarzare@redhat.com>
 References: <20240618100043.144657-1-sgarzare@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=sgarzare@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -115,55 +117,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The default value of the @share option of the @MemoryBackendProperties
-really depends on the backend type, so let's document the default
-values in the same place where we define the option to avoid
-dispersing the information.
+On some OS (e.g. macOS) sendmsg() returns -1 (errno EINVAL) if
+the `struct msghdr` has the field `msg_controllen` set to 0, but
+`msg_control` is not NULL.
 
-Cc: David Hildenbrand <david@redhat.com>
-Suggested-by: Markus Armbruster <armbru@redhat.com>
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
+Reviewed-by: Eric Blake <eblake@redhat.com>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Acked-by: Stefan Hajnoczi <stefanha@redhat.com>
 Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
 ---
-v2: https://patchew.org/QEMU/20240611130231.83152-1-sgarzare@redhat.com/
-v1: https://patchew.org/QEMU/20240523133302.103858-1-sgarzare@redhat.com/
----
- qapi/qom.json | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ subprojects/libvhost-user/libvhost-user.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/qapi/qom.json b/qapi/qom.json
-index 8bd299265e..9b8f6a7ab5 100644
---- a/qapi/qom.json
-+++ b/qapi/qom.json
-@@ -600,7 +600,9 @@
- #     preallocation threads (default: none) (since 7.2)
- #
- # @share: if false, the memory is private to QEMU; if true, it is
--#     shared (default: false)
-+#     shared (default false for backends memory-backend-file and
-+#     memory-backend-ram, true for backends memory-backend-epc and
-+#     memory-backend-memfd)
- #
- # @reserve: if true, reserve swap space (or huge pages) if applicable
- #     (default: true) (since 6.1)
-@@ -700,8 +702,6 @@
- #
- # Properties for memory-backend-memfd objects.
- #
--# The @share boolean option is true by default with memfd.
--#
- # @hugetlb: if true, the file to be created resides in the hugetlbfs
- #     filesystem (default: false)
- #
-@@ -726,8 +726,6 @@
- #
- # Properties for memory-backend-epc objects.
- #
--# The @share boolean option is true by default with epc
--#
- # The @merge boolean option is false by default with epc
- #
- # The @dump boolean option is false by default with epc
+diff --git a/subprojects/libvhost-user/libvhost-user.c b/subprojects/libvhost-user/libvhost-user.c
+index a879149fef..22bea0c775 100644
+--- a/subprojects/libvhost-user/libvhost-user.c
++++ b/subprojects/libvhost-user/libvhost-user.c
+@@ -632,6 +632,7 @@ vu_message_write(VuDev *dev, int conn_fd, VhostUserMsg *vmsg)
+         memcpy(CMSG_DATA(cmsg), vmsg->fds, fdsize);
+     } else {
+         msg.msg_controllen = 0;
++        msg.msg_control = NULL;
+     }
+ 
+     do {
 -- 
 2.45.2
 
