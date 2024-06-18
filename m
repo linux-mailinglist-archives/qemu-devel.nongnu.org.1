@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7710790D89B
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jun 2024 18:12:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CE4D90D831
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jun 2024 18:07:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sJbIt-0007an-FG; Tue, 18 Jun 2024 12:03:27 -0400
+	id 1sJbIw-0007fS-D7; Tue, 18 Jun 2024 12:03:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sJbIk-0007Ly-Uk
- for qemu-devel@nongnu.org; Tue, 18 Jun 2024 12:03:20 -0400
-Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sJbIs-0007cG-Eg
+ for qemu-devel@nongnu.org; Tue, 18 Jun 2024 12:03:26 -0400
+Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sJbIi-00078m-Vc
- for qemu-devel@nongnu.org; Tue, 18 Jun 2024 12:03:18 -0400
-Received: by mail-ej1-x636.google.com with SMTP id
- a640c23a62f3a-a6f9fe791f8so65682066b.0
- for <qemu-devel@nongnu.org>; Tue, 18 Jun 2024 09:03:16 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sJbIq-00079l-BK
+ for qemu-devel@nongnu.org; Tue, 18 Jun 2024 12:03:26 -0400
+Received: by mail-lf1-x136.google.com with SMTP id
+ 2adb3069b0e04-52bc27cfb14so6967458e87.0
+ for <qemu-devel@nongnu.org>; Tue, 18 Jun 2024 09:03:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1718726595; x=1719331395; darn=nongnu.org;
+ d=linaro.org; s=google; t=1718726601; x=1719331401; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=2h5hZc6LXMjCThYre/XODwbhy/fDBZZML+oz5gALLWA=;
- b=d1EXL3myi9i9PZt9+kVwyP9RdCN6V+FdpXCPAhlpWaJJTv6S8VuCOEekepdbhdS+0r
- whDH7V4hb7unkRDM5LzU+cejFPsRncVjS4P5C9Wu4EHXrYC55DNRNoQMnQN+tUjw1oTm
- JrBgTI09AoOb9FQoD+G/IRpZV8YliPv1pRYRJKQPacBXk3u0X9DEYRZcivP7H5HI6dVX
- xse6T7VIH6KRJWjxxMkbr4X9dnG1AfuggFabCIZ/vAicNXqxcNwZpnLpttO+3PrEXNPj
- MUiqUOaiAxce2aKq4dHwwRUud7MsjcZi/hbdGFz321czFEbEokXakgFLbAeyppNpyfPV
- oKMA==
+ bh=0D0UVQQFPvgGs+AWFdh2z7yAuwNg5N51LbDWqW4G400=;
+ b=Th2OKuC/CoPBIBcrh8LcVxvv/fH7dXSyWjdcMl192DKu1cQnxccBPtiK7+wfKlWzUD
+ xiU5U/xiZ4R0ce4BAL8/GojX10QxWhidf9XNifRf+nqz2KhFYQtNVSrHGWFUsFZ429UE
+ Nl/rpQaKU08iBxfeoZBx/qxe6AaISu4AIRZghxH96l57jnRanNQRyZp4YPGCCivygehN
+ FCqlq/nuWRppKqwtA1M77big6i9KL5M5vYUMFpTWti0bMXQs0ZODL3JDHEUBZNUSC0dg
+ XpaPggiRTvVa+M1AQxmsO1wWInZU6iZmSANbWH2HVEiGF6J3vWxBi7lqqa2yCo91c6oe
+ eeYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718726595; x=1719331395;
+ d=1e100.net; s=20230601; t=1718726601; x=1719331401;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=2h5hZc6LXMjCThYre/XODwbhy/fDBZZML+oz5gALLWA=;
- b=nGjoX2H7btaGEACO9Ra5T1fKVMbGS5FH2wRCifO1oyXQDX6BTyFW0A/nGE0lvx+YNS
- YfYS+7ba0K0NQscXFBAEfh5Uf3l38MVmDPrmVrwQXHOjEmpF8nQ2UAz5dgu02G39LiLR
- Tp6qSGyuNL7J1CCSHstvV86C5M8WYPuq+vffHHXm3QAIRqWxwaBq0LhpNc6syRIh17yU
- 7OKf6e0/fyzTRiy4KlNPv0VIs+HwPSP/FxYHmLgGfQp+dbCME9nAWt3R0lwkJ+886kfH
- GoWoAgkOoHYBx7enwzxzuf11Qvts8MwyEeC17POxWzo7z3P60l0BTdT1Q/+DZPfFsw2x
- Mt4g==
-X-Gm-Message-State: AOJu0YyUM3UGzS5f8+wxkhOppIln6TM6olayez4tzlhRNpIJ/t6ZDayN
- dfLyxxjlUICMqVIsnaKGvK442KPm40Z/owptmQone9KzxGdf7jE40mISDCh6/eHSJDumNPtHUYq
- B
-X-Google-Smtp-Source: AGHT+IGFHLkAzXgnMVF953doTFT7+WsvM3vKWHZEFWE3fwourM4SYc8AkG8sUsdruwNlTNXVkfAdIQ==
-X-Received: by 2002:a17:906:370a:b0:a6f:a262:2f89 with SMTP id
- a640c23a62f3a-a6fa26234b5mr34753666b.12.1718726595178; 
- Tue, 18 Jun 2024 09:03:15 -0700 (PDT)
+ bh=0D0UVQQFPvgGs+AWFdh2z7yAuwNg5N51LbDWqW4G400=;
+ b=o8ruIExiCXMvjTs2Wcqs5JFxRGTjUUBDOTuKEbdDckhyJBJRVpHQwu9ghdC5gVXmOc
+ vUXPK0CNDeVoJ/EuDL4U9RWp2LynvMgnoShzqIZ1y/8nocZR3k3CkSfkTiqji6weg1zb
+ Q7J94srCD7BNVStyd62UTOy30nOiM5hG9LSCSj+rhlhtA6q9xNQTaSQo9DASVZJeU17y
+ Xt1/dMkXN7DIh9akjoqLx2/6tp2la4fW2LduyKzP7qHGhz4aAfz6c5MW1nbJ+tJ/p0VH
+ AYcwi81JWJyq92qqoXefPTHIxkcgZ1eSjMQEz1Ex8KUruuiJngs5PV5LUqZ/ZqKEIpFK
+ tGfA==
+X-Gm-Message-State: AOJu0Ywed6T9EkjFpCEJ83az4THErRCFapDevMXaihm8z35BHHtBkmIp
+ KRTStwHfyxlHDwC0AvwHu30iZABxNxdROJOBQvSATSP7L85KoRRW7x0Ogk9vGDGw9WeNdYqthNM
+ h
+X-Google-Smtp-Source: AGHT+IGh+6zAvVKqVqqbTDKLOxPstPbifmFJ1P3QkVtWj476EYQM2mCrkpWl42HP1ag2l+BVZJPL/Q==
+X-Received: by 2002:ac2:43b5:0:b0:52c:8811:42f7 with SMTP id
+ 2adb3069b0e04-52ccaa32a00mr64711e87.19.1718726600866; 
+ Tue, 18 Jun 2024 09:03:20 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.212.55])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a6f56db618dsm626220166b.75.2024.06.18.09.03.13
+ a640c23a62f3a-a6f56dd3109sm633044166b.95.2024.06.18.09.03.19
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 18 Jun 2024 09:03:14 -0700 (PDT)
+ Tue, 18 Jun 2024 09:03:20 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>
-Subject: [PULL 26/76] hw/ppc: Avoid using Monitor in icp_pic_print_info()
-Date: Tue, 18 Jun 2024 17:59:48 +0200
-Message-ID: <20240618160039.36108-27-philmd@linaro.org>
+Subject: [PULL 27/76] hw/ppc: Avoid using Monitor in xive_tctx_pic_print_info()
+Date: Tue, 18 Jun 2024 17:59:49 +0200
+Message-ID: <20240618160039.36108-28-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240618160039.36108-1-philmd@linaro.org>
 References: <20240618160039.36108-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::636;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x636.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::136;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x136.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,69 +100,42 @@ Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 Reviewed-by: Cédric Le Goater <clg@kaod.org>
 Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
-Message-Id: <20240610062105.49848-3-philmd@linaro.org>
+Message-Id: <20240610062105.49848-4-philmd@linaro.org>
 ---
- include/hw/ppc/xics.h | 2 +-
- hw/intc/xics.c        | 8 ++++----
- hw/intc/xics_spapr.c  | 8 +++++++-
- hw/ppc/pnv.c          | 8 +++++++-
- 4 files changed, 19 insertions(+), 7 deletions(-)
+ include/hw/ppc/xive.h |  2 +-
+ hw/intc/spapr_xive.c  |  7 ++++++-
+ hw/intc/xive.c        | 11 ++++++-----
+ hw/ppc/pnv.c          | 16 ++++++++++++++--
+ 4 files changed, 27 insertions(+), 9 deletions(-)
 
-diff --git a/include/hw/ppc/xics.h b/include/hw/ppc/xics.h
-index 95ead0dd7c..1116aa6953 100644
---- a/include/hw/ppc/xics.h
-+++ b/include/hw/ppc/xics.h
-@@ -171,7 +171,7 @@ static inline bool ics_irq_free(ICSState *ics, uint32_t srcno)
- }
+diff --git a/include/hw/ppc/xive.h b/include/hw/ppc/xive.h
+index f120874e0f..bc1cbad8a8 100644
+--- a/include/hw/ppc/xive.h
++++ b/include/hw/ppc/xive.h
+@@ -528,7 +528,7 @@ void xive_tctx_tm_write(XivePresenter *xptr, XiveTCTX *tctx, hwaddr offset,
+ uint64_t xive_tctx_tm_read(XivePresenter *xptr, XiveTCTX *tctx, hwaddr offset,
+                            unsigned size);
  
- void ics_set_irq_type(ICSState *ics, int srcno, bool lsi);
--void icp_pic_print_info(ICPState *icp, Monitor *mon);
-+void icp_pic_print_info(ICPState *icp, GString *buf);
- void ics_pic_print_info(ICSState *ics, Monitor *mon);
- 
- void ics_resend(ICSState *ics);
-diff --git a/hw/intc/xics.c b/hw/intc/xics.c
-index 9b3b7abaea..039e10a0e4 100644
---- a/hw/intc/xics.c
-+++ b/hw/intc/xics.c
-@@ -42,7 +42,7 @@
- #include "sysemu/reset.h"
- #include "target/ppc/cpu.h"
- 
--void icp_pic_print_info(ICPState *icp, Monitor *mon)
-+void icp_pic_print_info(ICPState *icp, GString *buf)
- {
-     int cpu_index;
- 
-@@ -63,9 +63,9 @@ void icp_pic_print_info(ICPState *icp, Monitor *mon)
-         icp_synchronize_state(icp);
-     }
- 
--    monitor_printf(mon, "CPU %d XIRR=%08x (%p) PP=%02x MFRR=%02x\n",
--                   cpu_index, icp->xirr, icp->xirr_owner,
--                   icp->pending_priority, icp->mfrr);
-+    g_string_append_printf(buf, "CPU %d XIRR=%08x (%p) PP=%02x MFRR=%02x\n",
-+                           cpu_index, icp->xirr, icp->xirr_owner,
-+                           icp->pending_priority, icp->mfrr);
- }
- 
- void ics_pic_print_info(ICSState *ics, Monitor *mon)
-diff --git a/hw/intc/xics_spapr.c b/hw/intc/xics_spapr.c
-index 37b2d99977..bab9d88218 100644
---- a/hw/intc/xics_spapr.c
-+++ b/hw/intc/xics_spapr.c
-@@ -34,6 +34,8 @@
- #include "hw/ppc/xics_spapr.h"
- #include "hw/ppc/fdt.h"
- #include "qapi/visitor.h"
+-void xive_tctx_pic_print_info(XiveTCTX *tctx, Monitor *mon);
++void xive_tctx_pic_print_info(XiveTCTX *tctx, GString *buf);
+ Object *xive_tctx_create(Object *cpu, XivePresenter *xptr, Error **errp);
+ void xive_tctx_reset(XiveTCTX *tctx);
+ void xive_tctx_destroy(XiveTCTX *tctx);
+diff --git a/hw/intc/spapr_xive.c b/hw/intc/spapr_xive.c
+index d7e56bfb20..b7c12aa432 100644
+--- a/hw/intc/spapr_xive.c
++++ b/hw/intc/spapr_xive.c
+@@ -11,6 +11,7 @@
+ #include "qemu/log.h"
+ #include "qemu/module.h"
+ #include "qapi/error.h"
 +#include "qapi/type-helpers.h"
-+#include "monitor/monitor.h"
- 
- /*
-  * Guest interfaces
-@@ -399,12 +401,16 @@ static void xics_spapr_print_info(SpaprInterruptController *intc, Monitor *mon)
+ #include "qemu/error-report.h"
+ #include "target/ppc/cpu.h"
+ #include "sysemu/cpus.h"
+@@ -703,12 +704,16 @@ static void spapr_xive_print_info(SpaprInterruptController *intc, Monitor *mon)
  {
-     ICSState *ics = ICS_SPAPR(intc);
+     SpaprXive *xive = SPAPR_XIVE(intc);
      CPUState *cs;
 +    g_autoptr(GString) buf = g_string_new("");
 +    g_autoptr(HumanReadableText) info = NULL;
@@ -170,27 +143,74 @@ index 37b2d99977..bab9d88218 100644
      CPU_FOREACH(cs) {
          PowerPCCPU *cpu = POWERPC_CPU(cs);
  
--        icp_pic_print_info(spapr_cpu_state(cpu)->icp, mon);
-+        icp_pic_print_info(spapr_cpu_state(cpu)->icp, buf);
+-        xive_tctx_pic_print_info(spapr_cpu_state(cpu)->tctx, mon);
++        xive_tctx_pic_print_info(spapr_cpu_state(cpu)->tctx, buf);
      }
 +    info = human_readable_text_from_str(buf);
 +    monitor_puts(mon, info->human_readable_text);
  
-     ics_pic_print_info(ics, mon);
+     spapr_xive_pic_print_info(xive, mon);
+ }
+diff --git a/hw/intc/xive.c b/hw/intc/xive.c
+index 057b308ae9..a0d7e7ca67 100644
+--- a/hw/intc/xive.c
++++ b/hw/intc/xive.c
+@@ -669,7 +669,7 @@ static const char * const xive_tctx_ring_names[] = {
+          xpc->in_kernel ? xpc->in_kernel(xptr) : false;                 \
+      }))
+ 
+-void xive_tctx_pic_print_info(XiveTCTX *tctx, Monitor *mon)
++void xive_tctx_pic_print_info(XiveTCTX *tctx, GString *buf)
+ {
+     int cpu_index;
+     int i;
+@@ -693,13 +693,14 @@ void xive_tctx_pic_print_info(XiveTCTX *tctx, Monitor *mon)
+         }
+     }
+ 
+-    monitor_printf(mon, "CPU[%04x]:   QW   NSR CPPR IPB LSMFB ACK# INC AGE PIPR"
+-                   "  W2\n", cpu_index);
++    g_string_append_printf(buf, "CPU[%04x]:   "
++                           "QW   NSR CPPR IPB LSMFB ACK# INC AGE PIPR  W2\n",
++                           cpu_index);
+ 
+     for (i = 0; i < XIVE_TM_RING_COUNT; i++) {
+         char *s = xive_tctx_ring_print(&tctx->regs[i * XIVE_TM_RING_SIZE]);
+-        monitor_printf(mon, "CPU[%04x]: %4s    %s\n", cpu_index,
+-                       xive_tctx_ring_names[i], s);
++        g_string_append_printf(buf, "CPU[%04x]: %4s    %s\n",
++                               cpu_index, xive_tctx_ring_names[i], s);
+         g_free(s);
+     }
  }
 diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
-index 5356a4e295..fa23b27a2b 100644
+index fa23b27a2b..5854358f65 100644
 --- a/hw/ppc/pnv.c
 +++ b/hw/ppc/pnv.c
-@@ -1130,7 +1130,13 @@ static void pnv_chip_power8_intc_destroy(PnvChip *chip, PowerPCCPU *cpu)
- static void pnv_chip_power8_intc_print_info(PnvChip *chip, PowerPCCPU *cpu,
+@@ -1223,7 +1223,13 @@ static void pnv_chip_power9_intc_destroy(PnvChip *chip, PowerPCCPU *cpu)
+ static void pnv_chip_power9_intc_print_info(PnvChip *chip, PowerPCCPU *cpu,
                                              Monitor *mon)
  {
--    icp_pic_print_info(ICP(pnv_cpu_state(cpu)->intc), mon);
+-    xive_tctx_pic_print_info(XIVE_TCTX(pnv_cpu_state(cpu)->intc), mon);
 +    g_autoptr(GString) buf = g_string_new("");
 +    g_autoptr(HumanReadableText) info = NULL;
 +
-+    icp_pic_print_info(ICP(pnv_cpu_state(cpu)->intc), buf);
++    xive_tctx_pic_print_info(XIVE_TCTX(pnv_cpu_state(cpu)->intc), buf);
++
++    info = human_readable_text_from_str(buf);
++    monitor_puts(mon, info->human_readable_text);
+ }
+ 
+ static void pnv_chip_power10_intc_create(PnvChip *chip, PowerPCCPU *cpu,
+@@ -1267,7 +1273,13 @@ static void pnv_chip_power10_intc_destroy(PnvChip *chip, PowerPCCPU *cpu)
+ static void pnv_chip_power10_intc_print_info(PnvChip *chip, PowerPCCPU *cpu,
+                                              Monitor *mon)
+ {
+-    xive_tctx_pic_print_info(XIVE_TCTX(pnv_cpu_state(cpu)->intc), mon);
++    g_autoptr(GString) buf = g_string_new("");
++    g_autoptr(HumanReadableText) info = NULL;
++
++    xive_tctx_pic_print_info(XIVE_TCTX(pnv_cpu_state(cpu)->intc), buf);
 +
 +    info = human_readable_text_from_str(buf);
 +    monitor_puts(mon, info->human_readable_text);
