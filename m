@@ -2,83 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2941F90D274
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jun 2024 15:50:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9CB290D2FC
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jun 2024 15:57:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sJZCz-00062i-Ni; Tue, 18 Jun 2024 09:49:13 -0400
+	id 1sJZJf-00087I-4O; Tue, 18 Jun 2024 09:56:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1sJZCs-000624-97
- for qemu-devel@nongnu.org; Tue, 18 Jun 2024 09:49:07 -0400
-Received: from mail-lf1-x12c.google.com ([2a00:1450:4864:20::12c])
+ (Exim 4.90_1) (envelope-from <zheyuma97@gmail.com>)
+ id 1sJZJd-00085b-4c; Tue, 18 Jun 2024 09:56:05 -0400
+Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1sJZCq-0000md-GB
- for qemu-devel@nongnu.org; Tue, 18 Jun 2024 09:49:06 -0400
-Received: by mail-lf1-x12c.google.com with SMTP id
- 2adb3069b0e04-52cc14815c3so1298091e87.0
- for <qemu-devel@nongnu.org>; Tue, 18 Jun 2024 06:49:03 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <zheyuma97@gmail.com>)
+ id 1sJZJa-00022k-MR; Tue, 18 Jun 2024 09:56:04 -0400
+Received: by mail-ej1-x633.google.com with SMTP id
+ a640c23a62f3a-a6265d3ba8fso642046466b.0; 
+ Tue, 18 Jun 2024 06:56:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1718718542; x=1719323342; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to
- :references:user-agent:subject:cc:to:from:date:from:to:cc:subject
- :date:message-id:reply-to;
- bh=flw9SaA0nZN6x3YJjhuda53O4E/G6rHmnKdh+7Szslg=;
- b=bsA+2YLOk5T/jotrjSuRfgwSiGmRs50zaLCvPUAAtQjHuFreErQZ/RqdMBdwHyQ2m2
- dJPtjYYp3Jhvq3CtYY+JdfbI8MnoXvCdk3JCT1f/BGNTS0B7pwNoEoBn/UhYl28O2Esh
- xEq0fOj4A5GeqyvN6RFbCR/YL8fQ+RkLPATd4Np1QuJHliWf8DJQxYW19p7qZ1Tg3ZVU
- tYvyg7+jfUNn9UnEtcKPVYREfucHRjkPcL7owvmi/yY3qqze4rlJ2i6nKm2G2vOL22XZ
- 41yCAn2VKmGJqjinWYDQ6AyWKRzKXH5piNaSfSscEi71NiVl9VnsLjdzeuEfXt3bnaLQ
- hdZA==
+ d=gmail.com; s=20230601; t=1718718960; x=1719323760; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=u1cyBezRJri5KnZVsR+MFjuxJYCacR58JRUFpBBdC3g=;
+ b=jNVFQnzrXOUt46rr/64ueaAxGBsKV81SwjuCZB7svoE+Tb1CyFWW3Ds6rp6eVLwuou
+ v57DNbLUkOL/NL7l2eAS61xU97FHH54FKvkSidINA6HE56hqUVgDu3A4cdwyzftyEJf2
+ T15+3lBUutL6jE2bM6bYewkFJNX6B/QIVT9RMrrl4+74qcYu3MdBTQMB8t/20tT6JYdU
+ QAT9AGTil6yBqDLBm39IaLzSVySc/1FboRXW89giczqJjG38LCznHei+/LYZ+uR+iP1G
+ 8qdRyPt+NaTcT/NAoPoXvVBv2eyJZhvO5m/MRj9Ue+XmkyJZ3kDUA4lh33CqmYsYqdiJ
+ bedQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718718542; x=1719323342;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to
- :references:user-agent:subject:cc:to:from:date:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=flw9SaA0nZN6x3YJjhuda53O4E/G6rHmnKdh+7Szslg=;
- b=t5xr2WgPGiopOsRiDXFBPjai1Ec2D6R1eb9phKbefIerDZJv11AsgIm3NAjVmBWNav
- rrETRwBPx7XMafDS8B6sP5oPhWjNvkzBONzvVZ7tS6gDmpkGm8vxBVCz1rqRgHyJT3S1
- 3G5mG0+SfGG0fa7xQ45tYK4rVbdHnSLD22Wml0nRoi3EYZO5wwEA4qXLl52NHooODg9F
- 8Ihp2uAhUu3yJjClRFZhoVPII250jsp/tf0L+P0l7QzTIYYi7D38gHZiP+rTbt49iVZ5
- Rc4VvSnUfS4GjvVVPqR8x1jhKm7B8QtN6xIjW9TWdBsHQHGcxuRMEcJovZLkwXqrOhS+
- 0odA==
-X-Gm-Message-State: AOJu0YyR9QpGWyxaQnAUgj1EQXVmlZxLTOj9catjWHE1ZfJVKVfgqNLu
- N1+BFv71zu8A+cnvjZbax0JhBYrGVFJWTebCXe4n+Y/s2W2jD4Hg1hFveGDmOEFjPeOe1j5C2NA
- Uv7g=
-X-Google-Smtp-Source: AGHT+IF6tSuaJsF3lFhvZX2/bhCTxVC6A2k2r1delU0GJeK99tbnyvgfkTTBo8TeDsKji+PoTvE5pw==
-X-Received: by 2002:a19:9101:0:b0:52c:8aef:d16b with SMTP id
- 2adb3069b0e04-52ca6e6d5d5mr6614727e87.34.1718718539771; 
- Tue, 18 Jun 2024 06:48:59 -0700 (PDT)
-Received: from meli-email.org (adsl-103.37.6.162.tellas.gr. [37.6.162.103])
+ d=1e100.net; s=20230601; t=1718718960; x=1719323760;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=u1cyBezRJri5KnZVsR+MFjuxJYCacR58JRUFpBBdC3g=;
+ b=UWinD22m+nYOYQ58ScJwzztpv4v+a9XFHFtN5mqzdcfJSmvzFsVp08mD8mRF2yBDqW
+ 42VCgaUXV6bv0pfoislL+0trsVKn4Va+GjNrXEaox/oweB1CNsx3bfFPDMjHdWWnszFc
+ N2Ebka4+MwIoFIACW4M3GYs2AR1OJL1ZMfOrUlncXmthvQm41otyTOu1bob1SNNHShk4
+ BqbCEcZCWCRhdeFMJtf9x0LiTv6n0SnOlKIMTmIUOP3rgw3FlzeyMgjNLxvNB9uUqT4I
+ hB8zVfin3g9PfhTFb5W4ntzdDlMLkgx9XDcciiggOqECUpqbkQjPyh7st+kgiC0w0HEJ
+ +9WA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUB7umEBP9NGCamER/b+Fxp9RibgfTIQfZ8n0Pm0atLawRcIjDT3C7i/uJtXYAqYa8tsT6oEmgewh4uiO/DP/dkoI1+j1oZXoWRmmJdHfT+fM5NAJdIHmibELU=
+X-Gm-Message-State: AOJu0YzWqQr46DFrPv/QBGhGB4u8Q/4e7d3crDzfTROhZYM+71Lhw0kL
+ SUk6+57+iPoJA7IowNQTMhbD+Te1SSmSiwj1M0AkrHEZGp92IXI=
+X-Google-Smtp-Source: AGHT+IECf99R/+pOY6WJuMaK3pMgr4IYX8PJie/hHXLP5R3+uWQSlXUPMCbUsQgU/8bAz5Pix8X1Fw==
+X-Received: by 2002:a17:907:874e:b0:a6f:8e42:b794 with SMTP id
+ a640c23a62f3a-a6f8e42ca00mr273324166b.26.1718718960238; 
+ Tue, 18 Jun 2024 06:56:00 -0700 (PDT)
+Received: from wing.epfl.ch (dhcp-122-dist-b-021.epfl.ch. [128.178.122.21])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-360750f2489sm14096413f8f.69.2024.06.18.06.48.59
+ a640c23a62f3a-a6f56f9c858sm617015966b.206.2024.06.18.06.55.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 18 Jun 2024 06:48:59 -0700 (PDT)
-Date: Tue, 18 Jun 2024 16:44:36 +0300
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-To: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Alex Benn=?UTF-8?B?w6k=?= e <alex.bennee@linaro.org>
-Cc: qemu-stable@nongnu.org, C=?UTF-8?B?w6k=?= dric Le Goater <clg@kaod.org>,
- Stefan Hajnoczi <stefanha@redhat.com>
-Subject: Re: [PATCH] hw/virtio: Fix the de-initialization of vhost-user devices
-User-Agent: meli 0.8.6
-References: <20240618121958.88673-1-thuth@redhat.com>
-In-Reply-To: <20240618121958.88673-1-thuth@redhat.com>
-Message-ID: <fa3pl.fcf892mzbx7@linaro.org>
+ Tue, 18 Jun 2024 06:56:00 -0700 (PDT)
+From: Zheyu Ma <zheyuma97@gmail.com>
+To: Arnaud Minier <arnaud.minier@telecom-paris.fr>,
+ =?UTF-8?q?In=C3=A8s=20Varhol?= <ines.varhol@telecom-paris.fr>
+Cc: Zheyu Ma <zheyuma97@gmail.com>, qemu-arm@nongnu.org, qemu-devel@nongnu.org
+Subject: [PATCH] hw/misc/stm32l4x5_rcc: Add validation for MCOPRE and MCOSEL
+ values
+Date: Tue, 18 Jun 2024 15:55:50 +0200
+Message-Id: <20240618135550.3108739-1-zheyuma97@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset=utf-8; format=flowed
-Received-SPF: pass client-ip=2a00:1450:4864:20::12c;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-lf1-x12c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Received-SPF: pass client-ip=2a00:1450:4864:20::633;
+ envelope-from=zheyuma97@gmail.com; helo=mail-ej1-x633.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -96,67 +91,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 18 Jun 2024 15:19, Thomas Huth <thuth@redhat.com> wrote:
->The unrealize functions of the various vhost-user devices are
->calling the corresponding vhost_*_set_status() functions with a
->status of 0 to shut down the device correctly.
->
->Now these vhost_*_set_status() functions all follow this scheme:
->
->    bool should_start = virtio_device_should_start(vdev, status);
->
->    if (vhost_dev_is_started(&vvc->vhost_dev) == should_start) {
->        return;
->    }
->
->    if (should_start) {
->        /* ... do the initialization stuff ... */
->    } else {
->        /* ... do the cleanup stuff ... */
->    }
->
->The problem here is virtio_device_should_start(vdev, 0) currently
->always returns "true" since it internally only looks at vdev->started
->instead of looking at the "status" parameter. Thus once the device
->got started once, virtio_device_should_start() always returns true
+This commit adds validation checks for the MCOPRE and MCOSEL values in
+the rcc_update_cfgr_register function. If the MCOPRE value exceeds
+0b100 or the MCOSEL value exceeds 0b111, an error is logged and the
+corresponding clock mux is disabled. This helps in identifying and
+handling invalid configurations in the RCC registers.
 
+Reproducer:
+cat << EOF | qemu-system-aarch64 -display \
+none -machine accel=qtest, -m 512M -machine b-l475e-iot01a -qtest \
+stdio
+writeq 0x40021008 0xffffffff
+EOF
 
-virtio_device_should_start() returning true if it's already started and 
-running looks like a code smell to me... it intuitively feels like a 
-ternary state instead of boolean: not startable, startable, already 
-started.
+Signed-off-by: Zheyu Ma <zheyuma97@gmail.com>
+---
+ hw/misc/stm32l4x5_rcc.c | 28 ++++++++++++++++++++--------
+ 1 file changed, 20 insertions(+), 8 deletions(-)
 
->and thus the vhost_*_set_status() functions return early, without
->ever doing any clean-up when being called with status == 0. This
->causes e.g. problems when trying to hot-plug and hot-unplug a vhost
->user devices multiple times since the de-initialization step is
->completely skipped during the unplug operation.
->
->This bug has been introduced in commit 9f6bcfd99f ("hw/virtio: move
->vm_running check to virtio_device_started") which replaced
->
-> should_start = status & VIRTIO_CONFIG_S_DRIVER_OK;
->
->with
->
-> should_start = virtio_device_started(vdev, status);
->
->which later got replaced by virtio_device_should_start(). This blocked
->the possibility to set should_start to false in case the status flag
->VIRTIO_CONFIG_S_DRIVER_OK was not set.
->
->Fix it by adjusting the virtio_device_should_start() function to
->only consider the status flag instead of vdev->started. Since this
->function is only used in the various vhost_*_set_status() functions
->for exactly the same purpose, it should be fine to fix it in this
->central place there without any risk to change the behavior of other
->code.
->
->Fixes: 9f6bcfd99f ("hw/virtio: move vm_running check to virtio_device_started")
->Buglink: https://issues.redhat.com/browse/RHEL-40708
->Signed-off-by: Thomas Huth <thuth@redhat.com>
->---
+diff --git a/hw/misc/stm32l4x5_rcc.c b/hw/misc/stm32l4x5_rcc.c
+index 417bd5e85f..59d428fa66 100644
+--- a/hw/misc/stm32l4x5_rcc.c
++++ b/hw/misc/stm32l4x5_rcc.c
+@@ -543,19 +543,31 @@ static void rcc_update_cfgr_register(Stm32l4x5RccState *s)
+     uint32_t val;
+     /* MCOPRE */
+     val = FIELD_EX32(s->cfgr, CFGR, MCOPRE);
+-    assert(val <= 0b100);
+-    clock_mux_set_factor(&s->clock_muxes[RCC_CLOCK_MUX_MCO],
+-                         1, 1 << val);
++    if (val > 0b100) {
++        qemu_log_mask(LOG_GUEST_ERROR,
++                      "%s: Invalid MCOPRE value: 0x%"PRIx32"\n",
++                      __func__, val);
++        clock_mux_set_enable(&s->clock_muxes[RCC_CLOCK_MUX_MCO], false);
++    } else {
++        clock_mux_set_factor(&s->clock_muxes[RCC_CLOCK_MUX_MCO],
++                             1, 1 << val);
++    }
+ 
+     /* MCOSEL */
+     val = FIELD_EX32(s->cfgr, CFGR, MCOSEL);
+-    assert(val <= 0b111);
+-    if (val == 0) {
++    if (val > 0b111) {
++        qemu_log_mask(LOG_GUEST_ERROR,
++                      "%s: Invalid MCOSEL value: 0x%"PRIx32"\n",
++                      __func__, val);
+         clock_mux_set_enable(&s->clock_muxes[RCC_CLOCK_MUX_MCO], false);
+     } else {
+-        clock_mux_set_enable(&s->clock_muxes[RCC_CLOCK_MUX_MCO], true);
+-        clock_mux_set_source(&s->clock_muxes[RCC_CLOCK_MUX_MCO],
+-                             val - 1);
++        if (val == 0) {
++            clock_mux_set_enable(&s->clock_muxes[RCC_CLOCK_MUX_MCO], false);
++        } else {
++            clock_mux_set_enable(&s->clock_muxes[RCC_CLOCK_MUX_MCO], true);
++            clock_mux_set_source(&s->clock_muxes[RCC_CLOCK_MUX_MCO],
++                                 val - 1);
++        }
+     }
+ 
+     /* STOPWUCK */
+-- 
+2.34.1
 
-
-Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 
