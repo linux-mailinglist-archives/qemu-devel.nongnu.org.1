@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3F6F90D84D
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jun 2024 18:09:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3381390D88A
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jun 2024 18:11:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sJbLC-0006OZ-Rs; Tue, 18 Jun 2024 12:05:50 -0400
+	id 1sJbLO-0006PY-BR; Tue, 18 Jun 2024 12:06:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sJbLA-0006OF-NW
- for qemu-devel@nongnu.org; Tue, 18 Jun 2024 12:05:48 -0400
-Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sJbLF-0006PE-Hp
+ for qemu-devel@nongnu.org; Tue, 18 Jun 2024 12:05:53 -0400
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sJbL8-0007jD-Gq
- for qemu-devel@nongnu.org; Tue, 18 Jun 2024 12:05:48 -0400
-Received: by mail-ed1-x530.google.com with SMTP id
- 4fb4d7f45d1cf-57d05e0017aso264987a12.1
- for <qemu-devel@nongnu.org>; Tue, 18 Jun 2024 09:05:46 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sJbLD-0007jV-LF
+ for qemu-devel@nongnu.org; Tue, 18 Jun 2024 12:05:53 -0400
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-362f62ae4c5so120809f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 18 Jun 2024 09:05:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1718726744; x=1719331544; darn=nongnu.org;
+ d=linaro.org; s=google; t=1718726750; x=1719331550; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=hythfOpvKdnQtXG8QgrEpQziqfs8Kk/FNjGJNS+WjGI=;
- b=BNjXYHErjlqlm3ifAFGeoB3OFnJD5OvpgzqL6CSiKutObcmT5dKCjgjfQMBsegAM4L
- awI4NYnTlgrgbHNOW5oTOxojpQ1By29C8l4DzRp0ic7LnEMEUFSV05MLl00u3PrUxm7b
- YE9YZiwl2N4Oj2UvZ8jsyx2qq/NIZT/y7J874013oTMsNhcZ9dcRuSSvBp2TOZHziNPZ
- tvbnNxvgF5QW8+VK7gM8KndHHlxoNfxFAePODbBSfTO7ryGbSocXX/wAR1psHNc42fu+
- g5uoGRYDclaQIAxPKjRR8PwVAamkKEqd1qnf/JuFol+ajJFCSsR0U6FeQnVO5ZMLTTUv
- F3UA==
+ bh=KzZq3iGA+Ys+b27eQPwLx5mcriu5b6pZoRIjvgOYd8M=;
+ b=e8h/2AfyKnK3l7aVl4AN8Rzky0GrIIOYTQqJq0d3WaKkQTDGV43dJOgQhTREfKVjy9
+ Ypn1IEjrTS6DuacOnjbrOISQAyNPR8/1RlQWQoW9/mzKpP4uDPJGpjqltOdpcWdND47J
+ 06aeaBJ86FopD+JqCMB5ws8taqWhG8q0ZhPjjcbTr1MHRRkdMcLVotzD5pxtGzXmy/8i
+ 7USeyp0qwOQar+JfaaosRgoO+rn05OtBwoqW4iDvQmlQf7hbGdDMyuhwJT1SyBX/qNet
+ Lwm44tRYLBUeK7FgmeAqoNaqbwaBmnbExIOf/fqhCcbc5Mo3X5nsVpxG0LBoBW8+X17/
+ jN2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718726744; x=1719331544;
+ d=1e100.net; s=20230601; t=1718726750; x=1719331550;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=hythfOpvKdnQtXG8QgrEpQziqfs8Kk/FNjGJNS+WjGI=;
- b=Zb5BDUHq07TEy5weRxIY7Q/RviJcvETKqRHUnil6X8I1TbQ5KAAAwq+d+POSoIsBR1
- M+MU/QjkpPu1h/3Jq/rqwLL+zpfySv36RqASxysBlTxwH5+xArc7R6pRxdandobhf0R7
- mxmHJ+GbMQnTks0/QUQWh7sU+lcNOiSH5aCBG7aD3/SA28NH3m0Axub1/UnD+pqRhTGt
- o0Jcb9XVeV89ufVGVcjEnJXcx95C1kdUwH73BBs2DBtha7IeAsfHcyCHJYJxwAKQBMao
- XqkuJu/Ex+NpYTRz16MGlhoVNyzwfpTNA/CrI/TcBxSJ6lyjG5xeB/GIckhVK7YWLKPP
- a6qA==
-X-Gm-Message-State: AOJu0YzS2OACu2wQ97OfnI6aoVN1D2Q7ZzMx5q1Xr63WUFqjKCyZTgJb
- TUiLCz9vmGe4PKqcD308eMcqaA8boW6yApzxZUQRy8kkn7+BR5AQeR2XU2Voz+/pwf7nOTH9zsQ
- P
-X-Google-Smtp-Source: AGHT+IEspRNMV9GWzp1uzSiWH5Clmi5MoCQdX+bcNbpP6GOl8JXh9iUQjYGpsnS7eW3o8HD92O3V3g==
-X-Received: by 2002:a50:a402:0:b0:57c:d4e9:4a03 with SMTP id
- 4fb4d7f45d1cf-57cd4e94b6emr3841204a12.41.1718726744386; 
- Tue, 18 Jun 2024 09:05:44 -0700 (PDT)
+ bh=KzZq3iGA+Ys+b27eQPwLx5mcriu5b6pZoRIjvgOYd8M=;
+ b=ICS7q8s6PeuNlhGdMI/xlCttFN80RdJ4iJRodEBRJlnnHEEhe7G8kPUuyALbiGJfA2
+ OeSD1FaeuZKIDPKdeYsCeU4ezlbl4iWXl1zOHz+GIPc7H/AVGghy+nHtoKpC+JxUIeE+
+ Zgc2iEp/cwnYjt6BkN5/d/ckyZYIowIFC79NgWSseJ52c/9yNZqdMulHDmWUghGCaemF
+ M/Qyj7xVHtex89AOhPZeL6mOo7yjrHMuylvQ2VQRjIzo38G46v2WaO+xqIwzPC0wiVy1
+ 2w4TaUhgTAIi00RB9L02hlx3FIgXizhlpx5RC94q4ob76p1phZXcqma+xY/+DiembdX2
+ gEOA==
+X-Gm-Message-State: AOJu0YzlOJqA5sfKiuI6N8JxEXqf1YanNyIs2oWSTJyf5VFb6QtNDPyu
+ gLWXgnOjSCHpTCBb2GBUooj+3CxdjzTXOx4umg/9Q0BSlDmxKbssyXTLbhKP8nQbfB1jFH1V6ub
+ B
+X-Google-Smtp-Source: AGHT+IGwfHe86djaPMrWAqocVmLNPm1nYoZM7OOGcLLDZ/ENSv/6Ap22PcNYws88XdJc3NtaUGczDw==
+X-Received: by 2002:a5d:4052:0:b0:362:8138:f45e with SMTP id
+ ffacd0b85a97d-362ffb429d4mr362808f8f.17.1718726749759; 
+ Tue, 18 Jun 2024 09:05:49 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.212.55])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-36075104a26sm14440062f8f.97.2024.06.18.09.05.43
+ ffacd0b85a97d-36075093a3fsm14582256f8f.1.2024.06.18.09.05.48
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 18 Jun 2024 09:05:44 -0700 (PDT)
+ Tue, 18 Jun 2024 09:05:49 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 52/76] hw/intc: Introduce x-query-interrupt-controllers QMP
- command
-Date: Tue, 18 Jun 2024 18:00:14 +0200
-Message-ID: <20240618160039.36108-53-philmd@linaro.org>
+Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 53/76] ppc/pnv: Introduce pnv_chip_foreach_cpu()
+Date: Tue, 18 Jun 2024 18:00:15 +0200
+Message-ID: <20240618160039.36108-54-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240618160039.36108-1-philmd@linaro.org>
 References: <20240618160039.36108-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::530;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x530.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,152 +93,105 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is a counterpart to the HMP "info pic" command. It is being
-added with an "x-" prefix because this QMP command is intended as an
-adhoc debugging tool and will thus not be modelled in QAPI as fully
-structured data, nor will it have long term guaranteed stability.
-The existing HMP command is rewritten to call the QMP command.
+From: Cédric Le Goater <clg@redhat.com>
 
+This helper routine uses the machine definition, sockets, cores and
+threads, to loop on all CPUs of the machine. Replace CPU_FOREACH()
+with it.
+
+Signed-off-by: Cédric Le Goater <clg@redhat.com>
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20240424093048.180966-1-clg@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-Id: <20240610063518.50680-3-philmd@linaro.org>
 ---
- qapi/machine.json          | 17 +++++++++++++++++
- hw/core/machine-qmp-cmds.c | 29 +++++++++++++++++++++++++++++
- monitor/hmp-cmds.c         | 33 ---------------------------------
- hmp-commands-info.hx       |  2 +-
- 4 files changed, 47 insertions(+), 34 deletions(-)
+ hw/ppc/pnv.c | 50 +++++++++++++++++++++++++++++++++++++-------------
+ 1 file changed, 37 insertions(+), 13 deletions(-)
 
-diff --git a/qapi/machine.json b/qapi/machine.json
-index 453feb9347..2fd3e9c3d5 100644
---- a/qapi/machine.json
-+++ b/qapi/machine.json
-@@ -1864,3 +1864,20 @@
- { 'command': 'dumpdtb',
-   'data': { 'filename': 'str' },
-   'if': 'CONFIG_FDT' }
-+
-+##
-+# @x-query-interrupt-controllers:
-+#
-+# Query information on interrupt controller devices
-+#
-+# Features:
-+#
-+# @unstable: This command is meant for debugging.
-+#
-+# Returns: Interrupt controller devices information
-+#
-+# Since: 9.1
-+##
-+{ 'command': 'x-query-interrupt-controllers',
-+  'returns': 'HumanReadableText',
-+  'features': [ 'unstable' ]}
-diff --git a/hw/core/machine-qmp-cmds.c b/hw/core/machine-qmp-cmds.c
-index 5972100b1f..130217da8f 100644
---- a/hw/core/machine-qmp-cmds.c
-+++ b/hw/core/machine-qmp-cmds.c
-@@ -361,6 +361,35 @@ HumanReadableText *qmp_x_query_irq(Error **errp)
-     return human_readable_text_from_str(buf);
+diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
+index 03c595788f..6b41d1d2dd 100644
+--- a/hw/ppc/pnv.c
++++ b/hw/ppc/pnv.c
+@@ -2261,6 +2261,21 @@ PowerPCCPU *pnv_chip_find_cpu(PnvChip *chip, uint32_t pir)
+     return NULL;
  }
  
-+static int qmp_x_query_intc_foreach(Object *obj, void *opaque)
++static void pnv_chip_foreach_cpu(PnvChip *chip,
++                   void (*fn)(PnvChip *chip, PowerPCCPU *cpu, void *opaque),
++                   void *opaque)
 +{
-+    InterruptStatsProvider *intc;
-+    InterruptStatsProviderClass *k;
-+    GString *buf = opaque;
++    int i, j;
 +
-+    if (object_dynamic_cast(obj, TYPE_INTERRUPT_STATS_PROVIDER)) {
-+        intc = INTERRUPT_STATS_PROVIDER(obj);
-+        k = INTERRUPT_STATS_PROVIDER_GET_CLASS(obj);
-+        if (k->print_info) {
-+            k->print_info(intc, buf);
-+        } else {
-+            g_string_append_printf(buf,
-+                                   "Interrupt controller information not available for %s.\n",
-+                                   object_get_typename(obj));
++    for (i = 0; i < chip->nr_cores; i++) {
++        PnvCore *pc = chip->cores[i];
++
++        for (j = 0; j < CPU_CORE(pc)->nr_threads; j++) {
++            fn(chip, pc->threads[j], opaque);
 +        }
 +    }
-+
-+    return 0;
 +}
 +
-+HumanReadableText *qmp_x_query_interrupt_controllers(Error **errp)
-+{
-+    g_autoptr(GString) buf = g_string_new("");
-+    object_child_foreach_recursive(object_get_root(),
-+                                   qmp_x_query_intc_foreach, buf);
-+    return human_readable_text_from_str(buf);
-+}
-+
- GuidInfo *qmp_query_vm_generation_id(Error **errp)
+ static ICSState *pnv_ics_get(XICSFabric *xi, int irq)
  {
-     GuidInfo *info;
-diff --git a/monitor/hmp-cmds.c b/monitor/hmp-cmds.c
-index fbff7fdb57..45ee3a9e1f 100644
---- a/monitor/hmp-cmds.c
-+++ b/monitor/hmp-cmds.c
-@@ -25,9 +25,7 @@
- #include "qapi/qapi-commands-machine.h"
- #include "qapi/qapi-commands-misc.h"
- #include "qapi/qmp/qdict.h"
--#include "qapi/type-helpers.h"
- #include "qemu/cutils.h"
--#include "hw/intc/intc.h"
- #include "qemu/log.h"
- #include "sysemu/sysemu.h"
- 
-@@ -83,37 +81,6 @@ void hmp_info_version(Monitor *mon, const QDict *qdict)
-     qapi_free_VersionInfo(info);
+     PnvMachineState *pnv = PNV_MACHINE(xi);
+@@ -2329,22 +2344,25 @@ static ICPState *pnv_icp_get(XICSFabric *xi, int pir)
+     return cpu ? ICP(pnv_cpu_state(cpu)->intc) : NULL;
  }
  
--static int hmp_info_pic_foreach(Object *obj, void *opaque)
--{
--    InterruptStatsProvider *intc;
--    InterruptStatsProviderClass *k;
--    Monitor *mon = opaque;
--
--    if (object_dynamic_cast(obj, TYPE_INTERRUPT_STATS_PROVIDER)) {
--        intc = INTERRUPT_STATS_PROVIDER(obj);
--        k = INTERRUPT_STATS_PROVIDER_GET_CLASS(obj);
--        if (k->print_info) {
--            g_autoptr(GString) buf = g_string_new("");
--            g_autoptr(HumanReadableText) info = NULL;
--
--            k->print_info(intc, buf);
--            info = human_readable_text_from_str(buf);
--            monitor_puts(mon, info->human_readable_text);
--        } else {
--            monitor_printf(mon, "Interrupt controller information not available for %s.\n",
--                           object_get_typename(obj));
--        }
--    }
--
--    return 0;
--}
--
--void hmp_info_pic(Monitor *mon, const QDict *qdict)
--{
--    object_child_foreach_recursive(object_get_root(),
--                                   hmp_info_pic_foreach, mon);
--}
--
- void hmp_quit(Monitor *mon, const QDict *qdict)
++static void pnv_pic_intc_print_info(PnvChip *chip, PowerPCCPU *cpu,
++                                    void *opaque)
++{
++    PNV_CHIP_GET_CLASS(chip)->intc_print_info(chip, cpu, opaque);
++}
++
+ static void pnv_pic_print_info(InterruptStatsProvider *obj, GString *buf)
  {
-     monitor_suspend(mon);
-diff --git a/hmp-commands-info.hx b/hmp-commands-info.hx
-index 20a9835ea8..cfd4ad5651 100644
---- a/hmp-commands-info.hx
-+++ b/hmp-commands-info.hx
-@@ -174,7 +174,7 @@ ERST
-         .args_type  = "",
-         .params     = "",
-         .help       = "show PIC state",
--        .cmd        = hmp_info_pic,
-+        .cmd_info_hrt = qmp_x_query_interrupt_controllers,
-     },
+     PnvMachineState *pnv = PNV_MACHINE(obj);
+     int i;
+-    CPUState *cs;
+-
+-    CPU_FOREACH(cs) {
+-        PowerPCCPU *cpu = POWERPC_CPU(cs);
+-
+-        /* XXX: loop on each chip/core/thread instead of CPU_FOREACH() */
+-        PNV_CHIP_GET_CLASS(pnv->chips[0])->intc_print_info(pnv->chips[0], cpu,
+-                                                           buf);
+-    }
  
- SRST
+     for (i = 0; i < pnv->num_chips; i++) {
+-        PNV_CHIP_GET_CLASS(pnv->chips[i])->pic_print_info(pnv->chips[i], buf);
++        PnvChip *chip = pnv->chips[i];
++
++        /* First CPU presenters */
++        pnv_chip_foreach_cpu(chip, pnv_pic_intc_print_info, buf);
++
++        /* Then other devices, PHB, PSI, XIVE */
++        PNV_CHIP_GET_CLASS(chip)->pic_print_info(chip, buf);
+     }
+ }
+ 
+@@ -2545,12 +2563,18 @@ static void pnv_cpu_do_nmi_on_cpu(CPUState *cs, run_on_cpu_data arg)
+     }
+ }
+ 
++static void pnv_cpu_do_nmi(PnvChip *chip, PowerPCCPU *cpu, void *opaque)
++{
++    async_run_on_cpu(CPU(cpu), pnv_cpu_do_nmi_on_cpu, RUN_ON_CPU_NULL);
++}
++
+ static void pnv_nmi(NMIState *n, int cpu_index, Error **errp)
+ {
+-    CPUState *cs;
++    PnvMachineState *pnv = PNV_MACHINE(qdev_get_machine());
++    int i;
+ 
+-    CPU_FOREACH(cs) {
+-        async_run_on_cpu(cs, pnv_cpu_do_nmi_on_cpu, RUN_ON_CPU_NULL);
++    for (i = 0; i < pnv->num_chips; i++) {
++        pnv_chip_foreach_cpu(pnv->chips[i], pnv_cpu_do_nmi, NULL);
+     }
+ }
+ 
 -- 
 2.41.0
 
