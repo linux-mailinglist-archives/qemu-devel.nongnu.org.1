@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5825090EB72
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jun 2024 14:50:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D58B90EB71
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jun 2024 14:50:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sJuke-0005ar-3X; Wed, 19 Jun 2024 08:49:24 -0400
+	id 1sJukf-0005bl-DB; Wed, 19 Jun 2024 08:49:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sJukb-0005aS-G8
- for qemu-devel@nongnu.org; Wed, 19 Jun 2024 08:49:21 -0400
-Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sJukd-0005am-8W
+ for qemu-devel@nongnu.org; Wed, 19 Jun 2024 08:49:23 -0400
+Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sJukX-0008Mv-8i
- for qemu-devel@nongnu.org; Wed, 19 Jun 2024 08:49:21 -0400
-Received: by mail-ed1-x52b.google.com with SMTP id
- 4fb4d7f45d1cf-57ccd1111aeso4885970a12.0
- for <qemu-devel@nongnu.org>; Wed, 19 Jun 2024 05:49:15 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sJukb-0008OB-58
+ for qemu-devel@nongnu.org; Wed, 19 Jun 2024 08:49:22 -0400
+Received: by mail-ed1-x529.google.com with SMTP id
+ 4fb4d7f45d1cf-57cfe600cbeso2280270a12.2
+ for <qemu-devel@nongnu.org>; Wed, 19 Jun 2024 05:49:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1718801354; x=1719406154; darn=nongnu.org;
+ d=linaro.org; s=google; t=1718801359; x=1719406159; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=7LS7O9dFBi9P9NXcnsBVdZ2SR50qoYr4kXRSECVup2M=;
- b=FzoSGmDixW/9NjYRB2i0eamBEKWbQjnJyfqu9WX8Poan0UMuBvTzfiVEXPIbUmo32T
- 56sB18je4J+AsJ/uHX6gFbbbRAfeBYjIKjVDIN3b+6o+si7sCPb/euJmhOm5S9r0MZdO
- MJqvvM+9cPMHHmN+nWYDlm5XWbhl9WFhdDQ3S9vHLgzrq81vwSxYHDmlFTuaFL8AjUPe
- Mly3/g7BU0PohJ4KvBLTGrw4rGHuWP67fDfziefDCeKy1E/VulWbdXdEvqKDBe+aOShb
- yzW6Z5Qhn5/95Kq37M5LJOMOpXY26Nm16twC6wXgqLJ+H/bxVXMnA2gZQ/mzIUOXg9Bp
- MRGQ==
+ bh=YYUdrW7l/DLW1Z4TgfkAfyXdWOn38cJZ9hefdlLR9fY=;
+ b=Mx9sKbqsaoRciH+f7EVKysLiYb5IcT5XyY/2LZSRZx2EQxzL04gXOdodNoAvBAmdhq
+ g9Fy3p0C73pCW2qNFzksm/FWcrT4RuQFGx2SckvDws/xGjx7Eqr3524vFPG3Aktv+fzS
+ ohYwXXGDEdbzhZUG5DRKGJVKfqPODA020sCkYsmr3V+Pcek3mG/W1GLHEc5lmD8WBoDl
+ +l/c8SgWIqw3jurLDGED+0HtgpqpjM8q6BbEY0PUOcGdhJ2ZuRbHqn0HxP6H5GY74IyY
+ nUCe1apk8wrVyzHvYejFH3KXy1sizXUFSgYIKEh0QNcXiHiGXylIjSnPDPYfgXeBtzyj
+ POqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718801354; x=1719406154;
+ d=1e100.net; s=20230601; t=1718801359; x=1719406159;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=7LS7O9dFBi9P9NXcnsBVdZ2SR50qoYr4kXRSECVup2M=;
- b=aoJautRrEyrBiGGoAPLvG2AIdWduzCGowFx8Ilog7UmbXPCdtm/LxaSwRBY/2gP73U
- QOnzzRNCW4OL5o6GXRpijAiHQf5k012dJy6vWSF25bkSIQfJFUsh3TMM08Nbq6h8ADuF
- LbVT3Nx1GX491tTT6rJt9suQqGWft43JedO3tJdtqI4ZUdoDVY3HV6G9a1xGy8LtmF7u
- vuwv9qHoKJBWAIc7tMDM6y4LFuysOmw01x/zmfg+tVQmatjpSboRIV00AykkGNycLL6G
- y+ey2flCFlKlaPm5912RWb7LsfeAUZhl5j4LabFDebfQIWgyrozzcEzKrlRXt5GlK7Yy
- Apfw==
-X-Gm-Message-State: AOJu0Yzxwex7JZp75OCb8nowta0xBW1rGSUboLkHTuFzriw0XXRnjHU4
- RtsJL9SqlqVmXXkcg3+b9gvUp6S/R44Rg+zOsdgNPP7rSFCAszXsaC7OL+bvIjJEA2U1rJPOQus
- u
-X-Google-Smtp-Source: AGHT+IFOFeekqff/IjWCEM91ScnU4c+FH9nmdLhBpDI32VkM1tJgPIgknxiy1+GLp8MB2FQG0rhbVw==
-X-Received: by 2002:a50:8719:0:b0:57c:571f:e52d with SMTP id
- 4fb4d7f45d1cf-57d07ebeaaamr1571053a12.36.1718801353752; 
- Wed, 19 Jun 2024 05:49:13 -0700 (PDT)
+ bh=YYUdrW7l/DLW1Z4TgfkAfyXdWOn38cJZ9hefdlLR9fY=;
+ b=SxuYocwsa4mjeBlFqR2DCQH9wJ/3XnSlOA4na0bbDzWJqWYnjimHx/hBxp8jYkFlFN
+ g3n0ko+khnPap45VnUg/MEUbLpN8inCGJZ7WZXhaq/T3IFz4+vimE3GQKgvAR2+hBCCD
+ QsQ6a3q1qwT53ut5LQ6vkNc7VAp5cpjBelFH3d7AiZaL0bHlFSTXnk8MlxAQtWDSqnSx
+ wbj7w+aQPB3bWeLw82jo7io8raa2okopcRSQT4WDYPqcru1D1WuUeZoiGsPDlaJ1FIIF
+ VOstrDuciCxIqeb9vhL+5GEZcCH4oAZyhCF4r6GI5aJBuC84BttLOlVruh2WdEvjI/4I
+ nGCw==
+X-Gm-Message-State: AOJu0YyJ3fxcESpPooUGr6gwzlXLu7HpIzTKY6S0ausXpL2cFnIYgcet
+ I15xCnfte14BCO8ekhC9mRkdVLp7Bum08XaSw0C5Qpnf/kY85FOTbQ4EvHqjZ0Kr+ujdP4OvS63
+ o
+X-Google-Smtp-Source: AGHT+IHJfUKhFHzJHzfPU66S5QcsRP+yQ4xbZFqcceYymLp9T1hO0tBxFqJxeFaPiQihWGxUTg43UQ==
+X-Received: by 2002:aa7:c70c:0:b0:57d:e27:4774 with SMTP id
+ 4fb4d7f45d1cf-57d0e2748a4mr1049767a12.37.1718801359241; 
+ Wed, 19 Jun 2024 05:49:19 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.133.105])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-57cb72da371sm8294617a12.24.2024.06.19.05.49.11
+ 4fb4d7f45d1cf-57d1606e7absm175608a12.69.2024.06.19.05.49.18
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 19 Jun 2024 05:49:12 -0700 (PDT)
+ Wed, 19 Jun 2024 05:49:18 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Gustavo Romero <gustavo.romero@linaro.org>, qemu-arm@nongnu.org,
  Anton Johansson <anjo@rev.ng>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 1/2] target/arm: Merge gdbstub64.c within gdbstub.c
-Date: Wed, 19 Jun 2024 14:49:02 +0200
-Message-ID: <20240619124903.56898-2-philmd@linaro.org>
+Subject: [PATCH 2/2] target/arm: Always build Aarch64 gdbstub helpers
+Date: Wed, 19 Jun 2024 14:49:03 +0200
+Message-ID: <20240619124903.56898-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240619124903.56898-1-philmd@linaro.org>
 References: <20240619124903.56898-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::529;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x529.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,798 +94,127 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Simple code movement adding #ifdef'ry on TARGET_AARCH64.
+In order to have a single binary for ARM and Aarch64,
+always build Aarch64 gdbstub support.
+
+Since arm_cpu_register_gdb_regs_for_features() checks
+on arm_feature(env, ARM_FEATURE_AARCH64), the Aarch64
+gdb registers won't be registered on 32-bit ARM.
+There should be no functional changes.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/arm/gdbstub.c   | 363 ++++++++++++++++++++++++++++++++++++++
- target/arm/gdbstub64.c | 383 -----------------------------------------
- target/arm/meson.build |   1 -
- 3 files changed, 363 insertions(+), 384 deletions(-)
- delete mode 100644 target/arm/gdbstub64.c
+ target/arm/cpu.h       | 8 +++-----
+ target/arm/internals.h | 2 --
+ target/arm/gdbstub.c   | 4 ----
+ 3 files changed, 3 insertions(+), 11 deletions(-)
 
+diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+index 3841359d0f..1240754f71 100644
+--- a/target/arm/cpu.h
++++ b/target/arm/cpu.h
+@@ -180,12 +180,12 @@ typedef struct ARMVectorReg {
+     uint64_t d[2 * ARM_MAX_VQ] QEMU_ALIGNED(16);
+ } ARMVectorReg;
+ 
+-#ifdef TARGET_AARCH64
+ /* In AArch32 mode, predicate registers do not exist at all.  */
+ typedef struct ARMPredicateReg {
+     uint64_t p[DIV_ROUND_UP(2 * ARM_MAX_VQ, 8)] QEMU_ALIGNED(16);
+ } ARMPredicateReg;
+ 
++#ifdef TARGET_AARCH64
+ /* In AArch32 mode, PAC keys do not exist at all.  */
+ typedef struct ARMPACKey {
+     uint64_t lo, hi;
+@@ -606,13 +606,11 @@ typedef struct CPUArchState {
+     struct {
+         ARMVectorReg zregs[32];
+ 
+-#ifdef TARGET_AARCH64
+         /* Store FFR as pregs[16] to make it easier to treat as any other.  */
+ #define FFR_PRED_NUM 16
+         ARMPredicateReg pregs[17];
+         /* Scratch space for aa64 sve predicate temporary.  */
+         ARMPredicateReg preg_tmp;
+-#endif
+ 
+         /* We store these fpcsr fields separately for convenience.  */
+         uint32_t qc[4] QEMU_ALIGNED(16);
+@@ -1165,6 +1163,8 @@ hwaddr arm_cpu_get_phys_page_attrs_debug(CPUState *cpu, vaddr addr,
+ 
+ int arm_cpu_gdb_read_register(CPUState *cpu, GByteArray *buf, int reg);
+ int arm_cpu_gdb_write_register(CPUState *cpu, uint8_t *buf, int reg);
++int aarch64_cpu_gdb_read_register(CPUState *cpu, GByteArray *buf, int reg);
++int aarch64_cpu_gdb_write_register(CPUState *cpu, uint8_t *buf, int reg);
+ 
+ int arm_cpu_write_elf64_note(WriteCoreDumpFunction f, CPUState *cs,
+                              int cpuid, DumpState *s);
+@@ -1194,8 +1194,6 @@ int arm_cpu_write_elf32_note(WriteCoreDumpFunction f, CPUState *cs,
+ void arm_emulate_firmware_reset(CPUState *cpustate, int target_el);
+ 
+ #ifdef TARGET_AARCH64
+-int aarch64_cpu_gdb_read_register(CPUState *cpu, GByteArray *buf, int reg);
+-int aarch64_cpu_gdb_write_register(CPUState *cpu, uint8_t *buf, int reg);
+ void aarch64_sve_narrow_vq(CPUARMState *env, unsigned vq);
+ void aarch64_sve_change_el(CPUARMState *env, int old_el,
+                            int new_el, bool el0_a64);
+diff --git a/target/arm/internals.h b/target/arm/internals.h
+index 11b5da2562..79dd62dd46 100644
+--- a/target/arm/internals.h
++++ b/target/arm/internals.h
+@@ -1632,7 +1632,6 @@ static inline uint64_t pmu_counter_mask(CPUARMState *env)
+   return (1ULL << 31) | ((1ULL << pmu_num_counters(env)) - 1);
+ }
+ 
+-#ifdef TARGET_AARCH64
+ GDBFeature *arm_gen_dynamic_svereg_feature(CPUState *cpu, int base_reg);
+ int aarch64_gdb_get_sve_reg(CPUState *cs, GByteArray *buf, int reg);
+ int aarch64_gdb_set_sve_reg(CPUState *cs, uint8_t *buf, int reg);
+@@ -1648,7 +1647,6 @@ void aarch64_max_tcg_initfn(Object *obj);
+ void aarch64_add_pauth_properties(Object *obj);
+ void aarch64_add_sve_properties(Object *obj);
+ void aarch64_add_sme_properties(Object *obj);
+-#endif
+ 
+ /* Read the CONTROL register as the MRS instruction would. */
+ uint32_t arm_v7m_mrs_control(CPUARMState *env, uint32_t secure);
 diff --git a/target/arm/gdbstub.c b/target/arm/gdbstub.c
-index a3bb73cfa7..508b3d8116 100644
+index 508b3d8116..92fa716826 100644
 --- a/target/arm/gdbstub.c
 +++ b/target/arm/gdbstub.c
-@@ -18,6 +18,7 @@
-  * License along with this library; if not, see <http://www.gnu.org/licenses/>.
-  */
- #include "qemu/osdep.h"
-+#include "qemu/log.h"
- #include "cpu.h"
- #include "exec/gdbstub.h"
- #include "gdbstub/helpers.h"
-@@ -310,6 +311,368 @@ static GDBFeature *arm_gen_dynamic_sysreg_feature(CPUState *cs, int base_reg)
+@@ -311,7 +311,6 @@ static GDBFeature *arm_gen_dynamic_sysreg_feature(CPUState *cs, int base_reg)
      return &cpu->dyn_sysreg_feature.desc;
  }
  
-+#ifdef TARGET_AARCH64
-+int aarch64_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
-+{
-+    ARMCPU *cpu = ARM_CPU(cs);
-+    CPUARMState *env = &cpu->env;
-+
-+    if (n < 31) {
-+        /* Core integer register.  */
-+        return gdb_get_reg64(mem_buf, env->xregs[n]);
-+    }
-+    switch (n) {
-+    case 31:
-+        return gdb_get_reg64(mem_buf, env->xregs[31]);
-+    case 32:
-+        return gdb_get_reg64(mem_buf, env->pc);
-+    case 33:
-+        return gdb_get_reg32(mem_buf, pstate_read(env));
-+    }
-+    /* Unknown register.  */
-+    return 0;
-+}
-+
-+int aarch64_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
-+{
-+    ARMCPU *cpu = ARM_CPU(cs);
-+    CPUARMState *env = &cpu->env;
-+    uint64_t tmp;
-+
-+    tmp = ldq_p(mem_buf);
-+
-+    if (n < 31) {
-+        /* Core integer register.  */
-+        env->xregs[n] = tmp;
-+        return 8;
-+    }
-+    switch (n) {
-+    case 31:
-+        env->xregs[31] = tmp;
-+        return 8;
-+    case 32:
-+        env->pc = tmp;
-+        return 8;
-+    case 33:
-+        /* CPSR */
-+        pstate_write(env, tmp);
-+        return 4;
-+    }
-+    /* Unknown register.  */
-+    return 0;
-+}
-+
-+int aarch64_gdb_get_fpu_reg(CPUState *cs, GByteArray *buf, int reg)
-+{
-+    ARMCPU *cpu = ARM_CPU(cs);
-+    CPUARMState *env = &cpu->env;
-+
-+    switch (reg) {
-+    case 0 ... 31:
-+    {
-+        /* 128 bit FP register - quads are in LE order */
-+        uint64_t *q = aa64_vfp_qreg(env, reg);
-+        return gdb_get_reg128(buf, q[1], q[0]);
-+    }
-+    case 32:
-+        /* FPSR */
-+        return gdb_get_reg32(buf, vfp_get_fpsr(env));
-+    case 33:
-+        /* FPCR */
-+        return gdb_get_reg32(buf, vfp_get_fpcr(env));
-+    default:
-+        return 0;
-+    }
-+}
-+
-+int aarch64_gdb_set_fpu_reg(CPUState *cs, uint8_t *buf, int reg)
-+{
-+    ARMCPU *cpu = ARM_CPU(cs);
-+    CPUARMState *env = &cpu->env;
-+
-+    switch (reg) {
-+    case 0 ... 31:
-+        /* 128 bit FP register */
-+        {
-+            uint64_t *q = aa64_vfp_qreg(env, reg);
-+            q[0] = ldq_le_p(buf);
-+            q[1] = ldq_le_p(buf + 8);
-+            return 16;
-+        }
-+    case 32:
-+        /* FPSR */
-+        vfp_set_fpsr(env, ldl_p(buf));
-+        return 4;
-+    case 33:
-+        /* FPCR */
-+        vfp_set_fpcr(env, ldl_p(buf));
-+        return 4;
-+    default:
-+        return 0;
-+    }
-+}
-+
-+int aarch64_gdb_get_sve_reg(CPUState *cs, GByteArray *buf, int reg)
-+{
-+    ARMCPU *cpu = ARM_CPU(cs);
-+    CPUARMState *env = &cpu->env;
-+
-+    switch (reg) {
-+    /* The first 32 registers are the zregs */
-+    case 0 ... 31:
-+    {
-+        int vq, len = 0;
-+        for (vq = 0; vq < cpu->sve_max_vq; vq++) {
-+            len += gdb_get_reg128(buf,
-+                                  env->vfp.zregs[reg].d[vq * 2 + 1],
-+                                  env->vfp.zregs[reg].d[vq * 2]);
-+        }
-+        return len;
-+    }
-+    case 32:
-+        return gdb_get_reg32(buf, vfp_get_fpsr(env));
-+    case 33:
-+        return gdb_get_reg32(buf, vfp_get_fpcr(env));
-+    /* then 16 predicates and the ffr */
-+    case 34 ... 50:
-+    {
-+        int preg = reg - 34;
-+        int vq, len = 0;
-+        for (vq = 0; vq < cpu->sve_max_vq; vq = vq + 4) {
-+            len += gdb_get_reg64(buf, env->vfp.pregs[preg].p[vq / 4]);
-+        }
-+        return len;
-+    }
-+    case 51:
-+    {
-+        /*
-+         * We report in Vector Granules (VG) which is 64bit in a Z reg
-+         * while the ZCR works in Vector Quads (VQ) which is 128bit chunks.
-+         */
-+        int vq = sve_vqm1_for_el(env, arm_current_el(env)) + 1;
-+        return gdb_get_reg64(buf, vq * 2);
-+    }
-+    default:
-+        /* gdbstub asked for something out our range */
-+        qemu_log_mask(LOG_UNIMP, "%s: out of range register %d", __func__, reg);
-+        break;
-+    }
-+
-+    return 0;
-+}
-+
-+int aarch64_gdb_set_sve_reg(CPUState *cs, uint8_t *buf, int reg)
-+{
-+    ARMCPU *cpu = ARM_CPU(cs);
-+    CPUARMState *env = &cpu->env;
-+
-+    /* The first 32 registers are the zregs */
-+    switch (reg) {
-+    /* The first 32 registers are the zregs */
-+    case 0 ... 31:
-+    {
-+        int vq, len = 0;
-+        uint64_t *p = (uint64_t *) buf;
-+        for (vq = 0; vq < cpu->sve_max_vq; vq++) {
-+            env->vfp.zregs[reg].d[vq * 2 + 1] = *p++;
-+            env->vfp.zregs[reg].d[vq * 2] = *p++;
-+            len += 16;
-+        }
-+        return len;
-+    }
-+    case 32:
-+        vfp_set_fpsr(env, *(uint32_t *)buf);
-+        return 4;
-+    case 33:
-+        vfp_set_fpcr(env, *(uint32_t *)buf);
-+        return 4;
-+    case 34 ... 50:
-+    {
-+        int preg = reg - 34;
-+        int vq, len = 0;
-+        uint64_t *p = (uint64_t *) buf;
-+        for (vq = 0; vq < cpu->sve_max_vq; vq = vq + 4) {
-+            env->vfp.pregs[preg].p[vq / 4] = *p++;
-+            len += 8;
-+        }
-+        return len;
-+    }
-+    case 51:
-+        /* cannot set vg via gdbstub */
-+        return 0;
-+    default:
-+        /* gdbstub asked for something out our range */
-+        break;
-+    }
-+
-+    return 0;
-+}
-+
-+int aarch64_gdb_get_pauth_reg(CPUState *cs, GByteArray *buf, int reg)
-+{
-+    ARMCPU *cpu = ARM_CPU(cs);
-+    CPUARMState *env = &cpu->env;
-+
-+    switch (reg) {
-+    case 0: /* pauth_dmask */
-+    case 1: /* pauth_cmask */
-+    case 2: /* pauth_dmask_high */
-+    case 3: /* pauth_cmask_high */
-+        /*
-+         * Note that older versions of this feature only contained
-+         * pauth_{d,c}mask, for use with Linux user processes, and
-+         * thus exclusively in the low half of the address space.
-+         *
-+         * To support system mode, and to debug kernels, two new regs
-+         * were added to cover the high half of the address space.
-+         * For the purpose of pauth_ptr_mask, we can use any well-formed
-+         * address within the address space half -- here, 0 and -1.
-+         */
-+        {
-+            bool is_data = !(reg & 1);
-+            bool is_high = reg & 2;
-+            ARMMMUIdx mmu_idx = arm_stage1_mmu_idx(env);
-+            ARMVAParameters param;
-+
-+            param = aa64_va_parameters(env, -is_high, mmu_idx, is_data, false);
-+            return gdb_get_reg64(buf, pauth_ptr_mask(param));
-+        }
-+    default:
-+        return 0;
-+    }
-+}
-+
-+int aarch64_gdb_set_pauth_reg(CPUState *cs, uint8_t *buf, int reg)
-+{
-+    /* All pseudo registers are read-only. */
-+    return 0;
-+}
-+
-+static void output_vector_union_type(GDBFeatureBuilder *builder, int reg_width,
-+                                     const char *name)
-+{
-+    struct TypeSize {
-+        const char *gdb_type;
-+        short size;
-+        char sz, suffix;
-+    };
-+
-+    static const struct TypeSize vec_lanes[] = {
-+        /* quads */
-+        { "uint128", 128, 'q', 'u' },
-+        { "int128", 128, 'q', 's' },
-+        /* 64 bit */
-+        { "ieee_double", 64, 'd', 'f' },
-+        { "uint64", 64, 'd', 'u' },
-+        { "int64", 64, 'd', 's' },
-+        /* 32 bit */
-+        { "ieee_single", 32, 's', 'f' },
-+        { "uint32", 32, 's', 'u' },
-+        { "int32", 32, 's', 's' },
-+        /* 16 bit */
-+        { "ieee_half", 16, 'h', 'f' },
-+        { "uint16", 16, 'h', 'u' },
-+        { "int16", 16, 'h', 's' },
-+        /* bytes */
-+        { "uint8", 8, 'b', 'u' },
-+        { "int8", 8, 'b', 's' },
-+    };
-+
-+    static const char suf[] = { 'b', 'h', 's', 'd', 'q' };
-+    int i, j;
-+
-+    /* First define types and totals in a whole VL */
-+    for (i = 0; i < ARRAY_SIZE(vec_lanes); i++) {
-+        gdb_feature_builder_append_tag(
-+            builder, "<vector id=\"%s%c%c\" type=\"%s\" count=\"%d\"/>",
-+            name, vec_lanes[i].sz, vec_lanes[i].suffix,
-+            vec_lanes[i].gdb_type, reg_width / vec_lanes[i].size);
-+    }
-+
-+    /*
-+     * Now define a union for each size group containing unsigned and
-+     * signed and potentially float versions of each size from 128 to
-+     * 8 bits.
-+     */
-+    for (i = 0; i < ARRAY_SIZE(suf); i++) {
-+        int bits = 8 << i;
-+
-+        gdb_feature_builder_append_tag(builder, "<union id=\"%sn%c\">",
-+                                       name, suf[i]);
-+        for (j = 0; j < ARRAY_SIZE(vec_lanes); j++) {
-+            if (vec_lanes[j].size == bits) {
-+                gdb_feature_builder_append_tag(
-+                    builder, "<field name=\"%c\" type=\"%s%c%c\"/>",
-+                    vec_lanes[j].suffix, name,
-+                    vec_lanes[j].sz, vec_lanes[j].suffix);
-+            }
-+        }
-+        gdb_feature_builder_append_tag(builder, "</union>");
-+    }
-+
-+    /* And now the final union of unions */
-+    gdb_feature_builder_append_tag(builder, "<union id=\"%s\">", name);
-+    for (i = ARRAY_SIZE(suf) - 1; i >= 0; i--) {
-+        gdb_feature_builder_append_tag(builder,
-+                                       "<field name=\"%c\" type=\"%sn%c\"/>",
-+                                       suf[i], name, suf[i]);
-+    }
-+    gdb_feature_builder_append_tag(builder, "</union>");
-+}
-+
-+GDBFeature *arm_gen_dynamic_svereg_feature(CPUState *cs, int base_reg)
-+{
-+    ARMCPU *cpu = ARM_CPU(cs);
-+    int reg_width = cpu->sve_max_vq * 128;
-+    int pred_width = cpu->sve_max_vq * 16;
-+    GDBFeatureBuilder builder;
-+    char *name;
-+    int reg = 0;
-+    int i;
-+
-+    gdb_feature_builder_init(&builder, &cpu->dyn_svereg_feature.desc,
-+                             "org.gnu.gdb.aarch64.sve", "sve-registers.xml",
-+                             base_reg);
-+
-+    /* Create the vector union type. */
-+    output_vector_union_type(&builder, reg_width, "svev");
-+
-+    /* Create the predicate vector type. */
-+    gdb_feature_builder_append_tag(
-+        &builder, "<vector id=\"svep\" type=\"uint8\" count=\"%d\"/>",
-+        pred_width / 8);
-+
-+    /* Define the vector registers. */
-+    for (i = 0; i < 32; i++) {
-+        name = g_strdup_printf("z%d", i);
-+        gdb_feature_builder_append_reg(&builder, name, reg_width, reg++,
-+                                       "svev", NULL);
-+    }
-+
-+    /* fpscr & status registers */
-+    gdb_feature_builder_append_reg(&builder, "fpsr", 32, reg++,
-+                                   "int", "float");
-+    gdb_feature_builder_append_reg(&builder, "fpcr", 32, reg++,
-+                                   "int", "float");
-+
-+    /* Define the predicate registers. */
-+    for (i = 0; i < 16; i++) {
-+        name = g_strdup_printf("p%d", i);
-+        gdb_feature_builder_append_reg(&builder, name, pred_width, reg++,
-+                                       "svep", NULL);
-+    }
-+    gdb_feature_builder_append_reg(&builder, "ffr", pred_width, reg++,
-+                                   "svep", "vector");
-+
-+    /* Define the vector length pseudo-register. */
-+    gdb_feature_builder_append_reg(&builder, "vg", 64, reg++, "int", NULL);
-+
-+    gdb_feature_builder_end(&builder);
-+
-+    return &cpu->dyn_svereg_feature.desc;
-+}
-+#endif
-+
+-#ifdef TARGET_AARCH64
+ int aarch64_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
+ {
+     ARMCPU *cpu = ARM_CPU(cs);
+@@ -671,7 +670,6 @@ GDBFeature *arm_gen_dynamic_svereg_feature(CPUState *cs, int base_reg)
+ 
+     return &cpu->dyn_svereg_feature.desc;
+ }
+-#endif
+ 
  #ifdef CONFIG_TCG
  typedef enum {
-     M_SYSREG_MSP,
-diff --git a/target/arm/gdbstub64.c b/target/arm/gdbstub64.c
-deleted file mode 100644
-index caa31ff3fa..0000000000
---- a/target/arm/gdbstub64.c
-+++ /dev/null
-@@ -1,383 +0,0 @@
--/*
-- * ARM gdb server stub: AArch64 specific functions.
-- *
-- * Copyright (c) 2013 SUSE LINUX Products GmbH
-- *
-- * This library is free software; you can redistribute it and/or
-- * modify it under the terms of the GNU Lesser General Public
-- * License as published by the Free Software Foundation; either
-- * version 2.1 of the License, or (at your option) any later version.
-- *
-- * This library is distributed in the hope that it will be useful,
-- * but WITHOUT ANY WARRANTY; without even the implied warranty of
-- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-- * Lesser General Public License for more details.
-- *
-- * You should have received a copy of the GNU Lesser General Public
-- * License along with this library; if not, see <http://www.gnu.org/licenses/>.
-- */
--#include "qemu/osdep.h"
--#include "qemu/log.h"
--#include "cpu.h"
--#include "internals.h"
--#include "gdbstub/helpers.h"
--
--int aarch64_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
--{
--    ARMCPU *cpu = ARM_CPU(cs);
--    CPUARMState *env = &cpu->env;
--
--    if (n < 31) {
--        /* Core integer register.  */
--        return gdb_get_reg64(mem_buf, env->xregs[n]);
--    }
--    switch (n) {
--    case 31:
--        return gdb_get_reg64(mem_buf, env->xregs[31]);
--    case 32:
--        return gdb_get_reg64(mem_buf, env->pc);
--    case 33:
--        return gdb_get_reg32(mem_buf, pstate_read(env));
--    }
--    /* Unknown register.  */
--    return 0;
--}
--
--int aarch64_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
--{
--    ARMCPU *cpu = ARM_CPU(cs);
--    CPUARMState *env = &cpu->env;
--    uint64_t tmp;
--
--    tmp = ldq_p(mem_buf);
--
--    if (n < 31) {
--        /* Core integer register.  */
--        env->xregs[n] = tmp;
--        return 8;
--    }
--    switch (n) {
--    case 31:
--        env->xregs[31] = tmp;
--        return 8;
--    case 32:
--        env->pc = tmp;
--        return 8;
--    case 33:
--        /* CPSR */
--        pstate_write(env, tmp);
--        return 4;
--    }
--    /* Unknown register.  */
--    return 0;
--}
--
--int aarch64_gdb_get_fpu_reg(CPUState *cs, GByteArray *buf, int reg)
--{
--    ARMCPU *cpu = ARM_CPU(cs);
--    CPUARMState *env = &cpu->env;
--
--    switch (reg) {
--    case 0 ... 31:
--    {
--        /* 128 bit FP register - quads are in LE order */
--        uint64_t *q = aa64_vfp_qreg(env, reg);
--        return gdb_get_reg128(buf, q[1], q[0]);
--    }
--    case 32:
--        /* FPSR */
--        return gdb_get_reg32(buf, vfp_get_fpsr(env));
--    case 33:
--        /* FPCR */
--        return gdb_get_reg32(buf, vfp_get_fpcr(env));
--    default:
--        return 0;
--    }
--}
--
--int aarch64_gdb_set_fpu_reg(CPUState *cs, uint8_t *buf, int reg)
--{
--    ARMCPU *cpu = ARM_CPU(cs);
--    CPUARMState *env = &cpu->env;
--
--    switch (reg) {
--    case 0 ... 31:
--        /* 128 bit FP register */
--        {
--            uint64_t *q = aa64_vfp_qreg(env, reg);
--            q[0] = ldq_le_p(buf);
--            q[1] = ldq_le_p(buf + 8);
--            return 16;
--        }
--    case 32:
--        /* FPSR */
--        vfp_set_fpsr(env, ldl_p(buf));
--        return 4;
--    case 33:
--        /* FPCR */
--        vfp_set_fpcr(env, ldl_p(buf));
--        return 4;
--    default:
--        return 0;
--    }
--}
--
--int aarch64_gdb_get_sve_reg(CPUState *cs, GByteArray *buf, int reg)
--{
--    ARMCPU *cpu = ARM_CPU(cs);
--    CPUARMState *env = &cpu->env;
--
--    switch (reg) {
--    /* The first 32 registers are the zregs */
--    case 0 ... 31:
--    {
--        int vq, len = 0;
--        for (vq = 0; vq < cpu->sve_max_vq; vq++) {
--            len += gdb_get_reg128(buf,
--                                  env->vfp.zregs[reg].d[vq * 2 + 1],
--                                  env->vfp.zregs[reg].d[vq * 2]);
--        }
--        return len;
--    }
--    case 32:
--        return gdb_get_reg32(buf, vfp_get_fpsr(env));
--    case 33:
--        return gdb_get_reg32(buf, vfp_get_fpcr(env));
--    /* then 16 predicates and the ffr */
--    case 34 ... 50:
--    {
--        int preg = reg - 34;
--        int vq, len = 0;
--        for (vq = 0; vq < cpu->sve_max_vq; vq = vq + 4) {
--            len += gdb_get_reg64(buf, env->vfp.pregs[preg].p[vq / 4]);
--        }
--        return len;
--    }
--    case 51:
--    {
--        /*
--         * We report in Vector Granules (VG) which is 64bit in a Z reg
--         * while the ZCR works in Vector Quads (VQ) which is 128bit chunks.
--         */
--        int vq = sve_vqm1_for_el(env, arm_current_el(env)) + 1;
--        return gdb_get_reg64(buf, vq * 2);
--    }
--    default:
--        /* gdbstub asked for something out our range */
--        qemu_log_mask(LOG_UNIMP, "%s: out of range register %d", __func__, reg);
--        break;
--    }
--
--    return 0;
--}
--
--int aarch64_gdb_set_sve_reg(CPUState *cs, uint8_t *buf, int reg)
--{
--    ARMCPU *cpu = ARM_CPU(cs);
--    CPUARMState *env = &cpu->env;
--
--    /* The first 32 registers are the zregs */
--    switch (reg) {
--    /* The first 32 registers are the zregs */
--    case 0 ... 31:
--    {
--        int vq, len = 0;
--        uint64_t *p = (uint64_t *) buf;
--        for (vq = 0; vq < cpu->sve_max_vq; vq++) {
--            env->vfp.zregs[reg].d[vq * 2 + 1] = *p++;
--            env->vfp.zregs[reg].d[vq * 2] = *p++;
--            len += 16;
--        }
--        return len;
--    }
--    case 32:
--        vfp_set_fpsr(env, *(uint32_t *)buf);
--        return 4;
--    case 33:
--        vfp_set_fpcr(env, *(uint32_t *)buf);
--        return 4;
--    case 34 ... 50:
--    {
--        int preg = reg - 34;
--        int vq, len = 0;
--        uint64_t *p = (uint64_t *) buf;
--        for (vq = 0; vq < cpu->sve_max_vq; vq = vq + 4) {
--            env->vfp.pregs[preg].p[vq / 4] = *p++;
--            len += 8;
--        }
--        return len;
--    }
--    case 51:
--        /* cannot set vg via gdbstub */
--        return 0;
--    default:
--        /* gdbstub asked for something out our range */
--        break;
--    }
--
--    return 0;
--}
--
--int aarch64_gdb_get_pauth_reg(CPUState *cs, GByteArray *buf, int reg)
--{
--    ARMCPU *cpu = ARM_CPU(cs);
--    CPUARMState *env = &cpu->env;
--
--    switch (reg) {
--    case 0: /* pauth_dmask */
--    case 1: /* pauth_cmask */
--    case 2: /* pauth_dmask_high */
--    case 3: /* pauth_cmask_high */
--        /*
--         * Note that older versions of this feature only contained
--         * pauth_{d,c}mask, for use with Linux user processes, and
--         * thus exclusively in the low half of the address space.
--         *
--         * To support system mode, and to debug kernels, two new regs
--         * were added to cover the high half of the address space.
--         * For the purpose of pauth_ptr_mask, we can use any well-formed
--         * address within the address space half -- here, 0 and -1.
--         */
--        {
--            bool is_data = !(reg & 1);
--            bool is_high = reg & 2;
--            ARMMMUIdx mmu_idx = arm_stage1_mmu_idx(env);
--            ARMVAParameters param;
--
--            param = aa64_va_parameters(env, -is_high, mmu_idx, is_data, false);
--            return gdb_get_reg64(buf, pauth_ptr_mask(param));
--        }
--    default:
--        return 0;
--    }
--}
--
--int aarch64_gdb_set_pauth_reg(CPUState *cs, uint8_t *buf, int reg)
--{
--    /* All pseudo registers are read-only. */
--    return 0;
--}
--
--static void output_vector_union_type(GDBFeatureBuilder *builder, int reg_width,
--                                     const char *name)
--{
--    struct TypeSize {
--        const char *gdb_type;
--        short size;
--        char sz, suffix;
--    };
--
--    static const struct TypeSize vec_lanes[] = {
--        /* quads */
--        { "uint128", 128, 'q', 'u' },
--        { "int128", 128, 'q', 's' },
--        /* 64 bit */
--        { "ieee_double", 64, 'd', 'f' },
--        { "uint64", 64, 'd', 'u' },
--        { "int64", 64, 'd', 's' },
--        /* 32 bit */
--        { "ieee_single", 32, 's', 'f' },
--        { "uint32", 32, 's', 'u' },
--        { "int32", 32, 's', 's' },
--        /* 16 bit */
--        { "ieee_half", 16, 'h', 'f' },
--        { "uint16", 16, 'h', 'u' },
--        { "int16", 16, 'h', 's' },
--        /* bytes */
--        { "uint8", 8, 'b', 'u' },
--        { "int8", 8, 'b', 's' },
--    };
--
--    static const char suf[] = { 'b', 'h', 's', 'd', 'q' };
--    int i, j;
--
--    /* First define types and totals in a whole VL */
--    for (i = 0; i < ARRAY_SIZE(vec_lanes); i++) {
--        gdb_feature_builder_append_tag(
--            builder, "<vector id=\"%s%c%c\" type=\"%s\" count=\"%d\"/>",
--            name, vec_lanes[i].sz, vec_lanes[i].suffix,
--            vec_lanes[i].gdb_type, reg_width / vec_lanes[i].size);
--    }
--
--    /*
--     * Now define a union for each size group containing unsigned and
--     * signed and potentially float versions of each size from 128 to
--     * 8 bits.
--     */
--    for (i = 0; i < ARRAY_SIZE(suf); i++) {
--        int bits = 8 << i;
--
--        gdb_feature_builder_append_tag(builder, "<union id=\"%sn%c\">",
--                                       name, suf[i]);
--        for (j = 0; j < ARRAY_SIZE(vec_lanes); j++) {
--            if (vec_lanes[j].size == bits) {
--                gdb_feature_builder_append_tag(
--                    builder, "<field name=\"%c\" type=\"%s%c%c\"/>",
--                    vec_lanes[j].suffix, name,
--                    vec_lanes[j].sz, vec_lanes[j].suffix);
--            }
--        }
--        gdb_feature_builder_append_tag(builder, "</union>");
--    }
--
--    /* And now the final union of unions */
--    gdb_feature_builder_append_tag(builder, "<union id=\"%s\">", name);
--    for (i = ARRAY_SIZE(suf) - 1; i >= 0; i--) {
--        gdb_feature_builder_append_tag(builder,
--                                       "<field name=\"%c\" type=\"%sn%c\"/>",
--                                       suf[i], name, suf[i]);
--    }
--    gdb_feature_builder_append_tag(builder, "</union>");
--}
--
--GDBFeature *arm_gen_dynamic_svereg_feature(CPUState *cs, int base_reg)
--{
--    ARMCPU *cpu = ARM_CPU(cs);
--    int reg_width = cpu->sve_max_vq * 128;
--    int pred_width = cpu->sve_max_vq * 16;
--    GDBFeatureBuilder builder;
--    char *name;
--    int reg = 0;
--    int i;
--
--    gdb_feature_builder_init(&builder, &cpu->dyn_svereg_feature.desc,
--                             "org.gnu.gdb.aarch64.sve", "sve-registers.xml",
--                             base_reg);
--
--    /* Create the vector union type. */
--    output_vector_union_type(&builder, reg_width, "svev");
--
--    /* Create the predicate vector type. */
--    gdb_feature_builder_append_tag(
--        &builder, "<vector id=\"svep\" type=\"uint8\" count=\"%d\"/>",
--        pred_width / 8);
--
--    /* Define the vector registers. */
--    for (i = 0; i < 32; i++) {
--        name = g_strdup_printf("z%d", i);
--        gdb_feature_builder_append_reg(&builder, name, reg_width, reg++,
--                                       "svev", NULL);
--    }
--
--    /* fpscr & status registers */
--    gdb_feature_builder_append_reg(&builder, "fpsr", 32, reg++,
--                                   "int", "float");
--    gdb_feature_builder_append_reg(&builder, "fpcr", 32, reg++,
--                                   "int", "float");
--
--    /* Define the predicate registers. */
--    for (i = 0; i < 16; i++) {
--        name = g_strdup_printf("p%d", i);
--        gdb_feature_builder_append_reg(&builder, name, pred_width, reg++,
--                                       "svep", NULL);
--    }
--    gdb_feature_builder_append_reg(&builder, "ffr", pred_width, reg++,
--                                   "svep", "vector");
--
--    /* Define the vector length pseudo-register. */
--    gdb_feature_builder_append_reg(&builder, "vg", 64, reg++, "int", NULL);
--
--    gdb_feature_builder_end(&builder);
--
--    return &cpu->dyn_svereg_feature.desc;
--}
-diff --git a/target/arm/meson.build b/target/arm/meson.build
-index 2e10464dbb..10b7f8d509 100644
---- a/target/arm/meson.build
-+++ b/target/arm/meson.build
-@@ -13,7 +13,6 @@ arm_ss.add(when: 'CONFIG_HVF', if_true: files('hyp_gdbstub.c'))
- 
- arm_ss.add(when: 'TARGET_AARCH64', if_true: files(
-   'cpu64.c',
--  'gdbstub64.c',
- ))
- 
- arm_system_ss = ss.source_set()
+@@ -847,7 +845,6 @@ void arm_cpu_register_gdb_regs_for_features(ARMCPU *cpu)
+          * The lower part of each SVE register aliases to the FPU
+          * registers so we don't need to include both.
+          */
+-#ifdef TARGET_AARCH64
+         if (isar_feature_aa64_sve(&cpu->isar)) {
+             GDBFeature *feature = arm_gen_dynamic_svereg_feature(cs, cs->gdb_num_regs);
+             gdb_register_coprocessor(cs, aarch64_gdb_get_sve_reg,
+@@ -870,7 +867,6 @@ void arm_cpu_register_gdb_regs_for_features(ARMCPU *cpu)
+                                      gdb_find_static_feature("aarch64-pauth.xml"),
+                                      0);
+         }
+-#endif
+     } else {
+         if (arm_feature(env, ARM_FEATURE_NEON)) {
+             gdb_register_coprocessor(cs, vfp_gdb_get_reg, vfp_gdb_set_reg,
 -- 
 2.41.0
 
