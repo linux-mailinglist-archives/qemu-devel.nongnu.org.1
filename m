@@ -2,128 +2,128 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B04490E6AF
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jun 2024 11:17:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0218C90E6B5
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jun 2024 11:18:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sJrR5-00047p-M8; Wed, 19 Jun 2024 05:16:59 -0400
+	id 1sJrR7-00049U-C1; Wed, 19 Jun 2024 05:17:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sai.pavan.boddu@amd.com>)
- id 1sJrR2-00046Y-Jw; Wed, 19 Jun 2024 05:16:56 -0400
-Received: from mail-dm6nam12on20601.outbound.protection.outlook.com
- ([2a01:111:f403:2417::601]
- helo=NAM12-DM6-obe.outbound.protection.outlook.com)
+ id 1sJrR4-00047N-At; Wed, 19 Jun 2024 05:16:58 -0400
+Received: from mail-dm3nam02on20601.outbound.protection.outlook.com
+ ([2a01:111:f403:2405::601]
+ helo=NAM02-DM3-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sai.pavan.boddu@amd.com>)
- id 1sJrR0-0003rA-Dy; Wed, 19 Jun 2024 05:16:56 -0400
+ id 1sJrR2-0003rP-Ef; Wed, 19 Jun 2024 05:16:58 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=dAT4A1WUpTEDbO1pqFWt/SG3t5Fo7uARFWDKY4fwMv0V3IylHsWMHwL2esE/ufWCp7Mz1TKWNIIsphrOJBRjv3kf4N2GpCCDstwZNNF1et7I8Dq2PKQpO7rNp3o3wo8keRgmzGVPV9tf5KwImQKZZM3VkTVoYWhuPnHVLJZ/XsHqrtc/SrIKlouOQCoxxuvl9DblYSZdIdsJBX+8Z4UnO9J7ZamXeiWpX4Gn68kpvSeoGZHRInkkeCPEayR76ObJpa5vx498EYf7FQld0bzzvsb7nbFa4FSMv1pJKJEKXqh4H6cJT5+j6QrMJxhJWTcsGHGM0T04916EqLYZQApi5w==
+ b=ETCCkCLiau00kObTUOkQjC8J9ez7uIU+a4ZcXhtp7U3Xg4VDY0+mrgz2JIkVBzpHWQrSs08EcfXwVDqMveH7y7lzYjtNrR0e2BRNVSRNa+gTvAwiKZFmbeFyNZ4jLdggnMn/Rfybmk44bv5kGmcO2K23qHnCz9G8o6m3imMUMEDwWyqtosc3Swh3kk2zmH1j24axtHXLkJxW9+hgC2x6rZB9ItAhvA4lGjD4B8qs9wZXDq/+zUFVtvslGzHZjdyc41OJPs9RSWqirTxz2Ebt2Qg+D8FtPq/RLyaVOIcHvrqda0OlhQu2+bDt8S2cxUYysZ7sMmxtf+0p7D9eSpenyA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9WN67zXjHmDGowiH2idVIydJ1Mr0xx31g4bqPPMHYsw=;
- b=Wtd4igSS+Kc0BKmcsY6GAj9d6dbVEWlUNn4dr2C+rWNUJwnb+S09V9MC/sRfXS75VzUFCD5lr7UXwve102Hc1JFGzi8TA9c+iF3yUZABlzkeuKEJv61+LcV/q02Fu9x+sYGhvq+j0pB08uUYYG8kp6jNBUqViiuJylgFDjm1viC3mK9dz+x9KUYIVzsUIAaY/Vs6Xq67ccDsDJzd6t0I3G8aKjeVvXaQ1sL1l76CWxqH6xk/llt0Z2X2k4BZdEbfe+98JV2udL7qWEi+tNLDIJ9qNn4JV4uOLe6ekdjlbPm5/nnVlc3LepJxDJlpZeTd3x2rkxT8qaTqugKJWAnSzQ==
+ bh=jvamlq+3atkXRl9UXQ722T+p7FhrjBnF4rhoNIqGCXs=;
+ b=Hsq4pzXqfPY9bsWQ14DJX3ZxB2UgU1nB23kFB0qLooapQjl2A8oMNwF+o2lECXsSBPrOxnMJi5ZAWp2zCEdeAJK7Vn3mD89MCbnq14yt6He8KOuPKGskIceoAh+tfl7PRPYUGRhHthKCqVYV5fkigKN7xYCKrFmcgdCm9vHOEOFSw5IPcdMfGgLUNwgh6xc2tu8w6fsaej2bhwFyY/1bdcVNrTeChqPqejhHe+enP5a41/TVXlHee03yCwczLCtS/eGCXRNMXPVTGu6FgolBdQOnEX8t+nNVJFEKyyqtMP7Xl6B9I8+Ry7aX0b0a5kxi2jnvai/E5dNijALYgJiOGw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9WN67zXjHmDGowiH2idVIydJ1Mr0xx31g4bqPPMHYsw=;
- b=x6WFh3mX1y6CqqZat/RaQ/V83odv8ZESFD+TskUNt2PnVMQYhn5fa1EZt3EPPK14VoSQahUmcyqzoKBIwxzZ8k+cgkzZZN+6AT+OyewnP0gl0IaivgQfP2DysXP4dPY+Zi3+B1Y739HHc5jSz51hxi+7smHH9nNfvBgovRf6gIk=
-Received: from BL0PR05CA0014.namprd05.prod.outlook.com (2603:10b6:208:91::24)
- by CY8PR12MB7241.namprd12.prod.outlook.com (2603:10b6:930:5a::12)
+ bh=jvamlq+3atkXRl9UXQ722T+p7FhrjBnF4rhoNIqGCXs=;
+ b=aAGI17fJAelODIyFZDBvLYf/coi7Na375liv1OCgSAsqPxxRa5YN2AuBIKKLLa0h2uKVy03x3g6J3JWTcu0dPwvDKruQRvfrBb5vJ+EnBAxB0b3lXOV1rBeuzcfRkyyhvPUbWHk3eaXqm+fQ0jzqHv8I4dMPAx3KN60FWV7D2V0=
+Received: from BL1P221CA0007.NAMP221.PROD.OUTLOOK.COM (2603:10b6:208:2c5::33)
+ by SN7PR12MB8436.namprd12.prod.outlook.com (2603:10b6:806:2e3::10)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7698.19; Wed, 19 Jun
- 2024 09:16:49 +0000
-Received: from BL6PEPF00022570.namprd02.prod.outlook.com
- (2603:10b6:208:91:cafe::ae) by BL0PR05CA0014.outlook.office365.com
- (2603:10b6:208:91::24) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7677.30 via Frontend
- Transport; Wed, 19 Jun 2024 09:16:49 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7677.24; Wed, 19 Jun
+ 2024 09:16:51 +0000
+Received: from BL6PEPF0001AB55.namprd02.prod.outlook.com
+ (2603:10b6:208:2c5:cafe::98) by BL1P221CA0007.outlook.office365.com
+ (2603:10b6:208:2c5::33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7677.32 via Frontend
+ Transport; Wed, 19 Jun 2024 09:16:51 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
 Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
-Received: from SATLEXMB03.amd.com (165.204.84.17) by
- BL6PEPF00022570.mail.protection.outlook.com (10.167.249.38) with Microsoft
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ BL6PEPF0001AB55.mail.protection.outlook.com (10.167.241.7) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7677.15 via Frontend Transport; Wed, 19 Jun 2024 09:16:49 +0000
-Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
+ 15.20.7677.15 via Frontend Transport; Wed, 19 Jun 2024 09:16:51 +0000
+Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 19 Jun
- 2024 04:16:48 -0500
+ 2024 04:16:50 -0500
 Received: from xhdsaipava41.xilinx.com (10.180.168.240) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server id 15.1.2507.39 via
- Frontend Transport; Wed, 19 Jun 2024 04:16:47 -0500
+ Frontend Transport; Wed, 19 Jun 2024 04:16:49 -0500
 From: Sai Pavan Boddu <sai.pavan.boddu@amd.com>
 To: <qemu-arm@nongnu.org>, <qemu-devel@nongnu.org>
 CC: "'Edgar E . Iglesias'" <edgar.iglesias@gmail.com>, Peter Maydell
  <peter.maydell@linaro.org>, <francisco.iglesias@amd.com>
-Subject: [PATCH v2 1/3] hw/misc/zynq_slcr: Add BootMode property
-Date: Wed, 19 Jun 2024 14:46:30 +0530
-Message-ID: <20240619091632.2825550-2-sai.pavan.boddu@amd.com>
+Subject: [PATCH v2 2/3] hw/arm/xilinx_zynq: Add boot-mode property
+Date: Wed, 19 Jun 2024 14:46:31 +0530
+Message-ID: <20240619091632.2825550-3-sai.pavan.boddu@amd.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240619091632.2825550-1-sai.pavan.boddu@amd.com>
 References: <20240619091632.2825550-1-sai.pavan.boddu@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Received-SPF: None (SATLEXMB03.amd.com: sai.pavan.boddu@amd.com does not
+Received-SPF: None (SATLEXMB04.amd.com: sai.pavan.boddu@amd.com does not
  designate permitted sender hosts)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL6PEPF00022570:EE_|CY8PR12MB7241:EE_
-X-MS-Office365-Filtering-Correlation-Id: d05d77a5-d018-4c56-8987-08dc90408cdf
+X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB55:EE_|SN7PR12MB8436:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5f89437a-83fc-4b18-0e33-08dc90408e10
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230037|82310400023|1800799021|36860700010|376011; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?mTZaVEqdlp51MyquSdtChUjHtk0YnNGqvTKgD++yCPC/7pS6oBZoXgpt+uIF?=
- =?us-ascii?Q?9Y67WDq6227UIWdWBWOXLgaG540zcfoJmBBAZflZPHhxpy9qsap/USFvRD2D?=
- =?us-ascii?Q?jSXbzjIZoQLZFOw6u5ZZq857DceX9kpk0c95QzxhkZpXkvS2lpjZXqVIPhM/?=
- =?us-ascii?Q?GQfvzN0gxGqdf+uwitI1FFjMA25AOyCLHni817wdCwjgNaD3j4HRgCZqVoEO?=
- =?us-ascii?Q?PCA+cQnJpsIAXcFrvrxx9wZBTpeifcqK0wSjWhv9I/h0Z2VhGVGOSVYhXarY?=
- =?us-ascii?Q?diHjSE0fQRVgqRrz5qMdLdrUA/cJw3H2ehe9huZdVTfQ2fbLjBk+zuLtxlwh?=
- =?us-ascii?Q?1E9DpBPdmY5EkrCI956CqKfQQ+AOnuUZSX6tn1xyZYCmVRpmZHYFRjlDo8Bd?=
- =?us-ascii?Q?orpFKyizJzgG3QIaeeSu6uNNUEZtS5WAea5tcWNKqp119eRLTFe22th08Ydv?=
- =?us-ascii?Q?XNsHmOrHroriGH942NAYyZmqa0SmmtSLIESg7zk9xEGb6eKF9XPH42ysMT3f?=
- =?us-ascii?Q?uK9AZ0ZA6pT13f1AEoAujkoMZXfVmBbeReeYZZHTIjkUc2PIHakgP10dVMgh?=
- =?us-ascii?Q?KsPQimriP3Swpk2tq3MXmLjffB7fFxJLGtunUffz4O9dPwmH2Y22/qW0E3nr?=
- =?us-ascii?Q?p9kgaQ4S4IVs7f8ONm+kOSFpt4w2qKwDFQ4pZ7j88GxNQn0cPS3q11khXOcT?=
- =?us-ascii?Q?8MQh+YJyjfA9c9epAntEygZ61276a8/78L/bj0ijJuew6qvtAMXQLPPprFD7?=
- =?us-ascii?Q?ELaDqI7Byq9ceYJnDgGBCVZbCSpQr3qkR2OIrTPZ2Etmx6Faj1K7yRXS2OdT?=
- =?us-ascii?Q?l2VLrheVepfiq5+HbTjNEm7E+dVl0Fw1SpugqgA6B5M/CG7JVHxAceCCnihZ?=
- =?us-ascii?Q?jLV9xBcUEkqQ/+UuuqD1DuGBoDz+Xn2U7YBNDaxKWSr08Bxc0wyFZn2VLktg?=
- =?us-ascii?Q?ux21G9UMOz92EwaWnN+Ijay6WnOYlXWsCm7TRoMz8984NoT+gFiCFp1fO36t?=
- =?us-ascii?Q?5Jq9fcCj0aRjDps9i3MPwqHEdHNuJ7p6/vswUHOSqpM3gHHIKBltQHD2h5qz?=
- =?us-ascii?Q?GieArgvGcU2suif3ul7iyaq3w/DIjxFJ4TvRsfguE7lLnan05TNPDJrPLO4A?=
- =?us-ascii?Q?cujynmjWMGwQnWVrMQ3XgCQfp16yIOlQP7n/Va4vHc2A/LC/ULsHwlpLGuqu?=
- =?us-ascii?Q?UG5Z9lF1uEiozIi4CHJ+SHoQyoVhKLNdjeTTKzT2jMCbLN2+PLpW/wGcgWcQ?=
- =?us-ascii?Q?VgzyDXGBNfLmQfSF7tUo1PB3gF/lg3TuWM97Jgqce3k6fxkrseV+89UrfZqS?=
- =?us-ascii?Q?KHngsKztxkEROImMVM1natQJHruJYdSB6gM/U0HhDSRZxvLT7c7sPLMytx57?=
- =?us-ascii?Q?iWlKbYaOz+rxkNQIj8+QLEecXf1u5m80AUolfALCKI/kxzsn0w=3D=3D?=
+ ARA:13230037|1800799021|82310400023|36860700010|376011; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?iUYUDoTz+2CqSPAU0oZaHoSGi6ILjZccuBu3F2yOXGsz4lR/XrmHtJxqVIdc?=
+ =?us-ascii?Q?NjUouaX6/AZju20u3tGBHUgr9dRoLtA2J8iaM8bOCWjQoGYCybHp2RN19PUb?=
+ =?us-ascii?Q?XPc/u67yu9DQ+1NK6ucwWFkg5uVlFaYYwCICBk/U/v5MnA45ImRi4uVQDJA7?=
+ =?us-ascii?Q?njcy607YVH6mvsyP9koVZV6MzDKaiFDCO0qv3Uz86oBNR6SB6j3P2euQemgp?=
+ =?us-ascii?Q?kj3BFWYbbpJ7k5QoGEX0pvWTmhGR5h8quq1y4ovN9dzZoBOmubxR/95mAwwt?=
+ =?us-ascii?Q?EophAv05K01uJsL3wExlve94WfytI3ihDhVnR33ObBqUwX0KN/kfBzKScknx?=
+ =?us-ascii?Q?7fMmbO/u0KaQPoCXdJOMCOqzu0heI/S3opZZhvVOYVS7zAzdwlP4ixSEkvi0?=
+ =?us-ascii?Q?mAA8JUb75C/s4ppHHeI7CqfzG0ePA6tEwijWlI9iYZ+OoZsBbl6oRz3LcFvq?=
+ =?us-ascii?Q?LNSRhY5rTlf6TeKi//XSNLatNlRft7YyVF2KqxWwhXAGhkkp3HnLsntV3Ikn?=
+ =?us-ascii?Q?aQqUoK0ccdm52kaMBmYGAcZsCB3pyNrANXETUeXdfdEZlQHESVLHnxYz5hm0?=
+ =?us-ascii?Q?/Rzgb5bv2zGeNm7Vxj0YE+cW6VbswoHgmK0c7mNnl4cHRNnzFlMIW0pdSllz?=
+ =?us-ascii?Q?TkAFETWhNIVpj0D33uiKit7ybymTPyaK3qjjNQiUrKO4sty8zHCHs7cQ8GAB?=
+ =?us-ascii?Q?vP5fgcvUJ0RL8x3JLGwEXNRwQXh2biPKPMvgYAIi24vYRyde7vN7OIoNXprm?=
+ =?us-ascii?Q?x36JwrzgThZxRZvN/5eyCkEBbtkRGD5YMtaUlD3WNNh0JY2owBQriPWLe6Uz?=
+ =?us-ascii?Q?mkzbhhgYbqE/g7mOf9ey4yBY5LetuZu7riWf6hxh2Ig5kuxyb+d5JCoc21zB?=
+ =?us-ascii?Q?1SXoqEDhcz4AYnujEE2ZcUZ2TBtuELZgCgxoj5hdN0a0E/10kdHhQFsA2XcA?=
+ =?us-ascii?Q?Jc9+PNJTBn1BIIWMMW/6wD2e6rNuHEsVcLrPCTN3RnJnfIytERw5Z9JnegFB?=
+ =?us-ascii?Q?zE+b1VezL8irFgaeeve7mUYMAPP14WQEEerU6ygZ0HKSVLxo+HfiySyGXEOZ?=
+ =?us-ascii?Q?JDQ/w14VEj5kT1sI4fpZjEu3QHk5AaGd1oEwzKGABh8UiQMqaaXJK1Q4U14Q?=
+ =?us-ascii?Q?bS4mvjL6GNGzPCEH1ISYVKc0NW6hhltzHuJU6Ud2VZwR8bIyc8ftCCQnSSlY?=
+ =?us-ascii?Q?3IVsc9LyqV/ji7iEZetIA4w6QfJU/gdztXUpT2cl0K4FqDXaY3SI9MGBp8Qa?=
+ =?us-ascii?Q?t6WablGSgAcnCDsIL0ZOk9y+o4VRbD+6u+a0B3uOEFyEbuZwNIOiMSP6U3L5?=
+ =?us-ascii?Q?m48XSBPvjG5r0jG7TCS9y5AvICOZWnQ9WyiTVVEUrFi96QHe97wabw7a9KpZ?=
+ =?us-ascii?Q?8RV3ilzipWwcbyy8CQUFFMhNTRdC5TXR0Ls3lc4DA9mceXfRRg=3D=3D?=
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB03.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230037)(82310400023)(1800799021)(36860700010)(376011); DIR:OUT;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230037)(1800799021)(82310400023)(36860700010)(376011); DIR:OUT;
  SFP:1101; 
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Jun 2024 09:16:49.4909 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: d05d77a5-d018-4c56-8987-08dc90408cdf
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Jun 2024 09:16:51.4866 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5f89437a-83fc-4b18-0e33-08dc90408e10
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB03.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: BL6PEPF00022570.namprd02.prod.outlook.com
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: BL6PEPF0001AB55.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7241
-Received-SPF: permerror client-ip=2a01:111:f403:2417::601;
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB8436
+Received-SPF: permerror client-ip=2a01:111:f403:2405::601;
  envelope-from=sai.pavan.boddu@amd.com;
- helo=NAM12-DM6-obe.outbound.protection.outlook.com
+ helo=NAM02-DM3-obe.outbound.protection.outlook.com
 X-Spam_score_int: -22
 X-Spam_score: -2.3
 X-Spam_bar: --
@@ -146,91 +146,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-BootMode property sets user values into BOOT_MODE register, on hardware
-these are derived from board switches.
+Read boot-mode value as machine property and propagate that to
+SLCR.BOOT_MODE register.
 
 Signed-off-by: Sai Pavan Boddu <sai.pavan.boddu@amd.com>
 ---
- hw/misc/zynq_slcr.c | 22 +++++++++++++++++++++-
- 1 file changed, 21 insertions(+), 1 deletion(-)
+ hw/arm/xilinx_zynq.c | 31 +++++++++++++++++++++++++++++++
+ 1 file changed, 31 insertions(+)
 
-diff --git a/hw/misc/zynq_slcr.c b/hw/misc/zynq_slcr.c
-index 3412ff099ea..ad814c3a79b 100644
---- a/hw/misc/zynq_slcr.c
-+++ b/hw/misc/zynq_slcr.c
-@@ -24,6 +24,8 @@
- #include "hw/registerfields.h"
- #include "hw/qdev-clock.h"
+diff --git a/hw/arm/xilinx_zynq.c b/hw/arm/xilinx_zynq.c
+index 7f7a3d23fbe..39f07e6dfd8 100644
+--- a/hw/arm/xilinx_zynq.c
++++ b/hw/arm/xilinx_zynq.c
+@@ -38,6 +38,7 @@
  #include "qom/object.h"
-+#include "hw/qdev-properties.h"
-+#include "qapi/error.h"
+ #include "exec/tswap.h"
+ #include "target/arm/cpu-qom.h"
++#include "qapi/visitor.h"
  
- #ifndef ZYNQ_SLCR_ERR_DEBUG
- #define ZYNQ_SLCR_ERR_DEBUG 0
-@@ -121,6 +123,7 @@ REG32(RST_REASON, 0x250)
- 
- REG32(REBOOT_STATUS, 0x258)
- REG32(BOOT_MODE, 0x25c)
-+    FIELD(BOOT_MODE, BOOT_MODE, 0, 4)
- 
- REG32(APU_CTRL, 0x300)
- REG32(WDT_CLK_SEL, 0x304)
-@@ -195,6 +198,7 @@ struct ZynqSLCRState {
+ #define TYPE_ZYNQ_MACHINE MACHINE_TYPE_NAME("xilinx-zynq-a9")
+ OBJECT_DECLARE_SIMPLE_TYPE(ZynqMachineState, ZYNQ_MACHINE)
+@@ -90,6 +91,7 @@ struct ZynqMachineState {
+     MachineState parent;
      Clock *ps_clk;
-     Clock *uart0_ref_clk;
-     Clock *uart1_ref_clk;
+     ARMCPU *cpu[ZYNQ_MAX_CPUS];
 +    uint8_t boot_mode;
  };
  
- /*
-@@ -371,7 +375,7 @@ static void zynq_slcr_reset_init(Object *obj, ResetType type)
-     s->regs[R_FPGA_RST_CTRL]  = 0x01F33F0F;
-     s->regs[R_RST_REASON]     = 0x00000040;
- 
--    s->regs[R_BOOT_MODE]      = 0x00000001;
-+    s->regs[R_BOOT_MODE]      = s->boot_mode & R_BOOT_MODE_BOOT_MODE_MASK;
- 
-     /* 0x700 - 0x7D4 */
-     for (i = 0; i < 54; i++) {
-@@ -588,6 +592,15 @@ static const ClockPortInitArray zynq_slcr_clocks = {
-     QDEV_CLOCK_END
- };
- 
-+static void zynq_slcr_realize(DeviceState *dev, Error **errp)
-+{
-+    ZynqSLCRState *s = ZYNQ_SLCR(dev);
-+
-+    if (s->boot_mode > 0xF) {
-+        error_setg(errp, "Invalid boot mode %d specified", s->boot_mode);
-+    }
-+}
-+
- static void zynq_slcr_init(Object *obj)
- {
-     ZynqSLCRState *s = ZYNQ_SLCR(obj);
-@@ -610,15 +623,22 @@ static const VMStateDescription vmstate_zynq_slcr = {
-     }
- };
- 
-+static Property zynq_slcr_props[] = {
-+    DEFINE_PROP_UINT8("boot-mode", ZynqSLCRState, boot_mode, 1),
-+    DEFINE_PROP_END_OF_LIST(),
-+};
-+
- static void zynq_slcr_class_init(ObjectClass *klass, void *data)
- {
-     DeviceClass *dc = DEVICE_CLASS(klass);
-     ResettableClass *rc = RESETTABLE_CLASS(klass);
- 
-     dc->vmsd = &vmstate_zynq_slcr;
-+    dc->realize = zynq_slcr_realize;
-     rc->phases.enter = zynq_slcr_reset_init;
-     rc->phases.hold  = zynq_slcr_reset_hold;
-     rc->phases.exit  = zynq_slcr_reset_exit;
-+    device_class_set_props(dc, zynq_slcr_props);
+ static void zynq_write_board_setup(ARMCPU *cpu,
+@@ -176,6 +178,27 @@ static inline int zynq_init_spi_flashes(uint32_t base_addr, qemu_irq irq,
+     return unit;
  }
  
- static const TypeInfo zynq_slcr_info = {
++static void zynq_set_boot_mode(Object *obj, const char *str,
++                                               Error **errp)
++{
++    ZynqMachineState *m = ZYNQ_MACHINE(obj);
++    uint8_t mode = 0;
++
++    if (!strcasecmp(str, "QSPI")) {
++        mode = 1;
++    } else if (!strcasecmp(str, "SD")) {
++        mode = 5;
++    } else if (!strcasecmp(str, "NOR")) {
++        mode = 2;
++    } else if (!strcasecmp(str, "JTAG")) {
++        mode = 0;
++    } else {
++        error_setg(errp, "%s bootmode is not supported", str);
++        return;
++    }
++    m->boot_mode = mode;
++}
++
+ static void zynq_init(MachineState *machine)
+ {
+     ZynqMachineState *zynq_machine = ZYNQ_MACHINE(machine);
+@@ -241,6 +264,7 @@ static void zynq_init(MachineState *machine)
+     /* Create slcr, keep a pointer to connect clocks */
+     slcr = qdev_new("xilinx-zynq_slcr");
+     qdev_connect_clock_in(slcr, "ps_clk", zynq_machine->ps_clk);
++    qdev_prop_set_uint8(slcr, "boot-mode", zynq_machine->boot_mode);
+     sysbus_realize_and_unref(SYS_BUS_DEVICE(slcr), &error_fatal);
+     sysbus_mmio_map(SYS_BUS_DEVICE(slcr), 0, 0xF8000000);
+ 
+@@ -372,6 +396,7 @@ static void zynq_machine_class_init(ObjectClass *oc, void *data)
+         NULL
+     };
+     MachineClass *mc = MACHINE_CLASS(oc);
++    ObjectProperty *prop;
+     mc->desc = "Xilinx Zynq Platform Baseboard for Cortex-A9";
+     mc->init = zynq_init;
+     mc->max_cpus = ZYNQ_MAX_CPUS;
+@@ -379,6 +404,12 @@ static void zynq_machine_class_init(ObjectClass *oc, void *data)
+     mc->ignore_memory_transaction_failures = true;
+     mc->valid_cpu_types = valid_cpu_types;
+     mc->default_ram_id = "zynq.ext_ram";
++    prop = object_class_property_add_str(oc, "boot-mode", NULL,
++                              zynq_set_boot_mode);
++    object_class_property_set_description(oc, "boot-mode",
++                                          "Supported boot modes:"
++                                          " JTAG QSPI SD NOR");
++    object_property_set_default_str(prop, "QSPI");
+ }
+ 
+ static const TypeInfo zynq_machine_type = {
 -- 
 2.34.1
 
