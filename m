@@ -2,108 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 964F490E6D1
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jun 2024 11:21:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 733AF90E6E4
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jun 2024 11:24:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sJrVF-0000TV-62; Wed, 19 Jun 2024 05:21:17 -0400
+	id 1sJrYJ-0002QE-D5; Wed, 19 Jun 2024 05:24:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sJrV5-0000Qi-3D
- for qemu-devel@nongnu.org; Wed, 19 Jun 2024 05:21:07 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <ruansy.fnst@fujitsu.com>)
+ id 1sJrYH-0002Pd-4C
+ for qemu-devel@nongnu.org; Wed, 19 Jun 2024 05:24:25 -0400
+Received: from esa3.hc1455-7.c3s2.iphmx.com ([207.54.90.49])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sJrV1-0004Zd-73
- for qemu-devel@nongnu.org; Wed, 19 Jun 2024 05:21:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1718788862;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Suhj2379smWVBTU/BGDAtu/5KXCfWIK/YZcDffkBmEA=;
- b=N7Y02uT9Ims+Wl8PEanUnD8TrFd1nhzqVAgmUx240bUYBlYXzEAGO5HzMcGVoJZMnCv8q9
- DIswsLKmuezjDrnNoyqLZGkHVLAdbJWBGZdnD0GM8M7ZVSemDYnBSYLI7pW7/9Ed0++TsF
- Ce399zxPvT9xWV9cnnBi0Z4AK4qrjjI=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-500-h0gXb7-jNm2J2hvJ_zDyIQ-1; Wed, 19 Jun 2024 05:21:00 -0400
-X-MC-Unique: h0gXb7-jNm2J2hvJ_zDyIQ-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-35f271c5b17so2884914f8f.0
- for <qemu-devel@nongnu.org>; Wed, 19 Jun 2024 02:21:00 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718788859; x=1719393659;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Suhj2379smWVBTU/BGDAtu/5KXCfWIK/YZcDffkBmEA=;
- b=lRuYqJxG11pJHzmI3OveleJ7dxjOvg2n/24lvdYaQkE8BwJ2VCzeJGrQhlnxrS9s1N
- zCjGSCDWSZh7uVuNixZ+CztIQZd5XiEJgj7X9JIHHqjEQZwkplIMAGmM6zXhmR0VMN9l
- 10VCIGoLvUwwZyIGLgTbWB1Fb73sCKX3jbvWbwZwb5dd+6CZ+W+z5sHEdafTr4JMIBRO
- pCRZ60Fj1BSmKzE3Pi7nZrOLSmJC64qKrvdewwJYPY8WB3rJIYg+LC3AX8tgCxgXFv7E
- drvtZOEFjlYsdHBIbWY4Qa34MjLNwdwZa1tIIw5yq99XYk52ZIEfSjF+V0dJYkKcyJTJ
- DQBw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVb3FTaVK8ZCQkMs70220AiuYjlEd8/8SswdrCpsmmVPPFjdAA1laibp66CPW1mbsxVJBHJYPIZyOhNeNxlRytNzdmtgvc=
-X-Gm-Message-State: AOJu0YzVTJKBvYmQwcKycOL49eVRIEu+zt6sdv6aU4DnyBQO+DdnvTRf
- srMy8lFPlLdRLX3iT+qloLWZmd0vNYEUi/LO1cxEETzBP+0dH4uGEBI/vgVBbknC+CYdYDePI9c
- Tv5bFtf9AfWqrELYcRyX6KR2itMv6FyKt2rnJeMM+uG/xGj6N0jRR
-X-Received: by 2002:adf:a415:0:b0:362:3730:8762 with SMTP id
- ffacd0b85a97d-363177a200emr1358770f8f.24.1718788859498; 
- Wed, 19 Jun 2024 02:20:59 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHH/3FsI5bKIrpUuTgwaPZ6k8ig5H9goYiLkUbZcoEGcgZcpMmje6ttxCzTp//cg5zUqKTIfA==
-X-Received: by 2002:adf:a415:0:b0:362:3730:8762 with SMTP id
- ffacd0b85a97d-363177a200emr1358723f8f.24.1718788858852; 
- Wed, 19 Jun 2024 02:20:58 -0700 (PDT)
-Received: from redhat.com ([2.52.146.100]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-362f03ac73dsm2504997f8f.55.2024.06.19.02.20.53
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 19 Jun 2024 02:20:58 -0700 (PDT)
-Date: Wed, 19 Jun 2024 05:20:50 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Igor Mammedov <imammedo@redhat.com>
-Cc: Sunil V L <sunilvl@ventanamicro.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-riscv@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
- Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
- Alistair Francis <alistair23@gmail.com>,
- Sia Jee Heng <jeeheng.sia@starfivetech.com>,
- Haibo1 Xu <haibo1.xu@intel.com>, Anup Patel <apatel@ventanamicro.com>,
- Andrew Jones <ajones@ventanamicro.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Palmer Dabbelt <palmer@dabbelt.com>, Bin Meng <bmeng.cn@gmail.com>,
- Weiwei Li <liwei1518@gmail.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Alistair Francis <alistair.francis@wdc.com>
-Subject: Re: [PATCH v2 06/12] tests/data/acpi/virt: Move ACPI tables under
- aarch64
-Message-ID: <20240619052043-mutt-send-email-mst@kernel.org>
-References: <20240524061411.341599-1-sunilvl@ventanamicro.com>
- <20240524061411.341599-7-sunilvl@ventanamicro.com>
- <27cef750-262a-402a-97fe-c4a55700a376@linaro.org>
- <ZlSjzfSj8MwDcJk6@sunil-laptop>
- <20240619111743.58930119@imammedo.users.ipa.redhat.com>
+ (Exim 4.90_1) (envelope-from <ruansy.fnst@fujitsu.com>)
+ id 1sJrYE-0004wp-Ii
+ for qemu-devel@nongnu.org; Wed, 19 Jun 2024 05:24:24 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+ d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
+ t=1718789062; x=1750325062;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=P5qUMmTvxRhRm+xvXml4/gq2sDOAqp/7/NAm9NbVRRo=;
+ b=ChxMDk33ExFY5kUKyNwx4BRCUy9yzGNy6MpAhr7lBU5LYlEyArpdFNpb
+ kmsoGN7+KPjJA67wDkt2RSZux/NCPeI8YgIXGmXIsJX2RbvV3If2EKfm8
+ 6XSpczDnezh9Gu4K58eM6nR1N6l/t4Gkl1Hi7q1n7On3n5tFASf/QXBhc
+ J2Lvo9wS1flAmW4WmXNAwPtSRvriHz4QsMufZjCNXktUT9G7wn0mS+tgs
+ LA6pSNcgnAMo8LNZme+4csFGongEvAfrjw4ueTVwubac5TKFoEAyO7v7C
+ Sv/8HpYzlQE7c0bd5Moh6RKCIK1U7zVguLaEcH/huk6n3GcxXm/UuR2rZ A==;
+X-IronPort-AV: E=McAfee;i="6700,10204,11107"; a="164163246"
+X-IronPort-AV: E=Sophos;i="6.08,250,1712588400"; d="scan'208";a="164163246"
+Received: from unknown (HELO oym-r4.gw.nic.fujitsu.com) ([210.162.30.92])
+ by esa3.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Jun 2024 18:24:19 +0900
+Received: from oym-m1.gw.nic.fujitsu.com (oym-nat-oym-m1.gw.nic.fujitsu.com
+ [192.168.87.58])
+ by oym-r4.gw.nic.fujitsu.com (Postfix) with ESMTP id DDD62D800A
+ for <qemu-devel@nongnu.org>; Wed, 19 Jun 2024 18:24:16 +0900 (JST)
+Received: from kws-ab4.gw.nic.fujitsu.com (kws-ab4.gw.nic.fujitsu.com
+ [192.51.206.22])
+ by oym-m1.gw.nic.fujitsu.com (Postfix) with ESMTP id 26BA9D8B0F
+ for <qemu-devel@nongnu.org>; Wed, 19 Jun 2024 18:24:16 +0900 (JST)
+Received: from edo.cn.fujitsu.com (edo.cn.fujitsu.com [10.167.33.5])
+ by kws-ab4.gw.nic.fujitsu.com (Postfix) with ESMTP id 974BEE3690
+ for <qemu-devel@nongnu.org>; Wed, 19 Jun 2024 18:24:15 +0900 (JST)
+Received: from [192.168.50.5] (unknown [10.167.226.114])
+ by edo.cn.fujitsu.com (Postfix) with ESMTP id 840D11A0002;
+ Wed, 19 Jun 2024 17:24:14 +0800 (CST)
+Message-ID: <b9bbf3bc-9125-4cbb-b127-613b841dc9a8@fujitsu.com>
+Date: Wed, 19 Jun 2024 17:24:14 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH] cxl: avoid duplicating report from MCE & device
+To: Dave Jiang <dave.jiang@intel.com>, qemu-devel@nongnu.org,
+ linux-cxl@vger.kernel.org
+Cc: jonathan.cameron@huawei.com, dan.j.williams@intel.com, dave@stgolabs.net, 
+ ira.weiny@intel.com, alison.schofield@intel.com, vishal.l.verma@intel.com
+References: <20240618165310.877974-1-ruansy.fnst@fujitsu.com>
+ <be14ee00-6d43-4db1-ad63-beac6aacb814@intel.com>
+In-Reply-To: <be14ee00-6d43-4db1-ad63-beac6aacb814@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240619111743.58930119@imammedo.users.ipa.redhat.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -22
-X-Spam_score: -2.3
-X-Spam_bar: --
-X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.148,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-TM-AS-GCONF: 00
+X-TM-AS-Product-Ver: IMSS-9.1.0.1417-9.0.0.1002-28462.006
+X-TM-AS-User-Approved-Sender: Yes
+X-TMASE-Version: IMSS-9.1.0.1417-9.0.1002-28462.006
+X-TMASE-Result: 10--16.853000-10.000000
+X-TMASE-MatchedRID: NuHz/06ZeuaPvrMjLFD6eKn9fPsu8s0a2q80vLACqaeqvcIF1TcLYLBk
+ jjdoOP1bp3Z/y3zTL9+zN6XcSN8uuHerlGbz8OXFolVO7uyOCDUXivwflisSrEJsNXD374+pO+W
+ Rk1kOc5MCcJ+0x3yT8twnF1a+MpDfC5dVqsgzBjuOFfLQqF6P0tUEOicf335WUoV94zwLp3VJ9L
+ 43nm/22bqZhYf6F5ZElyW1ZrZx68b/awIuxLRW1EhwlOfYeSqxlDt5PQMgj00zAwv94MqCLh8aR
+ hKglPt8mNVEdxRO2BKiQrGQ0QrIUcfdkIlEiI2knVTWWiNp+v9AApRfVHzqNN9RlPzeVuQQunqB
+ IQj+1Jm8HpxVQnR8jFIgVt7sAjKWDOQhvAmAT8UDccazfMVOqLFcDzCo2ZtWmWGz8DF0pgYRRLf
+ e6UPgvOt2gGXLArR6zG7gfWFsstqR9GF2J2xqM4MbH85DUZXyudR/NJw2JHcNYpvo9xW+mI6HM5
+ rqDwqtjBK61ITomYqktjwv041Qk/+6+AIb3vIoeBQZ5OZ7tJxxR93z5vKGpA==
+X-TMASE-SNAP-Result: 1.821001.0001-0-1-22:0,33:0,34:0-0
+Received-SPF: pass client-ip=207.54.90.49;
+ envelope-from=ruansy.fnst@fujitsu.com; helo=esa3.hc1455-7.c3s2.iphmx.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -117,55 +98,90 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Shiyang Ruan <ruansy.fnst@fujitsu.com>
+From:  Shiyang Ruan via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jun 19, 2024 at 11:17:43AM +0200, Igor Mammedov wrote:
-> On Mon, 27 May 2024 20:46:29 +0530
-> Sunil V L <sunilvl@ventanamicro.com> wrote:
+
+
+在 2024/6/19 7:35, Dave Jiang 写道:
 > 
-> > On Mon, May 27, 2024 at 12:12:10PM +0200, Philippe Mathieu-Daud� wrote:
-> > > Hi Sunil,
-> > > 
-> > > On 24/5/24 08:14, Sunil V L wrote:  
-> > > > Since virt is a common machine name across architectures like ARM64 and
-> > > > RISC-V, move existing ARM64 ACPI tables under aarch64 folder so that
-> > > > RISC-V tables can be added under riscv64 folder in future.
-> > > > 
-> > > > Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
-> > > > Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-> > > > ---
-> > > >   tests/data/acpi/virt/{ => aarch64}/APIC             | Bin  
-> > > 
-> > > The usual pattern is {target}/{machine}, so instead of:
-> > > 
-> > >   microvm/
-> > >   pc/
-> > >   q35/
-> > >   virt/aarch64/
-> > >   virt/riscv64/
-> > > 
-> > > (which is odd because q35 is the x86 'virt'), I'd rather see:
-> > > 
-> > >   x86/microvm/
-> > >   x86/pc/
-> > >   x86/q35/
-> > >   aarch64/virt/
-> > >   riscv64/virt/
-> > > 
-> > > Anyhow just my 2 cents, up to the ACPI maintainers :)
-> > >   
-> > Hi Phil,
-> > 
-> > Your suggestion does make sense to me. Let me wait for feedback from
-> > ARM/ACPI maintainers.
 > 
-> I'd prefer  {target}/{machine} hierarchy like Philippe suggests
+> On 6/18/24 9:53 AM, Shiyang Ruan wrote:
+>> Background:
+>> Since CXL device is a memory device, while CPU consumes a poison page of
+>> CXL device, it always triggers a MCE by interrupt (INT18), no matter
+>> which-First path is configured.  This is the first report.  Then
+>> currently, in FW-First path, the poison event is transferred according
+>> to the following process: CXL device -> firmware -> OS:ACPI->APEI->GHES
+>>   -> CPER -> trace report.  This is the second one.  These two reports
+>> are indicating the same poisoning page, which is the so-called "duplicate
+>> report"[1].  And the memory_failure() handling I'm trying to add in
+>> OS-First path could also be another duplicate report.
+>>
+>> Hope the flow below could make it easier to understand:
+>> CPU accesses bad memory on CXL device, then
+>>   -> MCE (INT18), *always* report (1)
+>>   -> * FW-First (implemented now)
+>>        -> CXL device -> FW
+>> 	      -> OS:ACPI->APEI->GHES->CPER -> trace report (2.a)
+>>      * OS-First (not implemented yet, I'm working on it)
+>>        -> CXL device -> MSI
+>> 	      -> OS:CXL driver -> memory_failure() (2.b)
+>> so, the (1) and (2.a/b) are duplicated.
+>>
+>> (I didn't get response in my reply for [1] while I have to make patch to
+>> solve this problem, so please correct me if my understanding is wrong.)
+>>
+>> This patch adds a new notifier_block and MCE_PRIO_CXL, for CXL memdev
+>> to check whether the current poison page has been reported (if yes,
+>> stop the notifier chain, won't call the following memory_failure()
+>> to report), into `x86_mce_decoder_chain`.  In this way, if the poison
+>> page already handled(recorded and reported) in (1) or (2), the other one
+>> won't duplicate the report.  The record could be clear when
+>> cxl_clear_poison() is called.
+>>
+>> [1] https://lore.kernel.org/linux-cxl/664d948fb86f0_e8be294f8@dwillia2-mobl3.amr.corp.intel.com.notmuch/
+>>
 
-Agreed.
+...
 
-> > Thanks,
-> > Sunil
-> > 
+>> +
+>> +static bool cxl_contains_hpa(const struct cxl_memdev *cxlmd, u64 hpa)
+>> +{
+>> +	struct cxl_contains_hpa_context ctx = {
+>> +		.contains = false,
+>> +		.hpa = hpa,
+>> +	};
+>> +	struct cxl_port *port;
+>> +
+>> +	port = cxlmd->endpoint;
+>> +	if (port && is_cxl_endpoint(port) && cxl_num_decoders_committed(port))
+> 
+> Maybe no need to check is_cxl_endpoint() if the port is retrieved from cxlmd->endpoint.
 
+OK, I'll remove this.
+
+> 
+> Also, in order to use cxl_num_decoders_committed(), cxl_region_rwsem must be held. See the lockdep_assert_held() in the function. Maybe add a
+> guard(cxl_regoin_rwsem);
+> before the if statement above.
+
+Got it.  I didn't realize it before.  Will add it.
+
+
+BTW, may I have your opinion on this proposal?  I'm not sure if the 
+Background and problem described above are correct or not.  If not, it 
+could lead me in the wrong direction.
+
+Thank you very much!
+
+
+--
+Ruan.
+
+> 
+> DJ
+> 
 
