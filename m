@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C925490E0DC
+	by mail.lfdr.de (Postfix) with ESMTPS id A09EF90E0DB
 	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jun 2024 02:32:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sJjEC-0006E4-Ho; Tue, 18 Jun 2024 20:31:08 -0400
+	id 1sJjEJ-0006GS-JS; Tue, 18 Jun 2024 20:31:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1sJjEA-0006DG-JU
- for qemu-devel@nongnu.org; Tue, 18 Jun 2024 20:31:06 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1sJjEI-0006Fr-4J
+ for qemu-devel@nongnu.org; Tue, 18 Jun 2024 20:31:14 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1sJjE8-0001Np-Sv
- for qemu-devel@nongnu.org; Tue, 18 Jun 2024 20:31:06 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1sJjEG-0001Pf-9S
+ for qemu-devel@nongnu.org; Tue, 18 Jun 2024 20:31:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1718757064;
+ s=mimecast20190719; t=1718757071;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=951Fu4K97h2hTiTUEle9YH03T13J0kCtQXeDDdNZL4Q=;
- b=g/E4PKknVkjTbZQCCKsS/manLb/JQzH7nfa0frou4EWgzWBGMAya4ncYPN1qTfVLNJZbYv
- P0TUjzftRDpqt7Zacp5DPZmjmKQ7BOVuuicV7vX21jKa8AfHczbai1u/UJpbWW7P6iwMb+
- gaOYIIhSEGuxgQBPbA68h1aicXUS5zE=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=t7v4IUwQ2Vu8HBDp7pZw63iLhIi04GcZUKA2Bhf20o8=;
+ b=ASt40aAaJsRLhyG5hJHk2fvorAYDkovkajki61kLXEPqI1a0+jsEX/aoUgdR+7Wp7A5zYK
+ T4Hm4oZQfsqYGVe3U1uTKtsyi5GmJiQOSuf5tFbxmtTiySxE16NbhgTdF+u2jVQch8o29b
+ YdzPGIxHulrP0MdYcD3b/M5Ohng3GYM=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-592-fn-I_8ZLNXeSUb3stJLofw-1; Tue,
- 18 Jun 2024 20:30:59 -0400
-X-MC-Unique: fn-I_8ZLNXeSUb3stJLofw-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-620-Hb3_E5i6MRydAjF8NvPkzw-1; Tue,
+ 18 Jun 2024 20:31:07 -0400
+X-MC-Unique: Hb3_E5i6MRydAjF8NvPkzw-1
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 402F619560B4; Wed, 19 Jun 2024 00:30:57 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B3F731956083; Wed, 19 Jun 2024 00:31:04 +0000 (UTC)
 Received: from scv.localdomain (unknown [10.22.16.38])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id B52261956087; Wed, 19 Jun 2024 00:30:49 +0000 (UTC)
+ id 587351955E80; Wed, 19 Jun 2024 00:30:57 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Stefan Hajnoczi <stefanha@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
@@ -68,9 +68,9 @@ Cc: Stefan Hajnoczi <stefanha@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
  Alex Williamson <alex.williamson@redhat.com>,
  Kevin Wolf <kwolf@redhat.com>, Eric Blake <eblake@redhat.com>,
  John Snow <jsnow@redhat.com>
-Subject: [PATCH 03/13] docs/qapidoc: delint a tiny portion of the module
-Date: Tue, 18 Jun 2024 20:30:02 -0400
-Message-ID: <20240619003012.1753577-4-jsnow@redhat.com>
+Subject: [PATCH 04/13] qapi/parser: preserve indentation in QAPIDoc sections
+Date: Tue, 18 Jun 2024 20:30:03 -0400
+Message-ID: <20240619003012.1753577-5-jsnow@redhat.com>
 In-Reply-To: <20240619003012.1753577-1-jsnow@redhat.com>
 References: <20240619003012.1753577-1-jsnow@redhat.com>
 MIME-Version: 1.0
@@ -101,171 +101,268 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In a forthcoming series that adds a new QMP documentation generator, it
-will be helpful to have a linting baseline. However, there's no need to
-shuffle around the deck chairs too much, because most of this code will
-be removed once that new qapidoc generator (the "transmogrifier") is in
-place.
+Change get_doc_indented() to preserve indentation on all subsequent text
+lines, and create a compatibility dedent() function for qapidoc.py to
+remove that indentation. This is being done for the benefit of a new
+qapidoc generator which requires that indentation in argument and
+features sections are preserved.
 
-To ease my pain: just turn off the black auto-formatter for most, but
-not all, of qapidoc.py. This will help ensure that *new* code follows a
-coding standard without bothering too much with cleaning up the existing
-code.
+Prior to this patch, a section like this:
 
-Code that I intend to keep is still subject to the delinting beam.
+```
+@name: lorem ipsum
+   dolor sit amet
+     consectetur adipiscing elit
+```
+
+would have its body text be parsed as:
+(first and final newline only for presentation)
+
+```
+lorem ipsum
+dolor sit amet
+  consectetur adipiscing elit
+```
+
+We want to preserve the indentation for even the first body line so that
+the entire block can be parsed directly as rST. This patch would now
+parse that segment as:
+
+```
+lorem ipsum
+   dolor sit amet
+     consectetur adipiscing elit
+```
+
+This is helpful for formatting arguments and features as field lists in
+rST, where the new generator will format this information as:
+
+```
+:arg type name: lorem ipsum
+   dolor sit amet
+     consectetur apidiscing elit
+```
+
+...and can be formed by the simple concatenation of the field list
+construct and the body text. The indents help preserve the continuation
+of a block-level element, and further allow the use of additional rST
+block-level constructs such as code blocks, lists, and other such
+markup. Avoiding reflowing the text conditionally also helps preserve
+source line context for better rST error reporting from sphinx through
+generated source, too.
+
+This understandably breaks the existing qapidoc.py; so a new function is
+added there to dedent the text for compatibility. Once the new generator
+is merged, this function will not be needed any longer and can be
+dropped.
+
+I verified this patch changes absolutely nothing by comparing the
+md5sums of the QMP ref html pages both before and after the change, so
+it's certified inert. QAPI test output has been updated to reflect the
+new strategy of preserving indents for rST.
+
+before:
+
+69cde3d6f18b0f324badbb447d4381ce  manual_before/interop/qemu-ga-ref.html
+446e9381833def2adc779f1b90f2215f  manual_before/interop/qemu-qmp-ref.html
+df0ad6c26cb4c28b85d663fe44609c12  manual_before/interop/qemu-storage-daemon-qmp-ref.html
+
+after:
+
+69cde3d6f18b0f324badbb447d4381ce  manual/interop/qemu-ga-ref.html
+446e9381833def2adc779f1b90f2215f  manual/interop/qemu-qmp-ref.html
+df0ad6c26cb4c28b85d663fe44609c12  manual/interop/qemu-storage-daemon-qmp-ref.html
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- docs/sphinx/qapidoc.py | 66 +++++++++++++++++++++++++-----------------
- 1 file changed, 40 insertions(+), 26 deletions(-)
+ docs/sphinx/qapidoc.py         | 29 ++++++++++++++++++++++++-----
+ scripts/qapi/parser.py         |  5 +++--
+ tests/qapi-schema/doc-good.out | 32 ++++++++++++++++----------------
+ 3 files changed, 43 insertions(+), 23 deletions(-)
 
 diff --git a/docs/sphinx/qapidoc.py b/docs/sphinx/qapidoc.py
-index f270b494f01..e675966defa 100644
+index e675966defa..f2f2005dd5f 100644
 --- a/docs/sphinx/qapidoc.py
 +++ b/docs/sphinx/qapidoc.py
-@@ -28,33 +28,42 @@
+@@ -26,6 +26,7 @@
+ 
+ import os
  import re
++import textwrap
  
  from docutils import nodes
-+from docutils.parsers.rst import Directive, directives
- from docutils.statemachine import ViewList
--from docutils.parsers.rst import directives, Directive
--from sphinx.errors import ExtensionError
--from sphinx.util.nodes import nested_parse_with_titles
--import sphinx
--from qapi.gen import QAPISchemaVisitor
- from qapi.error import QAPIError, QAPISemError
-+from qapi.gen import QAPISchemaVisitor
- from qapi.schema import QAPISchema
+ from docutils.parsers.rst import Directive, directives
+@@ -53,6 +54,21 @@
+ __version__ = "1.0"
  
-+import sphinx
-+from sphinx.errors import ExtensionError
-+from sphinx.util.nodes import nested_parse_with_titles
+ 
++def dedent(text: str) -> str:
++    # Temporary: In service of the new QAPI Sphinx domain, the QAPI doc
++    # parser now preserves indents in args/members/features text.
++    # QAPIDoc does not handle this well, so undo that change here.
 +
- 
- # Sphinx up to 1.6 uses AutodocReporter; 1.7 and later
- # use switch_source_input. Check borrowed from kerneldoc.py.
--Use_SSI = sphinx.__version__[:3] >= '1.7'
--if Use_SSI:
-+USE_SSI = sphinx.__version__[:3] >= "1.7"
-+if USE_SSI:
-     from sphinx.util.docutils import switch_source_input
- else:
--    from sphinx.ext.autodoc import AutodocReporter
-+    from sphinx.ext.autodoc import (  # pylint: disable=no-name-in-module
-+        AutodocReporter,
-+    )
- 
- 
--__version__ = '1.0'
-+__version__ = "1.0"
- 
- 
-+# Disable black auto-formatter until re-enabled:
-+# fmt: off
++    lines = text.splitlines(True)
++    if re.match(r"\s+", lines[0]):
++        # First line is indented; description started on the line after
++        # the name. dedent the whole block.
++        return textwrap.dedent(text)
 +
- # Function borrowed from pydash, which is under the MIT license
- def intersperse(iterable, separator):
-     """Yield the members of *iterable* interspersed with *separator*."""
-     iterable = iter(iterable)
--    yield next(iterable)
-+    try:
-+        yield next(iterable)
-+    except StopIteration:
-+        return
-     for item in iterable:
-         yield separator
-         yield item
-@@ -451,6 +460,10 @@ def get_document_nodes(self):
-         return self._top_node.children
- 
- 
-+# Turn the black formatter on for the rest of the file.
-+# fmt: on
++    # Descr started on same line. Dedent line 2+.
++    return lines[0] + textwrap.dedent("".join(lines[1:]))
 +
 +
- class QAPISchemaGenDepVisitor(QAPISchemaVisitor):
-     """A QAPI schema visitor which adds Sphinx dependencies each module
+ # Disable black auto-formatter until re-enabled:
+ # fmt: off
  
-@@ -458,34 +471,34 @@ class QAPISchemaGenDepVisitor(QAPISchemaVisitor):
-     that the generated documentation output depends on the input
-     schema file associated with each module in the QAPI input.
-     """
-+
-     def __init__(self, env, qapidir):
-         self._env = env
-         self._qapidir = qapidir
+@@ -176,7 +192,7 @@ def _nodes_for_members(self, doc, what, base=None, branches=None):
+             term = self._nodes_for_one_member(section.member)
+             # TODO drop fallbacks when undocumented members are outlawed
+             if section.text:
+-                defn = section.text
++                defn = dedent(section.text)
+             else:
+                 defn = [nodes.Text('Not documented')]
  
-     def visit_module(self, name):
-         if name != "./builtin":
--            qapifile = self._qapidir + '/' + name
-+            qapifile = self._qapidir + "/" + name
-             self._env.note_dependency(os.path.abspath(qapifile))
-         super().visit_module(name)
+@@ -214,7 +230,7 @@ def _nodes_for_enum_values(self, doc):
+                 termtext.extend(self._nodes_for_ifcond(section.member.ifcond))
+             # TODO drop fallbacks when undocumented members are outlawed
+             if section.text:
+-                defn = section.text
++                defn = dedent(section.text)
+             else:
+                 defn = [nodes.Text('Not documented')]
  
+@@ -249,7 +265,7 @@ def _nodes_for_features(self, doc):
+         dlnode = nodes.definition_list()
+         for section in doc.features.values():
+             dlnode += self._make_dlitem(
+-                [nodes.literal('', section.member.name)], section.text)
++                [nodes.literal('', section.member.name)], dedent(section.text))
+             seen_item = True
  
- class QAPIDocDirective(Directive):
-     """Extract documentation from the specified QAPI .json file"""
-+
-     required_argument = 1
-     optional_arguments = 1
--    option_spec = {
--        'qapifile': directives.unchanged_required
--    }
-+    option_spec = {"qapifile": directives.unchanged_required}
-     has_content = False
+         if not seen_item:
+@@ -272,9 +288,12 @@ def _nodes_for_sections(self, doc):
+                 continue
+             snode = self._make_section(section.tag)
+             if section.tag and section.tag.startswith('Example'):
+-                snode += self._nodes_for_example(section.text)
++                snode += self._nodes_for_example(dedent(section.text))
+             else:
+-                self._parse_text_into_node(section.text, snode)
++                self._parse_text_into_node(
++                    dedent(section.text) if section.tag else section.text,
++                    snode,
++                )
+             nodelist.append(snode)
+         return nodelist
  
-     def new_serialno(self):
-         """Return a unique new ID string suitable for use as a node's ID"""
-         env = self.state.document.settings.env
--        return 'qapidoc-%d' % env.new_serialno('qapidoc')
-+        return "qapidoc-%d" % env.new_serialno("qapidoc")
+diff --git a/scripts/qapi/parser.py b/scripts/qapi/parser.py
+index 7b13a583ac1..43167ef0ab3 100644
+--- a/scripts/qapi/parser.py
++++ b/scripts/qapi/parser.py
+@@ -437,6 +437,7 @@ def _match_at_name_colon(string: str) -> Optional[Match[str]]:
+         return re.match(r'@([^:]*): *', string)
  
-     def run(self):
-         env = self.state.document.settings.env
--        qapifile = env.config.qapidoc_srctree + '/' + self.arguments[0]
-+        qapifile = env.config.qapidoc_srctree + "/" + self.arguments[0]
-         qapidir = os.path.dirname(qapifile)
+     def get_doc_indented(self, doc: 'QAPIDoc') -> Optional[str]:
++        """get_doc_indented preserves indentation for later rST parsing."""
+         self.accept(False)
+         line = self.get_doc_line()
+         while line == '':
+@@ -448,7 +449,7 @@ def get_doc_indented(self, doc: 'QAPIDoc') -> Optional[str]:
+         indent = must_match(r'\s*', line).end()
+         if not indent:
+             return line
+-        doc.append_line(line[indent:])
++        doc.append_line(line)
+         prev_line_blank = False
+         while True:
+             self.accept(False)
+@@ -465,7 +466,7 @@ def get_doc_indented(self, doc: 'QAPIDoc') -> Optional[str]:
+                     self,
+                     "unexpected de-indent (expected at least %d spaces)" %
+                     indent)
+-            doc.append_line(line[indent:])
++            doc.append_line(line)
+             prev_line_blank = True
  
-         try:
-@@ -523,13 +536,14 @@ def do_parse(self, rstlist, node):
-         # plain self.state.nested_parse(), and so we can drop the saving
-         # of title_styles and section_level that kerneldoc.py does,
-         # because nested_parse_with_titles() does that for us.
--        if Use_SSI:
-+        if USE_SSI:
-             with switch_source_input(self.state, rstlist):
-                 nested_parse_with_titles(self.state, rstlist, node)
-         else:
-             save = self.state.memo.reporter
-             self.state.memo.reporter = AutodocReporter(
--                rstlist, self.state.memo.reporter)
-+                rstlist, self.state.memo.reporter
-+            )
-             try:
-                 nested_parse_with_titles(self.state, rstlist, node)
-             finally:
-@@ -537,12 +551,12 @@ def do_parse(self, rstlist, node):
+     def get_doc_paragraph(self, doc: 'QAPIDoc') -> Optional[str]:
+diff --git a/tests/qapi-schema/doc-good.out b/tests/qapi-schema/doc-good.out
+index 716a9a41026..435f6e6d768 100644
+--- a/tests/qapi-schema/doc-good.out
++++ b/tests/qapi-schema/doc-good.out
+@@ -117,8 +117,8 @@ doc symbol=Base
+     body=
  
+     arg=base1
+-description starts on a new line,
+-minimally indented
++ description starts on a new line,
++ minimally indented
+ doc symbol=Variant1
+     body=
+ A paragraph
+@@ -145,8 +145,8 @@ doc symbol=Alternate
  
- def setup(app):
--    """ Register qapi-doc directive with Sphinx"""
--    app.add_config_value('qapidoc_srctree', None, 'env')
--    app.add_directive('qapi-doc', QAPIDocDirective)
-+    """Register qapi-doc directive with Sphinx"""
-+    app.add_config_value("qapidoc_srctree", None, "env")
-+    app.add_directive("qapi-doc", QAPIDocDirective)
+     arg=i
+ description starts on the same line
+-remainder indented the same
+-@b is undocumented
++    remainder indented the same
++    @b is undocumented
+     arg=b
  
--    return dict(
--        version=__version__,
--        parallel_read_safe=True,
--        parallel_write_safe=True
--    )
-+    return {
-+        "version": __version__,
-+        "parallel_read_safe": True,
-+        "parallel_write_safe": True,
-+    }
+     feature=alt-feat
+@@ -158,11 +158,11 @@ doc symbol=cmd
+     body=
+ 
+     arg=arg1
+-description starts on a new line,
+-indented
++    description starts on a new line,
++    indented
+     arg=arg2
+ description starts on the same line
+-remainder indented differently
++    remainder indented differently
+     arg=arg3
+ 
+     feature=cmd-feat1
+@@ -178,16 +178,16 @@ some
+     section=TODO
+ frobnicate
+     section=Notes
+-- Lorem ipsum dolor sit amet
+-- Ut enim ad minim veniam
++ - Lorem ipsum dolor sit amet
++ - Ut enim ad minim veniam
+ 
+-Duis aute irure dolor
++ Duis aute irure dolor
+     section=Example
+--> in
+-<- out
++ -> in
++ <- out
+     section=Examples
+-- *verbatim*
+-- {braces}
++ - *verbatim*
++ - {braces}
+     section=Since
+ 2.10
+ doc symbol=cmd-boxed
+@@ -198,9 +198,9 @@ a feature
+     feature=cmd-feat2
+ another feature
+     section=Example
+--> in
++ -> in
+ 
+-<- out
++ <- out
+ doc symbol=EVT_BOXED
+     body=
+ 
 -- 
 2.44.0
 
