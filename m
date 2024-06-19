@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DC0790F7F4
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jun 2024 23:01:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6CA790F801
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jun 2024 23:02:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sK2PX-0002Cc-3X; Wed, 19 Jun 2024 17:00:07 -0400
+	id 1sK2Pc-0002F9-KY; Wed, 19 Jun 2024 17:00:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sK2PR-0002BQ-Dy
- for qemu-devel@nongnu.org; Wed, 19 Jun 2024 17:00:01 -0400
-Received: from mail-pg1-x531.google.com ([2607:f8b0:4864:20::531])
+ id 1sK2PT-0002C8-Pm
+ for qemu-devel@nongnu.org; Wed, 19 Jun 2024 17:00:05 -0400
+Received: from mail-pg1-x532.google.com ([2607:f8b0:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sK2PP-0000Jl-Mo
- for qemu-devel@nongnu.org; Wed, 19 Jun 2024 17:00:01 -0400
-Received: by mail-pg1-x531.google.com with SMTP id
- 41be03b00d2f7-6eab07ae82bso152279a12.3
- for <qemu-devel@nongnu.org>; Wed, 19 Jun 2024 13:59:59 -0700 (PDT)
+ id 1sK2PQ-0000KD-U4
+ for qemu-devel@nongnu.org; Wed, 19 Jun 2024 17:00:02 -0400
+Received: by mail-pg1-x532.google.com with SMTP id
+ 41be03b00d2f7-6e4dbca52f0so177480a12.0
+ for <qemu-devel@nongnu.org>; Wed, 19 Jun 2024 14:00:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1718830798; x=1719435598; darn=nongnu.org;
+ d=linaro.org; s=google; t=1718830799; x=1719435599; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=0lTcCjJ3oR/AagcegLt/3bpmmkWF2oByWozOC0a9UQ8=;
- b=KFCLGD5mc9QnxYFZlQ9WYarDasUe12FRtDXXkVTo4uHfhwYEZgVf3xqAZ/Y0oFd4dq
- 4kDSBDEjkZEXGV/p8T1MTC7Iey0bE94OjkOfDi0TaIi+DNreVjmgUQ9RJsR8rMRRuHng
- 2v257iZXdPO8t60mNCoqy5lfBumLFiq2Gw8W8c9MqjojaRGaZgQQB2sSZdQV423MTZSb
- SU5RTyo3OiMY53xRODkxwTJjNKPlXJu4p/66y4c1RjRCjuRHcQhe/n5iK8RmRoIP5SoX
- ADzPF+rwYa+8VMi7Qdml8M4d+TqeKwvBP+6teddi82EuTJ0kY0M9l0mNHbCD9bWDQuZ1
- vIAA==
+ bh=1R6PniPLNMWr5brkBomFlTCMhKgUFohFxAyFLb2Rr/U=;
+ b=DwsPC9pHX3XZFzx0xbIkplf+dwcEYudnU/nKLbORf1k7v4aFI8XqLvp7WqGDtTOcJC
+ KXXQlPv3C9WSUdgsLxsxa2DSl6tajdOZ+ECdk7sZGqC1xFR0+5igBrwRk0h031dlvK/2
+ xDoaBkgN4qVh32SHCBjJ2f0d00i8PuBkEEDffCYTbwwKatuC+0TKnE5eDVJowqzj3INq
+ +lb24o+hppp3tqCOSGx/hy3KZtltuibGSQ/5kvnx3uYlnYeX1UsRc2pats50MaBe70xu
+ LZ6r1on4WbF5uEkxwEag7+pUNTS1GrQWzFu5yoGpUXNq9YLRh7Dj/zbtESl96dIEgYhg
+ XTTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718830798; x=1719435598;
+ d=1e100.net; s=20230601; t=1718830799; x=1719435599;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0lTcCjJ3oR/AagcegLt/3bpmmkWF2oByWozOC0a9UQ8=;
- b=qChzzpCfg5I1+h5MNKsvtiDQNZShHAySK9HfQpKMp8pU64ZzVs4qNp/grpUTsMz4Wv
- IMiutUPe1G8TnzuhBqMDv5S3IlDpdf18WCQq4dX57OI0Y0H4kMRM+qH1G5+0Qsi8aysR
- 44XIEoVcpXSV0Nv6JKi3zWHNZPYRW026agNVPzF32BeKMAVhsdJXCft8No7OwSQ1NYLU
- z+WtVL6+W3nbz7CHPxsGwUQdkzdq28+N4zRKY9IbWrfWH67RRma4XSwj8OIygvS6qt9v
- y6MLnjYv1oF+N2NMYQJc41TMQAzIU0xURRAC3lMm58FNc4emCQMMAGYVbWxV68NwucYU
- lvhw==
-X-Gm-Message-State: AOJu0YxBFnd1caAg+6dSzYz/9L+Y5x34y8N8TjS/yNFXnL/CPLKuO6ty
- aY1NvtBvnubYZMmfSjvyT0RP55Lja+wUIco2/t5Jg/wOXHLd9+qAY6xQA9wxL0jD1FSTT8y798y
- p
-X-Google-Smtp-Source: AGHT+IGjU/C4WiheAxh41fu3jSsG7+CO+ID8yUWzlBRbx7d6FyudpgWCIbV1iif3hAk5pPJSAffjiw==
-X-Received: by 2002:a17:903:230d:b0:1f7:3e19:6d9f with SMTP id
- d9443c01a7336-1f9aa3dab89mr43615635ad.19.1718830798211; 
- Wed, 19 Jun 2024 13:59:58 -0700 (PDT)
+ bh=1R6PniPLNMWr5brkBomFlTCMhKgUFohFxAyFLb2Rr/U=;
+ b=XgI21Eb2T5ghtw9QIYi6361oC0fsxTa41bCOGdX9DNi2zAVFy34PunmZPq96VM7yva
+ OocIIjua2Ey9HL6wgEVu2kYPRLRadW0zJJj0KIQb2xpRRmxhylSAPXtk0O40z8wEmGG8
+ SleOxB/5vCZnGTPiJAIrRJF6XTg+2GmvHnG1+btRFofw9sLsUITH7CRLkDJpX9uEo2IE
+ VgHR8NrURkaRq/S8oRlS0NXfwRvvkMrw6KgFuAsPDotmReEXYWNsezV6vyuJoRX1DFZ+
+ sqsBRO6b0Ctar7Yna8b5UoNTFeWRip2ETQi7IvL2awhFztsVSfzcUGFtlE3Kk6kkkrZU
+ uv2w==
+X-Gm-Message-State: AOJu0YwbkKDmk4vLcAQ9A455MaHkr2A2XdIBgnKA6RP8vf7GCAtuhEhP
+ Mj4uwZrSWnUFwzPuNSaVH2KIBuKAmPSNjHQcqAu7pERryFo3cD/gb85YQrfQRnAXDjIOSM3KIVi
+ O
+X-Google-Smtp-Source: AGHT+IFpTRNcv0313QMDfjFS1Ep11oQST3wo1aTJLp2Xa6fm9pV4nuub5XHsndlPuI9o5zKIHLDVnA==
+X-Received: by 2002:a17:902:f68f:b0:1f6:673c:ff2f with SMTP id
+ d9443c01a7336-1f9aa472200mr39234485ad.68.1718830799082; 
+ Wed, 19 Jun 2024 13:59:59 -0700 (PDT)
 Received: from stoup.. ([71.212.132.216]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1f98f8f8c42sm39183765ad.162.2024.06.19.13.59.57
+ d9443c01a7336-1f98f8f8c42sm39183765ad.162.2024.06.19.13.59.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 19 Jun 2024 13:59:57 -0700 (PDT)
+ Wed, 19 Jun 2024 13:59:58 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Song Gao <gaosong@loongson.cn>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 05/24] util/loongarch64: Detect LASX vector support
-Date: Wed, 19 Jun 2024 13:59:33 -0700
-Message-Id: <20240619205952.235946-6-richard.henderson@linaro.org>
+Subject: [PULL 06/24] tcg/loongarch64: Simplify tcg_out_dup_vec
+Date: Wed, 19 Jun 2024 13:59:34 -0700
+Message-Id: <20240619205952.235946-7-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240619205952.235946-1-richard.henderson@linaro.org>
 References: <20240619205952.235946-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::531;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x531.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::532;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x532.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,34 +97,42 @@ Reviewed-by: Song Gao <gaosong@loongson.cn>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- host/include/loongarch64/host/cpuinfo.h | 1 +
- util/cpuinfo-loongarch.c                | 1 +
- 2 files changed, 2 insertions(+)
+ tcg/loongarch64/tcg-target.c.inc | 22 ++++++----------------
+ 1 file changed, 6 insertions(+), 16 deletions(-)
 
-diff --git a/host/include/loongarch64/host/cpuinfo.h b/host/include/loongarch64/host/cpuinfo.h
-index fab664a10b..d7bf27501d 100644
---- a/host/include/loongarch64/host/cpuinfo.h
-+++ b/host/include/loongarch64/host/cpuinfo.h
-@@ -8,6 +8,7 @@
+diff --git a/tcg/loongarch64/tcg-target.c.inc b/tcg/loongarch64/tcg-target.c.inc
+index 980ea10211..b1d652355d 100644
+--- a/tcg/loongarch64/tcg-target.c.inc
++++ b/tcg/loongarch64/tcg-target.c.inc
+@@ -1674,22 +1674,12 @@ static void tcg_out_op(TCGContext *s, TCGOpcode opc,
+ static bool tcg_out_dup_vec(TCGContext *s, TCGType type, unsigned vece,
+                             TCGReg rd, TCGReg rs)
+ {
+-    switch (vece) {
+-    case MO_8:
+-        tcg_out_opc_vreplgr2vr_b(s, rd, rs);
+-        break;
+-    case MO_16:
+-        tcg_out_opc_vreplgr2vr_h(s, rd, rs);
+-        break;
+-    case MO_32:
+-        tcg_out_opc_vreplgr2vr_w(s, rd, rs);
+-        break;
+-    case MO_64:
+-        tcg_out_opc_vreplgr2vr_d(s, rd, rs);
+-        break;
+-    default:
+-        g_assert_not_reached();
+-    }
++    static const LoongArchInsn repl_insn[4] = {
++        OPC_VREPLGR2VR_B, OPC_VREPLGR2VR_H, OPC_VREPLGR2VR_W, OPC_VREPLGR2VR_D
++    };
++
++    tcg_debug_assert(vece <= MO_64);
++    tcg_out32(s, encode_vdj_insn(repl_insn[vece], rd, rs));
+     return true;
+ }
  
- #define CPUINFO_ALWAYS          (1u << 0)  /* so cpuinfo is nonzero */
- #define CPUINFO_LSX             (1u << 1)
-+#define CPUINFO_LASX            (1u << 2)
- 
- /* Initialized with a constructor. */
- extern unsigned cpuinfo;
-diff --git a/util/cpuinfo-loongarch.c b/util/cpuinfo-loongarch.c
-index 08b6d7460c..bb1f7f698b 100644
---- a/util/cpuinfo-loongarch.c
-+++ b/util/cpuinfo-loongarch.c
-@@ -29,6 +29,7 @@ unsigned __attribute__((constructor)) cpuinfo_init(void)
- 
-     info = CPUINFO_ALWAYS;
-     info |= (hwcap & HWCAP_LOONGARCH_LSX ? CPUINFO_LSX : 0);
-+    info |= (hwcap & HWCAP_LOONGARCH_LASX ? CPUINFO_LASX : 0);
- 
-     cpuinfo = info;
-     return info;
 -- 
 2.34.1
 
