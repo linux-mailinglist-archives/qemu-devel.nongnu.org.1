@@ -2,86 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1455290F557
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jun 2024 19:41:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F3D890F563
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jun 2024 19:44:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sJzIX-0000zw-PV; Wed, 19 Jun 2024 13:40:41 -0400
+	id 1sJzLb-0003AK-Pt; Wed, 19 Jun 2024 13:43:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sJzIS-0000zB-SC
- for qemu-devel@nongnu.org; Wed, 19 Jun 2024 13:40:37 -0400
-Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sJzIQ-00063s-MB
- for qemu-devel@nongnu.org; Wed, 19 Jun 2024 13:40:36 -0400
-Received: by mail-ed1-x533.google.com with SMTP id
- 4fb4d7f45d1cf-57cc1c00ba6so6449266a12.1
- for <qemu-devel@nongnu.org>; Wed, 19 Jun 2024 10:40:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1718818833; x=1719423633; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=f4skJCa4wMR5/p1vPpn4GIPcC8hA65S+qZcd/sGER4E=;
- b=QBRhGfYy3w+oSLiQvcU5HbCeg9JW2uC7bonsrLIotT2Pisc7ldmdGZRcfi3s7/Pj2D
- e0b0AHs0PUvzpW57qFVcWpATwFpkYbkRjJoH5V408ywixeuuSEq3ART1RvXXYD1YjxrX
- HY8DHEYV/uRlF2rj9R5CWSj2urvrk66jN0crmwdrEi4iRKvYwxo+E+xE2JZWA+Onw9VQ
- ZMSX2lWUeaUzUFTfaBJ6KjLbDYK0Vx8pbHDFwo54PWysCegZhBFyqFECNz80t5HA1vv/
- 6PAfAOZrw87foe4Sawfmr1LHGa5LHXiyvN98dj4CzUK0Qls4G9hC5TBamTqy33e+y5Rq
- Iw8w==
+ (Exim 4.90_1) (envelope-from <nsoffer@redhat.com>)
+ id 1sJzLZ-00039v-SN
+ for qemu-devel@nongnu.org; Wed, 19 Jun 2024 13:43:49 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <nsoffer@redhat.com>)
+ id 1sJzLX-0006TY-KW
+ for qemu-devel@nongnu.org; Wed, 19 Jun 2024 13:43:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1718819026;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=PtValsoMsDBsbDkO2BGJgpt8cOh0br0FEgiE2dJ2Kck=;
+ b=gQA+tGH7vKe0GmcfumNIne2R16+68OnzYIX1bh0s3+NwKxV+1TVQfNRqtkFzc+tf+bzOx+
+ mS4BRSiahji1AtsRayCehzRSTCHC3nZbL/nYuyjyCyw05z+5yE0OUcHpanxTXv/Ty9mBsm
+ vJKmSQaOZEJV3wYq+RRd48Nl4R7qaXo=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-367-J2fPpQtwNzG5laBVL0EWTA-1; Wed, 19 Jun 2024 13:43:43 -0400
+X-MC-Unique: J2fPpQtwNzG5laBVL0EWTA-1
+Received: by mail-qv1-f69.google.com with SMTP id
+ 6a1803df08f44-6b51042049eso683096d6.1
+ for <qemu-devel@nongnu.org>; Wed, 19 Jun 2024 10:43:43 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718818833; x=1719423633;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=f4skJCa4wMR5/p1vPpn4GIPcC8hA65S+qZcd/sGER4E=;
- b=rKfE5jYtT2fCOq/gGAHRS0FxW58l5DBvstXpOrPWcGyHtTVbrby8SwHvMECxqJwvSZ
- mKaGf8vsoQ4e2h2c7zjR3eXzwI9BM8e7DZij8FlQj0avMIa7affAI0jOETSjeyzOJVe0
- OLfJPWguF7PMm1mRRQAF5vSS/s2LKw719Fy5GzseruStlo6K1vy1G7mwtgl2O1MN1+A/
- iuFodcXzGrZq3Q3jBaEmSX1mN+MVZCTC+RPDGDSUpAiIeXmf++Va8FgUoF+zHCe07dLl
- qGMSs6MLb/0UWNAmDDBNYJBQwPRb8Y93b0tG3n1PbZoBW8dxqqAfnbchrMruNIrsXYFH
- ahEA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVf6Ygw6dOLpLiLAV8jbuPBjLJItC6e+dDcdAB5orklB2f8Hb7n6s0MTPB+o8ilpjDW9gfFEjsHgL5cHoHs1unJO3NO8YA=
-X-Gm-Message-State: AOJu0YxWCA0QDx/ROLo0SoCN9hF9JGH2VFleLOWF8agrtIPlYW8K24Z6
- t5oub95F0wwLbZ5BbJsXsNM9J/bvyqD+z8/wHBpPnHjDiQQ21yiWS8Jfe1PGCiA=
-X-Google-Smtp-Source: AGHT+IGt5awq/V9cI3yWAlJE10x1aAboz7tqIYIVpYmP2fj6G+4CFlzBkBMa6GXnptqH1nbKRfsPlw==
-X-Received: by 2002:a50:ee92:0:b0:57c:765b:83a3 with SMTP id
- 4fb4d7f45d1cf-57d0bff1a13mr1925322a12.25.1718818832015; 
- Wed, 19 Jun 2024 10:40:32 -0700 (PDT)
-Received: from [192.168.69.100] ([176.176.133.105])
- by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-57cb743890dsm8616920a12.83.2024.06.19.10.40.30
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 19 Jun 2024 10:40:31 -0700 (PDT)
-Message-ID: <59f1da17-719d-4389-b21a-053b2ee980dd@linaro.org>
-Date: Wed, 19 Jun 2024 19:40:29 +0200
+ d=1e100.net; s=20230601; t=1718819022; x=1719423822;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=PtValsoMsDBsbDkO2BGJgpt8cOh0br0FEgiE2dJ2Kck=;
+ b=hWdORa1niTUskTFyPf28OejRDaCQZTwuT0qUhmNZ3WVVHMnAF/QtBcPJMDYlt0VflR
+ 4ixtezGHqeVaCIEOaDsIVaSHJfCrLeV4QFovdnC+BNy5HZh403ppFiha8FfpvAWHdsKP
+ pdEFG29+of7HqeLDGNqWCV8jAULTfE/IumE3+Pp8m+dBU7et+LUf269yKMhnlW94unnP
+ 0FcRZSva52eDU5E/uNso2xcZnl16iVJPWt6peRI3zSL9691SBunsUql+FC7xgsxJ2Mep
+ tVSQZ8R4kjizqipP5xc44kbnbuCryKDJwoP9BdtoyB7u2tUnwh8ZQ76KmC3eio0DKz8v
+ lSUw==
+X-Gm-Message-State: AOJu0YxMr3mgiEtYlveMPrpvgye0rwDZawQklXEmeqgZOM8PfpUYhc3Z
+ 2KL4dAYknA/DsobkXPcbzX7tWkN2WrCEamTuv9hpG9ZOUFC/VaavrMkrFJ0YYnAO2FhBH4v7t5I
+ jxKVZqTY/XQZw0K6Vmz7L94p1t5DQ13P1jgTNuvHPH4s2NqzUyzOQ6UXI38Pv4pWTov05QrzJDP
+ 5A8+LOUZnZCMx7UK+dyp739YfF6SDOqvQ4olP10Q==
+X-Received: by 2002:a0c:f38b:0:b0:6b4:ff8e:63f1 with SMTP id
+ 6a1803df08f44-6b501e4eecbmr29860496d6.34.1718819022399; 
+ Wed, 19 Jun 2024 10:43:42 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHXIaHavhalv8sdR7Ql4QjOShoBpYweFVDdg+IzEuvpgnNE0bywkMPVEH2UFsmC5USqWLVG0gyPZdsK2/Y9HMM=
+X-Received: by 2002:a0c:f38b:0:b0:6b4:ff8e:63f1 with SMTP id
+ 6a1803df08f44-6b501e4eecbmr29860346d6.34.1718819022076; Wed, 19 Jun 2024
+ 10:43:42 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 22/32] hw/sd: Add emmc_cmd_SEND_EXT_CSD() handler
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, qemu-devel@nongnu.org,
- Joel Stanley <joel@jms.id.au>
-Cc: Bin Meng <bin.meng@windriver.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Lucien Murray-Pitts <lucienmp.qemu@gmail.com>
-References: <20230703132509.2474225-1-clg@kaod.org>
- <20230703132509.2474225-23-clg@kaod.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20230703132509.2474225-23-clg@kaod.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::533;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x533.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+References: <20240619174022.1298578-1-nsoffer@redhat.com>
+In-Reply-To: <20240619174022.1298578-1-nsoffer@redhat.com>
+From: Nir Soffer <nsoffer@redhat.com>
+Date: Wed, 19 Jun 2024 20:43:25 +0300
+Message-ID: <CAMRbyyso9cMFueVS3SGtJ3G=-OGu+ueqqE5u2NYtsydBxf_J3Q@mail.gmail.com>
+Subject: Re: [PATCH v2] Consider discard option when writing zeros
+To: qemu-devel@nongnu.org
+Cc: Fam Zheng <fam@euphon.net>, qemu-block@nongnu.org, 
+ Stefan Hajnoczi <stefanha@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>
+Content-Type: multipart/alternative; boundary="0000000000003e98d5061b41bdd6"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=nsoffer@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,112 +95,384 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+--0000000000003e98d5061b41bdd6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 3/7/23 15:24, Cédric Le Goater wrote:
-> The parameters mimick a real 4GB eMMC, but it can be set to various
-> sizes. Initially from Vincent Palatin <vpalatin@chromium.org>
-> 
-> Signed-off-by: Cédric Le Goater <clg@kaod.org>
+Tested using:
+
+$ cat test-unmap.sh
+#!/bin/sh
+
+qemu=3D${1:?Usage: $0 qemu-executable}
+img=3D/tmp/test.raw
+
+echo
+echo "defaults - write zeroes"
+fallocate -l 1m $img
+echo -e 'qemu-io none0 "write -z 0 1m"\nquit' | $qemu -monitor stdio \
+    -drive if=3Dnone,file=3D$img,format=3Draw >/dev/null
+du -sh $img
+
+echo
+echo "defaults - write zeroes unmap"
+fallocate -l 1m $img
+echo -e 'qemu-io none0 "write -zu 0 1m"\nquit' | $qemu -monitor stdio \
+    -drive if=3Dnone,file=3D$img,format=3Draw >/dev/null
+du -sh $img
+
+echo
+echo "defaults - write actual zeros"
+fallocate -l 1m $img
+echo -e 'qemu-io none0 "write -P 0 0 1m"\nquit' | $qemu -monitor stdio \
+    -drive if=3Dnone,file=3D$img,format=3Draw >/dev/null
+du -sh $img
+
+echo
+echo "discard=3Doff - write zeroes unmap"
+fallocate -l 1m $img
+echo -e 'qemu-io none0 "write -zu 0 1m"\nquit' | $qemu -monitor stdio \
+    -drive if=3Dnone,file=3D$img,format=3Draw,discard=3Doff >/dev/null
+du -sh $img
+
+echo
+echo "detect-zeros=3Don - write actual zeros"
+fallocate -l 1m $img
+echo -e 'qemu-io none0 "write -P 0 0 1m"\nquit' | $qemu -monitor stdio \
+    -drive if=3Dnone,file=3D$img,format=3Draw,detect-zeroes=3Don >/dev/null
+du -sh $img
+
+echo
+echo "detect-zeros=3Dunmap,discard=3Dunmap - write actual zeros"
+fallocate -l 1m $img
+echo -e 'qemu-io none0 "write -P 0 0 1m"\nquit' |  $qemu -monitor stdio \
+    -drive if=3Dnone,file=3D$img,format=3Draw,detect-zeroes=3Dunmap,discard=
+=3Dunmap
+>/dev/null
+du -sh $img
+
+echo
+echo "discard=3Dunmap - write zeroes"
+fallocate -l 1m $img
+echo -e 'qemu-io none0 "write -z 0 1m"\nquit' | $qemu -monitor stdio \
+    -drive if=3Dnone,file=3D$img,format=3Draw,discard=3Dunmap >/dev/null
+du -sh $img
+
+echo
+echo "discard=3Dunmap - write zeroes unmap"
+fallocate -l 1m $img
+echo -e 'qemu-io none0 "write -zu 0 1m"\nquit' | $qemu -monitor stdio \
+    -drive if=3Dnone,file=3D$img,format=3Draw,discard=3Dunmap >/dev/null
+du -sh $img
+
+rm $img
+
+
+Before this change:
+
+$ cat before.out
+
+defaults - write zeroes
+1.0M /tmp/test.raw
+
+defaults - write zeroes unmap
+0 /tmp/test.raw
+
+defaults - write actual zeros
+1.0M /tmp/test.raw
+
+discard=3Doff - write zeroes unmap
+0 /tmp/test.raw
+
+detect-zeros=3Don - write actual zeros
+1.0M /tmp/test.raw
+
+detect-zeros=3Dunmap,discard=3Dunmap - write actual zeros
+0 /tmp/test.raw
+
+discard=3Dunmap - write zeroes
+1.0M /tmp/test.raw
+
+discard=3Dunmap - write zeroes unmap
+0 /tmp/test.raw
+[nsoffer build (consider-discard-option)]$
+
+
+After this change:
+
+$ cat after.out
+
+defaults - write zeroes
+1.0M /tmp/test.raw
+
+defaults - write zeroes unmap
+1.0M /tmp/test.raw
+
+defaults - write actual zeros
+1.0M /tmp/test.raw
+
+discard=3Doff - write zeroes unmap
+1.0M /tmp/test.raw
+
+detect-zeros=3Don - write actual zeros
+1.0M /tmp/test.raw
+
+detect-zeros=3Dunmap,discard=3Dunmap - write actual zeros
+0 /tmp/test.raw
+
+discard=3Dunmap - write zeroes
+1.0M /tmp/test.raw
+
+discard=3Dunmap - write zeroes unmap
+0 /tmp/test.raw
+
+
+Differences:
+
+$ diff -u before.out after.out
+--- before.out 2024-06-19 20:24:09.234083713 +0300
++++ after.out 2024-06-19 20:24:20.526165573 +0300
+@@ -3,13 +3,13 @@
+ 1.0M /tmp/test.raw
+
+ defaults - write zeroes unmap
+-0 /tmp/test.raw
++1.0M /tmp/test.raw
+
+ defaults - write actual zeros
+ 1.0M /tmp/test.raw
+
+ discard=3Doff - write zeroes unmap
+-0 /tmp/test.raw
++1.0M /tmp/test.raw
+
+On Wed, Jun 19, 2024 at 8:40=E2=80=AFPM Nir Soffer <nsoffer@redhat.com> wro=
+te:
+
+> When opening an image with discard=3Doff, we punch hole in the image when
+> writing zeroes, making the image sparse. This breaks users that want to
+> ensure that writes cannot fail with ENOSPACE by using fully allocated
+> images.
+>
+> bdrv_co_pwrite_zeroes() correctly disable BDRV_REQ_MAY_UNMAP if we
+> opened the child without discard=3Dunmap or discard=3Don. But we don't go
+> through this function when accessing the top node. Move the check down
+> to bdrv_co_do_pwrite_zeroes() which seems to be used in all code paths.
+>
+> Issues:
+> - We don't punch hole by default, so images are kept allocated. Before
+>   this change we punched holes by default. I'm not sure this is a good
+>   change in behavior.
+> - Need to run all block tests
+> - Not sure that we have tests covering unmapping, we may need new tests
+> - We may need new tests to cover this change
+>
+> Signed-off-by: Nir Soffer <nsoffer@redhat.com>
 > ---
->   hw/sd/sdmmc-internal.h |  97 ++++++++++++++++++++++++++++++++++++
->   include/hw/sd/sd.h     |   1 +
->   hw/sd/sd.c             | 109 ++++++++++++++++++++++++++++++++++++++++-
->   3 files changed, 206 insertions(+), 1 deletion(-)
-
-First pass review, this will take time...
-
-> +static void mmc_set_ext_csd(SDState *sd, uint64_t size)
-> +{
-> +    uint32_t sectcount = size >> HWBLOCK_SHIFT;
+>
+> Changes since v1:
+> - Replace the incorrect has_discard change with the right fix
+>
+> v1 was here:
+> https://lists.nongnu.org/archive/html/qemu-block/2024-06/msg00198.html
+>
+>  block/io.c | 9 +++++----
+>  1 file changed, 5 insertions(+), 4 deletions(-)
+>
+> diff --git a/block/io.c b/block/io.c
+> index 7217cf811b..301514c880 100644
+> --- a/block/io.c
+> +++ b/block/io.c
+> @@ -1860,10 +1860,15 @@ bdrv_co_do_pwrite_zeroes(BlockDriverState *bs,
+> int64_t offset, int64_t bytes,
+>      /* By definition there is no user buffer so this flag doesn't make
+> sense */
+>      if (flags & BDRV_REQ_REGISTERED_BUF) {
+>          return -EINVAL;
+>      }
+>
+> +    /* If opened with discard=3Doff we should never unmap. */
+> +    if (!(bs->open_flags & BDRV_O_UNMAP)) {
+> +        flags &=3D ~BDRV_REQ_MAY_UNMAP;
+> +    }
 > +
-> +    memset(sd->ext_csd, 0, sizeof(sd->ext_csd));
-> +
-> +    sd->ext_csd[EXT_CSD_S_CMD_SET] = 0x1; /* supported command sets */
-> +    sd->ext_csd[EXT_CSD_HPI_FEATURES] = 0x3; /* HPI features  */
-> +    sd->ext_csd[EXT_CSD_BKOPS_SUPPORT] = 0x1; /* Background operations */
-> +    sd->ext_csd[241] = 0xA; /* 1st initialization time after partitioning */
-> +    sd->ext_csd[EXT_CSD_TRIM_MULT] = 0x1; /* Trim multiplier */
-> +    sd->ext_csd[EXT_CSD_SEC_FEATURE_SUPPORT] = 0x15; /* Secure feature */
+>      /* Invalidate the cached block-status data range if this write
+> overlaps */
+>      bdrv_bsc_invalidate_range(bs, offset, bytes);
+>
+>      assert(alignment % bs->bl.request_alignment =3D=3D 0);
+>      head =3D offset % alignment;
+> @@ -2313,14 +2318,10 @@ int coroutine_fn bdrv_co_pwrite_zeroes(BdrvChild
+> *child, int64_t offset,
+>  {
+>      IO_CODE();
+>      trace_bdrv_co_pwrite_zeroes(child->bs, offset, bytes, flags);
+>      assert_bdrv_graph_readable();
+>
+> -    if (!(child->bs->open_flags & BDRV_O_UNMAP)) {
+> -        flags &=3D ~BDRV_REQ_MAY_UNMAP;
+> -    }
+> -
+>      return bdrv_co_pwritev(child, offset, bytes, NULL,
+>                             BDRV_REQ_ZERO_WRITE | flags);
+>  }
+>
+>  /*
+> --
+> 2.45.1
+>
+>
 
-We do not support (and are not interested in) that. I'll use 0x0 for
-"do not support".
+--0000000000003e98d5061b41bdd6
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> +    sd->ext_csd[EXT_CSD_SEC_ERASE_MULT] = 0x96; /* Secure erase support */
+<div dir=3D"ltr">Tested using:<div><br></div><div>$ cat test-unmap.sh <br>#=
+!/bin/sh<br><br>qemu=3D${1:?Usage: $0 qemu-executable}<br>img=3D/tmp/test.r=
+aw<br><br>echo<br>echo &quot;defaults - write zeroes&quot;<br>fallocate -l =
+1m $img<br>echo -e &#39;qemu-io none0 &quot;write -z 0 1m&quot;\nquit&#39; =
+| $qemu -monitor stdio \<br>=C2=A0 =C2=A0 -drive if=3Dnone,file=3D$img,form=
+at=3Draw &gt;/dev/null<br>du -sh $img<br><br>echo<br>echo &quot;defaults - =
+write zeroes unmap&quot;<br>fallocate -l 1m $img<br>echo -e &#39;qemu-io no=
+ne0 &quot;write -zu 0 1m&quot;\nquit&#39; | $qemu -monitor stdio \<br>=C2=
+=A0 =C2=A0 -drive if=3Dnone,file=3D$img,format=3Draw &gt;/dev/null<br>du -s=
+h $img<br><br>echo<br>echo &quot;defaults - write actual zeros&quot;<br>fal=
+locate -l 1m $img<br>echo -e &#39;qemu-io none0 &quot;write -P 0 0 1m&quot;=
+\nquit&#39; | $qemu -monitor stdio \<br>=C2=A0 =C2=A0 -drive if=3Dnone,file=
+=3D$img,format=3Draw &gt;/dev/null<br>du -sh $img<br><br>echo<br>echo &quot=
+;discard=3Doff - write zeroes unmap&quot;<br>fallocate -l 1m $img<br>echo -=
+e &#39;qemu-io none0 &quot;write -zu 0 1m&quot;\nquit&#39; | $qemu -monitor=
+ stdio \<br>=C2=A0 =C2=A0 -drive if=3Dnone,file=3D$img,format=3Draw,discard=
+=3Doff &gt;/dev/null<br>du -sh $img<br><br>echo<br>echo &quot;detect-zeros=
+=3Don - write actual zeros&quot;<br>fallocate -l 1m $img<br>echo -e &#39;qe=
+mu-io none0 &quot;write -P 0 0 1m&quot;\nquit&#39; | $qemu -monitor stdio \=
+<br>=C2=A0 =C2=A0 -drive if=3Dnone,file=3D$img,format=3Draw,detect-zeroes=
+=3Don &gt;/dev/null<br>du -sh $img<br><br>echo<br>echo &quot;detect-zeros=
+=3Dunmap,discard=3Dunmap - write actual zeros&quot;<br>fallocate -l 1m $img=
+<br>echo -e &#39;qemu-io none0 &quot;write -P 0 0 1m&quot;\nquit&#39; | =C2=
+=A0$qemu -monitor stdio \<br>=C2=A0 =C2=A0 -drive if=3Dnone,file=3D$img,for=
+mat=3Draw,detect-zeroes=3Dunmap,discard=3Dunmap &gt;/dev/null<br>du -sh $im=
+g<br><br>echo<br>echo &quot;discard=3Dunmap - write zeroes&quot;<br>falloca=
+te -l 1m $img<br>echo -e &#39;qemu-io none0 &quot;write -z 0 1m&quot;\nquit=
+&#39; | $qemu -monitor stdio \<br>=C2=A0 =C2=A0 -drive if=3Dnone,file=3D$im=
+g,format=3Draw,discard=3Dunmap &gt;/dev/null<br>du -sh $img<br><br>echo<br>=
+echo &quot;discard=3Dunmap - write zeroes unmap&quot;<br>fallocate -l 1m $i=
+mg<br>echo -e &#39;qemu-io none0 &quot;write -zu 0 1m&quot;\nquit&#39; | $q=
+emu -monitor stdio \<br>=C2=A0 =C2=A0 -drive if=3Dnone,file=3D$img,format=
+=3Draw,discard=3Dunmap &gt;/dev/null<br>du -sh $img<br><br>rm $img<br><div>=
+<br></div><div><br></div><div>Before this change:</div><div><br></div><div>=
+$ cat before.out <br><br>defaults - write zeroes<br>1.0M	/tmp/test.raw<br><=
+br>defaults - write zeroes unmap<br>0	/tmp/test.raw<br><br>defaults - write=
+ actual zeros<br>1.0M	/tmp/test.raw<br><br>discard=3Doff - write zeroes unm=
+ap<br>0	/tmp/test.raw<br><br>detect-zeros=3Don - write actual zeros<br>1.0M=
+	/tmp/test.raw<br><br>detect-zeros=3Dunmap,discard=3Dunmap - write actual z=
+eros<br>0	/tmp/test.raw<br><br>discard=3Dunmap - write zeroes<br>1.0M	/tmp/=
+test.raw<br><br>discard=3Dunmap - write zeroes unmap<br>0	/tmp/test.raw<br>=
+[nsoffer build (consider-discard-option)]$ <br><br></div><div><br></div><di=
+v>After this change:</div><div><br></div><div>$ cat after.out <br><br>defau=
+lts - write zeroes<br>1.0M	/tmp/test.raw<br><br>defaults - write zeroes unm=
+ap<br>1.0M	/tmp/test.raw<br><br>defaults - write actual zeros<br>1.0M	/tmp/=
+test.raw<br><br>discard=3Doff - write zeroes unmap<br>1.0M	/tmp/test.raw<br=
+><br>detect-zeros=3Don - write actual zeros<br>1.0M	/tmp/test.raw<br><br>de=
+tect-zeros=3Dunmap,discard=3Dunmap - write actual zeros<br>0	/tmp/test.raw<=
+br><br>discard=3Dunmap - write zeroes<br>1.0M	/tmp/test.raw<br><br>discard=
+=3Dunmap - write zeroes unmap<br>0	/tmp/test.raw<br></div><div><br></div></=
+div><div><br></div><div>Differences:</div><div><br></div><div>$ diff -u bef=
+ore.out after.out <br>--- before.out	2024-06-19 20:24:09.234083713 +0300<br=
+>+++ after.out	2024-06-19 20:24:20.526165573 +0300<br>@@ -3,13 +3,13 @@<br>=
+=C2=A01.0M	/tmp/test.raw<br>=C2=A0<br>=C2=A0defaults - write zeroes unmap<b=
+r>-0	/tmp/test.raw<br>+1.0M	/tmp/test.raw<br>=C2=A0<br>=C2=A0defaults - wri=
+te actual zeros<br>=C2=A01.0M	/tmp/test.raw<br>=C2=A0<br>=C2=A0discard=3Dof=
+f - write zeroes unmap<br>-0	/tmp/test.raw<br>+1.0M	/tmp/test.raw<br></div>=
+</div><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">=
+On Wed, Jun 19, 2024 at 8:40=E2=80=AFPM Nir Soffer &lt;<a href=3D"mailto:ns=
+offer@redhat.com">nsoffer@redhat.com</a>&gt; wrote:<br></div><blockquote cl=
+ass=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid=
+ rgb(204,204,204);padding-left:1ex">When opening an image with discard=3Dof=
+f, we punch hole in the image when<br>
+writing zeroes, making the image sparse. This breaks users that want to<br>
+ensure that writes cannot fail with ENOSPACE by using fully allocated<br>
+images.<br>
+<br>
+bdrv_co_pwrite_zeroes() correctly disable BDRV_REQ_MAY_UNMAP if we<br>
+opened the child without discard=3Dunmap or discard=3Don. But we don&#39;t =
+go<br>
+through this function when accessing the top node. Move the check down<br>
+to bdrv_co_do_pwrite_zeroes() which seems to be used in all code paths.<br>
+<br>
+Issues:<br>
+- We don&#39;t punch hole by default, so images are kept allocated. Before<=
+br>
+=C2=A0 this change we punched holes by default. I&#39;m not sure this is a =
+good<br>
+=C2=A0 change in behavior.<br>
+- Need to run all block tests<br>
+- Not sure that we have tests covering unmapping, we may need new tests<br>
+- We may need new tests to cover this change<br>
+<br>
+Signed-off-by: Nir Soffer &lt;<a href=3D"mailto:nsoffer@redhat.com" target=
+=3D"_blank">nsoffer@redhat.com</a>&gt;<br>
+---<br>
+<br>
+Changes since v1:<br>
+- Replace the incorrect has_discard change with the right fix<br>
+<br>
+v1 was here:<br>
+<a href=3D"https://lists.nongnu.org/archive/html/qemu-block/2024-06/msg0019=
+8.html" rel=3D"noreferrer" target=3D"_blank">https://lists.nongnu.org/archi=
+ve/html/qemu-block/2024-06/msg00198.html</a><br>
+<br>
+=C2=A0block/io.c | 9 +++++----<br>
+=C2=A01 file changed, 5 insertions(+), 4 deletions(-)<br>
+<br>
+diff --git a/block/io.c b/block/io.c<br>
+index 7217cf811b..301514c880 100644<br>
+--- a/block/io.c<br>
++++ b/block/io.c<br>
+@@ -1860,10 +1860,15 @@ bdrv_co_do_pwrite_zeroes(BlockDriverState *bs, int6=
+4_t offset, int64_t bytes,<br>
+=C2=A0 =C2=A0 =C2=A0/* By definition there is no user buffer so this flag d=
+oesn&#39;t make sense */<br>
+=C2=A0 =C2=A0 =C2=A0if (flags &amp; BDRV_REQ_REGISTERED_BUF) {<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return -EINVAL;<br>
+=C2=A0 =C2=A0 =C2=A0}<br>
+<br>
++=C2=A0 =C2=A0 /* If opened with discard=3Doff we should never unmap. */<br=
+>
++=C2=A0 =C2=A0 if (!(bs-&gt;open_flags &amp; BDRV_O_UNMAP)) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 flags &amp;=3D ~BDRV_REQ_MAY_UNMAP;<br>
++=C2=A0 =C2=A0 }<br>
++<br>
+=C2=A0 =C2=A0 =C2=A0/* Invalidate the cached block-status data range if thi=
+s write overlaps */<br>
+=C2=A0 =C2=A0 =C2=A0bdrv_bsc_invalidate_range(bs, offset, bytes);<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0assert(alignment % bs-&gt;bl.request_alignment =3D=3D 0=
+);<br>
+=C2=A0 =C2=A0 =C2=A0head =3D offset % alignment;<br>
+@@ -2313,14 +2318,10 @@ int coroutine_fn bdrv_co_pwrite_zeroes(BdrvChild *c=
+hild, int64_t offset,<br>
+=C2=A0{<br>
+=C2=A0 =C2=A0 =C2=A0IO_CODE();<br>
+=C2=A0 =C2=A0 =C2=A0trace_bdrv_co_pwrite_zeroes(child-&gt;bs, offset, bytes=
+, flags);<br>
+=C2=A0 =C2=A0 =C2=A0assert_bdrv_graph_readable();<br>
+<br>
+-=C2=A0 =C2=A0 if (!(child-&gt;bs-&gt;open_flags &amp; BDRV_O_UNMAP)) {<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 flags &amp;=3D ~BDRV_REQ_MAY_UNMAP;<br>
+-=C2=A0 =C2=A0 }<br>
+-<br>
+=C2=A0 =C2=A0 =C2=A0return bdrv_co_pwritev(child, offset, bytes, NULL,<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 BDRV_REQ_ZERO_WRITE | flags);<br>
+=C2=A0}<br>
+<br>
+=C2=A0/*<br>
+-- <br>
+2.45.1<br>
+<br>
+</blockquote></div>
 
-This value is obsolete, so I'd use 0x0 to avoid confusions.
-
-> +    sd->ext_csd[EXT_CSD_SEC_TRIM_MULT] = 0x96; /* Secure TRIM multiplier */
-
-Again, 0x0 for "not defined".
-
-> +    sd->ext_csd[EXT_CSD_BOOT_INFO] = 0x7; /* Boot information */
-> +    sd->ext_csd[EXT_CSD_BOOT_MULT] = 0x8; /* Boot partition size. 128KB unit */
-> +    sd->ext_csd[EXT_CSD_ACC_SIZE] = 0x6; /* Access size */
-
-16KB of super_page_size hmm. Simpler could be the underlying block
-retrieved with bdrv_nb_sectors() or simply BDRV_SECTOR_SIZE (0x1).
-
-> +    sd->ext_csd[EXT_CSD_HC_ERASE_GRP_SIZE] = 0x4; /* HC Erase unit size */
-
-2MB of erase size hmmm why not.
-
-> +    sd->ext_csd[EXT_CSD_ERASE_TIMEOUT_MULT] = 0x1; /* HC erase timeout */
-
-We don't implement timeout, can we use 0?
-
-> +    sd->ext_csd[EXT_CSD_REL_WR_SEC_C] = 0x1; /* Reliable write sector count */
-> +    sd->ext_csd[EXT_CSD_HC_WP_GRP_SIZE] = 0x4; /* HC write protect group size */
-> +    sd->ext_csd[EXT_CSD_S_C_VCC] = 0x8; /* Sleep current VCC  */
-> +    sd->ext_csd[EXT_CSD_S_C_VCCQ] = 0x7; /* Sleep current VCCQ */
-> +    sd->ext_csd[EXT_CSD_S_A_TIMEOUT] = 0x11; /* Sleep/Awake timeout */
-> +    sd->ext_csd[215] = (sectcount >> 24) & 0xff; /* Sector count */
-> +    sd->ext_csd[214] = (sectcount >> 16) & 0xff; /* ... */
-> +    sd->ext_csd[213] = (sectcount >> 8) & 0xff;  /* ... */
-> +    sd->ext_csd[EXT_CSD_SEC_CNT] = (sectcount & 0xff);       /* ... */
-> +    sd->ext_csd[210] = 0xa; /* Min write perf for 8bit@52Mhz */
-> +    sd->ext_csd[209] = 0xa; /* Min read perf for 8bit@52Mhz  */
-> +    sd->ext_csd[208] = 0xa; /* Min write perf for 4bit@52Mhz */
-> +    sd->ext_csd[207] = 0xa; /* Min read perf for 4bit@52Mhz */
-> +    sd->ext_csd[206] = 0xa; /* Min write perf for 4bit@26Mhz */
-> +    sd->ext_csd[205] = 0xa; /* Min read perf for 4bit@26Mhz */
-
-Class B at 3MB/s. I suppose announcing up to J at 21MB/s is safe (0x46).
-
-> +    sd->ext_csd[EXT_CSD_PART_SWITCH_TIME] = 0x1;
-
-SWITCH command isn't implemented so far. We could use 0x0 for "not
-defined".
-
-> +    sd->ext_csd[EXT_CSD_OUT_OF_INTERRUPT_TIME] = 0x1;
-
-Similarly, 0x0 for "undefined" is legal.
-
-> +    sd->ext_csd[EXT_CSD_CARD_TYPE] = 0x7;
-
-You anounce dual data rate. Could we just use High-Speed mode (0x3)
-to ease modelling?
-
-> +    sd->ext_csd[EXT_CSD_STRUCTURE] = 0x2;
-> +    sd->ext_csd[EXT_CSD_REV] = 0x5;
-
-This is Revision 1.5 (for MMC v4.41)... The first QEMU implementation
-was based on Revision 1.3 (for MMC v4.3) and I'm seeing some features
-from Revision 1.6 (for MMC v4.5)...
-
-Do we want to implement all of them? Since we are adding from
-scratch, I suggest we directly start with v4.5 (0x6).
-
-Note, EXT_CSD_BUS_WIDTH is not set (0x0) meaning 1-bit data bus.
-I'd set it to 0x2 (8-bit):
-
-        sd->ext_csd[EXT_CSD_BUS_WIDTH] = EXT_CSD_BUS_WIDTH_8_MASK;
-
-> +    sd->ext_csd[EXT_CSD_RPMB_MULT] = 0x1; /* RPMB size */
-> +    sd->ext_csd[EXT_CSD_PARTITION_SUPPORT] = 0x3;
-> +    sd->ext_csd[159] = 0x00; /* Max enhanced area size */
-> +    sd->ext_csd[158] = 0x00; /* ... */
-> +    sd->ext_csd[157] = 0xEC; /* ... */
-> +}
+--0000000000003e98d5061b41bdd6--
 
 
