@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8753790F776
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jun 2024 22:16:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 53A0690F773
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jun 2024 22:15:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sK1iB-0002pI-J9; Wed, 19 Jun 2024 16:15:19 -0400
+	id 1sK1iG-0002uh-7I; Wed, 19 Jun 2024 16:15:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1sK1i9-0002oL-HF
- for qemu-devel@nongnu.org; Wed, 19 Jun 2024 16:15:17 -0400
-Received: from mail-lf1-x130.google.com ([2a00:1450:4864:20::130])
+ id 1sK1iE-0002tY-9o
+ for qemu-devel@nongnu.org; Wed, 19 Jun 2024 16:15:22 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1sK1i6-0001lb-5r
- for qemu-devel@nongnu.org; Wed, 19 Jun 2024 16:15:17 -0400
-Received: by mail-lf1-x130.google.com with SMTP id
- 2adb3069b0e04-52ccc40e72eso122363e87.3
- for <qemu-devel@nongnu.org>; Wed, 19 Jun 2024 13:15:12 -0700 (PDT)
+ id 1sK1iC-0001pA-NU
+ for qemu-devel@nongnu.org; Wed, 19 Jun 2024 16:15:22 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-4217d808034so1765265e9.3
+ for <qemu-devel@nongnu.org>; Wed, 19 Jun 2024 13:15:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1718828111; x=1719432911; darn=nongnu.org;
+ d=linaro.org; s=google; t=1718828118; x=1719432918; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=cYO/SbAMZR8zG8WQ2uHmTCcKmd+CH0lFQCVFLcVdTQM=;
- b=pvZPpDAdOYcnNUw3JP/bBK1iEWhPvFOxb5yT5GGy4HorvmKl1OQr4JTddYZB5ZAb17
- tLE0dGFRBQZUzCVO+t7kKmoF5YT7+5pUlexsWG9cjsXbDY7yQ4DAbNZs7EDG4UgKLpH4
- fdOhVE5wMUArMV2/adTVozKegfoC9G0pOl+2FTIzkgZLydYGTCctgvq4T14E9mtO0CVV
- WFa8GTV4Sv+NysrvaXXMifnfY4+/CvyjNJTDqDFucPNjhCYA9t0iutYXSAQwknUKFR/Z
- +jqPdGytqa/Ytrp6E4tPlivNIGXmZdI71u0sZWZMCbOl5Y6n6IcqF0PMlaXHEQjLRyQS
- /PIQ==
+ bh=kfBlhlKJNBiXVGnmXKNokqgloJowB7odFyWS6IGw2Bs=;
+ b=aFmzLnTf1sgzWDGc/xHZ7dCqsW0Blsk7zE67eTOskRDFH42f3pc3pOyvhcyy92bKvP
+ AXjTV30OU7PloIfmcH4iz+QfkBEVVIpM6AyweqysaKxIpGEEqMzaqQ8ejWlwNVL/3P5I
+ xXVyKG1ZpG5GrzRI9Buin1v6BIv/qcYMT89AJlf/axc6Psct2NcAY/V+QAaCQR3WQgTt
+ mqqKojD0gxpNzrIl66vq2A2VQFeW1u4eLv5/9A5qrotm74ndyn/FzQ5H3AnlojVRfyWb
+ 4lzzwm3Pdlo4l9uEq95cH5Wo1fMQuToit1ySDyzVYvymbp0Z2hnnJb5JxYxoO4xwOcbK
+ mbjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718828111; x=1719432911;
+ d=1e100.net; s=20230601; t=1718828118; x=1719432918;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=cYO/SbAMZR8zG8WQ2uHmTCcKmd+CH0lFQCVFLcVdTQM=;
- b=uAdGVwkZCbC3uc+Qmp+nN+yhROkueozYXYW+sfkH9J0/4lALuzZCD0sI5OshyG34M1
- o+hoK00C5EWNZDgKW9106NqU65LxojINMP8dvyFAYG1KWxYIbcmS0knGIXh+GTvxJ1vJ
- Zd1Ky/nNZqQ5Q/lu1aWkyQeJwc2t3wZaJe92Z/iPcbo+jdbWMpMBqyesdgBnR+k5akhh
- HU4wZQh8IJg3ikGlt8oEtKFoUb3JYjYogRRGZFnrg5kO53TnPorbjsvqwzGq4+gXpZzs
- 0ujYXFh1Le7A/FGIn9gGlglF18Epkk6GmLzUjtU66eG9p9KnRG+/cwsH+rq+IXkS1EwO
- rYVw==
-X-Gm-Message-State: AOJu0YzO9ZeOrJi3tIQTttK7VYySA4Re5nbHOjGamIASm/5Jd/7ZZ/PZ
- WRz6IiIC8L6Jmvosjspx0b1k1SiBL6COO12byWm7LKtapMfjPI4k+b8kqQh5e1T/XrdFd5zJizr
- ztwA=
-X-Google-Smtp-Source: AGHT+IGqJIS3f3gf24pliSuPUuvwUB85qilEqqrxicIxL4f6BFz/lwgAICfJEhMxVYygGh3nc1+Abg==
-X-Received: by 2002:a05:6512:281e:b0:52c:a88b:9997 with SMTP id
- 2adb3069b0e04-52ccaa53ea8mr3263503e87.49.1718828110701; 
- Wed, 19 Jun 2024 13:15:10 -0700 (PDT)
+ bh=kfBlhlKJNBiXVGnmXKNokqgloJowB7odFyWS6IGw2Bs=;
+ b=QdaYQnemUBfdIdKJPxkTwi/Z31py2OayuGfx+bH10aOtmhJblrbPrPOUxm4sqFhxdl
+ AgAVjdIL9GGYqfXMLlXSL8VTLzSxfr0PeafvZ3GHPaqiiF+/uSLBPclXt8IvPgNCcHut
+ t0dSUqGeaNbq6xKoIx7xw42Km+Z/z720uNFaTLm01aAw0ldhiLRTx4L8S71PcQJh2c5U
+ 86ZotzookOFqK60isDiTNBDLtSXD2RwoWlxUFQSMUriLg4p3Ga3v9V0N6nYBM5n3zzGA
+ g/ys/bUOUHqt6hqasX9rx744FdJuzrfDSUMW4+Xsm1eWpzJpPbS3HWc4UyI6pwdcRwkv
+ i2xQ==
+X-Gm-Message-State: AOJu0YyYUCZN/1OGPvEkIMkT/EEmA8jS0VNwnamFozwZEXqarqDDJJyN
+ jwqGoIu9imtLjbRLIjnoYS/Wvnh65SahbQhACRv4xlB0OJzEz9T4Hqj71ka+etj0JMIyyX/QQOS
+ HoyQ=
+X-Google-Smtp-Source: AGHT+IFwh4Cg8fzxeEz6lV14WhbpQxy3K3e724v6u9ffOUFEWfQZU+O8YDORo10T7H+BZi+vCZIZnQ==
+X-Received: by 2002:a05:600c:3503:b0:422:1a82:3ebf with SMTP id
+ 5b1f17b1804b1-4247529bdb6mr26227915e9.35.1718828118374; 
+ Wed, 19 Jun 2024 13:15:18 -0700 (PDT)
 Received: from localhost.localdomain (adsl-103.37.6.162.tellas.gr.
  [37.6.162.103]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4247101aac6sm45623235e9.0.2024.06.19.13.15.08
+ 5b1f17b1804b1-4247101aac6sm45623235e9.0.2024.06.19.13.15.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 19 Jun 2024 13:15:10 -0700 (PDT)
+ Wed, 19 Jun 2024 13:15:18 -0700 (PDT)
 From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Stefan Hajnoczi <stefanha@redhat.com>, Mads Ynddal <mads@ynddal.dk>,
@@ -68,27 +68,26 @@ Cc: Stefan Hajnoczi <stefanha@redhat.com>, Mads Ynddal <mads@ynddal.dk>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Zhao Liu <zhao1.liu@intel.com>, Gustavo Romero <gustavo.romero@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>, rowan.hart@intel.com,
- Richard Henderson <richard.henderson@linaro.org>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>
-Subject: [RFC PATCH v3 4/5] DO NOT MERGE: add rustdoc build for gitlab pages
-Date: Wed, 19 Jun 2024 23:14:01 +0300
-Message-ID: <4ab9f69a8207eb9432d13da56a437f2c7cb83ef3.1718827153.git.manos.pitsidianakis@linaro.org>
+ Richard Henderson <richard.henderson@linaro.org>, qemu-arm@nongnu.org
+Subject: [RFC PATCH v3 5/5] DO NOT MERGE: replace TYPE_PL011 with x-pl011-rust
+ in arm virt machine
+Date: Wed, 19 Jun 2024 23:14:02 +0300
+Message-ID: <229703c7f4394691f254b02c012ee0d7dcf57afb.1718827153.git.manos.pitsidianakis@linaro.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <rust-pl011-rfc-v3.git.manos.pitsidianakis@linaro.org>
 References: <rust-pl011-rfc-v3.git.manos.pitsidianakis@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::130;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-lf1-x130.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,98 +103,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Deploy the generated rustdocs for my personal rust qemu fork on gitlab.
-
-The URL is:
-
-https://rust-for-qemu-epilys-aebb06ca9f9adfe6584811c14ae44156501d935ba4.gitlab.io/pl011/index.html
+Convenience patch for testing the rust device.
 
 Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 ---
- .gitlab-ci.d/buildtest.yml | 64 +++++++++++++++++++++++++++-----------
- 1 file changed, 45 insertions(+), 19 deletions(-)
+ hw/arm/virt.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index 91c57efded..380c24897d 100644
---- a/.gitlab-ci.d/buildtest.yml
-+++ b/.gitlab-ci.d/buildtest.yml
-@@ -715,31 +715,57 @@ build-tools-and-docs-debian:
- # For contributor forks we want to publish from any repo so
- # that users can see the results of their commits, regardless
- # of what topic branch they're currently using
-+# pages:
-+#   extends: .base_job_template
-+#   image: $CI_REGISTRY_IMAGE/qemu/debian:$QEMU_CI_CONTAINER_TAG
-+#   stage: test
-+#   needs:
-+#     - job: build-tools-and-docs-debian
-+#   script:
-+#     - mkdir -p public
-+#     # HTML-ised source tree
-+#     - make gtags
-+#     # We unset variables to work around a bug in some htags versions
-+#     # which causes it to fail when the environment is large
-+#     - CI_COMMIT_MESSAGE= CI_COMMIT_TAG_MESSAGE= htags
-+#         -anT --tree-view=filetree -m qemu_init
-+#         -t "Welcome to the QEMU sourcecode"
-+#     - mv HTML public/src
-+#     # Project documentation
-+#     - make -C build install DESTDIR=$(pwd)/temp-install
-+#     - mv temp-install/usr/local/share/doc/qemu/* public/
-+#   artifacts:
-+#     when: on_success
-+#     paths:
-+#       - public
-+#   variables:
-+#     QEMU_JOB_PUBLISH: 1
-+# The Docker image that will be used to build your app
- pages:
--  extends: .base_job_template
--  image: $CI_REGISTRY_IMAGE/qemu/debian:$QEMU_CI_CONTAINER_TAG
--  stage: test
--  needs:
--    - job: build-tools-and-docs-debian
-+  image: rust:latest
-   script:
--    - mkdir -p public
--    # HTML-ised source tree
--    - make gtags
--    # We unset variables to work around a bug in some htags versions
--    # which causes it to fail when the environment is large
--    - CI_COMMIT_MESSAGE= CI_COMMIT_TAG_MESSAGE= htags
--        -anT --tree-view=filetree -m qemu_init
--        -t "Welcome to the QEMU sourcecode"
--    - mv HTML public/src
--    # Project documentation
--    - make -C build install DESTDIR=$(pwd)/temp-install
--    - mv temp-install/usr/local/share/doc/qemu/* public/
-+    - rustup component add rustfmt
-+    - DEBIAN_FRONTEND=noninteractive apt-get update -y
-+    - DEBIAN_FRONTEND=noninteractive apt-get install -y python3-venv meson libgcrypt20-dev zlib1g-dev autoconf automake libtool bison flex git libglib2.0-dev libfdt-dev libpixman-1-dev ninja-build make libclang-14-dev
-+    - cargo install bindgen-cli
-+    - mkdir ./build/
-+    - cd ./build/
-+    - ../configure --enable-system --disable-kvm --target-list=aarch64-softmmu --enable-with-rust
-+    - ninja "aarch64-softmmu-generated.rs"
-+    - cp ./aarch64-softmmu-generated.rs ../rust/pl011/src/generated.rs.inc
-+    - cd ../rust/pl011/
-+    - cargo tree --depth 1 -e normal --prefix none | cut -d' ' -f1  | xargs
-+      printf -- '-p %s\n'  | xargs cargo doc --no-deps --document-private-items --target x86_64-unknown-linux-gnu
-+    - cd ./../..
-+    - mv ./rust/pl011/target/x86_64-unknown-linux-gnu/doc ./public
-   artifacts:
-     when: on_success
-     paths:
-       - public
--  variables:
--    QEMU_JOB_PUBLISH: 1
-+  rules:
-+    # This ensures that only pushes to the default branch will trigger
-+    # a pages deploy
-+    - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
+diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+index 3c93c0c0a6..f33b58ae0d 100644
+--- a/hw/arm/virt.c
++++ b/hw/arm/virt.c
+@@ -912,7 +912,11 @@ static void create_uart(const VirtMachineState *vms, int uart,
+     int irq = vms->irqmap[uart];
+     const char compat[] = "arm,pl011\0arm,primecell";
+     const char clocknames[] = "uartclk\0apb_pclk";
++#ifdef CONFIG_WITH_RUST
++    DeviceState *dev = qdev_new("x-pl011-rust");
++#else
+     DeviceState *dev = qdev_new(TYPE_PL011);
++#endif
+     SysBusDevice *s = SYS_BUS_DEVICE(dev);
+     MachineState *ms = MACHINE(vms);
  
- coverity:
-   image: $CI_REGISTRY_IMAGE/qemu/fedora:$QEMU_CI_CONTAINER_TAG
 -- 
 γαῖα πυρί μιχθήτω
 
