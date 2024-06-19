@@ -2,76 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F3E390F902
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jun 2024 00:32:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4180390F900
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jun 2024 00:32:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sK3pS-0001of-UN; Wed, 19 Jun 2024 18:30:58 -0400
+	id 1sK3pR-0001ob-Ui; Wed, 19 Jun 2024 18:30:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sK3pR-0001oI-7r
- for qemu-devel@nongnu.org; Wed, 19 Jun 2024 18:30:57 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sK3pP-0001o1-Lu
+ for qemu-devel@nongnu.org; Wed, 19 Jun 2024 18:30:55 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sK3pP-0008Os-Ef
- for qemu-devel@nongnu.org; Wed, 19 Jun 2024 18:30:57 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sK3pN-0008Ow-TK
+ for qemu-devel@nongnu.org; Wed, 19 Jun 2024 18:30:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1718836252;
+ s=mimecast20190719; t=1718836253;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=tUXepmqjv4T+w5M3EORwUdyerwo6fhzNAvCWsOnkK2M=;
- b=SoM/VInsW93SJYc6WqPrS5tv8yeH69i/vR1ZGP7NfY3hdzw3ca/6zemIUDuk2IN11C3xoJ
- /aHv5g0GQR/x4noy7XkMrgu0NoSQATjdpIYVrQz7doVtnlzdajwzUr5F3OGHye8xox0hAb
- 5Vpwxir/1FqZMxu1dppYRBPow3BKR2g=
-Received: from mail-yb1-f199.google.com (mail-yb1-f199.google.com
- [209.85.219.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=wzpRVcMoHJuiYGTTUkqQjk7ezIIqhok8HbPaC8esF3E=;
+ b=HvDInXYTLWztisybI8zz5i1YEDj644Qnpu4ECPNRJOCtHjJ9iuN5AzwmBGFix4D/C2YXxH
+ OOfv0UDDU3T1DSQJdmye0rNjXwWpZfM2vPI7OdzE/4alI+vLYWnLN78PNq4J8qVjdCxFK5
+ vqBxkYu/sNHG6YP/tn88QfgvN7Onv0k=
+Received: from mail-yb1-f197.google.com (mail-yb1-f197.google.com
+ [209.85.219.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-678-20Bx2ncZMLWj-ztrVB53rg-1; Wed, 19 Jun 2024 18:30:51 -0400
-X-MC-Unique: 20Bx2ncZMLWj-ztrVB53rg-1
-Received: by mail-yb1-f199.google.com with SMTP id
- 3f1490d57ef6-dff2e22678dso51450276.2
- for <qemu-devel@nongnu.org>; Wed, 19 Jun 2024 15:30:50 -0700 (PDT)
+ us-mta-682-7jnWWpaeOF6p8SZ5l4fc2A-1; Wed, 19 Jun 2024 18:30:51 -0400
+X-MC-Unique: 7jnWWpaeOF6p8SZ5l4fc2A-1
+Received: by mail-yb1-f197.google.com with SMTP id
+ 3f1490d57ef6-e02b7b50986so66517276.0
+ for <qemu-devel@nongnu.org>; Wed, 19 Jun 2024 15:30:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718836249; x=1719441049;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=tUXepmqjv4T+w5M3EORwUdyerwo6fhzNAvCWsOnkK2M=;
- b=KIim4k0bjIvYM7gWPFTnn7pmrK6jaUBAsJ2fDLmyYaxjVZ7gk9N+dVRnFZIEvj5a0n
- RidJYXuPkIsKiUnNB2W0Ch8Mz/7/vxmzdRIQy9ISUVPcLsfQDOUsBzEq2H/LDNoZiIfV
- CD0DDy1TEywJsqAAvDGUiF+uLB770zNUR6DpITCEUDSUwoVPtqVZK2JCmvwaDS9ZYLO1
- tA6sC5l6E1F0iKvr3WjorXNzWH/j8sbbfsW4RwIMjuLHPEGnVzbWROtziv0G8nR20Tp2
- y2z1+2hC4swoiw/X/1lEf7HHAxqmPrN3LT4n2bHuyexIXoLa9a8a5PE/LSTuFyd1t2Uj
- uTcQ==
-X-Gm-Message-State: AOJu0YwT1uk5ldRZLQNWOmL6TkXKz/4W584LxLP4AcBLmH5W4wsk/qQ1
- volDOlk8ZF+jPdjJ+MtQyXP915dKHzfARXUJxyGmSF2Tpe2276BKGrSsBuDjoB4pFU7Ha/PDB0o
- Bgp1mAOhaZ8BrHY+S0z+wFa7pJOHgo6/uqk7tfnPNKnZi5zaKNblfLI0KEkph0lVdy4ephoIiiT
- hITt/OMsgOvfrquy0U5tiPmiN3vGfoIpVy6Q==
-X-Received: by 2002:a25:d882:0:b0:e02:575b:4883 with SMTP id
- 3f1490d57ef6-e02be25d91cmr3540650276.5.1718836249203; 
+ d=1e100.net; s=20230601; t=1718836250; x=1719441050;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=wzpRVcMoHJuiYGTTUkqQjk7ezIIqhok8HbPaC8esF3E=;
+ b=XkXFgIFBTQ/WDm1NqWsTAW3w20B5fGyWL4H6aalBCNWyiaRsHt0dk/Yr+lAl8Y/qvB
+ TR1WcQsJ/4js+4+r00tOKAOCF3SVika92Rm0D8xmnCSp3YRmywp0IHWWmnozSCMCK5Vd
+ XNPQDCIDK0QWC/sE0BCQqecRLn2xRxXlE9chn5PkoricNZi0Flfv8RrY+RcmtU0lX23U
+ v8MlTqWBy2u62RVzC6afqHJG8jQdiCtYeBpsaLuofllC0nF0t0GcrBXA2M2yJVU7RirQ
+ Hb9rF2KVnxXtaG5U+XAjUgu821zmv8bX0m64HkqA7NLRyorHFVb4Hq4nHQFTHJ3K16tE
+ Wdxw==
+X-Gm-Message-State: AOJu0YweuQ2qKSaLQj6qhSx9k0aGtDfbdQytMznbJ8iMKfjyc8eBEZ4T
+ zG8j23Xl6xD1d4sqEDO9Ms6rK4l8qOZdNPdEwT5nMJYTncIro5En5s6l+Wgo6Kl/Xg43x4Bxnb+
+ u/t9x5bgBDIpD2CnVwtB/aN/8JBt2vGzoJxkcLYPRg9YZ/z+yOKMzb2n/QzOAyp95IYhGK5dsZf
+ IlfeJ2AtIuzWA8nC88jRTF0DBRhScf2glR1Q==
+X-Received: by 2002:a25:3f43:0:b0:e02:bde3:3166 with SMTP id
+ 3f1490d57ef6-e02be0ff8a9mr3433840276.1.1718836250253; 
+ Wed, 19 Jun 2024 15:30:50 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHPmuZ2JgL8GTCtKHRrcd2UupkF1MbvDm18LmonsoRHozY3zHM9LUssJE69o3nQEdKaFC0TeA==
+X-Received: by 2002:a25:3f43:0:b0:e02:bde3:3166 with SMTP id
+ 3f1490d57ef6-e02be0ff8a9mr3433814276.1.1718836249677; 
  Wed, 19 Jun 2024 15:30:49 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGDHnGByRzm4FjtqcxqcaZnycbFh5WaiS+uQ3fkqK73T9ESU8+/++KynFUqlY5iC4bWYSWRLA==
-X-Received: by 2002:a25:d882:0:b0:e02:575b:4883 with SMTP id
- 3f1490d57ef6-e02be25d91cmr3540621276.5.1718836248454; 
- Wed, 19 Jun 2024 15:30:48 -0700 (PDT)
 Received: from x1n.redhat.com (pool-99-254-121-117.cpe.net.cable.rogers.com.
  [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6b2a5c466bfsm80844256d6.68.2024.06.19.15.30.47
+ 6a1803df08f44-6b2a5c466bfsm80844256d6.68.2024.06.19.15.30.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 19 Jun 2024 15:30:47 -0700 (PDT)
+ Wed, 19 Jun 2024 15:30:49 -0700 (PDT)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Markus Armbruster <armbru@redhat.com>, Bandan Das <bdas@redhat.com>,
  Zhijian Li <lizhijian@fujitsu.com>, Fabiano Rosas <farosas@suse.de>,
  Jiri Denemark <jdenemar@redhat.com>, Prasad Pandit <ppandit@redhat.com>,
  Eric Blake <eblake@redhat.com>, peterx@redhat.com
-Subject: [PATCH v3 00/11] migration: New postcopy state, and some cleanups
-Date: Wed, 19 Jun 2024 18:30:35 -0400
-Message-ID: <20240619223046.1798968-1-peterx@redhat.com>
+Subject: [PATCH v3 01/11] migration/multifd: Avoid the final FLUSH in
+ complete()
+Date: Wed, 19 Jun 2024 18:30:36 -0400
+Message-ID: <20240619223046.1798968-2-peterx@redhat.com>
 X-Mailer: git-send-email 2.45.0
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20240619223046.1798968-1-peterx@redhat.com>
+References: <20240619223046.1798968-1-peterx@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
@@ -99,70 +102,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Based-on: <20240617185731.9725-1-farosas@suse.de>
+We always do the flush when finishing one round of scan, and during
+complete() phase we should scan one more round making sure no dirty page
+existed.  In that case we shouldn't need one explicit FLUSH at the end of
+complete(), as when reaching there all pages should have been flushed.
 
-v3:
-- Added one comment in patch 8 explaining why migrate_incoming_qmp() needs
-  to keep enabling "events" capability.
-- Split patch 9 into two patches, which makes migration_event_wait() to be
-  used also in migrate_incoming_qmp()
-- Rename the tests in last patch, and a spell fix
-- Rebased to "[PATCH v3 00/16] migration/mapped-ram: Add direct-io support"
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Tested-by: Fabiano Rosas <farosas@suse.de>
+Signed-off-by: Peter Xu <peterx@redhat.com>
+---
+ migration/ram.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-v1: https://lore.kernel.org/r/20240612144228.1179240-1-peterx@redhat.com
-v2: https://lore.kernel.org/r/20240617181534.1425179-1-peterx@redhat.com
-
-The major goal of this patchset is patch 5, which introduced a new postcopy
-state so that we will send an event in postcopy reconnect failures that
-Libvirt would prefer to have.  There's more information for that issue in
-the commit message alone.
-
-Patch 1-2 are cleanups that are not directly relevant but I found/stored
-that could be good to have.  I made it simple by putting them together in
-one thread to make patch management easier, but I can send them separately
-when necessary.
-
-Patch 3 is also a cleanup, but will be needed for patch 4 as dependency.
-
-Patch 4-5 is the core patches.
-
-Patch 6 updates doc for the new state.
-
-Patch 7-11 adds a new test for the new state.
-
-CI: https://gitlab.com/peterx/qemu/-/pipelines/1339544694
-
-Comments welcomed, thanks.
-
-Peter Xu (11):
-  migration/multifd: Avoid the final FLUSH in complete()
-  migration: Rename thread debug names
-  migration: Use MigrationStatus instead of int
-  migration: Cleanup incoming migration setup state change
-  migration/postcopy: Add postcopy-recover-setup phase
-  migration/docs: Update postcopy recover session for SETUP phase
-  tests/migration-tests: Drop most WIN32 ifdefs for postcopy failure
-    tests
-  tests/migration-tests: Always enable migration events
-  tests/migration-tests: migration_event_wait()
-  tests/migration-tests: Verify postcopy-recover-setup status
-  tests/migration-tests: Cover postcopy failure on reconnect
-
- docs/devel/migration/postcopy.rst |  31 ++++----
- qapi/migration.json               |   4 ++
- migration/migration.h             |   9 +--
- migration/postcopy-ram.h          |   3 +
- tests/qtest/migration-helpers.h   |   2 +
- migration/colo.c                  |   2 +-
- migration/migration.c             |  98 +++++++++++++++++--------
- migration/multifd.c               |   6 +-
- migration/postcopy-ram.c          |  10 ++-
- migration/ram.c                   |   4 --
- migration/savevm.c                |   6 +-
- tests/qtest/migration-helpers.c   |  32 ++++++---
- tests/qtest/migration-test.c      | 116 +++++++++++++++++++++++-------
- 13 files changed, 229 insertions(+), 94 deletions(-)
-
+diff --git a/migration/ram.c b/migration/ram.c
+index ceea586b06..edec1a2d07 100644
+--- a/migration/ram.c
++++ b/migration/ram.c
+@@ -3300,10 +3300,6 @@ static int ram_save_complete(QEMUFile *f, void *opaque)
+         }
+     }
+ 
+-    if (migrate_multifd() && !migrate_multifd_flush_after_each_section() &&
+-        !migrate_mapped_ram()) {
+-        qemu_put_be64(f, RAM_SAVE_FLAG_MULTIFD_FLUSH);
+-    }
+     qemu_put_be64(f, RAM_SAVE_FLAG_EOS);
+     return qemu_fflush(f);
+ }
 -- 
 2.45.0
 
