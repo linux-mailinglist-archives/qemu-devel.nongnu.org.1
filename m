@@ -2,70 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7426290F072
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jun 2024 16:28:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 011FC90F0FF
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jun 2024 16:46:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sJwHN-0004gp-Fa; Wed, 19 Jun 2024 10:27:17 -0400
+	id 1sJwYI-0007t1-FS; Wed, 19 Jun 2024 10:44:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sJwHF-0004f0-CK
- for qemu-devel@nongnu.org; Wed, 19 Jun 2024 10:27:10 -0400
-Received: from mgamail.intel.com ([192.198.163.18])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sJwYD-0007rv-Og
+ for qemu-devel@nongnu.org; Wed, 19 Jun 2024 10:44:42 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sJwHD-0001zY-LQ
- for qemu-devel@nongnu.org; Wed, 19 Jun 2024 10:27:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1718807227; x=1750343227;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=jauyaYw1jnW78rNrSjJFkZYuoVLlFWiJ834BoOczctA=;
- b=mmEAmnPrhWR3VNUXDJ8qk2rAtwnDwTAbh06KPnnQbNseCI2y79hcuknH
- 7mhv7j9VIgVOrE4H5kmTAAgGrHE1F5ry8jWyW7Zi9kki4+HZuu/ATf0/V
- wM5VWTFgYJJdGhzEXpbQWj/oCCS141Kwk7atzZ1uWfu0hFZiVFV+IZfCO
- 0CjLTWBtMhn9XucLe9a7tgg9xAALfvT0JEOAVbuhs4NQXfQeWMSkg8rX7
- xErVHsbU24rL56FGP/KkPwBS72MAo/LL2C1GYMVwjE34+YldhckgwQV7b
- L6CQBYW36bARpa178VbKmnxoJuBdNPQaLffF9KgxkDfzjJCiw5UaLNggQ Q==;
-X-CSE-ConnectionGUID: GNfd0UxKRwGKc1lKVz4iJg==
-X-CSE-MsgGUID: 1MP1EhUqT1mwJqMDgpBjOA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11108"; a="15462621"
-X-IronPort-AV: E=Sophos;i="6.08,250,1712646000"; d="scan'208";a="15462621"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Jun 2024 07:27:03 -0700
-X-CSE-ConnectionGUID: 9nq9c4cwQqCXBlvrHikAaw==
-X-CSE-MsgGUID: zp1aJjmwTK+k5Tt/P4xhJw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,250,1712646000"; d="scan'208";a="41788952"
-Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by fmviesa007.fm.intel.com with ESMTP; 19 Jun 2024 07:27:02 -0700
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>,
-	Igor Mammedov <imammedo@redhat.com>
-Cc: qemu-devel@nongnu.org,
-	Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH 3/3] target/i386/cpu: Add comment about adjusting the Guest
- cache topo for host-cache-info
-Date: Wed, 19 Jun 2024 22:42:15 +0800
-Message-Id: <20240619144215.3273989-4-zhao1.liu@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240619144215.3273989-1-zhao1.liu@intel.com>
-References: <20240619144215.3273989-1-zhao1.liu@intel.com>
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sJwYB-0005fC-Qh
+ for qemu-devel@nongnu.org; Wed, 19 Jun 2024 10:44:41 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1718808278;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=c9QG8td8OJzqVsZj1ZAdo6ySqv2jMpAVszHcQa1tvzo=;
+ b=afzDZgP3InFDxcVsb4uUaMeT+tCuVmxJlAtWMccWQz5dUIi6PI4unq6OYLqms/Cv2+4EFz
+ YgFsIvk8hZhHzOEb2CknBrPAmPv85P0ohd+hBgEigB6RR7yWVdDF/vnCy0mwmye/x1iOfs
+ i7JX6mM5nsV7uCoyo6AaY4lq9r94d1w=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-501-cv8A2wTzPb-bjh2H4Bsxag-1; Wed,
+ 19 Jun 2024 10:44:35 -0400
+X-MC-Unique: cv8A2wTzPb-bjh2H4Bsxag-1
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 134771955E77; Wed, 19 Jun 2024 14:44:33 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.39.192.145])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 38E7A30030E2; Wed, 19 Jun 2024 14:44:22 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: qemu-devel@nongnu.org, qemu-s390x@nongnu.org,
+ David Hildenbrand <david@redhat.com>
+Cc: Eric Farman <farman@linux.ibm.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Halil Pasic <pasic@linux.ibm.com>
+Subject: [PATCH] hw/intc/s390_flic: Fix interrupt controller migration on
+ s390x with TCG
+Date: Wed, 19 Jun 2024 16:44:21 +0200
+Message-ID: <20240619144421.261342-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=192.198.163.18; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -45
-X-Spam_score: -4.6
-X-Spam_bar: ----
-X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: 11
+X-Spam_score: 1.1
+X-Spam_bar: +
+X-Spam_report: (1.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,51 +80,169 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The host-cache-info needs the check to ensure the valid maximum
-addressable thread IDs.
+Migration of a s390x guest with TCG was long known to be very unstable,
+so the tests in tests/qtest/migration-test.c are disabled if running
+with TCG instead of KVM.
 
-We don't need to adjust the information in this one field for all cache
-topology cases by default, even though Host's cache topology may not
-correspond to Guest's CPU topology level.
+Nicholas Piggin did a great analysis of the problem:
 
-For example, when a Geust (3 threads per core) runs on a Host with 1
-threads per core, the L2 cache topo (L2 per core on Host) obtained by
-Guest does not correspond to the Guest's core level. So for the case
-where the topology of Guest and Host are very inconsistent, it is not
-possible to do a perfect job, so we try to let the Guest have similar
-cache topo info as Host, at least in the case of an even distribution
-of vCPUs, which can benefit the Guest internal scheduling.
+"The flic pending state is not migrated, so if the machine is migrated
+ while an interrupt is pending, it can be lost. This shows up in
+ qtest migration test, an extint is pending (due to console writes?)
+ and the CPU waits via s390_cpu_set_psw and expects the interrupt to
+ wake it. However when the flic pending state is lost, s390_cpu_has_int
+ returns false, so s390_cpu_exec_interrupt falls through to halting
+ again."
 
-To this end, add a comment to explain why we need to care for this check
-and why we don't need to adjust the topology for all cache cases.
+Thus let's finally migrate the pending state, and to be on the safe
+side, also the other state variables of the QEMUS390FLICState structure.
 
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- target/i386/cpu.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ Once this has been merged, we can enable the migration-test again
+ with Nicholas' patch here:
+ https://lore.kernel.org/qemu-devel/20240525131241.378473-3-npiggin@gmail.com/
 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index c20ff69b7b65..71300ac6d197 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -6463,7 +6463,15 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-                 guest_thread_ids_per_pkg =
-                     max_thread_ids_for_cache(&topo_info,
-                                              CPU_TOPO_LEVEL_PACKAGE);
--
-+                /*
-+                 * We handle this case because it causes sharing threads to
-+                 * overflow out of the package scope. In other cases, there
-+                 * is no need to adjust the cache topology info for the Guest,
-+                 * as the Host's maximum addressable thread IDs are not out of
-+                 * bounds in the Guest's APIC ID scope, and are always valid,
-+                 * even though Host's cache topology may not correspond to
-+                 * Guest's CPU topology level.
-+                 */
-                 if (host_thread_ids_per_cache > guest_thread_ids_per_pkg) {
-                     *eax &= ~0x3FFC000;
+ include/hw/s390x/s390_flic.h |  1 +
+ hw/intc/s390_flic.c          | 75 ++++++++++++++++++++++++++++++++++--
+ hw/s390x/s390-virtio-ccw.c   |  5 +++
+ 3 files changed, 78 insertions(+), 3 deletions(-)
+
+diff --git a/include/hw/s390x/s390_flic.h b/include/hw/s390x/s390_flic.h
+index 382d9833f1..4d66c5e42e 100644
+--- a/include/hw/s390x/s390_flic.h
++++ b/include/hw/s390x/s390_flic.h
+@@ -116,6 +116,7 @@ struct QEMUS390FLICState {
+     uint8_t simm;
+     uint8_t nimm;
+     QLIST_HEAD(, QEMUS390FlicIO) io[8];
++    bool migrate_all_state;
+ };
+ 
+ uint32_t qemu_s390_flic_dequeue_service(QEMUS390FLICState *flic);
+diff --git a/hw/intc/s390_flic.c b/hw/intc/s390_flic.c
+index 6771645699..a91a4a47e8 100644
+--- a/hw/intc/s390_flic.c
++++ b/hw/intc/s390_flic.c
+@@ -361,15 +361,77 @@ bool ais_needed(void *opaque)
+     return s->ais_supported;
+ }
+ 
++static bool ais_needed_v(void *opaque, int version_id)
++{
++    return ais_needed(opaque);
++}
++
++static bool qemu_s390_flic_full_state_needed(void *opaque)
++{
++    QEMUS390FLICState *s = opaque;
++
++    return s->migrate_all_state;
++}
++
++static bool qemu_s390_flic_state_needed(void *opaque)
++{
++    return ais_needed(opaque) || qemu_s390_flic_full_state_needed(opaque);
++}
++
++static const VMStateDescription vmstate_qemu_s390_flic_io = {
++     .name = "qemu-s390-flic-io",
++     .version_id = 1,
++     .minimum_version_id = 1,
++     .fields = (const VMStateField[]) {
++         VMSTATE_UINT16(id, QEMUS390FlicIO),
++         VMSTATE_UINT16(nr, QEMUS390FlicIO),
++         VMSTATE_UINT32(parm, QEMUS390FlicIO),
++         VMSTATE_UINT32(word, QEMUS390FlicIO),
++         VMSTATE_END_OF_LIST()
++     },
++};
++
++static const VMStateDescription vmstate_qemu_s390_flic_full = {
++    .name = "qemu-s390-flic-full",
++    .version_id = 1,
++    .minimum_version_id = 1,
++    .needed = qemu_s390_flic_full_state_needed,
++    .fields = (const VMStateField[]) {
++        VMSTATE_UINT32(pending, QEMUS390FLICState),
++        VMSTATE_UINT32(service_param, QEMUS390FLICState),
++        VMSTATE_QLIST_V(io[0], QEMUS390FLICState, 1,
++                        vmstate_qemu_s390_flic_io, QEMUS390FlicIO, next),
++        VMSTATE_QLIST_V(io[1], QEMUS390FLICState, 1,
++                        vmstate_qemu_s390_flic_io, QEMUS390FlicIO, next),
++        VMSTATE_QLIST_V(io[2], QEMUS390FLICState, 1,
++                        vmstate_qemu_s390_flic_io, QEMUS390FlicIO, next),
++        VMSTATE_QLIST_V(io[3], QEMUS390FLICState, 1,
++                        vmstate_qemu_s390_flic_io, QEMUS390FlicIO, next),
++        VMSTATE_QLIST_V(io[4], QEMUS390FLICState, 1,
++                        vmstate_qemu_s390_flic_io, QEMUS390FlicIO, next),
++        VMSTATE_QLIST_V(io[5], QEMUS390FLICState, 1,
++                        vmstate_qemu_s390_flic_io, QEMUS390FlicIO, next),
++        VMSTATE_QLIST_V(io[6], QEMUS390FLICState, 1,
++                        vmstate_qemu_s390_flic_io, QEMUS390FlicIO, next),
++        VMSTATE_QLIST_V(io[7], QEMUS390FLICState, 1,
++                        vmstate_qemu_s390_flic_io, QEMUS390FlicIO, next),
++        VMSTATE_END_OF_LIST()
++    }
++};
++
+ static const VMStateDescription qemu_s390_flic_vmstate = {
+     .name = "qemu-s390-flic",
+     .version_id = 1,
+     .minimum_version_id = 1,
+-    .needed = ais_needed,
++    .needed = qemu_s390_flic_state_needed,
+     .fields = (const VMStateField[]) {
+-        VMSTATE_UINT8(simm, QEMUS390FLICState),
+-        VMSTATE_UINT8(nimm, QEMUS390FLICState),
++        VMSTATE_UINT8_TEST(simm, QEMUS390FLICState, ais_needed_v),
++        VMSTATE_UINT8_TEST(nimm, QEMUS390FLICState, ais_needed_v),
+         VMSTATE_END_OF_LIST()
++    },
++    .subsections = (const VMStateDescription * const []) {
++        &vmstate_qemu_s390_flic_full,
++        NULL
+     }
+ };
+ 
+@@ -383,11 +445,18 @@ static void qemu_s390_flic_instance_init(Object *obj)
+     }
+ }
+ 
++static Property qemu_s390_flic_properties[] = {
++    DEFINE_PROP_BOOL("migrate-all-state", QEMUS390FLICState,
++                     migrate_all_state, true),
++    DEFINE_PROP_END_OF_LIST(),
++};
++
+ static void qemu_s390_flic_class_init(ObjectClass *oc, void *data)
+ {
+     DeviceClass *dc = DEVICE_CLASS(oc);
+     S390FLICStateClass *fsc = S390_FLIC_COMMON_CLASS(oc);
+ 
++    device_class_set_props(dc, qemu_s390_flic_properties);
+     dc->reset = qemu_s390_flic_reset;
+     dc->vmsd = &qemu_s390_flic_vmstate;
+     fsc->register_io_adapter = qemu_s390_register_io_adapter;
+diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
+index cd063f8b64..f87ca36264 100644
+--- a/hw/s390x/s390-virtio-ccw.c
++++ b/hw/s390x/s390-virtio-ccw.c
+@@ -863,8 +863,13 @@ static void ccw_machine_9_0_instance_options(MachineState *machine)
+ 
+ static void ccw_machine_9_0_class_options(MachineClass *mc)
+ {
++    static GlobalProperty compat[] = {
++        { TYPE_QEMU_S390_FLIC, "migrate-all-state", "off", },
++    };
++
+     ccw_machine_9_1_class_options(mc);
+     compat_props_add(mc->compat_props, hw_compat_9_0, hw_compat_9_0_len);
++    compat_props_add(mc->compat_props, compat, G_N_ELEMENTS(compat));
+ }
+ DEFINE_CCW_MACHINE(9_0, "9.0", false);
  
 -- 
-2.34.1
+2.45.2
 
 
