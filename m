@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC36090E0E1
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jun 2024 02:32:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0332290E0DD
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jun 2024 02:32:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sJjE1-00063h-Fn; Tue, 18 Jun 2024 20:30:57 -0400
+	id 1sJjE4-00068j-08; Tue, 18 Jun 2024 20:31:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1sJjDv-0005ta-Aq
- for qemu-devel@nongnu.org; Tue, 18 Jun 2024 20:30:53 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1sJjE2-00066N-8t
+ for qemu-devel@nongnu.org; Tue, 18 Jun 2024 20:30:58 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1sJjDt-0001HR-Le
- for qemu-devel@nongnu.org; Tue, 18 Jun 2024 20:30:51 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1sJjE0-0001Mg-JS
+ for qemu-devel@nongnu.org; Tue, 18 Jun 2024 20:30:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1718757048;
+ s=mimecast20190719; t=1718757055;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=DIhyARDSiJAKf1IGFLgtu4n0qVqz5AupiUZ8Wv0Ht5I=;
- b=N1UbAGOt98zZYT19AeiAOsvPAQHo2Bn+9dkX2Crmi1zjREHc3Ye55HQcP9759ifPUmrR6g
- sFrY34TRru3s2+CZX8mlK3WHSsLW1HVmYzTTh8cgciOIYRegY8CKi3Y0LG4SjGe+GThzVw
- h1Dx0XyhNUJHrybg5/AG6PMMHySiTCA=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=MJUQMNtf2+A8cpKrrUn8Xky3ru7ZoRaVFrgPv8DydEs=;
+ b=f/j84rPXR8Dpj9A4HG9c26ym4HOUBvfyw3fuSkUFSqH+O+bKBPpVupNINqh9TyMEXJnJPM
+ YcPj5JgJIpi4VBV300g+hGsEIpTJsTTwfMgipfvfqpa8Ip5kLybJH5rnQuS1yOsZ9fwIP3
+ gUj2U2zMvaKSnt+ZbgEqZdnPeWKqKnU=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-615-9ecJEb_JM6ew5-jrKb9tfA-1; Tue,
- 18 Jun 2024 20:30:44 -0400
-X-MC-Unique: 9ecJEb_JM6ew5-jrKb9tfA-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-79-EKXGVEsiN7edRJxyPby_FA-1; Tue,
+ 18 Jun 2024 20:30:52 -0400
+X-MC-Unique: EKXGVEsiN7edRJxyPby_FA-1
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D268E19560B8; Wed, 19 Jun 2024 00:30:40 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 674FF195608D; Wed, 19 Jun 2024 00:30:49 +0000 (UTC)
 Received: from scv.localdomain (unknown [10.22.16.38])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 7FB131956087; Wed, 19 Jun 2024 00:30:31 +0000 (UTC)
+ id 26FE91955E80; Wed, 19 Jun 2024 00:30:40 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Stefan Hajnoczi <stefanha@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
@@ -68,9 +68,9 @@ Cc: Stefan Hajnoczi <stefanha@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
  Alex Williamson <alex.williamson@redhat.com>,
  Kevin Wolf <kwolf@redhat.com>, Eric Blake <eblake@redhat.com>,
  John Snow <jsnow@redhat.com>
-Subject: [PATCH 01/13] [DO-NOT-MERGE]: Add some ad-hoc linting helpers.
-Date: Tue, 18 Jun 2024 20:30:00 -0400
-Message-ID: <20240619003012.1753577-2-jsnow@redhat.com>
+Subject: [PATCH 02/13] qapi: linter fixups
+Date: Tue, 18 Jun 2024 20:30:01 -0400
+Message-ID: <20240619003012.1753577-3-jsnow@redhat.com>
 In-Reply-To: <20240619003012.1753577-1-jsnow@redhat.com>
 References: <20240619003012.1753577-1-jsnow@redhat.com>
 MIME-Version: 1.0
@@ -101,107 +101,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These aren't ready for upstream inclusion, because they do not properly
-manage version dependencies, execution environment and so on. These are
-just the tools I use in my Own Special Environment :tm: for testing and
-debugging.
+Fix minor irritants to pylint/flake8 et al.
 
-They've been tested only on Fedora 38 for right now, which means:
-
-Python 3.11.4-1.fc38
-pylint 2.17.4-2.fc38
-mypy 1.4.0-1.fc38
-isort 5.12.0-1.fc38
-flake8 5.0.3-2.fc38
-
-"Soon" :tm: I'll move the qapi generator code under the python/
-directory to take advantage of the more robust linting infrastructure
-there, but that's going to happen after this series. Sorry about that!
+(Yes, these need to be guarded by the Python tests. That's a work in
+progress, a series that's quite likely to follow once I finish this
+Sphinx project. Please pardon the temporary irritation.)
 
 Signed-off-by: John Snow <jsnow@redhat.com>
+Reviewed-by: Markus Armbruster <armbru@redhat.com>
 ---
- scripts/qapi-lint.sh  | 59 +++++++++++++++++++++++++++++++++++++++++++
- scripts/qapi/Makefile |  5 ++++
- 2 files changed, 64 insertions(+)
- create mode 100755 scripts/qapi-lint.sh
- create mode 100644 scripts/qapi/Makefile
+ scripts/qapi/introspect.py | 8 ++++----
+ scripts/qapi/schema.py     | 6 +++---
+ scripts/qapi/visit.py      | 5 +++--
+ 3 files changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/scripts/qapi-lint.sh b/scripts/qapi-lint.sh
-new file mode 100755
-index 00000000000..ba13306f09e
---- /dev/null
-+++ b/scripts/qapi-lint.sh
-@@ -0,0 +1,59 @@
-+#!/usr/bin/env bash
-+set -e
-+
-+if [[ -f qapi/.flake8 ]]; then
-+    echo "flake8 --config=qapi/.flake8 qapi/"
-+    flake8 --config=qapi/.flake8 qapi/
-+fi
-+if [[ -f qapi/pylintrc ]]; then
-+    echo "pylint --rcfile=qapi/pylintrc qapi/"
-+    pylint --rcfile=qapi/pylintrc qapi/
-+fi
-+if [[ -f qapi/mypy.ini ]]; then
-+    echo "mypy --config-file=qapi/mypy.ini qapi/"
-+    mypy --config-file=qapi/mypy.ini qapi/
-+fi
-+
-+if [[ -f qapi/.isort.cfg ]]; then
-+    pushd qapi
-+    echo "isort -c ."
-+    isort -c .
-+    popd
-+fi
-+
-+if [[ -f ../docs/sphinx/qapi-domain.py ]]; then
-+    pushd ../docs/sphinx
-+
-+    echo "mypy --strict qapi-domain.py"
-+    mypy --strict qapi-domain.py
-+    echo "flake8 qapi-domain.py --max-line-length=99"
-+    flake8 qapi-domain.py --max-line-length=99
-+    echo "isort qapi-domain.py"
-+    isort qapi-domain.py
-+    echo "black --check qapi-domain.py"
-+    black --check qapi-domain.py
-+
-+    popd
-+fi
-+
-+if [[ -f ../docs/sphinx/qapidoc.py ]]; then
-+    pushd ../docs/sphinx
-+
-+    echo "pylint --rc-file ../../scripts/qapi/pylintrc qapidoc.py"
-+    PYTHONPATH=${HOME}/src/qemu/scripts/ pylint --rc-file ../../scripts/qapi/pylintrc qapidoc.py
-+    echo "flake8 qapidoc.py --max-line-length=80"
-+    flake8 qapidoc.py --max-line-length=80
-+    echo "isort qapidoc.py"
-+    isort qapidoc.py
-+    echo "black --line-length 80 --check qapidoc.py"
-+    black --line-length 80 --check qapidoc.py
-+
-+    popd
-+fi
-+
-+pushd ../build
-+make -j13
-+make check-qapi-schema
-+make docs
-+make sphinxdocs
-+popd
-diff --git a/scripts/qapi/Makefile b/scripts/qapi/Makefile
-new file mode 100644
-index 00000000000..314e8a5505e
---- /dev/null
-+++ b/scripts/qapi/Makefile
-@@ -0,0 +1,5 @@
-+check:
-+	isort -c .
-+	flake8 .
-+	cd .. && pylint --rcfile=qapi/pylintrc qapi
-+	cd .. && mypy -p qapi --config-file=qapi/mypy.ini
+diff --git a/scripts/qapi/introspect.py b/scripts/qapi/introspect.py
+index 86c075a6ad2..ac14b20f308 100644
+--- a/scripts/qapi/introspect.py
++++ b/scripts/qapi/introspect.py
+@@ -27,8 +27,8 @@
+ from .schema import (
+     QAPISchema,
+     QAPISchemaAlternatives,
+-    QAPISchemaBranches,
+     QAPISchemaArrayType,
++    QAPISchemaBranches,
+     QAPISchemaBuiltinType,
+     QAPISchemaEntity,
+     QAPISchemaEnumMember,
+@@ -233,9 +233,9 @@ def _use_type(self, typ: QAPISchemaType) -> str:
+             typ = type_int
+         elif (isinstance(typ, QAPISchemaArrayType) and
+               typ.element_type.json_type() == 'int'):
+-            type_intList = self._schema.lookup_type('intList')
+-            assert type_intList
+-            typ = type_intList
++            type_intlist = self._schema.lookup_type('intList')
++            assert type_intlist
++            typ = type_intlist
+         # Add type to work queue if new
+         if typ not in self._used_types:
+             self._used_types.append(typ)
+diff --git a/scripts/qapi/schema.py b/scripts/qapi/schema.py
+index 721c470d2b8..d65c35f6ee6 100644
+--- a/scripts/qapi/schema.py
++++ b/scripts/qapi/schema.py
+@@ -730,6 +730,7 @@ def set_defined_in(self, name: str) -> None:
+         for v in self.variants:
+             v.set_defined_in(name)
+ 
++    # pylint: disable=unused-argument
+     def check(
+             self, schema: QAPISchema, seen: Dict[str, QAPISchemaMember]
+     ) -> None:
+@@ -1166,7 +1167,7 @@ def _def_definition(self, defn: QAPISchemaDefinition) -> None:
+                 defn.info, "%s is already defined" % other_defn.describe())
+         self._entity_dict[defn.name] = defn
+ 
+-    def lookup_entity(self,name: str) -> Optional[QAPISchemaEntity]:
++    def lookup_entity(self, name: str) -> Optional[QAPISchemaEntity]:
+         return self._entity_dict.get(name)
+ 
+     def lookup_type(self, name: str) -> Optional[QAPISchemaType]:
+@@ -1302,11 +1303,10 @@ def _make_implicit_object_type(
+         name = 'q_obj_%s-%s' % (name, role)
+         typ = self.lookup_entity(name)
+         if typ:
+-            assert(isinstance(typ, QAPISchemaObjectType))
++            assert isinstance(typ, QAPISchemaObjectType)
+             # The implicit object type has multiple users.  This can
+             # only be a duplicate definition, which will be flagged
+             # later.
+-            pass
+         else:
+             self._def_definition(QAPISchemaObjectType(
+                 name, info, None, ifcond, None, None, members, None))
+diff --git a/scripts/qapi/visit.py b/scripts/qapi/visit.py
+index e766acaac92..12f92e429f6 100644
+--- a/scripts/qapi/visit.py
++++ b/scripts/qapi/visit.py
+@@ -280,8 +280,9 @@ def gen_visit_alternate(name: str,
+         abort();
+     default:
+         assert(visit_is_input(v));
+-        error_setg(errp, "Invalid parameter type for '%%s', expected: %(name)s",
+-                         name ? name : "null");
++        error_setg(errp,
++                   "Invalid parameter type for '%%s', expected: %(name)s",
++                   name ? name : "null");
+         /* Avoid passing invalid *obj to qapi_free_%(c_name)s() */
+         g_free(*obj);
+         *obj = NULL;
 -- 
 2.44.0
 
