@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4982990F802
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jun 2024 23:02:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D176790F821
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jun 2024 23:04:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sK2Pm-0002OS-3R; Wed, 19 Jun 2024 17:00:22 -0400
+	id 1sK2Pn-0002Pi-41; Wed, 19 Jun 2024 17:00:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sK2Pi-0002Ln-B3
- for qemu-devel@nongnu.org; Wed, 19 Jun 2024 17:00:18 -0400
-Received: from mail-pg1-x52c.google.com ([2607:f8b0:4864:20::52c])
+ id 1sK2Pj-0002N4-IX
+ for qemu-devel@nongnu.org; Wed, 19 Jun 2024 17:00:19 -0400
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sK2Pg-0000jE-Kr
- for qemu-devel@nongnu.org; Wed, 19 Jun 2024 17:00:18 -0400
-Received: by mail-pg1-x52c.google.com with SMTP id
- 41be03b00d2f7-70346ae2c43so916740a12.1
+ id 1sK2Ph-0000jk-5b
+ for qemu-devel@nongnu.org; Wed, 19 Jun 2024 17:00:19 -0400
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-7062c0ee254so249994b3a.0
  for <qemu-devel@nongnu.org>; Wed, 19 Jun 2024 14:00:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1718830815; x=1719435615; darn=nongnu.org;
+ d=linaro.org; s=google; t=1718830816; x=1719435616; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=FtNxjFE/f89KWIDXkuZChFJ2j7WRxZA+Mhz/JhRC3yg=;
- b=IIy6ns+nConpkdezXu+VmOc6doR/SpZddMTcpUmMxW8zVPDno1mVFWtJQKzb4W6RbK
- Kp7Zdj3LNtUV6WMG/Ye4V8qNVJQF1fzLCViKTXXq4TnLbaIlRKBtv06F2IcSKh8KCBrD
- ABFsG+hIC0OEdarL9m02+JtAnlX5CY5kImv/MAe+CV0sYHUG3sc+lQo0KPDcAihYyMIR
- wCf6lsJ7TlawxkyO58P+6P3/Oz/UiHOmBrrrt36yXtq7ymAEtAXuRv6pTjVy/AL481fO
- Us5X3XzNcTHOM67Nl2X4m67Ipo8/Kdk3FHH+kU39NWDnvMtxDUwwj9VBZeijcev5GfCJ
- 40nw==
+ bh=V+5WPOQQn7wdJFBxPC03WeaiWKObhZXvJYhNjI8CS4I=;
+ b=zHAo2QIQYJDkGsYuQh7Ekaa3n31GljJLlAlSfEhV40V8BzV0GEwWl8MdwmqcaI5Gqg
+ PXeKHG75DK+fLuVZsuBHxBltqoaQU7YPIVS/hPR8LXJoMH7XF7waBo7MfY96VQrTfHKc
+ JmtwPJ9rZY8vdj+C6sh+on0FxFEBfTGtKpKqBfECljq+//8ArTT87MP+Xk2JdOOauXwB
+ 4OjyzT6ghxcD/KVpDfvjlBMvmGVMRMmEhTmkoF7rxOvBNY3Yr0oMQTMAzqJz+khPE9XP
+ k9X4pGQMPMFRe2zGK/aatFYrMndALD/kKNz/OKbA+1U+3bnTBD5WT5QA+44lay78xnB8
+ iHTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718830815; x=1719435615;
+ d=1e100.net; s=20230601; t=1718830816; x=1719435616;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=FtNxjFE/f89KWIDXkuZChFJ2j7WRxZA+Mhz/JhRC3yg=;
- b=wh5TwMo3Thx0Nw+S388rzPtoYEZdnGTZRBO82Yeh1d3+oWsiKO/ZDDBDDiXsTcKr52
- 7knjo/6tHjaQ4bWqePYGA5sT5zOW74M9Ay4xd/iKEHwdcuPYa5TQ0tfcxjpyiX2sC+T7
- 5vr3geEZ2N7rxRayvOxkeNXV9LDaf2DiWSg3+2V1vHj9m0YgMoj3hzDSr3YQmTPbOrCR
- Fy2xQAh50lWU1y0hBO+bnjMwszkucZyLUhHCR+UTMYkZt1FIBtazEcRsIbNviU8ufmYT
- P9rwOXNRfq/NhAZXEZAK3i2IrrwhlEI039QE72XmIs42MmKe9m8+Zj32+oQvefIDGbxO
- 96Pw==
-X-Gm-Message-State: AOJu0Yx4Duwn+bky6mtvb+MD4ixRM6ZwotIJ1VM8YXdEwdyC8UChpQEN
- 2GndD9n7hGDVgnzDELUmLlTSJ0/ccR6eXoPI4QvIZr6alxPjPqkxUE3dXaFDQSEUcDC+3SvKz1Y
- n
-X-Google-Smtp-Source: AGHT+IGJQF3MB+nVBhH8FPJcFeIDjPRo3oxMhg5mST27Les7pOnXtDsrXmWa/9lh8kpjqcvTH3Ia6g==
-X-Received: by 2002:a17:902:f9c4:b0:1f8:3e2c:d66f with SMTP id
- d9443c01a7336-1f98b23f6d9mr67753515ad.17.1718830814841; 
- Wed, 19 Jun 2024 14:00:14 -0700 (PDT)
+ bh=V+5WPOQQn7wdJFBxPC03WeaiWKObhZXvJYhNjI8CS4I=;
+ b=W9BpkqBMyGIgp3gwiejOTG3lrVabiAMhHcdBQD9qGm0CW8Lcc5WMg6tSfp6piNqLBG
+ njEI9xbKocHFPJaFAmshYw9ad19ZuemBH8twcTiKB4n2f8+4dW4klb53vQ56UcbQhEBE
+ GN1yKuWmKGb6gMVG6rsrcxAyKQtvPYGyFYfw5zEVdOWV/91D16sOw1Pi2KTFlTXBTSF7
+ lDhJCwrNHDbrGFXau2+sZ9K3qR4s9c+RZroZdPpnJWQSORgm253SFf1EZ2LK8QSOjfr1
+ 5xUgMHwACuZ0sm4NBCiBjGbsNHW+5cqIJ2p4P5/qEHRxpLvz4LNFXc0qfatgk+GDV5zf
+ H5KQ==
+X-Gm-Message-State: AOJu0Yx9yRPzbZEbFIpnW3rmiZNrf4dpTJDONHPCx6+KJCR2Y6Zd8sz0
+ yVgiQLbF98uraj0rHkOxHnQosbPUY9D9gCAEzPMNmk9w9Dyr6mAPN3xLD0xLnu8NgQ3OBFWLk/S
+ 2
+X-Google-Smtp-Source: AGHT+IEufdJCehTRpbxjxsFUisYn/l1HnyqVkOFALrM8B761KPN4s8cWRplJH6vQbQ0YPpWfDZaqeQ==
+X-Received: by 2002:a05:6a20:7929:b0:1b8:a2ca:3b6d with SMTP id
+ adf61e73a8af0-1bcbb5d4cfamr3375701637.37.1718830815679; 
+ Wed, 19 Jun 2024 14:00:15 -0700 (PDT)
 Received: from stoup.. ([71.212.132.216]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1f98f8f8c42sm39183765ad.162.2024.06.19.14.00.14
+ d9443c01a7336-1f98f8f8c42sm39183765ad.162.2024.06.19.14.00.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 19 Jun 2024 14:00:14 -0700 (PDT)
+ Wed, 19 Jun 2024 14:00:15 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>,
- qemu-stable@nongnu.org
-Subject: [PULL 23/24] target/sparc: use signed denominator in sdiv helper
-Date: Wed, 19 Jun 2024 13:59:51 -0700
-Message-Id: <20240619205952.235946-24-richard.henderson@linaro.org>
+Cc: qemu-stable@nongnu.org,
+	Song Gao <gaosong@loongson.cn>
+Subject: [PULL 24/24] tcg/loongarch64: Fix tcg_out_movi vs some pcrel pointers
+Date: Wed, 19 Jun 2024 13:59:52 -0700
+Message-Id: <20240619205952.235946-25-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240619205952.235946-1-richard.henderson@linaro.org>
 References: <20240619205952.235946-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,35 +92,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Clément Chigot <chigot@adacore.com>
-
-The result has to be done with the signed denominator (b32) instead of
-the unsigned value passed in argument (b).
+Simplify the logic for two-part, 32-bit pc-relative addresses.
+Rather than assume all such fit in int32_t, do some arithmetic
+and assert a result, do some arithmetic first and then check
+to see if the pieces are in range.
 
 Cc: qemu-stable@nongnu.org
-Fixes: 1326010322d6 ("target/sparc: Remove CC_OP_DIV")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2319
-Signed-off-by: Clément Chigot <chigot@adacore.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20240606144331.698361-1-chigot@adacore.com>
+Fixes: dacc51720db ("tcg/loongarch64: Implement tcg_out_mov and tcg_out_movi")
+Reviewed-by: Song Gao <gaosong@loongson.cn>
+Reported-by: Song Gao <gaosong@loongson.cn>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/sparc/helper.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tcg/loongarch64/tcg-target.c.inc | 32 +++++++++++++++-----------------
+ 1 file changed, 15 insertions(+), 17 deletions(-)
 
-diff --git a/target/sparc/helper.c b/target/sparc/helper.c
-index 2247e243b5..7846ddd6f6 100644
---- a/target/sparc/helper.c
-+++ b/target/sparc/helper.c
-@@ -121,7 +121,7 @@ uint64_t helper_sdiv(CPUSPARCState *env, target_ulong a, target_ulong b)
-         return (uint32_t)(b32 < 0 ? INT32_MAX : INT32_MIN) | (-1ull << 32);
+diff --git a/tcg/loongarch64/tcg-target.c.inc b/tcg/loongarch64/tcg-target.c.inc
+index 1c4dc4decb..5b7ed5c176 100644
+--- a/tcg/loongarch64/tcg-target.c.inc
++++ b/tcg/loongarch64/tcg-target.c.inc
+@@ -382,8 +382,7 @@ static void tcg_out_movi(TCGContext *s, TCGType type, TCGReg rd,
+      * back to the slow path.
+      */
+ 
+-    intptr_t pc_offset;
+-    tcg_target_long val_lo, val_hi, pc_hi, offset_hi;
++    intptr_t src_rx, pc_offset;
+     tcg_target_long hi12, hi32, hi52;
+ 
+     /* Value fits in signed i32.  */
+@@ -393,24 +392,23 @@ static void tcg_out_movi(TCGContext *s, TCGType type, TCGReg rd,
      }
  
--    a64 /= b;
-+    a64 /= b32;
-     r = a64;
-     if (unlikely(r != a64)) {
-         return (uint32_t)(a64 < 0 ? INT32_MIN : INT32_MAX) | (-1ull << 32);
+     /* PC-relative cases.  */
+-    pc_offset = tcg_pcrel_diff(s, (void *)val);
+-    if (pc_offset == sextreg(pc_offset, 0, 22) && (pc_offset & 3) == 0) {
+-        /* Single pcaddu2i.  */
+-        tcg_out_opc_pcaddu2i(s, rd, pc_offset >> 2);
+-        return;
++    src_rx = (intptr_t)tcg_splitwx_to_rx(s->code_ptr);
++    if ((val & 3) == 0) {
++        pc_offset = val - src_rx;
++        if (pc_offset == sextreg(pc_offset, 0, 22)) {
++            /* Single pcaddu2i.  */
++            tcg_out_opc_pcaddu2i(s, rd, pc_offset >> 2);
++            return;
++        }
+     }
+ 
+-    if (pc_offset == (int32_t)pc_offset) {
+-        /* Offset within 32 bits; load with pcalau12i + ori.  */
+-        val_lo = sextreg(val, 0, 12);
+-        val_hi = val >> 12;
+-        pc_hi = (val - pc_offset) >> 12;
+-        offset_hi = val_hi - pc_hi;
+-
+-        tcg_debug_assert(offset_hi == sextreg(offset_hi, 0, 20));
+-        tcg_out_opc_pcalau12i(s, rd, offset_hi);
++    pc_offset = (val >> 12) - (src_rx >> 12);
++    if (pc_offset == sextreg(pc_offset, 0, 20)) {
++        /* Load with pcalau12i + ori.  */
++        tcg_target_long val_lo = val & 0xfff;
++        tcg_out_opc_pcalau12i(s, rd, pc_offset);
+         if (val_lo != 0) {
+-            tcg_out_opc_ori(s, rd, rd, val_lo & 0xfff);
++            tcg_out_opc_ori(s, rd, rd, val_lo);
+         }
+         return;
+     }
 -- 
 2.34.1
 
