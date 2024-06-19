@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71E0D90EB6F
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jun 2024 14:50:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62C9B90EB82
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jun 2024 14:57:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sJukf-0005c2-Kf; Wed, 19 Jun 2024 08:49:25 -0400
+	id 1sJuql-0002Va-Er; Wed, 19 Jun 2024 08:55:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sJukd-0005al-8B
- for qemu-devel@nongnu.org; Wed, 19 Jun 2024 08:49:23 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sJuqj-0002TH-EW
+ for qemu-devel@nongnu.org; Wed, 19 Jun 2024 08:55:41 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sJuka-0008Nz-LU
- for qemu-devel@nongnu.org; Wed, 19 Jun 2024 08:49:22 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sJuqg-0001IX-Vq
+ for qemu-devel@nongnu.org; Wed, 19 Jun 2024 08:55:41 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1718801359;
+ s=mimecast20190719; t=1718801738;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=WIcJKdJudu0F60frY9jZpg/H6w4MwarPvlfgSAPNQyE=;
- b=ONkVTaSKl7qdaqhDNGcdCcVWAi/UR2cVizWDBCm73SAZFYAwWou2u580EOpe8AcgqYvgg3
- zxJrhUkK92q2a9x5x68t6cwIGRvi0Q3BkBbAfmcTR+m4G11GRNR+UY2rquGYbJYGOexr0u
- xwLw+EVMV3NSwpxjG/oAFLRxOvL32pw=
+ bh=NxtW5mlkj6pJNx85OjVw8LadK8F1hzkg23jQP/t3DwQ=;
+ b=ikc+c/isjAdOfEmInbuBanyEVTkJP+d+U4Lo+NuilRPdE33dvT7kWV6yZoVXVferi8Or9o
+ DGvzLsqwu01/GqxnDuLbcD8d8sKEgJeoGU+MGPCSll/o5htFq1dQHJQzleVKwnnwAO8v7y
+ wh34N1jkdjd2p/cF4Lc94ee/VZnJDB8=
 Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-259-WoZC2M1CN9W0nT-9_HJXdw-1; Wed,
- 19 Jun 2024 08:49:16 -0400
-X-MC-Unique: WoZC2M1CN9W0nT-9_HJXdw-1
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-652-aLMP10w6Mlat55yYnsYU2A-1; Wed,
+ 19 Jun 2024 08:55:33 -0400
+X-MC-Unique: aLMP10w6Mlat55yYnsYU2A-1
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B18D81955DCE; Wed, 19 Jun 2024 12:49:12 +0000 (UTC)
+ id F223919560AE; Wed, 19 Jun 2024 12:55:29 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.93])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 833AA19560AF; Wed, 19 Jun 2024 12:49:09 +0000 (UTC)
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id A7DC73000218; Wed, 19 Jun 2024 12:55:28 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 40A4821E6757; Wed, 19 Jun 2024 14:49:07 +0200 (CEST)
+ id D7BEF21E6757; Wed, 19 Jun 2024 14:55:25 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: John Snow <jsnow@redhat.com>
 Cc: qemu-devel@nongnu.org,  Stefan Hajnoczi <stefanha@redhat.com>,  Hanna
@@ -65,18 +65,19 @@ Cc: qemu-devel@nongnu.org,  Stefan Hajnoczi <stefanha@redhat.com>,  Hanna
  qemu-block@nongnu.org,  Jiri Pirko <jiri@resnulli.us>,  Alex Williamson
  <alex.williamson@redhat.com>,  Kevin Wolf <kwolf@redhat.com>,  Eric Blake
  <eblake@redhat.com>
-Subject: Re: [PATCH 09/13] qapi: convert "Note" sections to plain rST
-In-Reply-To: <20240619003012.1753577-10-jsnow@redhat.com> (John Snow's message
- of "Tue, 18 Jun 2024 20:30:08 -0400")
+Subject: Re: [PATCH 12/13] qapi/parser: don't parse rST markup as section
+ headers
+In-Reply-To: <20240619003012.1753577-13-jsnow@redhat.com> (John Snow's message
+ of "Tue, 18 Jun 2024 20:30:11 -0400")
 References: <20240619003012.1753577-1-jsnow@redhat.com>
- <20240619003012.1753577-10-jsnow@redhat.com>
-Date: Wed, 19 Jun 2024 14:49:07 +0200
-Message-ID: <87wmmlyu64.fsf@pond.sub.org>
+ <20240619003012.1753577-13-jsnow@redhat.com>
+Date: Wed, 19 Jun 2024 14:55:25 +0200
+Message-ID: <877celytvm.fsf@pond.sub.org>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: 11
 X-Spam_score: 1.1
@@ -103,373 +104,40 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 John Snow <jsnow@redhat.com> writes:
 
-> We do not need a dedicated section for notes. By eliminating a specially
-> parsed section, these notes can be treated as normal rST paragraphs in
-> the new QMP reference manual, and can be placed and styled much more
-> flexibly.
+> The double-colon synax is rST formatting that precedes a literal code
+> block. We do not want to capture these as QAPI-specific sections.
 >
-> Convert all existing "Note" and "Notes" sections to pure rST. As part of
-> the conversion, capitalize the first letter of each sentence and add
-> trailing punctuation where appropriate to ensure notes look sensible and
-> consistent in rendered HTML documentation.
->
-> Update docs/devel/qapi-code-gen.rst to reflect the new paradigm, and ...
->
-> ... Update the QAPI parser to prohibit "Note" sections while suggesting
-
-Scratch "... ..." and downcase "Update"?
-
-> a new syntax. The exact formatting to use is a matter of taste, but a
-> good candidate is simply:
->
-> .. note:: lorem ipsum ...
->
-> ... but there are other choices, too. The Sphinx readthedocs theme
-> offers theming for the following forms (capitalization unimportant); all
-> are adorned with a (!) symbol in the title bar for rendered HTML docs.
->
-> See
-> https://sphinx-rtd-theme.readthedocs.io/en/stable/demo/demo.html#admonitions
-> for examples of each directive/admonition in use.
->
-> These are rendered in orange:
->
-> .. Attention:: ...
-> .. Caution:: ...
-> .. WARNING:: ...
->
-> These are rendered in red:
->
-> .. DANGER:: ...
-> .. Error:: ...
->
-> These are rendered in green:
->
-> .. Hint:: ...
-> .. Important:: ...
-> .. Tip:: ...
->
-> These are rendered in blue:
->
-> .. Note:: ...
-> .. admonition:: custom title
->
->    admonition body text
->
-> This patch uses ".. note::" almost everywhere, with just two "caution"
-> directives. ".. admonition:: notes" is used in a few places where we had
-> an ordered list of multiple notes that would not make sense as
-> standalone/separate admonitions.
+> Coerce blocks that start with e.g. "Example::" to be parsed as untagged
+> paragraphs instead of special tagged sections.
 >
 > Signed-off-by: John Snow <jsnow@redhat.com>
-> Acked-by: Stefan Hajnoczi <stefanha@redhat.com> [for block*.json]
-
-[...]
-
-> diff --git a/qga/qapi-schema.json b/qga/qapi-schema.json
-> index b3de1fb6b3a..57598331c5c 100644
-> --- a/qga/qapi-schema.json
-> +++ b/qga/qapi-schema.json
-> @@ -422,8 +422,9 @@
->  # Returns: GuestFsfreezeStatus ("thawed", "frozen", etc., as defined
->  #     below)
->  #
-> -# Note: This may fail to properly report the current state as a result
-> -#     of some other guest processes having issued an fs freeze/thaw.
-> +# .. note:: This may fail to properly report the current state as a
-> +#    result of some other guest processes having issued an fs
-> +#    freeze/thaw.
->  #
->  # Since: 0.15.0
->  ##
-> @@ -443,9 +444,9 @@
->  #
->  # Returns: Number of file systems currently frozen.
->  #
-> -# Note: On Windows, the command is implemented with the help of a
-> -#     Volume Shadow-copy Service DLL helper.  The frozen state is
-> -#     limited for up to 10 seconds by VSS.
-> +# .. note:: On Windows, the command is implemented with the help of a
-> +#    Volume Shadow-copy Service DLL helper.  The frozen state is limited
-> +#    for up to 10 seconds by VSS.
->  #
->  # Since: 0.15.0
->  ##
-> @@ -479,10 +480,10 @@
->  #
->  # Returns: Number of file systems thawed by this call
->  #
-> -# Note: if return value does not match the previous call to
-> -#     guest-fsfreeze-freeze, this likely means some freezable
-> -#     filesystems were unfrozen before this call, and that the
-> -#     filesystem state may have changed before issuing this command.
-> +# .. note:: If return value does not match the previous call to
-> +#    guest-fsfreeze-freeze, this likely means some freezable filesystems
-> +#    were unfrozen before this call, and that the filesystem state may
-> +#    have changed before issuing this command.
->  #
->  # Since: 0.15.0
->  ##
-> @@ -560,8 +561,8 @@
->  # Errors:
->  #     - If suspend to disk is not supported, Unsupported
->  #
-> -# Notes: It's strongly recommended to issue the guest-sync command
-> -#     before sending commands when the guest resumes
-> +# .. note:: It's strongly recommended to issue the guest-sync command
-> +#    before sending commands when the guest resumes.
->  #
->  # Since: 1.1
->  ##
-> @@ -596,8 +597,8 @@
->  # Errors:
->  #     - If suspend to ram is not supported, Unsupported
->  #
-> -# Notes: It's strongly recommended to issue the guest-sync command
-> -#     before sending commands when the guest resumes
-> +# .. note:: It's strongly recommended to issue the guest-sync command
-> +#    before sending commands when the guest resumes.
->  #
->  # Since: 1.1
->  ##
-> @@ -631,8 +632,8 @@
->  # Errors:
->  #     - If hybrid suspend is not supported, Unsupported
->  #
-> -# Notes: It's strongly recommended to issue the guest-sync command
-> -#     before sending commands when the guest resumes
-> +# .. note:: It's strongly recommended to issue the guest-sync command
-> +#    before sending commands when the guest resumes.
->  #
->  # Since: 1.1
->  ##
-> @@ -1461,16 +1462,15 @@
->  #     * POSIX: as defined by os-release(5)
->  #     * Windows: contains string "server" or "client"
->  #
-> -# Notes: On POSIX systems the fields @id, @name, @pretty-name,
-> -#     @version, @version-id, @variant and @variant-id follow the
-> -#     definition specified in os-release(5). Refer to the manual page
-> -#     for exact description of the fields.  Their values are taken
-> -#     from the os-release file.  If the file is not present in the
-> -#     system, or the values are not present in the file, the fields
-> -#     are not included.
-> +# .. note:: On POSIX systems the fields @id, @name, @pretty-name,
-> +#    @version, @version-id, @variant and @variant-id follow the
-> +#    definition specified in os-release(5). Refer to the manual page for
-> +#    exact description of the fields.  Their values are taken from the
-> +#    os-release file.  If the file is not present in the system, or the
-> +#    values are not present in the file, the fields are not included.
->  #
-> -#     On Windows the values are filled from information gathered from
-> -#     the system.
-> +#    On Windows the values are filled from information gathered from
-> +#    the system.
-
-Please don't change the indentation here.  I get the same output with
-
-  @@ -1461,7 +1462,7 @@
-   #     * POSIX: as defined by os-release(5)
-   #     * Windows: contains string "server" or "client"
-   #
-  -# Notes: On POSIX systems the fields @id, @name, @pretty-name,
-  +# .. note:: On POSIX systems the fields @id, @name, @pretty-name,
-   #     @version, @version-id, @variant and @variant-id follow the
-   #     definition specified in os-release(5). Refer to the manual page
-   #     for exact description of the fields.  Their values are taken
-
-
->  #
->  # Since: 2.10
->  ##
+> ---
+>  scripts/qapi/parser.py | 9 +++++++--
+>  1 file changed, 7 insertions(+), 2 deletions(-)
+>
 > diff --git a/scripts/qapi/parser.py b/scripts/qapi/parser.py
-> index dfd6a6c5bee..53b06a94508 100644
+> index 53b06a94508..971fdf61a09 100644
 > --- a/scripts/qapi/parser.py
 > +++ b/scripts/qapi/parser.py
-> @@ -548,6 +548,21 @@ def get_doc(self) -> 'QAPIDoc':
->                          r'(Returns|Errors|Since|Notes?|Examples?|TODO): *',
->                          line):
+> @@ -545,10 +545,15 @@ def get_doc(self) -> 'QAPIDoc':
+>                          line = self.get_doc_indented(doc)
+>                      no_more_args = True
+>                  elif match := re.match(
+> -                        r'(Returns|Errors|Since|Notes?|Examples?|TODO): *',
+> -                        line):
+> +                        r'(Returns|Errors|Since|Notes?|Examples?|TODO)'
+> +                        r'(?!::): *',
+> +                        line,
+> +                ):
 >                      # tagged section
+>  
+> +                    # Note: "sections" with two colons are left alone as
+> +                    # rST markup and not interpreted as a section heading.
 > +
-> +                    # TODO: Remove this error sometime in 2025 or so
-> +                    # after we've fully transitioned to the new qapidoc
-> +                    # generator.
-> +
-> +                    # See commit message for more markup suggestions O:-)
-> +                    if 'Note' in match.group(1):
-> +                        emsg = (
-> +                            f"The '{match.group(1)}' section is no longer "
-> +                            "supported. Please use rST's '.. note::' or "
-> +                            "'.. admonition:: notes' directives, or another "
-> +                            "suitable admonition instead."
-> +                        )
-> +                        raise QAPIParseError(self, emsg)
-> +
->                      doc.new_tagged_section(self.info, match.group(1))
->                      text = line[match.end():]
->                      if text:
-> diff --git a/tests/qapi-schema/doc-empty-section.err b/tests/qapi-schema/doc-empty-section.err
-> index 5f03a6d733f..711a0d629c2 100644
-> --- a/tests/qapi-schema/doc-empty-section.err
-> +++ b/tests/qapi-schema/doc-empty-section.err
-> @@ -1 +1 @@
-> -doc-empty-section.json:6: text required after 'Note:'
-> +doc-empty-section.json:6: text required after 'Errors:'
-> diff --git a/tests/qapi-schema/doc-empty-section.json b/tests/qapi-schema/doc-empty-section.json
-> index f3384e9a3bb..f179d3eff6d 100644
-> --- a/tests/qapi-schema/doc-empty-section.json
-> +++ b/tests/qapi-schema/doc-empty-section.json
-> @@ -3,6 +3,6 @@
->  ##
->  # @foo:
->  #
-> -# Note:
-> +# Errors:
->  ##
->  { 'command': 'foo', 'data': {'a': 'int'} }
-> diff --git a/tests/qapi-schema/doc-good.json b/tests/qapi-schema/doc-good.json
-> index 8b39eb946af..4b338cc0186 100644
-> --- a/tests/qapi-schema/doc-good.json
-> +++ b/tests/qapi-schema/doc-good.json
-> @@ -29,7 +29,7 @@
->  # - Second list
->  #   Note: still in list
->  #
-> -# Note: not in list
-> +# .. note:: not in list
+>                      # TODO: Remove this error sometime in 2025 or so
+>                      # after we've fully transitioned to the new qapidoc
+>                      # generator.
 
-Uh...  see [*] below.
-
->  #
->  # 1. Third list
->  #    is numbered
-> @@ -157,7 +157,7 @@
->  # @cmd-feat1: a feature
->  # @cmd-feat2: another feature
->  #
-> -# Note: @arg3 is undocumented
-> +# .. note:: @arg3 is undocumented
->  #
->  # Returns: @Object
->  #
-> @@ -165,7 +165,7 @@
->  #
->  # TODO: frobnicate
->  #
-> -# Notes:
-> +# .. admonition:: Notes
->  #
->  #  - Lorem ipsum dolor sit amet
->  #  - Ut enim ad minim veniam
-> diff --git a/tests/qapi-schema/doc-good.out b/tests/qapi-schema/doc-good.out
-> index 435f6e6d768..2c9b4e419cb 100644
-> --- a/tests/qapi-schema/doc-good.out
-> +++ b/tests/qapi-schema/doc-good.out
-> @@ -76,7 +76,7 @@ Not in list
->  - Second list
->    Note: still in list
->  
-> -Note: not in list
-
-[*] This demonstrates the "Note: ..." is *not* recognized as a "Note"
-section before the patch (compare to the change we get for recognized
-sections below).
-
-Obscure fact: the doc parser recognizes tagged sections *only* in
-definition documentation.  Arguably a misfeature.
-
-Your series makes the misfeature even more obscure, because afterwards,
-the only tagged section left that could make sense in a free-form doc
-comment is "TODO".  Let's not worry about the misfeature now.
-
-Two sensible solutions:
-
-1. Since the patch converts tagged sections, and this isn't, don't touch
-it.  If you feel you want to mention this in the commit message, go
-ahead.
-
-2. Touch it anyway.  Do mention it in the commit message then.
-
-> +.. note:: not in list
->  
->  1. Third list
->     is numbered
-> @@ -169,15 +169,17 @@ description starts on the same line
->  a feature
->      feature=cmd-feat2
->  another feature
-> -    section=Note
-> -@arg3 is undocumented
-> +    section=None
-> +.. note:: @arg3 is undocumented
->      section=Returns
->  @Object
->      section=Errors
->  some
->      section=TODO
->  frobnicate
-> -    section=Notes
-> +    section=None
-> +.. admonition:: Notes
-> +
->   - Lorem ipsum dolor sit amet
->   - Ut enim ad minim veniam
->  
-> diff --git a/tests/qapi-schema/doc-good.txt b/tests/qapi-schema/doc-good.txt
-> index 847db70412d..b89f35d5476 100644
-> --- a/tests/qapi-schema/doc-good.txt
-> +++ b/tests/qapi-schema/doc-good.txt
-> @@ -17,7 +17,9 @@ Not in list
->  
->  * Second list Note: still in list
->  
-> -Note: not in list
-> +Note:
-> +
-> +  not in list
->  
->  1. Third list is numbered
->  
-> @@ -193,11 +195,9 @@ Features
->  "cmd-feat2"
->     another feature
->  
-> +Note:
->  
-> -Note
-> -~~~~
-> -
-> -"arg3" is undocumented
-> +  "arg3" is undocumented
->  
->  
->  Returns
-> @@ -211,9 +211,7 @@ Errors
->  
->  some
->  
-> -
-> -Notes
-> -~~~~~
-> +Notes:
->  
->  * Lorem ipsum dolor sit amet
->  
-> diff --git a/tests/qapi-schema/doc-interleaved-section.json b/tests/qapi-schema/doc-interleaved-section.json
-> index adb29e98daa..b26bc0bbb79 100644
-> --- a/tests/qapi-schema/doc-interleaved-section.json
-> +++ b/tests/qapi-schema/doc-interleaved-section.json
-> @@ -10,7 +10,7 @@
->  #
->  #           bao
->  #
-> -# Note: a section.
-> +# Returns: a section.
->  #
->  # @foobar: catch this
->  #
-
-"Returns:" is only valid for commands, and this is a struct.  Let's use
-"TODO:" instead.
+Patch looks good, but let's add a positive test to doc-good.json.
 
 
