@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0218C90E6B5
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jun 2024 11:18:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C0D990E6AE
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jun 2024 11:17:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sJrR7-00049U-C1; Wed, 19 Jun 2024 05:17:01 -0400
+	id 1sJrR8-00049w-3y; Wed, 19 Jun 2024 05:17:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sai.pavan.boddu@amd.com>)
- id 1sJrR4-00047N-At; Wed, 19 Jun 2024 05:16:58 -0400
-Received: from mail-dm3nam02on20601.outbound.protection.outlook.com
- ([2a01:111:f403:2405::601]
- helo=NAM02-DM3-obe.outbound.protection.outlook.com)
+ id 1sJrR5-00048W-Ms; Wed, 19 Jun 2024 05:16:59 -0400
+Received: from mail-bn8nam11on20610.outbound.protection.outlook.com
+ ([2a01:111:f403:2414::610]
+ helo=NAM11-BN8-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sai.pavan.boddu@amd.com>)
- id 1sJrR2-0003rP-Ef; Wed, 19 Jun 2024 05:16:58 -0400
+ id 1sJrR3-0003rZ-LK; Wed, 19 Jun 2024 05:16:59 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ETCCkCLiau00kObTUOkQjC8J9ez7uIU+a4ZcXhtp7U3Xg4VDY0+mrgz2JIkVBzpHWQrSs08EcfXwVDqMveH7y7lzYjtNrR0e2BRNVSRNa+gTvAwiKZFmbeFyNZ4jLdggnMn/Rfybmk44bv5kGmcO2K23qHnCz9G8o6m3imMUMEDwWyqtosc3Swh3kk2zmH1j24axtHXLkJxW9+hgC2x6rZB9ItAhvA4lGjD4B8qs9wZXDq/+zUFVtvslGzHZjdyc41OJPs9RSWqirTxz2Ebt2Qg+D8FtPq/RLyaVOIcHvrqda0OlhQu2+bDt8S2cxUYysZ7sMmxtf+0p7D9eSpenyA==
+ b=WfD+YYlYqII6HTKO9mziEvAfg35gliuZhxpSVopqebECBZS3QbcPyxUvY01tiek+u9Ps60BBWdO4uIG5ZdohcS53lC+hCfaDhjFnCjSO6gNXZYIX2gkYks19sLqPxeTmhI4kLtvlcXEjHmmLTQ+HuqZTDm2Gukzgf4Rvv6plQ33cSrw5C1bnpAMA8VQCYNnGh0B6hm5MMQgFp72xd4D01FP1+ZMLazTXxh4MaspJkWIoKQnh9bNYmpxV3WZdE3TSS/rKtax69mKENzhdUKAp9LHIcYVZGaX6lYbmeCfKT1ELnSBm4uRBOIqpfGOUlPINJyAJwDyufkzB8FNUEb+bRQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jvamlq+3atkXRl9UXQ722T+p7FhrjBnF4rhoNIqGCXs=;
- b=Hsq4pzXqfPY9bsWQ14DJX3ZxB2UgU1nB23kFB0qLooapQjl2A8oMNwF+o2lECXsSBPrOxnMJi5ZAWp2zCEdeAJK7Vn3mD89MCbnq14yt6He8KOuPKGskIceoAh+tfl7PRPYUGRhHthKCqVYV5fkigKN7xYCKrFmcgdCm9vHOEOFSw5IPcdMfGgLUNwgh6xc2tu8w6fsaej2bhwFyY/1bdcVNrTeChqPqejhHe+enP5a41/TVXlHee03yCwczLCtS/eGCXRNMXPVTGu6FgolBdQOnEX8t+nNVJFEKyyqtMP7Xl6B9I8+Ry7aX0b0a5kxi2jnvai/E5dNijALYgJiOGw==
+ bh=2Q2XwiHhQDPY6HBUB/s6+x8qVqjvUZ3B/o+F4Yxi36Q=;
+ b=TLJ1VfgXIIrLj/BhsCRMc7bZDzxL9aUsLxRpm6PtWOuZDvGNHZ2yu0lj4EJ4x/H+TGRg73NCYbQaEiDAbJ9WO5sPhMoh9hDdZysXQAfIxz0yumpIZo1K+ixhQADnJuv8Hpm0cJvCl05AZq7DXalk6HbCBH4TQ+yGjqAyiKsBfYLkO9fXeNC4jL9dgANh9bnMyk/znXJcfqmcFqiGlcJXPchUrHSMveoaUWue/fXFr+HrrIR8mpWKUJx0p0I0GQjYyFhcapSSao53zC4q4CENAXPoIyycDJ1uQM7190J3jcFGZlhTlXoJ7gyz+JVvMUHlJvE5Q/pkhZW5TPkvVG26GA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jvamlq+3atkXRl9UXQ722T+p7FhrjBnF4rhoNIqGCXs=;
- b=aAGI17fJAelODIyFZDBvLYf/coi7Na375liv1OCgSAsqPxxRa5YN2AuBIKKLLa0h2uKVy03x3g6J3JWTcu0dPwvDKruQRvfrBb5vJ+EnBAxB0b3lXOV1rBeuzcfRkyyhvPUbWHk3eaXqm+fQ0jzqHv8I4dMPAx3KN60FWV7D2V0=
-Received: from BL1P221CA0007.NAMP221.PROD.OUTLOOK.COM (2603:10b6:208:2c5::33)
- by SN7PR12MB8436.namprd12.prod.outlook.com (2603:10b6:806:2e3::10)
+ bh=2Q2XwiHhQDPY6HBUB/s6+x8qVqjvUZ3B/o+F4Yxi36Q=;
+ b=t27byTVeYlPnH27Gg9zka7cOpgwLSYT4WhMO5tvQJrf4jKjhYTSGY/qwlTD1ZoiewpCsmAdH+K/5y+NUE/LLOLomrTr+FmNZe9N/9a8yVY7BJLD4J2hmHHAcrAuoZCw3cYHYLt5h3tBKxIbXZfnVRQRAPlqEAgsNU7Lx/tu5z/g=
+Received: from BLAP220CA0011.NAMP220.PROD.OUTLOOK.COM (2603:10b6:208:32c::16)
+ by IA1PR12MB6210.namprd12.prod.outlook.com (2603:10b6:208:3e6::14)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7677.24; Wed, 19 Jun
- 2024 09:16:51 +0000
-Received: from BL6PEPF0001AB55.namprd02.prod.outlook.com
- (2603:10b6:208:2c5:cafe::98) by BL1P221CA0007.outlook.office365.com
- (2603:10b6:208:2c5::33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7677.32 via Frontend
- Transport; Wed, 19 Jun 2024 09:16:51 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7698.19; Wed, 19 Jun
+ 2024 09:16:53 +0000
+Received: from BL6PEPF0001AB56.namprd02.prod.outlook.com
+ (2603:10b6:208:32c:cafe::8) by BLAP220CA0011.outlook.office365.com
+ (2603:10b6:208:32c::16) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7677.31 via Frontend
+ Transport; Wed, 19 Jun 2024 09:16:53 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -50,23 +50,23 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
 Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BL6PEPF0001AB55.mail.protection.outlook.com (10.167.241.7) with Microsoft
+ BL6PEPF0001AB56.mail.protection.outlook.com (10.167.241.8) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7677.15 via Frontend Transport; Wed, 19 Jun 2024 09:16:51 +0000
+ 15.20.7677.15 via Frontend Transport; Wed, 19 Jun 2024 09:16:53 +0000
 Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 19 Jun
- 2024 04:16:50 -0500
+ 2024 04:16:52 -0500
 Received: from xhdsaipava41.xilinx.com (10.180.168.240) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server id 15.1.2507.39 via
- Frontend Transport; Wed, 19 Jun 2024 04:16:49 -0500
+ Frontend Transport; Wed, 19 Jun 2024 04:16:51 -0500
 From: Sai Pavan Boddu <sai.pavan.boddu@amd.com>
 To: <qemu-arm@nongnu.org>, <qemu-devel@nongnu.org>
 CC: "'Edgar E . Iglesias'" <edgar.iglesias@gmail.com>, Peter Maydell
  <peter.maydell@linaro.org>, <francisco.iglesias@amd.com>
-Subject: [PATCH v2 2/3] hw/arm/xilinx_zynq: Add boot-mode property
-Date: Wed, 19 Jun 2024 14:46:31 +0530
-Message-ID: <20240619091632.2825550-3-sai.pavan.boddu@amd.com>
+Subject: [PATCH v2 3/3] docs/system/arm: Add a doc for zynq board
+Date: Wed, 19 Jun 2024 14:46:32 +0530
+Message-ID: <20240619091632.2825550-4-sai.pavan.boddu@amd.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240619091632.2825550-1-sai.pavan.boddu@amd.com>
 References: <20240619091632.2825550-1-sai.pavan.boddu@amd.com>
@@ -77,60 +77,60 @@ Received-SPF: None (SATLEXMB04.amd.com: sai.pavan.boddu@amd.com does not
  designate permitted sender hosts)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB55:EE_|SN7PR12MB8436:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5f89437a-83fc-4b18-0e33-08dc90408e10
+X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB56:EE_|IA1PR12MB6210:EE_
+X-MS-Office365-Filtering-Correlation-Id: d0ffbd67-bcda-443d-fdc8-08dc90408f42
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230037|1800799021|82310400023|36860700010|376011; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?iUYUDoTz+2CqSPAU0oZaHoSGi6ILjZccuBu3F2yOXGsz4lR/XrmHtJxqVIdc?=
- =?us-ascii?Q?NjUouaX6/AZju20u3tGBHUgr9dRoLtA2J8iaM8bOCWjQoGYCybHp2RN19PUb?=
- =?us-ascii?Q?XPc/u67yu9DQ+1NK6ucwWFkg5uVlFaYYwCICBk/U/v5MnA45ImRi4uVQDJA7?=
- =?us-ascii?Q?njcy607YVH6mvsyP9koVZV6MzDKaiFDCO0qv3Uz86oBNR6SB6j3P2euQemgp?=
- =?us-ascii?Q?kj3BFWYbbpJ7k5QoGEX0pvWTmhGR5h8quq1y4ovN9dzZoBOmubxR/95mAwwt?=
- =?us-ascii?Q?EophAv05K01uJsL3wExlve94WfytI3ihDhVnR33ObBqUwX0KN/kfBzKScknx?=
- =?us-ascii?Q?7fMmbO/u0KaQPoCXdJOMCOqzu0heI/S3opZZhvVOYVS7zAzdwlP4ixSEkvi0?=
- =?us-ascii?Q?mAA8JUb75C/s4ppHHeI7CqfzG0ePA6tEwijWlI9iYZ+OoZsBbl6oRz3LcFvq?=
- =?us-ascii?Q?LNSRhY5rTlf6TeKi//XSNLatNlRft7YyVF2KqxWwhXAGhkkp3HnLsntV3Ikn?=
- =?us-ascii?Q?aQqUoK0ccdm52kaMBmYGAcZsCB3pyNrANXETUeXdfdEZlQHESVLHnxYz5hm0?=
- =?us-ascii?Q?/Rzgb5bv2zGeNm7Vxj0YE+cW6VbswoHgmK0c7mNnl4cHRNnzFlMIW0pdSllz?=
- =?us-ascii?Q?TkAFETWhNIVpj0D33uiKit7ybymTPyaK3qjjNQiUrKO4sty8zHCHs7cQ8GAB?=
- =?us-ascii?Q?vP5fgcvUJ0RL8x3JLGwEXNRwQXh2biPKPMvgYAIi24vYRyde7vN7OIoNXprm?=
- =?us-ascii?Q?x36JwrzgThZxRZvN/5eyCkEBbtkRGD5YMtaUlD3WNNh0JY2owBQriPWLe6Uz?=
- =?us-ascii?Q?mkzbhhgYbqE/g7mOf9ey4yBY5LetuZu7riWf6hxh2Ig5kuxyb+d5JCoc21zB?=
- =?us-ascii?Q?1SXoqEDhcz4AYnujEE2ZcUZ2TBtuELZgCgxoj5hdN0a0E/10kdHhQFsA2XcA?=
- =?us-ascii?Q?Jc9+PNJTBn1BIIWMMW/6wD2e6rNuHEsVcLrPCTN3RnJnfIytERw5Z9JnegFB?=
- =?us-ascii?Q?zE+b1VezL8irFgaeeve7mUYMAPP14WQEEerU6ygZ0HKSVLxo+HfiySyGXEOZ?=
- =?us-ascii?Q?JDQ/w14VEj5kT1sI4fpZjEu3QHk5AaGd1oEwzKGABh8UiQMqaaXJK1Q4U14Q?=
- =?us-ascii?Q?bS4mvjL6GNGzPCEH1ISYVKc0NW6hhltzHuJU6Ud2VZwR8bIyc8ftCCQnSSlY?=
- =?us-ascii?Q?3IVsc9LyqV/ji7iEZetIA4w6QfJU/gdztXUpT2cl0K4FqDXaY3SI9MGBp8Qa?=
- =?us-ascii?Q?t6WablGSgAcnCDsIL0ZOk9y+o4VRbD+6u+a0B3uOEFyEbuZwNIOiMSP6U3L5?=
- =?us-ascii?Q?m48XSBPvjG5r0jG7TCS9y5AvICOZWnQ9WyiTVVEUrFi96QHe97wabw7a9KpZ?=
- =?us-ascii?Q?8RV3ilzipWwcbyy8CQUFFMhNTRdC5TXR0Ls3lc4DA9mceXfRRg=3D=3D?=
+ ARA:13230037|1800799021|36860700010|82310400023|376011; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?T99EIB38X+XJP2pXqCuIrO4bDKAOlyCihrj4H9w/hMpwf3ltmk6wXR/kfrZs?=
+ =?us-ascii?Q?W9Eo3NFfC3P9Fy6WDECdrS9KvVsR28zcN5x32M01Dd8SzjmLSxPuNfR4Nfbu?=
+ =?us-ascii?Q?pCmysY5A11ar2j/PZD/AE1uPNfOCnFAlf9eFFwB5A9/KW2//IanLJV8svpY8?=
+ =?us-ascii?Q?hLo+ahzN11Y9hInv6o05holhdAIT516H00pt+G8fBDS6lcrNdEinifG7FcZE?=
+ =?us-ascii?Q?FlIg5liJuuRi7OTSEBRXZZAUNreC9zv+EKfFu+57a/QWunqgmCBY42MbT1/Y?=
+ =?us-ascii?Q?iwSN4XHR5L0apOLeEi+QMk7n1NePwQS2cTfn0swV5zKjbjJlgHfQraEDC75u?=
+ =?us-ascii?Q?+aWk9kb1HKwYDLIt22fq1Poa6Nj7JoIf1zYVhtucSi23fFtmF28xXFRpFotK?=
+ =?us-ascii?Q?mTRUSQH938p6jrX8BTp0HzMGc2elE1MGdSbM6MEK3DQl0PSph5318k7oi/NQ?=
+ =?us-ascii?Q?LFRS/Njyu7gr8PUGZdYMq+jrlOTFTTLEnzOSuc1qQ+Qvey97Of0KooayS8Gb?=
+ =?us-ascii?Q?2IXOW1ZEGYg8Kviezq7byKLqTbXwuDlY83oNJunRoDgm7HQ0+VOLVVSB9+d4?=
+ =?us-ascii?Q?+XA9MO9AwOxZtuc1Ky2vu6ntkk7WtOpwRrFdSIjSKDS5MSjY4h8JDeLnpWCY?=
+ =?us-ascii?Q?dzkfJWf9y/BetCZYmU/phrSAXS907YP0EsaYoMF9U0XTXzdjC6IVStXCW8Tp?=
+ =?us-ascii?Q?6M1ldcypt1F80WX7dXTFb8w9N2Oaa2QIy4x2NIbaxE4UI2X8KOxnmMrkZQB3?=
+ =?us-ascii?Q?+TkuNswhHCqTrfFN9H2EVZpgzNGdt9L2NyQxeysO8jVZDVRaca7fGErynppW?=
+ =?us-ascii?Q?ymfvt78MlxRAU84y7HexNqYYOiri+K0lpAbbj/xL91wnV8O9+8P9zGQzRSyU?=
+ =?us-ascii?Q?vUGBTwGQHYla07zX4ZUtXI8CkVeZlLZp0RJuODjBDHsD+TTBbl7E9zNpROgx?=
+ =?us-ascii?Q?+fZMSaqdYsR/+AFBMzWoJYHF9LRiFIGo0w3dlfSYNw3NzYHZsE71W8674sn+?=
+ =?us-ascii?Q?4sUFLwtJHy4+iXXkFYj/J7WZU2omFw1VPYyvUvcV+ZpBQCrDDDdyvnfDLoEu?=
+ =?us-ascii?Q?dmaelcuIhMlFCVb+EJwP2nA3MmZbOxiws8jjUAUMUFQEC8tyvbfNuMHbNrIR?=
+ =?us-ascii?Q?0pj24XiqPXZbC+0F/mWsIjnOIpKXkEJy4DB/+u1J8j1OkNSC8Vop/bdKFn6D?=
+ =?us-ascii?Q?e2pQWx3s2XZRW8U46HZaOmiaOSRmBNCExWgOsDMfispxyDOrWVc+O8sXBHF5?=
+ =?us-ascii?Q?oJeYMFFSChjmp7LGUIyqdFKAjJaNyjzBeTjRboVBe+8ZNaiHuNhScLRnL5Kc?=
+ =?us-ascii?Q?ZOqddnKl9Ql7dipnCz07SjT3xWPtCqHDNwf27gIE8fFUsnqC7amaat/3psZm?=
+ =?us-ascii?Q?UF+zJqQ=3D?=
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
  IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230037)(1800799021)(82310400023)(36860700010)(376011); DIR:OUT;
+ SFS:(13230037)(1800799021)(36860700010)(82310400023)(376011); DIR:OUT;
  SFP:1101; 
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Jun 2024 09:16:51.4866 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5f89437a-83fc-4b18-0e33-08dc90408e10
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Jun 2024 09:16:53.4825 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: d0ffbd67-bcda-443d-fdc8-08dc90408f42
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
  Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: BL6PEPF0001AB55.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthSource: BL6PEPF0001AB56.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB8436
-Received-SPF: permerror client-ip=2a01:111:f403:2405::601;
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6210
+Received-SPF: permerror client-ip=2a01:111:f403:2414::610;
  envelope-from=sai.pavan.boddu@amd.com;
- helo=NAM02-DM3-obe.outbound.protection.outlook.com
+ helo=NAM11-BN8-obe.outbound.protection.outlook.com
 X-Spam_score_int: -22
 X-Spam_score: -2.3
 X-Spam_bar: --
 X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.148,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ WEIRD_QUOTING=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -146,91 +146,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Read boot-mode value as machine property and propagate that to
-SLCR.BOOT_MODE register.
+Added the supported device list and an example command.
 
 Signed-off-by: Sai Pavan Boddu <sai.pavan.boddu@amd.com>
 ---
- hw/arm/xilinx_zynq.c | 31 +++++++++++++++++++++++++++++++
- 1 file changed, 31 insertions(+)
+ docs/system/arm/xlnx-zynq.rst | 47 +++++++++++++++++++++++++++++++++++
+ docs/system/target-arm.rst    |  1 +
+ 2 files changed, 48 insertions(+)
+ create mode 100644 docs/system/arm/xlnx-zynq.rst
 
-diff --git a/hw/arm/xilinx_zynq.c b/hw/arm/xilinx_zynq.c
-index 7f7a3d23fbe..39f07e6dfd8 100644
---- a/hw/arm/xilinx_zynq.c
-+++ b/hw/arm/xilinx_zynq.c
-@@ -38,6 +38,7 @@
- #include "qom/object.h"
- #include "exec/tswap.h"
- #include "target/arm/cpu-qom.h"
-+#include "qapi/visitor.h"
- 
- #define TYPE_ZYNQ_MACHINE MACHINE_TYPE_NAME("xilinx-zynq-a9")
- OBJECT_DECLARE_SIMPLE_TYPE(ZynqMachineState, ZYNQ_MACHINE)
-@@ -90,6 +91,7 @@ struct ZynqMachineState {
-     MachineState parent;
-     Clock *ps_clk;
-     ARMCPU *cpu[ZYNQ_MAX_CPUS];
-+    uint8_t boot_mode;
- };
- 
- static void zynq_write_board_setup(ARMCPU *cpu,
-@@ -176,6 +178,27 @@ static inline int zynq_init_spi_flashes(uint32_t base_addr, qemu_irq irq,
-     return unit;
- }
- 
-+static void zynq_set_boot_mode(Object *obj, const char *str,
-+                                               Error **errp)
-+{
-+    ZynqMachineState *m = ZYNQ_MACHINE(obj);
-+    uint8_t mode = 0;
+diff --git a/docs/system/arm/xlnx-zynq.rst b/docs/system/arm/xlnx-zynq.rst
+new file mode 100644
+index 00000000000..419cc1aec8b
+--- /dev/null
++++ b/docs/system/arm/xlnx-zynq.rst
+@@ -0,0 +1,47 @@
++Xilinx Zynq board (``xilinx-zynq-a9``)
++======================================
++The Zynq 7000 family is based on the AMD SoC architecture. These products
++integrate a feature-rich dual or single-core Arm Cortex-A9 MPCore based
++processing system (PS) and AMD programmable logic (PL) in a single device.
 +
-+    if (!strcasecmp(str, "QSPI")) {
-+        mode = 1;
-+    } else if (!strcasecmp(str, "SD")) {
-+        mode = 5;
-+    } else if (!strcasecmp(str, "NOR")) {
-+        mode = 2;
-+    } else if (!strcasecmp(str, "JTAG")) {
-+        mode = 0;
-+    } else {
-+        error_setg(errp, "%s bootmode is not supported", str);
-+        return;
-+    }
-+    m->boot_mode = mode;
-+}
++More details here:
++https://docs.amd.com/r/en-US/ug585-zynq-7000-SoC-TRM/Zynq-7000-SoC-Technical-Reference-Manual
 +
- static void zynq_init(MachineState *machine)
- {
-     ZynqMachineState *zynq_machine = ZYNQ_MACHINE(machine);
-@@ -241,6 +264,7 @@ static void zynq_init(MachineState *machine)
-     /* Create slcr, keep a pointer to connect clocks */
-     slcr = qdev_new("xilinx-zynq_slcr");
-     qdev_connect_clock_in(slcr, "ps_clk", zynq_machine->ps_clk);
-+    qdev_prop_set_uint8(slcr, "boot-mode", zynq_machine->boot_mode);
-     sysbus_realize_and_unref(SYS_BUS_DEVICE(slcr), &error_fatal);
-     sysbus_mmio_map(SYS_BUS_DEVICE(slcr), 0, 0xF8000000);
++QEMU xilinx-zynq-a9 board supports following devices:
++    - A9 MPCORE
++        - cortex-a9
++        - GIC v1
++        - Generic timer
++        - wdt
++    - OCM 256KB
++    - SMC SRAM@0xe2000000 64MB
++    - Zynq SLCR
++    - SPI x2
++    - QSPI
++    - UART
++    - TTC x2
++    - Gigabit Ethernet Controller x2
++    - SD Controller x2
++    - XADC
++    - Arm PrimeCell DMA Controller
++    - DDR Memory
++    - USB 2.0 x2
++
++Running
++"""""""
++Direct Linux boot of a generic ARM upstream Linux kernel:
++
++.. code-block:: bash
++
++  $ qemu-system-aarch64 -M xilinx-zynq-a9 \
++        -dtb zynq-zc702.dtb  -serial null -serial mon:stdio \
++        -display none  -m 1024 \
++        -initrd rootfs.cpio.gz -kernel zImage
++
++For configuring the boot-mode provide the following on the command line:
++
++.. code-block:: bash
++
++   -machine boot-mode=qspi
++
++Supported values are JTAG, SD, QSPI, NOR.
+diff --git a/docs/system/target-arm.rst b/docs/system/target-arm.rst
+index 870d30e3502..7b992722846 100644
+--- a/docs/system/target-arm.rst
++++ b/docs/system/target-arm.rst
+@@ -109,6 +109,7 @@ undocumented; you can get a complete list by running
+    arm/virt
+    arm/xenpvh
+    arm/xlnx-versal-virt
++   arm/xlnx-zynq
  
-@@ -372,6 +396,7 @@ static void zynq_machine_class_init(ObjectClass *oc, void *data)
-         NULL
-     };
-     MachineClass *mc = MACHINE_CLASS(oc);
-+    ObjectProperty *prop;
-     mc->desc = "Xilinx Zynq Platform Baseboard for Cortex-A9";
-     mc->init = zynq_init;
-     mc->max_cpus = ZYNQ_MAX_CPUS;
-@@ -379,6 +404,12 @@ static void zynq_machine_class_init(ObjectClass *oc, void *data)
-     mc->ignore_memory_transaction_failures = true;
-     mc->valid_cpu_types = valid_cpu_types;
-     mc->default_ram_id = "zynq.ext_ram";
-+    prop = object_class_property_add_str(oc, "boot-mode", NULL,
-+                              zynq_set_boot_mode);
-+    object_class_property_set_description(oc, "boot-mode",
-+                                          "Supported boot modes:"
-+                                          " JTAG QSPI SD NOR");
-+    object_property_set_default_str(prop, "QSPI");
- }
- 
- static const TypeInfo zynq_machine_type = {
+ Emulated CPU architecture support
+ =================================
 -- 
 2.34.1
 
