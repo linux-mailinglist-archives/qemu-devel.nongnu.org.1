@@ -2,133 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69DA790EB6E
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E00B90EB70
 	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jun 2024 14:50:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sJukV-0005WH-Gk; Wed, 19 Jun 2024 08:49:15 -0400
+	id 1sJukZ-0005YT-E4; Wed, 19 Jun 2024 08:49:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sJukQ-0005Vc-U9
- for qemu-devel@nongnu.org; Wed, 19 Jun 2024 08:49:11 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sJukO-0008Kw-7O
- for qemu-devel@nongnu.org; Wed, 19 Jun 2024 08:49:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1718801345;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=uM8hlHsh4aMGWS0Z3ebCCU8/ijPbg/i9sVSzR5U+jlk=;
- b=AFyGHr+GTw+VwMANOxoEUJ4+eHuklY3LFjh0lxsx6MXJ1JXY2zDdHpOCObuhUJBQzX3S1l
- YwmT+8NjyqnpC2ywDCFeOTJ5hanEh6U35soUFb73j0mlSdivFmW88hN3tZiW16qJZT1Nxa
- +o0knGRhXyic/wlp34SexAGg1cfw58c=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-59-BLnuBHe1M0KslngDbYMaLA-1; Wed, 19 Jun 2024 08:49:03 -0400
-X-MC-Unique: BLnuBHe1M0KslngDbYMaLA-1
-Received: by mail-qk1-f199.google.com with SMTP id
- af79cd13be357-79784eb58cdso647319185a.0
- for <qemu-devel@nongnu.org>; Wed, 19 Jun 2024 05:49:03 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sJukU-0005Wn-N8
+ for qemu-devel@nongnu.org; Wed, 19 Jun 2024 08:49:14 -0400
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sJukQ-0008LL-NG
+ for qemu-devel@nongnu.org; Wed, 19 Jun 2024 08:49:14 -0400
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-57d07464aa9so1104802a12.2
+ for <qemu-devel@nongnu.org>; Wed, 19 Jun 2024 05:49:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1718801347; x=1719406147; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=GcVbfAkS8W8gQIjPCN8HOtm0HdYc+tEWdN0wNBVQ5yM=;
+ b=ZxM+0tH0YIP9VzwgH9BUQr8jCA9EsXRa9zROCuOVUzR+N+6tZwCLP1Hrx+GMUs2zuT
+ F6VM51xUuABYxUeEa1+MNHqa4PKtbj1XTm3itOvrzsTzHCTe8seIXkKCkXzvoZbJ9GUw
+ ijQyJyO5bBV9I+ypwKN/sdsMm6U31ExRhEVS4PbN03NmoAzKg0gCqO2MXUUloxNEgv8p
+ Gsx0hEStvHiRLe/aJ4AemimInim+RkSfu/sOOYuOa+LMB3TgcCc0i9CgDiY8QYsEdGM6
+ oncADI3gQbN5YR5PdpvtjPOqM8xQtxP1rCBxixNNeK51rOv1Anu/v/GT1QNwi+QJlTV0
+ rn/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718801343; x=1719406143;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1718801347; x=1719406147;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=uM8hlHsh4aMGWS0Z3ebCCU8/ijPbg/i9sVSzR5U+jlk=;
- b=c5daY80LcDh4/nhlwj4A0Vi5ZOvVHqXeFMu1nmWOLViY3hVg8wGWrJlWBsX8EUriz/
- 7IIg5GcoVA0EI8vBcM2dKrPyr1RjvlmPwo+6BsFp5IaZZgUH8FykbEowgwIZZRYLN2Kp
- ryNKCfgt1LVK9y0xbwsfIiaL6UBKN0S5gv1cENJuMqd/jgZpIg7nORpxcynsWzugmTOv
- R7ZywDFuC0py35nsIzuPfrZoLqOC3IHJkqeSs9XiAkvf4xY54ZtzVgKwFyLnjVW4Bcuu
- QXAeiUefmAHGtqIEoZPUyVbonzTF3KLz9V1h3HA5E95vBGIQl52eaViXVN7PE/7i2EX1
- gi2g==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWfxx9DKfOjh5ONRmizYzoNHEdAbN0Zkev4WOCH+j3d6xDfU49RF81quju4Wp/yMEUU5nrk2GYE8mXos7MJbSy5R9Tom6M=
-X-Gm-Message-State: AOJu0YwFTPeOPznFCEROegPF16ZkfXozWqey1Kd/TwKBLZACAGb/wi6g
- cDZXVGQkDqvFRXHMm6P/D16jmW9mHTDXbolyxuZ7y4ggWhjVwKnUZf3R6d+/1x3yg0+k/hxv0dM
- Di7jXe48X5E+ZHJD8e1ecci6asWoi98qJE2d7mWEW4vfgyQ5VHW/b
-X-Received: by 2002:a05:620a:4084:b0:795:5315:1cc9 with SMTP id
- af79cd13be357-79bb3ed489cmr275558585a.49.1718801342790; 
- Wed, 19 Jun 2024 05:49:02 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFkQz3prxQFkBHP2EiADwIsW8JJPMspChhEeGDmswQ6Fi0om5sF5laWAfEGTGPQUD9r29IR7w==
-X-Received: by 2002:a05:620a:4084:b0:795:5315:1cc9 with SMTP id
- af79cd13be357-79bb3ed489cmr275557485a.49.1718801342470; 
- Wed, 19 Jun 2024 05:49:02 -0700 (PDT)
-Received: from [192.168.0.4] (ip-109-43-178-117.web.vodafone.de.
- [109.43.178.117]) by smtp.gmail.com with ESMTPSA id
- af79cd13be357-798aacae1c6sm601735285a.7.2024.06.19.05.49.01
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 19 Jun 2024 05:49:02 -0700 (PDT)
-Message-ID: <0c71a089-47a7-4d07-954a-aa5071cb563f@redhat.com>
-Date: Wed, 19 Jun 2024 14:49:00 +0200
+ bh=GcVbfAkS8W8gQIjPCN8HOtm0HdYc+tEWdN0wNBVQ5yM=;
+ b=P3f4Xb6fGpex5w+jWq8b6NLrMsx1o/gPivjfrZbwoiy1p1fxi+Q1zPgz6xR12hmaaH
+ H3tTMq3A7jNDIOPHUHnbQl3BWHtf57HVz/+AWkIw3SyJy/DM0Wp+lDG0l1RWG9SqOl+1
+ oldqCfQxRQ5XEGSlf4j/zlOMusa/ZpjKvgCHObYs6noQ5EnwmSxxPcz8ceLv6fIT5OOW
+ izZlMzRnwA7oPwjMikm0Eg9brTzzwI1edhd2riajMxtVVAGKE1vGaQkECzNFZ+NSSxK1
+ s//l+Rc14yEzVoxyIz7FxqMGdmI6Z6d4/DXYdpdC2DHBeKpldpHkxjIE2c1HZTpKsBUb
+ BaHA==
+X-Gm-Message-State: AOJu0Ywt5+IL58fEV7v/I0+jCI2Zj/ujkrQbxG+OnJ/mbIQ+hoyR4j0q
+ xPqQTXQmTfp7Zza13YlqI6CuozhYAR/pi7WexQx4Nq6I+1DZvqJ9RS0owztgUz1CH2B3B2AJ4MJ
+ a
+X-Google-Smtp-Source: AGHT+IH/wycrgETGIrZ14OJYoM1kQk5FdyE1fwxV6xQ+e2PmHpwowo7avFvTmhqMcanHj8FOHHjRSw==
+X-Received: by 2002:a50:9982:0:b0:57a:2ccb:b3e5 with SMTP id
+ 4fb4d7f45d1cf-57d07ec1e50mr1289195a12.42.1718801346616; 
+ Wed, 19 Jun 2024 05:49:06 -0700 (PDT)
+Received: from m1x-phil.lan ([176.176.133.105])
+ by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-57cb741e758sm8309727a12.68.2024.06.19.05.49.05
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Wed, 19 Jun 2024 05:49:06 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Gustavo Romero <gustavo.romero@linaro.org>, qemu-arm@nongnu.org,
+ Anton Johansson <anjo@rev.ng>,
+ Philippe =?unknown-8bit?q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH 0/2] target/arm: Always build Aarch64 gdbstub helpers
+Date: Wed, 19 Jun 2024 14:49:01 +0200
+Message-ID: <20240619124903.56898-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] configure: detect --cpu=mipsisa64r6
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-Cc: philmd@linaro.org
-References: <20240619114616.251610-1-pbonzini@redhat.com>
-From: Thomas Huth <thuth@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20240619114616.251610-1-pbonzini@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -22
-X-Spam_score: -2.3
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::530;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x530.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -144,33 +91,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 19/06/2024 13.46, Paolo Bonzini wrote:
-> Treat it as a MIPS64 machine.
+Merge gdbstub64.c in gdbstub.c and remove uses of
+target specific TARGET_AARCH64 definition.
+Small step toward single ARM/Aarch64 binary.
 
-Where did you encounter it?
+Philippe Mathieu-Daudé (2):
+  target/arm: Merge gdbstub64.c within gdbstub.c
+  target/arm: Always build Aarch64 gdbstub helpers
 
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->   configure | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/configure b/configure
-> index d0703ea279d..3669eec86e5 100755
-> --- a/configure
-> +++ b/configure
-> @@ -452,7 +452,7 @@ case "$cpu" in
->       linux_arch=loongarch
->       ;;
->   
-> -  mips64*)
-> +  mips64*|mipsisa64*)
+ target/arm/cpu.h       |   8 +-
+ target/arm/internals.h |   2 -
+ target/arm/gdbstub.c   | 363 +++++++++++++++++++++++++++++++++++++-
+ target/arm/gdbstub64.c | 383 -----------------------------------------
+ target/arm/meson.build |   1 -
+ 5 files changed, 364 insertions(+), 393 deletions(-)
+ delete mode 100644 target/arm/gdbstub64.c
 
-Maybe simply switch to mips*64*) ?
-
->       cpu=mips64
->       host_arch=mips
->       linux_arch=mips
-
-  Thomas
+-- 
+2.41.0
 
 
