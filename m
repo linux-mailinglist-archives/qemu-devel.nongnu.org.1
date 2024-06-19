@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B284190E0E7
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jun 2024 02:32:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81AC190E0E0
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jun 2024 02:32:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sJjEQ-0006Vs-QS; Tue, 18 Jun 2024 20:31:22 -0400
+	id 1sJjEY-0006eD-8r; Tue, 18 Jun 2024 20:31:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1sJjEP-0006V4-2R
- for qemu-devel@nongnu.org; Tue, 18 Jun 2024 20:31:21 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1sJjEW-0006as-8f
+ for qemu-devel@nongnu.org; Tue, 18 Jun 2024 20:31:28 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1sJjEN-0001Q6-Lq
- for qemu-devel@nongnu.org; Tue, 18 Jun 2024 20:31:20 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1sJjEU-0001Qi-RV
+ for qemu-devel@nongnu.org; Tue, 18 Jun 2024 20:31:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1718757079;
+ s=mimecast20190719; t=1718757086;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=WU3PPeoFcqzJGnQ89mlu8FLrWAVG1O30CAoCNkiPKqk=;
- b=IzJqGrBC+wM0a0TYcGjob1tmr0IJcsJqObwgcUQbFUCWSJ+4N+hVDrc6l+RwhAW67QT19M
- uxyeRU/ug2J5DOejik4S+Rvo9a0rnhVKqMAJid8Z7k82BH3Dz0VBFsxWDhiPZ7Sjonpfqt
- qc/x+nXS93VlmXaPadiNeAvWf6pViD0=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ bh=PKn8SIxGob2pKMM70MaK6Zu4lcrmGDuuPfEZ9b3S+uQ=;
+ b=SpJWRUGht3tE81yX0TJpPKN0zmw8AySpTbAzHFY/zEHpoCvRREdtO2GxVlMz6yFMYZ/ujf
+ wlhnEzYfsivsNoYLb2KjlfFhW5GzRf6D14wGqexJjHqCaAdMGLxN9cpAZXd1wu6FMSTMRs
+ RTikvAPY8EgPtVqDbLrpaRxqLH6eX3s=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-184-C9rZb6ZvOJaKe-8DY929_w-1; Tue,
- 18 Jun 2024 20:31:14 -0400
-X-MC-Unique: C9rZb6ZvOJaKe-8DY929_w-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-402-4OkzGxRBOvGFq_PlNjrGvQ-1; Tue,
+ 18 Jun 2024 20:31:23 -0400
+X-MC-Unique: 4OkzGxRBOvGFq_PlNjrGvQ-1
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C177F195608D; Wed, 19 Jun 2024 00:31:12 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 6E40319560B2; Wed, 19 Jun 2024 00:31:20 +0000 (UTC)
 Received: from scv.localdomain (unknown [10.22.16.38])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id B111F1956087; Wed, 19 Jun 2024 00:31:04 +0000 (UTC)
+ id F122A1955E80; Wed, 19 Jun 2024 00:31:12 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Stefan Hajnoczi <stefanha@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
@@ -68,10 +68,9 @@ Cc: Stefan Hajnoczi <stefanha@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
  Alex Williamson <alex.williamson@redhat.com>,
  Kevin Wolf <kwolf@redhat.com>, Eric Blake <eblake@redhat.com>,
  John Snow <jsnow@redhat.com>
-Subject: [PATCH 05/13] qapi/parser: fix comment parsing immediately following
- a doc block
-Date: Tue, 18 Jun 2024 20:30:04 -0400
-Message-ID: <20240619003012.1753577-6-jsnow@redhat.com>
+Subject: [PATCH 06/13] docs/qapidoc: fix nested parsing under untagged sections
+Date: Tue, 18 Jun 2024 20:30:05 -0400
+Message-ID: <20240619003012.1753577-7-jsnow@redhat.com>
 In-Reply-To: <20240619003012.1753577-1-jsnow@redhat.com>
 References: <20240619003012.1753577-1-jsnow@redhat.com>
 MIME-Version: 1.0
@@ -102,53 +101,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If a comment immediately follows a doc block, the parser doesn't ignore
-that token appropriately. Fix that.
+Sphinx does not like sections without titles, because it wants to
+convert every section into a reference. When there is no title, it
+struggles to do this and transforms the tree inproperly.
 
-e.g.
+Depending on the rST used, this may result in an assertion error deep in
+the docutils HTMLWriter.
 
-> ##
-> # = Hello World!
-> ##
->
-> # I'm a comment!
+(Observed when using ".. admonition:: Notes" under such a section - When
+this is transformed with its own <title> element, Sphinx is fooled into
+believing this title belongs to the section and incorrect mutates the
+docutils tree, leading to errors during rendering time.)
 
-will break the parser, because it does not properly ignore the comment
-token if it immediately follows a doc block.
+When parsing an untagged section (free paragraphs), skip making a hollow
+section and instead append the parse results to the prior section.
 
-Fixes: 3d035cd2cca6 (qapi: Rewrite doc comment parser)
+Many Bothans died to bring us this information.
+
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- scripts/qapi/parser.py          | 2 +-
- tests/qapi-schema/doc-good.json | 2 ++
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ docs/sphinx/qapidoc.py | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/scripts/qapi/parser.py b/scripts/qapi/parser.py
-index 43167ef0ab3..dfd6a6c5bee 100644
---- a/scripts/qapi/parser.py
-+++ b/scripts/qapi/parser.py
-@@ -584,7 +584,7 @@ def get_doc(self) -> 'QAPIDoc':
-                 line = self.get_doc_line()
-                 first = False
- 
--        self.accept(False)
-+        self.accept()
-         doc.end()
-         return doc
- 
-diff --git a/tests/qapi-schema/doc-good.json b/tests/qapi-schema/doc-good.json
-index de38a386e8f..8b39eb946af 100644
---- a/tests/qapi-schema/doc-good.json
-+++ b/tests/qapi-schema/doc-good.json
-@@ -55,6 +55,8 @@
- # - {braces}
- ##
- 
-+# Not a doc comment
+diff --git a/docs/sphinx/qapidoc.py b/docs/sphinx/qapidoc.py
+index f2f2005dd5f..66cf254a624 100644
+--- a/docs/sphinx/qapidoc.py
++++ b/docs/sphinx/qapidoc.py
+@@ -286,14 +286,20 @@ def _nodes_for_sections(self, doc):
+             if section.tag and section.tag == 'TODO':
+                 # Hide TODO: sections
+                 continue
 +
- ##
- # @Enum:
- #
++            if not section.tag:
++                # Sphinx cannot handle sectionless titles;
++                # Instead, just append the results to the prior section.
++                container = nodes.container()
++                self._parse_text_into_node(section.text, container)
++                nodelist += container.children
++                continue
++
+             snode = self._make_section(section.tag)
+-            if section.tag and section.tag.startswith('Example'):
++            if section.tag.startswith('Example'):
+                 snode += self._nodes_for_example(dedent(section.text))
+             else:
+-                self._parse_text_into_node(
+-                    dedent(section.text) if section.tag else section.text,
+-                    snode,
+-                )
++                self._parse_text_into_node(dedent(section.text), snode)
+             nodelist.append(snode)
+         return nodelist
+ 
 -- 
 2.44.0
 
