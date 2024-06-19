@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C457690E0E2
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jun 2024 02:32:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B641490E0E3
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jun 2024 02:32:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sJjF3-0000mZ-I2; Tue, 18 Jun 2024 20:32:01 -0400
+	id 1sJjF9-0001aK-LB; Tue, 18 Jun 2024 20:32:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1sJjF1-0000dn-Su
- for qemu-devel@nongnu.org; Tue, 18 Jun 2024 20:31:59 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1sJjF8-0001Oz-0S
+ for qemu-devel@nongnu.org; Tue, 18 Jun 2024 20:32:06 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1sJjF0-0001SP-8G
- for qemu-devel@nongnu.org; Tue, 18 Jun 2024 20:31:59 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1sJjF6-0001T2-7U
+ for qemu-devel@nongnu.org; Tue, 18 Jun 2024 20:32:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1718757117;
+ s=mimecast20190719; t=1718757123;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=HiXSAuzEdzgitdd236attDgC+aqt3d64fl1N8CQCCn8=;
- b=ivHLGfMmzGLL6dMHcFTFuci1fyWmvJ6pyEhc/VAFnirpDEAN4VyslR0DaT4e4xfd0FnUE0
- 43uy9Fm6vYrs5Nuea6gEMBFMQsz8iaa+EP7hJ280n5w7keP4NsYm2+nAHDk7supbODGUBe
- 9rHzsKGpjVB2mlLS0WNU1xP6zwDIoWA=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ bh=L6AnbYZO/P56oES7EE5cq3UJCGzylUH7FETDvELDxTI=;
+ b=K+jj4oso4FVdcHF7CwOv+P9+aPpJN/vT8uTjC0axwo0E7Zc2amlk6DPlQ8mFSFnTKziFDN
+ +EZZXTIUA9xS+mgzB8sydOU2wPwOwtdLs3KDdhq+cvKdqGS+O4Sm1fMBn4v9zA9ec2P7kl
+ jiEvUwlCLzREFxEc2GqWvioyNWBiCr8=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-592-X6PQE9U4OJe_0JtB1PP6uw-1; Tue,
- 18 Jun 2024 20:31:53 -0400
-X-MC-Unique: X6PQE9U4OJe_0JtB1PP6uw-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-346-EK4KF4UvNm2wymuHGYDrEw-1; Tue,
+ 18 Jun 2024 20:32:00 -0400
+X-MC-Unique: EK4KF4UvNm2wymuHGYDrEw-1
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5FA5819560B3; Wed, 19 Jun 2024 00:31:51 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 8356119560B2; Wed, 19 Jun 2024 00:31:58 +0000 (UTC)
 Received: from scv.localdomain (unknown [10.22.16.38])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 1C6831956087; Wed, 19 Jun 2024 00:31:43 +0000 (UTC)
+ id 5E0BC1955E80; Wed, 19 Jun 2024 00:31:51 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Stefan Hajnoczi <stefanha@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
@@ -68,9 +68,9 @@ Cc: Stefan Hajnoczi <stefanha@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
  Alex Williamson <alex.williamson@redhat.com>,
  Kevin Wolf <kwolf@redhat.com>, Eric Blake <eblake@redhat.com>,
  John Snow <jsnow@redhat.com>
-Subject: [PATCH 10/13] qapi: update prose in note blocks
-Date: Tue, 18 Jun 2024 20:30:09 -0400
-Message-ID: <20240619003012.1753577-11-jsnow@redhat.com>
+Subject: [PATCH 11/13] qapi: add markup to note blocks
+Date: Tue, 18 Jun 2024 20:30:10 -0400
+Message-ID: <20240619003012.1753577-12-jsnow@redhat.com>
 In-Reply-To: <20240619003012.1753577-1-jsnow@redhat.com>
 References: <20240619003012.1753577-1-jsnow@redhat.com>
 MIME-Version: 1.0
@@ -101,43 +101,124 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Where I've noticed, rephrase the note to read more fluently.
+Generally, surround command-line options with ``literal`` markup to help
+it stand out from prose in rendered HTML, and add cross-references to
+replace "see also" messages.
+
+References to types, values, and other QAPI definitions are not yet
+adjusted here; they will be converted en masse in a subsequent patch
+after the new QAPI doc generator is merged.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- qapi/block-core.json | 4 ++--
- qga/qapi-schema.json | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ qapi/control.json   | 4 ++--
+ qapi/misc.json      | 8 ++++----
+ qapi/qdev.json      | 2 +-
+ qapi/run-state.json | 2 +-
+ qapi/sockets.json   | 2 +-
+ qapi/ui.json        | 2 +-
+ 6 files changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/qapi/block-core.json b/qapi/block-core.json
-index cacedfb771c..9ef23ec02ae 100644
---- a/qapi/block-core.json
-+++ b/qapi/block-core.json
-@@ -6048,9 +6048,9 @@
+diff --git a/qapi/control.json b/qapi/control.json
+index 59d5e00c151..fe2af45120b 100644
+--- a/qapi/control.json
++++ b/qapi/control.json
+@@ -24,8 +24,8 @@
  #
- # @name: the name of the internal snapshot to be created
+ # .. note:: This command is valid exactly when first connecting: it must
+ #    be issued before any other command will be accepted, and will fail
+-#    once the monitor is accepting other commands.  (see qemu
+-#    docs/interop/qmp-spec.rst)
++#    once the monitor is accepting other commands.
++#    (see :doc:`/interop/qmp-spec`)
  #
--# .. note:: In transaction, if @name is empty, or any snapshot matching
-+# .. note:: In a transaction, if @name is empty or any snapshot matching
- #    @name exists, the operation will fail.  Only some image formats
--#    support it, for example, qcow2, and rbd.
-+#    support it; for example, qcow2, and rbd.
+ # .. note:: The QMP client needs to explicitly enable QMP capabilities,
+ #    otherwise all the QMP capabilities will be turned off by default.
+diff --git a/qapi/misc.json b/qapi/misc.json
+index 13ea82f5254..b04efbadec6 100644
+--- a/qapi/misc.json
++++ b/qapi/misc.json
+@@ -104,7 +104,7 @@
+ # Returns a list of information about each iothread.
  #
- # Since: 1.7
+ # .. note:: This list excludes the QEMU main loop thread, which is not
+-#    declared using the -object iothread command-line option.  It is
++#    declared using the ``-object iothread`` command-line option.  It is
+ #    always the main thread of the process.
+ #
+ # Returns: a list of @IOThreadInfo for each iothread
+@@ -138,8 +138,8 @@
+ #
+ # .. note:: This function will succeed even if the guest is already in
+ #    the stopped state.  In "inmigrate" state, it will ensure that the
+-#    guest remains paused once migration finishes, as if the -S option
+-#    was passed on the command line.
++#    guest remains paused once migration finishes, as if the ``-S``
++#    option was passed on the command line.
+ #
+ #    In the "suspended" state, it will completely stop the VM and cause
+ #    a transition to the "paused" state.  (Since 9.0)
+@@ -161,7 +161,7 @@
+ # .. note:: This command will succeed if the guest is currently running.
+ #    It will also succeed if the guest is in the "inmigrate" state; in
+ #    this case, the effect of the command is to make sure the guest
+-#    starts once migration finishes, removing the effect of the -S
++#    starts once migration finishes, removing the effect of the ``-S``
+ #    command line option if it was passed.
+ #
+ #    If the VM was previously suspended, and not been reset or woken,
+diff --git a/qapi/qdev.json b/qapi/qdev.json
+index f5b35a814fe..d031fc3590d 100644
+--- a/qapi/qdev.json
++++ b/qapi/qdev.json
+@@ -59,7 +59,7 @@
+ #        the 'docs/qdev-device-use.txt' file.
+ #
+ #     3. It's possible to list device properties by running QEMU with
+-#        the "-device DEVICE,help" command-line argument, where DEVICE
++#        the ``-device DEVICE,help`` command-line argument, where DEVICE
+ #        is the device's name.
+ #
+ # Example:
+diff --git a/qapi/run-state.json b/qapi/run-state.json
+index dc524234ace..252d7d6afa7 100644
+--- a/qapi/run-state.json
++++ b/qapi/run-state.json
+@@ -146,7 +146,7 @@
+ # @reason: The @ShutdownCause which resulted in the SHUTDOWN.
+ #     (since 4.0)
+ #
+-# .. note:: If the command-line option "-no-shutdown" has been
++# .. note:: If the command-line option ``-no-shutdown`` has been
+ #    specified, qemu will not exit, and a STOP event will eventually
+ #    follow the SHUTDOWN event.
+ #
+diff --git a/qapi/sockets.json b/qapi/sockets.json
+index 20e05ca7ac2..f46113ab1b8 100644
+--- a/qapi/sockets.json
++++ b/qapi/sockets.json
+@@ -181,7 +181,7 @@
+ #
+ # .. note:: This type is deprecated in favor of SocketAddress.  The
+ #    difference between SocketAddressLegacy and SocketAddress is that
+-#    the latter has fewer {} on the wire.
++#    the latter has fewer ``{}`` on the wire.
+ #
+ # Since: 1.3
  ##
-diff --git a/qga/qapi-schema.json b/qga/qapi-schema.json
-index 57598331c5c..1273d85bb5f 100644
---- a/qga/qapi-schema.json
-+++ b/qga/qapi-schema.json
-@@ -480,7 +480,7 @@
+diff --git a/qapi/ui.json b/qapi/ui.json
+index a1999965e44..5bcccbfc930 100644
+--- a/qapi/ui.json
++++ b/qapi/ui.json
+@@ -1268,7 +1268,7 @@
+ # Since: 2.6
  #
- # Returns: Number of file systems thawed by this call
+ # .. note:: The consoles are visible in the qom tree, under
+-#    /backend/console[$index]. They have a device link and head
++#    ``/backend/console[$index]``. They have a device link and head
+ #    property, so it is possible to map which console belongs to which
+ #    device and display.
  #
--# .. note:: If return value does not match the previous call to
-+# .. note:: If the return value does not match the previous call to
- #    guest-fsfreeze-freeze, this likely means some freezable filesystems
- #    were unfrozen before this call, and that the filesystem state may
- #    have changed before issuing this command.
 -- 
 2.44.0
 
