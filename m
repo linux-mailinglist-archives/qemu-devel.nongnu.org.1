@@ -2,71 +2,135 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9086F90F0C1
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jun 2024 16:36:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B339B90F15D
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jun 2024 16:54:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sJwOW-0002GA-Dj; Wed, 19 Jun 2024 10:34:40 -0400
+	id 1sJwgW-000171-Ga; Wed, 19 Jun 2024 10:53:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sJwOO-0002Fl-Dr
- for qemu-devel@nongnu.org; Wed, 19 Jun 2024 10:34:32 -0400
-Received: from mgamail.intel.com ([198.175.65.9])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sJwgU-00016t-4t
+ for qemu-devel@nongnu.org; Wed, 19 Jun 2024 10:53:14 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sJwOL-0003Xy-EJ
- for qemu-devel@nongnu.org; Wed, 19 Jun 2024 10:34:32 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1718807670; x=1750343670;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=nZDlhvUT6Rsc5q2kZ2/8XKGyU+Gz7O9C5IAeCTS2DhM=;
- b=MQHM9AftRf1y/4vBBuNDeDGl1BDkDAOFQLa+pqFdbayIlClGFaxBlb9i
- VXKeeiQmZhFJMlopJckl9VdWFELQ0CByUVQTtsFF6F13eMgovb53XCc31
- BcMTSiOq9Y26mG0WCQ+Oa7wT7x8qcTP0ZnRpNP/77VCXDY4YVCyGPRM+/
- IZ0bvys+PYK/nburF/OCDN/jyQULs7JZZQcYyb5E33r/WVQ25U09r0ouz
- k5fCHPEhrms5NfSIlU3Rz9csD4duLjNn9PrBfADOpVGupPGhX7EXwRwl3
- dNiJwxqie36uVVXAguJcZN2upCy80p63w+zBy0RDfXyv8Sx/eS8uITGUG g==;
-X-CSE-ConnectionGUID: 2VStCrZ5SyeHCyJ4XCE+GQ==
-X-CSE-MsgGUID: 5zPR7RujSoK//oG04J2vKw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11108"; a="38262409"
-X-IronPort-AV: E=Sophos;i="6.08,250,1712646000"; d="scan'208";a="38262409"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Jun 2024 07:34:27 -0700
-X-CSE-ConnectionGUID: hpNDQ1S4Q8Ciyu9raLmJFg==
-X-CSE-MsgGUID: /HlVoESnRLeDe5D7q/IjRw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,250,1712646000"; d="scan'208";a="73143909"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by fmviesa001.fm.intel.com with ESMTP; 19 Jun 2024 07:34:24 -0700
-Date: Wed, 19 Jun 2024 22:49:56 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>, Thomas Huth <thuth@redhat.com>,
- Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
-Cc: Zhao Liu <zhao1.liu@intel.com>
-Subject: Re: [PATCH] hw/core: Rename CpuTopology to CPUTopology
-Message-ID: <ZnLwFPb3iLNiC8li@intel.com>
-References: <20240527131837.2630961-1-zhao1.liu@intel.com>
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sJwgP-0007rC-OH
+ for qemu-devel@nongnu.org; Wed, 19 Jun 2024 10:53:13 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1718808786;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=n2Kpt8fJBdOEwXt35JZ5EsgT8fl46K2U5CWU8pBbsO8=;
+ b=B/W7iJWx7Qu2t1fft0lDXUmvlneGuvjIqvfWP8cRJiTCAu5+J9wA9BJsbScufZ7kKlrNZ6
+ Yepz1+G5kWZH3VyhfgwB4DBp3bnRV0CpOvAgW5u7Jqm1Of62jCtb45sEMKDE1qL1b671g9
+ +VasRbIVjC7UcDiy2grJKZgcst3OfbI=
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
+ [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-118-DoUBOyjgNl6aE2Fir5ZPCg-1; Wed, 19 Jun 2024 10:53:04 -0400
+X-MC-Unique: DoUBOyjgNl6aE2Fir5ZPCg-1
+Received: by mail-qt1-f198.google.com with SMTP id
+ d75a77b69052e-44212083709so19709461cf.0
+ for <qemu-devel@nongnu.org>; Wed, 19 Jun 2024 07:53:04 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1718808784; x=1719413584;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=n2Kpt8fJBdOEwXt35JZ5EsgT8fl46K2U5CWU8pBbsO8=;
+ b=eBwzzF0Exs1vvfs8hQEtlq8cMmsBLs9wJgC2pnSzWuMtcjzEd1vz8+aZyhoZFzftAh
+ 7lJh9ivVzlCFrQF7O6OfY8tufB/RzopHAbtIIuiIAg+l3NGNY6y/zWV6M9NKk5ZegpP7
+ 7P2fYH4wUt/ls/P5VzB+/Ok9dtvJKBfKoe8Ibfh7aTNmxfDahZ8+2kHu+vzA9U2Cq4Qf
+ wSjYeDpnmvbxRKfAit9R0xjwA+mBpUW19zbtnvzp15USXevWuiLPoTr+ehIMO84MPVji
+ 0dDHL3hEHMD+NywDtpLckjKz5QEj+oHcE583a0tmWxTxKMftb4Lk6lko2JFo5nzPcI4I
+ ZV4Q==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCV3NU5AeLCntJYDhqmQFFZPC01i3pzkZHe+nMUjAOZ9zMwln0ieRxchOkmsLOIPICT7x3n63xFYL21XC7KfpOQz2cBnmSg=
+X-Gm-Message-State: AOJu0Yxk1ueZxAyITOAxeIQ/KZXMMUUiB2TbIgiWEEJ1e+AqpA5c4TdJ
+ VPnK1DhnyVsnqRt13U9LQOIPgeRdiq+Nd1AiaDqS1Rkp1tZoaCPF0i6SCsAbk/hH7a4coo56MPy
+ Ub0xUPQNn2FZjokWPssYqbqWv1HvD0Uq1ehSpwaX4hjAsO0rPg+sq
+X-Received: by 2002:a05:622a:1189:b0:441:24e:6464 with SMTP id
+ d75a77b69052e-4449b93f587mr91757641cf.14.1718808784135; 
+ Wed, 19 Jun 2024 07:53:04 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEXH0+5MxJ+DFaELjmYPlFk7Q80t9YH0lzi9fD9xzhFoaMtDjlXax9JXGhrJqD/wJKMbJFLPg==
+X-Received: by 2002:a05:622a:1189:b0:441:24e:6464 with SMTP id
+ d75a77b69052e-4449b93f587mr91757401cf.14.1718808783793; 
+ Wed, 19 Jun 2024 07:53:03 -0700 (PDT)
+Received: from [192.168.0.4] (ip-109-43-178-117.web.vodafone.de.
+ [109.43.178.117]) by smtp.gmail.com with ESMTPSA id
+ d75a77b69052e-441f2fceea3sm66496181cf.78.2024.06.19.07.53.01
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 19 Jun 2024 07:53:03 -0700 (PDT)
+Message-ID: <d0135269-25c8-4156-ad0e-9b3b4b9159f5@redhat.com>
+Date: Wed, 19 Jun 2024 16:53:00 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240527131837.2630961-1-zhao1.liu@intel.com>
-Received-SPF: pass client-ip=198.175.65.9; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -45
-X-Spam_score: -4.6
-X-Spam_bar: ----
-X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] hw/core: Rename CpuTopology to CPUTopology
+To: Zhao Liu <zhao1.liu@intel.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, Markus Armbruster <armbru@redhat.com>,
+ qemu-devel@nongnu.org
+References: <20240527131837.2630961-1-zhao1.liu@intel.com>
+ <ZnLwFPb3iLNiC8li@intel.com>
+From: Thomas Huth <thuth@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <ZnLwFPb3iLNiC8li@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
+X-Spam_bar: --
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -83,191 +147,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi maintainers,
-
-Per my communication with Markus, it seems this renaming matches the
-"local consistency" principle in (include/hw/boards.h). :-)
-
-So do you think this change is acceptable?
-
-Thanks,
-Zhao
-
-On Mon, May 27, 2024 at 09:18:37PM +0800, Zhao Liu wrote:
-> Date: Mon, 27 May 2024 21:18:37 +0800
-> From: Zhao Liu <zhao1.liu@intel.com>
-> Subject: [PATCH] hw/core: Rename CpuTopology to CPUTopology
-> X-Mailer: git-send-email 2.34.1
+On 19/06/2024 16.49, Zhao Liu wrote:
+> Hi maintainers,
 > 
-> Use CPUTopology to honor the generic style of CPU capitalization
-> abbreviations.
+> Per my communication with Markus, it seems this renaming matches the
+> "local consistency" principle in (include/hw/boards.h). :-)
 > 
-> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-> ---
->  * Split from the previous SMP cache RFC:
->    https://lore.kernel.org/qemu-devel/20240220092504.726064-2-zhao1.liu@linux.intel.com/
-> ---
->  hw/s390x/cpu-topology.c         |  6 +++---
->  include/hw/boards.h             |  8 ++++----
->  include/hw/s390x/cpu-topology.h |  6 +++---
->  tests/unit/test-smp-parse.c     | 14 +++++++-------
->  4 files changed, 17 insertions(+), 17 deletions(-)
+> So do you think this change is acceptable?
+
+I don't care too much, both ways of naming look acceptable to me...
+... but in case somebody else wants to merge this, FWIW:
+
+s390x parts
+Acked-by: Thomas Huth <thuth@redhat.com>
+
 > 
-> diff --git a/hw/s390x/cpu-topology.c b/hw/s390x/cpu-topology.c
-> index f16bdf65faa0..016f6c1c15ac 100644
-> --- a/hw/s390x/cpu-topology.c
-> +++ b/hw/s390x/cpu-topology.c
-> @@ -86,7 +86,7 @@ bool s390_has_topology(void)
->   */
->  static void s390_topology_init(MachineState *ms)
->  {
-> -    CpuTopology *smp = &ms->smp;
-> +    CPUTopology *smp = &ms->smp;
->  
->      s390_topology.cores_per_socket = g_new0(uint8_t, smp->sockets *
->                                              smp->books * smp->drawers);
-> @@ -181,7 +181,7 @@ void s390_topology_reset(void)
->   */
->  static bool s390_topology_cpu_default(S390CPU *cpu, Error **errp)
->  {
-> -    CpuTopology *smp = &current_machine->smp;
-> +    CPUTopology *smp = &current_machine->smp;
->      CPUS390XState *env = &cpu->env;
->  
->      /* All geometry topology attributes must be set or all unset */
-> @@ -234,7 +234,7 @@ static bool s390_topology_check(uint16_t socket_id, uint16_t book_id,
->                                  uint16_t drawer_id, uint16_t entitlement,
->                                  bool dedicated, Error **errp)
->  {
-> -    CpuTopology *smp = &current_machine->smp;
-> +    CPUTopology *smp = &current_machine->smp;
->  
->      if (socket_id >= smp->sockets) {
->          error_setg(errp, "Unavailable socket: %d", socket_id);
-> diff --git a/include/hw/boards.h b/include/hw/boards.h
-> index 2fa800f11ae4..c1737f2a5736 100644
-> --- a/include/hw/boards.h
-> +++ b/include/hw/boards.h
-> @@ -334,7 +334,7 @@ typedef struct DeviceMemoryState {
->  } DeviceMemoryState;
->  
->  /**
-> - * CpuTopology:
-> + * CPUTopology:
->   * @cpus: the number of present logical processors on the machine
->   * @drawers: the number of drawers on the machine
->   * @books: the number of books in one drawer
-> @@ -346,7 +346,7 @@ typedef struct DeviceMemoryState {
->   * @threads: the number of threads in one core
->   * @max_cpus: the maximum number of logical processors on the machine
->   */
-> -typedef struct CpuTopology {
-> +typedef struct CPUTopology {
->      unsigned int cpus;
->      unsigned int drawers;
->      unsigned int books;
-> @@ -357,7 +357,7 @@ typedef struct CpuTopology {
->      unsigned int cores;
->      unsigned int threads;
->      unsigned int max_cpus;
-> -} CpuTopology;
-> +} CPUTopology;
->  
->  /**
->   * MachineState:
-> @@ -409,7 +409,7 @@ struct MachineState {
->      const char *cpu_type;
->      AccelState *accelerator;
->      CPUArchIdList *possible_cpus;
-> -    CpuTopology smp;
-> +    CPUTopology smp;
->      struct NVDIMMState *nvdimms_state;
->      struct NumaState *numa_state;
->  };
-> diff --git a/include/hw/s390x/cpu-topology.h b/include/hw/s390x/cpu-topology.h
-> index c064f427e948..ff09c57a4428 100644
-> --- a/include/hw/s390x/cpu-topology.h
-> +++ b/include/hw/s390x/cpu-topology.h
-> @@ -63,17 +63,17 @@ static inline void s390_topology_reset(void)
->  
->  extern S390Topology s390_topology;
->  
-> -static inline int s390_std_socket(int n, CpuTopology *smp)
-> +static inline int s390_std_socket(int n, CPUTopology *smp)
->  {
->      return (n / smp->cores) % smp->sockets;
->  }
->  
-> -static inline int s390_std_book(int n, CpuTopology *smp)
-> +static inline int s390_std_book(int n, CPUTopology *smp)
->  {
->      return (n / (smp->cores * smp->sockets)) % smp->books;
->  }
->  
-> -static inline int s390_std_drawer(int n, CpuTopology *smp)
-> +static inline int s390_std_drawer(int n, CPUTopology *smp)
->  {
->      return (n / (smp->cores * smp->sockets * smp->books)) % smp->drawers;
->  }
-> diff --git a/tests/unit/test-smp-parse.c b/tests/unit/test-smp-parse.c
-> index 9fdba24fce56..f51138794ca1 100644
-> --- a/tests/unit/test-smp-parse.c
-> +++ b/tests/unit/test-smp-parse.c
-> @@ -120,8 +120,8 @@
->   */
->  typedef struct SMPTestData {
->      SMPConfiguration config;
-> -    CpuTopology expect_prefer_sockets;
-> -    CpuTopology expect_prefer_cores;
-> +    CPUTopology expect_prefer_sockets;
-> +    CPUTopology expect_prefer_cores;
->      const char *expect_error;
->  } SMPTestData;
->  
-> @@ -643,7 +643,7 @@ static char *smp_config_to_string(const SMPConfiguration *config)
->  }
->  
->  /* Use the different calculation than machine_topo_get_threads_per_socket(). */
-> -static unsigned int cpu_topology_get_threads_per_socket(const CpuTopology *topo)
-> +static unsigned int cpu_topology_get_threads_per_socket(const CPUTopology *topo)
->  {
->      /* Check the divisor to avoid invalid topology examples causing SIGFPE. */
->      if (!topo->drawers || !topo->books || !topo->sockets) {
-> @@ -654,7 +654,7 @@ static unsigned int cpu_topology_get_threads_per_socket(const CpuTopology *topo)
->  }
->  
->  /* Use the different calculation than machine_topo_get_cores_per_socket(). */
-> -static unsigned int cpu_topology_get_cores_per_socket(const CpuTopology *topo)
-> +static unsigned int cpu_topology_get_cores_per_socket(const CPUTopology *topo)
->  {
->      /* Check the divisor to avoid invalid topology examples causing SIGFPE. */
->      if (!topo->threads) {
-> @@ -664,13 +664,13 @@ static unsigned int cpu_topology_get_cores_per_socket(const CpuTopology *topo)
->      }
->  }
->  
-> -static char *cpu_topology_to_string(const CpuTopology *topo,
-> +static char *cpu_topology_to_string(const CPUTopology *topo,
->                                      unsigned int threads_per_socket,
->                                      unsigned int cores_per_socket,
->                                      bool has_clusters)
->  {
->      return g_strdup_printf(
-> -        "(CpuTopology) {\n"
-> +        "(CPUTopology) {\n"
->          "    .cpus               = %u,\n"
->          "    .drawers            = %u,\n"
->          "    .books              = %u,\n"
-> @@ -692,7 +692,7 @@ static char *cpu_topology_to_string(const CpuTopology *topo,
->  }
->  
->  static void check_parse(MachineState *ms, const SMPConfiguration *config,
-> -                        const CpuTopology *expect_topo, const char *expect_err,
-> +                        const CPUTopology *expect_topo, const char *expect_err,
->                          bool is_valid)
->  {
->      MachineClass *mc = MACHINE_GET_CLASS(ms);
-> -- 
-> 2.34.1
-> 
+> On Mon, May 27, 2024 at 09:18:37PM +0800, Zhao Liu wrote:
+>> Date: Mon, 27 May 2024 21:18:37 +0800
+>> From: Zhao Liu <zhao1.liu@intel.com>
+>> Subject: [PATCH] hw/core: Rename CpuTopology to CPUTopology
+>> X-Mailer: git-send-email 2.34.1
+>>
+>> Use CPUTopology to honor the generic style of CPU capitalization
+>> abbreviations.
+>>
+>> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+>> ---
+>>   * Split from the previous SMP cache RFC:
+>>     https://lore.kernel.org/qemu-devel/20240220092504.726064-2-zhao1.liu@linux.intel.com/
+>> ---
+>>   hw/s390x/cpu-topology.c         |  6 +++---
+>>   include/hw/boards.h             |  8 ++++----
+>>   include/hw/s390x/cpu-topology.h |  6 +++---
+>>   tests/unit/test-smp-parse.c     | 14 +++++++-------
+>>   4 files changed, 17 insertions(+), 17 deletions(-)
+
+
+
+
 
