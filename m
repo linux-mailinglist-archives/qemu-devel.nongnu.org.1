@@ -2,56 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6382B90F071
+	by mail.lfdr.de (Postfix) with ESMTPS id 7497490F073
 	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jun 2024 16:28:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sJwHK-0004fc-1B; Wed, 19 Jun 2024 10:27:14 -0400
+	id 1sJwHK-0004gL-Un; Wed, 19 Jun 2024 10:27:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sJwHD-0004eV-BP
+ id 1sJwHD-0004eU-Ao
  for qemu-devel@nongnu.org; Wed, 19 Jun 2024 10:27:08 -0400
 Received: from mgamail.intel.com ([192.198.163.18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sJwH9-0001zY-Gs
+ id 1sJwHA-00020h-9r
  for qemu-devel@nongnu.org; Wed, 19 Jun 2024 10:27:06 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1718807223; x=1750343223;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=elKJG0XjV2yjbEMTXMJHgHHF+Tv8ht7AwVlPwyJqLpc=;
- b=luGCs+HvS0xiqvaYbbE4Sd2Ifcd4x68Q6/xbE2Njfd4ZRKuKZdpuR1IV
- Wgn575rWTSiyGSYX3kz6tYGopE4TFLKkxWTWiOpHIyd8cSfaktbC7Pkjb
- AKS8brotPTAbeQoz5wdcyFISDCc2pWqcIszc+ocq38Ae0F3Wwnk+uJ3/P
- 0yrhJnQeCQ2b6eYxhpr5tFZiltgasua6UjPicJryI7fORpMj/fm1SoPM9
- l11iwPfznNmJDRLftHKqea5Oh/npb/YLWPYKsALmhdIxpLseouP2wg0RZ
- f9MLI4Hxqs0qcaQ7garw6kK2iIybrwuYe2mPz6LHxpjXxIDH7l/5pshFD A==;
-X-CSE-ConnectionGUID: hJuJkdGFT+igOLAK4Mi6rw==
-X-CSE-MsgGUID: ZenX6BEVSXGakP2nmYF2XA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11108"; a="15462614"
-X-IronPort-AV: E=Sophos;i="6.08,250,1712646000"; d="scan'208";a="15462614"
+ t=1718807224; x=1750343224;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=oz4iYND1Xekpj8oEUN4s0fCw1gdhIu4WUfOqsSv9eIU=;
+ b=aJb4jYZnWX41gVDgdYdHDA2pEI4nVUnm5iNvHs4+d8j6JeTmeFvVWY0N
+ ps+JJVuXLyIEKHIuo0pL0tt77nnYL4W7a3L++3+C10mniUWMIO6XCsDZQ
+ w4By4WkylZsAT6aV7FnE8ljoDUVlKVcMfUW5p2FAkO5uZesMHdMqdaidh
+ 3Nbdasf8JVHlJ2WoRvObtlql285SSn/eKYdkXLmj9/n1/0vv5lDKuF7+r
+ jZGVDomshHw0BC7rBBSPB9jBaTrRteKNSYBQlFINrckLfSBkEKeSesAVM
+ KTRtHoHHWUYU9MlnvzcoxIlJiSSDkYelUF9HpFUyhCKalaSdk3Q60tEXD Q==;
+X-CSE-ConnectionGUID: inOJBt/0SKi7w9dqhhlNaw==
+X-CSE-MsgGUID: zTxIZE8uTn2u9mrmXmdQWg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11108"; a="15462615"
+X-IronPort-AV: E=Sophos;i="6.08,250,1712646000"; d="scan'208";a="15462615"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Jun 2024 07:26:59 -0700
-X-CSE-ConnectionGUID: kZX/MSc1S7ieZh8N0ySy4w==
-X-CSE-MsgGUID: lp0wNIZjRzO2aTZcMQgBMA==
+ 19 Jun 2024 07:27:01 -0700
+X-CSE-ConnectionGUID: U3Jio1OsTL2sm4e7jE6NdQ==
+X-CSE-MsgGUID: BsW4ZC82Rm6htGs+6aPKrA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,250,1712646000"; d="scan'208";a="41788914"
+X-IronPort-AV: E=Sophos;i="6.08,250,1712646000"; d="scan'208";a="41788935"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by fmviesa007.fm.intel.com with ESMTP; 19 Jun 2024 07:26:58 -0700
+ by fmviesa007.fm.intel.com with ESMTP; 19 Jun 2024 07:26:59 -0700
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
 	Igor Mammedov <imammedo@redhat.com>
 Cc: qemu-devel@nongnu.org,
 	Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH 0/3] target/i386/cpu: Misc Cleanup on host-cache-info
-Date: Wed, 19 Jun 2024 22:42:12 +0800
-Message-Id: <20240619144215.3273989-1-zhao1.liu@intel.com>
+Subject: [PATCH 1/3] target/i386/cpu: Use hex mask to check for valid cache
+ CPUID leaf
+Date: Wed, 19 Jun 2024 22:42:13 +0800
+Message-Id: <20240619144215.3273989-2-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240619144215.3273989-1-zhao1.liu@intel.com>
+References: <20240619144215.3273989-1-zhao1.liu@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=192.198.163.18; envelope-from=zhao1.liu@intel.com;
@@ -78,44 +81,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+Hexadecimal mask is more intuitive comparing to decimal.
 
-This series is mainly to addresss Igor's comment about if one check in
-host-cache-info could be removed [1], i.e., whether Guest's cache
-topology should be self-consistent (able to correspond to Guest's CPU
-topology level, as we currently do with the Guest cache topo).
+Therefore convert the mask of bits 00-04 to hexadecimal value.
 
-I originally thought (in the mail thread with Igor) that host-cache-info
-should allow Guest and Host to have the same topology level information,
-e.g. if Host shares cache on core level, then via host-cache-info, Guest
-should also share on core level.
-
-But in practice, I gave up on this idea, because in the cache info
-passthrough case, it should be possible for Guest to get the original
-Host cache info (including the original threads sharing cache) without
-further modifying the info to Guest.
-
-Therefore, I simply added the comment in PATCH 3 to hopefully illustrate
-the need for such a check.
-
-Hope my explanation is clear enough so that my poor English doesn't
-bother you!
-
-[1]: https://lore.kernel.org/qemu-devel/20240527170317.14520a2f@imammedo.users.ipa.redhat.com/
-
-Thanks and Best Regards,
-Zhao
+Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
-Zhao Liu (3):
-  target/i386/cpu: Use hex mask to check for valid cache CPUID leaf
-  target/i386/cpu: Check guest_thread_ids_per_pkg for host-cache-info
-    case
-  target/i386/cpu: Add comment about adjusting the Guest cache topo for
-    host-cache-info
+ target/i386/cpu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- target/i386/cpu.c | 24 +++++++++++++++++++-----
- 1 file changed, 19 insertions(+), 5 deletions(-)
-
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 365852cb99e1..c4d4048ec32a 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -6452,7 +6452,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+              * QEMU has its own number of cores/logical cpus,
+              * set 24..14, 31..26 bit to configured values
+              */
+-            if (*eax & 31) {
++            if (*eax & 0x1f) {
+                 int host_vcpus_per_cache = 1 + ((*eax & 0x3FFC000) >> 14);
+ 
+                 *eax &= ~0xFC000000;
 -- 
 2.34.1
 
