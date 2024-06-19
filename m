@@ -2,76 +2,133 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3273590EB68
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jun 2024 14:47:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69DA790EB6E
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jun 2024 14:50:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sJuhI-0003k5-AJ; Wed, 19 Jun 2024 08:45:56 -0400
+	id 1sJukV-0005WH-Gk; Wed, 19 Jun 2024 08:49:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
- id 1sJuhE-0003fa-Mp; Wed, 19 Jun 2024 08:45:52 -0400
-Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
- id 1sJuhC-0007c7-NH; Wed, 19 Jun 2024 08:45:52 -0400
-Received: by mail-ed1-x529.google.com with SMTP id
- 4fb4d7f45d1cf-57d07673185so1217178a12.1; 
- Wed, 19 Jun 2024 05:45:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1718801148; x=1719405948; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=Rt+vMimWpCZ3tXCuIBMMYYTnbBLTe2/+Fe2vxefBHDE=;
- b=EWvPVmUlF7GW7Z/NyYb835SUXpiYEjN87OiUC/OzZtuesgDgrdE/Zbg1pMzZCRN1gj
- UyvGCEj6Mc0NKdets1Bd3J0slbWgrA8cSAm+K16cXreDMDUrDXbPlVQRX4FHxoviGa7E
- hSayexfCUHsu7jXvcQr6qnMF88xlXZ+DhY6WTvDCmCa3vYKwGcmyxL8VIz9uRf3RHmEr
- ui0DrnWlliyDJ2RRMSmztgfmAIBjxtOrfvqfBCJufvB4MrvNDIQbPZRFB5WOo/2hFQ19
- uv9ENDhtSI1qX6KCohaS298/+IrqIau0iSte3IueO5wfj9yd23n6eaPPf5APWgyGcAvX
- au8w==
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sJukQ-0005Vc-U9
+ for qemu-devel@nongnu.org; Wed, 19 Jun 2024 08:49:11 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sJukO-0008Kw-7O
+ for qemu-devel@nongnu.org; Wed, 19 Jun 2024 08:49:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1718801345;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=uM8hlHsh4aMGWS0Z3ebCCU8/ijPbg/i9sVSzR5U+jlk=;
+ b=AFyGHr+GTw+VwMANOxoEUJ4+eHuklY3LFjh0lxsx6MXJ1JXY2zDdHpOCObuhUJBQzX3S1l
+ YwmT+8NjyqnpC2ywDCFeOTJ5hanEh6U35soUFb73j0mlSdivFmW88hN3tZiW16qJZT1Nxa
+ +o0knGRhXyic/wlp34SexAGg1cfw58c=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-59-BLnuBHe1M0KslngDbYMaLA-1; Wed, 19 Jun 2024 08:49:03 -0400
+X-MC-Unique: BLnuBHe1M0KslngDbYMaLA-1
+Received: by mail-qk1-f199.google.com with SMTP id
+ af79cd13be357-79784eb58cdso647319185a.0
+ for <qemu-devel@nongnu.org>; Wed, 19 Jun 2024 05:49:03 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718801148; x=1719405948;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1718801343; x=1719406143;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=Rt+vMimWpCZ3tXCuIBMMYYTnbBLTe2/+Fe2vxefBHDE=;
- b=BMkSe7J/VFd2tTB75wogCpYW8NYWiWCGcLXDY1VO/f9kiqoCr6OLJBxfLwt9WUxFY8
- oVCiCnHfEFSVIQ/t2nJlPdb+PvbhBBLd4aUdsOqGgUNU/nDoc/iaAmCnjBOe8BW5CBBu
- HLYSEZ94XCyo/EpETyv46K2oL9AChhjKJHHhqn/z5UNnM3CPieujsBEC77HgjLSFJ0J3
- cNylHv+NejgZzV2kDE2JaIHcAJ9Hle/IXMnD4wLGPflJwx22z5pYHBeVXBsOCE7UqsrZ
- RxtG529o1EQLJQuF2bW8Tdj679DVkmgkMvp01705WtObvPxrDPGxRYrZLR9lqTt73W+S
- WtLA==
+ bh=uM8hlHsh4aMGWS0Z3ebCCU8/ijPbg/i9sVSzR5U+jlk=;
+ b=c5daY80LcDh4/nhlwj4A0Vi5ZOvVHqXeFMu1nmWOLViY3hVg8wGWrJlWBsX8EUriz/
+ 7IIg5GcoVA0EI8vBcM2dKrPyr1RjvlmPwo+6BsFp5IaZZgUH8FykbEowgwIZZRYLN2Kp
+ ryNKCfgt1LVK9y0xbwsfIiaL6UBKN0S5gv1cENJuMqd/jgZpIg7nORpxcynsWzugmTOv
+ R7ZywDFuC0py35nsIzuPfrZoLqOC3IHJkqeSs9XiAkvf4xY54ZtzVgKwFyLnjVW4Bcuu
+ QXAeiUefmAHGtqIEoZPUyVbonzTF3KLz9V1h3HA5E95vBGIQl52eaViXVN7PE/7i2EX1
+ gi2g==
 X-Forwarded-Encrypted: i=1;
- AJvYcCX2meGPtsFg3r8zaB+CsYX9DgucS3xSve+5rxtwQgVT3uIzdSmxt1r3E9hQiWbtlJ/27DlYZDizuTH6Bpf8xk/gfNZaPYY=
-X-Gm-Message-State: AOJu0Yxx5b0k0cLlkTlBaLqFCyGq2eu/GoV2+kCW4+immzPM9qLsFCQu
- BEK1i3aQHtV/ZcyBWLcQp2BeQu+OanAy3FrWx5YFVZxjXaGi29k3eDgCJgaEGEtICsi5vbjv3M3
- LZ/IiRGxhNiv4eRcDSU+T9/3YAA4=
-X-Google-Smtp-Source: AGHT+IHS24KMyJaVmhL/foSbT9+kH0L79z3SmNOHiu84vdMv3uZbhMIm6vPHEgiWZYEOMxRMHEHN7cZ1GMgHtYushg4=
-X-Received: by 2002:a50:d74f:0:b0:57c:6c98:b622 with SMTP id
- 4fb4d7f45d1cf-57d07ec1fc4mr1853623a12.38.1718801148114; Wed, 19 Jun 2024
- 05:45:48 -0700 (PDT)
+ AJvYcCWfxx9DKfOjh5ONRmizYzoNHEdAbN0Zkev4WOCH+j3d6xDfU49RF81quju4Wp/yMEUU5nrk2GYE8mXos7MJbSy5R9Tom6M=
+X-Gm-Message-State: AOJu0YwFTPeOPznFCEROegPF16ZkfXozWqey1Kd/TwKBLZACAGb/wi6g
+ cDZXVGQkDqvFRXHMm6P/D16jmW9mHTDXbolyxuZ7y4ggWhjVwKnUZf3R6d+/1x3yg0+k/hxv0dM
+ Di7jXe48X5E+ZHJD8e1ecci6asWoi98qJE2d7mWEW4vfgyQ5VHW/b
+X-Received: by 2002:a05:620a:4084:b0:795:5315:1cc9 with SMTP id
+ af79cd13be357-79bb3ed489cmr275558585a.49.1718801342790; 
+ Wed, 19 Jun 2024 05:49:02 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFkQz3prxQFkBHP2EiADwIsW8JJPMspChhEeGDmswQ6Fi0om5sF5laWAfEGTGPQUD9r29IR7w==
+X-Received: by 2002:a05:620a:4084:b0:795:5315:1cc9 with SMTP id
+ af79cd13be357-79bb3ed489cmr275557485a.49.1718801342470; 
+ Wed, 19 Jun 2024 05:49:02 -0700 (PDT)
+Received: from [192.168.0.4] (ip-109-43-178-117.web.vodafone.de.
+ [109.43.178.117]) by smtp.gmail.com with ESMTPSA id
+ af79cd13be357-798aacae1c6sm601735285a.7.2024.06.19.05.49.01
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 19 Jun 2024 05:49:02 -0700 (PDT)
+Message-ID: <0c71a089-47a7-4d07-954a-aa5071cb563f@redhat.com>
+Date: Wed, 19 Jun 2024 14:49:00 +0200
 MIME-Version: 1.0
-References: <20240619091632.2825550-1-sai.pavan.boddu@amd.com>
- <20240619091632.2825550-2-sai.pavan.boddu@amd.com>
-In-Reply-To: <20240619091632.2825550-2-sai.pavan.boddu@amd.com>
-From: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
-Date: Wed, 19 Jun 2024 14:45:36 +0200
-Message-ID: <CAJy5ezpchrSME7YHE7L7VAtLrnuCdfsOEN51jQn7kmBVhYX62A@mail.gmail.com>
-Subject: Re: [PATCH v2 1/3] hw/misc/zynq_slcr: Add BootMode property
-To: Sai Pavan Boddu <sai.pavan.boddu@amd.com>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, 
- Peter Maydell <peter.maydell@linaro.org>, francisco.iglesias@amd.com
-Content-Type: multipart/alternative; boundary="000000000000df7fad061b3d93fe"
-Received-SPF: pass client-ip=2a00:1450:4864:20::529;
- envelope-from=edgar.iglesias@gmail.com; helo=mail-ed1-x529.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] configure: detect --cpu=mipsisa64r6
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+Cc: philmd@linaro.org
+References: <20240619114616.251610-1-pbonzini@redhat.com>
+From: Thomas Huth <thuth@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <20240619114616.251610-1-pbonzini@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,226 +144,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000df7fad061b3d93fe
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On 19/06/2024 13.46, Paolo Bonzini wrote:
+> Treat it as a MIPS64 machine.
 
-On Wed, Jun 19, 2024 at 11:16=E2=80=AFAM Sai Pavan Boddu <sai.pavan.boddu@a=
-md.com>
-wrote:
+Where did you encounter it?
 
-> BootMode property sets user values into BOOT_MODE register, on hardware
-> these are derived from board switches.
->
->
-
-Reviewed-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
-
-
-
-> Signed-off-by: Sai Pavan Boddu <sai.pavan.boddu@amd.com>
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 > ---
->  hw/misc/zynq_slcr.c | 22 +++++++++++++++++++++-
->  1 file changed, 21 insertions(+), 1 deletion(-)
->
-> diff --git a/hw/misc/zynq_slcr.c b/hw/misc/zynq_slcr.c
-> index 3412ff099ea..ad814c3a79b 100644
-> --- a/hw/misc/zynq_slcr.c
-> +++ b/hw/misc/zynq_slcr.c
-> @@ -24,6 +24,8 @@
->  #include "hw/registerfields.h"
->  #include "hw/qdev-clock.h"
->  #include "qom/object.h"
-> +#include "hw/qdev-properties.h"
-> +#include "qapi/error.h"
->
->  #ifndef ZYNQ_SLCR_ERR_DEBUG
->  #define ZYNQ_SLCR_ERR_DEBUG 0
-> @@ -121,6 +123,7 @@ REG32(RST_REASON, 0x250)
->
->  REG32(REBOOT_STATUS, 0x258)
->  REG32(BOOT_MODE, 0x25c)
-> +    FIELD(BOOT_MODE, BOOT_MODE, 0, 4)
->
->  REG32(APU_CTRL, 0x300)
->  REG32(WDT_CLK_SEL, 0x304)
-> @@ -195,6 +198,7 @@ struct ZynqSLCRState {
->      Clock *ps_clk;
->      Clock *uart0_ref_clk;
->      Clock *uart1_ref_clk;
-> +    uint8_t boot_mode;
->  };
->
->  /*
-> @@ -371,7 +375,7 @@ static void zynq_slcr_reset_init(Object *obj,
-> ResetType type)
->      s->regs[R_FPGA_RST_CTRL]  =3D 0x01F33F0F;
->      s->regs[R_RST_REASON]     =3D 0x00000040;
->
-> -    s->regs[R_BOOT_MODE]      =3D 0x00000001;
-> +    s->regs[R_BOOT_MODE]      =3D s->boot_mode & R_BOOT_MODE_BOOT_MODE_M=
-ASK;
->
->      /* 0x700 - 0x7D4 */
->      for (i =3D 0; i < 54; i++) {
-> @@ -588,6 +592,15 @@ static const ClockPortInitArray zynq_slcr_clocks =3D=
- {
->      QDEV_CLOCK_END
->  };
->
-> +static void zynq_slcr_realize(DeviceState *dev, Error **errp)
-> +{
-> +    ZynqSLCRState *s =3D ZYNQ_SLCR(dev);
-> +
-> +    if (s->boot_mode > 0xF) {
-> +        error_setg(errp, "Invalid boot mode %d specified", s->boot_mode)=
-;
-> +    }
-> +}
-> +
->  static void zynq_slcr_init(Object *obj)
->  {
->      ZynqSLCRState *s =3D ZYNQ_SLCR(obj);
-> @@ -610,15 +623,22 @@ static const VMStateDescription vmstate_zynq_slcr =
-=3D {
->      }
->  };
->
-> +static Property zynq_slcr_props[] =3D {
-> +    DEFINE_PROP_UINT8("boot-mode", ZynqSLCRState, boot_mode, 1),
-> +    DEFINE_PROP_END_OF_LIST(),
-> +};
-> +
->  static void zynq_slcr_class_init(ObjectClass *klass, void *data)
->  {
->      DeviceClass *dc =3D DEVICE_CLASS(klass);
->      ResettableClass *rc =3D RESETTABLE_CLASS(klass);
->
->      dc->vmsd =3D &vmstate_zynq_slcr;
-> +    dc->realize =3D zynq_slcr_realize;
->      rc->phases.enter =3D zynq_slcr_reset_init;
->      rc->phases.hold  =3D zynq_slcr_reset_hold;
->      rc->phases.exit  =3D zynq_slcr_reset_exit;
-> +    device_class_set_props(dc, zynq_slcr_props);
->  }
->
->  static const TypeInfo zynq_slcr_info =3D {
-> --
-> 2.34.1
->
->
+>   configure | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/configure b/configure
+> index d0703ea279d..3669eec86e5 100755
+> --- a/configure
+> +++ b/configure
+> @@ -452,7 +452,7 @@ case "$cpu" in
+>       linux_arch=loongarch
+>       ;;
+>   
+> -  mips64*)
+> +  mips64*|mipsisa64*)
 
---000000000000df7fad061b3d93fe
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Maybe simply switch to mips*64*) ?
 
-<div dir=3D"ltr"><div dir=3D"ltr">On Wed, Jun 19, 2024 at 11:16=E2=80=AFAM =
-Sai Pavan Boddu &lt;<a href=3D"mailto:sai.pavan.boddu@amd.com">sai.pavan.bo=
-ddu@amd.com</a>&gt; wrote:<br></div><div class=3D"gmail_quote"><blockquote =
-class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px sol=
-id rgb(204,204,204);padding-left:1ex">BootMode property sets user values in=
-to BOOT_MODE register, on hardware<br>
-these are derived from board switches.<br>
-<br></blockquote><div><br></div><div><br></div><div>Reviewed-by: Edgar E. I=
-glesias &lt;<a href=3D"mailto:edgar.iglesias@amd.com">edgar.iglesias@amd.co=
-m</a>&gt;<br></div><div><br></div><div>=C2=A0</div><blockquote class=3D"gma=
-il_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,2=
-04,204);padding-left:1ex">
-Signed-off-by: Sai Pavan Boddu &lt;<a href=3D"mailto:sai.pavan.boddu@amd.co=
-m" target=3D"_blank">sai.pavan.boddu@amd.com</a>&gt;<br>
----<br>
-=C2=A0hw/misc/zynq_slcr.c | 22 +++++++++++++++++++++-<br>
-=C2=A01 file changed, 21 insertions(+), 1 deletion(-)<br>
-<br>
-diff --git a/hw/misc/zynq_slcr.c b/hw/misc/zynq_slcr.c<br>
-index 3412ff099ea..ad814c3a79b 100644<br>
---- a/hw/misc/zynq_slcr.c<br>
-+++ b/hw/misc/zynq_slcr.c<br>
-@@ -24,6 +24,8 @@<br>
-=C2=A0#include &quot;hw/registerfields.h&quot;<br>
-=C2=A0#include &quot;hw/qdev-clock.h&quot;<br>
-=C2=A0#include &quot;qom/object.h&quot;<br>
-+#include &quot;hw/qdev-properties.h&quot;<br>
-+#include &quot;qapi/error.h&quot;<br>
-<br>
-=C2=A0#ifndef ZYNQ_SLCR_ERR_DEBUG<br>
-=C2=A0#define ZYNQ_SLCR_ERR_DEBUG 0<br>
-@@ -121,6 +123,7 @@ REG32(RST_REASON, 0x250)<br>
-<br>
-=C2=A0REG32(REBOOT_STATUS, 0x258)<br>
-=C2=A0REG32(BOOT_MODE, 0x25c)<br>
-+=C2=A0 =C2=A0 FIELD(BOOT_MODE, BOOT_MODE, 0, 4)<br>
-<br>
-=C2=A0REG32(APU_CTRL, 0x300)<br>
-=C2=A0REG32(WDT_CLK_SEL, 0x304)<br>
-@@ -195,6 +198,7 @@ struct ZynqSLCRState {<br>
-=C2=A0 =C2=A0 =C2=A0Clock *ps_clk;<br>
-=C2=A0 =C2=A0 =C2=A0Clock *uart0_ref_clk;<br>
-=C2=A0 =C2=A0 =C2=A0Clock *uart1_ref_clk;<br>
-+=C2=A0 =C2=A0 uint8_t boot_mode;<br>
-=C2=A0};<br>
-<br>
-=C2=A0/*<br>
-@@ -371,7 +375,7 @@ static void zynq_slcr_reset_init(Object *obj, ResetType=
- type)<br>
-=C2=A0 =C2=A0 =C2=A0s-&gt;regs[R_FPGA_RST_CTRL]=C2=A0 =3D 0x01F33F0F;<br>
-=C2=A0 =C2=A0 =C2=A0s-&gt;regs[R_RST_REASON]=C2=A0 =C2=A0 =C2=A0=3D 0x00000=
-040;<br>
-<br>
--=C2=A0 =C2=A0 s-&gt;regs[R_BOOT_MODE]=C2=A0 =C2=A0 =C2=A0 =3D 0x00000001;<=
-br>
-+=C2=A0 =C2=A0 s-&gt;regs[R_BOOT_MODE]=C2=A0 =C2=A0 =C2=A0 =3D s-&gt;boot_m=
-ode &amp; R_BOOT_MODE_BOOT_MODE_MASK;<br>
-<br>
-=C2=A0 =C2=A0 =C2=A0/* 0x700 - 0x7D4 */<br>
-=C2=A0 =C2=A0 =C2=A0for (i =3D 0; i &lt; 54; i++) {<br>
-@@ -588,6 +592,15 @@ static const ClockPortInitArray zynq_slcr_clocks =3D {=
-<br>
-=C2=A0 =C2=A0 =C2=A0QDEV_CLOCK_END<br>
-=C2=A0};<br>
-<br>
-+static void zynq_slcr_realize(DeviceState *dev, Error **errp)<br>
-+{<br>
-+=C2=A0 =C2=A0 ZynqSLCRState *s =3D ZYNQ_SLCR(dev);<br>
-+<br>
-+=C2=A0 =C2=A0 if (s-&gt;boot_mode &gt; 0xF) {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 error_setg(errp, &quot;Invalid boot mode %d sp=
-ecified&quot;, s-&gt;boot_mode);<br>
-+=C2=A0 =C2=A0 }<br>
-+}<br>
-+<br>
-=C2=A0static void zynq_slcr_init(Object *obj)<br>
-=C2=A0{<br>
-=C2=A0 =C2=A0 =C2=A0ZynqSLCRState *s =3D ZYNQ_SLCR(obj);<br>
-@@ -610,15 +623,22 @@ static const VMStateDescription vmstate_zynq_slcr =3D=
- {<br>
-=C2=A0 =C2=A0 =C2=A0}<br>
-=C2=A0};<br>
-<br>
-+static Property zynq_slcr_props[] =3D {<br>
-+=C2=A0 =C2=A0 DEFINE_PROP_UINT8(&quot;boot-mode&quot;, ZynqSLCRState, boot=
-_mode, 1),<br>
-+=C2=A0 =C2=A0 DEFINE_PROP_END_OF_LIST(),<br>
-+};<br>
-+<br>
-=C2=A0static void zynq_slcr_class_init(ObjectClass *klass, void *data)<br>
-=C2=A0{<br>
-=C2=A0 =C2=A0 =C2=A0DeviceClass *dc =3D DEVICE_CLASS(klass);<br>
-=C2=A0 =C2=A0 =C2=A0ResettableClass *rc =3D RESETTABLE_CLASS(klass);<br>
-<br>
-=C2=A0 =C2=A0 =C2=A0dc-&gt;vmsd =3D &amp;vmstate_zynq_slcr;<br>
-+=C2=A0 =C2=A0 dc-&gt;realize =3D zynq_slcr_realize;<br>
-=C2=A0 =C2=A0 =C2=A0rc-&gt;phases.enter =3D zynq_slcr_reset_init;<br>
-=C2=A0 =C2=A0 =C2=A0rc-&gt;phases.hold=C2=A0 =3D zynq_slcr_reset_hold;<br>
-=C2=A0 =C2=A0 =C2=A0rc-&gt;phases.exit=C2=A0 =3D zynq_slcr_reset_exit;<br>
-+=C2=A0 =C2=A0 device_class_set_props(dc, zynq_slcr_props);<br>
-=C2=A0}<br>
-<br>
-=C2=A0static const TypeInfo zynq_slcr_info =3D {<br>
--- <br>
-2.34.1<br>
-<br>
-</blockquote></div></div>
+>       cpu=mips64
+>       host_arch=mips
+>       linux_arch=mips
 
---000000000000df7fad061b3d93fe--
+  Thomas
+
 
