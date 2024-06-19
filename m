@@ -2,85 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB4F690E26B
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jun 2024 06:45:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1A5D90E280
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jun 2024 07:01:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sJnBs-0001qK-Nt; Wed, 19 Jun 2024 00:45:00 -0400
+	id 1sJnR6-00089M-J4; Wed, 19 Jun 2024 01:00:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sJnBq-0001pw-VS
- for qemu-devel@nongnu.org; Wed, 19 Jun 2024 00:44:58 -0400
-Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
+ (Exim 4.90_1) (envelope-from <osandov@osandov.com>)
+ id 1sJnQx-00086Q-0r
+ for qemu-devel@nongnu.org; Wed, 19 Jun 2024 01:00:36 -0400
+Received: from mail-pj1-x102b.google.com ([2607:f8b0:4864:20::102b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sJnBp-0007jA-3Q
- for qemu-devel@nongnu.org; Wed, 19 Jun 2024 00:44:58 -0400
-Received: by mail-pf1-x42f.google.com with SMTP id
- d2e1a72fcca58-701b0b0be38so5531486b3a.0
- for <qemu-devel@nongnu.org>; Tue, 18 Jun 2024 21:44:56 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <osandov@osandov.com>)
+ id 1sJnQu-0002DK-SW
+ for qemu-devel@nongnu.org; Wed, 19 Jun 2024 01:00:34 -0400
+Received: by mail-pj1-x102b.google.com with SMTP id
+ 98e67ed59e1d1-2c2c6277ef3so4975465a91.3
+ for <qemu-devel@nongnu.org>; Tue, 18 Jun 2024 22:00:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1718772295; x=1719377095; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=1Cp1GBDG94nB1Tc9OevdNHAXSBZL6zT9wcUPdQOM1sI=;
- b=Ag5EJOw425jMLtyjYuHzBDnsu3pgcomQ/FUpIcdQoAqBGBNMhKr/nacgMK4CcHegPJ
- l8HN52lged6/gOHalyBXx9xlI1U1IeWrhBVF/nrirvydzS5g0qFTkfLtmFxfLfXWmBSl
- R/czhHNVVC/kkkS6OXB+c9Y/8CZs7bKxZAhtYMNoqRWnudD1irnX55yi2+wqHy/pu99G
- K9Te6l1Shr1VErILrRvySptb1l0Hh9GXcIhQcseOFgk09mPXWkLgvnGPnBiNpnDWWoYs
- 2SmctzmlUQUh0jKI2LX9tHPN3Px/c0sOA/ypabQbgeXQMlVcpVsV1elJphyZW3JuceUM
- vkZw==
+ d=osandov-com.20230601.gappssmtp.com; s=20230601; t=1718773229; x=1719378029;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=wdqYdzGELW4IMh8dvRt2slYw0DUpWprPFoFZwvvOnhg=;
+ b=hZIPtelAGTqnZ4AHowRQqlNN9eoa/96n03Cslnrioq9BfsiRtGD3CvWnAF0v0iC+ce
+ yu6TSrdEXXrmvtZrJc+CC6OeaaY7G13s8JPspN5WaD0uuPlGCgo7sLAmkMvw3UwZ7Cy2
+ CF/Ekvw9d5q7SZu2IuT9L2ZGvLM5+wCppFRLl45mHK5EARD6kH9XY7XcKI7Gfe8d+/eU
+ WfPU2RWuc2l45bcoLnq2z3zddZUXk8Wqum6DL6Yb2S8nbTnvfNG4JenQo2XFY7urldto
+ HHWDDPsctquksxcte+f9a6ZuN5aOtEkIEH/OcFH8jCx69O+2sxtLqhUrtkOCCNfWXqny
+ 1d4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718772295; x=1719377095;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=1Cp1GBDG94nB1Tc9OevdNHAXSBZL6zT9wcUPdQOM1sI=;
- b=TvsEyXWHhV3jjF6gC34gU/OlhCxJyFCR+74OY4uH3wu8hjoOgnDF7Iv+jFEIhtWimq
- Pdj0fR5v8Ii4WQGZsxXrMPTsehd9F33Op4+wZk9dKl5lNF8bl1regVdlpxREwdalr21h
- W/UvzV3duz/ktS+TLk+y67ovs4UwqVtD542+W8vuOS4JT14li8YiyERFWvK803O2GNjQ
- GDZ4JvRy4Vw6HDK5Mj1VPqvMm7QX0IH9io32SiOWcYa2Qy6lWxWVEj2CnPCYMqTSLd11
- JEL1CB21ku4gFn4xtiOTZan0X1EVYvrqkunwCDqgE+U0Llkij25U7jJQxc5Kha4BDomJ
- 653Q==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWXT7HbCOfyYOoqyefIdtalyAwbnQ/65b+aHbDD1QTiUZKd6pRTPBGWZZ3lnqzqRmdTLltWZ4Uk4u0JTVxI8R4L5uqV2/0=
-X-Gm-Message-State: AOJu0YwKGTLqq4DsT7m/yJoyLzAngYnPv/CcYx8ojWguskPF6nhEmpp4
- FEExpsKhe2zt6KR8thOa/DFJkUCShz1JoQDnV8t4ANYddlOZv3gzj5ieda/SXvd03Zc4xlp3obu
- z
-X-Google-Smtp-Source: AGHT+IFp9xZHgaf8g3BT4mlMfGkjXk05tY6bwkYmusFHk8CEgt2/ycSd91uskpwCxBRFRkPogoTJ6Q==
-X-Received: by 2002:a62:aa0d:0:b0:705:d805:214c with SMTP id
- d2e1a72fcca58-70629c1ad2fmr1576604b3a.3.1718772295450; 
- Tue, 18 Jun 2024 21:44:55 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.132.216])
+ d=1e100.net; s=20230601; t=1718773229; x=1719378029;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=wdqYdzGELW4IMh8dvRt2slYw0DUpWprPFoFZwvvOnhg=;
+ b=uEDG5Tqjn5ljXEZHN2RUmpB4nY2VtD515WA6W6gE6YcjcO4Eu52Tn8qv5eR5AaJle9
+ usIwtWQzn9urXg6/B/5ur4DLwu2c+Aud9dUgc5+4tlBmsv8J8gpr+pwKL+kNq1k29CrL
+ wLDv+RJH2XCEyKr/g8EEG2CzPasVtAt5yEIGU2wZo3KYPq5qisSApjr9ZI43YacpXp4f
+ E9Km2hPp0xNz3tspvlgyvst2IIBP79NLKfs5rOwOGBkB2sAUKlmA2OQvA94daRkJHEj8
+ f1v+HoN3bARnQXgiH46VQtA/g9NW9Jgwsxl5hXhPv/8H1Mx7v/L+pN6fYl4qsKForKjf
+ G3eQ==
+X-Gm-Message-State: AOJu0YxSmytQ4nWqdFj4SMYhHSueIAkO9X9N3G9gR6GLrADS4iJ78z3h
+ NHFYBYRN8HF9TIass7OOw3mu2MbQA/+fue8Y+iR0SDdsay/ETFMUgC/oOa9MbbWQihClB7eA8Dx
+ G9fg=
+X-Google-Smtp-Source: AGHT+IFGKOapms3+4yZP/y65VOPCtRvSPTLwXvy7mVzgCYouExeFAtg/CMJ7sjj/S52Xdj9Wns6vQQ==
+X-Received: by 2002:a17:90b:3552:b0:2c3:11fa:41f with SMTP id
+ 98e67ed59e1d1-2c7b5daec84mr1538586a91.45.1718773227597; 
+ Tue, 18 Jun 2024 22:00:27 -0700 (PDT)
+Received: from telecaster.hsd1.wa.comcast.net ([2601:602:8980:9170::2f17])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-705ccb3d188sm10050415b3a.99.2024.06.18.21.44.54
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 18 Jun 2024 21:44:55 -0700 (PDT)
-Message-ID: <ed69b9c6-2e86-484f-8e04-3b81b9acba33@linaro.org>
-Date: Tue, 18 Jun 2024 21:44:53 -0700
+ 41be03b00d2f7-6fedcf36be7sm7457523a12.1.2024.06.18.22.00.25
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 18 Jun 2024 22:00:26 -0700 (PDT)
+From: Omar Sandoval <osandov@osandov.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-s390x@nongnu.org, qemu-ppc@nongnu.org,
+ Richard Henderson <richard.henderson@linaro.org>,
+ David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ Thomas Huth <thuth@redhat.com>, Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ linux-debuggers@vger.kernel.org
+Subject: [PATCH 0/2] arch_dump: fix prstatus pid on s390x and ppc
+Date: Tue, 18 Jun 2024 22:00:11 -0700
+Message-ID: <cover.1718771802.git.osandov@osandov.com>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 1/5] build-sys: Add rust feature option
-To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, qemu-devel@nongnu.org
-References: <rust-pl011-rfc-v2.git.manos.pitsidianakis@linaro.org>
- <89b7d4ae6c03cf16ce9fcc95d0406c20627fd444.1718101832.git.manos.pitsidianakis@linaro.org>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <89b7d4ae6c03cf16ce9fcc95d0406c20627fd444.1718101832.git.manos.pitsidianakis@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: none client-ip=2607:f8b0:4864:20::102b;
+ envelope-from=osandov@osandov.com; helo=mail-pj1-x102b.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,44 +94,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/11/24 03:33, Manos Pitsidianakis wrote:
-> Add options for Rust in meson_options.txt, meson.build, configure to
-> prepare for adding Rust code in the followup commits.
-> 
-> `rust` is a reserved meson name, so we have to use an alternative.
-> `with_rust` was chosen.
-> 
-> A cargo_wrapper.py script is added that is heavily based on the work of
-> Marc-André Lureau from 2021.
-> 
-> https://patchew.org/QEMU/20210907121943.3498701-1-marcandre.lureau@redhat.com/
-> 
-> Signed-off-by: Marc-André Lureau<marcandre.lureau@redhat.com>
-> Signed-off-by: Manos Pitsidianakis<manos.pitsidianakis@linaro.org>
-> ---
->   .gitignore                    |   2 +
->   MAINTAINERS                   |   5 +
->   configure                     |  12 ++
->   meson.build                   |  11 ++
->   meson_options.txt             |   4 +
->   scripts/cargo_wrapper.py      | 211 ++++++++++++++++++++++++++++++++++
->   scripts/meson-buildoptions.sh |   6 +
->   7 files changed, 251 insertions(+)
->   create mode 100644 scripts/cargo_wrapper.py
+Hello,
 
-[13/5185] Generating rust_pl011_cargo with a custom command
-FAILED: libpl011.a
-/home/rth/chroot-home/qemu/bld-x/pyvenv/bin/python3 
-/home/rth/chroot-home/qemu/src/scripts/cargo_wrapper.py --config-headers 
-/home/rth/chroot-home/qemu/bld-x/config-host.h --meson-build-root 
-/home/rth/chroot-home/qemu/bld-x --meson-build-dir /home/rth/chroot-home/qemu/bld-x/rust 
---meson-source-dir /home/rth/chroot-home/qemu/src/rust --color always --crate-dir 
-/home/rth/chroot-home/qemu/src/rust/pl011 --profile release --target-triple 
-x86_64-unknown-linux-gnu --outdir . build-lib
-/home/rth/chroot-home/qemu/src/scripts/cargo_wrapper.py:14: DeprecationWarning: The 
-distutils package is deprecated and slated for removal in Python 3.12. Use setuptools or 
-check PEP 632 for potential alternatives
+I maintain drgn [1], a debugger for the Linux kernel. I ran into a quirk
+of the NT_PRSTATUS note in kernel core dumps [2], so I looked into how
+QEMU's dump-guest-memory command generates NT_PRSTATUS. I noticed that
+on most architectures, the note's PID field is set to the CPU ID plus 1.
+There are two exceptions: on s390x, there's an endianness bug (it's not
+byte swapped if the host is little endian), and on ppc, it's not set at
+all (it defaults to zero). They're both easy fixes.
 
+Thanks,
+Omar
 
-r~
+1: https://github.com/osandov/drgn
+2: https://github.com/osandov/drgn/issues/404
+
+Omar Sandoval (2):
+  target/s390x/arch_dump: use correct byte order for pid
+  target/ppc/arch_dump: set prstatus pid to cpuid
+
+ target/ppc/arch_dump.c   | 21 ++++++++++++---------
+ target/s390x/arch_dump.c |  2 +-
+ 2 files changed, 13 insertions(+), 10 deletions(-)
+
+-- 
+2.45.2
+
 
