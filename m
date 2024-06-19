@@ -2,73 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F49B90F82F
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jun 2024 23:05:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 382AB90F82E
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jun 2024 23:05:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sK2Pm-0002PG-No; Wed, 19 Jun 2024 17:00:22 -0400
+	id 1sK2Pj-0002ML-Jx; Wed, 19 Jun 2024 17:00:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sK2Pg-0002Ks-OI
- for qemu-devel@nongnu.org; Wed, 19 Jun 2024 17:00:16 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ id 1sK2Ph-0002L9-1r
+ for qemu-devel@nongnu.org; Wed, 19 Jun 2024 17:00:17 -0400
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sK2Pe-0000fw-0B
+ id 1sK2Pf-0000h9-6e
  for qemu-devel@nongnu.org; Wed, 19 Jun 2024 17:00:16 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-1f700e4cb92so1732485ad.2
- for <qemu-devel@nongnu.org>; Wed, 19 Jun 2024 14:00:13 -0700 (PDT)
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-1f6fabe9da3so1749825ad.0
+ for <qemu-devel@nongnu.org>; Wed, 19 Jun 2024 14:00:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1718830812; x=1719435612; darn=nongnu.org;
+ d=linaro.org; s=google; t=1718830813; x=1719435613; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Pj+qvvjA1OpTR0kovCqFcBz5fTkZz/8axEDe30k10Pc=;
- b=UL6OGZ2fMqJJC7Grh+yk0myXfh+KVjBk/piJQeJQNW+wubD7fmBFzx3/KYz9QP/tX7
- CooiZy2oaCGZ3ty/gwE6OHJeIy3IApnKj9x2N9Gsl++QEV2y0tHW/J6fpJhTuwF2DaC9
- ms4XTwkm0PGWdaHY1E7hCj+jd3E6QrJbHsJWomCsaDpWnm2X84kdR0BvVY8MdHii3n9u
- IoD9MdhUFbxkaxMFM87ahJoh2fTzko+YDgAczK8hPOvfdPv1qq/ddRb1HhA0OSEmhH8b
- 15bcRJsM4tBTv7TDT4wFpMwITpMOMXKdqNcgAkCMFmtz3D8A02z3WlBXtcyZD3ai+pA1
- 1gJA==
+ bh=kWCrz2KU8h744vxLguDhIrWWg2q5qa6M3b4q4pYmIRw=;
+ b=mBXKUZ1I4lHVSJcaHvCDDCIQZSzQXEttWhrRkuewz7fa3Sm2YPMBPJ7QE9bfH9BudY
+ /j1+KHwKZYRdUEozPD+926N5OGM9UDNkIy2U4OQ8opPXUkSYDOftftzWJu8MFgoY+lOo
+ BFyekneKM2DG5en86zduLVmBoJxOLsbjo73mLn5r59KFTx3rOtj094QUTnOb0D2gOIH+
+ KI7wJMBZJOByEsYSuig1mNSO8QDCW+A5kTw5g/HmaRejv+eL5PEs96+gg6vaN+Q2mc5X
+ 1Li6IorUHOnWKw1EAokqp32fl8xBqfMK9b9XvRIlN18RcThA7+RrvGyu4PZbsbb6fFDE
+ chJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718830812; x=1719435612;
+ d=1e100.net; s=20230601; t=1718830813; x=1719435613;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Pj+qvvjA1OpTR0kovCqFcBz5fTkZz/8axEDe30k10Pc=;
- b=NbNSnX0tIrJq1eAGUMDAItSZi6h21o2QOx1PyMmfz1FgWGxcsyuRTcSuyrESIY5OZt
- VLoRu5ZKILpBnOdnyxvU1cDRlBR+9UE+wgNbVhBaWCGp2h2zlWyY7DPfdYoX6IgqBnRH
- JZDJ3JxrYBr0LF+6SbRYqWZUi87AnNXffDRtS9d2o0OBlFvdfzzhMVKLclgJ8RM3LXCk
- +7ICIG9jEwfIxgkx1nqUvBAAUSznWwzNuPYwiJhFcU2WnreIum+OYUB5QWPnleYZynl4
- gGFt1p9+sFVcTrYaQY5vLryikmvNdcENEXf1K8cvqh96IXvZYxJeqJbCfqXL7UcN4yM/
- K6FQ==
-X-Gm-Message-State: AOJu0YxUIVYrnWrHLQubdaa8MdGdjEhUyb44lVuNb/v+zYhXpGThV2k+
- qDnuJIdmVPqzpFHZHtvir+ylgIoioaU+p17ya7Hj0fHj6bzXS00sWBg5eb2+22bwWJv3qJtXUSr
- 4
-X-Google-Smtp-Source: AGHT+IFgcah2rCN3TLtimsT5/zjt8zLBgGjoG3XkfSt0PFyZ3ND/Mf5wVQwQXLkKFMxqMfXelM+HMA==
-X-Received: by 2002:a17:903:1cf:b0:1f6:92f1:b01c with SMTP id
- d9443c01a7336-1f9aa481248mr43110975ad.69.1718830812268; 
- Wed, 19 Jun 2024 14:00:12 -0700 (PDT)
+ bh=kWCrz2KU8h744vxLguDhIrWWg2q5qa6M3b4q4pYmIRw=;
+ b=TB9KTh3vxC+RcefLNsWuO4dpbQ70mubqW8KqddP0ZIPbbMPIJJhaVOv9bV/NAIa4PZ
+ WFbh/sZ3QP+EA5cgDeFo97f6iWk950qtt6F+7OmN5Z8VVeOWZAOkJy7YoZYL9bk24+Qy
+ AzpB0ZVB9yNpeLYuiuTj/K4jym6ckXNPK5XsuhX/EQuqNxTE0B6WtKs81NUCKlfCOmps
+ E7GHj9Kk/gsAD7q0PP36nSgB97rSbHtKiNAX8ofnGwxy9YWxYwZYZOn4equQ3k/uSor/
+ 6bpnuz2+Fstog55uOTvtngPn3HOtdRHiQY9xquT59eCJq24SVcZ9TZ3DsJEU5FfqUhxJ
+ n1Ug==
+X-Gm-Message-State: AOJu0YyKe8T828iTOnflt566cjKj2bJ83R0mKLE3Vsh0ULTc1gXDfLbE
+ WElK/OwimO6YvnTxxqqI0PCocpekPh+19TSe7rQu2J3s9PZ0ealG6nW9snYhoQlbOmzdiAgBfV4
+ s
+X-Google-Smtp-Source: AGHT+IGsiVlC5/n5NReTTVEIOzbQqsdsBwGfWiaK9qRMzHpJGy/7oKRzdKfzOhqluMUmiAAetxhPag==
+X-Received: by 2002:a17:902:fc4e:b0:1f9:c661:7b9 with SMTP id
+ d9443c01a7336-1f9c661092amr6024045ad.42.1718830813126; 
+ Wed, 19 Jun 2024 14:00:13 -0700 (PDT)
 Received: from stoup.. ([71.212.132.216]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1f98f8f8c42sm39183765ad.162.2024.06.19.14.00.11
+ d9443c01a7336-1f98f8f8c42sm39183765ad.162.2024.06.19.14.00.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 19 Jun 2024 14:00:11 -0700 (PDT)
+ Wed, 19 Jun 2024 14:00:12 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Bibo Mao <maobibo@loongson.cn>
-Subject: [PULL 20/24] util/bufferiszero: Add loongarch64 vector acceleration
-Date: Wed, 19 Jun 2024 13:59:48 -0700
-Message-Id: <20240619205952.235946-21-richard.henderson@linaro.org>
+Cc: Anton Johansson <anjo@rev.ng>, qemu-stable@nongnu.org,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PULL 21/24] accel/tcg: Fix typo causing tb->page_addr[1] to not be
+ recorded
+Date: Wed, 19 Jun 2024 13:59:49 -0700
+Message-Id: <20240619205952.235946-22-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240619205952.235946-1-richard.henderson@linaro.org>
 References: <20240619205952.235946-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,165 +96,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use inline assembly because no release compiler allows
-per-function selection of the ISA.
+From: Anton Johansson <anjo@rev.ng>
 
-Tested-by: Bibo Mao <maobibo@loongson.cn>
+For TBs crossing page boundaries, the 2nd page will never be
+recorded/removed, as the index of the 2nd page is computed from the
+address of the 1st page. This is due to a typo, fix it.
+
+Cc: qemu-stable@nongnu.org
+Fixes: deba78709a ("accel/tcg: Always lock pages before translation")
+Signed-off-by: Anton Johansson <anjo@rev.ng>
+Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Message-Id: <20240612133031.15298-1-anjo@rev.ng>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- .../loongarch64/host/bufferiszero.c.inc       | 143 ++++++++++++++++++
- 1 file changed, 143 insertions(+)
- create mode 100644 host/include/loongarch64/host/bufferiszero.c.inc
+ accel/tcg/tb-maint.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/host/include/loongarch64/host/bufferiszero.c.inc b/host/include/loongarch64/host/bufferiszero.c.inc
-new file mode 100644
-index 0000000000..69891eac80
---- /dev/null
-+++ b/host/include/loongarch64/host/bufferiszero.c.inc
-@@ -0,0 +1,143 @@
-+/*
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ * buffer_is_zero acceleration, loongarch64 version.
-+ */
-+
-+/*
-+ * Builtins for LSX and LASX are introduced by gcc 14 and llvm 18,
-+ * but as yet neither has support for attribute target, so neither
-+ * is able to enable the optimization without globally enabling
-+ * vector support.  Since we want runtime detection, use assembly.
-+ */
-+
-+static bool buffer_is_zero_lsx(const void *buf, size_t len)
-+{
-+    const void *p = QEMU_ALIGN_PTR_DOWN(buf + 16, 16);
-+    const void *e = QEMU_ALIGN_PTR_DOWN(buf + len - 1, 16) - (7 * 16);
-+    const void *l = buf + len;
-+    bool ret;
-+
-+    asm("vld $vr0,%2,0\n\t"             /* first: buf + 0 */
-+        "vld $vr1,%4,-16\n\t"           /* last: buf + len - 16 */
-+        "vld $vr2,%3,0\n\t"             /* e[0] */
-+        "vld $vr3,%3,16\n\t"            /* e[1] */
-+        "vld $vr4,%3,32\n\t"            /* e[2] */
-+        "vld $vr5,%3,48\n\t"            /* e[3] */
-+        "vld $vr6,%3,64\n\t"            /* e[4] */
-+        "vld $vr7,%3,80\n\t"            /* e[5] */
-+        "vld $vr8,%3,96\n\t"            /* e[6] */
-+        "vor.v $vr0,$vr0,$vr1\n\t"
-+        "vor.v $vr2,$vr2,$vr3\n\t"
-+        "vor.v $vr4,$vr4,$vr5\n\t"
-+        "vor.v $vr6,$vr6,$vr7\n\t"
-+        "vor.v $vr0,$vr0,$vr2\n\t"
-+        "vor.v $vr4,$vr4,$vr6\n\t"
-+        "vor.v $vr0,$vr0,$vr4\n\t"
-+        "vor.v $vr0,$vr0,$vr8\n\t"
-+        "or %0,$r0,$r0\n"               /* prepare return false */
-+    "1:\n\t"
-+        "vsetnez.v $fcc0,$vr0\n\t"
-+        "bcnez $fcc0,2f\n\t"
-+        "vld $vr0,%1,0\n\t"             /* p[0] */
-+        "vld $vr1,%1,16\n\t"            /* p[1] */
-+        "vld $vr2,%1,32\n\t"            /* p[2] */
-+        "vld $vr3,%1,48\n\t"            /* p[3] */
-+        "vld $vr4,%1,64\n\t"            /* p[4] */
-+        "vld $vr5,%1,80\n\t"            /* p[5] */
-+        "vld $vr6,%1,96\n\t"            /* p[6] */
-+        "vld $vr7,%1,112\n\t"           /* p[7] */
-+        "addi.d %1,%1,128\n\t"
-+        "vor.v $vr0,$vr0,$vr1\n\t"
-+        "vor.v $vr2,$vr2,$vr3\n\t"
-+        "vor.v $vr4,$vr4,$vr5\n\t"
-+        "vor.v $vr6,$vr6,$vr7\n\t"
-+        "vor.v $vr0,$vr0,$vr2\n\t"
-+        "vor.v $vr4,$vr4,$vr6\n\t"
-+        "vor.v $vr0,$vr0,$vr4\n\t"
-+        "bltu %1,%3,1b\n\t"
-+        "vsetnez.v $fcc0,$vr0\n\t"
-+        "bcnez $fcc0,2f\n\t"
-+        "ori %0,$r0,1\n"
-+    "2:"
-+        : "=&r"(ret), "+r"(p)
-+        : "r"(buf), "r"(e), "r"(l)
-+        : "f0", "f1", "f2", "f3", "f4", "f5", "f6", "f7", "f8", "fcc0");
-+
-+    return ret;
-+}
-+
-+static bool buffer_is_zero_lasx(const void *buf, size_t len)
-+{
-+    const void *p = QEMU_ALIGN_PTR_DOWN(buf + 32, 32);
-+    const void *e = QEMU_ALIGN_PTR_DOWN(buf + len - 1, 32) - (7 * 32);
-+    const void *l = buf + len;
-+    bool ret;
-+
-+    asm("xvld $xr0,%2,0\n\t"             /* first: buf + 0 */
-+        "xvld $xr1,%4,-32\n\t"           /* last: buf + len - 32 */
-+        "xvld $xr2,%3,0\n\t"             /* e[0] */
-+        "xvld $xr3,%3,32\n\t"            /* e[1] */
-+        "xvld $xr4,%3,64\n\t"            /* e[2] */
-+        "xvld $xr5,%3,96\n\t"            /* e[3] */
-+        "xvld $xr6,%3,128\n\t"           /* e[4] */
-+        "xvld $xr7,%3,160\n\t"           /* e[5] */
-+        "xvld $xr8,%3,192\n\t"           /* e[6] */
-+        "xvor.v $xr0,$xr0,$xr1\n\t"
-+        "xvor.v $xr2,$xr2,$xr3\n\t"
-+        "xvor.v $xr4,$xr4,$xr5\n\t"
-+        "xvor.v $xr6,$xr6,$xr7\n\t"
-+        "xvor.v $xr0,$xr0,$xr2\n\t"
-+        "xvor.v $xr4,$xr4,$xr6\n\t"
-+        "xvor.v $xr0,$xr0,$xr4\n\t"
-+        "xvor.v $xr0,$xr0,$xr8\n\t"
-+        "or %0,$r0,$r0\n\t"              /* prepare return false */
-+        "bgeu %1,%3,2f\n"
-+    "1:\n\t"
-+        "xvsetnez.v $fcc0,$xr0\n\t"
-+        "bcnez $fcc0,3f\n\t"
-+        "xvld $xr0,%1,0\n\t"             /* p[0] */
-+        "xvld $xr1,%1,32\n\t"            /* p[1] */
-+        "xvld $xr2,%1,64\n\t"            /* p[2] */
-+        "xvld $xr3,%1,96\n\t"            /* p[3] */
-+        "xvld $xr4,%1,128\n\t"           /* p[4] */
-+        "xvld $xr5,%1,160\n\t"           /* p[5] */
-+        "xvld $xr6,%1,192\n\t"           /* p[6] */
-+        "xvld $xr7,%1,224\n\t"           /* p[7] */
-+        "addi.d %1,%1,256\n\t"
-+        "xvor.v $xr0,$xr0,$xr1\n\t"
-+        "xvor.v $xr2,$xr2,$xr3\n\t"
-+        "xvor.v $xr4,$xr4,$xr5\n\t"
-+        "xvor.v $xr6,$xr6,$xr7\n\t"
-+        "xvor.v $xr0,$xr0,$xr2\n\t"
-+        "xvor.v $xr4,$xr4,$xr6\n\t"
-+        "xvor.v $xr0,$xr0,$xr4\n\t"
-+        "bltu %1,%3,1b\n"
-+    "2:\n\t"
-+        "xvsetnez.v $fcc0,$xr0\n\t"
-+        "bcnez $fcc0,3f\n\t"
-+        "ori %0,$r0,1\n"
-+    "3:"
-+        : "=&r"(ret), "+r"(p)
-+        : "r"(buf), "r"(e), "r"(l)
-+        : "f0", "f1", "f2", "f3", "f4", "f5", "f6", "f7", "f8", "fcc0");
-+
-+    return ret;
-+}
-+
-+static biz_accel_fn const accel_table[] = {
-+    buffer_is_zero_int_ge256,
-+    buffer_is_zero_lsx,
-+    buffer_is_zero_lasx,
-+};
-+
-+static unsigned best_accel(void)
-+{
-+    unsigned info = cpuinfo_init();
-+    if (info & CPUINFO_LASX) {
-+        return 2;
-+    }
-+    if (info & CPUINFO_LSX) {
-+        return 1;
-+    }
-+    return 0;
-+}
+diff --git a/accel/tcg/tb-maint.c b/accel/tcg/tb-maint.c
+index 19ae6793f3..cc0f5afd47 100644
+--- a/accel/tcg/tb-maint.c
++++ b/accel/tcg/tb-maint.c
+@@ -713,7 +713,7 @@ static void tb_record(TranslationBlock *tb)
+     tb_page_addr_t paddr0 = tb_page_addr0(tb);
+     tb_page_addr_t paddr1 = tb_page_addr1(tb);
+     tb_page_addr_t pindex0 = paddr0 >> TARGET_PAGE_BITS;
+-    tb_page_addr_t pindex1 = paddr0 >> TARGET_PAGE_BITS;
++    tb_page_addr_t pindex1 = paddr1 >> TARGET_PAGE_BITS;
+ 
+     assert(paddr0 != -1);
+     if (unlikely(paddr1 != -1) && pindex0 != pindex1) {
+@@ -745,7 +745,7 @@ static void tb_remove(TranslationBlock *tb)
+     tb_page_addr_t paddr0 = tb_page_addr0(tb);
+     tb_page_addr_t paddr1 = tb_page_addr1(tb);
+     tb_page_addr_t pindex0 = paddr0 >> TARGET_PAGE_BITS;
+-    tb_page_addr_t pindex1 = paddr0 >> TARGET_PAGE_BITS;
++    tb_page_addr_t pindex1 = paddr1 >> TARGET_PAGE_BITS;
+ 
+     assert(paddr0 != -1);
+     if (unlikely(paddr1 != -1) && pindex0 != pindex1) {
 -- 
 2.34.1
 
