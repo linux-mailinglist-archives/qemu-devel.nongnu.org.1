@@ -2,102 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 488D99109CA
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jun 2024 17:24:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69D699109D4
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jun 2024 17:27:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sKJcc-00067Q-BY; Thu, 20 Jun 2024 11:22:46 -0400
+	id 1sKJfx-0000Gy-9G; Thu, 20 Jun 2024 11:26:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sKJcZ-00064R-Q1
- for qemu-devel@nongnu.org; Thu, 20 Jun 2024 11:22:43 -0400
-Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sKJcX-00082h-B7
- for qemu-devel@nongnu.org; Thu, 20 Jun 2024 11:22:43 -0400
-Received: by mail-ed1-x534.google.com with SMTP id
- 4fb4d7f45d1cf-57d1679ee83so1032100a12.2
- for <qemu-devel@nongnu.org>; Thu, 20 Jun 2024 08:22:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1718896960; x=1719501760; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=mk0X1Wnynj7dOIA6noc/XZNsTzvKKxUiDNUzj/HAsA8=;
- b=ZzvT2ZFaSIK0esGkPGcp/rGrJMYSL1ju0zZyVgnEZDZxEykadTO9B4Whacak2AuT99
- EeXn0/T8Ql3WS5h8tRongY7fc50CI2/+dxlgsz/qOP1seRnDIlL/71TIlYrxX2dwGHxo
- vrywgIuvMZ55iqy8uhL8VuHmSLNBB/Y38NmFbIKZAormTyIprZfov271xShdCLqJl1kA
- aOXvSGJVC84pVvcPPTPnvApRMxtYb2ZX1Mdte1OvApq74fh9iJtJidJWhHMFQO6heH9r
- 4wJJjyKJxcKwUdzdzmkI9n7BagHL/YItf079DQo11cH8vy1w3roOtikMEYiUdCuI8j74
- siHw==
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1sKJfu-0000GP-UK
+ for qemu-devel@nongnu.org; Thu, 20 Jun 2024 11:26:10 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1sKJfs-0000Ki-3o
+ for qemu-devel@nongnu.org; Thu, 20 Jun 2024 11:26:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1718897166;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=PVWh+WNEDznQkCV/n7HzSseU4f0b7FoUVEvhIgbGBmI=;
+ b=bCh3ESooLi4YoMIRU8VyCj4htL/KsbT6LWMyD1xYoEKHWc9yAiub2nrul6kpYkcwAVyQza
+ MeX4p/gBivXVu4sTbis7AnxwLh/9EvboBH7eGHIg/01qqvhvoJXxmeae4gjJ9h2ikO7PTg
+ nu2KZnGWXoK2ZscY8X2KUtJSlolNEO4=
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com
+ [209.85.215.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-407-2jHLitv9PCykTI6vYr_SJw-1; Thu, 20 Jun 2024 11:26:04 -0400
+X-MC-Unique: 2jHLitv9PCykTI6vYr_SJw-1
+Received: by mail-pg1-f197.google.com with SMTP id
+ 41be03b00d2f7-6507e2f0615so1054972a12.1
+ for <qemu-devel@nongnu.org>; Thu, 20 Jun 2024 08:26:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718896960; x=1719501760;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=mk0X1Wnynj7dOIA6noc/XZNsTzvKKxUiDNUzj/HAsA8=;
- b=sMTaQdA7yWi2Ew+v33sWPNWA3ypVZIB9rShZ/GBK3ku0CWr53rwplA9X195nDDbozk
- m4HFKx+x3+LHQLS5GUWqfQANb+f9m6iCXLG4MtxIxjNlIBOtf0OaDv+qErL5F6Qf7JQ7
- 1ncWHrcKFZJTInzBgJgF0zkWGXnEQfXC9XwS1o/MnW5ZJVgMtO2e+dE/2rlIOLNqDolo
- RQhywpqW6hnJbuTYeXTwIdkSH+SdK9gYz3k6laos1F/mmW5DVv7kMfkymCId8wyITTLf
- 8ok3rtD+r+jK+c//ap9g2EsSafbzE8b038Dr0LiKAuxt01IwhKXdUeoPaB9tY5BBq8NQ
- Oojg==
-X-Gm-Message-State: AOJu0Yze3G1MRhcYXQzSKQxI7TFgGsX7AFilMXMl0cgC/RosHBKTw64/
- GKDsOZrRJKNpGQwn8njD4HimS91kMIn6GSoctJ/OLbN052LBIgro6iwbe/kdiG0=
-X-Google-Smtp-Source: AGHT+IH9pCECdMbMVVhjjvf6u9eh17rATloLp9u6G8EZyVpWPyMAS/cVnhG2jsc1yqsUpAe4BtIosw==
-X-Received: by 2002:a50:d595:0:b0:57c:5874:4f74 with SMTP id
- 4fb4d7f45d1cf-57d07ed24b8mr3437569a12.28.1718896959461; 
- Thu, 20 Jun 2024 08:22:39 -0700 (PDT)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-57cb72da156sm9758038a12.22.2024.06.20.08.22.29
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 20 Jun 2024 08:22:36 -0700 (PDT)
-Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 3BD7D5FA0E;
- Thu, 20 Jun 2024 16:22:22 +0100 (BST)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, kvm@vger.kernel.org,
- qemu-ppc@nongnu.org, Christian Borntraeger <borntraeger@linux.ibm.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Jamie Iles <quic_jiles@quicinc.com>,
- David Hildenbrand <david@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Mark Burton <mburton@qti.qualcomm.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>, qemu-arm@nongnu.org,
- Laurent Vivier <lvivier@redhat.com>, Alexander Graf <agraf@csgraf.de>,
- Ilya Leoshkevich <iii@linux.ibm.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Marco Liebel <mliebel@qti.qualcomm.com>, Halil Pasic <pasic@linux.ibm.com>,
- Thomas Huth <thuth@redhat.com>, qemu-s390x@nongnu.org,
- Cameron Esfahani <dirty@apple.com>, Alexandre Iooss <erdnaxe@crans.org>,
- Nicholas Piggin <npiggin@gmail.com>, Roman Bolshakov <rbolshakov@ddn.com>,
- "Dr. David Alan Gilbert" <dave@treblig.org>,
- Marcelo Tosatti <mtosatti@redhat.com>,
- Mahmoud Mandour <ma.mandourr@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Max Chou <max.chou@sifive.com>, Frank Chang <frank.chang@sifive.com>
-Subject: [PATCH v2 12/12] accel/tcg: Avoid unnecessary call overhead from
- qemu_plugin_vcpu_mem_cb
-Date: Thu, 20 Jun 2024 16:22:20 +0100
-Message-Id: <20240620152220.2192768-13-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240620152220.2192768-1-alex.bennee@linaro.org>
-References: <20240620152220.2192768-1-alex.bennee@linaro.org>
+ d=1e100.net; s=20230601; t=1718897163; x=1719501963;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=PVWh+WNEDznQkCV/n7HzSseU4f0b7FoUVEvhIgbGBmI=;
+ b=EcVx+ZWTIrMwwDMr4maE8s71h6x2/NO+ywaxXl6pmNu70qchMCq1Tj+aFyrlE9IYol
+ kRLsA68D7LsZt5ra9URXGprhndi7A+6bYXmj8U48QYG/LOgJuN88rBYL+pgHgHWynHjr
+ oOI7GYsKRV5rqCv1OuFiqA0xpxpUSr1fbydsRd2Fx9S9Ysq3AaoG6eMKHeiMS7nt90F6
+ yKDnfAkEN7uEtXxq1CR3J8t8i8mRggBtMIrxGuPOWwV04yhtIgByG/va9CrZEqTkBIZT
+ w3zjr6A8MG1ZT9MpMvQnFcnryV9OGIG/0Kx8lxmb7HSC44RsTwxWPZg2PI8iPacVj4XZ
+ r/kw==
+X-Gm-Message-State: AOJu0YwoCd+xjZEVYNy5VYVpYpD4vkDp5h+31EL0G+DeaogDhRfZ+sqw
+ l9ztjXevQW++7RvPNGW5wGOuVSmSZ9zXMHCV3yMB+R4KD2Kd2LDOOwZKVSsvkHYR6yKRHpkfT+b
+ UuEp7jPdriIDAOJyyCxNDPr98hn1aYPgxZEb7+w0CGM6+dCFH58rXocy/BVrG5B8DXq9cX7Qheg
+ mAokco/mmOIxYqQ1cpZxdVJhz1qvU=
+X-Received: by 2002:a17:902:ecc7:b0:1f7:21fd:ab83 with SMTP id
+ d9443c01a7336-1f9aa461c07mr65806065ad.54.1718897163262; 
+ Thu, 20 Jun 2024 08:26:03 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFK3q6h/ro4t2ohqKpDes/3Oc/Xt4xrr5ZKe6fpWlKkhNl2VAT3dgv5xBoWMuwXwLgPiBvdviLJTOcgSRWYx/g=
+X-Received: by 2002:a17:902:ecc7:b0:1f7:21fd:ab83 with SMTP id
+ d9443c01a7336-1f9aa461c07mr65805645ad.54.1718897162866; Thu, 20 Jun 2024
+ 08:26:02 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::534;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x534.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+References: <20240619003012.1753577-1-jsnow@redhat.com>
+ <20240619003012.1753577-9-jsnow@redhat.com>
+ <87plsd16bc.fsf@pond.sub.org>
+In-Reply-To: <87plsd16bc.fsf@pond.sub.org>
+From: John Snow <jsnow@redhat.com>
+Date: Thu, 20 Jun 2024 11:25:51 -0400
+Message-ID: <CAFn=p-bWCYpO2WhC-9JtmBq-3a+uE0H7jg1FOooatHDeCx4XJQ@mail.gmail.com>
+Subject: Re: [PATCH 08/13] qapi: ensure all errors sections are uniformly
+ typset
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel <qemu-devel@nongnu.org>, Stefan Hajnoczi <stefanha@redhat.com>, 
+ Hanna Reitz <hreitz@redhat.com>, Michael Roth <michael.roth@amd.com>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Victor Toso de Carvalho <victortoso@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, 
+ Konstantin Kostiuk <kkostiuk@redhat.com>, Yanan Wang <wangyanan55@huawei.com>, 
+ Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>, 
+ =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Fabiano Rosas <farosas@suse.de>,
+ Lukas Straub <lukasstraub2@web.de>, Eduardo Habkost <eduardo@habkost.net>,
+ Mads Ynddal <mads@ynddal.dk>, 
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Gerd Hoffmann <kraxel@redhat.com>, Stefan Berger <stefanb@linux.vnet.ibm.com>, 
+ Peter Xu <peterx@redhat.com>, Igor Mammedov <imammedo@redhat.com>, 
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, 
+ Jason Wang <jasowang@redhat.com>, Ani Sinha <anisinha@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Maydell <peter.maydell@linaro.org>, 
+ Qemu-block <qemu-block@nongnu.org>, Jiri Pirko <jiri@resnulli.us>, 
+ Alex Williamson <alex.williamson@redhat.com>, Kevin Wolf <kwolf@redhat.com>, 
+ Eric Blake <eblake@redhat.com>
+Content-Type: multipart/alternative; boundary="000000000000cc66e3061b53ee90"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.152,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -113,47 +113,157 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Max Chou <max.chou@sifive.com>
+--000000000000cc66e3061b53ee90
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-If there are not any QEMU plugin memory callback functions, checking
-before calling the qemu_plugin_vcpu_mem_cb function can reduce the
-function call overhead.
+On Wed, Jun 19, 2024, 8:10=E2=80=AFAM Markus Armbruster <armbru@redhat.com>=
+ wrote:
 
-Signed-off-by: Max Chou <max.chou@sifive.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Frank Chang <frank.chang@sifive.com>
-Message-Id: <20240613175122.1299212-2-max.chou@sifive.com>
----
- accel/tcg/ldst_common.c.inc | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+> John Snow <jsnow@redhat.com> writes:
+>
+> > Transactions have the only instance of an Errors section that isn't a
+> > rST list; turn it into one.
+> >
+> > Signed-off-by: John Snow <jsnow@redhat.com>
+>
+> Let;s explain the "why" a bit more clearly.  Maybe
+>
+>     qapi: Nail down convention that Errors sections are lists
+>
+>     By unstated convention, Errors sections are rST lists.  Document the
+>     convention, and make the one exception conform.
+>
+> > ---
+> >  docs/devel/qapi-code-gen.rst | 7 +++++++
+> >  qapi/transaction.json        | 2 +-
+> >  2 files changed, 8 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/docs/devel/qapi-code-gen.rst b/docs/devel/qapi-code-gen.rs=
+t
+> > index f453bd35465..cee43222f19 100644
+> > --- a/docs/devel/qapi-code-gen.rst
+> > +++ b/docs/devel/qapi-code-gen.rst
+> > @@ -1011,6 +1011,13 @@ like this::
+> >  "Returns" and "Errors" sections are only valid for commands.  They
+> >  document the success and the error response, respectively.
+> >
+> > +"Errors" sections should be formatted as an rST list, each entry
+> > +detailing a relevant error condition. For example::
+> > +
+> > + # Errors:
+> > + #     - If @device does not exist, DeviceNotFound
+> > + #     - Any other error returns a GenericError.
+> > +
+> >  A "Since: x.y.z" tagged section lists the release that introduced the
+> >  definition.
+> >
+> > diff --git a/qapi/transaction.json b/qapi/transaction.json
+> > index 5749c133d4a..07afc269d54 100644
+> > --- a/qapi/transaction.json
+> > +++ b/qapi/transaction.json
+> > @@ -235,7 +235,7 @@
+> >  #     additional detail.
+> >  #
+> >  # Errors:
+> > -#     Any errors from commands in the transaction
+> > +#     - Any errors from commands in the transaction
+> >  #
+> >  # Note: The transaction aborts on the first failure.  Therefore, there
+> >  #     will be information on only one failed operation returned in an
+>
+> Preferably with an improved commit message
+> Reviewed-by: Markus Armbruster <armbru@redhat.com>
+>
 
-diff --git a/accel/tcg/ldst_common.c.inc b/accel/tcg/ldst_common.c.inc
-index c82048e377..87ceb95487 100644
---- a/accel/tcg/ldst_common.c.inc
-+++ b/accel/tcg/ldst_common.c.inc
-@@ -125,7 +125,9 @@ void helper_st_i128(CPUArchState *env, uint64_t addr, Int128 val, MemOpIdx oi)
- 
- static void plugin_load_cb(CPUArchState *env, abi_ptr addr, MemOpIdx oi)
- {
--    qemu_plugin_vcpu_mem_cb(env_cpu(env), addr, oi, QEMU_PLUGIN_MEM_R);
-+    if (cpu_plugin_mem_cbs_enabled(env_cpu(env))) {
-+        qemu_plugin_vcpu_mem_cb(env_cpu(env), addr, oi, QEMU_PLUGIN_MEM_R);
-+    }
- }
- 
- uint8_t cpu_ldb_mmu(CPUArchState *env, abi_ptr addr, MemOpIdx oi, uintptr_t ra)
-@@ -188,7 +190,9 @@ Int128 cpu_ld16_mmu(CPUArchState *env, abi_ptr addr,
- 
- static void plugin_store_cb(CPUArchState *env, abi_ptr addr, MemOpIdx oi)
- {
--    qemu_plugin_vcpu_mem_cb(env_cpu(env), addr, oi, QEMU_PLUGIN_MEM_W);
-+    if (cpu_plugin_mem_cbs_enabled(env_cpu(env))) {
-+        qemu_plugin_vcpu_mem_cb(env_cpu(env), addr, oi, QEMU_PLUGIN_MEM_W);
-+    }
- }
- 
- void cpu_stb_mmu(CPUArchState *env, abi_ptr addr, uint8_t val,
--- 
-2.39.2
+okie dokie.
+
+(Feel free to adjust the doc phrasing too, if you want. I promise I'm not
+offended by that.)
+
+>
+
+--000000000000cc66e3061b53ee90
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
+class=3D"gmail_attr">On Wed, Jun 19, 2024, 8:10=E2=80=AFAM Markus Armbruste=
+r &lt;<a href=3D"mailto:armbru@redhat.com">armbru@redhat.com</a>&gt; wrote:=
+<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;bord=
+er-left:1px #ccc solid;padding-left:1ex">John Snow &lt;<a href=3D"mailto:js=
+now@redhat.com" target=3D"_blank" rel=3D"noreferrer">jsnow@redhat.com</a>&g=
+t; writes:<br>
+<br>
+&gt; Transactions have the only instance of an Errors section that isn&#39;=
+t a<br>
+&gt; rST list; turn it into one.<br>
+&gt;<br>
+&gt; Signed-off-by: John Snow &lt;<a href=3D"mailto:jsnow@redhat.com" targe=
+t=3D"_blank" rel=3D"noreferrer">jsnow@redhat.com</a>&gt;<br>
+<br>
+Let;s explain the &quot;why&quot; a bit more clearly.=C2=A0 Maybe<br>
+<br>
+=C2=A0 =C2=A0 qapi: Nail down convention that Errors sections are lists<br>
+<br>
+=C2=A0 =C2=A0 By unstated convention, Errors sections are rST lists.=C2=A0 =
+Document the<br>
+=C2=A0 =C2=A0 convention, and make the one exception conform.<br>
+<br>
+&gt; ---<br>
+&gt;=C2=A0 docs/devel/qapi-code-gen.rst | 7 +++++++<br>
+&gt;=C2=A0 qapi/transaction.json=C2=A0 =C2=A0 =C2=A0 =C2=A0 | 2 +-<br>
+&gt;=C2=A0 2 files changed, 8 insertions(+), 1 deletion(-)<br>
+&gt;<br>
+&gt; diff --git a/docs/devel/qapi-code-gen.rst b/docs/devel/qapi-code-gen.r=
+st<br>
+&gt; index f453bd35465..cee43222f19 100644<br>
+&gt; --- a/docs/devel/qapi-code-gen.rst<br>
+&gt; +++ b/docs/devel/qapi-code-gen.rst<br>
+&gt; @@ -1011,6 +1011,13 @@ like this::<br>
+&gt;=C2=A0 &quot;Returns&quot; and &quot;Errors&quot; sections are only val=
+id for commands.=C2=A0 They<br>
+&gt;=C2=A0 document the success and the error response, respectively.<br>
+&gt;=C2=A0 <br>
+&gt; +&quot;Errors&quot; sections should be formatted as an rST list, each =
+entry<br>
+&gt; +detailing a relevant error condition. For example::<br>
+&gt; +<br>
+&gt; + # Errors:<br>
+&gt; + #=C2=A0 =C2=A0 =C2=A0- If @device does not exist, DeviceNotFound<br>
+&gt; + #=C2=A0 =C2=A0 =C2=A0- Any other error returns a GenericError.<br>
+&gt; +<br>
+&gt;=C2=A0 A &quot;Since: x.y.z&quot; tagged section lists the release that=
+ introduced the<br>
+&gt;=C2=A0 definition.<br>
+&gt;=C2=A0 <br>
+&gt; diff --git a/qapi/transaction.json b/qapi/transaction.json<br>
+&gt; index 5749c133d4a..07afc269d54 100644<br>
+&gt; --- a/qapi/transaction.json<br>
+&gt; +++ b/qapi/transaction.json<br>
+&gt; @@ -235,7 +235,7 @@<br>
+&gt;=C2=A0 #=C2=A0 =C2=A0 =C2=A0additional detail.<br>
+&gt;=C2=A0 #<br>
+&gt;=C2=A0 # Errors:<br>
+&gt; -#=C2=A0 =C2=A0 =C2=A0Any errors from commands in the transaction<br>
+&gt; +#=C2=A0 =C2=A0 =C2=A0- Any errors from commands in the transaction<br=
+>
+&gt;=C2=A0 #<br>
+&gt;=C2=A0 # Note: The transaction aborts on the first failure.=C2=A0 There=
+fore, there<br>
+&gt;=C2=A0 #=C2=A0 =C2=A0 =C2=A0will be information on only one failed oper=
+ation returned in an<br>
+<br>
+Preferably with an improved commit message<br>
+Reviewed-by: Markus Armbruster &lt;<a href=3D"mailto:armbru@redhat.com" tar=
+get=3D"_blank" rel=3D"noreferrer">armbru@redhat.com</a>&gt;<br></blockquote=
+></div></div><div dir=3D"auto"><br></div><div dir=3D"auto">okie dokie.</div=
+><div dir=3D"auto"><br></div><div dir=3D"auto">(Feel free to adjust the doc=
+ phrasing too, if you want. I promise I&#39;m not offended by that.)</div><=
+div dir=3D"auto"><div class=3D"gmail_quote"><blockquote class=3D"gmail_quot=
+e" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">
+</blockquote></div></div></div>
+
+--000000000000cc66e3061b53ee90--
 
 
