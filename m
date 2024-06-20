@@ -2,72 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 964119105C3
+	by mail.lfdr.de (Postfix) with ESMTPS id 5735C9105C0
 	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jun 2024 15:24:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sKHl3-0004qf-Sc; Thu, 20 Jun 2024 09:23:22 -0400
+	id 1sKHl2-0004mJ-N6; Thu, 20 Jun 2024 09:23:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <arthurtumanyan@gmail.com>)
- id 1sKD9e-0002FF-O8
- for qemu-devel@nongnu.org; Thu, 20 Jun 2024 04:28:26 -0400
-Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
+ (Exim 4.90_1) (envelope-from <cosocaf@gmail.com>) id 1sKEO7-0000ol-Ns
+ for qemu-devel@nongnu.org; Thu, 20 Jun 2024 05:47:27 -0400
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <arthurtumanyan@gmail.com>)
- id 1sKD9c-00059l-8s
- for qemu-devel@nongnu.org; Thu, 20 Jun 2024 04:28:25 -0400
-Received: by mail-ej1-x635.google.com with SMTP id
- a640c23a62f3a-a6fbe639a76so99632566b.1
- for <qemu-devel@nongnu.org>; Thu, 20 Jun 2024 01:28:23 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <cosocaf@gmail.com>) id 1sKEO6-0003zz-7g
+ for qemu-devel@nongnu.org; Thu, 20 Jun 2024 05:47:27 -0400
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-1f4a0050b9aso5646105ad.2
+ for <qemu-devel@nongnu.org>; Thu, 20 Jun 2024 02:47:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1718872102; x=1719476902; darn=nongnu.org;
- h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
- :date:message-id:reply-to;
- bh=HVY7kz4o5AJEzQoHDnGHl7B3DMBernvumRCFXI7Sb6I=;
- b=Wyh2/esZwV/D08qqDHcZWsFWPrxW6Z2/sEL01Zmrm2I/smnWIiWGhQvM5SksWzutlC
- JhIJ2yEDG/fiXTCIw/8ulLiytZ67oH+RG9Ag1Qhvf8/J5Glm2Z8B5olXlWiW39K8fC+a
- md7q10cEZmwzXbP3WoOBG2ZJho7CdSDfWZlAX6V/OdFK6gryw/Vl4oG9hIVDKAFovnk6
- DdoHMlZ+rlhBsK+T/tQdpeF3tuEzZKo1qruF2qMDkcwqInN7N+wVKz/Slo27vJ3VCuu5
- 06WMrYyDpTzlE2x1O6aC9+pwefAn84AdagVWUUwSMY2eybCT7Z+gtEtYV89yGsS8jQIE
- ig1A==
+ d=gmail.com; s=20230601; t=1718876844; x=1719481644; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=0SWsQ+P9qcIwkDeO8cToOuTdDu6RLHW2I8drvdyHOUQ=;
+ b=mtoif6vDy2C+lGg5lXA8sOsYk3TLCxPxXZPqRve8SfmlSDQCD1Dcky5j4/GW6hcsT3
+ qnrpUwSSCS/cELZ621nB+q+FcGbVZufQZze/uyBlezELqt8tlTi675nyTuKCCAErHcry
+ FcjSUJAli3QrC6qfr07a7DtWzNg2x633/ADFdMj9MZCfBitrXqtKxn8sPWBi8nsOsH0X
+ GD2mxVw9aGZWT9+tPWr6Qs0Uw989ECgYAKkgeDj5ipbe7wcR5DTI2sChmYqJnjg/mFA3
+ 2fu555eSuOEb4kAkLSBxST6AHWwRj/TiLiarSHayHmCDF0IJwEi/pAoGvkYcmqBPrvtl
+ NrlA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718872102; x=1719476902;
- h=to:subject:message-id:date:from:mime-version:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=HVY7kz4o5AJEzQoHDnGHl7B3DMBernvumRCFXI7Sb6I=;
- b=qf1I4j5YiskDsfl96cdqGCImwmE+THc4w5qS9NIeXw4bpGDUBGwv6wpIvGCOhvVvIY
- zwblk/4a68qlySZwsOWN2u70vd5q8lD4enNdKPcfiWGZJhxNB/SZiKOkjD6auDjusrbX
- bMsH6hxxts8ih0wsR96ajXMMrU6E6+ms4sujqkLiN3c6skmhpt7ztgPS6heWv+UDDb3W
- W/njayUfyjpsOJx70J0ZJ+lXUhrWAqZmd2DnFC5DHMEc3sPUTCP5lu/GNoA1EymAEuJw
- m92XODMxK6Y4iEVwTdXzQ3lFhPk/tJQu4MliGNrW/uhbae2CvNHq9ei5cOahzW2U01vb
- W9vQ==
-X-Gm-Message-State: AOJu0YzQHBKWKFdceu66MQjgc3qdp8HDUD2A3A2V0CW0qCqwTGapd/0+
- 6mZfW3d2nnodQpLHPICt7I6HeXVu2PhFvbmn2fBsc2JGqSRSftJCHCFYCu/EKZPMqxWAWKUmV6s
- UTUTxfdiQ7e10D1zIfDYE6x+GG1jrh7d8
-X-Google-Smtp-Source: AGHT+IFQmXnIWjljxAynXr0wPcDSltNljLas0c9fop5KhOe8oxM3oKHhp2XCotKhR4qb2ab76KVTUxhE4JPqO0Fy9ko=
-X-Received: by 2002:a17:906:144f:b0:a6f:935b:8777 with SMTP id
- a640c23a62f3a-a6f9506f561mr470208166b.25.1718872101709; Thu, 20 Jun 2024
- 01:28:21 -0700 (PDT)
-MIME-Version: 1.0
-From: Arthur Tumanyan <arthurtumanyan@gmail.com>
-Date: Thu, 20 Jun 2024 12:28:10 +0400
-Message-ID: <CADueUgQh-=vmoO9kqL589Xeuf_LOM_K2Rr-rBxwe8iArdNdzsA@mail.gmail.com>
-Subject: How to use designware-root-port and designware-root-host devices ?
+ d=1e100.net; s=20230601; t=1718876844; x=1719481644;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=0SWsQ+P9qcIwkDeO8cToOuTdDu6RLHW2I8drvdyHOUQ=;
+ b=u3dl9GoxmguuY2nppR+WGY81aNINdCC9vWl1WOCwea0hIbUhUjiKGwzWazEBeZpE7g
+ 4ZUCYEtzbL2QO7WXeASmDLLLMRUmuAs/55395lVRrmXKeSjOMnTddjEUHgfThS46K15r
+ GTRia0yS1o/MyqQ62Uz99ysqFto+uunkw5JHFAoUZwW6AE6hm7jlijYGc82J28PiuvOk
+ JH3EWPWWsQ883+I2ZpRrKNB8OBTT6NnfSesR/4TlHg4Bnbn0mDcFQiAchdBoWUefSMp4
+ tKR63c+q72TN0G10kcSEvEkV6sVdib1IdJOkhoD5C+NB1ucO+N4pmJGdeH4yBZxyd1GI
+ 4zCg==
+X-Gm-Message-State: AOJu0YzuoaJaJcYDW/+OjfCewSqPnIdDMUnxXDRLPCKYZjovXJqd9zBu
+ Wvq2pHasrVpPrVS0ZD9IIzGurjugt9UD+4ir7wY0F5nVEnOWmVmpvp0EoiGM
+X-Google-Smtp-Source: AGHT+IEx7j3hxYnmxH2dvgGRg3pgdpjkUXhCBYY/MLGjTrmFPDyK66tMBlNlLrx1koU0MU53/MOZJQ==
+X-Received: by 2002:a17:902:eccc:b0:1f7:42de:e7e5 with SMTP id
+ d9443c01a7336-1f9aa45a7d2mr62982465ad.45.1718876844249; 
+ Thu, 20 Jun 2024 02:47:24 -0700 (PDT)
+Received: from localhost.localdomain (KD175132079186.ppp-bb.dion.ne.jp.
+ [175.132.79.186]) by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-1f993deb126sm49350585ad.219.2024.06.20.02.47.22
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 20 Jun 2024 02:47:23 -0700 (PDT)
+From: Shota Imamura <cosocaf@gmail.com>
 To: qemu-devel@nongnu.org
-Content-Type: multipart/alternative; boundary="000000000000096d51061b4e19ed"
-Received-SPF: pass client-ip=2a00:1450:4864:20::635;
- envelope-from=arthurtumanyan@gmail.com; helo=mail-ej1-x635.google.com
+Cc: Shota Imamura <cosocaf@gmail.com>
+Subject: [PATCH 0/2] Implement dirty ring for pre-copy migration
+Date: Thu, 20 Jun 2024 18:47:12 +0900
+Message-Id: <20240620094714.871727-1-cosocaf@gmail.com>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=cosocaf@gmail.com; helo=mail-pl1-x633.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Thu, 20 Jun 2024 09:23:14 -0400
+X-Mailman-Approved-At: Thu, 20 Jun 2024 09:23:07 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,75 +87,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000096d51061b4e19ed
-Content-Type: text/plain; charset="UTF-8"
+This patch series introduces the dirty ring as an additional method for
+dirty tracking, alongside the existing dirty bitmap.
 
-Hi all,
+Shota Imamura (2):
+  migration: Implement dirty ring
+  qtest/migration: Add dirty ring tests
 
-My question may sound stupid, however... Currently I'm trying to make
-available designware-root-{port,host} devices  in linux when I run it in
-qemu.
+ accel/kvm/kvm-all.c            |  36 ++++++++-
+ include/exec/ram_addr.h        | 131 +++++++++++++++++++++++++++++++--
+ include/exec/ramlist.h         |  48 ++++++++++++
+ include/migration/misc.h       |   4 +-
+ include/qemu/bitops.h          |  23 ++++++
+ migration/migration-hmp-cmds.c |   2 +
+ migration/migration.c          |  27 ++++++-
+ migration/migration.h          |   6 ++
+ migration/ram.c                | 127 ++++++++++++++++++++++++++++----
+ qemu-options.hx                |  29 ++++++++
+ system/physmem.c               | 128 +++++++++++++++++++++++++++++++-
+ system/vl.c                    |  63 +++++++++++++++-
+ tests/qtest/migration-test.c   |  78 ++++++++++++++++++--
+ 13 files changed, 667 insertions(+), 35 deletions(-)
 
-I try the following way to run:
+-- 
+2.34.1
 
-qemu-system-arm -M virt -m 2G \
-     -kernel images/Image \
-     -append "rootwait root=/dev/vda ro" \
-     -drive file=images/rootfs.ext2,format=raw,id=hd0 \
-     -device designware-root-port,id=rp0,chassis=1,slot=0,bus=pcie.0,addr=1
-\
-     -device e1000,netdev=net0,mac=52:54:00:12:34:56,bus=rp0,addr=0 \
-     -netdev user,id=net0
-
-but it seems designware device is not enabled by default: qemu-system-arm:
--device designware-root-port,id=rp0,chassis=1,slot=0,bus=pcie.0,addr=1:
-'designware-root-port' is not a valid device model name
-
-when I enable it from Kconfig/meson.build it says the device is already
-registered and exits with abort().
-
-From the other hand the device is declared as non pluggable: dc->user_creatable
-= false;
-
-Can you please help me to use designware-root-host/port devices ?
-
-Thanks in advance,
-Arthur
-
---000000000000096d51061b4e19ed
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr">Hi all,<div><br></div><div>My question may sound stupid, h=
-owever... Currently I&#39;m trying to make available=C2=A0designware-root-{=
-port,host} devices=C2=A0 in linux when I run it in qemu.=C2=A0</div><div><b=
-r></div><div>I try the following way to run:=C2=A0</div><div><br></div><div=
->qemu-system-arm -M virt -m 2G \<br>=C2=A0 =C2=A0 =C2=A0-kernel images/Imag=
-e \<br>=C2=A0 =C2=A0 =C2=A0-append &quot;rootwait root=3D/dev/vda ro&quot; =
-\<br>=C2=A0 =C2=A0 =C2=A0-drive file=3Dimages/rootfs.ext2,format=3Draw,id=
-=3Dhd0 \<br>=C2=A0 =C2=A0 =C2=A0-device designware-root-port,id=3Drp0,chass=
-is=3D1,slot=3D0,bus=3Dpcie.0,addr=3D1 \<br>=C2=A0 =C2=A0 =C2=A0-device e100=
-0,netdev=3Dnet0,mac=3D52:54:00:12:34:56,bus=3Drp0,addr=3D0 \<br>=C2=A0 =C2=
-=A0 =C2=A0-netdev user,id=3Dnet0<br></div><div><br></div><div>but it seems =
-designware device is not enabled by default:=C2=A0qemu-system-arm: -device =
-designware-root-port,id=3Drp0,chassis=3D1,slot=3D0,bus=3Dpcie.0,addr=3D1: &=
-#39;designware-root-port&#39; is not a valid device model name</div><div><b=
-r></div><div>when I enable it from Kconfig/meson.build it says the device i=
-s already registered and exits with abort().=C2=A0</div><div><br></div><div=
->From the other hand the device is declared as non pluggable:=C2=A0<span st=
-yle=3D"font-family:&quot;JetBrains Mono&quot;,monospace;font-size:10.5pt;co=
-lor:rgb(0,0,0)">dc</span><span style=3D"font-family:&quot;JetBrains Mono&qu=
-ot;,monospace;font-size:10.5pt;color:rgb(8,8,8)">-&gt;</span><span style=3D=
-"font-family:&quot;JetBrains Mono&quot;,monospace;font-size:10.5pt;color:rg=
-b(102,14,122)">user_creatable </span><span style=3D"font-family:&quot;JetBr=
-ains Mono&quot;,monospace;font-size:10.5pt;color:rgb(8,8,8)">=3D </span><sp=
-an style=3D"font-family:&quot;JetBrains Mono&quot;,monospace;font-size:10.5=
-pt;color:rgb(0,51,179)">false</span><span style=3D"font-family:&quot;JetBra=
-ins Mono&quot;,monospace;font-size:10.5pt;color:rgb(8,8,8)">;</span></div><=
-div><span style=3D"font-family:&quot;JetBrains Mono&quot;,monospace;font-si=
-ze:10.5pt;color:rgb(8,8,8)"><br></span></div><div>Can you please help me to=
- use designware-root-host/port devices ?</div><div><br></div><div>Thanks in=
- advance,</div><div>Arthur</div><div><br></div></div>
-
---000000000000096d51061b4e19ed--
 
