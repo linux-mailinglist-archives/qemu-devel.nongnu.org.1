@@ -2,62 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D4DD910DF8
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jun 2024 19:03:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 557F2910DFB
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jun 2024 19:04:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sKLBd-0006xz-Iq; Thu, 20 Jun 2024 13:03:01 -0400
+	id 1sKLD1-0001nl-Aj; Thu, 20 Jun 2024 13:04:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1sKLBS-0006pm-QI
- for qemu-devel@nongnu.org; Thu, 20 Jun 2024 13:02:50 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1sKLBP-00024Y-Dd
- for qemu-devel@nongnu.org; Thu, 20 Jun 2024 13:02:50 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.31])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4W4my54BCjz6JB7w;
- Fri, 21 Jun 2024 01:02:37 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
- by mail.maildlp.com (Postfix) with ESMTPS id 66567140D27;
- Fri, 21 Jun 2024 01:02:40 +0800 (CST)
-Received: from localhost (10.203.174.77) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 20 Jun
- 2024 18:02:39 +0100
-Date: Thu, 20 Jun 2024 18:02:39 +0100
-To: Shiyang Ruan <ruansy.fnst@fujitsu.com>
-CC: <qemu-devel@nongnu.org>, <linux-cxl@vger.kernel.org>,
- <dan.j.williams@intel.com>, <dave@stgolabs.net>, <ira.weiny@intel.com>,
- <alison.schofield@intel.com>, <dave.jiang@intel.com>,
- <vishal.l.verma@intel.com>, Borislav Petkov <bp@alien8.de>, Tony Luck
- <tony.luck@intel.com>, "James Morse" <james.morse@arm.com>, Mauro Carvalho
- Chehab <mchehab@kernel.org>, Robert Richter <rric@kernel.org>,
- <linux-edac@vger.kernel.org>, Miaohe Lin <linmiaohe@huawei.com>, Naoya
- Horiguchi <nao.horiguchi@gmail.com>, <linux-mm@kvack.org>
-Subject: Re: [RFC PATCH] cxl: avoid duplicating report from MCE & device
-Message-ID: <20240620180239.00004d41@Huawei.com>
-In-Reply-To: <20240618165310.877974-1-ruansy.fnst@fujitsu.com>
-References: <20240618165310.877974-1-ruansy.fnst@fujitsu.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sKLCw-0001du-VX
+ for qemu-devel@nongnu.org; Thu, 20 Jun 2024 13:04:23 -0400
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sKLCv-0002IS-3a
+ for qemu-devel@nongnu.org; Thu, 20 Jun 2024 13:04:22 -0400
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-7041e39a5beso939625b3a.3
+ for <qemu-devel@nongnu.org>; Thu, 20 Jun 2024 10:04:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1718903059; x=1719507859; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Hob8cmTF6KTnQfL59r2fa3FyswISqsN1fLLoj9QasO8=;
+ b=FrI8Zpq2s3+U5LLoy8rFWO9KmZg/Ycso/AXl5xQUddb4GjKKcroCKCUuoksKaHBCMB
+ 7XOttPZh8t9uz3ZxLw3dyqb5wglK+Td57Vw3RNkNd056IAXPOzdpLsasuaKNzjgp1bWa
+ wRhc3EDjOpN5CkJVMqe/5grwoT0O5Y8VOduj8gUUuvETZF9vE+MF1iiYhWymVUCcJ3Pd
+ fwywRLjmPri3G4PDf8QZCTQvH25xGVKgfc5B5S4mTuzmrhdzI0Awik3qNwppu5mmhsDm
+ Nw5qMidgqT87IFqA+4jWWSyZ7olggNznTq2LETunfu8GcwpXtNtYXQLjk+JPsfQR8oXg
+ NVrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1718903059; x=1719507859;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Hob8cmTF6KTnQfL59r2fa3FyswISqsN1fLLoj9QasO8=;
+ b=auBjcl83I2EX3/tr9uTNvXkRAFBjf+lpu4Ac2f6ViMofMzXpYvqYg5NVJHyZ6G6DCZ
+ fi8ZMr3JEe05my172p4OwQYWOTreC8bPHRIj/x1q1v10LWt58QNRyPhVltfqDZcaVwa7
+ UC0fRvYOje8sheTJY18pclVrOS8KEJCS35Y4xc3PiaRvRctlmjkBtSVQPY64ajkCjVhT
+ rqSW62hsbgpmt0vGtk0Xw7yr+vhpjqXXCuvHLEWGO0ejq5itJbgocA0wo0O5mPzlVCKY
+ wnAQ1GBZ8ZgwdQ8cpWpipb9UNXU4B48u/B5bAfkTFZ60IU79wbqbT//qYFW6jtjCOXHw
+ hxmw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUwZVpf4HHxzAoUKCZQk7/acapLeyCcbiGxHUlvMqysWP7ln7OBjHEvukyVLH+IBgblSX67gJKQgFycvDWwLnWleyz0bbM=
+X-Gm-Message-State: AOJu0YxnMdP56J8GdzAeWFFrk8LQ1zPW5smUaVG1TLwYK06W3xOnaiTT
+ znufwjV+CdrMS+lbv7Vjj0X4y6HXh8bAbnBRdUD3QwhsXMO00ANuVo0AFeUfzEZAlCECvMEFF6t
+ y
+X-Google-Smtp-Source: AGHT+IHwKdcBXI8I2jEPppMjRPHB+S/NlC+OBfDMkSlynDT6KHT3etU6Q4wGfy+6Sz7iOLWUHhZf4Q==
+X-Received: by 2002:a05:6a20:3002:b0:1b8:9933:14d7 with SMTP id
+ adf61e73a8af0-1bcbb655bc5mr5725314637.43.1718903058313; 
+ Thu, 20 Jun 2024 10:04:18 -0700 (PDT)
+Received: from [192.168.0.4] ([71.212.132.216])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-705ccb8d7f9sm12512159b3a.194.2024.06.20.10.04.17
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 20 Jun 2024 10:04:17 -0700 (PDT)
+Message-ID: <e7e16cae-cc7f-4b70-ba9a-10cd0aedc98f@linaro.org>
+Date: Thu, 20 Jun 2024 10:04:15 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5/6] meson: remove dead optimization option
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ amonakov@ispras.ru
+References: <20240620130254.415699-1-pbonzini@redhat.com>
+ <20240620130254.415699-6-pbonzini@redhat.com>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20240620130254.415699-6-pbonzini@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.203.174.77]
-X-ClientProxiedBy: lhrpeml100006.china.huawei.com (7.191.160.224) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -70,294 +95,17 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 19 Jun 2024 00:53:10 +0800
-Shiyang Ruan <ruansy.fnst@fujitsu.com> wrote:
-
-> Background:
-> Since CXL device is a memory device, while CPU consumes a poison page of 
-> CXL device, it always triggers a MCE by interrupt (INT18), no matter 
-> which-First path is configured.  This is the first report.  Then 
-> currently, in FW-First path, the poison event is transferred according 
-> to the following process: CXL device -> firmware -> OS:ACPI->APEI->GHES 
->  -> CPER -> trace report.  This is the second one.  These two reports  
-> are indicating the same poisoning page, which is the so-called "duplicate
-> report"[1].  And the memory_failure() handling I'm trying to add in
-> OS-First path could also be another duplicate report.
-> 
-> Hope the flow below could make it easier to understand:
-> CPU accesses bad memory on CXL device, then
->  -> MCE (INT18), *always* report (1)
->  -> * FW-First (implemented now)
->       -> CXL device -> FW
-> 	      -> OS:ACPI->APEI->GHES->CPER -> trace report (2.a)  
->     * OS-First (not implemented yet, I'm working on it)
->       -> CXL device -> MSI
-> 	      -> OS:CXL driver -> memory_failure() (2.b)  
-> so, the (1) and (2.a/b) are duplicated.
-> 
-> (I didn't get response in my reply for [1] while I have to make patch to
-> solve this problem, so please correct me if my understanding is wrong.)
-> 
-> This patch adds a new notifier_block and MCE_PRIO_CXL, for CXL memdev
-> to check whether the current poison page has been reported (if yes,
-> stop the notifier chain, won't call the following memory_failure()
-> to report), into `x86_mce_decoder_chain`.  In this way, if the poison
-> page already handled(recorded and reported) in (1) or (2), the other one
-> won't duplicate the report.  The record could be clear when
-> cxl_clear_poison() is called.
-> 
-> [1] https://lore.kernel.org/linux-cxl/664d948fb86f0_e8be294f8@dwillia2-mobl3.amr.corp.intel.com.notmuch/
-> 
-> Signed-off-by: Shiyang Ruan <ruansy.fnst@fujitsu.com>
-
-So poison can be cleared in a number of ways and a CXL poison clear command
-is unfortunately only one of them.  Some architectures have instructions
-that guarantee to write a whole cacheline and can clear things as well.
-I believe x86 does for starters.
-
-+CC linux-edac and related maintainers / reviewers.
-    linux-mm and hwpoison maintainer.
-
-So I think this needs a more general solution that encompasses 
-more general cleanup of poison.
-
-Trivial comments inline.
-
-Jonathan
-
-
+On 6/20/24 06:02, Paolo Bonzini wrote:
+> Signed-off-by: Paolo Bonzini<pbonzini@redhat.com>
 > ---
->  arch/x86/include/asm/mce.h |   1 +
->  drivers/cxl/core/mbox.c    | 130 +++++++++++++++++++++++++++++++++++++
->  drivers/cxl/core/memdev.c  |   6 +-
->  drivers/cxl/cxlmem.h       |   3 +
->  4 files changed, 139 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/x86/include/asm/mce.h b/arch/x86/include/asm/mce.h
-> index dfd2e9699bd7..d8109c48e7d9 100644
-> --- a/arch/x86/include/asm/mce.h
-> +++ b/arch/x86/include/asm/mce.h
-> @@ -182,6 +182,7 @@ enum mce_notifier_prios {
->  	MCE_PRIO_NFIT,
->  	MCE_PRIO_EXTLOG,
->  	MCE_PRIO_UC,
-> +	MCE_PRIO_CXL,
->  	MCE_PRIO_EARLY,
->  	MCE_PRIO_CEC,
->  	MCE_PRIO_HIGHEST = MCE_PRIO_CEC
-> diff --git a/drivers/cxl/core/mbox.c b/drivers/cxl/core/mbox.c
-> index 2626f3fff201..0eb3c5401e81 100644
-> --- a/drivers/cxl/core/mbox.c
-> +++ b/drivers/cxl/core/mbox.c
-> @@ -4,6 +4,8 @@
->  #include <linux/debugfs.h>
->  #include <linux/ktime.h>
->  #include <linux/mutex.h>
-> +#include <linux/notifier.h>
-> +#include <asm/mce.h>
->  #include <asm/unaligned.h>
->  #include <cxlpci.h>
->  #include <cxlmem.h>
-> @@ -880,6 +882,9 @@ void cxl_event_trace_record(const struct cxl_memdev *cxlmd,
->  		if (cxlr)
->  			hpa = cxl_trace_hpa(cxlr, cxlmd, dpa);
->  
-> +		if (hpa != ULLONG_MAX && cxl_mce_recorded(hpa))
-> +			return;
-> +
->  		if (event_type == CXL_CPER_EVENT_GEN_MEDIA)
->  			trace_cxl_general_media(cxlmd, type, cxlr, hpa,
->  						&evt->gen_media);
-> @@ -1408,6 +1413,127 @@ int cxl_poison_state_init(struct cxl_memdev_state *mds)
->  }
->  EXPORT_SYMBOL_NS_GPL(cxl_poison_state_init, CXL);
->  
-> +struct cxl_mce_record {
-> +	struct list_head node;
-> +	u64 hpa;
-> +};
-> +LIST_HEAD(cxl_mce_records);
-> +DEFINE_MUTEX(cxl_mce_mutex);
-> +
-> +bool cxl_mce_recorded(u64 hpa)
-> +{
-> +	struct cxl_mce_record *cur, *next, *rec;
-> +	int rc;
-> +
-> +	rc = mutex_lock_interruptible(&cxl_mce_mutex);
+>   meson.build       | 13 -------------
+>   meson_options.txt |  2 --
+>   2 files changed, 15 deletions(-)
 
-guard(mutex)(&cxl_mce_muted);
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-> +	if (rc)
-> +		return false;
-> +
-> +	list_for_each_entry_safe(cur, next, &cxl_mce_records, node) {
-> +		if (cur->hpa == hpa) {
-> +			mutex_unlock(&cxl_mce_mutex);
-> +			return true;
-> +		}
-> +	}
-> +
-> +	rec = kmalloc(sizeof(struct cxl_mce_record), GFP_KERNEL);
-> +	rec->hpa = hpa;
-> +	list_add(&cxl_mce_records, &rec->node);
-> +
-> +	mutex_unlock(&cxl_mce_mutex);
-> +
-> +	return false;
-> +}
-> +
-> +void cxl_mce_clear(u64 hpa)
-> +{
-> +	struct cxl_mce_record *cur, *next;
-> +	int rc;
-> +
-> +	rc = mutex_lock_interruptible(&cxl_mce_mutex);
-
-Maybe cond_guard().
-
-> +	if (rc)
-> +		return;
-> +
-> +	list_for_each_entry_safe(cur, next, &cxl_mce_records, node) {
-> +		if (cur->hpa == hpa) {
-> +			list_del(&cur->node);
-> +			break;
-> +		}
-> +	}
-> +
-> +	mutex_unlock(&cxl_mce_mutex);
-> +}
-> +
-> +struct cxl_contains_hpa_context {
-> +	bool contains;
-> +	u64 hpa;
-> +};
-> +
-> +static int __cxl_contains_hpa(struct device *dev, void *arg)
-> +{
-> +	struct cxl_contains_hpa_context *ctx = arg;
-> +	struct cxl_endpoint_decoder *cxled;
-> +	struct range *range;
-> +	u64 hpa = ctx->hpa;
-> +
-> +	if (!is_endpoint_decoder(dev))
-> +		return 0;
-> +
-> +	cxled = to_cxl_endpoint_decoder(dev);
-> +	range = &cxled->cxld.hpa_range;
-> +
-> +	if (range->start <= hpa && hpa <= range->end) {
-> +		ctx->contains = true;
-> +		return 1;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static bool cxl_contains_hpa(const struct cxl_memdev *cxlmd, u64 hpa)
-> +{
-> +	struct cxl_contains_hpa_context ctx = {
-> +		.contains = false,
-> +		.hpa = hpa,
-> +	};
-> +	struct cxl_port *port;
-> +
-> +	port = cxlmd->endpoint;
-> +	if (port && is_cxl_endpoint(port) && cxl_num_decoders_committed(port))
-> +		device_for_each_child(&port->dev, &ctx, __cxl_contains_hpa);
-> +
-> +	return ctx.contains;
-> +}
-> +
-> +static int cxl_handle_mce(struct notifier_block *nb, unsigned long val,
-> +			  void *data)
-> +{
-> +	struct mce *mce = (struct mce *)data;
-> +	struct cxl_memdev_state *mds = container_of(nb, struct cxl_memdev_state,
-> +						    mce_notifier);
-> +	u64 hpa;
-> +
-> +	if (!mce || !mce_usable_address(mce))
-> +		return NOTIFY_DONE;
-> +
-> +	hpa = mce->addr & MCI_ADDR_PHYSADDR;
-> +
-> +	/* Check if the PFN is located on this CXL device */
-> +	if (!pfn_valid(hpa >> PAGE_SHIFT) &&
-> +	    !cxl_contains_hpa(mds->cxlds.cxlmd, hpa))
-> +		return NOTIFY_DONE;
-> +
-> +	/*
-> +	 * Search PFN in the cxl_mce_records, if already exists, don't continue
-> +	 * to do memory_failure() to avoid a poison address being reported
-> +	 * more than once.
-> +	 */
-> +	if (cxl_mce_recorded(hpa))
-> +		return NOTIFY_STOP;
-> +	else
-> +		return NOTIFY_OK;
-> +}
-> +
->  struct cxl_memdev_state *cxl_memdev_state_create(struct device *dev)
->  {
->  	struct cxl_memdev_state *mds;
-> @@ -1427,6 +1553,10 @@ struct cxl_memdev_state *cxl_memdev_state_create(struct device *dev)
->  	mds->ram_perf.qos_class = CXL_QOS_CLASS_INVALID;
->  	mds->pmem_perf.qos_class = CXL_QOS_CLASS_INVALID;
->  
-> +	mds->mce_notifier.notifier_call = cxl_handle_mce;
-> +	mds->mce_notifier.priority = MCE_PRIO_CXL;
-> +	mce_register_decode_chain(&mds->mce_notifier);
-> +
->  	return mds;
->  }
->  EXPORT_SYMBOL_NS_GPL(cxl_memdev_state_create, CXL);
-> diff --git a/drivers/cxl/core/memdev.c b/drivers/cxl/core/memdev.c
-> index 0277726afd04..aa3ac89d17be 100644
-> --- a/drivers/cxl/core/memdev.c
-> +++ b/drivers/cxl/core/memdev.c
-> @@ -376,10 +376,14 @@ int cxl_clear_poison(struct cxl_memdev *cxlmd, u64 dpa)
->  		goto out;
->  
->  	cxlr = cxl_dpa_to_region(cxlmd, dpa);
-> -	if (cxlr)
-> +	if (cxlr) {
-> +		u64 hpa = cxl_trace_hpa(cxlr, cxlmd, dpa);
-> +
-> +		cxl_mce_clear(hpa);
->  		dev_warn_once(mds->cxlds.dev,
->  			      "poison clear dpa:%#llx region: %s\n", dpa,
->  			      dev_name(&cxlr->dev));
-> +	}
->  
->  	record = (struct cxl_poison_record) {
->  		.address = cpu_to_le64(dpa),
-> diff --git a/drivers/cxl/cxlmem.h b/drivers/cxl/cxlmem.h
-> index 19aba81cdf13..fbf8d9f46984 100644
-> --- a/drivers/cxl/cxlmem.h
-> +++ b/drivers/cxl/cxlmem.h
-> @@ -501,6 +501,7 @@ struct cxl_memdev_state {
->  	struct cxl_fw_state fw;
->  
->  	struct rcuwait mbox_wait;
-> +	struct notifier_block mce_notifier;
->  	int (*mbox_send)(struct cxl_memdev_state *mds,
->  			 struct cxl_mbox_cmd *cmd);
->  };
-> @@ -836,6 +837,8 @@ int cxl_mem_get_poison(struct cxl_memdev *cxlmd, u64 offset, u64 len,
->  int cxl_trigger_poison_list(struct cxl_memdev *cxlmd);
->  int cxl_inject_poison(struct cxl_memdev *cxlmd, u64 dpa);
->  int cxl_clear_poison(struct cxl_memdev *cxlmd, u64 dpa);
-> +bool cxl_mce_recorded(u64 pfn);
-> +void cxl_mce_clear(u64 pfn);
->  
->  #ifdef CONFIG_CXL_SUSPEND
->  void cxl_mem_active_inc(void);
-
+r~
 
