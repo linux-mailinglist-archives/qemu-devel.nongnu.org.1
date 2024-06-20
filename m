@@ -2,85 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C91B49109B7
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jun 2024 17:23:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E2E39109C4
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jun 2024 17:24:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sKJcD-0005j0-9v; Thu, 20 Jun 2024 11:22:21 -0400
+	id 1sKJcY-00060c-QZ; Thu, 20 Jun 2024 11:22:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sKJcB-0005is-Br
- for qemu-devel@nongnu.org; Thu, 20 Jun 2024 11:22:19 -0400
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1sKJcW-0005xF-1M
+ for qemu-devel@nongnu.org; Thu, 20 Jun 2024 11:22:40 -0400
+Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sKJc9-0007pf-U7
- for qemu-devel@nongnu.org; Thu, 20 Jun 2024 11:22:19 -0400
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-1f9aeb96b93so8059975ad.3
- for <qemu-devel@nongnu.org>; Thu, 20 Jun 2024 08:22:17 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1sKJcS-000808-56
+ for qemu-devel@nongnu.org; Thu, 20 Jun 2024 11:22:39 -0400
+Received: by mail-ed1-x52b.google.com with SMTP id
+ 4fb4d7f45d1cf-57d1d45ba34so1111732a12.3
+ for <qemu-devel@nongnu.org>; Thu, 20 Jun 2024 08:22:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1718896936; x=1719501736; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=LYxRRHrFLXjBu6x3E9bHKIH/sqVDpzERW+KEdi14p1I=;
- b=HQOECb621vaudnuxgC9JCW/ecoNbM0oEZp6KvQpEnGEfxPr7cNwlWfXiK98emhvxyq
- SoEfI8wzODg/zK1mdHWIMkyu3GOuvvvvW2M2KnZCku5KA54Vyp2u5n7Fr8GIqLju4Jsz
- ntPBcNl97fwmf1z4S1/JIhCEv+8TQOXu7EUcsDDZOgMwWTp/J36x48lTagvPAnsEOr1K
- w08HIyk7qMGbxd8UurOuB01CpDLx5N0aQuBnqsxFVoxgfQ7oA876nHwh2vdglMvuESVw
- EFDe3OH9TgvPDY9yYbj3+HhtiSOgFRzDgFYpjM+mYGm+ybHxrouvC6jhkQ8anm0vomL0
- 0toA==
+ d=linaro.org; s=google; t=1718896954; x=1719501754; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=bRGnfZngJdWMgOcvZ7TtStbP9AmubDNWr9Hu5lfqXOc=;
+ b=TQfrIIcMPQNzMrq1HAoou3OeloPIpZ5lqYyD8XbTptKRd7iLdzYAiDaNqRhMNXt/hD
+ GV0OXTr1wtO8GfAuApDxq8hKCmMkif+Ilbs/HsnU1A6+vRoMOONwrHa500sD0B0/WK+y
+ FHqal7HmCQ0ckUi1GR+Kms1vsQTp6V5Xxw/qz8xoDvvLr6LPmluwvtgpYGSmSf16bM3Y
+ Re5NFwcrX+1Z7QucGMx+BBKxnRWBKqRx2F+C+SsTu0bGd9i0jtdsm0nSWHj+VSyzKIvU
+ ZfOh11SY7ws0xImkXRpfl11mgK5iVGz0KnhZ0IiNl+sOfZzSuJCC8+7zqYocX9RJIFED
+ WfmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718896936; x=1719501736;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=LYxRRHrFLXjBu6x3E9bHKIH/sqVDpzERW+KEdi14p1I=;
- b=SyzQc/03Uz/lCU4btCRZM4LP0a21HhfB8LABHW5iAZCRwpBh6mMTn5Up/zpJ+c5IYN
- 5FFVa8/KuwqjyCpkudUpfmUTTZW6czSrtoeeqa5LJNCoF4oZRLIR5e3kY4UcB4IeSFvL
- 5OHSfMGkMl4ZUrrZl58c4SpCIajPriJPZINX0ehhSA3NZQUIIPsjolNb4B2Hgj4UeSRq
- efRMmsfVMTGNYTKhryeUgOIRgXelfL7Gyh5RaqRrMk5oh/5yFPvef5Fm8AYnT3IMawmA
- QXvH/7/MPNOAea2WBeIor1nswbt2LiU92aV8f6lVDbD8tReISMPLdmdO4K31GnGc6F1k
- wjDQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCULSSPcIwiQVmM7YKDvU5Iiwb3xinp+D8BBTWA9RfGzz5j2dGeO9V9o/IVIj78zgEOpsaq2XB202TmX4m6RdRB4QKGEOWE=
-X-Gm-Message-State: AOJu0YxqQ6q4emXpHZKgbE9ShKhAZFguXFf4tHzcvSKYNtUDqIiAOLT1
- PPOgVsLKjinfzETg9Xc4JVGPokC/yylfb3+A7GLwQPcKwHtMcBlC0ysO38fkbnA=
-X-Google-Smtp-Source: AGHT+IES4MIVeumoogDJOzZGClM8LLbSmXHCuNZAdAVjytEzOgIGBV0WUiXLcE7wSqq9pnTnixnx9w==
-X-Received: by 2002:a17:902:f54d:b0:1f9:b7ea:c320 with SMTP id
- d9443c01a7336-1f9b7eac674mr36319775ad.41.1718896935954; 
- Thu, 20 Jun 2024 08:22:15 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.132.216])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1f9c22ae4a5sm22426975ad.7.2024.06.20.08.22.15
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 20 Jun 2024 08:22:15 -0700 (PDT)
-Message-ID: <a090fbb9-1b74-458e-bf55-8801aefbbb65@linaro.org>
-Date: Thu, 20 Jun 2024 08:22:13 -0700
+ d=1e100.net; s=20230601; t=1718896954; x=1719501754;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=bRGnfZngJdWMgOcvZ7TtStbP9AmubDNWr9Hu5lfqXOc=;
+ b=TdbBRAxrkaXs9Wfc6zOlH3jRDqbLtRiRLlkxnIvqyPmCNQNdgqGt7TynPDcRANMyIS
+ jqj8Hc1quvfRTrAiitPFY5yoe23TgPPRd/ETyfoRX819tvCs/wsD5K5EdGZ3wldQQfb+
+ YzZyfn+ll7yZnWQqry5gu37j1k/JRhbTsgUlsL2bj7g0wwEwMZIfOHE3ytX2Ivwcq59F
+ qXODwVMk/pdyxqglWQ51F661Lab8E+og48Q7WyDQFzLsEJg+A4he9dE995yQQ72RQwht
+ ggOfX5n92PVgP/U+9F2vtCH3A58KVTG85Iu4dHP39KYokaWg8Jg00GC2h1Lm6DJctUDT
+ SPnw==
+X-Gm-Message-State: AOJu0Yy+Edq06lxh2lDFqQrorBHP3VFHmnY0H9zRAzugmOBbp3YpGfmy
+ eMcn5R0zUCztktCApo68Za7lSpOAu5GROvvAvr4tO1EtsXODj9c8tdNCAKB71c4=
+X-Google-Smtp-Source: AGHT+IEiVE4x6H+fZARaO4Zg3BaGTcyG+2ERR3isx5aQQpt7wxoNKnSQpwaFZQ2FBRWx1WpkNkdG7g==
+X-Received: by 2002:a50:9f4a:0:b0:57d:5ac:7426 with SMTP id
+ 4fb4d7f45d1cf-57d07e66c47mr3246096a12.9.1718896954416; 
+ Thu, 20 Jun 2024 08:22:34 -0700 (PDT)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-57cb72e9115sm9869605a12.46.2024.06.20.08.22.24
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 20 Jun 2024 08:22:28 -0700 (PDT)
+Received: from draig.lan (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 81C2E5F9FF;
+ Thu, 20 Jun 2024 16:22:21 +0100 (BST)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>, kvm@vger.kernel.org,
+ qemu-ppc@nongnu.org, Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Jamie Iles <quic_jiles@quicinc.com>,
+ David Hildenbrand <david@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Mark Burton <mburton@qti.qualcomm.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>, qemu-arm@nongnu.org,
+ Laurent Vivier <lvivier@redhat.com>, Alexander Graf <agraf@csgraf.de>,
+ Ilya Leoshkevich <iii@linux.ibm.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Marco Liebel <mliebel@qti.qualcomm.com>, Halil Pasic <pasic@linux.ibm.com>,
+ Thomas Huth <thuth@redhat.com>, qemu-s390x@nongnu.org,
+ Cameron Esfahani <dirty@apple.com>, Alexandre Iooss <erdnaxe@crans.org>,
+ Nicholas Piggin <npiggin@gmail.com>, Roman Bolshakov <rbolshakov@ddn.com>,
+ "Dr. David Alan Gilbert" <dave@treblig.org>,
+ Marcelo Tosatti <mtosatti@redhat.com>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v2 05/12] qtest: use cpu interface in qtest_clock_warp
+Date: Thu, 20 Jun 2024 16:22:13 +0100
+Message-Id: <20240620152220.2192768-6-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240620152220.2192768-1-alex.bennee@linaro.org>
+References: <20240620152220.2192768-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 03/10] target/i386: convert bit test instructions to new
- decoder
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-References: <20240620095419.386958-1-pbonzini@redhat.com>
- <20240620095419.386958-4-pbonzini@redhat.com>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240620095419.386958-4-pbonzini@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x632.google.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,16 +112,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/20/24 02:54, Paolo Bonzini wrote:
-> Signed-off-by: Paolo Bonzini<pbonzini@redhat.com>
-> ---
->   target/i386/tcg/decode-new.h     |   3 +
->   target/i386/tcg/translate.c      | 147 +-----------------------------
->   target/i386/tcg/decode-new.c.inc |  40 ++++++---
->   target/i386/tcg/emit.c.inc       | 149 ++++++++++++++++++++++++++++++-
->   4 files changed, 181 insertions(+), 158 deletions(-)
+This generalises the qtest_clock_warp code to use the AccelOps
+handlers for updating its own sense of time. This will make the next
+patch which moves the warp code closer to pure code motion.
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+From: Alex Bennée <alex.bennee@linaro.org>
+Acked-by: Thomas Huth <thuth@redhat.com>
+Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Message-Id: <20240530220610.1245424-3-pierrick.bouvier@linaro.org>
+---
+ include/sysemu/qtest.h | 1 +
+ accel/qtest/qtest.c    | 1 +
+ system/qtest.c         | 6 +++---
+ 3 files changed, 5 insertions(+), 3 deletions(-)
 
-r~
+diff --git a/include/sysemu/qtest.h b/include/sysemu/qtest.h
+index b5d5fd3463..45f3b7e1df 100644
+--- a/include/sysemu/qtest.h
++++ b/include/sysemu/qtest.h
+@@ -36,6 +36,7 @@ void qtest_server_set_send_handler(void (*send)(void *, const char *),
+ void qtest_server_inproc_recv(void *opaque, const char *buf);
+ 
+ int64_t qtest_get_virtual_clock(void);
++void qtest_set_virtual_clock(int64_t count);
+ #endif
+ 
+ #endif
+diff --git a/accel/qtest/qtest.c b/accel/qtest/qtest.c
+index f6056ac836..53182e6c2a 100644
+--- a/accel/qtest/qtest.c
++++ b/accel/qtest/qtest.c
+@@ -52,6 +52,7 @@ static void qtest_accel_ops_class_init(ObjectClass *oc, void *data)
+ 
+     ops->create_vcpu_thread = dummy_start_vcpu_thread;
+     ops->get_virtual_clock = qtest_get_virtual_clock;
++    ops->set_virtual_clock = qtest_set_virtual_clock;
+ };
+ 
+ static const TypeInfo qtest_accel_ops_type = {
+diff --git a/system/qtest.c b/system/qtest.c
+index 507a358f3b..5be66b0140 100644
+--- a/system/qtest.c
++++ b/system/qtest.c
+@@ -332,14 +332,14 @@ int64_t qtest_get_virtual_clock(void)
+     return qatomic_read_i64(&qtest_clock_counter);
+ }
+ 
+-static void qtest_set_virtual_clock(int64_t count)
++void qtest_set_virtual_clock(int64_t count)
+ {
+     qatomic_set_i64(&qtest_clock_counter, count);
+ }
+ 
+ static void qtest_clock_warp(int64_t dest)
+ {
+-    int64_t clock = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
++    int64_t clock = cpus_get_virtual_clock();
+     AioContext *aio_context;
+     assert(qtest_enabled());
+     aio_context = qemu_get_aio_context();
+@@ -348,7 +348,7 @@ static void qtest_clock_warp(int64_t dest)
+                                                       QEMU_TIMER_ATTR_ALL);
+         int64_t warp = qemu_soonest_timeout(dest - clock, deadline);
+ 
+-        qtest_set_virtual_clock(qtest_get_virtual_clock() + warp);
++        cpus_set_virtual_clock(cpus_get_virtual_clock() + warp);
+ 
+         qemu_clock_run_timers(QEMU_CLOCK_VIRTUAL);
+         timerlist_run_timers(aio_context->tlg.tl[QEMU_CLOCK_VIRTUAL]);
+-- 
+2.39.2
+
 
