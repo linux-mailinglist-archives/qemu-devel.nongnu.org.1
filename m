@@ -2,87 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9802E9100D9
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jun 2024 11:55:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 446FC9100E5
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jun 2024 11:56:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sKEVP-0002U0-UP; Thu, 20 Jun 2024 05:55:00 -0400
+	id 1sKEVm-0003Tr-2G; Thu, 20 Jun 2024 05:55:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sKEVI-0002Nu-Gy
- for qemu-devel@nongnu.org; Thu, 20 Jun 2024 05:54:53 -0400
-Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
+ (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
+ id 1sKEVh-0003Pp-Rd
+ for qemu-devel@nongnu.org; Thu, 20 Jun 2024 05:55:17 -0400
+Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sKEVF-0005UJ-Si
- for qemu-devel@nongnu.org; Thu, 20 Jun 2024 05:54:51 -0400
-Received: by mail-ej1-x62f.google.com with SMTP id
- a640c23a62f3a-a6f51660223so36780966b.0
- for <qemu-devel@nongnu.org>; Thu, 20 Jun 2024 02:54:49 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
+ id 1sKEVf-0005kq-QV
+ for qemu-devel@nongnu.org; Thu, 20 Jun 2024 05:55:17 -0400
+Received: by mail-ej1-x631.google.com with SMTP id
+ a640c23a62f3a-a6f09eaf420so73410366b.3
+ for <qemu-devel@nongnu.org>; Thu, 20 Jun 2024 02:55:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1718877288; x=1719482088; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=m5sQ6gvadSLwAdHAje/r5iIRCwLuMbfiGlO1mJnXkOE=;
- b=lmpbHgpE/Fnrd/ehJZLtV2hgnlhGw86mBf/58iIQgd0QGkAPVEcry3FXhuNX2N+nId
- P7Zf1XQh+FX4x8JTlxq2v612jTfs6fDRmkiYswoL7c9Y4ZmKGU3iohZnqNbh2G/oWCsV
- ZBy+9ma4qprjk9NXFzwLRQ5KDEJKr23btfkrwpzYbi5hjvk8D8JAqrNW9qpXNHlYagJZ
- 6npKbn6Ki2ktMaxCBAmD/yJXD/BQn1CAeW9e7hm5RQ5nzCjMjpD/Fb5WMi9F8kCC3kPJ
- 6wDnq15pUQa6jy9YSXZdIitrwKgYo/WhAMfwjPMUubhSZ/THRkcC0FHCAOrjFxoO1i+D
- NqGg==
+ d=linaro.org; s=google; t=1718877314; x=1719482114; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:organization:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:from:to:cc:subject:date:message-id:reply-to;
+ bh=SUZwthDtG2fuP8/5EbZqEBmw672XXZZwzpx0iio86zQ=;
+ b=NZnseCNpGsOwXfw+3DIfO4W205caEITCTKlpaQj7zqwOubCmFSqpVVJHFVHsADHrwC
+ re0yPQ7J9yW76Bg7YoKWCoR/EM54aNI+xnbCGZ89clZ5rtXoUqgrmkDeY7IJGCSwLEt0
+ GIEGFtuapQtMbsdmv9AUtQZqt9bl/E8MN+z5wseKrh6U9LVtRY/g2oMLTK2v5oOrPhXs
+ fM2ADQddDWgUHwlYXO/uMYyd9pZ5pQUqLywtasrumAPCJCbZU2afDwShZMeIsOZRVtVb
+ n7XFSvmrZk1q/D2Gspg3nvoc5NT6Vb9fM7U1WhsrQGyPl2FNOKpVGIEUWDelJCpRs16I
+ 4IOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718877288; x=1719482088;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=m5sQ6gvadSLwAdHAje/r5iIRCwLuMbfiGlO1mJnXkOE=;
- b=SKe5tlB/HVnp76TSuChuBgqFxLkvT8xM7jhX6plRhAxz7saMiLnIu+9z1Qvt3HBI+x
- WylgaVuAJkyCDtFVa477Mz+vOp+Q9b0GWu5REhpEnhK9O2h82qQFk9jmf5fYvl6oB/v0
- qy8BIsfppp+K06ZougguOJJEwD0gy4X692JDCTJoUEejdfB4Xjy5KgO7CdG+jXB3IZZ3
- 8bmKxpKrdH6cr+ahxYTem0jjHw1TclABx0w2FO4fd4Qql7n5zJvlvx5uu8JdKgXM0uzj
- h/UCv4was4wsai/t+RM4fLBwaESWiATGcMpassdb6H1wBCOWU/10HZaz7UqJDMm/I1SX
- VkbA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWK4uqxsooyykhG42BYUGsWggx/3DLLBcZ8nczcwBigAB9saWiN3+5PPVdUpJGXGc0jS00dtepIVoJYobc676NpMqn0puE=
-X-Gm-Message-State: AOJu0YxliGSxp7MfBS2YvAZFtEWKUuiUfvmyZav9pCCB9vCSevw51kxa
- tmdLRBZJ3oRInmMbNHBImXIABS6noJ+ppU5vbxEjCKbuss1xtoGSVHVerkm6Z70O+6jc8kWIOGC
- e
-X-Google-Smtp-Source: AGHT+IGxJ3ZfIYw1pMFGBCEM6yZEIIvKuwFPI4yvqBLnUeV35YKW3eTBXfcTcLtnEXogEJ3YGKUqjg==
-X-Received: by 2002:a50:9b54:0:b0:57a:4c22:b3 with SMTP id
- 4fb4d7f45d1cf-57d07e0d43dmr3318794a12.1.1718877288049; 
- Thu, 20 Jun 2024 02:54:48 -0700 (PDT)
-Received: from [192.168.69.100] ([176.176.151.40])
- by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a6f56ecdd40sm753149066b.120.2024.06.20.02.54.46
+ d=1e100.net; s=20230601; t=1718877314; x=1719482114;
+ h=content-transfer-encoding:in-reply-to:organization:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=SUZwthDtG2fuP8/5EbZqEBmw672XXZZwzpx0iio86zQ=;
+ b=husN20lBiYO4xS+mSFRKlvJSeFhZ+ImKIbPZBtVvIv1FoCdwkycPC85Hpym6JSqAeT
+ p0TJOl2yKMhYLAJU/tizLVh8nmbCMWj9e2uMNXLoGD5c8UsjoJ5KcUVe5Qb6YiZ+es01
+ D+qgbPiqBHkAX146JjowjRwIWzkobsdteLojULuqRVCa7hRcn3FObJDFzJMCnrIjND5a
+ Okpsd/k3WYKUnrxoW+9lYdzyKtmF2TArtzogXG7CVOwMPq+svG1yStxDbG2GvXL90Te3
+ TNC1lsEnK9MT+BJUYoa2tcOUc/MnS0P3heC5UfytscyZ4zSarM6E8Fv0nhqgKm97Pii7
+ Yp7A==
+X-Gm-Message-State: AOJu0YyZdSsR5Hz8dv6hd224R82fnevrbyO4SvJQQF6fsed2FHyScWGS
+ KGOJlJ2kr4fJiPROwVS561cdfy9QrBnVMnSNyD8Hqma5I8hXj8BQKlxR8XXoOuI=
+X-Google-Smtp-Source: AGHT+IH0JdFKqYPYm27TPKByNnJEwM5WrT696UlAFTJoG4NviW1n9vDpOAWTurwt8vz49p4/mbQfiw==
+X-Received: by 2002:a17:907:a644:b0:a6f:b60c:2c08 with SMTP id
+ a640c23a62f3a-a6fb60c2f79mr245355166b.24.1718877313483; 
+ Thu, 20 Jun 2024 02:55:13 -0700 (PDT)
+Received: from [192.168.200.106] (83.11.22.244.ipv4.supernova.orange.pl.
+ [83.11.22.244]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-a6f56db61ebsm744375966b.56.2024.06.20.02.55.12
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 20 Jun 2024 02:54:47 -0700 (PDT)
-Message-ID: <2c043e6e-e685-44fb-a231-e59d7ba89234@linaro.org>
-Date: Thu, 20 Jun 2024 11:54:45 +0200
+ Thu, 20 Jun 2024 02:55:13 -0700 (PDT)
+Message-ID: <d7880fca-2bfb-4368-9419-8227616f2ce9@linaro.org>
+Date: Thu, 20 Jun 2024 11:55:11 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 22/32] hw/sd: Add emmc_cmd_SEND_EXT_CSD() handler
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, qemu-devel@nongnu.org,
- Joel Stanley <joel@jms.id.au>
-Cc: Bin Meng <bin.meng@windriver.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Lucien Murray-Pitts <lucienmp.qemu@gmail.com>
-References: <20230703132509.2474225-1-clg@kaod.org>
- <20230703132509.2474225-23-clg@kaod.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20230703132509.2474225-23-clg@kaod.org>
+Subject: Re: [PATCH v2 1/2] tests/avocado: use default amount of cores on
+ sbsa-ref
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, Leif Lindholm <quic_llindhol@quicinc.com>,
+ Radoslaw Biernacki <rad@semihalf.com>, Cleber Rosa <crosa@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>, qemu-arm@nongnu.org,
+ Rebecca Cran <rebecca@bsdio.com>, Ard Biesheuvel <ardb+tianocore@kernel.org>
+References: <20240620060014.605563-1-marcin.juszkiewicz@linaro.org>
+ <20240620060014.605563-2-marcin.juszkiewicz@linaro.org>
+ <CAFEAcA9XbYr9jzYm908_stCUrZCqixB+cysFTRCe2MnAFW1FVA@mail.gmail.com>
+From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+Content-Language: pl-PL, en-GB, en-HK
+Organization: Linaro
+In-Reply-To: <CAFEAcA9XbYr9jzYm908_stCUrZCqixB+cysFTRCe2MnAFW1FVA@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62f.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::631;
+ envelope-from=marcin.juszkiewicz@linaro.org; helo=mail-ej1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,82 +103,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/7/23 15:24, Cédric Le Goater wrote:
-> The parameters mimick a real 4GB eMMC, but it can be set to various
-> sizes. Initially from Vincent Palatin <vpalatin@chromium.org>
+W dniu 20.06.2024 o 11:34, Peter Maydell pisze:
+> On Thu, 20 Jun 2024 at 07:00, Marcin Juszkiewicz 
+> <marcin.juszkiewicz@linaro.org> wrote:
+>> 
+>> I was wondering why avocado tests passed with firmware which
+>> crashes when anyone else is using it.
+>> 
+>> Turned out that amount of cores matters. Have to find out why
+>> still.
 > 
-> Signed-off-by: Cédric Le Goater <clg@kaod.org>
-> ---
->   hw/sd/sdmmc-internal.h |  97 ++++++++++++++++++++++++++++++++++++
->   include/hw/sd/sd.h     |   1 +
->   hw/sd/sd.c             | 109 ++++++++++++++++++++++++++++++++++++++++-
->   3 files changed, 206 insertions(+), 1 deletion(-)
+> This commit message confuses me.
 
+Had no idea how to write in more readable form. Will reword it for v3 
+(with reverse order of patches as recommended by Philippe.
 
-> diff --git a/hw/sd/sd.c b/hw/sd/sd.c
-> index 51e2254728a6..212658050441 100644
-> --- a/hw/sd/sd.c
-> +++ b/hw/sd/sd.c
-> @@ -141,6 +141,7 @@ struct SDState {
->       uint64_t data_start;
->       uint32_t data_offset;
->       uint8_t data[512];
-> +    uint8_t ext_csd[512];
+> It reads like "running with two cores will make the guest crash",
+> i.e. "apply this patch and the test suite will stop passing". I
+> assume that's not the case, but what's actually going on here?
 
-Since the SWITCH command writes to EXT_CSD, this array must be
-migrated.
+That's exactly the case. With sbsa-ref firmware which qemu uses now we 
+have crash if more than 1 core is used. Avocado test hardcoded "-smp 1" 
+and was passing fine.
 
->       qemu_irq readonly_cb;
->       qemu_irq inserted_cb;
->       QEMUTimer *ocr_power_timer;
-> @@ -414,8 +415,85 @@ static const uint8_t sd_csd_rw_mask[16] = {
->       0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xfc, 0xfe,
->   };
->   
-> +static void mmc_set_ext_csd(SDState *sd, uint64_t size)
-> +{
-> +    uint32_t sectcount = size >> HWBLOCK_SHIFT;
-> +
-> +    memset(sd->ext_csd, 0, sizeof(sd->ext_csd));
-> +
-> +    sd->ext_csd[EXT_CSD_S_CMD_SET] = 0x1; /* supported command sets */
-> +    sd->ext_csd[EXT_CSD_HPI_FEATURES] = 0x3; /* HPI features  */
-> +    sd->ext_csd[EXT_CSD_BKOPS_SUPPORT] = 0x1; /* Background operations */
-> +    sd->ext_csd[241] = 0xA; /* 1st initialization time after partitioning */
-> +    sd->ext_csd[EXT_CSD_TRIM_MULT] = 0x1; /* Trim multiplier */
-> +    sd->ext_csd[EXT_CSD_SEC_FEATURE_SUPPORT] = 0x15; /* Secure feature */
-> +    sd->ext_csd[EXT_CSD_SEC_ERASE_MULT] = 0x96; /* Secure erase support */
-> +    sd->ext_csd[EXT_CSD_SEC_TRIM_MULT] = 0x96; /* Secure TRIM multiplier */
-> +    sd->ext_csd[EXT_CSD_BOOT_INFO] = 0x7; /* Boot information */
-> +    sd->ext_csd[EXT_CSD_BOOT_MULT] = 0x8; /* Boot partition size. 128KB unit */
-> +    sd->ext_csd[EXT_CSD_ACC_SIZE] = 0x6; /* Access size */
-> +    sd->ext_csd[EXT_CSD_HC_ERASE_GRP_SIZE] = 0x4; /* HC Erase unit size */
-> +    sd->ext_csd[EXT_CSD_ERASE_TIMEOUT_MULT] = 0x1; /* HC erase timeout */
-> +    sd->ext_csd[EXT_CSD_REL_WR_SEC_C] = 0x1; /* Reliable write sector count */
-> +    sd->ext_csd[EXT_CSD_HC_WP_GRP_SIZE] = 0x4; /* HC write protect group size */
-> +    sd->ext_csd[EXT_CSD_S_C_VCC] = 0x8; /* Sleep current VCC  */
-> +    sd->ext_csd[EXT_CSD_S_C_VCCQ] = 0x7; /* Sleep current VCCQ */
-> +    sd->ext_csd[EXT_CSD_S_A_TIMEOUT] = 0x11; /* Sleep/Awake timeout */
-> +    sd->ext_csd[215] = (sectcount >> 24) & 0xff; /* Sector count */
-> +    sd->ext_csd[214] = (sectcount >> 16) & 0xff; /* ... */
-> +    sd->ext_csd[213] = (sectcount >> 8) & 0xff;  /* ... */
-> +    sd->ext_csd[EXT_CSD_SEC_CNT] = (sectcount & 0xff);       /* ... */
-> +    sd->ext_csd[210] = 0xa; /* Min write perf for 8bit@52Mhz */
-> +    sd->ext_csd[209] = 0xa; /* Min read perf for 8bit@52Mhz  */
-> +    sd->ext_csd[208] = 0xa; /* Min write perf for 4bit@52Mhz */
-> +    sd->ext_csd[207] = 0xa; /* Min read perf for 4bit@52Mhz */
-> +    sd->ext_csd[206] = 0xa; /* Min write perf for 4bit@26Mhz */
-> +    sd->ext_csd[205] = 0xa; /* Min read perf for 4bit@26Mhz */
-> +    sd->ext_csd[EXT_CSD_PART_SWITCH_TIME] = 0x1;
-> +    sd->ext_csd[EXT_CSD_OUT_OF_INTERRUPT_TIME] = 0x1;
-> +    sd->ext_csd[EXT_CSD_CARD_TYPE] = 0x7;
-> +    sd->ext_csd[EXT_CSD_STRUCTURE] = 0x2;
-> +    sd->ext_csd[EXT_CSD_REV] = 0x5;
-> +    sd->ext_csd[EXT_CSD_RPMB_MULT] = 0x1; /* RPMB size */
-> +    sd->ext_csd[EXT_CSD_PARTITION_SUPPORT] = 0x3;
-> +    sd->ext_csd[159] = 0x00; /* Max enhanced area size */
-> +    sd->ext_csd[158] = 0x00; /* ... */
-> +    sd->ext_csd[157] = 0xEC; /* ... */
-> +}
+And I forgot to mail qemu-devel when I got hit by that crash.
 
+This week Rebecca Cran pointed me that crash is in BootLogoLib in EDK2 
+and I wrote some workaround for make things work. Then Ard Biesheuvel 
+found the real reason, fixed QemuVideoDxe in EDK2 and we got sbsa-ref 
+running with any amount of cores.
+
+The commit message of fix:
+
+commit c1d1910be6e04a8b1a73090cf2881fb698947a6e
+Author: Ard Biesheuvel <ardb@kernel.org>
+Date:   Mon Jun 17 17:07:41 2024 +0200
+
+OvmfPkg/QemuVideoDxe: add feature PCD to remap framebuffer W/C
+
+Some platforms (such as SBSA-QEMU on recent builds of the emulator) only
+tolerate misaligned accesses to normal memory, and raise alignment
+faults on such accesses to device memory, which is the default for PCIe
+MMIO BARs.
+
+When emulating a PCIe graphics controller, the framebuffer is typically
+exposed via a MMIO BAR, while the disposition of the region is closer to
+memory (no side effects on reads or writes, except for the changing
+picture on the screen; direct random access to any pixel in the image).
+
+In order to permit the use of such controllers on platforms that only
+tolerate these types of accesses for normal memory, it is necessary to
+remap the memory. Use the DXE services to set the desired capabilities
+and attributes.
+
+Hide this behavior under a feature PCD so only platforms that really
+need it can enable it. (OVMF on x86 has no need for this)
 
