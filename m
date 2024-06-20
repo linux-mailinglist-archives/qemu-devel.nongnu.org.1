@@ -2,75 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10A7B911569
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jun 2024 00:05:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D5979116AB
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jun 2024 01:19:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sKPtE-0002q5-Gp; Thu, 20 Jun 2024 18:04:20 -0400
+	id 1sKR38-0003xX-GD; Thu, 20 Jun 2024 19:18:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <venture@google.com>)
- id 1sKPtB-0002pq-Fz
- for qemu-devel@nongnu.org; Thu, 20 Jun 2024 18:04:17 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <venture@google.com>)
- id 1sKPt9-0006RL-9W
- for qemu-devel@nongnu.org; Thu, 20 Jun 2024 18:04:16 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-424786e4056so2705e9.0
- for <qemu-devel@nongnu.org>; Thu, 20 Jun 2024 15:04:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1718921053; x=1719525853; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
- :date:message-id:reply-to;
- bh=Klco4mKLJOKgUByMKFjjAYs1il5+49UYdHvz4iQArS0=;
- b=wOrJHw3yD7jCGcr4GVC7Jm3RDhhWtWo30oCwP3NeDSzr/okE64iRo7S9cOL2e2ykOo
- GcOMqjrEbKycOiJlp3WmhD2xRijTCLDnbcatuUIccBDep9rEa8GYgF+CddLF5kUNPlvu
- O2aYHgVQiz1BBOLzK2GCpcJeIN4rdEIoqQELV/PfOljKrj6hwOiPvenqH3OA8asLXx2c
- nKuA/3nRmmc2X4adcviPwU9B5DwU6kSSjQpu9boJEgYYo25pGfGx7Vwh2/dDbjAKiO52
- 6rhkY7rqzJGwD0+3DnWD3tTYkWm5korKBV2Xh/06pzGUaFw+gBQcWAs7vGJagedQlSy9
- fiBg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718921053; x=1719525853;
- h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Klco4mKLJOKgUByMKFjjAYs1il5+49UYdHvz4iQArS0=;
- b=UQJ6/M553gmIpwqfGODn645CNa/A9mnmbQd2sDg9A2gu6iAq3KVbLp3hyQWylRUXwO
- e+OSc3qA4IPlhJ5Nnjrvr4VN7W0wRbiT+qWso+o04axQHg/PpByX0zRGBtc5RRjQCF7l
- 4wts5SsbeHJ4dhwv2TOm6wSM0rdodQdGfviujAZbYJ/YoeaYinlm8aTYhFERE/h4ygKh
- iUMS3n0QohrWryaQVBCuBfPzlzTn0ELeewhAkIiSjS0TcTBjQp9f8NXBloni5eT7lTkZ
- GMEVRHhr4e8+aFSoqj0uFKrt6SzMLw1bNy/ziE87YCIGaelnKoDT4ds43CsVZsa1LJvZ
- pu1Q==
-X-Gm-Message-State: AOJu0YxTXkfxUHE3R9HpPjkJwBN+eLNcTcNRySTxDqoM402/ayrgA0FU
- /Rhwb7fqnbKLMTHo+IAb6F9euE2RQxuNangsmIyDr6Z0G/J7D0w4S46kYCiG3x/LoHNlv+uob9i
- syz7MtCGYyczpLqH5Q8QLm2nEf1lqkocTp3tV
-X-Google-Smtp-Source: AGHT+IHlDiAAWDntjSQHt0EDxDywadqkBnfJQ4m/jD9NjuZPmPWKl17UpvEnrd0DyGmXZYD0Cu8MLBWg/+aaRI9m/lI=
-X-Received: by 2002:a05:600c:ccf:b0:423:798:38e3 with SMTP id
- 5b1f17b1804b1-42481d93b15mr40505e9.5.1718921052626; Thu, 20 Jun 2024 15:04:12
- -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <dongwon.kim@intel.com>)
+ id 1sKR36-0003xM-Da
+ for qemu-devel@nongnu.org; Thu, 20 Jun 2024 19:18:36 -0400
+Received: from mgamail.intel.com ([192.198.163.8])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <dongwon.kim@intel.com>)
+ id 1sKR33-0001h8-KR
+ for qemu-devel@nongnu.org; Thu, 20 Jun 2024 19:18:36 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1718925514; x=1750461514;
+ h=from:to:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=cfovPrMmAbQv8m6x+P1xeV4rPLUwzYgIQK0B5J//SHo=;
+ b=OiYF3h6cq91gYeSkufGOsJEUhfvyMyhbSFviN8Hv8/YytM8Sj8d9c+31
+ DpYYwlzInZhc/M/JlWxLIHR+4hvs9V8wA3pjTYBtnjUTTIpLn1dR66ore
+ 8RqR8cuIzZ0nJn/84nNiijepNku6ZE8kPSrY3W33Bs7H0gYxBvd3hNndt
+ UtGf1iveM5NP81E8tLLiFQKKifWweOSk6N+eZlF4DrOwes/75QaZUr8RQ
+ AVcuv9T0t2i3Kt8PMD7PabK1VHyftwiMAdz6ZMzSMgGX23AZHgHvz9XD7
+ q/LwCsXzaxkALC8W/I6lwchPZ7KdYKBriaUrguVTMm3vjAtfly1W1JvXY w==;
+X-CSE-ConnectionGUID: DZXEtHInSKGai9w7HTeDPA==
+X-CSE-MsgGUID: PJJEceAxQRyc/UnJ9JS7mg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11109"; a="33482964"
+X-IronPort-AV: E=Sophos;i="6.08,253,1712646000"; d="scan'208";a="33482964"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Jun 2024 16:18:29 -0700
+X-CSE-ConnectionGUID: SXuaR1GXTaW72VkeW9bA8A==
+X-CSE-MsgGUID: E87QS2gaQVGVQqb8Esevww==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,253,1712646000"; d="scan'208";a="42359628"
+Received: from dongwonk-z390-aorus-ultra.fm.intel.com ([10.105.129.124])
+ by fmviesa008.fm.intel.com with ESMTP; 20 Jun 2024 16:18:28 -0700
+From: dongwon.kim@intel.com
+To: qemu-devel@nongnu.org
+Subject: [RFC PATCH 0/4] hw/display/virtio-gpu: Introducing asynchronous guest
+ display render
+Date: Thu, 20 Jun 2024 16:17:23 -0700
+Message-Id: <20240620231727.235841-1-dongwon.kim@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-From: Patrick Leis <venture@google.com>
-Date: Thu, 20 Jun 2024 15:03:59 -0700
-Message-ID: <CAO=notyY_Jc2_Xq0NeK-0zUORy1n-6yuP5M_WXWEQnaqTmVXkw@mail.gmail.com>
-Subject: standardizing i2c device ids
-To: Corey Minyard <cminyard@mvista.com>,
- Peter Maydell <peter.maydell@linaro.org>, 
- Titus Rwantare <titusr@google.com>
-Cc: QEMU Developers <qemu-devel@nongnu.org>
-Content-Type: multipart/alternative; boundary="000000000000bd67cf061b597e16"
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=venture@google.com; helo=mail-wm1-x32f.google.com
-X-Spam_score_int: -175
-X-Spam_score: -17.6
-X-Spam_bar: -----------------
-X-Spam_report: (-17.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=192.198.163.8; envelope-from=dongwon.kim@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -45
+X-Spam_score: -4.6
+X-Spam_bar: ----
+X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.152,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- ENV_AND_HDR_SPF_MATCH=-0.5, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- USER_IN_DEF_DKIM_WL=-7.5,
- USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,34 +77,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000bd67cf061b597e16
-Content-Type: text/plain; charset="UTF-8"
+From: Dongwon Kim <dongwon.kim@intel.com>
 
-Corey and Peter,
+Introducing new virtio-gpu param, 'render_sync' when guest scanout blob
+is used (blob=true). The new param is used to specify when to start
+rendering a guest scanout frame.
 
-My team builds lots of configurations for Qemu boards, and one pain point
-has been that the qom path for a device depends on the device insertion
-order, child[0], child[1] and the like.  I noticed that the qdev paths for
-devices also exist by their device id property.  By default, this ends up
-being the device type name.  I was wondering if it made sense to override
-this with the device type plus the smbus address?  I did something similar
-with the i2c mux device, to resolve part of this issue.
+By default (and so far) rendering of the guest frame is started in
+the draw event to make sure guest display update is sychronized with
+host's vsync. But this method inevitably brings some extra wait because
+most of time, the draw event is not happening right after the guest
+scanout frame is flushed.
 
-Patrick
+This delay often makes the guest stuck at certain frame for too long and
+causes general performance degradation of graphic workloads on the guest's
+side especially when the display update rate is high. This unwanted perf
+drop can be reduced if the guest scanout frame is rendered as soon as it is
+flushed through 'VIRTIO_GPU_CMD_RESOURCE_FLUSH' msg. The gl display
+pipeline can be unblocked a lot earlier in this case so that guest can
+move to the next display frame right away.
 
---000000000000bd67cf061b597e16
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+However, this "asynchrounous" render mode may cause some waste of resources
+as the guest could produce more frames than what are actually displayed
+on the host display. This is similar as running rendering apps with no vblank
+or vsync option. This is why this feature should stay as optional.
 
-<div dir=3D"ltr">Corey and Peter,<div><br></div><div>My team builds lots of=
- configurations for Qemu boards, and one pain point has been that the=C2=A0=
-qom path for a device depends on the device insertion order, child[0], chil=
-d[1] and the like.=C2=A0 I noticed that the qdev paths for devices also exi=
-st by their device id property.=C2=A0 By default, this ends up being the de=
-vice type name.=C2=A0 I was wondering if it made sense to override this wit=
-h the device type plus the smbus address?=C2=A0 I did something similar wit=
-h the i2c mux device, to resolve part of this issue.</div><div><br></div><d=
-iv>Patrick</div></div>
+The param 'render_sync' is set to 'true' by default and this is in line
+with traditional way while setting it to 'false' is basically enabling
+this asynchronouse mode.
 
---000000000000bd67cf061b597e16--
+Dongwon Kim (4):
+  hw/display/virtio-gpu: Introducing render_sync param
+  ui/egl-helpers: Consolidates create-sync and create-fence
+  ui/gtk-egl: Start rendering of guest blob scanout if render_sync is
+    off
+  ui/gtk-gl-draw: Start rendering of guest blob scanout if render_sync
+    is off
+
+ include/hw/virtio/virtio-gpu.h  |  3 ++
+ include/ui/dmabuf.h             |  4 +-
+ include/ui/egl-helpers.h        |  3 +-
+ hw/display/vhost-user-gpu.c     |  3 +-
+ hw/display/virtio-gpu-udmabuf.c |  3 +-
+ hw/display/virtio-gpu.c         |  2 +
+ hw/vfio/display.c               |  3 +-
+ ui/dbus-listener.c              |  2 +-
+ ui/dmabuf.c                     | 11 +++-
+ ui/egl-helpers.c                | 27 ++++------
+ ui/gtk-egl.c                    | 93 ++++++++++++++++++---------------
+ ui/gtk-gl-area.c                | 90 +++++++++++++++++++------------
+ 12 files changed, 146 insertions(+), 98 deletions(-)
+
+-- 
+2.34.1
+
 
