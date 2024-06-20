@@ -2,136 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4ED209101A6
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jun 2024 12:43:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 77AB29101A8
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jun 2024 12:44:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sKFF6-0002d2-R1; Thu, 20 Jun 2024 06:42:12 -0400
+	id 1sKFGr-00053a-Hk; Thu, 20 Jun 2024 06:44:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sai.pavan.boddu@amd.com>)
- id 1sKFF0-0002Y7-0R; Thu, 20 Jun 2024 06:42:06 -0400
-Received: from mail-bn8nam12on20606.outbound.protection.outlook.com
- ([2a01:111:f403:2418::606]
- helo=NAM12-BN8-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sai.pavan.boddu@amd.com>)
- id 1sKFEy-0005YO-6D; Thu, 20 Jun 2024 06:42:05 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=i3SLZu4vFN+cfAE2mQ/k2Ly7VXHwAoEO0LbY3bUhV6bCeZu8DkKhRcCGdCUE7uKvQvaqQX9wZfTpmEm+ZBduH6z7PYJqzEaAHmobXKONSKJ/EsGHIbO8/qfLienAJndei3vxn0YZuyWypXlSjwkEjWTFV4pD1eo1yIVBNzL/Cs12Ls6DMDEcOl9QTElgI0p/8TNW7w2/mdYoRHX1EW6zFE5eXalY9z3tce+p4dSvWTimL+wwAvgjVoOzwjU1nZfuTGVXkVujfF6xa5e/gYlyoMy/wD83m94T7Dxl66ZfAY0FYno2NndFH8hVtqa5X+eA+CEmmlJWmN9MFnlandiFfw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0QtWRXaVYHO3xyKxfaWo0PfJ4Cs0EXokrOGNp/Ejot4=;
- b=kS/fpq6E18NqVOp5BGkV8zJZh3wQi6tgOWybzwDwNOpub/c4m1xjbJG9zMpSBwZE9Tsx9YrjueJn66IRpRV00mDO8zDYERZPAhmZ9LhEPT4y5V+sFGTTl/gyhHCXxgtm3D3iHtXc24tcjDUbqtUsIfGOA3eDoT936vlDOF12AV2I8SF0Maj8+5ZsKLtMspcjedIAqdSHJ0xcliQSL9NTf1e5qVlPWumW+r+pmkMcSLDLgzwJGYhICoHehkHuh/wvPbHX7pDEfIyUx+uP2TVwZWCa8iQ6Z9YAXklSACuZVLe//eWh4grzotczI6do1NHAASPOX12YbaEfvJCRKo+TyA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0QtWRXaVYHO3xyKxfaWo0PfJ4Cs0EXokrOGNp/Ejot4=;
- b=rjYA4eLcH7+g68Gu0zeqCEA8Gz6tZyyA5culPAEn72FHSsX/RLs5b4miPdfpCk0cnnhcamfLmw2C0Sg9/I+wd6Z00B5pFUPz9VeSRVxCQP6Z998ZReD2KnnSefEBPs4HwLwxFeRQS2gkALvTDHltSbq6ioYkHFhY+bdcrEZllDY=
-Received: from BYAPR05CA0080.namprd05.prod.outlook.com (2603:10b6:a03:e0::21)
- by SA3PR12MB9107.namprd12.prod.outlook.com (2603:10b6:806:381::7)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7698.19; Thu, 20 Jun
- 2024 10:41:57 +0000
-Received: from CO1PEPF000042A7.namprd03.prod.outlook.com
- (2603:10b6:a03:e0:cafe::bd) by BYAPR05CA0080.outlook.office365.com
- (2603:10b6:a03:e0::21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7677.33 via Frontend
- Transport; Thu, 20 Jun 2024 10:41:57 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
-Received: from SATLEXMB03.amd.com (165.204.84.17) by
- CO1PEPF000042A7.mail.protection.outlook.com (10.167.243.36) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7677.15 via Frontend Transport; Thu, 20 Jun 2024 10:41:57 +0000
-Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 20 Jun
- 2024 05:41:56 -0500
-Received: from xhdsaipava41.xilinx.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server id 15.1.2507.39 via
- Frontend Transport; Thu, 20 Jun 2024 05:41:54 -0500
-From: Sai Pavan Boddu <sai.pavan.boddu@amd.com>
-To: <qemu-arm@nongnu.org>, <qemu-devel@nongnu.org>
-CC: "'Edgar E . Iglesias'" <edgar.iglesias@gmail.com>, Peter Maydell
- <peter.maydell@linaro.org>, <francisco.iglesias@amd.com>, "Edgar E .
- Iglesias" <edgar.iglesias@amd.com>
-Subject: [PATCH v3 3/3] docs/system/arm: Add a doc for zynq board
-Date: Thu, 20 Jun 2024 16:11:39 +0530
-Message-ID: <20240620104139.217908-4-sai.pavan.boddu@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240620104139.217908-1-sai.pavan.boddu@amd.com>
-References: <20240620104139.217908-1-sai.pavan.boddu@amd.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sKFGQ-0004rK-8s
+ for qemu-devel@nongnu.org; Thu, 20 Jun 2024 06:43:35 -0400
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sKFGM-0005ir-KI
+ for qemu-devel@nongnu.org; Thu, 20 Jun 2024 06:43:33 -0400
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-57a4d7ba501so696690a12.2
+ for <qemu-devel@nongnu.org>; Thu, 20 Jun 2024 03:43:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1718880209; x=1719485009; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=VCHaOBI/pzcWFl4PSGNo6VIcNzZ9wgQjXBKizEWy4ek=;
+ b=PodmgwQ++L+Idn51/gD95KMVDkesV9O82RrJaDs0NIK2ciYOiWkgqHs2f8cD1L/qJz
+ 84cV9QeYnLlkxR2tt3fsoC6rifytvUxR/2Gj6uHyZD9dE/TNfFA34rgLXKadbyW5swkg
+ s/vs64ied4zTt/x172/EwVhHLEf66cjFhjfaivUwv07zAcQ8bahqKLrwqJ/lxKZtKUVA
+ sVv/3sQAQ14gQmOacOQcprer7CKjiFYOC5TrcVE1sIb8pFtXKc0Q+5caHRpvaq/+MDsk
+ 5Y5h4rIMN5yrMe0r7aLbH/pwQ7ck0QmH9rgpEqCyeAzejpg2zV7B3K7UvPAsrff9I+7n
+ EFIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1718880209; x=1719485009;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=VCHaOBI/pzcWFl4PSGNo6VIcNzZ9wgQjXBKizEWy4ek=;
+ b=AWaZZE1SVjPMqBfXpW8lb4jXt7zpH5BkUEKT/2P8D2bUwpcpXC4+d5dW4s+WGFUDL/
+ ICeVA561NInRzH5/uW6Me+YAG0bjlqrI5EGc8Z1Dh9aV59ZHdz33mTDi//vmWCjWFIu/
+ UjJvT4sf93H+Y4vAcyk0Od3FfwnYP43nZ464CcIKYhON9+kwWoE0fV3T0dmp+a9bbBWB
+ KYbvh8vhxKJf35LAImWLDZGWIK98UR+N6gPanGOKPgVjpvBb37HiU/c3fsb/K4DsHo4s
+ 0aSypxz1fM4M9VvHDDkxZVs8X4mzjm1choUCbKnNOvdmk02/QcGHz2PJyZDPSXfeKjE2
+ Jhdw==
+X-Gm-Message-State: AOJu0YyB5V0LY5niK6kQfTqxctdHrPPycQJFaNz1Ycv99Cf6Vp2GkX0+
+ pko1A/egON+dhwxTJ69JtR0ePnTp6OdguMJOj3APCPU5zRdbequ1C5AxyaR3XOaSVhWIpAHq8JI
+ M6B6irwey7Pmt2YuOLa0rGCh6cO5fJCbW2mKihw==
+X-Google-Smtp-Source: AGHT+IHlHajhGew6hb6CDJS+myMTq399D0C/kt3Pf9YkCJ2NVejDx/snMlzMTRPm6hd6YghS/vqFJoDV3T5GwxqKM20=
+X-Received: by 2002:a50:9b15:0:b0:57c:6861:d735 with SMTP id
+ 4fb4d7f45d1cf-57d07e6b560mr3081170a12.19.1718880208839; Thu, 20 Jun 2024
+ 03:43:28 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Received-SPF: None (SATLEXMB03.amd.com: sai.pavan.boddu@amd.com does not
- designate permitted sender hosts)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PEPF000042A7:EE_|SA3PR12MB9107:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1e2a3e08-fb60-4fef-fa8d-08dc91159bdc
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230037|376011|36860700010|82310400023|1800799021; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?wNy9OX/l6as0nmkAvxtro7HDCE1eoSUG2G8bkF2PaL2kjFw1AnYOpZrgZMQ8?=
- =?us-ascii?Q?r3C2k9QTifalryK6rAypYFdO43nVqr08N670N3kJfgbZ6LfoA4+cjup/OQno?=
- =?us-ascii?Q?btccHpg7NHY6kuvnWau65V3WQYPeqFLZ+AhGKPfY7Fu642RbfqA+gn1kLBy/?=
- =?us-ascii?Q?wwCz545rO/+rXxYrtKW3CwUqp9hkBE8/kUv3m7Ibf6nNnhcS1M0epjj/OgpO?=
- =?us-ascii?Q?nkA1tjrcbGA2qCq9KU/WF9047JNvt5NMA59TgfxoWU94VQvz6VF916rfZTB1?=
- =?us-ascii?Q?OETy5YE3eoJ9m5dk1JGV7DRml5pdJCCL09ZsQUFdVHTXPJ60DpaQQSki4vZM?=
- =?us-ascii?Q?Z9X6HAYBbxW/s5ND9RFHigIkjqq5msm+u9drEVzUj4XgbndgvGXAU2WMA0wC?=
- =?us-ascii?Q?1ia250MHZ55UsjOOmLG5OUohXKyJ945P69EBtGgGWoR1xivRrlXrwEKB4AWL?=
- =?us-ascii?Q?eiCRdafumHIb6WtS+p+8Pu5zxL8Ybnu1LMQw2S5eAJ1juvAR+spy3g1g1YjJ?=
- =?us-ascii?Q?FsuzuUVxwWheRayVGcgamYEd49vghUCHZvl8JY8Gbu0RLmQi0gqbvvEMIdhl?=
- =?us-ascii?Q?sP6mekZf0A8aqwBtdJ/XYKMHPjITxNyKhgj5gmEg2u0LrSmri49Z1IvIGE9R?=
- =?us-ascii?Q?44/lF2sF1VMmDolUyTFQDwWCgTe20UPhINNq454Zo8Co2jq2N2aXKH0T/4jZ?=
- =?us-ascii?Q?FxHrwUvlc6QIO/bbQwGRyWfYilzB8f3NcTPURjHjZKIKmKoi4fvinzcM51og?=
- =?us-ascii?Q?6qutWzzVTu/jnh6uSS5dVrOwOWtp7c+oOqL5tMpO04hAjbokqVYIWkdd2ipZ?=
- =?us-ascii?Q?1qOBU3YbSA9/4ftAOKg6OczZkGHT/wDk5nxSd3Mxryy5FKeEr4bmbWur6Muy?=
- =?us-ascii?Q?27k5msZJ9mFRoBx87MfBz0kXV/aeSAdeZK4y1cmeJxU3UnVX/1I4EYTJzeZj?=
- =?us-ascii?Q?50IT/2Vi5jNfTUYSSS8Nyu4mcAeUCLikawdCC/q716BXoaY+sIIh8faJo2zL?=
- =?us-ascii?Q?0Xjeo5UDT1h5CW+gq7R3nDIbKx/wtyQm1+7pXacv6Y+Szx71ynnAQiAUYBr+?=
- =?us-ascii?Q?PO8kswneBfGGly+duPhGUPPISQo4oTe1Q1v2XaS57EushJsjncmnG9LKrQcC?=
- =?us-ascii?Q?n8lOgZwjrH3bgVezkC5t6Ez+Hl8+SYyNdOGFh5WJQlCtAtpsC1NbZGENkZRm?=
- =?us-ascii?Q?xEHHWa5DmaK1D6zmDKVMxNYkPwBO8Vvx3Uf3fiErlrMm7hOUnmYlkuyVevL3?=
- =?us-ascii?Q?MyF6mmeKBgdxwOt8cFfY3sGkc01dKJmVMsmphprDyand3jVi2hTYbekj7tfZ?=
- =?us-ascii?Q?9Cxl5eLmykM/NtA/Qu/MTysptS/CqXjDkYnkz+X2WngxW0NC8bI0lmoSEjeB?=
- =?us-ascii?Q?7V6/254=3D?=
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB03.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230037)(376011)(36860700010)(82310400023)(1800799021); DIR:OUT;
- SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jun 2024 10:41:57.2402 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1e2a3e08-fb60-4fef-fa8d-08dc91159bdc
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB03.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: CO1PEPF000042A7.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB9107
-Received-SPF: permerror client-ip=2a01:111:f403:2418::606;
- envelope-from=sai.pavan.boddu@amd.com;
- helo=NAM12-BN8-obe.outbound.protection.outlook.com
-X-Spam_score_int: -22
-X-Spam_score: -2.3
+References: <20240615185423.49474-1-florian.lugou@provenrun.com>
+In-Reply-To: <20240615185423.49474-1-florian.lugou@provenrun.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 20 Jun 2024 11:43:17 +0100
+Message-ID: <CAFEAcA_+WrzM4fXQMUxMi3L5yiUWMrUGTSZH=NDdYDKUCP+8NQ@mail.gmail.com>
+Subject: Re: [PATCH] target/arm/helper: Fix timer interrupt masking when
+ HCR_EL2.E2H == 0
+To: Florian Lugou <florian.lugou@provenrun.com>
+Cc: qemu-devel@nongnu.org, "open list:ARM TCG CPUs" <qemu-arm@nongnu.org>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::531;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x531.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- WEIRD_QUOTING=0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -147,95 +86,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Added the supported device list and an example command.
+On Sat, 15 Jun 2024 at 19:56, Florian Lugou <florian.lugou@provenrun.com> wrote:
+>
+> CNTHCTL_EL2 based masking of timer interrupts was introduced in
+> f6fc36deef6abcee406211f3e2f11ff894b87fa4. This masking was however
+> effective no matter whether EL2 was enabled in the current security
+> state or not, contrary to arm specification.
+>
+> Signed-off-by: Florian Lugou <florian.lugou@provenrun.com>
+> ---
+>  target/arm/helper.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/target/arm/helper.c b/target/arm/helper.c
+> index ce31957235..60e2344c68 100644
+> --- a/target/arm/helper.c
+> +++ b/target/arm/helper.c
+> @@ -2684,7 +2684,8 @@ static void gt_update_irq(ARMCPU *cpu, int timeridx)
+>       * If bit CNTHCTL_EL2.CNT[VP]MASK is set, it overrides IMASK.
+>       * It is RES0 in Secure and NonSecure state.
+>       */
+> -    if ((ss == ARMSS_Root || ss == ARMSS_Realm) &&
+> +    if ((arm_hcr_el2_eff(env) & HCR_E2H) &&
+> +        (ss == ARMSS_Root || ss == ARMSS_Realm) &&
 
-Signed-off-by: Sai Pavan Boddu <sai.pavan.boddu@amd.com>
-Reviewed-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
----
- MAINTAINERS                   |  1 +
- docs/system/arm/xlnx-zynq.rst | 47 +++++++++++++++++++++++++++++++++++
- docs/system/target-arm.rst    |  1 +
- 3 files changed, 49 insertions(+)
- create mode 100644 docs/system/arm/xlnx-zynq.rst
+When the architecture says "is EL2 enabled in the current security state"
+it doesn't mean "is HCR_EL2.E2H set?", it means "is this either NonSecure/Realm
+or else is SCR_EL2.EEL2 set?". Compare the pseudocode EL2Enabled()
+and QEMU's arm_is_el2_enabled() and arm_is_el2_enabled_secstate() functions.
+This doesn't mean much in Root state, and for Realm state EL2 is always
+enabled (assuming it is implemented).
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 951556224a1..2f06febc676 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1033,6 +1033,7 @@ F: hw/adc/zynq-xadc.c
- F: include/hw/misc/zynq_slcr.h
- F: include/hw/adc/zynq-xadc.h
- X: hw/ssi/xilinx_*
-+F: docs/system/arm/xlnx-zynq.rst
- 
- Xilinx ZynqMP and Versal
- M: Alistair Francis <alistair@alistair23.me>
-diff --git a/docs/system/arm/xlnx-zynq.rst b/docs/system/arm/xlnx-zynq.rst
-new file mode 100644
-index 00000000000..ade18a3fe13
---- /dev/null
-+++ b/docs/system/arm/xlnx-zynq.rst
-@@ -0,0 +1,47 @@
-+Xilinx Zynq board (``xilinx-zynq-a9``)
-+======================================
-+The Zynq 7000 family is based on the AMD SoC architecture. These products
-+integrate a feature-rich dual or single-core Arm Cortex-A9 MPCore based
-+processing system (PS) and AMD programmable logic (PL) in a single device.
-+
-+More details here:
-+https://docs.amd.com/r/en-US/ug585-zynq-7000-SoC-TRM/Zynq-7000-SoC-Technical-Reference-Manual
-+
-+QEMU xilinx-zynq-a9 board supports following devices:
-+    - A9 MPCORE
-+        - cortex-a9
-+        - GIC v1
-+        - Generic timer
-+        - wdt
-+    - OCM 256KB
-+    - SMC SRAM@0xe2000000 64MB
-+    - Zynq SLCR
-+    - SPI x2
-+    - QSPI
-+    - UART
-+    - TTC x2
-+    - Gigabit Ethernet Controller x2
-+    - SD Controller x2
-+    - XADC
-+    - Arm PrimeCell DMA Controller
-+    - DDR Memory
-+    - USB 2.0 x2
-+
-+Running
-+"""""""
-+Direct Linux boot of a generic ARM upstream Linux kernel:
-+
-+.. code-block:: bash
-+
-+  $ qemu-system-aarch64 -M xilinx-zynq-a9 \
-+        -dtb zynq-zc702.dtb  -serial null -serial mon:stdio \
-+        -display none  -m 1024 \
-+        -initrd rootfs.cpio.gz -kernel zImage
-+
-+For configuring the boot-mode provide the following on the command line:
-+
-+.. code-block:: bash
-+
-+   -machine boot-mode=qspi
-+
-+Supported values are jtag, sd, qspi, nor.
-diff --git a/docs/system/target-arm.rst b/docs/system/target-arm.rst
-index 870d30e3502..7b992722846 100644
---- a/docs/system/target-arm.rst
-+++ b/docs/system/target-arm.rst
-@@ -109,6 +109,7 @@ undocumented; you can get a complete list by running
-    arm/virt
-    arm/xenpvh
-    arm/xlnx-versal-virt
-+   arm/xlnx-zynq
- 
- Emulated CPU architecture support
- =================================
--- 
-2.34.1
+For this timer check, we're doing I think the same thing as the
+pseudocode AArch64.CheckTimerConditions(), which does:
 
+  if (IsFeatureImplemented(FEAT_RME) && ss IN {SS_Root, SS_Realm} &&
+      CNTHCTL_EL2.CNTPMASK == '1') then
+     imask = '1';
+
+so I'm inclined to say that our current implementation in QEMU is correct.
+
+>          ((timeridx == GTIMER_VIRT && (cnthctl & R_CNTHCTL_CNTVMASK_MASK)) ||
+>           (timeridx == GTIMER_PHYS && (cnthctl & R_CNTHCTL_CNTPMASK_MASK)))) {
+>          irqstate = 0;
+> --
+
+thanks
+-- PMM
 
