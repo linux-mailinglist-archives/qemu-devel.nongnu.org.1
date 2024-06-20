@@ -2,79 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2F47910534
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jun 2024 15:04:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A01F910537
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jun 2024 15:04:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sKHRT-0001Pt-SR; Thu, 20 Jun 2024 09:03:07 -0400
+	id 1sKHRZ-0001Qv-If; Thu, 20 Jun 2024 09:03:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sKHRS-0001Pd-1V
- for qemu-devel@nongnu.org; Thu, 20 Jun 2024 09:03:06 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1sKHRX-0001QX-HU
+ for qemu-devel@nongnu.org; Thu, 20 Jun 2024 09:03:11 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sKHRQ-0006WT-7B
- for qemu-devel@nongnu.org; Thu, 20 Jun 2024 09:03:05 -0400
+ id 1sKHRV-0006Wo-Ot
+ for qemu-devel@nongnu.org; Thu, 20 Jun 2024 09:03:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1718888582;
+ s=mimecast20190719; t=1718888588;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=QCI976/3sOBC9H/aNjSRBPY5v3P4X1vwvF1rF8Dw3q0=;
- b=DTW6K47+y/HvNl+1m+qnUBIVRvjtC+9emahWm6Lfb3V+6fd3dneHoXxPOXHuJIBeZMnh4n
- df7zpqXSxDmVSsvaB2fFJOSLrDgjB4WZUlo4dlVNEaMfumzFmB3zGCcnWPMSscxNWTh4GI
- hENfxO7lSLpwqvajkNyMkSzzs8hDaUQ=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=LuxMfRanQpqIe+rAUiRiqqmIxZ2Dd4XmJCnCNtxApfk=;
+ b=MhXLm+7FghTej6orLIU9LVeDVkqiL/YNeBda0c/mIlrUPBxxnKhtJyTBA5fSoFMu0+VP+0
+ sctyiZaiMZ3P3p9wTjQ8ZbxdjnzhjToWGHeuxxwalW553jQ/X/TV603lyY7J7PULCrQ35D
+ bBZZ9FG+EHWt5aPmDRx3AOlHwLLGoKQ=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-629-oqaVSV3fNkWL_h_CcKqb1A-1; Thu, 20 Jun 2024 09:03:01 -0400
-X-MC-Unique: oqaVSV3fNkWL_h_CcKqb1A-1
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-a6f1db7e425so53577766b.1
- for <qemu-devel@nongnu.org>; Thu, 20 Jun 2024 06:03:00 -0700 (PDT)
+ us-mta-126-FBHZiCqUPp2fdx3FT8e4yg-1; Thu, 20 Jun 2024 09:03:03 -0400
+X-MC-Unique: FBHZiCqUPp2fdx3FT8e4yg-1
+Received: by mail-ed1-f70.google.com with SMTP id
+ 4fb4d7f45d1cf-57cdc3f0410so458793a12.2
+ for <qemu-devel@nongnu.org>; Thu, 20 Jun 2024 06:03:03 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718888579; x=1719493379;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=QCI976/3sOBC9H/aNjSRBPY5v3P4X1vwvF1rF8Dw3q0=;
- b=fuJHa3FfIySdpv0gW/BsGH21IozaVg2b/P0awlOCHXRfTzVA1GXxyf88MLqt/64dU1
- v2U5qUrswu5XgGZXLlcV6ZfBDpsFbpKxHUSZyFeMYmTG6MFMNbCKYIAFnWhtM0FzlMin
- kWcyKwtgta53kZrcQUxtQOBxZG5enqG0OmkZFzUz697WP8MZjyJUQX12WGHJI3+5BE2Z
- KV42yBlNemRaHibAjTBufx0MNwTc72ubQc3LFHf0TusvHSxGztpT1Anal40/0veyqFzZ
- WJTloz5oRLHeTmWD9jkAOyjpW0a4yNKzXxCDjHxKPFHpgWYMv/yo/C7r0/f2WRYN4FAp
- s6AA==
-X-Gm-Message-State: AOJu0YyexvSd83u56xVw23fOcoRqBIl5CYaDJYcgNtG7U/H4FP4kz7BL
- zpD57kOZuVwwA2Dr2iaRpQIpg/YzjGcu5y6W2fB0BkcIHLH21jRXzciWBC0AcyAkurINgHQW4nW
- l+sRfgtoors8ZxIbTIwhBQ8W5xanBqyYVYe7ziROjnrYf8e+K1CYGBNapNVyb6yHR3B/pXrcXz3
- wTUnrm9wnTobJvHfhWGE8P+NG+KTc+7Wou9vqY
-X-Received: by 2002:a17:906:1359:b0:a6f:5f26:4d91 with SMTP id
- a640c23a62f3a-a6fab7d14f7mr333905366b.69.1718888579140; 
- Thu, 20 Jun 2024 06:02:59 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHfQWeklky7wgsg2sBmX8DsrVun3SL5HuxQ3LhqBV+ScAkbmCuB0nnILN1m5Tv2o9STIC+6jQ==
-X-Received: by 2002:a17:906:1359:b0:a6f:5f26:4d91 with SMTP id
- a640c23a62f3a-a6fab7d14f7mr333902866b.69.1718888578617; 
- Thu, 20 Jun 2024 06:02:58 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1718888581; x=1719493381;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=LuxMfRanQpqIe+rAUiRiqqmIxZ2Dd4XmJCnCNtxApfk=;
+ b=LSj/bR9I7E3MTPRi2vLF7ihxBCGJ1O5NtQreIdtTzPpCFw/APwvigiL8LVRM+GbzDi
+ 9ZVBscPA06d/5TzdcFEi5xndhG42PKQmeDY12XraGZmkv6Sk3XJRPqBh36V4BeR2RFpB
+ hnvLqhCVZjaVx9WDPjyBOnXzmbUp5/5ZOA+AtGxf6jc3n2DnhC3WPinElFrBaH26ztiM
+ N3eR3AR1W8KWq4J0ReuulS35o1Kj9b67iXVEp206mSXJDLMd1s0qfiZn7aZTROLrmWJW
+ FXdC6ZUiaQ23jMAu2/S50Zsn+q4cEq+eY1xxZWURYl1Ifth3+jvRwUH3ROL6nhuAN5Xe
+ 8W0A==
+X-Gm-Message-State: AOJu0Yyo85HJI0tIGcUUmi5mhwivTcLH1GtlRD8J/nHD4iGtGyxhzdf9
+ 6RbbRUhK9ji3X6LVq7CMPGMC5nnskmpJEDyGPwlFNYO9Axn4S0XjyeEwm0V4H2G1IgF5fAyMG5D
+ hLvywkQ922Fk8dq9YoIgvMYTdBNiIg1Mh0XMCZ1xqLJAtEsp4LbogU13Np3KiPQ1h4G1k+0ABXN
+ uYd7DzqrzvUio8xiGPlBTQ17Om5fu+XfXuIKNm
+X-Received: by 2002:a50:d707:0:b0:57c:5fca:ab25 with SMTP id
+ 4fb4d7f45d1cf-57d07e84bf2mr3389304a12.25.1718888581680; 
+ Thu, 20 Jun 2024 06:03:01 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHr6TmoysP21cnHNMxklPhbR8DW1eELX2UPuk1Q/bseUyUSNPxkRMEAAsVIYq+a7NaLoUE5Mg==
+X-Received: by 2002:a50:d707:0:b0:57c:5fca:ab25 with SMTP id
+ 4fb4d7f45d1cf-57d07e84bf2mr3389285a12.25.1718888581227; 
+ Thu, 20 Jun 2024 06:03:01 -0700 (PDT)
 Received: from avogadro.local ([151.62.196.71])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a6f8a6e58bdsm344477466b.187.2024.06.20.06.02.57
+ 4fb4d7f45d1cf-57d21df986esm860455a12.72.2024.06.20.06.03.00
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 20 Jun 2024 06:02:58 -0700 (PDT)
+ Thu, 20 Jun 2024 06:03:00 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  amonakov@ispras.ru
-Subject: [PATCH 0/6] host/i386: allow configuring the x86-64 baseline
-Date: Thu, 20 Jun 2024 15:02:48 +0200
-Message-ID: <20240620130254.415699-1-pbonzini@redhat.com>
+Subject: [PATCH 1/6] Revert "host/i386: assume presence of POPCNT"
+Date: Thu, 20 Jun 2024 15:02:49 +0200
+Message-ID: <20240620130254.415699-2-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240620130254.415699-1-pbonzini@redhat.com>
+References: <20240620130254.415699-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -22
 X-Spam_score: -2.3
@@ -99,35 +102,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-As discussed, add a Meson option to configure which x86-64 instruction
-set to use.  QEMU will now default to x86-64-v1 + cmpxchg16b for
-64-bit builds (that corresponds to a Pentium 4 for 32-bit builds).
+This reverts commit 45ccdbcb24baf99667997fac5cf60318e5e7db51.
+The x86-64 instruction set can now be tuned down to x86-64 v1
+or i386 Pentium Pro.
 
-The baseline can be tuned down to Pentium Pro for 32-bit builds (with
--Dx86_version=0), or up as desired.
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ host/include/i386/host/cpuinfo.h | 1 +
+ tcg/i386/tcg-target.h            | 5 +++--
+ util/cpuinfo-i386.c              | 1 +
+ 3 files changed, 5 insertions(+), 2 deletions(-)
 
-Patch "host/i386: assume presence of CMOV" is not reverted because
-CMOV appeared first in the Pentium Pro.
-
-Paolo
-
-Paolo Bonzini (6):
-  Revert "host/i386: assume presence of POPCNT"
-  Revert "host/i386: assume presence of SSSE3"
-  Revert "host/i386: assume presence of SSE2"
-  meson: allow configuring the x86-64 baseline
-  meson: remove dead optimization option
-  meson: require compiler support for chosen x86-64 instructions
-
- meson.build                      | 56 ++++++++++++++++++++------------
- host/include/i386/host/cpuinfo.h |  2 ++
- tcg/i386/tcg-target.h            |  5 +--
- util/bufferiszero.c              |  4 +--
- util/cpuinfo-i386.c              |  6 ++--
- meson_options.txt                |  5 +--
- scripts/meson-buildoptions.sh    |  3 ++
- 7 files changed, 52 insertions(+), 29 deletions(-)
-
+diff --git a/host/include/i386/host/cpuinfo.h b/host/include/i386/host/cpuinfo.h
+index c1e94d75ce1..72f6fad61e5 100644
+--- a/host/include/i386/host/cpuinfo.h
++++ b/host/include/i386/host/cpuinfo.h
+@@ -11,6 +11,7 @@
+ #define CPUINFO_ALWAYS          (1u << 0)  /* so cpuinfo is nonzero */
+ #define CPUINFO_MOVBE           (1u << 2)
+ #define CPUINFO_LZCNT           (1u << 3)
++#define CPUINFO_POPCNT          (1u << 4)
+ #define CPUINFO_BMI1            (1u << 5)
+ #define CPUINFO_BMI2            (1u << 6)
+ #define CPUINFO_AVX1            (1u << 9)
+diff --git a/tcg/i386/tcg-target.h b/tcg/i386/tcg-target.h
+index ecc69827287..2f67a97e059 100644
+--- a/tcg/i386/tcg-target.h
++++ b/tcg/i386/tcg-target.h
+@@ -111,6 +111,7 @@ typedef enum {
+ #endif
+ 
+ #define have_bmi1         (cpuinfo & CPUINFO_BMI1)
++#define have_popcnt       (cpuinfo & CPUINFO_POPCNT)
+ #define have_avx1         (cpuinfo & CPUINFO_AVX1)
+ #define have_avx2         (cpuinfo & CPUINFO_AVX2)
+ #define have_movbe        (cpuinfo & CPUINFO_MOVBE)
+@@ -142,7 +143,7 @@ typedef enum {
+ #define TCG_TARGET_HAS_nor_i32          0
+ #define TCG_TARGET_HAS_clz_i32          1
+ #define TCG_TARGET_HAS_ctz_i32          1
+-#define TCG_TARGET_HAS_ctpop_i32        1
++#define TCG_TARGET_HAS_ctpop_i32        have_popcnt
+ #define TCG_TARGET_HAS_deposit_i32      1
+ #define TCG_TARGET_HAS_extract_i32      1
+ #define TCG_TARGET_HAS_sextract_i32     1
+@@ -177,7 +178,7 @@ typedef enum {
+ #define TCG_TARGET_HAS_nor_i64          0
+ #define TCG_TARGET_HAS_clz_i64          1
+ #define TCG_TARGET_HAS_ctz_i64          1
+-#define TCG_TARGET_HAS_ctpop_i64        1
++#define TCG_TARGET_HAS_ctpop_i64        have_popcnt
+ #define TCG_TARGET_HAS_deposit_i64      1
+ #define TCG_TARGET_HAS_extract_i64      1
+ #define TCG_TARGET_HAS_sextract_i64     0
+diff --git a/util/cpuinfo-i386.c b/util/cpuinfo-i386.c
+index 8f2694d88f2..6d474a6259a 100644
+--- a/util/cpuinfo-i386.c
++++ b/util/cpuinfo-i386.c
+@@ -35,6 +35,7 @@ unsigned __attribute__((constructor)) cpuinfo_init(void)
+         __cpuid(1, a, b, c, d);
+ 
+         info |= (c & bit_MOVBE ? CPUINFO_MOVBE : 0);
++        info |= (c & bit_POPCNT ? CPUINFO_POPCNT : 0);
+         info |= (c & bit_PCLMUL ? CPUINFO_PCLMUL : 0);
+ 
+         /* NOTE: our AES support requires SSSE3 (PSHUFB) as well. */
 -- 
 2.45.2
 
