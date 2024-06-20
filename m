@@ -2,79 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B85259100D3
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jun 2024 11:54:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 253E09100E7
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jun 2024 11:56:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sKETi-0001cv-N7; Thu, 20 Jun 2024 05:53:14 -0400
+	id 1sKEUy-0002G2-4B; Thu, 20 Jun 2024 05:54:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sKETe-0001cB-4e
- for qemu-devel@nongnu.org; Thu, 20 Jun 2024 05:53:10 -0400
-Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sKETc-0005JQ-EK
- for qemu-devel@nongnu.org; Thu, 20 Jun 2024 05:53:09 -0400
-Received: by mail-ed1-x533.google.com with SMTP id
- 4fb4d7f45d1cf-57cfe600cbeso726631a12.2
- for <qemu-devel@nongnu.org>; Thu, 20 Jun 2024 02:53:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1718877181; x=1719481981; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=7TsBQ3rcHz6afeqtu9RFubAOc02bqXltcu1rcXcLBnk=;
- b=F1apOnTjfpYtDRLJx8YaM9xX/PC5PFuMdm99VviGDBsZOPeQD4U6v+PTOc16jejdWs
- Pn0hHjxZVA5i393ma+RVvSyopzvtHbpT5f3pWaP406ZDnROnldGrsDvkAcWW0DwpnPoq
- ayIt1KY80qCqLd7O4Ah2hVDUVVwCLUKOjc7IW0tzNhoArJ1QU6tc6z1seLpfk+mT4krT
- pfYcH8dfPdzmS1OR/aqREuQawQKbSZS1ZQsIig9sLk2EP844BNr0uIMJ50ZltpV8bYG7
- mewKuVw/Mt7f6piqHupZjzQBy9dem6d9t9x0aKgXU3XDiVTreejUt6oiYWO6SRwKRbPV
- bRrw==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1sKEUv-0002FO-8m
+ for qemu-devel@nongnu.org; Thu, 20 Jun 2024 05:54:29 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1sKEUs-0005Ri-UT
+ for qemu-devel@nongnu.org; Thu, 20 Jun 2024 05:54:28 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1718877265;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=x9Yf0M+o6C/2mh3mr8OK3u/T08e/UXINZa/I62u2Tqc=;
+ b=Q6GWUSEyb/oiuJUHBQTXSgI2RsouHytQ/0fF2VIeIx3diG/n8/hmj7lCnCN6oezVi/A+6w
+ nvCsLfwo162m8nVQvqPfBhzH5aoVtvlyRuDWs9fsx7FPAPhZkG+sMqCpr/8CfktSXj1p1o
+ mPMfAIckh/5NBkOuZL/bS0U+2UyfOp4=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-315-W3tOMPz2PteKB4w_Wz5ToA-1; Thu, 20 Jun 2024 05:54:24 -0400
+X-MC-Unique: W3tOMPz2PteKB4w_Wz5ToA-1
+Received: by mail-ed1-f70.google.com with SMTP id
+ 4fb4d7f45d1cf-57d0524060dso307547a12.2
+ for <qemu-devel@nongnu.org>; Thu, 20 Jun 2024 02:54:23 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718877181; x=1719481981;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=7TsBQ3rcHz6afeqtu9RFubAOc02bqXltcu1rcXcLBnk=;
- b=X2PGcKsA/ZzDaLUqB9qXxVTmSSxdmi6RWN0t5ym1t5pjoXD9eEvJxRs2QMcMiw6k8S
- dtbwIlNKimWtfWH5BWWnU/do30tuIcv8xzMS1Ya/TE6kH9Umre/GQhXXaZauRIiKzNCp
- HMVfbw8t1MJNBG7OBuVSfpsGLg/DUvqpjnDnUGC5i87NMG/dELhFzvl7Vn9At8Vi/97o
- uJydNYP2LnOl3Mu6/vphhsIJzCJ4fkVVA1QrZRNUZx3nDq+CY6JHbXHsu5KyLgt9UNUp
- +WwtKGOs05Ij0Y6xZIodSBbza8nPzRMZP4GtMCeBFihRz6H4Lo0vW4WObHSTFIQlvdkx
- 4Beg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVB8EalhkQ/ATYI0m+EGpIEwJtUYo4PtdSPisviN8LRRTKwI/ciPLZkmjXXAztz73531ptmCvbYtp+2LNx5VGeqIRr8jbI=
-X-Gm-Message-State: AOJu0YzJabHGQXxVwoUJNfITcvBlxz1iFyAf6MsuSTkBwizUgutHmvlB
- Xc1OyxPXKoACnMwYVv+2N5Hcz3hcrIP6dVNaJW/qo6kJrnCfATNqD8yeOMhdfCNS2hVvWEkZLSo
- agjVaMcgg18WiecZNa3FAFwctJPPOnEz4TeRvaQ==
-X-Google-Smtp-Source: AGHT+IFLsiV2zhuLgF9KIUJT8YGCCwqazH7DUGuXB8h7b1yM9RhI7l8JZ4BpO9eedEifWm1rDCw+mFFafRheliS8W2A=
-X-Received: by 2002:a50:baa5:0:b0:57c:ff70:5429 with SMTP id
- 4fb4d7f45d1cf-57d07e670a2mr2476238a12.8.1718877180797; Thu, 20 Jun 2024
- 02:53:00 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1718877262; x=1719482062;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=x9Yf0M+o6C/2mh3mr8OK3u/T08e/UXINZa/I62u2Tqc=;
+ b=CNTEl3WxHcTBGHPsjUpqkCGZzS9onJ2jDLivkBQOYXyj/HW3QkUVNZ3BwDWPKaE0e1
+ UC0NlLE9wE+mSMupYhkfAlbMtDTnOxJvRO6c3HSvylpKr+duTAtN3a8WrJBE9zEWuUPP
+ 2mKJtPr5acIaDJyYoQ5vxJ+K1PYRqhY5I+FDRJ7AEVJlL0wvznmvqyGbWVtcynb9NlB0
+ fftn41FVBftZfsdGVUyT+oqZi7p3HvxaXF6qm6cfADBwoJ1n4uJ/iWPJOUtBVPDtZrov
+ UKJwbKiUIoAurhP7SWF4QMUUJcKbbtv9wsi5D/loleT/g5DwkgSPbae/G5z+kdHmvmto
+ OsBw==
+X-Gm-Message-State: AOJu0YxTV9BWVAdYqHdiHOToXShJ/CQpD2b/AOwP6hdKZ5U7i7AJjh5s
+ c0KHeNs8ROSDs0bETUN06Y2GE0sUsurPbKIzdU62/j8nELROyJ43aVSNCJKEShURtltpmJJeFQb
+ VxdGtKz3L9Ozagf4jD7GQUmWGp0K3Rh0lbv3JMqx4LVHhjadnJmiTNUQcwaifGJ/nNS/TVzSVR5
+ /kfG/tMP2bb0ZoQo5Ej5BTq0msjhgk03GsVMK9
+X-Received: by 2002:a50:d74f:0:b0:57c:677a:a941 with SMTP id
+ 4fb4d7f45d1cf-57d07ebf13bmr2755145a12.40.1718877262216; 
+ Thu, 20 Jun 2024 02:54:22 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGHyELjGvrAUwFlIuDmLsOBV+LHrA4a6QEO6h343gaUaP/ss3SX8GdK8+q3NwIUisXOV4lemA==
+X-Received: by 2002:a50:d74f:0:b0:57c:677a:a941 with SMTP id
+ 4fb4d7f45d1cf-57d07ebf13bmr2755134a12.40.1718877261741; 
+ Thu, 20 Jun 2024 02:54:21 -0700 (PDT)
+Received: from avogadro.local ([151.62.196.71])
+ by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-57d17d9471fsm1172903a12.52.2024.06.20.02.54.21
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 20 Jun 2024 02:54:21 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Subject: [PATCH 00/10] target/i386: make decoding entirely table based
+Date: Thu, 20 Jun 2024 11:54:09 +0200
+Message-ID: <20240620095419.386958-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-References: <20240618172527.3450098-1-nabihestefan@google.com>
- <87o77xcn2g.fsf@draig.linaro.org>
-In-Reply-To: <87o77xcn2g.fsf@draig.linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 20 Jun 2024 10:52:49 +0100
-Message-ID: <CAFEAcA8Jx=CrXCSzOtjtEky5ikvtatk8N2gz=nKccpwEwO13+w@mail.gmail.com>
-Subject: Re: [PATCH] hw/net: Fix Coverity Issue for npcm-gmac
-To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
-Cc: Nabih Estefan <nabihestefan@google.com>, qemu-devel@nongnu.org,
- kfting@nuvoton.com, wuhaotsh@google.com, jasowang@redhat.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::533;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x533.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.144,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -91,63 +97,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 19 Jun 2024 at 10:13, Alex Benn=C3=A9e <alex.bennee@linaro.org> wro=
-te:
->
-> Nabih Estefan <nabihestefan@google.com> writes:
->
-> > There is an extra `buf=3D` set that is not used by npcm-gmac. Remove it
-> > for coverity to be happy.
+The trailing part of the previous series I sent; with fixes for
+BT/BTS/BTR/BTC, plus moving code generation of CMPXCHG8B/CMPXCHG16B to
+the new decoder.  This way all LOCKable instructions are converted, and
+the patch "target/i386: do not check PREFIX_LOCK in old-style decoder"
+is correct.
 
-By the way, Nabih, it looks like the mailing list received five copies
-of this patch email. You might want to look at what happened on your
-end that resulted in all the duplicates.
+Sneak in a couple cleanups for CC_OP_POPCNT.  They don't really make
+the generated code any more efficient, but they simplify a bit the
+logic for the BT/BTS/BTR/BTC flags.
 
-> Have you go the coverity reference to include in the commit message?
+Supersedes: <20240608084113.2770363-1-pbonzini@redhat.com>
 
-This is CID 1534027.
 
-> > Signed-off-by: Nabih Estefan <nabihestefan@google.com>
-> > ---
-> >  hw/net/npcm_gmac.c | 1 -
-> >  1 file changed, 1 deletion(-)
-> >
-> > diff --git a/hw/net/npcm_gmac.c b/hw/net/npcm_gmac.c
-> > index 1b71e2526e..b397fd5064 100644
-> > --- a/hw/net/npcm_gmac.c
-> > +++ b/hw/net/npcm_gmac.c
-> > @@ -614,7 +614,6 @@ static void gmac_try_send_next_packet(NPCMGMACState=
- *gmac)
-> >              net_checksum_calculate(tx_send_buffer, length, csum);
-> >              qemu_send_packet(qemu_get_queue(gmac->nic), tx_send_buffer=
-, length);
-> >              trace_npcm_gmac_packet_sent(DEVICE(gmac)->canonical_path, =
-length);
-> > -            buf =3D tx_send_buffer;
->
-> So coverity is saying that buf starts at tx_send_buffer and none of the
-> other legs that can mess with it are possible for the tx_desc.tdes1 &
-> TX_DESC_TDES1_LAST_SEG_MASK leg?
+Paolo Bonzini (10):
+  target/i386: use cpu_cc_dst for CC_OP_POPCNT
+  target/i386: give CC_OP_POPCNT low bits corresponding to MO_TL
+  target/i386: convert bit test instructions to new decoder
+  target/i386: try not to force EFLAGS computation for CC_OP_ADOX/ADCX
+  target/i386: decode address before going back to translate.c
+  target/i386: convert CMPXCHG8B/CMPXCHG16B to new decoder
+  target/i386: do not check PREFIX_LOCK in old-style decoder
+  target/i386: list instructions still in translate.c
+  target/i386: assert that cc_op* and pc_save are preserved
+  target/i386: remove gen_ext_tl
 
-Coverity is saying that in the loop body, we unconditionally
-(in "step 4") set "buf =3D &tx_send_buffer[prev_buf_size]" before
-we ever try to use "buf". This assignment "buf =3D tx_send_buffer"
-happens later in the loop body, but there is no further reference
-to buf either inside the loop body or after the loop ends. So we
-will never look at the value we assign to "buf" here (either we
-finish the loop and the function, or else we loop back around
-again and overwrite this value), and this assignment is dead code.
+ target/i386/cpu.h                |  13 +-
+ target/i386/tcg/decode-new.h     |  19 +-
+ target/i386/tcg/cc_helper.c      |   2 +-
+ target/i386/tcg/translate.c      | 492 ++++++-------------------------
+ target/i386/tcg/decode-new.c.inc | 136 ++++++---
+ target/i386/tcg/emit.c.inc       | 249 +++++++++++++++-
+ 6 files changed, 467 insertions(+), 444 deletions(-)
 
-What I'm wondering is whether this code for "last segment,
-send the packet" should be setting "prev_buf_size =3D 0" instead
-of "buf =3D tx_send_buffer" (meaning, I think "we've sent this packet,
-there is nothing currently in the tx_send_buffer, the next descriptor
-can start filling tx_send_buffer from byte 0".) Otherwise I think
-we will continue to accumulate data from the following descriptor
-into tx_send_buffer after the data from this packet, but when we
-send that second packet we will do it from the start of
-tx_send_buffer and so we will send the wrong data.
+-- 
+2.45.2
 
-thanks
--- PMM
 
