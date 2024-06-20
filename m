@@ -2,79 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C3799110BA
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jun 2024 20:22:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DEFFD911104
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jun 2024 20:35:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sKMPf-00070h-T9; Thu, 20 Jun 2024 14:21:35 -0400
+	id 1sKMd6-00011K-OW; Thu, 20 Jun 2024 14:35:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sKMPe-00070S-EJ
- for qemu-devel@nongnu.org; Thu, 20 Jun 2024 14:21:34 -0400
-Received: from mail-pg1-x52e.google.com ([2607:f8b0:4864:20::52e])
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1sKMd4-00010L-JQ
+ for qemu-devel@nongnu.org; Thu, 20 Jun 2024 14:35:26 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sKMPc-0001Go-U1
- for qemu-devel@nongnu.org; Thu, 20 Jun 2024 14:21:34 -0400
-Received: by mail-pg1-x52e.google.com with SMTP id
- 41be03b00d2f7-6e5fd488d9fso852163a12.3
- for <qemu-devel@nongnu.org>; Thu, 20 Jun 2024 11:21:32 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1sKMd2-0003sC-RB
+ for qemu-devel@nongnu.org; Thu, 20 Jun 2024 14:35:26 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-4247f36f689so6132445e9.1
+ for <qemu-devel@nongnu.org>; Thu, 20 Jun 2024 11:35:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1718907691; x=1719512491; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=lYybmh9Ei3+1TAs+4NB3zFjNe3lIw6ds/Q6O3NNq/Fs=;
- b=QpOgkBEsyEtmkUTinV7dCnOOZHylp8ASmDiTXp4GuBXkqy/tIeFMZjUjRUDq/gzWTx
- AWED15B9p/rW9YGpSp0X/pTW6JF8nUX2+xoPscMEabYJJkCkwFmqe0u3Z6g+iRxzHIwT
- EORo8ccaiMF5w+/COpYq5Kw5FVClO8TOsKJimsqdKd/nK4Nw+DcWu4a7VBoSqnGzIlKL
- YPFj67TGYJEz2igslIsFhv7bYP7iggyP1a8ZariWVrHiDkU/N+LFNdqjP7ELQlnEpgYn
- gMwvyB/vbpnaJQNduNbPXzAthRCaaZUDDRX/xkIlWeRflPalsLMUPUR8Ut3uprhGZ+DH
- 5ROQ==
+ d=linaro.org; s=google; t=1718908523; x=1719513323; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=HuMzMuwNykd9ozAMAPiLo7EVlgWOviQIxyx7fR9sCII=;
+ b=Hc+56EjttVzKO/gp6g8nWgzqANLTBVoo6DQHig/fNQ8BLrPbbnAAWsWxEVvKHn2/1D
+ lDpjbCq4cABRFxn8wsucSzYcwXGVpktWzz1MMNc1Cn/MUMPpvmdbxkKTNKxKEjcnWvuP
+ YMqhDAoycP6wVZGeGQYxnjIioox0fML6GZ4LLygp7U8AiEArKB+7zReVgTvYmYQbsf9g
+ TAsuCmJxFPPAL/xC54zpFRKwF3cw7A887g/ZCMHXLZdIiV6D7kIDP3DvwWKTFX7hDKs8
+ Gy2NZ+VcI75pEjKqy3uJ/20H6Tcqo8LBu4tbdFmlOos0bDuubiLPHBcViLzIjgPxM5LW
+ vHJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718907691; x=1719512491;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=lYybmh9Ei3+1TAs+4NB3zFjNe3lIw6ds/Q6O3NNq/Fs=;
- b=iIxT7jJDRUdvv9ahLLpnj0tPrxglUq7pD6RdG3j2O4z0SwUS9tLkl8kCCdRWIU/suo
- IQgPZWQM247QjAe53ktT03BJd9hduUb2fPtGJwRUyE7B/ZyDON7vJMJEsmt/zd/fc9B9
- T1tZOtCCzwMT/s5G19pIqIFfxHUWCulMjB9m5eKVrL0JAazoLljLfSv9bDFpCT+1lBTs
- w4KLQYrhOgV5xKuWorKqBmaLxpPz82fO0fTczEjTXfYCw+0eD61GjZq9lYLPCWlue5Vk
- WewhY2YDn0qW3LiYxmz2pH1xfeoNhoYabiBsZqBmc3N+faKwjFOLHPNAwKQQUB/YhTu3
- qs2w==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUzfm/r/JCt3qzf5ikwBrbyqF2eDEGQbzlTaHK0i32mXFDx46YsWriqdgk4fu0HJ2J+qljz8Z+8roAFRIVgRobbwg8aIQU=
-X-Gm-Message-State: AOJu0YxRQpv/33/LW8675SmWtBz7NXY6DO9KjsqdsjsEy2iq09+70HFy
- PLpLNnL5J1SaZ4/gFi+Dkmz90438Q1qdtiEswdmRj3KEqi3IysDoYuEH5q814Zo=
-X-Google-Smtp-Source: AGHT+IGB86C88pOYbAKBa8c6M8KJ7rxQrgj+2DN4VmCoDmX4rlHi6Qt5VdxKZQa8M5ppTR1YS94c8g==
-X-Received: by 2002:a17:902:a503:b0:1f8:393e:8b9a with SMTP id
- d9443c01a7336-1f9aa3faf67mr56947325ad.33.1718907691174; 
- Thu, 20 Jun 2024 11:21:31 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.132.216])
+ d=1e100.net; s=20230601; t=1718908523; x=1719513323;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=HuMzMuwNykd9ozAMAPiLo7EVlgWOviQIxyx7fR9sCII=;
+ b=OcLchdPEzET7pO2N9LeSMlz59KqS6lNpzXKUuzx1Wggam5PkrHV7v6JHs2KMZXx1ZH
+ ZO8tR1A+ofEczERFIBYIWU1MOmH0fEk9he2vwB4sUinG8z8okFNsGShQaRWMm4aNeEP8
+ CiJGoKaqciJcowDxhC62vpduTGr0ypWNwYPaa/yPDzBWKO1R4FgLDWjzdCGiYA/8e/wV
+ e/5+cIkBOzwdP1OZsS+nfrXlerbaqT3kTYr7FYAYqTUXNxB6J6pPyUY3A1uZSXIs9Mtg
+ W97BWSc5AAbFLZX7BiHNT9TCIlf/jMjK4gNaM9/WMvhJRxhafpQ40D1EL7eROvXiStoB
+ 7PNg==
+X-Gm-Message-State: AOJu0YzD7hEJCBTXP4BMaZ2pJEW8qtJItjWUPguOJrVg8qNiyy3v+Cpm
+ /QFdz1Er3rVwDay77zFBafu4eq+GYbXOSfPHeQgTgXKi03IBk01V/2+Xo/NBElX7jqLIQL0IM7T
+ WhXg=
+X-Google-Smtp-Source: AGHT+IGowjYqpOW8j0GB9VlkOHFCtxRDBfJXAYT/3NzP5XAp/3/yqXlBJbkvfAlWlzslRiPsbQwfUQ==
+X-Received: by 2002:a05:600c:20c:b0:418:fe93:22d0 with SMTP id
+ 5b1f17b1804b1-42475173d66mr51567345e9.11.1718908523228; 
+ Thu, 20 Jun 2024 11:35:23 -0700 (PDT)
+Received: from meli-email.org (adsl-103.37.6.162.tellas.gr. [37.6.162.103])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1f855ee6f01sm140888425ad.153.2024.06.20.11.21.30
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 20 Jun 2024 11:21:30 -0700 (PDT)
-Message-ID: <2af6449a-f4c2-422c-a92b-cfb11a5ae2d5@linaro.org>
-Date: Thu, 20 Jun 2024 11:21:28 -0700
+ 5b1f17b1804b1-4247d0be9fasm35579665e9.16.2024.06.20.11.35.22
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 20 Jun 2024 11:35:22 -0700 (PDT)
+Date: Thu, 20 Jun 2024 21:22:53 +0300
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+To: Alex Benn=?UTF-8?B?w6k=?= e <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
+ Mads Ynddal <mads@ynddal.dk>, Peter Maydell <peter.maydell@linaro.org>
+Subject: Re: [RFC PATCH v3 2/5] rust: add bindgen step as a meson dependency
+User-Agent: meli 0.8.6
+References: <rust-pl011-rfc-v3.git.manos.pitsidianakis@linaro.org>
+ <6bf311a35e6d3bfa8b3bfd10d8f896a9e655fa30.1718827153.git.manos.pitsidianakis@linaro.org>
+ <8734p7dcbq.fsf@draig.linaro.org>
+In-Reply-To: <8734p7dcbq.fsf@draig.linaro.org>
+Message-ID: <fe6ax.yk8b6hjo7ezl@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] target/arm: Move initialization of debug ID registers
-To: Gustavo Romero <gustavo.romero@linaro.org>, qemu-devel@nongnu.org,
- alex.bennee@linaro.org
-Cc: philmd@linaro.org, peter.maydell@linaro.org
-References: <20240620181352.3590086-1-gustavo.romero@linaro.org>
- <20240620181352.3590086-2-gustavo.romero@linaro.org>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240620181352.3590086-2-gustavo.romero@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52e.google.com
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8; format=flowed
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,25 +96,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/20/24 11:13, Gustavo Romero wrote:
-> @@ -1268,7 +1268,10 @@ void aarch64_max_tcg_initfn(Object *obj)
->       t = FIELD_DP64(t, ID_AA64SMFR0, FA64, 1);     /* FEAT_SME_FA64 */
->       cpu->isar.id_aa64smfr0 = t;
->   
-> -    /* Replicate the same data to the 32-bit id registers.  */
-> +    /*
-> +     * Replicate the same values from the 32-bit max CPU to the 32-bit ID
-> +     * registers.
-> +     */
->       aa32_max_features(cpu);
+On Thu, 20 Jun 2024 15:32, Alex Bennée <alex.bennee@linaro.org> wrote:
+>Manos Pitsidianakis <manos.pitsidianakis@linaro.org> writes:
+>
+>> Add mechanism to generate rust hw targets that depend on a custom
+>> bindgen target for rust bindings to C.
+>>
+>> This way bindings will be created before the rust crate is compiled.
+>>
+>> The bindings will end up in BUILDDIR/{target}-generated.rs and have the same name
+>> as a target:
+>>
+>> ninja aarch64-softmmu-generated.rs
+>>
+><snip>
+>> +
+>> +
+>> +rust_targets = {}
+>> +
+>> +cargo_wrapper = [
+>> +  find_program(meson.global_source_root() / 'scripts/cargo_wrapper.py'),
+>> +  '--config-headers', meson.project_build_root() / 'config-host.h',
+>> +  '--meson-build-root', meson.project_build_root(),
+>> +  '--meson-build-dir', meson.current_build_dir(),
+>> +  '--meson-source-dir', meson.current_source_dir(),
+>> +]
+>
+>I'm unclear what the difference between meson-build-root and
+>meson-build-dir is?
 
-I think the previous comment is more accurate.
+Build-dir is the subdir of the current subdir(...) meson.build file
 
-There is no separate "32-bit max CPU". There is one "max CPU", which supports both 32-bit 
-and 64-bit modes, and thus has both 32-bit and 64-bit ID registers.
+So if we are building under qemu/build, meson_build_root is qemu/build 
+and meson_build_dir is qemu/build/rust
 
-The rest of the patch looks good.
+>
+>We also end up defining crate-dir and outdir. Aren't these all
+>derivable from whatever module we are building?
 
+Crate dir is the source directory (i.e. qemu/rust/pl011) that contains 
+the crate's manifest file Cargo.toml.
 
-r~
+Outdir is where to put the final build artifact for meson to find. We 
+could derive that from the build directories and package names somehow 
+but I chose to be explicit instead of doing indirect logic to make the 
+process less magic.
+
+I know it's a lot so I'm open to simplifications. The only problem is 
+that all of these directories, except the crate source code, are defined 
+from meson and can change with any refactor we do from the meson side of 
+things.
 
