@@ -2,31 +2,31 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2DEA90FC79
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jun 2024 08:01:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4889990FC7B
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jun 2024 08:01:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sKAqc-0004BN-6h; Thu, 20 Jun 2024 02:00:38 -0400
+	id 1sKAqd-0004D7-AW; Thu, 20 Jun 2024 02:00:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
- id 1sKAqW-000434-Ei; Thu, 20 Jun 2024 02:00:32 -0400
+ id 1sKAqW-00043M-H0; Thu, 20 Jun 2024 02:00:32 -0400
 Received: from muminek.juszkiewicz.com.pl ([213.251.184.221])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
- id 1sKAqU-0004f1-MX; Thu, 20 Jun 2024 02:00:32 -0400
+ id 1sKAqV-0004f2-27; Thu, 20 Jun 2024 02:00:32 -0400
 Received: from localhost (localhost [127.0.0.1])
- by muminek.juszkiewicz.com.pl (Postfix) with ESMTP id AF027261A3C;
- Thu, 20 Jun 2024 08:00:26 +0200 (CEST)
+ by muminek.juszkiewicz.com.pl (Postfix) with ESMTP id 9872F2606D1;
+ Thu, 20 Jun 2024 08:00:27 +0200 (CEST)
 X-Virus-Scanned: Debian amavis at juszkiewicz.com.pl
 Received: from muminek.juszkiewicz.com.pl ([127.0.0.1])
  by localhost (muminek.juszkiewicz.com.pl [127.0.0.1]) (amavis, port 10024)
- with ESMTP id 3gbgHnBG4Jvk; Thu, 20 Jun 2024 08:00:25 +0200 (CEST)
+ with ESMTP id wdPHsOq95QPL; Thu, 20 Jun 2024 08:00:25 +0200 (CEST)
 Received: from applejack.lan (83.11.22.244.ipv4.supernova.orange.pl
  [83.11.22.244])
- by muminek.juszkiewicz.com.pl (Postfix) with ESMTPSA id 150D72606D1;
- Thu, 20 Jun 2024 08:00:23 +0200 (CEST)
+ by muminek.juszkiewicz.com.pl (Postfix) with ESMTPSA id 39F7B26074C;
+ Thu, 20 Jun 2024 08:00:25 +0200 (CEST)
 From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
@@ -36,10 +36,12 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Beraldo Leal <bleal@redhat.com>, qemu-arm@nongnu.org,
  Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-Subject: [PATCH v2 0/2] tests/avocado: make sbsa-ref working with >1 core
-Date: Thu, 20 Jun 2024 08:00:12 +0200
-Message-ID: <20240620060014.605563-1-marcin.juszkiewicz@linaro.org>
+Subject: [PATCH v2 1/2] tests/avocado: use default amount of cores on sbsa-ref
+Date: Thu, 20 Jun 2024 08:00:13 +0200
+Message-ID: <20240620060014.605563-2-marcin.juszkiewicz@linaro.org>
 X-Mailer: git-send-email 2.45.1
+In-Reply-To: <20240620060014.605563-1-marcin.juszkiewicz@linaro.org>
+References: <20240620060014.605563-1-marcin.juszkiewicz@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: softfail client-ip=213.251.184.221;
@@ -64,24 +66,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Recent changes made sbsa-ref crash when more than 1 cpu core was used.
-We handle it in firmware now so one patch updates it to the working
-snapshot (TF-A 2.11 + EDK2 snapshot + EDK2-platforms snapshot).
+I was wondering why avocado tests passed with firmware which crashes
+when anyone else is using it.
 
-Other change drops "-smp 1" from CI to make sure we test default setup
-of sbsa-ref.
+Turned out that amount of cores matters. Have to find out why still.
 
-I have no idea why previous firmware worked with 1 cpu core and failed
-with any higher number.
+Signed-off-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+---
+ tests/avocado/machine_aarch64_sbsaref.py | 2 --
+ 1 file changed, 2 deletions(-)
 
-
-Marcin Juszkiewicz (2):
-  tests/avocado: use default amount of cores on sbsa-ref
-  tests/avocado: update firmware for sbsa-ref
-
- tests/avocado/machine_aarch64_sbsaref.py | 16 +++++++---------
- 1 file changed, 7 insertions(+), 9 deletions(-)
-
+diff --git a/tests/avocado/machine_aarch64_sbsaref.py b/tests/avocado/machine_aarch64_sbsaref.py
+index 6bb82f2a03..136b495096 100644
+--- a/tests/avocado/machine_aarch64_sbsaref.py
++++ b/tests/avocado/machine_aarch64_sbsaref.py
+@@ -75,8 +75,6 @@ def fetch_firmware(self):
+             f"if=pflash,file={fs0_path},format=raw",
+             "-drive",
+             f"if=pflash,file={fs1_path},format=raw",
+-            "-smp",
+-            "1",
+             "-machine",
+             "sbsa-ref",
+         )
 -- 
 2.45.1
 
