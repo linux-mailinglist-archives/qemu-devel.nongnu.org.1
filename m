@@ -2,86 +2,151 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4603910E48
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jun 2024 19:16:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6AC3910E50
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jun 2024 19:19:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sKLOL-0006zF-Rk; Thu, 20 Jun 2024 13:16:09 -0400
+	id 1sKLRD-0008KD-1H; Thu, 20 Jun 2024 13:19:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sKLOI-0006yz-Pt
- for qemu-devel@nongnu.org; Thu, 20 Jun 2024 13:16:06 -0400
-Received: from mail-il1-x136.google.com ([2607:f8b0:4864:20::136])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sKLOG-0004bD-8S
- for qemu-devel@nongnu.org; Thu, 20 Jun 2024 13:16:06 -0400
-Received: by mail-il1-x136.google.com with SMTP id
- e9e14a558f8ab-376208fbe7bso4161005ab.3
- for <qemu-devel@nongnu.org>; Thu, 20 Jun 2024 10:16:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1718903763; x=1719508563; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=iMOzXAVz9g/6D7IcBunTPzUS6D6eX8YxQFJu2pcH5SI=;
- b=jCgeve5CBnBZ+UBzA0dmGP0vzhO6iRhMI307PfB19RG2awkDlPqcvbX7wUgr1BSoyB
- 96WDsc04kR8a4uFk3KXponCuPZfnGLoy4kyutT+Gsz4DlNylxJ76bstRzLCCf9VxOU7w
- 2fCsJq21HSTvikYpJdWa9rmnIPjGTU6Kg5DdWr8eM6jSjs4ZAbJlbzzsq0jDZrx00XIx
- HK+qq36dQDbipE7pGwOAjSlrE1j7PoMiclKtmJt2wi4ToqHlDcNH8PiHwvUnt5gkYCog
- NtCd7sMbiXLLyB/AjwR5pXGF2FacqqHLU0rwFglH8sf/csF2FpSXpcTMsUb3YRzKyDp8
- MG4w==
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sKLRA-0008JZ-Em
+ for qemu-devel@nongnu.org; Thu, 20 Jun 2024 13:19:04 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sKLR8-0004vp-Nv
+ for qemu-devel@nongnu.org; Thu, 20 Jun 2024 13:19:04 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1718903940;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=4HV8IXNm9fsVPDhyNHFw3KBX78cttSIyqr1tkW2rGhY=;
+ b=frFzdKeLChfd9oUUg5pYMA7BNUUlYtgKj30IyY4IK57d0t2hTJaUJCIqG3zmUbRgvvjtqQ
+ qhm4I64kmPjUoUESUH9Y1f9lOHxt1oA1V/xPmjcgzfteSpLInGahnlsdyAehfQlpTFh164
+ vtfWe0xVYYLGugIJzH3KyoqUxfyUFMk=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-557-qmc8FIasPoyVniVYn1E89A-1; Thu, 20 Jun 2024 13:18:56 -0400
+X-MC-Unique: qmc8FIasPoyVniVYn1E89A-1
+Received: by mail-ed1-f72.google.com with SMTP id
+ 4fb4d7f45d1cf-57d22ea3e71so507734a12.2
+ for <qemu-devel@nongnu.org>; Thu, 20 Jun 2024 10:18:56 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718903763; x=1719508563;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=iMOzXAVz9g/6D7IcBunTPzUS6D6eX8YxQFJu2pcH5SI=;
- b=nllfq8tNjfcqDI1LIB5xkv7ywMp0QD+EyFZQ7AGotzU3hupLgNmj+g6foxRQI0U452
- UbETI+aX3fjpmvxL7CHILByJldSwXKMIt2zoVWVUD7ZQ6skRTAqFJYQtlahUhWIqbY6Q
- bBcuKAKKoEOfSNYhXFtWgurZGP44YXoXUART/8RcmbxUZE7qNcKQVTvDVMOq2wp4gvXR
- Oav9P8Pq3u6+I3BtX+A8fWN9t9iTOX6Zf+km9aZXblCbaDhZXN7Smk6FoYPnOjK3AdnF
- 3I9qNyPXMVdU1NJjSD5xB6Gz5YPJh4ENz7FSb+YAER2P4v37X+5ySOqfnrPi7WVfYnIB
- dVaw==
+ d=1e100.net; s=20230601; t=1718903935; x=1719508735;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=4HV8IXNm9fsVPDhyNHFw3KBX78cttSIyqr1tkW2rGhY=;
+ b=siGk0vF0aQbLrw5QJJRoM29cbV1ebpqpqRmHRp/DVLLN9nFGOG0Wl2UCTgoLXU6E/+
+ MIvXPhE6EmzahYxYJqhT61N7C0PW0+szZqNxKkyPcQtNpVWXos3JfYXHvQ92iGwsnHIw
+ ob6rOoTVYx1RMxvHfRzgXjJsZsXggBztUYUbqPaJNaSXG682yashtzlHxn2iKyOiTWVa
+ yUfW+6GAaUukeJRxWRkE+fsdxYJwRSjgtzO/Du4CbYa67C1AR2gSCMo03F3GIskmLP5y
+ KAup0C+zVeww6mxBy8gAt41z+d6CZuS1lr2KkGaqiwaCPJuZKfYd2SdhN4O/rOYWENdW
+ jVZA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXPKQDVIxajOElN4kUM//wixlLYc4r/meSWYPHBPoYpZEDVSX9jMKbT58b86cPik3L9SE8OtjmNOMj2Z4P+wK8bc3zIYh8=
-X-Gm-Message-State: AOJu0Yw6+Io97pazvO3uBOboEIexVbqVT8DwJxOt5bJR9STJY/SMOokq
- FNk/3JfFaiMWEBx/o5OcSH45Ix8qoaEEqbxIrSOTGo0rZiEJ1AapFd+8tDG9JnI=
-X-Google-Smtp-Source: AGHT+IFSomVENBcfSxj2TSe78DgbJFZqpKy6gNWdlvx5qNOd0ScQ1/W1iCeQ+J3dZfQ1VgCYctWDFQ==
-X-Received: by 2002:a05:6e02:1fea:b0:375:ae6b:9d9c with SMTP id
- e9e14a558f8ab-3761d710f83mr70394655ab.26.1718903762915; 
- Thu, 20 Jun 2024 10:16:02 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.132.216])
- by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-6fee2d34be7sm11209369a12.63.2024.06.20.10.16.01
+ AJvYcCUgImkrxYpm7junyLD3mfkkajmLsH2/RW/LRAND5Xf8L2K8bEuLNCWUCdGcfEo3Z5V3zvHsfsn8qfEK3Kmo5NgVB+cMwFM=
+X-Gm-Message-State: AOJu0YwtGs4VZ6hizz/OrXgMWTHZ/Q8LzYlQtkVPBY4dwZRkWdiWvtER
+ Wk3zYItEu893TddHMA9CaqI/ocT+kRh5Tm1LmjbKuX0W1wE0cqLbXnIJq3jEQUuAXgOPxve9L+S
+ uPbDHAubkLIAojIZEDzMwQsq6TT4zy0Jgl/y2M1ANNd35RHKxa1ZB
+X-Received: by 2002:a05:6402:50c9:b0:57d:15d4:a685 with SMTP id
+ 4fb4d7f45d1cf-57d15d4a9fdmr3555230a12.40.1718903935374; 
+ Thu, 20 Jun 2024 10:18:55 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEVexZNb3iKApxhhE3Kvs4c6ov6DkieaxjgHpjKK9h7f0Du+GiB8N7bF0RYp9fw4ua6pbOQAg==
+X-Received: by 2002:a05:6402:50c9:b0:57d:15d4:a685 with SMTP id
+ 4fb4d7f45d1cf-57d15d4a9fdmr3555210a12.40.1718903934982; 
+ Thu, 20 Jun 2024 10:18:54 -0700 (PDT)
+Received: from [192.168.0.4] (ip-109-43-178-117.web.vodafone.de.
+ [109.43.178.117]) by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-57d0d9c3b7fsm1999762a12.55.2024.06.20.10.18.53
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 20 Jun 2024 10:16:02 -0700 (PDT)
-Message-ID: <56955999-6fe1-4f39-a519-2175988b1ff9@linaro.org>
-Date: Thu, 20 Jun 2024 10:16:00 -0700
+ Thu, 20 Jun 2024 10:18:54 -0700 (PDT)
+Message-ID: <fb06af10-2647-4f1b-9fbe-ab4e45a924d9@redhat.com>
+Date: Thu, 20 Jun 2024 19:18:52 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/6] meson: allow configuring the x86-64 baseline
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- amonakov@ispras.ru, Warner Losh <imp@bsdimp.com>
-References: <20240620130254.415699-1-pbonzini@redhat.com>
- <20240620130254.415699-5-pbonzini@redhat.com>
+Subject: Re: [PATCH v2 09/14] include/hw: temporarily disable deletion of
+ versioned machine types
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ qemu-devel@nongnu.org
+Cc: Halil Pasic <pasic@linux.ibm.com>, devel@lists.libvirt.org,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Eric Farman <farman@linux.ibm.com>,
+ qemu-s390x@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ Nicholas Piggin <npiggin@gmail.com>, David Hildenbrand <david@redhat.com>,
+ Ilya Leoshkevich <iii@linux.ibm.com>,
+ David Gibson <david@gibson.dropbear.id.au>, qemu-arm@nongnu.org,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clegoate@redhat.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Yanan Wang <wangyanan55@huawei.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Laurent Vivier <laurent@vivier.eu>, qemu-ppc@nongnu.org
+References: <20240620165742.1711389-1-berrange@redhat.com>
+ <20240620165742.1711389-10-berrange@redhat.com>
+From: Thomas Huth <thuth@redhat.com>
 Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240620130254.415699-5-pbonzini@redhat.com>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <20240620165742.1711389-10-berrange@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::136;
- envelope-from=richard.henderson@linaro.org; helo=mail-il1-x136.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.152,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,31 +162,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/20/24 06:02, Paolo Bonzini wrote:
-> Signed-off-by: Paolo Bonzini<pbonzini@redhat.com>
+On 20/06/2024 18.57, Daniel P. Berrangé wrote:
+> The new deprecation and deletion policy for versioned machine types is
+> being introduced in QEMU 9.1.0.
+> 
+> Under the new policy a number of old machine types (any prior to 2.12)
+> would be liable for immediate deletion which would be a violation of our
+> historical deprecation and removal policy
+> 
+> Thus automatic deletions (by skipping QOM registration) are temporarily
+> gated on existance of the env variable "QEMU_DELETE_MACHINES" / QEMU
+> version number >= 10.1.0. This allows opt-in testing of the automatic
+> deletion logic, while activating it fully in QEMU >= 10.1.0.
+> 
+> This whole commit should be reverted in the 10.1.0 dev cycle or shortly
+> thereafter.
+> 
+> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 > ---
->   meson.build                   | 41 ++++++++++++++++++++++++++++-------
->   meson_options.txt             |  3 +++
->   scripts/meson-buildoptions.sh |  3 +++
->   3 files changed, 39 insertions(+), 8 deletions(-)
+>   include/hw/boards.h | 19 ++++++++++++++++++-
+>   1 file changed, 18 insertions(+), 1 deletion(-)
+> 
+> diff --git a/include/hw/boards.h b/include/hw/boards.h
+> index 187ed76646..ef6f18f2c1 100644
+> --- a/include/hw/boards.h
+> +++ b/include/hw/boards.h
+> @@ -686,11 +686,28 @@ struct MachineState {
+>    * suitable period of time has passed, it will cause
+>    * execution of the method to return, avoiding registration
+>    * of the machine
+> + *
+> + * The new deprecation and deletion policy for versioned
+> + * machine types was introduced in QEMU 9.1.0.
+> + *
+> + * Under the new policy a number of old machine types (any
+> + * prior to 2.12) would be liable for immediate deletion
+> + * which would be a violation of our historical deprecation
+> + * and removal policy
+> + *
+> + * Thus deletions are temporarily gated on existance of
+> + * the env variable "QEMU_DELETE_MACHINES" / QEMU version
+> + * number >= 10.1.0. This gate can be deleted in the 10.1.0
+> + * dev cycle
+>    */
+>   #define MACHINE_VER_DELETION(...) \
+>       do { \
+>           if (MACHINE_VER_SHOULD_DELETE(__VA_ARGS__)) { \
+> -            return; \
+> +            if (getenv("QEMU_DELETE_MACHINES") || \
+> +                QEMU_VERSION_MAJOR > 10 || (QEMU_VERSION_MAJOR == 10 && \
+> +                                            QEMU_VERSION_MINOR >= 1)) { \
+> +                return; \
+> +            } \
+>           } \
+>       } while (0)
+>   
 
-Acked-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
-For -mneeded, we need gcc 11 and for enforcing GNU_PROPERTY_X86_ISA_1_NEEDED we need glibc 
-2.33, so:
-
-   debian 12
-   fedora 34
-   ubuntu 2204
-   suse leap 15.6 or tumbleweed.
-   centos stream 9
-
-I believe the -mneeded option will be accepted by FreeBSD's clang, but the note will not 
-be enforced by the dynamic linker at startup.
-
-However, since this is all optional, requiring an explicit configure option, I don't think 
-any of this versioning should stand in the way.
-
-
-r~
 
