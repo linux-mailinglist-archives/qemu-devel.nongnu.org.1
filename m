@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F396E910DF2
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jun 2024 19:02:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D52D910DF6
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jun 2024 19:02:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sKL97-0001ES-V6; Thu, 20 Jun 2024 13:00:26 -0400
+	id 1sKL9R-0001vx-4L; Thu, 20 Jun 2024 13:00:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sKL8j-00017F-Bv
- for qemu-devel@nongnu.org; Thu, 20 Jun 2024 13:00:02 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1sKL8z-0001L5-Mf
+ for qemu-devel@nongnu.org; Thu, 20 Jun 2024 13:00:20 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sKL8h-0001Df-OM
- for qemu-devel@nongnu.org; Thu, 20 Jun 2024 13:00:00 -0400
+ id 1sKL8x-0001Qh-DO
+ for qemu-devel@nongnu.org; Thu, 20 Jun 2024 13:00:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1718902799;
+ s=mimecast20190719; t=1718902810;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=6z+0EL1JZTnHpwLYAG/nApKKGSfdaAKYBCaJ5wx9O1A=;
- b=RhbnJ5qbpPPItrNNLk9iyTKQZs7lq3Wzed0DZ5eWm5XYuCSVrVZnh6Oh7KcJ+rqQ55r5tn
- mrh83Ih7jJhtbMIf1uqSeJVv6rjj5sMnMkiALV6/ssN5D7z+Mfug1RhWd9OwHSmVwlWMKP
- CkXwR3pLS3dw3xEhRFIyLq+UIRbeEFU=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ bh=cp5hTDyX0yXK7RBKij04gMtATUSvfKAIAWpFR+x0kC4=;
+ b=SzKl6syugq8EMAQUL4LMAPrQBnnjNMmsHjxYaVIahyR0OClCB/AUEYFFBTKaDUDUroIqkk
+ /DCTuia4tolGvLY7gvPJK+qdR2oNN2BcxHUVs8UDBYc504WSEJDAb9zeNPUkC1qzvvVqoV
+ hZs6pGOSoMQB/U4vzchwv5F6wV1+n54=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-240-RZf7vTpZPfGheaoTQ67l-Q-1; Thu,
- 20 Jun 2024 12:59:54 -0400
-X-MC-Unique: RZf7vTpZPfGheaoTQ67l-Q-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-171-BEtTyNoYMYGeIfmCQyYrJQ-1; Thu,
+ 20 Jun 2024 13:00:04 -0400
+X-MC-Unique: BEtTyNoYMYGeIfmCQyYrJQ-1
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id F0A8C1956083; Thu, 20 Jun 2024 16:59:49 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 8C66F19560B8; Thu, 20 Jun 2024 17:00:01 +0000 (UTC)
 Received: from toolbox.redhat.com (unknown [10.42.28.69])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id E0E9919560AF; Thu, 20 Jun 2024 16:59:41 +0000 (UTC)
+ id 66BC019560AF; Thu, 20 Jun 2024 16:59:50 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Halil Pasic <pasic@linux.ibm.com>, devel@lists.libvirt.org,
@@ -63,17 +63,17 @@ Cc: Halil Pasic <pasic@linux.ibm.com>, devel@lists.libvirt.org,
  Christian Borntraeger <borntraeger@linux.ibm.com>,
  Laurent Vivier <laurent@vivier.eu>, qemu-ppc@nongnu.org,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v2 13/14] hw/i386: remove obsolete manual deprecation reason
- string of i440fx machines
-Date: Thu, 20 Jun 2024 17:57:41 +0100
-Message-ID: <20240620165742.1711389-14-berrange@redhat.com>
+Subject: [PATCH v2 14/14] docs: document special exception for machine type
+ deprecation & removal
+Date: Thu, 20 Jun 2024 17:57:42 +0100
+Message-ID: <20240620165742.1711389-15-berrange@redhat.com>
 In-Reply-To: <20240620165742.1711389-1-berrange@redhat.com>
 References: <20240620165742.1711389-1-berrange@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: 11
 X-Spam_score: 1.1
@@ -98,34 +98,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The automatic deprecation mechanism introduced in the preceeding patches
-will mark every i440fx machine upto and including 2.12 as deprecated. As
-such we can revert the manually added deprecation introduced in:
-
-  commit 792b4fdd4eb8197bd6eb9e80a1dfaf0cb3b54aeb
-  Author: Philippe Mathieu-Daudé <philmd@linaro.org>
-  Date:   Wed Feb 28 10:34:35 2024 +0100
-
-    hw/i386/pc: Deprecate 2.4 to 2.12 pc-i440fx machines
+This extends the deprecation policy to indicate that versioned machine
+types will be marked deprecated after 3 years, and then subject to
+removal after a further 3 years has passed.
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- hw/i386/pc_piix.c | 1 -
- 1 file changed, 1 deletion(-)
+ docs/about/deprecated.rst | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-index 5705d6e155..9445b07b4f 100644
---- a/hw/i386/pc_piix.c
-+++ b/hw/i386/pc_piix.c
-@@ -688,7 +688,6 @@ DEFINE_I440FX_MACHINE(3, 0);
- static void pc_i440fx_machine_2_12_options(MachineClass *m)
- {
-     pc_i440fx_machine_3_0_options(m);
--    m->deprecation_reason = "old and unattended - use a newer version instead";
-     compat_props_add(m->compat_props, hw_compat_2_12, hw_compat_2_12_len);
-     compat_props_add(m->compat_props, pc_compat_2_12, pc_compat_2_12_len);
- }
+diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+index ff3da68208..bba12d1641 100644
+--- a/docs/about/deprecated.rst
++++ b/docs/about/deprecated.rst
+@@ -11,6 +11,19 @@ releases, the feature is liable to be removed. Deprecated features may also
+ generate warnings on the console when QEMU starts up, or if activated via a
+ monitor command, however, this is not a mandatory requirement.
+ 
++As a special exception to this general timeframe, rather than have an
++indefinite lifetime, versioned machine types are only intended to be
++supported for a period of 6 years, equivalent to 18 QEMU releases. All
++versioned machine types will be automatically marked deprecated after an
++initial 3 years (9 QEMU releases) has passed, and will then be deleted after
++a further 3 year period has passed. It is recommended that a deprecated
++machine type is only used for incoming migrations and restore of saved state,
++for pre-existing VM deployments. They should be scheduled for updating to a
++newer machine type during an appropriate service window. Newly deployed VMs
++should exclusively use a non-deprecated machine type, with use of the most
++recent version highly recommended. Non-versioned machine types follow the
++general feature deprecation policy.
++
+ Prior to the 2.10.0 release there was no official policy on how
+ long features would be deprecated prior to their removal, nor
+ any documented list of which features were deprecated. Thus
 -- 
 2.43.0
 
