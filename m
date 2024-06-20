@@ -2,76 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CC0991108A
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jun 2024 20:15:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A2A1291109D
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jun 2024 20:17:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sKMJC-0002sx-JR; Thu, 20 Jun 2024 14:14:54 -0400
+	id 1sKML2-0005Qo-DU; Thu, 20 Jun 2024 14:16:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1sKMJ9-0002sG-VD
- for qemu-devel@nongnu.org; Thu, 20 Jun 2024 14:14:51 -0400
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1sKML1-0005QR-2w
+ for qemu-devel@nongnu.org; Thu, 20 Jun 2024 14:16:47 -0400
+Received: from mail-lf1-x132.google.com ([2a00:1450:4864:20::132])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1sKMJ8-0000Bv-Aa
- for qemu-devel@nongnu.org; Thu, 20 Jun 2024 14:14:51 -0400
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-1f6559668e1so9333025ad.3
- for <qemu-devel@nongnu.org>; Thu, 20 Jun 2024 11:14:49 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1sKMKz-0000bx-C7
+ for qemu-devel@nongnu.org; Thu, 20 Jun 2024 14:16:46 -0400
+Received: by mail-lf1-x132.google.com with SMTP id
+ 2adb3069b0e04-52cc129c78fso1142173e87.2
+ for <qemu-devel@nongnu.org>; Thu, 20 Jun 2024 11:16:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1718907288; x=1719512088; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=MuptFvL2/Hy787+4SKwmAONPx69cXgZ8qPSFH2rsqCc=;
- b=YwVmrqKOHE++C5g9DhO8xYqLdelZvBpC92StU7CnBQIokI72E/KTz7NR814czggL8g
- QsclP9s81r3CM0ZqCzfekkcX/biHy0daE9MiIORwtEzaR75RdLZGot19tQGHLLGV32ei
- uOVrWJ8AufrtTPyoB4FP5CHWrkK/FPrstpnet8zHK+/gBOg3znBtI+iW7kV5t90Z8o/j
- bkr08ZozdZ8NPXZ5FgV3S7/ScFEsGcgVf8vRb1QjdAcADvPJf5tsWfWk+MUJ8DiUX+I7
- WNVaZRe9y/vKtiLiFgGs5Mrezscn8NqO4vLyowjAKhUeIRh82fb/s4vj4KdborYN4Q3u
- vGyA==
+ d=linaro.org; s=google; t=1718907403; x=1719512203; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=kh7Fq7G0vOno8gwCjWCBVesE6cLTRymiMkBSA5I/Dyc=;
+ b=a2of1lJsGy1r0cdziNcMY2AzOuDk9s1F33+C+c6GP/sffaEA+1xfUHlVY2NT/mzD6/
+ Scm6i+EgO0/8AWcxKzXJvHRz6fYX8n0F/d52AWuwf40aI2UxaG5PcFf3xHEZZcxmxdQ5
+ uM6Cldl8jE2szVBzSWLIp6qfl2Rp1FaRcTpSwciCHOzPGHizB3f9C0aN+3JfrU2qB2KI
+ KYQGfFixPVP4mGKJDNTvFHiGQc+GvCcCXaQCA5osB7KrZbgV//NPTJVWwAlPsoi59SiS
+ GFnu5RTqzFNFtYXJNKifnhivYQ2fTbjBAwWNWyFM4+LJHJtdYSN9gRnbcscB/NuKInFt
+ Xasg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718907288; x=1719512088;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=MuptFvL2/Hy787+4SKwmAONPx69cXgZ8qPSFH2rsqCc=;
- b=udLeZl3aQzqznKnC3pqYRidZ5MMV7hXqCrfhLAfTAqnmGaGfpoggBKr0ysLqrTYd8G
- 76YID/OefGyIJIfP6AMqZGV3WSPMY1xmxzzZv83JI1jIrOX7qUuAg5eFYGl3fmgk3MCS
- FuhSvd+35wxF7gNpooTLx9/Q6zvFstIhm5v3QQegocIB4Kz/NqBgntzKWpD7AQrHKCX7
- t0jHk0xp5h/kSAYJYEVfIp6iuQLdaSl+OAiJRH4SeuPQzuSqUdv6qZ7l1ZCztbPlHOZp
- sh8cS4d5YVrIOK4HKhOstaI9ACKyEQvTYBtKNg8VxEmtxgbXkKA5skUJFar8KDa+qoFZ
- Pvyw==
-X-Gm-Message-State: AOJu0YxhOEeuVHsyxthPLIgCN8FkC44fUwvmeR60d+zyjBFQZ3E4Ddao
- Sd+y7uRhbZFU0uN7DixRSZitC3O2xd/R40tzFXg/r3kD1wcJhOrl6KBsEbITDAhhMD58Zw56yUt
- 7
-X-Google-Smtp-Source: AGHT+IFKI/jODsjblTkC72Fv2qKZbwT8R0CYCUpbIaArJmVBQdlF3G82LmfCa5udVQildFRK+44hdw==
-X-Received: by 2002:a17:902:d50a:b0:1f8:6971:c35d with SMTP id
- d9443c01a7336-1f9aa47e82cmr66637075ad.68.1718907288059; 
- Thu, 20 Jun 2024 11:14:48 -0700 (PDT)
-Received: from amd.. ([2804:7f0:b400:8dcb:3e7c:3fff:fe7a:e83b])
+ d=1e100.net; s=20230601; t=1718907403; x=1719512203;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=kh7Fq7G0vOno8gwCjWCBVesE6cLTRymiMkBSA5I/Dyc=;
+ b=EqFyV2Y4HAzDipBAOzfXgSsEooEZoWtKk9a8hMUexY3/muQST+3Mwj6Baxq6VsOGuo
+ Tsjna6cR8jedvjlWNmDDZ7GJh4V6VtqL5Mr1PhV0mK8sFkr7C8yNGw8+uGWOdIYe7rnp
+ Quft1xUqkhRxdWbm5feD/STUuleOYzUUZs0z5h2XxAzGq4gjtxow7YE6Pt1BYPB8Alsf
+ UGiGrMvhpGgFpNvHq+SZYv4XtAiYrqaZgT8xCGe2rpXUuYiI4AJRfxogVsHGSz69xEJE
+ 76CBngo7emFalelAwD7eJKxkFJtLGtZ0dsj9P55aT1b8zgCzKi1qsL8OqR21b2UTyW/F
+ HgNw==
+X-Gm-Message-State: AOJu0YwRSuic9yy61iqlDqbS0rseNUy9EJQoGUW2zmwdRR7e+bUlIbd/
+ /2aFJoOgbBHhktTbj26VblaDLGb9jeiDTlUZgehLpujhMDmoi45tCBA/qBsGbsk=
+X-Google-Smtp-Source: AGHT+IHptl4i634FdmFix5CbMeL+AbkDWWJZQfHPzRrOq6/ju+eaD/fAIuNfkmlbB+N/uAVvUpcrKQ==
+X-Received: by 2002:a05:6512:1c8:b0:52c:39eb:40d2 with SMTP id
+ 2adb3069b0e04-52ccaa5e026mr3419656e87.20.1718907403403; 
+ Thu, 20 Jun 2024 11:16:43 -0700 (PDT)
+Received: from meli-email.org (adsl-103.37.6.162.tellas.gr. [37.6.162.103])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1f9d6b7f403sm13628255ad.200.2024.06.20.11.14.45
+ 5b1f17b1804b1-4247d1e38dcsm33151995e9.36.2024.06.20.11.16.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 20 Jun 2024 11:14:47 -0700 (PDT)
-From: Gustavo Romero <gustavo.romero@linaro.org>
-To: qemu-devel@nongnu.org, alex.bennee@linaro.org, richard.henderson@linaro.org
-Cc: philmd@linaro.org,
-	peter.maydell@linaro.org,
-	gustavo.romero@linaro.org
-Subject: [PATCH 2/2] target/arm: Enable FEAT_Debugv8p8 for -cpu max
-Date: Thu, 20 Jun 2024 18:13:52 +0000
-Message-Id: <20240620181352.3590086-3-gustavo.romero@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240620181352.3590086-1-gustavo.romero@linaro.org>
-References: <20240620181352.3590086-1-gustavo.romero@linaro.org>
+ Thu, 20 Jun 2024 11:16:43 -0700 (PDT)
+Date: Thu, 20 Jun 2024 21:14:13 +0300
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+To: Alex Benn=?UTF-8?B?w6k=?= e <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
+ Mads Ynddal <mads@ynddal.dk>, Peter Maydell <peter.maydell@linaro.org>
+Subject: Re: [RFC PATCH v3 1/5] build-sys: Add rust feature option
+User-Agent: meli 0.8.6
+References: <rust-pl011-rfc-v3.git.manos.pitsidianakis@linaro.org>
+ <e74803e6b570ab36ebc538dd84dc7c4bc2fbe4e7.1718827153.git.manos.pitsidianakis@linaro.org>
+ <87y16zbujq.fsf@draig.linaro.org>
+In-Reply-To: <87y16zbujq.fsf@draig.linaro.org>
+Message-ID: <fe5fs.dfmwsqwldfn@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=gustavo.romero@linaro.org; helo=mail-pl1-x636.google.com
+Content-Type: text/plain; charset=utf-8; format=flowed
+Received-SPF: pass client-ip=2a00:1450:4864:20::132;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-lf1-x132.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,55 +95,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Enable FEAT_Debugv8p8 for 32-bit and 64-bit max CPUs. This feature is
-out of scope for QEMU since it concerns the external debug interface for
-JTAG, but is mandatory in Armv8.8 implementations, hence it is reported
-as supported in the ID registers.
+On Thu, 20 Jun 2024 16:41, Alex Bennée <alex.bennee@linaro.org> wrote:
+>> +summary_info += {'Rust support':      with_rust}
+>> +if with_rust and get_option('with_rust_target_triple') != ''
+>> +  summary_info += {'Rust target':     get_option('with_rust_target_triple')}
+>> +endif
+><snip>
+>
+>I wonder if we should display the auto-probed triple here as well, not
+>just when its been overridden?
 
-Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
----
- target/arm/tcg/cpu32.c | 6 +++---
- target/arm/tcg/cpu64.c | 2 +-
- 2 files changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/target/arm/tcg/cpu32.c b/target/arm/tcg/cpu32.c
-index b155a0136f..a1273a73a3 100644
---- a/target/arm/tcg/cpu32.c
-+++ b/target/arm/tcg/cpu32.c
-@@ -82,8 +82,8 @@ void aa32_max_features(ARMCPU *cpu)
-     cpu->isar.id_pfr2 = t;
- 
-     t = cpu->isar.id_dfr0;
--    t = FIELD_DP32(t, ID_DFR0, COPDBG, 9);        /* FEAT_Debugv8p4 */
--    t = FIELD_DP32(t, ID_DFR0, COPSDBG, 9);       /* FEAT_Debugv8p4 */
-+    t = FIELD_DP32(t, ID_DFR0, COPDBG, 10);       /* FEAT_Debugv8p8 */
-+    t = FIELD_DP32(t, ID_DFR0, COPSDBG, 10);      /* FEAT_Debugv8p8 */
-     t = FIELD_DP32(t, ID_DFR0, PERFMON, 6);       /* FEAT_PMUv3p5 */
-     cpu->isar.id_dfr0 = t;
- 
-@@ -93,7 +93,7 @@ void aa32_max_features(ARMCPU *cpu)
-     t = 0x00008000;
-     t = FIELD_DP32(t, DBGDIDR, SE_IMP, 1);
-     t = FIELD_DP32(t, DBGDIDR, NSUHD_IMP, 1);
--    t = FIELD_DP32(t, DBGDIDR, VERSION, 6);       /* Armv8 debug */
-+    t = FIELD_DP32(t, DBGDIDR, VERSION, 10);      /* FEAT_Debugv8p8 */
-     t = FIELD_DP32(t, DBGDIDR, CTX_CMPS, 1);
-     t = FIELD_DP32(t, DBGDIDR, BRPS, 5);
-     t = FIELD_DP32(t, DBGDIDR, WRPS, 3);
-diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
-index 7d4b88d787..d011755753 100644
---- a/target/arm/tcg/cpu64.c
-+++ b/target/arm/tcg/cpu64.c
-@@ -1253,7 +1253,7 @@ void aarch64_max_tcg_initfn(Object *obj)
-     cpu->isar.id_aa64zfr0 = t;
- 
-     t = cpu->isar.id_aa64dfr0;
--    t = FIELD_DP64(t, ID_AA64DFR0, DEBUGVER, 9);  /* FEAT_Debugv8p4 */
-+    t = FIELD_DP64(t, ID_AA64DFR0, DEBUGVER, 10); /* FEAT_Debugv8p8 */
-     t = FIELD_DP64(t, ID_AA64DFR0, PMUVER, 6);    /* FEAT_PMUv3p5 */
-     t = FIELD_DP64(t, ID_AA64DFR0, HPMN0, 1);     /* FEAT_HPMN0 */
-     cpu->isar.id_aa64dfr0 = t;
--- 
-2.34.1
-
+I agree, once we straighten out host target / cross target detection 
+logic the target summary info print should be unconditional.
 
