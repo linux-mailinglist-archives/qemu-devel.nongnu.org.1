@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8012910DE5
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jun 2024 19:00:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78334910DF0
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jun 2024 19:02:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sKL89-0006xk-Rt; Thu, 20 Jun 2024 12:59:25 -0400
+	id 1sKL8L-0008It-5D; Thu, 20 Jun 2024 12:59:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sKL87-0006wD-Dy
- for qemu-devel@nongnu.org; Thu, 20 Jun 2024 12:59:23 -0400
+ id 1sKL8J-00086C-A2
+ for qemu-devel@nongnu.org; Thu, 20 Jun 2024 12:59:35 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sKL85-00014l-UG
- for qemu-devel@nongnu.org; Thu, 20 Jun 2024 12:59:23 -0400
+ id 1sKL8H-00018H-Jh
+ for qemu-devel@nongnu.org; Thu, 20 Jun 2024 12:59:34 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1718902761;
+ s=mimecast20190719; t=1718902772;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ktzPbwVOi3JvFl/Gc7vY9/eRCqcDsrTeLN6084ufJhI=;
- b=FalueFNcKNgPWjjVGW3DmexhAshce4qYo8cYwbFpWAmUe1KFAfGQjy7C3PKgO5PyntwrLJ
- vY8QKtW8WLywK9QgKn/O86SLuhjJCDFbB1aHG5pE/95cr0SmMhHxYPvQB9bbGQEjzkB1r+
- 4+a4U9jonbvFxmKyof/k/PmsDYI9df8=
+ bh=62rjxcJ3nmchiyP3ljOtuxEnPhE805Y+giHJJYqlDdU=;
+ b=QRajCCUCRkoHvKFBxkUCzdX3AAPPBWKSnVnhC6wBtiVmb4M9XAJgUrXKkDF6ep5yMUKscU
+ XrJo0Jksurm91GIm9N8lVDBVD/ctvvcfx8WMkuERID5zYD6gD8CAr4cjXUU1rTrz2Ha/Pp
+ d6WPDhoqt1BTpiRaIdvEFon4YwvNxw0=
 Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-353-3CpxUNziPd6U5coLl82dKQ-1; Thu,
- 20 Jun 2024 12:59:16 -0400
-X-MC-Unique: 3CpxUNziPd6U5coLl82dKQ-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-63-3_hYD_v-Nm2FIUWa37YF8Q-1; Thu,
+ 20 Jun 2024 12:59:27 -0400
+X-MC-Unique: 3_hYD_v-Nm2FIUWa37YF8Q-1
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id BA6ED19560B5; Thu, 20 Jun 2024 16:59:13 +0000 (UTC)
+ id BFC7219560A7; Thu, 20 Jun 2024 16:59:23 +0000 (UTC)
 Received: from toolbox.redhat.com (unknown [10.42.28.69])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 26FBB19560AF; Thu, 20 Jun 2024 16:59:04 +0000 (UTC)
+ id 2D45519560AF; Thu, 20 Jun 2024 16:59:13 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Halil Pasic <pasic@linux.ibm.com>, devel@lists.libvirt.org,
@@ -63,10 +63,10 @@ Cc: Halil Pasic <pasic@linux.ibm.com>, devel@lists.libvirt.org,
  Christian Borntraeger <borntraeger@linux.ibm.com>,
  Laurent Vivier <laurent@vivier.eu>, qemu-ppc@nongnu.org,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v2 09/14] include/hw: temporarily disable deletion of
- versioned machine types
-Date: Thu, 20 Jun 2024 17:57:37 +0100
-Message-ID: <20240620165742.1711389-10-berrange@redhat.com>
+Subject: [PATCH v2 10/14] hw: set deprecation info for all versioned machine
+ types
+Date: Thu, 20 Jun 2024 17:57:38 +0100
+Message-ID: <20240620165742.1711389-11-berrange@redhat.com>
 In-Reply-To: <20240620165742.1711389-1-berrange@redhat.com>
 References: <20240620165742.1711389-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -98,60 +98,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The new deprecation and deletion policy for versioned machine types is
-being introduced in QEMU 9.1.0.
+This calls the MACHINE_VER_DEPRECATION() macro in the definition of
+all machine type classes which support versioning. This ensures
+that they will automatically get deprecation info set when they
+reach the appropriate point in their lifecycle.
 
-Under the new policy a number of old machine types (any prior to 2.12)
-would be liable for immediate deletion which would be a violation of our
-historical deprecation and removal policy
-
-Thus automatic deletions (by skipping QOM registration) are temporarily
-gated on existance of the env variable "QEMU_DELETE_MACHINES" / QEMU
-version number >= 10.1.0. This allows opt-in testing of the automatic
-deletion logic, while activating it fully in QEMU >= 10.1.0.
-
-This whole commit should be reverted in the 10.1.0 dev cycle or shortly
-thereafter.
-
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- include/hw/boards.h | 19 ++++++++++++++++++-
- 1 file changed, 18 insertions(+), 1 deletion(-)
+ hw/arm/virt.c              | 1 +
+ hw/m68k/virt.c             | 1 +
+ hw/ppc/spapr.c             | 1 +
+ hw/s390x/s390-virtio-ccw.c | 1 +
+ include/hw/i386/pc.h       | 1 +
+ 5 files changed, 5 insertions(+)
 
-diff --git a/include/hw/boards.h b/include/hw/boards.h
-index 187ed76646..ef6f18f2c1 100644
---- a/include/hw/boards.h
-+++ b/include/hw/boards.h
-@@ -686,11 +686,28 @@ struct MachineState {
-  * suitable period of time has passed, it will cause
-  * execution of the method to return, avoiding registration
-  * of the machine
-+ *
-+ * The new deprecation and deletion policy for versioned
-+ * machine types was introduced in QEMU 9.1.0.
-+ *
-+ * Under the new policy a number of old machine types (any
-+ * prior to 2.12) would be liable for immediate deletion
-+ * which would be a violation of our historical deprecation
-+ * and removal policy
-+ *
-+ * Thus deletions are temporarily gated on existance of
-+ * the env variable "QEMU_DELETE_MACHINES" / QEMU version
-+ * number >= 10.1.0. This gate can be deleted in the 10.1.0
-+ * dev cycle
-  */
- #define MACHINE_VER_DELETION(...) \
-     do { \
-         if (MACHINE_VER_SHOULD_DELETE(__VA_ARGS__)) { \
--            return; \
-+            if (getenv("QEMU_DELETE_MACHINES") || \
-+                QEMU_VERSION_MAJOR > 10 || (QEMU_VERSION_MAJOR == 10 && \
-+                                            QEMU_VERSION_MINOR >= 1)) { \
-+                return; \
-+            } \
+diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+index a326aa24db..ef6591d914 100644
+--- a/hw/arm/virt.c
++++ b/hw/arm/virt.c
+@@ -110,6 +110,7 @@ static void arm_virt_compat_set(MachineClass *mc)
+         arm_virt_compat_set(mc); \
+         MACHINE_VER_SYM(options, virt, __VA_ARGS__)(mc); \
+         mc->desc = "QEMU " MACHINE_VER_STR(__VA_ARGS__) " ARM Virtual Machine"; \
++        MACHINE_VER_DEPRECATION(__VA_ARGS__); \
+         if (latest) { \
+             mc->alias = "virt"; \
          } \
-     } while (0)
- 
+diff --git a/hw/m68k/virt.c b/hw/m68k/virt.c
+index cd6ee692f7..37bb36b385 100644
+--- a/hw/m68k/virt.c
++++ b/hw/m68k/virt.c
+@@ -343,6 +343,7 @@ type_init(virt_machine_register_types)
+         MachineClass *mc = MACHINE_CLASS(oc); \
+         MACHINE_VER_SYM(options, virt, __VA_ARGS__)(mc); \
+         mc->desc = "QEMU " MACHINE_VER_STR(__VA_ARGS__) " M68K Virtual Machine"; \
++        MACHINE_VER_DEPRECATION(__VA_ARGS__); \
+         if (latest) { \
+             mc->alias = "virt"; \
+         } \
+diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+index 2785b6b303..55268489d3 100644
+--- a/hw/ppc/spapr.c
++++ b/hw/ppc/spapr.c
+@@ -4811,6 +4811,7 @@ static void spapr_machine_latest_class_options(MachineClass *mc)
+     {                                                                \
+         MachineClass *mc = MACHINE_CLASS(oc);                        \
+         MACHINE_VER_SYM(class_options, spapr, __VA_ARGS__)(mc);      \
++        MACHINE_VER_DEPRECATION(__VA_ARGS__);                        \
+         if (latest) {                                                \
+             spapr_machine_latest_class_options(mc);                  \
+         }                                                            \
+diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
+index efed539bc6..4cc7567872 100644
+--- a/hw/s390x/s390-virtio-ccw.c
++++ b/hw/s390x/s390-virtio-ccw.c
+@@ -825,6 +825,7 @@ static const TypeInfo ccw_machine_info = {
+         MachineClass *mc = MACHINE_CLASS(oc);                                 \
+         MACHINE_VER_SYM(class_options, ccw, __VA_ARGS__)(mc);                 \
+         mc->desc = "Virtual s390x machine (version " MACHINE_VER_STR(__VA_ARGS__) ")"; \
++        MACHINE_VER_DEPRECATION(__VA_ARGS__);                                 \
+         if (latest) {                                                         \
+             mc->alias = "s390-ccw-virtio";                                    \
+             mc->is_default = true;                                            \
+diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
+index 027c6f29f7..83d2e66498 100644
+--- a/include/hw/i386/pc.h
++++ b/include/hw/i386/pc.h
+@@ -330,6 +330,7 @@ extern const size_t pc_compat_2_3_len;
+         MachineClass *mc = MACHINE_CLASS(oc); \
+         MACHINE_VER_SYM(options, namesym, __VA_ARGS__)(mc); \
+         mc->init = MACHINE_VER_SYM(init, namesym, __VA_ARGS__); \
++        MACHINE_VER_DEPRECATION(__VA_ARGS__); \
+     } \
+     static const TypeInfo MACHINE_VER_SYM(info, namesym, __VA_ARGS__) = \
+     { \
 -- 
 2.43.0
 
