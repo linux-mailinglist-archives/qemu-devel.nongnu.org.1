@@ -2,68 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BF3C9116AD
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jun 2024 01:19:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3831911703
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jun 2024 01:48:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sKR3D-0003zS-Sd; Thu, 20 Jun 2024 19:18:43 -0400
+	id 1sKRUN-0005tq-7p; Thu, 20 Jun 2024 19:46:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dongwon.kim@intel.com>)
- id 1sKR3C-0003yr-7M
- for qemu-devel@nongnu.org; Thu, 20 Jun 2024 19:18:42 -0400
-Received: from mgamail.intel.com ([192.198.163.8])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dongwon.kim@intel.com>)
- id 1sKR3A-0001hp-Ee
- for qemu-devel@nongnu.org; Thu, 20 Jun 2024 19:18:41 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1718925521; x=1750461521;
- h=from:to:subject:date:message-id:in-reply-to:references:
- mime-version:content-transfer-encoding;
- bh=aUhUdVN61RQrZr1LHcic/H9Yj04gNHVHexZdw7CMyVg=;
- b=MTnKR4gSD5DFe9QHyG8pcHnBO8YvG6YnmNm6eNAzdFYFhW33vXIUdiSJ
- IU1ph9il/RXt6dBA+r7BjzDoFThK7uk9xFBd7C+NwY03gUNb2C8U3mPP0
- 9r7P1uZPVWcx7KLk1hF/AlKjjOYbZZpA2P2pknYlSOzbewYzSL/Znr4LL
- 352UEMj3sw2XcBFfHkr90Vs5Xx87jsCQEkWzKbGcrbvALiCSk4BZ2nr2h
- +e0+dZM1TFB4mKyvxKL1lCv5foiT+XbsQzx3ElDtYM9UrcenAJGzDV2e4
- Fc9UIMqrmhXf+P4NrrMnOvb9lN3T2g2KpiJYRG0glV1qSmilYcH9f5IMl g==;
-X-CSE-ConnectionGUID: iPzljJogSJORDeRQxE54qA==
-X-CSE-MsgGUID: oKOU+YJ/SDawBsn/1loIkQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11109"; a="33482969"
-X-IronPort-AV: E=Sophos;i="6.08,253,1712646000"; d="scan'208";a="33482969"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Jun 2024 16:18:29 -0700
-X-CSE-ConnectionGUID: +tFeFk7MTWW1ebk3G1pfXw==
-X-CSE-MsgGUID: NYwO/zOyRX6sH6cagwXI9A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,253,1712646000"; d="scan'208";a="42359633"
-Received: from dongwonk-z390-aorus-ultra.fm.intel.com ([10.105.129.124])
- by fmviesa008.fm.intel.com with ESMTP; 20 Jun 2024 16:18:28 -0700
-From: dongwon.kim@intel.com
+ (Exim 4.90_1) (envelope-from <wzssyqa@gmail.com>) id 1sKRUJ-0005t9-JE
+ for qemu-devel@nongnu.org; Thu, 20 Jun 2024 19:46:43 -0400
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <wzssyqa@gmail.com>) id 1sKRUH-00063C-Sf
+ for qemu-devel@nongnu.org; Thu, 20 Jun 2024 19:46:43 -0400
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-1f44b5b9de6so12114475ad.3
+ for <qemu-devel@nongnu.org>; Thu, 20 Jun 2024 16:46:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1718927200; x=1719532000; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:sender:from:to:cc:subject:date:message-id:reply-to;
+ bh=NoVnXxozX2Jamz42DuJRZj2z8nz8xYd9StQ7DmE2FI0=;
+ b=eDq+mTHqC+tLEzTSYSLMg9BQHOPEZw4iuzPbgDfaVU+K+0W+YSTDIntqrlA1worV5h
+ +vUMHP/UrbeA15SprRV+qTRmuEEx/YazuzrKLnDVGskig24Hl2CVLrogZqv4LbTrqCUh
+ WJ5Hs+tYy1o9S8qEV7XHYedL3mFe61Zr7t7eecgxwI0V5v+A/rLzsxpqyDWo8rwG9NuN
+ WaboU4S8X4VJjZSaeWAoaaokmrNg3hkCVFcp0CZncV0ca7EOI3Hqlsk2RHEt+NONZuHW
+ ZRqfVs1K9Aja0ZXp50AmN3fbwIeHnJewL7KcNECeaZHLOKqCGZ+DRRL0q5bB9frS4Bzh
+ DIog==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1718927200; x=1719532000;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:sender:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=NoVnXxozX2Jamz42DuJRZj2z8nz8xYd9StQ7DmE2FI0=;
+ b=S3corHPtc+FtYZBfYcFjtXpJHKHLRKiKQL8FpdD5NydW/zX3h+bKLR2Y5CaoK7R49z
+ 89nIB5z6BZFgRZSaLU0nFDKTCv8iXvq+GwQxU8xcdR4Jw5AcmJRRgfIynDGWiAldX9Ds
+ /7R5Bu7w2GQLsL0moCCf+xYlsmlOx1spj1l+atAzbZiNYFDIstj8vSY0e09N1V8dLjmT
+ wsI+HLTxpu5AHLNK54yu8J187R7JrgNEfdbNlb3ifQgLGON0fuvPIgPYP0BdGT23szGz
+ Yr6iIw7iCKqly0z1/ohwn4ntx2HCAL8vgp6PrhUKH+v60iCNqKfJMlM458ddjk76G0bv
+ L4lg==
+X-Gm-Message-State: AOJu0YzUD23396CS2lPprkV4PuAxX0zmde3epd21ffTQyVT8bVglfAiL
+ flLm909aUljL7J29nFHRCDllhUGOAP1N2aIbRG/g3glr+11fTyflnZwZnPxZ
+X-Google-Smtp-Source: AGHT+IFqHSQ/dPO8x3SeYEj6J5ZKRfDk+Y+qF97simhKcZfPN6KrYl9ym4CymrL5bQIXjGCffWM62g==
+X-Received: by 2002:a17:902:e542:b0:1f7:3217:3519 with SMTP id
+ d9443c01a7336-1f9aa3da6f7mr88647635ad.25.1718927199864; 
+ Thu, 20 Jun 2024 16:46:39 -0700 (PDT)
+Received: from localhost.localdomain ([194.169.55.179])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-1f9ebbc7d39sm1738885ad.301.2024.06.20.16.46.38
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Thu, 20 Jun 2024 16:46:39 -0700 (PDT)
+From: YunQiang Su <syq@debian.org>
 To: qemu-devel@nongnu.org
-Subject: [RFC PATCH 4/4] ui/gtk-gl-draw: Start rendering of guest blob scanout
- if render_sync is off
-Date: Thu, 20 Jun 2024 16:17:27 -0700
-Message-Id: <20240620231727.235841-5-dongwon.kim@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240620231727.235841-1-dongwon.kim@intel.com>
-References: <20240620231727.235841-1-dongwon.kim@intel.com>
+Cc: macro@orcam.me.uk,
+	philmd@linaro.org,
+	YunQiang Su <syq@debian.org>
+Subject: [PATCH] mips: pass code of conditional trap
+Date: Fri, 21 Jun 2024 07:46:33 +0800
+Message-Id: <20240620234633.74447-1-syq@debian.org>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=192.198.163.8; envelope-from=dongwon.kim@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -45
-X-Spam_score: -4.6
-X-Spam_bar: ----
-X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.152,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=wzssyqa@gmail.com; helo=mail-pl1-x629.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FORGED_FROMDOMAIN=0.001,
+ FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.25,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,151 +89,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Dongwon Kim <dongwon.kim@intel.com>
+Linux and We use the code of conditional trap instructions to emit
+signals other than simple SIGTRAP.  Currently, code 6 (overflow),
+7 (div by zero) are supported. It means that if code 7 is used with
+a conditional trap instruction, a SIGFPE instead of SIGTRAP will emit.
 
-Draw (executing glBlitFramebuffer) immediately as soon as the frame
-is flushed instead of getting it done in the next draw event if render_sync
-flag is reset. With this, the fence will be signaled way ealier so the guest
-can be working on the next frame right away.
-
-Cc: Marc-André Lureau <marcandre.lureau@redhat.com>
-Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>
-Signed-off-by: Dongwon Kim <dongwon.kim@intel.com>
+But when `gen_trap` we didn't pass the code as we use `generate_exception`,
+which has no info about the code.  Let's introduce a new function
+`generate_exception_code` for it.
 ---
- ui/gtk-gl-area.c | 84 +++++++++++++++++++++++++++++++++---------------
- 1 file changed, 58 insertions(+), 26 deletions(-)
+ target/mips/tcg/translate.c | 8 +++++++-
+ target/mips/tcg/translate.h | 1 +
+ 2 files changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/ui/gtk-gl-area.c b/ui/gtk-gl-area.c
-index 0b11423824..88d4e66a52 100644
---- a/ui/gtk-gl-area.c
-+++ b/ui/gtk-gl-area.c
-@@ -65,39 +65,36 @@ void gd_gl_area_draw(VirtualConsole *vc)
-             } else {
-                 qemu_dmabuf_set_draw_submitted(dmabuf, false);
-             }
--        }
--#endif
- 
--        glBindFramebuffer(GL_READ_FRAMEBUFFER, vc->gfx.guest_fb.framebuffer);
--        /* GtkGLArea sets GL_DRAW_FRAMEBUFFER for us */
--
--        glViewport(0, 0, ww, wh);
--        y1 = vc->gfx.y0_top ? 0 : vc->gfx.h;
--        y2 = vc->gfx.y0_top ? vc->gfx.h : 0;
--        glBlitFramebuffer(0, y1, vc->gfx.w, y2,
--                          0, 0, ww, wh,
--                          GL_COLOR_BUFFER_BIT, GL_NEAREST);
--#ifdef CONFIG_GBM
--        if (dmabuf) {
--            int fence_fd;
--            fence_fd = egl_dmabuf_create_fence(dmabuf);
--            if (fence_fd >= 0) {
--                qemu_set_fd_handler(fence_fd, gd_hw_gl_flushed, NULL, vc);
--                return;
-+            if (qemu_dmabuf_get_render_sync(dmabuf)) {
-+                int fence_fd;
-+                glBindFramebuffer(GL_READ_FRAMEBUFFER, vc->gfx.guest_fb.framebuffer);
-+                /* GtkGLArea sets GL_DRAW_FRAMEBUFFER for us */
-+
-+                glViewport(0, 0, ww, wh);
-+                y1 = vc->gfx.y0_top ? 0 : vc->gfx.h;
-+                y2 = vc->gfx.y0_top ? vc->gfx.h : 0;
-+                glBlitFramebuffer(0, y1, vc->gfx.w, y2,
-+                                  0, 0, ww, wh,
-+                                  GL_COLOR_BUFFER_BIT, GL_NEAREST);
-+                fence_fd = egl_dmabuf_create_fence(dmabuf);
-+                if (fence_fd >= 0) {
-+                    qemu_set_fd_handler(fence_fd, gd_hw_gl_flushed, NULL, vc);
-+                } else {
-+                    graphic_hw_gl_block(vc->gfx.dcl.con, false);
-+                }
-             }
--            graphic_hw_gl_block(vc->gfx.dcl.con, false);
-         }
- #endif
--        glFlush();
-     } else {
-         if (!vc->gfx.ds) {
-             return;
-         }
--        gtk_gl_area_make_current(GTK_GL_AREA(vc->gfx.drawing_area));
- 
-         surface_gl_setup_viewport(vc->gfx.gls, vc->gfx.ds, ww, wh);
-         surface_gl_render_texture(vc->gfx.gls, vc->gfx.ds);
-     }
-+    glFlush();
+diff --git a/target/mips/tcg/translate.c b/target/mips/tcg/translate.c
+index 333469b268..e680a1c2f2 100644
+--- a/target/mips/tcg/translate.c
++++ b/target/mips/tcg/translate.c
+@@ -1353,6 +1353,12 @@ void generate_exception(DisasContext *ctx, int excp)
+     gen_helper_raise_exception(tcg_env, tcg_constant_i32(excp));
  }
  
- void gd_gl_area_update(DisplayChangeListener *dcl,
-@@ -119,13 +116,19 @@ void gd_gl_area_refresh(DisplayChangeListener *dcl)
++void generate_exception_with_code(DisasContext *ctx, int excp, int code)
++{
++    gen_helper_raise_exception_err(tcg_env, tcg_constant_i32(excp),
++                                   tcg_constant_i32(code));
++}
++
+ void generate_exception_end(DisasContext *ctx, int excp)
  {
-     VirtualConsole *vc = container_of(dcl, VirtualConsole, gfx.dcl);
- 
-+#ifdef CONFIG_GBM
-+    QemuDmaBuf *dmabuf = vc->gfx.guest_fb.dmabuf;
-+#endif
-+
-     gd_update_monitor_refresh_rate(vc, vc->window ? vc->window : vc->gfx.drawing_area);
- 
--    if (vc->gfx.guest_fb.dmabuf &&
--        qemu_dmabuf_get_draw_submitted(vc->gfx.guest_fb.dmabuf)) {
-+#ifdef CONFIG_GBM
-+    if (dmabuf && qemu_dmabuf_get_draw_submitted(dmabuf) &&
-+        qemu_dmabuf_get_render_sync(dmabuf)) {
-         gd_gl_area_draw(vc);
-         return;
+     generate_exception_err(ctx, excp, 0);
+@@ -4553,7 +4559,7 @@ static void gen_trap(DisasContext *ctx, uint32_t opc,
+         if (ctx->hflags != ctx->saved_hflags) {
+             tcg_gen_movi_i32(hflags, ctx->hflags);
+         }
+-        generate_exception(ctx, EXCP_TRAP);
++        generate_exception_with_code(ctx, EXCP_TRAP, code);
+         gen_set_label(l1);
      }
-+#endif
- 
-     if (!vc->gfx.gls) {
-         if (!gtk_widget_get_realized(vc->gfx.drawing_area)) {
-@@ -282,13 +285,42 @@ void gd_gl_area_scanout_flush(DisplayChangeListener *dcl,
-                           uint32_t x, uint32_t y, uint32_t w, uint32_t h)
- {
-     VirtualConsole *vc = container_of(dcl, VirtualConsole, gfx.dcl);
-+#ifdef CONFIG_GBM
-+    QemuDmaBuf *dmabuf = vc->gfx.guest_fb.dmabuf;
-+    int ww, wh, ws, y1, y2;
-+
-+    if (dmabuf && !qemu_dmabuf_get_draw_submitted(dmabuf)) {
-+        gtk_gl_area_make_current(GTK_GL_AREA(vc->gfx.drawing_area));
-+        ws = gdk_window_get_scale_factor(gtk_widget_get_window(vc->gfx.drawing_area));
-+        ww = gtk_widget_get_allocated_width(vc->gfx.drawing_area) * ws;
-+        wh = gtk_widget_get_allocated_height(vc->gfx.drawing_area) * ws;
- 
--    if (vc->gfx.guest_fb.dmabuf &&
--        !qemu_dmabuf_get_draw_submitted(vc->gfx.guest_fb.dmabuf)) {
-         graphic_hw_gl_block(vc->gfx.dcl.con, true);
--        qemu_dmabuf_set_draw_submitted(vc->gfx.guest_fb.dmabuf, true);
-+        qemu_dmabuf_set_draw_submitted(dmabuf, true);
-         gtk_gl_area_set_scanout_mode(vc, true);
-+        if (!qemu_dmabuf_get_render_sync(dmabuf)) {
-+            int fence_fd;
-+            glBindFramebuffer(GL_READ_FRAMEBUFFER, vc->gfx.guest_fb.framebuffer);
-+            /* GtkGLArea sets GL_DRAW_FRAMEBUFFER for us */
-+
-+            glViewport(0, 0, ww, wh);
-+            y1 = vc->gfx.y0_top ? 0 : vc->gfx.h;
-+            y2 = vc->gfx.y0_top ? vc->gfx.h : 0;
-+            glBlitFramebuffer(0, y1, vc->gfx.w, y2,
-+                              0, 0, ww, wh,
-+                              GL_COLOR_BUFFER_BIT, GL_NEAREST);
-+
-+            egl_dmabuf_create_fence(dmabuf);
-+            fence_fd = qemu_dmabuf_get_fence_fd(dmabuf);
-+            if (fence_fd >= 0) {
-+                qemu_set_fd_handler(fence_fd, gd_hw_gl_flushed, NULL, vc);
-+            } else {
-+                graphic_hw_gl_block(vc->gfx.dcl.con, false);
-+            }
-+        }
-     }
-+#endif
-+
-     gtk_gl_area_queue_render(GTK_GL_AREA(vc->gfx.drawing_area));
  }
+diff --git a/target/mips/tcg/translate.h b/target/mips/tcg/translate.h
+index 2b6646b339..e3d544b478 100644
+--- a/target/mips/tcg/translate.h
++++ b/target/mips/tcg/translate.h
+@@ -134,6 +134,7 @@ enum {
+     } while (0)
  
+ void generate_exception(DisasContext *ctx, int excp);
++void generate_exception_with_code(DisasContext *ctx, int excp, int code);
+ void generate_exception_err(DisasContext *ctx, int excp, int err);
+ void generate_exception_end(DisasContext *ctx, int excp);
+ void generate_exception_break(DisasContext *ctx, int code);
 -- 
-2.34.1
+2.39.3 (Apple Git-146)
 
 
