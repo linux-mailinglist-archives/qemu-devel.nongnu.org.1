@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3045D9100DC
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jun 2024 11:55:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E229E9100E8
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jun 2024 11:57:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sKEVV-0002Zd-Ew; Thu, 20 Jun 2024 05:55:05 -0400
+	id 1sKEVN-0002Ro-G5; Thu, 20 Jun 2024 05:54:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sKEVI-0002Nt-Gf
+ id 1sKEVI-0002Nr-Gi
  for qemu-devel@nongnu.org; Thu, 20 Jun 2024 05:54:53 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sKEVG-0005V9-SE
+ id 1sKEVG-0005Uu-HH
  for qemu-devel@nongnu.org; Thu, 20 Jun 2024 05:54:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1718877290;
+ s=mimecast20190719; t=1718877289;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=edfgvS3ELSSOyELG7RxvO1gV2FBychxCHSiOtjvR6gU=;
- b=FxWm4nv+CsGBq8Ej2hm5A+S8GiA2kPifuvqKvW0MJ1lDlk77JJIkQO9vFaldV0M8cjrM39
- jFDCfJgOS9vljGuV1vWDgiQTBboF31qZ79vCNQCuuosMGo+CskT3GGQvd4sFWH82nw/mtt
- YeeDFqK1XDUcP616VhiWAtnV+pUb23U=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=5vNRpvyeREGd2+Es2hiS7dffvsmxbIt4ClxNcgU2ADU=;
+ b=NSaz37lXXS+qO+PROB4u7cxRBubrrjkF3HO1FLoTUrI9FOO8gZb9ze1EkiGxmb8ywOZpai
+ bplooe14dt6L/NHX+Dhd2oCfgKGa6eKGZNt3GKdE/lCpceSHQ/uPD1t7YKVj4ZhynXDWBH
+ FSErAKjrJc2wZTNxP+NdrL9OEnu+Trs=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-452-jvH3huPtMB22kTNjaaeIbw-1; Thu, 20 Jun 2024 05:54:46 -0400
-X-MC-Unique: jvH3huPtMB22kTNjaaeIbw-1
-Received: by mail-ed1-f72.google.com with SMTP id
- 4fb4d7f45d1cf-57d05177afaso1762302a12.1
- for <qemu-devel@nongnu.org>; Thu, 20 Jun 2024 02:54:45 -0700 (PDT)
+ us-mta-94-fb6hg6TwOEa5LZJ0LCA5wQ-1; Thu, 20 Jun 2024 05:54:48 -0400
+X-MC-Unique: fb6hg6TwOEa5LZJ0LCA5wQ-1
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-a6def6e9ef2so171271366b.0
+ for <qemu-devel@nongnu.org>; Thu, 20 Jun 2024 02:54:48 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718877284; x=1719482084;
+ d=1e100.net; s=20230601; t=1718877286; x=1719482086;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=edfgvS3ELSSOyELG7RxvO1gV2FBychxCHSiOtjvR6gU=;
- b=LrIMp2OQjuSAhPld9q/JcNwzWnRDSsFUDm+6t9DtVPPPDTHWTq/P3sZsd8ZsCvY0jt
- Qu4TRAx3/rdoNwIyFnyx9zRng1WCqZlF/54mQI0mIb4Sd4ORb3VauvLQaBph6JhTvUOR
- +a1wQn251KfHQ+vxIY1C2zpGzBlDAnffJxKDlqlrprKYFAQ00lHEGMqeDLwMaBbLJAVX
- FchxmbqLd6IKizCsJr1Sz7u6AKL9KTSaX+ftSlApIsH76PJcyluq+hfRTQi1pqt1g9W4
- m0WHYr1lsAUiSIXaESutX/MHiInZ2iGJBQ6CiNi6yfEgyhOettwajXAyScNcRsqKJJhI
- hVVg==
-X-Gm-Message-State: AOJu0YyqBJTA6ExYITTsKUG2XH9e/R98xmgiIXq2pRlIM+dAXKUWTDMV
- K82l6ryCoZ44O3LOZfNcUQSpKPB0xy0/8WjRjyBIZwpwL7LqlsmSWcmnsxibw7uuHDiYTMELMs6
- r1asw9TfbR3yguyCXhN3P6Fj8yxQd/JLMgbc9CLKndhvEvaLTFeARuITbcGN7axnPfmADEpNePq
- WGf0q+b1oNtNajzTFVWNFpBxFKpkEKAukFm+40
-X-Received: by 2002:aa7:d943:0:b0:57d:1d9e:d1fe with SMTP id
- 4fb4d7f45d1cf-57d1d9ed435mr1742409a12.9.1718877284106; 
- Thu, 20 Jun 2024 02:54:44 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH5xX2HtQ30O1ak0ERNiiVoWS/wk9WiExgclELgLPcw5tkqMBZ5w461WrLaAax0ZDijlVDK5w==
-X-Received: by 2002:aa7:d943:0:b0:57d:1d9e:d1fe with SMTP id
- 4fb4d7f45d1cf-57d1d9ed435mr1742391a12.9.1718877283757; 
- Thu, 20 Jun 2024 02:54:43 -0700 (PDT)
+ bh=5vNRpvyeREGd2+Es2hiS7dffvsmxbIt4ClxNcgU2ADU=;
+ b=jHosLTjZFNeqV3QtI78zKU2jL/nQE8sEDTYUHbv03wBv8zqtyE1r4H9Zz/5XsaWS/E
+ 19QJBEVE0TdOGUTPxsvfW1RNX/KaGPSZ3AHkth/qUHfPxqhJSKbEDWnBZBOMQ9XxMzFS
+ ief/pjdQe+dDRHdBdDCq4sgYBEs/7/D8TpfBVUQCkSDeCkK022EUGolVPv9vWOOD10eF
+ cbMM27LHm3/HrykhhZ3sHAsx2eRe3Yy+T8rshau9GoRzoAgYmVJAN5ejr4ndLEGLfFm2
+ Vi1tmtzAhdFkVI51BGRFn4Npc2YNJRLK9TQ2AQllaIyD+9Wi3QNOilnZcb5M4GtZruox
+ id9Q==
+X-Gm-Message-State: AOJu0YzVDZCX/HeSDKw1SbChsYSsYU7SA6AcfMZOMIcPjktmUuWtUn9+
+ l3Bpkrg3f6aqCN+LiqU0a3mUCLqb0VJpxYvzt5TzJqdY0GLY6sw12DqCx25Ib+hLhy0RsX5cCqv
+ t9WPXYCqGBs36oTYLgmy2vHhNWrU2jFSTIVbVb8Gnfhb+GThFkYZX8Vd6mwv/j6XLH4VmIXFO91
+ TBzwZ1dsGhyQUqgi2Hi9u8/9NjpGHHk15YfaFn
+X-Received: by 2002:a17:906:ba84:b0:a6f:47c0:d8f2 with SMTP id
+ a640c23a62f3a-a6fa430eeb9mr326710566b.17.1718877286567; 
+ Thu, 20 Jun 2024 02:54:46 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IENmVgcmb1wSDEp5PrylKItlNjOc8nB/OmezbgZ8+QbIRRfjYhWBBJwnhHa5lUI9FSCVapBew==
+X-Received: by 2002:a17:906:ba84:b0:a6f:47c0:d8f2 with SMTP id
+ a640c23a62f3a-a6fa430eeb9mr326709366b.17.1718877286158; 
+ Thu, 20 Jun 2024 02:54:46 -0700 (PDT)
 Received: from avogadro.local ([151.62.196.71])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-57cb72ce08bsm9390731a12.1.2024.06.20.02.54.43
+ a640c23a62f3a-a6f56ed3690sm752612166b.128.2024.06.20.02.54.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 20 Jun 2024 02:54:43 -0700 (PDT)
+ Thu, 20 Jun 2024 02:54:45 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH 08/10] target/i386: list instructions still in translate.c
-Date: Thu, 20 Jun 2024 11:54:17 +0200
-Message-ID: <20240620095419.386958-9-pbonzini@redhat.com>
+Subject: [PATCH 09/10] target/i386: assert that cc_op* and pc_save are
+ preserved
+Date: Thu, 20 Jun 2024 11:54:18 +0200
+Message-ID: <20240620095419.386958-10-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240620095419.386958-1-pbonzini@redhat.com>
 References: <20240620095419.386958-1-pbonzini@redhat.com>
@@ -101,57 +102,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Group them so that it is easier to figure out which two-byte opcodes to
-tackle together.
+Now all decoding has been done before any code generation.
+There is no need anymore to save and restore cc_op* and
+pc_save but, for the time being, assert that this is indeed
+the case.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/tcg/decode-new.c.inc | 31 +++++++++++++++++++++++++++++++
- 1 file changed, 31 insertions(+)
+ target/i386/tcg/translate.c | 12 +++---------
+ 1 file changed, 3 insertions(+), 9 deletions(-)
 
-diff --git a/target/i386/tcg/decode-new.c.inc b/target/i386/tcg/decode-new.c.inc
-index fa51aadfcf2..f01a4f1f1fe 100644
---- a/target/i386/tcg/decode-new.c.inc
-+++ b/target/i386/tcg/decode-new.c.inc
-@@ -129,6 +129,37 @@
-  *
-  *    (^)  these are the two cases in which Intel and AMD disagree on the
-  *         primary exception class
-+ *
-+ * Instructions still in translate.c
-+ * ---------------------------------
-+ * Generation of TCG opcodes for almost all instructions is in emit.c.inc;
-+ * this file interprets the prefixes and opcode bytes down to individual
-+ * instruction mnemonics.  There is only a handful of opcodes still using
-+ * a switch statement to decode modrm bits 3-5 and prefixes after decoding
-+ * is complete; these are relics of the older x86 decoder and their code
-+ * generation is performed in translate.c.
-+ *
-+ * These unconverted opcodes also perform their own effective address
-+ * generation using the gen_lea_modrm() function.
-+ *
-+ * There is nothing particularly complicated about them; simply, they don't
-+ * need any nasty hacks in the decoder, and they shouldn't get in the way
-+ * of the implementation of new x86 instructions, so they are left alone
-+ * for the time being.
-+ *
-+ * x87:
-+ * 0xD8 - 0xDF
-+ *
-+ * privileged/system:
-+ * 0x0F 0x00               group 6 (SLDT, STR, LLDT, LTR, VERR, VERW)
-+ * 0x0F 0x01               group 7 (SGDT, SIDT, LGDT, LIDT, SMSW, LMSW, INVLPG,
-+ *                                  MONITOR, MWAIT, CLAC, STAC, XGETBV, XSETBV,
-+ *                                  SWAPGS, RDTSCP)
-+ * 0x0F 0xC7 (reg operand) group 9 (RDRAND, RDSEED, RDPID)
-+ *
-+ * MPX:
-+ * 0x0F 0x1A               BNDLDX, BNDMOV, BNDCL, BNDCU
-+ * 0x0F 0x1B               BNDSTX, BNDMOV, BNDMK, BNDCN
-  */
- 
- #define X86_OP_NONE { 0 },
+diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
+index 501a1ef9313..d11c5e1dc13 100644
+--- a/target/i386/tcg/translate.c
++++ b/target/i386/tcg/translate.c
+@@ -3709,15 +3709,9 @@ static void i386_tr_translate_insn(DisasContextBase *dcbase, CPUState *cpu)
+     case 2:
+         /* Restore state that may affect the next instruction. */
+         dc->pc = dc->base.pc_next;
+-        /*
+-         * TODO: These save/restore can be removed after the table-based
+-         * decoder is complete; we will be decoding the insn completely
+-         * before any code generation that might affect these variables.
+-         */
+-        dc->cc_op_dirty = orig_cc_op_dirty;
+-        dc->cc_op = orig_cc_op;
+-        dc->pc_save = orig_pc_save;
+-        /* END TODO */
++        assert(dc->cc_op_dirty == orig_cc_op_dirty);
++        assert(dc->cc_op == orig_cc_op);
++        assert(dc->pc_save == orig_pc_save);
+         dc->base.num_insns--;
+         tcg_remove_ops_after(dc->prev_insn_end);
+         dc->base.insn_start = dc->prev_insn_start;
 -- 
 2.45.2
 
