@@ -2,79 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F07BC91111C
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jun 2024 20:42:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6AB791110E
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jun 2024 20:39:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sKMjr-0004YA-IH; Thu, 20 Jun 2024 14:42:27 -0400
+	id 1sKMgE-0002WR-TZ; Thu, 20 Jun 2024 14:38:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1sKMjf-0004V8-VE
- for qemu-devel@nongnu.org; Thu, 20 Jun 2024 14:42:16 -0400
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1sKMg6-0002Vz-14
+ for qemu-devel@nongnu.org; Thu, 20 Jun 2024 14:38:34 -0400
+Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1sKMjd-00050K-0G
- for qemu-devel@nongnu.org; Thu, 20 Jun 2024 14:42:15 -0400
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-3632a6437d7so778306f8f.0
- for <qemu-devel@nongnu.org>; Thu, 20 Jun 2024 11:42:11 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1sKMg3-0004LK-9V
+ for qemu-devel@nongnu.org; Thu, 20 Jun 2024 14:38:33 -0400
+Received: by mail-pf1-x436.google.com with SMTP id
+ d2e1a72fcca58-705bf368037so1112920b3a.0
+ for <qemu-devel@nongnu.org>; Thu, 20 Jun 2024 11:38:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1718908930; x=1719513730; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to
- :references:user-agent:subject:cc:to:from:date:from:to:cc:subject
- :date:message-id:reply-to;
- bh=1WrcPu6ux6xTIzc9Spckyx2sySwM5IjSq2MtY54hdJk=;
- b=jKjHm85ICadYnvZjcpw8qP15vktZOcc63aMvcLEmxdfJ6tZKC6TcGcpkcjeuEJTChQ
- HwbVMKC2bfQcvENTdwr3iY0VehFIT2WGZVNgA99QLdNqsCFlnibNp8ACRoFA15TasUnR
- n5lGaAv81t05kyPGUhoqqjwMlSnsJpheE6gtM+ieyAZPu6ZjOKi7fT4Y0Hy1MHdJ+Vxk
- ZdYtH7nAw1wnALiPcsSCl+VzGEMYLwmUw60nuVioWRNjifaaySZekLS9BY3enTno9dq+
- hfEmIhp8nT7f2yuZLHa6PwEuC3n5Fg8mnAR3ATtVUaQP6uf/lIE4K5ZxMDRk7v+mgNRw
- 25yA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718908930; x=1719513730;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to
- :references:user-agent:subject:cc:to:from:date:x-gm-message-state
+ d=linaro.org; s=google; t=1718908709; x=1719513509; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=1WrcPu6ux6xTIzc9Spckyx2sySwM5IjSq2MtY54hdJk=;
- b=hTmr69t296eXZ36gBGeG91IVIxFxN7JPTnc5Ruf+yVnIHoUD6OEQ8Lag3wrEFXIUWK
- G6tatytz0U3ZbagImxsg3RJ3T77a2Ow6P7OifT1Y9C7Y4HdLnw1nIU9lSOV3Ey8SLGC2
- N2PglEy8U17j6XJ1dgscZF9dq3CQGJBVUT7V1c6ygKaLI3D/5OTftgOvbeC+Zd99MKuU
- UTA96CGx2ghHjxa5rGAc85sogVJv49Vn/6Y6Rr4vfVSvvwD2Smwq6zZQNNXZE6j5gr8T
- Fe2K9qhYxMvVfM4GzAF4WgaoSYm6Wh6z9tW1M4RFvv8ISaL6XuW6Pw0leLAPFeqhiRwj
- If2w==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVHRI3wJnEb5t7QxeUUqBZvS/HqyXnt2s++3KC/+l4QDCr5VCEwP90UjUIYou40R7WMd61vaKG6NMQtUCujTSPq5qW1nRs=
-X-Gm-Message-State: AOJu0YxKi7QCx4CRRkp4EcgGibGtT5Agb8jnUHTOIT5yIFSGTwmRqdNN
- ssotS7c/xvFLpiva+6irMwngwJ9snAGKiKVa29PeU3Qfh4vLEcKuMbRIDQlhNr/JfWsZmkX0SC2
- 0OQM=
-X-Google-Smtp-Source: AGHT+IESCbxBq//EbhUjCjtaspYgZpQC/pM3jxIvaBp1EccgI6dovnnctO7Pi0vRex2n/FupPweoJA==
-X-Received: by 2002:a5d:45cf:0:b0:364:8f54:e0ec with SMTP id
- ffacd0b85a97d-3648f54e17dmr2719527f8f.19.1718908930066; 
- Thu, 20 Jun 2024 11:42:10 -0700 (PDT)
-Received: from meli-email.org (adsl-31.37.6.1.tellas.gr. [37.6.1.31])
+ bh=EuG1WU31MNgaEf8xhe6HVCvciGrvE95KENN7fkoaxXI=;
+ b=aKrwKx8NU8SdCUrauGGb8kX7YpmPhvKoFn8Z9YvXpD/nQa6t9B62/VE/E9Ya6wJi0A
+ tHh+2TZH0JN9fm0lNrHyrmgdTUJE4j6lpxLciNLBjbdtZBCiXdmhkIMWNMAjKOOnNchm
+ ySO3CCEzjGU9qCHaL05km/3tfEWbvcZ/e5tCqfC/rtmeP0TCmi8kyPxp+Lm9bohl/XCA
+ VmM3ieCA0ERXFw7Y/+0SR/Rn8clhz8MxCsAr4mCBCkSd6oiXWdgvgLrFetgD1+VRUy7x
+ OHu7smvcNqgqE/zq6pB8NAPhZUsDD/i4QOxsGvYxAoYFwdH5wQePb8PeqCElDAwinAbE
+ c+EQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1718908709; x=1719513509;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=EuG1WU31MNgaEf8xhe6HVCvciGrvE95KENN7fkoaxXI=;
+ b=gR2lTKv4meB4tSNHfMrSDPP5JRlFLkTCAl4pdeP0dLH2MHkYRoAlSlsOvYhHMmJLX3
+ 8MRPPID/+Qi9EQYSM6T2cLyyEsf+Kaogut/oFM7zInLJxzTWKJpO6nzdg9ez5ewkOrk0
+ A0Phrk9cB8a37FMfF/PpNVSv/nDLNedKfQIfV47FzuNVZsEszDo6p9T7W4yBxxqzbsNy
+ fp2WDStRyVVImysUuNR/Gi4JFpMqKx94yWPJLcJeFlzyEjPzDQuEjAGO12WhwBrA9OU1
+ oErV1o8s+ryO8IaXsqUcsumQjxy8RsRdq1v0nurtz850YtpLW6LNptKcsYwpkvhRMjpQ
+ lBFw==
+X-Gm-Message-State: AOJu0YyO2r/v7tKHjltw0WtdOTb7Hek2KyAiqBJGSflogMR6eiu8VIEh
+ vZtjkKkym82ox5Mi4IdfE5MZ5iok94kq9P1h9MQy4LKb8FWy4y4+lMsnaiA1zoE=
+X-Google-Smtp-Source: AGHT+IHY/Zsd87xB2Kr3uAhsYuL6FbtYzc3T7FWz6EWWQmBAeOg5IOXm5jaOQ7Mm4x7QkAL78mySag==
+X-Received: by 2002:a62:5e45:0:b0:705:fe85:3672 with SMTP id
+ d2e1a72fcca58-70629cce6c0mr6333177b3a.27.1718908708670; 
+ Thu, 20 Jun 2024 11:38:28 -0700 (PDT)
+Received: from ?IPV6:2604:3d08:9384:1d00::2193? ([2604:3d08:9384:1d00::2193])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-36431476efasm3700260f8f.1.2024.06.20.11.42.09
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 20 Jun 2024 11:42:09 -0700 (PDT)
-Date: Thu, 20 Jun 2024 21:36:47 +0300
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: 
-Subject: Re: [RFC PATCH v3 2/5] rust: add bindgen step as a meson dependency
-User-Agent: meli 0.8.6
-References: <rust-pl011-rfc-v3.git.manos.pitsidianakis@linaro.org>
- <6bf311a35e6d3bfa8b3bfd10d8f896a9e655fa30.1718827153.git.manos.pitsidianakis@linaro.org>
- <d32a653f-f741-4c59-8a6e-c2094e972009@linaro.org>
-In-Reply-To: <d32a653f-f741-4c59-8a6e-c2094e972009@linaro.org>
-Message-ID: <fe6m8.4d61etyid59f@linaro.org>
+ d2e1a72fcca58-705cc91f6a4sm13120902b3a.13.2024.06.20.11.38.27
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 20 Jun 2024 11:38:28 -0700 (PDT)
+Message-ID: <e2ff8e08-4903-4259-b858-447e2001134a@linaro.org>
+Date: Thu, 20 Jun 2024 11:38:26 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset=utf-8; format=flowed
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wr1-x42e.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] plugins/execlog.c: correct dump of registers values
+Content-Language: en-US
+To: =?UTF-8?B?RnLDqWTDqXJpYyBQw6l0cm90?=
+ <frederic.petrot@univ-grenoble-alpes.fr>, alex.bennee@linaro.org,
+ erdnaxe@crans.org, ma.mandourr@gmail.com
+Cc: qemu-devel@nongnu.org
+References: <20240620083805.73603-1-frederic.petrot@univ-grenoble-alpes.fr>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <20240620083805.73603-1-frederic.petrot@univ-grenoble-alpes.fr>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
+Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,37 +95,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 20 Jun 2024 17:01, Richard Henderson <richard.henderson@linaro.org> wrote:
->On 6/19/24 13:13, Manos Pitsidianakis wrote:
->> +# FIXME: These are the latest stable versions, refine to actual minimum ones.
->> +msrv = {
->> +  'rustc': '1.79.0',
->> +  'cargo': '1.79.0',
->> +  'bindgen': '0.69.4',
->> +}
->
->A note for other rust newbies:
->
->These versions are pretty darn close to actual minima.  Ubuntu 24.04 packages rust 1.77, 
->which does not support (but has a warning reserving syntax for)
->
->> +    println!("cargo::rerun-if-env-changed=MESON_BUILD_DIR");
->
-
-
-rerun-if-env-changed is not new, I think, but the `cargo::` instead of 
-`cargo:` syntax is. Is this what the warning is saying?
-
-Source 
-<https://doc.rust-lang.org/cargo/reference/build-scripts.html#outputs-of-the-build-script>:
-
-  Note: The old invocation prefix cargo: (one colon only) is deprecated
-  and won’t get any new features. To migrate, use two-colons prefix
-  cargo::, which was added in Rust 1.77. If you were using
-  cargo:KEY=VALUE for arbitrary links manifest key-value pairs, it is
-  encouraged to switch to cargo::metadata=KEY=VALUE. Stick to cargo:
-  only if the support of Rust version older than 1.77 is required.
-
-But this is not in any way necessary for us, we can ignore cargo's stale 
-build detection and force it from meson.
+T24gNi8yMC8yNCAwMTozOCwgRnLDqWTDqXJpYyBQw6l0cm90IHdyb3RlOg0KPiBSZWdpc3Rl
+ciB2YWx1ZXMgYXJlIGR1bXBlZCBhcyAnc3onIGNodW5rcyBvZiB0d28gbmliYmxlcyBpbiB0
+aGUgZXhlY2xvZw0KPiBwbHVnaW4sIHN6IHdhcyAxIHRvbyBiaWcuDQo+IA0KPiBTaWduZWQt
+b2ZmLWJ5OiBGcsOpZMOpcmljIFDDqXRyb3QgPGZyZWRlcmljLnBldHJvdEB1bml2LWdyZW5v
+YmxlLWFscGVzLmZyPg0KPiAtLS0NCj4gICBjb250cmliL3BsdWdpbnMvZXhlY2xvZy5jIHwg
+MiArLQ0KPiAgIDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKSwgMSBkZWxldGlvbigt
+KQ0KPiANCj4gZGlmZiAtLWdpdCBhL2NvbnRyaWIvcGx1Z2lucy9leGVjbG9nLmMgYi9jb250
+cmliL3BsdWdpbnMvZXhlY2xvZy5jDQo+IGluZGV4IDM3MWRiOTdlYjEuLjFjMTYwMWNjMGIg
+MTAwNjQ0DQo+IC0tLSBhL2NvbnRyaWIvcGx1Z2lucy9leGVjbG9nLmMNCj4gKysrIGIvY29u
+dHJpYi9wbHVnaW5zL2V4ZWNsb2cuYw0KPiBAQCAtMTAxLDcgKzEwMSw3IEBAIHN0YXRpYyB2
+b2lkIGluc25fY2hlY2tfcmVncyhDUFUgKmNwdSkNCj4gICAgICAgICAgICAgICBHQnl0ZUFy
+cmF5ICp0ZW1wID0gcmVnLT5sYXN0Ow0KPiAgICAgICAgICAgICAgIGdfc3RyaW5nX2FwcGVu
+ZF9wcmludGYoY3B1LT5sYXN0X2V4ZWMsICIsICVzIC0+IDB4IiwgcmVnLT5uYW1lKTsNCj4g
+ICAgICAgICAgICAgICAvKiBUT0RPOiBoYW5kbGUgQkUgcHJvcGVybHkgKi8NCj4gLSAgICAg
+ICAgICAgIGZvciAoaW50IGkgPSBzejsgaSA+PSAwOyBpLS0pIHsNCj4gKyAgICAgICAgICAg
+IGZvciAoaW50IGkgPSBzeiAtIDE7IGkgPj0gMDsgaS0tKSB7DQo+ICAgICAgICAgICAgICAg
+ICAgIGdfc3RyaW5nX2FwcGVuZF9wcmludGYoY3B1LT5sYXN0X2V4ZWMsICIlMDJ4IiwNCj4g
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICByZWctPm5ldy0+ZGF0
+YVtpXSk7DQo+ICAgICAgICAgICAgICAgfQ0KDQpHb29kIGNhdGNoLCB0aGFua3MhDQpSZXZp
+ZXdlZC1ieTogUGllcnJpY2sgQm91dmllciA8cGllcnJpY2suYm91dmllckBsaW5hcm8ub3Jn
+Pg0KDQpQaWVycmljaw0K
 
