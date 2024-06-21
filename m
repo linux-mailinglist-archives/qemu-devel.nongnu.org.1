@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 343A0911DED
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jun 2024 10:09:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90AEC911DE6
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jun 2024 10:08:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sKZJI-0000r5-Q2; Fri, 21 Jun 2024 04:07:52 -0400
+	id 1sKZJN-0001GA-Qw; Fri, 21 Jun 2024 04:07:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sKZJF-0000iH-Ac
- for qemu-devel@nongnu.org; Fri, 21 Jun 2024 04:07:49 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sKZJL-00016W-46
+ for qemu-devel@nongnu.org; Fri, 21 Jun 2024 04:07:55 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sKZJD-00007E-PP
- for qemu-devel@nongnu.org; Fri, 21 Jun 2024 04:07:49 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-4218180a122so12903105e9.1
- for <qemu-devel@nongnu.org>; Fri, 21 Jun 2024 01:07:47 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sKZJJ-00007p-BS
+ for qemu-devel@nongnu.org; Fri, 21 Jun 2024 04:07:54 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-421cd1e5f93so12981345e9.0
+ for <qemu-devel@nongnu.org>; Fri, 21 Jun 2024 01:07:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1718957266; x=1719562066; darn=nongnu.org;
+ d=linaro.org; s=google; t=1718957271; x=1719562071; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=SZVdw7g4FFY2EyPpj/GEhmJmZqJuSFbYAj+AqUiDdB4=;
- b=ThyGybpkX6USi5XO9h/o3RA9MADSAZd2ZkiNEQB3/if2BMuWtkRt/cz6oTf/7GDuvh
- idk2jRYd7J384BNqB6sEXJxdpopYCufPk0C8wLq7EXtDe1GvVXw/3H5jGljCGaGCo96x
- tj9fE2OA9ntLW/oiC2fTL5v5mV7tmoup2EGiCLYu7pVYMrlwo1CwQt45NwAeqT6WpvjT
- Nt7RDvCqm+k+p0L+EBXaNdhWalIq602mGkZ8q37JyfTwF5vbe4UODQHa1LCCXnMq+g2y
- YIQFLJ4Ji4xOa5ikWQSXWTauojChSKiRNNHW3E+DWgc0Zk5riLjoHV87As44ZtawWC+z
- 1xEg==
+ bh=kNBeXm9P/Ml80/yN91/eWbfFz/hJLMpAuct+ZmQTshg=;
+ b=OrBh0QKF5202eZgpnj4VVSsUmsZ3Ac0YN/BkJjSwIJYWzJgUIOpL5B4JP7rvigrgw9
+ xubpYvPoJlCtDl2+D9qzhjSXRHvbteKr1sPYhNi70sFfVUsatTKtoO5ou5QoUSExy1E8
+ k803Zj8As0Q4yqwjomyBpRCGuHzxK9FYEanff+eXxjSqqFM0hPAH3UoAuZ9VcvfE+fzc
+ Iy668CH6aFKPFvsWU/Zj2DWCABqwwY/yCCFpmTv0XTGYwJ1haYQ+WGQZZJZzrxPxuTip
+ Y+BQ3LdBtx6knaWDdmVk9g1BAguYu63RvvH0BDRSZIW7kgIotiMnfAeG0ZaYQxCWjMyT
+ CnNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718957266; x=1719562066;
+ d=1e100.net; s=20230601; t=1718957271; x=1719562071;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=SZVdw7g4FFY2EyPpj/GEhmJmZqJuSFbYAj+AqUiDdB4=;
- b=I0KEEQ5ZGykww3uG6Jze3p4F96toCjs49YTHCgCAI3W6PwwMXzwzocTT7OujYK7CL6
- RjjCpeJH6n4Yd+QuMPd1N6+SrW64nK3oQ6R0TZ11Hap9z5Jg3Rl4QESaDJGjyDtoskFU
- JW9/idgOTkfX+HURlFWGgRuZLb6JLSPZlDApnL74T32isn5nBlkkeLLt77ev0HcLoIed
- UkgvcHgHiKewNXVEoumV5xUdNHyOK87sW9G9IrYJNygi5VAJQGIdGDLwE1H39NW9Y9wl
- YZX+fpqSfFf7sfF5eFbooLgZ/2qx6TAktQoIZANsf5VB/5/g/39HgihrRuuwQ5lc40MZ
- HJGg==
-X-Gm-Message-State: AOJu0YzxsqFttmPSGMKbDncuhXSLw2yb4d9boz4LjJD/GFiWmiWLasgP
- GYopGeoNhCK1+mMEvR9H1rpHXxds26TfHG1Cbo0+LlnMvyhRTkEMF2FEhZmAjfqG+ku6an7YOup
- z
-X-Google-Smtp-Source: AGHT+IHhVh1/7gwxlIA1WJjOQSjlj/YTHTc0qn/ahDv3YxqFUhtRDOs82oiAy2kjym8Z5BhM3g+MCA==
-X-Received: by 2002:adf:f6c5:0:b0:360:93d4:c4e0 with SMTP id
- ffacd0b85a97d-363171e1995mr6478167f8f.5.1718957265914; 
- Fri, 21 Jun 2024 01:07:45 -0700 (PDT)
+ bh=kNBeXm9P/Ml80/yN91/eWbfFz/hJLMpAuct+ZmQTshg=;
+ b=a2VFm6O1lP7AQvoRFlmBvgNJxp+5rBNOddrBDXwSgumvOAG1LaNumiFhM8NWFJuTe1
+ Amg7bZ7x92Mk638RwxfWnIvx/uvwOtXIp4CEH4o7bnSvTzD4IUQvSj74vgjXEp5Yr2mR
+ vQk/AOg1wFGOKZyGTVaw3oxH005wFKxPitpctOrVVJEoBeVufoEuv6SmlC5lB3HegC8q
+ peW7wju0PmxPmzsgbzo0g5UeSe96tvjEnBFVS47KUuLrjujJMSsuW8mUjhnrnpbiBoNB
+ dNy8HZeEqYyZK0y/yR4TES7umDY+BwPZsBXx4/qzxaXioXU7I/84evvowzWgUVeEay0k
+ fnFg==
+X-Gm-Message-State: AOJu0YxYiQ8FZj63rpxTWakNzI1QDgnyK+cTJHMWnuEiMpdbVtbDcgpI
+ b0v4z93r6Wx2bbC3PkkkHv4AkqyHYfJ6aWk+Obl3HiVpxmRX7rfk8o5QZ0blMmUbMKWWRdeZ8T2
+ 5
+X-Google-Smtp-Source: AGHT+IEqdyrdTUH8xzFAJeTGgMv41+cTdI7kRLqldWZsa0rWZmaGFn7XEb+ExxJeN1QhIbDeIIQiuw==
+X-Received: by 2002:a05:600c:2d93:b0:421:182d:9232 with SMTP id
+ 5b1f17b1804b1-42475185a23mr56228875e9.18.1718957271702; 
+ Fri, 21 Jun 2024 01:07:51 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.128.209])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-36638d9c158sm977420f8f.56.2024.06.21.01.07.44
+ 5b1f17b1804b1-4248191c65asm16698085e9.40.2024.06.21.01.07.50
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 21 Jun 2024 01:07:45 -0700 (PDT)
+ Fri, 21 Jun 2024 01:07:51 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Joel Stanley <joel@jms.id.au>, Bin Meng <bmeng.cn@gmail.com>,
  Sai Pavan Boddu <sai.pavan.boddu@amd.com>, qemu-block@nongnu.org
-Subject: [PATCH 18/23] hw/sd/sdcard: Add sd_invalid_mode_for_cmd to report
- invalid mode switch
-Date: Fri, 21 Jun 2024 10:05:49 +0200
-Message-ID: <20240621080554.18986-19-philmd@linaro.org>
+Subject: [PATCH 19/23] hw/sd/sdcard: Inline BLK_READ_BLOCK / BLK_WRITE_BLOCK
+ macros
+Date: Fri, 21 Jun 2024 10:05:50 +0200
+Message-ID: <20240621080554.18986-20-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240621080554.18986-1-philmd@linaro.org>
 References: <20240621080554.18986-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,126 +95,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Having the mode switch displayed help to track incomplete
-command implementations.
+These macros only save 3 chars and make the code harder
+to maintain, simply remove them.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/sd/sd.c | 75 +++++++++++++++++++++++++++++-------------------------
- 1 file changed, 41 insertions(+), 34 deletions(-)
+ hw/sd/sd.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
 diff --git a/hw/sd/sd.c b/hw/sd/sd.c
-index 1df16ce6a2..8d63a39a54 100644
+index 8d63a39a54..ca2c903c5b 100644
 --- a/hw/sd/sd.c
 +++ b/hw/sd/sd.c
-@@ -180,6 +180,17 @@ static const char *sd_version_str(enum SDPhySpecificationVersion version)
-     return sdphy_version[version];
+@@ -816,8 +816,6 @@ static void sd_blk_write(SDState *sd, uint64_t addr, uint32_t len)
+     }
  }
  
-+static const char *sd_mode_name(enum SDCardModes mode)
-+{
-+    static const char *mode_name[] = {
-+        [sd_inactive]                   = "inactive",
-+        [sd_card_identification_mode]   = "identification",
-+        [sd_data_transfer_mode]         = "transfer",
-+    };
-+    assert(mode < ARRAY_SIZE(mode_name));
-+    return mode_name[mode];
-+}
-+
- static const char *sd_state_name(enum SDCardStates state)
- {
-     static const char *state_name[] = {
-@@ -1015,6 +1026,15 @@ static sd_rsp_type_t sd_invalid_state_for_cmd(SDState *sd, SDRequest req)
-     return sd_illegal;
+-#define BLK_READ_BLOCK(a, len)  sd_blk_read(sd, a, len)
+-#define BLK_WRITE_BLOCK(a, len) sd_blk_write(sd, a, len)
+ #define APP_READ_BLOCK(a, len)  memset(sd->data, 0xec, len)
+ #define APP_WRITE_BLOCK(a, len)
+ 
+@@ -869,7 +867,7 @@ static void sd_erase(SDState *sd)
+                 continue;
+             }
+         }
+-        BLK_WRITE_BLOCK(erase_addr, erase_len);
++        sd_blk_write(sd, erase_addr, erase_len);
+     }
  }
  
-+static sd_rsp_type_t sd_invalid_mode_for_cmd(SDState *sd, SDRequest req)
-+{
-+    qemu_log_mask(LOG_GUEST_ERROR, "%s: CMD%i in a wrong mode: %s (spec %s)\n",
-+                  sd_proto(sd)->name, req.cmd, sd_mode_name(sd->mode),
-+                  sd_version_str(sd->spec_version));
-+
-+    return sd_illegal;
-+}
-+
- static sd_rsp_type_t sd_cmd_illegal(SDState *sd, SDRequest req)
- {
-     qemu_log_mask(LOG_GUEST_ERROR, "%s: Unknown CMD%i for spec %s\n",
-@@ -1154,18 +1174,14 @@ static sd_rsp_type_t sd_normal_command(SDState *sd, SDRequest req)
+@@ -1901,7 +1899,7 @@ void sd_write_byte(SDState *sd, uint8_t value)
+         if (sd->data_offset >= sd->blk_len) {
+             /* TODO: Check CRC before committing */
+             sd->state = sd_programming_state;
+-            BLK_WRITE_BLOCK(sd->data_start, sd->data_offset);
++            sd_blk_write(sd, sd->data_start, sd->data_offset);
+             sd->blk_written ++;
+             sd->csd[14] |= 0x40;
+             /* Bzzzzzzztt .... Operation complete.  */
+@@ -1927,7 +1925,7 @@ void sd_write_byte(SDState *sd, uint8_t value)
+         if (sd->data_offset >= sd->blk_len) {
+             /* TODO: Check CRC before committing */
+             sd->state = sd_programming_state;
+-            BLK_WRITE_BLOCK(sd->data_start, sd->data_offset);
++            sd_blk_read(sd, sd->data_start, sd->data_offset);
+             sd->blk_written++;
+             sd->data_start += sd->blk_len;
+             sd->data_offset = 0;
+@@ -2075,8 +2073,9 @@ uint8_t sd_read_byte(SDState *sd)
          break;
  
-     case 6:  /* CMD6:   SWITCH_FUNCTION */
--        switch (sd->mode) {
--        case sd_data_transfer_mode:
--            sd_function_switch(sd, req.arg);
--            sd->state = sd_sendingdata_state;
--            sd->data_start = 0;
--            sd->data_offset = 0;
--            return sd_r1;
--
--        default:
--            break;
-+        if (sd->mode != sd_data_transfer_mode) {
-+            return sd_invalid_mode_for_cmd(sd, req);
-         }
--        break;
-+        sd_function_switch(sd, req.arg);
-+        sd->state = sd_sendingdata_state;
-+        sd->data_start = 0;
-+        sd->data_offset = 0;
-+        return sd_r1;
- 
-     case 7:  /* CMD7:   SELECT/DESELECT_CARD */
-         rca = sd_req_get_rca(sd, req);
-@@ -1289,33 +1305,24 @@ static sd_rsp_type_t sd_normal_command(SDState *sd, SDRequest req)
- 
-     case 13:  /* CMD13:  SEND_STATUS */
-         rca = sd_req_get_rca(sd, req);
--        switch (sd->mode) {
--        case sd_data_transfer_mode:
--            if (!sd_is_spi(sd) && sd->rca != rca) {
--                return sd_r0;
--            }
--
--            return sd_r1;
--
--        default:
--            break;
-+        if (sd->mode != sd_data_transfer_mode) {
-+            return sd_invalid_mode_for_cmd(sd, req);
-         }
--        break;
-+        if (!sd_is_spi(sd) && sd->rca != rca) {
-+            return sd_r0;
+     case 17:  /* CMD17:  READ_SINGLE_BLOCK */
+-        if (sd->data_offset == 0)
+-            BLK_READ_BLOCK(sd->data_start, io_len);
++        if (sd->data_offset == 0) {
++            sd_blk_read(sd, sd->data_start, io_len);
 +        }
-+
-+        return sd_r1;
+         ret = sd->data[sd->data_offset ++];
  
-     case 15:  /* CMD15:  GO_INACTIVE_STATE */
--        rca = sd_req_get_rca(sd, req);
--        switch (sd->mode) {
--        case sd_data_transfer_mode:
--            if (sd->rca != rca)
--                return sd_r0;
--
--            sd->state = sd_inactive_state;
--            return sd_r0;
--
--        default:
--            break;
-+        if (sd->mode != sd_data_transfer_mode) {
-+            return sd_invalid_mode_for_cmd(sd, req);
+         if (sd->data_offset >= io_len)
+@@ -2089,7 +2088,7 @@ uint8_t sd_read_byte(SDState *sd)
+                                   sd->data_start, io_len)) {
+                 return 0x00;
+             }
+-            BLK_READ_BLOCK(sd->data_start, io_len);
++            sd_blk_read(sd, sd->data_start, io_len);
          }
--        break;
-+        rca = sd_req_get_rca(sd, req);
-+        if (sd->rca == rca) {
-+            sd->state = sd_inactive_state;
-+        }
-+        return sd_r0;
+         ret = sd->data[sd->data_offset ++];
  
-     /* Block read commands (Class 2) */
-     case 16:  /* CMD16:  SET_BLOCKLEN */
 -- 
 2.41.0
 
