@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A67619124BC
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jun 2024 14:06:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F0429124B2
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jun 2024 14:04:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sKcvl-0004DY-LK; Fri, 21 Jun 2024 07:59:50 -0400
+	id 1sKcwv-0005v2-IA; Fri, 21 Jun 2024 08:01:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sunilvl@ventanamicro.com>)
- id 1sKcvj-0004Ch-Dl
- for qemu-devel@nongnu.org; Fri, 21 Jun 2024 07:59:47 -0400
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
+ id 1sKcwJ-0005cV-H8
+ for qemu-devel@nongnu.org; Fri, 21 Jun 2024 08:00:24 -0400
+Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <sunilvl@ventanamicro.com>)
- id 1sKcvh-0003Ak-6s
- for qemu-devel@nongnu.org; Fri, 21 Jun 2024 07:59:47 -0400
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-1f9cd92b146so14411315ad.3
- for <qemu-devel@nongnu.org>; Fri, 21 Jun 2024 04:59:44 -0700 (PDT)
+ id 1sKcwG-0003Pz-96
+ for qemu-devel@nongnu.org; Fri, 21 Jun 2024 08:00:23 -0400
+Received: by mail-pl1-x630.google.com with SMTP id
+ d9443c01a7336-1f480624d10so15599635ad.1
+ for <qemu-devel@nongnu.org>; Fri, 21 Jun 2024 05:00:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1718971183; x=1719575983; darn=nongnu.org;
+ d=ventanamicro.com; s=google; t=1718971217; x=1719576017; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=HZycHu1GawJwjwX4WxIIeJpZLZFE0AM425lGZ17tEhU=;
- b=IbUTkjIuHArbPDA+htOYVhJ+xW6dnjeYFUQwnk8tC0xIZo9Pe2HYR76OUlpVXwyxOk
- lYh+ZjhSVWdb8i3vimvsHe1bbbb933szig7IpKpRLez9ii1LnSO/m1p2PgPYJ93GN3gy
- XFkIT087Z9YRlgMpyWSKzTa3ZAl29TDJcg0G8AOZivWVGxEMiEAEb5rd5ZcohNyvorF5
- nWKK5DCAuioJQEEbHSVI7M9ZPjGbRd83ICPhe1aoUUYj82RfOFheQxIjHkAjEJ441H3D
- BFE5WhaQppDlgyjl+f6tMith4aXJwMcyF+arrs/HeFD4jDkG0HekZHAaA19Snsrd3l6e
- M4ZQ==
+ bh=SPyOu1IwMNogunIuIjBkDIc9zx4X6xTuQJ4OgT7GMUM=;
+ b=oQj6p6je9QJ9DXadZHlsPVIwM+o62JfxPCf03J8vYfceq6vVai3RuEOiPsDthteX7z
+ Kyar6MS7LZUKELlO4GAdSNuJ5SjyJLbkQ8fcJolJGyc/0EdzwxkpBaV6j4iV7T6a0nH4
+ IB8uIxXa7x8DoOF4dhZ5tTgYTtSF8NygmiGvFDAeqDX8K/GypBO3ZFRGOc+bC0Jk0TWi
+ T8B3dY0tN3359aBVaXCEXJRobmV/Rmos9bLsQX8tq/xC63cb0BQAmTesC8qgnD0a1v/C
+ 1G6zG74rwiSSkHVkeXfwM2QqY2hKmeIFkA+AZ3NW9zcywhQLrj732Grj1il2J+XEGcCK
+ L+Sg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718971183; x=1719575983;
+ d=1e100.net; s=20230601; t=1718971217; x=1719576017;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=HZycHu1GawJwjwX4WxIIeJpZLZFE0AM425lGZ17tEhU=;
- b=pXklWuHYunx0QKGcKnu9+MIhckyQMOmXoj9cpN16P5iMpUBoTjLVEd6zMWKT64AUE3
- z0vddDIBjNF8ngDSMhEQu2IKp0gQv3RXeY04fKRK61JkDEuOJKwQ454ZxDFUs+md9Ike
- rLfNhFsO+LYgxcEOo9h1XbfeZqSIlhMFnNq4tr5xXQEL38PnAZA5e8AbicpxTIn0Kvj4
- cHnWQmI7fsO8Xe8usWr2NpEcAIHK6nsSr3bgvSNYvlE3L0hZSn2oxWjrkKBWtRJo1Nje
- zUehgeGo8u+saqVQ5vQaqXzjkgWJ9quh5Uh3RAverJGCmA1I3Gxv1RzQV5jc6xfjcA+i
- sOAg==
-X-Gm-Message-State: AOJu0YyzCSTT21WwJGGAz9gzut/2lDZRJKhpmrr8ld2YyogXllGso4mf
- 5VecLcd0Hkbo8eUalQnBmtjMM0qFJjOcUaeoY81jGqUy1oOyolzP3SkbHXky8bXywWVI2o5vljh
- 7
-X-Google-Smtp-Source: AGHT+IEM/tKOfaceedNOkIfkk8ElpCPYFvefB8Uw0BTod8hzVgPZbwql+26Z4OV1rz2i6Vw1iR+loA==
-X-Received: by 2002:a17:902:d491:b0:1f9:a386:2bbd with SMTP id
- d9443c01a7336-1f9aa3d0af5mr99598565ad.22.1718971183111; 
- Fri, 21 Jun 2024 04:59:43 -0700 (PDT)
+ bh=SPyOu1IwMNogunIuIjBkDIc9zx4X6xTuQJ4OgT7GMUM=;
+ b=w8r8isNzOWXhzsOmpBLDa4cvEr8RkM4GFicT//mAXVuvZiakYmCj5Fp44/cGc2YIph
+ 6/AMy3Lov8xBx7/n+c/0rKaIwkWjJ5o+eMpgmq38uCWmCTbru2Lrrj7RtqOQv0cMxzBE
+ /cufFHg4H4oNmQACGmK7dOpgmp19OWLckhBmwgkd+uYQLUapJNTZz9TPGS2mlkniR36B
+ U5fQMnLRK1J2tOf4nvZT1P5ZVF7OQ9MBadjldDNA5i1q3GWXez7d3Ks77//XDAuAkcGF
+ shkq76vdNHe7LI2uy+YMWMrL6faAroQDwsvzyz+wSE9wvSFhZcne4K5cDpYPc/+XY2jE
+ z6lg==
+X-Gm-Message-State: AOJu0YwpQXJ+Zg2B4QiPsXG2FI5MaRy4jUYKMI4b3VgqsKg9sv2/K0lU
+ cypPx+1RMSUQLAGdr35zK+Ff6FAY7eOh1NFRQ3tqVxQUg84YLAyWdS2xkQZKC1vxbZNh6JYNOu1
+ P
+X-Google-Smtp-Source: AGHT+IHtGvg4wuthzMm9qqF7AxX/oLsuZOxbTB/4KTnxieAwz2cWT8oc+AbZQ1D7XX0Z+Q/z07neug==
+X-Received: by 2002:a17:902:e885:b0:1f9:c8cc:9e2d with SMTP id
+ d9443c01a7336-1f9c8cca31fmr60315195ad.28.1718971217126; 
+ Fri, 21 Jun 2024 05:00:17 -0700 (PDT)
 Received: from sunil-pc.Dlink ([106.51.187.237])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1f9ebbb606dsm12422995ad.270.2024.06.21.04.59.37
+ d9443c01a7336-1f9ebbb606dsm12422995ad.270.2024.06.21.05.00.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 21 Jun 2024 04:59:42 -0700 (PDT)
+ Fri, 21 Jun 2024 05:00:16 -0700 (PDT)
 From: Sunil V L <sunilvl@ventanamicro.com>
 To: qemu-devel@nongnu.org,
 	qemu-arm@nongnu.org,
@@ -74,18 +74,19 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Palmer Dabbelt <palmer@dabbelt.com>, Bin Meng <bmeng.cn@gmail.com>,
  Weiwei Li <liwei1518@gmail.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Sunil V L <sunilvl@ventanamicro.com>
-Subject: [PATCH v3 05/15] tests/qtest/bios-tables-test.c: Add support for arch
- in path
-Date: Fri, 21 Jun 2024 17:28:56 +0530
-Message-Id: <20240621115906.1049832-6-sunilvl@ventanamicro.com>
+ Sunil V L <sunilvl@ventanamicro.com>,
+ Alistair Francis <alistair.francis@wdc.com>
+Subject: [PATCH v3 11/15] pc-bios/meson.build: Add support for RISC-V in
+ unpack_edk2_blobs
+Date: Fri, 21 Jun 2024 17:29:02 +0530
+Message-Id: <20240621115906.1049832-12-sunilvl@ventanamicro.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20240621115906.1049832-1-sunilvl@ventanamicro.com>
 References: <20240621115906.1049832-1-sunilvl@ventanamicro.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=sunilvl@ventanamicro.com; helo=mail-pl1-x62a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
+ envelope-from=sunilvl@ventanamicro.com; helo=mail-pl1-x630.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -108,65 +109,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since machine name can be common for multiple architectures (ex: virt),
-add "arch" in the path to search for expected AML files. Since the AML
-files are still under old path, add support for searching with and
-without arch in the path.
+Update list of images supported in unpack_edk2_blobs to enable RISC-V
+ACPI table testing.
 
 Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Reviewed-by: Igor Mammedov <imammedo@redhat.com>
 ---
- tests/qtest/bios-tables-test.c | 23 ++++++++++++++++++++---
- 1 file changed, 20 insertions(+), 3 deletions(-)
+ pc-bios/meson.build     | 2 ++
+ tests/qtest/meson.build | 3 +++
+ 2 files changed, 5 insertions(+)
 
-diff --git a/tests/qtest/bios-tables-test.c b/tests/qtest/bios-tables-test.c
-index c4a4d1c7bf..29c52952f4 100644
---- a/tests/qtest/bios-tables-test.c
-+++ b/tests/qtest/bios-tables-test.c
-@@ -78,6 +78,7 @@
- typedef struct {
-     bool tcg_only;
-     const char *machine;
-+    const char *arch;
-     const char *machine_param;
-     const char *variant;
-     const char *uefi_fl1;
-@@ -262,8 +263,19 @@ static void dump_aml_files(test_data *data, bool rebuild)
-         g_assert(exp_sdt->aml);
+diff --git a/pc-bios/meson.build b/pc-bios/meson.build
+index 0760612bea..8602b45b9b 100644
+--- a/pc-bios/meson.build
++++ b/pc-bios/meson.build
+@@ -4,6 +4,8 @@ if unpack_edk2_blobs
+     'edk2-aarch64-code.fd',
+     'edk2-arm-code.fd',
+     'edk2-arm-vars.fd',
++    'edk2-riscv-code.fd',
++    'edk2-riscv-vars.fd',
+     'edk2-i386-code.fd',
+     'edk2-i386-secure-code.fd',
+     'edk2-i386-vars.fd',
+diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
+index 12792948ff..6508bfb1a2 100644
+--- a/tests/qtest/meson.build
++++ b/tests/qtest/meson.build
+@@ -259,6 +259,9 @@ qtests_s390x = \
+ qtests_riscv32 = \
+   (config_all_devices.has_key('CONFIG_SIFIVE_E_AON') ? ['sifive-e-aon-watchdog-test'] : [])
  
-         if (rebuild) {
--            aml_file = g_strdup_printf("%s/%s/%.4s%s", data_dir, data->machine,
-+            aml_file = g_strdup_printf("%s/%s/%s/%.4s%s", data_dir,
-+                                       data->arch, data->machine,
-                                        sdt->aml, ext);
++qtests_riscv64 = \
++  (unpack_edk2_blobs ? ['bios-tables-test'] : [])
 +
-+            /*
-+             * To keep test cases not failing before the DATA files are moved to
-+             * ${arch}/${machine} folder, add this check as well.
-+             */
-+            if (!g_file_test(aml_file, G_FILE_TEST_EXISTS)) {
-+                aml_file = g_strdup_printf("%s/%s/%.4s%s", data_dir,
-+                                           data->machine, sdt->aml, ext);
-+            }
-+
-             if (!g_file_test(aml_file, G_FILE_TEST_EXISTS) &&
-                 sdt->aml_len == exp_sdt->aml_len &&
-                 !memcmp(sdt->aml, exp_sdt->aml, sdt->aml_len)) {
-@@ -398,8 +410,13 @@ static GArray *load_expected_aml(test_data *data)
-         memset(&exp_sdt, 0, sizeof(exp_sdt));
- 
- try_again:
--        aml_file = g_strdup_printf("%s/%s/%.4s%s", data_dir, data->machine,
--                                   sdt->aml, ext);
-+        aml_file = g_strdup_printf("%s/%s/%s/%.4s%s", data_dir, data->arch,
-+                                   data->machine, sdt->aml, ext);
-+        if (!g_file_test(aml_file, G_FILE_TEST_EXISTS)) {
-+            aml_file = g_strdup_printf("%s/%s/%.4s%s", data_dir, data->machine,
-+                                       sdt->aml, ext);
-+        }
-+
-         if (verbosity_level >= 2) {
-             fprintf(stderr, "Looking for expected file '%s'\n", aml_file);
-         }
+ qos_test_ss = ss.source_set()
+ qos_test_ss.add(
+   'ac97-test.c',
 -- 
 2.40.1
 
