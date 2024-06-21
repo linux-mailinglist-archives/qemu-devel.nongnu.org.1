@@ -2,80 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14BF6911DCF
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jun 2024 10:07:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99219911DEF
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jun 2024 10:09:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sKZHY-00052v-5r; Fri, 21 Jun 2024 04:06:04 -0400
+	id 1sKZHc-00054e-Ma; Fri, 21 Jun 2024 04:06:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sKZHU-00050o-Ho
- for qemu-devel@nongnu.org; Fri, 21 Jun 2024 04:06:01 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sKZHa-00054C-HF
+ for qemu-devel@nongnu.org; Fri, 21 Jun 2024 04:06:06 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sKZHS-0008Dj-VG
- for qemu-devel@nongnu.org; Fri, 21 Jun 2024 04:06:00 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-4218180a122so12893355e9.1
- for <qemu-devel@nongnu.org>; Fri, 21 Jun 2024 01:05:58 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sKZHY-0008Ey-P0
+ for qemu-devel@nongnu.org; Fri, 21 Jun 2024 04:06:06 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-42165f6645fso15641215e9.2
+ for <qemu-devel@nongnu.org>; Fri, 21 Jun 2024 01:06:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1718957157; x=1719561957; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=KN16E9BUKPMQG4T8oHAz1JXgBHAHT3sIYZJzcPVZl5U=;
- b=qR1MWZAUk8LeMowk1kn/qfpueKB5+FuFDgRxkTamdphhLmbh4MzMTSzsXAnaZdcvdV
- uUD4k401+VXGRyTUuDlvYX3lx24pTm9mCKWGgXfxHEjZp+j6xsRyOvxoclLWq7xrnjyJ
- zTQrf2CBP81Y8YUzU9A3aPF6oGUb+neAxQ/Szas0s/Gx9inR9W6Dh3Jse+6wjDewViCo
- yFfcMm1PkhKaJycNp+fWyrt0EtUhYpd2eolAvEVzNAqKAseeP3Git34nX0gppRWaWbXU
- nB1RoCMdjYc3US3WZjx+EI4wSaaCC5W0pTrF5owdzBFZOOH9brpsCiKgaq6nxLfOaFIa
- qudw==
+ d=linaro.org; s=google; t=1718957163; x=1719561963; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=4c/usVrkl8YKkr8RnXE4rYu6P4lZW+FXlANdR7STD3A=;
+ b=ZuS2TuxppI1j00p7VVy2TC5FNuzruBF+SMvwlJWGM4nCzhgoKF5IkZtpGe0uzFKtew
+ 6Mb2iRmrfxM4gIRWh0AFlpD887mkQz2OBmGbADUtcTXes6OOsSZ67aZrAnU4FQDcPUdP
+ oXej5F+LwRbra5dXOIYs+x9rznUrF12fqlGa8F4Wu1X1RXkKQq8pnvHGUA+0ni0O06FY
+ eTUtBGD4PYAJ8W+sT9bfjzMQAByp8aOqZF+aFNGP0XZUYweKmZTmP12JAdf+3cxqL6+h
+ 4W08if0uDSeo2ts4DPIhipio+5u+6VxPt3nlt9b5NChJ6B6dGqam7bBjfZk7xUIVp5xx
+ 7Usw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718957157; x=1719561957;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=KN16E9BUKPMQG4T8oHAz1JXgBHAHT3sIYZJzcPVZl5U=;
- b=VOFj88EELZRKAj+/3GlpOrZi4gDUf9VVVie177hQDjhF02kyxljj7kFNIJeoxnnPny
- Gxaqv9Z2BFosqvssP5XJp3BriRi9R6b9WxXQ8lXEilNobYqXBJUEWj7ZGECelXClOw9H
- iohj5S2sFxwBXDX5kvVUplAvabxIU1cZQrHKdLscxJfXRoLsWTjHyphVXv/rYrRIv5S/
- G+3FOdDnHF2SxMduC0xW6f6mv7DD2v7ZAzxNZzzeJoAgEYCURMZHt/yJNANAN60OtSup
- 1Lk7c0co0C+LDdLchnT+w6Lq8PZU4KCLpg/Zw/jj9mTHx61mJubUk+yvSvTuvGm2e5f6
- Pusg==
-X-Gm-Message-State: AOJu0YxvNnalESZEm1NDlotQMK9koj485BiJU6g5JkXlM4ATKE3nk9KA
- kHrR+pwUfgXz2CJbbZZGl3zoAl2r34J5P7vqtT/EjCbmdexpwrMM31DHQ7xkjq7uVMi4llU3+84
- /
-X-Google-Smtp-Source: AGHT+IGJX7ngFSPBnIRyOaVA9IalliHYLR/ISdgUvdn3d7V3POVFPe2d3RrVq4psA/GtsbNbqq8dTA==
-X-Received: by 2002:a05:600c:2141:b0:424:74ed:dbfc with SMTP id
- 5b1f17b1804b1-4247529fbeamr62112725e9.35.1718957157187; 
- Fri, 21 Jun 2024 01:05:57 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1718957163; x=1719561963;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=4c/usVrkl8YKkr8RnXE4rYu6P4lZW+FXlANdR7STD3A=;
+ b=eUGAxM/rDIxkwFD4hoMiMapkHtPy667JYK5D06biGPXSPVaReNcWiHUb0hFVb45msJ
+ XgTu/C4+Mfu+qiYSl9joZ6OI0yQUgZq7Jd9T7frxsOAPkItYiJ5abbvhlgP3MuUVcamT
+ HWe4g6LO1ZJoeYkXP1JaOk9ylc4+HtevwyOGyjuG1mFrwfZKbaHOH2buhKVYvDHvSsT7
+ tzVwY9pHEvfgvUbPvy5DTnJOFNSKFkQUgFT45+xCkGamZfepMfBq5KBXZd7GbzrZ/G++
+ GuTX77rNQOanO3fvEIWbhFdHeayrkyiC3XsjtEb7wp6WK0eszlgztLsGbaEgjpclCnx6
+ a4Cw==
+X-Gm-Message-State: AOJu0Yy/s3i0x05KKiJkBh4U6SehViD8QQa45d8gKsqE/DMKY9bun/IZ
+ Z7HeCGStjnLEiGOz8ojD7wHD9NRXo1An9oRRurILLbROIG9SiXswJevl4f5FOzEetj2tR5BKwH4
+ O
+X-Google-Smtp-Source: AGHT+IHcd/mD0AQsb+hbMx8H3KeN11iekchbc+pLPX/KX/3DAMVaO5FJp23Qvipp06K5s10rnBwc/Q==
+X-Received: by 2002:a05:600c:4447:b0:422:7996:3f3f with SMTP id
+ 5b1f17b1804b1-42475174910mr63841185e9.11.1718957162942; 
+ Fri, 21 Jun 2024 01:06:02 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.128.209])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4247d21243esm53095695e9.43.2024.06.21.01.05.55
+ 5b1f17b1804b1-4248179d982sm17070775e9.1.2024.06.21.01.06.01
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 21 Jun 2024 01:05:56 -0700 (PDT)
+ Fri, 21 Jun 2024 01:06:02 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Joel Stanley <joel@jms.id.au>, Bin Meng <bmeng.cn@gmail.com>,
  Sai Pavan Boddu <sai.pavan.boddu@amd.com>, qemu-block@nongnu.org
-Subject: [PATCH 00/23] hw/sd/sdcard: Accumulation of cleanups and fixes
-Date: Fri, 21 Jun 2024 10:05:31 +0200
-Message-ID: <20240621080554.18986-1-philmd@linaro.org>
+Subject: [PATCH 01/23] hw/sd/sdcard: Correct code indentation
+Date: Fri, 21 Jun 2024 10:05:32 +0200
+Message-ID: <20240621080554.18986-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20240621080554.18986-1-philmd@linaro.org>
+References: <20240621080554.18986-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,43 +94,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Various SD card cleanups and fixes accumulated over
-the years. Various have been useful to help integrating
-eMMC support (which will come later).
+Fix mis-alignment from commits 793d04f495 and 6380cd2052
+("Add sd_cmd_SEND_TUNING_BLOCK" and "Add sd_cmd_SET_BLOCK_COUNT").
 
-Based-on: <20240621075607.17902-1-philmd@linaro.org> st24_be_p()
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ hw/sd/sd.c | 34 +++++++++++++++++-----------------
+ 1 file changed, 17 insertions(+), 17 deletions(-)
 
-Philippe Mathieu-Daudé (23):
-  hw/sd/sdcard: Correct code indentation
-  hw/sd/sdcard: Rewrite sd_cmd_ALL_SEND_CID using switch case (CMD2)
-  hw/sd/sdcard: Fix typo in SEND_OP_COND command name
-  hw/sd/sdcard: Use HWBLOCK_SHIFT definition instead of magic values
-  hw/sd/sdcard: Use registerfield CSR::CURRENT_STATE definition
-  hw/sd/sdcard: Use Load/Store API to fill some CID/CSD registers
-  hw/sd/sdcard: Remove ACMD6 handler for SPI mode
-  hw/sd/sdcard: Remove explicit entries for illegal commands
-  hw/sd/sdcard: Generate random RCA value
-  hw/sd/sdcard: Track last command used to help logging
-  hw/sd/sdcard: Trace update of block count (CMD23)
-  hw/sd/sdcard: Trace block offset in READ/WRITE data accesses
-  hw/sd/sdcard: Have cmd_valid_while_locked() return a boolean value
-  hw/sd/sdcard: Factor sd_req_get_rca() method out
-  hw/sd/sdcard: Only call sd_req_get_rca() where RCA is used
-  hw/sd/sdcard: Factor sd_req_get_address() method out
-  hw/sd/sdcard: Only call sd_req_get_address() where address is used
-  hw/sd/sdcard: Add sd_invalid_mode_for_cmd to report invalid mode
-    switch
-  hw/sd/sdcard: Inline BLK_READ_BLOCK / BLK_WRITE_BLOCK macros
-  hw/sd/sdcard: Add comments around registers and commands
-  hw/sd/sdcard: Do not store vendor data on block drive (CMD56)
-  hw/sd/sdcard: Send WRITE_PROT bits MSB first (CMD30)
-  hw/sd/sdcard: Send NUM_WR_BLOCKS bits MSB first (ACMD22)
-
- hw/sd/sd.c             | 278 +++++++++++++++++++++++------------------
- hw/sd/sdmmc-internal.c |   2 +-
- hw/sd/trace-events     |   7 +-
- 3 files changed, 159 insertions(+), 128 deletions(-)
-
+diff --git a/hw/sd/sd.c b/hw/sd/sd.c
+index 16d8d52a78..626e99ecd6 100644
+--- a/hw/sd/sd.c
++++ b/hw/sd/sd.c
+@@ -1069,33 +1069,33 @@ static sd_rsp_type_t sd_cmd_SEND_RELATIVE_ADDR(SDState *sd, SDRequest req)
+ 
+ static sd_rsp_type_t sd_cmd_SEND_TUNING_BLOCK(SDState *sd, SDRequest req)
+ {
+-        if (sd->spec_version < SD_PHY_SPECv3_01_VERS) {
+-            return sd_cmd_illegal(sd, req);
+-        }
++    if (sd->spec_version < SD_PHY_SPECv3_01_VERS) {
++        return sd_cmd_illegal(sd, req);
++    }
+ 
+-        if (sd->state != sd_transfer_state) {
+-            return sd_invalid_state_for_cmd(sd, req);
+-        }
++    if (sd->state != sd_transfer_state) {
++        return sd_invalid_state_for_cmd(sd, req);
++    }
+ 
+-        sd->state = sd_sendingdata_state;
+-        sd->data_offset = 0;
++    sd->state = sd_sendingdata_state;
++    sd->data_offset = 0;
+ 
+-        return sd_r1;
++    return sd_r1;
+ }
+ 
+ static sd_rsp_type_t sd_cmd_SET_BLOCK_COUNT(SDState *sd, SDRequest req)
+ {
+-        if (sd->spec_version < SD_PHY_SPECv3_01_VERS) {
+-            return sd_cmd_illegal(sd, req);
+-        }
++    if (sd->spec_version < SD_PHY_SPECv3_01_VERS) {
++        return sd_cmd_illegal(sd, req);
++    }
+ 
+-        if (sd->state != sd_transfer_state) {
+-            return sd_invalid_state_for_cmd(sd, req);
+-        }
++    if (sd->state != sd_transfer_state) {
++        return sd_invalid_state_for_cmd(sd, req);
++    }
+ 
+-        sd->multi_blk_cnt = req.arg;
++    sd->multi_blk_cnt = req.arg;
+ 
+-        return sd_r1;
++    return sd_r1;
+ }
+ 
+ static sd_rsp_type_t sd_normal_command(SDState *sd, SDRequest req)
 -- 
 2.41.0
 
