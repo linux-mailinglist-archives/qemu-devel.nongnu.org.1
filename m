@@ -2,93 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CFAE912CD3
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jun 2024 19:58:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57480912CCD
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jun 2024 19:58:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sKiTL-0003GF-1M; Fri, 21 Jun 2024 13:54:51 -0400
+	id 1sKiTL-0003GU-Kb; Fri, 21 Jun 2024 13:54:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sKiTE-0003Ev-4C
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sKiTF-0003F3-Ce
  for qemu-devel@nongnu.org; Fri, 21 Jun 2024 13:54:45 -0400
-Received: from smtp-out2.suse.de ([195.135.223.131])
+Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sKiTA-0003JF-Lt
- for qemu-devel@nongnu.org; Fri, 21 Jun 2024 13:54:43 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sKiTC-0003JL-Vv
+ for qemu-devel@nongnu.org; Fri, 21 Jun 2024 13:54:45 -0400
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 035781F7F2;
- Fri, 21 Jun 2024 17:54:38 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 9EEC821B37;
+ Fri, 21 Jun 2024 17:54:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1718992478; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=eKih3/ekCNCGZBJmxj32Xw0Sv30BGcQlrAemKqh4gwc=;
- b=Kf9oXV670mz6THPlGztwjiscxztiTmCqNsmkPJ4igLB2IygxVNrS3liVX1CFQxyLup8lJb
- OfROGlOiEt6HTVmSvWM1aeBCwXqSy4jw95xUOBztz1fdguxV7DJUxN4MdofdJ6FeXyTNyY
- +ECtJ1sQTbhWAGrUepeObugtsQ4Arm0=
+ t=1718992479; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=kmKfQt7layowIRW2SpPGoIDYLqLdV6aEOQgXewASHS4=;
+ b=ZregTxxUVCn32KM9TlpS/PkPQALhQLvDPmfWX9x/Jp7ORF25Gb3bp9DIbn2L0l49NKZlp2
+ bUdOnaBaUkRBGBnDNEBf4LT1+V8fbMCSA6gaUi6faAZwo/K3mjNpuhvaVsqUv/SpLgmzW+
+ OR/LVqX8fGDK7/30RAj1JZB+cXJ2vUk=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1718992478;
+ s=susede2_ed25519; t=1718992479;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=eKih3/ekCNCGZBJmxj32Xw0Sv30BGcQlrAemKqh4gwc=;
- b=ZmuFZjnP9W2wK7vc5ocVxGRUZXWo+bKr1NHiC/uf1crqIw+jOGLbCi5XXGnvFjU7i4BHcZ
- m6uAwAHBcAd0EpAQ==
-Authentication-Results: smtp-out2.suse.de;
+ mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=kmKfQt7layowIRW2SpPGoIDYLqLdV6aEOQgXewASHS4=;
+ b=ft+PBB988k0PM32rzQyj4j5Vt7H/RuYVFIaW15MIH9plWQE7LzdSHoBspXjNuEuzlX+Q9D
+ EIa0rc3JKG1IcHBA==
+Authentication-Results: smtp-out1.suse.de;
 	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1718992478; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=eKih3/ekCNCGZBJmxj32Xw0Sv30BGcQlrAemKqh4gwc=;
- b=Kf9oXV670mz6THPlGztwjiscxztiTmCqNsmkPJ4igLB2IygxVNrS3liVX1CFQxyLup8lJb
- OfROGlOiEt6HTVmSvWM1aeBCwXqSy4jw95xUOBztz1fdguxV7DJUxN4MdofdJ6FeXyTNyY
- +ECtJ1sQTbhWAGrUepeObugtsQ4Arm0=
+ t=1718992479; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=kmKfQt7layowIRW2SpPGoIDYLqLdV6aEOQgXewASHS4=;
+ b=ZregTxxUVCn32KM9TlpS/PkPQALhQLvDPmfWX9x/Jp7ORF25Gb3bp9DIbn2L0l49NKZlp2
+ bUdOnaBaUkRBGBnDNEBf4LT1+V8fbMCSA6gaUi6faAZwo/K3mjNpuhvaVsqUv/SpLgmzW+
+ OR/LVqX8fGDK7/30RAj1JZB+cXJ2vUk=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1718992478;
+ s=susede2_ed25519; t=1718992479;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=eKih3/ekCNCGZBJmxj32Xw0Sv30BGcQlrAemKqh4gwc=;
- b=ZmuFZjnP9W2wK7vc5ocVxGRUZXWo+bKr1NHiC/uf1crqIw+jOGLbCi5XXGnvFjU7i4BHcZ
- m6uAwAHBcAd0EpAQ==
+ mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=kmKfQt7layowIRW2SpPGoIDYLqLdV6aEOQgXewASHS4=;
+ b=ft+PBB988k0PM32rzQyj4j5Vt7H/RuYVFIaW15MIH9plWQE7LzdSHoBspXjNuEuzlX+Q9D
+ EIa0rc3JKG1IcHBA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C965013AAA;
- Fri, 21 Jun 2024 17:54:36 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6B8CB13AAA;
+ Fri, 21 Jun 2024 17:54:38 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id N5alIly+dWZNawAAD6G6ig
- (envelope-from <farosas@suse.de>); Fri, 21 Jun 2024 17:54:36 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id GMGmDF6+dWZNawAAD6G6ig
+ (envelope-from <farosas@suse.de>); Fri, 21 Jun 2024 17:54:38 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 00/28] Migration patches for 2024-06-21
-Date: Fri, 21 Jun 2024 14:54:06 -0300
-Message-Id: <20240621175434.31180-1-farosas@suse.de>
+Subject: [PULL 01/28] migration: Drop reference to QIOChannel if file seeking
+ fails
+Date: Fri, 21 Jun 2024 14:54:07 -0300
+Message-Id: <20240621175434.31180-2-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
+In-Reply-To: <20240621175434.31180-1-farosas@suse.de>
+References: <20240621175434.31180-1-farosas@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-3.30 / 50.00]; BAYES_HAM(-3.00)[100.00%];
- NEURAL_HAM_LONG(-1.00)[-1.000]; MID_CONTAINS_FROM(1.00)[];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- FUZZY_BLOCKED(0.00)[rspamd.com];
+X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[99.99%];
+ MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-1.000];
+ MIME_GOOD(-0.10)[text/plain]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ ARC_NA(0.00)[]; FUZZY_BLOCKED(0.00)[rspamd.com];
+ MIME_TRACE(0.00)[0:+];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; ARC_NA(0.00)[];
- FROM_HAS_DN(0.00)[]; RCVD_TLS_ALL(0.00)[];
- RCPT_COUNT_THREE(0.00)[3]; FROM_EQ_ENVFROM(0.00)[];
- MIME_TRACE(0.00)[0:+]; RCVD_COUNT_TWO(0.00)[2];
- RCVD_VIA_SMTP_AUTH(0.00)[]; TO_DN_SOME(0.00)[]
-X-Spam-Score: -3.30
-Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
+ RCVD_TLS_ALL(0.00)[]; RCPT_COUNT_THREE(0.00)[3];
+ FROM_EQ_ENVFROM(0.00)[]; TO_DN_SOME(0.00)[];
+ RCVD_COUNT_TWO(0.00)[2]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ FROM_HAS_DN(0.00)[]
+X-Spam-Score: -2.80
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
+ envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -111,105 +118,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 02d9c38236cf8c9826e5c5be61780c4444cb4ae0:
+We forgot to drop the reference to the QIOChannel in the error path of
+the offset adjustment. Do it now.
 
-  Merge tag 'pull-tcg-20240619' of https://gitlab.com/rth7680/qemu into staging (2024-06-19 14:00:39 -0700)
+Reviewed-by: Peter Xu <peterx@redhat.com>
+Signed-off-by: Fabiano Rosas <farosas@suse.de>
+---
+ migration/file.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-are available in the Git repository at:
-
-  https://gitlab.com/farosas/qemu.git tags/migration-20240621-pull-request
-
-for you to fetch changes up to 04b09de16d78cf2d163ca65d7c6d161bf2baceb6:
-
-  migration: Remove unused VMSTATE_ARRAY_TEST() macro (2024-06-21 14:37:58 -0300)
-
-----------------------------------------------------------------
-Migration pull request
-
-- Fabiano's fix for fdset + file migration truncating the migration
-  file
-
-- Fabiano's fdset + direct-io support for mapped-ram
-
-- Peter's various cleanups (multifd sync, thread names, migration
-  states, tests)
-
-- Peter's new migration state postcopy-recover-setup
-
-- Philippe's unused vmstate macro cleanup
-
-----------------------------------------------------------------
-
-Fabiano Rosas (15):
-  migration: Drop reference to QIOChannel if file seeking fails
-  migration: Fix file migration with fdset
-  tests/qtest/migration: Fix file migration offset check
-  tests/qtest/migration: Add a precopy file test with fdset
-  monitor: Introduce monitor_fdset_*free
-  monitor: Stop removing non-duplicated fds
-  monitor: Simplify fdset and fd removal
-  monitor: Report errors from monitor_fdset_dup_fd_add
-  io: Stop using qemu_open_old in channel-file
-  migration: Add direct-io parameter
-  migration/multifd: Add direct-io support
-  tests/qtest/migration: Add tests for file migration with direct-io
-  monitor: fdset: Match against O_DIRECT
-  migration: Add documentation for fdset with multifd + file
-  tests/qtest/migration: Add a test for mapped-ram with passing of fds
-
-Peter Xu (12):
-  monitor: Drop monitor_fdset_dup_fd_find/_remove()
-  migration/multifd: Avoid the final FLUSH in complete()
-  migration: Rename thread debug names
-  migration: Use MigrationStatus instead of int
-  migration: Cleanup incoming migration setup state change
-  migration/postcopy: Add postcopy-recover-setup phase
-  migration/docs: Update postcopy recover session for SETUP phase
-  tests/migration-tests: Drop most WIN32 ifdefs for postcopy failure
-    tests
-  tests/migration-tests: Always enable migration events
-  tests/migration-tests: migration_event_wait()
-  tests/migration-tests: Verify postcopy-recover-setup status
-  tests/migration-tests: Cover postcopy failure on reconnect
-
-Philippe Mathieu-Daudé (1):
-  migration: Remove unused VMSTATE_ARRAY_TEST() macro
-
- docs/devel/migration/main.rst       |  24 +-
- docs/devel/migration/mapped-ram.rst |   6 +-
- docs/devel/migration/postcopy.rst   |  29 +-
- include/migration/vmstate.h         |  10 -
- include/monitor/monitor.h           |   3 +-
- include/qemu/osdep.h                |   2 +
- io/channel-file.c                   |   8 +-
- migration/colo.c                    |   2 +-
- migration/file.c                    |  45 ++-
- migration/file.h                    |   1 -
- migration/migration-hmp-cmds.c      |  11 +
- migration/migration.c               | 121 +++++--
- migration/migration.h               |   9 +-
- migration/multifd.c                 |   6 +-
- migration/options.c                 |  35 +++
- migration/options.h                 |   1 +
- migration/postcopy-ram.c            |  10 +-
- migration/postcopy-ram.h            |   3 +
- migration/ram.c                     |   4 -
- migration/savevm.c                  |   6 +-
- monitor/fds.c                       |  96 +++---
- monitor/hmp.c                       |   2 -
- monitor/monitor-internal.h          |   1 -
- monitor/monitor.c                   |   1 -
- monitor/qmp.c                       |   2 -
- qapi/migration.json                 |  25 +-
- stubs/fdset.c                       |   7 +-
- tests/qtest/libqtest.c              |  15 +-
- tests/qtest/libqtest.h              |   2 +
- tests/qtest/migration-helpers.c     |  76 ++++-
- tests/qtest/migration-helpers.h     |  10 +
- tests/qtest/migration-test.c        | 470 +++++++++++++++++++++++++---
- util/osdep.c                        |  34 +-
- 33 files changed, 838 insertions(+), 239 deletions(-)
-
+diff --git a/migration/file.c b/migration/file.c
+index ab18ba505a..2bb8c64092 100644
+--- a/migration/file.c
++++ b/migration/file.c
+@@ -94,6 +94,7 @@ void file_start_outgoing_migration(MigrationState *s,
+ 
+     ioc = QIO_CHANNEL(fioc);
+     if (offset && qio_channel_io_seek(ioc, offset, SEEK_SET, errp) < 0) {
++        object_unref(OBJECT(fioc));
+         return;
+     }
+     qio_channel_set_name(ioc, "migration-file-outgoing");
 -- 
 2.35.3
 
