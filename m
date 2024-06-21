@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CD27912636
+	by mail.lfdr.de (Postfix) with ESMTPS id AF03F91263A
 	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jun 2024 15:00:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sKdqz-0000op-Uq; Fri, 21 Jun 2024 08:58:57 -0400
+	id 1sKdr0-0000p0-Ms; Fri, 21 Jun 2024 08:58:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1sKdqx-0000nz-Qf
- for qemu-devel@nongnu.org; Fri, 21 Jun 2024 08:58:55 -0400
-Received: from fhigh3-smtp.messagingengine.com ([103.168.172.154])
+ id 1sKdqy-0000oR-7q
+ for qemu-devel@nongnu.org; Fri, 21 Jun 2024 08:58:56 -0400
+Received: from fout6-smtp.messagingengine.com ([103.168.172.149])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1sKdqv-0000xx-M8
+ id 1sKdqw-0000y7-Gm
  for qemu-devel@nongnu.org; Fri, 21 Jun 2024 08:58:55 -0400
 Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
- by mailfhigh.nyi.internal (Postfix) with ESMTP id BF22F11401C3;
- Fri, 21 Jun 2024 08:58:52 -0400 (EDT)
+ by mailfout.nyi.internal (Postfix) with ESMTP id E120313801AE;
+ Fri, 21 Jun 2024 08:58:53 -0400 (EDT)
 Received: from mailfrontend1 ([10.202.2.162])
- by compute1.internal (MEProxy); Fri, 21 Jun 2024 08:58:52 -0400
+ by compute1.internal (MEProxy); Fri, 21 Jun 2024 08:58:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
  cc:cc:content-transfer-encoding:content-type:content-type:date
  :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
- :references:reply-to:subject:subject:to:to; s=fm3; t=1718974732;
- x=1719061132; bh=Sgm/Wc3/2M61rteByezCX+8/ODyLp+wVv9Wwdmdj8TQ=; b=
- Hd4jZkVuFWxQpYZ9he5ox0C841EJBEpsKxNyu5g+veuZ6Y29ejVbFICoKOEZFNBW
- bvvbfW2UMjEUtekRkay/r648dm3m70nmGyoCMChIJ3l6HyljXhqiLHQDHhwOiP3U
- HVoEkhEB44Fu65eOFHgJjfdQ/xVZQ+Z0uz6bUy5CQitFniq1a9Q288dehtQ2H3Vx
- InllpbfWY+1NI2rGxSkYSZLgCtRnYudgIfjwA9JhyQZp88XQ17V+MtCv5KVckaCG
- ZKPnBl6a8WD3FBB23fnU7J+o4Ier2lxfBw75v1RZxXL8nuizuZzPiPNB9y9st01z
- MsS27WVFy/34Zqjvm4dO1g==
+ :references:reply-to:subject:subject:to:to; s=fm3; t=1718974733;
+ x=1719061133; bh=qJmSM1/+QGx4fJmM9mp+Dx7mU1S35gUOBnlt8xJMvx8=; b=
+ bhm/ZD+6xfmp1P+uWvpDIuU19W6GER7CcEplKybyfBSjE1mS59rZsfqDOGj6x/6v
+ sLs+cA49+0vJ6gjgmvEeGqxfEvGGx2yZccbn3metNd5kCUtBFpZrdP3bp5w5bx7j
+ hMO42ql/fj89EYuumoFeDLglbm7wCP0YXo4lBPv3aoS/HrJULUIBQQQcxfFDf6Fw
+ hjkgN0xwolOKuySc0tsptd9L74K4k35+19uMJHnsK8q1wFuBWY680oWmYGtA/qgG
+ cbJ45uUlYk4W7SwCY5N0bYd6aZFOdHwa2zY72OgM4BxEJCK7H+fkgAVSh2Nr2blh
+ OcVMDjLtoIH6gMvnwf8NcQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
  messagingengine.com; h=cc:cc:content-transfer-encoding
  :content-type:content-type:date:date:feedback-id:feedback-id
  :from:from:in-reply-to:in-reply-to:message-id:mime-version
  :references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
- :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1718974732; x=
- 1719061132; bh=Sgm/Wc3/2M61rteByezCX+8/ODyLp+wVv9Wwdmdj8TQ=; b=u
- fgFoCfhz2ntJsUGh2CfltUSjmDZ+Bzypz7uYZZjWrGuc059q0cV1w1AczSmPf0l/
- YdzSJmxUb9BOX7UaCT2/KXZmwtwRWCe4SySaZJ4iFyqqZjPaAo3Ws5eRNnsDR1qx
- TcIZj19O0SYbkLamGQY/wXjjvPp7IWsmLP+95IedpDQo3NNoJLPBFoefFLt6i1rv
- u6Bf8c9dkZVwwgm1MZP0AKUEtj6GplkJEczC9lNSDxNrp7TRcJs7dqenz8RFdHJ5
- L94h3E+M8aNnz6nthmvb9Ul7Mq0RQXXwC7Cv8Ty1/lteVNBt+dWACfgIVvbUMFq+
- rGfarn+IFLDJ2904xeQ3g==
-X-ME-Sender: <xms:DHl1ZgKZjUYCtMp5Xwr6-NckqUYUGG4QjqZDJFrIjB2ckf7mw0jG0g>
- <xme:DHl1ZgIOkFOD3zmimQLityLNDGCq_1l3fG0uydm4g3taOC5PJtp0joKGKY-Ta3pIH
- FxxGX0Zb5uWo7dtcP4>
-X-ME-Received: <xmr:DHl1ZgsbJJ78rGmtSskaD7Kpd7GJj8046TxJNrTg4itz_9gU1Kgyf1I>
+ :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1718974733; x=
+ 1719061133; bh=qJmSM1/+QGx4fJmM9mp+Dx7mU1S35gUOBnlt8xJMvx8=; b=O
+ TNOecKMoEHJYxkuTFqN22SZqGZP21QsnRK8T/jESh/FXPhZNxI38qFIHZ+4cW+LY
+ 5gjkVCIS2ezx/M6SkQae7KenEyHE2d5UfpVVUjuoN0zWlQCq8ltkKifFMvlm7AnF
+ dADrrfpo5ZH/VepMWdrmqIGqsuAkNUGTBhhnJP/w7RMjsceLOVIzq6vUyFOZ5OfK
+ ERTDd9z4rtKC5kFxfbAuD4fR4Q+JyJQhAus8449BiwjwUjAtqUUP7wl6ayKZVYvE
+ 8xPlIWL/7lTuCL7NO5l9EFr+pwnJ0Ir58d7DC0qcSSRuOfncN7ksfaqP5P858HKf
+ nbGST0Z0R7cL1R9LKe0Rg==
+X-ME-Sender: <xms:DXl1Ztgnvbed47o55_NNMW3cvc9wmL9V1sg8qTXWVgVJrw9_lJ5dHA>
+ <xme:DXl1ZiAjbIAtyOV3aXhDv30y-KKiTdz0CVXo9rV4MjGxCF-btD37N3CaLNseCIH1E
+ SF4jvrHkQ7fXBce_40>
+X-ME-Received: <xmr:DXl1ZtEMeu43Axd6FvkRmRVB6qcKk6FeBtyLah-hnsO64oAQAK2Issk>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrfeefgedgheekucetufdoteggodetrfdotf
  fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
  uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
- cujfgurhephfffufggtgfgkfhfjgfvvefosehtkeertdertdejnecuhfhrohhmpeflihgr
+ cujfgurhephfffufggtgfgkfhfjgfvvefosehtjeertdertdejnecuhfhrohhmpeflihgr
  gihunhcujggrnhhguceojhhirgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomheqne
- cuggftrfgrthhtvghrnhepffeiteeufeegtdeuuefgieelffefgfdvffekuedujeevteff
- hedvgfeikeelueegnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghdpihhotghsrhdrmh
- hrnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepjhhi
- rgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomh
-X-ME-Proxy: <xmx:DHl1ZtbRsoKTgGO42k6POPZWRCD4QUo4NFiADySCHKdoSmvmrLyDaA>
- <xmx:DHl1ZnZgNZBYQFn12iRPGCjClI4Pm4ufEtTppkPyhSafE449bi8gGA>
- <xmx:DHl1ZpCyEh05zcGetSdE8Y95FmDdPf6VN95d5xAb5lucgpNzgbwRYQ>
- <xmx:DHl1Ztb4wBxgwF0nJV0vYur687AX2sMhqtgnZF23ynaYPbouifHfmA>
- <xmx:DHl1Zix7H_9x05MFEHT32V8uEhWjOyjJvLPgU92-HzFdW6_AfdCn4TTd>
+ cuggftrfgrthhtvghrnhepvedujefhfffhveekhfffkeetvefgteejkeeutdduieehieeg
+ feejtdelveejtedunecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvg
+ hrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehjihgrgihunhdrhigrnhhg
+ sehflhihghhorghtrdgtohhm
+X-ME-Proxy: <xmx:DXl1ZiSnCoUFo1_1vVFGNtRpCo0YXAVBbVMjJLGmXdg9EeOv1dp4ng>
+ <xmx:DXl1ZqxGJ8GpYVTj58Nia2iUWzqZmCFub6G47eco1Mc1Tejvq6z5oQ>
+ <xmx:DXl1Zo47rlZ8qYqXGICYkcuL6rU6sQBB6Y9nyaEUmLSCKfu5QK_ipg>
+ <xmx:DXl1ZvyANu_iH4-Wkf2Z_qG3HwIkERgmXQre7u00YcbmTiR1_iwJgg>
+ <xmx:DXl1ZhqvTog-u-aZnHOUyFu_HNenf0ElSawtVBuT0pkicaQqrCabcxgJ>
 Feedback-ID: ifd894703:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 21 Jun 2024 08:58:51 -0400 (EDT)
+ 21 Jun 2024 08:58:52 -0400 (EDT)
 From: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Date: Fri, 21 Jun 2024 13:58:41 +0100
-Subject: [PATCH 1/3] hw/mips/loongson3_virt: Store core_iocsr into
- LoongsonMachineState
+Date: Fri, 21 Jun 2024 13:58:42 +0100
+Subject: [PATCH 2/3] hw/mips/loongson3_virt: Fix condition of IPI IOCSR
+ connection
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20240621-loongson3-ipi-follow-v1-1-c6e73f2b2844@flygoat.com>
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240621-loongson3-ipi-follow-v1-2-c6e73f2b2844@flygoat.com>
 References: <20240621-loongson3-ipi-follow-v1-0-c6e73f2b2844@flygoat.com>
 In-Reply-To: <20240621-loongson3-ipi-follow-v1-0-c6e73f2b2844@flygoat.com>
 To: qemu-devel@nongnu.org
@@ -83,17 +83,17 @@ Cc: Huacai Chen <chenhuacai@kernel.org>,
  =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
  Laurent Vivier <laurent@vivier.eu>, Jiaxun Yang <jiaxun.yang@flygoat.com>
 X-Mailer: b4 0.14.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1616;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=864;
  i=jiaxun.yang@flygoat.com; h=from:subject:message-id;
- bh=2CZ+I7xCZ2htt0pOnidS13rmrrRuj6WIRlHoYWJa2QM=;
- b=owGbwMvMwCXmXMhTe71c8zDjabUkhrTSSq4ZT96W6nP8fajAeEz/nUtlxiqRDbtOyhpdf9Zcb
- pr9yF25o5SFQYyLQVZMkSVEQKlvQ+PFBdcfZP2BmcPKBDKEgYtTACbSsoDhf9q1JTESSQ+mKlp7
- rMzzfc57f9f6v44Zcpuny5g88bghY8XIsEBOKqKFZcdlzgV3+zbG7MoV2q4Yr3MjVWr9iy+rX1p
- 8ZgMA
+ bh=cofTbte/00M4qpTM7HECtdZQ9j7Dm2Dzsyya+FjtljI=;
+ b=owGbwMvMwCXmXMhTe71c8zDjabUkhrTSSi6/yNUdVzZ9nv4p4s1d4Y3eM7Im3dZdd+xdVvMuo
+ bs9exeZdZSyMIhxMciKKbKECCj1bWi8uOD6g6w/MHNYmUCGMHBxCsBEWnkZ/hc1sH2b4nBEZQFr
+ dtnf9dcqlt9s1J3WE/rC7M4ie8adJusYGQ6f4jb/tTJI3WDbygYBH1nx4C1ZR96ply6U3e9+dl7
+ HcUYA
 X-Developer-Key: i=jiaxun.yang@flygoat.com; a=openpgp;
  fpr=980379BEFEBFBF477EA04EF9C111949073FC0F67
-Received-SPF: pass client-ip=103.168.172.154;
- envelope-from=jiaxun.yang@flygoat.com; helo=fhigh3-smtp.messagingengine.com
+Received-SPF: pass client-ip=103.168.172.149;
+ envelope-from=jiaxun.yang@flygoat.com; helo=fout6-smtp.messagingengine.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
 X-Spam_bar: --
@@ -116,42 +116,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Link: https://lore.kernel.org/qemu-devel/972034d6-23b3-415a-b401-b8bc1cc515c9@linaro.org/
-Suggested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+This fixes Coverity CID-1547264.
+
+Link: https://lore.kernel.org/qemu-devel/752417ad-ab72-4fed-8d1f-af41f15bc225@app.fastmail.com/
 Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
 ---
- hw/mips/loongson3_virt.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ hw/mips/loongson3_virt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/hw/mips/loongson3_virt.c b/hw/mips/loongson3_virt.c
-index 4ad36f0c5b64..528be84bf970 100644
+index 528be84bf970..80e953512a85 100644
 --- a/hw/mips/loongson3_virt.c
 +++ b/hw/mips/loongson3_virt.c
-@@ -97,6 +97,7 @@ struct LoongsonMachineState {
-     MemoryRegion *pio_alias;
-     MemoryRegion *mmio_alias;
-     MemoryRegion *ecam_alias;
-+    MemoryRegion *core_iocsr[LOONGSON_MAX_VCPUS];
- };
- typedef struct LoongsonMachineState LoongsonMachineState;
+@@ -575,7 +575,7 @@ static void mips_loongson3_virt_init(MachineState *machine)
+         cpu_mips_clock_init(cpu);
+         qemu_register_reset(main_cpu_reset, cpu);
  
-@@ -493,6 +494,8 @@ static void mips_loongson3_virt_init(MachineState *machine)
-     const char *kernel_filename = machine->kernel_filename;
-     const char *initrd_filename = machine->initrd_filename;
-     ram_addr_t ram_size = machine->ram_size;
-+    MachineClass *mc = MACHINE_GET_CLASS(machine);
-+    LoongsonMachineState *s = LOONGSON_MACHINE(machine);
-     MemoryRegion *address_space_mem = get_system_memory();
-     MemoryRegion *ram = g_new(MemoryRegion, 1);
-     MemoryRegion *bios = g_new(MemoryRegion, 1);
-@@ -586,6 +589,7 @@ static void mips_loongson3_virt_init(MachineState *machine)
-                                      iocsr, 0, UINT32_MAX);
-             memory_region_add_subregion(&MIPS_CPU(cpu)->env.iocsr.mr,
-                                         0, core_iocsr);
-+            s->core_iocsr[i] = core_iocsr;
-         }
- 
-         if (node > 0) {
+-        if (ipi) {
++        if (!kvm_enabled()) {
+             hwaddr base = ((hwaddr)node << 44) + virt_memmap[VIRT_IPI].base;
+             base += core * 0x100;
+             qdev_connect_gpio_out(ipi, i, cpu->env.irq[6]);
 
 -- 
 2.43.0
