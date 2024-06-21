@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE003911E9F
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jun 2024 10:25:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61AFD911EA5
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jun 2024 10:26:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sKZZo-0008Qv-T0; Fri, 21 Jun 2024 04:24:56 -0400
+	id 1sKZZs-0008RZ-Qb; Fri, 21 Jun 2024 04:25:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sKZZm-0008QZ-UH
- for qemu-devel@nongnu.org; Fri, 21 Jun 2024 04:24:54 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sKZZq-0008RF-Jl
+ for qemu-devel@nongnu.org; Fri, 21 Jun 2024 04:24:58 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sKZZk-0003LT-SR
- for qemu-devel@nongnu.org; Fri, 21 Jun 2024 04:24:54 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sKZZo-0003Lk-Rf
+ for qemu-devel@nongnu.org; Fri, 21 Jun 2024 04:24:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1718958292;
+ s=mimecast20190719; t=1718958296;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=t5bGAyhiRsrXgPNb1doMR/Q+cf242OIFPtw4sRJHrvQ=;
- b=OnY5oxs4s7ePDBl8paI1EaF5gaO3H89d0MDGzy1ByiXKnC8CSQnRzDOQsUtC60MO/ZPcft
- NWigQpfV8sVtjHYM4LYZ8Idwr5c6gLjsekb/tV9VVUS9+oLbtmdMTzCvRb+I7aQDGikBkL
- 9gYbEnWeaMuTMQjbBkf7OYPztOgQjSU=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=tWrziMf2ceTCKn9MC4baWs15ewcjC8xpFlegXybltDA=;
+ b=B0W3Ruz06iEzhF0IQXZSD1+6I74pi1/hmljF3MtvVTQwy3x0l6rATnVF1LEXQqUcugP3Gk
+ fwJ4twBdfwy3h57i5jnJ+YEqA3wQHm2bzJD87pIKiH2XLvK9wvxPap9DPn6vBjR5pHviN3
+ TmrNk5BIICKadx0PlbAEP4z/VoB42W8=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-26-1x_fgTVAM1qlA2DGml31GA-1; Fri,
- 21 Jun 2024 04:24:46 -0400
-X-MC-Unique: 1x_fgTVAM1qlA2DGml31GA-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-324-EdEBQ0CnNWKY1AZWFUQYhQ-1; Fri,
+ 21 Jun 2024 04:24:52 -0400
+X-MC-Unique: EdEBQ0CnNWKY1AZWFUQYhQ-1
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 3D9C719560A2; Fri, 21 Jun 2024 08:24:45 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id E03EF195609E; Fri, 21 Jun 2024 08:24:50 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.213])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id AE9ED1955E80; Fri, 21 Jun 2024 08:24:40 +0000 (UTC)
+ id B92DC1955E80; Fri, 21 Jun 2024 08:24:45 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-s390x@nongnu.org, Christian Borntraeger <borntraeger@linux.ibm.com>,
  Jared Rossi <jrossi@linux.ibm.com>
@@ -51,10 +51,10 @@ Cc: qemu-devel@nongnu.org, Eric Farman <farman@linux.ibm.com>,
  Janosch Frank <frankja@linux.ibm.com>,
  "Jason J . Herne" <jjherne@linux.ibm.com>,
  Marc Hartmayer <mhartmay@linux.ibm.com>
-Subject: [PATCH 3/7] pc-bios/s390-ccw: Use the libc from SLOF for the main
- s390-ccw.img binary, too
-Date: Fri, 21 Jun 2024 10:24:18 +0200
-Message-ID: <20240621082422.136217-4-thuth@redhat.com>
+Subject: [PATCH 4/7] pc-bios/s390-ccw: Link the netboot code into the main
+ s390-ccw.img binary
+Date: Fri, 21 Jun 2024 10:24:19 +0200
+Message-ID: <20240621082422.136217-5-thuth@redhat.com>
 In-Reply-To: <20240621082422.136217-1-thuth@redhat.com>
 References: <20240621082422.136217-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -85,522 +85,246 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We are already using the libc from SLOF for the s390-netboot.img, and
-this libc implementation is way more complete and accurate than the
-simple implementation that we currently use for the s390-ccw.img binary.
-Since we are now always assuming that the SLOF submodule is available
-when building the s390-ccw bios (see commit bf6903f6944f), we can drop
-the simple implementation and use the SLOF libc for the s390-ccw.img
-binary, too.
+We originally built a separate binary for the netboot code since it
+was considered as experimental and we could not be sure that the
+necessary SLOF module had been checked out. Time passed, the code
+proved its usefulness, and the build system nowadays makes sure that
+the SLOF module is checked out if you have a s390x compiler available
+for building the s390-ccw bios. So there is no real compelling reason
+anymore to keep the netboot code in a separate binary. Linking the
+code together with the main s390-ccw.img will make future enhancements
+much easier, like supporting more than one boot device.
 
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- pc-bios/s390-ccw/netboot.mak     |  3 --
- pc-bios/s390-ccw/libc.h          | 89 --------------------------------
- pc-bios/s390-ccw/s390-ccw.h      |  7 +--
- pc-bios/s390-ccw/bootmap.c       |  2 +-
- pc-bios/s390-ccw/cio.c           |  2 +-
- pc-bios/s390-ccw/dasd-ipl.c      |  2 +-
- pc-bios/s390-ccw/jump2ipl.c      |  2 +-
- pc-bios/s390-ccw/libc.c          | 88 -------------------------------
- pc-bios/s390-ccw/main.c          |  5 +-
- pc-bios/s390-ccw/menu.c          | 25 ++++-----
- pc-bios/s390-ccw/sclp.c          |  2 +-
- pc-bios/s390-ccw/virtio-blkdev.c |  1 -
- pc-bios/s390-ccw/virtio-scsi.c   |  2 +-
- pc-bios/s390-ccw/virtio.c        |  2 +-
- pc-bios/s390-ccw/Makefile        | 15 ++++--
- 15 files changed, 34 insertions(+), 213 deletions(-)
- delete mode 100644 pc-bios/s390-ccw/libc.h
- delete mode 100644 pc-bios/s390-ccw/libc.c
+ pc-bios/s390-ccw/netboot.mak | 14 --------------
+ pc-bios/s390-ccw/cio.h       |  2 ++
+ pc-bios/s390-ccw/iplb.h      |  4 ++--
+ pc-bios/s390-ccw/s390-ccw.h  |  3 +++
+ pc-bios/s390-ccw/virtio.h    |  1 -
+ pc-bios/s390-ccw/bootmap.c   |  2 +-
+ pc-bios/s390-ccw/main.c      | 10 +++++++---
+ pc-bios/s390-ccw/netmain.c   | 15 ++-------------
+ pc-bios/s390-ccw/Makefile    | 13 +++++++------
+ 9 files changed, 24 insertions(+), 40 deletions(-)
 
 diff --git a/pc-bios/s390-ccw/netboot.mak b/pc-bios/s390-ccw/netboot.mak
-index 046aa35587..d2b3d8ee74 100644
+index d2b3d8ee74..0a24257ff4 100644
 --- a/pc-bios/s390-ccw/netboot.mak
 +++ b/pc-bios/s390-ccw/netboot.mak
-@@ -1,9 +1,6 @@
+@@ -1,18 +1,4 @@
  
--SLOF_DIR := $(SRC_PATH)/../../roms/SLOF
+-NETOBJS := start.o sclp.o cio.o virtio.o virtio-net.o jump2ipl.o netmain.o
 -
- NETOBJS := start.o sclp.o cio.o virtio.o virtio-net.o jump2ipl.o netmain.o
+-LIBNET_INC := -I$(SLOF_DIR)/lib/libnet
+-
+-NETLDFLAGS := $(LDFLAGS) -Wl,-Ttext=0x7800000
+-
+-$(NETOBJS): EXTRA_CFLAGS += $(LIBC_INC) $(LIBNET_INC)
+-
+-s390-netboot.elf: $(NETOBJS) libnet.a libc.a
+-	$(call quiet-command,$(CC) $(NETLDFLAGS) -o $@ $^,Linking)
+-
+-s390-netboot.img: s390-netboot.elf
+-	$(call quiet-command,$(STRIP) --strip-unneeded $< -o $@,Stripping $< into)
+-
+ # libc files:
  
--LIBC_INC := -nostdinc -I$(SLOF_DIR)/lib/libc/include
- LIBNET_INC := -I$(SLOF_DIR)/lib/libnet
+ LIBC_CFLAGS = $(EXTRA_CFLAGS) $(CFLAGS) $(LIBC_INC) $(LIBNET_INC) \
+diff --git a/pc-bios/s390-ccw/cio.h b/pc-bios/s390-ccw/cio.h
+index 8b18153deb..6a5e86ba01 100644
+--- a/pc-bios/s390-ccw/cio.h
++++ b/pc-bios/s390-ccw/cio.h
+@@ -361,6 +361,8 @@ typedef struct CcwSearchIdData {
+     uint8_t record;
+ } __attribute__((packed)) CcwSearchIdData;
  
- NETLDFLAGS := $(LDFLAGS) -Wl,-Ttext=0x7800000
-diff --git a/pc-bios/s390-ccw/libc.h b/pc-bios/s390-ccw/libc.h
-deleted file mode 100644
-index bcdc45732d..0000000000
---- a/pc-bios/s390-ccw/libc.h
-+++ /dev/null
-@@ -1,89 +0,0 @@
--/*
-- * libc-style definitions and functions
-- *
-- * Copyright (c) 2013 Alexander Graf <agraf@suse.de>
-- *
-- * This code is free software; you can redistribute it and/or modify it
-- * under the terms of the GNU General Public License as published by the
-- * Free Software Foundation; either version 2 of the License, or (at your
-- * option) any later version.
-- */
--
--#ifndef S390_CCW_LIBC_H
--#define S390_CCW_LIBC_H
--
--typedef unsigned long      size_t;
--typedef int                bool;
--typedef unsigned char      uint8_t;
--typedef unsigned short     uint16_t;
--typedef unsigned int       uint32_t;
--typedef unsigned long long uint64_t;
--
--static inline void *memset(void *s, int c, size_t n)
--{
--    size_t i;
--    unsigned char *p = s;
--
--    for (i = 0; i < n; i++) {
--        p[i] = c;
--    }
--
--    return s;
--}
--
--static inline void *memcpy(void *s1, const void *s2, size_t n)
--{
--    uint8_t *dest = s1;
--    const uint8_t *src = s2;
--    size_t i;
--
--    for (i = 0; i < n; i++) {
--        dest[i] = src[i];
--    }
--
--    return s1;
--}
--
--static inline int memcmp(const void *s1, const void *s2, size_t n)
--{
--    size_t i;
--    const uint8_t *p1 = s1, *p2 = s2;
--
--    for (i = 0; i < n; i++) {
--        if (p1[i] != p2[i]) {
--            return p1[i] > p2[i] ? 1 : -1;
--        }
--    }
--
--    return 0;
--}
--
--static inline size_t strlen(const char *str)
--{
--    size_t i;
--    for (i = 0; *str; i++) {
--        str++;
--    }
--    return i;
--}
--
--static inline char *strcat(char *dest, const char *src)
--{
--    int i;
--    char *dest_end = dest + strlen(dest);
--
--    for (i = 0; i <= strlen(src); i++) {
--        dest_end[i] = src[i];
--    }
--    return dest;
--}
--
--static inline int isdigit(int c)
--{
--    return (c >= '0') && (c <= '9');
--}
--
--uint64_t atoui(const char *str);
--char *uitoa(uint64_t num, char *str, size_t len);
--
--#endif
++extern SubChannelId net_schid;
++
+ int enable_mss_facility(void);
+ void enable_subchannel(SubChannelId schid);
+ uint16_t cu_type(SubChannelId schid);
+diff --git a/pc-bios/s390-ccw/iplb.h b/pc-bios/s390-ccw/iplb.h
+index cb6ac8a880..3758698468 100644
+--- a/pc-bios/s390-ccw/iplb.h
++++ b/pc-bios/s390-ccw/iplb.h
+@@ -87,9 +87,9 @@ extern IplParameterBlock iplb __attribute__((__aligned__(PAGE_SIZE)));
+ struct QemuIplParameters {
+     uint8_t  qipl_flags;
+     uint8_t  reserved1[3];
+-    uint64_t netboot_start_addr;
++    uint64_t reserved2;
+     uint32_t boot_menu_timeout;
+-    uint8_t  reserved2[12];
++    uint8_t  reserved3[12];
+ } __attribute__ ((packed));
+ typedef struct QemuIplParameters QemuIplParameters;
+ 
 diff --git a/pc-bios/s390-ccw/s390-ccw.h b/pc-bios/s390-ccw/s390-ccw.h
-index c977a52b50..b911ebe6d2 100644
+index b911ebe6d2..b960f85b90 100644
 --- a/pc-bios/s390-ccw/s390-ccw.h
 +++ b/pc-bios/s390-ccw/s390-ccw.h
-@@ -13,6 +13,10 @@
+@@ -54,6 +54,9 @@ void write_iplb_location(void);
+ unsigned int get_loadparm_index(void);
+ void main(void);
  
- /* #define DEBUG */
- 
-+#include <stdbool.h>
-+#include <stddef.h>
-+#include <stdint.h>
++/* netmain.c */
++void netmain(void);
 +
- typedef unsigned char      u8;
- typedef unsigned short     u16;
- typedef unsigned int       u32;
-@@ -26,9 +30,6 @@ typedef unsigned long long u64;
- #define EBUSY   2
- #define ENODEV  3
- 
--#ifndef NULL
--#define NULL    0
--#endif
- #ifndef MIN
- #define MIN(a, b) (((a) < (b)) ? (a) : (b))
- #endif
+ /* sclp.c */
+ void sclp_print(const char *string);
+ void sclp_set_write_mask(uint32_t receive_mask, uint32_t send_mask);
+diff --git a/pc-bios/s390-ccw/virtio.h b/pc-bios/s390-ccw/virtio.h
+index 85bd9d1695..6f9a558ff5 100644
+--- a/pc-bios/s390-ccw/virtio.h
++++ b/pc-bios/s390-ccw/virtio.h
+@@ -253,7 +253,6 @@ struct VDev {
+     uint8_t scsi_dev_heads;
+     bool scsi_device_selected;
+     ScsiDevice selected_scsi_device;
+-    uint64_t netboot_start_addr;
+     uint32_t max_transfer;
+     uint32_t guest_features[2];
+ };
 diff --git a/pc-bios/s390-ccw/bootmap.c b/pc-bios/s390-ccw/bootmap.c
-index a2137449dc..bf85a9c5fe 100644
+index bf85a9c5fe..3c56d547ca 100644
 --- a/pc-bios/s390-ccw/bootmap.c
 +++ b/pc-bios/s390-ccw/bootmap.c
-@@ -8,7 +8,7 @@
-  * directory.
-  */
+@@ -928,7 +928,7 @@ void zipl_load(void)
+     }
  
--#include "libc.h"
-+#include <string.h>
- #include "s390-ccw.h"
- #include "s390-arch.h"
- #include "bootmap.h"
-diff --git a/pc-bios/s390-ccw/cio.c b/pc-bios/s390-ccw/cio.c
-index 83ca27ab41..11f0387ff4 100644
---- a/pc-bios/s390-ccw/cio.c
-+++ b/pc-bios/s390-ccw/cio.c
-@@ -11,7 +11,7 @@
-  * directory.
-  */
+     if (virtio_get_device_type() == VIRTIO_ID_NET) {
+-        jump_to_IPL_code(vdev->netboot_start_addr);
++        netmain();
+     }
  
--#include "libc.h"
-+#include <string.h>
- #include "s390-ccw.h"
- #include "s390-arch.h"
- #include "helper.h"
-diff --git a/pc-bios/s390-ccw/dasd-ipl.c b/pc-bios/s390-ccw/dasd-ipl.c
-index 254bb1a15e..6e895abb44 100644
---- a/pc-bios/s390-ccw/dasd-ipl.c
-+++ b/pc-bios/s390-ccw/dasd-ipl.c
-@@ -8,7 +8,7 @@
-  * directory.
-  */
- 
--#include "libc.h"
-+#include <string.h>
- #include "s390-ccw.h"
- #include "s390-arch.h"
- #include "dasd-ipl.h"
-diff --git a/pc-bios/s390-ccw/jump2ipl.c b/pc-bios/s390-ccw/jump2ipl.c
-index 78f5f46533..6166061045 100644
---- a/pc-bios/s390-ccw/jump2ipl.c
-+++ b/pc-bios/s390-ccw/jump2ipl.c
-@@ -6,7 +6,7 @@
-  * directory.
-  */
- 
--#include "libc.h"
-+#include <string.h>
- #include "s390-ccw.h"
- #include "s390-arch.h"
- 
-diff --git a/pc-bios/s390-ccw/libc.c b/pc-bios/s390-ccw/libc.c
-deleted file mode 100644
-index 3187923950..0000000000
---- a/pc-bios/s390-ccw/libc.c
-+++ /dev/null
-@@ -1,88 +0,0 @@
--/*
-- * libc-style definitions and functions
-- *
-- * Copyright 2018 IBM Corp.
-- * Author(s): Collin L. Walling <walling@linux.vnet.ibm.com>
-- *
-- * This code is free software; you can redistribute it and/or modify it
-- * under the terms of the GNU General Public License as published by the
-- * Free Software Foundation; either version 2 of the License, or (at your
-- * option) any later version.
-- */
--
--#include "libc.h"
--#include "s390-ccw.h"
--
--/**
-- * atoui:
-- * @str: the string to be converted.
-- *
-- * Given a string @str, convert it to an integer. Leading spaces are
-- * ignored. Any other non-numerical value will terminate the conversion
-- * and return 0. This function only handles numbers between 0 and
-- * UINT64_MAX inclusive.
-- *
-- * Returns: an integer converted from the string @str, or the number 0
-- * if an error occurred.
-- */
--uint64_t atoui(const char *str)
--{
--    int val = 0;
--
--    if (!str || !str[0]) {
--        return 0;
--    }
--
--    while (*str == ' ') {
--        str++;
--    }
--
--    while (*str) {
--        if (!isdigit(*(unsigned char *)str)) {
--            break;
--        }
--        val = val * 10 + *str - '0';
--        str++;
--    }
--
--    return val;
--}
--
--/**
-- * uitoa:
-- * @num: an integer (base 10) to be converted.
-- * @str: a pointer to a string to store the conversion.
-- * @len: the length of the passed string.
-- *
-- * Given an integer @num, convert it to a string. The string @str must be
-- * allocated beforehand. The resulting string will be null terminated and
-- * returned. This function only handles numbers between 0 and UINT64_MAX
-- * inclusive.
-- *
-- * Returns: the string @str of the converted integer @num
-- */
--char *uitoa(uint64_t num, char *str, size_t len)
--{
--    long num_idx = 1; /* account for NUL */
--    uint64_t tmp = num;
--
--    IPL_assert(str != NULL, "uitoa: no space allocated to store string");
--
--    /* Count indices of num */
--    while ((tmp /= 10) != 0) {
--        num_idx++;
--    }
--
--    /* Check if we have enough space for num and NUL */
--    IPL_assert(len > num_idx, "uitoa: array too small for conversion");
--
--    str[num_idx--] = '\0';
--
--    /* Convert int to string */
--    while (num_idx >= 0) {
--        str[num_idx--] = num % 10 + '0';
--        num /= 10;
--    }
--
--    return str;
--}
+     ipl_scsi();
 diff --git a/pc-bios/s390-ccw/main.c b/pc-bios/s390-ccw/main.c
-index 5506798098..b8bf9f5fcc 100644
+index b8bf9f5fcc..558c26c21b 100644
 --- a/pc-bios/s390-ccw/main.c
 +++ b/pc-bios/s390-ccw/main.c
-@@ -8,7 +8,8 @@
-  * directory.
+@@ -37,8 +37,13 @@ LowCore *lowcore; /* Yes, this *is* a pointer to address 0 */
   */
- 
--#include "libc.h"
-+#include <stdlib.h>
-+#include <string.h>
- #include "helper.h"
- #include "s390-arch.h"
- #include "s390-ccw.h"
-@@ -50,7 +51,7 @@ void write_iplb_location(void)
- 
- unsigned int get_loadparm_index(void)
+ void write_subsystem_identification(void)
  {
--    return atoui(loadparm_str);
-+    return atoi(loadparm_str);
+-    lowcore->subchannel_id = blk_schid.sch_id;
+-    lowcore->subchannel_nr = blk_schid.sch_no;
++    if (cutype == CU_TYPE_VIRTIO && virtio_get_device_type() == VIRTIO_ID_NET) {
++        lowcore->subchannel_id = net_schid.sch_id;
++        lowcore->subchannel_nr = net_schid.sch_no;
++    } else {
++        lowcore->subchannel_id = blk_schid.sch_id;
++        lowcore->subchannel_nr = blk_schid.sch_no;
++    }
+     lowcore->io_int_parm = 0;
  }
  
- static int is_dev_possibly_bootable(int dev_no, int sch_no)
-diff --git a/pc-bios/s390-ccw/menu.c b/pc-bios/s390-ccw/menu.c
-index d601952d3e..eab64f6357 100644
---- a/pc-bios/s390-ccw/menu.c
-+++ b/pc-bios/s390-ccw/menu.c
-@@ -9,7 +9,10 @@
-  * directory.
-  */
+@@ -230,7 +235,6 @@ static int virtio_setup(void)
+     switch (vdev->senseid.cu_model) {
+     case VIRTIO_ID_NET:
+         sclp_print("Network boot device detected\n");
+-        vdev->netboot_start_addr = qipl.netboot_start_addr;
+         return 0;
+     case VIRTIO_ID_BLOCK:
+         ret = virtio_blk_setup_device(blk_schid);
+diff --git a/pc-bios/s390-ccw/netmain.c b/pc-bios/s390-ccw/netmain.c
+index 5cd619b2d6..99b07f72d9 100644
+--- a/pc-bios/s390-ccw/netmain.c
++++ b/pc-bios/s390-ccw/netmain.c
+@@ -41,7 +41,6 @@
+ #define DEFAULT_TFTP_RETRIES 20
  
--#include "libc.h"
-+#include <ctype.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <string.h>
- #include "s390-ccw.h"
- #include "sclp.h"
- #include "s390-time.h"
-@@ -140,20 +143,17 @@ static int get_index(void)
-         }
-     }
+ extern char _start[];
+-void write_iplb_location(void) {}
  
--    return atoui(buf);
-+    return atoi(buf);
+ #define KERNEL_ADDR             ((void *)0L)
+ #define KERNEL_MAX_SIZE         ((long)_start)
+@@ -50,10 +49,9 @@ void write_iplb_location(void) {}
+ /* STSI 3.2.2 offset of first vmdb + offset of uuid inside vmdb */
+ #define STSI322_VMDB_UUID_OFFSET ((8 + 12) * 4)
+ 
+-IplParameterBlock iplb __attribute__((aligned(PAGE_SIZE)));
+ static char cfgbuf[2048];
+ 
+-static SubChannelId net_schid = { .one = 1 };
++SubChannelId net_schid = { .one = 1 };
+ static uint8_t mac[6];
+ static uint64_t dest_timer;
+ 
+@@ -438,15 +436,6 @@ static int net_try_direct_tftp_load(filename_ip_t *fn_ip)
+     return rc;
  }
  
- static void boot_menu_prompt(bool retry)
- {
--    char tmp[11];
+-void write_subsystem_identification(void)
+-{
+-    SubChannelId *schid = (SubChannelId *) 184;
+-    uint32_t *zeroes = (uint32_t *) 188;
 -
-     if (retry) {
-         sclp_print("\nError: undefined configuration"
-                    "\nPlease choose:\n");
-     } else if (timeout > 0) {
--        sclp_print("Please choose (default will boot in ");
--        sclp_print(uitoa(timeout / 1000, tmp, sizeof(tmp)));
--        sclp_print(" seconds):\n");
-+        printf("Please choose (default will boot in %d seconds):\n",
-+               (int)(timeout / 1000));
-     } else {
-         sclp_print("Please choose:\n");
-     }
-@@ -163,7 +163,6 @@ static int get_boot_index(bool *valid_entries)
+-    *schid = net_schid;
+-    *zeroes = 0;
+-}
+-
+ static bool find_net_dev(Schib *schib, int dev_no)
  {
-     int boot_index;
-     bool retry = false;
--    char tmp[5];
- 
-     do {
-         boot_menu_prompt(retry);
-@@ -172,8 +171,7 @@ static int get_boot_index(bool *valid_entries)
-     } while (boot_index < 0 || boot_index >= MAX_BOOT_ENTRIES ||
-              !valid_entries[boot_index]);
- 
--    sclp_print("\nBooting entry #");
--    sclp_print(uitoa(boot_index, tmp, sizeof(tmp)));
-+    printf("\nBooting entry #%d", boot_index);
- 
-     return boot_index;
- }
-@@ -189,7 +187,7 @@ static int zipl_print_entry(const char *data, size_t len)
- 
-     sclp_print(buf);
- 
--    return buf[0] == ' ' ? atoui(buf + 1) : atoui(buf);
-+    return buf[0] == ' ' ? atoi(buf + 1) : atoi(buf);
+     int i, r;
+@@ -509,7 +498,7 @@ static void virtio_setup(void)
+     IPL_assert(found, "No virtio net device found");
  }
  
- int menu_get_zipl_boot_index(const char *menu_data)
-@@ -231,7 +229,6 @@ int menu_get_zipl_boot_index(const char *menu_data)
- 
- int menu_get_enum_boot_index(bool *valid_entries)
+-void main(void)
++void netmain(void)
  {
--    char tmp[3];
-     int i;
- 
-     sclp_print("s390-ccw Enumerated Boot Menu.\n\n");
-@@ -241,9 +238,7 @@ int menu_get_enum_boot_index(bool *valid_entries)
-             if (i < 10) {
-                 sclp_print(" ");
-             }
--            sclp_print("[");
--            sclp_print(uitoa(i, tmp, sizeof(tmp)));
--            sclp_print("]");
-+            printf("[%d]", i);
-             if (i == 0) {
-                 sclp_print(" default\n");
-             }
-diff --git a/pc-bios/s390-ccw/sclp.c b/pc-bios/s390-ccw/sclp.c
-index 7251f9af4d..48b1cc4d16 100644
---- a/pc-bios/s390-ccw/sclp.c
-+++ b/pc-bios/s390-ccw/sclp.c
-@@ -8,7 +8,7 @@
-  * directory.
-  */
- 
--#include "libc.h"
-+#include <string.h>
- #include "s390-ccw.h"
- #include "sclp.h"
- 
-diff --git a/pc-bios/s390-ccw/virtio-blkdev.c b/pc-bios/s390-ccw/virtio-blkdev.c
-index a81207b52e..08bb5c1347 100644
---- a/pc-bios/s390-ccw/virtio-blkdev.c
-+++ b/pc-bios/s390-ccw/virtio-blkdev.c
-@@ -8,7 +8,6 @@
-  * directory.
-  */
- 
--#include "libc.h"
- #include "s390-ccw.h"
- #include "virtio.h"
- #include "virtio-scsi.h"
-diff --git a/pc-bios/s390-ccw/virtio-scsi.c b/pc-bios/s390-ccw/virtio-scsi.c
-index d1a84b937c..1f24007ab1 100644
---- a/pc-bios/s390-ccw/virtio-scsi.c
-+++ b/pc-bios/s390-ccw/virtio-scsi.c
-@@ -9,7 +9,7 @@
-  * directory.
-  */
- 
--#include "libc.h"
-+#include <string.h>
- #include "s390-ccw.h"
- #include "virtio.h"
- #include "scsi.h"
-diff --git a/pc-bios/s390-ccw/virtio.c b/pc-bios/s390-ccw/virtio.c
-index 5edd058d88..8c6b0a8a92 100644
---- a/pc-bios/s390-ccw/virtio.c
-+++ b/pc-bios/s390-ccw/virtio.c
-@@ -8,7 +8,7 @@
-  * directory.
-  */
- 
--#include "libc.h"
-+#include <string.h>
- #include "s390-ccw.h"
- #include "cio.h"
- #include "virtio.h"
+     filename_ip_t fn_ip;
+     int rc, fnlen;
 diff --git a/pc-bios/s390-ccw/Makefile b/pc-bios/s390-ccw/Makefile
-index 6207911b53..3f4232636e 100644
+index 3f4232636e..cf6859823a 100644
 --- a/pc-bios/s390-ccw/Makefile
 +++ b/pc-bios/s390-ccw/Makefile
-@@ -33,13 +33,18 @@ QEMU_DGFLAGS = -MMD -MP -MT $@ -MF $(@D)/$(*F).d
+@@ -32,19 +32,20 @@ QEMU_DGFLAGS = -MMD -MP -MT $@ -MF $(@D)/$(*F).d
+ 
  .PHONY : all clean build-all distclean
  
- OBJECTS = start.o main.o bootmap.o jump2ipl.o sclp.o menu.o \
--	  virtio.o virtio-scsi.o virtio-blkdev.o libc.o cio.o dasd-ipl.o
-+	  virtio.o virtio-scsi.o virtio-blkdev.o cio.o dasd-ipl.o
-+
-+SLOF_DIR := $(SRC_PATH)/../../roms/SLOF
-+
-+LIBC_INC := -nostdinc -I$(SLOF_DIR)/lib/libc/include
+-OBJECTS = start.o main.o bootmap.o jump2ipl.o sclp.o menu.o \
+-	  virtio.o virtio-scsi.o virtio-blkdev.o cio.o dasd-ipl.o
++OBJECTS = start.o main.o bootmap.o jump2ipl.o sclp.o menu.o netmain.o \
++	  virtio.o virtio-net.o virtio-scsi.o virtio-blkdev.o cio.o dasd-ipl.o
+ 
+ SLOF_DIR := $(SRC_PATH)/../../roms/SLOF
+ 
+ LIBC_INC := -nostdinc -I$(SLOF_DIR)/lib/libc/include
++LIBNET_INC := -I$(SLOF_DIR)/lib/libnet
  
  EXTRA_CFLAGS += -Wall
  EXTRA_CFLAGS += -ffreestanding -fno-delete-null-pointer-checks -fno-common -fPIE
  EXTRA_CFLAGS += -fwrapv -fno-strict-aliasing -fno-asynchronous-unwind-tables
  EXTRA_CFLAGS += -msoft-float
  EXTRA_CFLAGS += -std=gnu99
-+EXTRA_CFLAGS += $(LIBC_INC)
+-EXTRA_CFLAGS += $(LIBC_INC)
++EXTRA_CFLAGS += $(LIBC_INC) $(LIBNET_INC)
  LDFLAGS += -Wl,-pie -nostdlib -z noexecstack
  
  cc-test = $(CC) -Werror $1 -c -o /dev/null -xc /dev/null >/dev/null 2>/dev/null
-@@ -55,18 +60,18 @@ config-cc.mak: Makefile
- 	    $(call cc-option,-march=z900,-march=z10)) 3> config-cc.mak
- -include config-cc.mak
+@@ -62,9 +63,9 @@ config-cc.mak: Makefile
  
-+include $(SRC_PATH)/netboot.mak
-+
- build-all: s390-ccw.img s390-netboot.img
+ include $(SRC_PATH)/netboot.mak
  
--s390-ccw.elf: $(OBJECTS)
--	$(call quiet-command,$(CC) $(LDFLAGS) -o $@ $(OBJECTS),Linking)
-+s390-ccw.elf: $(OBJECTS) libc.a
-+	$(call quiet-command,$(CC) $(LDFLAGS) -o $@ $^,Linking)
+-build-all: s390-ccw.img s390-netboot.img
++build-all: s390-ccw.img
+ 
+-s390-ccw.elf: $(OBJECTS) libc.a
++s390-ccw.elf: $(OBJECTS) libnet.a libc.a
+ 	$(call quiet-command,$(CC) $(LDFLAGS) -o $@ $^,Linking)
  
  s390-ccw.img: s390-ccw.elf
- 	$(call quiet-command,$(STRIP) --strip-unneeded $< -o $@,Stripping $< into)
+@@ -72,7 +73,7 @@ s390-ccw.img: s390-ccw.elf
  
  $(OBJECTS): Makefile
  
--include $(SRC_PATH)/netboot.mak
--
- ALL_OBJS = $(sort $(OBJECTS) $(NETOBJS) $(LIBCOBJS) $(LIBNETOBJS))
+-ALL_OBJS = $(sort $(OBJECTS) $(NETOBJS) $(LIBCOBJS) $(LIBNETOBJS))
++ALL_OBJS = $(sort $(OBJECTS) $(LIBCOBJS) $(LIBNETOBJS))
  -include $(ALL_OBJS:%.o=%.d)
  
+ clean:
 -- 
 2.45.2
 
