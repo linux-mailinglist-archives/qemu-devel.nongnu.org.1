@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEE1A911E9D
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jun 2024 10:25:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ACD6F911EA1
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jun 2024 10:25:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sKZZe-0008OK-35; Fri, 21 Jun 2024 04:24:46 -0400
+	id 1sKZZj-0008PS-N2; Fri, 21 Jun 2024 04:24:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sKZZb-0008Nv-UY
- for qemu-devel@nongnu.org; Fri, 21 Jun 2024 04:24:43 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sKZZg-0008Ox-LM
+ for qemu-devel@nongnu.org; Fri, 21 Jun 2024 04:24:48 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sKZZa-0003IK-MH
- for qemu-devel@nongnu.org; Fri, 21 Jun 2024 04:24:43 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sKZZf-0003Ix-BH
+ for qemu-devel@nongnu.org; Fri, 21 Jun 2024 04:24:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1718958282;
+ s=mimecast20190719; t=1718958286;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=W55o4SDbJUzpSKUuR14H+OXFuIu/a+8ZtKB6C82JOHc=;
- b=cjW/OQ+me/R3M60u0vtjpbN6y2n1yKArhFM8GOQ3WXM55bcz+QBqa8gQ+7XUTATnHR8Rhz
- txPPwvEw3zVCtc5lWueGrHLc7fp69Z7kPHNKNxSiDWULvpmXEMQ6lcdk+tue94imk1nvaM
- +oi9EahEChPruSdWi9S+JOyJSocRFZI=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ bh=gJAuN/MJIKkZkJLsxF/L2OIAthjDl8A7pQXerPTdKjA=;
+ b=atlNEupbgrRK1JVC85Y16H2rySjS6Mj8NFbUuBMi0l10O4vfBhOtyljlfHwSFWBQgi6rAa
+ wurTj0IdbXKcl0PVrJYsxZlTnosW37GPlB5w6Bc0wo9CY24XAF3YH1BcTH0UVJt0VHjK88
+ JH1Vf/bG5a/XvOCtsjiky3vHBZ8rjqA=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-146-T4sMI9peNZK6WixXvIlrMg-1; Fri,
- 21 Jun 2024 04:24:37 -0400
-X-MC-Unique: T4sMI9peNZK6WixXvIlrMg-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-468-cx6WTd_VPQmMKdokVqEBSQ-1; Fri,
+ 21 Jun 2024 04:24:41 -0400
+X-MC-Unique: cx6WTd_VPQmMKdokVqEBSQ-1
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C69CA1956095; Fri, 21 Jun 2024 08:24:35 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 086E61955E87; Fri, 21 Jun 2024 08:24:40 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.213])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id D7AB31955E83; Fri, 21 Jun 2024 08:24:29 +0000 (UTC)
+ id 8CF911956087; Fri, 21 Jun 2024 08:24:36 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-s390x@nongnu.org, Christian Borntraeger <borntraeger@linux.ibm.com>,
  Jared Rossi <jrossi@linux.ibm.com>
@@ -51,9 +51,10 @@ Cc: qemu-devel@nongnu.org, Eric Farman <farman@linux.ibm.com>,
  Janosch Frank <frankja@linux.ibm.com>,
  "Jason J . Herne" <jjherne@linux.ibm.com>,
  Marc Hartmayer <mhartmay@linux.ibm.com>
-Subject: [PATCH 1/7] pc-bios/s390-ccw: Remove duplicated LDFLAGS
-Date: Fri, 21 Jun 2024 10:24:16 +0200
-Message-ID: <20240621082422.136217-2-thuth@redhat.com>
+Subject: [PATCH 2/7] hw/s390x/ipl: Provide more memory to the s390-ccw.img
+ firmware
+Date: Fri, 21 Jun 2024 10:24:17 +0200
+Message-ID: <20240621082422.136217-3-thuth@redhat.com>
 In-Reply-To: <20240621082422.136217-1-thuth@redhat.com>
 References: <20240621082422.136217-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -84,36 +85,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The -Wl,-pie and -nostdlib flags are added to LDFLAGS twice. Merge
-the two lines to get rid of the duplicates.
+We are going to link the SLOF libc into the s390-ccw.img, and this
+libc needs more memory for providing space for malloc() and friends.
+Thus bump the memory size that we reserve for the bios to 3 MiB
+instead of only 2 MiB. While we're at it, add a proper check that
+there is really enough memory assigned to the machine before blindly
+using it.
 
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- pc-bios/s390-ccw/Makefile | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ hw/s390x/ipl.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/pc-bios/s390-ccw/Makefile b/pc-bios/s390-ccw/Makefile
-index acfcd1e71a..6207911b53 100644
---- a/pc-bios/s390-ccw/Makefile
-+++ b/pc-bios/s390-ccw/Makefile
-@@ -40,7 +40,7 @@ EXTRA_CFLAGS += -ffreestanding -fno-delete-null-pointer-checks -fno-common -fPIE
- EXTRA_CFLAGS += -fwrapv -fno-strict-aliasing -fno-asynchronous-unwind-tables
- EXTRA_CFLAGS += -msoft-float
- EXTRA_CFLAGS += -std=gnu99
--LDFLAGS += -Wl,-pie -nostdlib
-+LDFLAGS += -Wl,-pie -nostdlib -z noexecstack
+diff --git a/hw/s390x/ipl.c b/hw/s390x/ipl.c
+index e934bf89d1..9362de0b6f 100644
+--- a/hw/s390x/ipl.c
++++ b/hw/s390x/ipl.c
+@@ -45,6 +45,7 @@
+ #define INITRD_PARM_START               0x010408UL
+ #define PARMFILE_START                  0x001000UL
+ #define ZIPL_IMAGE_START                0x009000UL
++#define BIOS_MAX_SIZE                   0x300000UL
+ #define IPL_PSW_MASK                    (PSW_MASK_32 | PSW_MASK_64)
  
- cc-test = $(CC) -Werror $1 -c -o /dev/null -xc /dev/null >/dev/null 2>/dev/null
- cc-option = if $(call cc-test, $1); then \
-@@ -55,8 +55,6 @@ config-cc.mak: Makefile
- 	    $(call cc-option,-march=z900,-march=z10)) 3> config-cc.mak
- -include config-cc.mak
+ static bool iplb_extended_needed(void *opaque)
+@@ -144,7 +145,14 @@ static void s390_ipl_realize(DeviceState *dev, Error **errp)
+      * even if an external kernel has been defined.
+      */
+     if (!ipl->kernel || ipl->enforce_bios) {
+-        uint64_t fwbase = (MIN(ms->ram_size, 0x80000000U) - 0x200000) & ~0xffffUL;
++        uint64_t fwbase;
++
++        if (ms->ram_size < BIOS_MAX_SIZE) {
++            error_setg(errp, "not enough RAM to load the BIOS file");
++            return;
++        }
++
++        fwbase = (MIN(ms->ram_size, 0x80000000U) - BIOS_MAX_SIZE) & ~0xffffUL;
  
--LDFLAGS += -Wl,-pie -nostdlib -z noexecstack
--
- build-all: s390-ccw.img s390-netboot.img
- 
- s390-ccw.elf: $(OBJECTS)
+         bios_filename = qemu_find_file(QEMU_FILE_TYPE_BIOS, ipl->firmware);
+         if (bios_filename == NULL) {
 -- 
 2.45.2
 
