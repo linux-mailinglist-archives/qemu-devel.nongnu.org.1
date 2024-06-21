@@ -2,73 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDF3991281D
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jun 2024 16:40:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 117BD912820
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jun 2024 16:40:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sKfQT-0006oy-99; Fri, 21 Jun 2024 10:39:41 -0400
+	id 1sKfQV-0006pm-UA; Fri, 21 Jun 2024 10:39:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1sKfQQ-0006oo-Sb
- for qemu-devel@nongnu.org; Fri, 21 Jun 2024 10:39:38 -0400
-Received: from mail-pg1-x531.google.com ([2607:f8b0:4864:20::531])
+ id 1sKfQT-0006pD-8v
+ for qemu-devel@nongnu.org; Fri, 21 Jun 2024 10:39:41 -0400
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1sKfQP-0007xd-AA
- for qemu-devel@nongnu.org; Fri, 21 Jun 2024 10:39:38 -0400
-Received: by mail-pg1-x531.google.com with SMTP id
- 41be03b00d2f7-70b2421471aso1578166a12.0
- for <qemu-devel@nongnu.org>; Fri, 21 Jun 2024 07:39:36 -0700 (PDT)
+ id 1sKfQR-0007xu-Eb
+ for qemu-devel@nongnu.org; Fri, 21 Jun 2024 10:39:40 -0400
+Received: by mail-pf1-x42d.google.com with SMTP id
+ d2e1a72fcca58-7041053c0fdso1510558b3a.3
+ for <qemu-devel@nongnu.org>; Fri, 21 Jun 2024 07:39:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1718980775; x=1719585575; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=E3/WZqFWAHQRjBXjGRmHCUu9PQRrPOKBj97O5x5guDY=;
- b=yzzLSJpQZ0UgfGNpBgAeff3Y2Q1ZCGboC1CxK773WRU3/1AhQQungWR2v/O4jiu5dP
- QSZvI7nh5XeXEI1/x7rGc9KGcBfJW7Pe8g7CaCUUQyQuLVXUPucGgUDEOioOSgXmspg7
- meylWNZggKKwKhbEn/gIHn+QLN9SXLcLLw6hve7WcyEBtt9+WA7psmzlihrb88LubFz7
- GZCGPt9PRHAISZvwFc5tAg13n3IJ8PtVCp1qRMDasVu7mEazduItj8rntQGmInr74D2h
- GJO9YLRqnFoBvvLece24tvjl95tSIvS4bQgpx1FXiFNCPDcgov3W7/WFF2qwA6JeVSx9
- 4UrQ==
+ d=linaro.org; s=google; t=1718980778; x=1719585578; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=pbW4VmHlRcXOaBBuGCKxn/sE/2fViPqLSFr+O68nhEo=;
+ b=WxNOYfvvAXintAio7+uvQcUpcQQpzCP+z7OnQrjbpwohxsCZOlf2JE4yuD9g+PtXCV
+ AyhqDB73M1bcOaAYbpjSbL8Ht9AhoCxZ3lbbxj66qFDyBQYj1jb4OOTr7Shhuy51JjqQ
+ KL/pn4hvyGk4RYE/yKZmdADcp4rN2nervkBLmSs4A4CJObw+2N08lagBIil/TRmScJQs
+ HZ9hc26E/CDZdf+cC4lILxVeTTYi3IyR7516hSB6FQME8EvmsSClHKYWpHigY09k6Axc
+ H6kJkXyfl8f12xLUmvS7bhLjPeh1TIJ7ZJHBmdqVvo3O4Iclv5V1Ii7xoA6xW2KBBDh6
+ p+yA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718980775; x=1719585575;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=E3/WZqFWAHQRjBXjGRmHCUu9PQRrPOKBj97O5x5guDY=;
- b=tUkBnVQGYoPYPuBugFgktzFcwhL3ZMqqHzj/5Yo/nO5hIPX5gZINDw0QNvMgNJ6c7e
- ij2yNuDTDuq9HUrkb1KRugXM6TEBC90DvQy/J+UctOcDp+NE8aJ9Zwfn6uX7urwqeigN
- 2zkVyd3km0QDQyhV18wvz2FOdxFprHYLf/F6Wb/wD1/tA/GjSqIb5dOqI1eih5NA7qj2
- /zMIT7sXz+zOqTv0Lwpwb3pBTvTAJp3Ib3cWUdsOLJZsdpb7XFvveXj/p4mc3Eo9D45z
- sVCjeaPUucx7kJwJZnMVgboSi182m5UHTnNiv61v7n6xsRvlJhJTAb8aYmtrMvLTOqQQ
- K/DQ==
-X-Gm-Message-State: AOJu0YwGAOwdg6F1RmwT1PGvjzlzpPkQytqL885ONNNSROPzBNkF33lX
- D9iVKqrYohfKXcSqag8ATHV719XXw+gRVn7Ke+8oJqJl/rN6D52LpuN/A4hjmxLh1fVGT+rARGn
- K
-X-Google-Smtp-Source: AGHT+IEOnym4MGNIRaXFO5jWrGH7B5XwyS9hoyTRYicswERGf3Zov+y0o0xN1b/Id96nmYClUjC2kg==
-X-Received: by 2002:a05:6a20:6a1a:b0:1b6:6d41:7bd5 with SMTP id
- adf61e73a8af0-1bcbb58062amr10674457637.15.1718980775145; 
- Fri, 21 Jun 2024 07:39:35 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1718980778; x=1719585578;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=pbW4VmHlRcXOaBBuGCKxn/sE/2fViPqLSFr+O68nhEo=;
+ b=OXwogNAXZinoTe1LzfqnuhBMFi2m143nI0QcHa6wpNa2rGflMt9oKGR0+cFWXaMAkw
+ RJKQ2sPB/YyOUyyELZeHJrzPVgJrUzsKEIq8Bkm8tRTok+or2PvUs2k7c+GPDrLaaVKJ
+ ad5/+9zkLEB7fjWvHXgr/FFkROL/JIUMOE0hh95QCYZRzbwljbsgJbLSxiERXDd19/Zk
+ TvXyGXztxKuLql9cEhI7coAkRgtjsrnwAox1la/zRATyIsVPMhcst1Du5XqfLAYZZodd
+ 4z5rZmzhc1C6iji7QmwdNUsj1QcypOPmdzy6hLY/282kb6hf8buvCNYRIdXDVCCc51uG
+ KnZQ==
+X-Gm-Message-State: AOJu0YwbggK/AG1ldj965OglExGX8lmktYUJxoEPbIgirRbZOM/dUadD
+ Y5mY4glxWKVA4Q7yn17nDLF2vI+V7PPHc5xAJ+GzIbG3I/R7XKxC/c7xWSMSs/Hw+JnF6ayyxlb
+ pp/A=
+X-Google-Smtp-Source: AGHT+IGDzPLTZJ+ZyBvyT59inRM7G/nSyZkGJRS7o5jFWQYArBuKTJLtJ9TMVYI+S8oUHqoTcidnYQ==
+X-Received: by 2002:a05:6a20:891f:b0:1b4:1560:f80f with SMTP id
+ adf61e73a8af0-1bcbb697107mr8106408637.56.1718980777558; 
+ Fri, 21 Jun 2024 07:39:37 -0700 (PDT)
 Received: from amd.. ([2804:7f0:b401:1654:3e7c:3fff:fe7a:e83b])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7065130e8e2sm1466513b3a.215.2024.06.21.07.39.33
+ d2e1a72fcca58-7065130e8e2sm1466513b3a.215.2024.06.21.07.39.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 21 Jun 2024 07:39:34 -0700 (PDT)
+ Fri, 21 Jun 2024 07:39:37 -0700 (PDT)
 From: Gustavo Romero <gustavo.romero@linaro.org>
 To: qemu-devel@nongnu.org, alex.bennee@linaro.org, richard.henderson@linaro.org
 Cc: philmd@linaro.org,
 	peter.maydell@linaro.org,
 	gustavo.romero@linaro.org
-Subject: [PATCH v2 0/2] target/arm: Enable FEAT_Debugv8p8 for -cpu max
-Date: Fri, 21 Jun 2024 14:39:01 +0000
-Message-Id: <20240621143903.3598230-1-gustavo.romero@linaro.org>
+Subject: [PATCH v2 1/2] target/arm: Move initialization of debug ID registers
+Date: Fri, 21 Jun 2024 14:39:02 +0000
+Message-Id: <20240621143903.3598230-2-gustavo.romero@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240621143903.3598230-1-gustavo.romero@linaro.org>
+References: <20240621143903.3598230-1-gustavo.romero@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::531;
- envelope-from=gustavo.romero@linaro.org; helo=mail-pg1-x531.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
+ envelope-from=gustavo.romero@linaro.org; helo=mail-pf1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,20 +94,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Enable FEAT_Debugv8p8 on Arm max CPU.
+Move the initialization of the debug ID registers to aa32_max_features,
+which is used to set the 32-bit ID registers. This ensures that the
+debug ID registers are consistently set for the max CPU in a single
+place.
 
-v2:
- - Revert to the original comment above call to aa32_max_features()
-
-Gustavo Romero (2):
-  target/arm: Move initialization of debug ID registers
-  target/arm: Enable FEAT_Debugv8p8 for -cpu max
-
+Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
+---
  target/arm/cpu.h       |  2 ++
- target/arm/tcg/cpu32.c | 34 +++++++++++++++++++++++++++++-----
- target/arm/tcg/cpu64.c |  4 ++--
- 3 files changed, 33 insertions(+), 7 deletions(-)
+ target/arm/tcg/cpu32.c | 30 +++++++++++++++++++++++++++---
+ target/arm/tcg/cpu64.c |  2 +-
+ 3 files changed, 30 insertions(+), 4 deletions(-)
 
+diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+index 3841359d0f..d8eb986a04 100644
+--- a/target/arm/cpu.h
++++ b/target/arm/cpu.h
+@@ -2299,6 +2299,8 @@ FIELD(DBGDEVID, DOUBLELOCK, 20, 4)
+ FIELD(DBGDEVID, AUXREGS, 24, 4)
+ FIELD(DBGDEVID, CIDMASK, 28, 4)
+ 
++FIELD(DBGDEVID1, PCSROFFSET, 0, 4)
++
+ FIELD(MVFR0, SIMDREG, 0, 4)
+ FIELD(MVFR0, FPSP, 4, 4)
+ FIELD(MVFR0, FPDP, 8, 4)
+diff --git a/target/arm/tcg/cpu32.c b/target/arm/tcg/cpu32.c
+index bdd82d912a..b155a0136f 100644
+--- a/target/arm/tcg/cpu32.c
++++ b/target/arm/tcg/cpu32.c
+@@ -87,6 +87,33 @@ void aa32_max_features(ARMCPU *cpu)
+     t = FIELD_DP32(t, ID_DFR0, PERFMON, 6);       /* FEAT_PMUv3p5 */
+     cpu->isar.id_dfr0 = t;
+ 
++    /* Debug ID registers. */
++
++    /* Bit[15] is RES1, Bit[13] and Bits[11:0] are RES0. */
++    t = 0x00008000;
++    t = FIELD_DP32(t, DBGDIDR, SE_IMP, 1);
++    t = FIELD_DP32(t, DBGDIDR, NSUHD_IMP, 1);
++    t = FIELD_DP32(t, DBGDIDR, VERSION, 6);       /* Armv8 debug */
++    t = FIELD_DP32(t, DBGDIDR, CTX_CMPS, 1);
++    t = FIELD_DP32(t, DBGDIDR, BRPS, 5);
++    t = FIELD_DP32(t, DBGDIDR, WRPS, 3);
++    cpu->isar.dbgdidr = t;
++
++    t = FIELD_DP32(t, DBGDEVID, PCSAMPLE, 3);
++    t = FIELD_DP32(t, DBGDEVID, WPADDRMASK, 1);
++    t = FIELD_DP32(t, DBGDEVID, BPADDRMASK, 15);
++    t = FIELD_DP32(t, DBGDEVID, VECTORCATCH, 0);
++    t = FIELD_DP32(t, DBGDEVID, VIRTEXTNS, 1);
++    t = FIELD_DP32(t, DBGDEVID, DOUBLELOCK, 1);
++    t = FIELD_DP32(t, DBGDEVID, AUXREGS, 0);
++    t = FIELD_DP32(t, DBGDEVID, CIDMASK, 0);
++    cpu->isar.dbgdevid = t;
++
++    /* Bits[31:4] are RES0. */
++    t = 0;
++    t = FIELD_DP32(t, DBGDEVID1, PCSROFFSET, 2);
++    cpu->isar.dbgdevid1 = t;
++
+     t = cpu->isar.id_dfr1;
+     t = FIELD_DP32(t, ID_DFR1, HPMN0, 1);         /* FEAT_HPMN0 */
+     cpu->isar.id_dfr1 = t;
+@@ -955,9 +982,6 @@ static void arm_max_initfn(Object *obj)
+     cpu->isar.id_isar4 = 0x00011142;
+     cpu->isar.id_isar5 = 0x00011121;
+     cpu->isar.id_isar6 = 0;
+-    cpu->isar.dbgdidr = 0x3516d000;
+-    cpu->isar.dbgdevid = 0x00110f13;
+-    cpu->isar.dbgdevid1 = 0x2;
+     cpu->isar.reset_pmcr_el0 = 0x41013000;
+     cpu->clidr = 0x0a200023;
+     cpu->ccsidr[0] = 0x701fe00a; /* 32KB L1 dcache */
+diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
+index 0899251eef..71e1bfcd4e 100644
+--- a/target/arm/tcg/cpu64.c
++++ b/target/arm/tcg/cpu64.c
+@@ -1167,7 +1167,7 @@ void aarch64_max_tcg_initfn(Object *obj)
+ 
+     t = cpu->isar.id_aa64isar2;
+     t = FIELD_DP64(t, ID_AA64ISAR2, MOPS, 1);     /* FEAT_MOPS */
+-    t = FIELD_DP64(t, ID_AA64ISAR2, BC, 1);      /* FEAT_HBC */
++    t = FIELD_DP64(t, ID_AA64ISAR2, BC, 1);       /* FEAT_HBC */
+     t = FIELD_DP64(t, ID_AA64ISAR2, WFXT, 2);     /* FEAT_WFxT */
+     cpu->isar.id_aa64isar2 = t;
+ 
 -- 
 2.34.1
 
