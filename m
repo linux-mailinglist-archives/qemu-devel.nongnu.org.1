@@ -2,88 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 819D7912CC9
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jun 2024 19:58:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D49B8912CCB
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jun 2024 19:58:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sKiTr-0003Yi-Pd; Fri, 21 Jun 2024 13:55:23 -0400
+	id 1sKiTu-0003hL-Fm; Fri, 21 Jun 2024 13:55:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sKiTp-0003YI-RD
- for qemu-devel@nongnu.org; Fri, 21 Jun 2024 13:55:21 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sKiTr-0003Yv-Ky
+ for qemu-devel@nongnu.org; Fri, 21 Jun 2024 13:55:23 -0400
 Received: from smtp-out1.suse.de ([195.135.223.130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sKiTn-0003Qn-Lw
- for qemu-devel@nongnu.org; Fri, 21 Jun 2024 13:55:21 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sKiTp-0003bi-Jh
+ for qemu-devel@nongnu.org; Fri, 21 Jun 2024 13:55:23 -0400
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 60CE221B41;
- Fri, 21 Jun 2024 17:55:18 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 05D0321B40;
+ Fri, 21 Jun 2024 17:55:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1718992518; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1718992520; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=S7FeEXGMcDSenWm4U8X664XX4ySenbLtOwTL8HqhioI=;
- b=euxbH9qokLJFtjSf7kZOPZYpj0VFHFyT+S3SZG/8gBmTfQlPAeXOoLgQgKgUukVlYrtcFB
- Tx9rjobCsOFs3YEpDrQyjXyYYqEDsD05CcKrfPzhbrKlNKRgRQvkpx6RFFct+b0Y6cnMO0
- CobR1YwIuP1biOxHLOEajw/lGFCrXtA=
+ bh=7Aaj/WoDV5uAm41cMA1Jz8VwWrLFuTsQAw9Ij2plECo=;
+ b=UqeZyirSgl4zrPxBJ4R4HhItS1QsGvxT8utKE/w4CoQ4/qhGRJZl5GLIqMsCJA2GUJElXw
+ NVZ6rBAwAHYVfIjfkzlDTkbjqPY/R2jxi+Tkuf1Q24Dew/GCYJpQEFDj1xP6kVFzNQqEES
+ zr+qIE/iEhUJXsjqKWmqvGpzn/z13ig=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1718992518;
+ s=susede2_ed25519; t=1718992520;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=S7FeEXGMcDSenWm4U8X664XX4ySenbLtOwTL8HqhioI=;
- b=QH7jPEJxiQsYfYRe409bEax91AksfeATLk2v/sOnQhOc7KjTKT0r1JPlDV0NtrdI0sxRh1
- DTm8eOrQHPwFk0Dg==
+ bh=7Aaj/WoDV5uAm41cMA1Jz8VwWrLFuTsQAw9Ij2plECo=;
+ b=WwEYt153PR7cBHHj5r8DV+EpqHeQweOsMBmqjPGGPxa7TYYZE0R3fyIMZZxp7dkJt7NVWy
+ lZeL3WYaqcBTVHAg==
 Authentication-Results: smtp-out1.suse.de;
 	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1718992518; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1718992520; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=S7FeEXGMcDSenWm4U8X664XX4ySenbLtOwTL8HqhioI=;
- b=euxbH9qokLJFtjSf7kZOPZYpj0VFHFyT+S3SZG/8gBmTfQlPAeXOoLgQgKgUukVlYrtcFB
- Tx9rjobCsOFs3YEpDrQyjXyYYqEDsD05CcKrfPzhbrKlNKRgRQvkpx6RFFct+b0Y6cnMO0
- CobR1YwIuP1biOxHLOEajw/lGFCrXtA=
+ bh=7Aaj/WoDV5uAm41cMA1Jz8VwWrLFuTsQAw9Ij2plECo=;
+ b=UqeZyirSgl4zrPxBJ4R4HhItS1QsGvxT8utKE/w4CoQ4/qhGRJZl5GLIqMsCJA2GUJElXw
+ NVZ6rBAwAHYVfIjfkzlDTkbjqPY/R2jxi+Tkuf1Q24Dew/GCYJpQEFDj1xP6kVFzNQqEES
+ zr+qIE/iEhUJXsjqKWmqvGpzn/z13ig=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1718992518;
+ s=susede2_ed25519; t=1718992520;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=S7FeEXGMcDSenWm4U8X664XX4ySenbLtOwTL8HqhioI=;
- b=QH7jPEJxiQsYfYRe409bEax91AksfeATLk2v/sOnQhOc7KjTKT0r1JPlDV0NtrdI0sxRh1
- DTm8eOrQHPwFk0Dg==
+ bh=7Aaj/WoDV5uAm41cMA1Jz8VwWrLFuTsQAw9Ij2plECo=;
+ b=WwEYt153PR7cBHHj5r8DV+EpqHeQweOsMBmqjPGGPxa7TYYZE0R3fyIMZZxp7dkJt7NVWy
+ lZeL3WYaqcBTVHAg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3615113AAA;
- Fri, 21 Jun 2024 17:55:16 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CDFF313AAA;
+ Fri, 21 Jun 2024 17:55:18 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id kLcxO4S+dWZNawAAD6G6ig
- (envelope-from <farosas@suse.de>); Fri, 21 Jun 2024 17:55:16 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id OJ98JIa+dWZNawAAD6G6ig
+ (envelope-from <farosas@suse.de>); Fri, 21 Jun 2024 17:55:18 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 23/28] tests/migration-tests: Drop most WIN32 ifdefs for
- postcopy failure tests
-Date: Fri, 21 Jun 2024 14:54:29 -0300
-Message-Id: <20240621175434.31180-24-farosas@suse.de>
+Subject: [PULL 24/28] tests/migration-tests: Always enable migration events
+Date: Fri, 21 Jun 2024 14:54:30 -0300
+Message-Id: <20240621175434.31180-25-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20240621175434.31180-1-farosas@suse.de>
 References: <20240621175434.31180-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Spam-Score: -2.80
 X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[100.00%];
- NEURAL_HAM_LONG(-1.00)[-1.000]; MID_CONTAINS_FROM(1.00)[];
+ MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
  R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-1.000];
  MIME_GOOD(-0.10)[text/plain]; RCVD_VIA_SMTP_AUTH(0.00)[];
  TO_DN_SOME(0.00)[]; ARC_NA(0.00)[]; MIME_TRACE(0.00)[0:+];
@@ -92,7 +92,6 @@ X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[100.00%];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
  FROM_EQ_ENVFROM(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
  RCVD_COUNT_TWO(0.00)[2]; RCVD_TLS_ALL(0.00)[]
-X-Spam-Score: -2.80
 Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
  helo=smtp-out1.suse.de
 X-Spam_score_int: -43
@@ -119,85 +118,53 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Peter Xu <peterx@redhat.com>
 
-Most of them are not needed, we can stick with one ifdef inside
-postcopy_recover_fail() so as to cover the scm right tricks only.
-The tests won't run on windows anyway due to has_uffd always false.
+Libvirt should always enable it, so it'll be nice qtest also cover that for
+all tests on both sides.  migrate_incoming_qmp() used to enable it only on
+dst, now we enable them on both, as we'll start to sanity check events even
+on the src QEMU.
 
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
+We'll need to leave the one in migrate_incoming_qmp(), because
+virtio-net-failover test uses that one only, and it relies on the events to
+work.
+
 Signed-off-by: Peter Xu <peterx@redhat.com>
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- tests/qtest/migration-test.c | 10 ++--------
- 1 file changed, 2 insertions(+), 8 deletions(-)
+ tests/qtest/migration-helpers.c | 1 +
+ tests/qtest/migration-test.c    | 7 +++++++
+ 2 files changed, 8 insertions(+)
 
+diff --git a/tests/qtest/migration-helpers.c b/tests/qtest/migration-helpers.c
+index 0ac49ceb54..2ca4425d71 100644
+--- a/tests/qtest/migration-helpers.c
++++ b/tests/qtest/migration-helpers.c
+@@ -258,6 +258,7 @@ void migrate_incoming_qmp(QTestState *to, const char *uri, const char *fmt, ...)
+     g_assert(!qdict_haskey(args, "uri"));
+     qdict_put_str(args, "uri", uri);
+ 
++    /* This function relies on the event to work, make sure it's enabled */
+     migrate_set_capability(to, "events", true);
+ 
+     rsp = qtest_qmp(to, "{ 'execute': 'migrate-incoming', 'arguments': %p}",
 diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index 6207305ff8..b7dea1aabb 100644
+index b7dea1aabb..32e31fff86 100644
 --- a/tests/qtest/migration-test.c
 +++ b/tests/qtest/migration-test.c
-@@ -1364,9 +1364,9 @@ static void wait_for_postcopy_status(QTestState *one, const char *status)
-                                                   "completed", NULL });
- }
- 
--#ifndef _WIN32
- static void postcopy_recover_fail(QTestState *from, QTestState *to)
- {
-+#ifndef _WIN32
-     int ret, pair1[2], pair2[2];
-     char c;
- 
-@@ -1428,8 +1428,8 @@ static void postcopy_recover_fail(QTestState *from, QTestState *to)
-     close(pair1[1]);
-     close(pair2[0]);
-     close(pair2[1]);
-+#endif
- }
--#endif /* _WIN32 */
- 
- static void test_postcopy_recovery_common(MigrateCommon *args)
- {
-@@ -1469,7 +1469,6 @@ static void test_postcopy_recovery_common(MigrateCommon *args)
-     wait_for_postcopy_status(to, "postcopy-paused");
-     wait_for_postcopy_status(from, "postcopy-paused");
- 
--#ifndef _WIN32
-     if (args->postcopy_recovery_test_fail) {
-         /*
-          * Test when a wrong socket specified for recover, and then the
-@@ -1478,7 +1477,6 @@ static void test_postcopy_recovery_common(MigrateCommon *args)
-         postcopy_recover_fail(from, to);
-         /* continue with a good recovery */
+@@ -852,6 +852,13 @@ static int test_migrate_start(QTestState **from, QTestState **to,
+         unlink(shmem_path);
      }
--#endif /* _WIN32 */
  
-     /*
-      * Create a new socket to emulate a new channel that is different
-@@ -1507,7 +1505,6 @@ static void test_postcopy_recovery(void)
-     test_postcopy_recovery_common(&args);
++    /*
++     * Always enable migration events.  Libvirt always uses it, let's try
++     * to mimic as closer as that.
++     */
++    migrate_set_capability(*from, "events", true);
++    migrate_set_capability(*to, "events", true);
++
+     return 0;
  }
  
--#ifndef _WIN32
- static void test_postcopy_recovery_double_fail(void)
- {
-     MigrateCommon args = {
-@@ -1516,7 +1513,6 @@ static void test_postcopy_recovery_double_fail(void)
- 
-     test_postcopy_recovery_common(&args);
- }
--#endif /* _WIN32 */
- 
- #ifdef CONFIG_GNUTLS
- static void test_postcopy_recovery_tls_psk(void)
-@@ -3782,10 +3778,8 @@ int main(int argc, char **argv)
-                            test_postcopy_preempt);
-         migration_test_add("/migration/postcopy/preempt/recovery/plain",
-                            test_postcopy_preempt_recovery);
--#ifndef _WIN32
-         migration_test_add("/migration/postcopy/recovery/double-failures",
-                            test_postcopy_recovery_double_fail);
--#endif /* _WIN32 */
-         if (is_x86) {
-             migration_test_add("/migration/postcopy/suspend",
-                                test_postcopy_suspend);
 -- 
 2.35.3
 
