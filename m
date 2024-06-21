@@ -2,57 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3959F9127D8
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jun 2024 16:32:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 906A99127CF
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jun 2024 16:31:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sKfHA-0001HN-7P; Fri, 21 Jun 2024 10:30:04 -0400
+	id 1sKfHB-0001Hj-Ux; Fri, 21 Jun 2024 10:30:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <roy.hopkins@suse.com>)
- id 1sKfH7-0001Ev-A0
- for qemu-devel@nongnu.org; Fri, 21 Jun 2024 10:30:01 -0400
-Received: from smtp-out2.suse.de ([195.135.223.131])
+ id 1sKfH9-0001GM-1f
+ for qemu-devel@nongnu.org; Fri, 21 Jun 2024 10:30:03 -0400
+Received: from smtp-out1.suse.de ([195.135.223.130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <roy.hopkins@suse.com>)
- id 1sKfH5-0005iW-At
- for qemu-devel@nongnu.org; Fri, 21 Jun 2024 10:30:01 -0400
+ id 1sKfH6-0005ir-ME
+ for qemu-devel@nongnu.org; Fri, 21 Jun 2024 10:30:02 -0400
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 0F5621FB7C;
+ by smtp-out1.suse.de (Postfix) with ESMTPS id D260E21B3B;
  Fri, 21 Jun 2024 14:29:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
  t=1718980198; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=EE7RO7i1hyaVgXKXgfhCebnA6WkH3VYzMFc3ZNaIRn4=;
- b=QRIepjHzT85wXjHV40Kvln2zaSFi3kYcXLpROOUHXo7vagoPutvpfJ+vm1WD9jx/YoTNt3
- cs20yN18397zGMkQU9a7b+il5S6UIWIho8eCe83p6EN5COO2Pqolcr4rMZioquUr5m0yWp
- 8wE+uAUPym2tK2MsHYi92+NnnUQqG6M=
-Authentication-Results: smtp-out2.suse.de;
+ bh=v011CwWWoGJFbbUNx6sY+EzT3rU42u9xKuwUhDeisG0=;
+ b=u8BHJfcjiaHp5N6TtKRelfCAB2tcRqEgfv7AKn2uL36ivjBSL5zLWsegZVUVrSRnfDN6Gm
+ VACvDt4UVn+JjRRmj3e1GrmRHQekkbL0FU7kVYbH1wyd6hV8Kxlr303jTF2Si21v1+0gr8
+ LMW5qmRU4TQW6fp+EqP2ZgAUEJyqyio=
+Authentication-Results: smtp-out1.suse.de;
 	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
  t=1718980198; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=EE7RO7i1hyaVgXKXgfhCebnA6WkH3VYzMFc3ZNaIRn4=;
- b=QRIepjHzT85wXjHV40Kvln2zaSFi3kYcXLpROOUHXo7vagoPutvpfJ+vm1WD9jx/YoTNt3
- cs20yN18397zGMkQU9a7b+il5S6UIWIho8eCe83p6EN5COO2Pqolcr4rMZioquUr5m0yWp
- 8wE+uAUPym2tK2MsHYi92+NnnUQqG6M=
+ bh=v011CwWWoGJFbbUNx6sY+EzT3rU42u9xKuwUhDeisG0=;
+ b=u8BHJfcjiaHp5N6TtKRelfCAB2tcRqEgfv7AKn2uL36ivjBSL5zLWsegZVUVrSRnfDN6Gm
+ VACvDt4UVn+JjRRmj3e1GrmRHQekkbL0FU7kVYbH1wyd6hV8Kxlr303jTF2Si21v1+0gr8
+ LMW5qmRU4TQW6fp+EqP2ZgAUEJyqyio=
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 50C1613ABD;
- Fri, 21 Jun 2024 14:29:57 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1F1BA13ACD;
+ Fri, 21 Jun 2024 14:29:58 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id IDusEWWOdWbwKQAAD6G6ig
- (envelope-from <roy.hopkins@suse.com>); Fri, 21 Jun 2024 14:29:57 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id 0ASeBWaOdWbwKQAAD6G6ig
+ (envelope-from <roy.hopkins@suse.com>); Fri, 21 Jun 2024 14:29:58 +0000
 From: Roy Hopkins <roy.hopkins@suse.com>
 To: qemu-devel@nongnu.org
 Cc: Roy Hopkins <roy.hopkins@suse.com>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -67,10 +67,10 @@ Cc: Roy Hopkins <roy.hopkins@suse.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Tom Lendacky <thomas.lendacky@amd.com>,
  Michael Roth <michael.roth@amd.com>, Ani Sinha <anisinha@redhat.com>,
  =?UTF-8?q?J=C3=B6rg=20Roedel?= <jroedel@suse.com>
-Subject: [PATCH v3 14/15] i386/sev: Add implementation of CGS
- set_guest_policy()
-Date: Fri, 21 Jun 2024 15:29:17 +0100
-Message-ID: <bcf161124214aa768f05eb99e174705741dda352.1718979106.git.roy.hopkins@suse.com>
+Subject: [PATCH v3 15/15] sev: Provide sev_features flags from IGVM VMSA to
+ KVM_SEV_INIT2
+Date: Fri, 21 Jun 2024 15:29:18 +0100
+Message-ID: <8e49a1aed06d4f98c13a98fbbe3a48cdeb6e0070.1718979106.git.roy.hopkins@suse.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <cover.1718979106.git.roy.hopkins@suse.com>
 References: <cover.1718979106.git.roy.hopkins@suse.com>
@@ -93,8 +93,8 @@ X-Spamd-Result: default: False [-1.30 / 50.00]; BAYES_HAM(-3.00)[100.00%];
  R_RATELIMIT(0.00)[to_ip_from(RLm8d31jk6dhzwhww9bgqrb1jt)];
  DKIM_SIGNED(0.00)[suse.com:s=susede1];
  FREEMAIL_ENVRCPT(0.00)[gmail.com]
-Received-SPF: pass client-ip=195.135.223.131;
- envelope-from=roy.hopkins@suse.com; helo=smtp-out2.suse.de
+Received-SPF: pass client-ip=195.135.223.130;
+ envelope-from=roy.hopkins@suse.com; helo=smtp-out1.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -117,148 +117,247 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The new cgs_set_guest_policy() function is provided to receive the guest
-policy flags, SNP ID block and SNP ID authentication from guest
-configuration such as an IGVM file and apply it to the platform prior to
-launching the guest.
+IGVM files can contain an initial VMSA that should be applied to each
+vcpu as part of the initial guest state. The sev_features flags are
+provided as part of the VMSA structure. However, KVM only allows
+sev_features to be set during initialization and not as the guest is
+being prepared for launch.
 
-The policy is used to populate values for the existing 'policy',
-'id_block' and 'id_auth' parameters. When provided, the guest policy is
-applied and the ID block configuration is used to verify the launch
-measurement and signatures. The guest is only successfully started if
-the expected launch measurements match the actual measurements and the
-signatures are valid.
+This patch queries KVM for the supported set of sev_features flags and
+processes the IGVM file during kvm_init to determine any sev_features
+flags set in the IGVM file. These are then provided in the call to
+KVM_SEV_INIT2 to ensure the guest state matches that specified in the
+IGVM file.
+
+This does cause the IGVM file to be processed twice. Firstly to extract
+the sev_features then secondly to actually configure the guest. However,
+the first pass is largely ignored meaning the overhead is minimal.
 
 Signed-off-by: Roy Hopkins <roy.hopkins@suse.com>
 ---
- target/i386/sev.h | 12 +++++++
- target/i386/sev.c | 83 +++++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 95 insertions(+)
+ target/i386/sev.c | 145 ++++++++++++++++++++++++++++++++++++++++------
+ 1 file changed, 126 insertions(+), 19 deletions(-)
 
-diff --git a/target/i386/sev.h b/target/i386/sev.h
-index 2ccd6fe1e8..7b92102bd0 100644
---- a/target/i386/sev.h
-+++ b/target/i386/sev.h
-@@ -157,6 +157,18 @@ struct QEMU_PACKED sev_es_save_area {
-     uint8_t fpreg_ymm[256];
- };
- 
-+struct QEMU_PACKED sev_snp_id_authentication {
-+    uint32_t id_key_alg;
-+    uint32_t auth_key_algo;
-+    uint8_t reserved[56];
-+    uint8_t id_block_sig[512];
-+    uint8_t id_key[1028];
-+    uint8_t reserved2[60];
-+    uint8_t id_key_sig[512];
-+    uint8_t author_key[1028];
-+    uint8_t reserved3[892];
-+};
-+
- #ifdef CONFIG_SEV
- bool sev_enabled(void);
- bool sev_es_enabled(void);
 diff --git a/target/i386/sev.c b/target/i386/sev.c
-index 5d9ef745bb..688b378c42 100644
+index 688b378c42..4b9d74207b 100644
 --- a/target/i386/sev.c
 +++ b/target/i386/sev.c
-@@ -2446,6 +2446,88 @@ static int cgs_get_mem_map_entry(int index,
-     return 0;
+@@ -117,6 +117,8 @@ struct SevCommonState {
+     uint32_t cbitpos;
+     uint32_t reduced_phys_bits;
+     bool kernel_hashes;
++    uint64_t sev_features;
++    uint64_t supported_sev_features;
+ 
+     /* runtime state */
+     uint8_t api_major;
+@@ -490,7 +492,40 @@ static void sev_apply_cpu_context(CPUState *cpu)
+     }
  }
  
-+static int cgs_set_guest_policy(ConfidentialGuestPolicyType policy_type,
-+                                uint64_t policy, void *policy_data1,
-+                                uint32_t policy_data1_size, void *policy_data2,
-+                                uint32_t policy_data2_size, Error **errp)
+-static int check_vmsa_supported(hwaddr gpa, const struct sev_es_save_area *vmsa,
++static int check_sev_features(SevCommonState *sev_common, uint64_t sev_features,
++                              Error **errp)
 +{
-+    if (policy_type != GUEST_POLICY_SEV) {
-+        error_setg(errp, "%s: Invalid guest policy type provided for SEV: %d",
-+        __func__, policy_type);
++    /*
++     * Ensure SEV_FEATURES is configured for correct SEV hardware and that
++     * the requested features are supported. If SEV-SNP is enabled then
++     * that feature must be enabled, otherwise it must be cleared.
++     */
++    if (sev_snp_enabled() && !(sev_features & SVM_SEV_FEAT_SNP_ACTIVE)) {
++        error_setg(
++            errp,
++            "%s: SEV_SNP is enabled but is not enabled in VMSA sev_features",
++            __func__);
++        return -1;
++    } else if (!sev_snp_enabled() &&
++               (sev_features & SVM_SEV_FEAT_SNP_ACTIVE)) {
++        error_setg(
++            errp,
++            "%s: SEV_SNP is not enabled but is enabled in VMSA sev_features",
++            __func__);
 +        return -1;
 +    }
-+    /*
-+     * SEV-SNP handles policy differently. The policy flags are defined in
-+     * kvm_start_conf.policy and an ID block and ID auth can be provided.
-+     */
-+    if (sev_snp_enabled()) {
-+        SevSnpGuestState *sev_snp_guest =
-+            SEV_SNP_GUEST(MACHINE(qdev_get_machine())->cgs);
-+        struct kvm_sev_snp_launch_finish *finish =
-+            &sev_snp_guest->kvm_finish_conf;
-+
-+        /*
-+         * The policy consists of flags in 'policy' and optionally an ID block
-+         * and ID auth in policy_data1 and policy_data2 respectively. The ID
-+         * block and auth are optional so clear any previous ID block and auth
-+         * and set them if provided, but always set the policy flags.
-+         */
-+        g_free(sev_snp_guest->id_block);
-+        g_free((guchar *)finish->id_block_uaddr);
-+        g_free(sev_snp_guest->id_auth);
-+        g_free((guchar *)finish->id_auth_uaddr);
-+        sev_snp_guest->id_block = NULL;
-+        finish->id_block_uaddr = 0;
-+        sev_snp_guest->id_auth = NULL;
-+        finish->id_auth_uaddr = 0;
-+
-+        if (policy_data1_size > 0) {
-+            struct sev_snp_id_authentication *id_auth =
-+                (struct sev_snp_id_authentication *)policy_data2;
-+
-+            if (policy_data1_size != KVM_SEV_SNP_ID_BLOCK_SIZE) {
-+                error_setg(errp, "%s: Invalid SEV-SNP ID block: incorrect size",
-+                           __func__);
-+                return -1;
-+            }
-+            if (policy_data2_size != KVM_SEV_SNP_ID_AUTH_SIZE) {
-+                error_setg(errp,
-+                           "%s: Invalid SEV-SNP ID auth block: incorrect size",
-+                           __func__);
-+                return -1;
-+            }
-+            finish->id_block_uaddr =
-+                (__u64)g_malloc0(KVM_SEV_SNP_ID_BLOCK_SIZE);
-+            finish->id_auth_uaddr = (__u64)g_malloc0(KVM_SEV_SNP_ID_AUTH_SIZE);
-+            memcpy((void *)finish->id_block_uaddr, policy_data1,
-+                   KVM_SEV_SNP_ID_BLOCK_SIZE);
-+            memcpy((void *)finish->id_auth_uaddr, policy_data2,
-+                   KVM_SEV_SNP_ID_AUTH_SIZE);
-+
-+            /*
-+             * Check if an author key has been provided and use that to flag
-+             * whether the author key is enabled. The first of the author key
-+             * must be non-zero to indicate the key type, which will currently
-+             * always be 2.
-+             */
-+            sev_snp_guest->kvm_finish_conf.auth_key_en =
-+                id_auth->author_key[0] ? 1 : 0;
-+            finish->id_block_en = 1;
-+        }
-+        sev_snp_guest->kvm_start_conf.policy = policy;
-+    } else {
-+        SevGuestState *sev_guest = SEV_GUEST(MACHINE(qdev_get_machine())->cgs);
-+        /* Only the policy flags are supported for SEV and SEV-ES */
-+        if ((policy_data1_size > 0) || (policy_data2_size > 0) || !sev_guest) {
-+            error_setg(errp, "%s: An ID block/ID auth block has been provided "
-+                             "but SEV-SNP is not supported", __func__);
-+            return -1;
-+        }
-+        sev_guest->policy = policy;
++    if (sev_features & ~sev_common->supported_sev_features) {
++        error_setg(errp,
++                   "%s: VMSA contains unsupported sev_features: %lX, "
++                   "supported features: %lX",
++                   __func__, sev_features, sev_common->supported_sev_features);
++        return -1;
 +    }
 +    return 0;
 +}
 +
- static void
- sev_common_class_init(ObjectClass *oc, void *data)
++static int check_vmsa_supported(SevCommonState *sev_common, hwaddr gpa,
++                                const struct sev_es_save_area *vmsa,
+                                 Error **errp)
  {
-@@ -2484,6 +2566,7 @@ sev_common_instance_init(Object *obj)
-     cgs->check_support = cgs_check_support;
-     cgs->set_guest_state = cgs_set_guest_state;
-     cgs->get_mem_map_entry = cgs_get_mem_map_entry;
-+    cgs->set_guest_policy = cgs_set_guest_policy;
+     struct sev_es_save_area vmsa_check;
+@@ -556,24 +591,10 @@ static int check_vmsa_supported(hwaddr gpa, const struct sev_es_save_area *vmsa,
+     vmsa_check.x87_fcw = 0;
+     vmsa_check.mxcsr = 0;
  
-     QTAILQ_INIT(&sev_common->launch_vmsa);
+-    if (sev_snp_enabled()) {
+-        if (vmsa_check.sev_features != SVM_SEV_FEAT_SNP_ACTIVE) {
+-            error_setg(errp,
+-                       "%s: sev_features in the VMSA contains an unsupported "
+-                       "value. For SEV-SNP, sev_features must be set to %x.",
+-                       __func__, SVM_SEV_FEAT_SNP_ACTIVE);
+-            return -1;
+-        }
+-        vmsa_check.sev_features = 0;
+-    } else {
+-        if (vmsa_check.sev_features != 0) {
+-            error_setg(errp,
+-                       "%s: sev_features in the VMSA contains an unsupported "
+-                       "value. For SEV-ES and SEV, sev_features must be "
+-                       "set to 0.", __func__);
+-            return -1;
+-        }
++    if (check_sev_features(sev_common, vmsa_check.sev_features, errp) < 0) {
++        return -1;
+     }
++    vmsa_check.sev_features = 0;
+ 
+     if (!buffer_is_zero(&vmsa_check, sizeof(vmsa_check))) {
+         error_setg(errp,
+@@ -1663,6 +1684,25 @@ static int sev_snp_kvm_type(X86ConfidentialGuest *cg)
+     return KVM_X86_SNP_VM;
  }
+ 
++static int sev_init_supported_features(SevCommonState *sev_common, Error **errp)
++{
++    /* Query KVM for the supported set of sev_features */
++    struct kvm_device_attr attr = {
++        .group = KVM_X86_GRP_SEV,
++        .attr = KVM_X86_SEV_VMSA_FEATURES,
++        .addr = (unsigned long)&sev_common->supported_sev_features,
++    };
++    if (kvm_ioctl(kvm_state, KVM_GET_DEVICE_ATTR, &attr) < 0) {
++        error_setg(errp, "%s: failed to query supported sev_features",
++                   __func__);
++        return -1;
++    }
++    if (sev_snp_enabled()) {
++        sev_common->supported_sev_features |= SVM_SEV_FEAT_SNP_ACTIVE;
++    }
++    return 0;
++}
++
+ static int sev_common_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
+ {
+     char *devname;
+@@ -1743,6 +1783,10 @@ static int sev_common_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
+         }
+     }
+ 
++    if (sev_init_supported_features(sev_common, errp) < 0) {
++        return -1;
++    }
++
+     trace_kvm_sev_init();
+     if (x86_klass->kvm_type(X86_CONFIDENTIAL_GUEST(sev_common)) == KVM_X86_DEFAULT_VM) {
+         cmd = sev_es_enabled() ? KVM_SEV_ES_INIT : KVM_SEV_INIT;
+@@ -1750,6 +1794,38 @@ static int sev_common_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
+         ret = sev_ioctl(sev_common->sev_fd, cmd, NULL, &fw_error);
+     } else {
+         struct kvm_sev_init args = { 0 };
++        MachineState *machine = MACHINE(qdev_get_machine());
++
++        /*
++         * If configuration is provided via an IGVM file then the IGVM file
++         * might contain configuration of the initial vcpu context. For SEV
++         * the vcpu context includes the sev_features which should be applied
++         * to the vcpu.
++         *
++         * KVM does not synchronize sev_features from CPU state. Instead it
++         * requires sev_features to be provided as part of this initialization
++         * call which is subsequently automatically applied to the VMSA of
++         * each vcpu.
++         *
++         * The IGVM file is normally processed after initialization. Therefore
++         * we need to pre-process it here to extract sev_features in order to
++         * provide it to KVM_SEV_INIT2. Each cgs_* function that is called by
++         * the IGVM processor detects this pre-process by observing the state
++         * as SEV_STATE_UNINIT.
++         */
++        if (machine->igvm) {
++            if (IGVM_CFG_GET_CLASS(machine->igvm)
++                    ->process(machine->igvm, machine->cgs, errp) == -1) {
++                return -1;
++            }
++            /*
++             * KVM maintains a bitmask of allowed sev_features. This does not
++             * include SVM_SEV_FEAT_SNP_ACTIVE which is set accordingly by KVM
++             * itself. Therefore we need to clear this flag.
++             */
++            args.vmsa_features = sev_common->sev_features &
++                                 ~SVM_SEV_FEAT_SNP_ACTIVE;
++        }
+ 
+         ret = sev_ioctl(sev_common->sev_fd, KVM_SEV_INIT2, &args, &fw_error);
+     }
+@@ -2348,6 +2424,24 @@ static int cgs_set_guest_state(hwaddr gpa, uint8_t *ptr, uint64_t len,
+     SevCommonState *sev_common = SEV_COMMON(MACHINE(qdev_get_machine())->cgs);
+     SevCommonStateClass *klass = SEV_COMMON_GET_CLASS(sev_common);
+ 
++    if (sev_common->state == SEV_STATE_UNINIT) {
++        /* Pre-processing of IGVM file called from sev_common_kvm_init() */
++        if ((cpu_index == 0) && (memory_type == CGS_PAGE_TYPE_VMSA)) {
++            const struct sev_es_save_area *sa =
++                (const struct sev_es_save_area *)ptr;
++            if (len < sizeof(*sa)) {
++                error_setg(errp, "%s: invalid VMSA length encountered",
++                           __func__);
++                return -1;
++            }
++            if (check_sev_features(sev_common, sa->sev_features, errp) < 0) {
++                return -1;
++            }
++            sev_common->sev_features = sa->sev_features;
++        }
++        return 0;
++    }
++
+     if (!sev_enabled()) {
+         error_setg(errp, "%s: attempt to configure guest memory, but SEV "
+                      "is not enabled", __func__);
+@@ -2367,7 +2461,8 @@ static int cgs_set_guest_state(hwaddr gpa, uint8_t *ptr, uint64_t len,
+                        __func__);
+             return -1;
+         }
+-        if (check_vmsa_supported(gpa, (const struct sev_es_save_area *)ptr,
++        if (check_vmsa_supported(sev_common, gpa,
++                                 (const struct sev_es_save_area *)ptr,
+                                  errp) < 0) {
+             return -1;
+         }
+@@ -2421,6 +2516,12 @@ static int cgs_get_mem_map_entry(int index,
+                                  ConfidentialGuestMemoryMapEntry *entry,
+                                  Error **errp)
+ {
++    SevCommonState *sev_common = SEV_COMMON(MACHINE(qdev_get_machine())->cgs);
++    if (sev_common->state == SEV_STATE_UNINIT) {
++        /* Pre-processing of IGVM file called from sev_common_kvm_init() */
++        return 1;
++    }
++
+     if ((index < 0) || (index >= e820_get_num_entries())) {
+         return 1;
+     }
+@@ -2451,6 +2552,12 @@ static int cgs_set_guest_policy(ConfidentialGuestPolicyType policy_type,
+                                 uint32_t policy_data1_size, void *policy_data2,
+                                 uint32_t policy_data2_size, Error **errp)
+ {
++    SevCommonState *sev_common = SEV_COMMON(MACHINE(qdev_get_machine())->cgs);
++    if (sev_common->state == SEV_STATE_UNINIT) {
++        /* Pre-processing of IGVM file called from sev_common_kvm_init() */
++        return 0;
++    }
++
+     if (policy_type != GUEST_POLICY_SEV) {
+         error_setg(errp, "%s: Invalid guest policy type provided for SEV: %d",
+         __func__, policy_type);
 -- 
 2.43.0
 
