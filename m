@@ -2,176 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61E55912CAA
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jun 2024 19:52:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CFAE912CD3
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jun 2024 19:58:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sKiPw-0001OQ-NS; Fri, 21 Jun 2024 13:51:20 -0400
+	id 1sKiTL-0003GF-1M; Fri, 21 Jun 2024 13:54:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dan.j.williams@intel.com>)
- id 1sKiPu-0001OC-Hh
- for qemu-devel@nongnu.org; Fri, 21 Jun 2024 13:51:18 -0400
-Received: from mgamail.intel.com ([198.175.65.9])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dan.j.williams@intel.com>)
- id 1sKiPr-0002yI-HT
- for qemu-devel@nongnu.org; Fri, 21 Jun 2024 13:51:18 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1718992275; x=1750528275;
- h=date:from:to:cc:subject:message-id:references:
- in-reply-to:mime-version;
- bh=SLeii5j5k5vGYEw4iDrnweH4Ox0CgUP8QDAOEhrkh9U=;
- b=ceKYrmfiHDE2zRr/ueYLEHb+3dFi0BMJrXze7mvGiBf4bnP/rLmT/9VP
- ssJYn9Ua6vja1hgLzsS1QsoGI1KJJF/82UAPdppTBxxSVGiyYNZpvfQj1
- Vb6COIIcFYCVCScRJfB9YDC2KrZ8vx6ben4j9JoCBTg6HStKDdBgwrGxw
- yX3FYKLZPOe8Sy/XGzxSap1ysBA/IN1G6TL7wxlIoIKhuYl5l+EDr8n2+
- vvNTwBQOqe8mCVtVR0aTmrLZIEYGn6i4sA4U9JN4vFXqTgioCrr4131Lp
- AUO8Rhg08txLNqtt5xptEaIZqFJXTNsQ936Z6AjWALHlsdde9GRv7yb2Q A==;
-X-CSE-ConnectionGUID: 9/BvhWZCT3CBIGMsInybkQ==
-X-CSE-MsgGUID: GKOGvkPpRd+DIDZBKs45tQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11110"; a="38557252"
-X-IronPort-AV: E=Sophos;i="6.08,255,1712646000"; d="scan'208";a="38557252"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Jun 2024 10:51:10 -0700
-X-CSE-ConnectionGUID: uv8bsZJwRdCXkS2BYLf1Ew==
-X-CSE-MsgGUID: pShUpPRYR/arHZWo8JNNNw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,255,1712646000"; d="scan'208";a="47838398"
-Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
- by orviesa004.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 21 Jun 2024 10:51:10 -0700
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Fri, 21 Jun 2024 10:51:10 -0700
-Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
- orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Fri, 21 Jun 2024 10:51:10 -0700
-Received: from NAM02-BN1-obe.outbound.protection.outlook.com (104.47.51.47) by
- edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Fri, 21 Jun 2024 10:51:09 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=lYApV3Aa+yIcLoR/tYQ7GM24iVEGdgMaFttHZMaWrKSm/9xeZ104dWoC5Q+t3LsdTo8qUEHUr1Wkf8WnyoPUNM8wqIK2VKPG1rEqr6XD581hJrcHAJEAoICEpJzr/k6orSVudHUCeEtdHZYzB0XjhGxwMITWvAde4cBUjCr7arLE7tnj2B/U7Y0O7dRa8rDp74o05YmALhQ6yu+UEomA3Zgvml4cr7JB5aKJlO+en1tm7FgRe1KUKS4MKJ9jI6X3dZ/BHKVebzf96mRI9kSpLj37uDJc1TiLLMAsXdP64YNfMOKJIEgLexLYwl3UQ22RU65f57enK7astJHIyGE5mw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qqsrz5xEx5q/Cn3pzsYEV8OkOpHNIhZ+4o13XXfkuwE=;
- b=l6YJKOREVMb55tFbqafvZkVGT3GX2MVkxNtTF3UiTlYWa+7923hkfpw3Lb3/2Yrzzmgc3fPlU05nVr44jt7EWOkPlzJ0kjXWDVDOLfrRvPFZTuo/Cld30rov/P97kRNRd+zvw+GtqC5Lxvn2w+h1qd27KcVBO9h5SJrs6rpA781tl72+H/5Wz/+ZaDwr+VJr0Z4dRGc9rJkDSQ1P09FVWSd7HgkuMU0wXpHlkOWrPqNNLJH/jCARusA80KuKvm5B7GFtfac4d6ffPn+2Cqbfi7fD+Gd3rmsz9f9LHUkZLaEetH0W7BUmlNWlxWYMUybuy8JQqoKp0G9LIFefnJkMTg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
- by MN2PR11MB4535.namprd11.prod.outlook.com (2603:10b6:208:24e::21)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7698.20; Fri, 21 Jun
- 2024 17:51:07 +0000
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::6b05:74cf:a304:ecd8]) by PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::6b05:74cf:a304:ecd8%6]) with mapi id 15.20.7633.021; Fri, 21 Jun 2024
- 17:51:05 +0000
-Date: Fri, 21 Jun 2024 10:51:02 -0700
-From: Dan Williams <dan.j.williams@intel.com>
-To: Shiyang Ruan <ruansy.fnst@fujitsu.com>, <qemu-devel@nongnu.org>,
- <linux-cxl@vger.kernel.org>
-CC: <jonathan.cameron@huawei.com>, <dan.j.williams@intel.com>,
- <dave@stgolabs.net>, <ira.weiny@intel.com>, <alison.schofield@intel.com>,
- <dave.jiang@intel.com>, <vishal.l.verma@intel.com>
-Subject: Re: [RFC PATCH] cxl: avoid duplicating report from MCE & device
-Message-ID: <6675bd86ea005_57ac29411@dwillia2-xfh.jf.intel.com.notmuch>
-References: <20240618165310.877974-1-ruansy.fnst@fujitsu.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20240618165310.877974-1-ruansy.fnst@fujitsu.com>
-X-ClientProxiedBy: MW4PR04CA0260.namprd04.prod.outlook.com
- (2603:10b6:303:88::25) To PH8PR11MB8107.namprd11.prod.outlook.com
- (2603:10b6:510:256::6)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sKiTE-0003Ev-4C
+ for qemu-devel@nongnu.org; Fri, 21 Jun 2024 13:54:45 -0400
+Received: from smtp-out2.suse.de ([195.135.223.131])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sKiTA-0003JF-Lt
+ for qemu-devel@nongnu.org; Fri, 21 Jun 2024 13:54:43 -0400
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 035781F7F2;
+ Fri, 21 Jun 2024 17:54:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1718992478; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=eKih3/ekCNCGZBJmxj32Xw0Sv30BGcQlrAemKqh4gwc=;
+ b=Kf9oXV670mz6THPlGztwjiscxztiTmCqNsmkPJ4igLB2IygxVNrS3liVX1CFQxyLup8lJb
+ OfROGlOiEt6HTVmSvWM1aeBCwXqSy4jw95xUOBztz1fdguxV7DJUxN4MdofdJ6FeXyTNyY
+ +ECtJ1sQTbhWAGrUepeObugtsQ4Arm0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1718992478;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=eKih3/ekCNCGZBJmxj32Xw0Sv30BGcQlrAemKqh4gwc=;
+ b=ZmuFZjnP9W2wK7vc5ocVxGRUZXWo+bKr1NHiC/uf1crqIw+jOGLbCi5XXGnvFjU7i4BHcZ
+ m6uAwAHBcAd0EpAQ==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1718992478; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=eKih3/ekCNCGZBJmxj32Xw0Sv30BGcQlrAemKqh4gwc=;
+ b=Kf9oXV670mz6THPlGztwjiscxztiTmCqNsmkPJ4igLB2IygxVNrS3liVX1CFQxyLup8lJb
+ OfROGlOiEt6HTVmSvWM1aeBCwXqSy4jw95xUOBztz1fdguxV7DJUxN4MdofdJ6FeXyTNyY
+ +ECtJ1sQTbhWAGrUepeObugtsQ4Arm0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1718992478;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=eKih3/ekCNCGZBJmxj32Xw0Sv30BGcQlrAemKqh4gwc=;
+ b=ZmuFZjnP9W2wK7vc5ocVxGRUZXWo+bKr1NHiC/uf1crqIw+jOGLbCi5XXGnvFjU7i4BHcZ
+ m6uAwAHBcAd0EpAQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C965013AAA;
+ Fri, 21 Jun 2024 17:54:36 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id N5alIly+dWZNawAAD6G6ig
+ (envelope-from <farosas@suse.de>); Fri, 21 Jun 2024 17:54:36 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: qemu-devel@nongnu.org
+Cc: Peter Xu <peterx@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 00/28] Migration patches for 2024-06-21
+Date: Fri, 21 Jun 2024 14:54:06 -0300
+Message-Id: <20240621175434.31180-1-farosas@suse.de>
+X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|MN2PR11MB4535:EE_
-X-MS-Office365-Filtering-Correlation-Id: 729ca789-495d-48b0-823a-08dc921ab92a
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230037|376011|366013|1800799021;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?NkQJqCVLHPrJHIKnD65qDWDD/kAxESNDGEJMjJvwExHOeUx4w0iixlrYlRlp?=
- =?us-ascii?Q?A+QxDtujffwRWwJn6jgZz6Otjme+mKzHCWGGtc2UuYRMFiSu0+Kzx9866FyS?=
- =?us-ascii?Q?GECSDY+BLMgNuwnf2dc1KNRiBTvVPMuW0qwMShECxDjIX0H6dvpTcxWF/Q9w?=
- =?us-ascii?Q?Z6kPLpgf4668SvxBOLRyBoJ95twJ0BrGI92FTSRflmDghcA6HycmZS/5LeRs?=
- =?us-ascii?Q?8wSwBtOc7PecmZxYI61+L9Zb0g43S/HFIWe3w1yqLj+XpK1MRMWIpLoLNHof?=
- =?us-ascii?Q?pF6h+JUdAIoV3AWRd+o0VT37GNTInCvduwEBOv0VTkASU8SkgHNAamuVWviT?=
- =?us-ascii?Q?cSN4zh+qLbC3qzDgxWf5Bi3bwli6q8ESkaCqxTK5WsEm3/L75NBVCaNB5M3u?=
- =?us-ascii?Q?u3gJNCQMKTf9XmweBQN0Sk1oldo2czz/RZ/Lqab7XB193GUyP7yhfu920/XE?=
- =?us-ascii?Q?NEkO5ZZvl86C0VWXrhMX3CvF2yzz+X82W/xzocASYW1qSNaZxLYM9IseMg96?=
- =?us-ascii?Q?43py+A33Qm+sXNWkibVhwSKv0xmj2R5NBhL2/BlJBgR+xTQLDOBX4bLy84Q0?=
- =?us-ascii?Q?7aQ4tpOKlhfRMF3jEnWDDj+D7sWB2vpx36EHU2kLJMwg4I4ZMjwWvbqm9HdN?=
- =?us-ascii?Q?pAJWVUHtYViu2eTRgLJ/C8Z3aynyGAjXcTuYI/d50Tl3V69/iwQun5FffKu9?=
- =?us-ascii?Q?9h6fIFaI2/5MVMyZAAcqjApD/r1nHq3QCXiDZFWKTqHK2wkbYI0xBXPdeHn5?=
- =?us-ascii?Q?cR5zy6CHKzMZKbCXeGC0+o/YKqD4pw1XZUivoxF58UbmKPZNiT2xEkwKy+gp?=
- =?us-ascii?Q?MHieLSZAbKVQOgKTqX4SrXSSdKKDsBqeOyB5Q/gypAz2UleEOrJzpttuygED?=
- =?us-ascii?Q?+Ipeb1kumB8FuO1pL5XTL8BduVgAhHiswkZp0wYc64Gykpnx5/Sj0fUw/mEU?=
- =?us-ascii?Q?1E6sC8Im5MCZuhbXIhW7C6rmmpTpqmhvQbIa25D5aqGvZ62OEi9wJQTfYIXS?=
- =?us-ascii?Q?+HBSRzLazGr7Qc7WCE1DrTpNDOSjBK7YIHbZq/VBbm3ypDb6BUFZdfuDtYKe?=
- =?us-ascii?Q?+k8LCMLOul75WtqlXWX1KW8/g5WTljrzi9kPtvE2/rA7zg5gIwTAGAYb41L+?=
- =?us-ascii?Q?VSI9Qo8nqbw/V05eELnile2z/sejaNGrSHtlGT2dq/X8tkxfBD5HKyER3xvP?=
- =?us-ascii?Q?GxDEakKNjDXG6oPVKo+6KUzyzFlhTox7fKF8pF+6766C6F7JLkqQ8AOaXbof?=
- =?us-ascii?Q?wEPsOBSvbDoj1CwV4dR6?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PH8PR11MB8107.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230037)(376011)(366013)(1800799021); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?HxbKeavvIaa7QgACgLcqE0bVidB4iC7fVZfSbaDzqbHi+FnZtgGPKMsvJz6n?=
- =?us-ascii?Q?ZiA3+xV+GVQ/aZ0acHHVzWnfsMUU45LkRtkBHfcCd6jPu9KkAvmr/jqqu9bV?=
- =?us-ascii?Q?XYoNsCFdXD+BZv4nJiA7WUPofQqmb+u8N9ncAUT3I5EsoBtNkwUVDa5k9G1Y?=
- =?us-ascii?Q?YXZuw+UYpIpaNWWlWz+NSClf6dwukNuVLAKpLYOJZ5uQTSSu1eAxwBZGqn6n?=
- =?us-ascii?Q?COVY6yJne8gPAwDEqhlBC72PEYxb468smwjo0NVv20FvJG+sekv4QmmqfIix?=
- =?us-ascii?Q?eJDB5TarId3S3VNAA2kROQREHE1H0Mc7uHz+eDvFcPWgP1ZUg1mLGqwAnOes?=
- =?us-ascii?Q?UIl914rE5+lPycAe3aAdH9EKArB1VViK12eWZa5LtWymMVEAWtdYjYtOyAJ6?=
- =?us-ascii?Q?/sV6QRFqLsky5PvaEYpPq7Mv24SW0pkHtWHWfeDZflRVoZi3KnpUInyMgsgw?=
- =?us-ascii?Q?h9eT1XWRg271E1jDFbWTVRlGRzDxJB9CeuoHzBS2Uar3zerTlHx/ynnKlM4N?=
- =?us-ascii?Q?lKpdzVpZJdMumhmr+Uo2KqT3Y+zexTImIbJivHdeglSjFECX/8StllrInnz2?=
- =?us-ascii?Q?UDINLg/Mv6psw1QfsZfu0HHGDxDdbqcZX27o9VTQJdhhwfK2YT2Dxcru+lNh?=
- =?us-ascii?Q?e9ESRvJtybd6k7GGu65Y+KSSuRrmBWAPBfAg0mx5FAw23weao+9xTRRTHeCl?=
- =?us-ascii?Q?9bvJ7fivd1p6LvzyXAJ5p8ci8vIvVbyepUvAz5pcTfgBtldRFZTnwTJIzX6T?=
- =?us-ascii?Q?U3O7IfFWYtVT2oqMSGjLkya2Q15wflHkZiUVvv1PUAfgpoVYGyUnq17ypxxT?=
- =?us-ascii?Q?xvgDzipQfopb/acfkpRltomqAMNB7iAQ6evS7X7BIvUGrVyjwlYMdgAH7M00?=
- =?us-ascii?Q?cXl4UZ8l3ekg2whHxssCN9k20+kZzXLQEihT4WmrWar+vYlLm9LBNu9aWK9M?=
- =?us-ascii?Q?DjOmf7qeWvwZPXmxNcrdrv42RjbdZLCtkIsOQBMeQRABGEiNfVG4VXGNYrrs?=
- =?us-ascii?Q?ijE2M11fkp9ykn0aAw1wi5FkAnvH0ktsbp6KkvsE5MDb6ke5QjFIlVj/QOvB?=
- =?us-ascii?Q?vVvVrj5EaIhRD2urAuOZPzsiEya+a9GX/icZCmfIzMXFawUSdZA/HVX7Grn5?=
- =?us-ascii?Q?MmfDr8rFjJRcGhH9YuGFXN7uJZ1EYhiyDPYL5tnfinvJn0VCdMJ0uz+Pvufs?=
- =?us-ascii?Q?YxkIgeXnmacqjUCdOPxhvRLAP7bCpfdzKa/QtCNP7PxRqBB0U0lykQhs57va?=
- =?us-ascii?Q?CgNZgMfOl79AAU4D0Kk0caZ7zxf5sScPs00cxyQ9sp+lQbL1/hy8iP8/qxNq?=
- =?us-ascii?Q?VhjE+p+XjV5UElabyZxkccmF0HAtmN7luECy68OZ9f2T/VTWxedwfkFrEEPB?=
- =?us-ascii?Q?2/2gDL5li4vJXcrxpqmi6e2sVWMo/2g/F+Ul7hSGLvtRxHQ7BHEWJXj/ed+m?=
- =?us-ascii?Q?jSYjBS8Gtl4Y/RoHaWXWsLT8Az6KtsidzQjNGb7tJnXY9D61rMI+K/E776iR?=
- =?us-ascii?Q?TVX4vlKH+VtlL2Jzs3GlaAUdHnXVI/Sr0VRZvwD+ITj8z+U2S/CApcfNIpOR?=
- =?us-ascii?Q?66SIeKjpfcX5tOQxzc8XobGrJ6SgehPl5bJ2S9wvsfevGzHMj+evP6Z5QAgm?=
- =?us-ascii?Q?lw=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 729ca789-495d-48b0-823a-08dc921ab92a
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jun 2024 17:51:05.4714 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 2E3BBSfNjYXtaJWwjcSBYCg3r3f7cgs6H0yrrpJ/gu28BWEPMcM1R5CPPjTkiKJtqxPrcw0vJk2Yb3qdz+qkJ72fnM3/MUmWFh5JQnAKsNs=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR11MB4535
-X-OriginatorOrg: intel.com
-Received-SPF: pass client-ip=198.175.65.9;
- envelope-from=dan.j.williams@intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-3.30 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+ NEURAL_HAM_LONG(-1.00)[-1.000]; MID_CONTAINS_FROM(1.00)[];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ FUZZY_BLOCKED(0.00)[rspamd.com];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; ARC_NA(0.00)[];
+ FROM_HAS_DN(0.00)[]; RCVD_TLS_ALL(0.00)[];
+ RCPT_COUNT_THREE(0.00)[3]; FROM_EQ_ENVFROM(0.00)[];
+ MIME_TRACE(0.00)[0:+]; RCVD_COUNT_TWO(0.00)[2];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; TO_DN_SOME(0.00)[]
+X-Spam-Score: -3.30
+Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
 X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.145,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -189,107 +111,106 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Shiyang Ruan wrote:
-> Background:
-> Since CXL device is a memory device, while CPU consumes a poison page of 
-> CXL device, it always triggers a MCE by interrupt (INT18), no matter 
-> which-First path is configured.  This is the first report.  Then 
-> currently, in FW-First path, the poison event is transferred according 
-> to the following process: CXL device -> firmware -> OS:ACPI->APEI->GHES 
->  -> CPER -> trace report.  This is the second one.  These two reports
-> are indicating the same poisoning page, which is the so-called "duplicate
-> report"[1].  And the memory_failure() handling I'm trying to add in
-> OS-First path could also be another duplicate report.
-> 
-> Hope the flow below could make it easier to understand:
-> CPU accesses bad memory on CXL device, then
->  -> MCE (INT18), *always* report (1)
->  -> * FW-First (implemented now)
->       -> CXL device -> FW
-> 	      -> OS:ACPI->APEI->GHES->CPER -> trace report (2.a)
->     * OS-First (not implemented yet, I'm working on it)
->       -> CXL device -> MSI
-> 	      -> OS:CXL driver -> memory_failure() (2.b)
-> so, the (1) and (2.a/b) are duplicated.
-> 
-> (I didn't get response in my reply for [1] while I have to make patch to
-> solve this problem, so please correct me if my understanding is wrong.)
+The following changes since commit 02d9c38236cf8c9826e5c5be61780c4444cb4ae0:
 
-The CPU MCE may not be in the loop. Consider the case of patrol scrub,
-or device-DMA accessing poison. In that case the device will signal a
-component event and the CPU may never issue the MCE.
+  Merge tag 'pull-tcg-20240619' of https://gitlab.com/rth7680/qemu into staging (2024-06-19 14:00:39 -0700)
 
-What is missing for me from this description is *why* does the duplicate
-report matter in practice? If all that happens is that the kernel
-repeats the lookup to offline the page and set the HWPoison bit, is that
-duplicated work worth adding more tracking?
+are available in the Git repository at:
 
-> This patch adds a new notifier_block and MCE_PRIO_CXL, for CXL memdev
-> to check whether the current poison page has been reported (if yes,
-> stop the notifier chain, won't call the following memory_failure()
-> to report), into `x86_mce_decoder_chain`.  In this way, if the poison
-> page already handled(recorded and reported) in (1) or (2), the other one
-> won't duplicate the report.  The record could be clear when
-> cxl_clear_poison() is called.
-> 
-> [1] https://lore.kernel.org/linux-cxl/664d948fb86f0_e8be294f8@dwillia2-mobl3.amr.corp.intel.com.notmuch/
-> 
-> Signed-off-by: Shiyang Ruan <ruansy.fnst@fujitsu.com>
-> ---
->  arch/x86/include/asm/mce.h |   1 +
->  drivers/cxl/core/mbox.c    | 130 +++++++++++++++++++++++++++++++++++++
->  drivers/cxl/core/memdev.c  |   6 +-
->  drivers/cxl/cxlmem.h       |   3 +
->  4 files changed, 139 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/x86/include/asm/mce.h b/arch/x86/include/asm/mce.h
-> index dfd2e9699bd7..d8109c48e7d9 100644
-> --- a/arch/x86/include/asm/mce.h
-> +++ b/arch/x86/include/asm/mce.h
-> @@ -182,6 +182,7 @@ enum mce_notifier_prios {
->  	MCE_PRIO_NFIT,
->  	MCE_PRIO_EXTLOG,
->  	MCE_PRIO_UC,
-> +	MCE_PRIO_CXL,
->  	MCE_PRIO_EARLY,
->  	MCE_PRIO_CEC,
->  	MCE_PRIO_HIGHEST = MCE_PRIO_CEC
-> diff --git a/drivers/cxl/core/mbox.c b/drivers/cxl/core/mbox.c
-> index 2626f3fff201..0eb3c5401e81 100644
-> --- a/drivers/cxl/core/mbox.c
-> +++ b/drivers/cxl/core/mbox.c
-> @@ -4,6 +4,8 @@
->  #include <linux/debugfs.h>
->  #include <linux/ktime.h>
->  #include <linux/mutex.h>
-> +#include <linux/notifier.h>
-> +#include <asm/mce.h>
->  #include <asm/unaligned.h>
->  #include <cxlpci.h>
->  #include <cxlmem.h>
-> @@ -880,6 +882,9 @@ void cxl_event_trace_record(const struct cxl_memdev *cxlmd,
->  		if (cxlr)
->  			hpa = cxl_trace_hpa(cxlr, cxlmd, dpa);
->  
-> +		if (hpa != ULLONG_MAX && cxl_mce_recorded(hpa))
-> +			return;
-> +
->  		if (event_type == CXL_CPER_EVENT_GEN_MEDIA)
->  			trace_cxl_general_media(cxlmd, type, cxlr, hpa,
->  						&evt->gen_media);
-> @@ -1408,6 +1413,127 @@ int cxl_poison_state_init(struct cxl_memdev_state *mds)
->  }
->  EXPORT_SYMBOL_NS_GPL(cxl_poison_state_init, CXL);
->  
-> +struct cxl_mce_record {
-> +	struct list_head node;
-> +	u64 hpa;
-> +};
-> +LIST_HEAD(cxl_mce_records);
-> +DEFINE_MUTEX(cxl_mce_mutex);
+  https://gitlab.com/farosas/qemu.git tags/migration-20240621-pull-request
 
-I would recommend an xarray for this use case as that already has its
-own internal locking and efficient memory allocation for new nodes.
+for you to fetch changes up to 04b09de16d78cf2d163ca65d7c6d161bf2baceb6:
 
-However, the "why" question needs to be answered first.
+  migration: Remove unused VMSTATE_ARRAY_TEST() macro (2024-06-21 14:37:58 -0300)
+
+----------------------------------------------------------------
+Migration pull request
+
+- Fabiano's fix for fdset + file migration truncating the migration
+  file
+
+- Fabiano's fdset + direct-io support for mapped-ram
+
+- Peter's various cleanups (multifd sync, thread names, migration
+  states, tests)
+
+- Peter's new migration state postcopy-recover-setup
+
+- Philippe's unused vmstate macro cleanup
+
+----------------------------------------------------------------
+
+Fabiano Rosas (15):
+  migration: Drop reference to QIOChannel if file seeking fails
+  migration: Fix file migration with fdset
+  tests/qtest/migration: Fix file migration offset check
+  tests/qtest/migration: Add a precopy file test with fdset
+  monitor: Introduce monitor_fdset_*free
+  monitor: Stop removing non-duplicated fds
+  monitor: Simplify fdset and fd removal
+  monitor: Report errors from monitor_fdset_dup_fd_add
+  io: Stop using qemu_open_old in channel-file
+  migration: Add direct-io parameter
+  migration/multifd: Add direct-io support
+  tests/qtest/migration: Add tests for file migration with direct-io
+  monitor: fdset: Match against O_DIRECT
+  migration: Add documentation for fdset with multifd + file
+  tests/qtest/migration: Add a test for mapped-ram with passing of fds
+
+Peter Xu (12):
+  monitor: Drop monitor_fdset_dup_fd_find/_remove()
+  migration/multifd: Avoid the final FLUSH in complete()
+  migration: Rename thread debug names
+  migration: Use MigrationStatus instead of int
+  migration: Cleanup incoming migration setup state change
+  migration/postcopy: Add postcopy-recover-setup phase
+  migration/docs: Update postcopy recover session for SETUP phase
+  tests/migration-tests: Drop most WIN32 ifdefs for postcopy failure
+    tests
+  tests/migration-tests: Always enable migration events
+  tests/migration-tests: migration_event_wait()
+  tests/migration-tests: Verify postcopy-recover-setup status
+  tests/migration-tests: Cover postcopy failure on reconnect
+
+Philippe Mathieu-Daudé (1):
+  migration: Remove unused VMSTATE_ARRAY_TEST() macro
+
+ docs/devel/migration/main.rst       |  24 +-
+ docs/devel/migration/mapped-ram.rst |   6 +-
+ docs/devel/migration/postcopy.rst   |  29 +-
+ include/migration/vmstate.h         |  10 -
+ include/monitor/monitor.h           |   3 +-
+ include/qemu/osdep.h                |   2 +
+ io/channel-file.c                   |   8 +-
+ migration/colo.c                    |   2 +-
+ migration/file.c                    |  45 ++-
+ migration/file.h                    |   1 -
+ migration/migration-hmp-cmds.c      |  11 +
+ migration/migration.c               | 121 +++++--
+ migration/migration.h               |   9 +-
+ migration/multifd.c                 |   6 +-
+ migration/options.c                 |  35 +++
+ migration/options.h                 |   1 +
+ migration/postcopy-ram.c            |  10 +-
+ migration/postcopy-ram.h            |   3 +
+ migration/ram.c                     |   4 -
+ migration/savevm.c                  |   6 +-
+ monitor/fds.c                       |  96 +++---
+ monitor/hmp.c                       |   2 -
+ monitor/monitor-internal.h          |   1 -
+ monitor/monitor.c                   |   1 -
+ monitor/qmp.c                       |   2 -
+ qapi/migration.json                 |  25 +-
+ stubs/fdset.c                       |   7 +-
+ tests/qtest/libqtest.c              |  15 +-
+ tests/qtest/libqtest.h              |   2 +
+ tests/qtest/migration-helpers.c     |  76 ++++-
+ tests/qtest/migration-helpers.h     |  10 +
+ tests/qtest/migration-test.c        | 470 +++++++++++++++++++++++++---
+ util/osdep.c                        |  34 +-
+ 33 files changed, 838 insertions(+), 239 deletions(-)
+
+-- 
+2.35.3
+
 
