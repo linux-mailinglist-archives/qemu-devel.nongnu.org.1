@@ -2,81 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12EA9912821
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jun 2024 16:40:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC58E91282B
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jun 2024 16:42:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sKfQZ-0006qH-4p; Fri, 21 Jun 2024 10:39:47 -0400
+	id 1sKfSd-0000vs-Ey; Fri, 21 Jun 2024 10:41:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1sKfQV-0006pn-F9
- for qemu-devel@nongnu.org; Fri, 21 Jun 2024 10:39:43 -0400
-Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+ id 1sKfSX-0000vX-EX
+ for qemu-devel@nongnu.org; Fri, 21 Jun 2024 10:41:49 -0400
+Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1sKfQT-0007yG-TF
- for qemu-devel@nongnu.org; Fri, 21 Jun 2024 10:39:43 -0400
-Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-70661cd46d2so148007b3a.3
- for <qemu-devel@nongnu.org>; Fri, 21 Jun 2024 07:39:41 -0700 (PDT)
+ id 1sKfSV-00005w-PC
+ for qemu-devel@nongnu.org; Fri, 21 Jun 2024 10:41:49 -0400
+Received: by mail-pl1-x630.google.com with SMTP id
+ d9443c01a7336-1f9d9b57b90so12671475ad.0
+ for <qemu-devel@nongnu.org>; Fri, 21 Jun 2024 07:41:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1718980780; x=1719585580; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=+1bsxXTyJYNTiYjX7+F9Hoal/1vE9r9yDkUQkjviuNk=;
- b=SD08RSKwB0AQc4UbyLAwuSvM/Gh4p7iO+ZDm9E04lT62HkgMzQDh7M49oO/fTV9R0a
- m2JD9xQF6iwbYSdrRimRngJ9kpncSAGlaAb5qRnKFkJLjU79Xs+eeCuG+LFjRMhx0TyX
- VrE1G58HuynNxbhqhmzS7oU8wnFhpT7juLyXTliSqxgaOq9yeKdYw+ZcgnM4nxq2SGsA
- BZ6zvzd6/OUOnWUx4kdSGjHFBBLWpxy3A5XuOadhD8UoDZWQfsPDkxL/9DA+BOb4tQ26
- 8G7PxY/aGnT8UTwC15az8FQPxrRjfbq69DixB17Or8kVgl/jHXRrzEqdAfBlBVFc5aCQ
- sbLQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718980780; x=1719585580;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=linaro.org; s=google; t=1718980906; x=1719585706; darn=nongnu.org;
+ h=content-transfer-encoding:content-language:in-reply-to:mime-version
+ :user-agent:date:message-id:from:references:cc:to:subject:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+1bsxXTyJYNTiYjX7+F9Hoal/1vE9r9yDkUQkjviuNk=;
- b=RxL4eC9p0ZJ3OQz5bD/+B6agCXxWgg0dCDLgRU+i44zNNfwfD4pjsMq9V6He87SHqK
- q8g2ffEV/J6UloHwnmsuLnOfWL7k71SXmK7y88xxwRTHg8A3W3eaqZvcybZRs/mAHDiL
- wr4tklDm0PqpwHpQWFNpnPGYsc+RxLxC7D6GrSaBN4K9GUS8f0S+QSv0fA94AIzi+wWA
- 7KmndmJDbu/UcMHQ9eJKtLHCRA7zKQmJs2s8w3zxrc0Vm4INpa2NV5/aNfgwr5WdxWHW
- ZWbGihYU27kcS17bmq2WzLbmp3D/fiHsK/wg8wfSiK5lSLTH3ioCjzsrdawvGBiKAT2N
- 3QhQ==
-X-Gm-Message-State: AOJu0Yzf8g2YAjVKdcBul8Tgm3pwz1fof36zT0LRixQo5UDgx/uXEHjs
- NlCrk3FAJTj6piUAUFk31ydhGRIPZGDm56ysHI4UdPxCZJTHmKic76twdQArv1XKoMvHzwlwqqV
- W7qI=
-X-Google-Smtp-Source: AGHT+IH8BLxLJ54xeKY1YClhznEvR5IvrJ2TLCmTEZE+sUd/SfoBumF+gup9ZGdUgxUXz76aB6aTlw==
-X-Received: by 2002:aa7:9294:0:b0:706:616d:2215 with SMTP id
- d2e1a72fcca58-706616d235bmr476590b3a.21.1718980779902; 
- Fri, 21 Jun 2024 07:39:39 -0700 (PDT)
-Received: from amd.. ([2804:7f0:b401:1654:3e7c:3fff:fe7a:e83b])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7065130e8e2sm1466513b3a.215.2024.06.21.07.39.37
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 21 Jun 2024 07:39:39 -0700 (PDT)
+ bh=2EadQnRtkxnuKs9n7EVh0RBW5rPvMo6y9WTGkbjtPRQ=;
+ b=Ar6XBMscMkGyrSvQ1uZ16CIidypzA1dmm+NUbjzS5XFZ8zg8g1G/WggTTgk3FODRU7
+ oiltyoRE5YGkagTR36LICGYl2F5vJzfOsGTdRjC5+48bQB7XO5hlAy9+9e+XrwUXId6I
+ M7M7Xc41Lb772sYZiIrcoQDkv49Yedo+Ul2JmuvguSe+LDC207njC95zT2fr1pcFEu7y
+ cP3pIGPHvMbVinaEgE8gin9tA30LPpVl/Q1sqcfOJNjRz/50dZq6OE0gC4s6bZaxkHHY
+ JfYp6vWHBdxKTzhHnvCuj/0RHMSK/njpYk0rVlwyiSq+Jkup2kIhqdk0qloP/Rdqwi1e
+ 2SyA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1718980906; x=1719585706;
+ h=content-transfer-encoding:content-language:in-reply-to:mime-version
+ :user-agent:date:message-id:from:references:cc:to:subject
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=2EadQnRtkxnuKs9n7EVh0RBW5rPvMo6y9WTGkbjtPRQ=;
+ b=r8oAiiH6kSGUjThIjrFFhjS7YM8JgI7JYjPhFH22hYRoxzpl+UGTEgeYimAzOtpl+h
+ uafyi49J8kM0aakP/8VG8nsh6vxlx5ELN8y0gpbzgrWIjU1x6QviWFfD/KP325uGUrcc
+ 4uiNxMB+Saj9ebhFCopA/L2A0K9mLa2VZiVhHSbERUx5e2ovDf4NQ6UoRF5lmagEjVi8
+ 8ojerYIqVC1vP1thoAvtcBECkNgDFLNIUjo91x2lxFaDO5X02ChVp+YUP8hAU3vbo7Qo
+ D6yP73NsQhiJ/mN2wByI1awL6loVXRu8mcmTL0Gyb405YMLPEAMkCrz3oZnnk3ddsFs3
+ /Ccw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUMzOUuXnZPLq91y/660IgLeB72SKrVQ6h/A3wmuuj9gE7dqwo2b7dSMECGxJaLr+l05pt1r/z4QwDWyM4yuJnlxDUIzGc=
+X-Gm-Message-State: AOJu0YyYFjBTI/slNGUtcoPvgSmqee70Gae3Tda4Mqq4AbDuRvTpWF0P
+ HDr5sAtMR3/So65OmPKFdVbl4kx7897u6xqeA0EIoa1XwM+cOuH2f9qBjFnuGlrFKvZbo5HY306
+ H
+X-Google-Smtp-Source: AGHT+IHXuHhxqOIhzmYF9zcL0hNBVe8xGod9J24jOhhlX5oJqsWPGVmyhwZEJJ4UavTBi7sft2B4pA==
+X-Received: by 2002:a17:903:1248:b0:1f8:3c5d:9eb with SMTP id
+ d9443c01a7336-1f9aa3b1488mr104263575ad.7.1718980906349; 
+ Fri, 21 Jun 2024 07:41:46 -0700 (PDT)
+Received: from [192.168.0.102] (200-207-104-144.dsl.telesp.net.br.
+ [200.207.104.144]) by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-1f9eb3c591bsm14816985ad.165.2024.06.21.07.41.44
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 21 Jun 2024 07:41:46 -0700 (PDT)
+Subject: Re: [PATCH 1/2] target/arm: Move initialization of debug ID registers
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org,
+ alex.bennee@linaro.org
+Cc: philmd@linaro.org, peter.maydell@linaro.org
+References: <20240620181352.3590086-1-gustavo.romero@linaro.org>
+ <20240620181352.3590086-2-gustavo.romero@linaro.org>
+ <2af6449a-f4c2-422c-a92b-cfb11a5ae2d5@linaro.org>
 From: Gustavo Romero <gustavo.romero@linaro.org>
-To: qemu-devel@nongnu.org, alex.bennee@linaro.org, richard.henderson@linaro.org
-Cc: philmd@linaro.org,
-	peter.maydell@linaro.org,
-	gustavo.romero@linaro.org
-Subject: [PATCH v2 2/2] target/arm: Enable FEAT_Debugv8p8 for -cpu max
-Date: Fri, 21 Jun 2024 14:39:03 +0000
-Message-Id: <20240621143903.3598230-3-gustavo.romero@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240621143903.3598230-1-gustavo.romero@linaro.org>
-References: <20240621143903.3598230-1-gustavo.romero@linaro.org>
+Message-ID: <c9cb3219-b55a-e05a-7253-3ff270bb58fc@linaro.org>
+Date: Fri, 21 Jun 2024 11:41:42 -0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
+In-Reply-To: <2af6449a-f4c2-422c-a92b-cfb11a5ae2d5@linaro.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
- envelope-from=gustavo.romero@linaro.org; helo=mail-pf1-x429.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
+ envelope-from=gustavo.romero@linaro.org; helo=mail-pl1-x630.google.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.465,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -94,55 +100,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Enable FEAT_Debugv8p8 for max CPU. This feature is out of scope for QEMU
-since it concerns the external debug interface for JTAG, but is
-mandatory in Armv8.8 implementations, hence it is reported as supported
-in the ID registers.
+Hi Richard,
 
-Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
----
- target/arm/tcg/cpu32.c | 6 +++---
- target/arm/tcg/cpu64.c | 2 +-
- 2 files changed, 4 insertions(+), 4 deletions(-)
+On 6/20/24 3:21 PM, Richard Henderson wrote:
+> On 6/20/24 11:13, Gustavo Romero wrote:
+>> @@ -1268,7 +1268,10 @@ void aarch64_max_tcg_initfn(Object *obj)
+>>       t = FIELD_DP64(t, ID_AA64SMFR0, FA64, 1);     /* FEAT_SME_FA64 */
+>>       cpu->isar.id_aa64smfr0 = t;
+>> -    /* Replicate the same data to the 32-bit id registers.  */
+>> +    /*
+>> +     * Replicate the same values from the 32-bit max CPU to the 32-bit ID
+>> +     * registers.
+>> +     */
+>>       aa32_max_features(cpu);
+> 
+> I think the previous comment is more accurate.
+> 
+> There is no separate "32-bit max CPU". There is one "max CPU", which supports both 32-bit and 64-bit modes, and thus has both 32-bit and 64-bit ID registers.
+I see. In v2 I reverted to the previous comment. Thanks a lot for the review.
 
-diff --git a/target/arm/tcg/cpu32.c b/target/arm/tcg/cpu32.c
-index b155a0136f..a1273a73a3 100644
---- a/target/arm/tcg/cpu32.c
-+++ b/target/arm/tcg/cpu32.c
-@@ -82,8 +82,8 @@ void aa32_max_features(ARMCPU *cpu)
-     cpu->isar.id_pfr2 = t;
- 
-     t = cpu->isar.id_dfr0;
--    t = FIELD_DP32(t, ID_DFR0, COPDBG, 9);        /* FEAT_Debugv8p4 */
--    t = FIELD_DP32(t, ID_DFR0, COPSDBG, 9);       /* FEAT_Debugv8p4 */
-+    t = FIELD_DP32(t, ID_DFR0, COPDBG, 10);       /* FEAT_Debugv8p8 */
-+    t = FIELD_DP32(t, ID_DFR0, COPSDBG, 10);      /* FEAT_Debugv8p8 */
-     t = FIELD_DP32(t, ID_DFR0, PERFMON, 6);       /* FEAT_PMUv3p5 */
-     cpu->isar.id_dfr0 = t;
- 
-@@ -93,7 +93,7 @@ void aa32_max_features(ARMCPU *cpu)
-     t = 0x00008000;
-     t = FIELD_DP32(t, DBGDIDR, SE_IMP, 1);
-     t = FIELD_DP32(t, DBGDIDR, NSUHD_IMP, 1);
--    t = FIELD_DP32(t, DBGDIDR, VERSION, 6);       /* Armv8 debug */
-+    t = FIELD_DP32(t, DBGDIDR, VERSION, 10);      /* FEAT_Debugv8p8 */
-     t = FIELD_DP32(t, DBGDIDR, CTX_CMPS, 1);
-     t = FIELD_DP32(t, DBGDIDR, BRPS, 5);
-     t = FIELD_DP32(t, DBGDIDR, WRPS, 3);
-diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
-index 71e1bfcd4e..fe232eb306 100644
---- a/target/arm/tcg/cpu64.c
-+++ b/target/arm/tcg/cpu64.c
-@@ -1253,7 +1253,7 @@ void aarch64_max_tcg_initfn(Object *obj)
-     cpu->isar.id_aa64zfr0 = t;
- 
-     t = cpu->isar.id_aa64dfr0;
--    t = FIELD_DP64(t, ID_AA64DFR0, DEBUGVER, 9);  /* FEAT_Debugv8p4 */
-+    t = FIELD_DP64(t, ID_AA64DFR0, DEBUGVER, 10); /* FEAT_Debugv8p8 */
-     t = FIELD_DP64(t, ID_AA64DFR0, PMUVER, 6);    /* FEAT_PMUv3p5 */
-     t = FIELD_DP64(t, ID_AA64DFR0, HPMN0, 1);     /* FEAT_HPMN0 */
-     cpu->isar.id_aa64dfr0 = t;
--- 
-2.34.1
 
+Cheers,
+Gustavo
+
+> The rest of the patch looks good.
+> 
+> 
+> r~
 
