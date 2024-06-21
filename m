@@ -2,97 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91805912CC6
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jun 2024 19:57:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01E4F912CC2
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jun 2024 19:57:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sKiTb-0003SH-EN; Fri, 21 Jun 2024 13:55:07 -0400
+	id 1sKiTc-0003Sf-DX; Fri, 21 Jun 2024 13:55:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sKiTY-0003Oq-Dj
- for qemu-devel@nongnu.org; Fri, 21 Jun 2024 13:55:04 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sKiTa-0003RU-1d
+ for qemu-devel@nongnu.org; Fri, 21 Jun 2024 13:55:06 -0400
 Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sKiTW-0003Lo-Ke
- for qemu-devel@nongnu.org; Fri, 21 Jun 2024 13:55:04 -0400
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sKiTY-0003MD-Cz
+ for qemu-devel@nongnu.org; Fri, 21 Jun 2024 13:55:05 -0400
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 74EEB1FB89;
- Fri, 21 Jun 2024 17:55:01 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 2534E1FB84;
+ Fri, 21 Jun 2024 17:55:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1718992501; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1718992503; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=2sG9YOGinTBqaVO3rdKf22gmGfh8tPzqmsvDWpjg9ZU=;
- b=KIqih6GHfx0X4O4cjAHtaIOur0tJRhCeRK10CA4MAS/fgsLu4F1qVkvZod3OxzmKmPFcW6
- jMj0g9HaYvrxi4hN43kMurWcUxHNMNQVBhBL5W15oD+tvo2BAeMCozNYyurKbk+xKzR+qI
- 1xHhgaAqE4HooZ+tbK+EUg8uKN3+qxs=
+ bh=MkrcRNBtpDTsthhpbC7Y92TOWA0h/KuMNbfGLxSxh9U=;
+ b=mNXBhqvcvzN2T3kQ3scZLiUQeXSGfSZADZjTDtPfmIyf8FZCtHABMGhlJtx1fNxzfzUy+o
+ BwZ9kLRz90nrHDbW1Rgj2GmhqmsGJDc5PIQL3YAa2hm84XR04kXs64dRT9Q7Fj0uV1DYxT
+ v74NWBZwn14wDJ+S3g4kVkFvKuTlzUw=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1718992501;
+ s=susede2_ed25519; t=1718992503;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=2sG9YOGinTBqaVO3rdKf22gmGfh8tPzqmsvDWpjg9ZU=;
- b=4AjDnz1jh7fd4q3J0Rh5n5H8ZQiuGA/E2Zj9QmDZrsR/QyVpUWI87hMceXODrKtQfmrlQf
- lEUdgwhKnSoep6Ag==
+ bh=MkrcRNBtpDTsthhpbC7Y92TOWA0h/KuMNbfGLxSxh9U=;
+ b=syU3YvuY/FLvVg0k5J1qO9joSZdeYMzs3wz3QC5wZ5aIyCVy6DWPL+rCOLyIIHtL7Fj3C6
+ WTIU9qtzNEScpMBg==
 Authentication-Results: smtp-out2.suse.de;
-	none
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=mNXBhqvc;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=syU3YvuY
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1718992501; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1718992503; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=2sG9YOGinTBqaVO3rdKf22gmGfh8tPzqmsvDWpjg9ZU=;
- b=KIqih6GHfx0X4O4cjAHtaIOur0tJRhCeRK10CA4MAS/fgsLu4F1qVkvZod3OxzmKmPFcW6
- jMj0g9HaYvrxi4hN43kMurWcUxHNMNQVBhBL5W15oD+tvo2BAeMCozNYyurKbk+xKzR+qI
- 1xHhgaAqE4HooZ+tbK+EUg8uKN3+qxs=
+ bh=MkrcRNBtpDTsthhpbC7Y92TOWA0h/KuMNbfGLxSxh9U=;
+ b=mNXBhqvcvzN2T3kQ3scZLiUQeXSGfSZADZjTDtPfmIyf8FZCtHABMGhlJtx1fNxzfzUy+o
+ BwZ9kLRz90nrHDbW1Rgj2GmhqmsGJDc5PIQL3YAa2hm84XR04kXs64dRT9Q7Fj0uV1DYxT
+ v74NWBZwn14wDJ+S3g4kVkFvKuTlzUw=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1718992501;
+ s=susede2_ed25519; t=1718992503;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=2sG9YOGinTBqaVO3rdKf22gmGfh8tPzqmsvDWpjg9ZU=;
- b=4AjDnz1jh7fd4q3J0Rh5n5H8ZQiuGA/E2Zj9QmDZrsR/QyVpUWI87hMceXODrKtQfmrlQf
- lEUdgwhKnSoep6Ag==
+ bh=MkrcRNBtpDTsthhpbC7Y92TOWA0h/KuMNbfGLxSxh9U=;
+ b=syU3YvuY/FLvVg0k5J1qO9joSZdeYMzs3wz3QC5wZ5aIyCVy6DWPL+rCOLyIIHtL7Fj3C6
+ WTIU9qtzNEScpMBg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4985A13AAA;
- Fri, 21 Jun 2024 17:55:00 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E106213AAA;
+ Fri, 21 Jun 2024 17:55:01 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id GLcxBHS+dWZNawAAD6G6ig
- (envelope-from <farosas@suse.de>); Fri, 21 Jun 2024 17:55:00 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id yPQ3KXW+dWZNawAAD6G6ig
+ (envelope-from <farosas@suse.de>); Fri, 21 Jun 2024 17:55:01 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 13/28] tests/qtest/migration: Add tests for file migration with
- direct-io
-Date: Fri, 21 Jun 2024 14:54:19 -0300
-Message-Id: <20240621175434.31180-14-farosas@suse.de>
+Subject: [PULL 14/28] monitor: fdset: Match against O_DIRECT
+Date: Fri, 21 Jun 2024 14:54:20 -0300
+Message-Id: <20240621175434.31180-15-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20240621175434.31180-1-farosas@suse.de>
 References: <20240621175434.31180-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Score: -2.80
-X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+X-Rspamd-Queue-Id: 2534E1FB84
+X-Spam-Score: -3.01
+X-Spamd-Result: default: False [-3.01 / 50.00]; BAYES_HAM(-3.00)[100.00%];
  MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
- R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-1.000];
- MIME_GOOD(-0.10)[text/plain]; RCVD_VIA_SMTP_AUTH(0.00)[];
- TO_DN_SOME(0.00)[]; ARC_NA(0.00)[]; MIME_TRACE(0.00)[0:+];
- FUZZY_BLOCKED(0.00)[rspamd.com]; RCPT_COUNT_THREE(0.00)[3];
- FROM_HAS_DN(0.00)[];
+ R_MISSING_CHARSET(0.50)[];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ MX_GOOD(-0.01)[]; ARC_NA(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[]; MIME_TRACE(0.00)[0:+];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; RCVD_COUNT_TWO(0.00)[2];
+ FROM_EQ_ENVFROM(0.00)[]; RCVD_TLS_ALL(0.00)[];
+ FUZZY_BLOCKED(0.00)[rspamd.com];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FROM_EQ_ENVFROM(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- RCVD_COUNT_TWO(0.00)[2]; RCVD_TLS_ALL(0.00)[]
+ DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+ RCPT_COUNT_THREE(0.00)[3]; DKIM_TRACE(0.00)[suse.de:+]
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
 Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
  envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
 X-Spam_score_int: -43
@@ -117,184 +124,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The tests are only allowed to run in systems that know about the
-O_DIRECT flag and in filesystems which support it.
+We're about to enable the use of O_DIRECT in the migration code and
+due to the alignment restrictions imposed by filesystems we need to
+make sure the flag is only used when doing aligned IO.
 
-Note: this also brings back migrate_set_parameter_bool() which went
-away when we removed the compression tests. I copied it verbatim.
+The migration will do parallel IO to different regions of a file, so
+we need to use more than one file descriptor. Those cannot be obtained
+by duplicating (dup()) since duplicated file descriptors share the
+file status flags, including O_DIRECT. If one migration channel does
+unaligned IO while another sets O_DIRECT to do aligned IO, the
+filesystem would fail the unaligned operation.
+
+The add-fd QMP command along with the fdset code are specifically
+designed to allow the user to pass a set of file descriptors with
+different access flags into QEMU to be later fetched by code that
+needs to alternate between those flags when doing IO.
+
+Extend the fdset matching to behave the same with the O_DIRECT flag.
 
 Reviewed-by: Peter Xu <peterx@redhat.com>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- tests/qtest/migration-helpers.c | 44 +++++++++++++++++++++++
- tests/qtest/migration-helpers.h |  8 +++++
- tests/qtest/migration-test.c    | 62 +++++++++++++++++++++++++++++++++
- 3 files changed, 114 insertions(+)
+ monitor/fds.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/tests/qtest/migration-helpers.c b/tests/qtest/migration-helpers.c
-index ce6d6615b5..0ac49ceb54 100644
---- a/tests/qtest/migration-helpers.c
-+++ b/tests/qtest/migration-helpers.c
-@@ -18,6 +18,7 @@
- #include "qapi/error.h"
- #include "qapi/qmp/qlist.h"
- #include "qemu/cutils.h"
-+#include "qemu/memalign.h"
- 
- #include "migration-helpers.h"
- 
-@@ -473,3 +474,46 @@ void migration_test_add(const char *path, void (*fn)(void))
-     qtest_add_data_func_full(path, test, migration_test_wrapper,
-                              migration_test_destroy);
- }
+diff --git a/monitor/fds.c b/monitor/fds.c
+index d8c6b395b0..b5416b5b5d 100644
+--- a/monitor/fds.c
++++ b/monitor/fds.c
+@@ -424,6 +424,11 @@ int monitor_fdset_dup_fd_add(int64_t fdset_id, int flags, Error **errp)
+         int fd = -1;
+         int dup_fd;
+         int mon_fd_flags;
++        int mask = O_ACCMODE;
 +
 +#ifdef O_DIRECT
-+/*
-+ * Probe for O_DIRECT support on the filesystem. Since this is used
-+ * for tests, be conservative, if anything fails, assume it's
-+ * unsupported.
-+ */
-+bool probe_o_direct_support(const char *tmpfs)
-+{
-+    g_autofree char *filename = g_strdup_printf("%s/probe-o-direct", tmpfs);
-+    int fd, flags = O_CREAT | O_RDWR | O_TRUNC | O_DIRECT;
-+    void *buf;
-+    ssize_t ret, len;
-+    uint64_t offset;
-+
-+    fd = open(filename, flags, 0660);
-+    if (fd < 0) {
-+        unlink(filename);
-+        return false;
-+    }
-+
-+    /*
-+     * Using 1MB alignment as conservative choice to satisfy any
-+     * plausible architecture default page size, and/or filesystem
-+     * alignment restrictions.
-+     */
-+    len = 0x100000;
-+    offset = 0x100000;
-+
-+    buf = qemu_try_memalign(len, len);
-+    g_assert(buf);
-+
-+    ret = pwrite(fd, buf, len, offset);
-+    unlink(filename);
-+    g_free(buf);
-+
-+    if (ret < 0) {
-+        return false;
-+    }
-+
-+    return true;
-+}
++        mask |= O_DIRECT;
 +#endif
-diff --git a/tests/qtest/migration-helpers.h b/tests/qtest/migration-helpers.h
-index 1339835698..50095fca4a 100644
---- a/tests/qtest/migration-helpers.h
-+++ b/tests/qtest/migration-helpers.h
-@@ -54,5 +54,13 @@ char *find_common_machine_version(const char *mtype, const char *var1,
-                                   const char *var2);
- char *resolve_machine_version(const char *alias, const char *var1,
-                               const char *var2);
-+#ifdef O_DIRECT
-+bool probe_o_direct_support(const char *tmpfs);
-+#else
-+static inline bool probe_o_direct_support(const char *tmpfs)
-+{
-+    return false;
-+}
-+#endif
- void migration_test_add(const char *path, void (*fn)(void));
- #endif /* MIGRATION_HELPERS_H */
-diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index eb4d5948e0..5c41d1b70e 100644
---- a/tests/qtest/migration-test.c
-+++ b/tests/qtest/migration-test.c
-@@ -408,6 +408,38 @@ static void migrate_set_parameter_str(QTestState *who, const char *parameter,
-     migrate_check_parameter_str(who, parameter, value);
- }
  
-+static long long migrate_get_parameter_bool(QTestState *who,
-+                                           const char *parameter)
-+{
-+    QDict *rsp;
-+    int result;
-+
-+    rsp = qtest_qmp_assert_success_ref(
-+        who, "{ 'execute': 'query-migrate-parameters' }");
-+    result = qdict_get_bool(rsp, parameter);
-+    qobject_unref(rsp);
-+    return !!result;
-+}
-+
-+static void migrate_check_parameter_bool(QTestState *who, const char *parameter,
-+                                        int value)
-+{
-+    int result;
-+
-+    result = migrate_get_parameter_bool(who, parameter);
-+    g_assert_cmpint(result, ==, value);
-+}
-+
-+static void migrate_set_parameter_bool(QTestState *who, const char *parameter,
-+                                      int value)
-+{
-+    qtest_qmp_assert_success(who,
-+                             "{ 'execute': 'migrate-set-parameters',"
-+                             "'arguments': { %s: %i } }",
-+                             parameter, value);
-+    migrate_check_parameter_bool(who, parameter, value);
-+}
-+
- static void migrate_ensure_non_converge(QTestState *who)
- {
-     /* Can't converge with 1ms downtime + 3 mbs bandwidth limit */
-@@ -2235,6 +2267,33 @@ static void test_multifd_file_mapped_ram(void)
-     test_file_common(&args, true);
- }
+         if (mon_fdset->id != fdset_id) {
+             continue;
+@@ -437,7 +442,7 @@ int monitor_fdset_dup_fd_add(int64_t fdset_id, int flags, Error **errp)
+                 return -1;
+             }
  
-+static void *multifd_mapped_ram_dio_start(QTestState *from, QTestState *to)
-+{
-+    migrate_multifd_mapped_ram_start(from, to);
-+
-+    migrate_set_parameter_bool(from, "direct-io", true);
-+    migrate_set_parameter_bool(to, "direct-io", true);
-+
-+    return NULL;
-+}
-+
-+static void test_multifd_file_mapped_ram_dio(void)
-+{
-+    g_autofree char *uri = g_strdup_printf("file:%s/%s", tmpfs,
-+                                           FILE_TEST_FILENAME);
-+    MigrateCommon args = {
-+        .connect_uri = uri,
-+        .listen_uri = "defer",
-+        .start_hook = multifd_mapped_ram_dio_start,
-+    };
-+
-+    if (!probe_o_direct_support(tmpfs)) {
-+        g_test_skip("Filesystem does not support O_DIRECT");
-+        return;
-+    }
-+
-+    test_file_common(&args, true);
-+}
- 
- static void test_precopy_tcp_plain(void)
- {
-@@ -3674,6 +3733,9 @@ int main(int argc, char **argv)
-     migration_test_add("/migration/multifd/file/mapped-ram/live",
-                        test_multifd_file_mapped_ram_live);
- 
-+    migration_test_add("/migration/multifd/file/mapped-ram/dio",
-+                       test_multifd_file_mapped_ram_dio);
-+
- #ifdef CONFIG_GNUTLS
-     migration_test_add("/migration/precopy/unix/tls/psk",
-                        test_precopy_unix_tls_psk);
+-            if ((flags & O_ACCMODE) == (mon_fd_flags & O_ACCMODE)) {
++            if ((flags & mask) == (mon_fd_flags & mask)) {
+                 fd = mon_fdset_fd->fd;
+                 break;
+             }
 -- 
 2.35.3
 
