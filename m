@@ -2,100 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57480912CCD
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jun 2024 19:58:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9EB2912CB8
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jun 2024 19:56:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sKiTL-0003GU-Kb; Fri, 21 Jun 2024 13:54:51 -0400
+	id 1sKiTM-0003H0-9E; Fri, 21 Jun 2024 13:54:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sKiTF-0003F3-Ce
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sKiTF-0003F5-FG
  for qemu-devel@nongnu.org; Fri, 21 Jun 2024 13:54:45 -0400
-Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
+Received: from smtp-out2.suse.de ([195.135.223.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sKiTC-0003JL-Vv
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sKiTD-0003JW-TH
  for qemu-devel@nongnu.org; Fri, 21 Jun 2024 13:54:45 -0400
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 9EEC821B37;
- Fri, 21 Jun 2024 17:54:39 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id BCCDA1F835;
+ Fri, 21 Jun 2024 17:54:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1718992479; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
+ t=1718992481; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=kmKfQt7layowIRW2SpPGoIDYLqLdV6aEOQgXewASHS4=;
- b=ZregTxxUVCn32KM9TlpS/PkPQALhQLvDPmfWX9x/Jp7ORF25Gb3bp9DIbn2L0l49NKZlp2
- bUdOnaBaUkRBGBnDNEBf4LT1+V8fbMCSA6gaUi6faAZwo/K3mjNpuhvaVsqUv/SpLgmzW+
- OR/LVqX8fGDK7/30RAj1JZB+cXJ2vUk=
+ bh=hKJ7OgowTW5xAwPODDARLGeRGWa3PEf/OcdtH34X+gM=;
+ b=I16D8+MxbdxjvZjCKRssOzipIz61C3cRDvaw76rUyqaJYGPcYi667jBLysLFCZgwUv0I70
+ 8zTjZwDm6PjlmjOVR6nbMliMe/cOeoBdIKqQd9h0Xs/klmX1rjca/MwzzsSpJd02zP+Xnn
+ pIOssOpa6mc4j/SUdfDDzNFpcm7lKU8=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1718992479;
+ s=susede2_ed25519; t=1718992481;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
+ mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=kmKfQt7layowIRW2SpPGoIDYLqLdV6aEOQgXewASHS4=;
- b=ft+PBB988k0PM32rzQyj4j5Vt7H/RuYVFIaW15MIH9plWQE7LzdSHoBspXjNuEuzlX+Q9D
- EIa0rc3JKG1IcHBA==
-Authentication-Results: smtp-out1.suse.de;
+ bh=hKJ7OgowTW5xAwPODDARLGeRGWa3PEf/OcdtH34X+gM=;
+ b=SKaxUYlxr3/QdljMpNxAqLBHvX2dF3fccNbjiS3yq4wWvj9ALVC38eB18lYDxcbQxsP4KB
+ GeL0knzceV3nTECw==
+Authentication-Results: smtp-out2.suse.de;
 	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1718992479; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
+ t=1718992481; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=kmKfQt7layowIRW2SpPGoIDYLqLdV6aEOQgXewASHS4=;
- b=ZregTxxUVCn32KM9TlpS/PkPQALhQLvDPmfWX9x/Jp7ORF25Gb3bp9DIbn2L0l49NKZlp2
- bUdOnaBaUkRBGBnDNEBf4LT1+V8fbMCSA6gaUi6faAZwo/K3mjNpuhvaVsqUv/SpLgmzW+
- OR/LVqX8fGDK7/30RAj1JZB+cXJ2vUk=
+ bh=hKJ7OgowTW5xAwPODDARLGeRGWa3PEf/OcdtH34X+gM=;
+ b=I16D8+MxbdxjvZjCKRssOzipIz61C3cRDvaw76rUyqaJYGPcYi667jBLysLFCZgwUv0I70
+ 8zTjZwDm6PjlmjOVR6nbMliMe/cOeoBdIKqQd9h0Xs/klmX1rjca/MwzzsSpJd02zP+Xnn
+ pIOssOpa6mc4j/SUdfDDzNFpcm7lKU8=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1718992479;
+ s=susede2_ed25519; t=1718992481;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
+ mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=kmKfQt7layowIRW2SpPGoIDYLqLdV6aEOQgXewASHS4=;
- b=ft+PBB988k0PM32rzQyj4j5Vt7H/RuYVFIaW15MIH9plWQE7LzdSHoBspXjNuEuzlX+Q9D
- EIa0rc3JKG1IcHBA==
+ bh=hKJ7OgowTW5xAwPODDARLGeRGWa3PEf/OcdtH34X+gM=;
+ b=SKaxUYlxr3/QdljMpNxAqLBHvX2dF3fccNbjiS3yq4wWvj9ALVC38eB18lYDxcbQxsP4KB
+ GeL0knzceV3nTECw==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6B8CB13AAA;
- Fri, 21 Jun 2024 17:54:38 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 163DC13AAA;
+ Fri, 21 Jun 2024 17:54:39 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id GMGmDF6+dWZNawAAD6G6ig
- (envelope-from <farosas@suse.de>); Fri, 21 Jun 2024 17:54:38 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id EDdsM1++dWZNawAAD6G6ig
+ (envelope-from <farosas@suse.de>); Fri, 21 Jun 2024 17:54:39 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 01/28] migration: Drop reference to QIOChannel if file seeking
- fails
-Date: Fri, 21 Jun 2024 14:54:07 -0300
-Message-Id: <20240621175434.31180-2-farosas@suse.de>
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Prasad Pandit <pjp@fedoraproject.org>
+Subject: [PULL 02/28] migration: Fix file migration with fdset
+Date: Fri, 21 Jun 2024 14:54:08 -0300
+Message-Id: <20240621175434.31180-3-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20240621175434.31180-1-farosas@suse.de>
 References: <20240621175434.31180-1-farosas@suse.de>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[99.99%];
+X-Spam-Score: -3.30
+X-Spamd-Result: default: False [-3.30 / 50.00]; BAYES_HAM(-3.00)[100.00%];
  MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
- R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-1.000];
- MIME_GOOD(-0.10)[text/plain]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- ARC_NA(0.00)[]; FUZZY_BLOCKED(0.00)[rspamd.com];
- MIME_TRACE(0.00)[0:+];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ RCVD_TLS_ALL(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ ARC_NA(0.00)[]; MIME_TRACE(0.00)[0:+];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- RCVD_TLS_ALL(0.00)[]; RCPT_COUNT_THREE(0.00)[3];
- FROM_EQ_ENVFROM(0.00)[]; TO_DN_SOME(0.00)[];
- RCVD_COUNT_TWO(0.00)[2]; RCVD_VIA_SMTP_AUTH(0.00)[];
- FROM_HAS_DN(0.00)[]
-X-Spam-Score: -2.80
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
- envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
+ FUZZY_BLOCKED(0.00)[rspamd.com]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
+ FROM_EQ_ENVFROM(0.00)[]; RCVD_COUNT_TWO(0.00)[2];
+ RCPT_COUNT_FIVE(0.00)[5]
+Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -118,27 +119,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We forgot to drop the reference to the QIOChannel in the error path of
-the offset adjustment. Do it now.
+When the "file:" migration support was added we missed the special
+case in the qemu_open_old implementation that allows for a particular
+file name format to be used to refer to a set of file descriptors that
+have been previously provided to QEMU via the add-fd QMP command.
 
+When using this fdset feature, we should not truncate the migration
+file because being given an fd means that the management layer is in
+control of the file and will likely already have some data written to
+it. This is further indicated by the presence of the 'offset'
+argument, which indicates the start of the region where QEMU is
+allowed to write.
+
+Fix the issue by replacing the O_TRUNC flag on open by an ftruncate
+call, which will take the offset into consideration.
+
+Fixes: 385f510df5 ("migration: file URI offset")
+Suggested-by: Daniel P. Berrangé <berrange@redhat.com>
+Reviewed-by: Prasad Pandit <pjp@fedoraproject.org>
 Reviewed-by: Peter Xu <peterx@redhat.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- migration/file.c | 1 +
- 1 file changed, 1 insertion(+)
+ migration/file.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
 diff --git a/migration/file.c b/migration/file.c
-index ab18ba505a..2bb8c64092 100644
+index 2bb8c64092..a903710f06 100644
 --- a/migration/file.c
 +++ b/migration/file.c
-@@ -94,6 +94,7 @@ void file_start_outgoing_migration(MigrationState *s,
+@@ -84,12 +84,19 @@ void file_start_outgoing_migration(MigrationState *s,
  
-     ioc = QIO_CHANNEL(fioc);
-     if (offset && qio_channel_io_seek(ioc, offset, SEEK_SET, errp) < 0) {
-+        object_unref(OBJECT(fioc));
+     trace_migration_file_outgoing(filename);
+ 
+-    fioc = qio_channel_file_new_path(filename, O_CREAT | O_WRONLY | O_TRUNC,
+-                                     0600, errp);
++    fioc = qio_channel_file_new_path(filename, O_CREAT | O_WRONLY, 0600, errp);
+     if (!fioc) {
          return;
      }
-     qio_channel_set_name(ioc, "migration-file-outgoing");
+ 
++    if (ftruncate(fioc->fd, offset)) {
++        error_setg_errno(errp, errno,
++                         "failed to truncate migration file to offset %" PRIx64,
++                         offset);
++        object_unref(OBJECT(fioc));
++        return;
++    }
++
+     outgoing_args.fname = g_strdup(filename);
+ 
+     ioc = QIO_CHANNEL(fioc);
 -- 
 2.35.3
 
