@@ -2,94 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF03F91263A
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C3FE912639
 	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jun 2024 15:00:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sKdr0-0000p0-Ms; Fri, 21 Jun 2024 08:58:58 -0400
+	id 1sKdr2-0000pX-6i; Fri, 21 Jun 2024 08:59:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1sKdqy-0000oR-7q
- for qemu-devel@nongnu.org; Fri, 21 Jun 2024 08:58:56 -0400
+ id 1sKdqz-0000or-Gq
+ for qemu-devel@nongnu.org; Fri, 21 Jun 2024 08:58:57 -0400
 Received: from fout6-smtp.messagingengine.com ([103.168.172.149])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1sKdqw-0000y7-Gm
- for qemu-devel@nongnu.org; Fri, 21 Jun 2024 08:58:55 -0400
-Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
- by mailfout.nyi.internal (Postfix) with ESMTP id E120313801AE;
- Fri, 21 Jun 2024 08:58:53 -0400 (EDT)
+ id 1sKdqy-0000yh-0i
+ for qemu-devel@nongnu.org; Fri, 21 Jun 2024 08:58:57 -0400
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+ by mailfout.nyi.internal (Postfix) with ESMTP id 2F76913801CA;
+ Fri, 21 Jun 2024 08:58:55 -0400 (EDT)
 Received: from mailfrontend1 ([10.202.2.162])
- by compute1.internal (MEProxy); Fri, 21 Jun 2024 08:58:53 -0400
+ by compute5.internal (MEProxy); Fri, 21 Jun 2024 08:58:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
  cc:cc:content-transfer-encoding:content-type:content-type:date
  :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
- :references:reply-to:subject:subject:to:to; s=fm3; t=1718974733;
- x=1719061133; bh=qJmSM1/+QGx4fJmM9mp+Dx7mU1S35gUOBnlt8xJMvx8=; b=
- bhm/ZD+6xfmp1P+uWvpDIuU19W6GER7CcEplKybyfBSjE1mS59rZsfqDOGj6x/6v
- sLs+cA49+0vJ6gjgmvEeGqxfEvGGx2yZccbn3metNd5kCUtBFpZrdP3bp5w5bx7j
- hMO42ql/fj89EYuumoFeDLglbm7wCP0YXo4lBPv3aoS/HrJULUIBQQQcxfFDf6Fw
- hjkgN0xwolOKuySc0tsptd9L74K4k35+19uMJHnsK8q1wFuBWY680oWmYGtA/qgG
- cbJ45uUlYk4W7SwCY5N0bYd6aZFOdHwa2zY72OgM4BxEJCK7H+fkgAVSh2Nr2blh
- OcVMDjLtoIH6gMvnwf8NcQ==
+ :references:reply-to:subject:subject:to:to; s=fm3; t=1718974735;
+ x=1719061135; bh=gT2jLym9c6kJFJ+5mmTK3eAZwFetlVf+TwMnw12Lex4=; b=
+ DgLsni8E5ia0IiiCB95PNetLn34LXf+bvh+rI1Uk9PBE1Z7na1WStTaZTNHmxCh4
+ cUm3fUjtMBDwgydXOSKRpjFH2My5sFt0ltTslG8B0FdVvR/YADI7yTcLjoKYbT5d
+ gj/BTGXKbPxFSn38pB37IZ4TrisjPqsfgDj8sMYtfUNp2P86Gf2YkIeQjpTwk1Y3
+ wATn/m0Q5k4MVpneuqg3Di7dDONIuFyn8gPC8q8KEESmcodcQ42AUrBVpgZYJw1l
+ 7PhsoVlIJjINuSLa13NPyR2FDey7ZjM3X6lZ286pxs8wxJQF43CM+2d9uqze7eIO
+ 86YIji2t7Zfb1xsUvm1hNw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
  messagingengine.com; h=cc:cc:content-transfer-encoding
  :content-type:content-type:date:date:feedback-id:feedback-id
  :from:from:in-reply-to:in-reply-to:message-id:mime-version
  :references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
- :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1718974733; x=
- 1719061133; bh=qJmSM1/+QGx4fJmM9mp+Dx7mU1S35gUOBnlt8xJMvx8=; b=O
- TNOecKMoEHJYxkuTFqN22SZqGZP21QsnRK8T/jESh/FXPhZNxI38qFIHZ+4cW+LY
- 5gjkVCIS2ezx/M6SkQae7KenEyHE2d5UfpVVUjuoN0zWlQCq8ltkKifFMvlm7AnF
- dADrrfpo5ZH/VepMWdrmqIGqsuAkNUGTBhhnJP/w7RMjsceLOVIzq6vUyFOZ5OfK
- ERTDd9z4rtKC5kFxfbAuD4fR4Q+JyJQhAus8449BiwjwUjAtqUUP7wl6ayKZVYvE
- 8xPlIWL/7lTuCL7NO5l9EFr+pwnJ0Ir58d7DC0qcSSRuOfncN7ksfaqP5P858HKf
- nbGST0Z0R7cL1R9LKe0Rg==
-X-ME-Sender: <xms:DXl1Ztgnvbed47o55_NNMW3cvc9wmL9V1sg8qTXWVgVJrw9_lJ5dHA>
- <xme:DXl1ZiAjbIAtyOV3aXhDv30y-KKiTdz0CVXo9rV4MjGxCF-btD37N3CaLNseCIH1E
- SF4jvrHkQ7fXBce_40>
-X-ME-Received: <xmr:DXl1ZtEMeu43Axd6FvkRmRVB6qcKk6FeBtyLah-hnsO64oAQAK2Issk>
+ :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1718974735; x=
+ 1719061135; bh=gT2jLym9c6kJFJ+5mmTK3eAZwFetlVf+TwMnw12Lex4=; b=K
+ UqbMLptVBw85uzN5pou2ci/Igivf0Nex/P7yCUk9Eh2I7JSmgmcVz6be0YRACByt
+ VvZguJ/9EQM8tomwkK9EIFILVypTwfFTzXkMys0BhkkgxrIvIJJeQtPKwUf8/L4l
+ SKNMEBzJ25ZThkOcyGx8/ZikL6vkusNJIeRiORji21hOB01GHStixzX4cZ9mRsJn
+ RcPx/tXtz6Hz6kuJjzQiPLkJ/z2azG9LhUFo3IHM+bFtDba2i5xnJzyaO6KQzxuB
+ fFXWvdByZBveD/QtotkbSGnEMdHfVC8G+HeSd95QbelK9KBUTzbQyu6EcUiXFEMp
+ ga/9o3Xlap3PZguoA9Diw==
+X-ME-Sender: <xms:Dnl1Zsq1sKeKSyLTyIMfm2bMNYRoYhKWZAIe4eOGVkPTQyz9DBkkXA>
+ <xme:Dnl1Zir_vjPL_ubv2xu9g3qX9cYP5t2jkbE8POMsOt4RmEZxsvvq1yU0kwUuI1phE
+ fNfjQFGTBCfRH75GNs>
+X-ME-Received: <xmr:Dnl1ZhO5qj9CLlxFTJy-M1a1BwFuvPlHSIme_MxBLWh7Vlx75CKfV_8>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrfeefgedgheekucetufdoteggodetrfdotf
  fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
  uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
  cujfgurhephfffufggtgfgkfhfjgfvvefosehtjeertdertdejnecuhfhrohhmpeflihgr
  gihunhcujggrnhhguceojhhirgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomheqne
- cuggftrfgrthhtvghrnhepvedujefhfffhveekhfffkeetvefgteejkeeutdduieehieeg
- feejtdelveejtedunecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvg
- hrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehjihgrgihunhdrhigrnhhg
- sehflhihghhorghtrdgtohhm
-X-ME-Proxy: <xmx:DXl1ZiSnCoUFo1_1vVFGNtRpCo0YXAVBbVMjJLGmXdg9EeOv1dp4ng>
- <xmx:DXl1ZqxGJ8GpYVTj58Nia2iUWzqZmCFub6G47eco1Mc1Tejvq6z5oQ>
- <xmx:DXl1Zo47rlZ8qYqXGICYkcuL6rU6sQBB6Y9nyaEUmLSCKfu5QK_ipg>
- <xmx:DXl1ZvyANu_iH4-Wkf2Z_qG3HwIkERgmXQre7u00YcbmTiR1_iwJgg>
- <xmx:DXl1ZhqvTog-u-aZnHOUyFu_HNenf0ElSawtVBuT0pkicaQqrCabcxgJ>
+ cuggftrfgrthhtvghrnhepvdekiefhfeevkeeuveetfeelffekgedugefhtdduudeghfeu
+ veegffegudekjeelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilh
+ hfrhhomhepjhhirgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomh
+X-ME-Proxy: <xmx:D3l1Zj5LX9puHgh8fdFZfDDIrH4J4MIHyHFwbdIP3xFKO_EEh5oATQ>
+ <xmx:D3l1Zr6BmPWgdLUDBDsTuKuZQU_QYYlI2EH_CWKBUI-zvI82UGpq-A>
+ <xmx:D3l1ZjiOjnYobgxOzRGYZJSMLs2cNErC6qzPaNiKd3DNtmMrRQxOHg>
+ <xmx:D3l1Zl5vtqzz3vo3JgXB_CRWTm6V3nCTLhVGdLOgb-4uSZP3lDlwDQ>
+ <xmx:D3l1ZoshP8BFWhuZ6Lczn6Uf1Qvi-nrQmvLhWuySjTjneUOowiVyOAsG>
 Feedback-ID: ifd894703:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 21 Jun 2024 08:58:52 -0400 (EDT)
+ 21 Jun 2024 08:58:54 -0400 (EDT)
 From: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Date: Fri, 21 Jun 2024 13:58:42 +0100
-Subject: [PATCH 2/3] hw/mips/loongson3_virt: Fix condition of IPI IOCSR
- connection
+Date: Fri, 21 Jun 2024 13:58:43 +0100
+Subject: [PATCH 3/3] linux-user/mips64: Use MIPS64R2-generic as default CPU
+ type
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240621-loongson3-ipi-follow-v1-2-c6e73f2b2844@flygoat.com>
+Message-Id: <20240621-loongson3-ipi-follow-v1-3-c6e73f2b2844@flygoat.com>
 References: <20240621-loongson3-ipi-follow-v1-0-c6e73f2b2844@flygoat.com>
 In-Reply-To: <20240621-loongson3-ipi-follow-v1-0-c6e73f2b2844@flygoat.com>
 To: qemu-devel@nongnu.org
 Cc: Huacai Chen <chenhuacai@kernel.org>, 
  =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
- Laurent Vivier <laurent@vivier.eu>, Jiaxun Yang <jiaxun.yang@flygoat.com>
+ Laurent Vivier <laurent@vivier.eu>, Jiaxun Yang <jiaxun.yang@flygoat.com>, 
+ stable@vger.kernel.org
 X-Mailer: b4 0.14.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=864;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=844;
  i=jiaxun.yang@flygoat.com; h=from:subject:message-id;
- bh=cofTbte/00M4qpTM7HECtdZQ9j7Dm2Dzsyya+FjtljI=;
- b=owGbwMvMwCXmXMhTe71c8zDjabUkhrTSSi6/yNUdVzZ9nv4p4s1d4Y3eM7Im3dZdd+xdVvMuo
- bs9exeZdZSyMIhxMciKKbKECCj1bWi8uOD6g6w/MHNYmUCGMHBxCsBEWnkZ/hc1sH2b4nBEZQFr
- dtnf9dcqlt9s1J3WE/rC7M4ie8adJusYGQ6f4jb/tTJI3WDbygYBH1nx4C1ZR96ply6U3e9+dl7
- HcUYA
+ bh=g3k3nWcLqtTiZ2wMMOFp6to4dK8fiS1Lxyx+pASHj8Y=;
+ b=owGbwMvMwCXmXMhTe71c8zDjabUkhrTSSi6ez3d7Uu/nHj7EMr/H6rCYlG9dZEprx5RZ/QXxW
+ Z/nX9vVUcrCIMbFICumyBIioNS3ofHigusPsv7AzGFlAhnCwMUpABNpYmBk2GJ90zO+1X51U8WU
+ 46fkffwNPGbv+MVfM1dMUf/73ES+v4wMG37amlyqeNutc1g/6uMxjTkiF0Q9c2NtIzY0tzE8bdj
+ CCQA=
 X-Developer-Key: i=jiaxun.yang@flygoat.com; a=openpgp;
  fpr=980379BEFEBFBF477EA04EF9C111949073FC0F67
 Received-SPF: pass client-ip=103.168.172.149;
@@ -116,27 +116,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This fixes Coverity CID-1547264.
+5KEf is some what not standard compliant by having non-functional
+FCSR condition fields. This is causing glibc test failure in
+qemu-user.
 
-Link: https://lore.kernel.org/qemu-devel/752417ad-ab72-4fed-8d1f-af41f15bc225@app.fastmail.com/
+Use MIPS64R2-generic as our default type, which have maximum CPU
+features.
+
+Cc: stable@vger.kernel.org
 Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
 ---
- hw/mips/loongson3_virt.c | 2 +-
+ linux-user/mips64/target_elf.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/mips/loongson3_virt.c b/hw/mips/loongson3_virt.c
-index 528be84bf970..80e953512a85 100644
---- a/hw/mips/loongson3_virt.c
-+++ b/hw/mips/loongson3_virt.c
-@@ -575,7 +575,7 @@ static void mips_loongson3_virt_init(MachineState *machine)
-         cpu_mips_clock_init(cpu);
-         qemu_register_reset(main_cpu_reset, cpu);
- 
--        if (ipi) {
-+        if (!kvm_enabled()) {
-             hwaddr base = ((hwaddr)node << 44) + virt_memmap[VIRT_IPI].base;
-             base += core * 0x100;
-             qdev_connect_gpio_out(ipi, i, cpu->env.irq[6]);
+diff --git a/linux-user/mips64/target_elf.h b/linux-user/mips64/target_elf.h
+index 5f2f2df29f7f..82bb7e8b1cbf 100644
+--- a/linux-user/mips64/target_elf.h
++++ b/linux-user/mips64/target_elf.h
+@@ -15,6 +15,6 @@ static inline const char *cpu_get_model(uint32_t eflags)
+     if ((eflags & EF_MIPS_MACH) == EF_MIPS_MACH_5900) {
+         return "R5900";
+     }
+-    return "5KEf";
++    return "MIPS64R2-generic";
+ }
+ #endif
 
 -- 
 2.43.0
