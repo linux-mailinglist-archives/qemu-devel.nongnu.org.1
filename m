@@ -2,76 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24395911DD0
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jun 2024 10:07:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA753911DE0
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jun 2024 10:08:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sKZIF-0005Kv-PH; Fri, 21 Jun 2024 04:06:47 -0400
+	id 1sKZIK-0005do-Ce; Fri, 21 Jun 2024 04:06:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sKZIC-0005It-8c
- for qemu-devel@nongnu.org; Fri, 21 Jun 2024 04:06:44 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sKZIH-0005Vc-R4
+ for qemu-devel@nongnu.org; Fri, 21 Jun 2024 04:06:49 -0400
+Received: from mail-lj1-x22a.google.com ([2a00:1450:4864:20::22a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sKZIA-0008Ji-2J
- for qemu-devel@nongnu.org; Fri, 21 Jun 2024 04:06:44 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-364ff42999eso1301282f8f.3
- for <qemu-devel@nongnu.org>; Fri, 21 Jun 2024 01:06:41 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sKZIF-0008Kb-L2
+ for qemu-devel@nongnu.org; Fri, 21 Jun 2024 04:06:49 -0400
+Received: by mail-lj1-x22a.google.com with SMTP id
+ 38308e7fff4ca-2ec50a5e230so1567201fa.0
+ for <qemu-devel@nongnu.org>; Fri, 21 Jun 2024 01:06:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1718957199; x=1719561999; darn=nongnu.org;
+ d=linaro.org; s=google; t=1718957205; x=1719562005; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=5/RgyhQBn7T7/7BrixgsTi+BC7Dln0yA+HQ13ohYUUo=;
- b=ERdp1tgpQ0CP3m0+t/dPTumLnSj1jKZ4hfzDu9xvA9cytya1wnlMkXBS1JatlnF/+V
- 80oJ3SLcN7yQO2uuqi4Cwbfis6mSljWZ010K0gYvX9HRb8yBoBQcbfh9+Ow0G0L4caOH
- unnYgqs0EQYqpSg+xIAGc60BtjqUaLkmAgHPgrYi0hUlWE0wsntcsE/j+ICbkEqDKT3N
- eRgX3Ut2e4UoE19C0WKTqisSCLNKhgVBxGB23Cha6AFhTdrCLwb7Bb3qjS4iLAyUxF7M
- Zq9Z/cuCLgOwOsjLFhfTzQI+rqAHSfE0AJJMujpjIOw/vhuHtwYcAQ1kT7r5BkJvbAcI
- H3Ww==
+ bh=YQaHBopgwSjXudC8k46XwyUf5aDsciZs6MaYovNVcw4=;
+ b=mXPUmOmDtmSfLqeFq53zrSLbHowcI3hZHkqQyVcZ29wboFKUz8p00P6cWI0KDcPnqH
+ Hq1Ep8sDbjFineYi/ld50+HUpH1nRE09PGYFTNnOOBLIaitUwjyr7YiACELZhnS0H/lV
+ MoHXU5GekmZuFCooFEmrus4WupHeBtg4eN2YLiP3dr9H46amo2j2jcE2++ZWN0MonEHj
+ oc2cAZlrA9VytREER94o0tQCoDazN51iAwYQCzqpl1E3m4Rn87WueHQgBOkRyd7H3EvZ
+ Qmi17xp1pkKDo/orcLF17L7zUz38JDT6waSE/KL2t29Z0EMoeQd6nCeeoiSzf/f0Ld2o
+ LVjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718957199; x=1719561999;
+ d=1e100.net; s=20230601; t=1718957205; x=1719562005;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=5/RgyhQBn7T7/7BrixgsTi+BC7Dln0yA+HQ13ohYUUo=;
- b=gRXUfbEcX2MUk873cS3C1/zYx2rzmqDN7Fl+RyubJWoz5ugKZ30+TPipZ/FaNf7kgL
- vAoR1jfUPyfm0df9uu2pP47aVmV6nGOAYhH0fb6RC5N8tBobvudBOD20jfO3LRz0OuKT
- EQDw5W9lLsiUe/+7H6xQxh0OrpWCOiNd+YRevv6hx13rbQHSS8L4Hb6TwNVr4/6vvVmv
- bvv1rS/7b0V13zMiXvlghEwRU69u0mGAns6WV5c8gtqNf4FQ+7WTOFdUer2UCEehrkVV
- UF9JZThpfmolCBv8Um9s0KFhlSh3Qjvv8EFKqhmbzItSbZ190lYAP754pkK5Nsdz/oUg
- L98g==
-X-Gm-Message-State: AOJu0YyzmtdbsottZRhv7/7KYj3XYNbOC69Q0982afTrU4rzGc+93SjY
- I2c8vxj5xwy52ms2moqotJD4cFZlg7hmDWT9RzX4y6p+Vv+mXxYLEL6kOUt5vzEoS5caFTUWai2
- /
-X-Google-Smtp-Source: AGHT+IGeRbmY4LdJ/gNJBgZWLBPlfAf6117+uKh/sO4vbzQ+GFfWHwuDAwrHgYiPV9LOHHQo23I9sA==
-X-Received: by 2002:a5d:590c:0:b0:35f:1eba:cf66 with SMTP id
- ffacd0b85a97d-363199905dbmr6916611f8f.61.1718957199119; 
- Fri, 21 Jun 2024 01:06:39 -0700 (PDT)
+ bh=YQaHBopgwSjXudC8k46XwyUf5aDsciZs6MaYovNVcw4=;
+ b=fRbF4KlOAHYiT1Fw7x7azNza6mbwyYz2W1JsqpfMPYg9aBeBry3PItO4nT1KBB+Cx1
+ GgusGSGCvOlsRhGkJrr6stuorCio3Pb4F2EEinRWH80kwRTA2tjIK6ISN4asn8DiK5jA
+ jSxi+bhu4H0EVeZ6RJd6y8E0u7iGPRftELrDQPSzhSQJfdvlXeOtiXcLQ7AZg9iStcAY
+ vqa7V4QzPCpqXyGyTAsCpEzXQngM3zsRpCCiMKkOdHEydsR5Al7rvkcB64+xlQeR4mPm
+ ctw8QiSlf8c0pOPoc9boI+svqQ9djgKPmDPXQ13wTHzXNGq8uxg14g1zRQovkwC75oll
+ DJTQ==
+X-Gm-Message-State: AOJu0Yw02FW7ZUcsC2pDwgMfJqY1x9E5Uo7h0L6GQ+0tw7x8vqKlkxQj
+ ahv8BGJYJ1AsfL3CaP/HK3YqSI/LePsvHCbJuvMoI/XJAtw7fn3adwGflPwXxjPC/+yycmzFr3z
+ 1
+X-Google-Smtp-Source: AGHT+IHC36reLkPQEaKj3Cld22JOWPAHwya+F/z+KxieWbZiqTLfC59sBHN/1YungtgqqTyw03hiDA==
+X-Received: by 2002:a2e:8701:0:b0:2ec:f68:51de with SMTP id
+ 38308e7fff4ca-2ec3cffc8c5mr49170631fa.47.1718957205286; 
+ Fri, 21 Jun 2024 01:06:45 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.128.209])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3663a8c8aa6sm962550f8f.105.2024.06.21.01.06.37
+ 5b1f17b1804b1-424817a8ec8sm16809315e9.11.2024.06.21.01.06.43
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 21 Jun 2024 01:06:38 -0700 (PDT)
+ Fri, 21 Jun 2024 01:06:44 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Joel Stanley <joel@jms.id.au>, Bin Meng <bmeng.cn@gmail.com>,
  Sai Pavan Boddu <sai.pavan.boddu@amd.com>, qemu-block@nongnu.org
-Subject: [PATCH 07/23] hw/sd/sdcard: Remove ACMD6 handler for SPI mode
-Date: Fri, 21 Jun 2024 10:05:38 +0200
-Message-ID: <20240621080554.18986-8-philmd@linaro.org>
+Subject: [PATCH 08/23] hw/sd/sdcard: Remove explicit entries for illegal
+ commands
+Date: Fri, 21 Jun 2024 10:05:39 +0200
+Message-ID: <20240621080554.18986-9-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240621080554.18986-1-philmd@linaro.org>
 References: <20240621080554.18986-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22a;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x22a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,36 +95,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-There is no ACMD6 command in SPI mode, remove the pointless
-handler introduced in commit 946897ce18 ("sdcard: handles
-more commands in SPI mode"). Keep sd_cmd_unimplemented()
-since we'll reuse it later.
+NULL handler is already handled as illegal, no need to
+duplicate (that keeps this array simpler to maintain).
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/sd/sd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/sd/sd.c | 11 -----------
+ 1 file changed, 11 deletions(-)
 
 diff --git a/hw/sd/sd.c b/hw/sd/sd.c
-index b0cd30c657..e9af834a8c 100644
+index e9af834a8c..30239b28bc 100644
 --- a/hw/sd/sd.c
 +++ b/hw/sd/sd.c
-@@ -1012,6 +1012,7 @@ static sd_rsp_type_t sd_cmd_illegal(SDState *sd, SDRequest req)
- }
- 
- /* Commands that are recognised but not yet implemented. */
-+__attribute__((unused))
- static sd_rsp_type_t sd_cmd_unimplemented(SDState *sd, SDRequest req)
- {
-     qemu_log_mask(LOG_UNIMP, "%s: CMD%i not implemented\n",
-@@ -2153,7 +2154,6 @@ static const SDProto sd_proto_spi = {
-         [52 ... 54] = sd_cmd_illegal,
+@@ -2146,12 +2146,6 @@ static const SDProto sd_proto_spi = {
+     .cmd = {
+         [0]         = sd_cmd_GO_IDLE_STATE,
+         [1]         = spi_cmd_SEND_OP_COND,
+-        [2 ... 4]   = sd_cmd_illegal,
+-        [5]         = sd_cmd_illegal,
+-        [7]         = sd_cmd_illegal,
+-        [15]        = sd_cmd_illegal,
+-        [26]        = sd_cmd_illegal,
+-        [52 ... 54] = sd_cmd_illegal,
      },
      .acmd = {
--        [6]         = sd_cmd_unimplemented,
          [41]        = spi_cmd_SEND_OP_COND,
+@@ -2162,15 +2156,10 @@ static const SDProto sd_proto_sd = {
+     .name = "SD",
+     .cmd = {
+         [0]         = sd_cmd_GO_IDLE_STATE,
+-        [1]         = sd_cmd_illegal,
+         [2]         = sd_cmd_ALL_SEND_CID,
+         [3]         = sd_cmd_SEND_RELATIVE_ADDR,
+-        [5]         = sd_cmd_illegal,
+         [19]        = sd_cmd_SEND_TUNING_BLOCK,
+         [23]        = sd_cmd_SET_BLOCK_COUNT,
+-        [52 ... 54] = sd_cmd_illegal,
+-        [58]        = sd_cmd_illegal,
+-        [59]        = sd_cmd_illegal,
      },
  };
+ 
 -- 
 2.41.0
 
