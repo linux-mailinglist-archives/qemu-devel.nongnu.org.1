@@ -2,43 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD2EE912B3D
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jun 2024 18:22:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF840912B3A
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jun 2024 18:21:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sKh0n-0003Oo-Vy; Fri, 21 Jun 2024 12:21:19 -0400
+	id 1sKh0w-0003l1-0P; Fri, 21 Jun 2024 12:21:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=9ak7=NX=kaod.org=clg@ozlabs.org>)
- id 1sKh09-00031d-HQ; Fri, 21 Jun 2024 12:20:38 -0400
+ id 1sKh0f-0003OT-Lv; Fri, 21 Jun 2024 12:21:11 -0400
 Received: from gandalf.ozlabs.org ([150.107.74.76] helo=mail.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=9ak7=NX=kaod.org=clg@ozlabs.org>)
- id 1sKh07-0003XV-S0; Fri, 21 Jun 2024 12:20:37 -0400
+ id 1sKh0d-0003bq-Po; Fri, 21 Jun 2024 12:21:09 -0400
 Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4W5Mz41xjTz4wc5;
- Sat, 22 Jun 2024 02:20:32 +1000 (AEST)
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4W5MzY75c8z4wcJ;
+ Sat, 22 Jun 2024 02:20:57 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits))
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4W5Mz16k5Yz4wbr;
- Sat, 22 Jun 2024 02:20:29 +1000 (AEST)
-Message-ID: <fa5c5fda-dc40-4750-b7d9-5c59027721b3@kaod.org>
-Date: Fri, 21 Jun 2024 18:20:27 +0200
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4W5MzW4zpfz4w2Q;
+ Sat, 22 Jun 2024 02:20:55 +1000 (AEST)
+Message-ID: <79d4accf-b7e8-4b65-9396-7e07cb3e1ed3@kaod.org>
+Date: Fri, 21 Jun 2024 18:20:53 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 14/23] hw/sd/sdcard: Factor sd_req_get_rca() method out
+Subject: Re: [PATCH 15/23] hw/sd/sdcard: Only call sd_req_get_rca() where RCA
+ is used
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
 Cc: Joel Stanley <joel@jms.id.au>, Bin Meng <bmeng.cn@gmail.com>,
  Sai Pavan Boddu <sai.pavan.boddu@amd.com>, qemu-block@nongnu.org
 References: <20240621080554.18986-1-philmd@linaro.org>
- <20240621080554.18986-15-philmd@linaro.org>
+ <20240621080554.18986-16-philmd@linaro.org>
 Content-Language: en-US, fr
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20240621080554.18986-15-philmd@linaro.org>
+In-Reply-To: <20240621080554.18986-16-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=150.107.74.76;
@@ -65,8 +66,10 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 6/21/24 10:05 AM, Philippe Mathieu-Daudé wrote:
-> Extract sd_req_get_rca() so we can re-use it in various
-> SDProto handlers. Return a 16-bit value since RCA is 16-bit.
+> It will be useful later to assert only AC commands
+> (Addressed point-to-point Commands, defined as the
+> 'sd_ac' enum) extract the RCA value from the command
+> argument.
 > 
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
@@ -79,48 +82,69 @@ C.
 
 
 > ---
->   hw/sd/sd.c | 15 +++++++++------
->   1 file changed, 9 insertions(+), 6 deletions(-)
+>   hw/sd/sd.c | 8 +++++++-
+>   1 file changed, 7 insertions(+), 1 deletion(-)
 > 
 > diff --git a/hw/sd/sd.c b/hw/sd/sd.c
-> index 510784fc82..bc47ae36bc 100644
+> index bc47ae36bc..cb9d85bb11 100644
 > --- a/hw/sd/sd.c
 > +++ b/hw/sd/sd.c
-> @@ -471,6 +471,14 @@ static void sd_set_csd(SDState *sd, uint64_t size)
->       sd->csd[15] = (sd_crc7(sd->csd, 15) << 1) | 1;
->   }
->   
-> +static uint16_t sd_req_get_rca(SDState *s, SDRequest req)
-> +{
-> +    if (sd_cmd_type[req.cmd] == sd_ac || sd_cmd_type[req.cmd] == sd_adtc) {
-> +        return req.arg >> 16;
-> +    }
-> +    return 0;
-> +}
-> +
->   FIELD(CSR, AKE_SEQ_ERROR,               3,  1)
->   FIELD(CSR, APP_CMD,                     5,  1)
->   FIELD(CSR, FX_EVENT,                    6,  1)
-> @@ -1094,7 +1102,7 @@ static sd_rsp_type_t sd_cmd_SET_BLOCK_COUNT(SDState *sd, SDRequest req)
+> @@ -1102,7 +1102,7 @@ static sd_rsp_type_t sd_cmd_SET_BLOCK_COUNT(SDState *sd, SDRequest req)
 >   
 >   static sd_rsp_type_t sd_normal_command(SDState *sd, SDRequest req)
 >   {
-> -    uint32_t rca = 0x0000;
-> +    uint16_t rca = sd_req_get_rca(sd, req);
+> -    uint16_t rca = sd_req_get_rca(sd, req);
+> +    uint16_t rca;
 >       uint64_t addr = (sd->ocr & (1 << 30)) ? (uint64_t) req.arg << 9 : req.arg;
 >   
 >       sd->last_cmd_name = sd_cmd_name(req.cmd);
-> @@ -1110,11 +1118,6 @@ static sd_rsp_type_t sd_normal_command(SDState *sd, SDRequest req)
->       /* Not interpreting this as an app command */
->       sd->card_status &= ~APP_CMD;
+> @@ -1160,6 +1160,7 @@ static sd_rsp_type_t sd_normal_command(SDState *sd, SDRequest req)
+>           break;
 >   
-> -    if (sd_cmd_type[req.cmd] == sd_ac
-> -        || sd_cmd_type[req.cmd] == sd_adtc) {
-> -        rca = req.arg >> 16;
-> -    }
-> -
->       /* CMD23 (set block count) must be immediately followed by CMD18 or CMD25
->        * if not, its effects are cancelled */
->       if (sd->multi_blk_cnt != 0 && !(req.cmd == 18 || req.cmd == 25)) {
+>       case 7:  /* CMD7:   SELECT/DESELECT_CARD */
+> +        rca = sd_req_get_rca(sd, req);
+>           switch (sd->state) {
+>           case sd_standby_state:
+>               if (sd->rca != rca)
+> @@ -1214,6 +1215,7 @@ static sd_rsp_type_t sd_normal_command(SDState *sd, SDRequest req)
+>           return sd_r7;
+>   
+>       case 9:  /* CMD9:   SEND_CSD */
+> +        rca = sd_req_get_rca(sd, req);
+>           switch (sd->state) {
+>           case sd_standby_state:
+>               if (sd->rca != rca)
+> @@ -1237,6 +1239,7 @@ static sd_rsp_type_t sd_normal_command(SDState *sd, SDRequest req)
+>           break;
+>   
+>       case 10:  /* CMD10:  SEND_CID */
+> +        rca = sd_req_get_rca(sd, req);
+>           switch (sd->state) {
+>           case sd_standby_state:
+>               if (sd->rca != rca)
+> @@ -1277,6 +1280,7 @@ static sd_rsp_type_t sd_normal_command(SDState *sd, SDRequest req)
+>           break;
+>   
+>       case 13:  /* CMD13:  SEND_STATUS */
+> +        rca = sd_req_get_rca(sd, req);
+>           switch (sd->mode) {
+>           case sd_data_transfer_mode:
+>               if (!sd_is_spi(sd) && sd->rca != rca) {
+> @@ -1291,6 +1295,7 @@ static sd_rsp_type_t sd_normal_command(SDState *sd, SDRequest req)
+>           break;
+>   
+>       case 15:  /* CMD15:  GO_INACTIVE_STATE */
+> +        rca = sd_req_get_rca(sd, req);
+>           switch (sd->mode) {
+>           case sd_data_transfer_mode:
+>               if (sd->rca != rca)
+> @@ -1523,6 +1528,7 @@ static sd_rsp_type_t sd_normal_command(SDState *sd, SDRequest req)
+>   
+>       /* Application specific commands (Class 8) */
+>       case 55:  /* CMD55:  APP_CMD */
+> +        rca = sd_req_get_rca(sd, req);
+>           switch (sd->state) {
+>           case sd_ready_state:
+>           case sd_identification_state:
 
 
