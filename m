@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AD719133C6
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Jun 2024 14:09:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 571AA9133C0
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Jun 2024 14:08:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sKzWK-0007yZ-7g; Sat, 22 Jun 2024 08:07:04 -0400
+	id 1sKzWJ-0007yW-Rr; Sat, 22 Jun 2024 08:07:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sKzWB-0007oF-Hb
- for qemu-devel@nongnu.org; Sat, 22 Jun 2024 08:06:55 -0400
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ id 1sKzWC-0007pj-DY
+ for qemu-devel@nongnu.org; Sat, 22 Jun 2024 08:06:56 -0400
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sKzW9-0000Kt-6v
- for qemu-devel@nongnu.org; Sat, 22 Jun 2024 08:06:55 -0400
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-3636c572257so2544605f8f.0
- for <qemu-devel@nongnu.org>; Sat, 22 Jun 2024 05:06:52 -0700 (PDT)
+ id 1sKzW9-0000L6-Kj
+ for qemu-devel@nongnu.org; Sat, 22 Jun 2024 08:06:56 -0400
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-3621ac606e1so2295435f8f.1
+ for <qemu-devel@nongnu.org>; Sat, 22 Jun 2024 05:06:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1719058012; x=1719662812; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=zaC8IIbLHsxQsiW8y62vNZ0UWZAgeZUGk/0zUMHijyY=;
- b=Ye0VkwoBdmj+K2q2Pj9tVSqGVx/TJAH9Y4oOWWBRThWOZvQURV2Vkajd1LegSO3SIH
- IRUWZ+9e7ETF98ZXmb3N4By6wM37IOebH4sKM95skbC5vCOBG4Q8Dj0Lr5tBftNQ/2SU
- Tr3ks8WmVqX1il2Q/R4jXWEzSNrW14qOPk8W7VWhS/M6GvWqqXwmcKOwAk1POfYsms4J
- U5HLTy3ey3tMlb6NsYuK8o9bucWIWAi6lnPKX5UR9LCL8ucCtWpUrWTEmLB8dzQaTExj
- TvPL+HoRpLv01i1VPf9vTbcf+Ph+QJQ+G8etJfCv0DX1ge96C3h0AtzrBjo6yp8QFH2J
- /Flw==
+ :reply-to; bh=TDROnXRZm4HJC9JeBRZrJ0oXuZuLpT1NFzYgwIqZIyc=;
+ b=qsywLHptiZPIMrx5aOcuE5zEyAXkOqCmZyplmINlHRXnl5IhI5w5AtpmtgtpkmbptH
+ DtsisbWHAXIwq8sx3kXVRruj/jwvZN0GotJ1gclxsB769OMaJx7mJAOBgoYjLR40aD6X
+ 9lT8WPf0GFNr8V9pswma8wSX6UCKFj4IRiqPv+GgBGlpGUGte/xhIAz3yqsXSI2bEdAe
+ PuKfK3fMQqrIMQGL1Igdq/dVlDNBus5fjw7Wx6WozkA5GDscreeSpAbTLd0luhgWPHFn
+ 51q1BvLrzeMdHauv2dpSZUFYP3tUElJK3u/Q9PAeBfR1evbRxeg3sN+kYnyez9ofTF/n
+ gQYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1719058012; x=1719662812;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=zaC8IIbLHsxQsiW8y62vNZ0UWZAgeZUGk/0zUMHijyY=;
- b=R3mM1MCfuO55NzcwkheICOwVUEQe1yLhZcS1wAm2X1zQrLh7eOFjhYOLJUwGhNcbhE
- V7+U4WK3Xpmp4djxbBVgxbhCGsAo+kwvlSemD2DWrvXq9SfFdd9+I90exW3EDBBB4LMG
- YSBAcwaUHMxsUUEapm89iNu7HLsGQhNrs+SS7BdsswBsa71J2RW7sl96RvdMs3cR0s8k
- lX+qvC4BVsXJ1onNz6RXdhEqBp6Fw+V5LJ5w1jydZXLVWTblg6B+0P2IHWDMPmU2ycQo
- vZbmp4hlvBlqy3TfN//8xKAT3qdRYvPnSGWHwWQLZuvcHAXKKGG065rxJVHWt/O2RaH9
- mlGw==
-X-Gm-Message-State: AOJu0YytQKabuFX8tIQPfz1/kdRKfUEblCmrdGgTVT21yTkk88e5/SWz
- N+jOiosYRXAVzKO9oKtvvAlMcZhbPAGky6gWT71dJlyX5YHBOifaJPf8Q7/7I3K05GHx6XQE2eN
- afa8=
-X-Google-Smtp-Source: AGHT+IGGZx5BStVf/USUskI0NbjEQN/PdTOWbbWZTTyeHFbeXal1l2ys5OlySePbd1EDD1nWEwQoWw==
-X-Received: by 2002:adf:e6c9:0:b0:360:712e:3610 with SMTP id
- ffacd0b85a97d-36317c79b42mr10139005f8f.38.1719058011730; 
- Sat, 22 Jun 2024 05:06:51 -0700 (PDT)
+ bh=TDROnXRZm4HJC9JeBRZrJ0oXuZuLpT1NFzYgwIqZIyc=;
+ b=cyzLSXtT7rqx6TzeQ5Rqw7AvMsydrRd9nSrHxStJ+yvr96UW47PZgxt22dji5hW8NH
+ IWnL+vFIjyvu+UaPJQ2oj7w+cMUxFtcY2KDjiFUOilF2Af/poG+qe7PYSBcUruEeqK8Q
+ 7ctR9dPBfVRIj8ZEFTlqA/Z+htO277OmwsQS+hxpxu8DbtVy1KVA4btnucHTFqnRQW0F
+ YtyBZ8ef7IbbMENUMDbHrCIJUi5usgufmxkHidWwywDHvZPuo3AEySJcJrxKBEU8+3i8
+ udWmrVFBCvpUAJ8p+NcB9F9KTTd3q2HH62oE76cWD4PV3zDT1i3eqB2Kd9GLmfqB82Nu
+ IJUQ==
+X-Gm-Message-State: AOJu0YzwO8z7P/cpEgVfcXSq8LCfhOBWPGKotasoJeo9vtbd+Y3rnyry
+ Mm3Vz/Y7A/BvINS+xzR1GXVUekuUx6rIb4nD1hKQbiLIE4Pjp+hTq/k0wISXlxYWfhIpIyPyEfO
+ tm3g=
+X-Google-Smtp-Source: AGHT+IEPV/FMnvpm2m3zzc5vvt71nl6AtSxR9OHd+4dcFQeGJvVX6/kCqiFPFnFH/ubOclAuBWr7Dw==
+X-Received: by 2002:adf:e789:0:b0:360:8281:71ef with SMTP id
+ ffacd0b85a97d-366e3649591mr1037910f8f.4.1719058012270; 
+ Sat, 22 Jun 2024 05:06:52 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  ffacd0b85a97d-3663a2f698dsm4393006f8f.70.2024.06.22.05.06.51
@@ -59,17 +59,17 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Sat, 22 Jun 2024 05:06:51 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 14/18] hw/arm/virt: allow creation of a second NonSecure UART
-Date: Sat, 22 Jun 2024 13:06:39 +0100
-Message-Id: <20240622120643.3797539-15-peter.maydell@linaro.org>
+Subject: [PULL 15/18] hw/arm/virt: Avoid unexpected warning from Linux guest
+ on host with Fujitsu CPUs
+Date: Sat, 22 Jun 2024 13:06:40 +0100
+Message-Id: <20240622120643.3797539-16-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240622120643.3797539-1-peter.maydell@linaro.org>
 References: <20240622120643.3797539-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x435.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,168 +92,107 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For some use-cases, it is helpful to have more than one UART
-available to the guest.  If the second UART slot is not already used
-for a TrustZone Secure-World-only UART, create it as a NonSecure UART
-only when the user provides a serial backend (e.g.  via a second
--serial command line option).
+From: Zhenyu Zhang <zhenyzha@redhat.com>
 
-This avoids problems where existing guest software only expects a
-single UART, and gets confused by the second UART in the DTB.  The
-major example of this is older EDK2 firmware, which will send the
-GRUB bootloader output to UART1 and the guest serial output to UART0.
-Users who want to use both UARTs with a guest setup including EDK2
-are advised to update to EDK2 release edk2-stable202311 or newer.
-(The prebuilt EDK2 blobs QEMU upstream provides are new enough.)
-The relevant EDK2 changes are the ones described here:
-https://bugzilla.tianocore.org/show_bug.cgi?id=4577
+Multiple warning messages and corresponding backtraces are observed when Linux
+guest is booted on the host with Fujitsu CPUs. One of them is shown as below.
 
-Inspired-by: Axel Heider <axel.heider@hensoldt.net>
+[    0.032443] ------------[ cut here ]------------
+[    0.032446] uart-pl011 9000000.pl011: ARCH_DMA_MINALIGN smaller than
+CTR_EL0.CWG (128 < 256)
+[    0.032454] WARNING: CPU: 0 PID: 1 at arch/arm64/mm/dma-mapping.c:54
+arch_setup_dma_ops+0xbc/0xcc
+[    0.032470] Modules linked in:
+[    0.032475] CPU: 0 PID: 1 Comm: swapper/0 Not tainted 5.14.0-452.el9.aarch64
+[    0.032481] Hardware name: linux,dummy-virt (DT)
+[    0.032484] pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[    0.032490] pc : arch_setup_dma_ops+0xbc/0xcc
+[    0.032496] lr : arch_setup_dma_ops+0xbc/0xcc
+[    0.032501] sp : ffff80008003b860
+[    0.032503] x29: ffff80008003b860 x28: 0000000000000000 x27: ffffaae4b949049c
+[    0.032510] x26: 0000000000000000 x25: 0000000000000000 x24: 0000000000000000
+[    0.032517] x23: 0000000000000100 x22: 0000000000000000 x21: 0000000000000000
+[    0.032523] x20: 0000000100000000 x19: ffff2f06c02ea400 x18: ffffffffffffffff
+[    0.032529] x17: 00000000208a5f76 x16: 000000006589dbcb x15: ffffaae4ba071c89
+[    0.032535] x14: 0000000000000000 x13: ffffaae4ba071c84 x12: 455f525443206e61
+[    0.032541] x11: 68742072656c6c61 x10: 0000000000000029 x9 : ffffaae4b7d21da4
+[    0.032547] x8 : 0000000000000029 x7 : 4c414e494d5f414d x6 : 0000000000000029
+[    0.032553] x5 : 000000000000000f x4 : ffffaae4b9617a00 x3 : 0000000000000001
+[    0.032558] x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff2f06c029be40
+[    0.032564] Call trace:
+[    0.032566]  arch_setup_dma_ops+0xbc/0xcc
+[    0.032572]  of_dma_configure_id+0x138/0x300
+[    0.032591]  amba_dma_configure+0x34/0xc0
+[    0.032600]  really_probe+0x78/0x3dc
+[    0.032614]  __driver_probe_device+0x108/0x160
+[    0.032619]  driver_probe_device+0x44/0x114
+[    0.032624]  __device_attach_driver+0xb8/0x14c
+[    0.032629]  bus_for_each_drv+0x88/0xe4
+[    0.032634]  __device_attach+0xb0/0x1e0
+[    0.032638]  device_initial_probe+0x18/0x20
+[    0.032643]  bus_probe_device+0xa8/0xb0
+[    0.032648]  device_add+0x4b4/0x6c0
+[    0.032652]  amba_device_try_add.part.0+0x48/0x360
+[    0.032657]  amba_device_add+0x104/0x144
+[    0.032662]  of_amba_device_create.isra.0+0x100/0x1c4
+[    0.032666]  of_platform_bus_create+0x294/0x35c
+[    0.032669]  of_platform_populate+0x5c/0x150
+[    0.032672]  of_platform_default_populate_init+0xd0/0xec
+[    0.032697]  do_one_initcall+0x4c/0x2e0
+[    0.032701]  do_initcalls+0x100/0x13c
+[    0.032707]  kernel_init_freeable+0x1c8/0x21c
+[    0.032712]  kernel_init+0x28/0x140
+[    0.032731]  ret_from_fork+0x10/0x20
+[    0.032735] ---[ end trace 0000000000000000 ]---
+
+In Linux, a check is applied to every device which is exposed through
+device-tree node. The warning message is raised when the device isn't
+DMA coherent and the cache line size is larger than ARCH_DMA_MINALIGN
+(128 bytes). The cache line is sorted from CTR_EL0[CWG], which corresponds
+to 256 bytes on the guest CPUs. The DMA coherent capability is claimed
+through 'dma-coherent' in their device-tree nodes or parent nodes.
+This happens even when the device doesn't implement or use DMA at all,
+for legacy reasons.
+
+Fix the issue by adding 'dma-coherent' property to the device-tree root
+node, meaning all devices are capable of DMA coherent by default.
+This both suppresses the spurious kernel warnings and also guards
+against possible future QEMU bugs where we add a DMA-capable device
+and forget to mark it as dma-coherent.
+
+Signed-off-by: Zhenyu Zhang <zhenyzha@redhat.com>
+Reviewed-by: Gavin Shan <gshan@redhat.com>
+Reviewed-by: Donald Dutile <ddutile@redhat.com
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Message-id: 20240612020506.307793-1-zhenyzha@redhat.com
+[PMM: tweaked commit message]
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Tested-by: Laszlo Ersek <lersek@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20240610162343.2131524-4-peter.maydell@linaro.org
 ---
- docs/system/arm/virt.rst |  6 +++++-
- include/hw/arm/virt.h    |  1 +
- hw/arm/virt-acpi-build.c | 12 ++++++++----
- hw/arm/virt.c            | 38 +++++++++++++++++++++++++++++++++++---
- 4 files changed, 49 insertions(+), 8 deletions(-)
+ hw/arm/virt.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/docs/system/arm/virt.rst b/docs/system/arm/virt.rst
-index 26fcba00b76..e67e7f0f7c5 100644
---- a/docs/system/arm/virt.rst
-+++ b/docs/system/arm/virt.rst
-@@ -26,7 +26,7 @@ The virt board supports:
- 
- - PCI/PCIe devices
- - Flash memory
--- One PL011 UART
-+- Either one or two PL011 UARTs for the NonSecure World
- - An RTC
- - The fw_cfg device that allows a guest to obtain data from QEMU
- - A PL061 GPIO controller
-@@ -48,6 +48,10 @@ The virt board supports:
-   - A secure flash memory
-   - 16MB of secure RAM
- 
-+The second NonSecure UART only exists if a backend is configured
-+explicitly (e.g. with a second -serial command line option) and
-+TrustZone emulation is not enabled.
-+
- Supported guest CPU types:
- 
- - ``cortex-a7`` (32-bit)
-diff --git a/include/hw/arm/virt.h b/include/hw/arm/virt.h
-index 1227e7f7f08..ab961bb6a9b 100644
---- a/include/hw/arm/virt.h
-+++ b/include/hw/arm/virt.h
-@@ -151,6 +151,7 @@ struct VirtMachineState {
-     bool ras;
-     bool mte;
-     bool dtb_randomness;
-+    bool second_ns_uart_present;
-     OnOffAuto acpi;
-     VirtGICType gic_version;
-     VirtIOMMUType iommu;
-diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
-index eb5796e309b..b2366f24f96 100644
---- a/hw/arm/virt-acpi-build.c
-+++ b/hw/arm/virt-acpi-build.c
-@@ -79,11 +79,11 @@ static void acpi_dsdt_add_cpus(Aml *scope, VirtMachineState *vms)
- }
- 
- static void acpi_dsdt_add_uart(Aml *scope, const MemMapEntry *uart_memmap,
--                                           uint32_t uart_irq)
-+                               uint32_t uart_irq, int uartidx)
- {
--    Aml *dev = aml_device("COM0");
-+    Aml *dev = aml_device("COM%d", uartidx);
-     aml_append(dev, aml_name_decl("_HID", aml_string("ARMH0011")));
--    aml_append(dev, aml_name_decl("_UID", aml_int(0)));
-+    aml_append(dev, aml_name_decl("_UID", aml_int(uartidx)));
- 
-     Aml *crs = aml_resource_template();
-     aml_append(crs, aml_memory32_fixed(uart_memmap->base,
-@@ -817,7 +817,11 @@ build_dsdt(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
-     scope = aml_scope("\\_SB");
-     acpi_dsdt_add_cpus(scope, vms);
-     acpi_dsdt_add_uart(scope, &memmap[VIRT_UART0],
--                       (irqmap[VIRT_UART0] + ARM_SPI_BASE));
-+                       (irqmap[VIRT_UART0] + ARM_SPI_BASE), 0);
-+    if (vms->second_ns_uart_present) {
-+        acpi_dsdt_add_uart(scope, &memmap[VIRT_UART1],
-+                           (irqmap[VIRT_UART1] + ARM_SPI_BASE), 1);
-+    }
-     if (vmc->acpi_expose_flash) {
-         acpi_dsdt_add_flash(scope, &memmap[VIRT_FLASH]);
-     }
 diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index ffb4983885f..85556152563 100644
+index 85556152563..0784ee7f466 100644
 --- a/hw/arm/virt.c
 +++ b/hw/arm/virt.c
-@@ -906,7 +906,7 @@ static void create_gic(VirtMachineState *vms, MemoryRegion *mem)
- }
+@@ -271,6 +271,17 @@ static void create_fdt(VirtMachineState *vms)
+     qemu_fdt_setprop_cell(fdt, "/", "#size-cells", 0x2);
+     qemu_fdt_setprop_string(fdt, "/", "model", "linux,dummy-virt");
  
- static void create_uart(const VirtMachineState *vms, int uart,
--                        MemoryRegion *mem, Chardev *chr)
-+                        MemoryRegion *mem, Chardev *chr, bool secure)
- {
-     char *nodename;
-     hwaddr base = vms->memmap[uart].base;
-@@ -944,6 +944,8 @@ static void create_uart(const VirtMachineState *vms, int uart,
-         qemu_fdt_setprop_string(ms->fdt, "/aliases", "serial0", nodename);
-     } else {
-         qemu_fdt_setprop_string(ms->fdt, "/aliases", "serial1", nodename);
-+    }
-+    if (secure) {
-         /* Mark as not usable by the normal world */
-         qemu_fdt_setprop_string(ms->fdt, nodename, "status", "disabled");
-         qemu_fdt_setprop_string(ms->fdt, nodename, "secure-status", "okay");
-@@ -2317,11 +2319,41 @@ static void machvirt_init(MachineState *machine)
- 
-     fdt_add_pmu_nodes(vms);
- 
--    create_uart(vms, VIRT_UART0, sysmem, serial_hd(0));
 +    /*
-+     * The first UART always exists. If the security extensions are
-+     * enabled, the second UART also always exists. Otherwise, it only exists
-+     * if a backend is configured explicitly via '-serial <backend>'.
-+     * This avoids potentially breaking existing user setups that expect
-+     * only one NonSecure UART to be present (for instance, older EDK2
-+     * binaries).
++     * For QEMU, all DMA is coherent. Advertising this in the root node
++     * has two benefits:
 +     *
-+     * The nodes end up in the DTB in reverse order of creation, so we must
-+     * create UART0 last to ensure it appears as the first node in the DTB,
-+     * for compatibility with guest software that just iterates through the
-+     * DTB to find the first UART, as older versions of EDK2 do.
-+     * DTB readers that follow the spec, as Linux does, should honour the
-+     * aliases node information and /chosen/stdout-path regardless of
-+     * the order that nodes appear in the DTB.
-+     *
-+     * For similar back-compatibility reasons, if UART1 is the secure UART
-+     * we create it second (and so it appears first in the DTB), because
-+     * that's what QEMU has always done.
++     * - It avoids potential bugs where we forget to mark a DMA
++     *   capable device as being dma-coherent
++     * - It avoids spurious warnings from the Linux kernel about
++     *   devices which can't do DMA at all
 +     */
-+    if (!vms->secure) {
-+        Chardev *serial1 = serial_hd(1);
++    qemu_fdt_setprop(fdt, "/", "dma-coherent", NULL, 0);
 +
-+        if (serial1) {
-+            vms->second_ns_uart_present = true;
-+            create_uart(vms, VIRT_UART1, sysmem, serial1, false);
-+        }
-+    }
-+    create_uart(vms, VIRT_UART0, sysmem, serial_hd(0), false);
-+    if (vms->secure) {
-+        create_uart(vms, VIRT_UART1, secure_sysmem, serial_hd(1), true);
-+    }
- 
-     if (vms->secure) {
-         create_secure_ram(vms, secure_sysmem, secure_tag_sysmem);
--        create_uart(vms, VIRT_UART1, secure_sysmem, serial_hd(1));
-     }
- 
-     if (tag_sysmem) {
+     /* /chosen must exist for load_dtb to fill in necessary properties later */
+     qemu_fdt_add_subnode(fdt, "/chosen");
+     if (vms->dtb_randomness) {
 -- 
 2.34.1
 
