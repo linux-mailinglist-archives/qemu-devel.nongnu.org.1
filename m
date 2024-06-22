@@ -2,73 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FD2A9133B1
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Jun 2024 14:08:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 336B791353F
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Jun 2024 18:57:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sKzWM-000814-MT; Sat, 22 Jun 2024 08:07:06 -0400
+	id 1sL41V-0004T4-P7; Sat, 22 Jun 2024 12:55:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sKzWG-0007vu-W2
- for qemu-devel@nongnu.org; Sat, 22 Jun 2024 08:07:01 -0400
-Received: from mail-lj1-x236.google.com ([2a00:1450:4864:20::236])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sL41T-0004Sa-Ui
+ for qemu-devel@nongnu.org; Sat, 22 Jun 2024 12:55:31 -0400
+Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sKzWB-0000LZ-EP
- for qemu-devel@nongnu.org; Sat, 22 Jun 2024 08:06:57 -0400
-Received: by mail-lj1-x236.google.com with SMTP id
- 38308e7fff4ca-2ec3c0dada3so36589761fa.0
- for <qemu-devel@nongnu.org>; Sat, 22 Jun 2024 05:06:54 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sL41S-0001mX-AS
+ for qemu-devel@nongnu.org; Sat, 22 Jun 2024 12:55:31 -0400
+Received: by mail-pf1-x434.google.com with SMTP id
+ d2e1a72fcca58-7066c799382so370065b3a.3
+ for <qemu-devel@nongnu.org>; Sat, 22 Jun 2024 09:55:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719058014; x=1719662814; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=y/peQK2HWWhn2ma2SjoOX9PrYOZzJnJW241P1DXKLDo=;
- b=M/ap3v1FDFzv52L9BGdMKUQNQMK/seFFXNZ0/qnK1Ce2cZjPAUeog8/XBeTXEktBqs
- CWvqt807w5jAB1vgWVSsmwKeVy17uQwnkZ/3RkqwDKWjqFfffJFZ1Syw47ddrMONpIFc
- AXTeT3PrCFMK/Ov/tTpC3OZmUJd+24H/kP/FDWOeO4Q+R7CwZCCCrtl2sUzFmy1EBqLa
- OR0r8glw5fD/x7UTrjHoxc9bmdlM+MfbbvinC1ZqjZQFO21HQbdhza1FswjETyTVqX8S
- CByEhtMZ4LXZgmCRHQgKZPNYnVplsdrphZuhp/ZGOUo1Q8BxVzPCV4O3aFwIP/m86lN4
- cqlA==
+ d=linaro.org; s=google; t=1719075329; x=1719680129; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=BDsAQ7Faz0CJ6QN+3lU9nvKNb3jLqhqG+fEBguDOLOc=;
+ b=frpzp7cFcqYYGLUFOZZj9jz/KMIppHROK9YxA8AfHL6Cgd6NGQ2jFIrEvUkKjeOgAK
+ Z6kn8Uj/sj3icBzCaAtXI+gA/9+cdfLTF3DFEatPIkftwmP2omJTo/j9vpnG21x4IZvc
+ HKF5WLy04wqbn+ukkd6NovgPO9+FGuO6QsN6AN3Qze4CEMUKhR/jnd1UPnKBmjb4pmoU
+ LxeY6UmuImOtflXAWj8DcoZoozDpntVx1aEq99q4M9vo/BngDYcXBEfRuTyg/QbEXYtC
+ QOs+dBsaIkCoqaSRs5v+9fcfSbCK5YUCFIfrwG3ysB2cmUXxGJ6ITtotRh8WJimf30FQ
+ plcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719058014; x=1719662814;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=y/peQK2HWWhn2ma2SjoOX9PrYOZzJnJW241P1DXKLDo=;
- b=v2ulQSSCQhMXKEkmXrylWE+/EzhEYvV02Kdaz9tZNTcRoKgLzuNuPiDE/KVLIKdWDv
- k4jERUBxiJWtibb4gQV1+9D/XJ5XQt4zVvU1dvNwYz1cNCfZdcHSWRwlAN5iu6OudzTi
- 49GNGXmdQukFXdRuPpmDhbAImkhuBfLJqYk8c88zijPTpmtBvOoJVRJX7qabP1if26ja
- n0QtAlUnCybeiGqRudm2OeAvcDuDmZG+6SCAumdPIpzYjsjeLpUGPGcbhSBDnsBAw8sN
- k/NrdKDxvBVYTTi8ZpucZDsVZEY3lMCfgSHJDvkt+tWg3869NzSRR6XmRbfIJlM7axf9
- j3zw==
-X-Gm-Message-State: AOJu0YydNV8Y20bY/R6lOtwQlndVrZcwPPMMzDSl7EegL0R67ceu8LTo
- 8FvNgWYIaoxZbkoySNY0JXtIyYiu6J2kVK9yhU7kvRrGtCmO4LFm8ow/F0goxcIkV6LoFMX85Mg
- pa2A=
-X-Google-Smtp-Source: AGHT+IH6BamVDuq5uANDGDgTnK6QF93UssX1lloTzUE3S4rJJMLgmIUC4uCQZGTM1BJZ76pFq5QH6A==
-X-Received: by 2002:ac2:4e8d:0:b0:52c:df4e:3343 with SMTP id
- 2adb3069b0e04-52cdf4e346emr803123e87.16.1719058013586; 
- Sat, 22 Jun 2024 05:06:53 -0700 (PDT)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ d=1e100.net; s=20230601; t=1719075329; x=1719680129;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=BDsAQ7Faz0CJ6QN+3lU9nvKNb3jLqhqG+fEBguDOLOc=;
+ b=JzIs4YArMv/k6G8D3M+rQN5fCDJnlWDtm8EE3+DbMQ000Ell04nMayIiMZj38EeXub
+ NEB68ptLSoOo4uEEDny4Qemq7ocXHfQueIji1Whg8+woYIeTcmUgv75ZqZBvfDb6Ed/p
+ fAuzo/MEyQIHwdBKZa0Lg7+FvsxQly+JlEWfSqZRl4pwbrXu/D1e+0Rz81Up2YigU9bM
+ fD97iD/XjIH9qxIq8iysxklPRdLZG7l1xCNzorkCYJxBgAvxat7UrssLr015EOUWVvN1
+ BmdJiWbGlFOtutgnsz7mLlW/A/che1XooYAVvM7ColpHXMUHKINycWvK+032vyp1laLH
+ tRJQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUcH9Q0TmYceYo//MPQNvtbFHEm/tWvGEZwlMS7+CIDjxzN3lYds5HkqagtY86PU+g/JV0oyRz5mm9DEaNz30AZtjU9sqI=
+X-Gm-Message-State: AOJu0YznZI4Ejki/xRknZ+7IDePCRBAEMgt3BCurJZw97RyyLtb1LMCT
+ Ksx8ATQlcO8W7FKrTbDn7aCtIMr3cG/4gu2PBXIJvi8/GlJfnC6nN8VPBuVfgbI=
+X-Google-Smtp-Source: AGHT+IFiEbkLzlwE3jNKxGTS8f6YG6Lz0T0fKWzbKBniK2UkWlqXZ8maz/cPHfiPtD54o4KcIp/Y1A==
+X-Received: by 2002:a05:6a20:b713:b0:1b6:da8b:ad with SMTP id
+ adf61e73a8af0-1bcf7eecf04mr285596637.34.1719075328735; 
+ Sat, 22 Jun 2024 09:55:28 -0700 (PDT)
+Received: from [192.168.0.4] (174-21-76-141.tukw.qwest.net. [174.21.76.141])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3663a2f698dsm4393006f8f.70.2024.06.22.05.06.53
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 22 Jun 2024 05:06:53 -0700 (PDT)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-devel@nongnu.org
-Subject: [PULL 18/18] hw/arm/sbsa-ref: Enable CPU cluster on ARM sbsa machine
-Date: Sat, 22 Jun 2024 13:06:43 +0100
-Message-Id: <20240622120643.3797539-19-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240622120643.3797539-1-peter.maydell@linaro.org>
-References: <20240622120643.3797539-1-peter.maydell@linaro.org>
+ d2e1a72fcca58-7065126d0b0sm3285189b3a.103.2024.06.22.09.55.28
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sat, 22 Jun 2024 09:55:28 -0700 (PDT)
+Message-ID: <448c9d98-8793-4c1a-90a8-f4883aa67a29@linaro.org>
+Date: Sat, 22 Jun 2024 09:55:26 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::236;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x236.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PULL 15/23] Revert "host/i386: assume presence of SSE2"
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+References: <20240622061558.530543-1-pbonzini@redhat.com>
+ <20240622061558.530543-16-pbonzini@redhat.com>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20240622061558.530543-16-pbonzini@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,80 +95,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Xiong Yining <xiongyining1480@phytium.com.cn>
+On 6/21/24 23:15, Paolo Bonzini wrote:
+> This reverts commit b18236897ca15c3db1506d8edb9a191dfe51429c.
+> The x86-64 instruction set can now be tuned down to x86-64 v1
+> or i386 Pentium Pro.
+> 
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>   host/include/i386/host/cpuinfo.h | 1 +
+>   util/bufferiszero.c              | 4 ++--
+>   util/cpuinfo-i386.c              | 1 +
+>   3 files changed, 4 insertions(+), 2 deletions(-)
+> 
+> diff --git a/host/include/i386/host/cpuinfo.h b/host/include/i386/host/cpuinfo.h
+> index 72f6fad61e5..81771733eaa 100644
+> --- a/host/include/i386/host/cpuinfo.h
+> +++ b/host/include/i386/host/cpuinfo.h
+> @@ -14,6 +14,7 @@
+>   #define CPUINFO_POPCNT          (1u << 4)
+>   #define CPUINFO_BMI1            (1u << 5)
+>   #define CPUINFO_BMI2            (1u << 6)
+> +#define CPUINFO_SSE2            (1u << 7)
+>   #define CPUINFO_AVX1            (1u << 9)
+>   #define CPUINFO_AVX2            (1u << 10)
+>   #define CPUINFO_AVX512F         (1u << 11)
+> diff --git a/util/bufferiszero.c b/util/bufferiszero.c
+> index 11c080e02cf..74864f7b782 100644
+> --- a/util/bufferiszero.c
+> +++ b/util/bufferiszero.c
+> @@ -188,14 +188,14 @@ static biz_accel_fn const accel_table[] = {
+>   
+>   static unsigned best_accel(void)
+>   {
+> -#ifdef CONFIG_AVX2_OPT
+>       unsigned info = cpuinfo_init();
+>   
+> +#ifdef CONFIG_AVX2_OPT
+>       if (info & CPUINFO_AVX2) {
+>           return 2;
+>       }
+>   #endif
+> -    return 1;
+> +    return info & CPUINFO_SSE2 ? 1 : 0;
+>   }
 
-Enable CPU cluster support on SbsaQemu platform, so that users can
-specify a 4-level CPU hierarchy sockets/clusters/cores/threads. And
-this topology can be passed to the firmware through /cpus/topology
-Device Tree.
+Merge conflict with master here -- bufferiszero.c has been split.
+This hunk now goes in host/include/i386/host/bufferiszero.c.inc.
 
-Signed-off-by: Xiong Yining <xiongyining1480@phytium.com.cn>
-Reviewed-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-Reviewed-by: Leif Lindholm <quic_llindhol@quicinc.com>
-Message-id: 20240607103825.1295328-2-xiongyining1480@phytium.com.cn
-Tested-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
- docs/system/arm/sbsa.rst |  4 ++++
- hw/arm/sbsa-ref.c        | 11 ++++++++++-
- 2 files changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/docs/system/arm/sbsa.rst b/docs/system/arm/sbsa.rst
-index 2bf22a1d0b0..2bf3fc8d59d 100644
---- a/docs/system/arm/sbsa.rst
-+++ b/docs/system/arm/sbsa.rst
-@@ -62,6 +62,7 @@ The devicetree reports:
-    - platform version
-    - GIC addresses
-    - NUMA node id for CPUs and memory
-+   - CPU topology information
- 
- Platform version
- ''''''''''''''''
-@@ -88,3 +89,6 @@ Platform version changes:
- 
- 0.3
-   The USB controller is an XHCI device, not EHCI.
-+
-+0.4
-+  CPU topology information is present in devicetree.
-diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
-index 87884400e30..ae37a923015 100644
---- a/hw/arm/sbsa-ref.c
-+++ b/hw/arm/sbsa-ref.c
-@@ -219,7 +219,7 @@ static void create_fdt(SBSAMachineState *sms)
-      *                        fw compatibility.
-      */
-     qemu_fdt_setprop_cell(fdt, "/", "machine-version-major", 0);
--    qemu_fdt_setprop_cell(fdt, "/", "machine-version-minor", 3);
-+    qemu_fdt_setprop_cell(fdt, "/", "machine-version-minor", 4);
- 
-     if (ms->numa_state->have_numa_distance) {
-         int size = nb_numa_nodes * nb_numa_nodes * 3 * sizeof(uint32_t);
-@@ -276,6 +276,14 @@ static void create_fdt(SBSAMachineState *sms)
-         g_free(nodename);
-     }
- 
-+    /* Add CPU topology description through fdt node topology. */
-+    qemu_fdt_add_subnode(sms->fdt, "/cpus/topology");
-+
-+    qemu_fdt_setprop_cell(sms->fdt, "/cpus/topology", "sockets", ms->smp.sockets);
-+    qemu_fdt_setprop_cell(sms->fdt, "/cpus/topology", "clusters", ms->smp.clusters);
-+    qemu_fdt_setprop_cell(sms->fdt, "/cpus/topology", "cores", ms->smp.cores);
-+    qemu_fdt_setprop_cell(sms->fdt, "/cpus/topology", "threads", ms->smp.threads);
-+
-     sbsa_fdt_add_gic_node(sms);
- }
- 
-@@ -898,6 +906,7 @@ static void sbsa_ref_class_init(ObjectClass *oc, void *data)
-     mc->default_ram_size = 1 * GiB;
-     mc->default_ram_id = "sbsa-ref.ram";
-     mc->default_cpus = 4;
-+    mc->smp_props.clusters_supported = true;
-     mc->possible_cpu_arch_ids = sbsa_ref_possible_cpu_arch_ids;
-     mc->cpu_index_to_instance_props = sbsa_ref_cpu_index_to_props;
-     mc->get_default_cpu_node_id = sbsa_ref_get_default_cpu_node_id;
--- 
-2.34.1
-
+r~
 
