@@ -2,80 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB914913250
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Jun 2024 08:18:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD899913240
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Jun 2024 08:17:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sKu2q-0008M9-Gk; Sat, 22 Jun 2024 02:16:16 -0400
+	id 1sKu2r-0008Mf-KV; Sat, 22 Jun 2024 02:16:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sKu2n-0008L3-TF
+ id 1sKu2m-0008KA-C8
  for qemu-devel@nongnu.org; Sat, 22 Jun 2024 02:16:13 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sKu2m-0006NW-D9
- for qemu-devel@nongnu.org; Sat, 22 Jun 2024 02:16:13 -0400
+ id 1sKu2k-0006NQ-S4
+ for qemu-devel@nongnu.org; Sat, 22 Jun 2024 02:16:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1719036970;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=INLXKQAnxyLlbt49tJcziQ4qLBnfUf83esez+1sBRI0=;
- b=BCakeXIB+tk4/AK6zrksoYIzUxK/YnM45SK/xRX5UNNWAUOtBdW62EkKihqimaHnF0PYmv
- P90yY8J8d1I+3mhNHJPIQRoJTZekjdIRmG5sClPs2NluL+CjK1XWjlJokIT9ehmkK/ZPnm
- Ngl0QcFuHO/KEv4uRSMjekZh0SwFdE4=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=UpEB8RKh0nHTTV4SYs2ZNSxWI14Dka7ndAM1DOHLcLk=;
+ b=S4eYNUpXdbpinc1CPymRENEpMAUIRY8G0AtzgJcCms26/L+LMbzf6KsDxLF86a24qHF87T
+ UuW24q8ENEdmXCJa8t0BLbjkLTN9Tq7wU13oy7PkSOIFJ5z5LZEtp+kn1alH0qBEX3JAXs
+ nwHNiqkLdiVzuNiA3LNTGdhMGXG7iw0=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-418-AICYOFVCOVqM91qjriU-qw-1; Sat, 22 Jun 2024 02:16:05 -0400
-X-MC-Unique: AICYOFVCOVqM91qjriU-qw-1
-Received: by mail-ed1-f71.google.com with SMTP id
- 4fb4d7f45d1cf-57d3d594107so290192a12.3
- for <qemu-devel@nongnu.org>; Fri, 21 Jun 2024 23:16:05 -0700 (PDT)
+ us-mta-538-BTbVEsR5PXeofSSRdZu8Og-1; Sat, 22 Jun 2024 02:16:06 -0400
+X-MC-Unique: BTbVEsR5PXeofSSRdZu8Og-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-a706f279c56so4969566b.3
+ for <qemu-devel@nongnu.org>; Fri, 21 Jun 2024 23:16:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719036963; x=1719641763;
+ d=1e100.net; s=20230601; t=1719036964; x=1719641764;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=INLXKQAnxyLlbt49tJcziQ4qLBnfUf83esez+1sBRI0=;
- b=sera8gBAHJK8F3zE9wfYqjkeRddDb0SG3lPnh+Sjzod0dfSZYYfkkpRZk0Owz0aSrp
- 6P7rJczf1ARl9rV9DTWdc/3ka/CYaxAcUWiV011z2bRXcxOBbm/5jj4JXD/q78xWPKSZ
- LTdo+1Y4nuJYjyJz7QBNIS9vpKzhsSTUSSMohZAo1r/y6QBOKNat1edy1ClljMG9M2Vz
- GpDJ2PEXYkrVnWmi25uQoTB+u7BZQP6WiVord3Qr3pkhJS6BkO9KlFLcDUJBBMGSJv6I
- xqXIgG+2fdG23GcglK0Cj8hZJ+CpSgEnER2K7VJSj3a4zxDogb8n86z6kCm585yTyCy2
- nZ8A==
-X-Gm-Message-State: AOJu0YzhunF8yuGy65VRTbB/3PUH2EauiSr6lwea6+BfRl/u9cgOVoDY
- kwS+cWHclmnOtcK59dxAdtX8f9oT67eRT6rzG7EqdWU1yQrcmnwj+pwQPTSmT2PJy29tqowl1XK
- wSODyMOQYTahKkFU3/6dTIHjQUmLNaZXfAmOHEHEGGCwGL3FJn8qZ01ZldhXTgAps5T6QQgKZJh
- KfuJqDOSNsmUr6lZ+HvnzMPl0+bhIXS14FIQR4
-X-Received: by 2002:a05:6402:3414:b0:57c:a7dc:b0de with SMTP id
- 4fb4d7f45d1cf-57d07ee7906mr6298000a12.39.1719036963138; 
+ bh=UpEB8RKh0nHTTV4SYs2ZNSxWI14Dka7ndAM1DOHLcLk=;
+ b=nyolh35fqKGAk4Rh2TcYeoSH0oIl05wuLZQEI0WnJ1ymWSiVgt5gRl2g18Pv57JCz2
+ B7F48BRXqi+U1VIaMU9aux3MBqLlHaWbJZbGO4XzAKxlo+za8a+n9W4gcJHjOnuPCVXr
+ KiuUcj0Ib12ElsmwONy9BByk2sjN9qVgALIere0JOSQ23ZksoeMZh4GIJosaWIzqVZfz
+ 7jFKgYiyM6Rv8IzNEu3Pf0jYOI+HvCumPpVAywBr7ftP+KpoR6YKJx0OVbtmjO+MpV23
+ 5Y8+FP47Cki/6eFxKX14KRUptwEBr3B9LfUS5Y5vYxYHrWQJcA3KEIE5GMr5yJU7yyb8
+ TMqQ==
+X-Gm-Message-State: AOJu0Yy8LVYKu/Jd4SvZMTZlDgY/OfB4XyqgbcCns5TnT9bm0Q57+a+r
+ Xeme8zRij53klgayS/ti0X/10eIFrpoDFVgD8zn4pnzGDddUnw3MnYC1j1DxkJ6Ir4h5W2YJjwc
+ /FP7HApJSZ6Nzy3AyjGoV+s2IonYn4WAsGAlYbgxhV7nXNF3Sx+3QRLS0eMmMkiZT4P5oLC6bJD
+ D+RdylS0aIohTytkj9roY4j48vzetjUbtpdJNU
+X-Received: by 2002:a17:907:c5c7:b0:a6f:e5f2:e67c with SMTP id
+ a640c23a62f3a-a6fe5f2e746mr45574666b.38.1719036964374; 
+ Fri, 21 Jun 2024 23:16:04 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEuGmYTA+qyNNitAFYGppTdJRHvB3tWpfLyyOXSt20kGS2uQAI6gDsrZnE64aVNOEHRlwsSTw==
+X-Received: by 2002:a17:907:c5c7:b0:a6f:e5f2:e67c with SMTP id
+ a640c23a62f3a-a6fe5f2e746mr45573166b.38.1719036963750; 
  Fri, 21 Jun 2024 23:16:03 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF2G9v2ZubQK1ejU9FzinfQaoHLrZcGHxLd1CquQiKPYAfYT3Eg7IeWX8gx84fL5r2osgjo9A==
-X-Received: by 2002:a05:6402:3414:b0:57c:a7dc:b0de with SMTP id
- 4fb4d7f45d1cf-57d07ee7906mr6297984a12.39.1719036962576; 
- Fri, 21 Jun 2024 23:16:02 -0700 (PDT)
 Received: from avogadro.local ([151.62.196.71])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-57d3042d509sm1924241a12.43.2024.06.21.23.16.00
+ a640c23a62f3a-a6fcf428c67sm157489766b.2.2024.06.21.23.16.03
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 21 Jun 2024 23:16:01 -0700 (PDT)
+ Fri, 21 Jun 2024 23:16:03 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>
-Subject: [PULL 01/23] configure: detect --cpu=mipsisa64r6
-Date: Sat, 22 Jun 2024 08:15:35 +0200
-Message-ID: <20240622061558.530543-2-pbonzini@redhat.com>
+Subject: [PULL 02/23] target/i386: fix CC_OP dump
+Date: Sat, 22 Jun 2024 08:15:36 +0200
+Message-ID: <20240622061558.530543-3-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240622061558.530543-1-pbonzini@redhat.com>
 References: <20240622061558.530543-1-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
@@ -86,7 +84,8 @@ X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.145,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ UPPERCASE_50_75=0.008 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,28 +101,142 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Treat it as a MIPS64 machine.
+POPCNT was missing, and the entries were all out of order after
+ADCX/ADOX/ADCOX were moved close to EFLAGS.  Just use designated
+initializers.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+Fixes: 4885c3c4953 ("target-i386: Use ctpop helper", 2017-01-10)
+Fixes: cc155f19717 ("target/i386: rewrite flags writeback for ADCX/ADOX", 2024-06-11)
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- configure | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/i386/cpu-dump.c | 101 +++++++++++++++++++++--------------------
+ 1 file changed, 51 insertions(+), 50 deletions(-)
 
-diff --git a/configure b/configure
-index 5ad1674ca5f..8b6a2f16ceb 100755
---- a/configure
-+++ b/configure
-@@ -450,7 +450,7 @@ case "$cpu" in
-     linux_arch=loongarch
-     ;;
+diff --git a/target/i386/cpu-dump.c b/target/i386/cpu-dump.c
+index 40697064d92..3bb8e440916 100644
+--- a/target/i386/cpu-dump.c
++++ b/target/i386/cpu-dump.c
+@@ -28,69 +28,70 @@
+ /* x86 debug */
  
--  mips64*)
-+  mips64*|mipsisa64*)
-     cpu=mips64
-     host_arch=mips
-     linux_arch=mips
+ static const char *cc_op_str[CC_OP_NB] = {
+-    "DYNAMIC",
+-    "EFLAGS",
++    [CC_OP_DYNAMIC] = "DYNAMIC",
+ 
+-    "MULB",
+-    "MULW",
+-    "MULL",
+-    "MULQ",
++    [CC_OP_EFLAGS] = "EFLAGS",
++    [CC_OP_ADCX] = "ADCX",
++    [CC_OP_ADOX] = "ADOX",
++    [CC_OP_ADCOX] = "ADCOX",
+ 
+-    "ADDB",
+-    "ADDW",
+-    "ADDL",
+-    "ADDQ",
++    [CC_OP_MULB] = "MULB",
++    [CC_OP_MULW] = "MULW",
++    [CC_OP_MULL] = "MULL",
++    [CC_OP_MULQ] = "MULQ",
+ 
+-    "ADCB",
+-    "ADCW",
+-    "ADCL",
+-    "ADCQ",
++    [CC_OP_ADDB] = "ADDB",
++    [CC_OP_ADDW] = "ADDW",
++    [CC_OP_ADDL] = "ADDL",
++    [CC_OP_ADDQ] = "ADDQ",
+ 
+-    "SUBB",
+-    "SUBW",
+-    "SUBL",
+-    "SUBQ",
++    [CC_OP_ADCB] = "ADCB",
++    [CC_OP_ADCW] = "ADCW",
++    [CC_OP_ADCL] = "ADCL",
++    [CC_OP_ADCQ] = "ADCQ",
+ 
+-    "SBBB",
+-    "SBBW",
+-    "SBBL",
+-    "SBBQ",
++    [CC_OP_SUBB] = "SUBB",
++    [CC_OP_SUBW] = "SUBW",
++    [CC_OP_SUBL] = "SUBL",
++    [CC_OP_SUBQ] = "SUBQ",
+ 
+-    "LOGICB",
+-    "LOGICW",
+-    "LOGICL",
+-    "LOGICQ",
++    [CC_OP_SBBB] = "SBBB",
++    [CC_OP_SBBW] = "SBBW",
++    [CC_OP_SBBL] = "SBBL",
++    [CC_OP_SBBQ] = "SBBQ",
+ 
+-    "INCB",
+-    "INCW",
+-    "INCL",
+-    "INCQ",
++    [CC_OP_LOGICB] = "LOGICB",
++    [CC_OP_LOGICW] = "LOGICW",
++    [CC_OP_LOGICL] = "LOGICL",
++    [CC_OP_LOGICQ] = "LOGICQ",
+ 
+-    "DECB",
+-    "DECW",
+-    "DECL",
+-    "DECQ",
++    [CC_OP_INCB] = "INCB",
++    [CC_OP_INCW] = "INCW",
++    [CC_OP_INCL] = "INCL",
++    [CC_OP_INCQ] = "INCQ",
+ 
+-    "SHLB",
+-    "SHLW",
+-    "SHLL",
+-    "SHLQ",
++    [CC_OP_DECB] = "DECB",
++    [CC_OP_DECW] = "DECW",
++    [CC_OP_DECL] = "DECL",
++    [CC_OP_DECQ] = "DECQ",
+ 
+-    "SARB",
+-    "SARW",
+-    "SARL",
+-    "SARQ",
++    [CC_OP_SHLB] = "SHLB",
++    [CC_OP_SHLW] = "SHLW",
++    [CC_OP_SHLL] = "SHLL",
++    [CC_OP_SHLQ] = "SHLQ",
+ 
+-    "BMILGB",
+-    "BMILGW",
+-    "BMILGL",
+-    "BMILGQ",
++    [CC_OP_SARB] = "SARB",
++    [CC_OP_SARW] = "SARW",
++    [CC_OP_SARL] = "SARL",
++    [CC_OP_SARQ] = "SARQ",
+ 
+-    "ADCX",
+-    "ADOX",
+-    "ADCOX",
++    [CC_OP_BMILGB] = "BMILGB",
++    [CC_OP_BMILGW] = "BMILGW",
++    [CC_OP_BMILGL] = "BMILGL",
++    [CC_OP_BMILGQ] = "BMILGQ",
+ 
+-    "CLR",
++    [CC_OP_POPCNT] = "POPCNT",
++    [CC_OP_CLR] = "CLR",
+ };
+ 
+ static void
 -- 
 2.45.2
 
