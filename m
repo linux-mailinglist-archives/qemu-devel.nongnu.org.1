@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7666E913256
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Jun 2024 08:19:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C335C913259
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Jun 2024 08:19:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sKu3Y-0000Vy-9r; Sat, 22 Jun 2024 02:17:01 -0400
+	id 1sKu3q-0000Zz-FG; Sat, 22 Jun 2024 02:17:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sKu3L-0000Qr-9g
- for qemu-devel@nongnu.org; Sat, 22 Jun 2024 02:16:48 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1sKu3O-0000Sj-O0
+ for qemu-devel@nongnu.org; Sat, 22 Jun 2024 02:16:50 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sKu3J-0006UV-Cb
- for qemu-devel@nongnu.org; Sat, 22 Jun 2024 02:16:46 -0400
+ id 1sKu3N-0006Uf-Cr
+ for qemu-devel@nongnu.org; Sat, 22 Jun 2024 02:16:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719037004;
+ s=mimecast20190719; t=1719037008;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=2zJrXRaDXBIm9h7tTU28UT9xcD/K/7uFNW/URjbJHRw=;
- b=M+IdJz6LvSGIU2sihWZw9kbgZvImBO+lpWOweL4i7IEATaH65eiSdYpdvUijGouF/J57Kt
- tXW0Z340/9dqo6h7C2pC9DGZlNZTf9YiUsTsIvB26JM+no9y6Exa75Wvc0ljVwcmJca3u9
- MTm8pn+SWEJ+S1tCtbFJ5+wLgqS1E0Q=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=yrycet3jL1WSrURyl4kYUHh4gIffr2JcIs+cSDvgvbc=;
+ b=I5HbbvpvLtpX52JYXAen92RQhZk0Nb15mL96GpdPzfDIMSRSqX9ihFtUTfHaLSlvUWU91P
+ iv1RaMOsZe/VEu90p6ETPNYREHMY1EUVExhqMkM5+9DtObZW1g0hZwDsMFs4VGHLwLyg4G
+ dCEGsMFbmI/uCX70E8SfxEJhbCeHZhk=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-621-w03g5oJYMemwQTdB07K3Hw-1; Sat, 22 Jun 2024 02:16:41 -0400
-X-MC-Unique: w03g5oJYMemwQTdB07K3Hw-1
-Received: by mail-ed1-f69.google.com with SMTP id
- 4fb4d7f45d1cf-57d3f1d20adso466509a12.0
- for <qemu-devel@nongnu.org>; Fri, 21 Jun 2024 23:16:41 -0700 (PDT)
+ us-mta-18-BUyPwInlNt2yhZJF7BGTvg-1; Sat, 22 Jun 2024 02:16:44 -0400
+X-MC-Unique: BUyPwInlNt2yhZJF7BGTvg-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-a6fe871a5aeso8412266b.2
+ for <qemu-devel@nongnu.org>; Fri, 21 Jun 2024 23:16:44 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719037000; x=1719641800;
+ d=1e100.net; s=20230601; t=1719037002; x=1719641802;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=2zJrXRaDXBIm9h7tTU28UT9xcD/K/7uFNW/URjbJHRw=;
- b=hifVjl30grCH1w0R7uZ3YmdZwQNt4uGWYNWXPP2eeZhenASsIdFyfqmc/K2/q7vjgU
- 1tKc2CKtRfbZIdkEqyNW9R/bDm/cc2xwG4Uvgeu8/Mt+vWzT30WL7uvq8JGQNJgKQC7V
- O02JWvdiEYaq2/ty2EeRIK7afznfNZ83LPSXiG4TDDov7XkonnuqXeWklbIsSCr9DeHf
- DAkX7mlpopi6+9gXqfTLDXN94cWW+unjP7jLBCvx/Ola4cbR8G1gJrYfdusAXwZ9Netn
- Ys4N7zSc1GBNInWIB0ndXUL/T5gU5owcyZiHvCS2BngPfAJRmYSH0zHpmv0YaFE02yX6
- kF0w==
-X-Gm-Message-State: AOJu0YzFzCez1Sz2aWAFasZEVraZQ4XLVL7vzh3Lk3ehdpsBc9gEx5c1
- JcC+yy55paJk7Y3AHj189SKms2pt/ugeylDYtplW6chXkOFEr7Lvw8oNG/Ul+Sztx2KeX5CMZRP
- 0yVJEWroTx43rqMif85FCjAztzpKeY68CjsSGOwiNiiAzcjYDVh2/CDiwcl2bFVvp+diiCuQLAw
- ANe0aq/Xs1UFqMzlLzhP7IcpvPU2MGn+LWAnVB
-X-Received: by 2002:a05:6402:184b:b0:57c:6b49:aef with SMTP id
- 4fb4d7f45d1cf-57d4483b0ffmr350113a12.11.1719037000063; 
- Fri, 21 Jun 2024 23:16:40 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFK0wmR8jmoYRTxchYKF3rgI0Gwaz69fLnuEdn7aGZ0+gSYclcQ/Pl/MBtOKJPM3iVieMIkmg==
-X-Received: by 2002:a05:6402:184b:b0:57c:6b49:aef with SMTP id
- 4fb4d7f45d1cf-57d4483b0ffmr350109a12.11.1719036999807; 
- Fri, 21 Jun 2024 23:16:39 -0700 (PDT)
+ bh=yrycet3jL1WSrURyl4kYUHh4gIffr2JcIs+cSDvgvbc=;
+ b=Hc/Cm/TM94l6EfFp9MYhUxpPHxLDLZWOuVk7xKKNpJuycY38krI/B9tgVDddWrSftm
+ FXRhQh6qBOyargP9KsHLIXIKmpaCRjMUK+j5rerqyFI0iN09dgIzNwkjDNNdfxyHqD5x
+ qYaJZaY3zLg2nEa2ScRoAqPQV8knMQCray3NaqiUGiJIe8vfoIAXW7AbCvnkAPf5kMIS
+ dGVdIqYn+vYiMXhEg8KcOs27tjFYz5rmubVgcumIpsS4apb97XnrvVciMrcr0Wnoc0PA
+ KZPHlmer1nTq3k0c+sJ1x8+SYMOladxBHfipm2Uf1K9XoNdl0w0OhBssG3L6Ejf+qksy
+ owJA==
+X-Gm-Message-State: AOJu0YwM9lWa/NwGURFGyRoNl0vlbxeRBQ2sffW5PlZTp4smtQG1DBUQ
+ hdXAyC+oQ/k4jsC2qSPF9J/JMxGGJ57Q1nx6gvlPn16ctP9+lu2kytsKZxIE36WfWhlE/iuDg/T
+ d/q0/phgBCoLRnWsxYUo5kkEPE8sKayaGbAb+A/YbBYm8cjj15CAD7VnGEMdDpGB+Pf65GhKXgB
+ 3MqmeoUOeCivKqiVdJ2XmkluD7V4gyDl6/ZHNN
+X-Received: by 2002:a17:906:bf45:b0:a6f:5db5:71a0 with SMTP id
+ a640c23a62f3a-a6fab602c9emr712358666b.14.1719037002612; 
+ Fri, 21 Jun 2024 23:16:42 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG02UMRoMIQfh+0IUhhOOuBtKoryQodMVv5YNLt8O0yU4nfSjN1jAB9D9ZlT/3pTSXFC04Rag==
+X-Received: by 2002:a17:906:bf45:b0:a6f:5db5:71a0 with SMTP id
+ a640c23a62f3a-a6fab602c9emr712357866b.14.1719037002238; 
+ Fri, 21 Jun 2024 23:16:42 -0700 (PDT)
 Received: from avogadro.local ([151.62.196.71])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-57d30534b25sm1863380a12.68.2024.06.21.23.16.38
+ a640c23a62f3a-a6fcf560ad2sm158996266b.173.2024.06.21.23.16.40
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 21 Jun 2024 23:16:38 -0700 (PDT)
+ Fri, 21 Jun 2024 23:16:40 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 17/23] meson: remove dead optimization option
-Date: Sat, 22 Jun 2024 08:15:51 +0200
-Message-ID: <20240622061558.530543-18-pbonzini@redhat.com>
+Subject: [PULL 18/23] block: make assertion more generic
+Date: Sat, 22 Jun 2024 08:15:52 +0200
+Message-ID: <20240622061558.530543-19-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240622061558.530543-1-pbonzini@redhat.com>
 References: <20240622061558.530543-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -100,79 +100,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+.bdrv_needs_filename is only set for drivers that also set bdrv_file_open,
+i.e. protocol drivers.
+
+So we can make the assertion always, it will always pass for those drivers
+that use bdrv_open.
+
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- meson.build                   | 13 -------------
- meson_options.txt             |  2 --
- scripts/meson-buildoptions.sh |  3 ---
- 3 files changed, 18 deletions(-)
+ block.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/meson.build b/meson.build
-index 6e694ecd9fe..54e6b09f4fb 100644
---- a/meson.build
-+++ b/meson.build
-@@ -2874,18 +2874,6 @@ config_host_data.set('CONFIG_AVX2_OPT', get_option('avx2') \
-     int main(int argc, char *argv[]) { return bar(argv[argc - 1]); }
-   '''), error_message: 'AVX2 not available').allowed())
+diff --git a/block.c b/block.c
+index 468cf5e67d7..69a2905178a 100644
+--- a/block.c
++++ b/block.c
+@@ -1655,8 +1655,8 @@ bdrv_open_driver(BlockDriverState *bs, BlockDriver *drv, const char *node_name,
+     bs->drv = drv;
+     bs->opaque = g_malloc0(drv->instance_size);
  
--config_host_data.set('CONFIG_AVX512F_OPT', get_option('avx512f') \
--  .require(have_cpuid_h, error_message: 'cpuid.h not available, cannot enable AVX512F') \
--  .require(cc.links('''
--    #include <cpuid.h>
--    #include <immintrin.h>
--    static int __attribute__((target("avx512f"))) bar(void *a) {
--      __m512i x = *(__m512i *)a;
--      return _mm512_test_epi64_mask(x, x);
--    }
--    int main(int argc, char *argv[]) { return bar(argv[argc - 1]); }
--  '''), error_message: 'AVX512F not available').allowed())
--
- config_host_data.set('CONFIG_AVX512BW_OPT', get_option('avx512bw') \
-   .require(have_cpuid_h, error_message: 'cpuid.h not available, cannot enable AVX512BW') \
-   .require(cc.links('''
-@@ -4283,7 +4271,6 @@ summary_info += {'mutex debugging':   get_option('debug_mutex')}
- summary_info += {'memory allocator':  get_option('malloc')}
- summary_info += {'avx2 optimization': config_host_data.get('CONFIG_AVX2_OPT')}
- summary_info += {'avx512bw optimization': config_host_data.get('CONFIG_AVX512BW_OPT')}
--summary_info += {'avx512f optimization': config_host_data.get('CONFIG_AVX512F_OPT')}
- summary_info += {'gcov':              get_option('b_coverage')}
- summary_info += {'thread sanitizer':  get_option('tsan')}
- summary_info += {'CFI support':       get_option('cfi')}
-diff --git a/meson_options.txt b/meson_options.txt
-index 6065ed2d352..0269fa0f16e 100644
---- a/meson_options.txt
-+++ b/meson_options.txt
-@@ -119,8 +119,6 @@ option('membarrier', type: 'feature', value: 'disabled',
- 
- option('avx2', type: 'feature', value: 'auto',
-        description: 'AVX2 optimizations')
--option('avx512f', type: 'feature', value: 'disabled',
--       description: 'AVX512F optimizations')
- option('avx512bw', type: 'feature', value: 'auto',
-        description: 'AVX512BW optimizations')
- option('keyring', type: 'feature', value: 'auto',
-diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
-index 62842d47e88..cfadb5ea86a 100644
---- a/scripts/meson-buildoptions.sh
-+++ b/scripts/meson-buildoptions.sh
-@@ -95,7 +95,6 @@ meson_options_help() {
-   printf "%s\n" '  auth-pam        PAM access control'
-   printf "%s\n" '  avx2            AVX2 optimizations'
-   printf "%s\n" '  avx512bw        AVX512BW optimizations'
--  printf "%s\n" '  avx512f         AVX512F optimizations'
-   printf "%s\n" '  blkio           libblkio block device driver'
-   printf "%s\n" '  bochs           bochs image format support'
-   printf "%s\n" '  bpf             eBPF support'
-@@ -240,8 +239,6 @@ _meson_option_parse() {
-     --disable-avx2) printf "%s" -Davx2=disabled ;;
-     --enable-avx512bw) printf "%s" -Davx512bw=enabled ;;
-     --disable-avx512bw) printf "%s" -Davx512bw=disabled ;;
--    --enable-avx512f) printf "%s" -Davx512f=enabled ;;
--    --disable-avx512f) printf "%s" -Davx512f=disabled ;;
-     --enable-gcov) printf "%s" -Db_coverage=true ;;
-     --disable-gcov) printf "%s" -Db_coverage=false ;;
-     --enable-lto) printf "%s" -Db_lto=true ;;
++    assert(!drv->bdrv_needs_filename || bs->filename[0]);
+     if (drv->bdrv_file_open) {
+-        assert(!drv->bdrv_needs_filename || bs->filename[0]);
+         ret = drv->bdrv_file_open(bs, options, open_flags, &local_err);
+     } else if (drv->bdrv_open) {
+         ret = drv->bdrv_open(bs, options, open_flags, &local_err);
 -- 
 2.45.2
 
