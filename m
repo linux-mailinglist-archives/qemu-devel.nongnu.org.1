@@ -2,68 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EDE79133C8
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Jun 2024 14:09:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6375B9133B3
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Jun 2024 14:08:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sKzWH-0007vi-LB; Sat, 22 Jun 2024 08:07:01 -0400
+	id 1sKzWC-0007lw-0L; Sat, 22 Jun 2024 08:06:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sKzW7-0007ki-RY
- for qemu-devel@nongnu.org; Sat, 22 Jun 2024 08:06:53 -0400
+ id 1sKzW6-0007k4-Lp
+ for qemu-devel@nongnu.org; Sat, 22 Jun 2024 08:06:50 -0400
 Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sKzW4-0000JA-A0
- for qemu-devel@nongnu.org; Sat, 22 Jun 2024 08:06:51 -0400
+ id 1sKzW4-0000JB-2A
+ for qemu-devel@nongnu.org; Sat, 22 Jun 2024 08:06:49 -0400
 Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-366dcd21604so626614f8f.1
+ ffacd0b85a97d-35f2c9e23d3so2442389f8f.0
  for <qemu-devel@nongnu.org>; Sat, 22 Jun 2024 05:06:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719058005; x=1719662805; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=8TqPjrWurcxaMYlphBRpDrxRDcnk63JB/olF+Qaq8DA=;
- b=aJNeuXWPhlwKkxQE6kLcIU0Ish/CkVVAY0b/IpVvddDazz5M+tchfT6pBQoX8w3v0v
- KBIOI6GfFM1+ZLNTZKnpel4axCwxBvwqradUEboECEqdkXZvYBRx0qHPOVa/dJB/1k4D
- uYCI0hJ8naW7yUtzHkNT0FyuC1Csx3i8i9HIe3+UHuncLWZ4mrgM0o2JA3xUkw3zQU7G
- gUdhrUnXiXc77YkfQ6e9c3RJY0zn6RK1+WUdKgWF7IXS8JhOXS3g/UcLqoPb/QRerJgj
- asEdi6T+txAACs5owbeC+H/13cHDR1tj3n5uu/QxFVf5+JrMO9EXKU2VxWpOujzDw4cv
- Ix7A==
+ d=linaro.org; s=google; t=1719058006; x=1719662806; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=eWHSPGQ4OpgUOQnB0NTDT0+Cwh6MYZ+vbNYocaAOsiE=;
+ b=zGA/CoOkJLs6A3+/Ziuajk72PZbmKI4HXTpAhQBqIas2U1ROZeMjoBhpGM98bdZ4eB
+ 92aiGZSRVt2pJrXMwXH217QjsLLa/Za/8DXQNPTVuGTHHCBqK40Ox+IlpE2c6n6Z/huW
+ EhMltvx9xHXVX3OzMg/M3E/5pp9qs21CHqNVstGxMRCOTmqmb3CrXAETvtc2tN77g/1X
+ l1xsDHOMSOcaP1X+2EK2fdtxY8DSI4T8YxJdqvmmyQAkfX4bis2QgwhgxAD/Z0CTLWix
+ cmxR8K8nv0Sz/NH5xvqqwxdayKF+23O6Ku6bp2NhL11KGSJ3vC3gDnHz3wc5kWIm1vqc
+ aaNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719058005; x=1719662805;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=8TqPjrWurcxaMYlphBRpDrxRDcnk63JB/olF+Qaq8DA=;
- b=g6UiZyrLd5pSvmt+q3Sn19tA1xMNCgQELousY4tLp3SbDfssI8JUkagHr5Oc2TmAoA
- QK35rhGZJqTBLFERiZllAKuzwN5moXNOuhEX3UBgInaTQaeFswoyFjXSzLXmbA8K86n+
- 0vZmohGsgqZap9cLaBtPQSqCzQdwpXvXn1fznnonQOETDo1ZErrHsb0Meubqz/0MXCSt
- wDDiUUlSwm68JnvFvBG7dH3pnoPu08jSx+1xppSn3D5YZXkCcKg3agIuVW7cCWJY74lh
- M6aNBwNop+B7D/0A4h4PvoPXlgjH0Ho5qC8nV7o9CaULr7bc7oGJZfOl7bVyaLJfCxfJ
- W7Qg==
-X-Gm-Message-State: AOJu0YyZSZIdQNkz3iQeUHMDAjaha8xkqeOdcH0u8AVpXzZURJD3oiEh
- EiXUA1Ozz0lez0BOA/3m0mK7LAXw0fvl4/EGhyhx8f6bSTvmUbeICG+0Rnf9+OResuDCkWWizFL
- cEJk=
-X-Google-Smtp-Source: AGHT+IG4hs+xO2yHu4yPpKVu5QIZdYMDYTjGL2gMYdM70OM6J9gLVOIw0BxMdVHHWjOnrd1+46yrjQ==
-X-Received: by 2002:a5d:660c:0:b0:366:e7c8:453e with SMTP id
- ffacd0b85a97d-366e7c84697mr233493f8f.12.1719058005380; 
+ d=1e100.net; s=20230601; t=1719058006; x=1719662806;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=eWHSPGQ4OpgUOQnB0NTDT0+Cwh6MYZ+vbNYocaAOsiE=;
+ b=cclfhpwb6nfbiP2GWjgbIM1v15mv71JpR2Q2RlrmI8uXwURjELuP37SD6eY18zOAwl
+ M3Ugxro0JC3ltG50TCxHdRsHErCrJP0sTcHxhPPRT3cd7ryl9w+VzaT3Mzz3ARAGpyFw
+ uZmPXl7mQ5AzwE+Q+P3VSZAeq1uXngvQz1qFeXGXFcsilDLWPjCJtn4B/XZM4jBudgI1
+ skRxa1VhIn1AB6STwirXEx96Kjo1BPH20jaHFgJ29Xdbt0ezic9IQUdpg/cyr+k6D+i/
+ Ln47MpeFd789X6r+27MqH8frfcZx6O5hKbk8zUnTxYJSdlYCRUxL5JmLme2Q/ef0khsF
+ JtRQ==
+X-Gm-Message-State: AOJu0YxbSH7+QFPBHE7Gmh+fYdcT03DOxKVoR8JjoXFDJs/id/rH7+dx
+ /YyzD4ENLbcx4iGf/9vKUP3tAsKdQ+7KMKSIT/930WHwivsUid2b2tzH2KHqOEq96n9eztt/lcE
+ JKog=
+X-Google-Smtp-Source: AGHT+IHJ1cJtSx0r6XZSn7BemioWS7NiSOd58bUwtRO0y6LGequNK6i1cTHzeXf0euLWeGdoR9uvaA==
+X-Received: by 2002:a05:6000:1a8c:b0:360:728d:8439 with SMTP id
+ ffacd0b85a97d-366e36491b7mr1214622f8f.2.1719058005778; 
  Sat, 22 Jun 2024 05:06:45 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3663a2f698dsm4393006f8f.70.2024.06.22.05.06.44
+ ffacd0b85a97d-3663a2f698dsm4393006f8f.70.2024.06.22.05.06.45
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 22 Jun 2024 05:06:44 -0700 (PDT)
+ Sat, 22 Jun 2024 05:06:45 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 00/18] target-arm queue
-Date: Sat, 22 Jun 2024 13:06:25 +0100
-Message-Id: <20240622120643.3797539-1-peter.maydell@linaro.org>
+Subject: [PULL 01/18] hw/net/can/xlnx-versal-canfd: Fix sorting of the tx queue
+Date: Sat, 22 Jun 2024 13:06:26 +0100
+Message-Id: <20240622120643.3797539-2-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240622120643.3797539-1-peter.maydell@linaro.org>
+References: <20240622120643.3797539-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2a00:1450:4864:20::432;
  envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x432.google.com
@@ -89,89 +91,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi; here's the latest target-arm pullreq; this is pretty much
-just various bugfixes.
+From: Shiva sagar Myana <Shivasagar.Myana@amd.com>
 
--- PMM
+Returning an uint32_t casted to a gint from g_cmp_ids causes the tx queue to
+become wrongly sorted when executing g_slist_sort. Fix this by always
+returning -1 or 1 from g_cmp_ids based on the ID comparison instead.
+Also, if two message IDs are the same, sort them by using their index and
+transmit the message at the lowest index first.
 
-The following changes since commit 02d9c38236cf8c9826e5c5be61780c4444cb4ae0:
+Signed-off-by: Shiva sagar Myana <Shivasagar.Myana@amd.com>
+Reviewed-by: Francisco Iglesias <francisco.iglesias@amd.com>
+Message-id: 20240603051732.3334571-1-Shivasagar.Myana@amd.com
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+---
+ hw/net/can/xlnx-versal-canfd.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-  Merge tag 'pull-tcg-20240619' of https://gitlab.com/rth7680/qemu into staging (2024-06-19 14:00:39 -0700)
+diff --git a/hw/net/can/xlnx-versal-canfd.c b/hw/net/can/xlnx-versal-canfd.c
+index 47a14cfe633..5f083c21e93 100644
+--- a/hw/net/can/xlnx-versal-canfd.c
++++ b/hw/net/can/xlnx-versal-canfd.c
+@@ -1312,7 +1312,10 @@ static gint g_cmp_ids(gconstpointer data1, gconstpointer data2)
+     tx_ready_reg_info *tx_reg_1 = (tx_ready_reg_info *) data1;
+     tx_ready_reg_info *tx_reg_2 = (tx_ready_reg_info *) data2;
+ 
+-    return tx_reg_1->can_id - tx_reg_2->can_id;
++    if (tx_reg_1->can_id == tx_reg_2->can_id) {
++        return (tx_reg_1->reg_num < tx_reg_2->reg_num) ? -1 : 1;
++    }
++    return (tx_reg_1->can_id < tx_reg_2->can_id) ? -1 : 1;
+ }
+ 
+ static void free_list(GSList *list)
+-- 
+2.34.1
 
-are available in the Git repository at:
-
-  https://git.linaro.org/people/pmaydell/qemu-arm.git tags/pull-target-arm-20240622
-
-for you to fetch changes up to 3b36cead6ecc0e40edb8b2f3e253baa01ebc1e9a:
-
-  hw/arm/sbsa-ref: Enable CPU cluster on ARM sbsa machine (2024-06-21 16:24:46 +0100)
-
-----------------------------------------------------------------
-target-arm queue:
- * hw/net/can/xlnx-versal-canfd: Fix sorting of the tx queue
- * hw/arm/xilinx_zynq: Fix IRQ/FIQ routing
- * hw/intc/arm_gic: Fix deactivation of SPI lines
- * hw/timer/a9gtimer: Handle QTest mode in a9_gtimer_get_current_cpu
- * hw/misc: Set valid access size for Exynos4210 RNG
- * hw/arm/sbsa-ref: switch to 1GHz timer frequency
- * hw/arm/sbsa-ref: Enable CPU cluster on ARM sbsa machine
- * hw/arm/virt: allow creation of a second NonSecure UART
- * hw/arm/virt: Avoid unexpected warning from Linux guest on host with Fujitsu CPUs
- * scripts/coverity-scan/COMPONENTS.md: update component regexes
- * hw/usb/hcd-dwc2: Handle invalid address access in read and write functions
- * hw/usb/hcd-ohci: Fix ohci_service_td: accept zero-length TDs where CBP=BE+1
-
-----------------------------------------------------------------
-David Hubbard (1):
-      hw/usb/hcd-ohci: Fix ohci_service_td: accept zero-length TDs where CBP=BE+1
-
-Edgar E. Iglesias (1):
-      hw/intc/arm_gic: Fix deactivation of SPI lines
-
-Marcin Juszkiewicz (1):
-      hw/arm/sbsa-ref: switch to 1GHz timer frequency
-
-Peter Maydell (8):
-      scripts/coverity-scan/COMPONENTS.md: Update paths to match gitlab CI
-      scripts/coverity-scan/COMPONENTS.md: Fix 'char' component
-      scripts/coverity-scan/COMPONENTS.md: Add crypto headers in host/include to the crypto component
-      scripts/coverity-scan/COMPONENTS.md: Fix monitor component
-      scripts/coverity-scan/COMPONENTS.md: Include libqmp in testlibs
-      hw/arm/virt: Add serial aliases in DTB
-      hw/arm/virt: Rename VIRT_UART and VIRT_SECURE_UART to VIRT_UART[01]
-      hw/arm/virt: allow creation of a second NonSecure UART
-
-Sebastian Huber (1):
-      hw/arm/xilinx_zynq: Fix IRQ/FIQ routing
-
-Shiva sagar Myana (1):
-      hw/net/can/xlnx-versal-canfd: Fix sorting of the tx queue
-
-Xiong Yining (1):
-      hw/arm/sbsa-ref: Enable CPU cluster on ARM sbsa machine
-
-Zhenyu Zhang (1):
-      hw/arm/virt: Avoid unexpected warning from Linux guest on host with Fujitsu CPUs
-
-Zheyu Ma (3):
-      hw/timer/a9gtimer: Handle QTest mode in a9_gtimer_get_current_cpu
-      hw/usb/hcd-dwc2: Handle invalid address access in read and write functions
-      hw/misc: Set valid access size for Exynos4210 RNG
-
- docs/system/arm/sbsa.rst            |   4 ++
- docs/system/arm/virt.rst            |   6 +-
- hw/intc/gic_internal.h              |   8 ++-
- include/hw/arm/virt.h               |   5 +-
- hw/arm/sbsa-ref.c                   |  23 +++++---
- hw/arm/virt-acpi-build.c            |  22 +++++---
- hw/arm/virt.c                       |  63 ++++++++++++++++++---
- hw/arm/xilinx_zynq.c                |   5 +-
- hw/misc/exynos4210_rng.c            |   2 +
- hw/net/can/xlnx-versal-canfd.c      |   5 +-
- hw/timer/a9gtimer.c                 |   5 ++
- hw/usb/hcd-dwc2.c                   |   9 ++-
- hw/usb/hcd-ohci.c                   |   4 +-
- hw/usb/trace-events                 |   1 +
- scripts/coverity-scan/COMPONENTS.md | 107 ++++++++++++++++++------------------
- 15 files changed, 179 insertions(+), 90 deletions(-)
 
