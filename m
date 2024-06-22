@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DA829133B9
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Jun 2024 14:08:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 956949133C2
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Jun 2024 14:08:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sKzWI-0007wh-8a; Sat, 22 Jun 2024 08:07:02 -0400
+	id 1sKzWN-00081Q-A1; Sat, 22 Jun 2024 08:07:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sKzW9-0007lU-2J
- for qemu-devel@nongnu.org; Sat, 22 Jun 2024 08:06:53 -0400
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ id 1sKzW9-0007lx-SA
+ for qemu-devel@nongnu.org; Sat, 22 Jun 2024 08:06:54 -0400
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sKzW6-0000Ju-Qs
- for qemu-devel@nongnu.org; Sat, 22 Jun 2024 08:06:52 -0400
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-3658197cdbbso1338314f8f.3
+ id 1sKzW7-0000Jy-JJ
+ for qemu-devel@nongnu.org; Sat, 22 Jun 2024 08:06:53 -0400
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-36279cf6414so2235572f8f.3
  for <qemu-devel@nongnu.org>; Sat, 22 Jun 2024 05:06:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719058009; x=1719662809; darn=nongnu.org;
+ d=linaro.org; s=google; t=1719058010; x=1719662810; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=hJXw18R+LAKc75qOpzY4VoPBavys2Xc3dbvQaGAdCEg=;
- b=vUCmSNcqAQDdq/9EPZZPvZaJtkXkJqBVQzuaS2ZdHF3OEbMDfLJe6FGcMWXMiqX/kV
- 0NS79lClnkLoNCqPwCLMVXVl1T2BDPYn5yd4VHFrMARaFsk3zURmMHNHj7mA33WyXJGT
- 0s5FhBXbyE0YRCSB8D3Rm3spumV6whuJE5XjRmzQ6seoRGKK/hP4B0OURIChGWiqwh21
- YainjFZzHLlW2DjGtLzt66xcDLf0DzxGF/Mh+3BeB97zXm/PoOBdju1Dxcfwj9oxWiHG
- xQwFMffKPR6xHDhEZddArTdIxb+JNQ0u/D6KoBjqlPd86HyASVkmr//vjZf8iwcfWQTB
- qQ6Q==
+ :reply-to; bh=WZEwtz/pwjMa4zwtaeGl8+Ie8svZn5Th6HSPtyByswE=;
+ b=P6t6gJLiVVo5H5kU3Jh9+AZXAZqeS6eV9Z30vu+NbmCSM+8W1t9q8X5m4sccfAQNTE
+ 1sgB/ssiL2g13yDMndeMOnLbvdCgm6xh0NOzCciGnvb2gXw1w5A3ZVXz3VBll4qc1yz1
+ 4Un6lwSRut5nnpy9kTuxvbExGg1EiyVIWVIW/eGqeKZq1/yZQIg6lxtfrSpbI5jorKrE
+ EbhO/I0t0hDR/3RKEZBi0yOei3pQAW81Kob77s2tifTye1cx+UlYl1T+HJNRRY+lf0SU
+ UAEibwFm1YXdv065JEcABRNTJBX8r1J0/69gGxMec+oaFv+sC0/IpWiaMxIQNLntoqeA
+ I3nA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719058009; x=1719662809;
+ d=1e100.net; s=20230601; t=1719058010; x=1719662810;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=hJXw18R+LAKc75qOpzY4VoPBavys2Xc3dbvQaGAdCEg=;
- b=wedgqB73hTRbCigeZNpwh31O98+jXgqweSERtWPPEWYUgtAgFFDExepKvqtdoB0eCp
- zHELjZc02Y6CZgosMlZmKeXBAzIRlyuzrmYMevF3YARErzHwXH0BjFF//WGEFuRaBVsr
- 36KZdbwduro7UyHXyID9yteBOnoCAquLLZSln1eObVd2MZzO/S3QlRyAGBb/CThHODgh
- mNPcJKZtj2rNQ8bG27c6wL8wmZ+wDZiFQEsYJEi0IgddACESEIlYabS5CyLLdDcMYmXI
- ILGFN9gMws/uYEXem5S+1JA1r9ksgyNHZD3UykwwkmjLdrmKjBUqXFyO9U1Y4+r9lVgF
- myAA==
-X-Gm-Message-State: AOJu0Yz/wNlGodvYKpu2DpjZFd4kTnbCVNSZCLgr/nx+ZH5iCXkLGJwe
- ririonPYUFmGdidf7imIIQrtCBKaqT1wn/G9rK9uJCV2AKPC2tY1b5JCUW26bgbYuCOXSIMaK9s
- vnPw=
-X-Google-Smtp-Source: AGHT+IF+U24xzRH+md7HIfGh3LoslqJkD30l8YMZlStdJ/4t81Wl+3lyQx5ZbMbwtJ73hV/qniE09g==
-X-Received: by 2002:a5d:4b4b:0:b0:362:e71:9268 with SMTP id
- ffacd0b85a97d-363171e23d8mr7559688f8f.6.1719058009552; 
+ bh=WZEwtz/pwjMa4zwtaeGl8+Ie8svZn5Th6HSPtyByswE=;
+ b=rf+geEHiU7W/Atc5/Sx/dcQRMfmT4kXEutzmmOlogPLG4bIPTyE19ekTQvc2J6IgJx
+ TSnPElCIPok+48ihdFjUOVxNal7dpmj61815dKVoQtsRZOEXY7M0gWEwiwq7qdqbvmIT
+ ExUg0h31xYNlG9wG2IJsO5AzpP0/wonr8iyN3YtNhY1Kffgm162vRZ1nk+00Ppkt2j+0
+ 3Dw1YunY0UA8kgvE8BUEo/6sUHASx/rCjCnjCNaPjGrMEYRHcOybwGECt3OFCx9PujBm
+ 0hPhRsFPaQ9caBlrqdyGmhs/Wu5PcL9uv2fPwrH97Ghk5RnhxgDN2HYhG0AIGU557IA6
+ DHBA==
+X-Gm-Message-State: AOJu0YxjPU87o20J09gIyFhG58kf9EQdFKxqj5Dtc84EuZmaxKTDot1P
+ k7hsHLOF7bLUBjEw9BoFxyfGELwEtIlMa3RMDAODng9hFkU4w4siK7DBsPQag+K8AEO5NLsRqoh
+ DLng=
+X-Google-Smtp-Source: AGHT+IEOVruQ/93GjvDrXo+Ij8CnMJJrieNseZnvTV1tQbwup/xuVUq/e7mOlWjsb4n2Kjyw7VZWYw==
+X-Received: by 2002:adf:ce87:0:b0:35f:209b:c10f with SMTP id
+ ffacd0b85a97d-3631998ffcbmr7275862f8f.68.1719058009927; 
  Sat, 22 Jun 2024 05:06:49 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
@@ -59,18 +59,18 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Sat, 22 Jun 2024 05:06:49 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 09/18] scripts/coverity-scan/COMPONENTS.md: Include libqmp in
- testlibs
-Date: Sat, 22 Jun 2024 13:06:34 +0100
-Message-Id: <20240622120643.3797539-10-peter.maydell@linaro.org>
+Subject: [PULL 10/18] hw/timer/a9gtimer: Handle QTest mode in
+ a9_gtimer_get_current_cpu
+Date: Sat, 22 Jun 2024 13:06:35 +0100
+Message-Id: <20240622120643.3797539-11-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240622120643.3797539-1-peter.maydell@linaro.org>
 References: <20240622120643.3797539-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x435.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,28 +93,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add libqmp to the testlibs component.
+From: Zheyu Ma <zheyuma97@gmail.com>
 
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+This commit updates the a9_gtimer_get_current_cpu() function to handle
+cases where QTest is enabled. When QTest is used, it returns 0 instead
+of dereferencing the current_cpu, which can be NULL. This prevents the
+program from crashing during QTest runs.
+
+Reproducer:
+cat << EOF | qemu-system-aarch64 -display \
+none -machine accel=qtest, -m 512M -machine npcm750-evb -qtest stdio
+writel 0xf03fe20c 0x26d7468c
+EOF
+
+Signed-off-by: Zheyu Ma <zheyuma97@gmail.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20240604145934.1230583-6-peter.maydell@linaro.org
+Message-id: 20240618144009.3137806-1-zheyuma97@gmail.com
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- scripts/coverity-scan/COMPONENTS.md | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/timer/a9gtimer.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/scripts/coverity-scan/COMPONENTS.md b/scripts/coverity-scan/COMPONENTS.md
-index 3864f8eda07..858190be097 100644
---- a/scripts/coverity-scan/COMPONENTS.md
-+++ b/scripts/coverity-scan/COMPONENTS.md
-@@ -154,7 +154,7 @@ sysemu
-   ~ .*/qemu(/include/.*)
+diff --git a/hw/timer/a9gtimer.c b/hw/timer/a9gtimer.c
+index a2ac5bdfb99..64d80cdf6a3 100644
+--- a/hw/timer/a9gtimer.c
++++ b/hw/timer/a9gtimer.c
+@@ -32,6 +32,7 @@
+ #include "qemu/log.h"
+ #include "qemu/module.h"
+ #include "hw/core/cpu.h"
++#include "sysemu/qtest.h"
  
- testlibs
--  ~ .*/qemu(/tests/qtest(/libqos/.*|/libqtest.*))
-+  ~ .*/qemu(/tests/qtest(/libqos/.*|/libqtest.*|/libqmp.*))
+ #ifndef A9_GTIMER_ERR_DEBUG
+ #define A9_GTIMER_ERR_DEBUG 0
+@@ -48,6 +49,10 @@
  
- tests
-   ~ .*/qemu(/tests/.*)
+ static inline int a9_gtimer_get_current_cpu(A9GTimerState *s)
+ {
++    if (qtest_enabled()) {
++        return 0;
++    }
++
+     if (current_cpu->cpu_index >= s->num_cpu) {
+         hw_error("a9gtimer: num-cpu %d but this cpu is %d!\n",
+                  s->num_cpu, current_cpu->cpu_index);
 -- 
 2.34.1
 
