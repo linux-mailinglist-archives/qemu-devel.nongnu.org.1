@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E742B9133BC
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Jun 2024 14:08:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FF2C9133BE
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Jun 2024 14:08:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sKzWJ-0007yR-Hv; Sat, 22 Jun 2024 08:07:03 -0400
+	id 1sKzWJ-0007yF-Go; Sat, 22 Jun 2024 08:07:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sKzW9-0007lv-Rp
- for qemu-devel@nongnu.org; Sat, 22 Jun 2024 08:06:54 -0400
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ id 1sKzWB-0007oE-Hb
+ for qemu-devel@nongnu.org; Sat, 22 Jun 2024 08:06:55 -0400
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sKzW7-0000KI-QA
+ id 1sKzW8-0000KN-Fx
  for qemu-devel@nongnu.org; Sat, 22 Jun 2024 08:06:53 -0400
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-3650f2e540dso1784679f8f.0
- for <qemu-devel@nongnu.org>; Sat, 22 Jun 2024 05:06:51 -0700 (PDT)
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-366df217347so593720f8f.0
+ for <qemu-devel@nongnu.org>; Sat, 22 Jun 2024 05:06:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719058010; x=1719662810; darn=nongnu.org;
+ d=linaro.org; s=google; t=1719058011; x=1719662811; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=H5GU695wBqzPlnCl6LHUjaUC9nnJlhbb4hAcQcaW5AI=;
- b=TBeHo6WgviJWAIPm15E1oZf0XAMqc//2DkLk42dhLfMBckqACrcPGI3+zPDmx056c9
- UMYzH8+fktQ0DIj1i8YU5R/A9OgmgwIm8mT6D8pEpPen9dxvqhYwyViH4XPRj5BUddie
- h7d6reermiV5LytqdPge8KlGOoc4yjBAUPyQpCm5pMJMGLQsJ68W2dJOF2rlxcZtbEWW
- btfKtodlF22pfU9SXMyEMzQLfzvP/SFwASpcZi4XR4AMhxWtioSURccCwGn6aKqFINH5
- FYc8r/liifnbPz/dZZwxqCVjsS9AepykQwu5zeBNASh0CuQsZ/MF4x+FHWAXKJdIwnMk
- /Njg==
+ :reply-to; bh=mDo+JBOeUoxcIeTzZxYoC2qPYwPf30n/5YLwDLvTy9M=;
+ b=rAUu1e6elmoz90v1TjVdDP1nucpWZVfF45YIvU60+asxdoizaaGjb2mi0rigdV3McZ
+ fZtEFfkEVXln/8pY7DtB2yz5PQ7dlUfRVOgVznPDzYaOhJ3QwD7vdcUdh+RA8eMg6p0F
+ H4kgfc/jvQFA26tXEIp8SXxCagRRUcSEEeQV9PBZegLXI9DFwM2Np9NTEKgZ8Nr39eF6
+ Vo+oMsrBSlh0JKZLLrMcochQ1fFcnqAVpFD3lvhpuC1lJVHifCve/Rmj+wFF5Oq1qXhy
+ 0VHzb8oDndFe0EbaWn69Vgcln7opTuzkDZb4QuCxxKM/FxDyX5o40ZNiBFn1k9MfchCT
+ xvRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719058010; x=1719662810;
+ d=1e100.net; s=20230601; t=1719058011; x=1719662811;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=H5GU695wBqzPlnCl6LHUjaUC9nnJlhbb4hAcQcaW5AI=;
- b=O+ovcbWiWgonfq6RRGbv3lVrh1MrFkeVr+kiDcPPfWUc0foU6CQaYWqewbx2fUAh6a
- +4Z3QNohTvWcKpiUle+bUAMO7hmoWsCGQW4XfYYRXFHmOYR3rGixHDF4AbvSaUES5nwG
- 4J/McwJ2uhYX5dIZvkTo+hEwOrfV6m4ICDStiQx2BfcvTmIAgvQq7hOp3IfAIoVocJjJ
- q7UXOK99MDej8QFHm8ieVCCOTHcH+cJYlm5A1vV6BepZej/a14618FVqDixtwoNhGwHM
- 0xFUUF/JU1gPDolNVAjeGH56/s+EB6D1wOojBAyx20DsY4o57Md7WTSWCuOABbuJERk4
- PQgQ==
-X-Gm-Message-State: AOJu0YzMWhZ9tBvBeb4JFHaBXK61frRDv8wIRU9nZ61WuIBLPI7hhLCl
- yjIs3LRAOpFI+WamGNetBoGpjPulkC5wbNhDyF5jcFZ0a2Vu/6Uouog/dEMr3GgwuIN+9zWWZGq
- 0BmQ=
-X-Google-Smtp-Source: AGHT+IHDCQdx19ltFCec4XM6j5axiyLYFm0QD87HSCNLJ2E1piNtv+/72zZLAyYbTFwVt0Y/Q66CKw==
-X-Received: by 2002:adf:e441:0:b0:362:c237:5569 with SMTP id
- ffacd0b85a97d-363170eccc5mr7900219f8f.2.1719058010381; 
+ bh=mDo+JBOeUoxcIeTzZxYoC2qPYwPf30n/5YLwDLvTy9M=;
+ b=QzKNO2QeMv1XpNuIaN2RiBloUXEW+zoiqstMle17GYwykF5R2tSfx0sSPU7oKrqGKU
+ L+tVUZC53TBLjXSPyjp1/tur/h1NOjw4TSRgP2Q8LzgNs4CHr5lCmmwir2m0akAYl+c+
+ gh19q7BMUtZQI+ItS+vacmzczlAgF749ji4azIu0x5QBeLzeocaZMSyt9N3fZGGhUP/T
+ ZvUYYbGhQtO4vYpbFwWZTXbNyR2gc7q8NyoBS/+LXUm/j8s/YUTEnq3SEk3+rCgNHZHT
+ T/BUuFt2mqr7AFCEvIxwTbakhUVmf8AI0qJDWT+Ml79BKbFKy35R8c5O9kmQHSP5h3Qw
+ SvWg==
+X-Gm-Message-State: AOJu0YwwLuV3OgdjKoEK5QaMsp+uAumpx3b6WSyC4u3Y8dqAhuVP35IP
+ aC0w8cBlsUuT+bgLmDNa+n/osTblRFslkhZAUdUpbPQSOx8pA5+j8gFCko+3yM/GPzN6698Q25L
+ lHAA=
+X-Google-Smtp-Source: AGHT+IHw19iEyk5fa6bKXJg1UTU2hfIu5EdfPb3B+hdsW1pjAiHSVc8j/Y0Jru1erXXau7yJMC66Rg==
+X-Received: by 2002:a05:6000:143:b0:362:93f9:cb7f with SMTP id
+ ffacd0b85a97d-36317c7eb8cmr8363263f8f.29.1719058010855; 
  Sat, 22 Jun 2024 05:06:50 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
@@ -59,17 +59,17 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Sat, 22 Jun 2024 05:06:50 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 11/18] hw/usb/hcd-dwc2: Handle invalid address access in read
- and write functions
-Date: Sat, 22 Jun 2024 13:06:36 +0100
-Message-Id: <20240622120643.3797539-12-peter.maydell@linaro.org>
+Subject: [PULL 12/18] hw/arm/virt: Add serial aliases in DTB
+Date: Sat, 22 Jun 2024 13:06:37 +0100
+Message-Id: <20240622120643.3797539-13-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240622120643.3797539-1-peter.maydell@linaro.org>
 References: <20240622120643.3797539-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x432.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,60 +92,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zheyu Ma <zheyuma97@gmail.com>
+If there is more than one UART in the DTB, then there is no guarantee
+on which order a guest is supposed to initialise them.  The standard
+solution to this is "serialN" entries in the "/aliases" node of the
+dtb which give the nodename of the UARTs.
 
-This commit modifies the dwc2_hsotg_read() and dwc2_hsotg_write() functions
-to handle invalid address access gracefully. Instead of using
-g_assert_not_reached(), which causes the program to abort, the functions
-now log an error message and return a default value for reads or do
-nothing for writes.
+At the moment we only have two UARTs in the DTB when one is for
+the Secure world and one for the Non-Secure world, so this isn't
+really a problem. However if we want to add a second NS UART we'll
+need the aliases to ensure guests pick the right one.
 
-This change prevents the program from aborting and provides clear log
-messages indicating when an invalid memory address is accessed.
-
-Reproducer:
-cat << EOF | qemu-system-aarch64 -display none \
--machine accel=qtest, -m 512M -machine raspi2b -m 1G -nodefaults \
--usb -drive file=null-co://,if=none,format=raw,id=disk0 -device \
-usb-storage,port=1,drive=disk0 -qtest stdio
-readl 0x3f980dfb
-EOF
-
-Signed-off-by: Zheyu Ma <zheyuma97@gmail.com>
-Reviewed-by: Paul Zimmerman <pauldzim@gmail.com>
-Message-id: 20240618135610.3109175-1-zheyuma97@gmail.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-id: 20240610162343.2131524-2-peter.maydell@linaro.org
 ---
- hw/usb/hcd-dwc2.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ hw/arm/virt.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/hw/usb/hcd-dwc2.c b/hw/usb/hcd-dwc2.c
-index 8cac9c0a062..b4f0652c7d2 100644
---- a/hw/usb/hcd-dwc2.c
-+++ b/hw/usb/hcd-dwc2.c
-@@ -1128,7 +1128,10 @@ static uint64_t dwc2_hsotg_read(void *ptr, hwaddr addr, unsigned size)
-         val = dwc2_pcgreg_read(ptr, addr, (addr - HSOTG_REG(0xe00)) >> 2, size);
-         break;
-     default:
--        g_assert_not_reached();
-+        qemu_log_mask(LOG_GUEST_ERROR, "%s: Bad offset 0x%"HWADDR_PRIx"\n",
-+                      __func__, addr);
-+        val = 0;
-+        break;
+diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+index c7a1f754e72..61a9d47c026 100644
+--- a/hw/arm/virt.c
++++ b/hw/arm/virt.c
+@@ -284,6 +284,8 @@ static void create_fdt(VirtMachineState *vms)
+         }
      }
  
-     return val;
-@@ -1160,7 +1163,9 @@ static void dwc2_hsotg_write(void *ptr, hwaddr addr, uint64_t val,
-         dwc2_pcgreg_write(ptr, addr, (addr - HSOTG_REG(0xe00)) >> 2, val, size);
-         break;
-     default:
--        g_assert_not_reached();
-+        qemu_log_mask(LOG_GUEST_ERROR, "%s: Bad offset 0x%"HWADDR_PRIx"\n",
-+                      __func__, addr);
-+        break;
-     }
- }
++    qemu_fdt_add_subnode(fdt, "/aliases");
++
+     /* Clock node, for the benefit of the UART. The kernel device tree
+      * binding documentation claims the PL011 node clock properties are
+      * optional but in practice if you omit them the kernel refuses to
+@@ -939,7 +941,9 @@ static void create_uart(const VirtMachineState *vms, int uart,
  
+     if (uart == VIRT_UART) {
+         qemu_fdt_setprop_string(ms->fdt, "/chosen", "stdout-path", nodename);
++        qemu_fdt_setprop_string(ms->fdt, "/aliases", "serial0", nodename);
+     } else {
++        qemu_fdt_setprop_string(ms->fdt, "/aliases", "serial1", nodename);
+         /* Mark as not usable by the normal world */
+         qemu_fdt_setprop_string(ms->fdt, nodename, "status", "disabled");
+         qemu_fdt_setprop_string(ms->fdt, nodename, "secure-status", "okay");
 -- 
 2.34.1
 
