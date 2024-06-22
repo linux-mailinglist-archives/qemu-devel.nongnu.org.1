@@ -2,84 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 865F39131F6
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Jun 2024 06:35:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CAA04913246
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Jun 2024 08:17:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sKsRs-0003v6-Pn; Sat, 22 Jun 2024 00:34:00 -0400
+	id 1sKu2p-0008Li-2Q; Sat, 22 Jun 2024 02:16:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <icegambit91@gmail.com>)
- id 1sKsRr-0003us-Dk
- for qemu-devel@nongnu.org; Sat, 22 Jun 2024 00:33:59 -0400
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <icegambit91@gmail.com>)
- id 1sKsRp-0006w0-A4
- for qemu-devel@nongnu.org; Sat, 22 Jun 2024 00:33:59 -0400
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-1f9b364faddso23248805ad.3
- for <qemu-devel@nongnu.org>; Fri, 21 Jun 2024 21:33:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1719030836; x=1719635636; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=U928YwRXTXmHBUJIicNJdvuxM1L86valDlAMu1boHAA=;
- b=Y1TFHhD3LLhfNvThfXPCXVvCtt9KiVe0h5Ys3d7E3ilPSpwEtjtchiQlErG44JHPtU
- W0KBd+OXkK+cMJ96G5sckpu4jcRyQv4LmMpHwDCKHTm/28gUzRMNrRF/z2oplGr2I5Zk
- Lex/yUtwOSn3ONwTbIKuPmgibm39CmcG3AtHsloDlDi6RPjXzbpSOeflBm2ALpr5q7b0
- LW9S52jpVK5pSis8/n5gKNkS7YOCZRKcorA3NgItYK6MbWPKPJWO5ox72RO2MbUu6f7o
- aSItVFTUOPntWMleYD/x8eCXr9dnCanAFlCrgGigr3RMPrBmu0ltjiv5xjqMUEnWzYRv
- hEhw==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1sKu2j-0008K5-N0
+ for qemu-devel@nongnu.org; Sat, 22 Jun 2024 02:16:13 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1sKu2f-0006NG-R5
+ for qemu-devel@nongnu.org; Sat, 22 Jun 2024 02:16:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1719036964;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:  content-type:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=YSCOHApccYoLBq+W6uZx9RtGQ0xPmTOB1+7n96OYzX0=;
+ b=TFeeOEzPyd9wN66MgXyAPVZdyM8gzeKk66H36e959/EJaqHKuH0b0FjqmViCaCi1m+6KqD
+ oGZv81qxc+hZD83HkR4zaj1hbR9oD9Nln236mV0R0iE7rnuXTDUqp4BF1KM1fgrNhJTmFf
+ XjoZosDhq11oY+9sUgm2xKSdi0+5bzw=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-523-1EBWvxznM2aH91jIouE0EQ-1; Sat, 22 Jun 2024 02:16:02 -0400
+X-MC-Unique: 1EBWvxznM2aH91jIouE0EQ-1
+Received: by mail-ed1-f69.google.com with SMTP id
+ 4fb4d7f45d1cf-57a306c4b1eso1742700a12.0
+ for <qemu-devel@nongnu.org>; Fri, 21 Jun 2024 23:16:02 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719030836; x=1719635636;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=U928YwRXTXmHBUJIicNJdvuxM1L86valDlAMu1boHAA=;
- b=snyBF1Q6O8mNRHBKJuX9FxMH2CX0GuBrs7xEFUp3DqS7FINhu9YQucZ3XxBGsvxpIF
- TBnDD7rLVGMIVaAGPqKEABg9Vhsv5i13XlkL+KHncmvG0DBmCMSMuLFva1oapJs9lENp
- TsTras3PLSqT5sA+7uPNFXVBUlrdXEOMYSLsSK7s421Qmzxym1mBMZ0mWSvgopdMmz5a
- eb5H4ypQTL7zqO1HH7PcpgDHngzM2T5CgegWT3aRsoqEK58mrLOH1uNXssKttepFrpNy
- ZCvSu2cuzzFXA/y635qpJzFSMJPASIeM8rVOEoQHITqs28N95Sj35yYYir9WpV+jsGVc
- Aj9Q==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXM/Q+cbXPRhwGGvnbAKoaVXB592Fqo1xmQSApSfgefcMm8wnQnmKCLPMM2Sv0QcGgYL3inrq9fQgxa1pFtuSD4pIyD76k=
-X-Gm-Message-State: AOJu0YxqyweW1q3WSGYIIIouOwDDoWm54zJ6vzNytBZbYUfaMI17Lulk
- v+VTteFQ9OzUiLFbXRFXnFmLGUaJAbbrgYQ9TgdWTqvFEcyvj4Cv
-X-Google-Smtp-Source: AGHT+IGTkHvTTtgD/iPxeXzLJIV74SUnKThkG+zYZ995v3b6eAH3aYWhO9dqrvP2lA2QT0boDrFtTw==
-X-Received: by 2002:a17:902:e5c6:b0:1f9:b681:1956 with SMTP id
- d9443c01a7336-1f9b6811d1dmr98362505ad.61.1719030835422; 
- Fri, 21 Jun 2024 21:33:55 -0700 (PDT)
-Received: from valdaarhun.localnet ([223.233.83.26])
+ d=1e100.net; s=20230601; t=1719036961; x=1719641761;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=YSCOHApccYoLBq+W6uZx9RtGQ0xPmTOB1+7n96OYzX0=;
+ b=jXDjgDMijQjpzKntf/bhsCXve+9g84bTL4/b6T4kgJbNGcVa+UZnFxeeMMD5EoA4xz
+ Koei54/2n8ZyKtDUOHZxKZZJXmuKYUE3vtykd6ZbI4HgKARfaGCcNCnyi1QlqQUDwQ6D
+ w3Ooar32KhFjz+U6iu5WEH+ImJf8uBIv4yx8IH0VizFulvfy8qXmbP8wjL8zDaPjvGob
+ nF0IKWWD1gTUrBCPFc0MMFleU4bPYOJXeSv+jGVOQ/HC/HczwbA0CiY7R7+iKoOUiibH
+ V0BE6gtR1IIaDbVR/r9tVnB9P8QrgA3ROK8jtqNhSsnDlhwbdQVL6lMQPKp2+VHm6mc8
+ kgIg==
+X-Gm-Message-State: AOJu0YzaZniQ2BuIDzlqDMvZThLkDBShPkxUd+qdHNxbOZeT/+p9kAk0
+ rZAzvhbkge72qMcSFarxdnOpIbJsicuZmvwM4cUH0Jov+beMzPFoDrGiIBkEqfmHcY3wsWeddB2
+ wVPT9bXiBniKvOBtcXOQZKaROF2v5xXdN0KRkWCcmjgs5EYGM8RDFil9I3xEYm9jgAyY2uAg667
+ ZowXaAoUQgTxSodxiAq0njmV24EElhw3T7ncjv
+X-Received: by 2002:a50:bb45:0:b0:57c:bf3b:76f5 with SMTP id
+ 4fb4d7f45d1cf-57d45809d0dmr172380a12.35.1719036960813; 
+ Fri, 21 Jun 2024 23:16:00 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGOsDNbIeL+Dpyq9tfFEUc9xuh8nKpAArVYMeZrq9LBbGGTCzY+dLj2mTdYt0a91eKXGmceOA==
+X-Received: by 2002:a50:bb45:0:b0:57c:bf3b:76f5 with SMTP id
+ 4fb4d7f45d1cf-57d45809d0dmr172363a12.35.1719036960075; 
+ Fri, 21 Jun 2024 23:16:00 -0700 (PDT)
+Received: from avogadro.local ([151.62.196.71])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1f9eb3c5cf6sm22252615ad.156.2024.06.21.21.33.51
+ 4fb4d7f45d1cf-57d30413446sm1899848a12.31.2024.06.21.23.15.59
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 21 Jun 2024 21:33:54 -0700 (PDT)
-From: Sahil <icegambit91@gmail.com>
-To: Eugenio Perez Martin <eperezma@redhat.com>
-Cc: sgarzare@redhat.com, mst@redhat.com, qemu-devel@nongnu.org,
- Sahil Siddiq <sahilcdq@proton.me>
-Subject: Re: [RFC] vhost: Introduce packed vq and add buffer elements
-Date: Sat, 22 Jun 2024 10:03:44 +0530
-Message-ID: <3301839.44csPzL39Z@valdaarhun>
-In-Reply-To: <CAJaqyWc8L2rZULeHgqmuieAqmQvePm9sicJFGq+POKPLYQMLJg@mail.gmail.com>
-References: <20240618181834.14173-1-sahilcdq@proton.me>
- <CAJaqyWc8L2rZULeHgqmuieAqmQvePm9sicJFGq+POKPLYQMLJg@mail.gmail.com>
+ Fri, 21 Jun 2024 23:15:59 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Subject: [PULL 00/23] Misc changes for 2024-06-22
+Date: Sat, 22 Jun 2024 08:15:34 +0200
+Message-ID: <20240622061558.530543-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="utf-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=icegambit91@gmail.com; helo=mail-pl1-x62d.google.com
-X-Spam_score_int: 15
-X-Spam_score: 1.5
-X-Spam_bar: +
-X-Spam_report: (1.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_ENVFROM_END_DIGIT=0.25,
- FREEMAIL_FROM=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_SBL_CSS=3.335,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.145,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,236 +97,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+The following changes since commit 223696363bb117241ad9c2facbff0c474afa4104:
 
-On Wednesday, June 19, 2024 3:49:29=E2=80=AFPM GMT+5:30 Eugenio Perez Marti=
-n wrote:
-> [...]
-> Hi Sahil,
->=20
-> Just some nitpicks here and there,
->=20
-> > [1] https://wiki.qemu.org/Internships/ProjectIdeas/PackedShadowVirtqueue
-> >=20
-> >  hw/virtio/vhost-shadow-virtqueue.c | 124 ++++++++++++++++++++++++++++-
-> >  hw/virtio/vhost-shadow-virtqueue.h |  66 ++++++++++-----
-> >  2 files changed, 167 insertions(+), 23 deletions(-)
-> >=20
-> > diff --git a/hw/virtio/vhost-shadow-virtqueue.c
-> > b/hw/virtio/vhost-shadow-virtqueue.c index fc5f408f77..e3b276a9e9 100644
-> > --- a/hw/virtio/vhost-shadow-virtqueue.c
-> > +++ b/hw/virtio/vhost-shadow-virtqueue.c
-> > @@ -217,6 +217,122 @@ static bool vhost_svq_add_split(VhostShadowVirtqu=
-eue *svq,
-> >      return true;
-> >  }
-> >=20
-> > +/**
-> > + * Write descriptors to SVQ packed vring
-> > + *
-> > + * @svq: The shadow virtqueue
-> > + * @sg: Cache for hwaddr
-> > + * @out_sg: The iovec from the guest that is read-only for device
-> > + * @out_num: iovec length
-> > + * @in_sg: The iovec from the guest that is write-only for device
-> > + * @in_num: iovec length
-> > + * @head_flags: flags for first descriptor in list
-> > + *
-> > + * Return true if success, false otherwise and print error.
-> > + */
-> > +static bool vhost_svq_vring_write_descs_packed(VhostShadowVirtqueue *s=
-vq, hwaddr *sg,
-> > +                                        const struct iovec *out_sg, si=
-ze_t out_num,
-> > +                                        const struct iovec *in_sg, siz=
-e_t in_num,
-> > +                                        uint16_t *head_flags)
-> > +{
-> > +    uint16_t id, curr, head, i;
-> > +    unsigned n;
-> > +    struct vring_packed_desc *descs =3D svq->vring_packed.vring.desc;
-> > +    bool ok;
-> > +
-> > +    head =3D svq->vring_packed.next_avail_idx;
-> > +    i =3D head;
-> > +    id =3D svq->free_head;
-> > +    curr =3D id;
-> > +
-> > +    size_t num =3D out_num + in_num;
-> > +
-> > +    if (num =3D=3D 0) {
-> > +        return true;
-> > +    }
->=20
-> num =3D=3D 0 is impossible now, the caller checks for that.
+  Merge tag 'edgar/xilinx-queue-2024-06-17.for-upstream' of https://gitlab.com/edgar.iglesias/qemu into staging (2024-06-18 13:08:01 -0700)
 
-Oh yes, I missed that.
+are available in the Git repository at:
 
->=20
-> > +
-> > +    ok =3D vhost_svq_translate_addr(svq, sg, out_sg, out_num);
-> > +    if (unlikely(!ok)) {
-> > +        return false;
-> > +    }
-> > +
-> > +    ok =3D vhost_svq_translate_addr(svq, sg + out_num, in_sg, in_num);
-> > +    if (unlikely(!ok)) {
-> > +        return false;
-> > +    }
-> > +
-> > +    for (n =3D 0; n < num; n++) {
-> > +        uint16_t flags =3D cpu_to_le16(svq->vring_packed.avail_used_fl=
-ags |
-> > +                (n < out_num ? 0 : VRING_DESC_F_WRITE) |
-> > +                (n + 1 =3D=3D num ? 0 : VRING_DESC_F_NEXT));
-> > +        if (i =3D=3D head) {
-> > +            *head_flags =3D flags;
-> > +        } else {
-> > +            descs[i].flags =3D flags;
-> > +        }
-> > +
-> > +        descs[i].addr =3D cpu_to_le64(sg[n]);
-> > +        descs[i].id =3D id;
-> > +        if (n < out_num) {
-> > +            descs[i].len =3D cpu_to_le32(out_sg[n].iov_len);
-> > +        } else {
-> > +            descs[i].len =3D cpu_to_le32(in_sg[n - out_num].iov_len);
-> > +        }
-> > +
-> > +        curr =3D cpu_to_le16(svq->desc_next[curr]);
-> > +
-> > +        if (++i >=3D svq->vring_packed.vring.num) {
-> > +            i =3D 0;
-> > +            svq->vring_packed.avail_used_flags ^=3D
-> > +                    1 << VRING_PACKED_DESC_F_AVAIL |
-> > +                    1 << VRING_PACKED_DESC_F_USED;
-> > +        }
-> > +    }
-> > +
-> > +    if (i <=3D head) {
-> > +        svq->vring_packed.avail_wrap_counter ^=3D 1;
-> > +    }
-> > +
-> > +    svq->vring_packed.next_avail_idx =3D i;
-> > +    svq->free_head =3D curr;
-> > +    return true;
-> > +}
-> > +
-> > +static bool vhost_svq_add_packed(VhostShadowVirtqueue *svq,
-> > +                                const struct iovec *out_sg, size_t out=
-_num,
-> > +                                const struct iovec *in_sg, size_t in_n=
-um,
-> > +                                unsigned *head)
-> > +{
-> > +    bool ok;
-> > +    uint16_t head_flags =3D 0;
-> > +    g_autofree hwaddr *sgs =3D g_new(hwaddr, out_num + in_num);
-> > +
-> > +    *head =3D svq->vring_packed.next_avail_idx;
-> > +
-> > +    /* We need some descriptors here */
-> > +    if (unlikely(!out_num && !in_num)) {
-> > +        qemu_log_mask(LOG_GUEST_ERROR,
-> > +                      "Guest provided element with no descriptors");
-> > +        return false;
-> > +    }
-> > +
-> > +    ok =3D vhost_svq_vring_write_descs_packed(svq, sgs, out_sg, out_nu=
-m,
-> > +                                            in_sg, in_num, &head_flags=
-);
-> > +    if (unlikely(!ok)) {
-> > +        return false;
-> > +    }
-> > +
->=20
-> Ok now I see why you switched sgs length from MAX to sum. But if we're
-> here, why not just embed all vhost_svq_vring_write_descs_packed here?
-> vhost_svq_vring_write_descs makes sense to split as we repeat the
-> operation, but I think it adds nothing here. What do you think?
+  https://gitlab.com/bonzini/qemu.git tags/for-upstream
 
-You're right. The function is called only once and there is nothing to reus=
-e.
-I'll move "vhost_svq_vring_write_descs_packed" to "vhost_svq_add_packed".
+for you to fetch changes up to b9b51004033983589e00fb4697f620b903cfcf0e:
 
-> > [...]
-> > diff --git a/hw/virtio/vhost-shadow-virtqueue.h
-> > b/hw/virtio/vhost-shadow-virtqueue.h index 19c842a15b..ee1a87f523 100644
-> > --- a/hw/virtio/vhost-shadow-virtqueue.h
-> > +++ b/hw/virtio/vhost-shadow-virtqueue.h
-> > @@ -46,10 +46,53 @@ typedef struct VhostShadowVirtqueueOps {
-> >=20
-> >      VirtQueueAvailCallback avail_handler;
-> > =20
-> >  } VhostShadowVirtqueueOps;
-> >=20
-> > +struct vring_packed {
-> > +    /* Actual memory layout for this queue. */
-> > +    struct {
-> > +        unsigned int num;
-> > +        struct vring_packed_desc *desc;
-> > +        struct vring_packed_desc_event *driver;
-> > +        struct vring_packed_desc_event *device;
-> > +    } vring;
-> > +
-> > +    /* Avail used flags. */
-> > +    uint16_t avail_used_flags;
-> > +
-> > +    /* Index of the next avail descriptor. */
-> > +    uint16_t next_avail_idx;
-> > +
-> > +    /* Driver ring wrap counter */
-> > +    bool avail_wrap_counter;
-> > +};
-> > +
-> >=20
-> >  /* Shadow virtqueue to relay notifications */
-> >  typedef struct VhostShadowVirtqueue {
-> >=20
-> > +    /* Virtio queue shadowing */
-> > +    VirtQueue *vq;
-> > +
-> > +    /* Virtio device */
-> > +    VirtIODevice *vdev;
-> > +
-> > +    /* SVQ vring descriptors state */
-> > +    SVQDescState *desc_state;
-> > +
-> > +    /*
-> > +     * Backup next field for each descriptor so we can recover securel=
-y,
-> > not +     * needing to trust the device access.
-> > +     */
-> > +    uint16_t *desc_next;
-> > +
-> > +    /* Next free descriptor */
-> > +    uint16_t free_head;
-> > +
-> > +    /* Size of SVQ vring free descriptors */
-> > +    uint16_t num_free;
-> > +
->=20
-> Why the reorder of all of the previous members?
+  exec: don't use void* in pointer arithmetic in headers (2024-06-21 18:32:18 +0200)
 
-I was thinking of placing all the members that are common to packed and
-split vring above the union while leaving the remaining members below the
-union. I did this based on our discussion here [1]. I don't think this reor=
-dering
-serves any purpose implementation-wise. Please let me know if I should reve=
-rt
-this change.
+----------------------------------------------------------------
+* configure: detect --cpu=mipsisa64r6
+* target/i386: decode address before going back to translate.c
+* meson: allow configuring the x86-64 baseline
+* meson: remove dead optimization option
+* exec: small changes to allow compilation with C++ in Android emulator
 
-> Apart from the nitpicks I don't see anything wrong with this part of
-> the project. Looking forward to the next!
->=20
+----------------------------------------------------------------
+Paolo Bonzini (21):
+      configure: detect --cpu=mipsisa64r6
+      target/i386: fix CC_OP dump
+      target/i386: use cpu_cc_dst for CC_OP_POPCNT
+      target/i386: give CC_OP_POPCNT low bits corresponding to MO_TL
+      target/i386: convert bit test instructions to new decoder
+      target/i386: try not to force EFLAGS computation for CC_OP_ADOX/ADCX
+      target/i386: decode address before going back to translate.c
+      target/i386: convert CMPXCHG8B/CMPXCHG16B to new decoder
+      target/i386: do not check PREFIX_LOCK in old-style decoder
+      target/i386: list instructions still in translate.c
+      target/i386: assert that cc_op* and pc_save are preserved
+      target/i386: remove gen_ext_tl
+      Revert "host/i386: assume presence of POPCNT"
+      Revert "host/i386: assume presence of SSSE3"
+      Revert "host/i386: assume presence of SSE2"
+      meson: allow configuring the x86-64 baseline
+      meson: remove dead optimization option
+      block: make assertion more generic
+      block: do not check bdrv_file_open
+      block: remove separate bdrv_file_open callback
+      block: rename former bdrv_file_open callbacks
 
-Thank you for the review.
+Roman Kiryanov (2):
+      exec: avoid using C++ keywords in function parameters
+      exec: don't use void* in pointer arithmetic in headers
 
-Thanks,
-Sahil
-
-[1] https://lists.nongnu.org/archive/html/qemu-devel/2024-05/msg02591.html
-
+ configure                        |   2 +-
+ meson.build                      |  54 +++--
+ host/include/i386/host/cpuinfo.h |   2 +
+ include/block/block_int-common.h |   3 -
+ include/exec/memory.h            |   6 +-
+ target/i386/cpu.h                |  13 +-
+ target/i386/tcg/decode-new.h     |  19 +-
+ tcg/i386/tcg-target.h            |   5 +-
+ block.c                          |  17 +-
+ block/blkdebug.c                 |   2 +-
+ block/blkio.c                    |   8 +-
+ block/blkverify.c                |   2 +-
+ block/curl.c                     |   8 +-
+ block/file-posix.c               |   8 +-
+ block/file-win32.c               |   4 +-
+ block/gluster.c                  |   6 +-
+ block/iscsi.c                    |   4 +-
+ block/nbd.c                      |   6 +-
+ block/nfs.c                      |   2 +-
+ block/null.c                     |   8 +-
+ block/nvme.c                     |   8 +-
+ block/rbd.c                      |   3 +-
+ block/ssh.c                      |   6 +-
+ block/vvfat.c                    |   2 +-
+ target/i386/cpu-dump.c           | 101 ++++----
+ target/i386/tcg/cc_helper.c      |   2 +-
+ target/i386/tcg/translate.c      | 492 ++++++++-------------------------------
+ util/bufferiszero.c              |   4 +-
+ util/cpuinfo-i386.c              |   6 +-
+ target/i386/tcg/decode-new.c.inc | 136 ++++++++---
+ target/i386/tcg/emit.c.inc       | 249 +++++++++++++++++++-
+ meson_options.txt                |   5 +-
+ scripts/meson-buildoptions.sh    |   6 +-
+ 33 files changed, 618 insertions(+), 581 deletions(-)
+-- 
+2.45.2
 
 
