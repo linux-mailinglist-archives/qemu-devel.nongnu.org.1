@@ -2,73 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A2B29133C7
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Jun 2024 14:09:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E1589133C5
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Jun 2024 14:08:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sKzWI-0007wz-Nt; Sat, 22 Jun 2024 08:07:02 -0400
+	id 1sKzWH-0007vl-Kr; Sat, 22 Jun 2024 08:07:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sKzW7-0007kf-Qg
+ id 1sKzW7-0007kg-RQ
  for qemu-devel@nongnu.org; Sat, 22 Jun 2024 08:06:53 -0400
-Received: from mail-lj1-x236.google.com ([2a00:1450:4864:20::236])
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sKzW5-0000JJ-2D
+ id 1sKzW4-0000JO-On
  for qemu-devel@nongnu.org; Sat, 22 Jun 2024 08:06:50 -0400
-Received: by mail-lj1-x236.google.com with SMTP id
- 38308e7fff4ca-2ec1620a956so32478871fa.1
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-362b32fbb3bso1973550f8f.2
  for <qemu-devel@nongnu.org>; Sat, 22 Jun 2024 05:06:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1719058007; x=1719662807; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=hDzCMQj4Kz45odIGKOYD91iUsefbCW1gBNGz5HSGeJo=;
- b=o1/Fd2+ePMxG9PQ8pXdfvYzxnpljP7Zdcv3WXJQFp61pRQHc6bjO+FdLgXjLAee8vI
- Zr+LSY0AfK+6+N4jxKamn2lySx8d8GhyXOgZkJF7BhaRI24DCXA+O9SzIhfxwOF6ckl6
- BXIdoxjPUDr4QbNQcKxJSdCsaF3Ej1LRoso1NPMh8mQYTO3oN4Yhed+M3945SQ31zrOe
- dRhPNMhcLG0qEUeRrNCFFfseCf37j4cIBiUzuU5tDpZmQYrzXej5YnovamYqgxSMb2fB
- F4CB74QqO1s3ezUx28s39G0bVaQ/k9yvF/GSXWEd0aHIDgm7fGdkP7M9WX4Mi8MN1TUe
- 6cAA==
+ :reply-to; bh=azdAp+TG1VIrt8vW4aIFwdtaw2axsecfAU0t9ommjDQ=;
+ b=fe/sJd00w6WZoe3L+ZqeiSeHHiL4/XjmzNua9iKzYSN/zjAaOELw+ncxqjy03Ov10u
+ PbbbN+xvYH9/8iUn8q7EcBL3WL53mi7vI5c4ePGk29fCgEFj44hgxw2AQIatpl3ho7R3
+ 3U2N9XcyUMH/MQwRVCTiHfuM+R3OsSdElP/5qG16FdFpFZTBciKLacBpKIoIS3nqEBIo
+ I88/uYxe5RfQvt2hN1h69LIPAs5oeVuC7UTT9vsiztSAHsBtj/L9gm8Nfo3CFXqBlHo/
+ orwNOOtkR2r3KRS9fIjzQxc/C6OOnft4UIaaXNNwwtzrFalB92jaQonN0cxNkOGwaIAR
+ 0MHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1719058007; x=1719662807;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=hDzCMQj4Kz45odIGKOYD91iUsefbCW1gBNGz5HSGeJo=;
- b=hwJGVqczXLOm566Kekbg3Sm6W+NuSDSPYtvLcOJyTN55ZdufL+im9G0AYaBPnMmvyw
- AakTQ8uLlDPLrY8BKnB1V8VC9Vinm/LhpbdADqNw3GSdlsL3Ok4FKEpDszkgVrjokTGU
- f0sBfuZs16DzL/D93CpXVW+yKbu+EPnY65gZnfX42QFgeQPFvgTrf8ecsenAeSvxFyQE
- n/Kbmd+bEbWT78Oh2PIRL400Gc4BZksv6F5pDdjsf/1QHd2L1022df+xa1pxWpvvXs0l
- LtY8hSfJKdINm1iktkw2yFi1aD1a+3jeUA1L14f0Afe0C111uFd+L2Kr3n8tpPz3dKNZ
- oDXA==
-X-Gm-Message-State: AOJu0Yybn6PYDoD4b70FMX1hVHjudEu9JyJ5I2wpr1Pz+J67AiLigsqE
- +oHjr7wzZPUaIuPhHYG3+B7yXtcMZXiOC0IWYoL+xUKY/HPlyQEYngdtncjDNhn+HsckxMTY7WJ
- OZo0=
-X-Google-Smtp-Source: AGHT+IGNz/KFpBvKqbrAkBmqoQ+0XXSx1w+LGM0VVE4sbpTArZZm30yV8uQCXzgXUG6vzGCqAlquRg==
-X-Received: by 2002:a05:6512:3441:b0:52c:dc70:ebf8 with SMTP id
- 2adb3069b0e04-52cdc70ef1emr1281076e87.19.1719058006742; 
- Sat, 22 Jun 2024 05:06:46 -0700 (PDT)
+ bh=azdAp+TG1VIrt8vW4aIFwdtaw2axsecfAU0t9ommjDQ=;
+ b=QsJyOJnvs5EIsr4WFQ0ifKe40eUCNNwCwJIRnX4mj4okVi0RDzVLuRQ99Vcf2RjJK9
+ Segn1jdlaCo3aUAkwk2GyjJURxN814FW9Y8OBOKp5soS79J5svoNH4ARjObTRp/GfmT2
+ Ndxqd+FlCE/vVMte/zywVHFXDwRx8xL1DxWrYsXroF+W6/STmtW9e0oefC2W6yYzSfAa
+ 5MIX+F6oLHz48Np1DtitjNiq09bGaodovjD1OSQEmPka2FgMK/B9Gb8sqNZNrrKicilI
+ B98UC14xt1GSsFQhbBIydlBZ0TYFOW3JjnXcXyuK+3nx60h2bHLPSs15S1wnFvNtxwhx
+ b3iw==
+X-Gm-Message-State: AOJu0YxhYjbaaj1cEsnN0jlI825XfOqRYqdMbGGT6KE7qZ0jpCdmPTGQ
+ U/BdGFl2/eAZsRlgWCrGs9UgJ3DqCUurg3Gd2ywQMM4wNxFX6zG9TemqDw7BKL5qMHEAgoM2tex
+ oqjM=
+X-Google-Smtp-Source: AGHT+IF/CpnDyouPRGM3H4ujTJ4PcLUGBQJa5HieelbmPV71js6ArmKpsvzXlNYwKmcbjEOzm3DVUQ==
+X-Received: by 2002:a05:6000:10d:b0:35f:2f3b:ba90 with SMTP id
+ ffacd0b85a97d-366e7a1955amr247498f8f.18.1719058007260; 
+ Sat, 22 Jun 2024 05:06:47 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  ffacd0b85a97d-3663a2f698dsm4393006f8f.70.2024.06.22.05.06.46
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 22 Jun 2024 05:06:46 -0700 (PDT)
+ Sat, 22 Jun 2024 05:06:47 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 03/18] hw/intc/arm_gic: Fix deactivation of SPI lines
-Date: Sat, 22 Jun 2024 13:06:28 +0100
-Message-Id: <20240622120643.3797539-4-peter.maydell@linaro.org>
+Subject: [PULL 04/18] hw/arm/xilinx_zynq: Fix IRQ/FIQ routing
+Date: Sat, 22 Jun 2024 13:06:29 +0100
+Message-Id: <20240622120643.3797539-5-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240622120643.3797539-1-peter.maydell@linaro.org>
 References: <20240622120643.3797539-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::236;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x236.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,58 +92,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: "Edgar E. Iglesias" <edgar.iglesias@amd.com>
+From: Sebastian Huber <sebastian.huber@embedded-brains.de>
 
-Julien reported that he has seen strange behaviour when running
-Xen on QEMU using GICv2. When Xen migrates a guest's vCPU from
-one pCPU to another while the vCPU is handling an interrupt, the
-guest is unable to properly deactivate interrupts.
+Fix the system bus interrupt line to CPU core assignment.
 
-Looking at it a little closer, our GICv2 model treats
-deactivation of SPI lines as if they were PPI's, i.e banked per
-CPU core. The state for active interrupts should only be banked
-for PPI lines, not for SPI lines.
-
-Make deactivation of SPI lines unbanked, similar to how we
-handle writes to GICD_ICACTIVER.
-
-Reported-by: Julien Grall <julien@xen.org>
-Signed-off-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
-Message-id: 20240605143044.2029444-2-edgar.iglesias@gmail.com
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Fixes: ddcf58e044ce0 ("hw/arm/xilinx_zynq: Support up to two CPU cores")
+Signed-off-by: Sebastian Huber <sebastian.huber@embedded-brains.de>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-id: 20240610052906.4432-1-sebastian.huber@embedded-brains.de
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/intc/gic_internal.h | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ hw/arm/xilinx_zynq.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/hw/intc/gic_internal.h b/hw/intc/gic_internal.h
-index 8d29b40ca10..8ddbf554c69 100644
---- a/hw/intc/gic_internal.h
-+++ b/hw/intc/gic_internal.h
-@@ -280,6 +280,8 @@ static inline void gic_set_active(GICState *s, int irq, int cpu)
- 
- static inline void gic_clear_active(GICState *s, int irq, int cpu)
- {
-+    unsigned int cm;
-+
-     if (gic_is_vcpu(cpu)) {
-         uint32_t *entry = gic_get_lr_entry(s, irq, cpu);
-         GICH_LR_CLEAR_ACTIVE(*entry);
-@@ -301,11 +303,13 @@ static inline void gic_clear_active(GICState *s, int irq, int cpu)
-              * the GIC is secure.
-              */
-             if (!s->security_extn || GIC_DIST_TEST_GROUP(phys_irq, 1 << rcpu)) {
--                GIC_DIST_CLEAR_ACTIVE(phys_irq, 1 << rcpu);
-+                cm = phys_irq < GIC_INTERNAL ? 1 << rcpu : ALL_CPU_MASK;
-+                GIC_DIST_CLEAR_ACTIVE(phys_irq, cm);
-             }
-         }
-     } else {
--        GIC_DIST_CLEAR_ACTIVE(irq, 1 << cpu);
-+        cm = irq < GIC_INTERNAL ? 1 << cpu : ALL_CPU_MASK;
-+        GIC_DIST_CLEAR_ACTIVE(irq, cm);
+diff --git a/hw/arm/xilinx_zynq.c b/hw/arm/xilinx_zynq.c
+index 7f7a3d23fbe..c79661bbc1b 100644
+--- a/hw/arm/xilinx_zynq.c
++++ b/hw/arm/xilinx_zynq.c
+@@ -252,10 +252,11 @@ static void zynq_init(MachineState *machine)
+     zynq_binfo.gic_cpu_if_addr = MPCORE_PERIPHBASE + 0x100;
+     sysbus_create_varargs("l2x0", MPCORE_PERIPHBASE + 0x2000, NULL);
+     for (n = 0; n < smp_cpus; n++) {
++        /* See "hw/intc/arm_gic.h" for the IRQ line association */
+         DeviceState *cpudev = DEVICE(zynq_machine->cpu[n]);
+-        sysbus_connect_irq(busdev, (2 * n) + 0,
++        sysbus_connect_irq(busdev, n,
+                            qdev_get_gpio_in(cpudev, ARM_CPU_IRQ));
+-        sysbus_connect_irq(busdev, (2 * n) + 1,
++        sysbus_connect_irq(busdev, smp_cpus + n,
+                            qdev_get_gpio_in(cpudev, ARM_CPU_FIQ));
      }
- }
  
 -- 
 2.34.1
