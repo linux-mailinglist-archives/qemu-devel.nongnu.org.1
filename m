@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F13491325E
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Jun 2024 08:20:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07C7E913245
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Jun 2024 08:17:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sKu43-0001Y4-0b; Sat, 22 Jun 2024 02:17:31 -0400
+	id 1sKu3y-0001HB-BO; Sat, 22 Jun 2024 02:17:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sKu3T-0000W2-Qr
- for qemu-devel@nongnu.org; Sat, 22 Jun 2024 02:16:56 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1sKu3T-0000VX-9n
+ for qemu-devel@nongnu.org; Sat, 22 Jun 2024 02:16:55 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sKu3R-0006V2-KZ
- for qemu-devel@nongnu.org; Sat, 22 Jun 2024 02:16:55 -0400
+ id 1sKu3R-0006Uz-Bc
+ for qemu-devel@nongnu.org; Sat, 22 Jun 2024 02:16:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719037013;
+ s=mimecast20190719; t=1719037012;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=26VrXM0DHOiKV7RbRMquU6833DYubbhko1Fn4Gg+sYw=;
- b=IVFTMP4xR4mquExcCglN6GjMOIAhoR7R9I6scCBR+wdX5+HEEjwwpI69/APUumd3Q0VzAO
- xpVGgejbvWuk8cVhh8N+99q1K1eQwJ9EkMxVmmrOoQNbHgXYsgdf3HOCPS7D5uSFgAmA/h
- YIEQlhPmiw4QIx59vmD/yiYDMX9PY5w=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=d1Zs3bNs8jOuOgSShaHDoScFAM7FpjL8r/fpmfWVVwk=;
+ b=cVKXLrcOCsB1OwyhcHNZKq+2/Z6/O4qm8S+JPGUYwbUXHqWlhUE1j/8psu/X1JrZiIT7Cp
+ wH9zjSN1Z31SWGG3Gvu4O+V7L8iAqqQjtcw4zu5bdM8U4L4XJKRgRLi0vB0AHgadp7bwOt
+ OcTUCgd+JJ/qAGkOpP0l3eNGLm4eebw=
+Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
+ [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-609-1UoEU_9bNGSDzM8OlXTHCQ-1; Sat, 22 Jun 2024 02:16:49 -0400
-X-MC-Unique: 1UoEU_9bNGSDzM8OlXTHCQ-1
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-a6def6e9ef2so317182966b.0
- for <qemu-devel@nongnu.org>; Fri, 21 Jun 2024 23:16:49 -0700 (PDT)
+ us-mta-308-zprxo6FyN0e6owYWXdnVaQ-1; Sat, 22 Jun 2024 02:16:50 -0400
+X-MC-Unique: zprxo6FyN0e6owYWXdnVaQ-1
+Received: by mail-lf1-f71.google.com with SMTP id
+ 2adb3069b0e04-52c94ad861aso1953700e87.2
+ for <qemu-devel@nongnu.org>; Fri, 21 Jun 2024 23:16:50 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719037007; x=1719641807;
+ d=1e100.net; s=20230601; t=1719037008; x=1719641808;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=26VrXM0DHOiKV7RbRMquU6833DYubbhko1Fn4Gg+sYw=;
- b=jPeTLNtp4c9xcVsFpx2kgafjWvH9SVXSW8S/nLgvXjGi09Eikt7VjVi3M1ShG47jks
- akxYQBgC7c4z7MzY7QSOmeJ/4jzq+r0FaeWobWqY07/DIQjsng8uqSuihESU8AloZegP
- RhQ9kKf7oEdjEcIG28xkRB5wb6Sf028/8KceKilhBEeL8c9Zc0uNfM84LtsNSY/rlGZy
- V5JC9yHonE9wQRhxiTHe8IpTXHcY+igygpXuQJeSRWVp8dokc1fVEifn1id3Ecfb3WPj
- YJTwwlpwZZf02MOJqnhZJhC9s6u3p5e0wnI6eRSq5TeuH6LrUVPA2MuL8xOOrKJUTNjz
- P8cw==
-X-Gm-Message-State: AOJu0YzVVFnsT1HwAIjdfsbYWkSDp5MTL02AxcxuOLQCJlYYgrcv6KbV
- geDEUWOsXHnGxXoTkz+Xp+uAXoNduKEgUVRwGNwBCHNeKVFxb1uIQcFaks8QDF+iiVpk0t5VYdB
- NGJPN669ANfmo/C3d43Ai0uqKDv/2jP/q/XIqmPZ6JqWNTNHh89NcqVS+Qz7I41EYRuugbZhNe0
- LKcx0Wt/72DZciT4yIU3Khfc1++BJKe0o2a4+g
-X-Received: by 2002:a17:906:339a:b0:a6f:4287:f196 with SMTP id
- a640c23a62f3a-a6ffe2706a7mr37261066b.2.1719037007369; 
+ bh=d1Zs3bNs8jOuOgSShaHDoScFAM7FpjL8r/fpmfWVVwk=;
+ b=D2BdfZuqiIWCetB9j4ag9RGRth6Rad3DG5VzbNLyUoD1ak/XmQWQga5D8VzV2FLe9Z
+ 8Yw8lLxVIP2SD9CYsgyBrzzL0DKxZDnh4ejARytvyV/qQYyHczZAoT+AU+ImWgnejmTO
+ PNG+EDI0XBm4cJxJFxsomWXHdJMwVKX4yHuqhhQZQkx380eHqILHWtiWAq3DeGShMrR0
+ O97fTlblfiKav1WZT0DU/uVJNtWnV+vjTifmvPJLujBdMmLwlNTzRSUjBV1j+CusEJr9
+ czUGWKqm+3Limo6NaY9JsjUoCyVSaPeWIKvsYDxDABFg5fRLSyddANR/K05c29JeAYGZ
+ F1lQ==
+X-Gm-Message-State: AOJu0Yw+Jru33D6B0HaQZMOPb9j2tNoj/9MEBnGTm85MSHiZuJAOSgs+
+ 8VNB1zFt8wtyc0bNC/Xaa721ORJtbexBKtf/9dVHD9pEYpPhfSVdXLq4iOJYUtryN2BgoT6B5lv
+ 31NCVd/s/lflGw7b6fa1OuchEnT45AMZzxUD/VBoHCiVGHCwIm435pgvSZyccgMXZ+vVeHKPfyw
+ E8UEo6Baeci6g7aYWe2ZZ2e7g1D8o3/wuDOJXF
+X-Received: by 2002:ac2:4a6a:0:b0:52b:8c88:2d6b with SMTP id
+ 2adb3069b0e04-52ccaa55843mr6297311e87.11.1719037008328; 
+ Fri, 21 Jun 2024 23:16:48 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGNvUD8xUj7lBX4DyLFSl8joudMjA6d0t0XOOD/3nB2LuwlG07G+AYWC3U2KjizZ46Sgg1kPQ==
+X-Received: by 2002:ac2:4a6a:0:b0:52b:8c88:2d6b with SMTP id
+ 2adb3069b0e04-52ccaa55843mr6297301e87.11.1719037007968; 
  Fri, 21 Jun 2024 23:16:47 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEsBeFiVJUegOJ0SGTHzkx0ENXAcHRZaQWUiP6R4Fa649NiHQtH0QtfMsSpMTGnoOPAale4aA==
-X-Received: by 2002:a17:906:339a:b0:a6f:4287:f196 with SMTP id
- a640c23a62f3a-a6ffe2706a7mr37259266b.2.1719037006749; 
- Fri, 21 Jun 2024 23:16:46 -0700 (PDT)
 Received: from avogadro.local ([151.62.196.71])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a6fcf48b3bdsm155828766b.75.2024.06.21.23.16.45
- for <qemu-devel@nongnu.org>
+ a640c23a62f3a-a6fe25f07efsm48016266b.12.2024.06.21.23.16.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 21 Jun 2024 23:16:45 -0700 (PDT)
+ Fri, 21 Jun 2024 23:16:47 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 20/23] block: remove separate bdrv_file_open callback
-Date: Sat, 22 Jun 2024 08:15:54 +0200
-Message-ID: <20240622061558.530543-21-pbonzini@redhat.com>
+Cc: Kevin Wolf <kwolf@redhat.com>
+Subject: [PULL 21/23] block: rename former bdrv_file_open callbacks
+Date: Sat, 22 Jun 2024 08:15:55 +0200
+Message-ID: <20240622061558.530543-22-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240622061558.530543-1-pbonzini@redhat.com>
 References: <20240622061558.530543-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -100,308 +100,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-bdrv_file_open and bdrv_open are completely equivalent, they are
-never checked except to see which one to invoke.  So merge them
-into a single one.
+Since there is no bdrv_file_open callback anymore, rename the implementations
+so that they end with "_open" instead of "_file_open".  NFS is the exception
+because all the functions are named nfs_file_*.
 
+Suggested-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- include/block/block_int-common.h | 3 ---
- block.c                          | 4 +---
- block/blkdebug.c                 | 2 +-
- block/blkio.c                    | 2 +-
- block/blkverify.c                | 2 +-
- block/curl.c                     | 8 ++++----
- block/file-posix.c               | 8 ++++----
- block/file-win32.c               | 4 ++--
- block/gluster.c                  | 6 +++---
- block/iscsi.c                    | 4 ++--
- block/nbd.c                      | 6 +++---
- block/nfs.c                      | 2 +-
- block/null.c                     | 4 ++--
- block/nvme.c                     | 2 +-
- block/rbd.c                      | 3 ++-
- block/ssh.c                      | 2 +-
- block/vvfat.c                    | 2 +-
- 17 files changed, 30 insertions(+), 34 deletions(-)
+ block/blkio.c | 8 ++++----
+ block/null.c  | 8 ++++----
+ block/nvme.c  | 8 ++++----
+ block/ssh.c   | 6 +++---
+ 4 files changed, 15 insertions(+), 15 deletions(-)
 
-diff --git a/include/block/block_int-common.h b/include/block/block_int-common.h
-index 761276127ed..ebb4e56a503 100644
---- a/include/block/block_int-common.h
-+++ b/include/block/block_int-common.h
-@@ -248,9 +248,6 @@ struct BlockDriver {
-     int GRAPH_UNLOCKED_PTR (*bdrv_open)(
-         BlockDriverState *bs, QDict *options, int flags, Error **errp);
- 
--    /* Protocol drivers should implement this instead of bdrv_open */
--    int GRAPH_UNLOCKED_PTR (*bdrv_file_open)(
--        BlockDriverState *bs, QDict *options, int flags, Error **errp);
-     void (*bdrv_close)(BlockDriverState *bs);
- 
-     int coroutine_fn GRAPH_UNLOCKED_PTR (*bdrv_co_create)(
-diff --git a/block.c b/block.c
-index dd14ba85fc3..c1cc313d216 100644
---- a/block.c
-+++ b/block.c
-@@ -1655,9 +1655,7 @@ bdrv_open_driver(BlockDriverState *bs, BlockDriver *drv, const char *node_name,
-     bs->opaque = g_malloc0(drv->instance_size);
- 
-     assert(!drv->bdrv_needs_filename || bs->filename[0]);
--    if (drv->bdrv_file_open) {
--        ret = drv->bdrv_file_open(bs, options, open_flags, &local_err);
--    } else if (drv->bdrv_open) {
-+    if (drv->bdrv_open) {
-         ret = drv->bdrv_open(bs, options, open_flags, &local_err);
-     } else {
-         ret = 0;
-diff --git a/block/blkdebug.c b/block/blkdebug.c
-index 9da8c9eddc2..c95c818c388 100644
---- a/block/blkdebug.c
-+++ b/block/blkdebug.c
-@@ -1073,7 +1073,7 @@ static BlockDriver bdrv_blkdebug = {
-     .is_filter              = true,
- 
-     .bdrv_parse_filename    = blkdebug_parse_filename,
--    .bdrv_file_open         = blkdebug_open,
-+    .bdrv_open              = blkdebug_open,
-     .bdrv_close             = blkdebug_close,
-     .bdrv_reopen_prepare    = blkdebug_reopen_prepare,
-     .bdrv_child_perm        = blkdebug_child_perm,
 diff --git a/block/blkio.c b/block/blkio.c
-index 882e1c297b4..1a38064ce76 100644
+index 1a38064ce76..3d9a2e764c3 100644
 --- a/block/blkio.c
 +++ b/block/blkio.c
+@@ -713,7 +713,7 @@ static int blkio_virtio_blk_connect(BlockDriverState *bs, QDict *options,
+          * for example will fail.
+          *
+          * In order to open the device read-only, we are using the `read-only`
+-         * property of the libblkio driver in blkio_file_open().
++         * property of the libblkio driver in blkio_open().
+          */
+         fd = qemu_open(path, O_RDWR, NULL);
+         if (fd < 0) {
+@@ -791,8 +791,8 @@ static int blkio_virtio_blk_connect(BlockDriverState *bs, QDict *options,
+     return 0;
+ }
+ 
+-static int blkio_file_open(BlockDriverState *bs, QDict *options, int flags,
+-                           Error **errp)
++static int blkio_open(BlockDriverState *bs, QDict *options, int flags,
++                      Error **errp)
+ {
+     const char *blkio_driver = bs->drv->protocol_name;
+     BDRVBlkioState *s = bs->opaque;
 @@ -1088,7 +1088,7 @@ static void blkio_refresh_limits(BlockDriverState *bs, Error **errp)
   */
  #define BLKIO_DRIVER_COMMON \
      .instance_size           = sizeof(BDRVBlkioState), \
--    .bdrv_file_open          = blkio_file_open, \
-+    .bdrv_open               = blkio_file_open, \
+-    .bdrv_open               = blkio_file_open, \
++    .bdrv_open               = blkio_open, \
      .bdrv_close              = blkio_close, \
      .bdrv_co_getlength       = blkio_co_getlength, \
      .bdrv_co_truncate        = blkio_truncate, \
-diff --git a/block/blkverify.c b/block/blkverify.c
-index ec45d8335ed..5a9bf674d9c 100644
---- a/block/blkverify.c
-+++ b/block/blkverify.c
-@@ -321,7 +321,7 @@ static BlockDriver bdrv_blkverify = {
-     .instance_size                    = sizeof(BDRVBlkverifyState),
- 
-     .bdrv_parse_filename              = blkverify_parse_filename,
--    .bdrv_file_open                   = blkverify_open,
-+    .bdrv_open                        = blkverify_open,
-     .bdrv_close                       = blkverify_close,
-     .bdrv_child_perm                  = bdrv_default_perms,
-     .bdrv_co_getlength                = blkverify_co_getlength,
-diff --git a/block/curl.c b/block/curl.c
-index 419f7c89ef2..ef5252d00b5 100644
---- a/block/curl.c
-+++ b/block/curl.c
-@@ -1034,7 +1034,7 @@ static BlockDriver bdrv_http = {
- 
-     .instance_size              = sizeof(BDRVCURLState),
-     .bdrv_parse_filename        = curl_parse_filename,
--    .bdrv_file_open             = curl_open,
-+    .bdrv_open                  = curl_open,
-     .bdrv_close                 = curl_close,
-     .bdrv_co_getlength          = curl_co_getlength,
- 
-@@ -1053,7 +1053,7 @@ static BlockDriver bdrv_https = {
- 
-     .instance_size              = sizeof(BDRVCURLState),
-     .bdrv_parse_filename        = curl_parse_filename,
--    .bdrv_file_open             = curl_open,
-+    .bdrv_open                  = curl_open,
-     .bdrv_close                 = curl_close,
-     .bdrv_co_getlength          = curl_co_getlength,
- 
-@@ -1072,7 +1072,7 @@ static BlockDriver bdrv_ftp = {
- 
-     .instance_size              = sizeof(BDRVCURLState),
-     .bdrv_parse_filename        = curl_parse_filename,
--    .bdrv_file_open             = curl_open,
-+    .bdrv_open                  = curl_open,
-     .bdrv_close                 = curl_close,
-     .bdrv_co_getlength          = curl_co_getlength,
- 
-@@ -1091,7 +1091,7 @@ static BlockDriver bdrv_ftps = {
- 
-     .instance_size              = sizeof(BDRVCURLState),
-     .bdrv_parse_filename        = curl_parse_filename,
--    .bdrv_file_open             = curl_open,
-+    .bdrv_open                  = curl_open,
-     .bdrv_close                 = curl_close,
-     .bdrv_co_getlength          = curl_co_getlength,
- 
-diff --git a/block/file-posix.c b/block/file-posix.c
-index be25e35ff6e..f3bd946afac 100644
---- a/block/file-posix.c
-+++ b/block/file-posix.c
-@@ -3886,7 +3886,7 @@ BlockDriver bdrv_file = {
-     .bdrv_needs_filename = true,
-     .bdrv_probe = NULL, /* no probe for protocols */
-     .bdrv_parse_filename = raw_parse_filename,
--    .bdrv_file_open = raw_open,
-+    .bdrv_open      = raw_open,
-     .bdrv_reopen_prepare = raw_reopen_prepare,
-     .bdrv_reopen_commit = raw_reopen_commit,
-     .bdrv_reopen_abort = raw_reopen_abort,
-@@ -4257,7 +4257,7 @@ static BlockDriver bdrv_host_device = {
-     .bdrv_needs_filename = true,
-     .bdrv_probe_device  = hdev_probe_device,
-     .bdrv_parse_filename = hdev_parse_filename,
--    .bdrv_file_open     = hdev_open,
-+    .bdrv_open          = hdev_open,
-     .bdrv_close         = raw_close,
-     .bdrv_reopen_prepare = raw_reopen_prepare,
-     .bdrv_reopen_commit  = raw_reopen_commit,
-@@ -4396,7 +4396,7 @@ static BlockDriver bdrv_host_cdrom = {
-     .bdrv_needs_filename = true,
-     .bdrv_probe_device	= cdrom_probe_device,
-     .bdrv_parse_filename = cdrom_parse_filename,
--    .bdrv_file_open     = cdrom_open,
-+    .bdrv_open          = cdrom_open,
-     .bdrv_close         = raw_close,
-     .bdrv_reopen_prepare = raw_reopen_prepare,
-     .bdrv_reopen_commit  = raw_reopen_commit,
-@@ -4522,7 +4522,7 @@ static BlockDriver bdrv_host_cdrom = {
-     .bdrv_needs_filename = true,
-     .bdrv_probe_device	= cdrom_probe_device,
-     .bdrv_parse_filename = cdrom_parse_filename,
--    .bdrv_file_open     = cdrom_open,
-+    .bdrv_open          = cdrom_open,
-     .bdrv_close         = raw_close,
-     .bdrv_reopen_prepare = raw_reopen_prepare,
-     .bdrv_reopen_commit  = raw_reopen_commit,
-diff --git a/block/file-win32.c b/block/file-win32.c
-index 48b790d9173..7e1baa1ece6 100644
---- a/block/file-win32.c
-+++ b/block/file-win32.c
-@@ -746,7 +746,7 @@ BlockDriver bdrv_file = {
-     .instance_size	= sizeof(BDRVRawState),
-     .bdrv_needs_filename = true,
-     .bdrv_parse_filename = raw_parse_filename,
--    .bdrv_file_open     = raw_open,
-+    .bdrv_open          = raw_open,
-     .bdrv_refresh_limits = raw_probe_alignment,
-     .bdrv_close         = raw_close,
-     .bdrv_co_create_opts = raw_co_create_opts,
-@@ -920,7 +920,7 @@ static BlockDriver bdrv_host_device = {
-     .bdrv_needs_filename = true,
-     .bdrv_parse_filename = hdev_parse_filename,
-     .bdrv_probe_device	= hdev_probe_device,
--    .bdrv_file_open	= hdev_open,
-+    .bdrv_open     	= hdev_open,
-     .bdrv_close		= raw_close,
-     .bdrv_refresh_limits = hdev_refresh_limits,
- 
-diff --git a/block/gluster.c b/block/gluster.c
-index d0999903dfe..f8b415f3812 100644
---- a/block/gluster.c
-+++ b/block/gluster.c
-@@ -1551,7 +1551,7 @@ static BlockDriver bdrv_gluster = {
-     .format_name                  = "gluster",
-     .protocol_name                = "gluster",
-     .instance_size                = sizeof(BDRVGlusterState),
--    .bdrv_file_open               = qemu_gluster_open,
-+    .bdrv_open                    = qemu_gluster_open,
-     .bdrv_reopen_prepare          = qemu_gluster_reopen_prepare,
-     .bdrv_reopen_commit           = qemu_gluster_reopen_commit,
-     .bdrv_reopen_abort            = qemu_gluster_reopen_abort,
-@@ -1580,7 +1580,7 @@ static BlockDriver bdrv_gluster_tcp = {
-     .format_name                  = "gluster",
-     .protocol_name                = "gluster+tcp",
-     .instance_size                = sizeof(BDRVGlusterState),
--    .bdrv_file_open               = qemu_gluster_open,
-+    .bdrv_open                    = qemu_gluster_open,
-     .bdrv_reopen_prepare          = qemu_gluster_reopen_prepare,
-     .bdrv_reopen_commit           = qemu_gluster_reopen_commit,
-     .bdrv_reopen_abort            = qemu_gluster_reopen_abort,
-@@ -1609,7 +1609,7 @@ static BlockDriver bdrv_gluster_unix = {
-     .format_name                  = "gluster",
-     .protocol_name                = "gluster+unix",
-     .instance_size                = sizeof(BDRVGlusterState),
--    .bdrv_file_open               = qemu_gluster_open,
-+    .bdrv_open                    = qemu_gluster_open,
-     .bdrv_reopen_prepare          = qemu_gluster_reopen_prepare,
-     .bdrv_reopen_commit           = qemu_gluster_reopen_commit,
-     .bdrv_reopen_abort            = qemu_gluster_reopen_abort,
-diff --git a/block/iscsi.c b/block/iscsi.c
-index 2ff14b74724..979bf90cb79 100644
---- a/block/iscsi.c
-+++ b/block/iscsi.c
-@@ -2429,7 +2429,7 @@ static BlockDriver bdrv_iscsi = {
- 
-     .instance_size          = sizeof(IscsiLun),
-     .bdrv_parse_filename    = iscsi_parse_filename,
--    .bdrv_file_open         = iscsi_open,
-+    .bdrv_open              = iscsi_open,
-     .bdrv_close             = iscsi_close,
-     .bdrv_co_create_opts    = bdrv_co_create_opts_simple,
-     .create_opts            = &bdrv_create_opts_simple,
-@@ -2468,7 +2468,7 @@ static BlockDriver bdrv_iser = {
- 
-     .instance_size          = sizeof(IscsiLun),
-     .bdrv_parse_filename    = iscsi_parse_filename,
--    .bdrv_file_open         = iscsi_open,
-+    .bdrv_open              = iscsi_open,
-     .bdrv_close             = iscsi_close,
-     .bdrv_co_create_opts    = bdrv_co_create_opts_simple,
-     .create_opts            = &bdrv_create_opts_simple,
-diff --git a/block/nbd.c b/block/nbd.c
-index 589d28af833..d464315766e 100644
---- a/block/nbd.c
-+++ b/block/nbd.c
-@@ -2146,7 +2146,7 @@ static BlockDriver bdrv_nbd = {
-     .bdrv_parse_filename        = nbd_parse_filename,
-     .bdrv_co_create_opts        = bdrv_co_create_opts_simple,
-     .create_opts                = &bdrv_create_opts_simple,
--    .bdrv_file_open             = nbd_open,
-+    .bdrv_open                  = nbd_open,
-     .bdrv_reopen_prepare        = nbd_client_reopen_prepare,
-     .bdrv_co_preadv             = nbd_client_co_preadv,
-     .bdrv_co_pwritev            = nbd_client_co_pwritev,
-@@ -2174,7 +2174,7 @@ static BlockDriver bdrv_nbd_tcp = {
-     .bdrv_parse_filename        = nbd_parse_filename,
-     .bdrv_co_create_opts        = bdrv_co_create_opts_simple,
-     .create_opts                = &bdrv_create_opts_simple,
--    .bdrv_file_open             = nbd_open,
-+    .bdrv_open                  = nbd_open,
-     .bdrv_reopen_prepare        = nbd_client_reopen_prepare,
-     .bdrv_co_preadv             = nbd_client_co_preadv,
-     .bdrv_co_pwritev            = nbd_client_co_pwritev,
-@@ -2202,7 +2202,7 @@ static BlockDriver bdrv_nbd_unix = {
-     .bdrv_parse_filename        = nbd_parse_filename,
-     .bdrv_co_create_opts        = bdrv_co_create_opts_simple,
-     .create_opts                = &bdrv_create_opts_simple,
--    .bdrv_file_open             = nbd_open,
-+    .bdrv_open                  = nbd_open,
-     .bdrv_reopen_prepare        = nbd_client_reopen_prepare,
-     .bdrv_co_preadv             = nbd_client_co_preadv,
-     .bdrv_co_pwritev            = nbd_client_co_pwritev,
-diff --git a/block/nfs.c b/block/nfs.c
-index 60240a8733d..0500f60c08f 100644
---- a/block/nfs.c
-+++ b/block/nfs.c
-@@ -888,7 +888,7 @@ static BlockDriver bdrv_nfs = {
- #endif
-     .bdrv_co_truncate               = nfs_file_co_truncate,
- 
--    .bdrv_file_open                 = nfs_file_open,
-+    .bdrv_open                      = nfs_file_open,
-     .bdrv_close                     = nfs_file_close,
-     .bdrv_co_create                 = nfs_file_co_create,
-     .bdrv_co_create_opts            = nfs_file_co_create_opts,
 diff --git a/block/null.c b/block/null.c
-index 4808704ffd3..6fa64d20d86 100644
+index 6fa64d20d86..4730acc1eb2 100644
 --- a/block/null.c
 +++ b/block/null.c
+@@ -77,8 +77,8 @@ static void null_aio_parse_filename(const char *filename, QDict *options,
+     }
+ }
+ 
+-static int null_file_open(BlockDriverState *bs, QDict *options, int flags,
+-                          Error **errp)
++static int null_open(BlockDriverState *bs, QDict *options, int flags,
++                     Error **errp)
+ {
+     QemuOpts *opts;
+     BDRVNullState *s = bs->opaque;
 @@ -283,7 +283,7 @@ static BlockDriver bdrv_null_co = {
      .protocol_name          = "null-co",
      .instance_size          = sizeof(BDRVNullState),
  
--    .bdrv_file_open         = null_file_open,
-+    .bdrv_open              = null_file_open,
+-    .bdrv_open              = null_file_open,
++    .bdrv_open              = null_open,
      .bdrv_parse_filename    = null_co_parse_filename,
      .bdrv_co_getlength      = null_co_getlength,
      .bdrv_co_get_allocated_file_size = null_co_get_allocated_file_size,
@@ -409,65 +174,68 @@ index 4808704ffd3..6fa64d20d86 100644
      .protocol_name          = "null-aio",
      .instance_size          = sizeof(BDRVNullState),
  
--    .bdrv_file_open         = null_file_open,
-+    .bdrv_open              = null_file_open,
+-    .bdrv_open              = null_file_open,
++    .bdrv_open              = null_open,
      .bdrv_parse_filename    = null_aio_parse_filename,
      .bdrv_co_getlength      = null_co_getlength,
      .bdrv_co_get_allocated_file_size = null_co_get_allocated_file_size,
 diff --git a/block/nvme.c b/block/nvme.c
-index 3a3c6da73d2..c84914af6dd 100644
+index c84914af6dd..3b588b139f6 100644
 --- a/block/nvme.c
 +++ b/block/nvme.c
+@@ -889,7 +889,7 @@ out:
+         qemu_vfio_pci_unmap_bar(s->vfio, 0, (void *)regs, 0, sizeof(NvmeBar));
+     }
+ 
+-    /* Cleaning up is done in nvme_file_open() upon error. */
++    /* Cleaning up is done in nvme_open() upon error. */
+     return ret;
+ }
+ 
+@@ -967,8 +967,8 @@ static void nvme_close(BlockDriverState *bs)
+     g_free(s->device);
+ }
+ 
+-static int nvme_file_open(BlockDriverState *bs, QDict *options, int flags,
+-                          Error **errp)
++static int nvme_open(BlockDriverState *bs, QDict *options, int flags,
++                     Error **errp)
+ {
+     const char *device;
+     QemuOpts *opts;
 @@ -1630,7 +1630,7 @@ static BlockDriver bdrv_nvme = {
      .create_opts              = &bdrv_create_opts_simple,
  
      .bdrv_parse_filename      = nvme_parse_filename,
--    .bdrv_file_open           = nvme_file_open,
-+    .bdrv_open                = nvme_file_open,
+-    .bdrv_open                = nvme_file_open,
++    .bdrv_open                = nvme_open,
      .bdrv_close               = nvme_close,
      .bdrv_co_getlength        = nvme_co_getlength,
      .bdrv_probe_blocksizes    = nvme_probe_blocksizes,
-diff --git a/block/rbd.c b/block/rbd.c
-index 84bb2fa5d71..9c0fd0cb3f7 100644
---- a/block/rbd.c
-+++ b/block/rbd.c
-@@ -1815,8 +1815,9 @@ static const char *const qemu_rbd_strong_runtime_opts[] = {
- static BlockDriver bdrv_rbd = {
-     .format_name            = "rbd",
-     .instance_size          = sizeof(BDRVRBDState),
-+
-     .bdrv_parse_filename    = qemu_rbd_parse_filename,
--    .bdrv_file_open         = qemu_rbd_open,
-+    .bdrv_open              = qemu_rbd_open,
-     .bdrv_close             = qemu_rbd_close,
-     .bdrv_reopen_prepare    = qemu_rbd_reopen_prepare,
-     .bdrv_co_create         = qemu_rbd_co_create,
 diff --git a/block/ssh.c b/block/ssh.c
-index a88171d4b53..1344822ed85 100644
+index 1344822ed85..27d582e0e3d 100644
 --- a/block/ssh.c
 +++ b/block/ssh.c
+@@ -837,8 +837,8 @@ static int connect_to_ssh(BDRVSSHState *s, BlockdevOptionsSsh *opts,
+     return ret;
+ }
+ 
+-static int ssh_file_open(BlockDriverState *bs, QDict *options, int bdrv_flags,
+-                         Error **errp)
++static int ssh_open(BlockDriverState *bs, QDict *options, int bdrv_flags,
++                    Error **errp)
+ {
+     BDRVSSHState *s = bs->opaque;
+     BlockdevOptionsSsh *opts;
 @@ -1362,7 +1362,7 @@ static BlockDriver bdrv_ssh = {
      .protocol_name                = "ssh",
      .instance_size                = sizeof(BDRVSSHState),
      .bdrv_parse_filename          = ssh_parse_filename,
--    .bdrv_file_open               = ssh_file_open,
-+    .bdrv_open                    = ssh_file_open,
+-    .bdrv_open                    = ssh_file_open,
++    .bdrv_open                    = ssh_open,
      .bdrv_co_create               = ssh_co_create,
      .bdrv_co_create_opts          = ssh_co_create_opts,
      .bdrv_close                   = ssh_close,
-diff --git a/block/vvfat.c b/block/vvfat.c
-index 9d050ba3aea..086fedf4745 100644
---- a/block/vvfat.c
-+++ b/block/vvfat.c
-@@ -3258,7 +3258,7 @@ static BlockDriver bdrv_vvfat = {
-     .instance_size          = sizeof(BDRVVVFATState),
- 
-     .bdrv_parse_filename    = vvfat_parse_filename,
--    .bdrv_file_open         = vvfat_open,
-+    .bdrv_open              = vvfat_open,
-     .bdrv_refresh_limits    = vvfat_refresh_limits,
-     .bdrv_close             = vvfat_close,
-     .bdrv_child_perm        = vvfat_child_perm,
 -- 
 2.45.2
 
