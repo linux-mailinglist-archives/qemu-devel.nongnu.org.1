@@ -2,73 +2,111 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 138169132EC
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Jun 2024 11:45:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E771A91340D
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Jun 2024 14:57:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sKxIX-00029o-Uc; Sat, 22 Jun 2024 05:44:41 -0400
+	id 1sL0I1-0004Ja-6N; Sat, 22 Jun 2024 08:56:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ines.varhol@telecom-paris.fr>)
- id 1sKxIV-00027a-IL; Sat, 22 Jun 2024 05:44:39 -0400
-Received: from zproxy2.enst.fr ([137.194.2.221])
+ (Exim 4.90_1) (envelope-from <wendland@live.com.au>)
+ id 1sKvSR-00087m-Au
+ for qemu-devel@nongnu.org; Sat, 22 Jun 2024 03:46:48 -0400
+Received: from mail-mw2nam12olkn2099.outbound.protection.outlook.com
+ ([40.92.23.99] helo=NAM12-MW2-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ines.varhol@telecom-paris.fr>)
- id 1sKxIS-00011K-4D; Sat, 22 Jun 2024 05:44:39 -0400
-Received: from localhost (localhost [IPv6:::1])
- by zproxy2.enst.fr (Postfix) with ESMTP id A83D080832;
- Sat, 22 Jun 2024 11:44:34 +0200 (CEST)
-Received: from zproxy2.enst.fr ([IPv6:::1])
- by localhost (zproxy2.enst.fr [IPv6:::1]) (amavis, port 10032) with ESMTP
- id QgvR6AZFBnLQ; Sat, 22 Jun 2024 11:44:34 +0200 (CEST)
-Received: from localhost (localhost [IPv6:::1])
- by zproxy2.enst.fr (Postfix) with ESMTP id 13E6180767;
- Sat, 22 Jun 2024 11:44:34 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.10.3 zproxy2.enst.fr 13E6180767
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=telecom-paris.fr;
- s=A35C7578-1106-11E5-A17F-C303FDDA8F2E; t=1719049474;
- bh=nolDPs4/mJZyGtMc4P7VYywEmjvd5pQJLLW0y0ZEHZU=;
- h=From:To:Date:Message-ID:MIME-Version;
- b=UkW2Sd0JlmY0ioLHn5ZlUXmmEhyG8yAKu0rWp0J6LrUb8uR0yLgNb4RuXCSkNx/33
- tlJZN4t1n2MQ9UckxksC+QRcavH5T+WJN6OAOR5SFtvNijp/6iI8qRsp3uWN86a1S8
- B002v0mv+xzAYgAxwv6GQIVZK0QwHqw7AcuP2quk=
-X-Virus-Scanned: amavis at enst.fr
-Received: from zproxy2.enst.fr ([IPv6:::1])
- by localhost (zproxy2.enst.fr [IPv6:::1]) (amavis, port 10026) with ESMTP
- id fqXnLdwKN0tY; Sat, 22 Jun 2024 11:44:33 +0200 (CEST)
-Received: from inesv-Inspiron-3501.enst.fr (unknown
- [IPv6:2a04:8ec0:0:124::190c])
- by zproxy2.enst.fr (Postfix) with ESMTPSA id 91BD980822;
- Sat, 22 Jun 2024 11:44:32 +0200 (CEST)
-From: =?UTF-8?q?In=C3=A8s=20Varhol?= <ines.varhol@telecom-paris.fr>
+ (Exim 4.90_1) (envelope-from <wendland@live.com.au>)
+ id 1sKvSP-0004DW-Kq
+ for qemu-devel@nongnu.org; Sat, 22 Jun 2024 03:46:47 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=AdZddKEMhqZvYEu+r0mf5fWqWqdHTeA6TFm7MPOSiq3JFyEPMZ3j5eKPUY8qQIo9l55iMngPoyypKKRdy6PNHpJ8gOdLdnUcg9pumwWI4uS01PM4b2Iq2yqtvRq7XZUfryFvMMb69rKgh5jSpjvszJBmTnIS+L1r5eRajNjWsjEesKUx1ShtrhlCVCVHrK5ITCldW+lDNG2lyo0Qx1Ao68/FyF5zJ6ZUIZ8budzS3lCqj5GvD7ObgJWOS3wYwQ6j8DeL2PpmMrJd4y0IYFThK3NwveYLhZQl85WTWRh64M4XY+3OeHCoJ/FigNR1Q0XXbb6LJeZ1wsmkoINZMtxlIg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=mmXQ+Op3WrTaHYmcHws2XBqeNaH/0dqs+mSMStfK3XQ=;
+ b=Kp3IX5eXTkjDKS0RgRFwG/YvXkJvnaGDn+4kWXGY5sZMd9J8Y7GwnGMQb/j242mFp5bC+qkULzB4uqi0JbQyKk1koYyOS7FB2Df74Js4Lq2GRr0YzRpXyvA/4gYKHwuiT8oox+tdgjMilz9JzwpRi1Kx8snIL24MAJJwqvOO3EyNX+DBLHkwsCSF4iaqyuyNKCivYBTZsiL+/FOXdS6MPg6aS1vbYWjHnf3bGBcN/NZPdnZOvGE0ahDjcGs+wp4bldg5DqXC9wPr/+y0Z0Z1YcoG6n/xevglRJBMWWC8yZMdflhVCJyI32Ukhxyytpq37/0Xr0/t6zt8GKVoWGefTw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=LIVE.COM.AU;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=mmXQ+Op3WrTaHYmcHws2XBqeNaH/0dqs+mSMStfK3XQ=;
+ b=HvJsBOmh81KCVbrGQKLmOSZzdVV1RCn9twmWQwfnBGqwrSHpIFstB3F7pPE9Et8Ab36WRzneUlImRGs6qedtlMLB2OO/xSvaQWC2VESxJ0aV5cjbmJiUM/gI9M5i4syOg7AQmiPI8SqsDtqny+5iLoEnmyaLxtWD7g5Q3T0m6qZMat4wkDm+CzZ2g3N0/RX1seeWXTr1yjARvl0oajuNiDeRwe0QCYsLrc4Ku3kqFUsKg+qKXyLhMSW2mcU3vvvg1BALXed50ZXOXhfDCNdgW5ihOfnN1JGJJ9m7FLXcrqEX38rBGOFP/36tvGEWTkjRFi1gkUJVguoByvr7IEQcmg==
+Received: from LV3P220MB1868.NAMP220.PROD.OUTLOOK.COM (2603:10b6:408:1d7::7)
+ by PH7P220MB1534.NAMP220.PROD.OUTLOOK.COM (2603:10b6:510:321::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7698.26; Sat, 22 Jun
+ 2024 07:41:38 +0000
+Received: from LV3P220MB1868.NAMP220.PROD.OUTLOOK.COM
+ ([fe80::f559:6351:749f:b7fb]) by LV3P220MB1868.NAMP220.PROD.OUTLOOK.COM
+ ([fe80::f559:6351:749f:b7fb%6]) with mapi id 15.20.7698.017; Sat, 22 Jun 2024
+ 07:41:38 +0000
+From: Ryan Wendland <wendland@live.com.au>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Luc Michel <luc@lmichel.fr>,
- =?UTF-8?q?In=C3=A8s=20Varhol?= <ines.varhol@telecom-paris.fr>,
- Arnaud Minier <arnaud.minier@telecom-paris.fr>, qemu-arm@nongnu.org,
- Thomas Huth <thuth@redhat.com>, Damien Hedde <damien.hedde@dahe.fr>
-Subject: [PATCH v4 3/3] tests/qtest: Check STM32L4x5 clock connections
-Date: Sat, 22 Jun 2024 11:43:55 +0200
-Message-ID: <20240622094402.244604-4-ines.varhol@telecom-paris.fr>
-X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240622094402.244604-1-ines.varhol@telecom-paris.fr>
-References: <20240622094402.244604-1-ines.varhol@telecom-paris.fr>
+Cc: Ryan Wendland <wendland@live.com.au>
+Subject: [PATCH] hw/usb/hcd-ohci: Set transfer error code with no dev
+Date: Sat, 22 Jun 2024 17:10:38 +0930
+Message-ID: <LV3P220MB18680A6716082003FEC1846386CA2@LV3P220MB1868.NAMP220.PROD.OUTLOOK.COM>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-TMN: [r6V9/W9nYR7aRexWS5h6rf4X4+TN+ZB0]
+X-ClientProxiedBy: MEWP282CA0176.AUSP282.PROD.OUTLOOK.COM
+ (2603:10c6:220:1cd::13) To LV3P220MB1868.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:408:1d7::7)
+X-Microsoft-Original-Message-ID: <20240622074038.62758-1-wendland@live.com.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=137.194.2.221;
- envelope-from=ines.varhol@telecom-paris.fr; helo=zproxy2.enst.fr
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV3P220MB1868:EE_|PH7P220MB1534:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4302ff5f-6851-4e9f-f48d-08dc928ebfcb
+X-Microsoft-Antispam: BCL:0;
+ ARA:14566002|461199025|4302099010|440099025|3412199022|1602099009|1710799023; 
+X-Microsoft-Antispam-Message-Info: QKwoHX8jOUbeSoVGeWJIZqSWnmBsamgE8MZhiA2yZqnn8qFALw58oIF6oZFG48BgOg8pYU0Fo8gxbqwHWIKRfZf8/7DV+mchXUvHaH7VYXs+1UmI6XHvuQUylYVFNZ8l/LjBsFZjTbvc6kjaLNQ0BFZfyM96wGiuSoNAU2pT8Ycs1q55aToujBwlX5R/L+0pecwTwfIdSiD8D0R4HNshPBzTzpsjE7dmagTP+ogvPY/NBfkHU2FKoeKAsyoeEyR4sZm+sNrOyZa2b7jVZnCUF+vGWjtcYaGjzfxw5anMJMRU0XoVdBL0wUBXnnZm7/QMaDT5WfEujap+MT8OTtA3WGOk63cHcgT34UlF3O2hdMAjxsXmFCHEVejwBnZZl7WYeDdWG+pd9WGFlqI7mhgT0nunxwEpyq6GDkbTvLyjhwLH2uI7ych0WntanZ1yC6G5LwWzdY2aRHypwN1UWs2bcSbQ/4vu3hWP+pgFFx9F3CEdHrRY+7BTnCNCT9ClzYGlyFIp5IJJ1VPN8l8D4OHCm6bQWwfJvPHa+7XO9C7Zyo54jPrpAj1eFsjL2sNEBLJEGPNPpmeXBlBF+6620Q2suc1pLNi607OONGq4QfaIBfPLl8SUTm3h3Y5SS7sfMYplmkjWgALSoVFAruclOC2Q2JhGZi/UVnwxQN1fXXE1/KOACLDYxXjcxZCHn+A41tu2krhWxL226ovX+Cf7jhMxMR7UD59qzUnlTyoXA71iibc=
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?oiaBUa3i0mVh98DYYh+/qRyOA7HRVSzfmD+j9ATCZ/6rfHISP17gI4ieE7wb?=
+ =?us-ascii?Q?OwwmTcSU87jcZ1ZsCqKJoOlrALfXOM3ajtEavqTQ/QCkjtVTO7df0fDC0jT8?=
+ =?us-ascii?Q?4rIZatFoTSJMuaGvNFWsP37TX5jOJh1xBP5pRLqVg8gJmM8+qQEs49S8U+W/?=
+ =?us-ascii?Q?G3mPA4XyjyVYD+FIxytpuM2ZRKSIIs9Wrz/JZPAMOBkSoUrswINYcvdUN7nz?=
+ =?us-ascii?Q?yC9aeQPiFR38lwoTIHU9YnwJtB7rDjl+kM6Hkcf1BhfsuoTqCgacDusXgwq4?=
+ =?us-ascii?Q?YbJbcvbfNdi6GFqKgaU71iQt4sqiXBV8vbGxTfmwml6A9k16Qccm3MW7RO6X?=
+ =?us-ascii?Q?QwL8j/S1JU8UDmRj3ht/9MIo+acA5OoFUy8yB9HxV3rIk7uoaoSwTaSUNoxE?=
+ =?us-ascii?Q?DgepA1UX2tuFbYtO1Kvyllg8GEpzmsxazeK82VFQpBrJpOpSP6jp5EkGFPrX?=
+ =?us-ascii?Q?AbSWUaNnlQ1ydOBPOT0tNJ1TjDJjeU861dX4wWFt16yqQTtpbIO4cXkmejXK?=
+ =?us-ascii?Q?gPc65MKHSmjeyGn4dU3Zew8sCB/j1/ur89wGSE8Hanf7iGCsUym0Uwuq5rYk?=
+ =?us-ascii?Q?eIoffvjrTQF2uN6ktLHJAuVfuNhrp8fJ3YfaWUSe9wy6aIBHxVbB/zJ3Zq/+?=
+ =?us-ascii?Q?5SQgFJX8iEZOa6S4f7Zso6U6hgXm12xshz6J+dyxMAUaw6scMuZR+FzjmaXr?=
+ =?us-ascii?Q?8i3sXfmOZqYiPHBZDnjHVk4XdD6FUHdVvUGS26G5ss4yKEeR12e7jSS01HsB?=
+ =?us-ascii?Q?E00WF2UaRVUngwvksc1vqFUAAovqopX2oaIiOCX3Kumrn5OTCrqupD6qdLfi?=
+ =?us-ascii?Q?5mh9wJVS+YjyA8XXFcP6QU2u3ZDR4fEci2Pec13VS2XJkjXsmVJWbJi/2KA5?=
+ =?us-ascii?Q?w70TbgH3hNB39XwLP4TQqmNgoNlpa4sPUvMZC1UmVOgzVq94eACVNcbSQsBW?=
+ =?us-ascii?Q?BkxeleWfq0cTzFtBY130O70LnqfDHaJLNwHKcupXDDWZB514YgOF4uSCuN/4?=
+ =?us-ascii?Q?082j/e07HYAvKx7aUzXTFhyD3Q0TF+MM2BsFVefMee1uMaCgfDLeJzJYxemW?=
+ =?us-ascii?Q?Rc2ODV05r9utfkV89Ca2ayEZ1SiOkluXnNt4WQ4u64+1rb33rG4D8ftNs0+Y?=
+ =?us-ascii?Q?QABi4fY4eD0+zZpBxFfaHeCKtvDuyuwIlMg1ChAFCXgP4NsyRPc7Ny2Arh36?=
+ =?us-ascii?Q?0ZpKKVU8GnGi9w1dxajD4QWl31ndCyXMlITgxCPnzQsJobd33M94uJAns68?=
+ =?us-ascii?Q?=3D?=
+X-OriginatorOrg: sct-15-20-4755-11-msonline-outlook-3458f.templateTenant
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4302ff5f-6851-4e9f-f48d-08dc928ebfcb
+X-MS-Exchange-CrossTenant-AuthSource: LV3P220MB1868.NAMP220.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jun 2024 07:41:38.5203 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7P220MB1534
+Received-SPF: pass client-ip=40.92.23.99; envelope-from=wendland@live.com.au;
+ helo=NAM12-MW2-obe.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Sat, 22 Jun 2024 08:56:19 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,239 +121,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For USART, GPIO and SYSCFG devices, check that clock frequency before
-and after enabling the peripheral clock in RCC is correct.
+When a usb device is disconnected the transfer service functions bails
+before appropraite transfer error flags are set.
+This patch sets the appropriate condition code OHCI_CC_DEVICENOTRESPONDING
+when a device is disconnected and consequently has no response on the USB bus.
 
-Signed-off-by: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Fixes: https://gitlab.com/qemu-project/qemu/-/issues/2081
+
+Signed-off-by: Ryan Wendland <wendland@live.com.au>
 ---
- tests/qtest/stm32l4x5.h             | 42 +++++++++++++++++++++++++++++
- tests/qtest/stm32l4x5_gpio-test.c   | 23 ++++++++++++++++
- tests/qtest/stm32l4x5_syscfg-test.c | 20 ++++++++++++--
- tests/qtest/stm32l4x5_usart-test.c  | 26 ++++++++++++++++++
- 4 files changed, 109 insertions(+), 2 deletions(-)
- create mode 100644 tests/qtest/stm32l4x5.h
+ hw/usb/hcd-ohci.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/tests/qtest/stm32l4x5.h b/tests/qtest/stm32l4x5.h
-new file mode 100644
-index 0000000000..2d21cc666c
---- /dev/null
-+++ b/tests/qtest/stm32l4x5.h
-@@ -0,0 +1,42 @@
-+/*
-+ * QTest testcase header for STM32L4X5 :
-+ * used for consolidating common objects in stm32l4x5_*-test.c
-+ *
-+ * Copyright (c) 2024 Arnaud Minier <arnaud.minier@telecom-paris.fr>
-+ * Copyright (c) 2024 In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or la=
-ter.
-+ * See the COPYING file in the top-level directory.
-+ */
-+
-+#include "libqtest.h"
-+
-+/* copied from clock.h */
-+#define CLOCK_PERIOD_1SEC (1000000000llu << 32)
-+#define CLOCK_PERIOD_FROM_HZ(hz) (((hz) !=3D 0) ? CLOCK_PERIOD_1SEC / (h=
-z) : 0u)
-+/*
-+ * MSI (4 MHz) is used as system clock source after startup
-+ * from Reset.
-+ * AHB, APB1 and APB2 prescalers are set to 1 at reset.
-+ */
-+#define SYSCLK_PERIOD CLOCK_PERIOD_FROM_HZ(4000000)
-+#define RCC_AHB2ENR 0x4002104C
-+#define RCC_APB1ENR1 0x40021058
-+#define RCC_APB1ENR2 0x4002105C
-+#define RCC_APB2ENR 0x40021060
-+
-+
-+static inline uint64_t get_clock_period(QTestState *qts, const char *pat=
-h)
-+{
-+    uint64_t clock_period =3D 0;
-+    QDict *r;
-+
-+    r =3D qtest_qmp(qts, "{ 'execute': 'qom-get', 'arguments':"
-+        " { 'path': %s, 'property': 'qtest-clock-period'} }", path);
-+    g_assert_false(qdict_haskey(r, "error"));
-+    clock_period =3D qdict_get_int(r, "return");
-+    qobject_unref(r);
-+    return clock_period;
-+}
-+
-+
-diff --git a/tests/qtest/stm32l4x5_gpio-test.c b/tests/qtest/stm32l4x5_gp=
-io-test.c
-index 72a7823406..c0686c7b30 100644
---- a/tests/qtest/stm32l4x5_gpio-test.c
-+++ b/tests/qtest/stm32l4x5_gpio-test.c
-@@ -10,6 +10,7 @@
-=20
- #include "qemu/osdep.h"
- #include "libqtest-single.h"
-+#include "stm32l4x5.h"
-=20
- #define GPIO_BASE_ADDR 0x48000000
- #define GPIO_SIZE      0x400
-@@ -505,6 +506,26 @@ static void test_bsrr_brr(const void *data)
-     gpio_writel(gpio, ODR, reset(gpio, ODR));
- }
-=20
-+static void test_clock_enable(void)
-+{
-+    /*
-+     * For each GPIO, enable its clock in RCC
-+     * and check that its clock period changes to SYSCLK_PERIOD
-+     */
-+    unsigned int gpio_id;
-+
-+    for (uint32_t gpio =3D GPIO_A; gpio <=3D GPIO_H; gpio +=3D GPIO_B - =
-GPIO_A) {
-+        gpio_id =3D get_gpio_id(gpio);
-+        g_autofree char *path =3D g_strdup_printf("/machine/soc/gpio%c/c=
-lk",
-+                                                gpio_id + 'a');
-+        g_assert_cmpuint(get_clock_period(global_qtest, path), =3D=3D, 0=
-);
-+        /* Enable the gpio clock */
-+        writel(RCC_AHB2ENR, readl(RCC_AHB2ENR) | (0x1 << gpio_id));
-+        g_assert_cmpuint(get_clock_period(global_qtest, path), =3D=3D,
-+                         SYSCLK_PERIOD);
-+    }
-+}
-+
- int main(int argc, char **argv)
- {
-     int ret;
-@@ -556,6 +577,8 @@ int main(int argc, char **argv)
-     qtest_add_data_func("stm32l4x5/gpio/test_bsrr_brr2",
-                         test_data(GPIO_D, 0),
-                         test_bsrr_brr);
-+    qtest_add_func("stm32l4x5/gpio/test_clock_enable",
-+                   test_clock_enable);
-=20
-     qtest_start("-machine b-l475e-iot01a");
-     ret =3D g_test_run();
-diff --git a/tests/qtest/stm32l4x5_syscfg-test.c b/tests/qtest/stm32l4x5_=
-syscfg-test.c
-index 506ca08bc2..8eaffe43ea 100644
---- a/tests/qtest/stm32l4x5_syscfg-test.c
-+++ b/tests/qtest/stm32l4x5_syscfg-test.c
-@@ -10,6 +10,7 @@
-=20
- #include "qemu/osdep.h"
- #include "libqtest-single.h"
-+#include "stm32l4x5.h"
-=20
- #define SYSCFG_BASE_ADDR 0x40010000
- #define SYSCFG_MEMRMP 0x00
-@@ -26,7 +27,9 @@
- #define INVALID_ADDR 0x2C
-=20
- /* SoC forwards GPIOs to SysCfg */
--#define SYSCFG "/machine/soc"
-+#define SOC "/machine/soc"
-+#define SYSCFG "/machine/soc/syscfg"
-+#define SYSCFG_CLK "/machine/soc/syscfg/clk"
- #define EXTI "/machine/soc/exti"
-=20
- static void syscfg_writel(unsigned int offset, uint32_t value)
-@@ -41,7 +44,7 @@ static uint32_t syscfg_readl(unsigned int offset)
-=20
- static void syscfg_set_irq(int num, int level)
- {
--   qtest_set_irq_in(global_qtest, SYSCFG, NULL, num, level);
-+   qtest_set_irq_in(global_qtest, SOC, NULL, num, level);
- }
-=20
- static void system_reset(void)
-@@ -301,6 +304,17 @@ static void test_irq_gpio_multiplexer(void)
-     syscfg_writel(SYSCFG_EXTICR1, 0x00000000);
- }
-=20
-+static void test_clock_enable(void)
-+{
-+    g_assert_cmpuint(get_clock_period(global_qtest, SYSCFG_CLK), =3D=3D,=
- 0);
-+
-+    /* Enable SYSCFG clock */
-+    writel(RCC_APB2ENR, readl(RCC_APB2ENR) | (0x1 << 0));
-+
-+    g_assert_cmpuint(get_clock_period(global_qtest, SYSCFG_CLK), =3D=3D,
-+                                       SYSCLK_PERIOD);
-+}
-+
- int main(int argc, char **argv)
- {
-     int ret;
-@@ -325,6 +339,8 @@ int main(int argc, char **argv)
-                    test_irq_pin_multiplexer);
-     qtest_add_func("stm32l4x5/syscfg/test_irq_gpio_multiplexer",
-                    test_irq_gpio_multiplexer);
-+    qtest_add_func("stm32l4x5/syscfg/test_clock_enable",
-+                   test_clock_enable);
-=20
-     qtest_start("-machine b-l475e-iot01a");
-     ret =3D g_test_run();
-diff --git a/tests/qtest/stm32l4x5_usart-test.c b/tests/qtest/stm32l4x5_u=
-sart-test.c
-index 8902518233..4bad3603e8 100644
---- a/tests/qtest/stm32l4x5_usart-test.c
-+++ b/tests/qtest/stm32l4x5_usart-test.c
-@@ -12,6 +12,7 @@
- #include "libqtest.h"
- #include "hw/misc/stm32l4x5_rcc_internals.h"
- #include "hw/registerfields.h"
-+#include "stm32l4x5.h"
-=20
- #define RCC_BASE_ADDR 0x40021000
- /* Use USART 1 ADDR, assume the others work the same */
-@@ -296,6 +297,30 @@ static void test_send_str(void)
-     qtest_quit(qts);
- }
-=20
-+static void check_clock(QTestState *qts, const char *path, uint32_t rcc_=
-reg,
-+                        uint32_t reg_offset)
-+{
-+    g_assert_cmpuint(get_clock_period(qts, path), =3D=3D, 0);
-+    qtest_writel(qts, rcc_reg, qtest_readl(qts, rcc_reg) | (0x1 << reg_o=
-ffset));
-+    g_assert_cmpuint(get_clock_period(qts, path), =3D=3D, SYSCLK_PERIOD)=
-;
-+}
-+
-+static void test_clock_enable(void)
-+{
-+    /*
-+     * For each USART device, enable its clock in RCC
-+     * and check that its clock frequency is SYSCLK_PERIOD
-+     */
-+    QTestState *qts =3D qtest_init("-M b-l475e-iot01a");
-+
-+    check_clock(qts, "machine/soc/usart[0]/clk", RCC_APB2ENR, 14);
-+    check_clock(qts, "machine/soc/usart[1]/clk", RCC_APB1ENR1, 17);
-+    check_clock(qts, "machine/soc/usart[2]/clk", RCC_APB1ENR1, 18);
-+    check_clock(qts, "machine/soc/uart[0]/clk", RCC_APB1ENR1, 19);
-+    check_clock(qts, "machine/soc/uart[1]/clk", RCC_APB1ENR1, 20);
-+    check_clock(qts, "machine/soc/lpuart1/clk", RCC_APB1ENR2, 0);
-+}
-+
- int main(int argc, char **argv)
- {
-     int ret;
-@@ -308,6 +333,7 @@ int main(int argc, char **argv)
-     qtest_add_func("stm32l4x5/usart/send_char", test_send_char);
-     qtest_add_func("stm32l4x5/usart/receive_str", test_receive_str);
-     qtest_add_func("stm32l4x5/usart/send_str", test_send_str);
-+    qtest_add_func("stm32l4x5/usart/clock_enable", test_clock_enable);
-     ret =3D g_test_run();
-=20
-     return ret;
---=20
-2.43.2
+diff --git a/hw/usb/hcd-ohci.c b/hw/usb/hcd-ohci.c
+index acd6016980..8cd25d74af 100644
+--- a/hw/usb/hcd-ohci.c
++++ b/hw/usb/hcd-ohci.c
+@@ -980,7 +980,8 @@ static int ohci_service_td(OHCIState *ohci, struct ohci_ed *ed)
+         dev = ohci_find_device(ohci, OHCI_BM(ed->flags, ED_FA));
+         if (dev == NULL) {
+             trace_usb_ohci_td_dev_error();
+-            return 1;
++            OHCI_SET_BM(td.flags, TD_CC, OHCI_CC_DEVICENOTRESPONDING);
++            goto exit_and_retire;
+         }
+         ep = usb_ep_get(dev, pid, OHCI_BM(ed->flags, ED_EN));
+         if (ohci->async_td) {
+@@ -1087,6 +1088,7 @@ static int ohci_service_td(OHCIState *ohci, struct ohci_ed *ed)
+         ed->head |= OHCI_ED_H;
+     }
+ 
++exit_and_retire:
+     /* Retire this TD */
+     ed->head &= ~OHCI_DPTR_MASK;
+     ed->head |= td.next & OHCI_DPTR_MASK;
+-- 
+2.34.1
 
 
