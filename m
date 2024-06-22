@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 956949133C2
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Jun 2024 14:08:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E742B9133BC
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Jun 2024 14:08:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sKzWN-00081Q-A1; Sat, 22 Jun 2024 08:07:07 -0400
+	id 1sKzWJ-0007yR-Hv; Sat, 22 Jun 2024 08:07:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sKzW9-0007lx-SA
+ id 1sKzW9-0007lv-Rp
  for qemu-devel@nongnu.org; Sat, 22 Jun 2024 08:06:54 -0400
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sKzW7-0000Jy-JJ
+ id 1sKzW7-0000KI-QA
  for qemu-devel@nongnu.org; Sat, 22 Jun 2024 08:06:53 -0400
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-36279cf6414so2235572f8f.3
- for <qemu-devel@nongnu.org>; Sat, 22 Jun 2024 05:06:50 -0700 (PDT)
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-3650f2e540dso1784679f8f.0
+ for <qemu-devel@nongnu.org>; Sat, 22 Jun 2024 05:06:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1719058010; x=1719662810; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=WZEwtz/pwjMa4zwtaeGl8+Ie8svZn5Th6HSPtyByswE=;
- b=P6t6gJLiVVo5H5kU3Jh9+AZXAZqeS6eV9Z30vu+NbmCSM+8W1t9q8X5m4sccfAQNTE
- 1sgB/ssiL2g13yDMndeMOnLbvdCgm6xh0NOzCciGnvb2gXw1w5A3ZVXz3VBll4qc1yz1
- 4Un6lwSRut5nnpy9kTuxvbExGg1EiyVIWVIW/eGqeKZq1/yZQIg6lxtfrSpbI5jorKrE
- EbhO/I0t0hDR/3RKEZBi0yOei3pQAW81Kob77s2tifTye1cx+UlYl1T+HJNRRY+lf0SU
- UAEibwFm1YXdv065JEcABRNTJBX8r1J0/69gGxMec+oaFv+sC0/IpWiaMxIQNLntoqeA
- I3nA==
+ :reply-to; bh=H5GU695wBqzPlnCl6LHUjaUC9nnJlhbb4hAcQcaW5AI=;
+ b=TBeHo6WgviJWAIPm15E1oZf0XAMqc//2DkLk42dhLfMBckqACrcPGI3+zPDmx056c9
+ UMYzH8+fktQ0DIj1i8YU5R/A9OgmgwIm8mT6D8pEpPen9dxvqhYwyViH4XPRj5BUddie
+ h7d6reermiV5LytqdPge8KlGOoc4yjBAUPyQpCm5pMJMGLQsJ68W2dJOF2rlxcZtbEWW
+ btfKtodlF22pfU9SXMyEMzQLfzvP/SFwASpcZi4XR4AMhxWtioSURccCwGn6aKqFINH5
+ FYc8r/liifnbPz/dZZwxqCVjsS9AepykQwu5zeBNASh0CuQsZ/MF4x+FHWAXKJdIwnMk
+ /Njg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1719058010; x=1719662810;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=WZEwtz/pwjMa4zwtaeGl8+Ie8svZn5Th6HSPtyByswE=;
- b=rf+geEHiU7W/Atc5/Sx/dcQRMfmT4kXEutzmmOlogPLG4bIPTyE19ekTQvc2J6IgJx
- TSnPElCIPok+48ihdFjUOVxNal7dpmj61815dKVoQtsRZOEXY7M0gWEwiwq7qdqbvmIT
- ExUg0h31xYNlG9wG2IJsO5AzpP0/wonr8iyN3YtNhY1Kffgm162vRZ1nk+00Ppkt2j+0
- 3Dw1YunY0UA8kgvE8BUEo/6sUHASx/rCjCnjCNaPjGrMEYRHcOybwGECt3OFCx9PujBm
- 0hPhRsFPaQ9caBlrqdyGmhs/Wu5PcL9uv2fPwrH97Ghk5RnhxgDN2HYhG0AIGU557IA6
- DHBA==
-X-Gm-Message-State: AOJu0YxjPU87o20J09gIyFhG58kf9EQdFKxqj5Dtc84EuZmaxKTDot1P
- k7hsHLOF7bLUBjEw9BoFxyfGELwEtIlMa3RMDAODng9hFkU4w4siK7DBsPQag+K8AEO5NLsRqoh
- DLng=
-X-Google-Smtp-Source: AGHT+IEOVruQ/93GjvDrXo+Ij8CnMJJrieNseZnvTV1tQbwup/xuVUq/e7mOlWjsb4n2Kjyw7VZWYw==
-X-Received: by 2002:adf:ce87:0:b0:35f:209b:c10f with SMTP id
- ffacd0b85a97d-3631998ffcbmr7275862f8f.68.1719058009927; 
- Sat, 22 Jun 2024 05:06:49 -0700 (PDT)
+ bh=H5GU695wBqzPlnCl6LHUjaUC9nnJlhbb4hAcQcaW5AI=;
+ b=O+ovcbWiWgonfq6RRGbv3lVrh1MrFkeVr+kiDcPPfWUc0foU6CQaYWqewbx2fUAh6a
+ +4Z3QNohTvWcKpiUle+bUAMO7hmoWsCGQW4XfYYRXFHmOYR3rGixHDF4AbvSaUES5nwG
+ 4J/McwJ2uhYX5dIZvkTo+hEwOrfV6m4ICDStiQx2BfcvTmIAgvQq7hOp3IfAIoVocJjJ
+ q7UXOK99MDej8QFHm8ieVCCOTHcH+cJYlm5A1vV6BepZej/a14618FVqDixtwoNhGwHM
+ 0xFUUF/JU1gPDolNVAjeGH56/s+EB6D1wOojBAyx20DsY4o57Md7WTSWCuOABbuJERk4
+ PQgQ==
+X-Gm-Message-State: AOJu0YzMWhZ9tBvBeb4JFHaBXK61frRDv8wIRU9nZ61WuIBLPI7hhLCl
+ yjIs3LRAOpFI+WamGNetBoGpjPulkC5wbNhDyF5jcFZ0a2Vu/6Uouog/dEMr3GgwuIN+9zWWZGq
+ 0BmQ=
+X-Google-Smtp-Source: AGHT+IHDCQdx19ltFCec4XM6j5axiyLYFm0QD87HSCNLJ2E1piNtv+/72zZLAyYbTFwVt0Y/Q66CKw==
+X-Received: by 2002:adf:e441:0:b0:362:c237:5569 with SMTP id
+ ffacd0b85a97d-363170eccc5mr7900219f8f.2.1719058010381; 
+ Sat, 22 Jun 2024 05:06:50 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3663a2f698dsm4393006f8f.70.2024.06.22.05.06.49
+ ffacd0b85a97d-3663a2f698dsm4393006f8f.70.2024.06.22.05.06.50
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 22 Jun 2024 05:06:49 -0700 (PDT)
+ Sat, 22 Jun 2024 05:06:50 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 10/18] hw/timer/a9gtimer: Handle QTest mode in
- a9_gtimer_get_current_cpu
-Date: Sat, 22 Jun 2024 13:06:35 +0100
-Message-Id: <20240622120643.3797539-11-peter.maydell@linaro.org>
+Subject: [PULL 11/18] hw/usb/hcd-dwc2: Handle invalid address access in read
+ and write functions
+Date: Sat, 22 Jun 2024 13:06:36 +0100
+Message-Id: <20240622120643.3797539-12-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240622120643.3797539-1-peter.maydell@linaro.org>
 References: <20240622120643.3797539-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,48 +94,58 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zheyu Ma <zheyuma97@gmail.com>
 
-This commit updates the a9_gtimer_get_current_cpu() function to handle
-cases where QTest is enabled. When QTest is used, it returns 0 instead
-of dereferencing the current_cpu, which can be NULL. This prevents the
-program from crashing during QTest runs.
+This commit modifies the dwc2_hsotg_read() and dwc2_hsotg_write() functions
+to handle invalid address access gracefully. Instead of using
+g_assert_not_reached(), which causes the program to abort, the functions
+now log an error message and return a default value for reads or do
+nothing for writes.
+
+This change prevents the program from aborting and provides clear log
+messages indicating when an invalid memory address is accessed.
 
 Reproducer:
-cat << EOF | qemu-system-aarch64 -display \
-none -machine accel=qtest, -m 512M -machine npcm750-evb -qtest stdio
-writel 0xf03fe20c 0x26d7468c
+cat << EOF | qemu-system-aarch64 -display none \
+-machine accel=qtest, -m 512M -machine raspi2b -m 1G -nodefaults \
+-usb -drive file=null-co://,if=none,format=raw,id=disk0 -device \
+usb-storage,port=1,drive=disk0 -qtest stdio
+readl 0x3f980dfb
 EOF
 
 Signed-off-by: Zheyu Ma <zheyuma97@gmail.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20240618144009.3137806-1-zheyuma97@gmail.com
+Reviewed-by: Paul Zimmerman <pauldzim@gmail.com>
+Message-id: 20240618135610.3109175-1-zheyuma97@gmail.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/timer/a9gtimer.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ hw/usb/hcd-dwc2.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/hw/timer/a9gtimer.c b/hw/timer/a9gtimer.c
-index a2ac5bdfb99..64d80cdf6a3 100644
---- a/hw/timer/a9gtimer.c
-+++ b/hw/timer/a9gtimer.c
-@@ -32,6 +32,7 @@
- #include "qemu/log.h"
- #include "qemu/module.h"
- #include "hw/core/cpu.h"
-+#include "sysemu/qtest.h"
+diff --git a/hw/usb/hcd-dwc2.c b/hw/usb/hcd-dwc2.c
+index 8cac9c0a062..b4f0652c7d2 100644
+--- a/hw/usb/hcd-dwc2.c
++++ b/hw/usb/hcd-dwc2.c
+@@ -1128,7 +1128,10 @@ static uint64_t dwc2_hsotg_read(void *ptr, hwaddr addr, unsigned size)
+         val = dwc2_pcgreg_read(ptr, addr, (addr - HSOTG_REG(0xe00)) >> 2, size);
+         break;
+     default:
+-        g_assert_not_reached();
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: Bad offset 0x%"HWADDR_PRIx"\n",
++                      __func__, addr);
++        val = 0;
++        break;
+     }
  
- #ifndef A9_GTIMER_ERR_DEBUG
- #define A9_GTIMER_ERR_DEBUG 0
-@@ -48,6 +49,10 @@
+     return val;
+@@ -1160,7 +1163,9 @@ static void dwc2_hsotg_write(void *ptr, hwaddr addr, uint64_t val,
+         dwc2_pcgreg_write(ptr, addr, (addr - HSOTG_REG(0xe00)) >> 2, val, size);
+         break;
+     default:
+-        g_assert_not_reached();
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: Bad offset 0x%"HWADDR_PRIx"\n",
++                      __func__, addr);
++        break;
+     }
+ }
  
- static inline int a9_gtimer_get_current_cpu(A9GTimerState *s)
- {
-+    if (qtest_enabled()) {
-+        return 0;
-+    }
-+
-     if (current_cpu->cpu_index >= s->num_cpu) {
-         hw_error("a9gtimer: num-cpu %d but this cpu is %d!\n",
-                  s->num_cpu, current_cpu->cpu_index);
 -- 
 2.34.1
 
