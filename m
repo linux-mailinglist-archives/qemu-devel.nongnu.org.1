@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB6909133B6
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Jun 2024 14:08:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A2B29133C7
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Jun 2024 14:09:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sKzWG-0007pa-Ff; Sat, 22 Jun 2024 08:07:00 -0400
+	id 1sKzWI-0007wz-Nt; Sat, 22 Jun 2024 08:07:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sKzW7-0007kG-0D
- for qemu-devel@nongnu.org; Sat, 22 Jun 2024 08:06:51 -0400
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ id 1sKzW7-0007kf-Qg
+ for qemu-devel@nongnu.org; Sat, 22 Jun 2024 08:06:53 -0400
+Received: from mail-lj1-x236.google.com ([2a00:1450:4864:20::236])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sKzW4-0000JD-9y
+ id 1sKzW5-0000JJ-2D
  for qemu-devel@nongnu.org; Sat, 22 Jun 2024 08:06:50 -0400
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-363bbd51050so2084493f8f.0
- for <qemu-devel@nongnu.org>; Sat, 22 Jun 2024 05:06:47 -0700 (PDT)
+Received: by mail-lj1-x236.google.com with SMTP id
+ 38308e7fff4ca-2ec1620a956so32478871fa.1
+ for <qemu-devel@nongnu.org>; Sat, 22 Jun 2024 05:06:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719058006; x=1719662806; darn=nongnu.org;
+ d=linaro.org; s=google; t=1719058007; x=1719662807; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=QdEbEVs429MCQSS+xvirVRecsUYVa5N98xC7KwBFFig=;
- b=IvheSQufPLTb94SbDF7bQHG/Di8UxMHjDXvg6yhS0oHlqPFqabr/aK+W83kuYJ0rO3
- Z/W7tqTGPvk9H7esxVJzNOP5M/XJBS+vvc5/o4VTuHL+cS2Smc53Ahtuo0k4YshZG+xV
- ohdpLFGno9t1wv0Dn4HLZvayZP3zhtceGo1NLfXs8CDz4hyA1i72OnCJSucC8o1bfXMG
- uOVRH45UFEiJGDjntFAqPVXpqmXKLeEF4q3MHwg7ifdaJ2K3sbAtfX/w8/tD6AYmpofZ
- wr9pFr3nnOjO6QHpkju3nk2mUSsPbfHdlkMPOFrDY7K4nj5wbveZ2RpqzeYQtlHF5VrC
- HW7Q==
+ :reply-to; bh=hDzCMQj4Kz45odIGKOYD91iUsefbCW1gBNGz5HSGeJo=;
+ b=o1/Fd2+ePMxG9PQ8pXdfvYzxnpljP7Zdcv3WXJQFp61pRQHc6bjO+FdLgXjLAee8vI
+ Zr+LSY0AfK+6+N4jxKamn2lySx8d8GhyXOgZkJF7BhaRI24DCXA+O9SzIhfxwOF6ckl6
+ BXIdoxjPUDr4QbNQcKxJSdCsaF3Ej1LRoso1NPMh8mQYTO3oN4Yhed+M3945SQ31zrOe
+ dRhPNMhcLG0qEUeRrNCFFfseCf37j4cIBiUzuU5tDpZmQYrzXej5YnovamYqgxSMb2fB
+ F4CB74QqO1s3ezUx28s39G0bVaQ/k9yvF/GSXWEd0aHIDgm7fGdkP7M9WX4Mi8MN1TUe
+ 6cAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719058006; x=1719662806;
+ d=1e100.net; s=20230601; t=1719058007; x=1719662807;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=QdEbEVs429MCQSS+xvirVRecsUYVa5N98xC7KwBFFig=;
- b=clWL39PI9qdIFaDAl0y4RGDdviO6S0BfT3PtrkwoHV1HRB1IFO74Ub1s4JIezoYrxd
- pJ2Imm6m8p5NaMbf4z+QB7RGM1Zi8XUh0PK3ja2+P0ZYWBC3Dv8y/70ODhb7e9xore6Q
- 41Vi5UC4uwS3DbNx+9gVpJZmLL/w8FRkdG8LiWZlj2yBxuSz0SmExlNRcN+ce2mM0fo6
- z8gzrEzDeXs3tGXOouNCspO9k6bajxpN8Cy7PeOz0us3b52emNL5YQzrjfiwHOwC8DOZ
- oLSpk7+oUROaYZqhbESVWE7C2Jal9JgW4IT4fQ91lVDCh+HLBFvqtXOkMfr2SS0gfq/Q
- tnwg==
-X-Gm-Message-State: AOJu0YwYz4VSQx9qn37DPwxJjT0roU4GkOlMLtnkzK4Rn9aTzOcITnRA
- rzGzWSyOxzSd0lyWpZfyEeKR/vyUfit4pflNoHy5m3aOxqzAkgvGheci6PLKXKM9SZErh//W38w
- +/Ng=
-X-Google-Smtp-Source: AGHT+IHGQ2ILAHvekV1Vy5WQyxgetM5qhgQAeCyqsfxJWWfWd2XbK6dlufc2q+/1i1vSZOISKoDcSg==
-X-Received: by 2002:a5d:6a48:0:b0:362:8ea3:a3a3 with SMTP id
- ffacd0b85a97d-366e4ed2deamr603128f8f.17.1719058006259; 
+ bh=hDzCMQj4Kz45odIGKOYD91iUsefbCW1gBNGz5HSGeJo=;
+ b=hwJGVqczXLOm566Kekbg3Sm6W+NuSDSPYtvLcOJyTN55ZdufL+im9G0AYaBPnMmvyw
+ AakTQ8uLlDPLrY8BKnB1V8VC9Vinm/LhpbdADqNw3GSdlsL3Ok4FKEpDszkgVrjokTGU
+ f0sBfuZs16DzL/D93CpXVW+yKbu+EPnY65gZnfX42QFgeQPFvgTrf8ecsenAeSvxFyQE
+ n/Kbmd+bEbWT78Oh2PIRL400Gc4BZksv6F5pDdjsf/1QHd2L1022df+xa1pxWpvvXs0l
+ LtY8hSfJKdINm1iktkw2yFi1aD1a+3jeUA1L14f0Afe0C111uFd+L2Kr3n8tpPz3dKNZ
+ oDXA==
+X-Gm-Message-State: AOJu0Yybn6PYDoD4b70FMX1hVHjudEu9JyJ5I2wpr1Pz+J67AiLigsqE
+ +oHjr7wzZPUaIuPhHYG3+B7yXtcMZXiOC0IWYoL+xUKY/HPlyQEYngdtncjDNhn+HsckxMTY7WJ
+ OZo0=
+X-Google-Smtp-Source: AGHT+IGNz/KFpBvKqbrAkBmqoQ+0XXSx1w+LGM0VVE4sbpTArZZm30yV8uQCXzgXUG6vzGCqAlquRg==
+X-Received: by 2002:a05:6512:3441:b0:52c:dc70:ebf8 with SMTP id
+ 2adb3069b0e04-52cdc70ef1emr1281076e87.19.1719058006742; 
  Sat, 22 Jun 2024 05:06:46 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3663a2f698dsm4393006f8f.70.2024.06.22.05.06.45
+ ffacd0b85a97d-3663a2f698dsm4393006f8f.70.2024.06.22.05.06.46
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 22 Jun 2024 05:06:45 -0700 (PDT)
+ Sat, 22 Jun 2024 05:06:46 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 02/18] hw/arm/sbsa-ref: switch to 1GHz timer frequency
-Date: Sat, 22 Jun 2024 13:06:27 +0100
-Message-Id: <20240622120643.3797539-3-peter.maydell@linaro.org>
+Subject: [PULL 03/18] hw/intc/arm_gic: Fix deactivation of SPI lines
+Date: Sat, 22 Jun 2024 13:06:28 +0100
+Message-Id: <20240622120643.3797539-4-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240622120643.3797539-1-peter.maydell@linaro.org>
 References: <20240622120643.3797539-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::236;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x236.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,47 +91,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+From: "Edgar E. Iglesias" <edgar.iglesias@amd.com>
 
-Updated firmware for QEMU CI is already in merge queue so we can move
-platform to be future proof.
+Julien reported that he has seen strange behaviour when running
+Xen on QEMU using GICv2. When Xen migrates a guest's vCPU from
+one pCPU to another while the vCPU is handling an interrupt, the
+guest is unable to properly deactivate interrupts.
 
-All supported cpus work fine with 1GHz timer frequency when firmware is
-fresh enough.
+Looking at it a little closer, our GICv2 model treats
+deactivation of SPI lines as if they were PPI's, i.e banked per
+CPU core. The state for active interrupts should only be banked
+for PPI lines, not for SPI lines.
 
-Signed-off-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-Reviewed-by: Leif Lindholm <quic_llindhol@quicinc.com>
-Message-id: 20240531093729.220758-2-marcin.juszkiewicz@linaro.org
+Make deactivation of SPI lines unbanked, similar to how we
+handle writes to GICD_ICACTIVER.
+
+Reported-by: Julien Grall <julien@xen.org>
+Signed-off-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
+Message-id: 20240605143044.2029444-2-edgar.iglesias@gmail.com
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/arm/sbsa-ref.c | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+ hw/intc/gic_internal.h | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
-index e884692f07f..87884400e30 100644
---- a/hw/arm/sbsa-ref.c
-+++ b/hw/arm/sbsa-ref.c
-@@ -62,16 +62,12 @@
+diff --git a/hw/intc/gic_internal.h b/hw/intc/gic_internal.h
+index 8d29b40ca10..8ddbf554c69 100644
+--- a/hw/intc/gic_internal.h
++++ b/hw/intc/gic_internal.h
+@@ -280,6 +280,8 @@ static inline void gic_set_active(GICState *s, int irq, int cpu)
  
- /*
-  * Generic timer frequency in Hz (which drives both the CPU generic timers
-- * and the SBSA watchdog-timer). Older versions of the TF-A firmware
-- * typically used with sbsa-ref (including the binaries in our Avocado test
-- * Aarch64SbsarefMachine.test_sbsaref_alpine_linux_max_pauth_impdef
-- * assume it is this value.
-+ * and the SBSA watchdog-timer). Older (<2.11) versions of the TF-A firmware
-+ * assumed 62.5MHz here.
-  *
-- * TODO: this value is not architecturally correct for an Armv8.6 or
-- * better CPU, so we should move to 1GHz once the TF-A fix above has
-- * made it into a release and into our Avocado test.
-+ * Starting with Armv8.6 CPU 1GHz timer frequency is mandated.
-  */
--#define SBSA_GTIMER_HZ 62500000
-+#define SBSA_GTIMER_HZ 1000000000
+ static inline void gic_clear_active(GICState *s, int irq, int cpu)
+ {
++    unsigned int cm;
++
+     if (gic_is_vcpu(cpu)) {
+         uint32_t *entry = gic_get_lr_entry(s, irq, cpu);
+         GICH_LR_CLEAR_ACTIVE(*entry);
+@@ -301,11 +303,13 @@ static inline void gic_clear_active(GICState *s, int irq, int cpu)
+              * the GIC is secure.
+              */
+             if (!s->security_extn || GIC_DIST_TEST_GROUP(phys_irq, 1 << rcpu)) {
+-                GIC_DIST_CLEAR_ACTIVE(phys_irq, 1 << rcpu);
++                cm = phys_irq < GIC_INTERNAL ? 1 << rcpu : ALL_CPU_MASK;
++                GIC_DIST_CLEAR_ACTIVE(phys_irq, cm);
+             }
+         }
+     } else {
+-        GIC_DIST_CLEAR_ACTIVE(irq, 1 << cpu);
++        cm = irq < GIC_INTERNAL ? 1 << cpu : ALL_CPU_MASK;
++        GIC_DIST_CLEAR_ACTIVE(irq, cm);
+     }
+ }
  
- enum {
-     SBSA_FLASH,
 -- 
 2.34.1
 
