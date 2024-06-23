@@ -2,39 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7660A913C47
-	for <lists+qemu-devel@lfdr.de>; Sun, 23 Jun 2024 17:25:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C8BE913C3E
+	for <lists+qemu-devel@lfdr.de>; Sun, 23 Jun 2024 17:24:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sLP4a-0001nn-8H; Sun, 23 Jun 2024 11:24:08 -0400
+	id 1sLP4d-0001uP-JW; Sun, 23 Jun 2024 11:24:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1sLP4W-0001my-W3
- for qemu-devel@nongnu.org; Sun, 23 Jun 2024 11:24:05 -0400
+ id 1sLP4Y-0001nY-PF
+ for qemu-devel@nongnu.org; Sun, 23 Jun 2024 11:24:06 -0400
 Received: from madrid.collaboradmins.com ([46.235.227.194])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1sLP4V-0003KL-D0
- for qemu-devel@nongnu.org; Sun, 23 Jun 2024 11:24:04 -0400
+ id 1sLP4X-0003KT-3u
+ for qemu-devel@nongnu.org; Sun, 23 Jun 2024 11:24:06 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
- s=mail; t=1719156241;
- bh=vsjQDU6o24fVd5AnZ+zpHqMrrXzBZfjmUbMvz7OiZbE=;
+ s=mail; t=1719156243;
+ bh=ERCEjbeofuFXN7aryxZb+pJysYHHTmCz1fykr4fdm0M=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=iDb8N8fxS+uHnOINiLI7VTaSRESYUQzT6Qc/nOsvEt+VkTGOC+154Zz2BBjUHNnJR
- qwP9UKMg2w31rAeoIfM0mupNZLjY1WIrxZvWe8fEwIknNOEAhp/lmTu98oG7mXe0Jm
- PnYgpSo0QC6MIPWNC4B1RK9VEI3k82tyNvEXQ9PAR9Sthk3z2BhMrcd1i721ltKtcg
- PEvkTplnJY/rKmBo8+Og+TwJ3JJ72r7lVtDsEU6EsgkoGhfvVrvauUeKS3uKXdJ5NF
- LhqEyQBoQ68oot1nvboHacC2Xq4P53nQLoLhmL4003vWpay+NJE33QS4aJBcplho+k
- fOwugvpVUZ3UA==
+ b=QRX2ocnPyySqQlTc9lyCfz3skyIvHSeXTI9P25+AWt14FXjcNyY4ni3wEeixLdSwQ
+ vBEW/I4R0oJlF7WbToG8WAnnMmDET1PgetmkwTOaXLOKFKatwqyY3BCnx+F0hsJhv2
+ e6nkLPVgnILNx4SeLj5qWPU5pxD4QRUmyBiwcV+DZcAI88OLAmEQDtUi5uelHTVHsc
+ lzktb6VD0zG1i1ixX0d5NXH4ZIyaVf1z2awIrnIlpygszmmNQbl+YiwI2nUyluOPcS
+ isKBKJfKn4wHxxS/1A495aX6174EDIgJCvcBbFtOq572poctY+wStQYIOEfmC1N8ko
+ CjmiT6wFNPeDw==
 Received: from workpc.. (cola.collaboradmins.com [195.201.22.229])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
  (Authenticated sender: dmitry.osipenko)
- by madrid.collaboradmins.com (Postfix) with ESMTPSA id 816F937804C9;
- Sun, 23 Jun 2024 15:23:59 +0000 (UTC)
+ by madrid.collaboradmins.com (Postfix) with ESMTPSA id AD3423780629;
+ Sun, 23 Jun 2024 15:24:01 +0000 (UTC)
 From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
 To: Akihiko Odaki <akihiko.odaki@daynix.com>, Huang Rui <ray.huang@amd.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@gmail.com>,
@@ -56,15 +56,13 @@ Cc: qemu-devel@nongnu.org, Gurchetan Singh <gurchetansingh@chromium.org>,
  Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
  Honglei Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
  Chen Jiqian <Jiqian.Chen@amd.com>, Yiwei Zhang <zzyiwei@chromium.org>
-Subject: [PATCH v16 01/13] virtio-gpu: Use trace events for tracking number of
- in-flight fences
-Date: Sun, 23 Jun 2024 18:23:31 +0300
-Message-ID: <20240623152343.328436-2-dmitry.osipenko@collabora.com>
+Subject: [PATCH v16 02/13] virtio-gpu: Move fence_poll timer to VirtIOGPUGL
+Date: Sun, 23 Jun 2024 18:23:32 +0300
+Message-ID: <20240623152343.328436-3-dmitry.osipenko@collabora.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240623152343.328436-1-dmitry.osipenko@collabora.com>
 References: <20240623152343.328436-1-dmitry.osipenko@collabora.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=46.235.227.194;
  envelope-from=dmitry.osipenko@collabora.com; helo=madrid.collaboradmins.com
@@ -89,66 +87,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Replace printf's used for tracking of in-flight fence inc/dec events
-with tracing, for consistency with the rest of virtio-gpu code that
-uses tracing.
+Move fence_poll timer to VirtIOGPUGL for consistency with cmdq_resume_bh
+that are used only by GL device.
 
-Suggested-by: Marc-André Lureau <marcandre.lureau@gmail.com>
 Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
 ---
- hw/display/trace-events       | 2 ++
- hw/display/virtio-gpu-virgl.c | 2 +-
- hw/display/virtio-gpu.c       | 4 ++--
- 3 files changed, 5 insertions(+), 3 deletions(-)
+ hw/display/virtio-gpu-virgl.c  | 8 +++++---
+ include/hw/virtio/virtio-gpu.h | 3 ++-
+ 2 files changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/hw/display/trace-events b/hw/display/trace-events
-index 781f8a33203b..e212710284ae 100644
---- a/hw/display/trace-events
-+++ b/hw/display/trace-events
-@@ -53,6 +53,8 @@ virtio_gpu_cmd_ctx_submit(uint32_t ctx, uint32_t size) "ctx 0x%x, size %d"
- virtio_gpu_update_cursor(uint32_t scanout, uint32_t x, uint32_t y, const char *type, uint32_t res) "scanout %d, x %d, y %d, %s, res 0x%x"
- virtio_gpu_fence_ctrl(uint64_t fence, uint32_t type) "fence 0x%" PRIx64 ", type 0x%x"
- virtio_gpu_fence_resp(uint64_t fence) "fence 0x%" PRIx64
-+virtio_gpu_inc_inflight_fences(uint32_t inflight) "in-flight+ %u"
-+virtio_gpu_dec_inflight_fences(uint32_t inflight) "in-flight- %u"
- 
- # qxl.c
- disable qxl_io_write_vga(int qid, const char *mode, uint32_t addr, uint32_t val) "%d %s addr=%u val=%u"
 diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
-index 9f34d0e6619c..14091b191ec0 100644
+index 14091b191ec0..91dce90f9176 100644
 --- a/hw/display/virtio-gpu-virgl.c
 +++ b/hw/display/virtio-gpu-virgl.c
-@@ -525,7 +525,7 @@ static void virgl_write_fence(void *opaque, uint32_t fence)
-         g_free(cmd);
-         g->inflight--;
-         if (virtio_gpu_stats_enabled(g->parent_obj.conf)) {
--            fprintf(stderr, "inflight: %3d (-)\r", g->inflight);
-+            trace_virtio_gpu_dec_inflight_fences(g->inflight);
-         }
+@@ -594,11 +594,12 @@ static void virtio_gpu_print_stats(void *opaque)
+ static void virtio_gpu_fence_poll(void *opaque)
+ {
+     VirtIOGPU *g = opaque;
++    VirtIOGPUGL *gl = VIRTIO_GPU_GL(g);
+ 
+     virgl_renderer_poll();
+     virtio_gpu_process_cmdq(g);
+     if (!QTAILQ_EMPTY(&g->cmdq) || !QTAILQ_EMPTY(&g->fenceq)) {
+-        timer_mod(g->fence_poll, qemu_clock_get_ms(QEMU_CLOCK_VIRTUAL) + 10);
++        timer_mod(gl->fence_poll, qemu_clock_get_ms(QEMU_CLOCK_VIRTUAL) + 10);
      }
  }
-diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
-index d60b1b2973af..602952a7041b 100644
---- a/hw/display/virtio-gpu.c
-+++ b/hw/display/virtio-gpu.c
-@@ -1066,7 +1066,7 @@ void virtio_gpu_process_cmdq(VirtIOGPU *g)
-                 if (g->stats.max_inflight < g->inflight) {
-                     g->stats.max_inflight = g->inflight;
-                 }
--                fprintf(stderr, "inflight: %3d (+)\r", g->inflight);
-+                trace_virtio_gpu_inc_inflight_fences(g->inflight);
-             }
-         } else {
-             g_free(cmd);
-@@ -1086,7 +1086,7 @@ static void virtio_gpu_process_fenceq(VirtIOGPU *g)
-         g_free(cmd);
-         g->inflight--;
-         if (virtio_gpu_stats_enabled(g->parent_obj.conf)) {
--            fprintf(stderr, "inflight: %3d (-)\r", g->inflight);
-+            trace_virtio_gpu_dec_inflight_fences(g->inflight);
-         }
+ 
+@@ -626,6 +627,7 @@ int virtio_gpu_virgl_init(VirtIOGPU *g)
+ {
+     int ret;
+     uint32_t flags = 0;
++    VirtIOGPUGL *gl = VIRTIO_GPU_GL(g);
+ 
+ #if VIRGL_RENDERER_CALLBACKS_VERSION >= 4
+     if (qemu_egl_display) {
+@@ -645,8 +647,8 @@ int virtio_gpu_virgl_init(VirtIOGPU *g)
+         return ret;
      }
- }
+ 
+-    g->fence_poll = timer_new_ms(QEMU_CLOCK_VIRTUAL,
+-                                 virtio_gpu_fence_poll, g);
++    gl->fence_poll = timer_new_ms(QEMU_CLOCK_VIRTUAL,
++                                  virtio_gpu_fence_poll, g);
+ 
+     if (virtio_gpu_stats_enabled(g->parent_obj.conf)) {
+         g->print_stats = timer_new_ms(QEMU_CLOCK_VIRTUAL,
+diff --git a/include/hw/virtio/virtio-gpu.h b/include/hw/virtio/virtio-gpu.h
+index 7a59379f5a7a..bc69fd78a440 100644
+--- a/include/hw/virtio/virtio-gpu.h
++++ b/include/hw/virtio/virtio-gpu.h
+@@ -196,7 +196,6 @@ struct VirtIOGPU {
+     uint64_t hostmem;
+ 
+     bool processing_cmdq;
+-    QEMUTimer *fence_poll;
+     QEMUTimer *print_stats;
+ 
+     uint32_t inflight;
+@@ -231,6 +230,8 @@ struct VirtIOGPUGL {
+ 
+     bool renderer_inited;
+     bool renderer_reset;
++
++    QEMUTimer *fence_poll;
+ };
+ 
+ struct VhostUserGPU {
 -- 
 2.45.2
 
