@@ -2,39 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DF0D913C44
+	by mail.lfdr.de (Postfix) with ESMTPS id 6924A913C46
 	for <lists+qemu-devel@lfdr.de>; Sun, 23 Jun 2024 17:25:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sLP4l-0001zh-EI; Sun, 23 Jun 2024 11:24:19 -0400
+	id 1sLP4o-00021x-9m; Sun, 23 Jun 2024 11:24:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1sLP4j-0001zH-5B
- for qemu-devel@nongnu.org; Sun, 23 Jun 2024 11:24:17 -0400
-Received: from madrid.collaboradmins.com ([46.235.227.194])
+ id 1sLP4l-00020I-DD
+ for qemu-devel@nongnu.org; Sun, 23 Jun 2024 11:24:19 -0400
+Received: from madrid.collaboradmins.com ([2a00:1098:ed:100::25])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1sLP4h-0003Lr-M4
- for qemu-devel@nongnu.org; Sun, 23 Jun 2024 11:24:16 -0400
+ id 1sLP4j-0003MF-Ty
+ for qemu-devel@nongnu.org; Sun, 23 Jun 2024 11:24:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
- s=mail; t=1719156254;
- bh=FZ6FS2MoKc2H0rpMb0UUV78A4c2XMdCRKlQsJoKtzGY=;
+ s=mail; t=1719156256;
+ bh=i6xHnEgRVKX8VgheK2nrNdCGjgNzOozzyoIi3MThrQY=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=T/n+b7pBANgYKh3SVsi1XDsQXCk3ATMYJhTNEonkJe7f69iI0wJTAAaCNoUAd9zuV
- o4lITchqXvtw6RJuI5MooKVsS6izdw36HL/qnr/UAqM+pln1WDYs8RHoTVL5I3Ft9h
- S08OIgj6U2p5k/9J49buz4N7HcUU5IDN6jj5xjjn/OO6SMdwojMH2JWt914Jj/ZjG3
- FXksZB0eqUPRGDKUq6P65ldm6efN/VZ/o/DuZUZlLndOgTzgULD1Z7SZvw1HgPrh2N
- 0qmZ13BMwB+hg0l6iX9R/5khyXcyLwILmj5TJXdx7saz3lpmetRzUEr1BfkYgc5N5F
- x5ehdCQme5jfA==
+ b=a/SyVraitU8CIBohjpwTFsRHJ3LLIHLBsyA0iq7CVLOKKdk31SPZ8+QuzGQH5PdQO
+ zgG4buTIRLDAsgnhPuj/I91FHAwG59BBE1mv6MvPRI0MAvVfmEc+xERFySNBYE/P5a
+ oZrSSAR29vE1Lrbyf/hfBiDml/hgZ8aq2ccpe3FsEJVKPDW3us3o26rRRSxC7OLY4f
+ CKGIN6qtwKU3t6NeTVZ9xnuJ50vpeXOhGDUNvmJtoKss3QB+c8D2+tWp238/d/mSH+
+ 2TqgPjZ45IlGeteNDFqi0dIovKQXG5QbCkFUlFFNXJ44wobXXcNGOUGGODwiP+UzlF
+ xykCcgGTI2W0A==
 Received: from workpc.. (cola.collaboradmins.com [195.201.22.229])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
  (Authenticated sender: dmitry.osipenko)
- by madrid.collaboradmins.com (Postfix) with ESMTPSA id 7A6B137804C9;
- Sun, 23 Jun 2024 15:24:12 +0000 (UTC)
+ by madrid.collaboradmins.com (Postfix) with ESMTPSA id 2EB9C37804C8;
+ Sun, 23 Jun 2024 15:24:14 +0000 (UTC)
 From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
 To: Akihiko Odaki <akihiko.odaki@daynix.com>, Huang Rui <ray.huang@amd.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@gmail.com>,
@@ -56,16 +56,17 @@ Cc: qemu-devel@nongnu.org, Gurchetan Singh <gurchetansingh@chromium.org>,
  Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
  Honglei Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
  Chen Jiqian <Jiqian.Chen@amd.com>, Yiwei Zhang <zzyiwei@chromium.org>
-Subject: [PATCH v16 07/13] virtio-gpu: Support context-init feature with
- virglrenderer
-Date: Sun, 23 Jun 2024 18:23:37 +0300
-Message-ID: <20240623152343.328436-8-dmitry.osipenko@collabora.com>
+Subject: [PATCH v16 08/13] virtio-gpu: Don't require udmabuf when blobs and
+ virgl are enabled
+Date: Sun, 23 Jun 2024 18:23:38 +0300
+Message-ID: <20240623152343.328436-9-dmitry.osipenko@collabora.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240623152343.328436-1-dmitry.osipenko@collabora.com>
 References: <20240623152343.328436-1-dmitry.osipenko@collabora.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=46.235.227.194;
+Received-SPF: pass client-ip=2a00:1098:ed:100::25;
  envelope-from=dmitry.osipenko@collabora.com; helo=madrid.collaboradmins.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -88,67 +89,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Huang Rui <ray.huang@amd.com>
+The udmabuf usage is mandatory when virgl is disabled and blobs feature
+enabled in the Qemu machine configuration. If virgl and blobs are enabled,
+then udmabuf requirement is optional. Since udmabuf isn't widely supported
+by a popular Linux distros today, let's relax the udmabuf requirement for
+blobs=on,virgl=on. Now, a full-featured virtio-gpu acceleration is
+available to Qemu users without a need to have udmabuf available in the
+system.
 
-Patch "virtio-gpu: CONTEXT_INIT feature" has added the context_init
-feature flags. Expose this feature and support creating virglrenderer
-context with flags using context_id if libvirglrenderer is new enough.
-
-Originally-by: Antonio Caggiano <antonio.caggiano@collabora.com>
+Reviewed-by: Antonio Caggiano <antonio.caggiano@collabora.com>
 Signed-off-by: Huang Rui <ray.huang@amd.com>
 Reviewed-by: Antonio Caggiano <quic_acaggian@quicinc.com>
+Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
 ---
- hw/display/virtio-gpu-gl.c    |  4 ++++
- hw/display/virtio-gpu-virgl.c | 20 ++++++++++++++++++--
- 2 files changed, 22 insertions(+), 2 deletions(-)
+ hw/display/virtio-gpu.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/hw/display/virtio-gpu-gl.c b/hw/display/virtio-gpu-gl.c
-index 0109244276fc..4fe9e6a0c21c 100644
---- a/hw/display/virtio-gpu-gl.c
-+++ b/hw/display/virtio-gpu-gl.c
-@@ -141,6 +141,10 @@ static void virtio_gpu_gl_device_realize(DeviceState *qdev, Error **errp)
-     VIRTIO_GPU_BASE(g)->virtio_config.num_capsets =
-         virtio_gpu_virgl_get_num_capsets(g);
+diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
+index 602952a7041b..40a9d089710c 100644
+--- a/hw/display/virtio-gpu.c
++++ b/hw/display/virtio-gpu.c
+@@ -1485,6 +1485,7 @@ void virtio_gpu_device_realize(DeviceState *qdev, Error **errp)
  
-+#if VIRGL_VERSION_MAJOR >= 1
-+    g->parent_obj.conf.flags |= 1 << VIRTIO_GPU_FLAG_CONTEXT_INIT_ENABLED;
-+#endif
-+
-     virtio_gpu_device_realize(qdev, errp);
- }
- 
-diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
-index ca6f4d6cbb58..b3aa444bcfa5 100644
---- a/hw/display/virtio-gpu-virgl.c
-+++ b/hw/display/virtio-gpu-virgl.c
-@@ -106,8 +106,24 @@ static void virgl_cmd_context_create(VirtIOGPU *g,
-     trace_virtio_gpu_cmd_ctx_create(cc.hdr.ctx_id,
-                                     cc.debug_name);
- 
--    virgl_renderer_context_create(cc.hdr.ctx_id, cc.nlen,
--                                  cc.debug_name);
-+    if (cc.context_init) {
-+        if (!virtio_gpu_context_init_enabled(g->parent_obj.conf)) {
-+            qemu_log_mask(LOG_GUEST_ERROR, "%s: context_init disabled",
-+                          __func__);
-+            cmd->error = VIRTIO_GPU_RESP_ERR_UNSPEC;
-+            return;
-+        }
-+
-+#if VIRGL_VERSION_MAJOR >= 1
-+        virgl_renderer_context_create_with_flags(cc.hdr.ctx_id,
-+                                                 cc.context_init,
-+                                                 cc.nlen,
-+                                                 cc.debug_name);
-+        return;
-+#endif
-+    }
-+
-+    virgl_renderer_context_create(cc.hdr.ctx_id, cc.nlen, cc.debug_name);
- }
- 
- static void virgl_cmd_context_destroy(VirtIOGPU *g,
+     if (virtio_gpu_blob_enabled(g->parent_obj.conf)) {
+         if (!virtio_gpu_rutabaga_enabled(g->parent_obj.conf) &&
++            !virtio_gpu_virgl_enabled(g->parent_obj.conf) &&
+             !virtio_gpu_have_udmabuf()) {
+             error_setg(errp, "need rutabaga or udmabuf for blob resources");
+             return;
 -- 
 2.45.2
 
