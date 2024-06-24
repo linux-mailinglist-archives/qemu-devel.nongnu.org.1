@@ -2,72 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6D56915327
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jun 2024 18:10:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C31D915368
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jun 2024 18:22:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sLmFL-0001q1-0v; Mon, 24 Jun 2024 12:08:47 -0400
+	id 1sLmRF-0000Fe-R7; Mon, 24 Jun 2024 12:21:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1sLmFH-0001pd-K4
- for qemu-devel@nongnu.org; Mon, 24 Jun 2024 12:08:44 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
+ id 1sLmRA-0000CJ-Qo; Mon, 24 Jun 2024 12:21:01 -0400
+Received: from muminek.juszkiewicz.com.pl ([213.251.184.221])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1sLmFD-0007eW-OU
- for qemu-devel@nongnu.org; Mon, 24 Jun 2024 12:08:42 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719245318;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=1l6Txhxh6/qgaiSYJZjNquQiKgZq3TS74TTkfmTFghQ=;
- b=eLhvGSgYHUI21xkzpyXCzxWR/LRBgVqMDyRWxgWqQng7whPBK3jChOZaqW1+FgxO5CG/jl
- gRODndhc7R3N+CBkPYYlUUnfwvLwmW+hH0c9fFVguTVLOqPz7zb58CeVvXIQMfeqN+9OWO
- 3Lg9CkeuRIoB37CiMdzldHy3NomAoaU=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-663-W5V5i7MpOdehR7IfoBDa7g-1; Mon,
- 24 Jun 2024 12:08:32 -0400
-X-MC-Unique: W5V5i7MpOdehR7IfoBDa7g-1
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B784019560AE; Mon, 24 Jun 2024 16:08:31 +0000 (UTC)
-Received: from redhat.com (unknown [10.39.193.9])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 538E219560BF; Mon, 24 Jun 2024 16:08:28 +0000 (UTC)
-Date: Mon, 24 Jun 2024 18:08:26 +0200
-From: Kevin Wolf <kwolf@redhat.com>
-To: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: Nir Soffer <nsoffer@redhat.com>, qemu-devel@nongnu.org,
- Fam Zheng <fam@euphon.net>, qemu-block@nongnu.org,
- Hanna Reitz <hreitz@redhat.com>
-Subject: Re: [PATCH v2] Consider discard option when writing zeros
-Message-ID: <ZnmZ-m38IAHg0UdX@redhat.com>
-References: <20240619174022.1298578-1-nsoffer@redhat.com>
- <CAMRbyyso9cMFueVS3SGtJ3G=-OGu+ueqqE5u2NYtsydBxf_J3Q@mail.gmail.com>
- <20240624152302.GA2402845@fedora.redhat.com>
+ (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
+ id 1sLmR8-00022u-VB; Mon, 24 Jun 2024 12:21:00 -0400
+Received: from localhost (localhost [127.0.0.1])
+ by muminek.juszkiewicz.com.pl (Postfix) with ESMTP id 41778261A9A;
+ Mon, 24 Jun 2024 18:20:55 +0200 (CEST)
+X-Virus-Scanned: Debian amavis at juszkiewicz.com.pl
+Received: from muminek.juszkiewicz.com.pl ([127.0.0.1])
+ by localhost (muminek.juszkiewicz.com.pl [127.0.0.1]) (amavis, port 10024)
+ with ESMTP id MEgInPk_aRAN; Mon, 24 Jun 2024 18:20:53 +0200 (CEST)
+Received: from applejack.lan (83.11.22.244.ipv4.supernova.orange.pl
+ [83.11.22.244])
+ by muminek.juszkiewicz.com.pl (Postfix) with ESMTPSA id C31BC260662;
+ Mon, 24 Jun 2024 18:20:51 +0200 (CEST)
+From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+Subject: [PATCH v3 0/2] tests/avocado: updates for sbsa-ref testing
+Date: Mon, 24 Jun 2024 18:20:42 +0200
+Message-Id: <20240624-b4-move-to-freebsd-v3-0-71496bf119d4@linaro.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="oreNmGh9Mt/AvTwB"
-Content-Disposition: inline
-In-Reply-To: <20240624152302.GA2402845@fedora.redhat.com>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 10
-X-Spam_score: 1.0
-X-Spam_bar: +
-X-Spam_report: (1.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.207,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIANqceWYC/32NTQrCMBBGr1Jm7UhIY39ceQ/pIrGTdkCbMilBK
+ bm7sQdw+R5879shkjBFuFY7CCWOHJYC9amCx2yXiZDHwqCVNqrRBp3BV0iEW0AvRC6OaK0fybU
+ X8nUHZbgKeX4f0ftQeOa4BfkcH0n/7N9c0qiwMWRbp0zfd/725MVKOAeZYMg5fwGCDTU0tQAAA
+ A==
+To: qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, Leif Lindholm <quic_llindhol@quicinc.com>, 
+ Radoslaw Biernacki <rad@semihalf.com>, 
+ Peter Maydell <peter.maydell@linaro.org>, Cleber Rosa <crosa@redhat.com>, 
+ =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
+ Wainer dos Santos Moschetta <wainersm@redhat.com>, 
+ Beraldo Leal <bleal@redhat.com>, 
+ Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+X-Mailer: b4 0.13.0
+Received-SPF: softfail client-ip=213.251.184.221;
+ envelope-from=marcin.juszkiewicz@linaro.org; helo=muminek.juszkiewicz.com.pl
+X-Spam_score_int: -11
+X-Spam_score: -1.2
+X-Spam_bar: -
+X-Spam_report: (-1.2 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_SOFTFAIL=0.665 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,60 +69,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+We want to have some non-Linux OS in testing in case one of changes keep
+Linux booting but crash elsewhere. So far OpenBSD was used for it but we
+move to FreeBSD 14.x due to longer support cycles.
 
---oreNmGh9Mt/AvTwB
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+One OpenBSD stays - will be run on Cortex-A57 only. And only on local
+runs.
 
-Am 24.06.2024 um 17:23 hat Stefan Hajnoczi geschrieben:
-> On Wed, Jun 19, 2024 at 08:43:25PM +0300, Nir Soffer wrote:
-> > Tested using:
->=20
-> Hi Nir,
-> This looks like a good candidate for the qemu-iotests test suite. Adding
-> it to the automated tests will protect against future regressions.
->=20
-> Please add the script and the expected output to
-> tests/qemu-iotests/test/write-zeroes-unmap and run it using
-> `(cd build && tests/qemu-iotests/check write-zeroes-unmap)`.
->=20
-> See the existing test cases in tests/qemu-iotests/ and
-> tests/qemu-iotests/tests/ for examples. Some are shell scripts and
-> others are Python. I think shell makes sense for this test case. You
-> can copy the test framework boilerplate from an existing test case.
+At same time we add test to run on default cpu settings. For now it is
+plain Neoverse-N2 but we are considering either disabling PAuth or going
+with 'impdef' way.
 
-'du' can't be used like this in qemu-iotests because it makes
-assumptions that depend on the filesystem. A test case replicating what
-Nir did manually would likely fail on XFS with its preallocation.
+Signed-off-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
 
-Maybe we could operate on a file exposed by the FUSE export that is
-backed by qcow2, and then you can use 'qemu-img map' on that qcow2 image
-to verify the allocation status. Somewhat complicated, but I think it
-could work.
+---
+Changes in v3:
+- kept OpenBSD/Cortex-A57 test for local runs (by request of Philippe)
+- Link to v2: https://lore.kernel.org/r/20240624-b4-move-to-freebsd-v2-0-64ea7b04998f@linaro.org
 
-Kevin
+---
+Marcin Juszkiewicz (2):
+      tests/avocado: sbsa-ref: add FreeBSD tests
+      tests/avocado: add test for default sbsa-ref cpu
 
---oreNmGh9Mt/AvTwB
-Content-Type: application/pgp-signature; name="signature.asc"
+ tests/avocado/machine_aarch64_sbsaref.py | 90 +++++++++++++++++++++++---------
+ 1 file changed, 65 insertions(+), 25 deletions(-)
+---
+base-commit: c9ba79baca7c673098361e3a687f72d458e0d18a
+change-id: 20240624-b4-move-to-freebsd-aafdeb75ef38
 
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEE3D3rFZqa+V09dFb+fwmycsiPL9YFAmZ5mfoACgkQfwmycsiP
-L9YPBBAAw/Tm7gF9WNRuXcFzGa3Su8qgZeAppugdN88xFIJ/yFkepQTf1v9cViTW
-xanxIAk4pkUKZofUQAy/SIdPzdXfb2USsjUO3EqpnsBUSKUeZY3Oh/1lGEqs48sX
-g/LR7jqZ/AJVq2uyGORJHiO04tsptkvoKkeoMz9H1jE0VnLs7hwHc/7TCeZZN8iY
-/hNhkEzypqCfGpdTTtVUPj9uhYSk1i3YsUS8yQlLKZF8UyaVaxzBuYbQMRIEH+Rx
-54rnI6yZGViooZN5dQYZgmmTTFqiS31d0Tj0oBuGaXBBVbc7dZDV99BTBJZbHoCK
-pu3MGXEoFoMdCPCe1+t9MpJtgz9IMJtqeSeWxWof8KXjkOuPIq0yCAaXtmCEcbjS
-Clkc8Y0AYcTf9a6ctklU+Nd0QiwKqADHpQQRj1gVOYHWap8blCEQnpFuywhGyA4V
-CfmYMW0VFbNsWpH0ywbbKh7nl2HO4k1QYxvQCUltdPCw+K0haPkUTW6nfp2761l2
-dic3XdFoc9C+vf0MZD5qJKhyoRzNX/PXSC6vhmCdCbTokp591z9O3ehvAoAnZ6i9
-4/JCWu1CnptmF9DlKs8KWITAptFgtjlMve9miIp08e+dVsEiO8eAXIo0TncGjJ45
-zn5zQQESeTVjwdwLJFsy5DrGTMWvJBRrizmZlVMc5apSIM/ZCVE=
-=Nqkq
------END PGP SIGNATURE-----
-
---oreNmGh9Mt/AvTwB--
+Best regards,
+-- 
+Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
 
 
