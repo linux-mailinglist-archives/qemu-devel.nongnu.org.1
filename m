@@ -2,62 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89804915906
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jun 2024 23:29:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E1019158EF
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jun 2024 23:27:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sLrCW-00040c-BB; Mon, 24 Jun 2024 17:26:12 -0400
+	id 1sLrCm-0004Nf-Rv; Mon, 24 Jun 2024 17:26:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sLrCU-0003xU-Pr
- for qemu-devel@nongnu.org; Mon, 24 Jun 2024 17:26:10 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sLrCW-00043O-OW
+ for qemu-devel@nongnu.org; Mon, 24 Jun 2024 17:26:12 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sLrCT-0006i3-62
- for qemu-devel@nongnu.org; Mon, 24 Jun 2024 17:26:10 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sLrCU-0006i7-HB
+ for qemu-devel@nongnu.org; Mon, 24 Jun 2024 17:26:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719264368;
+ s=mimecast20190719; t=1719264369;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=bcBS4uUUsykGTPzNjN4nP/WY4vqExAExkoOnhQzWaA4=;
- b=PPhXqqtTSHU4ea5b+U6x+C1y91Du48Y1PEdhtquMKrBhE7rC0cjnOd8d+qyIltLY3/2YDd
- Zsfknr8Nx/40isLKpf/2/NnTVkeQliNmBn9YYwsGxDZS7lqztCg2bLJtsIlK8nJ/VoRIPj
- mS/LOtgeMCXs0cu4bUZS04DeSYnuVKA=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=2NoW4f6UN/hk0p+1mWEuYTjxfdPdRj6Di9z5gbnlvI8=;
+ b=WtXxvX24gmVLKk4clnPUwrNBC5ghk1AXj657Be8Gzl+u6qKYzNDv5VZ72+jO03TxPq14RZ
+ UTM986UqgjVDkqgdiFlYiFVa7EFhDH7QHNkTCLHM5XpcpfHIKR4LlSUzaxeVXc9ORuY2yG
+ guLSzWiD0TF81X+QdiRpu7l+unXRMLI=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-642-PfdFAzFWOGCqdcYzFWgozQ-1; Mon,
- 24 Jun 2024 17:26:04 -0400
-X-MC-Unique: PfdFAzFWOGCqdcYzFWgozQ-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-217-gTkOM_FrMbGGTs8uuksSLA-1; Mon,
+ 24 Jun 2024 17:26:06 -0400
+X-MC-Unique: gTkOM_FrMbGGTs8uuksSLA-1
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 7567A1956094; Mon, 24 Jun 2024 21:26:03 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 49BBF19560AE; Mon, 24 Jun 2024 21:26:05 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.192.49])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 8168D1956051; Mon, 24 Jun 2024 21:26:01 +0000 (UTC)
+ id 9928F1956051; Mon, 24 Jun 2024 21:26:03 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  Eric Auger <eric.auger@redhat.com>,
  Zhenzhong Duan <zhenzhong.duan@intel.com>,
  "Michael S . Tsirkin" <mst@redhat.com>
-Subject: [PULL 24/42] hw/vfio: Remove memory_region_iommu_set_iova_ranges()
- call
-Date: Mon, 24 Jun 2024 23:24:38 +0200
-Message-ID: <20240624212456.350919-25-clg@redhat.com>
+Subject: [PULL 25/42] memory: Remove IOMMU MR iommu_set_iova_range API
+Date: Mon, 24 Jun 2024 23:24:39 +0200
+Message-ID: <20240624212456.350919-26-clg@redhat.com>
 In-Reply-To: <20240624212456.350919-1-clg@redhat.com>
 References: <20240624212456.350919-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: 10
 X-Spam_score: 1.0
@@ -84,39 +83,94 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Eric Auger <eric.auger@redhat.com>
 
-As we have just removed the only implementation of
-iommu_set_iova_ranges IOMMU MR callback in the virtio-iommu,
-let's remove the call to the memory wrapper. Usable IOVA ranges
-are now conveyed through the PCIIOMMUOps in VFIO-PCI.
+Since the host IOVA ranges are now passed through the
+PCIIOMMUOps set_host_resv_regions and we have removed
+the only implementation of iommu_set_iova_range() in
+the virtio-iommu and the only call site in vfio/common,
+let's retire the IOMMU MR API and its memory wrapper.
 
 Signed-off-by: Eric Auger <eric.auger@redhat.com>
 Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/vfio/common.c | 10 ----------
- 1 file changed, 10 deletions(-)
+ include/exec/memory.h | 32 --------------------------------
+ system/memory.c       | 13 -------------
+ 2 files changed, 45 deletions(-)
 
-diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-index f20a7b5bba6b44ea4b181eab12a7ddd5175e8366..9e4c0cc95ff90209d3e8184035af0806a2bf890b 100644
---- a/hw/vfio/common.c
-+++ b/hw/vfio/common.c
-@@ -630,16 +630,6 @@ static void vfio_listener_region_add(MemoryListener *listener,
-             goto fail;
-         }
+diff --git a/include/exec/memory.h b/include/exec/memory.h
+index 2d7c278b9f43dd9ea6a12ab1d3948dfaa49be1e2..0903513d132840051bc5a02da99216c025669ba4 100644
+--- a/include/exec/memory.h
++++ b/include/exec/memory.h
+@@ -530,26 +530,6 @@ struct IOMMUMemoryRegionClass {
+      int (*iommu_set_page_size_mask)(IOMMUMemoryRegion *iommu,
+                                      uint64_t page_size_mask,
+                                      Error **errp);
+-    /**
+-     * @iommu_set_iova_ranges:
+-     *
+-     * Propagate information about the usable IOVA ranges for a given IOMMU
+-     * memory region. Used for example to propagate host physical device
+-     * reserved memory region constraints to the virtual IOMMU.
+-     *
+-     * Optional method: if this method is not provided, then the default IOVA
+-     * aperture is used.
+-     *
+-     * @iommu: the IOMMUMemoryRegion
+-     *
+-     * @iova_ranges: list of ordered IOVA ranges (at least one range)
+-     *
+-     * Returns 0 on success, or a negative error. In case of failure, the error
+-     * object must be created.
+-     */
+-     int (*iommu_set_iova_ranges)(IOMMUMemoryRegion *iommu,
+-                                  GList *iova_ranges,
+-                                  Error **errp);
+ };
  
--        if (bcontainer->iova_ranges) {
--            ret = memory_region_iommu_set_iova_ranges(giommu->iommu_mr,
--                                                      bcontainer->iova_ranges,
--                                                      &err);
--            if (ret) {
--                g_free(giommu);
--                goto fail;
--            }
--        }
+ typedef struct RamDiscardListener RamDiscardListener;
+@@ -1951,18 +1931,6 @@ int memory_region_iommu_set_page_size_mask(IOMMUMemoryRegion *iommu_mr,
+                                            uint64_t page_size_mask,
+                                            Error **errp);
+ 
+-/**
+- * memory_region_iommu_set_iova_ranges - Set the usable IOVA ranges
+- * for a given IOMMU MR region
+- *
+- * @iommu: IOMMU memory region
+- * @iova_ranges: list of ordered IOVA ranges (at least one range)
+- * @errp: pointer to Error*, to store an error if it happens.
+- */
+-int memory_region_iommu_set_iova_ranges(IOMMUMemoryRegion *iommu,
+-                                        GList *iova_ranges,
+-                                        Error **errp);
 -
-         ret = memory_region_register_iommu_notifier(section->mr, &giommu->n,
-                                                     &err);
-         if (ret) {
+ /**
+  * memory_region_name: get a memory region's name
+  *
+diff --git a/system/memory.c b/system/memory.c
+index 47c600df635b133e3791fd6f02397e62510982e7..2d6952136066da696aca911bba530ddc472e5d70 100644
+--- a/system/memory.c
++++ b/system/memory.c
+@@ -1914,19 +1914,6 @@ int memory_region_iommu_set_page_size_mask(IOMMUMemoryRegion *iommu_mr,
+     return ret;
+ }
+ 
+-int memory_region_iommu_set_iova_ranges(IOMMUMemoryRegion *iommu_mr,
+-                                        GList *iova_ranges,
+-                                        Error **errp)
+-{
+-    IOMMUMemoryRegionClass *imrc = IOMMU_MEMORY_REGION_GET_CLASS(iommu_mr);
+-    int ret = 0;
+-
+-    if (imrc->iommu_set_iova_ranges) {
+-        ret = imrc->iommu_set_iova_ranges(iommu_mr, iova_ranges, errp);
+-    }
+-    return ret;
+-}
+-
+ int memory_region_register_iommu_notifier(MemoryRegion *mr,
+                                           IOMMUNotifier *n, Error **errp)
+ {
 -- 
 2.45.2
 
