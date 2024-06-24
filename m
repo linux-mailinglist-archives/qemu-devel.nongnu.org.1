@@ -2,67 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8B4C914227
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jun 2024 07:38:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CB1F914228
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jun 2024 07:38:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sLcOU-0005YU-6A; Mon, 24 Jun 2024 01:37:34 -0400
+	id 1sLcOw-0006ol-G0; Mon, 24 Jun 2024 01:38:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sLcOO-0005KG-Rc
- for qemu-devel@nongnu.org; Mon, 24 Jun 2024 01:37:30 -0400
-Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
+ id 1sLcOr-0006d8-8g
+ for qemu-devel@nongnu.org; Mon, 24 Jun 2024 01:37:57 -0400
+Received: from mail-ot1-x32c.google.com ([2607:f8b0:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sLcON-0005YJ-Dz
- for qemu-devel@nongnu.org; Mon, 24 Jun 2024 01:37:28 -0400
-Received: by mail-pf1-x433.google.com with SMTP id
- d2e1a72fcca58-7066c9741b7so784097b3a.1
- for <qemu-devel@nongnu.org>; Sun, 23 Jun 2024 22:37:27 -0700 (PDT)
+ id 1sLcOo-0005ZH-SM
+ for qemu-devel@nongnu.org; Mon, 24 Jun 2024 01:37:57 -0400
+Received: by mail-ot1-x32c.google.com with SMTP id
+ 46e09a7af769-6fa0d077694so1859297a34.0
+ for <qemu-devel@nongnu.org>; Sun, 23 Jun 2024 22:37:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1719207446; x=1719812246;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1719207473; x=1719812273;
  darn=nongnu.org; 
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=ST6TBhbJ2OySO0RuuJ46yzMtuL2R3cT8Ca8OYbdGHeQ=;
- b=sWzRSm5SchrsGjBO+BMeViZtY4bPnl/yf3oFpjAorJeAMsfPtGpITyuE0HmQNeYBz9
- rw7PTcGiMuPXJyeumJkdtwScuxHT+MiKd+rgdMmNTIIus3otwWmZuot6LWuSvcvYdruh
- pLSiPvwAA4DIZ/wrBDcSuup2y/3AxDPKnnu4CIl7IrCd1l/P9nKuwyGeO5omYU1zqUoW
- gx2Tzn+UWss0eGkZBLLqOhkeJNe3RbcD5RvpEmipKE4nYzV9gf73/v0dOBRC01W4v9dr
- oAaYf5lLV680j0foKDTUHmSkLR2kC9Wh0t+nF+j13MQLzG6bb6yYGmlDJTf34vetJ6so
- NdQg==
+ bh=OKqECE3QQhpisdRYBLXwvGk6jmgmUU6sLJN/OKW97Lg=;
+ b=hN2P9SrANWHqXc4U4s0LDh113A15Fty+i/eHhQbHZdJ/gySCEhOBCQlcpRQ8MDecmi
+ 65fjCX3yp6jRxaQ9IVEIcb51n5LAda5QFjxV2qeCUgiLIL1Gqzj5267Esxdd1Iaw1M1M
+ VtQN0EEgEjw+mNWzVWj1IDdnhj+b6jrJXUGfdpKzElZtOW9pgLcosaU5FPRBoj5RUw1g
+ RW1m55sRu5q6cuA8OTdJnxBUPUcxN0TTxV7D3SkL1+kXgNs95asL4t0rZmhNh3JLEVXf
+ 4xvUpYrqAaYxWFJgJiEp8L6Gp6+ocYotngqWTe9hA7fKNNmIRxE0cSdvculAbzuSeaE4
+ AU5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719207446; x=1719812246;
+ d=1e100.net; s=20230601; t=1719207473; x=1719812273;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ST6TBhbJ2OySO0RuuJ46yzMtuL2R3cT8Ca8OYbdGHeQ=;
- b=UDjzLdbPha3ZL9sDlSasX3PytjL1MWpqxZJJBcjVHOBODObFLGw3Nq4QPuXe+tGKMf
- xR3A79d5M9cgeh1CE8Iha3/q9CKHHGvE40tYbQy4HV1xUg0SxxejO69B++d+KpokR33e
- 55a0t9wXGvmvH1EUutP3uApJcKc1SaMzFbWz0ncZXp5LWz7a3EyjQ3WBZ1onCNmMivj1
- 6zHXwPLJF8hyCiU8k/vbQjBBMADe6U8WylB14ZUVRWX7qIv6s5FC6aCTXsgIgNoFbJHw
- +Ep7fhabL7E1a4OQkYchdaS1MVMPvsnzEXgvpy0HNKS8eIfJ6mx/0vR1sChQqF9RUoNK
- ozvA==
-X-Gm-Message-State: AOJu0YxgXuxIfQH5F48eBn4x5MvYdHYiXpnaMAnV7EBjzg5/qqsL1JNN
- xtq2uTTujywLBdZGJirnC4aH4UaskLCYTPhm98mspOe2Q6xfVBWUvvVzzSz8eiU=
-X-Google-Smtp-Source: AGHT+IGqPlEFzkJd4izrNXXqMvPbuy+nxN4JUfPZ3dgSNvM0fFOy6VDERcuDnc6XQWIUwj9Jkp3NFA==
-X-Received: by 2002:a05:6a20:3813:b0:1bd:191:ed95 with SMTP id
- adf61e73a8af0-1bd0191ee94mr1692862637.32.1719207446054; 
- Sun, 23 Jun 2024 22:37:26 -0700 (PDT)
+ bh=OKqECE3QQhpisdRYBLXwvGk6jmgmUU6sLJN/OKW97Lg=;
+ b=DjeA1NRmsYwHqeuYnmSZ6Jezwxn3fEM4cxfrauR1GywMSEk4GFrKBQ+/63bnHYPIFV
+ 7rUQvZmoaNrd+vfVpuFFCkkKgfEIDvqvOoxU+gEU+0ZnNXDYO5GtcuUbm2g03YrePuAt
+ 0zuf+IfSoJ3A9x+AZpvMo8poBEzMECfI2ikB9I0ZQVVuHbwDE+30pW8cIZHHWYLcYg5T
+ SZekqJlgQsjGAYofQQjDT0cb2hhXtp9lhRYfMkOr3Oaz/+y4LnfrRPl1glidbO5Kxdyj
+ iSRhTsx7vjNHqyre+o2EOnOz5AX0bolTsMp9+ixesOJFJazOFfNugCdQ0SFg5nEDv+xk
+ rS3A==
+X-Gm-Message-State: AOJu0Yy63e3/baVvs2SgwVQEC1yBpQZq+A78owJRkfw5cxJlkPhIf2w5
+ 3czkEDJaTmgRT2yyskwxickk8UN+1cjTL5+4EBNzESp0C75rLRBZniYYVvSU4m4=
+X-Google-Smtp-Source: AGHT+IEJPlcOfKtjEPo3gicun2ZFI1rBP5KrnfniFx1TNZlmP0HPOUyYr9FuG1nWPig+HX1cg2jjdg==
+X-Received: by 2002:a9d:69c7:0:b0:6f9:90de:c67f with SMTP id
+ 46e09a7af769-700b11c68f2mr4519230a34.10.1719207473550; 
+ Sun, 23 Jun 2024 22:37:53 -0700 (PDT)
 Received: from [157.82.204.135] ([157.82.204.135])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7067d11a437sm1642090b3a.118.2024.06.23.22.37.21
+ 41be03b00d2f7-716b4a7319bsm4803508a12.50.2024.06.23.22.37.48
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 23 Jun 2024 22:37:25 -0700 (PDT)
-Message-ID: <87cc9679-b282-4632-9bee-b0d657e02d6e@daynix.com>
-Date: Mon, 24 Jun 2024 14:37:19 +0900
+ Sun, 23 Jun 2024 22:37:53 -0700 (PDT)
+Message-ID: <30447bda-dc0f-4b56-a65c-c38de1915f45@daynix.com>
+Date: Mon, 24 Jun 2024 14:37:46 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v16 08/13] virtio-gpu: Don't require udmabuf when blobs
- and virgl are enabled
+Subject: Re: [PATCH v16 09/13] virtio-gpu: Add virgl resource management
 To: Dmitry Osipenko <dmitry.osipenko@collabora.com>,
  Huang Rui <ray.huang@amd.com>, =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?=
  <marcandre.lureau@gmail.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
@@ -85,14 +84,14 @@ Cc: qemu-devel@nongnu.org, Gurchetan Singh <gurchetansingh@chromium.org>,
  Honglei Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
  Chen Jiqian <Jiqian.Chen@amd.com>, Yiwei Zhang <zzyiwei@chromium.org>
 References: <20240623152343.328436-1-dmitry.osipenko@collabora.com>
- <20240623152343.328436-9-dmitry.osipenko@collabora.com>
+ <20240623152343.328436-10-dmitry.osipenko@collabora.com>
 Content-Language: en-US
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <20240623152343.328436-9-dmitry.osipenko@collabora.com>
+In-Reply-To: <20240623152343.328436-10-dmitry.osipenko@collabora.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::433;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x433.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::32c;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-ot1-x32c.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -115,18 +114,15 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 2024/06/24 0:23, Dmitry Osipenko wrote:
-> The udmabuf usage is mandatory when virgl is disabled and blobs feature
-> enabled in the Qemu machine configuration. If virgl and blobs are enabled,
-> then udmabuf requirement is optional. Since udmabuf isn't widely supported
-> by a popular Linux distros today, let's relax the udmabuf requirement for
-> blobs=on,virgl=on. Now, a full-featured virtio-gpu acceleration is
-> available to Qemu users without a need to have udmabuf available in the
-> system.
+> From: Huang Rui <ray.huang@amd.com>
 > 
-> Reviewed-by: Antonio Caggiano <antonio.caggiano@collabora.com>
+> In a preparation to adding host blobs support to virtio-gpu, add virgl
+> resource management that allows to retrieve resource based on its ID
+> and virgl resource wrapper on top of simple resource that will be contain
+> fields specific to virgl.
+> 
 > Signed-off-by: Huang Rui <ray.huang@amd.com>
 > Reviewed-by: Antonio Caggiano <quic_acaggian@quicinc.com>
-> Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 > Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
 
 Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
