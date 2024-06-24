@@ -2,85 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D13D914E4B
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jun 2024 15:19:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AC80914E43
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jun 2024 15:18:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sLjX7-0001MJ-SQ; Mon, 24 Jun 2024 09:14:57 -0400
+	id 1sLjaV-00079o-OL; Mon, 24 Jun 2024 09:18:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sLjX5-0001M3-5e
- for qemu-devel@nongnu.org; Mon, 24 Jun 2024 09:14:55 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sLjaN-0006wm-1I
+ for qemu-devel@nongnu.org; Mon, 24 Jun 2024 09:18:22 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sLjX3-0004xn-6G
- for qemu-devel@nongnu.org; Mon, 24 Jun 2024 09:14:54 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sLjaJ-0005ri-SZ
+ for qemu-devel@nongnu.org; Mon, 24 Jun 2024 09:18:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719234891;
+ s=mimecast20190719; t=1719235094;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=psoXTWsyRrOWGiZ3rF1af656XfNZf/PEqwEZrKB+trs=;
- b=TSnLSfTiry6rWcy+aBrEoVwWdwH9NM+mU6SWMsP5iM1rVpi5aQ0dyIKW2n10uXLr3wfL3e
- LwhAaiSDq3/Ilv6zvwA7WybN92VBrJNIDeLugHetm1JO/Xb+U3/T/oSPmJTeQBYXmfrTnk
- jpjmCyobnip3jkxtI46j/j4yJtvw7P0=
-Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
- [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=QNadneWrO33F1H3PKCnhpcnx7rnW9OzzOfuqmtKqd4s=;
+ b=dujkF3JtkVBRTmtv0h0FPHa/n1J/MYosP+AbKMXaqFYLOcGd+yhUBZFEwTSjs8+ZMID/Sc
+ YUo9CnRhi12VSEOTxN2rTdG5ZvJN1LA3g/mIuqF8MlHtGjJ2nLfQ8hCroBISYq+OdRHGcN
+ Xi/mVBgvw7C+QULIiQr0uS20dl9YgFU=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-327-H-r7trx6N1u0ScVAJSJEkQ-1; Mon, 24 Jun 2024 09:14:49 -0400
-X-MC-Unique: H-r7trx6N1u0ScVAJSJEkQ-1
-Received: by mail-lj1-f197.google.com with SMTP id
- 38308e7fff4ca-2ec55065e52so13340251fa.2
- for <qemu-devel@nongnu.org>; Mon, 24 Jun 2024 06:14:49 -0700 (PDT)
+ us-mta-458-51J9UgOKNgelty9v5p3RLg-1; Mon, 24 Jun 2024 09:18:12 -0400
+X-MC-Unique: 51J9UgOKNgelty9v5p3RLg-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-4217a6a00d8so28677955e9.0
+ for <qemu-devel@nongnu.org>; Mon, 24 Jun 2024 06:18:12 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719234888; x=1719839688;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=psoXTWsyRrOWGiZ3rF1af656XfNZf/PEqwEZrKB+trs=;
- b=HPtNHMo49/VPMqBMi5JxCsFvrDysAb63bGeHPU/6fDBVs8dIFKEIHai5ouhfltI9l4
- zi5M/I+jhdZJbUnXCcqZOYGaTLMEZupHSr7pQH3T49CtaU3SGktLp27TeehykPjQnQbo
- qCD2LPRBbj6tWaBgXCsO6jPM4CKPLIq1h5blU9Z2a+m/R75lL2YgGw8w/8581AOVTazJ
- CC9BKaP1/h4eLRlY7aqFOJu6OHC93RZhM/qzhZS7LDHCWpBXT04QwJbL0f7i+umRFVCw
- QrrK+OkdMLDrGgY8WltZ6U5CbgbrntqhMQvKhiVGGx7Ua23FlxM6Ygxj1UljR8+JOs0G
- oLBw==
-X-Gm-Message-State: AOJu0Yxe84jJqT/eKrZXQE4ozuQNakxqGf/N4nIhsmLlZrhbmxGzZi58
- JhuIgZ1N50CH8HqwGFAgOIJwZsolyhcd5la6wvj6kcnQDUHVRYMTf2qoGo3a70mrjL6pOatwBna
- Y4BRfIQ0Z46FX3Y4lDoOBeAeLh4YW2QcCmcb60RfY31NADtzHLUZY
-X-Received: by 2002:a19:9115:0:b0:52c:df63:bebd with SMTP id
- 2adb3069b0e04-52ce0673528mr3081102e87.49.1719234887613; 
- Mon, 24 Jun 2024 06:14:47 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEK6SFsYetZGUqeLgQLZvwhl1ZS0DQXPNrYO89UhypzC2WfyA0fXYNZTx19ynIFE/km2tg/Xg==
-X-Received: by 2002:a19:9115:0:b0:52c:df63:bebd with SMTP id
- 2adb3069b0e04-52ce0673528mr3081072e87.49.1719234886822; 
- Mon, 24 Jun 2024 06:14:46 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1719235091; x=1719839891;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=QNadneWrO33F1H3PKCnhpcnx7rnW9OzzOfuqmtKqd4s=;
+ b=TcRxWk/MNZ2THXL5emRcF7zFqb/86QQ2s769paRQWkNvF3q0Yf3RxNQvV0o2OM6g5j
+ TUr6I62s++BN6u1RH4qE47mFYe1cDB+fgV3Cd07m6pwwi9bXQ3lUoTAKr7UsF168NjFL
+ TulbYou1CrGy6k62mrK1frz9RT8uJza4cHUmnKx4dTkwNCWvY/n73XVQY2y0D3lfum+K
+ b8X5lSv17h9/Gw+wtGWUjKqm9MO0HU8pMqN25B+7zJ71PFxYwgs8vbEPO92LPnVyNYjm
+ AaEQkuAWhXlDETxne5BXotZINpvizcXgWZQ/GxQN3XqXvPkZSkdaxyPo67XyGBy3oLT5
+ LXXQ==
+X-Gm-Message-State: AOJu0YylwZt/Ic8npeVinPZ4GZlEwNTi5eaxvq/86eXjSUHHuz4CPyMo
+ TsVPFuxNUaIE7NiBTB4F9xBP4KX8vxRVh6hrMxd/lRoqxVUEZbfJ44+mgveonOO1nrOhly8zFsk
+ P9NPAFx6RN5le642WQCPM3tTfJPdZZmBdXIwzXd01ndRj+nQfYHAt
+X-Received: by 2002:a05:600c:3b11:b0:422:fa63:33ff with SMTP id
+ 5b1f17b1804b1-42489e37068mr36948465e9.1.1719235091091; 
+ Mon, 24 Jun 2024 06:18:11 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFO0RYk6XCP1fRwpx2jYYEAKSptTty1fk+pezEm1V4Wp+ShhfmFQ+WDoJ8I+NQqfvdTh98CUA==
+X-Received: by 2002:a05:600c:3b11:b0:422:fa63:33ff with SMTP id
+ 5b1f17b1804b1-42489e37068mr36948145e9.1.1719235090332; 
+ Mon, 24 Jun 2024 06:18:10 -0700 (PDT)
 Received: from redhat.com ([2.52.146.100]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42481910fd4sm133401405e9.30.2024.06.24.06.14.44
+ 5b1f17b1804b1-42481910f64sm137914555e9.34.2024.06.24.06.18.09
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 24 Jun 2024 06:14:46 -0700 (PDT)
-Date: Mon, 24 Jun 2024 09:14:42 -0400
+ Mon, 24 Jun 2024 06:18:09 -0700 (PDT)
+Date: Mon, 24 Jun 2024 09:18:06 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Michael Roth <michael.roth@amd.com>, Eduardo Habkost <eduardo@habkost.net>,
- Richard Henderson <richard.henderson@linaro.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, kvm@vger.kernel.org,
- Markus Armbruster <armbru@redhat.com>, Eric Blake <eblake@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>
-Subject: Re: [PATCH] i386: revert defaults to 'legacy-vm-type=true' for
- SEV(-ES) guests
-Message-ID: <20240624090345-mutt-send-email-mst@kernel.org>
-References: <20240614103924.1420121-1-berrange@redhat.com>
- <20240624080458-mutt-send-email-mst@kernel.org>
- <Znlo4GMgJ91nKyft@redhat.com>
+To: Shiyuan Gao <gaoshiyuan@baidu.com>
+Cc: qemu-devel@nongnu.org, imammedo@redhat.com
+Subject: Re: [PATCH 1/1] hw/i386/acpi-build: add OSHP method support for SHPC
+ driver load
+Message-ID: <20240624091745-mutt-send-email-mst@kernel.org>
+References: <20240624131426.77231-1-gaoshiyuan@baidu.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <Znlo4GMgJ91nKyft@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+In-Reply-To: <20240624131426.77231-1-gaoshiyuan@baidu.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -22
 X-Spam_score: -2.3
@@ -104,109 +95,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jun 24, 2024 at 01:38:56PM +0100, Daniel P. Berrangé wrote:
-> On Mon, Jun 24, 2024 at 08:27:01AM -0400, Michael S. Tsirkin wrote:
-> > On Fri, Jun 14, 2024 at 11:39:24AM +0100, Daniel P. Berrangé wrote:
-> > > The KVM_SEV_INIT2 ioctl was only introduced in Linux 6.10, which will
-> > > only have been released for a bit over a month when QEMU 9.1 is
-> > > released.
-> > > 
-> > > The SEV(-ES) support in QEMU has been present since 2.12 dating back
-> > > to 2018. With this in mind, the overwhealming majority of users of
-> > > SEV(-ES) are unlikely to be running Linux >= 6.10, any time in the
-> > > forseeable future.
-> > > 
-> > > IOW, defaulting new QEMU to 'legacy-vm-type=false' means latest QEMU
-> > > machine types will be broken out of the box for most SEV(-ES) users.
-> > > Even if the kernel is new enough, it also affects the guest measurement,
-> > > which means that their existing tools for validating measurements will
-> > > also be broken by the new default.
-> > > 
-> > > This is not a sensible default choice at this point in time. Revert to
-> > > the historical behaviour which is compatible with what most users are
-> > > currently running.
-> > > 
-> > > This can be re-evaluated a few years down the line, though it is more
-> > > likely that all attention will be on SEV-SNP by this time. Distro
-> > > vendors may still choose to change this default downstream to align
-> > > with their new major releases where they can guarantee the kernel
-> > > will always provide the required functionality.
-> > > 
-> > > Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-> > 
-> > This makes sense superficially, so
-> > 
-> > Acked-by: Michael S. Tsirkin <mst@redhat.com>
-> > 
-> > and I'll let kvm maintainers merge this.
-> > 
-> > However I wonder, wouldn't it be better to refactor this:
-> > 
-> >     if (x86_klass->kvm_type(X86_CONFIDENTIAL_GUEST(sev_common)) == KVM_X86_DEFAULT_VM) {
-> >         cmd = sev_es_enabled() ? KVM_SEV_ES_INIT : KVM_SEV_INIT;
-> >         
-> >         ret = sev_ioctl(sev_common->sev_fd, cmd, NULL, &fw_error);
-> >     } else {
-> >         struct kvm_sev_init args = { 0 };
-> >                 
-> >         ret = sev_ioctl(sev_common->sev_fd, KVM_SEV_INIT2, &args, &fw_error);
-> >     }   
-> > 
-> > to something like:
-> > 
-> > if (x86_klass->kvm_type(X86_CONFIDENTIAL_GUEST(sev_common)) != KVM_X86_DEFAULT_VM) {
-> >         struct kvm_sev_init args = { 0 };
-> >                 
-> >         ret = sev_ioctl(sev_common->sev_fd, KVM_SEV_INIT2, &args, &fw_error);
-> > 	if (ret && errno == ENOTTY) {
-> > 		cmd = sev_es_enabled() ? KVM_SEV_ES_INIT : KVM_SEV_INIT;
-> > 
-> > 		ret = sev_ioctl(sev_common->sev_fd, cmd, NULL, &fw_error);
-> > 	}
-> > }
-> > 
-> > 
-> > Yes I realize this means measurement will then depend on the host
-> > but it seems nicer than failing guest start, no?
+On Mon, Jun 24, 2024 at 09:14:26PM +0800, Shiyuan Gao wrote:
+> SHPC driver will be loaded fail in i440fx platform, the dmesg shows
+> that OS cannot get control of SHPC hotplug and hotplug device to
+> the PCI bridge will fail when we use SHPC Native type:
 > 
-> IMHO having an invariant measurement for a given guest configuration
-> is a critical guarantee. We should not be allowing guest attestation
-> to break as a side-effect of upgrading a software component, while
-> keeping the guest config unchanged.
+>   [3.336059] shpchp 0000:00:03.0: Requesting control of SHPC hotplug via OSHP (\_SB_.PCI0.S28_)
+>   [3.337408] shpchp 0000:00:03.0: Requesting control of SHPC hotplug via OSHP (\_SB_.PCI0)
+>   [3.338710] shpchp 0000:00:03.0: Cannot get control of SHPC hotplug
+> 
+> Add OSHP method support for SHPC driver load, the hotplug device to the PCI bridge will
+> success when we use SHPC Native type.
+> 
+>   [1.703975] shpchp 0000:00:03.0: Requesting control of SHPC hotplug via OSHP (\_SB_.PCI0.S18_)
+>   [1.704934] shpchp 0000:00:03.0: Requesting control of SHPC hotplug via OSHP (\_SB_.PCI0)
+>   [1.705855] shpchp 0000:00:03.0: Gained control of SHPC hotplug (\_SB_.PCI0)
+>   [1.707054] shpchp 0000:00:03.0: HPC vendor_id 1b36 device_id 1 ss_vid 0 ss_did 0
+> 
+> According to the acpi_pcihp, the OSHP method don't need parameter and return value now.
+> 
+>   shpc_probe
+>     --> acpi_get_hp_hw_control_from_firmware
+>       --> acpi_run_oshp
+>         --> status = acpi_evaluate_object(handle, METHOD_NAME_OSHP, NULL, NULL);
+> 
+> Signed-off-by: Shiyuan Gao <gaoshiyuan@baidu.com>
+> ---
+>  hw/i386/acpi-build.c | 14 ++++++++++++++
+>  1 file changed, 14 insertions(+)
+> 
+> diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
+> index f4e366f64f..79622e6939 100644
+> --- a/hw/i386/acpi-build.c
+> +++ b/hw/i386/acpi-build.c
+> @@ -1412,6 +1412,18 @@ static void build_acpi0017(Aml *table)
+>      aml_append(table, scope);
+>  }
+>  
+> +static Aml *build_oshp_method(void)
+> +{
+> +    Aml *method;
+> +
+> +    /*
+> +     * Request control of SHPC hotplug via OSHP method,
+> +     * no need parameter and return value in acpi_pcihp.
+> +     */
 
-Well attenstation can change for a variety of reasons involving software
-upgrades: host or guest. It is up to user to either trust both old and
-new attestion, or pick one. Seems better than forcing policy host side.
-
-> IOW, I'd view measurement as being "guest ABI", and versioned machine
-> types are there to provide invariant guest ABI.
-
-In practice we can't always do this exactly: e.g. vhost has
-a rich feature mask and what we do is clear features not
-supported by a specific host kernel.
-
-Similarly for vhost-user where the ABI depends on an
-external component.
-
-So things can change if you move across host kernels.
+Quote spec and earliest version documenting this, please.
 
 
-
-
-> Personally, if we want simplicitly then just not using KVM_SEV_INIT2
-> at all would be the easiest option. SEV/SEV-ES are legacy technology
-> at this point, so we could be justified in leaving it unchanged and
-> only focusing on SEV-SNP. Unless someone can say what the critical
-> *must have* benefit of using KVM_SEV_INIT2 is ?
-
-
-No objection.
-
-> With regards,
-> Daniel
+> +    method = aml_method("OSHP", 0, AML_NOTSERIALIZED);
+> +    return method;
+> +}
+> +
+>  static void
+>  build_dsdt(GArray *table_data, BIOSLinker *linker,
+>             AcpiPmInfo *pm, AcpiMiscInfo *misc,
+> @@ -1452,6 +1464,7 @@ build_dsdt(GArray *table_data, BIOSLinker *linker,
+>          aml_append(dev, aml_name_decl("_HID", aml_eisaid("PNP0A03")));
+>          aml_append(dev, aml_name_decl("_UID", aml_int(pcmc->pci_root_uid)));
+>          aml_append(dev, aml_pci_edsm());
+> +        aml_append(dev, build_oshp_method());
+>          aml_append(sb_scope, dev);
+>          aml_append(dsdt, sb_scope);
+>  
+> @@ -1586,6 +1599,7 @@ build_dsdt(GArray *table_data, BIOSLinker *linker,
+>                  aml_append(dev, build_q35_osc_method(true));
+>              } else {
+>                  aml_append(dev, aml_name_decl("_HID", aml_eisaid("PNP0A03")));
+> +                aml_append(dev, build_oshp_method());
+>              }
+>  
+>              if (numa_node != NUMA_NODE_UNASSIGNED) {
 > -- 
-> |: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-> |: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-> |: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+> 2.27.0
 
 
