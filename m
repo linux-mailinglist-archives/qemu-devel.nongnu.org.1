@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5D4691472E
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jun 2024 12:15:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D10C091473F
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jun 2024 12:20:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sLgjB-0005gn-8J; Mon, 24 Jun 2024 06:15:14 -0400
+	id 1sLgmf-0006nT-PU; Mon, 24 Jun 2024 06:18:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jeuk20.kim@gmail.com>)
- id 1sLgj8-0005gM-2Z
- for qemu-devel@nongnu.org; Mon, 24 Jun 2024 06:15:10 -0400
-Received: from mail-pg1-x529.google.com ([2607:f8b0:4864:20::529])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1sLgmc-0006lX-Op
+ for qemu-devel@nongnu.org; Mon, 24 Jun 2024 06:18:46 -0400
+Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <jeuk20.kim@gmail.com>)
- id 1sLgj3-0006zs-1A
- for qemu-devel@nongnu.org; Mon, 24 Jun 2024 06:15:09 -0400
-Received: by mail-pg1-x529.google.com with SMTP id
- 41be03b00d2f7-717f17d7c63so1730577a12.0
- for <qemu-devel@nongnu.org>; Mon, 24 Jun 2024 03:15:04 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1sLgmW-0007eI-Kb
+ for qemu-devel@nongnu.org; Mon, 24 Jun 2024 06:18:46 -0400
+Received: by mail-ed1-x529.google.com with SMTP id
+ 4fb4d7f45d1cf-57cc1c00ba6so4960247a12.1
+ for <qemu-devel@nongnu.org>; Mon, 24 Jun 2024 03:18:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1719224103; x=1719828903; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=rMt95/eWbzku0b99P1I1bYk1mlMIcBFWWEob7XFQtZ4=;
- b=KtVZ+5EGmzh8HZ/bYnCeZGKvsgTS151sdO9Mxaf5f/6RJtmIFvTMZW4hJh/miuLCnc
- KhOjJudnqkG0CsIJJcleOU0KsYx8GStWhahTCDlF9pJaBMF9D7pWuxZ/0Kvp3v/HpDEf
- CHTUTFd1GF6lExcJ5mBDSG/ghlaa3OQPhbmIg5W7yE0uvdXO3QTKF9b/m79o3JJ15wui
- /hMLC9h/uJ2AmMqRkX1zVTkpYinZZCigAH0k5Y1NuW4bVA5YeKtlCJGbdteQ+Ze1VHwY
- tqJg0S+T0PXxyEjVDy7Ij8Q1ZcimSFeOIVOtdjxy5Hf8YPmFtfsHWAMG+TC6Yiw83ojK
- R7cA==
+ d=linaro.org; s=google; t=1719224318; x=1719829118; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=G7VsWS18FlsKfZhjTe+PQ6m9VKRsw6bNfLxEfQofpJk=;
+ b=ZROxOTuvm/n7slF3a0pQs5voJ91kTnLcexmy4MUY6A+YDWri7K6eyTfXOXJfOclKkq
+ yBoV29nGA4905KhXwXqzjla2023Cleq3VmcrB8ZvqW+iEab0G0THa8dgmSczhrGWjNMN
+ uT7oCRcWSTgZNu4lA7itaRGmSawWji2WOzycUrtVWgh722mIL5l/5LMIJKZc7cL03cPu
+ cSYS+7/VaEOVRm2a1kFwtjLDePQQkS6kqfKKREKxnjIqTEV/BxXn+6CCebnc1FdAG8J4
+ RB+Ph+ce+0A0gLG1cKlme3PZZ0Yv1sIy+5MBmLKAxQUGpFh9cp4C7h1jusyoq5AW7ICG
+ aKJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719224103; x=1719828903;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=rMt95/eWbzku0b99P1I1bYk1mlMIcBFWWEob7XFQtZ4=;
- b=VvxiYnBa+LYI7uxxBEoElV/yg0KsAU0ZHFA5b+okcphrXCj+ExPlGtFaV1l61DVsvG
- EKNOoDjvn1LVVB/JfedEcGTZd65Bczq7NH8kMJkx8ApL8deVkiEcuQdLl4VcRdPrxbfB
- DUWXN3VrypIz+suBMCR7hfI9o2R1MNJEUvvCO7ZotxcYkIlSy7CB/woaKMJVIUzZVs2a
- vGuKPnkfcHtlfSWsFSV2litD2Rb7wP3xtDBJtmykb1hHIxPGcA/vzXKEDITXHOG6RGGU
- YR0EqN5P46ubx1pLVcoPWvL9akCfs3FMa6guwAa/wURx7l6XoLiW27VkHwzpR28aAmah
- JHOg==
-X-Gm-Message-State: AOJu0Yyi/2sBIGry9U7JqiTXYV2zb91ER7rvJZ6gBpuN8J+eA5NFtJUw
- TTCVV4VDoZhUUDYbNDdkoP4jaJnLtFTFCc64/LSdzu+qgaEJB7N0
-X-Google-Smtp-Source: AGHT+IFKu78lB8aKs4oaU18Q/QqyLtJ4RkAHESwYkQ9FXjXp9Z0JG2wi8NU9vIXKon6y18tqs58Lxw==
-X-Received: by 2002:a17:90b:a50:b0:2c8:880:fba5 with SMTP id
- 98e67ed59e1d1-2c86146d12bmr3081182a91.34.1719224102879; 
- Mon, 24 Jun 2024 03:15:02 -0700 (PDT)
-Received: from [192.168.0.22] ([210.223.46.112])
- by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2c7e5af9b96sm8332589a91.35.2024.06.24.03.15.01
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 24 Jun 2024 03:15:02 -0700 (PDT)
-Message-ID: <fbc0a8cd-8b29-4cb0-8ea6-c7fb34f52c18@gmail.com>
-Date: Mon, 24 Jun 2024 19:14:59 +0900
+ d=1e100.net; s=20230601; t=1719224318; x=1719829118;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=G7VsWS18FlsKfZhjTe+PQ6m9VKRsw6bNfLxEfQofpJk=;
+ b=PsmVpgRADvSCjJPaVl0Pbua4k2I8M7pAxYzGMkbeRj+biQIgk6nLKpBMMijEfs4U0K
+ 4+Fy/yGGiRSSJhFrvQ4GR2T86a3R9N35xlLrvapZGidWF/7I680aLbbrZZAFedoHeBeV
+ TQNXYS48lK1b0mQqAo09uA4RfVwtr53dsWgK8hG0bQSl41GqM1mZ6gsRy2XS1xmUuM/W
+ i6LTRVPB0hYxDwXv7iAy3AXn1x2wr9CqUj3uYKjAfbrVOsDldqFhd024VxAzq95zPilj
+ 9j6/GKj05gFZeDiZUrUVjFxvMLK6tlUZkm7gw68nEu8deytjOkVHNpkiXeILfabQktbz
+ QqrA==
+X-Gm-Message-State: AOJu0Yyixugld4q4aXyPPdoggc4pBqjXG347caqlKjwM5xQ3Td/AgEEJ
+ uFUXoSQcJOdpDUAEdHGxIrRbwk3GjO9CHNc0oyCMkxGoBWTRuwBUa/MhrRoXNChQNjNMaw/UPh7
+ K
+X-Google-Smtp-Source: AGHT+IEDyD9EB0uNc/TqRVmhWGgrpafDUh8yoQ75iM19UcEpcobkyA+b/4QNQSLNTh2j9Q4FO8nSkQ==
+X-Received: by 2002:a50:9555:0:b0:57d:4cbc:cb59 with SMTP id
+ 4fb4d7f45d1cf-57d4cbccbf9mr2547353a12.25.1719224317686; 
+ Mon, 24 Jun 2024 03:18:37 -0700 (PDT)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-57d347a0710sm4104536a12.24.2024.06.24.03.18.37
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 24 Jun 2024 03:18:37 -0700 (PDT)
+Received: from draig.lan (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 4C9735F789;
+ Mon, 24 Jun 2024 11:18:36 +0100 (BST)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PULL 00/12] maintainer updates (plugins, gdbstub)
+Date: Mon, 24 Jun 2024 11:18:24 +0100
+Message-Id: <20240624101836.193761-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hw/ufs: Fix potential bugs in MMIO read|write
-To: Minwoo Im <minwoo.im.dev@gmail.com>, Jeuk Kim <jeuk20.kim@samsung.com>
-Cc: qemu-devel@nongnu.org, Minwoo Im <minwoo.im@samsung.com>,
- Peter Maydell <peter.maydell@linaro.org>
-References: <20240623024555.78697-1-minwoo.im.dev@gmail.com>
-Content-Language: ko
-From: Jeuk Kim <jeuk20.kim@gmail.com>
-In-Reply-To: <20240623024555.78697-1-minwoo.im.dev@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::529;
- envelope-from=jeuk20.kim@gmail.com; helo=mail-pg1-x529.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, FREEMAIL_FROM=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::529;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x529.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,20 +93,88 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
-On 6/23/2024 11:45 AM, Minwoo Im wrote:
-> This patch fixes two points reported in coverity scan report [1].  Check
-> the MMIO access address with (addr + size), not just with the start offset
-> addr to make sure that the requested memory access not to exceed the
-> actual register region.  We also updated (uint8_t *) to (uint32_t *) to
-> represent we are accessing the MMIO registers by dword-sized only.
->
-> [1] https://lore.kernel.org/qemu-devel/CAFEAcA82L-WZnHMW0X+Dr40bHM-EVq2ZH4DG4pdqop4xxDP2Og@mail.gmail.com/
->
-> Cc: Jeuk Kim <jeuk20.kim@gmail.com>
-> Reported-by: Peter Maydell <peter.maydell@linaro.org>
-> Signed-off-by: Minwoo Im <minwoo.im.dev@gmail.com>
-Thank you for the patch.
+The following changes since commit c9ba79baca7c673098361e3a687f72d458e0d18a:
 
-Reviewed-by: Jeuk Kim <jeuk20.kim@samsung.com>
+  Merge tag 'pull-target-arm-20240622' of https://git.linaro.org/people/pmaydell/qemu-arm into staging (2024-06-22 09:56:49 -0700)
+
+are available in the Git repository at:
+
+  https://gitlab.com/stsquad/qemu.git tags/pull-maintainer-june24-240624-1
+
+for you to fetch changes up to fce3d48038e9f38e3e342a59f76c7f9f9b043ed2:
+
+  accel/tcg: Avoid unnecessary call overhead from qemu_plugin_vcpu_mem_cb (2024-06-24 10:15:23 +0100)
+
+----------------------------------------------------------------
+maintainer updates (plugins, gdbstub):
+
+  - add missing include guard comment to gdbstub.h
+  - move gdbstub enums into separate header
+  - move qtest_[get|set]_virtual_clock functions
+  - allow plugins to manipulate the virtual clock
+  - introduce an Instructions Per Second plugin
+  - fix inject_mem_cb rw mask tests
+  - allow qemu_plugin_vcpu_mem_cb to shortcut when no memory cbs
+
+----------------------------------------------------------------
+Akihiko Odaki (1):
+      plugins: Ensure register handles are not NULL
+
+Alex Bennée (7):
+      include/exec: add missing include guard comment
+      gdbstub: move enums into separate header
+      sysemu: add set_virtual_time to accel ops
+      qtest: use cpu interface in qtest_clock_warp
+      sysemu: generalise qtest_warp_clock as qemu_clock_advance_virtual_time
+      plugins: add time control API
+      plugins: add migration blocker
+
+Max Chou (1):
+      accel/tcg: Avoid unnecessary call overhead from qemu_plugin_vcpu_mem_cb
+
+Pierrick Bouvier (3):
+      qtest: move qtest_{get, set}_virtual_clock to accel/qtest/qtest.c
+      contrib/plugins: add Instructions Per Second (IPS) example for cost modeling
+      plugins: fix inject_mem_cb rw masking
+
+ include/exec/gdbstub.h                             |  11 +-
+ include/gdbstub/enums.h                            |  21 +++
+ include/qemu/qemu-plugin.h                         |  27 ++++
+ include/qemu/timer.h                               |  15 ++
+ include/sysemu/accel-ops.h                         |  18 ++-
+ include/sysemu/cpu-timers.h                        |   3 +-
+ include/sysemu/qtest.h                             |   2 -
+ accel/hvf/hvf-accel-ops.c                          |   2 +-
+ accel/kvm/kvm-all.c                                |   2 +-
+ accel/qtest/qtest.c                                |  13 ++
+ accel/tcg/plugin-gen.c                             |   4 +-
+ accel/tcg/tcg-accel-ops.c                          |   2 +-
+ contrib/plugins/ips.c                              | 164 +++++++++++++++++++++
+ gdbstub/user.c                                     |   1 +
+ monitor/hmp-cmds.c                                 |   3 +-
+ plugins/api.c                                      |  49 +++++-
+ plugins/core.c                                     |   4 +-
+ ...us-get-virtual-clock.c => cpus-virtual-clock.c} |   5 +
+ system/cpus.c                                      |  11 ++
+ system/qtest.c                                     |  37 +----
+ system/vl.c                                        |   1 +
+ target/arm/hvf/hvf.c                               |   2 +-
+ target/arm/hyp_gdbstub.c                           |   2 +-
+ target/arm/kvm.c                                   |   2 +-
+ target/i386/kvm/kvm.c                              |   2 +-
+ target/ppc/kvm.c                                   |   2 +-
+ target/s390x/kvm/kvm.c                             |   2 +-
+ util/qemu-timer.c                                  |  26 ++++
+ accel/tcg/ldst_common.c.inc                        |   8 +-
+ contrib/plugins/Makefile                           |   1 +
+ plugins/qemu-plugins.symbols                       |   2 +
+ stubs/meson.build                                  |   2 +-
+ 32 files changed, 379 insertions(+), 67 deletions(-)
+ create mode 100644 include/gdbstub/enums.h
+ create mode 100644 contrib/plugins/ips.c
+ rename stubs/{cpus-get-virtual-clock.c => cpus-virtual-clock.c} (68%)
+
+-- 
+2.39.2
 
 
