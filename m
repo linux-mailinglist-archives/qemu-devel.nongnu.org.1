@@ -2,74 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07387915638
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jun 2024 20:10:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8C0D91563A
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jun 2024 20:10:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sLo8D-0002Zj-Aw; Mon, 24 Jun 2024 14:09:33 -0400
+	id 1sLo8E-0002aC-Qd; Mon, 24 Jun 2024 14:09:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1sLo8B-0002ZV-Lv
- for qemu-devel@nongnu.org; Mon, 24 Jun 2024 14:09:31 -0400
-Received: from mail-pg1-x536.google.com ([2607:f8b0:4864:20::536])
+ id 1sLo8D-0002Zz-5y
+ for qemu-devel@nongnu.org; Mon, 24 Jun 2024 14:09:33 -0400
+Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1sLo8A-0005VI-54
- for qemu-devel@nongnu.org; Mon, 24 Jun 2024 14:09:31 -0400
-Received: by mail-pg1-x536.google.com with SMTP id
- 41be03b00d2f7-6c4926bf9baso3833623a12.2
- for <qemu-devel@nongnu.org>; Mon, 24 Jun 2024 11:09:28 -0700 (PDT)
+ id 1sLo8B-0005VP-Kp
+ for qemu-devel@nongnu.org; Mon, 24 Jun 2024 14:09:32 -0400
+Received: by mail-pf1-x436.google.com with SMTP id
+ d2e1a72fcca58-7067272245aso1391661b3a.1
+ for <qemu-devel@nongnu.org>; Mon, 24 Jun 2024 11:09:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719252567; x=1719857367; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=y1sUyu2NpDGG39jui+mslSabiSdHVEC5l8i2enczN+U=;
- b=Kfdehs4DUKViHStLURRqGjWE2mEVxxOxRVlv95Y9K+g0kxSUzm+Eeom+nVGXnQWyNl
- vWI6gJ1Gk5xrbr6PuZiP/nKs/xwbehLfkTKPLmbBcEwOaVscbo6QPyk0l+Mq2/rsJ02E
- hCWgfeKa5N8f3hwjeUigC+SfZinA44fZNBeHKIDJI720ZkQGd4SitIFTuLDPMjUEH5Z4
- dAGg2FTXd0oqz5MPOGrpNIozJppx4ZEG8KiIZVRDA+yYH775165wh3t66BLWoLnXKn6x
- 8DgqzpG/LhkxX4KYFiuNrdtFReT8eQpw0b6vBa7SY3ktFBMmm/cfUnCchwYYpM+9EIY6
- tfrg==
+ d=linaro.org; s=google; t=1719252570; x=1719857370; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=qwmLeN19cPTq+BAPLXBZ+5P2B0cE6/NsDfoUArM3iy8=;
+ b=Tf5fi8Td3TpDgjfdQt3rk/bcDl9mMhxNvlFkfpZqVCLmN3/YSEthXDuZ7Blb/CBZbU
+ S6Zsxt41yke+wOia348yIc9fArIj1QxkTD4NZ0i3XENW2O8av7RIAssHvo1rCCE8VYHH
+ FuqScYHw+CX8zGQUf1YhWC9mV9B8xlOIXizjgInC4UQpTE/TWjG/qVCG5MPz3gukgcWy
+ 3wkqNZkb5Lp8HSemo7IO5Lm1EbO++mWhanS1e4QRr4O6Zza9+ZqNOETsPDTXQ9zg2GR2
+ SrIhL17o3avXBomBqKuyi27NRjtNrgEXIjPSchsQGm2zDEF7gzA2sW4k6TGBv0fl+mcT
+ c9Xw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719252567; x=1719857367;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=y1sUyu2NpDGG39jui+mslSabiSdHVEC5l8i2enczN+U=;
- b=lgo+UxEnqqRik+/8Hhsj3C/xmUjeeINB/zhxwX40QCPvA/xP7yZPejZ25Pp1Bgn1+7
- ALFeqEXgoE82sHP1hB2u4Dhb3lmf2MOOUSHt/lvFmJs/UkxKZXu4ulhmFw8xG+Uy7QXw
- 4SWuQWltVxKQlJsX0kf2RkhpFFz6+4edqbMKde8pOEbtJ3kqtU5G/6lCQT/u4ToF1b3x
- EYrwOm0tHXY2C6Fp82WQUuXvGlee+3v8h1BvUkA6X652/YAbtgkbY98qqKh8Wc0kO2pm
- pGP+QXlc+B+IP+X2KEkk2giK2rS6EA7vng5nlRm+464M8E2PZrUQa8GCOeun3EIcTFm8
- dtTA==
-X-Gm-Message-State: AOJu0YxRIK/LV8DKeUTsOT07kQRPImPCZhxPRg6wRK4bFmEh8/Q/x86M
- p3WfqMP5W85twh78zTDAa2GLewyZIN2PwdzOERc0RbwE62pAWRYwT0rVEExt3zDjDkmcgGpy/ER
- W
-X-Google-Smtp-Source: AGHT+IGHA3DTTprIxDPFYgRrzhHT6s+ndDFUtm77+0eMoad/OADSRVOwVD1y6N3+nkllXEESbn7GmA==
-X-Received: by 2002:a05:6a20:33a7:b0:1b5:ac9b:a59e with SMTP id
- adf61e73a8af0-1bcf44d8c1amr5867279637.32.1719252566680; 
- Mon, 24 Jun 2024 11:09:26 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1719252570; x=1719857370;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=qwmLeN19cPTq+BAPLXBZ+5P2B0cE6/NsDfoUArM3iy8=;
+ b=X6sUx2ts4zvxfhFSdeq3pQv6zIXoscOsTXCk25apdB/zwEO97oU5XiAMv+0i4Vow50
+ bEKKJVCkt7wCC7utwmUkKSuSKQZQh74lnlG5jFzI7z6AvtupV/uJpoHHCVGkhXWf/ZUU
+ LvQaRFF2OTAgZ3PQ/KXfIH0LNftIpYZaquGDNnHuci3q48sLG/aK3AnNllXADnNtStoX
+ pno00vBgYKkcSx93ar/AOuvL+4IflQLdImsjXNLN1CJzBwxnn+4mgGYiFUpMNzVSQg7y
+ tCSCjM/38aTM9P3WhPF8HZZ6V252hB0NpNK8+MkseozZaDoq+NnZEBER15SRvRxvrkt7
+ Lqew==
+X-Gm-Message-State: AOJu0Yx5JRArChYZJV9QiNXp3ohYautMxeoklx4HVvUaPE/yEe9ZeKuD
+ 1wYdAD1btXiZsLX0yNyPet50sv1+F/H4Yf3vdbstUkDwewE/AwOttEs0fgZ2otMb0adfvlPndX2
+ c
+X-Google-Smtp-Source: AGHT+IEQCLqp64nYVz6tefDKQYXjLpEmIwJnW2ig0T+iXL6qGymB21V9Y3kGpuQAwAw621g+dLd/UQ==
+X-Received: by 2002:a05:6a20:be1c:b0:1b6:98ba:8de9 with SMTP id
+ adf61e73a8af0-1bcf7e31a2bmr4127927637.7.1719252569838; 
+ Mon, 24 Jun 2024 11:09:29 -0700 (PDT)
 Received: from amd.. ([2804:7f0:b401:1758:3e7c:3fff:fe7a:e83b])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-706666e9708sm4974942b3a.121.2024.06.24.11.09.24
+ d2e1a72fcca58-706666e9708sm4974942b3a.121.2024.06.24.11.09.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 24 Jun 2024 11:09:26 -0700 (PDT)
+ Mon, 24 Jun 2024 11:09:29 -0700 (PDT)
 From: Gustavo Romero <gustavo.romero@linaro.org>
 To: qemu-devel@nongnu.org, peter.maydell@linaro.org,
  richard.henderson@linaro.org
 Cc: philmd@linaro.org,
 	alex.bennee@linaro.org,
 	gustavo.romero@linaro.org
-Subject: [PATCH v3 0/3] target/arm: Enable FEAT_Debugv8p8 for -cpu max
-Date: Mon, 24 Jun 2024 18:09:12 +0000
-Message-Id: <20240624180915.4528-1-gustavo.romero@linaro.org>
+Subject: [PATCH v3 1/3] target/arm: Fix indentation
+Date: Mon, 24 Jun 2024 18:09:13 +0000
+Message-Id: <20240624180915.4528-2-gustavo.romero@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240624180915.4528-1-gustavo.romero@linaro.org>
+References: <20240624180915.4528-1-gustavo.romero@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::536;
- envelope-from=gustavo.romero@linaro.org; helo=mail-pg1-x536.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
+ envelope-from=gustavo.romero@linaro.org; helo=mail-pf1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,31 +95,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Enable FEAT_Debugv8p8 on Arm max CPU.
+Fix comment indentation adding a missing space.
 
-v2:
- - Revert to the original comment above call to aa32_max_features()
+Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ target/arm/tcg/cpu64.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-v3:
- - Added feature entry to docs/system/arm/emulation.rst
- - Explicitly set t=0 before using it to set DBGDEVID reg.
- - Put indent fix in a separate patch
-
-
-Cheers,
-Gustavo
-
-Gustavo Romero (3):
-  target/arm: Fix indentation
-  target/arm: Move initialization of debug ID registers
-  target/arm: Enable FEAT_Debugv8p8 for -cpu max
-
- docs/system/arm/emulation.rst |  1 +
- target/arm/cpu.h              |  2 ++
- target/arm/tcg/cpu32.c        | 35 ++++++++++++++++++++++++++++++-----
- target/arm/tcg/cpu64.c        |  4 ++--
- 4 files changed, 35 insertions(+), 7 deletions(-)
-
+diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
+index 0899251eef..71e1bfcd4e 100644
+--- a/target/arm/tcg/cpu64.c
++++ b/target/arm/tcg/cpu64.c
+@@ -1167,7 +1167,7 @@ void aarch64_max_tcg_initfn(Object *obj)
+ 
+     t = cpu->isar.id_aa64isar2;
+     t = FIELD_DP64(t, ID_AA64ISAR2, MOPS, 1);     /* FEAT_MOPS */
+-    t = FIELD_DP64(t, ID_AA64ISAR2, BC, 1);      /* FEAT_HBC */
++    t = FIELD_DP64(t, ID_AA64ISAR2, BC, 1);       /* FEAT_HBC */
+     t = FIELD_DP64(t, ID_AA64ISAR2, WFXT, 2);     /* FEAT_WFxT */
+     cpu->isar.id_aa64isar2 = t;
+ 
 -- 
 2.34.1
 
