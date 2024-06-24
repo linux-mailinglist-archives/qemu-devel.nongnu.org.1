@@ -2,19 +2,19 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F9E8915908
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jun 2024 23:29:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EE9F91590A
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jun 2024 23:29:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sLrBu-0002pt-07; Mon, 24 Jun 2024 17:25:34 -0400
+	id 1sLrBu-0002qP-L5; Mon, 24 Jun 2024 17:25:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sLrBs-0002o2-A0
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sLrBs-0002oh-MN
  for qemu-devel@nongnu.org; Mon, 24 Jun 2024 17:25:32 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sLrBq-0006eL-Pw
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sLrBr-0006eO-4c
  for qemu-devel@nongnu.org; Mon, 24 Jun 2024 17:25:32 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1719264330;
@@ -22,36 +22,36 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=P5gRKfyarSbQQlOjJHcYjkSg6+cVdEEyGNplihrWZYw=;
- b=jOi4XB/1/+JWI0DzFo/TeU8r/548QtUZj4gcdSGy1YbhsjmOp8dYlylAqgVcPMf+VvICjz
- Us/hCk3Xb44A8ssVEbq3WbUVXTvSqMxlINCwQdC0jLMVzGgHvNbrdcdnosmKrYxD5pFGb7
- qx2OLqCKSEuQMXoPhr9d6qgBRFmpta8=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=QCfXwlRrOW1ALrpqWa4lQ8ajIIYJzJCsggvxAFX/QCc=;
+ b=GF5N5tcuhAN8u3ub3DMLK1xQRPy8MLaET4tZlFjHa6wRH48/fWjY+W8mdaf/jdgXt8Zr79
+ b/3xGLNgWTsZXHgOnL/CeA0pFLFXVViipLrfgmXMId7Y1K4jMhIMIsywK8Bj176o1bG34M
+ 0da8TfO+mcBSmCjUuSLoBwjiMV+W494=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-375-ay1LWYQfP3OcFAL689q3dA-1; Mon,
- 24 Jun 2024 17:25:26 -0400
-X-MC-Unique: ay1LWYQfP3OcFAL689q3dA-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-433-CuDEhfrVMeOS7ihwp15OGQ-1; Mon,
+ 24 Jun 2024 17:25:28 -0400
+X-MC-Unique: CuDEhfrVMeOS7ihwp15OGQ-1
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id AEEAA19560B5; Mon, 24 Jun 2024 21:25:25 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id D7FB0195608D; Mon, 24 Jun 2024 21:25:27 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.192.49])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 749061956051; Mon, 24 Jun 2024 21:25:23 +0000 (UTC)
+ id F105D1956051; Mon, 24 Jun 2024 21:25:25 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  Zhenzhong Duan <zhenzhong.duan@intel.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  Eric Auger <eric.auger@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>
-Subject: [PULL 09/42] vfio/container: Implement
+Subject: [PULL 10/42] backends/iommufd: Implement
  HostIOMMUDeviceClass::get_cap() handler
-Date: Mon, 24 Jun 2024 23:24:23 +0200
-Message-ID: <20240624212456.350919-10-clg@redhat.com>
+Date: Mon, 24 Jun 2024 23:24:24 +0200
+Message-ID: <20240624212456.350919-11-clg@redhat.com>
 In-Reply-To: <20240624212456.350919-1-clg@redhat.com>
 References: <20240624212456.350919-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -90,23 +90,24 @@ Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 Reviewed-by: Eric Auger <eric.auger@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/vfio/container.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ backends/iommufd.c | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-diff --git a/hw/vfio/container.c b/hw/vfio/container.c
-index 2f62c13214412618b412240b61efcbe1b1c79ed5..99beeba422ebfe49caed4fcd57afe5514dea8b39 100644
---- a/hw/vfio/container.c
-+++ b/hw/vfio/container.c
-@@ -1147,11 +1147,26 @@ static bool hiod_legacy_vfio_realize(HostIOMMUDevice *hiod, void *opaque,
+diff --git a/backends/iommufd.c b/backends/iommufd.c
+index c7e969d6f76dff8780efedde56b2015b3b8d616e..84fefbc9ee7a7228b0ed803132199fef5b56b1d7 100644
+--- a/backends/iommufd.c
++++ b/backends/iommufd.c
+@@ -230,6 +230,28 @@ bool iommufd_backend_get_device_info(IOMMUFDBackend *be, uint32_t devid,
      return true;
  }
  
-+static int hiod_legacy_vfio_get_cap(HostIOMMUDevice *hiod, int cap,
-+                                    Error **errp)
++static int hiod_iommufd_get_cap(HostIOMMUDevice *hiod, int cap, Error **errp)
 +{
 +    HostIOMMUDeviceCaps *caps = &hiod->caps;
 +
 +    switch (cap) {
++    case HOST_IOMMU_DEVICE_CAP_IOMMU_TYPE:
++        return caps->type;
 +    case HOST_IOMMU_DEVICE_CAP_AW_BITS:
 +        return caps->aw_bits;
 +    default:
@@ -115,15 +116,24 @@ index 2f62c13214412618b412240b61efcbe1b1c79ed5..99beeba422ebfe49caed4fcd57afe551
 +    }
 +}
 +
- static void hiod_legacy_vfio_class_init(ObjectClass *oc, void *data)
- {
-     HostIOMMUDeviceClass *hioc = HOST_IOMMU_DEVICE_CLASS(oc);
- 
-     hioc->realize = hiod_legacy_vfio_realize;
-+    hioc->get_cap = hiod_legacy_vfio_get_cap;
- };
- 
++static void hiod_iommufd_class_init(ObjectClass *oc, void *data)
++{
++    HostIOMMUDeviceClass *hioc = HOST_IOMMU_DEVICE_CLASS(oc);
++
++    hioc->get_cap = hiod_iommufd_get_cap;
++};
++
  static const TypeInfo types[] = {
+     {
+         .name = TYPE_IOMMUFD_BACKEND,
+@@ -246,6 +268,7 @@ static const TypeInfo types[] = {
+     }, {
+         .name = TYPE_HOST_IOMMU_DEVICE_IOMMUFD,
+         .parent = TYPE_HOST_IOMMU_DEVICE,
++        .class_init = hiod_iommufd_class_init,
+         .abstract = true,
+     }
+ };
 -- 
 2.45.2
 
