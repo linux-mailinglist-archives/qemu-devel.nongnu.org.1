@@ -2,74 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC7C59149AC
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jun 2024 14:20:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C588D9149CF
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jun 2024 14:28:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sLifH-0007Rw-HR; Mon, 24 Jun 2024 08:19:19 -0400
+	id 1sLin0-0001R1-Vm; Mon, 24 Jun 2024 08:27:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sLifF-0007RV-9M
- for qemu-devel@nongnu.org; Mon, 24 Jun 2024 08:19:17 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sLimz-0001QX-2t
+ for qemu-devel@nongnu.org; Mon, 24 Jun 2024 08:27:17 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sLifA-00014k-UG
- for qemu-devel@nongnu.org; Mon, 24 Jun 2024 08:19:15 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sLimx-0002ib-8I
+ for qemu-devel@nongnu.org; Mon, 24 Jun 2024 08:27:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719231550;
+ s=mimecast20190719; t=1719232033;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=bXld1KoVDk+O29bfZaoBJiljr+/K1/Bde++8SxeV9q8=;
- b=TaTbNqVURHhib8U8VzqIqoi+CEvUyrHEWi4P6Zy4H9DCdk7cqc/6d543rq1IwXHW7LdDjS
- ngaSViTVR7KxwXpkNN8UOFkYFv6A4YEGeqYQOmHf02zAfbop4JBVcVZTQ3iDMaKBAGzRaa
- vpo+hQ22DoE/gyMeB1hl7NlU+Xykbv4=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-294-VNJdIqywNeqxWp7GOIYMBw-1; Mon,
- 24 Jun 2024 08:19:06 -0400
-X-MC-Unique: VNJdIqywNeqxWp7GOIYMBw-1
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 7DCDF1955F16; Mon, 24 Jun 2024 12:19:00 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.93])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 23D2F300021C; Mon, 24 Jun 2024 12:18:59 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 0974121E6687; Mon, 24 Jun 2024 14:18:57 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: QEMU Developers <qemu-devel@nongnu.org>,  =?utf-8?Q?Marc-Andr=C3=A9?=
- Lureau
- <marcandre.lureau@redhat.com>,  Paolo Bonzini <pbonzini@redhat.com>,  Sai
- Pavan Boddu <sai.pavan.boddu@amd.com>,  Phil =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>
-Subject: Re: command line syntax for connecting a chardev to a CPU
-In-Reply-To: <CAFEAcA94twaBSx--NVXQcRBQ7v9TuK9iTq9kTWP4FYpRzgPbBA@mail.gmail.com>
- (Peter Maydell's message of "Fri, 21 Jun 2024 18:43:57 +0100")
-References: <CAFEAcA94twaBSx--NVXQcRBQ7v9TuK9iTq9kTWP4FYpRzgPbBA@mail.gmail.com>
-Date: Mon, 24 Jun 2024 14:18:57 +0200
-Message-ID: <877ceesfda.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ bh=2TWK+sfwtHYlg1TGDTvMfWnHFSmraa886QsMrQY+oCU=;
+ b=cA+ZwrAjh7gmwMdP9ydGz0NBpHrnM4vnk1icV0F9oK/ybQo01G1/2ujvpzjiJ20gKZ/17r
+ GAdg63AmIRX3fDNr8ODrONrjxAkIPsSSpTXA+Mt1HApXcEjAAsMJpfVM5Y8iL4F+QFoCJk
+ A17ysH7k3naivSvqApF0wAumoHUbvOo=
+Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
+ [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-572-1i5udWVHN-GQOARtFFsDhQ-1; Mon, 24 Jun 2024 08:27:09 -0400
+X-MC-Unique: 1i5udWVHN-GQOARtFFsDhQ-1
+Received: by mail-lf1-f71.google.com with SMTP id
+ 2adb3069b0e04-52cdbc21fa2so1701690e87.0
+ for <qemu-devel@nongnu.org>; Mon, 24 Jun 2024 05:27:09 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1719232028; x=1719836828;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=2TWK+sfwtHYlg1TGDTvMfWnHFSmraa886QsMrQY+oCU=;
+ b=vhlsOMeN7OMhn2H30pmcMn87DoRWx2K0sajf2dCF1vMPDbpRnvvhpEznLAXcEdy1ur
+ orIvZ63ZRueNOpQnj9RucI+nlQGYyXF+/Xl+mUCPy9FZfIlljPg7/Akz9h0yK7z+mivj
+ 3RZiLC9coVecLNY6ErGyYB5KcSi7cf9Sv7IRHmM4+RtgWeZdN2qyocV4Oqpa/FmGFXRf
+ CfI8gHV4k0Rx/11xHpB3A7kX/gP7O/r3d85kGJH4ORA4fGQ8Dquc1Y+OSQg2lCi/n+3U
+ 8YsCd8yMgxcOyTeVNcvtiOyG6C3oY+8zBKeP01rDOo8FWGnjk0YiMp/iGUSk33EyLY6q
+ U9Zg==
+X-Gm-Message-State: AOJu0YyQ4czbpvqlC/V8ErCBzSgToVcwlWgKRlHrTXOFNIzVuuh5jNg5
+ MpxBm/0KxzffS2rZr77Ea/Ty2rFIVUibZjyKPfuFEUSB5LNqrTmUwio/9iHpCSsOZVjh97toHCN
+ 2waqhoFWkz7tyFEE/IwhMbGoTdR/6UWZjknwzjbjbFms7pJbvEXc3
+X-Received: by 2002:ac2:5ded:0:b0:52c:dac0:59f8 with SMTP id
+ 2adb3069b0e04-52ce185fb12mr2622557e87.53.1719232027862; 
+ Mon, 24 Jun 2024 05:27:07 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGypNezLYvbgrPRJVO8xMHU9PQhPBSJ/O+uOgMOiAgMLLFOYLeIE4z87cK0nU4upF/BOyuLkA==
+X-Received: by 2002:ac2:5ded:0:b0:52c:dac0:59f8 with SMTP id
+ 2adb3069b0e04-52ce185fb12mr2622542e87.53.1719232027066; 
+ Mon, 24 Jun 2024 05:27:07 -0700 (PDT)
+Received: from redhat.com ([2.52.146.100]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-366bd575f6asm9284881f8f.6.2024.06.24.05.27.03
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 24 Jun 2024 05:27:06 -0700 (PDT)
+Date: Mon, 24 Jun 2024 08:27:01 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Michael Roth <michael.roth@amd.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, kvm@vger.kernel.org,
+ Markus Armbruster <armbru@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>
+Subject: Re: [PATCH] i386: revert defaults to 'legacy-vm-type=true' for
+ SEV(-ES) guests
+Message-ID: <20240624080458-mutt-send-email-mst@kernel.org>
+References: <20240614103924.1420121-1-berrange@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240614103924.1420121-1-berrange@redhat.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 10
-X-Spam_score: 1.0
-X-Spam_bar: +
-X-Spam_report: (1.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.207,
+X-Spam_score_int: -22
+X-Spam_score: -2.3
+X-Spam_bar: --
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.207,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,53 +102,132 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Maydell <peter.maydell@linaro.org> writes:
+On Fri, Jun 14, 2024 at 11:39:24AM +0100, Daniel P. Berrangé wrote:
+> The KVM_SEV_INIT2 ioctl was only introduced in Linux 6.10, which will
+> only have been released for a bit over a month when QEMU 9.1 is
+> released.
+> 
+> The SEV(-ES) support in QEMU has been present since 2.12 dating back
+> to 2018. With this in mind, the overwhealming majority of users of
+> SEV(-ES) are unlikely to be running Linux >= 6.10, any time in the
+> forseeable future.
+> 
+> IOW, defaulting new QEMU to 'legacy-vm-type=false' means latest QEMU
+> machine types will be broken out of the box for most SEV(-ES) users.
+> Even if the kernel is new enough, it also affects the guest measurement,
+> which means that their existing tools for validating measurements will
+> also be broken by the new default.
+> 
+> This is not a sensible default choice at this point in time. Revert to
+> the historical behaviour which is compatible with what most users are
+> currently running.
+> 
+> This can be re-evaluated a few years down the line, though it is more
+> likely that all attention will be on SEV-SNP by this time. Distro
+> vendors may still choose to change this default downstream to align
+> with their new major releases where they can guarantee the kernel
+> will always provide the required functionality.
+> 
+> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 
-> Arm CPUs have a "debug communications channel" which on real hardware
-> is basically a way to talk to the debugger on the other end of a JTAG
-> connection; Linux supports using this as a console. This patchseries:
->  https://patchew.org/QEMU/20240614093026.328271-1-sai.pavan.boddu@amd.com/
-> proposes implementing this in QEMU by wiring it up to a QEMU chardev.
->
-> I think this is useful (among other things, it lets the user sidestep
-> the "where is my UART?" question). But I'm not sure what the right way
-> to let the user enable it and pick the chardev on the command line is.
-> Do we have any relevant existing precedent?
->
-> The patchseries has the CPU look for a chardev by ID, so if the user
-> creates a chardev with id=dcc0 the first CPU will use that, if there's
-> a chardev with id=dcc1 the second CPU will use that, and so on. I
-> don't think we really want to make some ID string values be magic,
+This makes sense superficially, so
 
-Neither do I.
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
 
-> but maybe we do that already somewhere, and so it's OK to do here?
+and I'll let kvm maintainers merge this.
 
-I'm not aware of such existing (ab)use of chardev IDs.
+However I wonder, wouldn't it be better to refactor this:
 
-> I thought also of having the CPU take a chardev property, but then the
-> question is how to specify that on the command line. AFAICT the -cpu
-> option (a) requires a CPU type first, which is a pain for cases where
-> otherwise the user has no need to care about the exact type of CPU
-> because the machine model creates the right one for them, and (b) for
-> the key=value properties in a -cpu option string it will set the same
-> property value for every CPU in the system (which obviously isn't what
-> we want for this chardev).
+    if (x86_klass->kvm_type(X86_CONFIDENTIAL_GUEST(sev_common)) == KVM_X86_DEFAULT_VM) {
+        cmd = sev_es_enabled() ? KVM_SEV_ES_INIT : KVM_SEV_INIT;
+        
+        ret = sev_ioctl(sev_common->sev_fd, cmd, NULL, &fw_error);
+    } else {
+        struct kvm_sev_init args = { 0 };
+                
+        ret = sev_ioctl(sev_common->sev_fd, KVM_SEV_INIT2, &args, &fw_error);
+    }   
 
-Looks like an instance of the old "how to set properties of onboard
-devices" problem.  Still no good solution.
+to something like:
 
-> We could make it a machine property (so you would say eg
->  -M xlnx-zcu102,dcc0=mychardev -chardev stdio,id=mychardev)
-> but then that would require plumbing code in every machine model to
-> create the property and set the value on the right CPU.
+if (x86_klass->kvm_type(X86_CONFIDENTIAL_GUEST(sev_common)) != KVM_X86_DEFAULT_VM) {
+        struct kvm_sev_init args = { 0 };
+                
+        ret = sev_ioctl(sev_common->sev_fd, KVM_SEV_INIT2, &args, &fw_error);
+	if (ret && errno == ENOTTY) {
+		cmd = sev_es_enabled() ? KVM_SEV_ES_INIT : KVM_SEV_INIT;
 
-Machine properties that are aliases of the to onboard device properties
-we want to set is a solution we used in places.  Requires plumbing, as
-you wrote.
+		ret = sev_ioctl(sev_common->sev_fd, cmd, NULL, &fw_error);
+	}
+}
 
-> Do we have a neat way to specify per-cpu CPU properties that I'm missing?
 
-I'm not aware of a better solution.
+Yes I realize this means measurement will then depend on the host
+but it seems nicer than failing guest start, no?
+
+
+
+
+> ---
+>  hw/i386/pc.c      |  1 -
+>  qapi/qom.json     | 12 ++++++------
+>  target/i386/sev.c |  7 +++++++
+>  3 files changed, 13 insertions(+), 7 deletions(-)
+> 
+> diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+> index 0469af00a7..b65843c559 100644
+> --- a/hw/i386/pc.c
+> +++ b/hw/i386/pc.c
+> @@ -82,7 +82,6 @@
+>  GlobalProperty pc_compat_9_0[] = {
+>      { TYPE_X86_CPU, "x-l1-cache-per-thread", "false" },
+>      { TYPE_X86_CPU, "guest-phys-bits", "0" },
+> -    { "sev-guest", "legacy-vm-type", "true" },
+>      { TYPE_X86_CPU, "legacy-multi-node", "on" },
+>  };
+>  const size_t pc_compat_9_0_len = G_N_ELEMENTS(pc_compat_9_0);
+> diff --git a/qapi/qom.json b/qapi/qom.json
+> index 8bd299265e..714ebeec8b 100644
+> --- a/qapi/qom.json
+> +++ b/qapi/qom.json
+> @@ -912,12 +912,12 @@
+>  # @handle: SEV firmware handle (default: 0)
+>  #
+>  # @legacy-vm-type: Use legacy KVM_SEV_INIT KVM interface for creating the VM.
+> -#                  The newer KVM_SEV_INIT2 interface syncs additional vCPU
+> -#                  state when initializing the VMSA structures, which will
+> -#                  result in a different guest measurement. Set this to
+> -#                  maintain compatibility with older QEMU or kernel versions
+> -#                  that rely on legacy KVM_SEV_INIT behavior.
+> -#                  (default: false) (since 9.1)
+> +#                  The newer KVM_SEV_INIT2 interface, from Linux >= 6.10, syncs
+> +#                  additional vCPU state when initializing the VMSA structures,
+> +#                  which will result in a different guest measurement. Toggle
+> +#                  this to control compatibility with older QEMU or kernel
+> +#                  versions that rely on legacy KVM_SEV_INIT behavior.
+> +#                  (default: true) (since 9.1)
+>  #
+>  # Since: 2.12
+>  ##
+> diff --git a/target/i386/sev.c b/target/i386/sev.c
+> index 004c667ac1..16029282b7 100644
+> --- a/target/i386/sev.c
+> +++ b/target/i386/sev.c
+> @@ -2086,6 +2086,13 @@ sev_guest_instance_init(Object *obj)
+>      object_property_add_uint32_ptr(obj, "policy", &sev_guest->policy,
+>                                     OBJ_PROP_FLAG_READWRITE);
+>      object_apply_compat_props(obj);
+> +
+> +    /*
+> +     * KVM_SEV_INIT2 was only introduced in Linux 6.10. Avoid
+> +     * breaking existing users of SEV, since the overwhealming
+> +     * majority won't have a new enough kernel for a long time
+> +     */
+> +    sev_guest->legacy_vm_type = true;
+>  }
+>  
+>  /* guest info specific sev/sev-es */
+> -- 
+> 2.45.1
 
 
