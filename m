@@ -2,56 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19CD8914E4D
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jun 2024 15:19:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4491914E26
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jun 2024 15:15:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sLjWt-0001Ii-TA; Mon, 24 Jun 2024 09:14:43 -0400
+	id 1sLjXH-0001WC-Mp; Mon, 24 Jun 2024 09:15:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
- id 1sLjWr-0001Hb-Vn; Mon, 24 Jun 2024 09:14:42 -0400
-Received: from muminek.juszkiewicz.com.pl ([213.251.184.221])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
- id 1sLjWq-0004sc-AX; Mon, 24 Jun 2024 09:14:41 -0400
-Received: from localhost (localhost [127.0.0.1])
- by muminek.juszkiewicz.com.pl (Postfix) with ESMTP id 3F5D8261A90;
- Mon, 24 Jun 2024 15:14:38 +0200 (CEST)
-X-Virus-Scanned: Debian amavis at juszkiewicz.com.pl
-Received: from muminek.juszkiewicz.com.pl ([127.0.0.1])
- by localhost (muminek.juszkiewicz.com.pl [127.0.0.1]) (amavis, port 10024)
- with ESMTP id RknKwESWfuaG; Mon, 24 Jun 2024 15:14:36 +0200 (CEST)
-Received: from applejack.lan (83.11.22.244.ipv4.supernova.orange.pl
- [83.11.22.244])
- by muminek.juszkiewicz.com.pl (Postfix) with ESMTPSA id 76FAC261A96;
- Mon, 24 Jun 2024 15:14:34 +0200 (CEST)
-From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-Date: Mon, 24 Jun 2024 15:14:23 +0200
-Subject: [PATCH v2 2/2] tests/avocado: add test for default sbsa-ref cpu
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240624-b4-move-to-freebsd-v2-2-64ea7b04998f@linaro.org>
-References: <20240624-b4-move-to-freebsd-v2-0-64ea7b04998f@linaro.org>
-In-Reply-To: <20240624-b4-move-to-freebsd-v2-0-64ea7b04998f@linaro.org>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sLjXE-0001VD-NJ
+ for qemu-devel@nongnu.org; Mon, 24 Jun 2024 09:15:04 -0400
+Received: from mail-lj1-x22a.google.com ([2a00:1450:4864:20::22a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sLjXC-000506-5h
+ for qemu-devel@nongnu.org; Mon, 24 Jun 2024 09:15:04 -0400
+Received: by mail-lj1-x22a.google.com with SMTP id
+ 38308e7fff4ca-2ebeefb9a6eso47625211fa.1
+ for <qemu-devel@nongnu.org>; Mon, 24 Jun 2024 06:15:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1719234900; x=1719839700; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=G5C/rBGUajz/uZ65x4moAAqa+NPc5S7yF9iilS4WUHk=;
+ b=bQ4G3gE+VPTTgE7xHzMNoeYf92xWNXMWYVj2KrdoMFRsILwwyQkhm+JHZHScPISZty
+ GyJ1tRYcU2bvLPg6XiC9Ap884zbLMXL6E6Otsqj0tGPXUnTBmfh5KeCViEX/7pTO6gN1
+ mYJA1Qh0qNkRMyQBcxiYLwlsI1AptKKb5EGRYpygtGM+ur6ISn4VtAZaKyu+slAPfcv9
+ FxImM925Tk0jjGYr2FaIW5TBAwB1T0q04FbGpl4TReG2DU1QSqMOppasw6dHRkguHPOF
+ 7hUjV9T3hFFo19vcoxosQHSJa4eFoXaUJPQ+a7K2UbibrVb7kK7QQBAWPsjzKKNOGckI
+ 89zQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1719234900; x=1719839700;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=G5C/rBGUajz/uZ65x4moAAqa+NPc5S7yF9iilS4WUHk=;
+ b=GVg7D5hLy5wxk++ilYlpLvZ1YZb74/fiKRC/Rj7nP/4VxN1bW+0jHPZjDg9XR83xnW
+ BGxSaQ94jXl0AAANRFatLbR+AgtuuqjguWom8NqZue1B04yVj3FFbMC3S6bABo1uimGp
+ E83zO+XACxQrOLC5D/JeIplX/VTPCkeKy22PKpCgMN7cmJZRQZaO8mF6hmjD57XHO1fK
+ zH6BnNCisLkAEeNBUvaDZben24yJXSS8SDEKzocgHOjMw1G36qZUQBHAILWCKpuvtjMN
+ vO7/tpc+P2+EB/w8AVwsrGYFSXZr5mH6lNgi8MiYOcb5HwTrpEZj4OT/XKnLv2SjjGN/
+ OjJw==
+X-Gm-Message-State: AOJu0Yyo0pfK2IE4AIzrdY8XTcJAtSv+Wg4OM7oScWp3ODy5rYKS5t8B
+ HaWeez/IngWs6i5B78sWg80mRCR9nkkRBx8HUj2FFTdo4wweR7r3wimcEWo1rQeOOKdXHGTYoPr
+ t
+X-Google-Smtp-Source: AGHT+IELuqR4wMmlDqCMx98lY9cPeUbP8HZpgf6vJKFgGQ19UYoDv6DMwEaavXqWGwYmux4riJ1ICw==
+X-Received: by 2002:a05:651c:104f:b0:2eb:fb9c:5a85 with SMTP id
+ 38308e7fff4ca-2ec5940087bmr28858911fa.23.1719234900175; 
+ Mon, 24 Jun 2024 06:15:00 -0700 (PDT)
+Received: from m1x-phil.lan (bd137-h02-176-184-46-22.dsl.sta.abo.bbox.fr.
+ [176.184.46.22]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-424817a9667sm132776375e9.15.2024.06.24.06.14.58
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Mon, 24 Jun 2024 06:14:59 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, Leif Lindholm <quic_llindhol@quicinc.com>, 
- Radoslaw Biernacki <rad@semihalf.com>, 
- Peter Maydell <peter.maydell@linaro.org>, Cleber Rosa <crosa@redhat.com>, 
- =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
- Wainer dos Santos Moschetta <wainersm@redhat.com>, 
- Beraldo Leal <bleal@redhat.com>, 
- Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-X-Mailer: b4 0.13.0
-Received-SPF: softfail client-ip=213.251.184.221;
- envelope-from=marcin.juszkiewicz@linaro.org; helo=muminek.juszkiewicz.com.pl
-X-Spam_score_int: -11
-X-Spam_score: -1.2
-X-Spam_bar: -
-X-Spam_report: (-1.2 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_SOFTFAIL=0.665 autolearn=no autolearn_force=no
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PULL 03/19] hw/sd/sdcard: Correct code indentation
+Date: Mon, 24 Jun 2024 15:14:24 +0200
+Message-ID: <20240624131440.81111-4-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20240624131440.81111-1-philmd@linaro.org>
+References: <20240624131440.81111-1-philmd@linaro.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::22a;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x22a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -67,107 +92,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We changed sbsa-ref cpu several times already and may do it again in a
-future. To newer core or to enable/disable some properties.
+Fix mis-alignment from commits 793d04f495 and 6380cd2052
+("Add sd_cmd_SEND_TUNING_BLOCK" and "Add sd_cmd_SET_BLOCK_COUNT").
 
-This change switches Neoverse-N2 tests to 'let test default cpu' ones.
-
-Signed-off-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Tested-by: Cédric Le Goater <clg@redhat.com>
+Message-Id: <20240621080554.18986-2-philmd@linaro.org>
 ---
- tests/avocado/machine_aarch64_sbsaref.py | 29 ++++++++++++++++-------------
- 1 file changed, 16 insertions(+), 13 deletions(-)
+ hw/sd/sd.c | 34 +++++++++++++++++-----------------
+ 1 file changed, 17 insertions(+), 17 deletions(-)
 
-diff --git a/tests/avocado/machine_aarch64_sbsaref.py b/tests/avocado/machine_aarch64_sbsaref.py
-index d52f89f756..0e96e7ea16 100644
---- a/tests/avocado/machine_aarch64_sbsaref.py
-+++ b/tests/avocado/machine_aarch64_sbsaref.py
-@@ -115,7 +115,7 @@ def test_sbsaref_edk2_firmware(self):
-     # This tests the whole boot chain from EFI to Userspace
-     # We only boot a whole OS for the current top level CPU and GIC
-     # Other test profiles should use more minimal boots
--    def boot_alpine_linux(self, cpu):
-+    def boot_alpine_linux(self, cpu=False):
-         self.fetch_firmware()
+diff --git a/hw/sd/sd.c b/hw/sd/sd.c
+index 6a7a10501b..ba7f165cb5 100644
+--- a/hw/sd/sd.c
++++ b/hw/sd/sd.c
+@@ -1069,33 +1069,33 @@ static sd_rsp_type_t sd_cmd_SEND_RELATIVE_ADDR(SDState *sd, SDRequest req)
  
-         iso_url = (
-@@ -128,12 +128,14 @@ def boot_alpine_linux(self, cpu):
+ static sd_rsp_type_t sd_cmd_SEND_TUNING_BLOCK(SDState *sd, SDRequest req)
+ {
+-        if (sd->spec_version < SD_PHY_SPECv3_01_VERS) {
+-            return sd_cmd_illegal(sd, req);
+-        }
++    if (sd->spec_version < SD_PHY_SPECv3_01_VERS) {
++        return sd_cmd_illegal(sd, req);
++    }
  
-         self.vm.set_console()
-         self.vm.add_args(
--            "-cpu",
--            cpu,
-             "-drive",
-             f"file={iso_path},format=raw",
-         )
+-        if (sd->state != sd_transfer_state) {
+-            return sd_invalid_state_for_cmd(sd, req);
+-        }
++    if (sd->state != sd_transfer_state) {
++        return sd_invalid_state_for_cmd(sd, req);
++    }
  
-+        # let allow test which will use default cpu of platform
-+        if cpu:
-+            self.vm.add_args("-cpu", cpu)
-+
-         self.vm.launch()
-         wait_for_console_pattern(self, "Welcome to Alpine Linux 3.17")
+-        sd->state = sd_sendingdata_state;
+-        sd->data_offset = 0;
++    sd->state = sd_sendingdata_state;
++    sd->data_offset = 0;
  
-@@ -144,12 +146,12 @@ def test_sbsaref_alpine_linux_cortex_a57(self):
-         """
-         self.boot_alpine_linux("cortex-a57")
+-        return sd_r1;
++    return sd_r1;
+ }
  
--    def test_sbsaref_alpine_linux_neoverse_n1(self):
-+    # Let test whichever cpu is used as default
-+    def test_sbsaref_alpine_linux_default(self):
-         """
--        :avocado: tags=cpu:neoverse-n1
-         :avocado: tags=os:linux
-         """
--        self.boot_alpine_linux("neoverse-n1")
-+        self.boot_alpine_linux()
+ static sd_rsp_type_t sd_cmd_SET_BLOCK_COUNT(SDState *sd, SDRequest req)
+ {
+-        if (sd->spec_version < SD_PHY_SPECv3_01_VERS) {
+-            return sd_cmd_illegal(sd, req);
+-        }
++    if (sd->spec_version < SD_PHY_SPECv3_01_VERS) {
++        return sd_cmd_illegal(sd, req);
++    }
  
-     def test_sbsaref_alpine_linux_max_pauth_off(self):
-         """
-@@ -178,7 +180,7 @@ def test_sbsaref_alpine_linux_max(self):
-     # This tests the whole boot chain from EFI to Userspace
-     # We only boot a whole OS for the current top level CPU and GIC
-     # Other test profiles should use more minimal boots
--    def boot_freebsd(self, cpu):
-+    def boot_freebsd(self, cpu=False):
-         self.fetch_firmware()
+-        if (sd->state != sd_transfer_state) {
+-            return sd_invalid_state_for_cmd(sd, req);
+-        }
++    if (sd->state != sd_transfer_state) {
++        return sd_invalid_state_for_cmd(sd, req);
++    }
  
-         img_url = (
-@@ -191,12 +193,14 @@ def boot_freebsd(self, cpu):
+-        sd->multi_blk_cnt = req.arg;
++    sd->multi_blk_cnt = req.arg;
  
-         self.vm.set_console()
-         self.vm.add_args(
--            "-cpu",
--            cpu,
-             "-drive",
-             f"file={img_path},format=raw",
-         )
+-        return sd_r1;
++    return sd_r1;
+ }
  
-+        # let allow test which will use default cpu of platform
-+        if cpu:
-+            self.vm.add_args("-cpu", cpu)
-+
-         self.vm.launch()
-         wait_for_console_pattern(self, "Welcome to FreeBSD!")
- 
-@@ -207,13 +211,12 @@ def test_sbsaref_freebsd_cortex_a57(self):
-         """
-         self.boot_freebsd("cortex-a57")
- 
--    # We use Neoverse-N2 as default cpu
--    def test_sbsaref_freebsd_neoverse_n2(self):
-+    # Let test whichever cpu is used as default
-+    def test_sbsaref_freebsd_default(self):
-         """
--        :avocado: tags=cpu:neoverse-n2
-         :avocado: tags=os:freebsd
-         """
--        self.boot_freebsd("neoverse-n2")
-+        self.boot_freebsd()
- 
-     def test_sbsaref_freebsd_max_pauth_off(self):
-         """
-
+ static sd_rsp_type_t sd_normal_command(SDState *sd, SDRequest req)
 -- 
-2.45.2
+2.41.0
 
 
