@@ -2,77 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3489E9152BC
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jun 2024 17:42:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF62091532E
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jun 2024 18:10:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sLlpf-0002nP-N3; Mon, 24 Jun 2024 11:42:16 -0400
+	id 1sLmGh-0002VU-1e; Mon, 24 Jun 2024 12:10:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sLlpd-0002n9-Lt
- for qemu-devel@nongnu.org; Mon, 24 Jun 2024 11:42:13 -0400
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+ (Exim 4.90_1) (envelope-from <xoykie@gmail.com>) id 1sLki4-0001yA-CQ
+ for qemu-devel@nongnu.org; Mon, 24 Jun 2024 10:30:20 -0400
+Received: from mail-qk1-x742.google.com ([2607:f8b0:4864:20::742])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sLlpc-0002mb-0P
- for qemu-devel@nongnu.org; Mon, 24 Jun 2024 11:42:13 -0400
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-57cd26347d3so4783276a12.1
- for <qemu-devel@nongnu.org>; Mon, 24 Jun 2024 08:42:11 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <xoykie@gmail.com>) id 1sLki2-0005Ku-6U
+ for qemu-devel@nongnu.org; Mon, 24 Jun 2024 10:30:19 -0400
+Received: by mail-qk1-x742.google.com with SMTP id
+ af79cd13be357-79bd2de2157so295544485a.0
+ for <qemu-devel@nongnu.org>; Mon, 24 Jun 2024 07:30:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719243730; x=1719848530; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=E6ISa8+Qw+F0SnhHbSOOPpnlg7ypL2Jw8gPcbTV6Sto=;
- b=ARoxe1oSO+evPlwPHrvDdCN+c7sT8dnFJY6WzMAV6EFbiZ2YJKAgAgTw2m3T4KEogO
- pY2bAtixcFjqNW/5kax/G4eLJ8+qWxpJgGhb90zDNYr2gB9RrRJaXl2c6/Na/CvNbH9N
- 1iLIxlfojpNyqdhxoUJp1oPAFsKXcYOB1oyo3cOyffHWBK/zfrcHisCwFHQHa1flaQSD
- q01fIcQXZrIJMnIupJjGG1hHHc/7WpPp106/KBMN6SFCFtmBynad1VjlLz7nB28HkGWr
- 2C1bAS8vvhJEORh0iH7ifhhzwmJ+VqdVed48GE3GVTO/Nghsui+klO+i8kAI5dYDz9nA
- NNUQ==
+ d=gmail.com; s=20230601; t=1719239416; x=1719844216; darn=nongnu.org;
+ h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=VveAuMVcP+jyZpYtcft3KUnMYmigpS0dcqTVQs0sDuM=;
+ b=J9Y3x1lU9bc9TrXg0NUGoDs+/pgsuF6msHcZj3MeCBbA6vinQNVNBYRnr5vYYbizPV
+ YoGffB7VPAy7EOMlVi73RN6xWJwDa1V3Hh5SO3Vrfu52idjF2lOv5PkOnH9xdmixqAWf
+ 8GcUc9Oy8h8xN3P41EPwg04MGdV1IzTGr3CxxtPFSpdy/cvNn3DEPd2DfBmm4+SjFFdy
+ Oi3OU+gr6Ny5UQL2GIBwNXI6RyNoNjf27K9D/HvBpXnWmSH5pAtwKzPvLJVuWd3BLLHh
+ V6wqBzow462JK4QMDUI3CFMvC28xjdOVAmLv3EkB1YkpAsHI2NWqrlQ30z7l8r2r6iDs
+ plaQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719243730; x=1719848530;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=E6ISa8+Qw+F0SnhHbSOOPpnlg7ypL2Jw8gPcbTV6Sto=;
- b=QuSmZiBNkl7234BkQ57E0w2QSEg71UlLMjyKLwEXnmeUi7sG9CW6nMClTnRZ5h0Tny
- i3TBUhfjicF4CGCEA862ouRvk6xkQmSHRkL9Mn175hJWtboTwRd5lyqedEC8/fEpU2Gp
- 0tGWQ9iWfSFa4yxvVhUe5RUVafzvBv4Ssb+Qybr10V/BIrurIvvbVS8b73bGzjfg9dpH
- l1Z8jD/zuzM7lMJf4FIrVmB9hL03VIXs0sR7nhPzQ1lCqWyWNnyvFZCRVqw01Jz2Yq2h
- +21hP2K1Xtz5as1U5vCt+zqX0Tm5wlGgwaVcZnwiy+66Fg5DXWLpvf5IFRlL90Fm0/PD
- 9NPA==
-X-Gm-Message-State: AOJu0YxflUVHq/GSYcAbYiQ8EnJ1UIzUV4+LBvXdLVRq68VNHKjbH6JA
- I9erW34w2A5w/Hkt0X8A128w7HujvH4dlb26wZfS5LhAYMQ4M4s4Iqm8ZSLqQ5rtpmeXL9MOehG
- LBpFbJOgwNkbFcldQMtLqx3y15mbfJ+vdFEUjuLYoohSErP98
-X-Google-Smtp-Source: AGHT+IGA+3gMHcvf89knvnrlKHjJS/xJ4+QDVKj+pOyx22HllTyQgeI+TldxkYYhG1jeT/9V8Oy7VxaWoEJDAP0mX8Q=
-X-Received: by 2002:a50:ab14:0:b0:57d:2659:9141 with SMTP id
- 4fb4d7f45d1cf-57d4bd83465mr2719496a12.24.1719243729977; Mon, 24 Jun 2024
- 08:42:09 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1719239416; x=1719844216;
+ h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=VveAuMVcP+jyZpYtcft3KUnMYmigpS0dcqTVQs0sDuM=;
+ b=OTDUYTtsX/BYwyCEytTwX0iTteijq0GN2knRZ5wyUEnlp++fPJj+nj/7I2ASzVTZbQ
+ Wo1piIT7IGiGHt142gztuQ9S2j+tW+GZVv4l60/CDSja9zEd78sz+aQUc0mL9WnWKpUM
+ /4Mmxw23zhd5m3YVH0tNZctJ2fQuOUeLzFlZEa1MaKdnUuDBnIpySI/HNko1xTsMSQFB
+ /WKFl2eYxiHBBftGGCz7CwA0k18dQaNE/5in/VByayEczqMH0g+BcPwasAhSas1ggppq
+ u8a8oLuw5YZXfnOxxxXXTFhxmsna5HBzhsyZITFp9aTSCCczQdObM+sV7dcQSNjlb6T3
+ A/7Q==
+X-Gm-Message-State: AOJu0YwgsEi1sXzBC77dLOJiAgNZunX+ySwIbUQjzz2qMMFxtlFIosjT
+ mAB3OaJ+HLDoUps/0hQBMKfijN8hFaI9ZLIl/MRebGTG2O7vysGRLej+6zbudpp6/MATV1XkAxJ
+ tUnwysbGvzKAbqmPQiwzFRsvWh4a7NmsrNzM=
+X-Google-Smtp-Source: AGHT+IEFxsrt1ZLG1SSygZX9w+GILdBkKYn/5FVC2npmuw3cqtvDPg7ZC2ckgR4c/JFujFb/4OvGAyGfjVH6VL2saHY=
+X-Received: by 2002:a05:622a:1491:b0:440:ec00:fff6 with SMTP id
+ d75a77b69052e-444d9215b4cmr61561291cf.41.1719239416393; Mon, 24 Jun 2024
+ 07:30:16 -0700 (PDT)
 MIME-Version: 1.0
-References: <20240624153950.350-1-shiju.jose@huawei.com>
-In-Reply-To: <20240624153950.350-1-shiju.jose@huawei.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 24 Jun 2024 16:41:59 +0100
-Message-ID: <CAFEAcA-UR7a9Se0f4W+naLrXrvMCeFNBCVYq=--wROM2igS6eg@mail.gmail.com>
-Subject: Re: [QEMU PATCH v2 1/1] hw/arm: FW first ARM processor error injection
-To: shiju.jose@huawei.com
-Cc: qemu-devel@nongnu.org, linux-edac@vger.kernel.org, 
- jonathan.cameron@huawei.com, mchehab+huawei@kernel.org, tanxiaofei@huawei.com, 
- prime.zeng@hisilicon.com, linuxarm@huawei.com
+From: Xoykie <xoykie@gmail.com>
+Date: Mon, 24 Jun 2024 20:00:04 +0530
+Message-ID: <CAFU8RB_pjr77zMLsM0Unf9xPNxfr_--Tjr49F_eX32ZBc5o2zQ@mail.gmail.com>
+Subject: [Bug Report] Possible Missing Endianness Conversion
+To: qemu-devel@nongnu.org, Eugenio Perez Martin <eperezma@redhat.com>, 
+ Stefano Garzarella <sgarzare@redhat.com>, thuth@redhat.com, cohuck@redhat.com
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::742;
+ envelope-from=xoykie@gmail.com; helo=mail-qk1-x742.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Mon, 24 Jun 2024 12:10:09 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,28 +81,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 24 Jun 2024 at 16:40, <shiju.jose@huawei.com> wrote:
->
-> From: Shiju Jose <shiju.jose@huawei.com>
->
-> Add support for QEMU based FW first ARM processor error injection.
+The virtio packed virtqueue support patch[1] suggests converting
+endianness by lines:
 
+virtio_tswap16s(vdev, &e->off_wrap);
+virtio_tswap16s(vdev, &e->flags);
 
-> +++ b/hw/arm/arm_error_inject_stubs.c
-> @@ -0,0 +1,22 @@
-> +/*
-> + * ARM  Processor errors QMP stubs
-> + *
-> + * Copyright(C) 2024 Huawei LTD.
-> + *
-> + * This work is licensed under the terms of the GNU GPL, version 2. See the
-> + * COPYING file in the top-level directory.
-> + *
-> + * SPDX-License-Identifier: GPL-v2-only
+Though both of these conversion statements aren't present in the
+latest qemu code here[2]
 
-You missed an instance of gpl-v2-only (but you don't need to
-respin immediately just for this).
+Is this intentional?
 
-thanks
--- PMM
+[1]: https://mail.gnu.org/archive/html/qemu-block/2019-10/msg01492.html
+[2]: https://elixir.bootlin.com/qemu/latest/source/hw/virtio/virtio.c#L314
 
