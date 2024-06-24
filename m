@@ -2,85 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CBB79157DB
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jun 2024 22:20:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CCF6915831
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jun 2024 22:45:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sLqAJ-0005Ic-PL; Mon, 24 Jun 2024 16:19:51 -0400
+	id 1sLqXw-0001QS-UC; Mon, 24 Jun 2024 16:44:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1sLqAH-0005Hj-02
- for qemu-devel@nongnu.org; Mon, 24 Jun 2024 16:19:49 -0400
-Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
+ (Exim 4.90_1) (envelope-from
+ <3mtp5ZgQKCnEUaljVddVaT.RdbfTbj-STkTacdcVcj.dgV@flex--flwu.bounces.google.com>)
+ id 1sLqXu-0001Q8-Qf
+ for qemu-devel@nongnu.org; Mon, 24 Jun 2024 16:44:14 -0400
+Received: from mail-pf1-x449.google.com ([2607:f8b0:4864:20::449])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1sLqAF-0003l2-9I
- for qemu-devel@nongnu.org; Mon, 24 Jun 2024 16:19:48 -0400
-Received: by mail-pf1-x430.google.com with SMTP id
- d2e1a72fcca58-7065e2fe7d9so2265691b3a.3
- for <qemu-devel@nongnu.org>; Mon, 24 Jun 2024 13:19:46 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from
+ <3mtp5ZgQKCnEUaljVddVaT.RdbfTbj-STkTacdcVcj.dgV@flex--flwu.bounces.google.com>)
+ id 1sLqXs-00081A-Hi
+ for qemu-devel@nongnu.org; Mon, 24 Jun 2024 16:44:14 -0400
+Received: by mail-pf1-x449.google.com with SMTP id
+ d2e1a72fcca58-7065bc8314cso3583998b3a.2
+ for <qemu-devel@nongnu.org>; Mon, 24 Jun 2024 13:44:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1719260385; x=1719865185; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Ybl4nvVqnampJxkKuJ8/OQ5kDOcVjbQC5dv9c96s0KU=;
- b=CCv7k1GM4o92pzonC8eNIKUZINtyT22/zsgbjaj762MZ2q0O06gzsgi/wgl2XKMLWt
- MKluNSi48UhyQK4Tka6U0UKE4tfFQ6rcBCHNw28xGsVAayovvucFbzdHBicZB4o4gKra
- KAhmAB45KouBN/IuEfiDgyO79iajfvIPkPLiJhOFgLepAbiJ9D1j8SdU/ePfUPUNEEkd
- cazoWDLDzmZumS0AgV/bax3tp8HJeFp5UuojnSdUCJqms1MNF6nvpUKbiNK927eYRbTK
- hawyYsaUdfxrD0xiEyKzD3EaTT7p459233T2qwpeWmqB7ww0BCusQMXuAwy193Su8T/n
- 5bOA==
+ d=google.com; s=20230601; t=1719261850; x=1719866650; darn=nongnu.org;
+ h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=AAoHWXATQqD7krZTeZlGyYWpnm7i6H7r5viEN+pXzys=;
+ b=j8jrYA83I5cd7LIYZfVCeLIWH94pYtEsWJsHbDB2tPTlN/EwT+i2MMWKCSSUQrVytK
+ kkQ8Q5a9VBmftkm+ILBe6BsGQb2wo0RstJ/OywC+kTW+8e15MiKY7t9zyU9ZchTrWfyh
+ YDoBkIlydqquhDpdQ7QRe74vYHGfHmkT0uSmeAFULtnLsToOEdwV/Gu+o6QKaXeHoRJ/
+ DGa/AbYv8zj/SJYACCq1ZrxoMmT56q968m4ZD7UJ03s9JZn9mHngwLky7+3QYshbH4yl
+ tN9O8qmwSuClfYHQmi2XT7K4+GPHvfkkHeGSpcZ+Tnmkj4h/ox2MC5zyUI6qYEAe013U
+ eXig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719260385; x=1719865185;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Ybl4nvVqnampJxkKuJ8/OQ5kDOcVjbQC5dv9c96s0KU=;
- b=oDFOM4YpJEOYUD73wa2gGvJLkJjg4tH89dKVujgv5w98VMro3ECloax97QSVJRMgep
- HKatrpSeuZ8zyJNHyWl4iO4O3Od8tsZw0ao2TupEBGwEQOs/4K2LHBu6hSQ2kAwhZA0+
- JkUcOo8R4Xwd5Q0jfjdMSIk4BvnWzBQsie1EVHX3j0IcmvnlROFmmBg2PjqVejrLlg6k
- pifhhHr5WCCl/t6osgz4qjCnBNAcUpaykrF7V7RR7XFZzV0+7MyUWDZoLcyQIIwhR9rx
- ej6z0u2Q/0fgGsdskxq+Jqdwwj33apt5FHAMqvcr4XU6b3kLrh2B5P3owqzA5OoMY2Oi
- +vwA==
-X-Gm-Message-State: AOJu0YxMJRQ7mdstngC6cQGwEidQgDBfKlVJZqTj7pLSqfU1OCNCIYzg
- J7+5Qa9skvT6zCXKoDL6/O9F6jXMdwMkHV9pbPNiW4VONrDsE4dC1xrSgHGfKJgF4V1VHWaOCBY
- l
-X-Google-Smtp-Source: AGHT+IHOuB/OZZ19RDfepCvgdgTtq0RBsk2MU35r8pkA24KdAZJZQ46Emy0bhMVNoLzQfH2releSyg==
-X-Received: by 2002:a05:6a20:f393:b0:1b8:9f3a:c1c3 with SMTP id
- adf61e73a8af0-1bcf7fb9ce9mr5814560637.43.1719260385442; 
- Mon, 24 Jun 2024 13:19:45 -0700 (PDT)
-Received: from grind.dc1.ventanamicro.com
- ([2804:7f0:bcc0:1aea:63a7:288e:eb77:fe54])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-70688f2d76bsm1927091b3a.41.2024.06.24.13.19.41
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 24 Jun 2024 13:19:45 -0700 (PDT)
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
- ajones@ventanamicro.com, tjeznach@rivosinc.com, frank.chang@sifive.com,
- jason.chien@sifive.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH v4 14/14] docs/specs: add riscv-iommu
-Date: Mon, 24 Jun 2024 17:18:24 -0300
-Message-ID: <20240624201825.1054980-15-dbarboza@ventanamicro.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240624201825.1054980-1-dbarboza@ventanamicro.com>
-References: <20240624201825.1054980-1-dbarboza@ventanamicro.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x430.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ d=1e100.net; s=20230601; t=1719261850; x=1719866650;
+ h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=AAoHWXATQqD7krZTeZlGyYWpnm7i6H7r5viEN+pXzys=;
+ b=fDZp2stSysrFEEQPp6c18pEe1nJ+uYgwbWDBIf1T4VhB736WYq2p3UZ8OnR0tKAmcs
+ 6lqnWfdnMIWNlxCX1f3ZpXRCyucXmytSxX/q8DaRRdvilUby5jsnNLrAZ2yxg+dAN2oM
+ rTr4fvi8sUqafbZe+JNzswMmxLboOHCESQsC9kOqrrez5cWLsxXLSW2TT+0RPZYZ0a5o
+ hQdJx6t8AC/UZd3cWepD9Uw4BqXck7B92df11oq6CLWSpIsbYhqAaznsAKRbQJWbv+8x
+ XVm+Au173S4eFfr6IpeomJqui6nvloukHDJj26QG+TNMMhZO8HpatghDIGO185o5K03Z
+ Qu7w==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCU16CmF00ctYjyjLuIUSiHbskqNKxuiIh1yqaQfxUxBCCT0AdMENo3bI4vWDptQfn6f6zMxDEjlcGbfRGdShbxfcwOUVqg=
+X-Gm-Message-State: AOJu0YzZDoPMNTtDYQtaqbjjY5qiC+u5QDWPr7lbqVZPvlOacBNHRVrV
+ dJ3JUzUz/sfJgeuQGNczdxihxGJADs7Ev0LOSLByIXomS7Pq8u6FbVyUNg/NPCDqRmoUYQ==
+X-Google-Smtp-Source: AGHT+IHAjsTf9HCDT5qOpiAN8fZ8KGbCHW0/nyfPSOt+k+fAHQ12l3DNomdOOuXzOckvemXVPCi1wL8+
+X-Received: from flwu-kvm.c.googlers.com
+ ([fda3:e722:ac3:cc00:7f:e700:c0a8:5ceb])
+ (user=flwu job=sendgmr) by 2002:a05:6a00:3319:b0:704:2cd2:7822 with SMTP id
+ d2e1a72fcca58-7066e721059mr69088b3a.4.1719261850246; Mon, 24 Jun 2024
+ 13:44:10 -0700 (PDT)
+Date: Mon, 24 Jun 2024 20:43:59 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.45.2.741.gdbec12cfda-goog
+Message-ID: <20240624204400.103747-1-flwu@google.com>
+Subject: [PATCH 1/2] qom: Rename Object::class into Object::klass
+From: Felix Wu <flwu@google.com>
+To: peter.maydell@linaro.org
+Cc: pbonzini@redhat.com, berrange@redhat.com, eduardo@habkost.net, 
+ peterx@redhat.com, david@redhat.com, philmd@linaro.org, qemu-devel@nongnu.org, 
+ Roman Kiryanov <rkir@google.com>, Felix Wu <flwu@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::449;
+ envelope-from=3mtp5ZgQKCnEUaljVddVaT.RdbfTbj-STkTacdcVcj.dgV@flex--flwu.bounces.google.com;
+ helo=mail-pf1-x449.google.com
+X-Spam_score_int: -100
+X-Spam_score: -10.1
+X-Spam_bar: ----------
+X-Spam_report: (-10.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.453,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ USER_IN_DEF_DKIM_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,114 +91,340 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a simple guideline to use the existing RISC-V IOMMU support we just
-added.
+From: Roman Kiryanov <rkir@google.com>
 
-This doc will be updated once we add the riscv-iommu-sys device.
+'class' is a C++ keyword and it prevents from
+using the QEMU headers with a C++ compiler.
 
-Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Google-Bug-Id: 331190993
+Change-Id: I9ab7d2d77edef654a9c7b7cb9cd01795a6ed65a2
+Signed-off-by: Felix Wu <flwu@google.com>
+Signed-off-by: Roman Kiryanov <rkir@google.com>
 ---
- docs/specs/index.rst       |  1 +
- docs/specs/riscv-iommu.rst | 55 ++++++++++++++++++++++++++++++++++++++
- docs/system/riscv/virt.rst | 13 +++++++++
- 3 files changed, 69 insertions(+)
- create mode 100644 docs/specs/riscv-iommu.rst
+ hw/core/qdev-properties-system.c |  2 +-
+ include/exec/memory.h            |  2 +-
+ include/qom/object.h             |  2 +-
+ qom/object.c                     | 90 ++++++++++++++++----------------
+ 4 files changed, 48 insertions(+), 48 deletions(-)
 
-diff --git a/docs/specs/index.rst b/docs/specs/index.rst
-index 1484e3e760..c68cd9ae6c 100644
---- a/docs/specs/index.rst
-+++ b/docs/specs/index.rst
-@@ -33,3 +33,4 @@ guest hardware that is specific to QEMU.
-    virt-ctlr
-    vmcoreinfo
-    vmgenid
-+   riscv-iommu
-diff --git a/docs/specs/riscv-iommu.rst b/docs/specs/riscv-iommu.rst
-new file mode 100644
-index 0000000000..fa38ff7667
---- /dev/null
-+++ b/docs/specs/riscv-iommu.rst
-@@ -0,0 +1,55 @@
-+.. _riscv-iommu:
-+
-+RISC-V IOMMU support for RISC-V machines
-+========================================
-+
-+QEMU implements a RISC-V IOMMU emulation based on the RISC-V IOMMU spec
-+version 1.0 [1].
-+
-+The emulation includes a PCI reference device, riscv-iommu-pci, that QEMU
-+RISC-V boards can use.  The 'virt' RISC-V machine is compatible with this
-+device.
-+
-+A platform device that implements the RISC-V IOMMU will be added in the
-+future.
-+
-+
-+riscv-iommu-pci reference device
-+--------------------------------
-+
-+This device implements the RISC-V IOMMU emulation as recommended by the section
-+"Integrating an IOMMU as a PCIe device" of [1]: a PCI device with base class 08h,
-+sub-class 06h and programming interface 00h.
-+
-+As a reference device it doesn't implement anything outside of the specification,
-+so it uses a generic default PCI ID given by QEMU: 1b36:0014.
-+
-+To include the device in the 'virt' machine:
-+
-+.. code-block:: bash
-+
-+  $ qemu-system-riscv64 -M virt -device riscv-iommu-pci (...)
-+
-+As of this writing the existing Linux kernel support [2], not yet merged, is being
-+created as a Rivos device, i.e. it uses Rivos vendor ID.  To use the riscv-iommu-pci
-+device with the existing kernel support we need to emulate a Rivos PCI IOMMU by
-+setting 'vendor-id' and 'device-id':
-+
-+.. code-block:: bash
-+
-+  $ qemu-system-riscv64 -M virt	\
-+     -device riscv-iommu-pci,vendor-id=0x1efd,device-id=0xedf1 (...)
-+
-+Several options are available to control the capabilities of the device, namely:
-+
-+- "bus"
-+- "ioatc-limit"
-+- "intremap"
-+- "ats"
-+- "off" (Out-of-reset translation mode: 'on' for DMA disabled, 'off' for 'BARE' (passthrough))
-+- "s-stage"
-+- "g-stage"
-+
-+
-+[1] https://github.com/riscv-non-isa/riscv-iommu/releases/download/v1.0/riscv-iommu.pdf
-+[2] https://lore.kernel.org/linux-riscv/cover.1718388908.git.tjeznach@rivosinc.com/
-diff --git a/docs/system/riscv/virt.rst b/docs/system/riscv/virt.rst
-index 9a06f95a34..8e9a2e4dda 100644
---- a/docs/system/riscv/virt.rst
-+++ b/docs/system/riscv/virt.rst
-@@ -84,6 +84,19 @@ none``, as in
+diff --git a/hw/core/qdev-properties-system.c b/hw/core/qdev-properties-system.c
+index f13350b4fb..a6781841af 100644
+--- a/hw/core/qdev-properties-system.c
++++ b/hw/core/qdev-properties-system.c
+@@ -431,7 +431,7 @@ static void set_netdev(Object *obj, Visitor *v, const char *name,
+         }
  
- Firmware images used for pflash must be exactly 32 MiB in size.
+         if (peers[i]->info->check_peer_type) {
+-            if (!peers[i]->info->check_peer_type(peers[i], obj->class, errp)) {
++            if (!peers[i]->info->check_peer_type(peers[i], obj->klass, errp)) {
+                 goto out;
+             }
+         }
+diff --git a/include/exec/memory.h b/include/exec/memory.h
+index 2d7c278b9f..e5bd75956e 100644
+--- a/include/exec/memory.h
++++ b/include/exec/memory.h
+@@ -1808,7 +1808,7 @@ static inline IOMMUMemoryRegion *memory_region_get_iommu(MemoryRegion *mr)
+ static inline IOMMUMemoryRegionClass *memory_region_get_iommu_class_nocheck(
+         IOMMUMemoryRegion *iommu_mr)
+ {
+-    return (IOMMUMemoryRegionClass *) (((Object *)iommu_mr)->class);
++    return (IOMMUMemoryRegionClass *) (((Object *)iommu_mr)->klass);
+ }
  
-+riscv-iommu support
-+-------------------
-+
-+The board has support for the riscv-iommu-pci device by using the following
-+command line:
-+
-+.. code-block:: bash
-+
-+  $ qemu-system-riscv64 -M virt -device riscv-iommu-pci (...)
-+
-+Refer to :ref:`riscv-iommu` for more information on how the RISC-V IOMMU support
-+works.
-+
- Machine-specific options
- ------------------------
+ #define memory_region_is_iommu(mr) (memory_region_get_iommu(mr) != NULL)
+diff --git a/include/qom/object.h b/include/qom/object.h
+index 13d3a655dd..7afdb261a8 100644
+--- a/include/qom/object.h
++++ b/include/qom/object.h
+@@ -153,7 +153,7 @@ struct ObjectClass
+ struct Object
+ {
+     /* private: */
+-    ObjectClass *class;
++    ObjectClass *klass;
+     ObjectFree *free;
+     GHashTable *properties;
+     uint32_t ref;
+diff --git a/qom/object.c b/qom/object.c
+index 157a45c5f8..133cd08763 100644
+--- a/qom/object.c
++++ b/qom/object.c
+@@ -68,7 +68,7 @@ struct TypeImpl
+     const char *parent;
+     TypeImpl *parent_type;
  
+-    ObjectClass *class;
++    ObjectClass *klass;
+ 
+     int num_interfaces;
+     InterfaceImpl interfaces[MAX_INTERFACES];
+@@ -304,11 +304,11 @@ static void type_initialize_interface(TypeImpl *ti, TypeImpl *interface_type,
+     type_initialize(iface_impl);
+     g_free((char *)info.name);
+ 
+-    new_iface = (InterfaceClass *)iface_impl->class;
+-    new_iface->concrete_class = ti->class;
++    new_iface = (InterfaceClass *)iface_impl->klass;
++    new_iface->concrete_class = ti->klass;
+     new_iface->interface_type = interface_type;
+ 
+-    ti->class->interfaces = g_slist_append(ti->class->interfaces, new_iface);
++    ti->klass->interfaces = g_slist_append(ti->klass->interfaces, new_iface);
+ }
+ 
+ static void object_property_free(gpointer data)
+@@ -329,7 +329,7 @@ static void type_initialize(TypeImpl *ti)
+ {
+     TypeImpl *parent;
+ 
+-    if (ti->class) {
++    if (ti->klass) {
+         return;
+     }
+ 
+@@ -350,7 +350,7 @@ static void type_initialize(TypeImpl *ti)
+         assert(!ti->instance_finalize);
+         assert(!ti->num_interfaces);
+     }
+-    ti->class = g_malloc0(ti->class_size);
++    ti->klass = g_malloc0(ti->class_size);
+ 
+     parent = type_get_parent(ti);
+     if (parent) {
+@@ -360,10 +360,10 @@ static void type_initialize(TypeImpl *ti)
+ 
+         g_assert(parent->class_size <= ti->class_size);
+         g_assert(parent->instance_size <= ti->instance_size);
+-        memcpy(ti->class, parent->class, parent->class_size);
+-        ti->class->interfaces = NULL;
++        memcpy(ti->klass, parent->klass, parent->class_size);
++        ti->klass->interfaces = NULL;
+ 
+-        for (e = parent->class->interfaces; e; e = e->next) {
++        for (e = parent->klass->interfaces; e; e = e->next) {
+             InterfaceClass *iface = e->data;
+             ObjectClass *klass = OBJECT_CLASS(iface);
+ 
+@@ -377,7 +377,7 @@ static void type_initialize(TypeImpl *ti)
+                              ti->interfaces[i].typename, parent->name);
+                 abort();
+             }
+-            for (e = ti->class->interfaces; e; e = e->next) {
++            for (e = ti->klass->interfaces; e; e = e->next) {
+                 TypeImpl *target_type = OBJECT_CLASS(e->data)->type;
+ 
+                 if (type_is_ancestor(target_type, t)) {
+@@ -393,20 +393,20 @@ static void type_initialize(TypeImpl *ti)
+         }
+     }
+ 
+-    ti->class->properties = g_hash_table_new_full(g_str_hash, g_str_equal, NULL,
++    ti->klass->properties = g_hash_table_new_full(g_str_hash, g_str_equal, NULL,
+                                                   object_property_free);
+ 
+-    ti->class->type = ti;
++    ti->klass->type = ti;
+ 
+     while (parent) {
+         if (parent->class_base_init) {
+-            parent->class_base_init(ti->class, ti->class_data);
++            parent->class_base_init(ti->klass, ti->class_data);
+         }
+         parent = type_get_parent(parent);
+     }
+ 
+     if (ti->class_init) {
+-        ti->class_init(ti->class, ti->class_data);
++        ti->class_init(ti->klass, ti->class_data);
+     }
+ }
+ 
+@@ -554,7 +554,7 @@ static void object_initialize_with_type(Object *obj, size_t size, TypeImpl *type
+     g_assert(size >= type->instance_size);
+ 
+     memset(obj, 0, type->instance_size);
+-    obj->class = type->class;
++    obj->klass = type->klass;
+     object_ref(obj);
+     object_class_property_init_all(obj);
+     obj->properties = g_hash_table_new_full(g_str_hash, g_str_equal,
+@@ -731,7 +731,7 @@ static void object_deinit(Object *obj, TypeImpl *type)
+ static void object_finalize(void *data)
+ {
+     Object *obj = data;
+-    TypeImpl *ti = obj->class->type;
++    TypeImpl *ti = obj->klass->type;
+ 
+     object_property_del_all(obj);
+     object_deinit(obj, ti);
+@@ -912,7 +912,7 @@ Object *object_dynamic_cast(Object *obj, const char *typename)
+ Object *object_dynamic_cast_assert(Object *obj, const char *typename,
+                                    const char *file, int line, const char *func)
+ {
+-    trace_object_dynamic_cast_assert(obj ? obj->class->type->name : "(null)",
++    trace_object_dynamic_cast_assert(obj ? obj->klass->type->name : "(null)",
+                                      typename, file, line, func);
+ 
+ #ifdef CONFIG_QOM_CAST_DEBUG
+@@ -920,7 +920,7 @@ Object *object_dynamic_cast_assert(Object *obj, const char *typename,
+     Object *inst;
+ 
+     for (i = 0; obj && i < OBJECT_CLASS_CAST_CACHE; i++) {
+-        if (qatomic_read(&obj->class->object_cast_cache[i]) == typename) {
++        if (qatomic_read(&obj->klass->object_cast_cache[i]) == typename) {
+             goto out;
+         }
+     }
+@@ -937,10 +937,10 @@ Object *object_dynamic_cast_assert(Object *obj, const char *typename,
+ 
+     if (obj && obj == inst) {
+         for (i = 1; i < OBJECT_CLASS_CAST_CACHE; i++) {
+-            qatomic_set(&obj->class->object_cast_cache[i - 1],
+-                       qatomic_read(&obj->class->object_cast_cache[i]));
++            qatomic_set(&obj->klass->object_cast_cache[i - 1],
++                       qatomic_read(&obj->klass->object_cast_cache[i]));
+         }
+-        qatomic_set(&obj->class->object_cast_cache[i - 1], typename);
++        qatomic_set(&obj->klass->object_cast_cache[i - 1], typename);
+     }
+ 
+ out:
+@@ -971,7 +971,7 @@ ObjectClass *object_class_dynamic_cast(ObjectClass *class,
+         return NULL;
+     }
+ 
+-    if (type->class->interfaces &&
++    if (type->klass->interfaces &&
+             type_is_ancestor(target_type, type_interface)) {
+         int found = 0;
+         GSList *i;
+@@ -996,45 +996,45 @@ ObjectClass *object_class_dynamic_cast(ObjectClass *class,
+     return ret;
+ }
+ 
+-ObjectClass *object_class_dynamic_cast_assert(ObjectClass *class,
++ObjectClass *object_class_dynamic_cast_assert(ObjectClass *klass,
+                                               const char *typename,
+                                               const char *file, int line,
+                                               const char *func)
+ {
+     ObjectClass *ret;
+ 
+-    trace_object_class_dynamic_cast_assert(class ? class->type->name : "(null)",
++    trace_object_class_dynamic_cast_assert(klass ? klass->type->name : "(null)",
+                                            typename, file, line, func);
+ 
+ #ifdef CONFIG_QOM_CAST_DEBUG
+     int i;
+ 
+-    for (i = 0; class && i < OBJECT_CLASS_CAST_CACHE; i++) {
+-        if (qatomic_read(&class->class_cast_cache[i]) == typename) {
+-            ret = class;
++    for (i = 0; klass && i < OBJECT_CLASS_CAST_CACHE; i++) {
++        if (qatomic_read(&klass->class_cast_cache[i]) == typename) {
++            ret = klass;
+             goto out;
+         }
+     }
+ #else
+-    if (!class || !class->interfaces) {
+-        return class;
++    if (!klass || !klass->interfaces) {
++        return klass;
+     }
+ #endif
+ 
+-    ret = object_class_dynamic_cast(class, typename);
+-    if (!ret && class) {
++    ret = object_class_dynamic_cast(klass, typename);
++    if (!ret && klass) {
+         fprintf(stderr, "%s:%d:%s: Object %p is not an instance of type %s\n",
+-                file, line, func, class, typename);
++                file, line, func, klass, typename);
+         abort();
+     }
+ 
+ #ifdef CONFIG_QOM_CAST_DEBUG
+-    if (class && ret == class) {
++    if (klass && ret == klass) {
+         for (i = 1; i < OBJECT_CLASS_CAST_CACHE; i++) {
+-            qatomic_set(&class->class_cast_cache[i - 1],
+-                       qatomic_read(&class->class_cast_cache[i]));
++            qatomic_set(&klass->class_cast_cache[i - 1],
++                       qatomic_read(&klass->class_cast_cache[i]));
+         }
+-        qatomic_set(&class->class_cast_cache[i - 1], typename);
++        qatomic_set(&klass->class_cast_cache[i - 1], typename);
+     }
+ out:
+ #endif
+@@ -1043,12 +1043,12 @@ out:
+ 
+ const char *object_get_typename(const Object *obj)
+ {
+-    return obj->class->type->name;
++    return obj->klass->type->name;
+ }
+ 
+ ObjectClass *object_get_class(Object *obj)
+ {
+-    return obj->class;
++    return obj->klass;
+ }
+ 
+ bool object_class_is_abstract(ObjectClass *klass)
+@@ -1071,7 +1071,7 @@ ObjectClass *object_class_by_name(const char *typename)
+ 
+     type_initialize(type);
+ 
+-    return type->class;
++    return type->klass;
+ }
+ 
+ ObjectClass *module_object_class_by_name(const char *typename)
+@@ -1093,9 +1093,9 @@ ObjectClass *module_object_class_by_name(const char *typename)
+     return oc;
+ }
+ 
+-ObjectClass *object_class_get_parent(ObjectClass *class)
++ObjectClass *object_class_get_parent(ObjectClass *klass)
+ {
+-    TypeImpl *type = type_get_parent(class->type);
++    TypeImpl *type = type_get_parent(klass->type);
+ 
+     if (!type) {
+         return NULL;
+@@ -1103,7 +1103,7 @@ ObjectClass *object_class_get_parent(ObjectClass *class)
+ 
+     type_initialize(type);
+ 
+-    return type->class;
++    return type->klass;
+ }
+ 
+ typedef struct OCFData
+@@ -1122,7 +1122,7 @@ static void object_class_foreach_tramp(gpointer key, gpointer value,
+     ObjectClass *k;
+ 
+     type_initialize(type);
+-    k = type->class;
++    k = type->klass;
+ 
+     if (!data->include_abstract && type->abstract) {
+         return;
+@@ -1792,8 +1792,8 @@ static void object_finalize_child_property(Object *obj, const char *name,
+ {
+     Object *child = opaque;
+ 
+-    if (child->class->unparent) {
+-        (child->class->unparent)(child);
++    if (child->klass->unparent) {
++        (child->klass->unparent)(child);
+     }
+     child->parent = NULL;
+     object_unref(child);
 -- 
-2.45.2
+2.45.2.741.gdbec12cfda-goog
 
 
