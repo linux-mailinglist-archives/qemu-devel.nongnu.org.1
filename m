@@ -2,82 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7664D914E28
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jun 2024 15:15:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19CD8914E4D
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jun 2024 15:19:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sLjXA-0001QL-Ed; Mon, 24 Jun 2024 09:15:00 -0400
+	id 1sLjWt-0001Ii-TA; Mon, 24 Jun 2024 09:14:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sLjX8-0001Mo-BR
- for qemu-devel@nongnu.org; Mon, 24 Jun 2024 09:14:58 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sLjX6-0004yd-Dj
- for qemu-devel@nongnu.org; Mon, 24 Jun 2024 09:14:58 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-4217990f8baso37997685e9.2
- for <qemu-devel@nongnu.org>; Mon, 24 Jun 2024 06:14:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719234894; x=1719839694; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=aSK8hO4sLlN1hU/1KYxtFOH8CJir4+Yl/Ws4QmLQZLA=;
- b=upOoYYP9Vsy5BRy55w+Egr7n6iTSPcyii49ZI9cECZIr7UYB4jX4K9fRJKquQ7dH4l
- Lv7GZ082QeVTDCHKLxvO7R6MhR6zU++xlefFmfsIgml/TMXzhCU4lFKNYa+LDA6K8lWX
- Hg4ugob2kVrL4EDc8F65TsZ6+1xxTw0d8Omp7zd9psdTI9Z6OnebaDnQW1lVrPxsfPj2
- MmcMiD4xQrDErVztytfU1fdTLbBjmrL8Dxt6dwr8Ip99PEqMnPsBPNY9tT089xO9ie56
- q+YORExKpOR9g/thnBQjiwfoURbtmJNZC6LEZMg8W4D2/rHfzMlnXjfL+XSrzn26ZxYu
- 7OsQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719234894; x=1719839694;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=aSK8hO4sLlN1hU/1KYxtFOH8CJir4+Yl/Ws4QmLQZLA=;
- b=IWWiuT1z4bFEmZm4EnkTfwGN9ebqIPcD1p/8Q4kcbIE1ljPZ6VF01FYIfkyQQl7r2N
- u1IyIkU90SprB5zewLgp1+aA3TP87lJK3W3f0MHo8u0OcbkCxhLx9UOlU74MAuwlDQnS
- 5Ip/T+sqCSCY+1DxLjAAJWm7bmBzBopp1gfGr+rX3IGZU5I8mxNSs6d1DDvz/lGe58gb
- 3mUow2fxZmBXC1XorkEV4S8u+Yy5/8a4lGG1/XT2PUiMedAn7ybh6uomLLVfGTK0wVuz
- bQE3o4quYvQV8YGkCZlba+Y6OyH8A9EeiiJE+BjyJoTJi4GsAf7YhUAcsJpxA5WFIk4/
- J78Q==
-X-Gm-Message-State: AOJu0YwmgGcoTsMNzZ8Q+ziZua8FMu433JQYajuP2ckDqP79qJx2pHE/
- wYsumSlE2Sa5h/7sUujoKxRl68fyftoIz6nfo/9KXTift58gGKyMNeO0c5l7fc+LlCRuU0e/Z+y
- 8
-X-Google-Smtp-Source: AGHT+IG27lmH8c5acaDS4R9l0BvYew+nhI6n0YlO0kNThaUfJ3gCSxR5aBmqL6Y9iCbFddBOwirUlA==
-X-Received: by 2002:a05:600c:818:b0:422:1163:4488 with SMTP id
- 5b1f17b1804b1-4248b9c9c5dmr35020065e9.25.1719234894569; 
- Mon, 24 Jun 2024 06:14:54 -0700 (PDT)
-Received: from m1x-phil.lan (bd137-h02-176-184-46-22.dsl.sta.abo.bbox.fr.
- [176.184.46.22]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4247cf5272esm176765475e9.0.2024.06.24.06.14.53
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 24 Jun 2024 06:14:54 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Alexander Bulekov <alxndr@bu.edu>
-Subject: [PULL 02/19] hw/sd/sdcard: Avoid OOB in sd_read_byte() during
- unexpected CMD switch
+ (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
+ id 1sLjWr-0001Hb-Vn; Mon, 24 Jun 2024 09:14:42 -0400
+Received: from muminek.juszkiewicz.com.pl ([213.251.184.221])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
+ id 1sLjWq-0004sc-AX; Mon, 24 Jun 2024 09:14:41 -0400
+Received: from localhost (localhost [127.0.0.1])
+ by muminek.juszkiewicz.com.pl (Postfix) with ESMTP id 3F5D8261A90;
+ Mon, 24 Jun 2024 15:14:38 +0200 (CEST)
+X-Virus-Scanned: Debian amavis at juszkiewicz.com.pl
+Received: from muminek.juszkiewicz.com.pl ([127.0.0.1])
+ by localhost (muminek.juszkiewicz.com.pl [127.0.0.1]) (amavis, port 10024)
+ with ESMTP id RknKwESWfuaG; Mon, 24 Jun 2024 15:14:36 +0200 (CEST)
+Received: from applejack.lan (83.11.22.244.ipv4.supernova.orange.pl
+ [83.11.22.244])
+ by muminek.juszkiewicz.com.pl (Postfix) with ESMTPSA id 76FAC261A96;
+ Mon, 24 Jun 2024 15:14:34 +0200 (CEST)
+From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
 Date: Mon, 24 Jun 2024 15:14:23 +0200
-Message-ID: <20240624131440.81111-3-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20240624131440.81111-1-philmd@linaro.org>
-References: <20240624131440.81111-1-philmd@linaro.org>
+Subject: [PATCH v2 2/2] tests/avocado: add test for default sbsa-ref cpu
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240624-b4-move-to-freebsd-v2-2-64ea7b04998f@linaro.org>
+References: <20240624-b4-move-to-freebsd-v2-0-64ea7b04998f@linaro.org>
+In-Reply-To: <20240624-b4-move-to-freebsd-v2-0-64ea7b04998f@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, Leif Lindholm <quic_llindhol@quicinc.com>, 
+ Radoslaw Biernacki <rad@semihalf.com>, 
+ Peter Maydell <peter.maydell@linaro.org>, Cleber Rosa <crosa@redhat.com>, 
+ =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
+ Wainer dos Santos Moschetta <wainersm@redhat.com>, 
+ Beraldo Leal <bleal@redhat.com>, 
+ Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+X-Mailer: b4 0.13.0
+Received-SPF: softfail client-ip=213.251.184.221;
+ envelope-from=marcin.juszkiewicz@linaro.org; helo=muminek.juszkiewicz.com.pl
+X-Spam_score_int: -11
+X-Spam_score: -1.2
+X-Spam_bar: -
+X-Spam_report: (-1.2 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_SOFTFAIL=0.665 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,96 +67,107 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For multi-bytes commands, our implementation uses the @data_start
-and @data_offset fields to track byte access. We initialize the
-command start/offset in buffer once. Malicious guest might abuse
-by switching command while staying in the 'transfer' state, switching
-command buffer size, and our implementation can access out of buffer
-boundary. For example, CMD17 (READ_SINGLE_BLOCK) allows to read up to
-512 bytes, and CMD13 (SEND_STATUS) up to 64 bytes. By switching from
-CMD17 to CMD13 (see reproducer below), bytes [64-511] are out of the
-'status' buffer.
+We changed sbsa-ref cpu several times already and may do it again in a
+future. To newer core or to enable/disable some properties.
 
-Our implementation return R0 status code for unexpected commands.
-Such in-transaction command switch is unexpected and returns R0.
-This is a good place to reset the start/offset fields to avoid
-malicious accesses.
+This change switches Neoverse-N2 tests to 'let test default cpu' ones.
 
-Can be reproduced running:
-
-  $ export UBSAN_OPTIONS=print_stacktrace=1:halt_on_error=1
-  $ cat << EOF | qemu-system-i386 \
-                     -display none -nographic \
-                     -machine accel=qtest -m 512M \
-                     -nodefaults \
-                     -device sdhci-pci,sd-spec-version=3 \
-                     -device sd-card,drive=mydrive \
-                     -drive if=none,index=0,file=null-co://,format=raw,id=mydrive \
-                     -qtest stdio -trace sd\* -trace -sdbus_read
-  outl 0xcf8 0x80001010
-  outl 0xcfc 0xe0000000
-  outl 0xcf8 0x80001004
-  outw 0xcfc 0x02
-  write 0xe000002c 0x1 0x05
-  write 0xe000000f 0x1 0x37
-  write 0xe000000a 0x1 0x01
-  write 0xe000000f 0x1 0x29
-  write 0xe000000f 0x1 0x02
-  write 0xe000000f 0x1 0x03
-  write 0xe000000c 0x1 0x32
-  write 0xe000000f 0x1 0x06
-  write 0xe0000005 0x1 0x01
-  write 0xe0000007 0x1 0x01
-  write 0xe0000003 0x1 0x00
-  write 0xe000000f 0x1 0x11
-  write 0xe000002a 0x1 0x01
-  write 0xe000002a 0x1 0x02
-  write 0xe000000f 0x1 0x0d
-  write 0xe000002a 0x1 0x01
-  write 0xe000002a 0x1 0x02
-  EOF
-  hw/sd/sd.c:1984:15: runtime error: index 256 out of bounds for type 'uint8_t [64]'
-  #0 sd_read_byte hw/sd/sd.c:1984:15
-  #1 sdbus_read_data hw/sd/core.c:157:23
-  #2 sdhci_read_block_from_card hw/sd/sdhci.c:423:9
-  #3 sdhci_blkgap_write hw/sd/sdhci.c:1074:13
-  #4 sdhci_write hw/sd/sdhci.c:1195:13
-  #5 memory_region_write_accessor softmmu/memory.c:492:5
-  #6 access_with_adjusted_size softmmu/memory.c:554:18
-  #7 memory_region_dispatch_write softmmu/memory.c
-  #8 flatview_write_continue softmmu/physmem.c:2778:23
-  #9 flatview_write softmmu/physmem.c:2818:14
-  #10 address_space_write softmmu/physmem.c:2910:18
-  SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior hw/sd/sd.c:1984:15
-
-Reported-by: Alexander Bulekov <alxndr@bu.edu>
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/487
-Buglink: https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=36240
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20240408141717.66154-2-philmd@linaro.org>
+Signed-off-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
 ---
- hw/sd/sd.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ tests/avocado/machine_aarch64_sbsaref.py | 29 ++++++++++++++++-------------
+ 1 file changed, 16 insertions(+), 13 deletions(-)
 
-diff --git a/hw/sd/sd.c b/hw/sd/sd.c
-index 807b5d3de3..6a7a10501b 100644
---- a/hw/sd/sd.c
-+++ b/hw/sd/sd.c
-@@ -1826,6 +1826,13 @@ send_response:
-         break;
+diff --git a/tests/avocado/machine_aarch64_sbsaref.py b/tests/avocado/machine_aarch64_sbsaref.py
+index d52f89f756..0e96e7ea16 100644
+--- a/tests/avocado/machine_aarch64_sbsaref.py
++++ b/tests/avocado/machine_aarch64_sbsaref.py
+@@ -115,7 +115,7 @@ def test_sbsaref_edk2_firmware(self):
+     # This tests the whole boot chain from EFI to Userspace
+     # We only boot a whole OS for the current top level CPU and GIC
+     # Other test profiles should use more minimal boots
+-    def boot_alpine_linux(self, cpu):
++    def boot_alpine_linux(self, cpu=False):
+         self.fetch_firmware()
  
-     case sd_r0:
-+        /*
-+         * Invalid state transition, reset implementation
-+         * fields to avoid OOB abuse.
-+         */
-+        sd->data_start = 0;
-+        sd->data_offset = 0;
-+        /* fall-through */
-     case sd_illegal:
-         rsplen = 0;
-         break;
+         iso_url = (
+@@ -128,12 +128,14 @@ def boot_alpine_linux(self, cpu):
+ 
+         self.vm.set_console()
+         self.vm.add_args(
+-            "-cpu",
+-            cpu,
+             "-drive",
+             f"file={iso_path},format=raw",
+         )
+ 
++        # let allow test which will use default cpu of platform
++        if cpu:
++            self.vm.add_args("-cpu", cpu)
++
+         self.vm.launch()
+         wait_for_console_pattern(self, "Welcome to Alpine Linux 3.17")
+ 
+@@ -144,12 +146,12 @@ def test_sbsaref_alpine_linux_cortex_a57(self):
+         """
+         self.boot_alpine_linux("cortex-a57")
+ 
+-    def test_sbsaref_alpine_linux_neoverse_n1(self):
++    # Let test whichever cpu is used as default
++    def test_sbsaref_alpine_linux_default(self):
+         """
+-        :avocado: tags=cpu:neoverse-n1
+         :avocado: tags=os:linux
+         """
+-        self.boot_alpine_linux("neoverse-n1")
++        self.boot_alpine_linux()
+ 
+     def test_sbsaref_alpine_linux_max_pauth_off(self):
+         """
+@@ -178,7 +180,7 @@ def test_sbsaref_alpine_linux_max(self):
+     # This tests the whole boot chain from EFI to Userspace
+     # We only boot a whole OS for the current top level CPU and GIC
+     # Other test profiles should use more minimal boots
+-    def boot_freebsd(self, cpu):
++    def boot_freebsd(self, cpu=False):
+         self.fetch_firmware()
+ 
+         img_url = (
+@@ -191,12 +193,14 @@ def boot_freebsd(self, cpu):
+ 
+         self.vm.set_console()
+         self.vm.add_args(
+-            "-cpu",
+-            cpu,
+             "-drive",
+             f"file={img_path},format=raw",
+         )
+ 
++        # let allow test which will use default cpu of platform
++        if cpu:
++            self.vm.add_args("-cpu", cpu)
++
+         self.vm.launch()
+         wait_for_console_pattern(self, "Welcome to FreeBSD!")
+ 
+@@ -207,13 +211,12 @@ def test_sbsaref_freebsd_cortex_a57(self):
+         """
+         self.boot_freebsd("cortex-a57")
+ 
+-    # We use Neoverse-N2 as default cpu
+-    def test_sbsaref_freebsd_neoverse_n2(self):
++    # Let test whichever cpu is used as default
++    def test_sbsaref_freebsd_default(self):
+         """
+-        :avocado: tags=cpu:neoverse-n2
+         :avocado: tags=os:freebsd
+         """
+-        self.boot_freebsd("neoverse-n2")
++        self.boot_freebsd()
+ 
+     def test_sbsaref_freebsd_max_pauth_off(self):
+         """
+
 -- 
-2.41.0
+2.45.2
 
 
