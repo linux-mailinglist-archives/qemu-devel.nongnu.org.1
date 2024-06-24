@@ -2,60 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C7149145ED
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jun 2024 11:12:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55F769145F6
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jun 2024 11:12:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sLfjY-0007zG-DO; Mon, 24 Jun 2024 05:11:32 -0400
+	id 1sLfja-00080G-VB; Mon, 24 Jun 2024 05:11:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sLfjV-0007yV-KP
- for qemu-devel@nongnu.org; Mon, 24 Jun 2024 05:11:29 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sLfjY-0007zf-RK
+ for qemu-devel@nongnu.org; Mon, 24 Jun 2024 05:11:32 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sLfjJ-0003tV-DN
- for qemu-devel@nongnu.org; Mon, 24 Jun 2024 05:11:29 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sLfjX-0003uF-Ee
+ for qemu-devel@nongnu.org; Mon, 24 Jun 2024 05:11:32 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719220276;
+ s=mimecast20190719; t=1719220288;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=+9IY13yh8RRCqanS8sKsz76bmifajzLlE5oieW9FlZw=;
- b=JU2MLtA9Jbmkg6QbcPO7P5L2rvoRe63+r7ojw38Tqr0snCFlZJReBgMjKWJTLabdGtD3ND
- utkLjXQAv4m0SKbi9jWqxIjIMsoeerMfbw5P1DlABnN7P7Y59XmjlHHbPLkZhpqYZGgnf8
- HyZZ9JklNyT8lEZrJ8heFG3+TdfvLac=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=W7ohm5evrWfnX6RaracvxTgW8W6EpOv2Muym3qslNwI=;
+ b=OmcqLa9HuGmPKClv4FbT28pJbBkDHfzutqkJPO6mLMYO1f+iFq5dGueXbTBGPSHmsuJfyU
+ DL58hlmYVkmo4Xwg0DuQw997J/5Kt7IdHKkLJh7a6tGITAQ7oucK+Z1VGS9xa5ntReT1ld
+ 8BzoQsDAdMfWCgYikhJ3AIdsmQcg8j4=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-690-5Ojq6atiN0S2wfz5gobYkg-1; Mon,
- 24 Jun 2024 05:11:15 -0400
-X-MC-Unique: 5Ojq6atiN0S2wfz5gobYkg-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-461-EMjXoU1cMaC80Kw4zFqqEg-1; Mon,
+ 24 Jun 2024 05:11:18 -0400
+X-MC-Unique: EMjXoU1cMaC80Kw4zFqqEg-1
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id F11C91955E72; Mon, 24 Jun 2024 09:11:13 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 0CE2019560AE; Mon, 24 Jun 2024 09:11:17 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.193.33])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id CDE69300070F; Mon, 24 Jun 2024 09:11:11 +0000 (UTC)
+ id DE75E300021C; Mon, 24 Jun 2024 09:11:14 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org,
 	Richard Henderson <richard.henderson@linaro.org>
-Cc: Dmitry Frolov <frolov@swemel.ru>,
-	Alexander Bulekov <alxndr@bu.edu>
-Subject: [PULL 08/11] tests/qtest/fuzz: fix memleak in qos_fuzz.c
-Date: Mon, 24 Jun 2024 11:10:40 +0200
-Message-ID: <20240624091043.177484-9-thuth@redhat.com>
+Cc: Omar Sandoval <osandov@osandov.com>
+Subject: [PULL 09/11] target/s390x/arch_dump: use correct byte order for pid
+Date: Mon, 24 Jun 2024 11:10:41 +0200
+Message-ID: <20240624091043.177484-10-thuth@redhat.com>
 In-Reply-To: <20240624091043.177484-1-thuth@redhat.com>
 References: <20240624091043.177484-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: 11
 X-Spam_score: 1.1
@@ -80,31 +79,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Dmitry Frolov <frolov@swemel.ru>
+From: Omar Sandoval <osandov@osandov.com>
 
-Found with fuzzing for qemu-8.2, but also relevant for master
+The pid field of prstatus needs to be big endian like all of the other
+fields.
 
-Signed-off-by: Dmitry Frolov <frolov@swemel.ru>
+Fixes: f738f296eaae ("s390x/arch_dump: pass cpuid into notes sections")
+Signed-off-by: Omar Sandoval <osandov@osandov.com>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Alexander Bulekov <alxndr@bu.edu>
-Message-ID: <20240521103106.119021-3-frolov@swemel.ru>
+Message-ID: <5929f76d536d355afd04af51bf293695a1065118.1718771802.git.osandov@osandov.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/qtest/fuzz/qos_fuzz.c | 1 +
- 1 file changed, 1 insertion(+)
+ target/s390x/arch_dump.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/qtest/fuzz/qos_fuzz.c b/tests/qtest/fuzz/qos_fuzz.c
-index b71e945c5f..d3839bf999 100644
---- a/tests/qtest/fuzz/qos_fuzz.c
-+++ b/tests/qtest/fuzz/qos_fuzz.c
-@@ -180,6 +180,7 @@ static void walk_path(QOSGraphNode *orig_path, int len)
- 
-         fuzz_path_vec = path_vec;
-     } else {
-+        g_string_free(cmd_line, true);
-         g_free(path_vec);
+diff --git a/target/s390x/arch_dump.c b/target/s390x/arch_dump.c
+index 7e8a1b4fc0..029d91d93a 100644
+--- a/target/s390x/arch_dump.c
++++ b/target/s390x/arch_dump.c
+@@ -102,7 +102,7 @@ static void s390x_write_elf64_prstatus(Note *note, S390CPU *cpu, int id)
+         regs->acrs[i] = cpu_to_be32(cpu->env.aregs[i]);
+         regs->gprs[i] = cpu_to_be64(cpu->env.regs[i]);
      }
+-    note->contents.prstatus.pid = id;
++    note->contents.prstatus.pid = cpu_to_be32(id);
+ }
  
+ static void s390x_write_elf64_fpregset(Note *note, S390CPU *cpu, int id)
 -- 
 2.45.2
 
