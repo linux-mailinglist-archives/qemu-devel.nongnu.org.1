@@ -2,82 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7DBE915637
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jun 2024 20:10:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FB7F915650
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jun 2024 20:13:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sLo8S-0002bH-OY; Mon, 24 Jun 2024 14:09:48 -0400
+	id 1sLoC0-0005ou-V8; Mon, 24 Jun 2024 14:13:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1sLo8K-0002ag-22
- for qemu-devel@nongnu.org; Mon, 24 Jun 2024 14:09:40 -0400
-Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
+ id 1sLoBy-0005mR-Ba
+ for qemu-devel@nongnu.org; Mon, 24 Jun 2024 14:13:26 -0400
+Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1sLo8I-0005WC-Bn
- for qemu-devel@nongnu.org; Mon, 24 Jun 2024 14:09:39 -0400
-Received: by mail-pf1-x431.google.com with SMTP id
- d2e1a72fcca58-7024d571d8eso3675261b3a.0
- for <qemu-devel@nongnu.org>; Mon, 24 Jun 2024 11:09:37 -0700 (PDT)
+ id 1sLoBw-0006Hr-CH
+ for qemu-devel@nongnu.org; Mon, 24 Jun 2024 14:13:26 -0400
+Received: by mail-pf1-x436.google.com with SMTP id
+ d2e1a72fcca58-7067a2e9607so1390299b3a.3
+ for <qemu-devel@nongnu.org>; Mon, 24 Jun 2024 11:13:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719252576; x=1719857376; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Hk0VnpAGUhDWCzrPpaDYSlTmYSM3R8aHA3LLzBaPzwg=;
- b=JY454uKFkFUSq+VWApXkjoUIkAIlxduC/13sjEUzqOd7DrUl1tu0U8VXeTW4WL0j4K
- UKCizyltRPE5AsW+aiZylJb8UU9QYFJlAdy+Z6PyiTQgtMC3aQVUGs71XEtm/2+eoV5M
- 1IsQQ9O2/sHh1s1kmsdUPoP7SOAx7Z3d9YhGP6uBkwJHno2/M1xS0Pcah0RxSLYm1+7P
- SO0DIghxiy+fYjNHjFjazjgS6abahlwLZBxwKV3iXKMsSVGHi/z/jkL7gJ63z9GWG+8A
- GGBhQGGinbbu7PcWprj8fnhIbwZGTmnhrgT0D/rS0Z4MUYPUkHI5RqSh5prcafbpyrWw
- ncQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719252576; x=1719857376;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=linaro.org; s=google; t=1719252803; x=1719857603; darn=nongnu.org;
+ h=content-transfer-encoding:content-language:in-reply-to:mime-version
+ :user-agent:date:message-id:from:references:cc:to:subject:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Hk0VnpAGUhDWCzrPpaDYSlTmYSM3R8aHA3LLzBaPzwg=;
- b=QMZCdjmMr9E7l2aREzQg7XeQuJY6g+pUAd/IGxnIpRyB87WDt4ZFvFgRXAZ1CMU3EM
- tyPMje4sIP9Yg/y/hxM3HFOIfAXVK9T5LcLNMKDMtx7+BvM0lgWItF/9vvpAoQPccFJB
- KE0a93grgSfzu2cN22nhJghUJ7sCGPJogWD0zHuzrZrt2Etf3wcFmhuzNeNQrvra2ElN
- doiP+y8mmM3ABaBClejl5HGyp6yr8KtUEIrYPko58+iaDY2o3AzZCtk9Rl3GsBCHNtoT
- uI4UvtAVDmCh5kjULYUrQ//A5m4/zID0KmqTbN/qwfKYcauBqPLrxMCcWjQkcA4oXgku
- eQxg==
-X-Gm-Message-State: AOJu0YxhukoNlOWq5N+z4ZT6AhtgbG3BYXIZ0zfMhlUDOAKd9PRMDvm0
- GaynTxJ/XZpDFrtCi73Jms4jDvuNFFw6NR0QozaEvuNng8w+tPGE6ssmS/06uEugic1BfzfbAWb
- n
-X-Google-Smtp-Source: AGHT+IG+qSY7RpynGoUuG8yF2Voxbk32WBuoBpvCBu+iph77Jc5Atf8fvcx3DHi5U2jZXJhvA0MwIw==
-X-Received: by 2002:a05:6a00:4fd4:b0:706:9030:8960 with SMTP id
- d2e1a72fcca58-70690308abbmr2098107b3a.4.1719252576182; 
- Mon, 24 Jun 2024 11:09:36 -0700 (PDT)
-Received: from amd.. ([2804:7f0:b401:1758:3e7c:3fff:fe7a:e83b])
+ bh=To879kbmj98rQJFzRHOG6QT8ykxiEfUK0pRX7VF1lzQ=;
+ b=Pbx3XIUDaHH/IW2w/SivbrNYlPOqz7xDGitlWzgCNWeU3dNtVNMCs/Gr7bNaKLoVI6
+ eSrCc4YxBAQhodxiRqb2f2LUZyxTn6yE6sWzK8BKow+7B9MQfyFSleAC3jLpDFPGRasW
+ hkydJWeDXnB8FVPkTA7ZydP53O/7GjVUz+nCIsMjgBJLBy58oAdOuMfizQ5kyqGFv//9
+ PMr9ue2ywbVE+zeuwP2696MZzwzmw4ka0atuYOrChrQPPuoE7YvRdmCD8KUJBfI34ynX
+ eIr7EWfEexC+YFV3iJbpoa6B2IqwtiwZ0JcPPz/q4HovRrL0W/IpMO1v9vvlp3sitM2G
+ mwtw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1719252803; x=1719857603;
+ h=content-transfer-encoding:content-language:in-reply-to:mime-version
+ :user-agent:date:message-id:from:references:cc:to:subject
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=To879kbmj98rQJFzRHOG6QT8ykxiEfUK0pRX7VF1lzQ=;
+ b=Z8TDr4zb7ZbpEm0mAJDAB1brXYaUDAwepxVyax+/Gz0z2dascGpAR6K/RZJyFxzkxa
+ yFQ4qQhXqUe9wiP2YnvV8AX+TAKh8HqMzExHNNS23XxeJFhnfM6zhJYkYxD/rHipANqk
+ YBVsvRPpUxnK50NkqVUtYpTgYRs0NB5t6VgQavAbHba1q5hyw9xBPlFHG5c6+l7anbQu
+ NifC2/trGNPZtM/TKPUee7o6MliAwOmZKQHtMzupOTr87aqJejmfeQ57h2GoFl5WfVQA
+ sS4Cxr1XPXrIfcYVazE5b3SG0ZkGKqFLnTJen6mS1zDGflwPT8CvuWkkHPwaQA/k1sNn
+ y9/A==
+X-Gm-Message-State: AOJu0YwprVSG7beZVpTA8JLa3DSpCD8lSu3RiCytEilga5o6m+lVYYuD
+ Sm9nKKQdKRo6PJZduCaCjHy3X21G486wz/9DezAfr7fr3dwdgxkwPBIuWX20MV4=
+X-Google-Smtp-Source: AGHT+IHVSH/j01uVuXHrMbCXLERFueArHvLTC8+Nl4j7+9uvYrZ3bPUOFxCy+OBwsHqYmNYOn8iWqQ==
+X-Received: by 2002:a05:6a20:7b1f:b0:1b4:82eb:61c6 with SMTP id
+ adf61e73a8af0-1bcf44391damr5258931637.2.1719252802691; 
+ Mon, 24 Jun 2024 11:13:22 -0700 (PDT)
+Received: from ?IPv6:2804:7f0:b401:1758:f7d8:1e03:a6d:61a0?
+ ([2804:7f0:b401:1758:f7d8:1e03:a6d:61a0])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-706666e9708sm4974942b3a.121.2024.06.24.11.09.33
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 24 Jun 2024 11:09:35 -0700 (PDT)
+ d2e1a72fcca58-7068922cd19sm1812456b3a.107.2024.06.24.11.13.20
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 24 Jun 2024 11:13:22 -0700 (PDT)
+Subject: Re: [PATCH v2 1/2] target/arm: Move initialization of debug ID
+ registers
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, alex.bennee@linaro.org,
+ richard.henderson@linaro.org, philmd@linaro.org
+References: <20240621143903.3598230-1-gustavo.romero@linaro.org>
+ <20240621143903.3598230-2-gustavo.romero@linaro.org>
+ <CAFEAcA-W6KdKonrzf2UqAVODZLiUJdTzUiNLUeiq+Qe-W-KHQg@mail.gmail.com>
 From: Gustavo Romero <gustavo.romero@linaro.org>
-To: qemu-devel@nongnu.org, peter.maydell@linaro.org,
- richard.henderson@linaro.org
-Cc: philmd@linaro.org,
-	alex.bennee@linaro.org,
-	gustavo.romero@linaro.org
-Subject: [PATCH v3 3/3] target/arm: Enable FEAT_Debugv8p8 for -cpu max
-Date: Mon, 24 Jun 2024 18:09:15 +0000
-Message-Id: <20240624180915.4528-4-gustavo.romero@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240624180915.4528-1-gustavo.romero@linaro.org>
-References: <20240624180915.4528-1-gustavo.romero@linaro.org>
+Message-ID: <72424620-6a2e-333d-75ae-3ae9dc0920ab@linaro.org>
+Date: Mon, 24 Jun 2024 15:13:18 -0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
- envelope-from=gustavo.romero@linaro.org; helo=mail-pf1-x431.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+In-Reply-To: <CAFEAcA-W6KdKonrzf2UqAVODZLiUJdTzUiNLUeiq+Qe-W-KHQg@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
+ envelope-from=gustavo.romero@linaro.org; helo=mail-pf1-x436.google.com
+X-Spam_score_int: -42
+X-Spam_score: -4.3
+X-Spam_bar: ----
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-2.232,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -95,69 +99,112 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Enable FEAT_Debugv8p8 for max CPU. This feature is out of scope for QEMU
-since it concerns the external debug interface for JTAG, but is
-mandatory in Armv8.8 implementations, hence it is reported as supported
-in the ID registers.
+Hi Peter!
 
-Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
----
- docs/system/arm/emulation.rst | 1 +
- target/arm/tcg/cpu32.c        | 6 +++---
- target/arm/tcg/cpu64.c        | 2 +-
- 3 files changed, 5 insertions(+), 4 deletions(-)
+On 6/24/24 10:26 AM, Peter Maydell wrote:
+> On Fri, 21 Jun 2024 at 15:39, Gustavo Romero <gustavo.romero@linaro.org> wrote:
+>>
+>> Move the initialization of the debug ID registers to aa32_max_features,
+>> which is used to set the 32-bit ID registers. This ensures that the
+>> debug ID registers are consistently set for the max CPU in a single
+>> place.
+>>
+>> Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
+>> ---
+>>   target/arm/cpu.h       |  2 ++
+>>   target/arm/tcg/cpu32.c | 30 +++++++++++++++++++++++++++---
+>>   target/arm/tcg/cpu64.c |  2 +-
+>>   3 files changed, 30 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+>> index 3841359d0f..d8eb986a04 100644
+>> --- a/target/arm/cpu.h
+>> +++ b/target/arm/cpu.h
+>> @@ -2299,6 +2299,8 @@ FIELD(DBGDEVID, DOUBLELOCK, 20, 4)
+>>   FIELD(DBGDEVID, AUXREGS, 24, 4)
+>>   FIELD(DBGDEVID, CIDMASK, 28, 4)
+>>
+>> +FIELD(DBGDEVID1, PCSROFFSET, 0, 4)
+>> +
+>>   FIELD(MVFR0, SIMDREG, 0, 4)
+>>   FIELD(MVFR0, FPSP, 4, 4)
+>>   FIELD(MVFR0, FPDP, 8, 4)
+>> diff --git a/target/arm/tcg/cpu32.c b/target/arm/tcg/cpu32.c
+>> index bdd82d912a..b155a0136f 100644
+>> --- a/target/arm/tcg/cpu32.c
+>> +++ b/target/arm/tcg/cpu32.c
+>> @@ -87,6 +87,33 @@ void aa32_max_features(ARMCPU *cpu)
+>>       t = FIELD_DP32(t, ID_DFR0, PERFMON, 6);       /* FEAT_PMUv3p5 */
+>>       cpu->isar.id_dfr0 = t;
+>>
+>> +    /* Debug ID registers. */
+>> +
+>> +    /* Bit[15] is RES1, Bit[13] and Bits[11:0] are RES0. */
+>> +    t = 0x00008000;
+>> +    t = FIELD_DP32(t, DBGDIDR, SE_IMP, 1);
+>> +    t = FIELD_DP32(t, DBGDIDR, NSUHD_IMP, 1);
+>> +    t = FIELD_DP32(t, DBGDIDR, VERSION, 6);       /* Armv8 debug */
+>> +    t = FIELD_DP32(t, DBGDIDR, CTX_CMPS, 1);
+>> +    t = FIELD_DP32(t, DBGDIDR, BRPS, 5);
+>> +    t = FIELD_DP32(t, DBGDIDR, WRPS, 3);
+>> +    cpu->isar.dbgdidr = t;
+>> +
+>> +    t = FIELD_DP32(t, DBGDEVID, PCSAMPLE, 3);
+> 
+> Looks like we should have an initial "t = something" ("t = 0")
+> before this line? Otherwise we start the DBGDEVID value
+> with the value of DBGDIDR.
 
-diff --git a/docs/system/arm/emulation.rst b/docs/system/arm/emulation.rst
-index 1a06a5feb6..3ab6e72667 100644
---- a/docs/system/arm/emulation.rst
-+++ b/docs/system/arm/emulation.rst
-@@ -41,6 +41,7 @@ the following architecture extensions:
- - FEAT_Debugv8p1 (Debug with VHE)
- - FEAT_Debugv8p2 (Debug changes for v8.2)
- - FEAT_Debugv8p4 (Debug changes for v8.4)
-+- FEAT_Debugv8p8 (Debug changes for v8.8)
- - FEAT_DotProd (Advanced SIMD dot product instructions)
- - FEAT_DoubleFault (Double Fault Extension)
- - FEAT_E0PD (Preventing EL0 access to halves of address maps)
-diff --git a/target/arm/tcg/cpu32.c b/target/arm/tcg/cpu32.c
-index 28a5c033bb..20c2737f17 100644
---- a/target/arm/tcg/cpu32.c
-+++ b/target/arm/tcg/cpu32.c
-@@ -82,8 +82,8 @@ void aa32_max_features(ARMCPU *cpu)
-     cpu->isar.id_pfr2 = t;
- 
-     t = cpu->isar.id_dfr0;
--    t = FIELD_DP32(t, ID_DFR0, COPDBG, 9);        /* FEAT_Debugv8p4 */
--    t = FIELD_DP32(t, ID_DFR0, COPSDBG, 9);       /* FEAT_Debugv8p4 */
-+    t = FIELD_DP32(t, ID_DFR0, COPDBG, 10);       /* FEAT_Debugv8p8 */
-+    t = FIELD_DP32(t, ID_DFR0, COPSDBG, 10);      /* FEAT_Debugv8p8 */
-     t = FIELD_DP32(t, ID_DFR0, PERFMON, 6);       /* FEAT_PMUv3p5 */
-     cpu->isar.id_dfr0 = t;
- 
-@@ -93,7 +93,7 @@ void aa32_max_features(ARMCPU *cpu)
-     t = 0x00008000;
-     t = FIELD_DP32(t, DBGDIDR, SE_IMP, 1);
-     t = FIELD_DP32(t, DBGDIDR, NSUHD_IMP, 1);
--    t = FIELD_DP32(t, DBGDIDR, VERSION, 6);       /* Armv8 debug */
-+    t = FIELD_DP32(t, DBGDIDR, VERSION, 10);      /* FEAT_Debugv8p8 */
-     t = FIELD_DP32(t, DBGDIDR, CTX_CMPS, 1);
-     t = FIELD_DP32(t, DBGDIDR, BRPS, 5);
-     t = FIELD_DP32(t, DBGDIDR, WRPS, 3);
-diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
-index 71e1bfcd4e..fe232eb306 100644
---- a/target/arm/tcg/cpu64.c
-+++ b/target/arm/tcg/cpu64.c
-@@ -1253,7 +1253,7 @@ void aarch64_max_tcg_initfn(Object *obj)
-     cpu->isar.id_aa64zfr0 = t;
- 
-     t = cpu->isar.id_aa64dfr0;
--    t = FIELD_DP64(t, ID_AA64DFR0, DEBUGVER, 9);  /* FEAT_Debugv8p4 */
-+    t = FIELD_DP64(t, ID_AA64DFR0, DEBUGVER, 10); /* FEAT_Debugv8p8 */
-     t = FIELD_DP64(t, ID_AA64DFR0, PMUVER, 6);    /* FEAT_PMUv3p5 */
-     t = FIELD_DP64(t, ID_AA64DFR0, HPMN0, 1);     /* FEAT_HPMN0 */
-     cpu->isar.id_aa64dfr0 = t;
--- 
-2.34.1
+I'm setting all the 32 bits here so there is no bit left from previous t value.
 
+But I agree it's better to be explicit here for readability. Done in v3.
+
+
+>> +    t = FIELD_DP32(t, DBGDEVID, WPADDRMASK, 1);
+>> +    t = FIELD_DP32(t, DBGDEVID, BPADDRMASK, 15);
+>> +    t = FIELD_DP32(t, DBGDEVID, VECTORCATCH, 0);
+>> +    t = FIELD_DP32(t, DBGDEVID, VIRTEXTNS, 1);
+>> +    t = FIELD_DP32(t, DBGDEVID, DOUBLELOCK, 1);
+>> +    t = FIELD_DP32(t, DBGDEVID, AUXREGS, 0);
+>> +    t = FIELD_DP32(t, DBGDEVID, CIDMASK, 0);
+>> +    cpu->isar.dbgdevid = t;
+>> +
+>> +    /* Bits[31:4] are RES0. */
+>> +    t = 0;
+>> +    t = FIELD_DP32(t, DBGDEVID1, PCSROFFSET, 2);
+>> +    cpu->isar.dbgdevid1 = t;
+>> +
+>>       t = cpu->isar.id_dfr1;
+>>       t = FIELD_DP32(t, ID_DFR1, HPMN0, 1);         /* FEAT_HPMN0 */
+>>       cpu->isar.id_dfr1 = t;
+>> @@ -955,9 +982,6 @@ static void arm_max_initfn(Object *obj)
+>>       cpu->isar.id_isar4 = 0x00011142;
+>>       cpu->isar.id_isar5 = 0x00011121;
+>>       cpu->isar.id_isar6 = 0;
+>> -    cpu->isar.dbgdidr = 0x3516d000;
+>> -    cpu->isar.dbgdevid = 0x00110f13;
+>> -    cpu->isar.dbgdevid1 = 0x2;
+>>       cpu->isar.reset_pmcr_el0 = 0x41013000;
+>>       cpu->clidr = 0x0a200023;
+>>       cpu->ccsidr[0] = 0x701fe00a; /* 32KB L1 dcache */
+>> diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
+>> index 0899251eef..71e1bfcd4e 100644
+>> --- a/target/arm/tcg/cpu64.c
+>> +++ b/target/arm/tcg/cpu64.c
+>> @@ -1167,7 +1167,7 @@ void aarch64_max_tcg_initfn(Object *obj)
+>>
+>>       t = cpu->isar.id_aa64isar2;
+>>       t = FIELD_DP64(t, ID_AA64ISAR2, MOPS, 1);     /* FEAT_MOPS */
+>> -    t = FIELD_DP64(t, ID_AA64ISAR2, BC, 1);      /* FEAT_HBC */
+>> +    t = FIELD_DP64(t, ID_AA64ISAR2, BC, 1);       /* FEAT_HBC */
+>>       t = FIELD_DP64(t, ID_AA64ISAR2, WFXT, 2);     /* FEAT_WFxT */
+>>       cpu->isar.id_aa64isar2 = t;
+> 
+> This indent fixup is unrelated so should really be its own patch.
+
+Got it. Done in v3 so.
+
+
+Cheers,
+Gustavo
 
