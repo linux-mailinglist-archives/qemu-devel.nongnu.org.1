@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26C239145F0
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jun 2024 11:12:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 179019145F2
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jun 2024 11:12:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sLfj2-0007uQ-NM; Mon, 24 Jun 2024 05:11:00 -0400
+	id 1sLfj8-0007w4-TV; Mon, 24 Jun 2024 05:11:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sLfj0-0007uH-UU
- for qemu-devel@nongnu.org; Mon, 24 Jun 2024 05:10:59 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sLfj5-0007v3-A1
+ for qemu-devel@nongnu.org; Mon, 24 Jun 2024 05:11:03 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sLfix-0003rn-78
- for qemu-devel@nongnu.org; Mon, 24 Jun 2024 05:10:58 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sLfj3-0003s5-Kd
+ for qemu-devel@nongnu.org; Mon, 24 Jun 2024 05:11:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719220254;
+ s=mimecast20190719; t=1719220259;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=0MEH/mKV63v/JJwnQ03ODMnT7oVBF8nDVD2HElTki68=;
- b=AvWuCeqXGnVBr9aaVe1l3Hx8oiri2cORBVDuZv6583AhOA1Eo6shkp9lFtyp0HAi2+3+dv
- SceS8J8VH5gzGNTgkBYOPtgSeFHjMhNHBoGfoKN1UoiD5Z4jePX6SMAX3NEPZwbO1t+APv
- zkrKPe6TGaTI9Z9zJ+oUM9eUbRI/m+Q=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ bh=+4megXEFudFNidDu6usxu59kkO19OEawrxjQOAqZvUk=;
+ b=YKXP9eV9cZalEUMOOZXWPf4QvloANLhEEbQXkW3GTKh01hRUgOqwGWryHMPtEjtkBuR1nm
+ yiW0hr+Uzsb576y92LuEV54hmCB+Jf6LRsq3oamln6YCTkLvd7dhk8xh/lCHqkXLoeiOmU
+ 7IPzvWt+rZH8PPoHvStjlQcvOrHyJ0A=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-300-ZyPEeIplM-2XMuSsTDoVgg-1; Mon,
- 24 Jun 2024 05:10:51 -0400
-X-MC-Unique: ZyPEeIplM-2XMuSsTDoVgg-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-496-1rP4PcvANlm60yjG_2QYJg-1; Mon,
+ 24 Jun 2024 05:10:55 -0400
+X-MC-Unique: 1rP4PcvANlm60yjG_2QYJg-1
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 8B6E61956056; Mon, 24 Jun 2024 09:10:50 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 0592E19560A2; Mon, 24 Jun 2024 09:10:54 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.193.33])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 2C38A3000603; Mon, 24 Jun 2024 09:10:46 +0000 (UTC)
+ id D47A83000219; Mon, 24 Jun 2024 09:10:50 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org,
 	Richard Henderson <richard.henderson@linaro.org>
@@ -49,9 +49,9 @@ Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  Zhenzhong Duan <zhenzhong.duan@intel.com>,
  Anthony Krowiak <akrowiak@linux.ibm.com>,
  Eric Farman <farman@linux.ibm.com>
-Subject: [PULL 01/11] hw/s390x/ccw: Make s390_ccw_get_dev_info() return a bool
-Date: Mon, 24 Jun 2024 11:10:33 +0200
-Message-ID: <20240624091043.177484-2-thuth@redhat.com>
+Subject: [PULL 02/11] s390x/css: Make CCWDeviceClass::realize return bool
+Date: Mon, 24 Jun 2024 11:10:34 +0200
+Message-ID: <20240624091043.177484-3-thuth@redhat.com>
 In-Reply-To: <20240624091043.177484-1-thuth@redhat.com>
 References: <20240624091043.177484-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -85,73 +85,64 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Cédric Le Goater <clg@redhat.com>
 
-Since s390_ccw_get_dev_info() takes an 'Error **' argument, best
-practices suggest to return a bool. See the qapi/error.h Rules
-section. While at it, modify the call in s390_ccw_realize().
+Since the realize() handler of CCWDeviceClass takes an 'Error **'
+argument, best practices suggest to return a bool. See the api/error.h
+Rules section. While at it, modify the call in s390_ccw_realize().
 
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 Reviewed-by: Anthony Krowiak <akrowiak@linux.ibm.com>
 Reviewed-by: Eric Farman <farman@linux.ibm.com>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20240522170107.289532-2-clg@redhat.com>
+Message-ID: <20240522170107.289532-3-clg@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- hw/s390x/s390-ccw.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ hw/s390x/ccw-device.h | 2 +-
+ hw/s390x/ccw-device.c | 3 ++-
+ hw/s390x/s390-ccw.c   | 3 +--
+ 3 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/hw/s390x/s390-ccw.c b/hw/s390x/s390-ccw.c
-index 5261e66724..a06e91dfb3 100644
---- a/hw/s390x/s390-ccw.c
-+++ b/hw/s390x/s390-ccw.c
-@@ -71,7 +71,7 @@ IOInstEnding s390_ccw_store(SubchDev *sch)
-     return ret;
+diff --git a/hw/s390x/ccw-device.h b/hw/s390x/ccw-device.h
+index 6dff95225d..5feeb0ee7a 100644
+--- a/hw/s390x/ccw-device.h
++++ b/hw/s390x/ccw-device.h
+@@ -36,7 +36,7 @@ extern const VMStateDescription vmstate_ccw_dev;
+ struct CCWDeviceClass {
+     DeviceClass parent_class;
+     void (*unplug)(HotplugHandler *, DeviceState *, Error **);
+-    void (*realize)(CcwDevice *, Error **);
++    bool (*realize)(CcwDevice *, Error **);
+     void (*refill_ids)(CcwDevice *);
+ };
+ 
+diff --git a/hw/s390x/ccw-device.c b/hw/s390x/ccw-device.c
+index fb8c1acc64..a7d682e5af 100644
+--- a/hw/s390x/ccw-device.c
++++ b/hw/s390x/ccw-device.c
+@@ -31,9 +31,10 @@ static void ccw_device_refill_ids(CcwDevice *dev)
+     dev->subch_id.valid = true;
  }
  
--static void s390_ccw_get_dev_info(S390CCWDevice *cdev,
-+static bool s390_ccw_get_dev_info(S390CCWDevice *cdev,
-                                   char *sysfsdev,
-                                   Error **errp)
+-static void ccw_device_realize(CcwDevice *dev, Error **errp)
++static bool ccw_device_realize(CcwDevice *dev, Error **errp)
  {
-@@ -84,12 +84,12 @@ static void s390_ccw_get_dev_info(S390CCWDevice *cdev,
-         error_setg(errp, "No host device provided");
-         error_append_hint(errp,
-                           "Use -device vfio-ccw,sysfsdev=PATH_TO_DEVICE\n");
--        return;
-+        return false;
-     }
- 
-     if (!realpath(sysfsdev, dev_path)) {
-         error_setg_errno(errp, errno, "Host device '%s' not found", sysfsdev);
--        return;
-+        return false;
-     }
- 
-     cdev->mdevid = g_path_get_basename(dev_path);
-@@ -98,13 +98,14 @@ static void s390_ccw_get_dev_info(S390CCWDevice *cdev,
-     tmp = g_path_get_basename(tmp_dir);
-     if (sscanf(tmp, "%2x.%1x.%4x", &cssid, &ssid, &devid) != 3) {
-         error_setg_errno(errp, errno, "Failed to read %s", tmp);
--        return;
-+        return false;
-     }
- 
-     cdev->hostid.cssid = cssid;
-     cdev->hostid.ssid = ssid;
-     cdev->hostid.devid = devid;
-     cdev->hostid.valid = true;
+     ccw_device_refill_ids(dev);
 +    return true;
  }
  
- static void s390_ccw_realize(S390CCWDevice *cdev, char *sysfsdev, Error **errp)
-@@ -116,8 +117,7 @@ static void s390_ccw_realize(S390CCWDevice *cdev, char *sysfsdev, Error **errp)
-     int ret;
-     Error *err = NULL;
+ static Property ccw_device_properties[] = {
+diff --git a/hw/s390x/s390-ccw.c b/hw/s390x/s390-ccw.c
+index a06e91dfb3..4b8ede701d 100644
+--- a/hw/s390x/s390-ccw.c
++++ b/hw/s390x/s390-ccw.c
+@@ -137,8 +137,7 @@ static void s390_ccw_realize(S390CCWDevice *cdev, char *sysfsdev, Error **errp)
+         goto out_err;
+     }
  
--    s390_ccw_get_dev_info(cdev, sysfsdev, &err);
+-    ck->realize(ccw_dev, &err);
 -    if (err) {
-+    if (!s390_ccw_get_dev_info(cdev, sysfsdev, &err)) {
-         goto out_err_propagate;
++    if (!ck->realize(ccw_dev, &err)) {
+         goto out_err;
      }
  
 -- 
