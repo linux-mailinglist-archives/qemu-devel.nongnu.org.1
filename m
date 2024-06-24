@@ -2,84 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AC80914E43
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jun 2024 15:18:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AB5D914E55
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jun 2024 15:22:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sLjaV-00079o-OL; Mon, 24 Jun 2024 09:18:27 -0400
+	id 1sLje5-0000me-UE; Mon, 24 Jun 2024 09:22:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sLjaN-0006wm-1I
- for qemu-devel@nongnu.org; Mon, 24 Jun 2024 09:18:22 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sLjaJ-0005ri-SZ
- for qemu-devel@nongnu.org; Mon, 24 Jun 2024 09:18:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719235094;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=QNadneWrO33F1H3PKCnhpcnx7rnW9OzzOfuqmtKqd4s=;
- b=dujkF3JtkVBRTmtv0h0FPHa/n1J/MYosP+AbKMXaqFYLOcGd+yhUBZFEwTSjs8+ZMID/Sc
- YUo9CnRhi12VSEOTxN2rTdG5ZvJN1LA3g/mIuqF8MlHtGjJ2nLfQ8hCroBISYq+OdRHGcN
- Xi/mVBgvw7C+QULIiQr0uS20dl9YgFU=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-458-51J9UgOKNgelty9v5p3RLg-1; Mon, 24 Jun 2024 09:18:12 -0400
-X-MC-Unique: 51J9UgOKNgelty9v5p3RLg-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-4217a6a00d8so28677955e9.0
- for <qemu-devel@nongnu.org>; Mon, 24 Jun 2024 06:18:12 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sLje2-0000lh-Qk
+ for qemu-devel@nongnu.org; Mon, 24 Jun 2024 09:22:07 -0400
+Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sLjds-0006yq-Ig
+ for qemu-devel@nongnu.org; Mon, 24 Jun 2024 09:22:06 -0400
+Received: by mail-lf1-x136.google.com with SMTP id
+ 2adb3069b0e04-52ce0140416so1835905e87.0
+ for <qemu-devel@nongnu.org>; Mon, 24 Jun 2024 06:21:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1719235314; x=1719840114; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=qtPfj3Rr8TYOLDSlaqbXQgaU5zT7Ct0Jmt7DP5WEx3Q=;
+ b=u1gPrvZExOKOIEOtUNlzxMwG9Ce8g837VIdmQnWPiDwBuZKlLxxOklyMRihLx5ZTA+
+ 4UjhkecCTqvdhf3/8eTipVmg595Ot4era85PdzbeC4BN19ClOnH6dhveRKplkBNaMA+W
+ Dq/WduKFqQ5+fH606w/r8VeL9peGvKCGkTBRVWiH4raOFwDDwD0w+41TwRKuf2zMyqPq
+ MZxQ2bKnuHgTMd6m5FdAM9I0r36XeUuJuYOL5mwQQdMVTwkppFCGYboF7AZO5qchA26s
+ +U6i28OVa19In3+IYF4GWejxZMp3JcKwc+mTOmvLudgU6OiLJvdAWHfcC2o4OxQnOKdi
+ AQhQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719235091; x=1719839891;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=QNadneWrO33F1H3PKCnhpcnx7rnW9OzzOfuqmtKqd4s=;
- b=TcRxWk/MNZ2THXL5emRcF7zFqb/86QQ2s769paRQWkNvF3q0Yf3RxNQvV0o2OM6g5j
- TUr6I62s++BN6u1RH4qE47mFYe1cDB+fgV3Cd07m6pwwi9bXQ3lUoTAKr7UsF168NjFL
- TulbYou1CrGy6k62mrK1frz9RT8uJza4cHUmnKx4dTkwNCWvY/n73XVQY2y0D3lfum+K
- b8X5lSv17h9/Gw+wtGWUjKqm9MO0HU8pMqN25B+7zJ71PFxYwgs8vbEPO92LPnVyNYjm
- AaEQkuAWhXlDETxne5BXotZINpvizcXgWZQ/GxQN3XqXvPkZSkdaxyPo67XyGBy3oLT5
- LXXQ==
-X-Gm-Message-State: AOJu0YylwZt/Ic8npeVinPZ4GZlEwNTi5eaxvq/86eXjSUHHuz4CPyMo
- TsVPFuxNUaIE7NiBTB4F9xBP4KX8vxRVh6hrMxd/lRoqxVUEZbfJ44+mgveonOO1nrOhly8zFsk
- P9NPAFx6RN5le642WQCPM3tTfJPdZZmBdXIwzXd01ndRj+nQfYHAt
-X-Received: by 2002:a05:600c:3b11:b0:422:fa63:33ff with SMTP id
- 5b1f17b1804b1-42489e37068mr36948465e9.1.1719235091091; 
- Mon, 24 Jun 2024 06:18:11 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFO0RYk6XCP1fRwpx2jYYEAKSptTty1fk+pezEm1V4Wp+ShhfmFQ+WDoJ8I+NQqfvdTh98CUA==
-X-Received: by 2002:a05:600c:3b11:b0:422:fa63:33ff with SMTP id
- 5b1f17b1804b1-42489e37068mr36948145e9.1.1719235090332; 
- Mon, 24 Jun 2024 06:18:10 -0700 (PDT)
-Received: from redhat.com ([2.52.146.100]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42481910f64sm137914555e9.34.2024.06.24.06.18.09
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 24 Jun 2024 06:18:09 -0700 (PDT)
-Date: Mon, 24 Jun 2024 09:18:06 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Shiyuan Gao <gaoshiyuan@baidu.com>
-Cc: qemu-devel@nongnu.org, imammedo@redhat.com
-Subject: Re: [PATCH 1/1] hw/i386/acpi-build: add OSHP method support for SHPC
- driver load
-Message-ID: <20240624091745-mutt-send-email-mst@kernel.org>
-References: <20240624131426.77231-1-gaoshiyuan@baidu.com>
+ d=1e100.net; s=20230601; t=1719235314; x=1719840114;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=qtPfj3Rr8TYOLDSlaqbXQgaU5zT7Ct0Jmt7DP5WEx3Q=;
+ b=MKpYCDgMkzzUyJ4WdRt+l3znbqVXiR24l1WI2GpVtnoTrUSeYPRSHBxtTenfySD2kV
+ eRhGMhb8S4E6P4Kdlt7eO/+SSOR2xTZRgzddKF1wOzHgHpH7cmbuRSJneNJogxsFX/5z
+ twNLzhWbg81klNHGG0Aq3pvF0U/flGpA9r6Zs6Rb+0vgdn55Ed3KhCTvzMZ7vFdUpcpQ
+ pWId8APsv0BNDcY7ow61bMiMlcXpWVe/oQ1KrZIrMogco3D6th6mMnyYTFRiSKCKr+rZ
+ 6Z9oFH0EJdFOVqzQ4uBTUARGeXgOGf1B0+8ZNBiHBxH77laMpCmXy6QkO8dIqMA0o8Wk
+ 7B/g==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXCiypiwHx/5xIk10pz0f+MP3QlNXvVX1ovW9kVqsPi2SEC6YcdoXhBVxi2oBAdfQKR1z9xoKtuh7eTa0dkW+mUu27TiuA=
+X-Gm-Message-State: AOJu0YyVNPjSJjVG+GJ/RE0dmjLvOcqVJ7gmfgglaEcZWWx3ZsEFa30H
+ ygt0y0ax/oUCemWDP+Xb7jL+T4QgVW927sUH1+XBiMq5BaUclFoZ9+7NlAVY7d8=
+X-Google-Smtp-Source: AGHT+IGXKCvTDanaK8S04z1nwTF3Ox2ijSAf+LOM3aJfcjddmSmE/i1jEBNdBOWjLWYXNXmh/TTnbQ==
+X-Received: by 2002:a05:6512:2827:b0:52b:c296:902a with SMTP id
+ 2adb3069b0e04-52ce0610642mr4384985e87.5.1719235314279; 
+ Mon, 24 Jun 2024 06:21:54 -0700 (PDT)
+Received: from [192.168.69.100] (bd137-h02-176-184-46-22.dsl.sta.abo.bbox.fr.
+ [176.184.46.22]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-366383f6777sm10115425f8f.21.2024.06.24.06.21.52
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 24 Jun 2024 06:21:53 -0700 (PDT)
+Message-ID: <dc589268-efa3-45ae-85e9-30937fef81cd@linaro.org>
+Date: Mon, 24 Jun 2024 15:21:51 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240624131426.77231-1-gaoshiyuan@baidu.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -22
-X-Spam_score: -2.3
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] tests/avocado: sbsa-ref: switch from OpenBSD to
+ FreeBSD
+To: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>, qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, Leif Lindholm <quic_llindhol@quicinc.com>,
+ Radoslaw Biernacki <rad@semihalf.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Cleber Rosa <crosa@redhat.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>
+References: <20240624-b4-move-to-freebsd-v2-0-64ea7b04998f@linaro.org>
+ <20240624-b4-move-to-freebsd-v2-1-64ea7b04998f@linaro.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240624-b4-move-to-freebsd-v2-1-64ea7b04998f@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::136;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x136.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.207,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,79 +99,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jun 24, 2024 at 09:14:26PM +0800, Shiyuan Gao wrote:
-> SHPC driver will be loaded fail in i440fx platform, the dmesg shows
-> that OS cannot get control of SHPC hotplug and hotplug device to
-> the PCI bridge will fail when we use SHPC Native type:
+Hi Marcin,
+
+On 24/6/24 15:14, Marcin Juszkiewicz wrote:
+> FreeBSD has longer support cycle for stable release (14.x EoL in 2028)
+> than OpenBSD (7.3 we used is already EoL). Also bugfixes are backported
+> so we can stay on 14.x for longer.
+
+Could we keep the test but not run it by default on CI? No need to
+upgrade the distro version, using the fixed cortex-a57 (and not 'max').
+I find it useful when bisecting hw model changes, when we don't need
+to test the bleeding edge sbsa-ref. At least I'd like to keep
+test_sbsaref_openbsd73_cortex_a57. Maybe:
+
+   @skipIf(os.getenv('GITLAB_CI'), 'Running on GitLab')
+
 > 
->   [3.336059] shpchp 0000:00:03.0: Requesting control of SHPC hotplug via OSHP (\_SB_.PCI0.S28_)
->   [3.337408] shpchp 0000:00:03.0: Requesting control of SHPC hotplug via OSHP (\_SB_.PCI0)
->   [3.338710] shpchp 0000:00:03.0: Cannot get control of SHPC hotplug
+> Moved from Neoverse-N1 to Neoverse-N2 as sbsa-ref defaults were changed.
 > 
-> Add OSHP method support for SHPC driver load, the hotplug device to the PCI bridge will
-> success when we use SHPC Native type.
+> Timeout messages expanded to mention being affected by PAuth emulation:
 > 
->   [1.703975] shpchp 0000:00:03.0: Requesting control of SHPC hotplug via OSHP (\_SB_.PCI0.S18_)
->   [1.704934] shpchp 0000:00:03.0: Requesting control of SHPC hotplug via OSHP (\_SB_.PCI0)
->   [1.705855] shpchp 0000:00:03.0: Gained control of SHPC hotplug (\_SB_.PCI0)
->   [1.707054] shpchp 0000:00:03.0: HPC vendor_id 1b36 device_id 1 ss_vid 0 ss_did 0
-> 
-> According to the acpi_pcihp, the OSHP method don't need parameter and return value now.
-> 
->   shpc_probe
->     --> acpi_get_hp_hw_control_from_firmware
->       --> acpi_run_oshp
->         --> status = acpi_evaluate_object(handle, METHOD_NAME_OSHP, NULL, NULL);
-> 
-> Signed-off-by: Shiyuan Gao <gaoshiyuan@baidu.com>
+> test_sbsaref_alpine_linux_cortex_a57: PASS (24.00 s)
+> test_sbsaref_alpine_linux_neoverse_n2: PASS (82.24 s)
+> test_sbsaref_alpine_linux_max: PASS (81.10 s)
+> test_sbsaref_alpine_linux_max_pauth_off: PASS (23.54 s)
+> test_sbsaref_alpine_linux_max_pauth_impdef: PASS (28.96 s)
+
+(These are Linux test outputs).
+
+> Signed-off-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
 > ---
->  hw/i386/acpi-build.c | 14 ++++++++++++++
->  1 file changed, 14 insertions(+)
-> 
-> diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
-> index f4e366f64f..79622e6939 100644
-> --- a/hw/i386/acpi-build.c
-> +++ b/hw/i386/acpi-build.c
-> @@ -1412,6 +1412,18 @@ static void build_acpi0017(Aml *table)
->      aml_append(table, scope);
->  }
->  
-> +static Aml *build_oshp_method(void)
-> +{
-> +    Aml *method;
-> +
-> +    /*
-> +     * Request control of SHPC hotplug via OSHP method,
-> +     * no need parameter and return value in acpi_pcihp.
-> +     */
-
-Quote spec and earliest version documenting this, please.
-
-
-> +    method = aml_method("OSHP", 0, AML_NOTSERIALIZED);
-> +    return method;
-> +}
-> +
->  static void
->  build_dsdt(GArray *table_data, BIOSLinker *linker,
->             AcpiPmInfo *pm, AcpiMiscInfo *misc,
-> @@ -1452,6 +1464,7 @@ build_dsdt(GArray *table_data, BIOSLinker *linker,
->          aml_append(dev, aml_name_decl("_HID", aml_eisaid("PNP0A03")));
->          aml_append(dev, aml_name_decl("_UID", aml_int(pcmc->pci_root_uid)));
->          aml_append(dev, aml_pci_edsm());
-> +        aml_append(dev, build_oshp_method());
->          aml_append(sb_scope, dev);
->          aml_append(dsdt, sb_scope);
->  
-> @@ -1586,6 +1599,7 @@ build_dsdt(GArray *table_data, BIOSLinker *linker,
->                  aml_append(dev, build_q35_osc_method(true));
->              } else {
->                  aml_append(dev, aml_name_decl("_HID", aml_eisaid("PNP0A03")));
-> +                aml_append(dev, build_oshp_method());
->              }
->  
->              if (numa_node != NUMA_NODE_UNASSIGNED) {
-> -- 
-> 2.27.0
+>   tests/avocado/machine_aarch64_sbsaref.py | 53 ++++++++++++++++----------------
+>   1 file changed, 27 insertions(+), 26 deletions(-)
 
 
