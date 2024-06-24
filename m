@@ -2,62 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E3F89158F4
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jun 2024 23:27:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DB9C9158EB
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jun 2024 23:26:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sLrCw-0005pg-04; Mon, 24 Jun 2024 17:26:38 -0400
+	id 1sLrCw-00066r-T3; Mon, 24 Jun 2024 17:26:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sLrCr-0005Lo-7W
- for qemu-devel@nongnu.org; Mon, 24 Jun 2024 17:26:33 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sLrCt-0005he-GU
+ for qemu-devel@nongnu.org; Mon, 24 Jun 2024 17:26:35 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sLrCp-0006rD-DU
- for qemu-devel@nongnu.org; Mon, 24 Jun 2024 17:26:32 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sLrCr-0006rO-HF
+ for qemu-devel@nongnu.org; Mon, 24 Jun 2024 17:26:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719264390;
+ s=mimecast20190719; t=1719264392;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=l+d15cpRUQTlejQZ4KZf89F6osecaDusFBmuvLsdTY0=;
- b=eCkF9BcoEjUIi+wjHKjhApXHlYayKHt4r/29cZgbALBnPJOJ+bwpRjlqDcc+aeUlnTbs9n
- 5G5x13Jh2Vod47dAd6nTRtgCOubMIGEUrXBhDm4ZUAEWKOEv9myri0zNVncSjdeTTWqNHs
- hmyjtbb4RaBJqMBft1fyyVqMR7yq8ZM=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=OBq61iAeWHT+8oXnJgWDEC4tGrxsioEtPTb5O+a6nVI=;
+ b=PGubGb4gc44tguoMkmztcw+mH89XO2dlMZ6lk82p4gDBvJL24cNR7Yx3L1O4YqNUSAFXDu
+ Lrb9V8+uox+7M7KbJ1VnOmTGt9P58Dqk9f4bez8RIEAP74PKIVVCEkV2Mv1Io7Y0ErmWOZ
+ 26hwiaO5sHxtWYC2EYzVuhkUDVRqESo=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-531-FprIDazLNJahekobtNPN7w-1; Mon,
- 24 Jun 2024 17:26:27 -0400
-X-MC-Unique: FprIDazLNJahekobtNPN7w-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-226-GPd5RrMUOMW2qoOVH4BJzg-1; Mon,
+ 24 Jun 2024 17:26:29 -0400
+X-MC-Unique: GPd5RrMUOMW2qoOVH4BJzg-1
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5F9BD19560AB; Mon, 24 Jun 2024 21:26:26 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 69AC7195608C; Mon, 24 Jun 2024 21:26:28 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.192.49])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 3FA161956053; Mon, 24 Jun 2024 21:26:24 +0000 (UTC)
+ id BA03A1956053; Mon, 24 Jun 2024 21:26:26 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  Zhenzhong Duan <zhenzhong.duan@intel.com>,
  Eric Auger <eric.auger@redhat.com>
-Subject: [PULL 34/42] vfio/container: Introduce vfio_create_container()
-Date: Mon, 24 Jun 2024 23:24:48 +0200
-Message-ID: <20240624212456.350919-35-clg@redhat.com>
+Subject: [PULL 35/42] vfio/container: Discover IOMMU type before creating the
+ container
+Date: Mon, 24 Jun 2024 23:24:49 +0200
+Message-ID: <20240624212456.350919-36-clg@redhat.com>
 In-Reply-To: <20240624212456.350919-1-clg@redhat.com>
 References: <20240624212456.350919-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: 10
 X-Spam_score: 1.0
@@ -82,58 +83,114 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This routine allocates the QEMU struct type representing the VFIO
-container. It is minimal currently and future changes will do more
-initialization.
+Since the QEMU struct type representing the VFIO container is deduced
+from the IOMMU type exposed by the host, this type should be well
+defined *before* creating the container struct. This will be necessary
+to instantiate a QOM object of the correct type in future changes.
+
+Rework vfio_set_iommu() to extract the part doing the container
+initialization and move it under vfio_create_container().
 
 Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 Reviewed-by: Eric Auger <eric.auger@redhat.com>
 Tested-by: Eric Auger <eric.auger@redhat.com>
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/vfio/container.c | 19 +++++++++++++++----
- 1 file changed, 15 insertions(+), 4 deletions(-)
+ hw/vfio/container.c | 47 ++++++++++++++++++++++-----------------------
+ 1 file changed, 23 insertions(+), 24 deletions(-)
 
 diff --git a/hw/vfio/container.c b/hw/vfio/container.c
-index bb6abe60ee29d5b69b494523c9002f53e1b2a3c8..a8691942791006f44f7a3c34b32c67ca51766182 100644
+index a8691942791006f44f7a3c34b32c67ca51766182..31bdc46a96d1626b237227a25007957e1d472757 100644
 --- a/hw/vfio/container.c
 +++ b/hw/vfio/container.c
-@@ -430,6 +430,16 @@ static bool vfio_set_iommu(VFIOContainer *container, int group_fd,
+@@ -389,54 +389,56 @@ static const char *vfio_get_iommu_class_name(int iommu_type)
+     };
+ }
+ 
+-static bool vfio_set_iommu(VFIOContainer *container, int group_fd,
+-                           Error **errp)
++static bool vfio_set_iommu(int container_fd, int group_fd,
++                           int *iommu_type, Error **errp)
+ {
+-    int iommu_type;
+-    const VFIOIOMMUClass *vioc;
+-    const char *vioc_name;
+-
+-    iommu_type = vfio_get_iommu_type(container->fd, errp);
+-    if (iommu_type < 0) {
+-        return false;
+-    }
+-
+-    if (ioctl(group_fd, VFIO_GROUP_SET_CONTAINER, &container->fd)) {
++    if (ioctl(group_fd, VFIO_GROUP_SET_CONTAINER, &container_fd)) {
+         error_setg_errno(errp, errno, "Failed to set group container");
+         return false;
+     }
+ 
+-    while (ioctl(container->fd, VFIO_SET_IOMMU, iommu_type)) {
+-        if (iommu_type == VFIO_SPAPR_TCE_v2_IOMMU) {
++    while (ioctl(container_fd, VFIO_SET_IOMMU, *iommu_type)) {
++        if (*iommu_type == VFIO_SPAPR_TCE_v2_IOMMU) {
+             /*
+              * On sPAPR, despite the IOMMU subdriver always advertises v1 and
+              * v2, the running platform may not support v2 and there is no
+              * way to guess it until an IOMMU group gets added to the container.
+              * So in case it fails with v2, try v1 as a fallback.
+              */
+-            iommu_type = VFIO_SPAPR_TCE_IOMMU;
++            *iommu_type = VFIO_SPAPR_TCE_IOMMU;
+             continue;
+         }
+         error_setg_errno(errp, errno, "Failed to set iommu for container");
+         return false;
+     }
+ 
+-    container->iommu_type = iommu_type;
+-
+-    vioc_name = vfio_get_iommu_class_name(iommu_type);
+-    vioc = VFIO_IOMMU_CLASS(object_class_by_name(vioc_name));
+-
+-    vfio_container_init(&container->bcontainer, vioc);
      return true;
  }
  
-+static VFIOContainer *vfio_create_container(int fd, VFIOGroup *group,
-+                                            Error **errp)
-+{
-+    VFIOContainer *container;
-+
-+    container = g_malloc0(sizeof(*container));
-+    container->fd = fd;
-+    return container;
-+}
-+
- static int vfio_get_iommu_info(VFIOContainer *container,
-                                struct vfio_iommu_type1_info **info)
+ static VFIOContainer *vfio_create_container(int fd, VFIOGroup *group,
+                                             Error **errp)
  {
-@@ -604,13 +614,14 @@ static bool vfio_connect_container(VFIOGroup *group, AddressSpace *as,
++    int iommu_type;
++    const VFIOIOMMUClass *vioc;
++    const char *vioc_name;
+     VFIOContainer *container;
+ 
++    iommu_type = vfio_get_iommu_type(fd, errp);
++    if (iommu_type < 0) {
++        return NULL;
++    }
++
++    if (!vfio_set_iommu(fd, group->fd, &iommu_type, errp)) {
++        return NULL;
++    }
++
++    vioc_name = vfio_get_iommu_class_name(iommu_type);
++    vioc = VFIO_IOMMU_CLASS(object_class_by_name(vioc_name));
++
+     container = g_malloc0(sizeof(*container));
+     container->fd = fd;
++    container->iommu_type = iommu_type;
++    vfio_container_init(&container->bcontainer, vioc);
+     return container;
+ }
+ 
+@@ -618,9 +620,6 @@ static bool vfio_connect_container(VFIOGroup *group, AddressSpace *as,
+     if (!container) {
          goto close_fd_exit;
      }
- 
--    container = g_malloc0(sizeof(*container));
--    container->fd = fd;
--    bcontainer = &container->bcontainer;
--
-+    container = vfio_create_container(fd, group, errp);
-+    if (!container) {
-+        goto close_fd_exit;
-+    }
-     if (!vfio_set_iommu(container, group->fd, errp)) {
-         goto free_container_exit;
-     }
-+    bcontainer = &container->bcontainer;
+-    if (!vfio_set_iommu(container, group->fd, errp)) {
+-        goto free_container_exit;
+-    }
+     bcontainer = &container->bcontainer;
  
      if (!vfio_cpr_register_container(bcontainer, errp)) {
-         goto free_container_exit;
 -- 
 2.45.2
 
