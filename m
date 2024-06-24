@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 600BE914224
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jun 2024 07:37:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1B92914226
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jun 2024 07:37:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sLcNn-0004Pc-2A; Mon, 24 Jun 2024 01:36:51 -0400
+	id 1sLcOT-0005PD-3T; Mon, 24 Jun 2024 01:37:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sLcNe-0004Ip-Og
- for qemu-devel@nongnu.org; Mon, 24 Jun 2024 01:36:43 -0400
-Received: from mail-oi1-x232.google.com ([2607:f8b0:4864:20::232])
+ id 1sLcOC-00056e-SM
+ for qemu-devel@nongnu.org; Mon, 24 Jun 2024 01:37:18 -0400
+Received: from mail-pg1-x536.google.com ([2607:f8b0:4864:20::536])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sLcNd-0005V6-Bm
- for qemu-devel@nongnu.org; Mon, 24 Jun 2024 01:36:42 -0400
-Received: by mail-oi1-x232.google.com with SMTP id
- 5614622812f47-3d35f1dfda2so2138647b6e.3
- for <qemu-devel@nongnu.org>; Sun, 23 Jun 2024 22:36:40 -0700 (PDT)
+ id 1sLcO7-0005XZ-30
+ for qemu-devel@nongnu.org; Mon, 24 Jun 2024 01:37:12 -0400
+Received: by mail-pg1-x536.google.com with SMTP id
+ 41be03b00d2f7-6c5bcb8e8edso2659740a12.2
+ for <qemu-devel@nongnu.org>; Sun, 23 Jun 2024 22:37:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1719207399; x=1719812199;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1719207429; x=1719812229;
  darn=nongnu.org; 
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=4UeIrnK+x4MJL0Fd1GojjIUpYNBbEWfFqfmaS+MdeYc=;
- b=rNN4rigGeMDuecT2H0QxzUwkLm7okJmJRBAqU6LEhBw/CYC14ZhnFkaMLwY0/oPupP
- pIIx20t9Y2yBVM4oacqf89DyikxEJPldX4B7TvO2INCgioB5S/xAE1MIgeuZIMS7vYsQ
- FAOU0C4GjqZ9CKfk7KYe7P3p9IQcAj3OkH64BKXgbgsFXE7XlIiPo9QbT0imYKNvazdj
- tf9x3djYkabwUKZoilyaFkMYnGKLFhJrpKSCULuZdJUvgDXMw6PopzgTmZXPfezFvWRP
- dFtgffrer7ENQEz2HXEHyuGDBN++wOfrxqw0o4yz3uca+PnQ4Ig97CNdrYg2xMcD3nGv
- EZ4Q==
+ bh=r/TlZl62s/0JwilXPCCEFYa5cWIGjt4qRe/1E+/8vu0=;
+ b=bCyhD+T+lYcbAq6OeTDlweaXtrqzI5f/6L8SLtBmsOqx97CE77QKznTjcyVOgFqzDk
+ oytQBANXMD/fTEPm7V6NkzGajh93vPd14UUAmnLpfhKDCtfcxxFvwJDw8ZqDXalkh9x2
+ pyyObKVqwQPPACnAxu0Dpk2JMDVDKlbTSCBK01Z+PpMqniqmbv7/Gja2DwwbMo1F94V4
+ pNRVPrP9nWJtTnw7/pf5+4+awJt3j/hwfuerCBWU8+ztTzpox8Kk2BI/lSQUFrigCMC5
+ Todq88/ClJKefsn1ZYFAs1R+/pWwJ4WVnw7x5QAs9QYistORY3YGhmoLQ1QqyC6x4dK1
+ FWng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719207399; x=1719812199;
+ d=1e100.net; s=20230601; t=1719207429; x=1719812229;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=4UeIrnK+x4MJL0Fd1GojjIUpYNBbEWfFqfmaS+MdeYc=;
- b=msAXMzB8bx8D4fVzUXG5wTi9+bAubI3CFVKSJhaql0sjey6FaPJffrDmo0kehtv3Mk
- N423+zLPYzdCyLMNOW2ETl4m3LScLgJz/I6OghgBYkQmdTF1QodohiCkqS5GVUZhNDSU
- RocwBZQhqBwgR1IZTfI0UNFQMtf86yB9XOIz7HK3UIIGrB5CuQ1AI1q67nN7yXIGMPnL
- mSwXGetG1xAGdAWXMEmU7CXIHcy25e7At18xktpu0NzafKskz9lqVsLcqvyuJZUSnq0i
- bzYiRHd8u5kgWW8W4J4omiEZM4sb4ocMfswWbdEm5XhAH/l8nhsxhAxRPQXOBD9wqaYa
- T2og==
-X-Gm-Message-State: AOJu0YxINME/hzhcdekcZa03/lnxVnc/0BEBKY2e+quVY1BL1nHXl+2S
- AIZ4FuIXvZ4o2kd9ePGae61kaIdPaRwWaQ8m+Tyt8gNDrQeIIazFNtmTSsY5GWs=
-X-Google-Smtp-Source: AGHT+IHbp0eiyz0zbaapHbvhjQwCWjEb4yMPDxXBpMVZbRziGJf4DxLGkZTOndrHIUgaGn31osxHbQ==
-X-Received: by 2002:a05:6808:bc9:b0:3d1:d3f6:455a with SMTP id
- 5614622812f47-3d541c65829mr5299997b6e.20.1719207399325; 
- Sun, 23 Jun 2024 22:36:39 -0700 (PDT)
+ bh=r/TlZl62s/0JwilXPCCEFYa5cWIGjt4qRe/1E+/8vu0=;
+ b=oz/Il1gYlNlVc3SAV/zayKI9XnvrrWXRf6w8Di9PlQmgpHjqE3Kt1f3/aHqiST3CRK
+ f1TbjBKJl6PDxOG2caRsMBVqH6qb3DtN3AG8XbGk7s5kp5CHJmkyAxEzy5K/a95MLEuA
+ LTAmKihF3IdqeOgrB3ix4CSIed9Unn1Nx9rgS0BUJdDWLw8a11YyN5zz1a+34eSZj+Sr
+ 8Ye++VpymFhkNK7O2fL9piaDbDJlo+BLpvMRUis5HMJpTRX4b7bPj4YekMF7h9IpdxMP
+ I7ACsP2UR5Yhq0yG9mPpxhU3maO8rydwfELHU7c2E7aS1dSUVidKOPDz7UCmc8rQFKaO
+ cyFA==
+X-Gm-Message-State: AOJu0YwMcMV4GAGxELEIFNDge3bRCloTE8dyLNiBAMkolnUJE21A3C6R
+ Vtt2v793m5ib+3eKyRmHezMrlM+oJaUcurTzYP2KuLliYpETsGHRG2zB3CODAtM=
+X-Google-Smtp-Source: AGHT+IEiQKmpIV/Tgxkq2nmyXGkGFXJK6QMYBTJwWc3qOQFnpfJMvmp0mqKs8XNpepIwxcjLZL5ZvQ==
+X-Received: by 2002:a05:6a21:196:b0:1bc:9b00:e012 with SMTP id
+ adf61e73a8af0-1bcf8006722mr4635913637.58.1719207428601; 
+ Sun, 23 Jun 2024 22:37:08 -0700 (PDT)
 Received: from [157.82.204.135] ([157.82.204.135])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7067e0e5723sm1582153b3a.75.2024.06.23.22.36.34
+ d9443c01a7336-1f9eb3d4c3fsm53812595ad.195.2024.06.23.22.37.03
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 23 Jun 2024 22:36:39 -0700 (PDT)
-Message-ID: <8af265a0-7e15-4944-b40c-a4d19f5928cf@daynix.com>
-Date: Mon, 24 Jun 2024 14:36:33 +0900
+ Sun, 23 Jun 2024 22:37:08 -0700 (PDT)
+Message-ID: <edc41d3d-990d-462f-ab22-be26ec1455f8@daynix.com>
+Date: Mon, 24 Jun 2024 14:37:02 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v16 06/13] virtio-gpu: Use pkgconfig version to decide
- which virgl features are available
+Subject: Re: [PATCH v16 07/13] virtio-gpu: Support context-init feature with
+ virglrenderer
 To: Dmitry Osipenko <dmitry.osipenko@collabora.com>,
  Huang Rui <ray.huang@amd.com>, =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?=
  <marcandre.lureau@gmail.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
@@ -85,14 +85,14 @@ Cc: qemu-devel@nongnu.org, Gurchetan Singh <gurchetansingh@chromium.org>,
  Honglei Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
  Chen Jiqian <Jiqian.Chen@amd.com>, Yiwei Zhang <zzyiwei@chromium.org>
 References: <20240623152343.328436-1-dmitry.osipenko@collabora.com>
- <20240623152343.328436-7-dmitry.osipenko@collabora.com>
+ <20240623152343.328436-8-dmitry.osipenko@collabora.com>
 Content-Language: en-US
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <20240623152343.328436-7-dmitry.osipenko@collabora.com>
+In-Reply-To: <20240623152343.328436-8-dmitry.osipenko@collabora.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::232;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-oi1-x232.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::536;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x536.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -115,12 +115,15 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 2024/06/24 0:23, Dmitry Osipenko wrote:
-> New virglrerenderer features were stabilized with release of v1.0.0.
-> Presence of symbols in virglrenderer.h doesn't guarantee ABI compatibility
-> with pre-release development versions of libvirglerender. Use virglrenderer
-> version to decide reliably which virgl features are available.
+> From: Huang Rui <ray.huang@amd.com>
 > 
-> Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+> Patch "virtio-gpu: CONTEXT_INIT feature" has added the context_init
+> feature flags. Expose this feature and support creating virglrenderer
+> context with flags using context_id if libvirglrenderer is new enough.
+> 
+> Originally-by: Antonio Caggiano <antonio.caggiano@collabora.com>
+> Signed-off-by: Huang Rui <ray.huang@amd.com>
+> Reviewed-by: Antonio Caggiano <quic_acaggian@quicinc.com>
 > Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
 
 Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
