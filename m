@@ -2,53 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4388C9140C7
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jun 2024 05:10:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89CD09140DD
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jun 2024 05:41:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sLa53-0002EY-Ul; Sun, 23 Jun 2024 23:09:21 -0400
+	id 1sLaZL-0000ll-GV; Sun, 23 Jun 2024 23:40:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaoshiyuan@baidu.com>)
- id 1sLa51-0002EN-HU
- for qemu-devel@nongnu.org; Sun, 23 Jun 2024 23:09:19 -0400
-Received: from mx24.baidu.com ([111.206.215.185] helo=baidu.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaoshiyuan@baidu.com>)
- id 1sLa4t-0005zp-Qo
- for qemu-devel@nongnu.org; Sun, 23 Jun 2024 23:09:19 -0400
-To: "Gao,Shiyuan" <gaoshiyuan@baidu.com>, "imammedo@redhat.com"
- <imammedo@redhat.com>
-CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "mst@redhat.com"
- <mst@redhat.com>, "berrange@redhat.com" <berrange@redhat.com>
-Subject: Failed to hot-plug device to pxb bridge
-Thread-Topic: Failed to hot-plug device to pxb bridge
-Thread-Index: AQHaw4XI87/5oTfsUESpKSNFbrbm9LHWO2qk
-Date: Mon, 24 Jun 2024 03:08:55 +0000
-Message-ID: <74e8929fd34d496ea64aab6b3a136b3b@baidu.com>
-References: <3A8D097B-3BA7-40DC-8DDF-D79B7BEE5CEE@baidu.com>,
- <20240530160919.01a3effc@imammedo.users.ipa.redhat.com>,
- <2cae6cf3c0f64b509ceed04be6a8bd70@baidu.com>
-In-Reply-To: <2cae6cf3c0f64b509ceed04be6a8bd70@baidu.com>
-Accept-Language: zh-CN, en-US
-Content-Language: zh-CN
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.22.200.68]
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
+ (Exim 4.90_1) (envelope-from <lixianglai@loongson.cn>)
+ id 1sLaZI-0000lG-6J
+ for qemu-devel@nongnu.org; Sun, 23 Jun 2024 23:40:36 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <lixianglai@loongson.cn>) id 1sLaZF-00033z-24
+ for qemu-devel@nongnu.org; Sun, 23 Jun 2024 23:40:35 -0400
+Received: from loongson.cn (unknown [10.2.5.185])
+ by gateway (Coremail) with SMTP id _____8Bxb+ul6nhmMGkJAA--.37617S3;
+ Mon, 24 Jun 2024 11:40:21 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.185])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8AxDMel6nhmfKQuAA--.45790S2; 
+ Mon, 24 Jun 2024 11:40:21 +0800 (CST)
+From: Xianglai Li <lixianglai@loongson.cn>
+To: qemu-devel@nongnu.org
+Cc: Bibo Mao <maobibo@loongson.cn>, Paolo Bonzini <pbonzini@redhat.com>,
+ Song Gao <gaosong@loongson.cn>
+Subject: [PATCH] hw/loongarch: Change the tpm support by default
+Date: Mon, 24 Jun 2024 11:23:00 +0800
+Message-Id: <20240624032300.999157-1-lixianglai@loongson.cn>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-X-FEAS-Client-IP: 10.127.64.12
-X-FE-Last-Public-Client-IP: 100.100.100.60
-X-FE-Policy-ID: 52:10:53:SYSTEM
-Received-SPF: pass client-ip=111.206.215.185;
- envelope-from=gaoshiyuan@baidu.com; helo=baidu.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
-X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_LOW=-0.7,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: AQAAf8AxDMel6nhmfKQuAA--.45790S2
+X-CM-SenderInfo: 5ol0xt5qjotxo6or00hjvr0hdfq/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+ ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+ nUUI43ZEXa7xR_UUUUUUUUU==
+Received-SPF: pass client-ip=114.242.206.163;
+ envelope-from=lixianglai@loongson.cn; helo=mail.loongson.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -61,47 +58,49 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  "Gao,Shiyuan" <gaoshiyuan@baidu.com>
-From:  "Gao,Shiyuan" via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-PiBJIGNoZWNrZWQgdGhlIGd1ZXN0IGRtZXNnIGFuZCBmb3VuZCB0aGF0IGZhaWxlZCBsb2FkIHNo
-cGMgZHJpdmVyLg0KPiAgIFsgICAgMC45NjY2NjhdIHNocGNocCAwMDAwOjAwOjA1LjA6IFJlcXVl
-c3RpbmcgY29udHJvbCBvZiBTSFBDIGhvdHBsdWcgdmlhIE9TSFAgKFxfU0JfLlBDSTAuUzI4XykN
-Cj4gICBbICAgIDAuOTY4MjM4XSBzaHBjaHAgMDAwMDowMDowNS4wOiBSZXF1ZXN0aW5nIGNvbnRy
-b2wgb2YgU0hQQyBob3RwbHVnIHZpYSBPU0hQIChcX1NCXy5QQ0kwKQ0KPiAgIFsgICAgMC45Njkx
-NjBdIHNocGNocCAwMDAwOjAwOjA1LjA6IENhbm5vdCBnZXQgY29udHJvbCBvZiBTSFBDIGhvdHBs
-dWcNCj4gICBbICAgIDAuOTY5ODc2XSBzaHBjaHAgMDAwMDowMDowNi4wOiBSZXF1ZXN0aW5nIGNv
-bnRyb2wgb2YgU0hQQyBob3RwbHVnIHZpYSBPU0hQIChcX1NCXy5QQ0kwLlMzMF8pDQo+ICAgWyAg
-ICAwLjk3MTQ1NF0gc2hwY2hwIDAwMDA6MDA6MDYuMDogUmVxdWVzdGluZyBjb250cm9sIG9mIFNI
-UEMgaG90cGx1ZyB2aWEgT1NIUCAoXF9TQl8uUENJMCkNCj4gICBbICAgIDAuOTcyMzc2XSBzaHBj
-aHAgMDAwMDowMDowNi4wOiBDYW5ub3QgZ2V0IGNvbnRyb2wgb2YgU0hQQyBob3RwbHVnDQo+ICAg
-WyAgICAwLjk3MzExOV0gc2hwY2hwIDAwMDA6ODA6MDAuMDogUmVxdWVzdGluZyBjb250cm9sIG9m
-IFNIUEMgaG90cGx1ZyB2aWEgT1NIUCAoXF9TQl8uUEM4MCkNCj4gICBbICAgIDAuOTc0Njc0XSBz
-aHBjaHAgMDAwMDo4MDowMC4wOiBDYW5ub3QgZ2V0IGNvbnRyb2wgb2YgU0hQQyBob3RwbHVnDQo+
-ICAgWyAgICAwLjk3OTQyMl0gc2hwY2hwIDAwMDA6ODE6MDEuMDogUmVxdWVzdGluZyBjb250cm9s
-IG9mIFNIUEMgaG90cGx1ZyB2aWEgT1NIUCAoXF9TQl8uUEM4MCkNCj4gICBbICAgIDAuOTgwOTQ4
-XSBzaHBjaHAgMDAwMDo4MTowMS4wOiBDYW5ub3QgZ2V0IGNvbnRyb2wgb2YgU0hQQyBob3RwbHVn
-DQo+ICAgWyAgICAwLjk4MTY4NV0gc2hwY2hwIDAwMDA6NjA6MDAuMDogUmVxdWVzdGluZyBjb250
-cm9sIG9mIFNIUEMgaG90cGx1ZyB2aWEgT1NIUCAoXF9TQl8uUEM2MCkNCj4gICBbICAgIDAuOTk0
-NjIzXSBzaHBjaHAgMDAwMDo2MDowMC4wOiBDYW5ub3QgZ2V0IGNvbnRyb2wgb2YgU0hQQyBob3Rw
-bHVnDQo+ICAgWyAgICAwLjk5NTM0OV0gc2hwY2hwIDAwMDA6NjE6MDEuMDogUmVxdWVzdGluZyBj
-b250cm9sIG9mIFNIUEMgaG90cGx1ZyB2aWEgT1NIUCAoXF9TQl8uUEM2MCkNCj4gICBbICAgIDAu
-OTk2ODkxXSBzaHBjaHAgMDAwMDo2MTowMS4wOiBDYW5ub3QgZ2V0IGNvbnRyb2wgb2YgU0hQQyBo
-b3RwbHVnDQo+ICAgWyAgICAwLjk5NzYyNl0gc2hwY2hwOiBTdGFuZGFyZCBIb3QgUGx1ZyBQQ0kg
-Q29udHJvbGxlciBEcml2ZXIgdmVyc2lvbjogMC40DQo+IFJlYWQgdGhlIHNocGMgZHJpdmVyIGNv
-ZGUsIEkgZm91bmQgdGhhdCBiZWZvcmUgc2hwY19pbml0IGl0IG5lZWQgY2hlY2sgdGhlIHNocGMg
-Y2FwYWJpbGl0eSBvZiBicmlkZ2Uoc2hwY19jYXBhYmxlKSBhbmQNCj4gZ2V0IGhvdHBsdWcgY29u
-dHJvbCBmcm9tIGZpcm13YXJlKGFjcGlfZ2V0X2hwX2h3X2NvbnRyb2xfZnJvbV9maXJtd2FyZSkg
-aW4gc2hwY19wcm9iZS4NCj4gSG93ZXJ2ZXIgaXQgcmV0dXJuIGZhaWwgaW4gYWNwaV9nZXRfaHBf
-aHdfY29udHJvbF9mcm9tX2Zpcm13YXJlLiBJIGR1bXAgdGhlIGFjcGlkIHRhYmxlLCBub3QgZm91
-bmQgT1NDIGFuZCBPU0hQDQo+IG1ldGhvZCBpbiBkc2R0LmRzbC4NCj4gSW4gdGhlIFFFTVUgYnVp
-bGRfZHNkdCwgbm90IGZvdW5kIGJ1aWxkIG9zYyBtZXRob2QgaW4gaTQ0MGZ4Lg0KPiBQdXR0aW5n
-IGFzaWRlIHRoaXMgcHhiIHNjZW5hcmlvLCBJIHN1c3BlY3QgdGhhdCBhZnRlciBkaXNhYmxlIGFj
-cGktcGNpLWhvdHBsdWctd2l0aC1icmlkZ2Utc3VwcG9ydCwNCj4gaG90LXBsdWcgaW50byB0aGUg
-UENJIGJyaWRnZSB2aWEgU0hQQyBjYW4gYmUgc3VjY2Vzc2Z1bCBpbiBpNDQwZnggPw0KDQpBZnRl
-ciBhZGRpbmcgb3NocCBtZXRob2QgaW4gYnVpbGRfZHNkdCwgdGhlIFNIUEMgZHJpdmVyIGxvYWQg
-c3VjZXNzIGFuZCBob3RwbHVnIGRldmljZSBzdWNlc3MuIE1heWJlIHdlIG5lZWQgYSBwYXRjaA0K
-Zml4IGl0ID8NCg0KDQoNCg0KICAgIA==
+Add devices that support tpm by default,
+Fixed incomplete tpm acpi table information.
+
+Signed-off-by: Xianglai Li <lixianglai@loongson.cn>
+---
+Cc: Bibo Mao <maobibo@loongson.cn>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Song Gao <gaosong@loongson.cn>
+
+ hw/loongarch/Kconfig      | 1 +
+ hw/loongarch/acpi-build.c | 3 +++
+ 2 files changed, 4 insertions(+)
+
+diff --git a/hw/loongarch/Kconfig b/hw/loongarch/Kconfig
+index 90a0dba9d5..89be737726 100644
+--- a/hw/loongarch/Kconfig
++++ b/hw/loongarch/Kconfig
+@@ -8,6 +8,7 @@ config LOONGARCH_VIRT
+     imply VIRTIO_VGA
+     imply PCI_DEVICES
+     imply NVDIMM
++    imply TPM_TIS_SYSBUS
+     select SERIAL
+     select VIRTIO_PCI
+     select PLATFORM_BUS
+diff --git a/hw/loongarch/acpi-build.c b/hw/loongarch/acpi-build.c
+index af45ce526d..72bfc35ae6 100644
+--- a/hw/loongarch/acpi-build.c
++++ b/hw/loongarch/acpi-build.c
+@@ -646,6 +646,9 @@ void loongarch_acpi_setup(LoongArchVirtMachineState *lvms)
+                                              build_state, tables.rsdp,
+                                              ACPI_BUILD_RSDP_FILE);
+ 
++    fw_cfg_add_file(lvms->fw_cfg, ACPI_BUILD_TPMLOG_FILE, tables.tcpalog->data,
++                    acpi_data_len(tables.tcpalog));
++
+     qemu_register_reset(acpi_build_reset, build_state);
+     acpi_build_reset(build_state);
+     vmstate_register(NULL, 0, &vmstate_acpi_build, build_state);
+-- 
+2.39.1
+
 
