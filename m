@@ -2,58 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CE63915909
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jun 2024 23:29:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CB4091590F
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jun 2024 23:29:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sLrBV-0002dv-0F; Mon, 24 Jun 2024 17:25:09 -0400
+	id 1sLrBa-0002hB-Lb; Mon, 24 Jun 2024 17:25:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sLrBS-0002dk-NK
- for qemu-devel@nongnu.org; Mon, 24 Jun 2024 17:25:06 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sLrBY-0002f9-C2
+ for qemu-devel@nongnu.org; Mon, 24 Jun 2024 17:25:12 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sLrBQ-0006Q0-HV
- for qemu-devel@nongnu.org; Mon, 24 Jun 2024 17:25:06 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sLrBW-0006Vg-HU
+ for qemu-devel@nongnu.org; Mon, 24 Jun 2024 17:25:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719264303;
+ s=mimecast20190719; t=1719264309;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=JKbw7Ew14AfchSn1bTTqvAZzsV53YxZtxrY9CzyUKjQ=;
- b=MZUJPRerjHRKjr6mj7lH1vQNrY+ntSUCqdV0xp6ITDwrldSY6L6PT2L1QzkPLAvpp5hUWm
- VMOpBvfezQC/raL1E6zNMtfVznF6VOrTpQTFdoM7UrzJ7FnUhC4Jq64+oQnZNRNB3QFyCk
- kU/IFJY9iUft7ZlsC56eM3tJi0DlARY=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=IaNnVR99BQzWWbJnN4JIPoW2wYW+07pQUUxKvDwUtfU=;
+ b=ImFi5oAnMeUgY+GzFEQ5aYcPUw8AP2vUhX1E2kotg1B1fUCznziXZYLsAeH9rVIkCUufyT
+ 0sCM3AsvOoyRJsaPAd+Uf+PDK+25fWZnmfgZUpBCSJFBBTB5Qyl9tfjDt5JExNrKaQsSY+
+ 9jANOVrfZvA+2PFEDGDqYsQ5c+Pak+U=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-502-gkWSRjk3Nx2wInHcAJHSjg-1; Mon,
- 24 Jun 2024 17:25:01 -0400
-X-MC-Unique: gkWSRjk3Nx2wInHcAJHSjg-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-335-T3Uhwin3NB2pk3dPdtOufw-1; Mon,
+ 24 Jun 2024 17:25:05 -0400
+X-MC-Unique: T3Uhwin3NB2pk3dPdtOufw-1
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id EA70A19560AD
- for <qemu-devel@nongnu.org>; Mon, 24 Jun 2024 21:25:00 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 9E17C195608C; Mon, 24 Jun 2024 21:25:04 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.192.49])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 49B861956058; Mon, 24 Jun 2024 21:24:58 +0000 (UTC)
+ id 561B21956057; Mon, 24 Jun 2024 21:25:01 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 00/42] vfio queue
-Date: Mon, 24 Jun 2024 23:24:14 +0200
-Message-ID: <20240624212456.350919-1-clg@redhat.com>
+ Zhenzhong Duan <zhenzhong.duan@intel.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ Eric Auger <eric.auger@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>
+Subject: [PULL 01/42] backends: Introduce HostIOMMUDevice abstract
+Date: Mon, 24 Jun 2024 23:24:15 +0200
+Message-ID: <20240624212456.350919-2-clg@redhat.com>
+In-Reply-To: <20240624212456.350919-1-clg@redhat.com>
+References: <20240624212456.350919-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: 10
 X-Spam_score: 1.0
@@ -78,106 +82,160 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit d89b64beea65f77c21a553cb54cb97b75c53dc21:
+From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 
-  Merge tag 'pull-request-2024-06-24' of https://gitlab.com/thuth/qemu into staging (2024-06-24 11:57:11 -0700)
+A HostIOMMUDevice is an abstraction for an assigned device that is protected
+by a physical IOMMU (aka host IOMMU). The userspace interaction with this
+physical IOMMU can be done either through the VFIO IOMMU type 1 legacy
+backend or the new iommufd backend. The assigned device can be a VFIO device
+or a VDPA device. The HostIOMMUDevice is needed to interact with the host
+IOMMU that protects the assigned device. It is especially useful when the
+device is also protected by a virtual IOMMU as this latter use the translation
+services of the physical IOMMU and is constrained by it. In that context the
+HostIOMMUDevice can be passed to the virtual IOMMU to collect physical IOMMU
+capabilities such as the supported address width. In the future, the virtual
+IOMMU will use the HostIOMMUDevice to program the guest page tables in the
+first translation stage of the physical IOMMU.
 
-are available in the Git repository at:
+Introduce .realize() to initialize HostIOMMUDevice further after instance init.
 
-  https://github.com/legoater/qemu/ tags/pull-vfio-20240624
-
-for you to fetch changes up to 96b7af4388b38bc1f66467a9c7c8ee9d3bff500f:
-
-  vfio/container: Move vfio_container_destroy() to an instance_finalize() handler (2024-06-24 23:15:31 +0200)
-
-----------------------------------------------------------------
-vfio queue:
-
-* Add a host IOMMU device abstraction
-* VIRTIO-IOMMU/VFIO: Fix host iommu geometry handling
-* QOMify VFIOContainer
-
-----------------------------------------------------------------
-Avihai Horon (1):
-      vfio/common: Extract vIOMMU code from vfio_sync_dirty_bitmap()
-
-Cédric Le Goater (15):
-      vfio: Make vfio_devices_dma_logging_start() return bool
-      vfio: Remove unused declarations from vfio-common.h
-      vfio/container: Introduce vfio_address_space_insert()
-      vfio/container: Simplify vfio_container_init()
-      vfio/container: Modify vfio_get_iommu_type() to use a container fd
-      vfio/container: Introduce vfio_get_iommu_class_name()
-      vfio/container: Introduce vfio_create_container()
-      vfio/container: Discover IOMMU type before creating the container
-      vfio/container: Change VFIOContainerBase to use QOM
-      vfio/container: Switch to QOM
-      vfio/container: Introduce an instance_init() handler
-      vfio/container: Remove VFIOContainerBase::ops
-      vfio/container: Remove vfio_container_init()
-      vfio/container: Introduce vfio_iommu_legacy_instance_init()
-      vfio/container: Move vfio_container_destroy() to an instance_finalize() handler
-
-Eric Auger (8):
-      HostIOMMUDevice: Store the VFIO/VDPA agent
-      virtio-iommu: Implement set|unset]_iommu_device() callbacks
-      HostIOMMUDevice: Introduce get_iova_ranges callback
-      HostIOMMUDevice: Store the aliased bus and devfn
-      virtio-iommu: Compute host reserved regions
-      virtio-iommu: Remove the implementation of iommu_set_iova_range
-      hw/vfio: Remove memory_region_iommu_set_iova_ranges() call
-      memory: Remove IOMMU MR iommu_set_iova_range API
-
-Joao Martins (1):
-      vfio/common: Move dirty tracking ranges update to helper
-
-Yi Liu (2):
-      hw/pci: Introduce pci_device_[set|unset]_iommu_device()
-      intel_iommu: Implement [set|unset]_iommu_device() callbacks
-
-Zhenzhong Duan (15):
-      backends: Introduce HostIOMMUDevice abstract
-      backends/host_iommu_device: Introduce HostIOMMUDeviceCaps
-      vfio/container: Introduce TYPE_HOST_IOMMU_DEVICE_LEGACY_VFIO device
-      backends/iommufd: Introduce TYPE_HOST_IOMMU_DEVICE_IOMMUFD[_VFIO] devices
-      range: Introduce range_get_last_bit()
-      vfio/container: Implement HostIOMMUDeviceClass::realize() handler
-      backends/iommufd: Introduce helper function iommufd_backend_get_device_info()
-      vfio/iommufd: Implement HostIOMMUDeviceClass::realize() handler
-      vfio/container: Implement HostIOMMUDeviceClass::get_cap() handler
-      backends/iommufd: Implement HostIOMMUDeviceClass::get_cap() handler
-      vfio: Create host IOMMU device instance
-      hw/pci: Introduce helper function pci_device_get_iommu_bus_devfn()
-      vfio/pci: Pass HostIOMMUDevice to vIOMMU
-      intel_iommu: Extract out vtd_cap_init() to initialize cap/ecap
-      intel_iommu: Check compatibility with host IOMMU capabilities
-
- MAINTAINERS                           |   2 +
- include/exec/memory.h                 |  32 ----
- include/hw/i386/intel_iommu.h         |   2 +
- include/hw/pci/pci.h                  |  38 ++++-
- include/hw/vfio/vfio-common.h         |  18 ++-
- include/hw/vfio/vfio-container-base.h |  22 +--
- include/hw/virtio/virtio-iommu.h      |   2 +
- include/qemu/range.h                  |  11 ++
- include/sysemu/host_iommu_device.h    | 102 ++++++++++++
- include/sysemu/iommufd.h              |  19 +++
- backends/host_iommu_device.c          |  33 ++++
- backends/iommufd.c                    |  76 +++++++--
- hw/i386/intel_iommu.c                 | 203 ++++++++++++++++++-----
- hw/pci/pci.c                          |  79 ++++++++-
- hw/vfio/common.c                      | 150 ++++++++++-------
- hw/vfio/container-base.c              |  70 ++++----
- hw/vfio/container.c                   | 164 +++++++++++++------
- hw/vfio/helpers.c                     |  17 ++
- hw/vfio/iommufd.c                     |  68 +++++++-
- hw/vfio/pci.c                         |  23 ++-
- hw/vfio/spapr.c                       |   3 +
- hw/virtio/virtio-iommu.c              | 296 ++++++++++++++++++++++------------
- system/memory.c                       |  13 --
- backends/meson.build                  |   1 +
- 24 files changed, 1066 insertions(+), 378 deletions(-)
+Suggested-by: Cédric Le Goater <clg@redhat.com>
+Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+---
+ MAINTAINERS                        |  2 ++
+ include/sysemu/host_iommu_device.h | 53 ++++++++++++++++++++++++++++++
+ backends/host_iommu_device.c       | 33 +++++++++++++++++++
+ backends/meson.build               |  1 +
+ 4 files changed, 89 insertions(+)
  create mode 100644 include/sysemu/host_iommu_device.h
  create mode 100644 backends/host_iommu_device.c
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index f144b5af449e786ce0d132bb4dc509b46da2e82b..19f67dc5d2153bbf994821ad49cc3a4d662192ef 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -2198,6 +2198,8 @@ M: Zhenzhong Duan <zhenzhong.duan@intel.com>
+ S: Supported
+ F: backends/iommufd.c
+ F: include/sysemu/iommufd.h
++F: backends/host_iommu_device.c
++F: include/sysemu/host_iommu_device.h
+ F: include/qemu/chardev_open.h
+ F: util/chardev_open.c
+ F: docs/devel/vfio-iommufd.rst
+diff --git a/include/sysemu/host_iommu_device.h b/include/sysemu/host_iommu_device.h
+new file mode 100644
+index 0000000000000000000000000000000000000000..db47a16189a142a25887a835be9f8a8137fe00ee
+--- /dev/null
++++ b/include/sysemu/host_iommu_device.h
+@@ -0,0 +1,53 @@
++/*
++ * Host IOMMU device abstract declaration
++ *
++ * Copyright (C) 2024 Intel Corporation.
++ *
++ * Authors: Zhenzhong Duan <zhenzhong.duan@intel.com>
++ *
++ * This work is licensed under the terms of the GNU GPL, version 2.  See
++ * the COPYING file in the top-level directory.
++ */
++
++#ifndef HOST_IOMMU_DEVICE_H
++#define HOST_IOMMU_DEVICE_H
++
++#include "qom/object.h"
++#include "qapi/error.h"
++
++#define TYPE_HOST_IOMMU_DEVICE "host-iommu-device"
++OBJECT_DECLARE_TYPE(HostIOMMUDevice, HostIOMMUDeviceClass, HOST_IOMMU_DEVICE)
++
++struct HostIOMMUDevice {
++    Object parent_obj;
++
++    char *name;
++};
++
++/**
++ * struct HostIOMMUDeviceClass - The base class for all host IOMMU devices.
++ *
++ * Different types of host devices (e.g., VFIO or VDPA device) or devices
++ * with different backend (e.g., VFIO legacy container or IOMMUFD backend)
++ * will have different implementations of the HostIOMMUDeviceClass.
++ */
++struct HostIOMMUDeviceClass {
++    ObjectClass parent_class;
++
++    /**
++     * @realize: initialize host IOMMU device instance further.
++     *
++     * Mandatory callback.
++     *
++     * @hiod: pointer to a host IOMMU device instance.
++     *
++     * @opaque: pointer to agent device of this host IOMMU device,
++     *          e.g., VFIO base device or VDPA device.
++     *
++     * @errp: pass an Error out when realize fails.
++     *
++     * Returns: true on success, false on failure.
++     */
++    bool (*realize)(HostIOMMUDevice *hiod, void *opaque, Error **errp);
++};
++#endif
+diff --git a/backends/host_iommu_device.c b/backends/host_iommu_device.c
+new file mode 100644
+index 0000000000000000000000000000000000000000..8f2dda1beb9bbea27a61c17d439aeb19ec26cc90
+--- /dev/null
++++ b/backends/host_iommu_device.c
+@@ -0,0 +1,33 @@
++/*
++ * Host IOMMU device abstract
++ *
++ * Copyright (C) 2024 Intel Corporation.
++ *
++ * Authors: Zhenzhong Duan <zhenzhong.duan@intel.com>
++ *
++ * This work is licensed under the terms of the GNU GPL, version 2.  See
++ * the COPYING file in the top-level directory.
++ */
++
++#include "qemu/osdep.h"
++#include "sysemu/host_iommu_device.h"
++
++OBJECT_DEFINE_ABSTRACT_TYPE(HostIOMMUDevice,
++                            host_iommu_device,
++                            HOST_IOMMU_DEVICE,
++                            OBJECT)
++
++static void host_iommu_device_class_init(ObjectClass *oc, void *data)
++{
++}
++
++static void host_iommu_device_init(Object *obj)
++{
++}
++
++static void host_iommu_device_finalize(Object *obj)
++{
++    HostIOMMUDevice *hiod = HOST_IOMMU_DEVICE(obj);
++
++    g_free(hiod->name);
++}
+diff --git a/backends/meson.build b/backends/meson.build
+index 8b2b111497f7c6cd5cb6ca50ec6d1474a543fc9f..106312f0c8b6d76f6aa6b9cc046b85e540c10f35 100644
+--- a/backends/meson.build
++++ b/backends/meson.build
+@@ -16,6 +16,7 @@ if host_os != 'windows'
+ endif
+ if host_os == 'linux'
+   system_ss.add(files('hostmem-memfd.c'))
++  system_ss.add(files('host_iommu_device.c'))
+ endif
+ if keyutils.found()
+     system_ss.add(keyutils, files('cryptodev-lkcf.c'))
+-- 
+2.45.2
 
 
