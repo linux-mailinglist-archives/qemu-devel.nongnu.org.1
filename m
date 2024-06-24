@@ -2,88 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32E8B914934
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jun 2024 13:55:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E53D914DB3
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jun 2024 14:52:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sLiHL-00086l-NM; Mon, 24 Jun 2024 07:54:35 -0400
+	id 1sLjAH-0000nN-CQ; Mon, 24 Jun 2024 08:51:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jeuk20.kim@gmail.com>)
- id 1sLiHJ-000863-LG
- for qemu-devel@nongnu.org; Mon, 24 Jun 2024 07:54:33 -0400
-Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <jeuk20.kim@gmail.com>)
- id 1sLiH9-0004MI-B0
- for qemu-devel@nongnu.org; Mon, 24 Jun 2024 07:54:33 -0400
-Received: by mail-pf1-x42d.google.com with SMTP id
- d2e1a72fcca58-701b0b0be38so3534918b3a.0
- for <qemu-devel@nongnu.org>; Mon, 24 Jun 2024 04:54:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1719230061; x=1719834861; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=J9exiM9nxej1c+gcLd3nCNe4L/RX8HFT4G0YVY7w/bM=;
- b=CSrapPXwvm6HuRNfr9qN64OR4c0OFMlkGpEXs+bLPHx1FPeIQOj6dhqm6Xo7Y7kf6+
- +wIVCuM4m/ob9GWP1L6cx3oRPyqzlVTImNd8kWx8qUYUMr3lgjxBWk6ylBlERT+pHOB6
- 7XDD4kERzO4EC0IAIv+D0oTiOgMDHnLxb5QfQdupo/5IDN15KFcJ47TTosjx8c0wL/Rb
- XALcev2brJN/OcULinLuRyeBKj8FOPQs3cH9qNXwJYEq/CxBMI5DO2xohm6VXEhVLD/u
- kteD5PhXnfi6SGWwLg9i5AclQ9+RvrGydeefuAzowgoBmy6Ej/YbguhgOiKO1udbs+xl
- Aw4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719230061; x=1719834861;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=J9exiM9nxej1c+gcLd3nCNe4L/RX8HFT4G0YVY7w/bM=;
- b=CANVGz2yfPjwIDdguKFxAR8Mgu2RlpB6FXJiJDyemKuw2Tp4OEf3/4mxOJvOZ3l7gp
- fJqo19HJu9E3uxdmxY45jmOLNA73XElGsEv7Bo7T98DQU3oNDA415iZhs7NX3g0RbLoB
- yfjKnAnpi/5hbR82CPmALzDakCOv53ytNN4FPbBkTQzqd64c8lE0gLR6j/qkW9MEJGku
- eE5sAkejLBWDGFG34HsLjVp4p6mONz+l5ZNZQCdZg0FBM3BCzMYrnEqAydcOIqpEZlbK
- oTuqmbGAI97+4K2XRS/9ce1K0uScCLA02+pSyuHY5JiN/gzzbNH/mr92T420oHbL01lz
- TgTA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCV2ELW9eMUzLysfhZoXD5FPWZz+Qdy5eZLAyOHDLkziAMUoGRTqWVEha+6ZsNeFg0ORTKuCnnJchiUKDdnOfL0B/be7U+k=
-X-Gm-Message-State: AOJu0Yw54tm24b0dwK/fLTxd0FmPXUqUlPvhpUEWQHF7ySvmzUjBv/0e
- IvA0w2PFkbZG9GWobXJCCZvGjGp/907uhNv8dMKjG/x+xEwZcBiZ
-X-Google-Smtp-Source: AGHT+IFcafTasGrwwkGcfJxx9D/+kLd8UeVbTpvBJOLxY9Kiu4rJ4Ubh3Gn/v+MTW6x8M4Wvh5uq1w==
-X-Received: by 2002:a05:6a21:999e:b0:1b2:b60a:a42d with SMTP id
- adf61e73a8af0-1bcf7e3cc4emr5272286637.4.1719230061300; 
- Mon, 24 Jun 2024 04:54:21 -0700 (PDT)
-Received: from [192.168.0.22] ([210.223.46.112])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1fa1d3773d1sm34433535ad.270.2024.06.24.04.54.19
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 24 Jun 2024 04:54:20 -0700 (PDT)
-Message-ID: <1cf11ba0-5b4c-4294-a34a-f238225dc261@gmail.com>
-Date: Mon, 24 Jun 2024 20:54:18 +0900
+ (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
+ id 1sLgGq-0005UZ-Ba
+ for qemu-devel@nongnu.org; Mon, 24 Jun 2024 05:45:56 -0400
+Received: from dfw.source.kernel.org ([139.178.84.217])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mchehab+huawei@kernel.org>)
+ id 1sLgGo-0001gb-Cu
+ for qemu-devel@nongnu.org; Mon, 24 Jun 2024 05:45:56 -0400
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+ by dfw.source.kernel.org (Postfix) with ESMTP id 078CF60B8D;
+ Mon, 24 Jun 2024 09:45:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0246FC2BBFC;
+ Mon, 24 Jun 2024 09:45:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1719222345;
+ bh=cW52zxJgpVsSrE9cLev7A24Pl9+DDNAp4ic425Ti+Y4=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=EVvXwvTa2dRso95ijmvxkEJ8uAhkbmG37zOi+grH8prpdua6kADnowYph3H4mI6+g
+ JkKtGCwrutt4IJnNqvNDIYX0YHJHV35/afDZZh8vCfWmvWXGQDZMl+CzNDS5a3iPre
+ AXbfEpO30WPRVmcVvicq0wk4IefC+thYSegFbpRXdRH9q79whpXhO5DXxwUXpCHB22
+ ZqpJV3IWeID8vFwEnEH3kNvSsKFsXw8Aq8dXhi5ir0EnZKXit3Am/8upEBGDnWLWzL
+ 2R6Bo6feNlIHLKqIXVIkiiJfqJRKA23Dvp6KLxxdLlnBicDmP7JGDfUt/qQ7HvN68I
+ sa8162M5uux4w==
+Date: Mon, 24 Jun 2024 11:45:40 +0200
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+Cc: <shiju.jose@huawei.com>, <qemu-devel@nongnu.org>,
+ <linux-edac@vger.kernel.org>, <tanxiaofei@huawei.com>,
+ <prime.zeng@hisilicon.com>, <linuxarm@huawei.com>
+Subject: Re: [RFC PATCH 1/1] hw/arm: FW first ARM processor error injection.
+Message-ID: <20240624114540.400b70a1@coco.lan>
+In-Reply-To: <20240621193316.00000d83@Huawei.com>
+References: <20240621165115.336-1-shiju.jose@huawei.com>
+ <20240621193316.00000d83@Huawei.com>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.42; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hw/ufs: Fix potential bugs in MMIO read|write
-To: Peter Maydell <peter.maydell@linaro.org>,
- Minwoo Im <minwoo.im.dev@gmail.com>
-Cc: Jeuk Kim <jeuk20.kim@samsung.com>, qemu-devel@nongnu.org,
- Minwoo Im <minwoo.im@samsung.com>
-References: <20240623024555.78697-1-minwoo.im.dev@gmail.com>
- <CAFEAcA-NmcugQwa1u=Yt0GF4y1BAGUhi3ZnLhs6SPGP+s1sDLA@mail.gmail.com>
-Content-Language: ko
-From: Jeuk Kim <jeuk20.kim@gmail.com>
-In-Reply-To: <CAFEAcA-NmcugQwa1u=Yt0GF4y1BAGUhi3ZnLhs6SPGP+s1sDLA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
- envelope-from=jeuk20.kim@gmail.com; helo=mail-pf1-x42d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Received-SPF: pass client-ip=139.178.84.217;
+ envelope-from=mchehab+huawei@kernel.org; helo=dfw.source.kernel.org
+X-Spam_score_int: -71
+X-Spam_score: -7.2
+X-Spam_bar: -------
+X-Spam_report: (-7.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.149,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Mon, 24 Jun 2024 08:51:19 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,58 +73,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Em Fri, 21 Jun 2024 19:33:16 +0100
+Jonathan Cameron <Jonathan.Cameron@Huawei.com> escreveu:
 
-On 6/24/2024 7:27 PM, Peter Maydell wrote:
-> On Sun, 23 Jun 2024 at 03:46, Minwoo Im <minwoo.im.dev@gmail.com> wrote:
->> This patch fixes two points reported in coverity scan report [1].  Check
->> the MMIO access address with (addr + size), not just with the start offset
->> addr to make sure that the requested memory access not to exceed the
->> actual register region.  We also updated (uint8_t *) to (uint32_t *) to
->> represent we are accessing the MMIO registers by dword-sized only.
->>
->> [1] https://lore.kernel.org/qemu-devel/CAFEAcA82L-WZnHMW0X+Dr40bHM-EVq2ZH4DG4pdqop4xxDP2Og@mail.gmail.com/
->>
->> Cc: Jeuk Kim <jeuk20.kim@gmail.com>
->> Reported-by: Peter Maydell <peter.maydell@linaro.org>
->> Signed-off-by: Minwoo Im <minwoo.im.dev@gmail.com>
->> ---
->>   hw/ufs/ufs.c | 31 ++++++++++++++++---------------
->>   1 file changed, 16 insertions(+), 15 deletions(-)
->>
->> diff --git a/hw/ufs/ufs.c b/hw/ufs/ufs.c
->> index 71a88d221ced..bf2ff02ac6e5 100644
->> --- a/hw/ufs/ufs.c
->> +++ b/hw/ufs/ufs.c
->> @@ -55,17 +55,18 @@ static inline uint64_t ufs_reg_size(UfsHc *u)
->>       return ufs_mcq_op_reg_addr(u, 0) + sizeof(u->mcq_op_reg);
->>   }
->>
->> -static inline bool ufs_is_mcq_reg(UfsHc *u, uint64_t addr)
->> +static inline bool ufs_is_mcq_reg(UfsHc *u, uint64_t addr, unsigned size)
->>   {
->>       uint64_t mcq_reg_addr = ufs_mcq_reg_addr(u, 0);
->> -    return addr >= mcq_reg_addr && addr < mcq_reg_addr + sizeof(u->mcq_reg);
->> +    return (addr >= mcq_reg_addr &&
->> +            addr + size <= mcq_reg_addr + sizeof(u->mcq_reg));
->>   }
->>
->> -static inline bool ufs_is_mcq_op_reg(UfsHc *u, uint64_t addr)
->> +static inline bool ufs_is_mcq_op_reg(UfsHc *u, uint64_t addr, unsigned size)
->>   {
->>       uint64_t mcq_op_reg_addr = ufs_mcq_op_reg_addr(u, 0);
->>       return (addr >= mcq_op_reg_addr &&
->> -            addr < mcq_op_reg_addr + sizeof(u->mcq_op_reg));
->> +            addr  + size <= mcq_op_reg_addr + sizeof(u->mcq_op_reg));
-> Stray extra space after "addr".
+> On Fri, 21 Jun 2024 17:51:15 +0100
+> <shiju.jose@huawei.com> wrote:
+> 
+> > From: Shiju Jose <shiju.jose@huawei.com>  
+> Thanks for posting this.
+> 
+> Given this is going to linux-edac, probably should mention
+> this is QEMU based error injection.  For cross postings
+> between kernel related and qemu lists I tend to stick
+> qemu in the [] of the patch description.
 
-Thank you for your comment.
+Thank you for that! It is really useful. Btw, I'm using a small
+script to do the error injection using netcat (nc), and assuming
+that the QMP interface used for error injection will be started 
+at localhost port 4445, e. g. qemu is started with:
 
-I'll fix it when I send the pull request.
+	-qmp tcp:localhost:4445,server=on,wait=off
 
->
-> Otherwise
-> Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
->
-> thanks
-> -- PMM
+Btw, I added some instructions about how to use it under rasdaemon
+page:
+
+	https://github.com/mchehab/rasdaemon/wiki/Error-injection-testing
+
+Feel free to improve it.
+
+Thanks,
+Mauro
+
+---
+
+
+#!/bin/bash
+
+trap 'catch $LINENO "$BASH_COMMAND"' ERR
+catch() {
+	echo "Error on line $1: $2"
+	exit 1
+}
+
+ERROR_DEFAULT='"cache-error"'
+ERROR=""
+
+HELP="$0 [<-c|--cache-error> <-t|--tlb-error> <-b|--bus-error> <-v|--vendor-error>|--micro-arch-error]"
+
+while [ "$1" != "" ]; do
+	case "$1" in
+		-c|--cache-error)
+			if [ ! -z "$ERROR" ]; then ERROR="$ERROR, "; fi
+			ERROR+='"cache-error"'
+			;;
+		-t|--tlb-error)
+			if [ ! -z "$ERROR" ]; then ERROR="$ERROR, "; fi
+			ERROR+='"tlb-error"'
+			;;
+		-b|--bus-error)
+			if [ ! -z "$ERROR" ]; then ERROR="$ERROR, "; fi
+			ERROR+='"bus-error"'
+			;;
+		-v|--vendor-error|--micro-arch-error)
+			if [ ! -z "$ERROR" ]; then ERROR="$ERROR, "; fi
+			ERROR+='"micro-arch-error"'
+			;;
+		help|-h|--help)
+			echo $HELP
+			exit 0
+			;;
+	esac
+	shift
+done
+
+
+if [ -z "$ERROR" ]; then
+	ERROR=$ERROR_DEFAULT
+fi
+
+CACHE_MSG='{ "execute": "qmp_capabilities" } '
+CACHE_MSG+='{ "execute": "arm-inject-error", "arguments": { "errortypes": ['$ERROR'] } }'
+
+echo $CACHE_MSG
+echo $CACHE_MSG | nc -v localhost 4445
+
+
 
