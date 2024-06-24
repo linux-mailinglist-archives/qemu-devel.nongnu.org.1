@@ -2,89 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98963914748
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jun 2024 12:20:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 298A8914753
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jun 2024 12:21:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sLgmj-0006pp-4Z; Mon, 24 Jun 2024 06:18:53 -0400
+	id 1sLgp0-00064V-G9; Mon, 24 Jun 2024 06:21:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sLgmh-0006ov-JX
- for qemu-devel@nongnu.org; Mon, 24 Jun 2024 06:18:51 -0400
-Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sLgme-0007hs-Mt
- for qemu-devel@nongnu.org; Mon, 24 Jun 2024 06:18:51 -0400
-Received: by mail-ej1-x631.google.com with SMTP id
- a640c23a62f3a-a724b4f1218so133438366b.2
- for <qemu-devel@nongnu.org>; Mon, 24 Jun 2024 03:18:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719224326; x=1719829126; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=csz4agAZp6lldiHiVd/L/1KnBx9/0btPjs2vbkrKDHw=;
- b=ehrNIR6s2ugtuKX1oJKaSxMT6df7vcm/OIwEV1MmbzUDFepB1Fk3vhfNeF9p/41yt7
- GjKWgxjYnyKB8xrM0rC3wY8kaqN4HeYXw1R7rEIdBU7FykjAfp10TZwH1YtxEnPQPdj3
- z1vJP5RGAAIrUJE8fQz+kIRtv1KK9LkFa2Uue7pv4Jbq/UsFskd8dt1jtznnfXbGOTkS
- A+fE8R9nrpC6Drf/lsI83KUf6ytZf+r8a3MEQk3VyQbRcCEOfGXJiGvvkE4QrUlYsnCD
- P+K9Oh3V31bHkT5SDVv3hJ5/Rz9poM1EQ3up8EDE9+66gkcjVbTHcM8ZDHgoUrIQrw4d
- c3/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719224326; x=1719829126;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=csz4agAZp6lldiHiVd/L/1KnBx9/0btPjs2vbkrKDHw=;
- b=Io4JWUhpLC0S7fPNhq2sCklsekqjmLhiZKz7e3xxOEXDh8Km7bPkKSOOSa6g6U4/vC
- ZeL3Egv1SlEcYVpueXptnvdsL86ddgqH6lMqaoqKT6TZbZkWFl48nIj0rl9KlGwAuU5k
- rUI4EjA5y6onAIJP1tA+11fmPcK8QNne2ddz12Lm9gyiP4PebTbzFAAHufDnpJaKzfmL
- 2OOP6CKVkW/VJM69D8YBAmmiSG6Lrn684YZcZWq0pbk8ZYwqXEy/kUvor/KlfqPiMw3o
- KgXhDexZc42um8lkqJ1aJnbUB8/X0RPdq2GYt02BTbJFLm/wyE9XMdjCz6/jqsJryqkw
- J2+Q==
-X-Gm-Message-State: AOJu0YwEJGnKp5HqF2eG01sE0cGx68Yo8fOedjrnXFHtDJ30/SY7scMm
- FoMtCdUovZr/RpB/GCGhu+UOTwcQYG6MKFV3LTwlJxsyaCw+7S91IthQcaKS7rUHgiVq/MjH2Cw
- S
-X-Google-Smtp-Source: AGHT+IG5BSidx52uhSWpp/mh6pNM+q21O4sxjvtkcz4NhOy76Clte55RiYYAyLy5AoXyXPbRdt1JjQ==
-X-Received: by 2002:a17:907:8b8c:b0:a72:4b31:13aa with SMTP id
- a640c23a62f3a-a724b311555mr241195866b.55.1719224325881; 
- Mon, 24 Jun 2024 03:18:45 -0700 (PDT)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a6fcf428c24sm400211666b.17.2024.06.24.03.18.39
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 24 Jun 2024 03:18:41 -0700 (PDT)
-Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 7ED865FA2E;
- Mon, 24 Jun 2024 11:18:37 +0100 (BST)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Max Chou <max.chou@sifive.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Frank Chang <frank.chang@sifive.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PULL 12/12] accel/tcg: Avoid unnecessary call overhead from
- qemu_plugin_vcpu_mem_cb
-Date: Mon, 24 Jun 2024 11:18:36 +0100
-Message-Id: <20240624101836.193761-13-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240624101836.193761-1-alex.bennee@linaro.org>
-References: <20240624101836.193761-1-alex.bennee@linaro.org>
+ (Exim 4.90_1) (envelope-from <EwanHai-oc@zhaoxin.com>)
+ id 1sLgox-00063t-Dc
+ for qemu-devel@nongnu.org; Mon, 24 Jun 2024 06:21:11 -0400
+Received: from mx2.zhaoxin.com ([203.110.167.99])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <EwanHai-oc@zhaoxin.com>)
+ id 1sLgot-0008IL-L4
+ for qemu-devel@nongnu.org; Mon, 24 Jun 2024 06:21:11 -0400
+X-ASG-Debug-ID: 1719224459-1eb14e2e60b9290001-jgbH7p
+Received: from ZXSHMBX2.zhaoxin.com (ZXSHMBX2.zhaoxin.com [10.28.252.164]) by
+ mx2.zhaoxin.com with ESMTP id 84MmLcTc9kLKvesU (version=TLSv1.2
+ cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO);
+ Mon, 24 Jun 2024 18:20:59 +0800 (CST)
+X-Barracuda-Envelope-From: EwanHai-oc@zhaoxin.com
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.164
+Received: from zxbjmbx1.zhaoxin.com (10.29.252.163) by ZXSHMBX2.zhaoxin.com
+ (10.28.252.164) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 24 Jun
+ 2024 18:20:59 +0800
+Received: from [10.28.66.62] (10.28.66.62) by zxbjmbx1.zhaoxin.com
+ (10.29.252.163) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 24 Jun
+ 2024 18:20:58 +0800
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.164
+Message-ID: <8d816541-2546-42a8-b6db-bd9d50729b36@zhaoxin.com>
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.66.62
+Date: Mon, 24 Jun 2024 06:20:58 -0400
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::631;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x631.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] target/i386/kvm: Refine VMX controls setting for
+ backward compatibility
+From: Ewan Hai <ewanhai-oc@zhaoxin.com>
+X-ASG-Orig-Subj: Re: [PATCH v3] target/i386/kvm: Refine VMX controls setting
+ for backward compatibility
+To: <mtosatti@redhat.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
+ <pbonzini@redhat.com>
+CC: <kvm@vger.kernel.org>, <qemu-devel@nongnu.org>, <ewanhai@zhaoxin.com>,
+ <cobechen@zhaoxin.com>, <zhao1.liu@intel.com>
+References: <20240624095806.214525-1-ewanhai-oc@zhaoxin.com>
+Content-Language: en-US
+In-Reply-To: <20240624095806.214525-1-ewanhai-oc@zhaoxin.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.28.66.62]
+X-ClientProxiedBy: ZXSHCAS1.zhaoxin.com (10.28.252.161) To
+ zxbjmbx1.zhaoxin.com (10.29.252.163)
+X-Barracuda-Connect: ZXSHMBX2.zhaoxin.com[10.28.252.164]
+X-Barracuda-Start-Time: 1719224459
+X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
+X-Barracuda-URL: https://10.28.252.36:4443/cgi-mod/mark.cgi
+X-Virus-Scanned: by bsmtpd at zhaoxin.com
+X-Barracuda-Scan-Msg-Size: 3148
+X-Barracuda-BRTS-Status: 1
+X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
+X-Barracuda-Spam-Score: -2.02
+X-Barracuda-Spam-Status: No,
+ SCORE=-2.02 using global scores of TAG_LEVEL=1000.0
+ QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=
+X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.126687
+ Rule breakdown below
+ pts rule name              description
+ ---- ---------------------- --------------------------------------------------
+Received-SPF: pass client-ip=203.110.167.99;
+ envelope-from=EwanHai-oc@zhaoxin.com; helo=mx2.zhaoxin.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -101,47 +94,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Max Chou <max.chou@sifive.com>
+Sorry for my oversight, I am adding the maintainers who were
+missed in the previous email.
 
-If there are not any QEMU plugin memory callback functions, checking
-before calling the qemu_plugin_vcpu_mem_cb function can reduce the
-function call overhead.
-
-Signed-off-by: Max Chou <max.chou@sifive.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Frank Chang <frank.chang@sifive.com>
-Message-Id: <20240613175122.1299212-2-max.chou@sifive.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20240620152220.2192768-13-alex.bennee@linaro.org>
-
-diff --git a/accel/tcg/ldst_common.c.inc b/accel/tcg/ldst_common.c.inc
-index c82048e377..87ceb95487 100644
---- a/accel/tcg/ldst_common.c.inc
-+++ b/accel/tcg/ldst_common.c.inc
-@@ -125,7 +125,9 @@ void helper_st_i128(CPUArchState *env, uint64_t addr, Int128 val, MemOpIdx oi)
- 
- static void plugin_load_cb(CPUArchState *env, abi_ptr addr, MemOpIdx oi)
- {
--    qemu_plugin_vcpu_mem_cb(env_cpu(env), addr, oi, QEMU_PLUGIN_MEM_R);
-+    if (cpu_plugin_mem_cbs_enabled(env_cpu(env))) {
-+        qemu_plugin_vcpu_mem_cb(env_cpu(env), addr, oi, QEMU_PLUGIN_MEM_R);
-+    }
- }
- 
- uint8_t cpu_ldb_mmu(CPUArchState *env, abi_ptr addr, MemOpIdx oi, uintptr_t ra)
-@@ -188,7 +190,9 @@ Int128 cpu_ld16_mmu(CPUArchState *env, abi_ptr addr,
- 
- static void plugin_store_cb(CPUArchState *env, abi_ptr addr, MemOpIdx oi)
- {
--    qemu_plugin_vcpu_mem_cb(env_cpu(env), addr, oi, QEMU_PLUGIN_MEM_W);
-+    if (cpu_plugin_mem_cbs_enabled(env_cpu(env))) {
-+        qemu_plugin_vcpu_mem_cb(env_cpu(env), addr, oi, QEMU_PLUGIN_MEM_W);
-+    }
- }
- 
- void cpu_stb_mmu(CPUArchState *env, abi_ptr addr, uint8_t val,
--- 
-2.39.2
+On 6/24/24 05:58, EwanHai wrote:
+> Commit 4a910e1 ("target/i386: do not set unsupported VMX secondary
+> execution controls") implemented a workaround for hosts that have
+> specific CPUID features but do not support the corresponding VMX
+> controls, e.g., hosts support RDSEED but do not support RDSEED-Exiting.
+>
+> In detail, commit 4a910e1 introduced a flag `has_msr_vmx_procbased_clts2`.
+> If KVM has `MSR_IA32_VMX_PROCBASED_CTLS2` in its msr list, QEMU would
+> use KVM's settings, avoiding any modifications to this MSR.
+>
+> However, this commit (4a910e1) didn't account for cases in older Linux
+> kernels(4.17~5.2) where `MSR_IA32_VMX_PROCBASED_CTLS2` is in
+> `kvm_feature_msrs`-obtained by ioctl(KVM_GET_MSR_FEATURE_INDEX_LIST),
+> but not in `kvm_msr_list`-obtained by ioctl(KVM_GET_MSR_INDEX_LIST).
+> As a result,it did not set the `has_msr_vmx_procbased_clts2` flag based
+> on `kvm_msr_list` alone, even though KVM does maintain the value of
+> this MSR.
+>
+> This patch supplements the above logic, ensuring that
+> `has_msr_vmx_procbased_clts2` is correctly set by checking both MSR
+> lists, thus maintaining compatibility with older kernels.
+>
+> Signed-off-by: EwanHai <ewanhai-oc@zhaoxin.com>
+> ---
+> Changes in v3:
+> - Use a more precise version range in the comment, specifically "4.17~5.2"
+> instead of "<5.3".
+>
+> Changes in v2:
+> - Adjusted some punctuation in the commit message as per suggestions.
+> - Added comments to the newly added code to indicate that it is a compatibility fix.
+>
+> v1 link:
+> https://lore.kernel.org/all/20230925071453.14908-1-ewanhai-oc@zhaoxin.com/
+>
+> v2 link:
+> https://lore.kernel.org/all/20231127034326.257596-1-ewanhai-oc@zhaoxin.com/
+> ---
+>   target/i386/kvm/kvm.c | 15 +++++++++++++++
+>   1 file changed, 15 insertions(+)
+>
+> diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+> index 7ad8072748..a7c6c5b2d0 100644
+> --- a/target/i386/kvm/kvm.c
+> +++ b/target/i386/kvm/kvm.c
+> @@ -2386,6 +2386,7 @@ void kvm_arch_do_init_vcpu(X86CPU *cpu)
+>   static int kvm_get_supported_feature_msrs(KVMState *s)
+>   {
+>       int ret = 0;
+> +    int i;
+>   
+>       if (kvm_feature_msrs != NULL) {
+>           return 0;
+> @@ -2420,6 +2421,20 @@ static int kvm_get_supported_feature_msrs(KVMState *s)
+>           return ret;
+>       }
+>   
+> +   /*
+> +    * Compatibility fix:
+> +    * Older Linux kernels (4.17~5.2) report MSR_IA32_VMX_PROCBASED_CTLS2
+> +    * in KVM_GET_MSR_FEATURE_INDEX_LIST but not in KVM_GET_MSR_INDEX_LIST.
+> +    * This leads to an issue in older kernel versions where QEMU,
+> +    * through the KVM_GET_MSR_INDEX_LIST check, assumes the kernel
+> +    * doesn't maintain MSR_IA32_VMX_PROCBASED_CTLS2, resulting in
+> +    * incorrect settings by QEMU for this MSR.
+> +    */
+> +    for (i = 0; i < kvm_feature_msrs->nmsrs; i++) {
+> +        if (kvm_feature_msrs->indices[i] == MSR_IA32_VMX_PROCBASED_CTLS2) {
+> +            has_msr_vmx_procbased_ctls2 = true;
+> +        }
+> +    }
+>       return 0;
+>   }
+>   
 
 
