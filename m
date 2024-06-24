@@ -2,58 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E11D9158FE
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jun 2024 23:28:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 275DB915900
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jun 2024 23:28:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sLrCo-0004oB-3C; Mon, 24 Jun 2024 17:26:30 -0400
+	id 1sLrCt-0005Yt-56; Mon, 24 Jun 2024 17:26:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sLrCe-0004Vs-LB
- for qemu-devel@nongnu.org; Mon, 24 Jun 2024 17:26:20 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sLrCg-0004bf-Vk
+ for qemu-devel@nongnu.org; Mon, 24 Jun 2024 17:26:23 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sLrCd-0006kK-0R
- for qemu-devel@nongnu.org; Mon, 24 Jun 2024 17:26:20 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sLrCe-0006m9-R0
+ for qemu-devel@nongnu.org; Mon, 24 Jun 2024 17:26:22 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719264377;
+ s=mimecast20190719; t=1719264380;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=7I5Q9DDwwADFOIgEN65wvviElU7l4p2zecM8yB5Yl5I=;
- b=EfCBOSdNi9QaY6bXoamzK05AWV8U/+Gokj0D9p9l3bLRm8KjEM8NshitRBV9FaF6gCzCDP
- CsBsezMbXnNeaJdN4h34A7nNOCa9GjZ9B2YrB+ELJTmU1wMqmMdcjhM9CPcOjQr3uinicN
- vQDaBiHisy4g7wnmLsHKB5SKryGx5Bw=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ bh=k2qATLNcNBu0tdZy+mmIA1IhZk80F7fErwBqOXKDazE=;
+ b=YJ/dvULnlhyxAKs3fYvJKnFlIKfH/f4LJ9Mv0ZZ6NRjzN3q29Spav5b4blKP2Q3EvMBV41
+ SI5qDRy/FoNzWUPd0sSEFADVk9R6R+xxOvEWF80V7FfeeYoO1yCcBOUvYxflvRJWnA10uE
+ rGWgCPnmw3EoHhtzHt1PUXAlwhBGcB0=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-133-pEjublzROTWxFpXS2uc3Bw-1; Mon,
- 24 Jun 2024 17:26:16 -0400
-X-MC-Unique: pEjublzROTWxFpXS2uc3Bw-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-641-4Te833OYOTSj5AgJ_HkCHQ-1; Mon,
+ 24 Jun 2024 17:26:18 -0400
+X-MC-Unique: 4Te833OYOTSj5AgJ_HkCHQ-1
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 1FC661956086; Mon, 24 Jun 2024 21:26:15 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 7627319560BD; Mon, 24 Jun 2024 21:26:17 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.192.49])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 0342E1956051; Mon, 24 Jun 2024 21:26:12 +0000 (UTC)
+ id 7F9281956051; Mon, 24 Jun 2024 21:26:15 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
- Avihai Horon <avihaih@nvidia.com>,
- Joao Martins <joao.m.martins@oracle.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  Zhenzhong Duan <zhenzhong.duan@intel.com>,
- Eric Auger <eric.auger@redhat.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 29/42] vfio/common: Extract vIOMMU code from
- vfio_sync_dirty_bitmap()
-Date: Mon, 24 Jun 2024 23:24:43 +0200
-Message-ID: <20240624212456.350919-30-clg@redhat.com>
+ Eric Auger <eric.auger@redhat.com>
+Subject: [PULL 30/42] vfio/container: Introduce vfio_address_space_insert()
+Date: Mon, 24 Jun 2024 23:24:44 +0200
+Message-ID: <20240624212456.350919-31-clg@redhat.com>
 In-Reply-To: <20240624212456.350919-1-clg@redhat.com>
 References: <20240624212456.350919-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -85,105 +82,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Avihai Horon <avihaih@nvidia.com>
+It prepares ground for a future change initializing the 'space' pointer
+of VFIOContainerBase. The goal is to replace vfio_container_init() by
+an .instance_init() handler when VFIOContainerBase is QOMified.
 
-Extract vIOMMU code from vfio_sync_dirty_bitmap() to a new function and
-restructure the code.
-
-This is done in preparation for optimizing vIOMMU device dirty page
-tracking. No functional changes intended.
-
-Signed-off-by: Avihai Horon <avihaih@nvidia.com>
-Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
-[ clg: - Rebased on upstream
-       - Fixed typo in commit log ]
 Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
 Tested-by: Eric Auger <eric.auger@redhat.com>
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/vfio/common.c | 63 +++++++++++++++++++++++++++++-------------------
- 1 file changed, 38 insertions(+), 25 deletions(-)
+ include/hw/vfio/vfio-common.h | 2 ++
+ hw/vfio/common.c              | 6 ++++++
+ hw/vfio/container.c           | 2 +-
+ hw/vfio/iommufd.c             | 2 +-
+ 4 files changed, 10 insertions(+), 2 deletions(-)
 
+diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
+index c19572f90b277193491020af28e8b5587f15bfd1..825d80130bd435fe50830c8ae5b7905d18104dd6 100644
+--- a/include/hw/vfio/vfio-common.h
++++ b/include/hw/vfio/vfio-common.h
+@@ -206,6 +206,8 @@ typedef struct VFIODisplay {
+ 
+ VFIOAddressSpace *vfio_get_address_space(AddressSpace *as);
+ void vfio_put_address_space(VFIOAddressSpace *space);
++void vfio_address_space_insert(VFIOAddressSpace *space,
++                               VFIOContainerBase *bcontainer);
+ 
+ void vfio_disable_irqindex(VFIODevice *vbasedev, int index);
+ void vfio_unmask_single_irqindex(VFIODevice *vbasedev, int index);
 diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-index fe215918bdf66ddbe3c5db803e10ce1aa9756b90..f28641bad5cf4b71fcdc0a6c9d42b24c8d786248 100644
+index f28641bad5cf4b71fcdc0a6c9d42b24c8d786248..8cdf26c6f5a490cfa02bdf1087a91948709aaa33 100644
 --- a/hw/vfio/common.c
 +++ b/hw/vfio/common.c
-@@ -1302,37 +1302,50 @@ vfio_sync_ram_discard_listener_dirty_bitmap(VFIOContainerBase *bcontainer,
-                                                 &vrdl);
+@@ -1508,6 +1508,12 @@ void vfio_put_address_space(VFIOAddressSpace *space)
+     }
  }
  
-+static int vfio_sync_iommu_dirty_bitmap(VFIOContainerBase *bcontainer,
-+                                        MemoryRegionSection *section)
++void vfio_address_space_insert(VFIOAddressSpace *space,
++                               VFIOContainerBase *bcontainer)
 +{
-+    VFIOGuestIOMMU *giommu;
-+    bool found = false;
-+    Int128 llend;
-+    vfio_giommu_dirty_notifier gdn;
-+    int idx;
-+
-+    QLIST_FOREACH(giommu, &bcontainer->giommu_list, giommu_next) {
-+        if (MEMORY_REGION(giommu->iommu_mr) == section->mr &&
-+            giommu->n.start == section->offset_within_region) {
-+            found = true;
-+            break;
-+        }
-+    }
-+
-+    if (!found) {
-+        return 0;
-+    }
-+
-+    gdn.giommu = giommu;
-+    idx = memory_region_iommu_attrs_to_index(giommu->iommu_mr,
-+                                             MEMTXATTRS_UNSPECIFIED);
-+
-+    llend = int128_add(int128_make64(section->offset_within_region),
-+                       section->size);
-+    llend = int128_sub(llend, int128_one());
-+
-+    iommu_notifier_init(&gdn.n, vfio_iommu_map_dirty_notify, IOMMU_NOTIFIER_MAP,
-+                        section->offset_within_region, int128_get64(llend),
-+                        idx);
-+    memory_region_iommu_replay(giommu->iommu_mr, &gdn.n);
-+
-+    return 0;
++    QLIST_INSERT_HEAD(&space->containers, bcontainer, next);
 +}
 +
- static int vfio_sync_dirty_bitmap(VFIOContainerBase *bcontainer,
-                                   MemoryRegionSection *section, Error **errp)
+ struct vfio_device_info *vfio_get_device_info(int fd)
  {
-     ram_addr_t ram_addr;
+     struct vfio_device_info *info;
+diff --git a/hw/vfio/container.c b/hw/vfio/container.c
+index c48749c089a67ee4d0e6b8dd975562e2938500cd..0237c216987ff64a6d11bef8688bb000d93a7f09 100644
+--- a/hw/vfio/container.c
++++ b/hw/vfio/container.c
+@@ -637,7 +637,7 @@ static bool vfio_connect_container(VFIOGroup *group, AddressSpace *as,
+     vfio_kvm_device_add_group(group);
  
-     if (memory_region_is_iommu(section->mr)) {
--        VFIOGuestIOMMU *giommu;
--
--        QLIST_FOREACH(giommu, &bcontainer->giommu_list, giommu_next) {
--            if (MEMORY_REGION(giommu->iommu_mr) == section->mr &&
--                giommu->n.start == section->offset_within_region) {
--                Int128 llend;
--                vfio_giommu_dirty_notifier gdn = { .giommu = giommu };
--                int idx = memory_region_iommu_attrs_to_index(giommu->iommu_mr,
--                                                       MEMTXATTRS_UNSPECIFIED);
--
--                llend = int128_add(int128_make64(section->offset_within_region),
--                                   section->size);
--                llend = int128_sub(llend, int128_one());
--
--                iommu_notifier_init(&gdn.n,
--                                    vfio_iommu_map_dirty_notify,
--                                    IOMMU_NOTIFIER_MAP,
--                                    section->offset_within_region,
--                                    int128_get64(llend),
--                                    idx);
--                memory_region_iommu_replay(giommu->iommu_mr, &gdn.n);
--                break;
--            }
--        }
--        return 0;
-+        return vfio_sync_iommu_dirty_bitmap(bcontainer, section);
-     } else if (memory_region_has_ram_discard_manager(section->mr)) {
-         int ret;
+     QLIST_INIT(&container->group_list);
+-    QLIST_INSERT_HEAD(&space->containers, bcontainer, next);
++    vfio_address_space_insert(space, bcontainer);
  
+     group->container = container;
+     QLIST_INSERT_HEAD(&container->group_list, group, container_next);
+diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
+index e502081c2ad9eda31769176f875fef60a77e2b43..9f8f33e383a38827ceca0f73cb77f5ca6b123198 100644
+--- a/hw/vfio/iommufd.c
++++ b/hw/vfio/iommufd.c
+@@ -358,7 +358,7 @@ static bool iommufd_cdev_attach(const char *name, VFIODevice *vbasedev,
+ 
+     bcontainer = &container->bcontainer;
+     vfio_container_init(bcontainer, space, iommufd_vioc);
+-    QLIST_INSERT_HEAD(&space->containers, bcontainer, next);
++    vfio_address_space_insert(space, bcontainer);
+ 
+     if (!iommufd_cdev_attach_container(vbasedev, container, errp)) {
+         goto err_attach_container;
 -- 
 2.45.2
 
