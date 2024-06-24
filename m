@@ -2,80 +2,133 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF6889146D9
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jun 2024 11:58:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07960914718
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jun 2024 12:08:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sLgRm-00088e-Ug; Mon, 24 Jun 2024 05:57:14 -0400
+	id 1sLgbD-00021Z-Pg; Mon, 24 Jun 2024 06:06:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sLgRl-00088W-N9
- for qemu-devel@nongnu.org; Mon, 24 Jun 2024 05:57:13 -0400
-Received: from mgamail.intel.com ([198.175.65.21])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sLgb6-00021J-6r
+ for qemu-devel@nongnu.org; Mon, 24 Jun 2024 06:06:52 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sLgRi-0003f7-NC
- for qemu-devel@nongnu.org; Mon, 24 Jun 2024 05:57:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1719223031; x=1750759031;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=U3MKvYKPY9cKIDjPveZIAD2vfvbdA4D86j1HHMdvXZA=;
- b=Cu257xmO7nFjKPRlTR89gQyF5PkkhY4wlnIKJs0JTUUxB57Ragb5nv/C
- zsXf8nLPIASEHx9AlWENnOgsrd3tRBcjc83+8IXAcllm9I0HDIqY1CyZr
- l22FbDdGQwthdPX1azsrZY8JsPfV3GXjklCc5nVnyLQ/kJu8S+FD8J4AX
- r1/WeB+PyqjzzQyBEmMhkzAG0jcMWmU6/NRXYka/JxO9aNQiF8ZWyX5rL
- TLWmAq/Kr8F9YOvCJC3LMt+oIh2QY4xIC1wlazOR+41yAYfuL1AxFMyPw
- s8UcXg7XmaTJCg5IVX4+uWyCxhjd8n4q9b9/tRqwyNmXJ4+1NmCyNzvh7 g==;
-X-CSE-ConnectionGUID: XAmEVPnCREaQGAcrY/OhDA==
-X-CSE-MsgGUID: /Lhs932GT32GOXoh0XakKg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11112"; a="16152208"
-X-IronPort-AV: E=Sophos;i="6.08,261,1712646000"; d="scan'208";a="16152208"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Jun 2024 02:57:08 -0700
-X-CSE-ConnectionGUID: BxYjMK0TS5OwJOn6VXqNOQ==
-X-CSE-MsgGUID: b7odZ++vTwWoDaVRznpRtA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,261,1712646000"; d="scan'208";a="48414036"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orviesa004.jf.intel.com with ESMTP; 24 Jun 2024 02:57:03 -0700
-Date: Mon, 24 Jun 2024 18:12:36 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Cc: qemu-devel@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
- Mads Ynddal <mads@ynddal.dk>, Peter Maydell <peter.maydell@linaro.org>,
- Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Gustavo Romero <gustavo.romero@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>, rowan.hart@intel.com,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, John Snow <jsnow@redhat.com>,
- Cleber Rosa <crosa@redhat.com>
-Subject: Re: [RFC PATCH v3 2/5] rust: add bindgen step as a meson dependency
-Message-ID: <ZnlGlOGORQkOsoO5@intel.com>
-References: <rust-pl011-rfc-v3.git.manos.pitsidianakis@linaro.org>
- <6bf311a35e6d3bfa8b3bfd10d8f896a9e655fa30.1718827153.git.manos.pitsidianakis@linaro.org>
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sLgb4-0005US-20
+ for qemu-devel@nongnu.org; Mon, 24 Jun 2024 06:06:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1719223608;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=G522OfGz28qpdWO8TeBeb3IJSGKMR9N+5+X4JHM/oIA=;
+ b=fa3yEZbBPDHD69EAzxYE+4WEhN1iFts0L1gnqwGhR3BkRm0UWvEQs+vrWQH8UX5aXUUMnC
+ HHbSOU5FwNNsYKl3rF6kfdRFi3G1klFQTXFEZ39qZlsB+h8bx7xuvnoYqVm2B27rMKdUJQ
+ uHmj0m0z0jfheD7d4HCiLiptVVyInFk=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-404-LS8bA1j7MC6VK0lxxeWnwA-1; Mon, 24 Jun 2024 06:06:47 -0400
+X-MC-Unique: LS8bA1j7MC6VK0lxxeWnwA-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-36250205842so2598649f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 24 Jun 2024 03:06:47 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1719223606; x=1719828406;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=G522OfGz28qpdWO8TeBeb3IJSGKMR9N+5+X4JHM/oIA=;
+ b=Ejrb1g066yX6xDvn2aWq+IH7/em46UqHzWVvH8gOVtMW5whfISs69g0xxdPjKiRWnK
+ bZ5AH9oX24eFlyV+eYgbzutKf0HC//eJ65oksWhcNQ3DKDB1kgfZJhv2uSTNvmIqMJdS
+ efQ2QHU+K/8IjQs/E7zjDp+Ts9nVrVG/FwyMbuvbvGcvZQ4+9SC42sQuyrju538aK7TO
+ FYdx7Tx9CGTeKepZijOfs1p5poq9LZosk6SBaCD0mjGHsxdEnM5hX5s65qreZFSHdw/+
+ 0C6KVfnyFh7eYMgyFuZoAnSKC/w3UE2yJRP7uVklv5yQ9Pxxvv0r3SEmBdacZOC75nqm
+ 8o1Q==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCW0rZewgAMhljxJ3jNf+l5arlLZAM2qPqA5miJ7EkV/e0BrYce/MPX4APDAXU1X9ELFKQEC9AvXPWnO8Ds98UwpngTdQYs=
+X-Gm-Message-State: AOJu0YyPcdN2QDPrGqzOJnhFp3URzJdrVIUSLNfIA826noUwqwOHEDyT
+ xUTKsnqe9ItrdZvNv0c89eWFlEsrXjHWBEW7XI/DCk1hqXEr5LsY0hKUgDvOf9ntcGVSyb/z9XX
+ xaElNvaMAHaLeYTOAAjtJ3Bcz79EX7ARb4PCYMd6GTNCgNtQVYrNq
+X-Received: by 2002:a5d:60c9:0:b0:362:ff95:5697 with SMTP id
+ ffacd0b85a97d-366e32f6e6emr3849800f8f.28.1719223606086; 
+ Mon, 24 Jun 2024 03:06:46 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IExSbu7GlpxIgtlr9r7tyc80qUbn42RZaZJk/lFW5mD2yQYUsQLgazl7AIXtDtygKiiyl8KsA==
+X-Received: by 2002:a5d:60c9:0:b0:362:ff95:5697 with SMTP id
+ ffacd0b85a97d-366e32f6e6emr3849779f8f.28.1719223605640; 
+ Mon, 24 Jun 2024 03:06:45 -0700 (PDT)
+Received: from [192.168.0.4] (ip-109-43-178-117.web.vodafone.de.
+ [109.43.178.117]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-42481910fd4sm127994685e9.30.2024.06.24.03.06.44
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 24 Jun 2024 03:06:45 -0700 (PDT)
+Message-ID: <b625d08e-e65f-4da4-818d-bbc4e2015122@redhat.com>
+Date: Mon, 24 Jun 2024 12:06:44 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6bf311a35e6d3bfa8b3bfd10d8f896a9e655fa30.1718827153.git.manos.pitsidianakis@linaro.org>
-Received-SPF: pass client-ip=198.175.65.21; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.149,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] scsi-disk: Fix crash for VM configured with USB CDROM
+ after live migration
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+Cc: yong.huang@smartx.com
+References: <20240610170252.26516-1-pbonzini@redhat.com>
+From: Thomas Huth <thuth@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <20240610170252.26516-1-pbonzini@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
+X-Spam_bar: --
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.149,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,313 +144,207 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Manos,
+On 10/06/2024 19.02, Paolo Bonzini wrote:
+> From: Hyman Huang <yong.huang@smartx.com>
+> 
+> For VMs configured with the USB CDROM device:
+> 
+> -drive file=/path/to/local/file,id=drive-usb-disk0,media=cdrom,readonly=on...
+> -device usb-storage,drive=drive-usb-disk0,id=usb-disk0...
+> 
+> QEMU process may crash after live migration, to reproduce the issue,
+> configure VM (Guest OS ubuntu 20.04 or 21.10) with the following XML:
+> 
+> <disk type='file' device='cdrom'>
+>    <driver name='qemu' type='raw'/>
+>    <source file='/path/to/share_fs/cdrom.iso'/>
+>    <target dev='sda' bus='usb'/>
+>    <readonly/>
+>    <address type='usb' bus='0' port='2'/>
+> </disk>
+> <controller type='usb' index='0' model='piix3-uhci'/>
+> 
+> Do the live migration repeatedly, crash may happen after live migratoin,
+> trace log at the source before live migration is as follows:
+> 
+> 324808@1711972823.521945:usb_uhci_frame_start nr 319
+> 324808@1711972823.521978:usb_uhci_qh_load qh 0x35cb5400
+> 324808@1711972823.521989:usb_uhci_qh_load qh 0x35cb5480
+> 324808@1711972823.521997:usb_uhci_td_load qh 0x35cb5480, td 0x35cbe000, ctrl 0x0, token 0xffe07f69
+> 324808@1711972823.522010:usb_uhci_td_nextqh qh 0x35cb5480, td 0x35cbe000
+> 324808@1711972823.522022:usb_uhci_qh_load qh 0x35cb5680
+> 324808@1711972823.522030:usb_uhci_td_load qh 0x35cb5680, td 0x75ac5180, ctrl 0x19800000, token 0x3c903e1
+> 324808@1711972823.522045:usb_uhci_packet_add token 0x103e1, td 0x75ac5180
+> 324808@1711972823.522056:usb_packet_state_change bus 0, port 2, ep 2, packet 0x559f9ba14b00, state undef -> setup
+> 324808@1711972823.522079:usb_msd_cmd_submit lun 0, tag 0x472, flags 0x00000080, len 10, data-len 8
+> 324808@1711972823.522107:scsi_req_parsed target 0 lun 0 tag 1138 command 74 dir 1 length 8
+> 324808@1711972823.522124:scsi_req_parsed_lba target 0 lun 0 tag 1138 command 74 lba 4096
+> 324808@1711972823.522139:scsi_req_alloc target 0 lun 0 tag 1138
+> 324808@1711972823.522169:scsi_req_continue target 0 lun 0 tag 1138
+> 324808@1711972823.522181:scsi_req_data target 0 lun 0 tag 1138 len 8
+> 324808@1711972823.522194:usb_packet_state_change bus 0, port 2, ep 2, packet 0x559f9ba14b00, state setup -> complete
+> 324808@1711972823.522209:usb_uhci_packet_complete_success token 0x103e1, td 0x75ac5180
+> 324808@1711972823.522219:usb_uhci_packet_del token 0x103e1, td 0x75ac5180
+> 324808@1711972823.522232:usb_uhci_td_complete qh 0x35cb5680, td 0x75ac5180
+> 
+> trace log at the destination after live migration is as follows:
+> 
+> 3286206@1711972823.951646:usb_uhci_frame_start nr 320
+> 3286206@1711972823.951663:usb_uhci_qh_load qh 0x35cb5100
+> 3286206@1711972823.951671:usb_uhci_qh_load qh 0x35cb5480
+> 3286206@1711972823.951680:usb_uhci_td_load qh 0x35cb5480, td 0x35cbe000, ctrl 0x1000000, token 0xffe07f69
+> 3286206@1711972823.951693:usb_uhci_td_nextqh qh 0x35cb5480, td 0x35cbe000
+> 3286206@1711972823.951702:usb_uhci_qh_load qh 0x35cb5700
+> 3286206@1711972823.951709:usb_uhci_td_load qh 0x35cb5700, td 0x75ac5240, ctrl 0x39800000, token 0xe08369
+> 3286206@1711972823.951727:usb_uhci_queue_add token 0x8369
+> 3286206@1711972823.951735:usb_uhci_packet_add token 0x8369, td 0x75ac5240
+> 3286206@1711972823.951746:usb_packet_state_change bus 0, port 2, ep 1, packet 0x56066b2fb5a0, state undef -> setup
+> 3286206@1711972823.951766:usb_msd_data_in 8/8 (scsi 8)
+> 2024-04-01 12:00:24.665+0000: shutting down, reason=crashed
+> 
+> The backtrace reveals the following:
+> 
+> Program terminated with signal SIGSEGV, Segmentation fault.
+> 0  __memmove_sse2_unaligned_erms () at ../sysdeps/x86_64/multiarch/memmove-vec-unaligned-erms.S:312
+> 312        movq    -8(%rsi,%rdx), %rcx
+> [Current thread is 1 (Thread 0x7f0a9025fc00 (LWP 3286206))]
+> (gdb) bt
+> 0  __memmove_sse2_unaligned_erms () at ../sysdeps/x86_64/multiarch/memmove-vec-unaligned-erms.S:312
+> 1  memcpy (__len=8, __src=<optimized out>, __dest=<optimized out>) at /usr/include/bits/string_fortified.h:34
+> 2  iov_from_buf_full (iov=<optimized out>, iov_cnt=<optimized out>, offset=<optimized out>, buf=0x0, bytes=bytes@entry=8) at ../util/iov.c:33
+> 3  iov_from_buf (bytes=8, buf=<optimized out>, offset=<optimized out>, iov_cnt=<optimized out>, iov=<optimized out>)
+>     at /usr/src/debug/qemu-6-6.2.0-75.7.oe1.smartx.git.40.x86_64/include/qemu/iov.h:49
+> 4  usb_packet_copy (p=p@entry=0x56066b2fb5a0, ptr=<optimized out>, bytes=bytes@entry=8) at ../hw/usb/core.c:636
+> 5  usb_msd_copy_data (s=s@entry=0x56066c62c770, p=p@entry=0x56066b2fb5a0) at ../hw/usb/dev-storage.c:186
+> 6  usb_msd_handle_data (dev=0x56066c62c770, p=0x56066b2fb5a0) at ../hw/usb/dev-storage.c:496
+> 7  usb_handle_packet (dev=0x56066c62c770, p=p@entry=0x56066b2fb5a0) at ../hw/usb/core.c:455
+> 8  uhci_handle_td (s=s@entry=0x56066bd5f210, q=0x56066bb7fbd0, q@entry=0x0, qh_addr=qh_addr@entry=902518530, td=td@entry=0x7fffe6e788f0, td_addr=<optimized out>,
+>     int_mask=int_mask@entry=0x7fffe6e788e4) at ../hw/usb/hcd-uhci.c:885
+> 9  uhci_process_frame (s=s@entry=0x56066bd5f210) at ../hw/usb/hcd-uhci.c:1061
+> 10 uhci_frame_timer (opaque=opaque@entry=0x56066bd5f210) at ../hw/usb/hcd-uhci.c:1159
+> 11 timerlist_run_timers (timer_list=0x56066af26bd0) at ../util/qemu-timer.c:642
+> 12 qemu_clock_run_timers (type=QEMU_CLOCK_VIRTUAL) at ../util/qemu-timer.c:656
+> 13 qemu_clock_run_all_timers () at ../util/qemu-timer.c:738
+> 14 main_loop_wait (nonblocking=nonblocking@entry=0) at ../util/main-loop.c:542
+> 15 qemu_main_loop () at ../softmmu/runstate.c:739
+> 16 main (argc=<optimized out>, argv=<optimized out>, envp=<optimized out>) at ../softmmu/main.c:52
+> (gdb) frame 5
+> (gdb) p ((SCSIDiskReq *)s->req)->iov
+> $1 = {iov_base = 0x0, iov_len = 0}
+> (gdb) p/x s->req->tag
+> $2 = 0x472
+> 
+> When designing the USB mass storage device model, QEMU places SCSI disk
+> device as the backend of USB mass storage device. In addition, USB mass
+> device driver in Guest OS conforms to the "Universal Serial Bus Mass
+> Storage Class Bulk-Only Transport" specification in order to simulate
+> the transform behavior between a USB controller and a USB mass device.
+> The following shows the protocol hierarchy:
+> 
+>                        +----------------+
+>   CDROM driver         |  scsi command  |        CDROM
+>                        +----------------+
+> 
+>                     +-----------------------+
+>   USB mass          | USB Mass Storage Class|    USB mass
+>   storage driver    | Bulk-Only Transport   |    storage device
+>                     +-----------------------+
+> 
+>                        +----------------+
+>   USB Controller       |  USB Protocol  |        USB device
+>                        +----------------+
+> 
+> In the USB protocol layer, between the USB controller and USB device, at
+> least two USB packets will be transformed when guest OS send a
+> read operation to USB mass storage device:
+> 
+> 1. The CBW packet, which will be delivered to the USB device's Bulk-Out
+> endpoint. In order to simulate a read operation, the USB mass storage
+> device parses the CBW and converts it to a SCSI command, which would be
+> executed by CDROM(represented as SCSI disk in QEMU internally), and store
+> the result data of the SCSI command in a buffer.
+> 
+> 2. The DATA-IN packet, which will be delivered from the USB device's
+> Bulk-In endpoint(fetched directly from the preceding buffer) to the USB
+> controller.
+> 
+> We consider UHCI to be the controller. The two packets mentioned above may
+> have been processed by UHCI in two separate frame entries of the Frame List
+> , and also described by two different TDs. Unlike the physical environment,
+> a virtualized environment requires the QEMU to make sure that the result
+> data of CBW is not lost and is delivered to the UHCI controller.
+> 
+> Currently, these types of SCSI requests are not migrated, so QEMU cannot
+> ensure the result data of the IO operation is not lost if there are
+> inflight emulated SCSI requests during the live migration.
+> 
+> Assume for the moment that the USB mass storage device is processing the
+> CBW and storing the result data of the read operation to a buffre, live
+> migration happens and moves the VM to the destination while not migrating
+> the result data of the read operation.
+> 
+> After migration, when UHCI at the destination issues a DATA-IN request to
+> the USB mass storage device, a crash happens because USB mass storage device
+> fetches the result data and get nothing.
+> 
+> The scenario this patch addresses is this one.
+> 
+> Theoretically, any device that uses the SCSI disk as a back-end would be
+> affected by this issue. In this case, it is the USB CDROM.
+> 
+> To fix it, inflight emulated SCSI request be migrated during live migration,
+> similar to the DMA SCSI request.
+> 
+> Signed-off-by: Hyman Huang <yong.huang@smartx.com>
+> Message-ID: <878c8f093f3fc2f584b5c31cb2490d9f6a12131a.1716531409.git.yong.huang@smartx.com>
+> [Do not bump migration version, introduce compat property instead. - Paolo]
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>   hw/core/machine.c   |  1 +
+>   hw/scsi/scsi-disk.c | 24 +++++++++++++++++++++++-
+>   2 files changed, 24 insertions(+), 1 deletion(-)
+> 
+> diff --git a/hw/core/machine.c b/hw/core/machine.c
+> index c93d2492443..655d75c21fc 100644
+> --- a/hw/core/machine.c
+> +++ b/hw/core/machine.c
+> @@ -36,6 +36,7 @@
+>   
+>   GlobalProperty hw_compat_9_0[] = {
+>       {"arm-cpu", "backcompat-cntfrq", "true" },
+> +    {"scsi-disk-base", "migrate-emulated-scsi-request", "false" },
+>       {"vfio-pci", "skip-vsc-check", "false" },
+>   };
 
-Thanks for your patch. I have a few comments below:
+  Hi Paolo, hi Hyman,
 
-> diff --git a/meson.build b/meson.build
-> index 3533889852..2b305e745a 100644
-> --- a/meson.build
-> +++ b/meson.build
-> @@ -3876,6 +3876,62 @@ foreach target : target_dirs
->      lib_deps += dep.partial_dependency(compile_args: true, includes: true)
->    endforeach
->  
-> +  if with_rust and target_type == 'system'
-> +       # FIXME:
+this patch introduced a problem with device introspection on older machine 
+types. Running "make check-qtest SPEED=slow" is now failing for older 
+machine types.
 
-Just nit, FIXME looks a bit ambiguous, is it intended to fix the
-following warning? It could be a bit more specific.
+Or if you want to reproduce it manually:
 
-> +       # > WARNING: Project specifies a minimum meson_version '>=0.63.0' but
-> +       # > uses features which were added in newer versions:
-> +       # > * 0.64.0: {'fs.copyfile'}
-> +       # > * 1.0.0: {'dependencies arg in rust.bindgen', 'module rust as stable module'}
-> +      rust_bindgen = import('rust')
-> +
-> +      # We need one generated_rs target per target, so give them
-> +      # target-specific names.
-> +      copy = fs.copyfile('rust/wrapper.h',
-> +                         target + '_wrapper.h')
-> +      generated_rs = rust_bindgen.bindgen(
-> +        input: copy,
-> +        dependencies: arch_deps + lib_deps,
-> +        output: target + '-generated.rs',
-> +        include_directories: include_directories('.', 'include'),
-> +        args: [
-> +          '--ctypes-prefix', 'core::ffi',
-> +          '--formatter', 'rustfmt',
-> +          '--generate-block',
-> +          '--generate-cstr',
-> +          '--impl-debug',
-> +          '--merge-extern-blocks',
-> +          '--no-doc-comments',
-> +          '--no-include-path-detection',
-> +          '--use-core',
-> +          '--with-derive-default',
-> +          '--allowlist-file', meson.project_source_root() + '/include/.*',
-> +          '--allowlist-file', meson.project_source_root() + '/.*',
-> +          '--allowlist-file', meson.project_build_root() + '/.*'
-> +        ],
-> +      )
-> +
-> +      if target in rust_targets
-> +        rust_hw = ss.source_set()
-> +        foreach t: rust_targets[target]
-> +          rust_device_cargo = custom_target(t['name'],
-> +                                       output: t['output'],
-> +                                       depends: [generated_rs],
-> +                                       build_always_stale: true,
-> +                                       command: t['command'])
-> +          rust_dep = declare_dependency(link_args: [
-> +                                          '-Wl,--whole-archive',
-> +                                          t['output-path'],
-> +                                          '-Wl,--no-whole-archive'
-> +                                          ],
-> +                                          sources: [rust_device_cargo])
-> +          rust_hw.add(rust_dep)
-> +        endforeach
-> +        rust_hw_config = rust_hw.apply(config_target, strict: false)
-> +        arch_srcs += rust_hw_config.sources()
-> +        arch_deps += rust_hw_config.dependencies()
-> +      endif
-> +  endif
-> +
->    lib = static_library('qemu-' + target,
->                   sources: arch_srcs + genh,
->                   dependencies: lib_deps,
-> diff --git a/rust/.gitignore b/rust/.gitignore
-> new file mode 100644
-> index 0000000000..1bf71b1f68
-> --- /dev/null
-> +++ b/rust/.gitignore
-> @@ -0,0 +1,3 @@
-> +# Ignore any cargo development build artifacts; for qemu-wide builds, all build
-> +# artifacts will go to the meson build directory.
-> +target
-> diff --git a/rust/meson.build b/rust/meson.build
-> new file mode 100644
-> index 0000000000..435abd3e1c
-> --- /dev/null
-> +++ b/rust/meson.build
-> @@ -0,0 +1,129 @@
-> +# Supported hosts
-> +rust_supported_oses = {
-> +  'linux': '-unknown-linux-gnu',
-> +  'darwin': '-apple-darwin',
-> +  'windows': '-pc-windows-gnu'
-> +}
+  $ ./qemu-system-x86_64 -M pc-q35-8.0 -monitor stdio
+  QEMU 9.0.50 monitor - type 'help' for more information
+  (qemu) device_add scsi-block,help
+  Unexpected error in object_property_find_err() at
+  ../../devel/qemu/qom/object.c:1357:
+  can't apply global scsi-disk-base.migrate-emulated-scsi-request=false:
+  Property 'scsi-block.migrate-emulated-scsi-request' not found
+  Aborted (core dumped)
 
-Does the current test cover windows and apple? If not, I think we can
-add these two platforms later on.
+I think the problem is that the property is only added to certain SCSI 
+devices via the DEFINE_SCSI_DISK_PROPERTIES macro, but "scsi-block" device 
+does not use this macro and thus does not have this property. So when the 
+compat code tries to set this property for "scsi-block" (which is also 
+derived from "scsi-disk-base"), it fails, of course.
 
-> +rust_supported_cpus = ['x86_64', 'aarch64']
+Should the "migrate-emulated-scsi-request" property maybe rather be added to 
+the "scsi-disk-base" class instead? Or should hw_compat_9_0 rather list the 
+devices that have the property instead of using the parent class? Could you 
+please have a look?
 
-Similarly, here I have another question, x-pl011-rust in arm virt machine
-I understand should only run on ARM platform, right? So compiling to
-x86_64 doesn't seem necessary at the moment?
-
-> +# Future-proof the above definitions against any change in the root meson.build file:
-> +foreach rust_os: rust_supported_oses.keys()
-> +  if not supported_oses.contains(rust_os)
-> +    message()
-> +    warning('UNSUPPORTED OS VALUES IN ' + meson.current_source_dir() + '/meson.build')
-> +    message()
-> +    message('This meson.build file claims OS `+' + rust_os + '` is supported but')
-> +    message('it is not included in the global supported OSes list in')
-> +    message(meson.global_source_root() + '/meson.build.')
-> +  endif
-> +endforeach
-> +foreach rust_cpu: rust_supported_cpus
-> +  if not supported_cpus.contains(rust_cpu)
-> +    message()
-> +    warning('UNSUPPORTED CPU VALUES IN ' + meson.current_source_dir() + '/meson.build')
-> +    message()
-> +    message('This meson.build file claims CPU `+' + rust_cpu + '` is supported but')
-> +    message('it is not included in the global supported CPUs list in')
-> +    message(meson.global_source_root() + '/meson.build.')
-> +  endif
-> +endforeach
-> +
-> +# FIXME: retrieve target triple from meson and construct rust_target_triple
-> +if meson.is_cross_build()
-> +  message()
-> +  error('QEMU does not support cross compiling with Rust enabled.')
-> +endif
-
-Is the check here to avoid inconsistencies between cross-build's target
-and rust_target_triple?
-
-If target consistency is not guaranteed, then it seems custom rust_target_triple
-is useless, right? please educate me if I am wrong ;-)
-
-> +# FIXME: These are the latest stable versions, refine to actual minimum ones.
-> +msrv = {
-> +  'rustc': '1.79.0',
-> +  'cargo': '1.79.0',
-> +  'bindgen': '0.69.4',
-> +}
-> +
-> +# rustup = find_program('rustup', required: false)
-> +foreach bin_dep: msrv.keys()
-> +  bin = find_program(bin_dep, required: true)
-> +  if bin.version() < msrv[bin_dep]
-> +    if bin_dep == 'bindgen' and get_option('wrap_mode') != 'nodownload'
-
-What about adding a download info here?
-
-It took a long time for my bindgen-cli to update quietly, and for a
-moment I thought it was stuck here...
-
-e.g., message('Installing bindgen-cli...')
-
-Or can we just report the error and let users install bindgen-cli
-themselves?
-
-> +      run_command(cargo, 'install', 'bindgen-cli', capture: true, check: true)
-> +      bin = find_program(bin_dep, required: true)
-> +      if bin.version() >= msrv[bin_dep]
-> +        continue
-> +      endif
-> +    endif
-> +    message()
-> +    error(bin_dep + ' version ' + bin.version() + ' is unsupported: Please upgrade to at least ' + msrv[bin_dep])
-> +  endif
-> +endforeach
-> +
-> +rust_target_triple = get_option('with_rust_target_triple')
-> +
-> +if rust_target_triple == ''
-> +  if not supported_oses.contains(host_os)
-> +    message()
-> +    error('QEMU does not support `' + host_os +'` as a Rust platform.')
-> +  elif not supported_cpus.contains(host_arch)
-> +    message()
-> +    error('QEMU does not support `' + host_arch +'` as a Rust architecture.')
-> +  endif
-> +  rust_target_triple = host_arch + rust_supported_oses[host_os]
-> +  if host_os == 'windows' and host_arch == 'aarch64'
-> +    rust_target_triple += 'llvm'
-> +  endif
-> +else
-> +  # verify rust_target_triple if given as an option
-> +  rustc = find_program('rustc', required: true)
-> +  rustc_targets = run_command(rustc, '--print', 'target-list', capture: true, check: true).stdout().strip().split()
-> +  if not rustc_targets.contains(rust_target_triple)
-> +    message()
-> +    error('Given rust_target_triple ' + rust_target_triple + ' is not listed in rustc --print target-list output')
-> +  endif
-
-It seems rust_target_triple missed support check, we should use rust_supported_cpus
-+ rust_supported_oses to check rust_target_triple, right? ;-)
-
-> +endif
-> +
-> +
-
-An extra blank line :-)
-
-> +rust_targets = {}
-> +
-> +cargo_wrapper = [
-> +  find_program(meson.global_source_root() / 'scripts/cargo_wrapper.py'),
-> +  '--config-headers', meson.project_build_root() / 'config-host.h',
-> +  '--meson-build-root', meson.project_build_root(),
-> +  '--meson-build-dir', meson.current_build_dir(),
-> +  '--meson-source-dir', meson.current_source_dir(),
-> +]
-> +
-> +if get_option('b_colorout') != 'never'
-> +  cargo_wrapper += ['--color', 'always']
-> +endif
-> +
-> +if get_option('optimization') in ['0', '1', 'g']
-> +  rs_build_type = 'debug'
-> +else
-> +  rs_build_type = 'release'
-> +endif
-
-Could we decouple 'optimization' with cargo's opt-level (maybe in the future)?
-
-Or we could add new option to specify custom rust opt-level, which will
-set the environment varialbe CARGO_PROFILE_<profile_name>_OPT_LEVEL and
-override the default opt-level in Cargo.toml.
-
-> +# Collect metadata for each (crate,qemu-target,compiler-target) combination.
-> +# Rust meson targets cannot be defined a priori because they depend on bindgen
-> +# generation that is created for each emulation target separately. Thus Rust
-> +# meson targets will be defined for each target after the target-specific
-> +# bindgen dependency is declared.
-> +rust_hw_target_list = {}
-> +
-> +foreach rust_hw_target, rust_hws: rust_hw_target_list
-> +  foreach rust_hw_dev: rust_hws
-> +    output = meson.current_build_dir() / rust_target_triple / rs_build_type / rust_hw_dev['output']
-> +    crate_metadata = {
-> +      'name': rust_hw_dev['name'],
-> +      'output': [rust_hw_dev['output']],
-> +      'output-path': output,
-> +      'command': [cargo_wrapper,
-> +        '--crate-dir', meson.current_source_dir() / rust_hw_dev['dirname'],
-> +        '--profile', rs_build_type,
-> +        '--target-triple', rust_target_triple,
-> +        '--outdir', '@OUTDIR@',
-> +        'build-lib'
-> +        ]
-> +      }
-> +    rust_targets += { rust_hw_target: [crate_metadata] }
-> +  endforeach
-> +endforeach
-> diff --git a/rust/wrapper.h b/rust/wrapper.h
-> new file mode 100644
-> index 0000000000..bcf808c8d7
-> --- /dev/null
-> +++ b/rust/wrapper.h
-> @@ -0,0 +1,39 @@
-> +/*
-> + * QEMU System Emulator
-> + *
-> + * Copyright (c) 2003-2020 Fabrice Bellard
-
-Here should the author be yourself?
-
-> + *
-> + * Permission is hereby granted, free of charge, to any person obtaining a copy
-> + * of this software and associated documentation files (the "Software"), to deal
-> + * in the Software without restriction, including without limitation the rights
-> + * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-> + * copies of the Software, and to permit persons to whom the Software is
-> + * furnished to do so, subject to the following conditions:
-> + *
-> + * The above copyright notice and this permission notice shall be included in
-> + * all copies or substantial portions of the Software.
-> + *
-> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-> + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-> + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-> + * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-> + * THE SOFTWARE.
-> + */
-> +
-> +#include "qemu/osdep.h"
-> +#include "qemu/module.h"
-> +#include "qemu-io.h"
-> +#include "sysemu/sysemu.h"
-> +#include "hw/sysbus.h"
-> +#include "exec/memory.h"
-> +#include "chardev/char-fe.h"
-> +#include "hw/clock.h"
-> +#include "hw/qdev-clock.h"
-> +#include "hw/qdev-properties.h"
-> +#include "hw/qdev-properties-system.h"
-> +#include "hw/irq.h"
-> +#include "qapi/error.h"
-> +#include "migration/vmstate.h"
-> +#include "chardev/char-serial.h"
-
-Thanks,
-Zhao
+  Thanks,
+   Thomas
 
 
