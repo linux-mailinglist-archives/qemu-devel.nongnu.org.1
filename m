@@ -2,55 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93DEF9158F7
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jun 2024 23:27:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB0B5915901
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jun 2024 23:28:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sLrCI-0003eb-DR; Mon, 24 Jun 2024 17:25:58 -0400
+	id 1sLrCJ-0003fC-EC; Mon, 24 Jun 2024 17:25:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sLrCG-0003cs-DA
- for qemu-devel@nongnu.org; Mon, 24 Jun 2024 17:25:56 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sLrCH-0003eZ-RH
+ for qemu-devel@nongnu.org; Mon, 24 Jun 2024 17:25:57 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sLrCE-0006gP-Ri
- for qemu-devel@nongnu.org; Mon, 24 Jun 2024 17:25:56 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sLrCG-0006gb-2Z
+ for qemu-devel@nongnu.org; Mon, 24 Jun 2024 17:25:57 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719264354;
+ s=mimecast20190719; t=1719264355;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=qhlyd6y5+YSs0sKhK6KEY/7OsA0K4HEEz9ZJHKULl/8=;
- b=D0dcXlySfwcv3WKDZ4P+6R1bXxvGjohxfX6+FsHwvnNplqWztPDarJaDRBT3wmP78rrKjp
- 35HEJhsW9ISAmPpAi8HoVdDLWdYYSbY2rWjwUhoqpQ4cDl4ESp+rvwTVc1dGLCEbmbHtOp
- R4SA+KP7c4rAh0AH7CaoKPagwwak6bA=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ bh=clVyp8If2X8bUXjyuih15CLwX4tPgvE5QhwvrAOqGB8=;
+ b=espwWHFD1GNy4PPxTBUTqdRLn2769hM1AnGpsuQtKG1x5SL+ChyRlAraqJ8JA9bYFas3pX
+ dj65/GsIYpuTDmHvpQwd+iiBvq3TtB7zctHeGDa+ZXG7VTnwpSJPoq5n5+/KGMXjvdzCWE
+ vVVrY9WFC5rBye5IAHr4ZEuuVyncmZw=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-607-slrqpkqVPeCRdOyu33PZbQ-1; Mon,
- 24 Jun 2024 17:25:49 -0400
-X-MC-Unique: slrqpkqVPeCRdOyu33PZbQ-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-609-z0p4JRxPNtm5zEZ4n2KXkg-1; Mon,
+ 24 Jun 2024 17:25:52 -0400
+X-MC-Unique: z0p4JRxPNtm5zEZ4n2KXkg-1
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id EFEFA195608C; Mon, 24 Jun 2024 21:25:48 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 088FE19560AF; Mon, 24 Jun 2024 21:25:51 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.192.49])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 4FE5D1956051; Mon, 24 Jun 2024 21:25:47 +0000 (UTC)
+ id 5CBC91956053; Mon, 24 Jun 2024 21:25:49 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  Eric Auger <eric.auger@redhat.com>,
  Zhenzhong Duan <zhenzhong.duan@intel.com>,
  "Michael S . Tsirkin" <mst@redhat.com>
-Subject: [PULL 18/42] HostIOMMUDevice: Store the VFIO/VDPA agent
-Date: Mon, 24 Jun 2024 23:24:32 +0200
-Message-ID: <20240624212456.350919-19-clg@redhat.com>
+Subject: [PULL 19/42] virtio-iommu: Implement set|unset]_iommu_device()
+ callbacks
+Date: Mon, 24 Jun 2024 23:24:33 +0200
+Message-ID: <20240624212456.350919-20-clg@redhat.com>
 In-Reply-To: <20240624212456.350919-1-clg@redhat.com>
 References: <20240624212456.350919-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -83,55 +84,148 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Eric Auger <eric.auger@redhat.com>
 
-Store the agent device (VFIO or VDPA) in the host IOMMU device.
-This will allow easy access to some of its resources.
+Implement PCIIOMMUOPs [set|unset]_iommu_device() callbacks.
+In set(), the HostIOMMUDevice handle is stored in a hash
+table indexed by PCI BDF. The object will allow to retrieve
+information related to the physical IOMMU.
 
 Signed-off-by: Eric Auger <eric.auger@redhat.com>
 Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- include/sysemu/host_iommu_device.h | 1 +
- hw/vfio/container.c                | 1 +
- hw/vfio/iommufd.c                  | 2 ++
- 3 files changed, 4 insertions(+)
+ include/hw/virtio/virtio-iommu.h |  2 +
+ hw/virtio/virtio-iommu.c         | 82 ++++++++++++++++++++++++++++++++
+ 2 files changed, 84 insertions(+)
 
-diff --git a/include/sysemu/host_iommu_device.h b/include/sysemu/host_iommu_device.h
-index a57873958b03e1fcd6c0c8991a2010dde02c566c..3e5f058e7ba80491eae04dc73c6957f7269150cf 100644
---- a/include/sysemu/host_iommu_device.h
-+++ b/include/sysemu/host_iommu_device.h
-@@ -34,6 +34,7 @@ struct HostIOMMUDevice {
-     Object parent_obj;
+diff --git a/include/hw/virtio/virtio-iommu.h b/include/hw/virtio/virtio-iommu.h
+index 83a52cc446d30443b8c89170e35829047bc24866..bdb3da72d0854272b01736ccc07af0a26009d23c 100644
+--- a/include/hw/virtio/virtio-iommu.h
++++ b/include/hw/virtio/virtio-iommu.h
+@@ -25,6 +25,7 @@
+ #include "hw/pci/pci.h"
+ #include "qom/object.h"
+ #include "qapi/qapi-types-virtio.h"
++#include "sysemu/host_iommu_device.h"
  
-     char *name;
-+    void *agent; /* pointer to agent device, ie. VFIO or VDPA device */
-     HostIOMMUDeviceCaps caps;
+ #define TYPE_VIRTIO_IOMMU "virtio-iommu-device"
+ #define TYPE_VIRTIO_IOMMU_PCI "virtio-iommu-pci"
+@@ -57,6 +58,7 @@ struct VirtIOIOMMU {
+     struct virtio_iommu_config config;
+     uint64_t features;
+     GHashTable *as_by_busptr;
++    GHashTable *host_iommu_devices;
+     IOMMUPciBus *iommu_pcibus_by_bus_num[PCI_BUS_MAX];
+     PCIBus *primary_bus;
+     ReservedRegion *prop_resv_regions;
+diff --git a/hw/virtio/virtio-iommu.c b/hw/virtio/virtio-iommu.c
+index 1326c6ec417c33ab5d8fdf22608dcab735f463c4..16c8ec3ca460a6d70e83b28787398f94dd16cc99 100644
+--- a/hw/virtio/virtio-iommu.c
++++ b/hw/virtio/virtio-iommu.c
+@@ -69,6 +69,11 @@ typedef struct VirtIOIOMMUMapping {
+     uint32_t flags;
+ } VirtIOIOMMUMapping;
+ 
++struct hiod_key {
++    PCIBus *bus;
++    uint8_t devfn;
++};
++
+ static inline uint16_t virtio_iommu_get_bdf(IOMMUDevice *dev)
+ {
+     return PCI_BUILD_BDF(pci_bus_num(dev->bus), dev->devfn);
+@@ -462,8 +467,82 @@ static AddressSpace *virtio_iommu_find_add_as(PCIBus *bus, void *opaque,
+     return &sdev->as;
+ }
+ 
++static gboolean hiod_equal(gconstpointer v1, gconstpointer v2)
++{
++    const struct hiod_key *key1 = v1;
++    const struct hiod_key *key2 = v2;
++
++    return (key1->bus == key2->bus) && (key1->devfn == key2->devfn);
++}
++
++static guint hiod_hash(gconstpointer v)
++{
++    const struct hiod_key *key = v;
++    guint value = (guint)(uintptr_t)key->bus;
++
++    return (guint)(value << 8 | key->devfn);
++}
++
++static void hiod_destroy(gpointer v)
++{
++    object_unref(v);
++}
++
++static HostIOMMUDevice *
++get_host_iommu_device(VirtIOIOMMU *viommu, PCIBus *bus, int devfn) {
++    struct hiod_key key = {
++        .bus = bus,
++        .devfn = devfn,
++    };
++
++    return g_hash_table_lookup(viommu->host_iommu_devices, &key);
++}
++
++static bool virtio_iommu_set_iommu_device(PCIBus *bus, void *opaque, int devfn,
++                                          HostIOMMUDevice *hiod, Error **errp)
++{
++    VirtIOIOMMU *viommu = opaque;
++    struct hiod_key *new_key;
++
++    assert(hiod);
++
++    if (get_host_iommu_device(viommu, bus, devfn)) {
++        error_setg(errp, "Host IOMMU device already exists");
++        return false;
++    }
++
++    new_key = g_malloc(sizeof(*new_key));
++    new_key->bus = bus;
++    new_key->devfn = devfn;
++
++    object_ref(hiod);
++    g_hash_table_insert(viommu->host_iommu_devices, new_key, hiod);
++
++    return true;
++}
++
++static void
++virtio_iommu_unset_iommu_device(PCIBus *bus, void *opaque, int devfn)
++{
++    VirtIOIOMMU *viommu = opaque;
++    HostIOMMUDevice *hiod;
++    struct hiod_key key = {
++        .bus = bus,
++        .devfn = devfn,
++    };
++
++    hiod = g_hash_table_lookup(viommu->host_iommu_devices, &key);
++    if (!hiod) {
++        return;
++    }
++
++    g_hash_table_remove(viommu->host_iommu_devices, &key);
++}
++
+ static const PCIIOMMUOps virtio_iommu_ops = {
+     .get_address_space = virtio_iommu_find_add_as,
++    .set_iommu_device = virtio_iommu_set_iommu_device,
++    .unset_iommu_device = virtio_iommu_unset_iommu_device,
  };
  
-diff --git a/hw/vfio/container.c b/hw/vfio/container.c
-index 26e6f7fb4f748162d881cb22c970428f319df3c3..b728b978a26d49b5a2895fd4d1add8f0a57787ad 100644
---- a/hw/vfio/container.c
-+++ b/hw/vfio/container.c
-@@ -1145,6 +1145,7 @@ static bool hiod_legacy_vfio_realize(HostIOMMUDevice *hiod, void *opaque,
+ static int virtio_iommu_attach(VirtIOIOMMU *s,
+@@ -1357,6 +1436,9 @@ static void virtio_iommu_device_realize(DeviceState *dev, Error **errp)
  
-     hiod->name = g_strdup(vdev->name);
-     hiod->caps.aw_bits = vfio_device_get_aw_bits(vdev);
-+    hiod->agent = opaque;
+     s->as_by_busptr = g_hash_table_new_full(NULL, NULL, NULL, g_free);
  
-     return true;
- }
-diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
-index 409ed3dcc91cde508ac74fa693798b87e82eb9dd..dbdae1adbb66f9c8547659320ce4436825efe1a1 100644
---- a/hw/vfio/iommufd.c
-+++ b/hw/vfio/iommufd.c
-@@ -631,6 +631,8 @@ static bool hiod_iommufd_vfio_realize(HostIOMMUDevice *hiod, void *opaque,
-         struct iommu_hw_info_vtd vtd;
-     } data;
- 
-+    hiod->agent = opaque;
++    s->host_iommu_devices = g_hash_table_new_full(hiod_hash, hiod_equal,
++                                                  g_free, hiod_destroy);
 +
-     if (!iommufd_backend_get_device_info(vdev->iommufd, vdev->devid,
-                                          &type, &data, sizeof(data), errp)) {
-         return false;
+     if (s->primary_bus) {
+         pci_setup_iommu(s->primary_bus, &virtio_iommu_ops, s);
+     } else {
 -- 
 2.45.2
 
