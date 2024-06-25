@@ -2,84 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C09691601B
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jun 2024 09:35:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1CF6916061
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jun 2024 09:50:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sM0i9-0004sT-Ar; Tue, 25 Jun 2024 03:35:29 -0400
+	id 1sM0vn-00034R-Qk; Tue, 25 Jun 2024 03:49:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sM0i7-0004r7-7i
- for qemu-devel@nongnu.org; Tue, 25 Jun 2024 03:35:27 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sM0i5-00042o-M9
- for qemu-devel@nongnu.org; Tue, 25 Jun 2024 03:35:26 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-424798859dfso43620855e9.0
- for <qemu-devel@nongnu.org>; Tue, 25 Jun 2024 00:35:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719300924; x=1719905724; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=dkL+F609blkCP7YhkbDtjFQ52Ff3yQ68oguPONbJIG8=;
- b=XhjLj5bRAIS9pow3Ewos9Vqixrh/KdJ3/zW010ce7gV05yssSWIg15Wow+eYIQj73R
- soQKvnhLNK9Me9MawxbuHlVfxvDbdo8Is9RzbtXEZHvdE1Wvn7ej7c8KUHVgBAksIH5L
- MvfrrUszAAnAf/yrS/YWKyDUNcxD9KNugFT1z6ds1aEf/yzTS94etiLaLOxkqlm9T4qg
- ftGD7yYzurTfQvcqGcwCRLxeERngqQqSFdMcKAtp7zpmxHh0TO8T8XTtIF4aM8iEOXj9
- ATwxKmRuUUsDo9P34S5ulQHXwGMPBdSB9EjMyCBz2X4EbW8vsGHFiXBObgJs+8tG07Zz
- Aygg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719300924; x=1719905724;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=dkL+F609blkCP7YhkbDtjFQ52Ff3yQ68oguPONbJIG8=;
- b=RWDB/HbLe+odQMZiGMWDK6w73Llr3/mYEyq+/lQKXv+gjLN0LfCeeirdtJiBIUOkE/
- Ezl5cBNNG8VIHUyxINyn7bCIsDiqf5/J+6GAJlTRh/MgPcCsdgMymUBCyW2slWoQKc49
- aSavk4kVkNez4okKyHH1yOtqH03oiVGSo3HCg7XjuIyPwc5Ytn1Pqo7nCLFEpP4u6eSz
- oiv0GiqY2LVzdppXCpcgoNVLcelRLq4Hdz67HrhGb3TRrI+AGHm0Z7dae7bJXPVSknDi
- zctcBRrWQSJ5fH+r2omILOk5f9Im428Wo0y7NSbZQqyXqhBpe0BNBDxTfwERuSau/fBN
- 1WUA==
-X-Gm-Message-State: AOJu0YwgpPzl/e2vtAHGUQdX6kS6I5hSCiOm4TkgQ2cj/aTjbPT5MSbv
- f0RPjGkn8KbHiN6+2pI4qOF0Y0ViOGjoLDO73uCt1Kg1GMx1DHra7MSxiLr/gnU4X3i/1OcpVB5
- t
-X-Google-Smtp-Source: AGHT+IGY2ql7Ry5epaD/h9fSFRPKqIjlbP6VVZa0yJxSpdUOj45HiIiVylLL5WrJPaz6Ko5hNxu0TQ==
-X-Received: by 2002:a05:600c:470a:b0:421:7fb6:511e with SMTP id
- 5b1f17b1804b1-4248cc5931bmr43876865e9.30.1719300923941; 
- Tue, 25 Jun 2024 00:35:23 -0700 (PDT)
-Received: from m1x-phil.lan (mau49-h01-176-184-41-129.dsl.sta.abo.bbox.fr.
- [176.184.41.129]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4247d208e13sm198393945e9.36.2024.06.25.00.35.22
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 25 Jun 2024 00:35:23 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Bin Meng <bmeng.cn@gmail.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH 7/7] hw/sd/sdcard: Convert GEN_CMD to generic_write_byte
- (CMD56)
-Date: Tue, 25 Jun 2024 09:34:41 +0200
-Message-ID: <20240625073441.34203-8-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20240625073441.34203-1-philmd@linaro.org>
-References: <20240625073441.34203-1-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1sM0vl-00033v-HQ
+ for qemu-devel@nongnu.org; Tue, 25 Jun 2024 03:49:33 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1sM0vj-0006SG-Ps
+ for qemu-devel@nongnu.org; Tue, 25 Jun 2024 03:49:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1719301770;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=rSExj/5IY2i2YthU2OdMUihIKKCOyd+PRbtfY8AvWQU=;
+ b=Sl3KwbTuxJGEjt8PEq0xHAhGFU0TxyQ9ySsGxHIoS3/DvzQNNLeeDw7dsHqiP5GaoYdSaM
+ P9BrgiMq5yhKp0ECnIPg1X10Qswmg2mpm/8cIJ6DzGQDcEwXlDtOPhp4rQdBMptA6ka/WF
+ j0KvDKk2SuyFCkdQxlEEzoI8WR7pwxc=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-619-Y5moQPb2N6KBTSwreClBZw-1; Tue,
+ 25 Jun 2024 03:49:26 -0400
+X-MC-Unique: Y5moQPb2N6KBTSwreClBZw-1
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B9DAC195605A; Tue, 25 Jun 2024 07:49:25 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.57])
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 0EA971955E72; Tue, 25 Jun 2024 07:49:23 +0000 (UTC)
+Date: Tue, 25 Jun 2024 08:49:20 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ qemu-devel <qemu-devel@nongnu.org>
+Subject: Re: Help improve 32-bit testing
+Message-ID: <Znp2gFeEeq_f8bTD@redhat.com>
+References: <ab8beba8-658a-4359-bfb1-672e5782633d@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <ab8beba8-658a-4359-bfb1-672e5782633d@linaro.org>
+User-Agent: Mutt/2.2.12 (2023-09-09)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: 10
+X-Spam_score: 1.0
+X-Spam_bar: +
+X-Spam_report: (1.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.207,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,47 +79,35 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- hw/sd/sd.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+On Mon, Jun 24, 2024 at 04:33:08PM -0700, Richard Henderson wrote:
+> Hiya,
+> 
+> I've just discovered a 32-bit build issue that is probably 3 weeks old.
+> 
+> While we still support 32-bit builds at all, I would request that we improve
+> our cross-i686 testing.  For instance: we have cross-i686-user and
+> cross-i686-tci.  There is some system build testing in the tci job, but
+> (rightfully) not everything.
+> 
+> I would like a full cross-i686-system target that builds all targets, and I
+> would like the debian-i686-cross image on which we base these to be more
+> complete -- ideally, exactly matching x86_64.  In particular, CONFIG_SEV is
+> not detected within the current docker image, which is where the current
+> build error is located.
 
-diff --git a/hw/sd/sd.c b/hw/sd/sd.c
-index 82b44b65e0..fe2210d65a 100644
---- a/hw/sd/sd.c
-+++ b/hw/sd/sd.c
-@@ -1633,14 +1633,12 @@ static sd_rsp_type_t sd_normal_command(SDState *sd, SDRequest req)
-     case 56:  /* CMD56:  GEN_CMD */
-         switch (sd->state) {
-         case sd_transfer_state:
--            sd->data_offset = 0;
-             if (req.arg & 1) {
-                 return sd_cmd_to_sendingdata(sd, req, 0,
-                                              sd->vendor_data,
-                                              sizeof(sd->vendor_data));
-             }
--            sd->state = sd_receivingdata_state;
--            return sd_r1;
-+            return sd_cmd_to_receivingdata(sd, req, 0, sizeof(sd->vendor_data));
- 
-         default:
-             break;
-@@ -2085,9 +2083,8 @@ void sd_write_byte(SDState *sd, uint8_t value)
-         break;
- 
-     case 56:  /* CMD56:  GEN_CMD */
--        sd->vendor_data[sd->data_offset ++] = value;
--        if (sd->data_offset >= sizeof(sd->vendor_data)) {
--            sd->state = sd_transfer_state;
-+        if (sd_generic_write_byte(sd, value)) {
-+            memcpy(sd->vendor_data, sd->data, sizeof(sd->vendor_data));
-         }
-         break;
- 
+The debian-i686-cross image should already be a precise match for
+the x86_64 image. Both are auto-generated by lcitool so have the
+same package set as inputs.
+
+With regards,
+Daniel
 -- 
-2.41.0
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
