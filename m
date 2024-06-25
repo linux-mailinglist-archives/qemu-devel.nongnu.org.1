@@ -2,83 +2,138 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4220A915AA3
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jun 2024 01:34:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90E24915BA6
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jun 2024 03:25:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sLtBU-000074-RA; Mon, 24 Jun 2024 19:33:16 -0400
+	id 1sLuvs-0005Hw-5F; Mon, 24 Jun 2024 21:25:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sLtBS-00004t-ES
- for qemu-devel@nongnu.org; Mon, 24 Jun 2024 19:33:14 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sLtBQ-0002y4-SM
- for qemu-devel@nongnu.org; Mon, 24 Jun 2024 19:33:14 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-1f70c457823so34327725ad.3
- for <qemu-devel@nongnu.org>; Mon, 24 Jun 2024 16:33:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719271991; x=1719876791; darn=nongnu.org;
- h=content-transfer-encoding:subject:from:to:content-language
- :user-agent:mime-version:date:message-id:from:to:cc:subject:date
- :message-id:reply-to;
- bh=afxSaZmFeayTgYwudaIpDk9TVyzzQoJFS4ZZ17h8Zg0=;
- b=l1gvV88wJyT8ydM7QgMDFv658guvkcVNjrRpqSART7tJ9/MgUnGLa2yEH2G4LKK/zx
- 09aA3yhnmc/iX2o2NC1ZZGtvo2PZk+RryG8TX33YfGhEs4iJoP+OnjT36rvrvYGvzRxJ
- pPdxGGXheZXKr/F58Ku1Qg63FLG3/tV/IVafglxO03pOtun821vJWvltb1oFLXa/thHB
- Esa7fqHE0s4dYheQ9qUQkURIMqKEp8ccLvRf/oDts6E6TKxRBW0JuKvSWeHGriP4Nitb
- gkGV2hEhzC7DTgTuzRg5eMf3K5jCKLyfgZ7+jt8f0EFtHwdj9LRWDLXPwFFFdUdMVuEv
- ULdQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719271991; x=1719876791;
- h=content-transfer-encoding:subject:from:to:content-language
- :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=afxSaZmFeayTgYwudaIpDk9TVyzzQoJFS4ZZ17h8Zg0=;
- b=QERaMjgXQ2UjjCed6ZgiqMsJ1CL49teYfIT/Gr/pVdb4umAo/zmfKfcWOCl1VF2kUL
- jFGS5ajRkGzAsyDAQunUh26ogORyiup0kHoIuApput0nFxOApMdclbo5SOzTnQWptFRU
- SbPQ/TsLFdcpUpoCgiJvgc32uGYz80s49KECEZNvQt85bkYWVSVL+Q82TwDoIFApXhwA
- IkqXBT+FBIB2T3R4ceyCGStrFewpqdhNKeAWWEEL3ZARnqkfl3Ptip7RRaREb6QtjOOb
- y6P06QDtzId827MaIYxlM/0I/Mr4uWX3GSaljBEHndS7cdg2p66f1rHC1V+2pY58G6yN
- AR8A==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUC/flzY9XTIEldKTpH0zAlC+2rY29X9BR5Pj6tOhHgnG0SlC9VSB4npQESv4+Sn5b8Go2SGJ1Ekw9OR1vORvrSK/VF2jE=
-X-Gm-Message-State: AOJu0YzfUd/cp06UnLNNmZfBuhSPxBxTLdpbPSahTybV2F1XGwDG28p4
- s4gcmYYGaL5UZ04Z4SvWBcCtBjofuQwgqvX+W5NFuZ3OQTbIbIvWW7ts7Q5v8QaXplXT3eyO47U
- c
-X-Google-Smtp-Source: AGHT+IGfX1lIGKoy0ZqrtOpl18FCvKd8sHkwXTdmx7oiq7jbo9TXhGYUw8z9w2xhDnalU4yqcL+Svw==
-X-Received: by 2002:a17:902:da8c:b0:1f6:daa6:e77b with SMTP id
- d9443c01a7336-1fa23f5a34emr63827455ad.68.1719271990564; 
- Mon, 24 Jun 2024 16:33:10 -0700 (PDT)
-Received: from [192.168.0.4] (174-21-76-141.tukw.qwest.net. [174.21.76.141])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1f9eb3d49e9sm68161085ad.194.2024.06.24.16.33.09
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 24 Jun 2024 16:33:10 -0700 (PDT)
-Message-ID: <ab8beba8-658a-4359-bfb1-672e5782633d@linaro.org>
-Date: Mon, 24 Jun 2024 16:33:08 -0700
+ (Exim 4.90_1) (envelope-from <Michael.Roth@amd.com>)
+ id 1sLuvf-0005Gm-DN
+ for qemu-devel@nongnu.org; Mon, 24 Jun 2024 21:25:04 -0400
+Received: from mail-dm6nam10on2042.outbound.protection.outlook.com
+ ([40.107.93.42] helo=NAM10-DM6-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <Michael.Roth@amd.com>)
+ id 1sLuvc-0004Ov-Sq
+ for qemu-devel@nongnu.org; Mon, 24 Jun 2024 21:25:03 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=B+LcXtBHQHwFs0nl1addgJufAX8Kk6V4FXxiV8uO7rrs4WXdgZLDOW1lPSJWlf4CFChN9iGmYkVF7tWydYEO1gb9Heu/C32wzYjr7GCIs990e8d8sXtbep0qx0rhFqN9klCBC4STqnn/oPkF6uBXWHiSRLo04xMW4pl1gF6In0dqtGnnbrLkrdPhgWkvtZQ2E6UCbKa9azbkpPEwf2zrGijFQ8s34a0mrIR4dveELd1ySK7otcx/AJ/iWbDIVHMWPOkRXmk0Gfex/OMrk3zDUFMVNfi9r96G/KWQATeLArvgaJUUL0WdLBJ9FudDGochUXnrArfvyQ9qM9QvHTLsew==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=njbhRRMTin575vJYPTH/Oc3pcsrizaSX1B5MMU6q/XQ=;
+ b=nPVgcb9zMmL4DR1OWlIi0pmWOiU82BmBb/mKfnQEg50nhaJZpqMHA8MZboLARBPiJBoB6M6lnYyYFJX7WsPLX3pFE41QN6lO5/NSF7ugztDKug525q5HaUIdxFdjb1rXSxv1tYcEwPvsWvuA9PPVMuERAbLfzlUNfRN7TLhfr80hdUtKDvjZQIZ/+qnpXnBJnitdW0bq/MPxVkGV7SugWdWkG3G/7Ka9nxqS5BVR3DXS8f4WM319/sqUMavYF3uuvkDvV2bEezHtSu171uaGWBaS03U13/eFA4wEdPp8Twn9ka4BeFDtAoYmI41/R7TZkjHPCxaqfOFAY/yVIlc7Ug==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=njbhRRMTin575vJYPTH/Oc3pcsrizaSX1B5MMU6q/XQ=;
+ b=5QCKqtxDioGaAiUzO9FqKIYvJoCkJtG+zTNy11csOMbjJBKYVySOaADa0KcfmS5QJdfPzS5CFMRF2ZkJtZ/f+VEe8e1OpbOzgJ9g177OtDj2TtpaydEjhqsB++welnm9DSps6itYFn1sWmIY92I4kIhHoz3vQWgrx/n45XCVZe4=
+Received: from MW4PR04CA0164.namprd04.prod.outlook.com (2603:10b6:303:85::19)
+ by BL3PR12MB6427.namprd12.prod.outlook.com (2603:10b6:208:3b6::11)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7698.30; Tue, 25 Jun
+ 2024 01:19:50 +0000
+Received: from CO1PEPF000042A8.namprd03.prod.outlook.com
+ (2603:10b6:303:85:cafe::6c) by MW4PR04CA0164.outlook.office365.com
+ (2603:10b6:303:85::19) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7677.38 via Frontend
+ Transport; Tue, 25 Jun 2024 01:19:49 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CO1PEPF000042A8.mail.protection.outlook.com (10.167.243.37) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7677.15 via Frontend Transport; Tue, 25 Jun 2024 01:19:49 +0000
+Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 24 Jun
+ 2024 20:19:47 -0500
+Date: Mon, 24 Jun 2024 20:19:19 -0500
+To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+CC: <qemu-devel@nongnu.org>, Paolo Bonzini <pbonzini@redhat.com>, Eduardo
+ Habkost <eduardo@habkost.net>, Richard Henderson
+ <richard.henderson@linaro.org>, Marcel Apfelbaum
+ <marcel.apfelbaum@gmail.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ <kvm@vger.kernel.org>, Markus Armbruster <armbru@redhat.com>, Eric Blake
+ <eblake@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>
+Subject: Re: [PATCH] i386: revert defaults to 'legacy-vm-type=true' for
+ SEV(-ES) guests
+Message-ID: <za7dwgyz2yfspsivg67qkzkf4cz3eeiclavdznskap6zcip66s@7iqpll2pzax4>
+References: <20240614103924.1420121-1-berrange@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- qemu-devel <qemu-devel@nongnu.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-Subject: Help improve 32-bit testing
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240614103924.1420121-1-berrange@redhat.com>
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1PEPF000042A8:EE_|BL3PR12MB6427:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3e7ce349-1389-4088-1180-08dc94b4e896
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230037|7416011|376011|36860700010|82310400023|1800799021; 
+X-Microsoft-Antispam-Message-Info: =?iso-8859-1?Q?uYxClRXhsBwIXYbejILsIBcYKcMgLjDXYqRsc0ANYzFdU33Q34Drzsfx3N?=
+ =?iso-8859-1?Q?xEYK/G/Gt0igHVO9ZrLbVNO3DWEOSKo9z0rUewFXpzFZbbdNC7Rd1WSxx/?=
+ =?iso-8859-1?Q?9e1siUozU96gW3WRnMFTkse6+dx83URbi55jBnxUfwZPCfVATUZFv+b4io?=
+ =?iso-8859-1?Q?XzLD89ar1OvugwNoYpg9RHvcxEQ4zOjNo4Z51vMNYhGIchMM3CuMD7HT93?=
+ =?iso-8859-1?Q?gYsrXp3CoIzL0gt3jjgoCMc+IHTssDaMUEQ3JZpwVbzwd1/a2y7qBbs3Sw?=
+ =?iso-8859-1?Q?jXqWssaCDZH0Mq8NipEtS+gdiYb5peoLgOPcBNNcgSGeiS4FY3V0VCCpfe?=
+ =?iso-8859-1?Q?XaW3onsZW8UTLpvNzB3EbfMixhtYaGp8Xad2h0QwusFT/asKOepZUdY6P8?=
+ =?iso-8859-1?Q?iB4qLWANPw5k5Xl/A3B+LUFnmjmsYNH/N1L14QopWeB1nmjgrONMPjWjNd?=
+ =?iso-8859-1?Q?eSC7ah4AKFomd061gm6XBwBFAagxf1cbVnrJACqbQTvyWzYJKtzOYAooeE?=
+ =?iso-8859-1?Q?6taYTN4mZMrOalHQVq7b1UJgefi1TQdNyjW2FqH4Acp/3lEoot9Og3QSvP?=
+ =?iso-8859-1?Q?rI5bcD62JJlkKC+PY5fexAAp8Q4231sJpkrrTVk5ZlBmyEP6xoDoZDFMWG?=
+ =?iso-8859-1?Q?tlk82/jigsjhZdinKNgovA9hAbS7yAgQoeLzX+ritL9QXJQHnqt4Fpvrar?=
+ =?iso-8859-1?Q?NJFf+xMF+KgDU4cK0G/ZlFJz6XM5RTZrwTe4pHSA7tmlE1LgIsnrqBGJeo?=
+ =?iso-8859-1?Q?dPEoIEFh9pS9lgKuHaVheEyp7iPnxbcJ5vl4UanYCXSXDwlY4C+uB13arz?=
+ =?iso-8859-1?Q?pFYkRPBGlGtYQTwkKyWSOSDp/bUIedXX3dnyUGMx1EUiLW4sVEA9ydQ8Em?=
+ =?iso-8859-1?Q?VPN/O5lyJaIzLjivf8VLv2MTMNVwJTw3qSsHWGnTdjz+u7gThtKNp31tzp?=
+ =?iso-8859-1?Q?e8at9tEuJXJvGsr4gAvS8ZlhUYPgWFGvQJV0Ei/xG6hWICyMe4nx3Q+CSh?=
+ =?iso-8859-1?Q?O0nEymHXBtsyy+gIApy+6sB1WDutKAU/mKPBcxOfYX343nQKTno3nEOMBP?=
+ =?iso-8859-1?Q?89UntvMAjIdNLHalgiD904ufjJKWAaIOefUmfxuCMyx+C7/b8reefCgMww?=
+ =?iso-8859-1?Q?YMDvkbOGNrY2THfND0oc3gm2lUjhGGiU8P67jh+MMwaGFGqbHUWdX2gTz1?=
+ =?iso-8859-1?Q?jEeI3G4evk4a7Msi48DJ1GWO4Caa02hT1YxJ74VIDzuVMDcdXQOnG7LD4g?=
+ =?iso-8859-1?Q?P8VrmIVoBn8DRmfpqkX5iV1DCsBKmW+S/rHHrj83u5PLGgQ4fAIzmUUlw0?=
+ =?iso-8859-1?Q?3IXEawZsXf5u3hAik2xIBeNcXaN//RZLDpJUwRr0UYvzLThEzWDxLuopVr?=
+ =?iso-8859-1?Q?4qpZmMIMp4lLicOmk7D0F5n60OXVxnQEy9RDcVhaTovEfgCAIr+VZfPDft?=
+ =?iso-8859-1?Q?K2ZOqbNdG/TLuigqNNhqV8V6A7kgAm+eIEsiaw=3D=3D?=
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230037)(7416011)(376011)(36860700010)(82310400023)(1800799021); DIR:OUT;
+ SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jun 2024 01:19:49.5222 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3e7ce349-1389-4088-1180-08dc94b4e896
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: CO1PEPF000042A8.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR12MB6427
+Received-SPF: permerror client-ip=40.107.93.42;
+ envelope-from=Michael.Roth@amd.com;
+ helo=NAM10-DM6-obe.outbound.protection.outlook.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,24 +146,135 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Michael Roth <michael.roth@amd.com>
+From:  Michael Roth via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hiya,
+On Fri, Jun 14, 2024 at 11:39:24AM +0100, Daniel P. Berrangé wrote:
+> The KVM_SEV_INIT2 ioctl was only introduced in Linux 6.10, which will
+> only have been released for a bit over a month when QEMU 9.1 is
+> released.
+> 
+> The SEV(-ES) support in QEMU has been present since 2.12 dating back
+> to 2018. With this in mind, the overwhealming majority of users of
+> SEV(-ES) are unlikely to be running Linux >= 6.10, any time in the
+> forseeable future.
+> 
+> IOW, defaulting new QEMU to 'legacy-vm-type=false' means latest QEMU
+> machine types will be broken out of the box for most SEV(-ES) users.
+> Even if the kernel is new enough, it also affects the guest measurement,
+> which means that their existing tools for validating measurements will
+> also be broken by the new default.
+> 
+> This is not a sensible default choice at this point in time. Revert to
+> the historical behaviour which is compatible with what most users are
+> currently running.
 
-I've just discovered a 32-bit build issue that is probably 3 weeks old.
+Part of the reason for the change is that SEV-ES measurements are
+already affected by some short-comings of the legacy KVM_SEV_ES_INIT
+API. Namely, if the kvm_amd.debug-swap module param is used to enable
+that SEV-ES feature, then that feature will get enabled on the KVM side
+and change the initial guest measurement (due to VMSA_FEATURES field
+of the vCPU's VMSA changing), and userspace has no way to control that
+on a per-VM basis, so measurement for any particular invocation will
+be somewhat random depending on the system configuration and kernel
+level.
 
-While we still support 32-bit builds at all, I would request that we improve our 
-cross-i686 testing.  For instance: we have cross-i686-user and cross-i686-tci.  There is 
-some system build testing in the tci job, but (rightfully) not everything.
+I think that's why users of newer QEMU machine types are highly
+encouraged to switch to the new KVM_SEV_INIT2 interface. I do see this
+causing issues for older QEMU machine types that previously relied on
+the legacy interface, since we do want to avoid measurement changing
+for an existing guest that was previously working on an older kernel,
+which is why this flag defaults to true for pre-9.1 machine types. But
+on newer kernels there is still potential for issues relating to
+debug-swap (and other VMSA features that get added to KVM in the future)
+and how they may cause measurement changes underneath the covers if we
+don't allow userspace the ability to control what is/isn't disabled.
 
-I would like a full cross-i686-system target that builds all targets, and I would like the 
-debian-i686-cross image on which we base these to be more complete -- ideally, exactly 
-matching x86_64.  In particular, CONFIG_SEV is not detected within the current docker 
-image, which is where the current build error is located.
+Because of that I think it's less headache for userspace to have to
+opt-in to legacy interface when using newer machine models. It should be
+a concious decision to keep using this deprecated interface with known
+limitations that could affect measurement in unexpected ways.
 
-Do you have time to look at this?
+I was actually planning to go the other direction on this because
+currently for 9.1+, QEMU will try to use KVM_SEV_INIT2 if
+KVM_CAP_VM_TYPES advertises its availability, but otherwise fall back to
+the above KVM_SEV_ES_INIT interface and potential inherit the issues
+noted above. So I was planning on getting rid of the fallback, and
+basically only allowing legacy KVM_SEV_ES_INIT for 9.1+ if the user
+manually sets sev_guest->legacy_vm_type via cmdline.
 
+-Mike
 
-r~
+> 
+> This can be re-evaluated a few years down the line, though it is more
+> likely that all attention will be on SEV-SNP by this time. Distro
+> vendors may still choose to change this default downstream to align
+> with their new major releases where they can guarantee the kernel
+> will always provide the required functionality.
+> 
+> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+> ---
+>  hw/i386/pc.c      |  1 -
+>  qapi/qom.json     | 12 ++++++------
+>  target/i386/sev.c |  7 +++++++
+>  3 files changed, 13 insertions(+), 7 deletions(-)
+> 
+> diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+> index 0469af00a7..b65843c559 100644
+> --- a/hw/i386/pc.c
+> +++ b/hw/i386/pc.c
+> @@ -82,7 +82,6 @@
+>  GlobalProperty pc_compat_9_0[] = {
+>      { TYPE_X86_CPU, "x-l1-cache-per-thread", "false" },
+>      { TYPE_X86_CPU, "guest-phys-bits", "0" },
+> -    { "sev-guest", "legacy-vm-type", "true" },
+>      { TYPE_X86_CPU, "legacy-multi-node", "on" },
+>  };
+>  const size_t pc_compat_9_0_len = G_N_ELEMENTS(pc_compat_9_0);
+> diff --git a/qapi/qom.json b/qapi/qom.json
+> index 8bd299265e..714ebeec8b 100644
+> --- a/qapi/qom.json
+> +++ b/qapi/qom.json
+> @@ -912,12 +912,12 @@
+>  # @handle: SEV firmware handle (default: 0)
+>  #
+>  # @legacy-vm-type: Use legacy KVM_SEV_INIT KVM interface for creating the VM.
+> -#                  The newer KVM_SEV_INIT2 interface syncs additional vCPU
+> -#                  state when initializing the VMSA structures, which will
+> -#                  result in a different guest measurement. Set this to
+> -#                  maintain compatibility with older QEMU or kernel versions
+> -#                  that rely on legacy KVM_SEV_INIT behavior.
+> -#                  (default: false) (since 9.1)
+> +#                  The newer KVM_SEV_INIT2 interface, from Linux >= 6.10, syncs
+> +#                  additional vCPU state when initializing the VMSA structures,
+> +#                  which will result in a different guest measurement. Toggle
+> +#                  this to control compatibility with older QEMU or kernel
+> +#                  versions that rely on legacy KVM_SEV_INIT behavior.
+> +#                  (default: true) (since 9.1)
+>  #
+>  # Since: 2.12
+>  ##
+> diff --git a/target/i386/sev.c b/target/i386/sev.c
+> index 004c667ac1..16029282b7 100644
+> --- a/target/i386/sev.c
+> +++ b/target/i386/sev.c
+> @@ -2086,6 +2086,13 @@ sev_guest_instance_init(Object *obj)
+>      object_property_add_uint32_ptr(obj, "policy", &sev_guest->policy,
+>                                     OBJ_PROP_FLAG_READWRITE);
+>      object_apply_compat_props(obj);
+> +
+> +    /*
+> +     * KVM_SEV_INIT2 was only introduced in Linux 6.10. Avoid
+> +     * breaking existing users of SEV, since the overwhealming
+> +     * majority won't have a new enough kernel for a long time
+> +     */
+> +    sev_guest->legacy_vm_type = true;
+>  }
+>  
+>  /* guest info specific sev/sev-es */
+> -- 
+> 2.45.1
+> 
 
