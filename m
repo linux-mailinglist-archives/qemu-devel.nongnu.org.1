@@ -2,89 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 343D0917688
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jun 2024 04:56:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 408C391768A
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jun 2024 04:56:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sMFun-0005mM-FB; Tue, 25 Jun 2024 19:49:37 -0400
+	id 1sMI3Q-0003KV-U5; Tue, 25 Jun 2024 22:06:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sMFuK-0005a3-E8
- for qemu-devel@nongnu.org; Tue, 25 Jun 2024 19:49:05 -0400
-Received: from [2607:f8b0:4864:20::230] (helo=mail-oi1-x230.google.com)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1sMI2i-0003Em-18
+ for qemu-devel@nongnu.org; Tue, 25 Jun 2024 22:06:01 -0400
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sMFtO-0006dt-5t
- for qemu-devel@nongnu.org; Tue, 25 Jun 2024 19:48:43 -0400
-Received: by mail-oi1-x230.google.com with SMTP id
- 5614622812f47-3d552600917so1248230b6e.2
- for <qemu-devel@nongnu.org>; Tue, 25 Jun 2024 16:46:46 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1sMI1y-0003AS-Iz
+ for qemu-devel@nongnu.org; Tue, 25 Jun 2024 22:05:41 -0400
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-421b9068274so53406115e9.1
+ for <qemu-devel@nongnu.org>; Tue, 25 Jun 2024 19:03:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719359191; x=1719963991; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=fSSKCItYz8+su55zaCeDfZqGcLGOvzO1zgA32uDbBb8=;
- b=bFOvCvJGlvhaMTXGW7EA8/zrQqn161UdjBk+b3SuN/xgU8fhPEIPuPbSN6oLEPxedL
- oRV8FwKgFwpz6VG3K36NzsgCvdxxoswrCFhUGMIM/yPOa109JxxiJ1gcEiAzr8OZfoAR
- ztNcH6BajJto4V2Rvy0skBa8J5lo5F72IHlfY+gm4eDMVuxTMk3dzH5k0svv0APREGVC
- P4zKZje+uVjai5iltV9uKdJGS2+b6vzDUaWnR7P9CAvL0Id5kQwupuDcxg6OkcmoyNT8
- 93cc2Zd98Q9De7nd9p0Q+eADLQRDwQ63FPx2qhGxjVB+VyC/FXzL258P4LiDf7X/Iz4Y
- FUlw==
+ d=linaro.org; s=google; t=1719367413; x=1719972213; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=xCFabv2nohWkThTwXlKe6p51NtMl+EbSJxir215ZsD8=;
+ b=TNlNiFaHMGV7uF/LiwHQkQaKR1+A81UaagNqhiHKAHqPo4Jf8R2gytldhoXUM537H3
+ lsp+x6riRyg4LObNnCMAnu01mO4+wh6PNCt6fGPmUxT/qrszBnKyF9JevnFH9voZiqfD
+ 839ibimePXxpHuTYbHcrpc3xRwHQLYQsbq1nep8vbZkafDOrvz1d1B3P+SwicljlCrrA
+ MHQc8lK0Ns3enIMyRB/c/Cd6TqZp0coFNymXZR+2+VnQKXydZTabzwYOPmip4n796Vgm
+ YwcDhgxw+XZx8/qvrWa+acKa/DyOxo/ydZd4x994nZYMi6Lg5Phce5ssitULfkFRjQGO
+ 9F2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719359191; x=1719963991;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=fSSKCItYz8+su55zaCeDfZqGcLGOvzO1zgA32uDbBb8=;
- b=c8T1fFvqzZ+qWlMgGuotFPPC6GrQBNInsv9bhfJ94V2Yi04Rg7O1WzIooNkW2A1i4s
- grC/5Y/glzt4al2/1Ruo8xoLvEu+18Y6VU3WoRiPv2Ra+0QfoiKsHXOrCdg2TKz/nis1
- 8UjzQE6lmV1DLYexz7+mhp166aYYIlgJPneT4mMc2UNc2tsm6sBCYcxRbdTO61vJ56cc
- kPwotsb8x4Ux5wUR5z55ZZUsjy/p9GF22N1klOAyHB9A5b5wQPwIuXJJKJtql+8hJtjE
- 9g7lqL3QP6jegrBislApQ39tvyz/91jUPoiwq8eWfou4dj7pCSHc4sn8svg+Hl0qxYct
- 01+Q==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXWRPvDPQnbf7+dyDNHPOZhJpyr6QbkcEw2VfkXt1c1UPpfVHHk85adj+KzRkBJ9qLtIFvCB9xBfBFCUy1M/EtJYjYkhkY=
-X-Gm-Message-State: AOJu0YxlFo/x0r2gCyfm0VPs0Fd10X7PJDd0nHuOg28Rz+HfYbYDOJ2d
- qU4XL0Sp6Xus8PEkiLAyJBBJQAfQsuhMtlAsutpIFQ0NPCYHPRH1+qAwlMpwxMUzz9GMvXUYC70
- e
-X-Google-Smtp-Source: AGHT+IFvVr28JLQAg9NoI+p/5/VRlo4mG2mg4ER6rd3Lc8iRdJTjdFIgre4+/paZJnIEh2MiCiBcsQ==
-X-Received: by 2002:a05:6a20:3944:b0:1b5:cf26:ecfd with SMTP id
- adf61e73a8af0-1bcee6f0162mr11027723637.24.1719339511426; 
- Tue, 25 Jun 2024 11:18:31 -0700 (PDT)
-Received: from [192.168.0.4] (174-21-76-141.tukw.qwest.net. [174.21.76.141])
+ d=1e100.net; s=20230601; t=1719367413; x=1719972213;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=xCFabv2nohWkThTwXlKe6p51NtMl+EbSJxir215ZsD8=;
+ b=Gc2dN28gAU3jjdQ6DajvMO+PTzYd1/Z5wJ21qmO9GHAgqPCL1vzrODTEIsWBs1mYTp
+ 2K2SPa+IFq/85oJd7Wbq849++OwzsHYYhx07aR4iOz4tt03wXx7IUuWf2nFL61Smh84k
+ zUttfA116iewB11EDNYhWn454U0Hw7iWDbLv+SH8C+KpgrEOPRGixrIs5zBUalzcvacg
+ ouAYTvofv4zwIqmnbm08vIpP+NY8KCYut3ipFejg5XMorpUgxo7Jbahgwp482FpLNnO7
+ qlNeQ7hUZN1PtrG720JlIDcNQheA+sgUzOShhrwO1REjTwKNcjiIXF29Z08LBdrM0rL1
+ 4r6g==
+X-Gm-Message-State: AOJu0Yzr/FwBcdVsa4rLQ4qi9N1DLQsfQxtZt9pSuKSusVIOyCyuc++i
+ VYJzLxr2+G8KQCpiGKjqZhUiI2Ijm7QAeQwvUMGkHVbck/+u+Ex3p8lwhWcAL9YiB0n/dYULywm
+ /JH0=
+X-Google-Smtp-Source: AGHT+IFZW/NLW8GfAHqDK2xt6sQX+9n5HxZ4aE3cvaweed+T4za4yMtN9jUuATR/Cm8+VOzcy9+QwA==
+X-Received: by 2002:ac2:54b3:0:b0:52c:c6a0:575c with SMTP id
+ 2adb3069b0e04-52ce064e939mr5073330e87.33.1719340490465; 
+ Tue, 25 Jun 2024 11:34:50 -0700 (PDT)
+Received: from meli-email.org (adsl-73.109.242.224.tellas.gr. [109.242.224.73])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-716bb22d45fsm7482622a12.86.2024.06.25.11.18.30
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 25 Jun 2024 11:18:31 -0700 (PDT)
-Message-ID: <2cb94b34-1a5f-4dc9-bec4-78c7008cd79d@linaro.org>
-Date: Tue, 25 Jun 2024 11:18:29 -0700
+ ffacd0b85a97d-366383f675esm13676151f8f.22.2024.06.25.11.34.49
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 25 Jun 2024 11:34:50 -0700 (PDT)
+Date: Tue, 25 Jun 2024 21:23:11 +0300
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+To: Zhao Liu <zhao1.liu@intel.com>
+Cc: qemu-devel@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
+ Mads Ynddal <mads@ynddal.dk>, Peter Maydell <peter.maydell@linaro.org>,
+ Alex Benn=?UTF-8?B?w6k=?= e <alex.bennee@linaro.org>,
+ "Daniel P. Berrang=?UTF-8?B?w6k=?= " <berrange@redhat.com>,
+ Marc-Andr=?UTF-8?B?w6kg?=Lureau <marcandre.lureau@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Philippe Mathieu-Daud=?UTF-8?B?w6kg?=<philmd@linaro.org>,
+ Gustavo Romero <gustavo.romero@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>, rowan.hart@intel.com,
+ Richard Henderson <richard.henderson@linaro.org>, qemu-arm@nongnu.org
+Subject: Re: [RFC PATCH v3 5/5] DO NOT MERGE: replace TYPE_PL011 with
+ x-pl011-rust in arm virt machine
+User-Agent: meli 0.8.6
+References: <rust-pl011-rfc-v3.git.manos.pitsidianakis@linaro.org>
+ <229703c7f4394691f254b02c012ee0d7dcf57afb.1718827153.git.manos.pitsidianakis@linaro.org>
+ <Znrt77XOc2YBNZyM@intel.com>
+In-Reply-To: <Znrt77XOc2YBNZyM@intel.com>
+Message-ID: <fnfm0.vm34jtk3isk@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] target/riscv: Add support for machine specific pmu's
- events
-To: Alexei Filippov <alexei.filippov@syntacore.com>, palmer@dabbelt.com
-Cc: alistair.francis@wdc.com, bmeng.cn@gmail.com, dbarboza@ventanamicro.com,
- zhiwei_liu@linux.alibaba.com, liwei1518@gmail.com, qemu-devel@nongnu.org,
- qemu-riscv@nongnu.org
-References: <20240625144643.34733-1-alexei.filippov@syntacore.com>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240625144643.34733-1-alexei.filippov@syntacore.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Host-Lookup-Failed: Reverse DNS lookup failed for 2607:f8b0:4864:20::230
- (deferred)
-Received-SPF: pass client-ip=2607:f8b0:4864:20::230;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x230.google.com
-X-Spam_score_int: -8
-X-Spam_score: -0.9
-X-Spam_bar: /
-X-Spam_report: (-0.9 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, PDS_HP_HELO_NORDNS=0.001, RDNS_NONE=0.793,
- T_SPF_HELO_TEMPERROR=0.01,
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8; format=flowed
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x331.google.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, T_SPF_HELO_TEMPERROR=0.01,
  T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -101,42 +104,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/25/24 07:46, Alexei Filippov wrote:
-> Was added call backs for machine specific pmu events.
-> Simplify monitor functions by adding new hash table, which going to map
-> counter number and event index.
-> Was added read/write callbacks which going to simplify support for events,
-> which expected to have different behavior.
-> 
-> Signed-off-by: Alexei Filippov <alexei.filippov@syntacore.com>
-> ---
-> Changes since v2:
-> 		-rebased to latest master
->   target/riscv/cpu.h |   9 +++
->   target/riscv/csr.c |  43 +++++++++-----
->   target/riscv/pmu.c | 139 ++++++++++++++++++++++-----------------------
->   target/riscv/pmu.h |  11 ++--
->   4 files changed, 115 insertions(+), 87 deletions(-)
-> 
-> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-> index 6fe0d712b4..fbf82b050b 100644
-> --- a/target/riscv/cpu.h
-> +++ b/target/riscv/cpu.h
-> @@ -374,6 +374,13 @@ struct CPUArchState {
->       uint64_t (*rdtime_fn)(void *);
->       void *rdtime_fn_arg;
->   
-> +    /*machine specific pmu callback */
-> +    void (*pmu_ctr_write)(PMUCTRState *counter, uint32_t event_idx,
-> +                          target_ulong val, bool high_half);
-> +    target_ulong (*pmu_ctr_read)(PMUCTRState *counter, uint32_t event_idx,
-> +                                 bool high_half);
-> +    bool (*pmu_vendor_support)(uint32_t event_idx);
+On Tue, 25 Jun 2024 19:18, Zhao Liu <zhao1.liu@intel.com> wrote:
+>Hi Manos,
+>
+>On Wed, Jun 19, 2024 at 11:14:02PM +0300, Manos Pitsidianakis wrote:
+>> Date: Wed, 19 Jun 2024 23:14:02 +0300
+>> From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+>> Subject: [RFC PATCH v3 5/5] DO NOT MERGE: replace TYPE_PL011 with
+>>  x-pl011-rust in arm virt machine
+>> X-Mailer: git-send-email 2.44.0
+>> 
+>> Convenience patch for testing the rust device.
+>> 
+>> Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+>> ---
+>>  hw/arm/virt.c | 4 ++++
+>>  1 file changed, 4 insertions(+)
+>> 
+>> diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+>> index 3c93c0c0a6..f33b58ae0d 100644
+>> --- a/hw/arm/virt.c
+>> +++ b/hw/arm/virt.c
+>> @@ -912,7 +912,11 @@ static void create_uart(const VirtMachineState *vms, int uart,
+>>      int irq = vms->irqmap[uart];
+>>      const char compat[] = "arm,pl011\0arm,primecell";
+>>      const char clocknames[] = "uartclk\0apb_pclk";
+>> +#ifdef CONFIG_WITH_RUST
+>> +    DeviceState *dev = qdev_new("x-pl011-rust");
+>> +#else
+>>      DeviceState *dev = qdev_new(TYPE_PL011);
+>> +#endif
+>>      SysBusDevice *s = SYS_BUS_DEVICE(dev);
+>>      MachineState *ms = MACHINE(vms);
+>>
+>
+>I realized that if we want to merge the rust pl011 device, then this
+>patch or similar enablement support is necessary, otherwise, the rust
+>code is only used for compilation and cannot actually be run...
+>
+>This is also an open for the devices that are rewrite in Rust.
+>
+>I think there should be an option for the user to choose whether to
+>enable pl011 in C or pl011 in Rust. What do you think?
+>
+>Perhaps the easiest way to enable rust pl011 is to add an option for
+>virt machine... But that's certainly not a long-term approach. I think
+>the ideal way would be to allow rust pl011 to be specified in the
+>command line via -device, but this approach would mean allowing the
+>user to create pl011 and would require changes to the current buildin
+>pl011's creation logic.
+>
+>-Zhao
+>
 
-Do these really belong in CPUArchState, rather than RISCVCPUClass?
+We should definitely refer to ARM maintainers. The peculiarity of it 
+being a chardev seems to make it not straightforward... I think it might 
+have to become a machine property like discussed here:
 
-Surely there's more to this series, since these fields are never set...
+https://lore.kernel.org/qemu-devel/CAFEAcA94twaBSx--NVXQcRBQ7v9TuK9iTq9kTWP4FYpRzgPbBA@mail.gmail.com/
 
+And that'd be a bigger change not related just to Rust.
 
-r~
 
