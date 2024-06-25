@@ -2,83 +2,115 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 486419168C0
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jun 2024 15:22:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A4EF9166FC
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jun 2024 14:09:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sM67W-0000Br-Rr; Tue, 25 Jun 2024 09:22:02 -0400
+	id 1sM4yY-0000JQ-Ev; Tue, 25 Jun 2024 08:08:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pykfirst@gmail.com>)
- id 1sM4Lg-00016P-6H
- for qemu-devel@nongnu.org; Tue, 25 Jun 2024 07:28:32 -0400
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pykfirst@gmail.com>)
- id 1sM4Le-0005c7-Bh
- for qemu-devel@nongnu.org; Tue, 25 Jun 2024 07:28:31 -0400
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-1f9cd92b146so42033985ad.3
- for <qemu-devel@nongnu.org>; Tue, 25 Jun 2024 04:28:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1719314907; x=1719919707; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=uBaSheNEI17XWmXxdX9yRTMBkPWOO88fG/ISELWu8bk=;
- b=Zdgbs/wj+BQaCqPailsHmqlgrs8IiTlLNi+6kwjn6wN2QSfYVyiOioc+9lWvnP9sv0
- EQe2A9q5c7Sk2lkOaWz488tdp3J9e4S5x2tlujP5gjend7uvEC1VoUL2JOTwd441bEcP
- 01tvT24R9Dnc8luZCAfTXV8Y1Yl+Ke98O380OJXcJ8V+qNE2KNYpM15eJY2vTPZl2yXS
- dv1rK6O6uh6LeoHYDBhFkLVMS5pZ5emx9uxlYxpaMIp4mYLKucr6nYmY6BGjEf9nk1G8
- CEq9jTzmHF4T2XALmh9AaIY8qiu3PMW1jKjrZFYEShqugdYbDmd09jLVsTQGy9Hpv9wO
- SQGw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719314907; x=1719919707;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=uBaSheNEI17XWmXxdX9yRTMBkPWOO88fG/ISELWu8bk=;
- b=vp8xVyx2o2m0Z1R/hIUd/cD3XJWpwLi0ju1wDMBy0NHXrvy4O4B4CB3x51kfwMMNUV
- vE4t8gxvmohfu0LJHCQyiOXMDX40hd4d+cjItRzmKtQ1SFbzSjd6VmRosU9Ee0ODO8DR
- gxlnQeeyVBH4LltNXlr/jrda6mw1N3CBtWJxiO53vGhioafEdIqJebzIUnrTjk7zVplK
- JiTYpskbZaRHSm9d3ZRFb5Ec0ooI1ivc1IOsaa3MpLXe3LgOPJthRhmzdghn37eJptAo
- qqM+hKleaMkjYimFnpICXi7W45qdJYk8fFnjvAUW+mqxQAALQDSGGMH4tVVbYB7hvsbc
- stBQ==
-X-Gm-Message-State: AOJu0Yzqgjk/W9YCoMKBJK2uf7IVkdQA4Ij0ta9f0GoCfxW8OWn7TKlo
- RjbXccVlvC9/UMOGF6tBd8T06Pyt6tJ0cTlkVXQ+mEMxLuj0Kou8rh6tIo03IPM=
-X-Google-Smtp-Source: AGHT+IHqUwRJFUoCz3qbjNJ+CVqW/avNyaw7XogtfvaL3OLauEv8OnVL1WH4He+7BQQ+X8daubb57g==
-X-Received: by 2002:a17:902:f685:b0:1f7:2050:9a76 with SMTP id
- d9443c01a7336-1fa1d3de5bcmr104365535ad.8.1719314906934; 
- Tue, 25 Jun 2024 04:28:26 -0700 (PDT)
-Received: from waoa-XPS-8940.. ([103.172.41.204])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1f9ec6595ebsm78466885ad.25.2024.06.25.04.28.23
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 25 Jun 2024 04:28:26 -0700 (PDT)
-From: Yuke Peng <pykfirst@gmail.com>
-To: qemu-devel <qemu-devel@nongnu.org>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, Peter Xu <peterx@redhat.com>,
- Jason Wang <jasowang@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PATCH] hw/i386/intel_iommu: Block CFI when necessary
-Date: Tue, 25 Jun 2024 19:28:19 +0800
-Message-Id: <20240625112819.862282-1-pykfirst@gmail.com>
+ (Exim 4.90_1) (envelope-from <taisei1212@outlook.jp>)
+ id 1sM4yW-0000JB-OQ
+ for qemu-devel@nongnu.org; Tue, 25 Jun 2024 08:08:40 -0400
+Received: from mail-tyzapc01olkn2043.outbound.protection.outlook.com
+ ([40.92.107.43] helo=APC01-TYZ-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <taisei1212@outlook.jp>)
+ id 1sM4yU-0004nE-TH
+ for qemu-devel@nongnu.org; Tue, 25 Jun 2024 08:08:40 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=DuiXrgOKNXBrfVQ0L2H5ijProSwYit7h162p7iOkQ1g7v8MC5ljqk2gAiMXA0KHpdXGf/Fzi96ZJPnMhU572fsxCZeBx8aQinmaw+C2icJE14ULcTA3uEXWaaBG+IA8R7lifpbHfsT+tuQTEmmnNzfvM7Z9bN8E4HGo67ChSOUcGugBz39SdlWBb8jX0Yac5rRE61Vh6s9xmZNHky1lxHHyHE2LoF4rYHt9/xT4GDcVUiS7gi1ND6xe32B+efRcyOBzdLj7gOLGX3O5YGI48NzINE1coM6XwxQtiU9rn71ikaKvLl9WdCTPPLQc2y6vCbZ8Qn+mrXijQaASR3zr1iw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=o3Pf+9MZcJGGnLkcNBGmMhQ5TyAytzqR3QSOwztioec=;
+ b=HseZWGZ54uTdsvQktsOhJQwO9oM6h5BL2WuS6cmobpJANDZ+Y+d3EIRHWCVbSYORvD1fGAU6COsWIhANCA+RCB4qYZHgopddAtnejX2YLkJql57Ehrt1MiKITySfi6q/iAiZIWhZNpoRmDCUG4pTzV+Jl/Tfga4MAJ3JiY2JRbIIbbpbHSQbsw3mFyfPqYa15y9RggqoOOwJjM8R6WjR/bos99PcoRhGKF5EMZoD212VjiyDgJHIZA/SnJnN4ciOZ2wE18nL11Hs3vyUIzW6HozfLk1rB2TKQEuRZVvHwBPqpmbwm5YjAm/EfjaAO+5KHsYznK+B8eEMeQp+EdFn4w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=OUTLOOK.JP;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=o3Pf+9MZcJGGnLkcNBGmMhQ5TyAytzqR3QSOwztioec=;
+ b=EgXmnJ0k4Ijq1LvNdgoP3R7LfyoBjOl5H3y0ffDSLvf1r1L0M+Kf0CiEi/Ts10u8VXz8SurGHetejz2Ki4qqu2pSQKhmqeCl8VRpT604CZkENlrq3PscC/6pHr0d1qWvXpY/CFaZuq6L4wdLa1NKddwZMIsMKeMT3tozxJYCaDVSjUdRCXaW1uqWzzE1/1lxDVeipvJi2haqDUambFRjG/yDgAw0dAngSmRaEklvu97eEBtBSZ0sQ3B30C0u9rA09TyDCbi2HNrgyZ4He8BdEZBDoqQSBrDhOphariWqj4SYB1zN+cRNjFNRThM4G4kuFmf05IXHR0iZim7gJwjDTQ==
+Received: from TY0PR0101MB4285.apcprd01.prod.exchangelabs.com
+ (2603:1096:400:1b0::11) by SEZPR01MB5509.apcprd01.prod.exchangelabs.com
+ (2603:1096:101:136::13) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7698.30; Tue, 25 Jun
+ 2024 12:03:30 +0000
+Received: from TY0PR0101MB4285.apcprd01.prod.exchangelabs.com
+ ([fe80::85c5:f6c5:8a81:ee35]) by
+ TY0PR0101MB4285.apcprd01.prod.exchangelabs.com
+ ([fe80::85c5:f6c5:8a81:ee35%4]) with mapi id 15.20.7698.025; Tue, 25 Jun 2024
+ 12:03:30 +0000
+From: TaiseiIto <taisei1212@outlook.jp>
+To: qemu-devel@nongnu.org
+Cc: pbonzini@redhat.com,
+	mst@redhat.com,
+	TaiseiIto <taisei1212@outlook.jp>
+Subject: [PATCH] hw/intc/ioapic: Delete a wrong IRQ redirection on I/O APIC
+Date: Tue, 25 Jun 2024 12:03:09 +0000
+Message-ID: <TY0PR0101MB42850337F8917D1F514107FBA4D52@TY0PR0101MB4285.apcprd01.prod.exchangelabs.com>
 X-Mailer: git-send-email 2.34.1
-MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=pykfirst@gmail.com; helo=mail-pl1-x635.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+X-TMN: [ey1RBDlVP0C/Jzvod7dp2FgqSerLf5Jt]
+X-ClientProxiedBy: TY2PR06CA0012.apcprd06.prod.outlook.com
+ (2603:1096:404:42::24) To TY0PR0101MB4285.apcprd01.prod.exchangelabs.com
+ (2603:1096:400:1b0::11)
+X-Microsoft-Original-Message-ID: <20240625120309.1816-1-taisei1212@outlook.jp>
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: TY0PR0101MB4285:EE_|SEZPR01MB5509:EE_
+X-MS-Office365-Filtering-Correlation-Id: a0402720-8e58-403d-c8d9-08dc950ed3fa
+X-Microsoft-Antispam: BCL:0;
+ ARA:14566002|461199025|3412199022|440099025|1710799023; 
+X-Microsoft-Antispam-Message-Info: R4abf8cy7tlkCJB2ttqTZktbIcU9GdZ04I8oDAjxRAYOhfIT/+T2+HS/AA7LDAlRj2fXdlYVhR4r6pC/0ZvFnl477XTbcqqhaZR6Rk4G+eYEgQaX/qtUfZtGrfHlNgu5hcpXMco+reA2P/3wmfOqLh7CrSYo/nYkWuFHny5/YKwge/npoWFCgLVlmVk8lTSkjSw5oPt2lcgukrR54mod4CJ+q6q4VtdLkj+0sX7FaxcJiiKhYNoBrRTXb1F0KCs1jGr/PUiTizl4bQTK5YYTc/NbbP14BB7j3ZqrP8OfEALnHAGLzty3GqTuYY29EMFxwvh2eR1kXtg2jtda8nsMSN7Y1jt0ZoXz3BasieBEIYvlFpfnhUgY3hBhEVmRqoH+Q2DKVeowiro2qugdGoQ1qUNXfT6A3K2I6PMeOFhdz6oxytLvbhVlXHNYi8nJZ9BICaP9xIGUEfmAlWMYLCjIerqYWLWuzAV3ALwUniSrpSEIYvgVDOT65KDifRus9XEsfmaNdtQkjPyJpwCHtipaJVNbQ6ZAXWY+Y4D+pZZS/3PPzX2TlaP/WfvfIC2iJrKEiGZq++pGGG0XTFF66iZ61YmqnGrWFk6+2OMKUHE+w4M4iaEf9G50qZrf6nPEodlj
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?4OgwhwaVuef9SONZ26TN/zP8ne5bQccGiUuW4BZ1eD6ruPyEbl7G7+j+pXoq?=
+ =?us-ascii?Q?OKHt0bLyK/Aqkpy3jAbibfEa8IMvYLLbFmyi6XPjrvsGcSENm/EoJhhLh/sM?=
+ =?us-ascii?Q?FDvxznnYDit8AqsEXdliNdn3bCOGtpeACHn4HiAB8mqwNhegnOPVB4QWXpAZ?=
+ =?us-ascii?Q?QUZLIXqtMuObwUXfZlzxDgr82hGFc5EYkwXRbN+iFTkRPFrR5htywkhcOTx6?=
+ =?us-ascii?Q?3kp0mmLSXxc97kW5ctcdNPD1ur+AhP0UJfa6u8AbH5SKW+H0NTflCU5zuRom?=
+ =?us-ascii?Q?GKj7GX2gKlTvth0CQRJtIQEk0lNwcxOEaZWb+SmFVQYSXnJc5tPnRt+uGYDH?=
+ =?us-ascii?Q?O71LiX9iEKSVaH6OHLRBC4ZR2wmaRNhoultXft3phIPampUkFV/wz1+Y2VMK?=
+ =?us-ascii?Q?UTxSeyuW4aSzxNqb+YsWoXJZyIQzNixcwwWPfhjrGJxh0/oLET5FKRHrnbel?=
+ =?us-ascii?Q?ift0+s5hKxIjxvKrtkB2dmu5RupJzDwln6ZtLHeJ2U79jgQbkXNVUnn2USxY?=
+ =?us-ascii?Q?UThy46EOSQuyUQGaq87i0P1Kog6XfdCNTRnzlFIk5Wql0JMEwY8Efbybfk7B?=
+ =?us-ascii?Q?+7uPmd8VxdkKgpPRPW1JPj41SX46QwZRhZE5o7jYb8J/v1foftNfurBrwFQU?=
+ =?us-ascii?Q?t4LXUnwni0+eOINHbB6qJEUQ8s/MbLTN8yr1FNafEqcj14SGU+R+Zz7FpO1X?=
+ =?us-ascii?Q?nFIgSnJu8+06AOOp4526kQ9Vd9F+DrdBgkFBGyNY8ZOYb8FRK7S0U4/wBWyu?=
+ =?us-ascii?Q?ejdXdtI6p6QeiL0yKCJibSK+RIocNG4XPLveiZbEc4kQHAFjabgcZ7RGNCzf?=
+ =?us-ascii?Q?CqlqpGlEq9ZPb6fOpITBqbPM1VMXxGfblpyETPXcvlI3cK6ewsLT1qh6l2Vc?=
+ =?us-ascii?Q?WR7t1FzgFBzQ4hp/PlU/Kk7H4g3674pJzpGcCky1n119cNN93qvtXKESfsn2?=
+ =?us-ascii?Q?UGLYF5Haoayzu3E7Gq8VE/u2EhCaLyky6uBNF1G7oYkcm/T3epK4xWCdse2j?=
+ =?us-ascii?Q?s7Se1TzGviK7acaK0QfQ7hc4ZeIlFtlDDE3LbtzA76dOnQFcshqB6k4NlEZU?=
+ =?us-ascii?Q?t8JEKiEW/nIZOMy0AbaQpXx7JqxAM9AQ1BU/W53G89VYLDw14LuXV7/ePalE?=
+ =?us-ascii?Q?IObo8tzHHtu4pwd7RS3JpWjQl+LGKOvCKlHYKqS0CB6+baOo5GTh9NvF/3lg?=
+ =?us-ascii?Q?RUxFfozv5NWUQkK7ZgWVsFjqSrTI33nh4ZtUHuNO4cZoebFqU8QkAHfxlrc?=
+ =?us-ascii?Q?=3D?=
+X-OriginatorOrg: sct-15-20-4755-11-msonline-outlook-d8e84.templateTenant
+X-MS-Exchange-CrossTenant-Network-Message-Id: a0402720-8e58-403d-c8d9-08dc950ed3fa
+X-MS-Exchange-CrossTenant-AuthSource: TY0PR0101MB4285.apcprd01.prod.exchangelabs.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jun 2024 12:03:30.1265 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SEZPR01MB5509
+Received-SPF: pass client-ip=40.92.107.43; envelope-from=taisei1212@outlook.jp;
+ helo=APC01-TYZ-obe.outbound.protection.outlook.com
+X-Spam_score_int: -4
+X-Spam_score: -0.5
+X-Spam_bar: /
+X-Spam_report: (-0.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_BL_SPAMCOP_NET=1.347, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Tue, 25 Jun 2024 09:22:01 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,108 +125,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-According to Intel VT-d specification 5.1.4, CFI must be blocked when
-Extended Interrupt Mode is enabled or Compatibility format interrupts
-are disabled.
+Before this commit, interruptions from i8254 which should be sent to IRQ0
+were sent to IRQ2. After this commit, these are correctly sent to IRQ0. When
+I had an HPET timer generate interruptions once per second to test an HPET
+driver in my operating system on QEMU, I observed more frequent
+interruptions than I configured on the HPET timer. I investigated the cause
+and found that not only interruptions from HPET but also interruptions from
+i8254 were sent to IRQ2 because of a redirection from IRQ0 to IRQ2. This
+redirection is added in hw/apic.c at commit
+16b29ae1807b024bd5052301550f5d47dae958a2 but this redirection caused wrong
+interruptions. So I deleted the redirection. Finally, I confirmed there is
+no problem on 'make check' results and that interruptions from i8254 and
+interruptions from HPET are correclty sent to IRQ0 and IRQ2 respectively.
 
-Signed-off-by: Yuke Peng <pykfirst@gmail.com>
+Signed-off-by: TaiseiIto <taisei1212@outlook.jp>
 ---
- hw/i386/intel_iommu.c         | 28 ++++++++++++++++++++++++++++
- hw/i386/trace-events          |  1 +
- include/hw/i386/intel_iommu.h |  1 +
- 3 files changed, 30 insertions(+)
+ hw/intc/ioapic.c | 7 -------
+ 1 file changed, 7 deletions(-)
 
-diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-index 5085a6fee3..dfa2f979e7 100644
---- a/hw/i386/intel_iommu.c
-+++ b/hw/i386/intel_iommu.c
-@@ -2410,6 +2410,22 @@ static void vtd_handle_gcmd_ire(IntelIOMMUState *s, bool en)
-     }
- }
- 
-+/* Handle Compatibility Format Interrupts Enable/Disable */
-+static void vtd_handle_gcmd_cfi(IntelIOMMUState *s, bool en)
-+{
-+    trace_vtd_cfi_enable(en);
-+
-+    if (en) {
-+        s->cfi_enabled = true;
-+        /* Ok - report back to driver */
-+        vtd_set_clear_mask_long(s, DMAR_GSTS_REG, 0, VTD_GSTS_CFIS);
-+    } else {
-+        s->cfi_enabled = false;
-+        /* Ok - report back to driver */
-+        vtd_set_clear_mask_long(s, DMAR_GSTS_REG, VTD_GSTS_CFIS, 0);
-+    }
-+}
-+
- /* Handle write to Global Command Register */
- static void vtd_handle_gcmd_write(IntelIOMMUState *s)
+diff --git a/hw/intc/ioapic.c b/hw/intc/ioapic.c
+index 716ffc8bbb..6b630b45ca 100644
+--- a/hw/intc/ioapic.c
++++ b/hw/intc/ioapic.c
+@@ -154,15 +154,8 @@ static void ioapic_set_irq(void *opaque, int vector, int level)
  {
-@@ -2440,6 +2456,10 @@ static void vtd_handle_gcmd_write(IntelIOMMUState *s)
-         /* Interrupt remap enable/disable */
-         vtd_handle_gcmd_ire(s, val & VTD_GCMD_IRE);
-     }
-+    if (changed & VTD_GCMD_CFI) {
-+        /* Compatibility format interrupts enable/disable */
-+        vtd_handle_gcmd_cfi(s, val & VTD_GCMD_CFI);
-+    }
- }
+     IOAPICCommonState *s = opaque;
  
- /* Handle write to Context Command Register */
-@@ -3304,6 +3324,7 @@ static const VMStateDescription vtd_vmstate = {
-         VMSTATE_BOOL(dmar_enabled, IntelIOMMUState),
-         VMSTATE_BOOL(qi_enabled, IntelIOMMUState),
-         VMSTATE_BOOL(intr_enabled, IntelIOMMUState),
-+        VMSTATE_BOOL(cfi_enabled, IntelIOMMUState),
-         VMSTATE_BOOL(intr_eime, IntelIOMMUState),
-         VMSTATE_END_OF_LIST()
-     }
-@@ -3525,6 +3546,12 @@ static int vtd_interrupt_remap_msi(IntelIOMMUState *iommu,
- 
-     /* This is compatible mode. */
-     if (addr.addr.int_mode != VTD_IR_INT_FORMAT_REMAP) {
-+        if (iommu->intr_eime || !iommu->cfi_enabled) {
-+            if (do_fault) {
-+                vtd_report_ir_fault(iommu, sid, VTD_FR_IR_REQ_COMPAT, 0);
-+            }
-+            return -EINVAL;
-+        }
-         memcpy(translated, origin, sizeof(*origin));
-         goto out;
-     }
-@@ -3950,6 +3977,7 @@ static void vtd_init(IntelIOMMUState *s)
-     s->root_scalable = false;
-     s->dmar_enabled = false;
-     s->intr_enabled = false;
-+    s->cfi_enabled = false;
-     s->iq_head = 0;
-     s->iq_tail = 0;
-     s->iq = 0;
-diff --git a/hw/i386/trace-events b/hw/i386/trace-events
-index 53c02d7ac8..ffd87db65f 100644
---- a/hw/i386/trace-events
-+++ b/hw/i386/trace-events
-@@ -57,6 +57,7 @@ vtd_dmar_translate(uint8_t bus, uint8_t slot, uint8_t func, uint64_t iova, uint6
- vtd_dmar_enable(bool en) "enable %d"
- vtd_dmar_fault(uint16_t sid, int fault, uint64_t addr, bool is_write) "sid 0x%"PRIx16" fault %d addr 0x%"PRIx64" write %d"
- vtd_ir_enable(bool en) "enable %d"
-+vtd_cfi_enable(bool en) "enable %d"
- vtd_ir_irte_get(int index, uint64_t lo, uint64_t hi) "index %d low 0x%"PRIx64" high 0x%"PRIx64
- vtd_ir_remap(int index, int tri, int vec, int deliver, uint32_t dest, int dest_mode) "index %d trigger %d vector %d deliver %d dest 0x%"PRIx32" mode %d"
- vtd_ir_remap_type(const char *type) "%s"
-diff --git a/include/hw/i386/intel_iommu.h b/include/hw/i386/intel_iommu.h
-index 7fa0a695c8..38e20d0f2c 100644
---- a/include/hw/i386/intel_iommu.h
-+++ b/include/hw/i386/intel_iommu.h
-@@ -294,6 +294,7 @@ struct IntelIOMMUState {
- 
-     /* interrupt remapping */
-     bool intr_enabled;              /* Whether guest enabled IR */
-+    bool cfi_enabled;               /* Whether CFI is enabled */
-     dma_addr_t intr_root;           /* Interrupt remapping table pointer */
-     uint32_t intr_size;             /* Number of IR table entries */
-     bool intr_eime;                 /* Extended interrupt mode enabled */
+-    /* ISA IRQs map to GSI 1-1 except for IRQ0 which maps
+-     * to GSI 2.  GSI maps to ioapic 1-1.  This is not
+-     * the cleanest way of doing it but it should work. */
+-
+     trace_ioapic_set_irq(vector, level);
+     ioapic_stat_update_irq(s, vector, level);
+-    if (vector == 0) {
+-        vector = 2;
+-    }
+     if (vector < IOAPIC_NUM_PINS) {
+         uint32_t mask = 1 << vector;
+         uint64_t entry = s->ioredtbl[vector];
 -- 
 2.34.1
 
