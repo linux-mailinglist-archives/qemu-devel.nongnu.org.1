@@ -2,83 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83E02917651
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jun 2024 04:47:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 745A5917636
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jun 2024 04:40:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sMCtX-0005Fx-At; Tue, 25 Jun 2024 16:36:04 -0400
+	id 1sMBV1-0007VV-8s; Tue, 25 Jun 2024 15:06:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sMCsg-000585-MJ
- for qemu-devel@nongnu.org; Tue, 25 Jun 2024 16:35:26 -0400
-Received: from [2607:f8b0:4864:20::d30] (helo=mail-io1-xd30.google.com)
+ id 1sMBBt-0002th-Pc
+ for qemu-devel@nongnu.org; Tue, 25 Jun 2024 14:47:18 -0400
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sMCoX-00077q-D9
- for qemu-devel@nongnu.org; Tue, 25 Jun 2024 16:34:52 -0400
-Received: by mail-io1-xd30.google.com with SMTP id
- ca18e2360f4ac-7e21dfbc310so219102039f.1
- for <qemu-devel@nongnu.org>; Tue, 25 Jun 2024 13:29:00 -0700 (PDT)
+ id 1sMBBB-0007Bm-30
+ for qemu-devel@nongnu.org; Tue, 25 Jun 2024 14:46:41 -0400
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-70656b43fd4so3399723b3a.0
+ for <qemu-devel@nongnu.org>; Tue, 25 Jun 2024 11:44:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719347323; x=1719952123; darn=nongnu.org;
+ d=linaro.org; s=google; t=1719341069; x=1719945869; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=eN1Efob1I3xatF3I5F8UROtAF2gQdoNN9Kj4+5dUxQA=;
- b=dlPA5B9N/0JF6XQbWR0eHBVrWS3VfsFnpN0+KCaTKg0eHl8hSsJqZ7uMnPLnwQxnCC
- nkDlkr+SHKSTOTspRiKkWFpzl6qK95xUsZu7UhjWUcjg0bCHk0dEo+Tn9wHb6Mj0P4CF
- 8sqQgS4eqHgOw10Q0JS1H0HliLvMRhW71lTD9jPQm+VqfTjO/tEbg9qo2y+ez6xxmeOh
- 3801mCLKQWbZmbIEjOOFHj+6GcjfurGkJRUAyEvwO2q/OHR8y5HjkLa7l4teSKT6qHfC
- eBzpcDJMzH5CuHQMPmBu3l0s/z0yXt9i1OczFkv8FLRKKWWsFHmqe0eoyhBjUrdhEBvJ
- Vw/Q==
+ bh=u70FGhdj6+SDi8C75S6LZSmiHm3Th47xqHQlbQAfOcI=;
+ b=Jodi/6k7s3Ih+jiSPmaaz8zmC7y9UxJbJ+6xOTPm37cToQHFbjJcIhegVHMprDiGR7
+ hd4ZSK7SmnOv9cGfZCQf0s3HFU0L9A3OnyWGjAaFvhCOvZxEcWC90sbCNrzkrCkH3fgD
+ 0kittIlkMqFr3H9ueaaGRH+WVeI3OV2cjNDyjwCbn5rBONjJ+ljDY5H/YXhgw0uf/CdS
+ c3awaLgB69u6ZxVeZPPz0zN+mw4jSBexGrvQNONxvVWcLxpammV78DBtLwBeFx7Qzd1h
+ Qn5QAZops9cLhaXNHIVkw0L1Hq2yXzTkWp5CkTAOrX4mTSNh3zl+5KzLDP9g9hU2Oezi
+ FN5Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719347323; x=1719952123;
+ d=1e100.net; s=20230601; t=1719341069; x=1719945869;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=eN1Efob1I3xatF3I5F8UROtAF2gQdoNN9Kj4+5dUxQA=;
- b=QCJKsT+LXUyQ676EGlE8RIgyru+WIPlz7OyV1Rku2CjAr4WIEgWP1Jx+t8YVz2URlU
- +6JxmqvtA6bohZZFm/nSwi1eRmjknkkTwb1N8WG+hAUtsafeaLkPuqhSuwJfW43WwRxE
- ZUz4opvuVC5eSbuwQPQF43YhcltzaFRO0vLp6L1bj4EDzlg/7CDVhfOSHPlXPW91/7VY
- +kuQo0sJBuuG8jrTCjCinqlLcxpAWBzPtYmqA5kImIL4468OOWSCn9kMOPAtNbB+sPcz
- LsGhLHBMgrM10QfRsUH4UqF4sHvq/B7CT08i4zuhlU1zXl6t3z/+pOsnUNbCVoOXHiAg
- SiOA==
-X-Gm-Message-State: AOJu0Yx1V6a27hiL5JhmgUryP2r7ZPK7yoiFhQT/QZgFeRHnLQhfzqOa
- by8zGFbEVdFOE0F2tZYGW/qeXX2bjb62y71PCX/RFVg8Ni2/NKqLV2li0JTkkO8tCqI4eAhZfDZ
- S
-X-Google-Smtp-Source: AGHT+IE9swytu+mWzkrvUlWnOVCCTnrNTp9MyM/NefwvNvXaEYNlFnYM+mJSu+K7wPK/G+dLgHVddQ==
-X-Received: by 2002:a17:903:32ce:b0:1fa:643:f424 with SMTP id
- d9443c01a7336-1fa238e46ddmr109487635ad.14.1719340542474; 
- Tue, 25 Jun 2024 11:35:42 -0700 (PDT)
+ bh=u70FGhdj6+SDi8C75S6LZSmiHm3Th47xqHQlbQAfOcI=;
+ b=gUWVr/jUFOS4ZdhFMwak+/DsW2vfsWrMglPQnbCUoqiBNjg/x/MX/gRtX+J1vIbDMn
+ YCE8KGEd1BZSQ1I0duMxAfW6olgJmOibBnk7xcvu31woVzkhoHDJ9Mw/HrPvKb+Nlqrt
+ KBE/0BQWru70eYnc6bag6yV1UVPlWyhlTPOtT4FMg5scnpHjQ7N6CVJRV2LyJ9x1Ocih
+ plRFgdf5xGhSQBXx5d/mRHxBC0mziT45bR6iyMd2A8WjxkPHm/SZrAtfW356Q5BPc6jD
+ XnTqplR++J7oidTrLy4nNU3te20b645hdiTFALXtGWZOqVGhhNt0dU/4XaRCMMaYQzc1
+ 6Wsg==
+X-Gm-Message-State: AOJu0YyRBVqsiJjzRtWmRYZiUIaHAzhySfQb3YC07FyVnoy5lb6VnMbg
+ mRT811rLRcQaHF/ZJJkqPEciLWlO0ZJOZ1UcBIp2X7hI50VasFbQqJv0dssFJo2cs0QjTCxB19C
+ l
+X-Google-Smtp-Source: AGHT+IExR7US1/HehZRxiSXpfdKHm0AYigFlSgCTddaoCmbwZwMcvf+HaoeSRclDw4L0pW3MMJxikQ==
+X-Received: by 2002:a17:903:41cd:b0:1f9:bb35:f313 with SMTP id
+ d9443c01a7336-1fa23edc8c2mr80059025ad.30.1719340546997; 
+ Tue, 25 Jun 2024 11:35:46 -0700 (PDT)
 Received: from stoup.. (174-21-76-141.tukw.qwest.net. [174.21.76.141])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1f9eb3c6027sm84693235ad.133.2024.06.25.11.35.41
+ d9443c01a7336-1f9eb3c6027sm84693235ad.133.2024.06.25.11.35.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 25 Jun 2024 11:35:42 -0700 (PDT)
+ Tue, 25 Jun 2024 11:35:46 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org,
 	Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH v2 05/13] target/arm: Convert SDOT, UDOT to decodetree
-Date: Tue, 25 Jun 2024 11:35:28 -0700
-Message-Id: <20240625183536.1672454-6-richard.henderson@linaro.org>
+Subject: [PATCH v2 10/13] target/arm: Add data argument to do_fp3_vector
+Date: Tue, 25 Jun 2024 11:35:33 -0700
+Message-Id: <20240625183536.1672454-11-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240625183536.1672454-1-richard.henderson@linaro.org>
 References: <20240625183536.1672454-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Host-Lookup-Failed: Reverse DNS lookup failed for 2607:f8b0:4864:20::d30
- (deferred)
-Received-SPF: pass client-ip=2607:f8b0:4864:20::d30;
- envelope-from=richard.henderson@linaro.org; helo=mail-io1-xd30.google.com
-X-Spam_score_int: -8
-X-Spam_score: -0.9
-X-Spam_bar: /
-X-Spam_report: (-0.9 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, PDS_HP_HELO_NORDNS=0.001, RDNS_NONE=0.793, SPF_PASS=-0.001,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x435.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,164 +95,224 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/a64.decode      |  7 +++++
- target/arm/tcg/translate-a64.c | 54 ++++++++++++++++++----------------
- 2 files changed, 35 insertions(+), 26 deletions(-)
+ target/arm/tcg/translate-a64.c | 52 +++++++++++++++++-----------------
+ 1 file changed, 26 insertions(+), 26 deletions(-)
 
-diff --git a/target/arm/tcg/a64.decode b/target/arm/tcg/a64.decode
-index 613cc9365c..7411d4ba97 100644
---- a/target/arm/tcg/a64.decode
-+++ b/target/arm/tcg/a64.decode
-@@ -61,6 +61,7 @@
- 
- @qrrr_b         . q:1 ...... ... rm:5 ...... rn:5 rd:5  &qrrr_e esz=0
- @qrrr_h         . q:1 ...... ... rm:5 ...... rn:5 rd:5  &qrrr_e esz=1
-+@qrrr_s         . q:1 ...... ... rm:5 ...... rn:5 rd:5  &qrrr_e esz=2
- @qrrr_sd        . q:1 ...... ... rm:5 ...... rn:5 rd:5  &qrrr_e esz=%esz_sd
- @qrrr_e         . q:1 ...... esz:2 . rm:5 ...... rn:5 rd:5  &qrrr_e
- @qr2r_e         . q:1 ...... esz:2 . ..... ...... rm:5 rd:5 &qrrr_e rn=%rd
-@@ -946,6 +947,9 @@ SQRDMULH_v      0.10 1110 ..1 ..... 10110 1 ..... ..... @qrrr_e
- SQRDMLAH_v      0.10 1110 ..0 ..... 10000 1 ..... ..... @qrrr_e
- SQRDMLSH_v      0.10 1110 ..0 ..... 10001 1 ..... ..... @qrrr_e
- 
-+SDOT_v          0.00 1110 100 ..... 10010 1 ..... ..... @qrrr_s
-+UDOT_v          0.10 1110 100 ..... 10010 1 ..... ..... @qrrr_s
-+
- ### Advanced SIMD scalar x indexed element
- 
- FMUL_si         0101 1111 00 .. .... 1001 . 0 ..... .....   @rrx_h
-@@ -1020,6 +1024,9 @@ SQRDMLAH_vi     0.10 1111 10 .. .... 1101 . 0 ..... .....   @qrrx_s
- SQRDMLSH_vi     0.10 1111 01 .. .... 1111 . 0 ..... .....   @qrrx_h
- SQRDMLSH_vi     0.10 1111 10 .. .... 1111 . 0 ..... .....   @qrrx_s
- 
-+SDOT_vi         0.00 1111 10 .. .... 1110 . 0 ..... .....   @qrrx_s
-+UDOT_vi         0.10 1111 10 .. .... 1110 . 0 ..... .....   @qrrx_s
-+
- # Floating-point conditional select
- 
- FCSEL           0001 1110 .. 1 rm:5 cond:4 11 rn:5 rd:5     esz=%esz_hsd
 diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 32c24c7422..f2e7d8d75c 100644
+index 2697c4b305..57cdde008e 100644
 --- a/target/arm/tcg/translate-a64.c
 +++ b/target/arm/tcg/translate-a64.c
-@@ -5592,6 +5592,18 @@ TRANS(SQRDMULH_v, do_gvec_fn3_no8_no64, a, gen_gvec_sqrdmulh_qc)
- TRANS_FEAT(SQRDMLAH_v, aa64_rdm, do_gvec_fn3_no8_no64, a, gen_gvec_sqrdmlah_qc)
- TRANS_FEAT(SQRDMLSH_v, aa64_rdm, do_gvec_fn3_no8_no64, a, gen_gvec_sqrdmlsh_qc)
+@@ -5290,7 +5290,7 @@ TRANS(CMHS_s, do_cmop_d, a, TCG_COND_GEU)
+ TRANS(CMEQ_s, do_cmop_d, a, TCG_COND_EQ)
+ TRANS(CMTST_s, do_cmop_d, a, TCG_COND_TSTNE)
  
-+static bool do_dot_vector(DisasContext *s, arg_qrrr_e *a,
-+                          gen_helper_gvec_4 *fn)
-+{
-+    if (fp_access_check(s)) {
-+        gen_gvec_op4_ool(s, a->q, a->rd, a->rn, a->rm, a->rd, 0, fn);
-+    }
-+    return true;
-+}
-+
-+TRANS_FEAT(SDOT_v, aa64_dp, do_dot_vector, a, gen_helper_gvec_sdot_b)
-+TRANS_FEAT(UDOT_v, aa64_dp, do_dot_vector, a, gen_helper_gvec_udot_b)
-+
- /*
-  * Advanced SIMD scalar/vector x indexed element
-  */
-@@ -5914,6 +5926,18 @@ static gen_helper_gvec_4 * const f_vector_idx_sqrdmlsh[2] = {
- TRANS_FEAT(SQRDMLSH_vi, aa64_rdm, do_int3_qc_vector_idx, a,
-            f_vector_idx_sqrdmlsh)
- 
-+static bool do_dot_vector_idx(DisasContext *s, arg_qrrx_e *a,
-+                              gen_helper_gvec_4 *fn)
-+{
-+    if (fp_access_check(s)) {
-+        gen_gvec_op4_ool(s, a->q, a->rd, a->rn, a->rm, a->rd, a->idx, fn);
-+    }
-+    return true;
-+}
-+
-+TRANS_FEAT(SDOT_vi, aa64_dp, do_dot_vector_idx, a, gen_helper_gvec_sdot_idx_b)
-+TRANS_FEAT(UDOT_vi, aa64_dp, do_dot_vector_idx, a, gen_helper_gvec_udot_idx_b)
-+
- /*
-  * Advanced SIMD scalar pairwise
-  */
-@@ -10890,14 +10914,6 @@ static void disas_simd_three_reg_same_extra(DisasContext *s, uint32_t insn)
-     int rot;
- 
-     switch (u * 16 + opcode) {
--    case 0x02: /* SDOT (vector) */
--    case 0x12: /* UDOT (vector) */
--        if (size != MO_32) {
--            unallocated_encoding(s);
--            return;
--        }
--        feature = dc_isar_feature(aa64_dp, s);
--        break;
-     case 0x03: /* USDOT */
-         if (size != MO_32) {
-             unallocated_encoding(s);
-@@ -10947,8 +10963,10 @@ static void disas_simd_three_reg_same_extra(DisasContext *s, uint32_t insn)
-         }
-         break;
-     default:
-+    case 0x02: /* SDOT (vector) */
-     case 0x10: /* SQRDMLAH (vector) */
-     case 0x11: /* SQRDMLSH (vector) */
-+    case 0x12: /* UDOT (vector) */
-         unallocated_encoding(s);
-         return;
+-static bool do_fp3_vector(DisasContext *s, arg_qrrr_e *a,
++static bool do_fp3_vector(DisasContext *s, arg_qrrr_e *a, int data,
+                           gen_helper_gvec_3_ptr * const fns[3])
+ {
+     MemOp esz = a->esz;
+@@ -5313,7 +5313,7 @@ static bool do_fp3_vector(DisasContext *s, arg_qrrr_e *a,
      }
-@@ -10961,11 +10979,6 @@ static void disas_simd_three_reg_same_extra(DisasContext *s, uint32_t insn)
+     if (fp_access_check(s)) {
+         gen_gvec_op3_fpst(s, a->q, a->rd, a->rn, a->rm,
+-                          esz == MO_16, 0, fns[esz - 1]);
++                          esz == MO_16, data, fns[esz - 1]);
      }
+     return true;
+ }
+@@ -5323,168 +5323,168 @@ static gen_helper_gvec_3_ptr * const f_vector_fadd[3] = {
+     gen_helper_gvec_fadd_s,
+     gen_helper_gvec_fadd_d,
+ };
+-TRANS(FADD_v, do_fp3_vector, a, f_vector_fadd)
++TRANS(FADD_v, do_fp3_vector, a, 0, f_vector_fadd)
  
-     switch (opcode) {
--    case 0x2: /* SDOT / UDOT */
--        gen_gvec_op4_ool(s, is_q, rd, rn, rm, rd, 0,
--                         u ? gen_helper_gvec_udot_b : gen_helper_gvec_sdot_b);
--        return;
--
-     case 0x3: /* USDOT */
-         gen_gvec_op4_ool(s, is_q, rd, rn, rm, rd, 0, gen_helper_gvec_usdot_b);
-         return;
-@@ -12043,13 +12056,6 @@ static void disas_simd_indexed(DisasContext *s, uint32_t insn)
-     case 0x0b: /* SQDMULL, SQDMULL2 */
-         is_long = true;
-         break;
--    case 0x0e: /* SDOT */
--    case 0x1e: /* UDOT */
--        if (is_scalar || size != MO_32 || !dc_isar_feature(aa64_dp, s)) {
--            unallocated_encoding(s);
--            return;
--        }
--        break;
-     case 0x0f:
-         switch (size) {
-         case 0: /* SUDOT */
-@@ -12099,12 +12105,14 @@ static void disas_simd_indexed(DisasContext *s, uint32_t insn)
-     case 0x09: /* FMUL */
-     case 0x0c: /* SQDMULH */
-     case 0x0d: /* SQRDMULH */
-+    case 0x0e: /* SDOT */
-     case 0x10: /* MLA */
-     case 0x14: /* MLS */
-     case 0x18: /* FMLAL2 */
-     case 0x19: /* FMULX */
-     case 0x1c: /* FMLSL2 */
-     case 0x1d: /* SQRDMLAH */
-+    case 0x1e: /* UDOT */
-     case 0x1f: /* SQRDMLSH */
-         unallocated_encoding(s);
-         return;
-@@ -12180,12 +12188,6 @@ static void disas_simd_indexed(DisasContext *s, uint32_t insn)
-     }
+ static gen_helper_gvec_3_ptr * const f_vector_fsub[3] = {
+     gen_helper_gvec_fsub_h,
+     gen_helper_gvec_fsub_s,
+     gen_helper_gvec_fsub_d,
+ };
+-TRANS(FSUB_v, do_fp3_vector, a, f_vector_fsub)
++TRANS(FSUB_v, do_fp3_vector, a, 0, f_vector_fsub)
  
-     switch (16 * u + opcode) {
--    case 0x0e: /* SDOT */
--    case 0x1e: /* UDOT */
--        gen_gvec_op4_ool(s, is_q, rd, rn, rm, rd, index,
--                         u ? gen_helper_gvec_udot_idx_b
--                         : gen_helper_gvec_sdot_idx_b);
--        return;
-     case 0x0f:
-         switch (extract32(insn, 22, 2)) {
-         case 0: /* SUDOT */
+ static gen_helper_gvec_3_ptr * const f_vector_fdiv[3] = {
+     gen_helper_gvec_fdiv_h,
+     gen_helper_gvec_fdiv_s,
+     gen_helper_gvec_fdiv_d,
+ };
+-TRANS(FDIV_v, do_fp3_vector, a, f_vector_fdiv)
++TRANS(FDIV_v, do_fp3_vector, a, 0, f_vector_fdiv)
+ 
+ static gen_helper_gvec_3_ptr * const f_vector_fmul[3] = {
+     gen_helper_gvec_fmul_h,
+     gen_helper_gvec_fmul_s,
+     gen_helper_gvec_fmul_d,
+ };
+-TRANS(FMUL_v, do_fp3_vector, a, f_vector_fmul)
++TRANS(FMUL_v, do_fp3_vector, a, 0, f_vector_fmul)
+ 
+ static gen_helper_gvec_3_ptr * const f_vector_fmax[3] = {
+     gen_helper_gvec_fmax_h,
+     gen_helper_gvec_fmax_s,
+     gen_helper_gvec_fmax_d,
+ };
+-TRANS(FMAX_v, do_fp3_vector, a, f_vector_fmax)
++TRANS(FMAX_v, do_fp3_vector, a, 0, f_vector_fmax)
+ 
+ static gen_helper_gvec_3_ptr * const f_vector_fmin[3] = {
+     gen_helper_gvec_fmin_h,
+     gen_helper_gvec_fmin_s,
+     gen_helper_gvec_fmin_d,
+ };
+-TRANS(FMIN_v, do_fp3_vector, a, f_vector_fmin)
++TRANS(FMIN_v, do_fp3_vector, a, 0, f_vector_fmin)
+ 
+ static gen_helper_gvec_3_ptr * const f_vector_fmaxnm[3] = {
+     gen_helper_gvec_fmaxnum_h,
+     gen_helper_gvec_fmaxnum_s,
+     gen_helper_gvec_fmaxnum_d,
+ };
+-TRANS(FMAXNM_v, do_fp3_vector, a, f_vector_fmaxnm)
++TRANS(FMAXNM_v, do_fp3_vector, a, 0, f_vector_fmaxnm)
+ 
+ static gen_helper_gvec_3_ptr * const f_vector_fminnm[3] = {
+     gen_helper_gvec_fminnum_h,
+     gen_helper_gvec_fminnum_s,
+     gen_helper_gvec_fminnum_d,
+ };
+-TRANS(FMINNM_v, do_fp3_vector, a, f_vector_fminnm)
++TRANS(FMINNM_v, do_fp3_vector, a, 0, f_vector_fminnm)
+ 
+ static gen_helper_gvec_3_ptr * const f_vector_fmulx[3] = {
+     gen_helper_gvec_fmulx_h,
+     gen_helper_gvec_fmulx_s,
+     gen_helper_gvec_fmulx_d,
+ };
+-TRANS(FMULX_v, do_fp3_vector, a, f_vector_fmulx)
++TRANS(FMULX_v, do_fp3_vector, a, 0, f_vector_fmulx)
+ 
+ static gen_helper_gvec_3_ptr * const f_vector_fmla[3] = {
+     gen_helper_gvec_vfma_h,
+     gen_helper_gvec_vfma_s,
+     gen_helper_gvec_vfma_d,
+ };
+-TRANS(FMLA_v, do_fp3_vector, a, f_vector_fmla)
++TRANS(FMLA_v, do_fp3_vector, a, 0, f_vector_fmla)
+ 
+ static gen_helper_gvec_3_ptr * const f_vector_fmls[3] = {
+     gen_helper_gvec_vfms_h,
+     gen_helper_gvec_vfms_s,
+     gen_helper_gvec_vfms_d,
+ };
+-TRANS(FMLS_v, do_fp3_vector, a, f_vector_fmls)
++TRANS(FMLS_v, do_fp3_vector, a, 0, f_vector_fmls)
+ 
+ static gen_helper_gvec_3_ptr * const f_vector_fcmeq[3] = {
+     gen_helper_gvec_fceq_h,
+     gen_helper_gvec_fceq_s,
+     gen_helper_gvec_fceq_d,
+ };
+-TRANS(FCMEQ_v, do_fp3_vector, a, f_vector_fcmeq)
++TRANS(FCMEQ_v, do_fp3_vector, a, 0, f_vector_fcmeq)
+ 
+ static gen_helper_gvec_3_ptr * const f_vector_fcmge[3] = {
+     gen_helper_gvec_fcge_h,
+     gen_helper_gvec_fcge_s,
+     gen_helper_gvec_fcge_d,
+ };
+-TRANS(FCMGE_v, do_fp3_vector, a, f_vector_fcmge)
++TRANS(FCMGE_v, do_fp3_vector, a, 0, f_vector_fcmge)
+ 
+ static gen_helper_gvec_3_ptr * const f_vector_fcmgt[3] = {
+     gen_helper_gvec_fcgt_h,
+     gen_helper_gvec_fcgt_s,
+     gen_helper_gvec_fcgt_d,
+ };
+-TRANS(FCMGT_v, do_fp3_vector, a, f_vector_fcmgt)
++TRANS(FCMGT_v, do_fp3_vector, a, 0, f_vector_fcmgt)
+ 
+ static gen_helper_gvec_3_ptr * const f_vector_facge[3] = {
+     gen_helper_gvec_facge_h,
+     gen_helper_gvec_facge_s,
+     gen_helper_gvec_facge_d,
+ };
+-TRANS(FACGE_v, do_fp3_vector, a, f_vector_facge)
++TRANS(FACGE_v, do_fp3_vector, a, 0, f_vector_facge)
+ 
+ static gen_helper_gvec_3_ptr * const f_vector_facgt[3] = {
+     gen_helper_gvec_facgt_h,
+     gen_helper_gvec_facgt_s,
+     gen_helper_gvec_facgt_d,
+ };
+-TRANS(FACGT_v, do_fp3_vector, a, f_vector_facgt)
++TRANS(FACGT_v, do_fp3_vector, a, 0, f_vector_facgt)
+ 
+ static gen_helper_gvec_3_ptr * const f_vector_fabd[3] = {
+     gen_helper_gvec_fabd_h,
+     gen_helper_gvec_fabd_s,
+     gen_helper_gvec_fabd_d,
+ };
+-TRANS(FABD_v, do_fp3_vector, a, f_vector_fabd)
++TRANS(FABD_v, do_fp3_vector, a, 0, f_vector_fabd)
+ 
+ static gen_helper_gvec_3_ptr * const f_vector_frecps[3] = {
+     gen_helper_gvec_recps_h,
+     gen_helper_gvec_recps_s,
+     gen_helper_gvec_recps_d,
+ };
+-TRANS(FRECPS_v, do_fp3_vector, a, f_vector_frecps)
++TRANS(FRECPS_v, do_fp3_vector, a, 0, f_vector_frecps)
+ 
+ static gen_helper_gvec_3_ptr * const f_vector_frsqrts[3] = {
+     gen_helper_gvec_rsqrts_h,
+     gen_helper_gvec_rsqrts_s,
+     gen_helper_gvec_rsqrts_d,
+ };
+-TRANS(FRSQRTS_v, do_fp3_vector, a, f_vector_frsqrts)
++TRANS(FRSQRTS_v, do_fp3_vector, a, 0, f_vector_frsqrts)
+ 
+ static gen_helper_gvec_3_ptr * const f_vector_faddp[3] = {
+     gen_helper_gvec_faddp_h,
+     gen_helper_gvec_faddp_s,
+     gen_helper_gvec_faddp_d,
+ };
+-TRANS(FADDP_v, do_fp3_vector, a, f_vector_faddp)
++TRANS(FADDP_v, do_fp3_vector, a, 0, f_vector_faddp)
+ 
+ static gen_helper_gvec_3_ptr * const f_vector_fmaxp[3] = {
+     gen_helper_gvec_fmaxp_h,
+     gen_helper_gvec_fmaxp_s,
+     gen_helper_gvec_fmaxp_d,
+ };
+-TRANS(FMAXP_v, do_fp3_vector, a, f_vector_fmaxp)
++TRANS(FMAXP_v, do_fp3_vector, a, 0, f_vector_fmaxp)
+ 
+ static gen_helper_gvec_3_ptr * const f_vector_fminp[3] = {
+     gen_helper_gvec_fminp_h,
+     gen_helper_gvec_fminp_s,
+     gen_helper_gvec_fminp_d,
+ };
+-TRANS(FMINP_v, do_fp3_vector, a, f_vector_fminp)
++TRANS(FMINP_v, do_fp3_vector, a, 0, f_vector_fminp)
+ 
+ static gen_helper_gvec_3_ptr * const f_vector_fmaxnmp[3] = {
+     gen_helper_gvec_fmaxnump_h,
+     gen_helper_gvec_fmaxnump_s,
+     gen_helper_gvec_fmaxnump_d,
+ };
+-TRANS(FMAXNMP_v, do_fp3_vector, a, f_vector_fmaxnmp)
++TRANS(FMAXNMP_v, do_fp3_vector, a, 0, f_vector_fmaxnmp)
+ 
+ static gen_helper_gvec_3_ptr * const f_vector_fminnmp[3] = {
+     gen_helper_gvec_fminnump_h,
+     gen_helper_gvec_fminnump_s,
+     gen_helper_gvec_fminnump_d,
+ };
+-TRANS(FMINNMP_v, do_fp3_vector, a, f_vector_fminnmp)
++TRANS(FMINNMP_v, do_fp3_vector, a, 0, f_vector_fminnmp)
+ 
+ static bool do_fmlal(DisasContext *s, arg_qrrr_e *a, bool is_s, bool is_2)
+ {
 -- 
 2.34.1
 
