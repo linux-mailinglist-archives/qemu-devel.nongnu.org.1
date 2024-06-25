@@ -2,80 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17F069170C9
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jun 2024 21:01:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC180917144
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jun 2024 21:51:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sMBBc-00022Z-8V; Tue, 25 Jun 2024 14:46:49 -0400
+	id 1sMC0g-00008T-El; Tue, 25 Jun 2024 15:39:40 -0400
 Received: from [209.51.188.92] (helo=eggs.gnu.org)
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sMB4Q-0000yt-PG
- for qemu-devel@nongnu.org; Tue, 25 Jun 2024 14:39:24 -0400
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ id 1sMByk-0008LY-HE
+ for qemu-devel@nongnu.org; Tue, 25 Jun 2024 15:37:34 -0400
+Received: from [2607:f8b0:4864:20::732] (helo=mail-qk1-x732.google.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sMB3F-00065t-QQ
- for qemu-devel@nongnu.org; Tue, 25 Jun 2024 14:38:55 -0400
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-1f9ffd24262so29413655ad.0
- for <qemu-devel@nongnu.org>; Tue, 25 Jun 2024 11:35:58 -0700 (PDT)
+ id 1sMBxX-0004tL-Tm
+ for qemu-devel@nongnu.org; Tue, 25 Jun 2024 15:37:03 -0400
+Received: by mail-qk1-x732.google.com with SMTP id
+ af79cd13be357-79c06169e9cso62234785a.3
+ for <qemu-devel@nongnu.org>; Tue, 25 Jun 2024 12:34:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719340539; x=1719945339; darn=nongnu.org;
+ d=linaro.org; s=google; t=1719344067; x=1719948867; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=1U9RNUfZ6ytehLhNDsOYxOlk3M9sl8ak/3adIT4lPPs=;
- b=FSaVAbvsbH86ywlHsxkot+XmbgYj06jzfUDfEK9meXlb42S7xGIySdDS1kLfUuqwZR
- jy19RRYe6ed5Y9FBg25wKhrqEEwllkWLhYq3RBCRi821zhodOdUWGprRyo8woQUHKOAG
- RCbQEjEhv0UE4qVKuk8gAwmfS9r3qS/7vw7QcxXrJysWN8fPHjXfINc/Eabva/H+tumC
- m1Ms+oxsaTLHV2FCX8pkzF4T/2SNSij3gdtWO1LhEfd1rm4TYRZ3PHiH+oLynHEfU9JC
- /MS8Jh0c6iYLcc/sfXDYiBEXtAGUozSgvb2loJqYb1VX76W3H0h6f/vn5N1urTSwCDSG
- ds5g==
+ bh=SkIsJKtZUJAkO/lpIvhYyVEDLS6NoChogP/TAxQnzSI=;
+ b=SxSuKEZwRMXu2kbEvW26ggPvNXdMFcRCq7CuSriR1Abw4y/jNJ7p8Ze/Z3fFZrFpcp
+ iwfWt1nOtZbvkTJ+szvaHiEvel0Erypweiy9U+HnIgfjSL/Kw3pxCa1WtHOvR5wtd/a3
+ 2dS03xOmapIjOB6Sov6txjp+SWfSzlxFA5hBOUF/9K3h4wHMmTY2BxVbx9uChemit4Yt
+ MQht/wT2KmPCcrTTkKx7mcWlhXhTJl8RCy9BnCouEBlPtf7lrxi2Vd1lv11c87jz88bV
+ UvS/d7EUFjmFONla3yNHhEZo84aRZnIuGzIIQ6FmA3ZHPZOOmSXlrwAD2f8MOLlkol8k
+ YMUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719340539; x=1719945339;
+ d=1e100.net; s=20230601; t=1719344067; x=1719948867;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=1U9RNUfZ6ytehLhNDsOYxOlk3M9sl8ak/3adIT4lPPs=;
- b=Ln7KixviXPsP0Uy7yeENaSj/9qx0di/Nsl7LMq5FBrAYCkXvRcALkNFZQjIUE9VSmr
- IoZEbJeJm8RtmaycQykUI0znMOzqGtE0Mwlnhagc6BfRvU1R8O2oIuwvTsCGnO0pT2ZP
- BV0mlwLSJLPeFl/cke39jz/+zuuTdu67wv3S8JtNMMepu1CeYp0p5m0mAQsbb7ktLtmB
- okgSQZuJq7Hhv4vbwLlhf17VvY0LJkWRhk5QAaLTv7777Axc57k0N2ftiJBBVrMgjCR2
- T+2hy8e+eZmtrEJchDzayfW3dBix7Vj4lHj7SKBO/zSS0jwxzMNF5v+06/r3O4ge7SxL
- zb8g==
-X-Gm-Message-State: AOJu0Yy/xYjF0kgaOKwi6+SS9yS4yd69zblIGHI/bwaqkYSc5klvoQ2R
- rW1UdCSeEL87njb7/zuhgcTciGt6M8lq43sjRm1y00LIvQghCXGjJJiSzGoW7F1sDHQkSsF9L+J
- 1
-X-Google-Smtp-Source: AGHT+IGNyBXQLDqgE9brreM9lqFudZ5fw73YuRvu2DhUPtADq8ONoT+8VGzcWT5VvgrG6vkOuX8tdQ==
-X-Received: by 2002:a17:903:22c3:b0:1f9:df92:d67a with SMTP id
- d9443c01a7336-1fa23f9e4aemr97804585ad.23.1719340538680; 
- Tue, 25 Jun 2024 11:35:38 -0700 (PDT)
+ bh=SkIsJKtZUJAkO/lpIvhYyVEDLS6NoChogP/TAxQnzSI=;
+ b=DCUol/iK+/H68pRMpWG8dvMjgCs5V03jUuvm0jZy9z1+GbA5mmrxut2d3D/ZtG1gLp
+ frXLYxylogzxK80likp0wVKjq60WfmEF+pkOicsvj6wI7KgTOaQ1XVDlrjV4RyObUfwm
+ QxEK9JMSGn+rjmT4ZsY4WTNqbmWJsC1Xm8r6HZqBnHoHeGF20WKsIQu7mcHOwKk6g1mZ
+ eBVyGITeOvLlw6ESOEKYPzIYDOo0eOXBc6OOCIsHRMUm/36GKFKCOc6QjMAMW6efeEr3
+ PStzU0tNth9Kmbu9/E6kp/2rZexE1Zhbvg6wLXbpJRVMbccKAwV9fK2QdWArKTttlRUW
+ UduA==
+X-Gm-Message-State: AOJu0YzsMaB8r84hgS9pUv8A6pm4vMN5V1shGvKHl4Jl6yVEhNiHAY8b
+ lGEcs5OcnHf28nCmQJRBOcvFt5VSnGTCbGjwcL4ulACRLat/6/z9gCLUnIl5mAe659mDpj/RMv4
+ j
+X-Google-Smtp-Source: AGHT+IG8cDeIeGAqVeoAwVRJanfKxbGCJH+qaOB7AgBHfa/WfcALNcSgLJ/6CwYprQsIuweEFaMJXw==
+X-Received: by 2002:a17:902:c40e:b0:1fa:2568:5895 with SMTP id
+ d9443c01a7336-1fa256858femr93716095ad.63.1719340540561; 
+ Tue, 25 Jun 2024 11:35:40 -0700 (PDT)
 Received: from stoup.. (174-21-76-141.tukw.qwest.net. [174.21.76.141])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1f9eb3c6027sm84693235ad.133.2024.06.25.11.35.38
+ d9443c01a7336-1f9eb3c6027sm84693235ad.133.2024.06.25.11.35.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 25 Jun 2024 11:35:38 -0700 (PDT)
+ Tue, 25 Jun 2024 11:35:40 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, qemu-stable@nongnu.org,
  Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH v2 01/13] target/arm: Fix VCMLA Dd, Dn, Dm[idx]
-Date: Tue, 25 Jun 2024 11:35:24 -0700
-Message-Id: <20240625183536.1672454-2-richard.henderson@linaro.org>
+Subject: [PATCH v2 03/13] target/arm: Fix FJCVTZS vs flush-to-zero
+Date: Tue, 25 Jun 2024 11:35:26 -0700
+Message-Id: <20240625183536.1672454-4-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240625183536.1672454-1-richard.henderson@linaro.org>
 References: <20240625183536.1672454-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x635.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, SPF_HELO_NONE=0.001,
+X-Host-Lookup-Failed: Reverse DNS lookup failed for 2607:f8b0:4864:20::732
+ (deferred)
+Received-SPF: pass client-ip=2607:f8b0:4864:20::732;
+ envelope-from=richard.henderson@linaro.org; helo=mail-qk1-x732.google.com
+X-Spam_score_int: -8
+X-Spam_score: -0.9
+X-Spam_bar: /
+X-Spam_report: (-0.9 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, PDS_HP_HELO_NORDNS=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
  T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -92,40 +95,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The inner loop, bounded by eltspersegment, must not be
-larger than the outer loop, bounded by elements.
+Input denormals cause the Javascript inexact bit
+(output to Z) to be set.
 
 Cc: qemu-stable@nongnu.org
-Fixes: 18fc2405781 ("target/arm: Implement SVE fp complex multiply add (indexed)")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2376
+Fixes: 6c1f6f2733a ("target/arm: Implement ARMv8.3-JSConv")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2375
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/vec_helper.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ target/arm/vfp_helper.c           | 18 +++++++++---------
+ tests/tcg/aarch64/test-2375.c     | 21 +++++++++++++++++++++
+ tests/tcg/aarch64/Makefile.target |  3 ++-
+ 3 files changed, 32 insertions(+), 10 deletions(-)
+ create mode 100644 tests/tcg/aarch64/test-2375.c
 
-diff --git a/target/arm/tcg/vec_helper.c b/target/arm/tcg/vec_helper.c
-index b05922b425..7b34cc98af 100644
---- a/target/arm/tcg/vec_helper.c
-+++ b/target/arm/tcg/vec_helper.c
-@@ -907,7 +907,7 @@ void HELPER(gvec_fcmlah_idx)(void *vd, void *vn, void *vm, void *va,
-     intptr_t index = extract32(desc, SIMD_DATA_SHIFT + 2, 2);
-     uint32_t neg_real = flip ^ neg_imag;
-     intptr_t elements = opr_sz / sizeof(float16);
--    intptr_t eltspersegment = 16 / sizeof(float16);
-+    intptr_t eltspersegment = MIN(16 / sizeof(float16), elements);
-     intptr_t i, j;
+diff --git a/target/arm/vfp_helper.c b/target/arm/vfp_helper.c
+index ce26b8a71a..50d7042fa9 100644
+--- a/target/arm/vfp_helper.c
++++ b/target/arm/vfp_helper.c
+@@ -1091,8 +1091,8 @@ const FloatRoundMode arm_rmode_to_sf_map[] = {
+ uint64_t HELPER(fjcvtzs)(float64 value, void *vstatus)
+ {
+     float_status *status = vstatus;
+-    uint32_t inexact, frac;
+-    uint32_t e_old, e_new;
++    uint32_t frac, e_old, e_new;
++    bool inexact;
  
-     /* Shift boolean to the sign bit so we can xor to negate.  */
-@@ -969,7 +969,7 @@ void HELPER(gvec_fcmlas_idx)(void *vd, void *vn, void *vm, void *va,
-     intptr_t index = extract32(desc, SIMD_DATA_SHIFT + 2, 2);
-     uint32_t neg_real = flip ^ neg_imag;
-     intptr_t elements = opr_sz / sizeof(float32);
--    intptr_t eltspersegment = 16 / sizeof(float32);
-+    intptr_t eltspersegment = MIN(16 / sizeof(float32), elements);
-     intptr_t i, j;
+     e_old = get_float_exception_flags(status);
+     set_float_exception_flags(0, status);
+@@ -1100,13 +1100,13 @@ uint64_t HELPER(fjcvtzs)(float64 value, void *vstatus)
+     e_new = get_float_exception_flags(status);
+     set_float_exception_flags(e_old | e_new, status);
  
-     /* Shift boolean to the sign bit so we can xor to negate.  */
+-    if (value == float64_chs(float64_zero)) {
+-        /* While not inexact for IEEE FP, -0.0 is inexact for JavaScript. */
+-        inexact = 1;
+-    } else {
+-        /* Normal inexact or overflow or NaN */
+-        inexact = e_new & (float_flag_inexact | float_flag_invalid);
+-    }
++    /* Normal inexact, denormal with flush-to-zero, or overflow or NaN */
++    inexact = e_new & (float_flag_inexact |
++                       float_flag_input_denormal |
++                       float_flag_invalid);
++
++    /* While not inexact for IEEE FP, -0.0 is inexact for JavaScript. */
++    inexact |= value == float64_chs(float64_zero);
+ 
+     /* Pack the result and the env->ZF representation of Z together.  */
+     return deposit64(frac, 32, 32, inexact);
+diff --git a/tests/tcg/aarch64/test-2375.c b/tests/tcg/aarch64/test-2375.c
+new file mode 100644
+index 0000000000..163eba422b
+--- /dev/null
++++ b/tests/tcg/aarch64/test-2375.c
+@@ -0,0 +1,21 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++/* Copyright (c) 2024 Linaro Ltd */
++/* See https://gitlab.com/qemu-project/qemu/-/issues/2375 */
++
++#include <assert.h>
++
++int main(void)
++{
++   int r, z;
++
++   asm("msr fpcr, %2\n\t"
++       "fjcvtzs %w0, %d3\n\t"
++       "cset %1, eq"
++       : "=r"(r), "=r"(z)
++       : "r"(0x01000000L),	/* FZ = 1 */
++         "w"(0xfcff00L));       /* denormal */
++
++    assert(r == 0);
++    assert(z == 0);
++    return 0;
++}
+diff --git a/tests/tcg/aarch64/Makefile.target b/tests/tcg/aarch64/Makefile.target
+index 70d728ae9a..4ecbca6a41 100644
+--- a/tests/tcg/aarch64/Makefile.target
++++ b/tests/tcg/aarch64/Makefile.target
+@@ -41,8 +41,9 @@ endif
+ 
+ # Pauth Tests
+ ifneq ($(CROSS_CC_HAS_ARMV8_3),)
+-AARCH64_TESTS += pauth-1 pauth-2 pauth-4 pauth-5
++AARCH64_TESTS += pauth-1 pauth-2 pauth-4 pauth-5 test-2375
+ pauth-%: CFLAGS += -march=armv8.3-a
++test-2375: CFLAGS += -march=armv8.3-a
+ run-pauth-1: QEMU_OPTS += -cpu max
+ run-pauth-2: QEMU_OPTS += -cpu max
+ # Choose a cpu with FEAT_Pauth but without FEAT_FPAC for pauth-[45].
 -- 
 2.34.1
 
