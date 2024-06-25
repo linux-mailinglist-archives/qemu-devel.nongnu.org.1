@@ -2,80 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F8009172A8
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jun 2024 22:47:42 +0200 (CEST)
-Received: from localhost ([::1] helo=lists1p.gnu.org)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CF1B917262
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jun 2024 22:19:05 +0200 (CEST)
+Received: from [::1] (helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sMBHr-0003yj-EO; Tue, 25 Jun 2024 14:53:11 -0400
-Received: from eggs.gnu.org ([2001:470:142:3::10])
+	id 1sMCRE-0007Sz-03; Tue, 25 Jun 2024 16:07:01 -0400
+Received: from [2001:470:142:3::10] (helo=eggs.gnu.org)
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sMB5B-00019M-P0
- for qemu-devel@nongnu.org; Tue, 25 Jun 2024 14:40:09 -0400
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ (Exim 4.90_1) (envelope-from <lists@philjordan.eu>)
+ id 1sMCOZ-0007L0-AK
+ for qemu-devel@nongnu.org; Tue, 25 Jun 2024 16:04:11 -0400
+Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sMB3d-00067T-MT
- for qemu-devel@nongnu.org; Tue, 25 Jun 2024 14:39:45 -0400
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-1f9de13d6baso40991565ad.2
- for <qemu-devel@nongnu.org>; Tue, 25 Jun 2024 11:36:14 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <lists@philjordan.eu>)
+ id 1sMCNx-0008OU-11
+ for qemu-devel@nongnu.org; Tue, 25 Jun 2024 16:03:51 -0400
+Received: by mail-lf1-x12b.google.com with SMTP id
+ 2adb3069b0e04-52ce01403f6so3232795e87.0
+ for <qemu-devel@nongnu.org>; Tue, 25 Jun 2024 13:02:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719340550; x=1719945350; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1719345733; x=1719950533;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=PecZkInRMvU6dxX9NAjaqUD1RvRTPZR33lK52/GwzZA=;
- b=SvdAjfFZtIbKTxqJtVXM3wglGZPuDT1qt/9pjckoktNRO8XOdBlwZvf/qRa/bGLOgM
- 3J1zn3e5ogTgLJcLymcooFC3b3Q8CDYRFNb5m+GFesT1KtRfwJqRrBwe5Gq/Kbx/dlNZ
- P/dA/o4GYGJlS+vxoCTSoSYb3jULMt5DxpPgjW31pL0/hqcHOu2L27KMZWSg2IIiqYPf
- is3/eneAzAPscYdo4+zjHe6jv6+zpnlGc9G5Mua+YnkmTTO1Dm2QFtMERaYTyRjt7SxJ
- 9lX7U3kttYXWHwCk/u94PQayH39+Qt0+4QrWirAdjrPzQvudAzXMo/7wX8+xQ3q3zQ50
- fnfA==
+ bh=pfa98Hhz/3a1N0c51sLjNCU13nfIteWFcsfvMzWwTAs=;
+ b=JSRo74w0IUMIoOdPYvyehoIBCbv2jFeiJD0bdU7GsBDuvkkzOkPe6OLJ/fjdZh/8GH
+ ECKYtwtFRoi7YskwwJ2R+C/a/+W4BMGoMRshHCFq04q0oPmoO2kF4ii3rzAjsgsExZST
+ HP7nkNr2ZXlbYqAkjfNgAdb2To8M0wn7czmf1w5v9ddu631V1N3/i2g8cXfNp3RBhECi
+ baeUjsj0gAmnLefYKsalxzxdTjGBKdrUvujNGyLiIOdKXdn9fJdL6p2N8RDH1ZamKMZX
+ 1vGXH+2PWiDwbHS3w/H2ZIoAGJYSFGy2lvQcp8eVVKFiH88XV4vrHU3NNu5YDQ+1k2HI
+ uCcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719340550; x=1719945350;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1719345733; x=1719950533;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=PecZkInRMvU6dxX9NAjaqUD1RvRTPZR33lK52/GwzZA=;
- b=edyRha0hYCHqbB7os2vDdCl5Iqm1LPCKQqan3CtKQqViFQfWSA9/9MVRHHArp81mU6
- EG6WkJd9L9WT+PNW6Ggx97DVzzefp+2KFd/gL8fV+pCWmfAdhYZjdFap+LxJH8Z33t0w
- PoSv9fLsKDM2nMAsDxl+jurRKrVfL/i20wIOAVZw7jU8IX1Lat+5H4iA2h5udDfzMPjs
- f31IHe0mOaidRBWz9cA+nI10kzBmdPi0dGy/xr3CixT7SQhxAKlRZyJpaZF94K7jElS6
- LRgfC45JDYimDKC+bUAEfNmO9jaIxbjxUJ9sY2Rw/4XRbmDYgg6BcEjZNY8kxJFGqYLh
- TYYw==
-X-Gm-Message-State: AOJu0YyJtV4CJpYpw65HsfFzxilDcW0NUc94Kus4ts67B/GemiUxFJPt
- xPOyd4bNMQp+D5rfeHYGnYV56Hzn35l/MkEWkjDvSMByhCQbJYEDvWLiNGRT/aT4UPJbb+w6oxD
- I
-X-Google-Smtp-Source: AGHT+IHkxUor8eUO37ZgszVYd3+UVvBM5JR18FeOUzLjJD7JkggjEkzFPDMMYUSUwKXbeRxCptgBUg==
-X-Received: by 2002:a17:902:ea03:b0:1f9:c1f0:7150 with SMTP id
- d9443c01a7336-1fa23f224a5mr85343315ad.8.1719340549928; 
- Tue, 25 Jun 2024 11:35:49 -0700 (PDT)
-Received: from stoup.. (174-21-76-141.tukw.qwest.net. [174.21.76.141])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1f9eb3c6027sm84693235ad.133.2024.06.25.11.35.49
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 25 Jun 2024 11:35:49 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org
-Subject: [PATCH v2 13/13] target/arm: Delete dead code from disas_simd_indexed
-Date: Tue, 25 Jun 2024 11:35:36 -0700
-Message-Id: <20240625183536.1672454-14-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240625183536.1672454-1-richard.henderson@linaro.org>
-References: <20240625183536.1672454-1-richard.henderson@linaro.org>
+ bh=pfa98Hhz/3a1N0c51sLjNCU13nfIteWFcsfvMzWwTAs=;
+ b=Zxj+2nHn49HGrpDalPnko1NVec6jq++vYpbddI0aTdDgFUbESmQAZwHVwF3r7wB9xJ
+ tBRXk8wRECH8S+L/fRT3SCS6rOcdpV0ElvlvbHzsti/llsLsIeuLG4CMNXgg3pU/bz8n
+ KFPYQkdVQF/v+GCirGQwEPQJZU0VShFSJDOS0PnP06VkStb9e43KvjmE1wFZHdNfrlFZ
+ MslkU+0GtcAop2HXQFPiugn3/3XXmK1k6ERvvjtBxhU2cAW4We+ngD8eI37BHIIRo7aF
+ dx7pFs8zRoF7eGbKJ2X/egozDQe+Pj9wBYHD/GXTa1jWYrK+G3y7RI9hLb337e9DmjY4
+ 0r5w==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXebxCjPmETvNl7TKmMqgmhfy3XWtJl7E6uhFxlUXYnjBxOGuqV1XIOKhRBrJWpke5wL7YDt2Bhbap97igSD5TuyQdxFxY=
+X-Gm-Message-State: AOJu0YyvnqGu8HE6yT9t6WkrJGRw5nVemupvhqx+9vhJhGxN/r2/wHkB
+ VVhtKdIOE5yBcKZFkc9mk4XZbWirW+n7V6bczZELRaNmfmlMAUc9WmHKPnDjFm3EhQNNieIIIwi
+ WhCV/6SekLvmkKDREu0Q62WC70duU3BE3Xz59eiCH98J0975A9SlR
+X-Google-Smtp-Source: AGHT+IHksRExRFpSVNc+FAU1wAgUppMXLoVrUBPwA9iObRsLtPKT6HOKxfAyw1lejlazqTUPLetXdU1V4I0AVqnTFCI=
+X-Received: by 2002:a2e:3009:0:b0:2ec:5ff1:227a with SMTP id
+ 38308e7fff4ca-2ec5ff12384mr44011751fa.17.1719341879605; Tue, 25 Jun 2024
+ 11:57:59 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62f.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
+References: <20240608202045.2815-1-phil@philjordan.eu>
+ <20240608202045.2815-4-phil@philjordan.eu>
+ <dd047370-f0ed-4b8c-a251-037e82f64986@daynix.com>
+ <CAAibmn2-JApae_MFX+Wy8MuzkCLuE7DbgmgVOko3f7WzZGoozQ@mail.gmail.com>
+ <f8020f9b-45de-4dca-a35d-b26fe91f8962@daynix.com>
+In-Reply-To: <f8020f9b-45de-4dca-a35d-b26fe91f8962@daynix.com>
+From: Phil Dennis-Jordan <lists@philjordan.eu>
+Date: Tue, 25 Jun 2024 20:57:48 +0200
+Message-ID: <CAGCz3vvg9An5DVt=DKbkoBM=qb_wJRnJuw+svvi+rq4G=JShZQ@mail.gmail.com>
+Subject: Re: [PATCH 3/3] ui/cocoa: Adds support for mouse cursors
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: Phil Dennis-Jordan <phil@philjordan.eu>, qemu-devel@nongnu.org,
+ peter.maydell@linaro.org, philmd@linaro.org, marcandre.lureau@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: neutral client-ip=2a00:1450:4864:20::12b;
+ envelope-from=lists@philjordan.eu; helo=mail-lf1-x12b.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, T_SPF_HELO_TEMPERROR=0.01,
- T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, T_SPF_HELO_TEMPERROR=0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,137 +94,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-MLA, MLS, SQDMULH, SQRDMULH, were converted with 8db93dcd3def
-and f80701cb44d, and this code should have been removed then.
+On Tue, 11 Jun 2024 at 09:36, Akihiko Odaki <akihiko.odaki@daynix.com> wrot=
+e:
+> > [=E2=80=A6] I also
+> > definitely think host cursor integration is useful and valuable, at
+> > least in absolute pointing mode - for example, when the host system is
+> > itself being remote controlled, and also to avoid the cursor being
+> > cropped near the edges of the guest viewport.
+>
+> Can you elaborate more about the remote control scenario? I don't think
+> having extra code just to fix cropped cursor is not worthwhile (I even
+> feel a bit awkward to make the cursor overflow.)
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- target/arm/tcg/translate-a64.c | 93 ----------------------------------
- 1 file changed, 93 deletions(-)
+If you're remote-controlling the host Mac, many VNC/RDP/whatever
+clients will use a local cursor and simply request cursor image
+updates from the server and apply them to the local native cursor.
+That way, there's no lag when moving the cursor even on slower
+connections, which you'd otherwise get if you had to wait for the
+regular screen image update, and which can make precise positioning
+difficult.
 
-diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 161fa2659c..6c07aeaf3b 100644
---- a/target/arm/tcg/translate-a64.c
-+++ b/target/arm/tcg/translate-a64.c
-@@ -11976,7 +11976,6 @@ static void disas_simd_indexed(DisasContext *s, uint32_t insn)
-     int h = extract32(insn, 11, 1);
-     int rn = extract32(insn, 5, 5);
-     int rd = extract32(insn, 0, 5);
--    bool is_long = false;
-     int index;
- 
-     switch (16 * u + opcode) {
-@@ -11990,12 +11989,10 @@ static void disas_simd_indexed(DisasContext *s, uint32_t insn)
-             unallocated_encoding(s);
-             return;
-         }
--        is_long = true;
-         break;
-     case 0x03: /* SQDMLAL, SQDMLAL2 */
-     case 0x07: /* SQDMLSL, SQDMLSL2 */
-     case 0x0b: /* SQDMULL, SQDMULL2 */
--        is_long = true;
-         break;
-     default:
-     case 0x00: /* FMLAL */
-@@ -12047,96 +12044,6 @@ static void disas_simd_indexed(DisasContext *s, uint32_t insn)
- 
-     if (size == 3) {
-         g_assert_not_reached();
--    } else if (!is_long) {
--        /* 32 bit floating point, or 16 or 32 bit integer.
--         * For the 16 bit scalar case we use the usual Neon helpers and
--         * rely on the fact that 0 op 0 == 0 with no side effects.
--         */
--        TCGv_i32 tcg_idx = tcg_temp_new_i32();
--        int pass, maxpasses;
--
--        if (is_scalar) {
--            maxpasses = 1;
--        } else {
--            maxpasses = is_q ? 4 : 2;
--        }
--
--        read_vec_element_i32(s, tcg_idx, rm, index, size);
--
--        if (size == 1 && !is_scalar) {
--            /* The simplest way to handle the 16x16 indexed ops is to duplicate
--             * the index into both halves of the 32 bit tcg_idx and then use
--             * the usual Neon helpers.
--             */
--            tcg_gen_deposit_i32(tcg_idx, tcg_idx, tcg_idx, 16, 16);
--        }
--
--        for (pass = 0; pass < maxpasses; pass++) {
--            TCGv_i32 tcg_op = tcg_temp_new_i32();
--            TCGv_i32 tcg_res = tcg_temp_new_i32();
--
--            read_vec_element_i32(s, tcg_op, rn, pass, is_scalar ? size : MO_32);
--
--            switch (16 * u + opcode) {
--            case 0x10: /* MLA */
--            case 0x14: /* MLS */
--            {
--                static NeonGenTwoOpFn * const fns[2][2] = {
--                    { gen_helper_neon_add_u16, gen_helper_neon_sub_u16 },
--                    { tcg_gen_add_i32, tcg_gen_sub_i32 },
--                };
--                NeonGenTwoOpFn *genfn;
--                bool is_sub = opcode == 0x4;
--
--                if (size == 1) {
--                    gen_helper_neon_mul_u16(tcg_res, tcg_op, tcg_idx);
--                } else {
--                    tcg_gen_mul_i32(tcg_res, tcg_op, tcg_idx);
--                }
--                if (opcode == 0x8) {
--                    break;
--                }
--                read_vec_element_i32(s, tcg_op, rd, pass, MO_32);
--                genfn = fns[size - 1][is_sub];
--                genfn(tcg_res, tcg_op, tcg_res);
--                break;
--            }
--            case 0x0c: /* SQDMULH */
--                if (size == 1) {
--                    gen_helper_neon_qdmulh_s16(tcg_res, tcg_env,
--                                               tcg_op, tcg_idx);
--                } else {
--                    gen_helper_neon_qdmulh_s32(tcg_res, tcg_env,
--                                               tcg_op, tcg_idx);
--                }
--                break;
--            case 0x0d: /* SQRDMULH */
--                if (size == 1) {
--                    gen_helper_neon_qrdmulh_s16(tcg_res, tcg_env,
--                                                tcg_op, tcg_idx);
--                } else {
--                    gen_helper_neon_qrdmulh_s32(tcg_res, tcg_env,
--                                                tcg_op, tcg_idx);
--                }
--                break;
--            default:
--            case 0x01: /* FMLA */
--            case 0x05: /* FMLS */
--            case 0x09: /* FMUL */
--            case 0x19: /* FMULX */
--            case 0x1d: /* SQRDMLAH */
--            case 0x1f: /* SQRDMLSH */
--                g_assert_not_reached();
--            }
--
--            if (is_scalar) {
--                write_fp_sreg(s, rd, tcg_res);
--            } else {
--                write_vec_element_i32(s, tcg_res, rd, pass, MO_32);
--            }
--        }
--
--        clear_vec_high(s, is_q, rd);
-     } else {
-         /* long ops: 16x16->32 or 32x32->64 */
-         TCGv_i64 tcg_res[2];
--- 
-2.34.1
+At any rate, most other Qemu UI frontends likewise implement guest
+cursors by setting the guest-supplied cursor image on the host's
+native windowing system's cursor, e.g. gdk_window_set_cursor(). I
+don't really see a good reason why macOS should be different? Qemu
+would also hardly be the first VMM on the Mac to pass guest pointers
+through as NSPointers - Parallels Desktop appears to do the same, for
+example.
 
+> You can add Based-on: to the cover letter to clarify the dependency, and
+> add "RFC" to the subject if the code is not ready to pull. Please look
+> at docs/devel/submitting-a-patch.rst for more info.
+
+I've done that now, thanks.
+https://patchew.org/QEMU/20240625134931.92279-1-phil@philjordan.eu/
+
+Phil
 
