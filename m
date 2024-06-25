@@ -2,72 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5744A91697B
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jun 2024 15:53:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A0769169D8
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jun 2024 16:08:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sM6bx-0000g2-PL; Tue, 25 Jun 2024 09:53:29 -0400
+	id 1sM6p2-0005D1-UM; Tue, 25 Jun 2024 10:07:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sM6bv-0000fn-Sg
- for qemu-devel@nongnu.org; Tue, 25 Jun 2024 09:53:27 -0400
-Received: from mgamail.intel.com ([198.175.65.15])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sM6bs-00085b-Mo
- for qemu-devel@nongnu.org; Tue, 25 Jun 2024 09:53:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1719323605; x=1750859605;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=VDqj8FLLXt2GlyHOeiwwgvCcHIxT7PLjCZ1Sav3JPg4=;
- b=ACOlRgsdXmeJ/JP9b3X6ZZyykynpWxFZroQVGEAgFz19CfUu3f8N7vgC
- XCGff00fQF++4oRUpkS1rqeC3aaFH4DPjiPUTAml6bjSbQz+IZf6PiDJ0
- ojL/7sqH4pMHCbnBKE3d5vNh8aOfYGxYPusi/hQl5IQuZTZgvu9yvgYhF
- 10qJMslDsNLZep2r8IxNTr1Br5scNtqiMyEPoH0kI1k1pPkJN4HouDglN
- 4fr0QT9+hMp9lW55lNXNZ/1F7ejjGBZgwZU2KqwbavGCxx2015tK7+9DQ
- 6v06zY87MH0wORlh14paCM4v+NiaxtiMOnXyJfdwpz2ArEvfs66J9NQZC g==;
-X-CSE-ConnectionGUID: PU10bj/mQDqTENPDpUPnNw==
-X-CSE-MsgGUID: N+deJ68DQzKR/EsMxIRNRw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11114"; a="20119523"
-X-IronPort-AV: E=Sophos;i="6.08,264,1712646000"; d="scan'208";a="20119523"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Jun 2024 06:53:22 -0700
-X-CSE-ConnectionGUID: JQb3GVzcQ+6FV7eH1DDqzg==
-X-CSE-MsgGUID: Gt67F+chRiWxW5GuUeWN4A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,264,1712646000"; d="scan'208";a="43539764"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orviesa010.jf.intel.com with ESMTP; 25 Jun 2024 06:53:19 -0700
-Date: Tue, 25 Jun 2024 22:08:53 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Ewan Hai <ewanhai-oc@zhaoxin.com>
-Cc: Xiaoyao Li <xiaoyao.li@intel.com>, pbonzini@redhat.com,
- mtosatti@redhat.com, kvm@vger.kernel.org, qemu-devel@nongnu.org,
- ewanhai@zhaoxin.com, cobechen@zhaoxin.com
-Subject: Re: [PATCH v3] target/i386/kvm: Refine VMX controls setting for
- backward compatibility
-Message-ID: <ZnrPdZdgcBSY1sMi@intel.com>
-References: <20240624095806.214525-1-ewanhai-oc@zhaoxin.com>
- <ZnqSj4PGrUeZ7OT1@intel.com>
- <53119b66-3528-41d6-ac44-df166699500a@zhaoxin.com>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sM6p0-0005Ce-BD
+ for qemu-devel@nongnu.org; Tue, 25 Jun 2024 10:06:58 -0400
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sM6oy-00022X-Mr
+ for qemu-devel@nongnu.org; Tue, 25 Jun 2024 10:06:58 -0400
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-1f9d9b57b90so37378995ad.0
+ for <qemu-devel@nongnu.org>; Tue, 25 Jun 2024 07:06:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1719324415; x=1719929215; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=/ciGB53KUieuWK8O7mqsJYtUePrIv1XfATtmdc7iE/s=;
+ b=dC8SY2Kc670qLbo20Imt/m6qzGYdbUD0DlPdkGGHvGT6ys/GDZ7JJbds+QjleYhavE
+ Xr/NTY/ZgF5M7DSayxKSpMH0JC9AagK1dJIoAfr1ttL1MyZzljrYTrOFOTNDtodjRuxh
+ dKGc1FS6dxPvZk6fH2jGXZAvldaEvR42Bm+zGBjUcsXJAz+FatXzPuz9wABjWp3RMrOU
+ X74jJzO9r0WMESW32mO/L9gFsIQ244Ig/qZszWkOWVumt4gbFAPi7sNplO4etrgxniwN
+ 4PHESwQkrv0cVmBdDh28hVh7ywWX2WKLORVuCHb7xm2qopEiyXaKLaSKyynMfJ4cDSEP
+ r8sA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1719324415; x=1719929215;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=/ciGB53KUieuWK8O7mqsJYtUePrIv1XfATtmdc7iE/s=;
+ b=Cmb1wy/L7BJt7yY09vjMYuttpeUsbsamsy3WWFMlbq0d9onW5NpBG+LFvWV4qlpYv4
+ i5098DqZNcoIwXNQhAJvFz6WFdwpnpnId2gh06qnxK6BbGi6T2YwwFAK+mBGqz285A0u
+ zi/KT86DZwqu0KQL40u+MZQ9OSBbovXgbNs7G2ULgrkb4nh+mwxtZXPINJd69R+dVQ+Q
+ geZch4H3HH3WhTl7T2OML/0Zax5Y9Ir5cdBchjcGdVFBTgjLfpvkmnnl8+oWBGjrlrwg
+ I2A/JSvmshV0mE/D5fAu2rchXU85Ux1zHjW90QX1MrJa2ozvNp5r/ai0zilpfXvhsldE
+ gq6A==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCW0/xN6j3WT8F2jaQyCMyk0OcgpX44l9t6pbANangX378jSeoyMBzcoKv05KY0K+OqdGeTHDdIx42KsU6/aC2r2kX1/UzA=
+X-Gm-Message-State: AOJu0YxxaSiCPAc1Z/sYYIwAtHYY678nMC/lTz3Yf4AbJRAIsrozPA2f
+ ru7v0k6jwGrKskkW18GqizNBwBJ7YhNjRBUSLHhS9pJEno9fHC5Li0hdmWgqcFg=
+X-Google-Smtp-Source: AGHT+IFcr8nzc5nSRSzOwrvJCZc2QMp90M4Dlz/XVWwsZF02oQsZPiwti/N7WsAAFy8B7PRhQ28vrQ==
+X-Received: by 2002:a17:903:41cd:b0:1f8:55dd:3c44 with SMTP id
+ d9443c01a7336-1fa23f235b4mr96652265ad.61.1719324414718; 
+ Tue, 25 Jun 2024 07:06:54 -0700 (PDT)
+Received: from [192.168.0.4] (174-21-76-141.tukw.qwest.net. [174.21.76.141])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-1f9ebbc9efesm80970175ad.309.2024.06.25.07.06.53
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 25 Jun 2024 07:06:54 -0700 (PDT)
+Message-ID: <d63f54ab-d5b3-4c45-a648-a50a5bb79805@linaro.org>
+Date: Tue, 25 Jun 2024 07:06:52 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <53119b66-3528-41d6-ac44-df166699500a@zhaoxin.com>
-Received-SPF: pass client-ip=198.175.65.15; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -45
-X-Spam_score: -4.6
-X-Spam_bar: ----
-X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.151,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: Help improve 32-bit testing
+To: Thomas Huth <thuth@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, qemu-devel <qemu-devel@nongnu.org>
+References: <ab8beba8-658a-4359-bfb1-672e5782633d@linaro.org>
+ <d59f9541-eb4e-4a0a-b2c2-54d7eecbff95@redhat.com>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <d59f9541-eb4e-4a0a-b2c2-54d7eecbff95@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x632.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -84,49 +96,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-[snip]
-
-> > Additionally, has_msr_vmx_vmfunc has the similar compat issue. I think
-> > it deserves a fix, too.
-> > 
-> > -Zhao
-> Thanks for your reply. In fact, I've tried to process has_msr_vmx_vmfunc in
-> the same
-> way as has_msr_vmx_procbased_ctls in this patch, but when I tested on Linux
-> kernel
-> 4.19.67, I encountered an "error: failed to set MSR 0x491 to 0x***".
+On 6/25/24 00:11, Thomas Huth wrote:
+> On 25/06/2024 01.33, Richard Henderson wrote:
+>> Hiya,
+>>
+>> I've just discovered a 32-bit build issue that is probably 3 weeks old.
+>>
+>> While we still support 32-bit builds at all, I would request that we improve our 
+>> cross-i686 testing.  For instance: we have cross-i686-user and cross-i686-tci.  There is 
+>> some system build testing in the tci job, but (rightfully) not everything.
 > 
-> This issue is due to Linux kernel commit 27c42a1bb ("KVM: nVMX: Enable
-> VMFUNC
-> for the L1 hypervisor", 2017-08-03) exposing VMFUNC to the QEMU guest
-> without
-> corresponding VMFUNC MSR modification code, leading to an error when QEMU
-> attempts
-> to set the VMFUNC MSR. This bug affects kernels from 4.14 to 5.2, with a fix
-> introduced
-> in 5.3 by Paolo (e8a70bd4e "KVM: nVMX: allow setting the VMFUNC controls
-> MSR", 2019-07-02).
+> System emulation on 32-bit x86 hosts is marked as deprecated since QEMU 8.0 ... maybe we 
+> could finally remove it instead?
 
-It looks like this fix was not ported to the 4.19 stable kernel.
+I'm ok with that too.  I just don't want the current situation to stand.
 
-> So the fix for has_msr_vmx_vmfunc is clearly different from
-> has_msr_vmx_procbased_ctls2.
-> However, due to the different kernel support situations, I have not yet come
-> up with a suitable
-> way to handle the compatibility of has_msr_vmx_procbased_ctls2 across
-> different kernel versions.
-> 
-> Therefore, should we consider only fixing has_msr_vmx_procbased_ctls2 this
-> time and addressing
-> has_msr_vmx_vmfunc in a future patch when the timing is more appropriate?
-> 
 
-I agree this fix should focus on MSR_IA32_VMX_PROCBASED_CTLS2.
-
-But I think at least we need a comment (maybe a TODO) to note the case of
-has_msr_vmx_vmfunc in a followup patch.
-
-Let's wait and see what Paolo will say.
-
--Zhao
+r~
 
