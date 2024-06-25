@@ -2,76 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8856D9166B5
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jun 2024 13:57:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 486419168C0
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jun 2024 15:22:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sM4mn-00051F-ID; Tue, 25 Jun 2024 07:56:33 -0400
+	id 1sM67W-0000Br-Rr; Tue, 25 Jun 2024 09:22:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sM4ml-00050T-IL
- for qemu-devel@nongnu.org; Tue, 25 Jun 2024 07:56:31 -0400
-Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
+ (Exim 4.90_1) (envelope-from <pykfirst@gmail.com>)
+ id 1sM4Lg-00016P-6H
+ for qemu-devel@nongnu.org; Tue, 25 Jun 2024 07:28:32 -0400
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sM4mi-00029Q-EP
- for qemu-devel@nongnu.org; Tue, 25 Jun 2024 07:56:31 -0400
-Received: by mail-ed1-x52d.google.com with SMTP id
- 4fb4d7f45d1cf-57d20d89748so5208108a12.0
- for <qemu-devel@nongnu.org>; Tue, 25 Jun 2024 04:56:27 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <pykfirst@gmail.com>)
+ id 1sM4Le-0005c7-Bh
+ for qemu-devel@nongnu.org; Tue, 25 Jun 2024 07:28:31 -0400
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-1f9cd92b146so42033985ad.3
+ for <qemu-devel@nongnu.org>; Tue, 25 Jun 2024 04:28:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719316586; x=1719921386; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=n6m1uGYAw2V2tNzKuzzVU/1bGox9Nl4LZRtZ579+Yc8=;
- b=a+iTbYgTW6t83KNGGgwvdfPmi98jLFx32jhuWCYeiqFrPZEZkka+JXvn20SadW4Leg
- PLn2lLZCurrLRmpw9Sa0sa8snG5FUZRetKvL2wnl/j/1L8I/rMEt41jNja1K1SJ3k5mV
- N2BAFFkjZn66SXYdmcq+jwWNWE5FcVd4L3cPE4yqT0EmMbADuxRm+AHY8L9or6p/nWFr
- oIKrsn4eLbG3Z2q+S01Tt7+id7pANjGHvNFCnXi1d0a10UuVulJ62DucviuekuoDodeo
- VyrmcEvW+6qIJEmcMaThwz76ssEeAxzE25hWe59d1ZU6cM46r8LAFGRs4FE0HJCqCb9+
- p5Gg==
+ d=gmail.com; s=20230601; t=1719314907; x=1719919707; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=uBaSheNEI17XWmXxdX9yRTMBkPWOO88fG/ISELWu8bk=;
+ b=Zdgbs/wj+BQaCqPailsHmqlgrs8IiTlLNi+6kwjn6wN2QSfYVyiOioc+9lWvnP9sv0
+ EQe2A9q5c7Sk2lkOaWz488tdp3J9e4S5x2tlujP5gjend7uvEC1VoUL2JOTwd441bEcP
+ 01tvT24R9Dnc8luZCAfTXV8Y1Yl+Ke98O380OJXcJ8V+qNE2KNYpM15eJY2vTPZl2yXS
+ dv1rK6O6uh6LeoHYDBhFkLVMS5pZ5emx9uxlYxpaMIp4mYLKucr6nYmY6BGjEf9nk1G8
+ CEq9jTzmHF4T2XALmh9AaIY8qiu3PMW1jKjrZFYEShqugdYbDmd09jLVsTQGy9Hpv9wO
+ SQGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719316586; x=1719921386;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1719314907; x=1719919707;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=n6m1uGYAw2V2tNzKuzzVU/1bGox9Nl4LZRtZ579+Yc8=;
- b=R5CDg7CIkF8tVuOmjd41nLWxqcEYly5MHtbscgzroJ2BqiKOU9jrmsKmX8o/1r4AzT
- 1LjEuj55AXC7oeEoRy6GdQxu7Zy+6wdOFz8MOvbFKpiAZQuNNuYSDpBB7PzNI0EhyLLl
- hvMpLWQltG/NsgGQHENDLKgtGEUYKvDrOkvtL7dIh5Sk5G7Qu0LIof8hV0oFnYlQL1l4
- ojYwhIpoI+lbAxeT60JpgWWXsk2y308NaNPzg65j2fAt9PTEzGRPjOubtkxhImpbN9An
- B8kglGv9p+CjCmmA8LxrkYfcFgG8mpScrTMOoQW6ppxmKT0/lMMGdR/1EHkI/ycxVMlP
- onGA==
-X-Gm-Message-State: AOJu0YzP9KHTGE0x0UFVrXnVayoRll2e6P9Z25IyFZRtML318dQL+sYz
- BQbtRcTv+hQ3dHmKmTtrY4FFoZqtRAPcPp0UHtq2lF03oRwbcR/pPKCXZEEH282AKwOGAZomZuZ
- j+acLh1bRyFoXnD9VeX9ilHf1+loa2jZHzVeBOw==
-X-Google-Smtp-Source: AGHT+IEzZsY0Z5jznPPGFuN/M3Uwa2xoAeYNL8JD433/fSEb26I9CE+yO5XgK4TX7zXJtz9TR2lEwV63taUnS6Amhgg=
-X-Received: by 2002:a05:6402:270c:b0:57d:6079:3916 with SMTP id
- 4fb4d7f45d1cf-57d607939edmr4357359a12.26.1719316586234; Tue, 25 Jun 2024
- 04:56:26 -0700 (PDT)
+ bh=uBaSheNEI17XWmXxdX9yRTMBkPWOO88fG/ISELWu8bk=;
+ b=vp8xVyx2o2m0Z1R/hIUd/cD3XJWpwLi0ju1wDMBy0NHXrvy4O4B4CB3x51kfwMMNUV
+ vE4t8gxvmohfu0LJHCQyiOXMDX40hd4d+cjItRzmKtQ1SFbzSjd6VmRosU9Ee0ODO8DR
+ gxlnQeeyVBH4LltNXlr/jrda6mw1N3CBtWJxiO53vGhioafEdIqJebzIUnrTjk7zVplK
+ JiTYpskbZaRHSm9d3ZRFb5Ec0ooI1ivc1IOsaa3MpLXe3LgOPJthRhmzdghn37eJptAo
+ qqM+hKleaMkjYimFnpICXi7W45qdJYk8fFnjvAUW+mqxQAALQDSGGMH4tVVbYB7hvsbc
+ stBQ==
+X-Gm-Message-State: AOJu0Yzqgjk/W9YCoMKBJK2uf7IVkdQA4Ij0ta9f0GoCfxW8OWn7TKlo
+ RjbXccVlvC9/UMOGF6tBd8T06Pyt6tJ0cTlkVXQ+mEMxLuj0Kou8rh6tIo03IPM=
+X-Google-Smtp-Source: AGHT+IHqUwRJFUoCz3qbjNJ+CVqW/avNyaw7XogtfvaL3OLauEv8OnVL1WH4He+7BQQ+X8daubb57g==
+X-Received: by 2002:a17:902:f685:b0:1f7:2050:9a76 with SMTP id
+ d9443c01a7336-1fa1d3de5bcmr104365535ad.8.1719314906934; 
+ Tue, 25 Jun 2024 04:28:26 -0700 (PDT)
+Received: from waoa-XPS-8940.. ([103.172.41.204])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-1f9ec6595ebsm78466885ad.25.2024.06.25.04.28.23
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 25 Jun 2024 04:28:26 -0700 (PDT)
+From: Yuke Peng <pykfirst@gmail.com>
+To: qemu-devel <qemu-devel@nongnu.org>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Jason Wang <jasowang@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: [PATCH] hw/i386/intel_iommu: Block CFI when necessary
+Date: Tue, 25 Jun 2024 19:28:19 +0800
+Message-Id: <20240625112819.862282-1-pykfirst@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20240625050810.1475643-1-richard.henderson@linaro.org>
- <20240625050810.1475643-4-richard.henderson@linaro.org>
-In-Reply-To: <20240625050810.1475643-4-richard.henderson@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 25 Jun 2024 12:56:15 +0100
-Message-ID: <CAFEAcA9t6nzxj4Lj769vHjyrLSrCKstnyWi2RVqJG0=J_j6jbw@mail.gmail.com>
-Subject: Re: [PATCH 03/13] target/arm: Fix FJCVTZS vs flush-to-zero
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-stable@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52d.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=pykfirst@gmail.com; helo=mail-pl1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Tue, 25 Jun 2024 09:22:01 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,58 +93,109 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 25 Jun 2024 at 06:09, Richard Henderson
-<richard.henderson@linaro.org> wrote:
->
-> Input denormals cause the Javascript inexact bit
-> (output to Z) to be set.
->
-> Cc: qemu-stable@nongnu.org
-> Fixes: 6c1f6f2733a ("target/arm: Implement ARMv8.3-JSConv")
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2375
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
+According to Intel VT-d specification 5.1.4, CFI must be blocked when
+Extended Interrupt Mode is enabled or Compatibility format interrupts
+are disabled.
 
-> --- /dev/null
-> +++ b/tests/tcg/aarch64/test-2375.c
-> @@ -0,0 +1,20 @@
-> +/* SPDX-License-Identifier: GPL-2.0-or-later */
-> +/* See https://gitlab.com/qemu-project/qemu/-/issues/2375 */
+Signed-off-by: Yuke Peng <pykfirst@gmail.com>
+---
+ hw/i386/intel_iommu.c         | 28 ++++++++++++++++++++++++++++
+ hw/i386/trace-events          |  1 +
+ include/hw/i386/intel_iommu.h |  1 +
+ 3 files changed, 30 insertions(+)
 
-Not a project requirement, I guess, but on the Linaro end I
-think we want a
- /* Copyright (c) 2024 Linaro Ltd */
+diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
+index 5085a6fee3..dfa2f979e7 100644
+--- a/hw/i386/intel_iommu.c
++++ b/hw/i386/intel_iommu.c
+@@ -2410,6 +2410,22 @@ static void vtd_handle_gcmd_ire(IntelIOMMUState *s, bool en)
+     }
+ }
+ 
++/* Handle Compatibility Format Interrupts Enable/Disable */
++static void vtd_handle_gcmd_cfi(IntelIOMMUState *s, bool en)
++{
++    trace_vtd_cfi_enable(en);
++
++    if (en) {
++        s->cfi_enabled = true;
++        /* Ok - report back to driver */
++        vtd_set_clear_mask_long(s, DMAR_GSTS_REG, 0, VTD_GSTS_CFIS);
++    } else {
++        s->cfi_enabled = false;
++        /* Ok - report back to driver */
++        vtd_set_clear_mask_long(s, DMAR_GSTS_REG, VTD_GSTS_CFIS, 0);
++    }
++}
++
+ /* Handle write to Global Command Register */
+ static void vtd_handle_gcmd_write(IntelIOMMUState *s)
+ {
+@@ -2440,6 +2456,10 @@ static void vtd_handle_gcmd_write(IntelIOMMUState *s)
+         /* Interrupt remap enable/disable */
+         vtd_handle_gcmd_ire(s, val & VTD_GCMD_IRE);
+     }
++    if (changed & VTD_GCMD_CFI) {
++        /* Compatibility format interrupts enable/disable */
++        vtd_handle_gcmd_cfi(s, val & VTD_GCMD_CFI);
++    }
+ }
+ 
+ /* Handle write to Context Command Register */
+@@ -3304,6 +3324,7 @@ static const VMStateDescription vtd_vmstate = {
+         VMSTATE_BOOL(dmar_enabled, IntelIOMMUState),
+         VMSTATE_BOOL(qi_enabled, IntelIOMMUState),
+         VMSTATE_BOOL(intr_enabled, IntelIOMMUState),
++        VMSTATE_BOOL(cfi_enabled, IntelIOMMUState),
+         VMSTATE_BOOL(intr_eime, IntelIOMMUState),
+         VMSTATE_END_OF_LIST()
+     }
+@@ -3525,6 +3546,12 @@ static int vtd_interrupt_remap_msi(IntelIOMMUState *iommu,
+ 
+     /* This is compatible mode. */
+     if (addr.addr.int_mode != VTD_IR_INT_FORMAT_REMAP) {
++        if (iommu->intr_eime || !iommu->cfi_enabled) {
++            if (do_fault) {
++                vtd_report_ir_fault(iommu, sid, VTD_FR_IR_REQ_COMPAT, 0);
++            }
++            return -EINVAL;
++        }
+         memcpy(translated, origin, sizeof(*origin));
+         goto out;
+     }
+@@ -3950,6 +3977,7 @@ static void vtd_init(IntelIOMMUState *s)
+     s->root_scalable = false;
+     s->dmar_enabled = false;
+     s->intr_enabled = false;
++    s->cfi_enabled = false;
+     s->iq_head = 0;
+     s->iq_tail = 0;
+     s->iq = 0;
+diff --git a/hw/i386/trace-events b/hw/i386/trace-events
+index 53c02d7ac8..ffd87db65f 100644
+--- a/hw/i386/trace-events
++++ b/hw/i386/trace-events
+@@ -57,6 +57,7 @@ vtd_dmar_translate(uint8_t bus, uint8_t slot, uint8_t func, uint64_t iova, uint6
+ vtd_dmar_enable(bool en) "enable %d"
+ vtd_dmar_fault(uint16_t sid, int fault, uint64_t addr, bool is_write) "sid 0x%"PRIx16" fault %d addr 0x%"PRIx64" write %d"
+ vtd_ir_enable(bool en) "enable %d"
++vtd_cfi_enable(bool en) "enable %d"
+ vtd_ir_irte_get(int index, uint64_t lo, uint64_t hi) "index %d low 0x%"PRIx64" high 0x%"PRIx64
+ vtd_ir_remap(int index, int tri, int vec, int deliver, uint32_t dest, int dest_mode) "index %d trigger %d vector %d deliver %d dest 0x%"PRIx32" mode %d"
+ vtd_ir_remap_type(const char *type) "%s"
+diff --git a/include/hw/i386/intel_iommu.h b/include/hw/i386/intel_iommu.h
+index 7fa0a695c8..38e20d0f2c 100644
+--- a/include/hw/i386/intel_iommu.h
++++ b/include/hw/i386/intel_iommu.h
+@@ -294,6 +294,7 @@ struct IntelIOMMUState {
+ 
+     /* interrupt remapping */
+     bool intr_enabled;              /* Whether guest enabled IR */
++    bool cfi_enabled;               /* Whether CFI is enabled */
+     dma_addr_t intr_root;           /* Interrupt remapping table pointer */
+     uint32_t intr_size;             /* Number of IR table entries */
+     bool intr_eime;                 /* Extended interrupt mode enabled */
+-- 
+2.34.1
 
-too.
-
-> +
-> +#include <assert.h>
-> +
-> +int main()
-
-Missing "void".
-
-> +{
-> +   int r, z;
-> +
-> +   asm("msr fpcr, %2\n\t"
-> +       "fjcvtzs %w0, %d3\n\t"
-> +       "cset %1, eq"
-> +       : "=r"(r), "=r"(z)
-> +       : "r"(0x01000000L),     /* FZ = 1 */
-> +         "w"(0xfcff00L));       /* denormal */
-> +
-> +    assert(r == 0);
-> +    assert(z == 0);
-> +    return 0;
-> +}
-
-Otherwise
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-
-(If these are the only issues in the patchset I'll fix them
-up when I apply it.)
-
-thanks
--- PMM
 
