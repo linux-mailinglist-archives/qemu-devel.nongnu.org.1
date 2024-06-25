@@ -2,78 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1733915E78
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jun 2024 07:56:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C7F7915E71
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jun 2024 07:55:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sLz84-0001bA-AT; Tue, 25 Jun 2024 01:54:08 -0400
+	id 1sLz8A-0001cL-Pj; Tue, 25 Jun 2024 01:54:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sLz82-0001aQ-7z
- for qemu-devel@nongnu.org; Tue, 25 Jun 2024 01:54:06 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sLz88-0001bY-0N
+ for qemu-devel@nongnu.org; Tue, 25 Jun 2024 01:54:12 -0400
+Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sLz80-0001Wb-GP
- for qemu-devel@nongnu.org; Tue, 25 Jun 2024 01:54:05 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-424a2ad06f1so1798535e9.1
- for <qemu-devel@nongnu.org>; Mon, 24 Jun 2024 22:54:04 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sLz86-0001Yw-El
+ for qemu-devel@nongnu.org; Tue, 25 Jun 2024 01:54:11 -0400
+Received: by mail-lf1-x136.google.com with SMTP id
+ 2adb3069b0e04-52cdd03d6aaso2934485e87.0
+ for <qemu-devel@nongnu.org>; Mon, 24 Jun 2024 22:54:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719294843; x=1719899643; darn=nongnu.org;
+ d=linaro.org; s=google; t=1719294848; x=1719899648; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=FRec2147tzGGJgDwnAFCM7MdLQrzjYCwJA0fQ2k29gM=;
- b=lbXzn8zCEM/eFhv9FQbcfblXmtgXwrTwVOnwN/0y0nzt2U0J8Rr1YaQAjKRMaSBX4s
- zEHh0IUOk2Q4vRDE39zXnoW/g6XoLCR2sZ8OUqakcyI+0MeT/e77ISrl5ChETnyfUupI
- jwp4YFLhQ0j5QBKcrc0o6nAxegIdE9GtewtkxaSlnD1ATUb4S4LoDhDCQ9dSNGomSFEs
- o4G0Kqn8MXlPGd6wUquyT+ntBVuiYhGYsloNtKZ+lY5kNtElQWWQ/UZle+F3B1+Xlzxo
- fNV1a9ego3cYth8kOwr7dxhCH7P0dsB2pVOIpCBRiYgu/j2QXaJm2BPqd2ys62WcWOVc
- PhAw==
+ bh=MsF8niTdQH3Vk+tuBHzzhdAif0xIcoOBVyM8lpmJF7M=;
+ b=Ons9rj7YfM1tfAl1ZK0cfaA9xpYUfWSjT13aoDvi/whcoiglKyLplYWCtNgMXKj8df
+ fpU+4XJzmpjfSpsDUNlnBONaP1Rbwcz652iJxLjlC8US9PWi/MLxvUHQyZIyg4m/cCwq
+ HknRNt7TPytOZFvQttx8m6NgOCIeemxO9A5juuzLGzcjBKiFiCSlpMSq6xNwIi2ebnBI
+ Cq2phsfgluMSh5htyZHGlruBYd5rAQNCn+0J5TNAeUQj45KC4ZnM067ZMkLPbvh14tLz
+ Nxx9hrHBbP17+lxHVgpIdTSCmuApPGoNoWsfH1zFx7e+R7pZymBHGVa9gl7c6Sl8Bjop
+ yfQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719294843; x=1719899643;
+ d=1e100.net; s=20230601; t=1719294848; x=1719899648;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=FRec2147tzGGJgDwnAFCM7MdLQrzjYCwJA0fQ2k29gM=;
- b=F9jDbat2ooKc60dqo26UA2BJEAwEp7nD3IRsrODrK25E/SyxPnV9bON5oEY+OzK0Lr
- oZO9kRmFFx3g98h9dL2isUSdMGbPjqLogLEd5gHMjI24wR+y3BVVcR8nMiqnz8brfHEq
- ue1PxtTJNtqR/4Om1MsZ2zMb6DmoZop8d6ySj2ONs3fqiXa2ICcsXqWJ/hjtsOx9JoaQ
- GnRhCtbmGwTkn2N8am/5G1VvdDnO0EZT345ytthExQY+qgF3+Kon8VjBjIfvp3oB3LGA
- MJuLwG3+WasmGh1Zy6YRINlIdYOzCkD1fFeGE+9/jpw47ygnKMP1PLcVYItViEVe8d1G
- 38yA==
-X-Gm-Message-State: AOJu0Yz4PeIP4HYjvcZx6o7P38K4r//gV7AaisesmN1uShBFAqbqpqiK
- jybN4deIPAMPnrTZe9n9UMH2epSkxok2oAQS6rJqPU8rx7gFgef5at+rHlPTSZf9qK5zj03bWWG
- 0
-X-Google-Smtp-Source: AGHT+IGjpxv8iQ5xIystXJEUsQL/JE9wFc/LepnYZUbDyhJjLg2KVeXtDurTLf42/0131WswwlFmsQ==
-X-Received: by 2002:a05:600c:3c91:b0:424:8fe1:41f9 with SMTP id
- 5b1f17b1804b1-4248fe14320mr36673165e9.11.1719294842831; 
- Mon, 24 Jun 2024 22:54:02 -0700 (PDT)
+ bh=MsF8niTdQH3Vk+tuBHzzhdAif0xIcoOBVyM8lpmJF7M=;
+ b=JO8tK69Bqra2pEGviOp+iE2jWzlKXL214+K2BVWkMjEvD4no/MX76KoVKSt9xFJxwL
+ VEcN+AZ20qlDs3zXPSTXmSUDwmPDDTdcaPMCwHmXhIkAnz4EDNEUaCETdqic4G6L90gl
+ P7Shpcdz43uL33xXHvXn4u0FLYlW8xpufnhqZ2kAgeuHHPvtD1dr0K/Spn/zGV8hwsps
+ PSG0D/QXqPQ9VNwzQBLU1remeDl4yR7y2DohKPtjLHU0kATnk5s+jBaRlJ44KHYYrq2b
+ +jHTpVw9uBcTipjrVXLgiUqa23PGjtNyGflx2T4guprhh446StIYDWI256kNlY+N4Srw
+ R2MQ==
+X-Gm-Message-State: AOJu0YyQTRD0X5EnlVyfCwK+Gujjxx/EU960VRw8fT7Ew8dMAuGWcFj3
+ zUcCNVkUNYqRcE+zhYrc0laMKq+C5yfM0kzDPkzZR/+1Bbw/WMVc/DrerC+0BVxsYRVyCgAo6ZY
+ e
+X-Google-Smtp-Source: AGHT+IGvqlpcBAAgPCq2HKYN0WZCmyEAd/sYOAR+YRP8vYT3iViMv0GadfmQ5K+XVux0OqzR+kR1Tg==
+X-Received: by 2002:a05:6512:3e0c:b0:52c:89b5:27bc with SMTP id
+ 2adb3069b0e04-52ce0673582mr4629523e87.42.1719294848316; 
+ Mon, 24 Jun 2024 22:54:08 -0700 (PDT)
 Received: from m1x-phil.lan (bd137-h02-176-184-46-22.dsl.sta.abo.bbox.fr.
  [176.184.46.22]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-424a49d6112sm4561375e9.6.2024.06.24.22.54.01
+ 5b1f17b1804b1-4248191fac8sm156993215e9.42.2024.06.24.22.54.07
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 24 Jun 2024 22:54:02 -0700 (PDT)
+ Mon, 24 Jun 2024 22:54:07 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Bin Meng <bmeng.cn@gmail.com>, Hao Wu <wuhaotsh@google.com>,
- Shengtan Mao <stmao@google.com>, Tyrone Ting <kfting@nuvoton.com>
-Subject: [PATCH v2 01/12] tests/qtest: Disable npcm7xx_sdhci tests using
- hardcoded RCA
-Date: Tue, 25 Jun 2024 07:53:42 +0200
-Message-ID: <20240625055354.23273-2-philmd@linaro.org>
+ Bin Meng <bmeng.cn@gmail.com>
+Subject: [PATCH v2 02/12] hw/sd/sdcard: Generate random RCA value
+Date: Tue, 25 Jun 2024 07:53:43 +0200
+Message-ID: <20240625055354.23273-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240625055354.23273-1-philmd@linaro.org>
 References: <20240625055354.23273-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::136;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x136.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,56 +94,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Disable tests using 0x4567 hardcoded RCA otherwise when
-using random RCA we get:
-
-  ERROR:../../tests/qtest/npcm7xx_sdhci-test.c:69:write_sdread: assertion failed: (ret == len)
-  not ok /arm/npcm7xx_sdhci/read_sd - ERROR:../../tests/qtest/npcm7xx_sdhci-test.c:69:write_sdread: assertion failed: (ret == len)
-  Bail out!
-
-See https://lore.kernel.org/qemu-devel/37f83be9-deb5-42a1-b704-14984351d803@linaro.org/
+Rather than using the obscure 0x4567 magic value,
+use a real random one.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Tested-by: Cédric Le Goater <clg@redhat.com>
 ---
-Cc: Hao Wu <wuhaotsh@google.com>
-Cc: Shengtan Mao <stmao@google.com>
-Cc: Tyrone Ting <kfting@nuvoton.com>
----
- tests/qtest/npcm7xx_sdhci-test.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ hw/sd/sd.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/tests/qtest/npcm7xx_sdhci-test.c b/tests/qtest/npcm7xx_sdhci-test.c
-index 5d68540e52..6a42b142ad 100644
---- a/tests/qtest/npcm7xx_sdhci-test.c
-+++ b/tests/qtest/npcm7xx_sdhci-test.c
-@@ -44,6 +44,7 @@ static QTestState *setup_sd_card(void)
-     sdhci_cmd_regs(qts, NPCM7XX_MMC_BA, 0, 0, 0x41200000, 0, (41 << 8));
-     sdhci_cmd_regs(qts, NPCM7XX_MMC_BA, 0, 0, 0, 0, SDHC_ALL_SEND_CID);
-     sdhci_cmd_regs(qts, NPCM7XX_MMC_BA, 0, 0, 0, 0, SDHC_SEND_RELATIVE_ADDR);
-+    g_test_skip("hardcoded 0x4567 card address");
-     sdhci_cmd_regs(qts, NPCM7XX_MMC_BA, 0, 0, 0x45670000, 0,
-                    SDHC_SELECT_DESELECT_CARD);
+diff --git a/hw/sd/sd.c b/hw/sd/sd.c
+index a48010cfc1..ec58c5e2a6 100644
+--- a/hw/sd/sd.c
++++ b/hw/sd/sd.c
+@@ -46,6 +46,7 @@
+ #include "qemu/error-report.h"
+ #include "qemu/timer.h"
+ #include "qemu/log.h"
++#include "qemu/guest-random.h"
+ #include "qemu/module.h"
+ #include "sdmmc-internal.h"
+ #include "trace.h"
+@@ -490,11 +491,6 @@ static void sd_set_csd(SDState *sd, uint64_t size)
  
-@@ -76,6 +77,9 @@ static void test_read_sd(void)
+ /* Relative Card Address register */
+ 
+-static void sd_set_rca(SDState *sd)
+-{
+-    sd->rca += 0x4567;
+-}
+-
+ static uint16_t sd_req_get_rca(SDState *s, SDRequest req)
  {
-     QTestState *qts = setup_sd_card();
+     if (sd_cmd_type[req.cmd] == sd_ac || sd_cmd_type[req.cmd] == sd_adtc) {
+@@ -1107,7 +1103,7 @@ static sd_rsp_type_t sd_cmd_SEND_RELATIVE_ADDR(SDState *sd, SDRequest req)
+     case sd_identification_state:
+     case sd_standby_state:
+         sd->state = sd_standby_state;
+-        sd_set_rca(sd);
++        qemu_guest_getrandom_nofail(&sd->rca, sizeof(sd->rca));
+         return sd_r6;
  
-+    g_test_skip("hardcoded 0x4567 card address used in setup_sd_card()");
-+    return;
-+
-     write_sdread(qts, "hello world");
-     write_sdread(qts, "goodbye");
- 
-@@ -108,6 +112,9 @@ static void test_write_sd(void)
- {
-     QTestState *qts = setup_sd_card();
- 
-+    g_test_skip("hardcoded 0x4567 card address used in setup_sd_card()");
-+    return;
-+
-     sdwrite_read(qts, "hello world");
-     sdwrite_read(qts, "goodbye");
- 
+     default:
 -- 
 2.41.0
 
