@@ -2,64 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C29D0915DD8
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jun 2024 06:58:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6E5E915DF4
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jun 2024 07:10:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sLyF6-0006rm-Ui; Tue, 25 Jun 2024 00:57:20 -0400
+	id 1sLyPh-00011Q-Lu; Tue, 25 Jun 2024 01:08:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1sLyF4-0006rK-8S; Tue, 25 Jun 2024 00:57:18 -0400
-Received: from forwardcorp1a.mail.yandex.net ([178.154.239.72])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1sLyF0-0007X5-3f; Tue, 25 Jun 2024 00:57:18 -0400
-Received: from mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
- [IPv6:2a02:6b8:c0c:1c20:0:640:f632:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 9143760031;
- Tue, 25 Jun 2024 07:57:08 +0300 (MSK)
-Received: from [IPV6:2a02:6b8:b081:b5bf::1:d] (unknown
- [2a02:6b8:b081:b5bf::1:d])
- by mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id 7vGIsI0IbCg0-X0gerE5K; Tue, 25 Jun 2024 07:57:07 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1719291427;
- bh=kSUB0o7/vUJovbVSzPolsZ3l/T+3tw5nuQ47hosarlI=;
- h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=I6qWQH51dhjRKGknYE4nZYrdlJyjfym0xM6VRNZzpu8TPt4ofNIgJDN9Ggxc7LHI2
- 8EyLQEju+kZrEbxRAIFs9dFxYIJrczYSpPNprwC2ygmHuAO5gSVPqjrkV+6opoGv2L
- KQfNd7PY4+xuokZHhG/28IO+UNEJWyK1K3u90CUo=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-Message-ID: <cab69e27-aacf-4371-88e4-9d8c76cb2a04@yandex-team.ru>
-Date: Tue, 25 Jun 2024 07:57:07 +0300
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sLyPf-00010z-Kw
+ for qemu-devel@nongnu.org; Tue, 25 Jun 2024 01:08:15 -0400
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sLyPd-0001V1-U8
+ for qemu-devel@nongnu.org; Tue, 25 Jun 2024 01:08:15 -0400
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-1f6da06ba24so36814005ad.2
+ for <qemu-devel@nongnu.org>; Mon, 24 Jun 2024 22:08:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1719292092; x=1719896892; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=uuKRzX/CVCBtz4u0mZkWLcpWrMUD415m7eGI+pRHqts=;
+ b=OII6b7yeCPvowH5p/UwQcV2q++/gVpEMNzuhhy5FP00JsutesEWS31z4HebAHpXfik
+ G/QSKpibjcXdACQMqm6G7q01Peagwrp8Q69sdItXxg10g/+GzxkoGmgkrOpw+monp/CJ
+ DZLFcnnL4YMsHqy0NG22khp2uCTrXGlKVbvLg+5l/iVa5rTxFRd69tOx1rzksV00tjKZ
+ Zx2jwFEBFxXMWgn+w59UyESu7OV3lIEWg9ZqEc1tQWYXrxwuX3H8Vy2hCPXboU0EX0r2
+ 8A2WJ1ectvcqMzoewE+RUIG7wtC09bojm6RUGN4EfpeikCsRstzzMO9cUuW2DHx3JApC
+ q7OA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1719292092; x=1719896892;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=uuKRzX/CVCBtz4u0mZkWLcpWrMUD415m7eGI+pRHqts=;
+ b=rTtNHI1xSu51yP4GW2GD9pmO/pptnNRZvjrSRCYu8QeSIFPC8YC8O1aPLgD1x7x/6j
+ LxVofKEX50C8GDvoYMrfkk8v9rt5gS9aKhJqQ1nwkWI2eKGmazpmVbdQnREynhA9XJi9
+ +12CWIbUkm4hk/Udn6wkcfU5HVy5+7y9tgEUCL4PmzaZJnrQbNulodxf/cOLK/KGWShJ
+ z9XVp1xcZOvzPNf5QzfspnLP+hoTpZG7coGPwqgmhbKBLpUKjXr81oT8+2ALs3YSZDDw
+ lUg1UwHnxa/Zw0PFNw/Iv/78hxtgyYQTTsXA6LbRo4XigmN9fvYWhsy3MR7PtuRTV+KN
+ r/ow==
+X-Gm-Message-State: AOJu0YwjEgBigxotD5f0BQK2mXh/R9bBHTbO5DTdNs+ACv8EqkePKFDD
+ qBASWicwjo7r1ZdZh+7KRMOCs6FcrapmaYrr29bNZHsPitTi6Qz75AquLAMwF+mj8HvlXeKReA0
+ O
+X-Google-Smtp-Source: AGHT+IHm6TOtzOBuYcM/HAKFo0+oChLUHA+7YhBBnw8JJwt5YYPgscHRoIHrqdus5dUO5CbbX5VW8A==
+X-Received: by 2002:a17:902:e9cd:b0:1fa:bcb:3db9 with SMTP id
+ d9443c01a7336-1fa23f60fdfmr51840165ad.31.1719292092195; 
+ Mon, 24 Jun 2024 22:08:12 -0700 (PDT)
+Received: from stoup.. (174-21-76-141.tukw.qwest.net. [174.21.76.141])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-1f9ebbc72e9sm70843865ad.296.2024.06.24.22.08.11
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 24 Jun 2024 22:08:11 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org
+Subject: [PATCH 00/13] target/arm: AdvSIMD conversion, part 2
+Date: Mon, 24 Jun 2024 22:07:57 -0700
+Message-Id: <20240625050810.1475643-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 5/5] blockdev: mirror: check for target's cluster size
- when using bitmap
-To: Fiona Ebner <f.ebner@proxmox.com>, qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, armbru@redhat.com, eblake@redhat.com,
- hreitz@redhat.com, kwolf@redhat.com, jsnow@redhat.com,
- f.gruenbichler@proxmox.com, t.lamprecht@proxmox.com,
- mahaocong@didichuxing.com, xiechanglong.d@gmail.com, wencongyang2@huawei.com
-References: <20240521122014.333221-1-f.ebner@proxmox.com>
- <20240521122014.333221-6-f.ebner@proxmox.com>
-Content-Language: en-US
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-In-Reply-To: <20240521122014.333221-6-f.ebner@proxmox.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=178.154.239.72;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -76,143 +89,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 21.05.24 15:20, Fiona Ebner wrote:
-> When using mirror with a bitmap and the target does not do COW and is
-> is a diff image, i.e. one that should only contain the delta and was
-> not synced to previously, a too large cluster size for the target can
-> be problematic. In particular, when the mirror sends data to the
-> target aligned to the jobs granularity, but not aligned to the larger
-> target image's cluster size, the target's cluster would be allocated
-> but only be filled partially. When rebasing such a diff image later,
-> the corresponding cluster of the base image would get "masked" and the
-> part of the cluster not in the diff image is not accessible anymore.
-> 
-> Unfortunately, it is not always possible to check for the target
-> image's cluster size, e.g. when it's NBD. Because the limitation is
-> already documented in the QAPI description for the @bitmap parameter
-> and it's only required for special diff image use-case, simply skip
-> the check then.
-> 
-> Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
-> ---
->   blockdev.c                                 | 57 ++++++++++++++++++++++
->   tests/qemu-iotests/tests/mirror-bitmap     |  6 +++
->   tests/qemu-iotests/tests/mirror-bitmap.out |  7 +++
->   3 files changed, 70 insertions(+)
-> 
-> diff --git a/blockdev.c b/blockdev.c
-> index 4f72a72dc7..468974108e 100644
-> --- a/blockdev.c
-> +++ b/blockdev.c
-> @@ -2769,6 +2769,59 @@ void qmp_blockdev_backup(BlockdevBackup *backup, Error **errp)
->       blockdev_do_action(&action, errp);
->   }
->   
-> +static int blockdev_mirror_check_bitmap_granularity(BlockDriverState *target,
-> +                                                    BdrvDirtyBitmap *bitmap,
-> +                                                    Error **errp)
-> +{
-> +    int ret;
-> +    BlockDriverInfo bdi;
-> +    uint32_t bitmap_granularity;
-> +
-> +    GLOBAL_STATE_CODE();
-> +    GRAPH_RDLOCK_GUARD_MAINLOOP();
-> +
-> +    if (bdrv_backing_chain_next(target)) {
-> +        /*
-> +         * No need to worry about creating clusters with partial data when the
-> +         * target does COW.
-> +         */
-> +        return 0;
-> +    }
-> +
-> +    /*
-> +     * If there is no backing file on the target, we cannot rely on COW if our
-> +     * backup cluster size is smaller than the target cluster size. Even for
-> +     * targets with a backing file, try to avoid COW if possible.
+Convert another hand-full of instructions, plus fixes
+for two issues that are related.
 
-"Even for targes with" - I don't follow. We do "return 0" already above for such targets?
 
-> +     */
-> +    ret = bdrv_get_info(target, &bdi);
-> +    if (ret == -ENOTSUP) {
-> +        /*
-> +         * Ignore if unable to get the info, e.g. when target is NBD. It's only
-> +         * relevant for syncing to a diff image and the documentation already
-> +         * states that the target's cluster size needs to small enough then.
-> +         */
-> +        return 0;
-> +    } else if (ret < 0) {
-> +        error_setg_errno(errp, -ret,
-> +            "Couldn't determine the cluster size of the target image, "
-> +            "which has no backing file");
-> +        return ret;
-> +    }
-> +
-> +    bitmap_granularity = bdrv_dirty_bitmap_granularity(bitmap);
-> +    if (bitmap_granularity < bdi.cluster_size ||
-> +        bitmap_granularity % bdi.cluster_size != 0) {
-> +        error_setg(errp, "Bitmap granularity %u is not a multiple of the "
-> +                   "target image's cluster size %u and the target image has "
-> +                   "no backing file",
-> +                   bitmap_granularity, bdi.cluster_size);
-> +        return -EINVAL;
-> +    }
-> +
-> +    return 0;
-> +}
-> +
-> +
->   /* Parameter check and block job starting for drive mirroring.
->    * Caller should hold @device and @target's aio context (must be the same).
->    **/
-> @@ -2863,6 +2916,10 @@ static void blockdev_mirror_common(const char *job_id, BlockDriverState *bs,
->               return;
->           }
->   
-> +        if (blockdev_mirror_check_bitmap_granularity(target, bitmap, errp)) {
-> +            return;
-> +        }
-> +
->           if (bdrv_dirty_bitmap_check(bitmap, BDRV_BITMAP_DEFAULT, errp)) {
->               return;
->           }
-> diff --git a/tests/qemu-iotests/tests/mirror-bitmap b/tests/qemu-iotests/tests/mirror-bitmap
-> index 37bbe0f241..e8cd482a19 100755
-> --- a/tests/qemu-iotests/tests/mirror-bitmap
-> +++ b/tests/qemu-iotests/tests/mirror-bitmap
-> @@ -584,6 +584,12 @@ def test_mirror_api():
->                                   bitmap=bitmap)
->                   log('')
->   
-> +        log("-- Test bitmap with too small granularity to non-COW target --\n")
-> +        vm.qmp_log("block-dirty-bitmap-add", node=drive0.node,
-> +                   name="bitmap-small", granularity=GRANULARITY)
-> +        blockdev_mirror(drive0.vm, drive0.node, "mirror_target", "full",
-> +                        job_id='api_job', bitmap="bitmap-small")
-> +        log('')
->   
->   def main():
->       for bsync_mode in ("never", "on-success", "always"):
-> diff --git a/tests/qemu-iotests/tests/mirror-bitmap.out b/tests/qemu-iotests/tests/mirror-bitmap.out
-> index 5c8acc1d69..af605f3803 100644
-> --- a/tests/qemu-iotests/tests/mirror-bitmap.out
-> +++ b/tests/qemu-iotests/tests/mirror-bitmap.out
-> @@ -3189,3 +3189,10 @@ qemu_img compare "TEST_DIR/PID-img" "TEST_DIR/PID-fmirror3" ==> Identical, OK!
->   {"execute": "blockdev-mirror", "arguments": {"bitmap": "bitmap0", "copy-mode": "write-blocking", "device": "drive0", "filter-node-name": "mirror-top", "job-id": "api_job", "sync": "none", "target": "mirror_target"}}
->   {"error": {"class": "GenericError", "desc": "Sync mode 'none' not supported with bitmap."}}
->   
-> +-- Test bitmap with too small granularity to non-COW target --
-> +
-> +{"execute": "block-dirty-bitmap-add", "arguments": {"granularity": 65536, "name": "bitmap-small", "node": "drive0"}}
-> +{"return": {}}
-> +{"execute": "blockdev-mirror", "arguments": {"bitmap": "bitmap-small", "copy-mode": "write-blocking", "device": "drive0", "filter-node-name": "mirror-top", "job-id": "api_job", "sync": "full", "target": "mirror_target"}}
-> +{"error": {"class": "GenericError", "desc": "Bitmap granularity 65536 is not a multiple of the target image's cluster size 131072 and the target image has no backing file"}}
-> +
+r~
+
+
+Richard Henderson (13):
+  target/arm: Fix VCMLA Dd, Dn, Dm[idx]
+  target/arm: Fix SQDMULH (by element) with Q=0
+  target/arm: Fix FJCVTZS vs flush-to-zero
+  target/arm: Convert SQRDMLAH, SQRDMLSH to decodetree
+  target/arm: Convert SDOT, UDOT to decodetree
+  target/arm: Convert SUDOT, USDOT to decodetree
+  target/arm: Convert BFDOT to decodetree
+  target/arm: Convert BFMLALB, BFMLALT to decodetree
+  target/arm: Convert BFMMLA, SMMLA, UMMLA, USMMLA to decodetree
+  target/arm: Add data argument to do_fp3_vector
+  target/arm: Convert FCADD to decodetree
+  target/arm: Convert FCMLA to decodetree
+  target/arm: Delete dead code from disas_simd_indexed
+
+ target/arm/helper.h               |  10 +
+ target/arm/tcg/a64.decode         |  42 ++
+ target/arm/tcg/translate-a64.c    | 811 +++++++++---------------------
+ target/arm/tcg/vec_helper.c       | 100 +++-
+ target/arm/vfp_helper.c           |  18 +-
+ tests/tcg/aarch64/test-2375.c     |  20 +
+ tests/tcg/aarch64/Makefile.target |   3 +-
+ 7 files changed, 422 insertions(+), 582 deletions(-)
+ create mode 100644 tests/tcg/aarch64/test-2375.c
 
 -- 
-Best regards,
-Vladimir
+2.34.1
 
 
