@@ -2,74 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C474916898
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jun 2024 15:07:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E464916961
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jun 2024 15:50:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sM5sM-0005Oe-IO; Tue, 25 Jun 2024 09:06:22 -0400
+	id 1sM6YY-0006x2-6d; Tue, 25 Jun 2024 09:49:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sM5sK-0005O2-23
- for qemu-devel@nongnu.org; Tue, 25 Jun 2024 09:06:20 -0400
-Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
+ (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
+ id 1sM6YT-0006vB-ST
+ for qemu-devel@nongnu.org; Tue, 25 Jun 2024 09:49:53 -0400
+Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sM5sI-0006z2-6z
- for qemu-devel@nongnu.org; Tue, 25 Jun 2024 09:06:19 -0400
-Received: by mail-ed1-x52b.google.com with SMTP id
- 4fb4d7f45d1cf-57d106e69a2so158649a12.0
- for <qemu-devel@nongnu.org>; Tue, 25 Jun 2024 06:06:17 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
+ id 1sM6YQ-0007II-Mb
+ for qemu-devel@nongnu.org; Tue, 25 Jun 2024 09:49:52 -0400
+Received: by mail-ed1-x534.google.com with SMTP id
+ 4fb4d7f45d1cf-57d07f07a27so6285350a12.3
+ for <qemu-devel@nongnu.org>; Tue, 25 Jun 2024 06:49:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719320776; x=1719925576; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=daJwH3TpEvhFy7z51X7AKTRuLJM31mKSMpN38C0iSMI=;
- b=EloEZun4dYkuiGE4TpIg5MpuwI6Vd77NTnIZTRRKsKbpO8xYmkVWaKNqQzkGUgeraX
- +UKgntHoBBU6Zjc/jbvF+p2UwZukiZQGHuU157u7HJy3OcmqZY1Vqi9FzBIvfX6E5O9T
- b6rzOgMwAcMaVCX8h1lD4n5X2G5kg2UtYgZYtYfBVsw8SaUsdqmSPQKQdjSr5BO8P+5h
- LC7XSGhUwe6k3zuRD/C0PLnJnwXUZAalYhTUuBfrbN4yFg6MvH8/GmZn6yt3zyNgFd0j
- epuCvRDMVEyJPMKWVNHBuiJ6LJW/31EHNyE4PKHwQlvWehMG9XD8CpjfLGu4tZj3zxqZ
- /2Uw==
+ d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1719323388; x=1719928188;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=d1fYQ7uSy0JYSBDhMCphzksyQ7P/f641WoT9TQMYJeE=;
+ b=jE+UaBgI4a625dI54X67TEcN1f8yfWkJmrTHvw4l28FyXab4Oq08BRC8sRoIsF28R+
+ /5RK9XREpY9rN9JsarJB0HhuHAa8mR/6zQndNEl00vSAdYIABkGOkepHa+AiijZDSnhM
+ b+oUQL/rzmls0ZBLikNdIod57Twa6gE26ExGIesVQf0Exw8tf61W9GJvFwZmJQEd9VY7
+ m5n2LfaDaJfQS5CaN3zYDJ5OIy1oJ8ijGxxzoSHV7D7ZaE3m9KTeZNbIccFJ4m7Ezbdl
+ JPPMf6sZcVECczK8mC04WrN7FHZG+PG9kaprXB1rfRFgY1s6MovdCpcwBLglM0s/Si2Q
+ KepA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719320776; x=1719925576;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1719323388; x=1719928188;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=daJwH3TpEvhFy7z51X7AKTRuLJM31mKSMpN38C0iSMI=;
- b=bAW9QRLZoyZeUpv1RyEiOMChxyDZsLVYwWkFVB87SGoRfGiJYuhAY8ceq4LhCZYszx
- YulXVnRt4sUapIsuLh15/1VcT4w+T6QKIPVWn+3+fy7FeCajIqpCj1zdAwJw/vXW3Gen
- 5KS7AC0aK86U4aD6d0lh4TUD2D40DqogdCa7eMcxVom0wf0jl+LNxLHinw8jY/0xXriu
- uwv+LrufMXLmxPg3N2PA85WJ6xb5mPhGd1fX4ACymWrFN8KdhfnVa7Ar+8va7l7c1sGt
- ulV/4oHP1v0C2z71vW0Il3/MIIA8IoQrW/+F8LTmul+B23LrMV3WNjc+ekYLg6Gvz94c
- dKTg==
-X-Gm-Message-State: AOJu0YzoNReYje30HpcoTN2d3A9B/2QBouLQB74A3PU+ijs+zmT0/+No
- covItwdL2gdtXVHqubCDljo7Ti0ti7VtgR/xcMripteWX7/vOANEzcA5vUpy253krcHFZlQdbqS
- Pzoq7rQlQcgp96PVxzM6ZfgLUVT1BgOrxILfmRA==
-X-Google-Smtp-Source: AGHT+IHU71qft/Tb+1/wWCEgHtHdL6tbfcqkNL6ZX5347bmnUtT78T7YAyKlbkAkLZPv/H445eP/YtERaltRJI1DWUk=
-X-Received: by 2002:a50:9f49:0:b0:57c:c171:2fb6 with SMTP id
- 4fb4d7f45d1cf-57d701badadmr2130914a12.1.1719320775918; Tue, 25 Jun 2024
- 06:06:15 -0700 (PDT)
+ bh=d1fYQ7uSy0JYSBDhMCphzksyQ7P/f641WoT9TQMYJeE=;
+ b=OtZNvFT/0Evu8PruPdK4JMPdDXHYyUi5wMPAhxcxjlruFuNUjo1AUyMenJF6QYZFlY
+ g30LK5JKupywEBfLVzArVCR010P8q6CqaJ95DwjQ8FyUJ2CrcWWrKDOome29DtWc3Eu2
+ 9w43dUs3t4GARiaZKWE8cg+Er0Qx11+SoR1c6E8cu7gxZObRY9aufdKKKfMZnG0cGOlx
+ If8vkd3RwQRZXJWOB014oxfbUag3FAbd2DVZgqOCY37lbOSREhvB0JlDSkfMXmKggd/2
+ ydQqRHYmFCuji2eGU6/nKdOSOIM0KvoENn+DUJ439El0/jBkio6MJgL2z4caAB39hup7
+ Q5dQ==
+X-Gm-Message-State: AOJu0YyxINWC0aXg37x2sepLHSn9kDxhWdVbZQMf3DRjY+24556IbFen
+ ESzgoR/E8sgNG4/5dMDQhr+JJcqzWZzXysYixkGSA9iMYBZW9cdAOU1lGeX1r+BRu0HQz3R7rZI
+ q5Q==
+X-Google-Smtp-Source: AGHT+IENc6qXlA18ThHHXpxt/cA1tjoEgnfXbNtZqjAkF9vjVyRSdmQVFDXXxCkyh2uKMBglywNdyA==
+X-Received: by 2002:a17:906:199a:b0:a72:450f:6045 with SMTP id
+ a640c23a62f3a-a7245b6252cmr388985366b.21.1719323387966; 
+ Tue, 25 Jun 2024 06:49:47 -0700 (PDT)
+Received: from localhost.localdomain (89-104-8-17.customer.bnet.at.
+ [89.104.8.17]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-a726e13a4d7sm77299166b.19.2024.06.25.06.49.46
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 25 Jun 2024 06:49:47 -0700 (PDT)
+From: Phil Dennis-Jordan <phil@philjordan.eu>
+To: qemu-devel@nongnu.org
+Cc: peter.maydell@linaro.org, philmd@linaro.org, marcandre.lureau@redhat.com,
+ akihiko.odaki@daynix.com, lists@philjordan.eu,
+ Phil Dennis-Jordan <phil@philjordan.eu>
+Subject: [PATCH v2 0/2] ui/cocoa: Adds native absolute pointer support
+Date: Tue, 25 Jun 2024 15:49:29 +0200
+Message-Id: <20240625134931.92279-1-phil@philjordan.eu>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
 MIME-Version: 1.0
-References: <cover.1717527933.git.mst@redhat.com>
-In-Reply-To: <cover.1717527933.git.mst@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 25 Jun 2024 14:06:04 +0100
-Message-ID: <CAFEAcA_cJjtN8Qq=9xJiyJLtazL-8zTWJTgjFG74SE3MQHpdNA@mail.gmail.com>
-Subject: Re: [PULL 00/46] virtio: features,fixes
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: neutral client-ip=2a00:1450:4864:20::534;
+ envelope-from=phil@philjordan.eu; helo=mail-ed1-x534.google.com
+X-Spam_score_int: -10
+X-Spam_score: -1.1
+X-Spam_bar: -
+X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NEUTRAL=0.779 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,29 +92,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 4 Jun 2024 at 20:06, Michael S. Tsirkin <mst@redhat.com> wrote:
-> ----------------------------------------------------------------
-> virtio: features,fixes
->
-> A bunch of improvements:
-> - vhost dirty log is now only scanned once, not once per device
-> - virtio and vhost now support VIRTIO_F_NOTIFICATION_DATA
-> - cxl gained DCD emulation support
-> - pvpanic gained shutdown support
-> - acpi now supports Generic Port Affinity Structure
-> - new tests
-> - bugfixes
->
-> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> Cindy Lu (2):
->       virtio-pci: Fix the use of an uninitialized irqfd.
->       virtio-pci: Fix the failure process in kvm_virtio_pci_vector_use_one()
+This change implements passing guest cursors through to the native
+Cocoa host NSCursor on macOS when using absolute pointing device
+input.
 
-Hi -- I was wondering what happened to this virtio-pci patch,
-which I reviewed. It seems like it got into this pullreq
-which didn't get merged because of a bios-tables-test failure.
+The first pass at this was based purely on NSCursor, which drew
+some criticism due to the somewhat complex nature of the code which
+was required to generate correct relative pointer input events
+after teleporting the host cursor.
 
-Michael, do you plan to respin this pullreq soon ?
+This new version builds on Akihiko Odaki's work implementing CALayer
+based cursors. We retain CALayer for compositing cursors when the
+input is relative and the pointer thus completely captured by the
+guest. When using absolute positioning of the pointer, we use the
+fully host-integrated NSCursor, with no offsetting or teleporting
+needed.
 
--- PMM
+The first patch consists of a few reference counting fixes to the
+existing CALayer patch, the second implements the NSCursor logic
+and switches between CALayer and NSCursor depending on whether
+relative or absolute input is used.
+
+Based-on: <20240318-cursor-v1-2-0bbe6c382217@daynix.com>
+
+
+Phil Dennis-Jordan (2):
+  ui/cocoa: Minor fixes to CALayer based cursors
+  ui/cocoa: Adds NSCursor absolute pointer support
+
+ ui/cocoa.m | 93 +++++++++++++++++++++++++++++++++++++++++++-----------
+ 1 file changed, 75 insertions(+), 18 deletions(-)
+
+-- 
+2.39.3 (Apple Git-146)
+
 
