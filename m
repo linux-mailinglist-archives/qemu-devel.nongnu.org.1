@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8B54915DF5
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jun 2024 07:10:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AFC2C915DFA
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jun 2024 07:10:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sLyPq-00015Y-D1; Tue, 25 Jun 2024 01:08:26 -0400
+	id 1sLyPq-000166-Cf; Tue, 25 Jun 2024 01:08:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sLyPi-00012M-HV
- for qemu-devel@nongnu.org; Tue, 25 Jun 2024 01:08:20 -0400
-Received: from mail-pg1-x530.google.com ([2607:f8b0:4864:20::530])
+ id 1sLyPm-00013r-5F
+ for qemu-devel@nongnu.org; Tue, 25 Jun 2024 01:08:22 -0400
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sLyPf-0001VP-SY
- for qemu-devel@nongnu.org; Tue, 25 Jun 2024 01:08:18 -0400
-Received: by mail-pg1-x530.google.com with SMTP id
- 41be03b00d2f7-6c4926bf9baso4202472a12.2
- for <qemu-devel@nongnu.org>; Mon, 24 Jun 2024 22:08:15 -0700 (PDT)
+ id 1sLyPh-0001Vs-1v
+ for qemu-devel@nongnu.org; Tue, 25 Jun 2024 01:08:19 -0400
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-1fa78306796so55645ad.3
+ for <qemu-devel@nongnu.org>; Mon, 24 Jun 2024 22:08:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719292094; x=1719896894; darn=nongnu.org;
+ d=linaro.org; s=google; t=1719292095; x=1719896895; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=YQcO2r2IZyvd41q48Eu940ny4a3LvMma1E5P7T03ZrI=;
- b=A+8GtcjORd6IZ6YITkLKB5gbb5IvRbvOZkOOsJvOEjOt+vtaLG6JbSjOi+khxO6fTA
- Mmap4Lc4rAcNVI9DNqs1xYhvkp05hrk6SR2NZ6ryPggv6/NI0rJ+LZrRbDiPO7w/qMEW
- EK1Jprd3z9khkQCt5onENcR1Kyqe6ArAj3gAjNACGB1KooKzpxrl25N22xxSUs0eEaG+
- VEEd6xGM1RqN21tdBfffUUkVAvnn4nD1GVHn82wp2aC+wqnjWNwiz8MWiKl9bLnEmNLb
- Mk9UzvRiFsQbxeZyjndtaJUHIdARfWEmrxU3s4/dzQha/CQrW4//TzyRY24jRAPxIieC
- xGaQ==
+ bh=/Pg6/3MNS2vx+BkKofM6RgZsGJ5t7KT/lobWOjzWfJo=;
+ b=qjo/tohw2kgcn4zqsCgSb0Q+qmDoeH1H0z4kjLMW6QZ/6SQh7OBk/aFg1E5+S2wycL
+ BZ/pFyxBEtwTF7itIBopr80LefytEyhIra5QcsFMqenX9hZaG1X6HqeKvWRLNYfOExq7
+ L8Xw8QhQC+BgZ9JyJFpdD1TCOKNqCv9ctj5MKskH0oiefNX7lbksKWoNUnXl6BoKnEYc
+ WzC/M86jOzBC46cG+dP/xjiUgLkqDMNVtc+Fac+18K92brVCre9KxBvQcVrqNiWaattw
+ S9C5LErSXHFo1FIuVDTVrqN6jL+fdmJxgWDPbfQcAoonPca/YjkxGUNHOR3OytPd7Doz
+ zvVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719292094; x=1719896894;
+ d=1e100.net; s=20230601; t=1719292095; x=1719896895;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=YQcO2r2IZyvd41q48Eu940ny4a3LvMma1E5P7T03ZrI=;
- b=TdHCu4HlVUTLpANS0yIWd19wsTMIXBbcdCHwvKQuv1ZOxYzEdotdqyncSjbRps998g
- jR6zO/Kj4GYtm7sPdEk5yvr2vkMOTy9LwuRXlo+9ckxAG9W3yCcPFDHZQrjB+I+Y5tz3
- oF5LGb97VEMJaHMXZ2XQ8yjKtUeT9YrNF1GlwWUCsexp49GSRw9c2qcaGnsEH3w6iEKC
- 4VmTrMuIAFW3Cn4kYWtW0/T3iWwRv21ru6Jh5KIgYFLTqjIZNAlzbqp89zQd7VI7tXrL
- m/T4uehE+WfUG18XwmK+Pk3mkBEqNm8c1nDCOvLNwmRf7lzB7upOFyQjnpPTb5+t30zS
- 4HJw==
-X-Gm-Message-State: AOJu0Yz5R5pbDIBDVzLPuZZIkma6Ifce8xVlB/U4+2riZzG/3CZOmvqN
- YSxTIx6vPfbiH1dISbV0N8BLstLH/5dneqHebIkerE9pC8P/lNAttvNd1prrj3vVcTKoS0aZtDg
- V
-X-Google-Smtp-Source: AGHT+IFS7llonFXHEW804uNLpkBm2l9kxGuA8TkGIPLfMDZomNWv/ota1UykzSaNAhGOJ7lS69Gr7Q==
-X-Received: by 2002:a05:6a20:b313:b0:1bd:23f4:df70 with SMTP id
- adf61e73a8af0-1bd23f4e114mr17411637.52.1719292094215; 
- Mon, 24 Jun 2024 22:08:14 -0700 (PDT)
+ bh=/Pg6/3MNS2vx+BkKofM6RgZsGJ5t7KT/lobWOjzWfJo=;
+ b=BK3cDRQ/AjF37ArOABYjp5g3GcVeExrZM94kC3PleU1ve15tALsmdaV5rs6d8ReG89
+ athuO8JFkaAD51BUDH0zejx+AHxRRBc18BWOr7XE4myOYBpsckgs5lFYiADLFbeeX6Wh
+ 7SUinpre8V+NAdNqAp2ZYPvJa1UuevnPdZ/rO0hx3/y6lRlfl2IZLLT6FGuBg8LnRKJf
+ TSd2BVgIAdnLaI/wq1IUSs8dUyc6w3n4kz7jsFjUzxKGMMrg3Y40sRgR/l8bKn5AkKbH
+ nNRYlmy9FagelDUZWWhyMvEtDStnVjrJlOKJpl44bcwGIxPGz0jYxMmWiP7FuiEkJZtJ
+ 4Aew==
+X-Gm-Message-State: AOJu0YyFBn0BOb81jc8qf/JJcTw7cNMPpChdO0p9WGd1fau48hoQywjU
+ 01cQprkfFop49oMf7MRSb1/+AXbKqTJ08qxSETEcNg7ycvTl2SJvfX5WHAzRqiPM/DwChGo/5iD
+ 9
+X-Google-Smtp-Source: AGHT+IE9rTGP39kRkZtz2CxjMld3ebebDoEJ/Q0QTg05TGza++uaSO5QeOMIpmatrDhcjUnt4U1XaQ==
+X-Received: by 2002:a17:902:cecc:b0:1f9:d99f:61ab with SMTP id
+ d9443c01a7336-1fa1d685713mr71326665ad.62.1719292095275; 
+ Mon, 24 Jun 2024 22:08:15 -0700 (PDT)
 Received: from stoup.. (174-21-76-141.tukw.qwest.net. [174.21.76.141])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1f9ebbc72e9sm70843865ad.296.2024.06.24.22.08.13
+ d9443c01a7336-1f9ebbc72e9sm70843865ad.296.2024.06.24.22.08.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 24 Jun 2024 22:08:13 -0700 (PDT)
+ Mon, 24 Jun 2024 22:08:14 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org,
 	qemu-stable@nongnu.org
-Subject: [PATCH 02/13] target/arm: Fix SQDMULH (by element) with Q=0
-Date: Mon, 24 Jun 2024 22:07:59 -0700
-Message-Id: <20240625050810.1475643-3-richard.henderson@linaro.org>
+Subject: [PATCH 03/13] target/arm: Fix FJCVTZS vs flush-to-zero
+Date: Mon, 24 Jun 2024 22:08:00 -0700
+Message-Id: <20240625050810.1475643-4-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240625050810.1475643-1-richard.henderson@linaro.org>
 References: <20240625050810.1475643-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::530;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x530.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,79 +93,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The inner loop, bounded by eltspersegment, must not be
-larger than the outer loop, bounded by elements.
+Input denormals cause the Javascript inexact bit
+(output to Z) to be set.
 
 Cc: qemu-stable@nongnu.org
+Fixes: 6c1f6f2733a ("target/arm: Implement ARMv8.3-JSConv")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2375
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/vec_helper.c | 24 ++++++++++++++++--------
- 1 file changed, 16 insertions(+), 8 deletions(-)
+ target/arm/vfp_helper.c           | 18 +++++++++---------
+ tests/tcg/aarch64/test-2375.c     | 20 ++++++++++++++++++++
+ tests/tcg/aarch64/Makefile.target |  3 ++-
+ 3 files changed, 31 insertions(+), 10 deletions(-)
+ create mode 100644 tests/tcg/aarch64/test-2375.c
 
-diff --git a/target/arm/tcg/vec_helper.c b/target/arm/tcg/vec_helper.c
-index 7b34cc98af..d477479bb1 100644
---- a/target/arm/tcg/vec_helper.c
-+++ b/target/arm/tcg/vec_helper.c
-@@ -317,10 +317,12 @@ void HELPER(neon_sqdmulh_idx_h)(void *vd, void *vn, void *vm,
-     intptr_t i, j, opr_sz = simd_oprsz(desc);
-     int idx = simd_data(desc);
-     int16_t *d = vd, *n = vn, *m = (int16_t *)vm + H2(idx);
-+    intptr_t elements = opr_sz / 2;
-+    intptr_t eltspersegment = MIN(16 / 2, elements);
+diff --git a/target/arm/vfp_helper.c b/target/arm/vfp_helper.c
+index ce26b8a71a..50d7042fa9 100644
+--- a/target/arm/vfp_helper.c
++++ b/target/arm/vfp_helper.c
+@@ -1091,8 +1091,8 @@ const FloatRoundMode arm_rmode_to_sf_map[] = {
+ uint64_t HELPER(fjcvtzs)(float64 value, void *vstatus)
+ {
+     float_status *status = vstatus;
+-    uint32_t inexact, frac;
+-    uint32_t e_old, e_new;
++    uint32_t frac, e_old, e_new;
++    bool inexact;
  
--    for (i = 0; i < opr_sz / 2; i += 16 / 2) {
-+    for (i = 0; i < elements; i += 16 / 2) {
-         int16_t mm = m[i];
--        for (j = 0; j < 16 / 2; ++j) {
-+        for (j = 0; j < eltspersegment; ++j) {
-             d[i + j] = do_sqrdmlah_h(n[i + j], mm, 0, false, false, vq);
-         }
-     }
-@@ -333,10 +335,12 @@ void HELPER(neon_sqrdmulh_idx_h)(void *vd, void *vn, void *vm,
-     intptr_t i, j, opr_sz = simd_oprsz(desc);
-     int idx = simd_data(desc);
-     int16_t *d = vd, *n = vn, *m = (int16_t *)vm + H2(idx);
-+    intptr_t elements = opr_sz / 2;
-+    intptr_t eltspersegment = MIN(16 / 2, elements);
+     e_old = get_float_exception_flags(status);
+     set_float_exception_flags(0, status);
+@@ -1100,13 +1100,13 @@ uint64_t HELPER(fjcvtzs)(float64 value, void *vstatus)
+     e_new = get_float_exception_flags(status);
+     set_float_exception_flags(e_old | e_new, status);
  
--    for (i = 0; i < opr_sz / 2; i += 16 / 2) {
-+    for (i = 0; i < elements; i += 16 / 2) {
-         int16_t mm = m[i];
--        for (j = 0; j < 16 / 2; ++j) {
-+        for (j = 0; j < eltspersegment; ++j) {
-             d[i + j] = do_sqrdmlah_h(n[i + j], mm, 0, false, true, vq);
-         }
-     }
-@@ -512,10 +516,12 @@ void HELPER(neon_sqdmulh_idx_s)(void *vd, void *vn, void *vm,
-     intptr_t i, j, opr_sz = simd_oprsz(desc);
-     int idx = simd_data(desc);
-     int32_t *d = vd, *n = vn, *m = (int32_t *)vm + H4(idx);
-+    intptr_t elements = opr_sz / 4;
-+    intptr_t eltspersegment = MIN(16 / 4, elements);
+-    if (value == float64_chs(float64_zero)) {
+-        /* While not inexact for IEEE FP, -0.0 is inexact for JavaScript. */
+-        inexact = 1;
+-    } else {
+-        /* Normal inexact or overflow or NaN */
+-        inexact = e_new & (float_flag_inexact | float_flag_invalid);
+-    }
++    /* Normal inexact, denormal with flush-to-zero, or overflow or NaN */
++    inexact = e_new & (float_flag_inexact |
++                       float_flag_input_denormal |
++                       float_flag_invalid);
++
++    /* While not inexact for IEEE FP, -0.0 is inexact for JavaScript. */
++    inexact |= value == float64_chs(float64_zero);
  
--    for (i = 0; i < opr_sz / 4; i += 16 / 4) {
-+    for (i = 0; i < elements; i += 16 / 4) {
-         int32_t mm = m[i];
--        for (j = 0; j < 16 / 4; ++j) {
-+        for (j = 0; j < eltspersegment; ++j) {
-             d[i + j] = do_sqrdmlah_s(n[i + j], mm, 0, false, false, vq);
-         }
-     }
-@@ -528,10 +534,12 @@ void HELPER(neon_sqrdmulh_idx_s)(void *vd, void *vn, void *vm,
-     intptr_t i, j, opr_sz = simd_oprsz(desc);
-     int idx = simd_data(desc);
-     int32_t *d = vd, *n = vn, *m = (int32_t *)vm + H4(idx);
-+    intptr_t elements = opr_sz / 4;
-+    intptr_t eltspersegment = MIN(16 / 4, elements);
+     /* Pack the result and the env->ZF representation of Z together.  */
+     return deposit64(frac, 32, 32, inexact);
+diff --git a/tests/tcg/aarch64/test-2375.c b/tests/tcg/aarch64/test-2375.c
+new file mode 100644
+index 0000000000..f83af8b3ea
+--- /dev/null
++++ b/tests/tcg/aarch64/test-2375.c
+@@ -0,0 +1,20 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++/* See https://gitlab.com/qemu-project/qemu/-/issues/2375 */
++
++#include <assert.h>
++
++int main()
++{
++   int r, z;
++
++   asm("msr fpcr, %2\n\t"
++       "fjcvtzs %w0, %d3\n\t"
++       "cset %1, eq"
++       : "=r"(r), "=r"(z)
++       : "r"(0x01000000L),	/* FZ = 1 */
++         "w"(0xfcff00L));       /* denormal */
++
++    assert(r == 0);
++    assert(z == 0);
++    return 0;
++}
+diff --git a/tests/tcg/aarch64/Makefile.target b/tests/tcg/aarch64/Makefile.target
+index 70d728ae9a..4ecbca6a41 100644
+--- a/tests/tcg/aarch64/Makefile.target
++++ b/tests/tcg/aarch64/Makefile.target
+@@ -41,8 +41,9 @@ endif
  
--    for (i = 0; i < opr_sz / 4; i += 16 / 4) {
-+    for (i = 0; i < elements; i += 16 / 4) {
-         int32_t mm = m[i];
--        for (j = 0; j < 16 / 4; ++j) {
-+        for (j = 0; j < eltspersegment; ++j) {
-             d[i + j] = do_sqrdmlah_s(n[i + j], mm, 0, false, true, vq);
-         }
-     }
+ # Pauth Tests
+ ifneq ($(CROSS_CC_HAS_ARMV8_3),)
+-AARCH64_TESTS += pauth-1 pauth-2 pauth-4 pauth-5
++AARCH64_TESTS += pauth-1 pauth-2 pauth-4 pauth-5 test-2375
+ pauth-%: CFLAGS += -march=armv8.3-a
++test-2375: CFLAGS += -march=armv8.3-a
+ run-pauth-1: QEMU_OPTS += -cpu max
+ run-pauth-2: QEMU_OPTS += -cpu max
+ # Choose a cpu with FEAT_Pauth but without FEAT_FPAC for pauth-[45].
 -- 
 2.34.1
 
