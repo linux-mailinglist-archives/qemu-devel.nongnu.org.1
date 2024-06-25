@@ -2,93 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 408C391768A
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jun 2024 04:56:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 159A0917670
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jun 2024 04:53:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sMI3Q-0003KV-U5; Tue, 25 Jun 2024 22:06:38 -0400
-Received: from eggs.gnu.org ([2001:470:142:3::10])
+	id 1sMEDF-0003uj-Hn; Tue, 25 Jun 2024 18:00:32 -0400
+Received: from eggs.gnu.org ([209.51.188.92])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1sMI2i-0003Em-18
- for qemu-devel@nongnu.org; Tue, 25 Jun 2024 22:06:01 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sMECm-0003sF-0G
+ for qemu-devel@nongnu.org; Tue, 25 Jun 2024 18:00:03 -0400
+Received: from [2607:f8b0:4864:20::331] (helo=mail-ot1-x331.google.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1sMI1y-0003AS-Iz
- for qemu-devel@nongnu.org; Tue, 25 Jun 2024 22:05:41 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-421b9068274so53406115e9.1
- for <qemu-devel@nongnu.org>; Tue, 25 Jun 2024 19:03:56 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sMEBt-00046X-E9
+ for qemu-devel@nongnu.org; Tue, 25 Jun 2024 17:59:41 -0400
+Received: by mail-ot1-x331.google.com with SMTP id
+ 46e09a7af769-7009b8113ebso2628414a34.1
+ for <qemu-devel@nongnu.org>; Tue, 25 Jun 2024 14:57:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719367413; x=1719972213; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to
- :references:user-agent:subject:cc:to:from:date:from:to:cc:subject
- :date:message-id:reply-to;
- bh=xCFabv2nohWkThTwXlKe6p51NtMl+EbSJxir215ZsD8=;
- b=TNlNiFaHMGV7uF/LiwHQkQaKR1+A81UaagNqhiHKAHqPo4Jf8R2gytldhoXUM537H3
- lsp+x6riRyg4LObNnCMAnu01mO4+wh6PNCt6fGPmUxT/qrszBnKyF9JevnFH9voZiqfD
- 839ibimePXxpHuTYbHcrpc3xRwHQLYQsbq1nep8vbZkafDOrvz1d1B3P+SwicljlCrrA
- MHQc8lK0Ns3enIMyRB/c/Cd6TqZp0coFNymXZR+2+VnQKXydZTabzwYOPmip4n796Vgm
- YwcDhgxw+XZx8/qvrWa+acKa/DyOxo/ydZd4x994nZYMi6Lg5Phce5ssitULfkFRjQGO
- 9F2g==
+ d=linaro.org; s=google; t=1719352652; x=1719957452; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Mj7QlXoeP2V1pOBsxsghEG+3S3aDNGmpRLT6MqBN1Ws=;
+ b=hFIni6GNtQE03mQNEVVb2gXCaYhWn0MkZUnLhAHNsJzE+AR9UJDPmKSakOnegPdAky
+ xZWGx8szxLiArTEMYR0LFCxRChwYcFmD2WQ1amJaWtcXA88/yboIbg8xlYNA1FaKmAtp
+ Zgh/sCGJXx9WrmTG11J4kPUn6DL87JpNTMZnEFcftKyZOm8QjzMXNM5Df/2QfV3SEUeA
+ UnW8kzpUymYTL1H2DWRx4/0Ei4D1C3UMqlXSsSmVo/+3eyVFWAgDaXfD8Sk8H3bh4tnV
+ HP14EWyD/UDzfvJbg1XYKc/fgPKaN8WVoD3YJKKs8d7DRdkMNwRaxmwdT+tqVfmJZAP8
+ VHXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719367413; x=1719972213;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to
- :references:user-agent:subject:cc:to:from:date:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=xCFabv2nohWkThTwXlKe6p51NtMl+EbSJxir215ZsD8=;
- b=Gc2dN28gAU3jjdQ6DajvMO+PTzYd1/Z5wJ21qmO9GHAgqPCL1vzrODTEIsWBs1mYTp
- 2K2SPa+IFq/85oJd7Wbq849++OwzsHYYhx07aR4iOz4tt03wXx7IUuWf2nFL61Smh84k
- zUttfA116iewB11EDNYhWn454U0Hw7iWDbLv+SH8C+KpgrEOPRGixrIs5zBUalzcvacg
- ouAYTvofv4zwIqmnbm08vIpP+NY8KCYut3ipFejg5XMorpUgxo7Jbahgwp482FpLNnO7
- qlNeQ7hUZN1PtrG720JlIDcNQheA+sgUzOShhrwO1REjTwKNcjiIXF29Z08LBdrM0rL1
- 4r6g==
-X-Gm-Message-State: AOJu0Yzr/FwBcdVsa4rLQ4qi9N1DLQsfQxtZt9pSuKSusVIOyCyuc++i
- VYJzLxr2+G8KQCpiGKjqZhUiI2Ijm7QAeQwvUMGkHVbck/+u+Ex3p8lwhWcAL9YiB0n/dYULywm
- /JH0=
-X-Google-Smtp-Source: AGHT+IFZW/NLW8GfAHqDK2xt6sQX+9n5HxZ4aE3cvaweed+T4za4yMtN9jUuATR/Cm8+VOzcy9+QwA==
-X-Received: by 2002:ac2:54b3:0:b0:52c:c6a0:575c with SMTP id
- 2adb3069b0e04-52ce064e939mr5073330e87.33.1719340490465; 
- Tue, 25 Jun 2024 11:34:50 -0700 (PDT)
-Received: from meli-email.org (adsl-73.109.242.224.tellas.gr. [109.242.224.73])
+ d=1e100.net; s=20230601; t=1719352652; x=1719957452;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Mj7QlXoeP2V1pOBsxsghEG+3S3aDNGmpRLT6MqBN1Ws=;
+ b=QlP+W7tJutkouutacDDb7i3g8tVgD8bq50CnpOQMS0J4qzTS+OV12t250Shbr61oMW
+ Go7gbRBPML8VDoMyqpwDwbe+5IMJ3XKXFxPrgCY6gmz+ak3CkagD5tNyzBCyfhaz130z
+ LIeMcUAKDEPR02QvgKHmthpS80jKTrS3MdgC+/VYI8NUaD7yUZFgA6ziI6DGEWWvr5+Z
+ C6Lard5KWufyGzo5uxlvuQ8czrMtjnN0rAa7UAKpgxVpL56jxDwi3F29ibfrtqi7SX8K
+ 4ldo7TIcP51pOaOpMMdZcWbNZK0MxyIQWmerdjyLkV8Ku0cJ+pa6Ke6+352d9FQWuZgH
+ DNEQ==
+X-Gm-Message-State: AOJu0YxDEAmMQ1i9jEfVzWG6a7a8tQfVXaAb8h0xLOiZMWvtIfpr6fWa
+ R8KacOtv06gPDojC7jXclnvh5hEcar5LHraS5HoDcieK0Jx0reyRYuY9dmxorIut/iMHT8Y8v1i
+ 0
+X-Google-Smtp-Source: AGHT+IGmRpKU3uisicIyQkWV9U+fNDMQdfLn9q2ukyi+z3KUtk5TQAzgrypIuxul2gUK+0Q1sCvmaw==
+X-Received: by 2002:a17:902:bd07:b0:1f7:23d9:f530 with SMTP id
+ d9443c01a7336-1fa23f8df23mr67334385ad.66.1719340539628; 
+ Tue, 25 Jun 2024 11:35:39 -0700 (PDT)
+Received: from stoup.. (174-21-76-141.tukw.qwest.net. [174.21.76.141])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-366383f675esm13676151f8f.22.2024.06.25.11.34.49
+ d9443c01a7336-1f9eb3c6027sm84693235ad.133.2024.06.25.11.35.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 25 Jun 2024 11:34:50 -0700 (PDT)
-Date: Tue, 25 Jun 2024 21:23:11 +0300
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-To: Zhao Liu <zhao1.liu@intel.com>
-Cc: qemu-devel@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
- Mads Ynddal <mads@ynddal.dk>, Peter Maydell <peter.maydell@linaro.org>,
- Alex Benn=?UTF-8?B?w6k=?= e <alex.bennee@linaro.org>,
- "Daniel P. Berrang=?UTF-8?B?w6k=?= " <berrange@redhat.com>,
- Marc-Andr=?UTF-8?B?w6kg?=Lureau <marcandre.lureau@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Philippe Mathieu-Daud=?UTF-8?B?w6kg?=<philmd@linaro.org>,
- Gustavo Romero <gustavo.romero@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>, rowan.hart@intel.com,
- Richard Henderson <richard.henderson@linaro.org>, qemu-arm@nongnu.org
-Subject: Re: [RFC PATCH v3 5/5] DO NOT MERGE: replace TYPE_PL011 with
- x-pl011-rust in arm virt machine
-User-Agent: meli 0.8.6
-References: <rust-pl011-rfc-v3.git.manos.pitsidianakis@linaro.org>
- <229703c7f4394691f254b02c012ee0d7dcf57afb.1718827153.git.manos.pitsidianakis@linaro.org>
- <Znrt77XOc2YBNZyM@intel.com>
-In-Reply-To: <Znrt77XOc2YBNZyM@intel.com>
-Message-ID: <fnfm0.vm34jtk3isk@linaro.org>
+ Tue, 25 Jun 2024 11:35:39 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, qemu-stable@nongnu.org,
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: [PATCH v2 02/13] target/arm: Fix SQDMULH (by element) with Q=0
+Date: Tue, 25 Jun 2024 11:35:25 -0700
+Message-Id: <20240625183536.1672454-3-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240625183536.1672454-1-richard.henderson@linaro.org>
+References: <20240625183536.1672454-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset=utf-8; format=flowed
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x331.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, T_SPF_HELO_TEMPERROR=0.01,
- T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
+X-Host-Lookup-Failed: Reverse DNS lookup failed for 2607:f8b0:4864:20::331
+ (deferred)
+Received-SPF: pass client-ip=2607:f8b0:4864:20::331;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x331.google.com
+X-Spam_score_int: -8
+X-Spam_score: -0.9
+X-Spam_bar: /
+X-Spam_report: (-0.9 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, PDS_HP_HELO_NORDNS=0.001, RDNS_NONE=0.793,
+ SPF_HELO_NONE=0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,65 +94,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 25 Jun 2024 19:18, Zhao Liu <zhao1.liu@intel.com> wrote:
->Hi Manos,
->
->On Wed, Jun 19, 2024 at 11:14:02PM +0300, Manos Pitsidianakis wrote:
->> Date: Wed, 19 Jun 2024 23:14:02 +0300
->> From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
->> Subject: [RFC PATCH v3 5/5] DO NOT MERGE: replace TYPE_PL011 with
->>  x-pl011-rust in arm virt machine
->> X-Mailer: git-send-email 2.44.0
->> 
->> Convenience patch for testing the rust device.
->> 
->> Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
->> ---
->>  hw/arm/virt.c | 4 ++++
->>  1 file changed, 4 insertions(+)
->> 
->> diff --git a/hw/arm/virt.c b/hw/arm/virt.c
->> index 3c93c0c0a6..f33b58ae0d 100644
->> --- a/hw/arm/virt.c
->> +++ b/hw/arm/virt.c
->> @@ -912,7 +912,11 @@ static void create_uart(const VirtMachineState *vms, int uart,
->>      int irq = vms->irqmap[uart];
->>      const char compat[] = "arm,pl011\0arm,primecell";
->>      const char clocknames[] = "uartclk\0apb_pclk";
->> +#ifdef CONFIG_WITH_RUST
->> +    DeviceState *dev = qdev_new("x-pl011-rust");
->> +#else
->>      DeviceState *dev = qdev_new(TYPE_PL011);
->> +#endif
->>      SysBusDevice *s = SYS_BUS_DEVICE(dev);
->>      MachineState *ms = MACHINE(vms);
->>
->
->I realized that if we want to merge the rust pl011 device, then this
->patch or similar enablement support is necessary, otherwise, the rust
->code is only used for compilation and cannot actually be run...
->
->This is also an open for the devices that are rewrite in Rust.
->
->I think there should be an option for the user to choose whether to
->enable pl011 in C or pl011 in Rust. What do you think?
->
->Perhaps the easiest way to enable rust pl011 is to add an option for
->virt machine... But that's certainly not a long-term approach. I think
->the ideal way would be to allow rust pl011 to be specified in the
->command line via -device, but this approach would mean allowing the
->user to create pl011 and would require changes to the current buildin
->pl011's creation logic.
->
->-Zhao
->
+The inner loop, bounded by eltspersegment, must not be
+larger than the outer loop, bounded by elements.
 
-We should definitely refer to ARM maintainers. The peculiarity of it 
-being a chardev seems to make it not straightforward... I think it might 
-have to become a machine property like discussed here:
+Cc: qemu-stable@nongnu.org
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ target/arm/tcg/vec_helper.c | 24 ++++++++++++++++--------
+ 1 file changed, 16 insertions(+), 8 deletions(-)
 
-https://lore.kernel.org/qemu-devel/CAFEAcA94twaBSx--NVXQcRBQ7v9TuK9iTq9kTWP4FYpRzgPbBA@mail.gmail.com/
-
-And that'd be a bigger change not related just to Rust.
+diff --git a/target/arm/tcg/vec_helper.c b/target/arm/tcg/vec_helper.c
+index 7b34cc98af..d477479bb1 100644
+--- a/target/arm/tcg/vec_helper.c
++++ b/target/arm/tcg/vec_helper.c
+@@ -317,10 +317,12 @@ void HELPER(neon_sqdmulh_idx_h)(void *vd, void *vn, void *vm,
+     intptr_t i, j, opr_sz = simd_oprsz(desc);
+     int idx = simd_data(desc);
+     int16_t *d = vd, *n = vn, *m = (int16_t *)vm + H2(idx);
++    intptr_t elements = opr_sz / 2;
++    intptr_t eltspersegment = MIN(16 / 2, elements);
+ 
+-    for (i = 0; i < opr_sz / 2; i += 16 / 2) {
++    for (i = 0; i < elements; i += 16 / 2) {
+         int16_t mm = m[i];
+-        for (j = 0; j < 16 / 2; ++j) {
++        for (j = 0; j < eltspersegment; ++j) {
+             d[i + j] = do_sqrdmlah_h(n[i + j], mm, 0, false, false, vq);
+         }
+     }
+@@ -333,10 +335,12 @@ void HELPER(neon_sqrdmulh_idx_h)(void *vd, void *vn, void *vm,
+     intptr_t i, j, opr_sz = simd_oprsz(desc);
+     int idx = simd_data(desc);
+     int16_t *d = vd, *n = vn, *m = (int16_t *)vm + H2(idx);
++    intptr_t elements = opr_sz / 2;
++    intptr_t eltspersegment = MIN(16 / 2, elements);
+ 
+-    for (i = 0; i < opr_sz / 2; i += 16 / 2) {
++    for (i = 0; i < elements; i += 16 / 2) {
+         int16_t mm = m[i];
+-        for (j = 0; j < 16 / 2; ++j) {
++        for (j = 0; j < eltspersegment; ++j) {
+             d[i + j] = do_sqrdmlah_h(n[i + j], mm, 0, false, true, vq);
+         }
+     }
+@@ -512,10 +516,12 @@ void HELPER(neon_sqdmulh_idx_s)(void *vd, void *vn, void *vm,
+     intptr_t i, j, opr_sz = simd_oprsz(desc);
+     int idx = simd_data(desc);
+     int32_t *d = vd, *n = vn, *m = (int32_t *)vm + H4(idx);
++    intptr_t elements = opr_sz / 4;
++    intptr_t eltspersegment = MIN(16 / 4, elements);
+ 
+-    for (i = 0; i < opr_sz / 4; i += 16 / 4) {
++    for (i = 0; i < elements; i += 16 / 4) {
+         int32_t mm = m[i];
+-        for (j = 0; j < 16 / 4; ++j) {
++        for (j = 0; j < eltspersegment; ++j) {
+             d[i + j] = do_sqrdmlah_s(n[i + j], mm, 0, false, false, vq);
+         }
+     }
+@@ -528,10 +534,12 @@ void HELPER(neon_sqrdmulh_idx_s)(void *vd, void *vn, void *vm,
+     intptr_t i, j, opr_sz = simd_oprsz(desc);
+     int idx = simd_data(desc);
+     int32_t *d = vd, *n = vn, *m = (int32_t *)vm + H4(idx);
++    intptr_t elements = opr_sz / 4;
++    intptr_t eltspersegment = MIN(16 / 4, elements);
+ 
+-    for (i = 0; i < opr_sz / 4; i += 16 / 4) {
++    for (i = 0; i < elements; i += 16 / 4) {
+         int32_t mm = m[i];
+-        for (j = 0; j < 16 / 4; ++j) {
++        for (j = 0; j < eltspersegment; ++j) {
+             d[i + j] = do_sqrdmlah_s(n[i + j], mm, 0, false, true, vq);
+         }
+     }
+-- 
+2.34.1
 
 
