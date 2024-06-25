@@ -2,85 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BF2A917332
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jun 2024 23:18:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C2009173E6
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jun 2024 23:57:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sMBQD-00060e-3l; Tue, 25 Jun 2024 15:02:01 -0400
+	id 1sMBLT-0004z6-2f; Tue, 25 Jun 2024 14:57:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sMB8J-0001tq-4I
- for qemu-devel@nongnu.org; Tue, 25 Jun 2024 14:44:30 -0400
-Received: from mail-oa1-x2a.google.com ([2001:4860:4864:20::2a])
+ id 1sMBAL-0002Ql-JN
+ for qemu-devel@nongnu.org; Tue, 25 Jun 2024 14:45:37 -0400
+Received: from mail-qt1-x834.google.com ([2607:f8b0:4864:20::834])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sMB7M-0006p2-1K
- for qemu-devel@nongnu.org; Tue, 25 Jun 2024 14:42:57 -0400
-Received: by mail-oa1-x2a.google.com with SMTP id
- 586e51a60fabf-25cc6962c24so2624200fac.3
- for <qemu-devel@nongnu.org>; Tue, 25 Jun 2024 11:40:55 -0700 (PDT)
+ id 1sMB9b-00078s-Vn
+ for qemu-devel@nongnu.org; Tue, 25 Jun 2024 14:45:01 -0400
+Received: by mail-qt1-x834.google.com with SMTP id
+ d75a77b69052e-4405e343dd8so24501651cf.1
+ for <qemu-devel@nongnu.org>; Tue, 25 Jun 2024 11:43:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719340845; x=1719945645; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=6KuISq7Eq2uldN7W6ls6TqJkng66O5auRfGJh0XlrPQ=;
- b=gpwzQYKY07RHvenjsV9mL4hFyidKTEOSAWCIHj8Uz+Y9cSpUYkzyUoMhTsFNtLgwfr
- DFAlub/GvWDpTjxxWXuimbO7d+Xq1ATM5i0pk2N5wZMr/NIgKHnNHCeBv/z/lNMpcKsi
- zRyWy5F84NxEJBekEMnDNs1BkaL4mx1qvO/cE0+eeb61iWzW9gv3wPayyn1R+EZinZPf
- lmY5GmC3etNxLPRmo7D7luLxc3JfRzncR4ijEIIBW2yLccVcK3Tz8luRw5nSgi27cgpY
- OGcnBYphIlKeIo4u1yAEMkMUvY9N6pjcRhewOI5wqwiRXpNwz3ZWsqSQY4B84pLdOObE
- WFVg==
+ d=linaro.org; s=google; t=1719341024; x=1719945824; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=CMjhGlcExekQf+5VSLIRvctS+6B2uJGjUo3v3Mg5lsk=;
+ b=ariL5+NdldnEt2ECqz0DXmP2RFuPl3JdlVk3spA8c/DABHrlDOKj5x1Xf8mYtGCg6m
+ JnCEchI1uxXlWnMSfeb9raMYjk1tN8E6inUqXlZ/QPRkpBYHF/bJoKyW97/th3ZiyiPr
+ YwlAExcVUoEWjT5OrN4Q1/zPU/VY2LfTnlrQeDKMbHssFyCezMNpseVmRS5Zqe8aSitq
+ wWxHc8RbD4J1NJdcHGSHe1VRS06cAzP1ajOQy3ZvIlYlHCmKNKDGoJOMmRVkQ9kWyD7k
+ zCGqwZ+6R6SVGROEc/y4nPO5mSEddNvhmdLDOCDiLBmnbxVlJZRNjNFCVsEH+hDE/iG7
+ 6NOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719340845; x=1719945645;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=6KuISq7Eq2uldN7W6ls6TqJkng66O5auRfGJh0XlrPQ=;
- b=Njz2llreOaLSPTzV3bFZwEvPSJJIuX+sG6euOZzt8L7LieFGeppZeVaf5Ez45zQblS
- ZL3+mVXfg2owIZ9wvpy9xmA1E5DKvpmx5y08cw0LE/HTy+MUl7fjlQWPNLZ72HWPWhJs
- tqE1J8Bs86ustDWZo1Y9W3UN5Y/R/BfNWUXHEsMoSONdpmcfJoNe/5L6FndemvX0YuEp
- uVqVkZ5HZdFhW1wvS/0OLruOThsvRjNujedllfqtZTuNksRHIs9MHBvVagGOsiz59rL2
- sMlv4gHCh0YDyl/NNR5ViLg3WamfE/VPBfIsFkkjSx9pKRawlQxWlY9Jiy0XIH8/DTi6
- 5oPQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVVNofkkM7JByuJdFHW7x6xL7EJWLaqQTa33OP9mUdwXHl/feZDhs3NlcDgxDr2k0jVqAQp7rQ7Gl3IpumGmnlkY0Y1mAY=
-X-Gm-Message-State: AOJu0YwHv2+48mM/UUCEfQA8c2B4+qtJGqHEdb9pjMDV9w522rG0m/8Y
- XYJT9dFdKGj45VIe2CxsTNNW09JrfkOr/eJJ4rvAISjJQsKE3UieRtObuCGE8JredgD8bB3zhLp
- 3
-X-Google-Smtp-Source: AGHT+IGKYJpyIYjsGeMaUqsnlpNStNs7GW8QiC2j5TgIcMwtwy0tGqD5VjbKhUBepTVodJLhM4GbJg==
-X-Received: by 2002:a17:903:32d1:b0:1fa:80b3:d63b with SMTP id
- d9443c01a7336-1fa80b3d9d1mr13791095ad.55.1719340306135; 
- Tue, 25 Jun 2024 11:31:46 -0700 (PDT)
-Received: from [192.168.0.4] (174-21-76-141.tukw.qwest.net. [174.21.76.141])
+ d=1e100.net; s=20230601; t=1719341024; x=1719945824;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=CMjhGlcExekQf+5VSLIRvctS+6B2uJGjUo3v3Mg5lsk=;
+ b=BeldFcJul9n64E6i62/w6SZ/V4E8ptu3LggjRQdftJlpIvX/dIRYOnyYbDbniuMSon
+ r96VualNjDo06gQlwQhf15zewGnIocBb5VSmpJjqeXvSH8yiqvK+j7R42nu+EzJPIHDW
+ OP8XwxlJ70umC1LpJjFl6ecFwXOx7VGq28kEGazBRww2VyuzRtNosvQexMaWv+vhFZ7+
+ THlhT8ZsVApikZ8ZOzauyGPdZZJxRfEkIQdhsPbQob4fB1kphQWdZyREXho5Smmiya0w
+ 1olzWkCZ37+nxiRkf/p0Njpl/0SRIKWBonDD6dUB35qUTdfluERtiLbT3ODVT9sUVyT/
+ IrzQ==
+X-Gm-Message-State: AOJu0YxQPa+7ABaOPDx7801IcU+4qC00+eVmAe8ROMSfjudoA4UBLB6l
+ benLPKRbeHVZn3BwKaQXUZK73t3Q1RN+kwx3cVkUM7nR/Cp66LVyCnLwE8yIbNiAvG4sHnZWfQc
+ C
+X-Google-Smtp-Source: AGHT+IFeMMKYcZXRzdeQDN8zTw8EhlztVceHIlwe0SjXLlW/mXBavKsYoeO1y0NcimQ3YD0u7ZROdw==
+X-Received: by 2002:a17:902:e846:b0:1f6:87c:6f with SMTP id
+ d9443c01a7336-1fa23f36020mr81750205ad.62.1719340548123; 
+ Tue, 25 Jun 2024 11:35:48 -0700 (PDT)
+Received: from stoup.. (174-21-76-141.tukw.qwest.net. [174.21.76.141])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1f9eb2f2a06sm84617045ad.31.2024.06.25.11.31.45
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 25 Jun 2024 11:31:45 -0700 (PDT)
-Message-ID: <d7790078-80d8-4d02-82d1-7109040db81e@linaro.org>
-Date: Tue, 25 Jun 2024 11:31:44 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] include: move typeof_strip_qual to compiler.h, use it in
- QAPI_LIST_LENGTH()
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-Cc: flwu@google.com, berrange@redhat.com, peter.maydell@linaro.org,
- rkir@google.com
-References: <20240625111848.709176-1-pbonzini@redhat.com>
-Content-Language: en-US
+ d9443c01a7336-1f9eb3c6027sm84693235ad.133.2024.06.25.11.35.47
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 25 Jun 2024 11:35:47 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240625111848.709176-1-pbonzini@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2001:4860:4864:20::2a;
- envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x2a.google.com
+To: qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org,
+	Peter Maydell <peter.maydell@linaro.org>
+Subject: [PATCH v2 11/13] target/arm: Convert FCADD to decodetree
+Date: Tue, 25 Jun 2024 11:35:34 -0700
+Message-Id: <20240625183536.1672454-12-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240625183536.1672454-1-richard.henderson@linaro.org>
+References: <20240625183536.1672454-1-richard.henderson@linaro.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::834;
+ envelope-from=richard.henderson@linaro.org; helo=mail-qt1-x834.google.com
 X-Spam_score_int: -16
 X-Spam_score: -1.7
 X-Spam_bar: -
 X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, T_SPF_HELO_TEMPERROR=0.01,
+ DKIM_SIGNED=0.1, T_SPF_HELO_TEMPERROR=0.01,
  T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,35 +92,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/25/24 04:18, Paolo Bonzini wrote:
-> The typeof_strip_qual() is most useful for the atomic fetch-and-modify
-> operations in atomic.h, but it can be used elsewhere as well.  For example,
-> QAPI_LIST_LENGTH() assumes that the argument is not const, which is not a
-> requirement.
-> 
-> Move the macro to compiler.h and, while at it, move it under #ifndef
-> __cplusplus to emphasize that it uses C-only constructs.  A C++ version
-> of typeof_strip_qual() using type traits is possible[1], but beyond the
-> scope of this patch because the little C++ code that is in QEMU does not
-> use QAPI.
-> 
-> The patch was tested by changing the declaration of strv_from_str_list()
-> in qapi/qapi-type-helpers.c to:
-> 
->      char **strv_from_str_list(const strList *const list)
-> 
-> This is valid C code, and it fails to compile without this change.
-> 
-> [1]https://lore.kernel.org/qemu-devel/20240624205647.112034-1-flwu@google.com/
-> 
-> Signed-off-by: Paolo Bonzini<pbonzini@redhat.com>
-> ---
->   include/qapi/util.h     |  2 +-
->   include/qemu/atomic.h   | 42 -------------------------------------
->   include/qemu/compiler.h | 46 +++++++++++++++++++++++++++++++++++++++++
->   3 files changed, 47 insertions(+), 43 deletions(-)
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ target/arm/tcg/a64.decode      |  3 +++
+ target/arm/tcg/translate-a64.c | 33 ++++++++++-----------------------
+ 2 files changed, 13 insertions(+), 23 deletions(-)
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+diff --git a/target/arm/tcg/a64.decode b/target/arm/tcg/a64.decode
+index b2c7e36969..f330919851 100644
+--- a/target/arm/tcg/a64.decode
++++ b/target/arm/tcg/a64.decode
+@@ -957,6 +957,9 @@ SMMLA           0100 1110 100 ..... 10100 1 ..... ..... @rrr_q1e0
+ UMMLA           0110 1110 100 ..... 10100 1 ..... ..... @rrr_q1e0
+ USMMLA          0100 1110 100 ..... 10101 1 ..... ..... @rrr_q1e0
+ 
++FCADD_90        0.10 1110 ..0 ..... 11100 1 ..... ..... @qrrr_e
++FCADD_270       0.10 1110 ..0 ..... 11110 1 ..... ..... @qrrr_e
++
+ ### Advanced SIMD scalar x indexed element
+ 
+ FMUL_si         0101 1111 00 .. .... 1001 . 0 ..... .....   @rrx_h
+diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
+index 57cdde008e..a1b338263f 100644
+--- a/target/arm/tcg/translate-a64.c
++++ b/target/arm/tcg/translate-a64.c
+@@ -5623,6 +5623,14 @@ static bool trans_BFMLAL_v(DisasContext *s, arg_qrrr_e *a)
+     return true;
+ }
+ 
++static gen_helper_gvec_3_ptr * const f_vector_fcadd[3] = {
++    gen_helper_gvec_fcaddh,
++    gen_helper_gvec_fcadds,
++    gen_helper_gvec_fcaddd,
++};
++TRANS_FEAT(FCADD_90, aa64_fcma, do_fp3_vector, a, 0, f_vector_fcadd)
++TRANS_FEAT(FCADD_270, aa64_fcma, do_fp3_vector, a, 1, f_vector_fcadd)
++
+ /*
+  * Advanced SIMD scalar/vector x indexed element
+  */
+@@ -10957,8 +10965,6 @@ static void disas_simd_three_reg_same_extra(DisasContext *s, uint32_t insn)
+     case 0x19: /* FCMLA, #90 */
+     case 0x1a: /* FCMLA, #180 */
+     case 0x1b: /* FCMLA, #270 */
+-    case 0x1c: /* FCADD, #90 */
+-    case 0x1e: /* FCADD, #270 */
+         if (size == 0
+             || (size == 1 && !dc_isar_feature(aa64_fp16, s))
+             || (size == 3 && !is_q)) {
+@@ -10976,7 +10982,9 @@ static void disas_simd_three_reg_same_extra(DisasContext *s, uint32_t insn)
+     case 0x11: /* SQRDMLSH (vector) */
+     case 0x12: /* UDOT (vector) */
+     case 0x14: /* UMMLA */
++    case 0x1c: /* FCADD, #90 */
+     case 0x1d: /* BFMMLA */
++    case 0x1e: /* FCADD, #270 */
+     case 0x1f: /* BFDOT / BFMLAL */
+         unallocated_encoding(s);
+         return;
+@@ -11013,27 +11021,6 @@ static void disas_simd_three_reg_same_extra(DisasContext *s, uint32_t insn)
+         }
+         return;
+ 
+-    case 0xc: /* FCADD, #90 */
+-    case 0xe: /* FCADD, #270 */
+-        rot = extract32(opcode, 1, 1);
+-        switch (size) {
+-        case 1:
+-            gen_gvec_op3_fpst(s, is_q, rd, rn, rm, size == 1, rot,
+-                              gen_helper_gvec_fcaddh);
+-            break;
+-        case 2:
+-            gen_gvec_op3_fpst(s, is_q, rd, rn, rm, size == 1, rot,
+-                              gen_helper_gvec_fcadds);
+-            break;
+-        case 3:
+-            gen_gvec_op3_fpst(s, is_q, rd, rn, rm, size == 1, rot,
+-                              gen_helper_gvec_fcaddd);
+-            break;
+-        default:
+-            g_assert_not_reached();
+-        }
+-        return;
+-
+     default:
+         g_assert_not_reached();
+     }
+-- 
+2.34.1
 
-r~
 
