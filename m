@@ -2,83 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CF1B917262
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jun 2024 22:19:05 +0200 (CEST)
-Received: from [::1] (helo=lists1p.gnu.org)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09D7B9173CC
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jun 2024 23:55:16 +0200 (CEST)
+Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sMCRE-0007Sz-03; Tue, 25 Jun 2024 16:07:01 -0400
+	id 1sMBue-0006HU-Uo; Tue, 25 Jun 2024 15:33:28 -0400
 Received: from [2001:470:142:3::10] (helo=eggs.gnu.org)
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lists@philjordan.eu>)
- id 1sMCOZ-0007L0-AK
- for qemu-devel@nongnu.org; Tue, 25 Jun 2024 16:04:11 -0400
-Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <lists@philjordan.eu>)
- id 1sMCNx-0008OU-11
- for qemu-devel@nongnu.org; Tue, 25 Jun 2024 16:03:51 -0400
-Received: by mail-lf1-x12b.google.com with SMTP id
- 2adb3069b0e04-52ce01403f6so3232795e87.0
- for <qemu-devel@nongnu.org>; Tue, 25 Jun 2024 13:02:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1719345733; x=1719950533;
- darn=nongnu.org; 
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=pfa98Hhz/3a1N0c51sLjNCU13nfIteWFcsfvMzWwTAs=;
- b=JSRo74w0IUMIoOdPYvyehoIBCbv2jFeiJD0bdU7GsBDuvkkzOkPe6OLJ/fjdZh/8GH
- ECKYtwtFRoi7YskwwJ2R+C/a/+W4BMGoMRshHCFq04q0oPmoO2kF4ii3rzAjsgsExZST
- HP7nkNr2ZXlbYqAkjfNgAdb2To8M0wn7czmf1w5v9ddu631V1N3/i2g8cXfNp3RBhECi
- baeUjsj0gAmnLefYKsalxzxdTjGBKdrUvujNGyLiIOdKXdn9fJdL6p2N8RDH1ZamKMZX
- 1vGXH+2PWiDwbHS3w/H2ZIoAGJYSFGy2lvQcp8eVVKFiH88XV4vrHU3NNu5YDQ+1k2HI
- uCcw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719345733; x=1719950533;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=pfa98Hhz/3a1N0c51sLjNCU13nfIteWFcsfvMzWwTAs=;
- b=Zxj+2nHn49HGrpDalPnko1NVec6jq++vYpbddI0aTdDgFUbESmQAZwHVwF3r7wB9xJ
- tBRXk8wRECH8S+L/fRT3SCS6rOcdpV0ElvlvbHzsti/llsLsIeuLG4CMNXgg3pU/bz8n
- KFPYQkdVQF/v+GCirGQwEPQJZU0VShFSJDOS0PnP06VkStb9e43KvjmE1wFZHdNfrlFZ
- MslkU+0GtcAop2HXQFPiugn3/3XXmK1k6ERvvjtBxhU2cAW4We+ngD8eI37BHIIRo7aF
- dx7pFs8zRoF7eGbKJ2X/egozDQe+Pj9wBYHD/GXTa1jWYrK+G3y7RI9hLb337e9DmjY4
- 0r5w==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXebxCjPmETvNl7TKmMqgmhfy3XWtJl7E6uhFxlUXYnjBxOGuqV1XIOKhRBrJWpke5wL7YDt2Bhbap97igSD5TuyQdxFxY=
-X-Gm-Message-State: AOJu0YyvnqGu8HE6yT9t6WkrJGRw5nVemupvhqx+9vhJhGxN/r2/wHkB
- VVhtKdIOE5yBcKZFkc9mk4XZbWirW+n7V6bczZELRaNmfmlMAUc9WmHKPnDjFm3EhQNNieIIIwi
- WhCV/6SekLvmkKDREu0Q62WC70duU3BE3Xz59eiCH98J0975A9SlR
-X-Google-Smtp-Source: AGHT+IHksRExRFpSVNc+FAU1wAgUppMXLoVrUBPwA9iObRsLtPKT6HOKxfAyw1lejlazqTUPLetXdU1V4I0AVqnTFCI=
-X-Received: by 2002:a2e:3009:0:b0:2ec:5ff1:227a with SMTP id
- 38308e7fff4ca-2ec5ff12384mr44011751fa.17.1719341879605; Tue, 25 Jun 2024
- 11:57:59 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1sMBo7-00051t-Ty
+ for qemu-devel@nongnu.org; Tue, 25 Jun 2024 15:26:36 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1sMBnE-0003UE-Eb
+ for qemu-devel@nongnu.org; Tue, 25 Jun 2024 15:25:59 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1719343473;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=fiBoRbKqcXPEaXb9Wfb7tOE/hP9waTBqlmTEDeA82AQ=;
+ b=RfFX98lLlSPCZxQoFS4Kp5WEEFiX93gsmG2yKsILjOzyaM19vWFk/CFPJuIuAWPtk851FX
+ 1n5cp2c1V/HkEQAHbklBzpxMi+dkjkKXwJdFAGUQFUq42FvSQwHzu1XbefzwAovLD3qXu2
+ N6dAut7NMG3kEX0k816//BYUj7EbTiY=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-187-P0bWCPHlM1iTwXBfgWbUPQ-1; Tue,
+ 25 Jun 2024 15:05:35 -0400
+X-MC-Unique: P0bWCPHlM1iTwXBfgWbUPQ-1
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id DC33C19560BC; Tue, 25 Jun 2024 19:05:32 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.31])
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 24B1519560AB; Tue, 25 Jun 2024 19:05:28 +0000 (UTC)
+Date: Tue, 25 Jun 2024 20:05:25 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Elena Ufimtseva <elena.ufimtseva@oracle.com>
+Cc: qemu-devel@nongnu.org, eduardo@habkost.net, marcel.apfelbaum@gmail.com,
+ philmd@linaro.org, wangyanan55@huawei.com, peterx@redhat.com,
+ farosas@suse.de, eblake@redhat.com, armbru@redhat.com
+Subject: Re: [PATCH RFC 1/2] migration: abort when switchover limit exceeded
+Message-ID: <ZnsU9aWczE3vWISR@redhat.com>
+References: <20240621143221.198784-1-elena.ufimtseva@oracle.com>
+ <20240621143221.198784-2-elena.ufimtseva@oracle.com>
 MIME-Version: 1.0
-References: <20240608202045.2815-1-phil@philjordan.eu>
- <20240608202045.2815-4-phil@philjordan.eu>
- <dd047370-f0ed-4b8c-a251-037e82f64986@daynix.com>
- <CAAibmn2-JApae_MFX+Wy8MuzkCLuE7DbgmgVOko3f7WzZGoozQ@mail.gmail.com>
- <f8020f9b-45de-4dca-a35d-b26fe91f8962@daynix.com>
-In-Reply-To: <f8020f9b-45de-4dca-a35d-b26fe91f8962@daynix.com>
-From: Phil Dennis-Jordan <lists@philjordan.eu>
-Date: Tue, 25 Jun 2024 20:57:48 +0200
-Message-ID: <CAGCz3vvg9An5DVt=DKbkoBM=qb_wJRnJuw+svvi+rq4G=JShZQ@mail.gmail.com>
-Subject: Re: [PATCH 3/3] ui/cocoa: Adds support for mouse cursors
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: Phil Dennis-Jordan <phil@philjordan.eu>, qemu-devel@nongnu.org,
- peter.maydell@linaro.org, philmd@linaro.org, marcandre.lureau@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: neutral client-ip=2a00:1450:4864:20::12b;
- envelope-from=lists@philjordan.eu; helo=mail-lf1-x12b.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240621143221.198784-2-elena.ufimtseva@oracle.com>
+User-Agent: Mutt/2.2.12 (2023-09-09)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, T_SPF_HELO_TEMPERROR=0.01,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,43 +79,74 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 11 Jun 2024 at 09:36, Akihiko Odaki <akihiko.odaki@daynix.com> wrot=
-e:
-> > [=E2=80=A6] I also
-> > definitely think host cursor integration is useful and valuable, at
-> > least in absolute pointing mode - for example, when the host system is
-> > itself being remote controlled, and also to avoid the cursor being
-> > cropped near the edges of the guest viewport.
->
-> Can you elaborate more about the remote control scenario? I don't think
-> having extra code just to fix cropped cursor is not worthwhile (I even
-> feel a bit awkward to make the cursor overflow.)
+On Fri, Jun 21, 2024 at 07:32:20AM -0700, Elena Ufimtseva wrote:
+> Introduce capability switchover_abort and migration parameter switchover_limit
+> to allow for live migration abort when the source downtime exceeded by
+> switchover_limit.
+> 
+> Signed-off-by: Elena Ufimtseva <elena.ufimtseva@oracle.com>
+> ---
+>  hw/core/machine.c                  |  1 +
+>  include/migration/client-options.h |  1 +
+>  migration/migration-hmp-cmds.c     | 10 ++++++
+>  migration/migration.c              | 39 +++++++++++++++++++++
+>  migration/migration.h              |  5 +++
+>  migration/options.c                | 56 ++++++++++++++++++++++++++++++
+>  migration/options.h                |  1 +
+>  migration/savevm.c                 | 13 +++++++
+>  qapi/migration.json                | 27 +++++++++++---
+>  9 files changed, 149 insertions(+), 4 deletions(-)
 
-If you're remote-controlling the host Mac, many VNC/RDP/whatever
-clients will use a local cursor and simply request cursor image
-updates from the server and apply them to the local native cursor.
-That way, there's no lag when moving the cursor even on slower
-connections, which you'd otherwise get if you had to wait for the
-regular screen image update, and which can make precise positioning
-difficult.
+> diff --git a/qapi/migration.json b/qapi/migration.json
+> index 470f746cc5..069a44f207 100644
+> --- a/qapi/migration.json
+> +++ b/qapi/migration.json
+> @@ -469,6 +469,10 @@
+>  #     each RAM page.  Requires a migration URI that supports seeking,
+>  #     such as a file.  (since 9.0)
+>  #
+> +# @switchover-abort: abort migration if downtime exceeds the downtime
+> +#     limit configured by the specified value by switchover-limit
+> +#     migration parameter.
+> +#
+>  # Features:
+>  #
+>  # @unstable: Members @x-colo and @x-ignore-shared are experimental.
+> @@ -485,7 +489,7 @@
+>             { 'name': 'x-ignore-shared', 'features': [ 'unstable' ] },
+>             'validate-uuid', 'background-snapshot',
+>             'zero-copy-send', 'postcopy-preempt', 'switchover-ack',
+> -           'dirty-limit', 'mapped-ram'] }
+> +           'dirty-limit', 'mapped-ram', 'switchover-abort'] }
+>  
+>  ##
+>  # @MigrationCapabilityStatus:
+> @@ -821,6 +825,10 @@
+>  #     See description in @ZeroPageDetection.  Default is 'multifd'.
+>  #     (since 9.0)
+>  #
+> +# @switchover-limit: Switchover limit (ms) that would be used to
+> +#     intiate abort of live migration if the total switchover time
+> +#     exceeded downtime_limit + switchover_limit (Since 9.1)
 
-At any rate, most other Qemu UI frontends likewise implement guest
-cursors by setting the guest-supplied cursor image on the host's
-native windowing system's cursor, e.g. gdk_window_set_cursor(). I
-don't really see a good reason why macOS should be different? Qemu
-would also hardly be the first VMM on the Mac to pass guest pointers
-through as NSPointers - Parallels Desktop appears to do the same, for
-example.
+IMHO switchover_limit should not exist.
 
-> You can add Based-on: to the cover letter to clarify the dependency, and
-> add "RFC" to the subject if the code is not ready to pull. Please look
-> at docs/devel/submitting-a-patch.rst for more info.
+When 'switchover-abort' is enabled, then the existing downtime_limit
+semantics should just be defined to also include the switchover
+time.  The admin (on behalf of the guest owner) only cares about
+the overall downtime experianced by the VM, not the individual
+phases of the switch process.
 
-I've done that now, thanks.
-https://patchew.org/QEMU/20240625134931.92279-1-phil@philjordan.eu/
 
-Phil
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+
 
