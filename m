@@ -2,77 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECF539163CA
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jun 2024 11:50:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDB30916263
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jun 2024 11:34:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sM2nV-0007jb-4u; Tue, 25 Jun 2024 05:49:09 -0400
+	id 1sM2Yf-0004ip-2Q; Tue, 25 Jun 2024 05:33:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <east.moutain.yang@gmail.com>)
- id 1sM2nT-0007iq-B3; Tue, 25 Jun 2024 05:49:07 -0400
-Received: from mail-oo1-xc33.google.com ([2607:f8b0:4864:20::c33])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <east.moutain.yang@gmail.com>)
- id 1sM2nR-0003Fe-I2; Tue, 25 Jun 2024 05:49:07 -0400
-Received: by mail-oo1-xc33.google.com with SMTP id
- 006d021491bc7-5c2177bf7a8so102088eaf.2; 
- Tue, 25 Jun 2024 02:49:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1719308943; x=1719913743; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=ScpTwYEgj3XP1Q2imqxoItyBRdYB3AJf+gJpu+LZmxg=;
- b=McK/1NZt4R+SctpChBrf/NBWTcSESz5xcnbOzd7wE7CNDyYJr7zp65rj5oL5o0CqIe
- Fjul8d7lsL4j7jxrSNI37k72AnxvSiSCHZ1O3+v91c/rvyHC4Ck9P/Kh39f4nk2i/opK
- plbpNMHBxO1vSRORHAZ1IZwn8X3r7KDHJiVShDkvw0gc+VIhdr/e+kFm6fRcKbTo1MTr
- eKCl1h+qbX37o6yPP4L0z/TEND7bmTda82JsNkSuCeYg1KwpyuuIDDrvphNAXvuEkuS/
- Nwwhfsr+Wc6LmENM/XpkSJXVov8Yo9ix6H2mBRPV7Qg2MuwkMDItO2JAImtjl+tsdt7z
- Yocw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719308943; x=1719913743;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=ScpTwYEgj3XP1Q2imqxoItyBRdYB3AJf+gJpu+LZmxg=;
- b=xTiuegUzQqYJs+X1g/+yYmFZfiahvCgmC5fQprfMGbRcVwspuaYKq9FeFaH1fJOtkF
- tdwb8sbtRnY88IrbrjAtdSmj5gGy2h/Yz84crKM0BrLmaDqElDx9DVoRgJFrF8i9bWk6
- tVTa5OFDZdhAHth5vPZZzAz1b7Ehh87WQmQw2AzsifUqZVt8sAXoeZ1EHSXCD52ZSsMH
- /0atd+P33FZANQ8I+7dt4vp0GjpSG8+Q1vB379vUbdPr6ZW0BgtBDnCB2+k1dJW88Ldl
- Lb9BVM29hdnjqFH1RTA3BH6zMESJDJme9atFfw6GbEUFuaKNLJ2AAAQA03Os0aKipnGg
- OAZQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWNS/6zxYv9gw5e6ShJqadspu/j0rXMQXfB0qICfyPW9XktVln8O6YCylpHgwwlcZZFIknGLWl9CpF+iOS1ncFqwW6iiXBT
-X-Gm-Message-State: AOJu0YwX+82Wd7Yug60nPUN8dMfIvbJnslGl8zUdd5dOx2H2J92QxFd4
- 62Dd/YeDqi1oTgV82ydOOslMc7GWzR4ukpewQWwvJEyI196fHwsXgpRtgwVP4+o=
-X-Google-Smtp-Source: AGHT+IG+NAHBxlhvrocSQH+QlSRJ/ve3AiLibaLODN+W/a9pusNx8K2d+xmAeWAyX7N5mSMeJgyLkw==
-X-Received: by 2002:a05:6870:1602:b0:259:8c82:999 with SMTP id
- 586e51a60fabf-25d06cd3dc7mr8321740fac.25.1719308942746; 
- Tue, 25 Jun 2024 02:49:02 -0700 (PDT)
-Received: from localhost.localdomain ([118.242.3.34])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-70672e24d7asm4784363b3a.114.2024.06.25.02.49.00
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 25 Jun 2024 02:49:02 -0700 (PDT)
-From: Wencheng Yang <east.moutain.yang@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: mst@redhat.com, jasowang@redhat.com, qemu-stable@nongnu.org,
- thomas <east.moutain.yang@gmail.com>
-Subject: [PATCH v4] virtio-net: Notify the guest with the latest available idx
-Date: Tue, 25 Jun 2024 17:48:51 +0800
-Message-Id: <20240625094851.5252-1-east.moutain.yang@gmail.com>
-X-Mailer: git-send-email 2.39.0
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sM2Ya-0004iJ-3Q
+ for qemu-devel@nongnu.org; Tue, 25 Jun 2024 05:33:44 -0400
+Received: from mgamail.intel.com ([192.198.163.17])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sM2YU-0000km-Fk
+ for qemu-devel@nongnu.org; Tue, 25 Jun 2024 05:33:43 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1719308018; x=1750844018;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=/EBGKUq/bPwKFGVxQK4hCA1mKw9MM/cSXI/gZArZTl0=;
+ b=OJgScm+DXSTqNFgOn7Px5XI7khynDuy/PU0vl9gd4viTOFosJB9QFzXc
+ BP4iwdWkXB5yVN+b5/uUatBE53V7fvqNhUzNAzhlbfHtguQp/jDJsDt8F
+ qDwCaEChSMENIf/gIzv0orBfFvIC1HbCd+przGK1XFGC/8+IbazvHIOCq
+ 5IZJCoxcbBePeUe2t8JBG0rsLS8GYaYM/GVBZATiI5KPMYqm+eLNiCxPn
+ f/EvRIUUs6WuOUj9AAqegcf/sDTsrDS63+vcm7vr1KmKIN11OzzA/j6eq
+ TXDBlSlpM2hvjKSfP5P3BA0O+nKOkLHAr+jUDPgbcFWZ6CGpcLVUdwhV/ w==;
+X-CSE-ConnectionGUID: JeV70J+9Q3OhgUgwUntsZw==
+X-CSE-MsgGUID: PGotsDhnRKqdRM9aqpokVQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11113"; a="16189563"
+X-IronPort-AV: E=Sophos;i="6.08,263,1712646000"; d="scan'208";a="16189563"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Jun 2024 02:33:32 -0700
+X-CSE-ConnectionGUID: b5DvKGjFR2qbuNMfbmZCxA==
+X-CSE-MsgGUID: Y6TWtXF1TwGaEfs0FJSv6Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,263,1712646000"; d="scan'208";a="48557661"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by orviesa005.jf.intel.com with ESMTP; 25 Jun 2024 02:33:30 -0700
+Date: Tue, 25 Jun 2024 17:49:03 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: EwanHai <ewanhai-oc@zhaoxin.com>
+Cc: Xiaoyao Li <xiaoyao.li@intel.com>, pbonzini@redhat.com,
+ mtosatti@redhat.com, kvm@vger.kernel.org, qemu-devel@nongnu.org,
+ ewanhai@zhaoxin.com, cobechen@zhaoxin.com
+Subject: Re: [PATCH v3] target/i386/kvm: Refine VMX controls setting for
+ backward compatibility
+Message-ID: <ZnqSj4PGrUeZ7OT1@intel.com>
+References: <20240624095806.214525-1-ewanhai-oc@zhaoxin.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c33;
- envelope-from=east.moutain.yang@gmail.com; helo=mail-oo1-xc33.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240624095806.214525-1-ewanhai-oc@zhaoxin.com>
+Received-SPF: pass client-ip=192.198.163.17; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -45
+X-Spam_score: -4.6
+X-Spam_bar: ----
+X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.207,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -89,172 +82,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: thomas <east.moutain.yang@gmail.com>
+On Mon, Jun 24, 2024 at 05:58:06AM -0400, EwanHai wrote:
+> Date: Mon, 24 Jun 2024 05:58:06 -0400
+> From: EwanHai <ewanhai-oc@zhaoxin.com>
+> Subject: [PATCH v3] target/i386/kvm: Refine VMX controls setting for
+>  backward compatibility
+> X-Mailer: git-send-email 2.34.1
+> 
+> Commit 4a910e1 ("target/i386: do not set unsupported VMX secondary
+> execution controls") implemented a workaround for hosts that have
+> specific CPUID features but do not support the corresponding VMX
+> controls, e.g., hosts support RDSEED but do not support RDSEED-Exiting.
+> 
+> In detail, commit 4a910e1 introduced a flag `has_msr_vmx_procbased_clts2`.
+> If KVM has `MSR_IA32_VMX_PROCBASED_CTLS2` in its msr list, QEMU would
+> use KVM's settings, avoiding any modifications to this MSR.
+> 
+> However, this commit (4a910e1) didn't account for cases in older Linux
+> kernels(4.17~5.2) where `MSR_IA32_VMX_PROCBASED_CTLS2` is in
+> `kvm_feature_msrs`-obtained by ioctl(KVM_GET_MSR_FEATURE_INDEX_LIST),
+> but not in `kvm_msr_list`-obtained by ioctl(KVM_GET_MSR_INDEX_LIST).
+> As a result,it did not set the `has_msr_vmx_procbased_clts2` flag based
+> on `kvm_msr_list` alone, even though KVM does maintain the value of
+> this MSR.
+> 
+> This patch supplements the above logic, ensuring that
+> `has_msr_vmx_procbased_clts2` is correctly set by checking both MSR
+> lists, thus maintaining compatibility with older kernels.
+> 
+> Signed-off-by: EwanHai <ewanhai-oc@zhaoxin.com>
+> ---
+> Changes in v3:
+> - Use a more precise version range in the comment, specifically "4.17~5.2"
+> instead of "<5.3".
+> 
+> Changes in v2:
+> - Adjusted some punctuation in the commit message as per suggestions.
+> - Added comments to the newly added code to indicate that it is a compatibility fix.
+> 
+> v1 link:
+> https://lore.kernel.org/all/20230925071453.14908-1-ewanhai-oc@zhaoxin.com/
+> 
+> v2 link:
+> https://lore.kernel.org/all/20231127034326.257596-1-ewanhai-oc@zhaoxin.com/
+> ---
+>  target/i386/kvm/kvm.c | 15 +++++++++++++++
+>  1 file changed, 15 insertions(+)
+> 
+> diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+> index 7ad8072748..a7c6c5b2d0 100644
+> --- a/target/i386/kvm/kvm.c
+> +++ b/target/i386/kvm/kvm.c
+> @@ -2386,6 +2386,7 @@ void kvm_arch_do_init_vcpu(X86CPU *cpu)
+>  static int kvm_get_supported_feature_msrs(KVMState *s)
+>  {
+>      int ret = 0;
+> +    int i;
+>  
+>      if (kvm_feature_msrs != NULL) {
+>          return 0;
+> @@ -2420,6 +2421,20 @@ static int kvm_get_supported_feature_msrs(KVMState *s)
+>          return ret;
+>      }
+>  
+> +   /*
+> +    * Compatibility fix:
+> +    * Older Linux kernels (4.17~5.2) report MSR_IA32_VMX_PROCBASED_CTLS2
+> +    * in KVM_GET_MSR_FEATURE_INDEX_LIST but not in KVM_GET_MSR_INDEX_LIST.
+> +    * This leads to an issue in older kernel versions where QEMU,
+> +    * through the KVM_GET_MSR_INDEX_LIST check, assumes the kernel
+> +    * doesn't maintain MSR_IA32_VMX_PROCBASED_CTLS2, resulting in
+> +    * incorrect settings by QEMU for this MSR.
+> +    */
+> +    for (i = 0; i < kvm_feature_msrs->nmsrs; i++) {
 
-Patch 06b12970174 ("virtio-net: fix network stall under load")
-added double-check to test whether the available buffer size
-can satisfy the request or not, in case the guest has added
-some buffers to the avail ring simultaneously after the first
-check.
+nit: `i` could be declared here,
 
-It will be lucky if the available buffer size becomes okay
-after the double-check, then the host can send the packet to
-the guest. If the buffer size still can't satisfy the request,
-even if the guest has added some buffers, notify the guest
-with the latest available idx seen by the host, similiar to
-the action taken by the host after the first check, else
-viritio-net would stall at the host side forever.
+for (int i = 0; i < kvm_feature_msrs->nmsrs; i++) {
 
-The case below can reproduce the stall.
+> +        if (kvm_feature_msrs->indices[i] == MSR_IA32_VMX_PROCBASED_CTLS2) {
+> +            has_msr_vmx_procbased_ctls2 = true;
+> +        }
+> +    }
+>      return 0;
+>  }
+>  
+> -- 
+> 2.34.1
+>
 
-                                       Guest 0
-                                     +--------+
-                                     | iperf  |
-                    ---------------> | server |
-         Host       |                +--------+
-       +--------+   |                    ...
-       | iperf  |----
-       | client |----                  Guest n
-       +--------+   |                +--------+
-                    |                | iperf  |
-                    ---------------> | server |
-                                     +--------+
+Since the minimum KVM version supported for i386 is v4.5 (docs/system/
+target-i386.rst), this fix makes sense, so for this patch,
 
-Boot many guests from qemu with virtio network:
- qemu ... -netdev tap,id=net_x \
-    -device virtio-net-pci-non-transitional,\
-    iommu_platform=on,mac=xx:xx:xx:xx:xx:xx,netdev=net_x
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
-Each guest acts as iperf server with commands below:
- iperf3 -s -D -i 10 -p 8001
- iperf3 -s -D -i 10 -p 8002
+Additionally, has_msr_vmx_vmfunc has the similar compat issue. I think
+it deserves a fix, too.
 
-The host as iperf client:
- iperf3 -c guest_IP -p 8001 -i 30 -w 256k -P 20 -t 40000
- iperf3 -c guest_IP -p 8002 -i 30 -w 256k -P 20 -t 40000
-
-After some time, the host loses connection to the guest,
-the guest can send packet to the host, but can't receive
-packet from host.
-
-It's more likely to happen if SWIOTLB is enabled in the guest,
-allocating and freeing bounce buffer takes some CPU ticks,
-copying from/to bounce buffer takes more CPU ticks, compared
-with that there is no bounce buffer in the guest.
-Once the rate of producing packets from the host approximates
-the rate of receiveing packets in the guest, the guest would
-loop in NAPI.
-
-         receive packets    ---
-               |             |
-               v             |
-           free buf      virtnet_poll
-               |             |
-               v             |
-     add buf to avail ring  ---
-               |
-               |  need kick the host?
-               |  NAPI continues
-               v
-         receive packets    ---
-               |             |
-               v             |
-           free buf      virtnet_poll
-               |             |
-               v             |
-     add buf to avail ring  ---
-               |
-               v
-              ...           ...
-
-On the other hand, the host fetches free buf from avail
-ring, if the buf in the avail ring is not enough, the
-host notifies the guest the event by writing the avail
-idx read from avail ring to the event idx of used ring,
-then the host goes to sleep, waiting for the kick signal
-from the guest.
-
-Once the guest finds the host is waiting for kick singal
-(in virtqueue_kick_prepare_split()), it kicks the host.
-
-The host may stall forever at the sequences below:
-
-         Host                        Guest
-     ------------                 -----------
- fetch buf, send packet           receive packet ---
-         ...                          ...         |
- fetch buf, send packet             add buf       |
-         ...                        add buf   virtnet_poll
-    buf not enough      avail idx-> add buf       |
-    read avail idx                  add buf       |
-                                    add buf      ---
-                                  receive packet ---
-    write event idx                   ...         |
-    waiting for kick                 add buf   virtnet_poll
-                                      ...         |
-                                                 ---
-                                 no more packet, exit NAPI
-
-In the first loop of NAPI above, indicated in the range of
-virtnet_poll above, the host is sending packets while the
-guest is receiving packets and adding buf.
- step 1: The buf is not enough, for example, a big packet
-         needs 5 buf, but the available buf count is 3.
-         The host read current avail idx.
- step 2: The guest adds some buf, then checks whether the
-         host is waiting for kick signal, not at this time.
-         The used ring is not empty, the guest continues
-         the second loop of NAPI.
- step 3: The host write the avail idx readed from avail
-         ring to used ring as event idx via
-         virtio_queue_set_notification(q->rx_vq, 1).
- step 4: At the end of the second loop of NAPI, recheck
-         whether kick is needed, as the event idx in the
-         used ring written by the host is beyound the
-         range of kick condition, the guest will not
-         send kick signal to the host.
-
-The patch notifies the guest with the latest avail idx seen
-by the host in the double-check, which increases the
-probability of hitting kick condition, but logically
-speaking, it can't resolve the issue. It's kind of
-optimization agianst patch 06b12970174.
-
-Changelog:
-v4:
-- Correct spelling mistake in the subject
-- Describe the issue that virtio-net is blocked at host side
-
-v3:
-- Add virtio-net tag in the subject
-- Refine commit log
-
-v2:
-- Add SOB tag at the end of the commit message
-- Place Fixes tag at the end of the commit message
-
-v1:
-- Initial patch
-
-Fixes: 06b12970174 ("virtio-net: fix network stall under load")
-Signed-off-by: Wencheng Yang <east.moutain.yang@gmail.com>
----
- hw/net/virtio-net.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-index 9c7e85caea..23c6c8c898 100644
---- a/hw/net/virtio-net.c
-+++ b/hw/net/virtio-net.c
-@@ -1654,6 +1654,7 @@ static int virtio_net_has_buffers(VirtIONetQueue *q, int bufsize)
-         if (virtio_queue_empty(q->rx_vq) ||
-             (n->mergeable_rx_bufs &&
-              !virtqueue_avail_bytes(q->rx_vq, bufsize, 0))) {
-+            virtio_queue_set_notification(q->rx_vq, 1);
-             return 0;
-         }
-     }
--- 
-2.39.0
+-Zhao
 
 
