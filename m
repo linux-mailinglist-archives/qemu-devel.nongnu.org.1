@@ -2,94 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD5D0917274
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jun 2024 22:22:57 +0200 (CEST)
-Received: from [::1] (helo=lists1p.gnu.org)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BF2A917332
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jun 2024 23:18:56 +0200 (CEST)
+Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sMCVs-0000T6-RG; Tue, 25 Jun 2024 16:11:40 -0400
+	id 1sMBQD-00060e-3l; Tue, 25 Jun 2024 15:02:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1sMCT5-0000EQ-11
- for qemu-devel@nongnu.org; Tue, 25 Jun 2024 16:08:47 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sMB8J-0001tq-4I
+ for qemu-devel@nongnu.org; Tue, 25 Jun 2024 14:44:30 -0400
+Received: from mail-oa1-x2a.google.com ([2001:4860:4864:20::2a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1sMCSQ-0000Nq-6r
- for qemu-devel@nongnu.org; Tue, 25 Jun 2024 16:08:33 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-424acf3226fso1431215e9.1
- for <qemu-devel@nongnu.org>; Tue, 25 Jun 2024 13:05:59 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sMB7M-0006p2-1K
+ for qemu-devel@nongnu.org; Tue, 25 Jun 2024 14:42:57 -0400
+Received: by mail-oa1-x2a.google.com with SMTP id
+ 586e51a60fabf-25cc6962c24so2624200fac.3
+ for <qemu-devel@nongnu.org>; Tue, 25 Jun 2024 11:40:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719345941; x=1719950741; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to
- :references:user-agent:subject:cc:to:from:date:from:to:cc:subject
- :date:message-id:reply-to;
- bh=jKrfFtD+zVr5EvhCiB/d12GVI5bP9LbTIwL35SDNz+8=;
- b=k2/vS4j2MyJRhCI6QlJISW0uGijLiLcjeUdVt72K1+n7zoU6MtBJT4/EBIYtNLvKnu
- EQz9eQs32dhYpDDn29LTR1aN9knUfPKzfEvYXytuIB+I0JMvT6gdGCY0ftaB//rodosp
- LimbMzValABKNYoiJp1OWTO9EDP83J8r29dTw8jKMwgqYg2eXYjgGGCZEyMXpNtJqtia
- m8WeUZ9UStZLe6Jsyct8kYZAL0jJw5Ngez3K7lT32qit3uxWLqvYIVDK8tI4YaWt3DmD
- IJSEgxNlj1RLuQV3KWab+s4v1jSMLCNYhTw4hJppPn23LdvowFcm56TM3xZewvy0qSQp
- 5epA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719345941; x=1719950741;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to
- :references:user-agent:subject:cc:to:from:date:x-gm-message-state
+ d=linaro.org; s=google; t=1719340845; x=1719945645; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=jKrfFtD+zVr5EvhCiB/d12GVI5bP9LbTIwL35SDNz+8=;
- b=ZzrKeAEkm5JJmGO74ku0IG/YVOk1VFEfwBQaLn39vPqA32WRuueIBjbJcsi1nYqsYQ
- DAveOgIUnI212F6Qi2VEW9s42eeNkEJ3Ppu1E1SdyTd352qKVFOH0HVkXibxgUx8+IL8
- ezNUR1vKxqeUvKTR8s1R5TjvfH5eBTwGdkejpMhY3HacBiwmrCLds3yzBPvHhqOWUeMq
- uzhnMk7kfWRA0XUpZ7NgiN1dpujENthIxcbbnajfQEkKrWAtlBJBY9dEsKLr7OWm0Kvs
- LjKH6I5j/X9famG+ckYvDVWRK6USjLGPv76sCFHgiAvohSBwi9UjJoCE9q4xslKdArar
- 3mxA==
-X-Gm-Message-State: AOJu0Yzwh5zVGy9393hf7SZjmgeIm2oScpeOUDljmdrQBGzguheSpLr+
- 7ibe9K4S/C0UIh3TQrEAY3zmcn61xDVhj4hdtQpKSaW+Le/X6XjbC0rEqDDpS9VUIxZLT50ksOF
- 4oRU=
-X-Google-Smtp-Source: AGHT+IFryNNsHz4Wq4Dc8B333dCUhmTAVrWfr8mesYoehqFhNbP/a+mnveimqE9pY++LUl4UT31ptg==
-X-Received: by 2002:a05:600c:4a99:b0:421:29e1:998 with SMTP id
- 5b1f17b1804b1-4248cc67376mr51272055e9.39.1719339560987; 
- Tue, 25 Jun 2024 11:19:20 -0700 (PDT)
-Received: from meli-email.org (adsl-193.37.6.1.tellas.gr. [37.6.1.193])
+ bh=6KuISq7Eq2uldN7W6ls6TqJkng66O5auRfGJh0XlrPQ=;
+ b=gpwzQYKY07RHvenjsV9mL4hFyidKTEOSAWCIHj8Uz+Y9cSpUYkzyUoMhTsFNtLgwfr
+ DFAlub/GvWDpTjxxWXuimbO7d+Xq1ATM5i0pk2N5wZMr/NIgKHnNHCeBv/z/lNMpcKsi
+ zRyWy5F84NxEJBekEMnDNs1BkaL4mx1qvO/cE0+eeb61iWzW9gv3wPayyn1R+EZinZPf
+ lmY5GmC3etNxLPRmo7D7luLxc3JfRzncR4ijEIIBW2yLccVcK3Tz8luRw5nSgi27cgpY
+ OGcnBYphIlKeIo4u1yAEMkMUvY9N6pjcRhewOI5wqwiRXpNwz3ZWsqSQY4B84pLdOObE
+ WFVg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1719340845; x=1719945645;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=6KuISq7Eq2uldN7W6ls6TqJkng66O5auRfGJh0XlrPQ=;
+ b=Njz2llreOaLSPTzV3bFZwEvPSJJIuX+sG6euOZzt8L7LieFGeppZeVaf5Ez45zQblS
+ ZL3+mVXfg2owIZ9wvpy9xmA1E5DKvpmx5y08cw0LE/HTy+MUl7fjlQWPNLZ72HWPWhJs
+ tqE1J8Bs86ustDWZo1Y9W3UN5Y/R/BfNWUXHEsMoSONdpmcfJoNe/5L6FndemvX0YuEp
+ uVqVkZ5HZdFhW1wvS/0OLruOThsvRjNujedllfqtZTuNksRHIs9MHBvVagGOsiz59rL2
+ sMlv4gHCh0YDyl/NNR5ViLg3WamfE/VPBfIsFkkjSx9pKRawlQxWlY9Jiy0XIH8/DTi6
+ 5oPQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVVNofkkM7JByuJdFHW7x6xL7EJWLaqQTa33OP9mUdwXHl/feZDhs3NlcDgxDr2k0jVqAQp7rQ7Gl3IpumGmnlkY0Y1mAY=
+X-Gm-Message-State: AOJu0YwHv2+48mM/UUCEfQA8c2B4+qtJGqHEdb9pjMDV9w522rG0m/8Y
+ XYJT9dFdKGj45VIe2CxsTNNW09JrfkOr/eJJ4rvAISjJQsKE3UieRtObuCGE8JredgD8bB3zhLp
+ 3
+X-Google-Smtp-Source: AGHT+IGKYJpyIYjsGeMaUqsnlpNStNs7GW8QiC2j5TgIcMwtwy0tGqD5VjbKhUBepTVodJLhM4GbJg==
+X-Received: by 2002:a17:903:32d1:b0:1fa:80b3:d63b with SMTP id
+ d9443c01a7336-1fa80b3d9d1mr13791095ad.55.1719340306135; 
+ Tue, 25 Jun 2024 11:31:46 -0700 (PDT)
+Received: from [192.168.0.4] (174-21-76-141.tukw.qwest.net. [174.21.76.141])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-36638d9bb1fsm13653144f8f.49.2024.06.25.11.19.20
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 25 Jun 2024 11:19:20 -0700 (PDT)
-Date: Tue, 25 Jun 2024 21:08:53 +0300
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-To: Zhao Liu <zhao1.liu@intel.com>
-Cc: qemu-devel@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
- Mads Ynddal <mads@ynddal.dk>, Peter Maydell <peter.maydell@linaro.org>,
- Alex Benn=?UTF-8?B?w6kg?=e <alex.bennee@linaro.org>,
- "Daniel P. Berrang=?UTF-8?B?w6k=?= " <berrange@redhat.com>,
- Marc-Andr=?UTF-8?B?w6kg?=Lureau <marcandre.lureau@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Philippe Mathieu-Daud=?UTF-8?B?w6kg?=<philmd@linaro.org>,
- Gustavo Romero <gustavo.romero@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>, rowan.hart@intel.com,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, John Snow <jsnow@redhat.com>,
- Cleber Rosa <crosa@redhat.com>
-Subject: Re: [RFC PATCH v3 2/5] rust: add bindgen step as a meson dependency
-User-Agent: meli 0.8.6
-References: <rust-pl011-rfc-v3.git.manos.pitsidianakis@linaro.org>
- <6bf311a35e6d3bfa8b3bfd10d8f896a9e655fa30.1718827153.git.manos.pitsidianakis@linaro.org>
- <ZnlGlOGORQkOsoO5@intel.com> <fl60u.ry7sk6d8fv39@linaro.org>
- <ZnrpgW+CopiJAGZF@intel.com>
-In-Reply-To: <ZnrpgW+CopiJAGZF@intel.com>
-Message-ID: <fnew7.3urdmuxnhe3l@linaro.org>
+ d9443c01a7336-1f9eb2f2a06sm84617045ad.31.2024.06.25.11.31.45
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 25 Jun 2024 11:31:45 -0700 (PDT)
+Message-ID: <d7790078-80d8-4d02-82d1-7109040db81e@linaro.org>
+Date: Tue, 25 Jun 2024 11:31:44 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset=utf-8; format=flowed
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x333.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] include: move typeof_strip_qual to compiler.h, use it in
+ QAPI_LIST_LENGTH()
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+Cc: flwu@google.com, berrange@redhat.com, peter.maydell@linaro.org,
+ rkir@google.com
+References: <20240625111848.709176-1-pbonzini@redhat.com>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20240625111848.709176-1-pbonzini@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2001:4860:4864:20::2a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x2a.google.com
 X-Spam_score_int: -16
 X-Spam_score: -1.7
 X-Spam_bar: -
 X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, T_SPF_HELO_TEMPERROR=0.01,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, T_SPF_HELO_TEMPERROR=0.01,
  T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -106,63 +97,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 25 Jun 2024 19:00, Zhao Liu <zhao1.liu@intel.com> wrote:
->[snip]
->> This is for future-proofing the Rust integration in general. I 
->> haven't been
->> able to compile under macos yet because bindgen cannot find the system clang
->> header. I also don't have a windows pc to test it on. But it should work
->> theoretically under all three.
->
->Yes, they should work. EMM, but there is no particular need for them at
->the moment, so just to be safe, we can put these two platforms on hold
->for now, and they can be easily added when the tests are covered.
->
->A TODO can remind support for them.
+On 6/25/24 04:18, Paolo Bonzini wrote:
+> The typeof_strip_qual() is most useful for the atomic fetch-and-modify
+> operations in atomic.h, but it can be used elsewhere as well.  For example,
+> QAPI_LIST_LENGTH() assumes that the argument is not const, which is not a
+> requirement.
+> 
+> Move the macro to compiler.h and, while at it, move it under #ifndef
+> __cplusplus to emphasize that it uses C-only constructs.  A C++ version
+> of typeof_strip_qual() using type traits is possible[1], but beyond the
+> scope of this patch because the little C++ code that is in QEMU does not
+> use QAPI.
+> 
+> The patch was tested by changing the declaration of strv_from_str_list()
+> in qapi/qapi-type-helpers.c to:
+> 
+>      char **strv_from_str_list(const strList *const list)
+> 
+> This is valid C code, and it fails to compile without this change.
+> 
+> [1]https://lore.kernel.org/qemu-devel/20240624205647.112034-1-flwu@google.com/
+> 
+> Signed-off-by: Paolo Bonzini<pbonzini@redhat.com>
+> ---
+>   include/qapi/util.h     |  2 +-
+>   include/qemu/atomic.h   | 42 -------------------------------------
+>   include/qemu/compiler.h | 46 +++++++++++++++++++++++++++++++++++++++++
+>   3 files changed, 47 insertions(+), 43 deletions(-)
 
-I'm still trying to figure out why bindgen doesn't find the /Library/*** 
-include paths.. it's frustrating! I will remove them if I don't succeed 
-and also no one volunteers to attempt a windows build. :)
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
->[snip]
->> > 
->> > Could we decouple 'optimization' with cargo's opt-level (maybe in the future)?
->> > 
->> > Or we could add new option to specify custom rust opt-level, which will
->> > set the environment varialbe CARGO_PROFILE_<profile_name>_OPT_LEVEL and
->> > override the default opt-level in Cargo.toml.
->> 
->> optimization here refers to LLVM's opt flags directly, so I think it makes
->> sense to follow the project-wide compiler settings?
->
->Oh, yes. But I think the choice of debug or release is best based on the
->debug info. What about this?
->
->if get_option('debug')
->    rs_build_type = 'debug'
->else
->    rs_build_type = 'release'
->endif
->
->get_option('debug') would apply -g flag, and that flag is mapped to debuginfo=2,
->which is the default debuginfo level for debug version.
-
-But wait, I just noticed rs_build_type should be 'dev' not 'debug'. You 
-can build with optimizations and keep debuginfo if you override the 
-'release' profile or use a different profile altogether.
-
-I will correct the optimization and debuginfo mappings in the next 
-version.
-
->It's a totally new file, and it is used to derive other files. These 
->are
->all significant changes. At least for 2024, I think you can declare
->copyright here. :-)
-
-Heh yes :)
-
->
->Thanks,
->Zhao
->
+r~
 
