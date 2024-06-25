@@ -2,56 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 926C0917322
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jun 2024 23:14:34 +0200 (CEST)
-Received: from localhost ([::1] helo=lists1p.gnu.org)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD5D0917274
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jun 2024 22:22:57 +0200 (CEST)
+Received: from [::1] (helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sMAPL-000197-CX; Tue, 25 Jun 2024 13:56:53 -0400
+	id 1sMCVs-0000T6-RG; Tue, 25 Jun 2024 16:11:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1sMANr-00012n-H6
- for qemu-devel@nongnu.org; Tue, 25 Jun 2024 13:55:17 -0400
-Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1sMAN3-00086C-LR
- for qemu-devel@nongnu.org; Tue, 25 Jun 2024 13:55:00 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.216])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4W7rqx53Vkz6K6HQ;
- Wed, 26 Jun 2024 01:07:57 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
- by mail.maildlp.com (Postfix) with ESMTPS id 00FFC140A79;
- Wed, 26 Jun 2024 01:08:37 +0800 (CST)
-Received: from SecurePC-101-06.china.huawei.com (10.122.19.247) by
- lhrpeml500005.china.huawei.com (7.191.163.240) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Tue, 25 Jun 2024 18:08:36 +0100
-To: <qemu-devel@nongnu.org>, <nifan.cxl@gmail.com>,
- <linux-cxl@vger.kernel.org>, <mst@redhat.com>, <armbru@redhat.com>
-CC: <linuxarm@huawei.com>
-Subject: [PATCH 1/2] hw/cxl/events: Improve QMP interfaces and documentation
- for add/release dynamic capacity.
-Date: Tue, 25 Jun 2024 18:08:04 +0100
-Message-ID: <20240625170805.359278-2-Jonathan.Cameron@huawei.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240625170805.359278-1-Jonathan.Cameron@huawei.com>
-References: <20240625170805.359278-1-Jonathan.Cameron@huawei.com>
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1sMCT5-0000EQ-11
+ for qemu-devel@nongnu.org; Tue, 25 Jun 2024 16:08:47 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1sMCSQ-0000Nq-6r
+ for qemu-devel@nongnu.org; Tue, 25 Jun 2024 16:08:33 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-424acf3226fso1431215e9.1
+ for <qemu-devel@nongnu.org>; Tue, 25 Jun 2024 13:05:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1719345941; x=1719950741; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=jKrfFtD+zVr5EvhCiB/d12GVI5bP9LbTIwL35SDNz+8=;
+ b=k2/vS4j2MyJRhCI6QlJISW0uGijLiLcjeUdVt72K1+n7zoU6MtBJT4/EBIYtNLvKnu
+ EQz9eQs32dhYpDDn29LTR1aN9knUfPKzfEvYXytuIB+I0JMvT6gdGCY0ftaB//rodosp
+ LimbMzValABKNYoiJp1OWTO9EDP83J8r29dTw8jKMwgqYg2eXYjgGGCZEyMXpNtJqtia
+ m8WeUZ9UStZLe6Jsyct8kYZAL0jJw5Ngez3K7lT32qit3uxWLqvYIVDK8tI4YaWt3DmD
+ IJSEgxNlj1RLuQV3KWab+s4v1jSMLCNYhTw4hJppPn23LdvowFcm56TM3xZewvy0qSQp
+ 5epA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1719345941; x=1719950741;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=jKrfFtD+zVr5EvhCiB/d12GVI5bP9LbTIwL35SDNz+8=;
+ b=ZzrKeAEkm5JJmGO74ku0IG/YVOk1VFEfwBQaLn39vPqA32WRuueIBjbJcsi1nYqsYQ
+ DAveOgIUnI212F6Qi2VEW9s42eeNkEJ3Ppu1E1SdyTd352qKVFOH0HVkXibxgUx8+IL8
+ ezNUR1vKxqeUvKTR8s1R5TjvfH5eBTwGdkejpMhY3HacBiwmrCLds3yzBPvHhqOWUeMq
+ uzhnMk7kfWRA0XUpZ7NgiN1dpujENthIxcbbnajfQEkKrWAtlBJBY9dEsKLr7OWm0Kvs
+ LjKH6I5j/X9famG+ckYvDVWRK6USjLGPv76sCFHgiAvohSBwi9UjJoCE9q4xslKdArar
+ 3mxA==
+X-Gm-Message-State: AOJu0Yzwh5zVGy9393hf7SZjmgeIm2oScpeOUDljmdrQBGzguheSpLr+
+ 7ibe9K4S/C0UIh3TQrEAY3zmcn61xDVhj4hdtQpKSaW+Le/X6XjbC0rEqDDpS9VUIxZLT50ksOF
+ 4oRU=
+X-Google-Smtp-Source: AGHT+IFryNNsHz4Wq4Dc8B333dCUhmTAVrWfr8mesYoehqFhNbP/a+mnveimqE9pY++LUl4UT31ptg==
+X-Received: by 2002:a05:600c:4a99:b0:421:29e1:998 with SMTP id
+ 5b1f17b1804b1-4248cc67376mr51272055e9.39.1719339560987; 
+ Tue, 25 Jun 2024 11:19:20 -0700 (PDT)
+Received: from meli-email.org (adsl-193.37.6.1.tellas.gr. [37.6.1.193])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-36638d9bb1fsm13653144f8f.49.2024.06.25.11.19.20
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 25 Jun 2024 11:19:20 -0700 (PDT)
+Date: Tue, 25 Jun 2024 21:08:53 +0300
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+To: Zhao Liu <zhao1.liu@intel.com>
+Cc: qemu-devel@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
+ Mads Ynddal <mads@ynddal.dk>, Peter Maydell <peter.maydell@linaro.org>,
+ Alex Benn=?UTF-8?B?w6kg?=e <alex.bennee@linaro.org>,
+ "Daniel P. Berrang=?UTF-8?B?w6k=?= " <berrange@redhat.com>,
+ Marc-Andr=?UTF-8?B?w6kg?=Lureau <marcandre.lureau@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Philippe Mathieu-Daud=?UTF-8?B?w6kg?=<philmd@linaro.org>,
+ Gustavo Romero <gustavo.romero@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>, rowan.hart@intel.com,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, John Snow <jsnow@redhat.com>,
+ Cleber Rosa <crosa@redhat.com>
+Subject: Re: [RFC PATCH v3 2/5] rust: add bindgen step as a meson dependency
+User-Agent: meli 0.8.6
+References: <rust-pl011-rfc-v3.git.manos.pitsidianakis@linaro.org>
+ <6bf311a35e6d3bfa8b3bfd10d8f896a9e655fa30.1718827153.git.manos.pitsidianakis@linaro.org>
+ <ZnlGlOGORQkOsoO5@intel.com> <fl60u.ry7sk6d8fv39@linaro.org>
+ <ZnrpgW+CopiJAGZF@intel.com>
+In-Reply-To: <ZnrpgW+CopiJAGZF@intel.com>
+Message-ID: <fnew7.3urdmuxnhe3l@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.122.19.247]
-X-ClientProxiedBy: lhrpeml100004.china.huawei.com (7.191.162.219) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-Host-Lookup-Failed: Reverse DNS lookup failed for 185.176.79.56 (deferred)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -10
-X-Spam_score: -1.1
+Content-Type: text/plain; charset=utf-8; format=flowed
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x333.google.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
 X-Spam_bar: -
-X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, RDNS_NONE=0.793,
- SPF_PASS=-0.001, T_SPF_HELO_TEMPERROR=0.01 autolearn=no autolearn_force=no
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, T_SPF_HELO_TEMPERROR=0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -64,374 +103,66 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-New DCD command definitions updated in response to review comments
-from Markus.
+On Tue, 25 Jun 2024 19:00, Zhao Liu <zhao1.liu@intel.com> wrote:
+>[snip]
+>> This is for future-proofing the Rust integration in general. I 
+>> haven't been
+>> able to compile under macos yet because bindgen cannot find the system clang
+>> header. I also don't have a windows pc to test it on. But it should work
+>> theoretically under all three.
+>
+>Yes, they should work. EMM, but there is no particular need for them at
+>the moment, so just to be safe, we can put these two platforms on hold
+>for now, and they can be easily added when the tests are covered.
+>
+>A TODO can remind support for them.
 
-- Used CxlXXXX instead of CXLXXXXX for newly added types.
-- Expanded some abreviations in type names to be easier to read.
-- Additional documentation for some fields.
-- Replace slightly vague cxl r3.1 references with
-  "Compute Express Link (CXL) Specification, Revision 3.1, XXXX"
-  to bring them inline with what it says on the specification cover.
+I'm still trying to figure out why bindgen doesn't find the /Library/*** 
+include paths.. it's frustrating! I will remove them if I don't succeed 
+and also no one volunteers to attempt a windows build. :)
 
-Suggested-by: Markus Armbruster <armbru@redhat.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>[snip]
+>> > 
+>> > Could we decouple 'optimization' with cargo's opt-level (maybe in the future)?
+>> > 
+>> > Or we could add new option to specify custom rust opt-level, which will
+>> > set the environment varialbe CARGO_PROFILE_<profile_name>_OPT_LEVEL and
+>> > override the default opt-level in Cargo.toml.
+>> 
+>> optimization here refers to LLVM's opt flags directly, so I think it makes
+>> sense to follow the project-wide compiler settings?
+>
+>Oh, yes. But I think the choice of debug or release is best based on the
+>debug info. What about this?
+>
+>if get_option('debug')
+>    rs_build_type = 'debug'
+>else
+>    rs_build_type = 'release'
+>endif
+>
+>get_option('debug') would apply -g flag, and that flag is mapped to debuginfo=2,
+>which is the default debuginfo level for debug version.
 
----
-I can break this up into a separate patches, but that's going to be
-quite a lot of churn as often multiple of the above affect the same
-paragraph.
----
- qapi/cxl.json            | 152 ++++++++++++++++++++++++---------------
- hw/mem/cxl_type3.c       |  18 ++---
- hw/mem/cxl_type3_stubs.c |   8 +--
- 3 files changed, 107 insertions(+), 71 deletions(-)
+But wait, I just noticed rs_build_type should be 'dev' not 'debug'. You 
+can build with optimizations and keep debuginfo if you override the 
+'release' profile or use a different profile altogether.
 
-diff --git a/qapi/cxl.json b/qapi/cxl.json
-index 57d9f82014..a38622a0d1 100644
---- a/qapi/cxl.json
-+++ b/qapi/cxl.json
-@@ -363,9 +363,11 @@
-  'data': {'path': 'str', 'type': 'CxlCorErrorType'}}
- 
- ##
--# @CXLDynamicCapacityExtent:
-+# @CxlDynamicCapacityExtent:
- #
--# A single dynamic capacity extent
-+# A single dynamic capacity extent.  This is a contiguous allocation
-+# of memory by Device Physical Address within a single Dynamic
-+# Capacity Region on a CXL Type 3 Device.
- #
- # @offset: The offset (in bytes) to the start of the region
- #     where the extent belongs to.
-@@ -374,7 +376,7 @@
- #
- # Since: 9.1
- ##
--{ 'struct': 'CXLDynamicCapacityExtent',
-+{ 'struct': 'CxlDynamicCapacityExtent',
-   'data': {
-       'offset':'uint64',
-       'len': 'uint64'
-@@ -382,22 +384,40 @@
- }
- 
- ##
--# @CXLExtSelPolicy:
-+# @CxlExtentSelectionPolicy:
- #
- # The policy to use for selecting which extents comprise the added
--# capacity, as defined in cxl spec r3.1 Table 7-70.
--#
--# @free: 0h = Free
--#
--# @contiguous: 1h = Continuous
--#
--# @prescriptive: 2h = Prescriptive
--#
--# @enable-shared-access: 3h = Enable Shared Access
-+# capacity, as defined in Compute Express Link (CXL) Specification,
-+# Revision 3.1, Table 7-70.
-+#
-+# @free: Device is responsible for allocating the requested memory
-+#     capacity and is free to do this using any combination of
-+#     supported extents.
-+#
-+# @contiguous: Device is responsible for allocating the requested
-+#     memory capacity but must do so as a single contiguous
-+#     extent.
-+#
-+# @prescriptive: The precise set of extents to be allocated is
-+#     specified by the command.  Thus allocation is being managed
-+#     by the issuer of the allocation command, not the device.
-+#
-+# @enable-shared-access: Capacity has already been allocated to a
-+#     different host using free, contiguous or prescriptive policy
-+#     with a known tag.  This policy then instructs the device to
-+#     make the capacity with the specified tag available to an
-+#     additional host.  Capacity is implicit as it matches that
-+#     already associated with the tag.  Note that the extent list
-+#     (and hence Device Physical Addresses) used are per host, so
-+#     a device may use different representations on each host.
-+#     The ordering of the extents provided to each host is indicated
-+#     to the host using per extent sequence numbers generated by
-+#     the device.  Has a similar meaning for temporal sharing, but
-+#     in that case there may be only one host involved.
- #
- # Since: 9.1
- ##
--{ 'enum': 'CXLExtSelPolicy',
-+{ 'enum': 'CxlExtentSelectionPolicy',
-   'data': ['free',
-            'contiguous',
-            'prescriptive',
-@@ -407,54 +427,60 @@
- ##
- # @cxl-add-dynamic-capacity:
- #
--# Command to initiate to add dynamic capacity extents to a host.  It
--# simulates operations defined in cxl spec r3.1 7.6.7.6.5.
-+# Initiate adding dynamic capacity extents to a host.  This simulates
-+# operations defined in Compute Express Link (CXL) Specification,
-+# Revision 3.1, Section 7.6.7.6.5. Note that, currently, establishing
-+# success or failure of the full Add Dynamic Capacity flow requires
-+# out of band communication with the OS of the CXL host.
- #
--# @path: CXL DCD canonical QOM path.
-+# @path: path to the CXL Dynamic Capacity Device in the QOM tree.
- #
--# @host-id: The "Host ID" field as defined in cxl spec r3.1
--#     Table 7-70.
-+# @host-id: The "Host ID" field as defined in Compute Express Link
-+#     (CXL) Specification, Revision 3.1, Table 7-70.
- #
- # @selection-policy: The "Selection Policy" bits as defined in
--#     cxl spec r3.1 Table 7-70.  It specifies the policy to use for
--#     selecting which extents comprise the added capacity.
-+#     Compute Express Link (CXL) Specification, Revision 3.1,
-+#     Table 7-70.  It specifies the policy to use for selecting
-+#     which extents comprise the added capacity.
- #
--# @region: The "Region Number" field as defined in cxl spec r3.1
--#     Table 7-70.  The dynamic capacity region where the capacity
--#     is being added.  Valid range is from 0-7.
-+# @region: The "Region Number" field as defined in Compute Express
-+#     Link (CXL) Specification, Revision 3.1, Table 7-70.  Valid
-+#     range is from 0-7.
- #
--# @tag: The "Tag" field as defined in cxl spec r3.1 Table 7-70.
-+# @tag: The "Tag" field as defined in Compute Express Link (CXL)
-+#     Specification, Revision 3.1, Table 7-70.
- #
--# @extents: The "Extent List" field as defined in cxl spec r3.1
--#     Table 7-70.
-+# @extents: The "Extent List" field as defined in Compute Express Link
-+#     (CXL) Specification, Revision 3.1, Table 7-70.
- #
- # Since : 9.1
- ##
- { 'command': 'cxl-add-dynamic-capacity',
-   'data': { 'path': 'str',
-             'host-id': 'uint16',
--            'selection-policy': 'CXLExtSelPolicy',
-+            'selection-policy': 'CxlExtentSelectionPolicy',
-             'region': 'uint8',
-             '*tag': 'str',
--            'extents': [ 'CXLDynamicCapacityExtent' ]
-+            'extents': [ 'CxlDynamicCapacityExtent' ]
-            }
- }
- 
- ##
--# @CXLExtRemovalPolicy:
-+# @CxlExtentRemovalPolicy:
- #
- # The policy to use for selecting which extents comprise the released
--# capacity, defined in the "Flags" field in cxl spec r3.1 Table 7-71.
-+# capacity, defined in the "Flags" field in Compute Express Link (CXL)
-+# Specification, Revision 3.1, Table 7-71.
- #
--# @tag-based: value = 0h.  Extents are selected by the device based
--#     on tag, with no requirement for contiguous extents.
-+# @tag-based: Extents are selected by the device based on tag, with
-+#     no requirement for contiguous extents.
- #
--# @prescriptive: value = 1h.  Extent list of capacity to release is
--#     included in the request payload.
-+# @prescriptive: Extent list of capacity to release is included in
-+#     the request payload.
- #
- # Since: 9.1
- ##
--{ 'enum': 'CXLExtRemovalPolicy',
-+{ 'enum': 'CxlExtentRemovalPolicy',
-   'data': ['tag-based',
-            'prescriptive']
- }
-@@ -462,45 +488,55 @@
- ##
- # @cxl-release-dynamic-capacity:
- #
--# Command to initiate to release dynamic capacity extents from a
--# host.  It simulates operations defined in cxl spec r3.1 7.6.7.6.6.
-+# Initiate release of dynamic capacity extents from a host.  This
-+# simulates operations defined in Compute Express Link (CXL)
-+# Specification, Revision 3.1, Section 7.6.7.6.6. Note that,
-+# currently, success or failure of the full Release Dynamic Capacity
-+# flow requires out of band communication with the OS of the CXL host.
- #
--# @path: CXL DCD canonical QOM path.
-+# @path: path to the CXL Dynamic Capacity Device in the QOM tree.
- #
--# @host-id: The "Host ID" field as defined in cxl spec r3.1
--#     Table 7-71.
-+# @host-id: The "Host ID" field as defined in Compute Express Link
-+#     (CXL) Specification, Revision 3.1, Table 7-71.
- #
--# @removal-policy: Bit[3:0] of the "Flags" field as defined in cxl
--#     spec r3.1 Table 7-71.
-+# @removal-policy: Bit[3:0] of the "Flags" field as defined in
-+#     Compute Express Link (CXL) Specification, Revision 3.1,
-+#     Table 7-71.
- #
--# @forced-removal: Bit[4] of the "Flags" field in cxl spec r3.1
--#     Table 7-71.  When set, device does not wait for a Release
--#     Dynamic Capacity command from the host.  Host immediately
--#     loses access to released capacity.
-+# @forced-removal: Bit[4] of the "Flags" field in Compute Express
-+#     Link (CXL) Specification, Revision 3.1, Table 7-71.  When set,
-+#     the device does not wait for a Release Dynamic Capacity command
-+#     from the host.  Instead, the host immediately looses access to
-+#     the released capacity.
- #
--# @sanitize-on-release: Bit[5] of the "Flags" field in cxl spec r3.1
--#     Table 7-71.  When set, device should sanitize all released
--#     capacity as a result of this request.
-+# @sanitize-on-release: Bit[5] of the "Flags" field in Compute
-+#     Express Link (CXL) Specification, Revision 3.1, Table 7-71.
-+#     When set, the device should sanitize all released capacity as
-+#     a result of this request. This ensures that all user data
-+#     and metadata is made permanently unavailable by whatever
-+#     means is appropriate for the media type. Note that changing
-+#     encryption keys is not sufficient.
- #
--# @region: The "Region Number" field as defined in cxl spec r3.1
--#     Table 7-71.  The dynamic capacity region where the capacity
--#     is being added.  Valid range is from 0-7.
-+# @region: The "Region Number" field as defined in Compute Express
-+#     Link Specification, Revision 3.1, Table 7-71.  Valid range
-+#     is from 0-7.
- #
--# @tag: The "Tag" field as defined in cxl spec r3.1 Table 7-71.
-+# @tag: The "Tag" field as defined in Compute Express Link (CXL)
-+#     Specification, Revision 3.1, Table 7-71.
- #
--# @extents: The "Extent List" field as defined in cxl spec r3.1
--#     Table 7-71.
-+# @extents: The "Extent List" field as defined in Compute Express
-+#     Link (CXL) Specification, Revision 3.1, Table 7-71.
- #
- # Since : 9.1
- ##
- { 'command': 'cxl-release-dynamic-capacity',
-   'data': { 'path': 'str',
-             'host-id': 'uint16',
--            'removal-policy': 'CXLExtRemovalPolicy',
-+            'removal-policy': 'CxlExtentRemovalPolicy',
-             '*forced-removal': 'bool',
-             '*sanitize-on-release': 'bool',
-             'region': 'uint8',
-             '*tag': 'str',
--            'extents': [ 'CXLDynamicCapacityExtent' ]
-+            'extents': [ 'CxlDynamicCapacityExtent' ]
-            }
- }
-diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
-index 3274e5dcbb..35ac59883a 100644
---- a/hw/mem/cxl_type3.c
-+++ b/hw/mem/cxl_type3.c
-@@ -1874,7 +1874,7 @@ static bool cxl_extent_groups_overlaps_dpa_range(CXLDCExtentGroupList *list,
-  */
- static void qmp_cxl_process_dynamic_capacity_prescriptive(const char *path,
-         uint16_t hid, CXLDCEventType type, uint8_t rid,
--        CXLDynamicCapacityExtentList *records, Error **errp)
-+        CxlDynamicCapacityExtentList *records, Error **errp)
- {
-     Object *obj;
-     CXLEventDynamicCapacity dCap = {};
-@@ -1882,7 +1882,7 @@ static void qmp_cxl_process_dynamic_capacity_prescriptive(const char *path,
-     CXLType3Dev *dcd;
-     uint8_t flags = 1 << CXL_EVENT_TYPE_INFO;
-     uint32_t num_extents = 0;
--    CXLDynamicCapacityExtentList *list;
-+    CxlDynamicCapacityExtentList *list;
-     CXLDCExtentGroup *group = NULL;
-     g_autofree CXLDCExtentRaw *extents = NULL;
-     uint8_t enc_log = CXL_EVENT_TYPE_DYNAMIC_CAP;
-@@ -2032,13 +2032,13 @@ static void qmp_cxl_process_dynamic_capacity_prescriptive(const char *path,
- }
- 
- void qmp_cxl_add_dynamic_capacity(const char *path, uint16_t host_id,
--                                  CXLExtSelPolicy sel_policy, uint8_t region,
--                                  const char *tag,
--                                  CXLDynamicCapacityExtentList  *extents,
-+                                  CxlExtentSelectionPolicy sel_policy,
-+                                  uint8_t region, const char *tag,
-+                                  CxlDynamicCapacityExtentList  *extents,
-                                   Error **errp)
- {
-     switch (sel_policy) {
--    case CXL_EXT_SEL_POLICY_PRESCRIPTIVE:
-+    case CXL_EXTENT_SELECTION_POLICY_PRESCRIPTIVE:
-         qmp_cxl_process_dynamic_capacity_prescriptive(path, host_id,
-                                                       DC_EVENT_ADD_CAPACITY,
-                                                       region, extents, errp);
-@@ -2050,14 +2050,14 @@ void qmp_cxl_add_dynamic_capacity(const char *path, uint16_t host_id,
- }
- 
- void qmp_cxl_release_dynamic_capacity(const char *path, uint16_t host_id,
--                                      CXLExtRemovalPolicy removal_policy,
-+                                      CxlExtentRemovalPolicy removal_policy,
-                                       bool has_forced_removal,
-                                       bool forced_removal,
-                                       bool has_sanitize_on_release,
-                                       bool sanitize_on_release,
-                                       uint8_t region,
-                                       const char *tag,
--                                      CXLDynamicCapacityExtentList  *extents,
-+                                      CxlDynamicCapacityExtentList  *extents,
-                                       Error **errp)
- {
-     CXLDCEventType type = DC_EVENT_RELEASE_CAPACITY;
-@@ -2070,7 +2070,7 @@ void qmp_cxl_release_dynamic_capacity(const char *path, uint16_t host_id,
-     }
- 
-     switch (removal_policy) {
--    case CXL_EXT_REMOVAL_POLICY_PRESCRIPTIVE:
-+    case CXL_EXTENT_REMOVAL_POLICY_PRESCRIPTIVE:
-         qmp_cxl_process_dynamic_capacity_prescriptive(path, host_id, type,
-                                                       region, extents, errp);
-         return;
-diff --git a/hw/mem/cxl_type3_stubs.c b/hw/mem/cxl_type3_stubs.c
-index 45419bbefe..c1a5e4a7c1 100644
---- a/hw/mem/cxl_type3_stubs.c
-+++ b/hw/mem/cxl_type3_stubs.c
-@@ -70,24 +70,24 @@ void qmp_cxl_inject_correctable_error(const char *path, CxlCorErrorType type,
- 
- void qmp_cxl_add_dynamic_capacity(const char *path,
-                                   uint16_t host_id,
--                                  CXLExtSelPolicy sel_policy,
-+                                  CxlExtentSelectionPolicy sel_policy,
-                                   uint8_t region,
-                                   const char *tag,
--                                  CXLDynamicCapacityExtentList *extents,
-+                                  CxlDynamicCapacityExtentList *extents,
-                                   Error **errp)
- {
-     error_setg(errp, "CXL Type 3 support is not compiled in");
- }
- 
- void qmp_cxl_release_dynamic_capacity(const char *path, uint16_t host_id,
--                                      CXLExtRemovalPolicy removal_policy,
-+                                      CxlExtentRemovalPolicy removal_policy,
-                                       bool has_forced_removal,
-                                       bool forced_removal,
-                                       bool has_sanitize_on_release,
-                                       bool sanitize_on_release,
-                                       uint8_t region,
-                                       const char *tag,
--                                      CXLDynamicCapacityExtentList *extents,
-+                                      CxlDynamicCapacityExtentList *extents,
-                                       Error **errp)
- {
-     error_setg(errp, "CXL Type 3 support is not compiled in");
--- 
-2.43.0
+I will correct the optimization and debuginfo mappings in the next 
+version.
 
+>It's a totally new file, and it is used to derive other files. These 
+>are
+>all significant changes. At least for 2024, I think you can declare
+>copyright here. :-)
+
+Heh yes :)
+
+>
+>Thanks,
+>Zhao
+>
 
