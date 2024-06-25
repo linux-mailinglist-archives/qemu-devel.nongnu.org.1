@@ -2,67 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECCE6916773
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jun 2024 14:20:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5073A9168C1
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jun 2024 15:22:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sM58m-0003II-24; Tue, 25 Jun 2024 08:19:16 -0400
+	id 1sM67X-0000Cd-Eu; Tue, 25 Jun 2024 09:22:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1sM58f-0003Gf-JP; Tue, 25 Jun 2024 08:19:09 -0400
-Received: from forwardcorp1a.mail.yandex.net
- ([2a02:6b8:c0e:500:1:45:d181:df01])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1sM58c-0006eN-Bc; Tue, 25 Jun 2024 08:19:09 -0400
-Received: from mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
- [IPv6:2a02:6b8:c1f:6401:0:640:7e6f:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id BDE79608ED;
- Tue, 25 Jun 2024 15:19:02 +0300 (MSK)
-Received: from vsementsov-lin.. (unknown [2a02:6b8:b081:b645::1:29])
- by mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id jIOnbJ0r9iE0-e5bHznxp; Tue, 25 Jun 2024 15:19:02 +0300
-Precedence: bulk
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1719317942;
- bh=YZu4KWgt1xJx0r1R/GrG6qSjpXE1sWThQoMb8vqBGFg=;
- h=Message-Id:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=qRiBlcqs6NyhIf+BJDZghx8IqCQD/jYCUiHO836QzGoqPkxu3xKllEoMrSPtRWLYw
- KmHYlxbEdZIQyELJqy5ZGm2/pRSWUjjUyVJ8goNIPS4gXoX6g1MFGcD92wInYU+2ik
- 1KoJRh8RTF2ca0TPzUYERlGPZ3pqhCErZAI5aPCo=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-To: qemu-block@nongnu.org,
-	raphael@enfabrica.net,
-	mst@redhat.com
-Cc: qemu-devel@nongnu.org, armbru@redhat.com, eblake@redhat.com,
- eduardo@habkost.net, berrange@redhat.com, pbonzini@redhat.com,
- hreitz@redhat.com, kwolf@redhat.com, vsementsov@yandex-team.ru,
- yc-core@yandex-team.ru
-Subject: [PATCH v5 3/3] qapi: introduce device-sync-config
-Date: Tue, 25 Jun 2024 15:18:43 +0300
-Message-Id: <20240625121843.120035-4-vsementsov@yandex-team.ru>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240625121843.120035-1-vsementsov@yandex-team.ru>
-References: <20240625121843.120035-1-vsementsov@yandex-team.ru>
+ (Exim 4.90_1) (envelope-from <rajurastogijkt@gmail.com>)
+ id 1sM5IG-0007SW-Bi
+ for qemu-devel@nongnu.org; Tue, 25 Jun 2024 08:29:04 -0400
+Received: from mail-pg1-x533.google.com ([2607:f8b0:4864:20::533])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <rajurastogijkt@gmail.com>)
+ id 1sM5IE-0000HA-MW
+ for qemu-devel@nongnu.org; Tue, 25 Jun 2024 08:29:04 -0400
+Received: by mail-pg1-x533.google.com with SMTP id
+ 41be03b00d2f7-7178727da84so2576107a12.0
+ for <qemu-devel@nongnu.org>; Tue, 25 Jun 2024 05:29:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1719318540; x=1719923340; darn=nongnu.org;
+ h=content-language:mime-version:user-agent:date:message-id:subject:to
+ :from:reply-to:from:to:cc:subject:date:message-id:reply-to;
+ bh=WCdoKFbLeIS0j7UjsChNNgOrZixtul9Bpu9Zm2TdKt4=;
+ b=bx/jPdJd4RmxWAYIySa1JYxpINg/R7PNmwE6GBdGXhiK17S+nhvTQxiOgPPYWhUVyf
+ pa1HQIL8ASgY7F7ao3Dv+ow5B6g99AnPlYHCwZHUnsEAjWXKTtsHwRfTWw+GOWU5cwcI
+ nUJOnGH+PyER3ZG0L50blMZoH3wZjXNOvfVHBFhsGxSIx5qThFQ5nKdr0BSuSV5hnRIO
+ 0GaM7tg1y2aKrFVskja38/8HBsXfbsyj7gakpANm823hlB4UmTI1BkMyTWjQoqgwos39
+ DAWL7GiVEO+X1C2we5ff9+JVQnnfUfsNGu4aXaecWi3IBcI9dAGWDQNlXuy5AiIJxtdy
+ nOsg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1719318540; x=1719923340;
+ h=content-language:mime-version:user-agent:date:message-id:subject:to
+ :from:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=WCdoKFbLeIS0j7UjsChNNgOrZixtul9Bpu9Zm2TdKt4=;
+ b=I/1vssuNN+9W7FlAn8rNRrit1RsFdSbWpAe50Shma1iWreKqbkgVfs/PUDJP9HfP0I
+ l+dX5ugza/DH3xqD5V+OBm0wht0BvKeBM15Gn6kNauyUlj0Rg6oY/2oeGwEdM6p4jLax
+ yYEabu5G1NQmyrg7+OwWR9I83GshEr08Rz0WnbsnqHrwSJNmEqIDe7bYfY2jp/Rks5SB
+ bEKu5rCOl/lKMpPYR9mwh7/6u/h/fo6nFnxBJ2y5uQQ51TSNIm3H9NRt7wDLdnF1j7xq
+ +4d4Lr+cr6ehaLkPyUtjrocpXlyQYhk8mJb2WKHa2L8+ezLeiWIMvSDybvbadCD4W9zm
+ fZbg==
+X-Gm-Message-State: AOJu0YwuCV1UU9ixB9X/2krpjPxvtz/YhHDP4UlOdAmFxXvLNzDL/q1s
+ uVxvnw7jnsijWvI2T3gYcOhmCJ/FPfXZdPgWvAapxPWM0jiIdDKEHUHCww==
+X-Google-Smtp-Source: AGHT+IFTiis0WJZUcLJsxSSyxxG3KGdMDEVRE0+KeqieDXJ0UjkaSqfS3YSeWCWOut5Xk0FlviFfqQ==
+X-Received: by 2002:a05:6a20:1896:b0:1b5:e80d:2fe0 with SMTP id
+ adf61e73a8af0-1bcee6ebd00mr6572877637.19.1719318540112; 
+ Tue, 25 Jun 2024 05:29:00 -0700 (PDT)
+Received: from [192.168.1.103] ([103.15.252.203])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-706953ca94dsm1636644b3a.199.2024.06.25.05.28.58
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 25 Jun 2024 05:28:59 -0700 (PDT)
+From: Raju Rastogi <rajurastogijkt@gmail.com>
+To: qemu-devel@nongnu.org
+Subject: [FOLLOW UP] RE: Meeting request- Artificial Intelligence and Machine
+ Learning
+Message-ID: <1b4381ac-f27e-880b-80da-99323d3496ab@gmail.com>
+Date: Tue, 25 Jun 2024 17:58:57 +0530
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a02:6b8:c0e:500:1:45:d181:df01;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: multipart/alternative;
+ boundary="------------A5C9D1E43ADA4385080A19C6"
+Content-Language: en-GB
+Received-SPF: pass client-ip=2607:f8b0:4864:20::533;
+ envelope-from=rajurastogijkt@gmail.com; helo=mail-pg1-x533.google.com
+X-Spam_score_int: -7
+X-Spam_score: -0.8
+X-Spam_bar: /
+X-Spam_report: (-0.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ FREEMAIL_REPLYTO=1, FREEMAIL_REPLYTO_END_DIGIT=0.25, HTML_MESSAGE=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Tue, 25 Jun 2024 09:22:01 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
+Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -71,182 +91,88 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: ideasb39@gmail.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add command to sync config from vhost-user backend to the device. It
-may be helpful when VHOST_USER_SLAVE_CONFIG_CHANGE_MSG failed or not
-triggered interrupt to the guest or just not available (not supported
-by vhost-user server).
+This is a multi-part message in MIME format.
+--------------A5C9D1E43ADA4385080A19C6
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Command result is racy if allow it during migration. Let's allow the
-sync only in RUNNING state.
+Hi,
 
-Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
----
- hw/block/vhost-user-blk.c |  1 +
- hw/virtio/virtio-pci.c    |  9 +++++++++
- include/hw/qdev-core.h    |  3 +++
- qapi/qdev.json            | 24 ++++++++++++++++++++++++
- system/qdev-monitor.c     | 38 ++++++++++++++++++++++++++++++++++++++
- 5 files changed, 75 insertions(+)
+Following up on my last email.
 
-diff --git a/hw/block/vhost-user-blk.c b/hw/block/vhost-user-blk.c
-index 091d2c6acf..2f301f380c 100644
---- a/hw/block/vhost-user-blk.c
-+++ b/hw/block/vhost-user-blk.c
-@@ -588,6 +588,7 @@ static void vhost_user_blk_class_init(ObjectClass *klass, void *data)
- 
-     device_class_set_props(dc, vhost_user_blk_properties);
-     dc->vmsd = &vmstate_vhost_user_blk;
-+    dc->sync_config = vhost_user_blk_sync_config;
-     set_bit(DEVICE_CATEGORY_STORAGE, dc->categories);
-     vdc->realize = vhost_user_blk_device_realize;
-     vdc->unrealize = vhost_user_blk_device_unrealize;
-diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
-index b1d02f4b3d..0d91e8b5dc 100644
---- a/hw/virtio/virtio-pci.c
-+++ b/hw/virtio/virtio-pci.c
-@@ -2351,6 +2351,14 @@ static void virtio_pci_dc_realize(DeviceState *qdev, Error **errp)
-     vpciklass->parent_dc_realize(qdev, errp);
- }
- 
-+static int virtio_pci_sync_config(DeviceState *dev, Error **errp)
-+{
-+    VirtIOPCIProxy *proxy = VIRTIO_PCI(dev);
-+    VirtIODevice *vdev = virtio_bus_get_device(&proxy->bus);
-+
-+    return qdev_sync_config(DEVICE(vdev), errp);
-+}
-+
- static void virtio_pci_class_init(ObjectClass *klass, void *data)
- {
-     DeviceClass *dc = DEVICE_CLASS(klass);
-@@ -2367,6 +2375,7 @@ static void virtio_pci_class_init(ObjectClass *klass, void *data)
-     device_class_set_parent_realize(dc, virtio_pci_dc_realize,
-                                     &vpciklass->parent_dc_realize);
-     rc->phases.hold = virtio_pci_bus_reset_hold;
-+    dc->sync_config = virtio_pci_sync_config;
- }
- 
- static const TypeInfo virtio_pci_info = {
-diff --git a/include/hw/qdev-core.h b/include/hw/qdev-core.h
-index 5336728a23..f992061919 100644
---- a/include/hw/qdev-core.h
-+++ b/include/hw/qdev-core.h
-@@ -95,6 +95,7 @@ typedef void (*DeviceUnrealize)(DeviceState *dev);
- typedef void (*DeviceReset)(DeviceState *dev);
- typedef void (*BusRealize)(BusState *bus, Error **errp);
- typedef void (*BusUnrealize)(BusState *bus);
-+typedef int (*DeviceSyncConfig)(DeviceState *dev, Error **errp);
- 
- /**
-  * struct DeviceClass - The base class for all devices.
-@@ -162,6 +163,7 @@ struct DeviceClass {
-     DeviceReset reset;
-     DeviceRealize realize;
-     DeviceUnrealize unrealize;
-+    DeviceSyncConfig sync_config;
- 
-     /**
-      * @vmsd: device state serialisation description for
-@@ -547,6 +549,7 @@ bool qdev_hotplug_allowed(DeviceState *dev, Error **errp);
-  */
- HotplugHandler *qdev_get_hotplug_handler(DeviceState *dev);
- void qdev_unplug(DeviceState *dev, Error **errp);
-+int qdev_sync_config(DeviceState *dev, Error **errp);
- void qdev_simple_device_unplug_cb(HotplugHandler *hotplug_dev,
-                                   DeviceState *dev, Error **errp);
- void qdev_machine_creation_done(void);
-diff --git a/qapi/qdev.json b/qapi/qdev.json
-index facaa0bc6a..72e434bc45 100644
---- a/qapi/qdev.json
-+++ b/qapi/qdev.json
-@@ -161,3 +161,27 @@
- ##
- { 'event': 'DEVICE_UNPLUG_GUEST_ERROR',
-   'data': { '*device': 'str', 'path': 'str' } }
-+
-+##
-+# @device-sync-config:
-+#
-+# Synchronize device configuration from host to guest part.  First,
-+# copy the configuration from the host part (backend) to the guest
-+# part (frontend).  Then notify guest software that device
-+# configuration changed.
-+#
-+# The command may be used to notify the guest about block device
-+# capcity change.  Currently only vhost-user-blk device supports
-+# this.
-+#
-+# @id: the device's ID or QOM path
-+#
-+# Features:
-+#
-+# @unstable: The command is experimental.
-+#
-+# Since: 9.1
-+##
-+{ 'command': 'device-sync-config',
-+  'features': [ 'unstable' ],
-+  'data': {'id': 'str'} }
-diff --git a/system/qdev-monitor.c b/system/qdev-monitor.c
-index 264978aa40..1c29312b53 100644
---- a/system/qdev-monitor.c
-+++ b/system/qdev-monitor.c
-@@ -23,6 +23,7 @@
- #include "monitor/monitor.h"
- #include "monitor/qdev.h"
- #include "sysemu/arch_init.h"
-+#include "sysemu/runstate.h"
- #include "qapi/error.h"
- #include "qapi/qapi-commands-qdev.h"
- #include "qapi/qmp/dispatch.h"
-@@ -971,6 +972,43 @@ void qmp_device_del(const char *id, Error **errp)
-     }
- }
- 
-+int qdev_sync_config(DeviceState *dev, Error **errp)
-+{
-+    DeviceClass *dc = DEVICE_GET_CLASS(dev);
-+
-+    if (!dc->sync_config) {
-+        error_setg(errp, "device-sync-config is not supported for '%s'",
-+                   object_get_typename(OBJECT(dev)));
-+        return -ENOTSUP;
-+    }
-+
-+    return dc->sync_config(dev, errp);
-+}
-+
-+void qmp_device_sync_config(const char *id, Error **errp)
-+{
-+    DeviceState *dev;
-+
-+    /*
-+     * During migration there is a race between syncing`configuration
-+     * and migrating it (if migrate first, that target would get
-+     * outdated version), so let's just not allow it.
-+     */
-+
-+    if (migration_is_running()) {
-+        error_setg(errp, "Config synchronization is not allowed "
-+                   "during migration");
-+        return;
-+    }
-+
-+    dev = find_device_state(id, true, errp);
-+    if (!dev) {
-+        return;
-+    }
-+
-+    qdev_sync_config(dev, errp);
-+}
-+
- void hmp_device_add(Monitor *mon, const QDict *qdict)
- {
-     Error *err = NULL;
--- 
-2.34.1
+Can we schedule a quick call so we can discuss this further?
 
+Please suggest a day and time to connect and also share the best phone 
+number to reach you.
+
+Thank you
+Raju Rastogi
+
+On Friday 19 April 2024 5:43 PM, Raju Rastogi wrote:
+
+Hi,
+
+Stay ahead in today's fast-paced business world with our cutting-edge 
+AI/ML services!
+
+We're here to help your business make data-driven decisions and gain a 
+competitive edge using the power of artificial intelligence and machine
+learning.
+
+Let's schedule a quick call to explore how we can integrate these 
+technologies into your business.
+
+Regards,
+Raju Rastogi
+
+
+--------------A5C9D1E43ADA4385080A19C6
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <div class="moz-text-html" lang="x-western">Hi,<br>
+      <div style="font-size: 11pt;"> <br>
+        Following up on my last email.<br>
+        <br>
+        Can we schedule a quick call so we can discuss this further?<br>
+        <br>
+        Please suggest a day and time to connect and also share the best
+        phone number to reach you.<br>
+        <br>
+        Thank you<br>
+        Raju Rastogi<br>
+        <br>
+        On Friday 19 April 2024 5:43 PM, Raju Rastogi wrote:<br>
+        <br>
+        Hi,<br>
+        <br>
+        Stay ahead in today's fast-paced business world with our
+        cutting-edge AI/ML services!<br>
+        <br>
+        We're here to help your business make data-driven decisions and
+        gain a competitive edge using the power of artificial
+        intelligence and machine<br>
+        learning.<br>
+        <br>
+        Let's schedule a quick call to explore how we can integrate
+        these technologies into your business.<br>
+        <br>
+        Regards,<br>
+        Raju Rastogi<br>
+        <br>
+      </div>
+    </div>
+  </body>
+</html>
+
+--------------A5C9D1E43ADA4385080A19C6--
 
