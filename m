@@ -2,75 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E464916961
+	by mail.lfdr.de (Postfix) with ESMTPS id 780D3916963
 	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jun 2024 15:50:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sM6YY-0006x2-6d; Tue, 25 Jun 2024 09:49:58 -0400
+	id 1sM6Yc-0006zJ-Uh; Tue, 25 Jun 2024 09:50:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
- id 1sM6YT-0006vB-ST
- for qemu-devel@nongnu.org; Tue, 25 Jun 2024 09:49:53 -0400
-Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
+ id 1sM6YV-0006x0-Ok
+ for qemu-devel@nongnu.org; Tue, 25 Jun 2024 09:49:55 -0400
+Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
- id 1sM6YQ-0007II-Mb
- for qemu-devel@nongnu.org; Tue, 25 Jun 2024 09:49:52 -0400
-Received: by mail-ed1-x534.google.com with SMTP id
- 4fb4d7f45d1cf-57d07f07a27so6285350a12.3
- for <qemu-devel@nongnu.org>; Tue, 25 Jun 2024 06:49:49 -0700 (PDT)
+ id 1sM6YT-0007KH-Kc
+ for qemu-devel@nongnu.org; Tue, 25 Jun 2024 09:49:54 -0400
+Received: by mail-ej1-x636.google.com with SMTP id
+ a640c23a62f3a-a6f8ebbd268so1085822866b.0
+ for <qemu-devel@nongnu.org>; Tue, 25 Jun 2024 06:49:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1719323388; x=1719928188;
+ d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1719323391; x=1719928191;
  darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=d1fYQ7uSy0JYSBDhMCphzksyQ7P/f641WoT9TQMYJeE=;
- b=jE+UaBgI4a625dI54X67TEcN1f8yfWkJmrTHvw4l28FyXab4Oq08BRC8sRoIsF28R+
- /5RK9XREpY9rN9JsarJB0HhuHAa8mR/6zQndNEl00vSAdYIABkGOkepHa+AiijZDSnhM
- b+oUQL/rzmls0ZBLikNdIod57Twa6gE26ExGIesVQf0Exw8tf61W9GJvFwZmJQEd9VY7
- m5n2LfaDaJfQS5CaN3zYDJ5OIy1oJ8ijGxxzoSHV7D7ZaE3m9KTeZNbIccFJ4m7Ezbdl
- JPPMf6sZcVECczK8mC04WrN7FHZG+PG9kaprXB1rfRFgY1s6MovdCpcwBLglM0s/Si2Q
- KepA==
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=RJhNG6W/u2QBb+Lr2mxjHC9Dx9KTVbi65U/cSPuIL0U=;
+ b=x1/IXBqc0fKLBKQ0jl9Mr4me0mNZtKVp4veVJYLjZyA83eEjFIlM69nUwy6ifAOX1O
+ rBGqvB7s1EDbsFdACIcs5EylrYEskK1nEWXt+1cViHhs/ndHsUzMkAyIqRYRVY/HQ2t9
+ /CvBYxXXu+hgqXJuUA5FwfOxjHkcX/KofIE4DUCCDZKOsy3/OvzDpv0NBGZNK/t7IiHB
+ 7BjWmdgGy3Akc6X7yRNYCX0aolVpi4YnbF4I7A8ki3U6+3S5YU55a3NmNtpCFm5NXPHm
+ 2gyw2Yf/VnaCM+j+hyO0llLhJGo1qz8qgEIIG+PCL4UIn/ZIJ4XnDWSVG9HZBh+yiRZN
+ RyDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719323388; x=1719928188;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=d1fYQ7uSy0JYSBDhMCphzksyQ7P/f641WoT9TQMYJeE=;
- b=OtZNvFT/0Evu8PruPdK4JMPdDXHYyUi5wMPAhxcxjlruFuNUjo1AUyMenJF6QYZFlY
- g30LK5JKupywEBfLVzArVCR010P8q6CqaJ95DwjQ8FyUJ2CrcWWrKDOome29DtWc3Eu2
- 9w43dUs3t4GARiaZKWE8cg+Er0Qx11+SoR1c6E8cu7gxZObRY9aufdKKKfMZnG0cGOlx
- If8vkd3RwQRZXJWOB014oxfbUag3FAbd2DVZgqOCY37lbOSREhvB0JlDSkfMXmKggd/2
- ydQqRHYmFCuji2eGU6/nKdOSOIM0KvoENn+DUJ439El0/jBkio6MJgL2z4caAB39hup7
- Q5dQ==
-X-Gm-Message-State: AOJu0YyxINWC0aXg37x2sepLHSn9kDxhWdVbZQMf3DRjY+24556IbFen
- ESzgoR/E8sgNG4/5dMDQhr+JJcqzWZzXysYixkGSA9iMYBZW9cdAOU1lGeX1r+BRu0HQz3R7rZI
- q5Q==
-X-Google-Smtp-Source: AGHT+IENc6qXlA18ThHHXpxt/cA1tjoEgnfXbNtZqjAkF9vjVyRSdmQVFDXXxCkyh2uKMBglywNdyA==
-X-Received: by 2002:a17:906:199a:b0:a72:450f:6045 with SMTP id
- a640c23a62f3a-a7245b6252cmr388985366b.21.1719323387966; 
- Tue, 25 Jun 2024 06:49:47 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1719323391; x=1719928191;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=RJhNG6W/u2QBb+Lr2mxjHC9Dx9KTVbi65U/cSPuIL0U=;
+ b=f5DIEzowKgwgwRUEgX6hWcnppXAhU0oBtwyTSGYv1+LaZEsCh5Y1ppHbEbbbOkmzQ+
+ rh2cjwYlnwR/CEUpAfeMtvWelFyzJCwLFbJfWdYbw4fKaBOzByS+8FyzOfLSQPZhHGoQ
+ O68wsbFUgIw6/z2RdjleAXKzK2aZM3VmljCKXzeqapdYsb4x50dpooNIqJWsmRoTO3nd
+ 7+QLSMe0C7UWf5XPkrvfrEhMFcEM+Qw4hlG1bykQ+oxUqLSd8lZKnMJb10PPDjnP1N9J
+ yH7NUE0AndpDUkjP/EkuSabIebfmHp31+UDaNAfd5c2e26kW286KPlM1zQV8vmvh9NN0
+ 6fkA==
+X-Gm-Message-State: AOJu0YypOfysUTMM59xKiKlV2nOJvMBkLImlgdsiLUHLEiGYNsW9Q4/c
+ 6dtpfds6uMpp7W7/YXiCtekFnYI0J+0GWJHn/KQmULqvWpiK3J8siWYptZxwWZyE9BaRjTYE85P
+ xwQ==
+X-Google-Smtp-Source: AGHT+IHkWoyye5aFgxtGCab24XrPAMz+pZCcRPfDgntmT+aNwSZpZQdQrI8K/fY4jjOp778PEcE+vQ==
+X-Received: by 2002:a17:906:57cb:b0:a6f:e3e4:e0b6 with SMTP id
+ a640c23a62f3a-a700e70884emr725231766b.27.1719323390852; 
+ Tue, 25 Jun 2024 06:49:50 -0700 (PDT)
 Received: from localhost.localdomain (89-104-8-17.customer.bnet.at.
  [89.104.8.17]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a726e13a4d7sm77299166b.19.2024.06.25.06.49.46
+ a640c23a62f3a-a726e13a4d7sm77299166b.19.2024.06.25.06.49.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 25 Jun 2024 06:49:47 -0700 (PDT)
+ Tue, 25 Jun 2024 06:49:50 -0700 (PDT)
 From: Phil Dennis-Jordan <phil@philjordan.eu>
 To: qemu-devel@nongnu.org
 Cc: peter.maydell@linaro.org, philmd@linaro.org, marcandre.lureau@redhat.com,
  akihiko.odaki@daynix.com, lists@philjordan.eu,
  Phil Dennis-Jordan <phil@philjordan.eu>
-Subject: [PATCH v2 0/2] ui/cocoa: Adds native absolute pointer support
-Date: Tue, 25 Jun 2024 15:49:29 +0200
-Message-Id: <20240625134931.92279-1-phil@philjordan.eu>
+Subject: [PATCH v2 1/2] ui/cocoa: Minor fixes to CALayer based cursors
+Date: Tue, 25 Jun 2024 15:49:30 +0200
+Message-Id: <20240625134931.92279-2-phil@philjordan.eu>
 X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+In-Reply-To: <20240625134931.92279-1-phil@philjordan.eu>
+References: <20240625134931.92279-1-phil@philjordan.eu>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: neutral client-ip=2a00:1450:4864:20::534;
- envelope-from=phil@philjordan.eu; helo=mail-ed1-x534.google.com
+Received-SPF: neutral client-ip=2a00:1450:4864:20::636;
+ envelope-from=phil@philjordan.eu; helo=mail-ej1-x636.google.com
 X-Spam_score_int: -10
 X-Spam_score: -1.1
 X-Spam_bar: -
@@ -92,37 +94,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This change implements passing guest cursors through to the native
-Cocoa host NSCursor on macOS when using absolute pointing device
-input.
+This change fixes some object lifetime issues. (Unreleased reference
+counts)
 
-The first pass at this was based purely on NSCursor, which drew
-some criticism due to the somewhat complex nature of the code which
-was required to generate correct relative pointer input events
-after teleporting the host cursor.
+Signed-off-by: Phil Dennis-Jordan <phil@philjordan.eu>
+---
+ ui/cocoa.m | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-This new version builds on Akihiko Odaki's work implementing CALayer
-based cursors. We retain CALayer for compositing cursors when the
-input is relative and the pointer thus completely captured by the
-guest. When using absolute positioning of the pointer, we use the
-fully host-integrated NSCursor, with no offsetting or teleporting
-needed.
-
-The first patch consists of a few reference counting fixes to the
-existing CALayer patch, the second implements the NSCursor logic
-and switches between CALayer and NSCursor depending on whether
-relative or absolute input is used.
-
-Based-on: <20240318-cursor-v1-2-0bbe6c382217@daynix.com>
-
-
-Phil Dennis-Jordan (2):
-  ui/cocoa: Minor fixes to CALayer based cursors
-  ui/cocoa: Adds NSCursor absolute pointer support
-
- ui/cocoa.m | 93 +++++++++++++++++++++++++++++++++++++++++++-----------
- 1 file changed, 75 insertions(+), 18 deletions(-)
-
+diff --git a/ui/cocoa.m b/ui/cocoa.m
+index 06ca114800..cca987eac7 100644
+--- a/ui/cocoa.m
++++ b/ui/cocoa.m
+@@ -395,6 +395,13 @@ - (void) dealloc
+         CFRelease(eventsTap);
+     }
+ 
++    if (cursor) {
++        cursor_unref(cursor);
++        cursor = NULL;
++    }
++
++    [cursorLayer release];
++    cursorLayer = nil;
+     [super dealloc];
+ }
+ 
+@@ -474,6 +481,7 @@ - (void)setCursor:(QEMUCursor *)given_cursor
+ 
+     bounds.size.width = cursor->width;
+     bounds.size.height = cursor->height;
++    CGColorSpaceRef color_space = CGColorSpaceCreateWithName(kCGColorSpaceSRGB);
+ 
+     provider = CGDataProviderCreateWithData(
+         NULL,
+@@ -488,7 +496,7 @@ - (void)setCursor:(QEMUCursor *)given_cursor
+         8, //bitsPerComponent
+         32, //bitsPerPixel
+         cursor->width * 4, //bytesPerRow
+-        CGColorSpaceCreateWithName(kCGColorSpaceSRGB), //colorspace
++        color_space, //colorspace
+         kCGBitmapByteOrder32Little | kCGImageAlphaFirst, //bitmapInfo
+         provider, //provider
+         NULL, //decode
+@@ -497,6 +505,7 @@ - (void)setCursor:(QEMUCursor *)given_cursor
+     );
+ 
+     CGDataProviderRelease(provider);
++    CGColorSpaceRelease(color_space);
+     [CATransaction begin];
+     [CATransaction setDisableActions:YES];
+     [cursorLayer setBounds:bounds];
 -- 
 2.39.3 (Apple Git-146)
 
