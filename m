@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 838AE916C32
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jun 2024 17:12:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F09F5916C13
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jun 2024 17:10:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sM7nR-0001Rm-7m; Tue, 25 Jun 2024 11:09:25 -0400
+	id 1sM7nW-0001VX-9y; Tue, 25 Jun 2024 11:09:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sunilvl@ventanamicro.com>)
- id 1sM7nO-0001Py-RN
- for qemu-devel@nongnu.org; Tue, 25 Jun 2024 11:09:22 -0400
-Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
+ id 1sM7nU-0001U7-88
+ for qemu-devel@nongnu.org; Tue, 25 Jun 2024 11:09:28 -0400
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <sunilvl@ventanamicro.com>)
- id 1sM7nM-0006Tp-Af
- for qemu-devel@nongnu.org; Tue, 25 Jun 2024 11:09:22 -0400
-Received: by mail-pf1-x42b.google.com with SMTP id
- d2e1a72fcca58-706683e5249so2490339b3a.2
- for <qemu-devel@nongnu.org>; Tue, 25 Jun 2024 08:09:19 -0700 (PDT)
+ id 1sM7nR-0006WO-QH
+ for qemu-devel@nongnu.org; Tue, 25 Jun 2024 11:09:28 -0400
+Received: by mail-pf1-x42d.google.com with SMTP id
+ d2e1a72fcca58-706524adf91so3199314b3a.2
+ for <qemu-devel@nongnu.org>; Tue, 25 Jun 2024 08:09:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1719328158; x=1719932958; darn=nongnu.org;
+ d=ventanamicro.com; s=google; t=1719328164; x=1719932964; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=6c1DsoTK4qkNqQ5UnD/HyJUGXiusN7arWuORYSBvEOQ=;
- b=lFJF7FkCcErSIQT8gcnoouBD+y6AI1q/ga+sjbAL3M6daihmx+hZQRQCXGVx2D3CzA
- zRJKVY4qUT7JXiB7mYuavIkmN3H4Xb/jlDIm6GKJCGerKiAnVLnaURAt9h9bM3bIu01z
- +iAPTC3lOj3RjPgwIsH2ug7t/NG34XoiYxiVSdeUf8YU1Wim7Yb2dWUiarw/oa2aOOFj
- zb8Kv+6FEDKqNnexdwzNhkNycCrTYe8Uo2ux788WPVsidhuBbLE5pvd2DZfUN9BBpBpp
- GXJWkVAZpT4IUcTP54WfCTfFhqkhgQgfauSTSo3DlIXB9Q8zuCP38uoXWR7JNZY2kubL
- bitQ==
+ bh=y1OPYRH+1jqNvqk3IUxnhH2KTsAwqrwXkGI6cFJybeA=;
+ b=EZJcknYvHj4noK6B+gj6iG9ChCmUO4FIgibvBUQFQ1jsKJ61/23Z+MNzvdffp1wil5
+ 32TAllwKyZxCwRsgN5LZNgJq9d4CokdkaTdgijhE6LVt92cSfwV9IknFIi1JGYvnU54b
+ JtYv0zlO1Pc5hgHBzcZBD89ajtllgGuQLc4onqd3kI4n0039EHez8eQpcRekIN8aXnJ7
+ sG4o95gn4RmTyG5HEVLuuXRjD3DnDxZ9XcftwV9x5hjT+0Kd/ev5immM0IQEmDU4zlAI
+ e9eIGDncfCutlkh4u3nh6OBs2k2cTw5EZcz4KgJs1FZSsXqlpS5FLbeWd5zoFXzZ1bGH
+ ehKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719328158; x=1719932958;
+ d=1e100.net; s=20230601; t=1719328164; x=1719932964;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=6c1DsoTK4qkNqQ5UnD/HyJUGXiusN7arWuORYSBvEOQ=;
- b=aS4OZLMQT3FQJW5kiwYxetuuEfPEOY1yumDIqaSkh5JqPV5Ne5gMTG1vJadx4DbmiW
- zD4bRsIrDMcNftKI3bXnWQ+s1IAbbbNcBo8/Fg0BfRs9HyWxcrzXTKWR2mU5S9XL3zTF
- 5wChT5Vb45ngPgc6646PgkC4gmFjkrMzphkdIam5esrBUnhhcO5ab0Eb/Vk07UXwZMzL
- 7fSn8sAv+6XiHRY1jGM3n1wpbVy60iR24Uf2OlfHd6Hxy82MSNDMHVBOlFZW0dpDTSW4
- xENAK23JGpoRw9/Ng0Y5FSx0+67GIgnIv7YWJuSav5yGD3sqWIvh/QbtJ5FBLpY8NVc9
- gdyw==
-X-Gm-Message-State: AOJu0Yx6Xb71CEWoBA6OOJ4ikusf7xPRZ1bSd1yWirMSfjhQn4XAd+CU
- lxxtgrmHeke2PXd1CfarM8rCv52yFEX3ic7n9VYwr8qeqSgKNLv619/w4rnGU7ubLKTxlfl7qTB
- Y
-X-Google-Smtp-Source: AGHT+IG0dGXOEAI9eL78dBqm8PeBN4tlOiH37WDo7c4XR4IPtB2srFH3CRT2V7hNWdqGZA66JedClw==
-X-Received: by 2002:aa7:8d02:0:b0:706:62d9:a4f1 with SMTP id
- d2e1a72fcca58-706746b5ddemr7499131b3a.31.1719328157963; 
- Tue, 25 Jun 2024 08:09:17 -0700 (PDT)
+ bh=y1OPYRH+1jqNvqk3IUxnhH2KTsAwqrwXkGI6cFJybeA=;
+ b=b6hQpbEbCU3nA6cIPLIJXYnV0xOZBC/Dolxvr9BxDJ5puhHYj9c0MXOjX7Ee6a+C9D
+ zv06hJ3lAvl/rJxc//InnT/p3y+ZGXkvFs16+UR7RFHZBK8K/VNAoFOSulaefCGhVf2i
+ jJIqzBEREDh5kfwb9WMdnOxZ928m2swPxygmGyrt47PF+E5ADJDdbvSmUGWUNI0oJhjv
+ jd4DmV6uXB9ToHeEi/SDesWWSoYhGoRXiMEDgS1D5iIT0MCbV/RQsgwrYY0cbTFUZJVL
+ nezeHe/vaA4kQvqtxDPfzZ83P7SQ4999z17UgKSS/O7bsQJ2Ir5KmhvLGPrq4Xotz2ZG
+ PHBw==
+X-Gm-Message-State: AOJu0Yz61W4htgNQaHI8XL4/ViNYd7w3wZc/gefb0LC96q4NOsw85OPK
+ TAxuPLpiVePuDOThOLxoROj13OOuQ3MiwF04L+PxyxQSh11efOz+hIyKi47H58tW2Vv+ceGs4Nq
+ p
+X-Google-Smtp-Source: AGHT+IHh+glQz5bpzqBbMafxTBiedjDg8E9FAOGTZRELqYHixsca0aztRXEKHZOqK0Ntz0dA97XWAQ==
+X-Received: by 2002:a05:6a20:8914:b0:1bc:fff0:322a with SMTP id
+ adf61e73a8af0-1bcfff03370mr6211022637.4.1719328163837; 
+ Tue, 25 Jun 2024 08:09:23 -0700 (PDT)
 Received: from sunil-pc.Dlink ([106.51.187.237])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-70681722219sm4142636b3a.73.2024.06.25.08.09.12
+ d2e1a72fcca58-70681722219sm4142636b3a.73.2024.06.25.08.09.18
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 25 Jun 2024 08:09:17 -0700 (PDT)
+ Tue, 25 Jun 2024 08:09:23 -0700 (PDT)
 From: Sunil V L <sunilvl@ventanamicro.com>
 To: qemu-devel@nongnu.org,
 	qemu-arm@nongnu.org,
@@ -76,17 +76,17 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Weiwei Li <liwei1518@gmail.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
  Sunil V L <sunilvl@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PATCH v4 05/16] qtest: bios-tables-test: Rename aarch64 tests with
- aarch64 in them
-Date: Tue, 25 Jun 2024 20:38:28 +0530
-Message-Id: <20240625150839.1358279-6-sunilvl@ventanamicro.com>
+Subject: [PATCH v4 06/16] tests/qtest/bios-tables-test.c: Add support for arch
+ in path
+Date: Tue, 25 Jun 2024 20:38:29 +0530
+Message-Id: <20240625150839.1358279-7-sunilvl@ventanamicro.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20240625150839.1358279-1-sunilvl@ventanamicro.com>
 References: <20240625150839.1358279-1-sunilvl@ventanamicro.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
- envelope-from=sunilvl@ventanamicro.com; helo=mail-pf1-x42b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
+ envelope-from=sunilvl@ventanamicro.com; helo=mail-pf1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -109,121 +109,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Existing AARCH64 virt test functions do not have AARCH64 in their name.
-To add RISC-V virt related test cases, better to rename existing
-functions to indicate they are ARM only.
+Since machine name can be common for multiple architectures (ex: virt),
+add "arch" in the path to search for expected AML files. Since the AML
+files are still under old path, add support for searching with and
+without arch in the path.
 
 Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Acked-by: Alistair Francis <alistair.francis@wdc.com>
 Reviewed-by: Igor Mammedov <imammedo@redhat.com>
 ---
- tests/qtest/bios-tables-test.c | 35 ++++++++++++++++++----------------
- 1 file changed, 19 insertions(+), 16 deletions(-)
+ tests/qtest/bios-tables-test.c | 23 ++++++++++++++++++++---
+ 1 file changed, 20 insertions(+), 3 deletions(-)
 
 diff --git a/tests/qtest/bios-tables-test.c b/tests/qtest/bios-tables-test.c
-index d1ff4db7a2..c4a4d1c7bf 100644
+index c4a4d1c7bf..29c52952f4 100644
 --- a/tests/qtest/bios-tables-test.c
 +++ b/tests/qtest/bios-tables-test.c
-@@ -1570,7 +1570,7 @@ static void test_acpi_piix4_tcg_dimm_pxm(void)
-     test_acpi_tcg_dimm_pxm(MACHINE_PC);
- }
+@@ -78,6 +78,7 @@
+ typedef struct {
+     bool tcg_only;
+     const char *machine;
++    const char *arch;
+     const char *machine_param;
+     const char *variant;
+     const char *uefi_fl1;
+@@ -262,8 +263,19 @@ static void dump_aml_files(test_data *data, bool rebuild)
+         g_assert(exp_sdt->aml);
  
--static void test_acpi_virt_tcg_memhp(void)
-+static void test_acpi_aarch64_virt_tcg_memhp(void)
- {
-     test_data data = {
-         .machine = "virt",
-@@ -1663,7 +1663,7 @@ static void test_acpi_microvm_ioapic2_tcg(void)
-     free_test_data(&data);
- }
+         if (rebuild) {
+-            aml_file = g_strdup_printf("%s/%s/%.4s%s", data_dir, data->machine,
++            aml_file = g_strdup_printf("%s/%s/%s/%.4s%s", data_dir,
++                                       data->arch, data->machine,
+                                        sdt->aml, ext);
++
++            /*
++             * To keep test cases not failing before the DATA files are moved to
++             * ${arch}/${machine} folder, add this check as well.
++             */
++            if (!g_file_test(aml_file, G_FILE_TEST_EXISTS)) {
++                aml_file = g_strdup_printf("%s/%s/%.4s%s", data_dir,
++                                           data->machine, sdt->aml, ext);
++            }
++
+             if (!g_file_test(aml_file, G_FILE_TEST_EXISTS) &&
+                 sdt->aml_len == exp_sdt->aml_len &&
+                 !memcmp(sdt->aml, exp_sdt->aml, sdt->aml_len)) {
+@@ -398,8 +410,13 @@ static GArray *load_expected_aml(test_data *data)
+         memset(&exp_sdt, 0, sizeof(exp_sdt));
  
--static void test_acpi_virt_tcg_numamem(void)
-+static void test_acpi_aarch64_virt_tcg_numamem(void)
- {
-     test_data data = {
-         .machine = "virt",
-@@ -1685,7 +1685,7 @@ static void test_acpi_virt_tcg_numamem(void)
- 
- }
- 
--static void test_acpi_virt_tcg_pxb(void)
-+static void test_acpi_aarch64_virt_tcg_pxb(void)
- {
-     test_data data = {
-         .machine = "virt",
-@@ -1758,7 +1758,7 @@ static void test_acpi_piix4_tcg_acpi_hmat(void)
-     test_acpi_tcg_acpi_hmat(MACHINE_PC);
- }
- 
--static void test_acpi_virt_tcg_acpi_hmat(void)
-+static void test_acpi_aarch64_virt_tcg_acpi_hmat(void)
- {
-     test_data data = {
-         .machine = "virt",
-@@ -1914,7 +1914,7 @@ static void test_acpi_microvm_acpi_erst(void)
- }
- #endif /* CONFIG_POSIX */
- 
--static void test_acpi_virt_tcg(void)
-+static void test_acpi_aarch64_virt_tcg(void)
- {
-     test_data data = {
-         .machine = "virt",
-@@ -1933,7 +1933,7 @@ static void test_acpi_virt_tcg(void)
-     free_test_data(&data);
- }
- 
--static void test_acpi_virt_tcg_topology(void)
-+static void test_acpi_aarch64_virt_tcg_topology(void)
- {
-     test_data data = {
-         .machine = "virt",
-@@ -2016,7 +2016,7 @@ static void test_acpi_q35_cxl(void)
- }
- #endif /* CONFIG_POSIX */
- 
--static void test_acpi_virt_viot(void)
-+static void test_acpi_aarch64_virt_viot(void)
- {
-     test_data data = {
-         .machine = "virt",
-@@ -2192,7 +2192,7 @@ static void test_acpi_microvm_oem_fields(void)
-     g_free(args);
- }
- 
--static void test_acpi_virt_oem_fields(void)
-+static void test_acpi_aarch64_virt_oem_fields(void)
- {
-     test_data data = {
-         .machine = "virt",
-@@ -2364,16 +2364,19 @@ int main(int argc, char *argv[])
+ try_again:
+-        aml_file = g_strdup_printf("%s/%s/%.4s%s", data_dir, data->machine,
+-                                   sdt->aml, ext);
++        aml_file = g_strdup_printf("%s/%s/%s/%.4s%s", data_dir, data->arch,
++                                   data->machine, sdt->aml, ext);
++        if (!g_file_test(aml_file, G_FILE_TEST_EXISTS)) {
++            aml_file = g_strdup_printf("%s/%s/%.4s%s", data_dir, data->machine,
++                                       sdt->aml, ext);
++        }
++
+         if (verbosity_level >= 2) {
+             fprintf(stderr, "Looking for expected file '%s'\n", aml_file);
          }
-     } else if (strcmp(arch, "aarch64") == 0) {
-         if (has_tcg && qtest_has_device("virtio-blk-pci")) {
--            qtest_add_func("acpi/virt", test_acpi_virt_tcg);
-+            qtest_add_func("acpi/virt", test_acpi_aarch64_virt_tcg);
-             qtest_add_func("acpi/virt/acpihmatvirt",
--                            test_acpi_virt_tcg_acpi_hmat);
--            qtest_add_func("acpi/virt/topology", test_acpi_virt_tcg_topology);
--            qtest_add_func("acpi/virt/numamem", test_acpi_virt_tcg_numamem);
--            qtest_add_func("acpi/virt/memhp", test_acpi_virt_tcg_memhp);
--            qtest_add_func("acpi/virt/pxb", test_acpi_virt_tcg_pxb);
--            qtest_add_func("acpi/virt/oem-fields", test_acpi_virt_oem_fields);
-+                           test_acpi_aarch64_virt_tcg_acpi_hmat);
-+            qtest_add_func("acpi/virt/topology",
-+                           test_acpi_aarch64_virt_tcg_topology);
-+            qtest_add_func("acpi/virt/numamem",
-+                           test_acpi_aarch64_virt_tcg_numamem);
-+            qtest_add_func("acpi/virt/memhp", test_acpi_aarch64_virt_tcg_memhp);
-+            qtest_add_func("acpi/virt/pxb", test_acpi_aarch64_virt_tcg_pxb);
-+            qtest_add_func("acpi/virt/oem-fields",
-+                           test_acpi_aarch64_virt_oem_fields);
-             if (qtest_has_device("virtio-iommu-pci")) {
--                qtest_add_func("acpi/virt/viot", test_acpi_virt_viot);
-+                qtest_add_func("acpi/virt/viot", test_acpi_aarch64_virt_viot);
-             }
-         }
-     }
 -- 
 2.40.1
 
