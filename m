@@ -2,66 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3887E916D3D
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jun 2024 17:37:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88170916D66
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jun 2024 17:48:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sM8De-0006WH-Ps; Tue, 25 Jun 2024 11:36:30 -0400
+	id 1sM8OS-0001vg-4f; Tue, 25 Jun 2024 11:47:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ivan.klokov@syntacore.com>)
- id 1sM8DZ-0006Rq-7I; Tue, 25 Jun 2024 11:36:25 -0400
-Received: from mta-04.yadro.com ([89.207.88.248])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ivan.klokov@syntacore.com>)
- id 1sM8DV-00048Y-1U; Tue, 25 Jun 2024 11:36:24 -0400
-DKIM-Filter: OpenDKIM Filter v2.11.0 mta-04.yadro.com 25923C0009
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=syntacore.com;
- s=mta-04; t=1719329777;
- bh=wLlcKrBkJxyiieu6ax+od3Jo2DL/gvxf1C5KMKJGUNA=;
- h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
- b=ZbTGnaLbYRGcwKVez5gHUbqQMoFPpVDNIyOTMm0yEY0i4qBanhzQxzjUVS1vsGfMH
- ZAAiCy9/lzbH3qEdqmhgI7nNWoGEsQ9KCme5pUjtot6lchWWLIzmZdik0sGZFJyhV4
- F0oqYccObHOQb2Y/dUoIcjbJgiuuzcE3ry1KhE7fhvlwwnYNEnGe9ATkkiCRHkcfec
- wRm1tfghjCyjfPaB+wqx6T0Y/zwCOhLegjsnU3sgD0d5LtZKO+xWt/fD+BJxPX/tVI
- +qgW3sp6enpt2lsaveH1WEoa+5SI1DBQnSslwn1+6wGNQy6mRcJVaB3yddz+W4085u
- hbA1KxNJvqJxA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=syntacore.com;
- s=mta-03; t=1719329777;
- bh=wLlcKrBkJxyiieu6ax+od3Jo2DL/gvxf1C5KMKJGUNA=;
- h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
- b=sSQVWWbwgQUkN2D8zySc35RUM9IVM63ppACHQ6lDZCeQ+Yy5Z7wmu247r0dOs8hgn
- K+Fk8FdznT0wM474kNLhKWofv3WRmUQ5u9b8rPy8cjY5XePx/gkDFak7D9mpjy3tmx
- 9bk+QIenfdq5OJ0UxCwaRdr8q7SbVtedjzlKQIKJVAglrjRKTzyuxVVmhAbElgbnls
- hp7eLamw4sRv2WOXZY1EFRnngzuWyoKUcpRwgbKT2fu7K4b9+l4cgmX83IQbNFABjO
- b93CzO9f4aK+S/0ZDJQ2SfqVk9IQSucXjBJ+NrlNxsrKkjNiwOFmVm4JFY7HVG6EPQ
- 1y5j1pQv9OPvg==
-From: Ivan Klokov <ivan.klokov@syntacore.com>
-To: <qemu-devel@nongnu.org>
-CC: <qemu-riscv@nongnu.org>, <palmer@dabbelt.com>, <bmeng.cn@gmail.com>,
- <liwei1518@gmail.com>, <dbarboza@ventanamicro.com>,
- <zhiwei_liu@linux.alibaba.com>, <thuth@redhat.com>, <lvivier@redhat.com>,
- <pbonzini@redhat.com>, Ivan Klokov <ivan.klokov@syntacore.com>
-Subject: [RFC PATCH v3 2/2] tests/qtest: QTest example for RISC-V CSR register
-Date: Tue, 25 Jun 2024 18:35:55 +0300
-Message-ID: <20240625153555.104088-3-ivan.klokov@syntacore.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240625153555.104088-1-ivan.klokov@syntacore.com>
-References: <20240625153555.104088-1-ivan.klokov@syntacore.com>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sM8OQ-0001vY-L3
+ for qemu-devel@nongnu.org; Tue, 25 Jun 2024 11:47:38 -0400
+Received: from mail-pg1-x52d.google.com ([2607:f8b0:4864:20::52d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sM8OO-0006W6-UK
+ for qemu-devel@nongnu.org; Tue, 25 Jun 2024 11:47:38 -0400
+Received: by mail-pg1-x52d.google.com with SMTP id
+ 41be03b00d2f7-7178ba1c24bso2834422a12.3
+ for <qemu-devel@nongnu.org>; Tue, 25 Jun 2024 08:47:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1719330455; x=1719935255; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=31gfp3WAV/v1/sFwjk5+ATitsFqS56qCwRW1EjUScPo=;
+ b=oAeTjWl94GXvvFeaiy+bYcP/cRn/ZiRjrctrgsXO+jv2k5548lP5CxQwVb+3UxhriZ
+ ib5WcDrCjaDG1NlS/VDCKPD/BBMOeyI0ThjNteeW5RZWY8AAAb2xRJviIHKy9U7W9g1E
+ RJfgtnN87UZidDRSAtA/vfyZfP3UN7Uc3mToikZqJxn81I6uu8F0MDVuDzBz0/46ZZvy
+ 5Pbo5CL/DzBs4wfyNhTZX/NQlsiYO7mQn82VzqtPEMGJf0rwEmiE6NpuMGGUcFSyH0Y4
+ Hi5EIS8Ibk8JksTLGb95gEDKbGWzWHFMBbU0Y21kHp/jjKivuzbGeHeJ/uwYHsd1ktQ9
+ ZdVg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1719330455; x=1719935255;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=31gfp3WAV/v1/sFwjk5+ATitsFqS56qCwRW1EjUScPo=;
+ b=ZcPK+13fGL3XwURYYgdGT8uVaGxn9Rd22/iR8X7g2xPP8HvDTn85xBwbe3kkXPLPNV
+ YStAeUFnijf3o6+1x+nZQ3T+fFFpz7qWCRCAR/NDXA4khDJv4TfXZfvSraYO88H1pg8s
+ Y8BnnCXh2YtFg9zKY0Tw4bbKeNee+MJJJixmTt4D60EaJbgidDbu9AepAMd3ADaKb5Z/
+ 3p9RGDpPWJOdzzyQhjPXiY1T+lPuYwzYTzRsWhzMAUjEWEBdgY6vLqdfiaHDeHmXQ6/r
+ kckx4oHAUkpq/FTxE7bFxCZ7s/66d5CahyIdPJy3OOf0/y2TphBD3mcEG6kunOzi8ppI
+ dRKQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVR8KwKGL0UifhI7jqbRF7fvl2idWvYKXQI6o+D9GrVd5TbHwV84FTv1Yq2PRd1QQZbvqiYTmug/0nZHMlOJkIM4vPCfGU=
+X-Gm-Message-State: AOJu0Yw8gFgaHgnkLJ48VQmbwyuHBlOQD+rcEK+hk9hVFAG7iIzyL0KQ
+ V6HAedkliSZ0CVWLQaijB586h/L9XJZkxmuiY0AEq+H8KY8zgC2vMkJigS6baXsn5uEQtHVNamz
+ d
+X-Google-Smtp-Source: AGHT+IF0a0Syin+EtxGJod+Aj3vvKfZZunoTGqfb+y6l0l72WYfxyIRk6sMSFcOTZggHulpWf5fDaA==
+X-Received: by 2002:a05:6a20:858a:b0:1b7:bdb3:7bbd with SMTP id
+ adf61e73a8af0-1bcf7e32114mr8902439637.7.1719330455042; 
+ Tue, 25 Jun 2024 08:47:35 -0700 (PDT)
+Received: from [192.168.0.4] (174-21-76-141.tukw.qwest.net. [174.21.76.141])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-7065129b9edsm8529327b3a.148.2024.06.25.08.47.34
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 25 Jun 2024 08:47:34 -0700 (PDT)
+Message-ID: <9f3cb0e3-c069-497d-81de-234db7bd4d33@linaro.org>
+Date: Tue, 25 Jun 2024 08:47:32 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: T-EXCH-07.corp.yadro.com (172.17.11.57) To
- S-Exch-01.corp.yadro.com (10.78.5.241)
-Received-SPF: permerror client-ip=89.207.88.248;
- envelope-from=ivan.klokov@syntacore.com; helo=mta-04.yadro.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: linux-user cannot allocate stack memory on riscv64 host due to
+ non-zero guest_base
+To: Andreas Schwab <schwab@suse.de>, qemu-devel@nongnu.org
+References: <mvm8qytp828.fsf@suse.de>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <mvm8qytp828.fsf@suse.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- T_SPF_PERMERROR=0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,120 +96,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Added demo for reading CSR register from qtest environment.
+On 6/25/24 04:37, Andreas Schwab wrote:
+> When running qemu-riscv64 on a riscv64 host executing a ET_EXEC riscv64
+> binary it cannot allocate memory for the stack:
+> 
+> $ qemu-riscv64 -d page ./hello.riscv64
+> host mmap_min_addr=0x10000
+> Locating guest address space @ 0x3ee000
+> page layout changed following mmap
+> start            end              size             prot
+> 0000000000010000-0000000000013000 0000000000003000 ---
+> page layout changed following mmap
+> start            end              size             prot
+> 0000000000010000-0000000000011000 0000000000001000 r-x
+> 0000000000011000-0000000000013000 0000000000002000 ---
+> page layout changed following mmap
+> start            end              size             prot
+> 0000000000010000-0000000000011000 0000000000001000 r-x
+> 0000000000011000-0000000000013000 0000000000002000 rw-
+> mmap stack: Cannot allocate memory
+> 
+> The issue is that guest_base is non-zero, which turns the target_mmap
+> call with zero base in setup_arg_pages into a host mmap call with
+> non-zero base.  On other hosts like x86_64 or aarch64, guest_base
+> remains zero and the issue does not occur.
 
-Signed-off-by: Ivan Klokov <ivan.klokov@syntacore.com>
----
- tests/qtest/meson.build      |  2 +
- tests/qtest/riscv-csr-test.c | 85 ++++++++++++++++++++++++++++++++++++
- 2 files changed, 87 insertions(+)
- create mode 100644 tests/qtest/riscv-csr-test.c
+You need to be more precise in your bug reports, because it works for me.
+Everything non-PIE, statically linked:
 
-diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index 12792948ff..45d651da99 100644
---- a/tests/qtest/meson.build
-+++ b/tests/qtest/meson.build
-@@ -259,6 +259,8 @@ qtests_s390x = \
- qtests_riscv32 = \
-   (config_all_devices.has_key('CONFIG_SIFIVE_E_AON') ? ['sifive-e-aon-watchdog-test'] : [])
- 
-+qtests_riscv32 += ['riscv-csr-test']
-+
- qos_test_ss = ss.source_set()
- qos_test_ss.add(
-   'ac97-test.c',
-diff --git a/tests/qtest/riscv-csr-test.c b/tests/qtest/riscv-csr-test.c
-new file mode 100644
-index 0000000000..21a3646ae9
---- /dev/null
-+++ b/tests/qtest/riscv-csr-test.c
-@@ -0,0 +1,85 @@
-+/*
-+ * QTest testcase for RISC-V CSRs
-+ *
-+ * Copyright (c) 2024 Syntacore.
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms of the GNU General Public License as published by the
-+ * Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful, but WITHOUT
-+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
-+ * for more details.
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "libqtest-single.h"
-+#include "libqtest.h"
-+
-+static uint64_t qcsr_call(QTestState *qts, const char *name, uint64_t cpu,
-+                           int csrno, uint64_t *val)
-+{
-+    uint64_t res = 0;
-+
-+    res = qtest_csr_call(qts, name, cpu, csrno, val);
-+
-+    return res;
-+}
-+
-+static int qcsr_get_csr(QTestState *qts, uint64_t cpu,
-+        int csrno, uint64_t *val)
-+{
-+    int res;
-+
-+    res = qcsr_call(qts, "get_csr", cpu, csrno, val);
-+
-+    return res;
-+}
-+
-+static int qcsr_set_csr(QTestState *qts, uint64_t cpu,
-+        int csrno, uint64_t *val)
-+{
-+    int res;
-+
-+    res = qcsr_call(qts, "set_csr", cpu, csrno, val);
-+
-+    return res;
-+}
-+
-+static void run_test_csr(void)
-+{
-+
-+    uint64_t res;
-+    uint64_t val = 0;
-+
-+    res = qcsr_get_csr(global_qtest, 0, 0xf11, &val);
-+
-+    g_assert_cmpint(res, ==, 0);
-+    g_assert_cmpint(val, ==, 0x100);
-+
-+    val = 0xff;
-+    res = qcsr_set_csr(global_qtest, 0, 0x342, &val);
-+    g_assert_cmpint(res, ==, 0);
-+
-+    val = 0;
-+    res = qcsr_get_csr(global_qtest, 0, 0x342, &val);
-+
-+    g_assert_cmpint(res, ==, 0);
-+    g_assert_cmpint(val, ==, 0xff);
-+
-+    qtest_quit(global_qtest);
-+}
-+
-+int main(int argc, char **argv)
-+{
-+    g_test_init(&argc, &argv, NULL);
-+
-+    qtest_add_func("/cpu/csr", run_test_csr);
-+
-+    qtest_start("-machine virt -cpu any,mvendorid=0x100");
-+
-+    return g_test_run();
-+
-+}
--- 
-2.34.1
+./qemu-riscv64: ELF 64-bit LSB executable, UCB RISC-V, RVC, double-float ABI, version 1 
+(SYSV), statically linked, BuildID[sha1]=92e2b4b9a2cbcc91ac029a49ec72eaefe5111f38, for 
+GNU/Linux 4.15.0, with debug_info, not stripped
 
+/home/rth/a.out: ELF 64-bit LSB executable, UCB RISC-V, RVC, double-float ABI, version 1 
+(SYSV), statically linked, BuildID[sha1]=4c52c576a0452e97d9117b89dd317c88460b0768, for 
+GNU/Linux 4.15.0, not stripped
+
+$ ./qemu-riscv64 -d page ~/a.out
+host mmap_min_addr=0x1000
+Locating guest address space @ 0x3ff000
+page layout changed following mmap
+start            end              size             prot
+0000000000010000-0000000000084000 0000000000074000 ---
+...
+end_code    0x0000000000078388
+start_code  0x0000000000010000
+start_data  0x00000000000795b0
+end_data    0x000000000007e8a8
+start_stack 0x0000003f812224a0
+brk         0x0000000000084000
+entry       0x000000000001041c
+argv_start  0x0000003f812224a8
+env_start   0x0000003f812224b8
+auxv_start  0x0000003f81222570
+...
+Hello, World!
+
+
+I don't doubt that you see a problem, but I need a reproducer, not a guess as to what the 
+problem might be.  Certainly guest_base is *not* it.  One can always force the use of a 
+non-zero base with -B or -R.
+
+
+r~
 
