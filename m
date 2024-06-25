@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C141915DF7
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jun 2024 07:10:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE506915DFB
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jun 2024 07:10:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sLyPv-0001Bf-N2; Tue, 25 Jun 2024 01:08:31 -0400
+	id 1sLyPw-0001Cb-EB; Tue, 25 Jun 2024 01:08:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sLyPu-0001Ah-3D
- for qemu-devel@nongnu.org; Tue, 25 Jun 2024 01:08:30 -0400
-Received: from mail-pg1-x536.google.com ([2607:f8b0:4864:20::536])
+ id 1sLyPt-0001AO-Ts
+ for qemu-devel@nongnu.org; Tue, 25 Jun 2024 01:08:29 -0400
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sLyPq-0001Z3-Cs
+ id 1sLyPq-0001ZQ-QG
  for qemu-devel@nongnu.org; Tue, 25 Jun 2024 01:08:29 -0400
-Received: by mail-pg1-x536.google.com with SMTP id
- 41be03b00d2f7-7182a634815so2341495a12.3
- for <qemu-devel@nongnu.org>; Mon, 24 Jun 2024 22:08:25 -0700 (PDT)
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-1f47f07aceaso39877395ad.0
+ for <qemu-devel@nongnu.org>; Mon, 24 Jun 2024 22:08:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719292104; x=1719896904; darn=nongnu.org;
+ d=linaro.org; s=google; t=1719292105; x=1719896905; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=KOVwJ2HbyEXrwGcMTUooR/pqQ3FbdP38VzfLFDauipg=;
- b=mxH6fkxe0GmKMb9/aug0CZJXdKyfjRY51f6Oktd8KC3H6t0jSpOIVZ/GhQ+yId5892
- nl6iE83aO01ZgU9PatqWoh4kHe31Cu0EKgE5V6mfxCddq72bbD5WpJwE1KQks5dhXZz9
- pn88Tz2hsRLGJAA/YH5NojLSTGi0KyHz7A/wzQzWwTcTIo3aHARLd9d2BKnkjX1toj+O
- Q5UktSNlrDka4pQuEASg+H02T0auXPbtL2ZHXSZUXH/urczMTaHKOkDdk45ZQxoOeglp
- y5y80qQ41ch+cr6vz29ZG8vgnfF2spUl3iI56GCBwPIQzBCC079P4sHVqU0EvFMe5W6p
- +4Uw==
+ bh=TQx1O4lRhBgRZKl91tzhM+7YS0VF3KiwHZYbH152yYY=;
+ b=VGLWjTwdWb6Vgkn2I9rhOITeYUztro7JTAbBQ7EmyjgT5dyPsDSuO+KIUj8e27iNpN
+ kKyBdzyvEAb6Vf1V4FXbto0yWZYMMbD2QeiCfpnmbhMyy/7aEdYi43ZdTYjFTXXUKDqJ
+ zI2r3CTR+yNWETH7L5bMVt9mygNMxdMDNWIkLk4tatW8QoEzuNKCkFMk9hm2kMttFCGs
+ 8ipFa0onP2AT28zbuI7YzZytuCRpyrQmG1qGYQwii4S3GTJr9AS19cmXONg4PE95GtvC
+ hw2TbX1Mn/cpdj60AxLdK2IiKj2W7LFlY6CegIaQEaL0AmKDA8M+m29bnQLmKeBuqe28
+ 6Ufw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719292104; x=1719896904;
+ d=1e100.net; s=20230601; t=1719292105; x=1719896905;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=KOVwJ2HbyEXrwGcMTUooR/pqQ3FbdP38VzfLFDauipg=;
- b=LG2AZ+8qts6I871+UTrXdKHwB3Dl1uBi3JP/8t+M/A7BH2vptWgTsaNhkASuKPRgIU
- 6Uu6fRyhJvNx5o/89wnpjR+epPhwR3vdqoMTYqDvwPvtssehQPleX9X4LXEJ1ys4r1Gg
- 3g7iqGRw11eqAzkrqdgDAzBrHIfcI7lX0rGtTz0qzZ8rU1FttfjwoFicjhsWvnksgCLH
- 8oy7fCKiiShA2a5K5ZbauapSm1A0hiWp2XjsU8Wm3HAqkmrknJXC0tVwodRP7uZ+Rm8z
- hw9B4jQuDAufAp+jhLosn+rLCH4hNmxRN6FRpY7LE6nojpMxORjJdoNWR+0KwNcaiDlL
- 7nEw==
-X-Gm-Message-State: AOJu0YzfqSiPOcwLZGa0sZp/0sIK1P/HxR3osmu98r3sAPqreoyxvTQQ
- xcQKvn6iJpOakVa5xMjC/jZ1ZetkhgqiwTeosydq2yIs9XTSzUE0MpzfYr5g+NceJM+l5Nzs2fn
- L
-X-Google-Smtp-Source: AGHT+IEfQx3dI/h6MqSB2uH6Qv7DJgJ7QkiFKF/bCRXVYj41j+xMQ3n6ih4vcQdvHnyV9g5441BFtg==
-X-Received: by 2002:a05:6a20:30d5:b0:1b8:4107:ce4d with SMTP id
- adf61e73a8af0-1bcf7e76fcemr5326155637.19.1719292104433; 
- Mon, 24 Jun 2024 22:08:24 -0700 (PDT)
+ bh=TQx1O4lRhBgRZKl91tzhM+7YS0VF3KiwHZYbH152yYY=;
+ b=lGjQXTCWcO9QXl7QWN4O1dv2NKAtVU/n48iejwlEMf4GDKw6K0p4Tp2Zsyu7VBejCb
+ ita6tqCoNQze1ULL2g+VRwXBY9MAkl8zkb+nwONM37LZk1c3TDfz+FbAyrYH+C9UjMBS
+ 6wEPvTBQCrAVJsX2McRu29OlAhmIaL3xwPk50Wp/eZh8cfvaUC3U256RG47ryI1Oiddg
+ 6vdXc2rnAPL2Tg1d4amYruPZSOGSWshr/fyc1+CXriTab1hXEeQn/NObCCuH6YfJhQ1b
+ QuYq1A7ihrjcIf5RnxZcOb05j9Buo5VJ6zWtP/O09e4x6J3uOZFBq9QDAPQqvF95chwH
+ lijw==
+X-Gm-Message-State: AOJu0YwNpcQNyJuVzolSEgQxilbCC99TJ0kKNndUIx69RULef+diDHXK
+ xagIZhIm2vTvKOKOSEVmk54PY/MVsblEnoWtfmur+wiF+IfmqNWOugTn91VsIwO3tonL2Z0IN7+
+ H
+X-Google-Smtp-Source: AGHT+IEyMz50+fIt8Lt9f7g3YZpxq9bST9BeIV0pLn70anWO9+R2zAiMFvSLZeXv0N3tBqDpx+5JTw==
+X-Received: by 2002:a17:902:ea08:b0:1f7:2479:a50b with SMTP id
+ d9443c01a7336-1fa15937ad1mr88233715ad.54.1719292105245; 
+ Mon, 24 Jun 2024 22:08:25 -0700 (PDT)
 Received: from stoup.. (174-21-76-141.tukw.qwest.net. [174.21.76.141])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1f9ebbc72e9sm70843865ad.296.2024.06.24.22.08.23
+ d9443c01a7336-1f9ebbc72e9sm70843865ad.296.2024.06.24.22.08.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Mon, 24 Jun 2024 22:08:24 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org
-Subject: [PATCH 12/13] target/arm: Convert FCMLA to decodetree
-Date: Mon, 24 Jun 2024 22:08:09 -0700
-Message-Id: <20240625050810.1475643-13-richard.henderson@linaro.org>
+Subject: [PATCH 13/13] target/arm: Delete dead code from disas_simd_indexed
+Date: Mon, 24 Jun 2024 22:08:10 -0700
+Message-Id: <20240625050810.1475643-14-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240625050810.1475643-1-richard.henderson@linaro.org>
 References: <20240625050810.1475643-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::536;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x536.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,354 +92,136 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+The last insns in this block, MLA and MLS, were converted
+with f80701cb44d, and this code should have been removed then.
+
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/a64.decode      |   5 +
- target/arm/tcg/translate-a64.c | 241 ++++++++++-----------------------
- 2 files changed, 76 insertions(+), 170 deletions(-)
+ target/arm/tcg/translate-a64.c | 93 ----------------------------------
+ 1 file changed, 93 deletions(-)
 
-diff --git a/target/arm/tcg/a64.decode b/target/arm/tcg/a64.decode
-index f330919851..4b2a6ba302 100644
---- a/target/arm/tcg/a64.decode
-+++ b/target/arm/tcg/a64.decode
-@@ -960,6 +960,8 @@ USMMLA          0100 1110 100 ..... 10101 1 ..... ..... @rrr_q1e0
- FCADD_90        0.10 1110 ..0 ..... 11100 1 ..... ..... @qrrr_e
- FCADD_270       0.10 1110 ..0 ..... 11110 1 ..... ..... @qrrr_e
- 
-+FCMLA_v         0 q:1 10 1110 esz:2 0 rm:5 110 rot:2 1 rn:5 rd:5
-+
- ### Advanced SIMD scalar x indexed element
- 
- FMUL_si         0101 1111 00 .. .... 1001 . 0 ..... .....   @rrx_h
-@@ -1041,6 +1043,9 @@ USDOT_vi        0.00 1111 10 .. .... 1111 . 0 ..... .....   @qrrx_s
- BFDOT_vi        0.00 1111 01 .. .... 1111 . 0 ..... .....   @qrrx_s
- BFMLAL_vi       0.00 1111 11 .. .... 1111 . 0 ..... .....   @qrrx_h
- 
-+FCMLA_vi        0 q:1 10 1111 10 . rm:5 0 rot:2 1 . 0 rn:5 rd:5 esz=1 idx=%hl
-+FCMLA_vi        0 q:1 10 1111 01 0 rm:5 0 rot:2 1 idx:1 0 rn:5 rd:5 esz=2
-+
- # Floating-point conditional select
- 
- FCSEL           0001 1110 .. 1 rm:5 cond:4 11 rn:5 rd:5     esz=%esz_hsd
 diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index a1b338263f..0a54a9ef8f 100644
+index 0a54a9ef8f..11955c0c36 100644
 --- a/target/arm/tcg/translate-a64.c
 +++ b/target/arm/tcg/translate-a64.c
-@@ -5631,6 +5631,39 @@ static gen_helper_gvec_3_ptr * const f_vector_fcadd[3] = {
- TRANS_FEAT(FCADD_90, aa64_fcma, do_fp3_vector, a, 0, f_vector_fcadd)
- TRANS_FEAT(FCADD_270, aa64_fcma, do_fp3_vector, a, 1, f_vector_fcadd)
- 
-+static bool trans_FCMLA_v(DisasContext *s, arg_FCMLA_v *a)
-+{
-+    gen_helper_gvec_4_ptr *fn;
-+
-+    if (!dc_isar_feature(aa64_fcma, s)) {
-+        return false;
-+    }
-+    switch (a->esz) {
-+    case MO_64:
-+        if (!a->q) {
-+            return false;
-+        }
-+        fn = gen_helper_gvec_fcmlad;
-+        break;
-+    case MO_32:
-+        fn = gen_helper_gvec_fcmlas;
-+        break;
-+    case MO_16:
-+        if (!dc_isar_feature(aa64_fp16, s)) {
-+            return false;
-+        }
-+        fn = gen_helper_gvec_fcmlah;
-+        break;
-+    default:
-+        return false;
-+    }
-+    if (fp_access_check(s)) {
-+        gen_gvec_op4_fpst(s, a->q, a->rd, a->rn, a->rm, a->rd,
-+                          a->esz == MO_16, a->rot, fn);
-+    }
-+    return true;
-+}
-+
- /*
-  * Advanced SIMD scalar/vector x indexed element
-  */
-@@ -5985,6 +6018,36 @@ static bool trans_BFMLAL_vi(DisasContext *s, arg_qrrx_e *a)
-     return true;
- }
- 
-+static bool trans_FCMLA_vi(DisasContext *s, arg_FCMLA_vi *a)
-+{
-+    gen_helper_gvec_4_ptr *fn;
-+
-+    if (!dc_isar_feature(aa64_fcma, s)) {
-+        return false;
-+    }
-+    switch (a->esz) {
-+    case MO_16:
-+        if (!dc_isar_feature(aa64_fp16, s)) {
-+            return false;
-+        }
-+        fn = gen_helper_gvec_fcmlah_idx;
-+        break;
-+    case MO_32:
-+        if (!a->q && a->idx) {
-+            return false;
-+        }
-+        fn = gen_helper_gvec_fcmlas_idx;
-+        break;
-+    default:
-+        g_assert_not_reached();
-+    }
-+    if (fp_access_check(s)) {
-+        gen_gvec_op4_fpst(s, a->q, a->rd, a->rn, a->rm, a->rd,
-+                          a->esz == MO_16, (a->idx << 2) | a->rot, fn);
-+    }
-+    return true;
-+}
-+
- /*
-  * Advanced SIMD scalar pairwise
-  */
-@@ -10942,90 +11005,6 @@ static void disas_simd_three_reg_diff(DisasContext *s, uint32_t insn)
-     }
- }
- 
--/* AdvSIMD three same extra
-- *  31   30  29 28       24 23  22  21 20  16  15 14    11  10 9  5 4  0
-- * +---+---+---+-----------+------+---+------+---+--------+---+----+----+
-- * | 0 | Q | U | 0 1 1 1 0 | size | 0 |  Rm  | 1 | opcode | 1 | Rn | Rd |
-- * +---+---+---+-----------+------+---+------+---+--------+---+----+----+
-- */
--static void disas_simd_three_reg_same_extra(DisasContext *s, uint32_t insn)
--{
--    int rd = extract32(insn, 0, 5);
--    int rn = extract32(insn, 5, 5);
--    int opcode = extract32(insn, 11, 4);
--    int rm = extract32(insn, 16, 5);
--    int size = extract32(insn, 22, 2);
--    bool u = extract32(insn, 29, 1);
--    bool is_q = extract32(insn, 30, 1);
--    bool feature;
--    int rot;
--
--    switch (u * 16 + opcode) {
--    case 0x18: /* FCMLA, #0 */
--    case 0x19: /* FCMLA, #90 */
--    case 0x1a: /* FCMLA, #180 */
--    case 0x1b: /* FCMLA, #270 */
--        if (size == 0
--            || (size == 1 && !dc_isar_feature(aa64_fp16, s))
--            || (size == 3 && !is_q)) {
--            unallocated_encoding(s);
--            return;
--        }
--        feature = dc_isar_feature(aa64_fcma, s);
--        break;
--    default:
--    case 0x02: /* SDOT (vector) */
--    case 0x03: /* USDOT */
--    case 0x04: /* SMMLA */
--    case 0x05: /* USMMLA */
--    case 0x10: /* SQRDMLAH (vector) */
--    case 0x11: /* SQRDMLSH (vector) */
--    case 0x12: /* UDOT (vector) */
--    case 0x14: /* UMMLA */
--    case 0x1c: /* FCADD, #90 */
--    case 0x1d: /* BFMMLA */
--    case 0x1e: /* FCADD, #270 */
--    case 0x1f: /* BFDOT / BFMLAL */
--        unallocated_encoding(s);
--        return;
--    }
--    if (!feature) {
--        unallocated_encoding(s);
--        return;
--    }
--    if (!fp_access_check(s)) {
--        return;
--    }
--
--    switch (opcode) {
--    case 0x8: /* FCMLA, #0 */
--    case 0x9: /* FCMLA, #90 */
--    case 0xa: /* FCMLA, #180 */
--    case 0xb: /* FCMLA, #270 */
--        rot = extract32(opcode, 0, 2);
--        switch (size) {
--        case 1:
--            gen_gvec_op4_fpst(s, is_q, rd, rn, rm, rd, true, rot,
--                              gen_helper_gvec_fcmlah);
--            break;
--        case 2:
--            gen_gvec_op4_fpst(s, is_q, rd, rn, rm, rd, false, rot,
--                              gen_helper_gvec_fcmlas);
--            break;
--        case 3:
--            gen_gvec_op4_fpst(s, is_q, rd, rn, rm, rd, false, rot,
--                              gen_helper_gvec_fcmlad);
--            break;
--        default:
--            g_assert_not_reached();
--        }
--        return;
--
--    default:
--        g_assert_not_reached();
--    }
--}
--
- static void handle_2misc_widening(DisasContext *s, int opcode, bool is_q,
-                                   int size, int rn, int rd)
- {
-@@ -12001,10 +11980,7 @@ static void disas_simd_indexed(DisasContext *s, uint32_t insn)
+@@ -11979,7 +11979,6 @@ static void disas_simd_indexed(DisasContext *s, uint32_t insn)
+     int h = extract32(insn, 11, 1);
      int rn = extract32(insn, 5, 5);
      int rd = extract32(insn, 0, 5);
-     bool is_long = false;
--    int is_fp = 0;
--    bool is_fp16 = false;
+-    bool is_long = false;
      int index;
--    TCGv_ptr fpst;
  
      switch (16 * u + opcode) {
-     case 0x02: /* SMLAL, SMLAL2 */
-@@ -12024,16 +12000,6 @@ static void disas_simd_indexed(DisasContext *s, uint32_t insn)
-     case 0x0b: /* SQDMULL, SQDMULL2 */
-         is_long = true;
+@@ -11993,12 +11992,10 @@ static void disas_simd_indexed(DisasContext *s, uint32_t insn)
+             unallocated_encoding(s);
+             return;
+         }
+-        is_long = true;
          break;
--    case 0x11: /* FCMLA #0 */
--    case 0x13: /* FCMLA #90 */
--    case 0x15: /* FCMLA #180 */
--    case 0x17: /* FCMLA #270 */
--        if (is_scalar || !dc_isar_feature(aa64_fcma, s)) {
--            unallocated_encoding(s);
--            return;
--        }
--        is_fp = 2;
--        break;
+     case 0x03: /* SQDMLAL, SQDMLAL2 */
+     case 0x07: /* SQDMLSL, SQDMLSL2 */
+     case 0x0b: /* SQDMULL, SQDMULL2 */
+-        is_long = true;
+         break;
      default:
      case 0x00: /* FMLAL */
-     case 0x01: /* FMLA */
-@@ -12046,7 +12012,11 @@ static void disas_simd_indexed(DisasContext *s, uint32_t insn)
-     case 0x0e: /* SDOT */
-     case 0x0f: /* SUDOT / BFDOT / USDOT / BFMLAL */
-     case 0x10: /* MLA */
-+    case 0x11: /* FCMLA #0 */
-+    case 0x13: /* FCMLA #90 */
-     case 0x14: /* MLS */
-+    case 0x15: /* FCMLA #180 */
-+    case 0x17: /* FCMLA #270 */
-     case 0x18: /* FMLAL2 */
-     case 0x19: /* FMULX */
-     case 0x1c: /* FMLSL2 */
-@@ -12057,46 +12027,12 @@ static void disas_simd_indexed(DisasContext *s, uint32_t insn)
-         return;
-     }
+@@ -12050,96 +12047,6 @@ static void disas_simd_indexed(DisasContext *s, uint32_t insn)
  
--    switch (is_fp) {
--    case 1: /* normal fp */
--        unallocated_encoding(s); /* in decodetree */
--        return;
--
--    case 2: /* complex fp */
--        /* Each indexable element is a complex pair.  */
--        size += 1;
--        switch (size) {
--        case MO_32:
--            if (h && !is_q) {
--                unallocated_encoding(s);
--                return;
--            }
--            is_fp16 = true;
--            break;
--        case MO_64:
--            break;
--        default:
--            unallocated_encoding(s);
--            return;
--        }
--        break;
--
--    default: /* integer */
--        switch (size) {
--        case MO_8:
--        case MO_64:
--            unallocated_encoding(s);
--            return;
--        }
--        break;
--    }
--    if (is_fp16 && !dc_isar_feature(aa64_fp16, s)) {
--        unallocated_encoding(s);
--        return;
--    }
--
-     /* Given MemOp size, adjust register and indexing.  */
-     switch (size) {
-+    case MO_8:
-+    case MO_64:
-+        unallocated_encoding(s);
-+        return;
-     case MO_16:
-         index = h << 2 | l << 1 | m;
-         break;
-@@ -12104,14 +12040,6 @@ static void disas_simd_indexed(DisasContext *s, uint32_t insn)
-         index = h << 1 | l;
-         rm |= m << 4;
-         break;
--    case MO_64:
--        if (l || !is_q) {
--            unallocated_encoding(s);
--            return;
--        }
--        index = h;
--        rm |= m << 4;
--        break;
-     default:
-         g_assert_not_reached();
-     }
-@@ -12120,32 +12048,6 @@ static void disas_simd_indexed(DisasContext *s, uint32_t insn)
-         return;
-     }
- 
--    if (is_fp) {
--        fpst = fpstatus_ptr(is_fp16 ? FPST_FPCR_F16 : FPST_FPCR);
--    } else {
--        fpst = NULL;
--    }
--
--    switch (16 * u + opcode) {
--    case 0x11: /* FCMLA #0 */
--    case 0x13: /* FCMLA #90 */
--    case 0x15: /* FCMLA #180 */
--    case 0x17: /* FCMLA #270 */
--        {
--            int rot = extract32(insn, 13, 2);
--            int data = (index << 2) | rot;
--            tcg_gen_gvec_4_ptr(vec_full_reg_offset(s, rd),
--                               vec_full_reg_offset(s, rn),
--                               vec_full_reg_offset(s, rm),
--                               vec_full_reg_offset(s, rd), fpst,
--                               is_q ? 16 : 8, vec_full_reg_size(s), data,
--                               size == MO_64
--                               ? gen_helper_gvec_fcmlas_idx
--                               : gen_helper_gvec_fcmlah_idx);
--        }
--        return;
--    }
--
      if (size == 3) {
          g_assert_not_reached();
-     } else if (!is_long) {
-@@ -12407,7 +12309,6 @@ static void disas_simd_indexed(DisasContext *s, uint32_t insn)
-  */
- static const AArch64DecodeTable data_proc_simd[] = {
-     /* pattern  ,  mask     ,  fn                        */
--    { 0x0e008400, 0x9f208400, disas_simd_three_reg_same_extra },
-     { 0x0e200000, 0x9f200c00, disas_simd_three_reg_diff },
-     { 0x0e200800, 0x9f3e0c00, disas_simd_two_reg_misc },
-     { 0x0e300800, 0x9f3e0c00, disas_simd_across_lanes },
+-    } else if (!is_long) {
+-        /* 32 bit floating point, or 16 or 32 bit integer.
+-         * For the 16 bit scalar case we use the usual Neon helpers and
+-         * rely on the fact that 0 op 0 == 0 with no side effects.
+-         */
+-        TCGv_i32 tcg_idx = tcg_temp_new_i32();
+-        int pass, maxpasses;
+-
+-        if (is_scalar) {
+-            maxpasses = 1;
+-        } else {
+-            maxpasses = is_q ? 4 : 2;
+-        }
+-
+-        read_vec_element_i32(s, tcg_idx, rm, index, size);
+-
+-        if (size == 1 && !is_scalar) {
+-            /* The simplest way to handle the 16x16 indexed ops is to duplicate
+-             * the index into both halves of the 32 bit tcg_idx and then use
+-             * the usual Neon helpers.
+-             */
+-            tcg_gen_deposit_i32(tcg_idx, tcg_idx, tcg_idx, 16, 16);
+-        }
+-
+-        for (pass = 0; pass < maxpasses; pass++) {
+-            TCGv_i32 tcg_op = tcg_temp_new_i32();
+-            TCGv_i32 tcg_res = tcg_temp_new_i32();
+-
+-            read_vec_element_i32(s, tcg_op, rn, pass, is_scalar ? size : MO_32);
+-
+-            switch (16 * u + opcode) {
+-            case 0x10: /* MLA */
+-            case 0x14: /* MLS */
+-            {
+-                static NeonGenTwoOpFn * const fns[2][2] = {
+-                    { gen_helper_neon_add_u16, gen_helper_neon_sub_u16 },
+-                    { tcg_gen_add_i32, tcg_gen_sub_i32 },
+-                };
+-                NeonGenTwoOpFn *genfn;
+-                bool is_sub = opcode == 0x4;
+-
+-                if (size == 1) {
+-                    gen_helper_neon_mul_u16(tcg_res, tcg_op, tcg_idx);
+-                } else {
+-                    tcg_gen_mul_i32(tcg_res, tcg_op, tcg_idx);
+-                }
+-                if (opcode == 0x8) {
+-                    break;
+-                }
+-                read_vec_element_i32(s, tcg_op, rd, pass, MO_32);
+-                genfn = fns[size - 1][is_sub];
+-                genfn(tcg_res, tcg_op, tcg_res);
+-                break;
+-            }
+-            case 0x0c: /* SQDMULH */
+-                if (size == 1) {
+-                    gen_helper_neon_qdmulh_s16(tcg_res, tcg_env,
+-                                               tcg_op, tcg_idx);
+-                } else {
+-                    gen_helper_neon_qdmulh_s32(tcg_res, tcg_env,
+-                                               tcg_op, tcg_idx);
+-                }
+-                break;
+-            case 0x0d: /* SQRDMULH */
+-                if (size == 1) {
+-                    gen_helper_neon_qrdmulh_s16(tcg_res, tcg_env,
+-                                                tcg_op, tcg_idx);
+-                } else {
+-                    gen_helper_neon_qrdmulh_s32(tcg_res, tcg_env,
+-                                                tcg_op, tcg_idx);
+-                }
+-                break;
+-            default:
+-            case 0x01: /* FMLA */
+-            case 0x05: /* FMLS */
+-            case 0x09: /* FMUL */
+-            case 0x19: /* FMULX */
+-            case 0x1d: /* SQRDMLAH */
+-            case 0x1f: /* SQRDMLSH */
+-                g_assert_not_reached();
+-            }
+-
+-            if (is_scalar) {
+-                write_fp_sreg(s, rd, tcg_res);
+-            } else {
+-                write_vec_element_i32(s, tcg_res, rd, pass, MO_32);
+-            }
+-        }
+-
+-        clear_vec_high(s, is_q, rd);
+     } else {
+         /* long ops: 16x16->32 or 32x32->64 */
+         TCGv_i64 tcg_res[2];
 -- 
 2.34.1
 
