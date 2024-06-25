@@ -2,25 +2,25 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4A4E916236
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jun 2024 11:20:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 386BE916238
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jun 2024 11:20:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sM2Kf-0006bw-UZ; Tue, 25 Jun 2024 05:19:21 -0400
+	id 1sM2Kf-0006bj-AJ; Tue, 25 Jun 2024 05:19:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <EwanHai-oc@zhaoxin.com>)
- id 1sM2Kb-0006Z4-UH
+ id 1sM2Kb-0006Z5-UB
  for qemu-devel@nongnu.org; Tue, 25 Jun 2024 05:19:17 -0400
 Received: from mx2.zhaoxin.com ([203.110.167.99])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <EwanHai-oc@zhaoxin.com>)
- id 1sM2KY-0006IX-LG
+ id 1sM2KY-0006IF-2u
  for qemu-devel@nongnu.org; Tue, 25 Jun 2024 05:19:17 -0400
-X-ASG-Debug-ID: 1719307147-1eb14e2e5fbade0001-jgbH7p
+X-ASG-Debug-ID: 1719307147-1eb14e2e5fbade0002-jgbH7p
 Received: from ZXSHMBX1.zhaoxin.com (ZXSHMBX1.zhaoxin.com [10.28.252.163]) by
- mx2.zhaoxin.com with ESMTP id 0OjOJlLNDzVGZ7Lm (version=TLSv1.2
+ mx2.zhaoxin.com with ESMTP id oSVjF3VI6MrLfn5P (version=TLSv1.2
  cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO);
  Tue, 25 Jun 2024 17:19:07 +0800 (CST)
 X-Barracuda-Envelope-From: EwanHai-oc@zhaoxin.com
@@ -28,24 +28,26 @@ X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.163
 Received: from zxbjmbx1.zhaoxin.com (10.29.252.163) by ZXSHMBX1.zhaoxin.com
  (10.28.252.163) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 25 Jun
- 2024 17:19:06 +0800
+ 2024 17:19:07 +0800
 Received: from ewan-server.zhaoxin.com (10.28.66.62) by zxbjmbx1.zhaoxin.com
  (10.29.252.163) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 25 Jun
- 2024 17:19:05 +0800
+ 2024 17:19:06 +0800
 X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.163
 From: EwanHai <ewanhai-oc@zhaoxin.com>
 X-Barracuda-RBL-Trusted-Forwarder: 10.29.252.163
 To: <pbonzini@redhat.com>
 CC: <qemu-devel@nongnu.org>, <ewanhai@zhaoxin.com>, <cobechen@zhaoxin.com>,
  <rockcui@zhaoxin.com>, <louisqi@zhaoxin.com>
-Subject: [PATCH 0/4] Add support for Zhaoxin Yongfeng CPU model and other
- improvements
-Date: Tue, 25 Jun 2024 05:19:01 -0400
-X-ASG-Orig-Subj: [PATCH 0/4] Add support for Zhaoxin Yongfeng CPU model and
- other improvements
-Message-ID: <20240625091905.1325205-1-ewanhai-oc@zhaoxin.com>
+Subject: [PATCH 1/4] target/i386: Add support for Zhaoxin/VIA CPU vendor
+ identification
+Date: Tue, 25 Jun 2024 05:19:02 -0400
+X-ASG-Orig-Subj: [PATCH 1/4] target/i386: Add support for Zhaoxin/VIA CPU
+ vendor identification
+Message-ID: <20240625091905.1325205-2-ewanhai-oc@zhaoxin.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240625091905.1325205-1-ewanhai-oc@zhaoxin.com>
+References: <20240625091905.1325205-1-ewanhai-oc@zhaoxin.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
@@ -57,7 +59,7 @@ X-Barracuda-Start-Time: 1719307147
 X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
 X-Barracuda-URL: https://10.28.252.36:4443/cgi-mod/mark.cgi
 X-Virus-Scanned: by bsmtpd at zhaoxin.com
-X-Barracuda-Scan-Msg-Size: 1392
+X-Barracuda-Scan-Msg-Size: 2239
 X-Barracuda-BRTS-Status: 1
 X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
 X-Barracuda-Spam-Score: -2.02
@@ -90,35 +92,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch series introduces support for the Zhaoxin Yongfeng CPU model and includes
-some improvements and updates related to Zhaoxin and VIA CPUs. The changes ensure that
-QEMU can correctly identify and emulate Zhaoxin CPUs, providing accurate functionality
-and performance characteristics.
+This patch adds CPUID vendor strings and macros to identify Zhaoxin/VIA CPUs.
 
-### Summary of Changes
+Changes:
+- Added Zhaoxin/VIA CPUID vendor strings.
+- Defined CPUID_VENDOR_ZHAOXIN.
+- Added IS_ZHAOXIN_CPU/IS_VIA_CPU macro.
 
-EwanHai (4):
-  target/i386: Add support for Zhaoxin/VIA CPU vendor identification
-  target/i386: Add CPUID leaf 0xC000_0001 EDX definitions
-  target/i386: Introduce Zhaoxin Yongfeng CPU model
-  target/i386: Update CMPLegacy handling for Zhaoxin and VIA CPUs
+Signed-off-by: EwanHai <ewanhai-oc@zhaoxin.com>
+---
+ target/i386/cpu.h | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
- target/i386/cpu.c | 130 ++++++++++++++++++++++++++++++++++++++++++++--
- target/i386/cpu.h |  38 ++++++++++++++
- 2 files changed, 165 insertions(+), 3 deletions(-)
-
-### Known Bugs
-
-1. Issue with VMX Preemption Timer Rate on Yongfeng CPU:
-   - Description: On Yongfeng CPUs, the VMX preemption timer rate is 128, meaning that
-     bits 4:0 of MSR_IA32_VMX_MISC_CTLS should be set to 7. However, due to Intel's rate
-     being 5, the Linux kernel has hardcoded this value as 5:
-     `#define VMX_MISC_EMULATED_PREEMPTION_TIMER_RATE 5`
-   - Impact: This discrepancy can cause incorrect behavior in the VMX preemption timer on
-     Yongfeng CPUs.
-   - Workaround: A patch to correct this issue in the Linux kernel is currently being
-     prepared and will be submitted soon.
-
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index c64ef0c1a2..3653736525 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -1001,16 +1001,33 @@ uint64_t x86_cpu_get_supported_feature_word(FeatureWord w,
+ #define CPUID_VENDOR_AMD_3   0x444d4163 /* "cAMD" */
+ #define CPUID_VENDOR_AMD   "AuthenticAMD"
+ 
++#define CPUID_VENDOR_VIA_1 0x746E6543 /* "Cent" */
++#define CPUID_VENDOR_VIA_2 0x48727561 /* "aurH" */
++#define CPUID_VENDOR_VIA_3 0x736C7561 /* "auls" */
++
++#define CPUID_VENDOR_ZHAOXIN_1 0x68532020 /* "  Sh" */
++#define CPUID_VENDOR_ZHAOXIN_2 0x68676E61 /* "angh" */
++#define CPUID_VENDOR_ZHAOXIN_3 0x20206961 /* "ai  " */
++
+ #define CPUID_VENDOR_VIA   "CentaurHauls"
+ 
+ #define CPUID_VENDOR_HYGON    "HygonGenuine"
+ 
++#define CPUID_VENDOR_ZHAOXIN  "  Shanghai  "
++
+ #define IS_INTEL_CPU(env) ((env)->cpuid_vendor1 == CPUID_VENDOR_INTEL_1 && \
+                            (env)->cpuid_vendor2 == CPUID_VENDOR_INTEL_2 && \
+                            (env)->cpuid_vendor3 == CPUID_VENDOR_INTEL_3)
+ #define IS_AMD_CPU(env) ((env)->cpuid_vendor1 == CPUID_VENDOR_AMD_1 && \
+                          (env)->cpuid_vendor2 == CPUID_VENDOR_AMD_2 && \
+                          (env)->cpuid_vendor3 == CPUID_VENDOR_AMD_3)
++#define IS_VIA_CPU(env) ((env)->cpuid_vendor1 == CPUID_VENDOR_VIA_1 && \
++                         (env)->cpuid_vendor2 == CPUID_VENDOR_VIA_2 && \
++                         (env)->cpuid_vendor3 == CPUID_VENDOR_VIA_3)
++#define IS_ZHAOXIN_CPU(env) ((env)->cpuid_vendor1 == CPUID_VENDOR_ZHAOXIN_1 && \
++                             (env)->cpuid_vendor2 == CPUID_VENDOR_ZHAOXIN_2 && \
++                             (env)->cpuid_vendor3 == CPUID_VENDOR_ZHAOXIN_3)
++
+ 
+ #define CPUID_MWAIT_IBE     (1U << 1) /* Interrupts can exit capability */
+ #define CPUID_MWAIT_EMX     (1U << 0) /* enumeration supported */
 -- 
 2.34.1
 
