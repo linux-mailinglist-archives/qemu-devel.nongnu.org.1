@@ -2,84 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5073A9168C1
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jun 2024 15:22:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 518379167E0
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jun 2024 14:31:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sM67X-0000Cd-Eu; Tue, 25 Jun 2024 09:22:03 -0400
+	id 1sM5J2-0007Y5-DR; Tue, 25 Jun 2024 08:29:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rajurastogijkt@gmail.com>)
- id 1sM5IG-0007SW-Bi
- for qemu-devel@nongnu.org; Tue, 25 Jun 2024 08:29:04 -0400
-Received: from mail-pg1-x533.google.com ([2607:f8b0:4864:20::533])
+ (Exim 4.90_1) (envelope-from <sunilvl@ventanamicro.com>)
+ id 1sM5Iz-0007XA-No
+ for qemu-devel@nongnu.org; Tue, 25 Jun 2024 08:29:49 -0400
+Received: from mail-oo1-xc2b.google.com ([2607:f8b0:4864:20::c2b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <rajurastogijkt@gmail.com>)
- id 1sM5IE-0000HA-MW
- for qemu-devel@nongnu.org; Tue, 25 Jun 2024 08:29:04 -0400
-Received: by mail-pg1-x533.google.com with SMTP id
- 41be03b00d2f7-7178727da84so2576107a12.0
- for <qemu-devel@nongnu.org>; Tue, 25 Jun 2024 05:29:01 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <sunilvl@ventanamicro.com>)
+ id 1sM5Ix-0000Lb-Kc
+ for qemu-devel@nongnu.org; Tue, 25 Jun 2024 08:29:49 -0400
+Received: by mail-oo1-xc2b.google.com with SMTP id
+ 006d021491bc7-5b9706c84e5so3026760eaf.1
+ for <qemu-devel@nongnu.org>; Tue, 25 Jun 2024 05:29:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1719318540; x=1719923340; darn=nongnu.org;
- h=content-language:mime-version:user-agent:date:message-id:subject:to
- :from:reply-to:from:to:cc:subject:date:message-id:reply-to;
- bh=WCdoKFbLeIS0j7UjsChNNgOrZixtul9Bpu9Zm2TdKt4=;
- b=bx/jPdJd4RmxWAYIySa1JYxpINg/R7PNmwE6GBdGXhiK17S+nhvTQxiOgPPYWhUVyf
- pa1HQIL8ASgY7F7ao3Dv+ow5B6g99AnPlYHCwZHUnsEAjWXKTtsHwRfTWw+GOWU5cwcI
- nUJOnGH+PyER3ZG0L50blMZoH3wZjXNOvfVHBFhsGxSIx5qThFQ5nKdr0BSuSV5hnRIO
- 0GaM7tg1y2aKrFVskja38/8HBsXfbsyj7gakpANm823hlB4UmTI1BkMyTWjQoqgwos39
- DAWL7GiVEO+X1C2we5ff9+JVQnnfUfsNGu4aXaecWi3IBcI9dAGWDQNlXuy5AiIJxtdy
- nOsg==
+ d=ventanamicro.com; s=google; t=1719318586; x=1719923386; darn=nongnu.org;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=kOOOZrv8Wn5GwQsvG+CnPXkGyMtJ3HGlzcbEvGRFSfY=;
+ b=EF8YJoV5iRR5rIL0PFOefVvy0TXeBNMVWzTY27JNTmeCjHWMMdYmZA3pScSjckiB1Z
+ F8hof3vnjYOfb+vDvv/LezGFuw8oOdyNqUG9GVUjGICe03021TIsdBm5azNk+MmZg0qb
+ +HMJ2GMZBZLyosH3I+iurwozHQxSbQfY2bMGZR28qvCB8wKoq1idnyS8RtN5G3EJKJ/O
+ 5x5gR6KyOPAW9ztTQLvDnMoGCW00SKjOQxHCJ626MR6pFwNtfIelCHSiebuOPg4977Er
+ RwJnCgVzm/EwqTrETRWWcHiFiSqVp0Pn8eHRe8xtSy02nTExxSEN8nNi5tEeIwpAcQV4
+ LZuw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719318540; x=1719923340;
- h=content-language:mime-version:user-agent:date:message-id:subject:to
- :from:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=WCdoKFbLeIS0j7UjsChNNgOrZixtul9Bpu9Zm2TdKt4=;
- b=I/1vssuNN+9W7FlAn8rNRrit1RsFdSbWpAe50Shma1iWreKqbkgVfs/PUDJP9HfP0I
- l+dX5ugza/DH3xqD5V+OBm0wht0BvKeBM15Gn6kNauyUlj0Rg6oY/2oeGwEdM6p4jLax
- yYEabu5G1NQmyrg7+OwWR9I83GshEr08Rz0WnbsnqHrwSJNmEqIDe7bYfY2jp/Rks5SB
- bEKu5rCOl/lKMpPYR9mwh7/6u/h/fo6nFnxBJ2y5uQQ51TSNIm3H9NRt7wDLdnF1j7xq
- +4d4Lr+cr6ehaLkPyUtjrocpXlyQYhk8mJb2WKHa2L8+ezLeiWIMvSDybvbadCD4W9zm
- fZbg==
-X-Gm-Message-State: AOJu0YwuCV1UU9ixB9X/2krpjPxvtz/YhHDP4UlOdAmFxXvLNzDL/q1s
- uVxvnw7jnsijWvI2T3gYcOhmCJ/FPfXZdPgWvAapxPWM0jiIdDKEHUHCww==
-X-Google-Smtp-Source: AGHT+IFTiis0WJZUcLJsxSSyxxG3KGdMDEVRE0+KeqieDXJ0UjkaSqfS3YSeWCWOut5Xk0FlviFfqQ==
-X-Received: by 2002:a05:6a20:1896:b0:1b5:e80d:2fe0 with SMTP id
- adf61e73a8af0-1bcee6ebd00mr6572877637.19.1719318540112; 
- Tue, 25 Jun 2024 05:29:00 -0700 (PDT)
-Received: from [192.168.1.103] ([103.15.252.203])
+ d=1e100.net; s=20230601; t=1719318586; x=1719923386;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=kOOOZrv8Wn5GwQsvG+CnPXkGyMtJ3HGlzcbEvGRFSfY=;
+ b=itRkMk8aG7yXh9nqjamdhEAxt7RZndYRoCBvClLNj1DELW/4zAtOMPHin8jQzo5z8v
+ GxYzC4ukDP7AonzfivaHKH5RZxgBejHDU5Un2qIFvDE6/9CoFQxXV5XFnu+LXMx6eEc3
+ brPAzuUkT01lRFR7hEIk5Ut/JN+B05Q0N9aWN/swMb0zoojL1RJKql20Su/5KV5CQWPw
+ uw1ay5XTDTxcnFGo9Uc1+YyXZ3ddi94WQYPDiIbzCluso6674KofWyQmjq4cNIkEUO+d
+ 7Du2EJ3lCzGraDkNsLP54Se4xw9wMHkplPkZuonfVssqWrM+O3sA8x15OvTn6Ua95+F4
+ NS3w==
+X-Gm-Message-State: AOJu0YzPW7C/tBrvYLOAhJqpp/wz4gzLyVWNsBRQlZ+U+bFLQ/lt0wwu
+ q42QBCmttC2A3XvQH7etwNVtICJXrjaFQs+Eyi72i7bjWQ5YHdPJ+3wlvtrvr3s=
+X-Google-Smtp-Source: AGHT+IEffkaoJ3dtBGUW4mGMJrkhLs/uVEndm5N+1WuaGFTeOLzUZsKdOFdvUQluokdI4fVP6lnV9w==
+X-Received: by 2002:a4a:3515:0:b0:5bb:218e:3436 with SMTP id
+ 006d021491bc7-5c1eb9de604mr8329919eaf.1.1719318585804; 
+ Tue, 25 Jun 2024 05:29:45 -0700 (PDT)
+Received: from sunil-laptop ([106.51.187.237])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-706953ca94dsm1636644b3a.199.2024.06.25.05.28.58
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 25 Jun 2024 05:28:59 -0700 (PDT)
-From: Raju Rastogi <rajurastogijkt@gmail.com>
-To: qemu-devel@nongnu.org
-Subject: [FOLLOW UP] RE: Meeting request- Artificial Intelligence and Machine
- Learning
-Message-ID: <1b4381ac-f27e-880b-80da-99323d3496ab@gmail.com>
-Date: Tue, 25 Jun 2024 17:58:57 +0530
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.1
+ 006d021491bc7-5c1d58ff7e1sm1755337eaf.39.2024.06.25.05.29.38
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 25 Jun 2024 05:29:45 -0700 (PDT)
+Date: Tue, 25 Jun 2024 17:59:33 +0530
+From: Sunil V L <sunilvl@ventanamicro.com>
+To: Igor Mammedov <imammedo@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-riscv@nongnu.org,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
+ Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ "Michael S . Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ Sia Jee Heng <jeeheng.sia@starfivetech.com>,
+ Alistair Francis <alistair23@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Bin Meng <bmeng.cn@gmail.com>,
+ Weiwei Li <liwei1518@gmail.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Alistair Francis <alistair.francis@wdc.com>
+Subject: Re: [PATCH v3 14/15] tests/qtest/bios-tables-test.c: Enable basic
+ testing for RISC-V
+Message-ID: <Znq4LZCLbpT5zXbA@sunil-laptop>
+References: <20240621115906.1049832-1-sunilvl@ventanamicro.com>
+ <20240621115906.1049832-15-sunilvl@ventanamicro.com>
+ <20240625131959.67c2fc74@imammedo.users.ipa.redhat.com>
+ <20240625140558.168d1a9e@imammedo.users.ipa.redhat.com>
 MIME-Version: 1.0
-Content-Type: multipart/alternative;
- boundary="------------A5C9D1E43ADA4385080A19C6"
-Content-Language: en-GB
-Received-SPF: pass client-ip=2607:f8b0:4864:20::533;
- envelope-from=rajurastogijkt@gmail.com; helo=mail-pg1-x533.google.com
-X-Spam_score_int: -7
-X-Spam_score: -0.8
-X-Spam_bar: /
-X-Spam_report: (-0.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- FREEMAIL_REPLYTO=1, FREEMAIL_REPLYTO_END_DIGIT=0.25, HTML_MESSAGE=0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240625140558.168d1a9e@imammedo.users.ipa.redhat.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c2b;
+ envelope-from=sunilvl@ventanamicro.com; helo=mail-oo1-xc2b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Tue, 25 Jun 2024 09:22:01 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,88 +104,37 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: ideasb39@gmail.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is a multi-part message in MIME format.
---------------A5C9D1E43ADA4385080A19C6
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+On Tue, Jun 25, 2024 at 02:05:58PM +0200, Igor Mammedov wrote:
+> On Tue, 25 Jun 2024 13:19:59 +0200
+> Igor Mammedov <imammedo@redhat.com> wrote:
+> 
+> > On Fri, 21 Jun 2024 17:29:05 +0530
+> > Sunil V L <sunilvl@ventanamicro.com> wrote:
+> > 
+> > > Add basic ACPI table test case for RISC-V.
+> > > 
+> > > Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
+> > > Reviewed-by: Alistair Francis <alistair.francis@wdc.com>  
+> > 
+> > Reviewed-by: Igor Mammedov <imammedo@redhat.com>
+> 
+> I take ack back for now, since patch most likely to cause failures on weaker test host (CI infra)
+> 
+> test case never finishes and timeouts on my x86 host while consuming 100%,
+> 
+Hi Igor,
 
-Hi,
+Many thanks for your kind review!. I think you are missing the patch [1]
+(which I mentioned in cover letter as well). This patch became a
+dependency since your suggestion to use -cdrom option needed this fix.
 
-Following up on my last email.
+gitlab CI tests also passed for me with that patch included.
 
-Can we schedule a quick call so we can discuss this further?
-
-Please suggest a day and time to connect and also share the best phone 
-number to reach you.
-
-Thank you
-Raju Rastogi
-
-On Friday 19 April 2024 5:43 PM, Raju Rastogi wrote:
-
-Hi,
-
-Stay ahead in today's fast-paced business world with our cutting-edge 
-AI/ML services!
-
-We're here to help your business make data-driven decisions and gain a 
-competitive edge using the power of artificial intelligence and machine
-learning.
-
-Let's schedule a quick call to explore how we can integrate these 
-technologies into your business.
-
-Regards,
-Raju Rastogi
-
-
---------------A5C9D1E43ADA4385080A19C6
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    <div class="moz-text-html" lang="x-western">Hi,<br>
-      <div style="font-size: 11pt;"> <br>
-        Following up on my last email.<br>
-        <br>
-        Can we schedule a quick call so we can discuss this further?<br>
-        <br>
-        Please suggest a day and time to connect and also share the best
-        phone number to reach you.<br>
-        <br>
-        Thank you<br>
-        Raju Rastogi<br>
-        <br>
-        On Friday 19 April 2024 5:43 PM, Raju Rastogi wrote:<br>
-        <br>
-        Hi,<br>
-        <br>
-        Stay ahead in today's fast-paced business world with our
-        cutting-edge AI/ML services!<br>
-        <br>
-        We're here to help your business make data-driven decisions and
-        gain a competitive edge using the power of artificial
-        intelligence and machine<br>
-        learning.<br>
-        <br>
-        Let's schedule a quick call to explore how we can integrate
-        these technologies into your business.<br>
-        <br>
-        Regards,<br>
-        Raju Rastogi<br>
-        <br>
-      </div>
-    </div>
-  </body>
-</html>
-
---------------A5C9D1E43ADA4385080A19C6--
+[1] - https://mail.gnu.org/archive/html/qemu-devel/2024-06/msg03683.html
+ 
+Thanks,
+Sunil
 
