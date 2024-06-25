@@ -2,81 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 745A5917636
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jun 2024 04:40:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31B7C91764E
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jun 2024 04:45:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sMBV1-0007VV-8s; Tue, 25 Jun 2024 15:06:58 -0400
+	id 1sMGMh-00071n-9A; Tue, 25 Jun 2024 20:18:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sMBBt-0002th-Pc
- for qemu-devel@nongnu.org; Tue, 25 Jun 2024 14:47:18 -0400
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sMBBB-0007Bm-30
- for qemu-devel@nongnu.org; Tue, 25 Jun 2024 14:46:41 -0400
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-70656b43fd4so3399723b3a.0
- for <qemu-devel@nongnu.org>; Tue, 25 Jun 2024 11:44:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719341069; x=1719945869; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=u70FGhdj6+SDi8C75S6LZSmiHm3Th47xqHQlbQAfOcI=;
- b=Jodi/6k7s3Ih+jiSPmaaz8zmC7y9UxJbJ+6xOTPm37cToQHFbjJcIhegVHMprDiGR7
- hd4ZSK7SmnOv9cGfZCQf0s3HFU0L9A3OnyWGjAaFvhCOvZxEcWC90sbCNrzkrCkH3fgD
- 0kittIlkMqFr3H9ueaaGRH+WVeI3OV2cjNDyjwCbn5rBONjJ+ljDY5H/YXhgw0uf/CdS
- c3awaLgB69u6ZxVeZPPz0zN+mw4jSBexGrvQNONxvVWcLxpammV78DBtLwBeFx7Qzd1h
- Qn5QAZops9cLhaXNHIVkw0L1Hq2yXzTkWp5CkTAOrX4mTSNh3zl+5KzLDP9g9hU2Oezi
- FN5Q==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sMGME-0006zk-L4
+ for qemu-devel@nongnu.org; Tue, 25 Jun 2024 20:17:54 -0400
+Received: from [170.10.129.124] (helo=us-smtp-delivery-124.mimecast.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sMGLW-0002aa-6G
+ for qemu-devel@nongnu.org; Tue, 25 Jun 2024 20:17:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1719360962;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Rev1NjoEJJXHEvGvl9T4+up+8BzB/9mnBukmn7puj68=;
+ b=O3DxiguiUflty8SmSzYqRCem7klXR8VGixVGZxaMuL1qYrTnaZHkxY1Le0THm26VOHevYV
+ VoK9j8UIp5IE57yOfG5NscPgQOYJjOe4eSlTjopmPSKuFPyqAMh/EJpXZKVyzqQ5WOp+h6
+ BLFv82MRpSL9Agu4ZSMT91UWV55scUE=
+Received: from mail-oa1-f72.google.com (mail-oa1-f72.google.com
+ [209.85.160.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-122-ryrsLSeGMLu2vYXZo0riUA-1; Tue, 25 Jun 2024 15:04:01 -0400
+X-MC-Unique: ryrsLSeGMLu2vYXZo0riUA-1
+Received: by mail-oa1-f72.google.com with SMTP id
+ 586e51a60fabf-25cbd68532fso1360085fac.3
+ for <qemu-devel@nongnu.org>; Tue, 25 Jun 2024 12:04:01 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719341069; x=1719945869;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=u70FGhdj6+SDi8C75S6LZSmiHm3Th47xqHQlbQAfOcI=;
- b=gUWVr/jUFOS4ZdhFMwak+/DsW2vfsWrMglPQnbCUoqiBNjg/x/MX/gRtX+J1vIbDMn
- YCE8KGEd1BZSQ1I0duMxAfW6olgJmOibBnk7xcvu31woVzkhoHDJ9Mw/HrPvKb+Nlqrt
- KBE/0BQWru70eYnc6bag6yV1UVPlWyhlTPOtT4FMg5scnpHjQ7N6CVJRV2LyJ9x1Ocih
- plRFgdf5xGhSQBXx5d/mRHxBC0mziT45bR6iyMd2A8WjxkPHm/SZrAtfW356Q5BPc6jD
- XnTqplR++J7oidTrLy4nNU3te20b645hdiTFALXtGWZOqVGhhNt0dU/4XaRCMMaYQzc1
- 6Wsg==
-X-Gm-Message-State: AOJu0YyRBVqsiJjzRtWmRYZiUIaHAzhySfQb3YC07FyVnoy5lb6VnMbg
- mRT811rLRcQaHF/ZJJkqPEciLWlO0ZJOZ1UcBIp2X7hI50VasFbQqJv0dssFJo2cs0QjTCxB19C
- l
-X-Google-Smtp-Source: AGHT+IExR7US1/HehZRxiSXpfdKHm0AYigFlSgCTddaoCmbwZwMcvf+HaoeSRclDw4L0pW3MMJxikQ==
-X-Received: by 2002:a17:903:41cd:b0:1f9:bb35:f313 with SMTP id
- d9443c01a7336-1fa23edc8c2mr80059025ad.30.1719340546997; 
- Tue, 25 Jun 2024 11:35:46 -0700 (PDT)
-Received: from stoup.. (174-21-76-141.tukw.qwest.net. [174.21.76.141])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1f9eb3c6027sm84693235ad.133.2024.06.25.11.35.46
+ d=1e100.net; s=20230601; t=1719342241; x=1719947041;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Rev1NjoEJJXHEvGvl9T4+up+8BzB/9mnBukmn7puj68=;
+ b=Se2fPi24aTIXvcKXN1Cgc486CsVjYcneBEqBsEyIVimpymGrIJ0MoKKqsuiJnsRICd
+ sD3/RAkfuOFLWUdrnXFVCV1GDnWv9LAJpsIyNM7jaA/iOkgMcO0H0/DQ04nU08g9gKHK
+ Jk8YqPm/Gk+GatsjYMKABoOoOiYGp0HS5J4siavyFg+uBZhtcwgHR6/Vg0HH1V1IKvVB
+ c1Xr44IuhEEgmc0U02WiS7e+FVNZfJIjNP/suhgK5WPvvXCh7Y3CWMAeCXFQgEI/510f
+ Uh3vyDacQQZCDcjj03xRFUDi4i2PxgJlXwvoG2LhagejnesRSjV/0Flos0gCeyfv1zI5
+ gd/Q==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCU9opCy0CrNcjBWHxNKif6bSyla8e1hi22kweyZmOVbCDcha7A2pY1ulnEt7OB3JGQa8b8KmN2UXrMBQx+O3GV6zyRhx6o=
+X-Gm-Message-State: AOJu0YzdsxOXn5UhRPjBlv+aytzcwlRMipvXDZh/FeiP0k53Ko99McIV
+ il19mskTmTnZzT+Yf50KRmljEFaCIPxv1BwkwnsqnKsUzWyTKkeFphGWsugwNrkeIs8riLKVgMA
+ 150yPVhABNOHwqmHdBY5vz+3HUlCAd4kqn4HwiJnQzL+KF0x88sUJ
+X-Received: by 2002:a05:6359:4ca7:b0:1a4:6af9:2324 with SMTP id
+ e5c5f4694b2df-1a46af924f6mr312590955d.2.1719342240358; 
+ Tue, 25 Jun 2024 12:04:00 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFTL3A6+Z1MaB4cUIxDP5N4aVTuunyC704WX59VuPg31dtbHVz3vtMWs0zRqLafghXrxxK3BQ==
+X-Received: by 2002:a05:6359:4ca7:b0:1a4:6af9:2324 with SMTP id
+ e5c5f4694b2df-1a46af924f6mr312585955d.2.1719342239788; 
+ Tue, 25 Jun 2024 12:03:59 -0700 (PDT)
+Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com.
+ [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
+ 6a1803df08f44-6b534b6fb20sm33456826d6.58.2024.06.25.12.03.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 25 Jun 2024 11:35:46 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org,
-	Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH v2 10/13] target/arm: Add data argument to do_fp3_vector
-Date: Tue, 25 Jun 2024 11:35:33 -0700
-Message-Id: <20240625183536.1672454-11-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240625183536.1672454-1-richard.henderson@linaro.org>
-References: <20240625183536.1672454-1-richard.henderson@linaro.org>
+ Tue, 25 Jun 2024 12:03:59 -0700 (PDT)
+Date: Tue, 25 Jun 2024 15:03:56 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Joao Martins <joao.m.martins@oracle.com>
+Cc: Elena Ufimtseva <elena.ufimtseva@oracle.com>, qemu-devel@nongnu.org,
+ eduardo@habkost.net, marcel.apfelbaum@gmail.com, philmd@linaro.org,
+ wangyanan55@huawei.com, farosas@suse.de, eblake@redhat.com,
+ armbru@redhat.com
+Subject: Re: [PATCH RFC 2/2] migration: abort on destination if switchover
+ limit exceeded
+Message-ID: <ZnsUnKZHtsMKQc_2@x1n>
+References: <20240621143221.198784-1-elena.ufimtseva@oracle.com>
+ <20240621143221.198784-3-elena.ufimtseva@oracle.com>
+ <ZnnL42_iDip3hfUh@x1n>
+ <9eeea2a9-b3ef-4791-94de-fb06ad2bd9b4@oracle.com>
+ <ZnrZ9W6WpvmDBpgv@x1n>
+ <5953224c-9763-4806-ba72-c3cd87a71210@oracle.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x435.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <5953224c-9763-4806-ba72-c3cd87a71210@oracle.com>
+X-Host-Lookup-Failed: Reverse DNS lookup failed for 170.10.129.124 (deferred)
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -8
+X-Spam_score: -0.9
+X-Spam_bar: /
+X-Spam_report: (-0.9 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,228 +107,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- target/arm/tcg/translate-a64.c | 52 +++++++++++++++++-----------------
- 1 file changed, 26 insertions(+), 26 deletions(-)
+On Tue, Jun 25, 2024 at 05:31:19PM +0100, Joao Martins wrote:
+> The device-state multifd scaling is a take on improving switchover phase,
+> and we will keep improving it whenever we find things... but the
 
-diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 2697c4b305..57cdde008e 100644
---- a/target/arm/tcg/translate-a64.c
-+++ b/target/arm/tcg/translate-a64.c
-@@ -5290,7 +5290,7 @@ TRANS(CMHS_s, do_cmop_d, a, TCG_COND_GEU)
- TRANS(CMEQ_s, do_cmop_d, a, TCG_COND_EQ)
- TRANS(CMTST_s, do_cmop_d, a, TCG_COND_TSTNE)
- 
--static bool do_fp3_vector(DisasContext *s, arg_qrrr_e *a,
-+static bool do_fp3_vector(DisasContext *s, arg_qrrr_e *a, int data,
-                           gen_helper_gvec_3_ptr * const fns[3])
- {
-     MemOp esz = a->esz;
-@@ -5313,7 +5313,7 @@ static bool do_fp3_vector(DisasContext *s, arg_qrrr_e *a,
-     }
-     if (fp_access_check(s)) {
-         gen_gvec_op3_fpst(s, a->q, a->rd, a->rn, a->rm,
--                          esz == MO_16, 0, fns[esz - 1]);
-+                          esz == MO_16, data, fns[esz - 1]);
-     }
-     return true;
- }
-@@ -5323,168 +5323,168 @@ static gen_helper_gvec_3_ptr * const f_vector_fadd[3] = {
-     gen_helper_gvec_fadd_s,
-     gen_helper_gvec_fadd_d,
- };
--TRANS(FADD_v, do_fp3_vector, a, f_vector_fadd)
-+TRANS(FADD_v, do_fp3_vector, a, 0, f_vector_fadd)
- 
- static gen_helper_gvec_3_ptr * const f_vector_fsub[3] = {
-     gen_helper_gvec_fsub_h,
-     gen_helper_gvec_fsub_s,
-     gen_helper_gvec_fsub_d,
- };
--TRANS(FSUB_v, do_fp3_vector, a, f_vector_fsub)
-+TRANS(FSUB_v, do_fp3_vector, a, 0, f_vector_fsub)
- 
- static gen_helper_gvec_3_ptr * const f_vector_fdiv[3] = {
-     gen_helper_gvec_fdiv_h,
-     gen_helper_gvec_fdiv_s,
-     gen_helper_gvec_fdiv_d,
- };
--TRANS(FDIV_v, do_fp3_vector, a, f_vector_fdiv)
-+TRANS(FDIV_v, do_fp3_vector, a, 0, f_vector_fdiv)
- 
- static gen_helper_gvec_3_ptr * const f_vector_fmul[3] = {
-     gen_helper_gvec_fmul_h,
-     gen_helper_gvec_fmul_s,
-     gen_helper_gvec_fmul_d,
- };
--TRANS(FMUL_v, do_fp3_vector, a, f_vector_fmul)
-+TRANS(FMUL_v, do_fp3_vector, a, 0, f_vector_fmul)
- 
- static gen_helper_gvec_3_ptr * const f_vector_fmax[3] = {
-     gen_helper_gvec_fmax_h,
-     gen_helper_gvec_fmax_s,
-     gen_helper_gvec_fmax_d,
- };
--TRANS(FMAX_v, do_fp3_vector, a, f_vector_fmax)
-+TRANS(FMAX_v, do_fp3_vector, a, 0, f_vector_fmax)
- 
- static gen_helper_gvec_3_ptr * const f_vector_fmin[3] = {
-     gen_helper_gvec_fmin_h,
-     gen_helper_gvec_fmin_s,
-     gen_helper_gvec_fmin_d,
- };
--TRANS(FMIN_v, do_fp3_vector, a, f_vector_fmin)
-+TRANS(FMIN_v, do_fp3_vector, a, 0, f_vector_fmin)
- 
- static gen_helper_gvec_3_ptr * const f_vector_fmaxnm[3] = {
-     gen_helper_gvec_fmaxnum_h,
-     gen_helper_gvec_fmaxnum_s,
-     gen_helper_gvec_fmaxnum_d,
- };
--TRANS(FMAXNM_v, do_fp3_vector, a, f_vector_fmaxnm)
-+TRANS(FMAXNM_v, do_fp3_vector, a, 0, f_vector_fmaxnm)
- 
- static gen_helper_gvec_3_ptr * const f_vector_fminnm[3] = {
-     gen_helper_gvec_fminnum_h,
-     gen_helper_gvec_fminnum_s,
-     gen_helper_gvec_fminnum_d,
- };
--TRANS(FMINNM_v, do_fp3_vector, a, f_vector_fminnm)
-+TRANS(FMINNM_v, do_fp3_vector, a, 0, f_vector_fminnm)
- 
- static gen_helper_gvec_3_ptr * const f_vector_fmulx[3] = {
-     gen_helper_gvec_fmulx_h,
-     gen_helper_gvec_fmulx_s,
-     gen_helper_gvec_fmulx_d,
- };
--TRANS(FMULX_v, do_fp3_vector, a, f_vector_fmulx)
-+TRANS(FMULX_v, do_fp3_vector, a, 0, f_vector_fmulx)
- 
- static gen_helper_gvec_3_ptr * const f_vector_fmla[3] = {
-     gen_helper_gvec_vfma_h,
-     gen_helper_gvec_vfma_s,
-     gen_helper_gvec_vfma_d,
- };
--TRANS(FMLA_v, do_fp3_vector, a, f_vector_fmla)
-+TRANS(FMLA_v, do_fp3_vector, a, 0, f_vector_fmla)
- 
- static gen_helper_gvec_3_ptr * const f_vector_fmls[3] = {
-     gen_helper_gvec_vfms_h,
-     gen_helper_gvec_vfms_s,
-     gen_helper_gvec_vfms_d,
- };
--TRANS(FMLS_v, do_fp3_vector, a, f_vector_fmls)
-+TRANS(FMLS_v, do_fp3_vector, a, 0, f_vector_fmls)
- 
- static gen_helper_gvec_3_ptr * const f_vector_fcmeq[3] = {
-     gen_helper_gvec_fceq_h,
-     gen_helper_gvec_fceq_s,
-     gen_helper_gvec_fceq_d,
- };
--TRANS(FCMEQ_v, do_fp3_vector, a, f_vector_fcmeq)
-+TRANS(FCMEQ_v, do_fp3_vector, a, 0, f_vector_fcmeq)
- 
- static gen_helper_gvec_3_ptr * const f_vector_fcmge[3] = {
-     gen_helper_gvec_fcge_h,
-     gen_helper_gvec_fcge_s,
-     gen_helper_gvec_fcge_d,
- };
--TRANS(FCMGE_v, do_fp3_vector, a, f_vector_fcmge)
-+TRANS(FCMGE_v, do_fp3_vector, a, 0, f_vector_fcmge)
- 
- static gen_helper_gvec_3_ptr * const f_vector_fcmgt[3] = {
-     gen_helper_gvec_fcgt_h,
-     gen_helper_gvec_fcgt_s,
-     gen_helper_gvec_fcgt_d,
- };
--TRANS(FCMGT_v, do_fp3_vector, a, f_vector_fcmgt)
-+TRANS(FCMGT_v, do_fp3_vector, a, 0, f_vector_fcmgt)
- 
- static gen_helper_gvec_3_ptr * const f_vector_facge[3] = {
-     gen_helper_gvec_facge_h,
-     gen_helper_gvec_facge_s,
-     gen_helper_gvec_facge_d,
- };
--TRANS(FACGE_v, do_fp3_vector, a, f_vector_facge)
-+TRANS(FACGE_v, do_fp3_vector, a, 0, f_vector_facge)
- 
- static gen_helper_gvec_3_ptr * const f_vector_facgt[3] = {
-     gen_helper_gvec_facgt_h,
-     gen_helper_gvec_facgt_s,
-     gen_helper_gvec_facgt_d,
- };
--TRANS(FACGT_v, do_fp3_vector, a, f_vector_facgt)
-+TRANS(FACGT_v, do_fp3_vector, a, 0, f_vector_facgt)
- 
- static gen_helper_gvec_3_ptr * const f_vector_fabd[3] = {
-     gen_helper_gvec_fabd_h,
-     gen_helper_gvec_fabd_s,
-     gen_helper_gvec_fabd_d,
- };
--TRANS(FABD_v, do_fp3_vector, a, f_vector_fabd)
-+TRANS(FABD_v, do_fp3_vector, a, 0, f_vector_fabd)
- 
- static gen_helper_gvec_3_ptr * const f_vector_frecps[3] = {
-     gen_helper_gvec_recps_h,
-     gen_helper_gvec_recps_s,
-     gen_helper_gvec_recps_d,
- };
--TRANS(FRECPS_v, do_fp3_vector, a, f_vector_frecps)
-+TRANS(FRECPS_v, do_fp3_vector, a, 0, f_vector_frecps)
- 
- static gen_helper_gvec_3_ptr * const f_vector_frsqrts[3] = {
-     gen_helper_gvec_rsqrts_h,
-     gen_helper_gvec_rsqrts_s,
-     gen_helper_gvec_rsqrts_d,
- };
--TRANS(FRSQRTS_v, do_fp3_vector, a, f_vector_frsqrts)
-+TRANS(FRSQRTS_v, do_fp3_vector, a, 0, f_vector_frsqrts)
- 
- static gen_helper_gvec_3_ptr * const f_vector_faddp[3] = {
-     gen_helper_gvec_faddp_h,
-     gen_helper_gvec_faddp_s,
-     gen_helper_gvec_faddp_d,
- };
--TRANS(FADDP_v, do_fp3_vector, a, f_vector_faddp)
-+TRANS(FADDP_v, do_fp3_vector, a, 0, f_vector_faddp)
- 
- static gen_helper_gvec_3_ptr * const f_vector_fmaxp[3] = {
-     gen_helper_gvec_fmaxp_h,
-     gen_helper_gvec_fmaxp_s,
-     gen_helper_gvec_fmaxp_d,
- };
--TRANS(FMAXP_v, do_fp3_vector, a, f_vector_fmaxp)
-+TRANS(FMAXP_v, do_fp3_vector, a, 0, f_vector_fmaxp)
- 
- static gen_helper_gvec_3_ptr * const f_vector_fminp[3] = {
-     gen_helper_gvec_fminp_h,
-     gen_helper_gvec_fminp_s,
-     gen_helper_gvec_fminp_d,
- };
--TRANS(FMINP_v, do_fp3_vector, a, f_vector_fminp)
-+TRANS(FMINP_v, do_fp3_vector, a, 0, f_vector_fminp)
- 
- static gen_helper_gvec_3_ptr * const f_vector_fmaxnmp[3] = {
-     gen_helper_gvec_fmaxnump_h,
-     gen_helper_gvec_fmaxnump_s,
-     gen_helper_gvec_fmaxnump_d,
- };
--TRANS(FMAXNMP_v, do_fp3_vector, a, f_vector_fmaxnmp)
-+TRANS(FMAXNMP_v, do_fp3_vector, a, 0, f_vector_fmaxnmp)
- 
- static gen_helper_gvec_3_ptr * const f_vector_fminnmp[3] = {
-     gen_helper_gvec_fminnump_h,
-     gen_helper_gvec_fminnump_s,
-     gen_helper_gvec_fminnump_d,
- };
--TRANS(FMINNMP_v, do_fp3_vector, a, f_vector_fminnmp)
-+TRANS(FMINNMP_v, do_fp3_vector, a, 0, f_vector_fminnmp)
- 
- static bool do_fmlal(DisasContext *s, arg_qrrr_e *a, bool is_s, bool is_2)
- {
+That'll be helpful, thanks.  Just a quick note that "reducing downtime" is
+a separate issue comparing to "make downtime_limit accurate".
+
+> switchover itself can't be 'precomputed' into a downtime number equation
+> ahead of time to encompass all possible latencies/costs. Part of the
+> reason that at least we couldn't think of a way besides this proposal
+> here, which at the core it's meant to bounds check switchover. Even
+> without taking into account VFs/HW[0], it is simply not considered how
+> long it might take and giving some sort of downtime buffer coupled with
+> enforcement that can be enforced helps not violating migration SLAs.
+
+I agree such enforcement alone can be useful in general to be able to
+fallback.  Said that, I think it would definitely be nice to attach more
+information on the downtime analysis when reposting this series, if there
+is any.
+
+For example, irrelevant of whether QEMU can do proper predictions at all,
+there can be data / results to show what is the major parts that are
+missing besides the current calculations, aka an expectation on when the
+fallback can trigger, and some justification on why they can't be
+predicted.
+
+IMHO the enforcement won't make much sense if it keeps triggering, in that
+case people will simply not use it as it stops migrations from happening.
+Ultimately the work will still be needed to make downtime_limit accurate.
+The fallback should only be an last fence to guard the promise which should
+be the "corner cases".
+
 -- 
-2.34.1
+Peter Xu
 
 
