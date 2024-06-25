@@ -2,84 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D7649175D0
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jun 2024 03:44:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 343D0917688
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jun 2024 04:56:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sMHYc-0003zr-P7; Tue, 25 Jun 2024 21:34:47 -0400
-Received: from eggs.gnu.org ([209.51.188.92])
+	id 1sMFun-0005mM-FB; Tue, 25 Jun 2024 19:49:37 -0400
+Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sMHYG-0003yJ-VG
- for qemu-devel@nongnu.org; Tue, 25 Jun 2024 21:34:26 -0400
-Received: from [2607:f8b0:4864:20::736] (helo=mail-qk1-x736.google.com)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sMFuK-0005a3-E8
+ for qemu-devel@nongnu.org; Tue, 25 Jun 2024 19:49:05 -0400
+Received: from [2607:f8b0:4864:20::230] (helo=mail-oi1-x230.google.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sMHXY-0003iS-TV
- for qemu-devel@nongnu.org; Tue, 25 Jun 2024 21:34:10 -0400
-Received: by mail-qk1-x736.google.com with SMTP id
- af79cd13be357-79c03dbddb8so132725385a.1
- for <qemu-devel@nongnu.org>; Tue, 25 Jun 2024 18:32:38 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sMFtO-0006dt-5t
+ for qemu-devel@nongnu.org; Tue, 25 Jun 2024 19:48:43 -0400
+Received: by mail-oi1-x230.google.com with SMTP id
+ 5614622812f47-3d552600917so1248230b6e.2
+ for <qemu-devel@nongnu.org>; Tue, 25 Jun 2024 16:46:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1719365545; x=1719970345; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=GYudHtkKWd7Dipm9LqNUjoYl4NM9bNcT1f/3vN7kHU8=;
- b=Iy9VtHcY+x1q6Hme+Bdgd7tFy54FRh7s/VTUAF5cwiSh0JItr7T1C8nOvUn2+m82ws
- tc9+LdBl70vpAinoNYcslQsiL77dzsIM9NZfloGDZyUPRSv0bLwuTOBzdWb65sOLh5rK
- PQS/uMAb/h8Ok6oy+ER6nNnilqrAWDOqR+mcF+uQLRg+jF7vZL3eCfF47LkQ8ejpy2ZL
- Pvjs8pi1oYcJkmr6YJTAi+i9N9RkxMZ42Jl09cHwwXzpC1YJ4zDM6k90PoEjl7NSxJzc
- PoUcIVJSoO5WCbSRqMx6ew5AwLBQy9LRhwA/WxSgikbf3yhJiTTQTCQsKZP0xSTKAldd
- /bBA==
+ d=linaro.org; s=google; t=1719359191; x=1719963991; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=fSSKCItYz8+su55zaCeDfZqGcLGOvzO1zgA32uDbBb8=;
+ b=bFOvCvJGlvhaMTXGW7EA8/zrQqn161UdjBk+b3SuN/xgU8fhPEIPuPbSN6oLEPxedL
+ oRV8FwKgFwpz6VG3K36NzsgCvdxxoswrCFhUGMIM/yPOa109JxxiJ1gcEiAzr8OZfoAR
+ ztNcH6BajJto4V2Rvy0skBa8J5lo5F72IHlfY+gm4eDMVuxTMk3dzH5k0svv0APREGVC
+ P4zKZje+uVjai5iltV9uKdJGS2+b6vzDUaWnR7P9CAvL0Id5kQwupuDcxg6OkcmoyNT8
+ 93cc2Zd98Q9De7nd9p0Q+eADLQRDwQ63FPx2qhGxjVB+VyC/FXzL258P4LiDf7X/Iz4Y
+ FUlw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719365545; x=1719970345;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=GYudHtkKWd7Dipm9LqNUjoYl4NM9bNcT1f/3vN7kHU8=;
- b=b83YhmtqzXQAItWavJSrayKfL4ienX/wHgdnzB9opsudK5RbKFGlIeP+dlgCy9z3lI
- Mqz1X6nMIkV55ajTSaMuFDU9GateyendEDGqZlkz07SXECWnr5Th0ysuzeoY6HBGZigV
- dMdpxvbSQ8cHLzfv1zdoM5FuuJPeoUXSv+4NaZdSH4yHVQLvAfNma6xDToqco7MzLyKs
- xCPSYVhIcvWzQ3uja4oabUaMaGU90ajTWLlfjjd7tKeWIwQEy30C3QwkROmJWmvxaari
- z7mixKjCSy/MocOjXMPcYp51ynVRKHbqMJm+VmBJZrfQdNWk3zo/2h8kBEA3r6amPg2p
- J2Iw==
-X-Gm-Message-State: AOJu0YysBu4MSW2ug8wzz2BiB5wk3ZjjRaQt0c0Y1PjiEYNDjEgjF883
- mQBlHi6D7/CAIEgXkLBTC4ekYHkFg73XpKu3gpakFSdBfU2gISVYkeH9PU31eUpUzEXZmc6ZAxG
- waNKhobsBwiNQSR9fYHsgrSgG1s6aFI6Z
-X-Google-Smtp-Source: AGHT+IFSqNqdowHv7MKvWFf4FWp8oBIyt4CXA75Hy7bUW65jxhL5K4b6RP3ABodGjUD+Iv0GFNlAqU6mXuj83QOQH9g=
-X-Received: by 2002:a05:6102:416:b0:48c:1157:2f58 with SMTP id
- ada2fe7eead31-48f4ef62aa0mr7138762137.17.1719364992573; Tue, 25 Jun 2024
- 18:23:12 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1719359191; x=1719963991;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=fSSKCItYz8+su55zaCeDfZqGcLGOvzO1zgA32uDbBb8=;
+ b=c8T1fFvqzZ+qWlMgGuotFPPC6GrQBNInsv9bhfJ94V2Yi04Rg7O1WzIooNkW2A1i4s
+ grC/5Y/glzt4al2/1Ruo8xoLvEu+18Y6VU3WoRiPv2Ra+0QfoiKsHXOrCdg2TKz/nis1
+ 8UjzQE6lmV1DLYexz7+mhp166aYYIlgJPneT4mMc2UNc2tsm6sBCYcxRbdTO61vJ56cc
+ kPwotsb8x4Ux5wUR5z55ZZUsjy/p9GF22N1klOAyHB9A5b5wQPwIuXJJKJtql+8hJtjE
+ 9g7lqL3QP6jegrBislApQ39tvyz/91jUPoiwq8eWfou4dj7pCSHc4sn8svg+Hl0qxYct
+ 01+Q==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXWRPvDPQnbf7+dyDNHPOZhJpyr6QbkcEw2VfkXt1c1UPpfVHHk85adj+KzRkBJ9qLtIFvCB9xBfBFCUy1M/EtJYjYkhkY=
+X-Gm-Message-State: AOJu0YxlFo/x0r2gCyfm0VPs0Fd10X7PJDd0nHuOg28Rz+HfYbYDOJ2d
+ qU4XL0Sp6Xus8PEkiLAyJBBJQAfQsuhMtlAsutpIFQ0NPCYHPRH1+qAwlMpwxMUzz9GMvXUYC70
+ e
+X-Google-Smtp-Source: AGHT+IFvVr28JLQAg9NoI+p/5/VRlo4mG2mg4ER6rd3Lc8iRdJTjdFIgre4+/paZJnIEh2MiCiBcsQ==
+X-Received: by 2002:a05:6a20:3944:b0:1b5:cf26:ecfd with SMTP id
+ adf61e73a8af0-1bcee6f0162mr11027723637.24.1719339511426; 
+ Tue, 25 Jun 2024 11:18:31 -0700 (PDT)
+Received: from [192.168.0.4] (174-21-76-141.tukw.qwest.net. [174.21.76.141])
+ by smtp.gmail.com with ESMTPSA id
+ 41be03b00d2f7-716bb22d45fsm7482622a12.86.2024.06.25.11.18.30
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 25 Jun 2024 11:18:31 -0700 (PDT)
+Message-ID: <2cb94b34-1a5f-4dc9-bec4-78c7008cd79d@linaro.org>
+Date: Tue, 25 Jun 2024 11:18:29 -0700
 MIME-Version: 1.0
-References: <20240612031706.2927602-1-ethan84@andestech.com>
- <20240612031706.2927602-3-ethan84@andestech.com>
- <CAKmqyKM+dSQfGAUcU9w+hHA1SVA-OSLhsfYHh7rV1uutaeppfw@mail.gmail.com>
- <ZnjQCkiR2ikr1Rng@ethan84-VirtualBox>
-In-Reply-To: <ZnjQCkiR2ikr1Rng@ethan84-VirtualBox>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Wed, 26 Jun 2024 11:22:46 +1000
-Message-ID: <CAKmqyKMzg0rHj0RfpcGB3Mecy4tVvMQWDhgM8u3=GaRn46q2vg@mail.gmail.com>
-Subject: Re: [PATCH v7 2/2] hw/riscv/virt: Add IOPMP support
-To: Ethan Chen <ethan84@andestech.com>
-Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, palmer@dabbelt.com, 
- alistair.francis@wdc.com, bmeng.cn@gmail.com, liwei1518@gmail.com, 
- dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com, 
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] target/riscv: Add support for machine specific pmu's
+ events
+To: Alexei Filippov <alexei.filippov@syntacore.com>, palmer@dabbelt.com
+Cc: alistair.francis@wdc.com, bmeng.cn@gmail.com, dbarboza@ventanamicro.com,
+ zhiwei_liu@linux.alibaba.com, liwei1518@gmail.com, qemu-devel@nongnu.org,
  qemu-riscv@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Host-Lookup-Failed: Reverse DNS lookup failed for 2607:f8b0:4864:20::736
+References: <20240625144643.34733-1-alexei.filippov@syntacore.com>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20240625144643.34733-1-alexei.filippov@syntacore.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Host-Lookup-Failed: Reverse DNS lookup failed for 2607:f8b0:4864:20::230
  (deferred)
-Received-SPF: pass client-ip=2607:f8b0:4864:20::736;
- envelope-from=alistair23@gmail.com; helo=mail-qk1-x736.google.com
-X-Spam_score_int: -9
-X-Spam_score: -1.0
-X-Spam_bar: -
-X-Spam_report: (-1.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, PDS_HP_HELO_NORDNS=0.001,
- RDNS_NONE=0.793, T_SPF_HELO_TEMPERROR=0.01,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::230;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x230.google.com
+X-Spam_score_int: -8
+X-Spam_score: -0.9
+X-Spam_bar: /
+X-Spam_report: (-0.9 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, PDS_HP_HELO_NORDNS=0.001, RDNS_NONE=0.793,
+ T_SPF_HELO_TEMPERROR=0.01,
  T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,269 +101,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jun 24, 2024 at 11:47=E2=80=AFAM Ethan Chen <ethan84@andestech.com>=
- wrote:
->
-> Hi Alistair,
->
-> IOPMP can applies all device. In this patch series, PCI devices on the br=
-idge
-> can connect to IOPMP by pci_setup_iommu(), but other devices need change =
-their
-> memory access address space from system memory to IOPMP by themself.
+On 6/25/24 07:46, Alexei Filippov wrote:
+> Was added call backs for machine specific pmu events.
+> Simplify monitor functions by adding new hash table, which going to map
+> counter number and event index.
+> Was added read/write callbacks which going to simplify support for events,
+> which expected to have different behavior.
+> 
+> Signed-off-by: Alexei Filippov <alexei.filippov@syntacore.com>
+> ---
+> Changes since v2:
+> 		-rebased to latest master
+>   target/riscv/cpu.h |   9 +++
+>   target/riscv/csr.c |  43 +++++++++-----
+>   target/riscv/pmu.c | 139 ++++++++++++++++++++++-----------------------
+>   target/riscv/pmu.h |  11 ++--
+>   4 files changed, 115 insertions(+), 87 deletions(-)
+> 
+> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+> index 6fe0d712b4..fbf82b050b 100644
+> --- a/target/riscv/cpu.h
+> +++ b/target/riscv/cpu.h
+> @@ -374,6 +374,13 @@ struct CPUArchState {
+>       uint64_t (*rdtime_fn)(void *);
+>       void *rdtime_fn_arg;
+>   
+> +    /*machine specific pmu callback */
+> +    void (*pmu_ctr_write)(PMUCTRState *counter, uint32_t event_idx,
+> +                          target_ulong val, bool high_half);
+> +    target_ulong (*pmu_ctr_read)(PMUCTRState *counter, uint32_t event_idx,
+> +                                 bool high_half);
+> +    bool (*pmu_vendor_support)(uint32_t event_idx);
 
-We should be really clear about that then. The documentation and the
-flag `iopmp=3D[on|off]` implies that either the IOPMP is on or off.
+Do these really belong in CPUArchState, rather than RISCVCPUClass?
 
-For example, what happens in the future if we extend support to apply
-to all devices? That will be a breaking change for anyone currently
-using `iopmp=3Don`.
+Surely there's more to this series, since these fields are never set...
 
-Maybe we should have use something like `iopmp=3D[pci|off]` instead, and
-then be really clear in the docs what is and isn't going through the
-IOPMP.
 
-Alistair
-
->
-> Thanks,
-> Ethan
->
-> On Fri, Jun 21, 2024 at 03:54:15PM +1000, Alistair Francis wrote:
-> > On Wed, Jun 12, 2024 at 1:25=E2=80=AFPM Ethan Chen via <qemu-devel@nong=
-nu.org> wrote:
-> > >
-> > > If a requestor device is connected to the IOPMP device, its memory ac=
-cess will
-> > > be checked by the IOPMP rule.
-> > >
-> > > - Add 'iopmp=3Don' option to add an iopmp device and make the Generic=
- PCI Express
-> > >   Bridge connect to IOPMP.
-> >
-> > I have only had a chance to have a quick look at this series and the sp=
-ec.
-> >
-> > But the IOPMP spec applies to all devices right, but this series seems
-> > to only work with PCI. Am I missing something?
-> >
-> > Alistair
-> >
-> > >
-> > > Signed-off-by: Ethan Chen <ethan84@andestech.com>
-> > > ---
-> > >  docs/system/riscv/virt.rst |  6 ++++
-> > >  hw/riscv/Kconfig           |  1 +
-> > >  hw/riscv/virt.c            | 57 ++++++++++++++++++++++++++++++++++++=
---
-> > >  include/hw/riscv/virt.h    |  5 +++-
-> > >  4 files changed, 66 insertions(+), 3 deletions(-)
-> > >
-> > > diff --git a/docs/system/riscv/virt.rst b/docs/system/riscv/virt.rst
-> > > index 9a06f95a34..3b2576f905 100644
-> > > --- a/docs/system/riscv/virt.rst
-> > > +++ b/docs/system/riscv/virt.rst
-> > > @@ -116,6 +116,12 @@ The following machine-specific options are suppo=
-rted:
-> > >    having AIA IMSIC (i.e. "aia=3Daplic-imsic" selected). When not spe=
-cified,
-> > >    the default number of per-HART VS-level AIA IMSIC pages is 0.
-> > >
-> > > +- iopmp=3D[on|off]
-> > > +
-> > > +  When this option is "on", an IOPMP device is added to machine. It =
-checks dma
-> > > +  operations from the generic PCIe host bridge. This option is assum=
-ed to be
-> > > +  "off".
-> > > +
-> > >  Running Linux kernel
-> > >  --------------------
-> > >
-> > > diff --git a/hw/riscv/Kconfig b/hw/riscv/Kconfig
-> > > index a2030e3a6f..0b45a5ade2 100644
-> > > --- a/hw/riscv/Kconfig
-> > > +++ b/hw/riscv/Kconfig
-> > > @@ -56,6 +56,7 @@ config RISCV_VIRT
-> > >      select PLATFORM_BUS
-> > >      select ACPI
-> > >      select ACPI_PCI
-> > > +    select RISCV_IOPMP
-> > >
-> > >  config SHAKTI_C
-> > >      bool
-> > > diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
-> > > index 4fdb660525..53a1b71c71 100644
-> > > --- a/hw/riscv/virt.c
-> > > +++ b/hw/riscv/virt.c
-> > > @@ -55,6 +55,7 @@
-> > >  #include "hw/acpi/aml-build.h"
-> > >  #include "qapi/qapi-visit-common.h"
-> > >  #include "hw/virtio/virtio-iommu.h"
-> > > +#include "hw/misc/riscv_iopmp.h"
-> > >
-> > >  /* KVM AIA only supports APLIC MSI. APLIC Wired is always emulated b=
-y QEMU. */
-> > >  static bool virt_use_kvm_aia(RISCVVirtState *s)
-> > > @@ -82,6 +83,7 @@ static const MemMapEntry virt_memmap[] =3D {
-> > >      [VIRT_UART0] =3D        { 0x10000000,         0x100 },
-> > >      [VIRT_VIRTIO] =3D       { 0x10001000,        0x1000 },
-> > >      [VIRT_FW_CFG] =3D       { 0x10100000,          0x18 },
-> > > +    [VIRT_IOPMP] =3D        { 0x10200000,      0x100000 },
-> > >      [VIRT_FLASH] =3D        { 0x20000000,     0x4000000 },
-> > >      [VIRT_IMSIC_M] =3D      { 0x24000000, VIRT_IMSIC_MAX_SIZE },
-> > >      [VIRT_IMSIC_S] =3D      { 0x28000000, VIRT_IMSIC_MAX_SIZE },
-> > > @@ -1006,6 +1008,24 @@ static void create_fdt_virtio_iommu(RISCVVirtS=
-tate *s, uint16_t bdf)
-> > >                             bdf + 1, iommu_phandle, bdf + 1, 0xffff -=
- bdf);
-> > >  }
-> > >
-> > > +static void create_fdt_iopmp(RISCVVirtState *s, const MemMapEntry *m=
-emmap,
-> > > +                             uint32_t irq_mmio_phandle) {
-> > > +    g_autofree char *name =3D NULL;
-> > > +    MachineState *ms =3D MACHINE(s);
-> > > +
-> > > +    name =3D g_strdup_printf("/soc/iopmp@%lx", (long)memmap[VIRT_IOP=
-MP].base);
-> > > +    qemu_fdt_add_subnode(ms->fdt, name);
-> > > +    qemu_fdt_setprop_string(ms->fdt, name, "compatible", "riscv_iopm=
-p");
-> > > +    qemu_fdt_setprop_cells(ms->fdt, name, "reg", 0x0, memmap[VIRT_IO=
-PMP].base,
-> > > +        0x0, memmap[VIRT_IOPMP].size);
-> > > +    qemu_fdt_setprop_cell(ms->fdt, name, "interrupt-parent", irq_mmi=
-o_phandle);
-> > > +    if (s->aia_type =3D=3D VIRT_AIA_TYPE_NONE) {
-> > > +        qemu_fdt_setprop_cell(ms->fdt, name, "interrupts", IOPMP_IRQ=
-);
-> > > +    } else {
-> > > +        qemu_fdt_setprop_cells(ms->fdt, name, "interrupts", IOPMP_IR=
-Q, 0x4);
-> > > +    }
-> > > +}
-> > > +
-> > >  static void finalize_fdt(RISCVVirtState *s)
-> > >  {
-> > >      uint32_t phandle =3D 1, irq_mmio_phandle =3D 1, msi_pcie_phandle=
- =3D 1;
-> > > @@ -1024,6 +1044,10 @@ static void finalize_fdt(RISCVVirtState *s)
-> > >      create_fdt_uart(s, virt_memmap, irq_mmio_phandle);
-> > >
-> > >      create_fdt_rtc(s, virt_memmap, irq_mmio_phandle);
-> > > +
-> > > +    if (s->have_iopmp) {
-> > > +        create_fdt_iopmp(s, virt_memmap, irq_mmio_phandle);
-> > > +    }
-> > >  }
-> > >
-> > >  static void create_fdt(RISCVVirtState *s, const MemMapEntry *memmap)
-> > > @@ -1404,7 +1428,7 @@ static void virt_machine_init(MachineState *mac=
-hine)
-> > >      RISCVVirtState *s =3D RISCV_VIRT_MACHINE(machine);
-> > >      MemoryRegion *system_memory =3D get_system_memory();
-> > >      MemoryRegion *mask_rom =3D g_new(MemoryRegion, 1);
-> > > -    DeviceState *mmio_irqchip, *virtio_irqchip, *pcie_irqchip;
-> > > +    DeviceState *mmio_irqchip, *virtio_irqchip, *pcie_irqchip, *gpex=
-_dev;
-> > >      int i, base_hartid, hart_count;
-> > >      int socket_count =3D riscv_socket_count(machine);
-> > >
-> > > @@ -1570,7 +1594,7 @@ static void virt_machine_init(MachineState *mac=
-hine)
-> > >              qdev_get_gpio_in(virtio_irqchip, VIRTIO_IRQ + i));
-> > >      }
-> > >
-> > > -    gpex_pcie_init(system_memory, pcie_irqchip, s);
-> > > +    gpex_dev =3D gpex_pcie_init(system_memory, pcie_irqchip, s);
-> > >
-> > >      create_platform_bus(s, mmio_irqchip);
-> > >
-> > > @@ -1581,6 +1605,14 @@ static void virt_machine_init(MachineState *ma=
-chine)
-> > >      sysbus_create_simple("goldfish_rtc", memmap[VIRT_RTC].base,
-> > >          qdev_get_gpio_in(mmio_irqchip, RTC_IRQ));
-> > >
-> > > +    if (s->have_iopmp) {
-> > > +        DeviceState *iopmp_dev =3D sysbus_create_simple(TYPE_IOPMP,
-> > > +            memmap[VIRT_IOPMP].base,
-> > > +            qdev_get_gpio_in(DEVICE(mmio_irqchip), IOPMP_IRQ));
-> > > +
-> > > +        iopmp_setup_pci(iopmp_dev, PCI_HOST_BRIDGE(gpex_dev)->bus);
-> > > +    }
-> > > +
-> > >      for (i =3D 0; i < ARRAY_SIZE(s->flash); i++) {
-> > >          /* Map legacy -drive if=3Dpflash to machine properties */
-> > >          pflash_cfi01_legacy_drive(s->flash[i],
-> > > @@ -1684,6 +1716,21 @@ static void virt_set_aclint(Object *obj, bool =
-value, Error **errp)
-> > >      s->have_aclint =3D value;
-> > >  }
-> > >
-> > > +static bool virt_get_iopmp(Object *obj, Error **errp)
-> > > +{
-> > > +    RISCVVirtState *s =3D RISCV_VIRT_MACHINE(obj);
-> > > +
-> > > +    return s->have_iopmp;
-> > > +}
-> > > +
-> > > +static void virt_set_iopmp(Object *obj, bool value, Error **errp)
-> > > +{
-> > > +    RISCVVirtState *s =3D RISCV_VIRT_MACHINE(obj);
-> > > +
-> > > +    s->have_iopmp =3D value;
-> > > +}
-> > > +
-> > > +
-> > >  bool virt_is_acpi_enabled(RISCVVirtState *s)
-> > >  {
-> > >      return s->acpi !=3D ON_OFF_AUTO_OFF;
-> > > @@ -1794,6 +1841,12 @@ static void virt_machine_class_init(ObjectClas=
-s *oc, void *data)
-> > >                                NULL, NULL);
-> > >      object_class_property_set_description(oc, "acpi",
-> > >                                            "Enable ACPI");
-> > > +
-> > > +    object_class_property_add_bool(oc, "iopmp", virt_get_iopmp,
-> > > +                                   virt_set_iopmp);
-> > > +    object_class_property_set_description(oc, "iopmp",
-> > > +                                          "Set on/off to enable/disa=
-ble "
-> > > +                                          "iopmp device");
-> > >  }
-> > >
-> > >  static const TypeInfo virt_machine_typeinfo =3D {
-> > > diff --git a/include/hw/riscv/virt.h b/include/hw/riscv/virt.h
-> > > index 3db839160f..81460e29c4 100644
-> > > --- a/include/hw/riscv/virt.h
-> > > +++ b/include/hw/riscv/virt.h
-> > > @@ -55,6 +55,7 @@ struct RISCVVirtState {
-> > >
-> > >      int fdt_size;
-> > >      bool have_aclint;
-> > > +    bool have_iopmp;
-> > >      RISCVVirtAIAType aia_type;
-> > >      int aia_guests;
-> > >      char *oem_id;
-> > > @@ -84,12 +85,14 @@ enum {
-> > >      VIRT_PCIE_MMIO,
-> > >      VIRT_PCIE_PIO,
-> > >      VIRT_PLATFORM_BUS,
-> > > -    VIRT_PCIE_ECAM
-> > > +    VIRT_PCIE_ECAM,
-> > > +    VIRT_IOPMP,
-> > >  };
-> > >
-> > >  enum {
-> > >      UART0_IRQ =3D 10,
-> > >      RTC_IRQ =3D 11,
-> > > +    IOPMP_IRQ =3D 12,
-> > >      VIRTIO_IRQ =3D 1, /* 1 to 8 */
-> > >      VIRTIO_COUNT =3D 8,
-> > >      PCIE_IRQ =3D 0x20, /* 32 to 35 */
-> > > --
-> > > 2.34.1
-> > >
-> > >
+r~
 
