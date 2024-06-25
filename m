@@ -2,85 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BD5E916549
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jun 2024 12:33:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C109916588
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jun 2024 12:49:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sM3T2-00018w-N3; Tue, 25 Jun 2024 06:32:04 -0400
+	id 1sM3iu-0004dS-U2; Tue, 25 Jun 2024 06:48:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sM3T0-00018T-N1
- for qemu-devel@nongnu.org; Tue, 25 Jun 2024 06:32:02 -0400
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1sM3it-0004dK-DT
+ for qemu-devel@nongnu.org; Tue, 25 Jun 2024 06:48:27 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sM3Sy-0002s8-9j
- for qemu-devel@nongnu.org; Tue, 25 Jun 2024 06:32:02 -0400
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1sM3is-0005sU-1Z
+ for qemu-devel@nongnu.org; Tue, 25 Jun 2024 06:48:27 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719311518;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
+ s=mimecast20190719; t=1719312505;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=7pTRN3CCsy0/jz2C1XDFRuO5jH8q19bs2/Ol4SvzUZk=;
- b=NONHludjERdO2bKdE10GJ8rwTjBf9R6fDtynh3IGYy+D7dCbYhnOclD3AAGw+wkAZxa+7H
- 3acQR6u7BAwUd/RB5QRyhmBei1sVW/G4MJN3Dw1D//UGzEXS3LL6DuNupFH0Xbd5O+EbYz
- KHcPXrlhIqpZS81lJ2j8NOQLLbstmW0=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-304-A0WWjNToOni-IB41jMjl5A-1; Tue,
- 25 Jun 2024 06:31:55 -0400
-X-MC-Unique: A0WWjNToOni-IB41jMjl5A-1
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 0102B19560B0; Tue, 25 Jun 2024 10:31:54 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.57])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 51BD51956087; Tue, 25 Jun 2024 10:31:50 +0000 (UTC)
-Date: Tue, 25 Jun 2024 11:31:46 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Roman Kiryanov <rkir@google.com>, Felix Wu <flwu@google.com>,
- qemu-devel <qemu-devel@nongnu.org>, Markus Armbruster <armbru@redhat.com>,
- Thomas Huth <thuth@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: Re: [PATCH 1/1] include/qemu: Provide a C++ compatible version of
- typeof_strip_qual
-Message-ID: <ZnqckibHOALRQWBj@redhat.com>
-References: <20240624205647.112034-1-flwu@google.com>
- <8e54bd41-9a7e-4b1e-ad99-33de1615374c@linaro.org>
- <CAOGAQeq0b3_g80k5xa-6f+XPkv6C=nfMLkJt=X3-6FD_d3sJUA@mail.gmail.com>
- <CABgObfZ6U0pEcvr-J5H3sYjTU0-kOr4NOLjBRh0Vg-vfutRCqQ@mail.gmail.com>
- <0b5ff0ab-9b58-4463-8aeb-d464b3b085dd@linaro.org>
- <CAFEAcA-5RPETso7Z56SUhgDkSekLDWu8hPXmKEo_dhh1kPYpfg@mail.gmail.com>
- <CAFEAcA8pQ_XtitN-Zy63xxGT=6mBEuha7PCeJc-=OJWcvuw=vg@mail.gmail.com>
+ bh=9mQ99lHkIq3DfHEjy/RgutHBBcsK/k6F3d8XvkKQD8g=;
+ b=SLLs95Bh7ebrB/TYzNQTX9p6FtAcyvmVwmhCAjRGhMq+VXtrAiRGRgGH6ewOMv+SQ6zBfS
+ r0io5H1DSPIBvVQlOJfB/LRTMFWpdrx+qEV7/m2P9i4sfkb4uurtPt/jEZ3wNMU/y6Bzlj
+ 9odGv6dfVJj99h1NiowkDfAyRZ14EmQ=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-608-VyDPNjbWMXG2xl1gEjsMLA-1; Tue, 25 Jun 2024 06:48:20 -0400
+X-MC-Unique: VyDPNjbWMXG2xl1gEjsMLA-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-4229bde57easo34893595e9.3
+ for <qemu-devel@nongnu.org>; Tue, 25 Jun 2024 03:48:20 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1719312499; x=1719917299;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=9mQ99lHkIq3DfHEjy/RgutHBBcsK/k6F3d8XvkKQD8g=;
+ b=mQeG2qS5MOdaFR1/qJaH+wKvgfuuErSdGwU0P+Q7dy1id1ZYAO+9KG17+jweWuYM0t
+ nFFc9dQJZ3S7CGwNLowv7n+YOl420VTBDBylaHyoNRCAYyQw0kv0wn+1OiFSRQlHPcNX
+ llOklMN/uBPpeUUdvcmypIHYsHntzsiC88SW4sEL+P8HsJIoxT9lAE/Cyl+hZKjP2X5b
+ OE/qiLVrlnml6go72MsqRfW7ELKPmf76cFC3BE44hdddks/iXPjQpvafa2YlSdB0g86C
+ UqIk4txg4XyvNrA0l/4uSJSadi5977BvursladQR1aa1UFm9gDqgzG/hnTZE5lrC2qIQ
+ /rUQ==
+X-Gm-Message-State: AOJu0YwqdnD9YopC9osrBYgh72U/z/agGtIqFR1SAVMPConHdyP5yZDN
+ Rn8/LDlZ3gXLRWI64/n4clY3NFC0Yx69AWi/VVkdWr3ZRGCc9NdhjzfxNb9MAat3XURxIHW2cuN
+ kUAEx5cKlSP1tbRvxaOJGVO+OrreVEiPNT4KAzwIWJggVFXWaJubq
+X-Received: by 2002:a5d:5f49:0:b0:366:f713:bf05 with SMTP id
+ ffacd0b85a97d-366f713c0f0mr3926626f8f.64.1719312499132; 
+ Tue, 25 Jun 2024 03:48:19 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH3oVYc1iXsoi6BD1dJyg6HQ20OHs2Mbk4XLJF7QxD0EJHqKRfbgJgmH5zeQRUGx1/F2r+x+Q==
+X-Received: by 2002:a5d:5f49:0:b0:366:f713:bf05 with SMTP id
+ ffacd0b85a97d-366f713c0f0mr3926602f8f.64.1719312498653; 
+ Tue, 25 Jun 2024 03:48:18 -0700 (PDT)
+Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
+ [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-36638d9c1d1sm12589567f8f.51.2024.06.25.03.48.17
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 25 Jun 2024 03:48:18 -0700 (PDT)
+Date: Tue, 25 Jun 2024 12:48:16 +0200
+From: Igor Mammedov <imammedo@redhat.com>
+To: Sunil V L <sunilvl@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-riscv@nongnu.org, Paolo
+ Bonzini <pbonzini@redhat.com>, =?UTF-8?B?TWFyYy1BbmRyw6k=?= Lureau
+ <marcandre.lureau@redhat.com>, "Daniel P . =?UTF-8?B?QmVycmFuZ8Op?="
+ <berrange@redhat.com>, Thomas Huth <thuth@redhat.com>, Philippe
+ =?UTF-8?B?TWF0aGlldS1EYXVkw6k=?= <philmd@linaro.org>, "Michael S . Tsirkin"
+ <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>, Laurent Vivier
+ <lvivier@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>, Sia Jee Heng
+ <jeeheng.sia@starfivetech.com>, Alistair Francis <alistair23@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>, Palmer Dabbelt
+ <palmer@dabbelt.com>, Bin Meng <bmeng.cn@gmail.com>, Weiwei Li
+ <liwei1518@gmail.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+Subject: Re: [PATCH v3 05/15] tests/qtest/bios-tables-test.c: Add support
+ for arch in path
+Message-ID: <20240625124816.48183def@imammedo.users.ipa.redhat.com>
+In-Reply-To: <20240621115906.1049832-6-sunilvl@ventanamicro.com>
+References: <20240621115906.1049832-1-sunilvl@ventanamicro.com>
+ <20240621115906.1049832-6-sunilvl@ventanamicro.com>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.42; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAFEAcA8pQ_XtitN-Zy63xxGT=6mBEuha7PCeJc-=OJWcvuw=vg@mail.gmail.com>
-User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 10
-X-Spam_score: 1.0
-X-Spam_bar: +
-X-Spam_report: (1.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.207,
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.151,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,161 +108,73 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jun 25, 2024 at 11:16:16AM +0100, Peter Maydell wrote:
-> On Tue, 25 Jun 2024 at 10:27, Peter Maydell <peter.maydell@linaro.org> wrote:
-> >
-> > On Tue, 25 Jun 2024 at 07:19, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
-> > >
-> > > On 25/6/24 08:05, Paolo Bonzini wrote:
-> > > >
-> > > >
-> > > > Il mar 25 giu 2024, 04:32 Roman Kiryanov <rkir@google.com
-> > > > <mailto:rkir@google.com>> ha scritto:
-> > > >
-> > > >     Hi Philippe, thank you for looking.
-> > > >
-> > > >     On Mon, Jun 24, 2024 at 7:27 PM Philippe Mathieu-Daudé
-> > > >     <philmd@linaro.org <mailto:philmd@linaro.org>> wrote:
-> > > >      > In particular this patch seems contained well enough
-> > > >      > to be carried in forks were C++ _is_ used.
-> > > >
-> > > >     Will you agree to take #ifdef __cplusplus  and #error to the QEMU side
-> > > >     in atomic.h and
-> > > >     we will keep atomic.hpp on our side? The error message looks better
-> > > >     when atomic.hpp
-> > > >     is somewhere near.
-> > > >
-> > > >
-> > > > I think we should also move typeof_strip_qual elsewhere; I will take a
-> > > > look. I think there are a couple headers that already have #ifdef
-> > > > __cplusplus, but I need to check (no source code around right now).
-> > >
-> > > $ git grep -l __cplusplus
-> > > ebpf/rss.bpf.skeleton.h
-> > > include/hw/xtensa/xtensa-isa.h
-> > > include/qemu/compiler.h
-> > > include/qemu/osdep.h
-> > > include/standard-headers/drm/drm_fourcc.h
-> > > include/sysemu/os-posix.h
-> > > include/sysemu/os-win32.h
-> > > linux-headers/linux/stddef.h
-> > > qga/vss-win32/requester.h
-> >
-> > We should delete all of those, they're dead code for us now.
-> > We dropped some of the extern-C-block handling in
-> > commit d76aa73fad1f6 but that didn't get all of them.
+On Fri, 21 Jun 2024 17:28:56 +0530
+Sunil V L <sunilvl@ventanamicro.com> wrote:
+
+> Since machine name can be common for multiple architectures (ex: virt),
+> add "arch" in the path to search for expected AML files. Since the AML
+> files are still under old path, add support for searching with and
+> without arch in the path.
 > 
-> I was wrong about this -- I had forgotten about the Windows
-> Guest Agent code that has to be built with the Windows C++
-> compiler -- some of the cpp files in qga/vss-win32/ include
-> osdep.h. So the files above break down into:
+> Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
+
+Reviewed-by: Igor Mammedov <imammedo@redhat.com>
+
+> ---
+>  tests/qtest/bios-tables-test.c | 23 ++++++++++++++++++++---
+>  1 file changed, 20 insertions(+), 3 deletions(-)
 > 
->  * files imported from third-party projects, or generated
->    by third-party tools:
->     + ebpf/rss.bpf.skeleton.h
->     + include/hw/xtensa/xtensa-isa.h
->     + include/standard-headers/drm/drm_fourcc.h
->     + linux-headers/linux/stddef.h
-> 
->  * QEMU include files that we need to include directly
->    or indirectly from the vss-win32 files:
->     + include/qemu/compiler.h
->     + include/qemu/osdep.h
->     + include/sysemu/os-win32.h
->     + include/sysemu/os-posix.h
->     + qga/vss-win32/requester.h
-> 
-> Maybe we could drop the cplusplus handling from os-posix.h,
-> but I guess we're keeping it in parallel with os-win32.h.
-
-The vss-win32 code is specialized & self-contained code. Since
-it is inherantly Windows only code, it does not need any platform
-portability support which is what osdep.h would ordinarily assist
-with.
-
-As an example, if you remove osdep.h from the vss-win32 code,
-the following changes appear sufficient to solve the resulting
-compile issues.
-
-This could let us remove remaining cplusplus usage from the
-common QEMU headers:
-
-diff --git a/qga/vss-win32/provider.cpp b/qga/vss-win32/provider.cpp
-index cc72e5ef1b..ed2d8097ee 100644
---- a/qga/vss-win32/provider.cpp
-+++ b/qga/vss-win32/provider.cpp
-@@ -10,7 +10,6 @@
-  * See the COPYING file in the top-level directory.
-  */
- 
--#include "qemu/osdep.h"
- #include "vss-common.h"
- #include "vss-debug.h"
- #ifdef HAVE_VSS_SDK
-diff --git a/qga/vss-win32/requester.cpp b/qga/vss-win32/requester.cpp
-index 9884c65e70..e519e6cfd7 100644
---- a/qga/vss-win32/requester.cpp
-+++ b/qga/vss-win32/requester.cpp
-@@ -10,7 +10,6 @@
-  * See the COPYING file in the top-level directory.
-  */
- 
--#include "qemu/osdep.h"
- #include "vss-common.h"
- #include "vss-debug.h"
- #include "requester.h"
-diff --git a/qga/vss-win32/vss-common.h b/qga/vss-win32/vss-common.h
-index 0e67e7822c..5c6b21ce21 100644
---- a/qga/vss-win32/vss-common.h
-+++ b/qga/vss-win32/vss-common.h
-@@ -16,6 +16,9 @@
- #define __MIDL_user_allocate_free_DEFINED__
- #include <windows.h>
- #include <shlwapi.h>
-+#include <glib.h>
-+#include <assert.h>
-+#include "config-host.h"
- 
- /* Reduce warnings to include vss.h */
- 
-diff --git a/qga/vss-win32/vss-debug.cpp b/qga/vss-win32/vss-debug.cpp
-index 820b1c6667..ec4c2b3093 100644
---- a/qga/vss-win32/vss-debug.cpp
-+++ b/qga/vss-win32/vss-debug.cpp
-@@ -10,7 +10,6 @@
-  * See the COPYING file in the top-level directory.
-  */
- 
--#include "qemu/osdep.h"
- #include "vss-debug.h"
- #include "vss-common.h"
- 
-diff --git a/qga/vss-win32/vss-debug.h b/qga/vss-win32/vss-debug.h
-index 7800457392..77fd669698 100644
---- a/qga/vss-win32/vss-debug.h
-+++ b/qga/vss-win32/vss-debug.h
-@@ -10,8 +10,9 @@
-  * See the COPYING file in the top-level directory.
-  */
- 
--#include "qemu/osdep.h"
- #include <vss-handles.h>
-+#include <glib.h>
-+#include <stdio.h>
- 
- #ifndef VSS_DEBUG_H
- #define VSS_DEBUG_H
-
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+> diff --git a/tests/qtest/bios-tables-test.c b/tests/qtest/bios-tables-test.c
+> index c4a4d1c7bf..29c52952f4 100644
+> --- a/tests/qtest/bios-tables-test.c
+> +++ b/tests/qtest/bios-tables-test.c
+> @@ -78,6 +78,7 @@
+>  typedef struct {
+>      bool tcg_only;
+>      const char *machine;
+> +    const char *arch;
+>      const char *machine_param;
+>      const char *variant;
+>      const char *uefi_fl1;
+> @@ -262,8 +263,19 @@ static void dump_aml_files(test_data *data, bool rebuild)
+>          g_assert(exp_sdt->aml);
+>  
+>          if (rebuild) {
+> -            aml_file = g_strdup_printf("%s/%s/%.4s%s", data_dir, data->machine,
+> +            aml_file = g_strdup_printf("%s/%s/%s/%.4s%s", data_dir,
+> +                                       data->arch, data->machine,
+>                                         sdt->aml, ext);
+> +
+> +            /*
+> +             * To keep test cases not failing before the DATA files are moved to
+> +             * ${arch}/${machine} folder, add this check as well.
+> +             */
+> +            if (!g_file_test(aml_file, G_FILE_TEST_EXISTS)) {
+> +                aml_file = g_strdup_printf("%s/%s/%.4s%s", data_dir,
+> +                                           data->machine, sdt->aml, ext);
+> +            }
+> +
+>              if (!g_file_test(aml_file, G_FILE_TEST_EXISTS) &&
+>                  sdt->aml_len == exp_sdt->aml_len &&
+>                  !memcmp(sdt->aml, exp_sdt->aml, sdt->aml_len)) {
+> @@ -398,8 +410,13 @@ static GArray *load_expected_aml(test_data *data)
+>          memset(&exp_sdt, 0, sizeof(exp_sdt));
+>  
+>  try_again:
+> -        aml_file = g_strdup_printf("%s/%s/%.4s%s", data_dir, data->machine,
+> -                                   sdt->aml, ext);
+> +        aml_file = g_strdup_printf("%s/%s/%s/%.4s%s", data_dir, data->arch,
+> +                                   data->machine, sdt->aml, ext);
+> +        if (!g_file_test(aml_file, G_FILE_TEST_EXISTS)) {
+> +            aml_file = g_strdup_printf("%s/%s/%.4s%s", data_dir, data->machine,
+> +                                       sdt->aml, ext);
+> +        }
+> +
+>          if (verbosity_level >= 2) {
+>              fprintf(stderr, "Looking for expected file '%s'\n", aml_file);
+>          }
 
 
