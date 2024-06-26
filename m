@@ -2,65 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9FE091764C
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jun 2024 04:45:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DFEB917652
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jun 2024 04:48:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sMIeZ-0007Kc-Rm; Tue, 25 Jun 2024 22:44:59 -0400
+	id 1sMIhQ-00037m-0o; Tue, 25 Jun 2024 22:47:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lulu@redhat.com>) id 1sMIeX-0007HY-K8
- for qemu-devel@nongnu.org; Tue, 25 Jun 2024 22:44:57 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <EwanHai-oc@zhaoxin.com>)
+ id 1sMIhM-00034v-PI
+ for qemu-devel@nongnu.org; Tue, 25 Jun 2024 22:47:52 -0400
+Received: from mx2.zhaoxin.com ([203.110.167.99])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lulu@redhat.com>) id 1sMIeV-0001wX-4M
- for qemu-devel@nongnu.org; Tue, 25 Jun 2024 22:44:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719369892;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=3HsaTu0rEaLzrUEaPgROf/HqkAPij43XcgXV00m5wDo=;
- b=WyJ0ptGuV0g/mh4bmTyiCcD1QLhf/ymuBENX6HGJcJdxrxoDHKu2SUh/6KQidPeRN3Z5rk
- QjCJZMdBo2NydVMRM5hiDpkULauLAcKpDU4VBb8HEZHIZ8BifXsY8fYeSgl81/1jJ77GVH
- NU3RTE40ec/x/TFNLXRFP2K/jL9ownA=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-26-5q0BYMoxMKeaYOqYW6OEGg-1; Tue,
- 25 Jun 2024 22:44:45 -0400
-X-MC-Unique: 5q0BYMoxMKeaYOqYW6OEGg-1
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id DEAE41956095; Wed, 26 Jun 2024 02:44:42 +0000 (UTC)
-Received: from server.redhat.com (unknown [10.72.112.114])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 961511955F2D; Wed, 26 Jun 2024 02:44:38 +0000 (UTC)
-From: Cindy Lu <lulu@redhat.com>
-To: lulu@redhat.com, mst@redhat.com, jasowang@redhat.com,
- qemu-devel@nongnu.org, philmd@linaro.org
-Cc: qemu-stable@nongnu.org
-Subject: [PATCH v3] virtio-pci: Fix the use of an uninitialized irqfd
-Date: Wed, 26 Jun 2024 10:44:31 +0800
-Message-ID: <20240626024434.10523-1-lulu@redhat.com>
+ (Exim 4.90_1) (envelope-from <EwanHai-oc@zhaoxin.com>)
+ id 1sMIhK-0002ZF-B4
+ for qemu-devel@nongnu.org; Tue, 25 Jun 2024 22:47:52 -0400
+X-ASG-Debug-ID: 1719370055-1eb14e2e5ebbd40001-jgbH7p
+Received: from ZXSHMBX3.zhaoxin.com (ZXSHMBX3.zhaoxin.com [10.28.252.165]) by
+ mx2.zhaoxin.com with ESMTP id uyWzLZiY1u5x9S5H (version=TLSv1.2
+ cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO);
+ Wed, 26 Jun 2024 10:47:35 +0800 (CST)
+X-Barracuda-Envelope-From: EwanHai-oc@zhaoxin.com
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.165
+Received: from zxbjmbx1.zhaoxin.com (10.29.252.163) by ZXSHMBX3.zhaoxin.com
+ (10.28.252.165) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 26 Jun
+ 2024 10:47:35 +0800
+Received: from [10.28.66.62] (10.28.66.62) by zxbjmbx1.zhaoxin.com
+ (10.29.252.163) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 26 Jun
+ 2024 10:47:34 +0800
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.165
+Message-ID: <d4c0dae5-b9d5-4deb-b300-78492ab11ed8@zhaoxin.com>
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.66.62
+Date: Tue, 25 Jun 2024 22:47:33 -0400
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/4] Add support for Zhaoxin Yongfeng CPU model and other
+ improvements
+To: Zhao Liu <zhao1.liu@intel.com>
+X-ASG-Orig-Subj: Re: [PATCH 0/4] Add support for Zhaoxin Yongfeng CPU model
+ and other improvements
+CC: <pbonzini@redhat.com>, <qemu-devel@nongnu.org>, <ewanhai@zhaoxin.com>,
+ <cobechen@zhaoxin.com>, <rockcui@zhaoxin.com>, <louisqi@zhaoxin.com>
+References: <20240625091905.1325205-1-ewanhai-oc@zhaoxin.com>
+ <ZnrUt0/5CZ2Ww45e@intel.com>
+Content-Language: en-US
+From: Ewan Hai <ewanhai-oc@zhaoxin.com>
+In-Reply-To: <ZnrUt0/5CZ2Ww45e@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=lulu@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 11
-X-Spam_score: 1.1
-X-Spam_bar: +
-X-Spam_report: (1.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.151,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+X-Originating-IP: [10.28.66.62]
+X-ClientProxiedBy: ZXSHCAS1.zhaoxin.com (10.28.252.161) To
+ zxbjmbx1.zhaoxin.com (10.29.252.163)
+X-Barracuda-Connect: ZXSHMBX3.zhaoxin.com[10.28.252.165]
+X-Barracuda-Start-Time: 1719370055
+X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
+X-Barracuda-URL: https://10.28.252.36:4443/cgi-mod/mark.cgi
+X-Virus-Scanned: by bsmtpd at zhaoxin.com
+X-Barracuda-Scan-Msg-Size: 2975
+X-Barracuda-BRTS-Status: 1
+X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
+X-Barracuda-Spam-Score: -2.02
+X-Barracuda-Spam-Status: No,
+ SCORE=-2.02 using global scores of TAG_LEVEL=1000.0
+ QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=
+X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.126768
+ Rule breakdown below
+ pts rule name              description
+ ---- ---------------------- --------------------------------------------------
+Received-SPF: pass client-ip=203.110.167.99;
+ envelope-from=EwanHai-oc@zhaoxin.com; helo=mx2.zhaoxin.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,86 +94,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The crash was reported in MAC OS and NixOS, here is the link for this bug
-https://gitlab.com/qemu-project/qemu/-/issues/2334
-https://gitlab.com/qemu-project/qemu/-/issues/2321
+I’m sorry, but currently Zhaoxin has not released any specs or 
+datasheets related
+to the current patch. Zhaoxin CPUs are compatible with the x86 architecture,
+particularly with Intel. For example, you can refer to the Intel SDM 
+(Software
+Developer’s Manual). Regarding the current patch, except for the 
+features in the
+EDX of CPUID leaf 0xC000_0001, all other features can be found in the 
+general Intel
+specs and are already well known. The Zhaoxin-specific features in CPUID 
+leaf
+0xC000_0001 were introduced to the Linux Kernel a long time ago. For 
+example, the
+FEAT_C000_0001_EDX feature word defined in QEMU comes from the Linux 
+kernel’s
+arch/x86/include/asm/cpufeatures.h. The CPU model is just a feature 
+enumeration
+function, which I believe does not require as deep an understanding of 
+the features
+as driver code does. These changes will only affect users attempting to 
+emulate
+Zhaoxin CPUs and will not impact other Vendor/Micro-Arch CPUs.
 
-The root cause is the function virtio_pci_set_guest_notifiers() was not called
-in the virtio_input device.So the vector_irqfd was not initialized
-
-So the fix is add the check for vector_irqfd.
-
-Change in V3
-1) Move the vector_irqfd check to virtio_pci_get_notifier().
-The function virtio_pci_get_notifier() can also be used while vdev->status
-is not VIRTIO_CONFIG_S_DRIVER_OK. In that case, the vector_irqfd could be NULL,
-so also add the status check here.
-2) Add the return value check for kvm_virtio_pci_vector_use_one().
-Since the return value of function virtio_pci_set_vector() is void,
-just add the error message here.
-
-This fix is verified in vyatta,MacOS,NixOS,fedora system.
-
-The bt tree for this bug is:
-Thread 6 "CPU 0/KVM" received signal SIGSEGV, Segmentation fault.
-[Switching to Thread 0x7c817be006c0 (LWP 1269146)]
-kvm_virtio_pci_vq_vector_use () at ../qemu-9.0.0/hw/virtio/virtio-pci.c:817
-817         if (irqfd->users == 0) {
-(gdb) thread apply all bt
-...
-Thread 6 (Thread 0x7c817be006c0 (LWP 1269146) "CPU 0/KVM"):
-0  kvm_virtio_pci_vq_vector_use () at ../qemu-9.0.0/hw/virtio/virtio-pci.c:817
-1  kvm_virtio_pci_vector_use_one () at ../qemu-9.0.0/hw/virtio/virtio-pci.c:893
-2  0x00005983657045e2 in memory_region_write_accessor () at ../qemu-9.0.0/system/memory.c:497
-3  0x0000598365704ba6 in access_with_adjusted_size () at ../qemu-9.0.0/system/memory.c:573
-4  0x0000598365705059 in memory_region_dispatch_write () at ../qemu-9.0.0/system/memory.c:1528
-5  0x00005983659b8e1f in flatview_write_continue_step.isra.0 () at ../qemu-9.0.0/system/physmem.c:2713
-6  0x000059836570ba7d in flatview_write_continue () at ../qemu-9.0.0/system/physmem.c:2743
-7  flatview_write () at ../qemu-9.0.0/system/physmem.c:2774
-8  0x000059836570bb76 in address_space_write () at ../qemu-9.0.0/system/physmem.c:2894
-9  0x0000598365763afe in address_space_rw () at ../qemu-9.0.0/system/physmem.c:2904
-10 kvm_cpu_exec () at ../qemu-9.0.0/accel/kvm/kvm-all.c:2917
-11 0x000059836576656e in kvm_vcpu_thread_fn () at ../qemu-9.0.0/accel/kvm/kvm-accel-ops.c:50
-12 0x0000598365926ca8 in qemu_thread_start () at ../qemu-9.0.0/util/qemu-thread-posix.c:541
-13 0x00007c8185bcd1cf in ??? () at /usr/lib/libc.so.6
-14 0x00007c8185c4e504 in clone () at /usr/lib/libc.so.6
-
-Fixes: 2ce6cff94d ("virtio-pci: fix use of a released vector")
-Cc: qemu-stable@nongnu.org
-
-Signed-off-by: Cindy Lu <lulu@redhat.com>
----
- hw/virtio/virtio-pci.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
-
-diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
-index b1d02f4b3d..87307b9061 100644
---- a/hw/virtio/virtio-pci.c
-+++ b/hw/virtio/virtio-pci.c
-@@ -860,6 +860,11 @@ static int virtio_pci_get_notifier(VirtIOPCIProxy *proxy, int queue_no,
-     VirtIODevice *vdev = virtio_bus_get_device(&proxy->bus);
-     VirtQueue *vq;
- 
-+    if ((proxy->vector_irqfd == NULL) &&
-+        (vdev->status & VIRTIO_CONFIG_S_DRIVER_OK)) {
-+        return -1;
-+    }
-+
-     if (queue_no == VIRTIO_CONFIG_IRQ_IDX) {
-         *n = virtio_config_get_guest_notifier(vdev);
-         *vector = vdev->config_vector;
-@@ -1452,7 +1457,9 @@ static void virtio_pci_set_vector(VirtIODevice *vdev,
-     }
-     /* If the new vector changed need to set it up. */
-     if (kvm_irqfd && new_vector != VIRTIO_NO_VECTOR) {
--        kvm_virtio_pci_vector_use_one(proxy, queue_no);
-+        if (kvm_virtio_pci_vector_use_one(proxy, queue_no)) {
-+            virtio_error(vdev, "fail to set the vector %d", new_vector);
-+        }
-     }
- }
- 
--- 
-2.45.0
+On 6/25/24 10:31, Zhao Liu wrote:
+>
+> [这封邮件来自外部发件人 谨防风险]
+>
+> Hi EwanHai,
+>
+> On Tue, Jun 25, 2024 at 05:19:01AM -0400, EwanHai wrote:
+>> Date: Tue, 25 Jun 2024 05:19:01 -0400
+>> From: EwanHai <ewanhai-oc@zhaoxin.com>
+>> Subject: [PATCH 0/4] Add support for Zhaoxin Yongfeng CPU model and other
+>>   improvements
+>> X-Mailer: git-send-email 2.34.1
+>>
+>> This patch series introduces support for the Zhaoxin Yongfeng CPU model and includes
+>> some improvements and updates related to Zhaoxin and VIA CPUs. The changes ensure that
+>> QEMU can correctly identify and emulate Zhaoxin CPUs, providing accurate functionality
+>> and performance characteristics.
+>>
+>>
+>> ### Summary of Changes
+>>
+>> EwanHai (4):
+>>    target/i386: Add support for Zhaoxin/VIA CPU vendor identification
+>>    target/i386: Add CPUID leaf 0xC000_0001 EDX definitions
+>>    target/i386: Introduce Zhaoxin Yongfeng CPU model
+>>    target/i386: Update CMPLegacy handling for Zhaoxin and VIA CPUs
+>>
+>>   target/i386/cpu.c | 130 ++++++++++++++++++++++++++++++++++++++++++++--
+>>   target/i386/cpu.h |  38 ++++++++++++++
+>>   2 files changed, 165 insertions(+), 3 deletions(-)
+>>
+>> ### Known Bugs
+>>
+>> 1. Issue with VMX Preemption Timer Rate on Yongfeng CPU:
+>>     - Description: On Yongfeng CPUs, the VMX preemption timer rate is 128, meaning that
+>>       bits 4:0 of MSR_IA32_VMX_MISC_CTLS should be set to 7. However, due to Intel's rate
+>>       being 5, the Linux kernel has hardcoded this value as 5:
+>>       `#define VMX_MISC_EMULATED_PREEMPTION_TIMER_RATE 5`
+>>     - Impact: This discrepancy can cause incorrect behavior in the VMX preemption timer on
+>>       Yongfeng CPUs.
+>>     - Workaround: A patch to correct this issue in the Linux kernel is currently being
+>>       prepared and will be submitted soon.
+>>
+> Thanks for your patch. Is there some spec/datasheet link that people can
+> refer to?
+>
+> Regards,
+> Zhao
+>
 
 
