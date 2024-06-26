@@ -2,46 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B28669182EC
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jun 2024 15:44:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29B159182EB
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jun 2024 15:44:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sMSvx-0000xg-Dj; Wed, 26 Jun 2024 09:43:37 -0400
+	id 1sMSw0-0000zf-Qz; Wed, 26 Jun 2024 09:43:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1sMSvv-0000xD-J6; Wed, 26 Jun 2024 09:43:35 -0400
+ id 1sMSvw-0000xf-Ql; Wed, 26 Jun 2024 09:43:36 -0400
 Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1sMSvt-0007CK-Kz; Wed, 26 Jun 2024 09:43:35 -0400
+ id 1sMSvt-0007CL-Kq; Wed, 26 Jun 2024 09:43:36 -0400
 Received: from mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net
  [IPv6:2a02:6b8:c0c:958d:0:640:7be4:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id EE6CD60D7C;
- Wed, 26 Jun 2024 16:43:26 +0300 (MSK)
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id C166360D7B;
+ Wed, 26 Jun 2024 16:43:27 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6b8:b081:b645::1:29])
  by mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id 6hQ8Aa0IZiE0-XWZb1UyL; Wed, 26 Jun 2024 16:43:26 +0300
+ ESMTPSA id 6hQ8Aa0IZiE0-Oq39TsaE; Wed, 26 Jun 2024 16:43:27 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1719409406;
- bh=cvo+hMcUxlju52t+434JqXymNOWSaZltHB7XK4GSaUc=;
- h=Message-Id:Date:Cc:Subject:To:From;
- b=rfkiwZvMk7bcJwmNmTRkPpDpHvMT6w+g53dHEer/gYXyQ9NCPb673yg5oH2oaiRyQ
- U3Otx0DAX1MNewI2kg0xIJ05cfZpuHAITxeMQUgjmQDUPGQVGmyikWWz1tYUpSw92N
- 8n00tXExFhDWx0qDdNskw7Iv2FxmyuKL8FG7snaQ=
+ s=default; t=1719409407;
+ bh=VG1GR1FjrXFc8YGzTRoYNNCRAPmd5emLkaLTsifcTUE=;
+ h=Message-Id:Date:In-Reply-To:Cc:Subject:References:To:From;
+ b=NX8ubXoR8fV7uegB3sIxxaxLQf8gp12pzFQVRBwtdBy5w3w6mul1Y13zlMJJnhPq5
+ ZErEGBfZJ/tgEFV2drMT+5w4X7kNgjW014/daNVWanWcNBCS3tkcGpV660vJ/i1752
+ nzJadmRtIhetj9GM/jRAWGT9WIjBzvTLM+bLiVnw=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 To: qemu-devel@nongnu.org
 Cc: pbonzini@redhat.com, qemu-trivial@nongnu.org, armbru@redhat.com,
  Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Subject: [PATCH 0/3] vl.c: select_machine(): improve error message
-Date: Wed, 26 Jun 2024 16:43:02 +0300
-Message-Id: <20240626134305.432627-1-vsementsov@yandex-team.ru>
+Subject: [PATCH 1/3] vl.c: select_machine(): use ERRP_GUARD instead of error
+ propagation
+Date: Wed, 26 Jun 2024 16:43:03 +0300
+Message-Id: <20240626134305.432627-2-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240626134305.432627-1-vsementsov@yandex-team.ru>
+References: <20240626134305.432627-1-vsementsov@yandex-team.ru>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=178.154.239.136;
@@ -67,19 +70,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi all!
+Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+---
+ system/vl.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-Here are three simple patches, improving select_machine() function a
-bit.
-
-Vladimir Sementsov-Ogievskiy (3):
-  vl.c: select_machine(): use ERRP_GUARD instead of error propagation
-  vl.c: select_machine(): use g_autoptr
-  vl.c: select_machine(): add selected machine type to error message
-
- system/vl.c | 17 ++++++++---------
- 1 file changed, 8 insertions(+), 9 deletions(-)
-
+diff --git a/system/vl.c b/system/vl.c
+index cfcb674425..fa81037ce2 100644
+--- a/system/vl.c
++++ b/system/vl.c
+@@ -1665,28 +1665,28 @@ static const QEMUOption *lookup_opt(int argc, char **argv,
+ 
+ static MachineClass *select_machine(QDict *qdict, Error **errp)
+ {
++    ERRP_GUARD();
+     const char *machine_type = qdict_get_try_str(qdict, "type");
+     GSList *machines = object_class_get_list(TYPE_MACHINE, false);
+-    MachineClass *machine_class;
+-    Error *local_err = NULL;
++    MachineClass *machine_class = NULL;
+ 
+     if (machine_type) {
+         machine_class = find_machine(machine_type, machines);
+         qdict_del(qdict, "type");
+         if (!machine_class) {
+-            error_setg(&local_err, "unsupported machine type");
++            error_setg(errp, "unsupported machine type");
+         }
+     } else {
+         machine_class = find_default_machine(machines);
+         if (!machine_class) {
+-            error_setg(&local_err, "No machine specified, and there is no default");
++            error_setg(errp, "No machine specified, and there is no default");
+         }
+     }
+ 
+     g_slist_free(machines);
+-    if (local_err) {
+-        error_append_hint(&local_err, "Use -machine help to list supported machines\n");
+-        error_propagate(errp, local_err);
++    if (!machine_class) {
++        error_append_hint(errp,
++                          "Use -machine help to list supported machines\n");
+     }
+     return machine_class;
+ }
 -- 
 2.34.1
 
