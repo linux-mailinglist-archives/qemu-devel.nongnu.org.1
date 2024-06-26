@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66BCF917F40
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jun 2024 13:10:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA942917F3F
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jun 2024 13:09:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sMQV7-0006RV-Ve; Wed, 26 Jun 2024 07:07:46 -0400
+	id 1sMQV7-0006KQ-6z; Wed, 26 Jun 2024 07:07:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sMQUt-0005vY-GL
- for qemu-devel@nongnu.org; Wed, 26 Jun 2024 07:07:33 -0400
-Received: from mail-oo1-xc2f.google.com ([2607:f8b0:4864:20::c2f])
+ id 1sMQUv-0005wi-Lz
+ for qemu-devel@nongnu.org; Wed, 26 Jun 2024 07:07:35 -0400
+Received: from mail-pg1-x52d.google.com ([2607:f8b0:4864:20::52d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sMQUe-0004k2-9e
- for qemu-devel@nongnu.org; Wed, 26 Jun 2024 07:07:31 -0400
-Received: by mail-oo1-xc2f.google.com with SMTP id
- 006d021491bc7-5c21a177affso637898eaf.2
- for <qemu-devel@nongnu.org>; Wed, 26 Jun 2024 04:07:15 -0700 (PDT)
+ id 1sMQUp-0004kx-OM
+ for qemu-devel@nongnu.org; Wed, 26 Jun 2024 07:07:33 -0400
+Received: by mail-pg1-x52d.google.com with SMTP id
+ 41be03b00d2f7-6e3741519d7so4515848a12.2
+ for <qemu-devel@nongnu.org>; Wed, 26 Jun 2024 04:07:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1719400035; x=1720004835;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1719400041; x=1720004841;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=9ZmBpokay/lsP22q1IUevpTwDSp5jcANCIzAYF/y6M8=;
- b=Kasg5Bb6Tt1MkaOqRSR7GYkmqClZjSFA1Ek09+duFTpFHx8U/caOqF3wwwDCHi8Cs6
- MvaXjdmCZvQxjkJYrcpMIKAt55JWqv8oiaL0ZMXyZe+hUm+F5jCHPKk5flUDlBcLivSW
- af1/socvMxka6Es9Smlf6QBhQog53apInvYwoGj96q4gLIEXAGBClT0r2jc3LcW0kH5k
- r4R03sL57xjHxPjRRPTz4sklJYVS7Rvb7ih8YnDw8yHIBKQJmD1/7Z3XqgcbfdWnMnQY
- IDO7nKvObSJzw8s9irW7dVvNRKNrqQWqmQpm7rbQlaAd6bQoZ94sk80fYzMRpy3X1JuV
- /x+A==
+ :reply-to; bh=mUrmTt8+oFrzMkNkVkHTZpmYshFavrmG3OzzHBupQWA=;
+ b=yhKuopH7NajgdB0EjwxQaCBPu3qyb8EajO8IOqVMA6b2IIfReFhhTQOX6rNEBjmjrO
+ g32wB5dliPrTZrS5oH9auxe7pq69dWt1SiDhwjSB6cZL3d1bZW7iySCxIKTttBK20iNI
+ EZQPHIomKhE/vWiM9yRUGOzKZVmG32bKxj2Dg4kWL7TMPkfvxnlrp0kYnusIKHoWgPeI
+ JrVU2lwhN9BsrfKEtySQf7NHRF7+NIu1uSFrNvn8IdKcD4UKBzyrYzaGL6KYoHEDMF5X
+ 9fZzRPO6fnBXXol4xQjO5Ny7ZVZ1IKDjAQHPo7+jVsntMAniafzvUS7Ctyg/6ltGzAD8
+ LEoA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719400035; x=1720004835;
+ d=1e100.net; s=20230601; t=1719400041; x=1720004841;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9ZmBpokay/lsP22q1IUevpTwDSp5jcANCIzAYF/y6M8=;
- b=s8+tAAdtssglbgLgGe3auF+XD8sepJ8ioSNrzZ8SnvUsqhd81/yNF+y82ny7aVOvTA
- kWWpbrCF+IkzPIGqei5b+KktUj7eY4OPXE9oqa4G+V13blRqm3XNwLveliqcpk9RtkN5
- T+rDgyyzeZRTMx/NOq8H2ItiV9y/I4fx2Yx+bVa7Nb/LKGIYZsR2NUcr1WAnsR7Iqi4L
- 6RaVQEb2MEjds/O/7y/dJlBQb9aaNqzmnYQQjrWIlyYC4tnooLwehLnKCgYmIElPwJU0
- OBX6jFphys9hMJGhD/ovkiVjGLXhwBGh8ktIBiErg+n7fSgC8aEpbXlvwUbDvSMoy9UQ
- lsaQ==
-X-Gm-Message-State: AOJu0Yz7QScGomP5E2AUGdhgLhBTo9wLxpJLM1/7LAjCdfhlHjDCDvjQ
- B9xi/YNEGckDfxE8Yn2mLEgLB47uzAjoXi8BbcRm+SplXAOhCUY8Y1tftqKUdEo=
-X-Google-Smtp-Source: AGHT+IGr7mhUQc/kwzoC2SIj/Sh4EbH/tfTc7GcCgH2CK8pzXdS0VBUK4r8QMhdZTjnrV0Z6lwmRkw==
-X-Received: by 2002:a05:6358:2824:b0:1a1:cb05:243c with SMTP id
- e5c5f4694b2df-1a23c1b2289mr1333891255d.25.1719400034980; 
- Wed, 26 Jun 2024 04:07:14 -0700 (PDT)
+ bh=mUrmTt8+oFrzMkNkVkHTZpmYshFavrmG3OzzHBupQWA=;
+ b=ePiwwyMo1aHBb1m8ANDzYKXu/TlD2Tj5Rx0b7Ik7rjbefCeyoNhYlELTbXhZDh1W5n
+ dFZJ6kXdYisMNLsnfJqinyVtLr3o7/5oDpo8BKX+gC8k6wMU9AV3AL2EWWDQKIEjOU58
+ 7mzxvG1bH2Ggzob9bk6ep/OPzPXh0gs3cT9teavic46AT6/zSm/qaErMUF7QsLjFcIvY
+ LlOhR0e6gc3tPyKlD7V2MQZOvh5pufuqrC5pPbHHb2PZ+KzDmD3acp9rYBSOY+FIeXYP
+ A37rRYH7k8rRPY5Kt7/wdnQ+BwXz5k/oZE3TCYm1Hs+AAUD78CnYkj6uKDlFcw/qvpzF
+ HK3g==
+X-Gm-Message-State: AOJu0YyWDnIF3iP4hj1qnUcUy4argv5zEZoffY3VYpfZM8To5FRQd29q
+ TFxRzBPosP/NXOtGcXBtaTcxFxpotvYwq/iqfQE1JOPk3cksI1MvqrpFUm8YIJs=
+X-Google-Smtp-Source: AGHT+IE4qbHI1diVoBe9v5IequM5ti+nRE8x43HfaWZexsEG4+NNwDbERwgbGUr7DxNcZjxO9MjDLw==
+X-Received: by 2002:a17:90a:8c91:b0:2c8:538d:95b7 with SMTP id
+ 98e67ed59e1d1-2c8538d9832mr8818555a91.32.1719400040964; 
+ Wed, 26 Jun 2024 04:07:20 -0700 (PDT)
 Received: from localhost ([157.82.204.135])
  by smtp.gmail.com with UTF8SMTPSA id
- 41be03b00d2f7-71e1314dc83sm4678927a12.56.2024.06.26.04.07.10
+ 98e67ed59e1d1-2c8d8061497sm1380082a91.34.2024.06.26.04.07.16
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 26 Jun 2024 04:07:14 -0700 (PDT)
+ Wed, 26 Jun 2024 04:07:20 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Wed, 26 Jun 2024 20:06:29 +0900
-Subject: [PATCH 06/14] hw/virtio: Free vqs before vhost_dev_cleanup()
+Date: Wed, 26 Jun 2024 20:06:30 +0900
+Subject: [PATCH 07/14] migration: Free removed SaveStateEntry
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240626-san-v1-6-f3cc42302189@daynix.com>
+Message-Id: <20240626-san-v1-7-f3cc42302189@daynix.com>
 References: <20240626-san-v1-0-f3cc42302189@daynix.com>
 In-Reply-To: <20240626-san-v1-0-f3cc42302189@daynix.com>
 To: Eduardo Habkost <eduardo@habkost.net>, 
@@ -82,14 +82,14 @@ To: Eduardo Habkost <eduardo@habkost.net>,
 Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, qemu-ppc@nongnu.org, 
  Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.14-dev-fd6e3
-Received-SPF: none client-ip=2607:f8b0:4864:20::c2f;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-oo1-xc2f.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::52d;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x52d.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=unavailable autolearn_force=no
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,29 +109,22 @@ This suppresses LeakSanitizer warnings.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- hw/virtio/vhost-user-base.c | 2 ++
+ migration/savevm.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/hw/virtio/vhost-user-base.c b/hw/virtio/vhost-user-base.c
-index a83167191ee6..124ef536206f 100644
---- a/hw/virtio/vhost-user-base.c
-+++ b/hw/virtio/vhost-user-base.c
-@@ -223,6 +223,7 @@ static void vub_disconnect(DeviceState *dev)
- {
-     VirtIODevice *vdev = VIRTIO_DEVICE(dev);
-     VHostUserBase *vub = VHOST_USER_BASE(vdev);
-+    struct vhost_virtqueue *vhost_vqs = vub->vhost_dev.vqs;
+diff --git a/migration/savevm.c b/migration/savevm.c
+index c621f2359ba3..10b261823b7c 100644
+--- a/migration/savevm.c
++++ b/migration/savevm.c
+@@ -874,6 +874,8 @@ int vmstate_replace_hack_for_ppc(VMStateIf *obj, int instance_id,
  
-     if (!vub->connected) {
-         return;
-@@ -231,6 +232,7 @@ static void vub_disconnect(DeviceState *dev)
- 
-     vub_stop(vdev);
-     vhost_dev_cleanup(&vub->vhost_dev);
-+    g_free(vhost_vqs);
- 
-     /* Re-instate the event handler for new connections */
-     qemu_chr_fe_set_handlers(&vub->chardev,
+     if (se) {
+         savevm_state_handler_remove(se);
++        g_free(se->compat);
++        g_free(se);
+     }
+     return vmstate_register(obj, instance_id, vmsd, opaque);
+ }
 
 -- 
 2.45.2
