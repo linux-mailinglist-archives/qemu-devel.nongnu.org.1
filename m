@@ -2,93 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E1DB917BB4
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jun 2024 11:07:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36D4D917BB8
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jun 2024 11:07:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sMObG-0005nq-CW; Wed, 26 Jun 2024 05:05:58 -0400
+	id 1sMObG-0005nN-0P; Wed, 26 Jun 2024 05:05:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <chalapathi.v@linux.ibm.com>)
- id 1sMObD-0005mc-H3; Wed, 26 Jun 2024 05:05:55 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ id 1sMObC-0005mQ-VR; Wed, 26 Jun 2024 05:05:54 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <chalapathi.v@linux.ibm.com>)
- id 1sMObB-0005oK-5m; Wed, 26 Jun 2024 05:05:55 -0400
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45Q8x9hA024415;
- Wed, 26 Jun 2024 09:05:41 GMT
+ id 1sMObB-0005oZ-H1; Wed, 26 Jun 2024 05:05:54 -0400
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45Q8RFPJ027853;
+ Wed, 26 Jun 2024 09:05:45 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
- :to:cc:subject:date:message-id:mime-version:content-type
- :content-transfer-encoding; s=pp1; bh=HP2FJm2c0CHWB1ddiJW5gN563V
- xWA/IughUqY9mcjUo=; b=f/pdQKfaXd352rIzkNYnlqaSDuFrpVpm46Ha11Etcd
- 7hNuRZaMfc1ZW+af0oTKWSO9nZKcSNPSX3UlQFBGeQ+fuDkUBAv7O5LNJdN0ZFWF
- DXZUJ9yYdJGYEbLsGcGUP6hEXd4us5YBTSG5xQAZo1vJwleEBSSFk/G9nKaa4AFG
- yM47Z4mTwBA+eHJMa38YtY/BH58OmWz+ipVa9djJpx5JyZjQlqkFGFCNwUZy+ZUm
- D3kL5yhN96NB6/nedduFi7zILmAG60adeRmaBYpbk8NAoB5jxgEjC2ihk/8NeuoY
- l4AK2W3CbcQLFOoijYh2G/Q9g9NEtsvtMzen4z55ugBg==
+ :to:cc:subject:date:message-id:in-reply-to:references
+ :mime-version:content-transfer-encoding; s=pp1; bh=Y2L6Dj4n51A7B
+ ZHgtaMYdzsl6pGGc5qhQyS7kXHLl3o=; b=OC7aJcR/V0S7/+cSGukWrJzF8Vjnu
+ Jnqra2uIKWrkgAcsTWE7VZoiZydbHEXlWAOKbosO2cNo5hoBahj41KYOQ8v7SdfE
+ tlyHmSn+GhZnLMUT7cXj/eSp0Bg5+7YAlrmxogFk5CnZoERtS5+dhtR5aVcgSgYs
+ ryT9eN8omStoo/Yz9w1uCb2aAkyfe+QkfNLWOeftPjINXZp2pbXpDTf/pU9vz7Ai
+ ljfW+t73qWTqHZczjtRjIKPDtM+cLgHoz4bGQ8At8GPWwUk8BRokj6Pb7HEBddxT
+ DKwV82FVFFDl5c3sh+zRpwGSeFLJhXBSAfforyamZ4TJFT507RN7WVcZQ==
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 400fx9g0jk-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 400f2m84kk-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 26 Jun 2024 09:05:41 +0000 (GMT)
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 45Q95ep3002552;
- Wed, 26 Jun 2024 09:05:40 GMT
+ Wed, 26 Jun 2024 09:05:45 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 45Q95iUG020978;
+ Wed, 26 Jun 2024 09:05:44 GMT
 Received: from ppma11.dal12v.mail.ibm.com
  (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 400fx9g0jh-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 400f2m84kh-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 26 Jun 2024 09:05:40 +0000 (GMT)
+ Wed, 26 Jun 2024 09:05:44 +0000 (GMT)
 Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
  by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 45Q71nL6032373; Wed, 26 Jun 2024 09:05:40 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3yxbn3ax4g-1
+ 45Q71nL8032373; Wed, 26 Jun 2024 09:05:44 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3yxbn3ax4t-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 26 Jun 2024 09:05:39 +0000
+ Wed, 26 Jun 2024 09:05:43 +0000
 Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com
  [10.20.54.104])
- by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 45Q95YMA10551794
+ by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 45Q95c4Q53870864
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 26 Jun 2024 09:05:36 GMT
+ Wed, 26 Jun 2024 09:05:40 GMT
 Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 405CD2004D;
- Wed, 26 Jun 2024 09:05:34 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 8217C20065;
+ Wed, 26 Jun 2024 09:05:38 +0000 (GMT)
 Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 632242004B;
- Wed, 26 Jun 2024 09:05:32 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 9C5472004E;
+ Wed, 26 Jun 2024 09:05:36 +0000 (GMT)
 Received: from gfwr527.rchland.ibm.com (unknown [9.10.239.127])
  by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Wed, 26 Jun 2024 09:05:32 +0000 (GMT)
+ Wed, 26 Jun 2024 09:05:36 +0000 (GMT)
 From: Chalapathi V <chalapathi.v@linux.ibm.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, fbarrat@linux.ibm.com, npiggin@gmail.com,
  clg@kaod.org, calebs@us.ibm.com, chalapathi.v@ibm.com,
  chalapathi.v@linux.ibm.com, saif.abrar@linux.ibm.com,
  dantan@us.ibm.com, milesg@linux.ibm.com
-Subject: [PATCH v5 0/6] hw/ppc: SPI model
-Date: Wed, 26 Jun 2024 04:05:22 -0500
-Message-Id: <20240626090528.812-1-chalapathi.v@linux.ibm.com>
+Subject: [PATCH v5 1/6] ppc/pnv: Remove ppc target dependency from pnv_xscom.h
+Date: Wed, 26 Jun 2024 04:05:23 -0500
+Message-Id: <20240626090528.812-2-chalapathi.v@linux.ibm.com>
 X-Mailer: git-send-email 2.39.3
+In-Reply-To: <20240626090528.812-1-chalapathi.v@linux.ibm.com>
+References: <20240626090528.812-1-chalapathi.v@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: lDv0H6Uc24BN9FPiERmLVOVMnCrfv52E
-X-Proofpoint-ORIG-GUID: mHp2tPWBFBg9l8SootWwYPIgd11Cw6tq
+X-Proofpoint-GUID: zcG4P1qZUA7Z2ls71w_6lsZWDZyng7qx
+X-Proofpoint-ORIG-GUID: ZaUc3jh7xULGX4zCpRl-wLpFG1K7Gjb-
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
  definitions=2024-06-26_03,2024-06-25_01,2024-05-17_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=560 spamscore=0
- suspectscore=0 lowpriorityscore=0 phishscore=0 impostorscore=0
- malwarescore=0 priorityscore=1501 mlxscore=0 bulkscore=0 clxscore=1015
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2406140001 definitions=main-2406260062
-Received-SPF: pass client-ip=148.163.156.1;
- envelope-from=chalapathi.v@linux.ibm.com; helo=mx0a-001b2d01.pphosted.com
+ suspectscore=0 mlxscore=0
+ mlxlogscore=693 adultscore=0 priorityscore=1501 lowpriorityscore=0
+ impostorscore=0 clxscore=1015 spamscore=0 malwarescore=0 phishscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2406140001 definitions=main-2406260067
+Received-SPF: pass client-ip=148.163.158.5;
+ envelope-from=chalapathi.v@linux.ibm.com; helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -19
 X-Spam_score: -2.0
 X-Spam_bar: --
@@ -111,89 +112,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello,
+In this commit target specific dependency from include/hw/ppc/pnv_xscom.h
+has been removed so that pnv_xscom.h can be included outside hw/ppc.
 
-Thank You so much for reviewing patch v4.
-In patch v5,
-- Added a new commit to remove the dependency from include/hw/ppc/pnv_xscom.h
-so that pnv_xscom.h can be included in hw/ssi/pnv_spi.c in PATCH2.
-- General comments from Cedric and Glenn were addressed.
+Signed-off-by: Chalapathi V <chalapathi.v@linux.ibm.com>
+---
+ include/hw/ppc/pnv_xscom.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-The new qom-tree looks like below.
-(qemu) info qom-tree 
-/machine (powernv10-machine)
-  /chip[0] (power10_v2.0-pnv-chip)
-    /pib_spic[0] (pnv-spi)
-      /pnv-spi-bus.0 (SSI)
-      /xscom-spi[0] (memory-region)
-    /pib_spic[1] (pnv-spi)
-      /pnv-spi-bus.1 (SSI)
-      /xscom-spi[0] (memory-region)
-    /pib_spic[2] (pnv-spi)
-      /pnv-spi-bus.2 (SSI)
-      /xscom-spi[0] (memory-region)
-    /pib_spic[3] (pnv-spi)
-      /pnv-spi-bus.3 (SSI)
-      /xscom-spi[0] (memory-region)
-    /pib_spic[4] (pnv-spi)
-      /pnv-spi-bus.4 (SSI)
-      /xscom-spi[0] (memory-region)
-    /pib_spic[5] (pnv-spi)
-      /pnv-spi-bus.5 (SSI)
-      /xscom-spi[0] (memory-region)
-
-(qemu) info qom-tree 
-/machine (powernv10-machine)
-  /peripheral-anon (container)
-    /device[0] (25csm04)
-      /WP#[0] (irq)
-      /ssi-gpio-cs[0] (irq)
-
-Patches overview in v4.
-PATCH1: Remove ppc target dependency from include/hw/ppc/pnv_xscom.h so
-        that pnv_xscom.h can be included in hw/ssi/pnv_spi.c in PATCH2.
-PATCH2: Create a PNV SPI model and implement configuration unit
-        to model SCOM registers.
-PATCH3: Extend PNV SPI model: implement sequencer FSM and shift engine.
-PATCH4: Add Microchip's SEEPROM 25csm04 model on top of m25p80.
-PATCH5: Connect SPI controllers to p10 chip and connect cs lines.
-PATCH6: Write a qtest pnv-spi-seeprom-test to check the SPI transactions
-        between spi controller and seeprom device.
-
-Test covered:
-make check
-make check-avocado
-
-Thank You,
-Chalapathi
-
-Chalapathi V (6):
-  ppc/pnv: Remove ppc target dependency from pnv_xscom.h
-  hw/ssi: Add SPI model
-  hw/ssi: Extend SPI model
-  hw/block: Add Microchip's 25CSM04 to m25p80
-  hw/ppc: SPI controller wiring to P10 chip
-  tests/qtest: Add pnv-spi-seeprom qtest
-
- include/hw/ppc/pnv_chip.h          |    3 +
- include/hw/ppc/pnv_xscom.h         |    5 +-
- include/hw/ssi/pnv_spi.h           |   67 ++
- include/hw/ssi/pnv_spi_regs.h      |  133 +++
- hw/block/m25p80.c                  |    3 +
- hw/ppc/pnv.c                       |   21 +-
- hw/ssi/pnv_spi.c                   | 1267 ++++++++++++++++++++++++++++
- tests/qtest/pnv-spi-seeprom-test.c |  110 +++
- hw/ppc/Kconfig                     |    3 +
- hw/ssi/Kconfig                     |    4 +
- hw/ssi/meson.build                 |    1 +
- hw/ssi/trace-events                |   21 +
- tests/qtest/meson.build            |    1 +
- 13 files changed, 1637 insertions(+), 2 deletions(-)
- create mode 100644 include/hw/ssi/pnv_spi.h
- create mode 100644 include/hw/ssi/pnv_spi_regs.h
- create mode 100644 hw/ssi/pnv_spi.c
- create mode 100644 tests/qtest/pnv-spi-seeprom-test.c
-
+diff --git a/include/hw/ppc/pnv_xscom.h b/include/hw/ppc/pnv_xscom.h
+index 6209e18492..c8dd42bffd 100644
+--- a/include/hw/ppc/pnv_xscom.h
++++ b/include/hw/ppc/pnv_xscom.h
+@@ -21,9 +21,9 @@
+ #define PPC_PNV_XSCOM_H
+ 
+ #include "exec/memory.h"
+-#include "hw/ppc/pnv.h"
+ 
+ typedef struct PnvXScomInterface PnvXScomInterface;
++typedef struct PnvChip PnvChip;
+ 
+ #define TYPE_PNV_XSCOM_INTERFACE "pnv-xscom-interface"
+ #define PNV_XSCOM_INTERFACE(obj) \
 -- 
 2.39.3
 
