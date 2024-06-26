@@ -2,37 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFCC4917F1B
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jun 2024 13:03:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B5D1917F20
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jun 2024 13:03:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sMQPg-0007Nr-2T; Wed, 26 Jun 2024 07:02:09 -0400
+	id 1sMQPX-0007LS-1D; Wed, 26 Jun 2024 07:01:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1sMQPZ-0007Mt-4e; Wed, 26 Jun 2024 07:02:01 -0400
-Received: from forwardcorp1a.mail.yandex.net
- ([2a02:6b8:c0e:500:1:45:d181:df01])
+ id 1sMQPT-0007JR-6R; Wed, 26 Jun 2024 07:01:56 -0400
+Received: from forwardcorp1a.mail.yandex.net ([178.154.239.72])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1sMQPN-0003SB-V8; Wed, 26 Jun 2024 07:02:00 -0400
+ id 1sMQPN-0003SE-58; Wed, 26 Jun 2024 07:01:54 -0400
 Received: from mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
  [IPv6:2a02:6b8:c0c:1c20:0:640:f632:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 41CE560F26;
- Wed, 26 Jun 2024 14:01:43 +0300 (MSK)
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 1006760F2C;
+ Wed, 26 Jun 2024 14:01:44 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6b8:b081:b645::1:29])
  by mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id P1OLrj0IhSw0-KSAtZ5z3; Wed, 26 Jun 2024 14:01:42 +0300
+ ESMTPSA id P1OLrj0IhSw0-2j1SLQRl; Wed, 26 Jun 2024 14:01:43 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1719399702;
- bh=yLJaDyEAelrXRgY1Ri4RSUibfQW2G7z/Oefqj6dQnvE=;
+ s=default; t=1719399703;
+ bh=IP/7c3urCxtxEZ5EuganaMwu2l+duCJlhM4632kUDA4=;
  h=Message-Id:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=Mo96yZCQ/1SFBUFGK3JAyEq6j0LP4H45Fin122S9d7lLnHuyAYnHIhpB4yul9Pr3u
- gSTq7yEO3nBgid1rnE0syKgVzzjVJt0lRjErK9Mpii8EKjUusky8QPtB+it1hhHx55
- C/Me7UxCHrzcxheYQXanx1YKFROmN6H6Mg3mw27Y=
+ b=qMJ57jZkyuPAz6fZAMg5vgIx2jy2PrlxNzjl2oUZODtBKlNMnb07ojKyus47rLIGN
+ uo6M0AXRk49mf8qooFfmN9eCYTiBMlP4hi5rm5YLsnA3Xt4CD3+9fzdBhd8+nvzMin
+ j4oLXzSHinv/c9dFyT4eWM167aBoksUamQMdEmC8=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
@@ -41,15 +40,16 @@ Cc: qemu-devel@nongnu.org, armbru@redhat.com, eblake@redhat.com,
  devel@lists.libvirt.org, hreitz@redhat.com, kwolf@redhat.com,
  vsementsov@yandex-team.ru, jsnow@redhat.com, pkrempa@redhat.com,
  f.ebner@proxmox.com
-Subject: [PATCH v2 2/7] blockjob: block_job_change_locked(): check job type
-Date: Wed, 26 Jun 2024 14:01:19 +0300
-Message-Id: <20240626110124.374336-3-vsementsov@yandex-team.ru>
+Subject: [PATCH v2 3/7] qapi: block-job-change: make copy-mode parameter
+ optional
+Date: Wed, 26 Jun 2024 14:01:20 +0300
+Message-Id: <20240626110124.374336-4-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240626110124.374336-1-vsementsov@yandex-team.ru>
 References: <20240626110124.374336-1-vsementsov@yandex-team.ru>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a02:6b8:c0e:500:1:45:d181:df01;
+Received-SPF: pass client-ip=178.154.239.72;
  envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -72,30 +72,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-User may specify wrong type for the job id. Let's check it.
+We are going to add more parameters to change. We want to make possible
+to change only one or any subset of available options. So all the
+options should be optional.
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- blockjob.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ block/mirror.c       | 4 ++++
+ qapi/block-core.json | 3 ++-
+ 2 files changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/blockjob.c b/blockjob.c
-index 8cfbb15543..788cb1e07d 100644
---- a/blockjob.c
-+++ b/blockjob.c
-@@ -319,6 +319,12 @@ void block_job_change_locked(BlockJob *job, JobChangeOptions *opts,
+diff --git a/block/mirror.c b/block/mirror.c
+index 2816bb1042..60e8d83e4f 100644
+--- a/block/mirror.c
++++ b/block/mirror.c
+@@ -1272,6 +1272,10 @@ static void mirror_change(BlockJob *job, JobChangeOptions *opts,
  
      GLOBAL_STATE_CODE();
  
-+    if (job_type(&job->job) != opts->type) {
-+        error_setg(errp, "Job '%s' is '%s' job, not '%s'", job->job.id,
-+                   job_type_str(&job->job), JobType_str(opts->type));
++    if (!change_opts->has_copy_mode) {
 +        return;
 +    }
 +
-     if (job_apply_verb_locked(&job->job, JOB_VERB_CHANGE, errp)) {
+     if (qatomic_read(&s->copy_mode) == change_opts->copy_mode) {
          return;
      }
+diff --git a/qapi/block-core.json b/qapi/block-core.json
+index 4ec5632596..660c7f4a48 100644
+--- a/qapi/block-core.json
++++ b/qapi/block-core.json
+@@ -3071,11 +3071,12 @@
+ #
+ # @copy-mode: Switch to this copy mode.  Currently, only the switch
+ #     from 'background' to 'write-blocking' is implemented.
++#     If absent, copy mode remains the same.  (optional since 9.1)
+ #
+ # Since: 8.2
+ ##
+ { 'struct': 'JobChangeOptionsMirror',
+-  'data': { 'copy-mode' : 'MirrorCopyMode' } }
++  'data': { '*copy-mode' : 'MirrorCopyMode' } }
+ 
+ ##
+ # @JobChangeOptions:
 -- 
 2.34.1
 
