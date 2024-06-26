@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 542F5919AA0
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jun 2024 00:26:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80C5D919A99
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jun 2024 00:25:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sMb4P-0000vP-OT; Wed, 26 Jun 2024 18:24:53 -0400
+	id 1sMb4b-0001Nk-FN; Wed, 26 Jun 2024 18:25:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1sMb49-0000Nb-Da
- for qemu-devel@nongnu.org; Wed, 26 Jun 2024 18:24:38 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1sMb4B-0000S6-K9
+ for qemu-devel@nongnu.org; Wed, 26 Jun 2024 18:24:40 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1sMb44-00030r-NK
- for qemu-devel@nongnu.org; Wed, 26 Jun 2024 18:24:37 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1sMb49-00031Y-Qg
+ for qemu-devel@nongnu.org; Wed, 26 Jun 2024 18:24:39 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719440672;
+ s=mimecast20190719; t=1719440677;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=EZKq8NdPRtFQaqOS66UrV4r6O8zGuQk00MpGkJ/TuUc=;
- b=fq1XdAEqC+Y7pUKnaND8lGGKtyJODFFzQalShrKgD4mJzpzT8A+KUullO0jXjJnUNM4CvC
- m9ZjKxwPcp4Pzc4kcHoQPjmbRGsK7WemBtM9BxD/YtNarX1/rPWSh+mTDGgBxAp56xFxGG
- QhzwDypCWANNdXmAfOzzFDP4Sd2Ykw0=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=qEdS/Gb8GO1qphubxtf0mIutzvbw2WgtC4FPzFeseyw=;
+ b=Fz33KoUfB/uZXnY9vH13fN9CByRvxzrab+tLw5RG9qOHI146KrHlVpCD+BRjvkwlkwZitf
+ YCyFWUupC3IeCyU6wwuR5kNg+wNQ34JTid9A4soNBVhFK1bA2BkArSG0B3fznQCv87dW3L
+ fRXbEO+GZ+O9KbGHUTK5SzL3Hq7yHa0=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-327-67O201aBOgyAVyvd_s62Zw-1; Wed,
- 26 Jun 2024 18:24:25 -0400
-X-MC-Unique: 67O201aBOgyAVyvd_s62Zw-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-591-dJk26Y_vO2SRQd_VVepoTw-1; Wed,
+ 26 Jun 2024 18:24:34 -0400
+X-MC-Unique: dJk26Y_vO2SRQd_VVepoTw-1
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B7B5C19560AE; Wed, 26 Jun 2024 22:24:23 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 3B06E195609D; Wed, 26 Jun 2024 22:24:32 +0000 (UTC)
 Received: from scv.redhat.com (unknown [10.22.8.67])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 7FE0119560BF; Wed, 26 Jun 2024 22:24:14 +0000 (UTC)
+ id 0D97E19560BF; Wed, 26 Jun 2024 22:24:23 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Mads Ynddal <mads@ynddal.dk>, Jiri Pirko <jiri@resnulli.us>,
@@ -66,9 +66,9 @@ Cc: Mads Ynddal <mads@ynddal.dk>, Jiri Pirko <jiri@resnulli.us>,
  Jason Wang <jasowang@redhat.com>, Yanan Wang <wangyanan55@huawei.com>,
  Hanna Reitz <hreitz@redhat.com>, Konstantin Kostiuk <kkostiuk@redhat.com>,
  Stefan Berger <stefanb@linux.vnet.ibm.com>, John Snow <jsnow@redhat.com>
-Subject: [PATCH v2 19/21] qapi: convert "Example" sections with titles
-Date: Wed, 26 Jun 2024 18:21:25 -0400
-Message-ID: <20240626222128.406106-20-jsnow@redhat.com>
+Subject: [PATCH v2 20/21] qapi: convert "Example" sections with longer prose
+Date: Wed, 26 Jun 2024 18:21:26 -0400
+Message-ID: <20240626222128.406106-21-jsnow@redhat.com>
 In-Reply-To: <20240626222128.406106-1-jsnow@redhat.com>
 References: <20240626222128.406106-1-jsnow@redhat.com>
 MIME-Version: 1.0
@@ -98,328 +98,231 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When an Example section has a brief explanation, convert it to a
-qmp-example:: section using the :title: option.
+These examples require longer explanations or have explanations that
+require markup to look reasonable when rendered and so use the longer
+form of the ".. qmp-example::" directive.
 
-Rule of thumb: If the title can fit on a single line and requires no rST
-markup, it's a good candidate for using the :title: option of
-qmp-example.
+By using the :annotated: option, the content in the example block is
+assumed *not* to be a code block literal and is instead parsed as normal
+rST - with the exception that any code literal blocks after `::` will
+assumed to be a QMP code literal block.
 
-In this patch, trailing punctuation is removed from the title section
-for consistent headline aesthetics. In just one case, specifics of the
-example are removed to make the title read better.
+Note: There's one title-less conversion in this patch that comes along
+for the ride because it's part of a larger "Examples" block that was
+better to convert all at once.
 
-See commit-4: "docs/qapidoc: create qmp-example directive", for a
+See commit-5: "docs/qapidoc: create qmp-example directive", for a
               detailed explanation of this custom directive syntax.
 
-See commit+2: "qapi: remove "Example" doc section" for a detailed
+See commit+1: "qapi: remove "Example" doc section" for a detailed
               explanation of why.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- qapi/block-core.json | 24 ++++++++++++------------
- qapi/block.json      | 13 ++++++-------
- qapi/migration.json  | 25 ++++++++++++++-----------
- qapi/qom.json        |  8 ++++----
- qapi/ui.json         | 11 ++++++-----
- qapi/virtio.json     | 19 ++++++++++---------
- 6 files changed, 52 insertions(+), 48 deletions(-)
+ qapi/block.json     | 26 ++++++++++++++++----------
+ qapi/machine.json   | 30 ++++++++++++++++++++----------
+ qapi/migration.json |  7 +++++--
+ qapi/virtio.json    | 24 ++++++++++++++++++------
+ 4 files changed, 59 insertions(+), 28 deletions(-)
 
-diff --git a/qapi/block-core.json b/qapi/block-core.json
-index 4e0f0395146..a371e3464d2 100644
---- a/qapi/block-core.json
-+++ b/qapi/block-core.json
-@@ -5885,9 +5885,8 @@
+diff --git a/qapi/block.json b/qapi/block.json
+index 5ddd061e964..d95e9fd8140 100644
+--- a/qapi/block.json
++++ b/qapi/block.json
+@@ -545,31 +545,37 @@
+ #
+ # Since: 4.0
+ #
+-# Example:
++# .. qmp-example::
++#    :annotated:
+ #
+-#     Set new histograms for all io types with intervals
+-#     [0, 10), [10, 50), [50, 100), [100, +inf):
++#    Set new histograms for all io types with intervals
++#    [0, 10), [10, 50), [50, 100), [100, +inf)::
+ #
+ #     -> { "execute": "block-latency-histogram-set",
+ #          "arguments": { "id": "drive0",
+ #                         "boundaries": [10, 50, 100] } }
+ #     <- { "return": {} }
+ #
+-# Example:
++# .. qmp-example::
++#    :annotated:
+ #
+-#     Set new histogram only for write, other histograms will remain
+-#     not changed (or not created):
++#    Set new histogram only for write, other histograms will remain
++#    not changed (or not created)::
+ #
+ #     -> { "execute": "block-latency-histogram-set",
+ #          "arguments": { "id": "drive0",
+ #                         "boundaries-write": [10, 50, 100] } }
+ #     <- { "return": {} }
+ #
+-# Example:
++# .. qmp-example::
++#    :annotated:
+ #
+-#     Set new histograms with the following intervals:
+-#       read, flush: [0, 10), [10, 50), [50, 100), [100, +inf)
+-#       write: [0, 1000), [1000, 5000), [5000, +inf)
++#    Set new histograms with the following intervals:
++#
++#    - read, flush: [0, 10), [10, 50), [50, 100), [100, +inf)
++#    - write: [0, 1000), [1000, 5000), [5000, +inf)
++#
++#    ::
+ #
+ #     -> { "execute": "block-latency-histogram-set",
+ #          "arguments": { "id": "drive0",
+diff --git a/qapi/machine.json b/qapi/machine.json
+index 83f60b319c7..0a5ffe652b7 100644
+--- a/qapi/machine.json
++++ b/qapi/machine.json
+@@ -1047,10 +1047,11 @@
  #
  # Since: 2.7
  #
 -# Examples:
--#
--#     1. Add a new node to a quorum
 +# .. qmp-example::
-+#    :title: Add a new node to a quorum
++#    :annotated:
  #
- #     -> { "execute": "blockdev-add",
- #          "arguments": {
-@@ -5901,7 +5900,8 @@
- #                         "node": "new_node" } }
- #     <- { "return": {} }
+-#     For pseries machine type started with -smp 2,cores=2,maxcpus=4
+-#     -cpu POWER8:
++#    For pseries machine type started with
++#    ``-smp 2,cores=2,maxcpus=4 -cpu POWER8``::
  #
--#     2. Delete a quorum's node
+ #     -> { "execute": "query-hotpluggable-cpus" }
+ #     <- {"return": [
+@@ -1060,7 +1061,10 @@
+ #            "vcpus-count": 1, "qom-path": "/machine/unattached/device[0]"}
+ #        ]}
+ #
+-#     For pc machine type started with -smp 1,maxcpus=2:
 +# .. qmp-example::
-+#    :title: Delete a quorum's node
++#    :annotated:
++#
++#    For pc machine type started with ``-smp 1,maxcpus=2``::
  #
- #     -> { "execute": "x-blockdev-change",
- #          "arguments": { "parent": "disk1",
-@@ -5937,16 +5937,16 @@
+ #     -> { "execute": "query-hotpluggable-cpus" }
+ #     <- {"return": [
+@@ -1075,8 +1079,11 @@
+ #          }
+ #        ]}
  #
- # Since: 2.12
- #
--# Examples:
--#
--#     1. Move a node into an IOThread
+-#     For s390x-virtio-ccw machine type started with -smp 1,maxcpus=2
+-#     -cpu qemu (Since: 2.11):
 +# .. qmp-example::
-+#    :title: Move a node into an IOThread
++#    :annotated:
++#
++#    For s390x-virtio-ccw machine type started with
++#    ``-smp 1,maxcpus=2 -cpu qemu`` (Since: 2.11)::
  #
- #     -> { "execute": "x-blockdev-set-iothread",
- #          "arguments": { "node-name": "disk1",
- #                         "iothread": "iothread0" } }
- #     <- { "return": {} }
- #
--#     2. Move a node into the main loop
-+# .. qmp-example::
-+#    :title: Move a node into the main loop
- #
- #     -> { "execute": "x-blockdev-set-iothread",
- #          "arguments": { "node-name": "disk1",
-@@ -6022,16 +6022,16 @@
- #
- # Since: 2.0
- #
--# Examples:
--#
--#     1. Read operation
-+# .. qmp-example::
-+#    :title: Read operation
- #
- #     <- { "event": "QUORUM_REPORT_BAD",
- #          "data": { "node-name": "node0", "sector-num": 345435, "sectors-count": 5,
- #                    "type": "read" },
- #          "timestamp": { "seconds": 1344522075, "microseconds": 745528 } }
- #
--#     2. Flush operation
-+# .. qmp-example::
-+#    :title: Flush operation
- #
- #     <- { "event": "QUORUM_REPORT_BAD",
- #          "data": { "node-name": "node0", "sector-num": 0, "sectors-count": 2097120,
-diff --git a/qapi/block.json b/qapi/block.json
-index c8e52bc2d29..5ddd061e964 100644
---- a/qapi/block.json
-+++ b/qapi/block.json
-@@ -342,9 +342,8 @@
- #
- # Since: 2.5
- #
--# Examples:
--#
--#     1. Change a removable medium
-+# .. qmp-example::
-+#    :title: Change a removable medium
- #
- #     -> { "execute": "blockdev-change-medium",
- #          "arguments": { "id": "ide0-1-0",
-@@ -352,7 +351,8 @@
- #                         "format": "raw" } }
- #     <- { "return": {} }
- #
--#     2. Load a read-only medium into a writable drive
-+# .. qmp-example::
-+#    :title: Load a read-only medium into a writable drive
- #
- #     -> { "execute": "blockdev-change-medium",
- #          "arguments": { "id": "floppyA",
-@@ -577,9 +577,8 @@
- #                         "boundaries-write": [1000, 5000] } }
- #     <- { "return": {} }
- #
--# Example:
--#
--#     Remove all latency histograms:
-+# .. qmp-example::
-+#    :title: Remove all latency histograms
- #
- #     -> { "execute": "block-latency-histogram-set",
- #          "arguments": { "id": "drive0" } }
-diff --git a/qapi/migration.json b/qapi/migration.json
-index a4391ea7e6f..37ce8afa380 100644
---- a/qapi/migration.json
-+++ b/qapi/migration.json
-@@ -287,14 +287,14 @@
+ #     -> { "execute": "query-hotpluggable-cpus" }
+ #     <- {"return": [
+@@ -1130,12 +1137,15 @@
  #
  # Since: 0.14
  #
--# Examples:
--#
--#     1. Before the first migration
+-# Example:
 +# .. qmp-example::
-+#    :title: Before the first migration
++#    :annotated:
  #
- #     -> { "execute": "query-migrate" }
- #     <- { "return": {} }
+-#     -> { "execute": "balloon", "arguments": { "value": 536870912 } }
+-#     <- { "return": {} }
++#    ::
  #
--#     2. Migration is done and has succeeded
-+# .. qmp-example::
-+#    :title: Migration is done and has succeeded
- #
- #     -> { "execute": "query-migrate" }
- #     <- { "return": {
-@@ -314,12 +314,14 @@
- #          }
- #        }
- #
--#     3. Migration is done and has failed
-+# .. qmp-example::
-+#    :title: Migration is done and has failed
- #
- #     -> { "execute": "query-migrate" }
- #     <- { "return": { "status": "failed" } }
- #
--#     4. Migration is being performed:
-+# .. qmp-example::
-+#    :title: Migration is being performed
- #
- #     -> { "execute": "query-migrate" }
- #     <- {
-@@ -340,7 +342,8 @@
- #           }
- #        }
- #
--#     5. Migration is being performed and XBZRLE is active:
-+# .. qmp-example::
-+#    :title: Migration is being performed and XBZRLE is active
- #
- #     -> { "execute": "query-migrate" }
- #     <- {
-@@ -2131,15 +2134,15 @@
+-#     With a 2.5GiB guest this command inflated the ballon to 3GiB.
++#      -> { "execute": "balloon", "arguments": { "value": 536870912 } }
++#      <- { "return": {} }
++#
++#    With a 2.5GiB guest this command inflated the ballon to 3GiB.
+ ##
+ { 'command': 'balloon', 'data': {'value': 'int'} }
+ 
+diff --git a/qapi/migration.json b/qapi/migration.json
+index 37ce8afa380..e208a86258a 100644
+--- a/qapi/migration.json
++++ b/qapi/migration.json
+@@ -2106,13 +2106,16 @@
  #
  # Since: 5.2
  #
--# Examples:
--#
--#     1. Measurement is in progress:
+-# Example:
 +# .. qmp-example::
-+#    :title: Measurement is in progress
  #
- #     <- {"status": "measuring", "sample-pages": 512,
- #         "mode": "page-sampling", "start-time": 1693900454, "calc-time": 10,
- #         "calc-time-unit": "second"}
- #
--#     2. Measurement has been completed:
-+# .. qmp-example::
-+#    :title: Measurement has been completed
- #
- #     <- {"status": "measured", "sample-pages": 512, "dirty-rate": 108,
- #         "mode": "page-sampling", "start-time": 1693900454, "calc-time": 10,
-diff --git a/qapi/qom.json b/qapi/qom.json
-index fb365e5ce6b..1b3e6c94b73 100644
---- a/qapi/qom.json
-+++ b/qapi/qom.json
-@@ -104,16 +104,16 @@
- #
- # Since: 1.2
- #
--# Examples:
--#
--#     1. Use absolute path
-+# .. qmp-example::
-+#    :title: Use absolute path
- #
- #     -> { "execute": "qom-get",
- #          "arguments": { "path": "/machine/unattached/device[0]",
- #                         "property": "hotplugged" } }
- #     <- { "return": false }
- #
--#     2. Use partial path
-+# .. qmp-example::
-+#    :title: Use partial path
- #
- #     -> { "execute": "qom-get",
- #          "arguments": { "path": "unattached/sysbus",
-diff --git a/qapi/ui.json b/qapi/ui.json
-index c0e94fd0ed0..779b472f064 100644
---- a/qapi/ui.json
-+++ b/qapi/ui.json
-@@ -1272,9 +1272,8 @@
- #    property, so it is possible to map which console belongs to which
- #    device and display.
- #
--# Examples:
--#
--#     1. Press left mouse button.
-+# .. qmp-example::
-+#    :title: Press left mouse button
- #
- #     -> { "execute": "input-send-event",
- #         "arguments": { "device": "video0",
-@@ -1288,7 +1287,8 @@
- #                        "data" : { "down": false, "button": "left" } } ] } }
+ #     -> {"execute": "calc-dirty-rate", "arguments": {"calc-time": 1,
+ #                                                     "sample-pages": 512} }
  #     <- { "return": {} }
  #
--#     2. Press ctrl-alt-del.
+-#     Measure dirty rate using dirty bitmap for 500 milliseconds:
 +# .. qmp-example::
-+#    :title: Press ctrl-alt-del
++#    :annotated:
++#
++#    Measure dirty rate using dirty bitmap for 500 milliseconds::
  #
- #     -> { "execute": "input-send-event",
- #          "arguments": { "events": [
-@@ -1300,7 +1300,8 @@
- #               "key": {"type": "qcode", "data": "delete" } } } ] } }
- #     <- { "return": {} }
- #
--#     3. Move mouse pointer to absolute coordinates (20000, 400).
-+# .. qmp-example::
-+#    :title: Move mouse pointer to absolute coordinates
- #
- #     -> { "execute": "input-send-event" ,
- #       "arguments": { "events": [
+ #     -> {"execute": "calc-dirty-rate", "arguments": {"calc-time": 500,
+ #         "calc-time-unit": "millisecond", "mode": "dirty-bitmap"} }
 diff --git a/qapi/virtio.json b/qapi/virtio.json
-index f4323cc35e8..d965c98ad2b 100644
+index d965c98ad2b..26df8b3064b 100644
 --- a/qapi/virtio.json
 +++ b/qapi/virtio.json
-@@ -690,9 +690,8 @@
+@@ -203,9 +203,11 @@
  #
  # Since: 7.2
  #
 -# Examples:
--#
--#     1. Get vhost_virtqueue status for vhost-crypto
 +# .. qmp-example::
-+#    :title: Get vhost_virtqueue status for vhost-crypto
++#    :annotated:
  #
- #     -> { "execute": "x-query-virtio-vhost-queue-status",
- #          "arguments": { "path": "/machine/peripheral/crypto0/virtio-backend",
-@@ -715,7 +714,8 @@
+-#     1. Poll for the status of virtio-crypto (no vhost-crypto active)
++#    Poll for the status of virtio-crypto (no vhost-crypto active)
++#    ::
+ #
+ #     -> { "execute": "x-query-virtio-status",
+ #          "arguments": { "path": "/machine/peripheral/crypto0/virtio-backend" }
+@@ -261,7 +263,11 @@
  #          }
  #        }
  #
--#     2. Get vhost_virtqueue status for vhost-vsock
+-#     2. Poll for the status of virtio-net (vhost-net is active)
 +# .. qmp-example::
-+#    :title: Get vhost_virtqueue status for vhost-vsock
++#    :annotated:
++#
++#    Poll for the status of virtio-net (vhost-net is active)
++#    ::
  #
- #     -> { "execute": "x-query-virtio-vhost-queue-status",
+ #     -> { "execute": "x-query-virtio-status",
+ #          "arguments": { "path": "/machine/peripheral-anon/device[1]/virtio-backend" }
+@@ -568,9 +574,11 @@
+ #
+ # Since: 7.2
+ #
+-# Examples:
++# .. qmp-example::
++#    :annotated:
+ #
+-#     1. Get VirtQueueStatus for virtio-vsock (vhost-vsock running)
++#    Get VirtQueueStatus for virtio-vsock (vhost-vsock running)
++#    ::
+ #
+ #     -> { "execute": "x-query-virtio-queue-status",
  #          "arguments": { "path": "/machine/peripheral/vsock0/virtio-backend",
-@@ -839,9 +839,8 @@
- #
- # Since: 7.2
- #
--# Examples:
--#
--#     1. Introspect on virtio-net's VirtQueue 0 at index 5
-+# .. qmp-example::
-+#    :title: Introspect on virtio-net's VirtQueue 0 at index 5
- #
- #     -> { "execute": "x-query-virtio-queue-element",
- #          "arguments": { "path": "/machine/peripheral-anon/device[1]/virtio-backend",
-@@ -870,7 +869,8 @@
+@@ -593,7 +601,11 @@
  #          }
  #        }
  #
--#     2. Introspect on virtio-crypto's VirtQueue 1 at head
+-#     2. Get VirtQueueStatus for virtio-serial (no vhost)
 +# .. qmp-example::
-+#    :title: Introspect on virtio-crypto's VirtQueue 1 at head
++#    :annotated:
++#
++#    Get VirtQueueStatus for virtio-serial (no vhost)
++#    ::
  #
- #     -> { "execute": "x-query-virtio-queue-element",
- #          "arguments": { "path": "/machine/peripheral/crypto0/virtio-backend",
-@@ -898,7 +898,8 @@
- #          }
- #        }
- #
--#     3. Introspect on virtio-scsi's VirtQueue 2 at head
-+# .. qmp-example::
-+#    :title: Introspect on virtio-scsi's VirtQueue 2 at head
- #
- #     -> { "execute": "x-query-virtio-queue-element",
- #          "arguments": { "path": "/machine/peripheral-anon/device[2]/virtio-backend",
+ #     -> { "execute": "x-query-virtio-queue-status",
+ #          "arguments": { "path": "/machine/peripheral-anon/device[0]/virtio-backend",
 -- 
 2.45.0
 
