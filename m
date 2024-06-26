@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E94F917F3E
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jun 2024 13:09:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66BCF917F40
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jun 2024 13:10:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sMQV4-00065k-LD; Wed, 26 Jun 2024 07:07:43 -0400
+	id 1sMQV7-0006RV-Ve; Wed, 26 Jun 2024 07:07:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sMQUb-0005mp-Os
- for qemu-devel@nongnu.org; Wed, 26 Jun 2024 07:07:13 -0400
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+ id 1sMQUt-0005vY-GL
+ for qemu-devel@nongnu.org; Wed, 26 Jun 2024 07:07:33 -0400
+Received: from mail-oo1-xc2f.google.com ([2607:f8b0:4864:20::c2f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sMQUa-0004jD-AY
- for qemu-devel@nongnu.org; Wed, 26 Jun 2024 07:07:13 -0400
-Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-706a4a04891so780217b3a.3
- for <qemu-devel@nongnu.org>; Wed, 26 Jun 2024 04:07:10 -0700 (PDT)
+ id 1sMQUe-0004k2-9e
+ for qemu-devel@nongnu.org; Wed, 26 Jun 2024 07:07:31 -0400
+Received: by mail-oo1-xc2f.google.com with SMTP id
+ 006d021491bc7-5c21a177affso637898eaf.2
+ for <qemu-devel@nongnu.org>; Wed, 26 Jun 2024 04:07:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1719400029; x=1720004829;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1719400035; x=1720004835;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=UtuCMhxUWw1DUkDzmxPc06M4yVAzJqdA967oAcSFqUQ=;
- b=SJeHWumu0ADDAZqcqWySPr/apWvWYfN1p/9LGJNIguUIu6/3O45VqtGvkrkwMR7F67
- MJDq00f5BYKOehSaJ0aGAcXjSqI3pYDBEFCeLu8gNn+iJqep/WQUH4RBs65Oa/ypIPbJ
- Z4u5NYh9i71DUVT1q+GpbRLXOKDaB1KAoIEuiGDGCfbTaVlYnisGX2l1VSDfuHpThRZs
- H6SPPhhjpifmbTZMV5BTEMyFIzLHmnG8q35N7JjelQYcCoxD/F2ReCxGEF8B8K9o3Cqh
- 0vWeepOmpZdvM8YWMGPkU4fnH3puK5DgvC+igwO5zm1ECh0J0diXzgjxC2MDnosrLKvs
- j0Dg==
+ :reply-to; bh=9ZmBpokay/lsP22q1IUevpTwDSp5jcANCIzAYF/y6M8=;
+ b=Kasg5Bb6Tt1MkaOqRSR7GYkmqClZjSFA1Ek09+duFTpFHx8U/caOqF3wwwDCHi8Cs6
+ MvaXjdmCZvQxjkJYrcpMIKAt55JWqv8oiaL0ZMXyZe+hUm+F5jCHPKk5flUDlBcLivSW
+ af1/socvMxka6Es9Smlf6QBhQog53apInvYwoGj96q4gLIEXAGBClT0r2jc3LcW0kH5k
+ r4R03sL57xjHxPjRRPTz4sklJYVS7Rvb7ih8YnDw8yHIBKQJmD1/7Z3XqgcbfdWnMnQY
+ IDO7nKvObSJzw8s9irW7dVvNRKNrqQWqmQpm7rbQlaAd6bQoZ94sk80fYzMRpy3X1JuV
+ /x+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719400029; x=1720004829;
+ d=1e100.net; s=20230601; t=1719400035; x=1720004835;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=UtuCMhxUWw1DUkDzmxPc06M4yVAzJqdA967oAcSFqUQ=;
- b=UJfqCbM5kvdAye53p5WNmIwi+t3Sjmcg56u14ros+7wePcLhXla0yKu153JTJdQUkj
- nFh0fOWNhD6VmJbvYeQa3WqxgCvwMUFy8hwuHzACHYKXX0NMwF2iNgHrtoGQSVoQxmTL
- 3qHe2KPB7gPIIhV7kcJLwwUoTq+V/n/CmMXqzMtj10jw3qmhk+jmKq22lHF/mEFDJdSW
- +5CZKrwKn5DpnJL1eh/sLsEdacNQKqad9jSd8MzCyziZjv0mf627CcLkYpkk6V76wqU+
- Fe0NImLWcb84+eLgOTfB2lXC/eribwm4wsreKK8p1qkzEwXZb4SnahVwdRvOV+s6x+Lg
- Mchw==
-X-Gm-Message-State: AOJu0Yxty+dadKxuy6Pv2lH0nH8IjhaQiW6sii3m/OwKUX1Ry8P8mLv9
- z1UmHArLI6AQJKILJLeHmoGwq8kmE9Mj9brTlAPKgoky7TOeX2eZXmH8CUR6LMM=
-X-Google-Smtp-Source: AGHT+IF3Dc+m0QChTJ3J+oL5hbq9A7fYtNIurG9m8CclKzIjtqkWKlYcuGP9lQhN+pnh+ee0yqYcZQ==
-X-Received: by 2002:a05:6a00:2b8:b0:6ec:da6c:fc2d with SMTP id
- d2e1a72fcca58-70670fd4341mr8138448b3a.23.1719400029011; 
- Wed, 26 Jun 2024 04:07:09 -0700 (PDT)
+ bh=9ZmBpokay/lsP22q1IUevpTwDSp5jcANCIzAYF/y6M8=;
+ b=s8+tAAdtssglbgLgGe3auF+XD8sepJ8ioSNrzZ8SnvUsqhd81/yNF+y82ny7aVOvTA
+ kWWpbrCF+IkzPIGqei5b+KktUj7eY4OPXE9oqa4G+V13blRqm3XNwLveliqcpk9RtkN5
+ T+rDgyyzeZRTMx/NOq8H2ItiV9y/I4fx2Yx+bVa7Nb/LKGIYZsR2NUcr1WAnsR7Iqi4L
+ 6RaVQEb2MEjds/O/7y/dJlBQb9aaNqzmnYQQjrWIlyYC4tnooLwehLnKCgYmIElPwJU0
+ OBX6jFphys9hMJGhD/ovkiVjGLXhwBGh8ktIBiErg+n7fSgC8aEpbXlvwUbDvSMoy9UQ
+ lsaQ==
+X-Gm-Message-State: AOJu0Yz7QScGomP5E2AUGdhgLhBTo9wLxpJLM1/7LAjCdfhlHjDCDvjQ
+ B9xi/YNEGckDfxE8Yn2mLEgLB47uzAjoXi8BbcRm+SplXAOhCUY8Y1tftqKUdEo=
+X-Google-Smtp-Source: AGHT+IGr7mhUQc/kwzoC2SIj/Sh4EbH/tfTc7GcCgH2CK8pzXdS0VBUK4r8QMhdZTjnrV0Z6lwmRkw==
+X-Received: by 2002:a05:6358:2824:b0:1a1:cb05:243c with SMTP id
+ e5c5f4694b2df-1a23c1b2289mr1333891255d.25.1719400034980; 
+ Wed, 26 Jun 2024 04:07:14 -0700 (PDT)
 Received: from localhost ([157.82.204.135])
  by smtp.gmail.com with UTF8SMTPSA id
- d2e1a72fcca58-706953ca94dsm3374624b3a.199.2024.06.26.04.07.04
+ 41be03b00d2f7-71e1314dc83sm4678927a12.56.2024.06.26.04.07.10
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 26 Jun 2024 04:07:08 -0700 (PDT)
+ Wed, 26 Jun 2024 04:07:14 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Wed, 26 Jun 2024 20:06:28 +0900
-Subject: [PATCH 05/14] ppc/vof: Fix unaligned FDT property access
+Date: Wed, 26 Jun 2024 20:06:29 +0900
+Subject: [PATCH 06/14] hw/virtio: Free vqs before vhost_dev_cleanup()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240626-san-v1-5-f3cc42302189@daynix.com>
+Message-Id: <20240626-san-v1-6-f3cc42302189@daynix.com>
 References: <20240626-san-v1-0-f3cc42302189@daynix.com>
 In-Reply-To: <20240626-san-v1-0-f3cc42302189@daynix.com>
 To: Eduardo Habkost <eduardo@habkost.net>, 
@@ -82,8 +82,8 @@ To: Eduardo Habkost <eduardo@habkost.net>,
 Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, qemu-ppc@nongnu.org, 
  Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.14-dev-fd6e3
-Received-SPF: none client-ip=2607:f8b0:4864:20::436;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x436.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::c2f;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-oo1-xc2f.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -105,26 +105,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-FDT properties are aligned by 4 bytes, not 8 bytes.
+This suppresses LeakSanitizer warnings.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- hw/ppc/vof.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/virtio/vhost-user-base.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/hw/ppc/vof.c b/hw/ppc/vof.c
-index e3b430a81f4f..b5b6514d79fc 100644
---- a/hw/ppc/vof.c
-+++ b/hw/ppc/vof.c
-@@ -646,7 +646,7 @@ static void vof_dt_memory_available(void *fdt, GArray *claimed, uint64_t base)
-     mem0_reg = fdt_getprop(fdt, offset, "reg", &proplen);
-     g_assert(mem0_reg && proplen == sizeof(uint32_t) * (ac + sc));
-     if (sc == 2) {
--        mem0_end = be64_to_cpu(*(uint64_t *)(mem0_reg + sizeof(uint32_t) * ac));
-+        mem0_end = ldq_be_p(mem0_reg + sizeof(uint32_t) * ac);
-     } else {
-         mem0_end = be32_to_cpu(*(uint32_t *)(mem0_reg + sizeof(uint32_t) * ac));
-     }
+diff --git a/hw/virtio/vhost-user-base.c b/hw/virtio/vhost-user-base.c
+index a83167191ee6..124ef536206f 100644
+--- a/hw/virtio/vhost-user-base.c
++++ b/hw/virtio/vhost-user-base.c
+@@ -223,6 +223,7 @@ static void vub_disconnect(DeviceState *dev)
+ {
+     VirtIODevice *vdev = VIRTIO_DEVICE(dev);
+     VHostUserBase *vub = VHOST_USER_BASE(vdev);
++    struct vhost_virtqueue *vhost_vqs = vub->vhost_dev.vqs;
+ 
+     if (!vub->connected) {
+         return;
+@@ -231,6 +232,7 @@ static void vub_disconnect(DeviceState *dev)
+ 
+     vub_stop(vdev);
+     vhost_dev_cleanup(&vub->vhost_dev);
++    g_free(vhost_vqs);
+ 
+     /* Re-instate the event handler for new connections */
+     qemu_chr_fe_set_handlers(&vub->chardev,
 
 -- 
 2.45.2
