@@ -2,94 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 727C9917E5C
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jun 2024 12:40:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E3AD917F21
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jun 2024 13:03:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sMQ3Y-0002oD-DY; Wed, 26 Jun 2024 06:39:16 -0400
+	id 1sMQPT-0007Je-Uy; Wed, 26 Jun 2024 07:01:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sMQ3V-0002nU-R0
- for qemu-devel@nongnu.org; Wed, 26 Jun 2024 06:39:13 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1sMQPQ-0007HE-1n; Wed, 26 Jun 2024 07:01:52 -0400
+Received: from forwardcorp1a.mail.yandex.net ([178.154.239.72])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sMQ3U-000894-D8
- for qemu-devel@nongnu.org; Wed, 26 Jun 2024 06:39:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719398348;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=MFBijKNCUp0T7Qta2WUTwJTAhudpMqd/9GjSe79/mj4=;
- b=ANV9b+UDLpzLZU6ZDr1ZGbI8nMsrQIrDCCwuAr8uuQDTlIGyb5n2+vKI3d+/HZ2UaBFK1W
- p00lBZPRNcuu3glNuqW5vr/Jw2efOAS/xYvC1Cmgth3mNN2gKnnsCLgnz1XHrni6Y+3J6a
- 4dOHB1Sx/9us1YyDO7mcvOfHOxL1EV0=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-83-OJedAu8WOcOvW4B6-_gZsw-1; Wed, 26 Jun 2024 06:39:03 -0400
-X-MC-Unique: OJedAu8WOcOvW4B6-_gZsw-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-4227e29cd39so34972175e9.1
- for <qemu-devel@nongnu.org>; Wed, 26 Jun 2024 03:39:03 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719398342; x=1720003142;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=MFBijKNCUp0T7Qta2WUTwJTAhudpMqd/9GjSe79/mj4=;
- b=Msvjr6ukW14JMlQ3aEYdJZKz6PzwW7nU1QC60Keu8ObT0tcE1WroVQ7Yghsgo7X029
- /4lvHASnsLFrPr39lkeraNzHiHFxDhDYTyZYJNvQB3xeKc+KZB+q6vBIYzQjXgrJ8+yI
- exnqXopSAEz73uz0J69Wk+AGqo8f56MGZoUN5zyJ9UrTK8CBxbAlkKDrCY5dnKsxGhWV
- prV66RNlEzlA9rGs9ea4oMsL33YnxNXeondfBfMNC4rQp3hjG3Bjm+jsrygVwDowp33f
- 8594L4/2X9WFT5vIAwus+3sAlsrsHXNiuFdErRw3yrDyatMojjtJ/7pFrZU8WsjbhA1g
- y3aA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVU99dgpsDDzG/0ZxzZz0zhNeq0pX8l0simLDbQGI5G8qOeD1M1xzDlS5cLsY0UkMlesw/D4HuKf2W57T5V4o8lE3vzCWM=
-X-Gm-Message-State: AOJu0YxmacRE+SEFyXaADnnwYSTT2AhJwrjKBsjoCt32ril085XDwvdV
- IS8QV8kID1lYTzA8DzdCoeoMH6BhJZ9kCLgFra7QZgtyHMdmdwE9tfTKVVWtPkyx+XktdaSl8tM
- cYCKJclInD7YhWGcDL2jZrdoFub7DSq7YC8flRQto8rqbduABDT8K
-X-Received: by 2002:a05:600c:4209:b0:425:5e8b:679f with SMTP id
- 5b1f17b1804b1-4255e8b69f7mr7812355e9.6.1719398342671; 
- Wed, 26 Jun 2024 03:39:02 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFtDpRRHPAbU9ffJdUlFqu0JiPhOq0JNTw64oW3EK02RPjfmV4hXBto7np6DkVxbBnDQbNLig==
-X-Received: by 2002:a05:600c:4209:b0:425:5e8b:679f with SMTP id
- 5b1f17b1804b1-4255e8b69f7mr7812245e9.6.1719398342362; 
- Wed, 26 Jun 2024 03:39:02 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-424c826a2e7sm20439615e9.21.2024.06.26.03.39.01
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 26 Jun 2024 03:39:01 -0700 (PDT)
-Message-ID: <6a01db71-fbca-4ff6-be8c-628b43c937f6@redhat.com>
-Date: Wed, 26 Jun 2024 12:39:01 +0200
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1sMQPM-0003S5-Sy; Wed, 26 Jun 2024 07:01:50 -0400
+Received: from mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
+ [IPv6:2a02:6b8:c0c:1c20:0:640:f632:0])
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 5560B60F1E;
+ Wed, 26 Jun 2024 14:01:41 +0300 (MSK)
+Received: from vsementsov-lin.. (unknown [2a02:6b8:b081:b645::1:29])
+ by mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id P1OLrj0IhSw0-1TaEdKql; Wed, 26 Jun 2024 14:01:40 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1719399700;
+ bh=58T4tRCg4CRL4fpzaivwd8UNT5oKhRrVe86fLXtqedc=;
+ h=Message-Id:Date:Cc:Subject:To:From;
+ b=dK5mZnqKdXl2eJ9BHgQlY1N3Bvw8dA7w4nflcK+puTvh0Jo1M9nbVU+fWvsxnRl4B
+ S23XXLQali2x/wa7jsJJHupC8zUKB2wyEEpmwSTArG/uAOQRBw2Tqsg2XRhilTFTSc
+ dSY8J7iXoy6Vea5CnKkLYDRA1TS+liNmPDftg2BQ=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+To: qemu-block@nongnu.org
+Cc: qemu-devel@nongnu.org, armbru@redhat.com, eblake@redhat.com,
+ devel@lists.libvirt.org, hreitz@redhat.com, kwolf@redhat.com,
+ vsementsov@yandex-team.ru, jsnow@redhat.com, pkrempa@redhat.com,
+ f.ebner@proxmox.com
+Subject: [PATCH v2 0/7] introduce job-change qmp command
+Date: Wed, 26 Jun 2024 14:01:17 +0300
+Message-Id: <20240626110124.374336-1-vsementsov@yandex-team.ru>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/7] virtio-iommu: Fix error handling in
- virtio_iommu_set_host_iova_ranges()
-To: Eric Auger <eric.auger@redhat.com>, eric.auger.pro@gmail.com,
- qemu-devel@nongnu.org, qemu-arm@nongnu.org, mst@redhat.com,
- jean-philippe@linaro.org, peter.maydell@linaro.org, yanghliu@redhat.com,
- zhenzhong.duan@intel.com, alex.williamson@redhat.com
-References: <20240626082727.1278530-1-eric.auger@redhat.com>
- <20240626082727.1278530-2-eric.auger@redhat.com>
-Content-Language: en-US, fr
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <20240626082727.1278530-2-eric.auger@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Received-SPF: pass client-ip=178.154.239.72;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.151,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,46 +69,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/26/24 10:26 AM, Eric Auger wrote:
-> In case no IOMMUPciBus/IOMMUDevice are found we need to properly
-> set the error handle and return.
-> 
-> Fixes : Coverity CID 1549006
-> Signed-off-by: Eric Auger <eric.auger@redhat.com>
-> Fixes: cf2647a76e ("virtio-iommu: Compute host reserved regions")
+Hi all!
 
+This is an updated first part of my "[RFC 00/15] block job API"
+Supersedes: <20240313150907.623462-1-vsementsov@yandex-team.ru>
 
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
+v2:
+- only job-change for now, as a first step
+- drop "type-based unions", and keep type parameter as is for now (I now
+  doubt that this was good idea, as it makes QAPI protocol dependent on
+  context)
+03: improve documentation
+06: deprecated only block-job-change for now
+07: new
 
-Thanks,
+Vladimir Sementsov-Ogievskiy (7):
+  qapi: rename BlockJobChangeOptions to JobChangeOptions
+  blockjob: block_job_change_locked(): check job type
+  qapi: block-job-change: make copy-mode parameter optional
+  blockjob: move change action implementation to job from block-job
+  qapi: add job-change
+  qapi/block-core: derpecate block-job-change
+  iotests/mirror-change-copy-mode: switch to job-change command
 
-C.
+ block/mirror.c                                | 13 +++++---
+ blockdev.c                                    |  4 +--
+ blockjob.c                                    | 20 ------------
+ docs/about/deprecated.rst                     |  5 +++
+ include/block/blockjob.h                      | 11 -------
+ include/block/blockjob_int.h                  |  7 -----
+ include/qemu/job.h                            | 12 +++++++
+ job-qmp.c                                     | 15 +++++++++
+ job.c                                         | 23 ++++++++++++++
+ qapi/block-core.json                          | 31 ++++++++++++++-----
+ .../tests/mirror-change-copy-mode             |  2 +-
+ 11 files changed, 90 insertions(+), 53 deletions(-)
 
-
-> ---
->   hw/virtio/virtio-iommu.c | 7 ++++++-
->   1 file changed, 6 insertions(+), 1 deletion(-)
-> 
-> diff --git a/hw/virtio/virtio-iommu.c b/hw/virtio/virtio-iommu.c
-> index b9a7ddcd14..b708fb96fd 100644
-> --- a/hw/virtio/virtio-iommu.c
-> +++ b/hw/virtio/virtio-iommu.c
-> @@ -543,10 +543,15 @@ static int virtio_iommu_set_host_iova_ranges(VirtIOIOMMU *s, PCIBus *bus,
->       int ret = -EINVAL;
->   
->       if (!sbus) {
-> -        error_report("%s no sbus", __func__);
-> +        error_setg(errp, "%s: no IOMMUPciBus found!", __func__);
-> +        return ret;
->       }
->   
->       sdev = sbus->pbdev[devfn];
-> +    if (!sdev) {
-> +        error_setg(errp, "%s: no IOMMUDevice found!", __func__);
-> +        return ret;
-> +    }
->   
->       current_ranges = sdev->host_resv_ranges;
->   
+-- 
+2.34.1
 
 
