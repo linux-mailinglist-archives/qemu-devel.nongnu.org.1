@@ -2,144 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1DCA917671
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jun 2024 04:53:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B13C917648
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jun 2024 04:43:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sMGs7-0008AM-Om; Tue, 25 Jun 2024 20:50:51 -0400
+	id 1sMGqN-0007eL-Ak; Tue, 25 Jun 2024 20:49:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nicolinc@nvidia.com>)
- id 1sMGq6-0007bf-DU
- for qemu-devel@nongnu.org; Tue, 25 Jun 2024 20:49:47 -0400
-Received: from mail-mw2nam10on2060d.outbound.protection.outlook.com
- ([2a01:111:f403:2412::60d]
- helo=NAM10-MW2-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nicolinc@nvidia.com>)
- id 1sMGp5-0008P0-8f
- for qemu-devel@nongnu.org; Tue, 25 Jun 2024 20:48:31 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=mZznCwzvT1WhPZWlypTI8piZCf6tOY3s891wKxRCtkw1OBAZWDqS5x16wpNtPIsF9b+EpEFKuUasrj/3Z5OawEngnqaea4Z93J3dHfa1eJak1OS8QEOPq8gL6hZm9G8mo1l4SV24OuRkLzycyB6+nVR7taHJSz0OuewiMvBRaB/Z6KTi9HfXRDtjfFxbRu7rc9BKAWpEQLSaA4o9chV24PvgH7WInC+KJMsION8JsBk99tgQSaRHZ8a4igUuEZeQbRkHaggnENK5POY9FjKqUEpCQFd/XQAuQUHg+oCjre+WcvRGg7Z+A/4mscss59l7E1BaEFEv4Nl0qqDibz65Zg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9vBeQ2ESg7mBeqhgmI+k3egLqqRyw3wevs4tS2Tw3Uk=;
- b=JE67/ZkcKp28Bg3a77tNu88yy7ZE8dgPuCAzQ7dOCyKQsCuk7mMT72dF5AG2/JWgCOtV08tty6ghKeC2FrwNonGIbmNVBbpxHu1B5HT7d8ms+X6xgVDds2dJAoHs7+yccTafHim5Z3NEsS1e5+RCBUuw7MZZY2Ay/wvptex7oE+gd9qYv+YQFxC2xTQIasX+dz2s4Rc719mR7Y6/vtumUUOrkilvW2p2nZ2j0FK/oqDptJ9ahn9g6aa53KWl2Xk6/rAFHQSFWp4RNSJBiJCozyRstkuqlTdZzKj25pRscvyhREfwk+7HrT5gi9HpEEew50ftdrYZ5GuTcX09YFhMFg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.232) smtp.rcpttodomain=linaro.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9vBeQ2ESg7mBeqhgmI+k3egLqqRyw3wevs4tS2Tw3Uk=;
- b=KTDSk3KaB6HEPO76lOqU+X5IivS/kMP7nublGtJQBsMvUbQKKO8tprDhKcF2+EC8uCbb3GWCURQZKSojFT/jZSuZwoekmnFTmHWsZXDbBSkpGu2PA3FE3QQieomiUVRHaAhv21Z59t3d3v6oHPo+MvP564j7D23WvpTMDHtGYngxkst9au9aqKEHuAKWl8psXUHFRwMpR3owv9hZUBEIyPA0GXuwvm1k7DWbkBd5Ph1/CTYX9XKlOASXbejpCTPe42Zv7l3xfmaYwhUTsPik1YuKuoyI/QsZWmYeDpR4MvJwSk9DR05NSSKoEXFOI7/Jk26PebMgdCTRevJUKHNt7Q==
-Received: from BN9PR03CA0934.namprd03.prod.outlook.com (2603:10b6:408:108::9)
- by IA0PR12MB8745.namprd12.prod.outlook.com (2603:10b6:208:48d::11)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7698.32; Wed, 26 Jun
- 2024 00:29:43 +0000
-Received: from BN3PEPF0000B075.namprd04.prod.outlook.com
- (2603:10b6:408:108:cafe::83) by BN9PR03CA0934.outlook.office365.com
- (2603:10b6:408:108::9) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7719.22 via Frontend
- Transport; Wed, 26 Jun 2024 00:29:43 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
- smtp.mailfrom=nvidia.com;
- dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.232) by
- BN3PEPF0000B075.mail.protection.outlook.com (10.167.243.120) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7677.15 via Frontend Transport; Wed, 26 Jun 2024 00:29:43 +0000
-Received: from drhqmail201.nvidia.com (10.126.190.180) by mail.nvidia.com
- (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Tue, 25 Jun
- 2024 17:29:32 -0700
-Received: from drhqmail203.nvidia.com (10.126.190.182) by
- drhqmail201.nvidia.com (10.126.190.180) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.4; Tue, 25 Jun 2024 17:29:32 -0700
-Received: from Asurada-Nvidia.nvidia.com (10.127.8.10) by mail.nvidia.com
- (10.126.190.182) with Microsoft SMTP Server id 15.2.1544.4 via Frontend
- Transport; Tue, 25 Jun 2024 17:29:31 -0700
-To: <peter.maydell@linaro.org>, <shannon.zhaosl@gmail.com>, <mst@redhat.com>, 
- <imammedo@redhat.com>, <anisinha@redhat.com>, <eric.auger@redhat.com>,
- <peterx@redhat.com>
-CC: <qemu-arm@nongnu.org>, <qemu-devel@nongnu.org>, <jgg@nvidia.com>,
- <shameerali.kolothum.thodi@huawei.com>, <jasowang@redhat.com>
-Subject: [PATCH RFCv1 09/10] hw/arm/virt-acpi-build: Build IORT with multiple
- SMMU nodes
-Date: Tue, 25 Jun 2024 17:28:36 -0700
-Message-ID: <074b51a5a42875304d7d8d223d0bc644fa7a4736.1719361174.git.nicolinc@nvidia.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <cover.1719361174.git.nicolinc@nvidia.com>
-References: <cover.1719361174.git.nicolinc@nvidia.com>
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1sMGq6-0007c6-8C
+ for qemu-devel@nongnu.org; Tue, 25 Jun 2024 20:48:47 -0400
+Received: from mail-vs1-xe2f.google.com ([2607:f8b0:4864:20::e2f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1sMGp4-0008Oc-BP
+ for qemu-devel@nongnu.org; Tue, 25 Jun 2024 20:48:32 -0400
+Received: by mail-vs1-xe2f.google.com with SMTP id
+ ada2fe7eead31-48f5ae5cf20so932163137.3; 
+ Tue, 25 Jun 2024 17:46:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1719362772; x=1719967572; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=dZcH95/6aWpbDxh9dDlhrAjV7CtVT90I9hov7rHSLvk=;
+ b=i3EPpibDd3hY8CTIjDPTxlkrFeF1aeZoITloyyM78RYC5xWow+8exrlM5C7dvFIrr9
+ pKj4eCN9/E6hHm8s9U3HoKYB0ofIYR4WWgiWNtQ/r48xgCv3cHbm48Rz855U9qC1vCUp
+ J+Tuh4HfouF/fhHOLHAzL35JeUqguDb67Vo1rEE5UjNKHtGTBKqNnuKo1CECOclJecrp
+ NyCIOzYm2iNn/0ioq/ITxFueRcWw+799y3S9ZCFPV73s4dRsfhrGbrIwEymIRKPLj1H6
+ /YHcohi9hM/hTLRuj7rmUTvfPGgVg1Xlw2JHCcJASoIWinxI/kWYrFC9z+snJPuZR/dX
+ WEKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1719362772; x=1719967572;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=dZcH95/6aWpbDxh9dDlhrAjV7CtVT90I9hov7rHSLvk=;
+ b=C5mx0N4iCj733BGksmoDdF4WHrM2uZChJnzXPb7alcg9bBTpdFEkbda6PwWVneL16r
+ uMhNPDqcf4pSE5r3jJYfzG0UuWuG4oq/jbsRM+ylUNGhuriXLnbYWxaXSypS3eaH5+Ae
+ oKkKdMufQjeIMW3EfN/6mCVQEBIOnkz70IS3nV8HwtPH2m3eTMjsoGaqXZklMLj53nqB
+ oAonm3T+c/GdHcnvr2W5nFERlAmk6EdjUDq/S6+TfSq1cCl4UhK3P6t7dRrSmUscYH3M
+ Kv4qohH2vRorj2cvQVnx6uf4DoylThckKoFs3zy2oW0anrt0sVx0DZe+kjk6AkU9+Py7
+ V1tw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXIx9f0KyZqLrbjeBq7QBSum3keA9ohKGrO9cRc2L47Q436EpnUJYvaACngf9cHXvtYJNISDA1DERvKVal8srwKPBKMfoU=
+X-Gm-Message-State: AOJu0YwOG/xIqB7+LzaEO/ZKxtKyev7Vc3VhI4aR/GAomLDh/8i44h2S
+ hGxPE1iuJRsPYbs+T3sWJP73ySED+OtPvWhwYngPGTYJMvH26f5sg+Vc1iYstRAa2z6HTmZxqn/
+ P1JCesUGAHx89by/Z6by+0TZV/Ro=
+X-Google-Smtp-Source: AGHT+IHiuJ6+oPZPZqOF+PHfHIPrbnadCcn4WpykISlLBad9HY4A5aOWSbRvOu0FDY3MG2ZRXVRpBAfaspPK6iDjyDE=
+X-Received: by 2002:a67:eb02:0:b0:48f:44fe:734 with SMTP id
+ ada2fe7eead31-48f52b9d88amr8772966137.27.1719362772260; Tue, 25 Jun 2024
+ 17:46:12 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN3PEPF0000B075:EE_|IA0PR12MB8745:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0a97331d-57c5-44d5-c533-08dc95771345
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230038|82310400024|36860700011|1800799022|376012|7416012; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?nGXMnlqXDhq5ATrnMoHz1WHN0DYTzUSCHVMZS/fxlUxP7DTrL6vJeAGpqJpo?=
- =?us-ascii?Q?RyoSCTwtl8P7Hx9xPPytg1QqrzrInxxjxGL2KvToSucgy333t7iZC192y3Gp?=
- =?us-ascii?Q?HKyIoMtixWmm3+6OuzD0r7mY58+RNSs0zTeijWiuaTyyhA0EsyrHUfUDSfIv?=
- =?us-ascii?Q?j60dE+HaOe3Npphs+Q9vM/NVIycz6CADMyRemCA8awnhju9X0LBjfDyk/toR?=
- =?us-ascii?Q?9z5M6oiYb2SHLl0fqdIfU0xOggfuczmGeGiO4wzw3oUv6yzTGJ0fQmEPlenO?=
- =?us-ascii?Q?9Ol6lVD5fC7bGABzBtSZiPqXHaVaMddl7gHRFVirl/oJ6WFD8SBbJt8E+EK5?=
- =?us-ascii?Q?82SW0t4QrJQwTIl+eJ5EpHfD18pgEJQ+T38SurdzaTgNiqB5u+lUXAy97C31?=
- =?us-ascii?Q?Cl6hXSY94FZRbhzZifMSGseyIfniHs5PtxaFj4IXCYraU4htigLVdlmrNOtW?=
- =?us-ascii?Q?EbTzKGhX9a9dSyI5qUqlezsMrvHlRF9xS5qslq65/sbDFAtOU+rizyqkl0Nj?=
- =?us-ascii?Q?00lIglrpp1Bhq+DOqiIl4Hhcefcn+pUyZCzprPq6p55C1gkpdbhJdalSmHG2?=
- =?us-ascii?Q?ELcsPsk81Ly9MnpM/97vIuxNbXkgNmsZ1tGNotUSKYhBQTUat1Q5mtTl0DTD?=
- =?us-ascii?Q?kID/zQYI8qtKjV5pK7yNLZAfImszJ1ffV8MRpWL2/OMJ/6Re0xirQPDn7jjL?=
- =?us-ascii?Q?n3ZuOYyx46hxAy+H+7DdnwDz8E0WwKCMvVa9X1+BYd4ePJ7QS1Z7N3iGF/38?=
- =?us-ascii?Q?gwvb7bNDP5UpWZqEbdiPrACmEu8H5ZIqE8ZCm/o0cav415eiewuR5d92HeMj?=
- =?us-ascii?Q?IIXrDzgmPzzaPvTm3RPb7PIPfzlL/k+etAOpQI/wjx2mDN+t1vrRS9Y/pLC0?=
- =?us-ascii?Q?N9aY/gbpIzZP2Bzr47VyGBdY3TB1a+Z04WVpSOaEPRjtv0qsAlXNFIeyqfPx?=
- =?us-ascii?Q?r4J1CH7hOdZP5NGIlvR7c4WzLQzJfFAwSOv1eM1xvzbhFYN4Eh992dIWRit+?=
- =?us-ascii?Q?Dvxdgupj4V7CpxpS39znNjc+tZHGioDkOgihProUuTw8gr9TEOMizhpl32Oh?=
- =?us-ascii?Q?6heY0SPS40l4dGlDKtVQJs3CiEzF2HuRCT8NTNP4f8V1R9KY6K69K6l6+WaI?=
- =?us-ascii?Q?uuZCXXpc3kgLF0nrFdVNjPKk+0OenpGy1X6lX0h6drdxRizOmkmLIbRRZ2wM?=
- =?us-ascii?Q?kn1u1KEQrJea4jY+ii4EKBcp96O5wtJ2oZN9SpsJAB3uMRlGzRrYlA+BzIhd?=
- =?us-ascii?Q?wiIpaTPAvtUwqlhU9uskdzIN3yc9DEdAzz8niSpLUv/MaAd0CvIxDPJPec6g?=
- =?us-ascii?Q?WHwMiPfv0eoXFdUTW2G8wfX3dqzrjqKmTYJDideOOYDaegYbhaHAKIDoQnDL?=
- =?us-ascii?Q?37s33qvh/19bx6Lz2KcVH5p6FI4l/5rlcz5P4F5aejbTizOnRGFFdBRbs3q5?=
- =?us-ascii?Q?rTO+GmcBIQkJC8/YV14lsh4fFZn750B8?=
-X-Forefront-Antispam-Report: CIP:216.228.118.232; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc7edge1.nvidia.com; CAT:NONE;
- SFS:(13230038)(82310400024)(36860700011)(1800799022)(376012)(7416012); DIR:OUT;
- SFP:1101; 
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jun 2024 00:29:43.4879 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0a97331d-57c5-44d5-c533-08dc95771345
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.118.232];
- Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource: BN3PEPF0000B075.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8745
-Received-SPF: softfail client-ip=2a01:111:f403:2412::60d;
- envelope-from=nicolinc@nvidia.com;
- helo=NAM10-MW2-obe.outbound.protection.outlook.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
+References: <20240625114629.27793-1-frank.chang@sifive.com>
+In-Reply-To: <20240625114629.27793-1-frank.chang@sifive.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Wed, 26 Jun 2024 10:45:45 +1000
+Message-ID: <CAKmqyKNuhtzzOU78phTKfq8qEMo53F1oPbu6iCYO-Nmmtr_XZg@mail.gmail.com>
+Subject: Re: [PATCH v3 0/6] Introduce extension implied rules
+To: frank.chang@sifive.com
+Cc: qemu-devel@nongnu.org, Palmer Dabbelt <palmer@dabbelt.com>, 
+ Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bmeng.cn@gmail.com>, 
+ Weiwei Li <liwei1518@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>, 
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, 
+ "open list:RISC-V TCG CPUs" <qemu-riscv@nongnu.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::e2f;
+ envelope-from=alistair23@gmail.com; helo=mail-vs1-xe2f.google.com
+X-Spam_score_int: -13
+X-Spam_score: -1.4
 X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, SPF_PASS=-0.001,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=no autolearn_force=no
+X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ T_SPF_HELO_TEMPERROR=0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -152,134 +91,73 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Nicolin Chen <nicolinc@nvidia.com>
-From:  Nicolin Chen via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-There can be multiple PCI buses behind different SMMU nodes. And each pair
-should be associated in the IORT table too when building the ID mappings.
+On Tue, Jun 25, 2024 at 9:48=E2=80=AFPM <frank.chang@sifive.com> wrote:
+>
+> From: Frank Chang <frank.chang@sifive.com>
+>
+> Currently, the implied extensions are enabled and checked in
+> riscv_cpu_validate_set_extensions(). However, the order of enabling the
+> implied extensions must follow a strict sequence, which is error-prone.
+>
+> This patchset introduce extension implied rule helpers to enable the
+> implied extensions. This also eliminates the old-fashioned ordering
+> requirement. For example, Zvksg implies Zvks, Zvks implies Zvksed, etc.,
+> removing the need to check the implied rules of Zvksg before Zvks.
+>
+> The idea [1] and the implied rules [2] are referenced from LLVM.
+>
+> [1] https://github.com/llvm/llvm-project/blob/main/llvm/lib/TargetParser/=
+RISCVISAInfo.cpp#L875
+> [2] https://github.com/llvm/llvm-project/blob/main/llvm/lib/Target/RISCV/=
+RISCVFeatures.td
+>
+> Changelog:
+>
+> v3:
+>   - Replace the enabled bitmask of type 'uint64_t' with a dynamic bitmask
+>     to support more than 64 harts.
+>   - Ensure that implied rules and hash tables are initialized/created onl=
+y once.
+>   - Rename variables to align nomenclature with existing variables:
+>       - In RISCVCPUImpliedExtsRule structure:
+>         - 'implied_misas' -> 'implied_misa_exts'
+>         - 'implied_exts' -> 'implied_multi_exts'
+>       - 'misa_implied_rules' -> 'misa_ext_implied_rules'
+>       - 'ext_implied_rules' -> 'multi_ext_implied_rules'
+>       - 'riscv_misa_implied_rules' -> 'riscv_misa_ext_implied_rules'
+>       - 'riscv_ext_implied_rules -> 'riscv_multi_ext_implied_rules'
+>
+> v2:
+>   - Remove enabled bitmask from user-mode QEMU as there's no good way
+>     (e.g. mhartid) to distinguish the SMP cores in user-mode QEMU.
+>   - Use qatomic API to access the enabled bitmask to prevent the
+>     potential enabled bit from being cleared by another hart.
+>
+> Frank Chang (6):
+>   target/riscv: Introduce extension implied rules definition
+>   target/riscv: Introduce extension implied rule helpers
+>   target/riscv: Add MISA extension implied rules
+>   target/riscv: Add multi extension implied rules
+>   target/riscv: Add Zc extension implied rule
+>   target/riscv: Remove extension auto-update check statements
 
-Create multiple SMMU nodes if needed, store their offsets in an array.
+Thanks!
 
-Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
----
- hw/arm/virt-acpi-build.c | 36 ++++++++++++++++++++++++++----------
- 1 file changed, 26 insertions(+), 10 deletions(-)
+Applied to riscv-to-apply.next
 
-diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
-index 91f53f90ca..6d8b9aea42 100644
---- a/hw/arm/virt-acpi-build.c
-+++ b/hw/arm/virt-acpi-build.c
-@@ -295,7 +295,7 @@ static int iort_idmap_compare(gconstpointer a, gconstpointer b)
- }
- 
- static void
--build_iort_rmr_nodes(GArray *table_data, GArray *smmu_idmaps, int smmu_offset, uint32_t *id) {
-+build_iort_rmr_nodes(GArray *table_data, GArray *smmu_idmaps, size_t *smmu_offset, uint32_t *id) {
-     AcpiIortIdMapping *range;
-     int i;
- 
-@@ -323,7 +323,7 @@ build_iort_rmr_nodes(GArray *table_data, GArray *smmu_idmaps, int smmu_offset, u
-         build_append_int_noprefix(table_data, 1 , 4);
-         /* Reference to Memory Range Descriptors */
-         build_append_int_noprefix(table_data, 28 + ID_MAPPING_ENTRY_SIZE, 4);
--        build_iort_id_mapping(table_data, bdf, range->id_count, smmu_offset, 1);
-+        build_iort_id_mapping(table_data, bdf, range->id_count, smmu_offset[i], 1);
- 
-         /* Table 19 Memory Range Descriptor */
- 
-@@ -345,25 +345,42 @@ static void
- build_iort(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
- {
-     int i, nb_nodes, rc_mapping_count;
--    size_t node_size, smmu_offset = 0;
-+    size_t node_size, *smmu_offset;
-     AcpiIortIdMapping *idmap;
-     uint32_t id = 0;
-     GArray *smmu_idmaps = g_array_new(false, true, sizeof(AcpiIortIdMapping));
-     GArray *its_idmaps = g_array_new(false, true, sizeof(AcpiIortIdMapping));
-     AcpiIortIdMappingVM idmap_vm = { .vms = vms, .smmu_idmaps = smmu_idmaps, };
-+    int irq_offset = NUM_SMMU_IRQS;
-+    hwaddr offset = SMMU_IO_LEN;
-+    int irq, num_smmus = 0;
-+    hwaddr base;
- 
-     AcpiTable table = { .sig = "IORT", .rev = 5, .oem_id = vms->oem_id,
-                         .oem_table_id = vms->oem_table_id };
-     /* Table 2 The IORT */
-     acpi_table_begin(&table, table_data);
- 
-+    if (vms->num_nested_smmus) {
-+        irq = vms->irqmap[VIRT_NESTED_SMMU] + ARM_SPI_BASE;
-+        base = vms->memmap[VIRT_NESTED_SMMU].base;
-+        num_smmus = vms->num_nested_smmus;
-+    } else if (virt_has_smmuv3(vms)) {
-+        irq = vms->irqmap[VIRT_SMMU] + ARM_SPI_BASE;
-+        base = vms->memmap[VIRT_SMMU].base;
-+        num_smmus = 1;
-+    }
-+    smmu_offset = g_new0(size_t, num_smmus);
-+
-+    nb_nodes = 2; /* RC, ITS */
-+    nb_nodes += num_smmus; /* SMMU nodes */
-+
-     if (virt_has_smmuv3(vms)) {
-         AcpiIortIdMapping next_range = {0};
- 
-         object_child_foreach_recursive(object_get_root(),
-                                        iort_host_bridges, &idmap_vm);
- 
--        nb_nodes = 3; /* RC, ITS, SMMUv3 */
- 
-         /* Sort the smmu idmap by input_base */
-         g_array_sort(smmu_idmaps, iort_idmap_compare);
-@@ -394,7 +411,6 @@ build_iort(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
- 
-         rc_mapping_count = smmu_idmaps->len + its_idmaps->len;
-     } else {
--        nb_nodes = 2; /* RC, ITS */
-         rc_mapping_count = 1;
-     }
-     /* Number of IORT Nodes */
-@@ -416,10 +432,9 @@ build_iort(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
-     /* GIC ITS Identifier Array */
-     build_append_int_noprefix(table_data, 0 /* MADT translation_id */, 4);
- 
--    if (virt_has_smmuv3(vms)) {
--        int irq =  vms->irqmap[VIRT_SMMU] + ARM_SPI_BASE;
-+    for (i = 0; i < num_smmus; i++) {
-+        smmu_offset[i] = table_data->len - table.table_offset;
- 
--        smmu_offset = table_data->len - table.table_offset;
-         /* Table 9 SMMUv3 Format */
-         build_append_int_noprefix(table_data, 4 /* SMMUv3 */, 1); /* Type */
-         node_size =  SMMU_V3_ENTRY_SIZE + ID_MAPPING_ENTRY_SIZE;
-@@ -430,12 +445,13 @@ build_iort(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
-         /* Reference to ID Array */
-         build_append_int_noprefix(table_data, SMMU_V3_ENTRY_SIZE, 4);
-         /* Base address */
--        build_append_int_noprefix(table_data, vms->memmap[VIRT_SMMU].base, 8);
-+        build_append_int_noprefix(table_data, base + i * offset, 8);
-         /* Flags */
-         build_append_int_noprefix(table_data, 1 /* COHACC Override */, 4);
-         build_append_int_noprefix(table_data, 0, 4); /* Reserved */
-         build_append_int_noprefix(table_data, 0, 8); /* VATOS address */
-         /* Model */
-+        irq += irq_offset;
-         build_append_int_noprefix(table_data, 0 /* Generic SMMU-v3 */, 4);
-         build_append_int_noprefix(table_data, irq, 4); /* Event */
-         build_append_int_noprefix(table_data, irq + 1, 4); /* PRI */
-@@ -487,7 +503,7 @@ build_iort(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
-             range = &g_array_index(smmu_idmaps, AcpiIortIdMapping, i);
-             /* output IORT node is the smmuv3 node */
-             build_iort_id_mapping(table_data, range->input_base,
--                                  range->id_count, smmu_offset, 0);
-+                                  range->id_count, smmu_offset[i], 0);
-         }
- 
-         /* bypassed RIDs connect to ITS group node directly: RC -> ITS */
--- 
-2.43.0
+Alistair
 
+>
+>  target/riscv/cpu.c         | 396 +++++++++++++++++++++++++++++++++++++
+>  target/riscv/cpu.h         |  23 +++
+>  target/riscv/tcg/tcg-cpu.c | 274 ++++++++++++++-----------
+>  3 files changed, 574 insertions(+), 119 deletions(-)
+>
+> --
+> 2.43.2
+>
+>
 
