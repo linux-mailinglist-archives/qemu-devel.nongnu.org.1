@@ -2,85 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BF5B9180E1
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jun 2024 14:21:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52532918135
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jun 2024 14:44:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sMRdi-0003dc-LP; Wed, 26 Jun 2024 08:20:42 -0400
+	id 1sMRzR-0002XW-Dd; Wed, 26 Jun 2024 08:43:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sMRde-0003d9-CD
- for qemu-devel@nongnu.org; Wed, 26 Jun 2024 08:20:38 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sMRzP-0002X5-2w
+ for qemu-devel@nongnu.org; Wed, 26 Jun 2024 08:43:07 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sMRdb-0004qn-D7
- for qemu-devel@nongnu.org; Wed, 26 Jun 2024 08:20:38 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sMRzB-0000Yd-57
+ for qemu-devel@nongnu.org; Wed, 26 Jun 2024 08:43:06 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719404433;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
+ s=mimecast20190719; t=1719405772;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=9fUBakjLTQPkSGn5Z6zK8SbfgIplgj1ZAGjc7ngQQ3Q=;
- b=IygizeZl4cCpplOVEhjsGEAwNkOaCFOsoVpZZLddc/8Lewp5o/jbJobU76lc6WipFRFxx2
- /iJB3uomgSFS+K/KX520qnnwQv+4Syk+Gx28jtCpElxpHAjDtHt/jhPBT9e7U5OCBG0NeG
- 8/fc0ybv198m98rDwYsJLAIFDfWeX1I=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-76-GQIs5U0XMM6ZuHAO4nlUZA-1; Wed,
- 26 Jun 2024 08:20:28 -0400
-X-MC-Unique: GQIs5U0XMM6ZuHAO4nlUZA-1
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 6E8C31956094; Wed, 26 Jun 2024 12:20:26 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.50])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5A38B1956051; Wed, 26 Jun 2024 12:20:22 +0000 (UTC)
-Date: Wed, 26 Jun 2024 13:20:18 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Joao Martins <joao.m.martins@oracle.com>
-Cc: Peter Xu <peterx@redhat.com>,
- Elena Ufimtseva <elena.ufimtseva@oracle.com>, qemu-devel@nongnu.org,
- eduardo@habkost.net, marcel.apfelbaum@gmail.com, philmd@linaro.org,
- wangyanan55@huawei.com, farosas@suse.de, eblake@redhat.com,
- armbru@redhat.com
-Subject: Re: [PATCH RFC 2/2] migration: abort on destination if switchover
- limit exceeded
-Message-ID: <ZnwHgi0i6vqdrXfT@redhat.com>
-References: <20240621143221.198784-1-elena.ufimtseva@oracle.com>
- <20240621143221.198784-3-elena.ufimtseva@oracle.com>
- <ZnnL42_iDip3hfUh@x1n>
- <9eeea2a9-b3ef-4791-94de-fb06ad2bd9b4@oracle.com>
- <ZnrZ9W6WpvmDBpgv@x1n> <ZnsOdiHACtL90f3J@redhat.com>
- <9b6c50d2-5c42-48b2-8e0b-b6304f225679@oracle.com>
- <Znv81nAGJRb85wBs@redhat.com>
- <32366d3f-453e-4f34-98e6-70cbf83f0490@oracle.com>
+ bh=08m5ugK9T+OFvszkVn2IlOhibxzPIICM9l31TAR/N7E=;
+ b=d+66i6ycAMvftdNtw1hKgXsF7suYBIgQ1Sh7XF1OEc2F6wBK8dUp1svlVSg40Ibih1045j
+ 7m55Jg+Gxw2nGMhmw3B2N9S+zU41r12HCfDlIeMvrstaTV9/kNpIjF6dDXwhMZRpUBLje8
+ u2yprOwEsrflmRPcPdI0s2mUMSoWLpc=
+Received: from mail-ot1-f72.google.com (mail-ot1-f72.google.com
+ [209.85.210.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-12-40bxhaENO96bJu8ClLJwBg-1; Wed, 26 Jun 2024 08:42:50 -0400
+X-MC-Unique: 40bxhaENO96bJu8ClLJwBg-1
+Received: by mail-ot1-f72.google.com with SMTP id
+ 46e09a7af769-700d3fdd40aso504196a34.2
+ for <qemu-devel@nongnu.org>; Wed, 26 Jun 2024 05:42:50 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1719405769; x=1720010569;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=08m5ugK9T+OFvszkVn2IlOhibxzPIICM9l31TAR/N7E=;
+ b=RwMxQbmJdu4QuY+l8195PYjfVtva6rm3+rNmhWTX/AkSf6gewxYPTaOm/+kmpikT84
+ irfvd2p9UfaACXvSLHtQfNfPPCsIU7dFQz6SGzKpGcIb7/Zo0wjfRzJGUoaTm7io8cC9
+ 1sPP2AYrrTuOmfM+6gDktKoddxrQnRXqwfUDEAb9I/HTEozuEkoE+D9Uw0U+6KmJqJVx
+ TyfQmyFr5BpJjUFD3T1MJZ0PZK09AEagJknHgaSFfZVqArdP8iACq3dtmjCXozuJG6yA
+ Vi8+LC4pwQTFncVKCVD3aqMGI+LrYxabBBju1CrImwndYvlAxs/ebAbgt7tNzrtM1W0b
+ rsIw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXd9zlsqTrJkpf5SjS7+vnUgH/BaiiAAJ7/ZhbrUJ5CBDGiEUgZREWdhT87ic0O2djiTgljR0RiFWfL/vfSG00b6i+kvCE=
+X-Gm-Message-State: AOJu0Yw3u3UbREhF+NS4EZWFTD+jR6HQKeSFQ7MjO2Eq/iC49s1Xorcd
+ tTy3K2Ox0UP514gWlpXLPpo1QgV4Pt2wBhcRcx8SUO1HbBpLS0HVkjAzOky0AnucjntVUvebrQy
+ myeZgF3XtpYvUYQ3D4qpgBGNNQpwVMNx0ATB2wBdR3mw6kh7ShfEf
+X-Received: by 2002:a05:6830:161a:b0:700:d506:cfe9 with SMTP id
+ 46e09a7af769-700d506d7aamr887970a34.19.1719405769375; 
+ Wed, 26 Jun 2024 05:42:49 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE3SeI3YwbPyaQb8qXBNt2XLPpJ2isaQFyD/IcFPDTNimfMdn6u7eGC7qhEuyiDuhtF7liCRA==
+X-Received: by 2002:a05:6830:161a:b0:700:d506:cfe9 with SMTP id
+ 46e09a7af769-700d506d7aamr887954a34.19.1719405769019; 
+ Wed, 26 Jun 2024 05:42:49 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
+ ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
+ by smtp.gmail.com with ESMTPSA id
+ af79cd13be357-79c0afadd93sm124036085a.92.2024.06.26.05.42.46
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 26 Jun 2024 05:42:48 -0700 (PDT)
+Message-ID: <ec68e91f-898f-418e-89bc-24c6223c262d@redhat.com>
+Date: Wed, 26 Jun 2024 14:42:45 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/7] vfio-container-base: Introduce
+ vfio_container_get_iova_ranges() helper
+To: Eric Auger <eric.auger@redhat.com>, eric.auger.pro@gmail.com,
+ qemu-devel@nongnu.org, qemu-arm@nongnu.org, mst@redhat.com,
+ jean-philippe@linaro.org, peter.maydell@linaro.org, yanghliu@redhat.com,
+ zhenzhong.duan@intel.com, alex.williamson@redhat.com
+References: <20240626082727.1278530-1-eric.auger@redhat.com>
+ <20240626082727.1278530-3-eric.auger@redhat.com>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <20240626082727.1278530-3-eric.auger@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <32366d3f-453e-4f34-98e6-70cbf83f0490@oracle.com>
-User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 10
-X-Spam_score: 1.0
-X-Spam_bar: +
-X-Spam_report: (1.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.207,
+X-Spam_score_int: -22
+X-Spam_score: -2.3
+X-Spam_bar: --
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.207,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,84 +101,118 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jun 26, 2024 at 01:12:15PM +0100, Joao Martins wrote:
-> On 26/06/2024 12:34, Daniel P. Berrangé wrote:
-> > On Wed, Jun 26, 2024 at 12:29:41PM +0100, Joao Martins wrote:
-> >> On 25/06/2024 19:37, Daniel P. Berrangé wrote:
-> >>> On Tue, Jun 25, 2024 at 10:53:41AM -0400, Peter Xu wrote:
-> >>>> Then the question is how should we suggest the user to specify these two
-> >>>> parameters.
-> >>>>
-> >>>> The cover letter used:
-> >>>>
-> >>>>   migrate_set_parameter downtime-limit 300
-> >>>>   migrate_set_parameter switchover-limit 10
-> >>>
-> >>> What this means is that in practice the total downtime limit
-> >>> is 310 ms, however, expressing this as two parameters is
-> >>> incredibly inflexible.
-> >>>
-> >>> If the actual RAM transfer downtime only took 50 ms, then why
-> >>> should the switchover downtime still be limited to 10ms, when
-> >>> we've still got a budget of 250 ms that was unused.
-> >>>
-> >>
-> >> The downtime limit is 300, it's more than you are giving something *extra* 10ms
-> >> when you switchover regardless of where that's spent.
-> >>
-> >> If it makes it easier to understand you could see this parameter as:
-> >>
-> >> 'downtime-limit-max-error' = 10 ms
-> >>
-> >> The name as proposed by the RFC was meant to honor what the error margin was
-> >> meant for: to account for extra time during switchover. Adding this inside
-> >> downtime-limit wouldn't work as it otherwise would be used solely for RAM
-> >> transfer during precopy.
-> >>
-> >>> IOW, if my VM tolerates a downtime of 310ms, then I want that
-> >>> 310ms spread across the RAM transfer downtime and switchover
-> >>> downtime in *any* ratio. ALl that matters is the overall
-> >>> completion time.
-> >>>
-> >> That still happens with this patches, no specific budget is given to each.
-> > 
-> > If no specific budget is given to each, then IMHO adding the second
-> > parameter is pointless & misleading. 
+On 6/26/24 10:26 AM, Eric Auger wrote:
+> Introduce vfio_container_get_iova_ranges() to retrieve the usable
+> IOVA regions of the base container and use it in the Host IOMMU
+> device implementations of get_iova_ranges() callback.
 > 
-> That is contradictory with your earlier statement.
-
-I don't think it is.
-
-> You redacted the part where I describe how this works in *the worst case* if the
-> entire downtime-limit is used for RAM transfer then the switchover-limit might
-> *implicitly* act as an budget:
+> We also fix a UAF bug as the list was shallow copied while
+> g_list_free_full() was used both on the single call site, in
+> virtio_iommu_set_iommu_device() but also in
+> vfio_container_instance_finalize(). Instead use g_list_copy_deep.
 > 
-> | Though implicitly if downtime-limit captures only RAM transfer, then in theory
-> | if you're migrating a busy guest that happens to meet the SLA say
-> | expected-downtime=290, then you have a total of 20 for switchover (thanks to
-> | the extra 10 used in switchover-limit/downtime-limit-max-error 10).
+> Fixes: cf2647a76e ("virtio-iommu: Compute host reserved regions")
+> Signed-off-by: Eric Auger <eric.auger@redhat.com>
+> Suggested-by: Cédric Le Goater <clg@redhat.com>
+
+
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+
+Thanks,
+
+C.
+
+
+> ---
+>   include/hw/vfio/vfio-container-base.h |  2 ++
+>   hw/vfio/container-base.c              | 15 +++++++++++++++
+>   hw/vfio/container.c                   |  8 +-------
+>   hw/vfio/iommufd.c                     |  8 +-------
+>   4 files changed, 19 insertions(+), 14 deletions(-)
 > 
-> I am confused with what to make here. If budget is bad because any ratio should
-> be used if available, but then the added parameter doesn't care about ratios
-> specifically but *can* act as switchover ratio when RAM dominates
-> downtime-limit. But now no budget is associated is also bad ... then what's your
-> middle ground from your point of view to tackle switchover downtime being
-> somehow accounted?
-
-The pre-existing 'downtime-limit' value should apply to anything that
-happens between src CPUs stopping, and dst CPUs starting. If we were
-not correctly accounting for some parts, we just need to fix that
-accounting, without adding extra time parameters.
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+> diff --git a/include/hw/vfio/vfio-container-base.h b/include/hw/vfio/vfio-container-base.h
+> index 419e45ee7a..45d7c40fce 100644
+> --- a/include/hw/vfio/vfio-container-base.h
+> +++ b/include/hw/vfio/vfio-container-base.h
+> @@ -86,6 +86,8 @@ int vfio_container_set_dirty_page_tracking(VFIOContainerBase *bcontainer,
+>   int vfio_container_query_dirty_bitmap(const VFIOContainerBase *bcontainer,
+>                      VFIOBitmap *vbmap, hwaddr iova, hwaddr size, Error **errp);
+>   
+> +GList *vfio_container_get_iova_ranges(const VFIOContainerBase *bcontainer);
+> +
+>   #define TYPE_VFIO_IOMMU "vfio-iommu"
+>   #define TYPE_VFIO_IOMMU_LEGACY TYPE_VFIO_IOMMU "-legacy"
+>   #define TYPE_VFIO_IOMMU_SPAPR TYPE_VFIO_IOMMU "-spapr"
+> diff --git a/hw/vfio/container-base.c b/hw/vfio/container-base.c
+> index 50b1664f89..809b157674 100644
+> --- a/hw/vfio/container-base.c
+> +++ b/hw/vfio/container-base.c
+> @@ -83,6 +83,21 @@ int vfio_container_query_dirty_bitmap(const VFIOContainerBase *bcontainer,
+>                                                  errp);
+>   }
+>   
+> +static gpointer copy_iova_range(gconstpointer src, gpointer data)
+> +{
+> +     Range *source = (Range *)src;
+> +     Range *dest = g_new(Range, 1);
+> +
+> +     range_set_bounds(dest, range_lob(source), range_upb(source));
+> +     return dest;
+> +}
+> +
+> +GList *vfio_container_get_iova_ranges(const VFIOContainerBase *bcontainer)
+> +{
+> +    assert(bcontainer);
+> +    return g_list_copy_deep(bcontainer->iova_ranges, copy_iova_range, NULL);
+> +}
+> +
+>   static void vfio_container_instance_finalize(Object *obj)
+>   {
+>       VFIOContainerBase *bcontainer = VFIO_IOMMU(obj);
+> diff --git a/hw/vfio/container.c b/hw/vfio/container.c
+> index 2e7ecdf10e..2ad57cd845 100644
+> --- a/hw/vfio/container.c
+> +++ b/hw/vfio/container.c
+> @@ -1169,15 +1169,9 @@ static GList *
+>   hiod_legacy_vfio_get_iova_ranges(HostIOMMUDevice *hiod, Error **errp)
+>   {
+>       VFIODevice *vdev = hiod->agent;
+> -    GList *l = NULL;
+>   
+>       g_assert(vdev);
+> -
+> -    if (vdev->bcontainer) {
+> -        l = g_list_copy(vdev->bcontainer->iova_ranges);
+> -    }
+> -
+> -    return l;
+> +    return vfio_container_get_iova_ranges(vdev->bcontainer);
+>   }
+>   
+>   static void vfio_iommu_legacy_instance_init(Object *obj)
+> diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
+> index c2f158e603..890d8d6a38 100644
+> --- a/hw/vfio/iommufd.c
+> +++ b/hw/vfio/iommufd.c
+> @@ -647,15 +647,9 @@ static GList *
+>   hiod_iommufd_vfio_get_iova_ranges(HostIOMMUDevice *hiod, Error **errp)
+>   {
+>       VFIODevice *vdev = hiod->agent;
+> -    GList *l = NULL;
+>   
+>       g_assert(vdev);
+> -
+> -    if (vdev->bcontainer) {
+> -        l = g_list_copy(vdev->bcontainer->iova_ranges);
+> -    }
+> -
+> -    return l;
+> +    return vfio_container_get_iova_ranges(vdev->bcontainer);
+>   }
+>   
+>   static void hiod_iommufd_vfio_class_init(ObjectClass *oc, void *data)
 
 
