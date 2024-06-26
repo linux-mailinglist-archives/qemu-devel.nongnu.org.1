@@ -2,82 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 684D291988C
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jun 2024 21:51:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7C3E9198B7
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jun 2024 22:07:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sMYev-0007Kx-1p; Wed, 26 Jun 2024 15:50:26 -0400
+	id 1sMYuH-0003h8-SI; Wed, 26 Jun 2024 16:06:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sMYeo-0007Jg-8I
- for qemu-devel@nongnu.org; Wed, 26 Jun 2024 15:50:18 -0400
-Received: from mail-pg1-x535.google.com ([2607:f8b0:4864:20::535])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sMYea-0002gx-0E
- for qemu-devel@nongnu.org; Wed, 26 Jun 2024 15:50:16 -0400
-Received: by mail-pg1-x535.google.com with SMTP id
- 41be03b00d2f7-6e7e23b42c3so4398433a12.1
- for <qemu-devel@nongnu.org>; Wed, 26 Jun 2024 12:49:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719431395; x=1720036195; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=2vMo3UlLl6VRZdyC9VDGZj9tzgWdSUl3nVhPo3xSdwU=;
- b=YLkr1d7DHIdGWi5IRzaGTBwuffiwWStXzo5TKaXy+rJGHO+UXh4z7SQqw6SBqeYElj
- Syt73TgdySianV37fIrzKKr/XqQwxAUdZzSkFA5sRVrlAS5vYqzei0+k1bf70J879JiW
- Y+PQmt+APdC76kF3F10I1txXmoNuj3Ue0F8J5/rJfWxDp55zAyBbbm83Y7hmhjbS2PcF
- AnbyETkwX466sryNZ6nA8TAoZRGQVayDjSc9g3CbIQREbeLNjC6auFa5zIHewC5SmqeI
- bqf7WHyPf9qMeLsIVEafAnXZ3axLKiUr5jGxKIBZlUS/ED0l+n7l9+1Svfs1bkv5HgmF
- 7wWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719431395; x=1720036195;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=2vMo3UlLl6VRZdyC9VDGZj9tzgWdSUl3nVhPo3xSdwU=;
- b=n1pOmQDym0RYIYnyeXh/E+0JKesDiJvC46yyM5FYAMa08LWCxoy4LV5X/kLakhlKiG
- NSm0SBUnFVLMHFgTkZTekYUwHgsMZGsklQQxVN4p1+yKnnHu+Md332FGi7AKKDEQrndK
- k1GMXimBttqNnYsL6/oKIPUKIqwykuqX+N3xMdPKj2S+4+5OI8FWpC3zA+tUoOoG7Q6s
- 4nWA+jcQxYLJp4iiZYS+3zT13hXvlU6FYpzcXAecnqW56Vg9mHrIcTZWSAah/2/hd1nI
- 5gS26JGDlZNxI2ybCkWuaK2HSr28Ni9dvBEfyLFSZmCP4iT3uCY0481mOHs+WSTgzBjX
- EJtw==
-X-Gm-Message-State: AOJu0YxLzXxDvryO8+xLeSIB8l8YuUYu13haBjGwh/cwoWuakJZIrnnc
- TPakDczQJonEh7tKBcKm12kgeg9buKL+xFpInp5uxUAGGQP+lB5oFptR5M6vAhEkJX1jnBSGHJ9
- G
-X-Google-Smtp-Source: AGHT+IE7vlfjXqm0G4JjyZb39a7ACOjemljBHjSvttpVJoIvSXdbteFGxAA03Dm1OncSa/BFHVnRCg==
-X-Received: by 2002:a05:6a20:bf02:b0:1bd:272c:d17c with SMTP id
- adf61e73a8af0-1bd272cd2ffmr4267989637.12.1719431394810; 
- Wed, 26 Jun 2024 12:49:54 -0700 (PDT)
-Received: from stoup.. (174-21-76-141.tukw.qwest.net. [174.21.76.141])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1f9eb2f0318sm103734625ad.2.2024.06.26.12.49.54
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 26 Jun 2024 12:49:54 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: pbonzini@redhat.com, alex.bennee@linaro.org, berrange@redhat.com,
- philmd@linaro.org
-Subject: [PATCH 3/3] target/i386/sev: Fix printf formats
-Date: Wed, 26 Jun 2024 12:49:50 -0700
-Message-Id: <20240626194950.1725800-4-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240626194950.1725800-1-richard.henderson@linaro.org>
-References: <20240626194950.1725800-1-richard.henderson@linaro.org>
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1sMYuA-0003gq-D9
+ for qemu-devel@nongnu.org; Wed, 26 Jun 2024 16:06:10 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1sMYu7-0005gs-Q5
+ for qemu-devel@nongnu.org; Wed, 26 Jun 2024 16:06:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1719432365;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=WRV7G3xdSU2emWbuPmSBBw/rw1yqdwp385XN4StZGE8=;
+ b=AVzWmeQIA7A8fWOuG8uYSVNQiyBCvidiNwaXt8+H7fvIrjnJ+6siIDN/ExYHKkBsVpHXMU
+ 1kmdm+3CukyMDcBOdH7Zjp10Lw4TW5Pf2tsiCcBVz5fKV9C02pjbzBkYODhr5qhJQbo4xH
+ ic5CQvPq1pyEZGnqM3/X0DZe5ogjnls=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-533-UE1v6AuDPyuvKuPC0h4oew-1; Wed,
+ 26 Jun 2024 16:06:01 -0400
+X-MC-Unique: UE1v6AuDPyuvKuPC0h4oew-1
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 2657819560B1; Wed, 26 Jun 2024 20:05:57 +0000 (UTC)
+Received: from localhost (unknown [10.39.194.188])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id A6D0F300021A; Wed, 26 Jun 2024 20:05:53 +0000 (UTC)
+Date: Wed, 26 Jun 2024 16:05:51 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Changqi Lu <luchangqi.123@bytedance.com>
+Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, kwolf@redhat.com,
+ hreitz@redhat.com, fam@euphon.net, ronniesahlberg@gmail.com,
+ pbonzini@redhat.com, pl@dlhnet.de, kbusch@kernel.org,
+ its@irrelevant.dk, foss@defmacro.it, philmd@linaro.org,
+ pizhenwei@bytedance.com
+Subject: Re: [PATCH v6 01/10] block: add persistent reservation in/out api
+Message-ID: <20240626200551.GA2529519@fedora.redhat.com>
+References: <20240613071327.2498953-1-luchangqi.123@bytedance.com>
+ <20240613071327.2498953-2-luchangqi.123@bytedance.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::535;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x535.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="X8JbQxexzhy1gTtD"
+Content-Disposition: inline
+In-Reply-To: <20240613071327.2498953-2-luchangqi.123@bytedance.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.207,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,71 +85,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-hwaddr uses HWADDR_PRIx, sizeof yields size_t so uses %zu,
-and gsize uses G_GSIZE_FORMAT.
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- target/i386/sev.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+--X8JbQxexzhy1gTtD
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/target/i386/sev.c b/target/i386/sev.c
-index f96301f81f..74ed9948ca 100644
---- a/target/i386/sev.c
-+++ b/target/i386/sev.c
-@@ -932,8 +932,9 @@ sev_snp_launch_update(SevSnpGuestState *sev_snp_guest,
- 
- out:
-     if (!ret && update.gfn_start << TARGET_PAGE_BITS != data->gpa + data->len) {
--        error_report("SEV-SNP: expected update of GPA range %lx-%lx,"
--                     "got GPA range %lx-%llx",
-+        error_report("SEV-SNP: expected update of GPA range %"
-+                     HWADDR_PRIx "-%" HWADDR_PRIx ","
-+                     "got GPA range %" HWADDR_PRIx "-%llx",
-                      data->gpa, data->gpa + data->len, data->gpa,
-                      update.gfn_start << TARGET_PAGE_BITS);
-         ret = -EIO;
-@@ -2146,7 +2147,8 @@ sev_snp_guest_set_guest_visible_workarounds(Object *obj, const char *value,
-     }
- 
-     if (len != sizeof(start->gosvw)) {
--        error_setg(errp, "parameter length of %lu exceeds max of %lu",
-+        error_setg(errp, "parameter length of %" G_GSIZE_FORMAT
-+                   " exceeds max of %zu",
-                    len, sizeof(start->gosvw));
-         return;
-     }
-@@ -2184,7 +2186,8 @@ sev_snp_guest_set_id_block(Object *obj, const char *value, Error **errp)
-     }
- 
-     if (len != KVM_SEV_SNP_ID_BLOCK_SIZE) {
--        error_setg(errp, "parameter length of %lu not equal to %u",
-+        error_setg(errp, "parameter length of %" G_GSIZE_FORMAT
-+                   " not equal to %u",
-                    len, KVM_SEV_SNP_ID_BLOCK_SIZE);
-         return;
-     }
-@@ -2221,7 +2224,8 @@ sev_snp_guest_set_id_auth(Object *obj, const char *value, Error **errp)
-     }
- 
-     if (len > KVM_SEV_SNP_ID_AUTH_SIZE) {
--        error_setg(errp, "parameter length:ID_AUTH %lu exceeds max of %u",
-+        error_setg(errp, "parameter length:ID_AUTH %" G_GSIZE_FORMAT
-+                   " exceeds max of %u",
-                    len, KVM_SEV_SNP_ID_AUTH_SIZE);
-         return;
-     }
-@@ -2287,7 +2291,8 @@ sev_snp_guest_set_host_data(Object *obj, const char *value, Error **errp)
-     }
- 
-     if (len != sizeof(finish->host_data)) {
--        error_setg(errp, "parameter length of %lu not equal to %lu",
-+        error_setg(errp, "parameter length of %" G_GSIZE_FORMAT
-+                   " not equal to %zu",
-                    len, sizeof(finish->host_data));
-         return;
-     }
--- 
-2.34.1
+On Thu, Jun 13, 2024 at 03:13:18PM +0800, Changqi Lu wrote:
+> Add persistent reservation in/out operations
+> at the block level. The following operations
+> are included:
+>=20
+> - read_keys:        retrieves the list of registered keys.
+> - read_reservation: retrieves the current reservation status.
+> - register:         registers a new reservation key.
+> - reserve:          initiates a reservation for a specific key.
+> - release:          releases a reservation for a specific key.
+> - clear:            clears all existing reservations.
+> - preempt:          preempts a reservation held by another key.
+>=20
+> Signed-off-by: Changqi Lu <luchangqi.123@bytedance.com>
+> Signed-off-by: zhenwei pi <pizhenwei@bytedance.com>
+> ---
+>  block/block-backend.c             | 403 ++++++++++++++++++++++++++++++
+>  block/io.c                        | 163 ++++++++++++
+>  include/block/block-common.h      |  40 +++
+>  include/block/block-io.h          |  20 ++
+>  include/block/block_int-common.h  |  84 +++++++
+>  include/sysemu/block-backend-io.h |  24 ++
+>  6 files changed, 734 insertions(+)
+
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+
+--X8JbQxexzhy1gTtD
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmZ8dJ8ACgkQnKSrs4Gr
+c8gtVgf/RlKXC3KJ/UB80gHbhBG1kXBbVPrU8CxPfmBp+ZSHW/hVFF6zUFNsbAVK
+/QUAvgFIyE/2qsd5A40lkuhmvd5qsL3VYrFodYVwPj0QocPPRr/UBH5ClZtrldyo
+zEE7gInKSyMOJeFL5ncsP1ivnl2U1uG99ggTso/4Y+Eoc4as+xTr1SQysV3QoKux
+q/cV18X8ve5Xl9OM1uqc1whpOjs/xVJzm+gjBKo7ARVnodz2izo6hA2uh975RfIb
+gFoT8ol7qFB5GrkBz2nuZ4fGO3Cnl/TjOOJhzQcld/GZIJDYsZBe0fdmkYKWYKVf
+Ek/CSArxGc/VLBxRW0Q3KR0cJogFzg==
+=1Dj2
+-----END PGP SIGNATURE-----
+
+--X8JbQxexzhy1gTtD--
 
 
