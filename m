@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4F59917F34
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jun 2024 13:08:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04B4F917F35
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jun 2024 13:08:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sMQV9-0006av-L6; Wed, 26 Jun 2024 07:07:48 -0400
+	id 1sMQVB-0006lC-VT; Wed, 26 Jun 2024 07:07:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sMQV4-000681-2b
- for qemu-devel@nongnu.org; Wed, 26 Jun 2024 07:07:42 -0400
-Received: from mail-pj1-x1036.google.com ([2607:f8b0:4864:20::1036])
+ id 1sMQV9-0006cX-CM
+ for qemu-devel@nongnu.org; Wed, 26 Jun 2024 07:07:47 -0400
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sMQV2-0004ty-LF
- for qemu-devel@nongnu.org; Wed, 26 Jun 2024 07:07:41 -0400
-Received: by mail-pj1-x1036.google.com with SMTP id
- 98e67ed59e1d1-2c80637d8adso4449629a91.0
- for <qemu-devel@nongnu.org>; Wed, 26 Jun 2024 04:07:40 -0700 (PDT)
+ id 1sMQV7-0004vX-QE
+ for qemu-devel@nongnu.org; Wed, 26 Jun 2024 07:07:47 -0400
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-7066cba4ebbso2765697b3a.3
+ for <qemu-devel@nongnu.org>; Wed, 26 Jun 2024 04:07:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1719400058; x=1720004858;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1719400064; x=1720004864;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=JjfUQuEae0R8cdwKe9GcIhsbAslV8NkVY8L54kIHCMI=;
- b=l9ztF6AcLQSVChSCqqJTVVqo7+jKpUWgnPMiUxZpvHikcOUFocHhkQwup+YXESG9MO
- hn11/otHE6WhB7RITSKgzU+HIgFEzkUv+DLSSHH1PPQBypmx1cAHmJRGctXryudyDGDG
- wFuGDna8q7PNtPjxKJ7JY0wltz8X3vAgNbxlhNSKxRSKf4KgQUPRBl6xVMLrVDaDWaer
- fviB7UiDYcYX9R5mQIcaB3nS1JYV0g2nOyRmJ+yjpmnDPLBVHhKsuiueGwAiw26G175I
- H/hwLJBO16/cyReHYHbhwtAikCHbXMZBgJ57LAaqaeoueZp/5Jf1l0iDCV++BmbohVeN
- KXvQ==
+ :reply-to; bh=G/iOJJ9D9CGegt9ZDP3YD3xuz4pE7vwllWj27SOZguk=;
+ b=EoPcPHJVhc/enXxpDLynjBEZ13Ft3pNHK41k79SWX//jb+y1wQJ3J7sSMuamI8UOZd
+ XMUGVaC3S0XNiRsF79Cn6EZ3bZSoZSbGv4O2OjjloXYJag1tQzKIgP3BFYGjhMcKDTss
+ DFlXZTpzw1sFXDs/zhCvuuuOmLGAsnZlEOxSluIX8plw+sNVVAP3gbwneBF244qh6f22
+ BE1TulEoSVEiyXuYD+I77o6jQnsP36/oXokjv8aTwjkW3GWZaPuCjZPwBd9E/Ol1Mmvy
+ q8nUhv/t3fiaR+jQZOUPg2/lfK5n6lR6wHiBzthhZK+QvYJj1E/KbE42iptsc5vXa0Pf
+ wgXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719400058; x=1720004858;
+ d=1e100.net; s=20230601; t=1719400064; x=1720004864;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=JjfUQuEae0R8cdwKe9GcIhsbAslV8NkVY8L54kIHCMI=;
- b=GhEscsgubnSBmpCLp9gJw/mw+lLNmczcMT8Dn7R7m7H8DyuQFMvBH7HSwBXu8m8TYI
- mMKE1j4Jrxc5EqgaNSvqyuSFWLR4r9OBzporEs6zH8RgnnZGnn9IYAQgLLDz4CevVa6h
- 62v59wDMzQZxAya05lfnsbkIgeYSF4OsFcJaSI4WJ/V3jZ0NcUYnXKTNZSLoUyjHmi/T
- zDNy1FYDe/tvKQ8YgqvlXvUq9ZqsQ4n8LJAPQhMVU1cifn07HP6KWqlz7P1RHQ4KSICZ
- 8hu2YT7vk2ayxNp2/4F8APU8ILPKXTnnKiOdAIZ6xgEOep7zaoosBU/2fvCntxLxh+dQ
- 7aXQ==
-X-Gm-Message-State: AOJu0YwSbwNMrmHo2TtB2agiFRt8F/oL4/A1wAdd8iLTn85DRo9DxkK+
- bVvV18LZ2op2iNOYrWrC27V6tmdZrmEX7vgxq2icLB9b0LrX3Ipk6mhgH27eMyg=
-X-Google-Smtp-Source: AGHT+IHIDN4tW4JDc5fTZQZIemw+tavBwEvCkW8YIJ5Fh9l7Zao3bup8RJjQetrfRxOeOkLABmRjvA==
-X-Received: by 2002:a17:90a:fe0a:b0:2c1:aefa:1e7f with SMTP id
- 98e67ed59e1d1-2c85819fa27mr8551111a91.3.1719400058416; 
- Wed, 26 Jun 2024 04:07:38 -0700 (PDT)
+ bh=G/iOJJ9D9CGegt9ZDP3YD3xuz4pE7vwllWj27SOZguk=;
+ b=czeY657mwSTRy/jn0ArcSdeYzA0JIQkpx9z7rjmyc26vGQ89iRBJPAmJYGQ3llJmDy
+ OhdRno6YKi5YMfNsxxqxA/1Z0ycsPrhje+ty5vR68acK4hVLE/ENDA8YC0Midk34btrX
+ BYaUkmcykC/wEb68DP8RMtWAY9g7BywnEGVXJHliXyDyaBJ/FI57OyCqJanj/I1Uwb11
+ RsWM+tXvEnaBI16T/m+Qp7kUCbGBX2QoJc768uWjNyT8M4KnhfZBQx792lyRhkFMJzjT
+ fl5BJ+ZZbh+grGq15MgrMAeuNTnBH2BClWVqAjfJp8IOksjKWvtdN4ZXrShkyniQC0Xk
+ jD1w==
+X-Gm-Message-State: AOJu0YyageoVoYFa/dfEkLnBEDl5ZfA4r+6B1duIt+6xWoWCoFcW3XuW
+ bo9uMDw0WPNMmwYUygkwgWJS85BedN8RSTRxNzXkAOhJuEfviTfTkRzOEatuXts=
+X-Google-Smtp-Source: AGHT+IGZ7q5EdE7Yacjqa7EIZYyiK5wDOincTnN86B+2e41NepYsx4hlo3KnhsM/EmQA310DcZmMlw==
+X-Received: by 2002:a05:6a00:139f:b0:706:3204:fa4e with SMTP id
+ d2e1a72fcca58-7066cbd0820mr14170890b3a.0.1719400064484; 
+ Wed, 26 Jun 2024 04:07:44 -0700 (PDT)
 Received: from localhost ([157.82.204.135])
  by smtp.gmail.com with UTF8SMTPSA id
- 98e67ed59e1d1-2c8d8094371sm1377063a91.54.2024.06.26.04.07.34
+ d2e1a72fcca58-7065107b425sm9667624b3a.25.2024.06.26.04.07.39
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 26 Jun 2024 04:07:38 -0700 (PDT)
+ Wed, 26 Jun 2024 04:07:44 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Wed, 26 Jun 2024 20:06:33 +0900
-Subject: [PATCH 10/14] tests/qtest: Free unused QMP response
+Date: Wed, 26 Jun 2024 20:06:34 +0900
+Subject: [PATCH 11/14] tests/qtest: Free old machine variable name
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240626-san-v1-10-f3cc42302189@daynix.com>
+Message-Id: <20240626-san-v1-11-f3cc42302189@daynix.com>
 References: <20240626-san-v1-0-f3cc42302189@daynix.com>
 In-Reply-To: <20240626-san-v1-0-f3cc42302189@daynix.com>
 To: Eduardo Habkost <eduardo@habkost.net>, 
@@ -82,14 +82,14 @@ To: Eduardo Habkost <eduardo@habkost.net>,
 Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, qemu-ppc@nongnu.org, 
  Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.14-dev-fd6e3
-Received-SPF: none client-ip=2607:f8b0:4864:20::1036;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pj1-x1036.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::435;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x435.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=unavailable autolearn_force=no
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,22 +109,21 @@ This suppresses LeakSanitizer warnings.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- tests/qtest/libqtest.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tests/qtest/libqtest.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/tests/qtest/libqtest.c b/tests/qtest/libqtest.c
-index d8f80d335e74..28683fee28b2 100644
+index 28683fee28b2..06585104c7af 100644
 --- a/tests/qtest/libqtest.c
 +++ b/tests/qtest/libqtest.c
-@@ -743,6 +743,8 @@ QDict *qtest_qmp_receive(QTestState *s)
-                         response, s->eventData)) {
-             /* Stash the event for a later consumption */
-             s->pending_events = g_list_append(s->pending_events, response);
-+        } else {
-+            qobject_unref(response);
-         }
-     }
- }
+@@ -1502,6 +1502,7 @@ static struct MachInfo *qtest_get_machines(const char *var)
+     int idx;
+ 
+     if (g_strcmp0(qemu_var, var)) {
++        g_free(qemu_var);
+         qemu_var = g_strdup(var);
+ 
+         /* new qemu, clear the cache */
 
 -- 
 2.45.2
