@@ -2,129 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA870919B60
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jun 2024 01:43:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11CDB919B7D
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jun 2024 01:59:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sMcI8-0005WD-U6; Wed, 26 Jun 2024 19:43:08 -0400
+	id 1sMcWC-0007iL-AM; Wed, 26 Jun 2024 19:57:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sMcI6-0005Vu-67
- for qemu-devel@nongnu.org; Wed, 26 Jun 2024 19:43:06 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sMcI3-0000Iq-Hn
- for qemu-devel@nongnu.org; Wed, 26 Jun 2024 19:43:05 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719445379;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=2MRsBhRz3av/jkoQlN1aC+3haU3qVcXaZ5Hlj5aTWT0=;
- b=QwTmCr6thtyjXjYCTMu9ySuG9RSNI/nE46utYUSQTVGGog1TpcwAqdx8E4FyXim9e7EQsd
- aqI+yYZvHY6cx/jFKbQKTVKt5FjUWmUQFigMvBsdxfbOX3VXVb0/SDG2Jm3DbKe5diGwMu
- b+9SgYL5mHGFwd8CjHbTROjyLZjVQ0w=
-Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
- [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-611-eoRbCD49O5Ow593ck1WCFA-1; Wed, 26 Jun 2024 19:42:57 -0400
-X-MC-Unique: eoRbCD49O5Ow593ck1WCFA-1
-Received: by mail-lf1-f71.google.com with SMTP id
- 2adb3069b0e04-52cd90d8da1so4860406e87.0
- for <qemu-devel@nongnu.org>; Wed, 26 Jun 2024 16:42:57 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <atishp@rivosinc.com>)
+ id 1sMcW8-0007hJ-8T
+ for qemu-devel@nongnu.org; Wed, 26 Jun 2024 19:57:36 -0400
+Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <atishp@rivosinc.com>)
+ id 1sMcW6-0005VD-8Y
+ for qemu-devel@nongnu.org; Wed, 26 Jun 2024 19:57:36 -0400
+Received: by mail-pl1-x630.google.com with SMTP id
+ d9443c01a7336-1faad409ca7so155105ad.1
+ for <qemu-devel@nongnu.org>; Wed, 26 Jun 2024 16:57:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1719446252; x=1720051052;
+ darn=nongnu.org; 
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=4YjAQAZatoK5hzSHjG2ua+nUCbPXv9SsnYImB9DeAGg=;
+ b=FxDzs+laaJ76x5NCPABe1KZMH6/3pWVSX8QDJdeh3a5Tq5Nutg52+BLfiXzBgoDmP1
+ eEVKwHqcJGEzMvvBQ+AnubgXVcXSyRvfWRSx8UPKT4s4bZfzQpJHPXbTeQFVfit9Hjrd
+ s1JmMqEFQrLRuB3waQ+XtAwWGXU6pUVc6lbSLFAiaS9UBV6GvbX3YKFD5+k2r/TDPEDt
+ dZIQqo3hq/P90ygCoOVIduLU1RnksH5smJOKtE/pxgMqldiw2DrFpf9RON+HUyJ4+F//
+ tIXuWcVhjhSDU02qTDg7/vLTJmm432Tz5XT9UeDClsjdMaiqjVX57LrtdoiyDo+4z38N
+ 0d/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719445375; x=1720050175;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1719446252; x=1720051052;
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=2MRsBhRz3av/jkoQlN1aC+3haU3qVcXaZ5Hlj5aTWT0=;
- b=Zh3UvOHO1ksaEaZB32tOWiPnrLLLBiQkZFkCZgBqIKrzt/4zgShblGgihgC6NW8lLq
- 6Uvo8b5m6PAxmRDgBz+1YDio/wFEkk/2A2xCwS71d8Ilt3rby8sDa8hbxMVflsjbr1C2
- uTrwTBStflRUZJRUiLVMoyYx0e30DL0rFk9sgLw/zZRc5nvlPMpp/6/pl/CUo0NHSV6F
- Z+Cw8zAc2iCeRwUjuJJn1IwxviXXw7Mo4kJqD6PKcjH9cYsBT1i5/v8zmhv6uVrB/Nuk
- 9omUxNpMeisOnngQX2voT/ksE2b0NPgQJNyIJU9R7SRgdG847RvfgodEjzY4+9wQkeSL
- gpqw==
+ bh=4YjAQAZatoK5hzSHjG2ua+nUCbPXv9SsnYImB9DeAGg=;
+ b=cy8Twzpa8w6rB2K2hOIOPU8Mhs9vzo41WnwURz2HkBNgg1vEZfMa3XSrZ9kAh9Lu8a
+ id/Q+x0w1DQeXbv2j/GRFPinwqOEcxjNZBYPh7YhuHx8/VI/hw1+k2QGO1E25qt4Gyee
+ gCa8XT0syqceYasICEeVRUXf0YE5lpbEZ+UkXGKwnIdnrddGDt5SaAY0d8Y7nbpYC2Jf
+ +lvRrg8oVAYt2k004yQDjgV4tN+HbeI9OPMJRtdRLJ6gNVHjI456iN+2SJVF8L55pR8U
+ LHkFIQMA+XYB0lgOrMyUEnp0I1hXqxO6IpiAZC/KZPWezQuR6aMFbk9liN1osz56zq0M
+ vq4A==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWfvNhR/7sZpX8a4HBKT+wRB2UmqiU7kCckonse2Fh+peKVfNA+60EUJEcsKN+kisZDuM7SR1YyBrrySFEVGAhDyysc6bo=
-X-Gm-Message-State: AOJu0YwHrADtqHiTQCDo0ExPUdTg0072gp2AuawPFvTPqWUeUvozcZay
- Zrst1b4O/6w7wPsVKWx/fhK+590fxoqXw5sijuvz77Iux15pBdUeBp8MzhBeB0lcW+WhZpc51ql
- 6u12f7wRQaEtc6wGI+Ac81wW3/ZTGcnZCJLUciSWPBbniSYgDQxQ64BNMM8tl
-X-Received: by 2002:a05:6512:3e1c:b0:52c:e084:bb1e with SMTP id
- 2adb3069b0e04-52ce084bc12mr12477256e87.13.1719445375574; 
- Wed, 26 Jun 2024 16:42:55 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFDwQ4PnVWz0p28X43mkXITWyttCuEh1r3MtUlpnew8gJ+cNFZuSGDWSK82BDgDRW5BJc6KVQ==
-X-Received: by 2002:a05:6512:3e1c:b0:52c:e084:bb1e with SMTP id
- 2adb3069b0e04-52ce084bc12mr12477225e87.13.1719445374194; 
- Wed, 26 Jun 2024 16:42:54 -0700 (PDT)
-Received: from [192.168.10.47] ([151.62.196.71])
- by smtp.googlemail.com with ESMTPSA id
- a640c23a62f3a-a729d778ad1sm2953666b.141.2024.06.26.16.42.53
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 26 Jun 2024 16:42:53 -0700 (PDT)
-Message-ID: <d2cab7e4-2634-43b3-8cb1-58172456f602@redhat.com>
-Date: Thu, 27 Jun 2024 01:42:52 +0200
+ AJvYcCWdbESJIiZTVlKMax9zcFKbVbF9UkD3fvu1fQe/fi7+VMA1mDdVH6vl0hSxGNgMu2dDLvD/vED2UjQxJu4qcEWZIMNF370=
+X-Gm-Message-State: AOJu0Yxj3YYtpGWP/imWXVoNQOgmy21llnJIX1gLNcCCG+DB1XM7Nkl3
+ wm/LT5ORKw5WG330QLNEkJDmqjyyCCddN3iVfQWdKPe3ijkHNLtYpXIMA5mE4Ss=
+X-Google-Smtp-Source: AGHT+IHMANqiDLkbypi15KiX8LPaMwS0oQfP02Kg/bcsOPFzZECvOT+KZ/eI6Adi7bo2JKioJGvJQA==
+X-Received: by 2002:a17:902:ce92:b0:1f9:f521:6457 with SMTP id
+ d9443c01a7336-1faac2e6072mr3613625ad.34.1719446252026; 
+ Wed, 26 Jun 2024 16:57:32 -0700 (PDT)
+Received: from atishp.ba.rivosinc.com ([64.71.180.162])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-1faac998398sm630965ad.225.2024.06.26.16.57.30
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 26 Jun 2024 16:57:31 -0700 (PDT)
+From: Atish Patra <atishp@rivosinc.com>
+Subject: [PATCH v7 00/11] Add RISC-V ISA extension smcntrpmf support
+Date: Wed, 26 Jun 2024 16:57:20 -0700
+Message-Id: <20240626-smcntrpmf_v7-v7-0-bb0f10af7fa9@rivosinc.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] target/i386: restrict SEV to 64 bit host builds
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Marcelo Tosatti <mtosatti@redhat.com>,
- "open list:X86 KVM CPUs" <kvm@vger.kernel.org>
-References: <20240626140307.1026816-1-alex.bennee@linaro.org>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=pbonzini@redhat.com; keydata=
- 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
-In-Reply-To: <20240626140307.1026816-1-alex.bennee@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -22
-X-Spam_score: -2.3
-X-Spam_bar: --
-X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.207,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAOCqfGYC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyzHUUlJIzE
+ vPSU3UzU4B8JSMDIxMDMyMz3eLc5LySooLctPgyc13jJCNz0xTDlERDQ3MloJaCotS0zAqwcdG
+ xtbUAoqthLF4AAAA=
+To: qemu-riscv@nongnu.org, qemu-devel@nongnu.org
+Cc: Rajnesh Kanwal <rkanwal@rivosinc.com>, 
+ Atish Patra <atishp@rivosinc.com>, palmer@dabbelt.com, liwei1518@gmail.com, 
+ zhiwei_liu@linux.alibaba.com, bin.meng@windriver.com, 
+ dbarboza@ventanamicro.com, alistair.francis@wdc.com, 
+ Kaiwen Xue <kaiwenx@rivosinc.com>
+X-Mailer: b4 0.15-dev-13183
+Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
+ envelope-from=atishp@rivosinc.com; helo=mail-pl1-x630.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -140,60 +98,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/26/24 16:03, Alex Bennée wrote:
-> Re-enabling the 32 bit host build on i686 showed the recently merged
-> SEV code doesn't take enough care over its types. While the format
-> strings could use more portable types there isn't much we can do about
-> casting uint64_t into a pointer. The easiest solution seems to be just
-> to disable SEV for a 32 bit build. It's highly unlikely anyone would
-> want this functionality anyway.
+This patch series adds the support for RISC-V ISA extension smcntrpmf (cycle and
+privilege mode filtering) [1]. It is based on Kevin's earlier work but improves
+it by actually implement privilege mode filtering by tracking the privilege
+mode switches. This enables the privilege mode filtering for mhpmcounters as
+well. However, Smcntrpmf/Sscofpmf must be enabled to leverage this.
 
-It's better style to just fix the compilation issues.  I'll send a small 
-series once I test it.
+The series is also available at [2] as well.
 
-Paolo
+Changes from v6->v7:
+1. Fixed a compilation issue.
 
-> 
-> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-> ---
->   target/i386/sev.h       | 2 +-
->   target/i386/meson.build | 4 ++--
->   2 files changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/target/i386/sev.h b/target/i386/sev.h
-> index 858005a119..b0cb9dd7ed 100644
-> --- a/target/i386/sev.h
-> +++ b/target/i386/sev.h
-> @@ -45,7 +45,7 @@ typedef struct SevKernelLoaderContext {
->       size_t cmdline_size;
->   } SevKernelLoaderContext;
->   
-> -#ifdef CONFIG_SEV
-> +#if defined(CONFIG_SEV) && defined(HOST_X86_64)
->   bool sev_enabled(void);
->   bool sev_es_enabled(void);
->   bool sev_snp_enabled(void);
-> diff --git a/target/i386/meson.build b/target/i386/meson.build
-> index 075117989b..d2a008926c 100644
-> --- a/target/i386/meson.build
-> +++ b/target/i386/meson.build
-> @@ -6,7 +6,7 @@ i386_ss.add(files(
->     'xsave_helper.c',
->     'cpu-dump.c',
->   ))
-> -i386_ss.add(when: 'CONFIG_SEV', if_true: files('host-cpu.c', 'confidential-guest.c'))
-> +i386_ss.add(when: ['CONFIG_SEV', 'HOST_X86_64'], if_true: files('host-cpu.c', 'confidential-guest.c'))
->   
->   # x86 cpu type
->   i386_ss.add(when: 'CONFIG_KVM', if_true: files('host-cpu.c'))
-> @@ -21,7 +21,7 @@ i386_system_ss.add(files(
->     'cpu-apic.c',
->     'cpu-sysemu.c',
->   ))
-> -i386_system_ss.add(when: 'CONFIG_SEV', if_true: files('sev.c'), if_false: files('sev-sysemu-stub.c'))
-> +i386_system_ss.add(when: ['CONFIG_SEV', 'HOST_X86_64'], if_true: files('sev.c'), if_false: files('sev-sysemu-stub.c'))
->   
->   i386_user_ss = ss.source_set()
->   
+Changes from v5->v6:
+1. Rebased on top of alister/riscv-to-apply.next (c50aabe132) and icount fix
+   patch[4] which may cause conflicts.
+2. Fixed a bug in pmf logic related to VS<->HS transition and same mode
+   recording.
+3. Merged assorted fixes PR as the changes are intertwined. [2]
+4. Fix counter inhibit CSR behavior. This change now start counters from both
+   mhpmcounter and mcountinhibit writes. Previously cycle/inst timer was
+   only started on mhpmcounterx write.
+5. Optimized the PMU timer setup code.
+
+Changes from v4->v5:
+1. Rebased on top of master(158a054c4d1a).
+2. Fixed a bug for VS<->HS transition.
+
+Changes from v3->v4:
+1. Fixed the ordering of the ISA extension names in isa_edata_arr.
+2. Added RB tags.
+
+Changes from v2->v3:
+1. Fixed the rebasing error in PATCH2.
+2. Added RB tags.
+3. Addressed other review comments.
+
+Changes from v1->v2:
+1. Implemented actual mode filtering for both icount and host ticks mode.
+1. Addressed comments in v1.
+2. Added Kevin's personal email address.
+
+[1] https://github.com/riscv/riscv-smcntrpmf
+[2] https://github.com/atishp04/qemu/tree/b4/smcntrpmf_v7
+[3] https://lore.kernel.org/all/20240429-countinhibit_fix-v1-0-802ec1e99133@rivosinc.com/
+[4] https://lore.kernel.org/qemu-riscv/20240618112649.76683-1-cleger@rivosinc.com/
+
+Cc: Rajnesh Kanwal <rkanwal@rivosinc.com>
+
+Signed-off-by: Atish Patra <atishp@rivosinc.com>
+---
+Atish Patra (5):
+      target/riscv: Fix the predicate functions for mhpmeventhX CSRs
+      target/riscv: Implement privilege mode filtering for cycle/instret
+      target/riscv: Save counter values during countinhibit update
+      target/riscv: Enforce WARL behavior for scounteren/hcounteren
+      target/riscv: Do not setup pmu timer if OF is disabled
+
+Kaiwen Xue (3):
+      target/riscv: Add cycle & instret privilege mode filtering properties
+      target/riscv: Add cycle & instret privilege mode filtering definitions
+      target/riscv: Add cycle & instret privilege mode filtering support
+
+Rajnesh Kanwal (3):
+      target/riscv: Combine set_mode and set_virt functions.
+      target/riscv: Start counters from both mhpmcounter and mcountinhibit
+      target/riscv: More accurately model priv mode filtering.
+
+ target/riscv/cpu.c        |   2 +
+ target/riscv/cpu.h        |  20 ++-
+ target/riscv/cpu_bits.h   |  34 +++++
+ target/riscv/cpu_cfg.h    |   1 +
+ target/riscv/cpu_helper.c |  66 +++++----
+ target/riscv/csr.c        | 358 +++++++++++++++++++++++++++++++++++-----------
+ target/riscv/machine.c    |   5 +-
+ target/riscv/op_helper.c  |  17 +--
+ target/riscv/pmu.c        | 181 ++++++++++++++++++++---
+ target/riscv/pmu.h        |   4 +
+ 10 files changed, 543 insertions(+), 145 deletions(-)
+---
+base-commit: 842a3d79a0e37cd3d685c4728308fac0d9bfd0bb
+change-id: 20240626-smcntrpmf_v7-3b275d1da117
+--
+Regards,
+Atish patra
 
 
