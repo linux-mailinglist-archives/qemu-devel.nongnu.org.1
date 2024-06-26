@@ -2,83 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B13C917648
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jun 2024 04:43:58 +0200 (CEST)
-Received: from localhost ([::1] helo=lists1p.gnu.org)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06ACF91763D
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jun 2024 04:42:41 +0200 (CEST)
+Received: from [::1] (helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sMGqN-0007eL-Ak; Tue, 25 Jun 2024 20:49:04 -0400
-Received: from eggs.gnu.org ([2001:470:142:3::10])
+	id 1sMH7p-0004cn-Sq; Tue, 25 Jun 2024 21:07:05 -0400
+Received: from [2001:470:142:3::10] (helo=eggs.gnu.org)
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sMGq6-0007c6-8C
- for qemu-devel@nongnu.org; Tue, 25 Jun 2024 20:48:47 -0400
-Received: from mail-vs1-xe2f.google.com ([2607:f8b0:4864:20::e2f])
+ id 1sMH7T-0004X0-Ek; Tue, 25 Jun 2024 21:06:47 -0400
+Received: from mail-yb1-xb30.google.com ([2607:f8b0:4864:20::b30])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sMGp4-0008Oc-BP
- for qemu-devel@nongnu.org; Tue, 25 Jun 2024 20:48:32 -0400
-Received: by mail-vs1-xe2f.google.com with SMTP id
- ada2fe7eead31-48f5ae5cf20so932163137.3; 
- Tue, 25 Jun 2024 17:46:32 -0700 (PDT)
+ id 1sMH6t-0004ff-7J; Tue, 25 Jun 2024 21:06:31 -0400
+Received: by mail-yb1-xb30.google.com with SMTP id
+ 3f1490d57ef6-df481bf6680so5798811276.3; 
+ Tue, 25 Jun 2024 18:04:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1719362772; x=1719967572; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1719363873; x=1719968673; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=dZcH95/6aWpbDxh9dDlhrAjV7CtVT90I9hov7rHSLvk=;
- b=i3EPpibDd3hY8CTIjDPTxlkrFeF1aeZoITloyyM78RYC5xWow+8exrlM5C7dvFIrr9
- pKj4eCN9/E6hHm8s9U3HoKYB0ofIYR4WWgiWNtQ/r48xgCv3cHbm48Rz855U9qC1vCUp
- J+Tuh4HfouF/fhHOLHAzL35JeUqguDb67Vo1rEE5UjNKHtGTBKqNnuKo1CECOclJecrp
- NyCIOzYm2iNn/0ioq/ITxFueRcWw+799y3S9ZCFPV73s4dRsfhrGbrIwEymIRKPLj1H6
- /YHcohi9hM/hTLRuj7rmUTvfPGgVg1Xlw2JHCcJASoIWinxI/kWYrFC9z+snJPuZR/dX
- WEKA==
+ bh=cxGbC2rsByD1YwhBNK7IZT/41XoUO7KNGTNnsD+3aFQ=;
+ b=IB5fTx9iZcobKUaD7k7SlVUBT7xc7Vq7Kpb0DBnnewqgvb/7tSXviiTpr9F7zbRvj+
+ wHk0bFxCj7D33/N7VYC0imbbI0saY56jAYEzzxDcA4P8gokyfJn0QDiVR3UHcF5ZAJKQ
+ Ur7wRPKOpzL2QYgBVQR4NIVuyyq3ig7W3s5jo0gw4cUT6lmOdxSY8HDjCZqB0GfvwZ2X
+ eHQiaCqDAYu2JU9VN3LYjgDrSjm3BGa6rPfdgXYnLMb3BhuLcH4k9zUqyyuVcGPC32jI
+ f9KOV5kl0UwKKywoKsbUo2xOvw4dJSiGtsJN2VtFCv+vB3+6Pj9QhpZxcl9bEITVeOH5
+ qdDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719362772; x=1719967572;
+ d=1e100.net; s=20230601; t=1719363873; x=1719968673;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=dZcH95/6aWpbDxh9dDlhrAjV7CtVT90I9hov7rHSLvk=;
- b=C5mx0N4iCj733BGksmoDdF4WHrM2uZChJnzXPb7alcg9bBTpdFEkbda6PwWVneL16r
- uMhNPDqcf4pSE5r3jJYfzG0UuWuG4oq/jbsRM+ylUNGhuriXLnbYWxaXSypS3eaH5+Ae
- oKkKdMufQjeIMW3EfN/6mCVQEBIOnkz70IS3nV8HwtPH2m3eTMjsoGaqXZklMLj53nqB
- oAonm3T+c/GdHcnvr2W5nFERlAmk6EdjUDq/S6+TfSq1cCl4UhK3P6t7dRrSmUscYH3M
- Kv4qohH2vRorj2cvQVnx6uf4DoylThckKoFs3zy2oW0anrt0sVx0DZe+kjk6AkU9+Py7
- V1tw==
+ bh=cxGbC2rsByD1YwhBNK7IZT/41XoUO7KNGTNnsD+3aFQ=;
+ b=U46Nn9QKmsOQChgnxXTYvxHY9DaHKlGj8H8s1bdNaiPgeSnAPwGylVLuewiPxGJvtN
+ PqNx7+9yyc4IHy6483aSAemnORoSOfr5vZ3j8a8nsWEpCWUbTtJ/NRYUoCGjpcdeym5a
+ 4IKXumusUM0AvYr58NqGFkBytUMvmlypz72QP6Cnwovjw5R0FA5u1jZal1zC3LiWYKrm
+ p89SgVr344ybdusg8jI80lTKDUfRkMvuIlyS+MW0TjU3gmGICdh8K+No3jZFRzii01hW
+ HbqOnVlCfYiHsFitXtq9nu5p+MTRFrp1ihJ32lCDIBzexxD4Ykgc2LQ/d7Jo4W/xc6O1
+ VLvA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXIx9f0KyZqLrbjeBq7QBSum3keA9ohKGrO9cRc2L47Q436EpnUJYvaACngf9cHXvtYJNISDA1DERvKVal8srwKPBKMfoU=
-X-Gm-Message-State: AOJu0YwOG/xIqB7+LzaEO/ZKxtKyev7Vc3VhI4aR/GAomLDh/8i44h2S
- hGxPE1iuJRsPYbs+T3sWJP73ySED+OtPvWhwYngPGTYJMvH26f5sg+Vc1iYstRAa2z6HTmZxqn/
- P1JCesUGAHx89by/Z6by+0TZV/Ro=
-X-Google-Smtp-Source: AGHT+IHiuJ6+oPZPZqOF+PHfHIPrbnadCcn4WpykISlLBad9HY4A5aOWSbRvOu0FDY3MG2ZRXVRpBAfaspPK6iDjyDE=
-X-Received: by 2002:a67:eb02:0:b0:48f:44fe:734 with SMTP id
- ada2fe7eead31-48f52b9d88amr8772966137.27.1719362772260; Tue, 25 Jun 2024
- 17:46:12 -0700 (PDT)
+ AJvYcCUzR6A7On8Xehe7hJBip9c1PM1eRgKv26Hs+B6UMXrLBcyR4kL7NfEV7YVTzFFWruXNSmouuXM0iGlULU3hQOnOavwtOeM=
+X-Gm-Message-State: AOJu0YwvQ4xeMfIEz2bV6nq4bV2RJ9TXIvwUKpxPgJ40YrlKBW9vX/sM
+ FYzdtBfcIQZOWRgB+86V9YF5wb8qHvvvnE9L21Vny0hfAeJHkbmygvf5pGvLkwXfvYRxxpaInVE
+ RlnVhoEWJEoRyAg9Bp31fKl79Ij3Vfw==
+X-Google-Smtp-Source: AGHT+IFyEO4T5uU7YIHDoE7W32ODSNXeKpwfo1fMgZzhZXnxpkiqE1yAjOxyJGV1yu7F/hVVXP0XZP3EfHgfR3xebww=
+X-Received: by 2002:a05:6122:20a8:b0:4e4:ed90:27e6 with SMTP id
+ 71dfb90a1353d-4ef6d804647mr7805098e0c.5.1719363412963; Tue, 25 Jun 2024
+ 17:56:52 -0700 (PDT)
 MIME-Version: 1.0
-References: <20240625114629.27793-1-frank.chang@sifive.com>
-In-Reply-To: <20240625114629.27793-1-frank.chang@sifive.com>
+References: <20240624201825.1054980-1-dbarboza@ventanamicro.com>
+ <20240624201825.1054980-2-dbarboza@ventanamicro.com>
+In-Reply-To: <20240624201825.1054980-2-dbarboza@ventanamicro.com>
 From: Alistair Francis <alistair23@gmail.com>
-Date: Wed, 26 Jun 2024 10:45:45 +1000
-Message-ID: <CAKmqyKNuhtzzOU78phTKfq8qEMo53F1oPbu6iCYO-Nmmtr_XZg@mail.gmail.com>
-Subject: Re: [PATCH v3 0/6] Introduce extension implied rules
-To: frank.chang@sifive.com
-Cc: qemu-devel@nongnu.org, Palmer Dabbelt <palmer@dabbelt.com>, 
- Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bmeng.cn@gmail.com>, 
- Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>, 
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, 
- "open list:RISC-V TCG CPUs" <qemu-riscv@nongnu.org>
+Date: Wed, 26 Jun 2024 10:56:26 +1000
+Message-ID: <CAKmqyKM03Jb8a2Bjiwfs=Dc2_KvOExQxJ3RS=ug+on-Bkpz5Ug@mail.gmail.com>
+Subject: Re: [PATCH v4 01/14] exec/memtxattr: add process identifier to the
+ transaction attributes
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
+ bmeng@tinylab.org, liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, 
+ palmer@rivosinc.com, ajones@ventanamicro.com, tjeznach@rivosinc.com, 
+ frank.chang@sifive.com, jason.chien@sifive.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::e2f;
- envelope-from=alistair23@gmail.com; helo=mail-vs1-xe2f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b30;
+ envelope-from=alistair23@gmail.com; helo=mail-yb1-xb30.google.com
 X-Spam_score_int: -13
 X-Spam_score: -1.4
 X-Spam_bar: -
 X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
  DKIM_SIGNED=0.1, FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- T_SPF_HELO_TEMPERROR=0.01,
- T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,70 +91,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jun 25, 2024 at 9:48=E2=80=AFPM <frank.chang@sifive.com> wrote:
+On Tue, Jun 25, 2024 at 6:20=E2=80=AFAM Daniel Henrique Barboza
+<dbarboza@ventanamicro.com> wrote:
 >
-> From: Frank Chang <frank.chang@sifive.com>
+> From: Tomasz Jeznach <tjeznach@rivosinc.com>
 >
-> Currently, the implied extensions are enabled and checked in
-> riscv_cpu_validate_set_extensions(). However, the order of enabling the
-> implied extensions must follow a strict sequence, which is error-prone.
+> Extend memory transaction attributes with process identifier to allow
+> per-request address translation logic to use requester_id / process_id
+> to identify memory mapping (e.g. enabling IOMMU w/ PASID translations).
 >
-> This patchset introduce extension implied rule helpers to enable the
-> implied extensions. This also eliminates the old-fashioned ordering
-> requirement. For example, Zvksg implies Zvks, Zvks implies Zvksed, etc.,
-> removing the need to check the implied rules of Zvksg before Zvks.
->
-> The idea [1] and the implied rules [2] are referenced from LLVM.
->
-> [1] https://github.com/llvm/llvm-project/blob/main/llvm/lib/TargetParser/=
-RISCVISAInfo.cpp#L875
-> [2] https://github.com/llvm/llvm-project/blob/main/llvm/lib/Target/RISCV/=
-RISCVFeatures.td
->
-> Changelog:
->
-> v3:
->   - Replace the enabled bitmask of type 'uint64_t' with a dynamic bitmask
->     to support more than 64 harts.
->   - Ensure that implied rules and hash tables are initialized/created onl=
-y once.
->   - Rename variables to align nomenclature with existing variables:
->       - In RISCVCPUImpliedExtsRule structure:
->         - 'implied_misas' -> 'implied_misa_exts'
->         - 'implied_exts' -> 'implied_multi_exts'
->       - 'misa_implied_rules' -> 'misa_ext_implied_rules'
->       - 'ext_implied_rules' -> 'multi_ext_implied_rules'
->       - 'riscv_misa_implied_rules' -> 'riscv_misa_ext_implied_rules'
->       - 'riscv_ext_implied_rules -> 'riscv_multi_ext_implied_rules'
->
-> v2:
->   - Remove enabled bitmask from user-mode QEMU as there's no good way
->     (e.g. mhartid) to distinguish the SMP cores in user-mode QEMU.
->   - Use qatomic API to access the enabled bitmask to prevent the
->     potential enabled bit from being cleared by another hart.
->
-> Frank Chang (6):
->   target/riscv: Introduce extension implied rules definition
->   target/riscv: Introduce extension implied rule helpers
->   target/riscv: Add MISA extension implied rules
->   target/riscv: Add multi extension implied rules
->   target/riscv: Add Zc extension implied rule
->   target/riscv: Remove extension auto-update check statements
+> Signed-off-by: Tomasz Jeznach <tjeznach@rivosinc.com>
+> Reviewed-by: Frank Chang <frank.chang@sifive.com>
 
-Thanks!
-
-Applied to riscv-to-apply.next
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 
 Alistair
 
+> ---
+>  include/exec/memattrs.h | 5 +++++
+>  1 file changed, 5 insertions(+)
 >
->  target/riscv/cpu.c         | 396 +++++++++++++++++++++++++++++++++++++
->  target/riscv/cpu.h         |  23 +++
->  target/riscv/tcg/tcg-cpu.c | 274 ++++++++++++++-----------
->  3 files changed, 574 insertions(+), 119 deletions(-)
+> diff --git a/include/exec/memattrs.h b/include/exec/memattrs.h
+> index 14cdd8d582..46d0725416 100644
+> --- a/include/exec/memattrs.h
+> +++ b/include/exec/memattrs.h
+> @@ -52,6 +52,11 @@ typedef struct MemTxAttrs {
+>      unsigned int memory:1;
+>      /* Requester ID (for MSI for example) */
+>      unsigned int requester_id:16;
+> +
+> +    /*
+> +     * PCI PASID support: Limited to 8 bits process identifier.
+> +     */
+> +    unsigned int pasid:8;
+>  } MemTxAttrs;
 >
+>  /* Bus masters which don't specify any attributes will get this,
 > --
-> 2.43.2
+> 2.45.2
 >
 >
 
