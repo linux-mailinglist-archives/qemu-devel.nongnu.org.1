@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7111917F2E
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jun 2024 13:07:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 928FF917F32
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jun 2024 13:08:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sMQUF-0005JA-4l; Wed, 26 Jun 2024 07:06:51 -0400
+	id 1sMQUL-0005Kr-KX; Wed, 26 Jun 2024 07:06:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sMQUD-0005IR-4f
- for qemu-devel@nongnu.org; Wed, 26 Jun 2024 07:06:49 -0400
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+ id 1sMQUI-0005Jy-HM
+ for qemu-devel@nongnu.org; Wed, 26 Jun 2024 07:06:54 -0400
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sMQUA-0004ee-KT
- for qemu-devel@nongnu.org; Wed, 26 Jun 2024 07:06:48 -0400
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-7024d571d8eso5109912b3a.0
- for <qemu-devel@nongnu.org>; Wed, 26 Jun 2024 04:06:46 -0700 (PDT)
+ id 1sMQUG-0004fX-NG
+ for qemu-devel@nongnu.org; Wed, 26 Jun 2024 07:06:53 -0400
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-70683d96d0eso2313305b3a.0
+ for <qemu-devel@nongnu.org>; Wed, 26 Jun 2024 04:06:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1719400005; x=1720004805;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1719400011; x=1720004811;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=8gdrJSUaYQob8d/4ZxzgiF7J5n5fiKZWcn18f0CmUEY=;
- b=SCdPH9CMBhbehc8wnektX4X8oRmrwHenjJEZcZxUzGiTBUHwjFrtYE7P2NFEAI54t8
- dHU6ybS4HWchqGi7O9S0k9QP2Sypv5TPryRDIjftAyjTJFy59s2yUgR/Fb7drFvHzL2y
- elA7igDCBAkdGfCnu/ndsF939H/6EkityYAuCi3nbdArPnZOgp6NQX3RCUAEL/KXuKc7
- 5cu768X4yq+mGLVSuKbGHBOiu1lMxFsqGj+YNOi/8bVdaJk11m/Dqj5fu6pvFG8ttUkT
- qs3hCe+WJpTfDKEfzRZiaNmNTb/AYRxlMHVeYddN7di8cq5BBmv3mkfs88QHtvHIO7+q
- u2aA==
+ :reply-to; bh=iRIsabjOCp7YSjFwcV1tRdeNsvY9o6uLKWp2oClGRk0=;
+ b=nquZsbtDjKaqBReVXGUBgvoJcu7jMPDMavaSDJKxdOyHK79I8gDeSfpUthJAlCMwNr
+ a3eBmMMiDrNqKZn0UPF2d0ZV3lKBlIjJtPBe8/mcR8MDEm5piiyoIRx98FaK0l77tGtc
+ moxNYjF9Eko3w3oX0Qm97VpXUwJ8cbMpgasTTyHh5Dy8CdjgdSZHkzT7bVKUXLkT0a/N
+ GFPOIJOvwXRlHU+AYyzhZ9IgNDEcItmSI5Kz4kp/D/6B7hG+Rx8eRqTtO9ooy2u6Pdv2
+ mot+HTd8dRrVyEYGAMD5HaW4v9ygPsyfAzmgiGTZx74Uk6pBGk8PzOkqiJGqqvkCWTZR
+ f1gw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719400005; x=1720004805;
+ d=1e100.net; s=20230601; t=1719400011; x=1720004811;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=8gdrJSUaYQob8d/4ZxzgiF7J5n5fiKZWcn18f0CmUEY=;
- b=hWTE1qHw3JrshddahxZ4Zv+Ti5fdJTto2eKD5XaTxUQuqePPqFQmR84wwNpCJDSK07
- sNA+hvCfuG/AIhIZl63rD4L7EzWR3AT4xMQMiRnJ9wFBfnajKDztTnURsFe+1OeQNSW8
- F3lGWvLLW0NYN3Tx7l7wIJSfqLwPk3s0dOyhTG7B/IMM3DRiYW6QjOy5sp3R3Zs628oW
- xBkNFJcmej05eAHa6dt7f0F16ngJ5uDLKHiSQYVhTgQRS08G2RaDVXLWqEnorFTA746j
- NY4tGKYdoyonMn8f7tqMpWVfbiQ5Gs9kBCx3rl7/mb/p9eaJI7sHyC2TaKPFr2GOFpWc
- XhWA==
-X-Gm-Message-State: AOJu0YznRork4p3PrcNsdBnkipPL+hZpsrsRFl3Dc2WOOOJByUMrM4Cs
- 6h4NjfGuglykYHjFsuHn4aAqsvJYLBJ6pEVOzHvAcXA5E3I4P9nBbx9MeN54sws=
-X-Google-Smtp-Source: AGHT+IEm0Uk3jhijPGftXQo5d28gVdFOecDw4w56VU5pdI4g1PPkbbhI7q/sn3Q44Xj+9R245m8MMA==
-X-Received: by 2002:a05:6a20:1a96:b0:1be:c4bb:6f33 with SMTP id
- adf61e73a8af0-1bec4bb7008mr517626637.12.1719400005215; 
- Wed, 26 Jun 2024 04:06:45 -0700 (PDT)
+ bh=iRIsabjOCp7YSjFwcV1tRdeNsvY9o6uLKWp2oClGRk0=;
+ b=IMxHje8yZPjdRg6FD6KOVYZzFgwQUDQHSZI3FJ/rtWrDiUJDHuR4CaXQJpK86dOoj/
+ 9I7EM1L2Ij8o9pyJWjDMXqq57dwKlhh6HMhfrboQS9MtcYfyW0LNMNMs+GUz60YA/aaH
+ YyI5D2XEkTTTpTvLBHGFL3ZIHsGZ3evW7er4QXFQufCz6wBFDxlCo9zs6wv9m/4eWLh5
+ 4Qsk5VLbAOGzxuLoyHkbjaMKB8WVxKQ4pcFqgmkULnDhLQiCzg6mO3056hJj/cyE/Y7f
+ LF6++jT+F3Uza1GdUO/9eK5ySWkhL50aeB0gEmDKWTOS8fdthHJt19w7JqwvvjOmoBON
+ IUzg==
+X-Gm-Message-State: AOJu0Yx7Fo3w0wqINZusqEs4EEjkLQAw5CcNNG7x5yuiRVd68DobMob0
+ uJw/onosIPt55gugmtpNGrrnoY/VTTcPAFvcFDfJx/dWs8Ig2Ckf6oK75GdmrqQ=
+X-Google-Smtp-Source: AGHT+IH4urPQ6j+xa/HuI9tGhGaIO4IdTUEaZsjK099SMnteGDVmWKgkI9WZGwDiutNH4K+I8urtaA==
+X-Received: by 2002:a05:6a00:4ba6:b0:706:61d5:2792 with SMTP id
+ d2e1a72fcca58-7066e52a5bfmr8524764b3a.8.1719400011404; 
+ Wed, 26 Jun 2024 04:06:51 -0700 (PDT)
 Received: from localhost ([157.82.204.135])
  by smtp.gmail.com with UTF8SMTPSA id
- d9443c01a7336-1f9eb4ea7dbsm97876115ad.213.2024.06.26.04.06.40
+ d2e1a72fcca58-7067d11a437sm6020153b3a.118.2024.06.26.04.06.46
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 26 Jun 2024 04:06:44 -0700 (PDT)
+ Wed, 26 Jun 2024 04:06:50 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Wed, 26 Jun 2024 20:06:24 +0900
-Subject: [PATCH 01/14] hw/core: Free CPUState allocations
+Date: Wed, 26 Jun 2024 20:06:25 +0900
+Subject: [PATCH 02/14] hw/ide: Free macio-ide IRQs
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240626-san-v1-1-f3cc42302189@daynix.com>
+Message-Id: <20240626-san-v1-2-f3cc42302189@daynix.com>
 References: <20240626-san-v1-0-f3cc42302189@daynix.com>
 In-Reply-To: <20240626-san-v1-0-f3cc42302189@daynix.com>
 To: Eduardo Habkost <eduardo@habkost.net>, 
@@ -82,8 +82,8 @@ To: Eduardo Habkost <eduardo@habkost.net>,
 Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, qemu-ppc@nongnu.org, 
  Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.14-dev-fd6e3
-Received-SPF: none client-ip=2607:f8b0:4864:20::435;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x435.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::431;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x431.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -109,23 +109,36 @@ This suppresses LeakSanitizer warnings.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- hw/core/cpu-common.c | 3 +++
- 1 file changed, 3 insertions(+)
+ hw/ide/macio.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/hw/core/cpu-common.c b/hw/core/cpu-common.c
-index 0f0a247f5642..42f38b01a97f 100644
---- a/hw/core/cpu-common.c
-+++ b/hw/core/cpu-common.c
-@@ -274,6 +274,9 @@ static void cpu_common_finalize(Object *obj)
- {
-     CPUState *cpu = CPU(obj);
+diff --git a/hw/ide/macio.c b/hw/ide/macio.c
+index aca90d04f0e8..d8fbc1a17ba6 100644
+--- a/hw/ide/macio.c
++++ b/hw/ide/macio.c
+@@ -464,6 +464,14 @@ static void macio_ide_initfn(Object *obj)
+                              qdev_prop_allow_set_link_before_realize, 0);
+ }
  
-+    g_free(cpu->thread);
-+    g_free(cpu->halt_cond);
-+    g_free(cpu->cpu_ases);
-     g_array_free(cpu->gdb_regs, TRUE);
-     qemu_lockcnt_destroy(&cpu->in_ioctl_lock);
-     qemu_mutex_destroy(&cpu->work_mutex);
++static void macio_ide_finalize(Object *obj)
++{
++    MACIOIDEState *s = MACIO_IDE(obj);
++
++    qemu_free_irq(s->dma_irq);
++    qemu_free_irq(s->ide_irq);
++}
++
+ static Property macio_ide_properties[] = {
+     DEFINE_PROP_UINT32("channel", MACIOIDEState, channel, 0),
+     DEFINE_PROP_UINT32("addr", MACIOIDEState, addr, -1),
+@@ -486,6 +494,7 @@ static const TypeInfo macio_ide_type_info = {
+     .parent = TYPE_SYS_BUS_DEVICE,
+     .instance_size = sizeof(MACIOIDEState),
+     .instance_init = macio_ide_initfn,
++    .instance_finalize = macio_ide_finalize,
+     .class_init = macio_ide_class_init,
+ };
+ 
 
 -- 
 2.45.2
