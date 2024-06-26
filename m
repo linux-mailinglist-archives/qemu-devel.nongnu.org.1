@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA942917F3F
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jun 2024 13:09:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC51D917F39
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jun 2024 13:09:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sMQV7-0006KQ-6z; Wed, 26 Jun 2024 07:07:45 -0400
+	id 1sMQV6-00069G-28; Wed, 26 Jun 2024 07:07:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sMQUv-0005wi-Lz
+ id 1sMQUw-0005x4-VJ
  for qemu-devel@nongnu.org; Wed, 26 Jun 2024 07:07:35 -0400
-Received: from mail-pg1-x52d.google.com ([2607:f8b0:4864:20::52d])
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sMQUp-0004kx-OM
+ id 1sMQUq-0004om-BQ
  for qemu-devel@nongnu.org; Wed, 26 Jun 2024 07:07:33 -0400
-Received: by mail-pg1-x52d.google.com with SMTP id
- 41be03b00d2f7-6e3741519d7so4515848a12.2
- for <qemu-devel@nongnu.org>; Wed, 26 Jun 2024 04:07:23 -0700 (PDT)
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-1f47f07acd3so53930905ad.0
+ for <qemu-devel@nongnu.org>; Wed, 26 Jun 2024 04:07:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1719400041; x=1720004841;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1719400047; x=1720004847;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=mUrmTt8+oFrzMkNkVkHTZpmYshFavrmG3OzzHBupQWA=;
- b=yhKuopH7NajgdB0EjwxQaCBPu3qyb8EajO8IOqVMA6b2IIfReFhhTQOX6rNEBjmjrO
- g32wB5dliPrTZrS5oH9auxe7pq69dWt1SiDhwjSB6cZL3d1bZW7iySCxIKTttBK20iNI
- EZQPHIomKhE/vWiM9yRUGOzKZVmG32bKxj2Dg4kWL7TMPkfvxnlrp0kYnusIKHoWgPeI
- JrVU2lwhN9BsrfKEtySQf7NHRF7+NIu1uSFrNvn8IdKcD4UKBzyrYzaGL6KYoHEDMF5X
- 9fZzRPO6fnBXXol4xQjO5Ny7ZVZ1IKDjAQHPo7+jVsntMAniafzvUS7Ctyg/6ltGzAD8
- LEoA==
+ :reply-to; bh=iVExPEERs03d8J7JOBkBCKVU3MF1YFO5OIPVbHq+rGo=;
+ b=PJKT2esgUPOSw4PI1EviJa7jzgkEzKz8wr71MnZDp2IK/jlrk+dCS3nlm0ms4jHOvp
+ qzYXEEUc/MZ24ig7zqKsLZJVV30vCxYafjzoGSuq2+a4Tec4G4ex8Y+Z8azB7MCfXh8a
+ 92ws+Sy1yHDe/bRz3IqbfEw06HO3nO0AsUrsbFIBr9ho2nQmfZ3Rd22oICkkUCD2luW8
+ dhHBOzk2whFQcRUJC7nkbTQzPB7J0iQrvoq3tF4d2n8RHO3HMI7RKEBDwwChLpBG4uxy
+ +Z/i0nJ3TlyXNRyD/5+B4efdhXeoW4iHTC4pjsG7rg9OF7PP+LSRcjZlVxw+AmXmhedH
+ kZ4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719400041; x=1720004841;
+ d=1e100.net; s=20230601; t=1719400047; x=1720004847;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=mUrmTt8+oFrzMkNkVkHTZpmYshFavrmG3OzzHBupQWA=;
- b=ePiwwyMo1aHBb1m8ANDzYKXu/TlD2Tj5Rx0b7Ik7rjbefCeyoNhYlELTbXhZDh1W5n
- dFZJ6kXdYisMNLsnfJqinyVtLr3o7/5oDpo8BKX+gC8k6wMU9AV3AL2EWWDQKIEjOU58
- 7mzxvG1bH2Ggzob9bk6ep/OPzPXh0gs3cT9teavic46AT6/zSm/qaErMUF7QsLjFcIvY
- LlOhR0e6gc3tPyKlD7V2MQZOvh5pufuqrC5pPbHHb2PZ+KzDmD3acp9rYBSOY+FIeXYP
- A37rRYH7k8rRPY5Kt7/wdnQ+BwXz5k/oZE3TCYm1Hs+AAUD78CnYkj6uKDlFcw/qvpzF
- HK3g==
-X-Gm-Message-State: AOJu0YyWDnIF3iP4hj1qnUcUy4argv5zEZoffY3VYpfZM8To5FRQd29q
- TFxRzBPosP/NXOtGcXBtaTcxFxpotvYwq/iqfQE1JOPk3cksI1MvqrpFUm8YIJs=
-X-Google-Smtp-Source: AGHT+IE4qbHI1diVoBe9v5IequM5ti+nRE8x43HfaWZexsEG4+NNwDbERwgbGUr7DxNcZjxO9MjDLw==
-X-Received: by 2002:a17:90a:8c91:b0:2c8:538d:95b7 with SMTP id
- 98e67ed59e1d1-2c8538d9832mr8818555a91.32.1719400040964; 
- Wed, 26 Jun 2024 04:07:20 -0700 (PDT)
+ bh=iVExPEERs03d8J7JOBkBCKVU3MF1YFO5OIPVbHq+rGo=;
+ b=OuApOCNywMR+5ddyTi8KKA6t7yvN3WgIbLM5msSVa/LcSh5TgbjqoAKpYSnY9TMeWw
+ 7/eUXdAYnzgf3r9xlpSMB97ONacC3TIWWGeRBHuZaS2hME4KltxtkBMebyt9oIhP4LSl
+ SYMdUwbRHCPLaEI9/FK/VBFVNDUQINYScz0NVovaeEXA3J60yI+XeTXq7DBT+GPpDwX0
+ cuzo0wTpeXV6lRkTVSB0JZBTMxGJSCr6T2NSBzaeJEUmAV2wJEgOR2+TvH3RwhRpezpP
+ fBcIVhFGcSxwu9d9gExGx2KV2kY4yLEB6DpTHX2pGbnCCCE6FLiSrlWEN240oubV3Q/F
+ Hclw==
+X-Gm-Message-State: AOJu0Yz4cGKmBSVKLFSlJ68/vAaAMu+PqQh/uUkUZmqKLLuKVkphU/qJ
+ nvgDW46CuHuyRMbKBu1iT6YuXVaqyu2E95uFXi9fdQZz1RUe5T1bZ9/YqDGhcm0=
+X-Google-Smtp-Source: AGHT+IFHZSiES9BZEEPk+NXe29hftgQvC9L7D5dfAK7MIvE4y2e9kzrX+7AOJKzd50WKmiX8oIWT7Q==
+X-Received: by 2002:a17:90b:1d89:b0:2c7:9b9a:7619 with SMTP id
+ 98e67ed59e1d1-2c858275bd3mr9505817a91.32.1719400046756; 
+ Wed, 26 Jun 2024 04:07:26 -0700 (PDT)
 Received: from localhost ([157.82.204.135])
  by smtp.gmail.com with UTF8SMTPSA id
- 98e67ed59e1d1-2c8d8061497sm1380082a91.34.2024.06.26.04.07.16
+ 98e67ed59e1d1-2c8e3d5c212sm658497a91.39.2024.06.26.04.07.22
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 26 Jun 2024 04:07:20 -0700 (PDT)
+ Wed, 26 Jun 2024 04:07:26 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Wed, 26 Jun 2024 20:06:30 +0900
-Subject: [PATCH 07/14] migration: Free removed SaveStateEntry
+Date: Wed, 26 Jun 2024 20:06:31 +0900
+Subject: [PATCH 08/14] memory: Do not create circular reference with subregion
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240626-san-v1-7-f3cc42302189@daynix.com>
+Message-Id: <20240626-san-v1-8-f3cc42302189@daynix.com>
 References: <20240626-san-v1-0-f3cc42302189@daynix.com>
 In-Reply-To: <20240626-san-v1-0-f3cc42302189@daynix.com>
 To: Eduardo Habkost <eduardo@habkost.net>, 
@@ -82,14 +82,14 @@ To: Eduardo Habkost <eduardo@habkost.net>,
 Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, qemu-ppc@nongnu.org, 
  Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.14-dev-fd6e3
-Received-SPF: none client-ip=2607:f8b0:4864:20::52d;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x52d.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::636;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x636.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+ SPF_NONE=0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,25 +105,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This suppresses LeakSanitizer warnings.
+A memory region does not use their own reference counters, but instead
+piggybacks on another QOM object, "owner" (unless the owner is not the
+memory region itself). When creating a subregion, a new reference to the
+owner of the container must be created. However, if the subregion is
+owned by the same QOM object, this result in a self-reference, and make
+the owner immortal. Avoid such a self-reference.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- migration/savevm.c | 2 ++
- 1 file changed, 2 insertions(+)
+ system/memory.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/migration/savevm.c b/migration/savevm.c
-index c621f2359ba3..10b261823b7c 100644
---- a/migration/savevm.c
-+++ b/migration/savevm.c
-@@ -874,6 +874,8 @@ int vmstate_replace_hack_for_ppc(VMStateIf *obj, int instance_id,
+diff --git a/system/memory.c b/system/memory.c
+index 9540caa8a1f4..6645da02c658 100644
+--- a/system/memory.c
++++ b/system/memory.c
+@@ -2638,7 +2638,10 @@ static void memory_region_update_container_subregions(MemoryRegion *subregion)
  
-     if (se) {
-         savevm_state_handler_remove(se);
-+        g_free(se->compat);
-+        g_free(se);
+     memory_region_transaction_begin();
+ 
+-    memory_region_ref(subregion);
++    if (mr->owner != subregion->owner) {
++        memory_region_ref(subregion);
++    }
++
+     QTAILQ_FOREACH(other, &mr->subregions, subregions_link) {
+         if (subregion->priority >= other->priority) {
+             QTAILQ_INSERT_BEFORE(other, subregion, subregions_link);
+@@ -2696,7 +2699,11 @@ void memory_region_del_subregion(MemoryRegion *mr,
+         assert(alias->mapped_via_alias >= 0);
      }
-     return vmstate_register(obj, instance_id, vmsd, opaque);
+     QTAILQ_REMOVE(&mr->subregions, subregion, subregions_link);
+-    memory_region_unref(subregion);
++
++    if (mr->owner != subregion->owner) {
++        memory_region_unref(subregion);
++    }
++
+     memory_region_update_pending |= mr->enabled && subregion->enabled;
+     memory_region_transaction_commit();
  }
 
 -- 
