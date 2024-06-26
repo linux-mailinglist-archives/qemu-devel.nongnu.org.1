@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 752CE917F37
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jun 2024 13:08:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4713F917F33
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jun 2024 13:08:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sMQUR-0005R4-Hr; Wed, 26 Jun 2024 07:07:03 -0400
+	id 1sMQV3-0005r0-Je; Wed, 26 Jun 2024 07:07:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sMQUO-0005OP-3H
- for qemu-devel@nongnu.org; Wed, 26 Jun 2024 07:07:00 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ id 1sMQUa-0005gM-Ka
+ for qemu-devel@nongnu.org; Wed, 26 Jun 2024 07:07:12 -0400
+Received: from mail-pg1-x52d.google.com ([2607:f8b0:4864:20::52d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sMQUM-0004gS-Hx
- for qemu-devel@nongnu.org; Wed, 26 Jun 2024 07:06:59 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-1fa2ea1c443so29122345ad.0
- for <qemu-devel@nongnu.org>; Wed, 26 Jun 2024 04:06:58 -0700 (PDT)
+ id 1sMQUT-0004iN-E2
+ for qemu-devel@nongnu.org; Wed, 26 Jun 2024 07:07:11 -0400
+Received: by mail-pg1-x52d.google.com with SMTP id
+ 41be03b00d2f7-6eab07ae82bso4711376a12.3
+ for <qemu-devel@nongnu.org>; Wed, 26 Jun 2024 04:07:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1719400017; x=1720004817;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1719400023; x=1720004823;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=NdtXuYtoYpM+68cWqs8hQd4tffE/iSVor/TSMG9jMpE=;
- b=PPauVM+UgMUALgAr2fPV8PkAPs0l5wP4h749VNITr2FVNnIZj9Vjp9bDeD5Enqgi1e
- zKzqgow6MU7nCBGtWauC0qWWuCCNbC4EaAAJQpCLy3P4Rplcfn+h5KWDU46JbmJfG5JC
- HJHjNXi26vgwn0ryQpxYpnFNnZVA0ndESeppXClx8QKUqRk1h2n/FUM1SeiUAKSYk3IL
- 1ORmS4qWGyTolpD7fUc79OP7QiWEPsFG9stszDntRN8lVHu5kjYpIpAvkuVNXJCAKHmK
- ABGk4R5CH4QR4ZIIcFd1aFBDiucay75pDnt8t70Ft7+yhjCjiy5SAQZrbhFU2Gi/emDR
- JITw==
+ :reply-to; bh=hHflsNUlf0krU4+kDJRTbEl0rU+aWlAR1DnSBXEnGRI=;
+ b=NdMvlcJVHT9c5bfKIGnRRZ/o7s+orbVtxInFdJmZfajwgiw8VKY6eamj6EbmjaWc9S
+ Kypw4dmL0K24sW8m4zY7ydRTQ27Idpxc916/c5JuHv0JDgqeXlqZDgtYT0/F9SeBRhEy
+ FzafFa1cN4Y4iU3kFz2PlN/PMR8Z/57dkBCbfAFEM/knKr7yklC267j/4AK7krmdN2hD
+ b3X7dPIJygXDFB0dHyz9WAkWGT6y9pNmeOskQl2VVJBIsAuPfMjiWClZip4O/eBZvU1a
+ BTlF8D3/f4f7Pxf/Hzeph6PlozPTx1sfuphnxOeXSf0vVQ9F3FGeCL99xzXPtmiGHU48
+ fNdA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719400017; x=1720004817;
+ d=1e100.net; s=20230601; t=1719400023; x=1720004823;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=NdtXuYtoYpM+68cWqs8hQd4tffE/iSVor/TSMG9jMpE=;
- b=AQc6QXlGYToUtD4IQrchzh3jK8ghgOWbEzm4yroj6j1neO2jLFT6cIbQFh8JH1Q5QG
- vbS8diu3oSZU7pr9xCm4U3XPOmFrULumk/Gn7yckA14YCzHT7b5TV/d8GXfhtGFNqGR+
- CCDRYZ+QduEwfCreGkPksSy6Uxak0XWkrcNxq7EbMruDlTjp1ictuLodlba0sJGdwYsN
- vhlotoEwQM7RhImmxTwX2BB9mdym33rp2otpXKIceGXq55OnzyivhCQY6hxDXNZb/zvK
- yxg3D0IEEJmGdEVowl3XedCNGsYsVXhlSpjEoexNSHxf8h/+aZ1u/BeS0HtPja+GxwGt
- IFfQ==
-X-Gm-Message-State: AOJu0YweL/YTNwAtsG3SJUcF7+Imdfu8Tl+o+FOCQ/kiEMZxNmDVhT9C
- SWk2yItSdbBcf1dB6Yak5HVAq39xUdsWbmpu8BrfS61vGsgI/MwrXXM/XNBDa/o=
-X-Google-Smtp-Source: AGHT+IFg1T+vqFnUee178oY9EUIeMhokug+RTUydh6dLIMpcg1X+lIRMwce+VWX5z7BcMoNNVng/8A==
-X-Received: by 2002:a17:902:ea01:b0:1f7:3a5b:2f0 with SMTP id
- d9443c01a7336-1fa23ef7803mr126640085ad.44.1719400017213; 
- Wed, 26 Jun 2024 04:06:57 -0700 (PDT)
+ bh=hHflsNUlf0krU4+kDJRTbEl0rU+aWlAR1DnSBXEnGRI=;
+ b=s/W6z3TXXBXuuO60+3Z7UKrQpuOCMkdFBrhDkZgOdt8U29ysVj5beMVZY8rn2i0TzO
+ oB2drqYK36Z87Z1BY+Je8ECDb69rQzuJNLRDcVjjd2OPU+1QIxYq/52M0dQJ+R6PscCI
+ +4CdWV3uT1dv3SBInbX5ArD2JphUiJ+M02r74TB908DQj9sqidOWhcVD5nk62XbSOXLl
+ xIWA5qX4XR4FGvY2t9oOkK9hW01SaQYZoSuQchY3iYWE+eR4pIsu0Gd06oSDJI7QB7w1
+ +UtUwfoek+4Ad6kDVDDDkqFYxgugYKD+lQxJh9rFNZpXXnGNKhiFXYxhzWjStuyKnvII
+ bXeA==
+X-Gm-Message-State: AOJu0YxP2JiYP1NiCqFIkOjuFZV5mYMafKggve2Pa6QV+or+u4sNz89x
+ 9uhzoloLMNtDECOn37MQa9aHraUS3SwenEgEHJs/FRSzTJBeZ5igw7P+hBVq5vE=
+X-Google-Smtp-Source: AGHT+IEVt4in5VKGiMWbgfza8PvhkVGfPJcperKBRoRNL31xxHf2zwlIVtjISGk/ZZcjgSQh3kkVXw==
+X-Received: by 2002:a17:90a:f190:b0:2c8:a8e:c1cd with SMTP id
+ 98e67ed59e1d1-2c86124b458mr9135582a91.11.1719400023087; 
+ Wed, 26 Jun 2024 04:07:03 -0700 (PDT)
 Received: from localhost ([157.82.204.135])
  by smtp.gmail.com with UTF8SMTPSA id
- d9443c01a7336-1fa2ac93ad8sm62979925ad.266.2024.06.26.04.06.52
+ 98e67ed59e1d1-2c8d81d2f15sm1371829a91.55.2024.06.26.04.06.58
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 26 Jun 2024 04:06:56 -0700 (PDT)
+ Wed, 26 Jun 2024 04:07:02 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Wed, 26 Jun 2024 20:06:26 +0900
-Subject: [PATCH 03/14] hw/isa/vt82c686: Free irqs
+Date: Wed, 26 Jun 2024 20:06:27 +0900
+Subject: [PATCH 04/14] spapr: Free stdout path
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240626-san-v1-3-f3cc42302189@daynix.com>
+Message-Id: <20240626-san-v1-4-f3cc42302189@daynix.com>
 References: <20240626-san-v1-0-f3cc42302189@daynix.com>
 In-Reply-To: <20240626-san-v1-0-f3cc42302189@daynix.com>
 To: Eduardo Habkost <eduardo@habkost.net>, 
@@ -82,14 +82,14 @@ To: Eduardo Habkost <eduardo@habkost.net>,
 Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, qemu-ppc@nongnu.org, 
  Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.14-dev-fd6e3
-Received-SPF: none client-ip=2607:f8b0:4864:20::634;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x634.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::52d;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x52d.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+ SPF_NONE=0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,31 +109,22 @@ This suppresses LeakSanitizer warnings.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- hw/isa/vt82c686.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ hw/ppc/spapr_vof.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/isa/vt82c686.c b/hw/isa/vt82c686.c
-index 8582ac0322eb..189b487f1d22 100644
---- a/hw/isa/vt82c686.c
-+++ b/hw/isa/vt82c686.c
-@@ -721,7 +721,6 @@ static void via_isa_realize(PCIDevice *d, Error **errp)
+diff --git a/hw/ppc/spapr_vof.c b/hw/ppc/spapr_vof.c
+index 09f29be0b9de..c02eaacfed0b 100644
+--- a/hw/ppc/spapr_vof.c
++++ b/hw/ppc/spapr_vof.c
+@@ -28,7 +28,7 @@ target_ulong spapr_h_vof_client(PowerPCCPU *cpu, SpaprMachineState *spapr,
  
-     qdev_init_gpio_out(dev, &s->cpu_intr, 1);
-     qdev_init_gpio_in_named(dev, via_isa_pirq, "pirq", PCI_NUM_PINS);
--    isa_irq = qemu_allocate_irqs(via_isa_request_i8259_irq, s, 1);
-     isa_bus = isa_bus_new(dev, pci_address_space(d), pci_address_space_io(d),
-                           errp);
+ void spapr_vof_client_dt_finalize(SpaprMachineState *spapr, void *fdt)
+ {
+-    char *stdout_path = spapr_vio_stdout_path(spapr->vio_bus);
++    g_autofree char *stdout_path = spapr_vio_stdout_path(spapr->vio_bus);
  
-@@ -729,7 +728,9 @@ static void via_isa_realize(PCIDevice *d, Error **errp)
-         return;
-     }
+     vof_build_dt(fdt, spapr->vof);
  
-+    isa_irq = qemu_allocate_irqs(via_isa_request_i8259_irq, s, 1);
-     s->isa_irqs_in = i8259_init(isa_bus, *isa_irq);
-+    qemu_free_irqs(isa_irq, 1);
-     isa_bus_register_input_irqs(isa_bus, s->isa_irqs_in);
-     i8254_pit_init(isa_bus, 0x40, 0, NULL);
-     i8257_dma_init(OBJECT(d), isa_bus, 0);
 
 -- 
 2.45.2
