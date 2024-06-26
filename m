@@ -2,60 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55246919B15
+	by mail.lfdr.de (Postfix) with ESMTPS id 516CB919B14
 	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jun 2024 01:14:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sMbp4-000385-Os; Wed, 26 Jun 2024 19:13:06 -0400
+	id 1sMbp6-00038p-0p; Wed, 26 Jun 2024 19:13:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1sMbp1-00037n-Lx
+ id 1sMbp1-00037u-Ss
  for qemu-devel@nongnu.org; Wed, 26 Jun 2024 19:13:03 -0400
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1sMboz-0000O5-T5
+ id 1sMbp0-0000OA-BA
  for qemu-devel@nongnu.org; Wed, 26 Jun 2024 19:13:03 -0400
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-1fa244db0b2so37305145ad.3
- for <qemu-devel@nongnu.org>; Wed, 26 Jun 2024 16:13:00 -0700 (PDT)
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-1f64ecb1766so55240115ad.1
+ for <qemu-devel@nongnu.org>; Wed, 26 Jun 2024 16:13:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719443579; x=1720048379; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=bWHbxHSxdgz6rxef5BbyKktjuRNkDnV5c7BTIo2gVmA=;
- b=d3JOm+583S+wc24q1Zbd9IdlC2wtrKSgUeE5seJ5GnDkKdXHBTBg8NJMilB6PtbeT5
- CvKBPuiMnJCAdwc24PRbNF28VrB/AOC4BlG/WI2mCjKEpUPgugyv86FGOk3sFr+CKlCg
- kEfDV2Kg0OhWko898hF+FdYG/97e8d+2Hz42z+O+BjG9Ix8YNazT0xFwZ0oAsbVmflMh
- 3PNVLOKZkpn9KCEw6dOjIdw59lb5Vl3vbhqQuerYLQTAmVpxORq6SRuSmfJSNTSN9X/N
- cNWU3BZ+B3XgInB/j6sdOFFRpKyOc74iWNkx19HMkkcDOG+gvq1aZ9yYsBR3SKX001Bc
- 5gZQ==
+ d=linaro.org; s=google; t=1719443580; x=1720048380; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=zs33WUET3TwShkJZi0v92Kdx2DNNU6JjJOAyINKhk/A=;
+ b=n0Or9DdjfvPbekEtxWyOr75G1YMsVilhH2jw1uul4adaPCk3owzVLJwIgpXXfQMlLt
+ G1SwQRkK1phO/TDGmRwzJom9DwJOIcp+0HQdqFBLpSdG9Lllr3OEwXxbvhAE4qP4fpdu
+ ej12U2y7IwZE/6e74IJulOHFmzv8gdPMBoK4/ya7qSR9Cvs00OX5CZCceKo6QvB6ctCV
+ gvlDJcUqB7Mi5g6rFaNLU9PXxVMjC74uWz1gl7MA5VI8+J9qdz8yqDeuzDpCdBxwmEkL
+ ChQTezdtGgHIBp0yl0BW1Vi4zT8Pdx3UebJis6g3p8WGIMx4V3P5gsrLKBEzYO2U6ekw
+ hajA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719443579; x=1720048379;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=bWHbxHSxdgz6rxef5BbyKktjuRNkDnV5c7BTIo2gVmA=;
- b=xClck4jMYEl7nMLJNqHHxLk5bpd3aJQld+9ZSQEC+wVmbNHTr0OK1ECNEjnW547bTv
- thhk9bm2XXZosfbASdnfyyuUuEhHRCQENVLb5sHanNahvB5XMu3qGxfK5C5ydRNSoj3y
- czrNtjR9l1fKZpTnWYBvfbB4h8b5jyAd1qx71bqlDcO4y3r0n0+G/UkJKoTc6l82gk3x
- BGCONeWOotzNraoXEiQ4MbtdqNNmNopP7STVQaeNTpDQcRUzX41VWU25781yc32ftrjj
- iHRWksyTw/ZPNL9pBt1LYtIhiR3ev9JDfa8SwoqN/1IDxBHhoHMueuZGZprZUTvbljT2
- SyxQ==
-X-Gm-Message-State: AOJu0Yy64DqFgaX0c5dv5DlDLhZaTsOM6my7KSMMbx4I2bf7Udud2Kv+
- qx9ZzYmmWvHVJI35cdtHUvhi4faU1m7vEYF40hVsymny8rU9Hcew6uHlGn4zWyxledMpOeXTt4I
- 55Os=
-X-Google-Smtp-Source: AGHT+IHnj1bZc/iY5DKxumsXlV/JxiO/FwBhe7Go5CHiUOi07+y7/otssDt05aMGmHIhkzIq632mhw==
-X-Received: by 2002:a17:902:d4c7:b0:1fa:128c:4315 with SMTP id
- d9443c01a7336-1fa15937ac6mr135336835ad.44.1719443578738; 
- Wed, 26 Jun 2024 16:12:58 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1719443580; x=1720048380;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=zs33WUET3TwShkJZi0v92Kdx2DNNU6JjJOAyINKhk/A=;
+ b=CX0PXVNQnnPSDdIoP9002v8IeAYP0DyisFvCKOE0JW6AL3bVunhPMxjMke3DOB+PXV
+ RE4K9Y/bbYis/GRZXOVv11SkJCLi6Bf94E+bNPRJxeJGcifZHrqSqf7IGQJZ6wV38QG3
+ rbbtwUB1VUhdukHls4T9RB3wZ2UdXISjrDgNzgJnDLsVgkj1SjlYsRTBJQAo2uK2hwF8
+ /GrHw7orpTnjksGp8HyBXkOHoeAlj4Mf85JSv3f6mBD3xOKmdReU6LuT4art0MIVtQKk
+ 1EnZYbiVrYxn6BNZeMYp3DDWBkaPge4Xdk13KM+PVVUvps4vn1VobXkTddqI06zlX630
+ Yozw==
+X-Gm-Message-State: AOJu0YxpQreVcbmecd5poTApUs8oCYyI56N42CgItnlN9YvLVwQFo5SF
+ LLrOR4FeGzUbjMCmWkL7WhAl2l+ly277tKQq0nCGnEQNYgFLo1mj0CGXYq/pQiEbLwOXYAB0SfX
+ mfno=
+X-Google-Smtp-Source: AGHT+IEsfFw9YiaByLuzu6aiDzdQ0PqaouTqgeJ9vG0tgI2s8V6aBZH3f36ljcaphif/R0JyygI23w==
+X-Received: by 2002:a17:902:eccb:b0:1f7:1ba5:85ff with SMTP id
+ d9443c01a7336-1fa1d673c80mr136315375ad.57.1719443580340; 
+ Wed, 26 Jun 2024 16:13:00 -0700 (PDT)
 Received: from linaro.vn.shawcable.net ([2604:3d08:9384:1d00::2193])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1faac82cd3bsm478215ad.0.2024.06.26.16.12.57
+ d9443c01a7336-1faac82cd3bsm478215ad.0.2024.06.26.16.12.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 26 Jun 2024 16:12:58 -0700 (PDT)
+ Wed, 26 Jun 2024 16:12:59 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
@@ -65,15 +66,16 @@ Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Alexandre Iooss <erdnaxe@crans.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH 0/7] plugins: access values during a memory read/write
-Date: Wed, 26 Jun 2024 16:12:48 -0700
-Message-Id: <20240626231255.339353-1-pierrick.bouvier@linaro.org>
+Subject: [PATCH 1/7] plugins: fix mem callback array size
+Date: Wed, 26 Jun 2024 16:12:49 -0700
+Message-Id: <20240626231255.339353-2-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.39.2
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20240626231255.339353-1-pierrick.bouvier@linaro.org>
+References: <20240626231255.339353-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x62c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x634.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,49 +98,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series allows plugins to know which value is read/written during a memory
-access.
+data was correctly copied, but size of array was not set
+(g_array_sized_new only reserves memory, but does not set size).
 
-For every memory access, we know copy this value before calling mem callbacks,
-and those can query it using new API functions:
-- qemu_plugin_mem_get_value_upper_bits
-- qemu_plugin_mem_get_value_lower_bits
+As a result, callbacks were not called for code path relying on
+plugin_register_vcpu_mem_cb().
 
-Mem plugin was extended to print accesses, and a new test was added to check
-functionality work as expected. A bug was found where callbacks were not
-called as expected.
+Found when trying to trigger mem access callbacks for atomic
+instructions.
 
-This will open new use cases for plugins, such as following specific values in
-memory.
+Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+---
+ accel/tcg/plugin-gen.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-Pierrick Bouvier (7):
-  plugins: fix mem callback array size
-  plugins: save value during memory accesses
-  plugins: extend API to get latest memory value accessed
-  tests/tcg: add mechanism to run specific tests with plugins
-  tests/tcg: allow to check output of plugins
-  tests/plugin/mem: add option to print memory accesses
-  tests/tcg/x86_64: add test for plugin memory access
-
- accel/tcg/atomic_template.h                 | 64 +++++++++++++--
- include/qemu/plugin.h                       |  8 ++
- include/qemu/qemu-plugin.h                  | 20 +++++
- accel/tcg/plugin-gen.c                      |  3 +-
- plugins/api.c                               | 21 +++++
- plugins/core.c                              |  7 ++
- tcg/tcg-op-ldst.c                           | 72 +++++++++++++++--
- tests/plugin/mem.c                          | 28 ++++++-
- tests/tcg/x86_64/test-plugin-mem-access.c   | 89 +++++++++++++++++++++
- accel/tcg/atomic_common.c.inc               | 13 ++-
- accel/tcg/ldst_common.c.inc                 | 38 +++++----
- plugins/qemu-plugins.symbols                |  2 +
- tests/tcg/Makefile.target                   |  8 +-
- tests/tcg/x86_64/Makefile.target            |  7 ++
- tests/tcg/x86_64/check-plugin-mem-access.sh | 48 +++++++++++
- 15 files changed, 393 insertions(+), 35 deletions(-)
- create mode 100644 tests/tcg/x86_64/test-plugin-mem-access.c
- create mode 100755 tests/tcg/x86_64/check-plugin-mem-access.sh
-
+diff --git a/accel/tcg/plugin-gen.c b/accel/tcg/plugin-gen.c
+index b6bae32b997..ec89a085b43 100644
+--- a/accel/tcg/plugin-gen.c
++++ b/accel/tcg/plugin-gen.c
+@@ -85,8 +85,7 @@ static void gen_enable_mem_helper(struct qemu_plugin_tb *ptb,
+     len = insn->mem_cbs->len;
+     arr = g_array_sized_new(false, false,
+                             sizeof(struct qemu_plugin_dyn_cb), len);
+-    memcpy(arr->data, insn->mem_cbs->data,
+-           len * sizeof(struct qemu_plugin_dyn_cb));
++    g_array_append_vals(arr, insn->mem_cbs->data, len);
+     qemu_plugin_add_dyn_cb_arr(arr);
+ 
+     tcg_gen_st_ptr(tcg_constant_ptr((intptr_t)arr), tcg_env,
 -- 
 2.39.2
 
