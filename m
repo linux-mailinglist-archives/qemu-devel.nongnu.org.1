@@ -2,70 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D37A3917F2B
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jun 2024 13:07:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7111917F2E
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jun 2024 13:07:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sMQU9-0005F8-PC; Wed, 26 Jun 2024 07:06:45 -0400
+	id 1sMQUF-0005JA-4l; Wed, 26 Jun 2024 07:06:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sMQU8-0005EO-2t
- for qemu-devel@nongnu.org; Wed, 26 Jun 2024 07:06:44 -0400
-Received: from mail-pg1-x533.google.com ([2607:f8b0:4864:20::533])
+ id 1sMQUD-0005IR-4f
+ for qemu-devel@nongnu.org; Wed, 26 Jun 2024 07:06:49 -0400
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sMQU5-0004dQ-3q
- for qemu-devel@nongnu.org; Wed, 26 Jun 2024 07:06:43 -0400
-Received: by mail-pg1-x533.google.com with SMTP id
- 41be03b00d2f7-718354c17e4so3231786a12.1
- for <qemu-devel@nongnu.org>; Wed, 26 Jun 2024 04:06:40 -0700 (PDT)
+ id 1sMQUA-0004ee-KT
+ for qemu-devel@nongnu.org; Wed, 26 Jun 2024 07:06:48 -0400
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-7024d571d8eso5109912b3a.0
+ for <qemu-devel@nongnu.org>; Wed, 26 Jun 2024 04:06:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1719399999; x=1720004799;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1719400005; x=1720004805;
  darn=nongnu.org; 
- h=cc:to:content-transfer-encoding:mime-version:message-id:date
- :subject:from:from:to:cc:subject:date:message-id:reply-to;
- bh=aVMd78b6JawTzRGixWbj2f43TTFf+ku1C/f1kUzbhHI=;
- b=xtEdbG08MVbLd/rSixsmAk4+qqSd+jtlQlSE+rO12qxLQdSrhsA6JMZqHqo3N6DqCk
- mc6U+q5GyN9SMPu0SDVkjMSms4rqd28sLkd3irZrBsQDTuhVz0elMax05s34+RtkfnH9
- w2ZNpSsjGU77lboJs1yQTPwMRU2imKOjDcSmvydwpEO5HvZngp3Qdm9840Sv8V49Y8ev
- RN5au6dfueS2An07W6b56yqp0vSP9KYl8rLLeEwcPFEvAL/l+dlac7XDSODNGFsMgeBD
- q1uLGu6Pn/owZU/x2ZAQBdIHCL/37jFMbDe619LWB4auF44EAIJ/gp0KHMJEwPJW+hJp
- FFaA==
+ h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+ :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=8gdrJSUaYQob8d/4ZxzgiF7J5n5fiKZWcn18f0CmUEY=;
+ b=SCdPH9CMBhbehc8wnektX4X8oRmrwHenjJEZcZxUzGiTBUHwjFrtYE7P2NFEAI54t8
+ dHU6ybS4HWchqGi7O9S0k9QP2Sypv5TPryRDIjftAyjTJFy59s2yUgR/Fb7drFvHzL2y
+ elA7igDCBAkdGfCnu/ndsF939H/6EkityYAuCi3nbdArPnZOgp6NQX3RCUAEL/KXuKc7
+ 5cu768X4yq+mGLVSuKbGHBOiu1lMxFsqGj+YNOi/8bVdaJk11m/Dqj5fu6pvFG8ttUkT
+ qs3hCe+WJpTfDKEfzRZiaNmNTb/AYRxlMHVeYddN7di8cq5BBmv3mkfs88QHtvHIO7+q
+ u2aA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719399999; x=1720004799;
- h=cc:to:content-transfer-encoding:mime-version:message-id:date
- :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=aVMd78b6JawTzRGixWbj2f43TTFf+ku1C/f1kUzbhHI=;
- b=nAfjn04wp9SG5/9cXY+jH8HYD5FN10vDLiG0BdJ4hlDmT34lwTE3z1dCJch52wJH+x
- 4Qc7Wp/K3qftiOfvrp7xMOWfbeYHw9eb2XXDhq2poNwDDQ3IWO9YDctWKFzSB2VlM3Lz
- GB7HuYTQHh9IvnMkC622kv0HvEaXzOiUJBaTYREe31DA/voGvVx9YWTviWskTaINp6Cj
- Zn5JnblIO860QTk8H6+IYQR52qpmR6aYaHFjGqUQ2lbaIMh2+c+yOQ3f2C8EzcurK7WP
- IOp0H72myiFesH83M8HslWCkQNsAxubJyRUQBQpiHc03tokSCh7daWKgbkJe12Od/AP0
- VbyA==
-X-Gm-Message-State: AOJu0YzpBS7FLKUV1j7CSYSIxrZvN9973uju7m3p7rSMYUQqeXIZ0lsq
- bty4FBXd9rer34TEDrsFSAgE0a7oHwgAGu0azsmwvrXHtD7Qal994DDrogP9I1k=
-X-Google-Smtp-Source: AGHT+IG1bzoSOGYQ2lGHznKmZQGCC60NwCu2HAQyoTDeJ7aUrVSGq5FWysUjahFzyDBY8jXiMZeY3Q==
-X-Received: by 2002:a05:6a20:1dc:b0:1be:c3c8:10f3 with SMTP id
- adf61e73a8af0-1bec3c81354mr575694637.9.1719399999159; 
- Wed, 26 Jun 2024 04:06:39 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1719400005; x=1720004805;
+ h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+ :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=8gdrJSUaYQob8d/4ZxzgiF7J5n5fiKZWcn18f0CmUEY=;
+ b=hWTE1qHw3JrshddahxZ4Zv+Ti5fdJTto2eKD5XaTxUQuqePPqFQmR84wwNpCJDSK07
+ sNA+hvCfuG/AIhIZl63rD4L7EzWR3AT4xMQMiRnJ9wFBfnajKDztTnURsFe+1OeQNSW8
+ F3lGWvLLW0NYN3Tx7l7wIJSfqLwPk3s0dOyhTG7B/IMM3DRiYW6QjOy5sp3R3Zs628oW
+ xBkNFJcmej05eAHa6dt7f0F16ngJ5uDLKHiSQYVhTgQRS08G2RaDVXLWqEnorFTA746j
+ NY4tGKYdoyonMn8f7tqMpWVfbiQ5Gs9kBCx3rl7/mb/p9eaJI7sHyC2TaKPFr2GOFpWc
+ XhWA==
+X-Gm-Message-State: AOJu0YznRork4p3PrcNsdBnkipPL+hZpsrsRFl3Dc2WOOOJByUMrM4Cs
+ 6h4NjfGuglykYHjFsuHn4aAqsvJYLBJ6pEVOzHvAcXA5E3I4P9nBbx9MeN54sws=
+X-Google-Smtp-Source: AGHT+IEm0Uk3jhijPGftXQo5d28gVdFOecDw4w56VU5pdI4g1PPkbbhI7q/sn3Q44Xj+9R245m8MMA==
+X-Received: by 2002:a05:6a20:1a96:b0:1be:c4bb:6f33 with SMTP id
+ adf61e73a8af0-1bec4bb7008mr517626637.12.1719400005215; 
+ Wed, 26 Jun 2024 04:06:45 -0700 (PDT)
 Received: from localhost ([157.82.204.135])
  by smtp.gmail.com with UTF8SMTPSA id
- d2e1a72fcca58-70672e24d7asm6842235b3a.114.2024.06.26.04.06.34
+ d9443c01a7336-1f9eb4ea7dbsm97876115ad.213.2024.06.26.04.06.40
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 26 Jun 2024 04:06:38 -0700 (PDT)
+ Wed, 26 Jun 2024 04:06:44 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH 00/14] Fix check-qtest-ppc64 sanitizer errors
-Date: Wed, 26 Jun 2024 20:06:23 +0900
-Message-Id: <20240626-san-v1-0-f3cc42302189@daynix.com>
+Date: Wed, 26 Jun 2024 20:06:24 +0900
+Subject: [PATCH 01/14] hw/core: Free CPUState allocations
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAC/2e2YC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIxMDMyNT3eLEPF0DS/PEtMQ0kzTDZCMloMqCotS0zAqwKdGxtbUAKu9zylU
- AAAA=
+Message-Id: <20240626-san-v1-1-f3cc42302189@daynix.com>
+References: <20240626-san-v1-0-f3cc42302189@daynix.com>
+In-Reply-To: <20240626-san-v1-0-f3cc42302189@daynix.com>
 To: Eduardo Habkost <eduardo@habkost.net>, 
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
  =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
@@ -83,8 +82,8 @@ To: Eduardo Habkost <eduardo@habkost.net>,
 Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, qemu-ppc@nongnu.org, 
  Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.14-dev-fd6e3
-Received-SPF: none client-ip=2607:f8b0:4864:20::533;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x533.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::435;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x435.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -106,52 +105,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-I saw various sanitizer errors when running check-qtest-ppc64. While
-I could just turn off sanitizers, I decided to tackle them this time.
-
-Unfortunately, GLib does not free test data in some cases so some
-sanitizer errors remain. All sanitizer errors will be gone with this
-patch series combined with the following change for GLib:
-https://gitlab.gnome.org/GNOME/glib/-/merge_requests/4120
+This suppresses LeakSanitizer warnings.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
-Akihiko Odaki (14):
-      hw/core: Free CPUState allocations
-      hw/ide: Free macio-ide IRQs
-      hw/isa/vt82c686: Free irqs
-      spapr: Free stdout path
-      ppc/vof: Fix unaligned FDT property access
-      hw/virtio: Free vqs before vhost_dev_cleanup()
-      migration: Free removed SaveStateEntry
-      memory: Do not create circular reference with subregion
-      tests/qtest: Use qtest_add_data_func_full()
-      tests/qtest: Free unused QMP response
-      tests/qtest: Free old machine variable name
-      tests/qtest: Delete previous boot file
-      tests/qtest: Free paths
-      tests/qtest: Free GThread
+ hw/core/cpu-common.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
- hw/core/cpu-common.c                 |  3 +++
- hw/ide/macio.c                       |  9 +++++++++
- hw/isa/vt82c686.c                    |  3 ++-
- hw/ppc/spapr_vof.c                   |  2 +-
- hw/ppc/vof.c                         |  2 +-
- hw/virtio/vhost-user-base.c          |  2 ++
- migration/savevm.c                   |  2 ++
- system/memory.c                      | 11 +++++++++--
- tests/qtest/device-introspect-test.c |  7 +++----
- tests/qtest/libqtest.c               |  3 +++
- tests/qtest/migration-test.c         | 18 +++++++++++-------
- tests/qtest/qos-test.c               | 16 ++++++++++++----
- tests/qtest/vhost-user-test.c        |  6 +++---
- 13 files changed, 61 insertions(+), 23 deletions(-)
----
-base-commit: 74abb45dac6979e7ff76172b7f0a24e869405184
-change-id: 20240625-san-097afaf4f1c2
+diff --git a/hw/core/cpu-common.c b/hw/core/cpu-common.c
+index 0f0a247f5642..42f38b01a97f 100644
+--- a/hw/core/cpu-common.c
++++ b/hw/core/cpu-common.c
+@@ -274,6 +274,9 @@ static void cpu_common_finalize(Object *obj)
+ {
+     CPUState *cpu = CPU(obj);
+ 
++    g_free(cpu->thread);
++    g_free(cpu->halt_cond);
++    g_free(cpu->cpu_ases);
+     g_array_free(cpu->gdb_regs, TRUE);
+     qemu_lockcnt_destroy(&cpu->in_ioctl_lock);
+     qemu_mutex_destroy(&cpu->work_mutex);
 
-Best regards,
 -- 
-Akihiko Odaki <akihiko.odaki@daynix.com>
+2.45.2
 
 
