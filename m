@@ -2,112 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33BCC917ADC
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jun 2024 10:25:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5117917AEA
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jun 2024 10:28:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sMNwT-00058k-9M; Wed, 26 Jun 2024 04:23:49 -0400
+	id 1sMO0M-0006tZ-F5; Wed, 26 Jun 2024 04:27:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <schwab@suse.de>) id 1sMNwR-00058Z-I1
- for qemu-devel@nongnu.org; Wed, 26 Jun 2024 04:23:47 -0400
-Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <schwab@suse.de>) id 1sMNwP-00069o-Qv
- for qemu-devel@nongnu.org; Wed, 26 Jun 2024 04:23:47 -0400
-Received: from hawking.nue2.suse.org (unknown
- [IPv6:2a07:de40:a101:3:10:168:4:11])
- by smtp-out1.suse.de (Postfix) with ESMTP id EEA0321A42;
- Wed, 26 Jun 2024 08:23:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1719390223; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=gn8tI82BQm0FF9gt7xmG0UIgmsVsEWtVGNeSWmc1Q3k=;
- b=bzvyNJJViUPscQcQAH0NT8jfREVaGm44JhOy0r0/0aB0NBzRzJFRrFPRz2Ha54kwnw4C2j
- vaeyFPsGjRTbPoKR2WnBqO1Y1twAadR4Kv1aWW1Qw8DkaOorbR3XXrUqmwwSl07fKCfZQt
- X2pEbG5iEeDRY1S3JbWcxO5o/Fn2rdE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1719390223;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=gn8tI82BQm0FF9gt7xmG0UIgmsVsEWtVGNeSWmc1Q3k=;
- b=6N5cWksDEeFVAqcXXz9K7rMYEzpkN7CTAv1b7m4tlHHsFPrSpXJr8u/BoPiHIaClLLk+7B
- YOh/EIJ7fChvqgCA==
-Authentication-Results: smtp-out1.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=VioOpHv7;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=AwQrjAVr
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1719390222; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=gn8tI82BQm0FF9gt7xmG0UIgmsVsEWtVGNeSWmc1Q3k=;
- b=VioOpHv7qBEodDFug4Qov9aPM6ednnfB86JC28SZyx4GEr4MkZdqbNv4566GOeyKnFxyPS
- umYlPlhyvzzCGvGVE4+8hi5L2WcyTp412/RvGOUEtKEFLFPpxWPy5//oHgP3xuVi2vuqg7
- kGgkRiFlXN3eUguLkyrKPW6vDY+j9OY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1719390222;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=gn8tI82BQm0FF9gt7xmG0UIgmsVsEWtVGNeSWmc1Q3k=;
- b=AwQrjAVrSjXpniqAgmTSDo8yDs26xEg+GOGwe/XVoq9OzhPR9J0X14e+PBG2MPcW+f6yVZ
- sAPa09eqzBdWR4Cg==
-Received: by hawking.nue2.suse.org (Postfix, from userid 17005)
- id 79DCC4A050D; Wed, 26 Jun 2024 10:23:42 +0200 (CEST)
-From: Andreas Schwab <schwab@suse.de>
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org
-Subject: Re: linux-user cannot allocate stack memory on riscv64 host due to
- non-zero guest_base
-In-Reply-To: <9f3cb0e3-c069-497d-81de-234db7bd4d33@linaro.org> (Richard
- Henderson's message of "Tue, 25 Jun 2024 08:47:32 -0700")
-References: <mvm8qytp828.fsf@suse.de>
- <9f3cb0e3-c069-497d-81de-234db7bd4d33@linaro.org>
-X-Yow: Everybody gets free BORSCHT!
-Date: Wed, 26 Jun 2024 10:23:42 +0200
-Message-ID: <mvm4j9gp0xd.fsf@suse.de>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1sMO0L-0006ss-1N
+ for qemu-devel@nongnu.org; Wed, 26 Jun 2024 04:27:49 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1sMO0J-00077W-BL
+ for qemu-devel@nongnu.org; Wed, 26 Jun 2024 04:27:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1719390463;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=Z4TXulyFdXuDYnRFkMcuYu30552IRlokgdYw7ahEtCw=;
+ b=gOyZHtNU0+rXbM1eAhjWgI9ok4icjAavdr2WWlunaAdbK5jtVA4+vglso6yDYritrono3g
+ RMqUfiGZGPLhQexR2mfqRt+UjMVcInocemsg079xeq7CbraKr4yLIgbD04bHEC7ai+jj6a
+ 7zxQsyfEtXIBNPczU/zs66DIzHmE0iE=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-650-fB0mPjV6OKK5282KstcsEw-1; Wed,
+ 26 Jun 2024 04:27:40 -0400
+X-MC-Unique: fB0mPjV6OKK5282KstcsEw-1
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 05C181956086; Wed, 26 Jun 2024 08:27:38 +0000 (UTC)
+Received: from laptop.redhat.com (unknown [10.39.193.191])
+ by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 3A4CA1956087; Wed, 26 Jun 2024 08:27:32 +0000 (UTC)
+From: Eric Auger <eric.auger@redhat.com>
+To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
+ qemu-arm@nongnu.org, mst@redhat.com, jean-philippe@linaro.org,
+ peter.maydell@linaro.org, clg@redhat.com, yanghliu@redhat.com,
+ zhenzhong.duan@intel.com, alex.williamson@redhat.com
+Subject: [PATCH 0/7] VIRTIO-IOMMU/HostIOMMUDevice: Fixes and page size mask
+ rework
+Date: Wed, 26 Jun 2024 10:26:45 +0200
+Message-ID: <20240626082727.1278530-1-eric.auger@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spamd-Result: default: False [3.50 / 50.00]; BAYES_HAM(-2.99)[99.97%];
- HFILTER_HOSTNAME_UNKNOWN(2.50)[];
- NEURAL_SPAM_SHORT(1.70)[0.568]; ONCE_RECEIVED(1.20)[];
- RDNS_NONE(1.00)[];
- HFILTER_HELO_IP_A(1.00)[hawking.nue2.suse.org];
- NEURAL_HAM_LONG(-1.00)[-0.999];
- HFILTER_HELO_NORES_A_OR_MX(0.30)[hawking.nue2.suse.org];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- RCVD_NO_TLS_LAST(0.10)[]; MIME_GOOD(-0.10)[text/plain];
- MX_GOOD(-0.01)[];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- MIME_TRACE(0.00)[0:+]; RCPT_COUNT_TWO(0.00)[2];
- FUZZY_BLOCKED(0.00)[rspamd.com];
- DIRECT_TO_MX(0.00)[Gnus/5.13 (Gnus v5.13)]; ARC_NA(0.00)[];
- FROM_HAS_DN(0.00)[]; FROM_EQ_ENVFROM(0.00)[];
- MID_RHS_MATCH_FROM(0.00)[];
- DNSWL_BLOCKED(0.00)[2a07:de40:a101:3:10:168:4:11:from];
- TO_MATCH_ENVRCPT_ALL(0.00)[];
- DWL_DNSWL_BLOCKED(0.00)[suse.de:dkim];
- DKIM_TRACE(0.00)[suse.de:+]; RCVD_COUNT_ONE(0.00)[1];
- TO_DN_SOME(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:dkim]
-X-Spamd-Bar: +++
-X-Rspamd-Queue-Id: EEA0321A42
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spam-Score: 3.50
-X-Rspamd-Action: no action
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
- envelope-from=schwab@suse.de; helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Received-SPF: pass client-ip=170.10.133.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: 11
+X-Spam_score: 1.1
+X-Spam_bar: +
+X-Spam_report: (1.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.151,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -123,16 +81,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Jun 25 2024, Richard Henderson wrote:
+The 2 first patches are fixes of
+cf2647a76e ("virtio-iommu: Compute host reserved regions")
+They can be taken separately of the rest.
 
-> can always force the use of a non-zero base with -B or -R.
+Then the series uses the HostIOMMUDevice interface to fetch
+information about the page size mask supported along the assigned
+device and propagate it to the virtio-iommu. This is a similar
+work as what was done in
 
-$ qemu-riscv64 -d page -B 0x3ee000 hello.riscv64
-host mmap_min_addr=0x1000 (fallback)
-qemu-riscv64: /daten/src/test/hello.riscv64: requires virtual address space that is in use (omit the -B option or choose a different value)
+VIRTIO-IOMMU/VFIO: Fix host iommu geometry handling series
+
+but this time for the page size mask. Using this new
+infrastructure allows to handle page size mask conflicts
+earlier on device hotplug as opposed to current QEMU
+abort:
+
+qemu-system-aarch64: virtio-iommu virtio-iommu-memory-region-8-0
+does not support frozen granule 0x10000
+qemu: hardware error: vfio: DMA mapping failed, unable to continue
+
+With this series the hotplug nicely fails.
+
+Also this allows to remove hacks consisting in transiently enabling
+IOMMU MRs to collect coldplugged device page size mask before machine
+init. Those hacks were introduced by
+
+94df5b2180d6 ("virtio-iommu: Fix 64kB host page size VFIO device
+assignment")
+
+The series can be found at:
+https://github.com/eauger/qemu/tree/virtio-iommu-psmask-rework-v1
+
+
+Eric Auger (7):
+  virtio-iommu: Fix error handling in
+    virtio_iommu_set_host_iova_ranges()
+  vfio-container-base: Introduce vfio_container_get_iova_ranges() helper
+  HostIOMMUDevice : remove Error handle from get_iova_ranges callback
+  HostIOMMUDevice: Introduce get_page_size_mask() callback
+  virtio-iommu : Retrieve page size mask on
+    virtio_iommu_set_iommu_device()
+  memory: remove IOMMU MR iommu_set_page_size_mask() callback
+  virtio-iommu: Revert transient enablement of IOMMU MR in bypass mode
+
+ include/exec/memory.h                 |  38 --------
+ include/hw/vfio/vfio-container-base.h |   9 ++
+ include/sysemu/host_iommu_device.h    |  11 ++-
+ hw/vfio/common.c                      |   8 --
+ hw/vfio/container-base.c              |  15 ++++
+ hw/vfio/container.c                   |  16 ++--
+ hw/vfio/iommufd.c                     |  21 +++--
+ hw/virtio/virtio-iommu.c              | 121 +++++++++++++-------------
+ system/memory.c                       |  13 ---
+ hw/virtio/trace-events                |   2 +-
+ 10 files changed, 117 insertions(+), 137 deletions(-)
 
 -- 
-Andreas Schwab, SUSE Labs, schwab@suse.de
-GPG Key fingerprint = 0196 BAD8 1CE9 1970 F4BE  1748 E4D4 88E3 0EEA B9D7
-"And now for something completely different."
+2.41.0
+
 
