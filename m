@@ -2,83 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DFEB917652
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jun 2024 04:48:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD4C69176DC
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jun 2024 05:39:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sMIhQ-00037m-0o; Tue, 25 Jun 2024 22:47:56 -0400
+	id 1sMJUX-0007JS-Ch; Tue, 25 Jun 2024 23:38:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <EwanHai-oc@zhaoxin.com>)
- id 1sMIhM-00034v-PI
- for qemu-devel@nongnu.org; Tue, 25 Jun 2024 22:47:52 -0400
-Received: from mx2.zhaoxin.com ([203.110.167.99])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <EwanHai-oc@zhaoxin.com>)
- id 1sMIhK-0002ZF-B4
- for qemu-devel@nongnu.org; Tue, 25 Jun 2024 22:47:52 -0400
-X-ASG-Debug-ID: 1719370055-1eb14e2e5ebbd40001-jgbH7p
-Received: from ZXSHMBX3.zhaoxin.com (ZXSHMBX3.zhaoxin.com [10.28.252.165]) by
- mx2.zhaoxin.com with ESMTP id uyWzLZiY1u5x9S5H (version=TLSv1.2
- cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO);
- Wed, 26 Jun 2024 10:47:35 +0800 (CST)
-X-Barracuda-Envelope-From: EwanHai-oc@zhaoxin.com
-X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.165
-Received: from zxbjmbx1.zhaoxin.com (10.29.252.163) by ZXSHMBX3.zhaoxin.com
- (10.28.252.165) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 26 Jun
- 2024 10:47:35 +0800
-Received: from [10.28.66.62] (10.28.66.62) by zxbjmbx1.zhaoxin.com
- (10.29.252.163) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 26 Jun
- 2024 10:47:34 +0800
-X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.165
-Message-ID: <d4c0dae5-b9d5-4deb-b300-78492ab11ed8@zhaoxin.com>
-X-Barracuda-RBL-Trusted-Forwarder: 10.28.66.62
-Date: Tue, 25 Jun 2024 22:47:33 -0400
+ (Exim 4.90_1) (envelope-from <icegambit91@gmail.com>)
+ id 1sMJUS-0007Ir-1Q
+ for qemu-devel@nongnu.org; Tue, 25 Jun 2024 23:38:36 -0400
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <icegambit91@gmail.com>)
+ id 1sMJUQ-0004JA-Gc
+ for qemu-devel@nongnu.org; Tue, 25 Jun 2024 23:38:35 -0400
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-70665289275so80706b3a.0
+ for <qemu-devel@nongnu.org>; Tue, 25 Jun 2024 20:38:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1719373112; x=1719977912; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=eoNHHT9zyf4N6gTCTPTnqnyJhow7mdYnCAlaqLYb9ac=;
+ b=PoWCWfX768ct/OCK1dU0xRX//2uyrhbpSeMeL3xwwPVGfibx3LXpNhRzQNNmog48Xd
+ 1aiCDBh+B1tMdIwJZj29DB753WNETnGFB+5fs/wqM1F7fulDJodcON1FVsIJkxu0tbDs
+ U3HOq3utD2CDeulNLUgOK2k1AJTkJNT+2EA9/1gnUrNTHzIQuT6XK6a6jYLgDmPkwHRj
+ kz6mZAYIKHQXIWWv8TAlpKKKo/hz38nomfznc4AyTL8Nn9HTKDoi8iugyPmSBrplyvm7
+ V2+pK4hwsnJOf2jN397LHktlWxJHEMSosX0lOWUFJ5f5iVtiPvuXRILVL3q8AGojMX0Q
+ gh1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1719373112; x=1719977912;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=eoNHHT9zyf4N6gTCTPTnqnyJhow7mdYnCAlaqLYb9ac=;
+ b=hBvkE9XrrkOTerK8LwpxMzE410Bl8W+z85nHj7skdtTM1h9S5W1cuyYoajfrmJa2Ui
+ TZOl9uvNM8QSjH7hqIUQ5KGhP0NCJ8duiMJjCCmezoOFrpir9at2sV00gWbPnPTQ9HQG
+ CnKWFSZBNem4rxg/8CTosuVHToTXFgYgZCvzr2v3x9LFz30j4buerKKs33OA8vKC/n6Q
+ EqFrRLB5MU5/N/WC1GZ+V4QiCI+wxb3gZKWuvy2tabuoVqJuI8zvajR/bkTM8KoBzFat
+ qsfkFHlWNUN0u463ixbhIrKA0D7EisSbDif5Kun1iWKJgwd9bCBpkvZTsXtQXEXSIVSp
+ bF2Q==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUFEdJq6F9u+PNUmOuhAKeKS62KX4S4fcOK7qIzBr+Ys8mt2Ve22jaq05Lki2Zs8Pk/GszaXHkc8AIBCn6B1EyIJPvVgUc=
+X-Gm-Message-State: AOJu0YxDuHZ1d8/bBkYCHve+TDn+SiOtnQy/YvmVv9UWeSVdc5yiFLs1
+ zqlJRGziXKiDcWxJmE3URxrI9chW1EChr4x1A1J6D1ygzN2fnTId
+X-Google-Smtp-Source: AGHT+IEOyER7X/fFhrTqLCYuKbNH03KmNlnHLiUpKHCEjiF+DQccuXyzL84tvbLXtqgUTr6OyVLwCw==
+X-Received: by 2002:a05:6a20:914d:b0:1b5:88f5:5823 with SMTP id
+ adf61e73a8af0-1bceca3fba2mr15917769637.27.1719373112225; 
+ Tue, 25 Jun 2024 20:38:32 -0700 (PDT)
+Received: from valdaarhun.localnet ([223.233.84.250])
+ by smtp.gmail.com with ESMTPSA id
+ 41be03b00d2f7-716bb22dffesm7892241a12.83.2024.06.25.20.38.29
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 25 Jun 2024 20:38:31 -0700 (PDT)
+From: Sahil <icegambit91@gmail.com>
+To: Eugenio Perez Martin <eperezma@redhat.com>
+Cc: sgarzare@redhat.com, mst@redhat.com, qemu-devel@nongnu.org,
+ Sahil Siddiq <sahilcdq@proton.me>
+Subject: Re: [RFC] vhost: Introduce packed vq and add buffer elements
+Date: Wed, 26 Jun 2024 09:08:27 +0530
+Message-ID: <12465265.O9o76ZdvQC@valdaarhun>
+In-Reply-To: <CAJaqyWeXZ3HAxga1aH4hURnydwZhTMSoV65ReqiX1hVWMRYzbA@mail.gmail.com>
+References: <20240618181834.14173-1-sahilcdq@proton.me>
+ <3301839.44csPzL39Z@valdaarhun>
+ <CAJaqyWeXZ3HAxga1aH4hURnydwZhTMSoV65ReqiX1hVWMRYzbA@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/4] Add support for Zhaoxin Yongfeng CPU model and other
- improvements
-To: Zhao Liu <zhao1.liu@intel.com>
-X-ASG-Orig-Subj: Re: [PATCH 0/4] Add support for Zhaoxin Yongfeng CPU model
- and other improvements
-CC: <pbonzini@redhat.com>, <qemu-devel@nongnu.org>, <ewanhai@zhaoxin.com>,
- <cobechen@zhaoxin.com>, <rockcui@zhaoxin.com>, <louisqi@zhaoxin.com>
-References: <20240625091905.1325205-1-ewanhai-oc@zhaoxin.com>
- <ZnrUt0/5CZ2Ww45e@intel.com>
-Content-Language: en-US
-From: Ewan Hai <ewanhai-oc@zhaoxin.com>
-In-Reply-To: <ZnrUt0/5CZ2Ww45e@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.28.66.62]
-X-ClientProxiedBy: ZXSHCAS1.zhaoxin.com (10.28.252.161) To
- zxbjmbx1.zhaoxin.com (10.29.252.163)
-X-Barracuda-Connect: ZXSHMBX3.zhaoxin.com[10.28.252.165]
-X-Barracuda-Start-Time: 1719370055
-X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
-X-Barracuda-URL: https://10.28.252.36:4443/cgi-mod/mark.cgi
-X-Virus-Scanned: by bsmtpd at zhaoxin.com
-X-Barracuda-Scan-Msg-Size: 2975
-X-Barracuda-BRTS-Status: 1
-X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
-X-Barracuda-Spam-Score: -2.02
-X-Barracuda-Spam-Status: No,
- SCORE=-2.02 using global scores of TAG_LEVEL=1000.0
- QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=
-X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.126768
- Rule breakdown below
- pts rule name              description
- ---- ---------------------- --------------------------------------------------
-Received-SPF: pass client-ip=203.110.167.99;
- envelope-from=EwanHai-oc@zhaoxin.com; helo=mx2.zhaoxin.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=icegambit91@gmail.com; helo=mail-pf1-x431.google.com
+X-Spam_score_int: 15
+X-Spam_score: 1.5
+X-Spam_bar: +
+X-Spam_report: (1.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_ENVFROM_END_DIGIT=0.25,
+ FREEMAIL_FROM=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_SBL_CSS=3.335,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,77 +96,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-I’m sorry, but currently Zhaoxin has not released any specs or 
-datasheets related
-to the current patch. Zhaoxin CPUs are compatible with the x86 architecture,
-particularly with Intel. For example, you can refer to the Intel SDM 
-(Software
-Developer’s Manual). Regarding the current patch, except for the 
-features in the
-EDX of CPUID leaf 0xC000_0001, all other features can be found in the 
-general Intel
-specs and are already well known. The Zhaoxin-specific features in CPUID 
-leaf
-0xC000_0001 were introduced to the Linux Kernel a long time ago. For 
-example, the
-FEAT_C000_0001_EDX feature word defined in QEMU comes from the Linux 
-kernel’s
-arch/x86/include/asm/cpufeatures.h. The CPU model is just a feature 
-enumeration
-function, which I believe does not require as deep an understanding of 
-the features
-as driver code does. These changes will only affect users attempting to 
-emulate
-Zhaoxin CPUs and will not impact other Vendor/Micro-Arch CPUs.
+Hi,
 
-On 6/25/24 10:31, Zhao Liu wrote:
->
-> [这封邮件来自外部发件人 谨防风险]
->
-> Hi EwanHai,
->
-> On Tue, Jun 25, 2024 at 05:19:01AM -0400, EwanHai wrote:
->> Date: Tue, 25 Jun 2024 05:19:01 -0400
->> From: EwanHai <ewanhai-oc@zhaoxin.com>
->> Subject: [PATCH 0/4] Add support for Zhaoxin Yongfeng CPU model and other
->>   improvements
->> X-Mailer: git-send-email 2.34.1
->>
->> This patch series introduces support for the Zhaoxin Yongfeng CPU model and includes
->> some improvements and updates related to Zhaoxin and VIA CPUs. The changes ensure that
->> QEMU can correctly identify and emulate Zhaoxin CPUs, providing accurate functionality
->> and performance characteristics.
->>
->>
->> ### Summary of Changes
->>
->> EwanHai (4):
->>    target/i386: Add support for Zhaoxin/VIA CPU vendor identification
->>    target/i386: Add CPUID leaf 0xC000_0001 EDX definitions
->>    target/i386: Introduce Zhaoxin Yongfeng CPU model
->>    target/i386: Update CMPLegacy handling for Zhaoxin and VIA CPUs
->>
->>   target/i386/cpu.c | 130 ++++++++++++++++++++++++++++++++++++++++++++--
->>   target/i386/cpu.h |  38 ++++++++++++++
->>   2 files changed, 165 insertions(+), 3 deletions(-)
->>
->> ### Known Bugs
->>
->> 1. Issue with VMX Preemption Timer Rate on Yongfeng CPU:
->>     - Description: On Yongfeng CPUs, the VMX preemption timer rate is 128, meaning that
->>       bits 4:0 of MSR_IA32_VMX_MISC_CTLS should be set to 7. However, due to Intel's rate
->>       being 5, the Linux kernel has hardcoded this value as 5:
->>       `#define VMX_MISC_EMULATED_PREEMPTION_TIMER_RATE 5`
->>     - Impact: This discrepancy can cause incorrect behavior in the VMX preemption timer on
->>       Yongfeng CPUs.
->>     - Workaround: A patch to correct this issue in the Linux kernel is currently being
->>       prepared and will be submitted soon.
->>
-> Thanks for your patch. Is there some spec/datasheet link that people can
-> refer to?
->
-> Regards,
-> Zhao
->
+On Monday, June 24, 2024 5:06:42=E2=80=AFPM GMT+5:30 Eugenio Perez Martin w=
+rote:
+> [...]
+> > > >  /* Shadow virtqueue to relay notifications */
+> > > >  typedef struct VhostShadowVirtqueue {
+> > > >=20
+> > > > +    /* Virtio queue shadowing */
+> > > > +    VirtQueue *vq;
+> > > > +
+> > > > +    /* Virtio device */
+> > > > +    VirtIODevice *vdev;
+> > > > +
+> > > > +    /* SVQ vring descriptors state */
+> > > > +    SVQDescState *desc_state;
+> > > > +
+> > > > +    /*
+> > > > +     * Backup next field for each descriptor so we can recover
+> > > > securely,
+> > > > not +     * needing to trust the device access.
+> > > > +     */
+> > > > +    uint16_t *desc_next;
+> > > > +
+> > > > +    /* Next free descriptor */
+> > > > +    uint16_t free_head;
+> > > > +
+> > > > +    /* Size of SVQ vring free descriptors */
+> > > > +    uint16_t num_free;
+> > > > +
+> > >=20
+> > > Why the reorder of all of the previous members?
+> >=20
+> > I was thinking of placing all the members that are common to packed and
+> > split vring above the union while leaving the remaining members below t=
+he
+> > union. I did this based on our discussion here [1]. I don't think this
+> > reordering serves any purpose implementation-wise. Please let me know if
+> > I should revert this change.
+>=20
+> I'm not against the change, but removing superfluous changes helps the
+> reviewing. If you send the reordering, please use a separate patch so
+> it's easier to review.
+
+Understood, I'll keep this in mind when sending patches.
+
+Thanks,
+Sahil
+
+
 
 
