@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0181E91804C
+	by mail.lfdr.de (Postfix) with ESMTPS id AE2EA91804F
 	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jun 2024 13:55:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sMREM-0006OC-7S; Wed, 26 Jun 2024 07:54:30 -0400
+	id 1sMREB-0006KM-A3; Wed, 26 Jun 2024 07:54:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1sMREJ-0006NH-Am; Wed, 26 Jun 2024 07:54:27 -0400
+ id 1sMRE8-0006Io-Km; Wed, 26 Jun 2024 07:54:16 -0400
 Received: from forwardcorp1a.mail.yandex.net ([178.154.239.72])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1sMRE5-0007Hx-DY; Wed, 26 Jun 2024 07:54:27 -0400
+ id 1sMRE6-0007I7-39; Wed, 26 Jun 2024 07:54:16 -0400
 Received: from mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
  [IPv6:2a02:6b8:c1f:6401:0:640:7e6f:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id C73EA60E31;
- Wed, 26 Jun 2024 14:54:11 +0300 (MSK)
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 7582A60DF8;
+ Wed, 26 Jun 2024 14:54:12 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6b8:b081:b645::1:29])
  by mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id prOe6Z0rMmI0-mrNAPsry; Wed, 26 Jun 2024 14:54:11 +0300
+ ESMTPSA id prOe6Z0rMmI0-MJCzt2oG; Wed, 26 Jun 2024 14:54:11 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1719402851;
- bh=I+QF3fGvYELrEM7l+N59iHJKrQZhPHPzowmp1e2a5tw=;
+ s=default; t=1719402852;
+ bh=qvWYqS4f2DNusvrY+jo8XyNuToSaQtroc57GXqvMQw8=;
  h=Message-Id:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=Az1t7s2xJXSNg2ThBBYNl5LD5KkoPWZoz2woraYmqbv6rHNWRIjzPLJN1J5R4wud2
- AofZ5WdXYGgkoNRpfIPRVvQ7rnSTPzsC409/UL523D5t8lCr+Gq/K/99XBzQ/kwXJc
- pMT+kaSqV5LrZxzTsc0sRM9IwP3ZopynXSqTQxzg=
+ b=n0BMhm/yJ74iLHjocigXeMvme2zmvARNuQVk7um02dpVTlJ4mLCfprYFlm2pUoRW/
+ 7c/VZOkKRR04elKp15TOYhAU1WeGzKl9M80PmQTrtwfT5imphIfcNyCm8R7c5Tbdi1
+ AubIatTAn0kWvuy9ABjEOgA/b9yg7elmuFE3hnHc=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
@@ -39,9 +39,9 @@ To: qemu-block@nongnu.org
 Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, armbru@redhat.com,
  eblake@redhat.com, hreitz@redhat.com, kwolf@redhat.com,
  vsementsov@yandex-team.ru
-Subject: [PATCH v9 5/7] block: bdrv_get_xdbg_block_graph(): report export ids
-Date: Wed, 26 Jun 2024 14:53:48 +0300
-Message-Id: <20240626115350.405778-6-vsementsov@yandex-team.ru>
+Subject: [PATCH v9 6/7] iotests.py: introduce VM.assert_edges_list() method
+Date: Wed, 26 Jun 2024 14:53:49 +0300
+Message-Id: <20240626115350.405778-7-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240626115350.405778-1-vsementsov@yandex-team.ru>
 References: <20240626115350.405778-1-vsementsov@yandex-team.ru>
@@ -70,98 +70,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently for block exports we report empty blk names. That's not good.
-Let's try to find corresponding block export and report its id.
+Add an alternative method to check block graph, to be used in further
+commit.
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- block.c                     |  4 ++++
- block/export/export.c       | 13 +++++++++++++
- include/block/export.h      |  1 +
- stubs/blk-exp-find-by-blk.c |  9 +++++++++
- stubs/meson.build           |  1 +
- 5 files changed, 28 insertions(+)
- create mode 100644 stubs/blk-exp-find-by-blk.c
+ tests/qemu-iotests/iotests.py | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/block.c b/block.c
-index f6292f459a..601475e835 100644
---- a/block.c
-+++ b/block.c
-@@ -6326,7 +6326,11 @@ XDbgBlockGraph *bdrv_get_xdbg_block_graph(Error **errp)
-     for (blk = blk_all_next(NULL); blk; blk = blk_all_next(blk)) {
-         char *allocated_name = NULL;
-         const char *name = blk_name(blk);
-+        BlockExport *exp = blk_exp_find_by_blk(blk);
+diff --git a/tests/qemu-iotests/iotests.py b/tests/qemu-iotests/iotests.py
+index ea48af4a7b..8a5fd01eac 100644
+--- a/tests/qemu-iotests/iotests.py
++++ b/tests/qemu-iotests/iotests.py
+@@ -1108,6 +1108,23 @@ def check_bitmap_status(self, node_name, bitmap_name, fields):
  
-+        if (!*name && exp) {
-+            name = exp->id;
-+        }
-         if (!*name) {
-             name = allocated_name = blk_get_attached_dev_id(blk);
-         }
-diff --git a/block/export/export.c b/block/export/export.c
-index 57beae7982..8744a1171e 100644
---- a/block/export/export.c
-+++ b/block/export/export.c
-@@ -60,6 +60,19 @@ BlockExport *blk_exp_find(const char *id)
-     return NULL;
- }
+         return fields.items() <= ret.items()
  
-+BlockExport *blk_exp_find_by_blk(BlockBackend *blk)
-+{
-+    BlockExport *exp;
++    def get_block_graph(self):
++        """
++        Returns block graph in form of edges list, where each edge is a tuple:
++          (parent_node_name, child_name, child_node_name)
++        """
++        graph = self.qmp('x-debug-query-block-graph')['return']
 +
-+    QLIST_FOREACH(exp, &block_exports, next) {
-+        if (exp->blk == blk) {
-+            return exp;
-+        }
-+    }
++        nodes = {n['id']: n['name'] for n in graph['nodes']}
++        # Check that all names are unique:
++        assert len(set(nodes.values())) == len(nodes)
 +
-+    return NULL;
-+}
++        return [(nodes[e['parent']], e['name'], nodes[e['child']])
++                for e in graph['edges']]
 +
- static const BlockExportDriver *blk_exp_find_driver(BlockExportType type)
- {
-     int i;
-diff --git a/include/block/export.h b/include/block/export.h
-index f2fe0f8078..16863d37cf 100644
---- a/include/block/export.h
-+++ b/include/block/export.h
-@@ -82,6 +82,7 @@ struct BlockExport {
- 
- BlockExport *blk_exp_add(BlockExportOptions *export, Error **errp);
- BlockExport *blk_exp_find(const char *id);
-+BlockExport *blk_exp_find_by_blk(BlockBackend *blk);
- void blk_exp_ref(BlockExport *exp);
- void blk_exp_unref(BlockExport *exp);
- void blk_exp_request_shutdown(BlockExport *exp);
-diff --git a/stubs/blk-exp-find-by-blk.c b/stubs/blk-exp-find-by-blk.c
-new file mode 100644
-index 0000000000..2fc1da953b
---- /dev/null
-+++ b/stubs/blk-exp-find-by-blk.c
-@@ -0,0 +1,9 @@
-+#include "qemu/osdep.h"
-+#include "sysemu/block-backend.h"
-+#include "block/export.h"
++    def assert_edges_list(self, edges):
++        assert sorted(edges) == sorted(self.get_block_graph())
 +
-+BlockExport *blk_exp_find_by_blk(BlockBackend *blk)
-+{
-+    return NULL;
-+}
-+
-diff --git a/stubs/meson.build b/stubs/meson.build
-index 068998c1a5..cbe30f94e8 100644
---- a/stubs/meson.build
-+++ b/stubs/meson.build
-@@ -16,6 +16,7 @@ if have_block
-   stub_ss.add(files('blk-commit-all.c'))
-   stub_ss.add(files('blk-exp-close-all.c'))
-   stub_ss.add(files('blk-by-qdev-id.c'))
-+  stub_ss.add(files('blk-exp-find-by-blk.c'))
-   stub_ss.add(files('blockdev-close-all-bdrv-states.c'))
-   stub_ss.add(files('change-state-handler.c'))
-   stub_ss.add(files('get-vm-name.c'))
+     def assert_block_path(self, root, path, expected_node, graph=None):
+         """
+         Check whether the node under the given path in the block graph
 -- 
 2.34.1
 
