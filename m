@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A81D919B16
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jun 2024 01:14:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5705919B1A
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jun 2024 01:14:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sMbpK-0003Dz-U5; Wed, 26 Jun 2024 19:13:23 -0400
+	id 1sMbpI-0003DG-Rd; Wed, 26 Jun 2024 19:13:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1sMbpF-0003Cv-Oa
- for qemu-devel@nongnu.org; Wed, 26 Jun 2024 19:13:17 -0400
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+ id 1sMbp7-000392-6B
+ for qemu-devel@nongnu.org; Wed, 26 Jun 2024 19:13:09 -0400
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1sMbp4-0000Oo-OJ
- for qemu-devel@nongnu.org; Wed, 26 Jun 2024 19:13:16 -0400
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-1f9aeb96b93so50208495ad.3
- for <qemu-devel@nongnu.org>; Wed, 26 Jun 2024 16:13:06 -0700 (PDT)
+ id 1sMbp5-0000Ou-Iy
+ for qemu-devel@nongnu.org; Wed, 26 Jun 2024 19:13:08 -0400
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-1fa2782a8ccso30404445ad.2
+ for <qemu-devel@nongnu.org>; Wed, 26 Jun 2024 16:13:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719443585; x=1720048385; darn=nongnu.org;
+ d=linaro.org; s=google; t=1719443586; x=1720048386; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=KfJtbR1DHFH39g5O1RoXMV40m1cvFRDojz81uxTKSUM=;
- b=kPh+jV0/JpWu1FW1OgWeGyym40AzYaFvIk5XBoMXbA2krNquTKEd7Jj5FBNmYVL7+U
- MHN6WzvQp+Qji4liGohqAAnmiI59kQE6paLE68SQv5+/2KNnILz+CWOe+snLQYidYu64
- PrIJnGx78bKx70jsNrDqneuB+ohkAfT64NFcPjBMkVl5RfvFk6sf3VzaijUelMESZvGe
- NIopLTQ2qmGtYlH4Db5Y7m4edSTgdVyn30UQUwA16Ij2Hm6rMwAzrFlUDeMuj95jTlKd
- DKIkO1plTcX2ykk2t54oK4FQmMo22xeqQaNlVh5b/oLibUGOF885Y5spkdzmx2v0kAPy
- /xBA==
+ bh=doL4IgQgCF3HWgmN7iQLNBk72z9WitWnst2YOIXTsDc=;
+ b=PpTviXvN/4c7MjKUnYEaPn9TSOlwwp3b8ztjNbi5eWpKtSM/vVLKnGO1kI6zWbIKHK
+ fi1buTqdVzBKxoAiGW3eisatcGS91fIF+rXTNRq/8rFDFSc4dGc2eXTVmyEpbNNgk5Fv
+ xow6JiPJXyOvRpp28km+Reh5IGg7pZ60MQYkZgcCvujDo9/mIhXCUpP/O/evri03z6Is
+ YP9/apHLSwRCUEDGrAhFbGCgePNY7GMoVKCoIYWvkdiahNUK6Di2NfC5Hepv4gK/glTa
+ gD6UgMt+aC14lR4iCvSftx0oY9SHnDZhkzlrX68ybq3Xz1+8qRtoQoIKuWEVAzmX6Ebj
+ JN5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719443585; x=1720048385;
+ d=1e100.net; s=20230601; t=1719443586; x=1720048386;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=KfJtbR1DHFH39g5O1RoXMV40m1cvFRDojz81uxTKSUM=;
- b=hZ2tozTpPuHf+6YWDvZLTXQUmFKm10BelFVDRH0COnjv0/sANYbVyfeL2REO6r+4mE
- EBhTAFKXaCVKMlhq4/t7Kn7aTq70dUoq1aXlCqHsqhw93rPqd6BmcaVRiDuk5T87FY/z
- xmPrpVOmrwMkVTSar0dWEbDNyCwz/7zIjIFdfRtGq7g9ch//9yN/DrOfBbeamMONzxIr
- waurkBG4LgwQuV5VmklecjV1fDJhmRnh4i0Czo+gk4t6KNhrokxOw0Iiv47cx3hzsq7/
- JB0+2MTIhjV6o/Y6bxHdq5uZ1tw7+UL+9W2XLbgff0vv2fInJrOZ2amVi1Li0eL08ydF
- fTjQ==
-X-Gm-Message-State: AOJu0Yw+fIBkqchMX9XTP70VZrefREqUJ3Je0rnySF+dHCz63gCB3qDv
- 4Az/l1/QScueL+N8AbeGxi4u6r02hIdhA4pqs9ogxKVWcIc1kHdtKbGEff2xnf0u8dBmB0JX1XH
- 4UNI=
-X-Google-Smtp-Source: AGHT+IHz7n0rgQ3mTIOlKvDhPA03qfO4XnDmk28WHTm2yljHoInggSnSzVTEKeHq3Exgwfugkzo6bQ==
-X-Received: by 2002:a17:902:ecce:b0:1f8:46c9:c96f with SMTP id
- d9443c01a7336-1fa23f01d4amr141234695ad.61.1719443584791; 
- Wed, 26 Jun 2024 16:13:04 -0700 (PDT)
+ bh=doL4IgQgCF3HWgmN7iQLNBk72z9WitWnst2YOIXTsDc=;
+ b=gihc/l5JSFlq+k10PRpa9W9j9SnJCjuBsU0mC+mZsyCSOg+aSuIj9V3wONVgK4ksGV
+ oYrf4GxZlmdaldSw6bzNXf3KY6Nq6G4N6FaiwQvIfxM/A3/ViVjtYBKP5wEZlWxqgtbN
+ ATMjb6lieSYIDnpGmMXtB0yMDqMzozlLfhKV7mGIdkmO8i4f37+Yfa5o7AcFBs2c9aGZ
+ 5qvm4B02BKAYK52q441B1twsCGaBBdYJB8b4VLglodojrLhMVblaiVOFcMzU2rpAoUOc
+ hic1eMsucorVvSrRexD/x/CJd39tQPsens4V6fsoOQ0ox4C7txCCmMmcsStwBY6Usc/8
+ sQWQ==
+X-Gm-Message-State: AOJu0Yyw90piGg/ULWa3l92+ndp7reIGHjs58hH+5b7Dv4udHUbLk7on
+ 1GG40HAs/uqzk0XcmjFinXp1InBJ6UHoOtOqsyR0ixlYjrsdKdY3tPFF7SSb3KasvSV+Vs6DEoi
+ EpiI=
+X-Google-Smtp-Source: AGHT+IFAV/V+HBonKzPmujeU8znPTO3DXycdD5c7hC4jl3KMq1IoZny1TsyRBzC2m8d/vtrmnHukNg==
+X-Received: by 2002:a17:902:680e:b0:1f9:fb0f:b9ec with SMTP id
+ d9443c01a7336-1fa23f35fffmr91719095ad.62.1719443585803; 
+ Wed, 26 Jun 2024 16:13:05 -0700 (PDT)
 Received: from linaro.vn.shawcable.net ([2604:3d08:9384:1d00::2193])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1faac82cd3bsm478215ad.0.2024.06.26.16.13.03
+ d9443c01a7336-1faac82cd3bsm478215ad.0.2024.06.26.16.13.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 26 Jun 2024 16:13:03 -0700 (PDT)
+ Wed, 26 Jun 2024 16:13:05 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
@@ -66,17 +66,16 @@ Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Alexandre Iooss <erdnaxe@crans.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH 4/7] tests/tcg: add mechanism to run specific tests with
- plugins
-Date: Wed, 26 Jun 2024 16:12:52 -0700
-Message-Id: <20240626231255.339353-5-pierrick.bouvier@linaro.org>
+Subject: [PATCH 5/7] tests/tcg: allow to check output of plugins
+Date: Wed, 26 Jun 2024 16:12:53 -0700
+Message-Id: <20240626231255.339353-6-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240626231255.339353-1-pierrick.bouvier@linaro.org>
 References: <20240626231255.339353-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x629.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,31 +98,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Only multiarch tests are run with plugins, and we want to be able to run
-per-arch test with plugins too.
+A specific plugin test can now read and check a plugin output, to ensure
+it contains expected values.
 
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- tests/tcg/Makefile.target | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tests/tcg/Makefile.target | 5 +++++
+ 1 file changed, 5 insertions(+)
 
 diff --git a/tests/tcg/Makefile.target b/tests/tcg/Makefile.target
-index f21be50d3b2..dc5c8b7a3b4 100644
+index dc5c8b7a3b4..55993611cae 100644
 --- a/tests/tcg/Makefile.target
 +++ b/tests/tcg/Makefile.target
-@@ -152,10 +152,11 @@ PLUGINS=$(patsubst %.c, lib%.so, $(notdir $(wildcard $(PLUGIN_SRC)/*.c)))
- # only expand MULTIARCH_TESTS which are common on most of our targets
- # to avoid an exponential explosion as new tests are added. We also
- # add some special helpers the run-plugin- rules can use below.
-+# In more, extra tests can be added using PLUGINS_TESTS variable.
+@@ -90,6 +90,7 @@ CFLAGS=
+ LDFLAGS=
  
- ifneq ($(MULTIARCH_TESTS),)
- $(foreach p,$(PLUGINS), \
--	$(foreach t,$(MULTIARCH_TESTS),\
-+	$(foreach t,$(MULTIARCH_TESTS) $(PLUGINS_TESTS),\
- 		$(eval run-plugin-$(t)-with-$(p): $t $p) \
- 		$(eval RUN_TESTS+=run-plugin-$(t)-with-$(p))))
- endif # MULTIARCH_TESTS
+ QEMU_OPTS=
++CHECK_PLUGIN_OUTPUT_COMMAND=true
+ 
+ 
+ # If TCG debugging, or TCI is enabled things are a lot slower
+@@ -180,6 +181,8 @@ run-plugin-%:
+ 		-plugin $(PLUGIN_LIB)/$(call extract-plugin,$@)$(PLUGIN_ARGS) \
+ 		-d plugin -D $*.pout \
+ 		 $(call strip-plugin,$<))
++	@$(CHECK_PLUGIN_OUTPUT_COMMAND) $*.pout || echo \
++	$(CHECK_PLUGIN_OUTPUT_COMMAND) $*.pout failed
+ else
+ run-%: %
+ 	$(call run-test, $<, \
+@@ -194,6 +197,8 @@ run-plugin-%:
+ 	   	  -plugin $(PLUGIN_LIB)/$(call extract-plugin,$@)$(PLUGIN_ARGS) \
+ 	    	  -d plugin -D $*.pout \
+ 		  $(QEMU_OPTS) $(call strip-plugin,$<))
++	@$(CHECK_PLUGIN_OUTPUT_COMMAND) $*.pout || echo \
++	$(CHECK_PLUGIN_OUTPUT_COMMAND) $*.pout failed
+ endif
+ 
+ gdb-%: %
 -- 
 2.39.2
 
