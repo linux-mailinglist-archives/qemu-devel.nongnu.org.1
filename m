@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5FD9917F38
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jun 2024 13:08:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2620917F3A
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jun 2024 13:09:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sMQVN-0007eE-K7; Wed, 26 Jun 2024 07:08:01 -0400
+	id 1sMQVT-0007vm-Os; Wed, 26 Jun 2024 07:08:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sMQVH-0007Vs-3s
- for qemu-devel@nongnu.org; Wed, 26 Jun 2024 07:07:56 -0400
-Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
+ id 1sMQVR-0007s4-2m
+ for qemu-devel@nongnu.org; Wed, 26 Jun 2024 07:08:05 -0400
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sMQVE-0004wa-Fa
- for qemu-devel@nongnu.org; Wed, 26 Jun 2024 07:07:54 -0400
-Received: by mail-pf1-x432.google.com with SMTP id
- d2e1a72fcca58-70683d96d0eso2313960b3a.0
- for <qemu-devel@nongnu.org>; Wed, 26 Jun 2024 04:07:52 -0700 (PDT)
+ id 1sMQVL-0004xF-Ti
+ for qemu-devel@nongnu.org; Wed, 26 Jun 2024 07:08:04 -0400
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-1fa55dbf2e7so22494505ad.2
+ for <qemu-devel@nongnu.org>; Wed, 26 Jun 2024 04:07:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1719400070; x=1720004870;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1719400076; x=1720004876;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=IDtmLd4DIh+2XRkZ57QtXjyzkDOakOx1Ds4rKdXYuOE=;
- b=MmUcDohBTSvlo2NHH7APomDrwVolYb3Z3vp23AkMn2GWrmuomUSlqUufc+wRx5WM12
- SA0dhfZESVCBGOlnk87nanuXx3KtgT/8Kz3IAFs7oatxKFArO2oIRPeXlJ2GWDdJCcXn
- GWsxDNTk+hpiDHnMfnraAiMIG0fLr9nqHdyJsFyI5KNcElqCdHxlK6HWr8S/xjONmZ3m
- +0JCUMoCZsLQWKpfZEHc5QcdCVMZST0sfk15w43ppTJMFeg/yHFdFeEpcBtlxbZXB73j
- 5bZeV2/SnqPJUs6a+VadeyaO5pX8ji25Sd/fmLrGDwGXS4+QNRY9sIPgeCeBvuKhkBgU
- e7DA==
+ :reply-to; bh=s88RDAKD9didfyWyFg4xAviSDDkSMw5Wc3QBYXQ76FI=;
+ b=LUsbLGOPiS+R0WPDf5DIWcBlLG8Nv8yDKUOmPoZPyTPknIb+OWqqBPaY3VwwTL2hUa
+ fz2gUe60l0d61yPEuZLy5xntqtSW5zebYreHyA3VYvycN9iFlHbvuLUfynN13Nf0UPHz
+ x7nkaPdOC9hXQJ1ZbZe8V3I/c51mwgZn6BDJF1ifEwo08r5kHT2W/BwjPfhNJ0LXPaCr
+ DWQ6NnKR5IO32xzHwwyluffTx3T9Z7KMU6i/xcWcYahhoPrng0AjCNROVb8S1En5P+6y
+ 63FuwU0zp0GO/m/Y2qu04k45ZR0YjXM/hKJQsoF9UtT41bi0Gw/LP7f0zhaJmWebnAQL
+ 6idg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719400070; x=1720004870;
+ d=1e100.net; s=20230601; t=1719400076; x=1720004876;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=IDtmLd4DIh+2XRkZ57QtXjyzkDOakOx1Ds4rKdXYuOE=;
- b=SmX7VXkpTzwecPd6yRJeOy2r6GM1bd307tUttXfnKUZfhK8HHfVSWPP+a2NS1dVd9/
- cYi6qch9RVwwkVLLfNDx3x7KUJH/g96+BDH2xJVh7/vBiN59uHsB3hhBGT++2g8sUVBY
- eSiZNkpXihgWlbzxfl8H78tuTk0UMoz9F3cwucVdvxplK+StVDqw5k7spriWm8pZ+ckJ
- dW4CVx8r6KK58uZmDFBNAmCcEkKj10K08udacSAtAjVtOMESxG7sudUHHAMF0oE/Uc4w
- dtLJb1OzAD6jbLSUfQABoslHTsjUby2Ij2f3Rpw53UiXEVzo/uD0VyCgl/9dRa62NSQ0
- j+Dw==
-X-Gm-Message-State: AOJu0Yyvz87bXMzGx7rmVha04OiO4RMfBbn20nupYLWQszU0SQMKgG7n
- 4hHMSrlYMML+HPjRDb4M5+vUtw9eyudPg+GvMJWqKxCOpxOpM6TTRa5E/OYUJz8=
-X-Google-Smtp-Source: AGHT+IEtTUgO/yYQ0iY6MlOqVPv57FtOgSJbQp3S4MxOFQ5jPw6w5cGtdccBLo9897IO/nsxIpFxsw==
-X-Received: by 2002:a05:6a00:22cc:b0:705:ddbf:5c05 with SMTP id
- d2e1a72fcca58-7066e52a7cbmr12746690b3a.11.1719400070579; 
- Wed, 26 Jun 2024 04:07:50 -0700 (PDT)
+ bh=s88RDAKD9didfyWyFg4xAviSDDkSMw5Wc3QBYXQ76FI=;
+ b=bcmaR3txbL2xvRZ792OJi+3xahXpBECjt0wkBecm60fq0ggr6kBb8bxcTHIicG01qQ
+ p0po/fkqCOVRDarXZ0xJ3tVWbJOJeRspk9t1Qcu+ySjOeIKUMuY6aEQZ1OwZlYo/nmCm
+ ovtDuCOfdjSmdHPLnIzrc87HLUzGPAM0Qu2y78VihwgLU80M17oGtqTxDKi1/UdrLjN0
+ 35zgIYsJu/SJmPNpaGz695nGj8Cj/dD0jgJuifBPX6w6CD6HjuznjRekXFn+B15gPuqY
+ UFhAoLAPZCpvVXtjuRM+R6bE5Toa9BUzQO1wnSqUu9tH2cwmT/tmHm3E3aMN0KjHy4rG
+ 3eXA==
+X-Gm-Message-State: AOJu0YxeRyIqG8Rn37tAeNHev7UpSll/x30Qv/ckf5pmQW69qP1JsCIy
+ 12sF8WpFKSsoRSqyZkmQCU3Q5S0DR/eDwbSYKeQX8IwNWc+OliI40jMJt/1bSTk=
+X-Google-Smtp-Source: AGHT+IHzTI+eaHCjNSlntryxBmmHmKVW9cUOvgNduBxD/9bFh8actwBSuXmkd8m5hlFYe6WlFS33CA==
+X-Received: by 2002:a17:902:7849:b0:1fa:925b:5b6e with SMTP id
+ d9443c01a7336-1fa925b5e03mr8855945ad.63.1719400076478; 
+ Wed, 26 Jun 2024 04:07:56 -0700 (PDT)
 Received: from localhost ([157.82.204.135])
  by smtp.gmail.com with UTF8SMTPSA id
- d2e1a72fcca58-7069d65dfc7sm2664394b3a.133.2024.06.26.04.07.45
+ d9443c01a7336-1f9eb3c5feesm97761515ad.161.2024.06.26.04.07.52
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 26 Jun 2024 04:07:50 -0700 (PDT)
+ Wed, 26 Jun 2024 04:07:56 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Wed, 26 Jun 2024 20:06:35 +0900
-Subject: [PATCH 12/14] tests/qtest: Delete previous boot file
+Date: Wed, 26 Jun 2024 20:06:36 +0900
+Subject: [PATCH 13/14] tests/qtest: Free paths
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240626-san-v1-12-f3cc42302189@daynix.com>
+Message-Id: <20240626-san-v1-13-f3cc42302189@daynix.com>
 References: <20240626-san-v1-0-f3cc42302189@daynix.com>
 In-Reply-To: <20240626-san-v1-0-f3cc42302189@daynix.com>
 To: Eduardo Habkost <eduardo@habkost.net>, 
@@ -82,14 +82,14 @@ To: Eduardo Habkost <eduardo@habkost.net>,
 Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, qemu-ppc@nongnu.org, 
  Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.14-dev-fd6e3
-Received-SPF: none client-ip=2607:f8b0:4864:20::432;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x432.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
+Received-SPF: none client-ip=2607:f8b0:4864:20::631;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x631.google.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,56 +105,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-A test run may create boot files several times. Delete the previous boot
-file before creating a new one.
+This suppresses LeakSanitizer warnings.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- tests/qtest/migration-test.c | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+ tests/qtest/qos-test.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index b7e3406471a6..5c0d669b6df3 100644
---- a/tests/qtest/migration-test.c
-+++ b/tests/qtest/migration-test.c
-@@ -129,12 +129,23 @@ static char *bootpath;
- #include "tests/migration/aarch64/a-b-kernel.h"
- #include "tests/migration/s390x/a-b-bios.h"
+diff --git a/tests/qtest/qos-test.c b/tests/qtest/qos-test.c
+index 5da4091ec32b..114f6bef273a 100644
+--- a/tests/qtest/qos-test.c
++++ b/tests/qtest/qos-test.c
+@@ -33,7 +33,6 @@
+ static char *old_path;
  
-+static void bootfile_delete(void)
-+{
-+    unlink(bootpath);
-+    g_free(bootpath);
-+    bootpath = NULL;
-+}
-+
- static void bootfile_create(char *dir, bool suspend_me)
- {
-     const char *arch = qtest_get_arch();
-     unsigned char *content;
-     size_t len;
  
-+    if (bootpath) {
-+        bootfile_delete();
-+    }
-+
-     bootpath = g_strdup_printf("%s/bootsect", dir);
-     if (strcmp(arch, "i386") == 0 || strcmp(arch, "x86_64") == 0) {
-         /* the assembled x86 boot sector should be exactly one sector large */
-@@ -164,13 +175,6 @@ static void bootfile_create(char *dir, bool suspend_me)
-     fclose(bootfile);
+-
+ /**
+  * qos_set_machines_devices_available(): sets availability of qgraph
+  * machines and devices.
+@@ -191,6 +190,12 @@ static void subprocess_run_one_test(const void *arg)
+     g_test_trap_assert_passed();
  }
  
--static void bootfile_delete(void)
--{
--    unlink(bootpath);
--    g_free(bootpath);
--    bootpath = NULL;
--}
--
++static void destroy_pathv(void *arg)
++{
++    g_free(((char **)arg)[0]);
++    g_free(arg);
++}
++
  /*
-  * Wait for some output in the serial output file,
-  * we get an 'A' followed by an endless string of 'B's
+  * in this function, 2 path will be built:
+  * path_str, a one-string path (ex "pc/i440FX-pcihost/...")
+@@ -295,10 +300,13 @@ static void walk_path(QOSGraphNode *orig_path, int len)
+     if (path->u.test.subprocess) {
+         gchar *subprocess_path = g_strdup_printf("/%s/%s/subprocess",
+                                                  qtest_get_arch(), path_str);
+-        qtest_add_data_func(path_str, subprocess_path, subprocess_run_one_test);
+-        g_test_add_data_func(subprocess_path, path_vec, run_one_test);
++        qtest_add_data_func_full(path_str, subprocess_path,
++                                 subprocess_run_one_test, g_free);
++        g_test_add_data_func_full(subprocess_path, path_vec,
++                                  run_one_test, destroy_pathv);
+     } else {
+-        qtest_add_data_func(path_str, path_vec, run_one_test);
++        qtest_add_data_func_full(path_str, path_vec,
++                                 run_one_test, destroy_pathv);
+     }
+ 
+     g_free(path_str);
 
 -- 
 2.45.2
