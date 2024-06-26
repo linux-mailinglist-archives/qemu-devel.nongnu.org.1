@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E88D6919B1B
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jun 2024 01:14:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A81D919B16
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jun 2024 01:14:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sMbpA-000391-CG; Wed, 26 Jun 2024 19:13:13 -0400
+	id 1sMbpK-0003Dz-U5; Wed, 26 Jun 2024 19:13:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1sMbp5-00038h-AH
- for qemu-devel@nongnu.org; Wed, 26 Jun 2024 19:13:07 -0400
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ id 1sMbpF-0003Cv-Oa
+ for qemu-devel@nongnu.org; Wed, 26 Jun 2024 19:13:17 -0400
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1sMbp3-0000Ok-KM
- for qemu-devel@nongnu.org; Wed, 26 Jun 2024 19:13:07 -0400
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-1f64ecb1766so55240225ad.1
- for <qemu-devel@nongnu.org>; Wed, 26 Jun 2024 16:13:05 -0700 (PDT)
+ id 1sMbp4-0000Oo-OJ
+ for qemu-devel@nongnu.org; Wed, 26 Jun 2024 19:13:16 -0400
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-1f9aeb96b93so50208495ad.3
+ for <qemu-devel@nongnu.org>; Wed, 26 Jun 2024 16:13:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719443583; x=1720048383; darn=nongnu.org;
+ d=linaro.org; s=google; t=1719443585; x=1720048385; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=pEE58Wfx3Oif89AADmhPQguadlcOn12TkYSZVg6ccjY=;
- b=wT9xxqW3L6yVoUEKBBB+r6331cprohHKpgpb18yAFgQ7FkVORpiEyCHxkwCHJY5Qwm
- 8w3q4b+v+/PM84RBIl/uWYGnziJgyeNOtvIqjbRDd1jRpAVUf1Q+r7Wb15nujkFwfF78
- lmlmsawR/yY9tdJy8NeDFsagD62j1yUxnq+pLf0BMCR2xEezjHGvTYucaWtqvMqPRy2d
- q/x+Uo1FlJZP0j9hFWmos/yEkImlZuGBq6u3iqNiFv9e3V7nnHnCghR7tSrhOyA+tAGY
- NCdpleltjbE2Ke/XhyBAJCfvlpCnruE5FnwJsW0GUoQcRxG3NqfR53ugXxccxwiTkudo
- fkQg==
+ bh=KfJtbR1DHFH39g5O1RoXMV40m1cvFRDojz81uxTKSUM=;
+ b=kPh+jV0/JpWu1FW1OgWeGyym40AzYaFvIk5XBoMXbA2krNquTKEd7Jj5FBNmYVL7+U
+ MHN6WzvQp+Qji4liGohqAAnmiI59kQE6paLE68SQv5+/2KNnILz+CWOe+snLQYidYu64
+ PrIJnGx78bKx70jsNrDqneuB+ohkAfT64NFcPjBMkVl5RfvFk6sf3VzaijUelMESZvGe
+ NIopLTQ2qmGtYlH4Db5Y7m4edSTgdVyn30UQUwA16Ij2Hm6rMwAzrFlUDeMuj95jTlKd
+ DKIkO1plTcX2ykk2t54oK4FQmMo22xeqQaNlVh5b/oLibUGOF885Y5spkdzmx2v0kAPy
+ /xBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719443583; x=1720048383;
+ d=1e100.net; s=20230601; t=1719443585; x=1720048385;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=pEE58Wfx3Oif89AADmhPQguadlcOn12TkYSZVg6ccjY=;
- b=uypQj2ceUsknLTBe7FaG6NZf3ujwpnOq4cZ1NhqjmrJ+NDrYZLWPRTdUw5hV3Dpwie
- 7hPCiNHRu3/4v7wftXyieyNtfDSSBO57jsGlGl1MJBxlC+L2gRL0HoF4LkPrcvoacPHY
- FF64kjLVCZsnCYUb1VTk2r42G5r35CpZGmWiQSZX7isdmC3QE1HPBsiAAImC+fuvCm1m
- 9aUlpU8oGKGC+T1s9OY1xsz6mNw7RbsU2fL5bJGc6j72sTqpukAe8IycZGDc2xWvJIqt
- N8G+xAPy4Eu33fZrT9SHnJiEagLxVak7boxrINtS5iQYx4cjp9zBCxcd0NTt+BnMLhM1
- Wfmw==
-X-Gm-Message-State: AOJu0YyApzMNm6JtyeVUi1i4kZloIxhz8kimy6ROg2zMghrUIvz/+hz5
- duwLX4FqJxRIXm0ctXzLyP8LrTungv3Neda5mO08yh2EGrrmDGgv3rDqNHn7FBEuIi9QMmjKbx9
- c1gI=
-X-Google-Smtp-Source: AGHT+IFkyezoVgHJssBrFpgZLrvyBCnk+IWmjPP4ptSouzisQS8jNPUVW6z7pvSSHjx2ZZk1iI/l2w==
-X-Received: by 2002:a17:902:c944:b0:1f7:ff:b477 with SMTP id
- d9443c01a7336-1fa1d67101cmr144414285ad.55.1719443583249; 
- Wed, 26 Jun 2024 16:13:03 -0700 (PDT)
+ bh=KfJtbR1DHFH39g5O1RoXMV40m1cvFRDojz81uxTKSUM=;
+ b=hZ2tozTpPuHf+6YWDvZLTXQUmFKm10BelFVDRH0COnjv0/sANYbVyfeL2REO6r+4mE
+ EBhTAFKXaCVKMlhq4/t7Kn7aTq70dUoq1aXlCqHsqhw93rPqd6BmcaVRiDuk5T87FY/z
+ xmPrpVOmrwMkVTSar0dWEbDNyCwz/7zIjIFdfRtGq7g9ch//9yN/DrOfBbeamMONzxIr
+ waurkBG4LgwQuV5VmklecjV1fDJhmRnh4i0Czo+gk4t6KNhrokxOw0Iiv47cx3hzsq7/
+ JB0+2MTIhjV6o/Y6bxHdq5uZ1tw7+UL+9W2XLbgff0vv2fInJrOZ2amVi1Li0eL08ydF
+ fTjQ==
+X-Gm-Message-State: AOJu0Yw+fIBkqchMX9XTP70VZrefREqUJ3Je0rnySF+dHCz63gCB3qDv
+ 4Az/l1/QScueL+N8AbeGxi4u6r02hIdhA4pqs9ogxKVWcIc1kHdtKbGEff2xnf0u8dBmB0JX1XH
+ 4UNI=
+X-Google-Smtp-Source: AGHT+IHz7n0rgQ3mTIOlKvDhPA03qfO4XnDmk28WHTm2yljHoInggSnSzVTEKeHq3Exgwfugkzo6bQ==
+X-Received: by 2002:a17:902:ecce:b0:1f8:46c9:c96f with SMTP id
+ d9443c01a7336-1fa23f01d4amr141234695ad.61.1719443584791; 
+ Wed, 26 Jun 2024 16:13:04 -0700 (PDT)
 Received: from linaro.vn.shawcable.net ([2604:3d08:9384:1d00::2193])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1faac82cd3bsm478215ad.0.2024.06.26.16.13.01
+ d9443c01a7336-1faac82cd3bsm478215ad.0.2024.06.26.16.13.03
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 26 Jun 2024 16:13:02 -0700 (PDT)
+ Wed, 26 Jun 2024 16:13:03 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
@@ -66,16 +66,17 @@ Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Alexandre Iooss <erdnaxe@crans.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH 3/7] plugins: extend API to get latest memory value accessed
-Date: Wed, 26 Jun 2024 16:12:51 -0700
-Message-Id: <20240626231255.339353-4-pierrick.bouvier@linaro.org>
+Subject: [PATCH 4/7] tests/tcg: add mechanism to run specific tests with
+ plugins
+Date: Wed, 26 Jun 2024 16:12:52 -0700
+Message-Id: <20240626231255.339353-5-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240626231255.339353-1-pierrick.bouvier@linaro.org>
 References: <20240626231255.339353-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x635.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x629.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,95 +99,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Two functions are added to plugins API:
-- qemu_plugin_mem_get_value_upper_bits
-- qemu_plugin_mem_get_value_lower_bits
-
-This value can be accessed only during a memory callback.
+Only multiarch tests are run with plugins, and we want to be able to run
+per-arch test with plugins too.
 
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- include/qemu/qemu-plugin.h   | 20 ++++++++++++++++++++
- plugins/api.c                | 21 +++++++++++++++++++++
- plugins/qemu-plugins.symbols |  2 ++
- 3 files changed, 43 insertions(+)
+ tests/tcg/Makefile.target | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/include/qemu/qemu-plugin.h b/include/qemu/qemu-plugin.h
-index c71c705b699..5945f256949 100644
---- a/include/qemu/qemu-plugin.h
-+++ b/include/qemu/qemu-plugin.h
-@@ -551,6 +551,26 @@ bool qemu_plugin_mem_is_big_endian(qemu_plugin_meminfo_t info);
- QEMU_PLUGIN_API
- bool qemu_plugin_mem_is_store(qemu_plugin_meminfo_t info);
+diff --git a/tests/tcg/Makefile.target b/tests/tcg/Makefile.target
+index f21be50d3b2..dc5c8b7a3b4 100644
+--- a/tests/tcg/Makefile.target
++++ b/tests/tcg/Makefile.target
+@@ -152,10 +152,11 @@ PLUGINS=$(patsubst %.c, lib%.so, $(notdir $(wildcard $(PLUGIN_SRC)/*.c)))
+ # only expand MULTIARCH_TESTS which are common on most of our targets
+ # to avoid an exponential explosion as new tests are added. We also
+ # add some special helpers the run-plugin- rules can use below.
++# In more, extra tests can be added using PLUGINS_TESTS variable.
  
-+/**
-+ * qemu_plugin_mem_get_value_lower_bits() - return 64 lower bits of latest
-+ * accessed memory value
-+ * @info: opaque memory transaction handle
-+ *
-+ * Returns: lower bits for value accessed
-+ */
-+QEMU_PLUGIN_API
-+uint64_t qemu_plugin_mem_get_value_lower_bits(qemu_plugin_meminfo_t info);
-+
-+/**
-+ * qemu_plugin_mem_get_value_upper_bits() - return 64 upper bits of latest
-+ * accessed memory value
-+ * @info: opaque memory transaction handle
-+ *
-+ * Returns: upper bits for value accessed
-+ */
-+QEMU_PLUGIN_API
-+uint64_t qemu_plugin_mem_get_value_upper_bits(qemu_plugin_meminfo_t info);
-+
- /**
-  * qemu_plugin_get_hwaddr() - return handle for memory operation
-  * @info: opaque memory info structure
-diff --git a/plugins/api.c b/plugins/api.c
-index 2ff13d09de6..89e9f6ba5b4 100644
---- a/plugins/api.c
-+++ b/plugins/api.c
-@@ -351,6 +351,27 @@ bool qemu_plugin_mem_is_store(qemu_plugin_meminfo_t info)
-     return get_plugin_meminfo_rw(info) & QEMU_PLUGIN_MEM_W;
- }
- 
-+uint64_t qemu_plugin_mem_get_value_upper_bits(qemu_plugin_meminfo_t info)
-+{
-+    return current_cpu->plugin_state->mem_value_upper_bits;
-+}
-+
-+uint64_t qemu_plugin_mem_get_value_lower_bits(qemu_plugin_meminfo_t info)
-+{
-+    uint64_t value = current_cpu->plugin_state->mem_value_lower_bits;
-+    /* tcg values are sign extended, so we must clip them */
-+    switch (qemu_plugin_mem_size_shift(info)) {
-+    case 0:
-+        return value & 0xff;
-+    case 1:
-+        return value & 0xffff;
-+    case 2:
-+        return value & 0xffffffff;
-+    default:
-+        return value;
-+    }
-+}
-+
- /*
-  * Virtual Memory queries
-  */
-diff --git a/plugins/qemu-plugins.symbols b/plugins/qemu-plugins.symbols
-index ca773d8d9fe..9f2646fc812 100644
---- a/plugins/qemu-plugins.symbols
-+++ b/plugins/qemu-plugins.symbols
-@@ -13,6 +13,8 @@
-   qemu_plugin_insn_size;
-   qemu_plugin_insn_symbol;
-   qemu_plugin_insn_vaddr;
-+  qemu_plugin_mem_get_value_upper_bits;
-+  qemu_plugin_mem_get_value_lower_bits;
-   qemu_plugin_mem_is_big_endian;
-   qemu_plugin_mem_is_sign_extended;
-   qemu_plugin_mem_is_store;
+ ifneq ($(MULTIARCH_TESTS),)
+ $(foreach p,$(PLUGINS), \
+-	$(foreach t,$(MULTIARCH_TESTS),\
++	$(foreach t,$(MULTIARCH_TESTS) $(PLUGINS_TESTS),\
+ 		$(eval run-plugin-$(t)-with-$(p): $t $p) \
+ 		$(eval RUN_TESTS+=run-plugin-$(t)-with-$(p))))
+ endif # MULTIARCH_TESTS
 -- 
 2.39.2
 
