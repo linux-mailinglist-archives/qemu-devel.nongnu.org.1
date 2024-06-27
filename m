@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42CAB91A380
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jun 2024 12:07:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 945D291A372
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jun 2024 12:05:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sMlx8-0005SG-1o; Thu, 27 Jun 2024 06:02:06 -0400
+	id 1sMlxA-0005e4-6E; Thu, 27 Jun 2024 06:02:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sMlx1-0005I8-4n
- for qemu-devel@nongnu.org; Thu, 27 Jun 2024 06:02:00 -0400
-Received: from mail-pg1-x536.google.com ([2607:f8b0:4864:20::536])
+ id 1sMlx4-0005Np-E5
+ for qemu-devel@nongnu.org; Thu, 27 Jun 2024 06:02:04 -0400
+Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sMlwr-0001gD-NZ
- for qemu-devel@nongnu.org; Thu, 27 Jun 2024 06:01:58 -0400
-Received: by mail-pg1-x536.google.com with SMTP id
- 41be03b00d2f7-6eab07ae82bso5512816a12.3
- for <qemu-devel@nongnu.org>; Thu, 27 Jun 2024 03:01:49 -0700 (PDT)
+ id 1sMlwz-0001gs-Uu
+ for qemu-devel@nongnu.org; Thu, 27 Jun 2024 06:02:01 -0400
+Received: by mail-pf1-x436.google.com with SMTP id
+ d2e1a72fcca58-706627ff48dso4166230b3a.1
+ for <qemu-devel@nongnu.org>; Thu, 27 Jun 2024 03:01:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1719482508; x=1720087308; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1719482515; x=1720087315; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=FLCyPqMhz46RMQyVFn3nlk/YPcVVg7QWv/riYPUXA0Q=;
- b=KPk7VPnbbgY29O3yLpxtefZN1rJ7xZ/Bj7YLGr6UqfeFCDoJDccausF2P14L+Mxwq2
- k08ZIHWbVgVrnhTFcq6sZVHRlxaAitVRMARl2MsyGxKSJ6zP3XF9/umHBLr4k4NQDKlz
- Tu952VQ3kYmTApvo06fgzBMT0HFr2RH+SrhqP4XnuN6TbTLWXZeDpsLtTD6CCaHF0R7G
- 0e9cIGsMETd/DhsNAihJLJryGvaxS2oYofz6NnhAPhQAKxnrNgBYPerFEOXyJFrNx9ul
- UT2L8qGSEsabnR8V9silJMBbYci0sMgiTFVYOHYTBBaJ1grdFsto6+paeizB5geO3vk5
- YKVg==
+ bh=9aUCnalnUbISmCX7rnd1hepHfDNLqfkxy2lbhGVkz3Q=;
+ b=QBw05HWo76t7Mcq4WaakuBCVs2IMnNTG+50nnqaqY0XH4aKHnkz1gO2VHQzWXNzsm9
+ 2fy6EnsFj3Ro8tnM4MxBzh6l5rXjn15MaSC+V+51uBbH648XTrkCa3JoyVve4bG2dEdI
+ 1ZMs13m+720/JvQqc2W+RSsuEkTP5e29fVoZdby9gvl9x8suqN3IDK1WRZsSVPdoz9fH
+ EeZ+0EcE8XaxEmcAo7ncfPUXnktw3TopmK6ZmtLgD3bPLG/ZnyHZsNE+5dcP+PHqP17f
+ K+lhiNj8SmTuYYZ2kAy+00/sO/ynj9v0SIw8qmC//GKtxPKoonu0n2LS3jRlW3U6GErs
+ yRZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719482508; x=1720087308;
+ d=1e100.net; s=20230601; t=1719482515; x=1720087315;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=FLCyPqMhz46RMQyVFn3nlk/YPcVVg7QWv/riYPUXA0Q=;
- b=rFpLMMqN1e3Yo4VxIjmLsz/y3FYd38+rJU2a5jw6xrUwFW0abhhK1IC2p1Lu47Ns87
- 0+8uF4tzugxs50tb8Pdi8j06kFcTgFSZ2yGVKVwijakefB4SBCRu1bIFCKc68Yx8Z52Z
- cpS5NQzcvTYpMM+dUd21qSwIejouO9TSKPpV5gG7Rp+6YTpSC3Ykk481onvkce8MCbve
- 45JUw3cDqK4qtxIcYNKEkd07fmfUc1BljsBDEMilenfhSAg30qTuyzlQSXV5UweAznLP
- 9bhBuzURn2MQU+v5cY9asGw8vBYV8aWmUMos7xEG9vTrKLbWsClh4xjOJhNM08JRvJhh
- lUkw==
-X-Gm-Message-State: AOJu0Yz0rS+xim5IRwFu/pTv/FH9e/fmO0CqjMY89KU9RqgEjl/dl14i
- Z25QP6H0l6QyfIvtjKlYMBHLll6xe2PrJZFS049XXYAu/o+z+H9ZZqozBRrK
-X-Google-Smtp-Source: AGHT+IFRsJi8Lk/YkWmZNzyYq1os59XyudwW9DbXAz8UNZbqOp6WG+o9Z93x0Czo5Bhzx8xLQUI1ww==
-X-Received: by 2002:a05:6a20:ba20:b0:1bd:19e2:744c with SMTP id
- adf61e73a8af0-1bd19e274e6mr6680379637.4.1719482507949; 
- Thu, 27 Jun 2024 03:01:47 -0700 (PDT)
+ bh=9aUCnalnUbISmCX7rnd1hepHfDNLqfkxy2lbhGVkz3Q=;
+ b=JrK4CrssR0YHx/Vab+u6/1NFpp0X8IpFYMxTa1gxHmjvS9gLqOn8hfcjjmgOxEwovY
+ a+A//ykbPzvWVP0DveUxK8VNLI8yu/j3Rr0mZaeMJaKhv2pBl70uCHSCF4kvSsSDYqS7
+ fCYwceOc6vyjlJz3Yc6R8B7SalVrzu50s219vCqwsmF2lEvCzTT5DFzccyBFa7QTJpA0
+ EqyW7XdglHBWJrEcQYsrhAW9tIu9aQE3q8mk7FLewlLIWg+6lE2mmAca+yX1jKP0DxDU
+ UAkm5y5+3HG9cAMJEJTmXkzYoftqyMp61NrhEousHzsSplOZauHei9M7rdyun7V3Dqc3
+ YJ7Q==
+X-Gm-Message-State: AOJu0YxoxejxQC5Yn1Hh6ANDR/qE4GX6xBLXO5kqyEOPIRoD3xk5q6T1
+ ODDl8zqYB4b5QbHTtA47C14rNYaTUXQIhhenVYiKU/o8MaVWEIopaBTOxJQH
+X-Google-Smtp-Source: AGHT+IGInls2vv1jQdzTlwg9kn3sxblXT56o/xLZlxbKYxUsJWCMiMOQYlfHt2Kbjq2JsuOaAAOOKg==
+X-Received: by 2002:aa7:9d11:0:b0:706:6525:611f with SMTP id
+ d2e1a72fcca58-70674751f13mr14066320b3a.31.1719482515558; 
+ Thu, 27 Jun 2024 03:01:55 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-706b4a07326sm932431b3a.111.2024.06.27.03.01.45
+ d2e1a72fcca58-706b4a07326sm932431b3a.111.2024.06.27.03.01.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 27 Jun 2024 03:01:47 -0700 (PDT)
+ Thu, 27 Jun 2024 03:01:55 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Chao Du <duchao@eswincomputing.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Andrew Jones <ajones@ventanamicro.com>,
+Cc: alistair23@gmail.com, "Fea.Wang" <fea.wang@sifive.com>,
+ Frank Chang <frank.chang@sifive.com>, Weiwei Li <liwei1518@gmail.com>,
+ LIU Zhiwei <zhiwei_liu@linux.alibaba.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 14/32] target/riscv/kvm: define TARGET_KVM_HAVE_GUEST_DEBUG
-Date: Thu, 27 Jun 2024 20:00:35 +1000
-Message-ID: <20240627100053.150937-15-alistair.francis@wdc.com>
+Subject: [PULL 16/32] target/riscv: Define macros and variables for ss1p13
+Date: Thu, 27 Jun 2024 20:00:37 +1000
+Message-ID: <20240627100053.150937-17-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240627100053.150937-1-alistair.francis@wdc.com>
 References: <20240627100053.150937-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::536;
- envelope-from=alistair23@gmail.com; helo=mail-pg1-x536.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
+ envelope-from=alistair23@gmail.com; helo=mail-pf1-x436.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -98,32 +98,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Chao Du <duchao@eswincomputing.com>
+From: "Fea.Wang" <fea.wang@sifive.com>
 
-To enable the KVM GUEST DEBUG for RISC-V at QEMU side.
+Add macros and variables for RISC-V privilege 1.13 support.
 
-Signed-off-by: Chao Du <duchao@eswincomputing.com>
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-Acked-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20240606014501.20763-4-duchao@eswincomputing.com>
+Signed-off-by: Fea.Wang <fea.wang@sifive.com>
+Reviewed-by: Frank Chang <frank.chang@sifive.com>
+Reviewed-by: Weiwei Li <liwei1518@gmail.com>
+Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Message-ID: <20240606135454.119186-3-fea.wang@sifive.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- configs/targets/riscv64-softmmu.mak | 1 +
- 1 file changed, 1 insertion(+)
+ target/riscv/cpu.h     | 4 +++-
+ target/riscv/cpu_cfg.h | 1 +
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/configs/targets/riscv64-softmmu.mak b/configs/targets/riscv64-softmmu.mak
-index f688ffa7bc..917980e63e 100644
---- a/configs/targets/riscv64-softmmu.mak
-+++ b/configs/targets/riscv64-softmmu.mak
-@@ -1,6 +1,7 @@
- TARGET_ARCH=riscv64
- TARGET_BASE_ARCH=riscv
- TARGET_SUPPORTS_MTTCG=y
-+TARGET_KVM_HAVE_GUEST_DEBUG=y
- TARGET_XML_FILES= gdb-xml/riscv-64bit-cpu.xml gdb-xml/riscv-32bit-fpu.xml gdb-xml/riscv-64bit-fpu.xml gdb-xml/riscv-64bit-virtual.xml
- # needed by boot.c
- TARGET_NEED_FDT=y
+diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+index b4c9e13774..90b8f1b08f 100644
+--- a/target/riscv/cpu.h
++++ b/target/riscv/cpu.h
+@@ -96,12 +96,14 @@ extern RISCVCPUProfile *riscv_profiles[];
+ #define PRIV_VER_1_10_0_STR "v1.10.0"
+ #define PRIV_VER_1_11_0_STR "v1.11.0"
+ #define PRIV_VER_1_12_0_STR "v1.12.0"
++#define PRIV_VER_1_13_0_STR "v1.13.0"
+ enum {
+     PRIV_VERSION_1_10_0 = 0,
+     PRIV_VERSION_1_11_0,
+     PRIV_VERSION_1_12_0,
++    PRIV_VERSION_1_13_0,
+ 
+-    PRIV_VERSION_LATEST = PRIV_VERSION_1_12_0,
++    PRIV_VERSION_LATEST = PRIV_VERSION_1_13_0,
+ };
+ 
+ #define VEXT_VERSION_1_00_0 0x00010000
+diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
+index e1e4f32698..fb7eebde52 100644
+--- a/target/riscv/cpu_cfg.h
++++ b/target/riscv/cpu_cfg.h
+@@ -136,6 +136,7 @@ struct RISCVCPUConfig {
+      * TCG always implement/can't be user disabled,
+      * based on spec version.
+      */
++    bool has_priv_1_13;
+     bool has_priv_1_12;
+     bool has_priv_1_11;
+ 
 -- 
 2.45.2
 
