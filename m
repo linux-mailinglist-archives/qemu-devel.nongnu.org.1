@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46B6E91A820
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jun 2024 15:41:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18D1791A827
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jun 2024 15:41:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sMpLN-0001cr-Qo; Thu, 27 Jun 2024 09:39:22 -0400
+	id 1sMpLt-0002Ma-A0; Thu, 27 Jun 2024 09:39:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sMpLI-0001af-CE
- for qemu-devel@nongnu.org; Thu, 27 Jun 2024 09:39:16 -0400
-Received: from mail-pg1-x530.google.com ([2607:f8b0:4864:20::530])
+ id 1sMpLO-0001gJ-B6
+ for qemu-devel@nongnu.org; Thu, 27 Jun 2024 09:39:23 -0400
+Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sMpLG-0006WH-LX
- for qemu-devel@nongnu.org; Thu, 27 Jun 2024 09:39:16 -0400
-Received: by mail-pg1-x530.google.com with SMTP id
- 41be03b00d2f7-7182a634815so4429106a12.3
- for <qemu-devel@nongnu.org>; Thu, 27 Jun 2024 06:39:12 -0700 (PDT)
+ id 1sMpLM-0006Xf-BS
+ for qemu-devel@nongnu.org; Thu, 27 Jun 2024 09:39:22 -0400
+Received: by mail-pf1-x42a.google.com with SMTP id
+ d2e1a72fcca58-7067108f2cdso4256063b3a.1
+ for <qemu-devel@nongnu.org>; Thu, 27 Jun 2024 06:39:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1719495551; x=1720100351;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1719495558; x=1720100358;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=Yvl4pAdGzIA/y7zkDQtF9iZK7ptxPpuy1nIWlUirby4=;
- b=uaF7zszFj+kz80phxfb8lk1Ot7je7a0Yr3pvZry3QyHavtrSngDzdm41+eZIv469fw
- Ay8TA826kLpRlqmQP5XbY8ZxQSfuFCWcllxD1aFf9CPfwREnX04rt3BcYUekDP03HV4g
- zV2QzWwxSQRfY2cwGs8E+EvunT4q2BsKRoyHN4+jJ9YTw/N2ahjP4oTZdK+LWs/UFnQu
- rpeLmkuMFzLErtn3dPJ0qccx/gUeTVI9QLTPzfxUGkB88i82CkXVJxQnNZSlsig7+7QS
- 0RN4olyKeat03LnZdY7tGSbvqlXWizIZsfq/kVl8q3ia3PBrQq3pAQ8SOvT8EeuNCdtl
- bRNQ==
+ :reply-to; bh=bOTqGJASqbN+xq2cvidGDOZj3Yf25P/ZsUr7Yh4tZjc=;
+ b=sJQmCuwgbShIncPBnBQaiqJgjpg/UDYFFr2kfbd4pvIRt2mCj2dp+WJ5TFD9PeJIDn
+ gbrKLS1zKH51hwCQuoPXnHh4pUxlM4D+lHMY046ucz8ByRn9f9yj/TGK4k/vAC+pNDEm
+ N3TxBayynRDcRiCH3hYIsCqgqrHihXw9rxULSrFCLUIHgp3fGyo8J8O2fHXBVQcYrmWn
+ XMMTyhW6Pdf6gw/v1KNUz+FbssgTh4Mm+ueVX2DOaTY0LZI4LKmcy2kX1NuzJiNu3/mB
+ qLY5pKO/iG4dR6tiVpc3/CzrXxgVoan7q58jzfa8NvHasJgosdHTHC4spc+FfwsofH1Y
+ p2ag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719495551; x=1720100351;
+ d=1e100.net; s=20230601; t=1719495558; x=1720100358;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Yvl4pAdGzIA/y7zkDQtF9iZK7ptxPpuy1nIWlUirby4=;
- b=k+VAIeG7VYnUpJ5JohNmNhYmjC+LPmDLqbXs0dYR5hkWSGMtNV8ZBtHBQheHiT7krF
- y49bJyQoKraqtlZRSzSJTd8Hb/psqQbY3hq6t02meSmUcb/loFBDVczgPjAjweflzL2H
- M+YtOi+YEtmqIjAS12yBNMN/zEk3VZHHgrG5tl/zRcBDAofhVCgtQixEYNHNhDjY9137
- FNVW/4lWlF2rMRYpK6LgjW+BRKPBFpootLrHWfxH+j1NHBLatPqZPk+rAJvd4e+QSO5O
- ww+LNVWJD/GFog3bquWfoSP/drF8G+z5rtTTFIJP0b8RdKyn8YzPW1z096qHfMDqeiwP
- mEPA==
-X-Gm-Message-State: AOJu0Yy5Cy2rF5WGhSBWB6QdhDnIXzIsYzO3a4rs3IKtNB+Ih+QizhA1
- 5OOxRJYotnShMPvVfWK2r1S2bOTcyIGBGNYMeTH5peJJb7ev29UIWpQS1PLRAzc=
-X-Google-Smtp-Source: AGHT+IFlBGhq8j7ZQMV5qMOOdFsofTqP+NF+lT2o/+u4EH2nCOdF15FzOTWiA/9TuXR60cGyfzX9NA==
-X-Received: by 2002:a05:6a20:12c3:b0:1be:cbe9:f765 with SMTP id
- adf61e73a8af0-1becbe9f89amr3175993637.18.1719495551639; 
- Thu, 27 Jun 2024 06:39:11 -0700 (PDT)
+ bh=bOTqGJASqbN+xq2cvidGDOZj3Yf25P/ZsUr7Yh4tZjc=;
+ b=RoUM2X6eai3vb3B2QDXjcHELegeDhcOfRAI8liksbgWOiUxU2wHXkyptzNJ0O5l7uJ
+ M7betqr8QtbZ0PDeoAjzWHcUUsxqd4eFcS0nU0IGQ5e+b7wwJAxJPcolWNbFo3DImoE5
+ rY6iKLcfhPr+XflaGAlVrPiXCaOpS+Lc34bQbqRD8dVIwrAxgvuL6gL0ZQl0mZ/+oDae
+ 086tulRQGaMvoSVzFAjenKId0qw1pwy4DjcBVsokGc0A/iruKncaMQq495O6gRfztjC0
+ Dxh0WzEqeVQuz3Rf6t/tDj74qgemjZJp2ClaD/kdFlOXCqr0EF9iyCBKGkvYH1QmfDdd
+ LYVg==
+X-Gm-Message-State: AOJu0YypLzJiVxpyNXgsfmkH5Jo75UtGyaStPCqm7otSgC7FvVN9dhVX
+ uIDEuwLHh96+Cp8lPA2Yx/aFWACPOCZLq6b6Y9K3YtQ0bAiIvs4v+PwyN+Gyiec=
+X-Google-Smtp-Source: AGHT+IEWG5kSC0j6fCgKsJMYPuPASJg34e7zfzd1IrPkvGFbb3HCzQ4eIvOXePGeln+k/PXzaWks+w==
+X-Received: by 2002:a05:6a00:138f:b0:706:6895:3c85 with SMTP id
+ d2e1a72fcca58-70670ffbfb9mr18643834b3a.27.1719495557805; 
+ Thu, 27 Jun 2024 06:39:17 -0700 (PDT)
 Received: from localhost ([2400:4050:a840:1e00:9ac7:6d57:2b16:6932])
  by smtp.gmail.com with UTF8SMTPSA id
- d9443c01a7336-1faac9a73fcsm13434485ad.252.2024.06.27.06.39.07
+ d2e1a72fcca58-706b491cd54sm1338229b3a.79.2024.06.27.06.39.13
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 27 Jun 2024 06:39:11 -0700 (PDT)
+ Thu, 27 Jun 2024 06:39:17 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Thu, 27 Jun 2024 22:37:53 +0900
-Subject: [PATCH v2 10/15] tests/qtest: Use qtest_add_data_func_full()
+Date: Thu, 27 Jun 2024 22:37:54 +0900
+Subject: [PATCH v2 11/15] tests/qtest: Free unused QMP response
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240627-san-v2-10-750bb0946dbd@daynix.com>
+Message-Id: <20240627-san-v2-11-750bb0946dbd@daynix.com>
 References: <20240627-san-v2-0-750bb0946dbd@daynix.com>
 In-Reply-To: <20240627-san-v2-0-750bb0946dbd@daynix.com>
 To: Eduardo Habkost <eduardo@habkost.net>, 
@@ -82,14 +82,14 @@ To: Eduardo Habkost <eduardo@habkost.net>,
 Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, qemu-ppc@nongnu.org, 
  Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.14-dev-fd6e3
-Received-SPF: none client-ip=2607:f8b0:4864:20::530;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x530.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::42a;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x42a.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+ SPF_NONE=0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,51 +105,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-A test function may not be executed depending on the test command line
-so it is wrong to free data with a test function. Use
-qtest_add_data_func_full() to register a function to free data.
+This fixes LeakSanitizer warnings.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- tests/qtest/device-introspect-test.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ tests/qtest/libqtest.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tests/qtest/device-introspect-test.c b/tests/qtest/device-introspect-test.c
-index 5b0ffe43f5f4..587da59623dc 100644
---- a/tests/qtest/device-introspect-test.c
-+++ b/tests/qtest/device-introspect-test.c
-@@ -266,7 +266,6 @@ static void test_device_intro_concrete(const void *args)
- 
-     qobject_unref(types);
-     qtest_quit(qts);
--    g_free((void *)args);
- }
- 
- static void test_abstract_interfaces(void)
-@@ -310,12 +309,12 @@ static void add_machine_test_case(const char *mname)
- 
-     path = g_strdup_printf("device/introspect/concrete/defaults/%s", mname);
-     args = g_strdup_printf("-M %s", mname);
--    qtest_add_data_func(path, args, test_device_intro_concrete);
-+    qtest_add_data_func_full(path, args, test_device_intro_concrete, g_free);
-     g_free(path);
- 
-     path = g_strdup_printf("device/introspect/concrete/nodefaults/%s", mname);
-     args = g_strdup_printf("-nodefaults -M %s", mname);
--    qtest_add_data_func(path, args, test_device_intro_concrete);
-+    qtest_add_data_func_full(path, args, test_device_intro_concrete, g_free);
-     g_free(path);
- }
- 
-@@ -330,7 +329,7 @@ int main(int argc, char **argv)
-     qtest_add_func("device/introspect/abstract-interfaces", test_abstract_interfaces);
-     if (g_test_quick()) {
-         qtest_add_data_func("device/introspect/concrete/defaults/none",
--                            g_strdup(common_args), test_device_intro_concrete);
-+                            common_args, test_device_intro_concrete);
-     } else {
-         qtest_cb_for_every_machine(add_machine_test_case, true);
+diff --git a/tests/qtest/libqtest.c b/tests/qtest/libqtest.c
+index 18e2f7f28278..f89da7b80797 100644
+--- a/tests/qtest/libqtest.c
++++ b/tests/qtest/libqtest.c
+@@ -744,6 +744,8 @@ QDict *qtest_qmp_receive(QTestState *s)
+                         response, s->eventData)) {
+             /* Stash the event for a later consumption */
+             s->pending_events = g_list_append(s->pending_events, response);
++        } else {
++            qobject_unref(response);
+         }
      }
+ }
 
 -- 
 2.45.2
