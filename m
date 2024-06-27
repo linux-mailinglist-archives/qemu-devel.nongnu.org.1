@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3886091A9FD
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jun 2024 16:55:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 527FE91A9FC
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jun 2024 16:55:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sMqVu-0007tG-3i; Thu, 27 Jun 2024 10:54:18 -0400
+	id 1sMqVu-0007uA-KC; Thu, 27 Jun 2024 10:54:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sMqVo-0007t6-IJ
- for qemu-devel@nongnu.org; Thu, 27 Jun 2024 10:54:12 -0400
+ id 1sMqVr-0007th-TJ
+ for qemu-devel@nongnu.org; Thu, 27 Jun 2024 10:54:17 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sMqVm-0007Ho-Vw
- for qemu-devel@nongnu.org; Thu, 27 Jun 2024 10:54:12 -0400
+ id 1sMqVq-0007I3-1F
+ for qemu-devel@nongnu.org; Thu, 27 Jun 2024 10:54:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719500049;
+ s=mimecast20190719; t=1719500053;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=b2IS7msecJ7gmIh0NCWZXMeuw+h41Tdg1NGfSCga9pg=;
- b=ZhQvZfLaCJG7EBhqu4mirygfdSx8nH4lMKCPnQvCy02yTjPxC4L0E2CURGhPebQXcCNfZF
- ujsOxkOi4J+SpwYT5ax2iiKkEPlGJJ9q1AkNCdC/bHcsLa+84soZDHVCBR36yFfdgsTIMn
- B1g3ZXpgp6LIQ51vKUmOqzcOzWXTgpI=
-Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
- [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=wOVf84lwfgLrYogRC0LnY4gOavX8fM5mQLjh40mAI/o=;
+ b=cDZcIwHH92svQWBFLxnW+WCmfaBkNbuHW+vE5xYICkkE38wlHFTeKJGc5PGM0gYZxcAhvx
+ 2QCArDaankLxaF3JmihOcy1cULYuP91bgdh5D6opkrvPC2yo3U/fu3jGJrsj14RqPmV/r0
+ lfv39UfpjIOwL5sS0EeF2925R1ej984=
+Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
+ [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-20--DyqZtr_Pzqtl-LASBiWbg-1; Thu, 27 Jun 2024 10:54:07 -0400
-X-MC-Unique: -DyqZtr_Pzqtl-LASBiWbg-1
-Received: by mail-lj1-f198.google.com with SMTP id
- 38308e7fff4ca-2ec5f22cbedso38627791fa.3
- for <qemu-devel@nongnu.org>; Thu, 27 Jun 2024 07:54:07 -0700 (PDT)
+ us-mta-568-qP0CTMArOnC_51Qfr6kl_A-1; Thu, 27 Jun 2024 10:54:10 -0400
+X-MC-Unique: qP0CTMArOnC_51Qfr6kl_A-1
+Received: by mail-lf1-f72.google.com with SMTP id
+ 2adb3069b0e04-52ce42bb0efso4174390e87.2
+ for <qemu-devel@nongnu.org>; Thu, 27 Jun 2024 07:54:10 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719500046; x=1720104846;
+ d=1e100.net; s=20230601; t=1719500048; x=1720104848;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=b2IS7msecJ7gmIh0NCWZXMeuw+h41Tdg1NGfSCga9pg=;
- b=aNJTL3EKsyZ0NzFiPCai3JQfp2Zt7bNrTiQd/7xnRfdCSNpHNlaU9P+MEMl3nw94FP
- 0LkyTZ6pJGLl/Ss0/bklqLcg5Y7gtqwfhqsBeMTQzu0O2QeTxcdujz6zz6yU7cNQ7FDY
- PzbCwptyXjOJ4lY3hCxyhauzwNAYHJEBp3ao6x3nNKhBL++vy+wTuHyYBUqspZoqCMFs
- Ix5Rgxq9HSnFWvCB8QUl3QXOJVYP0nrqk+Mim7kEk34rci/3dAhs+XHac4vVnpt9QZhp
- e0epQjFncZgm4c3ZazYO4PXOMQFUbfrJTeKQMP8t25r+Aotpl6g23PR8fQ3ipgm/8+IV
- HpWw==
-X-Gm-Message-State: AOJu0YyuUmKQmoP8CydsZ2N7O9CAst1IZbNuCOEuMXw19y6ew5ddZD+k
- yzQnL6mOfw3d4iRsF947bWp4o8QtdocKXc1yJmA46tEC5lum9QqYPjouTaYaNbwOzUW8ddV/MZl
- lkbjBWy3L75Pa82LGkHLLq/dqP9A6WYRbs/lDhVbkxmZaxdeKXNoa72tJl1wU/vODlGitFOps1x
- mnr5sM5YqlpvzOpu/AhbNNgfh6+ulEY6C4o/aP
-X-Received: by 2002:a2e:9213:0:b0:2ec:4de9:7334 with SMTP id
- 38308e7fff4ca-2ec5b2fd2bdmr102371951fa.11.1719500045832; 
- Thu, 27 Jun 2024 07:54:05 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF1k+lYbTD+7n4O80+xmu4J3yLVNOrQN8wKmP+f+TOBZeuFiPrz/dpymR3tuctAyStwfx8mmg==
-X-Received: by 2002:a2e:9213:0:b0:2ec:4de9:7334 with SMTP id
- 38308e7fff4ca-2ec5b2fd2bdmr102371671fa.11.1719500045296; 
- Thu, 27 Jun 2024 07:54:05 -0700 (PDT)
+ bh=wOVf84lwfgLrYogRC0LnY4gOavX8fM5mQLjh40mAI/o=;
+ b=spGUj+KNxDH9y5UCO6uWj1+ku32qobxGHbWjGZELfKqt9JNzMIrQUjBcgK57dm3MnF
+ /cqKrWgx67P7PbLUxR2XMI3O3X9UgHD+HiEpBREhsZiwYlwEjhsrJXxBm0AXCG9sAal/
+ QxwUXw2unq/hVGJZVNuL0e7l33MxabtgXjf8bEkkXmpTqkuVGrcsEeqeIdbLto/5p9q5
+ aNkN3XJpIOFCyUIGUULPzzRQFeXrOYVNUe7QDMmzlImEiKDpg096lvtpa7AKEDZiS/A7
+ n8ySnfN7ReurDUdouO3AtVrkaKOOQF3ssJRdNxEr4+oeGKrdJCI1lSS6/hC7CZEoAqj6
+ BPMQ==
+X-Gm-Message-State: AOJu0YxVBVzMS9ZU6Jt2pP737VIixUIhH9vJbH6klv66xaniPtTm4eBs
+ cFALe1nrREgbzmcdsFQR5TSjkSPnaQM7HaZt1y/HdUIgWy6QSaEeelv0lNk1P2fha/vPAnGB3cJ
+ auwuk7RyBdlc/iJkb8TsqqYf+oSaa75xtjARkmhmNNEZnQOidD2fL0DyDmFkBO2JjdtlbLjbELQ
+ XUCoOOmFKPaTXErduUKWkoOV+0ArL/MjCGQsx/
+X-Received: by 2002:a19:641c:0:b0:52c:dca7:c9bd with SMTP id
+ 2adb3069b0e04-52ce064e3e3mr9346250e87.30.1719500048758; 
+ Thu, 27 Jun 2024 07:54:08 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFu+quy5kOlRS3maCOD9ORsX83Tg3m+qBYsrmJnWvy1RC6X55dBngXKbu8/BMCN2vnmpOmvgw==
+X-Received: by 2002:a19:641c:0:b0:52c:dca7:c9bd with SMTP id
+ 2adb3069b0e04-52ce064e3e3mr9346235e87.30.1719500048277; 
+ Thu, 27 Jun 2024 07:54:08 -0700 (PDT)
 Received: from avogadro.local ([151.48.235.205])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-584d1280e88sm977815a12.39.2024.06.27.07.54.04
+ a640c23a62f3a-a729d6fdc8esm66440566b.22.2024.06.27.07.54.07
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 27 Jun 2024 07:54:04 -0700 (PDT)
+ Thu, 27 Jun 2024 07:54:07 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: berrange@redhat.com,
 	alex.bennee@linaro.org
-Subject: [PATCH 2/5] target/i386: SEV: store pointer to decoded id_block in
- SevSnpGuest
-Date: Thu, 27 Jun 2024 16:53:54 +0200
-Message-ID: <20240627145357.1038664-3-pbonzini@redhat.com>
+Subject: [PATCH 3/5] target/i386: SEV: rename sev_snp_guest->id_auth
+Date: Thu, 27 Jun 2024 16:53:55 +0200
+Message-ID: <20240627145357.1038664-4-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240627145357.1038664-1-pbonzini@redhat.com>
 References: <20240627145357.1038664-1-pbonzini@redhat.com>
@@ -102,55 +101,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Do not rely on finish->id_block_uaddr, so that there are no casts from
-pointer to uint64_t.  They break on 32-bit hosts.
+Free the "id_auth" name for the binary version of the data.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/sev.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ target/i386/sev.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
 diff --git a/target/i386/sev.c b/target/i386/sev.c
-index 6daa8c264cd..2d4cfd41e83 100644
+index 2d4cfd41e83..a6b063b762c 100644
 --- a/target/i386/sev.c
 +++ b/target/i386/sev.c
-@@ -153,6 +153,7 @@ struct SevSnpGuestState {
-     /* configuration parameters */
+@@ -154,7 +154,7 @@ struct SevSnpGuestState {
      char *guest_visible_workarounds;
      char *id_block_base64;
-+    uint8_t *id_block;
-     char *id_auth;
+     uint8_t *id_block;
+-    char *id_auth;
++    char *id_auth_base64;
      char *host_data;
  
-@@ -2170,16 +2171,15 @@ sev_snp_guest_set_id_block(Object *obj, const char *value, Error **errp)
-     gsize len;
- 
-     finish->id_block_en = 0;
-+    g_free(sev_snp_guest->id_block);
-     g_free(sev_snp_guest->id_block_base64);
--    g_free((guchar *)finish->id_block_uaddr);
- 
-     /* store the base64 str so we don't need to re-encode in getter */
-     sev_snp_guest->id_block_base64 = g_strdup(value);
-+    sev_snp_guest->id_block =
-+        qbase64_decode(sev_snp_guest->id_block_base64, -1, &len, errp);
- 
--    finish->id_block_uaddr =
--        (uint64_t)qbase64_decode(sev_snp_guest->id_block_base64, -1, &len, errp);
--
--    if (!finish->id_block_uaddr) {
-+    if (!sev_snp_guest->id_block) {
-         return;
+     struct kvm_sev_snp_launch_start kvm_start_conf;
+@@ -1297,7 +1297,7 @@ sev_snp_launch_finish(SevCommonState *sev_common)
+         }
      }
  
-@@ -2190,6 +2190,7 @@ sev_snp_guest_set_id_block(Object *obj, const char *value, Error **errp)
-     }
+-    trace_kvm_sev_snp_launch_finish(sev_snp->id_block_base64, sev_snp->id_auth,
++    trace_kvm_sev_snp_launch_finish(sev_snp->id_block_base64, sev_snp->id_auth_base64,
+                                     sev_snp->host_data);
+     ret = sev_ioctl(sev_common->sev_fd, KVM_SEV_SNP_LAUNCH_FINISH,
+                     finish, &error);
+@@ -2198,7 +2198,7 @@ sev_snp_guest_get_id_auth(Object *obj, Error **errp)
+ {
+     SevSnpGuestState *sev_snp_guest = SEV_SNP_GUEST(obj);
  
-     finish->id_block_en = 1;
-+    finish->id_block_uaddr = (uintptr_t)sev_snp_guest->id_block;
+-    return g_strdup(sev_snp_guest->id_auth);
++    return g_strdup(sev_snp_guest->id_auth_base64);
  }
  
- static char *
+ static void
+@@ -2208,14 +2208,14 @@ sev_snp_guest_set_id_auth(Object *obj, const char *value, Error **errp)
+     struct kvm_sev_snp_launch_finish *finish = &sev_snp_guest->kvm_finish_conf;
+     gsize len;
+ 
+-    g_free(sev_snp_guest->id_auth);
++    g_free(sev_snp_guest->id_auth_base64);
+     g_free((guchar *)finish->id_auth_uaddr);
+ 
+     /* store the base64 str so we don't need to re-encode in getter */
+-    sev_snp_guest->id_auth = g_strdup(value);
++    sev_snp_guest->id_auth_base64 = g_strdup(value);
+ 
+     finish->id_auth_uaddr =
+-        (uint64_t)qbase64_decode(sev_snp_guest->id_auth, -1, &len, errp);
++        (uint64_t)qbase64_decode(sev_snp_guest->id_auth_base64, -1, &len, errp);
+ 
+     if (!finish->id_auth_uaddr) {
+         return;
 -- 
 2.45.2
 
