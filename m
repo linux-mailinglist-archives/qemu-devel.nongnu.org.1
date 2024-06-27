@@ -2,69 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDDFE91A884
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jun 2024 15:59:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8ED3C91A87A
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jun 2024 15:59:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sMpdy-0002T5-SO; Thu, 27 Jun 2024 09:58:34 -0400
+	id 1sMpe1-0002Vg-4X; Thu, 27 Jun 2024 09:58:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sMpdx-0002Rs-AS
+ id 1sMpdx-0002SE-I4
  for qemu-devel@nongnu.org; Thu, 27 Jun 2024 09:58:33 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sMpds-0007sq-PW
+ id 1sMpdv-0007t3-Jc
  for qemu-devel@nongnu.org; Thu, 27 Jun 2024 09:58:33 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-1f480624d0fso62760185ad.1
- for <qemu-devel@nongnu.org>; Thu, 27 Jun 2024 06:58:28 -0700 (PDT)
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-1f6fabe9da3so64200245ad.0
+ for <qemu-devel@nongnu.org>; Thu, 27 Jun 2024 06:58:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1719496707; x=1720101507;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1719496710; x=1720101510;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=heud5oPL9PguF+0Dl89or/td6O7yLCDZcvUAaJnUzns=;
- b=I1WQV2Z7/+iHdYpOmWF4r/sowSnXcCTZakDB7UKyj36IIPDZJ7zLPZS0aYZS8pV5y/
- sNQW1QuyLT3ENNuRme/oE1EvzdDOWr8o75Du0ZEcK/dx+SJYb6+NY4WmH0Zc6oTvQnw0
- 7duVc7p+UDn3v9YHCNsiM/BRxfsQOQvRjZu2T4OeApODY5j5oGVbNOIqVV60QtW98vEF
- o1sW+mHgTXk28qjvuy02oJ5QSrpjQXkB0bcivEt3er/LYjFyOQDCI71nqgv9+2QhnGC+
- A6Il6Bop288gW44fS/qZu4JQiNGFhvgGj2JcLt285D6QnFBX7w0TZnpUJWglkUrVLTsQ
- 6jlw==
+ :reply-to; bh=xfjEm1QZECbrFVCphMYb79ZHnIFQxwHobg0g4KA/LWs=;
+ b=u0MbdRyUb004QphMSZ0rwKlWYM6ScPEa7JodAGpxqEEVIsjrDWvLR1mmxDS0YaJXAB
+ oP4GMgld6mRq8JnteO6z/u06ZZ81GwFcvAoGSjIf664NjQWOaO4ia93zYJrex2Owv+4A
+ vAx72GFbgufIAn3OwxRtNmAa0Yhlq6lTXgaNjxZg9b4VZgORNiNfwq+u6d6QB3OayOCd
+ eqbkJiI/IoRuDMPai+7SQAPJCd5PKLoWYAwfk3RDeY6fFjkGhrW1GJmmN+mG3V46IsR2
+ eB9zcZmhmDhPksu0us3NjAZuOq7h+s8F85XBTIT7pziHxuFDkLReZPFNxIQTwswUWQbv
+ 5UgQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719496707; x=1720101507;
+ d=1e100.net; s=20230601; t=1719496710; x=1720101510;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=heud5oPL9PguF+0Dl89or/td6O7yLCDZcvUAaJnUzns=;
- b=F9IbtfgtnKOwafFKwpt8F9erFpHXXV8ha6e6LgMNTeCmdFsCWODRRmzl+Gm3noFRBL
- k9cw4m2gEFUK+6GtBXb/eeV72MQV3AT8La8KGgehQSHucr2UZ/iKS6/eq2d/EvEIkW0T
- pQ8gMrDT+yhBScfnk9nuMc9nqqze0hzxP55ujgsIKz74p/lhWlG9BcioauuSXvhTQIpF
- OZUu5KBgFrDiKmqe0/O3R3fEqk7UOUheucMqb8AfPbThwpI3Ux+ttTas80+Fnr5eH0dn
- la4rgEHeU9RjYLdMK1EDFScPYTS/k8FAg5LFRy0LcC7EeVfua3f/ukW367BpUqySTLL3
- +AIA==
+ bh=xfjEm1QZECbrFVCphMYb79ZHnIFQxwHobg0g4KA/LWs=;
+ b=JkvIY6XSP6rBCFjKk3zDKI9zs2M81X/AvQfOQGeV9SpTWaEicdsZbI7Hf9145eXGDO
+ 30MHawF9RjvHfsJhSiqhyJAmeP5Ms6zLGniHseNET+BOHhuhGtVZ4rvzON0vRyeqFV+v
+ 26r2mqXSmQfMCNeCzxbah46QU7LOiKxbvl6OWQhimeK2Vso4LtsV4y4RJmFrsGNVVOpJ
+ /X07r0kA+MEYsUxABUph9Ac8LE58ZzWEC73WseDcxrNTR9LalLa//LtekmNsqF7jligt
+ mnXHvn4YVH8HClV/QYBM6dxn3FVHD1IqQyWUxfwmaWlV1mM8cKa+9ae9oIBYH31coInj
+ 8lWA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCU8BkvsAFmc8sok+zIliEP4bQVPfQYaKybeka7mPaYMpa2aaBAeSxbbj2KxwQHnxRj15wYONJWsaBppTwmaxwHPkMMZiVk=
-X-Gm-Message-State: AOJu0YxphL4MaTcu0ZVloigwMpFq7dvQ4SfGxWHN55Aep22oE1/rnYeF
- 1YYJwCBZVcXg4Fzktu5VMVoutzbyD8IYq7B++93mOpyOoYo3fU2Van/P+hPr49c=
-X-Google-Smtp-Source: AGHT+IGon+Kh3oEuD1ex29QX/ojEPrLpLRJrh9wy0wfsAUnKEz9YFU2FzV3on1LO4wXqU1vRQAiMJQ==
-X-Received: by 2002:a17:902:d505:b0:1fa:ac73:ca2d with SMTP id
- d9443c01a7336-1faac73cb78mr15108605ad.11.1719496707334; 
- Thu, 27 Jun 2024 06:58:27 -0700 (PDT)
+ AJvYcCWaMjAFbO9Hh3524I2Wy8DgZNx1v6F1RBqbEcXKuDCaWgyxnU5MivqjaFTNskQI8r+fP2FbGh5uf4qakUYioFAQjg9mHC8=
+X-Gm-Message-State: AOJu0YzuJ2zV8HyKZWXL/7hwQx2ALvUia7je5I7q4PKAAOfqgoFfex18
+ KOg4pgCaduiH1+nC01HSeZOniR5yYrFIS+zWp/OMGxraGX1jwDrFnXAU+fQCS7Q=
+X-Google-Smtp-Source: AGHT+IFqsrJNhhU+ItZ1RtuSfKHh3Oqhi7BuzNUGYuUMcdRiFhYGaJCECMYQ9rOAyZURrOQKDlKCiw==
+X-Received: by 2002:a17:903:2342:b0:1fa:7e0:d69a with SMTP id
+ d9443c01a7336-1fa23f15bf5mr149519925ad.46.1719496710476; 
+ Thu, 27 Jun 2024 06:58:30 -0700 (PDT)
 Received: from localhost ([2400:4050:a840:1e00:9ac7:6d57:2b16:6932])
  by smtp.gmail.com with UTF8SMTPSA id
- d9443c01a7336-1faac8f25a1sm13532155ad.73.2024.06.27.06.58.25
+ d9443c01a7336-1faac8f5a71sm13506705ad.109.2024.06.27.06.58.28
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 27 Jun 2024 06:58:27 -0700 (PDT)
+ Thu, 27 Jun 2024 06:58:30 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Thu, 27 Jun 2024 22:58:05 +0900
-Subject: [PATCH v2 4/6] tests/tcg/aarch64: Fix irg operand type
+Date: Thu, 27 Jun 2024 22:58:06 +0900
+Subject: [PATCH v2 5/6] tests/tcg/aarch64: Do not use x constraint
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240627-tcg-v2-4-1690a813348e@daynix.com>
+Message-Id: <20240627-tcg-v2-5-1690a813348e@daynix.com>
 References: <20240627-tcg-v2-0-1690a813348e@daynix.com>
 In-Reply-To: <20240627-tcg-v2-0-1690a813348e@daynix.com>
 To: Peter Maydell <peter.maydell@linaro.org>, 
@@ -73,8 +73,8 @@ To: Peter Maydell <peter.maydell@linaro.org>,
 Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, 
  Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.14-dev-fd6e3
-Received-SPF: none client-ip=2607:f8b0:4864:20::62b;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62b.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::629;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x629.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -96,27 +96,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-irg expects 64-bit integers. Passing a 32-bit integer results in
-compilation failure with clang version 18.1.6.
+clang version 18.1.6 does not support x constraint for AArch64.
+Use w instead.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- tests/tcg/aarch64/mte-1.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/tcg/arm/fcvt.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/tests/tcg/aarch64/mte-1.c b/tests/tcg/aarch64/mte-1.c
-index 88dcd617addc..146cad4a0499 100644
---- a/tests/tcg/aarch64/mte-1.c
-+++ b/tests/tcg/aarch64/mte-1.c
-@@ -15,7 +15,7 @@ int main(int ac, char **av)
-     enable_mte(PR_MTE_TCF_NONE);
-     p0 = alloc_mte_mem(sizeof(*p0));
+diff --git a/tests/tcg/arm/fcvt.c b/tests/tcg/arm/fcvt.c
+index 05a27b2d0710..157790e67961 100644
+--- a/tests/tcg/arm/fcvt.c
++++ b/tests/tcg/arm/fcvt.c
+@@ -126,7 +126,7 @@ static void convert_single_to_half(void)
+         asm("vcvtb.f16.f32 %0, %1" : "=t" (output) : "x" (input));
+ #else
+         uint16_t output;
+-        asm("fcvt %h0, %s1" : "=w" (output) : "x" (input));
++        asm("fcvt %h0, %s1" : "=w" (output) : "w" (input));
+ #endif
+         print_half_number(i, output);
+     }
+@@ -149,7 +149,7 @@ static void convert_single_to_double(void)
+ #if defined(__arm__)
+         asm("vcvt.f64.f32 %P0, %1" : "=w" (output) : "t" (input));
+ #else
+-        asm("fcvt %d0, %s1" : "=w" (output) : "x" (input));
++        asm("fcvt %d0, %s1" : "=w" (output) : "w" (input));
+ #endif
+         print_double_number(i, output);
+     }
+@@ -244,7 +244,7 @@ static void convert_double_to_half(void)
+         /* asm("vcvtb.f16.f64 %0, %P1" : "=t" (output) : "x" (input)); */
+         output = input;
+ #else
+-        asm("fcvt %h0, %d1" : "=w" (output) : "x" (input));
++        asm("fcvt %h0, %d1" : "=w" (output) : "w" (input));
+ #endif
+         print_half_number(i, output);
+     }
+@@ -267,7 +267,7 @@ static void convert_double_to_single(void)
+ #if defined(__arm__)
+         asm("vcvt.f32.f64 %0, %P1" : "=w" (output) : "x" (input));
+ #else
+-        asm("fcvt %s0, %d1" : "=w" (output) : "x" (input));
++        asm("fcvt %s0, %d1" : "=w" (output) : "w" (input));
+ #endif
  
--    asm("irg %0,%1,%2" : "=r"(p1) : "r"(p0), "r"(1));
-+    asm("irg %0,%1,%2" : "=r"(p1) : "r"(p0), "r"(1l));
-     assert(p1 != p0);
-     asm("subp %0,%1,%2" : "=r"(c) : "r"(p0), "r"(p1));
-     assert(c == 0);
+         print_single_number(i, output);
+@@ -335,7 +335,7 @@ static void convert_half_to_double(void)
+         /* asm("vcvtb.f64.f16 %P0, %1" : "=w" (output) : "t" (input)); */
+         output = input;
+ #else
+-        asm("fcvt %d0, %h1" : "=w" (output) : "x" (input));
++        asm("fcvt %d0, %h1" : "=w" (output) : "w" (input));
+ #endif
+         print_double_number(i, output);
+     }
+@@ -357,7 +357,7 @@ static void convert_half_to_single(void)
+ #if defined(__arm__)
+         asm("vcvtb.f32.f16 %0, %1" : "=w" (output) : "x" ((uint32_t)input));
+ #else
+-        asm("fcvt %s0, %h1" : "=w" (output) : "x" (input));
++        asm("fcvt %s0, %h1" : "=w" (output) : "w" (input));
+ #endif
+         print_single_number(i, output);
+     }
+@@ -380,7 +380,7 @@ static void convert_half_to_integer(void)
+         /* asm("vcvt.s32.f16 %0, %1" : "=t" (output) : "t" (input)); v8.2*/
+         output = input;
+ #else
+-        asm("fcvt %s0, %h1" : "=w" (output) : "x" (input));
++        asm("fcvt %s0, %h1" : "=w" (output) : "w" (input));
+ #endif
+         print_int64(i, output);
+     }
 
 -- 
 2.45.2
