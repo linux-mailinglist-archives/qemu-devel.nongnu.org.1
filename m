@@ -2,87 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BD0691A35D
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jun 2024 12:03:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9223E91A455
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jun 2024 12:51:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sMlxk-000753-Ql; Thu, 27 Jun 2024 06:02:44 -0400
+	id 1sMmiZ-0004Z7-0x; Thu, 27 Jun 2024 06:51:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sMlxP-0006m0-19
- for qemu-devel@nongnu.org; Thu, 27 Jun 2024 06:02:23 -0400
-Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sMlxM-0001sU-5X
- for qemu-devel@nongnu.org; Thu, 27 Jun 2024 06:02:22 -0400
-Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-7065a2f4573so4560719b3a.2
- for <qemu-devel@nongnu.org>; Thu, 27 Jun 2024 03:02:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1719482538; x=1720087338; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=3PBJYVBwlZcM3vrZPZTYGjjElJE2GDldPlxWfqT4Lng=;
- b=VOp8qkKXUWdRmjQJ8EuZ/k0Q+H/gpH0K2WssbFr4ET9e6FZoowmfhxxsEOZkIP04ND
- JRXVH8VzACFgDadg/c6ZFs8PtSYUuL/xIptrxvq55XzVtYGuzoEII/CS3Ll+wl9aEiUU
- DYMfB1O99tx8L9CE3C9WYjhAqTjDRthTQlNq69YGW3LkesUjZmI+TPlRweeakqXwnY/X
- WtsUtO2DHLU3LE8e91SBxCMU5lxMY8kTj4mt9U7gy7S3ZxZR1OaiFuZL0fblZ+sPDNc4
- ZkU/Dca4eGWnWLL/gzhh9R1TKN9dOqbSWirNwOsTC8B4w3ox9J7YMdBDUGvkgfNxWg+8
- V9MQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719482538; x=1720087338;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=3PBJYVBwlZcM3vrZPZTYGjjElJE2GDldPlxWfqT4Lng=;
- b=KlPkRdvkfTw6ogqgsbltpllPwV+iqyWUFFb3ZGLnCtiJCejd2zplbUZWxm3ofdmxrN
- cykiOJSlMlv4hD8Q/b4U48KZvMOvIhT7L9F9ecupc+Bm2ojLz4i1M1BTjlF+eoTWfbTS
- cCXk58t5zfQoDbh9y27jzjPqlCxH+oSUa+SdSEqmZ3T5Bo6237bAGWbPH/E97+hU/dub
- FUYvFQ7/bjBCrzCyaTWN85LUFch02YulgTUElXoweM5ou9k9rhDR2/dh42Xmp5aI6oRs
- LOvBMeMQd0kYMcZ9DovSH9YMf90ITayZ+35JVe5dcMbQ+B4g3dWCFVG/LJjZqxgnMEhA
- 6m1Q==
-X-Gm-Message-State: AOJu0YyL1ch/Ihph3rm2QN9hd5EvZE3YPK8ZsV7iFVlHZrgtO2ZgDxkJ
- TTqbQOlOJDT2gGwBKpdmUEFvHyFthx+7DrYJqA/EArR7SImRsrZ3Fo84Vu9R
-X-Google-Smtp-Source: AGHT+IEJQM4eKkM4nv7oVkK3yujEJlkyul5WTiFcWAod+14xI0UFGni0M/8MtptwtINoDCwLVzUDgA==
-X-Received: by 2002:a05:6a00:a06:b0:706:9073:45ee with SMTP id
- d2e1a72fcca58-70690734663mr10959698b3a.25.1719482538319; 
- Thu, 27 Jun 2024 03:02:18 -0700 (PDT)
-Received: from toolbox.alistair23.me
- (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
- [2403:580b:97e8:0:82ce:f179:8a79:69f4])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-706b4a07326sm932431b3a.111.2024.06.27.03.02.15
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 27 Jun 2024 03:02:17 -0700 (PDT)
-From: Alistair Francis <alistair23@gmail.com>
-X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
-To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com,
- =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
- Atish Patra <atishp@rivosinc.com>,
- Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 23/32] target/riscv: fix instructions count handling in icount
- mode
-Date: Thu, 27 Jun 2024 20:00:44 +1000
-Message-ID: <20240627100053.150937-24-alistair.francis@wdc.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240627100053.150937-1-alistair.francis@wdc.com>
-References: <20240627100053.150937-1-alistair.francis@wdc.com>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sMmiW-0004Yq-NV
+ for qemu-devel@nongnu.org; Thu, 27 Jun 2024 06:51:04 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sMmiS-0006B8-0x
+ for qemu-devel@nongnu.org; Thu, 27 Jun 2024 06:51:04 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1719485459;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ resent-to:resent-from:resent-message-id:in-reply-to:in-reply-to:
+ references:references; bh=sD4v3Z5OJ0gM0AlBQaLc16t1VQbDPhBLxpZmUeyZ+yY=;
+ b=NCe7yQAms9Js659KfkmegyLv2cWSh13ePhxidayilffCwX5q0dN2x48pmtI2B0tbWmp4Rz
+ dhrdcvn0Z3WUpOCOYNSFScpsCfo5cK6o25UEzz/FWL++q06xoeGiVRzANtnbjnbNOhCXHf
+ rN5L1X8mddIv63WT+K5HEN/TPxpoRwQ=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-175-SLHGmjIhMpq4b1Jp4Ahlcw-1; Thu,
+ 27 Jun 2024 06:50:55 -0400
+X-MC-Unique: SLHGmjIhMpq4b1Jp4Ahlcw-1
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 24B4719560B5; Thu, 27 Jun 2024 10:50:53 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.194.114])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 6FB433000601; Thu, 27 Jun 2024 10:50:52 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 3DD7F21E668B; Thu, 27 Jun 2024 12:50:50 +0200 (CEST)
+Resent-To: michael.roth@amd.com, marcel.apfelbaum@gmail.com,
+ eduardo@habkost.net, wangyanan55@huawei.com, pavel.dovgaluk@ispras.ru,
+ peter.maydell@linaro.org, philmd@linaro.org, qemu-block@nongnu.org,
+ qemu-devel@nongnu.org, jiri@resnulli.us, farosas@suse.de,
+ lukasstraub2@web.de, mads@ynddal.dk
+Resent-From: Markus Armbruster <armbru@redhat.com>
+Resent-Date: Thu, 27 Jun 2024 12:50:50 +0200
+Resent-Message-ID: <87ikxu8xrp.fsf@pond.sub.org>
+From: Markus Armbruster <armbru@redhat.com>
+To: John Snow <jsnow@redhat.com>
+Cc: qemu-devel@nongnu.org,  Mads Ynddal <mads@ynddal.dk>,  Jiri Pirko
+ <jiri@resnulli.us>,  Stefan Hajnoczi <stefanha@redhat.com>,  Eric Blake
+ <eblake@redhat.com>,  Peter Maydell <peter.maydell@linaro.org>,  Michael
+ Roth <michael.roth@amd.com>,  "Michael S. Tsirkin" <mst@redhat.com>,  Alex
+ Williamson <alex.williamson@redhat.com>,  Pavel Dovgalyuk
+ <pavel.dovgaluk@ispras.ru>,  Victor Toso de Carvalho
+ <victortoso@redhat.com>,  =?utf-8?Q?C=C3=A9dric?= Le Goater
+ <clg@redhat.com>,  Daniel P.
+ =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,  qemu-block@nongnu.org,
+ Ani Sinha
+ <anisinha@redhat.com>,  Fabiano Rosas <farosas@suse.de>,  Marcel Apfelbaum
+ <marcel.apfelbaum@gmail.com>,  =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
+ <marcandre.lureau@redhat.com>,  Gerd Hoffmann <kraxel@redhat.com>,  Paolo
+ Bonzini <pbonzini@redhat.com>,  Kevin Wolf <kwolf@redhat.com>,  Peter Xu
+ <peterx@redhat.com>,  Eduardo Habkost <eduardo@habkost.net>,  Philippe
+ =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Lukas Straub
+ <lukasstraub2@web.de>,
+ Igor Mammedov <imammedo@redhat.com>,  Jason Wang <jasowang@redhat.com>,
+ Yanan Wang <wangyanan55@huawei.com>,  Hanna Reitz <hreitz@redhat.com>,
+ Konstantin Kostiuk <kkostiuk@redhat.com>
+Subject: Re: [PATCH v2 03/21] docs/qapidoc: remove unused intersperse function
+In-Reply-To: <20240626222128.406106-4-jsnow@redhat.com> (John Snow's message
+ of "Wed, 26 Jun 2024 18:21:09 -0400")
+References: <20240626222128.406106-1-jsnow@redhat.com>
+ <20240626222128.406106-4-jsnow@redhat.com>
+Date: Thu, 27 Jun 2024 08:02:16 +0200
+Message-ID: <87sewyj53r.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
- envelope-from=alistair23@gmail.com; helo=mail-pf1-x429.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+Content-Type: text/plain
+Lines: 11
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
+X-Spam_bar: --
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.212,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -100,118 +109,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Clément Léger <cleger@rivosinc.com>
+John Snow <jsnow@redhat.com> writes:
 
-When icount is enabled, rather than returning the virtual CPU time, we
-should return the instruction count itself. Add an instructions bool
-parameter to get_ticks() to correctly return icount_get_raw() when
-icount_enabled() == 1 and instruction count is queried. This will modify
-the existing behavior which was returning an instructions count close to
-the number of cycles (CPI ~= 1).
+> This function has been unused since fd62bff901b.
+>
+> Signed-off-by: John Snow <jsnow@redhat.com>
 
-Signed-off-by: Clément Léger <cleger@rivosinc.com>
+Reviewed-by: Markus Armbruster <armbru@redhat.com>
 
-Reviewed-by: Atish Patra <atishp@rivosinc.com>
-Message-ID: <20240618112649.76683-1-cleger@rivosinc.com>
-Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
----
- target/riscv/csr.c | 30 +++++++++++++++++-------------
- 1 file changed, 17 insertions(+), 13 deletions(-)
-
-diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-index 6f15612e76..432c59dc66 100644
---- a/target/riscv/csr.c
-+++ b/target/riscv/csr.c
-@@ -762,14 +762,18 @@ static RISCVException write_vcsr(CPURISCVState *env, int csrno,
- }
- 
- /* User Timers and Counters */
--static target_ulong get_ticks(bool shift)
-+static target_ulong get_ticks(bool shift, bool instructions)
- {
-     int64_t val;
-     target_ulong result;
- 
- #if !defined(CONFIG_USER_ONLY)
-     if (icount_enabled()) {
--        val = icount_get();
-+        if (instructions) {
-+            val = icount_get_raw();
-+        } else {
-+            val = icount_get();
-+        }
-     } else {
-         val = cpu_get_host_ticks();
-     }
-@@ -804,14 +808,14 @@ static RISCVException read_timeh(CPURISCVState *env, int csrno,
- static RISCVException read_hpmcounter(CPURISCVState *env, int csrno,
-                                       target_ulong *val)
- {
--    *val = get_ticks(false);
-+    *val = get_ticks(false, (csrno == CSR_INSTRET));
-     return RISCV_EXCP_NONE;
- }
- 
- static RISCVException read_hpmcounterh(CPURISCVState *env, int csrno,
-                                        target_ulong *val)
- {
--    *val = get_ticks(true);
-+    *val = get_ticks(true, (csrno == CSR_INSTRETH));
-     return RISCV_EXCP_NONE;
- }
- 
-@@ -875,11 +879,11 @@ static RISCVException write_mhpmcounter(CPURISCVState *env, int csrno,
-     int ctr_idx = csrno - CSR_MCYCLE;
-     PMUCTRState *counter = &env->pmu_ctrs[ctr_idx];
-     uint64_t mhpmctr_val = val;
-+    bool instr = riscv_pmu_ctr_monitor_instructions(env, ctr_idx);
- 
-     counter->mhpmcounter_val = val;
--    if (riscv_pmu_ctr_monitor_cycles(env, ctr_idx) ||
--        riscv_pmu_ctr_monitor_instructions(env, ctr_idx)) {
--        counter->mhpmcounter_prev = get_ticks(false);
-+    if (riscv_pmu_ctr_monitor_cycles(env, ctr_idx) || instr) {
-+        counter->mhpmcounter_prev = get_ticks(false, instr);
-         if (ctr_idx > 2) {
-             if (riscv_cpu_mxl(env) == MXL_RV32) {
-                 mhpmctr_val = mhpmctr_val |
-@@ -902,12 +906,12 @@ static RISCVException write_mhpmcounterh(CPURISCVState *env, int csrno,
-     PMUCTRState *counter = &env->pmu_ctrs[ctr_idx];
-     uint64_t mhpmctr_val = counter->mhpmcounter_val;
-     uint64_t mhpmctrh_val = val;
-+    bool instr = riscv_pmu_ctr_monitor_instructions(env, ctr_idx);
- 
-     counter->mhpmcounterh_val = val;
-     mhpmctr_val = mhpmctr_val | (mhpmctrh_val << 32);
--    if (riscv_pmu_ctr_monitor_cycles(env, ctr_idx) ||
--        riscv_pmu_ctr_monitor_instructions(env, ctr_idx)) {
--        counter->mhpmcounterh_prev = get_ticks(true);
-+    if (riscv_pmu_ctr_monitor_cycles(env, ctr_idx) || instr) {
-+        counter->mhpmcounterh_prev = get_ticks(true, instr);
-         if (ctr_idx > 2) {
-             riscv_pmu_setup_timer(env, mhpmctr_val, ctr_idx);
-         }
-@@ -926,6 +930,7 @@ static RISCVException riscv_pmu_read_ctr(CPURISCVState *env, target_ulong *val,
-                                          counter->mhpmcounter_prev;
-     target_ulong ctr_val = upper_half ? counter->mhpmcounterh_val :
-                                         counter->mhpmcounter_val;
-+    bool instr = riscv_pmu_ctr_monitor_instructions(env, ctr_idx);
- 
-     if (get_field(env->mcountinhibit, BIT(ctr_idx))) {
-         /*
-@@ -946,9 +951,8 @@ static RISCVException riscv_pmu_read_ctr(CPURISCVState *env, target_ulong *val,
-      * The kernel computes the perf delta by subtracting the current value from
-      * the value it initialized previously (ctr_val).
-      */
--    if (riscv_pmu_ctr_monitor_cycles(env, ctr_idx) ||
--        riscv_pmu_ctr_monitor_instructions(env, ctr_idx)) {
--        *val = get_ticks(upper_half) - ctr_prev + ctr_val;
-+    if (riscv_pmu_ctr_monitor_cycles(env, ctr_idx) || instr) {
-+        *val = get_ticks(upper_half, instr) - ctr_prev + ctr_val;
-     } else {
-         *val = ctr_val;
-     }
--- 
-2.45.2
+I assume you won't mind me adding a bit of polish: "since commit
+fd62bff901b (sphinx/qapidoc: Drop code to generate doc for simple union
+tag)".
 
 
