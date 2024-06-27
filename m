@@ -2,78 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C641A91A373
+	by mail.lfdr.de (Postfix) with ESMTPS id 485CF91A371
 	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jun 2024 12:05:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sMlxL-0006i8-QC; Thu, 27 Jun 2024 06:02:19 -0400
+	id 1sMlxo-0007hX-BQ; Thu, 27 Jun 2024 06:02:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sMlxI-0006Yb-9x
- for qemu-devel@nongnu.org; Thu, 27 Jun 2024 06:02:16 -0400
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+ id 1sMlxT-00070H-H9
+ for qemu-devel@nongnu.org; Thu, 27 Jun 2024 06:02:33 -0400
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sMlxG-0001ii-Lh
- for qemu-devel@nongnu.org; Thu, 27 Jun 2024 06:02:16 -0400
-Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-70698bcd19eso2194700b3a.0
- for <qemu-devel@nongnu.org>; Thu, 27 Jun 2024 03:02:14 -0700 (PDT)
+ id 1sMlxQ-00022t-Rk
+ for qemu-devel@nongnu.org; Thu, 27 Jun 2024 06:02:26 -0400
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-7041053c0fdso4624082b3a.3
+ for <qemu-devel@nongnu.org>; Thu, 27 Jun 2024 03:02:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1719482532; x=1720087332; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1719482542; x=1720087342; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=EsLiAHFyCsutJDc2599A4Vu0YvGo61TqCblpFBlIdck=;
- b=U69pmD2lBQfTcJozBSpCx1h2CJkKbJy3R8xznx2YmnodboNo5s0SoXFeJNs5Ipr+K1
- Jp0ehn/fxbhk9oZr7MfW5KwGlziWYoyjeeNOD2clC2yyF2N08WGI/0ES4MlYxUytPgKa
- 5j/fNaU+lTJBNcI4oc3l3U6jEdBueK6buRwjJuSyk8IPW4B717jx5xhOIsuOcFfmKawJ
- 5ZZtvcFskASerC5J13bncOjQEHLtwC0bXuUBsgx+pKDUR31XDtEGJuxofqQe5Fn580ZY
- 64IwSoI5r3Ra5l01Y9kRkz3Iu7acjJF7obMVqaYkobwTVZAgiTOTe30DycZTenhhHixN
- PXzw==
+ bh=YnkZtfqlRk/cYHVUB0haBca2EsSvWjX5ehFS1hvQupE=;
+ b=arWaMsBL3wFg8+1rwIXSUYSu2QiUFRni47qxhMDtiMruSumKZU2LpgSrnTfMCiv5Ra
+ AVPPJIcYLnSKcQxmi7eDvFcC6r+6wqBhUq4zy1bLFpl6xgHiSCItZpcxL+IKu+nKcHm0
+ fmeSqvSKSk/SVeRJlVCUkQpQgF2aFdx14FOoY7grUYStaBsIgvIYqGOUpZZ9YhLQKO4Q
+ 4s37aUP9ZMxDh+IoEghLdO3Mg4qcX+REkizcC4kqM+O9h6GUIkYvFnPas0BBkBSzSywb
+ yNK7sllTGheHzlpseJTlz8S7XFtDNBmkI0dnrURd7toZ/z9WsUb5iMWb2g9gEHdLIIcT
+ 7CNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719482532; x=1720087332;
+ d=1e100.net; s=20230601; t=1719482542; x=1720087342;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=EsLiAHFyCsutJDc2599A4Vu0YvGo61TqCblpFBlIdck=;
- b=xMUMSez3g3vDgXnhtGaGNhl6YZk/WGkOdlXapQKMzFBRxzqnjD+dFxm6r3K8tDra5y
- xuwoZKdJh4eL77OB4BGyEybOKwYl6pEHkDfHTqYfXb8BDjkYF5c/5nv6njdZW9qhXVcW
- neeY7PB63mKEX14LC7Pw+Vrk8adxTF89TJPVwatyFBZfvVwVo4ENC9rpwGhaEoM8O9kC
- WLayy/rPIqsqBWuahlqFNc59fCpJ6VhLOLqOWu4hn061OjSJfdaCWWpy9pNOni8lGkjG
- 0OnbxNnEsVjN6IGUScn2527v5ekVOmAfrSgN1hV+xnhviF033mUlFGuOO7zq+V6XwDFp
- lx0A==
-X-Gm-Message-State: AOJu0YxsCzi3xqNtpYcObGlkqvSavrJQx2nLH/V/ST+dvLFqKPMq/qmA
- NhYdxp4vbHTIJzbIxHY6ASxJkB1lqHi0xdsHYZ1hYrquhC/XSzmQMJQuV1Y+
-X-Google-Smtp-Source: AGHT+IH9IJrxKTJsMDGKvGKulwVzNLPAtUGlNCLckZC5UBnfGaMyeLlO1z0jX7uz1WFsxeAX4C6ZqA==
-X-Received: by 2002:a05:6a00:2195:b0:706:6c38:31f3 with SMTP id
- d2e1a72fcca58-706745830e0mr14179622b3a.8.1719482532046; 
- Thu, 27 Jun 2024 03:02:12 -0700 (PDT)
+ bh=YnkZtfqlRk/cYHVUB0haBca2EsSvWjX5ehFS1hvQupE=;
+ b=M4HDkAyGP4cDOf6BZbp6rsjYasa3x5XwVssRWa2NP8SK1TL0cU/rJm8mtxIfPFCjlw
+ 6GBT+em/r8YWhjbldyuu2YMIyLcViLi30IAvu8sh9JttGohn7r9skIxdYMinPXp23GaC
+ xgoTnoB2qo3d0Tflwe1WEGDAwnIIn3XzHz6G6RlvkRoeJPaQzsTN+kdzUp+dcrGGxypB
+ RzPRNUNRiPE9XnkDUSgHlOlQ3QJFBfWGeiRw7WHpZNhQKl1DnQQJPjnkKOTN6R2P7wV/
+ tCl+FeFm4X38QJElWKu1HcqJwpDaL45xb9h4spQy3mKIZixpGj3BC42BpFOv6UvLdvzR
+ Fofw==
+X-Gm-Message-State: AOJu0YwnbcJUb5OLmd1F+eJEelCCy6bjw87KC1lwxoRZW0jidmnJdGys
+ X9UvE8s9qRNQJRlMj51PowRVJatwXJyFxndYCDiCSz4nOkqBdyQe0eupvHWs
+X-Google-Smtp-Source: AGHT+IHUFnWvX+Z7yhzkGn8VfG/zDNOZvrKxs1fwaNoPM1fq6R0o8wZHu226DvUYRVYEwYcQias+BQ==
+X-Received: by 2002:aa7:8f8f:0:b0:706:b19c:46cf with SMTP id
+ d2e1a72fcca58-706b19c4a75mr2201839b3a.20.1719482542055; 
+ Thu, 27 Jun 2024 03:02:22 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-706b4a07326sm932431b3a.111.2024.06.27.03.02.09
+ d2e1a72fcca58-706b4a07326sm932431b3a.111.2024.06.27.03.02.18
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 27 Jun 2024 03:02:11 -0700 (PDT)
+ Thu, 27 Jun 2024 03:02:21 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Sunil V L <sunilvl@ventanamicro.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PULL 21/32] hw/riscv/virt.c: Make block devices default to virtio
-Date: Thu, 27 Jun 2024 20:00:42 +1000
-Message-ID: <20240627100053.150937-22-alistair.francis@wdc.com>
+Cc: alistair23@gmail.com, Frank Chang <frank.chang@sifive.com>,
+ Jerry Zhang Jian <jerry.zhangjian@sifive.com>,
+ Max Chou <max.chou@sifive.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Alistair Francis <alistair.francis@wdc.com>
+Subject: [PULL 24/32] target/riscv: Introduce extension implied rules
+ definition
+Date: Thu, 27 Jun 2024 20:00:45 +1000
+Message-ID: <20240627100053.150937-25-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240627100053.150937-1-alistair.francis@wdc.com>
 References: <20240627100053.150937-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
- envelope-from=alistair23@gmail.com; helo=mail-pf1-x436.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
+ envelope-from=alistair23@gmail.com; helo=mail-pf1-x435.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -97,37 +100,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Sunil V L <sunilvl@ventanamicro.com>
+From: Frank Chang <frank.chang@sifive.com>
 
-RISC-V virt is currently missing default type for block devices. Without
-this being set, proper backend is not created when option like -cdrom
-is used. So, make the virt board's default block device type be
-IF_VIRTIO similar to other architectures.
+RISCVCPUImpliedExtsRule is created to store the implied rules.
+'is_misa' flag is used to distinguish whether the rule is derived
+from the MISA or other extensions.
+'ext' stores the MISA bit if 'is_misa' is true. Otherwise, it stores
+the offset of the extension defined in RISCVCPUConfig. 'ext' will also
+serve as the key of the hash tables to look up the rule in the following
+commit.
 
-We also need to set no_cdrom to avoid getting a default cdrom device.
-
-Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Signed-off-by: Frank Chang <frank.chang@sifive.com>
+Reviewed-by: Jerry Zhang Jian <jerry.zhangjian@sifive.com>
+Tested-by: Max Chou <max.chou@sifive.com>
 Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Message-ID: <20240620064718.275427-1-sunilvl@ventanamicro.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Message-ID: <20240625114629.27793-2-frank.chang@sifive.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- hw/riscv/virt.c | 2 ++
- 1 file changed, 2 insertions(+)
+ target/riscv/cpu.h | 23 +++++++++++++++++++++++
+ target/riscv/cpu.c |  8 ++++++++
+ 2 files changed, 31 insertions(+)
 
-diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
-index 9b648540e6..bc0893e087 100644
---- a/hw/riscv/virt.c
-+++ b/hw/riscv/virt.c
-@@ -1764,6 +1764,8 @@ static void virt_machine_class_init(ObjectClass *oc, void *data)
-     mc->init = virt_machine_init;
-     mc->max_cpus = VIRT_CPUS_MAX;
-     mc->default_cpu_type = TYPE_RISCV_CPU_BASE;
-+    mc->block_default_type = IF_VIRTIO;
-+    mc->no_cdrom = 1;
-     mc->pci_allow_0_address = true;
-     mc->possible_cpu_arch_ids = riscv_numa_possible_cpu_arch_ids;
-     mc->cpu_index_to_instance_props = riscv_numa_cpu_index_to_props;
+diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+index 90b8f1b08f..87742047ce 100644
+--- a/target/riscv/cpu.h
++++ b/target/riscv/cpu.h
+@@ -124,6 +124,29 @@ typedef enum {
+     EXT_STATUS_DIRTY,
+ } RISCVExtStatus;
+ 
++typedef struct riscv_cpu_implied_exts_rule {
++#ifndef CONFIG_USER_ONLY
++    /*
++     * Bitmask indicates the rule enabled status for the harts.
++     * This enhancement is only available in system-mode QEMU,
++     * as we don't have a good way (e.g. mhartid) to distinguish
++     * the SMP cores in user-mode QEMU.
++     */
++    unsigned long *enabled;
++#endif
++    /* True if this is a MISA implied rule. */
++    bool is_misa;
++    /* ext is MISA bit if is_misa flag is true, else multi extension offset. */
++    const uint32_t ext;
++    const uint32_t implied_misa_exts;
++    const uint32_t implied_multi_exts[];
++} RISCVCPUImpliedExtsRule;
++
++extern RISCVCPUImpliedExtsRule *riscv_misa_ext_implied_rules[];
++extern RISCVCPUImpliedExtsRule *riscv_multi_ext_implied_rules[];
++
++#define RISCV_IMPLIED_EXTS_RULE_END -1
++
+ #define MMU_USER_IDX 3
+ 
+ #define MAX_RISCV_PMPS (16)
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index 4760cb2cc1..7b071ade04 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -2250,6 +2250,14 @@ RISCVCPUProfile *riscv_profiles[] = {
+     NULL,
+ };
+ 
++RISCVCPUImpliedExtsRule *riscv_misa_ext_implied_rules[] = {
++    NULL
++};
++
++RISCVCPUImpliedExtsRule *riscv_multi_ext_implied_rules[] = {
++    NULL
++};
++
+ static Property riscv_cpu_properties[] = {
+     DEFINE_PROP_BOOL("debug", RISCVCPU, cfg.debug, true),
+ 
 -- 
 2.45.2
 
