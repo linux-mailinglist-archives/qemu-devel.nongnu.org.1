@@ -2,68 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68E9691A4EF
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jun 2024 13:19:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4283391A4EE
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jun 2024 13:19:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sMn8c-0004Ei-DU; Thu, 27 Jun 2024 07:18:04 -0400
+	id 1sMn8f-0004FV-TA; Thu, 27 Jun 2024 07:18:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sMn8X-0004EU-67
- for qemu-devel@nongnu.org; Thu, 27 Jun 2024 07:17:57 -0400
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ id 1sMn8b-0004Ep-3c
+ for qemu-devel@nongnu.org; Thu, 27 Jun 2024 07:18:01 -0400
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sMn8V-0000Sc-Ao
- for qemu-devel@nongnu.org; Thu, 27 Jun 2024 07:17:56 -0400
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-1f9b364faddso62604395ad.3
- for <qemu-devel@nongnu.org>; Thu, 27 Jun 2024 04:17:54 -0700 (PDT)
+ id 1sMn8Z-0000TL-9Q
+ for qemu-devel@nongnu.org; Thu, 27 Jun 2024 07:18:00 -0400
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-1f4c7b022f8so66223085ad.1
+ for <qemu-devel@nongnu.org>; Thu, 27 Jun 2024 04:17:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1719487073; x=1720091873;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1719487078; x=1720091878;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=7M6buw52eZMZE8chSs+8yqu1mcRqVq2tRe1GuSt0QPw=;
- b=ENhlH3lFFVMznk990+gpmD/A+Dld4jV89yrb+uVEfQxjH1CA2X/6bHNtHzUXYXl0rX
- qplit2tiJqBTpC1dFkDoLE5CsaQVlouU5kZG935NbCZ9uVTb2L/uWJeIBS84+Ed4GI+D
- a32Jk0cslYBNcCzk5pSv2XDep1I11J4kC8IrOiZYB9RCVDt0MgBjq0a7zaGxqnW5Zhw9
- ubZY6MgOB0un4V/b0dIJHLY0cd1/qtHD7G4Tqt3Z9PxIO2k7tM/c6m/Sg7EiOW2TeyxX
- hok0T0ov0rHbOEbD2ecLZZFhvL7GI+u5ni+JUXrKo3/cz8wmSGVcpMSd+CUyHloBCT/2
- HVKw==
+ :reply-to; bh=Gud/N2WVB/hJEuBntpHZ3OPjTaafW+GXbIrsPuTc5jQ=;
+ b=bavLiXh/V1+0Ct8MkpiQQDPTjL/L7uk2Bl1lSIGvB9UC4oksZDuAVTETTaG2d7sCVJ
+ 0/1DcTkSGb9/brUiXr5mCxSEGSSklOsgZ0xTTgyw+Scy5cYD9dXw8Ch5Y1I5xeaZ6LEi
+ Kp8ieik/T/gicTrDCW4J72MYU46tpRqBBlhSVjOVY3AMXubC/lLpIteVfnu7bvifS1q0
+ Q6I7l75imC2x9b+GdIMTpnqe1vGwM98wzd3ZHvY80IxaxHKEiV5I/bBuiOOJ+xVDCyWG
+ yINK/KOFVyTwgs1lJryhheED9Fc593rl7K5S88E5+V1nZNeapa5Nl+zxRqLF0cyFfZCm
+ kysg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719487073; x=1720091873;
+ d=1e100.net; s=20230601; t=1719487078; x=1720091878;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=7M6buw52eZMZE8chSs+8yqu1mcRqVq2tRe1GuSt0QPw=;
- b=XIvQF0l/x/0kMukiwkPOddjqVos/t40T8thF5zm4Gxo7p8JCgNZfhGTDLrCJQIKBqN
- yqHLVU/F8DK1IveXBs72YxvLOe8OzQazz3q3ybAkdIypDzsPquLIUzsvO1CfwlPwZN3e
- Z5LI20nGB7J+b5VgMO/76yxNLkwDphprYcx4NJMKYXlP/pARm4U/pTNKhLGKkg0w8G5r
- 3+gltDtwgKFInea5VL3VqGn2RMt190JweX3k9KUfDuPKc0V1Lp0sub1f7UwyLKroa+yb
- THRjkFbANCu1/R8KxDNir24DqAUvC6PSFz8EFGIs5uh+dH27VpuO9OCsi7E4lNFhIFLG
- DoaA==
-X-Gm-Message-State: AOJu0YwvnN44SzMZANtQlNsSQ8sIF7960RdAlVRtrepUW+ustlSI0l8Z
- m9YyI9j29P4s+S2pnLA8DqF4xQXpJLcVVCRaG/fwuJf8mgNtPWXNrwEufNN9hJTQUe4u8fhah3U
- AEbw=
-X-Google-Smtp-Source: AGHT+IGr3FR59n6Xaeo/BB3X3NuDgvjAscr5jqWPD62MeN1pL0Kl7F/Hsb9R5XRcH/7kFpeyQYLPhA==
-X-Received: by 2002:a17:902:e5c1:b0:1f9:df83:8ab2 with SMTP id
- d9443c01a7336-1fa240c518bmr164304535ad.58.1719487073353; 
- Thu, 27 Jun 2024 04:17:53 -0700 (PDT)
+ bh=Gud/N2WVB/hJEuBntpHZ3OPjTaafW+GXbIrsPuTc5jQ=;
+ b=RclAjh8ZtCJ3ACdQCeRDbMVK1nmw8jwTMSemCrzrWQXF/024OuIXmyNXtEBkIae0Rc
+ i6saT5se3xFEJzUbW/wRsfKSVJ/ICME3cxofRSQSkNUyU7fwstJyLGT1uGkv7ReHdk9m
+ vgVsGvBD0OfW58wKXIIh5LgY9kPdhObjixGBEpFKKDuqwjxx49pG5tlPJqFNphTGeJwV
+ FcAtzfauAnUe0aMjNQ136pZdjOaybmG6WoFyqczKM0Xwk9UIeoKM+WIKdSKCcccfQlFl
+ tgxDprox9aLkqBOEZ0jekQOKXPr769itJDhvGzaF/9GaXx/f/UDnrplNP4rqUHssXxKs
+ rFqA==
+X-Gm-Message-State: AOJu0Yx5QcRFsD3k2bBB5faBJ8qLRprZRqtdu6YwFOuHw1tdB6tP3xcS
+ 73eNhKMvfPVRKrye+6NWXwTh98cBr5UA2cdKPvn6wU+fAI7ENdL6MDQ4Jff5+Kg=
+X-Google-Smtp-Source: AGHT+IGf5XUgSugWXJu45YD6yrMw+Gjb4x190DGqJN7lNYdIrbtmsgylBHkFuSGBpqlywr9XRkz6FA==
+X-Received: by 2002:a17:902:650e:b0:1f7:174e:354d with SMTP id
+ d9443c01a7336-1fa23ef7ef4mr102771625ad.48.1719487077980; 
+ Thu, 27 Jun 2024 04:17:57 -0700 (PDT)
 Received: from localhost ([157.82.204.135])
  by smtp.gmail.com with UTF8SMTPSA id
- d9443c01a7336-1faac8df839sm10992895ad.52.2024.06.27.04.17.50
+ d9443c01a7336-1faac8e0525sm11203855ad.55.2024.06.27.04.17.55
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 27 Jun 2024 04:17:53 -0700 (PDT)
+ Thu, 27 Jun 2024 04:17:57 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Thu, 27 Jun 2024 20:17:35 +0900
-Subject: [PATCH v2 3/4] ui/cocoa: Add cursor composition
+Date: Thu, 27 Jun 2024 20:17:36 +0900
+Subject: [PATCH v2 4/4] ui/console: Remove dpy_cursor_define_supported()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240627-cursor-v2-3-c3cd3ee35616@daynix.com>
+Message-Id: <20240627-cursor-v2-4-c3cd3ee35616@daynix.com>
 References: <20240627-cursor-v2-0-c3cd3ee35616@daynix.com>
 In-Reply-To: <20240627-cursor-v2-0-c3cd3ee35616@daynix.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, 
@@ -76,8 +75,8 @@ To: Paolo Bonzini <pbonzini@redhat.com>,
  Phil Dennis-Jordan <phil@philjordan.eu>
 Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.14-dev-fd6e3
-Received-SPF: none client-ip=2607:f8b0:4864:20::62c;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62c.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::629;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x629.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -99,199 +98,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add accelerated cursor composition to ui/cocoa. This does not only
-improve performance for display devices that exposes the capability to
-the guest according to dpy_cursor_define_supported(), but fixes the
-cursor display for devices that unconditionally expects the availability
-of the capability (e.g., virtio-gpu).
+Remove dpy_cursor_define_supported() as it brings no benefit today and
+it has a few inherent problems.
 
-The common pattern to implement accelerated cursor composition is to
-replace the cursor and warp it so that the replaced cursor is shown at
-the correct position on the guest display for relative pointer devices.
-Unfortunately, ui/cocoa cannot do the same because warping the cursor
-position interfers with the mouse input so it uses CALayer instead;
-although it is not specialized for cursor composition, it still can
-compose images with hardware acceleration.
+All graphical displays except egl-headless support cursor composition
+without DMA-BUF, and egl-headless is meant to be used in conjunction
+with another graphical display, so dpy_cursor_define_supported()
+always returns true and meaningless.
 
-Co-authored-by: Phil Dennis-Jordan <phil@philjordan.eu>
+Even if we add a new display without cursor composition in the future,
+dpy_cursor_define_supported() will be problematic as a cursor display
+fix for it because some display devices like virtio-gpu cannot tell the
+lack of cursor composition capability to the guest and are unable to
+utilize the value the function returns. Therefore, all non-headless
+graphical displays must actually implement cursor composition for
+correct cursor display.
+
+Another problem with dpy_cursor_define_supported() is that it returns
+true even if only some of the display listeners support cursor
+composition, which is wrong unless all display listeners that lack
+cursor composition is headless.
+
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- meson.build |  3 +-
- ui/cocoa.m  | 99 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 101 insertions(+), 1 deletion(-)
+ include/ui/console.h    |  1 -
+ hw/display/qxl-render.c |  4 ----
+ hw/display/vmware_vga.c |  6 ++----
+ ui/console.c            | 13 -------------
+ 4 files changed, 2 insertions(+), 22 deletions(-)
 
-diff --git a/meson.build b/meson.build
-index 638660714455..59cc1fb8bcfc 100644
---- a/meson.build
-+++ b/meson.build
-@@ -1041,7 +1041,8 @@ if get_option('attr').allowed()
-   endif
- endif
+diff --git a/include/ui/console.h b/include/ui/console.h
+index 82b573e68082..fa986ab97e3b 100644
+--- a/include/ui/console.h
++++ b/include/ui/console.h
+@@ -324,7 +324,6 @@ void dpy_text_update(QemuConsole *con, int x, int y, int w, int h);
+ void dpy_text_resize(QemuConsole *con, int w, int h);
+ void dpy_mouse_set(QemuConsole *con, int x, int y, bool on);
+ void dpy_cursor_define(QemuConsole *con, QEMUCursor *cursor);
+-bool dpy_cursor_define_supported(QemuConsole *con);
+ bool dpy_gfx_check_format(QemuConsole *con,
+                           pixman_format_code_t format);
  
--cocoa = dependency('appleframeworks', modules: ['Cocoa', 'CoreVideo'],
-+cocoa = dependency('appleframeworks',
-+                   modules: ['Cocoa', 'CoreVideo', 'QuartzCore'],
-                    required: get_option('cocoa'))
+diff --git a/hw/display/qxl-render.c b/hw/display/qxl-render.c
+index ec99ec887a6e..837d2446cd52 100644
+--- a/hw/display/qxl-render.c
++++ b/hw/display/qxl-render.c
+@@ -307,10 +307,6 @@ int qxl_render_cursor(PCIQXLDevice *qxl, QXLCommandExt *ext)
+         return 1;
+     }
  
- vmnet = dependency('appleframeworks', modules: 'vmnet', required: get_option('vmnet'))
-diff --git a/ui/cocoa.m b/ui/cocoa.m
-index 908454a434c5..0dcd1923bfb3 100644
---- a/ui/cocoa.m
-+++ b/ui/cocoa.m
-@@ -25,6 +25,7 @@
- #include "qemu/osdep.h"
- 
- #import <Cocoa/Cocoa.h>
-+#import <QuartzCore/QuartzCore.h>
- #include <crt_externs.h>
- 
- #include "qemu/help-texts.h"
-@@ -79,12 +80,16 @@ static void cocoa_switch(DisplayChangeListener *dcl,
-                          DisplaySurface *surface);
- 
- static void cocoa_refresh(DisplayChangeListener *dcl);
-+static void cocoa_mouse_set(DisplayChangeListener *dcl, int x, int y, int on);
-+static void cocoa_cursor_define(DisplayChangeListener *dcl, QEMUCursor *cursor);
- 
- static const DisplayChangeListenerOps dcl_ops = {
-     .dpy_name          = "cocoa",
-     .dpy_gfx_update = cocoa_update,
-     .dpy_gfx_switch = cocoa_switch,
-     .dpy_refresh = cocoa_refresh,
-+    .dpy_mouse_set = cocoa_mouse_set,
-+    .dpy_cursor_define = cocoa_cursor_define,
- };
- static DisplayChangeListener dcl = {
-     .ops = &dcl_ops,
-@@ -300,6 +305,11 @@ @interface QemuCocoaView : NSView
-     BOOL isAbsoluteEnabled;
-     CFMachPortRef eventsTap;
-     CGColorSpaceRef colorspace;
-+    CALayer *cursorLayer;
-+    QEMUCursor *cursor;
-+    int mouseX;
-+    int mouseY;
-+    bool mouseOn;
- }
- - (void) switchSurface:(pixman_image_t *)image;
- - (void) grabMouse;
-@@ -365,6 +375,12 @@ - (id)initWithFrame:(NSRect)frameRect
- #if MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_VERSION_14_0
-         [self setClipsToBounds:YES];
+-    if (!dpy_cursor_define_supported(qxl->vga.con)) {
+-        return 0;
+-    }
+-
+     if (qxl->debug > 1 && cmd->type != QXL_CURSOR_MOVE) {
+         fprintf(stderr, "%s", __func__);
+         qxl_log_cmd_cursor(qxl, cmd, ext->group_id);
+diff --git a/hw/display/vmware_vga.c b/hw/display/vmware_vga.c
+index 512f224b9f58..3db3ff98f763 100644
+--- a/hw/display/vmware_vga.c
++++ b/hw/display/vmware_vga.c
+@@ -904,10 +904,8 @@ static uint32_t vmsvga_value_read(void *opaque, uint32_t address)
+         caps |= SVGA_CAP_RECT_FILL;
  #endif
-+        [self setWantsLayer:YES];
-+        cursorLayer = [[CALayer alloc] init];
-+        [cursorLayer setAnchorPoint:CGPointMake(0, 1)];
-+        [cursorLayer setAutoresizingMask:kCALayerMaxXMargin |
-+                                         kCALayerMinYMargin];
-+        [[self layer] addSublayer:cursorLayer];
- 
+ #ifdef HW_MOUSE_ACCEL
+-        if (dpy_cursor_define_supported(s->vga.con)) {
+-            caps |= SVGA_CAP_CURSOR | SVGA_CAP_CURSOR_BYPASS_2 |
+-                    SVGA_CAP_CURSOR_BYPASS;
+-        }
++        caps |= SVGA_CAP_CURSOR | SVGA_CAP_CURSOR_BYPASS_2 |
++                SVGA_CAP_CURSOR_BYPASS;
+ #endif
+         ret = caps;
+         break;
+diff --git a/ui/console.c b/ui/console.c
+index 0ec70cb50ce6..33976446425e 100644
+--- a/ui/console.c
++++ b/ui/console.c
+@@ -1001,19 +1001,6 @@ void dpy_cursor_define(QemuConsole *c, QEMUCursor *cursor)
      }
-     return self;
-@@ -383,6 +399,8 @@ - (void) dealloc
-     }
- 
-     CGColorSpaceRelease(colorspace);
-+    [cursorLayer release];
-+    cursor_unref(cursor);
-     [super dealloc];
  }
  
-@@ -426,6 +444,72 @@ - (void) unhideCursor
-     [NSCursor unhide];
- }
- 
-+- (void)setMouseX:(int)x y:(int)y on:(bool)on
-+{
-+    CGPoint position;
-+
-+    mouseX = x;
-+    mouseY = y;
-+    mouseOn = on;
-+
-+    position.x = mouseX;
-+    position.y = screen.height - mouseY;
-+
-+    [CATransaction begin];
-+    [CATransaction setDisableActions:YES];
-+    [cursorLayer setPosition:position];
-+    [cursorLayer setHidden:!mouseOn];
-+    [CATransaction commit];
-+}
-+
-+- (void)setCursor:(QEMUCursor *)given_cursor
-+{
-+    CGDataProviderRef provider;
-+    CGImageRef image;
-+    CGRect bounds = CGRectZero;
-+
-+    cursor_unref(cursor);
-+    cursor = given_cursor;
-+
-+    if (!cursor) {
-+        return;
-+    }
-+
-+    cursor_ref(cursor);
-+
-+    bounds.size.width = cursor->width;
-+    bounds.size.height = cursor->height;
-+
-+    provider = CGDataProviderCreateWithData(
-+        NULL,
-+        cursor->data,
-+        cursor->width * cursor->height * 4,
-+        NULL
-+    );
-+
-+    image = CGImageCreate(
-+        cursor->width, //width
-+        cursor->height, //height
-+        8, //bitsPerComponent
-+        32, //bitsPerPixel
-+        cursor->width * 4, //bytesPerRow
-+        colorspace, //colorspace
-+        kCGBitmapByteOrder32Little | kCGImageAlphaFirst, //bitmapInfo
-+        provider, //provider
-+        NULL, //decode
-+        0, //interpolate
-+        kCGRenderingIntentDefault //intent
-+    );
-+
-+    CGDataProviderRelease(provider);
-+    [CATransaction begin];
-+    [CATransaction setDisableActions:YES];
-+    [cursorLayer setBounds:bounds];
-+    [cursorLayer setContents:(id)image];
-+    [CATransaction commit];
-+    CGImageRelease(image);
-+}
-+
- - (void) drawRect:(NSRect) rect
+-bool dpy_cursor_define_supported(QemuConsole *con)
+-{
+-    DisplayState *s = con->ds;
+-    DisplayChangeListener *dcl;
+-
+-    QLIST_FOREACH(dcl, &s->listeners, next) {
+-        if (dcl->ops->dpy_cursor_define) {
+-            return true;
+-        }
+-    }
+-    return false;
+-}
+-
+ QEMUGLContext dpy_gl_ctx_create(QemuConsole *con,
+                                 struct QEMUGLParams *qparams)
  {
-     COCOA_DEBUG("QemuCocoaView: drawRect\n");
-@@ -2003,6 +2087,21 @@ static void cocoa_refresh(DisplayChangeListener *dcl)
-     [pool release];
- }
- 
-+static void cocoa_mouse_set(DisplayChangeListener *dcl, int x, int y, bool on)
-+{
-+    dispatch_async(dispatch_get_main_queue(), ^{
-+        [cocoaView setMouseX:x y:y on:on];
-+    });
-+}
-+
-+static void cocoa_cursor_define(DisplayChangeListener *dcl, QEMUCursor *cursor)
-+{
-+    dispatch_async(dispatch_get_main_queue(), ^{
-+        BQL_LOCK_GUARD();
-+        [cocoaView setCursor:qemu_console_get_cursor(dcl->con)];
-+    });
-+}
-+
- static void cocoa_display_init(DisplayState *ds, DisplayOptions *opts)
- {
-     NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
 
 -- 
 2.45.2
