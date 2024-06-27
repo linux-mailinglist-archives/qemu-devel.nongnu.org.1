@@ -2,86 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92EA891A36A
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jun 2024 12:04:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22A4A91A437
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jun 2024 12:44:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sMlxv-0000LT-LV; Thu, 27 Jun 2024 06:02:55 -0400
+	id 1sMmb8-0001ZI-T2; Thu, 27 Jun 2024 06:43:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sMlxr-0008Rq-Oq
- for qemu-devel@nongnu.org; Thu, 27 Jun 2024 06:02:51 -0400
-Received: from mail-io1-xd31.google.com ([2607:f8b0:4864:20::d31])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sMlxp-0002qx-Uj
- for qemu-devel@nongnu.org; Thu, 27 Jun 2024 06:02:51 -0400
-Received: by mail-io1-xd31.google.com with SMTP id
- ca18e2360f4ac-7f61549406eso12605339f.1
- for <qemu-devel@nongnu.org>; Thu, 27 Jun 2024 03:02:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1719482568; x=1720087368; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=h+j6fKPVNUKUnpKxQMAdtrznAy8Ydu67u7x9DuieKE0=;
- b=I8j3lzUZAi/FSmYd2acqpG6FgRmbVaqptERU3A0gGZRe1spJksiCPOYU5fWIMJZpv6
- OxxCjGy5SXl83GdKCxDr5wuhNfDe6hARPfROeW14jhv51sl+b4NeYWIpB3ZbPXry/vvw
- CrxrAn7Bx7DUFNWHtCuU2mCXsVTDAqQZxN4zwwUWIrLfSUSNY4PtFy0B9yKzOYKZvSb7
- h0PGiB3Y50Wqnbf9wcMsGAmij9cs2gn49H70nMSmAUMGd0q+atCHVlPFXl2WE8iM7K/W
- PUV/DA8tsHgqPB8z+y4pviLIql1GMKIyPTbILL2EwUK0XOlnKO1oxEvID16emu9Tr13v
- F73Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719482568; x=1720087368;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=h+j6fKPVNUKUnpKxQMAdtrznAy8Ydu67u7x9DuieKE0=;
- b=WSh0VFnEqoec/5O+ZdjCFDlXJwTN3fGnPAiW1r/beS99HGDqNk0zZRADwk7OvlBj6n
- ssoGL8uCsdlarOxG/gASKl5hQPUVwJO2/qMLEnpc4UbabpcWaAFJ0H0QBoewE3Zb4ndD
- cBQRq9Kdtz4RTTVPVrroUQRDVeQuvSb3NZGl5QC8pPxEzC5I76ttL6v9xu4tFJR7ZtyE
- lPu8yt2gLV1EIpoATicX2ogHT1mkLCq5KwHferI0R8CZsxFmDf1KTJ74sHydRPFYiJlb
- I3LlIX2uCJh5ZLBtdZoM5+ZPZskyAnIhM4Knx1/DeJMe8a+YHqTmZtw3RIYreexjVU6l
- R5Sw==
-X-Gm-Message-State: AOJu0YxHKqBuXXpzEuoaWZ4c0RUFH7s0pTfyQILAvlgDl8bP4uftTqjv
- Wc+5IO49hQ4KvIAPn2n3atWdlDmFJTIIErU8IoeJRPYT5fcNinZDmUX13X/r
-X-Google-Smtp-Source: AGHT+IHNOnh4snA1JbyAl60XYCAUC6EPph/N571XudXc5WX1XegVfyIoxxTlpRi6NKvpqP+zREoRbQ==
-X-Received: by 2002:a05:6602:6d15:b0:7eb:71b9:fc8 with SMTP id
- ca18e2360f4ac-7f3a755b3c3mr1514878739f.16.1719482568291; 
- Thu, 27 Jun 2024 03:02:48 -0700 (PDT)
-Received: from toolbox.alistair23.me
- (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
- [2403:580b:97e8:0:82ce:f179:8a79:69f4])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-706b4a07326sm932431b3a.111.2024.06.27.03.02.45
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 27 Jun 2024 03:02:47 -0700 (PDT)
-From: Alistair Francis <alistair23@gmail.com>
-X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
-To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Alvin Chang <alvinga@andestech.com>,
- Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 32/32] target/riscv: Apply modularized matching conditions for
- icount trigger
-Date: Thu, 27 Jun 2024 20:00:53 +1000
-Message-ID: <20240627100053.150937-33-alistair.francis@wdc.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240627100053.150937-1-alistair.francis@wdc.com>
-References: <20240627100053.150937-1-alistair.francis@wdc.com>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sMmb6-0001Yw-9b
+ for qemu-devel@nongnu.org; Thu, 27 Jun 2024 06:43:24 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sMmb4-00030Z-Od
+ for qemu-devel@nongnu.org; Thu, 27 Jun 2024 06:43:24 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1719485001;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=sD4v3Z5OJ0gM0AlBQaLc16t1VQbDPhBLxpZmUeyZ+yY=;
+ b=QDvJp2I1pKXi5IYJTwpph40Ph6cXt7yA/BkDPrZTG1sUNgTkNlu96np7QgxhcoudZKLxLB
+ 3B0SfF2hZY/Itb2UWF+8TwFUFlSbBLzfL0hyXY3OSdGAHBSGRgWQhQkdNMFLJIDuM1x4rp
+ rZM0qQ/fQclvHKT+p4JGPQpsgBwIMNU=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-477-zQ6vv88ePMKObyyfkwmZsg-1; Thu,
+ 27 Jun 2024 06:43:16 -0400
+X-MC-Unique: zQ6vv88ePMKObyyfkwmZsg-1
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id EEEAB19560BC; Thu, 27 Jun 2024 10:43:13 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.194.114])
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id D927619560A3; Thu, 27 Jun 2024 10:43:12 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 9EB6421E668B; Thu, 27 Jun 2024 12:43:10 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: John Snow <jsnow@redhat.com>
+Cc: qemu-devel@nongnu.org,  Mads Ynddal <mads@ynddal.dk>,  Jiri Pirko
+ <jiri@resnulli.us>,  Stefan Hajnoczi <stefanha@redhat.com>,  Eric Blake
+ <eblake@redhat.com>,  Peter Maydell <peter.maydell@linaro.org>,  Michael
+ Roth <michael.roth@amd.com>,  "Michael S. Tsirkin" <mst@redhat.com>,  Alex
+ Williamson <alex.williamson@redhat.com>,  Pavel Dovgalyuk
+ <pavel.dovgaluk@ispras.ru>,  Victor Toso de Carvalho
+ <victortoso@redhat.com>,  =?utf-8?Q?C=C3=A9dric?= Le Goater
+ <clg@redhat.com>,  Daniel P.
+ =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,  qemu-block@nongnu.org,
+ Ani Sinha
+ <anisinha@redhat.com>,  Fabiano Rosas <farosas@suse.de>,  Marcel Apfelbaum
+ <marcel.apfelbaum@gmail.com>,  =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
+ <marcandre.lureau@redhat.com>,  Gerd Hoffmann <kraxel@redhat.com>,  Paolo
+ Bonzini <pbonzini@redhat.com>,  Kevin Wolf <kwolf@redhat.com>,  Peter Xu
+ <peterx@redhat.com>,  Eduardo Habkost <eduardo@habkost.net>,  Philippe
+ =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Lukas Straub
+ <lukasstraub2@web.de>,
+ Igor Mammedov <imammedo@redhat.com>,  Jason Wang <jasowang@redhat.com>,
+ Yanan Wang <wangyanan55@huawei.com>,  Hanna Reitz <hreitz@redhat.com>,
+ Konstantin Kostiuk <kkostiuk@redhat.com>
+Subject: Re: [PATCH v2 03/21] docs/qapidoc: remove unused intersperse function
+In-Reply-To: <20240626222128.406106-4-jsnow@redhat.com> (John Snow's message
+ of "Wed, 26 Jun 2024 18:21:09 -0400")
+References: <20240626222128.406106-1-jsnow@redhat.com>
+ <20240626222128.406106-4-jsnow@redhat.com>
+Date: Thu, 27 Jun 2024 12:43:10 +0200
+Message-ID: <87ikxuhdj5.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::d31;
- envelope-from=alistair23@gmail.com; helo=mail-io1-xd31.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
+X-Spam_bar: --
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.212,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,35 +100,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Alvin Chang <alvinga@andestech.com>
+John Snow <jsnow@redhat.com> writes:
 
-We have implemented trigger_common_match(), which checks if the enabled
-privilege levels of the trigger match CPU's current privilege level. We
-can invoke trigger_common_match() to check the privilege levels of the
-type 3 triggers.
+> This function has been unused since fd62bff901b.
+>
+> Signed-off-by: John Snow <jsnow@redhat.com>
 
-Signed-off-by: Alvin Chang <alvinga@andestech.com>
-Acked-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20240626132247.2761286-4-alvinga@andestech.com>
-Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
----
- target/riscv/debug.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Reviewed-by: Markus Armbruster <armbru@redhat.com>
 
-diff --git a/target/riscv/debug.c b/target/riscv/debug.c
-index c290d6002e..0b5099ff9a 100644
---- a/target/riscv/debug.c
-+++ b/target/riscv/debug.c
-@@ -624,7 +624,7 @@ void helper_itrigger_match(CPURISCVState *env)
-         if (get_trigger_type(env, i) != TRIGGER_TYPE_INST_CNT) {
-             continue;
-         }
--        if (check_itrigger_priv(env, i)) {
-+        if (!trigger_common_match(env, TRIGGER_TYPE_INST_CNT, i)) {
-             continue;
-         }
-         count = itrigger_get_count(env, i);
--- 
-2.45.2
+I assume you won't mind me adding a bit of polish: "since commit
+fd62bff901b (sphinx/qapidoc: Drop code to generate doc for simple union
+tag)".
 
 
