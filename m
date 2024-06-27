@@ -2,58 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF2E491AC89
+	by mail.lfdr.de (Postfix) with ESMTPS id EA89691AC88
 	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jun 2024 18:24:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sMrti-0003Pp-0i; Thu, 27 Jun 2024 12:22:58 -0400
+	id 1sMrto-0003Tb-0y; Thu, 27 Jun 2024 12:23:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sMrtW-0003NL-GN
- for qemu-devel@nongnu.org; Thu, 27 Jun 2024 12:22:46 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sMrtj-0003SJ-4n
+ for qemu-devel@nongnu.org; Thu, 27 Jun 2024 12:22:59 -0400
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sMrtU-00074t-LS
- for qemu-devel@nongnu.org; Thu, 27 Jun 2024 12:22:46 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-36742cc9c12so715702f8f.2
- for <qemu-devel@nongnu.org>; Thu, 27 Jun 2024 09:22:44 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sMrth-00076G-LJ
+ for qemu-devel@nongnu.org; Thu, 27 Jun 2024 12:22:58 -0400
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-354b722fe81so5411588f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 27 Jun 2024 09:22:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719505363; x=1720110163; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=4gNEJ7+L3PN7xtgjGNFEWvLx/YiUkhV8z3R5GUXOwXM=;
- b=SnbK82K2aU4YjlPKHZpoJogl7szfENiVUa3yzQe+gkB5qnvfbRMj1wDKHGFQmVPh63
- BIUeBLJwvdq4tIva0Ry8lziaZhP3iiQxjuikRRm9qTsHZrTbu7t2LBfsWIFzCIi7uiGW
- /4Ubcp9iiwhZCzxF21OyBd05fe33RVX1MOmDQqyp6pZJ5cavHYhhgEuoR5d0dQ9CdC4t
- 3EugSBi+p3D6gTsCNnfrb4N1x2JdPjfrFs4mmUhW1pBIrEzRqqo/Sq23InRkjN9Ojuwh
- v5G5yDOOTbeOKjunTn4CHJyphBdfxyIgpNQSu0RBljU/U4RtDtMUVVwP3t7S7YTYFl+8
- Klmg==
+ d=linaro.org; s=google; t=1719505376; x=1720110176; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=FehxPMt54YZs4mKlk2O0dDcvxQwBqAiau0Ry18uuTzM=;
+ b=tDFYtmbWqkrkRQSj7AT/JOWFHicHmCzy7N04rbm154RPu6cFhptTVevzdysOCGGshJ
+ ircp88kDwVFM3b+X7MG0UhWwp89iv15ZVmtzO6ZcUvmpVDAFxyOe3ImPdL5c7rC+V2st
+ 8rOd+M+BeQbM53UkeNtv2oj8ttiHNNm2Um+MypHhc5VmkBbyDfM3QhZ9LoDHWKFcHs4d
+ +1W5DGLIcwo7kMhObEGvopmkQO3I1gpmwyA3lP43nEcT8ojWJ/q3Oi/qJ3eKiAcrfQgn
+ Bl95HJSxWVgmsVN1Y6pcbJKE5CD1TVaNByAge0z5wwCNO5/rwkMArVw9fyBK1DjyXybs
+ Ok1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719505363; x=1720110163;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=4gNEJ7+L3PN7xtgjGNFEWvLx/YiUkhV8z3R5GUXOwXM=;
- b=AyzoGaPrFjju4zJc9k7bebJn8sBdBPcee4rDE/sjsKgo0d0dVTLmcV3Q2DE72fPww9
- xhLAeIAp/9KrvrLWmgwvDnjJlwFxEiR0MF27/4eCZddky1ZpUhWsUa/QfWHlEuJ1K11l
- et6A5F8UOD9YCsWFeb/IherJgA+Tx/5lCEVgB8iq5KLVvlMxefX8oyQxGE12gwEQuWqM
- IQmhBDGIs4j++bHWM4/jKWgfqh8MiX9rBVVuU1UVqvs7PmFfPnKCG/5Kp35YYzDZNkP5
- tXcYJlx8hrAs/11D/Us1S2Vj6Ul31r09s6/NnWv0yuMyV3FBMnEIec1oOKE7qTUogX03
- aNHQ==
-X-Gm-Message-State: AOJu0YzTX4n+eVDSElL1msKga1nm/nKFUandunlFhiodVe6eEitKQN9i
- 9ECY6e3Ykao2chVwRY6mlOyW61ZIMIGvGUzNiMin8VQu4NHeXWiSuwgBw1bMsmd+eZyiLCeEpUZ
- jElc=
-X-Google-Smtp-Source: AGHT+IFIa7RR/yfurpQ9sh05STVLKtDwSpHdQ/MwtvzYeDm9JS5ZwxGo8rYacq+YWTSpXUWZfqrL/g==
-X-Received: by 2002:a5d:5f54:0:b0:367:47e6:c7ce with SMTP id
- ffacd0b85a97d-36747e6cab8mr2190647f8f.6.1719505362779; 
- Thu, 27 Jun 2024 09:22:42 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1719505376; x=1720110176;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=FehxPMt54YZs4mKlk2O0dDcvxQwBqAiau0Ry18uuTzM=;
+ b=eOnNe8qm5bp5a1YEQYLgcbUdksxVOtW9TjsJlw39hcJW+Ux6f/1HW/cnKxcsa5XkOj
+ 2/BlurJiQEYkw+IyvW6yFY0uCIaZFq4OdZsvh5Hh9SlDTm1YtiAsetG2zAswxfn0elkS
+ 1+GiXGQYPJEbicQlMDPZZSqklk1k5i54isXknU8Cq6rllUrxQZIXylTT7CG7as9h91d8
+ UuIcpnzr4V9mEqIwitzP6AGq04ihm5lSPl/ewjpUCRnX6mtrFWvej1D4dgF6RWz2d5WW
+ im46Xnr8+Y2FEHsjY5WAqvGjoOE+HnPXc3vqY4WGMja6UlVq/k+FS4jjWu+wJGHx6CiE
+ r/gw==
+X-Gm-Message-State: AOJu0YzzekxuNfWmCyOkM9HJEJ/PCRBBu9oSYUYFCfGHixfhep9ezIJv
+ 1G4cUGgxNxMNsmZVsCbZMqm8tdF+FkB64D+uJPYaLUeu65sB0B1dUa62i2D4ilwarf+KEF63tzW
+ qNPg=
+X-Google-Smtp-Source: AGHT+IH18bbY1784vwnyJimBUwrB0LfuvZaWWzWLuq5M+w4p+pGq2ctXLO3iDhzmIIWclM3IqtZXDw==
+X-Received: by 2002:a5d:4047:0:b0:362:590c:84cf with SMTP id
+ ffacd0b85a97d-366e4ed3b67mr8850061f8f.24.1719505375971; 
+ Thu, 27 Jun 2024 09:22:55 -0700 (PDT)
 Received: from localhost.localdomain (33.red-95-127-46.staticip.rima-tde.net.
  [95.127.46.33]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3674357fdcasm2360704f8f.36.2024.06.27.09.22.36
+ ffacd0b85a97d-3674357fc35sm2384182f8f.25.2024.06.27.09.22.49
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 27 Jun 2024 09:22:42 -0700 (PDT)
+ Thu, 27 Jun 2024 09:22:55 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, Laurent Vivier <lvivier@redhat.com>,
@@ -64,16 +65,19 @@ Cc: qemu-block@nongnu.org, Laurent Vivier <lvivier@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, qemu-arm@nongnu.org,
  Joel Stanley <joel@jms.id.au>, Sai Pavan Boddu <sai.pavan.boddu@amd.com>,
- devel@lists.libvirt.org, Luc Michel <luc.michel@amd.com>
-Subject: [PATCH v3 00/17] hw/sd/sdcard: Accumulation of cleanups and fixes
-Date: Thu, 27 Jun 2024 18:22:15 +0200
-Message-ID: <20240627162232.80428-1-philmd@linaro.org>
+ devel@lists.libvirt.org, Luc Michel <luc.michel@amd.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PATCH v3 01/17] hw/sd/sdcard: Deprecate support for spec v1.10
+Date: Thu, 27 Jun 2024 18:22:16 +0200
+Message-ID: <20240627162232.80428-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20240627162232.80428-1-philmd@linaro.org>
+References: <20240627162232.80428-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,47 +100,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since v2:
-- Tested-by from Cédric recorded
-- more patches added :S
-Since v1:
-- various patches merged, few more added
+We use the v2.00 spec by default since commit 2f0939c234
+("sdcard: Add a 'spec_version' property, default to Spec v2.00").
+Time to deprecate the v1.10 which doesn't bring much, and
+is not tested.
 
-Various SD card cleanups and fixes accumulated over
-the years. Various have been useful to help integrating
-eMMC support (which will come later).
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+---
+ docs/about/deprecated.rst | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-Full series for testing:
-https://gitlab.com/philmd/qemu/-/tags/emmc-v4
-
-Cédric Le Goater (1):
-  hw/sd/sdcard: Introduce definitions for EXT_CSD register
-
-Philippe Mathieu-Daudé (16):
-  hw/sd/sdcard: Deprecate support for spec v1.10
-  hw/sd/sdcard: Use spec v3.01 by default
-  hw/sd/sdcard: Track last command used to help logging
-  hw/sd/sdcard: Trace block offset in READ/WRITE data accesses
-  hw/sd/sdcard: Trace requested address computed by sd_req_get_address()
-  hw/sd/sdcard: Do not store vendor data on block drive (CMD56)
-  hw/sd/sdcard: Send WRITE_PROT bits MSB first (CMD30)
-  hw/sd/sdcard: Send NUM_WR_BLOCKS bits MSB first (ACMD22)
-  hw/sd/sdcard: Use READY_FOR_DATA definition instead of magic value
-  hw/sd/sdcard: Assign SDCardStates enum values
-  hw/sd/sdcard: Simplify sd_inactive_state handling
-  hw/sd/sdcard: Restrict SWITCH_FUNCTION to sd_transfer_state (CMD6)
-  hw/sd/sdcard: Add direct reference to SDProto in SDState
-  hw/sd/sdcard: Extract sd_blk_len() helper
-  tests/qtest: Disable npcm7xx_sdhci tests using hardcoded RCA
-  hw/sd/sdcard: Generate random RCA value
-
- docs/about/deprecated.rst        |   6 ++
- hw/sd/sdmmc-internal.h           |  97 +++++++++++++++++++++
- hw/sd/sd.c                       | 145 ++++++++++++++++++-------------
- tests/qtest/npcm7xx_sdhci-test.c |   7 ++
- hw/sd/trace-events               |   6 +-
- 5 files changed, 199 insertions(+), 62 deletions(-)
-
+diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+index ff3da68208..02cdef14aa 100644
+--- a/docs/about/deprecated.rst
++++ b/docs/about/deprecated.rst
+@@ -362,6 +362,12 @@ recommending to switch to their stable counterparts:
+ - "Zve64f" should be replaced with "zve64f"
+ - "Zve64d" should be replaced with "zve64d"
+ 
++``-device sd-card,spec_version=1`` (since 9.1)
++^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
++
++SD physical layer specification v2.00 supersedes the v1.10 one.
++v2.00 is the default since QEMU 3.0.0.
++
+ Block device options
+ ''''''''''''''''''''
+ 
 -- 
 2.41.0
 
