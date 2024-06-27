@@ -2,60 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57C06919D38
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jun 2024 04:22:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05EF1919D4F
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jun 2024 04:36:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sMemC-0003ne-7P; Wed, 26 Jun 2024 22:22:20 -0400
+	id 1sMeyT-0006Rt-Ha; Wed, 26 Jun 2024 22:35:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <brad@comstyle.com>) id 1sMemA-0003nB-Mu
- for qemu-devel@nongnu.org; Wed, 26 Jun 2024 22:22:18 -0400
-Received: from speedy.comstyle.com ([2607:f938:3000:8::2]
- helo=mail.comstyle.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_CHACHA20_POLY1305:256)
- (Exim 4.90_1) (envelope-from <brad@comstyle.com>) id 1sMem9-0007kH-5O
- for qemu-devel@nongnu.org; Wed, 26 Jun 2024 22:22:18 -0400
-Received: from mail.comstyle.com (localhost [127.0.0.1])
- by mail.comstyle.com (Postfix) with ESMTP id 4W8j5260qMz8PbP;
- Wed, 26 Jun 2024 22:22:14 -0400 (EDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed; d=comstyle.com; h=date
- :from:to:cc:subject:message-id:mime-version:content-type; s=
- default; bh=DqURGYkpK/iX0plbjYjwaBbXg+c1+MU9QVzTxVgJ9Fs=; b=Bqur
- osoAWXKtJulVKKVe9UU7lslrTqiTz/Q+QMkhtjG3d/tstxAcftbaPx1Fkrl7nRCQ
- MTrxec/WpmDxl5xtz0IFg6Lq5qXKiT0yBVcvbfPzRsWNxbq7nyPSyraKuuixIDbE
- +/sh/hS//rzrZCu0Ta2eXlPQtd/ptWVN+AjwZd8=
-DomainKey-Signature: a=rsa-sha1; c=nofws; d=comstyle.com; h=date:from:to
- :cc:subject:message-id:mime-version:content-type; q=dns; s=
- default; b=anW6LMIXyiz0kg5a9g1fPyp9L9sozPOO0WCRgiIMfO1EiJ7kQZK/o
- 0jLw56JWQWVkT5CdXIMtTmfW2afPOWKpV5NfrIkheFAxZSRA4+DLK3eKckZNrXiG
- iJVa0vapNyAAf36PXpZqyE23wzacjNEjeGFhVv10sIS/OEQ/ra4U2U=
-Received: from humpty.home.comstyle.com (unknown
- [IPv6:2001:470:b050:3:6ab7:8ff0:603e:f824])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA512)
- (No client certificate requested) (Authenticated sender: brad)
- by mail.comstyle.com (Postfix) with ESMTPSA id 4W8j52560Yz8PbN;
- Wed, 26 Jun 2024 22:22:14 -0400 (EDT)
-Date: Wed, 26 Jun 2024 22:22:13 -0400
-From: Brad Smith <brad@comstyle.com>
-To: Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org
-Subject: [PATCH v2] util: fix building on OpenBSD/powerpc
-Message-ID: <ZnzM1T6Vo1Q0yAH-@humpty.home.comstyle.com>
+ (Exim 4.90_1) (envelope-from <alvinga@andestech.com>)
+ id 1sMeyR-0006Qw-05
+ for qemu-devel@nongnu.org; Wed, 26 Jun 2024 22:34:59 -0400
+Received: from 60-248-80-70.hinet-ip.hinet.net ([60.248.80.70]
+ helo=Atcsqr.andestech.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <alvinga@andestech.com>)
+ id 1sMeyN-0003Rg-HQ
+ for qemu-devel@nongnu.org; Wed, 26 Jun 2024 22:34:58 -0400
+Received: from mail.andestech.com (ATCPCS31.andestech.com [10.0.1.89])
+ by Atcsqr.andestech.com with ESMTP id 45R2YaCs074985;
+ Thu, 27 Jun 2024 10:34:36 +0800 (+08)
+ (envelope-from alvinga@andestech.com)
+Received: from atctrx.andestech.com (10.0.15.190) by ATCPCS31.andestech.com
+ (10.0.1.89) with Microsoft SMTP Server id 14.3.498.0; Thu, 27 Jun 2024
+ 10:34:36 +0800
+To: <qemu-riscv@nongnu.org>, <qemu-devel@nongnu.org>
+CC: <alistair.francis@wdc.com>, <bin.meng@windriver.com>,
+ <liwei1518@gmail.com>, <dbarboza@ventanamicro.com>,
+ <zhiwei_liu@linux.alibaba.com>, Alvin Chang <alvinga@andestech.com>
+Subject: [PATCH v6 0/3] RISC-V: Modularize common match conditions for trigger
+Date: Thu, 27 Jun 2024 10:34:04 +0800
+Message-ID: <20240627023407.2156838-1-alvinga@andestech.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Received-SPF: pass client-ip=2607:f938:3000:8::2;
- envelope-from=brad@comstyle.com; helo=mail.comstyle.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.0.15.190]
+X-DNSRBL: 
+X-SPAM-SOURCE-CHECK: pass
+X-MAIL: Atcsqr.andestech.com 45R2YaCs074985
+Received-SPF: pass client-ip=60.248.80.70; envelope-from=alvinga@andestech.com;
+ helo=Atcsqr.andestech.com
+X-Spam_score_int: -8
+X-Spam_score: -0.9
+X-Spam_bar: /
+X-Spam_report: (-0.9 / 5.0 requ) BAYES_00=-1.9, RDNS_DYNAMIC=0.982,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ TVD_RCVD_IP=0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -68,71 +61,54 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  <alvinga@andestech.com>
+From: alvinga--- via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-util: fix building on OpenBSD/powerpc
+From: Alvin Chang <alvinga@andestech.com>
 
-Signed-off-by: Brad Smith <brad@comstyle.com>
----
-v2: Keep headers in the same order as they originally were.
+According to RISC-V Debug specification ratified version 0.13 [1]
+(also applied to version 1.0 [2] but it has not been ratified yet), the
+enabled privilege levels of the trigger is common match conditions for
+all the types of the trigger.
 
- util/cpuinfo-ppc.c | 20 ++++++++++++--------
- 1 file changed, 12 insertions(+), 8 deletions(-)
+This series modularize the code for checking the privilege levels of
+type 2/3/6 triggers by implementing functions trigger_common_match()
+and trigger_priv_match().
 
-diff --git a/util/cpuinfo-ppc.c b/util/cpuinfo-ppc.c
-index b2d8893a06..47af55aa0c 100644
---- a/util/cpuinfo-ppc.c
-+++ b/util/cpuinfo-ppc.c
-@@ -6,11 +6,13 @@
- #include "qemu/osdep.h"
- #include "host/cpuinfo.h"
- 
--#include <asm/cputable.h>
--#ifdef CONFIG_GETAUXVAL
--# include <sys/auxv.h>
--#else
--# include "elf.h"
-+#ifdef CONFIG_LINUX
-+# include <asm/cputable.h>
-+# ifdef CONFIG_GETAUXVAL
-+#  include <sys/auxv.h>
-+# else
-+#  include "elf.h"
-+# endif
- #endif
- 
- unsigned cpuinfo;
-@@ -19,16 +21,17 @@ unsigned cpuinfo;
- unsigned __attribute__((constructor)) cpuinfo_init(void)
- {
-     unsigned info = cpuinfo;
--    unsigned long hwcap, hwcap2;
- 
-     if (info) {
-         return info;
-     }
- 
--    hwcap = qemu_getauxval(AT_HWCAP);
--    hwcap2 = qemu_getauxval(AT_HWCAP2);
-     info = CPUINFO_ALWAYS;
- 
-+#ifdef CONFIG_LINUX
-+    unsigned long hwcap = qemu_getauxval(AT_HWCAP);
-+    unsigned long hwcap2 = qemu_getauxval(AT_HWCAP2);
-+
-     /* Version numbers are monotonic, and so imply all lower versions. */
-     if (hwcap2 & PPC_FEATURE2_ARCH_3_1) {
-         info |= CPUINFO_V3_1 | CPUINFO_V3_0 | CPUINFO_V2_07 | CPUINFO_V2_06;
-@@ -58,6 +61,7 @@ unsigned __attribute__((constructor)) cpuinfo_init(void)
-             }
-         }
-     }
-+#endif
- 
-     cpuinfo = info;
-     return info;
+Additional match conditions, such as CSR tcontrol and textra, can be
+further implemented into trigger_common_match() in the future.
+
+[1]: https://github.com/riscv/riscv-debug-spec/releases/tag/task_group_vote
+[2]: https://github.com/riscv/riscv-debug-spec/releases/tag/1.0.0-rc1-asciidoc
+
+Changes from v5:
+- Merge first two commits to avoid build error
+
+Changes from v4:
+- Rebasing on riscv-to-apply.next 
+
+Changes from v3:
+- Change this series to target Debug Spec. version 0.13
+
+Changes from v2:
+- Explicitly mention the targeting version of RISC-V Debug Spec.
+
+Changes from v1:
+- Fix typo
+- Add commit description for changing behavior of looping the triggers
+  when we check type 2 triggers.
+
+Alvin Chang (3):
+  target/riscv: Add functions for common matching conditions of trigger
+  target/riscv: Apply modularized matching conditions for watchpoint
+  target/riscv: Apply modularized matching conditions for icount trigger
+
+ target/riscv/debug.c | 129 ++++++++++++++++++++++++++++---------------
+ 1 file changed, 85 insertions(+), 44 deletions(-)
+
 -- 
-2.45.2
+2.34.1
 
 
