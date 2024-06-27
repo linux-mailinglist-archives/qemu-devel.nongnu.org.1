@@ -2,68 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 872D891A80F
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jun 2024 15:40:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88F9991A80C
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jun 2024 15:39:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sMpKw-0001Am-7C; Thu, 27 Jun 2024 09:38:54 -0400
+	id 1sMpKw-0001Al-5p; Thu, 27 Jun 2024 09:38:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sMpKh-00016p-Pc
- for qemu-devel@nongnu.org; Thu, 27 Jun 2024 09:38:40 -0400
-Received: from mail-oi1-x22a.google.com ([2607:f8b0:4864:20::22a])
+ id 1sMpKl-00018F-Tl
+ for qemu-devel@nongnu.org; Thu, 27 Jun 2024 09:38:46 -0400
+Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sMpKd-0006Mw-Ot
- for qemu-devel@nongnu.org; Thu, 27 Jun 2024 09:38:37 -0400
-Received: by mail-oi1-x22a.google.com with SMTP id
- 5614622812f47-3c9d70d93dbso5277945b6e.3
- for <qemu-devel@nongnu.org>; Thu, 27 Jun 2024 06:38:34 -0700 (PDT)
+ id 1sMpKk-0006PI-B8
+ for qemu-devel@nongnu.org; Thu, 27 Jun 2024 09:38:43 -0400
+Received: by mail-pf1-x42c.google.com with SMTP id
+ d2e1a72fcca58-706b14044cbso868103b3a.2
+ for <qemu-devel@nongnu.org>; Thu, 27 Jun 2024 06:38:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1719495513; x=1720100313;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1719495520; x=1720100320;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=ttjpe0Zy78QRlVICf1w8g9FNolQGU7Fei8nrc5VuhDU=;
- b=KZ3u8CeLG3wv+E4DOhDghvmofyc5dHvZx+zctdB75dA3iRSS7P9F6EEJl0jF+Sy3Ow
- su8DGKXcHu7eS7bBb77dScPdNAp+fmOajodGE3VNJfG+q5Wm+q4sOIf+HHEHS7F8sb7V
- NjU/KsKkR6Ga+VrG+fd0YoKfYzgRB7QitKVlP93pIyQxVag6cwBX8DIgapo/tZypxj3r
- 83IhFfz95Erxwnvf6wUVhhMyeVGcPr5oMlNtcn89Yw/qihzSy9m81DpwyDTWKaM1Ag6L
- ouWHKSAsgmGZMjdgMbnwzJJhdhK97RhW8RdiIjQ8NwuhFnmR5OXDgYrWpbp415UIMk2X
- FlAA==
+ :reply-to; bh=y3Al/DkWdr7oNtWQmlrRFITkQePTtq0AALK4OUYETUY=;
+ b=lPeMh6BUSXMhZknRYOo9Rira3NbdGSHeTgUErQqeDFzcqRXpqnKWb+2P5HblpLvOjj
+ jQkXxbfRLKIiRj6/jM+my5ZA3LZB7TOFK+LQEfliyYJlsl/85JoKcXIleTMi4sopiup0
+ nOF+zPFRi8bvaH1DGXnde1IlEoC4nbUVOxR2yQEPZXdOQBs8AQEJ8T98MZe3rlYhVhl1
+ eylp8LDedrw0h6YDsBMphfxWVJUo1jQbm2fHjnIee25A2eLc09eRGmim2OJwZAslyfv2
+ 99zKHsTyOBkDBOBCmBMKqr8U1NZpdhpbSaoSl842X+9mZp/RwvZyZfdWqCGdraRy5LvS
+ oA2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719495513; x=1720100313;
+ d=1e100.net; s=20230601; t=1719495520; x=1720100320;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ttjpe0Zy78QRlVICf1w8g9FNolQGU7Fei8nrc5VuhDU=;
- b=LsbFjIA/CBkH9CHpbLv0a60z67YsNbeNxkOtdvtBPmdCRGCmnPTou2001QUwH2kIAi
- P0QKzLGnbyGlOQqYYrtxkzfSG+ShiLA3UdN0pTSGDaLxisomIzekiGww/G2WR3gkLklD
- 8nGH2x6+OhJLuBRtTrSuRYp3ZGygLEssY1ea9msrsnwpxAL/cFCoUAMcmgGXR0i1YX4t
- VGFuR4yEBuKav5GQd+Efi0H2RH6rYFBvZcYnvXzWPiV846GEjKz+/KUIDwh3Yyp2UJ7/
- +57mRLjYdcWwCfc85gCVWXFaj2MXf/P4lhFPCsKwy0+3zWCLkem3tRCHnGmIcDuhye4R
- wH7w==
-X-Gm-Message-State: AOJu0YwIvWD9oUlDKIvPuHuIKPa7m8RRbx1RZCzPFeNAm990kW4ettOj
- r1KNNniGXgGwbQKBLSmRBYyfdmo21gJPhwaVd9BeoDvIIMk1/NmN8sA+c4If8sc=
-X-Google-Smtp-Source: AGHT+IFN/aBIDxZnjlWX25a4chKiYG8RrkIkEkci/W6w41POb8g9HB7cE1bIk127xZ5DG/n29PtxHA==
-X-Received: by 2002:a05:6808:1813:b0:3d5:d7f8:a3e0 with SMTP id
- 5614622812f47-3d5d7f8a7f5mr1927401b6e.32.1719495513016; 
- Thu, 27 Jun 2024 06:38:33 -0700 (PDT)
+ bh=y3Al/DkWdr7oNtWQmlrRFITkQePTtq0AALK4OUYETUY=;
+ b=u4WbwAIAStdoneyV58CMcwTDXqXo1E3iIGLcsVwaGsR68DyRjVx9bAeUXCjTymEO91
+ gTfpgSo0PloHA+DFOQCxbZEsEXtZD1BJYRQyGodCuzvt+BpU0/PUnDdFF8qfOcW21sbL
+ Vr+h4EZRbd/xFPQpam3EHJwpRWvZNjrRn09F3c6frfhOxgmQcPBQ7YyiEGdBqRdTtMQF
+ IqlPxBc/PmfRUKTdJmQ6shO1SORp73fflA3Fwij4hrayKHzY7ztjAWWOXaYv377ZPnlS
+ lEdUD4AO5r0uewC7vW+92qIfzGSjRcc7o9AcW1P+xWfedvVgpO/RmBTr12+IyveXp/sa
+ lFKw==
+X-Gm-Message-State: AOJu0Yw0wBGtGtQy5nq3ifG6K3pwHuhiITLaYmHT+0e04p90CuAuSrp0
+ R4gYCZw8lZOfSt9sLQRJFP+bP6SMh2jsikMzInVUMWtkprjxAhyPYmGW9nT8+78=
+X-Google-Smtp-Source: AGHT+IHixATdz48pQww+mu3HBcr4wVkdvUAZf3x1lVxRgTZ61Ksvi18JOkIMtiIBBjcldi4x5EJhUg==
+X-Received: by 2002:a05:6a20:a8a1:b0:1bd:22cd:a639 with SMTP id
+ adf61e73a8af0-1bd22cda715mr7144503637.8.1719495519790; 
+ Thu, 27 Jun 2024 06:38:39 -0700 (PDT)
 Received: from localhost ([2400:4050:a840:1e00:9ac7:6d57:2b16:6932])
  by smtp.gmail.com with UTF8SMTPSA id
- d2e1a72fcca58-706b48cae37sm1337617b3a.3.2024.06.27.06.38.28
+ 98e67ed59e1d1-2c8fe9f1c35sm1441098a91.33.2024.06.27.06.38.35
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 27 Jun 2024 06:38:32 -0700 (PDT)
+ Thu, 27 Jun 2024 06:38:39 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Thu, 27 Jun 2024 22:37:47 +0900
-Subject: [PATCH v2 04/15] hw/isa/vt82c686: Define a GPIO line between
- vt82c686 and i8259
+Date: Thu, 27 Jun 2024 22:37:48 +0900
+Subject: [PATCH v2 05/15] spapr: Free stdout path
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240627-san-v2-4-750bb0946dbd@daynix.com>
+Content-Transfer-Encoding: 8bit
+Message-Id: <20240627-san-v2-5-750bb0946dbd@daynix.com>
 References: <20240627-san-v2-0-750bb0946dbd@daynix.com>
 In-Reply-To: <20240627-san-v2-0-750bb0946dbd@daynix.com>
 To: Eduardo Habkost <eduardo@habkost.net>, 
@@ -83,8 +82,8 @@ To: Eduardo Habkost <eduardo@habkost.net>,
 Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, qemu-ppc@nongnu.org, 
  Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.14-dev-fd6e3
-Received-SPF: none client-ip=2607:f8b0:4864:20::22a;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-oi1-x22a.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::42c;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x42c.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -106,43 +105,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This fixes qemu_irq array leak.
+This fixes LeakSanitizer warnings.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/isa/vt82c686.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ hw/ppc/spapr_vof.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/isa/vt82c686.c b/hw/isa/vt82c686.c
-index 8582ac0322eb..629d2d568137 100644
---- a/hw/isa/vt82c686.c
-+++ b/hw/isa/vt82c686.c
-@@ -715,13 +715,14 @@ static void via_isa_realize(PCIDevice *d, Error **errp)
-     ViaISAState *s = VIA_ISA(d);
-     DeviceState *dev = DEVICE(d);
-     PCIBus *pci_bus = pci_get_bus(d);
--    qemu_irq *isa_irq;
-+    qemu_irq isa_irq;
-     ISABus *isa_bus;
-     int i;
+diff --git a/hw/ppc/spapr_vof.c b/hw/ppc/spapr_vof.c
+index 09f29be0b9de..c02eaacfed0b 100644
+--- a/hw/ppc/spapr_vof.c
++++ b/hw/ppc/spapr_vof.c
+@@ -28,7 +28,7 @@ target_ulong spapr_h_vof_client(PowerPCCPU *cpu, SpaprMachineState *spapr,
  
-     qdev_init_gpio_out(dev, &s->cpu_intr, 1);
-     qdev_init_gpio_in_named(dev, via_isa_pirq, "pirq", PCI_NUM_PINS);
--    isa_irq = qemu_allocate_irqs(via_isa_request_i8259_irq, s, 1);
-+    qdev_init_gpio_in_named(dev, via_isa_request_i8259_irq, "i8259", 1);
-+    isa_irq = qdev_get_gpio_in_named(dev, "i8259", 0);
-     isa_bus = isa_bus_new(dev, pci_address_space(d), pci_address_space_io(d),
-                           errp);
+ void spapr_vof_client_dt_finalize(SpaprMachineState *spapr, void *fdt)
+ {
+-    char *stdout_path = spapr_vio_stdout_path(spapr->vio_bus);
++    g_autofree char *stdout_path = spapr_vio_stdout_path(spapr->vio_bus);
  
-@@ -729,7 +730,7 @@ static void via_isa_realize(PCIDevice *d, Error **errp)
-         return;
-     }
+     vof_build_dt(fdt, spapr->vof);
  
--    s->isa_irqs_in = i8259_init(isa_bus, *isa_irq);
-+    s->isa_irqs_in = i8259_init(isa_bus, isa_irq);
-     isa_bus_register_input_irqs(isa_bus, s->isa_irqs_in);
-     i8254_pit_init(isa_bus, 0x40, 0, NULL);
-     i8257_dma_init(OBJECT(d), isa_bus, 0);
 
 -- 
 2.45.2
