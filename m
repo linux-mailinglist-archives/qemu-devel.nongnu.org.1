@@ -2,70 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AAB691A56F
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jun 2024 13:37:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0E1691A661
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jun 2024 14:15:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sMnR5-0003pj-Ny; Thu, 27 Jun 2024 07:37:07 -0400
+	id 1sMo0W-0004Ed-1c; Thu, 27 Jun 2024 08:13:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sMnR3-0003oJ-7b
- for qemu-devel@nongnu.org; Thu, 27 Jun 2024 07:37:05 -0400
-Received: from mgamail.intel.com ([198.175.65.16])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sMnR1-0006xn-9X
- for qemu-devel@nongnu.org; Thu, 27 Jun 2024 07:37:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1719488223; x=1751024223;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=EsHyF8FI9Ep/AX9p5cB8YmwhhJICxdbmONHp5r/od0M=;
- b=WoWKGQXHLm2O7786HAzWpcZpsvc3/JKsDTSAiEAmKlUN93zhEB98ovVZ
- m7/l4csqtx5tohmYE5NZftfLZrlAbDQ12e9rbWMF5/32/5Y0U8DK4FXAi
- YHJ9R+vjjZ7FjGPrk0RAUZo2Kpntx54H9vq4bBkXPWI/m14mU2WYsD5PD
- o+86wiVfpI/CK3iGjw+3J/2M/0Y0nJG0nXgsODjmzh0LGx6MM9Kc1cYb3
- kRtnzjZPFM9iqb1/uB6xy+ZWDwKELWexWhbyt2bbv/88bLiLPchAS4UiJ
- hLC2vRvzjPVaYrqPrhroVF5hocD7W50Ugx1WUHbi37RbBsklMSR9fdtOy g==;
-X-CSE-ConnectionGUID: PfcKF4NlRi+49R3dZp9otA==
-X-CSE-MsgGUID: wJN2a6xtR/SaPuCaEhT59w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11115"; a="16746361"
-X-IronPort-AV: E=Sophos;i="6.09,270,1716274800"; d="scan'208";a="16746361"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Jun 2024 04:37:02 -0700
-X-CSE-ConnectionGUID: n4BhW3wDSUSLn+FZCgQ65w==
-X-CSE-MsgGUID: fjG01yxjRwiAHNMsz+O03w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,270,1716274800"; d="scan'208";a="49281031"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orviesa003.jf.intel.com with ESMTP; 27 Jun 2024 04:37:00 -0700
-Date: Thu, 27 Jun 2024 19:52:35 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org
-Subject: Re: [PATCH v2 0/6] target/i386: Misc cleanup on KVM PV defs and
- outdated comments
-Message-ID: <Zn1SgwRCnbbwyWzb@intel.com>
-References: <20240506085153.2834841-1-zhao1.liu@intel.com>
- <ZmGAi4j+IxZgNShC@intel.com>
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1sMo0J-0004ED-Tt
+ for qemu-devel@nongnu.org; Thu, 27 Jun 2024 08:13:34 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>) id 1sMo0A-0006l5-6x
+ for qemu-devel@nongnu.org; Thu, 27 Jun 2024 08:13:31 -0400
+Received: from loongson.cn (unknown [10.20.42.239])
+ by gateway (Coremail) with SMTP id _____8Bx7epaV31m_aQKAA--.43228S3;
+ Thu, 27 Jun 2024 20:13:14 +0800 (CST)
+Received: from [10.20.42.239] (unknown [10.20.42.239])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8BxVcVXV31m9jgzAA--.44423S3; 
+ Thu, 27 Jun 2024 20:13:13 +0800 (CST)
+Subject: Re: [PATCH 0/2] hw/intc/loongson_ipi: Fix for LoongArch
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>, qemu-devel@nongnu.org
+Cc: Huacai Chen <chenhuacai@kernel.org>, maobibo <maobibo@loongson.cn>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>, Paolo Bonzini
+ <pbonzini@redhat.com>, =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>
+References: <20240627-ipi-fixes-v1-0-9b061dc28a3a@flygoat.com>
+ <acc08621-19c1-4ec3-9fc9-acb0eec79121@linaro.org>
+From: gaosong <gaosong@loongson.cn>
+Message-ID: <0e42f372-26b8-b94a-80bb-6403062d2f1a@loongson.cn>
+Date: Thu, 27 Jun 2024 20:13:18 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZmGAi4j+IxZgNShC@intel.com>
-Received-SPF: pass client-ip=198.175.65.16; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -45
-X-Spam_score: -4.6
-X-Spam_bar: ----
-X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.212,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+In-Reply-To: <acc08621-19c1-4ec3-9fc9-acb0eec79121@linaro.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-CM-TRANSID: AQAAf8BxVcVXV31m9jgzAA--.44423S3
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoW7Cr4rZF4UGF48WrWktFW8uFX_yoW8WrWUpF
+ nF9as3tr47GrW8Gw4kZF15GFyrtF47Jw47JF93u340gw4kJr10v3sF93sIg3ZrA3WvgF1j
+ qFW7tw4vgF4UZFcCm3ZEXasCq-sJn29KB7ZKAUJUUUU5529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUU9Sb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+ xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
+ 1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y6r17McIj6I8E87Iv
+ 67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
+ AlzVAYIcxG8wCY1x0262kKe7AKxVWUAVWUtwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE
+ 7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI
+ 8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWU
+ CwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r
+ 1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBI
+ daVFxhVjvjDU0xZFpf9x07jnSdgUUUUU=
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -50
+X-Spam_score: -5.1
+X-Spam_bar: -----
+X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-3.174,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,73 +84,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Paolo,
 
-A gentle poke for this series.
 
-Thanks,
-Zhao
+在 2024/6/27 下午2:38, Philippe Mathieu-Daudé 写道:
+> On 27/6/24 06:13, Jiaxun Yang wrote:
+>> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+>> ---
+>> Jiaxun Yang (2):
+>>        hw/intc/loongson_ipi: Gate MMIO regions creation with property
+>>        MAINTAINERS: Add myself as a reviewer of LoongArch virt machine
+>
+> Maybe s/has-mmio/use-mmio/? Otherwise series:
+> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>
+Hi,
 
-On Thu, Jun 06, 2024 at 05:25:31PM +0800, Zhao Liu wrote:
-> Date: Thu, 6 Jun 2024 17:25:31 +0800
-> From: Zhao Liu <zhao1.liu@intel.com>
-> Subject: Re: [PATCH v2 0/6] target/i386: Misc cleanup on KVM PV defs and
->  outdated comments
-> 
-> Hi Paolo,
-> 
-> Just a ping for this cleanup series.
-> 
-> Thanks,
-> Zhao
-> 
-> On Mon, May 06, 2024 at 04:51:47PM +0800, Zhao Liu wrote:
-> > Date: Mon, 6 May 2024 16:51:47 +0800
-> > From: Zhao Liu <zhao1.liu@intel.com>
-> > Subject: [PATCH v2 0/6] target/i386: Misc cleanup on KVM PV defs and
-> >  outdated comments
-> > X-Mailer: git-send-email 2.34.1
-> > 
-> > Hi,
-> > 
-> > This is my v2 cleanup series. Compared with v1 [1], only tags (R/b, S/b)
-> > updates, and a typo fix, no code change.
-> > 
-> > This series picks cleanup from my previous kvmclock [2] (as other
-> > renaming attempts were temporarily put on hold).
-> > 
-> > In addition, this series also include the cleanup on a historically
-> > workaround and recent comment of coco interface [3].
-> > 
-> > Avoiding the fragmentation of these misc cleanups, I consolidated them
-> > all in one series and was able to tackle them in one go!
-> > 
-> > [1]: https://lore.kernel.org/qemu-devel/20240426100716.2111688-1-zhao1.liu@intel.com/
-> > [2]: https://lore.kernel.org/qemu-devel/20240329101954.3954987-1-zhao1.liu@linux.intel.com/
-> > [3]: https://lore.kernel.org/qemu-devel/2815f0f1-9e20-4985-849c-d74c6cdc94ae@intel.com/
-> > 
-> > Thanks and Best Regards,
-> > Zhao
-> > ---
-> > Zhao Liu (6):
-> >   target/i386/kvm: Add feature bit definitions for KVM CPUID
-> >   target/i386/kvm: Remove local MSR_KVM_WALL_CLOCK and
-> >     MSR_KVM_SYSTEM_TIME definitions
-> >   target/i386/kvm: Only save/load kvmclock MSRs when kvmclock enabled
-> >   target/i386/kvm: Save/load MSRs of kvmclock2
-> >     (KVM_FEATURE_CLOCKSOURCE2)
-> >   target/i386/kvm: Drop workaround for KVM_X86_DISABLE_EXITS_HTL typo
-> >   target/i386/confidential-guest: Fix comment of
-> >     x86_confidential_guest_kvm_type()
-> > 
-> >  hw/i386/kvm/clock.c              |  5 +--
-> >  target/i386/confidential-guest.h |  2 +-
-> >  target/i386/cpu.h                | 25 +++++++++++++
-> >  target/i386/kvm/kvm.c            | 63 +++++++++++++++++++-------------
-> >  4 files changed, 66 insertions(+), 29 deletions(-)
-> > 
-> > -- 
-> > 2.34.1
-> > 
-> 
+If we had done a simple test, we should have found the following 
+problem, but obviously we didn't .
+
+root@loongson-KVM:~/work/code/clean/github/qemu# . /kernel.sh
+Unexpected error in object_property_find_err() at . /qom/object.c:1357.
+qemu-system-loongarch64: Property 'loongson_ipi.unnamed-gpio-out[0]' not 
+found
+. /kernel.sh: line 16: 117708 Aborted (core dumped) . 
+/build/qemu-system-loongarch64 -machine virt -m 8G -cpu la464 -smp 8 
+-kernel ~/vmlinux -initrd ramdisk -serial stdio -monitor 
+telnet:localhost. 4418,server,nowait -net nic -net user -device 
+virtio-gpu-pci -device nec-usb-xhci,id=xhci,addr=0x1b -device 
+usb-tablet,id=tablet,bus=xhci.0, port=1 -device 
+usb-tablet,id=tablet,bus=xhci.0, -device usb-tablet,id=tablet,bus=xhci. 
+port=1 -device usb-kbd,id=keyboard,bus=xhci.0,port=2 -append 
+"root=/dev/ram rdinit=/sbin/init console=ttyS0,115200 
+earlycon=uart,mmio. 0x1fe001e0" --nographic
+
+
+So to minimize interactions with the MIPS architecture, I'll submit a 
+patch to restore loongarch_ipi for LoongArch.
+
+Thanks.
+Song Gao
+
 
