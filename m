@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC37F91A34E
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jun 2024 12:01:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE50E91A357
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jun 2024 12:02:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sMlwL-0004x9-0t; Thu, 27 Jun 2024 06:01:17 -0400
+	id 1sMlwd-000508-Jn; Thu, 27 Jun 2024 06:01:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sMlwJ-0004x0-BI
- for qemu-devel@nongnu.org; Thu, 27 Jun 2024 06:01:16 -0400
-Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+ id 1sMlwP-0004xk-NJ
+ for qemu-devel@nongnu.org; Thu, 27 Jun 2024 06:01:25 -0400
+Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sMlwH-0001ZX-I3
- for qemu-devel@nongnu.org; Thu, 27 Jun 2024 06:01:14 -0400
-Received: by mail-pf1-x42a.google.com with SMTP id
- d2e1a72fcca58-70670188420so4012391b3a.2
- for <qemu-devel@nongnu.org>; Thu, 27 Jun 2024 03:01:13 -0700 (PDT)
+ id 1sMlwN-0001aE-Cq
+ for qemu-devel@nongnu.org; Thu, 27 Jun 2024 06:01:20 -0400
+Received: by mail-pf1-x429.google.com with SMTP id
+ d2e1a72fcca58-70698bcd19eso2194010b3a.0
+ for <qemu-devel@nongnu.org>; Thu, 27 Jun 2024 03:01:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1719482472; x=1720087272; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1719482478; x=1720087278; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=XHVdgQ5R0OU4he+m9ZDS4YAng1a0QCz6gz1s5XZ7cf0=;
- b=lTy/a9VmlcBlFNvzWq4EmE4OzcYzzEbtpivONxSuaQJHk4SatoZ22m30uj0GR0nu+H
- yWrtcn9GGsD8QkIwhob8QOy1ZH0zjwDN4GAWNQdDQzMyq2+rOR6lpquRGMuzGKG1bIgA
- YDe5JQ2LNDA3F9ThzA/HarZnElm3FSCId57TPhGZySnn8YaKVnAzaipuU8mYL5q2D0c/
- PTfdI/ceHcUNT9PK0R4+cB5y9wyyIikgknOgZB9WKIEoFifBcS6XhhHpplzK3PiZ0Qap
- gf34+L3k4BsQzEs6h86EnuIX9HbaIbjst0p0FfD+HWQeYx3Av7mpvSOW5DovDi/JgHkL
- dacQ==
+ bh=7Os9dSPxVJFr6h4ij+p8yPFL3Km5u7oyL3YdiKrf7h8=;
+ b=babtBiKDnf4m0T9FiUgY1/GJxjuAzSc0RNV7Xekb+hKhLsjQv2bIOiKdTTK2BwK5Ej
+ n7kik76zLlhGRqZNACAU+y/hNQaL4zsO8NfQPeRsBldMKNgevJKJSemQPQLhp0j85tVP
+ LtpcUf2ejb6dRBZ4OHBPwUnDYs0z448frXJ+Qoy1DnwryFtwVseo3oYb2CLsK3xVgtqk
+ u+LvWmeeghv/vdhorgzjOsr9VFXa09UELBWq05RO3pgDL1UBUXS3cvWfjU79LfoeX4P+
+ Dt3S5MuHrQ6iPPe+Pfqt3kwtgDeoKDhypTDg9Kj6XR3zo3AQ+MMTKvlXH/wO6a8C70wZ
+ uFiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719482472; x=1720087272;
+ d=1e100.net; s=20230601; t=1719482478; x=1720087278;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=XHVdgQ5R0OU4he+m9ZDS4YAng1a0QCz6gz1s5XZ7cf0=;
- b=HiD0vNRjFd+g2MYq4JWe6q0lF8ToswYbWLIBSmKIcP7PiFngoN2RiQloIbSbFGk+a0
- T+ErfAYIgD9k/Savbr2lP9ejaMD2c/kUswaWtAtRtgjPitlkL+bbW44dvrHzbcDB0IAh
- P+HvTV6E0sI8pRbE+nm26pKVQoboAapgfqI/SivPqbD7r+gz0Gfwc/jLgsoEMor53LTr
- soV8WZdVcLJkKip/EFPDT2lpcj4PPZZ+FiNTX72NKj8HypgjyeJWbh15/+gpXIA9hw55
- OSh8ceBuRK9xutrlw6RAlIGPAq85Cyv1pRBuTQgDMYkIqSfrHJcORd5ObBMnjtdQAlyO
- U+3g==
-X-Gm-Message-State: AOJu0YwubU/cBKO17QpZN+D7bibstaJxJikWx2rQKhaM9J9Oi37FtBgv
- OkmSXYZlJR5tGvLZl4PHspHb3SqDS0SphOBmeNX568WFGitAPCOrk419PF7N
-X-Google-Smtp-Source: AGHT+IEIjTxOTZ+8LPGC1VoXdY16gbAcuKdNKVBV//ifj0meDne7H76OnSlgkcV4ntsvAMZi4s3mXA==
-X-Received: by 2002:a05:6a00:9290:b0:706:636a:21e1 with SMTP id
- d2e1a72fcca58-7066e4e6832mr19253105b3a.6.1719482471690; 
- Thu, 27 Jun 2024 03:01:11 -0700 (PDT)
+ bh=7Os9dSPxVJFr6h4ij+p8yPFL3Km5u7oyL3YdiKrf7h8=;
+ b=H60AmP0vNHgohV8XNmxL5Zk3z4lXUjOtqiEr/zVqyW/fTkQDG3NV9Ii1gSj2uY5Qr7
+ U151u3CJiJRNsCGb2VtpAd83avYE/dtTTDvux6XCyQ3siu/Ci8GQU/0FFmvZ/j1CRWYB
+ 1jJJMptUGBNOMYT7IUy9qmKqG1VZa0LuQSddgCdNyuCakNpV5yg46qCZM67HoSP3eT2G
+ BzejGIK+qQA1Gk1rJJGlJq8eyCiL5Dpn2ZVgblj5W+iPT7oY/j/ue2+Cu/Bkaug/P0P0
+ q9cOhKoo8UI2+P7AnrPKeQAWlR+4JkELbK86kDeN4MbyqHk2dXLy+x7X0IjqXtxZIB53
+ n5aA==
+X-Gm-Message-State: AOJu0YzOmQrA342/C/11VyQ38IKXkfIMlza45e1xm/pG3Bu1O1w9yC/N
+ uDLyTiDKS7emI2RHstsW6yzo+zQCA1XasYbC087qc2W4JJi9dzWn67reeWuO
+X-Google-Smtp-Source: AGHT+IHPnhcEx335l/QMUu2R0HLdkqWzGMCNJM2jLYcikSA3C6F1sAav/BfGKry7hCI3/EsKiMuCEQ==
+X-Received: by 2002:a05:6a00:1387:b0:706:a5f9:5240 with SMTP id
+ d2e1a72fcca58-706a5f9535dmr5509454b3a.13.1719482477605; 
+ Thu, 27 Jun 2024 03:01:17 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-706b4a07326sm932431b3a.111.2024.06.27.03.01.08
+ d2e1a72fcca58-706b4a07326sm932431b3a.111.2024.06.27.03.01.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 27 Jun 2024 03:01:11 -0700 (PDT)
+ Thu, 27 Jun 2024 03:01:17 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Rajnesh Kanwal <rkanwal@rivosinc.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PULL 02/32] target/riscv: Move Guest irqs out of the core local irqs
- range.
-Date: Thu, 27 Jun 2024 20:00:23 +1000
-Message-ID: <20240627100053.150937-3-alistair.francis@wdc.com>
+Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Anup Patel <apatel@ventanamicro.com>,
+ Alistair Francis <alistair.francis@wdc.com>
+Subject: [PULL 04/32] hw/riscv/virt.c: add address-cells in
+ create_fdt_one_aplic()
+Date: Thu, 27 Jun 2024 20:00:25 +1000
+Message-ID: <20240627100053.150937-5-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240627100053.150937-1-alistair.francis@wdc.com>
 References: <20240627100053.150937-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
- envelope-from=alistair23@gmail.com; helo=mail-pf1-x42a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
+ envelope-from=alistair23@gmail.com; helo=mail-pf1-x429.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -98,66 +98,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Rajnesh Kanwal <rkanwal@rivosinc.com>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-Qemu maps IRQs 0:15 for core interrupts and 16 onward for
-guest interrupts which are later translated to hgiep in
-`riscv_cpu_set_irq()` function.
+We need #address-cells properties in all interrupt controllers that are
+referred by an interrupt-map [1]. For the RISC-V machine, both PLIC and
+APLIC controllers must have this property.
 
-With virtual IRQ support added, software now can fully
-use the whole local interrupt range without any actual
-hardware attached.
+PLIC already sets it in create_fdt_socket_plic(). Set the property for
+APLIC in create_fdt_one_aplic().
 
-This change moves the guest interrupt range after the
-core local interrupt range to avoid clash.
+[1] https://lore.kernel.org/linux-arm-kernel/CAL_JsqJE15D-xXxmELsmuD+JQHZzxGzdXvikChn6KFWqk6NzPw@mail.gmail.com/
 
-Fixes: 1697837ed9 ("target/riscv: Add M-mode virtual interrupt and IRQ filtering support.")
-Fixes: 40336d5b1d ("target/riscv: Add HS-mode virtual interrupt and IRQ filtering support.")
-
-Signed-off-by: Rajnesh Kanwal <rkanwal@rivosinc.com>
-Acked-by: Alistair Francis <alistair.francis@wdc.com>
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Message-ID: <20240520125157.311503-3-rkanwal@rivosinc.com>
+Suggested-by: Anup Patel <apatel@ventanamicro.com>
+Fixes: e6faee65855b ("hw/riscv: virt: Add optional AIA APLIC support to virt machine")
+Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Message-ID: <20240531202759.911601-2-dbarboza@ventanamicro.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu_bits.h | 3 ++-
- target/riscv/csr.c      | 9 ++++++++-
- 2 files changed, 10 insertions(+), 2 deletions(-)
+ include/hw/riscv/virt.h | 1 +
+ hw/riscv/virt.c         | 2 ++
+ 2 files changed, 3 insertions(+)
 
-diff --git a/target/riscv/cpu_bits.h b/target/riscv/cpu_bits.h
-index 74318a925c..a470fda9be 100644
---- a/target/riscv/cpu_bits.h
-+++ b/target/riscv/cpu_bits.h
-@@ -695,7 +695,8 @@ typedef enum RISCVException {
- #define IRQ_M_EXT                          11
- #define IRQ_S_GEXT                         12
- #define IRQ_PMU_OVF                        13
--#define IRQ_LOCAL_MAX                      16
-+#define IRQ_LOCAL_MAX                      64
-+/* -1 is due to bit zero of hgeip and hgeie being ROZ. */
- #define IRQ_LOCAL_GUEST_MAX                (TARGET_LONG_BITS - 1)
- 
- /* mip masks */
-diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-index dd89edb06a..ee33019b03 100644
---- a/target/riscv/csr.c
-+++ b/target/riscv/csr.c
-@@ -1145,7 +1145,14 @@ static RISCVException write_stimecmph(CPURISCVState *env, int csrno,
- 
- #define VSTOPI_NUM_SRCS 5
- 
--#define LOCAL_INTERRUPTS (~0x1FFF)
-+/*
-+ * All core local interrupts except the fixed ones 0:12. This macro is for
-+ * virtual interrupts logic so please don't change this to avoid messing up
-+ * the whole support, For reference see AIA spec: `5.3 Interrupt filtering and
-+ * virtual interrupts for supervisor level` and `6.3.2 Virtual interrupts for
-+ * VS level`.
-+ */
-+#define LOCAL_INTERRUPTS   (~0x1FFFULL)
- 
- static const uint64_t delegable_ints =
-     S_MODE_INTERRUPTS | VS_MODE_INTERRUPTS | MIP_LCOFIP;
+diff --git a/include/hw/riscv/virt.h b/include/hw/riscv/virt.h
+index 3db839160f..c0dc41ff9a 100644
+--- a/include/hw/riscv/virt.h
++++ b/include/hw/riscv/virt.h
+@@ -118,6 +118,7 @@ enum {
+ #define FDT_PLIC_ADDR_CELLS   0
+ #define FDT_PLIC_INT_CELLS    1
+ #define FDT_APLIC_INT_CELLS   2
++#define FDT_APLIC_ADDR_CELLS  0
+ #define FDT_IMSIC_INT_CELLS   0
+ #define FDT_MAX_INT_CELLS     2
+ #define FDT_MAX_INT_MAP_WIDTH (FDT_PCI_ADDR_CELLS + FDT_PCI_INT_CELLS + \
+diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
+index 5676d66d12..e903f05851 100644
+--- a/hw/riscv/virt.c
++++ b/hw/riscv/virt.c
+@@ -609,6 +609,8 @@ static void create_fdt_one_aplic(RISCVVirtState *s, int socket,
+     aplic_name = g_strdup_printf("/soc/aplic@%lx", aplic_addr);
+     qemu_fdt_add_subnode(ms->fdt, aplic_name);
+     qemu_fdt_setprop_string(ms->fdt, aplic_name, "compatible", "riscv,aplic");
++    qemu_fdt_setprop_cell(ms->fdt, aplic_name, "#address-cells",
++                          FDT_APLIC_ADDR_CELLS);
+     qemu_fdt_setprop_cell(ms->fdt, aplic_name,
+                           "#interrupt-cells", FDT_APLIC_INT_CELLS);
+     qemu_fdt_setprop(ms->fdt, aplic_name, "interrupt-controller", NULL, 0);
 -- 
 2.45.2
 
