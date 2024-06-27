@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88F9991A80C
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jun 2024 15:39:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A047391A81A
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jun 2024 15:40:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sMpKw-0001Al-5p; Thu, 27 Jun 2024 09:38:54 -0400
+	id 1sMpKy-0001Ek-3c; Thu, 27 Jun 2024 09:38:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sMpKl-00018F-Tl
- for qemu-devel@nongnu.org; Thu, 27 Jun 2024 09:38:46 -0400
-Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
+ id 1sMpKw-0001Cw-8t
+ for qemu-devel@nongnu.org; Thu, 27 Jun 2024 09:38:54 -0400
+Received: from mail-oa1-x35.google.com ([2001:4860:4864:20::35])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sMpKk-0006PI-B8
- for qemu-devel@nongnu.org; Thu, 27 Jun 2024 09:38:43 -0400
-Received: by mail-pf1-x42c.google.com with SMTP id
- d2e1a72fcca58-706b14044cbso868103b3a.2
- for <qemu-devel@nongnu.org>; Thu, 27 Jun 2024 06:38:41 -0700 (PDT)
+ id 1sMpKr-0006Qe-6T
+ for qemu-devel@nongnu.org; Thu, 27 Jun 2024 09:38:53 -0400
+Received: by mail-oa1-x35.google.com with SMTP id
+ 586e51a60fabf-25d5333989dso1256777fac.1
+ for <qemu-devel@nongnu.org>; Thu, 27 Jun 2024 06:38:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1719495520; x=1720100320;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1719495526; x=1720100326;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=y3Al/DkWdr7oNtWQmlrRFITkQePTtq0AALK4OUYETUY=;
- b=lPeMh6BUSXMhZknRYOo9Rira3NbdGSHeTgUErQqeDFzcqRXpqnKWb+2P5HblpLvOjj
- jQkXxbfRLKIiRj6/jM+my5ZA3LZB7TOFK+LQEfliyYJlsl/85JoKcXIleTMi4sopiup0
- nOF+zPFRi8bvaH1DGXnde1IlEoC4nbUVOxR2yQEPZXdOQBs8AQEJ8T98MZe3rlYhVhl1
- eylp8LDedrw0h6YDsBMphfxWVJUo1jQbm2fHjnIee25A2eLc09eRGmim2OJwZAslyfv2
- 99zKHsTyOBkDBOBCmBMKqr8U1NZpdhpbSaoSl842X+9mZp/RwvZyZfdWqCGdraRy5LvS
- oA2w==
+ :reply-to; bh=UtuCMhxUWw1DUkDzmxPc06M4yVAzJqdA967oAcSFqUQ=;
+ b=F1dG3X3TWPB9MXJKsI7+ya5OpeWHWBLL17c5SmjmZ76jc3XRALRPlsyyqqoCV0RM0j
+ FnY2hLEAiMpBP2hfUnEZLtibcTvC/iX8v0wef5P6iDuChmKG5HrlCMjCfQ8b1+nNkK9o
+ CyqPFUIlT3EIwXOEyQOxyloxcLwfvAVVEFWLxZmOrxgFxaKDm/unbVI1MhsO4qBuqE2u
+ aXBOw2M14si5rxZVDKuUsCdhYBqtvTIscjlvAVK9/stpjSxe7upnftCFRSu2KUhsDlrj
+ fLxAvkoFJaZoo2o4XGEw7l/pPObHJ0oRbCoScoi4rAJd2zDpJWb2vg7WhLNpK6P3HfVr
+ QZOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719495520; x=1720100320;
+ d=1e100.net; s=20230601; t=1719495526; x=1720100326;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=y3Al/DkWdr7oNtWQmlrRFITkQePTtq0AALK4OUYETUY=;
- b=u4WbwAIAStdoneyV58CMcwTDXqXo1E3iIGLcsVwaGsR68DyRjVx9bAeUXCjTymEO91
- gTfpgSo0PloHA+DFOQCxbZEsEXtZD1BJYRQyGodCuzvt+BpU0/PUnDdFF8qfOcW21sbL
- Vr+h4EZRbd/xFPQpam3EHJwpRWvZNjrRn09F3c6frfhOxgmQcPBQ7YyiEGdBqRdTtMQF
- IqlPxBc/PmfRUKTdJmQ6shO1SORp73fflA3Fwij4hrayKHzY7ztjAWWOXaYv377ZPnlS
- lEdUD4AO5r0uewC7vW+92qIfzGSjRcc7o9AcW1P+xWfedvVgpO/RmBTr12+IyveXp/sa
- lFKw==
-X-Gm-Message-State: AOJu0Yw0wBGtGtQy5nq3ifG6K3pwHuhiITLaYmHT+0e04p90CuAuSrp0
- R4gYCZw8lZOfSt9sLQRJFP+bP6SMh2jsikMzInVUMWtkprjxAhyPYmGW9nT8+78=
-X-Google-Smtp-Source: AGHT+IHixATdz48pQww+mu3HBcr4wVkdvUAZf3x1lVxRgTZ61Ksvi18JOkIMtiIBBjcldi4x5EJhUg==
-X-Received: by 2002:a05:6a20:a8a1:b0:1bd:22cd:a639 with SMTP id
- adf61e73a8af0-1bd22cda715mr7144503637.8.1719495519790; 
- Thu, 27 Jun 2024 06:38:39 -0700 (PDT)
+ bh=UtuCMhxUWw1DUkDzmxPc06M4yVAzJqdA967oAcSFqUQ=;
+ b=v9uqnYBMbfpktqK2rT6us8vLRDnQbvps85d2dxzxPyUWSu3NOWJLpvcd7cjifDWTLW
+ wM65DKkdvxOcQI4F3/onsTPGY8xpnZQog87111aLsPPKlMcjT4ja9fje52w/CinLyVMC
+ O/EHkBnzA1R83T8DvW0ANNor0/qgBb9rLD7rREZZJwDR9wH3NLaCg9sNSl7wXQpkXhbM
+ tMUwlmIBznJ/eL/lYekvgfs+KJpuamQbaLGdHukw6v2Z/cRC5s7Xr+YaW+ftntVPJ+XO
+ kVMLKTdOazbYL5Avnl8liIERZMYQcW2ycxlhGfKPenYIiH8DzJ2VcFS3fzdAbCVvvgRm
+ 4klQ==
+X-Gm-Message-State: AOJu0Yws1b2mcMPzx3I7FhLdmjI4VCs8BjCXhpnFpbKWXdapFpzVwr1S
+ hB1E73gOCCkUF/Qp2LztPSM4uhd9dBuHjfMXgQMj8hjDJSdUSLzMywWuGWqOHLk=
+X-Google-Smtp-Source: AGHT+IE68QrvJItc29/tXsB2hhrn925IlwaD+nMu6WIGfpGM9AqZp/e9DNODXCKlCLfsXKLgBm7gVg==
+X-Received: by 2002:a05:6870:9692:b0:254:c27c:1b19 with SMTP id
+ 586e51a60fabf-25d06ec3501mr16894009fac.54.1719495526263; 
+ Thu, 27 Jun 2024 06:38:46 -0700 (PDT)
 Received: from localhost ([2400:4050:a840:1e00:9ac7:6d57:2b16:6932])
  by smtp.gmail.com with UTF8SMTPSA id
- 98e67ed59e1d1-2c8fe9f1c35sm1441098a91.33.2024.06.27.06.38.35
+ d2e1a72fcca58-706b491c898sm1333327b3a.77.2024.06.27.06.38.41
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 27 Jun 2024 06:38:39 -0700 (PDT)
+ Thu, 27 Jun 2024 06:38:45 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Thu, 27 Jun 2024 22:37:48 +0900
-Subject: [PATCH v2 05/15] spapr: Free stdout path
+Date: Thu, 27 Jun 2024 22:37:49 +0900
+Subject: [PATCH v2 06/15] ppc/vof: Fix unaligned FDT property access
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20240627-san-v2-5-750bb0946dbd@daynix.com>
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240627-san-v2-6-750bb0946dbd@daynix.com>
 References: <20240627-san-v2-0-750bb0946dbd@daynix.com>
 In-Reply-To: <20240627-san-v2-0-750bb0946dbd@daynix.com>
 To: Eduardo Habkost <eduardo@habkost.net>, 
@@ -82,14 +82,14 @@ To: Eduardo Habkost <eduardo@habkost.net>,
 Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, qemu-ppc@nongnu.org, 
  Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.14-dev-fd6e3
-Received-SPF: none client-ip=2607:f8b0:4864:20::42c;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x42c.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
+Received-SPF: none client-ip=2001:4860:4864:20::35;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-oa1-x35.google.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,27 +105,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This fixes LeakSanitizer warnings.
+FDT properties are aligned by 4 bytes, not 8 bytes.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/ppc/spapr_vof.c | 2 +-
+ hw/ppc/vof.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/ppc/spapr_vof.c b/hw/ppc/spapr_vof.c
-index 09f29be0b9de..c02eaacfed0b 100644
---- a/hw/ppc/spapr_vof.c
-+++ b/hw/ppc/spapr_vof.c
-@@ -28,7 +28,7 @@ target_ulong spapr_h_vof_client(PowerPCCPU *cpu, SpaprMachineState *spapr,
- 
- void spapr_vof_client_dt_finalize(SpaprMachineState *spapr, void *fdt)
- {
--    char *stdout_path = spapr_vio_stdout_path(spapr->vio_bus);
-+    g_autofree char *stdout_path = spapr_vio_stdout_path(spapr->vio_bus);
- 
-     vof_build_dt(fdt, spapr->vof);
- 
+diff --git a/hw/ppc/vof.c b/hw/ppc/vof.c
+index e3b430a81f4f..b5b6514d79fc 100644
+--- a/hw/ppc/vof.c
++++ b/hw/ppc/vof.c
+@@ -646,7 +646,7 @@ static void vof_dt_memory_available(void *fdt, GArray *claimed, uint64_t base)
+     mem0_reg = fdt_getprop(fdt, offset, "reg", &proplen);
+     g_assert(mem0_reg && proplen == sizeof(uint32_t) * (ac + sc));
+     if (sc == 2) {
+-        mem0_end = be64_to_cpu(*(uint64_t *)(mem0_reg + sizeof(uint32_t) * ac));
++        mem0_end = ldq_be_p(mem0_reg + sizeof(uint32_t) * ac);
+     } else {
+         mem0_end = be32_to_cpu(*(uint32_t *)(mem0_reg + sizeof(uint32_t) * ac));
+     }
 
 -- 
 2.45.2
