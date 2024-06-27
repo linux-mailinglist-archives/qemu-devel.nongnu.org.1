@@ -2,96 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EA6291A893
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jun 2024 16:03:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AECA91A8A4
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jun 2024 16:07:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sMpi3-0000Uv-5G; Thu, 27 Jun 2024 10:02:47 -0400
+	id 1sMpls-0001xz-9a; Thu, 27 Jun 2024 10:06:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sMphz-0000Tw-Pj
- for qemu-devel@nongnu.org; Thu, 27 Jun 2024 10:02:43 -0400
-Received: from mail-lj1-x22e.google.com ([2a00:1450:4864:20::22e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sMphy-0002mN-6k
- for qemu-devel@nongnu.org; Thu, 27 Jun 2024 10:02:43 -0400
-Received: by mail-lj1-x22e.google.com with SMTP id
- 38308e7fff4ca-2ec5fad1984so68188961fa.0
- for <qemu-devel@nongnu.org>; Thu, 27 Jun 2024 07:02:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719496960; x=1720101760; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=LAK2MWgc/ykY00o71q7fpH3L0gb+GjbMKTYZI7bbceg=;
- b=kjb3Kp0fPnzH86gbsSMpTLGWSHcL2pev0rCuH0MzTxyXeT83gU15uaVaWWz3QQ1PPI
- iHczYp2oBDah6/iyyrElVMKcch9kX/JDLvHwC795qDdPsbZolWRYQwNYfvLx65Fse+3+
- OVbJ5ciIfhVpNgYFBtJrklyyUPBGb7L8+5kBu7+mnUbO5APeRhapk74RaMv2CFUJumv2
- 7OHzgx/ZXw6zu4e8AdPpVG2f1B6GBWVDUlPRhQHpAdi2aTpBVuHdSAVyi3J9yM7QkuuI
- DWsRRtbCNKmswbeg9pxsgY3pfDU3+v13H4xxG5KuWssJkUUQtrBDG1Lm4Fd3T97yy/YU
- gD8w==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1sMplm-0001xo-HM
+ for qemu-devel@nongnu.org; Thu, 27 Jun 2024 10:06:38 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1sMpll-0003fv-0c
+ for qemu-devel@nongnu.org; Thu, 27 Jun 2024 10:06:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1719497195;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=RN13PerZa5guBC8xzoBDY7B4coHs5esmjYRJAP9x94M=;
+ b=WMB4082bI4LgmEfXiPROAIrTbUmaBKbGFUwQa6v3IvPRcSoCMVAtq8arH01O93uDtHH7eC
+ mwHT+OjNzezNDrH61y7GBZfXS3ulzd5xYqDyFxKXxXylckA/WRQ/MQIeTS0JHCEwN3uHME
+ ORbEUIaG2ryRNVLZBKUhJGK4rlZfYV8=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-548-8PyKEjpuPzytAxaS1ZYL8Q-1; Thu, 27 Jun 2024 10:06:34 -0400
+X-MC-Unique: 8PyKEjpuPzytAxaS1ZYL8Q-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-a727d1e7e9aso184676166b.1
+ for <qemu-devel@nongnu.org>; Thu, 27 Jun 2024 07:06:33 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719496960; x=1720101760;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=LAK2MWgc/ykY00o71q7fpH3L0gb+GjbMKTYZI7bbceg=;
- b=qU+6WwRdEdtKui+ZOSFhAzSkL+J6tZ/dGq78q3fDYFIJivI8BIeeaNsQGjncfLwOFP
- wy1Vp1x/GqP9hZhAjJAXFRw3MbCRAhKkrPv7ANqBxC45ZFpBppWGT/K8ENpljkXZmPlf
- AxCwV9yCm0WLSPUiVdD3Om+fa34fgSYrl2+AvPoacLq8WOi5zquFJRWK63hMEx6D9hvE
- o5qJXVO0IqesjPHpjeTYW+rOkU8hRTuMqA3J/ldBFstqko33se78qPvTmf2St1fXj/Az
- Ba4wfXiapaV3C6SKlWeOvmYyIhbTtPrFFG/vvqVN5A+ud27HwSq0UnseMhtoKJnRLNSZ
- wOEQ==
-X-Gm-Message-State: AOJu0YylGzHYQNlKhWKFazJa3WknB81WJ0raZO59XR2MLJ793kje6+uw
- xCl22mEv35Hlzjfem8fpA4/4iVpGe76ibS5yYAD0LlaIfgeUQPHKVdpVAurpXHo=
-X-Google-Smtp-Source: AGHT+IH3xWCTvER4HAhwRdK9XEPdCgyFO8NzgMmoXmMLkpjN11BgH/QgfksjY+F3XHHV93jUSGBriw==
-X-Received: by 2002:a2e:8752:0:b0:2ec:4d91:5156 with SMTP id
- 38308e7fff4ca-2ec5b31d14bmr98275011fa.28.1719496958158; 
- Thu, 27 Jun 2024 07:02:38 -0700 (PDT)
-Received: from [192.168.23.175] (227.red-95-127-45.staticip.rima-tde.net.
- [95.127.45.227]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4249b4233b3sm64536315e9.0.2024.06.27.07.02.34
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 27 Jun 2024 07:02:37 -0700 (PDT)
-Message-ID: <4b713ad2-1f92-49d1-88b9-6185a1b50062@linaro.org>
-Date: Thu, 27 Jun 2024 16:02:32 +0200
+ d=1e100.net; s=20230601; t=1719497191; x=1720101991;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=RN13PerZa5guBC8xzoBDY7B4coHs5esmjYRJAP9x94M=;
+ b=owzbaW4bujDtVr0gkCGbGijYkp2e0dZwoJiRGqdpDe9LuoSz5D03FJTdGmNpCEwwhJ
+ ZSjQEIShwPN+zQYtj3f7OQz3SNQwbFl802afMfA6AQVhGTWec015lCwJO5YEPU1PjJs2
+ GAC3VEsPqZeWMaa+tbnJjXx9TTlQlF0AzF5ju4l6uRCey0uYi8ja4U3iN9qKnbKa8lJP
+ BymIN+qki3DWqH7KZ5BgVPbewOnoqzD8wSPER8bzVL9+fWjpYvspJNuNYy1hrF7f/FLg
+ nCpJ68HD24zodZ8Z6r1oTJOeUEAR3pVEodMUY1weUICtKeTAK3jc6iBhdkDt7764h/Yi
+ 7sGg==
+X-Gm-Message-State: AOJu0Yw8tYTTCZokdHCe3jTgiOHVK5WNZx8mTR7D69jRWPNk9bqzKgXb
+ wJvgHybDGXASIqpiIPj53oFRWw8VZnZrlZfnKAYRewU1v1JUczJDuu+WUGeGr9ctsmZeBYzy8Sg
+ QO3vSuGo4t968o6lK0J7wgXUvrorddhri/C0jcBcpidTNVmQjP/615E5MqiNgUCXPyDDd7t/UKu
+ G+9ImgUOwfwPJZF1AURZuZKGmMvASWGNB/xVA/
+X-Received: by 2002:a17:907:c306:b0:a72:6055:7886 with SMTP id
+ a640c23a62f3a-a7260557953mr931639866b.24.1719497191518; 
+ Thu, 27 Jun 2024 07:06:31 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHi+lK2VdJAZfAn23TwjoLEbsjYVdd/XjEblNr0E7WD8Z8OwDGMtyOASOi9Pa4mLM5jTadbeg==
+X-Received: by 2002:a17:907:c306:b0:a72:6055:7886 with SMTP id
+ a640c23a62f3a-a7260557953mr931629266b.24.1719497190051; 
+ Thu, 27 Jun 2024 07:06:30 -0700 (PDT)
+Received: from avogadro.local ([151.48.235.205])
+ by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-a729d71f6f9sm63082466b.74.2024.06.27.07.06.29
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 27 Jun 2024 07:06:29 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Xiaoyao Li <xiaoyao.li@intel.com>,
+	John Allen <john.allen@amd.com>
+Subject: [PATCH 0/2] target/i386: drop AMD machine check bits from Intel CPUID
+Date: Thu, 27 Jun 2024 16:06:26 +0200
+Message-ID: <20240627140628.1025317-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 05/14] ppc/vof: Fix unaligned FDT property access
-To: Akihiko Odaki <akihiko.odaki@daynix.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Yanan Wang <wangyanan55@huawei.com>, John Snow <jsnow@redhat.com>,
- BALATON Zoltan <balaton@eik.bme.hu>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Alexey Kardashevskiy <aik@ozlabs.ru>, "Michael S. Tsirkin" <mst@redhat.com>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, qemu-ppc@nongnu.org
-References: <20240626-san-v1-0-f3cc42302189@daynix.com>
- <20240626-san-v1-5-f3cc42302189@daynix.com>
- <efdfa803-775c-4aa2-b7c4-f016dafe9a88@linaro.org>
- <9fdabbde-1ae8-4f78-af20-b4383b7705fc@daynix.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <9fdabbde-1ae8-4f78-af20-b4383b7705fc@daynix.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::22e;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x22e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.212,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,37 +98,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 27/6/24 15:12, Akihiko Odaki wrote:
-> On 2024/06/26 21:03, Philippe Mathieu-Daudé wrote:
->> On 26/6/24 13:06, Akihiko Odaki wrote:
->>> FDT properties are aligned by 4 bytes, not 8 bytes.
->>>
->>> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
->>> ---
->>>   hw/ppc/vof.c | 2 +-
->>>   1 file changed, 1 insertion(+), 1 deletion(-)
->>>
->>> diff --git a/hw/ppc/vof.c b/hw/ppc/vof.c
->>> index e3b430a81f4f..b5b6514d79fc 100644
->>> --- a/hw/ppc/vof.c
->>> +++ b/hw/ppc/vof.c
->>> @@ -646,7 +646,7 @@ static void vof_dt_memory_available(void *fdt, 
->>> GArray *claimed, uint64_t base)
->>>       mem0_reg = fdt_getprop(fdt, offset, "reg", &proplen);
->>>       g_assert(mem0_reg && proplen == sizeof(uint32_t) * (ac + sc));
->>>       if (sc == 2) {
->>> -        mem0_end = be64_to_cpu(*(uint64_t *)(mem0_reg + 
->>> sizeof(uint32_t) * ac));
->>> +        mem0_end = ldq_be_p(mem0_reg + sizeof(uint32_t) * ac);
->>>       } else {
->>>           mem0_end = be32_to_cpu(*(uint32_t *)(mem0_reg + 
->>> sizeof(uint32_t) * ac));
->>
->> OK but please keep API uses consistent, so convert other uses please.
-> 
-> This is the only unaligned access.
+The recent addition of the SUCCOR bit to kvm_arch_get_supported_cpuid()
+causes the bit to be visible when "-cpu host" VMs are started on Intel
+processors.
 
-What I mean with consistent API use is either use the be64_to_cpu and
-be32_to_cpu API, or ldq_be_p and ldl_be_p. A mix of both makes review
-more confusing.
+While this should in principle be harmless, it's not tidy and we don't
+even know for sure that it doesn't cause any guest OS to take unexpected
+paths.  So plumb in a mechanism for x86_cpu_get_supported_feature_word()
+to return different values depending on the *guest* CPU vendor (which,
+for KVM, is by default the same as the host vendor); and then use it
+to hide the SUCCOR bit if the guest has non-AMD vendor.
+
+Paolo Bonzini (2):
+  target/i386: pass X86CPU to x86_cpu_get_supported_feature_word
+  target/i386: drop AMD machine check bits from Intel CPUID
+
+ target/i386/cpu.h         |  3 +--
+ target/i386/cpu.c         | 29 +++++++++++++++++++++--------
+ target/i386/kvm/kvm-cpu.c |  2 +-
+ 3 files changed, 23 insertions(+), 11 deletions(-)
+
+-- 
+2.45.2
+
 
