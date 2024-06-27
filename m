@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27A8091A814
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jun 2024 15:40:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07CE991A826
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jun 2024 15:41:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sMpKU-00011n-FR; Thu, 27 Jun 2024 09:38:26 -0400
+	id 1sMpKt-00019R-GE; Thu, 27 Jun 2024 09:38:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sMpKQ-00010G-Uy
- for qemu-devel@nongnu.org; Thu, 27 Jun 2024 09:38:22 -0400
-Received: from mail-pg1-x536.google.com ([2607:f8b0:4864:20::536])
+ id 1sMpKe-00015R-0X
+ for qemu-devel@nongnu.org; Thu, 27 Jun 2024 09:38:38 -0400
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sMpKP-0006LX-9O
- for qemu-devel@nongnu.org; Thu, 27 Jun 2024 09:38:22 -0400
-Received: by mail-pg1-x536.google.com with SMTP id
- 41be03b00d2f7-6eab07ae82bso5671334a12.3
- for <qemu-devel@nongnu.org>; Thu, 27 Jun 2024 06:38:20 -0700 (PDT)
+ id 1sMpKW-0006MV-53
+ for qemu-devel@nongnu.org; Thu, 27 Jun 2024 09:38:35 -0400
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-1fa75f53f42so18712395ad.0
+ for <qemu-devel@nongnu.org>; Thu, 27 Jun 2024 06:38:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1719495500; x=1720100300;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1719495507; x=1720100307;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=GK1NnhFlKONfJOQ1epeja3jVUC6tPChPm6e/EkyYkzg=;
- b=3dfUEHYUCKzfRk7JTHaTwWcEEyeH9EmUDesSahiUXQXRaAOjwIMN2m2BkjCSkiyV1L
- h1fkXkEGFmToUnYBsBc39jrsJcx8RZxiALKMndPOGtQKWgToLxj5SL/kWIWU8iT0cOma
- BhdLbdGqSd+wxfGv0xQ3abc9vGKwllX2JNCtyYSUJD3oi4NpB69Wb0n4qj2jy6RLWW6E
- Fppt3Hrbk050D8CDfCQogynhKavRTEYuwU8cPHEz4DTEaYKiTw1eq55JsR3l3Ovfyn0F
- S20DtImPfnrYkXlWh63M/mCo5f4WjuKBukeXFDOQOxcE6d0rOMJvmSdkf/956ShPZ0s0
- 3hUQ==
+ :reply-to; bh=H1Ud2sffuzrWRWcIEMkaft+gSFV/vM2qExG+yzsFHsg=;
+ b=tOKzzI5S818bX1RcOKyIwWKZVxz8/r54xTNsQwNydWljGZga1ugk+/vcE+78DbdDKK
+ zSzw2n2nBLUaMVn0QE+P/H0IGdr0xwEBfgF/fehCGtU7u7A3s3WXOSm3rc1TEFSHesDB
+ qs8IA1Ecl8v3KHGWubjuQKgJUhEGOPd5r1/sUfHGmygbfJ0IGebPRLNOTa0qZKkQkNBn
+ FmFN5MR1s0vKWP3YFmnYKSYQ71xMA5kqiBa+Xcz1ejOV24q75wIdm6l/YoJgVMBpWbIw
+ uk0Ykm96GLf762CYZmZkxxTBT6GCa2UludZMzh2i5xkHyOBhWV/IVOD5gLlSvQ2rsxrN
+ cWWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719495500; x=1720100300;
+ d=1e100.net; s=20230601; t=1719495507; x=1720100307;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=GK1NnhFlKONfJOQ1epeja3jVUC6tPChPm6e/EkyYkzg=;
- b=eiZMzFws1/8bf3fh8b3Ut5xwlK5ap2efXKeWpXsRpVSzIw99nDdbmRKzjF+G8USlkb
- 7g84y2M0ptgk/SD4OlSoQTkvlbDbxZ4Q366a3cU1CGrAeQ30nFnBot3Mw1HtopM0lP6f
- X1LLdSDIPYK//haOEnl3pA47979WA9Igr6B1DvZDPhTxJsx0B/pkv3R0AxEYQ6D/p32X
- 5fT5Bv8dEKUmcdYMQN4lYIPptw98bszGgh/m51pD1huAE8BITlA38DyVv9MGL6aMdlaC
- iCiMdAT0v5vioDVY01vWdHYDX+HFycdErOpUjTCvqxK1WCvXv0pJdGiGwITn/dwApXvm
- 6jOA==
-X-Gm-Message-State: AOJu0YwjMRXgZs24L5ajSo6lp7TZyX2Wxi+eE5iAI+dz7YSIgRMWBJnU
- Yv1OCjP3AMCcLP4POtUEzUM7mmqtKC+xPEf/UGudoGSzMNMEB+dHTdX1FrAF3BI=
-X-Google-Smtp-Source: AGHT+IH3egdUupwHg3/fKTQf59c7eE0cNW7DQzddzdTPcu/CpgemJeZtdnd9ja5WHZ+QSceM/GYFVQ==
-X-Received: by 2002:a05:6a21:3382:b0:1be:c6e6:a712 with SMTP id
- adf61e73a8af0-1bec6e6a7edmr4650330637.29.1719495499967; 
- Thu, 27 Jun 2024 06:38:19 -0700 (PDT)
+ bh=H1Ud2sffuzrWRWcIEMkaft+gSFV/vM2qExG+yzsFHsg=;
+ b=MiYy2R+bDs9twW36BjacCO/+unOT8Y+mspQse8LK+qB7w7yZ4CYM4Lq4bktsVj7zxL
+ gFqBTYMCQle7rybWhxJ3ods3dQiZZaKSJai1Y34yY3MpnriejpUmXKGUHORhPXy7gbpa
+ Icqy91AD1FjJWMoiBGG52f/wvoO+lcAf52oyxzpv9chcDvCzfBNUG6voMTt96vrOoiiF
+ DYhapWGhioAfSgFztN7hmHWD/T6RYarzMFo95xNtoyCdpRwNJeiEXEn1V/s5iHCc1am4
+ Atf67GLNN88cwMy9vTqaQBEeo25q+Ew9JgFP7fdm//Can/xYvJu7venNgmpx9vCJanbx
+ wGgg==
+X-Gm-Message-State: AOJu0YwiMpEkpYBv9ZI2oWati/DPRC59BZ8YYb6CvrFdPD8ed5LmMAYL
+ GiC8Bs6yT12QvxzwbJh+cavB1H1cGv4/wQQTrKEPez0KJFgyOMNdGhPhofuVfHc=
+X-Google-Smtp-Source: AGHT+IGlthtRlIAOrErKWBa0d4JJXHENu4FzsbU9EBlxzWOmvVmo/stPsHEbzaIw8JmTtJTtru3wgw==
+X-Received: by 2002:a17:902:ec8e:b0:1f9:f559:d8c7 with SMTP id
+ d9443c01a7336-1fa240c5353mr166234385ad.57.1719495506752; 
+ Thu, 27 Jun 2024 06:38:26 -0700 (PDT)
 Received: from localhost ([2400:4050:a840:1e00:9ac7:6d57:2b16:6932])
  by smtp.gmail.com with UTF8SMTPSA id
- d9443c01a7336-1faac8fcd7dsm13226835ad.117.2024.06.27.06.38.15
+ d9443c01a7336-1faac979f54sm13182435ad.153.2024.06.27.06.38.22
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 27 Jun 2024 06:38:19 -0700 (PDT)
+ Thu, 27 Jun 2024 06:38:26 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Thu, 27 Jun 2024 22:37:45 +0900
-Subject: [PATCH v2 02/15] hw/ide: Convert macio ide_irq into GPIO line
+Date: Thu, 27 Jun 2024 22:37:46 +0900
+Subject: [PATCH v2 03/15] hw/ide: Remove internal DMA qemu_irq
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240627-san-v2-2-750bb0946dbd@daynix.com>
+Message-Id: <20240627-san-v2-3-750bb0946dbd@daynix.com>
 References: <20240627-san-v2-0-750bb0946dbd@daynix.com>
 In-Reply-To: <20240627-san-v2-0-750bb0946dbd@daynix.com>
 To: Eduardo Habkost <eduardo@habkost.net>, 
@@ -82,14 +82,14 @@ To: Eduardo Habkost <eduardo@habkost.net>,
 Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, qemu-ppc@nongnu.org, 
  Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.14-dev-fd6e3
-Received-SPF: none client-ip=2607:f8b0:4864:20::536;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x536.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::631;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x631.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,50 +105,137 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-macio ide_irq is connected to the IDE bus. This fixes the leak of
-ide_irq.
+A function pointer is sufficient for internal usage. Replacing qemu_irq
+with one fixes the leak of qemu_irq.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- hw/ide/macio.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ include/hw/ppc/mac_dbdma.h |  5 +++--
+ hw/ide/macio.c             | 11 +++++++----
+ hw/misc/macio/mac_dbdma.c  | 10 +++++-----
+ 3 files changed, 15 insertions(+), 11 deletions(-)
 
+diff --git a/include/hw/ppc/mac_dbdma.h b/include/hw/ppc/mac_dbdma.h
+index 4a3f644516b3..1e1973c39580 100644
+--- a/include/hw/ppc/mac_dbdma.h
++++ b/include/hw/ppc/mac_dbdma.h
+@@ -32,6 +32,7 @@
+ typedef struct DBDMA_io DBDMA_io;
+ 
+ typedef void (*DBDMA_flush)(DBDMA_io *io);
++typedef void (*DBDMA_irq)(DBDMA_io *io);
+ typedef void (*DBDMA_rw)(DBDMA_io *io);
+ typedef void (*DBDMA_end)(DBDMA_io *io);
+ struct DBDMA_io {
+@@ -154,7 +155,7 @@ typedef struct dbdma_cmd {
+ typedef struct DBDMA_channel {
+     int channel;
+     uint32_t regs[DBDMA_REGS];
+-    qemu_irq irq;
++    DBDMA_irq irq;
+     DBDMA_io io;
+     DBDMA_rw rw;
+     DBDMA_flush flush;
+@@ -172,7 +173,7 @@ typedef struct DBDMAState DBDMAState;
+ 
+ /* Externally callable functions */
+ 
+-void DBDMA_register_channel(void *dbdma, int nchan, qemu_irq irq,
++void DBDMA_register_channel(void *dbdma, int nchan, DBDMA_irq irq,
+                             DBDMA_rw rw, DBDMA_flush flush,
+                             void *opaque);
+ void DBDMA_kick(DBDMAState *dbdma);
 diff --git a/hw/ide/macio.c b/hw/ide/macio.c
-index aca90d04f0e8..9c96a857a7c1 100644
+index 9c96a857a7c1..425b670a52a9 100644
 --- a/hw/ide/macio.c
 +++ b/hw/ide/macio.c
-@@ -427,7 +427,7 @@ static void macio_ide_realizefn(DeviceState *dev, Error **errp)
+@@ -427,9 +427,8 @@ static void macio_ide_realizefn(DeviceState *dev, Error **errp)
      s->bus.dma = &s->dma;
  }
  
--static void pmac_ide_irq(void *opaque, int n, int level)
-+static void pmac_irq(void *opaque, int n, int level)
+-static void pmac_irq(void *opaque, int n, int level)
++static void pmac_irq(MACIOIDEState *s, int n, int level)
  {
-     MACIOIDEState *s = opaque;
+-    MACIOIDEState *s = opaque;
      uint32_t mask = 0x80000000u >> n;
-@@ -446,6 +446,11 @@ static void pmac_ide_irq(void *opaque, int n, int level)
+ 
+     /* We need to reflect the IRQ state in the irq register */
+@@ -446,6 +445,11 @@ static void pmac_irq(void *opaque, int n, int level)
      }
  }
  
-+static void pmac_ide_irq(void *opaque, int n, int level)
++static void pmac_dma_irq(DBDMA_io *io)
 +{
-+    pmac_irq(opaque, 1, level);
++    pmac_irq(io->opaque, 0, 1);
 +}
 +
- static void macio_ide_initfn(Object *obj)
+ static void pmac_ide_irq(void *opaque, int n, int level)
  {
-     SysBusDevice *d = SYS_BUS_DEVICE(obj);
-@@ -456,8 +461,8 @@ static void macio_ide_initfn(Object *obj)
+     pmac_irq(opaque, 1, level);
+@@ -461,7 +465,6 @@ static void macio_ide_initfn(Object *obj)
      sysbus_init_mmio(d, &s->mem);
      sysbus_init_irq(d, &s->real_ide_irq);
      sysbus_init_irq(d, &s->real_dma_irq);
--    s->dma_irq = qemu_allocate_irq(pmac_ide_irq, s, 0);
--    s->ide_irq = qemu_allocate_irq(pmac_ide_irq, s, 1);
-+    s->dma_irq = qemu_allocate_irq(pmac_irq, s, 0);
-+    qdev_init_gpio_in_named_with_opaque(DEVICE(obj), pmac_ide_irq, s, NULL, 1);
+-    s->dma_irq = qemu_allocate_irq(pmac_irq, s, 0);
+     qdev_init_gpio_in_named_with_opaque(DEVICE(obj), pmac_ide_irq, s, NULL, 1);
  
      object_property_add_link(obj, "dbdma", TYPE_MAC_DBDMA,
-                              (Object **) &s->dbdma,
+@@ -513,7 +516,7 @@ void macio_ide_init_drives(MACIOIDEState *s, DriveInfo **hd_table)
+ 
+ void macio_ide_register_dma(MACIOIDEState *s)
+ {
+-    DBDMA_register_channel(s->dbdma, s->channel, s->dma_irq,
++    DBDMA_register_channel(s->dbdma, s->channel, pmac_dma_irq,
+                            pmac_ide_transfer, pmac_ide_flush, s);
+ }
+ 
+diff --git a/hw/misc/macio/mac_dbdma.c b/hw/misc/macio/mac_dbdma.c
+index 2a528ea08caf..3450105ad851 100644
+--- a/hw/misc/macio/mac_dbdma.c
++++ b/hw/misc/macio/mac_dbdma.c
+@@ -114,7 +114,7 @@ static void kill_channel(DBDMA_channel *ch)
+     ch->regs[DBDMA_STATUS] |= DEAD;
+     ch->regs[DBDMA_STATUS] &= ~ACTIVE;
+ 
+-    qemu_irq_raise(ch->irq);
++    ch->irq(&ch->io);
+ }
+ 
+ static void conditional_interrupt(DBDMA_channel *ch)
+@@ -133,7 +133,7 @@ static void conditional_interrupt(DBDMA_channel *ch)
+     case INTR_NEVER:  /* don't interrupt */
+         return;
+     case INTR_ALWAYS: /* always interrupt */
+-        qemu_irq_raise(ch->irq);
++            ch->irq(&ch->io);
+         DBDMA_DPRINTFCH(ch, "%s: raise\n", __func__);
+         return;
+     }
+@@ -148,13 +148,13 @@ static void conditional_interrupt(DBDMA_channel *ch)
+     switch(intr) {
+     case INTR_IFSET:  /* intr if condition bit is 1 */
+         if (cond) {
+-            qemu_irq_raise(ch->irq);
++            ch->irq(&ch->io);
+             DBDMA_DPRINTFCH(ch, "%s: raise\n", __func__);
+         }
+         return;
+     case INTR_IFCLR:  /* intr if condition bit is 0 */
+         if (!cond) {
+-            qemu_irq_raise(ch->irq);
++            ch->irq(&ch->io);
+             DBDMA_DPRINTFCH(ch, "%s: raise\n", __func__);
+         }
+         return;
+@@ -562,7 +562,7 @@ void DBDMA_kick(DBDMAState *dbdma)
+     qemu_bh_schedule(dbdma->bh);
+ }
+ 
+-void DBDMA_register_channel(void *dbdma, int nchan, qemu_irq irq,
++void DBDMA_register_channel(void *dbdma, int nchan, DBDMA_irq irq,
+                             DBDMA_rw rw, DBDMA_flush flush,
+                             void *opaque)
+ {
 
 -- 
 2.45.2
