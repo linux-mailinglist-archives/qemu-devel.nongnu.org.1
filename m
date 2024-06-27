@@ -2,70 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0D0F91A4EB
+	by mail.lfdr.de (Postfix) with ESMTPS id 9553B91A4EA
 	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jun 2024 13:18:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sMn8M-0004D6-R6; Thu, 27 Jun 2024 07:17:46 -0400
+	id 1sMn8R-0004Dj-Ak; Thu, 27 Jun 2024 07:17:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sMn8K-0004Cp-9d
- for qemu-devel@nongnu.org; Thu, 27 Jun 2024 07:17:44 -0400
-Received: from mail-pg1-x533.google.com ([2607:f8b0:4864:20::533])
+ id 1sMn8N-0004DM-QE
+ for qemu-devel@nongnu.org; Thu, 27 Jun 2024 07:17:47 -0400
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sMn8I-0000Rv-Fs
- for qemu-devel@nongnu.org; Thu, 27 Jun 2024 07:17:44 -0400
-Received: by mail-pg1-x533.google.com with SMTP id
- 41be03b00d2f7-6bce380eb9bso4722051a12.0
- for <qemu-devel@nongnu.org>; Thu, 27 Jun 2024 04:17:41 -0700 (PDT)
+ id 1sMn8M-0000SE-6N
+ for qemu-devel@nongnu.org; Thu, 27 Jun 2024 07:17:47 -0400
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-1fa0f143b85so41940585ad.3
+ for <qemu-devel@nongnu.org>; Thu, 27 Jun 2024 04:17:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1719487061; x=1720091861;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1719487065; x=1720091865;
  darn=nongnu.org; 
- h=cc:to:content-transfer-encoding:mime-version:message-id:date
- :subject:from:from:to:cc:subject:date:message-id:reply-to;
- bh=iXcIgBgA0UJ6yrWDCCFqNE734EdF88Woj/W/UvPazNo=;
- b=q4s0OmEmzXbY5d7NFuYum+UnIKuTZbjabv9W73j9Zfn8a37qNypn7YPdntuov9vsIw
- SPeCEYT/mGTi7mofd4BWMveTsuKXNNiRg2s/Z9uzyVN4w+aWN6rwg/vnQyS8qyE10ovI
- H7aOM0FIQfPz+uSBIUdDo4MVV8K1WAkm0VjQaX+S6quF8ewQzvugKUTBz84kXJm4Cbo9
- aY6BLpGojum+bgoaYIl1+AUW7UADx84xVDU3DCiSKVIaa7tRKiXYTubCO0vNxi2MRKZ5
- RzOFiPS5bKXDwa25SHjO97zlm5EASIUQZVTn1+7TTyMH8iDU/CTVVOnmIkRVZ/UiQGX2
- 88AQ==
+ h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+ :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=+0MBOmhbtz1lyAbOdZb3RFV2v8aK9qDzLjqTtuOILhg=;
+ b=aVpESaxCtpddr3pqSDHFwTEH6CLXmB+h0HLfUCtiXmn7ZjfAjz1nLKdALGhXXybfYw
+ ganTfEIIvtZWsCLxEWCHWmnf6VXQQc2ZmH9vb9N/VWg7lQpU42/Nu9JIHMthOpf5PHbV
+ UIOB59vBO79lxdhZ3jI9z0IWCUbuoAa8wz6De+N6AN+Fv9XP4V4sjuRV76pOHt81Osh6
+ GrRUN5eVwt9BKnrZKKrSUih9RoEUfEGcXV5yOyxosUMZuSWYSzMFfp7zKEyYiGERHnuh
+ ge+vyls9STdwGwSGZgrqbwAFbMwDR/SvBfzrNJShITUQRn8rGZ5kiiCcHnqv0TJJroFE
+ V5bw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719487061; x=1720091861;
- h=cc:to:content-transfer-encoding:mime-version:message-id:date
- :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=iXcIgBgA0UJ6yrWDCCFqNE734EdF88Woj/W/UvPazNo=;
- b=ACrlpZ6jixjvEYpKAVZnmn14p/9G4nhrpghkWatFWlK5MtXZssCdY2DYv0lko90mr1
- iJLqch+eqaWG7s2b+UkWraj0koLfVTK3k+26RXquMyCnxw1Y0JkB9aLcHc8Nr7+gfXAP
- XoYZMepW5pPZ5GJO+FiLeSijsf6IyU0mR1TLveyNsHVFG4RLTYNuzl9rwbap2Kyyv8TO
- PdyiU01t9wP/Lu1oBd2vINQzwJbtfMe1N6hLYkE3yf2Vc/7NqAcVCvrIj76ZOcvolpOG
- mtGGlOvcFP51O9DsPuICcH6aX8DORIyUaNtvwWaXixRdDGJtlatvvvOrnUtYlH7K6AFr
- xLfg==
-X-Gm-Message-State: AOJu0Yzqe961BHxMkY7prptVJi85EBeJzl2s0A8WXvbSfZX785Vvdn2T
- lqCnPAHLb7ZDcRMYN9euyRLsdfVSc1GEN3WlA4MbmYucFBN+rHZGHz/m/eQbrwY=
-X-Google-Smtp-Source: AGHT+IEMyFjBG4S6M0CGobNobDUuuYtQSCSb1n3hKon0+oodrOzjRBaIGxOpHKQMMC515+0oCWDiug==
-X-Received: by 2002:a05:6a21:7881:b0:1be:d897:7982 with SMTP id
- adf61e73a8af0-1bed8977a19mr632799637.43.1719487060789; 
- Thu, 27 Jun 2024 04:17:40 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1719487065; x=1720091865;
+ h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+ :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=+0MBOmhbtz1lyAbOdZb3RFV2v8aK9qDzLjqTtuOILhg=;
+ b=DAXbWuF87idr3ehccPFgQ9aikrb/Y0O67oeF/9xEnGHW6jnTqRNx+QZ7Eedp+QKkOJ
+ hZ+LeZPjhdNB7jvJTO0NBKha3ISXGE2wmJ8xea2IbJ3TSV2zmn/Mrc5OJqwh4yg7xaTp
+ yaHsONBjMgKR1c52tdPdnxl5Cy4CioysdVRx/R0e1R+2nVQHT9kxD4hPtVEiCSoMU3+T
+ X124pmLooC4X5ztS+qC6g09Hpu4SOHiIO5gOGhvDY7iqApoKNxwlrICQ/V8W/5n9vMwy
+ eB/PNPR3rNLSqCFfinxl8i8wMoQp+wb8dSordkxLaNMIDoG/vGlUXS3emUuC++DFivT9
+ l2Pw==
+X-Gm-Message-State: AOJu0YxqqIcgZpkU1Nd77fh5VfkJ12kKYGLxNIeo0rmQS0QkQTQmZzqc
+ CKH5TtifYOgt5M/ml0/vXtGcnldlwXjvJb2zGUrNlEGfSbZXFboDJ9sbWXq7Ap0=
+X-Google-Smtp-Source: AGHT+IHZoBPxo8wvKyYnk+m0uKlaX+bMxaB2yPURoUti6HmVmC1MoQYITT1XeX5mbLU+PBUKrcRZXA==
+X-Received: by 2002:a17:902:f611:b0:1fa:a50c:def9 with SMTP id
+ d9443c01a7336-1faa50ce0b7mr23427225ad.57.1719487064821; 
+ Thu, 27 Jun 2024 04:17:44 -0700 (PDT)
 Received: from localhost ([157.82.204.135])
  by smtp.gmail.com with UTF8SMTPSA id
- 98e67ed59e1d1-2c8fe8ac707sm1186734a91.9.2024.06.27.04.17.38
+ d9443c01a7336-1faac8f5a93sm10960755ad.77.2024.06.27.04.17.42
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 27 Jun 2024 04:17:40 -0700 (PDT)
+ Thu, 27 Jun 2024 04:17:44 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH v2 0/4] ui/cocoa: Add cursor composition
-Date: Thu, 27 Jun 2024 20:17:32 +0900
-Message-Id: <20240627-cursor-v2-0-c3cd3ee35616@daynix.com>
+Date: Thu, 27 Jun 2024 20:17:33 +0900
+Subject: [PATCH v2 1/4] ui/cocoa: Release CGColorSpace
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAExKfWYC/2XMQQ7CIBCF4as0sxbDDLWiK+9huigU7SyEBpS0a
- bi72K3L/+Xl2yC5yC7BtdkgusyJg69BhwbsNPinEzzWBpLUSoVa2E9MIQrVXtCglt1JE9TzHN2
- Dlx2697UnTu8Q193N+Fv/iIxCCmmM66zSRHi+jcPqeTna8IK+lPIFnkM8D50AAAA=
+Message-Id: <20240627-cursor-v2-1-c3cd3ee35616@daynix.com>
+References: <20240627-cursor-v2-0-c3cd3ee35616@daynix.com>
+In-Reply-To: <20240627-cursor-v2-0-c3cd3ee35616@daynix.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, 
  =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>, 
  =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
@@ -76,8 +75,8 @@ To: Paolo Bonzini <pbonzini@redhat.com>,
  Phil Dennis-Jordan <phil@philjordan.eu>
 Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.14-dev-fd6e3
-Received-SPF: none client-ip=2607:f8b0:4864:20::533;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x533.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::635;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x635.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -99,59 +98,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add accelerated cursor composition to ui/cocoa. This does not only
-improve performance for display devices that exposes the capability to
-the guest according to dpy_cursor_define_supported(), but fixes the
-cursor display for devices that unconditionally expects the availability
-of the capability (e.g., virtio-gpu).
-
-The common pattern to implement accelerated cursor composition is to
-replace the cursor and warp it so that the replaced cursor is shown at
-the correct position on the guest display for relative pointer devices.
-Unfortunately, ui/cocoa cannot do the same because warping the cursor
-position interfers with the mouse input so it uses CALayer instead;
-although it is not specialized for cursor composition, it still can
-compose images with hardware acceleration.
+CGImageCreate | Apple Developer Documentation
+https://developer.apple.com/documentation/coregraphics/1455149-cgimagecreate
+> The color space is retained; on return, you may safely release it.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
-Changes in v2:
-- Incorporated changes from:
-  https://lore.kernel.org/r/20240625134931.92279-2-phil@philjordan.eu
-  ("[PATCH v2 1/2] ui/cocoa: Minor fixes to CALayer based cursors")
-- Added patch "ui/cocoa: Release CGColorSpace"
-- Added patch "ui/console: Convert mouse visibility parameter into bool"
-- Noted that the problem with warping is relevant only for relative
-  pointer devices.
-- Link to v1: https://lore.kernel.org/r/20240318-cursor-v1-0-0bbe6c382217@daynix.com
+ ui/cocoa.m | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
----
-Akihiko Odaki (4):
-      ui/cocoa: Release CGColorSpace
-      ui/console: Convert mouse visibility parameter into bool
-      ui/cocoa: Add cursor composition
-      ui/console: Remove dpy_cursor_define_supported()
+diff --git a/ui/cocoa.m b/ui/cocoa.m
+index 981615a8b925..908454a434c5 100644
+--- a/ui/cocoa.m
++++ b/ui/cocoa.m
+@@ -299,6 +299,7 @@ @interface QemuCocoaView : NSView
+     BOOL isMouseGrabbed;
+     BOOL isAbsoluteEnabled;
+     CFMachPortRef eventsTap;
++    CGColorSpaceRef colorspace;
+ }
+ - (void) switchSurface:(pixman_image_t *)image;
+ - (void) grabMouse;
+@@ -360,6 +361,7 @@ - (id)initWithFrame:(NSRect)frameRect
+         [trackingArea release];
+         screen.width = frameRect.size.width;
+         screen.height = frameRect.size.height;
++        colorspace = CGColorSpaceCreateWithName(kCGColorSpaceSRGB);
+ #if MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_VERSION_14_0
+         [self setClipsToBounds:YES];
+ #endif
+@@ -380,6 +382,7 @@ - (void) dealloc
+         CFRelease(eventsTap);
+     }
+ 
++    CGColorSpaceRelease(colorspace);
+     [super dealloc];
+ }
+ 
+@@ -456,7 +459,7 @@ - (void) drawRect:(NSRect) rect
+             DIV_ROUND_UP(bitsPerPixel, 8) * 2, //bitsPerComponent
+             bitsPerPixel, //bitsPerPixel
+             stride, //bytesPerRow
+-            CGColorSpaceCreateWithName(kCGColorSpaceSRGB), //colorspace
++            colorspace, //colorspace
+             kCGBitmapByteOrder32Little | kCGImageAlphaNoneSkipFirst, //bitmapInfo
+             dataProviderRef, //provider
+             NULL, //decode
 
- meson.build             |   3 +-
- include/ui/console.h    |   5 +--
- hw/display/ati.c        |   2 +-
- hw/display/qxl-render.c |   4 --
- hw/display/virtio-gpu.c |   3 +-
- hw/display/vmware_vga.c |   8 ++--
- ui/console.c            |  18 ++-------
- ui/dbus-listener.c      |   2 +-
- ui/gtk.c                |   2 +-
- ui/sdl2.c               |   4 +-
- ui/spice-display.c      |  11 ++---
- ui/vnc.c                |   2 +-
- ui/cocoa.m              | 104 +++++++++++++++++++++++++++++++++++++++++++++++-
- 13 files changed, 126 insertions(+), 42 deletions(-)
----
-base-commit: 74abb45dac6979e7ff76172b7f0a24e869405184
-change-id: 20240318-cursor-3491b1806582
-
-Best regards,
 -- 
-Akihiko Odaki <akihiko.odaki@daynix.com>
+2.45.2
 
 
