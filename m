@@ -2,73 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0E1691A661
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jun 2024 14:15:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5A9391A693
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jun 2024 14:32:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sMo0W-0004Ed-1c; Thu, 27 Jun 2024 08:13:44 -0400
+	id 1sMoHa-0001Wj-Hg; Thu, 27 Jun 2024 08:31:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1sMo0J-0004ED-Tt
- for qemu-devel@nongnu.org; Thu, 27 Jun 2024 08:13:34 -0400
+ id 1sMoHW-0001Vx-Fq
+ for qemu-devel@nongnu.org; Thu, 27 Jun 2024 08:31:19 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1sMo0A-0006l5-6x
- for qemu-devel@nongnu.org; Thu, 27 Jun 2024 08:13:31 -0400
-Received: from loongson.cn (unknown [10.20.42.239])
- by gateway (Coremail) with SMTP id _____8Bx7epaV31m_aQKAA--.43228S3;
- Thu, 27 Jun 2024 20:13:14 +0800 (CST)
-Received: from [10.20.42.239] (unknown [10.20.42.239])
+ (envelope-from <gaosong@loongson.cn>) id 1sMoHS-0004VF-7H
+ for qemu-devel@nongnu.org; Thu, 27 Jun 2024 08:31:18 -0400
+Received: from loongson.cn (unknown [10.2.5.185])
+ by gateway (Coremail) with SMTP id _____8Bx7eqMW31meaYKAA--.43236S3;
+ Thu, 27 Jun 2024 20:31:08 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.185])
  by localhost.localdomain (Coremail) with SMTP id
- AQAAf8BxVcVXV31m9jgzAA--.44423S3; 
- Thu, 27 Jun 2024 20:13:13 +0800 (CST)
-Subject: Re: [PATCH 0/2] hw/intc/loongson_ipi: Fix for LoongArch
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>, qemu-devel@nongnu.org
-Cc: Huacai Chen <chenhuacai@kernel.org>, maobibo <maobibo@loongson.cn>,
- Richard Henderson <richard.henderson@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>, Paolo Bonzini
- <pbonzini@redhat.com>, =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>
-References: <20240627-ipi-fixes-v1-0-9b061dc28a3a@flygoat.com>
- <acc08621-19c1-4ec3-9fc9-acb0eec79121@linaro.org>
-From: gaosong <gaosong@loongson.cn>
-Message-ID: <0e42f372-26b8-b94a-80bb-6403062d2f1a@loongson.cn>
-Date: Thu, 27 Jun 2024 20:13:18 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ AQAAf8Cx78eLW31mKjwzAA--.55672S2; 
+ Thu, 27 Jun 2024 20:31:07 +0800 (CST)
+From: Song Gao <gaosong@loongson.cn>
+To: qemu-devel@nongnu.org
+Cc: philmd@linaro.org, jiaxun.yang@flygoat.com, maobibo@loongson.cn,
+ chenhuacai@kernel.org, richard.henderson@linaro.org,
+ peter.maydell@linaro.org, alex.bennee@linaro.org, pbonzini@redhat.com
+Subject: [RESEND PATCH 0/2] hw/intc: Restore loongarch_ipi for LoongArch
+Date: Thu, 27 Jun 2024 20:13:46 +0800
+Message-Id: <20240627121348.3412568-1-gaosong@loongson.cn>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-In-Reply-To: <acc08621-19c1-4ec3-9fc9-acb0eec79121@linaro.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-CM-TRANSID: AQAAf8BxVcVXV31m9jgzAA--.44423S3
+X-CM-TRANSID: AQAAf8Cx78eLW31mKjwzAA--.55672S2
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW7Cr4rZF4UGF48WrWktFW8uFX_yoW8WrWUpF
- nF9as3tr47GrW8Gw4kZF15GFyrtF47Jw47JF93u340gw4kJr10v3sF93sIg3ZrA3WvgF1j
- qFW7tw4vgF4UZFcCm3ZEXasCq-sJn29KB7ZKAUJUUUU5529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUU9Sb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
- xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
- 1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y6r17McIj6I8E87Iv
- 67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
- AlzVAYIcxG8wCY1x0262kKe7AKxVWUAVWUtwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE
- 7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI
- 8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWU
- CwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r
- 1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBI
- daVFxhVjvjDU0xZFpf9x07jnSdgUUUUU=
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+ ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+ nUUI43ZEXa7xR_UUUUUUUUU==
 Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
  helo=mail.loongson.cn
-X-Spam_score_int: -50
-X-Spam_score: -5.1
-X-Spam_bar: -----
-X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-3.174,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,44 +62,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Currently LoongArch and MIPS architectures share loongson_ipi,
+and modifications to loongson_ipi by the MIPS architecture may
+lead to some unknown problems in the LoongArch architecture.
+In order to minimize the impact of this inter-architectural
+interaction, we believe that it is necessary to restore loongarch_ipi.
 
+Song Gao (2):
+  Revert "hw/intc: Remove loongarch_ipi.c"
+  hw/intc: Restore loongarch_ipi for LoongArch
 
-在 2024/6/27 下午2:38, Philippe Mathieu-Daudé 写道:
-> On 27/6/24 06:13, Jiaxun Yang wrote:
->> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
->> ---
->> Jiaxun Yang (2):
->>        hw/intc/loongson_ipi: Gate MMIO regions creation with property
->>        MAINTAINERS: Add myself as a reviewer of LoongArch virt machine
->
-> Maybe s/has-mmio/use-mmio/? Otherwise series:
-> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->
-Hi,
+ MAINTAINERS                     |   2 -
+ include/hw/intc/loongarch_ipi.h |  54 +++++
+ include/hw/loongarch/virt.h     |   2 +-
+ hw/intc/loongarch_ipi.c         | 347 ++++++++++++++++++++++++++++++++
+ hw/loongarch/virt.c             |   4 +-
+ hw/intc/Kconfig                 |   3 +
+ hw/intc/meson.build             |   1 +
+ hw/intc/trace-events            |   3 +
+ hw/loongarch/Kconfig            |   2 +-
+ 9 files changed, 412 insertions(+), 6 deletions(-)
+ create mode 100644 include/hw/intc/loongarch_ipi.h
+ create mode 100644 hw/intc/loongarch_ipi.c
 
-If we had done a simple test, we should have found the following 
-problem, but obviously we didn't .
-
-root@loongson-KVM:~/work/code/clean/github/qemu# . /kernel.sh
-Unexpected error in object_property_find_err() at . /qom/object.c:1357.
-qemu-system-loongarch64: Property 'loongson_ipi.unnamed-gpio-out[0]' not 
-found
-. /kernel.sh: line 16: 117708 Aborted (core dumped) . 
-/build/qemu-system-loongarch64 -machine virt -m 8G -cpu la464 -smp 8 
--kernel ~/vmlinux -initrd ramdisk -serial stdio -monitor 
-telnet:localhost. 4418,server,nowait -net nic -net user -device 
-virtio-gpu-pci -device nec-usb-xhci,id=xhci,addr=0x1b -device 
-usb-tablet,id=tablet,bus=xhci.0, port=1 -device 
-usb-tablet,id=tablet,bus=xhci.0, -device usb-tablet,id=tablet,bus=xhci. 
-port=1 -device usb-kbd,id=keyboard,bus=xhci.0,port=2 -append 
-"root=/dev/ram rdinit=/sbin/init console=ttyS0,115200 
-earlycon=uart,mmio. 0x1fe001e0" --nographic
-
-
-So to minimize interactions with the MIPS architecture, I'll submit a 
-patch to restore loongarch_ipi for LoongArch.
-
-Thanks.
-Song Gao
+-- 
+2.34.1
 
 
