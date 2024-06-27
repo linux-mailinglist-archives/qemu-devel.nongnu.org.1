@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D525C91A370
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jun 2024 12:05:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B30C91A37A
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jun 2024 12:06:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sMlxq-00089Z-V2; Thu, 27 Jun 2024 06:02:51 -0400
+	id 1sMlxs-0008OT-Fa; Thu, 27 Jun 2024 06:02:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sMlxm-0007gd-PK
- for qemu-devel@nongnu.org; Thu, 27 Jun 2024 06:02:46 -0400
-Received: from mail-oa1-x30.google.com ([2001:4860:4864:20::30])
+ id 1sMlxp-00085K-D5
+ for qemu-devel@nongnu.org; Thu, 27 Jun 2024 06:02:49 -0400
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sMlxk-0002hS-EP
- for qemu-devel@nongnu.org; Thu, 27 Jun 2024 06:02:46 -0400
-Received: by mail-oa1-x30.google.com with SMTP id
- 586e51a60fabf-25cb3f1765bso3965839fac.1
- for <qemu-devel@nongnu.org>; Thu, 27 Jun 2024 03:02:43 -0700 (PDT)
+ id 1sMlxn-0002jk-AK
+ for qemu-devel@nongnu.org; Thu, 27 Jun 2024 06:02:48 -0400
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-7066a4a611dso3747936b3a.3
+ for <qemu-devel@nongnu.org>; Thu, 27 Jun 2024 03:02:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1719482563; x=1720087363; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1719482566; x=1720087366; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=cDQcF84dre27NKrwxyR57edDUqmhHmvi6h4uP6eUGW4=;
- b=gTgh/koDtKWDZLXV3XOeA+ArnkcO7w2jGSAM8Kf+JBzQrIm1FKTJJvA0pn/OjyNuSq
- GlxgWdRXA8arVw4u0XTZ/O1PJCcBO8naPkieZRvzTcYzX463nnA+IjhZBCEWXVqVZJ7a
- sde9rRz9qcM7c3nv9p1NZOvwtsWsoPuVJnCNubIYrVtXoYjWrnfiOF0YCz/b0dn8whgE
- 0gCsnlTYmRysPdl4MLi/cgc91dmEH7VKWLavgThS7tosxpJYYM6kX1/xYp8xgT1s8doh
- lV1W+aQzn4k29LtMnY9essgpo40jlz4zquXrs35iFkCPga/J1vkdcuFeyglLoTd94uID
- U03w==
+ bh=R2ySpE5U7zE2XXo/BjdiRlPjhvKqenUQik4nMBEH7xQ=;
+ b=fsFSMm6qA7MUGs3xDfmNOfyFSemvUHopQzGEwKrxx1YgiWaldbw0+6bH5QE2zQU9tA
+ oDGw9BlgUk30n9p0hHa6mCknCLt6/C+efVtuWwBq57poOS9R2KL42ZDMZDANYsnTonsf
+ YDJrMrna3JTKf+SP/VpEQ70EfcMkrYXs3Ra4k+jPjrgFQe4UUX8UAcrNLOC1cI1E73d0
+ P9w7284+gMsA4+JYIiK/7+wLIN81buptlRYUG8wq9U2mAu7jRL4bccrEr1qRjZDcQEv+
+ A3SEuB/tc8aRkUdKXRUTaUqUxg83IbMsrUVRCxmMKTvm6P2MNGU0usVxEMBCMpqJVvkV
+ S1mA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719482563; x=1720087363;
+ d=1e100.net; s=20230601; t=1719482566; x=1720087366;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=cDQcF84dre27NKrwxyR57edDUqmhHmvi6h4uP6eUGW4=;
- b=f4EYStEI/SPUy/Q1lSvovZRotNPIQwrXlr1fhdjyLq1huts6UBC/nuJzo9d6t6F2Qh
- lHVNaQquUVQioHt+lzwSZ/QVNnHomLhUzfQNxYYiUYMyzXpgjf60y24LWXtiZ5uzlizQ
- Wlw8N1LGy5rJ7wUezo/gre3tqZWqY9qIgeHv/qZAQBFt6ie5p/zXbcn8HGTQcTPitKLt
- mRKqfIMrEwQANA4gYh1NqEe0KlCmTCU3C2yrY3DGnkL63KWvZxq4oClNZiVM4s6QV49W
- YzV23lIWdl6G1RIHXhPIqwFQHL0z/MZ1GuOu0wIZUmGwmeHvfYJvH0JFiv5tU6U5ausr
- TtZA==
-X-Gm-Message-State: AOJu0YyXV6tlk/yOO/nDPOfIEQbZ0Wqzi+5Q5LYwx6BlutJK9Fsu0DK3
- pO4E6TUNQjVJ38gRsDTHRbiMjsnf+pHQcAKyVijvfqYF1SdwOiKQpRksnb9g
-X-Google-Smtp-Source: AGHT+IHaR4uoCayL/kQbVJIxOjQmdU+U6FiaTlptZ719Vt61JO3ifSee0Yz734yodVkLat7Z6nof9g==
-X-Received: by 2002:a05:6870:828b:b0:25c:c42b:5349 with SMTP id
- 586e51a60fabf-25d06f021c4mr12401782fac.59.1719482562789; 
- Thu, 27 Jun 2024 03:02:42 -0700 (PDT)
+ bh=R2ySpE5U7zE2XXo/BjdiRlPjhvKqenUQik4nMBEH7xQ=;
+ b=sFyxnp6DYGvfib1kZhx35XyatX8g+4OoiudI9y1xFCyplMHx/L+49fFXkcYAUTfoBU
+ C/JkrNKV/6p0f0mv3zYI2PL8YqFntb74DjMwAY7hMW65uwyeZi95Sn6pfPvd/uon+buQ
+ ADoZuahBEPxk3ps43tZqHGLZLHADKkkFsD6islP0Uxk34YFh4x9lqtqUgrWYPHudmo6D
+ isdPnPMDcLBNVvaa/euBCIzyWfR6tac9NNskW6OxH5Hn9+dKc15nTHLmSbTZM79DdIE+
+ edKs8VYYSItl8vPjyVNGqNaHVpDsB0YlBA5rgs2LD+daFn+X3Z/wJ1U7yBGUpcwd4mmZ
+ qqhQ==
+X-Gm-Message-State: AOJu0Yy+aF44K8uhlFMRsea/PTN1qYTO9EItq3rbvgKT2Xxzq8SJAKRi
+ whfoQLql7M/p0G1nT9erZtnaLICnVT0cUQ129aD7f7ZHOCYYMitwe6ChfwoA
+X-Google-Smtp-Source: AGHT+IF3B6v82GALcn8dTX5L8YxkKs51s5fCTOPBZvyWyQjDweO1JF0/t5JzVKSFu+AjrNvUBy6I4g==
+X-Received: by 2002:aa7:8a53:0:b0:706:29e6:2edf with SMTP id
+ d2e1a72fcca58-70674548ef7mr11921175b3a.4.1719482565544; 
+ Thu, 27 Jun 2024 03:02:45 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-706b4a07326sm932431b3a.111.2024.06.27.03.02.40
+ d2e1a72fcca58-706b4a07326sm932431b3a.111.2024.06.27.03.02.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 27 Jun 2024 03:02:42 -0700 (PDT)
+ Thu, 27 Jun 2024 03:02:45 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, Alvin Chang <alvinga@andestech.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 30/32] target/riscv: Add functions for common matching
- conditions of trigger
-Date: Thu, 27 Jun 2024 20:00:51 +1000
-Message-ID: <20240627100053.150937-31-alistair.francis@wdc.com>
+Subject: [PULL 31/32] target/riscv: Apply modularized matching conditions for
+ watchpoint
+Date: Thu, 27 Jun 2024 20:00:52 +1000
+Message-ID: <20240627100053.150937-32-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240627100053.150937-1-alistair.francis@wdc.com>
 References: <20240627100053.150937-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::30;
- envelope-from=alistair23@gmail.com; helo=mail-oa1-x30.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
+ envelope-from=alistair23@gmail.com; helo=mail-pf1-x435.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -99,171 +99,81 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Alvin Chang <alvinga@andestech.com>
 
-According to RISC-V Debug specification version 0.13 [1] (also applied
-to version 1.0 [2] but it has not been ratified yet), there are several
-common matching conditions before firing a trigger, including the
-enabled privilege levels of the trigger.
-
-This commit adds trigger_common_match() to prepare the common matching
-conditions for the type 2/3/6 triggers. For now, we just implement
-trigger_priv_match() to check if the enabled privilege levels of the
-trigger match CPU's current privilege level.
-
-Remove the related code in riscv_cpu_debug_check_breakpoint() and invoke
+We have implemented trigger_common_match(), which checks if the enabled
+privilege levels of the trigger match CPU's current privilege level.
+Remove the related code in riscv_cpu_debug_check_watchpoint() and invoke
 trigger_common_match() to check the privilege levels of the type 2 and
-type 6 triggers for the breakpoints.
+type 6 triggers for the watchpoints.
 
 This commit also changes the behavior of looping the triggers. In
 previous implementation, if we have a type 2 trigger and
 env->virt_enabled is true, we directly return false to stop the loop.
 Now we keep looping all the triggers until we find a matched trigger.
 
-Only the execution bit and the executed PC should be futher checked in
-riscv_cpu_debug_check_breakpoint().
-
-[1]: https://github.com/riscv/riscv-debug-spec/releases/tag/task_group_vote
-[2]: https://github.com/riscv/riscv-debug-spec/releases/tag/1.0.0-rc1-asciidoc
+Only load/store bits and loaded/stored address should be further checked
+in riscv_cpu_debug_check_watchpoint().
 
 Signed-off-by: Alvin Chang <alvinga@andestech.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20240626132247.2761286-2-alvinga@andestech.com>
+Acked-by: Alistair Francis <alistair.francis@wdc.com>
+Message-ID: <20240626132247.2761286-3-alvinga@andestech.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/debug.c | 101 +++++++++++++++++++++++++++++++++----------
- 1 file changed, 78 insertions(+), 23 deletions(-)
+ target/riscv/debug.c | 26 ++++++--------------------
+ 1 file changed, 6 insertions(+), 20 deletions(-)
 
 diff --git a/target/riscv/debug.c b/target/riscv/debug.c
-index b110370ea6..11125f333b 100644
+index 11125f333b..c290d6002e 100644
 --- a/target/riscv/debug.c
 +++ b/target/riscv/debug.c
-@@ -241,6 +241,76 @@ static void do_trigger_action(CPURISCVState *env, target_ulong trigger_index)
-     }
- }
+@@ -901,13 +901,12 @@ bool riscv_cpu_debug_check_watchpoint(CPUState *cs, CPUWatchpoint *wp)
+     for (i = 0; i < RV_MAX_TRIGGERS; i++) {
+         trigger_type = get_trigger_type(env, i);
  
-+/*
-+ * Check the privilege level of specific trigger matches CPU's current privilege
-+ * level.
-+ */
-+static bool trigger_priv_match(CPURISCVState *env, trigger_type_t type,
-+                               int trigger_index)
-+{
-+    target_ulong ctrl = env->tdata1[trigger_index];
-+
-+    switch (type) {
-+    case TRIGGER_TYPE_AD_MATCH:
-+        /* type 2 trigger cannot be fired in VU/VS mode */
-+        if (env->virt_enabled) {
-+            return false;
++        if (!trigger_common_match(env, trigger_type, i)) {
++            continue;
 +        }
-+        /* check U/S/M bit against current privilege level */
-+        if ((ctrl >> 3) & BIT(env->priv)) {
-+            return true;
-+        }
-+        break;
-+    case TRIGGER_TYPE_AD_MATCH6:
-+        if (env->virt_enabled) {
-+            /* check VU/VS bit against current privilege level */
-+            if ((ctrl >> 23) & BIT(env->priv)) {
-+                return true;
-+            }
-+        } else {
-+            /* check U/S/M bit against current privilege level */
-+            if ((ctrl >> 3) & BIT(env->priv)) {
-+                return true;
-+            }
-+        }
-+        break;
-+    case TRIGGER_TYPE_INST_CNT:
-+        if (env->virt_enabled) {
-+            /* check VU/VS bit against current privilege level */
-+            if ((ctrl >> 25) & BIT(env->priv)) {
-+                return true;
-+            }
-+        } else {
-+            /* check U/S/M bit against current privilege level */
-+            if ((ctrl >> 6) & BIT(env->priv)) {
-+                return true;
-+            }
-+        }
-+        break;
-+    case TRIGGER_TYPE_INT:
-+    case TRIGGER_TYPE_EXCP:
-+    case TRIGGER_TYPE_EXT_SRC:
-+        qemu_log_mask(LOG_UNIMP, "trigger type: %d is not supported\n", type);
-+        break;
-+    case TRIGGER_TYPE_NO_EXIST:
-+    case TRIGGER_TYPE_UNAVAIL:
-+        qemu_log_mask(LOG_GUEST_ERROR, "trigger type: %d does not exist\n",
-+                      type);
-+        break;
-+    default:
-+        g_assert_not_reached();
-+    }
 +
-+    return false;
-+}
-+
-+/* Common matching conditions for all types of the triggers. */
-+static bool trigger_common_match(CPURISCVState *env, trigger_type_t type,
-+                                 int trigger_index)
-+{
-+    return trigger_priv_match(env, type, trigger_index);
-+}
-+
- /* type 2 trigger */
- 
- static uint32_t type2_breakpoint_size(CPURISCVState *env, target_ulong ctrl)
-@@ -785,22 +855,18 @@ bool riscv_cpu_debug_check_breakpoint(CPUState *cs)
-         for (i = 0; i < RV_MAX_TRIGGERS; i++) {
-             trigger_type = get_trigger_type(env, i);
- 
-+            if (!trigger_common_match(env, trigger_type, i)) {
-+                continue;
-+            }
-+
-             switch (trigger_type) {
-             case TRIGGER_TYPE_AD_MATCH:
--                /* type 2 trigger cannot be fired in VU/VS mode */
--                if (env->virt_enabled) {
--                    return false;
--                }
+         switch (trigger_type) {
+         case TRIGGER_TYPE_AD_MATCH:
+-            /* type 2 trigger cannot be fired in VU/VS mode */
+-            if (env->virt_enabled) {
+-                return false;
+-            }
 -
-                 ctrl = env->tdata1[i];
-                 pc = env->tdata2[i];
+             ctrl = env->tdata1[i];
+             addr = env->tdata2[i];
+             flags = 0;
+@@ -920,10 +919,7 @@ bool riscv_cpu_debug_check_watchpoint(CPUState *cs, CPUWatchpoint *wp)
+             }
  
-                 if ((ctrl & TYPE2_EXEC) && (bp->pc == pc)) {
--                    /* check U/S/M bit against current privilege level */
--                    if ((ctrl >> 3) & BIT(env->priv)) {
--                        env->badaddr = pc;
+             if ((wp->flags & flags) && (wp->vaddr == addr)) {
+-                /* check U/S/M bit against current privilege level */
+-                if ((ctrl >> 3) & BIT(env->priv)) {
+-                    return true;
+-                }
++                return true;
+             }
+             break;
+         case TRIGGER_TYPE_AD_MATCH6:
+@@ -939,17 +935,7 @@ bool riscv_cpu_debug_check_watchpoint(CPUState *cs, CPUWatchpoint *wp)
+             }
+ 
+             if ((wp->flags & flags) && (wp->vaddr == addr)) {
+-                if (env->virt_enabled) {
+-                    /* check VU/VS bit against current privilege level */
+-                    if ((ctrl >> 23) & BIT(env->priv)) {
 -                        return true;
 -                    }
-+                    env->badaddr = pc;
-+                    return true;
-                 }
-                 break;
-             case TRIGGER_TYPE_AD_MATCH6:
-@@ -808,19 +874,8 @@ bool riscv_cpu_debug_check_breakpoint(CPUState *cs)
-                 pc = env->tdata2[i];
- 
-                 if ((ctrl & TYPE6_EXEC) && (bp->pc == pc)) {
--                    if (env->virt_enabled) {
--                        /* check VU/VS bit against current privilege level */
--                        if ((ctrl >> 23) & BIT(env->priv)) {
--                            env->badaddr = pc;
--                            return true;
--                        }
--                    } else {
--                        /* check U/S/M bit against current privilege level */
--                        if ((ctrl >> 3) & BIT(env->priv)) {
--                            env->badaddr = pc;
--                            return true;
--                        }
+-                } else {
+-                    /* check U/S/M bit against current privilege level */
+-                    if ((ctrl >> 3) & BIT(env->priv)) {
+-                        return true;
 -                    }
-+                    env->badaddr = pc;
-+                    return true;
-                 }
-                 break;
-             default:
+-                }
++                return true;
+             }
+             break;
+         default:
 -- 
 2.45.2
 
