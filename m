@@ -2,87 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1529591A687
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jun 2024 14:28:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 265FB91A6B2
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jun 2024 14:40:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sMoDO-0007lN-4A; Thu, 27 Jun 2024 08:27:02 -0400
+	id 1sMoPG-0005PL-Qb; Thu, 27 Jun 2024 08:39:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sMoDI-0007kl-MG
- for qemu-devel@nongnu.org; Thu, 27 Jun 2024 08:26:57 -0400
-Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sMoDG-0003gT-LM
- for qemu-devel@nongnu.org; Thu, 27 Jun 2024 08:26:56 -0400
-Received: by mail-lj1-x231.google.com with SMTP id
- 38308e7fff4ca-2ec3f875e68so87016681fa.0
- for <qemu-devel@nongnu.org>; Thu, 27 Jun 2024 05:26:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719491212; x=1720096012; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=oLHP1XkRo0/fL47l0ds5Mlcb6EGB8gd+LBZVQENDmxU=;
- b=L+WW1Zquud09AFpUCAnnfO67pl0gHLmQ6qwzUFH75hDdesUZ609Ij+duaox077gfJx
- owr9VXoa+CNMMwrRpxx9aTlQfHLcAJ3D4dKABu3wz37D7BtJF584tvKu/0IrCPui270I
- LEzr5YR90vTPDwFzzFopqt1/o4VHQv6CB5XoeEbpeR86JGAlu0caevH4vpo/i9o0DP1H
- s+fqY9I7R63NowRX4Ps7RkJ8s/DjQUnzQQUMhnjL4zmjL481FNd7gtxDpY5orqw7xRqg
- J0UuqA41aLZshVVUDwlPTXkh6w9VVert6KcA+cYBQFJrT37lCooHQEvV5W/sHixCHC5h
- M5eA==
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1sMoP8-0005NO-Bl
+ for qemu-devel@nongnu.org; Thu, 27 Jun 2024 08:39:14 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1sMoP6-0007Rc-4p
+ for qemu-devel@nongnu.org; Thu, 27 Jun 2024 08:39:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1719491947;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=A7G5yMMAULPdfA62qHoyWahrZY1PyXyLJBLzlRLOr6c=;
+ b=YGopjoYFKAWO7mOEeHgO/jFnL9AdOq7Q3ceszI44Ab/Vf0CB8OoVipqRJJl4gsBvVCKmoY
+ c0ltemMdtA5S6EitRkQhl2WBGxPi3TZfIjEt6DFuZi9gK5/cu/Jn9Vbq/ppCoaQdXwSapD
+ 16uMTinMFwO9AQSKnV1MTSKbrVApOYA=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-526-H9cdh-_7N6-XO3jBZldsYg-1; Thu, 27 Jun 2024 08:39:05 -0400
+X-MC-Unique: H9cdh-_7N6-XO3jBZldsYg-1
+Received: by mail-ed1-f71.google.com with SMTP id
+ 4fb4d7f45d1cf-57d34e190d9so873403a12.2
+ for <qemu-devel@nongnu.org>; Thu, 27 Jun 2024 05:39:05 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719491212; x=1720096012;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=oLHP1XkRo0/fL47l0ds5Mlcb6EGB8gd+LBZVQENDmxU=;
- b=H11z7L5kDs+Ux8IcTwXy50DZpTuPdkQcALXFUtVwEonHYcSu6GhFvHV5Ak9XAtMpgD
- aA9hJfxuKimIrc5lMID79Z98BgcU8omxIDUsP/798WGpiWEIFKkekBO/odIudwTiMQvX
- xMAgk8jSkhgVB3EEqE9oQZfqYxm6PlA92ng5N5G8k2JVL4BIm4eqjhb8HQXA6M2D/KZw
- IolqNRbZ5rFwHh4Y04FM+5Qj7iwWmGjvs96Z/KT5NW7vJW6jLdHV0jIH5NTEUEewToB8
- c1rZWyxFeBrj34BZn3XRLBjq0XXUg0tjEhbg+r3SP6ugx3A5jHRTsvdq58MrHJVr6G0l
- FVdg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCX+R8PphgbC0hE0NqsXcPd7RdVKt+VStSoujvdzMhZzg9wt0VFn2OYfXqLl1E5Pk3ryHblU6zGxrbsoCitAmNaQ+h8ORQo=
-X-Gm-Message-State: AOJu0YyQvPhAaSsFZG1qqf1kXIY/UCHWNRKIHTvwBrULltlvB3BpSwrg
- D3yQXHHmivttMOCjvZUdN4b+DYHjvU2kuuUES03p3IANP4S68PSC3jEtFIfSQSg=
-X-Google-Smtp-Source: AGHT+IEWZPZKpgUpuwdJzBpwNReEa78zdxUTr+wW+q5x88ZEd60ZUrhhOIWjfeg9rAzgsVfJXA5C9w==
-X-Received: by 2002:a05:6512:2308:b0:52c:daac:bfba with SMTP id
- 2adb3069b0e04-52ce1ece4f3mr10376100e87.67.1719491212143; 
- Thu, 27 Jun 2024 05:26:52 -0700 (PDT)
-Received: from [192.168.23.175] ([81.185.165.118])
+ d=1e100.net; s=20230601; t=1719491944; x=1720096744;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=A7G5yMMAULPdfA62qHoyWahrZY1PyXyLJBLzlRLOr6c=;
+ b=uTnY0mNgp/HXi2cbJSTVvGVP3mJX/p5HoV56dNVFkRSaD/wiXNdD4raFRRyjKSTb0q
+ 3js9o5eocTnyltNOWrtpXcjZTnUW4hrEHUI3Z+wYgxnvRFQPfSNZR1GicJHqJrtxf2HE
+ 7Ql0t7FbAvR0obLkSlj8/DEYCEI6PGNwDkPeKA08gHhN8lnTkJn8QhpU+9NYx7nnkuad
+ 5EnuHMb2t7K0AX0hV5REq9iosMm3A8LgR7Q24UXdzN7gafbUXawrn3NWWb5kZTSK4Jb8
+ NraTEjnclKmpD/YlE/kO8PoHJg32COnJ8vmwu7wgTkRxuvPjIxdPbeeJDkzfMQb0GLE9
+ 4EKA==
+X-Gm-Message-State: AOJu0YwUrPnrCBB5Sg52NRtX2JfC7lA+wRYQbtosN+xZnLHuhgWbCkpF
+ JSOz4Zo55P3TwkReOSzthl+tN2yk3j9wdKNGCpGkbEfmUBHSjHFVh7uyUjkA5c3o6Hj0GpgBbkM
+ urHl6VUO4wgssg1zxPU5zEBihaz7g+ar7W+Gw7EKH7dQDAdc65pTB
+X-Received: by 2002:a50:99d4:0:b0:57d:34e2:f554 with SMTP id
+ 4fb4d7f45d1cf-57d4bd61381mr12299394a12.11.1719491944432; 
+ Thu, 27 Jun 2024 05:39:04 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEoAEV5PbcMWz7iUEzXYCn+kOXyEyWNrge8IL7aSTsAdqIvcow8YQBcjyBNmx5zU+HFKMY6WA==
+X-Received: by 2002:a50:99d4:0:b0:57d:34e2:f554 with SMTP id
+ 4fb4d7f45d1cf-57d4bd61381mr12299328a12.11.1719491942800; 
+ Thu, 27 Jun 2024 05:39:02 -0700 (PDT)
+Received: from sgarzare-redhat (83.0.40.93.internetdsl.tpnet.pl. [83.0.40.93])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3674357ff4fsm1691598f8f.42.2024.06.27.05.26.46
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 27 Jun 2024 05:26:51 -0700 (PDT)
-Message-ID: <b7a9150f-3271-456b-a4fd-05d77107155a@linaro.org>
-Date: Thu, 27 Jun 2024 14:26:17 +0200
+ 4fb4d7f45d1cf-5855a0f07cdsm382414a12.42.2024.06.27.05.39.00
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 27 Jun 2024 05:39:02 -0700 (PDT)
+Date: Thu, 27 Jun 2024 14:38:56 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Roy Hopkins <roy.hopkins@suse.com>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
+ Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, 
+ "Michael S . Tsirkin" <mst@redhat.com>, Cornelia Huck <cohuck@redhat.com>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Sergio Lopez <slp@redhat.com>, 
+ Eduardo Habkost <eduardo@habkost.net>,
+ Alistair Francis <alistair@alistair23.me>, 
+ Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>, 
+ Igor Mammedov <imammedo@redhat.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
+ Michael Roth <michael.roth@amd.com>, Ani Sinha <anisinha@redhat.com>, 
+ =?utf-8?B?SsO2cmc=?= Roedel <jroedel@suse.com>
+Subject: Re: [PATCH v3 05/15] i386/pc_sysfw: Ensure sysfw flash configuration
+ does not conflict with IGVM
+Message-ID: <irp5co5giwcafxf6jd6vdbzt4r7aeag2ozwkxasex5rqwfeesx@t2m6ssrkckor>
+References: <cover.1718979106.git.roy.hopkins@suse.com>
+ <97a1d5af646b0d6c3d1fe30022bcb61a16e46d95.1718979106.git.roy.hopkins@suse.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 7/9] gdbstub: Make get cpu and hex conversion functions
- non-internal
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-Cc: Gustavo Romero <gustavo.romero@linaro.org>, qemu-devel@nongnu.org,
- richard.henderson@linaro.org, peter.maydell@linaro.org
-References: <20240627041349.356704-1-gustavo.romero@linaro.org>
- <20240627041349.356704-8-gustavo.romero@linaro.org>
- <e0412202-3dd3-465d-8ed9-37ea9af1751b@linaro.org>
- <874j9eprwd.fsf@draig.linaro.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <874j9eprwd.fsf@draig.linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::231;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x231.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <97a1d5af646b0d6c3d1fe30022bcb61a16e46d95.1718979106.git.roy.hopkins@suse.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=sgarzare@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.212,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,97 +109,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 27/6/24 13:05, Alex Bennée wrote:
-> Philippe Mathieu-Daudé <philmd@linaro.org> writes:
-> 
->> On 27/6/24 06:13, Gustavo Romero wrote:
->>> Make the gdb_first_attached_cpu and gdb_hextomem non-internal so they
->>> are not confined to use only in gdbstub.c.
->>> Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
->>> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
->>> ---
->>>    gdbstub/internals.h        | 2 --
->>>    include/exec/gdbstub.h     | 5 +++++
->>>    include/gdbstub/commands.h | 6 ++++++
->>>    3 files changed, 11 insertions(+), 2 deletions(-)
->>
->>
->>> diff --git a/include/exec/gdbstub.h b/include/exec/gdbstub.h
->>> index 1bd2c4ec2a..77e5ec9a5b 100644
->>> --- a/include/exec/gdbstub.h
->>> +++ b/include/exec/gdbstub.h
->>> @@ -135,4 +135,9 @@ void gdb_set_stop_cpu(CPUState *cpu);
->>>    /* in gdbstub-xml.c, generated by scripts/feature_to_c.py */
->>>    extern const GDBFeature gdb_static_features[];
->>>    +/**
->>> + * Return the first attached CPU
->>> + */
->>> +CPUState *gdb_first_attached_cpu(void);
->>
->> Alex, it seems dubious to expose the API like that.
->>
->> IMHO GdbCmdHandler should take a GDBRegisterState argument,
->> then this would become:
->>
->>    CPUState *gdb_first_attached_cpu(GDBRegisterState *s);
-> 
-> Maybe instead of exposing this we can use user_ctx for something? If we
-> look at handle_set_reg/handle_get_reg we can see that passes down
-> gdbserver_state.g_cpu down to the eventual helpers. We could define
-> something like:
-> 
-> --8<---------------cut here---------------start------------->8---
-> fixups to avoid get_first_cpu()
-> 
-> 5 files changed, 25 insertions(+), 18 deletions(-)
-> gdbstub/internals.h        |  1 +
-> include/exec/gdbstub.h     |  5 -----
-> include/gdbstub/commands.h |  3 +++
-> gdbstub/gdbstub.c          |  7 ++++++-
-> target/arm/gdbstub64.c     | 27 +++++++++++++++------------
+On Fri, Jun 21, 2024 at 03:29:08PM GMT, Roy Hopkins wrote:
+>When using an IGVM file the configuration of the system firmware is
+>defined by IGVM directives contained in the file. In this case the user
+>should not configure any pflash devices.
+>
+>This commit skips initialization of the ROM mode when pflash0 is not set
+>then checks to ensure no pflash devices have been configured when using
+>IGVM, exiting with an error message if this is not the case.
+>
+>Signed-off-by: Roy Hopkins <roy.hopkins@suse.com>
+>---
+> hw/i386/pc_sysfw.c | 23 +++++++++++++++++++++--
+> 1 file changed, 21 insertions(+), 2 deletions(-)
+>
+>diff --git a/hw/i386/pc_sysfw.c b/hw/i386/pc_sysfw.c
+>index ef80281d28..39e94ce144 100644
+>--- a/hw/i386/pc_sysfw.c
+>+++ b/hw/i386/pc_sysfw.c
+>@@ -239,8 +239,13 @@ void pc_system_firmware_init(PCMachineState *pcms,
+>     }
+>
+>     if (!pflash_blk[0]) {
+>-        /* Machine property pflash0 not set, use ROM mode */
+>-        x86_bios_rom_init(X86_MACHINE(pcms), "bios.bin", rom_memory, false);
 
+We have the same call, a few lines above if `pci_enabled` is false, 
+should we make the same change there as well?
 
-> @@ -54,6 +54,8 @@ typedef union GdbCmdVariant {
->    * "stop reply" packet. The list of commands that accept such response is
->    * defined at the GDB Remote Serial Protocol documentation. See:
->    * https://sourceware.org/gdb/onlinedocs/gdb/Stop-Reply-Packets.html#Stop-Reply-Packets.
-> + *
-> + * @need_cpu_context: pass current CPU to command via user_ctx.
->    */
->   typedef struct GdbCmdParseEntry {
->       GdbCmdHandler handler;
-> @@ -61,6 +63,7 @@ typedef struct GdbCmdParseEntry {
->       bool cmd_startswith;
->       const char *schema;
->       bool allow_stop_reply;
-> +    bool need_cpu_context;
->   } GdbCmdParseEntry;
->   
->   #define get_cmd_parsers(p) (&g_array_index(p, GdbCmdParseEntry, 0))
-> modified   gdbstub/gdbstub.c
-> @@ -938,6 +938,7 @@ static bool process_string_cmd(const char *data,
->   
->       for (i = 0; i < num_cmds; i++) {
->           const GdbCmdParseEntry *cmd = &cmds[i];
-> +        void *user_ctx = NULL;
->           g_assert(cmd->handler && cmd->cmd);
->   
->           if ((cmd->cmd_startswith && !startswith(data, cmd->cmd)) ||
-> @@ -952,8 +953,12 @@ static bool process_string_cmd(const char *data,
->               }
->           }
->   
-> +        if (cmd->need_cpu_context) {
-> +            user_ctx = (void *) gdbserver_state.g_cpu;
-
-LGTM.
-
-> +        }
-> +
->           gdbserver_state.allow_stop_reply = cmd->allow_stop_reply;
-> -        cmd->handler(params, NULL);
-> +        cmd->handler(params, user_ctx);
->           return true;
->       }
+>+        /*
+>+         * Machine property pflash0 not set, use ROM mode unless using 
+>IGVM,
+>+         * in which case the firmware must be provided by the IGVM file.
+>+         */
+>+        if (!MACHINE(pcms)->igvm) {
+>+            x86_bios_rom_init(X86_MACHINE(pcms), "bios.bin", rom_memory, false);
+>+        }
+>     } else {
+>         if (kvm_enabled() && !kvm_readonly_mem_enabled()) {
+>             /*
+>@@ -256,6 +261,20 @@ void pc_system_firmware_init(PCMachineState *pcms,
+>     }
+>
+>     pc_system_flash_cleanup_unused(pcms);
+>+
+>+    /*
+>+     * The user should not have specified any pflash devices when using IGVM
+>+     * to configure the guest.
+>+     */
+>+    if (MACHINE(pcms)->igvm) {
+>+        for (i = 0; i < ARRAY_SIZE(pcms->flash); i++) {
+>+            if (pcms->flash[i]) {
+>+                error_report("pflash devices cannot be configured when "
+>+                             "using IGVM");
+>+                exit(1);
+>+            }
+>+        }
+>+    }
+> }
+>
+> void x86_firmware_configure(hwaddr gpa, void *ptr, int size)
+>-- 
+>2.43.0
+>
 
 
