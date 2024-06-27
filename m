@@ -2,73 +2,141 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDD7691AD20
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jun 2024 18:48:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FE9F91AD26
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jun 2024 18:49:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sMsI3-0007pS-NH; Thu, 27 Jun 2024 12:48:07 -0400
+	id 1sMsIK-0001pT-TH; Thu, 27 Jun 2024 12:48:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dg@treblig.org>)
- id 1sMsGv-0006Y8-8j; Thu, 27 Jun 2024 12:47:00 -0400
-Received: from mx.treblig.org ([2a00:1098:5b::1])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sMsIH-0001bF-Bc
+ for qemu-devel@nongnu.org; Thu, 27 Jun 2024 12:48:21 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dg@treblig.org>)
- id 1sMsGs-0000V2-Hv; Thu, 27 Jun 2024 12:46:56 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
- ; s=bytemarkmx;
- h=Content-Type:MIME-Version:Message-ID:Subject:From:Date:From
- :Subject; bh=odkanXfrPw63vz4sKB+Q4JKAVIo0yPDND0DCfJzeHQw=; b=Poekx9w2Vy/ZjfL4
- xwNU9VMr3n00i4Hzx7sGBDkrN4kEcKK4ixcFs3Nv52TUS0Zc8SPx3FcPBs4T5d5my9iluQ8InzjAw
- f/tsMF/GWGhSKF6o1KR/J+48GuB02fXxMN6cb5BItQ1olGKw8ZinmVGLicZ1/2ISSGf/2WND63BQh
- 7tkhiQ3YCH8jSK1zQ4aPMa5zO0KGrTNTkmBoDfPsxAM3h7k+8P7aJX1KH/+ue7tLGwmo0Rs+tc8mB
- j5mxGFF/c+Hv++K0HeGRo3iJSTwaHfpxA/fbaYQSwrPx+cJ3+rn9sKsUG4pjTiF+sRgRXplK9GEFm
- gYZcJ8m7JxG/fa/hXw==;
-Received: from dg by mx.treblig.org with local (Exim 4.96)
- (envelope-from <dg@treblig.org>) id 1sMsGj-008iwA-0R;
- Thu, 27 Jun 2024 16:46:45 +0000
-Date: Thu, 27 Jun 2024 16:46:45 +0000
-From: "Dr. David Alan Gilbert" <dave@treblig.org>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
- Cornelia Huck <cohuck@redhat.com>, David Hildenbrand <david@redhat.com>,
- Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- qemu-s390x@nongnu.org, devel@lists.libvirt.org,
- Eric Farman <farman@linux.ibm.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eric Blake <eblake@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
- Anton Johansson <anjo@rev.ng>, qemu-arm <qemu-arm@nongnu.org>
-Subject: Re: [PATCH 0/4] hw/s390x: Alias @dump-skeys -> @dump-s390-skey and
- deprecate
-Message-ID: <Zn2XdXo-HPihHPum@gallifrey>
-References: <20240530074544.25444-1-philmd@linaro.org>
- <cb4028fc-9596-47f3-9468-f8912dd48aed@redhat.com>
- <Zl20rAjHLJlZkwxE@redhat.com> <Zl4tgFuAdjU2bst6@gallifrey>
- <87y17lcni7.fsf@pond.sub.org>
- <fcb6ff5d-fcad-4eb1-9b64-0a8477954a0d@linaro.org>
- <875xup81u9.fsf@pond.sub.org> <ZmBPhxW85fqQWGSE@gallifrey>
- <87zfrts7a3.fsf@pond.sub.org>
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sMsI3-0001Gb-9n
+ for qemu-devel@nongnu.org; Thu, 27 Jun 2024 12:48:21 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1719506885;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=rZt77AtMVcEfKzbOM1A7aUOSO3Z0yBNv56LTDVaitTk=;
+ b=gB6VlQSno/zVZnezgcrzlvzAdyEH0pJOl7Qe/Oe5GFGNEqujXUHerXy2LPsjBz6v8wpcrX
+ C5yRXQImdIdbCjMdXJqnSKk26R98OYEA5jygDxJ45+jfJG6ZUjb6SVM3VLDyM9S81SAjSy
+ BozAIKE5G9Yh4WfgQ10iZCVU9srTrMU=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-303-QkQSZ3nJOi6TLLIP6JTIhA-1; Thu, 27 Jun 2024 12:48:03 -0400
+X-MC-Unique: QkQSZ3nJOi6TLLIP6JTIhA-1
+Received: by mail-qv1-f69.google.com with SMTP id
+ 6a1803df08f44-6b551a62a5eso82290736d6.2
+ for <qemu-devel@nongnu.org>; Thu, 27 Jun 2024 09:48:03 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1719506883; x=1720111683;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=rZt77AtMVcEfKzbOM1A7aUOSO3Z0yBNv56LTDVaitTk=;
+ b=wa2WZETnTSBcB9SZpEpTqYXLF0RNOhLtKiYHzDDqI3hgf5TfKewqc0V6SMjE7sLOap
+ E14fcKhhjGeVsI5R+unOiPrBaOPHrfiAZMxJhiYczBU/MsaY0Q+R3oj5o04jpoFftzPo
+ P7CZTldrYtV6Zwx6lXir4Be+J5DqpWmJ+ZITFYxVzVnV3UWnaxXAAhSaZSincymk9onh
+ kB/bJXyV8LzvofgGrN4GxJqSxhy431SlNJQqMoPdxtVs6JvYOagX/zHkiSNGR8oLDpnM
+ rT7eJV0Gt0iLejtOUsRR77yxtuBom3MvSnqe5aYf5mvI0Kvx/Awgu1Qx+dJDIA69ICtF
+ v/Nw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXklN5GvezNOv6HrEyuiXYhIgrONGNddbl1+RMJTBjbjvk+91AeyOgpaH7jM4vvmgUd5V7TwhwMQHo6p1YXF+Dzu35Fnhs=
+X-Gm-Message-State: AOJu0Yxnnm99IQp+KQj+YWeBX+AQ/gRG1UBj3fCayiPwPW8uIg5oHd4l
+ 51X4Aiw/jAarqseH9IjzHOCcKnzEXuII0WuPgXJB+sEdTUTMu85NOLYg1Gz7MJk5mW8D+3+5maG
+ L7RuQt9+aCMA7IBp66wwPGFr0V68+ZtQ76c6FAH8Ju9reZ+hCGl6a
+X-Received: by 2002:a0c:e0d3:0:b0:6b5:3013:a673 with SMTP id
+ 6a1803df08f44-6b540bf67d3mr144561246d6.57.1719506883355; 
+ Thu, 27 Jun 2024 09:48:03 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEUvVrUWZ8IXJE/ZHVquIh2yvKvtpZckDH2B+PpXacntR3VJRLjISAAhr4QAriufNgctq9gEg==
+X-Received: by 2002:a0c:e0d3:0:b0:6b5:3013:a673 with SMTP id
+ 6a1803df08f44-6b540bf67d3mr144561016d6.57.1719506883049; 
+ Thu, 27 Jun 2024 09:48:03 -0700 (PDT)
+Received: from [192.168.0.4] (ip-109-43-177-66.web.vodafone.de.
+ [109.43.177.66]) by smtp.gmail.com with ESMTPSA id
+ 6a1803df08f44-6b59e5f212fsm113156d6.79.2024.06.27.09.47.59
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 27 Jun 2024 09:48:02 -0700 (PDT)
+Message-ID: <c11ff772-2b85-40ec-b577-a6d996be015d@redhat.com>
+Date: Thu, 27 Jun 2024 18:47:56 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 15/17] tests/qtest: Disable npcm7xx_sdhci tests using
+ hardcoded RCA
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: qemu-block@nongnu.org, Laurent Vivier <lvivier@redhat.com>,
+ Tyrone Ting <kfting@nuvoton.com>, Bin Meng <bmeng.cn@gmail.com>,
+ Hao Wu <wuhaotsh@google.com>, Francisco Iglesias
+ <francisco.iglesias@amd.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, qemu-arm@nongnu.org,
+ Joel Stanley <joel@jms.id.au>, Sai Pavan Boddu <sai.pavan.boddu@amd.com>,
+ devel@lists.libvirt.org, Luc Michel <luc.michel@amd.com>,
+ Shengtan Mao <stmao@google.com>
+References: <20240627162232.80428-1-philmd@linaro.org>
+ <20240627162232.80428-16-philmd@linaro.org>
+From: Thomas Huth <thuth@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <20240627162232.80428-16-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <87zfrts7a3.fsf@pond.sub.org>
-X-Chocolate: 70 percent or better cocoa solids preferably
-X-Operating-System: Linux/6.1.0-21-amd64 (x86_64)
-X-Uptime: 16:46:03 up 50 days, 4:00, 1 user, load average: 0.00, 0.00, 0.00
-User-Agent: Mutt/2.2.12 (2023-09-09)
-Received-SPF: pass client-ip=2a00:1098:5b::1; envelope-from=dg@treblig.org;
- helo=mx.treblig.org
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.212,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,139 +152,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-* Markus Armbruster (armbru@redhat.com) wrote:
-> "Dr. David Alan Gilbert" <dave@treblig.org> writes:
+On 27/06/2024 18.22, Philippe Mathieu-DaudÃ© wrote:
+> Disable tests using 0x4567 hardcoded RCA otherwise when
+> using random RCA we get:
 > 
-> > * Markus Armbruster (armbru@redhat.com) wrote:
-> >> Philippe Mathieu-Daudé <philmd@linaro.org> writes:
-> >> 
-> >> > Hi Daniel, Dave, Markus & Thomas.
-> >> >
-> >> > On 4/6/24 06:58, Markus Armbruster wrote:
-> >> >> "Dr. David Alan Gilbert" <dave@treblig.org> writes:
-> >> >>> * Daniel P. Berrangé (berrange@redhat.com) wrote:
-> >> >>>> On Fri, May 31, 2024 at 06:47:45AM +0200, Thomas Huth wrote:
-> >> >>>>> On 30/05/2024 09.45, Philippe Mathieu-Daudé wrote:
-> >> >>>>>> We are trying to unify all qemu-system-FOO to a single binary.
-> >> >>>>>> In order to do that we need to remove QAPI target specific code.
-> >> >>>>>>
-> >> >>>>>> @dump-skeys is only available on qemu-system-s390x. This series
-> >> >>>>>> rename it as @dump-s390-skey, making it available on other
-> >> >>>>>> binaries. We take care of backward compatibility via deprecation.
-> >> >>>>>>
-> >> >>>>>> Philippe Mathieu-Daudé (4):
-> >> >>>>>>     hw/s390x: Introduce the @dump-s390-skeys QMP command
-> >> >>>>>>     hw/s390x: Introduce the 'dump_s390_skeys' HMP command
-> >> >>>>>>     hw/s390x: Deprecate the HMP 'dump_skeys' command
-> >> >>>>>>     hw/s390x: Deprecate the QMP @dump-skeys command
-> >> >>>>>
-> >> >>>>> Why do we have to rename the command? Just for the sake of it? I think
-> >> >>>>> renaming HMP commands is maybe ok, but breaking the API in QMP is something
-> >> >>>>> you should consider twice.
-> >> >
-> >> > I'm looking at how to include this command in the new "single binary".
-> >> >
-> >> > Markus explained in an earlier series, just expanding this command as
-> >> > stub to targets that don't implement it is not backward compatible and
-> >> > breaks QMP introspection. Currently on s390x we get a result, on other
-> >> > targets the command doesn't exist. If we add a stubs, then other targets
-> >> > return something (even if it is an empty list), confusing management
-> >> > interface.
-> >> 
-> >> Loss of introspection precision is a concern, not a hard "no".
-> >> 
-> >> We weigh all the concerns, and pick a solution we hate the least :)
-> >> 
-> >> > So this approach use to deprecate process to include a new command
-> >> > which behaves differently on non-s390x targets.
-> >> >
-> >> > If we don't care for this particular case, better. However I'd still
-> >> > like to discuss this approach for other target-specific commands.
-> >> >
-> >> >> PRO rename: the command's tie to S390 is them immediately obvious, which
-> >> >> may be useful when the command becomes available in qemu-systems capable
-> >> >> of running other targets.
-> >> >>
-> >> >> CON rename: users need to adapt.
-> >> >>
-> >> >> What are the users?  Not libvirt, as far as I can tell.
-> >> >
-> >> > Years ago we said, "all HMP must be based on QMP".
-> >> 
-> >> In practice, it's closer to "HMP must be base on QMP when the
-> >> functionality does or should exist in QMP."
-> >> 
-> >> >                                                    Now we realize HMP
-> >> > became stable because QMP-exposed, although not consumed externally...
-> >> 
-> >> I'm afraid I didn't get this part.
-> >> 
-> >> > Does the concept of "internal QMP commands" makes sense for HMP debug
-> >> > ones? (Looking at a way to not expose them). We could use the "x-"
-> >> > prefix to not care about stable / backward compat, but what is the point
-> >> > of exposing to QMP commands that will never be accessed there?
-> >> >
-> >> >>>> That was going to be my question too. Seems like its possible to simply
-> >> >>>> stub out the existing command for other targets.
-> >> >>
-> >> >> That's going to happen whether we rename the commands or not.
-> >> >> 
-> >> >>> Are these commands really supposed to be stable, or are they just debug
-> >> >>> commands?  If they are debug, then add the x- and don't worry too much.
-> >> >
-> >> > OK.
-> >> >
-> >> >> docs/devel/qapi-code-gen.rst:
-> >> >>
-> >> >>      Names beginning with ``x-`` used to signify "experimental".  This
-> >> >>      convention has been replaced by special feature "unstable".
-> >> >>
-> >> >> Feature "unstable" is what makes something unstable, and is what
-> >> >> machines should check.
-> >> >
-> >> > What I mentioned earlier could be 'Feature "internal" or "debug"'.
-> >> 
-> >> What's the difference to "unstable"?
-> >
-> > It should be clear *why* something is marked x- - something that's
-> > marked 'x-' because the feature is still in development is expected to shake
-> > out at some point, and the interface designed so it can.
-> > (and at some point the developer should get a prod to be asked whethere the
-> > x- can be removed).
-> > That's different from it permenantly being x- because it's expected to
-> > change as the needs of the people debugging change.
+>    ERROR:../../tests/qtest/npcm7xx_sdhci-test.c:69:write_sdread: assertion failed: (ret == len)
+>    not ok /arm/npcm7xx_sdhci/read_sd - ERROR:../../tests/qtest/npcm7xx_sdhci-test.c:69:write_sdread: assertion failed: (ret == len)
+>    Bail out!
 > 
-> When you add special feature 'unstable', the tooling insists you cover
-> it in the doc comment.  Review should then ensure the doc comment
-> explains why it is unstable.  Examples:
+> See https://lore.kernel.org/qemu-devel/37f83be9-deb5-42a1-b704-14984351d803@linaro.org/
 > 
->    # @unstable: Member @x-perf is experimental.
+> Signed-off-by: Philippe Mathieu-DaudÃ© <philmd@linaro.org>
+> ---
+> Cc: Hao Wu <wuhaotsh@google.com>
+> Cc: Shengtan Mao <stmao@google.com>
+> Cc: Tyrone Ting <kfting@nuvoton.com>
+> ---
+>   tests/qtest/npcm7xx_sdhci-test.c | 7 +++++++
+>   1 file changed, 7 insertions(+)
 > 
->    # @unstable: This command is meant for debugging.
+> diff --git a/tests/qtest/npcm7xx_sdhci-test.c b/tests/qtest/npcm7xx_sdhci-test.c
+> index 5d68540e52..6a42b142ad 100644
+> --- a/tests/qtest/npcm7xx_sdhci-test.c
+> +++ b/tests/qtest/npcm7xx_sdhci-test.c
+> @@ -44,6 +44,7 @@ static QTestState *setup_sd_card(void)
+>       sdhci_cmd_regs(qts, NPCM7XX_MMC_BA, 0, 0, 0x41200000, 0, (41 << 8));
+>       sdhci_cmd_regs(qts, NPCM7XX_MMC_BA, 0, 0, 0, 0, SDHC_ALL_SEND_CID);
+>       sdhci_cmd_regs(qts, NPCM7XX_MMC_BA, 0, 0, 0, 0, SDHC_SEND_RELATIVE_ADDR);
+> +    g_test_skip("hardcoded 0x4567 card address");
 
-OK, that makes some sense.
+This g_test_skip here does not make too much sense (since you're doing it in 
+the caller site, too) ... could you please replace it with a proper comment 
+why this code needs to be reworked? Thanks!
 
-Dave
+  Thomas
 
-> > Dave
-> >
-> >> >> An "x-" prefix may still be useful for humans.  Machines should *not*
-> >> >> key on the prefix.  It's unreliable anyway: InputBarrierProperties
-> >> >> member @x-origin is stable despite it's name.  Renames to gain or lose
-> >> >> the prefix may or may not be worth the bother.
-> >> >
-> >> > Could follow the rules and be renamed as "origin-coordinate-x".
-> >> 
-> >> I don't think it's worth the trouble.  The "x-" prefix is now strictly
-> >> for humans, and humans can figure out what the x- in @x-origin,
-> >> @y-origin means.
-> >> 
-> >> [...]
-> >> 
-> 
--- 
- -----Open up your eyes, open up your mind, open up your code -------   
-/ Dr. David Alan Gilbert    |       Running GNU/Linux       | Happy  \ 
-\        dave @ treblig.org |                               | In Hex /
- \ _________________________|_____ http://www.treblig.org   |_______/
+
+>       sdhci_cmd_regs(qts, NPCM7XX_MMC_BA, 0, 0, 0x45670000, 0,
+>                      SDHC_SELECT_DESELECT_CARD);
+>   
+> @@ -76,6 +77,9 @@ static void test_read_sd(void)
+>   {
+>       QTestState *qts = setup_sd_card();
+>   
+> +    g_test_skip("hardcoded 0x4567 card address used in setup_sd_card()");
+> +    return;
+> +
+>       write_sdread(qts, "hello world");
+>       write_sdread(qts, "goodbye");
+>   
+> @@ -108,6 +112,9 @@ static void test_write_sd(void)
+>   {
+>       QTestState *qts = setup_sd_card();
+>   
+> +    g_test_skip("hardcoded 0x4567 card address used in setup_sd_card()");
+> +    return;
+> +
+>       sdwrite_read(qts, "hello world");
+>       sdwrite_read(qts, "goodbye");
+>   
+
 
