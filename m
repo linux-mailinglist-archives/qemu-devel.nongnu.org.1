@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0451E91A81D
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jun 2024 15:40:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FD7F91A823
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jun 2024 15:41:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sMpL1-0001KA-JQ; Thu, 27 Jun 2024 09:38:59 -0400
+	id 1sMpL5-0001ND-KL; Thu, 27 Jun 2024 09:39:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sMpKy-0001FF-0Z
- for qemu-devel@nongnu.org; Thu, 27 Jun 2024 09:38:56 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ id 1sMpL4-0001Mx-6n
+ for qemu-devel@nongnu.org; Thu, 27 Jun 2024 09:39:02 -0400
+Received: from mail-pj1-x1035.google.com ([2607:f8b0:4864:20::1035])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sMpKw-0006Rj-Ci
- for qemu-devel@nongnu.org; Thu, 27 Jun 2024 09:38:55 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-1faad2f1967so4741795ad.0
- for <qemu-devel@nongnu.org>; Thu, 27 Jun 2024 06:38:53 -0700 (PDT)
+ id 1sMpL2-0006Tq-Jx
+ for qemu-devel@nongnu.org; Thu, 27 Jun 2024 09:39:01 -0400
+Received: by mail-pj1-x1035.google.com with SMTP id
+ 98e67ed59e1d1-2c7bf925764so6363939a91.0
+ for <qemu-devel@nongnu.org>; Thu, 27 Jun 2024 06:39:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1719495533; x=1720100333;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1719495539; x=1720100339;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=jOjlX532fbSm/MfzxqkUiGMJdKmyu/k4tTVPVBmckwI=;
- b=p3qr0+SkmQk1jz7lZKJzBUqbMtbpK0mKS84hCbY8OIrNu4ryc/kwJ34HxyUK6UGGos
- Y0fqPcQBSitSEMI0PvER7pxpHlnqGTR/hH3SOrSBe7RusQ0uWT/Fo6YQAefIGvAg5amz
- yn/0Au5TJoeWbA1HzWHUbzPc6ygAgCiczONHwqCtycYjRD3g6vfHCXQVIFJFX4mhvELS
- Zpf2FZDI0L44Tzgq6/AXC3tnf2Y4OMoqPnvI1tk2SggsTxhkWtyr5EpJGwo1duUk43yj
- mCIBlXF/6uOprrzO7s6VV/pA2YPV01YDOKGjyQlSRfObhgPXrUknnkVa1WDv0lUlyXjz
- g5TQ==
+ :reply-to; bh=6PV0Jwd3ow6/n1FaesIzFULRk/ni0qv5jyS/+wLDXMU=;
+ b=QcqaHWYjlNZDngp0PqSn+pMq3x0BilHZQthv2tTqvbr9+YCyvO0Truu3HBqc/7fPG5
+ udps2PfuB9SJ/OrsaYqirQApm79m/dQguD6E8XTKC8aL9IT/lQUJHGzvvaSeRrDiMd4R
+ NektLqDoP/2J8pTbMWtCsfj3q1whoXT1SVNPqfBF/imkpTYr+ZTuz6GHbpkVe3Bkcamo
+ RyE4CPjHFoDI1roXhquShMJrW0hYlpxSPi8+5IFigPDFBxjF/WrsJJZJ32T0y73JU7Qk
+ FVYgvPABJBvZeKf6NClZw+G3pTEqQ3rpZfNme9CvSALwIeSp7mKlNA3FOp8x7E3eoq+3
+ Xbpw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719495533; x=1720100333;
+ d=1e100.net; s=20230601; t=1719495539; x=1720100339;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=jOjlX532fbSm/MfzxqkUiGMJdKmyu/k4tTVPVBmckwI=;
- b=N0Uu5nmhuc7O+W0rosJOy8VrDZnKoDhvBzRbFk8qM7XcgC8UIkZB3j0+qybIugGr6+
- 8NVCNiZXS4gp9UMXaO32O+QwqAh1Nj8395CoId26TMdlq6m4l7Th4961tzXOqjoBcgvl
- wCy7fZmOVyVoS4EiRpuIeI+DuavQyYNPN1IPS/uZzkPgmmKDitSNogmGlSgCCPaAO/m0
- X6V+b9S1KbjZY+kA5TqUugLHMvipZVLFgDF+/pEnpn6TODoG7y6QLPPq2RMtREBzd3wX
- p1C/CIIZe2FSTQKFkKk0p9fcA6HruGXoy/MrwEslpNBkIGS5ZK6emppiLluN6siswzmt
- 9yVw==
-X-Gm-Message-State: AOJu0YxsE/OmyY4hg1M2MzWmfRDjOMAydeHKDoSYygHZP1AiJ5llvYX3
- CyyDZyyskx8RD4+rl5VjoQnqMD4j+PCWHIs/NGiWVjz1bvwV+CmDM19elBBfnGM=
-X-Google-Smtp-Source: AGHT+IEsd/pK7793+mXsdWMSRBASbbLo0NH3GV736hPrqauCSFkiwnjE8CzZdSLfrh8RDV6qe4Qb4Q==
-X-Received: by 2002:a17:902:ea05:b0:1f8:62a1:b6af with SMTP id
- d9443c01a7336-1faad4c7cc1mr26078615ad.21.1719495532682; 
- Thu, 27 Jun 2024 06:38:52 -0700 (PDT)
+ bh=6PV0Jwd3ow6/n1FaesIzFULRk/ni0qv5jyS/+wLDXMU=;
+ b=SqtWNKWPWfU5wjWnCAbgLZKr0OKa044QR7cKSdnPusb4KvS+RPfGUTOAFu9pJBzhvk
+ oyy05TVVtkiQMKX1hLNd/LOFZzF9xyUleuQN+Sp0W2YQP28oA3k9De6wqCDcAqbjD401
+ E81NjXNBXX4oYznEz14PLjYiY2YEJkWOWLqyH0n5jGnJPunwl4boyPSsIRj0kcmoSEp9
+ t1OQK/vyz3nQtAzVJ2VpDKk9XY49j2eh0uhlBFHZjrbrVyCMLr3NspbNHGUjXSLu4+fq
+ kW3OomzclMvw4ukpORmw4LMo5nMEkftFnW/5+5DEW2QWBRy5qqnl1hZWfbeQEMG/Ggma
+ swXQ==
+X-Gm-Message-State: AOJu0YwMsdrzL5Eb0jbfsQ8YXmKE/6c8GkCf5Cg7gXNmE66XG5jLCB1A
+ 4CBUOsj33BD9c9sIFnUpU11LBK9n9Q1cvxnvTqpJTVbBycRZRl7f6eIzU1jcVT4=
+X-Google-Smtp-Source: AGHT+IFhbuBpEabR6Yyi6TNRReI6E/qCCZTqe1ej20jTUBAg55/M7mIawYiSZUH0E8xhDFfhuRfkqg==
+X-Received: by 2002:a17:90a:917:b0:2c7:c914:69 with SMTP id
+ 98e67ed59e1d1-2c86141cc09mr12260587a91.43.1719495539229; 
+ Thu, 27 Jun 2024 06:38:59 -0700 (PDT)
 Received: from localhost ([2400:4050:a840:1e00:9ac7:6d57:2b16:6932])
  by smtp.gmail.com with UTF8SMTPSA id
- d9443c01a7336-1faac999bfcsm13185575ad.234.2024.06.27.06.38.47
+ 98e67ed59e1d1-2c8d7e63936sm3609235a91.19.2024.06.27.06.38.54
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 27 Jun 2024 06:38:52 -0700 (PDT)
+ Thu, 27 Jun 2024 06:38:58 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Thu, 27 Jun 2024 22:37:50 +0900
-Subject: [PATCH v2 07/15] hw/virtio: Free vqs after vhost_dev_cleanup()
+Date: Thu, 27 Jun 2024 22:37:51 +0900
+Subject: [PATCH v2 08/15] migration: Free removed SaveStateEntry
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240627-san-v2-7-750bb0946dbd@daynix.com>
+Message-Id: <20240627-san-v2-8-750bb0946dbd@daynix.com>
 References: <20240627-san-v2-0-750bb0946dbd@daynix.com>
 In-Reply-To: <20240627-san-v2-0-750bb0946dbd@daynix.com>
 To: Eduardo Habkost <eduardo@habkost.net>, 
@@ -82,8 +82,8 @@ To: Eduardo Habkost <eduardo@habkost.net>,
 Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, qemu-ppc@nongnu.org, 
  Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.14-dev-fd6e3
-Received-SPF: none client-ip=2607:f8b0:4864:20::634;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x634.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::1035;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pj1-x1035.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -108,30 +108,24 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 This fixes LeakSanitizer warnings.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Reviewed-by: Peter Xu <peterx@redhat.com>
 ---
- hw/virtio/vhost-user-base.c | 2 ++
+ migration/savevm.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/hw/virtio/vhost-user-base.c b/hw/virtio/vhost-user-base.c
-index a83167191ee6..124ef536206f 100644
---- a/hw/virtio/vhost-user-base.c
-+++ b/hw/virtio/vhost-user-base.c
-@@ -223,6 +223,7 @@ static void vub_disconnect(DeviceState *dev)
- {
-     VirtIODevice *vdev = VIRTIO_DEVICE(dev);
-     VHostUserBase *vub = VHOST_USER_BASE(vdev);
-+    struct vhost_virtqueue *vhost_vqs = vub->vhost_dev.vqs;
+diff --git a/migration/savevm.c b/migration/savevm.c
+index c621f2359ba3..10b261823b7c 100644
+--- a/migration/savevm.c
++++ b/migration/savevm.c
+@@ -874,6 +874,8 @@ int vmstate_replace_hack_for_ppc(VMStateIf *obj, int instance_id,
  
-     if (!vub->connected) {
-         return;
-@@ -231,6 +232,7 @@ static void vub_disconnect(DeviceState *dev)
- 
-     vub_stop(vdev);
-     vhost_dev_cleanup(&vub->vhost_dev);
-+    g_free(vhost_vqs);
- 
-     /* Re-instate the event handler for new connections */
-     qemu_chr_fe_set_handlers(&vub->chardev,
+     if (se) {
+         savevm_state_handler_remove(se);
++        g_free(se->compat);
++        g_free(se);
+     }
+     return vmstate_register(obj, instance_id, vmsd, opaque);
+ }
 
 -- 
 2.45.2
