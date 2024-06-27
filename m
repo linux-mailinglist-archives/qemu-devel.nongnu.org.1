@@ -2,90 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6258A91A8A6
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jun 2024 16:07:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3201891A8A7
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jun 2024 16:07:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sMplx-0001z6-Vp; Thu, 27 Jun 2024 10:06:50 -0400
+	id 1sMpmR-00024U-TU; Thu, 27 Jun 2024 10:07:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sMplt-0001yU-2E
- for qemu-devel@nongnu.org; Thu, 27 Jun 2024 10:06:45 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sMplp-0003gM-OZ
- for qemu-devel@nongnu.org; Thu, 27 Jun 2024 10:06:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719497200;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=omeEP+EChxLrWKFVAw/fyi3wTf+uHg0OC6QMr9MwfXE=;
- b=Rnl78sHExA3x095E2zjAiq7+fmHQ6wy8JwGce2zI/67e2YIOGwA35BPa2AJ6HgPRzOmRqQ
- aB0eNr9Er5JLGQnWqI8AFEf6hiFOArAcADBURazqMZ77DPeZWhY2pIzWJkfTzKpQhYQKmj
- PQcOe2GhS3pWSQLYHtAlBYfTKXsoUTk=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-241-po5dssx8P_iw_M6lOTZb0w-1; Thu, 27 Jun 2024 10:06:39 -0400
-X-MC-Unique: po5dssx8P_iw_M6lOTZb0w-1
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-a7194d0fd53so339423466b.0
- for <qemu-devel@nongnu.org>; Thu, 27 Jun 2024 07:06:39 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1sMpmP-00024I-DL
+ for qemu-devel@nongnu.org; Thu, 27 Jun 2024 10:07:17 -0400
+Received: from mail-oo1-xc2a.google.com ([2607:f8b0:4864:20::c2a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1sMpm8-0003j0-Vw
+ for qemu-devel@nongnu.org; Thu, 27 Jun 2024 10:07:17 -0400
+Received: by mail-oo1-xc2a.google.com with SMTP id
+ 006d021491bc7-5c21ba58227so1331943eaf.0
+ for <qemu-devel@nongnu.org>; Thu, 27 Jun 2024 07:07:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1719497220; x=1720102020;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Nuo3oGa7sW4ew3IXvrB1WXnfJy174fcdEXZL3iqFbso=;
+ b=aV6umN4A6/0W/e1aJKP/KTUKaZnRibs/bMYnsm/slJVuIVNKNWC/fwojJU/hg2sA8O
+ ULWQuzZSzE9T9dhw/x8dhwbvhTEn5+qTD1GLybIn+ITMyybDyIs0ImHhdPEoDXH6u7vK
+ K6na6gkzjvDrXQ8aWZH6oOTDrgtcMbGigbuTDAqxKx5Hg3/cx6r+qgJR4+7ljgEGZPTu
+ Mpwu2zULwRhMqwrMPeD4k3QHIBI8J/mzsNT55CcbqeVzdYFO1Qp3cU/It/iX1uGYOjzA
+ oCUIBy6rwQCSc7lQR0fwsydZC6yttCRYhD24QOrLL3Uajv7TKhoVmSoM0mLJJZXGG+C9
+ K+Aw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719497197; x=1720101997;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=omeEP+EChxLrWKFVAw/fyi3wTf+uHg0OC6QMr9MwfXE=;
- b=s+rpn+Ek8cACVEIcl3pHnk/g8t0YmsrvN3fS0mpA6Ijl022xMt2azaZrq27+eyEnbH
- pmg4E4eMYvDW+9MyYDtj1d4eV2CecfYP9ux3D8mNSNxAVOJ6Uqzunlyy2BJfmxPoeAKt
- GWC5OoN/EbvW6vSy9Ks57uF9AxmOguWjsVcppSMuh/xY0ly1YcZCW4T19czMXe+AQHMg
- buyXB5PuOJOpt9vzdnNckCMkc+Cn6F5ygpg4oWJgpbYfnKH9Hpm8Ef2FH5cd0fuHUKvO
- ec3pzYWWT9NAlCga0RRcmQyw3Lipt0rPGZoAtPCouY2/JvuYlVKjsSEDjzegOq3IN/mu
- /BmA==
-X-Gm-Message-State: AOJu0YzSiQFJUnyvzigU8nkK/2TUJcKptQ+D4uDfyZpAFR741H3vyqO7
- 0UBs9ZSbN84n9s+9v4bCKKSZHYadohZt8TUSSnkMHQTKWH1O2BILvTyLgawTjU2yOdaHYArvybt
- zGWr7y2yNhZCHf9e/qI3AsH7XNc//oBGfZVcgyinj/CAhtJNPWUp2LRSSEFV08rtXEO3+l1ZQRs
- tf/ixViRyUISa8NRZnDZOJqztjxTpiYOXvJzl4
-X-Received: by 2002:a17:907:a80e:b0:a72:7e1e:62e6 with SMTP id
- a640c23a62f3a-a727e1e65cemr588647166b.63.1719497197496; 
- Thu, 27 Jun 2024 07:06:37 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFXINIDstjLifrWxu81EqWugJsfQepKF8HP2z4IC1V66fe5A8OwrMmsGOzzEXfxqy8bG82MrA==
-X-Received: by 2002:a17:907:a80e:b0:a72:7e1e:62e6 with SMTP id
- a640c23a62f3a-a727e1e65cemr588643866b.63.1719497196893; 
- Thu, 27 Jun 2024 07:06:36 -0700 (PDT)
-Received: from avogadro.local ([151.48.235.205])
+ d=1e100.net; s=20230601; t=1719497220; x=1720102020;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Nuo3oGa7sW4ew3IXvrB1WXnfJy174fcdEXZL3iqFbso=;
+ b=Nxah7Rm3/sB2bbhEU3AHQuWrU0w68fTNFo0YNKj9uMosXpgILUWipSjKFsFax1Vax7
+ 4WsRpmy48d2k/uuRKbVKzbdc5CGnLuKPe9kIDri+9zRga/p4jqrKy53OjT34xFVmm2Zr
+ G4PJRzTKSqvOYQkq3qoM7dWVQVAi92l3RzoNpb91+P6klV7j/YlIWISzOUmBOb81FvFo
+ mhReZJItEW5Spngc7cQpwxhXA/eG0zRAykmcKzn2cU/t1UHkZKIFY+qJ7wK0uYauHYMC
+ udv4bH2Zcu78A0fvcgcN4f9FEocVOL1R9Cs/WBcvEs3XYI1BfyyqrQsnxrTaqZRM1WJE
+ mZGQ==
+X-Gm-Message-State: AOJu0YxyEpmo9UfNAmImcvNbVHtt3eGeUvsHAzcuy4lNmW9K/w1z3kfa
+ 4mczVyDDbR7WNYdRVQsDEEPNrqGzw52IafvEUIBZ17znmHMQ4ZYRH+sBnjz0DZk=
+X-Google-Smtp-Source: AGHT+IGL6WXwMwwBnuhg+DhKcuAXKgHHur/2uAVncPYfMkEpNNJt4zsReHeOhnDUaPjmRRfXJWZ/4g==
+X-Received: by 2002:a05:6358:5921:b0:1a6:3b1f:799 with SMTP id
+ e5c5f4694b2df-1a63b1f12c0mr368479355d.27.1719497219820; 
+ Thu, 27 Jun 2024 07:06:59 -0700 (PDT)
+Received: from ?IPV6:2400:4050:a840:1e00:9ac7:6d57:2b16:6932?
+ ([2400:4050:a840:1e00:9ac7:6d57:2b16:6932])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a72a66fc8d2sm2224866b.53.2024.06.27.07.06.35
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 27 Jun 2024 07:06:35 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Xiaoyao Li <xiaoyao.li@intel.com>,
-	John Allen <john.allen@amd.com>
-Subject: [PATCH 2/2] target/i386: drop AMD machine check bits from Intel CPUID
-Date: Thu, 27 Jun 2024 16:06:28 +0200
-Message-ID: <20240627140628.1025317-3-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240627140628.1025317-1-pbonzini@redhat.com>
-References: <20240627140628.1025317-1-pbonzini@redhat.com>
+ 41be03b00d2f7-72745d074adsm977559a12.36.2024.06.27.07.06.55
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 27 Jun 2024 07:06:59 -0700 (PDT)
+Message-ID: <6fb59b79-88d4-44d9-bf57-127d6eada90a@daynix.com>
+Date: Thu, 27 Jun 2024 23:06:54 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 05/14] ppc/vof: Fix unaligned FDT property access
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>, John Snow <jsnow@redhat.com>,
+ BALATON Zoltan <balaton@eik.bme.hu>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Alexey Kardashevskiy <aik@ozlabs.ru>, "Michael S. Tsirkin" <mst@redhat.com>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, qemu-ppc@nongnu.org
+References: <20240626-san-v1-0-f3cc42302189@daynix.com>
+ <20240626-san-v1-5-f3cc42302189@daynix.com>
+ <efdfa803-775c-4aa2-b7c4-f016dafe9a88@linaro.org>
+ <9fdabbde-1ae8-4f78-af20-b4383b7705fc@daynix.com>
+ <4b713ad2-1f92-49d1-88b9-6185a1b50062@linaro.org>
+Content-Language: en-US
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <4b713ad2-1f92-49d1-88b9-6185a1b50062@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -22
-X-Spam_score: -2.3
-X-Spam_bar: --
-X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.212,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: none client-ip=2607:f8b0:4864:20::c2a;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-oo1-xc2a.google.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,59 +111,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The recent addition of the SUCCOR bit to kvm_arch_get_supported_cpuid()
-causes the bit to be visible when "-cpu host" VMs are started on Intel
-processors.
+On 2024/06/27 23:02, Philippe Mathieu-Daudé wrote:
+> On 27/6/24 15:12, Akihiko Odaki wrote:
+>> On 2024/06/26 21:03, Philippe Mathieu-Daudé wrote:
+>>> On 26/6/24 13:06, Akihiko Odaki wrote:
+>>>> FDT properties are aligned by 4 bytes, not 8 bytes.
+>>>>
+>>>> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+>>>> ---
+>>>>   hw/ppc/vof.c | 2 +-
+>>>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>>>
+>>>> diff --git a/hw/ppc/vof.c b/hw/ppc/vof.c
+>>>> index e3b430a81f4f..b5b6514d79fc 100644
+>>>> --- a/hw/ppc/vof.c
+>>>> +++ b/hw/ppc/vof.c
+>>>> @@ -646,7 +646,7 @@ static void vof_dt_memory_available(void *fdt, 
+>>>> GArray *claimed, uint64_t base)
+>>>>       mem0_reg = fdt_getprop(fdt, offset, "reg", &proplen);
+>>>>       g_assert(mem0_reg && proplen == sizeof(uint32_t) * (ac + sc));
+>>>>       if (sc == 2) {
+>>>> -        mem0_end = be64_to_cpu(*(uint64_t *)(mem0_reg + 
+>>>> sizeof(uint32_t) * ac));
+>>>> +        mem0_end = ldq_be_p(mem0_reg + sizeof(uint32_t) * ac);
+>>>>       } else {
+>>>>           mem0_end = be32_to_cpu(*(uint32_t *)(mem0_reg + 
+>>>> sizeof(uint32_t) * ac));
+>>>
+>>> OK but please keep API uses consistent, so convert other uses please.
+>>
+>> This is the only unaligned access.
+> 
+> What I mean with consistent API use is either use the be64_to_cpu and
+> be32_to_cpu API, or ldq_be_p and ldl_be_p. A mix of both makes review
+> more confusing.
 
-While this should in principle be harmless, it's not tidy and we don't
-even know for sure that it doesn't cause any guest OS to take unexpected
-paths.  Since x86_cpu_get_supported_feature_word() can return different
-different values depending on the guest, adjust it to hide the SUCCOR
-bit if the guest has non-AMD vendor.
-
-Suggested-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: John Allen <john.allen@amd.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- target/i386/cpu.c | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
-
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index deb58670651..f3e9b543682 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -6064,8 +6064,10 @@ uint64_t x86_cpu_get_supported_feature_word(X86CPU *cpu, FeatureWord w)
-     } else {
-         return ~0;
-     }
-+
-+    switch (w) {
- #ifndef TARGET_X86_64
--    if (w == FEAT_8000_0001_EDX) {
-+    case FEAT_8000_0001_EDX:
-         /*
-          * 32-bit TCG can emulate 64-bit compatibility mode.  If there is no
-          * way for userspace to get out of its 32-bit jail, we can leave
-@@ -6077,6 +6079,18 @@ uint64_t x86_cpu_get_supported_feature_word(X86CPU *cpu, FeatureWord w)
-         r &= ~unavail;
-         break;
- #endif
-+
-+    case FEAT_8000_0007_EBX:
-+        if (cpu && !IS_AMD_CPU(&cpu->env)) {
-+            /* Disable AMD machine check architecture for Intel CPU.  */
-+            r = 0;
-+        }
-+        break;
-+
-+    default:
-+        break;
-+    }
-+
-     if (cpu && cpu->migratable) {
-         r &= x86_cpu_get_migratable_flags(w);
-     }
--- 
-2.45.2
-
+The desired semantics are different in these two cases so I believe it 
+is natural to use different APIs; ldq_be_p() for an unaligned 64-bit 
+access and be32_to_cpu(*(uint32_t *)) for an aligned 32-bit access.
 
