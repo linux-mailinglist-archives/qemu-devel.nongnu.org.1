@@ -2,77 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03B0891A35E
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jun 2024 12:03:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0590691A358
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jun 2024 12:02:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sMlwd-0004zo-Gy; Thu, 27 Jun 2024 06:01:35 -0400
+	id 1sMlwf-00050V-3L; Thu, 27 Jun 2024 06:01:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sMlwU-0004xw-Hv
- for qemu-devel@nongnu.org; Thu, 27 Jun 2024 06:01:29 -0400
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+ id 1sMlwb-0004ze-3h
+ for qemu-devel@nongnu.org; Thu, 27 Jun 2024 06:01:34 -0400
+Received: from mail-ot1-x32d.google.com ([2607:f8b0:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sMlwQ-0001aV-30
- for qemu-devel@nongnu.org; Thu, 27 Jun 2024 06:01:26 -0400
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-706683e5249so4122001b3a.2
- for <qemu-devel@nongnu.org>; Thu, 27 Jun 2024 03:01:21 -0700 (PDT)
+ id 1sMlwX-0001cs-CH
+ for qemu-devel@nongnu.org; Thu, 27 Jun 2024 06:01:32 -0400
+Received: by mail-ot1-x32d.google.com with SMTP id
+ 46e09a7af769-6f8d0a00a35so7005869a34.2
+ for <qemu-devel@nongnu.org>; Thu, 27 Jun 2024 03:01:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1719482480; x=1720087280; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1719482486; x=1720087286; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=H5ID2rbibjMInT22rN33D3iPwNHGXHXZ0Ds9aS1mUWE=;
- b=IIwW7J0oFO2Ypk2fokrX5msUC+4J1nG2T+XyDpAKKFNCFu0cHIzZnCKh7kD5vFiaE/
- AhTGGpLiQofXyb7IKp8cAYY/TmJD+7GqQDvSzRHoxN3wKEHoGKYMfHJbFfLTx+3EdM7u
- UzDarUBnnw9FO346qoBlHLg4k50AO9wNXLRoguh34dyyo5L2kyCrRqTgg4z76q3hVNlQ
- /CBoSujkwcDL7+vUXI1LFf4NFyN7UsKAaZGR/mYDIOrQutbIP/bkalze16sxkO+6TFu2
- 5C72eWKpHSanhoZ2yBWJbDuLtFehD1/AkM1U218m6iUnJCoVkTmhGSS58Iq5+56fc9w6
- b1sw==
+ bh=Q+eeNlFB8GixGjITkNWps0WtpsIa1zNDxCGuytiuKIQ=;
+ b=SHVsJgK3DcmSAKs6Tcc+sUEiYbSnMdx6IIdW3qtIlDUt+v/QCQjLie4EW/hry4jlWo
+ a0/VA2c7RtpHsSsd67XFLanKHfjTcrLBjThF0Dzp0/jvAhS/o98D4R+mRJ3o2oWUIB/m
+ ViMkdFULeV0UR6xRCgGs+cjPyVCUxrvosQGlFhukVO5pXZMaH+U+w/UZ+ry4iiKNEjoG
+ DT7uO6rcFjh1fETFYJRELpr0Bd9/l5HxxaoKUkMSKuctMhJQ8ur5nqb0J/RoIoN/PUrz
+ BaGqz9MAy6Bi05rC0LPZXns+Rzo22BO3yBzIntOgPr9W25r+fcviU3OvTKhM0mgJ1pxE
+ Ri/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719482480; x=1720087280;
+ d=1e100.net; s=20230601; t=1719482486; x=1720087286;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=H5ID2rbibjMInT22rN33D3iPwNHGXHXZ0Ds9aS1mUWE=;
- b=cqHH8IURnmsLsha2BUcV2LR0wL2QvzJN9r6sUPxzRqs5n9tOOBgCnQVUz4iX0kozwI
- fFTVdwHdeGbsv6YVTgww1PsPZM4nNlFBPpFOxxmGUFqm9Dn0guAcEZFzxLNMF+s60jc2
- p9c1bjAhpoixalgAJ7G2TFCuPeQJYvCq4yvHTUfk1dYYNLgycyrTPgTOTV5cZQcEEVYB
- 7fipK+67jGFaR/haQmJl0UNxiiiQASnduo8ZtfoUS0sp90fON0inUj2KeTBjcY+WFnf4
- sloKET1zBJHvep2ZjFQAqgHkSPnbJ1TkFqcfipvxLkuki8B8v9CAsUDVE+kZ9qBATfl6
- FTVA==
-X-Gm-Message-State: AOJu0YyKZXmTMaCdYvQd0dre8vJ3Tthpa5brN5AAu324brM0rsVCLPVH
- gGosdk7N/lIpbY+tdc4sknk4oylixjQ8RYN+YbwGNRw3UT43zJxEJUw/W59Q
-X-Google-Smtp-Source: AGHT+IHs3VdUTvBR9DQAZMIQqQEGAS9aoS06IajRAyP+mTZpC2UoJNSAG68Kw5vlbqQRL/4d1CCzgQ==
-X-Received: by 2002:a05:6a00:2289:b0:706:b179:dc5d with SMTP id
- d2e1a72fcca58-706b179de78mr2408270b3a.25.1719482480283; 
- Thu, 27 Jun 2024 03:01:20 -0700 (PDT)
+ bh=Q+eeNlFB8GixGjITkNWps0WtpsIa1zNDxCGuytiuKIQ=;
+ b=necpxBhmowDSJ8Vxyjhsp4I2KwPwrGit+h1huy/5I3/mQqExEwUa8ktz0FgC6hiVaP
+ y/UgSC8PYGRswWQgT6Do6y5qKAVC+lbtVgfq5bSdPGgazNOYGZ5vC1nD05GGieQZsSK+
+ VShCtYREFZItk+Ii6HDoHqJvTNQA5S6EC/TlM1B+HNzC0koAci1W/u4diUB+UfeONIZJ
+ hvCpEFE5ufuRkdmU5FM8/WiIapqf61djzvcSdKUlykkTM7SF/LP6NZ+4aiuKxlQoJgFt
+ JHACEO0O9wa2RBVwEfssTE2AEZACR0aRQ8HK7/z1BzM1Bg98xqIcDhS8T6bR+pZ9Mwmc
+ Uq5w==
+X-Gm-Message-State: AOJu0YxRMePJzNIeqQj3JBbHansAffMFPZZKh1HVMEjuuO+5zoG7eLrR
+ kgQN19mnQv/9+iZp9fi/ibzaJ4643K4h6c9FPOQ420RrtuYVn4SsfMEpaVLj
+X-Google-Smtp-Source: AGHT+IFQnutwQGVZAxVvlm79DohdPZj6MHxRC9K9rwOoZofaWpmovVStQXhnQRuGJaj35md+aEREMQ==
+X-Received: by 2002:a05:6870:1491:b0:254:b7d9:2dd0 with SMTP id
+ 586e51a60fabf-25cfcfa10f2mr14767976fac.55.1719482486276; 
+ Thu, 27 Jun 2024 03:01:26 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-706b4a07326sm932431b3a.111.2024.06.27.03.01.18
+ d2e1a72fcca58-706b4a07326sm932431b3a.111.2024.06.27.03.01.23
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 27 Jun 2024 03:01:19 -0700 (PDT)
+ Thu, 27 Jun 2024 03:01:25 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Conor Dooley <conor@kernel.org>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 05/32] hw/riscv/virt.c: add aplic nodename helper
-Date: Thu, 27 Jun 2024 20:00:26 +1000
-Message-ID: <20240627100053.150937-6-alistair.francis@wdc.com>
+Subject: [PULL 07/32] hw/riscv/virt.c: aplic DT: add 'qemu,
+ aplic' to 'compatible'
+Date: Thu, 27 Jun 2024 20:00:28 +1000
+Message-ID: <20240627100053.150937-8-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240627100053.150937-1-alistair.francis@wdc.com>
 References: <20240627100053.150937-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
- envelope-from=alistair23@gmail.com; helo=mail-pf1-x435.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32d;
+ envelope-from=alistair23@gmail.com; helo=mail-ot1-x32d.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -98,75 +100,46 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-We'll change the aplic DT nodename in the next patch and the name is
-hardcoded in 2 different functions. Create a helper to change a single
-place later.
+The DT docs for riscv,aplic [1] predicts a 'qemu,aplic' enum in the
+'compatible' property.
 
-While we're at it, in create_fdt_socket_aplic(), move 'aplic_name'
-inside the conditional to avoid allocating a string that won't be used
-when socket == NULL.
+[1] Documentation/devicetree/bindings/interrupt-controller/riscv,aplic.yaml
 
+Reported-by: Conor Dooley <conor@kernel.org>
+Fixes: e6faee65855b ("hw/riscv: virt: Add optional AIA APLIC support to virt machine")
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20240531202759.911601-3-dbarboza@ventanamicro.com>
+Message-ID: <20240531202759.911601-5-dbarboza@ventanamicro.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- hw/riscv/virt.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ hw/riscv/virt.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
 diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
-index e903f05851..569d9def24 100644
+index a803c33e21..746df3f294 100644
 --- a/hw/riscv/virt.c
 +++ b/hw/riscv/virt.c
-@@ -588,6 +588,12 @@ static void create_fdt_imsic(RISCVVirtState *s, const MemMapEntry *memmap,
- 
- }
- 
-+/* Caller must free string after use */
-+static char *fdt_get_aplic_nodename(unsigned long aplic_addr)
-+{
-+    return g_strdup_printf("/soc/aplic@%lx", aplic_addr);
-+}
-+
- static void create_fdt_one_aplic(RISCVVirtState *s, int socket,
-                                  unsigned long aplic_addr, uint32_t aplic_size,
-                                  uint32_t msi_phandle,
-@@ -597,7 +603,7 @@ static void create_fdt_one_aplic(RISCVVirtState *s, int socket,
-                                  bool m_mode, int num_harts)
- {
-     int cpu;
--    g_autofree char *aplic_name = NULL;
-+    g_autofree char *aplic_name = fdt_get_aplic_nodename(aplic_addr);
+@@ -606,6 +606,9 @@ static void create_fdt_one_aplic(RISCVVirtState *s, int socket,
+     g_autofree char *aplic_name = fdt_get_aplic_nodename(aplic_addr);
      g_autofree uint32_t *aplic_cells = g_new0(uint32_t, num_harts * 2);
      MachineState *ms = MACHINE(s);
++    static const char * const aplic_compat[2] = {
++        "qemu,aplic", "riscv,aplic"
++    };
  
-@@ -606,7 +612,6 @@ static void create_fdt_one_aplic(RISCVVirtState *s, int socket,
-         aplic_cells[cpu * 2 + 1] = cpu_to_be32(m_mode ? IRQ_M_EXT : IRQ_S_EXT);
+     for (cpu = 0; cpu < num_harts; cpu++) {
+         aplic_cells[cpu * 2 + 0] = cpu_to_be32(intc_phandles[cpu]);
+@@ -613,7 +616,9 @@ static void create_fdt_one_aplic(RISCVVirtState *s, int socket,
      }
  
--    aplic_name = g_strdup_printf("/soc/aplic@%lx", aplic_addr);
      qemu_fdt_add_subnode(ms->fdt, aplic_name);
-     qemu_fdt_setprop_string(ms->fdt, aplic_name, "compatible", "riscv,aplic");
+-    qemu_fdt_setprop_string(ms->fdt, aplic_name, "compatible", "riscv,aplic");
++    qemu_fdt_setprop_string_array(ms->fdt, aplic_name, "compatible",
++                                  (char **)&aplic_compat,
++                                  ARRAY_SIZE(aplic_compat));
      qemu_fdt_setprop_cell(ms->fdt, aplic_name, "#address-cells",
-@@ -648,7 +653,6 @@ static void create_fdt_socket_aplic(RISCVVirtState *s,
-                                     uint32_t *aplic_phandles,
-                                     int num_harts)
- {
--    g_autofree char *aplic_name = NULL;
-     unsigned long aplic_addr;
-     MachineState *ms = MACHINE(s);
-     uint32_t aplic_m_phandle, aplic_s_phandle;
-@@ -674,9 +678,8 @@ static void create_fdt_socket_aplic(RISCVVirtState *s,
-                          aplic_s_phandle, 0,
-                          false, num_harts);
- 
--    aplic_name = g_strdup_printf("/soc/aplic@%lx", aplic_addr);
--
-     if (!socket) {
-+        g_autofree char *aplic_name = fdt_get_aplic_nodename(aplic_addr);
-         platform_bus_add_all_fdt_nodes(ms->fdt, aplic_name,
-                                        memmap[VIRT_PLATFORM_BUS].base,
-                                        memmap[VIRT_PLATFORM_BUS].size,
+                           FDT_APLIC_ADDR_CELLS);
+     qemu_fdt_setprop_cell(ms->fdt, aplic_name,
 -- 
 2.45.2
 
