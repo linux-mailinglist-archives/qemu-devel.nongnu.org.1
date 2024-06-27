@@ -2,74 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02B1E919E0E
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jun 2024 06:14:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A07B919E18
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jun 2024 06:15:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sMgWX-0006Cx-4R; Thu, 27 Jun 2024 00:14:17 -0400
+	id 1sMgWf-0006Dp-PM; Thu, 27 Jun 2024 00:14:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1sMgWT-0006Ch-GF
- for qemu-devel@nongnu.org; Thu, 27 Jun 2024 00:14:13 -0400
-Received: from mail-oa1-x2c.google.com ([2001:4860:4864:20::2c])
+ id 1sMgWV-0006Cq-Cy
+ for qemu-devel@nongnu.org; Thu, 27 Jun 2024 00:14:15 -0400
+Received: from mail-yb1-xb33.google.com ([2607:f8b0:4864:20::b33])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1sMgWQ-00007m-V3
- for qemu-devel@nongnu.org; Thu, 27 Jun 2024 00:14:12 -0400
-Received: by mail-oa1-x2c.google.com with SMTP id
- 586e51a60fabf-25c9ef2701fso4163226fac.1
- for <qemu-devel@nongnu.org>; Wed, 26 Jun 2024 21:14:09 -0700 (PDT)
+ id 1sMgWS-00007s-Rk
+ for qemu-devel@nongnu.org; Thu, 27 Jun 2024 00:14:14 -0400
+Received: by mail-yb1-xb33.google.com with SMTP id
+ 3f1490d57ef6-e034356faefso468588276.2
+ for <qemu-devel@nongnu.org>; Wed, 26 Jun 2024 21:14:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719461648; x=1720066448; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=ZSeOzfkYDlIJW2pScs5aQr5R1YLYoQV0rtpLul9xrBM=;
- b=j8exl/Azdvg21qK44WMdtEzzLasq68lMN/qjJQ+2feoGHRiK2t5aFWk31onePINQQo
- twcbTO9BiyKJZq4u37qfylu6xysJc8Gdb5L+6P2fghplpfq/TJwvx9yPjNyvMChvr4bf
- +jO4HCm2P1M2WzIeC73N3RC9/iXWb0csziSXLVanUntpaNaA3d0Gupz9WIK877pv06fb
- tzehRXH7gmz9w9pX4JdlBSrd6PVkoKQ5g6L7XZKBiiu9++LqMc3kHZGdDRpHAy8OvMBG
- dMFHbS7Fw3ClNjXttcz10HG4AK7ElfwGyHUwmDhCzzUI1/vhtwR+at4S8Y8Bpw18I/+p
- +d5Q==
+ d=linaro.org; s=google; t=1719461651; x=1720066451; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=PsonJ1zRH/+YC/a6OR7EHJ04b9L1NQ9IXkQt5iZNFyk=;
+ b=lwZGvDGvnMT5dcSe5ZVkpY35l9Ag1vu3Im3x+v9pu261/auvAOj3F888B1Ct8r2ave
+ zGNtw8kKgPrv/g1KEJlyPaALltS2HSGrIHPUHzEEiyUGuLOqqADrL+sb0JI7mgCZcwjH
+ P8TuxFwXN6aX3QqvncE6NQtbXDH2AWsZ9h6sHifHd8YGUxK+LA321sGSZVh4X9vJvfYO
+ FtMUBDzKToEvw5ibTlPI3xedbozeO3P5hZwUronmYEBWrsx/9YFYGf3XuvK1ch+81OKD
+ 7FftdN2GYtujErUqe7DjYCS91/GMd8EOf4rxe9Jv4bdWZZP9vGGknvtEF3JijaPmDOUi
+ PHUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719461648; x=1720066448;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=ZSeOzfkYDlIJW2pScs5aQr5R1YLYoQV0rtpLul9xrBM=;
- b=J1+fLI2URnTan5j8mIZ+N5svOA3zRRsHOoAL/dZhReUZ+kXLG9SzKSQM12WrJD7z/m
- UXpmWJ533tjqjikRHF6p4sCu44+V+TAs7o+NmvFvNvS3vODZyx7MV0ygNct5UtN49ipb
- bkEshkcEAXiDV5sEjVlLa+nju1XkDI3Woh+8wP+qxAcTQNUiKt2WsQWKJvIT7IZxdPFL
- WTEEcTEviNrrPEOJeUHvUcJBBl+2SdjCqG1EwgRXXD8PvgNm6SwNelweD0glgK0U4ASf
- 50VXczdjewuk5aQL1gh4DCZCHoS6heXboH40W7JYaRzgbQTRqRDdysLtLUVaRrANDGMF
- 9flA==
-X-Gm-Message-State: AOJu0YzjnvGHdKtVLa8fYmz0neOt1GFOejvE8Ev5Vo9dj5U15xzeHSvW
- i5UYs6+uFLRxVHyEOAhW3mU6vD6dqTSU4107IRgzYYKijes3N+M7pD9o8QVD6lzCl3/8w7ijgqt
- fhk0=
-X-Google-Smtp-Source: AGHT+IEiVDTEoJIDk/xGqaaqrQM1BoxfZqiFCKTz2E5YClrA+nN7em3tFjFwWsx1LEuAFcrcVY15Og==
-X-Received: by 2002:a05:6870:d611:b0:25c:c73a:dce3 with SMTP id
- 586e51a60fabf-25d06ebbc04mr13131406fac.54.1719461648549; 
- Wed, 26 Jun 2024 21:14:08 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1719461651; x=1720066451;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=PsonJ1zRH/+YC/a6OR7EHJ04b9L1NQ9IXkQt5iZNFyk=;
+ b=CJ/lvFlaXNdW0MVUS7QeOF1TPzB2mtPeL4JXKqHIiQaudnbL6YOFzbd49uxwKN2Nrp
+ B64X4jrtqp1iO8wZGyQSdg7fRzSSiCEvp6FDId4BS0QuIbJ3DSMWQyAfeWHYyKS8EbDr
+ hKuSDTINB9Rijekz1w3X0kBNSl1Ul46yGztO+AKDX9gYbTOpr1Wyc/xTkVnBSrsoNGBX
+ +oR2CItg+oTo2zXcREcf+Lg1N7xQ4+X0G/BXVOPFmBAdAQa4ewRCLwm4JpWaCnVxldUD
+ zpzjgo52qmLZgjdBGf9rVw+GpEkejvDolGchf8ilomhDUESPwHepOQ38fm2dg0noHDMJ
+ A57Q==
+X-Gm-Message-State: AOJu0YwLv/DS1eZPVSK83mDBBN7MUHs+zdWIuTTpSNFqFxGHu27n9aAa
+ kVBmHq8r6+33yEZnEszW8cBo60jQJ3AddZwqY5LXCGtejj6yJsd1qfuxVPgXZguszka0BanOZwH
+ HbpQ=
+X-Google-Smtp-Source: AGHT+IHbUkNbJilfkggE9rzWsoJ7grNBtCuhr1PyYK+vckwfJ4YyUO2Ht6d+UmhDc/X0LGVl8+zj2A==
+X-Received: by 2002:a25:8045:0:b0:e02:b9ac:1486 with SMTP id
+ 3f1490d57ef6-e02fc3769b8mr11695462276.57.1719461651228; 
+ Wed, 26 Jun 2024 21:14:11 -0700 (PDT)
 Received: from amd.. ([2804:7f0:b401:391e:3e7c:3fff:fe7a:e83b])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-72748e8539fsm273045a12.66.2024.06.26.21.14.05
+ 41be03b00d2f7-72748e8539fsm273045a12.66.2024.06.26.21.14.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 26 Jun 2024 21:14:07 -0700 (PDT)
+ Wed, 26 Jun 2024 21:14:10 -0700 (PDT)
 From: Gustavo Romero <gustavo.romero@linaro.org>
 To: qemu-devel@nongnu.org, philmd@linaro.org, alex.bennee@linaro.org,
  richard.henderson@linaro.org
 Cc: peter.maydell@linaro.org,
 	gustavo.romero@linaro.org
-Subject: [PATCH v5 0/9] Add MTE stubs for aarch64 user mode
-Date: Thu, 27 Jun 2024 04:13:40 +0000
-Message-Id: <20240627041349.356704-1-gustavo.romero@linaro.org>
+Subject: [PATCH v5 1/9] gdbstub: Clean up process_string_cmd
+Date: Thu, 27 Jun 2024 04:13:41 +0000
+Message-Id: <20240627041349.356704-2-gustavo.romero@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240627041349.356704-1-gustavo.romero@linaro.org>
+References: <20240627041349.356704-1-gustavo.romero@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::2c;
- envelope-from=gustavo.romero@linaro.org; helo=mail-oa1-x2c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b33;
+ envelope-from=gustavo.romero@linaro.org; helo=mail-yb1-xb33.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,110 +95,120 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patchset adds the stubs necessary to support GDB memory tagging
-commands on QEMU aarch64 user mode.
+Change 'process_string_cmd' to return true on success and false on
+failure, instead of 0 and -1.
 
-These new stubs handle the qIsAddressTagged, qMemTag, and QMemTag
-packets, which allow GDB memory tagging subcommands 'check',
-'print-allocation-tag', and 'set-allocation-tag' to work. The remaining
-memory tagging commands ('print-logical-tag' and 'with-logical-tag')
-will also work, but they don't rely on any stub because they perform
-local operations.
+Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ gdbstub/gdbstub.c | 40 ++++++++++++++++++++--------------------
+ 1 file changed, 20 insertions(+), 20 deletions(-)
 
-Since the memory tagging stubs are not common to all architectures, this
-patchset also introduces three functions: gdb_extend_qsupported_features,
-gdb_extend_query_table, and gdb_extend_set_table. These functions can be
-used to extend the target-specific 'qSupported' feature string and the
-handlers for the 'q' (query) and 'Q' (set) packets. These new functions
-are used to add the MTE stubs for the aarch64 gdbstub.
+diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
+index b3574997ea..37314b92e5 100644
+--- a/gdbstub/gdbstub.c
++++ b/gdbstub/gdbstub.c
+@@ -962,14 +962,14 @@ static inline int startswith(const char *string, const char *pattern)
+   return !strncmp(string, pattern, strlen(pattern));
+ }
  
-Note that this patchset requires a GDB that supports the
-qIsAddressTagged packet (recently added to GDB), so the gdbstub MTE
-tests introduced by it must be run using GDB's master branch, since the
-GDB in the distros hasn't picked up the change yet.
-
-Once GDB is built and installed locally, the tests can be exercised, for
-example, this way:
-
-make GDB=~/.local/bin/gdb run-tcg-tests-aarch64-linux-user -j 32
-
-v2:
- - Addressed comments from Richard, Phil, and Alex
- - Made the series more granular by splitting it into more patches
- - Moved gdbstub command-specific structs and functions into a new header, gdbstub/commands.h
- - Fixed exception in allocation_tag_mem_probe()
- - Used MTE helpers ({store,load}_tag1 and allocation_tag_mem_probe) in the MTE stubs
- - Factored out MTE code to set TCF0, avoiding duplication (both prctl and gdbstub code use it)
- - Hoisted sscanf() out of loop in handle_Q_memtag stub and use gdb_hextomem instead
- - Rebased this series on Alex's gdb/next branch
+-static int process_string_cmd(const char *data,
+-                              const GdbCmdParseEntry *cmds, int num_cmds)
++static bool process_string_cmd(const char *data,
++                               const GdbCmdParseEntry *cmds, int num_cmds)
+ {
+     int i;
+     g_autoptr(GArray) params = g_array_new(false, true, sizeof(GdbCmdVariant));
  
-v3:
- - Moved stubs to gdbstub64.c
- - Fixed build for BSD target
- - Fixed license tags in the new header files
- - Use of only function prototypes in mte_helpers.h
- - Added prefix to arm_set_mte_tcf0 and marked it inline
- - Moved target/arm/mte.h -> target/arm/tcg/mte_user_helper.h
- - Cleaned up leftover in mte-8 test
+     if (!cmds) {
+-        return -1;
++        return false;
+     }
  
-v4:
- - Don't run tests when GDB < 15 (i.e., lacks most recent MTE changes) (Alex's review)
- - Added g_assert()s in new gdb_extend_* API functions to ensure all CPUs have the same features/query/set tables (Alex's review)
- - Move load_tag1 and store_tag1 to mte_helpers.h marking them as "static inline" (Richard's review)
- - Move mte_user_helper.h to linux-user/aarch64/ and include it from gdbstub64.c (Richard's review)
-
-v5:
- - Made load_tag1, store_tag1, and arm_set_mte_tcf0 non-inlined for code modularity (Phil's review)
- - MTE tests: GDB_HAS_MTE is now only set for aarch64 targets (Alex's suggestion)
+     for (i = 0; i < num_cmds; i++) {
+@@ -984,16 +984,16 @@ static int process_string_cmd(const char *data,
+         if (cmd->schema) {
+             if (cmd_parse_params(&data[strlen(cmd->cmd)],
+                                  cmd->schema, params)) {
+-                return -1;
++                return false;
+             }
+         }
  
+         gdbserver_state.allow_stop_reply = cmd->allow_stop_reply;
+         cmd->handler(params, NULL);
+-        return 0;
++        return true;
+     }
  
- Cheers,
- Gustavo
-
-Gustavo Romero (9):
-  gdbstub: Clean up process_string_cmd
-  gdbstub: Move GdbCmdParseEntry into a new header file
-  gdbstub: Add support for target-specific stubs
-  target/arm: Fix exception case in allocation_tag_mem_probe
-  target/arm: Make some MTE helpers widely available
-  target/arm: Factor out code for setting MTE TCF0 field
-  gdbstub: Make get cpu and hex conversion functions non-internal
-  gdbstub: Add support for MTE in user mode
-  tests/tcg/aarch64: Add MTE gdbstub tests
-
- configs/targets/aarch64-linux-user.mak |   2 +-
- configure                              |   4 +
- gdb-xml/aarch64-mte.xml                |  11 ++
- gdbstub/gdbstub.c                      | 254 +++++++++++++++----------
- gdbstub/internals.h                    |  24 ---
- gdbstub/syscalls.c                     |   7 +-
- gdbstub/system.c                       |   7 +-
- gdbstub/user-target.c                  |  25 +--
- gdbstub/user.c                         |   7 +-
- include/exec/gdbstub.h                 |   5 +
- include/gdbstub/commands.h             | 102 ++++++++++
- linux-user/aarch64/meson.build         |   2 +
- linux-user/aarch64/mte_user_helper.c   |  34 ++++
- linux-user/aarch64/mte_user_helper.h   |  25 +++
- linux-user/aarch64/target_prctl.h      |  22 +--
- target/arm/cpu.c                       |   1 +
- target/arm/gdbstub.c                   |  46 +++++
- target/arm/gdbstub64.c                 | 220 +++++++++++++++++++++
- target/arm/internals.h                 |   6 +
- target/arm/tcg/mte_helper.c            |  48 +----
- target/arm/tcg/mte_helper.h            |  66 +++++++
- tests/tcg/aarch64/Makefile.target      |  14 +-
- tests/tcg/aarch64/gdbstub/test-mte.py  |  86 +++++++++
- tests/tcg/aarch64/mte-8.c              |  98 ++++++++++
- 24 files changed, 911 insertions(+), 205 deletions(-)
- create mode 100644 gdb-xml/aarch64-mte.xml
- create mode 100644 include/gdbstub/commands.h
- create mode 100644 linux-user/aarch64/mte_user_helper.c
- create mode 100644 linux-user/aarch64/mte_user_helper.h
- create mode 100644 target/arm/tcg/mte_helper.h
- create mode 100644 tests/tcg/aarch64/gdbstub/test-mte.py
- create mode 100644 tests/tcg/aarch64/mte-8.c
-
+-    return -1;
++    return false;
+ }
+ 
+ static void run_cmd_parser(const char *data, const GdbCmdParseEntry *cmd)
+@@ -1007,7 +1007,7 @@ static void run_cmd_parser(const char *data, const GdbCmdParseEntry *cmd)
+ 
+     /* In case there was an error during the command parsing we must
+     * send a NULL packet to indicate the command is not supported */
+-    if (process_string_cmd(data, cmd, 1)) {
++    if (!process_string_cmd(data, cmd, 1)) {
+         gdb_put_packet("");
+     }
+ }
+@@ -1523,9 +1523,9 @@ static void handle_v_commands(GArray *params, void *user_ctx)
+         return;
+     }
+ 
+-    if (process_string_cmd(get_param(params, 0)->data,
+-                           gdb_v_commands_table,
+-                           ARRAY_SIZE(gdb_v_commands_table))) {
++    if (!process_string_cmd(get_param(params, 0)->data,
++                            gdb_v_commands_table,
++                            ARRAY_SIZE(gdb_v_commands_table))) {
+         gdb_put_packet("");
+     }
+ }
+@@ -1889,15 +1889,15 @@ static void handle_gen_query(GArray *params, void *user_ctx)
+         return;
+     }
+ 
+-    if (!process_string_cmd(get_param(params, 0)->data,
+-                            gdb_gen_query_set_common_table,
+-                            ARRAY_SIZE(gdb_gen_query_set_common_table))) {
++    if (process_string_cmd(get_param(params, 0)->data,
++                           gdb_gen_query_set_common_table,
++                           ARRAY_SIZE(gdb_gen_query_set_common_table))) {
+         return;
+     }
+ 
+-    if (process_string_cmd(get_param(params, 0)->data,
+-                           gdb_gen_query_table,
+-                           ARRAY_SIZE(gdb_gen_query_table))) {
++    if (!process_string_cmd(get_param(params, 0)->data,
++                            gdb_gen_query_table,
++                            ARRAY_SIZE(gdb_gen_query_table))) {
+         gdb_put_packet("");
+     }
+ }
+@@ -1908,13 +1908,13 @@ static void handle_gen_set(GArray *params, void *user_ctx)
+         return;
+     }
+ 
+-    if (!process_string_cmd(get_param(params, 0)->data,
+-                            gdb_gen_query_set_common_table,
+-                            ARRAY_SIZE(gdb_gen_query_set_common_table))) {
++    if (process_string_cmd(get_param(params, 0)->data,
++                           gdb_gen_query_set_common_table,
++                           ARRAY_SIZE(gdb_gen_query_set_common_table))) {
+         return;
+     }
+ 
+-    if (process_string_cmd(get_param(params, 0)->data,
++    if (!process_string_cmd(get_param(params, 0)->data,
+                            gdb_gen_set_table,
+                            ARRAY_SIZE(gdb_gen_set_table))) {
+         gdb_put_packet("");
 -- 
 2.34.1
 
