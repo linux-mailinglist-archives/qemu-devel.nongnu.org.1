@@ -2,80 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D619E919E28
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jun 2024 06:28:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22010919E0F
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jun 2024 06:14:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sMgk7-000745-6I; Thu, 27 Jun 2024 00:28:19 -0400
+	id 1sMgW8-00069J-Sb; Thu, 27 Jun 2024 00:13:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gregorhaas1997@gmail.com>)
- id 1sMeSi-0001GZ-Qa
- for qemu-devel@nongnu.org; Wed, 26 Jun 2024 22:02:13 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <gregorhaas1997@gmail.com>)
- id 1sMeSh-0007JE-A1
- for qemu-devel@nongnu.org; Wed, 26 Jun 2024 22:02:12 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-1f9b523a15cso9368055ad.0
- for <qemu-devel@nongnu.org>; Wed, 26 Jun 2024 19:02:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1719453729; x=1720058529; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=V7UUez2Ng0Gq7CrOp33lCArvsTqH1g6sRqOcOy9IZEA=;
- b=jC9pMwOJCjCBqmjliUmlTG9+ydj1SNlp4sFMDJTd7dhm3eQnceZxtBLgbpitPR6GNz
- /5JBXT9RGsf42+5pZ8Z/9829YW3/04uKICBPRPkRDhPfMswNJFrx2oMa7ta/2iR1eT8Z
- rB+wHtRAMmCYXO3HN3jqX/QBtL6o1BoCYNgO5oMoUS0g+HUZiJs+37hi1wHCglDa4clX
- q7okCK4HaJ6OpUGVJj4+qIkRFxVFz5JVqa0PZNfdTpQvyy0dGH7vd9HmSfd0/TMvFuc+
- cIuVU/COk3tGxJ3mssnFxBfHcUI/FlCUq7iHHFxwEC4pQtlGGZlN1XVKEwLHojNwWvPh
- BIwQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719453729; x=1720058529;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=V7UUez2Ng0Gq7CrOp33lCArvsTqH1g6sRqOcOy9IZEA=;
- b=eOUWLPJcyCuoxHOCtsgCWebR/r6ff4abvybxnluCg/HtzZctYQWt11pJ5OJiJZRR21
- oHNbscAgjh9RpIGddCJMeyhP0+SZRwscV7aCFmGtXtO/dDVyVGN2fxZcj5HAJUYDnB+N
- t9fSF0JTqlvstWLAH4lC/6OimWY68wgU3hCmH6ta/BELufrRsqDGHZpC2csR90Qf0Ug4
- QWf7bW5soy+r+toAQDhXsQGwx5EItZbCT8zl/QbA0cyzxRKfRX/EEMbeZv4c8m98KveW
- x0H2fTnEUq3n//1omtzYwnY4IfpXgAPbjjpp29Ck+iVck/Q/ylkdRNUuaL+huiN4SKSs
- vEag==
-X-Gm-Message-State: AOJu0YwbgE5K6XC7IGKH1b28hSYToBONEAktrbBxY6p5Pd+ciV9O8fAR
- LapREBYIP+gksaD1faog00wa+Pg4gZfJq2Rxewdr8p6nmGVy33W2iZV6gaF3
-X-Google-Smtp-Source: AGHT+IFEbTdDntgxRcIODv7RAmIbM3KUuCBadPhiRCKj5m6UtM2Y2sCNnv5uoLDTNfmd31Rdr34tNg==
-X-Received: by 2002:a17:903:1104:b0:1fa:97ec:3a4 with SMTP id
- d9443c01a7336-1fa97ec057emr34073075ad.8.1719453729466; 
- Wed, 26 Jun 2024 19:02:09 -0700 (PDT)
-Received: from localhost ([136.27.11.53]) by smtp.gmail.com with UTF8SMTPSA id
- d9443c01a7336-1faac9b11d1sm1553565ad.267.2024.06.26.19.02.09
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 26 Jun 2024 19:02:09 -0700 (PDT)
-From: Gregor Haas <gregorhaas1997@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: philmd@linaro.org, richard.henderson@linaro.org,
- Gregor Haas <gregorhaas1997@gmail.com>
-Subject: [PATCH] hw/core/loader: allow loading larger ROMs
-Date: Wed, 26 Jun 2024 19:02:07 -0700
-Message-ID: <20240627020207.630125-1-gregorhaas1997@gmail.com>
-X-Mailer: git-send-email 2.45.2
+ (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
+ id 1sMgW4-000696-K1
+ for qemu-devel@nongnu.org; Thu, 27 Jun 2024 00:13:48 -0400
+Received: from wfout6-smtp.messagingengine.com ([64.147.123.149])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
+ id 1sMgW2-00006J-1U
+ for qemu-devel@nongnu.org; Thu, 27 Jun 2024 00:13:47 -0400
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+ by mailfout.west.internal (Postfix) with ESMTP id 60F0E1C0007C;
+ Thu, 27 Jun 2024 00:13:42 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+ by compute6.internal (MEProxy); Thu, 27 Jun 2024 00:13:42 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
+ cc:cc:content-transfer-encoding:content-type:content-type:date
+ :date:from:from:in-reply-to:message-id:mime-version:reply-to
+ :subject:subject:to:to; s=fm3; t=1719461622; x=1719548022; bh=Ue
+ hycH934eNIEenSua7udXYbxzD4oQLZBn10XfORSww=; b=tb+nUeCArQCafGTkcU
+ EV3NPUZu9beb/aASdIvTN4gLsmWgq9YoFsY5SIIz2r3sbhSMVfppP3NYiSJ65PII
+ hdqV33aCAXszVCZv+CeSyBL97jLg790c3ohubX3H2gEexp5/dUxKmwXwfukrxe0W
+ aXkRC3ouTVCxFEKiyrFOizLTPIG8aW+/A/x1jdKcZd8GOJaH0hpc5j5q4G2q+J5L
+ LFGbWMwnkGfIxI5dT8DvIBFaiK4GZVY/mVxomZ9jrjkqgJ9QYPEj0bo3BROqVPB1
+ 6MbBGx1WF2l7K+E4x04WSrktrZgxoD0g9XpqWvX/9BHxsYvsWwi3FBnX/rPlKral
+ 4UBg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:cc:content-transfer-encoding
+ :content-type:content-type:date:date:feedback-id:feedback-id
+ :from:from:in-reply-to:message-id:mime-version:reply-to:subject
+ :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+ :x-sasl-enc; s=fm2; t=1719461622; x=1719548022; bh=UehycH934eNIE
+ enSua7udXYbxzD4oQLZBn10XfORSww=; b=L3Kwcs9oh2659K8owX5NzybxY+bwy
+ ATFxw9v3fUAthqP8i3HpboZmWa03vqW9ySc3IA8M8OW9HJXvWdNq0tMMXDUanlBj
+ ZYEyHWDHr1Ec9/ZswHKY0hEfSdMHK37OLdQUaS8XIpxO2cgCG5sx4QUCRJg7ui2n
+ OimC2KVuWI6KaUIf1yiy8IBYvp7NPPgLfxKfJGUBQgMBjVucYmFw0CTcfi+jODQD
+ VxSCnA5BaW8LUg6lYJRg21A/bQJzxTm6tB6jQsD79bSrwYGg5VnN2TL4DACaYif6
+ zru43T/RPm5JffzgrMgPwUbIcQGSyxWj1+GGhXa5gCzPeQoF+BFz2DZyw==
+X-ME-Sender: <xms:9eZ8ZhvunFpxRfLw6m4duvX9np491ma_oO_DAEfPnkHe0yMwazkRUw>
+ <xme:9eZ8Zqe_l8XckBzh_whg6aK5PgmFGWsOrFvflnLqaiTkEO5VPzbAfZ9X3AZpA5NlA
+ nMix-tfUQjWwNpvTDM>
+X-ME-Received: <xmr:9eZ8Zkz8IO_cXWd_DNHNGeY2a7mZ_ugM8kEpphN8aW7vwru8yURhGSB1MZ-I1jjHFPV1hmz-ggkXoWUtm9MGrasZxQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrtdefgdekudcutefuodetggdotefrodftvf
+ curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+ uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+ fjughrpefhufffkfggtgfgvfevofesthejredtredtjeenucfhrhhomheplfhirgiguhhn
+ ucgjrghnghcuoehjihgrgihunhdrhigrnhhgsehflhihghhorghtrdgtohhmqeenucggtf
+ frrghtthgvrhhnpedufffffffhueehvefhgfelveekueegteefgeeiieejheefkeehkeev
+ udevieegueenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhroh
+ hmpehjihgrgihunhdrhigrnhhgsehflhihghhorghtrdgtohhm
+X-ME-Proxy: <xmx:9eZ8ZoMgqzYoGSaIqTN5V3-QNwbxxMEKbC6kWqlENXYHtHeTlvGUUw>
+ <xmx:9eZ8Zh9OGtWBApKu2sLrFepdGWCiUXNxwhxQQ5eWE2JcgpnU_TDhHA>
+ <xmx:9eZ8ZoW53cUYu1vWsXjAzi56UabNHpHM_8-l9wd_LGvfkY86IEolJA>
+ <xmx:9eZ8ZicNT0PxcCRvCMLUYzGelgK5YhRl1LhYyD_7jK3zVAvjJnpNmQ>
+ <xmx:9uZ8ZhwQXutjV1nAly_ajJ2lB1uGz4dAZ10iuakwwh1ESBCDWPmek4nN>
+Feedback-ID: ifd894703:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 27 Jun 2024 00:13:38 -0400 (EDT)
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Subject: [PATCH 0/2] hw/intc/loongson_ipi: Fix for LoongArch
+Date: Thu, 27 Jun 2024 05:13:26 +0100
+Message-Id: <20240627-ipi-fixes-v1-0-9b061dc28a3a@flygoat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=gregorhaas1997@gmail.com; helo=mail-pl1-x62b.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAObmfGYC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxMDMyNz3cyCTN20zIrUYl1D49TENMMkCwtD00QloPqColSwBFB5dGxtLQD
+ 4ukboWwAAAA==
+To: qemu-devel@nongnu.org
+Cc: Huacai Chen <chenhuacai@kernel.org>, Song Gao <gaosong@loongson.cn>, 
+ =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
+ Jiaxun Yang <jiaxun.yang@flygoat.com>, maobibo <maobibo@loongson.cn>
+X-Mailer: b4 0.14.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=619;
+ i=jiaxun.yang@flygoat.com; h=from:subject:message-id;
+ bh=RTN0CR0Oas/OuE+6CkVZ2YaLKCDYlQvcDw8tJ1UW6bw=;
+ b=owGbwMvMwCXmXMhTe71c8zDjabUkhrSaZ5/zjwQ93vPaZUPbzpVPOl2Vd/9POny74VN+094pe
+ r0P/n9+0FHKwiDGxSArpsgSIqDUt6Hx4oLrD7L+wMxhZQIZwsDFKQATSfzMyDC74KjvG7U/4lH3
+ lT5wT9xpu8CBafHjZ1V5lhOmR/L/tKxhZJjw+6PjS63LUax7P3kr8EyZOv3Y606X1fapP6dUO53
+ hlWMGAA==
+X-Developer-Key: i=jiaxun.yang@flygoat.com; a=openpgp;
+ fpr=980379BEFEBFBF477EA04EF9C111949073FC0F67
+Received-SPF: pass client-ip=64.147.123.149;
+ envelope-from=jiaxun.yang@flygoat.com; helo=wfout6-smtp.messagingengine.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Thu, 27 Jun 2024 00:28:17 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,52 +114,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The read() syscall is not guaranteed to return all data from a file. The
-default ROM loader implementation currently does not take this into account,
-instead failing if all bytes are not read at once. This change wraps the
-read() syscall in a do/while loop to ensure all bytes of the ROM are read.
-
-Signed-off-by: Gregor Haas <gregorhaas1997@gmail.com>
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
 ---
- hw/core/loader.c | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+Jiaxun Yang (2):
+      hw/intc/loongson_ipi: Gate MMIO regions creation with property
+      MAINTAINERS: Add myself as a reviewer of LoongArch virt machine
 
-diff --git a/hw/core/loader.c b/hw/core/loader.c
-index 2f8105d7de..afa26dccb1 100644
---- a/hw/core/loader.c
-+++ b/hw/core/loader.c
-@@ -1075,7 +1075,7 @@ ssize_t rom_add_file(const char *file, const char *fw_dir,
- {
-     MachineClass *mc = MACHINE_GET_CLASS(qdev_get_machine());
-     Rom *rom;
--    ssize_t rc;
-+    ssize_t rc, sz = 0;
-     int fd = -1;
-     char devpath[100];
- 
-@@ -1116,12 +1116,15 @@ ssize_t rom_add_file(const char *file, const char *fw_dir,
-     rom->datasize = rom->romsize;
-     rom->data     = g_malloc0(rom->datasize);
-     lseek(fd, 0, SEEK_SET);
--    rc = read(fd, rom->data, rom->datasize);
--    if (rc != rom->datasize) {
--        fprintf(stderr, "rom: file %-20s: read error: rc=%zd (expected %zd)\n",
--                rom->name, rc, rom->datasize);
--        goto err;
--    }
-+    do {
-+        rc = read(fd, &rom->data[sz], rom->datasize);
-+        if (rc == -1) {
-+                fprintf(stderr, "rom: file %-20s: read error: %s\n",
-+                        rom->name, strerror(errno));
-+                goto err;
-+        }
-+        sz += rc;
-+    } while (sz != rom->datasize);
-     close(fd);
-     rom_insert(rom);
-     if (rom->fw_file && fw_cfg) {
+ MAINTAINERS                    |  1 +
+ hw/intc/loongson_ipi.c         | 23 ++++++++++++++---------
+ hw/mips/loongson3_virt.c       |  1 +
+ include/hw/intc/loongson_ipi.h |  1 +
+ 4 files changed, 17 insertions(+), 9 deletions(-)
+---
+base-commit: 3f044554b94fc0756d5b3cdbf84501e0eea0e629
+change-id: 20240627-ipi-fixes-13eaf1b8815a
+
+Best regards,
 -- 
-2.45.2
+Jiaxun Yang <jiaxun.yang@flygoat.com>
 
 
