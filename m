@@ -2,53 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 652D391B90D
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jun 2024 09:54:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC64391B919
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jun 2024 09:56:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sN6RH-0004og-I7; Fri, 28 Jun 2024 03:54:35 -0400
+	id 1sN6SO-0006MV-Lw; Fri, 28 Jun 2024 03:55:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=GU6n=N6=kaod.org=clg@ozlabs.org>)
- id 1sN6RA-0004nv-Fy
- for qemu-devel@nongnu.org; Fri, 28 Jun 2024 03:54:28 -0400
-Received: from gandalf.ozlabs.org ([150.107.74.76] helo=mail.ozlabs.org)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sN6SL-0006KQ-EC
+ for qemu-devel@nongnu.org; Fri, 28 Jun 2024 03:55:41 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=GU6n=N6=kaod.org=clg@ozlabs.org>)
- id 1sN6R8-0000dC-FM
- for qemu-devel@nongnu.org; Fri, 28 Jun 2024 03:54:28 -0400
-Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4W9SPr3B2Cz4wb7;
- Fri, 28 Jun 2024 17:54:24 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sN6SJ-0001CN-Fx
+ for qemu-devel@nongnu.org; Fri, 28 Jun 2024 03:55:41 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1719561337;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=c8BaWiFms4CMQQaurt/sMUGSvJD+aqIwzIjuNyZWpRg=;
+ b=h49RNqZKmYx1EDhRLKr81MxEkT1X3OxN78OxH86I0UHiqrlBF1E5U06f3PcerL1b8NspGI
+ 7cS+3EM8ApaGHtAnumwdrQEy2T8o6SMTKumdg4diqwpHTYjyxmn1+Oor0vdY17L24FyZoU
+ fOtOcx81xQ99KmAZMwGkHkcrKjJI2yg=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-553-95IjlzC8OKCiDgXx9K39WA-1; Fri,
+ 28 Jun 2024 03:54:55 -0400
+X-MC-Unique: 95IjlzC8OKCiDgXx9K39WA-1
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4W9SPp6yMcz4w2H;
- Fri, 28 Jun 2024 17:54:22 +1000 (AEST)
-Message-ID: <c2af3123-6dba-4d8f-9879-c9d002401f98@kaod.org>
-Date: Fri, 28 Jun 2024 09:54:20 +0200
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id F362F1944D36; Fri, 28 Jun 2024 07:54:52 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.194.114])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id DBEBC19560A3; Fri, 28 Jun 2024 07:54:50 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id A589621E668B; Fri, 28 Jun 2024 09:54:48 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: John Snow <jsnow@redhat.com>
+Cc: qemu-devel@nongnu.org,  Mads Ynddal <mads@ynddal.dk>,  Jiri Pirko
+ <jiri@resnulli.us>,  Stefan Hajnoczi <stefanha@redhat.com>,  Eric Blake
+ <eblake@redhat.com>,  Peter Maydell <peter.maydell@linaro.org>,  Michael
+ Roth <michael.roth@amd.com>,  "Michael S. Tsirkin" <mst@redhat.com>,  Alex
+ Williamson <alex.williamson@redhat.com>,  Pavel Dovgalyuk
+ <pavel.dovgaluk@ispras.ru>,  Victor Toso de Carvalho
+ <victortoso@redhat.com>,  =?utf-8?Q?C=C3=A9dric?= Le Goater
+ <clg@redhat.com>,  Daniel P.
+ =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,  qemu-block@nongnu.org,
+ Ani Sinha
+ <anisinha@redhat.com>,  Fabiano Rosas <farosas@suse.de>,  Marcel Apfelbaum
+ <marcel.apfelbaum@gmail.com>,  =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
+ <marcandre.lureau@redhat.com>,  Gerd Hoffmann <kraxel@redhat.com>,  Paolo
+ Bonzini <pbonzini@redhat.com>,  Kevin Wolf <kwolf@redhat.com>,  Peter Xu
+ <peterx@redhat.com>,  Eduardo Habkost <eduardo@habkost.net>,  Philippe
+ =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Lukas Straub
+ <lukasstraub2@web.de>,
+ Igor Mammedov <imammedo@redhat.com>,  Jason Wang <jasowang@redhat.com>,
+ Yanan Wang <wangyanan55@huawei.com>,  Hanna Reitz <hreitz@redhat.com>,
+ Konstantin Kostiuk <kkostiuk@redhat.com>
+Subject: Re: [PATCH v2 07/21] docs/qapidoc: fix nested parsing under
+ untagged sections
+In-Reply-To: <20240626222128.406106-8-jsnow@redhat.com> (John Snow's message
+ of "Wed, 26 Jun 2024 18:21:13 -0400")
+References: <20240626222128.406106-1-jsnow@redhat.com>
+ <20240626222128.406106-8-jsnow@redhat.com>
+Date: Fri, 28 Jun 2024 09:54:48 +0200
+Message-ID: <87r0chzelz.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v42 39/98] hw/sd/sdcard: Store command name in SDProto
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-References: <20240628070216.92609-1-philmd@linaro.org>
- <20240628070216.92609-40-philmd@linaro.org>
-Content-Language: en-US, fr
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20240628070216.92609-40-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=150.107.74.76;
- envelope-from=SRS0=GU6n=N6=kaod.org=clg@ozlabs.org; helo=mail.ozlabs.org
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
+X-Spam_bar: --
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.212,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -64,120 +103,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/28/24 9:01 AM, Philippe Mathieu-Daudé wrote:
-> We already have a const array where command handlers
-> are listed. Store the command name there too.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+John Snow <jsnow@redhat.com> writes:
 
+> Sphinx does not like sections without titles, because it wants to
+> convert every section into a reference. When there is no title, it
+> struggles to do this and transforms the tree inproperly.
+>
+> Depending on the rST used, this may result in an assertion error deep in
+> the docutils HTMLWriter.
+>
+> (Observed when using ".. admonition:: Notes" under such a section - When
+> this is transformed with its own <title> element, Sphinx is fooled into
+> believing this title belongs to the section and incorrect mutates the
+> docutils tree, leading to errors during rendering time.)
+>
+> When parsing an untagged section (free paragraphs), skip making a hollow
+> section and instead append the parse results to the prior section.
+>
+> Many Bothans died to bring us this information.
+>
+> Signed-off-by: John Snow <jsnow@redhat.com>
+> Acked-by: Markus Armbruster <armbru@redhat.com>
 
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Generated HTML changes, but the diff is hard to review due to id
+attribute changes all over the place.
 
-Thanks,
+Generated qemu-ga-ref.7 also changes:
 
-C.
+    diff -rup old/qemu-ga-ref.7 new/qemu-ga-ref.7
+    --- old/qemu-ga-ref.7	2024-06-27 10:42:21.466096276 +0200
+    +++ new/qemu-ga-ref.7	2024-06-27 10:45:36.502414099 +0200
+    @@ -397,6 +397,7 @@ shutdown request, with no guarantee of s
+     .B \fBmode\fP: \fBstring\fP (optional)
+     \(dqhalt\(dq, \(dqpowerdown\(dq (default), or \(dqreboot\(dq
+     .UNINDENT
+    +.sp
+     This command does NOT return a response on success.  Success
+     condition is indicated by the VM exiting with a zero exit status or,
+     when running with \-\-no\-shutdown, by issuing the query\-status QMP
+    @@ -1348,6 +1349,7 @@ the new password entry string, base64 en
+     .B \fBcrypted\fP: \fBboolean\fP
+     true if password is already crypt()d, false if raw
+     .UNINDENT
+    +.sp
+     If the \fBcrypted\fP flag is true, it is the caller\(aqs responsibilit=
+y to
+     ensure the correct crypt() encryption scheme is used.  This command
+     does not attempt to interpret or report on the encryption scheme.
 
+We add vertical space.  Visible when viewed with man.  Looks like an
+improvement to me.
 
-> ---
->   hw/sd/sd.c | 35 ++++++++++++++++++++++-------------
->   1 file changed, 22 insertions(+), 13 deletions(-)
-> 
-> diff --git a/hw/sd/sd.c b/hw/sd/sd.c
-> index 558c39419d..97fb3785ee 100644
-> --- a/hw/sd/sd.c
-> +++ b/hw/sd/sd.c
-> @@ -95,6 +95,7 @@ typedef sd_rsp_type_t (*sd_cmd_handler)(SDState *sd, SDRequest req);
->   typedef struct SDProto {
->       const char *name;
->       struct {
-> +        const char *name;
->           sd_cmd_handler handler;
->       } cmd[SDMMC_CMD_MAX], acmd[SDMMC_CMD_MAX];
->   } SDProto;
-> @@ -237,8 +238,6 @@ static const char *sd_response_name(sd_rsp_type_t rsp)
->   static const char *sd_cmd_name(SDState *sd, uint8_t cmd)
->   {
->       static const char *cmd_abbrev[SDMMC_CMD_MAX] = {
-> -         [0]    = "GO_IDLE_STATE",           [1]    = "SEND_OP_COND",
-> -         [2]    = "ALL_SEND_CID",            [3]    = "SEND_RELATIVE_ADDR",
->            [4]    = "SET_DSR",                 [5]    = "IO_SEND_OP_COND",
->            [6]    = "SWITCH_FUNC",             [7]    = "SELECT/DESELECT_CARD",
->            [8]    = "SEND_IF_COND",            [9]    = "SEND_CSD",
-> @@ -246,9 +245,8 @@ static const char *sd_cmd_name(SDState *sd, uint8_t cmd)
->           [12]    = "STOP_TRANSMISSION",      [13]    = "SEND_STATUS",
->                                               [15]    = "GO_INACTIVE_STATE",
->           [16]    = "SET_BLOCKLEN",           [17]    = "READ_SINGLE_BLOCK",
-> -        [18]    = "READ_MULTIPLE_BLOCK",    [19]    = "SEND_TUNING_BLOCK",
-> +        [18]    = "READ_MULTIPLE_BLOCK",
->           [20]    = "SPEED_CLASS_CONTROL",    [21]    = "DPS_spec",
-> -                                            [23]    = "SET_BLOCK_COUNT",
->           [24]    = "WRITE_BLOCK",            [25]    = "WRITE_MULTIPLE_BLOCK",
->           [26]    = "MANUF_RSVD",             [27]    = "PROGRAM_CSD",
->           [28]    = "SET_WRITE_PROT",         [29]    = "CLR_WRITE_PROT",
-> @@ -270,6 +268,12 @@ static const char *sd_cmd_name(SDState *sd, uint8_t cmd)
->           [60]    = "MANUF_RSVD",             [61]    = "MANUF_RSVD",
->           [62]    = "MANUF_RSVD",             [63]    = "MANUF_RSVD",
->       };
-> +    const SDProto *sdp = sd->proto;
-> +
-> +    if (sdp->cmd[cmd].handler) {
-> +        assert(!cmd_abbrev[cmd]);
-> +        return sdp->cmd[cmd].name;
-> +    }
->       return cmd_abbrev[cmd] ? cmd_abbrev[cmd] : "UNKNOWN_CMD";
->   }
->   
-> @@ -282,7 +286,6 @@ static const char *sd_acmd_name(SDState *sd, uint8_t cmd)
->           [16] = "DPS_spec",
->           [18] = "SECU_spec",
->           [22] = "SEND_NUM_WR_BLOCKS",        [23] = "SET_WR_BLK_ERASE_COUNT",
-> -        [41] = "SD_SEND_OP_COND",
->           [42] = "SET_CLR_CARD_DETECT",
->           [51] = "SEND_SCR",
->           [52] = "SECU_spec",                 [53] = "SECU_spec",
-> @@ -290,6 +293,12 @@ static const char *sd_acmd_name(SDState *sd, uint8_t cmd)
->           [56] = "SECU_spec",                 [57] = "SECU_spec",
->           [58] = "SECU_spec",                 [59] = "SECU_spec",
->       };
-> +    const SDProto *sdp = sd->proto;
-> +
-> +    if (sdp->acmd[cmd].handler) {
-> +        assert(!acmd_abbrev[cmd]);
-> +        return sdp->acmd[cmd].name;
-> +    }
->   
->       return acmd_abbrev[cmd] ? acmd_abbrev[cmd] : "UNKNOWN_ACMD";
->   }
-> @@ -2268,22 +2277,22 @@ void sd_enable(SDState *sd, bool enable)
->   static const SDProto sd_proto_spi = {
->       .name = "SPI",
->       .cmd = {
-> -        [0]  = {sd_cmd_GO_IDLE_STATE},
-> -        [1]  = {spi_cmd_SEND_OP_COND},
-> +        [0]  = {            "GO_IDLE_STATE", sd_cmd_GO_IDLE_STATE},
-> +        [1]  = {            "SEND_OP_COND", spi_cmd_SEND_OP_COND},
->       },
->       .acmd = {
-> -        [41] = {spi_cmd_SEND_OP_COND},
-> +        [41] = {            "SEND_OP_COND", spi_cmd_SEND_OP_COND},
->       },
->   };
->   
->   static const SDProto sd_proto_sd = {
->       .name = "SD",
->       .cmd = {
-> -        [0]  = {sd_cmd_GO_IDLE_STATE},
-> -        [2]  = {sd_cmd_ALL_SEND_CID},
-> -        [3]  = {sd_cmd_SEND_RELATIVE_ADDR},
-> -        [19] = {sd_cmd_SEND_TUNING_BLOCK},
-> -        [23] = {sd_cmd_SET_BLOCK_COUNT},
-> +        [0]  = {             "GO_IDLE_STATE", sd_cmd_GO_IDLE_STATE},
-> +        [2]  = {             "ALL_SEND_CID", sd_cmd_ALL_SEND_CID},
-> +        [3]  = {             "SEND_RELATIVE_ADDR", sd_cmd_SEND_RELATIVE_ADDR},
-> +        [19] = {             "SEND_TUNING_BLOCK", sd_cmd_SEND_TUNING_BLOCK},
-> +        [23] = {             "SET_BLOCK_COUNT", sd_cmd_SET_BLOCK_COUNT},
->       },
->   };
->   
+Here's the first of these two spots in HTML:
+
+    -<section id=3D"qapidoc-31">
+    -<h3><a class=3D"toc-backref" href=3D"#id13" role=3D"doc-backlink"><cod=
+e class=3D"docutils literal notranslate"><span class=3D"pre">guest-shutdown=
+</span></code> (Command)</a><a class=3D"headerlink" href=3D"#qapidoc-31" ti=
+tle=3D"Permalink to this heading">=EF=83=81</a></h3>
+    +<section id=3D"qapidoc-30">
+    +<h3><a class=3D"toc-backref" href=3D"#id13" role=3D"doc-backlink"><cod=
+e class=3D"docutils literal notranslate"><span class=3D"pre">guest-shutdown=
+</span></code> (Command)</a><a class=3D"headerlink" href=3D"#qapidoc-30" ti=
+tle=3D"Permalink to this heading">=EF=83=81</a></h3>
+     <p>Initiate guest-activated shutdown.  Note: this is an asynchronous
+     shutdown request, with no guarantee of successful shutdown.</p>
+     <section id=3D"qapidoc-28">
+    @@ -502,22 +502,20 @@ shutdown request, with no guarantee of s
+     </dd>
+     </dl>
+     </section>
+    -<section id=3D"qapidoc-29">
+     <p>This command does NOT return a response on success.  Success
+     condition is indicated by the VM exiting with a zero exit status or,
+     when running with =E2=80=93no-shutdown, by issuing the query-status QMP
+     command to confirm the VM status is =E2=80=9Cshutdown=E2=80=9D.</p>
+    -</section>
+    -<section id=3D"qapidoc-30">
+    -<h4>Since<a class=3D"headerlink" href=3D"#qapidoc-30" title=3D"Permali=
+nk to this heading">=EF=83=81</a></h4>
+    +<section id=3D"qapidoc-29">
+    +<h4>Since<a class=3D"headerlink" href=3D"#qapidoc-29" title=3D"Permali=
+nk to this heading">=EF=83=81</a></h4>
+     <p>0.15.0</p>
+     </section>
+     </section>
+
+The id changes muddy the waters.  With them manually removed:
+
+     <section id=3D"qapidoc-31">
+     <h3><a class=3D"toc-backref" href=3D"#id13" role=3D"doc-backlink"><cod=
+e class=3D"docutils literal notranslate"><span class=3D"pre">guest-shutdown=
+</span></code> (Command)</a><a class=3D"headerlink" href=3D"#qapidoc-31" ti=
+tle=3D"Permalink to this heading">=EF=83=81</a></h3>
+     <p>Initiate guest-activated shutdown.  Note: this is an asynchronous
+     shutdown request, with no guarantee of successful shutdown.</p>
+     <section id=3D"qapidoc-28">
+    @@ -502,22 +502,20 @@ shutdown request, with no guarantee of s
+     </dd>
+     </dl>
+     </section>
+    -<section id=3D"qapidoc-29">
+     <p>This command does NOT return a response on success.  Success
+     condition is indicated by the VM exiting with a zero exit status or,
+     when running with =E2=80=93no-shutdown, by issuing the query-status QMP
+     command to confirm the VM status is =E2=80=9Cshutdown=E2=80=9D.</p>
+    -</section>
+     <section id=3D"qapidoc-30">
+     <h4>Since<a class=3D"headerlink" href=3D"#qapidoc-30" title=3D"Permali=
+nk to this heading">=EF=83=81</a></h4>
+     <p>0.15.0</p>
+     </section>
+     </section>
+
+Makes no visual difference in my browser.
+
+Do these differences match your expectations?
 
 
