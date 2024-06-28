@@ -2,72 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17BD191B7E0
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jun 2024 09:11:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75BB491B7E3
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jun 2024 09:12:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sN5jw-0007Fo-S5; Fri, 28 Jun 2024 03:09:49 -0400
+	id 1sN5jw-00077u-77; Fri, 28 Jun 2024 03:09:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sN5jl-0006mR-SM
- for qemu-devel@nongnu.org; Fri, 28 Jun 2024 03:09:38 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sN5jq-0006xt-R3
+ for qemu-devel@nongnu.org; Fri, 28 Jun 2024 03:09:42 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sN5jj-0004Wp-CW
- for qemu-devel@nongnu.org; Fri, 28 Jun 2024 03:09:37 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-4217c7eb6b4so2642955e9.2
- for <qemu-devel@nongnu.org>; Fri, 28 Jun 2024 00:09:34 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sN5jo-0004XF-Oc
+ for qemu-devel@nongnu.org; Fri, 28 Jun 2024 03:09:42 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-424acfff613so3353735e9.0
+ for <qemu-devel@nongnu.org>; Fri, 28 Jun 2024 00:09:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719558573; x=1720163373; darn=nongnu.org;
+ d=linaro.org; s=google; t=1719558579; x=1720163379; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=V0gZMlOJcmhezdd4Yk1lqkQI7yCyPoJydtauFHQrfjI=;
- b=CW+drjv7FLwyqRmrTHriOIWDwIcnY4YW63Nyl3YykARkCJMvP6n4w0Sj+E0jT4efdK
- qLXSw6Gm0FSg41SB1sIkpH+xWxF8EzTMpubDpzTVWbSVDoaKSeXGoJWzxTC/IF8gdOKw
- bIRkoo1gUpGvQ0GuN8BgxG4OEw2ScLB/vrcMb+u7L2KWBFgbIavv8/H4UR0PdjazTGgl
- 6B7q11h96y5AVoS7Og7B+Ldlc8DStnas8yXgL4sL/W1jUap4jBq2AjKOiwOdHUER+Op1
- 6WKuwTwpZo1MC6M4B6JTIRtCNsZ5MHOwr+Q8OOifKwJTBrVmc4wpfnfzMq7qP6IAuJc7
- 6vIg==
+ :reply-to; bh=eSwX8/t3OMl0d9bqgd19YFhdT5y/t7Myi2nZ/gwkh2s=;
+ b=Q0cFbwPlWccYJPV8388DFAxCK3F4WIPyrtYh+rgOE9pKxZE9GYQQA6bZssh7VjwstW
+ AJLlBN3IYV9VHhLMSz92AQ+3BZNNAxYZA8Spw5KDm9u3dxBdsN2USDRr0LZBC9LxO6Ed
+ AJNwtIAFitK5j1tgiiSfQKEqLXPALB8u6VKzL/skb1620zZabbOqTDaQ02cKchA43hS+
+ ljFAaVEm7JG1aY/LXhrsctR6/VXshZMD1e64D6LyDhgKoDQ/pP85Ty/82z9G2p6uVgbf
+ QHh/gBEpkV/NzN642yUuNpEC2s2qxtaTZS31cdIHbYG6zelfCMvqwpU+2N0+w9vgvj3h
+ JM7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719558573; x=1720163373;
+ d=1e100.net; s=20230601; t=1719558579; x=1720163379;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=V0gZMlOJcmhezdd4Yk1lqkQI7yCyPoJydtauFHQrfjI=;
- b=jwLXC7rKJHgBtWE8CytjXznH1BLLvO4+qat1TNZOzlnhibbI7pdH+wtbERXPYj4ilM
- 7zEXev7w3FabtnvJ5CilpkXl9jNaF4hLT0DO9utibJq3m6qotJjFKujKPynU119gK4eS
- adCo9lb9tK/um4UcwcykudCvKxEZvW+KVG15XL9mXnpCiR5sbuoauPFvq/Iz8E8wvG8z
- sq6+To/TLm9HjBol9nhOIRUpqk1iELA3vuUe9t8KsY3rBlU5+2CDIEUPyUPgFdGstTPo
- 5WhmXEP21eDE7hbWCZEQugzABQdOEx99XjNJY3YKZQFw8PXD+Mx+uVNn29JCeX15Lxao
- NCxg==
-X-Gm-Message-State: AOJu0YxT+qO2p470oCKvHczdWclOdP9eE227uq8GqyocjS8Y3uq8RF+B
- BTv1LXguZ7octFxPZqa7S/r4mXLWVEmQ+99LOpNoAL/Dp/aZy6YMvCX2YRu62bmguTenx1XqNcy
- 8yTo=
-X-Google-Smtp-Source: AGHT+IH7vrZA9iM8neqGAqvNb3ky7J+bIveEagwKbn1N4DwixZk3anJZLwMlcbvEDrVHAxRzewhdBA==
-X-Received: by 2002:a05:600c:829:b0:425:61be:c911 with SMTP id
- 5b1f17b1804b1-42561bec952mr38622705e9.21.1719558573732; 
- Fri, 28 Jun 2024 00:09:33 -0700 (PDT)
+ bh=eSwX8/t3OMl0d9bqgd19YFhdT5y/t7Myi2nZ/gwkh2s=;
+ b=v/Ym3y0n7eZ5luHfrOJdj8HRad+CP4MUQSkTCTGArqhsN8xDMXY3QRrKx8Df5dIyUT
+ bjRZZFW7tQfU6il59jgkmTq1qJo0oEL0hdBhxf2JyIDmGdwL/2svZ0pkVxDkPzEiMIr8
+ kUZxKnSj1TqCqinXElIVsKgerzdNzOGqTAHxIlayEMWBO5x+JBDeuWOfN40rgd84y3mL
+ 4+WBQ8H2prYQNuIN9fAsCJwOtj1kEYGAuc9Fu4tdBkHjUy6s8jg/Zj/ylLnR+l7EDOGc
+ vlV6vHFlniTFOEKpGlXCbmEGIyOo/xjHPRIetP+uTP3jKthXagmwWm5Tqkw/yA9p21Le
+ 6qsQ==
+X-Gm-Message-State: AOJu0YwlFW7TlfaKTGqHkaTwP6k5WL4xkg4jbspORkRjbeBP3IJKS5bs
+ 7tCmfpjDd8zv9NWy3vPU4GwaacTgmiJBLwilU+iEr1msV361VdNpx8c+y8BbEoqk0+4SAuE+ZVR
+ vUgQ=
+X-Google-Smtp-Source: AGHT+IEuMJ9aMuTXmHGE4dUu9GVxoG8PR9nFqvNd80fH8rDjl4SyCb+xH/uUbO5C1SAs7ECr2vE6AA==
+X-Received: by 2002:a05:600c:1d2a:b0:425:185c:7a55 with SMTP id
+ 5b1f17b1804b1-425185c7b75mr54184025e9.40.1719558578763; 
+ Fri, 28 Jun 2024 00:09:38 -0700 (PDT)
 Received: from m1x-phil.lan (cho94-h02-176-184-4-239.dsl.sta.abo.bbox.fr.
  [176.184.4.239]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4256b0676a3sm21385085e9.28.2024.06.28.00.09.32
+ 5b1f17b1804b1-4256b09a828sm21423535e9.37.2024.06.28.00.09.37
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 28 Jun 2024 00:09:33 -0700 (PDT)
+ Fri, 28 Jun 2024 00:09:38 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org, =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [PATCH v42 73/98] hw/sd/sdcard: Add sd_acmd_SET_CLR_CARD_DETECT
- handler (ACMD42)
-Date: Fri, 28 Jun 2024 09:01:49 +0200
-Message-ID: <20240628070216.92609-74-philmd@linaro.org>
+Subject: [PATCH v42 74/98] hw/sd/sdcard: Add sd_acmd_SEND_SCR handler (ACMD51)
+Date: Fri, 28 Jun 2024 09:01:50 +0200
+Message-ID: <20240628070216.92609-75-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240628070216.92609-1-philmd@linaro.org>
 References: <20240628070216.92609-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,70 +91,64 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/sd/sd.c | 25 +++++++++++++------------
- 1 file changed, 13 insertions(+), 12 deletions(-)
+ hw/sd/sd.c | 19 ++++++++-----------
+ 1 file changed, 8 insertions(+), 11 deletions(-)
 
 diff --git a/hw/sd/sd.c b/hw/sd/sd.c
-index 167e1c517a..a27a7e0f24 100644
+index a27a7e0f24..6a9d611429 100644
 --- a/hw/sd/sd.c
 +++ b/hw/sd/sd.c
 @@ -263,7 +263,6 @@ static const char *sd_acmd_name(SDState *sd, uint8_t cmd)
          [14] = "DPS_spec",                  [15] = "DPS_spec",
          [16] = "DPS_spec",
          [18] = "SECU_spec",
--        [42] = "SET_CLR_CARD_DETECT",
-         [51] = "SEND_SCR",
+-        [51] = "SEND_SCR",
          [52] = "SECU_spec",                 [53] = "SECU_spec",
          [54] = "SECU_spec",
-@@ -1748,6 +1747,17 @@ static sd_rsp_type_t sd_acmd_SD_APP_OP_COND(SDState *sd, SDRequest req)
-     return sd_r3;
+         [56] = "SECU_spec",                 [57] = "SECU_spec",
+@@ -1758,6 +1757,12 @@ static sd_rsp_type_t sd_acmd_SET_CLR_CARD_DETECT(SDState *sd, SDRequest req)
+     return sd_r1;
  }
  
-+/* ACMD42 */
-+static sd_rsp_type_t sd_acmd_SET_CLR_CARD_DETECT(SDState *sd, SDRequest req)
++/* ACMD51 */
++static sd_rsp_type_t sd_acmd_SEND_SCR(SDState *sd, SDRequest req)
 +{
-+    if (sd->state != sd_transfer_state) {
-+        return sd_invalid_state_for_cmd(sd, req);
-+    }
-+
-+    /* Bringing in the 50KOhm pull-up resistor... Done.  */
-+    return sd_r1;
++    return sd_cmd_to_sendingdata(sd, req, 0, sd->scr, sizeof(sd->scr));
 +}
 +
  static sd_rsp_type_t sd_normal_command(SDState *sd, SDRequest req)
  {
      uint64_t addr;
-@@ -1856,17 +1866,6 @@ static sd_rsp_type_t sd_app_command(SDState *sd,
+@@ -1866,16 +1871,6 @@ static sd_rsp_type_t sd_app_command(SDState *sd,
      }
  
      switch (req.cmd) {
--    case 42:  /* ACMD42: SET_CLR_CARD_DETECT */
+-    case 51:  /* ACMD51: SEND_SCR */
 -        switch (sd->state) {
 -        case sd_transfer_state:
--            /* Bringing in the 50KOhm pull-up resistor... Done.  */
--            return sd_r1;
+-            return sd_cmd_to_sendingdata(sd, req, 0, sd->scr, sizeof(sd->scr));
 -
 -        default:
 -            break;
 -        }
 -        break;
 -
-     case 51:  /* ACMD51: SEND_SCR */
-         switch (sd->state) {
-         case sd_transfer_state:
-@@ -2327,6 +2326,7 @@ static const SDProto sd_proto_spi = {
-         [22] = {8,  sd_spi, "SEND_NUM_WR_BLOCKS", sd_acmd_SEND_NUM_WR_BLOCKS},
+     case 18:    /* Reserved for SD security applications */
+     case 25:
+     case 26:
+@@ -2327,6 +2322,7 @@ static const SDProto sd_proto_spi = {
          [23] = {8,  sd_spi, "SET_WR_BLK_ERASE_COUNT", sd_acmd_SET_WR_BLK_ERASE_COUNT},
          [41] = {8,  sd_spi, "SEND_OP_COND", spi_cmd_SEND_OP_COND},
-+        [42] = {8,  sd_spi, "SET_CLR_CARD_DETECT", sd_acmd_SET_CLR_CARD_DETECT},
+         [42] = {8,  sd_spi, "SET_CLR_CARD_DETECT", sd_acmd_SET_CLR_CARD_DETECT},
++        [51] = {8,  sd_spi, "SEND_SCR", sd_acmd_SEND_SCR},
      },
  };
  
-@@ -2387,6 +2387,7 @@ static const SDProto sd_proto_sd = {
-         [22] = {8,  sd_adtc, "SEND_NUM_WR_BLOCKS", sd_acmd_SEND_NUM_WR_BLOCKS},
+@@ -2388,6 +2384,7 @@ static const SDProto sd_proto_sd = {
          [23] = {8,  sd_ac,   "SET_WR_BLK_ERASE_COUNT", sd_acmd_SET_WR_BLK_ERASE_COUNT},
          [41] = {8,  sd_bcr,  "SD_APP_OP_COND", sd_acmd_SD_APP_OP_COND},
-+        [42] = {8,  sd_ac,   "SET_CLR_CARD_DETECT", sd_acmd_SET_CLR_CARD_DETECT},
+         [42] = {8,  sd_ac,   "SET_CLR_CARD_DETECT", sd_acmd_SET_CLR_CARD_DETECT},
++        [51] = {8,  sd_adtc, "SEND_SCR", sd_acmd_SEND_SCR},
      },
  };
  
