@@ -2,81 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3CC391C0E1
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jun 2024 16:26:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9710191C0D8
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jun 2024 16:26:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sNCWo-0002k8-83; Fri, 28 Jun 2024 10:24:42 -0400
+	id 1sNCWp-0002kO-0f; Fri, 28 Jun 2024 10:24:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sNCWW-0002ar-HU
+ id 1sNCWW-0002al-Fa
  for qemu-devel@nongnu.org; Fri, 28 Jun 2024 10:24:28 -0400
-Received: from mail-lf1-x133.google.com ([2a00:1450:4864:20::133])
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sNCW7-0004VM-TN
- for qemu-devel@nongnu.org; Fri, 28 Jun 2024 10:24:18 -0400
-Received: by mail-lf1-x133.google.com with SMTP id
- 2adb3069b0e04-52e764bb3fbso855234e87.3
- for <qemu-devel@nongnu.org>; Fri, 28 Jun 2024 07:23:56 -0700 (PDT)
+ id 1sNCWC-0004VZ-25
+ for qemu-devel@nongnu.org; Fri, 28 Jun 2024 10:24:21 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-42565697036so11179555e9.1
+ for <qemu-devel@nongnu.org>; Fri, 28 Jun 2024 07:23:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719584634; x=1720189434; darn=nongnu.org;
+ d=linaro.org; s=google; t=1719584635; x=1720189435; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=w7xsCqJG+GOkokM323EFwKmfjonAJNK39VxKpZVtgHA=;
- b=cNOE/Wd8+lVDqhVzzDKZ7yP15aH5GyxLkyHQo7El6nThpNnHYlsf8sNPMQx8x5tx05
- qIyxmsUF2WpkNfJwSoRYvkpkMzyP7vO4TwCwgvprp+f8KSiXVs0FzJFVxzztVypfxLB4
- Cf//JSB81yFgBA1lRbq4d6L9kzH+gcogSn/FybojZTi5X9CsyXq/RD1uXgULs693E/vs
- 56u2f83yOd8wBPxzERNamejCUZvPfMNGj/J12rGmdXZOzn5Yn/edMhUupDG/pC8jUB8u
- qfU47ub67M2IgS48+J9BpCX4DVftWNMB8lWx7TSseL5SLuslr01M9MbnTacjlFYH3X5H
- o16Q==
+ :reply-to; bh=T+eh+yGRfL9FJjfMdrxTEBsyJCPJ6c76a74QdscnKzw=;
+ b=LSnra88GVpyA9smemR43nDSbSh5iiRLlet16FYlIJd6Qm9ToOPm6iX9OLkx+hcefCF
+ wYfrMDk/Aj9anRivpXPG6Ttnom4szNNSRoiSjQUsfL28zTj3/DN0y94wOONtaM/4SGn0
+ 0HWW9Ww0QRF/kb194ypaejoJG88AirsFz1SFkEyj90dP5PK9EL+WIrjI/f1qwUD4utve
+ 36te+UBGhVXeBqMLTEKVBYxGmp82YXAnBfVHew4H8ma9DHj/6nBVX6Zj3Jr1M3iGKXx1
+ 5ZQmMQitmpfFpAGnqwliZgr9IhwTkWiq7wyeNEvtz+V4QBPtTDGs2QcxbBVCcwQV8hae
+ BX8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719584634; x=1720189434;
+ d=1e100.net; s=20230601; t=1719584635; x=1720189435;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=w7xsCqJG+GOkokM323EFwKmfjonAJNK39VxKpZVtgHA=;
- b=r/wKumLSJSC5Qg0zrMZmaFdmh9s6TtGZNtG2gnoz7A2hs/ATafn7uluwF1bbYGrqkc
- 52A3qAsDe1uFsgcJGPDKRP2lNPE7OvN7iqocTZIoE+0FMo8EuNSnhY/owoM+EoPcEZkV
- Tl/sB3wAZmhwxfjRYnW910hbNJW4r9cluZV5y+Q3yKSXVAl5LLk6xs8sbhyhUGojy5IQ
- mYo9WPX7B2LOT+glIT2C+J0nmTTklHpSme5hxLt0nVhQF6DHkk1+b6LIk02CEYgDUndF
- vaz/btG/AspfQoaSus17XWIpA6ez9CMpsOfSideL421r6P+hRa05te/akpAAOTKK0e8R
- 9I9w==
+ bh=T+eh+yGRfL9FJjfMdrxTEBsyJCPJ6c76a74QdscnKzw=;
+ b=QNJAHusS4o+E8AfSLbDV6bK+3yuEFWcJBAFgykLkCLFQ00s+GPdHLqrEZLUjJlEVBw
+ ymMKyeEtxxDtML1aqfIjs/MtVwpFsMIAZGr240tJv2K3P1KYCwMBwCVCfyfCY7EBdVx1
+ K038mDfdGJRdCrq+Mj1AqhisX7kqcTEjymYMom6r8P0PxBNxEUvMtFNsCpm/tjpqRZLc
+ 3FH21KB71lwCPiAV7dtDOzZ9Osr+rBHPY3rGtJunbThkaR29ApyalguFPweu2Qwk4qRj
+ nNcTYJi7FvH+Rtfjrv4fCA5PsKkoAkZZbPASTY03duP5WA/3umz/Nq3IOu/Kt/YhS1IV
+ fcYw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXpnafNS6AltMts3FIqccBZJHAx15BPi3BJqLkLWnmwUDdJatRjBsSX/GfDAvP+cttLjIwroiW2pup6zdSQXuA4bCQvhLs=
-X-Gm-Message-State: AOJu0YyEv9XQDK35j7+iw0KuqafnrrplgIhVb6UBYbnC63w+X3DGsRJn
- urTaO4aaCvtln1futxW3xa6NwFWVBz+WGlYcO3BmrWaVITxdlgzP8ZuNXNs2XPmTBZOOi1GOTiY
- Dc8I=
-X-Google-Smtp-Source: AGHT+IGGXj7PLrUym61VI8FobdhCeCebYTtR1FCy5FVVyWZGMH+qgDWcLnp0f8kqaTFq5k4oisf1zw==
-X-Received: by 2002:a05:6512:3caa:b0:52c:cccf:85e1 with SMTP id
- 2adb3069b0e04-52ce1865a49mr14550208e87.65.1719584634295; 
+ AJvYcCUfSRqituvJ9XqtcmrYkuxUmmZWu+KGbf8lwMgldeBe6f+JJV6jyO+g2mEfSzVntZ/Od/imZTsBM7K6xBTmJHRtla8fHbM=
+X-Gm-Message-State: AOJu0YzTEtqaPenxT/Mm7g6tVV3s+RntuPNhPzKUt/WWF/ujLuFk3ffp
+ i7O5YVqR3Ck95H8Ob7V7kloeyL5QFhq9WfX84NWzwlp3Gu1iSIICm2ONRYMqn7g=
+X-Google-Smtp-Source: AGHT+IE9YvNrVQ1Sp6/0F2w9paLrRfVPb5F6PuXHupLpEKrCn+fzXEpyr++rWttZn+pPOpjhl7sAGA==
+X-Received: by 2002:a05:6000:154e:b0:367:42ce:f004 with SMTP id
+ ffacd0b85a97d-36760aa2ec0mr1998473f8f.23.1719584634821; 
  Fri, 28 Jun 2024 07:23:54 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4256af55c0asm37180945e9.15.2024.06.28.07.23.53
+ 5b1f17b1804b1-4256af55c0asm37180945e9.15.2024.06.28.07.23.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 28 Jun 2024 07:23:54 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
-Subject: [PATCH 3/9] target/arm: Make vfp_set_fpscr() call vfp_set_{fpcr, fpsr}
-Date: Fri, 28 Jun 2024 15:23:41 +0100
-Message-Id: <20240628142347.1283015-4-peter.maydell@linaro.org>
+Subject: [PATCH 4/9] target/arm: Support migration when FPSR/FPCR won't fit in
+ the FPSCR
+Date: Fri, 28 Jun 2024 15:23:42 +0100
+Message-Id: <20240628142347.1283015-5-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240628142347.1283015-1-peter.maydell@linaro.org>
 References: <20240628142347.1283015-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::133;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x133.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x335.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,210 +93,226 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Make vfp_set_fpscr() call vfp_set_fpsr() and vfp_set_fpcr()
-instead of the other way around.
+To support FPSR and FPCR bits that don't exist in the AArch32 FPSCR
+view of floating point control and status (such as the FEAT_AFP ones),
+we need to make sure those bits can be migrated. This commit allows
+that, whilst maintaining backwards and forwards migration compatibility
+for CPUs where there are no such bits:
 
-The masking we do when getting and setting vfp.xregs[ARM_VFP_FPSCR]
-is a little awkward, but we are going to change where we store the
-underlying FPSR and FPCR information in a later commit, so it will
-go away then.
+On sending:
+ * If either the FPCR or the FPSR include set bits that are not
+   visible in the AArch32 FPSCR view of floating point control/status
+   then we send the FPCR and FPSR as two separate fields in a new
+   cpu/vfp/fpcr_fpsr subsection, and we send a 0 for the old
+   FPSCR field in cpu/vfp
+ * Otherwise, we don't send the fpcr_fpsr subsection, and we send
+   an FPSCR-format value in cpu/vfp as we did previously
+
+On receiving:
+ * if we see a non-zero FPSCR field, that is the right information
+ * if we see a fpcr_fpsr subsection then that has the information
+ * if we see neither, then FPSCR/FPCR/FPSR are all zero on the source;
+   cpu_pre_load() ensures the CPU state defaults to that
+ * if we see both, then the migration source is buggy or malicious;
+   either the fpcr_fpsr or the FPSCR will "win" depending which
+   is first in the migration stream; we don't care which that is
+
+We make the new FPCR and FPSR on-the-wire data be 64 bits, because
+architecturally these registers are that wide, and this avoids the
+need to engage in further migration-compatibility contortions in
+future if some new architecture revision defines bits in the high
+half of either register.
+
+(We won't ever send the new migration subsection until we add support
+for a CPU feature which enables setting overlapping FPCR bits, like
+FEAT_AFP.)
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/cpu.h        |  22 +++++----
- target/arm/vfp_helper.c | 100 ++++++++++++++++++++++++++--------------
- 2 files changed, 78 insertions(+), 44 deletions(-)
+ target/arm/machine.c | 134 ++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 132 insertions(+), 2 deletions(-)
 
-diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index 68a9922f88e..0a570afcab4 100644
---- a/target/arm/cpu.h
-+++ b/target/arm/cpu.h
-@@ -1730,17 +1730,19 @@ uint32_t vfp_get_fpsr(CPUARMState *env);
-  */
- uint32_t vfp_get_fpcr(CPUARMState *env);
- 
--static inline void vfp_set_fpsr(CPUARMState *env, uint32_t val)
--{
--    uint32_t new_fpscr = (vfp_get_fpscr(env) & ~FPSR_MASK) | (val & FPSR_MASK);
--    vfp_set_fpscr(env, new_fpscr);
--}
-+/**
-+ * vfp_set_fpsr: write the AArch64 FPSR
-+ * @env: CPU context
-+ * @value: new value
-+ */
-+void vfp_set_fpsr(CPUARMState *env, uint32_t value);
- 
--static inline void vfp_set_fpcr(CPUARMState *env, uint32_t val)
--{
--    uint32_t new_fpscr = (vfp_get_fpscr(env) & ~FPCR_MASK) | (val & FPCR_MASK);
--    vfp_set_fpscr(env, new_fpscr);
--}
-+/**
-+ * vfp_set_fpcr: write the AArch64 FPCR
-+ * @env: CPU context
-+ * @value: new value
-+ */
-+void vfp_set_fpcr(CPUARMState *env, uint32_t value);
- 
- enum arm_cpu_mode {
-   ARM_CPU_MODE_USR = 0x10,
-diff --git a/target/arm/vfp_helper.c b/target/arm/vfp_helper.c
-index a87d39e4d9b..38c8aadf9b4 100644
---- a/target/arm/vfp_helper.c
-+++ b/target/arm/vfp_helper.c
-@@ -99,14 +99,27 @@ static uint32_t vfp_get_fpsr_from_host(CPUARMState *env)
-     return vfp_exceptbits_from_host(i);
+diff --git a/target/arm/machine.c b/target/arm/machine.c
+index 0a722ca7e75..8c820955d95 100644
+--- a/target/arm/machine.c
++++ b/target/arm/machine.c
+@@ -18,6 +18,34 @@ static bool vfp_needed(void *opaque)
+             : cpu_isar_feature(aa32_vfp_simd, cpu));
  }
  
--static void vfp_set_fpscr_to_host(CPUARMState *env, uint32_t val)
-+static void vfp_set_fpsr_to_host(CPUARMState *env, uint32_t val)
++static bool vfp_fpcr_fpsr_needed(void *opaque)
 +{
 +    /*
-+     * The exception flags are ORed together when we read fpscr so we
-+     * only need to preserve the current state in one of our
-+     * float_status values.
++     * If either the FPCR or the FPSR include set bits that are not
++     * visible in the AArch32 FPSCR view of floating point control/status
++     * then we must send the FPCR and FPSR as two separate fields in the
++     * cpu/vfp/fpcr_fpsr subsection, and we will send a 0 for the old
++     * FPSCR field in cpu/vfp.
++     *
++     * If all the set bits are representable in an AArch32 FPSCR then we
++     * send that value as the cpu/vfp FPSCR field, and don't send the
++     * cpu/vfp/fpcr_fpsr subsection.
++     *
++     * On incoming migration, if the cpu/vfp FPSCR field is non-zero we
++     * use it, and if the fpcr_fpsr subsection is present we use that.
++     * (The subsection will never be present with a non-zero FPSCR field,
++     * and if FPSCR is zero and the subsection is not present that means
++     * that FPSCR/FPSR/FPCR are zero.)
++     *
++     * This preserves migration compatibility with older QEMU versions,
++     * in both directions.
 +     */
-+    int i = vfp_exceptbits_to_host(val);
-+    set_float_exception_flags(i, &env->vfp.fp_status);
-+    set_float_exception_flags(0, &env->vfp.fp_status_f16);
-+    set_float_exception_flags(0, &env->vfp.standard_fp_status);
-+    set_float_exception_flags(0, &env->vfp.standard_fp_status_f16);
++    ARMCPU *cpu = opaque;
++    CPUARMState *env = &cpu->env;
++
++    return (vfp_get_fpcr(env) & ~FPCR_MASK) || (vfp_get_fpsr(env) & ~FPSR_MASK);
 +}
 +
-+static void vfp_set_fpcr_to_host(CPUARMState *env, uint32_t val)
+ static int get_fpscr(QEMUFile *f, void *opaque, size_t size,
+                      const VMStateField *field)
  {
--    int i;
-     uint32_t changed = env->vfp.xregs[ARM_VFP_FPSCR];
+@@ -25,7 +53,10 @@ static int get_fpscr(QEMUFile *f, void *opaque, size_t size,
+     CPUARMState *env = &cpu->env;
+     uint32_t val = qemu_get_be32(f);
  
-     changed ^= val;
-     if (changed & (3 << 22)) {
--        i = (val >> 22) & 3;
-+        int i = (val >> 22) & 3;
-         switch (i) {
-         case FPROUNDING_TIEEVEN:
-             i = float_round_nearest_even;
-@@ -141,17 +154,6 @@ static void vfp_set_fpscr_to_host(CPUARMState *env, uint32_t val)
-         set_default_nan_mode(dnan_enabled, &env->vfp.fp_status);
-         set_default_nan_mode(dnan_enabled, &env->vfp.fp_status_f16);
-     }
--
--    /*
--     * The exception flags are ORed together when we read fpscr so we
--     * only need to preserve the current state in one of our
--     * float_status values.
--     */
--    i = vfp_exceptbits_to_host(val);
--    set_float_exception_flags(i, &env->vfp.fp_status);
--    set_float_exception_flags(0, &env->vfp.fp_status_f16);
--    set_float_exception_flags(0, &env->vfp.standard_fp_status);
--    set_float_exception_flags(0, &env->vfp.standard_fp_status_f16);
- }
- 
- #else
-@@ -161,7 +163,11 @@ static uint32_t vfp_get_fpsr_from_host(CPUARMState *env)
+-    vfp_set_fpscr(env, val);
++    if (val) {
++        /* 0 means we might have the data in the fpcr_fpsr subsection */
++        vfp_set_fpscr(env, val);
++    }
      return 0;
  }
  
--static void vfp_set_fpscr_to_host(CPUARMState *env, uint32_t val)
-+static void vfp_set_fpsr_to_host(CPUARMState *env, uint32_t val)
+@@ -34,8 +65,9 @@ static int put_fpscr(QEMUFile *f, void *opaque, size_t size,
+ {
+     ARMCPU *cpu = opaque;
+     CPUARMState *env = &cpu->env;
++    uint32_t fpscr = vfp_fpcr_fpsr_needed(opaque) ? 0 : vfp_get_fpscr(env);
+ 
+-    qemu_put_be32(f, vfp_get_fpscr(env));
++    qemu_put_be32(f, fpscr);
+     return 0;
+ }
+ 
+@@ -45,6 +77,86 @@ static const VMStateInfo vmstate_fpscr = {
+     .put = put_fpscr,
+ };
+ 
++static int get_fpcr(QEMUFile *f, void *opaque, size_t size,
++                     const VMStateField *field)
 +{
++    ARMCPU *cpu = opaque;
++    CPUARMState *env = &cpu->env;
++    uint64_t val = qemu_get_be64(f);
++
++    vfp_set_fpcr(env, val);
++    return 0;
 +}
 +
-+static void vfp_set_fpcr_to_host(CPUARMState *env, uint32_t val)
- {
- }
- 
-@@ -204,7 +210,37 @@ uint32_t vfp_get_fpscr(CPUARMState *env)
-     return HELPER(vfp_get_fpscr)(env);
- }
- 
--void HELPER(vfp_set_fpscr)(CPUARMState *env, uint32_t val)
-+void vfp_set_fpsr(CPUARMState *env, uint32_t val)
++static int put_fpcr(QEMUFile *f, void *opaque, size_t size,
++                     const VMStateField *field, JSONWriter *vmdesc)
 +{
-+    ARMCPU *cpu = env_archcpu(env);
++    ARMCPU *cpu = opaque;
++    CPUARMState *env = &cpu->env;
 +
-+    vfp_set_fpsr_to_host(env, val);
++    qemu_put_be64(f, vfp_get_fpcr(env));
++    return 0;
++}
 +
-+    if (arm_feature(env, ARM_FEATURE_NEON) ||
-+        cpu_isar_feature(aa32_mve, cpu)) {
-+        /*
-+         * The bit we set within fpscr_q is arbitrary; the register as a
-+         * whole being zero/non-zero is what counts.
-+         */
-+        env->vfp.qc[0] = val & FPCR_QC;
-+        env->vfp.qc[1] = 0;
-+        env->vfp.qc[2] = 0;
-+        env->vfp.qc[3] = 0;
-+    }
++static const VMStateInfo vmstate_fpcr = {
++    .name = "fpcr",
++    .get = get_fpcr,
++    .put = put_fpcr,
++};
 +
++static int get_fpsr(QEMUFile *f, void *opaque, size_t size,
++                     const VMStateField *field)
++{
++    ARMCPU *cpu = opaque;
++    CPUARMState *env = &cpu->env;
++    uint64_t val = qemu_get_be64(f);
++
++    vfp_set_fpsr(env, val);
++    return 0;
++}
++
++static int put_fpsr(QEMUFile *f, void *opaque, size_t size,
++                     const VMStateField *field, JSONWriter *vmdesc)
++{
++    ARMCPU *cpu = opaque;
++    CPUARMState *env = &cpu->env;
++
++    qemu_put_be64(f, vfp_get_fpsr(env));
++    return 0;
++}
++
++static const VMStateInfo vmstate_fpsr = {
++    .name = "fpsr",
++    .get = get_fpsr,
++    .put = put_fpsr,
++};
++
++static const VMStateDescription vmstate_vfp_fpcr_fpsr = {
++    .name = "cpu/vfp/fpcr_fpsr",
++    .version_id = 1,
++    .minimum_version_id = 1,
++    .needed = vfp_fpcr_fpsr_needed,
++    .fields = (const VMStateField[]) {
++        {
++            .name = "fpcr",
++            .version_id = 0,
++            .size = sizeof(uint64_t),
++            .info = &vmstate_fpcr,
++            .flags = VMS_SINGLE,
++            .offset = 0,
++        },
++        {
++            .name = "fpsr",
++            .version_id = 0,
++            .size = sizeof(uint64_t),
++            .info = &vmstate_fpsr,
++            .flags = VMS_SINGLE,
++            .offset = 0,
++        },
++        VMSTATE_END_OF_LIST()
++    },
++};
++
+ static const VMStateDescription vmstate_vfp = {
+     .name = "cpu/vfp",
+     .version_id = 3,
+@@ -100,6 +212,10 @@ static const VMStateDescription vmstate_vfp = {
+             .offset = 0,
+         },
+         VMSTATE_END_OF_LIST()
++    },
++    .subsections = (const VMStateDescription * const []) {
++        &vmstate_vfp_fpcr_fpsr,
++        NULL
+     }
+ };
+ 
+@@ -784,6 +900,20 @@ static int cpu_pre_load(void *opaque)
+     ARMCPU *cpu = opaque;
+     CPUARMState *env = &cpu->env;
+ 
 +    /*
-+     * The only FPSR bits we keep in vfp.xregs[FPSCR] are NZCV:
-+     * the exception flags IOC|DZC|OFC|UFC|IXC|IDC are stored in
-+     * fp_status, and QC is in vfp.qc[]. Store the NZCV bits there,
-+     * and zero any of the other FPSR bits (but preserve the FPCR
-+     * bits).
++     * In an inbound migration where on the source FPSCR/FPSR/FPCR are 0,
++     * there will be no fpcr_fpsr subsection so we won't call vfp_set_fpcr()
++     * and vfp_set_fpsr() from get_fpcr() and get_fpsr(); also the get_fpscr()
++     * function will not call vfp_set_fpscr() because it will see a 0 in the
++     * inbound data. Ensure that in this case we have a correctly set up
++     * zero FPSCR/FPCR/FPSR.
++     *
++     * This is not strictly needed because FPSCR is zero out of reset, but
++     * it avoids the possibility of future confusing migration bugs if some
++     * future architecture change makes the reset value non-zero.
 +     */
-+    val &= FPCR_NZCV_MASK;
-+    env->vfp.xregs[ARM_VFP_FPSCR] &= ~FPSR_MASK;
-+    env->vfp.xregs[ARM_VFP_FPSCR] |= val;
-+}
++    vfp_set_fpscr(env, 0);
 +
-+void vfp_set_fpcr(CPUARMState *env, uint32_t val)
- {
-     ARMCPU *cpu = env_archcpu(env);
- 
-@@ -213,7 +249,7 @@ void HELPER(vfp_set_fpscr)(CPUARMState *env, uint32_t val)
-         val &= ~FPCR_FZ16;
-     }
- 
--    vfp_set_fpscr_to_host(env, val);
-+    vfp_set_fpcr_to_host(env, val);
- 
-     if (!arm_feature(env, ARM_FEATURE_M)) {
-         /*
-@@ -231,28 +267,24 @@ void HELPER(vfp_set_fpscr)(CPUARMState *env, uint32_t val)
-                                      FPCR_LTPSIZE_LENGTH);
-     }
- 
--    if (arm_feature(env, ARM_FEATURE_NEON) ||
--        cpu_isar_feature(aa32_mve, cpu)) {
--        /*
--         * The bit we set within fpscr_q is arbitrary; the register as a
--         * whole being zero/non-zero is what counts.
--         */
--        env->vfp.qc[0] = val & FPCR_QC;
--        env->vfp.qc[1] = 0;
--        env->vfp.qc[2] = 0;
--        env->vfp.qc[3] = 0;
--    }
--
      /*
-      * We don't implement trapped exception handling, so the
-      * trap enable bits, IDE|IXE|UFE|OFE|DZE|IOE are all RAZ/WI (not RES0!)
-      *
--     * The exception flags IOC|DZC|OFC|UFC|IXC|IDC are stored in
--     * fp_status; QC, Len and Stride are stored separately earlier.
--     * Clear out all of those and the RES0 bits: only NZCV, AHP, DN,
--     * FZ, RMode and FZ16 are kept in vfp.xregs[FPSCR].
-+     * The FPCR bits we keep in vfp.xregs[FPSCR] are AHP, DN, FZ, RMode
-+     * and FZ16. Len, Stride and LTPSIZE we just handled. Store those bits
-+     * there, and zero any of the other FPCR bits and the RES0 and RAZ/WI
-+     * bits.
-      */
--    env->vfp.xregs[ARM_VFP_FPSCR] = val & 0xf7c80000;
-+    val &= FPCR_AHP | FPCR_DN | FPCR_FZ | FPCR_RMODE_MASK | FPCR_FZ16;
-+    env->vfp.xregs[ARM_VFP_FPSCR] &= ~FPCR_MASK;
-+    env->vfp.xregs[ARM_VFP_FPSCR] |= val;
-+}
-+
-+void HELPER(vfp_set_fpscr)(CPUARMState *env, uint32_t val)
-+{
-+    vfp_set_fpcr(env, val & FPCR_MASK);
-+    vfp_set_fpsr(env, val & FPSR_MASK);
- }
- 
- void vfp_set_fpscr(CPUARMState *env, uint32_t val)
+      * Pre-initialize irq_line_state to a value that's never valid as
+      * real data, so cpu_post_load() can tell whether we've seen the
 -- 
 2.34.1
 
