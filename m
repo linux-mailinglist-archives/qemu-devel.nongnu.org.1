@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80AB691BF12
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jun 2024 14:53:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C739C91BEE7
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jun 2024 14:45:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sNB57-0002lI-HB; Fri, 28 Jun 2024 08:52:01 -0400
+	id 1sNAxQ-0005WP-4y; Fri, 28 Jun 2024 08:44:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sNB55-0002k7-6p
- for qemu-devel@nongnu.org; Fri, 28 Jun 2024 08:51:59 -0400
-Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
+ id 1sNAwk-0004va-QH
+ for qemu-devel@nongnu.org; Fri, 28 Jun 2024 08:43:25 -0400
+Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sNB51-0007iI-D5
- for qemu-devel@nongnu.org; Fri, 28 Jun 2024 08:51:58 -0400
-Received: by mail-ej1-x634.google.com with SMTP id
- a640c23a62f3a-a729d9d7086so302960166b.0
- for <qemu-devel@nongnu.org>; Fri, 28 Jun 2024 05:51:54 -0700 (PDT)
+ id 1sNAwh-0005kn-EP
+ for qemu-devel@nongnu.org; Fri, 28 Jun 2024 08:43:22 -0400
+Received: by mail-ed1-x52b.google.com with SMTP id
+ 4fb4d7f45d1cf-57d15b85a34so664720a12.3
+ for <qemu-devel@nongnu.org>; Fri, 28 Jun 2024 05:43:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719579114; x=1720183914; darn=nongnu.org;
+ d=linaro.org; s=google; t=1719578595; x=1720183395; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=t7j8q068F+/YM+zRjDrDncqLYLrDba9m1UpS3/LlFks=;
- b=NAzBslSEdyIdKgahTOdpSBSsNjh3TS354Dif6k43+W2aTTK8NPpkZqHNztSdfLFEsU
- rDwcXx1mV79ktZ5Bju2Z9S8mdOZoV9Az8YJSTlDyTzNTFE2JFGJoUF4GMFHnwaG5k+Dt
- 4t6pcFkWwFZK5O/8Vb5i5dbnA1UC1EY8S98UmQaHyLZTXXIWBO9qcraNoPo70ReqDp9P
- FG8wU8YTGkOWb6VaRPDu62HxV9ixdwL5L54z9mDghwGVHRySs5lgjuQE+2ZenupTfWof
- XzWxpOdTjCt4b5LSW6zIv9dcAuc+vxk77ONF13S8vldhTsaGLdJSv04DcTBeDnceRsHS
- 08tQ==
+ bh=c51LkRcWqfbFF9p5AttaaXQeDDNNFHgjsINsISdVjjs=;
+ b=E6Q2D8oLNgj1PMKryZjbSC9xiiTfRKvicliEopstKE0PjNFYlhL0cg4BVwz5hkZUX3
+ vNrrDqVIPwnnHG1iiLnCzzgLECUgcFwBSUzICeauFa6eyPJ1krtKe0Z94qbnbCeFY6g+
+ acyosy6TxmWiKKncbb+ucTrdzemTJvpLBf+FSbnMvdZ3+ZozXHHHlXfbAYbsXwz3vBsb
+ t9rsWxog5d4f2IZouJHm29igYW7h6ZrysRUSONzPRhLdjYZ1gIh5oEkb4mFk+KoWqCIm
+ lp+Zkdg0bN6jQ+giztXinFnUW17sAqG8gUKYlpk4aM8Wjv/Yt4lOZtrNkFZwmPdfBQg6
+ y6eQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719579114; x=1720183914;
+ d=1e100.net; s=20230601; t=1719578595; x=1720183395;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=t7j8q068F+/YM+zRjDrDncqLYLrDba9m1UpS3/LlFks=;
- b=V2J2RHBrCxDGQxs+YUSC5+fls022OUbKDxnwdB51TJJ9/a2qNnqdXh2livyCVyQWf+
- eqtjV/p02VqmED6N/p1GSBg+WZhXh9kl6X1JHlM+yfeqU+qE6yfw+r+FfLncvOsbtxbd
- /DjwVbNgiNj93NYAUpRfedemwby+WEGJUD6nnfFIeA4I0oeRzk/LlzgXBfOF0AqoKuc/
- 1Vkgeb8X97dVM0f2exNyM/WjTIkoqdkF2uXAfMBvZGQ5WEoFEWwgTbpOhLfiuEO+2vZ8
- RNvwfLECpe8YVZNSnGhP9PvbzGRVWVT/VVxSTVUpurTWx1hVzlSFWde8rnQ7PxdzoCMu
- vMTQ==
-X-Gm-Message-State: AOJu0YwZCKLKUq6S7i8g/rz5BRlLiH2fgwngWJjMFa/cGim/YBJNm24A
- 0LY+v6oTIAf8kbJwWxD8+D3wt/CGdcsNgb1Ni5n0W3ay3C/39abrirBxNi/PhtM=
-X-Google-Smtp-Source: AGHT+IFGC+e7plvD10robakGGvwWeiAffjysjrX3dtoYdRs7FI+vwojxi0N6vXogyJSbTS9mIXRY9A==
-X-Received: by 2002:a17:907:2688:b0:a6f:1d4e:734f with SMTP id
- a640c23a62f3a-a72aef685e2mr147980166b.36.1719579113643; 
- Fri, 28 Jun 2024 05:51:53 -0700 (PDT)
+ bh=c51LkRcWqfbFF9p5AttaaXQeDDNNFHgjsINsISdVjjs=;
+ b=Ao691od1x6Ez++b5exQ0mH36hEjsCTr47JquggPiJo2A3fVwjcUMtTNiIY2dVeEK/V
+ lHcBI0M4y+KrNtqKu3Kal0pZ7LXEdsLL2EZqytiYbI1X5LYCiCCqzAi4ZhfLoupbYE8Y
+ A6vpTsD+ZVVcVnEOPtiNeSgeEibOkyKxccsWAp7Yux1FRIQb4YT5kIpS3q0gU9uDW6Nz
+ +qaLyRbF8iGOY7AdEIQsly10ea4sa9bIyFFf01HfzDip5l8/nFpT+LmbrEkCdrAYz2pt
+ haYUrErMBG0ixAAv/98q1zKyJc2LnKY1PvZkzwqJFnDpQUOgI/i/gJn8P5Qhve0aV/sJ
+ bAQQ==
+X-Gm-Message-State: AOJu0Yxqs8LYpN/E8bhJiLEI1ThBfg7pe7IfcyNFUA1On6TAwayVyeN9
+ SlZkVqCQrlB1XBMvckUsn1mAdsXkN/COXGXDK8oBgSe5Fi+SQ/vStUUO9RlTqQE=
+X-Google-Smtp-Source: AGHT+IGT49Od1R4ouqzLkdPFi+a41FnRALxNB5LXpeHcJ1eBvEnBt04D7yDyXDGBZsLJtEsmE4IU0w==
+X-Received: by 2002:a17:906:4a12:b0:a6f:d085:9e32 with SMTP id
+ a640c23a62f3a-a716593e3efmr1090806766b.76.1719578594356; 
+ Fri, 28 Jun 2024 05:43:14 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a72aaf18c83sm77927866b.4.2024.06.28.05.51.52
+ a640c23a62f3a-a72aaf6339bsm76915266b.80.2024.06.28.05.43.06
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 28 Jun 2024 05:51:53 -0700 (PDT)
+ Fri, 28 Jun 2024 05:43:11 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 8697C5FA3D;
+ by draig.lan (Postfix) with ESMTP id 9FB815F7A1;
  Fri, 28 Jun 2024 13:43:00 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -73,18 +73,17 @@ Cc: David Hildenbrand <david@redhat.com>, Beraldo Leal <bleal@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Thomas Huth <thuth@redhat.com>, Gustavo Romero <gustavo.romero@linaro.org>
-Subject: [PATCH 16/23] target/arm: Fix exception case in
- allocation_tag_mem_probe
-Date: Fri, 28 Jun 2024 13:42:51 +0100
-Message-Id: <20240628124258.832466-17-alex.bennee@linaro.org>
+Subject: [PATCH 17/23] target/arm: Make some MTE helpers widely available
+Date: Fri, 28 Jun 2024 13:42:52 +0100
+Message-Id: <20240628124258.832466-18-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240628124258.832466-1-alex.bennee@linaro.org>
 References: <20240628124258.832466-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::634;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x634.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -109,32 +108,168 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Gustavo Romero <gustavo.romero@linaro.org>
 
-If page in 'ptr_access' is inaccessible and probe is 'true'
-allocation_tag_mem_probe should not throw an exception, but currently it
-does, so fix it.
+Make the MTE helpers allocation_tag_mem_probe, load_tag1, and store_tag1
+available to other subsystems.
 
 Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20240628050850.536447-5-gustavo.romero@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-Id: <20240628050850.536447-6-gustavo.romero@linaro.org>
 ---
- target/arm/tcg/mte_helper.c | 3 +++
- 1 file changed, 3 insertions(+)
+ target/arm/tcg/mte_helper.h | 66 +++++++++++++++++++++++++++++++++++++
+ target/arm/tcg/mte_helper.c | 45 ++++---------------------
+ 2 files changed, 73 insertions(+), 38 deletions(-)
+ create mode 100644 target/arm/tcg/mte_helper.h
 
+diff --git a/target/arm/tcg/mte_helper.h b/target/arm/tcg/mte_helper.h
+new file mode 100644
+index 0000000000..1f471fb69b
+--- /dev/null
++++ b/target/arm/tcg/mte_helper.h
+@@ -0,0 +1,66 @@
++/*
++ * ARM MemTag operation helpers.
++ *
++ * This code is licensed under the GNU GPL v2 or later.
++ *
++ * SPDX-License-Identifier: LGPL-2.1-or-later
++ */
++
++#ifndef TARGET_ARM_MTE_H
++#define TARGET_ARM_MTE_H
++
++#include "exec/mmu-access-type.h"
++
++/**
++ * allocation_tag_mem_probe:
++ * @env: the cpu environment
++ * @ptr_mmu_idx: the addressing regime to use for the virtual address
++ * @ptr: the virtual address for which to look up tag memory
++ * @ptr_access: the access to use for the virtual address
++ * @ptr_size: the number of bytes in the normal memory access
++ * @tag_access: the access to use for the tag memory
++ * @probe: true to merely probe, never taking an exception
++ * @ra: the return address for exception handling
++ *
++ * Our tag memory is formatted as a sequence of little-endian nibbles.
++ * That is, the byte at (addr >> (LOG2_TAG_GRANULE + 1)) contains two
++ * tags, with the tag at [3:0] for the lower addr and the tag at [7:4]
++ * for the higher addr.
++ *
++ * Here, resolve the physical address from the virtual address, and return
++ * a pointer to the corresponding tag byte.
++ *
++ * If there is no tag storage corresponding to @ptr, return NULL.
++ *
++ * If the page is inaccessible for @ptr_access, or has a watchpoint, there are
++ * three options:
++ * (1) probe = true, ra = 0 : pure probe -- we return NULL if the page is not
++ *     accessible, and do not take watchpoint traps. The calling code must
++ *     handle those cases in the right priority compared to MTE traps.
++ * (2) probe = false, ra = 0 : probe, no fault expected -- the caller guarantees
++ *     that the page is going to be accessible. We will take watchpoint traps.
++ * (3) probe = false, ra != 0 : non-probe -- we will take both memory access
++ *     traps and watchpoint traps.
++ * (probe = true, ra != 0 is invalid and will assert.)
++ */
++uint8_t *allocation_tag_mem_probe(CPUARMState *env, int ptr_mmu_idx,
++                                  uint64_t ptr, MMUAccessType ptr_access,
++                                  int ptr_size, MMUAccessType tag_access,
++                                  bool probe, uintptr_t ra);
++
++/**
++ * load_tag1 - Load 1 tag (nibble) from byte
++ * @ptr: The tagged address
++ * @mem: The tag address (packed, 2 tags in byte)
++ */
++int load_tag1(uint64_t ptr, uint8_t *mem);
++
++/**
++ * store_tag1 - Store 1 tag (nibble) into byte
++ * @ptr: The tagged address
++ * @mem: The tag address (packed, 2 tags in byte)
++ * @tag: The tag to be stored in the nibble
++ */
++void store_tag1(uint64_t ptr, uint8_t *mem, int tag);
++
++#endif /* TARGET_ARM_MTE_H */
 diff --git a/target/arm/tcg/mte_helper.c b/target/arm/tcg/mte_helper.c
-index 037ac6dd60..a50d576294 100644
+index a50d576294..9d2ba287ee 100644
 --- a/target/arm/tcg/mte_helper.c
 +++ b/target/arm/tcg/mte_helper.c
-@@ -96,6 +96,9 @@ static uint8_t *allocation_tag_mem_probe(CPUARMState *env, int ptr_mmu_idx,
-     assert(!(probe && ra));
+@@ -29,6 +29,7 @@
+ #include "hw/core/tcg-cpu-ops.h"
+ #include "qapi/error.h"
+ #include "qemu/guest-random.h"
++#include "mte_helper.h"
  
-     if (!(flags & (ptr_access == MMU_DATA_STORE ? PAGE_WRITE_ORG : PAGE_READ))) {
-+        if (probe) {
-+            return NULL;
-+        }
-         cpu_loop_exit_sigsegv(env_cpu(env), ptr, ptr_access,
-                               !(flags & PAGE_VALID), ra);
-     }
+ 
+ static int choose_nonexcluded_tag(int tag, int offset, uint16_t exclude)
+@@ -50,42 +51,10 @@ static int choose_nonexcluded_tag(int tag, int offset, uint16_t exclude)
+     return tag;
+ }
+ 
+-/**
+- * allocation_tag_mem_probe:
+- * @env: the cpu environment
+- * @ptr_mmu_idx: the addressing regime to use for the virtual address
+- * @ptr: the virtual address for which to look up tag memory
+- * @ptr_access: the access to use for the virtual address
+- * @ptr_size: the number of bytes in the normal memory access
+- * @tag_access: the access to use for the tag memory
+- * @probe: true to merely probe, never taking an exception
+- * @ra: the return address for exception handling
+- *
+- * Our tag memory is formatted as a sequence of little-endian nibbles.
+- * That is, the byte at (addr >> (LOG2_TAG_GRANULE + 1)) contains two
+- * tags, with the tag at [3:0] for the lower addr and the tag at [7:4]
+- * for the higher addr.
+- *
+- * Here, resolve the physical address from the virtual address, and return
+- * a pointer to the corresponding tag byte.
+- *
+- * If there is no tag storage corresponding to @ptr, return NULL.
+- *
+- * If the page is inaccessible for @ptr_access, or has a watchpoint, there are
+- * three options:
+- * (1) probe = true, ra = 0 : pure probe -- we return NULL if the page is not
+- *     accessible, and do not take watchpoint traps. The calling code must
+- *     handle those cases in the right priority compared to MTE traps.
+- * (2) probe = false, ra = 0 : probe, no fault expected -- the caller guarantees
+- *     that the page is going to be accessible. We will take watchpoint traps.
+- * (3) probe = false, ra != 0 : non-probe -- we will take both memory access
+- *     traps and watchpoint traps.
+- * (probe = true, ra != 0 is invalid and will assert.)
+- */
+-static uint8_t *allocation_tag_mem_probe(CPUARMState *env, int ptr_mmu_idx,
+-                                         uint64_t ptr, MMUAccessType ptr_access,
+-                                         int ptr_size, MMUAccessType tag_access,
+-                                         bool probe, uintptr_t ra)
++uint8_t *allocation_tag_mem_probe(CPUARMState *env, int ptr_mmu_idx,
++                                  uint64_t ptr, MMUAccessType ptr_access,
++                                  int ptr_size, MMUAccessType tag_access,
++                                  bool probe, uintptr_t ra)
+ {
+ #ifdef CONFIG_USER_ONLY
+     uint64_t clean_ptr = useronly_clean_ptr(ptr);
+@@ -287,7 +256,7 @@ uint64_t HELPER(addsubg)(CPUARMState *env, uint64_t ptr,
+     return address_with_allocation_tag(ptr + offset, rtag);
+ }
+ 
+-static int load_tag1(uint64_t ptr, uint8_t *mem)
++int load_tag1(uint64_t ptr, uint8_t *mem)
+ {
+     int ofs = extract32(ptr, LOG2_TAG_GRANULE, 1) * 4;
+     return extract32(*mem, ofs, 4);
+@@ -321,7 +290,7 @@ static void check_tag_aligned(CPUARMState *env, uint64_t ptr, uintptr_t ra)
+ }
+ 
+ /* For use in a non-parallel context, store to the given nibble.  */
+-static void store_tag1(uint64_t ptr, uint8_t *mem, int tag)
++void store_tag1(uint64_t ptr, uint8_t *mem, int tag)
+ {
+     int ofs = extract32(ptr, LOG2_TAG_GRANULE, 1) * 4;
+     *mem = deposit32(*mem, ofs, 4, tag);
 -- 
 2.39.2
 
