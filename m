@@ -2,71 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87FC191B7C8
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jun 2024 09:07:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C93F491B7EC
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jun 2024 09:15:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sN5gr-0002x9-1s; Fri, 28 Jun 2024 03:06:37 -0400
+	id 1sN5gs-00034t-6k; Fri, 28 Jun 2024 03:06:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sN5gn-0002X7-BM
- for qemu-devel@nongnu.org; Fri, 28 Jun 2024 03:06:33 -0400
-Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sN5go-0002eF-Fa
+ for qemu-devel@nongnu.org; Fri, 28 Jun 2024 03:06:34 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sN5gi-0003GH-HZ
- for qemu-devel@nongnu.org; Fri, 28 Jun 2024 03:06:33 -0400
-Received: by mail-lf1-x129.google.com with SMTP id
- 2adb3069b0e04-52cdf579dd2so268453e87.3
- for <qemu-devel@nongnu.org>; Fri, 28 Jun 2024 00:06:28 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sN5gm-0003Gi-Q3
+ for qemu-devel@nongnu.org; Fri, 28 Jun 2024 03:06:34 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-421f4d1c057so2197715e9.3
+ for <qemu-devel@nongnu.org>; Fri, 28 Jun 2024 00:06:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719558386; x=1720163186; darn=nongnu.org;
+ d=linaro.org; s=google; t=1719558391; x=1720163191; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=W8MZ6mDUZDTzEHMhB6amOhsFMea88t3Iug/OVUXgLHk=;
- b=nCfxMW8nGlIedU12Wva6XOVhr02OSp/97twpqlJ3e4Zy29yC6WBztyEJp6QKjlVBKv
- qvjYtuzs8nwhKK5TXk29MPemeafaP+znRU4H4tHQ+j9bcHEOYaa+GZda9UWK8Z4FfA7Y
- EIFK8aoI3+GNndELIriaCYm0tnJqCfavR8RFOUZbnlpcgcZowxucvK3YKUeWpq9TpCI3
- UlWNQiPyUnOQ6UE23psRlzBttTp3cdbbAiAxUtWHir/qFffZQeCOj/LEjJms9FNk3rfT
- jI4HtDwUD9t8rxhgo/U7WGtoAVu+8tSszuWUDqNTaIYzsMD97KtIjZyAL+txxEbbLYCe
- /jYA==
+ :reply-to; bh=Kx/xpSwqNNbWf+vNm/3cxS62PiRf/NP5lc+BI6XCrgc=;
+ b=WV3Ee0wY06oNpxu2snE2EnIB/aF71IOeiY3Uft5UldoNW4c4inGsoz+n5H9FQ1Vmdr
+ JWkoc9QA/Kh+UL4Jx3J40fDVNZfhQCYRfc9ELxhiNXOb8eXJqzJmQScqbG/4Kt7DP18z
+ T1P7Qx4BW3gMIosqN4u0GNQUP2gHJNYWjemALyMKEQtwmICNK8g7kodOQ3kCAb0pWaVY
+ rqfKL+fJtIyzQOFN9Z8jwp037KIY/SHkd7GH/16dwLdTY7fsRVUHr2tMWkbbA1DxoUAR
+ waQ71rzSVizn18zEa/hD6WA+3iT/DU4PQDbZxt85IPXU0b/54zMl97R7dBmvOMQtmRx5
+ A6wA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719558386; x=1720163186;
+ d=1e100.net; s=20230601; t=1719558391; x=1720163191;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=W8MZ6mDUZDTzEHMhB6amOhsFMea88t3Iug/OVUXgLHk=;
- b=SNEFxYpyv0p+4rojpGK7tPFN8VbFM2aBAnxYBo4LesT9vjjjtbTFuvqjI9T7NbHrt7
- sYuqP6Jk7nd64uyb3brf+v+jhAQRcZGwhZvVqel0h9sCFuFFxyL2w9weHQ7+1PpklFFK
- kc357yN1VWDQLK5UzefZwCGTUR+ZUR0S4JCWwqU5MUNtHVQS3bfYljCii/cwRD4fRAIg
- ontJYwOAb4UAIGUNxVn6XlJpRWLQYbF4iQ3B2zl146d3iQOphCAO0B5kOi8lhFc7cjTo
- dNAuPppPzKWH89LPytoWO1+HhA7OW563GI4OzEMsFX9Px4lK1DOOghS16ugzeJtxq73M
- 1wPw==
-X-Gm-Message-State: AOJu0YzlLvY5w/tJXHyjKZHLO0Qic8fyZivcZpg0VG4LHCsg7cRwqi9s
- Sx1jSRK9eAYfLXVa2XB8qyI2LicIqk4zC2dq/Y9yt60Gi3LqSA614Y9S3TZaUOMVgfnKGvnOFuG
- YYmE=
-X-Google-Smtp-Source: AGHT+IHeRMbgQJ2rJ3DsY15nZU+I+nHMEPb5fvLd3W7+mzOkQMpLaAGh09otk9zhIDTl13zNm7LaHg==
-X-Received: by 2002:ac2:43ce:0:b0:52c:da39:e40d with SMTP id
- 2adb3069b0e04-52cdf7f1581mr9240334e87.26.1719558386164; 
- Fri, 28 Jun 2024 00:06:26 -0700 (PDT)
+ bh=Kx/xpSwqNNbWf+vNm/3cxS62PiRf/NP5lc+BI6XCrgc=;
+ b=QriRraooiyCqkImxVQvxJLKcIH1H/0bUVlUS3MKRODzRdTGxKa8d7lyMF7YotQwFhM
+ I5NNpExXlJX4RVCFlIUmCmHbG5W4sprZDKsh+UCCVY1Tg2t43mduQUVeikgWVeaqZMxM
+ Xh/BFuPf2RDE9I3ZOrpGPs71dXvReZyQsO0YHheJU+Hie9QranBY0DRdUkrt/WXUSq6n
+ esC3DmIuLtaXFFEaA9Hg+9S/vZIjlT8myq7RRXUB5T5G3ufjAkHPADt3IijwrS6bno1c
+ rE4S1+NunHC/4CnDzcgtP4nA6D1FVBVgbqMJHKFHP/kDtTQWSYqZGrpcQfgcBLSqbJAZ
+ WjTg==
+X-Gm-Message-State: AOJu0Yy+aQgkfbKwhJUcyrqDcZZdDX4eQnwIPjyZBBqh4I+RRHd3VLhW
+ 4fSdrfB7vqQZzOpCicu1i3qzUsQg8VcWjQSax50ur8DTm1fpLtGpjD2Pb6SFHTuO9RpnZ3MZ06n
+ COqc=
+X-Google-Smtp-Source: AGHT+IHld6UYOWtlkYr9ak8roMxCXQLnff9ME0tkRFAAhR6wCnAmwIf2RX+NdIqujIqI7wJPe3pl7Q==
+X-Received: by 2002:a05:600c:4889:b0:425:5a26:a12c with SMTP id
+ 5b1f17b1804b1-42564510fffmr26456725e9.13.1719558391212; 
+ Fri, 28 Jun 2024 00:06:31 -0700 (PDT)
 Received: from m1x-phil.lan (cho94-h02-176-184-4-239.dsl.sta.abo.bbox.fr.
  [176.184.4.239]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-424a2abcfd0sm62312855e9.1.2024.06.28.00.06.25
+ ffacd0b85a97d-3675a103e5esm1325302f8f.108.2024.06.28.00.06.30
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 28 Jun 2024 00:06:25 -0700 (PDT)
+ Fri, 28 Jun 2024 00:06:30 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org, =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [PATCH v42 42/98] hw/sd/sdcard: Remove SEND_DSR dead case (CMD4)
-Date: Fri, 28 Jun 2024 09:01:18 +0200
-Message-ID: <20240628070216.92609-43-philmd@linaro.org>
+Subject: [PATCH v42 43/98] hw/sd/sdcard: Register generic optional handlers
+ (CMD11 and CMD20)
+Date: Fri, 28 Jun 2024 09:01:19 +0200
+Message-ID: <20240628070216.92609-44-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240628070216.92609-1-philmd@linaro.org>
 References: <20240628070216.92609-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::129;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x129.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,82 +90,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The CSD::CSR_IMP bit defines whether the Driver Stage
-Register (DSR) is implemented or not. We do not set
-this bit in CSD:
-
-    static void sd_set_csd(SDState *sd, uint64_t size)
-    {
-        ...
-        if (size <= SDSC_MAX_CAPACITY) { /* Standard Capacity SD */
-            ...
-            sd->csd[6] = 0xe0 |     /* Partial block for read allowed */
-                ((csize >> 10) & 0x03);
-            ...
-        } else {                    /* SDHC */
-            ...
-            sd->csd[6] = 0x00;
-            ...
-        }
-        ...
-    }
-
-The sd_normal_command() switch case for the SEND_DSR
-command do nothing and fallback to "illegal command".
-Since the command is mandatory (although the register
-isn't...) call the sd_cmd_unimplemented() handler.
-
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/sd/sd.c | 14 ++------------
- 1 file changed, 2 insertions(+), 12 deletions(-)
+ hw/sd/sd.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
 diff --git a/hw/sd/sd.c b/hw/sd/sd.c
-index a816493d37..097cb0f2e2 100644
+index 097cb0f2e2..74aa38a442 100644
 --- a/hw/sd/sd.c
 +++ b/hw/sd/sd.c
-@@ -240,7 +240,7 @@ static const char *sd_response_name(sd_rsp_type_t rsp)
- static const char *sd_cmd_name(SDState *sd, uint8_t cmd)
- {
-     static const char *cmd_abbrev[SDMMC_CMD_MAX] = {
--         [4]    = "SET_DSR",                 [5]    = "IO_SEND_OP_COND",
-+                                             [5]    = "IO_SEND_OP_COND",
+@@ -243,12 +243,12 @@ static const char *sd_cmd_name(SDState *sd, uint8_t cmd)
+                                              [5]    = "IO_SEND_OP_COND",
           [6]    = "SWITCH_FUNC",             [7]    = "SELECT/DESELECT_CARD",
           [8]    = "SEND_IF_COND",            [9]    = "SEND_CSD",
-         [10]    = "SEND_CID",               [11]    = "VOLTAGE_SWITCH",
-@@ -1153,7 +1153,6 @@ static sd_rsp_type_t sd_cmd_illegal(SDState *sd, SDRequest req)
+-        [10]    = "SEND_CID",               [11]    = "VOLTAGE_SWITCH",
++        [10]    = "SEND_CID",
+         [12]    = "STOP_TRANSMISSION",      [13]    = "SEND_STATUS",
+                                             [15]    = "GO_INACTIVE_STATE",
+         [16]    = "SET_BLOCKLEN",           [17]    = "READ_SINGLE_BLOCK",
+         [18]    = "READ_MULTIPLE_BLOCK",
+-        [20]    = "SPEED_CLASS_CONTROL",    [21]    = "DPS_spec",
++                                            [21]    = "DPS_spec",
+         [24]    = "WRITE_BLOCK",            [25]    = "WRITE_MULTIPLE_BLOCK",
+         [26]    = "MANUF_RSVD",             [27]    = "PROGRAM_CSD",
+         [28]    = "SET_WRITE_PROT",         [29]    = "CLR_WRITE_PROT",
+@@ -1161,6 +1161,14 @@ static sd_rsp_type_t sd_cmd_unimplemented(SDState *sd, SDRequest req)
+     return sd_illegal;
  }
  
- /* Commands that are recognised but not yet implemented. */
--__attribute__((unused))
- static sd_rsp_type_t sd_cmd_unimplemented(SDState *sd, SDRequest req)
- {
-     qemu_log_mask(LOG_UNIMP, "%s: CMD%i not implemented\n",
-@@ -1312,16 +1311,6 @@ static sd_rsp_type_t sd_normal_command(SDState *sd, SDRequest req)
- 
-     switch (req.cmd) {
-     /* Basic commands (Class 0 and Class 1) */
--    case 4:  /* CMD4:   SEND_DSR */
--        switch (sd->state) {
--        case sd_standby_state:
--            break;
--
--        default:
--            break;
--        }
--        break;
--
-     case 6:  /* CMD6:   SWITCH_FUNCTION */
-         if (sd->mode != sd_data_transfer_mode) {
-             return sd_invalid_mode_for_cmd(sd, req);
-@@ -2289,6 +2278,7 @@ static const SDProto sd_proto_sd = {
-         [0]  = {0,  sd_bc,   "GO_IDLE_STATE", sd_cmd_GO_IDLE_STATE},
++static sd_rsp_type_t sd_cmd_optional(SDState *sd, SDRequest req)
++{
++    qemu_log_mask(LOG_UNIMP, "%s: Optional CMD%i not implemented\n",
++                  sd->proto->name, req.cmd);
++
++    return sd_illegal;
++}
++
+ /* Configure fields for following sd_generic_write_byte() calls */
+ static sd_rsp_type_t sd_cmd_to_receivingdata(SDState *sd, SDRequest req,
+                                              uint64_t start, size_t size)
+@@ -2279,7 +2287,9 @@ static const SDProto sd_proto_sd = {
          [2]  = {0,  sd_bcr,  "ALL_SEND_CID", sd_cmd_ALL_SEND_CID},
          [3]  = {0,  sd_bcr,  "SEND_RELATIVE_ADDR", sd_cmd_SEND_RELATIVE_ADDR},
-+        [4]  = {0,  sd_bc,   "SEND_DSR", sd_cmd_unimplemented},
+         [4]  = {0,  sd_bc,   "SEND_DSR", sd_cmd_unimplemented},
++        [11] = {0,  sd_ac,   "VOLTAGE_SWITCH", sd_cmd_optional},
          [19] = {2,  sd_adtc, "SEND_TUNING_BLOCK", sd_cmd_SEND_TUNING_BLOCK},
++        [20] = {2,  sd_ac,   "SPEED_CLASS_CONTROL", sd_cmd_optional},
          [23] = {2,  sd_ac,   "SET_BLOCK_COUNT", sd_cmd_SET_BLOCK_COUNT},
      },
+ };
 -- 
 2.41.0
 
