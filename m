@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EA5891B951
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jun 2024 10:03:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 622D591B957
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jun 2024 10:04:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sN6Zb-0004Yv-2W; Fri, 28 Jun 2024 04:03:11 -0400
+	id 1sN6Zm-0005hI-Op; Fri, 28 Jun 2024 04:03:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=GU6n=N6=kaod.org=clg@ozlabs.org>)
- id 1sN6ZU-0004JH-VZ
- for qemu-devel@nongnu.org; Fri, 28 Jun 2024 04:03:06 -0400
+ id 1sN6Zk-0005Wv-1M
+ for qemu-devel@nongnu.org; Fri, 28 Jun 2024 04:03:20 -0400
 Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=GU6n=N6=kaod.org=clg@ozlabs.org>)
- id 1sN6ZS-0005qK-LE
- for qemu-devel@nongnu.org; Fri, 28 Jun 2024 04:03:04 -0400
+ id 1sN6Zi-0005rY-3J
+ for qemu-devel@nongnu.org; Fri, 28 Jun 2024 04:03:19 -0400
 Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4W9Sbl4MZcz4wc8;
- Fri, 28 Jun 2024 18:02:59 +1000 (AEST)
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4W9Sc40jNdz4wb7;
+ Fri, 28 Jun 2024 18:03:16 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits))
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4W9Sbk30HYz4w2Q;
- Fri, 28 Jun 2024 18:02:58 +1000 (AEST)
-Message-ID: <f81139ab-3e0b-4bef-83f9-401d2dc69288@kaod.org>
-Date: Fri, 28 Jun 2024 10:02:56 +0200
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4W9Sc25Kd1z4w2Q;
+ Fri, 28 Jun 2024 18:03:14 +1000 (AEST)
+Message-ID: <175aa824-b8d3-4895-8f77-e0e7b18f0aa3@kaod.org>
+Date: Fri, 28 Jun 2024 10:03:12 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v42 66/98] hw/sd/sdcard: Add spi_cmd_READ_OCR handler
- (CMD58)
+Subject: Re: [PATCH v42 68/98] hw/sd/sdcard: Add sd_acmd_SET_BUS_WIDTH handler
+ (ACMD6)
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
 References: <20240628070216.92609-1-philmd@linaro.org>
- <20240628070216.92609-67-philmd@linaro.org>
+ <20240628070216.92609-69-philmd@linaro.org>
 Content-Language: en-US, fr
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20240628070216.92609-67-philmd@linaro.org>
+In-Reply-To: <20240628070216.92609-69-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
@@ -77,43 +77,68 @@ C.
 
 
 > ---
->   hw/sd/sd.c | 10 +++++++---
->   1 file changed, 7 insertions(+), 3 deletions(-)
+>   hw/sd/sd.c | 28 +++++++++++++++-------------
+>   1 file changed, 15 insertions(+), 13 deletions(-)
 > 
 > diff --git a/hw/sd/sd.c b/hw/sd/sd.c
-> index 50cee5ac40..b3b4cd5a3a 100644
+> index 2f853a89d1..0310a5a3a1 100644
 > --- a/hw/sd/sd.c
 > +++ b/hw/sd/sd.c
-> @@ -1660,6 +1660,12 @@ static sd_rsp_type_t sd_cmd_GEN_CMD(SDState *sd, SDRequest req)
->       }
+> @@ -260,7 +260,6 @@ static const char *sd_cmd_name(SDState *sd, uint8_t cmd)
+>   static const char *sd_acmd_name(SDState *sd, uint8_t cmd)
+>   {
+>       static const char *acmd_abbrev[SDMMC_CMD_MAX] = {
+> -         [6] = "SET_BUS_WIDTH",
+>           [13] = "SD_STATUS",
+>           [14] = "DPS_spec",                  [15] = "DPS_spec",
+>           [16] = "DPS_spec",
+> @@ -1672,6 +1671,18 @@ static sd_rsp_type_t spi_cmd_CRC_ON_OFF(SDState *sd, SDRequest req)
+>       return sd_r1;
 >   }
 >   
-> +/* CMD58 */
-> +static sd_rsp_type_t spi_cmd_READ_OCR(SDState *sd, SDRequest req)
+> +/* ACMD6 */
+> +static sd_rsp_type_t sd_acmd_SET_BUS_WIDTH(SDState *sd, SDRequest req)
 > +{
-> +    return sd_r3;
+> +    if (sd->state != sd_transfer_state) {
+> +        return sd_invalid_state_for_cmd(sd, req);
+> +    }
+> +
+> +    sd->sd_status[0] &= 0x3f;
+> +    sd->sd_status[0] |= (req.arg & 0x03) << 6;
+> +    return sd_r1;
 > +}
 > +
 >   static sd_rsp_type_t sd_normal_command(SDState *sd, SDRequest req)
 >   {
 >       uint64_t addr;
-> @@ -1748,9 +1754,6 @@ static sd_rsp_type_t sd_normal_command(SDState *sd, SDRequest req)
->           return sd_cmd_to_receivingdata(sd, req, 0, sizeof(sd->cid));
+> @@ -1780,18 +1791,6 @@ static sd_rsp_type_t sd_app_command(SDState *sd,
+>       }
 >   
->       /* Application specific commands (Class 8) */
-> -    case 58:    /* CMD58:   READ_OCR (SPI) */
-> -        return sd_r3;
+>       switch (req.cmd) {
+> -    case 6:  /* ACMD6:  SET_BUS_WIDTH */
+> -        switch (sd->state) {
+> -        case sd_transfer_state:
+> -            sd->sd_status[0] &= 0x3f;
+> -            sd->sd_status[0] |= (req.arg & 0x03) << 6;
+> -            return sd_r1;
 > -
->       case 59:    /* CMD59:   CRC_ON_OFF (SPI) */
->           return sd_r1;
->   
-> @@ -2321,6 +2324,7 @@ static const SDProto sd_proto_spi = {
->           [55] = {8,  sd_spi, "APP_CMD", sd_cmd_APP_CMD},
->           [56] = {8,  sd_spi, "GEN_CMD", sd_cmd_GEN_CMD},
->           [57] = {10, sd_spi, "DIRECT_SECURE_WRITE", sd_cmd_optional},
-> +        [58] = {0,  sd_spi, "READ_OCR", spi_cmd_READ_OCR},
+> -        default:
+> -            break;
+> -        }
+> -        break;
+> -
+>       case 13:  /* ACMD13: SD_STATUS */
+>           switch (sd->state) {
+>           case sd_transfer_state:
+> @@ -2385,6 +2384,9 @@ static const SDProto sd_proto_sd = {
+>           [58] = {11, sd_adtc, "READ_EXTR_MULTI", sd_cmd_optional},
+>           [59] = {11, sd_adtc, "WRITE_EXTR_MULTI", sd_cmd_optional},
 >       },
->       .acmd = {
->           [41] = {8,  sd_spi, "SEND_OP_COND", spi_cmd_SEND_OP_COND},
+> +    .acmd = {
+> +        [6]  = {8,  sd_ac,   "SET_BUS_WIDTH", sd_acmd_SET_BUS_WIDTH},
+> +    },
+>   };
+>   
+>   static void sd_instance_init(Object *obj)
 
 
