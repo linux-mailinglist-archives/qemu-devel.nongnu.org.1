@@ -2,85 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D4BB91C1E1
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jun 2024 16:58:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9025091C21A
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jun 2024 17:08:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sND30-0007Hk-G3; Fri, 28 Jun 2024 10:57:58 -0400
+	id 1sNDBc-0005g9-1M; Fri, 28 Jun 2024 11:06:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sND2y-0007Fq-Oc
- for qemu-devel@nongnu.org; Fri, 28 Jun 2024 10:57:56 -0400
-Received: from mail-pg1-x52f.google.com ([2607:f8b0:4864:20::52f])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sNDBa-0005fi-EX
+ for qemu-devel@nongnu.org; Fri, 28 Jun 2024 11:06:50 -0400
+Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sND2s-0003Af-5X
- for qemu-devel@nongnu.org; Fri, 28 Jun 2024 10:57:55 -0400
-Received: by mail-pg1-x52f.google.com with SMTP id
- 41be03b00d2f7-7163489149eso516227a12.1
- for <qemu-devel@nongnu.org>; Fri, 28 Jun 2024 07:57:49 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sNDBY-0001EE-Je
+ for qemu-devel@nongnu.org; Fri, 28 Jun 2024 11:06:50 -0400
+Received: by mail-ed1-x52b.google.com with SMTP id
+ 4fb4d7f45d1cf-57d044aa5beso983297a12.2
+ for <qemu-devel@nongnu.org>; Fri, 28 Jun 2024 08:06:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719586667; x=1720191467; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=p/6/mO9+cDFjd2Lwn6Pdfpyts2msKL/kmbIlYJPWFCo=;
- b=rNSrAQdOXFnj43IrFAQLkknKbN9MaA1kwia28f1pbsjlhv28tCPqXghBmW1JDUsq+Y
- uIjIMIEUkv2QPvmpEvaf+hiOFkWvZmqMW5zLaP1YDea5JDmIbCFTd/6zNbsyHxn+yM7h
- 3hf+FP25eWENEe641ZfKWQaNqPtWjEKlv2L8ktdg0VOOHv1DO9EBjOEqF0nMS4NwbPn3
- eNOW3WOkVqsiqiU7VfwRFhtfU/7AyhYVXHKeMivBIpKwRR1uzweWUS3pnsmh+4s3iqma
- hzi2CnPuUqpPOGa48Pmz3gzGLpm1pXIYtJNzWtnF4FeNCCkDpakv/YhMZb8mHKMqnKiC
- dSbQ==
+ d=linaro.org; s=google; t=1719587206; x=1720192006; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=hMmUo23z59UUFgPPnP96YGHZACAOnKlYWHEdFZZW8/E=;
+ b=cKIGj5OfrZtfW9DUa+x9zuxeQKA5/8+IkNnk0ufNvg3gNnsjFNZ8bFxGeW+qPe7Ve+
+ mn6ndTCyU7YZU90FNaJNUkcThvSeQYsNniWEqUelBMVvz5+OptKaQiXJXV4fgtRLFcPh
+ dMh0ynWtIt9AVU8ni2Vw5hODw5E/by44td0JAy1OMklKLbE6P/zuQFtnMFrpqiD5TZz7
+ zelNxiSehQx5i/RCJjw1HIBs/yKPvd1EjlxOvHgta+MXPacZmnteweNud1jGCU91Gq5B
+ 1LA7F2ETjQ05lOOn3Vh+pEqcBGG5IoeVY+uYn8TsHy7FokPJWb+JqElOkca2HGWjmx/7
+ vdDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719586667; x=1720191467;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=p/6/mO9+cDFjd2Lwn6Pdfpyts2msKL/kmbIlYJPWFCo=;
- b=FA92Ct4Ub4n8sG0iWHgKIgqtbWGxs0HInf6AT8TYRhoRblLEFIx28g+1UltF1N4QdG
- cIQmmrvKm1bL/R8Bt9np6vzwgrPQrVxb460WyzPU2UeszHDSvLhbPhuXMzHD8zz3hFcW
- WtUx869oA9JEhdy2JlxoONHBrxoPBHyNbdf2tER4fL1mkYXpJGt5cKGmiLOJ+V3cTbMC
- ppH2zLgH5Hjj4T/dFwWzcq3/9m4sTomFRHJaLXfYbAKDVyuRzQjU4GNuJ14e8MVSkx62
- W0oP9RnSkIgTIPhHNN2zcb+/a41FflZYE2u0se6boMfJUfGktdZFHWcw5PaljfX47Aut
- eMYQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVF3ZO6Xllt4nAGx6gCeBUqfFU8fbrmT07HLpMA4Ty/masHpaGJJR6G/CHiF9ZiWkwW2y/wLOG5v1/8BjGVqHaNAkHgcKY=
-X-Gm-Message-State: AOJu0YyD/zoTI86V92H8bJ58rTf3g3eeFPM2mm5+wVZ3kN1UQPioe1a7
- XoObf1Eos9kyn8tP9zAadsZZNqyENbRZSi1Bo3c3DmUvC6UDG0JcTLtPBN+zIX8=
-X-Google-Smtp-Source: AGHT+IFociIw2wT0pXKoNkzPq88RxAj0unywxRFOLNRXbTlRt7b77hzQ2AxwiSooGOogbajBOHzbfw==
-X-Received: by 2002:a05:6a20:2d98:b0:1be:c2df:3ecf with SMTP id
- adf61e73a8af0-1bec2df4073mr7115941637.48.1719586666880; 
- Fri, 28 Jun 2024 07:57:46 -0700 (PDT)
-Received: from [192.168.0.4] (174-21-76-141.tukw.qwest.net. [174.21.76.141])
- by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2c91ce17c54sm1729115a91.12.2024.06.28.07.57.46
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 28 Jun 2024 07:57:46 -0700 (PDT)
-Message-ID: <96c33d5a-aa19-4402-b5ad-d195c5139398@linaro.org>
-Date: Fri, 28 Jun 2024 07:57:44 -0700
+ d=1e100.net; s=20230601; t=1719587206; x=1720192006;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=hMmUo23z59UUFgPPnP96YGHZACAOnKlYWHEdFZZW8/E=;
+ b=TmunEx8aVkwvHUbNMkgdvu8NaJObqUCH2e5wc1PVdqi1C8AJm7SxTV1cly05CfATpR
+ eR47KbVoAMp5BbCp1ZM5fRIpce1on04IXNCoSqqNmZfP1znW247yNBDGoiakb8AEAHQu
+ Vf8EvkSL5K03iowG7NrcPByUova76Ij/aSTVO1DyQQRVNBJ6Fh4cy6RHHqJilUHSt3o5
+ KPfO5+iHs/lOMiTsINb1zSPgRw4epFnkEssRDxIb2nnow4EYyIf2687ioOBE7Yuwy21d
+ 6/6dCyjePKKYTTkl0lUwjE9u32hytY83y4q0EHRoEwLqheDUSHa7/kuQHbX4A7VBcLDY
+ tWQg==
+X-Gm-Message-State: AOJu0YyMnhlfS/lfNO4ttp97F+wbNRbfHBbAyYDFJ0O5PPHthDoJNcOb
+ T5NArg0DZ2YCl8VQrnJFMqvPT1UyoLilQaM8eoM7Sz0No7ku8z6xPXVtJP6Tyf7HbZy2iZl7Do+
+ iHCy2wJRou/LGz35B1/T5tfB+WNrNCUAvCErqM8l8xapypwTj
+X-Google-Smtp-Source: AGHT+IHg/pPe+G9Ur/GWlCWS6YADrnpJDQ3Hd8Ou70Sqxm2aqPJjuXZ7nUBfxwiTU2/SSoRUjIyKYEWGQVY5rns2QSk=
+X-Received: by 2002:a05:6402:1e95:b0:586:e6e3:ea18 with SMTP id
+ 4fb4d7f45d1cf-586e6e3eaa5mr955299a12.23.1719587206243; Fri, 28 Jun 2024
+ 08:06:46 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/9] target/arm: Correct comments about M-profile FPSCR
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
- qemu-devel@nongnu.org
-References: <20240628142347.1283015-1-peter.maydell@linaro.org>
- <20240628142347.1283015-2-peter.maydell@linaro.org>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240628142347.1283015-2-peter.maydell@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52f.google.com
+References: <LV3P220MB18680A6716082003FEC1846386CA2@LV3P220MB1868.NAMP220.PROD.OUTLOOK.COM>
+In-Reply-To: <LV3P220MB18680A6716082003FEC1846386CA2@LV3P220MB1868.NAMP220.PROD.OUTLOOK.COM>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 28 Jun 2024 16:06:34 +0100
+Message-ID: <CAFEAcA-rtwr+W_hkNpQ_atfjWQJaO0+sCQdChhvrxixqRfAT5A@mail.gmail.com>
+Subject: Re: [PATCH] hw/usb/hcd-ohci: Set transfer error code with no dev
+To: Ryan Wendland <wendland@live.com.au>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,20 +85,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/28/24 07:23, Peter Maydell wrote:
-> The M-profile FPSCR LTPSIZE is bits [18:16]; this is the same
-> field as A-profile FPSCR Len, not Stride. Correct the comment
-> in vfp_get_fpscr().
-> 
-> We also implemented M-profile FPSCR.QC, but forgot to delete
-> a TODO comment from vfp_set_fpscr(); remove it now.
-> 
-> Signed-off-by: Peter Maydell<peter.maydell@linaro.org>
+On Sat, 22 Jun 2024 at 13:57, Ryan Wendland <wendland@live.com.au> wrote:
+>
+> When a usb device is disconnected the transfer service functions bails
+> before appropraite transfer error flags are set.
+
+(typo: "appropriate")
+
+> This patch sets the appropriate condition code OHCI_CC_DEVICENOTRESPONDING
+> when a device is disconnected and consequently has no response on the USB bus.
+>
+> Fixes: https://gitlab.com/qemu-project/qemu/-/issues/2081
+>
+> Signed-off-by: Ryan Wendland <wendland@live.com.au>
 > ---
->   target/arm/vfp_helper.c | 5 ++---
->   1 file changed, 2 insertions(+), 3 deletions(-)
+>  hw/usb/hcd-ohci.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+>
+> diff --git a/hw/usb/hcd-ohci.c b/hw/usb/hcd-ohci.c
+> index acd6016980..8cd25d74af 100644
+> --- a/hw/usb/hcd-ohci.c
+> +++ b/hw/usb/hcd-ohci.c
+> @@ -980,7 +980,8 @@ static int ohci_service_td(OHCIState *ohci, struct ohci_ed *ed)
+>          dev = ohci_find_device(ohci, OHCI_BM(ed->flags, ED_FA));
+>          if (dev == NULL) {
+>              trace_usb_ohci_td_dev_error();
+> -            return 1;
+> +            OHCI_SET_BM(td.flags, TD_CC, OHCI_CC_DEVICENOTRESPONDING);
+> +            goto exit_and_retire;
+>          }
+>          ep = usb_ep_get(dev, pid, OHCI_BM(ed->flags, ED_EN));
+>          if (ohci->async_td) {
+> @@ -1087,6 +1088,7 @@ static int ohci_service_td(OHCIState *ohci, struct ohci_ed *ed)
+>          ed->head |= OHCI_ED_H;
+>      }
+>
+> +exit_and_retire:
+>      /* Retire this TD */
+>      ed->head &= ~OHCI_DPTR_MASK;
+>      ed->head |= td.next & OHCI_DPTR_MASK;
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Thanks for this patch; I have a couple of questions:
 
-r~
+(1) Do we also need to do something similar for the call in
+ohci_service_iso_td() ?
+
+(2) The error handling path for the other way we can
+set the DEVICENOTRESPONDING flag also does:
+ * set done_count to 0
+ * OR in OCHI_ED_H into ed->head
+
+Do we need to do those things here ? (My guess is "yes".)
+
+thanks
+-- PMM
 
