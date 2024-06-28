@@ -2,63 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 096C491B7F6
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jun 2024 09:16:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D301591B805
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jun 2024 09:17:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sN5kf-0001Ws-4U; Fri, 28 Jun 2024 03:10:33 -0400
+	id 1sN5kk-0001du-DC; Fri, 28 Jun 2024 03:10:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sN5ka-0001Q5-Hn
- for qemu-devel@nongnu.org; Fri, 28 Jun 2024 03:10:28 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sN5kf-0001an-Ts
+ for qemu-devel@nongnu.org; Fri, 28 Jun 2024 03:10:33 -0400
 Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sN5kY-0004o6-MJ
- for qemu-devel@nongnu.org; Fri, 28 Jun 2024 03:10:28 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sN5ke-0004oG-0j
+ for qemu-devel@nongnu.org; Fri, 28 Jun 2024 03:10:33 -0400
 Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-42122ac2f38so1540575e9.1
- for <qemu-devel@nongnu.org>; Fri, 28 Jun 2024 00:10:26 -0700 (PDT)
+ 5b1f17b1804b1-424ad289949so2356075e9.2
+ for <qemu-devel@nongnu.org>; Fri, 28 Jun 2024 00:10:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719558625; x=1720163425; darn=nongnu.org;
+ d=linaro.org; s=google; t=1719558630; x=1720163430; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=0++Ogxou44hWy9HUie+kN/Bmub/+XHfRbLoibWWU/Qg=;
- b=a7kOqS0hmVjM+ZumUhnocgWKmxftbpo9+fsPyizfuJHSouCCvB728uxLmVeHRYt1sY
- /mPLJUk1NEh13o2hOxbbf0pnqd9smk10Z3rXShWalh5yVAA4YpHu+7Dzx9gz5hDeWQNw
- Er4qWh5z/+8etCvNBDPReEcw8wFdRWYCJ9LqaadzVr+q6AEAWEk9Vj8BFbSf6+tka+xT
- alJoK6iaImTUwr13CiO/KroRGMoHFBOXKn6oy4vQsCm1zzMbCP+2jvPojiQgUSw06edb
- fgF8OLDjKQJP/zyZC7CcTVdpz8kiq6QaZ9bbTYEhB0lfF+hBISaw0+wWCog+KmdnHlsj
- DSUQ==
+ :reply-to; bh=UmLMWLzqSVJb3i4hpxGU8DfPCxonGkzeRg9cK3jhrKk=;
+ b=gle7YFHVHnN8fzx/OoqwuWCmUV7ficAJMEJJGXfUlhPUxWG0QHH6Ry5xC86PS5v1BS
+ cVlvBPevbQVV3WtLmEmgHeR8+zIPpDezhegdWJ0q2okRDNJEgttpHOoO7AQpAn5XtgC6
+ Lb+3frzjXu12RY8Wmqsi+CjsoNS1jA3fy2AJ5rAH6nBnaHHsGlI0CqICQMQdriORWIuD
+ NDMU0dskfL8iPhP4djKDSi4bV2DPTTEcvadz8OxXVuwSiehB1BgQshc/pEiSRN5s9LMX
+ Md7CpBXpLUqTlc2WYySpQTPNw3wLaRxqA49K+ylrprCFrIkz1DBWAQ7LFwmLQCJy0Oxc
+ F34A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719558625; x=1720163425;
+ d=1e100.net; s=20230601; t=1719558630; x=1720163430;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0++Ogxou44hWy9HUie+kN/Bmub/+XHfRbLoibWWU/Qg=;
- b=mkZazjtTGgNyXfcsKyq/5dHhQUxPz4fjTZG33wuxUx2i9iGBTEvkJLy/LguoHJU6Qq
- W9/ic3h1yy7yoP6SqTWyH/jaiensgMHYCv7yyaVCHtN3a0Dg1lJiXMb4Wmv8/wd1BTRk
- Fy5BWW0uLhXSxhu8Swz2i5aumHfu/BLZ1RlxF0neksFtxVovU9rwjrtcvorQYIBvgWXA
- dUrULREGHY53ObpdnwRNY7tWg6pbsizV9VtzMAxuxE7hfmOQzjE50NFgNeXwYeE1myY9
- t2EmeqhFbK6xSzQghMSprbuuB8SEuZ/FMqeCF7OGNxA12kQvVDj51rVcPClGlPOm4eZx
- ZzSQ==
-X-Gm-Message-State: AOJu0Yw2HKK1BQ2vV6meMyRooWIFEarPyctpCC1YAAU4hZCGaDhIuXgp
- yNfxIB2lzz9Tvj135FnOop4K48WNdabQ0YLW6ni/ZIi14Wfw7sgjhP5OkX5krm39wAifTChFr28
- yoe4=
-X-Google-Smtp-Source: AGHT+IGWSEOvJEopLeIFvtKJN9GUWMXhGah7i54cpUM3pAkXVPUwEZiyyDUuQ0Jzv8/Gnc63JQwOCg==
-X-Received: by 2002:a05:600c:3595:b0:424:8743:86b4 with SMTP id
- 5b1f17b1804b1-4256d4d35a7mr5558185e9.6.1719558624866; 
- Fri, 28 Jun 2024 00:10:24 -0700 (PDT)
+ bh=UmLMWLzqSVJb3i4hpxGU8DfPCxonGkzeRg9cK3jhrKk=;
+ b=OXGpWuggw74Nw+62oOzh9Kji9PDRTuIL4+qwILYnrlqDE9qrAMxgv+W502N0bkS7kw
+ PkjgzxxSKoMB9qurxs9h1g0QNmtU7xrebtMqJcbfyQwC8XRnWu4N8eVRjTK8HUjf5uWM
+ t1RMSy7Y6MqPXZGOgiqRvMAIjFquaYsDcWu2f2xR0kiAUYfGDfyTLmTsw/HE6v1BLyf/
+ RWa9i4Ifj85OguAvyUb/272sthZOmXbMgJBHtXDczqdwQ1aTTl1Yy3Jr2hG/rxr17JfX
+ kE83UBhDLtggJD+qoPTR1YgcXjMyJ/f5GY2281uYOLyDaYJc35cZq3f766IazPsNcdEZ
+ NUtA==
+X-Gm-Message-State: AOJu0YzixmNbILfzR+1b+0haQfpI7WRaoeCbXENxi3Yl7XyGM5VWWbhv
+ vr29qea1nNTN3dNFZJQ3duVwn7cprCpx098wDpuG9oaZEbNFoPtplWHghijV0i104kLjYNxYoqb
+ CDHw=
+X-Google-Smtp-Source: AGHT+IEVKKxrVnSmWTEszfSSmarhUWZExfRHOE/2CmzMsFvJSvVmT8/wrTJ2+2Nj7zkX00MdtsSsAQ==
+X-Received: by 2002:a05:6000:2ab:b0:366:ec2c:8642 with SMTP id
+ ffacd0b85a97d-366ec2c867dmr11327181f8f.10.1719558630329; 
+ Fri, 28 Jun 2024 00:10:30 -0700 (PDT)
 Received: from m1x-phil.lan (cho94-h02-176-184-4-239.dsl.sta.abo.bbox.fr.
  [176.184.4.239]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-424a2abcfd0sm62364015e9.1.2024.06.28.00.10.23
+ ffacd0b85a97d-3675a0e16b3sm1337514f8f.61.2024.06.28.00.10.29
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 28 Jun 2024 00:10:24 -0700 (PDT)
+ Fri, 28 Jun 2024 00:10:29 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org, =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [PATCH v42 83/98] hw/sd/sdcard: Register generic command handlers
-Date: Fri, 28 Jun 2024 09:01:59 +0200
-Message-ID: <20240628070216.92609-84-philmd@linaro.org>
+Subject: [PATCH v42 84/98] hw/sd/sdcard: Register unimplemented command
+ handlers
+Date: Fri, 28 Jun 2024 09:02:00 +0200
+Message-ID: <20240628070216.92609-85-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240628070216.92609-1-philmd@linaro.org>
 References: <20240628070216.92609-1-philmd@linaro.org>
@@ -89,44 +90,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Per the spec v4.5 these commands are mandatory,
+but we don't implement them.
+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/sd/sd.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ hw/sd/sd.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
 diff --git a/hw/sd/sd.c b/hw/sd/sd.c
-index 249fad0468..ebcd8c1e43 100644
+index ebcd8c1e43..9a2bfeaab6 100644
 --- a/hw/sd/sd.c
 +++ b/hw/sd/sd.c
-@@ -2383,6 +2383,28 @@ static const SDProto sd_proto_emmc = {
-     /* Only v4.5 is supported */
-     .name = "eMMC",
+@@ -2385,24 +2385,30 @@ static const SDProto sd_proto_emmc = {
      .cmd = {
-+        [0]  = {0,  sd_bc,   "GO_IDLE_STATE", sd_cmd_GO_IDLE_STATE},
-+        [2]  = {0,  sd_bcr,  "ALL_SEND_CID", sd_cmd_ALL_SEND_CID},
-+        [7]  = {0,  sd_ac,   "(DE)SELECT_CARD", sd_cmd_DE_SELECT_CARD},
-+        [9]  = {0,  sd_ac,   "SEND_CSD", sd_cmd_SEND_CSD},
-+        [10] = {0,  sd_ac,   "SEND_CID", sd_cmd_SEND_CID},
-+        [12] = {0,  sd_ac,   "STOP_TRANSMISSION", sd_cmd_STOP_TRANSMISSION},
-+        [13] = {0,  sd_ac,   "SEND_STATUS", sd_cmd_SEND_STATUS},
-+        [15] = {0,  sd_ac,   "GO_INACTIVE_STATE", sd_cmd_GO_INACTIVE_STATE},
-+        [16] = {2,  sd_ac,   "SET_BLOCKLEN", sd_cmd_SET_BLOCKLEN},
-+        [17] = {2,  sd_adtc, "READ_SINGLE_BLOCK", sd_cmd_READ_SINGLE_BLOCK},
-+        [23] = {2,  sd_ac,   "SET_BLOCK_COUNT", sd_cmd_SET_BLOCK_COUNT},
-+        [24] = {4,  sd_adtc, "WRITE_SINGLE_BLOCK", sd_cmd_WRITE_SINGLE_BLOCK},
-+        [27] = {4,  sd_adtc, "PROGRAM_CSD", sd_cmd_PROGRAM_CSD},
-+        [28] = {6,  sd_ac,   "SET_WRITE_PROT", sd_cmd_SET_WRITE_PROT},
-+        [29] = {6,  sd_ac,   "CLR_WRITE_PROT", sd_cmd_CLR_WRITE_PROT},
-+        [30] = {6,  sd_adtc, "SEND_WRITE_PROT", sd_cmd_SEND_WRITE_PROT},
-+        [35] = {5,  sd_ac,   "ERASE_WR_BLK_START", sd_cmd_ERASE_WR_BLK_START},
-+        [36] = {5,  sd_ac,   "ERASE_WR_BLK_END", sd_cmd_ERASE_WR_BLK_END},
-+        [38] = {5,  sd_ac,   "ERASE", sd_cmd_ERASE},
-+        [42] = {7,  sd_adtc, "LOCK_UNLOCK", sd_cmd_LOCK_UNLOCK},
-+        [55] = {8,  sd_ac,   "APP_CMD", sd_cmd_APP_CMD},
-+        [56] = {8,  sd_adtc, "GEN_CMD", sd_cmd_GEN_CMD},
+         [0]  = {0,  sd_bc,   "GO_IDLE_STATE", sd_cmd_GO_IDLE_STATE},
+         [2]  = {0,  sd_bcr,  "ALL_SEND_CID", sd_cmd_ALL_SEND_CID},
++        [4]  = {0,  sd_bc,   "SEND_DSR", sd_cmd_unimplemented},
+         [7]  = {0,  sd_ac,   "(DE)SELECT_CARD", sd_cmd_DE_SELECT_CARD},
+         [9]  = {0,  sd_ac,   "SEND_CSD", sd_cmd_SEND_CSD},
+         [10] = {0,  sd_ac,   "SEND_CID", sd_cmd_SEND_CID},
+         [12] = {0,  sd_ac,   "STOP_TRANSMISSION", sd_cmd_STOP_TRANSMISSION},
+         [13] = {0,  sd_ac,   "SEND_STATUS", sd_cmd_SEND_STATUS},
++        [14] = {0,  sd_adtc, "BUSTEST_R", sd_cmd_unimplemented},
+         [15] = {0,  sd_ac,   "GO_INACTIVE_STATE", sd_cmd_GO_INACTIVE_STATE},
+         [16] = {2,  sd_ac,   "SET_BLOCKLEN", sd_cmd_SET_BLOCKLEN},
+         [17] = {2,  sd_adtc, "READ_SINGLE_BLOCK", sd_cmd_READ_SINGLE_BLOCK},
++        [19] = {0,  sd_adtc, "BUSTEST_W", sd_cmd_unimplemented},
+         [23] = {2,  sd_ac,   "SET_BLOCK_COUNT", sd_cmd_SET_BLOCK_COUNT},
+         [24] = {4,  sd_adtc, "WRITE_SINGLE_BLOCK", sd_cmd_WRITE_SINGLE_BLOCK},
+         [27] = {4,  sd_adtc, "PROGRAM_CSD", sd_cmd_PROGRAM_CSD},
+         [28] = {6,  sd_ac,   "SET_WRITE_PROT", sd_cmd_SET_WRITE_PROT},
+         [29] = {6,  sd_ac,   "CLR_WRITE_PROT", sd_cmd_CLR_WRITE_PROT},
+         [30] = {6,  sd_adtc, "SEND_WRITE_PROT", sd_cmd_SEND_WRITE_PROT},
++        [31] = {6,  sd_adtc, "SEND_WRITE_PROT_TYPE", sd_cmd_unimplemented},
+         [35] = {5,  sd_ac,   "ERASE_WR_BLK_START", sd_cmd_ERASE_WR_BLK_START},
+         [36] = {5,  sd_ac,   "ERASE_WR_BLK_END", sd_cmd_ERASE_WR_BLK_END},
+         [38] = {5,  sd_ac,   "ERASE", sd_cmd_ERASE},
++        [39] = {9,  sd_ac,   "FAST_IO", sd_cmd_unimplemented},
+         [42] = {7,  sd_adtc, "LOCK_UNLOCK", sd_cmd_LOCK_UNLOCK},
++        [49] = {0,  sd_adtc, "SET_TIME", sd_cmd_unimplemented},
+         [55] = {8,  sd_ac,   "APP_CMD", sd_cmd_APP_CMD},
+         [56] = {8,  sd_adtc, "GEN_CMD", sd_cmd_GEN_CMD},
      },
- };
- 
 -- 
 2.41.0
 
