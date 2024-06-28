@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0E4891BEDB
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jun 2024 14:44:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C87A91BEFA
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jun 2024 14:46:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sNAxK-0005QU-Fw; Fri, 28 Jun 2024 08:44:00 -0400
+	id 1sNAxy-0006nV-Fd; Fri, 28 Jun 2024 08:44:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sNAwm-0004vj-Iu
- for qemu-devel@nongnu.org; Fri, 28 Jun 2024 08:43:27 -0400
-Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
+ id 1sNAwr-0004wK-1m
+ for qemu-devel@nongnu.org; Fri, 28 Jun 2024 08:43:32 -0400
+Received: from mail-lf1-x131.google.com ([2a00:1450:4864:20::131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sNAwc-0005ju-8H
- for qemu-devel@nongnu.org; Fri, 28 Jun 2024 08:43:24 -0400
-Received: by mail-ed1-x529.google.com with SMTP id
- 4fb4d7f45d1cf-57d0eca877cso705114a12.2
+ id 1sNAwh-0005k5-FA
+ for qemu-devel@nongnu.org; Fri, 28 Jun 2024 08:43:28 -0400
+Received: by mail-lf1-x131.google.com with SMTP id
+ 2adb3069b0e04-52e7d2278d8so719600e87.3
  for <qemu-devel@nongnu.org>; Fri, 28 Jun 2024 05:43:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1719578592; x=1720183392; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=JZ+hqOIuZbxaKf8ivZ8Q8bWGOAexH5YEB6Bnc5gityo=;
- b=J/nq3wiRi14GfL0A9ZZTxikvI2vhhL/0I31AE5c+gDd10D8EWRbdL/Ji7uBKGkwvIH
- +HEUQy2EQbv6x/swoL44DV22EO3PxDb4EwGs2MverVeBhBM/F8ppqmwfdKBj29UMGmsU
- 9OqQGv+R4ZUOXFPftzEC0Pj04cttpgJrM6yiS0j3msDiDb8jYjmgUoPngzRnN1IkENMo
- 4xBmuSkAv6Jr17bQMrX6wYEG/296U6P5QEultKu1P9Mo73iy9H3HATMszuZ53VhwSHTm
- bc+kBDUH4FQrYXQGRJ6sWhFOKbVpKCd0pMCSMLRWxCzc+IAXY9DEVuEiXPXW1g4e9r+C
- X1Yw==
+ bh=QedgY3rQrh3/N+Rjk6g1alJFiDBF8+JfOXizag4FY8E=;
+ b=vhU2/PG+w1b9OZBPuWHPVUh9BF+G37n9XLACFR6JgeQGrvrGYnYblAe2Zbqh4WxUfd
+ JU64OxZsxRS5hopFo19wb/N4nP/lc1cDOkQF77/9x9+Oynca6r7d+loA1EfN5UCc+Nvc
+ xWKxTY65Zjyick7rkK/WQCumNpD0zQkWhnKJizdbHQ7UvyTw/ecBbSCGPFEx9htsdTA2
+ 8vfE8D20GDEcK60ka75WKZeqf43+sX3mWB7D1eIfsr8WcxCH7VtomEV8UUPjesbtvi+I
+ J8DV/btTheqpvZ+2LR+uEIdueCtWJd8arBKtjG99PaN66OWVYMhJaTJl8NHrjMf7gAUH
+ 9ndw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1719578592; x=1720183392;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=JZ+hqOIuZbxaKf8ivZ8Q8bWGOAexH5YEB6Bnc5gityo=;
- b=RJgCHgMmUrnbfOE5oOw8WjFUTsZG+DgypABaUez0+BsixmSOILkOw8funp6ANmjDuC
- v3d1AV6fKvtHRKYqtxoFK+3+TwgIx1nDasCyTha+XvQy6uq/MPRp0xC3nnGoSj6RMB33
- XfJHEvpVHMAsbxxPkc/eSdJOC7j8nbJUzDY6BKrxnO8Zucd3lQQtgP01hReSDlNOcr1G
- WFCqh40TMf+e7+xYRu9vM8HfDQnV2IWsVjWPxQUz45kTnaFPoohbKq0MzOO7wC/qdi4x
- q8DnEqRmR3Hn57iJRaqZnYEqe6FbxklMx3bJhij+HIc4YCgLoCBS0IByj29BOAlcFdda
- amFg==
-X-Gm-Message-State: AOJu0YxwD002jndARk5TCkYwh5srQ+O/EDXkJcd5kauRs81QNGZAFrNe
- RckzQTGlRthtxLB300ef/7v7gg+zvCUl2NIyy9m4IZxjoUlHsu1uZY7URI9rh+g=
-X-Google-Smtp-Source: AGHT+IGbZaSKblUB8COuouwFDiGUpPHMF5Ow9EaW2D3yoTo/H+yF1glO5MSZHLR82c70ijbwo0PYEw==
-X-Received: by 2002:a50:aa96:0:b0:57d:2c9:6497 with SMTP id
- 4fb4d7f45d1cf-57d4bd53c7fmr15962487a12.3.1719578591943; 
- Fri, 28 Jun 2024 05:43:11 -0700 (PDT)
+ bh=QedgY3rQrh3/N+Rjk6g1alJFiDBF8+JfOXizag4FY8E=;
+ b=PVpvLxp8NP69n/SP1wxYC/+BGew+AItB3zNF0XBahj/eWCowaqpxK1LW/HP/YHOPFQ
+ K7faVRCNYe9pWwdtNRQaxWWCzU5gzO/lvYL6cU4VwS7YmIfEo7ZZUNZt8wEkTyEdglX7
+ isd+O7CrKDi8sahs2kgKMEQ551/VycwnjJxAK36YHPYYllIOO35UGSm129HRJB2rQO71
+ T0TWQyTp+4A3VAehwsw4wm8Bs9d7fCGwtMKP4o2A23thryk9IWf90EwSRrlNoC0BKu2T
+ OIeHOfDbzvyCk3vmMiBiwJ29XDcfR+uvNIeycHcYV9zCWosNnDCzqwlqzVI+bwE0+d/G
+ 8VaQ==
+X-Gm-Message-State: AOJu0YypDtOFr8GasdyV/WVHomjpL94YlymhXkwPCwr2MEnKuGn0qHk8
+ 9rPPRHgiROE6p8vbBh+AK9S+ep2DrZL/iH0UQAjRtLaSHWJMcbqdBm4t1WSqu6s=
+X-Google-Smtp-Source: AGHT+IEwUX9PV2BOxISxk8j+C0LpKSigGbqwdTvEIza5HAZ8ML0n0Y+IMVPREkd7gSzM5T2O7F9rHA==
+X-Received: by 2002:ac2:5609:0:b0:52c:dea7:f0db with SMTP id
+ 2adb3069b0e04-52ce1832b34mr12008345e87.23.1719578592259; 
+ Fri, 28 Jun 2024 05:43:12 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-58614d504cesm981837a12.71.2024.06.28.05.43.03
+ a640c23a62f3a-a72ab08d138sm76428566b.158.2024.06.28.05.43.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 28 Jun 2024 05:43:09 -0700 (PDT)
+ Fri, 28 Jun 2024 05:43:11 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 58D2D5FA3B;
+ by draig.lan (Postfix) with ESMTP id 72EE85FA3C;
  Fri, 28 Jun 2024 13:43:00 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -73,24 +73,24 @@ Cc: David Hildenbrand <david@redhat.com>, Beraldo Leal <bleal@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Thomas Huth <thuth@redhat.com>, Gustavo Romero <gustavo.romero@linaro.org>
-Subject: [PATCH 14/23] gdbstub: Move GdbCmdParseEntry into a new header file
-Date: Fri, 28 Jun 2024 13:42:49 +0100
-Message-Id: <20240628124258.832466-15-alex.bennee@linaro.org>
+Subject: [PATCH 15/23] gdbstub: Add support for target-specific stubs
+Date: Fri, 28 Jun 2024 13:42:50 +0100
+Message-Id: <20240628124258.832466-16-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240628124258.832466-1-alex.bennee@linaro.org>
 References: <20240628124258.832466-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::529;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x529.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::131;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x131.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,695 +108,206 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Gustavo Romero <gustavo.romero@linaro.org>
 
-Move GdbCmdParseEntry and its associated types into a separate header
-file to allow the use of GdbCmdParseEntry and other gdbstub command
-functions outside of gdbstub.c.
+Currently, it's not possible to have stubs specific to a given target,
+even though there are GDB features which are target-specific, like, for
+instance, memory tagging.
 
-Since GdbCmdParseEntry and get_param are now public, kdoc
-GdbCmdParseEntry and rename get_param to gdb_get_cmd_param.
-
-This commit also makes gdb_put_packet public since is used in gdbstub
-command handling.
+This commit introduces gdb_extend_qsupported_features,
+gdb_extend_query_table, and gdb_extend_set_table functions as interfaces
+to extend the qSupported string, the query handler table, and the set
+handler table, allowing target-specific stub implementations.
 
 Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
 Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20240628050850.536447-3-gustavo.romero@linaro.org>
+Message-Id: <20240628050850.536447-4-gustavo.romero@linaro.org>
 ---
- gdbstub/internals.h        |  22 ------
- include/gdbstub/commands.h |  72 ++++++++++++++++++++
- gdbstub/gdbstub.c          | 134 ++++++++++++++-----------------------
- gdbstub/syscalls.c         |   7 +-
- gdbstub/system.c           |   7 +-
- gdbstub/user-target.c      |  25 +++----
- gdbstub/user.c             |   7 +-
- 7 files changed, 146 insertions(+), 128 deletions(-)
- create mode 100644 include/gdbstub/commands.h
+ include/gdbstub/commands.h |  22 ++++++++
+ gdbstub/gdbstub.c          | 102 ++++++++++++++++++++++++++++++++++---
+ 2 files changed, 118 insertions(+), 6 deletions(-)
 
-diff --git a/gdbstub/internals.h b/gdbstub/internals.h
-index 32f9f63297..34121dc61a 100644
---- a/gdbstub/internals.h
-+++ b/gdbstub/internals.h
-@@ -106,7 +106,6 @@ static inline int tohex(int v)
-  */
- 
- void gdb_put_strbuf(void);
--int gdb_put_packet(const char *buf);
- int gdb_put_packet_binary(const char *buf, int len, bool dump);
- void gdb_hextomem(GByteArray *mem, const char *buf, int len);
- void gdb_memtohex(GString *buf, const uint8_t *mem, int len);
-@@ -166,27 +165,6 @@ void gdb_put_buffer(const uint8_t *buf, int len);
-  */
- void gdb_init_gdbserver_state(void);
- 
--typedef enum GDBThreadIdKind {
--    GDB_ONE_THREAD = 0,
--    GDB_ALL_THREADS,     /* One process, all threads */
--    GDB_ALL_PROCESSES,
--    GDB_READ_THREAD_ERR
--} GDBThreadIdKind;
--
--typedef union GdbCmdVariant {
--    const char *data;
--    uint8_t opcode;
--    unsigned long val_ul;
--    unsigned long long val_ull;
--    struct {
--        GDBThreadIdKind kind;
--        uint32_t pid;
--        uint32_t tid;
--    } thread_id;
--} GdbCmdVariant;
--
--#define get_param(p, i)    (&g_array_index(p, GdbCmdVariant, i))
--
- void gdb_handle_query_rcmd(GArray *params, void *ctx); /* system */
- void gdb_handle_query_offsets(GArray *params, void *user_ctx); /* user */
- void gdb_handle_query_xfer_auxv(GArray *params, void *user_ctx); /*user */
 diff --git a/include/gdbstub/commands.h b/include/gdbstub/commands.h
-new file mode 100644
-index 0000000000..639257493e
---- /dev/null
+index 639257493e..306dfdef97 100644
+--- a/include/gdbstub/commands.h
 +++ b/include/gdbstub/commands.h
-@@ -0,0 +1,72 @@
-+#ifndef GDBSTUB_COMMANDS_H
-+#define GDBSTUB
-+
-+typedef void (*GdbCmdHandler)(GArray *params, void *user_ctx);
-+
-+typedef enum GDBThreadIdKind {
-+    GDB_ONE_THREAD = 0,
-+    GDB_ALL_THREADS,     /* One process, all threads */
-+    GDB_ALL_PROCESSES,
-+    GDB_READ_THREAD_ERR
-+} GDBThreadIdKind;
-+
-+typedef union GdbCmdVariant {
-+    const char *data;
-+    uint8_t opcode;
-+    unsigned long val_ul;
-+    unsigned long long val_ull;
-+    struct {
-+        GDBThreadIdKind kind;
-+        uint32_t pid;
-+        uint32_t tid;
-+    } thread_id;
-+} GdbCmdVariant;
-+
-+#define gdb_get_cmd_param(p, i)    (&g_array_index(p, GdbCmdVariant, i))
+@@ -69,4 +69,26 @@ typedef struct GdbCmdParseEntry {
+  */
+ int gdb_put_packet(const char *buf);
+ 
++/**
++ * gdb_extend_query_table() - Extend query table.
++ * @table: The table with the additional query packet handlers.
++ * @size: The number of handlers to be added.
++ */
++void gdb_extend_query_table(GdbCmdParseEntry *table, int size);
 +
 +/**
-+ * typedef GdbCmdParseEntry - gdb command parser
-+ *
-+ * This structure keeps the information necessary to match a gdb command,
-+ * parse it (extract its parameters), and select the correct handler for it.
-+ *
-+ * @cmd: The command to be matched
-+ * @cmd_startswith: If true, @cmd is compared using startswith
-+ * @schema: Each schema for the command parameter entry consists of 2 chars,
-+ * the first char represents the parameter type handling the second char
-+ * represents the delimiter for the next parameter.
-+ *
-+ * Currently supported schema types:
-+ * 'l' -> unsigned long (stored in .val_ul)
-+ * 'L' -> unsigned long long (stored in .val_ull)
-+ * 's' -> string (stored in .data)
-+ * 'o' -> single char (stored in .opcode)
-+ * 't' -> thread id (stored in .thread_id)
-+ * '?' -> skip according to delimiter
-+ *
-+ * Currently supported delimiters:
-+ * '?' -> Stop at any delimiter (",;:=\0")
-+ * '0' -> Stop at "\0"
-+ * '.' -> Skip 1 char unless reached "\0"
-+ * Any other value is treated as the delimiter value itself
-+ *
-+ * @allow_stop_reply: True iff the gdbstub can respond to this command with a
-+ * "stop reply" packet. The list of commands that accept such response is
-+ * defined at the GDB Remote Serial Protocol documentation. See:
-+ * https://sourceware.org/gdb/onlinedocs/gdb/Stop-Reply-Packets.html#Stop-Reply-Packets.
++ * gdb_extend_set_table() - Extend set table.
++ * @table: The table with the additional set packet handlers.
++ * @size: The number of handlers to be added.
 + */
-+typedef struct GdbCmdParseEntry {
-+    GdbCmdHandler handler;
-+    const char *cmd;
-+    bool cmd_startswith;
-+    const char *schema;
-+    bool allow_stop_reply;
-+} GdbCmdParseEntry;
++void gdb_extend_set_table(GdbCmdParseEntry *table, int size);
 +
 +/**
-+ * gdb_put_packet() - put string into gdb server's buffer so it is sent
-+ * to the client
++ * gdb_extend_qsupported_features() - Extend the qSupported features string.
++ * @qsupported_features: The additional qSupported feature(s) string. The string
++ * should start with a semicolon and, if there are more than one feature, the
++ * features should be separate by a semiocolon.
 + */
-+int gdb_put_packet(const char *buf);
++void gdb_extend_qsupported_features(char *qsupported_features);
 +
-+#endif /* GDBSTUB_COMMANDS_H */
+ #endif /* GDBSTUB_COMMANDS_H */
 diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
-index 37314b92e5..9ff2f4177d 100644
+index 9ff2f4177d..b1ca253f97 100644
 --- a/gdbstub/gdbstub.c
 +++ b/gdbstub/gdbstub.c
-@@ -30,6 +30,7 @@
- #include "qemu/error-report.h"
- #include "trace.h"
- #include "exec/gdbstub.h"
-+#include "gdbstub/commands.h"
- #include "gdbstub/syscalls.h"
- #ifdef CONFIG_USER_ONLY
- #include "accel/tcg/vcpu-state.h"
-@@ -920,43 +921,6 @@ static int cmd_parse_params(const char *data, const char *schema,
-     return 0;
+@@ -1609,6 +1609,20 @@ static void handle_query_thread_extra(GArray *params, void *user_ctx)
+     gdb_put_strbuf();
  }
  
--typedef void (*GdbCmdHandler)(GArray *params, void *user_ctx);
--
--/*
-- * cmd_startswith -> cmd is compared using startswith
-- *
-- * allow_stop_reply -> true iff the gdbstub can respond to this command with a
-- *   "stop reply" packet. The list of commands that accept such response is
-- *   defined at the GDB Remote Serial Protocol documentation. see:
-- *   https://sourceware.org/gdb/onlinedocs/gdb/Stop-Reply-Packets.html#Stop-Reply-Packets.
-- *
-- * schema definitions:
-- * Each schema parameter entry consists of 2 chars,
-- * the first char represents the parameter type handling
-- * the second char represents the delimiter for the next parameter
-- *
-- * Currently supported schema types:
-- * 'l' -> unsigned long (stored in .val_ul)
-- * 'L' -> unsigned long long (stored in .val_ull)
-- * 's' -> string (stored in .data)
-- * 'o' -> single char (stored in .opcode)
-- * 't' -> thread id (stored in .thread_id)
-- * '?' -> skip according to delimiter
-- *
-- * Currently supported delimiters:
-- * '?' -> Stop at any delimiter (",;:=\0")
-- * '0' -> Stop at "\0"
-- * '.' -> Skip 1 char unless reached "\0"
-- * Any other value is treated as the delimiter value itself
-- */
--typedef struct GdbCmdParseEntry {
--    GdbCmdHandler handler;
--    const char *cmd;
--    bool cmd_startswith;
--    const char *schema;
--    bool allow_stop_reply;
--} GdbCmdParseEntry;
--
- static inline int startswith(const char *string, const char *pattern)
++static char *extended_qsupported_features;
++void gdb_extend_qsupported_features(char *qsupported_features)
++{
++    /*
++     * We don't support different sets of CPU gdb features on different CPUs yet
++     * so assert the feature strings are the same on all CPUs, or is set only
++     * once (1 CPU).
++     */
++    g_assert(extended_qsupported_features == NULL ||
++             g_strcmp0(extended_qsupported_features, qsupported_features) == 0);
++
++    extended_qsupported_features = qsupported_features;
++}
++
+ static void handle_query_supported(GArray *params, void *user_ctx)
  {
-   return !strncmp(string, pattern, strlen(pattern));
-@@ -1023,7 +987,7 @@ static void handle_detach(GArray *params, void *user_ctx)
-             return;
-         }
- 
--        pid = get_param(params, 0)->val_ul;
-+        pid = gdb_get_cmd_param(params, 0)->val_ul;
+     CPUClass *cc;
+@@ -1648,6 +1662,11 @@ static void handle_query_supported(GArray *params, void *user_ctx)
      }
  
- #ifdef CONFIG_USER_ONLY
-@@ -1061,13 +1025,13 @@ static void handle_thread_alive(GArray *params, void *user_ctx)
-         return;
-     }
- 
--    if (get_param(params, 0)->thread_id.kind == GDB_READ_THREAD_ERR) {
-+    if (gdb_get_cmd_param(params, 0)->thread_id.kind == GDB_READ_THREAD_ERR) {
-         gdb_put_packet("E22");
-         return;
-     }
- 
--    cpu = gdb_get_cpu(get_param(params, 0)->thread_id.pid,
--                      get_param(params, 0)->thread_id.tid);
-+    cpu = gdb_get_cpu(gdb_get_cmd_param(params, 0)->thread_id.pid,
-+                      gdb_get_cmd_param(params, 0)->thread_id.tid);
-     if (!cpu) {
-         gdb_put_packet("E22");
-         return;
-@@ -1079,7 +1043,7 @@ static void handle_thread_alive(GArray *params, void *user_ctx)
- static void handle_continue(GArray *params, void *user_ctx)
- {
-     if (params->len) {
--        gdb_set_cpu_pc(get_param(params, 0)->val_ull);
-+        gdb_set_cpu_pc(gdb_get_cmd_param(params, 0)->val_ull);
-     }
- 
-     gdbserver_state.signal = 0;
-@@ -1095,7 +1059,7 @@ static void handle_cont_with_sig(GArray *params, void *user_ctx)
-      *       omit the addr parameter
-      */
-     if (params->len) {
--        signal = get_param(params, 0)->val_ul;
-+        signal = gdb_get_cmd_param(params, 0)->val_ul;
-     }
- 
-     gdbserver_state.signal = gdb_signal_to_target(signal);
-@@ -1115,18 +1079,18 @@ static void handle_set_thread(GArray *params, void *user_ctx)
-         return;
-     }
- 
--    if (get_param(params, 1)->thread_id.kind == GDB_READ_THREAD_ERR) {
-+    if (gdb_get_cmd_param(params, 1)->thread_id.kind == GDB_READ_THREAD_ERR) {
-         gdb_put_packet("E22");
-         return;
-     }
- 
--    if (get_param(params, 1)->thread_id.kind != GDB_ONE_THREAD) {
-+    if (gdb_get_cmd_param(params, 1)->thread_id.kind != GDB_ONE_THREAD) {
-         gdb_put_packet("OK");
-         return;
-     }
- 
--    pid = get_param(params, 1)->thread_id.pid;
--    tid = get_param(params, 1)->thread_id.tid;
-+    pid = gdb_get_cmd_param(params, 1)->thread_id.pid;
-+    tid = gdb_get_cmd_param(params, 1)->thread_id.tid;
- #ifdef CONFIG_USER_ONLY
-     if (gdb_handle_set_thread_user(pid, tid)) {
-         return;
-@@ -1142,7 +1106,7 @@ static void handle_set_thread(GArray *params, void *user_ctx)
-      * Note: This command is deprecated and modern gdb's will be using the
-      *       vCont command instead.
-      */
--    switch (get_param(params, 0)->opcode) {
-+    switch (gdb_get_cmd_param(params, 0)->opcode) {
-     case 'c':
-         gdbserver_state.c_cpu = cpu;
-         gdb_put_packet("OK");
-@@ -1167,9 +1131,9 @@ static void handle_insert_bp(GArray *params, void *user_ctx)
-     }
- 
-     res = gdb_breakpoint_insert(gdbserver_state.c_cpu,
--                                get_param(params, 0)->val_ul,
--                                get_param(params, 1)->val_ull,
--                                get_param(params, 2)->val_ull);
-+                                gdb_get_cmd_param(params, 0)->val_ul,
-+                                gdb_get_cmd_param(params, 1)->val_ull,
-+                                gdb_get_cmd_param(params, 2)->val_ull);
-     if (res >= 0) {
-         gdb_put_packet("OK");
-         return;
-@@ -1191,9 +1155,9 @@ static void handle_remove_bp(GArray *params, void *user_ctx)
-     }
- 
-     res = gdb_breakpoint_remove(gdbserver_state.c_cpu,
--                                get_param(params, 0)->val_ul,
--                                get_param(params, 1)->val_ull,
--                                get_param(params, 2)->val_ull);
-+                                gdb_get_cmd_param(params, 0)->val_ul,
-+                                gdb_get_cmd_param(params, 1)->val_ull,
-+                                gdb_get_cmd_param(params, 2)->val_ull);
-     if (res >= 0) {
-         gdb_put_packet("OK");
-         return;
-@@ -1225,10 +1189,10 @@ static void handle_set_reg(GArray *params, void *user_ctx)
-         return;
-     }
- 
--    reg_size = strlen(get_param(params, 1)->data) / 2;
--    gdb_hextomem(gdbserver_state.mem_buf, get_param(params, 1)->data, reg_size);
-+    reg_size = strlen(gdb_get_cmd_param(params, 1)->data) / 2;
-+    gdb_hextomem(gdbserver_state.mem_buf, gdb_get_cmd_param(params, 1)->data, reg_size);
-     gdb_write_register(gdbserver_state.g_cpu, gdbserver_state.mem_buf->data,
--                       get_param(params, 0)->val_ull);
-+                       gdb_get_cmd_param(params, 0)->val_ull);
-     gdb_put_packet("OK");
+     g_string_append(gdbserver_state.str_buf, ";vContSupported+;multiprocess+");
++
++    if (extended_qsupported_features) {
++        g_string_append(gdbserver_state.str_buf, extended_qsupported_features);
++    }
++
+     gdb_put_strbuf();
  }
  
-@@ -1243,7 +1207,7 @@ static void handle_get_reg(GArray *params, void *user_ctx)
+@@ -1729,6 +1748,41 @@ static const GdbCmdParseEntry gdb_gen_query_set_common_table[] = {
+     },
+ };
  
-     reg_size = gdb_read_register(gdbserver_state.g_cpu,
-                                  gdbserver_state.mem_buf,
--                                 get_param(params, 0)->val_ull);
-+                                 gdb_get_cmd_param(params, 0)->val_ull);
-     if (!reg_size) {
-         gdb_put_packet("E14");
-         return;
-@@ -1264,16 +1228,16 @@ static void handle_write_mem(GArray *params, void *user_ctx)
-     }
- 
-     /* gdb_hextomem() reads 2*len bytes */
--    if (get_param(params, 1)->val_ull >
--        strlen(get_param(params, 2)->data) / 2) {
-+    if (gdb_get_cmd_param(params, 1)->val_ull >
-+        strlen(gdb_get_cmd_param(params, 2)->data) / 2) {
-         gdb_put_packet("E22");
-         return;
-     }
- 
--    gdb_hextomem(gdbserver_state.mem_buf, get_param(params, 2)->data,
--                 get_param(params, 1)->val_ull);
-+    gdb_hextomem(gdbserver_state.mem_buf, gdb_get_cmd_param(params, 2)->data,
-+                 gdb_get_cmd_param(params, 1)->val_ull);
-     if (gdb_target_memory_rw_debug(gdbserver_state.g_cpu,
--                                   get_param(params, 0)->val_ull,
-+                                   gdb_get_cmd_param(params, 0)->val_ull,
-                                    gdbserver_state.mem_buf->data,
-                                    gdbserver_state.mem_buf->len, true)) {
-         gdb_put_packet("E14");
-@@ -1291,16 +1255,16 @@ static void handle_read_mem(GArray *params, void *user_ctx)
-     }
- 
-     /* gdb_memtohex() doubles the required space */
--    if (get_param(params, 1)->val_ull > MAX_PACKET_LENGTH / 2) {
-+    if (gdb_get_cmd_param(params, 1)->val_ull > MAX_PACKET_LENGTH / 2) {
-         gdb_put_packet("E22");
-         return;
-     }
- 
-     g_byte_array_set_size(gdbserver_state.mem_buf,
--                          get_param(params, 1)->val_ull);
-+                          gdb_get_cmd_param(params, 1)->val_ull);
- 
-     if (gdb_target_memory_rw_debug(gdbserver_state.g_cpu,
--                                   get_param(params, 0)->val_ull,
-+                                   gdb_get_cmd_param(params, 0)->val_ull,
-                                    gdbserver_state.mem_buf->data,
-                                    gdbserver_state.mem_buf->len, false)) {
-         gdb_put_packet("E14");
-@@ -1324,8 +1288,8 @@ static void handle_write_all_regs(GArray *params, void *user_ctx)
-     }
- 
-     cpu_synchronize_state(gdbserver_state.g_cpu);
--    len = strlen(get_param(params, 0)->data) / 2;
--    gdb_hextomem(gdbserver_state.mem_buf, get_param(params, 0)->data, len);
-+    len = strlen(gdb_get_cmd_param(params, 0)->data) / 2;
-+    gdb_hextomem(gdbserver_state.mem_buf, gdb_get_cmd_param(params, 0)->data, len);
-     registers = gdbserver_state.mem_buf->data;
-     for (reg_id = 0;
-          reg_id < gdbserver_state.g_cpu->gdb_num_g_regs && len > 0;
-@@ -1360,7 +1324,7 @@ static void handle_read_all_regs(GArray *params, void *user_ctx)
- static void handle_step(GArray *params, void *user_ctx)
- {
-     if (params->len) {
--        gdb_set_cpu_pc(get_param(params, 0)->val_ull);
-+        gdb_set_cpu_pc(gdb_get_cmd_param(params, 0)->val_ull);
-     }
- 
-     cpu_single_step(gdbserver_state.c_cpu, gdbserver_state.sstep_flags);
-@@ -1373,7 +1337,7 @@ static void handle_backward(GArray *params, void *user_ctx)
-         gdb_put_packet("E22");
-     }
-     if (params->len == 1) {
--        switch (get_param(params, 0)->opcode) {
-+        switch (gdb_get_cmd_param(params, 0)->opcode) {
-         case 's':
-             if (replay_reverse_step()) {
-                 gdb_continue();
-@@ -1408,7 +1372,7 @@ static void handle_v_cont(GArray *params, void *user_ctx)
-         return;
-     }
- 
--    res = gdb_handle_vcont(get_param(params, 0)->data);
-+    res = gdb_handle_vcont(gdb_get_cmd_param(params, 0)->data);
-     if ((res == -EINVAL) || (res == -ERANGE)) {
-         gdb_put_packet("E22");
-     } else if (res) {
-@@ -1426,7 +1390,7 @@ static void handle_v_attach(GArray *params, void *user_ctx)
-         goto cleanup;
-     }
- 
--    process = gdb_get_process(get_param(params, 0)->val_ul);
-+    process = gdb_get_process(gdb_get_cmd_param(params, 0)->val_ul);
-     if (!process) {
-         goto cleanup;
-     }
-@@ -1523,7 +1487,7 @@ static void handle_v_commands(GArray *params, void *user_ctx)
-         return;
-     }
- 
--    if (!process_string_cmd(get_param(params, 0)->data,
-+    if (!process_string_cmd(gdb_get_cmd_param(params, 0)->data,
-                             gdb_v_commands_table,
-                             ARRAY_SIZE(gdb_v_commands_table))) {
-         gdb_put_packet("");
-@@ -1555,7 +1519,7 @@ static void handle_set_qemu_sstep(GArray *params, void *user_ctx)
-         return;
-     }
- 
--    new_sstep_flags = get_param(params, 0)->val_ul;
-+    new_sstep_flags = gdb_get_cmd_param(params, 0)->val_ul;
- 
-     if (new_sstep_flags  & ~gdbserver_state.supported_sstep_flags) {
-         gdb_put_packet("E22");
-@@ -1615,13 +1579,13 @@ static void handle_query_thread_extra(GArray *params, void *user_ctx)
-     CPUState *cpu;
- 
-     if (!params->len ||
--        get_param(params, 0)->thread_id.kind == GDB_READ_THREAD_ERR) {
-+        gdb_get_cmd_param(params, 0)->thread_id.kind == GDB_READ_THREAD_ERR) {
-         gdb_put_packet("E22");
-         return;
-     }
- 
--    cpu = gdb_get_cpu(get_param(params, 0)->thread_id.pid,
--                      get_param(params, 0)->thread_id.tid);
-+    cpu = gdb_get_cpu(gdb_get_cmd_param(params, 0)->thread_id.pid,
-+                      gdb_get_cmd_param(params, 0)->thread_id.tid);
-     if (!cpu) {
-         return;
-     }
-@@ -1673,7 +1637,7 @@ static void handle_query_supported(GArray *params, void *user_ctx)
++/* Compares if a set of command parsers is equal to another set of parsers. */
++static bool cmp_cmds(GdbCmdParseEntry *c, GdbCmdParseEntry *d, int size)
++{
++    for (int i = 0; i < size; i++) {
++        if (!(c[i].handler == d[i].handler &&
++            g_strcmp0(c[i].cmd, d[i].cmd) == 0 &&
++            c[i].cmd_startswith == d[i].cmd_startswith &&
++            g_strcmp0(c[i].schema, d[i].schema) == 0)) {
++
++            /* Sets are different. */
++            return false;
++        }
++    }
++
++    /* Sets are equal, i.e. contain the same command parsers. */
++    return true;
++}
++
++static GdbCmdParseEntry *extended_query_table;
++static int extended_query_table_size;
++void gdb_extend_query_table(GdbCmdParseEntry *table, int size)
++{
++    /*
++     * We don't support different sets of CPU gdb features on different CPUs yet
++     * so assert query table is the same on all CPUs, or is set only once
++     * (1 CPU).
++     */
++    g_assert(extended_query_table == NULL ||
++             (extended_query_table_size == size &&
++              cmp_cmds(extended_query_table, table, size)));
++
++    extended_query_table = table;
++    extended_query_table_size = size;
++}
++
+ static const GdbCmdParseEntry gdb_gen_query_table[] = {
+     {
+         .handler = handle_query_curr_tid,
+@@ -1821,6 +1875,22 @@ static const GdbCmdParseEntry gdb_gen_query_table[] = {
  #endif
+ };
  
-     if (params->len) {
--        const char *gdb_supported = get_param(params, 0)->data;
-+        const char *gdb_supported = gdb_get_cmd_param(params, 0)->data;
- 
-         if (strstr(gdb_supported, "multiprocess+")) {
-             gdbserver_state.multiprocess = true;
-@@ -1707,15 +1671,15 @@ static void handle_query_xfer_features(GArray *params, void *user_ctx)
++static GdbCmdParseEntry *extended_set_table;
++static int extended_set_table_size;
++void gdb_extend_set_table(GdbCmdParseEntry *table, int size)
++{
++    /*
++     * We don't support different sets of CPU gdb features on different CPUs yet
++     * so assert set table is the same on all CPUs, or is set only once (1 CPU).
++     */
++    g_assert(extended_set_table == NULL ||
++             (extended_set_table_size == size &&
++              cmp_cmds(extended_set_table, table, size)));
++
++    extended_set_table = table;
++    extended_set_table_size = size;
++}
++
+ static const GdbCmdParseEntry gdb_gen_set_table[] = {
+     /* Order is important if has same prefix */
+     {
+@@ -1859,11 +1929,21 @@ static void handle_gen_query(GArray *params, void *user_ctx)
          return;
      }
  
--    p = get_param(params, 0)->data;
-+    p = gdb_get_cmd_param(params, 0)->data;
-     xml = get_feature_xml(p, &p, process);
-     if (!xml) {
-         gdb_put_packet("E00");
-         return;
-     }
- 
--    addr = get_param(params, 1)->val_ul;
--    len = get_param(params, 2)->val_ul;
-+    addr = gdb_get_cmd_param(params, 1)->val_ul;
-+    len = gdb_get_cmd_param(params, 2)->val_ul;
-     total_len = strlen(xml);
-     if (addr > total_len) {
-         gdb_put_packet("E00");
-@@ -1889,13 +1853,13 @@ static void handle_gen_query(GArray *params, void *user_ctx)
-         return;
-     }
- 
--    if (process_string_cmd(get_param(params, 0)->data,
+-    if (!process_string_cmd(gdb_get_cmd_param(params, 0)->data,
+-                            gdb_gen_query_table,
+-                            ARRAY_SIZE(gdb_gen_query_table))) {
+-        gdb_put_packet("");
 +    if (process_string_cmd(gdb_get_cmd_param(params, 0)->data,
-                            gdb_gen_query_set_common_table,
-                            ARRAY_SIZE(gdb_gen_query_set_common_table))) {
++                           gdb_gen_query_table,
++                           ARRAY_SIZE(gdb_gen_query_table))) {
++        return;
++    }
++
++    if (extended_query_table &&
++        process_string_cmd(gdb_get_cmd_param(params, 0)->data,
++                           extended_query_table,
++                           extended_query_table_size)) {
++        return;
+     }
++
++    /* Can't handle query, return Empty response. */
++    gdb_put_packet("");
+ }
+ 
+ static void handle_gen_set(GArray *params, void *user_ctx)
+@@ -1878,11 +1958,21 @@ static void handle_gen_set(GArray *params, void *user_ctx)
          return;
      }
  
--    if (!process_string_cmd(get_param(params, 0)->data,
-+    if (!process_string_cmd(gdb_get_cmd_param(params, 0)->data,
-                             gdb_gen_query_table,
-                             ARRAY_SIZE(gdb_gen_query_table))) {
-         gdb_put_packet("");
-@@ -1908,13 +1872,13 @@ static void handle_gen_set(GArray *params, void *user_ctx)
-         return;
-     }
- 
--    if (process_string_cmd(get_param(params, 0)->data,
+-    if (!process_string_cmd(gdb_get_cmd_param(params, 0)->data,
 +    if (process_string_cmd(gdb_get_cmd_param(params, 0)->data,
-                            gdb_gen_query_set_common_table,
-                            ARRAY_SIZE(gdb_gen_query_set_common_table))) {
-         return;
-     }
- 
--    if (!process_string_cmd(get_param(params, 0)->data,
-+    if (!process_string_cmd(gdb_get_cmd_param(params, 0)->data,
                             gdb_gen_set_table,
                             ARRAY_SIZE(gdb_gen_set_table))) {
-         gdb_put_packet("");
-diff --git a/gdbstub/syscalls.c b/gdbstub/syscalls.c
-index 02e3a8f74c..4e1295b782 100644
---- a/gdbstub/syscalls.c
-+++ b/gdbstub/syscalls.c
-@@ -16,6 +16,7 @@
- #include "sysemu/runstate.h"
- #include "gdbstub/user.h"
- #include "gdbstub/syscalls.h"
-+#include "gdbstub/commands.h"
- #include "trace.h"
- #include "internals.h"
- 
-@@ -154,9 +155,9 @@ void gdb_handle_file_io(GArray *params, void *user_ctx)
-         uint64_t ret;
-         int err;
- 
--        ret = get_param(params, 0)->val_ull;
-+        ret = gdb_get_cmd_param(params, 0)->val_ull;
-         if (params->len >= 2) {
--            err = get_param(params, 1)->val_ull;
-+            err = gdb_get_cmd_param(params, 1)->val_ull;
-         } else {
-             err = 0;
-         }
-@@ -196,7 +197,7 @@ void gdb_handle_file_io(GArray *params, void *user_ctx)
-         gdbserver_syscall_state.current_syscall_cb = NULL;
+-        gdb_put_packet("");
++        return;
      }
++
++    if (extended_set_table &&
++        process_string_cmd(gdb_get_cmd_param(params, 0)->data,
++                           extended_set_table,
++                           extended_set_table_size)) {
++        return;
++    }
++
++    /* Can't handle set, return Empty response. */
++    gdb_put_packet("");
+ }
  
--    if (params->len >= 3 && get_param(params, 2)->opcode == (uint8_t)'C') {
-+    if (params->len >= 3 && gdb_get_cmd_param(params, 2)->opcode == (uint8_t)'C') {
-         gdb_put_packet("T02");
-         return;
-     }
-diff --git a/gdbstub/system.c b/gdbstub/system.c
-index d235403855..1ad87fe7fd 100644
---- a/gdbstub/system.c
-+++ b/gdbstub/system.c
-@@ -16,6 +16,7 @@
- #include "qemu/cutils.h"
- #include "exec/gdbstub.h"
- #include "gdbstub/syscalls.h"
-+#include "gdbstub/commands.h"
- #include "exec/hwaddr.h"
- #include "exec/tb-flush.h"
- #include "sysemu/cpus.h"
-@@ -501,7 +502,7 @@ void gdb_handle_set_qemu_phy_mem_mode(GArray *params, void *ctx)
-         return;
-     }
- 
--    if (!get_param(params, 0)->val_ul) {
-+    if (!gdb_get_cmd_param(params, 0)->val_ul) {
-         phy_memory_mode = 0;
-     } else {
-         phy_memory_mode = 1;
-@@ -519,7 +520,7 @@ void gdb_handle_query_rcmd(GArray *params, void *ctx)
-         return;
-     }
- 
--    len = strlen(get_param(params, 0)->data);
-+    len = strlen(gdb_get_cmd_param(params, 0)->data);
-     if (len % 2) {
-         gdb_put_packet("E01");
-         return;
-@@ -527,7 +528,7 @@ void gdb_handle_query_rcmd(GArray *params, void *ctx)
- 
-     g_assert(gdbserver_state.mem_buf->len == 0);
-     len = len / 2;
--    gdb_hextomem(gdbserver_state.mem_buf, get_param(params, 0)->data, len);
-+    gdb_hextomem(gdbserver_state.mem_buf, gdb_get_cmd_param(params, 0)->data, len);
-     g_byte_array_append(gdbserver_state.mem_buf, &zero, 1);
-     qemu_chr_be_write(gdbserver_system_state.mon_chr,
-                       gdbserver_state.mem_buf->data,
-diff --git a/gdbstub/user-target.c b/gdbstub/user-target.c
-index a9c6c64512..b5e01fd8b0 100644
---- a/gdbstub/user-target.c
-+++ b/gdbstub/user-target.c
-@@ -9,6 +9,7 @@
- 
- #include "qemu/osdep.h"
- #include "exec/gdbstub.h"
-+#include "gdbstub/commands.h"
- #include "qemu.h"
- #include "internals.h"
- #ifdef CONFIG_LINUX
-@@ -250,8 +251,8 @@ void gdb_handle_query_xfer_auxv(GArray *params, void *user_ctx)
-         return;
-     }
- 
--    offset = get_param(params, 0)->val_ul;
--    len = get_param(params, 1)->val_ul;
-+    offset = gdb_get_cmd_param(params, 0)->val_ul;
-+    len = gdb_get_cmd_param(params, 1)->val_ul;
-     ts = get_task_state(gdbserver_state.c_cpu);
-     saved_auxv = ts->info->saved_auxv;
-     auxv_len = ts->info->auxv_len;
-@@ -288,7 +289,7 @@ void gdb_handle_query_xfer_auxv(GArray *params, void *user_ctx)
- 
- static const char *get_filename_param(GArray *params, int i)
- {
--    const char *hex_filename = get_param(params, i)->data;
-+    const char *hex_filename = gdb_get_cmd_param(params, i)->data;
-     gdb_hextomem(gdbserver_state.mem_buf, hex_filename,
-                  strlen(hex_filename) / 2);
-     g_byte_array_append(gdbserver_state.mem_buf, (const guint8 *)"", 1);
-@@ -306,8 +307,8 @@ static void hostio_reply_with_data(const void *buf, size_t n)
- void gdb_handle_v_file_open(GArray *params, void *user_ctx)
- {
-     const char *filename = get_filename_param(params, 0);
--    uint64_t flags = get_param(params, 1)->val_ull;
--    uint64_t mode = get_param(params, 2)->val_ull;
-+    uint64_t flags = gdb_get_cmd_param(params, 1)->val_ull;
-+    uint64_t mode = gdb_get_cmd_param(params, 2)->val_ull;
- 
- #ifdef CONFIG_LINUX
-     int fd = do_guest_openat(cpu_env(gdbserver_state.g_cpu), 0, filename,
-@@ -325,7 +326,7 @@ void gdb_handle_v_file_open(GArray *params, void *user_ctx)
- 
- void gdb_handle_v_file_close(GArray *params, void *user_ctx)
- {
--    int fd = get_param(params, 0)->val_ul;
-+    int fd = gdb_get_cmd_param(params, 0)->val_ul;
- 
-     if (close(fd) == -1) {
-         g_string_printf(gdbserver_state.str_buf, "F-1,%d", errno);
-@@ -338,9 +339,9 @@ void gdb_handle_v_file_close(GArray *params, void *user_ctx)
- 
- void gdb_handle_v_file_pread(GArray *params, void *user_ctx)
- {
--    int fd = get_param(params, 0)->val_ul;
--    size_t count = get_param(params, 1)->val_ull;
--    off_t offset = get_param(params, 2)->val_ull;
-+    int fd = gdb_get_cmd_param(params, 0)->val_ul;
-+    size_t count = gdb_get_cmd_param(params, 1)->val_ull;
-+    off_t offset = gdb_get_cmd_param(params, 2)->val_ull;
- 
-     size_t bufsiz = MIN(count, BUFSIZ);
-     g_autofree char *buf = g_try_malloc(bufsiz);
-@@ -383,9 +384,9 @@ void gdb_handle_v_file_readlink(GArray *params, void *user_ctx)
- 
- void gdb_handle_query_xfer_exec_file(GArray *params, void *user_ctx)
- {
--    uint32_t pid = get_param(params, 0)->val_ul;
--    uint32_t offset = get_param(params, 1)->val_ul;
--    uint32_t length = get_param(params, 2)->val_ul;
-+    uint32_t pid = gdb_get_cmd_param(params, 0)->val_ul;
-+    uint32_t offset = gdb_get_cmd_param(params, 1)->val_ul;
-+    uint32_t length = gdb_get_cmd_param(params, 2)->val_ul;
- 
-     GDBProcess *process = gdb_get_process(pid);
-     if (!process) {
-diff --git a/gdbstub/user.c b/gdbstub/user.c
-index e34b58b407..b36033bc7a 100644
---- a/gdbstub/user.c
-+++ b/gdbstub/user.c
-@@ -16,6 +16,7 @@
- #include "exec/hwaddr.h"
- #include "exec/tb-flush.h"
- #include "exec/gdbstub.h"
-+#include "gdbstub/commands.h"
- #include "gdbstub/syscalls.h"
- #include "gdbstub/user.h"
- #include "gdbstub/enums.h"
-@@ -793,7 +794,7 @@ void gdb_syscall_return(CPUState *cs, int num)
- 
- void gdb_handle_set_catch_syscalls(GArray *params, void *user_ctx)
- {
--    const char *param = get_param(params, 0)->data;
-+    const char *param = gdb_get_cmd_param(params, 0)->data;
-     GDBSyscallsMask catch_syscalls_mask;
-     bool catch_all_syscalls;
-     unsigned int num;
-@@ -858,8 +859,8 @@ void gdb_handle_query_xfer_siginfo(GArray *params, void *user_ctx)
-     unsigned long offset, len;
-     uint8_t *siginfo_offset;
- 
--    offset = get_param(params, 0)->val_ul;
--    len = get_param(params, 1)->val_ul;
-+    offset = gdb_get_cmd_param(params, 0)->val_ul;
-+    len = gdb_get_cmd_param(params, 1)->val_ul;
- 
-     if (offset + len > gdbserver_user_state.siginfo_len) {
-         /* Invalid offset and/or requested length. */
+ static void handle_target_halt(GArray *params, void *user_ctx)
 -- 
 2.39.2
 
