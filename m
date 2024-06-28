@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C01A91BED1
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jun 2024 14:43:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1F0491BEDD
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jun 2024 14:44:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sNAww-0004qa-JI; Fri, 28 Jun 2024 08:43:36 -0400
+	id 1sNAxQ-0005WG-5O; Fri, 28 Jun 2024 08:44:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sNAwV-0004oB-QC
- for qemu-devel@nongnu.org; Fri, 28 Jun 2024 08:43:07 -0400
-Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
+ id 1sNAwX-0004pm-LN
+ for qemu-devel@nongnu.org; Fri, 28 Jun 2024 08:43:11 -0400
+Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sNAwT-0005fX-AM
- for qemu-devel@nongnu.org; Fri, 28 Jun 2024 08:43:07 -0400
-Received: by mail-ed1-x531.google.com with SMTP id
- 4fb4d7f45d1cf-57d07f07a27so703178a12.3
- for <qemu-devel@nongnu.org>; Fri, 28 Jun 2024 05:43:04 -0700 (PDT)
+ id 1sNAwV-0005hs-Pj
+ for qemu-devel@nongnu.org; Fri, 28 Jun 2024 08:43:09 -0400
+Received: by mail-ed1-x534.google.com with SMTP id
+ 4fb4d7f45d1cf-5854ac8168fso652490a12.2
+ for <qemu-devel@nongnu.org>; Fri, 28 Jun 2024 05:43:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719578584; x=1720183384; darn=nongnu.org;
+ d=linaro.org; s=google; t=1719578586; x=1720183386; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=WHuZmnhAdWHG3UIOg5pOVL+PmE5Wzgi3P02hFFcB2fk=;
- b=OeBHdPtRwtgq0VJkvuv6b1btbC83mdHxaGT/XsPcS1fVToTe0km/az7/BnUXuaFe5I
- wfZ88GjqN+toKzo1dvRe1RA9QtV0G/OZErezHCtjsyKKQ02DJU174USGrv7/OQN2ecLF
- FoZuSb9q9cPiBot14qTs64B+3MfVbxk2Ak56zr9N5zsHQi2bCjfMboitNMNspcdkgNH0
- /wg88X558gVlw5+0/nXciFbG12YxTpgGqbCGmK/MkTlZ6f3AkNoIp7JnILW6YNU2vFx6
- GPGYn7VL8kJVOGozsMk12f1KJQ/mUSFJsSBLFfMrWKfMWr6VyLsNKQwQL71UK/Z6ZEtD
- 1pVQ==
+ bh=k9Mm2xBLn8Ufe39/+67RjiS06msB6AjL659puseOu/8=;
+ b=DxTjHBdWq3UAZkZ2d9bJBVPvuhFZE7dSNBgp+SNCHM5hdanRJ0F+tJFYOgeZ+3g2xR
+ VIm0OpOY/wdOKgdAKampsVc+/Pab8FrYPubrinM7TkyD0FPiRmz7nzhWdWW/HIxhrMu3
+ aMcZ/NfKuYIofCjUMrQ2cU15mwTF4VJ91c/bNZU8kxFAi9tSnM9opTKZRaNfIXVz7Anv
+ gHsG2CqyYvImEGg75auGRSHydzMpGKP9MX1+cNbtGO8J/PCdWZWrUV6UEayA16sBxqjB
+ FcBQDamJ5xYn13o6d1ukVT4NFEBsG7QlBl8S0qn0btwkHu1HfXjWhEYuPUu4CQB7y1Aj
+ xG+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719578584; x=1720183384;
+ d=1e100.net; s=20230601; t=1719578586; x=1720183386;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=WHuZmnhAdWHG3UIOg5pOVL+PmE5Wzgi3P02hFFcB2fk=;
- b=HnpIqizLLETnw3U4CIw5KYck9rsNN5lB4GrKa0/5AqXfVJihXasnAr2GCawx6OwIP+
- tuVkNI8/2PpKYk5GOr/QO0eWfMNy+JJUv2W2Y8NjWAc5iUL8Ee7DWJn5s4v0vwQ9SpkC
- jCgFeOSROXDz3mftCfopCwU5wdQPARGkPzmY9GSBdklTe4M+mgdHoWiA+Mk3mxov9gDy
- fKq/7Sl094F60vRvFcp11vkIlFaOJUZus34xuyDGAkQYLtEOpJjC1R6mWH5In6e1RHMP
- WOjDdd8U1Q9hOW22tWJ/aL8SuC22AbmEuK5eGzjp24d2wgpVm2myx9i1H5/zl1ZQf0Ri
- 8inA==
-X-Gm-Message-State: AOJu0YwMy41Wb3MPCW9sxtiLw/pjZRRIUKlS8ydZzPxwROwyBmTagStO
- IWFRSw+QNlHhgFMQn/xeIXTS8fdVNlMVKlReQB3NbxnhSPNcTk3eaSqEVG9itX8=
-X-Google-Smtp-Source: AGHT+IFe6RsSVULiEZ9TSzaDNcxNpoCit9aWaibpEZa+IWOdNprR2gR92o9RMSSsrQoXiPMK2L7NvQ==
-X-Received: by 2002:a05:6402:5216:b0:584:8fcd:260d with SMTP id
- 4fb4d7f45d1cf-5848fcd26cfmr4530730a12.3.1719578583395; 
- Fri, 28 Jun 2024 05:43:03 -0700 (PDT)
+ bh=k9Mm2xBLn8Ufe39/+67RjiS06msB6AjL659puseOu/8=;
+ b=k3VDXtVbJrlVK6WUxDO1RRspPH612UUobAMNnigbXM3llPN7L92+BTtIcQhLx8WqNm
+ GkTA2kzeuhMCLN5CA+dj0ckCb/8LdI3cRM/ceznDGFY/MtmZPMyOzotEpx1FF/T6wCqN
+ qSM8LMu9Yr8zXwgv2JeLgiANxsMyLydRigtErsMYHhWUTdBEBdzOAsodeH4OPymNY0IH
+ oNxdFZoKw2MDbRNtWA3Omi7i7dfDQN7TqPpvQCSWeGUXuBOrTE/l0SWmJPcFfSZ5Ob0C
+ ETgzuWUQIzofV2csi6hE+xDL9E+/Jk2dOWW7AKOwEmohzN82Uvl0H0IxgGE5efreaFRl
+ G5Bg==
+X-Gm-Message-State: AOJu0YxmaS59ueDOP7XGtf+rza5Os7jIu117P4s9ZyxQYAo44GbQPcWY
+ jQDXld10eAoOW66fbIkDMpQbDsAo5EkOi/BxivhoZUcJIMj5NlencjmV00JHY3g=
+X-Google-Smtp-Source: AGHT+IH79IaWV40gYP0GxuuwUjDaUjnSbw93+yXZG5vqhXyYnHEhuApFlQo01SwVkKya22wREATRnQ==
+X-Received: by 2002:a50:9359:0:b0:57d:3691:baf3 with SMTP id
+ 4fb4d7f45d1cf-57d4bdd932fmr10904590a12.41.1719578586070; 
+ Fri, 28 Jun 2024 05:43:06 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-58612c834ecsm984261a12.12.2024.06.28.05.42.59
+ 4fb4d7f45d1cf-5861324ff85sm983330a12.29.2024.06.28.05.43.00
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 28 Jun 2024 05:43:00 -0700 (PDT)
+ Fri, 28 Jun 2024 05:43:03 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 577735F9F9;
+ by draig.lan (Postfix) with ESMTP id 6C1EE5F9FA;
  Fri, 28 Jun 2024 13:42:59 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -72,18 +72,18 @@ Cc: David Hildenbrand <david@redhat.com>, Beraldo Leal <bleal@redhat.com>,
  Alexandre Iooss <erdnaxe@crans.org>, Stefan Hajnoczi <stefanha@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
- Thomas Huth <thuth@redhat.com>
-Subject: [PATCH 04/23] tracepoints: move physmem trace points
-Date: Fri, 28 Jun 2024 13:42:39 +0100
-Message-Id: <20240628124258.832466-5-alex.bennee@linaro.org>
+ Thomas Huth <thuth@redhat.com>, Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: [PATCH 05/23] tests/docker: Specify --userns keep-id for Podman
+Date: Fri, 28 Jun 2024 13:42:40 +0100
+Message-Id: <20240628124258.832466-6-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240628124258.832466-1-alex.bennee@linaro.org>
 References: <20240628124258.832466-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::531;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x531.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::534;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x534.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,81 +106,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-They don't need to be in the global trace-events file and can have a
-local trace header. Also add address_space_map tracepoint for tracking
-mapping behaviour.
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
+Previously we are always specifying -u $(UID) to match the UID in the
+container with one outside. This causes a problem with rootless Podman.
+
+Rootless Podman remaps user IDs in the container to ones controllable
+for the current user outside. The -u option instructs Podman to use
+a specified UID in the container but does not affect the UID remapping.
+Therefore, the UID in the container can be remapped to some other UID
+outside the container. This can make the access to bind-mounted volumes
+fail because the remapped UID mismatches with the owner of the
+directories.
+
+Replace -u $(UID) with --userns keep-id, which fixes the UID remapping.
+This change is limited to Podman because Docker does not support
+--userns keep-id.
+
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Message-Id: <20240626-podman-v1-1-f8c8daf2bb0a@daynix.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- system/physmem.c    | 6 ++++--
- system/trace-events | 6 ++++++
- trace-events        | 5 -----
- 3 files changed, 10 insertions(+), 7 deletions(-)
+ tests/docker/Makefile.include | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/system/physmem.c b/system/physmem.c
-index 33d09f7571..17c9c70f97 100644
---- a/system/physmem.c
-+++ b/system/physmem.c
-@@ -53,7 +53,7 @@
- #include "sysemu/hostmem.h"
- #include "sysemu/hw_accel.h"
- #include "sysemu/xen-mapcache.h"
--#include "trace/trace-root.h"
-+#include "trace.h"
- 
- #ifdef CONFIG_FALLOCATE_PUNCH_HOLE
- #include <linux/falloc.h>
-@@ -1885,7 +1885,7 @@ static void ram_block_add(RAMBlock *new_block, Error **errp)
-     } else { /* list is empty */
-         QLIST_INSERT_HEAD_RCU(&ram_list.blocks, new_block, next);
-     }
--    ram_list.mru_block = NULL;
-+    qatomic_rcu_set(&ram_list.mru_block, NULL);
- 
-     /* Write list before version */
-     smp_wmb();
-@@ -3193,6 +3193,8 @@ void *address_space_map(AddressSpace *as,
-     MemoryRegion *mr;
-     FlatView *fv;
- 
-+    trace_address_space_map(as, addr, len, is_write, *(uint32_t *) &attrs);
-+
-     if (len == 0) {
-         return NULL;
-     }
-diff --git a/system/trace-events b/system/trace-events
-index 69c9044151..2ed1d59b1f 100644
---- a/system/trace-events
-+++ b/system/trace-events
-@@ -21,6 +21,12 @@ flatview_destroy(void *view, void *root) "%p (root %p)"
- flatview_destroy_rcu(void *view, void *root) "%p (root %p)"
- global_dirty_changed(unsigned int bitmask) "bitmask 0x%"PRIx32
- 
-+# physmem.c
-+address_space_map(void *as, uint64_t addr, uint64_t len, bool is_write, uint32_t attrs) "as:%p addr 0x%"PRIx64":%"PRIx64" write:%d attrs:0x%x"
-+find_ram_offset(uint64_t size, uint64_t offset) "size: 0x%" PRIx64 " @ 0x%" PRIx64
-+find_ram_offset_loop(uint64_t size, uint64_t candidate, uint64_t offset, uint64_t next, uint64_t mingap) "trying size: 0x%" PRIx64 " @ 0x%" PRIx64 ", offset: 0x%" PRIx64" next: 0x%" PRIx64 " mingap: 0x%" PRIx64
-+ram_block_discard_range(const char *rbname, void *hva, size_t length, bool need_madvise, bool need_fallocate, int ret) "%s@%p + 0x%zx: madvise: %d fallocate: %d ret: %d"
-+
- # cpus.c
- vm_stop_flush_all(int ret) "ret %d"
- 
-diff --git a/trace-events b/trace-events
-index dd318ed1af..9cb96f64c4 100644
---- a/trace-events
-+++ b/trace-events
-@@ -37,11 +37,6 @@ dma_complete(void *dbs, int ret, void *cb) "dbs=%p ret=%d cb=%p"
- dma_blk_cb(void *dbs, int ret) "dbs=%p ret=%d"
- dma_map_wait(void *dbs) "dbs=%p"
- 
--# exec.c
--find_ram_offset(uint64_t size, uint64_t offset) "size: 0x%" PRIx64 " @ 0x%" PRIx64
--find_ram_offset_loop(uint64_t size, uint64_t candidate, uint64_t offset, uint64_t next, uint64_t mingap) "trying size: 0x%" PRIx64 " @ 0x%" PRIx64 ", offset: 0x%" PRIx64" next: 0x%" PRIx64 " mingap: 0x%" PRIx64
--ram_block_discard_range(const char *rbname, void *hva, size_t length, bool need_madvise, bool need_fallocate, int ret) "%s@%p + 0x%zx: madvise: %d fallocate: %d ret: %d"
--
- # job.c
- job_state_transition(void *job,  int ret, const char *legal, const char *s0, const char *s1) "job %p (ret: %d) attempting %s transition (%s-->%s)"
- job_apply_verb(void *job, const char *state, const char *verb, const char *legal) "job %p in state %s; applying verb %s (%s)"
+diff --git a/tests/docker/Makefile.include b/tests/docker/Makefile.include
+index 8df50a0ca0..708e3a72fb 100644
+--- a/tests/docker/Makefile.include
++++ b/tests/docker/Makefile.include
+@@ -207,7 +207,12 @@ docker-run: docker-qemu-src
+ 	$(call quiet-command,						\
+ 		$(RUNC) run 						\
+ 			--rm						\
+-			$(if $(NOUSER),,-u $(UID)) 			\
++			$(if $(NOUSER),,				\
++				$(if $(filter docker,$(RUNC)),		\
++					-u $(UID),			\
++					--userns keep-id		\
++				)					\
++			) 						\
+ 			--security-opt seccomp=unconfined		\
+ 			$(if $(DEBUG),-ti,)				\
+ 			$(if $(NETWORK),$(if $(subst $(NETWORK),,1),--net=$(NETWORK)),--net=none) \
 -- 
 2.39.2
 
