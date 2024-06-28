@@ -2,71 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64BC791B7E2
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jun 2024 09:12:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FFC791B807
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jun 2024 09:17:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sN5kP-0000iq-0N; Fri, 28 Jun 2024 03:10:18 -0400
+	id 1sN5kS-0000yf-JW; Fri, 28 Jun 2024 03:10:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sN5k5-0008RF-Tf
- for qemu-devel@nongnu.org; Fri, 28 Jun 2024 03:09:57 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sN5kC-0000q5-CU
+ for qemu-devel@nongnu.org; Fri, 28 Jun 2024 03:10:08 -0400
+Received: from mail-lj1-x236.google.com ([2a00:1450:4864:20::236])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sN5k4-0004ZX-2M
- for qemu-devel@nongnu.org; Fri, 28 Jun 2024 03:09:57 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-42122ac2f38so1537735e9.1
- for <qemu-devel@nongnu.org>; Fri, 28 Jun 2024 00:09:55 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sN5kA-0004Zr-6K
+ for qemu-devel@nongnu.org; Fri, 28 Jun 2024 03:10:03 -0400
+Received: by mail-lj1-x236.google.com with SMTP id
+ 38308e7fff4ca-2eaea28868dso3274731fa.3
+ for <qemu-devel@nongnu.org>; Fri, 28 Jun 2024 00:10:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719558594; x=1720163394; darn=nongnu.org;
+ d=linaro.org; s=google; t=1719558599; x=1720163399; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=Qw+zxMHTEIwsFcpzBJxdUQmKFi6OrynqizbQoSQ84sA=;
- b=QOvRiwjroRJuE1a8fsquD0KLYEyflOD1M1UKk6Oc5v9r53viVXQvsee/s84goIPl8H
- muqBxx3PbuMHO0/y4Gu1bCvsV7SgLQsQfrmHlZKjDou137e2hhXZ+7G+bTVwNSZ7gpej
- Tc0gDLZIv7mkDurc6xB5AThxPAfwx30S52AVqoYvMVe+ANL7hT5YRCQq8gSfg16GrCFM
- vTPQbL4jknbkMuSV7ewDWh7f1czo/58F/od2yGxw0CfWC0ARshkgRyDo6c4rYFRMKAfr
- IBNVekDdBn4ccBpMkvU+X1jBbtODpukm0Vndf3TSmqCo5T5naEUTadUYUbLxs16bRsW1
- 7f6A==
+ :reply-to; bh=t05HoVB9l7/y3jswyRpww8YiOUTnZmazAh4RttVAsxI=;
+ b=bft+f3/rNWVof/h482ThKrPnXCwN1atrYGMxO/ML2UDjZ3XHcopv4mirm+zB6szMTk
+ 0Q4H5cTUm0dGeSCPBmS2D1SBBI0CFAjFi4vakcCSdHPSajUYYfxhGIn08LWbkDx6Vh6Y
+ Rv5mzCMrmTu2gQI36f/jpge6mdytXDf3cUQpeeMQCNRFrn/rTdYXHx06a8HcP3p3XjaR
+ L/NmloamhtXC19pre+wrawq8SRYU8G9NE5GlSh9qKjk+ZuGnazNdb0rYnOd+m5Mok+Go
+ A6TtBqUcatJXuCxqkzRg+vHNt3MSQNfGCgNBaXKbKbs3oor5X1crz4Hi1iqb7xLihaco
+ xzrA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719558594; x=1720163394;
+ d=1e100.net; s=20230601; t=1719558599; x=1720163399;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Qw+zxMHTEIwsFcpzBJxdUQmKFi6OrynqizbQoSQ84sA=;
- b=TfxX+aPA+Rq7YqPUf/rKd92MoG2Xzm+AI5cexKf4HVpK5PzyzF//DB3lTFvF2Cjfz/
- JUT4z/lQQGRipbE9oRg8O/7E6KdMFtnthwd7awVZkT7vozcPzaepTqmj61Q8MGGMlwma
- DT/f4UI1Bc/cu04z4Fqxn7Hme9j3kTkjEXB64LSAKSWP20d4OhN6rbEbTWuXziz3C7ly
- Zm286rJRQCU74biW77nvbt8vJHMEjfKgEzjNx67I3uigrzPrnT/qM7KHIDJHSjQZiKiM
- c5KYUsiBSHtD4x7+iA223wVizBHff1zyHnZGc+m5kUwQBTaWGYUnfuTWd5EsJ51miKvM
- Tj/w==
-X-Gm-Message-State: AOJu0Ywtwz2X51lSiylCQ8MunWG2UVy0/TY0OjG7rmQ8tLeNf0Zsu7Py
- A1aeYHdrAmP4awi7iJn4VVof/BtPGtQrvp/sUY96eTChfao2DQRwwyxjABW2VgbD/AeaZ/itslK
- D5R4=
-X-Google-Smtp-Source: AGHT+IHG0z6Hj+/ibEQCoHP8RF+lQQ6yBvBZ9ia/+0xI0ckpQRKDXxlNrseTKy0RW7VOVWj9Kgfnmw==
-X-Received: by 2002:a05:600c:4509:b0:425:61cf:947a with SMTP id
- 5b1f17b1804b1-4256d50efefmr5351985e9.12.1719558594316; 
- Fri, 28 Jun 2024 00:09:54 -0700 (PDT)
+ bh=t05HoVB9l7/y3jswyRpww8YiOUTnZmazAh4RttVAsxI=;
+ b=KOpRIR7PRvIGQ05bM7JQJECli1QU5NF3h42a5sUhqkCj5FDRnYf24JYSsU7YRutQ8g
+ Yt5lJU6X6CdGgjgX8mqdNOLqZp2sRfQvAAazu9l4d/fOuYXgsMWJ2lpLO1jRiQC6kXEU
+ 6NQm7cv0rv1a+5ztHmhzQGu0xkaBAWsKENttQJRB0YTrx/YM58p7SVhIw8GYLdgZEgoQ
+ 7mecZsCcrbSAwTuHijisAij16B4+m02bDexil4BrlF3evN9QGvUaMlPX7QkdxqbdrlO3
+ t3dVHUjGUhjXJjzimtNS5ou/Ic5KAxAMgA17ITJNdxWvWXYRFYkZ5/wYyC6cG76bXubO
+ bsbA==
+X-Gm-Message-State: AOJu0YwEIwrL4WAdsH38o5aodt99Yh1kxE4+1GzFlIZp6ZmzCCd3rXy2
+ zNkIuIfB4QzciMstIcAEoEk4LLlvvqBW/DihFLikddogsTiIGHe25GeBHiCPTh4TeBsFUMZ1ny9
+ 4KjY=
+X-Google-Smtp-Source: AGHT+IHkB06HZddu5gtKA07sowY8jEL7SSsz7A4JWtO+h3CfiODl+y/J7Ui8JPdRRI7uUfiLF/OkBg==
+X-Received: by 2002:a2e:a17a:0:b0:2ec:4093:ec7 with SMTP id
+ 38308e7fff4ca-2ec5b2e7238mr119455091fa.30.1719558599421; 
+ Fri, 28 Jun 2024 00:09:59 -0700 (PDT)
 Received: from m1x-phil.lan (cho94-h02-176-184-4-239.dsl.sta.abo.bbox.fr.
  [176.184.4.239]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4256af5901dsm21620825e9.14.2024.06.28.00.09.53
+ 5b1f17b1804b1-4256af3c272sm22262955e9.8.2024.06.28.00.09.58
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 28 Jun 2024 00:09:53 -0700 (PDT)
+ Fri, 28 Jun 2024 00:09:59 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org, =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [PATCH v42 77/98] hw/sd/sdcard: Remove noise from sd_cmd_name()
-Date: Fri, 28 Jun 2024 09:01:53 +0200
-Message-ID: <20240628070216.92609-78-philmd@linaro.org>
+Subject: [PATCH v42 78/98] hw/sd/sdcard: Remove default case in read/write on
+ DAT lines
+Date: Fri, 28 Jun 2024 09:01:54 +0200
+Message-ID: <20240628070216.92609-79-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240628070216.92609-1-philmd@linaro.org>
 References: <20240628070216.92609-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::236;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x236.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,30 +90,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These CMD names weren't really useful, "UNKNOWN_CMD" is simpler.
+All read/write on DAT lines are explicitly handled.
+Reaching this point would be a programming error:
+replace by an assertion.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/sd/sd.c | 5 -----
- 1 file changed, 5 deletions(-)
+ hw/sd/sd.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
 diff --git a/hw/sd/sd.c b/hw/sd/sd.c
-index 19322c558f..0a7b422b2c 100644
+index 0a7b422b2c..64621d4340 100644
 --- a/hw/sd/sd.c
 +++ b/hw/sd/sd.c
-@@ -241,12 +241,7 @@ static const char *sd_cmd_name(SDState *sd, uint8_t cmd)
- {
-     static const char *cmd_abbrev[SDMMC_CMD_MAX] = {
-         [18]    = "READ_MULTIPLE_BLOCK",
--                                            [21]    = "DPS_spec",
-                                             [25]    = "WRITE_MULTIPLE_BLOCK",
--        [26]    = "MANUF_RSVD",
--        [40]    = "DPS_spec",
--        [60]    = "MANUF_RSVD",             [61]    = "MANUF_RSVD",
--        [62]    = "MANUF_RSVD",             [63]    = "MANUF_RSVD",
-     };
-     const SDProto *sdp = sd->proto;
+@@ -1951,7 +1951,6 @@ int sd_do_command(SDState *sd, SDRequest *req,
+         /* Valid command, we can update the 'state before command' bits.
+          * (Do this now so they appear in r1 responses.)
+          */
+-        sd->current_cmd = req->cmd;
+         sd->card_status = FIELD_DP32(sd->card_status, CSR,
+                                      CURRENT_STATE, last_state);
+     }
+@@ -2016,6 +2015,8 @@ send_response:
+     qemu_hexdump(stderr, "Response", response, rsplen);
+ #endif
  
++    sd->current_cmd = rtype == sd_illegal ? 0 : req->cmd;
++
+     return rsplen;
+ }
+ 
+@@ -2171,8 +2172,7 @@ void sd_write_byte(SDState *sd, uint8_t value)
+         break;
+ 
+     default:
+-        qemu_log_mask(LOG_GUEST_ERROR, "%s: unknown command\n", __func__);
+-        break;
++        g_assert_not_reached();
+     }
+ }
+ 
+@@ -2238,8 +2238,7 @@ uint8_t sd_read_byte(SDState *sd)
+         break;
+ 
+     default:
+-        qemu_log_mask(LOG_GUEST_ERROR, "%s: unknown command\n", __func__);
+-        return 0x00;
++        g_assert_not_reached();
+     }
+ 
+     return ret;
 -- 
 2.41.0
 
