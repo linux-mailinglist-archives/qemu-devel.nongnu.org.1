@@ -2,46 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DC1C91B824
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jun 2024 09:20:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EEB2591B822
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jun 2024 09:20:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sN5rX-000396-8D; Fri, 28 Jun 2024 03:17:39 -0400
+	id 1sN5uD-0005co-Nr; Fri, 28 Jun 2024 03:20:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1sN5rI-0002rb-BA; Fri, 28 Jun 2024 03:17:32 -0400
+ id 1sN5tx-0005Nv-UD; Fri, 28 Jun 2024 03:20:10 -0400
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1sN5rF-00087M-OM; Fri, 28 Jun 2024 03:17:23 -0400
+ id 1sN5tv-0001O1-Nf; Fri, 28 Jun 2024 03:20:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
  In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
  Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
  :Resent-To:Resent-Cc:Resent-Message-ID;
- bh=cF+qyKhKg5T5d1hfo16Tc9vECZbCvl+/c0GWoQ5g1Ug=; b=UnhUz+tsbffXpIMCYTeCkgOEcD
- 6rFY9i7bh2Lj5WCUO8X0YAIoGix1Zok+szsH4+oy94rD4zcGvbDfWqXFwh6Omm2VH75R3A5zw9kGj
- nkEhsrZGtLjf2xSdD/rW506nCm04u/cTovXwCZpG2kYbsJ6wn2e0wDNyMXhXNJlb77FoZIOWsruq5
- y4KNv9UgohfFlw0cqpyetzxktirEIp5uLo227x/s46KnvhGU7gADhXuAyLLAkMUEUD+nvEF8jOa90
- 4ETS5yb6wFSigzuGygdVLJH4n4x/pWWyvvjPZV9oCmc5f2DRax3G0BoDbC65QyovVMMLIQAYzuJIi
- yVwzqufqeFN/voOi0X7vPxEWwXPSIky586fnNghdfhfqxme4aLAVbKQDBn/7maDdu6uoC1yAxdgVR
- 8nb5V5Q8eivTvo0o0MyJvY9oVam9GCG9Bpa6cI28My2DTOGx4GrbO2uGJhVU7kftHbiR4rjoy8LEB
- uxOOkRwRCdGQ8KHT7CC87R1Zkt7R8Ed+wwtCB+GYPXylfk7YK6Abn88EL6Qz0nKRdAQPp5S+5kxqQ
- LWH4A1mfbqmMn9ediT7wLVUuZw2rrosmd0nr2nowL748mQlg/Cd2N5C8WkrgK+NEIUpUHZQ1pMNi7
- CQwQwyYmRJZPZ0M3CIR2quU+jJsH8oC9pa2EcOETU=;
+ bh=BQXcDGrbTH1BIiik4vlmQG3bp4fR8x4xGEYXscXBtho=; b=swKUS7Su+sQniBsVgG0jCtFc6V
+ 16yYROsyTIIKwkMPpAq/Z9gZDp/4vqlc9xPYkTWYe2LZD00bT/V7KCiIpBvhUSUxqznRQ0LK3MbDh
+ qpn1hHE/81ZwsFOe1UeJLLzvHLo9nG8B04tt/i8W7ce6aM9H3xYNUwOm1aswqKX7IOjn5Mk+/oyhe
+ yfzoFpdVmx1Urg6ZSoeN88Ki5DZGFoYrztSB87KsbliWu5MXSXPeER6AEh3wCAjAjduHI3wql8LC8
+ lN3vNfAfq54d1ICIV/ByjGb+8zPK/5MYnoyp7y0T5kJE1L/b9Jhqr9lvKcRez0aI7MdbHWWGAHYTD
+ WlGjD9qkfSovJKgvk4xLe/E4QcBqos2Wu4CaBkynhOnzY+ypXZuY/yKOmoK0TaICu/EMll/l8s87q
+ m2fw7tNumLCD1aq100ntcWplgzsnR+95S+xxMiZUuuJwWAANZf+P6GWDov5iIkpRCtsS94D2f++0R
+ psqyrEohg6J1HGsW0+gwXD+dkmtZt3YNSyyDFtTOPJOH/dTERig866UeScjO5uDW4wJYKubIhJrRj
+ EyOLwTmpxhniRjcuAXnL3kApUUA23rPuLyann6mi92Rg+0vp1nOZPWbm+tWs7FhNYTnF7Gk+Fqnd5
+ iPlbEcC2cbIYoKXYYkDPg2fz3CS+K9AMXgcKEFiHE=;
 Received: from [2a00:23c4:8bb4:4000:71e:fc91:de8e:dcdf]
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1sN5pJ-0008JS-EJ; Fri, 28 Jun 2024 08:15:25 +0100
-Message-ID: <55e1f4c7-f140-42b4-80bb-21a7674625e9@ilande.co.uk>
-Date: Fri, 28 Jun 2024 08:16:40 +0100
+ id 1sN5sI-0008NX-9p; Fri, 28 Jun 2024 08:18:31 +0100
+Message-ID: <78dc561c-3abc-4ee0-b2c6-9b219e513705@ilande.co.uk>
+Date: Fri, 28 Jun 2024 08:19:47 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-To: Peter Maydell <peter.maydell@linaro.org>,
- Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: Eduardo Habkost <eduardo@habkost.net>,
+To: Akihiko Odaki <akihiko.odaki@daynix.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Yanan Wang <wangyanan55@huawei.com>, John Snow <jsnow@redhat.com>,
@@ -54,11 +53,10 @@ Cc: Eduardo Habkost <eduardo@habkost.net>,
  =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
- qemu-devel@nongnu.org, qemu-block@nongnu.org, qemu-ppc@nongnu.org
-References: <20240626-san-v1-0-f3cc42302189@daynix.com>
- <20240626-san-v1-2-f3cc42302189@daynix.com>
- <CAFEAcA-DNieFTV7VbM1MBTbEr9zd5kJ4oaWcsUrsPxCzQki+_g@mail.gmail.com>
+ Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, qemu-ppc@nongnu.org
+References: <20240627-san-v2-0-750bb0946dbd@daynix.com>
+ <20240627-san-v2-2-750bb0946dbd@daynix.com>
 Content-Language: en-US
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
@@ -85,12 +83,12 @@ Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
  Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
  KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
  imgcU9TTGC5qd9g=
-In-Reply-To: <CAFEAcA-DNieFTV7VbM1MBTbEr9zd5kJ4oaWcsUrsPxCzQki+_g@mail.gmail.com>
+In-Reply-To: <20240627-san-v2-2-750bb0946dbd@daynix.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-SA-Exim-Connect-IP: 2a00:23c4:8bb4:4000:71e:fc91:de8e:dcdf
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: Re: [PATCH 02/14] hw/ide: Free macio-ide IRQs
+Subject: Re: [PATCH v2 02/15] hw/ide: Convert macio ide_irq into GPIO line
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -116,53 +114,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 26/06/2024 13:59, Peter Maydell wrote:
+On 27/06/2024 14:37, Akihiko Odaki wrote:
 
-> On Wed, 26 Jun 2024 at 12:09, Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
->>
->> This suppresses LeakSanitizer warnings.
->>
->> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
->> ---
->>   hw/ide/macio.c | 9 +++++++++
->>   1 file changed, 9 insertions(+)
->>
->> diff --git a/hw/ide/macio.c b/hw/ide/macio.c
->> index aca90d04f0e8..d8fbc1a17ba6 100644
->> --- a/hw/ide/macio.c
->> +++ b/hw/ide/macio.c
->> @@ -464,6 +464,14 @@ static void macio_ide_initfn(Object *obj)
->>                                qdev_prop_allow_set_link_before_realize, 0);
->>   }
->>
->> +static void macio_ide_finalize(Object *obj)
->> +{
->> +    MACIOIDEState *s = MACIO_IDE(obj);
->> +
->> +    qemu_free_irq(s->dma_irq);
->> +    qemu_free_irq(s->ide_irq);
->> +}
->> +
->>   static Property macio_ide_properties[] = {
->>       DEFINE_PROP_UINT32("channel", MACIOIDEState, channel, 0),
->>       DEFINE_PROP_UINT32("addr", MACIOIDEState, addr, -1),
->> @@ -486,6 +494,7 @@ static const TypeInfo macio_ide_type_info = {
->>       .parent = TYPE_SYS_BUS_DEVICE,
->>       .instance_size = sizeof(MACIOIDEState),
->>       .instance_init = macio_ide_initfn,
->> +    .instance_finalize = macio_ide_finalize,
->>       .class_init = macio_ide_class_init,
->>   };
+> macio ide_irq is connected to the IDE bus. This fixes the leak of
+> ide_irq.
 > 
-> Rather than this, I suspect macio_ide_initfn() should not
-> be using qemu_allocate_irq() in the first place. Looks like
-> maybe a QOM conversion that left a loose end un-tidied-up.
+> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> ---
+>   hw/ide/macio.c | 11 ++++++++---
+>   1 file changed, 8 insertions(+), 3 deletions(-)
+> 
+> diff --git a/hw/ide/macio.c b/hw/ide/macio.c
+> index aca90d04f0e8..9c96a857a7c1 100644
+> --- a/hw/ide/macio.c
+> +++ b/hw/ide/macio.c
+> @@ -427,7 +427,7 @@ static void macio_ide_realizefn(DeviceState *dev, Error **errp)
+>       s->bus.dma = &s->dma;
+>   }
+>   
+> -static void pmac_ide_irq(void *opaque, int n, int level)
+> +static void pmac_irq(void *opaque, int n, int level)
+>   {
+>       MACIOIDEState *s = opaque;
+>       uint32_t mask = 0x80000000u >> n;
+> @@ -446,6 +446,11 @@ static void pmac_ide_irq(void *opaque, int n, int level)
+>       }
+>   }
+>   
+> +static void pmac_ide_irq(void *opaque, int n, int level)
+> +{
+> +    pmac_irq(opaque, 1, level);
+> +}
+> +
+>   static void macio_ide_initfn(Object *obj)
+>   {
+>       SysBusDevice *d = SYS_BUS_DEVICE(obj);
+> @@ -456,8 +461,8 @@ static void macio_ide_initfn(Object *obj)
+>       sysbus_init_mmio(d, &s->mem);
+>       sysbus_init_irq(d, &s->real_ide_irq);
+>       sysbus_init_irq(d, &s->real_dma_irq);
+> -    s->dma_irq = qemu_allocate_irq(pmac_ide_irq, s, 0);
+> -    s->ide_irq = qemu_allocate_irq(pmac_ide_irq, s, 1);
+> +    s->dma_irq = qemu_allocate_irq(pmac_irq, s, 0);
+> +    qdev_init_gpio_in_named_with_opaque(DEVICE(obj), pmac_ide_irq, s, NULL, 1);
+>   
+>       object_property_add_link(obj, "dbdma", TYPE_MAC_DBDMA,
+>                                (Object **) &s->dbdma,
+> 
 
-This is definitely old code: there used to be problems interfacing the IDE code with 
-qdev due to the hard-coded bus IRQs but I think this may is now possible with the 
-advent of ide_bus_init_output_irq().
+This doesn't feel quite right: generally I consider the use of 
+qdev_init_gpio_in_named_with_opaque() to indicate that the underlying modelling is 
+incorrect. Let me have a look and see if I can figure out what's supposed to be 
+happening.
 
-I'll have a quick look and see what has changed in this area.
+I guess I should probably be marked as maintainer of hw/ide/macio.c as it is part of 
+the macio device, but it looks as if this is missing from MAINTAINERS.
 
 
 ATB,
