@@ -2,86 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 346D291BB5E
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jun 2024 11:23:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4FF691BB80
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jun 2024 11:32:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sN7oi-0002hk-N1; Fri, 28 Jun 2024 05:22:52 -0400
+	id 1sN7wZ-0005nt-Hw; Fri, 28 Jun 2024 05:30:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sN7og-0002hY-Gi
- for qemu-devel@nongnu.org; Fri, 28 Jun 2024 05:22:50 -0400
-Received: from mail-lf1-x133.google.com ([2a00:1450:4864:20::133])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sN7oe-0007RA-N6
- for qemu-devel@nongnu.org; Fri, 28 Jun 2024 05:22:50 -0400
-Received: by mail-lf1-x133.google.com with SMTP id
- 2adb3069b0e04-52cdd893e5cso422653e87.1
- for <qemu-devel@nongnu.org>; Fri, 28 Jun 2024 02:22:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719566566; x=1720171366; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=w/NlnKRYgzxj0ZFweSPW1uMicGo4UxLM9L4T9n0hNA0=;
- b=REKlh+wjJW+stadO0Oauy3Hmis72HDErkFHZaAqW8cUeiGcqGXS24E66ymLMKbNN7S
- w0P2K6KtUVVY8rP/klfNw4/QUrqy12Rk09Wcy6v5obK2RxixoBDIsdD7DE6vD92daf/B
- GLSaFzcQL8QBvVqbH7yLr4YCyMH7UO2/NjDcTutH4r0xcuQEN5siK2v/9G5BB4ePv5tV
- nRMEySxN2SKqWL8H+6Zagdl29W+SgDsOtRiq2hVo/Aza7dUgIC7509gyVJhEjTJEYKy2
- vWesapCGU/B996Vkb2JzN7HnEq3RMi1NdtWnzb9sGpbbRET+5the/M/F438WCU+hwG/2
- tHYA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719566566; x=1720171366;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=w/NlnKRYgzxj0ZFweSPW1uMicGo4UxLM9L4T9n0hNA0=;
- b=oINukXgmg+BXBZNj7ZKVekIurK5nOfLACdnEO+vKc9Jmf1ZD1Tn6rGeiWzlTIHR90Z
- PeD8aHIw1QQa0+I+7GY+yyeMYIGvqQpHkehLreJEKbdO8s/VrCDbxi7/zwg1/ahPUZ4P
- w7FWdIEsQ+ZuO4obqoEqFX5uNEMuajrQtVU82UWk2SqcUon8m5MuKAhobslha+l3iC/8
- 0+F5VvTHTBNIm79B3RDorjT8MK2JKcRpMtWhaAHBh3D/qqegMUxMBUIAsK/rc2BeWCz0
- 0dWEjUyx6tePKnOCIlol027RUeOWW1IeqZ5CVot21/hdCXNBvtuyXLuhsKLDkhHw0GHp
- WMeg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVGzfx0PgT/G+v5i/XOKgrTZk5qfZYesqAjR9x2AQNlFfGEfQJ4mtnFjS3ifxnnzP4WCVtfQo9EiiTaASI7Dn9aJnNKy/c=
-X-Gm-Message-State: AOJu0YzIyg73YCHQrSXmLzr95zJ09O7FmJyqlpDuNconE7Swt0iS/tou
- nnr54muMCGPQsLZNjRzC1wY1gGecjg1l7V3jnU/bJQoAjUYMcgJs38U66M1dvKk=
-X-Google-Smtp-Source: AGHT+IFn/8RWHDCuiESiubMBB/gufpkS47gjb2IpZtVRvhsUN3peWssjrHqX5d+Tn/Edi57szg0I8Q==
-X-Received: by 2002:ac2:5f8b:0:b0:52c:df2c:65fe with SMTP id
- 2adb3069b0e04-52ce18350bemr11539015e87.15.1719566566466; 
- Fri, 28 Jun 2024 02:22:46 -0700 (PDT)
-Received: from [192.168.69.100] (cho94-h02-176-184-4-239.dsl.sta.abo.bbox.fr.
- [176.184.4.239]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4256b0c0f99sm25970865e9.41.2024.06.28.02.22.45
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 28 Jun 2024 02:22:46 -0700 (PDT)
-Message-ID: <ec6e89ee-1a8a-4900-b9d0-9d5769d855cc@linaro.org>
-Date: Fri, 28 Jun 2024 11:22:44 +0200
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1sN7wX-0005nN-JL
+ for qemu-devel@nongnu.org; Fri, 28 Jun 2024 05:30:57 -0400
+Received: from mgamail.intel.com ([198.175.65.12])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1sN7wV-0005Yc-I2
+ for qemu-devel@nongnu.org; Fri, 28 Jun 2024 05:30:57 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1719567056; x=1751103056;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=eCtk3sT3sYL1zlRgK1MJDKojnVFuD7IAxYX3BQAV1zQ=;
+ b=FNga582JVurE3xEOUYwQnl+MaYrEwve09OSMTP/BxfazmLFZ0yW0fnG8
+ IRPM4Y04k24h9fQSTkiDk4h+Mc5/QGo3au9zLjRhBko0pTS0ZMZMGyea/
+ YwWL1OoGWoeG27dOscnkvF7ukosTUKpIqyN2ANUiyliRQoBoXZPlpNUwy
+ 308QbB4NoU2K7xpz5DZUu2dfhVpl+7PQ/dBgRfZO4eeTu0RrxXpH+yq7W
+ l2eckIeNk7eiYwZLmafCI/KHkKm0wI2ugY23c9RzQoEKszM4qWDH26lub
+ 58Gh1qhuSXpcDeE5FOIjt+eHRiV8gNFOOLAw1QH38m0PWU7gDWTp63xHJ Q==;
+X-CSE-ConnectionGUID: 7QLGeluUSNiZaAdr0wc5Ww==
+X-CSE-MsgGUID: 3tHRU00YS4af6jmyZMLtQQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11116"; a="28136017"
+X-IronPort-AV: E=Sophos;i="6.09,168,1716274800"; d="scan'208";a="28136017"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Jun 2024 02:30:50 -0700
+X-CSE-ConnectionGUID: awSC6JQSTwih8wDyT2QDcg==
+X-CSE-MsgGUID: oz/6aXQoTvarKStQoWYjwQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,168,1716274800"; d="scan'208";a="44677893"
+Received: from unknown (HELO SPR-S2600BT.bj.intel.com) ([10.240.192.127])
+ by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Jun 2024 02:30:48 -0700
+From: Zhenzhong Duan <zhenzhong.duan@intel.com>
+To: qemu-devel@nongnu.org
+Cc: alex.williamson@redhat.com, clg@redhat.com, kraxel@redhat.com,
+ chao.p.peng@intel.com, Zhenzhong Duan <zhenzhong.duan@intel.com>
+Subject: [PATCH 0/2] Misc fixes on vfio display
+Date: Fri, 28 Jun 2024 17:28:13 +0800
+Message-Id: <20240628092815.164423-1-zhenzhong.duan@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 6/9] target/arm: Factor out code for setting MTE TCF0
- field
-To: Gustavo Romero <gustavo.romero@linaro.org>, qemu-devel@nongnu.org,
- alex.bennee@linaro.org, richard.henderson@linaro.org
-Cc: peter.maydell@linaro.org
-References: <20240627041349.356704-1-gustavo.romero@linaro.org>
- <20240627041349.356704-7-gustavo.romero@linaro.org>
- <50ff9c9e-39a6-4be1-b6d5-42ff0dee7232@linaro.org>
- <8406f36b-0324-54c5-5949-0cad6193eca8@linaro.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <8406f36b-0324-54c5-5949-0cad6193eca8@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::133;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x133.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Received-SPF: pass client-ip=198.175.65.12;
+ envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -45
+X-Spam_score: -4.6
+X-Spam_bar: ----
+X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.212,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -98,60 +79,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 28/6/24 07:20, Gustavo Romero wrote:
-> Hi Phil,
-> 
-> On 6/27/24 3:05 AM, Philippe Mathieu-Daudé wrote:
->> On 27/6/24 06:13, Gustavo Romero wrote:
->>> Factor out the code used for setting the MTE TCF0 field from the prctl
->>> code into a convenient function. Other subsystems, like gdbstub, need to
->>> set this field as well, so keep it as a separate function to avoid
->>> duplication and ensure consistency in how this field is set across the
->>> board.
->>>
->>> Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
->>> ---
->>>   linux-user/aarch64/meson.build       |  2 ++
->>>   linux-user/aarch64/mte_user_helper.c | 34 ++++++++++++++++++++++++++++
->>>   linux-user/aarch64/mte_user_helper.h | 25 ++++++++++++++++++++
->>>   linux-user/aarch64/target_prctl.h    | 22 ++----------------
->>>   4 files changed, 63 insertions(+), 20 deletions(-)
->>>   create mode 100644 linux-user/aarch64/mte_user_helper.c
->>>   create mode 100644 linux-user/aarch64/mte_user_helper.h
->>
->>
->>> diff --git a/linux-user/aarch64/mte_user_helper.h 
->>> b/linux-user/aarch64/mte_user_helper.h
->>> new file mode 100644
->>> index 0000000000..ee3f6b190a
->>> --- /dev/null
->>> +++ b/linux-user/aarch64/mte_user_helper.h
->>> @@ -0,0 +1,25 @@
->>> +/*
->>> + * ARM MemTag convenience functions.
->>> + *
->>> + * This code is licensed under the GNU GPL v2 or later.
->>> + *
->>> + * SPDX-License-Identifier: LGPL-2.1-or-later
->>> + */
->>> +
->>> +#ifndef AARCH64_MTE_USER_HELPER_H
->>> +#define AARCH64_MTE USER_HELPER_H
->>> +
->>> +#include "qemu/osdep.h"
->>
->> https://www.qemu.org/docs/master/devel/style.html#include-directives
->>
->>    Do not include “qemu/osdep.h” from header files since the .c file
->>    will have already included it.
->>
->>> +#include "qemu.h"
->>
->> "qemu.h" shouldn't be required neither.
-> 
-> If I remove qemu/osdep.h CPUArchState can't resolved. If I remove qemu.h
-> then abi_long can't be resolved. I'm in a tight corner here.
+Hi,
 
-Does it work with "exec/cpu-all.h"?
+This is trying to address an issue Cédric found.
+See https://www.mail-archive.com/qemu-devel@nongnu.org/msg1043142.html
+While looking into it, also found a potential memory leak.
+
+I'm sorry that I didn't find how to test this fix, because it looks
+a GFX card is needed. Any idea on how to test or help test are quite
+appreciated.
+
+Thanks
+Zhenzhong
+
+Zhenzhong Duan (2):
+  vfio/display: Fix potential memleak of edid info
+  vfio/display: Fix vfio_display_edid_init() error path
+
+ hw/vfio/display.c | 15 +++++++++------
+ hw/vfio/helpers.c |  1 +
+ 2 files changed, 10 insertions(+), 6 deletions(-)
+
+-- 
+2.34.1
 
 
