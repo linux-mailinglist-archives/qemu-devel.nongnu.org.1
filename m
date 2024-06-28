@@ -2,43 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD04991B94C
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jun 2024 10:03:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A6A191B954
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jun 2024 10:03:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sN6Z4-0002rK-Mv; Fri, 28 Jun 2024 04:02:38 -0400
+	id 1sN6Z6-0002ya-6W; Fri, 28 Jun 2024 04:02:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=GU6n=N6=kaod.org=clg@ozlabs.org>)
- id 1sN6Yx-0002hM-Im
- for qemu-devel@nongnu.org; Fri, 28 Jun 2024 04:02:32 -0400
+ id 1sN6Z3-0002rY-Vz
+ for qemu-devel@nongnu.org; Fri, 28 Jun 2024 04:02:38 -0400
 Received: from gandalf.ozlabs.org ([150.107.74.76] helo=mail.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=GU6n=N6=kaod.org=clg@ozlabs.org>)
- id 1sN6Yv-0005m0-Hu
- for qemu-devel@nongnu.org; Fri, 28 Jun 2024 04:02:31 -0400
+ id 1sN6Z2-0005mz-89
+ for qemu-devel@nongnu.org; Fri, 28 Jun 2024 04:02:37 -0400
 Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4W9Sb7465Pz4wb7;
- Fri, 28 Jun 2024 18:02:27 +1000 (AEST)
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4W9SbF3gP3z4w2Q;
+ Fri, 28 Jun 2024 18:02:33 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits))
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4W9Sb63kD7z4w2Q;
- Fri, 28 Jun 2024 18:02:26 +1000 (AEST)
-Message-ID: <0cb4a4af-4db4-4dd9-899f-d6b8a62d8c6c@kaod.org>
-Date: Fri, 28 Jun 2024 10:02:25 +0200
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4W9SbD31TGz4w2N;
+ Fri, 28 Jun 2024 18:02:32 +1000 (AEST)
+Message-ID: <c6c6db3c-62ff-4373-9f6b-74ffff934feb@kaod.org>
+Date: Fri, 28 Jun 2024 10:02:31 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v42 62/98] hw/sd/sdcard: Add sd_cmd_ERASE handler (CMD38)
+Subject: Re: [PATCH v42 63/98] hw/sd/sdcard: Add sd_cmd_LOCK_UNLOCK handler
+ (CMD42)
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
 References: <20240628070216.92609-1-philmd@linaro.org>
- <20240628070216.92609-63-philmd@linaro.org>
+ <20240628070216.92609-64-philmd@linaro.org>
 Content-Language: en-US, fr
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20240628070216.92609-63-philmd@linaro.org>
+In-Reply-To: <20240628070216.92609-64-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=150.107.74.76;
@@ -76,86 +77,58 @@ C.
 
 
 > ---
->   hw/sd/sd.c | 41 ++++++++++++++++++++---------------------
->   1 file changed, 20 insertions(+), 21 deletions(-)
+>   hw/sd/sd.c | 13 ++++++++-----
+>   1 file changed, 8 insertions(+), 5 deletions(-)
 > 
 > diff --git a/hw/sd/sd.c b/hw/sd/sd.c
-> index 4e31dfe18f..17fec612eb 100644
+> index 17fec612eb..4d78ac5b59 100644
 > --- a/hw/sd/sd.c
 > +++ b/hw/sd/sd.c
-> @@ -244,7 +244,6 @@ static const char *sd_cmd_name(SDState *sd, uint8_t cmd)
->                                               [21]    = "DPS_spec",
+> @@ -245,7 +245,6 @@ static const char *sd_cmd_name(SDState *sd, uint8_t cmd)
 >                                               [25]    = "WRITE_MULTIPLE_BLOCK",
 >           [26]    = "MANUF_RSVD",
-> -        [38]    = "ERASE",
 >           [40]    = "DPS_spec",
->           [42]    = "LOCK_UNLOCK",
+> -        [42]    = "LOCK_UNLOCK",
 >           [54]    = "SDIO_RSVD",              [55]    = "APP_CMD",
-> @@ -1602,6 +1601,24 @@ static sd_rsp_type_t sd_cmd_ERASE_WR_BLK_END(SDState *sd, SDRequest req)
->       return sd_r1;
+>           [56]    = "GEN_CMD",
+>           [60]    = "MANUF_RSVD",             [61]    = "MANUF_RSVD",
+> @@ -1619,6 +1618,12 @@ static sd_rsp_type_t sd_cmd_ERASE(SDState *sd, SDRequest req)
+>       return sd_r1b;
 >   }
 >   
-> +/* CMD38 */
-> +static sd_rsp_type_t sd_cmd_ERASE(SDState *sd, SDRequest req)
+> +/* CMD42 */
+> +static sd_rsp_type_t sd_cmd_LOCK_UNLOCK(SDState *sd, SDRequest req)
 > +{
-> +    if (sd->state != sd_transfer_state) {
-> +        return sd_invalid_state_for_cmd(sd, req);
-> +    }
-> +    if (sd->csd[14] & 0x30) {
-> +        sd->card_status |= WP_VIOLATION;
-> +        return sd_r1b;
-> +    }
-> +
-> +    sd->state = sd_programming_state;
-> +    sd_erase(sd);
-> +    /* Bzzzzzzztt .... Operation complete.  */
-> +    sd->state = sd_transfer_state;
-> +    return sd_r1b;
+> +    return sd_cmd_to_receivingdata(sd, req, 0, 0);
 > +}
 > +
 >   static sd_rsp_type_t sd_normal_command(SDState *sd, SDRequest req)
 >   {
 >       uint16_t rca;
-> @@ -1690,26 +1707,6 @@ static sd_rsp_type_t sd_normal_command(SDState *sd, SDRequest req)
+> @@ -1707,10 +1712,6 @@ static sd_rsp_type_t sd_normal_command(SDState *sd, SDRequest req)
 >       case 26:  /* CMD26:  PROGRAM_CID */
 >           return sd_cmd_to_receivingdata(sd, req, 0, sizeof(sd->cid));
 >   
-> -    /* Erase commands (Class 5) */
-> -    case 38:  /* CMD38:  ERASE */
-> -        switch (sd->state) {
-> -        case sd_transfer_state:
-> -            if (sd->csd[14] & 0x30) {
-> -                sd->card_status |= WP_VIOLATION;
-> -                return sd_r1b;
-> -            }
+> -    /* Lock card commands (Class 7) */
+> -    case 42:  /* CMD42:  LOCK_UNLOCK */
+> -        return sd_cmd_to_receivingdata(sd, req, 0, 0);
 > -
-> -            sd->state = sd_programming_state;
-> -            sd_erase(sd);
-> -            /* Bzzzzzzztt .... Operation complete.  */
-> -            sd->state = sd_transfer_state;
-> -            return sd_r1b;
-> -
-> -        default:
-> -            break;
-> -        }
-> -        break;
-> -
->       /* Lock card commands (Class 7) */
->       case 42:  /* CMD42:  LOCK_UNLOCK */
->           return sd_cmd_to_receivingdata(sd, req, 0, 0);
-> @@ -2318,6 +2315,7 @@ static const SDProto sd_proto_spi = {
->           [35] = {10, sd_spi, "WRITE_SEC_CMD", sd_cmd_optional},
+>       /* Application specific commands (Class 8) */
+>       case 55:  /* CMD55:  APP_CMD */
+>           rca = sd_req_get_rca(sd, req);
+> @@ -2316,6 +2317,7 @@ static const SDProto sd_proto_spi = {
 >           [36] = {10, sd_spi, "SEND_PSI", sd_cmd_optional},
 >           [37] = {10, sd_spi, "CONTROL_ASSD_SYSTEM", sd_cmd_optional},
-> +        [38] = {5,  sd_spi, "ERASE", sd_cmd_ERASE},
+>           [38] = {5,  sd_spi, "ERASE", sd_cmd_ERASE},
+> +        [42] = {7,  sd_spi, "LOCK_UNLOCK", sd_cmd_LOCK_UNLOCK},
 >           [50] = {10, sd_spi, "DIRECT_SECURE_READ", sd_cmd_optional},
 >           [52] = {9,  sd_spi, "IO_RW_DIRECT", sd_cmd_optional},
 >           [53] = {9,  sd_spi, "IO_RW_EXTENDED", sd_cmd_optional},
-> @@ -2361,6 +2359,7 @@ static const SDProto sd_proto_sd = {
->           [35] = {10, sd_adtc, "WRITE_SEC_CMD", sd_cmd_optional},
+> @@ -2360,6 +2362,7 @@ static const SDProto sd_proto_sd = {
 >           [36] = {10, sd_adtc, "SEND_PSI", sd_cmd_optional},
 >           [37] = {10, sd_ac,   "CONTROL_ASSD_SYSTEM", sd_cmd_optional},
-> +        [38] = {5,  sd_ac,   "ERASE", sd_cmd_ERASE},
+>           [38] = {5,  sd_ac,   "ERASE", sd_cmd_ERASE},
+> +        [42] = {7,  sd_adtc, "LOCK_UNLOCK", sd_cmd_LOCK_UNLOCK},
 >           [43] = {1,  sd_ac,   "Q_MANAGEMENT", sd_cmd_optional},
 >           [44] = {1,  sd_ac,   "Q_TASK_INFO_A", sd_cmd_optional},
 >           [45] = {1,  sd_ac,   "Q_TASK_INFO_B", sd_cmd_optional},
