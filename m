@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE37B91C0D9
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jun 2024 16:26:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBF9291C0DD
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jun 2024 16:26:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sNCWA-0002Tg-Oc; Fri, 28 Jun 2024 10:24:02 -0400
+	id 1sNCWL-0002WI-AO; Fri, 28 Jun 2024 10:24:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sNCW4-0002S9-Id
- for qemu-devel@nongnu.org; Fri, 28 Jun 2024 10:23:56 -0400
-Received: from mail-lf1-x12c.google.com ([2a00:1450:4864:20::12c])
+ id 1sNCWH-0002Vt-5n
+ for qemu-devel@nongnu.org; Fri, 28 Jun 2024 10:24:09 -0400
+Received: from mail-lf1-x133.google.com ([2a00:1450:4864:20::133])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sNCW1-0004PU-6v
- for qemu-devel@nongnu.org; Fri, 28 Jun 2024 10:23:56 -0400
-Received: by mail-lf1-x12c.google.com with SMTP id
- 2adb3069b0e04-52e743307a2so858406e87.0
- for <qemu-devel@nongnu.org>; Fri, 28 Jun 2024 07:23:52 -0700 (PDT)
+ id 1sNCW6-0004VE-RF
+ for qemu-devel@nongnu.org; Fri, 28 Jun 2024 10:24:07 -0400
+Received: by mail-lf1-x133.google.com with SMTP id
+ 2adb3069b0e04-52ccc40e72eso630243e87.3
+ for <qemu-devel@nongnu.org>; Fri, 28 Jun 2024 07:23:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719584630; x=1720189430; darn=nongnu.org;
+ d=linaro.org; s=google; t=1719584634; x=1720189434; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=kFJB9ypZ3yzacaX0zrNCsCIbzybKZZLvBjJsHqEuQeA=;
- b=seab8uxoAsuYUM1cmXzsjJjNsgG3CvHzOAEPWX9tG5MhU7a9R0GTDSdxJF5aI3WIgS
- T94S6kAqO4/iqsLo0SBiVHit20sPl7UIGSpKAwLFRwuh/b2rmsN7u2qI2gZSDwUEitGj
- nLsfWQJZG2Fzb2UpL1WnpCTTZsMlYnMjqjiOb9jG9+wFcaaUZjoyxYOcmnOwPXlYQJ6M
- Wj0eBDw2vYra/FsLwTlrMORPe+slYU9D6II5QmNrBdlxT7n9LSKP1wdKIQyMNXH5YDU0
- uQhwbifRnH83j90W8yGaAKwn+nbB3yukMKTGohhJaxQj8HLlTGI7VqndnyFCYytnDOw8
- UkjQ==
+ :reply-to; bh=G22fQN40fbFYvTKwEhcW1cHU/qR1FCgG6nD09XlMchg=;
+ b=AQ6kf/BfXoBsG+qPIppU5dsJc6nwRRHOLrMJfd1qq/u/6xmq0YcU8z0M1sPrU2TKPb
+ 2AV1vTfSK0KEKNUM9OKH0YVji7ub8OZL4jurw7rRVPbNOAvj21/XgE80dcquMI4WQlKW
+ uhrzZhhmaLc+iEmVVY80kAfF4P5fWVYB9DwP1q0ggs4+O0d9tTNgQXIjX4n0vx8OzuFk
+ IOyC3z3qRCrMopeEvxXIo85mg+mXX+OM34LZz6cEmNizaBZSGQqfhaB99ciJfBIqP/Wd
+ Jm858mqz2dzasc/gAftz7Ucc3KqfnPTfy253uH3oZhDdBC7MKW3KfdsJsmbXiCohWX+c
+ GbSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719584630; x=1720189430;
+ d=1e100.net; s=20230601; t=1719584634; x=1720189434;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=kFJB9ypZ3yzacaX0zrNCsCIbzybKZZLvBjJsHqEuQeA=;
- b=gBywWfCU7UXoMB2DpuSbvbDjqsG2I7M1tTdki6ruGhjlcuYZ6njyc19COoLhp2cfRc
- VhjKCaboDdCNBlLMUF5Et6r9wlLCjRdmd8O21vTXjdBZoPNC3xV2uoSLRzdhzCM6gkXE
- XEqtLOKj2pwc3rabO6kirOhawQafHHm0Lo0Tr4Ygjr1Loz9WZ0keV4HDA29i6ZtWlQpT
- yG6Pawe3hq20u1ftkhid7s2qBOw6owBE6PIAdgL4Xb8L8FIZh1pneME6PmYUydGx7myi
- eAChTJSy85brxn4B2y4OQVYKYj7AFNjhujRJBERDTCqWVbCQSOGROr6zzP2/J3tKjfSK
- 9S+w==
+ bh=G22fQN40fbFYvTKwEhcW1cHU/qR1FCgG6nD09XlMchg=;
+ b=puNN0JnnTABG9vB67K3fGc1N/AddZj8bZ2YqnUfA+sBmIhVjrjZMt3NFlfRYORMZGy
+ aPfoAISZgiZJLOQVOyQbeErCGhFShIbhcJkWBZg+l9m84L9IX+/1NI+ZN0g9OT4xFniJ
+ BLCEjeHiBQp9ZjIevpwsAXAoy/ndC1II3kv7VOXbP5wWsTLK4dvGpda1EbGp1XAiE/bu
+ zGMeVNRI8b/qkGfSLO0nKs/9tq5H8dh7KcAsidQBR17GznMpHUZkVE24+hHe6o8Hd00E
+ g6yrjEna5UAkIZsnqRI99uIBiHyRhLW0/3wYyK5kid2PGzINi6nTqVKc0JkHvxDJpAtR
+ T6Cg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXGDfsbUJtquALpx9tcASKXQJ+JL+sak+bVDWA8kkQPxp/52j92v8gnt2b9zk3y9dWSx2j5nxi8S6d0BdAQsecXWIWrf50=
-X-Gm-Message-State: AOJu0Yy+AU1BPg24DfjaQPuABk2JnOqsA4Ei/lmBRS4hrFZu4FFGffc7
- VHhKO5hGKR+oKMkvBqfMZ4I1SOuxWWmBY0D40IR4zbgEM+h2SDARHO5KFZBKm32kqMO8Tv8+UoM
- nZJQ=
-X-Google-Smtp-Source: AGHT+IHSzYfZG00ctXTCFyx2goAQG5uUxigIivx4K+tWnvhp+OzbJO504j421lBnfM+f08UM4JsDMg==
-X-Received: by 2002:a05:6512:3e0a:b0:52c:e3c7:941e with SMTP id
- 2adb3069b0e04-52ce3c799f0mr16122795e87.47.1719584629803; 
- Fri, 28 Jun 2024 07:23:49 -0700 (PDT)
+ AJvYcCWJ9aK+cY1D+rb6t3Lq30hPQGsqN+wYBC8948+DVsEw0TMsNWmIYNJ4vpx9oqvF1kJTgOH03IRNNCOh/AwvP9gChYQ48Qc=
+X-Gm-Message-State: AOJu0YzUGxVC6bKD8wBE1nmn2gkMPepoYUiB3wksNH1yedHyGwFZ9HjV
+ sdt1Gmp+GTfMDWMHd2GGQ+b2D117L5XCKyYrbxf7GgfEq66+5pJQolthDFkdsl8=
+X-Google-Smtp-Source: AGHT+IF9sAKLNbBThys7jatmuCgrD4zLHz4CGP5kAALtn2KLtc7D3cfkDmq4ws8T1/cX0NFUAblqew==
+X-Received: by 2002:a05:6512:3d04:b0:52c:df8a:5938 with SMTP id
+ 2adb3069b0e04-52ce1835465mr15710033e87.26.1719584630259; 
+ Fri, 28 Jun 2024 07:23:50 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  5b1f17b1804b1-4256af55c0asm37180945e9.15.2024.06.28.07.23.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 28 Jun 2024 07:23:49 -0700 (PDT)
+ Fri, 28 Jun 2024 07:23:50 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
-Subject: [PATCH 1/9] target/arm: Correct comments about M-profile FPSCR
-Date: Fri, 28 Jun 2024 15:23:39 +0100
-Message-Id: <20240628142347.1283015-2-peter.maydell@linaro.org>
+Subject: [PATCH 2/9] target/arm: Make vfp_get_fpscr() call vfp_get_{fpcr, fpsr}
+Date: Fri, 28 Jun 2024 15:23:40 +0100
+Message-Id: <20240628142347.1283015-3-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240628142347.1283015-1-peter.maydell@linaro.org>
 References: <20240628142347.1283015-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12c;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::133;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x133.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, T_SPF_HELO_TEMPERROR=0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,41 +92,146 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The M-profile FPSCR LTPSIZE is bits [18:16]; this is the same
-field as A-profile FPSCR Len, not Stride. Correct the comment
-in vfp_get_fpscr().
+In AArch32, the floating point control and status bits are all in a
+single register, FPSCR.  In AArch64, these were split into separate
+FPCR and FPSR registers, but the bit layouts remained the same, with
+no overlaps, so that you could construct an FPSCR value by ORing FPCR
+and FPSR, or equivalently could produce FPSR and FPCR by masking an
+FPSCR value.  For QEMU's implementation, we opted to use masking to
+produce FPSR and FPCR, because we started with an AArch32
+implementation of FPSCR.
 
-We also implemented M-profile FPSCR.QC, but forgot to delete
-a TODO comment from vfp_set_fpscr(); remove it now.
+The addition of the (AArch64-only) FEAT_AFP adds new bits to the FPCR
+which overlap with some bits in the FPSR.  This means we'll no longer
+be able to consider the FPSCR-encoded value as the primary one, but
+instead need to treat FPSR/FPCR as the primary encoding and construct
+the FPSCR from those.  (This remains possible because the FEAT_AFP
+bits in FPCR don't appear in the FPSCR.)
+
+As the first step in this refactoring, make vfp_get_fpscr() call
+vfp_get_fpcr() and vfp_get_fpsr(), instead of the other way around.
+
+Note that vfp_get_fpcsr_from_host() returns only bits in the FPSR
+(for the cumulative fp exception bits), so we can simply rename
+it without needing to add a new function for getting FPCR bits.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/vfp_helper.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ target/arm/cpu.h        | 24 +++++++++++++++---------
+ target/arm/vfp_helper.c | 34 ++++++++++++++++++++++------------
+ 2 files changed, 37 insertions(+), 21 deletions(-)
 
+diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+index 3841359d0f1..68a9922f88e 100644
+--- a/target/arm/cpu.h
++++ b/target/arm/cpu.h
+@@ -1714,10 +1714,21 @@ void vfp_set_fpscr(CPUARMState *env, uint32_t val);
+ #define FPCR_NZCV_MASK (FPCR_N | FPCR_Z | FPCR_C | FPCR_V)
+ #define FPCR_NZCVQC_MASK (FPCR_NZCV_MASK | FPCR_QC)
+ 
+-static inline uint32_t vfp_get_fpsr(CPUARMState *env)
+-{
+-    return vfp_get_fpscr(env) & FPSR_MASK;
+-}
++/**
++ * vfp_get_fpsr: read the AArch64 FPSR
++ * @env: CPU context
++ *
++ * Return the current AArch64 FPSR value
++ */
++uint32_t vfp_get_fpsr(CPUARMState *env);
++
++/**
++ * vfp_get_fpcr: read the AArch64 FPCR
++ * @env: CPU context
++ *
++ * Return the current AArch64 FPCR value
++ */
++uint32_t vfp_get_fpcr(CPUARMState *env);
+ 
+ static inline void vfp_set_fpsr(CPUARMState *env, uint32_t val)
+ {
+@@ -1725,11 +1736,6 @@ static inline void vfp_set_fpsr(CPUARMState *env, uint32_t val)
+     vfp_set_fpscr(env, new_fpscr);
+ }
+ 
+-static inline uint32_t vfp_get_fpcr(CPUARMState *env)
+-{
+-    return vfp_get_fpscr(env) & FPCR_MASK;
+-}
+-
+ static inline void vfp_set_fpcr(CPUARMState *env, uint32_t val)
+ {
+     uint32_t new_fpscr = (vfp_get_fpscr(env) & ~FPCR_MASK) | (val & FPCR_MASK);
 diff --git a/target/arm/vfp_helper.c b/target/arm/vfp_helper.c
-index ce26b8a71a1..dd67825270b 100644
+index dd67825270b..a87d39e4d9b 100644
 --- a/target/arm/vfp_helper.c
 +++ b/target/arm/vfp_helper.c
-@@ -176,8 +176,8 @@ uint32_t HELPER(vfp_get_fpscr)(CPUARMState *env)
-             | (env->vfp.vec_stride << 20);
+@@ -85,7 +85,7 @@ static inline int vfp_exceptbits_to_host(int target_bits)
+     return host_bits;
+ }
+ 
+-static uint32_t vfp_get_fpscr_from_host(CPUARMState *env)
++static uint32_t vfp_get_fpsr_from_host(CPUARMState *env)
+ {
+     uint32_t i;
+ 
+@@ -156,7 +156,7 @@ static void vfp_set_fpscr_to_host(CPUARMState *env, uint32_t val)
+ 
+ #else
+ 
+-static uint32_t vfp_get_fpscr_from_host(CPUARMState *env)
++static uint32_t vfp_get_fpsr_from_host(CPUARMState *env)
+ {
+     return 0;
+ }
+@@ -167,26 +167,36 @@ static void vfp_set_fpscr_to_host(CPUARMState *env, uint32_t val)
+ 
+ #endif
+ 
+-uint32_t HELPER(vfp_get_fpscr)(CPUARMState *env)
++uint32_t vfp_get_fpcr(CPUARMState *env)
+ {
+-    uint32_t i, fpscr;
+-
+-    fpscr = env->vfp.xregs[ARM_VFP_FPSCR]
+-            | (env->vfp.vec_len << 16)
+-            | (env->vfp.vec_stride << 20);
++    uint32_t fpcr = (env->vfp.xregs[ARM_VFP_FPSCR] & FPCR_MASK)
++        | (env->vfp.vec_len << 16)
++        | (env->vfp.vec_stride << 20);
  
      /*
--     * M-profile LTPSIZE overlaps A-profile Stride; whichever of the
--     * two is not applicable to this CPU will always be zero.
-+     * M-profile LTPSIZE is the same bits [18:16] as A-profile Len; whichever
-+     * of the two is not applicable to this CPU will always be zero.
+      * M-profile LTPSIZE is the same bits [18:16] as A-profile Len; whichever
+      * of the two is not applicable to this CPU will always be zero.
       */
-     fpscr |= env->v7m.ltpsize << 16;
+-    fpscr |= env->v7m.ltpsize << 16;
++    fpcr |= env->v7m.ltpsize << 16;
  
-@@ -226,7 +226,6 @@ void HELPER(vfp_set_fpscr)(CPUARMState *env, uint32_t val)
-         /*
-          * The bit we set within fpscr_q is arbitrary; the register as a
-          * whole being zero/non-zero is what counts.
--         * TODO: M-profile MVE also has a QC bit.
-          */
-         env->vfp.qc[0] = val & FPCR_QC;
-         env->vfp.qc[1] = 0;
+-    fpscr |= vfp_get_fpscr_from_host(env);
++    return fpcr;
++}
++
++uint32_t vfp_get_fpsr(CPUARMState *env)
++{
++    uint32_t fpsr = env->vfp.xregs[ARM_VFP_FPSCR] & FPSR_MASK;
++    uint32_t i;
++
++    fpsr |= vfp_get_fpsr_from_host(env);
+ 
+     i = env->vfp.qc[0] | env->vfp.qc[1] | env->vfp.qc[2] | env->vfp.qc[3];
+-    fpscr |= i ? FPCR_QC : 0;
++    fpsr |= i ? FPCR_QC : 0;
++    return fpsr;
++}
+ 
+-    return fpscr;
++uint32_t HELPER(vfp_get_fpscr)(CPUARMState *env)
++{
++    return (vfp_get_fpcr(env) & FPCR_MASK) | (vfp_get_fpsr(env) & FPSR_MASK);
+ }
+ 
+ uint32_t vfp_get_fpscr(CPUARMState *env)
 -- 
 2.34.1
 
