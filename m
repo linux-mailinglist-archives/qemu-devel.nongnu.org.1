@@ -2,72 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 872C591B81B
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jun 2024 09:19:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA26091B7EE
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jun 2024 09:15:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sN5l6-00027F-8N; Fri, 28 Jun 2024 03:11:00 -0400
+	id 1sN5l8-0002BC-Ot; Fri, 28 Jun 2024 03:11:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sN5l0-00023K-QR
- for qemu-devel@nongnu.org; Fri, 28 Jun 2024 03:10:55 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sN5l5-00028I-57
+ for qemu-devel@nongnu.org; Fri, 28 Jun 2024 03:10:59 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sN5ky-0004rC-Qg
- for qemu-devel@nongnu.org; Fri, 28 Jun 2024 03:10:54 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-421f4d1c057so2222885e9.3
- for <qemu-devel@nongnu.org>; Fri, 28 Jun 2024 00:10:52 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sN5l3-0004rL-Ar
+ for qemu-devel@nongnu.org; Fri, 28 Jun 2024 03:10:58 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-4217c7eb6b4so2651725e9.2
+ for <qemu-devel@nongnu.org>; Fri, 28 Jun 2024 00:10:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719558651; x=1720163451; darn=nongnu.org;
+ d=linaro.org; s=google; t=1719558656; x=1720163456; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=CppPyHBGnGyh+KeMhLUUfKK62hbBIjgp+PC1jB0KmHY=;
- b=PVZQAHVsrg0+QA2EhMrTnLRi30TJfH1Ej8R3KDr2PF6LPgChUk8UpLARO21EOPHe4v
- ehAgji34leJqfUg8HW0btwRwOsoIMPQZaKOesjHRA1mUBrIbe9ruwiU6kJe9xOrPosrK
- hbV4d4+nkuk8BxXMA9TdVLO6JrhASsMJV6z2t4vMxe0auNWUOh6/gr2BV8Rtq9eFP10j
- 13dOkkoWiEt/L07cqUD+kuNjttaj5YGVoq89+uMeDyhmjB0wavj1f0MO4MJ+K9TbAxte
- +00IOw3taO1kQ+47fPdwGXhqRf/GVEmYVA+5VriW9yiiDoO4rjtXOOsZWCaujaG/hhV5
- +ULg==
+ :reply-to; bh=wa9xIcQNODSrwCgxGYM1DSrbhUURwxNAmEEY/4Qlivk=;
+ b=vBFKZg9yWrwn9UklzAlj1ewb5WKrhLJ67KIiLiI0uSUDhOBGMLqbnZoYClxyk0q2np
+ QM+DNdHHd3AqmjBxSPdJnQTUVmVnsedPEhh3RXLpyPCX4k1z6t5RirVzE54W3whFd6A0
+ WUMxO7jBpON7fZq0i+E4lg+hl2bGQXxmnSwlGEtGRLv33ue/O2j9GwvTPFZVGOMGQXnZ
+ xFW89DkfZHK6irWAFU1WhAgB/edlzcpw456zb46A5mKZqAF4rT0t8I0UKZseI9RaIBX/
+ c63kfoJ9nY6mei3lOgrdv5d+NTvTaYH0x1Hwzm4Ao/qZEnT4j5gTPQoOkn1WwbJHEflE
+ PIgw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719558651; x=1720163451;
+ d=1e100.net; s=20230601; t=1719558656; x=1720163456;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=CppPyHBGnGyh+KeMhLUUfKK62hbBIjgp+PC1jB0KmHY=;
- b=wkZ1jh8FX3J72seVjgbjAhVLn7IPKYhM3NeMm0PZsRKOL6RPXfQ9Z8pwkHyGJ6vXRy
- dZyEJw8iBo9rWxPqAjwsj1B6YA1MPOks36Qbiocky/njCDdgk8FiyIAeJPtAwB3BVmey
- Tv1Pg8dF526nHh9bVTd7DfOpoxmfc8vRNr+aSXjXgz+AXme8jUhKXmu/Dmbl+vxQkOda
- f0/v+Lj7j23HrBiW+F21+9lShgMtmNovoV7U99+a6DjuJml8chAsRRgMT0pNBJFWJFCI
- /+SPZfVK3QWyN27QuzvB7SPb382ybKXcenVXkbuXkyNlrCUpsdCTO2VOf03yZNfg9OwD
- 1VgQ==
-X-Gm-Message-State: AOJu0YwRLmDZTgib0TYGPd2Pn4qKB5SCqrWlX4gqatNippUL4vxXPMD3
- hUwg3526NQDhATxXCuYNs25bFyq87K1YsM6C9hXDlBieIXQdIKXir+ROKia7p2cw9VY1J18FByQ
- 0LWE=
-X-Google-Smtp-Source: AGHT+IH+gv4K6fguDUiGJumLj11p2MVomqcoWZYedxjYoiSeLMD323j48cjX6FTNDSRLhk99GvPIxA==
-X-Received: by 2002:a05:600c:3216:b0:424:9f28:22fc with SMTP id
- 5b1f17b1804b1-4249f2823a4mr69757575e9.2.1719558650733; 
- Fri, 28 Jun 2024 00:10:50 -0700 (PDT)
+ bh=wa9xIcQNODSrwCgxGYM1DSrbhUURwxNAmEEY/4Qlivk=;
+ b=L3Cbu0g2ljWC201SAdzKk2vAtmmsN6jsZhJKAj3UfG68J1ky4woa9M8/2ZaWdRgc+T
+ +oHPkqM6IRd0hLoFAXfuDRik8pJBen6YOjEdr2zh98I2H4xkZOWRduIFRQsOEl5p0WMi
+ zSTo0mLpYBjNPy6qSk2gcRo4Vk9n7v5+f80CyEKrXedS5a9WkfqxuXVBPsCQR5UO6mNn
+ WManyVdSQ/toAMZUwrGJ09YmXlIENebxNk+IuIrrpW0Deoq0iM17ODPa4UrNfFLdIUcz
+ 3yGqPOcMhuuQ4CdLOBwv7hgYkjuFnEbqXWxWTsCP4AvWkxR6DtigbdzbQ/qsr5/KMu22
+ mFOw==
+X-Gm-Message-State: AOJu0YyZBBl5E5qDqYjkQuRMknCeFqJGJ9yBUdwinqD8fQW4TAqulqq6
+ adP4+ozCcAqJxksTzj641yF3fr3XZPiuqXd/ot9wqpTZWYDIWTsI40T7ejhbheVn6evKawxH7FJ
+ 0KrY=
+X-Google-Smtp-Source: AGHT+IHrK/w1lYcTETVwtc36uZHECNoYx9P/rab/5V4VlzexCLUTOz+Yv3iLP9sbdqJp95agIw+ocg==
+X-Received: by 2002:a05:6000:8f:b0:362:d382:2569 with SMTP id
+ ffacd0b85a97d-366e95d7df8mr9578972f8f.44.1719558655726; 
+ Fri, 28 Jun 2024 00:10:55 -0700 (PDT)
 Received: from m1x-phil.lan (cho94-h02-176-184-4-239.dsl.sta.abo.bbox.fr.
  [176.184.4.239]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4256b0c17e6sm21500175e9.42.2024.06.28.00.10.49
+ ffacd0b85a97d-3675a0d9286sm1343699f8f.35.2024.06.28.00.10.54
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 28 Jun 2024 00:10:50 -0700 (PDT)
+ Fri, 28 Jun 2024 00:10:55 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org, =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [PATCH v42 88/98] hw/sd/sdcard: Add mmc_cmd_PROGRAM_CID handler
- (CMD26)
-Date: Fri, 28 Jun 2024 09:02:04 +0200
-Message-ID: <20240628070216.92609-89-philmd@linaro.org>
+Subject: [PATCH v42 89/98] hw/sd/sdcard: Implement eMMC sleep state (CMD5)
+Date: Fri, 28 Jun 2024 09:02:05 +0200
+Message-ID: <20240628070216.92609-90-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240628070216.92609-1-philmd@linaro.org>
 References: <20240628070216.92609-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,46 +89,105 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+From: Luc Michel <luc.michel@amd.com>
+
+The JEDEC standards specifies a sleep state where the eMMC won't answer
+any command appart from RESET and WAKEUP and go to low power state.
+Implement this state and the corresponding command number 5.
+
+Signed-off-by: Luc Michel <luc.michel@amd.com>
+Signed-off-by: Francisco Iglesias <francisco.iglesias@amd.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/sd/sd.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ hw/sd/sd.c | 47 +++++++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 45 insertions(+), 2 deletions(-)
 
 diff --git a/hw/sd/sd.c b/hw/sd/sd.c
-index 7c6f5ccc72..0f9bab105e 100644
+index 0f9bab105e..bd77853419 100644
 --- a/hw/sd/sd.c
 +++ b/hw/sd/sd.c
-@@ -1520,6 +1520,12 @@ static sd_rsp_type_t sd_cmd_WRITE_SINGLE_BLOCK(SDState *sd, SDRequest req)
-     return sd_cmd_to_receivingdata(sd, req, addr, sd->blk_len);
+@@ -1182,8 +1182,19 @@ static sd_rsp_type_t sd_cmd_to_sendingdata(SDState *sd, SDRequest req,
+ /* CMD0 */
+ static sd_rsp_type_t sd_cmd_GO_IDLE_STATE(SDState *sd, SDRequest req)
+ {
+-    sd->state = sd_idle_state;
+-    sd_reset(DEVICE(sd));
++    if (sd->state == sd_sleep_state) {
++        switch (req.arg) {
++        case 0x00000000:
++        case 0xf0f0f0f0:
++            break;
++        default:
++            return sd_r0;
++        }
++    }
++    if (sd->state != sd_inactive_state) {
++        sd->state = sd_idle_state;
++        sd_reset(DEVICE(sd));
++    }
+ 
+     return sd_is_spi(sd) ? sd_r1 : sd_r0;
+ }
+@@ -1246,6 +1257,30 @@ static sd_rsp_type_t emmc_cmd_SET_RELATIVE_ADDR(SDState *sd, SDRequest req)
+     }
  }
  
-+/* CMD26 */
-+static sd_rsp_type_t mmc_cmd_PROGRAM_CID(SDState *sd, SDRequest req)
++/* CMD5 */
++static sd_rsp_type_t emmc_cmd_sleep_awake(SDState *sd, SDRequest req)
 +{
-+    return sd_cmd_to_receivingdata(sd, req, 0, sizeof(sd->cid));
++    bool do_sleep = extract32(req.arg, 15, 1);
++
++    switch (sd->state) {
++    case sd_sleep_state:
++        if (!do_sleep) {
++            /* Awake */
++            sd->state = sd_standby_state;
++        }
++        return sd_r1b;
++
++    case sd_standby_state:
++        if (do_sleep) {
++            sd->state = sd_sleep_state;
++        }
++        return sd_r1b;
++
++    default:
++        return sd_invalid_state_for_cmd(sd, req);
++    }
 +}
 +
- /* CMD27 */
- static sd_rsp_type_t sd_cmd_PROGRAM_CSD(SDState *sd, SDRequest req)
+ /* CMD6 */
+ static sd_rsp_type_t sd_cmd_SWITCH_FUNCTION(SDState *sd, SDRequest req)
  {
-@@ -1868,9 +1874,6 @@ static sd_rsp_type_t sd_normal_command(SDState *sd, SDRequest req)
-         }
-         break;
+@@ -1648,6 +1683,7 @@ static sd_rsp_type_t sd_cmd_APP_CMD(SDState *sd, SDRequest req)
+     case sd_ready_state:
+     case sd_identification_state:
+     case sd_inactive_state:
++    case sd_sleep_state:
+         return sd_invalid_state_for_cmd(sd, req);
+     case sd_idle_state:
+         if (!sd_is_spi(sd) && sd_req_get_rca(sd, req) != 0x0000) {
+@@ -1969,6 +2005,12 @@ int sd_do_command(SDState *sd, SDRequest *req,
+         req->cmd &= 0x3f;
+     }
  
--    case 26:  /* CMD26:  PROGRAM_CID */
--        return sd_cmd_to_receivingdata(sd, req, 0, sizeof(sd->cid));
--
-     default:
-         qemu_log_mask(LOG_GUEST_ERROR, "SD: Unknown CMD%i\n", req.cmd);
-         return sd_illegal;
-@@ -2429,6 +2432,7 @@ static const SDProto sd_proto_emmc = {
-         [19] = {0,  sd_adtc, "BUSTEST_W", sd_cmd_unimplemented},
-         [23] = {2,  sd_ac,   "SET_BLOCK_COUNT", sd_cmd_SET_BLOCK_COUNT},
-         [24] = {4,  sd_adtc, "WRITE_SINGLE_BLOCK", sd_cmd_WRITE_SINGLE_BLOCK},
-+        [26] = {4,  sd_adtc, "PROGRAM_CID", mmc_cmd_PROGRAM_CID},
-         [27] = {4,  sd_adtc, "PROGRAM_CSD", sd_cmd_PROGRAM_CSD},
-         [28] = {6,  sd_ac,   "SET_WRITE_PROT", sd_cmd_SET_WRITE_PROT},
-         [29] = {6,  sd_ac,   "CLR_WRITE_PROT", sd_cmd_CLR_WRITE_PROT},
++    if (sd->state == sd_sleep_state && req->cmd) {
++        qemu_log_mask(LOG_GUEST_ERROR, "SD: Card is sleeping\n");
++        rtype = sd_r0;
++        goto send_response;
++    }
++
+     if (sd->card_status & CARD_IS_LOCKED) {
+         if (!cmd_valid_while_locked(sd, req->cmd)) {
+             sd->card_status |= ILLEGAL_COMMAND;
+@@ -2420,6 +2462,7 @@ static const SDProto sd_proto_emmc = {
+         [2]  = {0,  sd_bcr,  "ALL_SEND_CID", sd_cmd_ALL_SEND_CID},
+         [3]  = {0,  sd_ac,   "SET_RELATIVE_ADDR", emmc_cmd_SET_RELATIVE_ADDR},
+         [4]  = {0,  sd_bc,   "SEND_DSR", sd_cmd_unimplemented},
++        [5]  = {0,  sd_ac,   "SLEEP/AWAKE", emmc_cmd_sleep_awake},
+         [7]  = {0,  sd_ac,   "(DE)SELECT_CARD", sd_cmd_DE_SELECT_CARD},
+         [9]  = {0,  sd_ac,   "SEND_CSD", sd_cmd_SEND_CSD},
+         [10] = {0,  sd_ac,   "SEND_CID", sd_cmd_SEND_CID},
 -- 
 2.41.0
 
