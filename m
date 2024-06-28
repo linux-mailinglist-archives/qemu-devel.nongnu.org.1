@@ -2,84 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDBC291B7FA
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jun 2024 09:16:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DC1C91B824
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jun 2024 09:20:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sN5iv-0005Rk-SW; Fri, 28 Jun 2024 03:08:46 -0400
+	id 1sN5rX-000396-8D; Fri, 28 Jun 2024 03:17:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sN5ia-0004rb-H6
- for qemu-devel@nongnu.org; Fri, 28 Jun 2024 03:08:25 -0400
-Received: from mail-lj1-x232.google.com ([2a00:1450:4864:20::232])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sN5iY-0004Ov-44
- for qemu-devel@nongnu.org; Fri, 28 Jun 2024 03:08:24 -0400
-Received: by mail-lj1-x232.google.com with SMTP id
- 38308e7fff4ca-2ec52fbb50cso2291951fa.2
- for <qemu-devel@nongnu.org>; Fri, 28 Jun 2024 00:08:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719558500; x=1720163300; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=+rsesIuhtBSUnVsKBhHCEih6zsr/jqTHDocjiLfN9Uk=;
- b=KtbZr7Ic/VrENL0t8JNga1G3/kJXa8g4zxNoj35jAl+JVk51gRXuMzlu59oiJv/DRS
- 1mBlUKUs9hUZwRskQYr7o8L8/g8Zxx7KI8rnwIWO+O3O2/zJf+feSkjS2HnxsF2qT9YH
- VIFHjL5HjOCYfKZj28tLjKoyiEdpndFFjQ+vil1b69rFF9yao7eAmlauROiVSvEausrF
- upkfvRCNhSLsmjBVIwiDAIyRRkyfbfcFFv1agjznS7OLgGNa2Jlx85j56+I2QFL0J9zx
- bAkGNdb/TmLgbq1LJCK51h9tFBS1uZnkq7q3uttGlfWPaepcDKjwzhfcmwUOfIWidYLH
- iISg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719558500; x=1720163300;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=+rsesIuhtBSUnVsKBhHCEih6zsr/jqTHDocjiLfN9Uk=;
- b=rD3HDCX+cMcKOl6TeU3RRSdtIHBTZ5rCJAxQO0OPXeuPY4ChFfgSipsVJozkfzBNXr
- +tY9QFwEryTSquRQiJI/PJ0Y/Pj6J9FXpRhQvRLNkOTSAYc+I+G+EzE8cQfKQc/58K+8
- uLO4vl99+xwNlbXWbvqfGHJzTB6vUMc1RHv93dVmabALdM9IXSg84Yg6mqdAQIdOzhFN
- l6D/QP0jBJV8l2LiO1KCxx9hy3lbbbrFNNYTzi0UMiGRGXkQjf7ZhzguhvYMTQ3iwu3D
- ZSo6eKe2xKSHKalg9xl2C9w5eVtB5VLtCnYDW1lZBYlaq5e7kfgCo4/np0L+jHcZK7OF
- bdVw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVN0q+O06Yc+sCMlREq2IF1cab4gvRSVF0AqPC+fdLmWgWRgWxYxZ++BT9h2+vJuzD2vvKrF/nFzUeALTfdfL6YmdpjvwU=
-X-Gm-Message-State: AOJu0YxdiDeclDsRRD/cYu4S+3N+abBZrShQz3BCFZ07Hs2ANMvQWVwA
- I+muF+5CS9nKSGhRzvBSbUnKHUvcQ/cvJ2Nn2AMKtaAup6TINp4lL0rKtEqt1WA=
-X-Google-Smtp-Source: AGHT+IH5x9/wDPHsFJ2zKyxqnaONq5wPgF+OReZxl0StuSIxW1nO4VStu4UfBp9BBRmaaJfhSNviuA==
-X-Received: by 2002:a05:651c:154b:b0:2ec:61b5:2162 with SMTP id
- 38308e7fff4ca-2ec61b521d6mr104658061fa.25.1719558499924; 
- Fri, 28 Jun 2024 00:08:19 -0700 (PDT)
-Received: from [192.168.69.100] (cho94-h02-176-184-4-239.dsl.sta.abo.bbox.fr.
- [176.184.4.239]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4256aed2263sm22874775e9.0.2024.06.28.00.08.18
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 28 Jun 2024 00:08:19 -0700 (PDT)
-Message-ID: <18343152-c677-4075-8c55-9a2802742a79@linaro.org>
-Date: Fri, 28 Jun 2024 09:08:15 +0200
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1sN5rI-0002rb-BA; Fri, 28 Jun 2024 03:17:32 -0400
+Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1sN5rF-00087M-OM; Fri, 28 Jun 2024 03:17:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
+ In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
+ Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+ :Resent-To:Resent-Cc:Resent-Message-ID;
+ bh=cF+qyKhKg5T5d1hfo16Tc9vECZbCvl+/c0GWoQ5g1Ug=; b=UnhUz+tsbffXpIMCYTeCkgOEcD
+ 6rFY9i7bh2Lj5WCUO8X0YAIoGix1Zok+szsH4+oy94rD4zcGvbDfWqXFwh6Omm2VH75R3A5zw9kGj
+ nkEhsrZGtLjf2xSdD/rW506nCm04u/cTovXwCZpG2kYbsJ6wn2e0wDNyMXhXNJlb77FoZIOWsruq5
+ y4KNv9UgohfFlw0cqpyetzxktirEIp5uLo227x/s46KnvhGU7gADhXuAyLLAkMUEUD+nvEF8jOa90
+ 4ETS5yb6wFSigzuGygdVLJH4n4x/pWWyvvjPZV9oCmc5f2DRax3G0BoDbC65QyovVMMLIQAYzuJIi
+ yVwzqufqeFN/voOi0X7vPxEWwXPSIky586fnNghdfhfqxme4aLAVbKQDBn/7maDdu6uoC1yAxdgVR
+ 8nb5V5Q8eivTvo0o0MyJvY9oVam9GCG9Bpa6cI28My2DTOGx4GrbO2uGJhVU7kftHbiR4rjoy8LEB
+ uxOOkRwRCdGQ8KHT7CC87R1Zkt7R8Ed+wwtCB+GYPXylfk7YK6Abn88EL6Qz0nKRdAQPp5S+5kxqQ
+ LWH4A1mfbqmMn9ediT7wLVUuZw2rrosmd0nr2nowL748mQlg/Cd2N5C8WkrgK+NEIUpUHZQ1pMNi7
+ CQwQwyYmRJZPZ0M3CIR2quU+jJsH8oC9pa2EcOETU=;
+Received: from [2a00:23c4:8bb4:4000:71e:fc91:de8e:dcdf]
+ by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1sN5pJ-0008JS-EJ; Fri, 28 Jun 2024 08:15:25 +0100
+Message-ID: <55e1f4c7-f140-42b4-80bb-21a7674625e9@ilande.co.uk>
+Date: Fri, 28 Jun 2024 08:16:40 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 06/11] target/arm: Factor out code for setting MTE TCF0
- field
-To: Gustavo Romero <gustavo.romero@linaro.org>, qemu-devel@nongnu.org,
- alex.bennee@linaro.org, richard.henderson@linaro.org
-Cc: peter.maydell@linaro.org
-References: <20240628050850.536447-1-gustavo.romero@linaro.org>
- <20240628050850.536447-7-gustavo.romero@linaro.org>
+To: Peter Maydell <peter.maydell@linaro.org>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, John Snow <jsnow@redhat.com>,
+ BALATON Zoltan <balaton@eik.bme.hu>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Alexey Kardashevskiy <aik@ozlabs.ru>, "Michael S. Tsirkin" <mst@redhat.com>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+ qemu-devel@nongnu.org, qemu-block@nongnu.org, qemu-ppc@nongnu.org
+References: <20240626-san-v1-0-f3cc42302189@daynix.com>
+ <20240626-san-v1-2-f3cc42302189@daynix.com>
+ <CAFEAcA-DNieFTV7VbM1MBTbEr9zd5kJ4oaWcsUrsPxCzQki+_g@mail.gmail.com>
 Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240628050850.536447-7-gustavo.romero@linaro.org>
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
+ xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
+ 3JzBTbtd4JfFcSupo6MNNOrCzdCbCjZ64ik8ycaUOSzK2tKbeQLEXzXoaDL1Y7vuVO7nL9bG
+ E5Ru3wkhCFc7SkoypIoAUqz8EtiB6T89/D9TDEyjdXUacc53R5gu8wEWiMg5MQQuGwzbQy9n
+ PFI+mXC7AaEUqBVc2lBQVpAYXkN0EyqNNT12UfDLdxaxaFpUAE2pCa2LTyo5vn5hEW+i3VdN
+ PkmjyPvL6DdY03fvC01PyY8zaw+UI94QqjlrDisHpUH40IUPpC/NB0LwzL2aQOMkzT2NABEB
+ AAHNME1hcmsgQ2F2ZS1BeWxhbmQgPG1hcmsuY2F2ZS1heWxhbmRAaWxhbmRlLmNvLnVrPsLA
+ eAQTAQIAIgUCVAm7PAIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQW8LFb64PMh9f
+ NAgAuc3ObOEY8NbZko72AGrg2tWKdybcMVITxmcor4hb9155o/OWcA4IDbeATR6cfiDL/oxU
+ mcmtXVgPqOwtW3NYAKr5g/FrZZ3uluQ2mtNYAyTFeALy8YF7N3yhs7LOcpbFP7tEbkSzoXNG
+ z8iYMiYtKwttt40WaheWuRs0ZOLbs6yoczZBDhna3Nj0LA3GpeJKlaV03O4umjKJgACP1c/q
+ T2Pkg+FCBHHFP454+waqojHp4OCBo6HyK+8I4wJRa9Z0EFqXIu8lTDYoggeX0Xd6bWeCFHK3
+ DhD0/Xi/kegSW33unsp8oVcM4kcFxTkpBgj39dB4KwAUznhTJR0zUHf63M7ATQRUCbs8AQgA
+ y7kyevA4bpetM/EjtuqQX4U05MBhEz/2SFkX6IaGtTG2NNw5wbcAfhOIuNNBYbw6ExuaJ3um
+ 2uLseHnudmvN4VSJ5Hfbd8rhqoMmmO71szgT/ZD9MEe2KHzBdmhmhxJdp+zQNivy215j6H27
+ 14mbC2dia7ktwP1rxPIX1OOfQwPuqlkmYPuVwZP19S4EYnCELOrnJ0m56tZLn5Zj+1jZX9Co
+ YbNLMa28qsktYJ4oU4jtn6V79H+/zpERZAHmH40IRXdR3hA+Ye7iC/ZpWzT2VSDlPbGY9Yja
+ Sp7w2347L5G+LLbAfaVoejHlfy/msPeehUcuKjAdBLoEhSPYzzdvEQARAQABwsBfBBgBAgAJ
+ BQJUCbs8AhsMAAoJEFvCxW+uDzIfabYIAJXmBepHJpvCPiMNEQJNJ2ZSzSjhic84LTMWMbJ+
+ opQgr5cb8SPQyyb508fc8b4uD8ejlF/cdbbBNktp3BXsHlO5BrmcABgxSP8HYYNsX0n9kERv
+ NMToU0oiBuAaX7O/0K9+BW+3+PGMwiu5ml0cwDqljxfVN0dUBZnQ8kZpLsY+WDrIHmQWjtH+
+ Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
+ KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
+ imgcU9TTGC5qd9g=
+In-Reply-To: <CAFEAcA-DNieFTV7VbM1MBTbEr9zd5kJ4oaWcsUrsPxCzQki+_g@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::232;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x232.google.com
+X-SA-Exim-Connect-IP: 2a00:23c4:8bb4:4000:71e:fc91:de8e:dcdf
+X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
+Subject: Re: [PATCH 02/14] hw/ide: Free macio-ide IRQs
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
+Received-SPF: pass client-ip=2001:41c9:1:41f::167;
+ envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,97 +116,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 28/6/24 07:08, Gustavo Romero wrote:
-> Factor out the code used for setting the MTE TCF0 field from the prctl
-> code into a convenient function. Other subsystems, like gdbstub, need to
-> set this field as well, so keep it as a separate function to avoid
-> duplication and ensure consistency in how this field is set across the
-> board.
+On 26/06/2024 13:59, Peter Maydell wrote:
+
+> On Wed, 26 Jun 2024 at 12:09, Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
+>>
+>> This suppresses LeakSanitizer warnings.
+>>
+>> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+>> ---
+>>   hw/ide/macio.c | 9 +++++++++
+>>   1 file changed, 9 insertions(+)
+>>
+>> diff --git a/hw/ide/macio.c b/hw/ide/macio.c
+>> index aca90d04f0e8..d8fbc1a17ba6 100644
+>> --- a/hw/ide/macio.c
+>> +++ b/hw/ide/macio.c
+>> @@ -464,6 +464,14 @@ static void macio_ide_initfn(Object *obj)
+>>                                qdev_prop_allow_set_link_before_realize, 0);
+>>   }
+>>
+>> +static void macio_ide_finalize(Object *obj)
+>> +{
+>> +    MACIOIDEState *s = MACIO_IDE(obj);
+>> +
+>> +    qemu_free_irq(s->dma_irq);
+>> +    qemu_free_irq(s->ide_irq);
+>> +}
+>> +
+>>   static Property macio_ide_properties[] = {
+>>       DEFINE_PROP_UINT32("channel", MACIOIDEState, channel, 0),
+>>       DEFINE_PROP_UINT32("addr", MACIOIDEState, addr, -1),
+>> @@ -486,6 +494,7 @@ static const TypeInfo macio_ide_type_info = {
+>>       .parent = TYPE_SYS_BUS_DEVICE,
+>>       .instance_size = sizeof(MACIOIDEState),
+>>       .instance_init = macio_ide_initfn,
+>> +    .instance_finalize = macio_ide_finalize,
+>>       .class_init = macio_ide_class_init,
+>>   };
 > 
-> Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
-> ---
->   linux-user/aarch64/meson.build       |  2 ++
->   linux-user/aarch64/mte_user_helper.c | 34 ++++++++++++++++++++++++++++
->   linux-user/aarch64/mte_user_helper.h | 25 ++++++++++++++++++++
->   linux-user/aarch64/target_prctl.h    | 22 ++----------------
->   4 files changed, 63 insertions(+), 20 deletions(-)
->   create mode 100644 linux-user/aarch64/mte_user_helper.c
->   create mode 100644 linux-user/aarch64/mte_user_helper.h
-> 
-> diff --git a/linux-user/aarch64/meson.build b/linux-user/aarch64/meson.build
-> index 248c578d15..f75bb3cd75 100644
-> --- a/linux-user/aarch64/meson.build
-> +++ b/linux-user/aarch64/meson.build
-> @@ -9,3 +9,5 @@ vdso_le_inc = gen_vdso.process('vdso-le.so',
->                                  extra_args: ['-r', '__kernel_rt_sigreturn'])
->   
->   linux_user_ss.add(when: 'TARGET_AARCH64', if_true: [vdso_be_inc, vdso_le_inc])
-> +
-> +linux_user_ss.add(when: 'TARGET_AARCH64', if_true: [files('mte_user_helper.c')])
-> diff --git a/linux-user/aarch64/mte_user_helper.c b/linux-user/aarch64/mte_user_helper.c
-> new file mode 100644
-> index 0000000000..8be6deaf03
-> --- /dev/null
-> +++ b/linux-user/aarch64/mte_user_helper.c
-> @@ -0,0 +1,34 @@
-> +/*
-> + * ARM MemTag convenience functions.
-> + *
-> + * This code is licensed under the GNU GPL v2 or later.
-> + *
-> + * SPDX-License-Identifier: LGPL-2.1-or-later
-> + */
-> +
+> Rather than this, I suspect macio_ide_initfn() should not
+> be using qemu_allocate_irq() in the first place. Looks like
+> maybe a QOM conversion that left a loose end un-tidied-up.
 
-   #include "qemu/osdep.h"
-   #include "qemu.h"
+This is definitely old code: there used to be problems interfacing the IDE code with 
+qdev due to the hard-coded bus IRQs but I think this may is now possible with the 
+advent of ide_bus_init_output_irq().
 
-> +#include <sys/prctl.h>
-> +#include "mte_user_helper.h"
-> +
-> +void arm_set_mte_tcf0(CPUArchState *env, abi_long value)
-> +{
-> +    /*
-> +     * Write PR_MTE_TCF to SCTLR_EL1[TCF0].
-> +     *
-> +     * The kernel has a per-cpu configuration for the sysadmin,
-> +     * /sys/devices/system/cpu/cpu<N>/mte_tcf_preferred,
-> +     * which qemu does not implement.
-> +     *
-> +     * Because there is no performance difference between the modes, and
-> +     * because SYNC is most useful for debugging MTE errors, choose SYNC
-> +     * as the preferred mode.  With this preference, and the way the API
-> +     * uses only two bits, there is no way for the program to select
-> +     * ASYMM mode.
-> +     */
-> +    unsigned tcf = 0;
-> +    if (value & PR_MTE_TCF_SYNC) {
-> +        tcf = 1;
-> +    } else if (value & PR_MTE_TCF_ASYNC) {
-> +        tcf = 2;
-> +    }
-> +    env->cp15.sctlr_el[1] = deposit64(env->cp15.sctlr_el[1], 38, 2, tcf);
-> +}
-> diff --git a/linux-user/aarch64/mte_user_helper.h b/linux-user/aarch64/mte_user_helper.h
-> new file mode 100644
-> index 0000000000..ee3f6b190a
-> --- /dev/null
-> +++ b/linux-user/aarch64/mte_user_helper.h
-> @@ -0,0 +1,25 @@
-> +/*
-> + * ARM MemTag convenience functions.
-> + *
-> + * This code is licensed under the GNU GPL v2 or later.
-> + *
-> + * SPDX-License-Identifier: LGPL-2.1-or-later
-> + */
-> +
-> +#ifndef AARCH64_MTE_USER_HELPER_H
-> +#define AARCH64_MTE USER_HELPER_H
-> +
-> +#include "qemu/osdep.h"
-> +#include "qemu.h"
+I'll have a quick look and see what has changed in this area.
 
-NACK. See my comment on v5.
+
+ATB,
+
+Mark.
 
 
