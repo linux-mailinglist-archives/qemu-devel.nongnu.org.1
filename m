@@ -2,58 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4FF691BB80
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jun 2024 11:32:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1018291BB7E
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jun 2024 11:32:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sN7wZ-0005nt-Hw; Fri, 28 Jun 2024 05:30:59 -0400
+	id 1sN7wb-0005og-1A; Fri, 28 Jun 2024 05:31:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1sN7wX-0005nN-JL
+ id 1sN7wX-0005nM-JM
  for qemu-devel@nongnu.org; Fri, 28 Jun 2024 05:30:57 -0400
 Received: from mgamail.intel.com ([198.175.65.12])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1sN7wV-0005Yc-I2
+ id 1sN7wV-0005Yz-I8
  for qemu-devel@nongnu.org; Fri, 28 Jun 2024 05:30:57 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1719567056; x=1751103056;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=eCtk3sT3sYL1zlRgK1MJDKojnVFuD7IAxYX3BQAV1zQ=;
- b=FNga582JVurE3xEOUYwQnl+MaYrEwve09OSMTP/BxfazmLFZ0yW0fnG8
- IRPM4Y04k24h9fQSTkiDk4h+Mc5/QGo3au9zLjRhBko0pTS0ZMZMGyea/
- YwWL1OoGWoeG27dOscnkvF7ukosTUKpIqyN2ANUiyliRQoBoXZPlpNUwy
- 308QbB4NoU2K7xpz5DZUu2dfhVpl+7PQ/dBgRfZO4eeTu0RrxXpH+yq7W
- l2eckIeNk7eiYwZLmafCI/KHkKm0wI2ugY23c9RzQoEKszM4qWDH26lub
- 58Gh1qhuSXpcDeE5FOIjt+eHRiV8gNFOOLAw1QH38m0PWU7gDWTp63xHJ Q==;
-X-CSE-ConnectionGUID: 7QLGeluUSNiZaAdr0wc5Ww==
-X-CSE-MsgGUID: 3tHRU00YS4af6jmyZMLtQQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11116"; a="28136017"
-X-IronPort-AV: E=Sophos;i="6.09,168,1716274800"; d="scan'208";a="28136017"
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=lA2zuINPzZoggNMavj+h2yI5orhGU69Td9Lm5CUad9w=;
+ b=Ho5dG2BMa1MhX/hnwtW6wql3B4OKqzODiAwkRKO2cy/U/2p0YIRf8Epv
+ VuNsAZcK9yJgll77OeCMA1MVmYkF5D7QXC0UYMIMrxvUW7SscY8Rdyr6O
+ VDBMK8luda2BXuw70Bgm5XmrbotrbWyxELQbs3aXp0eVwtnOa++qhAxNm
+ wVLiIfrLsTe66bMiqacZY5uPCgk2DGXnpX33JcVDeXmaIZfInSoPG3nlh
+ QE3wVRZoTHoSH6ba3qyDxjkTQ91qxHxlPTPPi+ju8/t1hfrYXHZxRnXbd
+ Ooc+GLjPQSCje7syqHvna5wIIaJaopODsTarKO7au9VxCZz+Ys+kBz9Zg g==;
+X-CSE-ConnectionGUID: n85z96lOQw2PuY+0ikBlSQ==
+X-CSE-MsgGUID: 3Ebk7kuZTjuTQ/sxbctznw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11116"; a="28136022"
+X-IronPort-AV: E=Sophos;i="6.09,168,1716274800"; d="scan'208";a="28136022"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Jun 2024 02:30:50 -0700
-X-CSE-ConnectionGUID: awSC6JQSTwih8wDyT2QDcg==
-X-CSE-MsgGUID: oz/6aXQoTvarKStQoWYjwQ==
+ 28 Jun 2024 02:30:52 -0700
+X-CSE-ConnectionGUID: IvJqDkC3SaCYGJQcXlxh+Q==
+X-CSE-MsgGUID: pmD5I61ARPy+l7mXDTbkYg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,168,1716274800"; d="scan'208";a="44677893"
+X-IronPort-AV: E=Sophos;i="6.09,168,1716274800"; d="scan'208";a="44677906"
 Received: from unknown (HELO SPR-S2600BT.bj.intel.com) ([10.240.192.127])
  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Jun 2024 02:30:48 -0700
+ 28 Jun 2024 02:30:49 -0700
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, kraxel@redhat.com,
  chao.p.peng@intel.com, Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PATCH 0/2] Misc fixes on vfio display
-Date: Fri, 28 Jun 2024 17:28:13 +0800
-Message-Id: <20240628092815.164423-1-zhenzhong.duan@intel.com>
+Subject: [PATCH 1/2] vfio/display: Fix potential memleak of edid info
+Date: Fri, 28 Jun 2024 17:28:14 +0800
+Message-Id: <20240628092815.164423-2-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240628092815.164423-1-zhenzhong.duan@intel.com>
+References: <20240628092815.164423-1-zhenzhong.duan@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=198.175.65.12;
  envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
@@ -79,27 +80,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+EDID related device region info is leaked in three paths:
+1. In vfio_get_dev_region_info(), when edid info isn't find, the last
+device region info is leaked.
+2. In vfio_display_edid_init() error path, edid info is leaked.
+3. In VFIODisplay destroying path, edid info is leaked.
 
-This is trying to address an issue Cédric found.
-See https://www.mail-archive.com/qemu-devel@nongnu.org/msg1043142.html
-While looking into it, also found a potential memory leak.
+Fixes: 08479114b0de ("vfio/display: add edid support.")
+Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+---
+ hw/vfio/display.c | 2 ++
+ hw/vfio/helpers.c | 1 +
+ 2 files changed, 3 insertions(+)
 
-I'm sorry that I didn't find how to test this fix, because it looks
-a GFX card is needed. Any idea on how to test or help test are quite
-appreciated.
-
-Thanks
-Zhenzhong
-
-Zhenzhong Duan (2):
-  vfio/display: Fix potential memleak of edid info
-  vfio/display: Fix vfio_display_edid_init() error path
-
- hw/vfio/display.c | 15 +++++++++------
- hw/vfio/helpers.c |  1 +
- 2 files changed, 10 insertions(+), 6 deletions(-)
-
+diff --git a/hw/vfio/display.c b/hw/vfio/display.c
+index 661e921616..5926bd6628 100644
+--- a/hw/vfio/display.c
++++ b/hw/vfio/display.c
+@@ -171,6 +171,7 @@ static void vfio_display_edid_init(VFIOPCIDevice *vdev)
+ 
+ err:
+     trace_vfio_display_edid_write_error();
++    g_free(dpy->edid_info);
+     g_free(dpy->edid_regs);
+     dpy->edid_regs = NULL;
+     return;
+@@ -182,6 +183,7 @@ static void vfio_display_edid_exit(VFIODisplay *dpy)
+         return;
+     }
+ 
++    g_free(dpy->edid_info);
+     g_free(dpy->edid_regs);
+     g_free(dpy->edid_blob);
+     timer_free(dpy->edid_link_timer);
+diff --git a/hw/vfio/helpers.c b/hw/vfio/helpers.c
+index b14edd46ed..3dd32b26a4 100644
+--- a/hw/vfio/helpers.c
++++ b/hw/vfio/helpers.c
+@@ -586,6 +586,7 @@ int vfio_get_dev_region_info(VFIODevice *vbasedev, uint32_t type,
+         g_free(*info);
+     }
+ 
++    g_free(*info);
+     *info = NULL;
+     return -ENODEV;
+ }
 -- 
 2.34.1
 
