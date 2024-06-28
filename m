@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB92991C4DF
+	by mail.lfdr.de (Postfix) with ESMTPS id E096891C4E1
 	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jun 2024 19:30:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sNFPh-0005fM-MC; Fri, 28 Jun 2024 13:29:33 -0400
+	id 1sNFPj-0005fQ-JV; Fri, 28 Jun 2024 13:29:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sNFPc-0005cw-Dz
- for qemu-devel@nongnu.org; Fri, 28 Jun 2024 13:29:28 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1sNFPd-0005e3-Qx
+ for qemu-devel@nongnu.org; Fri, 28 Jun 2024 13:29:30 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sNFPa-0002Ba-KZ
- for qemu-devel@nongnu.org; Fri, 28 Jun 2024 13:29:27 -0400
+ id 1sNFPc-0002CF-6W
+ for qemu-devel@nongnu.org; Fri, 28 Jun 2024 13:29:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719595763;
+ s=mimecast20190719; t=1719595766;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=d1Zs3bNs8jOuOgSShaHDoScFAM7FpjL8r/fpmfWVVwk=;
- b=T2DvYMeSkrHW+pXRHcprHrlc4xhJBPx6gtIXQ3TFHDe49iBDMRPhvWDamIw4l6C1g8z1Sn
- Nq/l9bCDQq8bMwM7BK2YyGnbQZ4CRngW5FyAlgmJEuCosbKaVo003Cx+p/Wn7GMl+cD1xb
- ghxweEkBg8Ssh+/BOXGTHx8S13AIofk=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=dTQLDy7fzv4IlAQ52PKIL6tgs655OTYs6Ror3JKC4ro=;
+ b=WbPUcB/9DL3ZQ8XZEx6Vfj5Bdu7RkPMkfII2mQ5Mo6UxsWtASF3L7jCj50lZGDaVPsorYt
+ D256zvfRLUEDvYhWODLLyGkDrR+tpf4KoE/F9gGFMCi49Au7Qz135GYiHAeIg1RRFuEFn8
+ iPe0pHu59MQkhz286HYwYDkFYNUqtg4=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-83-eCMFgWWvNCCEdjaW6Gl44g-1; Fri, 28 Jun 2024 13:29:20 -0400
-X-MC-Unique: eCMFgWWvNCCEdjaW6Gl44g-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-a7246c24b00so60618166b.0
- for <qemu-devel@nongnu.org>; Fri, 28 Jun 2024 10:29:20 -0700 (PDT)
+ us-mta-346-IJ4nIiYdOfWsz3TLFR41hg-1; Fri, 28 Jun 2024 13:29:22 -0400
+X-MC-Unique: IJ4nIiYdOfWsz3TLFR41hg-1
+Received: by mail-ed1-f71.google.com with SMTP id
+ 4fb4d7f45d1cf-57d22ea3e71so606634a12.2
+ for <qemu-devel@nongnu.org>; Fri, 28 Jun 2024 10:29:22 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719595759; x=1720200559;
+ d=1e100.net; s=20230601; t=1719595761; x=1720200561;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=d1Zs3bNs8jOuOgSShaHDoScFAM7FpjL8r/fpmfWVVwk=;
- b=U2d9Atwq5GiN0w5SyjkkMoUbPy+od0W3MXs6aknIfEhXRyrmYXHz1iKttIgwI7cyXl
- 22jvK3pVtt0TRSs298VAsYwhkyGUfk1Aa3tI7hP5xatM/NHXUdpxhjPD8vLNLochIhFM
- yerAxKZ1QN7gIVhRvmMXOGReR+H/5ddtzT19nrWx6lOH9cnXE6On4SMzD+euZrAdi0yB
- itwn2R6y1jvCaKNcl4V96YLhVYuxh+xkwLj2LJrjBHdZG+xHjZIoJjH1f4tFSBG5gsmY
- 4e6hh64Pg4BXkRN/1Phrvj0YIlW+aoo5uqr34M0i2M3cQMsy3lLiMy0nCV65mqF8msBV
- Bq+A==
-X-Gm-Message-State: AOJu0YyaTNeCHEiPkSqViYDghYTVFdrLXAGPJQjfAlqPuvlrbU0f0Cel
- J11TvQJ9/sH9M3wIQq4WRLwa8Qh0xhrFqrzxQtFSS5qgVKidMAa/RgLNh+iYnhnz55qMltvjf+w
- Ypsaz/x3avyLgubjqSTue/vWofR4uMZucBdShOLXnZwZ34mB8YcGxKknpD+JGRSQKIAZWbOlt7u
- XL/n+g7fCh6Xezn8whZG0mseHByyBcfywB21IO
-X-Received: by 2002:a17:906:809:b0:a6f:55e8:b361 with SMTP id
- a640c23a62f3a-a7242cb7a68mr1020278766b.41.1719595758835; 
- Fri, 28 Jun 2024 10:29:18 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG9oM5KVphqpXNh2OvO743ZmV9F4ZdWQ1mUzkAed/5NKkds+i/hWn0P0i0U3qonPkZKnPNHCA==
-X-Received: by 2002:a17:906:809:b0:a6f:55e8:b361 with SMTP id
- a640c23a62f3a-a7242cb7a68mr1020277466b.41.1719595758352; 
- Fri, 28 Jun 2024 10:29:18 -0700 (PDT)
+ bh=dTQLDy7fzv4IlAQ52PKIL6tgs655OTYs6Ror3JKC4ro=;
+ b=qAyLtziqWHijKb2779bI/Vk1t462vj4HZ1iltkR8ZsxCaK8QJsNHThqa1IUOrJgDnv
+ P37d+IAZ+s5vOQ6aZQdBkXkXA6LczILt2y91I+m2r6F/QWuvBZDog4PXoGJXMd+ClJvB
+ FmB09s6VHQKJbrHIRR6ed8Zzwngzd+3lOSnmpCsdLsXkRDu2JYZ4OnuGP7ux3tes+uOf
+ HImhBUdi6i0BAKpspmUXK1pdbqbIMLP7U6Zmg1u51PV0AgNoPcyIootSNCKalU9i6d+u
+ EYR+FFDqcAj9FoZJTYi8UwaCcmLnXiyViMnXUrhJSev6fei4xj1dG2V4eTBBt4a98Mvs
+ lnHQ==
+X-Gm-Message-State: AOJu0YxFtIrANgG55110FPM2zJWAorQpKFAp/BZ/yo2umijlXltv+fz8
+ 466XzCPs3xnE1TRywvNhnfLURQ+6yrbywYSpoOV8sx4qVyL3QVgFqfKCL41JAddNvi9vyyk2eK7
+ JOqlca6rOBCfFPzx5Fl8kA+yAZXtngzugWofPRXGypVbAOgyqOI2dgD0dVsjM1T7nY9CFl/ulJO
+ 4LRMagPr+0SZirm7EIs09pCAUx63zHt4X26/rO
+X-Received: by 2002:a17:907:a649:b0:a72:8135:2d4f with SMTP id
+ a640c23a62f3a-a7281352e3cmr873131466b.48.1719595761469; 
+ Fri, 28 Jun 2024 10:29:21 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFJxjjt9duRZgzcJ9F/23lxvLZauhMr7tyELJiQ742ajIcajjFwLUagkTIWED2gUoTH57P5fg==
+X-Received: by 2002:a17:907:a649:b0:a72:8135:2d4f with SMTP id
+ a640c23a62f3a-a7281352e3cmr873130266b.48.1719595761141; 
+ Fri, 28 Jun 2024 10:29:21 -0700 (PDT)
 Received: from avogadro.local ([151.62.196.71])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a72aaf1d201sm95793666b.9.2024.06.28.10.29.17
+ a640c23a62f3a-a72aaf18486sm96789466b.8.2024.06.28.10.29.19
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 28 Jun 2024 10:29:17 -0700 (PDT)
+ Fri, 28 Jun 2024 10:29:19 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Kevin Wolf <kwolf@redhat.com>
-Subject: [PULL 10/23] block: rename former bdrv_file_open callbacks
-Date: Fri, 28 Jun 2024 19:28:42 +0200
-Message-ID: <20240628172855.1147598-11-pbonzini@redhat.com>
+Cc: Roman Kiryanov <rkir@google.com>
+Subject: [PULL 11/23] exec: avoid using C++ keywords in function parameters
+Date: Fri, 28 Jun 2024 19:28:43 +0200
+Message-ID: <20240628172855.1147598-12-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240628172855.1147598-1-pbonzini@redhat.com>
 References: <20240628172855.1147598-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -22
 X-Spam_score: -2.3
@@ -100,142 +100,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since there is no bdrv_file_open callback anymore, rename the implementations
-so that they end with "_open" instead of "_file_open".  NFS is the exception
-because all the functions are named nfs_file_*.
+From: Roman Kiryanov <rkir@google.com>
 
-Suggested-by: Kevin Wolf <kwolf@redhat.com>
+to use the QEMU headers with a C++ compiler.
+
+Signed-off-by: Roman Kiryanov <rkir@google.com>
+Link: https://lore.kernel.org/r/20240618224553.878869-1-rkir@google.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- block/blkio.c | 8 ++++----
- block/null.c  | 8 ++++----
- block/nvme.c  | 8 ++++----
- block/ssh.c   | 6 +++---
- 4 files changed, 15 insertions(+), 15 deletions(-)
+ include/exec/memory.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/block/blkio.c b/block/blkio.c
-index 1a38064ce76..3d9a2e764c3 100644
---- a/block/blkio.c
-+++ b/block/blkio.c
-@@ -713,7 +713,7 @@ static int blkio_virtio_blk_connect(BlockDriverState *bs, QDict *options,
-          * for example will fail.
-          *
-          * In order to open the device read-only, we are using the `read-only`
--         * property of the libblkio driver in blkio_file_open().
-+         * property of the libblkio driver in blkio_open().
-          */
-         fd = qemu_open(path, O_RDWR, NULL);
-         if (fd < 0) {
-@@ -791,8 +791,8 @@ static int blkio_virtio_blk_connect(BlockDriverState *bs, QDict *options,
-     return 0;
- }
+diff --git a/include/exec/memory.h b/include/exec/memory.h
+index 0903513d132..154626f9ad2 100644
+--- a/include/exec/memory.h
++++ b/include/exec/memory.h
+@@ -925,7 +925,7 @@ struct MemoryListener {
+      * the current transaction.
+      */
+     void (*log_start)(MemoryListener *listener, MemoryRegionSection *section,
+-                      int old, int new);
++                      int old_val, int new_val);
  
--static int blkio_file_open(BlockDriverState *bs, QDict *options, int flags,
--                           Error **errp)
-+static int blkio_open(BlockDriverState *bs, QDict *options, int flags,
-+                      Error **errp)
- {
-     const char *blkio_driver = bs->drv->protocol_name;
-     BDRVBlkioState *s = bs->opaque;
-@@ -1088,7 +1088,7 @@ static void blkio_refresh_limits(BlockDriverState *bs, Error **errp)
-  */
- #define BLKIO_DRIVER_COMMON \
-     .instance_size           = sizeof(BDRVBlkioState), \
--    .bdrv_open               = blkio_file_open, \
-+    .bdrv_open               = blkio_open, \
-     .bdrv_close              = blkio_close, \
-     .bdrv_co_getlength       = blkio_co_getlength, \
-     .bdrv_co_truncate        = blkio_truncate, \
-diff --git a/block/null.c b/block/null.c
-index 6fa64d20d86..4730acc1eb2 100644
---- a/block/null.c
-+++ b/block/null.c
-@@ -77,8 +77,8 @@ static void null_aio_parse_filename(const char *filename, QDict *options,
-     }
- }
+     /**
+      * @log_stop:
+@@ -944,7 +944,7 @@ struct MemoryListener {
+      * the current transaction.
+      */
+     void (*log_stop)(MemoryListener *listener, MemoryRegionSection *section,
+-                     int old, int new);
++                     int old_val, int new_val);
  
--static int null_file_open(BlockDriverState *bs, QDict *options, int flags,
--                          Error **errp)
-+static int null_open(BlockDriverState *bs, QDict *options, int flags,
-+                     Error **errp)
- {
-     QemuOpts *opts;
-     BDRVNullState *s = bs->opaque;
-@@ -283,7 +283,7 @@ static BlockDriver bdrv_null_co = {
-     .protocol_name          = "null-co",
-     .instance_size          = sizeof(BDRVNullState),
- 
--    .bdrv_open              = null_file_open,
-+    .bdrv_open              = null_open,
-     .bdrv_parse_filename    = null_co_parse_filename,
-     .bdrv_co_getlength      = null_co_getlength,
-     .bdrv_co_get_allocated_file_size = null_co_get_allocated_file_size,
-@@ -304,7 +304,7 @@ static BlockDriver bdrv_null_aio = {
-     .protocol_name          = "null-aio",
-     .instance_size          = sizeof(BDRVNullState),
- 
--    .bdrv_open              = null_file_open,
-+    .bdrv_open              = null_open,
-     .bdrv_parse_filename    = null_aio_parse_filename,
-     .bdrv_co_getlength      = null_co_getlength,
-     .bdrv_co_get_allocated_file_size = null_co_get_allocated_file_size,
-diff --git a/block/nvme.c b/block/nvme.c
-index c84914af6dd..3b588b139f6 100644
---- a/block/nvme.c
-+++ b/block/nvme.c
-@@ -889,7 +889,7 @@ out:
-         qemu_vfio_pci_unmap_bar(s->vfio, 0, (void *)regs, 0, sizeof(NvmeBar));
-     }
- 
--    /* Cleaning up is done in nvme_file_open() upon error. */
-+    /* Cleaning up is done in nvme_open() upon error. */
-     return ret;
- }
- 
-@@ -967,8 +967,8 @@ static void nvme_close(BlockDriverState *bs)
-     g_free(s->device);
- }
- 
--static int nvme_file_open(BlockDriverState *bs, QDict *options, int flags,
--                          Error **errp)
-+static int nvme_open(BlockDriverState *bs, QDict *options, int flags,
-+                     Error **errp)
- {
-     const char *device;
-     QemuOpts *opts;
-@@ -1630,7 +1630,7 @@ static BlockDriver bdrv_nvme = {
-     .create_opts              = &bdrv_create_opts_simple,
- 
-     .bdrv_parse_filename      = nvme_parse_filename,
--    .bdrv_open                = nvme_file_open,
-+    .bdrv_open                = nvme_open,
-     .bdrv_close               = nvme_close,
-     .bdrv_co_getlength        = nvme_co_getlength,
-     .bdrv_probe_blocksizes    = nvme_probe_blocksizes,
-diff --git a/block/ssh.c b/block/ssh.c
-index 1344822ed85..27d582e0e3d 100644
---- a/block/ssh.c
-+++ b/block/ssh.c
-@@ -837,8 +837,8 @@ static int connect_to_ssh(BDRVSSHState *s, BlockdevOptionsSsh *opts,
-     return ret;
- }
- 
--static int ssh_file_open(BlockDriverState *bs, QDict *options, int bdrv_flags,
--                         Error **errp)
-+static int ssh_open(BlockDriverState *bs, QDict *options, int bdrv_flags,
-+                    Error **errp)
- {
-     BDRVSSHState *s = bs->opaque;
-     BlockdevOptionsSsh *opts;
-@@ -1362,7 +1362,7 @@ static BlockDriver bdrv_ssh = {
-     .protocol_name                = "ssh",
-     .instance_size                = sizeof(BDRVSSHState),
-     .bdrv_parse_filename          = ssh_parse_filename,
--    .bdrv_open                    = ssh_file_open,
-+    .bdrv_open                    = ssh_open,
-     .bdrv_co_create               = ssh_co_create,
-     .bdrv_co_create_opts          = ssh_co_create_opts,
-     .bdrv_close                   = ssh_close,
+     /**
+      * @log_sync:
 -- 
 2.45.2
 
