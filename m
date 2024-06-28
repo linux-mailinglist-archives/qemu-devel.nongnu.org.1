@@ -2,76 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7670E91C4E7
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jun 2024 19:31:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D15A91C4F5
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jun 2024 19:33:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sNFPm-0005ft-Ar; Fri, 28 Jun 2024 13:29:38 -0400
+	id 1sNFPo-0005gj-1N; Fri, 28 Jun 2024 13:29:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sNFPh-0005fP-O0
- for qemu-devel@nongnu.org; Fri, 28 Jun 2024 13:29:33 -0400
+ id 1sNFPj-0005fk-S8
+ for qemu-devel@nongnu.org; Fri, 28 Jun 2024 13:29:35 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sNFPf-0002EB-6Z
- for qemu-devel@nongnu.org; Fri, 28 Jun 2024 13:29:32 -0400
+ id 1sNFPh-0002EI-H5
+ for qemu-devel@nongnu.org; Fri, 28 Jun 2024 13:29:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719595770;
+ s=mimecast20190719; t=1719595772;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=QfPlkzAs6rsHhlewBnoT9acE//vGyzsRmxi7a5l5ZQw=;
- b=WRQ7+OF3IMc93RT9dTsvLsjbke7qLippQTU15Hx9IqfH1HPw4q8GxZpSsgwx0m2ICcej/f
- nTs5QWVxSuIFEVbkySDBekBAXCk697CXjc1wZr2w2mznj1g65+7N3tWOwzuX5FJnDXDSNM
- 7H9ZdFLmBRfASy1sUVXRjAhvAKd7rgI=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=UpEB8RKh0nHTTV4SYs2ZNSxWI14Dka7ndAM1DOHLcLk=;
+ b=FTmNe3ldfizufMmFLJ11LcU8T5I/vsmh7N4YGiCPyIMFUTYcxoZB5GWkKyI+ZPtHzLE7bl
+ /epYgufu0h3LjQ9CUkP4dyDxbfjqBrrOY7fI7xL5oar0cmT+Ppw7Mc9MYzzzKAeeM4yzC8
+ jR0BjrXCBzTHhguUM8OxPbBqqGtFbTQ=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-396-0oyQnOc6Nt28fGWWYEhg5g-1; Fri, 28 Jun 2024 13:29:29 -0400
-X-MC-Unique: 0oyQnOc6Nt28fGWWYEhg5g-1
-Received: by mail-ed1-f71.google.com with SMTP id
- 4fb4d7f45d1cf-57cad6e94e5so655566a12.3
- for <qemu-devel@nongnu.org>; Fri, 28 Jun 2024 10:29:28 -0700 (PDT)
+ us-mta-212-MpRZnYQRM4-QctaTEvycrg-1; Fri, 28 Jun 2024 13:29:31 -0400
+X-MC-Unique: MpRZnYQRM4-QctaTEvycrg-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-a71e1625bdbso59775566b.2
+ for <qemu-devel@nongnu.org>; Fri, 28 Jun 2024 10:29:30 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719595767; x=1720200567;
+ d=1e100.net; s=20230601; t=1719595769; x=1720200569;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=QfPlkzAs6rsHhlewBnoT9acE//vGyzsRmxi7a5l5ZQw=;
- b=KBAHYJv7q8cKd2rAeU4rwAe2qDJF1kjE3sGIHw4xCDGBBbHyY89jtTyTjiOGCStHlA
- /OujMTwDunuNs264UzWSaKeHKXRtCW5ze5ZROgsTFC2d/NgYayxw5p8fC9jKebpDjtrz
- KIFSkMsmdKaUGKKKWCIk0huqOOPaBuMYSY0bMRH/O2rRQsnArUu0z6olsD48VmloKref
- box8nIbONnWWB2EdN6K3nCXtxmplhTExXBn14Kzkjbsucr8AyU5EPrxFKMT7h1izEY/N
- 83hDtWlNXbLxptSoHY7RgMMU7GoguwYXuhOSHpzR30rVjq2ViUbtQZ3CPigYqm86exgT
- TQ9g==
-X-Gm-Message-State: AOJu0YyK+oPCSLAD84GrMQNQdq/gFBWI+2v7bDfOTFt75reflRmYOG4S
- A50OS1NALgcA16s3qVEROkZ8kL1l2fX7QUj3uR09rDtu1WvutbciSYIPEbKpnAWbdcJI4fJAWL6
- AKYkSMpkEPpoXaaKIFNSDmGESpD87PMElXYRpNyTZgLx0YRNymRLWkUV0yMjEoRtgtJQFtRmCXc
- dxNbnL9xBQDKdu3W3oOgAvYzGiIlo/ITLJGN85
-X-Received: by 2002:a50:a69d:0:b0:57d:3791:e8e1 with SMTP id
- 4fb4d7f45d1cf-57d4bde09cemr12004351a12.36.1719595766667; 
- Fri, 28 Jun 2024 10:29:26 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH9Af0/BdshL/SI4nNDR3kR4XB/x7OSG/J0PJ0knYTnfBjfPYrujix9tJMcKYdJOKryBt1gGQ==
-X-Received: by 2002:a50:a69d:0:b0:57d:3791:e8e1 with SMTP id
- 4fb4d7f45d1cf-57d4bde09cemr12004334a12.36.1719595766274; 
- Fri, 28 Jun 2024 10:29:26 -0700 (PDT)
+ bh=UpEB8RKh0nHTTV4SYs2ZNSxWI14Dka7ndAM1DOHLcLk=;
+ b=W6+yhi4Wtfpo5p8lmjcJazelqSPyQsrOE9jZUmAWE5wIj5gMX1fxNEbqy5Qk95rdHV
+ kcNJj05E/PoCUlq0DDTSyZMcbcjtCpyj3CFcfzD8tV7YWS6GwMX7CZqnXzH6qdUGtzkj
+ 9riAiK4jnFX2jTGnc3uqdSi5f+wbMMz87C5f4sPC0IspnOrKg4G8sVUgupTQTtvfwUqr
+ WT3n/ImTa1nKjG/wL95NNbTPqcIx+o8sg+KhvlxiG9NHOPkfxFgrAAd20IYGqmi2tTz1
+ BMwRZhfBQSA/6KAHBTI/zZYHtpj15HFLwpOYFoO1GbemoKbpep71Ul8iwv/J2qn/SIt+
+ 2wvA==
+X-Gm-Message-State: AOJu0YzhpT8u/YQSW4H+V01ugVCucpSxXbALWZBEUfJ75SBTV90pXsK6
+ kUxUW+zbuUJ0DDQdkQcdJj1MlwPmKvSfFMkmwxsb2hEqpGJwN8tbEfmHmDC+X07SGrdhwFb96Fj
+ wabgSWiYjRKgvzQyJuL/edyx9qi4gZepB3RUrI3igbV/SZG2tcws64bPeVNquRspHDkKo8OCA2a
+ OO1gw4w/mt98KTgZDjFOo2CgSedF3HrlCngmyw
+X-Received: by 2002:a17:907:198e:b0:a72:61f7:7a0d with SMTP id
+ a640c23a62f3a-a727f8be53emr800809266b.54.1719595769713; 
+ Fri, 28 Jun 2024 10:29:29 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH0JhrTZXB5izSnjD0HY+jrEQJ3UHY6VbGMku7iSaWt+7eViISqg2e2qruSIDsTvhGPt0slcw==
+X-Received: by 2002:a17:907:198e:b0:a72:61f7:7a0d with SMTP id
+ a640c23a62f3a-a727f8be53emr800806766b.54.1719595769203; 
+ Fri, 28 Jun 2024 10:29:29 -0700 (PDT)
 Received: from avogadro.local ([151.62.196.71])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5861503b4c5sm1253186a12.93.2024.06.28.10.29.24
+ a640c23a62f3a-a72ab0b56e6sm95334766b.202.2024.06.28.10.29.27
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 28 Jun 2024 10:29:24 -0700 (PDT)
+ Fri, 28 Jun 2024 10:29:27 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Subject: [PULL 13/23] include: move typeof_strip_qual to compiler.h,
- use it in QAPI_LIST_LENGTH()
-Date: Fri, 28 Jun 2024 19:28:45 +0200
-Message-ID: <20240628172855.1147598-14-pbonzini@redhat.com>
+Subject: [PULL 14/23] target/i386: fix CC_OP dump
+Date: Fri, 28 Jun 2024 19:28:46 +0200
+Message-ID: <20240628172855.1147598-15-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240628172855.1147598-1-pbonzini@redhat.com>
 References: <20240628172855.1147598-1-pbonzini@redhat.com>
@@ -86,7 +84,8 @@ X-Spam_bar: --
 X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.206,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ UPPERCASE_50_75=0.008 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,157 +101,142 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The typeof_strip_qual() is most useful for the atomic fetch-and-modify
-operations in atomic.h, but it can be used elsewhere as well.  For example,
-QAPI_LIST_LENGTH() assumes that the argument is not const, which is not a
-requirement.
+POPCNT was missing, and the entries were all out of order after
+ADCX/ADOX/ADCOX were moved close to EFLAGS.  Just use designated
+initializers.
 
-Move the macro to compiler.h and, while at it, move it under #ifndef
-__cplusplus to emphasize that it uses C-only constructs.  A C++ version
-of typeof_strip_qual() using type traits is possible[1], but beyond the
-scope of this patch because the little C++ code that is in QEMU does not
-use QAPI.
-
-The patch was tested by changing the declaration of strv_from_str_list()
-in qapi/qapi-type-helpers.c to:
-
-    char **strv_from_str_list(const strList *const list)
-
-This is valid C code, and it fails to compile without this change.
-
-[1] https://lore.kernel.org/qemu-devel/20240624205647.112034-1-flwu@google.com/
-
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Tested-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Fixes: 4885c3c4953 ("target-i386: Use ctpop helper", 2017-01-10)
+Fixes: cc155f19717 ("target/i386: rewrite flags writeback for ADCX/ADOX", 2024-06-11)
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- include/qapi/util.h     |  2 +-
- include/qemu/atomic.h   | 42 -------------------------------------
- include/qemu/compiler.h | 46 +++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 47 insertions(+), 43 deletions(-)
+ target/i386/cpu-dump.c | 101 +++++++++++++++++++++--------------------
+ 1 file changed, 51 insertions(+), 50 deletions(-)
 
-diff --git a/include/qapi/util.h b/include/qapi/util.h
-index 20dfea8a545..b8254247b8d 100644
---- a/include/qapi/util.h
-+++ b/include/qapi/util.h
-@@ -62,7 +62,7 @@ int parse_qapi_name(const char *name, bool complete);
- #define QAPI_LIST_LENGTH(list)                                      \
-     ({                                                              \
-         size_t _len = 0;                                            \
--        typeof(list) _tail;                                         \
-+        typeof_strip_qual(list) _tail;                              \
-         for (_tail = list; _tail != NULL; _tail = _tail->next) {    \
-             _len++;                                                 \
-         }                                                           \
-diff --git a/include/qemu/atomic.h b/include/qemu/atomic.h
-index 99110abefb3..dc4118ddd9e 100644
---- a/include/qemu/atomic.h
-+++ b/include/qemu/atomic.h
-@@ -20,48 +20,6 @@
- /* Compiler barrier */
- #define barrier()   ({ asm volatile("" ::: "memory"); (void)0; })
+diff --git a/target/i386/cpu-dump.c b/target/i386/cpu-dump.c
+index 40697064d92..3bb8e440916 100644
+--- a/target/i386/cpu-dump.c
++++ b/target/i386/cpu-dump.c
+@@ -28,69 +28,70 @@
+ /* x86 debug */
  
--/* The variable that receives the old value of an atomically-accessed
-- * variable must be non-qualified, because atomic builtins return values
-- * through a pointer-type argument as in __atomic_load(&var, &old, MODEL).
-- *
-- * This macro has to handle types smaller than int manually, because of
-- * implicit promotion.  int and larger types, as well as pointers, can be
-- * converted to a non-qualified type just by applying a binary operator.
-- */
--#define typeof_strip_qual(expr)                                                    \
--  typeof(                                                                          \
--    __builtin_choose_expr(                                                         \
--      __builtin_types_compatible_p(typeof(expr), bool) ||                          \
--        __builtin_types_compatible_p(typeof(expr), const bool) ||                  \
--        __builtin_types_compatible_p(typeof(expr), volatile bool) ||               \
--        __builtin_types_compatible_p(typeof(expr), const volatile bool),           \
--        (bool)1,                                                                   \
--    __builtin_choose_expr(                                                         \
--      __builtin_types_compatible_p(typeof(expr), signed char) ||                   \
--        __builtin_types_compatible_p(typeof(expr), const signed char) ||           \
--        __builtin_types_compatible_p(typeof(expr), volatile signed char) ||        \
--        __builtin_types_compatible_p(typeof(expr), const volatile signed char),    \
--        (signed char)1,                                                            \
--    __builtin_choose_expr(                                                         \
--      __builtin_types_compatible_p(typeof(expr), unsigned char) ||                 \
--        __builtin_types_compatible_p(typeof(expr), const unsigned char) ||         \
--        __builtin_types_compatible_p(typeof(expr), volatile unsigned char) ||      \
--        __builtin_types_compatible_p(typeof(expr), const volatile unsigned char),  \
--        (unsigned char)1,                                                          \
--    __builtin_choose_expr(                                                         \
--      __builtin_types_compatible_p(typeof(expr), signed short) ||                  \
--        __builtin_types_compatible_p(typeof(expr), const signed short) ||          \
--        __builtin_types_compatible_p(typeof(expr), volatile signed short) ||       \
--        __builtin_types_compatible_p(typeof(expr), const volatile signed short),   \
--        (signed short)1,                                                           \
--    __builtin_choose_expr(                                                         \
--      __builtin_types_compatible_p(typeof(expr), unsigned short) ||                \
--        __builtin_types_compatible_p(typeof(expr), const unsigned short) ||        \
--        __builtin_types_compatible_p(typeof(expr), volatile unsigned short) ||     \
--        __builtin_types_compatible_p(typeof(expr), const volatile unsigned short), \
--        (unsigned short)1,                                                         \
--      (expr)+0))))))
--
- #ifndef __ATOMIC_RELAXED
- #error "Expecting C11 atomic ops"
- #endif
-diff --git a/include/qemu/compiler.h b/include/qemu/compiler.h
-index c797f0d4572..554c5ce7df7 100644
---- a/include/qemu/compiler.h
-+++ b/include/qemu/compiler.h
-@@ -227,4 +227,50 @@
- #define SECOND_ARG(first, second, ...) second
- #define IS_EMPTY_(junk_maybecomma)     SECOND_ARG(junk_maybecomma 1, 0)
+ static const char *cc_op_str[CC_OP_NB] = {
+-    "DYNAMIC",
+-    "EFLAGS",
++    [CC_OP_DYNAMIC] = "DYNAMIC",
  
-+#ifndef __cplusplus
-+/*
-+ * Useful in macros that need to declare temporary variables.  For example,
-+ * the variable that receives the old value of an atomically-accessed
-+ * variable must be non-qualified, because atomic builtins return values
-+ * through a pointer-type argument as in __atomic_load(&var, &old, MODEL).
-+ *
-+ * This macro has to handle types smaller than int manually, because of
-+ * implicit promotion.  int and larger types, as well as pointers, can be
-+ * converted to a non-qualified type just by applying a binary operator.
-+ */
-+#define typeof_strip_qual(expr)                                                    \
-+  typeof(                                                                          \
-+    __builtin_choose_expr(                                                         \
-+      __builtin_types_compatible_p(typeof(expr), bool) ||                          \
-+        __builtin_types_compatible_p(typeof(expr), const bool) ||                  \
-+        __builtin_types_compatible_p(typeof(expr), volatile bool) ||               \
-+        __builtin_types_compatible_p(typeof(expr), const volatile bool),           \
-+        (bool)1,                                                                   \
-+    __builtin_choose_expr(                                                         \
-+      __builtin_types_compatible_p(typeof(expr), signed char) ||                   \
-+        __builtin_types_compatible_p(typeof(expr), const signed char) ||           \
-+        __builtin_types_compatible_p(typeof(expr), volatile signed char) ||        \
-+        __builtin_types_compatible_p(typeof(expr), const volatile signed char),    \
-+        (signed char)1,                                                            \
-+    __builtin_choose_expr(                                                         \
-+      __builtin_types_compatible_p(typeof(expr), unsigned char) ||                 \
-+        __builtin_types_compatible_p(typeof(expr), const unsigned char) ||         \
-+        __builtin_types_compatible_p(typeof(expr), volatile unsigned char) ||      \
-+        __builtin_types_compatible_p(typeof(expr), const volatile unsigned char),  \
-+        (unsigned char)1,                                                          \
-+    __builtin_choose_expr(                                                         \
-+      __builtin_types_compatible_p(typeof(expr), signed short) ||                  \
-+        __builtin_types_compatible_p(typeof(expr), const signed short) ||          \
-+        __builtin_types_compatible_p(typeof(expr), volatile signed short) ||       \
-+        __builtin_types_compatible_p(typeof(expr), const volatile signed short),   \
-+        (signed short)1,                                                           \
-+    __builtin_choose_expr(                                                         \
-+      __builtin_types_compatible_p(typeof(expr), unsigned short) ||                \
-+        __builtin_types_compatible_p(typeof(expr), const unsigned short) ||        \
-+        __builtin_types_compatible_p(typeof(expr), volatile unsigned short) ||     \
-+        __builtin_types_compatible_p(typeof(expr), const volatile unsigned short), \
-+        (unsigned short)1,                                                         \
-+      (expr)+0))))))
-+#endif
-+
- #endif /* COMPILER_H */
+-    "MULB",
+-    "MULW",
+-    "MULL",
+-    "MULQ",
++    [CC_OP_EFLAGS] = "EFLAGS",
++    [CC_OP_ADCX] = "ADCX",
++    [CC_OP_ADOX] = "ADOX",
++    [CC_OP_ADCOX] = "ADCOX",
+ 
+-    "ADDB",
+-    "ADDW",
+-    "ADDL",
+-    "ADDQ",
++    [CC_OP_MULB] = "MULB",
++    [CC_OP_MULW] = "MULW",
++    [CC_OP_MULL] = "MULL",
++    [CC_OP_MULQ] = "MULQ",
+ 
+-    "ADCB",
+-    "ADCW",
+-    "ADCL",
+-    "ADCQ",
++    [CC_OP_ADDB] = "ADDB",
++    [CC_OP_ADDW] = "ADDW",
++    [CC_OP_ADDL] = "ADDL",
++    [CC_OP_ADDQ] = "ADDQ",
+ 
+-    "SUBB",
+-    "SUBW",
+-    "SUBL",
+-    "SUBQ",
++    [CC_OP_ADCB] = "ADCB",
++    [CC_OP_ADCW] = "ADCW",
++    [CC_OP_ADCL] = "ADCL",
++    [CC_OP_ADCQ] = "ADCQ",
+ 
+-    "SBBB",
+-    "SBBW",
+-    "SBBL",
+-    "SBBQ",
++    [CC_OP_SUBB] = "SUBB",
++    [CC_OP_SUBW] = "SUBW",
++    [CC_OP_SUBL] = "SUBL",
++    [CC_OP_SUBQ] = "SUBQ",
+ 
+-    "LOGICB",
+-    "LOGICW",
+-    "LOGICL",
+-    "LOGICQ",
++    [CC_OP_SBBB] = "SBBB",
++    [CC_OP_SBBW] = "SBBW",
++    [CC_OP_SBBL] = "SBBL",
++    [CC_OP_SBBQ] = "SBBQ",
+ 
+-    "INCB",
+-    "INCW",
+-    "INCL",
+-    "INCQ",
++    [CC_OP_LOGICB] = "LOGICB",
++    [CC_OP_LOGICW] = "LOGICW",
++    [CC_OP_LOGICL] = "LOGICL",
++    [CC_OP_LOGICQ] = "LOGICQ",
+ 
+-    "DECB",
+-    "DECW",
+-    "DECL",
+-    "DECQ",
++    [CC_OP_INCB] = "INCB",
++    [CC_OP_INCW] = "INCW",
++    [CC_OP_INCL] = "INCL",
++    [CC_OP_INCQ] = "INCQ",
+ 
+-    "SHLB",
+-    "SHLW",
+-    "SHLL",
+-    "SHLQ",
++    [CC_OP_DECB] = "DECB",
++    [CC_OP_DECW] = "DECW",
++    [CC_OP_DECL] = "DECL",
++    [CC_OP_DECQ] = "DECQ",
+ 
+-    "SARB",
+-    "SARW",
+-    "SARL",
+-    "SARQ",
++    [CC_OP_SHLB] = "SHLB",
++    [CC_OP_SHLW] = "SHLW",
++    [CC_OP_SHLL] = "SHLL",
++    [CC_OP_SHLQ] = "SHLQ",
+ 
+-    "BMILGB",
+-    "BMILGW",
+-    "BMILGL",
+-    "BMILGQ",
++    [CC_OP_SARB] = "SARB",
++    [CC_OP_SARW] = "SARW",
++    [CC_OP_SARL] = "SARL",
++    [CC_OP_SARQ] = "SARQ",
+ 
+-    "ADCX",
+-    "ADOX",
+-    "ADCOX",
++    [CC_OP_BMILGB] = "BMILGB",
++    [CC_OP_BMILGW] = "BMILGW",
++    [CC_OP_BMILGL] = "BMILGL",
++    [CC_OP_BMILGQ] = "BMILGQ",
+ 
+-    "CLR",
++    [CC_OP_POPCNT] = "POPCNT",
++    [CC_OP_CLR] = "CLR",
+ };
+ 
+ static void
 -- 
 2.45.2
 
