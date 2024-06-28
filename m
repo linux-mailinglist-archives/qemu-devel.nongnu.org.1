@@ -2,102 +2,148 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 377D691B838
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jun 2024 09:24:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C8C891B879
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jun 2024 09:33:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sN5xF-0001iL-Oj; Fri, 28 Jun 2024 03:23:33 -0400
+	id 1sN65r-0008TG-0X; Fri, 28 Jun 2024 03:32:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1sN5xC-0001hy-Sg; Fri, 28 Jun 2024 03:23:31 -0400
-Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
+ (Exim 4.90_1) (envelope-from <Luc.Michel@amd.com>)
+ id 1sN64m-000852-Pn
+ for qemu-devel@nongnu.org; Fri, 28 Jun 2024 03:31:25 -0400
+Received: from mail-dm6nam12on2086.outbound.protection.outlook.com
+ ([40.107.243.86] helo=NAM12-DM6-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1sN5xA-0002wR-Tt; Fri, 28 Jun 2024 03:23:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
- In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
- Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
- :Resent-To:Resent-Cc:Resent-Message-ID;
- bh=eyavoEpXXCf6EvIoElMLvzoWuSWF0UmGAnjZ5OVYZkk=; b=ugqWMU2mdI64IEDSLC5II00xSj
- v88gJnIO71kg4N/kbmta75kj7sGPETRGX3UNtUw05JjmdEkF65F5Oo2RQOGeGBOc4ws5n+KLTpoXE
- hr1aEvmb0d5uUjtgvs6k/FBxjk/7+zAKuf2ClhCyfpPJIlxy2rBNdr9SaUkmskzi7c9ECTAu0rrBu
- fJRwFwC6qgftZ2+eqBbL4B+jgq2d5c4y/adVlWhqqQ9fU3vBHfT632wipUW4gInD3+aQNyymVvGIg
- UyWYMzmoGgFM8SY356L/GJDthHRqcQ+C4jQDUy3wMXxQQjz1GK093QBzW1Qzj2LY8z/b16oU5Wdr6
- FHQDJ2BFIHg4iVU+bVZOtvoP46y25s+VIEUxLzRXhEWL3ihkDyif5QgsACVfteCJXoALrFaVe6wAG
- J9ZP+MhYYVyE7JWA24GiSDcfii6RdVVGEFWbotb7Y5Chye1af1qIMKoXxNNIOnmxS18BqWaGEiNhD
- obLEOoAK5y5PCyFKU0GUQbJyDsSQ+Djl9YLPlvh9K8w5hBbZ8hYdOcP/QWgOsF1qCvgTQzXNFDFuE
- 1wclvu3HuKH8m6cW/8/5VQhWlt6R2g0D4t4jvcrqLhfo+4l4jVaGme37DE33pKVL8QkZa9iFp1EZO
- LiCp4DdPE/TkdG3npDm3Kyq9e3Z5p7Azvg7/r2POw=;
-Received: from [2a00:23c4:8bb4:4000:71e:fc91:de8e:dcdf]
- by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1sN5vV-0008Qc-6N; Fri, 28 Jun 2024 08:21:49 +0100
-Message-ID: <eb4e91b6-14da-46dd-a572-c07cb51afada@ilande.co.uk>
-Date: Fri, 28 Jun 2024 08:23:06 +0100
+ (Exim 4.90_1) (envelope-from <Luc.Michel@amd.com>)
+ id 1sN64h-0007at-Su
+ for qemu-devel@nongnu.org; Fri, 28 Jun 2024 03:31:18 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=OxrIElbO0NLEBYARVnEXCj9RizdsjxQu2sArXjjVs13UWCt+VLi/Kb/L8ym1Mmqj2O3jG/NtnoJNPy1tx9oQTgqqFR6OL0HySS1O+T7Ey+JlHrejx3FnROGv8DC5rQQoLhDHfkthzuhTWodcwUUTEk+MrBDMWd5YcNQWuKMxeYZMOEwrwG6NE8Ogv4yuotF4tYRvvXIo0xDjJPt2qZkGrQYweEzF4hchs3eM4tUidzV21vckFTItj7IA8C922GNZ76o4pzQONXbeblQeb5RaB8v2DqLo300y1Vhkfyd8sT5IoLFCb0xpDpw/JcHakFBnPsWokkHIwgYgNu29eOn+AQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=12j+6po2VEaoUEvMTxjDymz5CX/Tn7YyPxOS4TqVBNE=;
+ b=M+gOEI6BG43F09GVLOyZntkswN3R70jtzZKwaeAgwxH1cvkgwR9llah1qVR3EzXLs9qjOFbzqo2mAcbmLH9HNYJR5Gqzi/9MAEOC5HWoCX4N1/TLOQ2PFPhiE3iSvKYPpxV8pAhrGyBxXN7kl+vMwKAsN5KCgOCu8A6Qf5HgAwK1viNDJDFSBaqVz9U/B8ThjnmleTOtyeP0JmwjFE9nr44tm8TfUorpo5cXduXandUmzj2f4dNJIWWToTC0TTFf6ocAyJ39ot7dCAoaQDyXrPOIiMAm6W2s2gLJx3+PiFru3u0bfD1QYV6FCUhilS/Frz364Vd6lvZfA8boIfCMuw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=linaro.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=12j+6po2VEaoUEvMTxjDymz5CX/Tn7YyPxOS4TqVBNE=;
+ b=awvjH4biqxY632WNl7klxELKHKIXyWhJxm3bc5DV/Qktf7hB7dA2qW1canf6+zxtCYXTMWnQ4jbYBDtW6l6K17DiGHo5QuilHER8YzdU3YNg0eMcHGdazzfW6a3r9dcslSJuHm+JnPdOOkWDIrEwv9COkcsq4xkumkFqkZpCDT8=
+Received: from BN9PR03CA0345.namprd03.prod.outlook.com (2603:10b6:408:f6::20)
+ by SA1PR12MB8698.namprd12.prod.outlook.com (2603:10b6:806:38b::10)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7698.32; Fri, 28 Jun
+ 2024 07:26:00 +0000
+Received: from BN1PEPF00004687.namprd05.prod.outlook.com
+ (2603:10b6:408:f6:cafe::45) by BN9PR03CA0345.outlook.office365.com
+ (2603:10b6:408:f6::20) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7719.26 via Frontend
+ Transport; Fri, 28 Jun 2024 07:26:00 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
+Received: from SATLEXMB03.amd.com (165.204.84.17) by
+ BN1PEPF00004687.mail.protection.outlook.com (10.167.243.132) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7677.15 via Frontend Transport; Fri, 28 Jun 2024 07:25:59 +0000
+Received: from SATLEXMB06.amd.com (10.181.40.147) by SATLEXMB03.amd.com
+ (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Fri, 28 Jun
+ 2024 02:25:59 -0500
+Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB06.amd.com
+ (10.181.40.147) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Fri, 28 Jun
+ 2024 02:25:59 -0500
+Received: from XFR-LUMICHEL-L2.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39 via Frontend
+ Transport; Fri, 28 Jun 2024 02:25:58 -0500
+Date: Fri, 28 Jun 2024 09:25:58 +0200
+From: Luc Michel <luc.michel@amd.com>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+CC: <qemu-devel@nongnu.org>, =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>
+Subject: Re: [PATCH v42 05/98] hw/sd/sdcard: Trace requested address computed
+ by sd_req_get_address()
+Message-ID: <Zn5lVkZFeZCWVPtA@XFR-LUMICHEL-L2.amd.com>
+References: <20240628070216.92609-1-philmd@linaro.org>
+ <20240628070216.92609-6-philmd@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Akihiko Odaki <akihiko.odaki@daynix.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>, John Snow <jsnow@redhat.com>,
- BALATON Zoltan <balaton@eik.bme.hu>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Alexey Kardashevskiy <aik@ozlabs.ru>, "Michael S. Tsirkin" <mst@redhat.com>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, qemu-ppc@nongnu.org
-References: <20240627-san-v2-0-750bb0946dbd@daynix.com>
- <20240627-san-v2-3-750bb0946dbd@daynix.com>
-Content-Language: en-US
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
- xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
- 3JzBTbtd4JfFcSupo6MNNOrCzdCbCjZ64ik8ycaUOSzK2tKbeQLEXzXoaDL1Y7vuVO7nL9bG
- E5Ru3wkhCFc7SkoypIoAUqz8EtiB6T89/D9TDEyjdXUacc53R5gu8wEWiMg5MQQuGwzbQy9n
- PFI+mXC7AaEUqBVc2lBQVpAYXkN0EyqNNT12UfDLdxaxaFpUAE2pCa2LTyo5vn5hEW+i3VdN
- PkmjyPvL6DdY03fvC01PyY8zaw+UI94QqjlrDisHpUH40IUPpC/NB0LwzL2aQOMkzT2NABEB
- AAHNME1hcmsgQ2F2ZS1BeWxhbmQgPG1hcmsuY2F2ZS1heWxhbmRAaWxhbmRlLmNvLnVrPsLA
- eAQTAQIAIgUCVAm7PAIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQW8LFb64PMh9f
- NAgAuc3ObOEY8NbZko72AGrg2tWKdybcMVITxmcor4hb9155o/OWcA4IDbeATR6cfiDL/oxU
- mcmtXVgPqOwtW3NYAKr5g/FrZZ3uluQ2mtNYAyTFeALy8YF7N3yhs7LOcpbFP7tEbkSzoXNG
- z8iYMiYtKwttt40WaheWuRs0ZOLbs6yoczZBDhna3Nj0LA3GpeJKlaV03O4umjKJgACP1c/q
- T2Pkg+FCBHHFP454+waqojHp4OCBo6HyK+8I4wJRa9Z0EFqXIu8lTDYoggeX0Xd6bWeCFHK3
- DhD0/Xi/kegSW33unsp8oVcM4kcFxTkpBgj39dB4KwAUznhTJR0zUHf63M7ATQRUCbs8AQgA
- y7kyevA4bpetM/EjtuqQX4U05MBhEz/2SFkX6IaGtTG2NNw5wbcAfhOIuNNBYbw6ExuaJ3um
- 2uLseHnudmvN4VSJ5Hfbd8rhqoMmmO71szgT/ZD9MEe2KHzBdmhmhxJdp+zQNivy215j6H27
- 14mbC2dia7ktwP1rxPIX1OOfQwPuqlkmYPuVwZP19S4EYnCELOrnJ0m56tZLn5Zj+1jZX9Co
- YbNLMa28qsktYJ4oU4jtn6V79H+/zpERZAHmH40IRXdR3hA+Ye7iC/ZpWzT2VSDlPbGY9Yja
- Sp7w2347L5G+LLbAfaVoejHlfy/msPeehUcuKjAdBLoEhSPYzzdvEQARAQABwsBfBBgBAgAJ
- BQJUCbs8AhsMAAoJEFvCxW+uDzIfabYIAJXmBepHJpvCPiMNEQJNJ2ZSzSjhic84LTMWMbJ+
- opQgr5cb8SPQyyb508fc8b4uD8ejlF/cdbbBNktp3BXsHlO5BrmcABgxSP8HYYNsX0n9kERv
- NMToU0oiBuAaX7O/0K9+BW+3+PGMwiu5ml0cwDqljxfVN0dUBZnQ8kZpLsY+WDrIHmQWjtH+
- Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
- KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
- imgcU9TTGC5qd9g=
-In-Reply-To: <20240627-san-v2-3-750bb0946dbd@daynix.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2a00:23c4:8bb4:4000:71e:fc91:de8e:dcdf
-X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: Re: [PATCH v2 03/15] hw/ide: Remove internal DMA qemu_irq
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
-Received-SPF: pass client-ip=2001:41c9:1:41f::167;
- envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240628070216.92609-6-philmd@linaro.org>
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN1PEPF00004687:EE_|SA1PR12MB8698:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6c99f194-3020-45b9-1be1-08dc97438f26
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|36860700013|376014|1800799024|82310400026; 
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?cytLN2N2bFRpMTVBUkdSODFwK0NQbUtRT29vQ0M1aVRJdU15MnN0dVB3TDJG?=
+ =?utf-8?B?TEoxRGF5VVQyQ3MwcW5IK0NaVlFpakkzellYNFduVkFOaVpvc1NWT1FOc0V5?=
+ =?utf-8?B?blRmSkk0aTJESm1taGV5V2VYeHNpekZiYTYxSi9TczBHTVQydU54bCtPc2pR?=
+ =?utf-8?B?aEJydTI1Q0JpYVlmMUpwd3JDaWUvTWQ4TFlvRjNpMkRWUHhSdGdmKythKzVl?=
+ =?utf-8?B?SnhsYnp4QWw1MjVyV0pYRHVRcE0weno3OGtNQ1dOYzZPb0xWMFdjSjFITitr?=
+ =?utf-8?B?b1h6OHBub0NKQUlLVW9yRU1zRXZxSytXUlJtb08rNVhMOHVtT1c3ZXJmSWZE?=
+ =?utf-8?B?ekxRcXdWVTV6TzBRdUZOQ1puMmhmMnlHM0ZpK0RIcW5VN2FHbFpIYjhKdmZP?=
+ =?utf-8?B?dVdYRHJXall3WlBoRk9qV0Z2YW1meklLbnpDNm9vcWhTYXBOcnpiUFNuQnBJ?=
+ =?utf-8?B?cXdiNm9Ga0RlQjArcFNKTGV1WE9qSThWeHJCekpNSGxid3U2K1V6SXhNQUZP?=
+ =?utf-8?B?cXdzcUhTamtLSzVOOSs0bG9Rc2ExajQ4Ky9hNUdrbHNQM1V6WVVvclc0VDNM?=
+ =?utf-8?B?MlVpc08vWVphaWRRc3ZacFVsbjJ4M1o1UDZySlhieWo2SWF5eWdtRVRXVjVN?=
+ =?utf-8?B?QnRlRndTRWk4eXJsQ3BxMENwS1hXb1h1dXpPYjNqWmNCM21JSnFwTllacy9p?=
+ =?utf-8?B?RndselpncUdCRDBhcDJMcFFZRjdnb1pHWjlnbU5QVzV4QVZSRXRnVDlCWW5M?=
+ =?utf-8?B?RTFkRFJHbzI4bjNlRnNMNXc1VzhYOEJVNVpPN21aNVZBMS85QUp3QUZjOFRX?=
+ =?utf-8?B?MnJDSkI5aURWQTNBTWNNYUlhMVM3cXNTVEF1b0YyMS9ZcVZ6dzN5YlgwRmdu?=
+ =?utf-8?B?S2xZbTVkQ0VHUFRIS01wSzNtOEd4ZUFkVGk2U3RVRitRS21DclFPVm02SmxR?=
+ =?utf-8?B?Q1VmTVlOM2RkSEQvTDd3R0FCdGR4QjYrd2Z2NGpReGt1MTdYaURxZ1c2N0NM?=
+ =?utf-8?B?VXJKb1U4cFJCTG5wY0hCMVVXeHRYNFJFakN1U0QydmlPOU5qUmNkbGorTXZI?=
+ =?utf-8?B?SmJGakYxVVo3STN2YmNhdXR1Z293VWVCUmNNYzJvVDhrYm9SZ05aWW1xdWZE?=
+ =?utf-8?B?Q29qVktPblM0NXhSTGdCaWc1RWlNVjlaaVlQWmVYSjB5ZVdia3ozZEgvbEZa?=
+ =?utf-8?B?Y3VHbDZxMHRFWG9lcllxZ3hPNmU5UXNVa0g1aDBHYXhsUXhpKzBDYkJKSm5D?=
+ =?utf-8?B?QzMyejBCWGlaMDJqSVZyQ2svSXAxTEhqMkhGcGlpMW93V3h2LzV0NUxOdnVk?=
+ =?utf-8?B?Q1ZCVlFrUjlqNXgrOUhpTmxzOG9tcFZVYndGWFZFbXZUa1BDRER0dWZvR2NQ?=
+ =?utf-8?B?eWFZTmc3TTRUaGdvalpwU0UwWlFqY2p6aVU0VGJZVTJselF5U3ZQcHZldjZ2?=
+ =?utf-8?B?RURCT1pNMmMrc1FqRmV0UUpYcEd1VGlhWElVTlRVTlp5YnB5RVVaSk5TS1Zv?=
+ =?utf-8?B?RjhCSWczRjYvM3Q2NXBtQVNYa1JhY3ZYb2JKencyb09OMzY2dkNoNDlKRXo5?=
+ =?utf-8?B?Ny9XWWZ2aVczYUM0WVJkblp6eXduQ1R3bFV6ak9hZktMOFJmRWtVK05SeVZz?=
+ =?utf-8?B?bVhBN2VpSnowN0JFOGlUdXkySElHQjU3V3lyaVBXakJIeDIwNFJWOTFyRERI?=
+ =?utf-8?B?cEtpeGk1SWErUkxaWldod1l6RGZjSEVrN0RLVHp4VHp3QWlTUC90em44RjEy?=
+ =?utf-8?B?Mld0cnlCYU83d21QZVJuYXFNYnhIaGVNZFYzaitMT2thaGJ0cHVrMG05dFU4?=
+ =?utf-8?B?a3lHMld3QXRoUTNQOUJnTlRaYXJCRTRJM2N5dkJxMThka1htdlNwaFZzalVk?=
+ =?utf-8?B?ZWhDdHcrQzZpOStaZEtqSHdxQ1NlOFlzQlhmLy9UNjAwYmd2Q3IzcVAwZDFz?=
+ =?utf-8?Q?7mBG+7nmgodQ6+bMqH4tPfRCBebnZNrf?=
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB03.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(36860700013)(376014)(1800799024)(82310400026); DIR:OUT;
+ SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jun 2024 07:25:59.9385 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6c99f194-3020-45b9-1be1-08dc97438f26
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB03.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: BN1PEPF00004687.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB8698
+Received-SPF: permerror client-ip=40.107.243.86;
+ envelope-from=Luc.Michel@amd.com;
+ helo=NAM12-DM6-obe.outbound.protection.outlook.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.212,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -114,149 +160,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 27/06/2024 14:37, Akihiko Odaki wrote:
-
-> A function pointer is sufficient for internal usage. Replacing qemu_irq
-> with one fixes the leak of qemu_irq.
+On 09:00 Fri 28 Jun     , Philippe Mathieu-Daudé wrote:
+> Caution: This message originated from an External Source. Use proper caution when opening attachments, clicking links, or responding.
 > 
-> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+Reviewed-by: Luc Michel <luc.michel@amd.com>
+
 > ---
->   include/hw/ppc/mac_dbdma.h |  5 +++--
->   hw/ide/macio.c             | 11 +++++++----
->   hw/misc/macio/mac_dbdma.c  | 10 +++++-----
->   3 files changed, 15 insertions(+), 11 deletions(-)
+>  hw/sd/sd.c         | 9 +++++++--
+>  hw/sd/trace-events | 1 +
+>  2 files changed, 8 insertions(+), 2 deletions(-)
 > 
-> diff --git a/include/hw/ppc/mac_dbdma.h b/include/hw/ppc/mac_dbdma.h
-> index 4a3f644516b3..1e1973c39580 100644
-> --- a/include/hw/ppc/mac_dbdma.h
-> +++ b/include/hw/ppc/mac_dbdma.h
-> @@ -32,6 +32,7 @@
->   typedef struct DBDMA_io DBDMA_io;
->   
->   typedef void (*DBDMA_flush)(DBDMA_io *io);
-> +typedef void (*DBDMA_irq)(DBDMA_io *io);
->   typedef void (*DBDMA_rw)(DBDMA_io *io);
->   typedef void (*DBDMA_end)(DBDMA_io *io);
->   struct DBDMA_io {
-> @@ -154,7 +155,7 @@ typedef struct dbdma_cmd {
->   typedef struct DBDMA_channel {
->       int channel;
->       uint32_t regs[DBDMA_REGS];
-> -    qemu_irq irq;
-> +    DBDMA_irq irq;
->       DBDMA_io io;
->       DBDMA_rw rw;
->       DBDMA_flush flush;
-> @@ -172,7 +173,7 @@ typedef struct DBDMAState DBDMAState;
->   
->   /* Externally callable functions */
->   
-> -void DBDMA_register_channel(void *dbdma, int nchan, qemu_irq irq,
-> +void DBDMA_register_channel(void *dbdma, int nchan, DBDMA_irq irq,
->                               DBDMA_rw rw, DBDMA_flush flush,
->                               void *opaque);
->   void DBDMA_kick(DBDMAState *dbdma);
-> diff --git a/hw/ide/macio.c b/hw/ide/macio.c
-> index 9c96a857a7c1..425b670a52a9 100644
-> --- a/hw/ide/macio.c
-> +++ b/hw/ide/macio.c
-> @@ -427,9 +427,8 @@ static void macio_ide_realizefn(DeviceState *dev, Error **errp)
->       s->bus.dma = &s->dma;
->   }
->   
-> -static void pmac_irq(void *opaque, int n, int level)
-> +static void pmac_irq(MACIOIDEState *s, int n, int level)
->   {
-> -    MACIOIDEState *s = opaque;
->       uint32_t mask = 0x80000000u >> n;
->   
->       /* We need to reflect the IRQ state in the irq register */
-> @@ -446,6 +445,11 @@ static void pmac_irq(void *opaque, int n, int level)
->       }
->   }
->   
-> +static void pmac_dma_irq(DBDMA_io *io)
-> +{
-> +    pmac_irq(io->opaque, 0, 1);
-> +}
+> diff --git a/hw/sd/sd.c b/hw/sd/sd.c
+> index 090a6fdcdb..464576751a 100644
+> --- a/hw/sd/sd.c
+> +++ b/hw/sd/sd.c
+> @@ -608,10 +608,15 @@ static void sd_response_r7_make(SDState *sd, uint8_t *response)
+> 
+>  static uint64_t sd_req_get_address(SDState *sd, SDRequest req)
+>  {
+> +    uint64_t addr;
 > +
->   static void pmac_ide_irq(void *opaque, int n, int level)
->   {
->       pmac_irq(opaque, 1, level);
-> @@ -461,7 +465,6 @@ static void macio_ide_initfn(Object *obj)
->       sysbus_init_mmio(d, &s->mem);
->       sysbus_init_irq(d, &s->real_ide_irq);
->       sysbus_init_irq(d, &s->real_dma_irq);
-> -    s->dma_irq = qemu_allocate_irq(pmac_irq, s, 0);
->       qdev_init_gpio_in_named_with_opaque(DEVICE(obj), pmac_ide_irq, s, NULL, 1);
->   
->       object_property_add_link(obj, "dbdma", TYPE_MAC_DBDMA,
-> @@ -513,7 +516,7 @@ void macio_ide_init_drives(MACIOIDEState *s, DriveInfo **hd_table)
->   
->   void macio_ide_register_dma(MACIOIDEState *s)
->   {
-> -    DBDMA_register_channel(s->dbdma, s->channel, s->dma_irq,
-> +    DBDMA_register_channel(s->dbdma, s->channel, pmac_dma_irq,
->                              pmac_ide_transfer, pmac_ide_flush, s);
->   }
->   
-> diff --git a/hw/misc/macio/mac_dbdma.c b/hw/misc/macio/mac_dbdma.c
-> index 2a528ea08caf..3450105ad851 100644
-> --- a/hw/misc/macio/mac_dbdma.c
-> +++ b/hw/misc/macio/mac_dbdma.c
-> @@ -114,7 +114,7 @@ static void kill_channel(DBDMA_channel *ch)
->       ch->regs[DBDMA_STATUS] |= DEAD;
->       ch->regs[DBDMA_STATUS] &= ~ACTIVE;
->   
-> -    qemu_irq_raise(ch->irq);
-> +    ch->irq(&ch->io);
->   }
->   
->   static void conditional_interrupt(DBDMA_channel *ch)
-> @@ -133,7 +133,7 @@ static void conditional_interrupt(DBDMA_channel *ch)
->       case INTR_NEVER:  /* don't interrupt */
->           return;
->       case INTR_ALWAYS: /* always interrupt */
-> -        qemu_irq_raise(ch->irq);
-> +            ch->irq(&ch->io);
->           DBDMA_DPRINTFCH(ch, "%s: raise\n", __func__);
->           return;
->       }
-> @@ -148,13 +148,13 @@ static void conditional_interrupt(DBDMA_channel *ch)
->       switch(intr) {
->       case INTR_IFSET:  /* intr if condition bit is 1 */
->           if (cond) {
-> -            qemu_irq_raise(ch->irq);
-> +            ch->irq(&ch->io);
->               DBDMA_DPRINTFCH(ch, "%s: raise\n", __func__);
->           }
->           return;
->       case INTR_IFCLR:  /* intr if condition bit is 0 */
->           if (!cond) {
-> -            qemu_irq_raise(ch->irq);
-> +            ch->irq(&ch->io);
->               DBDMA_DPRINTFCH(ch, "%s: raise\n", __func__);
->           }
->           return;
-> @@ -562,7 +562,7 @@ void DBDMA_kick(DBDMAState *dbdma)
->       qemu_bh_schedule(dbdma->bh);
->   }
->   
-> -void DBDMA_register_channel(void *dbdma, int nchan, qemu_irq irq,
-> +void DBDMA_register_channel(void *dbdma, int nchan, DBDMA_irq irq,
->                               DBDMA_rw rw, DBDMA_flush flush,
->                               void *opaque)
->   {
+>      if (FIELD_EX32(sd->ocr, OCR, CARD_CAPACITY)) {
+> -        return (uint64_t) req.arg << HWBLOCK_SHIFT;
+> +        addr = (uint64_t) req.arg << HWBLOCK_SHIFT;
+> +    } else {
+> +        addr = req.arg;
+>      }
+> -    return req.arg;
+> +    trace_sdcard_req_addr(req.arg, addr);
+> +    return addr;
+>  }
+> 
+>  static inline uint64_t sd_addr_to_wpnum(uint64_t addr)
+> diff --git a/hw/sd/trace-events b/hw/sd/trace-events
+> index 0eee98a646..43eaeba149 100644
+> --- a/hw/sd/trace-events
+> +++ b/hw/sd/trace-events
+> @@ -50,6 +50,7 @@ sdcard_ejected(void) ""
+>  sdcard_erase(uint32_t first, uint32_t last) "addr first 0x%" PRIx32" last 0x%" PRIx32
+>  sdcard_lock(void) ""
+>  sdcard_unlock(void) ""
+> +sdcard_req_addr(uint32_t req_arg, uint64_t addr) "req 0x%" PRIx32 " addr 0x%" PRIx64
+>  sdcard_read_block(uint64_t addr, uint32_t len) "addr 0x%" PRIx64 " size 0x%x"
+>  sdcard_write_block(uint64_t addr, uint32_t len) "addr 0x%" PRIx64 " size 0x%x"
+>  sdcard_write_data(const char *proto, const char *cmd_desc, uint8_t cmd, uint32_t offset, uint8_t value) "%s %20s/ CMD%02d ofs %"PRIu32" value 0x%02x"
+> --
+> 2.41.0
+> 
+> 
 
-At first glance I can't say I'm keen on this: in general we should be moving towards 
-standardising on QEMU irqs or qdev gpios rather than introducing a custom function.
-
-As per my previous email I suspect this is another symptom that something is wrong 
-with the modelling, so I will take a look.
-
-
-ATB,
-
-Mark.
-
+-- 
 
