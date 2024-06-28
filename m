@@ -2,47 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36AB091B969
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jun 2024 10:05:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C11E591B96A
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jun 2024 10:05:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sN6bb-0002F4-Qy; Fri, 28 Jun 2024 04:05:15 -0400
+	id 1sN6be-0002eC-0c; Fri, 28 Jun 2024 04:05:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=GU6n=N6=kaod.org=clg@ozlabs.org>)
- id 1sN6bV-00026i-3R
- for qemu-devel@nongnu.org; Fri, 28 Jun 2024 04:05:10 -0400
-Received: from gandalf.ozlabs.org ([150.107.74.76] helo=mail.ozlabs.org)
+ id 1sN6ba-0002E1-AU
+ for qemu-devel@nongnu.org; Fri, 28 Jun 2024 04:05:14 -0400
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=GU6n=N6=kaod.org=clg@ozlabs.org>)
- id 1sN6bT-0007JF-0P
- for qemu-devel@nongnu.org; Fri, 28 Jun 2024 04:05:08 -0400
+ id 1sN6bY-0007Kf-KE
+ for qemu-devel@nongnu.org; Fri, 28 Jun 2024 04:05:14 -0400
 Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4W9Sf803Dpz4wcS;
- Fri, 28 Jun 2024 18:05:04 +1000 (AEST)
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4W9SfG2rbzz4w2N;
+ Fri, 28 Jun 2024 18:05:10 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits))
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4W9Sf675bDz4w2N;
- Fri, 28 Jun 2024 18:05:02 +1000 (AEST)
-Message-ID: <1894a8b9-448c-4e8e-b3f2-2ac87eba21bf@kaod.org>
-Date: Fri, 28 Jun 2024 10:05:00 +0200
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4W9SfF2SGLz4w2Q;
+ Fri, 28 Jun 2024 18:05:09 +1000 (AEST)
+Message-ID: <7056f84b-bcfc-4238-8a73-847ab40edbfb@kaod.org>
+Date: Fri, 28 Jun 2024 10:05:08 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [SPAM] [PATCH v42 76/98] hw/sd/sdcard: Remove noise from
- sd_acmd_name()
+Subject: Re: [PATCH v42 77/98] hw/sd/sdcard: Remove noise from sd_cmd_name()
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
 References: <20240628070216.92609-1-philmd@linaro.org>
- <20240628070216.92609-77-philmd@linaro.org>
+ <20240628070216.92609-78-philmd@linaro.org>
 Content-Language: en-US, fr
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20240628070216.92609-77-philmd@linaro.org>
+In-Reply-To: <20240628070216.92609-78-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=150.107.74.76;
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
  envelope-from=SRS0=GU6n=N6=kaod.org=clg@ozlabs.org; helo=mail.ozlabs.org
 X-Spam_score_int: -39
 X-Spam_score: -4.0
@@ -66,7 +65,7 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 6/28/24 9:01 AM, Philippe Mathieu-Daudé wrote:
-> These ACMD names weren't really useful, "UNKNOWN_ACMD" is simpler.
+> These CMD names weren't really useful, "UNKNOWN_CMD" is simpler.
 > 
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
@@ -79,37 +78,25 @@ C.
 
 
 > ---
->   hw/sd/sd.c | 12 +-----------
->   1 file changed, 1 insertion(+), 11 deletions(-)
+>   hw/sd/sd.c | 5 -----
+>   1 file changed, 5 deletions(-)
 > 
 > diff --git a/hw/sd/sd.c b/hw/sd/sd.c
-> index 7f93d363c7..19322c558f 100644
+> index 19322c558f..0a7b422b2c 100644
 > --- a/hw/sd/sd.c
 > +++ b/hw/sd/sd.c
-> @@ -259,23 +259,13 @@ static const char *sd_cmd_name(SDState *sd, uint8_t cmd)
->   
->   static const char *sd_acmd_name(SDState *sd, uint8_t cmd)
+> @@ -241,12 +241,7 @@ static const char *sd_cmd_name(SDState *sd, uint8_t cmd)
 >   {
-> -    static const char *acmd_abbrev[SDMMC_CMD_MAX] = {
-> -        [14] = "DPS_spec",                  [15] = "DPS_spec",
-> -        [16] = "DPS_spec",
-> -        [18] = "SECU_spec",
-> -        [52] = "SECU_spec",                 [53] = "SECU_spec",
-> -        [54] = "SECU_spec",
-> -        [56] = "SECU_spec",                 [57] = "SECU_spec",
-> -        [58] = "SECU_spec",                 [59] = "SECU_spec",
-> -    };
+>       static const char *cmd_abbrev[SDMMC_CMD_MAX] = {
+>           [18]    = "READ_MULTIPLE_BLOCK",
+> -                                            [21]    = "DPS_spec",
+>                                               [25]    = "WRITE_MULTIPLE_BLOCK",
+> -        [26]    = "MANUF_RSVD",
+> -        [40]    = "DPS_spec",
+> -        [60]    = "MANUF_RSVD",             [61]    = "MANUF_RSVD",
+> -        [62]    = "MANUF_RSVD",             [63]    = "MANUF_RSVD",
+>       };
 >       const SDProto *sdp = sd->proto;
 >   
->       if (sdp->acmd[cmd].handler) {
-> -        assert(!acmd_abbrev[cmd]);
->           return sdp->acmd[cmd].name;
->       }
->   
-> -    return acmd_abbrev[cmd] ? acmd_abbrev[cmd] : "UNKNOWN_ACMD";
-> +    return "UNKNOWN_ACMD";
->   }
->   
->   static uint8_t sd_get_dat_lines(SDState *sd)
 
 
