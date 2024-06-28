@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13D3B91BEDF
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jun 2024 14:44:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C01A91BED1
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jun 2024 14:43:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sNAwX-0004np-1d; Fri, 28 Jun 2024 08:43:09 -0400
+	id 1sNAww-0004qa-JI; Fri, 28 Jun 2024 08:43:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sNAwU-0004ml-53
- for qemu-devel@nongnu.org; Fri, 28 Jun 2024 08:43:06 -0400
-Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
+ id 1sNAwV-0004oB-QC
+ for qemu-devel@nongnu.org; Fri, 28 Jun 2024 08:43:07 -0400
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sNAwQ-0005eo-Rm
- for qemu-devel@nongnu.org; Fri, 28 Jun 2024 08:43:05 -0400
-Received: by mail-ed1-x52a.google.com with SMTP id
- 4fb4d7f45d1cf-57d4ee2aaabso685207a12.2
- for <qemu-devel@nongnu.org>; Fri, 28 Jun 2024 05:43:02 -0700 (PDT)
+ id 1sNAwT-0005fX-AM
+ for qemu-devel@nongnu.org; Fri, 28 Jun 2024 08:43:07 -0400
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-57d07f07a27so703178a12.3
+ for <qemu-devel@nongnu.org>; Fri, 28 Jun 2024 05:43:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719578581; x=1720183381; darn=nongnu.org;
+ d=linaro.org; s=google; t=1719578584; x=1720183384; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=bmUkQvx1dTB8+ePPVm90+LdKbwFZU9qtx5zavLenp5Q=;
- b=pSOcW5/vmKHE/qM/W1jqN4rsS89OBW9O3t4P2YIP/8xCgPkBUOZx24hG/2g3ma2Yvh
- 1QXIoU0uj71NbJFCwsMlzQxkNOML8O1GsSggm/zXw7bVMfDe8nCOERQT2kdhEB+Txh8n
- 1bGn8O5/cDbKfpqDMKxof2LU0pFZ/XUEwIlEoe5xXVMiT6FQ8rRWvuFhx4A7WazmiXhs
- 2w6bz5bdr5okEEaIx95Du99mBjCnIkGifXCrjFsU+Y3lommkbkkXs43sw3dl49hQHn9b
- k1oAUHYsFeL48o+0r2/zln1sYGiKtQhqq0k+uvY02UZ7/t2BqJh2MzljSoDj22vFCYpG
- XUiQ==
+ bh=WHuZmnhAdWHG3UIOg5pOVL+PmE5Wzgi3P02hFFcB2fk=;
+ b=OeBHdPtRwtgq0VJkvuv6b1btbC83mdHxaGT/XsPcS1fVToTe0km/az7/BnUXuaFe5I
+ wfZ88GjqN+toKzo1dvRe1RA9QtV0G/OZErezHCtjsyKKQ02DJU174USGrv7/OQN2ecLF
+ FoZuSb9q9cPiBot14qTs64B+3MfVbxk2Ak56zr9N5zsHQi2bCjfMboitNMNspcdkgNH0
+ /wg88X558gVlw5+0/nXciFbG12YxTpgGqbCGmK/MkTlZ6f3AkNoIp7JnILW6YNU2vFx6
+ GPGYn7VL8kJVOGozsMk12f1KJQ/mUSFJsSBLFfMrWKfMWr6VyLsNKQwQL71UK/Z6ZEtD
+ 1pVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719578581; x=1720183381;
+ d=1e100.net; s=20230601; t=1719578584; x=1720183384;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=bmUkQvx1dTB8+ePPVm90+LdKbwFZU9qtx5zavLenp5Q=;
- b=TTTSzO1I2pYRaNfRQyPshDG5YmKQfqUcX6vn4MiqVlst8zlKvkOWs97+WwH98eE4it
- 8KmxVeSmnQXXPPxtwkjxuW3E2+zT+cIthA4WuXwc73qyutVqvoL54KqmSx2wDcKeLW67
- ho1EN7VwBH60jgjEj5o6O5FL1ah/Fw/1lKr+qdktso0UaBNEi4Be2P4MbfUWIrPV2lOs
- rc19Iv02pzEqn/EcQTfEFrmHTSakX29RDbLson9b+9VB8SZM7TaEqOKwaIDakDgdPqDA
- 7m4cQGb8LJDEvObXs3Ft/ziLcdA+ExIUcmRlCipjffkmrWcSFzLfjak3Fvl89dQo2/0V
- t7jg==
-X-Gm-Message-State: AOJu0YzmnvQ4Kbaf3Yt2mi1LH1FRWrnHHK9lYmxaM36WDPEkE9/gcXBB
- EnFfO6muSxlNxdIiWk1Gh7OXZRJMhr+jl1spO0gbTak6V72DL7nXEi54ohw1Czw=
-X-Google-Smtp-Source: AGHT+IExDOg+4B1GItkum2PW4gtyVdJh0wbalWZQe1E69UXOv2qv1tIu8TUudMNmRRwGqmDDUo5Fgw==
-X-Received: by 2002:a50:c35b:0:b0:57c:6c1c:f942 with SMTP id
- 4fb4d7f45d1cf-57d4bdda616mr11042632a12.38.1719578581001; 
- Fri, 28 Jun 2024 05:43:01 -0700 (PDT)
+ bh=WHuZmnhAdWHG3UIOg5pOVL+PmE5Wzgi3P02hFFcB2fk=;
+ b=HnpIqizLLETnw3U4CIw5KYck9rsNN5lB4GrKa0/5AqXfVJihXasnAr2GCawx6OwIP+
+ tuVkNI8/2PpKYk5GOr/QO0eWfMNy+JJUv2W2Y8NjWAc5iUL8Ee7DWJn5s4v0vwQ9SpkC
+ jCgFeOSROXDz3mftCfopCwU5wdQPARGkPzmY9GSBdklTe4M+mgdHoWiA+Mk3mxov9gDy
+ fKq/7Sl094F60vRvFcp11vkIlFaOJUZus34xuyDGAkQYLtEOpJjC1R6mWH5In6e1RHMP
+ WOjDdd8U1Q9hOW22tWJ/aL8SuC22AbmEuK5eGzjp24d2wgpVm2myx9i1H5/zl1ZQf0Ri
+ 8inA==
+X-Gm-Message-State: AOJu0YwMy41Wb3MPCW9sxtiLw/pjZRRIUKlS8ydZzPxwROwyBmTagStO
+ IWFRSw+QNlHhgFMQn/xeIXTS8fdVNlMVKlReQB3NbxnhSPNcTk3eaSqEVG9itX8=
+X-Google-Smtp-Source: AGHT+IFe6RsSVULiEZ9TSzaDNcxNpoCit9aWaibpEZa+IWOdNprR2gR92o9RMSSsrQoXiPMK2L7NvQ==
+X-Received: by 2002:a05:6402:5216:b0:584:8fcd:260d with SMTP id
+ 4fb4d7f45d1cf-5848fcd26cfmr4530730a12.3.1719578583395; 
+ Fri, 28 Jun 2024 05:43:03 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-58612c835adsm982859a12.17.2024.06.28.05.42.59
+ 4fb4d7f45d1cf-58612c834ecsm984261a12.12.2024.06.28.05.42.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 28 Jun 2024 05:42:59 -0700 (PDT)
+ Fri, 28 Jun 2024 05:43:00 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 3FC425F958;
+ by draig.lan (Postfix) with ESMTP id 577735F9F9;
  Fri, 28 Jun 2024 13:42:59 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -73,24 +73,24 @@ Cc: David Hildenbrand <david@redhat.com>, Beraldo Leal <bleal@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Thomas Huth <thuth@redhat.com>
-Subject: [PATCH 03/23] testing: restore some testing for i686
-Date: Fri, 28 Jun 2024 13:42:38 +0100
-Message-Id: <20240628124258.832466-4-alex.bennee@linaro.org>
+Subject: [PATCH 04/23] tracepoints: move physmem trace points
+Date: Fri, 28 Jun 2024 13:42:39 +0100
+Message-Id: <20240628124258.832466-5-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240628124258.832466-1-alex.bennee@linaro.org>
 References: <20240628124258.832466-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::531;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x531.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,48 +106,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The commit 4f9a8315e6 (gitlab-ci.d/crossbuilds: Drop the i386 system
-emulation job) was a little too aggressive dropping testing for 32 bit
-system builds. Partially revert but using the debian-i686 cross build
-images this time as fedora has deprecated the 32 bit stuff.
+They don't need to be in the global trace-events file and can have a
+local trace header. Also add address_space_map tracepoint for tracking
+mapping behaviour.
 
-As the SEV breakage gets in the way and its TCG issues we want to
-catch I've added --disable-kvm to the build.
-
-Reported-by: Richard Henderson <richard.henderson@linaro.org>
-Suggested-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-
 ---
-v2
-  - add --disable-kvm
-  - currently blocked by https://gitlab.com/qemu-project/qemu/-/issues/2413
----
- .gitlab-ci.d/crossbuilds.yml | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ system/physmem.c    | 6 ++++--
+ system/trace-events | 6 ++++++
+ trace-events        | 5 -----
+ 3 files changed, 10 insertions(+), 7 deletions(-)
 
-diff --git a/.gitlab-ci.d/crossbuilds.yml b/.gitlab-ci.d/crossbuilds.yml
-index 47bdb99b5b..3de0341afe 100644
---- a/.gitlab-ci.d/crossbuilds.yml
-+++ b/.gitlab-ci.d/crossbuilds.yml
-@@ -37,6 +37,17 @@ cross-arm64-kvm-only:
-     IMAGE: debian-arm64-cross
-     EXTRA_CONFIGURE_OPTS: --disable-tcg --without-default-features
+diff --git a/system/physmem.c b/system/physmem.c
+index 33d09f7571..17c9c70f97 100644
+--- a/system/physmem.c
++++ b/system/physmem.c
+@@ -53,7 +53,7 @@
+ #include "sysemu/hostmem.h"
+ #include "sysemu/hw_accel.h"
+ #include "sysemu/xen-mapcache.h"
+-#include "trace/trace-root.h"
++#include "trace.h"
  
-+cross-i686-system:
-+  extends:
-+    - .cross_system_build_job
-+    - .cross_test_artifacts
-+  needs:
-+    job: i686-debian-cross-container
-+  variables:
-+    IMAGE: debian-i686-cross
-+    EXTRA_CONFIGURE_OPTS: --disable-kvm
-+    MAKE_CHECK_ARGS: check-qtest
+ #ifdef CONFIG_FALLOCATE_PUNCH_HOLE
+ #include <linux/falloc.h>
+@@ -1885,7 +1885,7 @@ static void ram_block_add(RAMBlock *new_block, Error **errp)
+     } else { /* list is empty */
+         QLIST_INSERT_HEAD_RCU(&ram_list.blocks, new_block, next);
+     }
+-    ram_list.mru_block = NULL;
++    qatomic_rcu_set(&ram_list.mru_block, NULL);
+ 
+     /* Write list before version */
+     smp_wmb();
+@@ -3193,6 +3193,8 @@ void *address_space_map(AddressSpace *as,
+     MemoryRegion *mr;
+     FlatView *fv;
+ 
++    trace_address_space_map(as, addr, len, is_write, *(uint32_t *) &attrs);
 +
- cross-i686-user:
-   extends:
-     - .cross_user_build_job
+     if (len == 0) {
+         return NULL;
+     }
+diff --git a/system/trace-events b/system/trace-events
+index 69c9044151..2ed1d59b1f 100644
+--- a/system/trace-events
++++ b/system/trace-events
+@@ -21,6 +21,12 @@ flatview_destroy(void *view, void *root) "%p (root %p)"
+ flatview_destroy_rcu(void *view, void *root) "%p (root %p)"
+ global_dirty_changed(unsigned int bitmask) "bitmask 0x%"PRIx32
+ 
++# physmem.c
++address_space_map(void *as, uint64_t addr, uint64_t len, bool is_write, uint32_t attrs) "as:%p addr 0x%"PRIx64":%"PRIx64" write:%d attrs:0x%x"
++find_ram_offset(uint64_t size, uint64_t offset) "size: 0x%" PRIx64 " @ 0x%" PRIx64
++find_ram_offset_loop(uint64_t size, uint64_t candidate, uint64_t offset, uint64_t next, uint64_t mingap) "trying size: 0x%" PRIx64 " @ 0x%" PRIx64 ", offset: 0x%" PRIx64" next: 0x%" PRIx64 " mingap: 0x%" PRIx64
++ram_block_discard_range(const char *rbname, void *hva, size_t length, bool need_madvise, bool need_fallocate, int ret) "%s@%p + 0x%zx: madvise: %d fallocate: %d ret: %d"
++
+ # cpus.c
+ vm_stop_flush_all(int ret) "ret %d"
+ 
+diff --git a/trace-events b/trace-events
+index dd318ed1af..9cb96f64c4 100644
+--- a/trace-events
++++ b/trace-events
+@@ -37,11 +37,6 @@ dma_complete(void *dbs, int ret, void *cb) "dbs=%p ret=%d cb=%p"
+ dma_blk_cb(void *dbs, int ret) "dbs=%p ret=%d"
+ dma_map_wait(void *dbs) "dbs=%p"
+ 
+-# exec.c
+-find_ram_offset(uint64_t size, uint64_t offset) "size: 0x%" PRIx64 " @ 0x%" PRIx64
+-find_ram_offset_loop(uint64_t size, uint64_t candidate, uint64_t offset, uint64_t next, uint64_t mingap) "trying size: 0x%" PRIx64 " @ 0x%" PRIx64 ", offset: 0x%" PRIx64" next: 0x%" PRIx64 " mingap: 0x%" PRIx64
+-ram_block_discard_range(const char *rbname, void *hva, size_t length, bool need_madvise, bool need_fallocate, int ret) "%s@%p + 0x%zx: madvise: %d fallocate: %d ret: %d"
+-
+ # job.c
+ job_state_transition(void *job,  int ret, const char *legal, const char *s0, const char *s1) "job %p (ret: %d) attempting %s transition (%s-->%s)"
+ job_apply_verb(void *job, const char *state, const char *verb, const char *legal) "job %p in state %s; applying verb %s (%s)"
 -- 
 2.39.2
 
