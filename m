@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3741C91BED6
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jun 2024 14:44:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3F6991BEEB
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jun 2024 14:45:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sNAxB-0005JU-04; Fri, 28 Jun 2024 08:43:50 -0400
+	id 1sNAxq-00069G-NN; Fri, 28 Jun 2024 08:44:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sNAwa-0004qb-0k
- for qemu-devel@nongnu.org; Fri, 28 Jun 2024 08:43:13 -0400
-Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
+ id 1sNAwh-0004tV-OF
+ for qemu-devel@nongnu.org; Fri, 28 Jun 2024 08:43:23 -0400
+Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sNAwX-0005i0-Cf
- for qemu-devel@nongnu.org; Fri, 28 Jun 2024 08:43:10 -0400
-Received: by mail-ed1-x52a.google.com with SMTP id
- 4fb4d7f45d1cf-57cc1c00ba6so804009a12.1
- for <qemu-devel@nongnu.org>; Fri, 28 Jun 2024 05:43:08 -0700 (PDT)
+ id 1sNAwY-0005ip-Ez
+ for qemu-devel@nongnu.org; Fri, 28 Jun 2024 08:43:13 -0400
+Received: by mail-ed1-x52e.google.com with SMTP id
+ 4fb4d7f45d1cf-57d2fc03740so698949a12.0
+ for <qemu-devel@nongnu.org>; Fri, 28 Jun 2024 05:43:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719578587; x=1720183387; darn=nongnu.org;
+ d=linaro.org; s=google; t=1719578589; x=1720183389; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=3DQ61RwLoSVOVHG6QMt3R+zEIysd/qF4AyFLX7PuacQ=;
- b=JOJ3zBO9t2biOzQayGUbVnjUF+veRAHqJ8NYy5Yh64rB4MKzXV3wyly5bNMx508sVp
- RcUzjbPrE47ledquJk+BowuEeSRBtWs2FJg/XYmg8/oSFmyGT30RrvkYo+1PaE/OgXC0
- zoDnJ8h+YTjcBhjDFbqYxVlVHp5o+WfU5dbG0Yx5SxZlEw03YADYpIi21y53ntNgcZCP
- 3iGr30T9NkDY+G/QjrbQb9ivJXfZFNIFESurlxasMp8zoFPDEw98wRAGKLKSX/0jpe2V
- FBZne0EDR6S2EF703izzCO7o1d2vYoAyf/MErTNMpHqFhE1u2J7JULwV9zgPihiUqqcy
- xTRA==
+ bh=/lQrpNj9Yq6e2VZHJs41tWCzx2SCmT2FMLZDJQM+poI=;
+ b=aDSVYpI6TDULZNdIwdKhalEMtN8zslvehkhc7LL62xAXMcCXO+gIMRYYHKQzhc9+lV
+ hsVXCgjcv01V0OlphTo6ENmcB+M15Fclgzc8e4TzvxNEF0Xqp0gqsooAW4Ljnvxrh7Bp
+ Ri7i0Qv++oWx3DrVQHC22owXLHRW0DN6gpBCNFeBK0FXCGTcwDtdOjfANB7z70zppGRG
+ 48i/Mof+bnksWoH3L6Aplyrqi4CAunL+lNZS38yL/Hyi3Pw6oAG4wEBjUjt6HDmR1e9t
+ BdmmyL8w8bbEskFIWM+Qm+4Rwf2DcD/Ylwy5r7/NLSXxwhMHJxLDuLLjokw2917zBCFz
+ kulw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719578587; x=1720183387;
+ d=1e100.net; s=20230601; t=1719578589; x=1720183389;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3DQ61RwLoSVOVHG6QMt3R+zEIysd/qF4AyFLX7PuacQ=;
- b=j6DPS38J0QA5gJzVLNU7qCPf0+CVV84hpr0eY/cKZYj7hyoocDzj0gdNkm748vpJwb
- 3CPyFkz6sdbT1hLhGca5Esg5D6QOtB4X7EdbN7UqQbCuaTPnGkFFEIpTi+KnvNP8gfwN
- mGO3qiw6GGdav9H3sn2uiBiz92UWGrRtiE9slDzhkzs1lDHmpcAXu4p3Dke7DE0Qf9hk
- V+QG8fOlAAs61j5YKt5V9ip4ZVZwnvlsmDkv4SZ34EjgRA6c2EE1/LXSzA6JXSp3QzGc
- kFM40LeM7yTTwG7tjkrbK0SJsGf809fm5U9PbFHkhBtzPwE5orwJAN8rAHBMTtE8f5jL
- ZNOQ==
-X-Gm-Message-State: AOJu0Yw65POfzee4V4R4QltEFJx6DTxx896102NfDTnobyN2+2j69FUB
- MFEJxWGEfcT3eDO9GGS/kRXueaPq4ULsWLyByarGFjDmE+3J20DeVM4RzhDSUdQ=
-X-Google-Smtp-Source: AGHT+IE/8csk/xO/MRYnaLNzQmnsiJuX+9poWWVIPomu9QcaVkLrD85zr0uNiuFfwH3O2tH660bY8Q==
-X-Received: by 2002:a17:907:268e:b0:a72:ae79:8350 with SMTP id
- a640c23a62f3a-a72ae798498mr127887066b.29.1719578586413; 
- Fri, 28 Jun 2024 05:43:06 -0700 (PDT)
+ bh=/lQrpNj9Yq6e2VZHJs41tWCzx2SCmT2FMLZDJQM+poI=;
+ b=KRfixRe4hRrrX4GhW+UFkTOLOHG20IS5HX9ypOBKfpq4jPqVoFLs9x8qnvO138rYvE
+ joSHn9zQEgoxPjvqp1cifY+rOodIstihLZJ6jwaT9rXduV+Z795x+sQUgxbif79J70G6
+ hVMvQvXncPYaJWDMYSMfsI9iH4rr6qn763rMJJcJbm6wCPKCzUNN3r7gz9NdWMRxrJcD
+ CZUp9JP7kOYcjOldzZFZIdlTeAnZRJXOXpOwimYsfHdYyX695mi6aQhastV3aMY0j+DB
+ DXc84Rdpx9gxQBm3MtFsZ9kvEIUKWmzc9K6Yl/UDwcDdkfj59PbZ8Ca7nljnb3yRqBgu
+ wA2w==
+X-Gm-Message-State: AOJu0YwVKRWcgWDHj3zBGZbW5NsKDpj14nFeI63lMPw4zORqdvFRH0to
+ vSd10omxSENCKAWbze9z1+zd74XU6ARy46qHArXs895uSODWcQ0QoZ8WgONCIT8=
+X-Google-Smtp-Source: AGHT+IGMunC04TdtPY6LkRLCf0WZt9814RwPekLOjvRi1GtNFOE3UfHThvaqo1gknzXR9el/Nzk8RA==
+X-Received: by 2002:a50:9e84:0:b0:57c:60f0:98bc with SMTP id
+ 4fb4d7f45d1cf-57d4bd69fa4mr11371811a12.11.1719578588583; 
+ Fri, 28 Jun 2024 05:43:08 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a72aaf6295csm76398266b.72.2024.06.28.05.43.01
+ 4fb4d7f45d1cf-58613816055sm980993a12.46.2024.06.28.05.43.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 28 Jun 2024 05:43:03 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id E64D55FA37;
- Fri, 28 Jun 2024 13:42:59 +0100 (BST)
+ by draig.lan (Postfix) with ESMTP id 08A0A5FA38;
+ Fri, 28 Jun 2024 13:43:00 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: David Hildenbrand <david@redhat.com>, Beraldo Leal <bleal@redhat.com>,
@@ -73,17 +73,17 @@ Cc: David Hildenbrand <david@redhat.com>, Beraldo Leal <bleal@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Thomas Huth <thuth@redhat.com>
-Subject: [PATCH 10/23] plugins/lockstep: make mixed-mode safe
-Date: Fri, 28 Jun 2024 13:42:45 +0100
-Message-Id: <20240628124258.832466-11-alex.bennee@linaro.org>
+Subject: [PATCH 11/23] plugins/lockstep: mention the one-insn-per-tb option
+Date: Fri, 28 Jun 2024 13:42:46 +0100
+Message-Id: <20240628124258.832466-12-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240628124258.832466-1-alex.bennee@linaro.org>
 References: <20240628124258.832466-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,37 +106,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The ExecState is shared across the socket and if we want to compare
-say 64 bit and 32 bit binaries we need the two to use the same sizes
-for things.
+This really helps with lockstep although its super slow on big jobs.
 
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- contrib/plugins/lockstep.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ contrib/plugins/lockstep.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/contrib/plugins/lockstep.c b/contrib/plugins/lockstep.c
-index 111ec3fa27..761bcdf363 100644
+index 761bcdf363..353bf12dfb 100644
 --- a/contrib/plugins/lockstep.c
 +++ b/contrib/plugins/lockstep.c
-@@ -57,7 +57,7 @@ typedef struct {
- /* The execution state we compare */
- typedef struct {
-     uint64_t pc;
--    unsigned long insn_count;
-+    uint64_t insn_count;
- } ExecState;
- 
- typedef struct {
-@@ -148,7 +148,7 @@ static void report_divergance(ExecState *us, ExecState *them)
- 
-         g_string_printf(out,
-                         "Δ insn_count @ 0x%016" PRIx64
--                        " (%ld) vs 0x%016" PRIx64 " (%ld)\n",
-+                        " (%"PRId64") vs 0x%016" PRIx64 " (%"PRId64")\n",
-                         us->pc, us->insn_count, them->pc, them->insn_count);
- 
-         for (entry = log, i = 0;
+@@ -14,7 +14,8 @@
+  * particular run may execute the exact same sequence of blocks. An
+  * asynchronous event (for example X11 graphics update) may cause a
+  * block to end early and a new partial block to start. This means
+- * serial only test cases are a better bet. -d nochain may also help.
++ * serial only test cases are a better bet. -d nochain may also help
++ * as well as -accel tcg,one-insn-per-tb=on
+  *
+  * This code is not thread safe!
+  *
 -- 
 2.39.2
 
