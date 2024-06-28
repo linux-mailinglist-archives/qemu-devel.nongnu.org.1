@@ -2,83 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3475C91C4F3
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jun 2024 19:32:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89D8991C4F2
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jun 2024 19:32:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sNFPW-0005ZP-V2; Fri, 28 Jun 2024 13:29:22 -0400
+	id 1sNFPZ-0005a3-2i; Fri, 28 Jun 2024 13:29:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sNFPG-0005Xx-R4
- for qemu-devel@nongnu.org; Fri, 28 Jun 2024 13:29:07 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1sNFPM-0005YO-P0
+ for qemu-devel@nongnu.org; Fri, 28 Jun 2024 13:29:15 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sNFPF-00029R-DY
- for qemu-devel@nongnu.org; Fri, 28 Jun 2024 13:29:06 -0400
+ id 1sNFPI-00029Z-In
+ for qemu-devel@nongnu.org; Fri, 28 Jun 2024 13:29:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719595744;
+ s=mimecast20190719; t=1719595746;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=INLXKQAnxyLlbt49tJcziQ4qLBnfUf83esez+1sBRI0=;
- b=L7n14Oq3gXom2EdgM4JHElORPY8gYv7PRuMZbbcV8bnpJ87o6zWw0mCDoRLlRPWVv8B65H
- qJT/09/WpSHCWhdxG07CgGn9mUtB+i/5PQYhwwB0xhNKNzD1DalvFfD6hT8wAfM0vGrp75
- JXCer4q+wwvSOP14ZOs9kNrjtQSyW/8=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=LuxMfRanQpqIe+rAUiRiqqmIxZ2Dd4XmJCnCNtxApfk=;
+ b=UIrZvsRWY+wmDspw9eyZP3FivYOihlTmPukyZ08djCKAjnmIQJHbvSJ1T0g9f/A//imxtM
+ etHNqp9We2V54H/o0FcvRBV4bECINzkzzNvFmDAfZ+4qyokXYUXZNSHtrSe6qaAG/1e6El
+ UZVAK3q6wmnEuo6wtZrmtuoZRk8pMrc=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-352-v9FYkyJPMmGOAjA7UA7GRg-1; Fri, 28 Jun 2024 13:29:02 -0400
-X-MC-Unique: v9FYkyJPMmGOAjA7UA7GRg-1
-Received: by mail-ed1-f69.google.com with SMTP id
- 4fb4d7f45d1cf-57c6979daf7so702072a12.1
- for <qemu-devel@nongnu.org>; Fri, 28 Jun 2024 10:29:02 -0700 (PDT)
+ us-mta-127-PvG9ViSXOXyMdoi4TXDp7A-1; Fri, 28 Jun 2024 13:29:04 -0400
+X-MC-Unique: PvG9ViSXOXyMdoi4TXDp7A-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-a729da8fbf1so242389366b.1
+ for <qemu-devel@nongnu.org>; Fri, 28 Jun 2024 10:29:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719595740; x=1720200540;
+ d=1e100.net; s=20230601; t=1719595743; x=1720200543;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=INLXKQAnxyLlbt49tJcziQ4qLBnfUf83esez+1sBRI0=;
- b=f4DzxdS1gLXSgAseQq1ZtNqpgiyDEx/pXk7In8/W0JORFDz5gpt1MmQpV5wAFthJEH
- WtLdffB9eenc1qYVvjXvu1rllTZcbfB59NTxLFfdJWk6cj/TogP8T6KvDediVMUvOgVZ
- 0ZCaLXAllUZgfa3UhMIceCcnOprWBue+fqRsfeF9Bzqbt1/U7e3Oea6zSSy4VMsUVstx
- KYx2F4b78/wDL6JZUnSGApbxoLS3dbRWJ+A4buzNhT0a2wrv573yr+HLAzATqgt/5FQp
- DbI7y884GF8Y+3W1jiW9GazGReiz5OyuTy2MZ42MYyFfx6y8LZH97no/ekiXFUXv1xk7
- z9gQ==
-X-Gm-Message-State: AOJu0YzQ3cfSR9zL31cKFvHWRl4xXUw9qt0v7x4OvdzBGSws0nx2pjX9
- poyCEwrqElCh4pqnoAoNXw1Dg48xvqMm5RYWInUxLggNgBj2xpWhGHyqQlOJWp6HGDXQJsL53Lb
- 8rjlrt/IvzJoiYySUH6HemR4Ct/6flPIJCB55KFriWTgRPmbr0S7oqfYEiy4NFLhexIj7iTNW30
- yjWMKqXpfBbq6Iqx9fayt9kq2QFXmzw0aw47tD
-X-Received: by 2002:a05:6402:2106:b0:586:1d26:1b4c with SMTP id
- 4fb4d7f45d1cf-5861d26215fmr2373241a12.37.1719595740386; 
- Fri, 28 Jun 2024 10:29:00 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF/5gebsMgK2FjR8MWaXrRdFQ5/t7sozq2ESEK2FoeFROhhvggmbuJbBMICn+ca6F8vNCPeDQ==
-X-Received: by 2002:a05:6402:2106:b0:586:1d26:1b4c with SMTP id
- 4fb4d7f45d1cf-5861d26215fmr2373226a12.37.1719595739986; 
- Fri, 28 Jun 2024 10:28:59 -0700 (PDT)
+ bh=LuxMfRanQpqIe+rAUiRiqqmIxZ2Dd4XmJCnCNtxApfk=;
+ b=s4olnSMGNNSwfqFytZWmilFAVsjacqCnXnechVreRO5MD0mqyBtNGiF3IGwejVKzOc
+ lXaZy8uRGp2X32jlD9hlWFd9C8hATbTP2rQ8teqT3RWGPD3Hdy8RUtA8jYitU8fLBtWu
+ NGtGwa/J8gHEO0I1DD/ZzHARHpb9U/BPNfqb5x8Y9q/YkTq2Oiw1714MmF0qeSMAK8Mo
+ TGuuyiZTTv7h8H5/9EAOaTnTn5GjbLwEPCAGv+qryi8aIjJeGyBY/CArreG8vYIQr1j3
+ fq4acHmJyBb4pDDmnHT8M4G+G1GjeOnYKbBJ58qkpJBehRdfOJSmv1R6hPz7d46Zt9rb
+ 51gg==
+X-Gm-Message-State: AOJu0Yzx7tWf2DCnrARZ327obcFfQVny92TFiTVFlYENOxqL4O6xBzDT
+ BvOlLlaaVJ26Ecf1AOgz62Yk0MVSfouYkfDEdAq0ISqihuBD5ZGJb5JMi9ARojNqyDm6HGM4/Np
+ 7toawcIXLocr8dn14ntANMGvRs64OtBuGzR6Jvn1TTDHWZJ2mhWPw0dVBp8qbQ7QGW3y4BwkaAn
+ MjNBOLP9fACi9MjivMV7Y/mtXJTf+1i2b2X1e5
+X-Received: by 2002:a17:906:1dc7:b0:a72:9077:7172 with SMTP id
+ a640c23a62f3a-a72aeeb156amr156617466b.19.1719595743011; 
+ Fri, 28 Jun 2024 10:29:03 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEqqpab9z0zqzegpxovk0mznubm8DA4sMAf4arQpkxJ++AIDETRQpl705KbctmZ6U0/i/s5hg==
+X-Received: by 2002:a17:906:1dc7:b0:a72:9077:7172 with SMTP id
+ a640c23a62f3a-a72aeeb156amr156616566b.19.1719595742617; 
+ Fri, 28 Jun 2024 10:29:02 -0700 (PDT)
 Received: from avogadro.local ([151.62.196.71])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-58612c835dfsm1273877a12.20.2024.06.28.10.28.58
+ a640c23a62f3a-a72ab0b889dsm96555866b.225.2024.06.28.10.29.01
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 28 Jun 2024 10:28:58 -0700 (PDT)
+ Fri, 28 Jun 2024 10:29:01 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>
-Subject: [PULL 01/23] configure: detect --cpu=mipsisa64r6
-Date: Fri, 28 Jun 2024 19:28:33 +0200
-Message-ID: <20240628172855.1147598-2-pbonzini@redhat.com>
+Subject: [PULL 02/23] Revert "host/i386: assume presence of POPCNT"
+Date: Fri, 28 Jun 2024 19:28:34 +0200
+Message-ID: <20240628172855.1147598-3-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240628172855.1147598-1-pbonzini@redhat.com>
 References: <20240628172855.1147598-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -22
 X-Spam_score: -2.3
@@ -102,28 +100,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Treat it as a MIPS64 machine.
+This reverts commit 45ccdbcb24baf99667997fac5cf60318e5e7db51.
+The x86-64 instruction set can now be tuned down to x86-64 v1
+or i386 Pentium Pro.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- configure | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ host/include/i386/host/cpuinfo.h | 1 +
+ tcg/i386/tcg-target.h            | 5 +++--
+ util/cpuinfo-i386.c              | 1 +
+ 3 files changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/configure b/configure
-index 5ad1674ca5f..8b6a2f16ceb 100755
---- a/configure
-+++ b/configure
-@@ -450,7 +450,7 @@ case "$cpu" in
-     linux_arch=loongarch
-     ;;
+diff --git a/host/include/i386/host/cpuinfo.h b/host/include/i386/host/cpuinfo.h
+index c1e94d75ce1..72f6fad61e5 100644
+--- a/host/include/i386/host/cpuinfo.h
++++ b/host/include/i386/host/cpuinfo.h
+@@ -11,6 +11,7 @@
+ #define CPUINFO_ALWAYS          (1u << 0)  /* so cpuinfo is nonzero */
+ #define CPUINFO_MOVBE           (1u << 2)
+ #define CPUINFO_LZCNT           (1u << 3)
++#define CPUINFO_POPCNT          (1u << 4)
+ #define CPUINFO_BMI1            (1u << 5)
+ #define CPUINFO_BMI2            (1u << 6)
+ #define CPUINFO_AVX1            (1u << 9)
+diff --git a/tcg/i386/tcg-target.h b/tcg/i386/tcg-target.h
+index ecc69827287..2f67a97e059 100644
+--- a/tcg/i386/tcg-target.h
++++ b/tcg/i386/tcg-target.h
+@@ -111,6 +111,7 @@ typedef enum {
+ #endif
  
--  mips64*)
-+  mips64*|mipsisa64*)
-     cpu=mips64
-     host_arch=mips
-     linux_arch=mips
+ #define have_bmi1         (cpuinfo & CPUINFO_BMI1)
++#define have_popcnt       (cpuinfo & CPUINFO_POPCNT)
+ #define have_avx1         (cpuinfo & CPUINFO_AVX1)
+ #define have_avx2         (cpuinfo & CPUINFO_AVX2)
+ #define have_movbe        (cpuinfo & CPUINFO_MOVBE)
+@@ -142,7 +143,7 @@ typedef enum {
+ #define TCG_TARGET_HAS_nor_i32          0
+ #define TCG_TARGET_HAS_clz_i32          1
+ #define TCG_TARGET_HAS_ctz_i32          1
+-#define TCG_TARGET_HAS_ctpop_i32        1
++#define TCG_TARGET_HAS_ctpop_i32        have_popcnt
+ #define TCG_TARGET_HAS_deposit_i32      1
+ #define TCG_TARGET_HAS_extract_i32      1
+ #define TCG_TARGET_HAS_sextract_i32     1
+@@ -177,7 +178,7 @@ typedef enum {
+ #define TCG_TARGET_HAS_nor_i64          0
+ #define TCG_TARGET_HAS_clz_i64          1
+ #define TCG_TARGET_HAS_ctz_i64          1
+-#define TCG_TARGET_HAS_ctpop_i64        1
++#define TCG_TARGET_HAS_ctpop_i64        have_popcnt
+ #define TCG_TARGET_HAS_deposit_i64      1
+ #define TCG_TARGET_HAS_extract_i64      1
+ #define TCG_TARGET_HAS_sextract_i64     0
+diff --git a/util/cpuinfo-i386.c b/util/cpuinfo-i386.c
+index 8f2694d88f2..6d474a6259a 100644
+--- a/util/cpuinfo-i386.c
++++ b/util/cpuinfo-i386.c
+@@ -35,6 +35,7 @@ unsigned __attribute__((constructor)) cpuinfo_init(void)
+         __cpuid(1, a, b, c, d);
+ 
+         info |= (c & bit_MOVBE ? CPUINFO_MOVBE : 0);
++        info |= (c & bit_POPCNT ? CPUINFO_POPCNT : 0);
+         info |= (c & bit_PCLMUL ? CPUINFO_PCLMUL : 0);
+ 
+         /* NOTE: our AES support requires SSSE3 (PSHUFB) as well. */
 -- 
 2.45.2
 
