@@ -2,87 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A60F091C1D3
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jun 2024 16:56:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F90991C1DB
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jun 2024 16:58:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sND0y-0006Gj-B1; Fri, 28 Jun 2024 10:55:52 -0400
+	id 1sND2f-0007BG-DS; Fri, 28 Jun 2024 10:57:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1sND0w-0006GW-Qn
- for qemu-devel@nongnu.org; Fri, 28 Jun 2024 10:55:50 -0400
-Received: from mail-io1-xd36.google.com ([2607:f8b0:4864:20::d36])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1sND0v-0002zM-6S
- for qemu-devel@nongnu.org; Fri, 28 Jun 2024 10:55:50 -0400
-Received: by mail-io1-xd36.google.com with SMTP id
- ca18e2360f4ac-7f615d04a32so36650639f.2
- for <qemu-devel@nongnu.org>; Fri, 28 Jun 2024 07:55:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719586548; x=1720191348; darn=nongnu.org;
- h=content-transfer-encoding:content-language:in-reply-to:mime-version
- :user-agent:date:message-id:from:references:cc:to:subject:from:to:cc
- :subject:date:message-id:reply-to;
- bh=ZTrPQ7yE+Qqexf1Etg+iaLBPPpCp419mlmCi5xZYCts=;
- b=o2NzDPGHYuhJrIXMMVI3hmts8UUDjwebeJ/OVnk4CqPuiVb71aYtGNXH53US4nu1J8
- MqMvcPc33xo6esakVw7vBC/746vOjBxltFVY3hj3gtTZrF1QKb1GulW6nrSc7q+magsd
- 8xaZeqBXy6yMYjxZUCpfs1xDfcvsYeASN/zEqACRiJCK0rReYmNHIlpbmK202VKXQPRr
- JcGGXUBNkSuh7R60Jx2Sxu0hyZfyqbOOwgnThPv3H89KVMynWlXskv10YIvt5ofwMa4U
- atfvVFs+aBYXHw7tCNOhZK/XseNSaCDK3smuERqGzQxhtZDKaPDWHDJUhsj3CTz8bflv
- OkJw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719586548; x=1720191348;
- h=content-transfer-encoding:content-language:in-reply-to:mime-version
- :user-agent:date:message-id:from:references:cc:to:subject
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ZTrPQ7yE+Qqexf1Etg+iaLBPPpCp419mlmCi5xZYCts=;
- b=NyYe7hv3FlQMDgmXjTTXO8we5KZwEddjbpe5eeSndBiOPwkW+qMpAMG8wArUwdFtUr
- Yc9+P7zLlnyZsO5RCDelrJPG2XoK5eaMpVFI28fkexn9yCyJ9soXEUH9Pjri9g/kCvUv
- 47h2wRnajFnEBmwNtkQuPXFRBQ9uDLVJPuCgNHBsheEz3pC7lBZlReK6H9Uvze8NtEu8
- FE2R9lja1ACW1qzPdyHp6qve9q7l0Gt6iOqlg9JdZJ5LC+zEWVVf2uzuXo/tjQ697ReX
- 6gPizpJYKj7MfGHC5WoJ2/XobaEGaXWG8Qg4WhtyqqLTlyOiLQwbnqwHwW0FVc99P2m+
- IWfw==
-X-Gm-Message-State: AOJu0YxAPmdmyT2DSHcLGTvwT1Juzpy1YTWtxKuqeX7PheRDt55sLfbR
- mIAFw4wdAO4WuErAshrOrhqeYAlmuA5I0VK0MSwEY8dsZ41Hppu70aJWMAXLagk=
-X-Google-Smtp-Source: AGHT+IG55lVOHQ6SOlw198nXB1Hp2XEOhUdfVVLJVqPgqKTRm7pxVBBTyk4BpjAh+UNnAifXqp/oeA==
-X-Received: by 2002:a5e:9411:0:b0:7f6:1da5:98a1 with SMTP id
- ca18e2360f4ac-7f61da599bdmr253291139f.21.1719586547847; 
- Fri, 28 Jun 2024 07:55:47 -0700 (PDT)
-Received: from [192.168.0.102] ([191.205.218.108])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-708043b7100sm1738137b3a.142.2024.06.28.07.55.45
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 28 Jun 2024 07:55:47 -0700 (PDT)
-Subject: Re: [PATCH v6 06/11] target/arm: Factor out code for setting MTE TCF0
- field
-To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org, philmd@linaro.org, richard.henderson@linaro.org,
- peter.maydell@linaro.org
-References: <20240628050850.536447-1-gustavo.romero@linaro.org>
- <20240628050850.536447-7-gustavo.romero@linaro.org>
- <87zfr5nu0z.fsf@draig.linaro.org>
-From: Gustavo Romero <gustavo.romero@linaro.org>
-Message-ID: <be8b6f51-300e-3ae8-b2c3-f85f70b0ad46@linaro.org>
-Date: Fri, 28 Jun 2024 11:55:44 -0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+ (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
+ id 1sND2Z-0007AZ-TK
+ for qemu-devel@nongnu.org; Fri, 28 Jun 2024 10:57:31 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
+ id 1sND2X-00038R-BT
+ for qemu-devel@nongnu.org; Fri, 28 Jun 2024 10:57:30 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1719586645;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=V9RUKIFtXdzZ3RWQjOxVMIzffGFa+x7jc27pv20LkH4=;
+ b=Aokg6YntX1DtFvPq6EVFMlfkJumislVamIvJb2CYbjdjFaZVVh7wjIXv7GNGnuiiJhuHEK
+ zg2HMEVbOaFLHMbkBSBvPe+9vGTxgK2nsEipKnA1JSf57XncZ/naSvAgUOq5CyqidHIDBf
+ TTByk5PCB6nOtChoeRViTaTwbNT/vcU=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-230-9WYA_QVzP7mklUtBQPEhFw-1; Fri,
+ 28 Jun 2024 10:57:21 -0400
+X-MC-Unique: 9WYA_QVzP7mklUtBQPEhFw-1
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 744AE19560AD; Fri, 28 Jun 2024 14:57:20 +0000 (UTC)
+Received: from localhost.localdomain (unknown [10.45.224.245])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id D1ED419560A3; Fri, 28 Jun 2024 14:57:16 +0000 (UTC)
+From: Albert Esteve <aesteve@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: jasowang@redhat.com, david@redhat.com, slp@redhat.com,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ stefanha@redhat.com, "Michael S. Tsirkin" <mst@redhat.com>,
+ Albert Esteve <aesteve@redhat.com>
+Subject: [RFC PATCH v2 0/5] vhost-user: Add SHMEM_MAP/UNMAP requests
+Date: Fri, 28 Jun 2024 16:57:05 +0200
+Message-ID: <20240628145710.1516121-1-aesteve@redhat.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-In-Reply-To: <87zfr5nu0z.fsf@draig.linaro.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::d36;
- envelope-from=gustavo.romero@linaro.org; helo=mail-io1-xd36.google.com
-X-Spam_score_int: -40
-X-Spam_score: -4.1
-X-Spam_bar: ----
-X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.965,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=aesteve@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
+X-Spam_bar: --
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.206,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,64 +80,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Alex,
+Hi all,
 
-On 6/28/24 9:14 AM, Alex Bennée wrote:
-> Gustavo Romero <gustavo.romero@linaro.org> writes:
-> 
->> Factor out the code used for setting the MTE TCF0 field from the prctl
->> code into a convenient function. Other subsystems, like gdbstub, need to
->> set this field as well, so keep it as a separate function to avoid
->> duplication and ensure consistency in how this field is set across the
->> board.
->>
->> Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
->> ---
->>   linux-user/aarch64/meson.build       |  2 ++
->>   linux-user/aarch64/mte_user_helper.c | 34 ++++++++++++++++++++++++++++
->>   linux-user/aarch64/mte_user_helper.h | 25 ++++++++++++++++++++
->>   linux-user/aarch64/target_prctl.h    | 22 ++----------------
->>   4 files changed, 63 insertions(+), 20 deletions(-)
->>   create mode 100644 linux-user/aarch64/mte_user_helper.c
->>   create mode 100644 linux-user/aarch64/mte_user_helper.h
->>
->> diff --git a/linux-user/aarch64/meson.build b/linux-user/aarch64/meson.build
->> index 248c578d15..f75bb3cd75 100644
->> --- a/linux-user/aarch64/meson.build
->> +++ b/linux-user/aarch64/meson.build
->> @@ -9,3 +9,5 @@ vdso_le_inc = gen_vdso.process('vdso-le.so',
->>                                  extra_args: ['-r', '__kernel_rt_sigreturn'])
->>   
->>   linux_user_ss.add(when: 'TARGET_AARCH64', if_true: [vdso_be_inc, vdso_le_inc])
->> +
->> +linux_user_ss.add(when: 'TARGET_AARCH64', if_true: [files('mte_user_helper.c')])
->> diff --git a/linux-user/aarch64/mte_user_helper.c b/linux-user/aarch64/mte_user_helper.c
->> new file mode 100644
->> index 0000000000..8be6deaf03
->> --- /dev/null
->> +++ b/linux-user/aarch64/mte_user_helper.c
->> @@ -0,0 +1,34 @@
->> +/*
->> + * ARM MemTag convenience functions.
->> + *
->> + * This code is licensed under the GNU GPL v2 or later.
->> + *
->> + * SPDX-License-Identifier: LGPL-2.1-or-later
->> + */
->> +
->> +#include <sys/prctl.h>
-> 
-> Aside from missing the osdep Phillipe pointed out including prctl.h here
-> is very suspect as its a system header. I assume if we need
-> PR_MTE_TCF_SYNC we should hoist the definition that linux-user uses into
-> a common header.
-Other .c files include <sys/prctl.h> for other PR_ definitions. For example,
-syscall.c and elfload.c. Is this really a problem? I see that would be a
-problem when trying to build, for instance, aarch64-linux-user target on a
-BSD host, but we don't support it. Building *-linux-user target is only
-supported on Linux host, no?
+v1->v2:
+- Corrected typos and clarifications from
+  first review
+- Added SHMEM_CONFIG frontend request to
+  query VIRTIO shared memory regions from
+  backends
+- vhost-user-device to use SHMEM_CONFIG
+  to request and initialise regions
+- Added MEM_READ/WRITE backend requests
+  in case address translation fails
+  accessing VIRTIO Shared Memory Regions
+  with MMAPs
 
+This is an update of my attempt to have
+backends support dynamic fd mapping into VIRTIO
+Shared Memory Regions. After the first review
+I have added more commits and new messages
+to the vhost-user protocol.
+However, I still have some doubts as to
+how will this work, specially regarding
+the MEM_READ and MEM_WRITE commands.
+Thus, I am still looking for feedback,
+to ensure that I am going in the right
+direction with the implementation.
 
-Cheers,
-Gustavo
+The usecase for this patch is, e.g., to support
+vhost-user-gpu RESOURCE_BLOB operations,
+or DAX Window request for virtio-fs. In
+general, any operation where a backend
+need to request the frontend to mmap an
+fd into a VIRTIO Shared Memory Region,
+so that the guest can then access it.
+
+After receiving the SHMEM_MAP/UNMAP request,
+the frontend will perform the mmap with the
+instructed parameters (i.e., shmid, shm_offset,
+fd_offset, fd, lenght).
+
+As there are already a couple devices
+that could benefit of such a feature,
+and more could require it in the future,
+the goal is to make the implementation
+generic.
+
+To that end, the VIRTIO Shared Memory
+Region list is declared in the `VirtIODevice`
+struct.
+
+This patch also includes:
+SHMEM_CONFIG frontend request that is
+specifically meant to allow generic
+vhost-user-device frontend to be able to
+query VIRTIO Shared Memory settings from the
+backend (as this device is generic and agnostic
+of the actual backend configuration).
+
+Finally, MEM_READ/WRITE backend requests are
+added to deal with a potential issue when having
+any backend sharing a descriptor that references
+a mapping to another backend. The first
+backend will not be able to see these
+mappings. So these requests are a fallback
+for vhost-user memory translation fails.
+
+Albert Esteve (5):
+  vhost-user: Add VIRTIO Shared Memory map request
+  vhost_user: Add frontend command for shmem config
+  vhost-user-dev: Add cache BAR
+  vhost_user: Add MEM_READ/WRITE backend requests
+  vhost_user: Implement mem_read/mem_write handlers
+
+ docs/interop/vhost-user.rst               |  58 ++++++
+ hw/virtio/vhost-user-base.c               |  39 +++-
+ hw/virtio/vhost-user-device-pci.c         |  37 +++-
+ hw/virtio/vhost-user.c                    | 221 ++++++++++++++++++++++
+ hw/virtio/virtio.c                        |  12 ++
+ include/hw/virtio/vhost-backend.h         |   6 +
+ include/hw/virtio/vhost-user.h            |   1 +
+ include/hw/virtio/virtio.h                |   5 +
+ subprojects/libvhost-user/libvhost-user.c | 149 +++++++++++++++
+ subprojects/libvhost-user/libvhost-user.h |  91 +++++++++
+ 10 files changed, 614 insertions(+), 5 deletions(-)
+
+-- 
+2.45.2
+
 
