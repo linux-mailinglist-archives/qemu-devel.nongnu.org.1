@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4716791BEEF
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jun 2024 14:45:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13D3B91BEDF
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jun 2024 14:44:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sNAx4-00050y-SE; Fri, 28 Jun 2024 08:43:42 -0400
+	id 1sNAwX-0004np-1d; Fri, 28 Jun 2024 08:43:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sNAwU-0004n4-Gs
+ id 1sNAwU-0004ml-53
  for qemu-devel@nongnu.org; Fri, 28 Jun 2024 08:43:06 -0400
-Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
+Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sNAwR-0005fB-EX
- for qemu-devel@nongnu.org; Fri, 28 Jun 2024 08:43:06 -0400
-Received: by mail-ej1-x631.google.com with SMTP id
- a640c23a62f3a-a689ad8d1f6so73517066b.2
+ id 1sNAwQ-0005eo-Rm
+ for qemu-devel@nongnu.org; Fri, 28 Jun 2024 08:43:05 -0400
+Received: by mail-ed1-x52a.google.com with SMTP id
+ 4fb4d7f45d1cf-57d4ee2aaabso685207a12.2
  for <qemu-devel@nongnu.org>; Fri, 28 Jun 2024 05:43:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719578582; x=1720183382; darn=nongnu.org;
+ d=linaro.org; s=google; t=1719578581; x=1720183381; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=bf4WpUP3pGX7br6bhDuGt9p7GApyU5+eBul3rNsS2rQ=;
- b=dJ8kVG8+/LAHdA2DUylJgR5ZA8TbZbU4iZWa45XkF72SChfAULXtgMvUzQojElbZ5t
- 6VBQ3zHDlsEQOUMILPA+ofLTmS4qqlrwo77rh8x5eC7+6XpQkBg5AtcZRa4+Mjgj3bxr
- WuaHvu08YE10aEUVYs/ptKNXqk46BQgbmCvv7q7BhbUTA9MZvN438d291hT0keNQCJ12
- BbojqotxyfWLZkk3z9bDzpKtzCT9wu/Mft3R00yp6O+64GUBlD6BtlbUmAQ7GVcLHEWp
- 7Nevo3ziV16NlN/+HOB2ReZLbrtOi81hgn5ONaJIy4MG48Jp3hXx9kJTl/woKivBrHgp
- yTDw==
+ bh=bmUkQvx1dTB8+ePPVm90+LdKbwFZU9qtx5zavLenp5Q=;
+ b=pSOcW5/vmKHE/qM/W1jqN4rsS89OBW9O3t4P2YIP/8xCgPkBUOZx24hG/2g3ma2Yvh
+ 1QXIoU0uj71NbJFCwsMlzQxkNOML8O1GsSggm/zXw7bVMfDe8nCOERQT2kdhEB+Txh8n
+ 1bGn8O5/cDbKfpqDMKxof2LU0pFZ/XUEwIlEoe5xXVMiT6FQ8rRWvuFhx4A7WazmiXhs
+ 2w6bz5bdr5okEEaIx95Du99mBjCnIkGifXCrjFsU+Y3lommkbkkXs43sw3dl49hQHn9b
+ k1oAUHYsFeL48o+0r2/zln1sYGiKtQhqq0k+uvY02UZ7/t2BqJh2MzljSoDj22vFCYpG
+ XUiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719578582; x=1720183382;
+ d=1e100.net; s=20230601; t=1719578581; x=1720183381;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=bf4WpUP3pGX7br6bhDuGt9p7GApyU5+eBul3rNsS2rQ=;
- b=Tj8nQTHMsXQYmqdAVfDE0KPz5xvYoNczMpM4DUpj1C++i8u/b0/X3nM5Mrh7lszQR8
- cdIeYkW7kX9DcSBvfIE+EFfvKZCKstxueAYU9Cm21y8x2hpKcEdScVV1gQtyezmLftJR
- 7VhEpFeE8xN+t6THT0y3wto2BzqmdZi0xr6ilWqluN1m4iLuSNSN1LAUk4LVHM/CpWTN
- SfPVKXgXnN/q45hX2a2FCiULW3H1LmQL+VBS8jraduDSBeyOyxulwNtjLyGgzgeM9M47
- JwJmzq/y0giUZ74gnP3fitfZSPKapeMXgtq3mJ7tXst9Bo/ToQKojLYlQBPoDz0MN5kC
- 35kQ==
-X-Gm-Message-State: AOJu0YxoVdh+3WcuTu0LQ/9h0BPzycdeqmmsDVauQHV+CCKal9U/BOEh
- 08/Fns5P4qnhQs4GbSxOyqhvKdo5RdTujbTYLBXRYg9bXs26Z0xl8PkwQUy5QYw=
-X-Google-Smtp-Source: AGHT+IH+++P/R21eqDgTQn+xp0aj6mpEyYARlO13ChiKD2kwSVYr6Y/nEyIUv0KyAiH5JPRhrkK0rg==
-X-Received: by 2002:a17:907:c805:b0:a72:4a4f:23d6 with SMTP id
- a640c23a62f3a-a724a4f2491mr1248488166b.8.1719578581296; 
+ bh=bmUkQvx1dTB8+ePPVm90+LdKbwFZU9qtx5zavLenp5Q=;
+ b=TTTSzO1I2pYRaNfRQyPshDG5YmKQfqUcX6vn4MiqVlst8zlKvkOWs97+WwH98eE4it
+ 8KmxVeSmnQXXPPxtwkjxuW3E2+zT+cIthA4WuXwc73qyutVqvoL54KqmSx2wDcKeLW67
+ ho1EN7VwBH60jgjEj5o6O5FL1ah/Fw/1lKr+qdktso0UaBNEi4Be2P4MbfUWIrPV2lOs
+ rc19Iv02pzEqn/EcQTfEFrmHTSakX29RDbLson9b+9VB8SZM7TaEqOKwaIDakDgdPqDA
+ 7m4cQGb8LJDEvObXs3Ft/ziLcdA+ExIUcmRlCipjffkmrWcSFzLfjak3Fvl89dQo2/0V
+ t7jg==
+X-Gm-Message-State: AOJu0YzmnvQ4Kbaf3Yt2mi1LH1FRWrnHHK9lYmxaM36WDPEkE9/gcXBB
+ EnFfO6muSxlNxdIiWk1Gh7OXZRJMhr+jl1spO0gbTak6V72DL7nXEi54ohw1Czw=
+X-Google-Smtp-Source: AGHT+IExDOg+4B1GItkum2PW4gtyVdJh0wbalWZQe1E69UXOv2qv1tIu8TUudMNmRRwGqmDDUo5Fgw==
+X-Received: by 2002:a50:c35b:0:b0:57c:6c1c:f942 with SMTP id
+ 4fb4d7f45d1cf-57d4bdda616mr11042632a12.38.1719578581001; 
  Fri, 28 Jun 2024 05:43:01 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a72ab0b7dcfsm75779166b.209.2024.06.28.05.42.59
+ 4fb4d7f45d1cf-58612c835adsm982859a12.17.2024.06.28.05.42.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 28 Jun 2024 05:42:59 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 2B5835F941;
+ by draig.lan (Postfix) with ESMTP id 3FC425F958;
  Fri, 28 Jun 2024 13:42:59 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -72,26 +72,25 @@ Cc: David Hildenbrand <david@redhat.com>, Beraldo Leal <bleal@redhat.com>,
  Alexandre Iooss <erdnaxe@crans.org>, Stefan Hajnoczi <stefanha@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Subject: [PATCH 02/23] target/i386: fix gen_prepare_size_nz condition
-Date: Fri, 28 Jun 2024 13:42:37 +0100
-Message-Id: <20240628124258.832466-3-alex.bennee@linaro.org>
+ Thomas Huth <thuth@redhat.com>
+Subject: [PATCH 03/23] testing: restore some testing for i686
+Date: Fri, 28 Jun 2024 13:42:38 +0100
+Message-Id: <20240628124258.832466-4-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240628124258.832466-1-alex.bennee@linaro.org>
 References: <20240628124258.832466-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::631;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x631.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,29 +106,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Incorrect brace positions causes an unintended overflow on 32 bit
-builds and shenanigans result.
+The commit 4f9a8315e6 (gitlab-ci.d/crossbuilds: Drop the i386 system
+emulation job) was a little too aggressive dropping testing for 32 bit
+system builds. Partially revert but using the debian-i686 cross build
+images this time as fedora has deprecated the 32 bit stuff.
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2413
-Suggested-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+As the SEV breakage gets in the way and its TCG issues we want to
+catch I've added --disable-kvm to the build.
+
+Reported-by: Richard Henderson <richard.henderson@linaro.org>
+Suggested-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
----
- target/i386/tcg/translate.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-index ad1819815a..94f13541c3 100644
---- a/target/i386/tcg/translate.c
-+++ b/target/i386/tcg/translate.c
-@@ -877,7 +877,7 @@ static CCPrepare gen_prepare_sign_nz(TCGv src, MemOp size)
-         return (CCPrepare) { .cond = TCG_COND_LT, .reg = src };
-     } else {
-         return (CCPrepare) { .cond = TCG_COND_TSTNE, .reg = src,
--                             .imm = 1ull << ((8 << size) - 1) };
-+                             .imm = (1ull << (8 << size)) - 1 };
-     }
- }
+---
+v2
+  - add --disable-kvm
+  - currently blocked by https://gitlab.com/qemu-project/qemu/-/issues/2413
+---
+ .gitlab-ci.d/crossbuilds.yml | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/.gitlab-ci.d/crossbuilds.yml b/.gitlab-ci.d/crossbuilds.yml
+index 47bdb99b5b..3de0341afe 100644
+--- a/.gitlab-ci.d/crossbuilds.yml
++++ b/.gitlab-ci.d/crossbuilds.yml
+@@ -37,6 +37,17 @@ cross-arm64-kvm-only:
+     IMAGE: debian-arm64-cross
+     EXTRA_CONFIGURE_OPTS: --disable-tcg --without-default-features
  
++cross-i686-system:
++  extends:
++    - .cross_system_build_job
++    - .cross_test_artifacts
++  needs:
++    job: i686-debian-cross-container
++  variables:
++    IMAGE: debian-i686-cross
++    EXTRA_CONFIGURE_OPTS: --disable-kvm
++    MAKE_CHECK_ARGS: check-qtest
++
+ cross-i686-user:
+   extends:
+     - .cross_user_build_job
 -- 
 2.39.2
 
