@@ -2,78 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E88FD91C0DA
+	by mail.lfdr.de (Postfix) with ESMTPS id CE37B91C0D9
 	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jun 2024 16:26:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sNCWQ-0002XJ-1D; Fri, 28 Jun 2024 10:24:18 -0400
+	id 1sNCWA-0002Tg-Oc; Fri, 28 Jun 2024 10:24:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sNCWJ-0002WV-3x
- for qemu-devel@nongnu.org; Fri, 28 Jun 2024 10:24:11 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ id 1sNCW4-0002S9-Id
+ for qemu-devel@nongnu.org; Fri, 28 Jun 2024 10:23:56 -0400
+Received: from mail-lf1-x12c.google.com ([2a00:1450:4864:20::12c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sNCW2-0004PS-E7
- for qemu-devel@nongnu.org; Fri, 28 Jun 2024 10:24:10 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-42565cdf99cso6761765e9.3
+ id 1sNCW1-0004PU-6v
+ for qemu-devel@nongnu.org; Fri, 28 Jun 2024 10:23:56 -0400
+Received: by mail-lf1-x12c.google.com with SMTP id
+ 2adb3069b0e04-52e743307a2so858406e87.0
  for <qemu-devel@nongnu.org>; Fri, 28 Jun 2024 07:23:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719584629; x=1720189429; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=JfU3+6nOeaBoMP9gBKKz5KGzwhl6LY/esOxJus4DARY=;
- b=EK0jeUS5aCX9Vh+dCAwfH62R5IPDkeTJPC1wdtg5hH6Tlh8shaH/wGo7GKKM/1gZMI
- GYS7zuUzjPrvC67h9I7ZZcc8I0G5bQ919IDlfHBv5xptkdWdS5HzONV6HywHHTCdY/8W
- 4B1sQiGXrwvIcnbF4Bh/bdjOxRgz5g9NdguL4vS1Ipyrq6gxnibJeZoD/wjzo7pnDIZ/
- ShL5UWAJTJ84NQlry8+CdbP5jcEoDWgen/fvnGst9VYInif6KNuaZ7pib2KKXn7HEkLU
- ujFcUJe3rMxeanGNWmGd3JO0MyKbIhAXii1/ldKvI5mRYU6Kw6YSofndC+NcrnoJGc+z
- yynQ==
+ d=linaro.org; s=google; t=1719584630; x=1720189430; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=kFJB9ypZ3yzacaX0zrNCsCIbzybKZZLvBjJsHqEuQeA=;
+ b=seab8uxoAsuYUM1cmXzsjJjNsgG3CvHzOAEPWX9tG5MhU7a9R0GTDSdxJF5aI3WIgS
+ T94S6kAqO4/iqsLo0SBiVHit20sPl7UIGSpKAwLFRwuh/b2rmsN7u2qI2gZSDwUEitGj
+ nLsfWQJZG2Fzb2UpL1WnpCTTZsMlYnMjqjiOb9jG9+wFcaaUZjoyxYOcmnOwPXlYQJ6M
+ Wj0eBDw2vYra/FsLwTlrMORPe+slYU9D6II5QmNrBdlxT7n9LSKP1wdKIQyMNXH5YDU0
+ uQhwbifRnH83j90W8yGaAKwn+nbB3yukMKTGohhJaxQj8HLlTGI7VqndnyFCYytnDOw8
+ UkjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719584629; x=1720189429;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=JfU3+6nOeaBoMP9gBKKz5KGzwhl6LY/esOxJus4DARY=;
- b=AAs296XpLHsW+Y46DXVejLNy1VUTJc1p0rzrbzVjcJ7idaRdY60gwZsk5s95CLUVGz
- O+1o3TYCGi5TWeSLKKIRS0bOsuITz5U0bXGsQ9Hpu4NzArepT7I/cBEzQdDp0UI5aQAU
- GfmX62PSz3OzSCfEQkg/s3Lnlj2hXGBcVGUEcAqkIjiZ/K+FKeoT/IS0OP31jBcR/oHw
- /Qa14AHjbPDfBw6T7PfKc0H+3pH3W4RUNhSWQE3zQhXeYGW/vXFhoeCzLkBtZX8gWPwy
- X1c9Tr8kpySOLOdilKrNpiNTm8NbvDCADNCxI2qX1ranepTjQMwLyv2WICEOLM0el7u2
- Hniw==
+ d=1e100.net; s=20230601; t=1719584630; x=1720189430;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=kFJB9ypZ3yzacaX0zrNCsCIbzybKZZLvBjJsHqEuQeA=;
+ b=gBywWfCU7UXoMB2DpuSbvbDjqsG2I7M1tTdki6ruGhjlcuYZ6njyc19COoLhp2cfRc
+ VhjKCaboDdCNBlLMUF5Et6r9wlLCjRdmd8O21vTXjdBZoPNC3xV2uoSLRzdhzCM6gkXE
+ XEqtLOKj2pwc3rabO6kirOhawQafHHm0Lo0Tr4Ygjr1Loz9WZ0keV4HDA29i6ZtWlQpT
+ yG6Pawe3hq20u1ftkhid7s2qBOw6owBE6PIAdgL4Xb8L8FIZh1pneME6PmYUydGx7myi
+ eAChTJSy85brxn4B2y4OQVYKYj7AFNjhujRJBERDTCqWVbCQSOGROr6zzP2/J3tKjfSK
+ 9S+w==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWkVpANwwur3jpf3kfPfNkgiRZNgpiyV1c/vOZ3gmKfyNhMZZ23xBEBQQhlK76v32o15wqOKCFIeVxH6CGXvzYjbKsSDUU=
-X-Gm-Message-State: AOJu0Yx/uRZZSZsTlvo9LzUPbbhJSSiDQg/SJqjT5E3GkcyAMSksSP7J
- wF3GTls/vMAqVNsVsTXbr0W1BSSsUEjoOcOvv0IIrwZHVUZkvgXgQSFRKSxHYqc=
-X-Google-Smtp-Source: AGHT+IFL7H5ygJ0nsZ6pfiH8X0erhyLlw7RCFs4kMJrUOsuHEhz18mpMSeowh5yq7UKQKfgcUwb2mQ==
-X-Received: by 2002:a05:600c:929:b0:425:65c5:79a9 with SMTP id
- 5b1f17b1804b1-42565c57a7emr48275565e9.30.1719584629250; 
+ AJvYcCXGDfsbUJtquALpx9tcASKXQJ+JL+sak+bVDWA8kkQPxp/52j92v8gnt2b9zk3y9dWSx2j5nxi8S6d0BdAQsecXWIWrf50=
+X-Gm-Message-State: AOJu0Yy+AU1BPg24DfjaQPuABk2JnOqsA4Ei/lmBRS4hrFZu4FFGffc7
+ VHhKO5hGKR+oKMkvBqfMZ4I1SOuxWWmBY0D40IR4zbgEM+h2SDARHO5KFZBKm32kqMO8Tv8+UoM
+ nZJQ=
+X-Google-Smtp-Source: AGHT+IHSzYfZG00ctXTCFyx2goAQG5uUxigIivx4K+tWnvhp+OzbJO504j421lBnfM+f08UM4JsDMg==
+X-Received: by 2002:a05:6512:3e0a:b0:52c:e3c7:941e with SMTP id
+ 2adb3069b0e04-52ce3c799f0mr16122795e87.47.1719584629803; 
  Fri, 28 Jun 2024 07:23:49 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4256af55c0asm37180945e9.15.2024.06.28.07.23.48
+ 5b1f17b1804b1-4256af55c0asm37180945e9.15.2024.06.28.07.23.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 28 Jun 2024 07:23:48 -0700 (PDT)
+ Fri, 28 Jun 2024 07:23:49 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
-Subject: [PATCH 0/9] target/arm: Refactor FPCR/FPSR handling to prepare for
- FEAT_AFP
-Date: Fri, 28 Jun 2024 15:23:38 +0100
-Message-Id: <20240628142347.1283015-1-peter.maydell@linaro.org>
+Subject: [PATCH 1/9] target/arm: Correct comments about M-profile FPSCR
+Date: Fri, 28 Jun 2024 15:23:39 +0100
+Message-Id: <20240628142347.1283015-2-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240628142347.1283015-1-peter.maydell@linaro.org>
+References: <20240628142347.1283015-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,62 +93,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In AArch32, the floating point control and status bits are all in a
-single register, FPSCR.  In AArch64, these were split into separate
-FPCR and FPSR registers, but the bit layouts remained the same, with
-no overlaps, so that you could construct an FPSCR value by ORing FPCR
-and FPSR, or equivalently could produce FPSR and FPCR by masking an
-FPSCR value.  For QEMU's implementation, we opted to use masking to
-produce FPSR and FPCR, because we started with an AArch32
-implementation of FPSCR.
+The M-profile FPSCR LTPSIZE is bits [18:16]; this is the same
+field as A-profile FPSCR Len, not Stride. Correct the comment
+in vfp_get_fpscr().
 
-The addition of the (AArch64-only) FEAT_AFP adds new bits to the FPCR
-which overlap with some bits in the FPSR.  This means we'll no longer
-be able to consider the FPSCR-encoded value as the primary one, but
-instead need to treat FPSR/FPCR as the primary encoding and construct
-the FPSCR from those.  (This remains possible because the FEAT_AFP
-bits in FPCR don't appear in the FPSCR.)
+We also implemented M-profile FPSCR.QC, but forgot to delete
+a TODO comment from vfp_set_fpscr(); remove it now.
 
-This patchseries does the necessary refactoring to our handling
-of FPCR and FPSR to allow us to implement the new FPCR-only bits:
- * we flip vfp_{get,set}_fpscr() and vfp_{get,set}_{fpcr,fpsr}()
-   so that the former call the latter rather than the other way round
- * we make the migration code send FPSR and FPCR separately when there's
-   a bit set which can't be represented in the FPSCR format
-   (we continue to use the FPSCR format on the wire when possible,
-   for migration backwards-compatibility)
- * we store the FPCR and FPSR in the CPU state struct in new
-   vfp.fpcr and vfp.fpsr fields, rather than in vfp.xregs[ARM_VFP_FPSCR]
- * we make sure that writes to FPSCR leave bits in FPCR that aren't
-   in FPSCR alone
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+---
+ target/arm/vfp_helper.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-The series also has a bit of tidyup of some of the macro naming etc.
-
-thanks
--- PMM
-
-Peter Maydell (9):
-  target/arm: Correct comments about M-profile FPSCR
-  target/arm: Make vfp_get_fpscr() call vfp_get_{fpcr,fpsr}
-  target/arm: Make vfp_set_fpscr() call vfp_set_{fpcr,fpsr}
-  target/arm: Support migration when FPSR/FPCR won't fit in the FPSCR
-  target/arm: Implement store_cpu_field_low32() macro
-  target/arm: Store FPSR and FPCR in separate CPU state fields
-  target/arm: Rename FPCR_ QC, NZCV macros to FPSR_
-  target/arm: Rename FPSR_MASK and FPCR_MASK and define them
-    symbolically
-  target/arm: Allow FPCR bits that aren't in FPSCR
-
- target/arm/cpu.h                  | 109 ++++++++++++-----
- target/arm/tcg/translate-a32.h    |   7 ++
- target/arm/tcg/translate.h        |   3 +-
- target/arm/machine.c              | 135 ++++++++++++++++++++-
- target/arm/tcg/mve_helper.c       |  12 +-
- target/arm/tcg/translate-m-nocp.c |  22 ++--
- target/arm/tcg/translate-vfp.c    |   4 +-
- target/arm/vfp_helper.c           | 187 +++++++++++++++++++-----------
- 8 files changed, 356 insertions(+), 123 deletions(-)
-
+diff --git a/target/arm/vfp_helper.c b/target/arm/vfp_helper.c
+index ce26b8a71a1..dd67825270b 100644
+--- a/target/arm/vfp_helper.c
++++ b/target/arm/vfp_helper.c
+@@ -176,8 +176,8 @@ uint32_t HELPER(vfp_get_fpscr)(CPUARMState *env)
+             | (env->vfp.vec_stride << 20);
+ 
+     /*
+-     * M-profile LTPSIZE overlaps A-profile Stride; whichever of the
+-     * two is not applicable to this CPU will always be zero.
++     * M-profile LTPSIZE is the same bits [18:16] as A-profile Len; whichever
++     * of the two is not applicable to this CPU will always be zero.
+      */
+     fpscr |= env->v7m.ltpsize << 16;
+ 
+@@ -226,7 +226,6 @@ void HELPER(vfp_set_fpscr)(CPUARMState *env, uint32_t val)
+         /*
+          * The bit we set within fpscr_q is arbitrary; the register as a
+          * whole being zero/non-zero is what counts.
+-         * TODO: M-profile MVE also has a QC bit.
+          */
+         env->vfp.qc[0] = val & FPCR_QC;
+         env->vfp.qc[1] = 0;
 -- 
 2.34.1
 
