@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31A7991B77D
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jun 2024 09:03:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F59491B784
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jun 2024 09:04:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sN5cs-0008PJ-9g; Fri, 28 Jun 2024 03:02:30 -0400
+	id 1sN5cw-0008QU-Th; Fri, 28 Jun 2024 03:02:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sN5cq-0008P9-AA
- for qemu-devel@nongnu.org; Fri, 28 Jun 2024 03:02:28 -0400
-Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sN5cu-0008QC-PY
+ for qemu-devel@nongnu.org; Fri, 28 Jun 2024 03:02:32 -0400
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sN5co-0006b0-Lw
- for qemu-devel@nongnu.org; Fri, 28 Jun 2024 03:02:28 -0400
-Received: by mail-lf1-x12e.google.com with SMTP id
- 2adb3069b0e04-52cd717ec07so323065e87.0
- for <qemu-devel@nongnu.org>; Fri, 28 Jun 2024 00:02:26 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sN5ct-0006ba-7D
+ for qemu-devel@nongnu.org; Fri, 28 Jun 2024 03:02:32 -0400
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-4255fc43f1cso1816605e9.0
+ for <qemu-devel@nongnu.org>; Fri, 28 Jun 2024 00:02:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719558144; x=1720162944; darn=nongnu.org;
+ d=linaro.org; s=google; t=1719558149; x=1720162949; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=FehxPMt54YZs4mKlk2O0dDcvxQwBqAiau0Ry18uuTzM=;
- b=YkdUKSZvBxlzCL2FhxtSNN1rZURbqWmgiKM6w2CnlmdIEiWBz5wg/FPY9/eUEZO9aI
- ilVUequ2ML/u42GoPc9uXGYJpOSr0AZWsdUY+Kdx+rIEQyC2C9G1UOnHdTUFzz7sZYZy
- BwIRHZJ75pwd6+hBulZbpowuD6bRNkq8aSJC67c8InhZGSW3oX5LeEOSKeOv+e2RuXm4
- M9M3C1wSEaxVrzyHEXhDkhbzFrik0Ml0MOVQXQM+DVHsr2C7eKmbEa3iLCIpUVPAXqSx
- zbaP4hCNFZPAV5u27XfsU8uqKshSJy46ow7aWW7DtiFzRdzUynY4kbUhy9ilcm7R8W5K
- gTBQ==
+ :reply-to; bh=q0dLi7LJeAuLomgAe/dqexun4vtTcne+GTOKHsnzMSk=;
+ b=tttvOkKkM0YNKxITtkKYISKHX3E3Pi2s6ZpEMes4nr6WsuEDNHAmcXZY41JRAEk/d8
+ JhM9g+JGdV0ULkGnR/+doLG5/ab8uwrdHeNkCfA0r+9hg1NP2FANSn1lPmSmk94edSaG
+ 3OkzHlD24wkWNL+CGb1LMcq4xqkc6PsjzM8A2MoL48XYgbSZbYQnynduGIk8sCsrkSbJ
+ pFR+R9ARKUyjOJUKw1BRa4moWfkJQ4V597TwdsjO8FFRLr1OvN8H7+DalUbyuc8YR1SZ
+ FrLLHYfo9ycr6q/mdPK+U8X8hMYdFvcVn6ayGjP+dt1KyxSwgbMhUSokvYUK8TvfKTot
+ 5U9Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719558144; x=1720162944;
+ d=1e100.net; s=20230601; t=1719558149; x=1720162949;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=FehxPMt54YZs4mKlk2O0dDcvxQwBqAiau0Ry18uuTzM=;
- b=m085V92FtKpdiqv0acxqdp17zUCvCPTUFdsvoM/Be/G2y5MJ88iU/FK+CcoU3+zNX9
- uzunD26FsdAWF963GYlmmEiNlCoDcCn9v0dq8j6pOuAfyMoEUqhbdElj17K0QmWKJF+V
- DcdIgkXLour+G/Ic/U3PNpEMkzfPZHCCL7x5qUB7iit/nc3w82rUxV/RKkNbIna+kVXm
- 8XjrP8NiPvJLVJVD3jDyp23iBJOcTicqHKghecrTf4iq+9O5Y8SUoyGfzdB2Kz4wcz81
- lQzLp2Hv6za5uWrBD/u3alSzoz3Nb2Pgm+FxNZF4GiIaQ+6Q3fzTJiLAD5L3lKnJqu2C
- x4FA==
-X-Gm-Message-State: AOJu0YwFzbXj1Kfsw5geQ+BOSw1ljrN8HyAc/lihGQurM6/rjpMdH4aX
- iqqCcx2cKGNb+XhnFB8B7PaDf9bTsSCDwduk+X8Tq2QsX21lTSm5ssjl9GfymnAemGviWwp0WNO
- tR5g=
-X-Google-Smtp-Source: AGHT+IG3J/+xtSr5xFPRTNnze0Hl9nrQ88+TXxJPB9lrroo7a9QDZBPeqNISxPQAF1omr52k6u6cGQ==
-X-Received: by 2002:a05:6512:a8c:b0:52e:7496:596f with SMTP id
- 2adb3069b0e04-52e74965ac0mr1875211e87.60.1719558144165; 
- Fri, 28 Jun 2024 00:02:24 -0700 (PDT)
+ bh=q0dLi7LJeAuLomgAe/dqexun4vtTcne+GTOKHsnzMSk=;
+ b=A7lJuPUf9cTcEIlsi6s1xbG9HSHitVtyRhS9hXrYVwNleBEIU0wkVE69uVObBSsl9u
+ Blzzdf8M1bwOibuvBzxzjfr1+Kr7lp5k1tqVvWQN44s8Smv1UkZF3Ke5SFBumCqB9rx5
+ R+qIEnTv4BiMQ14M71GHdrWYo1Hr49wRWwLnLL094ThWGxP988EowrcjMycMOWHCBxDk
+ FhcLYChRCsRrrTe7wXLMIcP01FSm3clXX43ut0mt0tKqLaTEO5qWv1DZ6jgUSdF+IV6u
+ jUZ/oh6Udtkj//EHtwP3Xh40Js0++0azoUsWMqYdSHuIRwGH2fcYmmh0nqwasGet2dXN
+ ta/w==
+X-Gm-Message-State: AOJu0YwJiEreABIAjxGa/ed8762yBKHh/SjVEfSKLvcKC7jFyhDqBWBX
+ e03FLoyQjKe4v9WcLIQll0Y22QaICvXl9OtWiykX/e952bMJUjgDWwXeoEXM75GZGyq8isG/cFV
+ XROc=
+X-Google-Smtp-Source: AGHT+IGXD9OZuz5w3RKMFasHKcwLJb01Q46GuqbG/ClsnEsogeNt9Dsc6powhrgUxoxW9tn5owf5gQ==
+X-Received: by 2002:a05:600c:470d:b0:422:7eca:db41 with SMTP id
+ 5b1f17b1804b1-4248cc18101mr123481815e9.2.1719558149429; 
+ Fri, 28 Jun 2024 00:02:29 -0700 (PDT)
 Received: from m1x-phil.lan (cho94-h02-176-184-4-239.dsl.sta.abo.bbox.fr.
  [176.184.4.239]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4256b097bcbsm21297625e9.35.2024.06.28.00.02.23
+ 5b1f17b1804b1-424a2abc2desm95968775e9.1.2024.06.28.00.02.28
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 28 Jun 2024 00:02:23 -0700 (PDT)
+ Fri, 28 Jun 2024 00:02:29 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org, =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [PATCH v42 01/98] hw/sd/sdcard: Deprecate support for spec v1.10
-Date: Fri, 28 Jun 2024 09:00:37 +0200
-Message-ID: <20240628070216.92609-2-philmd@linaro.org>
+Subject: [PATCH v42 02/98] hw/sd/sdcard: Use spec v3.01 by default
+Date: Fri, 28 Jun 2024 09:00:38 +0200
+Message-ID: <20240628070216.92609-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240628070216.92609-1-philmd@linaro.org>
 References: <20240628070216.92609-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12e;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x12e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,34 +89,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We use the v2.00 spec by default since commit 2f0939c234
-("sdcard: Add a 'spec_version' property, default to Spec v2.00").
-Time to deprecate the v1.10 which doesn't bring much, and
-is not tested.
+Recent SDHCI expect cards to support the v3.01 spec
+to negociate lower I/O voltage. Select it by default.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 ---
- docs/about/deprecated.rst | 6 ++++++
- 1 file changed, 6 insertions(+)
+ hw/sd/sd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-index ff3da68208..02cdef14aa 100644
---- a/docs/about/deprecated.rst
-+++ b/docs/about/deprecated.rst
-@@ -362,6 +362,12 @@ recommending to switch to their stable counterparts:
- - "Zve64f" should be replaced with "zve64f"
- - "Zve64d" should be replaced with "zve64d"
+diff --git a/hw/sd/sd.c b/hw/sd/sd.c
+index a48010cfc1..d0a1d5db18 100644
+--- a/hw/sd/sd.c
++++ b/hw/sd/sd.c
+@@ -2280,7 +2280,7 @@ static void sd_realize(DeviceState *dev, Error **errp)
  
-+``-device sd-card,spec_version=1`` (since 9.1)
-+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-+
-+SD physical layer specification v2.00 supersedes the v1.10 one.
-+v2.00 is the default since QEMU 3.0.0.
-+
- Block device options
- ''''''''''''''''''''
- 
+ static Property sd_properties[] = {
+     DEFINE_PROP_UINT8("spec_version", SDState,
+-                      spec_version, SD_PHY_SPECv2_00_VERS),
++                      spec_version, SD_PHY_SPECv3_01_VERS),
+     DEFINE_PROP_DRIVE("drive", SDState, blk),
+     /* We do not model the chip select pin, so allow the board to select
+      * whether card should be in SSI or MMC/SD mode.  It is also up to the
 -- 
 2.41.0
 
