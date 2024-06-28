@@ -2,71 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99C6B91B80E
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jun 2024 09:18:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E971391B7D6
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jun 2024 09:09:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sN5lu-0004Kg-OO; Fri, 28 Jun 2024 03:11:50 -0400
+	id 1sN5gH-0000Mx-P9; Fri, 28 Jun 2024 03:06:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sN5lq-0004G3-Qz
- for qemu-devel@nongnu.org; Fri, 28 Jun 2024 03:11:46 -0400
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sN5gF-0008WO-6j
+ for qemu-devel@nongnu.org; Fri, 28 Jun 2024 03:05:59 -0400
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sN5lp-0005ZH-0N
- for qemu-devel@nongnu.org; Fri, 28 Jun 2024 03:11:46 -0400
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-3651ee582cfso132782f8f.2
- for <qemu-devel@nongnu.org>; Fri, 28 Jun 2024 00:11:44 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sN5gD-0003DR-FK
+ for qemu-devel@nongnu.org; Fri, 28 Jun 2024 03:05:58 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-364a3d5d901so189929f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 28 Jun 2024 00:05:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719558703; x=1720163503; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=wfOV4Z9kH5/WWEkygPAPJDC+UN3xtUZojvL70U9kebo=;
- b=qH6m3otIN1V6wX6W7FwmY3sfY1CQQGM9vlwq5Cb32jAuHifqm5jIzkiZEi1Izys/Dd
- Bj7eMv3KYmGFerZ97l1tWcQRMcK18YtMBkOjfs7GUzj8V8ladw6cnwRv5gNTrD8E0kZn
- R97iTQOobh7FupgchJ0aT0irJwqr4Z02nriNcVjrS1Eb6mvHi7WYoYbgbR5CniTzJ/U8
- s71pzHG6p2d/lxYMn6Z/gO+CGCw9UFD40e7thjZByTIqNPQcn1YBi4z8MtVwFAUiGqQi
- Z6luuMAIMrajAnnCJ/Vv6l5X+Uckv3AabzZfrYzdFJZU7sxmza+Z36Ctz/OesJXrItfe
- zE+A==
+ d=linaro.org; s=google; t=1719558356; x=1720163156; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=kdbiuZydlcNqst37pX9DeYTtEMLTHrNiAsKGNW2EwWg=;
+ b=bFw8SkwvoUzB2RVUKPOWBBpGwYmL6Xs34ZYSEQI+761oNtvn8Ef+s6AnhdT5ckt8DQ
+ gFDMr/rxQBJT/Tcm4EGtNc0cWSaNZmUOSEcsyB5yC35iCUztT7kPDhcY52zJkVIKt0BE
+ Ao75nekFj13s6sSdf8YAL2O2q2VCM0PRsv5moQgJtEQFa1nGHcyY6RnVwQH3PmssyV5b
+ FWlPQ0iGvindWzl//IOmEIpXPn2LQcczxvCXYFDCcaGE/2FqeBvWwVaaO9ngZrc+DpY2
+ DQ0Egm7N84HDlo00boHbb7I1+puuwmAjfyzdILeypMixFhw302mf83uloZWFGHqo2H33
+ zbDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719558703; x=1720163503;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=wfOV4Z9kH5/WWEkygPAPJDC+UN3xtUZojvL70U9kebo=;
- b=G84hP2lmQK2wirL75tH3tq1CNbwim1CWPGLxiv5ORA5/JGHJ3fne4pEzGDeH7Cg3t9
- eSjtiSOp1U+TljIKw94XD932mvyM8owspPNDpz0cgIWwxCcR5jwGi8l22vbi2VRkGDyN
- KXIJiVtmMX5IN3D3S3BIr9EyKQn+UnEkfpWutQ4cp55Y6unqdoEhuCdK9spiiEtlzWnC
- aMpvQ5uTbXDXsb4yVj9tjvQmYBxsF+J1PAWASay8IoQGX4mYsoY/RX1a5LvbkpQ0XHLL
- gpARnHJy4KAJfx0dk5NiYsn8wnymUKRq1cwU7fcVUTr6fZUBatym5Rl2rqZ7sKeHeev0
- Dd4Q==
-X-Gm-Message-State: AOJu0YxLyCr9xN/vHG4/T2DtnYjNNliMEMNrTt7X+YUY4HCCSLC//4d4
- T1IW6Ul08Vge4qalhNpLxcj1d3qRQaEXa10dR8qfZQDT432ZjY+nL9C0RDve3utd/76kQOg0wmc
- DreM=
-X-Google-Smtp-Source: AGHT+IGxCRUaIt89HGbZR0qm5r0gsfFsm0u6blNX8GnSmzVKX/TUgxLs70CgV0/ZJFay3VRLYSAhiw==
-X-Received: by 2002:adf:e811:0:b0:35f:fa0:cf82 with SMTP id
- ffacd0b85a97d-366e9632621mr9952233f8f.68.1719558703350; 
- Fri, 28 Jun 2024 00:11:43 -0700 (PDT)
-Received: from m1x-phil.lan (cho94-h02-176-184-4-239.dsl.sta.abo.bbox.fr.
+ d=1e100.net; s=20230601; t=1719558356; x=1720163156;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=kdbiuZydlcNqst37pX9DeYTtEMLTHrNiAsKGNW2EwWg=;
+ b=j3K222M/xn5RNTpVpp3tU7nn/AHMvjg2e8jvHukXk5RDUd54seFLIFZFvC5EYqhj/i
+ qDGQWWDF14ffF1SIR7/OD9tkBgRNjgPkFwEOInXZKIkv0gM/RRrJjQFzt8shPlL6NmCb
+ 3pKT7WmyiUmsOUZF9UxgxaF6Z1tvdPCQnZhYjVzuvqfHE8tdaENFdGEepyUIH9IKDHVi
+ 0oUuAIxRPwIJKwZE7b1egX34t5SiVnnejoFFZA3TAcNEehyUwf9AHFkhgHcmLyufnrKr
+ L9Jb/qgvizJxcZ7p7InW5vivqQon/OAvscWw5fHnmzQDAUdNWABry0WMBfL3A9YbzemW
+ NhMQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVK7iiyqSZLXrKM+lKb3C8bQoLiSqcPocTCsjy6kiE3ROhNvOU345YoajkxgkhJ/gn+er8v+PE77xNc5a1fTQkXweY2vg0=
+X-Gm-Message-State: AOJu0Ywu2yIR8lW2V/G0mD8D9qsaxoJ87jYKBLjM19+s1rph4b7L1+4S
+ 3SHo722tuDT1Ikt9Yd4SJNqEByjN9rAM4a8vue9QFgVzcjpa9MsA/3IkLZD5/xw=
+X-Google-Smtp-Source: AGHT+IEgCqtvNtWPQaPp+8lwtfWpAyXFYEOMyZ0Z4X7s/eKiXzHweVkmbiARpQxvKXsdLp2zBF9iNA==
+X-Received: by 2002:a5d:4acb:0:b0:366:eef4:ce95 with SMTP id
+ ffacd0b85a97d-366eef4cf12mr9427968f8f.51.1719558356044; 
+ Fri, 28 Jun 2024 00:05:56 -0700 (PDT)
+Received: from [192.168.69.100] (cho94-h02-176-184-4-239.dsl.sta.abo.bbox.fr.
  [176.184.4.239]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3675a0cd562sm1350541f8f.15.2024.06.28.00.11.42
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 28 Jun 2024 00:11:42 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org, =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [RFC PATCH v42 98/98] hw/sd/sdcard: Add boot config support
-Date: Fri, 28 Jun 2024 09:02:14 +0200
-Message-ID: <20240628070216.92609-99-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20240628070216.92609-1-philmd@linaro.org>
-References: <20240628070216.92609-1-philmd@linaro.org>
+ ffacd0b85a97d-3675a1030c8sm1315645f8f.98.2024.06.28.00.05.54
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 28 Jun 2024 00:05:55 -0700 (PDT)
+Message-ID: <81390363-3474-453a-99ab-8f4b1172106b@linaro.org>
+Date: Fri, 28 Jun 2024 09:05:53 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 01/11] gdbstub: Clean up process_string_cmd
+To: Gustavo Romero <gustavo.romero@linaro.org>, qemu-devel@nongnu.org,
+ alex.bennee@linaro.org, richard.henderson@linaro.org
+Cc: peter.maydell@linaro.org
+References: <20240628050850.536447-1-gustavo.romero@linaro.org>
+ <20240628050850.536447-2-gustavo.romero@linaro.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240628050850.536447-2-gustavo.romero@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,66 +95,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Joel Stanley <joel@jms.id.au>
+On 28/6/24 07:08, Gustavo Romero wrote:
+> Change 'process_string_cmd' to return true on success and false on
+> failure, instead of 0 and -1.
+> 
+> Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
+> Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>   gdbstub/gdbstub.c | 40 ++++++++++++++++++++--------------------
+>   1 file changed, 20 insertions(+), 20 deletions(-)
 
-Introduced "boot-config" property to set CSD 179, the boot config
-register.
-
-With this correctly set we can use the enable bit to detect if
-partition support is enabled.
-
-Signed-off-by: Joel Stanley <joel@jms.id.au>
-Signed-off-by: Cédric Le Goater <clg@kaod.org>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- hw/sd/sd.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
-
-diff --git a/hw/sd/sd.c b/hw/sd/sd.c
-index bbf054ea1e..b598974bbf 100644
---- a/hw/sd/sd.c
-+++ b/hw/sd/sd.c
-@@ -129,6 +129,7 @@ struct SDState {
-     uint8_t spec_version;
-     BlockBackend *blk;
-     bool aspeed_emmc_kludge;
-+    uint8_t boot_config;
- 
-     const SDProto *proto;
- 
-@@ -505,6 +506,8 @@ static void mmc_set_ext_csd(SDState *sd, uint64_t size)
-     sd->ext_csd[159] = 0x00; /* Max enhanced area size */
-     sd->ext_csd[158] = 0x00; /* ... */
-     sd->ext_csd[157] = 0xEC; /* ... */
-+
-+    sd->ext_csd[EXT_CSD_PART_CONFIG] = sd->boot_config;
- }
- 
- static void sd_emmc_set_csd(SDState *sd, uint64_t size)
-@@ -1004,8 +1007,14 @@ static uint32_t sd_emmc_bootpart_offset(SDState *sd)
- {
-     unsigned int access = sd->ext_csd[EXT_CSD_PART_CONFIG] &
-         EXT_CSD_PART_CONFIG_ACC_MASK;
-+    unsigned int enable = sd->ext_csd[EXT_CSD_PART_CONFIG] &
-+         EXT_CSD_PART_CONFIG_EN_MASK;
-     unsigned int boot_capacity = sd_boot_capacity_bytes(sd);
- 
-+    if (!enable) {
-+        return 0;
-+    }
-+
-     switch (access) {
-     case EXT_CSD_PART_CONFIG_ACC_DEFAULT:
-         return boot_capacity * 2;
-@@ -2808,6 +2817,7 @@ static Property sd_properties[] = {
-      * whether card should be in SSI or MMC/SD mode.  It is also up to the
-      * board to ensure that ssi transfers only occur when the chip select
-      * is asserted.  */
-+    DEFINE_PROP_UINT8("boot-config", SDState, boot_config, 0x0),
-     DEFINE_PROP_END_OF_LIST()
- };
- 
--- 
-2.41.0
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
