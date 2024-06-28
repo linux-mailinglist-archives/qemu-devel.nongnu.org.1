@@ -2,72 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FDE491B77E
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jun 2024 09:03:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0A3791B783
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jun 2024 09:04:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sN5dL-0008VH-4y; Fri, 28 Jun 2024 03:02:59 -0400
+	id 1sN5dQ-0008W4-5F; Fri, 28 Jun 2024 03:03:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sN5dI-0008Uo-7j
- for qemu-devel@nongnu.org; Fri, 28 Jun 2024 03:02:57 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sN5dN-0008Va-6P
+ for qemu-devel@nongnu.org; Fri, 28 Jun 2024 03:03:01 -0400
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sN5dE-0006fh-HR
- for qemu-devel@nongnu.org; Fri, 28 Jun 2024 03:02:54 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-42563a9fa58so2468575e9.0
- for <qemu-devel@nongnu.org>; Fri, 28 Jun 2024 00:02:52 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sN5dK-0006gL-ND
+ for qemu-devel@nongnu.org; Fri, 28 Jun 2024 03:03:00 -0400
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-366e70d0330so222888f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 28 Jun 2024 00:02:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719558171; x=1720162971; darn=nongnu.org;
+ d=linaro.org; s=google; t=1719558176; x=1720162976; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=8X6AtOCpBUXAQ/1xHubY59Be7qdcbmyzPDPReyo42Nc=;
- b=jRs8BBgaAomubPxiCGqFKrVaB0820B5fps78bESQRRqA4YqszkkcU8l6nBfYcZdX5L
- Yw3pmqSjJ4D9IrDk/gnyh4pKsaqCLcirHqgw6z9dIqY7SRtT8zsVayaYsALud6PcOlD/
- nfL93ljqafB9SymBkdU0cmOCTqAY8qsCFKJh1N6bf0RRjabKUU7eSZI98naoyPBaDs4Y
- te9q0sSO3h0TyPJoxB1615sSFIQaHyzPczFFAm6EP2qztvg6wWORDXaF2AMrEdjJhsb9
- QP1lkLUvGbiPF3aNZBabko3UcjBDA1/Ftnu1Ru9AJoU1lRxYGbUNmV2gLB85fBDAK5k4
- 56JQ==
+ :reply-to; bh=+otp2F30HYnVaW0wjGWSRpaE6+qcbVlZ832snl2PQg0=;
+ b=wCkloADm0pPloudzt7dnxonITj/Qg2stcHTytdguwXTnu9LMzcW9WGERZE4B0cdIm/
+ Ln12+/S5tZwINLDPri2awlQn5yb0stpZSZ4ZDq30x1dLGy7OPP7zsh3ar/gkc8rcmbL7
+ KQxReWQlanf6HNeE7ixlfL4fdHAGDIJfafUHkV+AwaFBaOMIxPuXB11zGq7upa2bDkyJ
+ Z0PjZy4hVaRNqBk1HGbq2IpP02tkRnzsknU8opRHa2ZXAvECJaDZuOWD+N9tMUAB+lcg
+ plu9sBJNqQ/zLXCrzQHmIsCnaURqU1AKlAcTv+CPZKAOpniJqGN19KgEk9QX8DhVWQpH
+ tJJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719558171; x=1720162971;
+ d=1e100.net; s=20230601; t=1719558176; x=1720162976;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=8X6AtOCpBUXAQ/1xHubY59Be7qdcbmyzPDPReyo42Nc=;
- b=SXuLjaZq3UuJtipWmug10xftgwrTBMuQ4uJqrf9Zx1tyuQ65N/97jPoSJSXm37JUOI
- Yvoi2zBwhji7ZaLQSODIitjKww4DQulnvo+AwGxo44NC+e+OjGsW4N6pTXVZ9qVMe0Nf
- gUO0jPcZGIYrdebeYIS3H1EIn9jRUv4dZq8V/VTgNecWU9HQ1gQdx0F76QbX9Qc8qDy5
- SM0XBEqrqQMIUsHDR5jbswTyWSBEgkS+emQl9cRoiKqtIsn+cXigE1EfjWJCcwGwAInb
- 4ciyA14vUh/C2CnVrP84H+dq599NSV+pFv7yU7q+eF0iBIKUMdK1lcvZ4SHZ7UJENFR4
- ljsw==
-X-Gm-Message-State: AOJu0YyJ2gdoZ1Ty2KIiqR0JhKjipbJKDAk1FLhCXpDdVAkIwxLrb+MS
- whRHxjCblkmbqa95MXMygUYWmYiUQEye4U5P+QdpsU28L+w6I7sQjPTB9q6f2pYsFuUSUrNo4Lk
- Aci8=
-X-Google-Smtp-Source: AGHT+IGwVXgB+OxIdHUVsKSeeWSTUl1acpEpC8XD0UYbltjzHMoc1VvHXDt4KJFhSMUe72Mz5JXWRA==
-X-Received: by 2002:a05:600c:1c1e:b0:425:692d:c728 with SMTP id
- 5b1f17b1804b1-425692dd38dmr15098215e9.28.1719558170871; 
- Fri, 28 Jun 2024 00:02:50 -0700 (PDT)
+ bh=+otp2F30HYnVaW0wjGWSRpaE6+qcbVlZ832snl2PQg0=;
+ b=j2sn1V4X2ogNPOlnpw8pfQFEHSxHnKfTZSJezFhyvKkkx14szO0eU3Qq/ZfuVkCtOw
+ Vw+uvKnykKQl7vvLfY66WcgQNMb+EsaSuerlflNABCFRVHK/x3P7sUmyuVDsaeafVx76
+ VIg7LLsfVH35q2ZCzlP20YF/GUk4vUDGd7t1BynB6qXbLTmwnGVycDFZlQkfJ/ccBK8V
+ juvJs4HSrFiV1RkzHkDtDH/bjQUPudPCo1UV6aKZXKXf4yUrs9R1HgSMM/URt7u9AAcx
+ f/6kROmFceUBY18eYD2Zb/M1lLPU0k5iAVSHq0yU5+PK0LLA8SoKWdnwSoHEgQU3DYP1
+ 3Tng==
+X-Gm-Message-State: AOJu0YynXzqHzM/4C2RNPpbo7c59MDfiJzZfjkeLfKceX6R1NcHRNm5t
+ H4Rl7mxxGK1Mb1sezr5XEBWL95GSzvhrx/nCNXKPDj7TZkhKVPD2JRHYLWiLvBvhYTOwVBdTFgR
+ OsQU=
+X-Google-Smtp-Source: AGHT+IFQ9JZ71myrGQ6ba6tD9LBYXLP/xfp05Svcs8cDsVtVJGQtXEtHefy+uSOEsd/KGtjCmFQDzA==
+X-Received: by 2002:a5d:6dd0:0:b0:367:43af:5b8c with SMTP id
+ ffacd0b85a97d-36743af5d8fmr2506909f8f.53.1719558176379; 
+ Fri, 28 Jun 2024 00:02:56 -0700 (PDT)
 Received: from m1x-phil.lan (cho94-h02-176-184-4-239.dsl.sta.abo.bbox.fr.
  [176.184.4.239]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4256aed2263sm22708705e9.0.2024.06.28.00.02.49
+ ffacd0b85a97d-3675a0fb973sm1317253f8f.67.2024.06.28.00.02.55
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 28 Jun 2024 00:02:50 -0700 (PDT)
+ Fri, 28 Jun 2024 00:02:55 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org, =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [PATCH v42 06/98] hw/sd/sdcard: Do not store vendor data on block
- drive (CMD56)
-Date: Fri, 28 Jun 2024 09:00:42 +0200
-Message-ID: <20240628070216.92609-7-philmd@linaro.org>
+Subject: [PATCH v42 07/98] hw/sd/sdcard: Send WRITE_PROT bits MSB first (CMD30)
+Date: Fri, 28 Jun 2024 09:00:43 +0200
+Message-ID: <20240628070216.92609-8-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240628070216.92609-1-philmd@linaro.org>
 References: <20240628070216.92609-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,87 +89,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-"General command" (GEN_CMD, CMD56) is described as:
+Per sections 3.6.1 (SD Bus Protocol) and 7.3.2 (Responses):
 
-  GEN_CMD is the same as the single block read or write
-  commands (CMD24 or CMD17). The difference is that [...]
-  the data block is not a memory payload data but has a
-  vendor specific format and meaning.
+  In the CMD line the Most Significant Bit is transmitted first.
 
-Thus this block must not be stored overwriting data block
-on underlying storage drive. Keep it in a dedicated
-'vendor_data[]' array.
+Use the stl_be_p() helper to store the value in big-endian.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Tested-by: Cédric Le Goater <clg@redhat.com>
 ---
-RFC: Is it safe to reuse VMSTATE_UNUSED_V() (which happens
-to be the same size)?
+RFC because I'm surprised this has been unnoticed for 17 years
+(commit a1bb27b1e9 "initial SD card emulation", April 2007).
 
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Fabiano Rosas <farosas@suse.de>
+Cc: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/sd/sd.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ hw/sd/sd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/hw/sd/sd.c b/hw/sd/sd.c
-index 464576751a..1f3eea6e84 100644
+index 1f3eea6e84..4e09640852 100644
 --- a/hw/sd/sd.c
 +++ b/hw/sd/sd.c
-@@ -142,6 +142,8 @@ struct SDState {
-     uint64_t data_start;
-     uint32_t data_offset;
-     uint8_t data[512];
-+    uint8_t vendor_data[512];
-+
-     qemu_irq readonly_cb;
-     qemu_irq inserted_cb;
-     QEMUTimer *ocr_power_timer;
-@@ -656,6 +658,7 @@ static void sd_reset(DeviceState *dev)
-     sd->wp_switch = sd->blk ? !blk_is_writable(sd->blk) : false;
-     sd->wp_group_bits = sect;
-     sd->wp_group_bmap = bitmap_new(sd->wp_group_bits);
-+    memset(sd->vendor_data, 0xec, sizeof(sd->vendor_data));
-     memset(sd->function_group, 0, sizeof(sd->function_group));
-     sd->erase_start = INVALID_ADDRESS;
-     sd->erase_end = INVALID_ADDRESS;
-@@ -771,7 +774,7 @@ static const VMStateDescription sd_vmstate = {
-         VMSTATE_UINT64(data_start, SDState),
-         VMSTATE_UINT32(data_offset, SDState),
-         VMSTATE_UINT8_ARRAY(data, SDState, 512),
--        VMSTATE_UNUSED_V(1, 512),
-+        VMSTATE_UINT8_ARRAY(vendor_data, SDState, 512),
-         VMSTATE_BOOL(enable, SDState),
-         VMSTATE_END_OF_LIST()
-     },
-@@ -2029,9 +2032,8 @@ void sd_write_byte(SDState *sd, uint8_t value)
-         break;
+@@ -1507,7 +1507,7 @@ static sd_rsp_type_t sd_normal_command(SDState *sd, SDRequest req)
+             }
  
-     case 56:  /* CMD56:  GEN_CMD */
--        sd->data[sd->data_offset ++] = value;
--        if (sd->data_offset >= sd->blk_len) {
--            APP_WRITE_BLOCK(sd->data_start, sd->data_offset);
-+        sd->vendor_data[sd->data_offset ++] = value;
-+        if (sd->data_offset >= sizeof(sd->vendor_data)) {
-             sd->state = sd_transfer_state;
-         }
-         break;
-@@ -2165,12 +2167,11 @@ uint8_t sd_read_byte(SDState *sd)
-         break;
- 
-     case 56:  /* CMD56:  GEN_CMD */
--        if (sd->data_offset == 0)
--            APP_READ_BLOCK(sd->data_start, sd->blk_len);
--        ret = sd->data[sd->data_offset ++];
-+        ret = sd->vendor_data[sd->data_offset ++];
- 
--        if (sd->data_offset >= sd->blk_len)
-+        if (sd->data_offset >= sizeof(sd->vendor_data)) {
-             sd->state = sd_transfer_state;
-+        }
-         break;
- 
-     default:
+             sd->state = sd_sendingdata_state;
+-            *(uint32_t *) sd->data = sd_wpbits(sd, req.arg);
++            stl_be_p(sd->data, sd_wpbits(sd, req.arg));
+             sd->data_start = addr;
+             sd->data_offset = 0;
+             return sd_r1;
 -- 
 2.41.0
 
