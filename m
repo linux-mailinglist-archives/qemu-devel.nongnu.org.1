@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB1C991B86F
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jun 2024 09:32:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1A7591B880
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jun 2024 09:34:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sN65h-0008NP-EG; Fri, 28 Jun 2024 03:32:18 -0400
+	id 1sN66M-0000RQ-LY; Fri, 28 Jun 2024 03:33:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=GU6n=N6=kaod.org=clg@ozlabs.org>)
- id 1sN64s-00085o-JI
- for qemu-devel@nongnu.org; Fri, 28 Jun 2024 03:31:31 -0400
-Received: from gandalf.ozlabs.org ([150.107.74.76] helo=mail.ozlabs.org)
+ id 1sN65k-00009L-W1
+ for qemu-devel@nongnu.org; Fri, 28 Jun 2024 03:32:23 -0400
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=GU6n=N6=kaod.org=clg@ozlabs.org>)
- id 1sN64q-0007d4-Lx
- for qemu-devel@nongnu.org; Fri, 28 Jun 2024 03:31:26 -0400
+ id 1sN65j-0007in-2W
+ for qemu-devel@nongnu.org; Fri, 28 Jun 2024 03:32:20 -0400
 Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4W9RvG3MHwz4wcC;
- Fri, 28 Jun 2024 17:31:22 +1000 (AEST)
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4W9RwH3Nsdz4wcC;
+ Fri, 28 Jun 2024 17:32:15 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits))
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4W9RvF3JhLz4wb7;
- Fri, 28 Jun 2024 17:31:21 +1000 (AEST)
-Message-ID: <38ce1b2f-3bcf-4732-ada5-e01121da2cb3@kaod.org>
-Date: Fri, 28 Jun 2024 09:31:19 +0200
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4W9RwG3LFQz4wcg;
+ Fri, 28 Jun 2024 17:32:14 +1000 (AEST)
+Message-ID: <24f42c6c-c28e-4e23-9d78-aac2f0b315b2@kaod.org>
+Date: Fri, 28 Jun 2024 09:32:11 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v42 05/98] hw/sd/sdcard: Trace requested address computed
- by sd_req_get_address()
+Subject: Re: [PATCH v42 11/98] hw/sd/sdcard: Simplify sd_inactive_state
+ handling
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
 References: <20240628070216.92609-1-philmd@linaro.org>
- <20240628070216.92609-6-philmd@linaro.org>
+ <20240628070216.92609-12-philmd@linaro.org>
 Content-Language: en-US, fr
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20240628070216.92609-6-philmd@linaro.org>
+In-Reply-To: <20240628070216.92609-12-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=150.107.74.76;
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
  envelope-from=SRS0=GU6n=N6=kaod.org=clg@ozlabs.org; helo=mail.ozlabs.org
 X-Spam_score_int: -39
 X-Spam_score: -4.0
@@ -66,7 +66,13 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 6/28/24 9:00 AM, Philippe Mathieu-Daudé wrote:
+> Card entering sd_inactive_state powers off, and won't respond
+> anymore. Handle that once when entering sd_do_command().
+> 
+> Remove condition always true in sd_cmd_GO_IDLE_STATE().
+> 
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Tested-by: Cédric Le Goater <clg@redhat.com>
 
 
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
@@ -77,43 +83,45 @@ C.
 
 
 > ---
->   hw/sd/sd.c         | 9 +++++++--
->   hw/sd/trace-events | 1 +
->   2 files changed, 8 insertions(+), 2 deletions(-)
+>   hw/sd/sd.c | 12 +++++++-----
+>   1 file changed, 7 insertions(+), 5 deletions(-)
 > 
 > diff --git a/hw/sd/sd.c b/hw/sd/sd.c
-> index 090a6fdcdb..464576751a 100644
+> index fbdfafa3a6..7533a78cf6 100644
 > --- a/hw/sd/sd.c
 > +++ b/hw/sd/sd.c
-> @@ -608,10 +608,15 @@ static void sd_response_r7_make(SDState *sd, uint8_t *response)
->   
->   static uint64_t sd_req_get_address(SDState *sd, SDRequest req)
+> @@ -1081,10 +1081,8 @@ static sd_rsp_type_t sd_cmd_unimplemented(SDState *sd, SDRequest req)
+>   /* CMD0 */
+>   static sd_rsp_type_t sd_cmd_GO_IDLE_STATE(SDState *sd, SDRequest req)
 >   {
-> +    uint64_t addr;
-> +
->       if (FIELD_EX32(sd->ocr, OCR, CARD_CAPACITY)) {
-> -        return (uint64_t) req.arg << HWBLOCK_SHIFT;
-> +        addr = (uint64_t) req.arg << HWBLOCK_SHIFT;
-> +    } else {
-> +        addr = req.arg;
->       }
-> -    return req.arg;
-> +    trace_sdcard_req_addr(req.arg, addr);
-> +    return addr;
->   }
+> -    if (sd->state != sd_inactive_state) {
+> -        sd->state = sd_idle_state;
+> -        sd_reset(DEVICE(sd));
+> -    }
+> +    sd->state = sd_idle_state;
+> +    sd_reset(DEVICE(sd));
 >   
->   static inline uint64_t sd_addr_to_wpnum(uint64_t addr)
-> diff --git a/hw/sd/trace-events b/hw/sd/trace-events
-> index 0eee98a646..43eaeba149 100644
-> --- a/hw/sd/trace-events
-> +++ b/hw/sd/trace-events
-> @@ -50,6 +50,7 @@ sdcard_ejected(void) ""
->   sdcard_erase(uint32_t first, uint32_t last) "addr first 0x%" PRIx32" last 0x%" PRIx32
->   sdcard_lock(void) ""
->   sdcard_unlock(void) ""
-> +sdcard_req_addr(uint32_t req_arg, uint64_t addr) "req 0x%" PRIx32 " addr 0x%" PRIx64
->   sdcard_read_block(uint64_t addr, uint32_t len) "addr 0x%" PRIx64 " size 0x%x"
->   sdcard_write_block(uint64_t addr, uint32_t len) "addr 0x%" PRIx64 " size 0x%x"
->   sdcard_write_data(const char *proto, const char *cmd_desc, uint8_t cmd, uint32_t offset, uint8_t value) "%s %20s/ CMD%02d ofs %"PRIu32" value 0x%02x"
+>       return sd_is_spi(sd) ? sd_r1 : sd_r0;
+>   }
+> @@ -1579,7 +1577,6 @@ static sd_rsp_type_t sd_normal_command(SDState *sd, SDRequest req)
+>           switch (sd->state) {
+>           case sd_ready_state:
+>           case sd_identification_state:
+> -        case sd_inactive_state:
+>               return sd_illegal;
+>           case sd_idle_state:
+>               if (rca) {
+> @@ -1800,6 +1797,11 @@ int sd_do_command(SDState *sd, SDRequest *req,
+>           return 0;
+>       }
+>   
+> +    if (sd->state == sd_inactive_state) {
+> +        rtype = sd_illegal;
+> +        goto send_response;
+> +    }
+> +
+>       if (sd_req_crc_validate(req)) {
+>           sd->card_status |= COM_CRC_ERROR;
+>           rtype = sd_illegal;
 
 
