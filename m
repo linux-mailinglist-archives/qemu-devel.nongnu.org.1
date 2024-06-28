@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 396E191BEDE
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jun 2024 14:44:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43DE591BEDC
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jun 2024 14:44:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sNAx8-0005GK-G7; Fri, 28 Jun 2024 08:43:46 -0400
+	id 1sNAx6-00059z-O5; Fri, 28 Jun 2024 08:43:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sNAwV-0004oO-T0
- for qemu-devel@nongnu.org; Fri, 28 Jun 2024 08:43:08 -0400
-Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ id 1sNAwY-0004pu-77
+ for qemu-devel@nongnu.org; Fri, 28 Jun 2024 08:43:11 -0400
+Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sNAwU-0005fs-6W
- for qemu-devel@nongnu.org; Fri, 28 Jun 2024 08:43:07 -0400
-Received: by mail-ed1-x530.google.com with SMTP id
- 4fb4d7f45d1cf-584ee8da49aso3089524a12.0
- for <qemu-devel@nongnu.org>; Fri, 28 Jun 2024 05:43:05 -0700 (PDT)
+ id 1sNAwW-0005i4-Ct
+ for qemu-devel@nongnu.org; Fri, 28 Jun 2024 08:43:09 -0400
+Received: by mail-ej1-x631.google.com with SMTP id
+ a640c23a62f3a-a72b3e1c14cso59398666b.1
+ for <qemu-devel@nongnu.org>; Fri, 28 Jun 2024 05:43:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719578584; x=1720183384; darn=nongnu.org;
+ d=linaro.org; s=google; t=1719578587; x=1720183387; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=rvGmIc/IqaQmuLkCI/kfZ02beHV2np9KXDzigOomwVY=;
- b=LQ2i+wzo/qi5MzmYH5uZWE7RY2FTOZzYPF2qAltQjgnVzLLQnM2jYS4mhXUUzlSizY
- u8pg2LESNTV/pdACZILIaf9I57ltdkhyQZiyluUTrb5IpQKtoHwO3pTxWUa0zbPY2UKO
- F3BclslVtRW7YCIeEygP6xQB0U1GekLBbiP2M5cfXnp2LJKq1Urx4jadjM2CgpHiAx32
- OD65MUJ0sflErC0p4QvxDaHvsKWe6J9iKgZIdjtylmyOpZWuLvdG/mF50ZIeb9pZYOr+
- YJJ6QlnFB5OD0AhSChOMs0gqVDG0vdtxzHOJbdr+BYvVXqIyxqERGTu4mUjK1rcl1bv4
- TXmw==
+ bh=Y1MGJW50FjVhjyrhFQsVUOHRmt7nlCHL11oCXI6mA2A=;
+ b=aXDK7s1a4YfH+G14MLYD3/WM6lE5p2Jq82EY0s2uq6EGrFLN50v58xCU0gh/C9RgWG
+ c7WMbru+fukWQwRzNjOrYBg+HYih0ZmZHUXZH9ZR3YGUiUy2uR8XndbXCAUOWWzVhA0i
+ NRRz3qPXS5gcLQ0CnnNEasf9p2XQAvANSDFolZJPlzkmCHEUiS7WfOCgZcC60TxGGbwq
+ sm2MccapOjp5HQ5y8kKCN4ykqIryjMf9sWmwwUFN6F1vWYWNsXUhF7MlJwUThOIlyqu8
+ A5RnUHj0StIcC/thalhFf29jdfgstnsuv+/yxhjEH7TEQMaK6/VXPm12HY9JgG5JlnVB
+ 5y2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719578584; x=1720183384;
+ d=1e100.net; s=20230601; t=1719578587; x=1720183387;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=rvGmIc/IqaQmuLkCI/kfZ02beHV2np9KXDzigOomwVY=;
- b=nknmRAEkrFXRZh7dkR1XXJpLdKEfkNKEgtXBK6SI/PQyjaWC6r9MZAnvkWqT/VQuRb
- b0D4BWkODXT1ZPz3GcQ3Qettd2VKZZLljFkSv+7XhYx5VS/UPTs/GJwVWS6U27bdqHlA
- YjSmCHLPKmsREg/DsV8qRb2xBjqhd1ysmFcFfKV/GYY174EOLdUwpI//2Dvg/2BduPyX
- yHfh0rQixpN0TbCKdgm2XkPzsIbhYZjt9jwwl25AEF9YBpl07BAwxEk2Xs+kD/ZmuTi0
- X7LFAiuweK3K267QAfTcz1bVA33j+30hkVkziPQ+Imxh7Op3IJmHifuTsDH63UGhOdhK
- Re2A==
-X-Gm-Message-State: AOJu0Yw76eWvNw/R3IEUsCCMz5q8zXZL6roPKzZsbSdktmOkLjYtSAlq
- W/xNjibMjxPbGgBNIbemXyK4t/bABusvuKwzBRcUE9g6anwsabKn/B9m8B+7f4k=
-X-Google-Smtp-Source: AGHT+IEYYV3YJQeizporoofEsJYAFW1V8ZfOcmyW0NWTINkOfBKyfZgVbjC3k1twcoJS4y9EGymywg==
-X-Received: by 2002:a05:6402:440a:b0:57d:1d9e:d1fe with SMTP id
- 4fb4d7f45d1cf-5865c1f6e88mr1438298a12.9.1719578584324; 
- Fri, 28 Jun 2024 05:43:04 -0700 (PDT)
+ bh=Y1MGJW50FjVhjyrhFQsVUOHRmt7nlCHL11oCXI6mA2A=;
+ b=UBUrE6sSbrOTnw37z36aAJ3kREWOP0Ffg/9eq8S/EfkPiaJ676/nsJIzyqESC64DFQ
+ Z1Td7WeLocOh9jKIHYto/cM2Thp7Pq5rnJqN73h7JHbG0aWpQnicGZ4FRtLiawZNfjmM
+ jHkkr8q1fzmPx7wUBrfTE5bFarvQgTJHjixboesX01l/TMEB3Pt/HKLpZPUA/v2iYLXb
+ t1bpGLtGbj3bAHHqgC7xzXdb+LpcIuebOKIj5Bkppj0Jd/LWnZwBeqg+ewKphk7amO7f
+ g1TLipgSKderTtzQxl4h7YI8uehHkaTKUW+SKjODLBV62Bwqmh0kYNNsaFDJIEaeui2U
+ TLXQ==
+X-Gm-Message-State: AOJu0YyxBO0ORqWwQjNMb+YxOGTARHe/LRVY8LgDgwnp0FMhglIQ75XW
+ MyVWAY+UArjZLcUfd7NsrcgWSRYMb8ZYZHIWbgA/X8xwCVv7pHvWuBmLNJG8nx8=
+X-Google-Smtp-Source: AGHT+IGUyHaqE2H3ZeowGjOBN+7huQjG5y7y0uB/P99OvwUd34QrWa4YAfI42VJ7WhJZNPkifvwC8g==
+X-Received: by 2002:a17:906:2657:b0:a6f:1590:ab06 with SMTP id
+ a640c23a62f3a-a7245b56d21mr979825866b.31.1719578586715; 
+ Fri, 28 Jun 2024 05:43:06 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5861381756esm988562a12.56.2024.06.28.05.43.01
+ a640c23a62f3a-a72aaf1bc08sm76310066b.28.2024.06.28.05.43.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 28 Jun 2024 05:43:03 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id A04135FA12;
+ by draig.lan (Postfix) with ESMTP id B76F55FA15;
  Fri, 28 Jun 2024 13:42:59 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -73,24 +73,25 @@ Cc: David Hildenbrand <david@redhat.com>, Beraldo Leal <bleal@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Thomas Huth <thuth@redhat.com>
-Subject: [PATCH 07/23] test/plugin: make insn plugin less noisy by default
-Date: Fri, 28 Jun 2024 13:42:42 +0100
-Message-Id: <20240628124258.832466-8-alex.bennee@linaro.org>
+Subject: [PATCH 08/23] test/plugins: preserve the instruction record over
+ translations
+Date: Fri, 28 Jun 2024 13:42:43 +0100
+Message-Id: <20240628124258.832466-9-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240628124258.832466-1-alex.bennee@linaro.org>
 References: <20240628124258.832466-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::530;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x530.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::631;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,84 +107,128 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-While the match functionality is useful lets make the verbosity
-optional while we are actually running.
+We are interested in the particular instruction so we should use a
+stable record for it. We could bring this down to physical address but
+for now vaddr + disas seems to do the trick.
 
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- tests/plugin/insn.c | 36 +++++++++++++++++++++---------------
- 1 file changed, 21 insertions(+), 15 deletions(-)
+ tests/plugin/insn.c | 76 ++++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 71 insertions(+), 5 deletions(-)
 
 diff --git a/tests/plugin/insn.c b/tests/plugin/insn.c
-index 5e0aa03223..524f9ddde8 100644
+index 524f9ddde8..baf2d07205 100644
 --- a/tests/plugin/insn.c
 +++ b/tests/plugin/insn.c
-@@ -20,6 +20,7 @@ static qemu_plugin_u64 insn_count;
+@@ -43,6 +43,44 @@ typedef struct {
+     char *disas;
+ } Instruction;
  
- static bool do_inline;
- static bool do_size;
-+static bool do_trace;
- static GArray *sizes;
- 
- typedef struct {
-@@ -73,30 +74,30 @@ static void vcpu_insn_matched_exec_before(unsigned int cpu_index, void *udata)
-     MatchCount *match = qemu_plugin_scoreboard_find(insn_match->counts,
-                                                     cpu_index);
- 
--    g_autoptr(GString) ts = g_string_new("");
--
-     insn->hits++;
--    g_string_append_printf(ts, "0x%" PRIx64 ", '%s', %"PRId64 " hits",
--                           insn->vaddr, insn->disas, insn->hits);
- 
-     uint64_t icount = qemu_plugin_u64_get(insn_count, cpu_index);
-     uint64_t delta = icount - match->last_hit;
- 
-     match->hits++;
-     match->total_delta += delta;
--
--    g_string_append_printf(ts,
--                           " , cpu %u,"
--                           " %"PRId64" match hits,"
--                           " Δ+%"PRId64 " since last match,"
--                           " %"PRId64 " avg insns/match\n",
--                           cpu_index,
--                           match->hits, delta,
--                           match->total_delta / match->hits);
--
-     match->last_hit = icount;
- 
--    qemu_plugin_outs(ts->str);
-+    if (do_trace) {
-+        g_autoptr(GString) ts = g_string_new("");
-+        g_string_append_printf(ts, "0x%" PRIx64 ", '%s', %"PRId64 " hits",
-+                               insn->vaddr, insn->disas, insn->hits);
-+        g_string_append_printf(ts,
-+                               " , cpu %u,"
-+                               " %"PRId64" match hits,"
-+                               " Δ+%"PRId64 " since last match,"
-+                               " %"PRId64 " avg insns/match\n",
-+                               cpu_index,
-+                               match->hits, delta,
-+                               match->total_delta / match->hits);
++/* A hash table to hold matched instructions */
++static GHashTable *match_insn_records;
++static GMutex match_hash_lock;
 +
++
++static Instruction * get_insn_record(const char *disas, uint64_t vaddr, Match *m)
++{
++    g_autofree char *str_hash = g_strdup_printf("%"PRIx64" %s", vaddr, disas);
++    Instruction *record;
++
++    g_mutex_lock(&match_hash_lock);
++
++    if (!match_insn_records) {
++        match_insn_records = g_hash_table_new(g_str_hash, g_str_equal);
++    }
++
++    record = g_hash_table_lookup(match_insn_records, str_hash);
++
++    if (!record) {
++        g_autoptr(GString) ts = g_string_new(str_hash);
++
++        record = g_new0(Instruction, 1);
++        record->disas = g_strdup(disas);
++        record->vaddr = vaddr;
++        record->match = m;
++
++        g_hash_table_insert(match_insn_records, str_hash, record);
++
++        g_string_prepend(ts, "Created record for: ");
++        g_string_append(ts, "\n");
 +        qemu_plugin_outs(ts->str);
 +    }
- }
- 
- static void vcpu_tb_trans(qemu_plugin_id_t id, struct qemu_plugin_tb *tb)
-@@ -216,6 +217,11 @@ QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
-             }
-         } else if (g_strcmp0(tokens[0], "match") == 0) {
-             parse_match(tokens[1]);
-+        } else if (g_strcmp0(tokens[0], "trace") == 0) {
-+            if (!qemu_plugin_bool_parse(tokens[0], tokens[1], &do_trace)) {
-+                fprintf(stderr, "boolean argument parsing failed: %s\n", opt);
-+                return -1;
++
++    g_mutex_unlock(&match_hash_lock);
++
++    return record;
++}
++
+ /*
+  * Initialise a new vcpu with reading the register list
+  */
+@@ -131,16 +169,19 @@ static void vcpu_tb_trans(qemu_plugin_id_t id, struct qemu_plugin_tb *tb)
+          * If we are tracking certain instructions we will need more
+          * information about the instruction which we also need to
+          * save if there is a hit.
++         *
++         * We only want one record for each occurrence of the matched
++         * instruction.
+          */
+         if (matches->len) {
+             char *insn_disas = qemu_plugin_insn_disas(insn);
+             for (int j = 0; j < matches->len; j++) {
+                 Match *m = &g_array_index(matches, Match, j);
+                 if (g_str_has_prefix(insn_disas, m->match_string)) {
+-                    Instruction *rec = g_new0(Instruction, 1);
+-                    rec->disas = g_strdup(insn_disas);
+-                    rec->vaddr = qemu_plugin_insn_vaddr(insn);
+-                    rec->match = m;
++                    Instruction *rec = get_insn_record(insn_disas,
++                                                       qemu_plugin_insn_vaddr(insn),
++                                                       m);
++
+                     qemu_plugin_register_vcpu_insn_exec_cb(
+                         insn, vcpu_insn_matched_exec_before,
+                         QEMU_PLUGIN_CB_NO_REGS, rec);
+@@ -173,13 +214,38 @@ static void plugin_exit(qemu_plugin_id_t id, void *p)
+                                qemu_plugin_u64_sum(insn_count));
+     }
+     qemu_plugin_outs(out->str);
+-
+     qemu_plugin_scoreboard_free(insn_count.score);
++
++    g_mutex_lock(&match_hash_lock);
++
+     for (i = 0; i < matches->len; ++i) {
+         Match *m = &g_array_index(matches, Match, i);
++        GHashTableIter iter;
++        Instruction *record;
++        qemu_plugin_u64 hit_e = qemu_plugin_scoreboard_u64_in_struct(m->counts, MatchCount, hits);
++        uint64_t hits = qemu_plugin_u64_sum(hit_e);
++
++        g_string_printf(out, "Match: %s, hits %"PRId64"\n", m->match_string, hits);
++        qemu_plugin_outs(out->str);
++
++        g_hash_table_iter_init(&iter, match_insn_records);
++        while (g_hash_table_iter_next(&iter, NULL, (void **)&record)) {
++            if (record->match == m) {
++                g_string_printf(out,
++                                "  %"PRIx64": %s (hits %"PRId64")\n",
++                                record->vaddr,
++                                record->disas,
++                                record->hits);
++                qemu_plugin_outs(out->str);
 +            }
-         } else {
-             fprintf(stderr, "option parsing failed: %s\n", opt);
-             return -1;
++        }
++
+         g_free(m->match_string);
+         qemu_plugin_scoreboard_free(m->counts);
+     }
++
++    g_mutex_unlock(&match_hash_lock);
++
+     g_array_free(matches, TRUE);
+     g_array_free(sizes, TRUE);
+ }
 -- 
 2.39.2
 
