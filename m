@@ -2,69 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1410891CCCF
+	by mail.lfdr.de (Postfix) with ESMTPS id 48FF291CCD2
 	for <lists+qemu-devel@lfdr.de>; Sat, 29 Jun 2024 14:52:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sNXXr-0003hh-6g; Sat, 29 Jun 2024 08:51:11 -0400
+	id 1sNXXs-0003jU-H0; Sat, 29 Jun 2024 08:51:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sNXXj-0003gn-9M
- for qemu-devel@nongnu.org; Sat, 29 Jun 2024 08:51:03 -0400
-Received: from mail-oi1-x22c.google.com ([2607:f8b0:4864:20::22c])
+ id 1sNXXp-0003hk-1V
+ for qemu-devel@nongnu.org; Sat, 29 Jun 2024 08:51:09 -0400
+Received: from mail-pg1-x52e.google.com ([2607:f8b0:4864:20::52e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sNXXh-0006gN-NC
- for qemu-devel@nongnu.org; Sat, 29 Jun 2024 08:51:02 -0400
-Received: by mail-oi1-x22c.google.com with SMTP id
- 5614622812f47-3d566b147ffso1004070b6e.2
- for <qemu-devel@nongnu.org>; Sat, 29 Jun 2024 05:51:01 -0700 (PDT)
+ id 1sNXXm-0006vD-Is
+ for qemu-devel@nongnu.org; Sat, 29 Jun 2024 08:51:08 -0400
+Received: by mail-pg1-x52e.google.com with SMTP id
+ 41be03b00d2f7-71910dfb8c0so888277a12.3
+ for <qemu-devel@nongnu.org>; Sat, 29 Jun 2024 05:51:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1719665460; x=1720270260;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1719665465; x=1720270265;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=DvpsKqJKseTB8512E3EM/mcg58HxToRdE8EyOPRZHqA=;
- b=VjuW9nbTRhNSrwF/hZjfgebxWS9UR+kmw5TreB2ZtEdQLZ6gmg81+2UqqtGGet/NUC
- PY6JWyi2WyxEtXMvx2oWHQHgEF8yNVqkYGOK1kc0Cjs6pRcR3hsQ5y9cM0SRaQPbFsK7
- SJnCE7QAmhGVbxutTXqUOX4N45ok7VZ/3vBlmwLH3Nj8fpgekDrTKGyTUkqw2okmH4W6
- 1Mx9GmRr2CoxJbTPQ3EzeQBy7iet+BKUdAVWuMGwGOW1/D5xVcb5RKbcfqc+qKAl7oyh
- X7yjtyVisbV0Y6uJ0Hn/TwGplz/ad/fLkz46uoOXrwoGTK9whTIqq9/sGk21kbpkIcMk
- 9ykw==
+ :reply-to; bh=p3Ff167L5PnEkX8Hjv5zeODUS2Rm0iaQ73J60qa2lyQ=;
+ b=Y2FyUvxafM1bnRKsHx++CjP5C2v5O3QApX5R8wOWS9CMmgsmpWdyVS8nVVlUe0cCou
+ 7WLcWrhBx6nWI3FXtugjY/BsBuv0RspVEp7gn9J4mCr1P1rfW7alVfjA/x5HTnbIiIm7
+ lb3qqi7WRn2TdA6Li6nsw+tV3YcmFPnO42VhvNrj9GOe9DOFfe+8i7mkxLArrVxXrnmR
+ 2Pw6jKIMha5Si85vZkbYQBai7lXbzK15QZhRgGZx6GS7HVnutOMMm67arXUGuAe0E/bA
+ m+7YEQYFIGJxHQtqUpoy2Y63QvtUQjtonhi2E5kwa/IQo4U/LvWzD9ZpfPM21eR6Yl6B
+ rbWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719665460; x=1720270260;
+ d=1e100.net; s=20230601; t=1719665465; x=1720270265;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=DvpsKqJKseTB8512E3EM/mcg58HxToRdE8EyOPRZHqA=;
- b=L7AwTp/QOumceMgANJEIsAeIp+mmv1J7030PE4k5ncRVpkQhg/c9DqLLtlKwT59KEo
- kIuiTo3ZgzXHNTHNUN0hm0sK3HKw7CGDpMnu3jD76+mDA5u/zrIfWa+QmkoNywRyUoAO
- fCr4bEgpbjwTUOEZR+9s/rP45tIg7fY8KByHjmHeM0z3iRnow3r4JXjaz37W1+XZyRnK
- NFhUnutLvMK9YVsF/+QG4ZGxXzD5KRMPkm/JZI1yrpO/cOORpPNOkgmAnfFyuysDn/K3
- BmRzTwHgrp2haA+mWsLAYgwli4PYw8nCb3JVE6rd86XNOQeBjhcES5pf1UhG9XeDSiul
- gehw==
+ bh=p3Ff167L5PnEkX8Hjv5zeODUS2Rm0iaQ73J60qa2lyQ=;
+ b=qXwT8BJwBR7xcoUnqN2lb0qnY+V2CD1Ny62SHBt+QXK0UWoPGQpyd20j1H+4/bjT3m
+ s0MyX68E7WK7T1wlFvYpCww6+FQJPRhqWPDBL50FCHk663PUAblVdmroeQOWHG8TJZA1
+ E24Qjmqi1PWAuSPOxzbSvMqbnRVVS/bCgMlpgZEx0V04k6t9y47VxyLJqXwV/ygbdjl2
+ daD/88jgUOvveipM9d0lZ2WM9I03LoKLy3Ff63U0qWY3ortA2Q1mWXxqKBGIyJfdTeSM
+ 7NKSrE/CsCn1TeMs+z6lOhuiysoTuduxNDuUjB1TJO7ETqrfxbkGmRDN6u61bRe2ait3
+ XF0g==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWzmmBOX8Swig9/xEGBQRL6iBF57kpQhXm0CljXagV+slGpKgWufbAlobw+qHcoJ4AmP8rV1IPT7UKrwFkmmIN1IxLo+AA=
-X-Gm-Message-State: AOJu0Yw9w6EtBwUByXeN8pT/BhI9aEU2nmjN627h45HNhZ2kalIcyyOz
- xdaSLQaJRe4PMFcRTA7eu+NP1lNeOqyrRU1EOC+CeTKYW+A6ZDcRNjOiaQ+dfbY=
-X-Google-Smtp-Source: AGHT+IGnFk33QJj7zRJvjq34kT9S5rKVUvKwNykZ5WrLJUb8d4LshvqBoKRYEFxOAjs4b/IKgR0gEg==
-X-Received: by 2002:a05:6808:2204:b0:3d1:fc50:1aae with SMTP id
- 5614622812f47-3d6b2a2f0d4mr1188382b6e.7.1719665460603; 
- Sat, 29 Jun 2024 05:51:00 -0700 (PDT)
+ AJvYcCX5g5fguk+G+Y8Ufdz4ueyFhWrwJ0Tpq3fQgTrtr58j+zN1y1LDQ5zJizdwlLi32NcvucHbIuOCYamn7H302dJ5YRPnxgc=
+X-Gm-Message-State: AOJu0Ywl529esgJXTT2tpF5KElKa5bo1kenv67cABIgEII04uC4yRv7k
+ +M7nTl0rWb8Jso908nK3lLRR1jZ/qqEoGy4bTuQaQqDtn/UErlIol3U2Vt0KQEY=
+X-Google-Smtp-Source: AGHT+IFCiPS0/8zesPRbyIYow94YbPB6IyyS94I3YzDOLPGWwQAW7sXt9gryc2zlfG/1uWsWHnbXag==
+X-Received: by 2002:a05:6a20:78a6:b0:1bd:2f6:e400 with SMTP id
+ adf61e73a8af0-1bef624626bmr760352637.47.1719665464771; 
+ Sat, 29 Jun 2024 05:51:04 -0700 (PDT)
 Received: from localhost ([157.82.204.135])
  by smtp.gmail.com with UTF8SMTPSA id
- d2e1a72fcca58-708043b7145sm3322714b3a.148.2024.06.29.05.50.58
+ d9443c01a7336-1fac1535b6esm31432145ad.156.2024.06.29.05.51.02
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 29 Jun 2024 05:51:00 -0700 (PDT)
+ Sat, 29 Jun 2024 05:51:04 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Sat, 29 Jun 2024 21:50:32 +0900
-Subject: [PATCH 1/3] tests/arm-cpu-features: Do not assume PMU availability
+Date: Sat, 29 Jun 2024 21:50:33 +0900
+Subject: [PATCH 2/3] target/arm: Always add pmu property
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240629-pmu-v1-1-7269123b88a4@daynix.com>
+Message-Id: <20240629-pmu-v1-2-7269123b88a4@daynix.com>
 References: <20240629-pmu-v1-0-7269123b88a4@daynix.com>
 In-Reply-To: <20240629-pmu-v1-0-7269123b88a4@daynix.com>
 To: Peter Maydell <peter.maydell@linaro.org>, 
@@ -73,8 +73,8 @@ To: Peter Maydell <peter.maydell@linaro.org>,
 Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, kvm@vger.kernel.org, 
  Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.14-dev-fd6e3
-Received-SPF: none client-ip=2607:f8b0:4864:20::22c;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-oi1-x22c.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::52e;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x52e.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -96,56 +96,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Asahi Linux supports KVM but lacks PMU support.
+kvm-steal-time and sve properties are added for KVM even if the
+corresponding features are not available. Always add pmu property too.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- tests/qtest/arm-cpu-features.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ target/arm/cpu.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tests/qtest/arm-cpu-features.c b/tests/qtest/arm-cpu-features.c
-index 966c65d5c3e4..cfd6f7735354 100644
---- a/tests/qtest/arm-cpu-features.c
-+++ b/tests/qtest/arm-cpu-features.c
-@@ -509,6 +509,7 @@ static void test_query_cpu_model_expansion_kvm(const void *data)
-     assert_set_feature(qts, "host", "kvm-no-adjvtime", false);
+diff --git a/target/arm/cpu.c b/target/arm/cpu.c
+index 35fa281f1b98..0da72c12a5bd 100644
+--- a/target/arm/cpu.c
++++ b/target/arm/cpu.c
+@@ -1770,9 +1770,10 @@ void arm_cpu_post_init(Object *obj)
  
-     if (g_str_equal(qtest_get_arch(), "aarch64")) {
-+        bool kvm_supports_pmu;
-         bool kvm_supports_steal_time;
-         bool kvm_supports_sve;
-         char max_name[8], name[8];
-@@ -537,11 +538,6 @@ static void test_query_cpu_model_expansion_kvm(const void *data)
+     if (arm_feature(&cpu->env, ARM_FEATURE_PMU)) {
+         cpu->has_pmu = true;
+-        object_property_add_bool(obj, "pmu", arm_get_pmu, arm_set_pmu);
+     }
  
-         assert_has_feature_enabled(qts, "host", "aarch64");
- 
--        /* Enabling and disabling pmu should always work. */
--        assert_has_feature_enabled(qts, "host", "pmu");
--        assert_set_feature(qts, "host", "pmu", false);
--        assert_set_feature(qts, "host", "pmu", true);
--
-         /*
-          * Some features would be enabled by default, but they're disabled
-          * because this instance of KVM doesn't support them. Test that the
-@@ -551,11 +547,18 @@ static void test_query_cpu_model_expansion_kvm(const void *data)
-         assert_has_feature(qts, "host", "sve");
- 
-         resp = do_query_no_props(qts, "host");
-+        kvm_supports_pmu = resp_get_feature(resp, "pmu");
-         kvm_supports_steal_time = resp_get_feature(resp, "kvm-steal-time");
-         kvm_supports_sve = resp_get_feature(resp, "sve");
-         vls = resp_get_sve_vls(resp);
-         qobject_unref(resp);
- 
-+        if (kvm_supports_pmu) {
-+            /* If we have pmu then we should be able to toggle it. */
-+            assert_set_feature(qts, "host", "pmu", false);
-+            assert_set_feature(qts, "host", "pmu", true);
-+        }
++    object_property_add_bool(obj, "pmu", arm_get_pmu, arm_set_pmu);
 +
-         if (kvm_supports_steal_time) {
-             /* If we have steal-time then we should be able to toggle it. */
-             assert_set_feature(qts, "host", "kvm-steal-time", false);
+     /*
+      * Allow user to turn off VFP and Neon support, but only for TCG --
+      * KVM does not currently allow us to lie to the guest about its
 
 -- 
 2.45.2
