@@ -2,62 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50FF291CC2B
-	for <lists+qemu-devel@lfdr.de>; Sat, 29 Jun 2024 12:46:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4073291CC3E
+	for <lists+qemu-devel@lfdr.de>; Sat, 29 Jun 2024 13:09:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sNVZz-0000VR-3w; Sat, 29 Jun 2024 06:45:15 -0400
+	id 1sNVwM-0004Ou-Ma; Sat, 29 Jun 2024 07:08:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ines.varhol@telecom-paris.fr>)
- id 1sNVZv-0000TY-VF
- for qemu-devel@nongnu.org; Sat, 29 Jun 2024 06:45:12 -0400
-Received: from zproxy4.enst.fr ([2001:660:330f:2::df])
+ id 1sNVwD-0004M4-HX; Sat, 29 Jun 2024 07:08:14 -0400
+Received: from zproxy2.enst.fr ([137.194.2.221])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ines.varhol@telecom-paris.fr>)
- id 1sNVZt-0005jZ-Gr
- for qemu-devel@nongnu.org; Sat, 29 Jun 2024 06:45:11 -0400
+ id 1sNVwB-0002p9-Em; Sat, 29 Jun 2024 07:08:13 -0400
 Received: from localhost (localhost [IPv6:::1])
- by zproxy4.enst.fr (Postfix) with ESMTP id 58066209FE;
- Sat, 29 Jun 2024 12:45:03 +0200 (CEST)
-Received: from zproxy4.enst.fr ([IPv6:::1])
- by localhost (zproxy4.enst.fr [IPv6:::1]) (amavis, port 10032) with ESMTP
- id zFCZpdyG1B3F; Sat, 29 Jun 2024 12:45:02 +0200 (CEST)
+ by zproxy2.enst.fr (Postfix) with ESMTP id 217008086B;
+ Sat, 29 Jun 2024 13:08:08 +0200 (CEST)
+Received: from zproxy2.enst.fr ([IPv6:::1])
+ by localhost (zproxy2.enst.fr [IPv6:::1]) (amavis, port 10032) with ESMTP
+ id e3PP30qfhFP0; Sat, 29 Jun 2024 13:08:07 +0200 (CEST)
 Received: from localhost (localhost [IPv6:::1])
- by zproxy4.enst.fr (Postfix) with ESMTP id A3DC1209B3;
- Sat, 29 Jun 2024 12:45:02 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.10.3 zproxy4.enst.fr A3DC1209B3
+ by zproxy2.enst.fr (Postfix) with ESMTP id B022280873;
+ Sat, 29 Jun 2024 13:08:07 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.10.3 zproxy2.enst.fr B022280873
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=telecom-paris.fr;
- s=A35C7578-1106-11E5-A17F-C303FDDA8F2E; t=1719657902;
- bh=7u9l8fDOYqNCPgJ7I2tfMk4yn2eb2vxdl4GhQ1/oreU=;
+ s=A35C7578-1106-11E5-A17F-C303FDDA8F2E; t=1719659287;
+ bh=NoGIA+QH14p3U8EC14WujZvLi7NaMTSA4QkQhjA5IfQ=;
  h=From:To:Date:Message-ID:MIME-Version;
- b=X5ZWh1Sf0Z2dnAMh2DpbNEi23JkwQ0XT1Mz8RAu9oInVFjL3z4j5DQJPr9bMEspBV
- toujijot8xPDjFL/iwb51ypH1GemJXIHdgX4N2FR4aB556k6DL1B1MtAnJO9mmMOIL
- lXvgeY26f2n+XsYN7u4+GTjX1gCqRlOx0vlRHKQM=
+ b=tuamVQ42IJf3iHotnkrN4JIGA6ZQr+GLwKGwRl4v3LuPpqkRHwjTbAK8+LGIdhocR
+ mRRYczC80lnCMhD9PHXDSaJrzxyRECjsVi++16K16bdwypZCh3VxhG1hunY6cI/sqg
+ g8O27XUJn2wTUiVql51AeXgv1E6S48XfZ0Gibcg0=
 X-Virus-Scanned: amavis at enst.fr
-Received: from zproxy4.enst.fr ([IPv6:::1])
- by localhost (zproxy4.enst.fr [IPv6:::1]) (amavis, port 10026) with ESMTP
- id F5amyhFnoOGL; Sat, 29 Jun 2024 12:45:02 +0200 (CEST)
-Received: from inesv-Inspiron-3501.enst.fr (unknown
- [IPv6:2a04:8ec0:0:124::190c])
- by zproxy4.enst.fr (Postfix) with ESMTPSA id 7FE0620931;
- Sat, 29 Jun 2024 12:45:01 +0200 (CEST)
+Received: from zproxy2.enst.fr ([IPv6:::1])
+ by localhost (zproxy2.enst.fr [IPv6:::1]) (amavis, port 10026) with ESMTP
+ id LyqsnLqfoI1j; Sat, 29 Jun 2024 13:08:07 +0200 (CEST)
+Received: from inesv-Inspiron-3501.. (unknown
+ [IPv6:2a02:1808:284:73f9:f191:56:9ba9:96d9])
+ by zproxy2.enst.fr (Postfix) with ESMTPSA id 87AA380840;
+ Sat, 29 Jun 2024 13:08:06 +0200 (CEST)
 From: =?UTF-8?q?In=C3=A8s=20Varhol?= <ines.varhol@telecom-paris.fr>
 To: qemu-devel@nongnu.org
-Cc: Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+Cc: Thomas Huth <thuth@redhat.com>, qemu-arm@nongnu.org,
+ =?UTF-8?q?In=C3=A8s=20Varhol?= <ines.varhol@telecom-paris.fr>,
+ Paolo Bonzini <pbonzini@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+ Arnaud Minier <arnaud.minier@telecom-paris.fr>,
+ Alistair Francis <alistair@alistair23.me>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?In=C3=A8s=20Varhol?= <ines.varhol@telecom-paris.fr>
-Subject: [PATCH] tests/qtest: Fix STM32L4x5 SYSCFG irq line 15 state assumption
-Date: Sat, 29 Jun 2024 12:44:49 +0200
-Message-ID: <20240629104454.366283-1-ines.varhol@telecom-paris.fr>
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: [PATCH 0/2] hw/misc: Fix STM32L4x5 EXTI interrupts
+Date: Sat, 29 Jun 2024 13:07:07 +0200
+Message-ID: <20240629110800.539969-1-ines.varhol@telecom-paris.fr>
 X-Mailer: git-send-email 2.43.2
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2001:660:330f:2::df;
- envelope-from=ines.varhol@telecom-paris.fr; helo=zproxy4.enst.fr
+Received-SPF: pass client-ip=137.194.2.221;
+ envelope-from=ines.varhol@telecom-paris.fr; helo=zproxy2.enst.fr
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -79,65 +80,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The QTest `test_irq_pin_multiplexer` makes the assumption that the
-reset state of irq line 15 is low, which is false since STM32L4x5 GPIO
-was implemented (the reset state of pin GPIOA15 is high because there's
-pull-up and it results in the irq line 15 also being high at reset).
-
-It wasn't triggering an error because `test_interrupt` was mistakenly
-"resetting" the line low.
-
-This commit corrects these two mistakes by :
-- not setting the line low in `test_interrupt`
-- using an irq line in `test_irq_pin_multiplexer` which is low at reset
+STM32L4x5 EXTI was incorrectly expecting alternating interrupts.
+This patch adds a new field to track IRQ levels to actually
+*detect* edges.
+It also corrects existing QTests which were modifying the IRQ lines'
+levels.
 
 Signed-off-by: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
----
- tests/qtest/stm32l4x5_syscfg-test.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/tests/qtest/stm32l4x5_syscfg-test.c b/tests/qtest/stm32l4x5_=
-syscfg-test.c
-index 506ca08bc2..1cdf8f05c8 100644
---- a/tests/qtest/stm32l4x5_syscfg-test.c
-+++ b/tests/qtest/stm32l4x5_syscfg-test.c
-@@ -223,7 +223,7 @@ static void test_interrupt(void)
-     /* Clean the test */
-     syscfg_writel(SYSCFG_EXTICR1, 0x00000000);
-     syscfg_set_irq(0, 0);
--    syscfg_set_irq(15, 0);
-+    /* irq 15 is high at reset because GPIOA15 is high at reset */
-     syscfg_set_irq(17, 0);
- }
-=20
-@@ -237,21 +237,21 @@ static void test_irq_pin_multiplexer(void)
-=20
-     syscfg_set_irq(0, 1);
-=20
--    /* Check that irq 0 was set and irq 15 wasn't */
-+    /* Check that irq 0 was set and irq 2 wasn't */
-     g_assert_true(get_irq(0));
--    g_assert_false(get_irq(15));
-+    g_assert_false(get_irq(2));
-=20
-     /* Clean the test */
-     syscfg_set_irq(0, 0);
-=20
--    syscfg_set_irq(15, 1);
-+    syscfg_set_irq(2, 1);
-=20
--    /* Check that irq 15 was set and irq 0 wasn't */
--    g_assert_true(get_irq(15));
-+    /* Check that irq 2 was set and irq 0 wasn't */
-+    g_assert_true(get_irq(2));
-     g_assert_false(get_irq(0));
-=20
-     /* Clean the test */
--    syscfg_set_irq(15, 0);
-+    syscfg_set_irq(2, 0);
- }
-=20
- static void test_irq_gpio_multiplexer(void)
+In=C3=A8s Varhol (2):
+  hw/misc: In STM32L4x5 EXTI, correct configurable interrupts
+  tests/qtest: Ensure STM32L4x5 EXTI state is correct at the end of
+    QTests
+
+ include/hw/misc/stm32l4x5_exti.h    |  2 ++
+ hw/misc/stm32l4x5_exti.c            | 28 +++++++++++++---------------
+ tests/qtest/stm32l4x5_exti-test.c   |  8 ++++++++
+ tests/qtest/stm32l4x5_syscfg-test.c |  2 +-
+ 4 files changed, 24 insertions(+), 16 deletions(-)
+
 --=20
 2.43.2
 
