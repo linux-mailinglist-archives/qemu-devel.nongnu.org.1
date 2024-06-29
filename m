@@ -2,89 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6639091CBCA
-	for <lists+qemu-devel@lfdr.de>; Sat, 29 Jun 2024 10:57:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B9A091CBC7
+	for <lists+qemu-devel@lfdr.de>; Sat, 29 Jun 2024 10:57:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sNTst-0006vZ-1Y; Sat, 29 Jun 2024 04:56:39 -0400
+	id 1sNTsu-0006we-P8; Sat, 29 Jun 2024 04:56:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sNTsp-0006tU-A1
- for qemu-devel@nongnu.org; Sat, 29 Jun 2024 04:56:35 -0400
-Received: from mail-oa1-x32.google.com ([2001:4860:4864:20::32])
+ id 1sNTss-0006vx-Nj
+ for qemu-devel@nongnu.org; Sat, 29 Jun 2024 04:56:38 -0400
+Received: from mail-oo1-xc2a.google.com ([2607:f8b0:4864:20::c2a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sNTsn-0008FK-KN
- for qemu-devel@nongnu.org; Sat, 29 Jun 2024 04:56:35 -0400
-Received: by mail-oa1-x32.google.com with SMTP id
- 586e51a60fabf-25cb3f1765bso734695fac.1
- for <qemu-devel@nongnu.org>; Sat, 29 Jun 2024 01:56:33 -0700 (PDT)
+ id 1sNTsq-0008Fl-Te
+ for qemu-devel@nongnu.org; Sat, 29 Jun 2024 04:56:38 -0400
+Received: by mail-oo1-xc2a.google.com with SMTP id
+ 006d021491bc7-5c21f1bb810so700812eaf.3
+ for <qemu-devel@nongnu.org>; Sat, 29 Jun 2024 01:56:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1719651392; x=1720256192;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1719651395; x=1720256195;
  darn=nongnu.org; 
- h=cc:to:content-transfer-encoding:mime-version:message-id:date
- :subject:from:from:to:cc:subject:date:message-id:reply-to;
- bh=GhzLCcbYqjj4/wO4kZa5ouP20FwgGHEunUiM0ObyYwQ=;
- b=3J8bWMcBUHH0Ltvt9FDfGDoHnri9JF48KwaouBAQxgp0jXGQJw/rqEGPEJ7Z8lROtW
- Aq6pXeorUMnBm6fjYvfpvdcvgx3ryyl14nwcW98BScTed671VznDTojbdpaoee8p6EV9
- edla4UCEZu0fVdKV80axwMFoiIBqpLZqFu9bW3tmv0vu1cS5wtC61opgAcdhQRSwI/IY
- Xg6zlauZIrDpukp5OJzqwpILrlTl/3vVYKuKzV0WgxmyvqMpBI/bkycFUv84Qoq771dI
- eoixtwQB1IPBdNQ6vwu2OuSV0oLfs56llP20WtP6nEjUnSUEt4QiLvNFIlMoT5SV9+kN
- 23bQ==
+ h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+ :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=uV36Gt3F0NFarV2rkaJX1rYzyXO0vgzu3txrDL4RZ9o=;
+ b=JjszEdY9bV0X9ugQZsnEWM2SkPBPui8twycy1COMZ2POXNXYkX5ko5hq87++PXRtkB
+ IHDgi88kTeQSaPLc+bWMxFtYFOGuM6M3jpGuPxkziux30GMgKtMgM9O0twzUbe8zfJHI
+ M0pxqbnmhjU0Dz5EFstmXKOScVT6ZwTIOZ/kglIxeQpR5sG9RGKvOQKKUGEfMFqaHmyp
+ cGeb/slB2gbYFQk6dPXLd1FJY7HRKEv0PCZ44HvIQp6E0a/hQrjet/kxZVAtwz00BE41
+ 3/ujXVbIfgVrd0jXkPL12HhYtwVcpg1Ms1fS3rOoDITsRHCKjDZCh5MG67CEoxHtYwOB
+ pxIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719651392; x=1720256192;
- h=cc:to:content-transfer-encoding:mime-version:message-id:date
- :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=GhzLCcbYqjj4/wO4kZa5ouP20FwgGHEunUiM0ObyYwQ=;
- b=qgWhnnd3FsWJqJGKv8Ytwpqs4v9g/1TKSZd6eGW4+BYfEYPfgGk80wE16d3g+FZ1SK
- 3OFSLN75/Hn6psecUWDM8rqlHps1FwWa5pWI3thkWDtvd0rxfoYvCKlypNviFp+XOp1Z
- 1nnGY6gf0PgKKGpQiLyh3QoYte82cuTImx5lvOiOnS2G213c6C1ubaOz7MnxhXsurMXf
- iYNH3alHyLFgDgMB5H1bBnXIxdZKlPQrUA7Ztc9XA80phyuoTmn0YvwcYYX31NxCYBBw
- eFpGG5eSAnY4VHy/MEKdXWzSVFMMRt+msy3Tk0BQBQhjnH8b7+nLo7hswyBhRTRf5Abr
- h3AA==
+ d=1e100.net; s=20230601; t=1719651395; x=1720256195;
+ h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+ :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=uV36Gt3F0NFarV2rkaJX1rYzyXO0vgzu3txrDL4RZ9o=;
+ b=H6TaeF+Q2sQF9SJVblBWHEDfDKm8fP6QuUDcsT80oQkR/Qatz/+K8HNe7nEUnFtOXX
+ /S8A7UO+bswfNhZMOuIDfEOygeAmt/Q1uAFjE7I53dqlj58PRLNtdty+2eFivzm42HR0
+ AaYVPTW+e/eUFVtI/JG8hHbY361MZhNsi34b/VqP4z0sweeQUD9ZaTqsuVDvb76YppFL
+ muEXwiHnaCa3EY0hg6R0hNCxqtxkQzeZa55gOS9vfsNM/WbPMYQAgS8tvoUGHMPNAlbd
+ M6yrgxhiAQuWsOItY04pC6f57sM8mroRuj7pQY/+C/HFjUmzDBqK6+8r3d4Zh1utEqLr
+ WU9A==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWF7BXXIRjpq66OR9K9Sr5zU0quFEWnsS1knN+dFyhUEQH+qRJcxRuCxaz7xjkQH8arAoZgoODdmtkCSFTW7BoNHNWNLck=
-X-Gm-Message-State: AOJu0YwEVl7gmNsPRu2OOtESdICsu3VOFpCEVePCQm6Tj0aNSbxKFX2q
- N9cL9dz5zbaNcaKVsU6lIHCa++XTQtcyr4+RTx6NCq4RY23DhKDITqGyZTZTNgh0Y+kH75jLCmh
- yt/Y=
-X-Google-Smtp-Source: AGHT+IFkhoKdI4hPxVYzwXf2g733giCS7xxgIM6zGu+xKMleGrJL+SYfJF2lNmFLQ3C+GBdZAULwvg==
-X-Received: by 2002:a05:6871:7806:b0:254:9ba7:488b with SMTP id
- 586e51a60fabf-25db366c32dmr421989fac.40.1719651392034; 
- Sat, 29 Jun 2024 01:56:32 -0700 (PDT)
+ AJvYcCVoEE++h/8vhM3wpGsM7CZ6pCEOy2/qWUWOVd5CoI2aLk+42fjrRmPI4yXM32a9D8FVoJ6nG8kK65IY/zSL/TEkdwPJ8ss=
+X-Gm-Message-State: AOJu0YyWWIAxthgq7xwahwqtU7BNJF0MjvvVOkLiMldIQF88gy5rXzbi
+ +w54n64hR0T7M1oD2a1mai42qZJ/EvkKvNkqZPLJOzpRPdGp2ptOoEAYDt5JhzApPiqv42PNBC0
+ CGe4=
+X-Google-Smtp-Source: AGHT+IHp6po7/G9WybAOHrGE72hCCzpTgJQt4bM9E0JvKIFkPN+wRZh/Wsv6OaWcEj/cQJBQc/YfUg==
+X-Received: by 2002:a05:6358:2809:b0:19f:436b:f6b9 with SMTP id
+ e5c5f4694b2df-1a6acef67cfmr47311755d.32.1719651395347; 
+ Sat, 29 Jun 2024 01:56:35 -0700 (PDT)
 Received: from localhost ([157.82.204.135])
  by smtp.gmail.com with UTF8SMTPSA id
- d2e1a72fcca58-70802959452sm2938138b3a.90.2024.06.29.01.56.30
+ 98e67ed59e1d1-2c91d3ea47asm2889625a91.53.2024.06.29.01.56.33
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 29 Jun 2024 01:56:31 -0700 (PDT)
+ Sat, 29 Jun 2024 01:56:34 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH v3 0/7] tests/tcg/aarch64: Fix inline assemblies for clang
-Date: Sat, 29 Jun 2024 17:56:26 +0900
-Message-Id: <20240629-tcg-v3-0-fa57918bdf09@daynix.com>
+Date: Sat, 29 Jun 2024 17:56:27 +0900
+Subject: [PATCH v3 1/7] tests/tcg/aarch64: Use -fno-integrated-as
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIADrMf2YC/1XMQQ6CMBCF4auYWVszbbFUV97DuCh0gFkIpiUNh
- HB3C8ZEl28y379ApMAU4XpYIFDiyEOfhz4eoO5c35JgnzcoVAUaVYixbkXVWCkNWXSNg/z5CtT
- wtFfuj7w7juMQ5j2a5Hb9erP7JAUKrJw3Z6Ox9Pbm3dzzdKqHJ2yBpH5R+UEqI2ku6KzUurD0h
- 9Z1fQOiW0OKzAAAAA==
+Message-Id: <20240629-tcg-v3-1-fa57918bdf09@daynix.com>
+References: <20240629-tcg-v3-0-fa57918bdf09@daynix.com>
+In-Reply-To: <20240629-tcg-v3-0-fa57918bdf09@daynix.com>
 To: Peter Maydell <peter.maydell@linaro.org>, 
  =?utf-8?q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>, 
  =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, 
- Akihiko Odaki <akihiko.odaki@daynix.com>, 
- Richard Henderson <richard.henderson@linaro.org>
+ Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.14-dev-fd6e3
-Received-SPF: none client-ip=2001:4860:4864:20::32;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-oa1-x32.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::c2a;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-oo1-xc2a.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+ SPF_NONE=0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,47 +97,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Unlike GCC, clang checks if the operands in assembly matches with the
-type in C. It also does not support "x" constraint for AArch64 and
-complains about them.
+clang version 18.1.6 does not respect -Wa,-march=armv9-a+sme without
+-fno-integrated-as. Use it when available.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
-Changes in v3:
-- Added patch "tests/tcg/aarch64: Use -fno-integrated-as".
-- Added patch "tests/tcg/aarch64: Specify -Wa,-march=armv9-a+sme".
-- Dropped patch "tests/docker: Specify --userns keep-id for Podman"
-  as it is already queued.
-- Link to v2: https://lore.kernel.org/r/20240627-tcg-v2-0-1690a813348e@daynix.com
+ tests/tcg/aarch64/Makefile.target | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-Changes in v2:
-- Removed spurious a compiler flag change for normal SME tests.
-- Fixed sme-i16i64 detection.
-- Link to v1: https://lore.kernel.org/r/20240626-tcg-v1-0-0bad656307d8@daynix.com
+diff --git a/tests/tcg/aarch64/Makefile.target b/tests/tcg/aarch64/Makefile.target
+index 70d728ae9af7..05f98c80c88d 100644
+--- a/tests/tcg/aarch64/Makefile.target
++++ b/tests/tcg/aarch64/Makefile.target
+@@ -20,6 +20,9 @@ run-fcvt: fcvt
+ 
+ config-cc.mak: Makefile
+ 	$(quiet-@)( \
++		if $(call cc-test, -fno-integrated-as); then fno_integrated_as=-fno-integrated-as; else \
++		fno_integrated_as=; fi; \
++		$(call cc-option,-fno-integrated-as,            CROSS_CC_HAS_FNO_INTEGRATED_AS); \
+ 	    $(call cc-option,-march=armv8.1-a+sve,          CROSS_CC_HAS_SVE); \
+ 	    $(call cc-option,-march=armv8.1-a+sve2,         CROSS_CC_HAS_SVE2); \
+ 	    $(call cc-option,-march=armv8.2-a,              CROSS_CC_HAS_ARMV8_2); \
+@@ -27,7 +30,7 @@ config-cc.mak: Makefile
+ 	    $(call cc-option,-march=armv8.5-a,              CROSS_CC_HAS_ARMV8_5); \
+ 	    $(call cc-option,-mbranch-protection=standard,  CROSS_CC_HAS_ARMV8_BTI); \
+ 	    $(call cc-option,-march=armv8.5-a+memtag,       CROSS_CC_HAS_ARMV8_MTE); \
+-	    $(call cc-option,-Wa$(COMMA)-march=armv9-a+sme, CROSS_AS_HAS_ARMV9_SME)) 3> config-cc.mak
++	    $(call cc-option,-Wa$(COMMA)-march=armv9-a+sme $$fno_integrated_as, CROSS_AS_HAS_ARMV9_SME)) 3> config-cc.mak
+ -include config-cc.mak
+ 
+ ifneq ($(CROSS_CC_HAS_ARMV8_2),)
+@@ -69,6 +72,9 @@ endif
+ # SME Tests
+ ifneq ($(CROSS_AS_HAS_ARMV9_SME),)
+ AARCH64_TESTS += sme-outprod1 sme-smopa-1 sme-smopa-2
++ifneq ($(CROSS_CC_HAS_FNO_INTEGRATED_AS),)
++sme-%: CFLAGS += -fno-integrated-as
++endif
+ endif
+ 
+ # System Registers Tests
 
----
-Akihiko Odaki (7):
-      tests/tcg/aarch64: Use -fno-integrated-as
-      tests/tcg/aarch64: Specify -Wa,-march=armv9-a+sme
-      tests/tcg/aarch64: Fix test architecture specification
-      tests/tcg/aarch64: Explicitly specify register width
-      tests/tcg/aarch64: Fix irg operand type
-      tests/tcg/aarch64: Do not use x constraint
-      tests/tcg/arm: Manually bit-cast half-precision numbers
-
- tests/tcg/aarch64/bti-1.c         |  6 +++---
- tests/tcg/aarch64/bti-3.c         |  6 +++---
- tests/tcg/aarch64/mte-1.c         |  2 +-
- tests/tcg/aarch64/sme-smopa-2.c   |  2 +-
- tests/tcg/arm/fcvt.c              | 18 ++++++++++--------
- tests/tcg/aarch64/Makefile.target | 21 +++++++++++++++++++--
- 6 files changed, 37 insertions(+), 18 deletions(-)
----
-base-commit: 046a64b9801343e2e89eef10c7a48eec8d8c0d4f
-change-id: 20240624-tcg-bf8116e80afa
-
-Best regards,
 -- 
-Akihiko Odaki <akihiko.odaki@daynix.com>
+2.45.2
 
 
