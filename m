@@ -2,74 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F6C591CCB0
-	for <lists+qemu-devel@lfdr.de>; Sat, 29 Jun 2024 14:23:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C27F91CCD0
+	for <lists+qemu-devel@lfdr.de>; Sat, 29 Jun 2024 14:52:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sNX6a-0004Ep-Ja; Sat, 29 Jun 2024 08:23:00 -0400
+	id 1sNXXo-0003hS-QQ; Sat, 29 Jun 2024 08:51:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1sNX6Y-0004EQ-OR
- for qemu-devel@nongnu.org; Sat, 29 Jun 2024 08:22:58 -0400
-Received: from mail-qt1-x832.google.com ([2607:f8b0:4864:20::832])
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1sNXXg-0003gg-MP
+ for qemu-devel@nongnu.org; Sat, 29 Jun 2024 08:51:03 -0400
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1sNX6W-0005ma-JI
- for qemu-devel@nongnu.org; Sat, 29 Jun 2024 08:22:58 -0400
-Received: by mail-qt1-x832.google.com with SMTP id
- d75a77b69052e-4464b843e37so8546051cf.0
- for <qemu-devel@nongnu.org>; Sat, 29 Jun 2024 05:22:55 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1sNXXe-0006OR-Kf
+ for qemu-devel@nongnu.org; Sat, 29 Jun 2024 08:51:00 -0400
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-1f9de13d6baso9510035ad.2
+ for <qemu-devel@nongnu.org>; Sat, 29 Jun 2024 05:50:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1719663775; x=1720268575; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=IUUBXtzLWID0iiQPuCoYq1xSqAb3toPxlam8a3AodsA=;
- b=jx1nzAXBb+A1zT04U3lWn//7VBq2BnYAIW0jTFPGIkwYHlg/x1LChRwo8v71QnZOj1
- Yn8oSwpis8U6ljOIKeGcEF49vnSp/9/TBDuj6oz6hinA2YRJzdNannNvpNNeZgKAmHP1
- uunCHOocjc5Ob6Q9/wmelgtGAeD2RMXR+GzMWUO2+U2wo5QsNEpueZ7kG3unAXDZy6c+
- s2GUUwUgGDF+zDzeIuU5sCpjLBvTAlPs0U6chPT4RwgM1oGK35RgomfOn2niwdpCGJUf
- +8TTPUEHDZ51VuW8l3AoGJmsHi07J9kZBuc/7jyVx6s/U3Ed2JqcN2sSxN7ESYDlJp0g
- boGw==
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1719665457; x=1720270257;
+ darn=nongnu.org; 
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=NEVh6tc/8MCebyDPaGT8PrbTdB4/CVWgELlCvYthHz8=;
+ b=bWd4LMZVLuTynVSXt5iaLR3+v+SpMkGxBiNI1QAORIN7lW1z04UTIpbYGjMQ8K8Cho
+ adHLUYc7kQVaDDCWppXTAd6B1CthlokcNMLOTpitTr2gxuDBq6STs7vFbP3qZiJUGOUj
+ Bi6JLpOjSAu/QND4rLavnvemZOcGPtjuShXoQHuf22xzJbeooztpJ1sXLQBnSktKRvVb
+ yfQSu9+nhftH4ALy5DU7xsfSkrAsXq+EhC1ao4KObtx7ABlE2KHWdVU7bTXh8qLOYlFe
+ x6ff8oj/4uF1Z7r/HXqsehe2t0+6m4NVEkSKIc7L7A1ZRTNqZ4sytxGBJbAxGhyTOJgk
+ jW8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719663775; x=1720268575;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1719665457; x=1720270257;
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=IUUBXtzLWID0iiQPuCoYq1xSqAb3toPxlam8a3AodsA=;
- b=MthhjZJXfLddhcIfbUR+o3KR0Df5PYz+09ZMXJweYH6whs+eIkuEweghaJaDbOovve
- cjRzVIILOWRxpBz0d8yYis2HxtJKie7fAWrHIviwxtWrON0jrqPaIicugtDUVn4iMo6e
- qugkS1fpbpHjp4txpGFcyzm1Bq7wnhhlBTE7Qmh/NOpaBbcZApZEPn544Qm+LhNTHpvV
- xR8KXvqrq7f5xclFZ8GjmJ32nc6MvfI3rGWOILGjrY1gO691zc+7lTauD3vJxZtXoA5S
- sHkI6sLo2sQEnPrNizqCdyMGrKftP+SFw+DSg1E9XVD/epZVpv/JpzXoqV51c8dQWBpY
- ymfw==
-X-Gm-Message-State: AOJu0YyaDCCut5k4FqU82p//xklgSXv5bZAGX5+YfVSmPeIcKiCOqIKz
- CwvUKKW4esp17Jhw9Rta91xORzboym6cgGRfbCuCQseMwXmLgvTRmBEVpH7gtJbuA/+fnK97b9n
- fkvsIKRv2XYOjZu8s2/V2KIDFpeYZeOWh+L0=
-X-Google-Smtp-Source: AGHT+IHLf9fdPxj7pL8quvDIGIKotJnBZijYK9yb83YM+0bN5xvsBn/pbCyKmOlRngM8O0gD0xqJycMbZEHN+k21yFU=
-X-Received: by 2002:ac8:5809:0:b0:446:49f1:79a with SMTP id
- d75a77b69052e-44662dd024emr8897111cf.24.1719663775105; Sat, 29 Jun 2024
- 05:22:55 -0700 (PDT)
+ bh=NEVh6tc/8MCebyDPaGT8PrbTdB4/CVWgELlCvYthHz8=;
+ b=AMNXF2rapuAAuuICoBC1ZBcB2jU7MtsMz+PlAWL2xS8jq8tFBc/f4lWIZ/VreKyfGw
+ vjNmh6+exqDvZxf/G/dGV9uFQjd9he4Al0uqQhuGnHMXf8EP6YPBhJdOpM9wdAQfSSmf
+ 1OVj8YF1fupzVz6XIKIfh4nK+AM6u84MtNbp3vMitjaj3bEKkJnv7aCZ4U/NjAs5C7ob
+ lqfe2tf3HGrQdNKdzzqMfeauCEO5vdG+wFC5hQfjm+GEvJbJYFKbBrC6PbcxhXBeRWeK
+ FtD/AC+peb3KROJQ9HgQkKO36Zn9c1Yu2uSlnCxte/PfoE5ZvFBqCEuwW/5nqoxPd8u9
+ +PEA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCW9C5ign1++HJ4TaEVjrXtcLUKtULZ9F77CtZTpOcWMNDcRtQ+4KU3WJg6kCVRVxFomGFZtV6bbBlLcJdaWjsMXXxzU9Gw=
+X-Gm-Message-State: AOJu0YwH7fLwO31DLyTx5LGxV4wIkNXo0E59NWFsV/6ZRiQrkcKu/6PO
+ EKMA0HwxZUjav1gAE/V4U9AAqI7vq6JJ5BjiszXAhTWOxnV5xRWvkrLnBXUT8Fw=
+X-Google-Smtp-Source: AGHT+IHQCZeDATDIOxBT4heocgBU3MrJ8hkbe6u7b9bRsRm1CsujJG4vYA8jGjTcTXl88JuldNLyXg==
+X-Received: by 2002:a17:903:1104:b0:1f7:3fd5:9267 with SMTP id
+ d9443c01a7336-1fadbc7503fmr5271805ad.19.1719665456855; 
+ Sat, 29 Jun 2024 05:50:56 -0700 (PDT)
+Received: from localhost ([157.82.204.135])
+ by smtp.gmail.com with UTF8SMTPSA id
+ d9443c01a7336-1fac1599c23sm31376085ad.280.2024.06.29.05.50.54
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sat, 29 Jun 2024 05:50:56 -0700 (PDT)
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: [PATCH 0/3] target/arm/kvm: Report PMU unavailability
+Date: Sat, 29 Jun 2024 21:50:31 +0900
+Message-Id: <20240629-pmu-v1-0-7269123b88a4@daynix.com>
 MIME-Version: 1.0
-References: <20240624101040.82726-1-phil@philjordan.eu>
-In-Reply-To: <20240624101040.82726-1-phil@philjordan.eu>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Sat, 29 Jun 2024 16:22:43 +0400
-Message-ID: <CAJ+F1CJMzyWr3y7kEGcj2hE8fogLqH_PBcHkXYK=N28+t96OsQ@mail.gmail.com>
-Subject: Re: [PATCH v2] Cursor: 8 -> 1 bit alpha downsampling improvement
-To: Phil Dennis-Jordan <phil@philjordan.eu>
-Cc: qemu-devel@nongnu.org, akihiko.odaki@daynix.com, lists@philjordan.eu
-Content-Type: multipart/alternative; boundary="00000000000072daa6061c066c83"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::832;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x832.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIABcDgGYC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxMDMyNL3YLcUt3EFNM0M/NUo2TTFAMloMqCotS0zAqwKdGxtbUA5VjPjFU
+ AAAA=
+To: Peter Maydell <peter.maydell@linaro.org>, 
+ Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, kvm@vger.kernel.org, 
+ Akihiko Odaki <akihiko.odaki@daynix.com>
+X-Mailer: b4 0.14-dev-fd6e3
+Received-SPF: none client-ip=2607:f8b0:4864:20::634;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x634.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,116 +97,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---00000000000072daa6061c066c83
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+target/arm/kvm.c checked PMU availability but claimed PMU is
+available even if it is not. In fact, Asahi Linux supports KVM but lacks
+PMU support. Only advertise PMU availability only when it is really
+available.
 
-On Mon, Jun 24, 2024 at 2:11=E2=80=AFPM Phil Dennis-Jordan <phil@philjordan=
-.eu>
-wrote:
+Fixes: dc40d45ebd8e ("target/arm/kvm: Move kvm_arm_get_host_cpu_features and unexport")
 
-> Mouse cursors with 8 bit alpha were downsampled to 1-bit opacity maps by
-> turning alpha values of 255 into 1 and everything else into 0. This
-> means that mostly-opaque pixels ended up completely invisible.
->
-> This patch changes the behaviour so that only pixels with less than 50%
-> alpha (0-127) are treated as transparent when converted to 1-bit alpha.
->
-> This greatly improves the subjective appearance of anti-aliased mouse
-> cursors, such as those used by macOS, when using a front-end UI without
-> support for alpha-blended cursors, such as some VNC clients.
->
-> Signed-off-by: Phil Dennis-Jordan <phil@philjordan.eu>
->
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+---
+Akihiko Odaki (3):
+      tests/arm-cpu-features: Do not assume PMU availability
+      target/arm: Always add pmu property
+      target/arm/kvm: Report PMU unavailability
 
-Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+ target/arm/cpu.c               |  3 ++-
+ target/arm/kvm.c               |  2 +-
+ tests/qtest/arm-cpu-features.c | 13 ++++++++-----
+ 3 files changed, 11 insertions(+), 7 deletions(-)
+---
+base-commit: 046a64b9801343e2e89eef10c7a48eec8d8c0d4f
+change-id: 20240629-pmu-ad5f67e2c5d0
 
+Best regards,
+-- 
+Akihiko Odaki <akihiko.odaki@daynix.com>
 
-> ---
->  ui/cursor.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/ui/cursor.c b/ui/cursor.c
-> index 29717b3ecb..dd3853320d 100644
-> --- a/ui/cursor.c
-> +++ b/ui/cursor.c
-> @@ -232,7 +232,7 @@ void cursor_get_mono_mask(QEMUCursor *c, int
-> transparent, uint8_t *mask)
->      for (y =3D 0; y < c->height; y++) {
->          bit =3D 0x80;
->          for (x =3D 0; x < c->width; x++, data++) {
-> -            if ((*data & 0xff000000) !=3D 0xff000000) {
-> +            if ((*data & 0x80000000) =3D=3D 0x0) { /* Alpha < 0x80 (128)=
- */
->                  if (transparent !=3D 0) {
->                      mask[x/8] |=3D bit;
->                  }
-> --
-> 2.39.3 (Apple Git-146)
->
->
->
-
---=20
-Marc-Andr=C3=A9 Lureau
-
---00000000000072daa6061c066c83
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
-<div dir=3D"ltr" class=3D"gmail_attr">On Mon, Jun 24, 2024 at 2:11=E2=80=AF=
-PM Phil Dennis-Jordan &lt;<a href=3D"mailto:phil@philjordan.eu">phil@philjo=
-rdan.eu</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"=
-margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-lef=
-t:1ex">Mouse cursors with 8 bit alpha were downsampled to 1-bit opacity map=
-s by<br>
-turning alpha values of 255 into 1 and everything else into 0. This<br>
-means that mostly-opaque pixels ended up completely invisible.<br>
-<br>
-This patch changes the behaviour so that only pixels with less than 50%<br>
-alpha (0-127) are treated as transparent when converted to 1-bit alpha.<br>
-<br>
-This greatly improves the subjective appearance of anti-aliased mouse<br>
-cursors, such as those used by macOS, when using a front-end UI without<br>
-support for alpha-blended cursors, such as some VNC clients.<br>
-<br>
-Signed-off-by: Phil Dennis-Jordan &lt;<a href=3D"mailto:phil@philjordan.eu"=
- target=3D"_blank">phil@philjordan.eu</a>&gt;<br></blockquote><div><br></di=
-v><div>Reviewed-by: Marc-Andr=C3=A9 Lureau &lt;<a href=3D"mailto:marcandre.=
-lureau@redhat.com">marcandre.lureau@redhat.com</a>&gt;</div><div>=C2=A0<br>=
-</div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;b=
-order-left:1px solid rgb(204,204,204);padding-left:1ex">
----<br>
-=C2=A0ui/cursor.c | 2 +-<br>
-=C2=A01 file changed, 1 insertion(+), 1 deletion(-)<br>
-<br>
-diff --git a/ui/cursor.c b/ui/cursor.c<br>
-index 29717b3ecb..dd3853320d 100644<br>
---- a/ui/cursor.c<br>
-+++ b/ui/cursor.c<br>
-@@ -232,7 +232,7 @@ void cursor_get_mono_mask(QEMUCursor *c, int transparen=
-t, uint8_t *mask)<br>
-=C2=A0 =C2=A0 =C2=A0for (y =3D 0; y &lt; c-&gt;height; y++) {<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0bit =3D 0x80;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0for (x =3D 0; x &lt; c-&gt;width; x++, da=
-ta++) {<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 if ((*data &amp; 0xff000000) !=
-=3D 0xff000000) {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 if ((*data &amp; 0x80000000) =3D=
-=3D 0x0) { /* Alpha &lt; 0x80 (128) */<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (transpare=
-nt !=3D 0) {<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0mask[x/8] |=3D bit;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
--- <br>
-2.39.3 (Apple Git-146)<br>
-<br>
-<br>
-</blockquote></div><br clear=3D"all"><br><span class=3D"gmail_signature_pre=
-fix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signature">Marc-Andr=C3=
-=A9 Lureau<br></div></div>
-
---00000000000072daa6061c066c83--
 
