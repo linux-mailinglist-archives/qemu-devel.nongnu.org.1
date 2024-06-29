@@ -2,86 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9221B91CBCB
-	for <lists+qemu-devel@lfdr.de>; Sat, 29 Jun 2024 10:58:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50FF291CC2B
+	for <lists+qemu-devel@lfdr.de>; Sat, 29 Jun 2024 12:46:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sNTti-0007Kr-35; Sat, 29 Jun 2024 04:57:30 -0400
+	id 1sNVZz-0000VR-3w; Sat, 29 Jun 2024 06:45:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sNTtF-00079n-Ka
- for qemu-devel@nongnu.org; Sat, 29 Jun 2024 04:57:03 -0400
-Received: from mail-ot1-x32f.google.com ([2607:f8b0:4864:20::32f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sNTtC-0008IS-Fc
- for qemu-devel@nongnu.org; Sat, 29 Jun 2024 04:57:00 -0400
-Received: by mail-ot1-x32f.google.com with SMTP id
- 46e09a7af769-702052976f7so198503a34.1
- for <qemu-devel@nongnu.org>; Sat, 29 Jun 2024 01:56:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1719651417; x=1720256217;
- darn=nongnu.org; 
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=97jsLhmY2R6dVuT9X3mKtbkZTIY+9tQnPelHksLdIPM=;
- b=1timoStRytgspliiOjDne/QoOgM+S9QFE6KcZQloZqSBf0UBLfdZOuC33mz3Er5D/4
- VLd/AYA0gciOT0QybKR8yXbno6UeQ7A7GdsL5zyclFb+W6fQrqy9Af/sPXZvrH8vdjau
- CRtir3luzfDsQpUpq9URRarHlg/yG6LsEiIU+8GUIsdkox6S3Gr+sWyb8+RyvJS2cMiU
- X3TTWkdr9dDVmaW50SataUeF9H2mnyAbHVFOFmQac1Af75MLWeiaHQxgp6hCmZ8EYBFm
- g44NipDLic2ZyUqj1HXz+a/UEDbSSNqOMozfaTjW4+N3r/wfX+hWtSV9mUnhEoRkkFhs
- rPvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719651417; x=1720256217;
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=97jsLhmY2R6dVuT9X3mKtbkZTIY+9tQnPelHksLdIPM=;
- b=pkr5htPCi621THEboyv8ZRRtSxY5xEZH+ttGt+dl4QZBV9umAYxgyB3GjbaGAmBAtJ
- G6X6qPeawXyiC1i4v/yIaj6R0TD9+kqlg6yjxgLbreJPKI/KYpxDBSDwmYMRCMoFSmej
- NMh2BtMjqIjuKqPNHH+KcHaXlAP4TeVNY6QNsSt7sW9Kuj9LnIsSKD6VXrwQnhflWJL4
- S3pOffgzz+ZeYUdd2+V0GtPp0JoWLSSEj7LeD+gVDbsmrPjztBaYX+hDv2uiBLGAjdp4
- z+ZxwzcVzBDLBu8WX9Fdr90CXU9wACpSrH6n6whL+oNqnDvikSkQTAge9U64X9jf7gJw
- bikA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCU+lWvCG6kAzLA+aHQ6JESNfA/oVVSE3WHfxCqvXD/ajTt+r1R+6C03JDJsRTyssWodpDDnGCyZNnR+E4VbNjIv0mcrvAI=
-X-Gm-Message-State: AOJu0YwfRKW5q+3IRHKd3qxlPPY0WaAVM38csS87JNdFHojUYuV4s6Sq
- nQFDzPzOsLYTDiL0ILJUG5CrLB2PIXAcS756XyAvW8M2Uik5A9OcVWfXBNumymYHTG+WgQy8Ue5
- 4P8c=
-X-Google-Smtp-Source: AGHT+IFUK5Ft5geL5LSQlYzYQXX94NSA6wv+C23mYJ4J9rBGh2QyE8cwS4D5yI/1RyWhIHqRBZRaPQ==
-X-Received: by 2002:a05:6358:50c7:b0:1a4:558c:e135 with SMTP id
- e5c5f4694b2df-1a6acf43ec9mr41934655d.30.1719651417166; 
- Sat, 29 Jun 2024 01:56:57 -0700 (PDT)
-Received: from localhost ([157.82.204.135])
- by smtp.gmail.com with UTF8SMTPSA id
- 98e67ed59e1d1-2c91ce17cc1sm2916847a91.5.2024.06.29.01.56.55
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 29 Jun 2024 01:56:56 -0700 (PDT)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Sat, 29 Jun 2024 17:56:33 +0900
-Subject: [PATCH v3 7/7] tests/tcg/arm: Manually bit-cast half-precision numbers
+ (Exim 4.90_1) (envelope-from <ines.varhol@telecom-paris.fr>)
+ id 1sNVZv-0000TY-VF
+ for qemu-devel@nongnu.org; Sat, 29 Jun 2024 06:45:12 -0400
+Received: from zproxy4.enst.fr ([2001:660:330f:2::df])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <ines.varhol@telecom-paris.fr>)
+ id 1sNVZt-0005jZ-Gr
+ for qemu-devel@nongnu.org; Sat, 29 Jun 2024 06:45:11 -0400
+Received: from localhost (localhost [IPv6:::1])
+ by zproxy4.enst.fr (Postfix) with ESMTP id 58066209FE;
+ Sat, 29 Jun 2024 12:45:03 +0200 (CEST)
+Received: from zproxy4.enst.fr ([IPv6:::1])
+ by localhost (zproxy4.enst.fr [IPv6:::1]) (amavis, port 10032) with ESMTP
+ id zFCZpdyG1B3F; Sat, 29 Jun 2024 12:45:02 +0200 (CEST)
+Received: from localhost (localhost [IPv6:::1])
+ by zproxy4.enst.fr (Postfix) with ESMTP id A3DC1209B3;
+ Sat, 29 Jun 2024 12:45:02 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.10.3 zproxy4.enst.fr A3DC1209B3
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=telecom-paris.fr;
+ s=A35C7578-1106-11E5-A17F-C303FDDA8F2E; t=1719657902;
+ bh=7u9l8fDOYqNCPgJ7I2tfMk4yn2eb2vxdl4GhQ1/oreU=;
+ h=From:To:Date:Message-ID:MIME-Version;
+ b=X5ZWh1Sf0Z2dnAMh2DpbNEi23JkwQ0XT1Mz8RAu9oInVFjL3z4j5DQJPr9bMEspBV
+ toujijot8xPDjFL/iwb51ypH1GemJXIHdgX4N2FR4aB556k6DL1B1MtAnJO9mmMOIL
+ lXvgeY26f2n+XsYN7u4+GTjX1gCqRlOx0vlRHKQM=
+X-Virus-Scanned: amavis at enst.fr
+Received: from zproxy4.enst.fr ([IPv6:::1])
+ by localhost (zproxy4.enst.fr [IPv6:::1]) (amavis, port 10026) with ESMTP
+ id F5amyhFnoOGL; Sat, 29 Jun 2024 12:45:02 +0200 (CEST)
+Received: from inesv-Inspiron-3501.enst.fr (unknown
+ [IPv6:2a04:8ec0:0:124::190c])
+ by zproxy4.enst.fr (Postfix) with ESMTPSA id 7FE0620931;
+ Sat, 29 Jun 2024 12:45:01 +0200 (CEST)
+From: =?UTF-8?q?In=C3=A8s=20Varhol?= <ines.varhol@telecom-paris.fr>
+To: qemu-devel@nongnu.org
+Cc: Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?In=C3=A8s=20Varhol?= <ines.varhol@telecom-paris.fr>
+Subject: [PATCH] tests/qtest: Fix STM32L4x5 SYSCFG irq line 15 state assumption
+Date: Sat, 29 Jun 2024 12:44:49 +0200
+Message-ID: <20240629104454.366283-1-ines.varhol@telecom-paris.fr>
+X-Mailer: git-send-email 2.43.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240629-tcg-v3-7-fa57918bdf09@daynix.com>
-References: <20240629-tcg-v3-0-fa57918bdf09@daynix.com>
-In-Reply-To: <20240629-tcg-v3-0-fa57918bdf09@daynix.com>
-To: Peter Maydell <peter.maydell@linaro.org>, 
- =?utf-8?q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>, 
- =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, 
- Akihiko Odaki <akihiko.odaki@daynix.com>
-X-Mailer: b4 0.14-dev-fd6e3
-Received-SPF: none client-ip=2607:f8b0:4864:20::32f;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-ot1-x32f.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2001:660:330f:2::df;
+ envelope-from=ines.varhol@telecom-paris.fr; helo=zproxy4.enst.fr
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,32 +79,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-clang version 18.1.6 does not allow specifying an integer as the value
-of a single-precision register. Manually bit-cast into float with vmov
-first.
+The QTest `test_irq_pin_multiplexer` makes the assumption that the
+reset state of irq line 15 is low, which is false since STM32L4x5 GPIO
+was implemented (the reset state of pin GPIOA15 is high because there's
+pull-up and it results in the irq line 15 also being high at reset).
 
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+It wasn't triggering an error because `test_interrupt` was mistakenly
+"resetting" the line low.
+
+This commit corrects these two mistakes by :
+- not setting the line low in `test_interrupt`
+- using an irq line in `test_irq_pin_multiplexer` which is low at reset
+
+Signed-off-by: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
 ---
- tests/tcg/arm/fcvt.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ tests/qtest/stm32l4x5_syscfg-test.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/tests/tcg/arm/fcvt.c b/tests/tcg/arm/fcvt.c
-index f631197287a1..5263f607b59c 100644
---- a/tests/tcg/arm/fcvt.c
-+++ b/tests/tcg/arm/fcvt.c
-@@ -355,7 +355,9 @@ static void convert_half_to_single(void)
- 
-         print_half_number(i, input);
- #if defined(__arm__)
--        asm("vcvtb.f32.f16 %0, %1" : "=w" (output) : "x" ((uint32_t)input));
-+        float tmp;
-+        asm("vmov %0, %1" : "=w" (tmp) : "r" (input));
-+        asm("vcvtb.f32.f16 %0, %1" : "=w" (output) : "x" (tmp));
- #else
-         asm("fcvt %s0, %h1" : "=w" (output) : "w" (input));
- #endif
-
--- 
-2.45.2
+diff --git a/tests/qtest/stm32l4x5_syscfg-test.c b/tests/qtest/stm32l4x5_=
+syscfg-test.c
+index 506ca08bc2..1cdf8f05c8 100644
+--- a/tests/qtest/stm32l4x5_syscfg-test.c
++++ b/tests/qtest/stm32l4x5_syscfg-test.c
+@@ -223,7 +223,7 @@ static void test_interrupt(void)
+     /* Clean the test */
+     syscfg_writel(SYSCFG_EXTICR1, 0x00000000);
+     syscfg_set_irq(0, 0);
+-    syscfg_set_irq(15, 0);
++    /* irq 15 is high at reset because GPIOA15 is high at reset */
+     syscfg_set_irq(17, 0);
+ }
+=20
+@@ -237,21 +237,21 @@ static void test_irq_pin_multiplexer(void)
+=20
+     syscfg_set_irq(0, 1);
+=20
+-    /* Check that irq 0 was set and irq 15 wasn't */
++    /* Check that irq 0 was set and irq 2 wasn't */
+     g_assert_true(get_irq(0));
+-    g_assert_false(get_irq(15));
++    g_assert_false(get_irq(2));
+=20
+     /* Clean the test */
+     syscfg_set_irq(0, 0);
+=20
+-    syscfg_set_irq(15, 1);
++    syscfg_set_irq(2, 1);
+=20
+-    /* Check that irq 15 was set and irq 0 wasn't */
+-    g_assert_true(get_irq(15));
++    /* Check that irq 2 was set and irq 0 wasn't */
++    g_assert_true(get_irq(2));
+     g_assert_false(get_irq(0));
+=20
+     /* Clean the test */
+-    syscfg_set_irq(15, 0);
++    syscfg_set_irq(2, 0);
+ }
+=20
+ static void test_irq_gpio_multiplexer(void)
+--=20
+2.43.2
 
 
