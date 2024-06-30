@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C9CC91D372
+	by mail.lfdr.de (Postfix) with ESMTPS id 3812591D376
 	for <lists+qemu-devel@lfdr.de>; Sun, 30 Jun 2024 21:42:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sO0Q0-00005d-Cr; Sun, 30 Jun 2024 15:41:00 -0400
+	id 1sO0Q8-000072-HN; Sun, 30 Jun 2024 15:41:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1sO0Pu-0008S5-D7
+ id 1sO0Pu-0008SB-E9
  for qemu-devel@nongnu.org; Sun, 30 Jun 2024 15:40:54 -0400
 Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1sO0Pn-0004O1-Lq
+ id 1sO0Pn-0004O2-Jv
  for qemu-devel@nongnu.org; Sun, 30 Jun 2024 15:40:51 -0400
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45UJcvCO020058;
- Sun, 30 Jun 2024 19:40:40 GMT
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45UJW3BS026542;
+ Sun, 30 Jun 2024 19:40:41 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
  from:to:cc:subject:date:message-id:in-reply-to:references; s=
- corp-2023-11-20; bh=3raiXCm8kRFGnYk1UPCeOPFpx20xzLtvntIeQ9Dkyxg=; b=
- nTOyazqKQSjW8LQP4azBJFbllje1B+NYVtLw44T/XhuvOyoWtet5VNLEyKbXbVr4
- krdeu1XUMY1iLnaOPV8XBj+pwhXTkfBeEsGPQGpR99ZuaSSVDVknXLlXaaU1AHiV
- t06F565AqlLOS0Nac/lu7gnGPL9gW2V3rGFE23e6A2f4hLapW5eHYx4cynWE03/n
- AJGJP/RcnEUQjOFE4dFU5+XFhWFT3hQ+iMXWY2q0k/CjCPirrs+ClPXhwGTBwL+r
- fbWTHNMG3bEKp2dKlwVOCDcskzWg4nZiNu1LHOSk57K4c5oSKILoRAHfSiIwm8qs
- L1HvQg/a2hpj9byramVirw==
+ corp-2023-11-20; bh=7+QL5ZrrpPDnlyBxW0st4Wn/YKyjCdy8c6YwBxJSlJI=; b=
+ JMYo2HVd42mWYrnCWpGbMD657/sjXoB8OAlMJmyB+Kh0EczHvef2CpXnFzVqCyse
+ Xg7y7CrmHGv4kLaqAKLxAsWJXAq3q+stU2+3fz91cscpGTQj9jTKu6E08Qy3HkQP
+ Zuw+qyRZxn/gnEXY2c6Lp2XL6iHiNzpsRVrTuF7Fxk9ZsdysrAlf6EAExrJVH0nx
+ yWgxJQYy8hipl7kBs0vQjs71bQZPyvuUNaYeNA4Ox5HNx4UV2q1Gpk4sMk3CDF6I
+ KolCOLG18bnNhd+zjwk/KkSx8AY24S9LuMhzA5TmmVV270KQh7TkPhhk6oDxER7c
+ mon2K3wE7nq0HnI3TDLaTg==
 Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 402att9e1v-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4028v0hgjs-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sun, 30 Jun 2024 19:40:39 +0000 (GMT)
+ Sun, 30 Jun 2024 19:40:40 +0000 (GMT)
 Received: from pps.filterd
  (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 45UIwiMG018459; Sun, 30 Jun 2024 19:40:38 GMT
+ with ESMTP id 45UHtoa4019083; Sun, 30 Jun 2024 19:40:39 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 4028qc16cw-1
+ 4028qc16d2-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sun, 30 Jun 2024 19:40:38 +0000
+ Sun, 30 Jun 2024 19:40:39 +0000
 Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 45UJeaSQ014044;
- Sun, 30 Jun 2024 19:40:37 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 45UJeaSS014044;
+ Sun, 30 Jun 2024 19:40:38 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
- ESMTP id 4028qc16cc-2; Sun, 30 Jun 2024 19:40:37 +0000
+ ESMTP id 4028qc16cc-3; Sun, 30 Jun 2024 19:40:38 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
@@ -62,9 +62,9 @@ Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  "Daniel P. Berrange" <berrange@redhat.com>,
  Markus Armbruster <armbru@redhat.com>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V2 01/11] machine: alloc-anon option
-Date: Sun, 30 Jun 2024 12:40:24 -0700
-Message-Id: <1719776434-435013-2-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V2 02/11] migration: cpr-state
+Date: Sun, 30 Jun 2024 12:40:25 -0700
+Message-Id: <1719776434-435013-3-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1719776434-435013-1-git-send-email-steven.sistare@oracle.com>
 References: <1719776434-435013-1-git-send-email-steven.sistare@oracle.com>
@@ -76,8 +76,8 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
  adultscore=0 bulkscore=0 mlxlogscore=999 phishscore=0 spamscore=0
  mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2406180000 definitions=main-2406300157
-X-Proofpoint-GUID: LLqZLkOEv4-f0KPQWrpRiUV3jHhgo8HX
-X-Proofpoint-ORIG-GUID: LLqZLkOEv4-f0KPQWrpRiUV3jHhgo8HX
+X-Proofpoint-ORIG-GUID: zfmTs7vXi1T1LP0RHQR8hE53gHD2ecPu
+X-Proofpoint-GUID: zfmTs7vXi1T1LP0RHQR8hE53gHD2ecPu
 Received-SPF: pass client-ip=205.220.165.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -20
@@ -102,295 +102,331 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Allocate anonymous memory using mmap MAP_ANON or memfd_create depending
-on the value of the anon-alloc machine property.  This affects
-memory-backend-ram objects, guest RAM created with the global -m option
-but without an associated memory-backend object and without the -mem-path
-option, and various memory regions such as ROMs that are allocated when
-devices are created.  This option does not affect memory-backend-file,
-memory-backend-memfd, or memory-backend-epc objects.
+CPR must save state that is needed after QEMU is restarted, when devices
+are realized.  Thus the extra state cannot be saved in the migration stream,
+as objects must already exist before that stream can be loaded.  Instead,
+define auxilliary state structures and vmstate descriptions, not associated
+with any registered object, and serialize the aux state to a cpr-specific
+stream in cpr_state_save.  Deserialize in cpr_state_load after QEMU
+restarts, before devices are realized.
 
-The memfd option is intended to support new migration modes, in which the
-memory region can be transferred in place to a new QEMU process, by sending
-the memfd file descriptor to the process.  Memory contents are preserved,
-and if the mode also transfers device descriptors, then pages that are
-locked in memory for DMA remain locked.  This behavior is a pre-requisite
-for supporting vfio, vdpa, and iommufd devices with the new modes.
-
-To access the same memory in the old and new QEMU processes, the memory
-must be mapped shared.  Therefore, the implementation always sets
-RAM_SHARED if alloc-anon=memfd, except for memory-backend-ram, where the
-user must explicitly specify the share option.  In lieu of defining a new
-RAM flag, at the lowest level the implementation uses RAM_SHARED with fd=-1
-as the condition for calling memfd_create.
+Provide accessors for clients to register file descriptors for saving.
+The mechanism for passing the fd's to the new process will be specific
+to each migration mode, and added in subsequent patches.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 ---
- hw/core/machine.c   | 24 ++++++++++++++++++++++++
- include/hw/boards.h |  1 +
- qapi/machine.json   | 14 ++++++++++++++
- qemu-options.hx     | 13 +++++++++++++
- system/memory.c     | 12 +++++++++---
- system/physmem.c    | 38 +++++++++++++++++++++++++++++++++++++-
- system/trace-events |  3 +++
- 7 files changed, 101 insertions(+), 4 deletions(-)
+ include/migration/cpr.h |  21 ++++++
+ migration/cpr.c         | 188 ++++++++++++++++++++++++++++++++++++++++++++++++
+ migration/meson.build   |   1 +
+ migration/migration.c   |   6 ++
+ migration/trace-events  |   5 ++
+ system/vl.c             |   3 +
+ 6 files changed, 224 insertions(+)
+ create mode 100644 include/migration/cpr.h
+ create mode 100644 migration/cpr.c
 
-diff --git a/hw/core/machine.c b/hw/core/machine.c
-index 655d75c..7ca2ad0 100644
---- a/hw/core/machine.c
-+++ b/hw/core/machine.c
-@@ -454,6 +454,20 @@ static void machine_set_mem_merge(Object *obj, bool value, Error **errp)
-     ms->mem_merge = value;
- }
- 
-+static int machine_get_anon_alloc(Object *obj, Error **errp)
-+{
-+    MachineState *ms = MACHINE(obj);
+diff --git a/include/migration/cpr.h b/include/migration/cpr.h
+new file mode 100644
+index 0000000..8e7e705
+--- /dev/null
++++ b/include/migration/cpr.h
+@@ -0,0 +1,21 @@
++/*
++ * Copyright (c) 2021, 2024 Oracle and/or its affiliates.
++ *
++ * This work is licensed under the terms of the GNU GPL, version 2 or later.
++ * See the COPYING file in the top-level directory.
++ */
 +
-+    return ms->anon_alloc;
++#ifndef MIGRATION_CPR_H
++#define MIGRATION_CPR_H
++
++typedef int (*cpr_walk_fd_cb)(int fd);
++void cpr_save_fd(const char *name, int id, int fd);
++void cpr_delete_fd(const char *name, int id);
++int cpr_find_fd(const char *name, int id);
++int cpr_walk_fd(cpr_walk_fd_cb cb);
++void cpr_resave_fd(const char *name, int id, int fd);
++
++int cpr_state_save(Error **errp);
++int cpr_state_load(Error **errp);
++
++#endif
+diff --git a/migration/cpr.c b/migration/cpr.c
+new file mode 100644
+index 0000000..313e74e
+--- /dev/null
++++ b/migration/cpr.c
+@@ -0,0 +1,188 @@
++/*
++ * Copyright (c) 2021-2024 Oracle and/or its affiliates.
++ *
++ * This work is licensed under the terms of the GNU GPL, version 2 or later.
++ * See the COPYING file in the top-level directory.
++ */
++
++#include "qemu/osdep.h"
++#include "qapi/error.h"
++#include "migration/cpr.h"
++#include "migration/misc.h"
++#include "migration/qemu-file.h"
++#include "migration/savevm.h"
++#include "migration/vmstate.h"
++#include "sysemu/runstate.h"
++#include "trace.h"
++
++/*************************************************************************/
++/* cpr state container for all information to be saved. */
++
++typedef QLIST_HEAD(CprFdList, CprFd) CprFdList;
++
++typedef struct CprState {
++    CprFdList fds;
++} CprState;
++
++static CprState cpr_state;
++
++/****************************************************************************/
++
++typedef struct CprFd {
++    char *name;
++    unsigned int namelen;
++    int id;
++    int fd;
++    QLIST_ENTRY(CprFd) next;
++} CprFd;
++
++static const VMStateDescription vmstate_cpr_fd = {
++    .name = "cpr fd",
++    .version_id = 1,
++    .minimum_version_id = 1,
++    .fields = (VMStateField[]) {
++        VMSTATE_UINT32(namelen, CprFd),
++        VMSTATE_VBUFFER_ALLOC_UINT32(name, CprFd, 0, NULL, namelen),
++        VMSTATE_INT32(id, CprFd),
++        VMSTATE_INT32(fd, CprFd),
++        VMSTATE_END_OF_LIST()
++    }
++};
++
++void cpr_save_fd(const char *name, int id, int fd)
++{
++    CprFd *elem = g_new0(CprFd, 1);
++
++    trace_cpr_save_fd(name, id, fd);
++    elem->name = g_strdup(name);
++    elem->namelen = strlen(name) + 1;
++    elem->id = id;
++    elem->fd = fd;
++    QLIST_INSERT_HEAD(&cpr_state.fds, elem, next);
 +}
 +
-+static void machine_set_anon_alloc(Object *obj, int value, Error **errp)
++static CprFd *find_fd(CprFdList *head, const char *name, int id)
 +{
-+    MachineState *ms = MACHINE(obj);
++    CprFd *elem;
 +
-+    ms->anon_alloc = value;
++    QLIST_FOREACH(elem, head, next) {
++        if (!strcmp(elem->name, name) && elem->id == id) {
++            return elem;
++        }
++    }
++    return NULL;
 +}
 +
- static bool machine_get_usb(Object *obj, Error **errp)
- {
-     MachineState *ms = MACHINE(obj);
-@@ -1066,6 +1080,11 @@ static void machine_class_init(ObjectClass *oc, void *data)
-     object_class_property_set_description(oc, "mem-merge",
-         "Enable/disable memory merge support");
- 
-+    object_class_property_add_enum(oc, "anon-alloc", "AnonAllocOption",
-+                                   &AnonAllocOption_lookup,
-+                                   machine_get_anon_alloc,
-+                                   machine_set_anon_alloc);
++void cpr_delete_fd(const char *name, int id)
++{
++    CprFd *elem = find_fd(&cpr_state.fds, name, id);
 +
-     object_class_property_add_bool(oc, "usb",
-         machine_get_usb, machine_set_usb);
-     object_class_property_set_description(oc, "usb",
-@@ -1416,6 +1435,11 @@ static bool create_default_memdev(MachineState *ms, const char *path, Error **er
-     if (!object_property_set_int(obj, "size", ms->ram_size, errp)) {
-         goto out;
++    if (elem) {
++        QLIST_REMOVE(elem, next);
++        g_free(elem->name);
++        g_free(elem);
++    }
++
++    trace_cpr_delete_fd(name, id);
++}
++
++int cpr_find_fd(const char *name, int id)
++{
++    CprFd *elem = find_fd(&cpr_state.fds, name, id);
++    int fd = elem ? elem->fd : -1;
++
++    trace_cpr_find_fd(name, id, fd);
++    return fd;
++}
++
++int cpr_walk_fd(cpr_walk_fd_cb cb)
++{
++    CprFd *elem;
++
++    QLIST_FOREACH(elem, &cpr_state.fds, next) {
++        if (elem->fd >= 0 && cb(elem->fd)) {
++            return 1;
++        }
++    }
++    return 0;
++}
++
++void cpr_resave_fd(const char *name, int id, int fd)
++{
++    CprFd *elem = find_fd(&cpr_state.fds, name, id);
++    int old_fd = elem ? elem->fd : -1;
++
++    if (old_fd < 0) {
++        cpr_save_fd(name, id, fd);
++    } else if (old_fd != fd) {
++        error_setg(&error_fatal,
++                   "internal error: cpr fd '%s' id %d value %d "
++                   "already saved with a different value %d",
++                   name, id, fd, old_fd);
++    }
++}
++/*************************************************************************/
++#define CPR_STATE "CprState"
++
++static const VMStateDescription vmstate_cpr_state = {
++    .name = CPR_STATE,
++    .version_id = 1,
++    .minimum_version_id = 1,
++    .fields = (VMStateField[]) {
++        VMSTATE_QLIST_V(fds, CprState, 1, vmstate_cpr_fd, CprFd, next),
++        VMSTATE_END_OF_LIST()
++    }
++};
++/*************************************************************************/
++
++int cpr_state_save(Error **errp)
++{
++    int ret;
++    QEMUFile *f;
++
++    /* set f based on mode in a later patch in this series */
++    return 0;
++
++    qemu_put_be32(f, QEMU_VM_FILE_MAGIC);
++    qemu_put_be32(f, QEMU_VM_FILE_VERSION);
++
++    ret = vmstate_save_state(f, &vmstate_cpr_state, &cpr_state, 0);
++    if (ret) {
++        error_setg(errp, "vmstate_save_state error %d", ret);
++    }
++
++    qemu_fclose(f);
++    return ret;
++}
++
++int cpr_state_load(Error **errp)
++{
++    int ret;
++    uint32_t v;
++    QEMUFile *f;
++
++    /* set f based on mode in a later patch in this series */
++    return 0;
++
++    v = qemu_get_be32(f);
++    if (v != QEMU_VM_FILE_MAGIC) {
++        error_setg(errp, "Not a migration stream (bad magic %x)", v);
++        qemu_fclose(f);
++        return -EINVAL;
++    }
++    v = qemu_get_be32(f);
++    if (v != QEMU_VM_FILE_VERSION) {
++        error_setg(errp, "Unsupported migration stream version %d", v);
++        qemu_fclose(f);
++        return -ENOTSUP;
++    }
++
++    ret = vmstate_load_state(f, &vmstate_cpr_state, &cpr_state, 1);
++    if (ret) {
++        error_setg(errp, "vmstate_load_state error %d", ret);
++    }
++
++    qemu_fclose(f);
++    return ret;
++}
++
+diff --git a/migration/meson.build b/migration/meson.build
+index 5ce2acb4..87feb4c 100644
+--- a/migration/meson.build
++++ b/migration/meson.build
+@@ -13,6 +13,7 @@ system_ss.add(files(
+   'block-dirty-bitmap.c',
+   'channel.c',
+   'channel-block.c',
++  'cpr.c',
+   'dirtyrate.c',
+   'exec.c',
+   'fd.c',
+diff --git a/migration/migration.c b/migration/migration.c
+index 3dea06d..e394ad7 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -27,6 +27,7 @@
+ #include "sysemu/cpu-throttle.h"
+ #include "rdma.h"
+ #include "ram.h"
++#include "migration/cpr.h"
+ #include "migration/global_state.h"
+ #include "migration/misc.h"
+ #include "migration.h"
+@@ -2118,6 +2119,10 @@ void qmp_migrate(const char *uri, bool has_channels,
+         }
      }
-+    if (!object_property_set_bool(obj, "share",
-+                                  ms->anon_alloc == ANON_ALLOC_OPTION_MEMFD,
-+                                  errp)) {
+ 
++    if (cpr_state_save(&local_err)) {
 +        goto out;
 +    }
-     object_property_add_child(object_get_objects_root(), mc->default_ram_id,
-                               obj);
-     /* Ensure backend's memory region name is equal to mc->default_ram_id */
-diff --git a/include/hw/boards.h b/include/hw/boards.h
-index 73ad319..77f16ad 100644
---- a/include/hw/boards.h
-+++ b/include/hw/boards.h
-@@ -383,6 +383,7 @@ struct MachineState {
-     bool enable_graphics;
-     ConfidentialGuestSupport *cgs;
-     HostMemoryBackend *memdev;
-+    AnonAllocOption anon_alloc;
-     /*
-      * convenience alias to ram_memdev_id backend memory region
-      * or to numa container memory region
-diff --git a/qapi/machine.json b/qapi/machine.json
-index 2fd3e9c..9173953 100644
---- a/qapi/machine.json
-+++ b/qapi/machine.json
-@@ -1881,3 +1881,17 @@
- { 'command': 'x-query-interrupt-controllers',
-   'returns': 'HumanReadableText',
-   'features': [ 'unstable' ]}
 +
-+##
-+# @AnonAllocOption:
-+#
-+# An enumeration of the options for allocating anonymous guest memory.
-+#
-+# @mmap: allocate using mmap MAP_ANON
-+#
-+# @memfd: allocate using memfd_create
-+#
-+# Since: 9.1
-+##
-+{ 'enum': 'AnonAllocOption',
-+  'data': [ 'mmap', 'memfd' ] }
-diff --git a/qemu-options.hx b/qemu-options.hx
-index 8ca7f34..595b693 100644
---- a/qemu-options.hx
-+++ b/qemu-options.hx
-@@ -38,6 +38,7 @@ DEF("machine", HAS_ARG, QEMU_OPTION_machine, \
-     "                nvdimm=on|off controls NVDIMM support (default=off)\n"
-     "                memory-encryption=@var{} memory encryption object to use (default=none)\n"
-     "                hmat=on|off controls ACPI HMAT support (default=off)\n"
-+    "                anon-alloc=mmap|memfd allocate anonymous guest RAM using mmap MAP_ANON or memfd_create (default: mmap)\n"
-     "                memory-backend='backend-id' specifies explicitly provided backend for main RAM (default=none)\n"
-     "                cxl-fmw.0.targets.0=firsttarget,cxl-fmw.0.targets.1=secondtarget,cxl-fmw.0.size=size[,cxl-fmw.0.interleave-granularity=granularity]\n",
-     QEMU_ARCH_ALL)
-@@ -101,6 +102,18 @@ SRST
-         Enables or disables ACPI Heterogeneous Memory Attribute Table
-         (HMAT) support. The default is off.
- 
-+    ``anon-alloc=mmap|memfd``
-+        Allocate anonymous guest RAM using mmap MAP_ANON (the default)
-+        or memfd_create.  This affects memory-backend-ram objects,
-+        RAM created with the global -m option but without an
-+        associated memory-backend object and without the -mem-path
-+        option, and various memory regions such as ROMs that are
-+        allocated when devices are created.  This option does not
-+        affect memory-backend-file, memory-backend-memfd, or
-+        memory-backend-epc objects.
-+
-+        Some migration modes require anon-alloc=memfd.
-+
-     ``memory-backend='id'``
-         An alternative to legacy ``-mem-path`` and ``mem-prealloc`` options.
-         Allows to use a memory backend as main RAM.
-diff --git a/system/memory.c b/system/memory.c
-index 2d69521..28a837d 100644
---- a/system/memory.c
-+++ b/system/memory.c
-@@ -1552,8 +1552,10 @@ bool memory_region_init_ram_nomigrate(MemoryRegion *mr,
-                                       uint64_t size,
-                                       Error **errp)
- {
-+    uint32_t flags = (current_machine->anon_alloc == ANON_ALLOC_OPTION_MEMFD) ?
-+                     RAM_SHARED : 0;
-     return memory_region_init_ram_flags_nomigrate(mr, owner, name,
--                                                  size, 0, errp);
-+                                                  size, flags, errp);
- }
- 
- bool memory_region_init_ram_flags_nomigrate(MemoryRegion *mr,
-@@ -1713,8 +1715,10 @@ bool memory_region_init_rom_nomigrate(MemoryRegion *mr,
-                                       uint64_t size,
-                                       Error **errp)
- {
-+    uint32_t flags = (current_machine->anon_alloc == ANON_ALLOC_OPTION_MEMFD) ?
-+                     RAM_SHARED : 0;
-     if (!memory_region_init_ram_flags_nomigrate(mr, owner, name,
--                                                size, 0, errp)) {
-+                                                size, flags, errp)) {
-          return false;
+     if (addr->transport == MIGRATION_ADDRESS_TYPE_SOCKET) {
+         SocketAddress *saddr = &addr->u.socket;
+         if (saddr->type == SOCKET_ADDRESS_TYPE_INET ||
+@@ -2142,6 +2147,7 @@ void qmp_migrate(const char *uri, bool has_channels,
+                           MIGRATION_STATUS_FAILED);
      }
-     mr->readonly = true;
-@@ -1731,6 +1735,8 @@ bool memory_region_init_rom_device_nomigrate(MemoryRegion *mr,
-                                              Error **errp)
- {
-     Error *err = NULL;
-+    uint32_t flags = (current_machine->anon_alloc == ANON_ALLOC_OPTION_MEMFD) ?
-+                     RAM_SHARED : 0;
-     assert(ops);
-     memory_region_init(mr, owner, name, size);
-     mr->ops = ops;
-@@ -1738,7 +1744,7 @@ bool memory_region_init_rom_device_nomigrate(MemoryRegion *mr,
-     mr->terminates = true;
-     mr->rom_device = true;
-     mr->destructor = memory_region_destructor_ram;
--    mr->ram_block = qemu_ram_alloc(size, 0, mr, &err);
-+    mr->ram_block = qemu_ram_alloc(size, flags, mr, &err);
-     if (err) {
-         mr->size = int128_zero();
-         object_unparent(OBJECT(mr));
-diff --git a/system/physmem.c b/system/physmem.c
-index 33d09f7..efe95ff 100644
---- a/system/physmem.c
-+++ b/system/physmem.c
-@@ -47,6 +47,7 @@
- #include "qemu/qemu-print.h"
- #include "qemu/log.h"
- #include "qemu/memalign.h"
-+#include "qemu/memfd.h"
- #include "exec/memory.h"
- #include "exec/ioport.h"
- #include "sysemu/dma.h"
-@@ -54,6 +55,7 @@
- #include "sysemu/hw_accel.h"
- #include "sysemu/xen-mapcache.h"
- #include "trace/trace-root.h"
-+#include "trace.h"
  
- #ifdef CONFIG_FALLOCATE_PUNCH_HOLE
- #include <linux/falloc.h>
-@@ -69,6 +71,8 @@
++out:
+     if (local_err) {
+         if (!resume_requested) {
+             yank_unregister_instance(MIGRATION_YANK_INSTANCE);
+diff --git a/migration/trace-events b/migration/trace-events
+index 0b7c332..173f2c0 100644
+--- a/migration/trace-events
++++ b/migration/trace-events
+@@ -340,6 +340,11 @@ colo_receive_message(const char *msg) "Receive '%s' message"
+ # colo-failover.c
+ colo_failover_set_state(const char *new_state) "new state %s"
  
- #include "qemu/pmem.h"
++# cpr.c
++cpr_save_fd(const char *name, int id, int fd) "%s, id %d, fd %d"
++cpr_delete_fd(const char *name, int id) "%s, id %d"
++cpr_find_fd(const char *name, int id, int fd) "%s, id %d returns %d"
++
+ # block-dirty-bitmap.c
+ send_bitmap_header_enter(void) ""
+ send_bitmap_bits(uint32_t flags, uint64_t start_sector, uint32_t nr_sectors, uint64_t data_size) "flags: 0x%x, start_sector: %" PRIu64 ", nr_sectors: %" PRIu32 ", data_size: %" PRIu64
+diff --git a/system/vl.c b/system/vl.c
+index 03951be..6521ee3 100644
+--- a/system/vl.c
++++ b/system/vl.c
+@@ -77,6 +77,7 @@
+ #include "hw/block/block.h"
+ #include "hw/i386/x86.h"
+ #include "hw/i386/pc.h"
++#include "migration/cpr.h"
+ #include "migration/misc.h"
+ #include "migration/snapshot.h"
+ #include "sysemu/tpm.h"
+@@ -3713,6 +3714,8 @@ void qemu_init(int argc, char **argv)
  
-+#include "qapi/qapi-types-migration.h"
-+#include "migration/options.h"
- #include "migration/vmstate.h"
+     qemu_create_machine(machine_opts_dict);
  
- #include "qemu/range.h"
-@@ -1828,6 +1832,32 @@ static void ram_block_add(RAMBlock *new_block, Error **errp)
-                 qemu_mutex_unlock_ramlist();
-                 return;
-             }
++    cpr_state_load(&error_fatal);
 +
-+        } else if (new_block->flags & RAM_SHARED) {
-+            size_t max_length = new_block->max_length;
-+            MemoryRegion *mr = new_block->mr;
-+            const char *name = memory_region_name(mr);
-+
-+            new_block->mr->align = QEMU_VMALLOC_ALIGN;
-+
-+            if (new_block->fd == -1) {
-+                new_block->fd = qemu_memfd_create(name, max_length + mr->align,
-+                                                  0, 0, 0, errp);
-+            }
-+
-+            if (new_block->fd >= 0) {
-+                int mfd = new_block->fd;
-+                qemu_set_cloexec(mfd);
-+                new_block->host = file_ram_alloc(new_block, max_length, mfd,
-+                                                 false, 0, errp);
-+            }
-+            if (!new_block->host) {
-+                qemu_mutex_unlock_ramlist();
-+                return;
-+            }
-+            memory_try_enable_merging(new_block->host, new_block->max_length);
-+            free_on_error = true;
-+
-         } else {
-             new_block->host = qemu_anon_ram_alloc(new_block->max_length,
-                                                   &new_block->mr->align,
-@@ -1911,6 +1941,9 @@ static void ram_block_add(RAMBlock *new_block, Error **errp)
-         ram_block_notify_add(new_block->host, new_block->used_length,
-                              new_block->max_length);
-     }
-+    trace_ram_block_add(memory_region_name(new_block->mr), new_block->flags,
-+                        new_block->fd, new_block->used_length,
-+                        new_block->max_length);
-     return;
+     suspend_mux_open();
  
- out_free:
-@@ -2097,8 +2130,11 @@ RAMBlock *qemu_ram_alloc_resizeable(ram_addr_t size, ram_addr_t maxsz,
-                                                      void *host),
-                                      MemoryRegion *mr, Error **errp)
- {
-+    uint32_t flags = (current_machine->anon_alloc == ANON_ALLOC_OPTION_MEMFD) ?
-+                     RAM_SHARED : 0;
-+    flags |= RAM_RESIZEABLE;
-     return qemu_ram_alloc_internal(size, maxsz, resized, NULL,
--                                   RAM_RESIZEABLE, mr, errp);
-+                                   flags, mr, errp);
- }
- 
- static void reclaim_ramblock(RAMBlock *block)
-diff --git a/system/trace-events b/system/trace-events
-index 69c9044..f8ebf42 100644
---- a/system/trace-events
-+++ b/system/trace-events
-@@ -38,3 +38,6 @@ dirtylimit_state_finalize(void)
- dirtylimit_throttle_pct(int cpu_index, uint64_t pct, int64_t time_us) "CPU[%d] throttle percent: %" PRIu64 ", throttle adjust time %"PRIi64 " us"
- dirtylimit_set_vcpu(int cpu_index, uint64_t quota) "CPU[%d] set dirty page rate limit %"PRIu64
- dirtylimit_vcpu_execute(int cpu_index, int64_t sleep_time_us) "CPU[%d] sleep %"PRIi64 " us"
-+
-+#physmem.c
-+ram_block_add(const char *name, uint32_t flags, int fd, size_t used_length, size_t max_length) "%s, flags %u, fd %d, len %lu, maxlen %lu"
+     qemu_disable_default_devices();
 -- 
 1.8.3.1
 
