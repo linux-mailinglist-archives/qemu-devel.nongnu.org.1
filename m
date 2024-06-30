@@ -2,82 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7D2B91D37B
-	for <lists+qemu-devel@lfdr.de>; Sun, 30 Jun 2024 21:42:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4225091D37F
+	for <lists+qemu-devel@lfdr.de>; Sun, 30 Jun 2024 21:44:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sO0QP-0000G7-7q; Sun, 30 Jun 2024 15:41:25 -0400
+	id 1sO0TD-0007Uo-IH; Sun, 30 Jun 2024 15:44:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1sO0QB-0000As-Cs
- for qemu-devel@nongnu.org; Sun, 30 Jun 2024 15:41:12 -0400
+ id 1sO0T9-0007To-Gt
+ for qemu-devel@nongnu.org; Sun, 30 Jun 2024 15:44:15 -0400
 Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1sO0Q6-0004Pp-7W
- for qemu-devel@nongnu.org; Sun, 30 Jun 2024 15:41:11 -0400
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45UIt2tN001382;
- Sun, 30 Jun 2024 19:40:52 GMT
+ id 1sO0T5-0006Ou-TO
+ for qemu-devel@nongnu.org; Sun, 30 Jun 2024 15:44:13 -0400
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45UJW3BW026542;
+ Sun, 30 Jun 2024 19:44:10 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
- from:to:cc:subject:date:message-id:in-reply-to:references; s=
- corp-2023-11-20; bh=s2nPXNUcWaNjXppRfhXzp3VvXyVUj6SXPjOtMadq9Ac=; b=
- fZmQ1aySNvNYlSxjrzZFDf0dYFq6HcZkiLb1G6ZeTsmsOWuKT9aZg15zmybe4CCX
- qMEGX9EhStLeL6blSncH6p0vzory5i21y0VDnGimNSjg2MK49DEkTv95rxH6EXBy
- QUk5uM7XmIg4zOhhWGlw1udKhrU1lD9tf/auw6PRCWkhI7I/uGq2fLhWbAzEEl8Y
- 9bcg3bz9qiueT3cAxN9HEryud0dJM1BIIma52W/EKb48/4LGOGf/KE1hHlnYg+0s
- rrmQaJGmq9k/kcQVDwT90imlT8eixWtjfwnL3rVnA/+LszTpqMtUVrneU2zaHmLD
- lWkMOOz23oY3Suw4BDPgtw==
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 402att9e21-1
+ from:to:cc:subject:date:message-id; s=corp-2023-11-20; bh=be49iT
+ RTz7JjUHbkbXHhonhfU2QiIhmR7fj7j+Mqe/0=; b=ezPYVZ9mv1UpqJfMNiYTMa
+ Iwkv2XKp0UXT2k6iBhZoFVa9HBmttPbU+QS3buK7HuuYDKAfDGjbrhiAxvJcf50j
+ gf7QpzoH6YALism8OtPTB9jkcdBR+hI1HTePfsclOWR4P1mqPNlSgBLSOhljxzhb
+ u8Iyf/m6IFUEDsLRhAthYtD/P4qLiFW0KBfbmYppaOpeGwXmw838GBc5goYzCsPU
+ i5SZbSSTxJi4dW9syD3KdpBTo1cPYx+LOMK51CNjQPl7SKISNIwgos9ztNeqTU+3
+ vt7RJdZkUyk1GjPEG04OLKBgvk821jPY+jM4EZFJcdBB/WLDT2fzreM22OQp2/4Q
+ ==
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4028v0hgm2-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sun, 30 Jun 2024 19:40:52 +0000 (GMT)
+ Sun, 30 Jun 2024 19:44:10 +0000 (GMT)
 Received: from pps.filterd
- (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 45UIF7Pe018995; Sun, 30 Jun 2024 19:40:50 GMT
+ (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
+ with ESMTP id 45UFXWUl022941; Sun, 30 Jun 2024 19:44:09 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
- by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 4028qc16ev-1
+ by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
+ 4028q5gg4h-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sun, 30 Jun 2024 19:40:50 +0000
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 45UJeaSk014044;
- Sun, 30 Jun 2024 19:40:50 GMT
+ Sun, 30 Jun 2024 19:44:09 +0000
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 45UJg4f0039161;
+ Sun, 30 Jun 2024 19:44:09 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
- by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
- ESMTP id 4028qc16cc-12; Sun, 30 Jun 2024 19:40:50 +0000
+ by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with
+ ESMTP id 4028q5gg4e-1; Sun, 30 Jun 2024 19:44:08 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- David Hildenbrand <david@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Philippe Mathieu-Daude <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- "Daniel P. Berrange" <berrange@redhat.com>,
  Markus Armbruster <armbru@redhat.com>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V2 11/11] migration: cpr-exec mode
-Date: Sun, 30 Jun 2024 12:40:34 -0700
-Message-Id: <1719776434-435013-12-git-send-email-steven.sistare@oracle.com>
+Subject: [RFC V1 0/6] Live update: cpr-transfer
+Date: Sun, 30 Jun 2024 12:44:02 -0700
+Message-Id: <1719776648-435073-1-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
-In-Reply-To: <1719776434-435013-1-git-send-email-steven.sistare@oracle.com>
-References: <1719776434-435013-1-git-send-email-steven.sistare@oracle.com>
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
  definitions=2024-06-30_16,2024-06-28_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
- malwarescore=0
- adultscore=0 bulkscore=0 mlxlogscore=999 phishscore=0 spamscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2406180000 definitions=main-2406300157
-X-Proofpoint-GUID: 5kF2f7jvzqH_aire-mOMf0vaaCopLgJ4
-X-Proofpoint-ORIG-GUID: 5kF2f7jvzqH_aire-mOMf0vaaCopLgJ4
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
+ spamscore=0 suspectscore=0
+ mlxlogscore=836 malwarescore=0 adultscore=0 phishscore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2406180000
+ definitions=main-2406300157
+X-Proofpoint-ORIG-GUID: xWB15QlPyv7YLqGWAXfExslhJOO0LCy5
+X-Proofpoint-GUID: xWB15QlPyv7YLqGWAXfExslhJOO0LCy5
 Received-SPF: pass client-ip=205.220.165.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -20
@@ -102,347 +94,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add the cpr-exec migration mode.  Usage:
-  qemu-system-$arch -machine anon-alloc=memfd ...
-  migrate_set_parameter mode cpr-exec
-  migrate_set_parameter cpr-exec-command \
-    <arg1> <arg2> ... -incoming <uri-1> \
-  migrate -d <uri-1>
+What?
 
-The migrate command stops the VM, saves state to uri-1,
-directly exec's a new version of QEMU on the same host,
-replacing the original process while retaining its PID, and
-loads state from uri-1.  Guest RAM is preserved in place,
-albeit with new virtual addresses.
+This patch series adds the live migration cpr-transfer mode, which
+allows the user to transfer a guest to a new QEMU instance on the same
+host.  It is identical to cpr-exec in most respects, except as described
+below. 
 
-The new QEMU process is started by exec'ing the command
-specified by the @cpr-exec-command parameter.  The first word of
-the command is the binary, and the remaining words are its
-arguments.  The command may be a direct invocation of new QEMU,
-or may be a non-QEMU command that exec's the new QEMU binary.
+The new user-visible interfaces are:
+  * cpr-transfer (MigMode migration parameter)
+  * cpr-uri (migration parameter)
+  * cpr-uri (command-line argument)
 
-This mode creates a second migration channel that is not visible
-to the user.  At the start of migration, old QEMU saves CPR state
-to the second channel, and at the end of migration, it tells the
-main loop to call cpr_exec.  New QEMU loads CPR state early, before
-objects are created.
+In this mode, the user starts new QEMU on the same host as old QEMU, with
+the same arguments as old QEMU, plus the -incoming and the -cpr-uri options.
+The user issues the migrate command to old QEMU, which stops the VM, saves
+state to the migration channels, and enters the postmigrate state.  Execution
+resumes in new QEMU.
 
-Because old QEMU terminates when new QEMU starts, one cannot
-stream data between the two, so uri-1 must be a type,
-such as a file, that accepts all data before old QEMU exits.
-Otherwise, old QEMU may quietly block writing to the channel.
+This mode requires a second migration channel, specified by the cpr-uri
+migration property on the outgoing side, and by the cpr-uri QEMU command-line
+option on the incoming side.  The channel must be a type, such as unix socket,
+that supports SCM_RIGHTS.
 
-Memory-backend objects must have the share=on attribute, but
-memory-backend-epc is not supported.  The VM must be started with
-the '-machine anon-alloc=memfd' option, which allows anonymous
-memory to be transferred in place to the new process.  The memfds
-are kept open across exec by clearing the close-on-exec flag, their
-values are saved in CPR state, and they are mmap'd in new qemu.
+This series depends on the series "Live update: cpr-exec mode".
 
-Note that the anon-alloc option is not related to memory-backend-memfd.
-Later patches add support for memory-backend-memfd.
+Why?
 
-Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
----
- include/migration/cpr.h |  2 ++
- migration/cpr-exec.c    | 85 +++++++++++++++++++++++++++++++++++++++++++++++++
- migration/cpr.c         | 37 ++++++++++++++++++---
- migration/migration.c   | 14 ++++++--
- migration/ram.c         |  2 ++
- qapi/migration.json     | 24 +++++++++++++-
- 6 files changed, 157 insertions(+), 7 deletions(-)
+cpr-transfer offers the same benefits as cpr-exec mode, but with a model
+for launching new QEMU that may be more natural for some management packages.
 
-diff --git a/include/migration/cpr.h b/include/migration/cpr.h
-index 76d6ccb..c6c60f8 100644
---- a/include/migration/cpr.h
-+++ b/include/migration/cpr.h
-@@ -30,4 +30,6 @@ QEMUFile *cpr_exec_input(Error **errp);
- void cpr_exec_persist_state(QEMUFile *f);
- bool cpr_exec_has_state(void);
- void cpr_exec_unpersist_state(void);
-+void cpr_mig_init(void);
-+void cpr_unpreserve_fds(void);
- #endif
-diff --git a/migration/cpr-exec.c b/migration/cpr-exec.c
-index 5c40457..fd65435 100644
---- a/migration/cpr-exec.c
-+++ b/migration/cpr-exec.c
-@@ -11,8 +11,11 @@
- #include "qapi/error.h"
- #include "io/channel-file.h"
- #include "io/channel-socket.h"
-+#include "block/block-global-state.h"
-+#include "qemu/main-loop.h"
- #include "migration/cpr.h"
- #include "migration/qemu-file.h"
-+#include "migration/migration.h"
- #include "migration/misc.h"
- #include "migration/vmstate.h"
- #include "sysemu/runstate.h"
-@@ -93,3 +96,85 @@ QEMUFile *cpr_exec_input(Error **errp)
-     lseek(mfd, 0, SEEK_SET);
-     return qemu_file_new_fd_input(mfd, CPR_EXEC_STATE_NAME);
- }
-+
-+static int preserve_fd(int fd)
-+{
-+    qemu_clear_cloexec(fd);
-+    return 0;
-+}
-+
-+static int unpreserve_fd(int fd)
-+{
-+    qemu_set_cloexec(fd);
-+    return 0;
-+}
-+
-+static void cpr_preserve_fds(void)
-+{
-+    cpr_walk_fd(preserve_fd);
-+}
-+
-+void cpr_unpreserve_fds(void)
-+{
-+    cpr_walk_fd(unpreserve_fd);
-+}
-+
-+static void cpr_exec(char **argv)
-+{
-+    MigrationState *s = migrate_get_current();
-+    Error *err = NULL;
-+
-+    /*
-+     * Clear the close-on-exec flag for all preserved fd's.  We cannot do so
-+     * earlier because they should not persist across miscellaneous fork and
-+     * exec calls that are performed during normal operation.
-+     */
-+    cpr_preserve_fds();
-+
-+    execvp(argv[0], argv);
-+
-+    cpr_unpreserve_fds();
-+
-+    error_setg_errno(&err, errno, "execvp %s failed", argv[0]);
-+    error_report_err(error_copy(err));
-+    migrate_set_state(&s->state, s->state, MIGRATION_STATUS_FAILED);
-+    migrate_set_error(s, err);
-+
-+    migration_call_notifiers(s, MIG_EVENT_PRECOPY_FAILED, NULL);
-+
-+    if (s->block_inactive) {
-+        Error *local_err = NULL;
-+        bdrv_activate_all(&local_err);
-+        if (local_err) {
-+            error_report_err(local_err);
-+            return;
-+        } else {
-+            s->block_inactive = false;
-+        }
-+    }
-+
-+    if (runstate_is_live(s->vm_old_state)) {
-+        vm_start();
-+    }
-+}
-+
-+static int cpr_exec_notifier(NotifierWithReturn *notifier, MigrationEvent *e,
-+                             Error **errp)
-+{
-+    MigrationState *s = migrate_get_current();
-+
-+    if (e->type == MIG_EVENT_PRECOPY_DONE) {
-+        assert(s->state == MIGRATION_STATUS_COMPLETED);
-+        qemu_system_exec_request(cpr_exec, s->parameters.cpr_exec_command);
-+    } else if (e->type == MIG_EVENT_PRECOPY_FAILED) {
-+        cpr_exec_unpersist_state();
-+    }
-+    return 0;
-+}
-+
-+void cpr_mig_init(void)
-+{
-+    static NotifierWithReturn notifier;
-+    migration_add_notifier_mode(&notifier, cpr_exec_notifier,
-+                                MIG_MODE_CPR_EXEC);
-+}
-diff --git a/migration/cpr.c b/migration/cpr.c
-index 1c296c6..f756c15 100644
---- a/migration/cpr.c
-+++ b/migration/cpr.c
-@@ -9,6 +9,7 @@
- #include "qapi/error.h"
- #include "migration/cpr.h"
- #include "migration/misc.h"
-+#include "migration/options.h"
- #include "migration/qemu-file.h"
- #include "migration/savevm.h"
- #include "migration/vmstate.h"
-@@ -160,9 +161,16 @@ int cpr_state_save(Error **errp)
- {
-     int ret;
-     QEMUFile *f;
-+    MigMode mode = migrate_mode();
- 
--    /* set f based on mode in a later patch in this series */
--    return 0;
-+    if (mode == MIG_MODE_CPR_EXEC) {
-+        f = cpr_exec_output(errp);
-+    } else {
-+        return 0;
-+    }
-+    if (!f) {
-+        return -1;
-+    }
- 
-     qemu_put_be32(f, QEMU_VM_FILE_MAGIC);
-     qemu_put_be32(f, QEMU_VM_FILE_VERSION);
-@@ -170,8 +178,14 @@ int cpr_state_save(Error **errp)
-     ret = vmstate_save_state(f, &vmstate_cpr_state, &cpr_state, 0);
-     if (ret) {
-         error_setg(errp, "vmstate_save_state error %d", ret);
-+        goto out;
-     }
- 
-+    if (mode == MIG_MODE_CPR_EXEC) {
-+        cpr_exec_persist_state(f);
-+    }
-+
-+out:
-     qemu_fclose(f);
-     return ret;
- }
-@@ -182,8 +196,18 @@ int cpr_state_load(Error **errp)
-     uint32_t v;
-     QEMUFile *f;
- 
--    /* set f based on mode in a later patch in this series */
--    return 0;
-+    /*
-+     * Mode will be loaded in CPR state, so cannot use it to decide which
-+     * form of state to load.
-+     */
-+    if (cpr_exec_has_state()) {
-+        f = cpr_exec_input(errp);
-+    } else {
-+        return 0;
-+    }
-+    if (!f) {
-+        return -1;
-+    }
- 
-     v = qemu_get_be32(f);
-     if (v != QEMU_VM_FILE_MAGIC) {
-@@ -203,6 +227,11 @@ int cpr_state_load(Error **errp)
-         error_setg(errp, "vmstate_load_state error %d", ret);
-     }
- 
-+    if (migrate_mode() == MIG_MODE_CPR_EXEC) {
-+        /* Set cloexec to prevent fd leaks from fork until the next cpr-exec */
-+        cpr_unpreserve_fds();
-+    }
-+
-     qemu_fclose(f);
-     return ret;
- }
-diff --git a/migration/migration.c b/migration/migration.c
-index 8a8e927..a4a020e 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -73,9 +73,10 @@
- 
- #define INMIGRATE_DEFAULT_EXIT_ON_ERROR true
- 
--static NotifierWithReturnList migration_state_notifiers[] = {
-+static NotifierWithReturnList migration_state_notifiers[MIG_MODE__MAX] = {
-     NOTIFIER_ELEM_INIT(migration_state_notifiers, MIG_MODE_NORMAL),
-     NOTIFIER_ELEM_INIT(migration_state_notifiers, MIG_MODE_CPR_REBOOT),
-+    NOTIFIER_ELEM_INIT(migration_state_notifiers, MIG_MODE_CPR_EXEC),
- };
- 
- /* Messages sent on the return path from destination to source */
-@@ -264,6 +265,7 @@ void migration_object_init(void)
- 
-     ram_mig_init();
-     dirty_bitmap_mig_init();
-+    cpr_mig_init();
- }
- 
- typedef struct {
-@@ -1693,7 +1695,9 @@ bool migration_thread_is_self(void)
- 
- bool migrate_mode_is_cpr(MigrationState *s)
- {
--    return s->parameters.mode == MIG_MODE_CPR_REBOOT;
-+    MigMode mode = s->parameters.mode;
-+    return mode == MIG_MODE_CPR_REBOOT ||
-+           mode == MIG_MODE_CPR_EXEC;
- }
- 
- int migrate_init(MigrationState *s, Error **errp)
-@@ -2028,6 +2032,12 @@ static bool migrate_prepare(MigrationState *s, bool resume, Error **errp)
-         return false;
-     }
- 
-+    if (migrate_mode() == MIG_MODE_CPR_EXEC &&
-+        !s->parameters.has_cpr_exec_command) {
-+        error_setg(errp, "cpr-exec mode requires setting cpr-exec-command");
-+        return false;
-+    }
-+
-     if (migration_is_blocked(errp)) {
-         return false;
-     }
-diff --git a/migration/ram.c b/migration/ram.c
-index eaf3151..45b8f00 100644
---- a/migration/ram.c
-+++ b/migration/ram.c
-@@ -216,7 +216,9 @@ static bool postcopy_preempt_active(void)
- 
- bool migrate_ram_is_ignored(RAMBlock *block)
- {
-+    MigMode mode = migrate_mode();
-     return !qemu_ram_is_migratable(block) ||
-+           mode == MIG_MODE_CPR_EXEC ||
-            (migrate_ignore_shared() && qemu_ram_is_shared(block)
-                                     && qemu_ram_is_named_file(block));
- }
-diff --git a/qapi/migration.json b/qapi/migration.json
-index 20092d2..4e626df 100644
---- a/qapi/migration.json
-+++ b/qapi/migration.json
-@@ -604,9 +604,31 @@
- #     or COLO.
- #
- #     (since 8.2)
-+#
-+# @cpr-exec: The migrate command stops the VM, saves state to the
-+#     migration channel, directly exec's a new version of QEMU on the
-+#     same host, replacing the original process while retaining its
-+#     PID, and loads state from the channel.  Guest RAM is preserved
-+#     in place.
-+#
-+#     Old QEMU starts new QEMU by exec'ing the command specified by
-+#     the @cpr-exec-command parameter.  The command may be a direct
-+#     invocation of new QEMU, or may be a non-QEMU command that exec's
-+#     the new QEMU binary.
-+#
-+#     Because old QEMU terminates when new QEMU starts, one cannot
-+#     stream data between the two, so the channel must be a type,
-+#     such as a file, that accepts all data before old QEMU exits.
-+#     Otherwise, old QEMU may quietly block writing to the channel.
-+#
-+#     Memory-backend objects must have the share=on attribute, but
-+#     memory-backend-epc is not supported.  The VM must be started
-+#     with the '-machine anon-alloc=memfd' option.
-+#
-+#     (since 9.1)
- ##
- { 'enum': 'MigMode',
--  'data': [ 'normal', 'cpr-reboot' ] }
-+  'data': [ 'normal', 'cpr-reboot', 'cpr-exec' ] }
- 
- ##
- # @ZeroPageDetection:
+How?
+
+The file descriptors are kept open by sending them to new QEMU via the
+cpr-uri, which must support SCM_RIGHTS.
+
+Example:
+
+In this example, we simply restart the same version of QEMU, but in
+a real scenario one would use a new QEMU binary path in terminal 2.
+
+  Terminal 1: start old QEMU
+  # qemu-kvm -monitor stdio -object
+  memory-backend-file,id=ram0,size=4G,mem-path=/dev/shm/ram0,share=on
+  -m 4G -machine anon-alloc=memfd ...
+
+  Terminal 2: start new QEMU
+  # qemu-kvm ... -incoming unix:vm.sock -cpr-uri unix:cpr.sock
+
+  Terminal 1:
+  QEMU 9.1.50 monitor - type 'help' for more information
+  (qemu) info status
+  VM status: running
+  (qemu) migrate_set_parameter mode cpr-transfer
+  (qemu) migrate_set_parameter cpr-uri unix:cpr.sock
+  (qemu) migrate -d unix:vm.sock
+  (qemu) info status
+  VM status: paused (postmigrate)
+
+  Terminal 2:
+  QEMU 9.1.50 monitor - type 'help' for more information
+  (qemu) info status
+  VM status: running
+
+Steve Sistare (6):
+  migration: SCM_RIGHTS for QEMUFile
+  migration: VMSTATE_FD
+  migration: cpr-transfer save and load
+  migration: cpr-uri parameter
+  migration: cpr-uri option
+  migration: cpr-transfer mode
+
+ include/migration/cpr.h        |  4 ++
+ include/migration/vmstate.h    |  9 +++++
+ migration/cpr-transfer.c       | 81 +++++++++++++++++++++++++++++++++++++++++
+ migration/cpr.c                | 16 +++++++-
+ migration/meson.build          |  1 +
+ migration/migration-hmp-cmds.c | 10 +++++
+ migration/migration.c          | 37 +++++++++++++++++++
+ migration/options.c            | 29 +++++++++++++++
+ migration/options.h            |  1 +
+ migration/qemu-file.c          | 83 ++++++++++++++++++++++++++++++++++++++++--
+ migration/qemu-file.h          |  2 +
+ migration/ram.c                |  1 +
+ migration/trace-events         |  2 +
+ migration/vmstate-types.c      | 33 +++++++++++++++++
+ qapi/migration.json            | 38 ++++++++++++++++++-
+ qemu-options.hx                |  8 ++++
+ stubs/vmstate.c                |  7 ++++
+ system/vl.c                    |  3 ++
+ 18 files changed, 359 insertions(+), 6 deletions(-)
+ create mode 100644 migration/cpr-transfer.c
+
 -- 
 1.8.3.1
 
