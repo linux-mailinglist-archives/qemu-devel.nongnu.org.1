@@ -2,40 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AB6C91D2D6
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C8EF91D2D7
 	for <lists+qemu-devel@lfdr.de>; Sun, 30 Jun 2024 18:54:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sNxoB-0005be-UL; Sun, 30 Jun 2024 12:53:48 -0400
+	id 1sNxoE-0005cU-G0; Sun, 30 Jun 2024 12:53:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sNxo9-0005bF-Qw; Sun, 30 Jun 2024 12:53:45 -0400
+ id 1sNxo9-0005bH-Us; Sun, 30 Jun 2024 12:53:46 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sNxo8-0005IR-3g; Sun, 30 Jun 2024 12:53:45 -0400
+ id 1sNxo8-0005IW-8F; Sun, 30 Jun 2024 12:53:45 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 581F87575F;
+ by isrv.corpit.ru (Postfix) with ESMTP id 65DA175760;
  Sun, 30 Jun 2024 19:53:20 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 2D497FAD5C;
+ by tsrv.corpit.ru (Postfix) with SMTP id 3A9C4FAD5D;
  Sun, 30 Jun 2024 19:53:27 +0300 (MSK)
-Received: (nullmailer pid 38206 invoked by uid 1000);
+Received: (nullmailer pid 38209 invoked by uid 1000);
  Sun, 30 Jun 2024 16:53:27 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>,
- qemu-trivial@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 02/16] cpu: fix memleak of 'halt_cond' and 'thread'
-Date: Sun, 30 Jun 2024 19:53:12 +0300
-Message-Id: <20240630165327.38153-3-mjt@tls.msk.ru>
+Cc: Zide Chen <zide.chen@intel.com>, qemu-trivial@nongnu.org,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [PULL 03/16] vl: Allow multiple -overcommit commands
+Date: Sun, 30 Jun 2024 19:53:13 +0300
+Message-Id: <20240630165327.38153-4-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240630165327.38153-1-mjt@tls.msk.ru>
 References: <20240630165327.38153-1-mjt@tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -59,51 +58,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
+From: Zide Chen <zide.chen@intel.com>
 
-Since a4c2735f35 (cpu: move Qemu[Thread|Cond] setup into common code,
-2024-05-30) these fields are now allocated at cpu_common_initfn(). So
-let's make sure we also free them at cpu_common_finalize().
+Both cpu-pm and mem-lock are related to system resource overcommit, but
+they are separate from each other, in terms of how they are realized,
+and of course, they are applied to different system resources.
 
-Furthermore, the code also frees these on round robin, but we missed
-'halt_cond'.
+It's tempting to use separate command lines to specify their behavior.
+e.g., in the following example, the cpu-pm command is quietly
+overwritten, and it's not easy to notice it without careful inspection.
 
-Signed-off-by: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+  --overcommit mem-lock=on
+  --overcommit cpu-pm=on
+
+Fixes: c8c9dc42b7ca ("Remove the deprecated -realtime option")
+Suggested-by: Thomas Huth <thuth@redhat.com>
+Signed-off-by: Zide Chen <zide.chen@intel.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Reviewed-by: Igor Mammedov <imammedo@redhat.com>
 Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- accel/tcg/tcg-accel-ops-rr.c | 1 +
- hw/core/cpu-common.c         | 3 +++
- 2 files changed, 4 insertions(+)
+ system/vl.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/accel/tcg/tcg-accel-ops-rr.c b/accel/tcg/tcg-accel-ops-rr.c
-index 84c36c1450..48c38714bd 100644
---- a/accel/tcg/tcg-accel-ops-rr.c
-+++ b/accel/tcg/tcg-accel-ops-rr.c
-@@ -329,6 +329,7 @@ void rr_start_vcpu_thread(CPUState *cpu)
-         /* we share the thread, dump spare data */
-         g_free(cpu->thread);
-         qemu_cond_destroy(cpu->halt_cond);
-+        g_free(cpu->halt_cond);
-         cpu->thread = single_tcg_cpu_thread;
-         cpu->halt_cond = single_tcg_halt_cond;
- 
-diff --git a/hw/core/cpu-common.c b/hw/core/cpu-common.c
-index bf1a7b8892..f131cde2c0 100644
---- a/hw/core/cpu-common.c
-+++ b/hw/core/cpu-common.c
-@@ -286,6 +286,9 @@ static void cpu_common_finalize(Object *obj)
-     g_array_free(cpu->gdb_regs, TRUE);
-     qemu_lockcnt_destroy(&cpu->in_ioctl_lock);
-     qemu_mutex_destroy(&cpu->work_mutex);
-+    qemu_cond_destroy(cpu->halt_cond);
-+    g_free(cpu->halt_cond);
-+    g_free(cpu->thread);
- }
- 
- static int64_t cpu_common_get_arch_id(CPUState *cpu)
+diff --git a/system/vl.c b/system/vl.c
+index cfcb674425..4dc862652f 100644
+--- a/system/vl.c
++++ b/system/vl.c
+@@ -3546,8 +3546,8 @@ void qemu_init(int argc, char **argv)
+                 if (!opts) {
+                     exit(1);
+                 }
+-                enable_mlock = qemu_opt_get_bool(opts, "mem-lock", false);
+-                enable_cpu_pm = qemu_opt_get_bool(opts, "cpu-pm", false);
++                enable_mlock = qemu_opt_get_bool(opts, "mem-lock", enable_mlock);
++                enable_cpu_pm = qemu_opt_get_bool(opts, "cpu-pm", enable_cpu_pm);
+                 break;
+             case QEMU_OPTION_compat:
+                 {
 -- 
 2.39.2
 
