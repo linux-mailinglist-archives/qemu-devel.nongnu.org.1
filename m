@@ -2,80 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADA5591D350
-	for <lists+qemu-devel@lfdr.de>; Sun, 30 Jun 2024 21:04:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2F4E91D353
+	for <lists+qemu-devel@lfdr.de>; Sun, 30 Jun 2024 21:04:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sNznO-0004pP-TK; Sun, 30 Jun 2024 15:01:06 -0400
+	id 1sNznP-0004r9-PS; Sun, 30 Jun 2024 15:01:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sNznJ-0004n6-R8
+ id 1sNznL-0004nD-Az
  for qemu-devel@nongnu.org; Sun, 30 Jun 2024 15:01:04 -0400
-Received: from mail-pj1-x1035.google.com ([2607:f8b0:4864:20::1035])
+Received: from mail-pj1-x1036.google.com ([2607:f8b0:4864:20::1036])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sNznC-0007Tv-1H
- for qemu-devel@nongnu.org; Sun, 30 Jun 2024 15:01:01 -0400
-Received: by mail-pj1-x1035.google.com with SMTP id
- 98e67ed59e1d1-2c901185d73so2297494a91.0
- for <qemu-devel@nongnu.org>; Sun, 30 Jun 2024 12:00:53 -0700 (PDT)
+ id 1sNznF-0007Uv-Uf
+ for qemu-devel@nongnu.org; Sun, 30 Jun 2024 15:01:02 -0400
+Received: by mail-pj1-x1036.google.com with SMTP id
+ 98e67ed59e1d1-2c1a4192d55so1212593a91.2
+ for <qemu-devel@nongnu.org>; Sun, 30 Jun 2024 12:00:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719774052; x=1720378852; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=gXcD6RKAlC5/aI6jjanCPGZJp69fMWK17rMgS0+fr4A=;
- b=bUGf/MFzDdqAFArxVdLCBU134AKTwdAyi9ajlYDWzt0dHEw48va0oXSXc9ckvkTRKA
- Li56WpnlAvbgk04T0sVZ+dGDqPyI8R4TgDhAh1k43a2g+WtdIIE/PbHcPZGGAct41sPo
- rwS4hbTQfrw685x+jyl/OKgAhOLLGpCvPaMYvPSp/JA7KTKFGSGV1LIIF34jOwMSVbIt
- 3TslGf7p1+7c9Ll40zduycJl02RZ92OJRiKTHFCDq7JXqaS9RPk5Z/9mI6N8JEgWNb7W
- dWWPPq/vubpMepr6fuHAvGAbF1OTmUs9m9q/OI3o7ni8bAgBmt/4REaTlN728Ri8JNV5
- ek1A==
+ d=linaro.org; s=google; t=1719774055; x=1720378855; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=DtGVT1ZHjBzi0X95kSBoZYyuOcUliRAOUA12D0f1mZ0=;
+ b=LrS+sYIna8/tBJ6UM1bJ1g8Rl3Mwm9OMbkRBwhaNl0r+4ehZZEh3Wro1ilW9MUNdfu
+ uPlryZa4btuNEsXHCCNBA362kdaW2umC/iZ78RUku2A45AEHOFtu2sXfObU7xJiGYqHq
+ FnQhYuilY3rNPqTTB3Nkh/CNLTyR5Z0Cmmgu0yvUS4AEQoKsyvplhXC0wVpDKuNNuVHs
+ CMEUGPgLQ2l4KRdBQaoP6R0jY+SoizEPo5YYqzZcC8l76t2h0p/rMfjdy89y57UZ385Z
+ d04RscuwlA2EAOy4QAvI5kaCQ7TqTX4TyG0P+xYJke09YWFVevPJthlcdL5WCg9yk78a
+ T0rw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719774052; x=1720378852;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=gXcD6RKAlC5/aI6jjanCPGZJp69fMWK17rMgS0+fr4A=;
- b=axgxBPXpOU0Q3v/FxmHo2UXBXnfRveCRzhKooD1NFQxyjsC+x4XK/dRe5ln7lsWl+z
- zBt+7P9TCx7a6BwiJt57FZm0MM6jdvkX3tW6Br7fiWOV6kL0qEg43NMl6Civ5r1oNqq+
- whrkaJo09AI8vpx8c4+1SIimvE8aDluN2fSNWa2r5Q2ZSE6uEJK1q7ApJZRy0722f9OE
- BGSQ7NRLI+qbMa5eNDcq8ntEGXmDJOjj57KgLKnwQVdSM+twu8K74K5H8ejZ8dA74PJj
- vWgCPflwi9u+opsxuRQ/xUFbfnGEk5fSly0DtPESwYVnr39HPWuX4HfxWnNeHHjpltxd
- Dbrw==
-X-Gm-Message-State: AOJu0YxHKXVE5H20jasgMlw/ZH067IW6oXQ1tE0KddfLP9ky/QfTH8Gr
- wPPti55Yyxelq6OwLYaB6ioLs17sz/sDejjlBoHeX/OnR2bBJHxjI6/baBlUM/XOB0kbd0ClQRT
- X
-X-Google-Smtp-Source: AGHT+IEthC5QVyTQ/7eOjF+4TvYgEyOu4GkrGIj5ryErsBROvoy85muTbR5y4LjwT8Kvyg42VNtEIQ==
-X-Received: by 2002:a17:90a:da01:b0:2c8:2236:e2c3 with SMTP id
- 98e67ed59e1d1-2c92804d09dmr10735280a91.17.1719774051859; 
- Sun, 30 Jun 2024 12:00:51 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1719774055; x=1720378855;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=DtGVT1ZHjBzi0X95kSBoZYyuOcUliRAOUA12D0f1mZ0=;
+ b=aQd4fSImOEjlJkS+kryPi87UuRAQQMcTnAHgXtA1qMO3NYtvKJpuY2kI6ScdIzYPfP
+ G+qATQw2HeIRhJprZjN3LnptAVoGGcZMKfU8lmrisWze+hFnAv4c57i02JMm9qITA2mz
+ Cn1Qjd56WT3bnvvRlw1lsp88bo3w9KDmfhhlFFYBfpyrETPoYMq+CWaXvXny8USFCenL
+ fOcCef4014GQnUT+oJ5QmO4G+Z3weXfTR3macfBRMRP83xiZJOEBdsFQ+q8fsC8vC7RW
+ f3/oAgfINBUHqCz7fkoBrxN78+fr/UNzhjYdpWu0OGMInwhEMuooUtVNHMb98OX78/2Q
+ U5SQ==
+X-Gm-Message-State: AOJu0Yy9ADXyhN4DuI+KQueJDmFvE5jieFKElxqQcxkJuOj5Mev16VOF
+ zAIU26yRu/eUrCc0tiYtSdfIWtb3s2g5/eUNzjm9HMH4h5HdCHng6Fo9uiSmbF8KcBsUu8uFsFi
+ s
+X-Google-Smtp-Source: AGHT+IGnrCV/2ZsxzpC4JeLWaNNpT33FUx9fjN8NR14jcAoBg35zMzVT9+wf2MU/AHgAwxnrlfde2g==
+X-Received: by 2002:a17:90a:9b09:b0:2c4:a7af:4d79 with SMTP id
+ 98e67ed59e1d1-2c93d6ea90bmr1515235a91.11.1719774052788; 
+ Sun, 30 Jun 2024 12:00:52 -0700 (PDT)
 Received: from stoup.. (174-21-76-141.tukw.qwest.net. [174.21.76.141])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2c91d3e7e4bsm5115641a91.52.2024.06.30.12.00.51
+ 98e67ed59e1d1-2c91d3e7e4bsm5115641a91.52.2024.06.30.12.00.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 30 Jun 2024 12:00:51 -0700 (PDT)
+ Sun, 30 Jun 2024 12:00:52 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: akihiko.odaki@daynix.com,
 	alex.bennee@linaro.org,
 	qemu-arm@nongnu.org
-Subject: [PATCH v4 00/14] test/tcg: Clang build fixes for arm/aarch64
-Date: Sun, 30 Jun 2024 12:00:36 -0700
-Message-Id: <20240630190050.160642-1-richard.henderson@linaro.org>
+Subject: [PATCH v4 01/14] tests/tcg/minilib: Constify digits in print_num
+Date: Sun, 30 Jun 2024 12:00:37 -0700
+Message-Id: <20240630190050.160642-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240630190050.160642-1-richard.henderson@linaro.org>
+References: <20240630190050.160642-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1035;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1035.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1036;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1036.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,49 +94,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Supercedes: 20240629-tcg-v3-0-fa57918bdf09@daynix.com
-("[PATCH v3 0/7] tests/tcg/aarch64: Fix inline assemblies for clang")
+This avoids a memcpy to the stack when compiled with clang.
+Since we don't enable optimization, nor provide memcpy,
+this results in an undefined symbol error at link time.
 
-On top of Akihiko's patches for aarch64, additional changes are
-required for arm, both as a host and as a guest.
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ tests/tcg/minilib/printf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-
-r~
-
-
-Akihiko Odaki (5):
-  tests/tcg/aarch64: Explicitly specify register width
-  tests/tcg/aarch64: Fix irg operand type
-  tests/tcg/aarch64: Do not use x constraint
-  tests/tcg/arm: Fix fcvt result messages
-  tests/tcg/arm: Manually register allocate half-precision numbers
-
-Richard Henderson (9):
-  tests/tcg/minilib: Constify digits in print_num
-  tests/tcg: Adjust variable defintion from cc-option
-  tests/tcg/aarch64: Drop -fno-tree-loop-distribute-patterns
-  tests/tcg/aarch64: Add -fno-integrated-as for sme
-  tests/tcg/arm: Drop -N from LDFLAGS
-  tests/tcg/arm: Use -fno-integrated-as for test-arm-iwmmxt
-  tests/tcg/arm: Use -march and -mfpu for fcvt
-  tests/tcg/arm: Use vmrs/vmsr instead of mcr/mrc
-  linux-user/main: Suppress out-of-range comparison warning for clang
-
- linux-user/main.c                         |   1 +
- tests/tcg/aarch64/bti-1.c                 |   6 +-
- tests/tcg/aarch64/bti-3.c                 |   6 +-
- tests/tcg/aarch64/mte-1.c                 |   2 +-
- tests/tcg/arm/fcvt.c                      |  28 +-
- tests/tcg/minilib/printf.c                |   2 +-
- tests/tcg/Makefile.target                 |   2 +-
- tests/tcg/aarch64/Makefile.softmmu-target |   4 +-
- tests/tcg/aarch64/Makefile.target         |  18 +-
- tests/tcg/aarch64/fcvt.ref                | 604 +++++++++++-----------
- tests/tcg/arm/Makefile.softmmu-target     |   4 +-
- tests/tcg/arm/Makefile.target             |  12 +-
- tests/tcg/arm/fcvt.ref                    | 604 +++++++++++-----------
- 13 files changed, 653 insertions(+), 640 deletions(-)
-
+diff --git a/tests/tcg/minilib/printf.c b/tests/tcg/minilib/printf.c
+index 10472b4f58..fb0189c2bb 100644
+--- a/tests/tcg/minilib/printf.c
++++ b/tests/tcg/minilib/printf.c
+@@ -27,7 +27,7 @@ static void print_str(char *s)
+ 
+ static void print_num(unsigned long long value, int base)
+ {
+-    char digits[] = "0123456789abcdef";
++    static const char digits[] = "0123456789abcdef";
+     char buf[32];
+     int i = sizeof(buf) - 2, j;
+ 
 -- 
 2.34.1
 
