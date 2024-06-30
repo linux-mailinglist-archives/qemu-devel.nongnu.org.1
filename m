@@ -2,85 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8962D91D2FB
-	for <lists+qemu-devel@lfdr.de>; Sun, 30 Jun 2024 19:01:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ADA5591D350
+	for <lists+qemu-devel@lfdr.de>; Sun, 30 Jun 2024 21:04:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sNxvd-0002Bp-Kd; Sun, 30 Jun 2024 13:01:29 -0400
+	id 1sNznO-0004pP-TK; Sun, 30 Jun 2024 15:01:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sNxvJ-00022i-QU
- for qemu-devel@nongnu.org; Sun, 30 Jun 2024 13:01:12 -0400
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
+ id 1sNznJ-0004n6-R8
+ for qemu-devel@nongnu.org; Sun, 30 Jun 2024 15:01:04 -0400
+Received: from mail-pj1-x1035.google.com ([2607:f8b0:4864:20::1035])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sNxvF-00024g-0J
- for qemu-devel@nongnu.org; Sun, 30 Jun 2024 13:01:08 -0400
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-7067a2e9607so1837770b3a.3
- for <qemu-devel@nongnu.org>; Sun, 30 Jun 2024 10:01:03 -0700 (PDT)
+ id 1sNznC-0007Tv-1H
+ for qemu-devel@nongnu.org; Sun, 30 Jun 2024 15:01:01 -0400
+Received: by mail-pj1-x1035.google.com with SMTP id
+ 98e67ed59e1d1-2c901185d73so2297494a91.0
+ for <qemu-devel@nongnu.org>; Sun, 30 Jun 2024 12:00:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719766862; x=1720371662; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=jMQnezKxuUJF8CHkae2hxAV5facrSExHSVd+van6xKI=;
- b=chO3bQwM/m8sSTmOh6mSyp5o58KtD4sCbRRsz9e+mkJ679z7gIkcS/pk0xY1kVcj8Y
- IVRDj1CK1wPfK21/kXiO2drxQh90UbonDLV6w0JFjNtMywP7T8VA9Sez8bed5fSCeyHH
- tzAsmVoZqYTX+ZM+hys++LUsAY+X+aZHOTKUUPmQg8m+Du1A6NQ14ZlPESEp6EdEHf8c
- iIgxVJQf5VLuSOdIAeaOba6yXrs8eqWHFRpiN0QWYcYTfYdAIG1CcijHh/1Q4UXuyVaP
- AQpm70XG4OZknKhouMGv0d5zfIRAFT67utOABc7oupBVP1zhHldknL9LlbN9jrEf+4y+
- Nz3Q==
+ d=linaro.org; s=google; t=1719774052; x=1720378852; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=gXcD6RKAlC5/aI6jjanCPGZJp69fMWK17rMgS0+fr4A=;
+ b=bUGf/MFzDdqAFArxVdLCBU134AKTwdAyi9ajlYDWzt0dHEw48va0oXSXc9ckvkTRKA
+ Li56WpnlAvbgk04T0sVZ+dGDqPyI8R4TgDhAh1k43a2g+WtdIIE/PbHcPZGGAct41sPo
+ rwS4hbTQfrw685x+jyl/OKgAhOLLGpCvPaMYvPSp/JA7KTKFGSGV1LIIF34jOwMSVbIt
+ 3TslGf7p1+7c9Ll40zduycJl02RZ92OJRiKTHFCDq7JXqaS9RPk5Z/9mI6N8JEgWNb7W
+ dWWPPq/vubpMepr6fuHAvGAbF1OTmUs9m9q/OI3o7ni8bAgBmt/4REaTlN728Ri8JNV5
+ ek1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719766862; x=1720371662;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=jMQnezKxuUJF8CHkae2hxAV5facrSExHSVd+van6xKI=;
- b=uG2AB67e4dqccoAdZR1JBa5zz4WqshIf1pqJRwQsSpLg59HBmehb9j0RnLyC+zJpIl
- 6TP8iZb746cBkbuRwzMAn0OzyIbOB7IKEjXWyO40QmU2O7AYT8QbmwLS7XEwouKVlhfy
- 565qOGqvoKuYoihM8OTY6kgYwIjBVprkSDrlqpmVH95yyudyQzoe6YsfzA7poipXgsKZ
- pYN6SwcsHeZ7baQtlE7ZmorniMNHsfqhl/cpYoXSO2RZ0C+AYVBMYIAPFyK3MMuWknde
- SSdF7BXtMZBb9B+30hTpMy2dV6LO46OYTvU7SIrB0AHtAkcZuOhGgvqF/nmsTW/yQ/yp
- CRTQ==
-X-Gm-Message-State: AOJu0Yz4B8tb/AwowGHLQ1+01K1JrCss8xTOstLHOUsmLqkyPR21fUq5
- /t49M8XPvy722xb4p4NGzn5sXXttxIHbqaoJWGKcCPqUPtwoLqVisMQ3D1KkXt8=
-X-Google-Smtp-Source: AGHT+IEBfi5CfC0QqVq5k+blfZd4Z6cvCeQkGkrc+NV7oTAoVxHWvKpBiYKsE3OnZXwGAt64JPKOrA==
-X-Received: by 2002:a05:6a20:6a20:b0:1be:d161:47e7 with SMTP id
- adf61e73a8af0-1bef60fce9amr6169164637.24.1719766862325; 
- Sun, 30 Jun 2024 10:01:02 -0700 (PDT)
-Received: from [192.168.0.4] (174-21-76-141.tukw.qwest.net. [174.21.76.141])
+ d=1e100.net; s=20230601; t=1719774052; x=1720378852;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=gXcD6RKAlC5/aI6jjanCPGZJp69fMWK17rMgS0+fr4A=;
+ b=axgxBPXpOU0Q3v/FxmHo2UXBXnfRveCRzhKooD1NFQxyjsC+x4XK/dRe5ln7lsWl+z
+ zBt+7P9TCx7a6BwiJt57FZm0MM6jdvkX3tW6Br7fiWOV6kL0qEg43NMl6Civ5r1oNqq+
+ whrkaJo09AI8vpx8c4+1SIimvE8aDluN2fSNWa2r5Q2ZSE6uEJK1q7ApJZRy0722f9OE
+ BGSQ7NRLI+qbMa5eNDcq8ntEGXmDJOjj57KgLKnwQVdSM+twu8K74K5H8ejZ8dA74PJj
+ vWgCPflwi9u+opsxuRQ/xUFbfnGEk5fSly0DtPESwYVnr39HPWuX4HfxWnNeHHjpltxd
+ Dbrw==
+X-Gm-Message-State: AOJu0YxHKXVE5H20jasgMlw/ZH067IW6oXQ1tE0KddfLP9ky/QfTH8Gr
+ wPPti55Yyxelq6OwLYaB6ioLs17sz/sDejjlBoHeX/OnR2bBJHxjI6/baBlUM/XOB0kbd0ClQRT
+ X
+X-Google-Smtp-Source: AGHT+IEthC5QVyTQ/7eOjF+4TvYgEyOu4GkrGIj5ryErsBROvoy85muTbR5y4LjwT8Kvyg42VNtEIQ==
+X-Received: by 2002:a17:90a:da01:b0:2c8:2236:e2c3 with SMTP id
+ 98e67ed59e1d1-2c92804d09dmr10735280a91.17.1719774051859; 
+ Sun, 30 Jun 2024 12:00:51 -0700 (PDT)
+Received: from stoup.. (174-21-76-141.tukw.qwest.net. [174.21.76.141])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2c91d3bc5ffsm5072202a91.43.2024.06.30.10.01.01
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 30 Jun 2024 10:01:01 -0700 (PDT)
-Message-ID: <15fd6f84-6a80-44b6-93e1-b9ea8f9fadec@linaro.org>
-Date: Sun, 30 Jun 2024 10:01:00 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] target/ppc : Update VSX storage access insns to
- use tcg_gen_qemu _ld/st_i128.
-To: Chinmay Rath <rathc@linux.ibm.com>, qemu-ppc@nongnu.org
-Cc: qemu-devel@nongnu.org, npiggin@gmail.com, danielhb413@gmail.com,
- harshpb@linux.ibm.com
-References: <20240630120157.259233-1-rathc@linux.ibm.com>
- <20240630120157.259233-4-rathc@linux.ibm.com>
-Content-Language: en-US
+ 98e67ed59e1d1-2c91d3e7e4bsm5115641a91.52.2024.06.30.12.00.51
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 30 Jun 2024 12:00:51 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240630120157.259233-4-rathc@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x434.google.com
+To: qemu-devel@nongnu.org
+Cc: akihiko.odaki@daynix.com,
+	alex.bennee@linaro.org,
+	qemu-arm@nongnu.org
+Subject: [PATCH v4 00/14] test/tcg: Clang build fixes for arm/aarch64
+Date: Sun, 30 Jun 2024 12:00:36 -0700
+Message-Id: <20240630190050.160642-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1035;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1035.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,64 +91,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/30/24 05:01, Chinmay Rath wrote:
-> @@ -2175,13 +2179,13 @@ static bool do_lstxv(DisasContext *ctx, int ra, TCGv displ,
->                        int rt, bool store, bool paired)
->   {
->       TCGv ea;
-> -    TCGv_i64 xt;
-> +    TCGv_i128 data;
->       MemOp mop;
->       int rt1, rt2;
->   
-> -    xt = tcg_temp_new_i64();
-> +    data = tcg_temp_new_i128();
->   
-> -    mop = DEF_MEMOP(MO_UQ);
-> +    mop = DEF_MEMOP(MO_128 | MO_ATOM_IFALIGN_PAIR);
->   
->       gen_set_access_type(ctx, ACCESS_INT);
->       ea = do_ea_calc(ctx, ra, displ);
-> @@ -2195,32 +2199,20 @@ static bool do_lstxv(DisasContext *ctx, int ra, TCGv displ,
->       }
->   
->       if (store) {
-> -        get_cpu_vsr(xt, rt1, !ctx->le_mode);
-> -        tcg_gen_qemu_st_i64(xt, ea, ctx->mem_idx, mop);
-> -        gen_addr_add(ctx, ea, ea, 8);
-> -        get_cpu_vsr(xt, rt1, ctx->le_mode);
-> -        tcg_gen_qemu_st_i64(xt, ea, ctx->mem_idx, mop);
-> +        get_vsr_full(data, rt1);
-> +        tcg_gen_qemu_st_i128(data, ea, ctx->mem_idx, mop);
->           if (paired) {
->               gen_addr_add(ctx, ea, ea, 8);
+Supercedes: 20240629-tcg-v3-0-fa57918bdf09@daynix.com
+("[PATCH v3 0/7] tests/tcg/aarch64: Fix inline assemblies for clang")
 
-The increment needs updating to 16.
-
-> -            get_cpu_vsr(xt, rt2, !ctx->le_mode);
-> -            tcg_gen_qemu_st_i64(xt, ea, ctx->mem_idx, mop);
-> -            gen_addr_add(ctx, ea, ea, 8);
-> -            get_cpu_vsr(xt, rt2, ctx->le_mode);
-> -            tcg_gen_qemu_st_i64(xt, ea, ctx->mem_idx, mop);
-> +            get_vsr_full(data, rt2);
-> +            tcg_gen_qemu_st_i128(data, ea, ctx->mem_idx, mop);
->           }
->       } else {
-> -        tcg_gen_qemu_ld_i64(xt, ea, ctx->mem_idx, mop);
-> -        set_cpu_vsr(rt1, xt, !ctx->le_mode);
-> -        gen_addr_add(ctx, ea, ea, 8);
-> -        tcg_gen_qemu_ld_i64(xt, ea, ctx->mem_idx, mop);
-> -        set_cpu_vsr(rt1, xt, ctx->le_mode);
-> +        tcg_gen_qemu_ld_i128(data, ea, ctx->mem_idx, mop);
-> +        set_vsr_full(rt1, data);
->           if (paired) {
->               gen_addr_add(ctx, ea, ea, 8);
-
-Likewise.
-
-With those fixed,
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+On top of Akihiko's patches for aarch64, additional changes are
+required for arm, both as a host and as a guest.
 
 
 r~
+
+
+Akihiko Odaki (5):
+  tests/tcg/aarch64: Explicitly specify register width
+  tests/tcg/aarch64: Fix irg operand type
+  tests/tcg/aarch64: Do not use x constraint
+  tests/tcg/arm: Fix fcvt result messages
+  tests/tcg/arm: Manually register allocate half-precision numbers
+
+Richard Henderson (9):
+  tests/tcg/minilib: Constify digits in print_num
+  tests/tcg: Adjust variable defintion from cc-option
+  tests/tcg/aarch64: Drop -fno-tree-loop-distribute-patterns
+  tests/tcg/aarch64: Add -fno-integrated-as for sme
+  tests/tcg/arm: Drop -N from LDFLAGS
+  tests/tcg/arm: Use -fno-integrated-as for test-arm-iwmmxt
+  tests/tcg/arm: Use -march and -mfpu for fcvt
+  tests/tcg/arm: Use vmrs/vmsr instead of mcr/mrc
+  linux-user/main: Suppress out-of-range comparison warning for clang
+
+ linux-user/main.c                         |   1 +
+ tests/tcg/aarch64/bti-1.c                 |   6 +-
+ tests/tcg/aarch64/bti-3.c                 |   6 +-
+ tests/tcg/aarch64/mte-1.c                 |   2 +-
+ tests/tcg/arm/fcvt.c                      |  28 +-
+ tests/tcg/minilib/printf.c                |   2 +-
+ tests/tcg/Makefile.target                 |   2 +-
+ tests/tcg/aarch64/Makefile.softmmu-target |   4 +-
+ tests/tcg/aarch64/Makefile.target         |  18 +-
+ tests/tcg/aarch64/fcvt.ref                | 604 +++++++++++-----------
+ tests/tcg/arm/Makefile.softmmu-target     |   4 +-
+ tests/tcg/arm/Makefile.target             |  12 +-
+ tests/tcg/arm/fcvt.ref                    | 604 +++++++++++-----------
+ 13 files changed, 653 insertions(+), 640 deletions(-)
+
+-- 
+2.34.1
+
 
