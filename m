@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C688091D2E9
-	for <lists+qemu-devel@lfdr.de>; Sun, 30 Jun 2024 18:57:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4789591D2D9
+	for <lists+qemu-devel@lfdr.de>; Sun, 30 Jun 2024 18:54:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sNxoO-0005iM-VZ; Sun, 30 Jun 2024 12:54:01 -0400
+	id 1sNxoN-0005hU-UO; Sun, 30 Jun 2024 12:54:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sNxoI-0005g2-Uo; Sun, 30 Jun 2024 12:53:54 -0400
+ id 1sNxoK-0005gU-1S; Sun, 30 Jun 2024 12:53:56 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sNxoH-0005Jx-8H; Sun, 30 Jun 2024 12:53:54 -0400
+ id 1sNxoI-0005K9-A7; Sun, 30 Jun 2024 12:53:55 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id B5B4675765;
+ by isrv.corpit.ru (Postfix) with ESMTP id C3AB675766;
  Sun, 30 Jun 2024 19:53:20 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 8A7F2FAD62;
+ by tsrv.corpit.ru (Postfix) with SMTP id 98C68FAD63;
  Sun, 30 Jun 2024 19:53:27 +0300 (MSK)
-Received: (nullmailer pid 38224 invoked by uid 1000);
+Received: (nullmailer pid 38227 invoked by uid 1000);
  Sun, 30 Jun 2024 16:53:27 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: "Dr. David Alan Gilbert" <dave@treblig.org>, qemu-trivial@nongnu.org,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 08/16] hw/arm/bcm2836: Remove unusued struct 'BCM283XClass'
-Date: Sun, 30 Jun 2024 19:53:18 +0300
-Message-Id: <20240630165327.38153-9-mjt@tls.msk.ru>
+Subject: [PULL 09/16] net/can: Remove unused struct 'CanBusState'
+Date: Sun, 30 Jun 2024 19:53:19 +0300
+Message-Id: <20240630165327.38153-10-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240630165327.38153-1-mjt@tls.msk.ru>
 References: <20240630165327.38153-1-mjt@tls.msk.ru>
@@ -61,41 +61,34 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: "Dr. David Alan Gilbert" <dave@treblig.org>
 
-This struct has been unused since
-Commit f932093ae165 ("hw/arm/bcm2836: Split out common part of BCM283X
-classes")
+As far as I can tell this struct has never been used in this
+file (it is used in can_core.c).
 
 Signed-off-by: Dr. David Alan Gilbert <dave@treblig.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- hw/arm/bcm2836.c | 12 ------------
- 1 file changed, 12 deletions(-)
+ net/can/can_host.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
-diff --git a/hw/arm/bcm2836.c b/hw/arm/bcm2836.c
-index db191661f2..40a379bc36 100644
---- a/hw/arm/bcm2836.c
-+++ b/hw/arm/bcm2836.c
-@@ -18,18 +18,6 @@
- #include "target/arm/cpu-qom.h"
- #include "target/arm/gtimer.h"
+diff --git a/net/can/can_host.c b/net/can/can_host.c
+index a3c84028c6..b2fe553f91 100644
+--- a/net/can/can_host.c
++++ b/net/can/can_host.c
+@@ -34,12 +34,6 @@
+ #include "net/can_emu.h"
+ #include "net/can_host.h"
  
--struct BCM283XClass {
--    /*< private >*/
--    DeviceClass parent_class;
--    /*< public >*/
--    const char *name;
--    const char *cpu_type;
--    unsigned core_count;
--    hwaddr peri_base; /* Peripheral base address seen by the CPU */
--    hwaddr ctrl_base; /* Interrupt controller and mailboxes etc. */
--    int clusterid;
+-struct CanBusState {
+-    Object object;
+-
+-    QTAILQ_HEAD(, CanBusClientState) clients;
 -};
 -
- static Property bcm2836_enabled_cores_property =
-     DEFINE_PROP_UINT32("enabled-cpus", BCM283XBaseState, enabled_cpus, 0);
- 
+ static void can_host_disconnect(CanHostState *ch)
+ {
+     CanHostClass *chc = CAN_HOST_GET_CLASS(ch);
 -- 
 2.39.2
 
