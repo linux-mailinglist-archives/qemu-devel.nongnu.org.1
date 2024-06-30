@@ -2,41 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9ADE691D2DB
-	for <lists+qemu-devel@lfdr.de>; Sun, 30 Jun 2024 18:54:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A70591D2E0
+	for <lists+qemu-devel@lfdr.de>; Sun, 30 Jun 2024 18:56:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sNxoq-00068m-5M; Sun, 30 Jun 2024 12:54:28 -0400
+	id 1sNxpD-00076a-1K; Sun, 30 Jun 2024 12:54:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sNxom-0005xk-U0; Sun, 30 Jun 2024 12:54:24 -0400
+ id 1sNxpA-0006zq-LL; Sun, 30 Jun 2024 12:54:48 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sNxol-0005Q3-Bc; Sun, 30 Jun 2024 12:54:24 -0400
+ id 1sNxp9-0005Qd-2y; Sun, 30 Jun 2024 12:54:48 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 2112C7576C;
+ by isrv.corpit.ru (Postfix) with ESMTP id 2E5DC7576D;
  Sun, 30 Jun 2024 19:53:21 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id EA56EFAD69;
- Sun, 30 Jun 2024 19:53:27 +0300 (MSK)
-Received: (nullmailer pid 38246 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id 0361BFAD6A;
+ Sun, 30 Jun 2024 19:53:28 +0300 (MSK)
+Received: (nullmailer pid 38249 invoked by uid 1000);
  Sun, 30 Jun 2024 16:53:27 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
  qemu-trivial@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 15/16] vl.c: select_machine(): add selected machine type to
- error message
-Date: Sun, 30 Jun 2024 19:53:25 +0300
-Message-Id: <20240630165327.38153-16-mjt@tls.msk.ru>
+Subject: [PULL 16/16] hw/core/loader: gunzip(): fix memory leak on error path
+Date: Sun, 30 Jun 2024 19:53:26 +0300
+Message-Id: <20240630165327.38153-17-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240630165327.38153-1-mjt@tls.msk.ru>
 References: <20240630165327.38153-1-mjt@tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -62,27 +60,28 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 
+We should call inflateEnd() like on success path to cleanup state in s
+variable.
+
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- system/vl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/core/loader.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/system/vl.c b/system/vl.c
-index 92fc29c193..bdd2f6ecf6 100644
---- a/system/vl.c
-+++ b/system/vl.c
-@@ -1674,7 +1674,7 @@ static MachineClass *select_machine(QDict *qdict, Error **errp)
-         machine_class = find_machine(machine_type, machines);
-         qdict_del(qdict, "type");
-         if (!machine_class) {
--            error_setg(errp, "unsupported machine type");
-+            error_setg(errp, "unsupported machine type: \"%s\"", optarg);
-         }
-     } else {
-         machine_class = find_default_machine(machines);
+diff --git a/hw/core/loader.c b/hw/core/loader.c
+index 2f8105d7de..a3bea1e718 100644
+--- a/hw/core/loader.c
++++ b/hw/core/loader.c
+@@ -610,6 +610,7 @@ ssize_t gunzip(void *dst, size_t dstlen, uint8_t *src, size_t srclen)
+     r = inflate(&s, Z_FINISH);
+     if (r != Z_OK && r != Z_STREAM_END) {
+         printf ("Error: inflate() returned %d\n", r);
++        inflateEnd(&s);
+         return -1;
+     }
+     dstbytes = s.next_out - (unsigned char *) dst;
 -- 
 2.39.2
 
