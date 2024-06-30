@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA5C891D352
-	for <lists+qemu-devel@lfdr.de>; Sun, 30 Jun 2024 21:04:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BC4291D347
+	for <lists+qemu-devel@lfdr.de>; Sun, 30 Jun 2024 21:02:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sNznP-0004pv-77; Sun, 30 Jun 2024 15:01:07 -0400
+	id 1sNznP-0004rF-Sx; Sun, 30 Jun 2024 15:01:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sNznL-0004nC-AO
- for qemu-devel@nongnu.org; Sun, 30 Jun 2024 15:01:04 -0400
-Received: from mail-oo1-xc36.google.com ([2607:f8b0:4864:20::c36])
+ id 1sNznN-0004p2-1c
+ for qemu-devel@nongnu.org; Sun, 30 Jun 2024 15:01:05 -0400
+Received: from mail-pj1-x1032.google.com ([2607:f8b0:4864:20::1032])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sNznG-0007VE-48
- for qemu-devel@nongnu.org; Sun, 30 Jun 2024 15:01:02 -0400
-Received: by mail-oo1-xc36.google.com with SMTP id
- 006d021491bc7-5c229aa4d35so1457027eaf.3
- for <qemu-devel@nongnu.org>; Sun, 30 Jun 2024 12:00:57 -0700 (PDT)
+ id 1sNznH-0007Vl-NQ
+ for qemu-devel@nongnu.org; Sun, 30 Jun 2024 15:01:04 -0400
+Received: by mail-pj1-x1032.google.com with SMTP id
+ 98e67ed59e1d1-2c8e7553c9eso1643671a91.3
+ for <qemu-devel@nongnu.org>; Sun, 30 Jun 2024 12:00:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1719774057; x=1720378857; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=KbhfrqUnaAYuOyL/QoAAk+86rkpOm/3bNkjsHwjy29Q=;
- b=N2aqNkmQlgiZ2qYpzl9M8X7fllq1Ux1k6kzEMXr5oLKUT/WNn8GYRkXhVK/lsVWygJ
- EP3oxcv4FqMPQ+VOLC85u0IoQVRh+WsWu0To2VR2soj/RETwRIXSEz5C0qvSoa8SLuw8
- EOSMuBOYHM0cvWB+ohGS8OW92b1rI9DCipcmmtEfVnGTDhlGaoHG1xJTrqasShLOuXpx
- QyxObHz5yUzUeoZNOXr1/Oy+1idc7ZF8w3yLUVTbqmO6NFOUwN1jaYQiJ1g9jPJivBFd
- P9y+ZXyIe+JRvEHSHLRw1IG+H5elEENA6GOloymCTQzpKNaE2u9AbCCZ6F4lJVqfIQl6
- 370Q==
+ bh=jSW9RBr/uXKbMiOwje1wrfrlZqFBsh4is9koj+Xbztg=;
+ b=UXc3lXx/xJZ4WpRiG/t5jCqOdGUi34tIv5ckRuPkYlU+AKBsDs+J6CQgC4tRg/FU1R
+ x1isBNABigmptVC+OO4MTLihHckIPlTPsY/0cNvPFPhEf6kY0g42Vhl2M0C2QAb2UJsH
+ BaQSNLLOoRczP9OmHWms15N8Qq4i1l3Qk+ChnvYX1XTHBrBXZrdGFfw6LfWKkfBPYDi5
+ SJcIz9mZzJzKuLReWoXTHx/NO/gVXF+0pQjV1I/E5ZkIABLCua9ocuVVoY7B5tIghX8p
+ M55c10TFoknYYVUd+tivtfMnoKPHIOWNnEtdUIBfR6uy3lXxO+3pePaYT7Qje2ct7T7z
+ nENA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1719774057; x=1720378857;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=KbhfrqUnaAYuOyL/QoAAk+86rkpOm/3bNkjsHwjy29Q=;
- b=rGr1DX70YAr15vqVKLMV0+OjZgYStR/1f7dqzP7WIKrGw3kpaFzScMzv8tSytcIYQf
- prc4MfGDcimNQlrVVLGh6urwsdkremrEpLr8HBdQcPd4LDUkghBHxgmA4POutTT7eaYt
- RsbrXizccE3D38zeSWSlzbjtxAv/l32+nWuTLJ6auSE/KgSgrNetPrHnRW2TuwUVzU5V
- vtYUiCfp8i0w0lnpNBMNyQtbQOiMH2zUUHt3N7UF/ewWEQsX6BM3YrxLRfeANnsSovBH
- XtRwz3TD/UR6wVr3jZP5lbQwsMu6oS7nx5TJro6ZokOJO+F7d77QB4cDPmDwUA+6BQMH
- KRPA==
-X-Gm-Message-State: AOJu0YxMQ9rswpCfEdh9G1PKouan5sxkKTY4MlgFSusVH0TBn/VV5i9U
- OS9P1DnXrTZfsTGBE/UvYMGu63rp4gmn5a26/I7N0qyReT82bya8JCYC+oL5vvVrsIKlO2+kXnT
- G
-X-Google-Smtp-Source: AGHT+IF/KfTch98iHq3m2GtDdHSQ7Z8qhj99T8tk/rTUl+c6WObdSSkfmSky4F7iKU+hB/2F1lDgGQ==
-X-Received: by 2002:a05:6358:249b:b0:1a5:4b74:2214 with SMTP id
- e5c5f4694b2df-1a6acc6e5e7mr403361255d.3.1719774056399; 
- Sun, 30 Jun 2024 12:00:56 -0700 (PDT)
+ bh=jSW9RBr/uXKbMiOwje1wrfrlZqFBsh4is9koj+Xbztg=;
+ b=hNBPFugeinsSVD0UrYphJ0K/XMvEM/NHDRM1JsdL52ZsIM+VUwTch/SsGywHqcfAx5
+ OeyCE+ThPtpa8NlGJn4TK3MmvSs8EuughzmwKNZu0REXxfFofCzsB+3klJZucGD5cT5p
+ SNXARw/kAlrgmsZF5IYXMLiSX4MpjtC32U9/K2XAcZwtEC65vabcggDnaEdEYeJIXQJK
+ AWDPcXlX38ScBsJmPds/4nqR77joC9BVHpyupH8pog3SUXEb7TjZPyFjmJfHYNe6JXW9
+ oHLqa0P75jAdLOcXa8dcs0bgpAnOc+0F7sh36bevxN747HjwyR48Ad06pxhzd2KiPqMw
+ zDVw==
+X-Gm-Message-State: AOJu0YyPvQ0D5KEt9fhAMrxOp7l6jyY2te6uErI3EZ7Nuxuhm1OBWvV0
+ VyH34DmIoBKyNKcOUc14cQEWPs+da9pgB/ooD9P7ezAGB3B7p1PSnWFtl5Czyp8wKvop4k16ls0
+ u
+X-Google-Smtp-Source: AGHT+IGa3x/hA6JujaBuuvCzR3T8ldB2DGnYskd7N90qqB8m+DEmuxHJHxVf5u7cDTvBeIUAQ4OleQ==
+X-Received: by 2002:a17:90a:e286:b0:2c7:c914:69 with SMTP id
+ 98e67ed59e1d1-2c93d78e298mr3261403a91.43.1719774057367; 
+ Sun, 30 Jun 2024 12:00:57 -0700 (PDT)
 Received: from stoup.. (174-21-76-141.tukw.qwest.net. [174.21.76.141])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2c91d3e7e4bsm5115641a91.52.2024.06.30.12.00.55
+ 98e67ed59e1d1-2c91d3e7e4bsm5115641a91.52.2024.06.30.12.00.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 30 Jun 2024 12:00:56 -0700 (PDT)
+ Sun, 30 Jun 2024 12:00:57 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: akihiko.odaki@daynix.com, alex.bennee@linaro.org, qemu-arm@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v4 04/14] tests/tcg/aarch64: Explicitly specify register width
-Date: Sun, 30 Jun 2024 12:00:40 -0700
-Message-Id: <20240630190050.160642-5-richard.henderson@linaro.org>
+Cc: akihiko.odaki@daynix.com,
+	alex.bennee@linaro.org,
+	qemu-arm@nongnu.org
+Subject: [PATCH v4 05/14] tests/tcg/aarch64: Fix irg operand type
+Date: Sun, 30 Jun 2024 12:00:41 -0700
+Message-Id: <20240630190050.160642-6-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240630190050.160642-1-richard.henderson@linaro.org>
 References: <20240630190050.160642-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c36;
- envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc36.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1032;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1032.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,64 +96,28 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-clang version 18.1.6 assumes a register is 64-bit by default and
-complains if a 32-bit value is given. Explicitly specify register width
-when passing a 32-bit value.
+irg expects 64-bit integers. Passing a 32-bit integer results in
+compilation failure with clang version 18.1.6.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20240627-tcg-v2-3-1690a813348e@daynix.com>
+Message-Id: <20240627-tcg-v2-4-1690a813348e@daynix.com>
 ---
- tests/tcg/aarch64/bti-1.c | 6 +++---
- tests/tcg/aarch64/bti-3.c | 6 +++---
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ tests/tcg/aarch64/mte-1.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/tcg/aarch64/bti-1.c b/tests/tcg/aarch64/bti-1.c
-index 99a879af23..1fada8108d 100644
---- a/tests/tcg/aarch64/bti-1.c
-+++ b/tests/tcg/aarch64/bti-1.c
-@@ -17,15 +17,15 @@ static void skip2_sigill(int sig, siginfo_t *info, ucontext_t *uc)
- #define BTI_JC    "hint #38"
+diff --git a/tests/tcg/aarch64/mte-1.c b/tests/tcg/aarch64/mte-1.c
+index 88dcd617ad..146cad4a04 100644
+--- a/tests/tcg/aarch64/mte-1.c
++++ b/tests/tcg/aarch64/mte-1.c
+@@ -15,7 +15,7 @@ int main(int ac, char **av)
+     enable_mte(PR_MTE_TCF_NONE);
+     p0 = alloc_mte_mem(sizeof(*p0));
  
- #define BTYPE_1(DEST) \
--    asm("mov %0,#1; adr x16, 1f; br x16; 1: " DEST "; mov %0,#0" \
-+    asm("mov %w0,#1; adr x16, 1f; br x16; 1: " DEST "; mov %w0,#0" \
-         : "=r"(skipped) : : "x16")
- 
- #define BTYPE_2(DEST) \
--    asm("mov %0,#1; adr x16, 1f; blr x16; 1: " DEST "; mov %0,#0" \
-+    asm("mov %w0,#1; adr x16, 1f; blr x16; 1: " DEST "; mov %w0,#0" \
-         : "=r"(skipped) : : "x16", "x30")
- 
- #define BTYPE_3(DEST) \
--    asm("mov %0,#1; adr x15, 1f; br x15; 1: " DEST "; mov %0,#0" \
-+    asm("mov %w0,#1; adr x15, 1f; br x15; 1: " DEST "; mov %w0,#0" \
-         : "=r"(skipped) : : "x15")
- 
- #define TEST(WHICH, DEST, EXPECT) \
-diff --git a/tests/tcg/aarch64/bti-3.c b/tests/tcg/aarch64/bti-3.c
-index 8c534c09d7..6a3bd037bc 100644
---- a/tests/tcg/aarch64/bti-3.c
-+++ b/tests/tcg/aarch64/bti-3.c
-@@ -11,15 +11,15 @@ static void skip2_sigill(int sig, siginfo_t *info, ucontext_t *uc)
- }
- 
- #define BTYPE_1() \
--    asm("mov %0,#1; adr x16, 1f; br x16; 1: hint #25; mov %0,#0" \
-+    asm("mov %w0,#1; adr x16, 1f; br x16; 1: hint #25; mov %w0,#0" \
-         : "=r"(skipped) : : "x16", "x30")
- 
- #define BTYPE_2() \
--    asm("mov %0,#1; adr x16, 1f; blr x16; 1: hint #25; mov %0,#0" \
-+    asm("mov %w0,#1; adr x16, 1f; blr x16; 1: hint #25; mov %w0,#0" \
-         : "=r"(skipped) : : "x16", "x30")
- 
- #define BTYPE_3() \
--    asm("mov %0,#1; adr x15, 1f; br x15; 1: hint #25; mov %0,#0" \
-+    asm("mov %w0,#1; adr x15, 1f; br x15; 1: hint #25; mov %w0,#0" \
-         : "=r"(skipped) : : "x15", "x30")
- 
- #define TEST(WHICH, EXPECT) \
+-    asm("irg %0,%1,%2" : "=r"(p1) : "r"(p0), "r"(1));
++    asm("irg %0,%1,%2" : "=r"(p1) : "r"(p0), "r"(1l));
+     assert(p1 != p0);
+     asm("subp %0,%1,%2" : "=r"(c) : "r"(p0), "r"(p1));
+     assert(c == 0);
 -- 
 2.34.1
 
