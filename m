@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4789591D2D9
-	for <lists+qemu-devel@lfdr.de>; Sun, 30 Jun 2024 18:54:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9688C91D2DE
+	for <lists+qemu-devel@lfdr.de>; Sun, 30 Jun 2024 18:55:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sNxoN-0005hU-UO; Sun, 30 Jun 2024 12:54:00 -0400
+	id 1sNxoP-0005ih-Ue; Sun, 30 Jun 2024 12:54:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sNxoK-0005gU-1S; Sun, 30 Jun 2024 12:53:56 -0400
+ id 1sNxoM-0005i2-RV; Sun, 30 Jun 2024 12:53:58 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sNxoI-0005K9-A7; Sun, 30 Jun 2024 12:53:55 -0400
+ id 1sNxoK-0005L8-9u; Sun, 30 Jun 2024 12:53:58 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id C3AB675766;
+ by isrv.corpit.ru (Postfix) with ESMTP id D10D275767;
  Sun, 30 Jun 2024 19:53:20 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 98C68FAD63;
+ by tsrv.corpit.ru (Postfix) with SMTP id A604EFAD64;
  Sun, 30 Jun 2024 19:53:27 +0300 (MSK)
-Received: (nullmailer pid 38227 invoked by uid 1000);
+Received: (nullmailer pid 38231 invoked by uid 1000);
  Sun, 30 Jun 2024 16:53:27 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: "Dr. David Alan Gilbert" <dave@treblig.org>, qemu-trivial@nongnu.org,
+Cc: Trent Huber <trentmhuber@gmail.com>, qemu-trivial@nongnu.org,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 09/16] net/can: Remove unused struct 'CanBusState'
-Date: Sun, 30 Jun 2024 19:53:19 +0300
-Message-Id: <20240630165327.38153-10-mjt@tls.msk.ru>
+Subject: [PULL 10/16] os-posix: Expand setrlimit() syscall compatibility
+Date: Sun, 30 Jun 2024 19:53:20 +0300
+Message-Id: <20240630165327.38153-11-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240630165327.38153-1-mjt@tls.msk.ru>
 References: <20240630165327.38153-1-mjt@tls.msk.ru>
@@ -59,36 +59,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: "Dr. David Alan Gilbert" <dave@treblig.org>
+From: Trent Huber <trentmhuber@gmail.com>
 
-As far as I can tell this struct has never been used in this
-file (it is used in can_core.c).
+Darwin uses a subtly different version of the setrlimit() syscall as
+described in the COMPATIBILITY section of the macOS man page. The value
+of the rlim_cur member has been adjusted accordingly for Darwin-based
+systems.
 
-Signed-off-by: Dr. David Alan Gilbert <dave@treblig.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Trent Huber <trentmhuber@gmail.com>
+Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- net/can/can_host.c | 6 ------
- 1 file changed, 6 deletions(-)
+ os-posix.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/can/can_host.c b/net/can/can_host.c
-index a3c84028c6..b2fe553f91 100644
---- a/net/can/can_host.c
-+++ b/net/can/can_host.c
-@@ -34,12 +34,6 @@
- #include "net/can_emu.h"
- #include "net/can_host.h"
+diff --git a/os-posix.c b/os-posix.c
+index a4284e2c07..43f9a43f3f 100644
+--- a/os-posix.c
++++ b/os-posix.c
+@@ -270,7 +270,11 @@ void os_setup_limits(void)
+         return;
+     }
  
--struct CanBusState {
--    Object object;
--
--    QTAILQ_HEAD(, CanBusClientState) clients;
--};
--
- static void can_host_disconnect(CanHostState *ch)
- {
-     CanHostClass *chc = CAN_HOST_GET_CLASS(ch);
++#ifdef CONFIG_DARWIN
++    nofile.rlim_cur = OPEN_MAX < nofile.rlim_max ? OPEN_MAX : nofile.rlim_max;
++#else
+     nofile.rlim_cur = nofile.rlim_max;
++#endif
+ 
+     if (setrlimit(RLIMIT_NOFILE, &nofile) < 0) {
+         warn_report("unable to set NOFILE limit: %s", strerror(errno));
 -- 
 2.39.2
 
