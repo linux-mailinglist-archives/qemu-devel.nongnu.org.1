@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3189791D375
+	by mail.lfdr.de (Postfix) with ESMTPS id 2444491D374
 	for <lists+qemu-devel@lfdr.de>; Sun, 30 Jun 2024 21:42:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sO0QB-00008R-7f; Sun, 30 Jun 2024 15:41:11 -0400
+	id 1sO0QI-0000Er-UV; Sun, 30 Jun 2024 15:41:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1sO0Pw-0008UA-Fa
+ id 1sO0Pw-0008UF-Fy
  for qemu-devel@nongnu.org; Sun, 30 Jun 2024 15:40:56 -0400
 Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1sO0Pu-0004Oq-5L
+ id 1sO0Pu-0004PE-5I
  for qemu-devel@nongnu.org; Sun, 30 Jun 2024 15:40:56 -0400
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45UIwcCx022697;
- Sun, 30 Jun 2024 19:40:48 GMT
+Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45UJOOO6012862;
+ Sun, 30 Jun 2024 19:40:49 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
  from:to:cc:subject:date:message-id:in-reply-to:references; s=
- corp-2023-11-20; bh=4uKXgAn4d6hJh3JzwucC45gtPiookX4h8suJNmSSDmA=; b=
- AwV3ZTBLF7NOyDdrwxzRUONH+cwp7tO2g/DpZV1KW686YsfmGsHfFHfGmFzOEjSU
- aQJE2tmp6/ZqLJ7T9TKbBwlTQb8XGxKPpykWueZ1OuSJqAGAtDXjQwAUHgw8KVqM
- rJciOGYJyUOEFSeTo86EEy6vat0k0aymvwOxXAS90GQNgAnCcgm9S0S6BYd6vDd0
- GlLBNlko90mGWppRpmhv5Ofb1cUgIHzLTOiquHD37Je//66N1PeLw4PfqCyyx7Sr
- Y1lCh/v0+tsxv4OtwsVxZMwvF7blNwpwVeKwABns3imTm1BWELQc1O1X+BhAa9DI
- 4GkOcSDOGOapIoTCye3PNw==
+ corp-2023-11-20; bh=0niKNmTF4WrGuB6zYfEq+bYLo3vZ/K4GncHP23R0cUo=; b=
+ TnkizE5xSCefKzkKTzjUW540sd9EViOrK3E6ZWCBEz1O2k6/hTxRzgjTJCxPLJCk
+ et1z6/HgtLx/HGMo4pg2Gc8WfHEEPUFPybdQqbQEGjw33SNAouDoBkBpfA7FJUp/
+ 43ROB9trnt7cjN1PGj6n++uRfIwBCyIJkxP4NdmVwmXbVT5989oISjRU+Ul0rv8h
+ h29X3epDhvtfYO9fBB4kV5u+nhxKSA9u9qHMNzgmIPf2i0KIIcjcS7F5uX67B/Gs
+ EOvL3NqYzP5f+l3Ak7PV2gsbT+JFU6bBbiFC+3a6rHke6mmjKPp44okq6DGf8gZg
+ iQ/y599jwkFNC575OUgprQ==
 Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4028v0hgjw-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 402a591erf-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sun, 30 Jun 2024 19:40:48 +0000 (GMT)
+ Sun, 30 Jun 2024 19:40:49 +0000 (GMT)
 Received: from pps.filterd
  (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 45UEQnGX018357; Sun, 30 Jun 2024 19:40:47 GMT
+ with ESMTP id 45UG0nJ0019121; Sun, 30 Jun 2024 19:40:48 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 4028qc16e6-1
+ 4028qc16ee-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sun, 30 Jun 2024 19:40:46 +0000
+ Sun, 30 Jun 2024 19:40:48 +0000
 Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 45UJeaSe014044;
- Sun, 30 Jun 2024 19:40:46 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 45UJeaSg014044;
+ Sun, 30 Jun 2024 19:40:47 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
- ESMTP id 4028qc16cc-9; Sun, 30 Jun 2024 19:40:46 +0000
+ ESMTP id 4028qc16cc-10; Sun, 30 Jun 2024 19:40:47 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
@@ -62,9 +62,9 @@ Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  "Daniel P. Berrange" <berrange@redhat.com>,
  Markus Armbruster <armbru@redhat.com>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V2 08/11] vl: helper to request exec
-Date: Sun, 30 Jun 2024 12:40:31 -0700
-Message-Id: <1719776434-435013-9-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V2 09/11] migration: cpr-exec-command parameter
+Date: Sun, 30 Jun 2024 12:40:32 -0700
+Message-Id: <1719776434-435013-10-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1719776434-435013-1-git-send-email-steven.sistare@oracle.com>
 References: <1719776434-435013-1-git-send-email-steven.sistare@oracle.com>
@@ -76,8 +76,8 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
  adultscore=0 bulkscore=0 mlxlogscore=999 phishscore=0 spamscore=0
  mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2406180000 definitions=main-2406300157
-X-Proofpoint-ORIG-GUID: JLC7LN32UQinUQ8IaB4vS5uDV9YeJhZc
-X-Proofpoint-GUID: JLC7LN32UQinUQ8IaB4vS5uDV9YeJhZc
+X-Proofpoint-GUID: gnP3ihmOBfFg8Rd5CkNMWkvpBjVzPV0P
+X-Proofpoint-ORIG-GUID: gnP3ihmOBfFg8Rd5CkNMWkvpBjVzPV0P
 Received-SPF: pass client-ip=205.220.165.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -20
@@ -102,105 +102,198 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a qemu_system_exec_request() hook that causes the main loop to exit and
-exec a command using the specified arguments.  This will be used during CPR
-to exec a new version of QEMU.
+Create the cpr-exec-command migration parameter, defined as a list of
+strings.  It will be used for cpr-exec migration mode in a subsequent
+patch, and contains forward references to cpr-exec mode in the qapi
+doc.
+
+No functional change, except that cpr-exec-command is shown by the
+'info migrate' command.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 ---
- include/sysemu/runstate.h |  3 +++
- system/runstate.c         | 29 +++++++++++++++++++++++++++++
- 2 files changed, 32 insertions(+)
+ hmp-commands.hx                |  2 +-
+ migration/migration-hmp-cmds.c | 25 +++++++++++++++++++++++++
+ migration/options.c            | 14 ++++++++++++++
+ qapi/migration.json            | 21 ++++++++++++++++++---
+ 4 files changed, 58 insertions(+), 4 deletions(-)
 
-diff --git a/include/sysemu/runstate.h b/include/sysemu/runstate.h
-index 0117d24..cb669cf 100644
---- a/include/sysemu/runstate.h
-+++ b/include/sysemu/runstate.h
-@@ -80,6 +80,8 @@ typedef enum WakeupReason {
-     QEMU_WAKEUP_REASON_OTHER,
- } WakeupReason;
+diff --git a/hmp-commands.hx b/hmp-commands.hx
+index 06746f0..0e04eac 100644
+--- a/hmp-commands.hx
++++ b/hmp-commands.hx
+@@ -1009,7 +1009,7 @@ ERST
  
-+typedef void (*qemu_exec_func)(char **exec_argv);
-+
- void qemu_system_reset_request(ShutdownCause reason);
- void qemu_system_suspend_request(void);
- void qemu_register_suspend_notifier(Notifier *notifier);
-@@ -91,6 +93,7 @@ void qemu_register_wakeup_support(void);
- void qemu_system_shutdown_request_with_code(ShutdownCause reason,
-                                             int exit_code);
- void qemu_system_shutdown_request(ShutdownCause reason);
-+void qemu_system_exec_request(qemu_exec_func func, const strList *args);
- void qemu_system_powerdown_request(void);
- void qemu_register_powerdown_notifier(Notifier *notifier);
- void qemu_register_shutdown_notifier(Notifier *notifier);
-diff --git a/system/runstate.c b/system/runstate.c
-index ec32e27..afc56e4 100644
---- a/system/runstate.c
-+++ b/system/runstate.c
-@@ -40,6 +40,7 @@
- #include "qapi/error.h"
- #include "qapi/qapi-commands-run-state.h"
- #include "qapi/qapi-events-run-state.h"
-+#include "qapi/type-helpers.h"
- #include "qemu/accel.h"
- #include "qemu/error-report.h"
- #include "qemu/job.h"
-@@ -400,6 +401,8 @@ static NotifierList wakeup_notifiers =
- static NotifierList shutdown_notifiers =
-     NOTIFIER_LIST_INITIALIZER(shutdown_notifiers);
- static uint32_t wakeup_reason_mask = ~(1 << QEMU_WAKEUP_REASON_NONE);
-+qemu_exec_func exec_func;
-+static char **exec_argv;
- 
- ShutdownCause qemu_shutdown_requested_get(void)
- {
-@@ -416,6 +419,11 @@ static int qemu_shutdown_requested(void)
-     return qatomic_xchg(&shutdown_requested, SHUTDOWN_CAUSE_NONE);
+     {
+         .name       = "migrate_set_parameter",
+-        .args_type  = "parameter:s,value:s",
++        .args_type  = "parameter:s,value:S",
+         .params     = "parameter value",
+         .help       = "Set the parameter for migration",
+         .cmd        = hmp_migrate_set_parameter,
+diff --git a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
+index 7d608d2..16a4b00 100644
+--- a/migration/migration-hmp-cmds.c
++++ b/migration/migration-hmp-cmds.c
+@@ -229,6 +229,18 @@ void hmp_info_migrate_capabilities(Monitor *mon, const QDict *qdict)
+     qapi_free_MigrationCapabilityStatusList(caps);
  }
  
-+static int qemu_exec_requested(void)
++static void monitor_print_cpr_exec_command(Monitor *mon, strList *args)
 +{
-+    return exec_argv != NULL;
-+}
++    monitor_printf(mon, "%s:",
++        MigrationParameter_str(MIGRATION_PARAMETER_CPR_EXEC_COMMAND));
 +
- static void qemu_kill_report(void)
- {
-     if (!qtest_driver() && shutdown_signal) {
-@@ -693,6 +701,23 @@ void qemu_system_shutdown_request(ShutdownCause reason)
-     qemu_notify_event();
- }
- 
-+static void qemu_system_exec(void)
-+{
-+    exec_func(exec_argv);
-+
-+    /* exec failed */
-+    g_strfreev(exec_argv);
-+    exec_argv = NULL;
-+    exec_func = NULL;
-+}
-+
-+void qemu_system_exec_request(qemu_exec_func func, const strList *args)
-+{
-+    exec_func = func;
-+    exec_argv = strv_from_str_list(args);
-+    qemu_notify_event();
-+}
-+
- static void qemu_system_powerdown(void)
- {
-     qapi_event_send_powerdown();
-@@ -739,6 +764,10 @@ static bool main_loop_should_exit(int *status)
-     if (qemu_suspend_requested()) {
-         qemu_system_suspend();
-     }
-+    if (qemu_exec_requested()) {
-+        qemu_system_exec();
-+        return false;
++    while (args) {
++        monitor_printf(mon, " %s", args->value);
++        args = args->next;
 +    }
-     request = qemu_shutdown_requested();
-     if (request) {
-         qemu_kill_report();
++    monitor_printf(mon, "\n");
++}
++
+ void hmp_info_migrate_parameters(Monitor *mon, const QDict *qdict)
+ {
+     MigrationParameters *params;
+@@ -358,6 +370,9 @@ void hmp_info_migrate_parameters(Monitor *mon, const QDict *qdict)
+                                MIGRATION_PARAMETER_DIRECT_IO),
+                            params->direct_io ? "on" : "off");
+         }
++
++        assert(params->has_cpr_exec_command);
++        monitor_print_cpr_exec_command(mon, params->cpr_exec_command);
+     }
+ 
+     qapi_free_MigrationParameters(params);
+@@ -635,6 +650,16 @@ void hmp_migrate_set_parameter(Monitor *mon, const QDict *qdict)
+         p->has_direct_io = true;
+         visit_type_bool(v, param, &p->direct_io, &err);
+         break;
++    case MIGRATION_PARAMETER_CPR_EXEC_COMMAND: {
++        g_autofree char **strv = g_strsplit(valuestr ?: "", " ", -1);
++        strList **tail = &p->cpr_exec_command;
++
++        for (int i = 0; strv[i]; i++) {
++            QAPI_LIST_APPEND(tail, strv[i]);
++        }
++        p->has_cpr_exec_command = true;
++        break;
++    }
+     default:
+         assert(0);
+     }
+diff --git a/migration/options.c b/migration/options.c
+index 305397a..b8d5f72 100644
+--- a/migration/options.c
++++ b/migration/options.c
+@@ -931,6 +931,9 @@ MigrationParameters *qmp_query_migrate_parameters(Error **errp)
+     params->zero_page_detection = s->parameters.zero_page_detection;
+     params->has_direct_io = true;
+     params->direct_io = s->parameters.direct_io;
++    params->has_cpr_exec_command = true;
++    params->cpr_exec_command = QAPI_CLONE(strList,
++                                          s->parameters.cpr_exec_command);
+ 
+     return params;
+ }
+@@ -964,6 +967,7 @@ void migrate_params_init(MigrationParameters *params)
+     params->has_mode = true;
+     params->has_zero_page_detection = true;
+     params->has_direct_io = true;
++    params->has_cpr_exec_command = true;
+ }
+ 
+ /*
+@@ -1252,6 +1256,10 @@ static void migrate_params_test_apply(MigrateSetParameters *params,
+     if (params->has_direct_io) {
+         dest->direct_io = params->direct_io;
+     }
++
++    if (params->has_cpr_exec_command) {
++        dest->cpr_exec_command = params->cpr_exec_command;
++    }
+ }
+ 
+ static void migrate_params_apply(MigrateSetParameters *params, Error **errp)
+@@ -1381,6 +1389,12 @@ static void migrate_params_apply(MigrateSetParameters *params, Error **errp)
+     if (params->has_direct_io) {
+         s->parameters.direct_io = params->direct_io;
+     }
++
++    if (params->has_cpr_exec_command) {
++        qapi_free_strList(s->parameters.cpr_exec_command);
++        s->parameters.cpr_exec_command =
++            QAPI_CLONE(strList, params->cpr_exec_command);
++    }
+ }
+ 
+ void qmp_migrate_set_parameters(MigrateSetParameters *params, Error **errp)
+diff --git a/qapi/migration.json b/qapi/migration.json
+index 0f24206..20092d2 100644
+--- a/qapi/migration.json
++++ b/qapi/migration.json
+@@ -829,6 +829,10 @@
+ #     only has effect if the @mapped-ram capability is enabled.
+ #     (Since 9.1)
+ #
++# @cpr-exec-command: Command to start the new QEMU process when @mode
++#     is @cpr-exec.  The first list element is the program's filename,
++#     the remainder its arguments. (Since 9.1)
++#
+ # Features:
+ #
+ # @unstable: Members @x-checkpoint-delay and
+@@ -854,7 +858,8 @@
+            'vcpu-dirty-limit',
+            'mode',
+            'zero-page-detection',
+-           'direct-io'] }
++           'direct-io',
++           'cpr-exec-command'] }
+ 
+ ##
+ # @MigrateSetParameters:
+@@ -1004,6 +1009,10 @@
+ #     only has effect if the @mapped-ram capability is enabled.
+ #     (Since 9.1)
+ #
++# @cpr-exec-command: Command to start the new QEMU process when @mode
++#     is @cpr-exec.  The first list element is the program's filename,
++#     the remainder its arguments. (Since 9.1)
++#
+ # Features:
+ #
+ # @unstable: Members @x-checkpoint-delay and
+@@ -1044,7 +1053,8 @@
+             '*vcpu-dirty-limit': 'uint64',
+             '*mode': 'MigMode',
+             '*zero-page-detection': 'ZeroPageDetection',
+-            '*direct-io': 'bool' } }
++            '*direct-io': 'bool',
++            '*cpr-exec-command': [ 'str' ]} }
+ 
+ ##
+ # @migrate-set-parameters:
+@@ -1208,6 +1218,10 @@
+ #     only has effect if the @mapped-ram capability is enabled.
+ #     (Since 9.1)
+ #
++# @cpr-exec-command: Command to start the new QEMU process when @mode
++#     is @cpr-exec.  The first list element is the program's filename,
++#     the remainder its arguments. (Since 9.1)
++#
+ # Features:
+ #
+ # @unstable: Members @x-checkpoint-delay and
+@@ -1245,7 +1259,8 @@
+             '*vcpu-dirty-limit': 'uint64',
+             '*mode': 'MigMode',
+             '*zero-page-detection': 'ZeroPageDetection',
+-            '*direct-io': 'bool' } }
++            '*direct-io': 'bool',
++            '*cpr-exec-command': [ 'str' ]} }
+ 
+ ##
+ # @query-migrate-parameters:
 -- 
 1.8.3.1
 
