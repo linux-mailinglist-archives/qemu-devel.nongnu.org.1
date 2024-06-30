@@ -2,83 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B613591D355
-	for <lists+qemu-devel@lfdr.de>; Sun, 30 Jun 2024 21:04:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B58F291D351
+	for <lists+qemu-devel@lfdr.de>; Sun, 30 Jun 2024 21:04:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sNznv-000557-Cs; Sun, 30 Jun 2024 15:01:39 -0400
+	id 1sNzo5-0005Ms-Ai; Sun, 30 Jun 2024 15:01:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sNznP-0004sQ-MP
- for qemu-devel@nongnu.org; Sun, 30 Jun 2024 15:01:07 -0400
-Received: from mail-pj1-x1035.google.com ([2607:f8b0:4864:20::1035])
+ id 1sNznR-0004tl-8z
+ for qemu-devel@nongnu.org; Sun, 30 Jun 2024 15:01:09 -0400
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sNznL-0007Xl-1S
- for qemu-devel@nongnu.org; Sun, 30 Jun 2024 15:01:07 -0400
-Received: by mail-pj1-x1035.google.com with SMTP id
- 98e67ed59e1d1-2bfdae7997aso1267650a91.2
- for <qemu-devel@nongnu.org>; Sun, 30 Jun 2024 12:01:02 -0700 (PDT)
+ id 1sNznL-0007Y7-K6
+ for qemu-devel@nongnu.org; Sun, 30 Jun 2024 15:01:08 -0400
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-70aaab1cb72so979421b3a.0
+ for <qemu-devel@nongnu.org>; Sun, 30 Jun 2024 12:01:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719774061; x=1720378861; darn=nongnu.org;
+ d=linaro.org; s=google; t=1719774062; x=1720378862; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=tgpppfkBVV9iuvGOhUUIIQbmuFzvgm7jwu3YigAnmAw=;
- b=pe6qW3RADlScF09CEEHvbu/qzMvZQ+FohB1mYZQ7qLFOd/KGzvGC7+tI/EvGnQN+Yc
- C2NzYLhV5YsP2OMM2ynQ4T2gfYtgAcod4NrU2xDuImU5DciMnMXhZYXmPqDitXRP9OxC
- t+lVdMqT0+8lbBsD4JyGPPdHYPHsAeKy1aegBV8qv2GnxJNC93ZW6cS3eHc3cFAq/bhR
- RI81M/5bik/P9WYjj+0+KEi77Ea4DtYmLi+mCy1XlMIERBJ7pEoj2YwbuLNymG06c5xT
- TXTY9hk7XvaS1KPaJWJw1bpc8bxCcs7cdmJneaSjV6aO1E/fnJXZtJ2C/f66gk0pYmI4
- mrhg==
+ bh=RGOc0p/wwE/PuqcJ9S9lIVymEvPJ2X+gCQchQONAjmE=;
+ b=jLD29yoSQztoXt7ksbZ6HGrAUjSjeE9jRKjMI8OEJN8dTDLigjwiNzXk4BMUmAjRme
+ IxrD0vRTtM+uNK9Y9kzv8BXPNbPeh4VxLG7rp91W3gsmPEDFsYLNVzhdagGd3W/xsK33
+ I+sd4lky/wWdx4j1EwiXdyQHor2cgG2aXpxofbcxBliO1IX86aA71PeVSmsTqbU9wmZU
+ gFc5ww7AqNRvE2lUm6D3clgoMCtyOhXOG6qZZ5n7tXmnQtqltMJXzFQwuMwOEiNXw+EY
+ 1lxRKeCqbLyOzUhTHxuysQYo4SNy9hEdOaRNZjEr1eWtT5TmM5nBZBtm9bMWDvDG0O/I
+ lqzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719774061; x=1720378861;
+ d=1e100.net; s=20230601; t=1719774062; x=1720378862;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=tgpppfkBVV9iuvGOhUUIIQbmuFzvgm7jwu3YigAnmAw=;
- b=n+5Trt4FGdAtK901ysCpdOdCchk5qzP6BTUTH6xuG/orM8sJvts7IQ8olTyIyk3kvh
- oTgH4YYbObVIMha2YH2R4R7VZ+Jm1SbX8Y6k0I6TKuNe8IK2HdKOKpPGmAoK8LHkD0NA
- 7rzoc4VKXEA/0Udgm56JKZRC7TmNdNVs02ng5xLeCIUTJBZAa17LUNpY4POazz34Z644
- +jPsKlFetqzrHuYPey8rHT0B7nVwuswmVt/vho6CPuWUDV9dDLr4wAz49B8DfpUNBJBk
- l9LAzQWgxIpizxpiQBJt/iWCYi3UkH4WmxL1NV/CG40buwOAGgwx0AbpUPY43dvz6zc1
- EhzQ==
-X-Gm-Message-State: AOJu0YwzvxEDCzyFtOxCovTMBMkyb/l2zflz6FY8EAIRNsvMq5CPtpjq
- BrERcaOUO2cYX5DvQL9lIMHHNKNky8lNhhAwKUbU7wqcJbMpkM7kpJ+3/o9lAayw1Arkk7SQoEh
- o
-X-Google-Smtp-Source: AGHT+IFCXpYpVGnojg0mfObCr4UOqQMoUSRBgjCgnfB9eVdB6j/pLbOV19W8Tdrs6pTsSU9CwxMglw==
-X-Received: by 2002:a17:90a:3488:b0:2c5:249d:67be with SMTP id
- 98e67ed59e1d1-2c93d729fb2mr1385362a91.22.1719774061073; 
+ bh=RGOc0p/wwE/PuqcJ9S9lIVymEvPJ2X+gCQchQONAjmE=;
+ b=Le4u3Xndhw9biLkH20L37zw5kN684zI6Npo0TCBCbzZhrcFVy5AEqC5H7ztUOpBZ+C
+ 1eijzf6fq1VVWakH/q6zGCW3g2Rvk4ZruoKH0XikqFUWB/NeTxROHiPtlk3k7ppCabUq
+ qNTOyggaEt3g5r3BMoc/8Wb6NgBDHxh1RJZ5ST4WIOxTrm1wMuhT/EeCOMjqgsC0KyIQ
+ bLubAyNG03/QobXOCvhWIk4ObZJ7qetLAiyt0g6hwMcOWt5ldaRMk7xpqVU+dKCn6z8p
+ goBZDnPw+aUtTfojTJmECuzE4zZCZXvl3cYvgYGgQkney9jnLQF9Dp+gdMoboDIn/Cv6
+ dmkw==
+X-Gm-Message-State: AOJu0YxOXlE+3Vbp9JID/dij6uvqopMNBRpybQuarwVEhw/eMcXk6f+S
+ gaq35W3HthZU0MFjBGqlQDUEIW5U/oxE1V0+04d6drw1XyeQmd5vfpGzS01QX+ZppUvzCf6Cfgs
+ D
+X-Google-Smtp-Source: AGHT+IGOwn/Wjlvb0Lp7hBSnoPc6xk/p/n49YaGfx8MZBEyqvZ8aRawi6YB7EhFLpclWGQRn3NTs6Q==
+X-Received: by 2002:a05:6a20:da97:b0:1be:f8e0:abac with SMTP id
+ adf61e73a8af0-1bef8e0adb8mr6733442637.45.1719774061910; 
  Sun, 30 Jun 2024 12:01:01 -0700 (PDT)
 Received: from stoup.. (174-21-76-141.tukw.qwest.net. [174.21.76.141])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2c91d3e7e4bsm5115641a91.52.2024.06.30.12.01.00
+ 98e67ed59e1d1-2c91d3e7e4bsm5115641a91.52.2024.06.30.12.01.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 30 Jun 2024 12:01:00 -0700 (PDT)
+ Sun, 30 Jun 2024 12:01:01 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: akihiko.odaki@daynix.com,
 	alex.bennee@linaro.org,
 	qemu-arm@nongnu.org
-Subject: [PATCH v4 09/14] tests/tcg/arm: Drop -N from LDFLAGS
-Date: Sun, 30 Jun 2024 12:00:45 -0700
-Message-Id: <20240630190050.160642-10-richard.henderson@linaro.org>
+Subject: [PATCH v4 10/14] tests/tcg/arm: Use -fno-integrated-as for
+ test-arm-iwmmxt
+Date: Sun, 30 Jun 2024 12:00:46 -0700
+Message-Id: <20240630190050.160642-11-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240630190050.160642-1-richard.henderson@linaro.org>
 References: <20240630190050.160642-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1035;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1035.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,36 +95,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is redudant with a linker script, and is not
-supported by clang.
+Clang does not support IWMXT instructions.
+Fall back to the external assembler.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tests/tcg/arm/Makefile.softmmu-target | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tests/tcg/arm/Makefile.target | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/tests/tcg/arm/Makefile.softmmu-target b/tests/tcg/arm/Makefile.softmmu-target
-index 39e01ce49d..547063c08c 100644
---- a/tests/tcg/arm/Makefile.softmmu-target
-+++ b/tests/tcg/arm/Makefile.softmmu-target
-@@ -13,7 +13,7 @@ VPATH 		+= $(ARM_SRC)
- test-armv6m-undef: test-armv6m-undef.S
- 	$(CC) -mcpu=cortex-m0 -mfloat-abi=soft \
- 		-Wl,--build-id=none -x assembler-with-cpp \
--		$< -o $@ -nostdlib -N -static \
-+		$< -o $@ -nostdlib -static \
- 		-T $(ARM_SRC)/$@.ld
+diff --git a/tests/tcg/arm/Makefile.target b/tests/tcg/arm/Makefile.target
+index 0a1965fce7..95f891bf8c 100644
+--- a/tests/tcg/arm/Makefile.target
++++ b/tests/tcg/arm/Makefile.target
+@@ -8,6 +8,11 @@ ARM_SRC=$(SRC_PATH)/tests/tcg/arm
+ # Set search path for all sources
+ VPATH 		+= $(ARM_SRC)
  
- run-test-armv6m-undef: QEMU_OPTS=-semihosting-config enable=on,target=native,chardev=output -M microbit -kernel
-@@ -30,7 +30,7 @@ CRT_PATH=$(ARM_SRC)
- LINK_SCRIPT=$(ARM_SRC)/kernel.ld
- LDFLAGS=-Wl,-T$(LINK_SCRIPT)
- CFLAGS+=-nostdlib -ggdb -O0 $(MINILIB_INC)
--LDFLAGS+=-static -nostdlib -N $(CRT_OBJS) $(MINILIB_OBJS) -lgcc
-+LDFLAGS+=-static -nostdlib $(CRT_OBJS) $(MINILIB_OBJS) -lgcc
++config-cc.mak: Makefile
++	$(quiet-@)( \
++	    $(call cc-option,-fno-integrated-as, CROSS_CC_HAS_FNIA)) 3> config-cc.mak
++-include config-cc.mak
++
+ float_madds: CFLAGS+=-mfpu=neon-vfpv4
  
- # building head blobs
- .PRECIOUS: $(CRT_OBJS)
+ # Basic Hello World
+@@ -17,7 +22,8 @@ hello-arm: LDFLAGS+=-nostdlib
+ 
+ # IWMXT floating point extensions
+ ARM_TESTS += test-arm-iwmmxt
+-test-arm-iwmmxt: CFLAGS+=-marm -march=iwmmxt -mabi=aapcs -mfpu=fpv4-sp-d16
++# Clang assembler does not support IWMXT, so use the external assembler.
++test-arm-iwmmxt: CFLAGS += -marm -march=iwmmxt -mabi=aapcs -mfpu=fpv4-sp-d16 $(CROSS_CC_HAS_FNIA)
+ test-arm-iwmmxt: test-arm-iwmmxt.S
+ 	$(CC) $(CFLAGS) $< -o $@ $(LDFLAGS)
+ 
 -- 
 2.34.1
 
