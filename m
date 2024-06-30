@@ -2,48 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B25291CEEE
-	for <lists+qemu-devel@lfdr.de>; Sat, 29 Jun 2024 22:03:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC72191CFCF
+	for <lists+qemu-devel@lfdr.de>; Sun, 30 Jun 2024 03:33:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sNeGo-0000Dj-HL; Sat, 29 Jun 2024 16:02:02 -0400
+	id 1sNjPs-0000RD-10; Sat, 29 Jun 2024 21:31:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1sNeGm-0000BV-5t
- for qemu-devel@nongnu.org; Sat, 29 Jun 2024 16:02:00 -0400
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1sNeGk-0004fo-2t
- for qemu-devel@nongnu.org; Sat, 29 Jun 2024 16:01:59 -0400
-Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 1B2614E600F;
- Sat, 29 Jun 2024 22:01:56 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at eik.bme.hu
-Received: from zero.eik.bme.hu ([127.0.0.1])
- by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id Dbt-uUYqderj; Sat, 29 Jun 2024 22:01:54 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 24F7A4E6005; Sat, 29 Jun 2024 22:01:54 +0200 (CEST)
-Message-Id: <b70b9e72063b4dd4005bf4bc040b84f2bb617bf4.1719690591.git.balaton@eik.bme.hu>
-In-Reply-To: <cover.1719690591.git.balaton@eik.bme.hu>
-References: <cover.1719690591.git.balaton@eik.bme.hu>
-From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH 2/2] hw/isa/vt82c686.c: Embed i8259 irq in device state
- instead of allocating
-To: qemu-devel@nongnu.org
-Cc: philmd@linaro.org, Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Akihiko Odaki <akihiko.odaki@daynix.com>,
- Peter Maydell <peter.maydell@linaro.org>
-Date: Sat, 29 Jun 2024 22:01:54 +0200 (CEST)
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sNjPp-0000Qx-Un
+ for qemu-devel@nongnu.org; Sat, 29 Jun 2024 21:31:41 -0400
+Received: from mail-oi1-x233.google.com ([2607:f8b0:4864:20::233])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sNjPo-0001pK-EU
+ for qemu-devel@nongnu.org; Sat, 29 Jun 2024 21:31:41 -0400
+Received: by mail-oi1-x233.google.com with SMTP id
+ 5614622812f47-3d5666a4860so1099919b6e.2
+ for <qemu-devel@nongnu.org>; Sat, 29 Jun 2024 18:31:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1719711098; x=1720315898; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=/FJ5ic18X4jH12Ty/kRAASNDEzHSfIj9u6pJ+OmNqAo=;
+ b=Mz5rGqyMXABJ/vGhPKi3Gqg9vgz7OzkMIPKlfqtcbGmyEVybJwtRCq1CKFk4hGh4ya
+ R3jBeAcPVNV8GcGfl5ic2Bl9Io+izsp6llXPsGfGBBIpkyxBLF+WTwcuyRSeaI85HzFY
+ GWEtKk11aOjSD3s9sY4AyAQjM1yqpuLQmjs8+cIRRGB+tfjQ2Jiw5T2K3Xb2jiY+HiLP
+ otMXCMsSiQ7OSN2DN6AH7cNSFJA02EX1WY+D4GTdPnM6uRWqns7NlCYWo/Xet9U3bTC0
+ 9wYl6YjDhLCnjbwl/Mf3BH3xeKh3GJekhHHZCRXSu1fzDxRpmtYTXFcfAO2MUg97ycix
+ 8BbQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1719711098; x=1720315898;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=/FJ5ic18X4jH12Ty/kRAASNDEzHSfIj9u6pJ+OmNqAo=;
+ b=hDSEb7n/AWS6H3AIzyrV1O2+sgMK3ne7V1AAY+DAWKcqZQdv1DG5zDIFERdeZ1fgGE
+ NOua821dmOobmcr2MfYetiAVUcAxscTtiih4npElVn7jU0SAyWKih0xgWdgCt0CsoZ1m
+ xSYqV6VpkilgYRjmiD7nXYkWMa7EO+d9kZlrXyh9HbqNYdHkP81DUtNAnu5O1NYrJQ/v
+ FZ5nIxqXjDMCr+dmBW6dCmfMYJhi9Aw0sKIMp3IRdMjdl7+fDuxYNP5HG78LIkBVe5Mr
+ xbrzXXn8anJS8AeVVVDMfYzbAc00ESF08sUqYOVfAFCnG10+rJmpzPgJ6mrYHCZy0Wlx
+ nhog==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCW8XZ/Iv9ToMviBYlSaN3AvtOnaIQJ9/Ic1kZekr4jeX4Bf9wZM5C81OZBQKdWw8ppbvWJLosKQGRyG1AWRkfJtChaAmb8=
+X-Gm-Message-State: AOJu0YzVg2JrhCBrWJv7/LJSf2Qp9GK+CNlBBsVSnc4ag6wF0fjdH5tX
+ PTFTdWARnUvo4KQI1cyndK6OcVsWdqPm1kNodekCVm299I4+Rj6EPRo1Zm8z5oM=
+X-Google-Smtp-Source: AGHT+IHa3UjTRMWUwNN8urJ6kpLphgTn9XHDpBORQHfzsz1e2U1669b9EIubUSNR0spT9n1O7iROkw==
+X-Received: by 2002:a05:6808:38c3:b0:3d6:2d2f:d03b with SMTP id
+ 5614622812f47-3d6b2b24ee5mr3156853b6e.10.1719711098295; 
+ Sat, 29 Jun 2024 18:31:38 -0700 (PDT)
+Received: from [192.168.0.4] (174-21-76-141.tukw.qwest.net. [174.21.76.141])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-1fac1568da9sm38063385ad.203.2024.06.29.18.31.37
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sat, 29 Jun 2024 18:31:37 -0700 (PDT)
+Message-ID: <2712726e-ecc4-4a88-8675-7706c9be4d67@linaro.org>
+Date: Sat, 29 Jun 2024 18:31:35 -0700
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 4/7] tests/tcg: add mechanism to run specific tests
+ with plugins
+To: Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org
+Cc: Alexandre Iooss <erdnaxe@crans.org>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+References: <20240626233757.375083-1-pierrick.bouvier@linaro.org>
+ <20240626233757.375083-5-pierrick.bouvier@linaro.org>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20240626233757.375083-5-pierrick.bouvier@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::233;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x233.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -60,52 +101,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-To avoid a warning about unfreed qemu_irq embed the i8259 irq in the
-device state instead of allocating it.
+On 6/26/24 16:37, Pierrick Bouvier wrote:
+> Only multiarch tests are run with plugins, and we want to be able to run
+> per-arch test with plugins too.
+> 
+> Signed-off-by: Pierrick Bouvier<pierrick.bouvier@linaro.org>
+> ---
+>   tests/tcg/Makefile.target | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
 
-Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
----
- hw/isa/vt82c686.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-diff --git a/hw/isa/vt82c686.c b/hw/isa/vt82c686.c
-index 8582ac0322..834051abeb 100644
---- a/hw/isa/vt82c686.c
-+++ b/hw/isa/vt82c686.c
-@@ -592,6 +592,8 @@ OBJECT_DECLARE_SIMPLE_TYPE(ViaISAState, VIA_ISA)
- 
- struct ViaISAState {
-     PCIDevice dev;
-+
-+    IRQState i8259_irq;
-     qemu_irq cpu_intr;
-     qemu_irq *isa_irqs_in;
-     uint16_t irq_state[ISA_NUM_IRQS];
-@@ -715,13 +717,12 @@ static void via_isa_realize(PCIDevice *d, Error **errp)
-     ViaISAState *s = VIA_ISA(d);
-     DeviceState *dev = DEVICE(d);
-     PCIBus *pci_bus = pci_get_bus(d);
--    qemu_irq *isa_irq;
-     ISABus *isa_bus;
-     int i;
- 
-     qdev_init_gpio_out(dev, &s->cpu_intr, 1);
-     qdev_init_gpio_in_named(dev, via_isa_pirq, "pirq", PCI_NUM_PINS);
--    isa_irq = qemu_allocate_irqs(via_isa_request_i8259_irq, s, 1);
-+    qemu_init_irq(&s->i8259_irq, via_isa_request_i8259_irq, s, 0);
-     isa_bus = isa_bus_new(dev, pci_address_space(d), pci_address_space_io(d),
-                           errp);
- 
-@@ -729,7 +730,7 @@ static void via_isa_realize(PCIDevice *d, Error **errp)
-         return;
-     }
- 
--    s->isa_irqs_in = i8259_init(isa_bus, *isa_irq);
-+    s->isa_irqs_in = i8259_init(isa_bus, &s->i8259_irq);
-     isa_bus_register_input_irqs(isa_bus, s->isa_irqs_in);
-     i8254_pit_init(isa_bus, 0x40, 0, NULL);
-     i8257_dma_init(OBJECT(d), isa_bus, 0);
--- 
-2.30.9
-
+r~
 
