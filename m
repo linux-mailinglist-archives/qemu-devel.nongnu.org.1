@@ -2,77 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 694FC91D34A
-	for <lists+qemu-devel@lfdr.de>; Sun, 30 Jun 2024 21:02:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8B1C91D354
+	for <lists+qemu-devel@lfdr.de>; Sun, 30 Jun 2024 21:04:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sNzoD-0005Vu-IF; Sun, 30 Jun 2024 15:01:57 -0400
+	id 1sNzoF-0005YK-C9; Sun, 30 Jun 2024 15:01:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sNznS-0004vI-Nm
+ id 1sNznS-0004vJ-Oc
  for qemu-devel@nongnu.org; Sun, 30 Jun 2024 15:01:10 -0400
-Received: from mail-oo1-xc2b.google.com ([2607:f8b0:4864:20::c2b])
+Received: from mail-oo1-xc2a.google.com ([2607:f8b0:4864:20::c2a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sNznM-0007YP-Af
+ id 1sNznN-0007Yc-8b
  for qemu-devel@nongnu.org; Sun, 30 Jun 2024 15:01:10 -0400
-Received: by mail-oo1-xc2b.google.com with SMTP id
- 006d021491bc7-5b97a071c92so1085571eaf.1
- for <qemu-devel@nongnu.org>; Sun, 30 Jun 2024 12:01:03 -0700 (PDT)
+Received: by mail-oo1-xc2a.google.com with SMTP id
+ 006d021491bc7-5c21f1bb810so1174212eaf.3
+ for <qemu-devel@nongnu.org>; Sun, 30 Jun 2024 12:01:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719774063; x=1720378863; darn=nongnu.org;
+ d=linaro.org; s=google; t=1719774064; x=1720378864; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=RVOFvPwsyl4QfxgYtVSSFj0skJQCOvZiNxR84pYswu0=;
- b=Akqf+zbC/mCYhJHZ/IYzpXhBzF4xKDKxcFh9JmFTV/uykanKQSajOoo6O+c9XkbjD6
- AUI4PISNR6ogigq/Vi60YCqde3qCltTaqPHvYSm5Wj3T7NnoPvipZrVDNovO8ew7wgnB
- MEkPY2BI5YSOOv/X4dj0fxEBO1uZjdld9veUEOW/fcfbYfZv7h8myTTuT1J/gtodn182
- LHcDuWLCyVK5F9mc81asMPcAZ3TzxVjn3xJaaa0Ou9dB+gHYy2X7whV2i7oXqjVJt0c6
- aCJjKdF/mxKnms4op2lQKeVFolsbK4dgmYgL5cc2qSth2Izuy7TbB+itPpi0+p3OpyTB
- PoZg==
+ bh=z6AjjP28A+nmFWpUBGHe4AhBkZ8znn8UyBjn33WhQ6U=;
+ b=GSacmnwAi5wSoQfFAnLrRk0kupM+HFm8l8LsXq4Mv/a5jzADMDnYSCvTQF2wiFgMqV
+ +usYXB8qA+9MznddZD+gqh2fnHoqGEVgk80kLvV8Gkfpv/MmktKw/JEZY9qoAojTesOx
+ /wiXDyQjp1CFdz3y3Cm6WsN7EzdrzgC15ULbljzznhBIn6U23aIPcSTsh7JpwBUsSJAJ
+ Z6/ogCys3RQxbiu1KgbMxxGfCL/lh3BPB2rLI/09VQJaKxg50VsaOmPPiZL/k292Z+F1
+ GBUcy2N9yofXvF5g6Z7vUyitcM1rNp9+rXhaCo4RZkzchsOJz7XxprsXEOmugTf5fxMM
+ vhlw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719774063; x=1720378863;
+ d=1e100.net; s=20230601; t=1719774064; x=1720378864;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=RVOFvPwsyl4QfxgYtVSSFj0skJQCOvZiNxR84pYswu0=;
- b=tbkWHTtJNQ3gg5AL+p+FQo9WiglSW3zEzfhCN9hiHSdHBciI0694yDkh0pJarpFSNG
- 7JAgjz5lb8w+ToIu5o0Vi3j9uhz9ucvujuUeX9Rtfjbn+ePWDRRAdOE3xQduSOEXpJ+Q
- JS0qRwrkt26aaEoascAyiCYdoFL8NNkKQbUp2Vf4thavrRh1An48f7OrFDsTp+f7O9cG
- P5aW4P/4yyfuVWhmPV4a0QmLg0nH72w49vI6VtrVC/IiCHaxYisgcPsAN7eFROTDxCCA
- BVUlqXp0wFLimzSiHFQl2SljVYFYelCCp8w/bT8aJn7rF8ytvKPcVBRBrgdaLonq2Sr4
- cr0g==
-X-Gm-Message-State: AOJu0Ywc9MqEDa8s1Rq92olKWfEe0i4Q6/GMntZRu62WbEy9O1eanaSv
- gj+2HH0IP8GtXbeuPMCUKsrkP+lCWLCjXj2vTzYyuo7qqzZM1wKZPrPsSBrRQzWGLN8x9cWA4AL
- Z
-X-Google-Smtp-Source: AGHT+IHA7EAD2BcPbLOszhLP6OoRn2JyUpvo96A5Uk5LyADv0Efa7Q+vf8tGolXYGn9c94tdtTdkyQ==
-X-Received: by 2002:a05:6358:9486:b0:1a6:84aa:13f with SMTP id
- e5c5f4694b2df-1a6acf39bafmr430163455d.24.1719774062730; 
- Sun, 30 Jun 2024 12:01:02 -0700 (PDT)
+ bh=z6AjjP28A+nmFWpUBGHe4AhBkZ8znn8UyBjn33WhQ6U=;
+ b=JreR6kxKLiz+nztzVemPwMhjWDcG1Um/Ndv3E4ZAcKa9M3+eQAwGu+v4am3e50QY49
+ VlaUhQ94JEMaLhwPQnA9yJ4KYEZLxd/oiB3Js58jtLRBGcWKdVEGguqLGXp62yVyfdvO
+ IuT8JuCShCViVz8fQORkOwbVWZOfFLu3Lw6E1t/WN+Ek6oCpqJ7PrjywyNfRmFdKngnk
+ MTAzJJI69VL/79a8fSwmDh61HW7Lkl7ihwpOgXjHHXoMd7z6d0ndjrchGEi1/VrpKpjE
+ 7dV7e8lBBDx/yBizqF0S+zqq8TYP08rbw8OZ/Ch/5u6D5AZs0xDWMsM+0eVUFSJIUBG6
+ PnRg==
+X-Gm-Message-State: AOJu0YzV20bwp1c9ZhtmA9Ik5rtmPARM8El2Ay12neDaAVCTanRoFHrd
+ NMfOyRferEEzUi4G8b/3qFliEjLC8pl2LrfrnJnAsl9Z0RWJaJiQHSVgpK+oket8aQR0vCjcom+
+ +
+X-Google-Smtp-Source: AGHT+IEZqdtxlGnwVXN8pJTqay1KPgU6I77AvumxWecEDGBS+BHnRJ1bsngNFcAotBi3/eWXzTC86A==
+X-Received: by 2002:a05:6358:910e:b0:1a1:d75e:9bd2 with SMTP id
+ e5c5f4694b2df-1a6acef5f3fmr249892155d.30.1719774063571; 
+ Sun, 30 Jun 2024 12:01:03 -0700 (PDT)
 Received: from stoup.. (174-21-76-141.tukw.qwest.net. [174.21.76.141])
  by smtp.gmail.com with ESMTPSA id
  98e67ed59e1d1-2c91d3e7e4bsm5115641a91.52.2024.06.30.12.01.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 30 Jun 2024 12:01:02 -0700 (PDT)
+ Sun, 30 Jun 2024 12:01:03 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: akihiko.odaki@daynix.com,
 	alex.bennee@linaro.org,
 	qemu-arm@nongnu.org
-Subject: [PATCH v4 11/14] tests/tcg/arm: Manually register allocate
- half-precision numbers
-Date: Sun, 30 Jun 2024 12:00:47 -0700
-Message-Id: <20240630190050.160642-12-richard.henderson@linaro.org>
+Subject: [PATCH v4 12/14] tests/tcg/arm: Use -march and -mfpu for fcvt
+Date: Sun, 30 Jun 2024 12:00:48 -0700
+Message-Id: <20240630190050.160642-13-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240630190050.160642-1-richard.henderson@linaro.org>
 References: <20240630190050.160642-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2b;
- envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc2b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c2a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc2a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,36 +94,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
+Clang requires the architecture to be set properly
+in order to assemble the half-precision instructions.
 
-Clang does not allow specifying an integer as the value of a single
-precision register.  Explicitly move value from a general register.
-
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-[rth: Use one single inline asm block.]
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tests/tcg/arm/fcvt.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ tests/tcg/arm/Makefile.target | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tests/tcg/arm/fcvt.c b/tests/tcg/arm/fcvt.c
-index 157790e679..d8c61cd29f 100644
---- a/tests/tcg/arm/fcvt.c
-+++ b/tests/tcg/arm/fcvt.c
-@@ -355,7 +355,12 @@ static void convert_half_to_single(void)
+diff --git a/tests/tcg/arm/Makefile.target b/tests/tcg/arm/Makefile.target
+index 95f891bf8c..8e287191af 100644
+--- a/tests/tcg/arm/Makefile.target
++++ b/tests/tcg/arm/Makefile.target
+@@ -29,8 +29,8 @@ test-arm-iwmmxt: test-arm-iwmmxt.S
  
-         print_half_number(i, input);
- #if defined(__arm__)
--        asm("vcvtb.f32.f16 %0, %1" : "=w" (output) : "x" ((uint32_t)input));
-+        /*
-+         * Clang refuses to allocate an integer to a fp register.
-+         * Perform the move from a general register by hand.
-+         */
-+        asm("vmov %0, %1\n\t"
-+            "vcvtb.f32.f16 %0, %0" : "=w" (output) : "r" (input));
- #else
-         asm("fcvt %s0, %h1" : "=w" (output) : "w" (input));
- #endif
+ # Float-convert Tests
+ ARM_TESTS += fcvt
+-fcvt: LDFLAGS+=-lm
+-# fcvt: CFLAGS+=-march=armv8.2-a+fp16 -mfpu=neon-fp-armv8
++fcvt: LDFLAGS += -lm
++fcvt: CFLAGS += -march=armv8.2-a+fp16 -mfpu=neon-fp-armv8
+ run-fcvt: fcvt
+ 	$(call run-test,fcvt,$(QEMU) $<)
+ 	$(call diff-out,fcvt,$(ARM_SRC)/fcvt.ref)
 -- 
 2.34.1
 
