@@ -2,40 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9688C91D2DE
-	for <lists+qemu-devel@lfdr.de>; Sun, 30 Jun 2024 18:55:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1390691D2DF
+	for <lists+qemu-devel@lfdr.de>; Sun, 30 Jun 2024 18:55:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sNxoP-0005ih-Ue; Sun, 30 Jun 2024 12:54:02 -0400
+	id 1sNxoj-0005sv-Dp; Sun, 30 Jun 2024 12:54:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sNxoM-0005i2-RV; Sun, 30 Jun 2024 12:53:58 -0400
+ id 1sNxog-0005sN-Va; Sun, 30 Jun 2024 12:54:18 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sNxoK-0005L8-9u; Sun, 30 Jun 2024 12:53:58 -0400
+ id 1sNxof-0005LS-EF; Sun, 30 Jun 2024 12:54:18 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id D10D275767;
+ by isrv.corpit.ru (Postfix) with ESMTP id DE4CA75768;
  Sun, 30 Jun 2024 19:53:20 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id A604EFAD64;
+ by tsrv.corpit.ru (Postfix) with SMTP id B3430FAD65;
  Sun, 30 Jun 2024 19:53:27 +0300 (MSK)
-Received: (nullmailer pid 38231 invoked by uid 1000);
+Received: (nullmailer pid 38234 invoked by uid 1000);
  Sun, 30 Jun 2024 16:53:27 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: Trent Huber <trentmhuber@gmail.com>, qemu-trivial@nongnu.org,
+Cc: Hyeongtak Ji <hyeongtak.ji@gmail.com>, qemu-trivial@nongnu.org,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 10/16] os-posix: Expand setrlimit() syscall compatibility
-Date: Sun, 30 Jun 2024 19:53:20 +0300
-Message-Id: <20240630165327.38153-11-mjt@tls.msk.ru>
+Subject: [PULL 11/16] docs/cxl: fix some typos
+Date: Sun, 30 Jun 2024 19:53:21 +0300
+Message-Id: <20240630165327.38153-12-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240630165327.38153-1-mjt@tls.msk.ru>
 References: <20240630165327.38153-1-mjt@tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -59,38 +58,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Trent Huber <trentmhuber@gmail.com>
+From: Hyeongtak Ji <hyeongtak.ji@gmail.com>
 
-Darwin uses a subtly different version of the setrlimit() syscall as
-described in the COMPATIBILITY section of the macOS man page. The value
-of the rlim_cur member has been adjusted accordingly for Darwin-based
-systems.
+This patch corrects minor typographical errors to ensure the ASCII art
+aligns with the explanations provided.  Specifically, it fixes an
+incorrect root port reference and removes redundant words.
 
-Signed-off-by: Trent Huber <trentmhuber@gmail.com>
-Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
+Signed-off-by: Hyeongtak Ji <hyeongtak.ji@gmail.com>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- os-posix.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ docs/system/devices/cxl.rst | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/os-posix.c b/os-posix.c
-index a4284e2c07..43f9a43f3f 100644
---- a/os-posix.c
-+++ b/os-posix.c
-@@ -270,7 +270,11 @@ void os_setup_limits(void)
-         return;
-     }
- 
-+#ifdef CONFIG_DARWIN
-+    nofile.rlim_cur = OPEN_MAX < nofile.rlim_max ? OPEN_MAX : nofile.rlim_max;
-+#else
-     nofile.rlim_cur = nofile.rlim_max;
-+#endif
- 
-     if (setrlimit(RLIMIT_NOFILE, &nofile) < 0) {
-         warn_report("unable to set NOFILE limit: %s", strerror(errno));
+diff --git a/docs/system/devices/cxl.rst b/docs/system/devices/cxl.rst
+index 10a0e9bc9f..882b036f5e 100644
+--- a/docs/system/devices/cxl.rst
++++ b/docs/system/devices/cxl.rst
+@@ -218,17 +218,17 @@ Notes:
+     A complex configuration here, might be to use the following HDM
+     decoders in HB0. HDM0 routes CFMW0 requests to RP0 and hence
+     part of CXL Type3 0. HDM1 routes CFMW0 requests from a
+-    different region of the CFMW0 PA range to RP2 and hence part
++    different region of the CFMW0 PA range to RP1 and hence part
+     of CXL Type 3 1.  HDM2 routes yet another PA range from within
+     CFMW0 to be interleaved across RP0 and RP1, providing 2 way
+     interleave of part of the memory provided by CXL Type3 0 and
+     CXL Type 3 1. HDM3 routes those interleaved accesses from
+     CFMW1 that target HB0 to RP 0 and another part of the memory of
+     CXL Type 3 0 (as part of a 2 way interleave at the system level
+-    across for example CXL Type3 0 and CXL Type3 2.
++    across for example CXL Type3 0 and CXL Type3 2).
+     HDM4 is used to enable system wide 4 way interleave across all
+     the present CXL type3 devices, by interleaving those (interleaved)
+-    requests that HB0 receives from from CFMW1 across RP 0 and
++    requests that HB0 receives from CFMW1 across RP 0 and
+     RP 1 and hence to yet more regions of the memory of the
+     attached Type3 devices.  Note this is a representative subset
+     of the full range of possible HDM decoder configurations in this
 -- 
 2.39.2
 
