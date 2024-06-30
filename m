@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FF2791D2E5
-	for <lists+qemu-devel@lfdr.de>; Sun, 30 Jun 2024 18:56:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60D7F91D2E1
+	for <lists+qemu-devel@lfdr.de>; Sun, 30 Jun 2024 18:56:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sNxoK-0005gP-E5; Sun, 30 Jun 2024 12:53:56 -0400
+	id 1sNxoN-0005hY-HT; Sun, 30 Jun 2024 12:53:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sNxoF-0005ds-Ro; Sun, 30 Jun 2024 12:53:51 -0400
+ id 1sNxoG-0005f3-Tw; Sun, 30 Jun 2024 12:53:52 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sNxoE-0005JU-AX; Sun, 30 Jun 2024 12:53:51 -0400
+ id 1sNxoE-0005JX-EP; Sun, 30 Jun 2024 12:53:52 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 99AF275763;
+ by isrv.corpit.ru (Postfix) with ESMTP id A7CED75764;
  Sun, 30 Jun 2024 19:53:20 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 6EDACFAD60;
+ by tsrv.corpit.ru (Postfix) with SMTP id 7C5FEFAD61;
  Sun, 30 Jun 2024 19:53:27 +0300 (MSK)
-Received: (nullmailer pid 38218 invoked by uid 1000);
+Received: (nullmailer pid 38221 invoked by uid 1000);
  Sun, 30 Jun 2024 16:53:27 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: "Dr. David Alan Gilbert" <dave@treblig.org>, qemu-trivial@nongnu.org,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 06/16] linux-user: cris: Remove unused struct 'rt_signal_frame'
-Date: Sun, 30 Jun 2024 19:53:16 +0300
-Message-Id: <20240630165327.38153-7-mjt@tls.msk.ru>
+Subject: [PULL 07/16] linux-user: sparc: Remove unused struct 'target_mc_fq'
+Date: Sun, 30 Jun 2024 19:53:17 +0300
+Message-Id: <20240630165327.38153-8-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240630165327.38153-1-mjt@tls.msk.ru>
 References: <20240630165327.38153-1-mjt@tls.msk.ru>
@@ -60,36 +60,36 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: "Dr. David Alan Gilbert" <dave@treblig.org>
 
-Since 'setup_rt_frame' has never been implemented, this struct
-is unused.
+This struct is unused since Peter's
+Commit b8ae597f0e6d ("linux-user/sparc: Fix errors in target_ucontext
+structures")
+
+However, hmm, I'm a bit confused since that commit modifies the
+structure and then removes it, was that intentional?
 
 Signed-off-by: Dr. David Alan Gilbert <dave@treblig.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- linux-user/cris/signal.c | 8 --------
- 1 file changed, 8 deletions(-)
+ linux-user/sparc/signal.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/linux-user/cris/signal.c b/linux-user/cris/signal.c
-index 4f532b2903..10948bcf30 100644
---- a/linux-user/cris/signal.c
-+++ b/linux-user/cris/signal.c
-@@ -35,14 +35,6 @@ struct target_signal_frame {
-     uint16_t retcode[4];      /* Trampoline code. */
- };
+diff --git a/linux-user/sparc/signal.c b/linux-user/sparc/signal.c
+index f164b74032..8181b8b92c 100644
+--- a/linux-user/sparc/signal.c
++++ b/linux-user/sparc/signal.c
+@@ -546,11 +546,6 @@ void setup_sigtramp(abi_ulong sigtramp_page)
+ typedef abi_ulong target_mc_greg_t;
+ typedef target_mc_greg_t target_mc_gregset_t[SPARC_MC_NGREG];
  
--struct rt_signal_frame {
--    siginfo_t *pinfo;
--    void *puc;
--    siginfo_t info;
--    ucontext_t uc;
--    uint16_t retcode[4];      /* Trampoline code. */
+-struct target_mc_fq {
+-    abi_ulong mcfq_addr;
+-    uint32_t mcfq_insn;
 -};
 -
- static void setup_sigcontext(struct target_sigcontext *sc, CPUCRISState *env)
- {
-     __put_user(env->regs[0], &sc->regs.r0);
+ /*
+  * Note the manual 16-alignment; the kernel gets this because it
+  * includes a "long double qregs[16]" in the mcpu_fregs union,
 -- 
 2.39.2
 
