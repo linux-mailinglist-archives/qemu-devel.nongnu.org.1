@@ -2,76 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D058291E31E
-	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 17:01:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90D8491E346
+	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 17:05:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOIWB-0005GX-Cg; Mon, 01 Jul 2024 11:00:35 -0400
+	id 1sOIXN-0006Qw-Vc; Mon, 01 Jul 2024 11:01:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOIVs-0004iO-Cj
- for qemu-devel@nongnu.org; Mon, 01 Jul 2024 11:00:18 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOIWV-00062J-1M
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 11:00:57 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOIVq-0007kZ-4m
- for qemu-devel@nongnu.org; Mon, 01 Jul 2024 11:00:16 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-42565cdf99cso28157305e9.3
- for <qemu-devel@nongnu.org>; Mon, 01 Jul 2024 08:00:12 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOIWR-0001kw-PO
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 11:00:54 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-425624255f3so18776465e9.0
+ for <qemu-devel@nongnu.org>; Mon, 01 Jul 2024 08:00:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719846011; x=1720450811; darn=nongnu.org;
+ d=linaro.org; s=google; t=1719846050; x=1720450850; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=3ypUVq+qGNZm9nq7Bu6AhzAAvs9/y5+Ly1uBouhDlzI=;
- b=tdCmuoLQxG7Esqae0ycNmqyUAt26B5h1RNzUz/uObf8QXPWajcbNlVz3cwNtysWkyu
- 6p7RP3Q41drFBhz30ND6UA0MIu8/WWKgpvd+KmpW0Q0qebgC6cyxV7Khhk65UMh8yS19
- ETGHTn/quN4o661ADuiuX7H1h1Urtunx8vgPHX607aHMqU4PxWi3qJddfkfG3XtfPK+d
- Tz3yoGfdyedET+XX9v60GsevizymyvTDEL4WARNamjv4QlGUZKpAt7Brfb/GRuTTcI+9
- szf4RQEKnjIRZYTnUSIKkfGiiBK3XHnlFwP6ct28qKAIDjnGKWnYtVQh4GT0vorqIJ9W
- 7BPA==
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=0i9XgB3FWcCofNOcUCQntbSdJHNFbhPZ+eaxWE0nNQ8=;
+ b=iCSVShggcQRNQQMmmlBA6qHTD1mGH2+EYosVY80PLCiiy4TVmMszkEhgeFuQEsuyUX
+ LfONZM1bRltGxYJ3s6rimfIkc9NiYhCxlfID1clCoZKRpzBUWyeoBBqBKbKnk5rO/HrI
+ S1kxMNPT6qHp9a3Rgys5msnp9VT7V4ZWBvBXskMzkZ/pAMYLbgJoDKLPq19FyxviGkrD
+ N9fqUGFN4FpL6GRPzbRX9yhkUhxPRGXArErTFFRZmVpUUydPYOxeztlqHMhIF69P3x0K
+ xwzosm9rmbCpiv5hQ/CsV5OP9oF7u2LCu+MgyImvG3T31JCbCaDtfDfq9QZpAbLjtqRo
+ 0HdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719846011; x=1720450811;
+ d=1e100.net; s=20230601; t=1719846050; x=1720450850;
  h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=3ypUVq+qGNZm9nq7Bu6AhzAAvs9/y5+Ly1uBouhDlzI=;
- b=lOUV6j6x/H+0IS/h4nq5jjHd8mderqTBaytJORNEtOK2rOOtiPyCxIZBCNNBnH+9X3
- bV9XYVDORO7fA7cg2y5lyQCICcmDGs+U8g7QovRvTL6zl8uIZ38HakHsMLhofKClZkLh
- fUn/oYp5MZ6W9FBRfxIr/qFD8/hjnVAasIULijQfge/Lc2mHZcCQ62v682Bsbh4Kan78
- rrM6gEMsPsjpRavwlgrRY33luQywgnQPwdKpNXDZDrk8eXlHvekSwTLH4qBcfnoq2tLl
- xRm8c2vfDRRGTEEWl3S747dw3ilaYLwNZTlhgiH/DDTqMNrD0U/kXkxHgP7iPIpazJmi
- oY5g==
+ bh=0i9XgB3FWcCofNOcUCQntbSdJHNFbhPZ+eaxWE0nNQ8=;
+ b=Gm5HL/JuVJLp4JMrI+/W1iXq62/Vk0hNxTEVJW2z2SqzhwYmT4Rc+wJUjdLoJKrEeh
+ YoQ9EkZzoZuMJzMn9LYtCtHIONADyjizcg+12DFQvVTVb6TcXJftT4TlIdE8jPjXnlZz
+ bgFrO0sbP59/TQ7XIwScUxvODPnhlcUJdmjwxSrRu62lFkKfK04YYZ2gXJ5teXAcC1Ii
+ CdgXu2P/sI8DW89vASMl+fhIRGRIllNWOelgdhWQfXQH4AGoJPPriMaELGL0Wrzqtb/I
+ zlN3h6HGusgIWIFZuJeqHqYAMmhlrFD7ictHdiUIdRbRtWD+QtmSnthHN3VyIp8BocDG
+ 06ZQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUtEZPvmKjfSsZaGd8JQqDz50wggfV6vKUxZhyrKaK8B6gBSRsd6RgZw9hVhzkXMw22zQ0TbRWs3Qnv1RGVEnc2H3usLrs=
-X-Gm-Message-State: AOJu0YzzEkgVczg1+M8vpR15RWuYZQ+eM23emqgusVQYAcgnxMWOzgO1
- 0f/6Pnniv1+F3SCerhaB9fPHPZ0DrGCyhlYOswQjmABBSBFyo6AZslG0l35zlow=
-X-Google-Smtp-Source: AGHT+IGw4utSZofaR8s31XurL9kN4SXhhNSrKLuYaBCuGsr4+mtj0e9rxF4SQHyKBbhaywyRqmNGSA==
-X-Received: by 2002:a05:600c:6d4:b0:425:5fd9:370f with SMTP id
- 5b1f17b1804b1-4257a006636mr49779265e9.9.1719846011602; 
- Mon, 01 Jul 2024 08:00:11 -0700 (PDT)
+ AJvYcCX+otEYTzCzcELeXHu5Yp/ge4TAbuanTr+S8XBWl9g3JWrgbNGp7za/bVIE+1B96R+/MMb8gUbQj+cohKBBj0GrAmhrewQ=
+X-Gm-Message-State: AOJu0YyUKbx3rEI9g52X4PrgzJsTLcWW7WPodxc68CTkEv9qCy4BKocM
+ ZFN0ZSmBxHM90JU+rlsLEg5RwwX6wlM71mYSLxLIS/nZTuoxX2C1P3Zc+Rn4UF0=
+X-Google-Smtp-Source: AGHT+IHFMquxgYW21IEoWEkpoGLeh85y4F6RwynFDEcc7yVdwjBqb87QK+jgfMagdnDyikQ4E2i5wA==
+X-Received: by 2002:a05:600c:3552:b0:425:7c42:d24b with SMTP id
+ 5b1f17b1804b1-4257c42d3a0mr42783875e9.18.1719846050104; 
+ Mon, 01 Jul 2024 08:00:50 -0700 (PDT)
 Received: from [192.168.69.100] ([176.176.177.159])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4256b068d1fsm156950185e9.23.2024.07.01.08.00.10
+ 5b1f17b1804b1-4258014f8b7sm62140435e9.41.2024.07.01.08.00.47
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 01 Jul 2024 08:00:11 -0700 (PDT)
-Message-ID: <8300bbce-9cdf-4e55-8696-89b450634f9a@linaro.org>
-Date: Mon, 1 Jul 2024 17:00:09 +0200
+ Mon, 01 Jul 2024 08:00:49 -0700 (PDT)
+Message-ID: <89618c21-b1dc-4979-af97-35576d8eeabb@linaro.org>
+Date: Mon, 1 Jul 2024 17:00:46 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] hw/ide/macio.c: switch from using qemu_allocate_irq()
- to qdev input GPIOs
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, qemu-devel@nongnu.org,
- qemu-ppc@nongnu.org, qemu-block@nongnu.org, akihiko.odaki@daynix.com
-References: <20240628160334.653168-1-mark.cave-ayland@ilande.co.uk>
+Subject: Re: [PATCH] Remove inclusion of hw/hw.h from files that don't need it
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
+ Jiri Slaby <jslaby@suse.cz>, Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-trivial@nongnu.org, Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
+ Francisco Iglesias <francisco.iglesias@amd.com>,
+ Alistair Francis <alistair@alistair23.me>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
+References: <20240701132649.58345-1-thuth@redhat.com>
 Content-Language: en-US
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240628160334.653168-1-mark.cave-ayland@ilande.co.uk>
+In-Reply-To: <20240701132649.58345-1-thuth@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,15 +98,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 28/6/24 18:03, Mark Cave-Ayland wrote:
-> This prevents the IRQs from being leaked when the macio IDE device is used.
+On 1/7/24 15:26, Thomas Huth wrote:
+> hw/hw.h only contains the prototype of hw_error() nowadays, so
+> files that don't use this function don't need to include this
+> header.
 > 
-> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-> Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
 > ---
->   hw/ide/macio.c                | 10 ++++++----
->   include/hw/misc/macio/macio.h |  7 +++++--
->   2 files changed, 11 insertions(+), 6 deletions(-)
+>   include/hw/misc/xlnx-cfi-if.h | 1 -
+>   hw/misc/edu.c                 | 1 -
+>   hw/vfio/container.c           | 1 -
+>   3 files changed, 3 deletions(-)
 
 Thanks, patch queued.
 
