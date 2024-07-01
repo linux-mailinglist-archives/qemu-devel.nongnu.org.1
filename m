@@ -2,78 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1759A91D9E8
-	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 10:26:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D7A291D9F1
+	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 10:30:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOCLd-00054N-Gv; Mon, 01 Jul 2024 04:25:17 -0400
+	id 1sOCQ2-00066G-LS; Mon, 01 Jul 2024 04:29:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1sOCIw-0004jO-Tf
- for qemu-devel@nongnu.org; Mon, 01 Jul 2024 04:22:30 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1sOCN6-0005lR-Hg
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 04:26:48 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1sOCIv-0000za-88
- for qemu-devel@nongnu.org; Mon, 01 Jul 2024 04:22:30 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1sOCN4-0002db-Rg
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 04:26:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719822148;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ s=mimecast20190719; t=1719822404;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=t/JSP8j/zvkme/NWxYyLbMp1RYWPCaM/K8E7GZhHnwo=;
- b=HVG18PG2jaAneV+Z/HhLti51CPzucirhlYm82OXBAOD4dcY8h9gNJHVO01KKOZc5o7ucNa
- C06bJ457W6gyh9ECCDfSSqwYzXiFafoYdt/2Iu0VuXAs6uGQw2x1TMKZ+CXlM49QPmgB3E
- h/m78dxEd20waSLsnyL2q/hHRPTWvBM=
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com
- [209.85.210.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-347-pPFMrYvDOZqV9GLBmVZ9qQ-1; Mon, 01 Jul 2024 04:22:26 -0400
-X-MC-Unique: pPFMrYvDOZqV9GLBmVZ9qQ-1
-Received: by mail-pf1-f197.google.com with SMTP id
- d2e1a72fcca58-7065ba27265so2700949b3a.0
- for <qemu-devel@nongnu.org>; Mon, 01 Jul 2024 01:22:25 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719822145; x=1720426945;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=t/JSP8j/zvkme/NWxYyLbMp1RYWPCaM/K8E7GZhHnwo=;
- b=xA503803pFvlYzTiGmdywy6tsuaTbUH2ivHFGyk6w+vNfKuPnbMWgAk+t/z/gGcY32
- dtFtC3TtR3zhdeGS+OSQafzbZKL53aKSMG2ML2Pa3uCzjeHpqabm5e+x1rj+tcpKCu82
- KyyHuJO2s9sbIY+FjP0sepZNmFUFs0FmgHhuLyuqIbEHqaS8ZSgWm8tDjtebqxGyYR3y
- 1owoblaCfRBolNAt77+6n89LvS2aeeAEhChVUVR8M0jr+v9W8FNlJcO9qW6F/GHSOWwF
- bZm2LYbezH3MO6C12UYfWZZVHgX0Fzy/DUkZshgyeY4XMEWGlbT9gQDer18gBhzG6dUO
- bcRw==
-X-Gm-Message-State: AOJu0YyWiBZR7pCSPprw1FCGkSBtYDlt113dtjhMB3mYb0N3W+shKr+b
- F3ughMxMWe6CDnvV5bXuFTAwk9HAMWbAbHgnOCw+1uCZAcMGxSeswfpFL5jb0HosdR+8AsNa8He
- ajkjXsnGXSA8f9j8v2wg5/6tro/er+nX/83O/UWfpaPu3qLDfwYxmxR88oUaPSpDmNred5Aru6s
- MSHvXfR/MVlOPjM0ATujrjd3BIE4o=
-X-Received: by 2002:a05:6a00:1812:b0:706:9030:8960 with SMTP id
- d2e1a72fcca58-70aaad2a08cmr7874869b3a.4.1719822144985; 
- Mon, 01 Jul 2024 01:22:24 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFq06POL0waE0r/n8hsCoLLoMn+31A0A+3PhYKspw9SQAkd/5d7rr0uYiwnh5QqO3iQOY0Yq5uPq1uKb6jlgLc=
-X-Received: by 2002:a05:6a00:1812:b0:706:9030:8960 with SMTP id
- d2e1a72fcca58-70aaad2a08cmr7874850b3a.4.1719822144656; Mon, 01 Jul 2024
- 01:22:24 -0700 (PDT)
+ bh=HguodlYdyUJpK2Fv+UT+CKR5Vy/WkRaQ7GfAJ9z6fVw=;
+ b=i+5udHFNoHFyz/xGdnKYMFmkiIqGvMvnaL8xVotXpjTpy+X6ekzQ357Y72i+OY9YAbsF5D
+ tDJajjxDKvUUkH9EEoetFekknNlA9zCbUyeveajidV2XLaoVutafkNomfFv7V5cLJyvfNR
+ SfRAEyIIaR7EahyHEwsTmz0TKfO4/gY=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-298-4U-baDjjNZWeVW5-C8pE6w-1; Mon,
+ 01 Jul 2024 04:26:40 -0400
+X-MC-Unique: 4U-baDjjNZWeVW5-C8pE6w-1
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 84AFE196CE15; Mon,  1 Jul 2024 08:26:38 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.124])
+ by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id CB0AC1956089; Mon,  1 Jul 2024 08:26:36 +0000 (UTC)
+Date: Mon, 1 Jul 2024 09:26:33 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>
+Subject: Re: [PATCH v42 06/98] hw/sd/sdcard: Do not store vendor data on
+ block drive (CMD56)
+Message-ID: <ZoJoOSm2dELw4oRq@redhat.com>
+References: <20240628070216.92609-1-philmd@linaro.org>
+ <20240628070216.92609-7-philmd@linaro.org>
 MIME-Version: 1.0
-References: <20240701075208.19634-1-sgarzare@redhat.com>
-In-Reply-To: <20240701075208.19634-1-sgarzare@redhat.com>
-From: Jason Wang <jasowang@redhat.com>
-Date: Mon, 1 Jul 2024 16:22:13 +0800
-Message-ID: <CACGkMEu4u5js7L5Yp+-6o8D6hv=JDP4wFyn+t2WPPZSQVhH4EQ@mail.gmail.com>
-Subject: Re: [PATCH] virtio: remove virtio_tswap16s() call in
- vring_packed_event_read()
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: qemu-devel@nongnu.org, Eugenio Perez Martin <eperezma@redhat.com>, 
- Peter Maydell <peter.maydell@linaro.org>, "Michael S. Tsirkin" <mst@redhat.com>,
- qemu-stable@nongnu.org, Xoykie <xoykie@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240628070216.92609-7-philmd@linaro.org>
+User-Agent: Mutt/2.2.12 (2023-09-09)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -94,54 +82,64 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jul 1, 2024 at 3:52=E2=80=AFPM Stefano Garzarella <sgarzare@redhat.=
-com> wrote:
->
-> Commit d152cdd6f6 ("virtio: use virtio accessor to access packed event")
-> switched using of address_space_read_cached() to virito_lduw_phys_cached(=
-)
-> to access packed descriptor event.
->
-> When we used address_space_read_cached(), we needed to call
-> virtio_tswap16s() to handle the endianess of the field, but
-> virito_lduw_phys_cached() already handles it internally, so we no longer
-> need to call virtio_tswap16s() (as the commit had done for `off_wrap`,
-> but forgot for `flags`).
->
-> Fixes: d152cdd6f6 ("virtio: use virtio accessor to access packed event")
-> Cc: jasowang@redhat.com
-> Cc: qemu-stable@nongnu.org
-> Reported-by: Xoykie <xoykie@gmail.com>
-> Link: https://lore.kernel.org/qemu-devel/CAFU8RB_pjr77zMLsM0Unf9xPNxfr_--=
-Tjr49F_eX32ZBc5o2zQ@mail.gmail.com
-> Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-
-Acked-by: Jason Wang <jasowang@redhat.com>
-
-Thanks
-
+On Fri, Jun 28, 2024 at 09:00:42AM +0200, Philippe Mathieu-Daudé wrote:
+> "General command" (GEN_CMD, CMD56) is described as:
+> 
+>   GEN_CMD is the same as the single block read or write
+>   commands (CMD24 or CMD17). The difference is that [...]
+>   the data block is not a memory payload data but has a
+>   vendor specific format and meaning.
+> 
+> Thus this block must not be stored overwriting data block
+> on underlying storage drive. Keep it in a dedicated
+> 'vendor_data[]' array.
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Tested-by: Cédric Le Goater <clg@redhat.com>
 > ---
->  hw/virtio/virtio.c | 1 -
->  1 file changed, 1 deletion(-)
->
-> diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
-> index 893a072c9d..2e5e67bdb9 100644
-> --- a/hw/virtio/virtio.c
-> +++ b/hw/virtio/virtio.c
-> @@ -323,7 +323,6 @@ static void vring_packed_event_read(VirtIODevice *vde=
-v,
->      /* Make sure flags is seen before off_wrap */
->      smp_rmb();
->      e->off_wrap =3D virtio_lduw_phys_cached(vdev, cache, off_off);
-> -    virtio_tswap16s(vdev, &e->flags);
->  }
->
->  static void vring_packed_off_wrap_write(VirtIODevice *vdev,
-> --
-> 2.45.2
->
+> RFC: Is it safe to reuse VMSTATE_UNUSED_V() (which happens
+> to be the same size)?
+
+This field became unused with:
+
+commit 12c125cba9c548929ccf4da2515e5b795c94afd9
+Author: Eric Blake <eblake@redhat.com>
+Date:   Fri May 6 10:26:39 2016 -0600
+
+    sd: Switch to byte-based block access
+    
+which was in 2.6.1 / 2.7.0
+
+
+Thus if someone is using a machine type that is 2.6 or
+older, I don't think it is safe to unconditionally
+reuse that field.
+
+My pending series deprecates everything upto 2.12, but
+we won't remove those machine types until 2 further
+release are past.
+
+You could gamble that SD card usage is niche enough
+that its highly unlikely someone will be using SD
+card at the same time as these ancient machine types.
+
+The safe thing would be a new field.
+ 
+> Cc: Peter Xu <peterx@redhat.com>
+> Cc: Fabiano Rosas <farosas@suse.de>
+> ---
+>  hw/sd/sd.c | 17 +++++++++--------
+>  1 file changed, 9 insertions(+), 8 deletions(-)
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
