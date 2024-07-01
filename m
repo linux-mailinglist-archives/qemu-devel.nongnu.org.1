@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CACCA91D651
-	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 04:52:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3767A91D64C
+	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 04:51:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sO78X-00030h-Oy; Sun, 30 Jun 2024 22:51:25 -0400
+	id 1sO78X-000304-K5; Sun, 30 Jun 2024 22:51:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sO78U-0002xL-Qg
- for qemu-devel@nongnu.org; Sun, 30 Jun 2024 22:51:22 -0400
-Received: from mail-pj1-x1030.google.com ([2607:f8b0:4864:20::1030])
+ id 1sO78V-0002yS-7w
+ for qemu-devel@nongnu.org; Sun, 30 Jun 2024 22:51:23 -0400
+Received: from mail-pj1-x102b.google.com ([2607:f8b0:4864:20::102b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sO78S-00007m-TZ
+ id 1sO78T-0000DQ-LB
  for qemu-devel@nongnu.org; Sun, 30 Jun 2024 22:51:22 -0400
-Received: by mail-pj1-x1030.google.com with SMTP id
- 98e67ed59e1d1-2c84df0e2f4so1601400a91.1
- for <qemu-devel@nongnu.org>; Sun, 30 Jun 2024 19:51:20 -0700 (PDT)
+Received: by mail-pj1-x102b.google.com with SMTP id
+ 98e67ed59e1d1-2c8e7553c9eso1794296a91.3
+ for <qemu-devel@nongnu.org>; Sun, 30 Jun 2024 19:51:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719802279; x=1720407079; darn=nongnu.org;
+ d=linaro.org; s=google; t=1719802280; x=1720407080; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+mPvMUbmRUW5qOg66PJMTfVpv43K7IU1VZRf6V6fQ1Q=;
- b=V5/JjILYl8P0sxw3n2cUbZh/sMn5dztL6nI3t28zgPpENiEMoeQlsj9yaQ2OjshKoi
- WJdZhW1WDprayRfjLCXoduGM5wweEafs+aZFS5D42nEGxUA5Ti4Of6FNLNdL2/V7qQWl
- mag/oO0c7IGP+BQS9TKc9pBlpxBe7y1LKaiEL4B1M8ykI0P6Ee4nPNzQ6FRzhzCETqow
- D+d500UDnQja70WlBwYrGxmJtZ2pcdrcGLL9gqC0B1R2cS2Spzee0qw1ICcYQRUyG+Tn
- 89xF6c0QoMiq3tKGilB8W3mo0POR0Ob2c2+LP5sJNpocJmoifO7OaBab2jW53hPcfrjC
- sVlQ==
+ bh=M3N6rPlpvzYKdcGfQuTrjYcbyNAlpYXYp9ucQoujl0c=;
+ b=MBMM8ZAQ/LynmXoslz7vX4zIJjv7/3x/6x4CHIgo1bYTDREuXGwTVqftSDsBLck1BS
+ 4jIqrL/fsVsaKUK6T4r6vmko274QBcSvG4/T0keJPdNv5JcSdZwtlCm0zFesTG7GymDT
+ nydsCGLE9ce/Pu1HQgZqaNBhSAGzk08H/6X9zQnZ6W/HKEt5OjzhbClqi0InB8cfCkaM
+ O97HBXhuljL9dcymQMSOpPfXpf0EpvoWwjYt8Ydm1ML3gyxmtZe+gcvUzeEkubnGt2p4
+ 8W6E/6eTUuNsnvpzHAqsNYYmLX0puJ2/bEtQqUEtCyd6XPhCCVj88+G+mhVbNYWYhaad
+ JM8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719802279; x=1720407079;
+ d=1e100.net; s=20230601; t=1719802280; x=1720407080;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+mPvMUbmRUW5qOg66PJMTfVpv43K7IU1VZRf6V6fQ1Q=;
- b=TrUzLUe6EFrngqAUweg7jwOOdOjxE6DbjzUfJbcIGAwQj54CZpbWMeco3trXRRBWax
- njrJEwrga/wGYcFrXmT+eoT4bIIn62/8q+RNeh/wByLH4l37tjaNqt4ARPWjX0pld6Dz
- 9fFURDrMrEQKYaF1SMC4zdbImTcKhOXpi28jy4txJTmGq0E48Pz2aSg8bEjRP0NYpGtl
- Qz1HSVb7bQRdbbt64OWzRzRx2y49LQ+RTVHcnB51qy9gU8/IdFhqJ0CMmH0mq0Q9bGBo
- BTyemmX1IgP0OkmMYcGP+9fMj28wFzBi3UMHLURWZMx54Xf/eQAWWA33l4Z3k/gKFgZo
- wmMw==
-X-Gm-Message-State: AOJu0Yz63QAjsm+nyk8GwosIR+9efDEabDBXXCPIfgGu+5jQUxj5yROg
- XzpXxXbNDutDvlV4gz/bMfS0axrnrM9a1nSwPrb0UVcpnoaTC9pKgloGs7ZdxP7gSFr/OElRLXH
- 3
-X-Google-Smtp-Source: AGHT+IF6pDvzWK0bOiycY1uCErclF6JZrL67rAeQrWa2qa13XrLBXJUAFjg0jzFdzW4tc1aedpn0og==
-X-Received: by 2002:a17:90a:5b0e:b0:2c8:946b:eea2 with SMTP id
- 98e67ed59e1d1-2c93d1b9307mr7041641a91.7.1719802279273; 
- Sun, 30 Jun 2024 19:51:19 -0700 (PDT)
+ bh=M3N6rPlpvzYKdcGfQuTrjYcbyNAlpYXYp9ucQoujl0c=;
+ b=AjC4VBDKq3kwOtbra5Jgntv3I3DY9n1bBNSaftofqFDd2rJgdMgirnFtK2lukHVdEs
+ TZSkz077aeG+LDf3QHK413Shjn+mIk+qlJMc99DoMLcn3S3sRsu4ot30hlbL85FRj6aw
+ 8vIA8nloKHJnOXiEZj/QSgnBaWvgECgcGH+dGXrSPbstogf2QrZfLpYYwF+z064d77JX
+ RBIlirRFxqY6yHibT53dH2cx93+H+6uYXHEeNzvvS7n1ABf1o8CYhWx7luFuV8TKNUAy
+ 2aGpZ2rrv35AbBshAP49Fz5Dokn0PpTVsJclEWNWUPZHHTLN4lhg2O+bmfex3Gt428NO
+ iLMg==
+X-Gm-Message-State: AOJu0YzRfEYe3l+WfNhq1YuAxYulYiWNlCZJQNUum1sHMkf4l8HjDNdL
+ vTPKwPiGwOC6hfZd+CA7Lhi6BB2Ej5Ym3wbLSl3q8/nLOODMCuQJ58SmvrS8+CQUleKB+ggRtSF
+ z
+X-Google-Smtp-Source: AGHT+IHPZokYVk3/63oBakFeipGmzM7Rak8PpTpgOviYTVmG8EuKuUj+QkvZW6Py2tfoA9HvDc67aQ==
+X-Received: by 2002:a17:90a:c084:b0:2c7:c6a1:42c9 with SMTP id
+ 98e67ed59e1d1-2c93d6f22ffmr3648624a91.10.1719802280206; 
+ Sun, 30 Jun 2024 19:51:20 -0700 (PDT)
 Received: from stoup.. (174-21-76-141.tukw.qwest.net. [174.21.76.141])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2c91d3b9349sm5531698a91.37.2024.06.30.19.51.18
+ 98e67ed59e1d1-2c91d3b9349sm5531698a91.37.2024.06.30.19.51.19
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 30 Jun 2024 19:51:18 -0700 (PDT)
+ Sun, 30 Jun 2024 19:51:19 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: pbonzini@redhat.com
-Subject: [PATCH 3/5] target/i386: Rearrange CCOp
-Date: Sun, 30 Jun 2024 19:51:13 -0700
-Message-Id: <20240701025115.1265117-4-richard.henderson@linaro.org>
+Subject: [PATCH 4/5] target/i386: Remove default in cc_op_live
+Date: Sun, 30 Jun 2024 19:51:14 -0700
+Message-Id: <20240701025115.1265117-5-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240701025115.1265117-1-richard.henderson@linaro.org>
 References: <20240701025115.1265117-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1030;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1030.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,82 +92,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Define CC_OP_{FIRST,LAST}_BWLQ.  Remove CC_OP_NB.
-Give the first few enumerators explicit integer constants.
-Move CC_OP_POPCNT up in the enumeration; remove unused
-CC_OP_POPCNT*__ placeholders.  Align the BWLQ enumerators.
-
-This will be used to simplify ((op - CC_OP_*B) & 3).
+Now that CC_OP_NB is gone, push the assert after the switch.
+This will allow -Wswitch to diagnose missing entries.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/i386/cpu.h | 44 ++++++++++++++++++++++++--------------------
- 1 file changed, 24 insertions(+), 20 deletions(-)
+ target/i386/tcg/translate.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index 29daf37048..df4272fdae 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -1270,14 +1270,27 @@ uint64_t x86_cpu_get_supported_feature_word(FeatureWord w,
-  * are only needed for conditional branches.
-  */
- typedef enum {
--    CC_OP_DYNAMIC, /* must use dynamic code to get cc_op */
--    CC_OP_EFLAGS,  /* all cc are explicitly computed, CC_SRC = flags */
--    CC_OP_ADCX, /* CC_DST = C, CC_SRC = rest.  */
--    CC_OP_ADOX, /* CC_SRC2 = O, CC_SRC = rest.  */
--    CC_OP_ADCOX, /* CC_DST = C, CC_SRC2 = O, CC_SRC = rest.  */
--    CC_OP_CLR, /* Z and P set, all other flags clear.  */
-+    CC_OP_DYNAMIC = 0, /* must use dynamic code to get cc_op */
-+    CC_OP_EFLAGS = 1,  /* all cc are explicitly computed, CC_SRC = flags */
-+    CC_OP_ADCX = 2,    /* CC_DST = C, CC_SRC = rest.  */
-+    CC_OP_ADOX = 3,    /* CC_SRC2 = O, CC_SRC = rest.  */
-+    CC_OP_ADCOX = 4,   /* CC_DST = C, CC_SRC2 = O, CC_SRC = rest.  */
-+    CC_OP_CLR = 5,     /* Z and P set, all other flags clear.  */
+diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
+index e5a8aaf793..e675afca47 100644
+--- a/target/i386/tcg/translate.c
++++ b/target/i386/tcg/translate.c
+@@ -318,9 +318,8 @@ static uint8_t cc_op_live(CCOp op)
+     case CC_OP_SBBB ... CC_OP_SBBQ:
+     case CC_OP_ADCOX:
+         return USES_CC_DST | USES_CC_SRC | USES_CC_SRC2;
+-    default:
+-        g_assert_not_reached();
+     }
++    g_assert_not_reached();
+ }
  
--    CC_OP_MULB, /* modify all flags, C, O = (CC_SRC != 0) */
-+    /*
-+     * Z via CC_DST, all other flags clear.
-+     * Treat CC_OP_POPCNT like the other BWLQ ops in making the low bits
-+     * equal MO_TL; this gives a value of either 6 or 7.
-+     */
-+#ifdef TARGET_X86_64
-+    CC_OP_POPCNT = 7,
-+#else
-+    CC_OP_POPCNT = 6,
-+#endif
-+
-+#define CC_OP_FIRST_BWLQ  CC_OP_POPCNT
-+
-+    CC_OP_MULB = 8, /* modify all flags, C, O = (CC_SRC != 0) */
-     CC_OP_MULW,
-     CC_OP_MULL,
-     CC_OP_MULQ,
-@@ -1332,20 +1345,11 @@ typedef enum {
-     CC_OP_BMILGL,
-     CC_OP_BMILGQ,
- 
--    /*
--     * Note that only CC_OP_POPCNT (i.e. the one with MO_TL size)
--     * is used or implemented, because the translation needs
--     * to zero-extend CC_DST anyway.
--     */
--    CC_OP_POPCNTB__, /* Z via CC_DST, all other flags clear.  */
--    CC_OP_POPCNTW__,
--    CC_OP_POPCNTL__,
--    CC_OP_POPCNTQ__,
--    CC_OP_POPCNT = sizeof(target_ulong) == 8 ? CC_OP_POPCNTQ__ : CC_OP_POPCNTL__,
--
--    CC_OP_NB,
-+#define CC_OP_LAST_BWLQ CC_OP_BMILGQ
- } CCOp;
--QEMU_BUILD_BUG_ON(CC_OP_NB >= 128);
-+
-+/* See X86DecodedInsn.cc_op, using int8_t. */
-+QEMU_BUILD_BUG_ON(CC_OP_LAST_BWLQ > INT8_MAX);
- 
- typedef struct SegmentCache {
-     uint32_t selector;
+ static void set_cc_op_1(DisasContext *s, CCOp op, bool dirty)
 -- 
 2.34.1
 
