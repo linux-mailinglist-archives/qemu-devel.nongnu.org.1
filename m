@@ -2,67 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAC9E91DDBC
-	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 13:21:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F39F091DDBE
+	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 13:21:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOF5o-0004VT-FT; Mon, 01 Jul 2024 07:21:08 -0400
+	id 1sOF60-0004g3-50; Mon, 01 Jul 2024 07:21:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOF5m-0004S8-Pc
- for qemu-devel@nongnu.org; Mon, 01 Jul 2024 07:21:06 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOF5x-0004eg-Qw
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 07:21:17 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOF5g-0004gd-NK
- for qemu-devel@nongnu.org; Mon, 01 Jul 2024 07:21:06 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-42565697036so23016735e9.1
- for <qemu-devel@nongnu.org>; Mon, 01 Jul 2024 04:21:00 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOF5r-0004iK-S2
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 07:21:17 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-4255fc43f1cso19871235e9.0
+ for <qemu-devel@nongnu.org>; Mon, 01 Jul 2024 04:21:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719832859; x=1720437659; darn=nongnu.org;
+ d=linaro.org; s=google; t=1719832870; x=1720437670; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=dtvFfJZHexqAYaBJ9JwSErcs6iFCF0Sl9aNGrfPcKtk=;
- b=C+rBT40yhAPRakS5EHiiFj3x2wg5kRUJx6GP1jZzIK2LQzd5bbocPldZ42mVsBfHFj
- yuvKEZhbezwLjoHm0gisQcNPD4bETqNdGjLw69zspUU89M9kCnNfP2/nBuoPLnNmXGoY
- 90Ncj+YA4b/DZjA2Cx4A4cE6CtYkkCN5be5zbt8uSA+COAht5JrrLwyaMq1/Bv1mY2Rl
- KQAQlAfIzvxW+ZB3Akwdoq6eti6rY70eMJOskTkPZbnBBnhHe6wqInrUI+0bDyvz5JZc
- lZ9uhJTGSR42heD+3M9rURwbk6tBX+acVw46CvFdvN3ZyZ4jFzOhI0XqcJRp2hXNuhvk
- OtJQ==
+ bh=HqYKcm1A89FEOMNRUkVlvdrvbaPWNfCd2gw1vOazbek=;
+ b=UTkl6yI539ktzxHKza4YuZLfGfJ9hJx6dWoGYWjl7sePwnqxcGC/Xmmx9m6WVzvN4g
+ 4bzGaCY+6E274qQMn2iux7EC2js4Mzz1pfcerPqQ2z4tvNSfT+dJyri10F9TVAY37fl5
+ LSV32wxOdR2xHOIwCcglXD5yPpXns99kbQdGgCIeqBRIJVvljVMDIWX8s0h0N9MEQb+h
+ g6BIO2avCAwhmcshVU2x8dqteyLASuV6Uoabaydy0SARR4Mst1nK7uYeNjF0GZHXUnR6
+ FG2nen0qTmY1Osd/nRHEYVuz9v1fuuuy0sY+wXDkDTyJO8AA5rnsjzvMCaDs0PCIp1Mu
+ H6QQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719832859; x=1720437659;
+ d=1e100.net; s=20230601; t=1719832870; x=1720437670;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=dtvFfJZHexqAYaBJ9JwSErcs6iFCF0Sl9aNGrfPcKtk=;
- b=wMdyRtquxbCooRqvYrEcE6efJhL3oXGf8vGpSqOepxbCzUskbOWV+MOzZ8R2dorJWz
- X6FEQ8dPLIsVleBbHwjDz6JboyoFr66GFkG6+5s41cuEYLig45xdYiyNMGJr0XeDOkgz
- 5fiGeI7x85To8iShqPAKMk8hx4Y0cyL10XCvBrsK1qaHz0c2UIA6m3YzLAxJ30IgMD35
- LLoC2ZiGl2JwxDzWr6ClKS/JvuuKbxM06vv/6OT+mUu2kLpbDz3eG9v3KIERI7toU+SM
- UiDIenuqDC/ZXnPs3bwyMJxFDqowvBSXgLodd9pNMbPJqo5N3dCSdmCb47I34ipitMis
- WMEg==
+ bh=HqYKcm1A89FEOMNRUkVlvdrvbaPWNfCd2gw1vOazbek=;
+ b=T53oONuJgP0uL1Q5nMFulK/ab6yxQtEjbOVcAoS3GBawrXLhhH+wBY2ktVU7qBTOJZ
+ EnYmW4aYmCH3b0vEYsLucZReciIPdcwQuk4W08J7w6uyU+Os7vVy3D21nQdhdtqzhgyq
+ I8lc/lYxqqCjE0h2yGklHJjVaG0xqrQ7Mh1l67gQ7Q2T+yQ8uC94TlovQ8jf44cKvfkC
+ yelpsc4/dxACBFne6S9xO2DkU/fzA7qfM4WXlxB/msBOfLB9kjC1ZV3jOyGxjZS5XBm2
+ NR0tVYZltC4qEhgitX3Ua7svCzRRzw6mhIgOJwbQNMJ19+ap2YuwDgp9E/Kfb3j1Cgu9
+ B/Hg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVWH8HzxkuJCNmm+5x1sT8CYR6dizS+SEqxzAZ2s7343BNN7wMx6KSJ2SP15CQ9kcP9HuHg6mTC01s3GmdwWD1F8qAVHMQ=
-X-Gm-Message-State: AOJu0YzvZaMqPtty3Q06PAg6gH63gyWCpHpiLvDgYpCymhfWgkSTlP4k
- 5zGW0DIu+MNpMDAyWkUHkBh1I1meqxXrj06uVnx6obkTLeYK0Ygob+yZXQoEJ3RJNasCT9omCmG
- o
-X-Google-Smtp-Source: AGHT+IEckQfZYwEUvPxfaPbjlVBnM8WWKbMDAfRvS7dv8DBSU2I2Kx7vzmKPSbhSzFEvEb4Nd/7tyA==
-X-Received: by 2002:a05:600c:3b88:b0:424:8acb:7d53 with SMTP id
- 5b1f17b1804b1-4257984deb1mr49838445e9.1.1719832859062; 
- Mon, 01 Jul 2024 04:20:59 -0700 (PDT)
+ AJvYcCV6DEnakLomC21/xFx6F6zSWE6arXmVi0JuVoWuV7WJKWn7xNc2VSOcgFhuWdf0hBwj5S48/n1O96R9/ao1Vts5MG2UI0E=
+X-Gm-Message-State: AOJu0YwuNLj/JgRNy44y7qyx7UWLX4j/sAQ9HmkCU7WgR9FEesKkIpeU
+ 9sJROz36WsmbbS+cvi+2vT6DqvR/6gD9vV6m70nQ0VrlVo7Rmh1M0ws1XPO0pl0=
+X-Google-Smtp-Source: AGHT+IFb4DIdpprbeyX2xW5x8j2uVH+M74r8AZ26BvpgjK0wiroWvV11eBtMmAbfrDXzz+aJFtJrbw==
+X-Received: by 2002:a05:600c:331e:b0:425:65be:3477 with SMTP id
+ 5b1f17b1804b1-4257a03c3b6mr39176545e9.18.1719832870480; 
+ Mon, 01 Jul 2024 04:21:10 -0700 (PDT)
 Received: from [192.168.69.100] ([176.176.177.159])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4256af3c2afsm151018005e9.2.2024.07.01.04.20.56
+ 5b1f17b1804b1-4258014f8b7sm53525045e9.41.2024.07.01.04.21.08
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 01 Jul 2024 04:20:58 -0700 (PDT)
-Message-ID: <9bc15a96-8717-4c3d-b418-934a6e13f06c@linaro.org>
-Date: Mon, 1 Jul 2024 13:20:55 +0200
+ Mon, 01 Jul 2024 04:21:10 -0700 (PDT)
+Message-ID: <d2fa5c04-7e55-4051-a587-055c19cebfd6@linaro.org>
+Date: Mon, 1 Jul 2024 13:21:07 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 12/14] hw/ppc: remove obsolete manual deprecation
- reason string of spapr machines
+Subject: Re: [PATCH v2 13/14] hw/i386: remove obsolete manual deprecation
+ reason string of i440fx machines
 To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
  qemu-devel@nongnu.org
 Cc: Halil Pasic <pasic@linux.ibm.com>, devel@lists.libvirt.org,
@@ -81,21 +80,21 @@ Cc: Halil Pasic <pasic@linux.ibm.com>, devel@lists.libvirt.org,
  Christian Borntraeger <borntraeger@linux.ibm.com>,
  Laurent Vivier <laurent@vivier.eu>, qemu-ppc@nongnu.org
 References: <20240620165742.1711389-1-berrange@redhat.com>
- <20240620165742.1711389-13-berrange@redhat.com>
+ <20240620165742.1711389-14-berrange@redhat.com>
 Content-Language: en-US
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240620165742.1711389-13-berrange@redhat.com>
+In-Reply-To: <20240620165742.1711389-14-berrange@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -113,19 +112,19 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 20/6/24 18:57, Daniel P. Berrangé wrote:
 > The automatic deprecation mechanism introduced in the preceeding patches
-> will mark every spapr machine upto and including 2.12 as deprecated. As
-> such we can revert the manually added deprecation which was a subset:
+> will mark every i440fx machine upto and including 2.12 as deprecated. As
+> such we can revert the manually added deprecation introduced in:
 > 
->    commit 1392617d35765d5d912625fbb5cab1ffbed8e140
->    Author: Cédric Le Goater <clg@kaod.org>
->    Date:   Tue Jan 23 16:37:02 2024 +1000
+>    commit 792b4fdd4eb8197bd6eb9e80a1dfaf0cb3b54aeb
+>    Author: Philippe Mathieu-Daudé <philmd@linaro.org>
+>    Date:   Wed Feb 28 10:34:35 2024 +0100
 > 
->      spapr: Tag pseries-2.1 - 2.11 machines as deprecated
+>      hw/i386/pc: Deprecate 2.4 to 2.12 pc-i440fx machines
 > 
 > Reviewed-by: Thomas Huth <thuth@redhat.com>
 > Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 > ---
->   hw/ppc/spapr.c | 1 -
+>   hw/i386/pc_piix.c | 1 -
 >   1 file changed, 1 deletion(-)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
