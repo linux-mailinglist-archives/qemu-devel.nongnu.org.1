@@ -2,73 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C2C391D85A
-	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 08:56:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C9ED91D863
+	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 08:58:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOAxG-0001En-Ko; Mon, 01 Jul 2024 02:56:03 -0400
+	id 1sOAz3-0002fw-Qo; Mon, 01 Jul 2024 02:57:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sOAxC-0001Cs-FN; Mon, 01 Jul 2024 02:55:58 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
+ (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
+ id 1sOAz0-0002fZ-Rx
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 02:57:50 -0400
+Received: from fout6-smtp.messagingengine.com ([103.168.172.149])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sOAxA-00022b-IY; Mon, 01 Jul 2024 02:55:58 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 3317F75A58;
- Mon,  1 Jul 2024 09:55:45 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id D6DC2FB1BA;
- Mon,  1 Jul 2024 09:55:52 +0300 (MSK)
-Message-ID: <7f5753b1-16f3-49d8-9394-7fe85286777a@tls.msk.ru>
-Date: Mon, 1 Jul 2024 09:55:52 +0300
+ (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
+ id 1sOAyz-0002Eu-51
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 02:57:50 -0400
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+ by mailfout.nyi.internal (Postfix) with ESMTP id 698C213802A4;
+ Mon,  1 Jul 2024 02:57:46 -0400 (EDT)
+Received: from imap44 ([10.202.2.94])
+ by compute3.internal (MEProxy); Mon, 01 Jul 2024 02:57:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
+ cc:cc:content-transfer-encoding:content-type:content-type:date
+ :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+ :references:reply-to:subject:subject:to:to; s=fm3; t=1719817066;
+ x=1719903466; bh=PCZD+ZCwgI4oZeQPR59nzeQE/yjPZCP6vkk0m0ProPk=; b=
+ Sh9fCU1znbHIzWrwX0Kc57lvnVhWPDIlFBkD7aspz3Hj9SrOJNvRycc3TI9Rb1a2
+ OtmkCh+lDOBp4bYw3IcVpmWTbxwnWQgQJCoi1h3kLmduEqXvFXTqULY9e1aqqDRS
+ TszfUiu9VpzWcLDzwG0kq5djmnO0yTRcbquvm2BFZ/rMKWVU+NDAsiwYtIowm4zc
+ 4MZTgytVLZEFmGirmZ7KwVQm4NvSHxW946mYntwMYGtGxy9Gxg4AgQDV1Vo94mA3
+ BCVxE38xWkFn48CoUFXP6kUtTJljPxmNZJBfoa2lQ+XEY7OAcDe6qzd3l0a6kedM
+ YWDn6PJ3WLaxFJDpxvwKqw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:cc:content-transfer-encoding
+ :content-type:content-type:date:date:feedback-id:feedback-id
+ :from:from:in-reply-to:in-reply-to:message-id:mime-version
+ :references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
+ :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1719817066; x=
+ 1719903466; bh=PCZD+ZCwgI4oZeQPR59nzeQE/yjPZCP6vkk0m0ProPk=; b=W
+ 5jairg9M88ip3JZ28yFQjBlRKIRe/4v8taX+nNPjKEtqUrS8dKzistXtBo7wXtnR
+ 2uSvQ7zuu/fPCyJr5qXrkjZJV0giDoW1aI0XFMhK5UoBbuBt692Gsj6Oom5oDoaR
+ HcMKKt2A138kXmMaAK8mdBsXLueor3nIelamRu87bv7grsb+5Qa4F1Z5C/UEMzyf
+ 0CYzof0BXTUzOJY8BZRzHsLooDd3ExAq2R6B5zCFARlKkI0EMd7P0dzqOYLe9RfO
+ mpzxJdFxC6pVnf/rcz//beSfUNjtagcmb0P0yit+YdWZYhgsTK7BROMN+Vms1Loo
+ U2jk+BV3Xq4rH2O7dGQmg==
+X-ME-Sender: <xms:alOCZtUCVTNphIxVD1tHb4EtRCboPOiQ70n42vFzAhgl3Rm8P6OBvQ>
+ <xme:alOCZtmuD9ZZXk5R-M-BnGx_SdrL0_YAoEg4_aQhEQUp2IUHvuQ7KXdxvi6Wk6bB3
+ ConZ6TMLbP4CRHtSGc>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddruddvgdduudefucetufdoteggodetrfdotf
+ fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+ uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+ cujfgurhepofgfggfkjghffffhvfevufgtgfesthhqredtreerjeenucfhrhhomhepfdfl
+ ihgrgihunhcujggrnhhgfdcuoehjihgrgihunhdrhigrnhhgsehflhihghhorghtrdgtoh
+ hmqeenucggtffrrghtthgvrhhnpedufeegfeetudeghefftdehfefgveffleefgfehhfej
+ ueegveethfduuddvieehgfenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmh
+ grihhlfhhrohhmpehjihgrgihunhdrhigrnhhgsehflhihghhorghtrdgtohhm
+X-ME-Proxy: <xmx:alOCZpbAMJFxi910kGMcIKsnMLYp3nTks964JvOsaLmBhVp-ihf8Mw>
+ <xmx:alOCZgUw9IFGI0pdd475sue-wzX7CEUicAGVD6G-XDhg168NrSm7Qg>
+ <xmx:alOCZnm0_I5tVKHQXFvBPsiRrO9ke4prT0ABIzLJW16z0NK84Na89w>
+ <xmx:alOCZtcpMLoWRlgke8T9D15EzznJwtm3j8IX5zSmwFJXA92vQWLpUQ>
+ <xmx:alOCZlhT7WQJSHc3NvEGwj5qZcuczZQFrqD82yN9JJ4h0la27gwH59rm>
+Feedback-ID: ifd894703:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+ id E83DB36A0074; Mon,  1 Jul 2024 02:57:45 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.11.0-alpha0-566-g3812ddbbc-fm-20240627.001-g3812ddbb
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] block/curl: rewrite http header parsing function
-To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- qemu-block@nongnu.org
-Cc: qemu-devel@nongnu.org, hreitz@redhat.com, kwolf@redhat.com,
- qemu-trivial@nongnu.org
-References: <20240629142542.1086076-1-mjt@tls.msk.ru>
- <ead01cd7-80d7-4cfd-9b20-8417681fb3b8@yandex-team.ru>
-Content-Language: en-US, ru-RU
-From: Michael Tokarev <mjt@tls.msk.ru>
-Autocrypt: addr=mjt@tls.msk.ru; keydata=
- xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
- bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
- WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
- 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
- WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
- zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
- FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
- CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
- Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
- LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
- UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
- SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
- 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
- K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
- pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
- GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
- fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
- AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
- cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
- HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
- 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
- rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
- Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
-In-Reply-To: <ead01cd7-80d7-4cfd-9b20-8417681fb3b8@yandex-team.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Message-Id: <db19ed93-027c-4e29-aac5-e3a1edcd760b@app.fastmail.com>
+In-Reply-To: <20240530064941.1289573-2-maobibo@loongson.cn>
+References: <20240530064941.1289573-1-maobibo@loongson.cn>
+ <20240530064941.1289573-2-maobibo@loongson.cn>
+Date: Mon, 01 Jul 2024 07:57:31 +0100
+From: "Jiaxun Yang" <jiaxun.yang@flygoat.com>
+To: "Bibo Mao" <maobibo@loongson.cn>, "Song Gao" <gaosong@loongson.cn>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: "QEMU devel" <qemu-devel@nongnu.org>
+Subject: Re: [RFC v3 1/2] target/loongarch: Add loongson binary translation
+ feature
+Content-Type: text/plain;charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=103.168.172.149;
+ envelope-from=jiaxun.yang@flygoat.com; helo=fout6-smtp.messagingengine.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,26 +106,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-01.07.2024 09:54, Vladimir Sementsov-Ogievskiy wrote:
 
->> +    const char *t = "accept-ranges : bytes "; /* A lowercase template */
-> 
-> Note: you make parser less strict: you allow "bytes" to be uppercase (was allowed only for accept-ranges", and you allow whitespaces before colon.
 
-Yes, exactly.
+=E5=9C=A82024=E5=B9=B45=E6=9C=8830=E6=97=A5=E4=BA=94=E6=9C=88 =E4=B8=8A=E5=
+=8D=887:49=EF=BC=8CBibo Mao=E5=86=99=E9=81=93=EF=BC=9A
+> Loongson Binary Translation (LBT) is used to accelerate binary
+> translation, which contains 4 scratch registers (scr0 to scr3), x86/ARM
+> eflags (eflags) and x87 fpu stack pointer (ftop).
+>
+> Now LBT feature is added in kvm mode, not supported in TCG mode since
+> it is not emulated. Feature variable lbt is added with OnOffAuto type,
+> If lbt feature is not supported with KVM host, it reports error if the=
+re
+> is lbt=3Don command line.
+>
+> If there is no any command line about lbt parameter, it checks whether
+> KVM host supports lbt feature and set the corresponding value in cpucf=
+g.
+>
+> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+Hi Bibo,
 
-I should add this to the description (wanted to do that but forgot).
-I'll update the patch (without re-sending) - hopefully its' okay to
-keep your S-o-b :)
+I was going across recent LoongArch changes and this comes into my atten=
+tion:=20
 
-Thanks,
+> ---
+>  target/loongarch/cpu.c                | 53 +++++++++++++++++++++++++++
+>  target/loongarch/cpu.h                |  6 +++
+>  target/loongarch/kvm/kvm.c            | 26 +++++++++++++
+>  target/loongarch/kvm/kvm_loongarch.h  | 16 ++++++++
+>  target/loongarch/loongarch-qmp-cmds.c |  2 +-
+>  5 files changed, 102 insertions(+), 1 deletion(-)
+>
+> diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
+> index b5c1ec94af..14265b6667 100644
+> --- a/target/loongarch/cpu.c
+> +++ b/target/loongarch/cpu.c
+> @@ -571,6 +571,30 @@ static void loongarch_cpu_disas_set_info(CPUState=20
+> *s, disassemble_info *info)
+>      info->print_insn =3D print_insn_loongarch;
+>  }
+>=20
+> +static void loongarch_cpu_check_lbt(CPUState *cs, Error **errp)
+> +{
+> +    CPULoongArchState *env =3D cpu_env(cs);
+> +    LoongArchCPU *cpu =3D LOONGARCH_CPU(cs);
+> +    bool kvm_supported;
+> +
+> +    kvm_supported =3D kvm_feature_supported(cs, LOONGARCH_FEATURE_LBT=
+);
 
-/mjt
+IMHO if there is no global states that should be saved/restored VM wise,
+this should be handled at per CPU level, preferably with CPUCFG flags hi=
+nt.
 
--- 
-GPG Key transition (from rsa2048 to rsa4096) since 2024-04-24.
-New key: rsa4096/61AD3D98ECDF2C8E  9D8B E14E 3F2A 9DD7 9199  28F1 61AD 3D98 ECDF 2C8E
-Old key: rsa2048/457CE0A0804465C5  6EE1 95D1 886E 8FFB 810D  4324 457C E0A0 8044 65C5
-Transition statement: http://www.corpit.ru/mjt/gpg-transition-2024.txt
+We should minimize non-privilege KVM feature bits to prevent hindering
+asymmetry ISA system.
 
+Thanks
+- Jiaxun
+
+--=20
+- Jiaxun
 
