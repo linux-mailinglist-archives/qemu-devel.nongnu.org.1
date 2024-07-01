@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53D8891E323
-	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 17:01:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E991791E339
+	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 17:04:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOIV8-000420-1G; Mon, 01 Jul 2024 10:59:30 -0400
+	id 1sOIV6-00040W-B6; Mon, 01 Jul 2024 10:59:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sOIV4-00040k-T9
- for qemu-devel@nongnu.org; Mon, 01 Jul 2024 10:59:26 -0400
+ id 1sOIV3-00040F-6y
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 10:59:25 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sOIV2-0005JE-E0
- for qemu-devel@nongnu.org; Mon, 01 Jul 2024 10:59:26 -0400
+ id 1sOIV1-0005J7-BK
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 10:59:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719845963;
+ s=mimecast20190719; t=1719845962;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=um1cHYKDVA60dq1DdcbcXL9qPvVb59yG3OyrA7YkkNg=;
- b=CORQGbyLO1WO/FsL6DvBr29lhDt0wJubXL5yTWSjxKIPB8ha/7meeN05uEnnqSyiIF6d6G
- nH4ylm1u1ozb/XfBBqyVZcEzvqAkJPvVgxSQDwnlzimjfF/KYHDiBb1seHl4r9oYzxITyO
- uZ4aITFu5lWd5W6wEWXxckl38QKdesU=
-Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
- [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=ItGWoIXbmG8BtrqUqVyvFsub+0df4Uw051wHIRwFpYQ=;
+ b=Vz5P1xNJFfocxSWg6BFpuV3hLzFDTq4S1NL4yOyeQCUdz6SMhNr9jrT2RNp8oh67pM3Dgs
+ uT5JmbhZkxkGmoEEIs18+otWCg7PsJWQS3wiXQNI0y8hhY0VME/s66B2NtieJXvL/CZ9hl
+ DquiQ6fXX2Lj+MtgENxbZkjMcGPIFRA=
+Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
+ [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-329-rvlHLLYjO1qQ3_GqQzlrrQ-1; Mon, 01 Jul 2024 10:59:17 -0400
-X-MC-Unique: rvlHLLYjO1qQ3_GqQzlrrQ-1
-Received: by mail-lj1-f199.google.com with SMTP id
- 38308e7fff4ca-2ee4c666856so35551471fa.0
- for <qemu-devel@nongnu.org>; Mon, 01 Jul 2024 07:59:17 -0700 (PDT)
+ us-mta-637-C33Z-AxVO5--EY7C0qhI0A-1; Mon, 01 Jul 2024 10:59:21 -0400
+X-MC-Unique: C33Z-AxVO5--EY7C0qhI0A-1
+Received: by mail-lj1-f197.google.com with SMTP id
+ 38308e7fff4ca-2ee4a63e95cso31683741fa.1
+ for <qemu-devel@nongnu.org>; Mon, 01 Jul 2024 07:59:20 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719845955; x=1720450755;
+ d=1e100.net; s=20230601; t=1719845958; x=1720450758;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=um1cHYKDVA60dq1DdcbcXL9qPvVb59yG3OyrA7YkkNg=;
- b=pk3MdeU/jHk3bQFeXaS3AeOino5ERtqntv/Dy9r8mU/6AHA7lQXbzGbKRL+ZYAfY/v
- WntL2I8T0tiUBl7Pt5Sxm8FzpMZ0RX3nuDVp0d6VOS+Xhy8efVUJtRx89WinsnZ8u17L
- 4NMqSXxzJ7Pv/pr2SMc0ExBMnfGRlHquqhyF2YwvqznaXFU5wYNFfcbEmk/KhzYs/DYb
- /+n9/nGydvMcbn/jf4E1EIQA/xA12O5GD7n82USyMK93MABStesznny8AWKqPUcEPwo0
- H/0xw0IBXsw68bXvbPqXC84A85dHTSiaCPrq++XlBFCgyeShdKyiagvmSsddf4ih6cJo
- qI4g==
-X-Gm-Message-State: AOJu0YwmVXDMurNAHxd/ShFUKC/Tud20KGyZhqRumAO+vP0KQpoIKybO
- UIZYvJFia0CQtnPpY6hipyFLUUVheMWUF+GVrzc8m3x46PMeeQ0fzFB/yiIRBJ7Sxoa9A0t/U38
- RnpcwsU6gBuK0XX9Vc5tsw/HNh+Ugy9i1ULBFgDnKX47s0+WqPh2xtKKGm+iOc2H/CU+Hqb0vKv
- 4/lVUew9BirtV/wsRCKN29gz0ewJH0E1fNc/Jh
-X-Received: by 2002:a2e:3018:0:b0:2ec:5f85:61c0 with SMTP id
- 38308e7fff4ca-2ee5e707c21mr47302921fa.48.1719845954929; 
- Mon, 01 Jul 2024 07:59:14 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF7LkxnzvJNVXy+mD5cbiiqW3PV7qLAI1xQqINPEE8KtDPkKHNMSCCcvIpZYx6R577FF0DtKQ==
-X-Received: by 2002:a2e:3018:0:b0:2ec:5f85:61c0 with SMTP id
- 38308e7fff4ca-2ee5e707c21mr47302731fa.48.1719845954359; 
- Mon, 01 Jul 2024 07:59:14 -0700 (PDT)
+ bh=ItGWoIXbmG8BtrqUqVyvFsub+0df4Uw051wHIRwFpYQ=;
+ b=D6mx4rjIokBajljUj3RUD4dM/3OAJmWgmQilMNjQHT/EAyiEWFjWmWQR+84VGCs6rE
+ l/ieSwrmpeq107Y2rvk1ptmKMkEG8FoaAvFc4NfzyBPgOq3s+9eMhwvCLvbGSqa3SRGx
+ tZcfoWo8YSbcd5n1SmxNal3AuWXdG/6k4QBf2egPhnR2Kbma5Cka1QkqAWOioJ3XVLr3
+ h9Z3ipXTSxfeFQj/w1fHwmaF9i6umg/oQVwz+51EgU1ug+hY2w2uhSQ7JiVT2MkihdNW
+ 1LTle3SHnlJntF7Ip5G0atPBnpfz8+kRaXSnvmTIXW5eN1646NIjXvAEI2HbhGfXVw6D
+ uimw==
+X-Gm-Message-State: AOJu0YyfAR+NxErlAOI1Jcw0V47eM5ip1QoRJuM/AzxUx4Rk9tlWDGWp
+ UrI/NIlSzfqb1TkqshTjcpGJHnu0bwuHo1QNF26Wex48TEEGlTGsbDkKIFWVyUGqKqdQAofX7ga
+ X+hhVm9yCpfBR9d1HtdeCF/piHaig8+n5gLq1hKty5SJ2AqTRQQW30XA6mcp6/zmOpq2M11AH8v
+ h6V77Xw3x5xGAo0kEqTz4iNWFoQ/aU8W6yZols
+X-Received: by 2002:a05:6512:23a5:b0:52c:c9e9:7dc1 with SMTP id
+ 2adb3069b0e04-52e82685af7mr4560246e87.32.1719845958302; 
+ Mon, 01 Jul 2024 07:59:18 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHrq4CQpqRSQh7VeAd2458ighSxU+mbTpCqs5YqpXlLzux0ViL0UX3tC1CM1gF0qK7GU+tlgA==
+X-Received: by 2002:a05:6512:23a5:b0:52c:c9e9:7dc1 with SMTP id
+ 2adb3069b0e04-52e82685af7mr4560217e87.32.1719845957878; 
+ Mon, 01 Jul 2024 07:59:17 -0700 (PDT)
 Received: from avogadro.local ([151.95.101.29])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4256b061095sm149668235e9.23.2024.07.01.07.59.13
+ 5b1f17b1804b1-4256b064f16sm157833445e9.27.2024.07.01.07.59.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 01 Jul 2024 07:59:13 -0700 (PDT)
+ Mon, 01 Jul 2024 07:59:16 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
@@ -73,9 +73,10 @@ Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Hanna Czenczek <hreitz@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PATCH 06/14] rust: define wrappers for basic QOM concepts
-Date: Mon,  1 Jul 2024 16:58:38 +0200
-Message-ID: <20240701145853.1394967-7-pbonzini@redhat.com>
+Subject: [PATCH 07/14] rust: define wrappers for methods of the QOM Object
+ class
+Date: Mon,  1 Jul 2024 16:58:39 +0200
+Message-ID: <20240701145853.1394967-8-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240701145853.1394967-1-pbonzini@redhat.com>
 References: <20240701145853.1394967-1-pbonzini@redhat.com>
@@ -106,452 +107,169 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This provides type-safe object casts, and automatic reference counting.
+Provide a trait that can be used to invoke methods of the QOM object
+class.  The trait extends Deref and has a blanket implementation for any
+type that dereferences to IsA<Object>.  This way, it can be used on any
+struct that dereferences to Object or a subclass.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- qemu/qom-rust.txt      |  82 ++++++++++++
- qemu/src/lib.rs        |   6 +
- qemu/src/qom/mod.rs    |   2 +
- qemu/src/qom/object.rs |  34 +++++
- qemu/src/qom/refs.rs   | 274 +++++++++++++++++++++++++++++++++++++++++
- 5 files changed, 398 insertions(+)
- create mode 100644 qemu/qom-rust.txt
- create mode 100644 qemu/src/qom/mod.rs
- create mode 100644 qemu/src/qom/object.rs
- create mode 100644 qemu/src/qom/refs.rs
+ qemu/src/lib.rs        |  2 +
+ qemu/src/qom/object.rs | 92 ++++++++++++++++++++++++++++++++++++++++++
+ qemu/src/qom/refs.rs   |  8 ++++
+ 3 files changed, 102 insertions(+)
 
-diff --git a/qemu/qom-rust.txt b/qemu/qom-rust.txt
-new file mode 100644
-index 0000000..1588445
---- /dev/null
-+++ b/qemu/qom-rust.txt
-@@ -0,0 +1,82 @@
-+Rust QOM interoperability design
-+--------------------------------
-+
-+Passing objects around
-+----------------------
-+
-+ObjectRef:
-+-> trait for performing casts on objects
-+-> upcasts safe at compile time, downcasts safe at runtime
-+-> implemented by &T and qom::Owned<T>
-+-> casting &T produces &U, casting qom::Owned<T> produces qom::Owned<U>
-+
-+qom::Owned<T>
-+-> T is a struct for a QOM object
-+-> cloning qom::Owned calls object_ref, dropping qom::Owned calls object_unref
-+
-+
-+Calling methods
-+---------------
-+
-+- all methods &self (interior mutability)
-+  - Rust implementation needs to wrap state with Cell<>, RefCell<> or Mutex<>
-+
-+one struct per class; one trait per non-final class; one trait per interface
-+struct: Object, Device, ...
-+- defines constructors
-+     example: PL011::new()   (technically defined on ObjectType)
-+
-+- defines methods of final classes
-+
-+trait: ObjectMethods, DeviceMethods, UserCreatableMethods, ...
-+- defines methods of non-final classes and interfaces
-+     example: obj.typename()
-+
-+- automatically implemented by &T where T is a subclass
-+
-+
-+all methods expect interior mutability
-+- structs not Send/Sync by default since they contain C pointers
-+  - hence &T and Owned<T> also not thread-safe
-+- good: QOM tree (e.g. object_unparent) not thread-safe
-+- what if objects _are_ thread-safe?
-+  - possibly another trait ObjectSyncMethods?
-+
-+Bindings for C classes
-+----------------------
-+
-+struct must implement ObjectType
-+
-+    unsafe impl ObjectType for Object {
-+        const TYPE: &'static CStr = c"object";
-+    }
-+
-+struct must implement IsA<T> for all superclasses T
-+
-+    unsafe impl IsA<Object> for Object {}
-+
-+
-+Defining QOM classes in Rust
-+----------------------------
-+
-+struct must be #[repr(C)]
-+
-+one traits per class + one more if it has virtual functions
-+
-+trait #1: ObjectTypeImpl, DeviceTypeImpl, ...
-+- metadata
-+    type Super: ObjectType;
-+- functions:
-+    unsafe fn instance_init(obj: *mut Self);
-+    ...
-+
-+trait #2: ObjectImpl, DeviceImpl, ...
-+- functions:
-+    fn unrealize(&self)
-+
-+Rust implementation split in configuration (Default + ConstDefault) and
-+state (Default)
-+
-+instance_init implemented automatically via Default/ConstDefault trait
-+   maybe: pre_init hook that replaces memset(obj, 0, type->instance_size)?
-+instance_finalize implemented automatically via Drop trait
 diff --git a/qemu/src/lib.rs b/qemu/src/lib.rs
-index 5f926b8..0d91623 100644
+index 0d91623..a6e7b17 100644
 --- a/qemu/src/lib.rs
 +++ b/qemu/src/lib.rs
-@@ -2,6 +2,12 @@
- #![allow(dead_code)]
+@@ -5,6 +5,8 @@ pub mod bindings;
+ pub use bindings::Object;
  
- pub mod bindings;
-+pub use bindings::Object;
-+
-+pub mod qom;
-+pub use qom::object::ObjectType;
-+pub use qom::refs::ObjectCast;
-+pub use qom::refs::Owned;
- 
- pub mod util;
- pub use util::error::Error;
-diff --git a/qemu/src/qom/mod.rs b/qemu/src/qom/mod.rs
-new file mode 100644
-index 0000000..95489c5
---- /dev/null
-+++ b/qemu/src/qom/mod.rs
-@@ -0,0 +1,2 @@
-+pub mod object;
-+pub mod refs;
+ pub mod qom;
++pub use qom::object::ObjectClassMethods;
++pub use qom::object::ObjectMethods;
+ pub use qom::object::ObjectType;
+ pub use qom::refs::ObjectCast;
+ pub use qom::refs::Owned;
 diff --git a/qemu/src/qom/object.rs b/qemu/src/qom/object.rs
-new file mode 100644
-index 0000000..bd6b957
---- /dev/null
+index bd6b957..4e84e29 100644
+--- a/qemu/src/qom/object.rs
 +++ b/qemu/src/qom/object.rs
-@@ -0,0 +1,34 @@
-+//! Bindings for the QOM Object class
-+//!
-+//! @author Paolo Bonzini
-+
-+use std::ffi::CStr;
-+
-+use crate::bindings::Object;
-+
-+use crate::qom_isa;
-+
-+/// Trait exposed by all structs corresponding to QOM objects.
-+/// Defines "class methods" for the class.  Usually these can be
-+/// implemented on the class itself; here, using a trait allows
-+/// each class to define `TYPE`, and it also lets `new()` return the
-+/// right type.
-+///
-+/// # Safety
-+///
-+/// - the first field of the struct must be of `Object` type,
-+///   or derived from it
-+///
-+/// - `TYPE` must match the type name used in the `TypeInfo` (no matter
-+///   if it is defined in C or Rust).
-+///
-+/// - the struct must be `#[repr(C)]`
-+pub unsafe trait ObjectType: Sized {
-+    const TYPE: &'static CStr;
-+}
-+
-+unsafe impl ObjectType for Object {
-+    const TYPE: &'static CStr = c"object";
-+}
-+
-+qom_isa!(Object);
-diff --git a/qemu/src/qom/refs.rs b/qemu/src/qom/refs.rs
-new file mode 100644
-index 0000000..a319bde
---- /dev/null
-+++ b/qemu/src/qom/refs.rs
-@@ -0,0 +1,274 @@
-+//! Casting and reference counting traits for QOM objects
-+//!
-+//! @author Paolo Bonzini
-+
-+use crate::bindings::object_dynamic_cast;
-+use crate::bindings::Object;
-+use crate::bindings::{object_ref, object_unref};
-+
-+use crate::qom::object::ObjectType;
-+
-+use std::borrow::Borrow;
-+use std::mem::ManuallyDrop;
+@@ -2,12 +2,26 @@
+ //!
+ //! @author Paolo Bonzini
+ 
++use std::borrow::Cow;
+ use std::ffi::CStr;
++use std::fmt;
 +use std::ops::Deref;
-+use std::ptr::NonNull;
+ 
++use crate::bindings::object_get_typename;
++use crate::bindings::object_property_add_child;
++use crate::bindings::object_new;
++use crate::bindings::object_unparent;
+ use crate::bindings::Object;
+ 
+ use crate::qom_isa;
+ 
++use crate::qom::refs::IsA;
++use crate::qom::refs::ObjectCast;
++use crate::qom::refs::Owned;
 +
-+/// Marker trait: `Self` can be statically upcasted to `P` (i.e. `P` is a direct
-+/// or indirect parent of `Self`).
++use crate::util::foreign::CloneToForeign;
++use crate::util::foreign::FromForeign;
++
+ /// Trait exposed by all structs corresponding to QOM objects.
+ /// Defines "class methods" for the class.  Usually these can be
+ /// implemented on the class itself; here, using a trait allows
+@@ -31,4 +45,82 @@ unsafe impl ObjectType for Object {
+     const TYPE: &'static CStr = c"object";
+ }
+ 
++// ------------------------------
++// Object class
++
+ qom_isa!(Object);
++
++/// Trait for class methods exposed by the Object class.  The methods can be
++/// called on all objects that have the trait `IsA<Object>`.
 +///
-+/// # Safety
-+///
-+/// The struct `Self` must begin, directly or indirectly, with a field of type
-+/// `P`.  This ensures that invalid casts, which rely on `IsA<>` for static
-+/// checking, are rejected at compile time.
-+pub unsafe trait IsA<P: ObjectType>: ObjectType {}
++/// The trait should only be used through the blanket implementation,
++/// which guarantees safety via `IsA`
 +
-+// SAFETY: it is always safe to cast to your own type
-+unsafe impl<T: ObjectType> IsA<T> for T {}
-+
-+#[macro_export]
-+macro_rules! qom_isa {
-+    ($struct:ty $(,$parent:ty)* ) => {
-+        $(
-+            impl AsRef<$parent> for $struct {
-+                fn as_ref(&self) -> &$parent {
-+                    use $crate::ObjectCast;
-+                    self.upcast::<$parent>()
-+                }
-+            }
-+
-+            // SAFETY: it is the caller responsibility to have $parent as the
-+            // first field
-+            unsafe impl $crate::qom::refs::IsA<$parent> for $struct {}
-+        )*
-+    };
++pub trait ObjectClassMethods: IsA<Object> {
++    /// Return a new reference counted instance of this class
++    fn new() -> Owned<Self> {
++        // SAFETY: the object created by object_new is allocated on
++        // the heap and has a reference count of 1
++        unsafe {
++            let obj = &*object_new(Self::TYPE.as_ptr());
++            Owned::from_raw(obj.unsafe_cast::<Self>())
++        }
++    }
 +}
 +
-+/// Trait for a reference to a QOM object.  Allows conversion to/from
-+/// C objects in generic code.
-+pub trait ObjectCast: Copy + Deref
++/// Trait for methods exposed by the Object class.  The methods can be
++/// called on all objects that have the trait `IsA<Object>`.
++///
++/// The trait should only be used through the blanket implementation,
++/// which guarantees safety via `IsA`
++pub trait ObjectMethods: Deref
 +where
-+    Self::Target: ObjectType,
++    Self::Target: IsA<Object>,
 +{
-+    /// Convert this (possibly smart) reference to a basic Rust reference.
-+    fn as_ref(&self) -> &Self::Target {
-+        self.deref()
-+    }
-+
-+    /// Convert to a const Rust pointer, to be used for example for FFI.
-+    fn as_ptr(&self) -> *const Self::Target {
-+        self.as_ref()
-+    }
-+
-+    /// Convert to a mutable Rust pointer, to be used for example for FFI.
-+    /// Used to implement interior mutability for objects.
-+    ///
-+    /// # Safety
-+    ///
-+    /// This method is unsafe because it overrides const-ness of `&self`.
-+    /// Bindings to C APIs will use it a lot, but otherwise it should not
-+    /// be necessary.
-+    unsafe fn as_mut_ptr(&self) -> *mut Self::Target {
-+        #[allow(clippy::as_ptr_cast_mut)]
-+        {
-+            self.as_ptr().cast_mut()
-+        }
-+    }
-+
-+    /// Perform a cast to a superclass
-+    fn upcast<'a, U: ObjectType>(self) -> &'a U
-+    where
-+        Self::Target: IsA<U>,
-+        Self: 'a,
-+    {
-+        // SAFETY: soundness is declared via IsA<U>, which is an unsafe trait
-+        unsafe { self.unsafe_cast::<U>() }
-+    }
-+
-+    /// Perform a cast to a subclass.  Checks at compile time that the
-+    /// cast can succeed, but the final verification will happen at
-+    /// runtime only.
-+    fn downcast<'a, U: IsA<Self::Target>>(self) -> Option<&'a U>
-+    where
-+        Self: 'a,
-+    {
-+        self.dynamic_cast::<U>()
-+    }
-+
-+    /// Perform a cast between QOM types.  The check that U is indeed
-+    /// the dynamic type of `self` happens at runtime.
-+    fn dynamic_cast<'a, U: ObjectType>(self) -> Option<&'a U>
-+    where
-+        Self: 'a,
-+    {
++    /// Return the name of the type of `self`
++    fn typename(&self) -> Cow<'_, str> {
++        let obj = self.upcast::<Object>();
++        // SAFETY: safety of this is the requirement for implementing IsA
++        // The result of the C API has static lifetime
 +        unsafe {
-+            // SAFETY: upcasting to Object is always valid, and the
-+            // return type is either NULL or the argument itself
-+            let result: *const U =
-+                object_dynamic_cast(self.unsafe_cast::<Object>().as_mut_ptr(), U::TYPE.as_ptr())
-+                    .cast();
-+
-+            result.as_ref()
++            Cow::cloned_from_foreign(object_get_typename(obj.as_mut_ptr()))
 +        }
 +    }
 +
-+    /// Unconditional cast to an arbitrary QOM type.
-+    ///
-+    /// # Safety
-+    ///
-+    /// What safety? You need to know yourself that the cast is correct; only use
-+    /// when performance is paramount.  It is still better than a raw pointer
-+    /// `cast()`, which does not even check that you remain in the realm of
-+    /// QOM `ObjectType`s.
-+    ///
-+    /// `unsafe_cast::<Object>()` can also be used, and is always safe, if all
-+    /// you have is an `ObjectType` (as opposed to an `IsA<Object>`).
-+    unsafe fn unsafe_cast<'a, U: ObjectType>(self) -> &'a U
-+    where
-+        Self: 'a,
++    /// Add an object as a child of the receiver.
++    fn property_add_child<T: ObjectType>(&self, name: &str, child: Owned<T>)
 +    {
-+        &*(self.as_ptr().cast::<U>())
-+    }
-+}
-+
-+impl<T: ObjectType> ObjectCast for &T {}
-+
-+/// An owned reference to a QOM object.
-+///
-+/// Like [`std::sync::Arc`], references are added with [`Clone::clone`] and removed
-+/// by dropping the `Owned`.
-+#[derive(PartialEq, Eq, Hash, PartialOrd, Ord)]
-+pub struct Owned<T: ObjectType>(NonNull<T>);
-+
-+// QOM knows how to handle reference counting across threads, but sending
-+// the Owned to another thread requires the implementation itself to be
-+// thread-safe (aka Sync).  But I'm not entirely sure that this is enough
-+// (see for example ARef in rust/kernel/types.rs, which is very similar
-+// to this type).
-+//
-+//unsafe impl<T: Sync + ObjectType> Send for Owned<T> {}
-+//unsafe impl<T: ObjectType> Sync for Owned<T> {}
-+
-+impl<T: ObjectType> Owned<T> {
-+    /// Obtain a reference from a raw C pointer
-+    ///
-+    /// # Safety
-+    ///
-+    /// Typically this function will only be used by low level bindings
-+    /// to C APIs.
-+    pub unsafe fn from_raw(ptr: *const T) -> Self {
-+        // SAFETY NOTE: while NonNull requires a mutable pointer,
-+        // only Deref is implemented so the pointer passed to from_raw
-+        // remains const
-+        Owned(NonNull::new_unchecked(ptr.cast_mut()))
-+    }
-+
-+    /// Obtain a raw C pointer from a reference.  `src` is consumed
-+    /// and the reference is leaked.
-+    pub fn into_raw(src: Owned<T>) -> *const T {
-+        let src = ManuallyDrop::new(src);
-+        src.0.as_ptr()
-+    }
-+
-+
-+    /// Increase the reference count of a QOM object and return
-+    ///
-+    /// # Safety
-+    ///
-+    /// Unsafe because the object could be embedded in another.  To
-+    /// obtain an `Owned` safely, use `ObjectType::new()`.
-+    pub unsafe fn from(obj: &T) -> Self {
-+        object_ref(obj.unsafe_cast::<Object>().as_mut_ptr());
-+
-+        // SAFETY NOTE: while NonNull requires a mutable pointer,
-+        // only Deref is implemented so the pointer passed to from_raw
-+        // remains const
-+        Owned(NonNull::new_unchecked(obj.as_mut_ptr()))
-+    }
-+
-+    /// Perform a cast to a superclass
-+    pub fn upcast<U: ObjectType>(src: Owned<T>) -> Owned<U>
-+    where
-+        T: IsA<U>,
-+    {
-+        // SAFETY: soundness is declared via IsA<U>, which is an unsafe trait
-+        unsafe { Owned::unsafe_cast::<U>(src) }
-+    }
-+
-+    /// Perform a cast to a subclass.  Checks at compile time that the
-+    /// cast can succeed, but the final verification will happen at
-+    /// runtime only.
-+    pub fn downcast<U: IsA<T>>(src: Owned<T>) -> Result<Owned<U>, Owned<T>> {
-+        Owned::dynamic_cast::<U>(src)
-+    }
-+
-+    /// Perform a cast between QOM types.  The check that U is indeed
-+    /// the dynamic type of `self` happens at runtime.
-+    pub fn dynamic_cast<U: ObjectType>(src: Owned<T>) -> Result<Owned<U>, Owned<T>> {
-+        // override automatic drop to skip the unref/ref
-+        let src = ManuallyDrop::new(src);
-+        match src.dynamic_cast::<U>() {
-+            // get the ownership back from the ManuallyDrop<>
-+            None => Err(ManuallyDrop::into_inner(src)),
-+
-+            // SAFETY: the ref is moved (thanks to ManuallyDrop) from
-+            // self to casted_ref
-+            Some(casted_ref) => Ok(unsafe { Owned::<U>::from_raw(casted_ref) }),
-+        }
-+    }
-+
-+    /// Unconditional cast to an arbitrary QOM type.
-+    ///
-+    /// # Safety
-+    ///
-+    /// What safety? You need to know yourself that the cast is correct.  Only use
-+    /// when performance is paramount
-+    pub unsafe fn unsafe_cast<U: ObjectType>(src: Owned<T>) -> Owned<U> {
-+        // override automatic drop to skip the unref/ref
-+        let src = ManuallyDrop::new(src);
-+        let casted_ref = src.unsafe_cast::<U>();
-+        Owned::<U>::from_raw(casted_ref)
-+    }
-+}
-+
-+impl<T: ObjectType> AsRef<T> for Owned<T> {
-+    fn as_ref(&self) -> &T {
-+        self.deref()
-+    }
-+}
-+
-+impl<T: ObjectType> Borrow<T> for Owned<T> {
-+    fn borrow(&self) -> &T {
-+        self.deref()
-+    }
-+}
-+
-+impl<T: ObjectType> Clone for Owned<T> {
-+    fn clone(&self) -> Self {
-+        // SAFETY: creation method is unsafe, and whoever calls it
-+        // has responsibility that the pointer is valid
-+        unsafe { Owned::from(self.deref()) }
-+    }
-+}
-+
-+impl<T: ObjectType> Deref for Owned<T> {
-+    type Target = T;
-+
-+    fn deref(&self) -> &Self::Target {
-+        // SAFETY: creation method is unsafe, and whoever calls it
-+        // has responsibility that the pointer has a static lifetime.
-+        // Once that is guaranteed, reference counting ensures that
-+        // the object remains alive.
-+        unsafe { &*self.0.as_ptr() }
-+    }
-+}
-+
-+impl<T: ObjectType> Drop for Owned<T> {
-+    fn drop(&mut self) {
-+        // SAFETY: creation method is unsafe, and whoever calls it
-+        // has responsibility that the pointer is valid
++        let obj = self.upcast::<Object>();
++        let name = name.clone_to_foreign();
 +        unsafe {
-+            object_unref(self.unsafe_cast::<Object>().as_mut_ptr());
++            // SAFETY: casting to object is always safe even if `child`'s
++            // target type is an interface type
++            let child = child.unsafe_cast::<Object>();
++            object_property_add_child(obj.as_mut_ptr(),
++                                      name.as_ptr(),
++                                      child.as_mut_ptr());
++
++            // object_property_add_child() added a reference of its own;
++            // dropping the one in `child` is the common case.
 +        }
++    }
++
++    /// Remove the object from the QOM tree
++    fn unparent(&self) {
++        let obj = self.upcast::<Object>();
++        // SAFETY: safety of this is the requirement for implementing IsA
++        unsafe {
++            object_unparent(obj.as_mut_ptr());
++        }
++    }
++
++    /// Convenience function for implementing the Debug trait
++    fn debug_fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
++        f.debug_tuple(&self.typename())
++            .field(&(self as *const Self))
++            .finish()
++    }
++}
++
++impl<R> ObjectClassMethods for R where R: IsA<Object> {}
++impl<R: Deref> ObjectMethods for R where R::Target: IsA<Object> {}
+diff --git a/qemu/src/qom/refs.rs b/qemu/src/qom/refs.rs
+index a319bde..431ef0a 100644
+--- a/qemu/src/qom/refs.rs
++++ b/qemu/src/qom/refs.rs
+@@ -6,9 +6,11 @@ use crate::bindings::object_dynamic_cast;
+ use crate::bindings::Object;
+ use crate::bindings::{object_ref, object_unref};
+ 
++use crate::qom::object::ObjectMethods;
+ use crate::qom::object::ObjectType;
+ 
+ use std::borrow::Borrow;
++use std::fmt::{self, Debug};
+ use std::mem::ManuallyDrop;
+ use std::ops::Deref;
+ use std::ptr::NonNull;
+@@ -272,3 +274,9 @@ impl<T: ObjectType> Drop for Owned<T> {
+         }
+     }
+ }
++
++impl<T: IsA<Object>> Debug for Owned<T> {
++    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
++        self.deref().debug_fmt(f)
 +    }
 +}
 -- 
