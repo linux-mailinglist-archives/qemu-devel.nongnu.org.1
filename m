@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 937BE91E4F6
-	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 18:12:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF80691E4F9
+	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 18:12:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOJZw-00024l-IJ; Mon, 01 Jul 2024 12:08:32 -0400
+	id 1sOJZQ-0001DW-31; Mon, 01 Jul 2024 12:08:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sOJZ5-0000fx-GM
- for qemu-devel@nongnu.org; Mon, 01 Jul 2024 12:07:41 -0400
-Received: from mail-lj1-x22c.google.com ([2a00:1450:4864:20::22c])
+ id 1sOJZ7-0000io-Ou
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 12:07:43 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sOJZ1-0005Pv-6q
- for qemu-devel@nongnu.org; Mon, 01 Jul 2024 12:07:38 -0400
-Received: by mail-lj1-x22c.google.com with SMTP id
- 38308e7fff4ca-2ec5fad1984so44297841fa.0
+ id 1sOJZ3-0005Pz-An
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 12:07:40 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-42562a984d3so22946035e9.3
  for <qemu-devel@nongnu.org>; Mon, 01 Jul 2024 09:07:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719850053; x=1720454853; darn=nongnu.org;
+ d=linaro.org; s=google; t=1719850054; x=1720454854; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=GhKst7WHN9ASn36oUshu4tgIXvUX+N4f2K/V8e/wSkQ=;
- b=d1xM7R2M+W+05gDqcDAGKx9xZMUi/baONBD8QTyXK52amGj0Nzq5+J+00tV3H64a5u
- WnLMBh0R7urrk11Os005oLG8fm2hZylveE4l8kzcAz7uCfYIuPAECFUzo48f9iE90oOt
- Me3VRpUt7v9VHWYYY6cS3opuaMPHcIdW7WJyxq3KbZj1vf3Ga02ZJgSWD7l2+u6kw+e4
- A14Xx6TK7b1wlEX9Vu+rWAb2H9J2i8rqoPBcl8FCSOP4v0zksH4QWvrERXwLS+KRpM99
- Smqmo/gqOMfO7fprWRZZwKDeBSTt/BafUZyySHmIUwSTnliCK0E8D+G7Uw2QywpNZR6W
- ommw==
+ :reply-to; bh=akaP5CkcB85NRotBS27Sn9QbMl98HIBsHqiBEU5glnA=;
+ b=tjK9qR4+zybpryZmgTMTeQG0UJknsN59KSJvUeXiB1snzApX1ZHnxJCp3NrVEXp5wS
+ FVfgSmJD2NzXQR+qs3kK1PRdvqfZhsaho2pjmboV60ZWRhgKYZ+87B6uOl+QAdUqYMsg
+ 2Bam18Z8eAF1VIZiIjjYkvpbqgGZBSvxQuq3fB8YNvpvfAX8FE8W9GzSsuCZKM41v0Zf
+ MK5IE6FxhZIWLmqRT0Ua59AE9wgKLv23Q8QEK0Jv2NugiAGSz10HNiIny6Oeh9pEhNmv
+ 5pSnE2l6zKhiXwia1Bc26EqL3zJNAUI3X7MfJQkOpIVbxqmapCGHUlwon+sOilOdy+kh
+ wsVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719850053; x=1720454853;
+ d=1e100.net; s=20230601; t=1719850054; x=1720454854;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=GhKst7WHN9ASn36oUshu4tgIXvUX+N4f2K/V8e/wSkQ=;
- b=nlg02bxDX1D+89MLaLmkrEco5+dOT4fWiWfsP5LK0O2JkOclLBSzA+GtA4Ac9tf+S1
- 2RqnJuDaJDoYUdV4uu4l6iC7cPL3Ph1eBjqH13vyhhe5BapcQ3BJUDCF2ZDnnj06z6g+
- f4TgyXiKN3uNt5y5wl9dNsGoGnX8xPT1E2EtRuB10QaLL+yhmgBrsAglTCYc+QWh7xkx
- 8WVb9gJJUaFXdkYJwlSNAjCtZ7Q3uGtJWdaM75fz5Jiy/1W1I6lINrEEHqtdd+4qNcUj
- BqXdvx6jguapMORmYuuC4AIhIjcQH24Yu+TXHDR4BfKDRYy0JuBO4jSCcV+p5KTJQM/d
- rgBg==
-X-Gm-Message-State: AOJu0YxSgO9jpamGm/jGf6aNixeW1caBkIIsjQndilCMmxNbEzXn3g+i
- nbAvucFO/3rW+PARM51t2j1rzZY8Svc35UG8BTUokqekQ31vWJbmsxWl2fJuT2vVwQ/Ou0Glplt
- YRqY=
-X-Google-Smtp-Source: AGHT+IEFyWPJBOu1k/R+9QCR5SpWkvAnAsfKylbIyponkj8lvrS2vKRv0Al9iS/48xfT8E0NXf/W+A==
-X-Received: by 2002:a2e:bc04:0:b0:2eb:2e0b:72c with SMTP id
- 38308e7fff4ca-2ee5e393e7emr52167731fa.16.1719850053546; 
+ bh=akaP5CkcB85NRotBS27Sn9QbMl98HIBsHqiBEU5glnA=;
+ b=eq04IR2jaKjYfYKPevkflo9xo6uHVhEw+i5qKyj4H2wJkKSvIqzXLnBkxWmvL31mDE
+ eBUdOA2juRa1v0fQlz/dZAOWHyyA+Otaf8hPRzFNMVyuSvAIeUWji5o4y71DZUwSd7iT
+ uFW5dTvFwRx4+UA5mglNONhTB4fxmqPL91+CxOnzfET3nAsl9AMQ+teieL44HcqywsXc
+ fw6eQXDKKHNtcBM4fUB/WA3SI1BmlpAemAj4voKOlbjpG7g4kNKeGKXxXsSbks5fH9Ih
+ pEECXvgGDTpVrBNs4694FtGYjAsnl558wWMUI2jkQIrda51Z/AS159ukfdcLZ+afQ5Rj
+ nQiQ==
+X-Gm-Message-State: AOJu0YzSAnFR4Ug8Pw0xQdRLRoFckTR+v6EqMZDMeVZUq/GxSYruDqXV
+ Nq0i43MjkDvDLt3sk07RVp0TKmbLJ10A0xiY4KLN7V6ZQeQOohOt6BDx9YsO+VL1AiKEtQr1jTi
+ DsnA=
+X-Google-Smtp-Source: AGHT+IFSdXp7IKjzKk5MY/9vIq3fCddNu+MVdBa5aUrXF8MYTd0B2rqT5BPJw1ffErC+mSq2/oB4/Q==
+X-Received: by 2002:a05:600c:5cb:b0:424:a4c1:6ee7 with SMTP id
+ 5b1f17b1804b1-4257a010baamr39399315e9.18.1719850053972; 
  Mon, 01 Jul 2024 09:07:33 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
@@ -59,16 +59,16 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Mon, 01 Jul 2024 09:07:33 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 07/29] target/arm: Fix VCMLA Dd, Dn, Dm[idx]
-Date: Mon,  1 Jul 2024 17:07:07 +0100
-Message-Id: <20240701160729.1910763-8-peter.maydell@linaro.org>
+Subject: [PULL 08/29] target/arm: Fix SQDMULH (by element) with Q=0
+Date: Mon,  1 Jul 2024 17:07:08 +0100
+Message-Id: <20240701160729.1910763-9-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240701160729.1910763-1-peter.maydell@linaro.org>
 References: <20240701160729.1910763-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::22c;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x22c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,38 +97,78 @@ The inner loop, bounded by eltspersegment, must not be
 larger than the outer loop, bounded by elements.
 
 Cc: qemu-stable@nongnu.org
-Fixes: 18fc2405781 ("target/arm: Implement SVE fp complex multiply add (indexed)")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2376
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20240625183536.1672454-2-richard.henderson@linaro.org
+Message-id: 20240625183536.1672454-3-richard.henderson@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/tcg/vec_helper.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ target/arm/tcg/vec_helper.c | 24 ++++++++++++++++--------
+ 1 file changed, 16 insertions(+), 8 deletions(-)
 
 diff --git a/target/arm/tcg/vec_helper.c b/target/arm/tcg/vec_helper.c
-index b05922b425f..7b34cc98afe 100644
+index 7b34cc98afe..d477479bb19 100644
 --- a/target/arm/tcg/vec_helper.c
 +++ b/target/arm/tcg/vec_helper.c
-@@ -907,7 +907,7 @@ void HELPER(gvec_fcmlah_idx)(void *vd, void *vn, void *vm, void *va,
-     intptr_t index = extract32(desc, SIMD_DATA_SHIFT + 2, 2);
-     uint32_t neg_real = flip ^ neg_imag;
-     intptr_t elements = opr_sz / sizeof(float16);
--    intptr_t eltspersegment = 16 / sizeof(float16);
-+    intptr_t eltspersegment = MIN(16 / sizeof(float16), elements);
-     intptr_t i, j;
+@@ -317,10 +317,12 @@ void HELPER(neon_sqdmulh_idx_h)(void *vd, void *vn, void *vm,
+     intptr_t i, j, opr_sz = simd_oprsz(desc);
+     int idx = simd_data(desc);
+     int16_t *d = vd, *n = vn, *m = (int16_t *)vm + H2(idx);
++    intptr_t elements = opr_sz / 2;
++    intptr_t eltspersegment = MIN(16 / 2, elements);
  
-     /* Shift boolean to the sign bit so we can xor to negate.  */
-@@ -969,7 +969,7 @@ void HELPER(gvec_fcmlas_idx)(void *vd, void *vn, void *vm, void *va,
-     intptr_t index = extract32(desc, SIMD_DATA_SHIFT + 2, 2);
-     uint32_t neg_real = flip ^ neg_imag;
-     intptr_t elements = opr_sz / sizeof(float32);
--    intptr_t eltspersegment = 16 / sizeof(float32);
-+    intptr_t eltspersegment = MIN(16 / sizeof(float32), elements);
-     intptr_t i, j;
+-    for (i = 0; i < opr_sz / 2; i += 16 / 2) {
++    for (i = 0; i < elements; i += 16 / 2) {
+         int16_t mm = m[i];
+-        for (j = 0; j < 16 / 2; ++j) {
++        for (j = 0; j < eltspersegment; ++j) {
+             d[i + j] = do_sqrdmlah_h(n[i + j], mm, 0, false, false, vq);
+         }
+     }
+@@ -333,10 +335,12 @@ void HELPER(neon_sqrdmulh_idx_h)(void *vd, void *vn, void *vm,
+     intptr_t i, j, opr_sz = simd_oprsz(desc);
+     int idx = simd_data(desc);
+     int16_t *d = vd, *n = vn, *m = (int16_t *)vm + H2(idx);
++    intptr_t elements = opr_sz / 2;
++    intptr_t eltspersegment = MIN(16 / 2, elements);
  
-     /* Shift boolean to the sign bit so we can xor to negate.  */
+-    for (i = 0; i < opr_sz / 2; i += 16 / 2) {
++    for (i = 0; i < elements; i += 16 / 2) {
+         int16_t mm = m[i];
+-        for (j = 0; j < 16 / 2; ++j) {
++        for (j = 0; j < eltspersegment; ++j) {
+             d[i + j] = do_sqrdmlah_h(n[i + j], mm, 0, false, true, vq);
+         }
+     }
+@@ -512,10 +516,12 @@ void HELPER(neon_sqdmulh_idx_s)(void *vd, void *vn, void *vm,
+     intptr_t i, j, opr_sz = simd_oprsz(desc);
+     int idx = simd_data(desc);
+     int32_t *d = vd, *n = vn, *m = (int32_t *)vm + H4(idx);
++    intptr_t elements = opr_sz / 4;
++    intptr_t eltspersegment = MIN(16 / 4, elements);
+ 
+-    for (i = 0; i < opr_sz / 4; i += 16 / 4) {
++    for (i = 0; i < elements; i += 16 / 4) {
+         int32_t mm = m[i];
+-        for (j = 0; j < 16 / 4; ++j) {
++        for (j = 0; j < eltspersegment; ++j) {
+             d[i + j] = do_sqrdmlah_s(n[i + j], mm, 0, false, false, vq);
+         }
+     }
+@@ -528,10 +534,12 @@ void HELPER(neon_sqrdmulh_idx_s)(void *vd, void *vn, void *vm,
+     intptr_t i, j, opr_sz = simd_oprsz(desc);
+     int idx = simd_data(desc);
+     int32_t *d = vd, *n = vn, *m = (int32_t *)vm + H4(idx);
++    intptr_t elements = opr_sz / 4;
++    intptr_t eltspersegment = MIN(16 / 4, elements);
+ 
+-    for (i = 0; i < opr_sz / 4; i += 16 / 4) {
++    for (i = 0; i < elements; i += 16 / 4) {
+         int32_t mm = m[i];
+-        for (j = 0; j < 16 / 4; ++j) {
++        for (j = 0; j < eltspersegment; ++j) {
+             d[i + j] = do_sqrdmlah_s(n[i + j], mm, 0, false, true, vq);
+         }
+     }
 -- 
 2.34.1
 
