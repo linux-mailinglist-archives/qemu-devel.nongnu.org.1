@@ -2,83 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8F6B91EAF0
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 00:45:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF63C91EB84
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 01:46:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOPlE-0005Vj-Dm; Mon, 01 Jul 2024 18:44:36 -0400
+	id 1sOQhO-0008F1-4R; Mon, 01 Jul 2024 19:44:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
- id 1sOPlC-0005VX-Mc
- for qemu-devel@nongnu.org; Mon, 01 Jul 2024 18:44:34 -0400
-Received: from mail-lf1-x12d.google.com ([2a00:1450:4864:20::12d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
- id 1sOPlA-00032J-7D
- for qemu-devel@nongnu.org; Mon, 01 Jul 2024 18:44:34 -0400
-Received: by mail-lf1-x12d.google.com with SMTP id
- 2adb3069b0e04-52caebc6137so2912202e87.0
- for <qemu-devel@nongnu.org>; Mon, 01 Jul 2024 15:44:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1719873869; x=1720478669; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=sf82CyGT2KHh8k/j9sWHzVKPUD8ck5NskBySCFiD0JQ=;
- b=ZwZYyXMuZJyECHZZQHJkyx+TxTRaLB3tyYswD4Zi9CS49hcYPMOiXieV1salitprpY
- 9tT8lC1L1EtQAAKRrQvhPaPvihxDRxy+RSPnjIKWp0+JcC9OAZrmvjoUftFBGrdQzUHc
- +MulOrTo10rnVu+NuDy2a5a40Zq542pjk5gkrqeZI02Hi/M7B/TUd/ZTNtu99E64RPNZ
- YK8zuRCHtrY/QzPF8gfqNEtsBOO35A5WJIg92TL+fkclde0dW/zkfHqjhSFEJCZkuf6h
- g/1KZb8jdg57SalIDM6OG1EzlIrj417E0bASWi/aVUeHXC+VK3F7u3/ehj8zTBgQtO9+
- 2OWA==
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1sOQhC-0008E9-Ic
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 19:44:31 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1sOQhA-00036i-SB
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 19:44:30 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1719877466;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=UbkKhLdthwa8OuY4pqMq8iaL8/ZYD5SSDpkopNVSBjU=;
+ b=iS0htYPPdGQYvsDpqKBzfgX8qsmZFj6LPkQaGrJzvXoSGUiAJt3Z6swGHCCH6P+56sEWxe
+ IjGbCjo2jU21qvvIfwCZbOWFc7vrSBwG5YIq9RQAszf0LDldZoOub9ULT343WpGixH6R5J
+ x5Uy2ML6tjxm9Sl0H+AiSbPIB0k/dXM=
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
+ [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-411-zZo1RxRPOMeBo3kG3_3Ieg-1; Mon, 01 Jul 2024 19:44:21 -0400
+X-MC-Unique: zZo1RxRPOMeBo3kG3_3Ieg-1
+Received: by mail-pj1-f70.google.com with SMTP id
+ 98e67ed59e1d1-2c924a5edaaso3305288a91.2
+ for <qemu-devel@nongnu.org>; Mon, 01 Jul 2024 16:44:21 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719873869; x=1720478669;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=sf82CyGT2KHh8k/j9sWHzVKPUD8ck5NskBySCFiD0JQ=;
- b=vsN6HpfpGGAw6Hu6Bnt1MNGyhwp/1zSsTEk+3Vm0utP7hv1FHk2/QGP+NxUAVsC/pf
- Ue5TyseydybnEkyPfotugXF/7dl2sLHvN8zE3pqVq2CjGNhAyuqD4ILghFHhZWSrZRVX
- ZTrxqGM9dmFpLyJHhYa4VoyfA4ovN9tjJavBsEfGytJhB/rT55W1vkVHubsKnkC6ytLp
- 4tYN4UiR6zjUlEeyYjtCpqJXJhpjYOIeqY9AueeEJbllY+xZ2mCkeoWVprqoAyJ+I8Be
- 1Ho9q4Nlo29X8Gce+fNqVXQ1oVaxsquy7A6G0XlodqIraFJdv2PLwDg4ilwEaVcSZXuX
- f2zQ==
-X-Gm-Message-State: AOJu0YyiLyJeWTbVFG6h0cPOB1hA+usnYdmyq0Yt3odX6hmuUf3lEyYd
- aXom3ows5BHW27m+Hoek+JRIxL1/+Za1SLbNoCAsS6qPwU7XmW7At6hmBQWY
-X-Google-Smtp-Source: AGHT+IHWKetgrLPhxdzv9x0e7HCZWLzAzA+Cb1d+CG0m2IxNg7Q00FAe96b6YrkGhExYpUzmQX4I4Q==
-X-Received: by 2002:a05:6512:3b2c:b0:52e:7f16:96b6 with SMTP id
- 2adb3069b0e04-52e82687e16mr4837805e87.37.1719873867477; 
- Mon, 01 Jul 2024 15:44:27 -0700 (PDT)
-Received: from gmail.com (213-67-3-247-no600.tbcn.telia.com. [213.67.3.247])
- by smtp.gmail.com with ESMTPSA id
- 2adb3069b0e04-52e7ab27b8csm1586825e87.139.2024.07.01.15.44.25
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 01 Jul 2024 15:44:25 -0700 (PDT)
-From: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: sstabellini@kernel.org, anthony@xenproject.org, paul@xen.org,
- edgar.iglesias@amd.com, xen-devel@lists.xenproject.org,
- Anthony PERARD <anthony.perard@vates.tech>
-Subject: [PATCH v1 2/2] xen: mapcache: Fix unmapping of first entries in
- buckets
-Date: Tue,  2 Jul 2024 00:44:21 +0200
-Message-ID: <20240701224421.1432654-3-edgar.iglesias@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240701224421.1432654-1-edgar.iglesias@gmail.com>
-References: <20240701224421.1432654-1-edgar.iglesias@gmail.com>
+ d=1e100.net; s=20230601; t=1719877459; x=1720482259;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=UbkKhLdthwa8OuY4pqMq8iaL8/ZYD5SSDpkopNVSBjU=;
+ b=dr/ZuHFHaysNh3twAljrgGBF5Qi9gZaslj8cmmP3lMu/FXEVx12i0PJB8/LjQcMlUm
+ +9aflHHqp1d0fQsJtKFqTKVFzmageYDjQz4NTnOWmwPpMXRmn5N4/eE3Z3CPZzvTUNuT
+ KhI5C2Zh0xAQOcLB1pnJWGjtloirqrVGG6/3h2yX4VXXV/D08ylpFfGUdpUHXs/9Vv+5
+ RNp/ABXDbenvcbWqCjtyQic44C4Fhknn+imA6/15idCJ9infX40RrsLwON7NF4DR0EJI
+ 0p/hXvMGsYtYDzKnekZrHJAkzvY89qPDm9eNfJ6IM3yOpQOgLbVHA0ffe+VmYEoCRRo5
+ GD3A==
+X-Gm-Message-State: AOJu0YzhKYdMUw4zXAonAmst4g+I1OOMMW1QcM+gV2qBJpdBQzg/3Snh
+ FbWqH45Q3ekYkKH0CT68aw1AQ9cHSTx7+UqP6D3ZO0zr+oOL0W3o/c02wW5uoKY0H5IjHFGhDy7
+ bABPjUiC8BrlS8SXFStIpLXqYZWeHs42tIsKhrBuTYgRq6RVZn+f6tzdetwQzJpLk+B1aDQwDTN
+ jDtcuNh5keX2nRI9ElStpGqccmPzE/FGCEmHs=
+X-Received: by 2002:a17:90a:e648:b0:2c4:aab1:1803 with SMTP id
+ 98e67ed59e1d1-2c93d775a1fmr5703763a91.33.1719877459297; 
+ Mon, 01 Jul 2024 16:44:19 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEaZnXyba1uwRJrTUaS0ykwTGRAqpB9ttx2OWNliQI1Xo0oakQfsQnI261jdxkXMt5ErrfK7p+43OyrTA/TR7w=
+X-Received: by 2002:a17:90a:e648:b0:2c4:aab1:1803 with SMTP id
+ 98e67ed59e1d1-2c93d775a1fmr5703752a91.33.1719877458922; Mon, 01 Jul 2024
+ 16:44:18 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12d;
- envelope-from=edgar.iglesias@gmail.com; helo=mail-lf1-x12d.google.com
+References: <20240626232230.408004-1-jsnow@redhat.com>
+ <20240626232230.408004-4-jsnow@redhat.com>
+In-Reply-To: <20240626232230.408004-4-jsnow@redhat.com>
+From: John Snow <jsnow@redhat.com>
+Date: Mon, 1 Jul 2024 19:44:06 -0400
+Message-ID: <CAFn=p-Zu-YHHvswewTzpD6P=owhhjbmzpy5AsmXa+hWFJOUHrA@mail.gmail.com>
+Subject: Re: [PATCH 3/4] iotests: Change imports for Python 3.13
+To: qemu-devel <qemu-devel@nongnu.org>, Kevin Wolf <kwolf@redhat.com>
+Cc: Qemu-block <qemu-block@nongnu.org>, Cleber Rosa <crosa@redhat.com>, 
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>, Thomas Huth <thuth@redhat.com>, 
+ Hanna Reitz <hreitz@redhat.com>
+Content-Type: multipart/alternative; boundary="000000000000ff30dd061c382c7b"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,42 +97,147 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: "Edgar E. Iglesias" <edgar.iglesias@amd.com>
+--000000000000ff30dd061c382c7b
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This fixes the clobbering of the entry->next pointer when
-unmapping the first entry in a bucket of a mapcache.
+Ping - happy to merge this series myself but didn't wanna change iotests
+without at least an ack from the lord of that castle.
 
-Fixes: 123acd816d ("xen: mapcache: Unmap first entries in buckets")
-Reported-by: Anthony PERARD <anthony.perard@vates.tech>
-Signed-off-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
----
- hw/xen/xen-mapcache.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+On Wed, Jun 26, 2024, 7:22=E2=80=AFPM John Snow <jsnow@redhat.com> wrote:
 
-diff --git a/hw/xen/xen-mapcache.c b/hw/xen/xen-mapcache.c
-index 5f23b0adbe..18ba7b1d8f 100644
---- a/hw/xen/xen-mapcache.c
-+++ b/hw/xen/xen-mapcache.c
-@@ -597,7 +597,17 @@ static void xen_invalidate_map_cache_entry_unlocked(MapCache *mc,
-         pentry->next = entry->next;
-         g_free(entry);
-     } else {
--        memset(entry, 0, sizeof *entry);
-+        /*
-+         * Invalidate mapping but keep entry->next pointing to the rest
-+         * of the list.
-+         *
-+         * Note that lock is already zero here, otherwise we don't unmap.
-+         */
-+        entry->paddr_index = 0;
-+        entry->vaddr_base = NULL;
-+        entry->valid_mapping = NULL;
-+        entry->flags = 0;
-+        entry->size = 0;
-     }
- }
- 
--- 
-2.43.0
+> Python 3.13 isn't out yet, but it's in beta and Fedora is ramping up to
+> make it the default system interpreter for Fedora 41.
+>
+> They moved our cheese for where ContextManager lives; add a conditional
+> to locate it while we support both pre-3.9 and 3.13+.
+>
+> Signed-off-by: John Snow <jsnow@redhat.com>
+> ---
+>  tests/qemu-iotests/testenv.py    | 7 ++++++-
+>  tests/qemu-iotests/testrunner.py | 9 ++++++---
+>  2 files changed, 12 insertions(+), 4 deletions(-)
+>
+> diff --git a/tests/qemu-iotests/testenv.py b/tests/qemu-iotests/testenv.p=
+y
+> index 588f30a4f14..96d69e56963 100644
+> --- a/tests/qemu-iotests/testenv.py
+> +++ b/tests/qemu-iotests/testenv.py
+> @@ -25,7 +25,12 @@
+>  import random
+>  import subprocess
+>  import glob
+> -from typing import List, Dict, Any, Optional, ContextManager
+> +from typing import List, Dict, Any, Optional
+> +
+> +if sys.version_info >=3D (3, 9):
+> +    from contextlib import AbstractContextManager as ContextManager
+> +else:
+> +    from typing import ContextManager
+>
+>  DEF_GDB_OPTIONS =3D 'localhost:12345'
+>
+> diff --git a/tests/qemu-iotests/testrunner.py
+> b/tests/qemu-iotests/testrunner.py
+> index 7b322272e92..2e236c8fa39 100644
+> --- a/tests/qemu-iotests/testrunner.py
+> +++ b/tests/qemu-iotests/testrunner.py
+> @@ -27,11 +27,14 @@
+>  import shutil
+>  import sys
+>  from multiprocessing import Pool
+> -from typing import List, Optional, Any, Sequence, Dict, \
+> -        ContextManager
+> -
+> +from typing import List, Optional, Any, Sequence, Dict
+>  from testenv import TestEnv
+>
+> +if sys.version_info >=3D (3, 9):
+> +    from contextlib import AbstractContextManager as ContextManager
+> +else:
+> +    from typing import ContextManager
+> +
+>
+>  def silent_unlink(path: Path) -> None:
+>      try:
+> --
+> 2.45.0
+>
+>
+
+--000000000000ff30dd061c382c7b
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"auto"><div>Ping - happy to merge this series myself but didn&#3=
+9;t wanna change iotests without at least an ack from the lord of that cast=
+le.<br><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr"=
+>On Wed, Jun 26, 2024, 7:22=E2=80=AFPM John Snow &lt;<a href=3D"mailto:jsno=
+w@redhat.com">jsnow@redhat.com</a>&gt; wrote:<br></div><blockquote class=3D=
+"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding=
+-left:1ex">Python 3.13 isn&#39;t out yet, but it&#39;s in beta and Fedora i=
+s ramping up to<br>
+make it the default system interpreter for Fedora 41.<br>
+<br>
+They moved our cheese for where ContextManager lives; add a conditional<br>
+to locate it while we support both pre-3.9 and 3.13+.<br>
+<br>
+Signed-off-by: John Snow &lt;<a href=3D"mailto:jsnow@redhat.com" target=3D"=
+_blank" rel=3D"noreferrer">jsnow@redhat.com</a>&gt;<br>
+---<br>
+=C2=A0tests/qemu-iotests/testenv.py=C2=A0 =C2=A0 | 7 ++++++-<br>
+=C2=A0tests/qemu-iotests/testrunner.py | 9 ++++++---<br>
+=C2=A02 files changed, 12 insertions(+), 4 deletions(-)<br>
+<br>
+diff --git a/tests/qemu-iotests/testenv.py b/tests/qemu-iotests/testenv.py<=
+br>
+index 588f30a4f14..96d69e56963 100644<br>
+--- a/tests/qemu-iotests/testenv.py<br>
++++ b/tests/qemu-iotests/testenv.py<br>
+@@ -25,7 +25,12 @@<br>
+=C2=A0import random<br>
+=C2=A0import subprocess<br>
+=C2=A0import glob<br>
+-from typing import List, Dict, Any, Optional, ContextManager<br>
++from typing import List, Dict, Any, Optional<br>
++<br>
++if sys.version_info &gt;=3D (3, 9):<br>
++=C2=A0 =C2=A0 from contextlib import AbstractContextManager as ContextMana=
+ger<br>
++else:<br>
++=C2=A0 =C2=A0 from typing import ContextManager<br>
+<br>
+=C2=A0DEF_GDB_OPTIONS =3D &#39;localhost:12345&#39;<br>
+<br>
+diff --git a/tests/qemu-iotests/testrunner.py b/tests/qemu-iotests/testrunn=
+er.py<br>
+index 7b322272e92..2e236c8fa39 100644<br>
+--- a/tests/qemu-iotests/testrunner.py<br>
++++ b/tests/qemu-iotests/testrunner.py<br>
+@@ -27,11 +27,14 @@<br>
+=C2=A0import shutil<br>
+=C2=A0import sys<br>
+=C2=A0from multiprocessing import Pool<br>
+-from typing import List, Optional, Any, Sequence, Dict, \<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 ContextManager<br>
+-<br>
++from typing import List, Optional, Any, Sequence, Dict<br>
+=C2=A0from testenv import TestEnv<br>
+<br>
++if sys.version_info &gt;=3D (3, 9):<br>
++=C2=A0 =C2=A0 from contextlib import AbstractContextManager as ContextMana=
+ger<br>
++else:<br>
++=C2=A0 =C2=A0 from typing import ContextManager<br>
++<br>
+<br>
+=C2=A0def silent_unlink(path: Path) -&gt; None:<br>
+=C2=A0 =C2=A0 =C2=A0try:<br>
+-- <br>
+2.45.0<br>
+<br>
+</blockquote></div></div></div>
+
+--000000000000ff30dd061c382c7b--
 
 
