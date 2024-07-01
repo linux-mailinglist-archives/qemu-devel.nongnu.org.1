@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFA1D91E4FD
-	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 18:13:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AEE391E4FE
+	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 18:13:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOJa6-00039D-1i; Mon, 01 Jul 2024 12:08:42 -0400
+	id 1sOJa7-0003OK-BI; Mon, 01 Jul 2024 12:08:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sOJZE-0000p8-CT
+ id 1sOJZE-0000p7-4p
  for qemu-devel@nongnu.org; Mon, 01 Jul 2024 12:07:50 -0400
-Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sOJZ9-0005Tk-FW
+ id 1sOJZB-0005Tq-A6
  for qemu-devel@nongnu.org; Mon, 01 Jul 2024 12:07:47 -0400
-Received: by mail-lf1-x12b.google.com with SMTP id
- 2adb3069b0e04-52cdd03d6aaso3693883e87.0
- for <qemu-devel@nongnu.org>; Mon, 01 Jul 2024 09:07:42 -0700 (PDT)
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-425624255f3so19310585e9.0
+ for <qemu-devel@nongnu.org>; Mon, 01 Jul 2024 09:07:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719850061; x=1720454861; darn=nongnu.org;
+ d=linaro.org; s=google; t=1719850062; x=1720454862; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=Z7/IHdKKubpCBk70PI2w/9BtCaXUhcMHm9wylsLvrK0=;
- b=t4Vv6MG/Ev1n4mQvvepF5jZt5E4VCYefyvdVVKkuXavoGXywKe6OvzEKO0Lw0yP/vb
- S31GHSyJLUJg+lWw2q5QoOpxZPnBAaJF/gSEHpT7WvaeeznlRdo2vOPmbUYCBrbIVyPN
- iDhMRcFWKGOyaWgnHmZdhxRHkKHmZqVP5gTUROj0BLOtDOxQG3VqO/8bL4DrISCpmxGb
- p/+pccX+AH/m8f3lJOBLnF53B5z09dVWgI3RBeyZWI3utw05box/C8hqOjrbOKUvmUuB
- uxvidJccgCyLlkUkdq+DnMfewqWPt4i19VUKLpLm+xuq2V7nCP/EkdXvbaDnpgxEbJct
- LyKA==
+ :reply-to; bh=pJ0vzkmN5Hgmb8rgDSg5G2IpqWGpWILmCLfl1B7KYcA=;
+ b=tv6cDWkygLPEXxBBrw9Vt1oUm4xIxeONQaQEG+N6fiQWqcmEgOSfE8l5iGc3yt18LB
+ mLOIMofb/fA6Kj0U96nBh48IH4Zopaicg2kGsEMr/wFOHc34ZAM9X184Xy/PznmJgbKN
+ z+YnfJe36Iq6sxWcBNx9/UONjvbqApmpSt2TYeqefZTgjhRztjzSO6GC0THofx/GcNGb
+ 9aAmKQ99BJF7/9z8H+V35p9IqMIEUBNLSInP2q6vawreWQgNs1V+hse1EkDNFOth+fdI
+ /1RSe3vC0u+2K/h4LkjQwo7kh3bjG4TLhe67NgaYuBFwzcqsrwnm90NRzRohOQECTbAZ
+ r1Jg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719850061; x=1720454861;
+ d=1e100.net; s=20230601; t=1719850062; x=1720454862;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Z7/IHdKKubpCBk70PI2w/9BtCaXUhcMHm9wylsLvrK0=;
- b=B80JVFtK1Pob5JtyW7xPCFyG+BKzr4b71gSJnvlEfVn/3z4GGJEip/X8bcDWsBR8nw
- omkQSHhxgLmOeT5ddcj2tN29je/KAiTm3a+zcZCzXVPfxTqcEnA3qgV/qtwYBkhoZzYQ
- tlgccAkmDvmCnHq5wLK8zoqHES3+JEbwtSJzoscZC4D9vrzfwD5pqB/8LVeoNh4BoqJ/
- DtS90DfBfa8wRvfaFQZOaQjMerrOkNsglR7NhK2KhfJ3xh9W3t5tyIF9sWNxRttmdI+5
- NNPTA0gjir3D8NRfHpDbpnqXOnvq0o4UzsUnWGpP3PPp9fnOREnTrgSi2CeLDbg2Xatf
- a/OQ==
-X-Gm-Message-State: AOJu0Yz4AEDPqNO0QF8xPPr14bvmIWC3fF9NZjDvSMkJgiZTb8tHAgjM
- BYBZjdI77A/CdPkBgdQq8gYCPBEQYbc0UU+yNggZBG3HkJ4vVyC011cRBBSFgr5CUu2q5ENZfsR
- 1up8=
-X-Google-Smtp-Source: AGHT+IF1ie5reIAVKJ1o/hX9n4sX6FmpisZLZG/tSXtmR6d10zI8oAcUsbg0oYnBRji8r4sEG7AEVA==
-X-Received: by 2002:a05:6512:10d1:b0:52c:c6a0:575c with SMTP id
- 2adb3069b0e04-52e82687f07mr4438791e87.33.1719850061673; 
- Mon, 01 Jul 2024 09:07:41 -0700 (PDT)
+ bh=pJ0vzkmN5Hgmb8rgDSg5G2IpqWGpWILmCLfl1B7KYcA=;
+ b=OXtcf2Xo+gp7rggg2btv0HCorcI0jVcBvYz0pmAPBM6/9mXj82+9bCj8nJf8/v4LQ1
+ RKd80ohGhBDMCSJvBUIfVLgJhwsQXJoFTaMHrw+I3drE4YpCJ5SejUmLjUnewf+5aMWq
+ gJdq5xh06kF+AxbKxQwk4bWSpzyTlarGTx8pm4UHh9xPS7lXfCXzvnZ5BXZVlTp9wiYt
+ qvmhyX433YKk+9wplDZGeHEVP6q/PAyPrI5mQrFBuLjhBmGN9ravOE/KI6Xg/N/lfHT/
+ s0du03X7WgF6nArni+m9e+ht1XkVf7I+TswYCdZAMh3Kw3pMcExO7N1MnVKVA6z6JOSR
+ icYg==
+X-Gm-Message-State: AOJu0YysWTX6qGcnV+pKu7UScIAJwdic1qtcDtZwysHD/FRt2UeX0J7u
+ sab8GyGgiuDms9m/KiiiO5zDVYA7KbdFreHVsswHid/+FHf8GP+0dBlm4LbCNBVosUeGKJjznOg
+ mKZs=
+X-Google-Smtp-Source: AGHT+IEQ0Iky4Nmx04cl5wSxcnkRxKtgD8Q1N0Nj+oe2lvSCN/X0VdmtyoLASVvVSALQ05VuVidORw==
+X-Received: by 2002:a05:600c:1c21:b0:424:8be4:f2c with SMTP id
+ 5b1f17b1804b1-4257984de8fmr53664175e9.2.1719850062128; 
+ Mon, 01 Jul 2024 09:07:42 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  5b1f17b1804b1-4256af557fesm161952135e9.11.2024.07.01.09.07.41
@@ -59,16 +59,16 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Mon, 01 Jul 2024 09:07:41 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 22/29] target/arm: Enable FEAT_Debugv8p8 for -cpu max
-Date: Mon,  1 Jul 2024 17:07:22 +0100
-Message-Id: <20240701160729.1910763-23-peter.maydell@linaro.org>
+Subject: [PULL 23/29] MAINTAINERS: Update my family name
+Date: Mon,  1 Jul 2024 17:07:23 +0100
+Message-Id: <20240701160729.1910763-24-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240701160729.1910763-1-peter.maydell@linaro.org>
 References: <20240701160729.1910763-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,72 +91,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Gustavo Romero <gustavo.romero@linaro.org>
+From: Patrick Leis <venture@google.com>
 
-Enable FEAT_Debugv8p8 for max CPU. This feature is out of scope for QEMU
-since it concerns the external debug interface for JTAG, but is
-mandatory in Armv8.8 implementations, hence it is reported as supported
-in the ID registers.
-
-Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20240624180915.4528-4-gustavo.romero@linaro.org
+Signed-off-by: Patrick Leis <venture@google.com>
+Message-id: 20240626211623.3510701-1-venture@google.com
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- docs/system/arm/emulation.rst | 1 +
- target/arm/tcg/cpu32.c        | 6 +++---
- target/arm/tcg/cpu64.c        | 2 +-
- 3 files changed, 5 insertions(+), 4 deletions(-)
+ MAINTAINERS | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/docs/system/arm/emulation.rst b/docs/system/arm/emulation.rst
-index 1a06a5feb6e..3ab6e726679 100644
---- a/docs/system/arm/emulation.rst
-+++ b/docs/system/arm/emulation.rst
-@@ -41,6 +41,7 @@ the following architecture extensions:
- - FEAT_Debugv8p1 (Debug with VHE)
- - FEAT_Debugv8p2 (Debug changes for v8.2)
- - FEAT_Debugv8p4 (Debug changes for v8.4)
-+- FEAT_Debugv8p8 (Debug changes for v8.8)
- - FEAT_DotProd (Advanced SIMD dot product instructions)
- - FEAT_DoubleFault (Double Fault Extension)
- - FEAT_E0PD (Preventing EL0 access to halves of address maps)
-diff --git a/target/arm/tcg/cpu32.c b/target/arm/tcg/cpu32.c
-index 28a5c033bb9..20c2737f17b 100644
---- a/target/arm/tcg/cpu32.c
-+++ b/target/arm/tcg/cpu32.c
-@@ -82,8 +82,8 @@ void aa32_max_features(ARMCPU *cpu)
-     cpu->isar.id_pfr2 = t;
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 19f67dc5d21..13255d4a3bd 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -2496,7 +2496,7 @@ F: hw/net/tulip.c
+ F: hw/net/tulip.h
  
-     t = cpu->isar.id_dfr0;
--    t = FIELD_DP32(t, ID_DFR0, COPDBG, 9);        /* FEAT_Debugv8p4 */
--    t = FIELD_DP32(t, ID_DFR0, COPSDBG, 9);       /* FEAT_Debugv8p4 */
-+    t = FIELD_DP32(t, ID_DFR0, COPDBG, 10);       /* FEAT_Debugv8p8 */
-+    t = FIELD_DP32(t, ID_DFR0, COPSDBG, 10);      /* FEAT_Debugv8p8 */
-     t = FIELD_DP32(t, ID_DFR0, PERFMON, 6);       /* FEAT_PMUv3p5 */
-     cpu->isar.id_dfr0 = t;
- 
-@@ -93,7 +93,7 @@ void aa32_max_features(ARMCPU *cpu)
-     t = 0x00008000;
-     t = FIELD_DP32(t, DBGDIDR, SE_IMP, 1);
-     t = FIELD_DP32(t, DBGDIDR, NSUHD_IMP, 1);
--    t = FIELD_DP32(t, DBGDIDR, VERSION, 6);       /* Armv8 debug */
-+    t = FIELD_DP32(t, DBGDIDR, VERSION, 10);      /* FEAT_Debugv8p8 */
-     t = FIELD_DP32(t, DBGDIDR, CTX_CMPS, 1);
-     t = FIELD_DP32(t, DBGDIDR, BRPS, 5);
-     t = FIELD_DP32(t, DBGDIDR, WRPS, 3);
-diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
-index 71e1bfcd4ee..fe232eb3069 100644
---- a/target/arm/tcg/cpu64.c
-+++ b/target/arm/tcg/cpu64.c
-@@ -1253,7 +1253,7 @@ void aarch64_max_tcg_initfn(Object *obj)
-     cpu->isar.id_aa64zfr0 = t;
- 
-     t = cpu->isar.id_aa64dfr0;
--    t = FIELD_DP64(t, ID_AA64DFR0, DEBUGVER, 9);  /* FEAT_Debugv8p4 */
-+    t = FIELD_DP64(t, ID_AA64DFR0, DEBUGVER, 10); /* FEAT_Debugv8p8 */
-     t = FIELD_DP64(t, ID_AA64DFR0, PMUVER, 6);    /* FEAT_PMUv3p5 */
-     t = FIELD_DP64(t, ID_AA64DFR0, HPMN0, 1);     /* FEAT_HPMN0 */
-     cpu->isar.id_aa64dfr0 = t;
+ pca954x
+-M: Patrick Venture <venture@google.com>
++M: Patrick Leis <venture@google.com>
+ S: Maintained
+ F: hw/i2c/i2c_mux_pca954x.c
+ F: include/hw/i2c/i2c_mux_pca954x.h
 -- 
 2.34.1
 
