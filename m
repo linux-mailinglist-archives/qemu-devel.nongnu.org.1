@@ -2,67 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DEE291DABE
-	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 10:58:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C3D191DB0D
+	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 11:06:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOCrI-0004jO-KC; Mon, 01 Jul 2024 04:58:00 -0400
+	id 1sOCwL-0007uP-4m; Mon, 01 Jul 2024 05:03:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berto@igalia.com>)
- id 1sOCqC-0004M6-JH; Mon, 01 Jul 2024 04:56:53 -0400
-Received: from fanzine.igalia.com ([178.60.130.6] helo=fanzine2.igalia.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berto@igalia.com>)
- id 1sOCq6-0006XT-9q; Mon, 01 Jul 2024 04:56:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
- s=20170329;
- h=Content-Type:MIME-Version:Message-ID:Date:References:
- In-Reply-To:Subject:Cc:To:From:Sender:Reply-To:Content-Transfer-Encoding:
- Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
- Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
- List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=073QRSIAljNanot71WKMUobh9NY8CTxpm8fYzTNnETI=; b=IAGZwfzSAGCnv6eig9Rk1EIa1A
- sHknzLgyC/jfGArWZ3bWm+yJ2vSgnnoDrSWbgGF7qY8bB9eqByvFIr790WKhVtoT5pJBnoIz0j3d/
- 8fnrztwxfbqoZg1qMO2JtTHVLr/x7YGhZznzu4JMwGNc16MH7mzQu3U5hNu1ktVcXKu18DH3E0u7h
- SQJfytJcMNt9WWXnCZFjrPWhUmMwWfa1MTEOLQEnneErJ4r3R8BvEH69RAlgsGPjXPudQMXVupQsk
- /Up7XWk4K15rucGOLHpW3ZgCWJb/7TUXd8a6cpy90U2rpd5Hx8lstX51gcir0viVowG/e0NBC+SnJ
- aD5+Pbyg==;
-Received: from maestria.local.igalia.com ([192.168.10.14] helo=mail.igalia.com)
- by fanzine2.igalia.com with esmtps 
- (Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
- id 1sOCpt-009m7w-D4; Mon, 01 Jul 2024 10:56:33 +0200
-Received: from gate.service.igalia.com ([192.168.21.52])
- by mail.igalia.com with esmtp (Exim)
- id 1sOCpr-00EQSH-3s; Mon, 01 Jul 2024 10:56:33 +0200
-Received: from berto by gate.service.igalia.com with local (Exim 4.96)
- (envelope-from <berto@igalia.com>) id 1sOCpq-00G78q-36;
- Mon, 01 Jul 2024 08:56:30 +0000
-From: Alberto Garcia <berto@igalia.com>
-To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- qemu-block@nongnu.org, qemu-devel@nongnu.org
-Cc: Eric Blake <eblake@redhat.com>, Kevin Wolf <kwolf@redhat.com>, Hanna
- Czenczek <hreitz@redhat.com>, Madeeha Javed <javed@igalia.com>
-Subject: Re: [PATCH] scripts/qcow2-to-stdout.py: Add script to write qcow2
- images to stdout
-In-Reply-To: <eyt18.e0s2rty6vd9y@linaro.org>
-References: <20240610144708.81351-1-berto@igalia.com>
- <eyt18.e0s2rty6vd9y@linaro.org>
-Date: Mon, 01 Jul 2024 10:56:30 +0200
-Message-ID: <w51sewtpk1t.fsf@igalia.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sOCrd-0004xV-BZ
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 04:58:23 -0400
+Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sOCra-0006j8-DS
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 04:58:20 -0400
+Received: by mail-ed1-x52b.google.com with SMTP id
+ 4fb4d7f45d1cf-57d20d89748so2989727a12.0
+ for <qemu-devel@nongnu.org>; Mon, 01 Jul 2024 01:58:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1719824296; x=1720429096; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=kXXH3LOqJxGPAXdIJxcNmav/alDjOGq1U7fctTEu8io=;
+ b=Fxl7SlJC2Vsru/qVVW0PtNRr3DV6NIflB1E9ZZ93IoE46MqMh+shCJ1+YEo0wdlcxX
+ p7yuDgwEnIVZE9VuAKj/MhE17TGRNybD/EbaDFbMcbyCZ7GD5xScCgHp1ePMDF5GXrXF
+ yPLAwX2hLX+NtEvBbrl3EnUAA8NxoWsarNIAg90OkS/BsnBK1i84lw8BFXCG02PR/R1r
+ qebAlpayKfqEugb+OQUlSkbxYNeIu987eWbdGc4k45oEfznZ3jfdqYULRgmUDC4fIdZc
+ eU4Y4R7hEzmExYI+inQ8/M2ObWmgSc4jzb/dQeSHL8LL6DTcp9NB3vl01tKRiG/cICFk
+ FtEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1719824296; x=1720429096;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=kXXH3LOqJxGPAXdIJxcNmav/alDjOGq1U7fctTEu8io=;
+ b=sxlyhYG1W/3Oj9Xd0bWk8GT63aVi92MQXawgLiOeODWdqQG4RVkjFlKS1YykTjeZWu
+ 0pDY+ipWX2bNY+wxbzxtTi1wc5s0drtssyAU19MZ1PwaHBGyN57oYxR4lL74sTKm8jlW
+ 2E8e8Fz+xq6kfOkkMuuOmpFScBxFp0o8p6noERyKMMXD+Yyk4dKHMVJpg6ahvyTT+HTs
+ KkB+Pk9yixLrf5lh4e1WhCkUWrMdi4kqZOexI0yc/RUkCtIvezkgIYnVuDT5U3yLAlEV
+ vreQv/sY1NzHgRKY7XSEg3J0GibXRkiphhlbrdvV6lRihMLB8W9eTJ//MexjZnGtQJ4b
+ FMSg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUWi369Jqr0tpy37mRbNtssYtOpOPAVA0Nomo5wXde7xdORE887rnJgoDnPDNOs0gdOnUHec3+eJdHDcLie6BLBg5uYB1c=
+X-Gm-Message-State: AOJu0YysD6tomzp9q4GHI3AX/sJXATTcxoM/OynO1lFG5SSxsQRSh8nw
+ F9nerRAtzLNQZNUapwn+PGJT1Jkqkpw8CnfRqoDl1LXWl2glXs7F2jLZqqNKXsavy6lQTXAtLNN
+ QtC4j67zs7u4PmQ/sI69Izf7XiCh/4+8dHm6Kvg==
+X-Google-Smtp-Source: AGHT+IGLyyJzA5YKsF0kiK3YiDtBQO7yVJhfNvDWooPKTxZJtfhQmpK3tNoi/52BJOb8DEm3ddiRgcdOay1l/SW3hGQ=
+X-Received: by 2002:a05:6402:1751:b0:57c:749f:f5ef with SMTP id
+ 4fb4d7f45d1cf-587a0bfc733mr2734717a12.34.1719824296410; Mon, 01 Jul 2024
+ 01:58:16 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Score: -43
-X-Spam-Bar: ----
-Received-SPF: pass client-ip=178.60.130.6; envelope-from=berto@igalia.com;
- helo=fanzine2.igalia.com
+References: <20240620-b4-new-firmware-v3-0-29a3a2f1be1e@linaro.org>
+ <20240620-b4-new-firmware-v3-1-29a3a2f1be1e@linaro.org>
+ <CAMj1kXGb9xVQ5E3oK_QX+3hKkMfCoA9jF5jkEeG6Eq9+zbHPHA@mail.gmail.com>
+ <ca463afe-486f-4590-acb5-a61265cbbd37@linaro.org>
+In-Reply-To: <ca463afe-486f-4590-acb5-a61265cbbd37@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 1 Jul 2024 09:58:04 +0100
+Message-ID: <CAFEAcA_RUK53BZ7oiFgnt0HgcghACTc+XXC1h2340GAR8xHUEw@mail.gmail.com>
+Subject: Re: [PATCH v3 1/2] tests/avocado: update firmware for sbsa-ref
+To: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+Cc: Ard Biesheuvel <ardb@kernel.org>, qemu-devel@nongnu.org,
+ qemu-arm@nongnu.org, Leif Lindholm <quic_llindhol@quicinc.com>,
+ Radoslaw Biernacki <rad@semihalf.com>, Cleber Rosa <crosa@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>, 
+ Ard Biesheuvel <ardb+tianocore@kernel.org>, Rebecca Cran <rebecca@bsdio.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,121 +96,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed 12 Jun 2024 02:00:19 PM +03, Manos Pitsidianakis wrote:
-
-Hi, thanks for the review and sorry for taking so long to reply, I was
-on vacation.
-
->> scripts/qcow2-to-stdout.py | 330 +++++++++++++++++++++++++++++++++++++
->> 1 file changed, 330 insertions(+)
->> create mode 100755 scripts/qcow2-to-stdout.py
+On Mon, 1 Jul 2024 at 07:49, Marcin Juszkiewicz
+<marcin.juszkiewicz@linaro.org> wrote:
 >
-> I recommend running the `black` formatter on this script, it makes the
-> code more diff-friendly and uniform. Also it has become the de-facto
-> python style.
-
-Hmmm, I don't like how it reformats some of the lines. However other
-changes do make sense, so I'll apply those.
-
-> Also, it's more pythonic to name constants in uppercase, like
-> allocated_l2_tables. You can check such lints with pylint
-> scripts/qcow2-to-stdout.py
-
-allocated_l2_tables is not a constant :-?
-
->>+    struct.pack_into('>I', header, 0x70, 0x6803f857)
->>+    struct.pack_into('>I', header, 0x74, len(qcow2_features) * 48)
->>+    cur_offset = 0x78
+> W dniu 30.06.2024 o 16:37, Ard Biesheuvel pisze:
+> > On Thu, 20 Jun 2024 at 12:20, Marcin Juszkiewicz
+> > <marcin.juszkiewicz@linaro.org> wrote:
+> >>
+> >> Update firmware to have graphics card memory fix from EDK2 commit
+> >> c1d1910be6e04a8b1a73090cf2881fb698947a6e:
+> >>
+> >>      OvmfPkg/QemuVideoDxe: add feature PCD to remap framebuffer W/C
+> >>
+> >>      Some platforms (such as SBSA-QEMU on recent builds of the emulator) only
+> >>      tolerate misaligned accesses to normal memory, and raise alignment
+> >>      faults on such accesses to device memory, which is the default for PCIe
+> >>      MMIO BARs.
+> >>
+> >>      When emulating a PCIe graphics controller, the framebuffer is typically
+> >>      exposed via a MMIO BAR, while the disposition of the region is closer to
+> >>      memory (no side effects on reads or writes, except for the changing
+> >>      picture on the screen; direct random access to any pixel in the image).
+> >>
+> >>      In order to permit the use of such controllers on platforms that only
+> >>      tolerate these types of accesses for normal memory, it is necessary to
+> >>      remap the memory. Use the DXE services to set the desired capabilities
+> >>      and attributes.
+> >>
+> >>      Hide this behavior under a feature PCD so only platforms that really
+> >>      need it can enable it. (OVMF on x86 has no need for this)
+> >>
+> >> With this fix enabled we can boot sbsa-ref with more than one cpu core.
+> >>
+> >
+> > This requires an explanation: what does the number of CPU cores have
+> > to do with the memory attributes used for the framebuffer?
 >
-> Minor comment: extract magic values/offsets into constant globals with
-> descriptive names, it'd help the code be more readable and easier to
-> maintain if ported in the future to other formats.
-
-Good idea, will do.
-
->>+    for (feature_type, feature_bit, feature_name) in qcow2_features:
->>+        struct.pack_into('>BB46s', header, cur_offset,
->>+                         feature_type, feature_bit, feature_name.encode('ascii'))
->>+        cur_offset += 48
->>+
+> I have no idea. Older firmware was hanging on several systems but was
+> passing in QEMU tests. After closer looking I noticed that Avocado tests
+> run with "-smp 1" and pass.
 >
->>From here onwards put everything under a main block like so:
-
-Ok.
-
->>+# Command-line arguments
->>+parser = argparse.ArgumentParser(description='This program converts a QEMU disk image to qcow2 '
->>+                                 'and writes it to the standard output')
->>+parser.add_argument('input_file', help='name of the input file')
+> Checked failing system with "-smp 1" and it worked. In meantime you have
+> fixed problem in EDK2.
 >
-> Suggestion:
->
-> -parser.add_argument('input_file', help='name of the input file')
-> +parser.add_argument('input_file', help='name of the input file', type=pathlib.Path, required=True)
+> So yes, updating firmware may look like hiding a bug. Which I do not
+> know how to track (I can build and test QEMU, but going into its
+> internals is something I never done).
 
-'required' is not valid in positional arguments, and I'm not sure what
-benefits using pathlib brings in this case.
+My assumption was that random chance meant that TF-A when
+only dealing with one CPU meant that its memory layout etc
+was such that it didn't do the unaligned access. I don't think
+this is likely to be a QEMU side question.
 
->>+parser.add_argument('-v', dest='qcow2_version', metavar='qcow2_version',
->
-> Maybe -q instead of -v? No strong feelings on this one, it's just that 
-> -v is usually version. -q is also usually --quiet so not sure...
-
-Yeah, I thought the same but I didn't want to complicate this too much,
-this is just a helper script.
-
->>+# If the input file is not in raw format we can use
->>+# qemu-storage-daemon to make it appear as such
->>+if input_format != 'raw':
->>+    temp_dir = tempfile.mkdtemp()
->
-> Consider using the tempfile.TemporaryDirectory as with... context 
-> manager so that the temp dir cleanup is performed automatically
-
-I don't think I can do that directly here because the temp dir has to
-live until the very end (qemu-storage-daemon needs it).
-
->>+    pid_file = temp_dir + "/pid"
->>+    raw_file = temp_dir + "/raw"
->>+    open(raw_file, 'wb').close()
->
-> Consider using a with open(...) open manager for opening the file
-
-How would that be? Like this?
-
-    with open(raw_file, 'wb'):
-        pass
-
-If so I don't see the benefit, I just need to create an empty file and
-close it immediately.
-
->>+    atexit.register(kill_storage_daemon, pid_file, raw_file, temp_dir)
->
-> Hm, this too could be a context manager. Seems very C-like to use
-> atexit here.
-
-Yeah it is, but I think that using the context manager would require me
-to split the main function in two, and I'm not sure that it's worth it
-for this case. Other Python scripts in the QEMU repo use atexit already.
-
->>+    ret = subprocess.run(["qemu-storage-daemon", "--daemonize", "--pidfile", pid_file,
->>+                          "--blockdev", f"driver=file,node-name=file0,driver=file,filename={input_file},read-only=on",
->>+                          "--blockdev", f"driver={input_format},node-name=disk0,file=file0,read-only=on",
->>+                          "--export", f"type=fuse,id=export0,node-name=disk0,mountpoint={raw_file},writable=off"])
->
-> You can add shell=True, check=False arguments to subprocess.run() so 
-> that it captures the outputs. (check=False is the default behavior, but 
-> better make it explicit)
-
-I'm not sure that I understand, why would I need to use a shell here?
-
->>+sys.stdout.buffer.write(cluster)
->
-> Would it be a good idea to check if stdout is a tty and not a
-> pipe/redirection? You can check it with isatty() and error out to
-> prevent printing binary to the terminal.
-
-Yeah this is a good idea, thanks.
-
-Berto
+-- PMM
 
