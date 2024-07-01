@@ -2,78 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A262691DB08
-	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 11:06:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6083E91DB28
+	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 11:11:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOCwM-0007vB-8R; Mon, 01 Jul 2024 05:03:14 -0400
+	id 1sOCyO-0000Vn-LA; Mon, 01 Jul 2024 05:05:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sOCsI-0005au-Ho
- for qemu-devel@nongnu.org; Mon, 01 Jul 2024 04:59:02 -0400
-Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sOCsF-00077t-5s
- for qemu-devel@nongnu.org; Mon, 01 Jul 2024 04:59:00 -0400
-Received: by mail-ed1-x532.google.com with SMTP id
- 4fb4d7f45d1cf-5854ac8168fso2979431a12.2
- for <qemu-devel@nongnu.org>; Mon, 01 Jul 2024 01:58:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719824337; x=1720429137; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=l2lyDssl4G6ryHXDn9OaZUeP+3jqeJ+ldt2WC0u/TIc=;
- b=g+g6FKYpBUseHADFeRDDnnA441CSwUjmx103fjxJyhK9e3OXhhp9qwavP//P2Yb59c
- D8EflJV7o6mvIFDBeqbV7sRmTdGUAzz6DCbbgp24yDS60GGOZshb+TEH0Y0bFqFKnwWU
- ob3YHs+bTRjpj41u8fzivGmjXDtQnY8NjmAdLHkt/drHh3ZSKgw2pSQfWuioGridq7F7
- x7sGBeF4R2KG++I3tyZkjbkAKXe4n7pFZpkjhZJ+AOCS0GM4+T+l7K2Nk6y6BrSVXWFc
- xEgd1r5e1YS5WYzVRxmdUtRmzeOw8Qt6AvAz2tEjpcMjU9yBwI3Xk+IgV9Pr5W1Su5+l
- isNQ==
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1sOCuu-00079d-UT
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 05:01:46 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1sOCut-0002jO-9T
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 05:01:44 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1719824501;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=oEBDYAQdGZzD+ww+OiJTTgxS9CQV9GMVKaDk3lRKAtA=;
+ b=Tw5kr+c6IKCbajkaRabg5Zqqj1+OvYMfEw7OsUR2MXEUSp33KOwkSal4LzP8HiixFnQndF
+ LheJfsr+An03k2ogUJ3EnCe5JPixh7faXJHC49n7k6gJpwtV2n7UYB8RkyKQPNCsOQu7RS
+ bFy46x95A3wJLxQ6Zxkf7PkVIdDhUv4=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-125-VkSo6UMFP8-j-1OJW6FAKQ-1; Mon, 01 Jul 2024 05:01:40 -0400
+X-MC-Unique: VkSo6UMFP8-j-1OJW6FAKQ-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-4210d151c5bso19924395e9.3
+ for <qemu-devel@nongnu.org>; Mon, 01 Jul 2024 02:01:39 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719824337; x=1720429137;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=l2lyDssl4G6ryHXDn9OaZUeP+3jqeJ+ldt2WC0u/TIc=;
- b=GYGlXnao/xKddk8QuwTLdsz3uCUGaZdlaUEzf4v0fio3YzdLtkgQk2F/u6dnoM8cMa
- cNyqR5hZ4f0uLzeyKyjd7BQl5gQuPDJ9dOgJgMRVliC9R8IgHW5ts4bxwH7VgjcIxoIk
- pzWDEaupbj7nc0xrLbSBTNvJkfnYdD2+O301sAKTe5N1D6S4/DJeKlErMaORyxyBWe3O
- +hmmeDcxdBhfw1pFv47u87p4s2FapRr5cdHFnOSueCJx4+C3OsKesvGTzo2FN3/8KhTZ
- 5N4lMX4f7pO2E9bPGVcfhEqJLcbXjg/84etIhXwUBpZafAXpCxzJ8yrmiBIeJlijPzoq
- RFtw==
-X-Gm-Message-State: AOJu0YwF41XFGxGYw51JVSb0d4S16xzLF82s1YPTyIDIbQBCHEW9hg5S
- XCjP+wj5opIrZNWKvckghSi0t7cW5UezoxnfKvQ8zygRFC076rB5SYE+nyoIztzO2W1HYsPMXw5
- qx77+WzG93RT+PWlQaomKDoyxTKX7Rkbg0PI1ZG+pfYhkV2mO
-X-Google-Smtp-Source: AGHT+IHjh+YTvsjchGNVXEubpw9/qk3HiRdxy9sCou4DoLJphbXRFLcRXoP2EFm557mIMkot27H3XU5CrpJiI+ma5YI=
-X-Received: by 2002:a05:6402:2786:b0:582:7e6d:6816 with SMTP id
- 4fb4d7f45d1cf-5879f0c6348mr3753181a12.8.1719824336839; Mon, 01 Jul 2024
- 01:58:56 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1719824499; x=1720429299;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=oEBDYAQdGZzD+ww+OiJTTgxS9CQV9GMVKaDk3lRKAtA=;
+ b=hJ02rfVL7+kOpRPqUEjh7JjY4i+uBRgv3LYQwZGyiL3XWfERFJnfYG9TW4gnwSvqcB
+ 5acjPTuHeiWVeqYEI+Wwxnjj5b1a4E2yeqws8wQyN4Prcfd3g1DakZupswf+F4E8UxSt
+ a+92KQ7R1VPBqhLzKdfg4oqRtvjLxDLOCB12DkfQtZMX9tkErxNeAGoSrtQgM7loC0+J
+ 8zTQApH8Xe1C1inItIK5Gq6uEXrm3JDCPZSNji/YeK7LBVSVtiqFI8/k09ww2AhEkjdI
+ +wo3nhtznw0u5ys9om78kliH3FX7y3jktLXrQxzi30o+IXIRXyjsbo5xfPYbOcELstTO
+ Oc2A==
+X-Gm-Message-State: AOJu0YxGpNgtl/k6+24R7ygmQoAkK3/GSNieC7SxXeK8Pk0e9ZZ8uSmE
+ y/DOL3Zw8iHhe7nbZvlsAQz2/+hb13pUsm24WPJy1L7CN6lJQ4aHPKv25NMA3ZSfEDY9q3UsL1/
+ QT4KxTXr887UGsbBS+a3N/R7lh3FOP2q1P4QINpoQ1KGQd5P0HO52
+X-Received: by 2002:a7b:c458:0:b0:424:a655:c8b with SMTP id
+ 5b1f17b1804b1-4257a010ab5mr32799845e9.19.1719824498992; 
+ Mon, 01 Jul 2024 02:01:38 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGek2GHD933LRneG78XPG7FHYSOuQtjZWToFudFgCXQ+YjfCag1kHhC5nBK77W/OehMizIE5A==
+X-Received: by 2002:a7b:c458:0:b0:424:a655:c8b with SMTP id
+ 5b1f17b1804b1-4257a010ab5mr32799715e9.19.1719824498651; 
+ Mon, 01 Jul 2024 02:01:38 -0700 (PDT)
+Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
+ [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4258014f8b7sm47322965e9.41.2024.07.01.02.01.37
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 01 Jul 2024 02:01:38 -0700 (PDT)
+Date: Mon, 1 Jul 2024 11:01:36 +0200
+From: Igor Mammedov <imammedo@redhat.com>
+To: Alex =?UTF-8?B?QmVubsOpZQ==?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, David Hildenbrand <david@redhat.com>, Beraldo
+ Leal <bleal@redhat.com>, Eduardo Habkost <eduardo@habkost.net>, Wainer dos
+ Santos Moschetta <wainersm@redhat.com>, qemu-arm@nongnu.org, Peter Xu
+ <peterx@redhat.com>, Mads Ynddal <mads@ynddal.dk>, Mahmoud Mandour
+ <ma.mandourr@gmail.com>, Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Laurent Vivier <laurent@vivier.eu>, Paolo Bonzini <pbonzini@redhat.com>,
+ Philippe =?UTF-8?B?TWF0aGlldS1EYXVkw6k=?= <philmd@linaro.org>, Alexandre
+ Iooss <erdnaxe@crans.org>, Stefan Hajnoczi <stefanha@redhat.com>, Peter
+ Maydell <peter.maydell@linaro.org>, Richard Henderson
+ <richard.henderson@linaro.org>, Thomas Huth <thuth@redhat.com>, Mark
+ Cave-Ayland <mark.cave-ayland@ilande.co.uk>, "Michael S. Tsirkin"
+ <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>, Fabiano Rosas
+ <farosas@suse.de>
+Subject: Re: [PATCH 02/23] target/i386: fix gen_prepare_size_nz condition
+Message-ID: <20240701110136.6829422c@imammedo.users.ipa.redhat.com>
+In-Reply-To: <87ikxtnnjh.fsf@draig.linaro.org>
+References: <20240628124258.832466-1-alex.bennee@linaro.org>
+ <20240628124258.832466-3-alex.bennee@linaro.org>
+ <87ikxtnnjh.fsf@draig.linaro.org>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.42; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-References: <20240701075208.19634-1-sgarzare@redhat.com>
-In-Reply-To: <20240701075208.19634-1-sgarzare@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 1 Jul 2024 09:58:46 +0100
-Message-ID: <CAFEAcA_y-o40H7fytjC_uzHoWeyq-oNU_k-s98GbsRnLbyT7GQ@mail.gmail.com>
-Subject: Re: [PATCH] virtio: remove virtio_tswap16s() call in
- vring_packed_event_read()
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: qemu-devel@nongnu.org, Eugenio Perez Martin <eperezma@redhat.com>,
- jasowang@redhat.com, 
- "Michael S. Tsirkin" <mst@redhat.com>, qemu-stable@nongnu.org,
- Xoykie <xoykie@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::532;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x532.google.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,41 +113,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 1 Jul 2024 at 08:52, Stefano Garzarella <sgarzare@redhat.com> wrote:
->
-> Commit d152cdd6f6 ("virtio: use virtio accessor to access packed event")
-> switched using of address_space_read_cached() to virito_lduw_phys_cached()
-> to access packed descriptor event.
->
-> When we used address_space_read_cached(), we needed to call
-> virtio_tswap16s() to handle the endianess of the field, but
-> virito_lduw_phys_cached() already handles it internally, so we no longer
-> need to call virtio_tswap16s() (as the commit had done for `off_wrap`,
-> but forgot for `flags`).
->
-> Fixes: d152cdd6f6 ("virtio: use virtio accessor to access packed event")
-> Cc: jasowang@redhat.com
-> Cc: qemu-stable@nongnu.org
-> Reported-by: Xoykie <xoykie@gmail.com>
-> Link: https://lore.kernel.org/qemu-devel/CAFU8RB_pjr77zMLsM0Unf9xPNxfr_--Tjr49F_eX32ZBc5o2zQ@mail.gmail.com
-> Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-> ---
->  hw/virtio/virtio.c | 1 -
->  1 file changed, 1 deletion(-)
->
-> diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
-> index 893a072c9d..2e5e67bdb9 100644
-> --- a/hw/virtio/virtio.c
-> +++ b/hw/virtio/virtio.c
-> @@ -323,7 +323,6 @@ static void vring_packed_event_read(VirtIODevice *vdev,
->      /* Make sure flags is seen before off_wrap */
->      smp_rmb();
->      e->off_wrap = virtio_lduw_phys_cached(vdev, cache, off_off);
-> -    virtio_tswap16s(vdev, &e->flags);
->  }
+On Fri, 28 Jun 2024 15:34:58 +0100
+Alex Benn=C3=A9e <alex.bennee@linaro.org> wrote:
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+> Alex Benn=C3=A9e <alex.bennee@linaro.org> writes:
+>=20
+> > Incorrect brace positions causes an unintended overflow on 32 bit
+> > builds and shenanigans result.
+> >
+> > Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2413
+> > Suggested-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+> > Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org> =20
+>=20
+> This seems to trigger regressions in:
+>=20
+>   qtest-x86_64/bios-tables-test
+>   qtest-x86_64/pxe-test
+>   qtest-x86_64/vmgenid-test
+>=20
+> Could that be down to generated test data?
 
-thanks
--- PMM
+Without context, I'd guess, that
+guest doesn't boot/get to randevu point that tests are waiting for
+and then it just timeouts =3D> fails.
+
+>=20
+> > ---
+> >  target/i386/tcg/translate.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
+> > index ad1819815a..94f13541c3 100644
+> > --- a/target/i386/tcg/translate.c
+> > +++ b/target/i386/tcg/translate.c
+> > @@ -877,7 +877,7 @@ static CCPrepare gen_prepare_sign_nz(TCGv src, MemO=
+p size)
+> >          return (CCPrepare) { .cond =3D TCG_COND_LT, .reg =3D src };
+> >      } else {
+> >          return (CCPrepare) { .cond =3D TCG_COND_TSTNE, .reg =3D src,
+> > -                             .imm =3D 1ull << ((8 << size) - 1) };
+> > +                             .imm =3D (1ull << (8 << size)) - 1 };
+> >      }
+> >  } =20
+>=20
+
 
