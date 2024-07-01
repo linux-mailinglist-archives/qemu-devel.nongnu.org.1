@@ -2,42 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DB6A91E047
-	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 15:10:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AA2291E072
+	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 15:20:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOGmI-0004n9-Dk; Mon, 01 Jul 2024 09:09:06 -0400
+	id 1sOGw4-0000JR-UO; Mon, 01 Jul 2024 09:19:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1sOGmE-0004mI-PM; Mon, 01 Jul 2024 09:09:02 -0400
-Received: from proxmox-new.maurer-it.com ([94.136.29.106])
+ (Exim 4.90_1) (envelope-from <anthony@xenproject.org>)
+ id 1sOGvq-0000Az-IL
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 09:18:58 -0400
+Received: from mail.xenproject.org ([104.130.215.37])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1sOGmC-0005CC-2R; Mon, 01 Jul 2024 09:09:02 -0400
-Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
- by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 7514A45F19;
- Mon,  1 Jul 2024 15:08:49 +0200 (CEST)
-Message-ID: <ce81d0ec-688d-4545-b008-123cd01cbd5a@proxmox.com>
-Date: Mon, 1 Jul 2024 15:08:48 +0200
+ (Exim 4.90_1) (envelope-from <anthony@xenproject.org>)
+ id 1sOGvc-0007tG-SN
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 09:18:57 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=xenproject.org; s=20200302mail; h=Content-Transfer-Encoding:Content-Type:
+ MIME-Version:Message-Id:Date:Subject:Cc:To:From;
+ bh=8xAKxtEppAGTrzSC7hkh2NY6ILtcWHOkPPKuetf/ogM=; b=E48/+u9bo1hdCrtB6RM0TwoNrH
+ i3kYaf76WGDdto0mbIAStw0T/nG5eHyVpX5UigxiuJjPcFcXgtwVJlpniomkU/OG+U81M3ot9wohP
+ dbjgOYjJ70qCXECJKfigSif7a+hhKyz38zKDB6K/iuE8szhsFXbHxkByTSLW6mlMicOg=;
+Received: from xenbits.xenproject.org ([104.239.192.120])
+ by mail.xenproject.org with esmtp (Exim 4.92)
+ (envelope-from <anthony@xenproject.org>)
+ id 1sOGvZ-0006nc-Iq; Mon, 01 Jul 2024 13:18:41 +0000
+Received: from lfbn-lyo-1-451-148.w2-7.abo.wanadoo.fr ([2.7.43.148]
+ helo=l14.home) by xenbits.xenproject.org with esmtpsa
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <anthony@xenproject.org>)
+ id 1sOGvZ-0000WF-75; Mon, 01 Jul 2024 13:18:41 +0000
+From: anthony@xenproject.org
+To: qemu-devel@nongnu.org
+Cc: Anthony PERARD <anthony@xenproject.org>
+Subject: [PULL 0/3] xen queue 2024-07-01
+Date: Mon,  1 Jul 2024 15:18:30 +0200
+Message-Id: <20240701131833.29486-1-anthony@xenproject.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] scsi: Don't ignore most usb-storage properties
-To: Kevin Wolf <kwolf@redhat.com>, qemu-block@nongnu.org
-Cc: pbonzini@redhat.com, kraxel@redhat.com, qemu-devel@nongnu.org
-References: <20240131130607.24117-1-kwolf@redhat.com>
-Content-Language: en-US
-From: Fiona Ebner <f.ebner@proxmox.com>
-In-Reply-To: <20240131130607.24117-1-kwolf@redhat.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=94.136.29.106; envelope-from=f.ebner@proxmox.com;
- helo=proxmox-new.maurer-it.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=104.130.215.37;
+ envelope-from=anthony@xenproject.org; helo=mail.xenproject.org
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -54,66 +66,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+From: Anthony PERARD <anthony@xenproject.org>
 
-we got a user report about bootindex for an 'usb-storage' device not
-working anymore [0] and I reproduced it and bisected it to this patch.
+The following changes since commit b6d32a06fc0984e537091cba08f2e1ed9f775d74:
 
-Am 31.01.24 um 14:06 schrieb Kevin Wolf:
-> @@ -399,11 +397,10 @@ SCSIDevice *scsi_bus_legacy_add_drive(SCSIBus *bus, BlockBackend *blk,
->      object_property_add_child(OBJECT(bus), name, OBJECT(dev));
->      g_free(name);
->  
-> +    s = SCSI_DEVICE(dev);
-> +    s->conf = *conf;
-> +
->      qdev_prop_set_uint32(dev, "scsi-id", unit);
-> -    if (bootindex >= 0) {
-> -        object_property_set_int(OBJECT(dev), "bootindex", bootindex,
-> -                                &error_abort);
-> -    }
+  Merge tag 'pull-trivial-patches' of https://gitlab.com/mjt0k/qemu into staging (2024-06-30 16:12:24 -0700)
 
-The fact that this is not called anymore means that the 'set' method for
-the property is also not called. Here, that method is
-device_set_bootindex() (as configured by scsi_dev_instance_init() ->
-device_add_bootindex_property()). Therefore, the device is never
-registered via add_boot_device_path() meaning that the bootindex
-property does not have the desired effect anymore.
+are available in the Git repository at:
 
-Is it necessary to keep the object_property_set_{bool,int} and
-qdev_prop_set_enum calls around for these potential side effects? Would
-it even be necessary to introduce new similar calls for the newly
-supported properties? Or is there an easy alternative to
-s->conf = *conf;
-that does trigger the side effects?
+  https://xenbits.xen.org/git-http/people/aperard/qemu-dm.git tags/pull-xen-20240701
 
->      if (object_property_find(OBJECT(dev), "removable")) {
->          qdev_prop_set_bit(dev, "removable", removable);
->      }
-> @@ -414,19 +411,12 @@ SCSIDevice *scsi_bus_legacy_add_drive(SCSIBus *bus, BlockBackend *blk,
->          object_unparent(OBJECT(dev));
->          return NULL;
->      }
-> -    if (!object_property_set_bool(OBJECT(dev), "share-rw", share_rw, errp)) {
-> -        object_unparent(OBJECT(dev));
-> -        return NULL;
-> -    }
-> -
-> -    qdev_prop_set_enum(dev, "rerror", rerror);
-> -    qdev_prop_set_enum(dev, "werror", werror);
->  
->      if (!qdev_realize_and_unref(dev, &bus->qbus, errp)) {
->          object_unparent(OBJECT(dev));
->          return NULL;
->      }
-> -    return SCSI_DEVICE(dev);
-> +    return s;
->  }
->  
->  void scsi_bus_legacy_handle_cmdline(SCSIBus *bus)
-[0]: https://forum.proxmox.com/threads/149772/post-679433
+for you to fetch changes up to 410b4d560dfa3b38a11ad19cf00180238651d9b7:
 
-Best Regards,
-Fiona
+  xen-hvm: Avoid livelock while handling buffered ioreqs (2024-07-01 14:57:18 +0200)
 
+----------------------------------------------------------------
+Xen queue:
+
+* Improvement for running QEMU in a stubdomain.
+* Improve handling of buffered ioreqs.
+
+----------------------------------------------------------------
+Marek Marczykowski-Górecki (2):
+      hw/xen: detect when running inside stubdomain
+      xen: fix stubdom PCI addr
+
+Ross Lagerwall (1):
+      xen-hvm: Avoid livelock while handling buffered ioreqs
+
+ hw/i386/xen/xen-hvm.c        | 22 +++++++++++++
+ hw/xen/xen-host-pci-device.c | 76 +++++++++++++++++++++++++++++++++++++++++++-
+ hw/xen/xen-host-pci-device.h |  6 ++++
+ hw/xen/xen-hvm-common.c      | 26 +++++++++------
+ include/hw/xen/xen.h         |  1 +
+ system/globals.c             |  1 +
+ 6 files changed, 122 insertions(+), 10 deletions(-)
 
