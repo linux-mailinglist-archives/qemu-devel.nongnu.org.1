@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 103F691E4ED
-	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 18:12:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 004C491E4D9
+	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 18:09:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOJZL-0000mS-B3; Mon, 01 Jul 2024 12:07:55 -0400
+	id 1sOJZk-0001gd-3a; Mon, 01 Jul 2024 12:08:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sOJZ2-0000e9-Q9
- for qemu-devel@nongnu.org; Mon, 01 Jul 2024 12:07:37 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ id 1sOJZ7-0000iS-Nf
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 12:07:43 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sOJZ0-0005Pk-4M
- for qemu-devel@nongnu.org; Mon, 01 Jul 2024 12:07:36 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-42565cdf99cso28820345e9.3
- for <qemu-devel@nongnu.org>; Mon, 01 Jul 2024 09:07:33 -0700 (PDT)
+ id 1sOJZ0-0005Pp-G1
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 12:07:40 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-424ad991cbbso25269065e9.0
+ for <qemu-devel@nongnu.org>; Mon, 01 Jul 2024 09:07:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1719850053; x=1720454853; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=9i1t7NGFbpDxWQ4N6M+2vJDuEoC6XNQqU7Rbq4fgGT0=;
- b=Yxk3v8LXp9vWM9eFBAgOwkHgkwOzvqu6hSuqmFf9ykAcsftNdT4+YVDZKx1vWJKS9O
- d76QIAmZkVPKgy8kgWW74JN4OHrRXoveGbbvR0vB4hwFnuP+8dwDicV8gELmI5paX7Ls
- Pv83TzQWAx4+X6Zz4PM7kPkS3oOp99IEH3CTfZTZeBBj9jq144gBNBKiPmpmtTWw23wf
- NGXInL2jpfuVm0/qT0wtk/2AGzkcXN9ISgqt0CdnIZrX1HYEUtXdWqpi1PPzaA5MkroF
- Q4cnND8leNeeC6P807mhqNWAaxFJNJ73YdJzXZlR9D2xBzeH5iQ0RnAjRpuCPD9ZebCC
- A/0g==
+ :reply-to; bh=77qm/ulkxZX7SdkResvcWiVey4AydnKET0AsgP+gR9E=;
+ b=U/MHIEN3AOx+nkDaE6JVfhhsekgDj116goIDrZ/xwbI+y+OreJig84+rdIzq6HrdnS
+ g6JmEBOUiRdUodHdcGmBYr8UxYGuaW4BBoOS3C5+uYSEXJ8ciPtKVvdNI1Z2qYb0yr5S
+ d1uiKdGHxGSVW0BgQjpKOaLgutVxo512jXGJNMHYc2aLp1ZI1A5QmmhfKg77CtSDioEB
+ T0e+aLtwpM84bAZ+pkD2hMWCzC6DCgRd/6e3nyJpRFlH+abyikkrmeHijrEQhNx9J5Pm
+ aP1TndkbJPv3b++Wb2Y7B/CjPfzpCFmERhTjNvBCOSK9bcgGEkUvLpcn9dRxXWaDnoMf
+ 8szA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1719850053; x=1720454853;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9i1t7NGFbpDxWQ4N6M+2vJDuEoC6XNQqU7Rbq4fgGT0=;
- b=B/qfooQ7x3dQOD1gy9/puCkC+nmPuYFdkdSEwNmkWSqo9DVkjffig36YgM+RN4bGv3
- z0HUoGL7t0xhElEBdSIuAWVS6eVCOvVOTAxBv2gXLBdP+SNFJDdYsTm8myWVQAvsuFF+
- OH5WXyu1+HMViESXQ6Cm3FQQsSQtOvfd2F/YkrGKI34iChNMHVua1fQXEOIoa6fMkh4w
- l6VYpdRQ9GWiQvfSuEYGkw2Fnk2nefqhj6VRI3y+Q6mWGNnRZkyXb8Yd7Bqb8b0XU9xl
- CFBH49EPjkRQm5AFoJPoE2LnHlR4LIJORCEN1LWm6vfSxKUW/wsDL0qnirCcYHzH2RbW
- VnYQ==
-X-Gm-Message-State: AOJu0Yx9i+OHoA8n9MPSjBhpZJqvCENvGnzcCYCHwKF+h8TImj+KwKFF
- LOfjbmyQKyt9fsaGN/FTHakctxU6VaUSe+u7XqB4v5avm8hJOGPXqzglHTdJboFaPuM5tDyY+3O
- 8Eao=
-X-Google-Smtp-Source: AGHT+IHdPkpjWFdDlg5BEwLZvOWHGRldvIf6ZxdgQzN9jJqNE5h9pWnUlKoJFAVyLvq+9pyOIuNEOQ==
-X-Received: by 2002:a05:600c:6d4:b0:425:5fd9:370f with SMTP id
- 5b1f17b1804b1-4257a006636mr51411945e9.9.1719850052625; 
- Mon, 01 Jul 2024 09:07:32 -0700 (PDT)
+ bh=77qm/ulkxZX7SdkResvcWiVey4AydnKET0AsgP+gR9E=;
+ b=DTON1hxBJXwIAVHfbHtc2bqiTsbb/85IFpJXwzYXX2KA/j7fba6ITqxIpaUIKPuMMW
+ tRfsS4yMwIEMkLD08cdob6N9LgsbOcwx+PrV5M26BSUh02gPtNAiM4uQc7LpGjv06YOq
+ PqQGGLGNhd5hCLQnXcZGLu42BEkjAhDFlgO1IDA8mk1fE+Ab2WRn0V080YECK8Cvsgea
+ evzr3Rsh0snX4hdfcCCSD6JEunucwJqGpoquJf82RMS5JQP8/NAKMAnYfwjp31FWdPbp
+ 4x60aBvFZsLTiWAAdhkhFLfMQpJgw5eqdzcfIh0ABcPrRrBrGzhQVAlgBDS3k0WYjzkN
+ /uRA==
+X-Gm-Message-State: AOJu0Yxq+EjFwgvlNWbHj4ErOL7H45CMV/IdbUE4kRL4O7wABVxeENmZ
+ 5OD09jwYvYOCgT6EyThUI2OiiM+yHZXS3Wmi4hbOzv+mruWqEaa4JpmkqS8GqcyUO/DVIr8gxfp
+ csoM=
+X-Google-Smtp-Source: AGHT+IEOrYWG0pEry5wyrvkKZXlYk9Nn4DdLLM8VlEltvgMastqxyFRIAap4fKRv54d+kBholOjLww==
+X-Received: by 2002:a05:600c:1d1a:b0:424:a578:fc1 with SMTP id
+ 5b1f17b1804b1-4257a05c0a3mr39768355e9.25.1719850053094; 
+ Mon, 01 Jul 2024 09:07:33 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  5b1f17b1804b1-4256af557fesm161952135e9.11.2024.07.01.09.07.32
@@ -59,24 +59,24 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Mon, 01 Jul 2024 09:07:32 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 05/29] tests/avocado: use default amount of cores on sbsa-ref
-Date: Mon,  1 Jul 2024 17:07:05 +0100
-Message-Id: <20240701160729.1910763-6-peter.maydell@linaro.org>
+Subject: [PULL 06/29] hw/arm/smmu-common: Replace smmu_iommu_mr with
+ smmu_find_sdev
+Date: Mon,  1 Jul 2024 17:07:06 +0100
+Message-Id: <20240701160729.1910763-7-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240701160729.1910763-1-peter.maydell@linaro.org>
 References: <20240701160729.1910763-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,43 +92,114 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+From: Nicolin Chen <nicolinc@nvidia.com>
 
-The version of the sbsa-ref EDK2 firmware we used to use in this test
-had a bug where it might make an unaligned access to the framebuffer,
-which causes a guest crash on newer versions of QEMU where we enforce
-the architectural requirement that unaligned accesses to Device memory
-should take an exception.
+The caller of smmu_iommu_mr wants to get sdev for smmuv3_flush_config().
 
-We happened to not notice this because our test was booting with "-smp
-1" and through luck this didn't write the boot logo to the framebuffer
-at an unaligned address; but trying to boot the same firmware with two
-CPUs would result in a guest crash. Now we have updated the firmware
-we're using for the test, we can make the test use all the cores on the
-board, so we are testing the SMP boot path.
+Do it directly instead of bridging with an iommu mr pointer.
 
-Signed-off-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20240620-b4-new-firmware-v3-2-29a3a2f1be1e@linaro.org
+Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
+Message-id: 20240619002218.926674-1-nicolinc@nvidia.com
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- tests/avocado/machine_aarch64_sbsaref.py | 2 --
- 1 file changed, 2 deletions(-)
+ include/hw/arm/smmu-common.h |  4 ++--
+ hw/arm/smmu-common.c         |  8 ++------
+ hw/arm/smmuv3.c              | 12 ++++--------
+ 3 files changed, 8 insertions(+), 16 deletions(-)
 
-diff --git a/tests/avocado/machine_aarch64_sbsaref.py b/tests/avocado/machine_aarch64_sbsaref.py
-index e854ec6a1af..e920bbf08c1 100644
---- a/tests/avocado/machine_aarch64_sbsaref.py
-+++ b/tests/avocado/machine_aarch64_sbsaref.py
-@@ -75,8 +75,6 @@ def fetch_firmware(self):
-             f"if=pflash,file={fs0_path},format=raw",
-             "-drive",
-             f"if=pflash,file={fs1_path},format=raw",
--            "-smp",
--            "1",
-             "-machine",
-             "sbsa-ref",
-         )
+diff --git a/include/hw/arm/smmu-common.h b/include/hw/arm/smmu-common.h
+index 5ec2e6c1a43..687b7ca132d 100644
+--- a/include/hw/arm/smmu-common.h
++++ b/include/hw/arm/smmu-common.h
+@@ -182,8 +182,8 @@ int smmu_ptw(SMMUTransCfg *cfg, dma_addr_t iova, IOMMUAccessFlags perm,
+  */
+ SMMUTransTableInfo *select_tt(SMMUTransCfg *cfg, dma_addr_t iova);
+ 
+-/* Return the iommu mr associated to @sid, or NULL if none */
+-IOMMUMemoryRegion *smmu_iommu_mr(SMMUState *s, uint32_t sid);
++/* Return the SMMUDevice associated to @sid, or NULL if none */
++SMMUDevice *smmu_find_sdev(SMMUState *s, uint32_t sid);
+ 
+ #define SMMU_IOTLB_MAX_SIZE 256
+ 
+diff --git a/hw/arm/smmu-common.c b/hw/arm/smmu-common.c
+index 1ce706bf94b..b6601cc102e 100644
+--- a/hw/arm/smmu-common.c
++++ b/hw/arm/smmu-common.c
+@@ -620,20 +620,16 @@ static const PCIIOMMUOps smmu_ops = {
+     .get_address_space = smmu_find_add_as,
+ };
+ 
+-IOMMUMemoryRegion *smmu_iommu_mr(SMMUState *s, uint32_t sid)
++SMMUDevice *smmu_find_sdev(SMMUState *s, uint32_t sid)
+ {
+     uint8_t bus_n, devfn;
+     SMMUPciBus *smmu_bus;
+-    SMMUDevice *smmu;
+ 
+     bus_n = PCI_BUS_NUM(sid);
+     smmu_bus = smmu_find_smmu_pcibus(s, bus_n);
+     if (smmu_bus) {
+         devfn = SMMU_PCI_DEVFN(sid);
+-        smmu = smmu_bus->pbdev[devfn];
+-        if (smmu) {
+-            return &smmu->iommu;
+-        }
++        return smmu_bus->pbdev[devfn];
+     }
+     return NULL;
+ }
+diff --git a/hw/arm/smmuv3.c b/hw/arm/smmuv3.c
+index 2d1e0d55ec2..445e04ddf7c 100644
+--- a/hw/arm/smmuv3.c
++++ b/hw/arm/smmuv3.c
+@@ -1218,20 +1218,18 @@ static int smmuv3_cmdq_consume(SMMUv3State *s)
+         case SMMU_CMD_CFGI_STE:
+         {
+             uint32_t sid = CMD_SID(&cmd);
+-            IOMMUMemoryRegion *mr = smmu_iommu_mr(bs, sid);
+-            SMMUDevice *sdev;
++            SMMUDevice *sdev = smmu_find_sdev(bs, sid);
+ 
+             if (CMD_SSEC(&cmd)) {
+                 cmd_error = SMMU_CERROR_ILL;
+                 break;
+             }
+ 
+-            if (!mr) {
++            if (!sdev) {
+                 break;
+             }
+ 
+             trace_smmuv3_cmdq_cfgi_ste(sid);
+-            sdev = container_of(mr, SMMUDevice, iommu);
+             smmuv3_flush_config(sdev);
+ 
+             break;
+@@ -1260,20 +1258,18 @@ static int smmuv3_cmdq_consume(SMMUv3State *s)
+         case SMMU_CMD_CFGI_CD_ALL:
+         {
+             uint32_t sid = CMD_SID(&cmd);
+-            IOMMUMemoryRegion *mr = smmu_iommu_mr(bs, sid);
+-            SMMUDevice *sdev;
++            SMMUDevice *sdev = smmu_find_sdev(bs, sid);
+ 
+             if (CMD_SSEC(&cmd)) {
+                 cmd_error = SMMU_CERROR_ILL;
+                 break;
+             }
+ 
+-            if (!mr) {
++            if (!sdev) {
+                 break;
+             }
+ 
+             trace_smmuv3_cmdq_cfgi_cd(sid);
+-            sdev = container_of(mr, SMMUDevice, iommu);
+             smmuv3_flush_config(sdev);
+             break;
+         }
 -- 
 2.34.1
 
