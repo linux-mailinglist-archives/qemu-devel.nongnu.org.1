@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C37BC91E320
-	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 17:01:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C9D291E345
+	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 17:05:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOIVN-00046Z-VG; Mon, 01 Jul 2024 10:59:45 -0400
+	id 1sOIVP-0004GD-Sa; Mon, 01 Jul 2024 10:59:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sOIVL-00045A-ER
- for qemu-devel@nongnu.org; Mon, 01 Jul 2024 10:59:43 -0400
+ id 1sOIVN-00047L-Kv
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 10:59:45 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sOIVF-0005NO-P6
- for qemu-devel@nongnu.org; Mon, 01 Jul 2024 10:59:43 -0400
+ id 1sOIVH-0005Uz-9G
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 10:59:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719845976;
+ s=mimecast20190719; t=1719845978;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=S6tUQLMOUhCwh40f/djXK9f9MtwQXr/0BnjScvVQiDg=;
- b=BZP9CGBNzbz2UhvtSwaNrkKRnyxJuGzBHPd1LbXfC2ACOP7l9xzQtxgx7OAfiZXLOdbeM7
- eJKtgK+LaVypiu7sHRz4ahb6osFH+zMQ6UzmCWiik/X5oHItIjHBIQGwlxxNVVdSi1wPnB
- RURMK7MEp1lAgqmXPxcEu9lBXJBs94Q=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=L1+NBzK4iA++gxlMtSNv140MQlgSKu48htjyD75ufEs=;
+ b=Se2ibSAeyu2xxxxKMR1oikZg66mpj+dMsc11RAqDwQZTEZFfIihyr7uiDOkG4O1W3ho5mh
+ HR1u5hYjTOjVKg4ZZcadGJdO6Uj8PsP4zHe1gzyQu81sPDNcVzRbsEZO6UWKFDhioae1s8
+ RdY8YZNKfW3sHvI05I48+ghYj76kfWA=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-516-pPjkiIKAOgKSLHsSNLI_5A-1; Mon, 01 Jul 2024 10:59:34 -0400
-X-MC-Unique: pPjkiIKAOgKSLHsSNLI_5A-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-36725ec0f7dso1789636f8f.0
- for <qemu-devel@nongnu.org>; Mon, 01 Jul 2024 07:59:34 -0700 (PDT)
+ us-mta-634-p9dS2SUYOtWrIOMcy1owPA-1; Mon, 01 Jul 2024 10:59:37 -0400
+X-MC-Unique: p9dS2SUYOtWrIOMcy1owPA-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-4258675a531so4696995e9.3
+ for <qemu-devel@nongnu.org>; Mon, 01 Jul 2024 07:59:37 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719845972; x=1720450772;
+ d=1e100.net; s=20230601; t=1719845975; x=1720450775;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=S6tUQLMOUhCwh40f/djXK9f9MtwQXr/0BnjScvVQiDg=;
- b=aF+tJXeLA/vCbGeePaSJ6jm9aqyJG32b+aL1DFTJWABcPA6p1bgSFX5TwhgpePiEJM
- ywYecaqmH4HDqIvzyUV/lgifoOWUlsBCi3yLCT9mSwMP2q2ey/1/tGPp+Ai/yJqBgw1G
- iMdrMHt1eR9fhKg9dTcMnlEyWjgTZz3sd/8/JUft2XxBeBZCes4Piafm2f78yzx9u4mQ
- MLRXZIwE4B/BVqvS4XjBjvYGg4aqH4wkMYyzxTwmxVq+ZCHvuKTcuyq9Gy2nEwf92jnq
- NF2VuXkQkY697ttSeUh1R7AxjZD+pFsf04yBj1PlX1jiwyxaF9aO902neQBnFRFDN3i6
- Y5hA==
-X-Gm-Message-State: AOJu0Yw9hnKw2QeTTr7BLgWRpn1CpjB/HShhiHvLsfT5PTJdc7wXEDe0
- bcUxKx0FZZSh1ngOdG3I8q0dl2C0rIMRSDDuiFaZdYvtDhA0hYgW6QR/3mIbdZDXqagtb+2y13v
- WSyzEeWQFxeZx6u3xfRJtIvtuDopuMVUJN0xdSeLQAQNDZqmj9Z9nss01NME1ndLsi1MN5lDDlM
- OGAucJLWanXV86RL68E5g0QCSiGoU1A98lYebe
-X-Received: by 2002:a05:6000:cc1:b0:35f:1f28:2ec9 with SMTP id
- ffacd0b85a97d-367757309b3mr4591235f8f.70.1719845972471; 
- Mon, 01 Jul 2024 07:59:32 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHUs8iJiZlS9gIYM6LIQ8vGya0LH7I8sevS5ByHUq2hKrw+Xtip4wuC3ch865IK6PTZOxjwVQ==
-X-Received: by 2002:a05:6000:cc1:b0:35f:1f28:2ec9 with SMTP id
- ffacd0b85a97d-367757309b3mr4591205f8f.70.1719845972000; 
- Mon, 01 Jul 2024 07:59:32 -0700 (PDT)
+ bh=L1+NBzK4iA++gxlMtSNv140MQlgSKu48htjyD75ufEs=;
+ b=Vhuhg3vQ94rrPLrbkRn0xLUTiMRaC7Q5KCozUgTPyWV1aRTqkfw0yPNr0P6JakQmyu
+ of6cc2zNKNVErpImfdFr9rOi36PkPaN86VccysUJ22cOHLEbcbpuYfzEitAPQYrLWPqU
+ LB/aJDXIocvZTTePG1ICN8n69ffO8igMCcE/g5v5FEajcCd9sJqbbESxUVlLtYVIpzxy
+ TkLb+PYYUR+pxkMjScdYQBq0kHVjBexguCcUs1me++T4Xk2//O1Op84fllDKEWmVUQQL
+ 5DeEPmy5TusYPH63lWPeKOTTi7gNkFwy9DzRK/63SWIYgElSQq3eKhSsMGFkDo0r5OCO
+ I8cA==
+X-Gm-Message-State: AOJu0YyfG0JwIyHILbXZAjEXGvdkr/CrvEHPJe7+9LzM3By7VW0IsBU8
+ IvfBuC24cuxb9+GK/7Me3cU7sYfOsegVZTG82o8orsWK3j5LFJ/+10AAw2fGqaFMfE7Bozo3k1o
+ /hUIc/DTkxvMjC17U0zy8YT0IF1+WhJK83mU2PkrlDk+FWCXGo3+dhA74vUxGNXGG2SVPHP12Dw
+ cRZrq5i93NaCCS4WpJbd+zKIfHeGGZwFdFyM+2
+X-Received: by 2002:a05:6000:136f:b0:367:1da6:e419 with SMTP id
+ ffacd0b85a97d-3677571c211mr5077508f8f.46.1719845975210; 
+ Mon, 01 Jul 2024 07:59:35 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFOqL7Nm7rykTZQM85jvkNjOHlSRggswDFFctiJZAELgEEO0Z37teVQhYg2YQBb0MCbP0LWLA==
+X-Received: by 2002:a05:6000:136f:b0:367:1da6:e419 with SMTP id
+ ffacd0b85a97d-3677571c211mr5077485f8f.46.1719845974774; 
+ Mon, 01 Jul 2024 07:59:34 -0700 (PDT)
 Received: from avogadro.local ([151.95.101.29])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3675a0e1412sm10232820f8f.53.2024.07.01.07.59.31
+ ffacd0b85a97d-3675a0d8ed0sm10291911f8f.28.2024.07.01.07.59.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 01 Jul 2024 07:59:31 -0700 (PDT)
+ Mon, 01 Jul 2024 07:59:34 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
@@ -73,9 +73,9 @@ Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Hanna Czenczek <hreitz@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PATCH 12/14] rust: replace c"" literals with cstr crate
-Date: Mon,  1 Jul 2024 16:58:44 +0200
-Message-ID: <20240701145853.1394967-13-pbonzini@redhat.com>
+Subject: [PATCH 13/14] rust: introduce alternative to offset_of!
+Date: Mon,  1 Jul 2024 16:58:45 +0200
+Message-ID: <20240701145853.1394967-14-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240701145853.1394967-1-pbonzini@redhat.com>
 References: <20240701145853.1394967-1-pbonzini@redhat.com>
@@ -106,237 +106,242 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Part of what's needed to work with Rust versions prior to 1.77.
+Allow working with Rust versions prior to 1.77.  The code was
+taken from Rust's Discourse platform and is used with permission of
+the author.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- qemu/Cargo.toml            |  3 +++
- qemu/qom-rust.txt          |  2 +-
- qemu/src/hw/core/device.rs |  4 +++-
- qemu/src/qom/object.rs     |  4 +++-
- qemu/src/util/error.rs     |  4 +++-
- qemu/src/util/foreign.rs   | 20 +++++++++++---------
- qemu/tests/main.rs         |  7 ++++---
- 8 files changed, 39 insertions(+), 16 deletions(-)
+ qemu/Cargo.toml                 |  3 +
+ qemu/build.rs                   |  5 ++
+ qemu/src/hw/core/device_impl.rs |  4 +-
+ qemu/src/lib.rs                 |  4 ++
+ qemu/src/qom/object_impl.rs     | 13 +++--
+ qemu/src/util/mod.rs            |  1 +
+ qemu/src/util/offset_of.rs      | 99 +++++++++++++++++++++++++++++++++
+ qemu/tests/main.rs              | 11 +++-
+ 9 files changed, 137 insertions(+), 10 deletions(-)
+ create mode 100644 qemu/build.rs
+ create mode 100644 qemu/src/util/offset_of.rs
 
 diff --git a/qemu/Cargo.toml b/qemu/Cargo.toml
-index 1100725..a07a449 100644
+index a07a449..93808a5 100644
 --- a/qemu/Cargo.toml
 +++ b/qemu/Cargo.toml
-@@ -7,5 +7,8 @@ edition = "2021"
- const-default = { version = "~1", features = ["derive"] }
- libc = "^0"
+@@ -12,3 +12,6 @@ cstr = { version = "=0.2.10" }
  
-+# pick older version in order to support Rust 1.63
-+cstr = { version = "=0.2.10" }
-+
  [dev-dependencies]
  matches = ">=0"
-diff --git a/qemu/qom-rust.txt b/qemu/qom-rust.txt
-index 1588445..ef4bd06 100644
---- a/qemu/qom-rust.txt
-+++ b/qemu/qom-rust.txt
-@@ -48,7 +48,7 @@ Bindings for C classes
- struct must implement ObjectType
- 
-     unsafe impl ObjectType for Object {
--        const TYPE: &'static CStr = c"object";
-+        const TYPE: &'static CStr = cstr!("object");
-     }
- 
- struct must implement IsA<T> for all superclasses T
-diff --git a/qemu/src/hw/core/device.rs b/qemu/src/hw/core/device.rs
-index 294251e..4edf61d 100644
---- a/qemu/src/hw/core/device.rs
-+++ b/qemu/src/hw/core/device.rs
-@@ -17,12 +17,14 @@ use crate::qom_isa;
- 
- use crate::Result;
- 
-+use cstr::cstr;
 +
- use std::ffi::CStr;
- use std::ops::Deref;
- use std::ptr::null_mut;
- 
- unsafe impl ObjectType for DeviceState {
--    const TYPE: &'static CStr = c"device";
-+    const TYPE: &'static CStr = cstr!("device");
++[build-dependencies]
++version_check = { version = "~0.9" }
+diff --git a/qemu/build.rs b/qemu/build.rs
+new file mode 100644
+index 0000000..34f7b49
+--- /dev/null
++++ b/qemu/build.rs
+@@ -0,0 +1,5 @@
++fn main() {
++    if let Some(true) = version_check::is_min_version("1.77.0") {
++        println!("cargo:rustc-cfg=has_offset_of");
++    }
++}
+diff --git a/qemu/src/hw/core/device_impl.rs b/qemu/src/hw/core/device_impl.rs
+index 80b0e5e..b1d2f04 100644
+--- a/qemu/src/hw/core/device_impl.rs
++++ b/qemu/src/hw/core/device_impl.rs
+@@ -111,7 +111,7 @@ macro_rules! qdev_prop {
+             $kind,
+             $name,
+             (<$crate::conf_type!($type) as ConstDefault>::DEFAULT).$field,
+-            <$type as $crate::DeviceTypeImpl>::CONF_OFFSET + std::mem::offset_of!($crate::conf_type!($type), $field)
++            <$type as $crate::DeviceTypeImpl>::CONF_OFFSET + $crate::offset_of!($crate::conf_type!($type), $field)
+         )
+     };
  }
+@@ -126,7 +126,7 @@ macro_rules! qdev_define_type {
+             @extends $super $(,$supers)*, $crate::Object);
  
- qom_isa!(DeviceState, Object);
-diff --git a/qemu/src/qom/object.rs b/qemu/src/qom/object.rs
-index 4e84e29..9f6c078 100644
---- a/qemu/src/qom/object.rs
-+++ b/qemu/src/qom/object.rs
-@@ -7,6 +7,8 @@ use std::ffi::CStr;
- use std::fmt;
- use std::ops::Deref;
+         unsafe impl $crate::DeviceTypeImpl for $struct {
+-            const CONF_OFFSET: usize = std::mem::offset_of!($struct, conf);
++            const CONF_OFFSET: usize = $crate::offset_of!($struct, conf);
  
-+use cstr::cstr;
+             fn properties() -> *const $crate::Property {
+                 static mut PROPERTIES: &'static [$crate::Property] = &[$($props),+];
+diff --git a/qemu/src/lib.rs b/qemu/src/lib.rs
+index 3f0491c..2d43a25 100644
+--- a/qemu/src/lib.rs
++++ b/qemu/src/lib.rs
+@@ -31,3 +31,7 @@ pub use util::foreign::IntoNative;
+ pub use util::foreign::OwnedPointer;
+ pub use util::zeroed::Zeroed;
+ pub type Result<T> = std::result::Result<T, Error>;
 +
- use crate::bindings::object_get_typename;
- use crate::bindings::object_property_add_child;
- use crate::bindings::object_new;
-@@ -42,7 +44,7 @@ pub unsafe trait ObjectType: Sized {
- }
++// with_offsets is exported directly from util::offset_of
++#[cfg(has_offset_of)]
++pub use std::mem::offset_of;
+diff --git a/qemu/src/qom/object_impl.rs b/qemu/src/qom/object_impl.rs
+index 61546b6..b1768b9 100644
+--- a/qemu/src/qom/object_impl.rs
++++ b/qemu/src/qom/object_impl.rs
+@@ -95,11 +95,14 @@ unsafe fn rust_type_register<T: TypeImpl + ObjectImpl>() {
+ #[macro_export]
+ macro_rules! qom_define_type {
+     ($name:expr, $struct:ident, $conf_ty:ty, $state_ty:ty; @extends $super:ty $(,$supers:ty)*) => {
+-        struct $struct {
+-            // self.base dropped by call to superclass instance_finalize
+-            base: std::mem::ManuallyDrop<$super>,
+-            conf: $conf_ty,
+-            state: $state_ty,
++        $crate::with_offsets! {
++            #[repr(C)]
++            struct $struct {
++                // self.base dropped by call to superclass instance_finalize
++                base: std::mem::ManuallyDrop<$super>,
++                conf: $conf_ty,
++                state: $state_ty,
++            }
+         }
  
- unsafe impl ObjectType for Object {
--    const TYPE: &'static CStr = c"object";
-+    const TYPE: &'static CStr = cstr!("object");
- }
- 
- // ------------------------------
-diff --git a/qemu/src/util/error.rs b/qemu/src/util/error.rs
-index e7e6f2e..79c3c81 100644
---- a/qemu/src/util/error.rs
-+++ b/qemu/src/util/error.rs
-@@ -7,6 +7,8 @@ use crate::bindings::error_free;
- use crate::bindings::error_get_pretty;
- use crate::bindings::error_setg_internal;
- 
-+use cstr::cstr;
+         // Define IsA markers for the struct itself and all the superclasses
+diff --git a/qemu/src/util/mod.rs b/qemu/src/util/mod.rs
+index 9c081b6..e4df7c9 100644
+--- a/qemu/src/util/mod.rs
++++ b/qemu/src/util/mod.rs
+@@ -1,3 +1,4 @@
+ pub mod error;
+ pub mod foreign;
++pub mod offset_of;
+ pub mod zeroed;
+diff --git a/qemu/src/util/offset_of.rs b/qemu/src/util/offset_of.rs
+new file mode 100644
+index 0000000..4ce5188
+--- /dev/null
++++ b/qemu/src/util/offset_of.rs
+@@ -0,0 +1,99 @@
++#[cfg(not(has_offset_of))]
++#[macro_export]
++macro_rules! offset_of {
++    ($Container:ty, $field:ident) => {
++        <$Container>::offset_to.$field
++    };
++}
 +
- use std::ffi::CStr;
- use std::fmt::{self, Display};
- use std::ptr;
-@@ -215,7 +217,7 @@ impl CloneToForeign for Error {
-                 ptr::null_mut(), // FIXME
-                 0,
-                 ptr::null_mut(), // FIXME
--                c"%s".as_ptr(),
-+                cstr!("%s").as_ptr(),
-                 format!("{}", self),
-             );
-             OwnedPointer::new(x)
-diff --git a/qemu/src/util/foreign.rs b/qemu/src/util/foreign.rs
-index 464400a..7a663cc 100644
---- a/qemu/src/util/foreign.rs
-+++ b/qemu/src/util/foreign.rs
-@@ -167,7 +167,8 @@ pub trait FromForeign: CloneToForeign + Sized {
-     ///
-     /// ```
-     /// # use qemu::FromForeign;
--    /// let p = c"Hello, world!".as_ptr();
-+    /// # use cstr::cstr;
-+    /// let p = cstr!("Hello, world!").as_ptr();
-     /// let s = unsafe {
-     ///     String::cloned_from_foreign(p as *const libc::c_char)
-     /// };
-@@ -476,6 +477,7 @@ mod tests {
-     #![allow(clippy::shadow_unrelated)]
- 
-     use super::*;
-+    use cstr::cstr;
-     use matches::assert_matches;
-     use std::ffi::c_void;
- 
-@@ -498,7 +500,7 @@ mod tests {
-     #[test]
-     fn test_cloned_from_foreign_string_cow() {
-         let s = "Hello, world!".to_string();
--        let cstr = c"Hello, world!";
-+        let cstr = cstr!("Hello, world!");
-         let cloned = unsafe { Cow::cloned_from_foreign(cstr.as_ptr()) };
-         assert_eq!(s, cloned);
-     }
-@@ -506,7 +508,7 @@ mod tests {
-     #[test]
-     fn test_cloned_from_foreign_string() {
-         let s = "Hello, world!".to_string();
--        let cstr = c"Hello, world!";
-+        let cstr = cstr!("Hello, world!");
-         let cloned = unsafe { String::cloned_from_foreign(cstr.as_ptr()) };
-         assert_eq!(s, cloned);
-     }
-@@ -570,7 +572,7 @@ mod tests {
-     #[test]
-     fn test_clone_to_foreign_str() {
-         let s = "Hello, world!";
--        let p = c"Hello, world!".as_ptr();
-+        let p = cstr!("Hello, world!").as_ptr();
-         let cloned = s.clone_to_foreign();
-         unsafe {
-             let len = libc::strlen(cloned.as_ptr());
-@@ -588,7 +590,7 @@ mod tests {
- 
-     #[test]
-     fn test_clone_to_foreign_cstr() {
--        let s: &CStr = c"Hello, world!";
-+        let s: &CStr = cstr!("Hello, world!");
-         let cloned = s.clone_to_foreign();
-         unsafe {
-             let len = libc::strlen(cloned.as_ptr());
-@@ -606,7 +608,7 @@ mod tests {
- 
-     #[test]
-     fn test_clone_to_foreign_string_cow() {
--        let p = c"Hello, world!".as_ptr();
-+        let p = cstr!("Hello, world!").as_ptr();
-         for s in vec![
-             Into::<Cow<str>>::into("Hello, world!"),
-             Into::<Cow<str>>::into("Hello, world!".to_string())] {
-@@ -663,7 +665,7 @@ mod tests {
-     #[test]
-     fn test_clone_to_foreign_string() {
-         let s = "Hello, world!".to_string();
--        let cstr = c"Hello, world!";
-+        let cstr = cstr!("Hello, world!");
-         let cloned = s.clone_to_foreign();
-         unsafe {
-             let len = libc::strlen(cloned.as_ptr());
-@@ -683,7 +685,7 @@ mod tests {
-     fn test_option() {
-         // An Option can be used to produce or convert NULL pointers
-         let s = Some("Hello, world!".to_string());
--        let cstr = c"Hello, world!";
-+        let cstr = cstr!("Hello, world!");
-         unsafe {
-             assert_eq!(Option::<String>::cloned_from_foreign(cstr.as_ptr()), s);
-             assert_matches!(Option::<String>::cloned_from_foreign(ptr::null()), None);
-@@ -695,7 +697,7 @@ mod tests {
-     fn test_box() {
-         // A box can be produced if the inner type has the capability.
-         let s = Box::new("Hello, world!".to_string());
--        let cstr = c"Hello, world!";
-+        let cstr = cstr!("Hello, world!");
-         let cloned = unsafe { Box::<String>::cloned_from_foreign(cstr.as_ptr()) };
-         assert_eq!(s, cloned);
- 
++/// A wrapper for struct declarations, that allows using `offset_of!` in
++/// versions of Rust prior to 1.77
++#[macro_export]
++macro_rules! with_offsets {
++    // source: https://play.rust-lang.org/?version=stable&mode=debug&edition=2018&gist=10a22a9b8393abd7b541d8fc844bc0df
++    // used under MIT license with permission of Yandros aka Daniel Henry-Mantilla
++    (
++        #[repr(C)]
++        $(#[$struct_meta:meta])*
++        $struct_vis:vis
++        struct $StructName:ident {
++            $(
++                $(#[$field_meta:meta])*
++                $field_vis:vis
++                $field_name:ident : $field_ty:ty
++            ),*
++            $(,)?
++        }
++    ) => (
++        #[repr(C)]
++        $(#[$struct_meta])*
++        $struct_vis
++        struct $StructName {
++            $(
++                $(#[$field_meta])*
++                $field_vis
++                $field_name : $field_ty ,
++            )*
++        }
++
++        #[cfg(not(has_offset_of))]
++        #[allow(nonstandard_style)]
++        const _: () = {
++            pub
++            struct StructOffsets {
++                $(
++                    $field_vis
++                    $field_name: usize,
++                )*
++            }
++            struct Helper;
++            impl $StructName {
++                pub
++                const offset_to: StructOffsets = StructOffsets {
++                    $(
++                        $field_name: Helper::$field_name,
++                    )*
++                };
++            }
++            const END_OF_PREV_FIELD: usize = 0;
++            $crate::with_offsets! {
++                @names [ $($field_name)* ]
++                @tys [ $($field_ty ,)*]
++            }
++        };
++    );
++
++    (
++        @names []
++        @tys []
++    ) => ();
++
++    (
++        @names [$field_name:ident $($other_names:tt)*]
++        @tys [$field_ty:ty , $($other_tys:tt)*]
++    ) => (
++        impl Helper {
++            const $field_name: usize = {
++                let align =
++                    std::mem::align_of::<$field_ty>()
++                ;
++                let trail =
++                    END_OF_PREV_FIELD % align
++                ;
++                0   + END_OF_PREV_FIELD
++                    + (align - trail)
++                        * [1, 0][(trail == 0) as usize]
++            };
++        }
++        const _: () = {
++            const END_OF_PREV_FIELD: usize =
++                Helper::$field_name +
++                std::mem::size_of::<$field_ty>()
++            ;
++            $crate::with_offsets! {
++                @names [$($other_names)*]
++                @tys [$($other_tys)*]
++            }
++        };
++    );
++}
 diff --git a/qemu/tests/main.rs b/qemu/tests/main.rs
-index e499c14..601e92b 100644
+index 601e92b..854c626 100644
 --- a/qemu/tests/main.rs
 +++ b/qemu/tests/main.rs
-@@ -1,4 +1,5 @@
- use const_default::ConstDefault;
-+use cstr::cstr;
+@@ -14,11 +14,16 @@ use qemu::DeviceState;
  
- use qemu::qom_define_type;
- use qemu::Object;
-@@ -27,7 +28,7 @@ struct TestState {
+ use qemu::Result;
+ 
++use qemu::with_offsets;
++
+ use std::cell::RefCell;
+ 
+-#[derive(Default, ConstDefault)]
+-struct TestConf {
+-    foo: bool,
++with_offsets! {
++    #[repr(C)]
++    #[derive(Default, ConstDefault)]
++    struct TestConf {
++        foo: bool,
++    }
  }
  
- qom_define_type!(
--    c"test-object",
-+    cstr!("test-object"),
-     TestObject,
-     TestConf,
-     ();
-@@ -37,12 +38,12 @@ qom_define_type!(
- impl ObjectImpl for TestObject {}
- 
- qdev_define_type!(
--    c"test-device",
-+    cstr!("test-device"),
-     TestDevice,
-     TestConf,
-     RefCell<TestState>;
-     @extends DeviceState;
--    @properties [qdev_prop!(bool, c"foo", TestDevice, true, foo)]
-+    @properties [qdev_prop!(bool, cstr!("foo"), TestDevice, true, foo)]
- );
- 
- impl TestDevice {
+ #[derive(Default)]
 -- 
 2.45.2
 
