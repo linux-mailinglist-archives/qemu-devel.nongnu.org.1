@@ -2,78 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF84591E3AE
-	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 17:15:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73E4191E3B9
+	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 17:16:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOIk8-0007XU-Km; Mon, 01 Jul 2024 11:15:00 -0400
+	id 1sOIki-0008PV-Bm; Mon, 01 Jul 2024 11:15:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sOIjq-0007QL-Fv
- for qemu-devel@nongnu.org; Mon, 01 Jul 2024 11:14:44 -0400
-Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOIkY-0008HD-R5
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 11:15:26 -0400
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sOIjn-0006nJ-Q5
- for qemu-devel@nongnu.org; Mon, 01 Jul 2024 11:14:41 -0400
-Received: by mail-ed1-x52a.google.com with SMTP id
- 4fb4d7f45d1cf-57d20d89748so572469a12.0
- for <qemu-devel@nongnu.org>; Mon, 01 Jul 2024 08:14:38 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOIkW-0008BW-Re
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 11:15:26 -0400
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-364cdfdaf91so1797080f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 01 Jul 2024 08:15:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719846878; x=1720451678; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:references
- :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=saIO8yuEcqIHt4c13u7+w4pPuURHegbo1guXVO5zdjs=;
- b=iX40d61e9h6wJ2BTCf+DU7SfHOz+Y6VV2g6f74vpgGjo9xEe3QXjfJ/I+9HmQ4msAp
- X1rVvKOnw4wgCTqltvgeJZiDly2J9Qri9sU79vibZmFs960KbrvkQ4UKTLp2FZcs4nvp
- ljXkG/AeZvMWgLLAJmdMFSveo/xcZpmkemSMQICvuzhXMmnmivT11McgXRcslg0AU5eY
- 7LprDZa2HUOA48GElq808Qwu5gyFq43eTzJosKyAWuWoVOcanhqNQHOarLXkT+ReNOZn
- YlXJDZufoMzYg6GWdbo2FM3ee1vzETEnh4FfA++0SJD0bTvaaRl1B9XGaKwd4IY31/ib
- AXCg==
+ d=linaro.org; s=google; t=1719846922; x=1720451722; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=8Lnkl6kmtvAckHZq5GeTFigb3gwTP1kFw3VWYGdb+Ec=;
+ b=mGvhjJ3pZXORlV3Yygq6C+9s0loUT3yZPTV9na7mFpeYfIHzMmoC72kSB7Cs5moJ9K
+ CA4e78/+Cngu0oBImnmioYQ6XRc5zZqs/V2Q72ov/ign8t5nH4Rtzx5WFwD4D+RbtV4v
+ Wn0lrMKAQwuh5G2lkMVkSHgaz0rNjHyB3lfM+eN/ZewMVIWqWJBQOYUHmeLTviiiwjAE
+ 4ML14Ofy0pr8noHZJsZxi1eMrGZvq3e1B1RHwl5XE/kvN0WfyRgYaLdgnxgYbQv3T661
+ /Br5s646eG82XqlMJoE51PeJpUJY1w5Mr3yzzbn2tda8lncvV5duSp2IAyRK0YtTMwbY
+ keIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719846878; x=1720451678;
- h=content-transfer-encoding:mime-version:message-id:date:references
- :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=saIO8yuEcqIHt4c13u7+w4pPuURHegbo1guXVO5zdjs=;
- b=m+999algFkCjOZDIZg2eDWJEtHyOgIl2sSmEhnFYoNiHgFHJvBfZn5bnmmESNLMEPt
- iPIEq/Ja//0gm51oiMg7Qjdax8CRLfaNHFpVaBAs4gwrRInMtO7lk1NllwfInFTt2914
- fFFwc+4XaNZWb5xpzjcwxY0bJSh/C4oScmgt52aZZXbCK2KUO25qsFvnzrG4lZ+n8ZbL
- 4RKn9HEEaqJXkdEwPeIjSyuhoNi4KK0PzgTYuMa2AiLUDVaJEmBFZBsXZlI3l1GxiASo
- yv2E+bXe685qnKm76TlsLjPmq9bY9Umf5is9DWWbx3njWOmRVFB+PqjfDzT1L37EU36N
- Vo8w==
-X-Gm-Message-State: AOJu0YxrxeiikAxshIo2KN31gNah7XWoeI5VMQ+I3lpbamB25dvmpwR5
- Ka6ju3RZ0fhKbgYAgWQw6WQETBNcbCaLCwcfrxYzNUziM6zMfqUF394brnlzq8c=
-X-Google-Smtp-Source: AGHT+IEQ9P0iRHz1rDytgfGuRHY6C/TW0TLRKOo6vSh0cErX1WeW4dYyeUykK/9vzZu90M7SOougIw==
-X-Received: by 2002:a17:906:f909:b0:a71:afc3:5c94 with SMTP id
- a640c23a62f3a-a7514498f2emr370765966b.74.1719846877361; 
- Mon, 01 Jul 2024 08:14:37 -0700 (PDT)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a72ab0652eesm342943466b.131.2024.07.01.08.14.36
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 01 Jul 2024 08:14:36 -0700 (PDT)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id E3CB85F877;
- Mon,  1 Jul 2024 16:14:35 +0100 (BST)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: "BillXiang" <xiangwencheng@dayudpu.com>
-Cc: <qemu-devel@nongnu.org>,  <mst@redhat.com>
-Subject: Re: [PATCH] vhost-user: Skip unnecessary duplicated
- VHOST_USER_SET_LOG_BASE requests
-In-Reply-To: <fba0cfc406f202976ef5ac5d129e08524ce06bbf.8eed26c3.aba1.4d51.9976.281bbad0a8e6@feishu.cn>
- (BillXiang's message of "Mon, 01 Jul 2024 17:36:02 +0800")
-References: <20240613065150.3100-1-xiangwencheng@dayudpu.com>
- <87zfr1qyyi.fsf@draig.linaro.org>
- <fba0cfc406f202976ef5ac5d129e08524ce06bbf.8eed26c3.aba1.4d51.9976.281bbad0a8e6@feishu.cn>
-Date: Mon, 01 Jul 2024 16:14:35 +0100
-Message-ID: <87msn1qh44.fsf@draig.linaro.org>
+ d=1e100.net; s=20230601; t=1719846922; x=1720451722;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=8Lnkl6kmtvAckHZq5GeTFigb3gwTP1kFw3VWYGdb+Ec=;
+ b=QP6CDYngEbY5NCUvbNoTPQouNaFPaTZVbZ89FhaZTs0ueL6rvVYkrkmktxr+wccU+e
+ HGPIk4rPYArhAan9LJG5z4p8efKWv/ifls0Y2vfQIdxGgV3mTPFxVgCiGgXLvFxMzB9L
+ ATANve8WQDS4TcL7Lo2LIxCKyI6MKWmSM5VDqCEJRUFOLUYOt8srnjFoyxVjtFQLaVnC
+ pUZkOdEXYeA/AbUbEo+4kvBcK4bIHHi6+PVeRDMEDK+CNVEj3Tux6VouFzHDQrY2iNL8
+ 7H6dxmNz0nB06QTdrdEr57t2ZZkIfJqdEeoEfBydxOoM4Ddw3sWeN+shq/e2lS8rQ65M
+ /BMA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXJ6AyiwqVzL4A8UQWqIWUs8IlkR9t92t6wxA1EPfHlLFNedEKLlvGMgZC97fEnZLh/WZS4dlCnzV2YH6Vn+qjVFRV/T8A=
+X-Gm-Message-State: AOJu0Yw6A4kMlzxAA7dEMFr6trQ7s0zvDwJe39bkOVam2NtaOj4unTiy
+ u13c3UCJcio0sgrd03Skzs3iGz14/3UTX58xna2/nJyZsTOg6ZdXREMONuW5L/k=
+X-Google-Smtp-Source: AGHT+IGK5jVmBNON7xsnXWCLPK+c+JjXkVXR+oBp0QZM6uobYu+TnB8OKUizoFTjeVGQkjId2RldHQ==
+X-Received: by 2002:a5d:6483:0:b0:366:ebd2:662f with SMTP id
+ ffacd0b85a97d-367756c6f0fmr4178268f8f.30.1719846922232; 
+ Mon, 01 Jul 2024 08:15:22 -0700 (PDT)
+Received: from [192.168.69.100] ([176.176.177.159])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3675a0e146bsm10276862f8f.57.2024.07.01.08.15.19
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 01 Jul 2024 08:15:21 -0700 (PDT)
+Message-ID: <53558d9c-2f0d-4c5f-ba5b-06ba8b49b626@linaro.org>
+Date: Mon, 1 Jul 2024 17:15:18 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52a.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 14/14] docs: document special exception for machine
+ type deprecation & removal
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ qemu-devel@nongnu.org
+Cc: Halil Pasic <pasic@linux.ibm.com>, devel@lists.libvirt.org,
+ "Michael S. Tsirkin" <mst@redhat.com>, Eric Farman <farman@linux.ibm.com>,
+ qemu-s390x@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ Nicholas Piggin <npiggin@gmail.com>, David Hildenbrand <david@redhat.com>,
+ Ilya Leoshkevich <iii@linux.ibm.com>,
+ David Gibson <david@gibson.dropbear.id.au>, qemu-arm@nongnu.org,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clegoate@redhat.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Yanan Wang <wangyanan55@huawei.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Laurent Vivier <laurent@vivier.eu>, qemu-ppc@nongnu.org
+References: <20240620165742.1711389-1-berrange@redhat.com>
+ <20240620165742.1711389-15-berrange@redhat.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240620165742.1711389-15-berrange@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,62 +110,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-"BillXiang" <xiangwencheng@dayudpu.com> writes:
+On 20/6/24 18:57, Daniel P. Berrangé wrote:
+> This extends the deprecation policy to indicate that versioned machine
+> types will be marked deprecated after 3 years, and then subject to
+> removal after a further 3 years has passed.
+> 
+> Reviewed-by: Thomas Huth <thuth@redhat.com>
+> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+> ---
+>   docs/about/deprecated.rst | 13 +++++++++++++
+>   1 file changed, 13 insertions(+)
 
->> From: "Alex Benn=C3=A9e"<alex.bennee@linaro.org>
->> Date:=C2=A0 Mon, Jul 1, 2024, 16:49
->> Subject:=C2=A0 Re: [PATCH] vhost-user: Skip unnecessary duplicated VHOST=
-_USER_SET_LOG_BASE requests
->> To: "=E9=A1=B9=E6=96=87=E6=88=90"<xiangwencheng@dayudpu.com>
->> Cc: <qemu-devel@nongnu.org>, <mst@redhat.com>
->> =E9=A1=B9=E6=96=87=E6=88=90 <xiangwencheng@dayudpu.com> writes:
->>=C2=A0
->> > From: BillXiang <xiangwencheng@dayudpu.com>
->> >
->> > The VHOST_USER_SET_LOG_BASE requests should be categorized into
->> > non-vring specific messages, and should be sent only once.
->> > If send more than once, dpdk will munmap old log_addr which may has
->> > been used and cause segmentation fault.
->>=C2=A0
->> This looks fine to me but looking at the vhost-user.rst we don't seem to
->> make any explicit statements about how many times given messages should
->> be sent.
->>=C2=A0
-> There is indeed no explicit statements about how many times given messages
-> =C2=A0should be sent in vhost-user.rst but already have some discussions =
-such as=C2=A0
-> https://lore.kernel.org/qemu-devel/20230127083027-mutt-send-email-mst@ker=
-nel.org/.
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Right, but I think we should then update the specification if this is
-the way we want things to work. Otherwise we are putting a backend
-specific hack that another backend might be able to tolerate.
-
->> >
->> > Signed-off-by: BillXiang <xiangwencheng@dayudpu.com>
->> > ---
->> >=C2=A0 hw/virtio/vhost-user.c | 1 +
->> >=C2=A0 1 file changed, 1 insertion(+)
->> >
->> > diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
->> > index cdf9af4a4b..41e34edd49 100644
->> > --- a/hw/virtio/vhost-user.c
->> > +++ b/hw/virtio/vhost-user.c
->> > @@ -371,6 +371,7 @@ static bool vhost_user_per_device_request(VhostUse=
-rRequest request)
->> > =C2=A0 =C2=A0=C2=A0 case VHOST_USER_RESET_DEVICE:
->> > =C2=A0 =C2=A0=C2=A0 case VHOST_USER_ADD_MEM_REG:
->> > =C2=A0 =C2=A0=C2=A0 case VHOST_USER_REM_MEM_REG:
->> > + =C2=A0=C2=A0 case VHOST_USER_SET_LOG_BASE:
->> > =C2=A0 =C2=A0 =C2=A0 =C2=A0=C2=A0 return true;
->> > =C2=A0 =C2=A0=C2=A0 default:
->> > =C2=A0 =C2=A0 =C2=A0 =C2=A0=C2=A0 return false;
->>=C2=A0
->> --=C2=A0
->> Alex Benn=C3=A9e
->> Virtualisation Tech Lead @ Linaro
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
 
