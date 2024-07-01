@@ -2,56 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48B4691DA7A
-	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 10:51:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AE4891DA88
+	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 10:53:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOCkI-0003or-Ub; Mon, 01 Jul 2024 04:50:46 -0400
+	id 1sOClj-0005p4-Up; Mon, 01 Jul 2024 04:52:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1sOCjk-00033q-So
- for qemu-devel@nongnu.org; Mon, 01 Jul 2024 04:50:13 -0400
+ id 1sOCjq-00036a-TR
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 04:50:19 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1sOCji-0005K0-2p
- for qemu-devel@nongnu.org; Mon, 01 Jul 2024 04:50:11 -0400
+ id 1sOCjp-0005LR-8Z
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 04:50:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719823808;
+ s=mimecast20190719; t=1719823816;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=cgJfWjCJSsqWY8stLMqK0V9ndyG+mMup/arO83wAq2o=;
- b=c8V/DD+uTV/bQNFhSWbcS8fB2/YZclm6yHKDz6ak6eYzrTAXBCtCM7e9NW7kY+ASyYum/l
- sc4llWFZ/yR54OXhFqsZcyfqzeCLJMRE3F6rqpo6PUHpnFihx+n0nEHwFSssFBrTxOXwKA
- sT4Co/8ud7BEizJTxpwK7St5URDjomI=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=KvaElzgdc5LUZDt5B9HkTKyPwMmB6JE1O0fZPWrvisU=;
+ b=Bc6iwmLmZpTht2QVM7w8AUsbeBLnm+oJbnvv3xhTsbMWHN9J/SPvHCCF0qINwLfES3RYIA
+ 7COlD8ZAjHr/kARn45A4mgfQ1F6hhHDQuBUWpM2eVGg2AlTAzWIKcDgcEN7vLWMx0MBOf1
+ 3wUiQgC0MpskYGCpRPbKDe6yX/fBNQY=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-669-DKkEpFk_N-OclL7wr9YSkQ-1; Mon,
- 01 Jul 2024 04:50:06 -0400
-X-MC-Unique: DKkEpFk_N-OclL7wr9YSkQ-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-591-VUUO-PPuObq3G5EDmQaIRg-1; Mon,
+ 01 Jul 2024 04:50:11 -0400
+X-MC-Unique: VUUO-PPuObq3G5EDmQaIRg-1
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 4F05619560B1; Mon,  1 Jul 2024 08:50:05 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 786E0193318E; Mon,  1 Jul 2024 08:50:09 +0000 (UTC)
 Received: from laptop.redhat.com (unknown [10.22.9.3])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 45D781956089; Mon,  1 Jul 2024 08:50:00 +0000 (UTC)
+ id B36EC1955E80; Mon,  1 Jul 2024 08:50:05 +0000 (UTC)
 From: Eric Auger <eric.auger@redhat.com>
 To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
  qemu-arm@nongnu.org, mst@redhat.com, jean-philippe@linaro.org,
  peter.maydell@linaro.org, clg@redhat.com, yanghliu@redhat.com,
  zhenzhong.duan@intel.com, alex.williamson@redhat.com
-Subject: [PATCH v2 0/7] VIRTIO-IOMMU/HostIOMMUDevice: Fixes and page size mask
- rework
-Date: Mon,  1 Jul 2024 10:48:52 +0200
-Message-ID: <20240701084957.1567641-1-eric.auger@redhat.com>
+Subject: [PATCH v2 1/7] virtio-iommu: Fix error handling in
+ virtio_iommu_set_host_iova_ranges()
+Date: Mon,  1 Jul 2024 10:48:53 +0200
+Message-ID: <20240701084957.1567641-2-eric.auger@redhat.com>
+In-Reply-To: <20240701084957.1567641-1-eric.auger@redhat.com>
+References: <20240701084957.1567641-1-eric.auger@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -64,7 +67,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,66 +83,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The 2 first patches are fixes of
-cf2647a76e ("virtio-iommu: Compute host reserved regions")
-They can be taken separately of the rest.
+In case no IOMMUPciBus/IOMMUDevice are found we need to properly
+set the error handle and return.
 
-Then the series uses the HostIOMMUDevice interface to fetch
-information about the page size mask supported along the assigned
-device and propagate it to the virtio-iommu. This is a similar
-work as what was done in
-
-VIRTIO-IOMMU/VFIO: Fix host iommu geometry handling series
-
-but this time for the page size mask. Using this new
-infrastructure allows to handle page size mask conflicts
-earlier on device hotplug as opposed to current QEMU
-abort:
-
-qemu-system-aarch64: virtio-iommu virtio-iommu-memory-region-8-0
-does not support frozen granule 0x10000
-qemu: hardware error: vfio: DMA mapping failed, unable to continue
-
-With this series the hotplug nicely fails.
-
-Also this allows to remove hacks consisting in transiently enabling
-IOMMU MRs to collect coldplugged device page size mask before machine
-init. Those hacks were introduced by
-
-94df5b2180d6 ("virtio-iommu: Fix 64kB host page size VFIO device
-assignment")
-
-The series can be found at:
-https://github.com/eauger/qemu/tree/virtio-iommu-psmask-rework-v2
-
+Fixes : Coverity CID 1549006
+Signed-off-by: Eric Auger <eric.auger@redhat.com>
+Fixes: cf2647a76e ("virtio-iommu: Compute host reserved regions")
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
-v1 -> v2:
-- Don't update mask if the granule is frozen (Zhenzhong)
-- Collected Zhenzhong's and Cédric's R-bs
+ hw/virtio/virtio-iommu.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-Eric Auger (7):
-  virtio-iommu: Fix error handling in
-    virtio_iommu_set_host_iova_ranges()
-  vfio-container-base: Introduce vfio_container_get_iova_ranges() helper
-  HostIOMMUDevice : remove Error handle from get_iova_ranges callback
-  HostIOMMUDevice: Introduce get_page_size_mask() callback
-  virtio-iommu : Retrieve page size mask on
-    virtio_iommu_set_iommu_device()
-  memory: remove IOMMU MR iommu_set_page_size_mask() callback
-  virtio-iommu: Revert transient enablement of IOMMU MR in bypass mode
-
- include/exec/memory.h                 |  38 --------
- include/hw/vfio/vfio-container-base.h |   9 ++
- include/sysemu/host_iommu_device.h    |  11 ++-
- hw/vfio/common.c                      |   8 --
- hw/vfio/container-base.c              |  15 ++++
- hw/vfio/container.c                   |  16 ++--
- hw/vfio/iommufd.c                     |  21 +++--
- hw/virtio/virtio-iommu.c              | 123 +++++++++++++-------------
- system/memory.c                       |  13 ---
- hw/virtio/trace-events                |   2 +-
- 10 files changed, 119 insertions(+), 137 deletions(-)
-
+diff --git a/hw/virtio/virtio-iommu.c b/hw/virtio/virtio-iommu.c
+index b9a7ddcd14..b708fb96fd 100644
+--- a/hw/virtio/virtio-iommu.c
++++ b/hw/virtio/virtio-iommu.c
+@@ -543,10 +543,15 @@ static int virtio_iommu_set_host_iova_ranges(VirtIOIOMMU *s, PCIBus *bus,
+     int ret = -EINVAL;
+ 
+     if (!sbus) {
+-        error_report("%s no sbus", __func__);
++        error_setg(errp, "%s: no IOMMUPciBus found!", __func__);
++        return ret;
+     }
+ 
+     sdev = sbus->pbdev[devfn];
++    if (!sdev) {
++        error_setg(errp, "%s: no IOMMUDevice found!", __func__);
++        return ret;
++    }
+ 
+     current_ranges = sdev->host_resv_ranges;
+ 
 -- 
 2.41.0
 
