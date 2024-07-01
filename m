@@ -2,93 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7B4591DCB7
-	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 12:33:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00F2A91DCE6
+	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 12:42:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOEL8-0002Oq-OR; Mon, 01 Jul 2024 06:32:54 -0400
+	id 1sOESO-0004N3-VF; Mon, 01 Jul 2024 06:40:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOEL6-0002OJ-86
- for qemu-devel@nongnu.org; Mon, 01 Jul 2024 06:32:52 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOEL3-0004VD-I3
- for qemu-devel@nongnu.org; Mon, 01 Jul 2024 06:32:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719829967;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=x4BqsedlPzbO6bxocv2wV9TtkbK+PMbaG7L4xZpMHBk=;
- b=OKy9C6ijMJ8eyjmnUNKm6ws1xckYC+gAhn9ZT27b5Tt6PYej0QaiBizqVjIk34gsuQJQPA
- 7mk3TE1tMXzf/DNnytGEXs0tDlT1fF/fTTlkxEJFURHzibfOvvsX8rsNiuMPnlKcn63qrK
- 38qgCEveFD3RDB1rQYs8qAOr9L4wZj0=
-Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
- [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-388-xSqFsi6gNLSXTRF5_-lWxg-1; Mon, 01 Jul 2024 06:32:45 -0400
-X-MC-Unique: xSqFsi6gNLSXTRF5_-lWxg-1
-Received: by mail-lj1-f199.google.com with SMTP id
- 38308e7fff4ca-2ee5a98e5fdso23703031fa.1
- for <qemu-devel@nongnu.org>; Mon, 01 Jul 2024 03:32:45 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1sOESN-0004Md-81
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 06:40:23 -0400
+Received: from mail-pg1-x533.google.com ([2607:f8b0:4864:20::533])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1sOESE-0006yw-Lg
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 06:40:22 -0400
+Received: by mail-pg1-x533.google.com with SMTP id
+ 41be03b00d2f7-726d9b3bcf8so1781783a12.0
+ for <qemu-devel@nongnu.org>; Mon, 01 Jul 2024 03:40:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1719830413; x=1720435213;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=y91pxqGUc6xp63OWzpq0VcCFBeit31sjYVA/z30/KAw=;
+ b=dKgPV30cNHjI60+AnPZ42v8CEMvE8eYP8SMh/GG8bp18tzkKGV/TWZIpP6n8nWIi1P
+ Lup28J7Q4yZ04s5eW1lf61Qw7CoTYAo7clOg2ZryWRvnIFx9L1U/tcSrRcWHHETI2sfi
+ WSo9m+HsLz9vn47T3YwAcLnilC0FI6P1Jb0gb76kjpcS3427nk2HngJy7YdLM84uHHiT
+ Xbmw42L1TdImfOW5GN/D5XJhDy2awW9upEbgLqGXAgFecjTVA1JE57OF3FaCUi1vlPZO
+ cipQmYOLB4oJSVuuMV27befXsVQ7PCttCasQ6BK7cu0pQs2YbihFw4AQy5D6VrFaz5my
+ kLRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719829963; x=1720434763;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
+ d=1e100.net; s=20230601; t=1719830413; x=1720435213;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=x4BqsedlPzbO6bxocv2wV9TtkbK+PMbaG7L4xZpMHBk=;
- b=eFvLA+XVYu2PWxqJsYeghvoY/J6VEV5VFa+p5FV3OGh8O0DbTuvbkL2MDoDe48dMTQ
- UJeZ6Yz8K0QeONrNIeXxThCcJmnlRipytb4I2adVPHTAiQbV+DiKhma0+aBAbZTini5C
- RdgQJjZ4kRwiwrEoB0SXJcxe3J8OgwfRz/Gdq7kIwIViBXNME0AvJ7oG+/ISqmjXcsR4
- XY5oQfhcWzFW+XnQQl6cm1v0zuyQZB0j2nTXPekraeJPFrnb5AuhfAGOOJLZRjNt3lHR
- Kf/gfdF1NdTn2BsJ+vFEEgxD+wf0x7OdZwlhmFY5hZhSen5Onlb+PtdL3xxGtI5sB7GZ
- Geyg==
+ bh=y91pxqGUc6xp63OWzpq0VcCFBeit31sjYVA/z30/KAw=;
+ b=Ti7rTBNhEHBDKph9yLBQ+bfecfsMC1saJ7MYGR4mmLqgmaShfTjDO21KlEGH7gPLDc
+ H6Iy7uqHWrvwFVNoVXkrheugaBaP178b4su22dCDnB2x3wfIG3AL/SF8S8quZvCJ58Da
+ X5Axo1UcbCvTt65o1xxjP4xXBVcTWRqe+Yc6WYpTj33mR4dvDmWoqIBmujQVNBejhGA3
+ 0FYCXxVifyiiBBHrTn5iEOsDeP20hKLB6o+F3uObQVnHAA0Hckn+/CV5g7y+J+UVtqZJ
+ aZJhvqE1RBI9g3ZAqwWt21pam6Rfp2oISB+wppAdWATI2uKbH6KF0oP/vRWEJ4012NfQ
+ wGJw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWwA9ppRNEJjFnHMjd1eNJTiWddVCBiFqNBP+yO76qVHzu7IfQz802IHZtb8gIz1AL4NAmEFzxiurUnXC4xdGfHPvxVhco=
-X-Gm-Message-State: AOJu0YxbkQqVnp5w8HJZ9GHvOp6nXAPCirLupz5oRL+PpnaDJtxV1AcF
- 6dWuFHQBORl0ELowxxrRQiUhEleG5VjrZH2qhASogYq/Ez854qEW5bfb4xe0VH9/eAErbeJIYbs
- +hMZxtgp2RHM9FJjWB0dyXDXPZ/m1VVjEEYCBqjqkzt5exo9Cp5fSLjZTOien
-X-Received: by 2002:a2e:8684:0:b0:2ec:522f:6443 with SMTP id
- 38308e7fff4ca-2ee5e6ba578mr29788261fa.33.1719829963668; 
- Mon, 01 Jul 2024 03:32:43 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHrAs0j/XF0GfSBRu28VMGm3p8/McIQc61OSL1xcFXMiWRtJQNex0sDJgYClDsxL9gReUYKZw==
-X-Received: by 2002:a2e:8684:0:b0:2ec:522f:6443 with SMTP id
- 38308e7fff4ca-2ee5e6ba578mr29788061fa.33.1719829962761; 
- Mon, 01 Jul 2024 03:32:42 -0700 (PDT)
-Received: from redhat.com ([2a02:14f:1fc:1777:cc97:5c98:fa23:6d8a])
+ AJvYcCX8c5dyeCiQ3m6g0+OWs4Xv+d62y8KG93CQamsOEkV8Hl7w0M2irKVBOM0YleUAuKuWA9ekxP8rfpCuJk45i4jAScrQAtY=
+X-Gm-Message-State: AOJu0YweUHooiCt8RTUjsFhEsWBGkahiC87DHo9eCZe9iR07yJOwFbQ9
+ Sxdo+dop4fVk24sYN4J92UPMVp46y2L40e/xWqGjPTqjJ6Rwu2MoQSt7xG02rrmtTkzw/O3XE6r
+ 0P0w=
+X-Google-Smtp-Source: AGHT+IG9T0Emu7n6i6m9DzQOj5Uhc/PAjZxKm/dQjtkGAfFjIY6RAfYSrq8gmxN8MVmuXEJCY2GH9Q==
+X-Received: by 2002:a05:6a21:339d:b0:1bd:221d:e57 with SMTP id
+ adf61e73a8af0-1bef60f9a42mr4293401637.15.1719830412979; 
+ Mon, 01 Jul 2024 03:40:12 -0700 (PDT)
+Received: from [157.82.204.135] ([157.82.204.135])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3675a0e0b7csm9623615f8f.49.2024.07.01.03.32.40
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 01 Jul 2024 03:32:42 -0700 (PDT)
-Date: Mon, 1 Jul 2024 06:32:38 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Eugenio Perez Martin <eperezma@redhat.com>
-Cc: Stefano Garzarella <sgarzare@redhat.com>, qemu-devel@nongnu.org,
- jasowang@redhat.com, Peter Maydell <peter.maydell@linaro.org>,
- qemu-stable@nongnu.org, Xoykie <xoykie@gmail.com>,
- Lei Yang <leiyang@redhat.com>
-Subject: Re: [PATCH] virtio: remove virtio_tswap16s() call in
- vring_packed_event_read()
-Message-ID: <20240701063129-mutt-send-email-mst@kernel.org>
-References: <20240701075208.19634-1-sgarzare@redhat.com>
- <CAJaqyWffdg6jz-+_1_tZApLTWs362KQYAMkPHttP51s7v07tEw@mail.gmail.com>
+ 98e67ed59e1d1-2c91ce17ccfsm6455172a91.10.2024.07.01.03.40.11
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 01 Jul 2024 03:40:12 -0700 (PDT)
+Message-ID: <8b3657e2-5d2b-46ac-beba-fd0d5cf2a05a@daynix.com>
+Date: Mon, 1 Jul 2024 19:40:09 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJaqyWffdg6jz-+_1_tZApLTWs362KQYAMkPHttP51s7v07tEw@mail.gmail.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 00/14] test/tcg: Clang build fixes for arm/aarch64
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: alex.bennee@linaro.org, qemu-arm@nongnu.org
+References: <20240630190050.160642-1-richard.henderson@linaro.org>
+Content-Language: en-US
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <20240630190050.160642-1-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::533;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x533.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,55 +96,13 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jul 01, 2024 at 11:53:34AM +0200, Eugenio Perez Martin wrote:
-> On Mon, Jul 1, 2024 at 9:52 AM Stefano Garzarella <sgarzare@redhat.com> wrote:
-> >
-> > Commit d152cdd6f6 ("virtio: use virtio accessor to access packed event")
-> > switched using of address_space_read_cached() to virito_lduw_phys_cached()
-> > to access packed descriptor event.
-> >
-> > When we used address_space_read_cached(), we needed to call
-> > virtio_tswap16s() to handle the endianess of the field, but
-> > virito_lduw_phys_cached() already handles it internally, so we no longer
-> > need to call virtio_tswap16s() (as the commit had done for `off_wrap`,
-> > but forgot for `flags`).
-> >
-> > Fixes: d152cdd6f6 ("virtio: use virtio accessor to access packed event")
-> > Cc: jasowang@redhat.com
-> > Cc: qemu-stable@nongnu.org
-> > Reported-by: Xoykie <xoykie@gmail.com>
-> > Link: https://lore.kernel.org/qemu-devel/CAFU8RB_pjr77zMLsM0Unf9xPNxfr_--Tjr49F_eX32ZBc5o2zQ@mail.gmail.com
-> > Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+On 2024/07/01 4:00, Richard Henderson wrote:
+> Supercedes: 20240629-tcg-v3-0-fa57918bdf09@daynix.com
+> ("[PATCH v3 0/7] tests/tcg/aarch64: Fix inline assemblies for clang")
 > 
-> Reviewed-by: Eugenio Pérez <eperezma@redhat.com>
-> 
-> I think it would be great to test the patches using a big endian host
-> just in case.
-> 
-> Thanks!
+> On top of Akihiko's patches for aarch64, additional changes are
+> required for arm, both as a host and as a guest.
 
-I think we really should move to using sparse tags for endian-ness,
-like Linux does, and away from swap calls.
-
-
-> > ---
-> >  hw/virtio/virtio.c | 1 -
-> >  1 file changed, 1 deletion(-)
-> >
-> > diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
-> > index 893a072c9d..2e5e67bdb9 100644
-> > --- a/hw/virtio/virtio.c
-> > +++ b/hw/virtio/virtio.c
-> > @@ -323,7 +323,6 @@ static void vring_packed_event_read(VirtIODevice *vdev,
-> >      /* Make sure flags is seen before off_wrap */
-> >      smp_rmb();
-> >      e->off_wrap = virtio_lduw_phys_cached(vdev, cache, off_off);
-> > -    virtio_tswap16s(vdev, &e->flags);
-> >  }
-> >
-> >  static void vring_packed_off_wrap_write(VirtIODevice *vdev,
-> > --
-> > 2.45.2
-> >
-
+For the whole series:
+Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 
