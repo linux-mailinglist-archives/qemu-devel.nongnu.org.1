@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75A6991DD6B
-	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 13:04:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8FAC91DD71
+	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 13:05:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOEoY-00023m-Rl; Mon, 01 Jul 2024 07:03:20 -0400
+	id 1sOEog-00025S-UQ; Mon, 01 Jul 2024 07:03:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <37oyCZggKCk071378pupv33v0t.r315t19-stAt0232v29.36v@flex--smostafa.bounces.google.com>)
- id 1sOEoV-00022h-J7
- for qemu-devel@nongnu.org; Mon, 01 Jul 2024 07:03:15 -0400
-Received: from mail-wr1-x44a.google.com ([2a00:1450:4864:20::44a])
+ <38YyCZggKClAA46ABsxsy66y3w.u648w4C-vwDw3565y5C.69y@flex--smostafa.bounces.google.com>)
+ id 1sOEob-00024d-0m
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 07:03:22 -0400
+Received: from mail-yb1-xb49.google.com ([2607:f8b0:4864:20::b49])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from
- <37oyCZggKCk071378pupv33v0t.r315t19-stAt0232v29.36v@flex--smostafa.bounces.google.com>)
- id 1sOEoT-0005BV-3H
- for qemu-devel@nongnu.org; Mon, 01 Jul 2024 07:03:15 -0400
-Received: by mail-wr1-x44a.google.com with SMTP id
- ffacd0b85a97d-363edcf12a3so1924870f8f.3
- for <qemu-devel@nongnu.org>; Mon, 01 Jul 2024 04:03:12 -0700 (PDT)
+ <38YyCZggKClAA46ABsxsy66y3w.u648w4C-vwDw3565y5C.69y@flex--smostafa.bounces.google.com>)
+ id 1sOEoV-0005Fk-09
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 07:03:19 -0400
+Received: by mail-yb1-xb49.google.com with SMTP id
+ 3f1490d57ef6-e034f972e8bso4906937276.0
+ for <qemu-devel@nongnu.org>; Mon, 01 Jul 2024 04:03:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1719831791; x=1720436591; darn=nongnu.org;
+ d=google.com; s=20230601; t=1719831793; x=1720436593; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:from:subject:message-id:references
  :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
- :reply-to; bh=buei2TcPsrlo5yYQSY3rD7Mr3fqYf/EFvEpA8OSpk10=;
- b=11jJ01RIPyhGyV342a00qbJQdPFBUYL0v1GE/VMRHtXdlHDKKosbCxUv56+uywNlAs
- DxbondgIJuQiiNhIEdAsIwt/HBsYXGz6HAwuC6nS8joP5IhTItNHYpG2CiUvCtMmuMaX
- A0uprgpnB9hZ1IOY1lksu1STI/H1GEZDuz96j6mBgdZf9emAcroT3DEBTrY+AH7ohQS/
- WKGPqr81if6iu96gAjfyH71QC4y/TzJhZQ6YRn/7KhLR10uzza3g49Wjrto8/jmkuAvw
- UKbSvvNeDzIzqjBSy3o4d0Y4sS0buw1jvpoTQ0XUHDbX/3aM/fBFY3fqpJodDNvYqSXI
- ngPg==
+ :reply-to; bh=wqwMFjuNcPNQgfmtUIfkUcIllMEdFf4XaEpH+L83rCQ=;
+ b=zkMFpZT53BIUWHd1230ZyO7PHSqNuVL04YjqWqgG+ea33ZHJkgSo28jKaskv8n1DVc
+ lkkvH28+rWO058zXs5RFz9NogtmqUefaIr0ltVPcBcBm0ecTW1Fl2IJMROXLAeed4J4k
+ DTEhRI48Vm8HfYspTGGBn0u2iMc+IFMQtITdf0NXfkSw8eptNKfLdmI6xRFQYE5JfUiH
+ opu4IAUCUSoIEMdOsIeLy0CbPJsHoMHeYZ5RplZPx2UY5H18Ast50i47EMsUuxq2M2wE
+ 5WhJBoQiDqH5Wmlvn1rjAtrb9r4TDx/Zn6D8Mh/Idw0YNXnBZobDKiWLEUvAZdSxXkWq
+ bAhg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719831791; x=1720436591;
+ d=1e100.net; s=20230601; t=1719831793; x=1720436593;
  h=content-transfer-encoding:cc:to:from:subject:message-id:references
  :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
  :date:message-id:reply-to;
- bh=buei2TcPsrlo5yYQSY3rD7Mr3fqYf/EFvEpA8OSpk10=;
- b=d0StZZXOgBjVmJ5fiyr5B88AKf0VNh17D5iYKxqAeCwQ2+IbcqnQaoqH20fYOuF2+M
- 2hsH8OBO/hdYNIDibp4gOYVQjpaQpakeFokzrz+YaBrPP3Ph32czS5BbWpCTAxio/duZ
- dwtkLg4jIwnZ7LFG8Euo7R5OKXUDzYlA8nFi8VoxOShH1uJw7h7RD0erYI3jkv4yMU6Z
- j5NDN9xIIMbH9STfAPGX/5NIZErplgF5Qdz1jeQJGiufBdqnv7R7Au/H5WfLA6D3PzeQ
- 1v/JIiyB1oMd9S4PzKwwYrqFqp8kFM3VA3I75E8ke1fjGmfUxZEJRu8XdJIqRi3cosh2
- on8Q==
+ bh=wqwMFjuNcPNQgfmtUIfkUcIllMEdFf4XaEpH+L83rCQ=;
+ b=pKrkK/eC7XbtpubHl6I+Sm3sTcUUNQxTIJGsdrJeKg9kLK/Q5LkzzzzdSXrOiPgcWt
+ lVGp9M3MTbrmgmJhA78QosheT+6lDmHGNGEKCCPMHLirarvATRUF1lU5gZ9vqpp/6t30
+ 82D86FVa09yF9pUCYOBYvTFTImnTC21qthas++XuXnHcSh4t0zoBtRVfr3Z/6lSApR3m
+ qrBakPA6chD/8tWDnteSS9kgYCCVM3czI/CiBhJxGSwJcgdXdsgdC7+Z3F6klmUjbNJC
+ 7nbaTE7KthY3/FMgHTttH/0NQXTtK20EfRwkhT2WmykbnXhfodTXR5f7iCj6kG6dh7mB
+ if7g==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVdjPgUl+Ez4dPZPFxogiqlYl4YLpuYqP4YHEWJ2JKIbFC0Lhdg+22zJpvPvfc2QlnBgX0dgDQsjd0XhSBF4IaJMxxcnTY=
-X-Gm-Message-State: AOJu0Yy01vgiiyzD0vUZPIpNpsgeW8uSxI4Vp5sOz73+z0/7Gnt8Rbyj
- tMCeWBaMRi8Lg5f4x1CwepHA65V/d/DCayf22HnlGzC1zDmi3nVmag8E81BYtKkKKEEGnOsN4/E
- NS27CRH2M4A==
-X-Google-Smtp-Source: AGHT+IGWi1LibK1nZw0q6Q4tqmmWYS4B+FgwA8ZzIABQd+wHsGEliel9TjUnDDHBjOACDBJOhFUG3Xb2cqVxCw==
+ AJvYcCXMXTd9ncrdDOkTNe0poSgal32ifk/PQd+qvcuQh5PLf8y6tpX60BPPyNFXLDs6Yk9ucmDA5RuQBm8dQdKdd2pMrUeygL0=
+X-Gm-Message-State: AOJu0Yxl0BthSVQnnU2H6xC6DLrIyNbfUy9o2MU3O44qbvIX3d7kxVqo
+ aTqJDpmEkZkZHKBJAtVS3fiivLMznY0TwwPaowTP399/4PDSyj9a3QTT5SY8zQ5BqWmV3PhKdl1
+ 7fSX4e00yFw==
+X-Google-Smtp-Source: AGHT+IFA6H4WgylxWuZ+vt+/5n12yS4Zs2Xmd4MvpuDIDP+VuDP/DcgmBSLwr15ZoAgCBmR3gJWgFhmpdDH53g==
 X-Received: from mostafa.c.googlers.com
  ([fda3:e722:ac3:cc00:28:9cb1:c0a8:333c])
- (user=smostafa job=sendgmr) by 2002:a5d:43c5:0:b0:360:91c2:5708 with SMTP id
- ffacd0b85a97d-3677572997dmr8230f8f.13.1719831790599; Mon, 01 Jul 2024
- 04:03:10 -0700 (PDT)
-Date: Mon,  1 Jul 2024 11:02:24 +0000
+ (user=smostafa job=sendgmr) by 2002:a25:c802:0:b0:e03:62dc:63de with SMTP id
+ 3f1490d57ef6-e036eb27486mr333339276.6.1719831793563; Mon, 01 Jul 2024
+ 04:03:13 -0700 (PDT)
+Date: Mon,  1 Jul 2024 11:02:25 +0000
 In-Reply-To: <20240701110241.2005222-1-smostafa@google.com>
 Mime-Version: 1.0
 References: <20240701110241.2005222-1-smostafa@google.com>
 X-Mailer: git-send-email 2.45.2.803.g4e1b14247a-goog
-Message-ID: <20240701110241.2005222-3-smostafa@google.com>
-Subject: [PATCH v4 02/19] hw/arm/smmu: Fix IPA for stage-2 events
+Message-ID: <20240701110241.2005222-4-smostafa@google.com>
+Subject: [PATCH v4 03/19] hw/arm/smmuv3: Fix encoding of CLASS in events
 From: Mostafa Saleh <smostafa@google.com>
 To: qemu-arm@nongnu.org, eric.auger@redhat.com, peter.maydell@linaro.org, 
  qemu-devel@nongnu.org
@@ -72,15 +72,15 @@ Cc: jean-philippe@linaro.org, alex.bennee@linaro.org, maz@kernel.org,
  marcin.juszkiewicz@linaro.org, Mostafa Saleh <smostafa@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::44a;
- envelope-from=37oyCZggKCk071378pupv33v0t.r315t19-stAt0232v29.36v@flex--smostafa.bounces.google.com;
- helo=mail-wr1-x44a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b49;
+ envelope-from=38YyCZggKClAA46ABsxsy66y3w.u648w4C-vwDw3565y5C.69y@flex--smostafa.bounces.google.com;
+ helo=mail-yb1-xb49.google.com
 X-Spam_score_int: -95
 X-Spam_score: -9.6
 X-Spam_bar: ---------
-X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01,
  USER_IN_DEF_DKIM_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,128 +97,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For the following events (ARM IHI 0070 F.b - 7.3 Event records):
-- F_TRANSLATION
-- F_ACCESS
-- F_PERMISSION
-- F_ADDR_SIZE
+The SMMUv3 spec (ARM IHI 0070 F.b - 7.3 Event records) defines the
+class of events faults as:
 
-If fault occurs at stage 2, S2 =3D=3D 1 and:
-  - If translating an IPA for a transaction (whether by input to
-    stage 2-only configuration, or after successful stage 1 translation),
-    CLASS =3D=3D IN, and IPA is provided.
+CLASS: The class of the operation that caused the fault:
+- 0b00: CD, CD fetch.
+- 0b01: TTD, Stage 1 translation table fetch.
+- 0b10: IN, Input address
 
-At the moment only CLASS =3D=3D IN is used which indicates input
-translation.
+However, this value was not set and left as 0 which means CD and not
+IN (0b10).
+While at it, add an enum for class as it would be used for nesting.
+However, at the moment stage-1 and stage-2 use the same class values.
 
-However, this was not implemented correctly, as for stage 2, the code
-only sets the  S2 bit but not the IPA.
-
-This field has the same bits as FetchAddr in F_WALK_EABT which is
-populated correctly, so we don=E2=80=99t change that.
-The setting of this field should be done from the walker as the IPA address
-wouldn't be known in case of nesting.
-
-For stage 1, the spec says:
-  If fault occurs at stage 1, S2 =3D=3D 0 and:
-  CLASS =3D=3D IN, IPA is UNKNOWN.
-
-So, no need to set it to for stage 1, as ptw_info is initialised by zero in
-smmuv3_translate().
-
-Fixes: e703f7076a =E2=80=9Chw/arm/smmuv3: Add page table walk for stage-2=
-=E2=80=9D
+Fixes: 9bde7f0674 =E2=80=9Chw/arm/smmuv3: Implement translate callback=E2=
+=80=9D
 Reviewed-by: Eric Auger <eric.auger@redhat.com>
 Signed-off-by: Mostafa Saleh <smostafa@google.com>
 ---
- hw/arm/smmu-common.c | 10 ++++++----
- hw/arm/smmuv3.c      |  4 ++++
- 2 files changed, 10 insertions(+), 4 deletions(-)
+ hw/arm/smmuv3-internal.h | 6 ++++++
+ hw/arm/smmuv3.c          | 6 +++++-
+ 2 files changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/hw/arm/smmu-common.c b/hw/arm/smmu-common.c
-index eb2356bc35..8a8c718e6b 100644
---- a/hw/arm/smmu-common.c
-+++ b/hw/arm/smmu-common.c
-@@ -448,7 +448,7 @@ static int smmu_ptw_64_s2(SMMUTransCfg *cfg,
-      */
-     if (ipa >=3D (1ULL << inputsize)) {
-         info->type =3D SMMU_PTW_ERR_TRANSLATION;
--        goto error;
-+        goto error_ipa;
-     }
+diff --git a/hw/arm/smmuv3-internal.h b/hw/arm/smmuv3-internal.h
+index e4dd11e1e6..0f3ecec804 100644
+--- a/hw/arm/smmuv3-internal.h
++++ b/hw/arm/smmuv3-internal.h
+@@ -32,6 +32,12 @@ typedef enum SMMUTranslationStatus {
+     SMMU_TRANS_SUCCESS,
+ } SMMUTranslationStatus;
 =20
-     while (level < VMSA_LEVELS) {
-@@ -494,13 +494,13 @@ static int smmu_ptw_64_s2(SMMUTransCfg *cfg,
-          */
-         if (!PTE_AF(pte) && !cfg->s2cfg.affd) {
-             info->type =3D SMMU_PTW_ERR_ACCESS;
--            goto error;
-+            goto error_ipa;
-         }
++typedef enum SMMUTranslationClass {
++    SMMU_CLASS_CD,
++    SMMU_CLASS_TT,
++    SMMU_CLASS_IN,
++} SMMUTranslationClass;
++
+ /* MMIO Registers */
 =20
-         s2ap =3D PTE_AP(pte);
-         if (is_permission_fault_s2(s2ap, perm)) {
-             info->type =3D SMMU_PTW_ERR_PERMISSION;
--            goto error;
-+            goto error_ipa;
-         }
-=20
-         /*
-@@ -509,7 +509,7 @@ static int smmu_ptw_64_s2(SMMUTransCfg *cfg,
-          */
-         if (gpa >=3D (1ULL << cfg->s2cfg.eff_ps)) {
-             info->type =3D SMMU_PTW_ERR_ADDR_SIZE;
--            goto error;
-+            goto error_ipa;
-         }
-=20
-         tlbe->entry.translated_addr =3D gpa;
-@@ -522,6 +522,8 @@ static int smmu_ptw_64_s2(SMMUTransCfg *cfg,
-     }
-     info->type =3D SMMU_PTW_ERR_TRANSLATION;
-=20
-+error_ipa:
-+    info->addr =3D ipa;
- error:
-     info->stage =3D 2;
-     tlbe->entry.perm =3D IOMMU_NONE;
+ REG32(IDR0,                0x0)
 diff --git a/hw/arm/smmuv3.c b/hw/arm/smmuv3.c
-index 2d1e0d55ec..9dd3ea48e4 100644
+index 9dd3ea48e4..1eb5b160d2 100644
 --- a/hw/arm/smmuv3.c
 +++ b/hw/arm/smmuv3.c
-@@ -949,6 +949,7 @@ static IOMMUTLBEntry smmuv3_translate(IOMMUMemoryRegion=
+@@ -942,7 +942,7 @@ static IOMMUTLBEntry smmuv3_translate(IOMMUMemoryRegion=
  *mr, hwaddr addr,
-             if (PTW_RECORD_FAULT(cfg)) {
+             event.type =3D SMMU_EVT_F_WALK_EABT;
+             event.u.f_walk_eabt.addr =3D addr;
+             event.u.f_walk_eabt.rnw =3D flag & 0x1;
+-            event.u.f_walk_eabt.class =3D 0x1;
++            event.u.f_walk_eabt.class =3D SMMU_CLASS_TT;
+             event.u.f_walk_eabt.addr2 =3D ptw_info.addr;
+             break;
+         case SMMU_PTW_ERR_TRANSLATION:
+@@ -950,6 +950,7 @@ static IOMMUTLBEntry smmuv3_translate(IOMMUMemoryRegion=
+ *mr, hwaddr addr,
                  event.type =3D SMMU_EVT_F_TRANSLATION;
                  event.u.f_translation.addr =3D addr;
-+                event.u.f_translation.addr2 =3D ptw_info.addr;
+                 event.u.f_translation.addr2 =3D ptw_info.addr;
++                event.u.f_translation.class =3D SMMU_CLASS_IN;
                  event.u.f_translation.rnw =3D flag & 0x1;
              }
              break;
-@@ -956,6 +957,7 @@ static IOMMUTLBEntry smmuv3_translate(IOMMUMemoryRegion=
+@@ -958,6 +959,7 @@ static IOMMUTLBEntry smmuv3_translate(IOMMUMemoryRegion=
  *mr, hwaddr addr,
-             if (PTW_RECORD_FAULT(cfg)) {
                  event.type =3D SMMU_EVT_F_ADDR_SIZE;
                  event.u.f_addr_size.addr =3D addr;
-+                event.u.f_addr_size.addr2 =3D ptw_info.addr;
+                 event.u.f_addr_size.addr2 =3D ptw_info.addr;
++                event.u.f_translation.class =3D SMMU_CLASS_IN;
                  event.u.f_addr_size.rnw =3D flag & 0x1;
              }
              break;
-@@ -963,6 +965,7 @@ static IOMMUTLBEntry smmuv3_translate(IOMMUMemoryRegion=
+@@ -966,6 +968,7 @@ static IOMMUTLBEntry smmuv3_translate(IOMMUMemoryRegion=
  *mr, hwaddr addr,
-             if (PTW_RECORD_FAULT(cfg)) {
                  event.type =3D SMMU_EVT_F_ACCESS;
                  event.u.f_access.addr =3D addr;
-+                event.u.f_access.addr2 =3D ptw_info.addr;
+                 event.u.f_access.addr2 =3D ptw_info.addr;
++                event.u.f_translation.class =3D SMMU_CLASS_IN;
                  event.u.f_access.rnw =3D flag & 0x1;
              }
              break;
-@@ -970,6 +973,7 @@ static IOMMUTLBEntry smmuv3_translate(IOMMUMemoryRegion=
+@@ -974,6 +977,7 @@ static IOMMUTLBEntry smmuv3_translate(IOMMUMemoryRegion=
  *mr, hwaddr addr,
-             if (PTW_RECORD_FAULT(cfg)) {
                  event.type =3D SMMU_EVT_F_PERMISSION;
                  event.u.f_permission.addr =3D addr;
-+                event.u.f_permission.addr2 =3D ptw_info.addr;
+                 event.u.f_permission.addr2 =3D ptw_info.addr;
++                event.u.f_translation.class =3D SMMU_CLASS_IN;
                  event.u.f_permission.rnw =3D flag & 0x1;
              }
              break;
