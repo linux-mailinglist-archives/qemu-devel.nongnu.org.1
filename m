@@ -2,94 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6083E91DB28
-	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 11:11:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6F6E91DB35
+	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 11:14:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOCyO-0000Vn-LA; Mon, 01 Jul 2024 05:05:20 -0400
+	id 1sOD4u-00052P-PN; Mon, 01 Jul 2024 05:12:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1sOCuu-00079d-UT
- for qemu-devel@nongnu.org; Mon, 01 Jul 2024 05:01:46 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sOD4p-0004uN-2Q
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 05:11:59 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1sOCut-0002jO-9T
- for qemu-devel@nongnu.org; Mon, 01 Jul 2024 05:01:44 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sOD4m-00082M-Vu
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 05:11:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719824501;
+ s=mimecast20190719; t=1719825115;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=oEBDYAQdGZzD+ww+OiJTTgxS9CQV9GMVKaDk3lRKAtA=;
- b=Tw5kr+c6IKCbajkaRabg5Zqqj1+OvYMfEw7OsUR2MXEUSp33KOwkSal4LzP8HiixFnQndF
- LheJfsr+An03k2ogUJ3EnCe5JPixh7faXJHC49n7k6gJpwtV2n7UYB8RkyKQPNCsOQu7RS
- bFy46x95A3wJLxQ6Zxkf7PkVIdDhUv4=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-125-VkSo6UMFP8-j-1OJW6FAKQ-1; Mon, 01 Jul 2024 05:01:40 -0400
-X-MC-Unique: VkSo6UMFP8-j-1OJW6FAKQ-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-4210d151c5bso19924395e9.3
- for <qemu-devel@nongnu.org>; Mon, 01 Jul 2024 02:01:39 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719824499; x=1720429299;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=oEBDYAQdGZzD+ww+OiJTTgxS9CQV9GMVKaDk3lRKAtA=;
- b=hJ02rfVL7+kOpRPqUEjh7JjY4i+uBRgv3LYQwZGyiL3XWfERFJnfYG9TW4gnwSvqcB
- 5acjPTuHeiWVeqYEI+Wwxnjj5b1a4E2yeqws8wQyN4Prcfd3g1DakZupswf+F4E8UxSt
- a+92KQ7R1VPBqhLzKdfg4oqRtvjLxDLOCB12DkfQtZMX9tkErxNeAGoSrtQgM7loC0+J
- 8zTQApH8Xe1C1inItIK5Gq6uEXrm3JDCPZSNji/YeK7LBVSVtiqFI8/k09ww2AhEkjdI
- +wo3nhtznw0u5ys9om78kliH3FX7y3jktLXrQxzi30o+IXIRXyjsbo5xfPYbOcELstTO
- Oc2A==
-X-Gm-Message-State: AOJu0YxGpNgtl/k6+24R7ygmQoAkK3/GSNieC7SxXeK8Pk0e9ZZ8uSmE
- y/DOL3Zw8iHhe7nbZvlsAQz2/+hb13pUsm24WPJy1L7CN6lJQ4aHPKv25NMA3ZSfEDY9q3UsL1/
- QT4KxTXr887UGsbBS+a3N/R7lh3FOP2q1P4QINpoQ1KGQd5P0HO52
-X-Received: by 2002:a7b:c458:0:b0:424:a655:c8b with SMTP id
- 5b1f17b1804b1-4257a010ab5mr32799845e9.19.1719824498992; 
- Mon, 01 Jul 2024 02:01:38 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGek2GHD933LRneG78XPG7FHYSOuQtjZWToFudFgCXQ+YjfCag1kHhC5nBK77W/OehMizIE5A==
-X-Received: by 2002:a7b:c458:0:b0:424:a655:c8b with SMTP id
- 5b1f17b1804b1-4257a010ab5mr32799715e9.19.1719824498651; 
- Mon, 01 Jul 2024 02:01:38 -0700 (PDT)
-Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
- [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4258014f8b7sm47322965e9.41.2024.07.01.02.01.37
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 01 Jul 2024 02:01:38 -0700 (PDT)
-Date: Mon, 1 Jul 2024 11:01:36 +0200
-From: Igor Mammedov <imammedo@redhat.com>
-To: Alex =?UTF-8?B?QmVubsOpZQ==?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org, David Hildenbrand <david@redhat.com>, Beraldo
- Leal <bleal@redhat.com>, Eduardo Habkost <eduardo@habkost.net>, Wainer dos
- Santos Moschetta <wainersm@redhat.com>, qemu-arm@nongnu.org, Peter Xu
- <peterx@redhat.com>, Mads Ynddal <mads@ynddal.dk>, Mahmoud Mandour
- <ma.mandourr@gmail.com>, Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Laurent Vivier <laurent@vivier.eu>, Paolo Bonzini <pbonzini@redhat.com>,
- Philippe =?UTF-8?B?TWF0aGlldS1EYXVkw6k=?= <philmd@linaro.org>, Alexandre
- Iooss <erdnaxe@crans.org>, Stefan Hajnoczi <stefanha@redhat.com>, Peter
- Maydell <peter.maydell@linaro.org>, Richard Henderson
- <richard.henderson@linaro.org>, Thomas Huth <thuth@redhat.com>, Mark
- Cave-Ayland <mark.cave-ayland@ilande.co.uk>, "Michael S. Tsirkin"
- <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>, Fabiano Rosas
- <farosas@suse.de>
-Subject: Re: [PATCH 02/23] target/i386: fix gen_prepare_size_nz condition
-Message-ID: <20240701110136.6829422c@imammedo.users.ipa.redhat.com>
-In-Reply-To: <87ikxtnnjh.fsf@draig.linaro.org>
-References: <20240628124258.832466-1-alex.bennee@linaro.org>
- <20240628124258.832466-3-alex.bennee@linaro.org>
- <87ikxtnnjh.fsf@draig.linaro.org>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.42; x86_64-redhat-linux-gnu)
+ bh=S7hT4n6ISKxZUyUm4JpCd0/MZTDDpRW1JeMoxr8sEd0=;
+ b=IBR5X79jYr8lt2DQAlhxp1uOnK/264/o1cdsSAzxh61h6t7BF0HUH4BwyLrlk+3D4UBAtV
+ +WXnj2uEQeL6UBBfTrFadthFFM8JXd0yXuj/AbQxFCY7XRIukiyLUxxHG7OPn3SqdXxTiG
+ koIAukM3xy7CChVXV5eXEYDcLP38fPM=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-360-CBMwClAlMR2rnxNujOo_Cg-1; Mon,
+ 01 Jul 2024 05:11:50 -0400
+X-MC-Unique: CBMwClAlMR2rnxNujOo_Cg-1
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 966A91955F36; Mon,  1 Jul 2024 09:11:42 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.4])
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 370BD19560A3; Mon,  1 Jul 2024 09:11:36 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id E2C7C21E668B; Mon,  1 Jul 2024 11:11:32 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: John Snow <jsnow@redhat.com>
+Cc: Markus Armbruster <armbru@redhat.com>,  qemu-devel
+ <qemu-devel@nongnu.org>,  Mads Ynddal <mads@ynddal.dk>,  Jiri Pirko
+ <jiri@resnulli.us>,  Stefan Hajnoczi <stefanha@redhat.com>,  Eric Blake
+ <eblake@redhat.com>,  Peter Maydell <peter.maydell@linaro.org>,  Michael
+ Roth <michael.roth@amd.com>,  "Michael S. Tsirkin" <mst@redhat.com>,  Alex
+ Williamson <alex.williamson@redhat.com>,  Pavel Dovgalyuk
+ <pavel.dovgaluk@ispras.ru>,  Victor Toso de Carvalho
+ <victortoso@redhat.com>,  =?utf-8?Q?C=C3=A9dric?= Le Goater
+ <clg@redhat.com>,  Daniel P.
+ =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,  Qemu-block
+ <qemu-block@nongnu.org>,  Ani
+ Sinha <anisinha@redhat.com>,  Fabiano Rosas <farosas@suse.de>,  Marcel
+ Apfelbaum <marcel.apfelbaum@gmail.com>,  =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
+ <marcandre.lureau@redhat.com>,  Gerd Hoffmann <kraxel@redhat.com>,  Paolo
+ Bonzini <pbonzini@redhat.com>,  Kevin Wolf <kwolf@redhat.com>,  Peter Xu
+ <peterx@redhat.com>,  Eduardo Habkost <eduardo@habkost.net>,  Philippe
+ =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Lukas Straub
+ <lukasstraub2@web.de>,
+ Igor Mammedov <imammedo@redhat.com>,  Jason Wang <jasowang@redhat.com>,
+ Yanan Wang <wangyanan55@huawei.com>,  Hanna Reitz <hreitz@redhat.com>,
+ Konstantin Kostiuk <kkostiuk@redhat.com>
+Subject: Re: [PATCH v2 07/21] docs/qapidoc: fix nested parsing under
+ untagged sections
+In-Reply-To: <CAFn=p-aPJact6oMq_yMqDwUhY2vmsAtPe4jt5U1FW300MrMEuQ@mail.gmail.com>
+ (John Snow's message of "Fri, 28 Jun 2024 11:10:11 -0400")
+References: <20240626222128.406106-1-jsnow@redhat.com>
+ <20240626222128.406106-8-jsnow@redhat.com>
+ <87r0chzelz.fsf@pond.sub.org>
+ <CAFn=p-aPJact6oMq_yMqDwUhY2vmsAtPe4jt5U1FW300MrMEuQ@mail.gmail.com>
+Date: Mon, 01 Jul 2024 11:11:32 +0200
+Message-ID: <87bk3htr23.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -97,7 +90,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -113,48 +106,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 28 Jun 2024 15:34:58 +0100
-Alex Benn=C3=A9e <alex.bennee@linaro.org> wrote:
+John Snow <jsnow@redhat.com> writes:
 
-> Alex Benn=C3=A9e <alex.bennee@linaro.org> writes:
->=20
-> > Incorrect brace positions causes an unintended overflow on 32 bit
-> > builds and shenanigans result.
-> >
-> > Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2413
-> > Suggested-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-> > Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org> =20
->=20
-> This seems to trigger regressions in:
->=20
->   qtest-x86_64/bios-tables-test
->   qtest-x86_64/pxe-test
->   qtest-x86_64/vmgenid-test
->=20
-> Could that be down to generated test data?
+> On Fri, Jun 28, 2024, 3:55=E2=80=AFAM Markus Armbruster <armbru@redhat.co=
+m> wrote:
+>
+>> John Snow <jsnow@redhat.com> writes:
+>>
+>> > Sphinx does not like sections without titles, because it wants to
+>> > convert every section into a reference. When there is no title, it
+>> > struggles to do this and transforms the tree inproperly.
+>> >
+>> > Depending on the rST used, this may result in an assertion error deep =
+in
+>> > the docutils HTMLWriter.
+>> >
+>> > (Observed when using ".. admonition:: Notes" under such a section - Wh=
+en
+>> > this is transformed with its own <title> element, Sphinx is fooled into
+>> > believing this title belongs to the section and incorrect mutates the
+>> > docutils tree, leading to errors during rendering time.)
+>> >
+>> > When parsing an untagged section (free paragraphs), skip making a holl=
+ow
+>> > section and instead append the parse results to the prior section.
+>> >
+>> > Many Bothans died to bring us this information.
+>> >
+>> > Signed-off-by: John Snow <jsnow@redhat.com>
+>> > Acked-by: Markus Armbruster <armbru@redhat.com>
+>>
+>> Generated HTML changes, but the diff is hard to review due to id
+>> attribute changes all over the place.
+>>
+>> Generated qemu-ga-ref.7 also changes:
+>>
+>>     diff -rup old/qemu-ga-ref.7 new/qemu-ga-ref.7
+>>     --- old/qemu-ga-ref.7       2024-06-27 10:42:21.466096276 +0200
+>>     +++ new/qemu-ga-ref.7       2024-06-27 10:45:36.502414099 +0200
+>>     @@ -397,6 +397,7 @@ shutdown request, with no guarantee of s
+>>      .B \fBmode\fP: \fBstring\fP (optional)
+>>      \(dqhalt\(dq, \(dqpowerdown\(dq (default), or \(dqreboot\(dq
+>>      .UNINDENT
+>>     +.sp
+>>      This command does NOT return a response on success.  Success
+>>      condition is indicated by the VM exiting with a zero exit status or,
+>>      when running with \-\-no\-shutdown, by issuing the query\-status QMP
+>>     @@ -1348,6 +1349,7 @@ the new password entry string, base64 en
+>>      .B \fBcrypted\fP: \fBboolean\fP
+>>      true if password is already crypt()d, false if raw
+>>      .UNINDENT
+>>     +.sp
+>>      If the \fBcrypted\fP flag is true, it is the caller\(aqs
+>> responsibility to
+>>      ensure the correct crypt() encryption scheme is used.  This command
+>>      does not attempt to interpret or report on the encryption scheme.
+>>
+>> We add vertical space.  Visible when viewed with man.  Looks like an
+>> improvement to me.
+>>
+>> Here's the first of these two spots in HTML:
 
-Without context, I'd guess, that
-guest doesn't boot/get to randevu point that tests are waiting for
-and then it just timeouts =3D> fails.
+[...]
 
->=20
-> > ---
-> >  target/i386/tcg/translate.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-> > index ad1819815a..94f13541c3 100644
-> > --- a/target/i386/tcg/translate.c
-> > +++ b/target/i386/tcg/translate.c
-> > @@ -877,7 +877,7 @@ static CCPrepare gen_prepare_sign_nz(TCGv src, MemO=
-p size)
-> >          return (CCPrepare) { .cond =3D TCG_COND_LT, .reg =3D src };
-> >      } else {
-> >          return (CCPrepare) { .cond =3D TCG_COND_TSTNE, .reg =3D src,
-> > -                             .imm =3D 1ull << ((8 << size) - 1) };
-> > +                             .imm =3D (1ull << (8 << size)) - 1 };
-> >      }
-> >  } =20
->=20
+>> The id changes muddy the waters.  With them manually removed:
+
+[...]
+
+>> Makes no visual difference in my browser.
+>>
+>> Do these differences match your expectations?
+>>
+>
+> Yep!
+>
+> It does change the output just a little, but Sphinx really doesn't like
+> title-less sections.
+>
+> I thought the change looked fine, and I'm still planning on removing this
+> old generator anyway, so...
+
+I'll add to the commit message
+
+    The resulting output changes are basically invisible.
+
+Thanks!
 
 
