@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 004C491E4D9
-	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 18:09:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 937BE91E4F6
+	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 18:12:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOJZk-0001gd-3a; Mon, 01 Jul 2024 12:08:21 -0400
+	id 1sOJZw-00024l-IJ; Mon, 01 Jul 2024 12:08:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sOJZ7-0000iS-Nf
- for qemu-devel@nongnu.org; Mon, 01 Jul 2024 12:07:43 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ id 1sOJZ5-0000fx-GM
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 12:07:41 -0400
+Received: from mail-lj1-x22c.google.com ([2a00:1450:4864:20::22c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sOJZ0-0005Pp-G1
- for qemu-devel@nongnu.org; Mon, 01 Jul 2024 12:07:40 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-424ad991cbbso25269065e9.0
+ id 1sOJZ1-0005Pv-6q
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 12:07:38 -0400
+Received: by mail-lj1-x22c.google.com with SMTP id
+ 38308e7fff4ca-2ec5fad1984so44297841fa.0
  for <qemu-devel@nongnu.org>; Mon, 01 Jul 2024 09:07:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1719850053; x=1720454853; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=77qm/ulkxZX7SdkResvcWiVey4AydnKET0AsgP+gR9E=;
- b=U/MHIEN3AOx+nkDaE6JVfhhsekgDj116goIDrZ/xwbI+y+OreJig84+rdIzq6HrdnS
- g6JmEBOUiRdUodHdcGmBYr8UxYGuaW4BBoOS3C5+uYSEXJ8ciPtKVvdNI1Z2qYb0yr5S
- d1uiKdGHxGSVW0BgQjpKOaLgutVxo512jXGJNMHYc2aLp1ZI1A5QmmhfKg77CtSDioEB
- T0e+aLtwpM84bAZ+pkD2hMWCzC6DCgRd/6e3nyJpRFlH+abyikkrmeHijrEQhNx9J5Pm
- aP1TndkbJPv3b++Wb2Y7B/CjPfzpCFmERhTjNvBCOSK9bcgGEkUvLpcn9dRxXWaDnoMf
- 8szA==
+ :reply-to; bh=GhKst7WHN9ASn36oUshu4tgIXvUX+N4f2K/V8e/wSkQ=;
+ b=d1xM7R2M+W+05gDqcDAGKx9xZMUi/baONBD8QTyXK52amGj0Nzq5+J+00tV3H64a5u
+ WnLMBh0R7urrk11Os005oLG8fm2hZylveE4l8kzcAz7uCfYIuPAECFUzo48f9iE90oOt
+ Me3VRpUt7v9VHWYYY6cS3opuaMPHcIdW7WJyxq3KbZj1vf3Ga02ZJgSWD7l2+u6kw+e4
+ A14Xx6TK7b1wlEX9Vu+rWAb2H9J2i8rqoPBcl8FCSOP4v0zksH4QWvrERXwLS+KRpM99
+ Smqmo/gqOMfO7fprWRZZwKDeBSTt/BafUZyySHmIUwSTnliCK0E8D+G7Uw2QywpNZR6W
+ ommw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1719850053; x=1720454853;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=77qm/ulkxZX7SdkResvcWiVey4AydnKET0AsgP+gR9E=;
- b=DTON1hxBJXwIAVHfbHtc2bqiTsbb/85IFpJXwzYXX2KA/j7fba6ITqxIpaUIKPuMMW
- tRfsS4yMwIEMkLD08cdob6N9LgsbOcwx+PrV5M26BSUh02gPtNAiM4uQc7LpGjv06YOq
- PqQGGLGNhd5hCLQnXcZGLu42BEkjAhDFlgO1IDA8mk1fE+Ab2WRn0V080YECK8Cvsgea
- evzr3Rsh0snX4hdfcCCSD6JEunucwJqGpoquJf82RMS5JQP8/NAKMAnYfwjp31FWdPbp
- 4x60aBvFZsLTiWAAdhkhFLfMQpJgw5eqdzcfIh0ABcPrRrBrGzhQVAlgBDS3k0WYjzkN
- /uRA==
-X-Gm-Message-State: AOJu0Yxq+EjFwgvlNWbHj4ErOL7H45CMV/IdbUE4kRL4O7wABVxeENmZ
- 5OD09jwYvYOCgT6EyThUI2OiiM+yHZXS3Wmi4hbOzv+mruWqEaa4JpmkqS8GqcyUO/DVIr8gxfp
- csoM=
-X-Google-Smtp-Source: AGHT+IEOrYWG0pEry5wyrvkKZXlYk9Nn4DdLLM8VlEltvgMastqxyFRIAap4fKRv54d+kBholOjLww==
-X-Received: by 2002:a05:600c:1d1a:b0:424:a578:fc1 with SMTP id
- 5b1f17b1804b1-4257a05c0a3mr39768355e9.25.1719850053094; 
+ bh=GhKst7WHN9ASn36oUshu4tgIXvUX+N4f2K/V8e/wSkQ=;
+ b=nlg02bxDX1D+89MLaLmkrEco5+dOT4fWiWfsP5LK0O2JkOclLBSzA+GtA4Ac9tf+S1
+ 2RqnJuDaJDoYUdV4uu4l6iC7cPL3Ph1eBjqH13vyhhe5BapcQ3BJUDCF2ZDnnj06z6g+
+ f4TgyXiKN3uNt5y5wl9dNsGoGnX8xPT1E2EtRuB10QaLL+yhmgBrsAglTCYc+QWh7xkx
+ 8WVb9gJJUaFXdkYJwlSNAjCtZ7Q3uGtJWdaM75fz5Jiy/1W1I6lINrEEHqtdd+4qNcUj
+ BqXdvx6jguapMORmYuuC4AIhIjcQH24Yu+TXHDR4BfKDRYy0JuBO4jSCcV+p5KTJQM/d
+ rgBg==
+X-Gm-Message-State: AOJu0YxSgO9jpamGm/jGf6aNixeW1caBkIIsjQndilCMmxNbEzXn3g+i
+ nbAvucFO/3rW+PARM51t2j1rzZY8Svc35UG8BTUokqekQ31vWJbmsxWl2fJuT2vVwQ/Ou0Glplt
+ YRqY=
+X-Google-Smtp-Source: AGHT+IEFyWPJBOu1k/R+9QCR5SpWkvAnAsfKylbIyponkj8lvrS2vKRv0Al9iS/48xfT8E0NXf/W+A==
+X-Received: by 2002:a2e:bc04:0:b0:2eb:2e0b:72c with SMTP id
+ 38308e7fff4ca-2ee5e393e7emr52167731fa.16.1719850053546; 
  Mon, 01 Jul 2024 09:07:33 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4256af557fesm161952135e9.11.2024.07.01.09.07.32
+ 5b1f17b1804b1-4256af557fesm161952135e9.11.2024.07.01.09.07.33
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 01 Jul 2024 09:07:32 -0700 (PDT)
+ Mon, 01 Jul 2024 09:07:33 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 06/29] hw/arm/smmu-common: Replace smmu_iommu_mr with
- smmu_find_sdev
-Date: Mon,  1 Jul 2024 17:07:06 +0100
-Message-Id: <20240701160729.1910763-7-peter.maydell@linaro.org>
+Subject: [PULL 07/29] target/arm: Fix VCMLA Dd, Dn, Dm[idx]
+Date: Mon,  1 Jul 2024 17:07:07 +0100
+Message-Id: <20240701160729.1910763-8-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240701160729.1910763-1-peter.maydell@linaro.org>
 References: <20240701160729.1910763-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x22c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,114 +91,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Nicolin Chen <nicolinc@nvidia.com>
+From: Richard Henderson <richard.henderson@linaro.org>
 
-The caller of smmu_iommu_mr wants to get sdev for smmuv3_flush_config().
+The inner loop, bounded by eltspersegment, must not be
+larger than the outer loop, bounded by elements.
 
-Do it directly instead of bridging with an iommu mr pointer.
-
-Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
-Message-id: 20240619002218.926674-1-nicolinc@nvidia.com
+Cc: qemu-stable@nongnu.org
+Fixes: 18fc2405781 ("target/arm: Implement SVE fp complex multiply add (indexed)")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2376
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Message-id: 20240625183536.1672454-2-richard.henderson@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- include/hw/arm/smmu-common.h |  4 ++--
- hw/arm/smmu-common.c         |  8 ++------
- hw/arm/smmuv3.c              | 12 ++++--------
- 3 files changed, 8 insertions(+), 16 deletions(-)
+ target/arm/tcg/vec_helper.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/hw/arm/smmu-common.h b/include/hw/arm/smmu-common.h
-index 5ec2e6c1a43..687b7ca132d 100644
---- a/include/hw/arm/smmu-common.h
-+++ b/include/hw/arm/smmu-common.h
-@@ -182,8 +182,8 @@ int smmu_ptw(SMMUTransCfg *cfg, dma_addr_t iova, IOMMUAccessFlags perm,
-  */
- SMMUTransTableInfo *select_tt(SMMUTransCfg *cfg, dma_addr_t iova);
+diff --git a/target/arm/tcg/vec_helper.c b/target/arm/tcg/vec_helper.c
+index b05922b425f..7b34cc98afe 100644
+--- a/target/arm/tcg/vec_helper.c
++++ b/target/arm/tcg/vec_helper.c
+@@ -907,7 +907,7 @@ void HELPER(gvec_fcmlah_idx)(void *vd, void *vn, void *vm, void *va,
+     intptr_t index = extract32(desc, SIMD_DATA_SHIFT + 2, 2);
+     uint32_t neg_real = flip ^ neg_imag;
+     intptr_t elements = opr_sz / sizeof(float16);
+-    intptr_t eltspersegment = 16 / sizeof(float16);
++    intptr_t eltspersegment = MIN(16 / sizeof(float16), elements);
+     intptr_t i, j;
  
--/* Return the iommu mr associated to @sid, or NULL if none */
--IOMMUMemoryRegion *smmu_iommu_mr(SMMUState *s, uint32_t sid);
-+/* Return the SMMUDevice associated to @sid, or NULL if none */
-+SMMUDevice *smmu_find_sdev(SMMUState *s, uint32_t sid);
+     /* Shift boolean to the sign bit so we can xor to negate.  */
+@@ -969,7 +969,7 @@ void HELPER(gvec_fcmlas_idx)(void *vd, void *vn, void *vm, void *va,
+     intptr_t index = extract32(desc, SIMD_DATA_SHIFT + 2, 2);
+     uint32_t neg_real = flip ^ neg_imag;
+     intptr_t elements = opr_sz / sizeof(float32);
+-    intptr_t eltspersegment = 16 / sizeof(float32);
++    intptr_t eltspersegment = MIN(16 / sizeof(float32), elements);
+     intptr_t i, j;
  
- #define SMMU_IOTLB_MAX_SIZE 256
- 
-diff --git a/hw/arm/smmu-common.c b/hw/arm/smmu-common.c
-index 1ce706bf94b..b6601cc102e 100644
---- a/hw/arm/smmu-common.c
-+++ b/hw/arm/smmu-common.c
-@@ -620,20 +620,16 @@ static const PCIIOMMUOps smmu_ops = {
-     .get_address_space = smmu_find_add_as,
- };
- 
--IOMMUMemoryRegion *smmu_iommu_mr(SMMUState *s, uint32_t sid)
-+SMMUDevice *smmu_find_sdev(SMMUState *s, uint32_t sid)
- {
-     uint8_t bus_n, devfn;
-     SMMUPciBus *smmu_bus;
--    SMMUDevice *smmu;
- 
-     bus_n = PCI_BUS_NUM(sid);
-     smmu_bus = smmu_find_smmu_pcibus(s, bus_n);
-     if (smmu_bus) {
-         devfn = SMMU_PCI_DEVFN(sid);
--        smmu = smmu_bus->pbdev[devfn];
--        if (smmu) {
--            return &smmu->iommu;
--        }
-+        return smmu_bus->pbdev[devfn];
-     }
-     return NULL;
- }
-diff --git a/hw/arm/smmuv3.c b/hw/arm/smmuv3.c
-index 2d1e0d55ec2..445e04ddf7c 100644
---- a/hw/arm/smmuv3.c
-+++ b/hw/arm/smmuv3.c
-@@ -1218,20 +1218,18 @@ static int smmuv3_cmdq_consume(SMMUv3State *s)
-         case SMMU_CMD_CFGI_STE:
-         {
-             uint32_t sid = CMD_SID(&cmd);
--            IOMMUMemoryRegion *mr = smmu_iommu_mr(bs, sid);
--            SMMUDevice *sdev;
-+            SMMUDevice *sdev = smmu_find_sdev(bs, sid);
- 
-             if (CMD_SSEC(&cmd)) {
-                 cmd_error = SMMU_CERROR_ILL;
-                 break;
-             }
- 
--            if (!mr) {
-+            if (!sdev) {
-                 break;
-             }
- 
-             trace_smmuv3_cmdq_cfgi_ste(sid);
--            sdev = container_of(mr, SMMUDevice, iommu);
-             smmuv3_flush_config(sdev);
- 
-             break;
-@@ -1260,20 +1258,18 @@ static int smmuv3_cmdq_consume(SMMUv3State *s)
-         case SMMU_CMD_CFGI_CD_ALL:
-         {
-             uint32_t sid = CMD_SID(&cmd);
--            IOMMUMemoryRegion *mr = smmu_iommu_mr(bs, sid);
--            SMMUDevice *sdev;
-+            SMMUDevice *sdev = smmu_find_sdev(bs, sid);
- 
-             if (CMD_SSEC(&cmd)) {
-                 cmd_error = SMMU_CERROR_ILL;
-                 break;
-             }
- 
--            if (!mr) {
-+            if (!sdev) {
-                 break;
-             }
- 
-             trace_smmuv3_cmdq_cfgi_cd(sid);
--            sdev = container_of(mr, SMMUDevice, iommu);
-             smmuv3_flush_config(sdev);
-             break;
-         }
+     /* Shift boolean to the sign bit so we can xor to negate.  */
 -- 
 2.34.1
 
