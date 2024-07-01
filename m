@@ -2,84 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85A2C91D757
-	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 07:17:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D53D91D81F
+	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 08:36:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sO9OO-0005wZ-Cj; Mon, 01 Jul 2024 01:15:56 -0400
+	id 1sOAdF-0002ii-UY; Mon, 01 Jul 2024 02:35:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ying.huang@intel.com>)
- id 1sO9OM-0005wO-2a
- for qemu-devel@nongnu.org; Mon, 01 Jul 2024 01:15:54 -0400
-Received: from mgamail.intel.com ([198.175.65.18])
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1sOAd4-0002gK-I1; Mon, 01 Jul 2024 02:35:10 -0400
+Received: from forwardcorp1a.mail.yandex.net ([178.154.239.72])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ying.huang@intel.com>)
- id 1sO9OJ-0001Kj-4S
- for qemu-devel@nongnu.org; Mon, 01 Jul 2024 01:15:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1719810952; x=1751346952;
- h=from:to:cc:subject:in-reply-to:references:date:
- message-id:mime-version;
- bh=33LnhJ7+BqQZikbci+g6bJ6dGM6/pya/Tnvx+wHf3/o=;
- b=HqCAKMXXarXEK+5heQUwkfpMj5mPW8FCRkL46gSloJM96+L604e738yV
- TReF0zt5zb03Xty7gAVEqob//tr04e9yQSbw8FdQHUb1dcLZtKlfD9Qlv
- UTISjjqVuLGv//xguDcd0HWnibSkYQhkjKluReVt2c+ldw4IBBiNT7Obw
- 8viyDYD40TjBkvI2XwmaRwAsxirDQyElML7POpPvALK2+75AHfU3KqQui
- 4CsLrGSUlwSZTQ7WeYK+oR1S74cDJ2E2YtxggAp3mhG7ZgkO6HN9JZRJ0
- d1NthKYbD0rrqxHcAfG+8yfcu1B0kSj5xbXKtvumvXhB/moPI4TlleRy+ A==;
-X-CSE-ConnectionGUID: /VAgXj9xTi+WmR77WUQmBA==
-X-CSE-MsgGUID: csP/54PqRdKem2hVYpPXRA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11119"; a="17051624"
-X-IronPort-AV: E=Sophos;i="6.09,175,1716274800"; d="scan'208";a="17051624"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jun 2024 22:15:47 -0700
-X-CSE-ConnectionGUID: tRBL+MYsRYyKY5Q3fRDiVA==
-X-CSE-MsgGUID: yXSuGEvLRIqOj0oi+miQLQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,175,1716274800"; d="scan'208";a="45803392"
-Received: from unknown (HELO yhuang6-desk2.ccr.corp.intel.com)
- ([10.238.208.55])
- by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jun 2024 22:15:40 -0700
-From: "Huang, Ying" <ying.huang@intel.com>
-To: "Ho-Ren (Jack) Chuang" <horen.chuang@linux.dev>
-Cc: "Jonathan Cameron" <Jonathan.Cameron@Huawei.com>,  "Gregory Price"
- <gourry.memverge@gmail.com>,  aneesh.kumar@linux.ibm.com,
- mhocko@suse.com,  tj@kernel.org,  john@jagalactic.com,  "Eishan Mirakhur"
- <emirakhur@micron.com>,  "Vinicius Tavares Petrucci"
- <vtavarespetr@micron.com>,  "Ravis OpenSrc" <Ravis.OpenSrc@micron.com>,
- "Alistair Popple" <apopple@nvidia.com>,  "Srinivasulu Thanneeru"
- <sthanneeru@micron.com>,  "SeongJae Park" <sj@kernel.org>,  "Rafael J.
- Wysocki" <rafael@kernel.org>,  Len Brown <lenb@kernel.org>,  Andrew Morton
- <akpm@linux-foundation.org>,  Dave Jiang <dave.jiang@intel.com>,  Dan
- Williams <dan.j.williams@intel.com>,  linux-acpi@vger.kernel.org,
- linux-kernel@vger.kernel.org,  linux-mm@kvack.org,  "Ho-Ren (Jack)
- Chuang" <horenc@vt.edu>,  "Ho-Ren (Jack) Chuang"
- <horenchuang@bytedance.com>,  "Ho-Ren (Jack) Chuang"
- <horenchuang@gmail.com>,  linux-cxl@vger.kernel.org, qemu-devel@nongnu.org
-Subject: Re: [PATCH v2 1/1] memory tier: consolidate the initialization of
- memory tiers
-In-Reply-To: <20240628060925.303309-2-horen.chuang@linux.dev> (Ho-Ren Chuang's
- message of "Fri, 28 Jun 2024 06:09:23 +0000")
-References: <20240628060925.303309-1-horen.chuang@linux.dev>
- <20240628060925.303309-2-horen.chuang@linux.dev>
-Date: Mon, 01 Jul 2024 13:13:49 +0800
-Message-ID: <87tth9ofsi.fsf@yhuang6-desk2.ccr.corp.intel.com>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1sOAd0-0004Ze-5Z; Mon, 01 Jul 2024 02:35:09 -0400
+Received: from mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net
+ [IPv6:2a02:6b8:c12:2799:0:640:ddd6:0])
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 48EBE60BB8;
+ Mon,  1 Jul 2024 09:34:58 +0300 (MSK)
+Received: from [IPV6:2a02:6b8:b081:6415::1:19] (unknown
+ [2a02:6b8:b081:6415::1:19])
+ by mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id uYOLSW1IbKo0-4LuUi9te; Mon, 01 Jul 2024 09:34:57 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1719815697;
+ bh=gj+zo5adn8X0xiQfZxolRyKGEFbUsDoSpXXesN027kE=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=q+aAyoH/ajeefe4ob+c+tRUqF4n5x8o7YBtX5oLBYy6ggT9jXnBpe95eV2pVTv3cm
+ 3jaC9NgCyoloYl5OmTUgq9Rk/G28TJX3fb/bR8I9VFLNU95J653qNokQwgPesqsgXs
+ eE32ossjHlUs4vIslsWT/zR2m/ye+0ygpvqYovyw=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <1eb734b7-73a3-40d7-9e3d-7352b7be3940@yandex-team.ru>
+Date: Mon, 1 Jul 2024 09:34:55 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ascii
-Received-SPF: pass client-ip=198.175.65.18; envelope-from=ying.huang@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] block/curl: use strlen instead of strchr
+To: Michael Tokarev <mjt@tls.msk.ru>, qemu-block@nongnu.org
+Cc: qemu-devel@nongnu.org, hreitz@redhat.com, kwolf@redhat.com,
+ qemu-trivial@nongnu.org
+References: <20240628054942.657397-1-vsementsov@yandex-team.ru>
+ <03e1eb96-49ce-48bb-adc7-6ea3fb843b48@tls.msk.ru>
+Content-Language: en-US
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+In-Reply-To: <03e1eb96-49ce-48bb-adc7-6ea3fb843b48@tls.msk.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=178.154.239.72;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,206 +74,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi, Jack,
+On 29.06.24 09:20, Michael Tokarev wrote:
+> On 6/28/24 08:49, Vladimir Sementsov-Ogievskiy wrote:
+>> We already know where colon is, so no reason to search for it. Also,
+>> avoid a code, which looks like we forget to check return value of
+>> strchr() to NULL.
+>>
+>> Suggested-by: Kevin Wolf <kwolf@redhat.com>
+>> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+>> ---
+>>
+>> This replaces my patch
+>>    [PATCH] block/curl: explicitly assert that strchr returns non-NULL value
+>> Supersedes: <20240627153059.589070-1-vsementsov@yandex-team.ru>
+>>
+>>   block/curl.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/block/curl.c b/block/curl.c
+>> index 419f7c89ef..d03bfe4817 100644
+>> --- a/block/curl.c
+>> +++ b/block/curl.c
+>> @@ -219,7 +219,7 @@ static size_t curl_header_cb(void *ptr, size_t size, size_t nmemb, void *opaque)
+>>           && g_ascii_strncasecmp(header, accept_ranges,
+>>                                  strlen(accept_ranges)) == 0) {
+>> -        char *p = strchr(header, ':') + 1;
+>> +        char *p = header + strlen(accept_ranges);
+>>           /* Skip whitespace between the header name and value. */
+>>           while (p < end && *p && g_ascii_isspace(*p)) {
+> 
+> Heck.  All these strlen()s look ugly, especially in the
+> loop iterations..
 
-"Ho-Ren (Jack) Chuang" <horen.chuang@linux.dev> writes:
+I expect that strlen of string constant is calculated in compilation time.
 
-I suggest you to merge the [0/1] with the change log here.  [0/1]
-describes why do we need the patch.  The below text describes some
-details.  Just don't use "---" to separate them.  We need both parts in
-the final commit message.
+My aim was to fix Coverity complain (I don't see this complain in public qemu coverity project, that's why I don't specify CID in commit message), not to rewrite the whole function. So I'd prefer Kevein's suggesting which is both minimal and makes the code obviously correct.. The only simpler thing is to mark the problem false-positive in Coverity.
 
-> If we simply move the set_node_memory_tier() from memory_tier_init()
-> to late_initcall(), it will result in HMAT not registering
-> the mt_adistance_algorithm callback function, because
-> set_node_memory_tier() is not performed during the memory tiering
-> initialization phase, leading to a lack of correct default_dram
-> information.
->
-> Therefore, we introduced a nodemask to pass the information of the
-> default DRAM nodes. The reason for not choosing to reuse
-> default_dram_type->nodes is that it is not clean enough. So in the end,
-> we use a __initdata variable, which is a variable that is released once
-> initialization is complete, including both CPU and memory nodes for HMAT
-> to iterate through.
->
-> Besides, since default_dram_type may be checked/used during the
-> initialization process of HMAT and drivers, it is better to keep the
-> allocation of default_dram_type in memory_tier_init().
+-- 
+Best regards,
+Vladimir
 
-Why do we need it?  IIRC, we have deleted its usage in hmat.c.
-
-> Signed-off-by: Ho-Ren (Jack) Chuang <horenchuang@bytedance.com>
-> Suggested-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> ---
->  drivers/acpi/numa/hmat.c     |  5 +--
->  include/linux/memory-tiers.h |  2 ++
->  mm/memory-tiers.c            | 59 +++++++++++++++---------------------
->  3 files changed, 28 insertions(+), 38 deletions(-)
->
-> diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
-> index 2c8ccc91ebe6..a2f9e7a4b479 100644
-> --- a/drivers/acpi/numa/hmat.c
-> +++ b/drivers/acpi/numa/hmat.c
-> @@ -940,10 +940,7 @@ static int hmat_set_default_dram_perf(void)
->  	struct memory_target *target;
->  	struct access_coordinate *attrs;
->  
-> -	if (!default_dram_type)
-> -		return -EIO;
-> -
-> -	for_each_node_mask(nid, default_dram_type->nodes) {
-> +	for_each_node_mask(nid, default_dram_nodes) {
->  		pxm = node_to_pxm(nid);
->  		target = find_mem_target(pxm);
->  		if (!target)
-> diff --git a/include/linux/memory-tiers.h b/include/linux/memory-tiers.h
-> index 0d70788558f4..fa61ad9c4d75 100644
-> --- a/include/linux/memory-tiers.h
-> +++ b/include/linux/memory-tiers.h
-> @@ -38,6 +38,7 @@ struct access_coordinate;
->  #ifdef CONFIG_NUMA
->  extern bool numa_demotion_enabled;
->  extern struct memory_dev_type *default_dram_type;
-
-Can we remove the above line?
-
-> +extern nodemask_t default_dram_nodes __initdata;
-
-We don't need to use __initdata in variable declaration.
-
->  struct memory_dev_type *alloc_memory_type(int adistance);
->  void put_memory_type(struct memory_dev_type *memtype);
->  void init_node_memory_type(int node, struct memory_dev_type *default_type);
-> @@ -76,6 +77,7 @@ static inline bool node_is_toptier(int node)
->  
->  #define numa_demotion_enabled	false
->  #define default_dram_type	NULL
-> +#define default_dram_nodes NODE_MASK_NONE
-
-Should we use <tab> after "default_dram_nodes"?
-
->  /*
->   * CONFIG_NUMA implementation returns non NULL error.
->   */
-> diff --git a/mm/memory-tiers.c b/mm/memory-tiers.c
-> index 6632102bd5c9..a19a90c3ad36 100644
-> --- a/mm/memory-tiers.c
-> +++ b/mm/memory-tiers.c
-> @@ -43,6 +43,7 @@ static LIST_HEAD(memory_tiers);
->  static LIST_HEAD(default_memory_types);
->  static struct node_memory_type_map node_memory_types[MAX_NUMNODES];
->  struct memory_dev_type *default_dram_type;
-> +nodemask_t default_dram_nodes __initdata = NODE_MASK_NONE;
->  
->  static const struct bus_type memory_tier_subsys = {
->  	.name = "memory_tiering",
-> @@ -671,28 +672,38 @@ EXPORT_SYMBOL_GPL(mt_put_memory_types);
->  
->  /*
->   * This is invoked via `late_initcall()` to initialize memory tiers for
-> - * CPU-less memory nodes after driver initialization, which is
-> - * expected to provide `adistance` algorithms.
-> + * memory nodes, both with and without CPUs. After the initialization of
-> + * firmware and devices, adistance algorithms are expected to be provided.
->   */
->  static int __init memory_tier_late_init(void)
->  {
->  	int nid;
-> +	struct memory_tier *memtier;
->  
-> +	get_online_mems();
->  	guard(mutex)(&memory_tier_lock);
-> +	/*
-> +	 * Look at all the existing and uninitialized N_MEMORY nodes and
-> +	 * add them to default memory tier or to a tier if we already have
-> +	 * memory types assigned.
-> +	 */
-
-If the memory type of the node has been assigned, we will skip it in the
-following code.  So, I think that we need to revise the comments.
-
->  	for_each_node_state(nid, N_MEMORY) {
->  		/*
-> -		 * Some device drivers may have initialized memory tiers
-> -		 * between `memory_tier_init()` and `memory_tier_late_init()`,
-> -		 * potentially bringing online memory nodes and
-> -		 * configuring memory tiers. Exclude them here.
-> +		 * Some device drivers may have initialized
-> +		 * memory tiers, potentially bringing memory nodes
-> +		 * online and configuring memory tiers.
-> +		 * Exclude them here.
->  		 */
->  		if (node_memory_types[nid].memtype)
->  			continue;
->  
-> -		set_node_memory_tier(nid);
-> +		memtier = set_node_memory_tier(nid);
-> +		if (IS_ERR(memtier))
-> +			/* Continue with memtiers we are able to setup. */
-> +			break;
->  	}
-> -
->  	establish_demotion_targets();
-> +	put_online_mems();
->  
->  	return 0;
->  }
-> @@ -875,8 +886,7 @@ static int __meminit memtier_hotplug_callback(struct notifier_block *self,
->  
->  static int __init memory_tier_init(void)
->  {
-> -	int ret, node;
-> -	struct memory_tier *memtier;
-> +	int ret;
->  
->  	ret = subsys_virtual_register(&memory_tier_subsys, NULL);
->  	if (ret)
-> @@ -887,7 +897,8 @@ static int __init memory_tier_init(void)
->  				GFP_KERNEL);
->  	WARN_ON(!node_demotion);
->  #endif
-> -	mutex_lock(&memory_tier_lock);
-> +
-> +	guard(mutex)(&memory_tier_lock);
->  	/*
->  	 * For now we can have 4 faster memory tiers with smaller adistance
->  	 * than default DRAM tier.
-> @@ -897,29 +908,9 @@ static int __init memory_tier_init(void)
->  	if (IS_ERR(default_dram_type))
->  		panic("%s() failed to allocate default DRAM tier\n", __func__);
->  
-> -	/*
-> -	 * Look at all the existing N_MEMORY nodes and add them to
-> -	 * default memory tier or to a tier if we already have memory
-> -	 * types assigned.
-> -	 */
-> -	for_each_node_state(node, N_MEMORY) {
-> -		if (!node_state(node, N_CPU))
-> -			/*
-> -			 * Defer memory tier initialization on
-> -			 * CPUless numa nodes. These will be initialized
-> -			 * after firmware and devices are initialized.
-> -			 */
-> -			continue;
-> -
-> -		memtier = set_node_memory_tier(node);
-> -		if (IS_ERR(memtier))
-> -			/*
-> -			 * Continue with memtiers we are able to setup
-> -			 */
-> -			break;
-> -	}
-> -	establish_demotion_targets();
-> -	mutex_unlock(&memory_tier_lock);
-> +	/* Record nodes with memory and CPU to set default DRAM performance. */
-> +	nodes_and(default_dram_nodes, node_states[N_MEMORY],
-> +		  node_states[N_CPU]);
->  
->  	hotplug_memory_notifier(memtier_hotplug_callback, MEMTIER_HOTPLUG_PRI);
->  	return 0;
-
---
-Best Regards,
-Huang, Ying
 
