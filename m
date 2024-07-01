@@ -2,79 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F069291D644
-	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 04:48:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FBCA91D64D
+	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 04:51:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sO73n-0001iJ-Vy; Sun, 30 Jun 2024 22:46:32 -0400
+	id 1sO78T-0002tv-R1; Sun, 30 Jun 2024 22:51:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sO73l-0001ht-8f
- for qemu-devel@nongnu.org; Sun, 30 Jun 2024 22:46:29 -0400
-Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+ id 1sO78R-0002s8-I1
+ for qemu-devel@nongnu.org; Sun, 30 Jun 2024 22:51:19 -0400
+Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sO73i-0005Ut-Uv
- for qemu-devel@nongnu.org; Sun, 30 Jun 2024 22:46:28 -0400
-Received: by mail-pf1-x42a.google.com with SMTP id
- d2e1a72fcca58-7066c799382so2049936b3a.3
- for <qemu-devel@nongnu.org>; Sun, 30 Jun 2024 19:46:26 -0700 (PDT)
+ id 1sO78P-0008Va-VX
+ for qemu-devel@nongnu.org; Sun, 30 Jun 2024 22:51:19 -0400
+Received: by mail-pf1-x434.google.com with SMTP id
+ d2e1a72fcca58-7066a3229f4so1371936b3a.2
+ for <qemu-devel@nongnu.org>; Sun, 30 Jun 2024 19:51:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719801985; x=1720406785; darn=nongnu.org;
+ d=linaro.org; s=google; t=1719802277; x=1720407077; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=7uk0+/ouRfw5Hh1qNoz0AFZnn50xl2En+npPSW4GWrk=;
- b=aZILsPdXpQjZ7lm84Vjr2dCrri6/q4v7fuz8h8PDkUCA+5Z+usRMicG020x+sRFA5X
- oAaTH0NIHYssOPNRZKMPawfTWnuKvYX/Lv5QfV1X++7MgkbrduZGD+GXI5BGILvOs4Xr
- VXBWOLmEPq5Bz9DhVWGvpMuPGOSBqIbNSDdfJTzwH1XWdw6XIhq2BGEo0pgRJFpSMUT8
- Vt9KH7QlFZ9uYNiuCM+uFcv2fKpSkUqDL8oF+R33GX2j+USHgWCgDceH+xQ8WGaiKYks
- pt5BuG4EeSx4wPf83AiEQOvGCG5URJAHA9hO2fymkW5qewUNhtbQwQcOtxRDJ0paC0Rd
- HALA==
+ bh=WnwSoeUV3cwlH1+3n2f06XV+qKm4+k7po4qjUIY9IEI=;
+ b=GU6aJmSfjO5OPAnmZRKAvdkp1XHKINbasEPBG8zvq1kx/zWBNKvJ0c8x+2s++XK7xC
+ 9/VHiY1i6wFKbIjyc+mwwtkDUTcSEijjBlbwCt80WeYCWszregz3haI+idlxtOeWfeLN
+ Ol7tpLnuDe7X2F2lVI4G1f4l4ZD/ZbjN+t1J6mTzyf/bIcBUcV77GEzYF9muzHxo36EZ
+ /kTai/xQ9Id2V2ZVbS0RtGl0L5TUEurFDM1J9mdfpDPrFZufsM+wB4U3bs/DGUf4c0g1
+ 5jioqk4i0CJuzRmpKK31Tll9/wL0XgQYFAAdTfhtQDYG7FQAu6Fje5OOPNHdGrxzvAG5
+ 2zRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719801985; x=1720406785;
+ d=1e100.net; s=20230601; t=1719802277; x=1720407077;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=7uk0+/ouRfw5Hh1qNoz0AFZnn50xl2En+npPSW4GWrk=;
- b=qjjtGFBClqDk6Y80Kg9OpaUEauQLpp9CX4W8Tqwz+1Lft4tBMbXPeMu3XazJTGehBY
- ZeWne6yB8CouV/3rpIcJpTFuwqUC8QjaGHJeIkpkTr/apt/sAmivBppCnRtvH8SAOwpi
- 0QRAp4VDt9Vx1vIo9eimPV6yBP9gQBgl1600wo4424OjMcyHJ7NqJdBO/sl1KhdxlHZT
- Cog5xd4N/vQX1+4iKpGLPskzg0zmApcifk9aE8hDQPAva+EIix3y8HW7Dh89uD6svk0o
- MhInwR9mRJjofyg4Nm/6pwNRf18f6fJ4cza971AtDqByuZkeAENxu5jU1Io/6uxPGyX5
- gzlA==
-X-Gm-Message-State: AOJu0YytujimTRW2pTytmpcuStMWBrfkWGbLI5PinD8UzjyPgk7qzVpY
- lIJBQidkkI5pldf0EAy3dnzSI/i853GPa7QgbtIOSlmzTkSsxn9bfZtKAoDf4VR8A9BI5AfcnVY
- /
-X-Google-Smtp-Source: AGHT+IHJVAWT6ryh6FoD06Wf+ZTdlA76R9jQlBkDuoLWlTkMy0avK+gIrxSpPUu18RkPE3nJoo5QeA==
-X-Received: by 2002:a05:6a20:7343:b0:1be:cc4c:c386 with SMTP id
- adf61e73a8af0-1bef611c644mr6720067637.22.1719801984947; 
- Sun, 30 Jun 2024 19:46:24 -0700 (PDT)
+ bh=WnwSoeUV3cwlH1+3n2f06XV+qKm4+k7po4qjUIY9IEI=;
+ b=im8NpAEhp+/ylIX2IR7YBbJ14qQgVQJwWjVbtb3OiL1DfCW+uWg5XCiAmPBOqhOjcS
+ 8mw72uUpr36NVwckTm5l+n+YkEHfjlUY0ItTJN9px8imhIsqefvfOyCFYeFiWaOdJ93X
+ u51k1pssloAp2aM+kCuYULnpZy7lbWYEqUBUQFxtVr0zrTCsTqLGNjJeH2DbwNVcss98
+ x8s7iIVmbv6NmtlFCZUMI9QzQWvhQ+r5ba26qmUdWVD6RKCUFZ8pk3XdniqAJN3w2sdj
+ wZQbvoTmVxd128EcytABu0bWrY7m/m0yDZUny6qVkTQrd2Raurge2J2Nt9RQDwi+UTZC
+ oKqw==
+X-Gm-Message-State: AOJu0Yy3Vi3wEWKOWz+PCquuTJMAbgs3AmkHKoLKuoLBXMC+P4Xnx/y1
+ xpXC0IGGb/4/6IxSy2lVFplSPiQ5CAnnpnXUghI6cUYzIyfX28O+oF1eq8lGuCb2IqKvlGuW1yP
+ S
+X-Google-Smtp-Source: AGHT+IFjJ37anIm7yAEdIEqQi+d2Fp76TRr/IW9BRyUDOntV6ZD+eiHwbDhz3r05ZdSboCJWbneG9w==
+X-Received: by 2002:a05:6a20:ce4d:b0:1be:c65c:1e32 with SMTP id
+ adf61e73a8af0-1bef621edadmr3134198637.51.1719802276453; 
+ Sun, 30 Jun 2024 19:51:16 -0700 (PDT)
 Received: from stoup.. (174-21-76-141.tukw.qwest.net. [174.21.76.141])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2c91ce6f6cbsm5549885a91.29.2024.06.30.19.46.23
+ 98e67ed59e1d1-2c91d3b9349sm5531698a91.37.2024.06.30.19.51.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 30 Jun 2024 19:46:24 -0700 (PDT)
+ Sun, 30 Jun 2024 19:51:16 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: mark.cave-ayland@ilande.co.uk, alex.bennee@linaro.org,
- qemu-stable@nongnu.org
-Subject: [PATCH] tcg/optimize: Fix TCG_COND_TST* simplification of setcond2
-Date: Sun, 30 Jun 2024 19:46:23 -0700
-Message-Id: <20240701024623.1265028-1-richard.henderson@linaro.org>
+Cc: pbonzini@redhat.com
+Subject: [PATCH 0/5] target/i386: CCOp cleanups
+Date: Sun, 30 Jun 2024 19:51:10 -0700
+Message-Id: <20240701025115.1265117-1-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,67 +89,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fix a typo in the argument movement.
+While debugging #2413, I spent quite a bit of time trying to work
+out if the CCOp value was incorrect.  I think the following is a
+worthwhile cleanup, isolating potential problems to asserts.
 
-Cc: qemu-stable@nongnu.org
-Fixes: ceb9ee06b71 ("tcg/optimize: Handle TCG_COND_TST{EQ,NE}")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2413
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- tcg/optimize.c               |  2 +-
- tests/tcg/x86_64/test-2413.c | 30 ++++++++++++++++++++++++++++++
- 2 files changed, 31 insertions(+), 1 deletion(-)
- create mode 100644 tests/tcg/x86_64/test-2413.c
 
-diff --git a/tcg/optimize.c b/tcg/optimize.c
-index 8886f7037a..ba16ec27e2 100644
---- a/tcg/optimize.c
-+++ b/tcg/optimize.c
-@@ -2384,7 +2384,7 @@ static bool fold_setcond2(OptContext *ctx, TCGOp *op)
- 
-     case TCG_COND_TSTEQ:
-     case TCG_COND_TSTNE:
--        if (arg_is_const_val(op->args[2], 0)) {
-+        if (arg_is_const_val(op->args[3], 0)) {
-             goto do_setcond_high;
-         }
-         if (arg_is_const_val(op->args[4], 0)) {
-diff --git a/tests/tcg/x86_64/test-2413.c b/tests/tcg/x86_64/test-2413.c
-new file mode 100644
-index 0000000000..a0e4d25093
---- /dev/null
-+++ b/tests/tcg/x86_64/test-2413.c
-@@ -0,0 +1,30 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/* Copyright 2024 Linaro, Ltd. */
-+/* See https://gitlab.com/qemu-project/qemu/-/issues/2413 */
-+
-+#include <assert.h>
-+
-+void test(unsigned long *a, unsigned long *d, unsigned long c)
-+{
-+    asm("xorl %%eax, %%eax\n\t"
-+        "xorl %%edx, %%edx\n\t"
-+        "testb $0x20, %%cl\n\t"
-+        "sete %%al\n\t"
-+        "setne %%dl\n\t"
-+        "shll %%cl, %%eax\n\t"
-+        "shll %%cl, %%edx\n\t"
-+        : "=a"(*a), "=d"(*d)
-+        : "c"(c));
-+}
-+
-+int main(void)
-+{
-+    long a, c, d;
-+
-+    for (c = 0; c < 64; c++) {
-+        test(&a, &d, c);
-+        assert(a == (c & 0x20 ? 0 : 1u << (c & 0x1f)));
-+        assert(d == (c & 0x20 ? 1u << (c & 0x1f) : 0));
-+    }
-+    return 0;
-+}
+r~
+
+
+Richard Henderson (5):
+  target/i386: Tidy cc_op_str usage
+  target/i386: Convert cc_op_live to a function
+  target/i386: Rearrange CCOp
+  target/i386: Remove default in cc_op_live
+  target/i386: Introduce cc_op_size
+
+ target/i386/cpu.h                | 44 +++++++++--------
+ target/i386/cpu-dump.c           | 17 ++++---
+ target/i386/tcg/translate.c      | 84 +++++++++++++++++++-------------
+ target/i386/tcg/decode-new.c.inc |  2 +-
+ target/i386/tcg/emit.c.inc       |  9 ++--
+ 5 files changed, 93 insertions(+), 63 deletions(-)
+
 -- 
 2.34.1
 
