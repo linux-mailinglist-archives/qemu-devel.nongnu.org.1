@@ -2,84 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DDFB91DA72
-	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 10:50:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA75291DA83
+	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 10:52:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOCjY-0002yo-1H; Mon, 01 Jul 2024 04:50:00 -0400
+	id 1sOClt-00062A-Qp; Mon, 01 Jul 2024 04:52:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sOCis-0002u9-RU
- for qemu-devel@nongnu.org; Mon, 01 Jul 2024 04:49:19 -0400
-Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sOCir-00050r-1d
- for qemu-devel@nongnu.org; Mon, 01 Jul 2024 04:49:18 -0400
-Received: by mail-ed1-x529.google.com with SMTP id
- 4fb4d7f45d1cf-585e6ad9dbcso2969741a12.3
- for <qemu-devel@nongnu.org>; Mon, 01 Jul 2024 01:49:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719823751; x=1720428551; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:references
- :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=d47GClQWTKYuZpPkQTNk8v60KFq323k3GhJ96sEsSp8=;
- b=toulnVX6eZAj5A8pv5ABhbgeFWzLNqMl+OeuTOnPKSTRQdSgfuXFSIUchbA48p+ptQ
- 3A9u8TiiFyTYtBZiS+YYgk40eW+kvkOslB3ksTu+0qS1ZygCh+XCcXCZOZ2mhdspCYw7
- 7B8lvr2JJMC1ZjHkhTgNTlgZCzj0Wc9ouBfjkhV+vF8sZvYmvTy2K/QtwDisn2KK970X
- /VDrFyzPyClozbDbweUghomzMNzxyb85EU94z3eZyaJ4WgOVni7YRYMXunYkO3pJq19h
- PqBN/dBdyWcAvYut+xnxqSxw17gyjEfWk6WiQk55DpIalS4vcKBuqTzm6GJwCFjl00PJ
- 0E7g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719823751; x=1720428551;
- h=content-transfer-encoding:mime-version:message-id:date:references
- :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=d47GClQWTKYuZpPkQTNk8v60KFq323k3GhJ96sEsSp8=;
- b=Y9XgqcvDzO3k/Wgpf7HKbbx0u46OnGGEFH15cqwJvlI7B+B5VHZxWJfTPGIDvE1dAt
- Ulz1oHCYgcVTxVhLqvKkUCoCkuGiX6pzLIJ9iJu5m+trJ8596JHtELQC9ik8l7zGn1Mn
- BqZtHOCyFreNOoMGP2OlwD55YXxFa1hrstdANI4JMsO5D4CbeY0LdPuc+LTCmcy83MyZ
- hfAZ3+iQUznvDrDFCpmY9uJBrAordmjSgsVJ7KZAP3jmElsNSurm8xMpUbYpUXbscpjL
- 7/jlIzpgdHfoTZVw2YopyNz14lAsp3+YMSXR+FEbrhtLxkY2RIn1TOQ7R6DFR5Y8whaD
- 9m0A==
-X-Gm-Message-State: AOJu0YxoZiDYEavH8f/sf7tgdaKuoGplWToVs7Ahv1x66OfcWRmxLMzr
- BII6yKTK2C+kXN2LtXTyES489EK5qZK+/ovISguTmRsVSJ3GGTV1B0VSvZK7Gsw=
-X-Google-Smtp-Source: AGHT+IGuWg/18eBk95/Il++5Bi3s4PuX1mPXDAG+n48WKNbf+g05dtr7J5P85DSPiGEsejnwm6jYpw==
-X-Received: by 2002:a17:906:adb:b0:a6f:878e:d6f8 with SMTP id
- a640c23a62f3a-a75144deb8dmr290146966b.70.1719823751021; 
- Mon, 01 Jul 2024 01:49:11 -0700 (PDT)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a72ab0b7ddasm310363966b.207.2024.07.01.01.49.10
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 01 Jul 2024 01:49:10 -0700 (PDT)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 5CD035F877;
- Mon,  1 Jul 2024 09:49:09 +0100 (BST)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: =?utf-8?B?6aG55paH5oiQ?= <xiangwencheng@dayudpu.com>
-Cc: <qemu-devel@nongnu.org>,  <mst@redhat.com>
-Subject: Re: [PATCH] vhost-user: Skip unnecessary duplicated
- VHOST_USER_SET_LOG_BASE requests
-In-Reply-To: <20240613065150.3100-1-xiangwencheng@dayudpu.com>
- (=?utf-8?B?IumhueaWh+aIkCIncw==?=
- message of "Thu, 13 Jun 2024 14:51:50 +0800")
-References: <20240613065150.3100-1-xiangwencheng@dayudpu.com>
-Date: Mon, 01 Jul 2024 09:49:09 +0100
-Message-ID: <87zfr1qyyi.fsf@draig.linaro.org>
+ (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
+ id 1sOClM-00054p-IL
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 04:51:52 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <maobibo@loongson.cn>) id 1sOClI-0005j4-6H
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 04:51:52 -0400
+Received: from loongson.cn (unknown [10.20.42.62])
+ by gateway (Coremail) with SMTP id _____8Bx7eocboJmCdcLAA--.45800S3;
+ Mon, 01 Jul 2024 16:51:41 +0800 (CST)
+Received: from [10.20.42.62] (unknown [10.20.42.62])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8AxjscZboJm6k03AA--.63142S3; 
+ Mon, 01 Jul 2024 16:51:40 +0800 (CST)
+Subject: Re: [PATCH v3 1/4] hw/intc: Remove loongarch_ipi.c
+To: qemu-devel@nongnu.org
+References: <20240605-loongson3-ipi-v3-0-ddd2c0e03fa3@flygoat.com>
+ <20240605-loongson3-ipi-v3-1-ddd2c0e03fa3@flygoat.com>
+ <e1b8bbd8-2a9d-2417-1123-4aabfdedb684@loongson.cn>
+ <002f4e7e-682b-479b-9c6c-8971a0e6640a@linaro.org>
+ <8d975e9c-c2fd-09c8-7a37-5aebc63656d4@loongson.cn>
+ <9a0f73c6-33e9-4576-9056-6a5fd0718630@linaro.org>
+ <ceebb4ea-a417-0985-d45e-3988d76e2086@loongson.cn>
+ <3544da40-d680-20f2-d7af-cf304d07bc8d@loongson.cn>
+ <74a9606c-3b3b-4af3-8242-944619f898c9@app.fastmail.com>
+ <c817c31b-3f22-da1a-c110-4873e1a36eab@loongson.cn>
+ <dd0754c2-2a42-4cf4-8c23-eb7a1ca100b5@app.fastmail.com>
+From: maobibo <maobibo@loongson.cn>
+Message-ID: <5e5957f3-4a01-00ac-d5f1-720a5d40ae00@loongson.cn>
+Date: Mon, 1 Jul 2024 16:51:37 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::529;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x529.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+In-Reply-To: <dd0754c2-2a42-4cf4-8c23-eb7a1ca100b5@app.fastmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: AQAAf8AxjscZboJm6k03AA--.63142S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoW7ZryrKF1kGFyrAF1rCryrZrc_yoW8tw48pF
+ W8Ca1SkF1Ut3yUC392q34FqF1Ykw4xWw13Xw15tr9ruFyqgr1rArZ2k345CrZrZ3Z3KF12
+ vw47K3WxX3WjyFXCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUvIb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+ xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
+ 1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv
+ 67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
+ AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02
+ F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jr0_Jr
+ ylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7Cj
+ xVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r
+ 4j6F4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07j8
+ sqAUUUUU=
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -34
+X-Spam_score: -3.5
+X-Spam_bar: ---
+X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.587,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,40 +88,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-=E9=A1=B9=E6=96=87=E6=88=90 <xiangwencheng@dayudpu.com> writes:
 
-> From: BillXiang <xiangwencheng@dayudpu.com>
->
-> The VHOST_USER_SET_LOG_BASE requests should be categorized into
-> non-vring specific messages, and should be sent only once.
-> If send more than once, dpdk will munmap old log_addr which may has
-> been used and cause segmentation fault.
 
-This looks fine to me but looking at the vhost-user.rst we don't seem to
-make any explicit statements about how many times given messages should
-be sent.
+On 2024/7/1 下午4:29, Jiaxun Yang wrote:
+> 
+> 
+> 在2024年7月1日七月 上午8:22，maobibo写道：
+>> On 2024/7/1 下午3:01, Jiaxun Yang wrote:
+>>>
+>>>
+>>> 在2024年7月1日七月 上午7:44，maobibo写道：
+>>>> Also this patch is problematic on LoongArch.
+>>>>
+>>>> The original patch is to search physical cpuid rather than logic cpuid.
+>>>>
+>>>> We want to make ipi module better and better, however now it comes back
+>>>> to initial state at the beginning :(
+>>>
+>>> Isn't arch_id the "physical id" you want? "cs->cpu_index" is the logical ID
+>>> for QEMU.
+>>>
+>>> arch_id is setup by arch code, like APIC ID for x86.
+>>>
+>>> I had come across the old ipi_getcpu  implementation, and I'm sure we were
+>>> looking at arch_id as well.
+>> So, where is implementation code for function get_arch_id() looking for
+>> vcpu with physical index?
+> 
+> Hi Bibo,
+> 
+> cpu_by_arch_id will be redirected to:
+> 
+> ```
+> CPUState *cpu_by_arch_id(int64_t id)
+> {
+>      CPUState *cpu;
+> 
+>      CPU_FOREACH(cpu) {
+>          CPUClass *cc = CPU_GET_CLASS(cpu);
+> 
+>          if (cc->get_arch_id(cpu) == id) {
+>              return cpu;
+>          }
+>      }
+>      return NULL;
+> }
+> ```
+> 
+> It iterates over all vcpus and return CPUStates with corresponding arch_id.
+> 
+> Whereas, for LoongArch's get_arch_id implementation:
+> ```
+> static int64_t loongarch_cpu_get_arch_id(CPUState *cs)
+> {
+>      LoongArchCPU *cpu = LOONGARCH_CPU(cs);
+> 
+>      return cpu->phy_id;
+> }
+> ```
+> I believe it matches our intension here.
+yes, you are right.
 
->
-> Signed-off-by: BillXiang <xiangwencheng@dayudpu.com>
-> ---
->  hw/virtio/vhost-user.c | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
-> index cdf9af4a4b..41e34edd49 100644
-> --- a/hw/virtio/vhost-user.c
-> +++ b/hw/virtio/vhost-user.c
-> @@ -371,6 +371,7 @@ static bool vhost_user_per_device_request(VhostUserRe=
-quest request)
->      case VHOST_USER_RESET_DEVICE:
->      case VHOST_USER_ADD_MEM_REG:
->      case VHOST_USER_REM_MEM_REG:
-> +    case VHOST_USER_SET_LOG_BASE:
->          return true;
->      default:
->          return false;
+Got it, I miss the architecture specific implementation, and thanks for 
+pointing it out with patience.
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+Regards
+> 
+> Thanks
+> 
+>>
+>> Regards
+>> Bibo Mao
+>>
+>>>
+>>> Thanks
+>>> - Jiaxun
+>>>>
+>>>> commit 03ca348b6b9038ce284916b36c19f700ac0ce7a6
+>>>> Author: Jiaxun Yang <jiaxun.yang@flygoat.com>
+>>>> Date:   Wed Jun 5 10:04:27 2024
+>>>>
+>>>>        hw/intc/loongson_ipi: Replace ipi_getcpu with cpu_by_arch_id
+>>>>
+>>>>        cpu_by_arch_id is doing the same thing as our ipi_getcpu logic.
+>>>>
+>>>>        Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+>>>>        Reviewed-by: Song Gao <gaosong@loongson.cn>
+>>>>        Message-ID: <20240605-loongson3-ipi-v3-4-ddd2c0e03fa3@flygoat.com>
+>>>>        Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>>>>
+>>>>
+>>>> Regards
+>>>> Bibo Mao
+>>>>
+> 
+
 
