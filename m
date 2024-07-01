@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90D8491E346
-	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 17:05:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9915291E333
+	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 17:03:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOIXN-0006Qw-Vc; Mon, 01 Jul 2024 11:01:50 -0400
+	id 1sOIYU-00009i-Jz; Mon, 01 Jul 2024 11:02:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOIWV-00062J-1M
- for qemu-devel@nongnu.org; Mon, 01 Jul 2024 11:00:57 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOIY1-0008Kv-Hp
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 11:02:30 -0400
+Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOIWR-0001kw-PO
- for qemu-devel@nongnu.org; Mon, 01 Jul 2024 11:00:54 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-425624255f3so18776465e9.0
- for <qemu-devel@nongnu.org>; Mon, 01 Jul 2024 08:00:51 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOIXz-0002JD-MZ
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 11:02:29 -0400
+Received: by mail-ej1-x632.google.com with SMTP id
+ a640c23a62f3a-a729d9d7086so668808666b.0
+ for <qemu-devel@nongnu.org>; Mon, 01 Jul 2024 08:02:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719846050; x=1720450850; darn=nongnu.org;
+ d=linaro.org; s=google; t=1719846146; x=1720450946; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=0i9XgB3FWcCofNOcUCQntbSdJHNFbhPZ+eaxWE0nNQ8=;
- b=iCSVShggcQRNQQMmmlBA6qHTD1mGH2+EYosVY80PLCiiy4TVmMszkEhgeFuQEsuyUX
- LfONZM1bRltGxYJ3s6rimfIkc9NiYhCxlfID1clCoZKRpzBUWyeoBBqBKbKnk5rO/HrI
- S1kxMNPT6qHp9a3Rgys5msnp9VT7V4ZWBvBXskMzkZ/pAMYLbgJoDKLPq19FyxviGkrD
- N9fqUGFN4FpL6GRPzbRX9yhkUhxPRGXArErTFFRZmVpUUydPYOxeztlqHMhIF69P3x0K
- xwzosm9rmbCpiv5hQ/CsV5OP9oF7u2LCu+MgyImvG3T31JCbCaDtfDfq9QZpAbLjtqRo
- 0HdQ==
+ bh=dxc67L0Wz50+CSwhbiqJJUNkuFwEkB8Pr9ZDPtyhMSY=;
+ b=mCCR8GiOa1YZkoI4wJBR6Ee8bf7qnFoQf908VHlbWLb9KxGCq9AFCMicnSzxZbmsL2
+ a/hjmpm2FHZvjmBN9X+Cvo5k+5iZ/OLf/LGYMUq1a4d61yYFEdRIB8FDmFhe9T8wpDsJ
+ spkKv+kZvoEqVB8nznGwwh8EJ06whtRIOOtTi9EivUIPu9x81GXQErJxjFWbarI1Nw6n
+ MKhATmiCsLZWUXcBboSvurVGUKk8oxBPjPI+TPKs1u1FSic+MgJ4RxLQjj2fl/LqioEL
+ iy5hqMMiKNYk95+4afhzKI9k6U3byyixGiCBodhCdf61tYj8+sxspUIU60jt4BSmGVJL
+ mzQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719846050; x=1720450850;
+ d=1e100.net; s=20230601; t=1719846146; x=1720450946;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=0i9XgB3FWcCofNOcUCQntbSdJHNFbhPZ+eaxWE0nNQ8=;
- b=Gm5HL/JuVJLp4JMrI+/W1iXq62/Vk0hNxTEVJW2z2SqzhwYmT4Rc+wJUjdLoJKrEeh
- YoQ9EkZzoZuMJzMn9LYtCtHIONADyjizcg+12DFQvVTVb6TcXJftT4TlIdE8jPjXnlZz
- bgFrO0sbP59/TQ7XIwScUxvODPnhlcUJdmjwxSrRu62lFkKfK04YYZ2gXJ5teXAcC1Ii
- CdgXu2P/sI8DW89vASMl+fhIRGRIllNWOelgdhWQfXQH4AGoJPPriMaELGL0Wrzqtb/I
- zlN3h6HGusgIWIFZuJeqHqYAMmhlrFD7ictHdiUIdRbRtWD+QtmSnthHN3VyIp8BocDG
- 06ZQ==
+ bh=dxc67L0Wz50+CSwhbiqJJUNkuFwEkB8Pr9ZDPtyhMSY=;
+ b=IBcqxBUeg1nnfuzU+C3b/NqAoC/2TLTc1b34M5E/QjSCQuaXZM8eun66vpkceS3Oxp
+ ImV0AVThUw9rIWk/DVKymKKvxifILHo5v/CtbFT/xXunncb6sbuMvpd4mf2US804MezS
+ KVx8suAtd95q7v3PwzT4/YUYBpMvknlsMCaXY/ixwVR256XDWjFKGThGHGocgK2qUiyt
+ rZuDHZmFftv1/qjHxI5jkU8FdtchZzGH064xm7LWnWR55n3Teo32Pbfo8SYtT99tBKXB
+ G7ma821h/FcsYrZVsucAJ8/Sv2lGWU2kUFV00gfB3jTm06LF1nl4EAWYrtmq/2wkibC8
+ 9srg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCX+otEYTzCzcELeXHu5Yp/ge4TAbuanTr+S8XBWl9g3JWrgbNGp7za/bVIE+1B96R+/MMb8gUbQj+cohKBBj0GrAmhrewQ=
-X-Gm-Message-State: AOJu0YyUKbx3rEI9g52X4PrgzJsTLcWW7WPodxc68CTkEv9qCy4BKocM
- ZFN0ZSmBxHM90JU+rlsLEg5RwwX6wlM71mYSLxLIS/nZTuoxX2C1P3Zc+Rn4UF0=
-X-Google-Smtp-Source: AGHT+IHFMquxgYW21IEoWEkpoGLeh85y4F6RwynFDEcc7yVdwjBqb87QK+jgfMagdnDyikQ4E2i5wA==
-X-Received: by 2002:a05:600c:3552:b0:425:7c42:d24b with SMTP id
- 5b1f17b1804b1-4257c42d3a0mr42783875e9.18.1719846050104; 
- Mon, 01 Jul 2024 08:00:50 -0700 (PDT)
+ AJvYcCV2IjKX8orOJ1Q0W5Eqi+kFyHkOzigXZv1YymofAYH8Dl6sXc4tWEAvq/QJU/WTX1gc62HV3kGboxLmTXPpQT7sLfvxB6E=
+X-Gm-Message-State: AOJu0YwHDDHQwyzUV9Swv8gih6fvv+nU5DVgyWAr8/5bZeyvEQhyqT18
+ U6Zxv+zEP0nmoMmDgEzGmytcJqShcw6DoMpAtWNT1wi3lfEqR0R8nBlm1bdunuM=
+X-Google-Smtp-Source: AGHT+IEr9jvqHJZUaru02Q1xRzAm06qY+fIx36o2T93tCvVEOhyreaTJ7BCmr3PCnl9loujCqsx88g==
+X-Received: by 2002:a17:906:6d92:b0:a6f:2835:be95 with SMTP id
+ a640c23a62f3a-a7513953cfbmr368147966b.37.1719846145977; 
+ Mon, 01 Jul 2024 08:02:25 -0700 (PDT)
 Received: from [192.168.69.100] ([176.176.177.159])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4258014f8b7sm62140435e9.41.2024.07.01.08.00.47
+ a640c23a62f3a-a752008272esm141442466b.175.2024.07.01.08.02.24
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 01 Jul 2024 08:00:49 -0700 (PDT)
-Message-ID: <89618c21-b1dc-4979-af97-35576d8eeabb@linaro.org>
-Date: Mon, 1 Jul 2024 17:00:46 +0200
+ Mon, 01 Jul 2024 08:02:25 -0700 (PDT)
+Message-ID: <73a64211-0fc0-45e4-bf11-083497d32c40@linaro.org>
+Date: Mon, 1 Jul 2024 17:02:23 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] Remove inclusion of hw/hw.h from files that don't need it
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
- Jiri Slaby <jslaby@suse.cz>, Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-trivial@nongnu.org, Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
- Francisco Iglesias <francisco.iglesias@amd.com>,
- Alistair Francis <alistair@alistair23.me>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
-References: <20240701132649.58345-1-thuth@redhat.com>
+Subject: Re: [PATCH v2] hw/net: prevent potential NULL dereference
+To: Oleg Sviridov <oleg.sviridov@red-soft.ru>,
+ Nicholas Piggin <npiggin@gmail.com>
+Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>, Jason Wang
+ <jasowang@redhat.com>, qemu-ppc@nongnu.org, qemu-devel@nongnu.org
+References: <20240531073636.3779559-1-oleg.sviridov@red-soft.ru>
 Content-Language: en-US
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240701132649.58345-1-thuth@redhat.com>
+In-Reply-To: <20240531073636.3779559-1-oleg.sviridov@red-soft.ru>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::632;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,17 +97,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/7/24 15:26, Thomas Huth wrote:
-> hw/hw.h only contains the prototype of hw_error() nowadays, so
-> files that don't use this function don't need to include this
-> header.
+On 31/5/24 09:36, Oleg Sviridov wrote:
+> Pointer, returned from function 'spapr_vio_find_by_reg', may be NULL and is dereferenced immediately after.
 > 
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> Found by Linux Verification Center (linuxtesting.org) with SVACE.
+> 
+> Signed-off-by: Oleg Sviridov <oleg.sviridov@red-soft.ru>
 > ---
->   include/hw/misc/xlnx-cfi-if.h | 1 -
->   hw/misc/edu.c                 | 1 -
->   hw/vfio/container.c           | 1 -
->   3 files changed, 3 deletions(-)
+> v2: Debug message added
+>   hw/net/spapr_llan.c | 6 ++++++
+>   1 file changed, 6 insertions(+)
+> 
+> diff --git a/hw/net/spapr_llan.c b/hw/net/spapr_llan.c
+> index ecb30b7c76..8af33d91b6 100644
+> --- a/hw/net/spapr_llan.c
+> +++ b/hw/net/spapr_llan.c
+> @@ -770,6 +770,12 @@ static target_ulong h_change_logical_lan_mac(PowerPCCPU *cpu,
+>       SpaprVioVlan *dev = VIO_SPAPR_VLAN_DEVICE(sdev);
+>       int i;
+>   
+> +    if (!dev) {
+> +        hcall_dprintf("H_CHANGE_LOGICAL_LAN_MAC called when "
+> +                      "no NIC is present\n");
+> +        return H_PARAMETER;
+> +    }
+> +
+>       for (i = 0; i < ETH_ALEN; i++) {
+>           dev->nicconf.macaddr.a[ETH_ALEN - i - 1] = macaddr & 0xff;
+>           macaddr >>= 8;
 
 Thanks, patch queued.
 
