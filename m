@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08F6E91E30F
-	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 17:00:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FE6691E33A
+	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 17:04:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOIUz-0003xR-J0; Mon, 01 Jul 2024 10:59:21 -0400
+	id 1sOIUy-0003up-Lm; Mon, 01 Jul 2024 10:59:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sOIUx-0003um-6n
- for qemu-devel@nongnu.org; Mon, 01 Jul 2024 10:59:19 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1sOIUv-0003p3-3E
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 10:59:17 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sOIUs-0005Ap-1G
- for qemu-devel@nongnu.org; Mon, 01 Jul 2024 10:59:18 -0400
+ id 1sOIUs-0005Ah-0X
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 10:59:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719845953;
+ s=mimecast20190719; t=1719845952;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=dOb7lPpCZJz3JV8h1vR7Nm7ptbAZTCJyioTDRRfbz+U=;
- b=SG7YenCXIv9adhCTuAOznvomUhQFrV0nafvSnN+cDK8bOh3s6e9TXf3NjmmHxljDFHwnzR
- tBOXAv0s2kAZglxaBRYfFdoIYMafmrXwRAhm1O5ughcA7V/tSbyZgAMW/6Se8uk2VW5pCJ
- sWPxISPQQHJLgwxy8zDioo4YvDF1fdA=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=4FB4lTjJ2jdkYkhNKjtSbR2CEvqDwGBPr2HOuzmXi+Q=;
+ b=Cu4ubbs9phv437Vxcn/SDP9+iXVsa+mAKkB61RJSNR7pvkGSY7ZbzGH3wR9gteGo5tv5y4
+ Sonc0cu2C4y78Yh90nqblul6yDJOkvwOSWjtW3mB4iJYf49qw0al4C+WdCM8VsbyDmfZ8m
+ 97YHv0uLg1xmBMnfZ1r9+7NlDzdYyEQ=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-27-kJmnEonkN86oPV_C0k4w2g-1; Mon, 01 Jul 2024 10:59:08 -0400
-X-MC-Unique: kJmnEonkN86oPV_C0k4w2g-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-4255f94080bso22338945e9.2
- for <qemu-devel@nongnu.org>; Mon, 01 Jul 2024 07:59:08 -0700 (PDT)
+ us-mta-620-WgpDa7wbNZ61bhssyeVNAg-1; Mon, 01 Jul 2024 10:59:11 -0400
+X-MC-Unique: WgpDa7wbNZ61bhssyeVNAg-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-363edcf12a3so2052780f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 01 Jul 2024 07:59:11 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719845946; x=1720450746;
+ d=1e100.net; s=20230601; t=1719845949; x=1720450749;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=dOb7lPpCZJz3JV8h1vR7Nm7ptbAZTCJyioTDRRfbz+U=;
- b=A+O1uWXIzTMs6sp9yq8espKfcHn+Z77JQQd7BBpLti8akCjJiAZKQNvXa72Mb6kMIc
- Q/G3FI34UtwP/bTKpDo+opCB2p7LPCzJyBo1VhXmI9zUU+YJ9SobIqJVp6dv4R/dbkp4
- 86Oyu17f44zySD0WqySgSCrRYTT/04mQeM2LInVGAEkXaMEOjtrZ4oOu7V99cTpUZ29C
- GKZbLsBAIMaX3yS9tJBptOHoITMesPvOmqzUh5VCWuzsqp1hj0S70+Zja8pIlCzcoDne
- KWWWGGXQsaGZWarzvqYC7Zaknfy181loisTSEWDh5CF4ZDdAUUag81hM/CncVkiHFMUC
- Pwmw==
-X-Gm-Message-State: AOJu0YzNmJ4Y9uY0ZsmS43s8aTDT5PjSAlBK+m72Dc5bBErLFb9DjnPY
- eHx+Gxx0Hn5ukURtQLGkJE5hDCG7Ria9C0BzIyvWUj/PvqQOtZi/deQlRiGJK/uIY4WIbtpyHZw
- u2aor6N2WL84bliGHzLeQROXJs24okhw6MOjs/+ok5b7vQovsnjxXgXcfisY9K/2mzhtxuBlanC
- DsPkTMx0wTxS9JKTih9bS4AN/PUuvhotmPMHVU
-X-Received: by 2002:a05:600c:3b09:b0:424:7bcf:2486 with SMTP id
- 5b1f17b1804b1-4257a00aadamr34948445e9.4.1719845946398; 
- Mon, 01 Jul 2024 07:59:06 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGxYzDZk7aajFO2Hj5/wZoBbox9nvdOZOlzMaYILjTLvsNdMm0i2/Axrh27hLn+vIFESdNz9g==
-X-Received: by 2002:a05:600c:3b09:b0:424:7bcf:2486 with SMTP id
- 5b1f17b1804b1-4257a00aadamr34948265e9.4.1719845945943; 
- Mon, 01 Jul 2024 07:59:05 -0700 (PDT)
+ bh=4FB4lTjJ2jdkYkhNKjtSbR2CEvqDwGBPr2HOuzmXi+Q=;
+ b=OVoPFI6z4C+XrJ1LQm4dAMMz6CqDZub87m426OphPmBJV3eH9L8F1CIWTT2CoxvYLZ
+ k6MckvvBDWlbaDZkrpnuWw+9X9m8X24l7Wp9hZo6BvEJ1Vr4f/OViVUMk0kD+/H++F7j
+ qwVQwAh2e79cZLdxV+NNbQQUVr1lN3nFN/oNl0e6nfnw69+lZ7EW9Vvtqzx7+6SWsLSI
+ mG9OTvaR3ZVngVPG+UUx+rjAP+1VkgJtxskYzsBmp0KdmKoABz+KqGF9P11liZ+I+Jd9
+ COKSYrzZtETovDfYyXwopT+NkY+Hru1zcHhEe1rFqZ4TIEkdot12J+CcvwjWjHyR+Bym
+ Skow==
+X-Gm-Message-State: AOJu0YyEZMcnLulSfBoMkimj2YuqbxL/NgkdYRXPuAt1fbMGnenKKFmY
+ LighrUIADIQpRn9RBKxTf9TtqC84g7WNKmbRAkCC8FEqX66RNs0SbqJissYsvVfCQFPMhEN6It/
+ AWKB7WYraR42eVLLDyFqWVoqdBQ/RmBnXiGMM2f63vRyoViYxb+0OyhKDvXBUN17mHG+VF+B6Rr
+ S9Vp9GOucQTmpDTNl3s2MfcoJHUu4LK38PdevI
+X-Received: by 2002:a05:6000:1447:b0:367:4dbb:ed4e with SMTP id
+ ffacd0b85a97d-3677561da1bmr4170415f8f.0.1719845949201; 
+ Mon, 01 Jul 2024 07:59:09 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEma+4/l+Pn62ItPvedLeZpIOdZx7y2TYZTPNuebsrDVIm7QiIfX7fwQ3nyIkvoKCnsvAYgew==
+X-Received: by 2002:a05:6000:1447:b0:367:4dbb:ed4e with SMTP id
+ ffacd0b85a97d-3677561da1bmr4170391f8f.0.1719845948723; 
+ Mon, 01 Jul 2024 07:59:08 -0700 (PDT)
 Received: from avogadro.local ([151.95.101.29])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4256af3cf90sm156221475e9.5.2024.07.01.07.59.05
+ ffacd0b85a97d-3675a0fba5asm10250857f8f.71.2024.07.01.07.59.07
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 01 Jul 2024 07:59:05 -0700 (PDT)
+ Mon, 01 Jul 2024 07:59:08 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
@@ -73,17 +73,16 @@ Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Hanna Czenczek <hreitz@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PATCH 03/14] rust: define traits and pointer wrappers to convert
- from/to C representations
-Date: Mon,  1 Jul 2024 16:58:35 +0200
-Message-ID: <20240701145853.1394967-4-pbonzini@redhat.com>
+Subject: [PATCH 04/14] rust: add tests for util::foreign
+Date: Mon,  1 Jul 2024 16:58:36 +0200
+Message-ID: <20240701145853.1394967-5-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240701145853.1394967-1-pbonzini@redhat.com>
 References: <20240701145853.1394967-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -107,306 +106,561 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The qemu::util::foreign module provides:
-
-- A trait for structs that can be converted to a C ("foreign") representation
-  (CloneToForeign)
-
-- A trait for structs that can be built from a C ("foreign") representation
-  (FromForeign), and the utility IntoNative that can be used with less typing
-  (similar to the standard library's From and Into pair)
-
-- Automatic implementations of the above traits for Option<>, supporting NULL
-  pointers
-
-- A wrapper for a pointer that automatically frees the contained data.  If
-  a struct XYZ implements CloneToForeign, you can build an OwnedPointer<XYZ>
-  and it will free the contents automatically unless you retrieve it with
-  owned_ptr.into_inner()
+Provide sample implementations in util::foreign for strings and
+elementary integer types, and use them to test the code.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- qemu/src/lib.rs          |   6 +
- qemu/src/util/foreign.rs | 247 +++++++++++++++++++++++++++++++++++++++
- qemu/src/util/mod.rs     |   1 +
- 3 files changed, 254 insertions(+)
- create mode 100644 qemu/src/util/foreign.rs
- create mode 100644 qemu/src/util/mod.rs
+ qemu/Cargo.toml          |   4 +
+ qemu/src/util/foreign.rs | 456 +++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 474 insertions(+)
 
-diff --git a/qemu/src/lib.rs b/qemu/src/lib.rs
-index fce21d7..c48edcf 100644
---- a/qemu/src/lib.rs
-+++ b/qemu/src/lib.rs
-@@ -2,3 +2,9 @@
- #![allow(dead_code)]
+diff --git a/qemu/Cargo.toml b/qemu/Cargo.toml
+index 18d0fa4..1100725 100644
+--- a/qemu/Cargo.toml
++++ b/qemu/Cargo.toml
+@@ -5,3 +5,7 @@ edition = "2021"
  
- pub mod bindings;
+ [dependencies]
+ const-default = { version = "~1", features = ["derive"] }
++libc = "^0"
 +
-+pub mod util;
-+pub use util::foreign::CloneToForeign;
-+pub use util::foreign::FromForeign;
-+pub use util::foreign::IntoNative;
-+pub use util::foreign::OwnedPointer;
++[dev-dependencies]
++matches = ">=0"
 diff --git a/qemu/src/util/foreign.rs b/qemu/src/util/foreign.rs
-new file mode 100644
-index 0000000..a591925
---- /dev/null
+index a591925..0b8b708 100644
+--- a/qemu/src/util/foreign.rs
 +++ b/qemu/src/util/foreign.rs
-@@ -0,0 +1,247 @@
-+// TODO: change to use .cast() etc.
-+#![allow(clippy::ptr_as_ptr)]
-+
-+/// Traits to map between C structs and native Rust types.
-+/// Similar to glib-rs but a bit simpler and possibly more
-+/// idiomatic.
-+use std::borrow::Cow;
-+use std::fmt;
-+use std::fmt::Debug;
-+use std::mem;
-+use std::ptr;
-+
-+/// A type for which there is a canonical representation as a C datum.
-+pub trait CloneToForeign {
-+    /// The representation of `Self` as a C datum.  Typically a
-+    /// `struct`, though there are exceptions for example `c_char`
-+    /// for strings, since C strings are of `char *` type).
-+    type Foreign;
-+
-+    /// Free the C datum pointed to by `p`.
+@@ -5,6 +5,7 @@
+ /// Similar to glib-rs but a bit simpler and possibly more
+ /// idiomatic.
+ use std::borrow::Cow;
++use std::ffi::{c_char, c_void, CStr, CString};
+ use std::fmt;
+ use std::fmt::Debug;
+ use std::mem;
+@@ -22,6 +23,14 @@ pub trait CloneToForeign {
+     /// # Safety
+     ///
+     /// `p` must be `NULL` or point to valid data.
 +    ///
-+    /// # Safety
++    /// ```
++    /// # use qemu::CloneToForeign;
++    /// let foreign = "Hello, world!".clone_to_foreign();
++    /// unsafe {
++    ///     String::free_foreign(foreign.into_inner());
++    /// }
++    /// ```
+     unsafe fn free_foreign(p: *mut Self::Foreign);
+ 
+     /// Convert a native Rust object to a foreign C struct, copying
+@@ -119,6 +128,17 @@ pub trait IntoNative<T> {
+     ///
+     /// `p` must point to valid data, or can be `NULL` if Self is an
+     /// `Option` type.  It becomes invalid after the function returns.
 +    ///
-+    /// `p` must be `NULL` or point to valid data.
-+    unsafe fn free_foreign(p: *mut Self::Foreign);
++    /// ```
++    /// # use qemu::{CloneToForeign, IntoNative};
++    /// let s = "Hello, world!".to_string();
++    /// let foreign = s.clone_to_foreign();
++    /// let native: String = unsafe {
++    ///     foreign.into_native()
++    ///     // foreign is not leaked
++    /// };
++    /// assert_eq!(s, native);
++    /// ```
+     unsafe fn into_native(self) -> T;
+ }
+ 
+@@ -141,6 +161,15 @@ pub trait FromForeign: CloneToForeign + Sized {
+     ///
+     /// `p` must point to valid data, or can be `NULL` is `Self` is an
+     /// `Option` type.
++    ///
++    /// ```
++    /// # use qemu::FromForeign;
++    /// let p = c"Hello, world!".as_ptr();
++    /// let s = unsafe {
++    ///     String::cloned_from_foreign(p as *const std::ffi::c_char)
++    /// };
++    /// assert_eq!(s, "Hello, world!");
++    /// ```
+     unsafe fn cloned_from_foreign(p: *const Self::Foreign) -> Self;
+ 
+     /// Convert a C datum to a native Rust object, taking ownership of
+@@ -152,6 +181,16 @@ pub trait FromForeign: CloneToForeign + Sized {
+     ///
+     /// `p` must point to valid data, or can be `NULL` is `Self` is an
+     /// `Option` type.  `p` becomes invalid after the function returns.
++    ///
++    /// ```
++    /// # use qemu::{CloneToForeign, FromForeign};
++    /// let s = "Hello, world!";
++    /// let foreign = s.clone_to_foreign();
++    /// unsafe {
++    ///     assert_eq!(String::from_foreign(foreign.into_inner()), s);
++    /// }
++    /// // foreign is not leaked
++    /// ```
+     unsafe fn from_foreign(p: *mut Self::Foreign) -> Self {
+         let result = Self::cloned_from_foreign(p);
+         Self::free_foreign(p);
+@@ -176,6 +215,12 @@ impl<T: CloneToForeign + ?Sized> OwnedPointer<T> {
+ 
+     /// Safely create an `OwnedPointer` from one that has the same
+     /// freeing function.
++    /// ```
++    /// # use qemu::{CloneToForeign, OwnedPointer};
++    /// let s = "Hello, world!";
++    /// let foreign_str = s.clone_to_foreign();
++    /// let foreign_string = OwnedPointer::<String>::from(foreign_str);
++    /// # assert_eq!(foreign_string.into_native(), s);
+     pub fn from<U>(x: OwnedPointer<U>) -> Self
+     where
+         U: CloneToForeign<Foreign = <T as CloneToForeign>::Foreign> + ?Sized,
+@@ -189,6 +234,12 @@ impl<T: CloneToForeign + ?Sized> OwnedPointer<T> {
+ 
+     /// Safely convert an `OwnedPointer` into one that has the same
+     /// freeing function.
++    /// ```
++    /// # use qemu::{CloneToForeign, OwnedPointer};
++    /// let s = "Hello, world!";
++    /// let foreign_str = s.clone_to_foreign();
++    /// let foreign_string: OwnedPointer<String> = foreign_str.into();
++    /// # assert_eq!(foreign_string.into_native(), s);
+     pub fn into<U>(self) -> OwnedPointer<U>
+     where
+         U: CloneToForeign<Foreign = <T as CloneToForeign>::Foreign>,
+@@ -198,6 +249,16 @@ impl<T: CloneToForeign + ?Sized> OwnedPointer<T> {
+ 
+     /// Return the pointer that is stored in the `OwnedPointer`.  The
+     /// pointer is valid for as long as the `OwnedPointer` itself.
++    ///
++    /// ```
++    /// # use qemu::CloneToForeign;
++    /// let s = "Hello, world!";
++    /// let foreign = s.clone_to_foreign();
++    /// let p = foreign.as_ptr();
++    /// let len = unsafe { libc::strlen(p) };
++    /// drop(foreign);
++    /// # assert_eq!(len, 13);
++    /// ```
+     pub fn as_ptr(&self) -> *const <T as CloneToForeign>::Foreign {
+         self.ptr
+     }
+@@ -208,6 +269,15 @@ impl<T: CloneToForeign + ?Sized> OwnedPointer<T> {
+ 
+     /// Return the pointer that is stored in the `OwnedPointer`,
+     /// consuming the `OwnedPointer` but not freeing the pointer.
++    ///
++    /// ```
++    /// # use qemu::CloneToForeign;
++    /// let s = "Hello, world!";
++    /// let p = s.clone_to_foreign().into_inner();
++    /// let len = unsafe { libc::strlen(p) };
++    /// // p needs to be freed manually
++    /// # assert_eq!(len, 13);
++    /// ```
+     pub fn into_inner(mut self) -> *mut <T as CloneToForeign>::Foreign {
+         let result = mem::replace(&mut self.ptr, ptr::null_mut());
+         mem::forget(self);
+@@ -218,6 +288,17 @@ impl<T: CloneToForeign + ?Sized> OwnedPointer<T> {
+ impl<T: FromForeign + ?Sized> OwnedPointer<T> {
+     /// Convert a C datum to a native Rust object, taking ownership of
+     /// the pointer or Rust object (same as `from_glib_full` in `glib-rs`)
++    ///
++    /// ```
++    /// # use qemu::{CloneToForeign, IntoNative};
++    /// let s = "Hello, world!".to_string();
++    /// let foreign = s.clone_to_foreign();
++    /// let native: String = unsafe {
++    ///     foreign.into_native()
++    ///     // foreign is not leaked
++    /// };
++    /// assert_eq!(s, native);
++    /// ```
+     pub fn into_native(self) -> T {
+         // SAFETY: the pointer was passed to the unsafe constructor OwnedPointer::new
+         unsafe { T::from_foreign(self.into_inner()) }
+@@ -245,3 +326,378 @@ impl<T: CloneToForeign + ?Sized> Drop for OwnedPointer<T> {
+         unsafe { T::free_foreign(p) }
+     }
+ }
 +
-+    /// Convert a native Rust object to a foreign C struct, copying
-+    /// everything pointed to by `self` (same as `to_glib_full` in `glib-rs`)
-+    fn clone_to_foreign(&self) -> OwnedPointer<Self>;
++impl CloneToForeign for str {
++    type Foreign = c_char;
 +
-+    /// Convert a native Rust object to a foreign C pointer, copying
-+    /// everything pointed to by `self`.  The returned pointer must
-+    /// be freed with the `free_foreign` associated function.
-+    fn clone_to_foreign_ptr(&self) -> *mut Self::Foreign {
-+        self.clone_to_foreign().into_inner()
-+    }
-+}
-+
-+impl<T> CloneToForeign for Option<T>
-+where
-+    T: CloneToForeign,
-+{
-+    type Foreign = <T as CloneToForeign>::Foreign;
-+
-+    unsafe fn free_foreign(x: *mut Self::Foreign) {
-+        T::free_foreign(x)
++    unsafe fn free_foreign(ptr: *mut c_char) {
++        libc::free(ptr as *mut c_void);
 +    }
 +
 +    fn clone_to_foreign(&self) -> OwnedPointer<Self> {
-+        // Same as the underlying implementation, but also convert `None`
-+        // to a `NULL` pointer.
-+        self.as_ref()
-+            .map(CloneToForeign::clone_to_foreign)
-+            .map(OwnedPointer::into)
-+            .unwrap_or_default()
-+    }
-+}
-+
-+impl<T> FromForeign for Option<T>
-+where
-+    T: FromForeign,
-+{
-+    unsafe fn cloned_from_foreign(p: *const Self::Foreign) -> Self {
-+        // Same as the underlying implementation, but also accept a `NULL` pointer.
-+        if p.is_null() {
-+            None
-+        } else {
-+            Some(T::cloned_from_foreign(p))
-+        }
-+    }
-+}
-+
-+impl<T> CloneToForeign for Box<T>
-+where
-+    T: CloneToForeign,
-+{
-+    type Foreign = <T as CloneToForeign>::Foreign;
-+
-+    unsafe fn free_foreign(x: *mut Self::Foreign) {
-+        T::free_foreign(x)
-+    }
-+
-+    fn clone_to_foreign(&self) -> OwnedPointer<Self> {
-+        self.as_ref().clone_to_foreign().into()
-+    }
-+}
-+
-+impl<T> FromForeign for Box<T>
-+where
-+    T: FromForeign,
-+{
-+    unsafe fn cloned_from_foreign(p: *const Self::Foreign) -> Self {
-+        Box::new(T::cloned_from_foreign(p))
-+    }
-+}
-+
-+impl<'a, B> CloneToForeign for Cow<'a, B>
-+    where B: 'a + ToOwned + ?Sized + CloneToForeign,
-+{
-+    type Foreign = B::Foreign;
-+
-+    unsafe fn free_foreign(ptr: *mut B::Foreign) {
-+        B::free_foreign(ptr);
-+    }
-+
-+    fn clone_to_foreign(&self) -> OwnedPointer<Self> {
-+        self.as_ref().clone_to_foreign().into()
-+    }
-+}
-+
-+/// Convert a C datum into a native Rust object, taking ownership of
-+/// the C datum.  You should not need to implement this trait
-+/// as long as Rust types implement `FromForeign`.
-+pub trait IntoNative<T> {
-+    /// Convert a C datum to a native Rust object, taking ownership of
-+    /// the pointer or Rust object (same as `from_glib_full` in `glib-rs`)
-+    ///
-+    /// # Safety
-+    ///
-+    /// `p` must point to valid data, or can be `NULL` if Self is an
-+    /// `Option` type.  It becomes invalid after the function returns.
-+    unsafe fn into_native(self) -> T;
-+}
-+
-+impl<T, U> IntoNative<U> for *mut T
-+where
-+    U: FromForeign<Foreign = T>,
-+{
-+    unsafe fn into_native(self) -> U {
-+        U::from_foreign(self)
-+    }
-+}
-+
-+/// A type which can be constructed from a canonical representation as a
-+/// C datum.
-+pub trait FromForeign: CloneToForeign + Sized {
-+    /// Convert a C datum to a native Rust object, copying everything
-+    /// pointed to by `p` (same as `from_glib_none` in `glib-rs`)
-+    ///
-+    /// # Safety
-+    ///
-+    /// `p` must point to valid data, or can be `NULL` is `Self` is an
-+    /// `Option` type.
-+    unsafe fn cloned_from_foreign(p: *const Self::Foreign) -> Self;
-+
-+    /// Convert a C datum to a native Rust object, taking ownership of
-+    /// the pointer or Rust object (same as `from_glib_full` in `glib-rs`)
-+    ///
-+    /// The default implementation calls `cloned_from_foreign` and frees `p`.
-+    ///
-+    /// # Safety
-+    ///
-+    /// `p` must point to valid data, or can be `NULL` is `Self` is an
-+    /// `Option` type.  `p` becomes invalid after the function returns.
-+    unsafe fn from_foreign(p: *mut Self::Foreign) -> Self {
-+        let result = Self::cloned_from_foreign(p);
-+        Self::free_foreign(p);
-+        result
-+    }
-+}
-+
-+pub struct OwnedPointer<T: CloneToForeign + ?Sized> {
-+    ptr: *mut <T as CloneToForeign>::Foreign,
-+}
-+
-+impl<T: CloneToForeign + ?Sized> OwnedPointer<T> {
-+    /// Return a new `OwnedPointer` that wraps the pointer `ptr`.
-+    ///
-+    /// # Safety
-+    ///
-+    /// The pointer must be valid and live until the returned `OwnedPointer`
-+    /// is dropped.
-+    pub unsafe fn new(ptr: *mut <T as CloneToForeign>::Foreign) -> Self {
-+        OwnedPointer { ptr }
-+    }
-+
-+    /// Safely create an `OwnedPointer` from one that has the same
-+    /// freeing function.
-+    pub fn from<U>(x: OwnedPointer<U>) -> Self
-+    where
-+        U: CloneToForeign<Foreign = <T as CloneToForeign>::Foreign> + ?Sized,
-+    {
++        // SAFETY: self.as_ptr() is guaranteed to point to self.len() bytes;
++        // the destination is freshly allocated
 +        unsafe {
-+            // SAFETY: the pointer type and free function are the same,
-+            // only the type changes
-+            OwnedPointer::new(x.into_inner())
++            let p = libc::malloc(self.len() + 1) as *mut c_char;
++            ptr::copy_nonoverlapping(self.as_ptr() as *const c_char, p, self.len());
++            *p.add(self.len()) = 0;
++            OwnedPointer::new(p)
++        }
++    }
++}
++
++impl CloneToForeign for CStr {
++    type Foreign = c_char;
++
++    unsafe fn free_foreign(ptr: *mut c_char) {
++        libc::free(ptr as *mut c_void);
++    }
++
++    fn clone_to_foreign(&self) -> OwnedPointer<Self> {
++        // SAFETY: self.as_ptr() is guaranteed to point to self.len() bytes;
++        // the destination is freshly allocated
++        unsafe {
++            let slice = self.to_bytes_with_nul();
++            let p = libc::malloc(slice.len()) as *mut c_char;
++            ptr::copy_nonoverlapping(self.as_ptr() as *const c_char, p, slice.len());
++            OwnedPointer::new(p)
++        }
++    }
++}
++
++impl CloneToForeign for String {
++    type Foreign = c_char;
++
++    unsafe fn free_foreign(ptr: *mut c_char) {
++        libc::free(ptr as *mut c_void);
++    }
++
++    fn clone_to_foreign(&self) -> OwnedPointer<Self> {
++        self.as_str().clone_to_foreign().into()
++    }
++}
++
++impl FromForeign for String {
++    unsafe fn cloned_from_foreign(p: *const c_char) -> Self {
++        let cstr = CStr::from_ptr(p);
++        String::from_utf8_lossy(cstr.to_bytes()).into_owned()
++    }
++}
++
++impl CloneToForeign for CString {
++    type Foreign = c_char;
++
++    unsafe fn free_foreign(ptr: *mut c_char) {
++        libc::free(ptr as *mut c_void);
++    }
++
++    fn clone_to_foreign(&self) -> OwnedPointer<Self> {
++        self.as_c_str().clone_to_foreign().into()
++    }
++}
++
++impl FromForeign for CString {
++    unsafe fn cloned_from_foreign(p: *const c_char) -> Self {
++        CStr::from_ptr(p).to_owned()
++    }
++}
++
++impl FromForeign for Cow<'_, str>
++{
++    unsafe fn cloned_from_foreign(p: *const c_char) -> Self {
++        let cstr = CStr::from_ptr(p);
++        cstr.to_string_lossy()
++    }
++}
++
++macro_rules! foreign_copy_type {
++    ($rust_type:ty, $foreign_type:ty) => {
++        impl CloneToForeign for $rust_type {
++            type Foreign = $foreign_type;
++
++            unsafe fn free_foreign(ptr: *mut Self::Foreign) {
++                libc::free(ptr as *mut c_void);
++            }
++
++            fn clone_to_foreign(&self) -> OwnedPointer<Self> {
++                // Safety: we are copying into a freshly-allocated block
++                unsafe {
++                    let p = libc::malloc(mem::size_of::<Self>()) as *mut Self::Foreign;
++                    *p = *self as Self::Foreign;
++                    OwnedPointer::new(p)
++                }
++            }
++        }
++
++        impl FromForeign for $rust_type {
++            unsafe fn cloned_from_foreign(p: *const Self::Foreign) -> Self {
++                *p
++            }
++        }
++
++        impl CloneToForeign for [$rust_type] {
++            type Foreign = $foreign_type;
++
++            unsafe fn free_foreign(ptr: *mut Self::Foreign) {
++                libc::free(ptr as *mut c_void);
++            }
++
++            fn clone_to_foreign(&self) -> OwnedPointer<Self> {
++                // SAFETY: self.as_ptr() is guaranteed to point to the same number of bytes
++                // as the freshly allocated destination
++                unsafe {
++                    let size = mem::size_of::<Self::Foreign>();
++                    let p = libc::malloc(self.len() * size) as *mut Self::Foreign;
++                    ptr::copy_nonoverlapping(self.as_ptr() as *const Self::Foreign, p, self.len());
++                    OwnedPointer::new(p)
++                }
++            }
++        }
++    };
++}
++foreign_copy_type!(i8, i8);
++foreign_copy_type!(u8, u8);
++foreign_copy_type!(i16, i16);
++foreign_copy_type!(u16, u16);
++foreign_copy_type!(i32, i32);
++foreign_copy_type!(u32, u32);
++foreign_copy_type!(i64, i64);
++foreign_copy_type!(u64, u64);
++foreign_copy_type!(isize, libc::ptrdiff_t);
++foreign_copy_type!(usize, libc::size_t);
++foreign_copy_type!(f32, f32);
++foreign_copy_type!(f64, f64);
++
++#[cfg(test)]
++mod tests {
++    #![allow(clippy::shadow_unrelated)]
++
++    use super::*;
++    use matches::assert_matches;
++    use std::ffi::c_void;
++
++    #[test]
++    fn test_foreign_int_convert() {
++        let i = 123i8;
++        let p = i.clone_to_foreign();
++        unsafe {
++            assert_eq!(i, *p.as_ptr());
++            assert_eq!(i, i8::cloned_from_foreign(p.as_ptr()));
++        }
++        assert_eq!(i, p.into_native());
++
++        let p = i.clone_to_foreign();
++        unsafe {
++            assert_eq!(i, i8::from_foreign(p.into_inner()));
 +        }
 +    }
 +
-+    /// Safely convert an `OwnedPointer` into one that has the same
-+    /// freeing function.
-+    pub fn into<U>(self) -> OwnedPointer<U>
-+    where
-+        U: CloneToForeign<Foreign = <T as CloneToForeign>::Foreign>,
-+    {
-+        OwnedPointer::from(self)
++    #[test]
++    fn test_cloned_from_foreign_string_cow() {
++        let s = "Hello, world!".to_string();
++        let cstr = c"Hello, world!";
++        let cloned = unsafe { Cow::cloned_from_foreign(cstr.as_ptr()) };
++        assert_eq!(s, cloned);
 +    }
 +
-+    /// Return the pointer that is stored in the `OwnedPointer`.  The
-+    /// pointer is valid for as long as the `OwnedPointer` itself.
-+    pub fn as_ptr(&self) -> *const <T as CloneToForeign>::Foreign {
-+        self.ptr
++    #[test]
++    fn test_cloned_from_foreign_string() {
++        let s = "Hello, world!".to_string();
++        let cstr = c"Hello, world!";
++        let cloned = unsafe { String::cloned_from_foreign(cstr.as_ptr()) };
++        assert_eq!(s, cloned);
 +    }
 +
-+    pub fn as_mut_ptr(&self) -> *mut <T as CloneToForeign>::Foreign {
-+        self.ptr
++    #[test]
++    fn test_cloned_from_foreign_cstring() {
++        let s = CString::new("Hello, world!").unwrap();
++        let cloned = s.clone_to_foreign();
++        let copy = unsafe { CString::cloned_from_foreign(cloned.as_ptr()) };
++        assert_ne!(copy.as_ptr(), cloned.as_ptr());
++        assert_ne!(copy.as_ptr(), s.as_ptr());
++        assert_eq!(copy, s);
 +    }
 +
-+    /// Return the pointer that is stored in the `OwnedPointer`,
-+    /// consuming the `OwnedPointer` but not freeing the pointer.
-+    pub fn into_inner(mut self) -> *mut <T as CloneToForeign>::Foreign {
-+        let result = mem::replace(&mut self.ptr, ptr::null_mut());
-+        mem::forget(self);
-+        result
++    #[test]
++    fn test_from_foreign_string() {
++        let s = "Hello, world!".to_string();
++        let cloned = s.clone_to_foreign_ptr();
++        let copy = unsafe { String::from_foreign(cloned) };
++        assert_eq!(s, copy);
++    }
++
++    #[test]
++    fn test_owned_pointer_default() {
++        let s: String = Default::default();
++        let foreign: OwnedPointer<String> = Default::default();
++        let native = foreign.into_native();
++        assert_eq!(s, native);
++    }
++
++    #[test]
++    fn test_owned_pointer_into() {
++        let s = "Hello, world!".to_string();
++        let cloned: OwnedPointer<String> = s.clone_to_foreign().into();
++        let copy = cloned.into_native();
++        assert_eq!(s, copy);
++    }
++
++    #[test]
++    fn test_owned_pointer_into_native() {
++        let s = "Hello, world!".to_string();
++        let cloned = s.clone_to_foreign();
++        let copy = cloned.into_native();
++        assert_eq!(s, copy);
++    }
++
++    #[test]
++    fn test_ptr_into_native() {
++        let s = "Hello, world!".to_string();
++        let cloned = s.clone_to_foreign_ptr();
++        let copy: String = unsafe { cloned.into_native() };
++        assert_eq!(s, copy);
++
++        // This is why type bounds are needed... they aren't for
++        // OwnedPointer::into_native
++        let cloned = s.clone_to_foreign_ptr();
++        let copy: c_char = unsafe { cloned.into_native() };
++        assert_eq!(s.as_bytes()[0], copy as u8);
++    }
++
++    #[test]
++    fn test_clone_to_foreign_str() {
++        let s = "Hello, world!";
++        let p = c"Hello, world!".as_ptr();
++        let cloned = s.clone_to_foreign();
++        unsafe {
++            let len = libc::strlen(cloned.as_ptr());
++            assert_eq!(len, s.len());
++            assert_eq!(
++                libc::memcmp(
++                    cloned.as_ptr() as *const c_void,
++                    p as *const c_void,
++                    len + 1
++                ),
++                0
++            );
++        }
++    }
++
++    #[test]
++    fn test_clone_to_foreign_cstr() {
++        let s: &CStr = c"Hello, world!";
++        let cloned = s.clone_to_foreign();
++        unsafe {
++            let len = libc::strlen(cloned.as_ptr());
++            assert_eq!(len, s.count_bytes());
++            assert_eq!(
++                libc::memcmp(
++                    cloned.as_ptr() as *const c_void,
++                    s.as_ptr() as *const c_void,
++                    len + 1
++                ),
++                0
++            );
++        }
++    }
++
++    #[test]
++    fn test_clone_to_foreign_string_cow() {
++        let p = c"Hello, world!".as_ptr();
++        for s in vec![
++            Into::<Cow<str>>::into("Hello, world!"),
++            Into::<Cow<str>>::into("Hello, world!".to_string())] {
++            let cloned = s.clone_to_foreign();
++            unsafe {
++                let len = libc::strlen(cloned.as_ptr());
++                assert_eq!(len, s.len());
++                assert_eq!(
++                    libc::memcmp(
++                        cloned.as_ptr() as *const c_void,
++                        p as *const c_void,
++                        len + 1
++                    ),
++                    0
++                );
++            }
++        }
++    }
++
++    #[test]
++    fn test_clone_to_foreign_bytes() {
++        let s = b"Hello, world!\0";
++        let cloned = s.clone_to_foreign();
++        unsafe {
++            let len = libc::strlen(cloned.as_ptr() as *const c_char);
++            assert_eq!(len, s.len() - 1);
++            assert_eq!(
++                libc::memcmp(
++                    cloned.as_ptr() as *const c_void,
++                    s.as_ptr() as *const c_void,
++                    len + 1
++                ),
++                0
++            );
++        }
++    }
++
++    #[test]
++    fn test_clone_to_foreign_cstring() {
++        let s = CString::new("Hello, world!").unwrap();
++        let cloned = s.clone_to_foreign();
++        unsafe {
++            assert_ne!(s.as_ptr(), cloned.as_ptr());
++            assert_eq!(
++                libc::strcmp(
++                    cloned.as_ptr() as *const c_char,
++                    s.as_ptr() as *const c_char,
++                ),
++                0
++            );
++        }
++    }
++
++    #[test]
++    fn test_clone_to_foreign_string() {
++        let s = "Hello, world!".to_string();
++        let cstr = c"Hello, world!";
++        let cloned = s.clone_to_foreign();
++        unsafe {
++            let len = libc::strlen(cloned.as_ptr());
++            assert_eq!(len, s.len());
++            assert_eq!(
++                libc::memcmp(
++                    cloned.as_ptr() as *const c_void,
++                    cstr.as_ptr() as *const c_void,
++                    len + 1
++                ),
++                0
++            );
++        }
++    }
++
++    #[test]
++    fn test_option() {
++        // An Option can be used to produce or convert NULL pointers
++        let s = Some("Hello, world!".to_string());
++        let cstr = c"Hello, world!";
++        unsafe {
++            assert_eq!(Option::<String>::cloned_from_foreign(cstr.as_ptr()), s);
++            assert_matches!(Option::<String>::cloned_from_foreign(ptr::null()), None);
++            assert_matches!(Option::<String>::from_foreign(ptr::null_mut()), None);
++        }
++    }
++
++    #[test]
++    fn test_box() {
++        // A box can be produced if the inner type has the capability.
++        let s = Box::new("Hello, world!".to_string());
++        let cstr = c"Hello, world!";
++        let cloned = unsafe { Box::<String>::cloned_from_foreign(cstr.as_ptr()) };
++        assert_eq!(s, cloned);
++
++        let s = Some(Box::new("Hello, world!".to_string()));
++        let cloned = unsafe { Option::<Box<String>>::cloned_from_foreign(cstr.as_ptr()) };
++        assert_eq!(s, cloned);
 +    }
 +}
-+
-+impl<T: FromForeign + ?Sized> OwnedPointer<T> {
-+    /// Convert a C datum to a native Rust object, taking ownership of
-+    /// the pointer or Rust object (same as `from_glib_full` in `glib-rs`)
-+    pub fn into_native(self) -> T {
-+        // SAFETY: the pointer was passed to the unsafe constructor OwnedPointer::new
-+        unsafe { T::from_foreign(self.into_inner()) }
-+    }
-+}
-+
-+impl<T: CloneToForeign + ?Sized> Debug for OwnedPointer<T> {
-+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-+        let name = std::any::type_name::<T>();
-+        let name = format!("OwnedPointer<{}>", name);
-+        f.debug_tuple(&name).field(&self.as_ptr()).finish()
-+    }
-+}
-+
-+impl<T: CloneToForeign + Default + ?Sized> Default for OwnedPointer<T> {
-+    fn default() -> Self {
-+        <T as Default>::default().clone_to_foreign()
-+    }
-+}
-+
-+impl<T: CloneToForeign + ?Sized> Drop for OwnedPointer<T> {
-+    fn drop(&mut self) {
-+        let p = mem::replace(&mut self.ptr, ptr::null_mut());
-+        // SAFETY: the pointer was passed to the unsafe constructor OwnedPointer::new
-+        unsafe { T::free_foreign(p) }
-+    }
-+}
-diff --git a/qemu/src/util/mod.rs b/qemu/src/util/mod.rs
-new file mode 100644
-index 0000000..be00d0c
---- /dev/null
-+++ b/qemu/src/util/mod.rs
-@@ -0,0 +1 @@
-+pub mod foreign;
 -- 
 2.45.2
 
