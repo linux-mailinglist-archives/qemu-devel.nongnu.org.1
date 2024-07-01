@@ -2,97 +2,120 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5DE991DA4D
-	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 10:45:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 527A791DA79
+	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 10:51:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOCeS-0001ds-Kk; Mon, 01 Jul 2024 04:44:44 -0400
+	id 1sOCkT-0003q5-J3; Mon, 01 Jul 2024 04:50:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1sOCd5-0001QL-3j
- for qemu-devel@nongnu.org; Mon, 01 Jul 2024 04:43:19 -0400
-Received: from fout7-smtp.messagingengine.com ([103.168.172.150])
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1sOCiW-0002rN-J7
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 04:48:56 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1sOCcz-0007mg-Fl
- for qemu-devel@nongnu.org; Mon, 01 Jul 2024 04:43:18 -0400
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
- by mailfout.nyi.internal (Postfix) with ESMTP id A1812138016A;
- Mon,  1 Jul 2024 04:43:12 -0400 (EDT)
-Received: from imap44 ([10.202.2.94])
- by compute3.internal (MEProxy); Mon, 01 Jul 2024 04:43:12 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
- cc:cc:content-transfer-encoding:content-type:content-type:date
- :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
- :references:reply-to:subject:subject:to:to; s=fm3; t=1719823392;
- x=1719909792; bh=SBuncp6t1oMXbh1a8cQAXO+N/Yf4y6oazG/4surUgQU=; b=
- mFzbaqjyWENcrdI7Hmsjqnx+hXzkTFJvWbLBadbZCk0P85f6K+x2vSZonTdX4s8E
- u2/UIuTi5/y4kEYQ7lRDAigufsE72yLLcY6eJh3wwNqnRhYLfISOqcOsN7jnuIug
- ZUu4JTL8PAp269k8QYfdjqRMYgtVDBBSxIpnPjyS2zf3I6ua70Esf4HbDgclxKlN
- GeKuPorTDa62OK0i1ooZgkMEcg5DLeeX4vEoOYECP9TvkN1PCoIgYO1Fy8BykEFh
- wmeL1UCLCWCWbFQhOLQeexmWhtKNLEYS4BoNp8RGIgMuJX5h+cz/pfBqTibRBG4G
- xVNKw+WqkVPf3qeHDW4wwQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-transfer-encoding
- :content-type:content-type:date:date:feedback-id:feedback-id
- :from:from:in-reply-to:in-reply-to:message-id:mime-version
- :references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
- :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1719823392; x=
- 1719909792; bh=SBuncp6t1oMXbh1a8cQAXO+N/Yf4y6oazG/4surUgQU=; b=S
- fkXpibYTdEC/+GjvIGIzqgtFjj5wbPUi5A9S/B81jsO8AD+veiu9Tngme5XdxuVr
- 3uqORhbWeCa5BrLd84FOVYPQVU/yIeC0CZn8Py42coOyI6y0wmXXFTfmahEsdoSZ
- 97AODHJxx+i1fZV1JuLyWvhf61/SdF2QWfPzR07hhnh9dobb7QeAwzA+1QXpW126
- m0pZFl0wyG9hl79kYzZRgglw9iugfyg+KZtRxMznsFNYunt+QvlSeISO5loxf1Vd
- 3OT3pJBPkDiOm2m93jz7lZ6uw4qcmH8YgGmzVTU3tvA8B3cjvKVfF/T8x6KdumcM
- GCC7nFHgzY38dpDptxbyg==
-X-ME-Sender: <xms:IGyCZuJIH3_L95jyQzDGCfuF6fUO3Tzmxpdto4U4EnWfWKVlucOAaA>
- <xme:IGyCZmIwG7CxhoH4z_kin6fNQCFvzo1ekuk4_Em6TLPBrrPpxHu4JK8p-9dxl-7yF
- A6miNVv43A0rr6gv1g>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrudefgddtiecutefuodetggdotefrodftvf
- curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
- uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
- fjughrpefofgggkfgjfhffhffvvefutgfgsehtqhertderreejnecuhfhrohhmpedflfhi
- rgiguhhnucgjrghnghdfuceojhhirgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomh
- eqnecuggftrfgrthhtvghrnhepudefgeeftedugeehffdtheefgfevffelfefghefhjeeu
- geevtefhudduvdeihefgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrg
- hilhhfrhhomhepjhhirgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomh
-X-ME-Proxy: <xmx:IGyCZuv9w_YEKsfM2avObi9_doNHfMlEziprPPlsVDO682CcYDKYBw>
- <xmx:IGyCZjarG0vvOIRcvcjKp4WSWJjUQycpuHdWFDY3Eq9g7CRNE_3kuQ>
- <xmx:IGyCZlYuprwwoIJflTbpnaSB_Wvdvcbur9yYn8XPB59Ti3Z_jV9MSw>
- <xmx:IGyCZvCakWw-ivKsJ9Dmxkky9ik8LXFNhE4MTFcm3bvGsBeLowh-Nw>
- <xmx:IGyCZpFuWMiXGnH_FBfUVx5pMedcJYynwfLNnI9t8W2VF27telLQ3Opz>
-Feedback-ID: ifd894703:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
- id 3037536A0074; Mon,  1 Jul 2024 04:43:12 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.11.0-alpha0-566-g3812ddbbc-fm-20240627.001-g3812ddbb
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1sOCiU-0004y8-3p
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 04:48:55 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1719823731;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=tGULnVzcpI8jzaIWqxlHtEMGdelK1jaDjxgMatjjCug=;
+ b=aG80VNZBsGVQ20fKuV0VsnSrvyfizSx+P73sP0DmbeGtGUIsPJYhbLy46e4MBvmmNO8KI8
+ kwdvO3H+OGZGpFyAd5RSNh54O1RGiRYRpgJBK8EHrilS3s2n1EoRnaM5XNoRW65Z3qTTXl
+ vVB9awUj2Z0O487IemMmnAOEKrXJ4M8=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-511-EXS8meMKOK64XdqAhBKyDA-1; Mon, 01 Jul 2024 04:48:49 -0400
+X-MC-Unique: EXS8meMKOK64XdqAhBKyDA-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-4256849a9f4so19954925e9.3
+ for <qemu-devel@nongnu.org>; Mon, 01 Jul 2024 01:48:49 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1719823728; x=1720428528;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=tGULnVzcpI8jzaIWqxlHtEMGdelK1jaDjxgMatjjCug=;
+ b=UmOOYzJwr12KaEtNYotVdKNNuU7mVNEtsQ0tLvSQr4mLaiDLYMCHKUuAXtKxLZPfFq
+ W0Tz7gykC5wvLnSWiCp0Q5Gcud5P4Rr6DNnmUSXCcSGbwJ0R3GDYbuAq4JRiwjJsusyi
+ BR3/uYzZE9RktetGGQfCcxYvvkVb3Ew912stpqdlqS1oMdQiMTqWU8nLgVhmz3xsNZJj
+ 3sfjnKP2Coqucy3s3GHe2I6GgAk+faBQq2w+/1mWVCZ3bPz3sLgJmYGxWWETHzmyzi3z
+ Hxdji0X7qwRzp+s932ALIXTy0zBbJb2ZrfYxMRNtABsojRHNOgoKaeQcFeH5DqkLJ23l
+ aVvw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXzGA3pU4UfRPPD9Pv0S+fED6soSSu7Jlu1d3RQ+/AjIP67vZ0ChVUGIAwImbDsYa2dCXkHP9j0Y4KQswxSSE3mGEo0Ptk=
+X-Gm-Message-State: AOJu0YxhMO8wO9hAU7X8InWhVZmx9LTPoJqSS7n3BQK7KkbYuUbx/8F7
+ GTFtGGv1VtvrGZPonwVBFg8AVauyoytkYCs4jT/7k0zNwBNeUf9OZSir9YxipHMI6FkoBxt7Lef
+ rziS2wNHslw8CqrDNzIsPn9La6DW3FqZnHcjvO6jjdFUaiGk6Nre4
+X-Received: by 2002:adf:ea4d:0:b0:362:ed39:c1e6 with SMTP id
+ ffacd0b85a97d-36775730a4amr3370359f8f.62.1719823728424; 
+ Mon, 01 Jul 2024 01:48:48 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHGjbb5teUwdhZ8fxa8+Jw6l9rJiXiTDZ1/IrUhl6v8jIbYiTmFaxe+/BVQCUeeMuLClAuprQ==
+X-Received: by 2002:adf:ea4d:0:b0:362:ed39:c1e6 with SMTP id
+ ffacd0b85a97d-36775730a4amr3370333f8f.62.1719823728038; 
+ Mon, 01 Jul 2024 01:48:48 -0700 (PDT)
+Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
+ [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3675a0d90casm9318235f8f.32.2024.07.01.01.48.45
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 01 Jul 2024 01:48:47 -0700 (PDT)
+Date: Mon, 1 Jul 2024 10:48:44 +0200
+From: Igor Mammedov <imammedo@redhat.com>
+To: Salil Mehta <salil.mehta@huawei.com>
+Cc: Gavin Shan <gshan@redhat.com>, Salil Mehta <salil.mehta@opnsrc.net>,
+ "Michael S. Tsirkin" <mst@redhat.com>, "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>, "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>,
+ "maz@kernel.org" <maz@kernel.org>, "jean-philippe@linaro.org"
+ <jean-philippe@linaro.org>, Jonathan Cameron <jonathan.cameron@huawei.com>,
+ "lpieralisi@kernel.org" <lpieralisi@kernel.org>, "peter.maydell@linaro.org"
+ <peter.maydell@linaro.org>, "richard.henderson@linaro.org"
+ <richard.henderson@linaro.org>, "andrew.jones@linux.dev"
+ <andrew.jones@linux.dev>, "david@redhat.com" <david@redhat.com>,
+ "philmd@linaro.org" <philmd@linaro.org>, "eric.auger@redhat.com"
+ <eric.auger@redhat.com>, "oliver.upton@linux.dev" <oliver.upton@linux.dev>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>, "will@kernel.org"
+ <will@kernel.org>, "rafael@kernel.org" <rafael@kernel.org>,
+ "alex.bennee@linaro.org" <alex.bennee@linaro.org>, "linux@armlinux.org.uk"
+ <linux@armlinux.org.uk>, "darren@os.amperecomputing.com"
+ <darren@os.amperecomputing.com>, "ilkka@os.amperecomputing.com"
+ <ilkka@os.amperecomputing.com>, "vishnu@os.amperecomputing.com"
+ <vishnu@os.amperecomputing.com>, "karl.heubaum@oracle.com"
+ <karl.heubaum@oracle.com>, "miguel.luis@oracle.com"
+ <miguel.luis@oracle.com>, zhukeqian <zhukeqian1@huawei.com>, "wangxiongfeng
+ (C)" <wangxiongfeng2@huawei.com>, "wangyanan (Y)" <wangyanan55@huawei.com>,
+ "jiakernel2@gmail.com" <jiakernel2@gmail.com>, "maobibo@loongson.cn"
+ <maobibo@loongson.cn>, "lixianglai@loongson.cn" <lixianglai@loongson.cn>,
+ "npiggin@gmail.com" <npiggin@gmail.com>, "harshpb@linux.ibm.com"
+ <harshpb@linux.ibm.com>, Linuxarm <linuxarm@huawei.com>
+Subject: Re: [PATCH V12 0/8] Add architecture agnostic code to support vCPU
+ Hotplug
+Message-ID: <20240701104844.32e0207b@imammedo.users.ipa.redhat.com>
+In-Reply-To: <eb5880984ddf41aabca9d036e7ad445f@huawei.com>
+References: <20240529234241.205053-1-salil.mehta@huawei.com>
+ <20240602180241-mutt-send-email-mst@kernel.org>
+ <20240605160327.3c71f4ab@imammedo.users.ipa.redhat.com>
+ <CAJ7pxeYehVhPWfbEqRMMSCVHk31JQhtQhRSM_4e1WqBhqv0UHQ@mail.gmail.com>
+ <b36e0d64-9653-4d48-b72a-00a1aee86629@redhat.com>
+ <eb5880984ddf41aabca9d036e7ad445f@huawei.com>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.42; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Message-Id: <cdc0d448-8e3b-44f7-89ca-a15ea48acd2b@app.fastmail.com>
-In-Reply-To: <bba3338b-4c28-fc38-fc5e-f4691bfa28b1@loongson.cn>
-References: <20240530064941.1289573-1-maobibo@loongson.cn>
- <20240530064941.1289573-2-maobibo@loongson.cn>
- <db19ed93-027c-4e29-aac5-e3a1edcd760b@app.fastmail.com>
- <bba3338b-4c28-fc38-fc5e-f4691bfa28b1@loongson.cn>
-Date: Mon, 01 Jul 2024 09:42:57 +0100
-From: "Jiaxun Yang" <jiaxun.yang@flygoat.com>
-To: "Bibo Mao" <maobibo@loongson.cn>, "Song Gao" <gaosong@loongson.cn>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: "QEMU devel" <qemu-devel@nongnu.org>
-Subject: Re: [RFC v3 1/2] target/loongarch: Add loongson binary translation
- feature
-Content-Type: text/plain;charset=utf-8
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=103.168.172.150;
- envelope-from=jiaxun.yang@flygoat.com; helo=fout7-smtp.messagingengine.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,63 +131,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Wed, 26 Jun 2024 17:53:52 +0000
+Salil Mehta <salil.mehta@huawei.com> wrote:
 
+> Hi Gavin,
+>=20
+> >  From: Gavin Shan <gshan@redhat.com>
+> >  Sent: Wednesday, June 26, 2024 5:13 AM
+> >  To: Salil Mehta <salil.mehta@opnsrc.net>; Igor Mammedov
+> >  <imammedo@redhat.com>
+> > =20
+> >  Hi Salil and Igor,
+> > =20
+> >  On 6/26/24 9:51 AM, Salil Mehta wrote: =20
+> >  > On Wed, Jun 5, 2024 at 3:03=E2=80=AFPM Igor Mammedov =20
+> >  <imammedo@redhat.com <mailto:imammedo@redhat.com>> wrote: =20
+> >  >     On Sun, 2 Jun 2024 18:03:05 -0400
+> >  >     "Michael S. Tsirkin" <mst@redhat.com <mailto:mst@redhat.com>> =20
+> >  wrote: =20
+> >  > =20
+> >  >      > On Thu, May 30, 2024 at 12:42:33AM +0100, Salil Mehta wrote: =
+=20
+> >  >      > > Virtual CPU hotplug support is being added across various a=
+rchitectures[1][3].
+> >  >      > > This series adds various code bits common across all archit=
+ectures:
+> >  >      > >
+> >  >      > > 1. vCPU creation and Parking code refactor [Patch 1]
+> >  >      > > 2. Update ACPI GED framework to support vCPU Hotplug [Patch=
+ 2,3]
+> >  >      > > 3. ACPI CPUs AML code change [Patch 4,5]
+> >  >      > > 4. Helper functions to support unrealization of CPU objects=
+ [Patch  6,7]
+> >  >      > > 5. Docs [Patch 8]
+> >  >      > >
+> >  >      > >
+> >  >      > > Repository:
+> >  >      > >
+> >  >      > > [*] https://github.com/salil-mehta/qemu.git   <https://gith=
+ub.com/salil-mehta/qemu.git> virt-cpuhp-armv8/rfc- v3.arch.agnostic.v12
+> >  >      > >
+> >  >      > > NOTE: This series is meant to work in conjunction with Arch=
+itecture specific patch-set.
+> >  >      > > For ARM, this will work in combination of the architecture =
+specific part based on
+> >  >      > > RFC V2 [1]. This architecture specific patch-set RFC V3 sha=
+ll be floated soon and is
+> >  >      > > present at below location
+> >  >      > >
+> >  >      > > [*] https://github.com/salil-mehta/qemu/tree/virt-cpuhp-arm=
+v8/rfc-v3-rc1 <https://github.com/salil-mehta/qemu/tree/virt-cpuhp-armv8/rf=
+c-v3-rc1>
+> >  >      > > =20
+> >  >      >
+> >  >      >
+> >  >      > Igor plan to take a look? =20
+> >  >
+> >  >     Yep, I plan to review it
+> >  >
+> >  >
+> >  > A gentle reminder on this.
+> >  > =20
+> > =20
+> >  Since the latest revision for this series is v13, so I guess Igor need=
+s to do the
+> >  final screening on v13 instead?
+> > =20
+> >  v13: https://lists.nongnu.org/archive/html/qemu-arm/2024-06/msg00129.h=
+tml =20
+>=20
+>=20
+> Yes, thanks for pointing this. =F0=9F=98=8A
 
-=E5=9C=A82024=E5=B9=B47=E6=9C=881=E6=97=A5=E4=B8=83=E6=9C=88 =E4=B8=8A=E5=
-=8D=888:32=EF=BC=8Cmaobibo=E5=86=99=E9=81=93=EF=BC=9A
-[...]
->>>
->>> +static void loongarch_cpu_check_lbt(CPUState *cs, Error **errp)
->>> +{
->>> +    CPULoongArchState *env =3D cpu_env(cs);
->>> +    LoongArchCPU *cpu =3D LOONGARCH_CPU(cs);
->>> +    bool kvm_supported;
->>> +
->>> +    kvm_supported =3D kvm_feature_supported(cs, LOONGARCH_FEATURE_L=
-BT);
->>=20
->> IMHO if there is no global states that should be saved/restored VM wi=
-se,
->> this should be handled at per CPU level, preferably with CPUCFG flags=
- hint.
->>=20
->> We should minimize non-privilege KVM feature bits to prevent hindering
->> asymmetry ISA system.
-> For "asymmetry ISA system", do you meaning some vcpus have LBT feature=
-,=20
-> however some vcpus does have LBT features? That does not exists at all.
+I have v13 tagged,
+Sorry for delay, I'll try to review it this week
 
-Yes, we should always prepare for the future :-)
+>=20
+>=20
+> > =20
+> >  Thanks,
+> >  Gavin
+> >   =20
+>=20
 
-From Weiwu's presentations, I believe LASX asymmetry product is already =
-on the
-roadmap. So for LBT it's also a possibility.
-
-Even if such product won't land in near future, we should still try our =
-best
-to bound to vCPU creation, not to the system.
-
->
-> It will be big disaster for such products, how does application use th=
-is?
-
-Affinity placement etc, there are many possibilities.
-
-On Arm side, there are already systems with Big.Little asymmetry CPU that
-some of the processor equipped 32 bit EL0 mode while others doesn't. They
-managed that well with affinity.
-
-See: arm64: Allow mismatched 32-bit EL0 support
-
-Thanks
->
-> Regards
-> Bibo
->>=20
->> Thanks
->> - Jiaxun
->>
-
---=20
-- Jiaxun
 
