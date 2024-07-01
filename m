@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33ACF91E311
-	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 17:00:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0ABE391E312
+	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 17:00:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOIVN-00045D-4o; Mon, 01 Jul 2024 10:59:45 -0400
+	id 1sOIVS-0004Pk-QZ; Mon, 01 Jul 2024 10:59:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sOIVK-00044q-19
- for qemu-devel@nongnu.org; Mon, 01 Jul 2024 10:59:42 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1sOIVQ-0004M2-El
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 10:59:48 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sOIVB-0005L8-I3
- for qemu-devel@nongnu.org; Mon, 01 Jul 2024 10:59:41 -0400
+ id 1sOIVB-0005LJ-Nd
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 10:59:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719845972;
+ s=mimecast20190719; t=1719845973;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=kFn8a5fReLo+S4SarZhzaU3e4BbwOPj+DmW1DUwZMXo=;
- b=E1vI6ayGcZtcsRjzVouLeXS5LmXgS0hrbWLtblBdeFZedjHq+tDM3owGKGQ6Qp1liRT+/9
- 3VpljY2bXvVoFR2l0upGsvZAfHoTSWcf5NgG+8xkyTvpIfvJ0wRtoE1gd9fY5pqJ9hoXPC
- BwUQYKlKiBYglmuaw7CjUjyw8aMgfHk=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=ATkDSIn1AD4iloFEBRdTrGDcFCBr2wUtEchDeQI6v+Q=;
+ b=ErwXH893U6f3EPXmS9wr5FVZu/nCulC2NsNmAfRooQGdf+CHeJANgk8x8UapRA2wZB3Fm+
+ h8rJntb/nZajO+aeDBQe6n7Qo5tg8ZK8zSVjbgJxo2hC11SzeEPQ7fOTpGfnM2Cwiui5U3
+ p2Z/NFx12AyCMceFJdnkxkH/bb3aJWE=
+Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
+ [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-60-pp4OJrtGNNWnSZzbcDuyKg-1; Mon, 01 Jul 2024 10:59:28 -0400
-X-MC-Unique: pp4OJrtGNNWnSZzbcDuyKg-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-424a775ee7fso22872765e9.0
- for <qemu-devel@nongnu.org>; Mon, 01 Jul 2024 07:59:28 -0700 (PDT)
+ us-mta-655-SwrYpLGaMSm5psLRhGgHaw-1; Mon, 01 Jul 2024 10:59:31 -0400
+X-MC-Unique: SwrYpLGaMSm5psLRhGgHaw-1
+Received: by mail-lf1-f71.google.com with SMTP id
+ 2adb3069b0e04-52d174e26baso4072166e87.2
+ for <qemu-devel@nongnu.org>; Mon, 01 Jul 2024 07:59:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719845967; x=1720450767;
+ d=1e100.net; s=20230601; t=1719845969; x=1720450769;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=kFn8a5fReLo+S4SarZhzaU3e4BbwOPj+DmW1DUwZMXo=;
- b=d+pFcr4dAH+WNzK6KihdhZcBzTttX7DScrqh15Q612Dp88osLHv/OV3qapDiCw3mTX
- 5VN+ZNyefdZ+ZYiwQ2UZXZn4QyHup2veioBl2mcVLrzdAAgHFzuofNGeHQGWqkFpfyP+
- 4sfM9EltNH6jF4wM/0CyedbEHRyoQrMD80Hnfj59p5Jzdh+dXW+nAQa1U9XuCbjDCaNt
- XMr0EcSvrzm72AYoo+6Qofd05b8ARzTCXndlrDzVshgKVmyVtu/cyJ0Nir1ctbR5coxG
- vi6BkoMF+WYSLaWHbwe/nMHS354BWR3T7aGAkQSQhqrUDXYfoLpZzxqIubKHB9d8QxkU
- fQiw==
-X-Gm-Message-State: AOJu0YyeJXLO8Qd3Hpca/z3g9EWg4bonW5gJqzmvk105UQa+CNFE97ef
- hHzaMdh4ioO8E1nMjC5QoGdggWRhpjDf+49FYADF5Rvz9IX3+ogPhnscJaGjTu8pa77swIjcLmL
- XWozflv7sJweRvnOXGladxUlQ5KgMVlREbA6Axv6RnRwDN7RiG0LO+YgwGJf+uDzl/zCl9FIb4m
- NNc0SXla3/NYaYUIYT6NJkTxKZRDTITxI310Uy
-X-Received: by 2002:a5d:5f8e:0:b0:363:7788:b975 with SMTP id
- ffacd0b85a97d-36775721529mr4047303f8f.52.1719845966872; 
- Mon, 01 Jul 2024 07:59:26 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEy1qi0DnHKrmHTxoOgaGg/kZjQppCGzPd4Wb/whzeKfCyDi6+eAC45fD2XzhbQUkYllkUWZQ==
-X-Received: by 2002:a5d:5f8e:0:b0:363:7788:b975 with SMTP id
- ffacd0b85a97d-36775721529mr4047279f8f.52.1719845966483; 
- Mon, 01 Jul 2024 07:59:26 -0700 (PDT)
+ bh=ATkDSIn1AD4iloFEBRdTrGDcFCBr2wUtEchDeQI6v+Q=;
+ b=rUgyIgwcb09Fn7SxTBECaatROdXsoS7+bipkU6dMcmoTDtUOiZB4tS+Rs2wMkfn1oU
+ MVwwfvrLMtZ2nnPQHtQZ/tum/zy+Mhaxpp2iOEIWFEx7fY+4k4JIkI/1BVfa4pw2ahUi
+ 0/KGxU5ay/S3k84Vjirxucdfm1HDWQWBnA0acAkFVXJN1lW5dQD+xWAJ6Tj+GBfZNuQ3
+ nA9f3HTajc3dasaOJbQXo4UFHCX55C3dAxo+gXSnOhNOq3CSqtJImeYbAO+wC/d1cPIr
+ OGBjQtBOz+WwS9gHPS13CYjmcLQglZvR+plYadc6+29ZDoYb6agNsRidY/iXgJmwNYmQ
+ tPYw==
+X-Gm-Message-State: AOJu0YyA5mLWtZVHMb6M8szIz3QUlgaHQvj6PQZfNEh4aRluaKO4bae0
+ b+H0mh6cNtmVXgecKf9+PfVo9ju+7+XZtoWrdXWRDtlnEeHk7ibIi6aamSIYsH1rFlIu/cT7K/8
+ oKOQXHiAx+Hi0i5/UL3RppHN54jUdbewvWnosnRDEljqf+HSTWUI/ik+tumkI202Z6glCCSNngc
+ rkcNBKEbrrhIqaUldR4oi9ZtpMRz+3niIJGBMv
+X-Received: by 2002:a05:6512:2807:b0:52e:764b:b20d with SMTP id
+ 2adb3069b0e04-52e8266df15mr4109348e87.28.1719845969613; 
+ Mon, 01 Jul 2024 07:59:29 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGRUwwyRrlhMLiBz8bYjke97OF81aIw/lI/5KWh8bhZEqd1yOGGLzXZGVgy1sfMMY1nE4sg2A==
+X-Received: by 2002:a05:6512:2807:b0:52e:764b:b20d with SMTP id
+ 2adb3069b0e04-52e8266df15mr4109332e87.28.1719845969238; 
+ Mon, 01 Jul 2024 07:59:29 -0700 (PDT)
 Received: from avogadro.local ([151.95.101.29])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3675a1030dfsm10236997f8f.100.2024.07.01.07.59.25
+ 5b1f17b1804b1-4256af3cf9bsm159885515e9.8.2024.07.01.07.59.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 01 Jul 2024 07:59:25 -0700 (PDT)
+ Mon, 01 Jul 2024 07:59:28 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
@@ -73,24 +73,23 @@ Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Hanna Czenczek <hreitz@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PATCH 10/14] rust: add idiomatic bindings to define Device subclasses
-Date: Mon,  1 Jul 2024 16:58:42 +0200
-Message-ID: <20240701145853.1394967-11-pbonzini@redhat.com>
+Subject: [PATCH 11/14] rust: replace std::ffi::c_char with libc::c_char
+Date: Mon,  1 Jul 2024 16:58:43 +0200
+Message-ID: <20240701145853.1394967-12-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240701145853.1394967-1-pbonzini@redhat.com>
 References: <20240701145853.1394967-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,267 +105,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Provide a macro to register a type and automatically define qdev
-properties.  Subclasses of DeviceState must define a trait DeviceImpl, to
-point the type definition machinery to the implementation of virtual
-functions in DeviceState.
+Allow working with Rust versions prior to 1.64.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- qemu/src/hw/core/device_impl.rs | 140 ++++++++++++++++++++++++++++++++
- qemu/src/hw/core/mod.rs         |   1 +
- qemu/src/lib.rs                 |   5 ++
- qemu/tests/main.rs              |  52 +++++++++++-
- 4 files changed, 197 insertions(+), 1 deletion(-)
- create mode 100644 qemu/src/hw/core/device_impl.rs
+ qemu/src/bindings/mod.rs | 3 ++-
+ qemu/src/util/foreign.rs | 7 +++++--
+ 2 files changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/qemu/src/hw/core/device_impl.rs b/qemu/src/hw/core/device_impl.rs
-new file mode 100644
-index 0000000..80b0e5e
---- /dev/null
-+++ b/qemu/src/hw/core/device_impl.rs
-@@ -0,0 +1,140 @@
-+//! Macros and traits to implement subclasses of Device in Rust
-+//!
-+//! @author Paolo Bonzini
-+
-+#![allow(clippy::missing_safety_doc)]
-+
+diff --git a/qemu/src/bindings/mod.rs b/qemu/src/bindings/mod.rs
+index a49447b..0ad3828 100644
+--- a/qemu/src/bindings/mod.rs
++++ b/qemu/src/bindings/mod.rs
+@@ -1,4 +1,5 @@
+-use std::ffi::{c_char, c_void};
++use libc::c_char;
 +use std::ffi::c_void;
-+
-+use crate::bindings;
-+use crate::bindings::DeviceClass;
-+use crate::bindings::DeviceState;
-+use crate::bindings::Property;
-+
-+use crate::qom::object_impl::ObjectImpl;
-+use crate::qom::object_impl::TypeImpl;
-+
-+use crate::qom::refs::ObjectCast;
-+
-+use crate::util::error::Error;
-+
-+/// Information on which superclass methods are overridden
-+/// by a Rust-implemented subclass of Device.
-+pub trait DeviceImpl: ObjectImpl + DeviceTypeImpl {
-+    /// If not `None`, a function that implements the `realize` member
-+    /// of the QOM `DeviceClass`.
-+    const REALIZE: Option<fn(obj: &Self) -> crate::Result<()>> = None;
-+
-+    /// If not `None`, a function that implements the `unrealize` member
-+    /// of the QOM `DeviceClass`.
-+    const UNREALIZE: Option<fn(obj: &Self)> = None;
-+
-+    /// If not `None`, a function that implements the `cold_reset` member
-+    /// of the QOM `DeviceClass`.
-+    const COLD_RESET: Option<fn(obj: &Self)> = None;
-+}
-+
-+impl DeviceClass {
-+    pub fn class_init<T: DeviceImpl>(&mut self) {
-+        unsafe extern "C" fn rust_cold_reset<T: DeviceImpl>(obj: *mut DeviceState) {
-+            let f = T::COLD_RESET.unwrap();
-+            f((&*obj).unsafe_cast::<T>())
-+        }
-+        self.cold_reset = T::COLD_RESET.map(|_| rust_cold_reset::<T> as _);
-+
-+        unsafe extern "C" fn rust_realize<T: DeviceImpl>(
-+            obj: *mut DeviceState,
-+            errp: *mut *mut bindings::Error,
-+        ) {
-+            let f = T::REALIZE.unwrap();
-+            let result = f((&*obj).unsafe_cast::<T>());
-+            Error::ok_or_propagate(result, errp);
-+        }
-+        self.realize = T::REALIZE.map(|_| rust_realize::<T> as _);
-+
-+        unsafe extern "C" fn rust_unrealize<T: DeviceImpl>(obj: *mut DeviceState) {
-+            let f = T::UNREALIZE.unwrap();
-+            f((&*obj).unsafe_cast::<T>())
-+        }
-+        self.unrealize = T::UNREALIZE.map(|_| rust_unrealize::<T> as _);
-+
-+        self.properties = <T as DeviceTypeImpl>::properties();
-+
-+        // Now initialize the ObjectClass from the ObjectImpl.
-+        self.oc.class_init::<T>();
-+    }
-+}
-+
-+impl DeviceState {
-+    pub unsafe extern "C" fn rust_class_init<T: DeviceImpl>(
-+        klass: *mut c_void,
-+        _data: *mut c_void,
-+    ) {
-+        let dc: &mut DeviceClass = &mut *(klass.cast());
-+        dc.class_init::<T>();
-+    }
-+}
-+
-+/// Internal information on a Rust-implemented subclass of Device.
-+/// Only public because it is used by macros.
-+pub unsafe trait DeviceTypeImpl: TypeImpl {
-+    const CONF_OFFSET: usize;
-+
-+    // This needs to be here, and not in DeviceImpl, because properties
-+    // reference statics (for globals defined in C, e.g. qdev_prop_bool)
-+    // which is unstable (see https://github.com/rust-lang/rust/issues/119618,
-+    // feature const_refs_to_static)
-+    fn properties() -> *const Property;
-+}
-+
-+pub struct QdevPropBool;
-+impl QdevPropBool {
-+    pub const fn convert(value: &bool) -> u64 {
-+        *value as u64
-+    }
-+}
-+
-+#[macro_export]
-+macro_rules! qdev_prop {
-+    (@internal bool, $name:expr, $default:expr, $offset:expr) => {
-+        $crate::Property {
-+            name: $name.as_ptr(),
-+            offset: $offset,
-+            default: $crate::hw::core::device_impl::QdevPropBool::convert(&($default)),
-+            info: unsafe { &$crate::bindings::qdev_prop_bool },
-+        }
-+    };
-+
-+    // Replace field with typechecking expression and offset
-+    ($kind:tt, $name:expr, $type:ty, $default:expr, $field:ident) => {
-+        qdev_prop!(@internal
-+            $kind,
-+            $name,
-+            (<$crate::conf_type!($type) as ConstDefault>::DEFAULT).$field,
-+            <$type as $crate::DeviceTypeImpl>::CONF_OFFSET + std::mem::offset_of!($crate::conf_type!($type), $field)
-+        )
-+    };
-+}
-+
-+#[macro_export]
-+macro_rules! qdev_define_type {
-+    ($name:expr, $struct:ident, $conf_ty:ty, $state_ty:ty;
-+     @extends $super:ty $(,$supers:ty)*;
-+     @properties [$($props: expr),+]) => {
-+        $crate::qom_define_type!(
-+            $name, $struct, $conf_ty, $state_ty;
-+            @extends $super $(,$supers)*, $crate::Object);
-+
-+        unsafe impl $crate::DeviceTypeImpl for $struct {
-+            const CONF_OFFSET: usize = std::mem::offset_of!($struct, conf);
-+
-+            fn properties() -> *const $crate::Property {
-+                static mut PROPERTIES: &'static [$crate::Property] = &[$($props),+];
-+
-+                // SAFETY: The only reference is created here; mut is needed to refer to
-+                // &qdev_prop_xxx.
-+                unsafe { PROPERTIES.as_ptr() }
-+            }
-+        }
-+    }
-+}
-diff --git a/qemu/src/hw/core/mod.rs b/qemu/src/hw/core/mod.rs
-index 5458924..6cd9197 100644
---- a/qemu/src/hw/core/mod.rs
-+++ b/qemu/src/hw/core/mod.rs
-@@ -1 +1,2 @@
- pub mod device;
-+pub mod device_impl;
-diff --git a/qemu/src/lib.rs b/qemu/src/lib.rs
-index 81abf9c..3f0491c 100644
---- a/qemu/src/lib.rs
-+++ b/qemu/src/lib.rs
-@@ -2,12 +2,17 @@
- #![allow(dead_code)]
  
- pub mod bindings;
-+pub use bindings::DeviceClass;
- pub use bindings::DeviceState;
- pub use bindings::Object;
-+pub use bindings::Property;
-+pub use bindings::PropertyInfo;
- pub use bindings::TypeInfo;
- 
- pub mod hw;
- pub use hw::core::device::DeviceMethods;
-+pub use hw::core::device_impl::DeviceImpl;
-+pub use hw::core::device_impl::DeviceTypeImpl;
- 
- pub mod qom;
- pub use qom::object::ObjectClassMethods;
-diff --git a/qemu/tests/main.rs b/qemu/tests/main.rs
-index a7cbeed..e499c14 100644
---- a/qemu/tests/main.rs
-+++ b/qemu/tests/main.rs
-@@ -5,9 +5,18 @@ use qemu::Object;
- use qemu::ObjectClassMethods;
- use qemu::ObjectImpl;
- 
-+use qemu::qdev_define_type;
-+use qemu::qdev_prop;
-+use qemu::DeviceImpl;
-+use qemu::DeviceMethods;
-+use qemu::DeviceState;
+ #[repr(C)]
+ pub struct Object {
+diff --git a/qemu/src/util/foreign.rs b/qemu/src/util/foreign.rs
+index 0b8b708..464400a 100644
+--- a/qemu/src/util/foreign.rs
++++ b/qemu/src/util/foreign.rs
+@@ -4,8 +4,11 @@
+ /// Traits to map between C structs and native Rust types.
+ /// Similar to glib-rs but a bit simpler and possibly more
+ /// idiomatic.
 +
-+use qemu::Result;
++use libc::c_char;
 +
-+use std::cell::RefCell;
-+
- #[derive(Default, ConstDefault)]
- struct TestConf {
--    #[allow(dead_code)]
-     foo: bool,
- }
- 
-@@ -27,6 +36,47 @@ qom_define_type!(
- 
- impl ObjectImpl for TestObject {}
- 
-+qdev_define_type!(
-+    c"test-device",
-+    TestDevice,
-+    TestConf,
-+    RefCell<TestState>;
-+    @extends DeviceState;
-+    @properties [qdev_prop!(bool, c"foo", TestDevice, true, foo)]
-+);
-+
-+impl TestDevice {
-+    #[allow(clippy::unused_self)]
-+    fn unparent(&self) {
-+        println!("unparent");
-+    }
-+
-+    #[allow(clippy::unused_self)]
-+    fn realize(&self) -> Result<()> {
-+        println!("realize");
-+        Ok(())
-+    }
-+
-+    #[allow(clippy::unused_self)]
-+    fn unrealize(&self) {
-+        println!("unrealize");
-+    }
-+}
-+
-+impl ObjectImpl for TestDevice {
-+    const UNPARENT: Option<fn(&TestDevice)> = Some(TestDevice::unparent);
-+}
-+
-+impl DeviceImpl for TestDevice {
-+    const REALIZE: Option<fn(&TestDevice) -> Result<()>> = Some(TestDevice::realize);
-+    const UNREALIZE: Option<fn(&TestDevice)> = Some(TestDevice::unrealize);
-+}
-+
- fn main() {
-     drop(TestObject::new());
-+
-+    let d = TestDevice::new();
-+    d.realize().unwrap();
-+    d.cold_reset();
-+    d.unparent();
- }
+ use std::borrow::Cow;
+-use std::ffi::{c_char, c_void, CStr, CString};
++use std::ffi::{c_void, CStr, CString};
+ use std::fmt;
+ use std::fmt::Debug;
+ use std::mem;
+@@ -166,7 +169,7 @@ pub trait FromForeign: CloneToForeign + Sized {
+     /// # use qemu::FromForeign;
+     /// let p = c"Hello, world!".as_ptr();
+     /// let s = unsafe {
+-    ///     String::cloned_from_foreign(p as *const std::ffi::c_char)
++    ///     String::cloned_from_foreign(p as *const libc::c_char)
+     /// };
+     /// assert_eq!(s, "Hello, world!");
+     /// ```
 -- 
 2.45.2
 
