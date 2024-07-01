@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DF6B91E4DB
-	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 18:09:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5820991E4EA
+	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 18:12:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOJZN-00012B-DP; Mon, 01 Jul 2024 12:07:57 -0400
+	id 1sOJZa-0001LB-6Q; Mon, 01 Jul 2024 12:08:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sOJZ4-0000fV-Au
- for qemu-devel@nongnu.org; Mon, 01 Jul 2024 12:07:41 -0400
-Received: from mail-lj1-x236.google.com ([2a00:1450:4864:20::236])
+ id 1sOJZ2-0000eB-Qm
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 12:07:37 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sOJZ0-0005Pe-4E
- for qemu-devel@nongnu.org; Mon, 01 Jul 2024 12:07:37 -0400
-Received: by mail-lj1-x236.google.com with SMTP id
- 38308e7fff4ca-2ebed33cb65so34368941fa.2
+ id 1sOJZ0-0005Pf-2k
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 12:07:36 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-42565697036so25316405e9.1
  for <qemu-devel@nongnu.org>; Mon, 01 Jul 2024 09:07:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1719850052; x=1720454852; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=v4q4C3V/5/Br3sgQcvb/M3Jy91TsPgVVMFf55olF/G8=;
- b=cQkVIHzAFfZYHIbtnxgnBEWvlfvpsqwFZDjsgzKE0MCvAhmF18bDafKcfzS4Im6Bi1
- 16g1+41mzoiEarkTIWC8DPr7UtTfAuuBvo7lrtuA7HVn9dxaLtJvAObC9VbVd2UuuwXZ
- no1liUXKBrkR0qLcFefKla8R+sVo12BDbzMVYHqeLmunnreVUcgBencK+N48mwF3WzwH
- Xx7sbxlV4G5w55wFQ3XzQ+XP6S9NcoJdbdN9TLks9JuRunkTu0wSS/I00IfRIKRPvzby
- 52QxcYcbE16eH70qn4OQ5o0MzXuJGSbbMPIlfeGGSq1Ycjk36UoHma3jUZse08+EfwWT
- Cbbw==
+ :reply-to; bh=n2HEIr2aWh0/VnzuRGuJ20MxeoVg0gSXyflQZjqPsQI=;
+ b=ei9uNi0rMElC3vF+McJqdu1xBFGRADIvLgpiWBzr1txfJsExNjhfTrb36n68ceclJl
+ DpzClZMMrddQNCMxTwxoWk6AJFD2gmilH+6UKi9lFrfXmwrIDA3583P338+7XxFl05cX
+ 450vSMsV6I7+xGGcECodyimjLZtnm9ByceRhOL0GH/suLQFhW+UI0MSIBHSATihEdYH3
+ tugqEI2lFAy+TAofP6OD6zOEugH5T68kg6ahHurvWNLwoipMcEz4sZ9h4k/wke1WqOu/
+ P0aZb8xkTGosQkNU1CX2zLxuHlD1E1tAbqNQc83++J7sg2JxS0bBOH8wNCFd1QjPxRIU
+ cvEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1719850052; x=1720454852;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=v4q4C3V/5/Br3sgQcvb/M3Jy91TsPgVVMFf55olF/G8=;
- b=Hxcl8dCgn8P2+4FxCGaRNFd0OM+UistWMOTnI3LuM5zRAwnn77IJEZuvuY6RMwiYFj
- JhXKSONQoX8LbYqyO6wGZeFlBNsvwPag3iOFMAWUu2URkKMihxHGR0kYefrCRN1VXjm/
- /+MnwarWcJxJwkofccJfyQYVRiwppz6b4XwLbWymmJVc89EGCs2N14OqWpu6WZQqDAhA
- T3CY6zSI21nTzq2ATjzfDAjeFan0FRBd6tXfB157ELmbXfulajJqyj/yZVkh4Vjpw7WS
- jBxT05sN2sZvyIt1TUaCzbxp1PXjcVXsOJa2987meoBwuyAsWjHa10fyOWAmuZ5b9PZD
- DmpA==
-X-Gm-Message-State: AOJu0YyyfjXGniUiJlGileHQAjz7eVa13AVo4t5a1VI/6nR9rGdhqd5S
- spbhl1FStAqK6J4EhnOqsYBm+gxmUMs/cjrx5lRUBpF9s+QWVAgQD3hRrxrLVuEQsCqlTOdpITu
- 6m3g=
-X-Google-Smtp-Source: AGHT+IE0oFsxKRuBP2C5z0aA/d7lRQ4IhcwM+RRTfrljJTAy+9ZCD57/CsrMRkSBjYo2nxXo2cAKdw==
-X-Received: by 2002:a2e:bc0d:0:b0:2ec:18e5:e686 with SMTP id
- 38308e7fff4ca-2ee5e6f2727mr50981591fa.33.1719850051757; 
- Mon, 01 Jul 2024 09:07:31 -0700 (PDT)
+ bh=n2HEIr2aWh0/VnzuRGuJ20MxeoVg0gSXyflQZjqPsQI=;
+ b=RHK1DMYOYdubesGYlJLYHBdHcOImKwIumbDR7YHOS009H8Ke8sMk5GBwmzWuUKLieH
+ Zhxtsk5O9eK68qV6pkvgyFURd44HcMAyVXEGw0WTGHMBjVFxuIAVbItTbLVnA4cy/E5B
+ +b0HBwy23S8f7D5lUSJ0ScBEoZjG6IWXXdJvCIu1ARRp1OzBMRr8BftsiryRPchYJBad
+ Zq7BlqcefW+mhRX5ZZFt/TgWsaJI/k2CXvWaJyA1SypRClh/Y4PyusnrzB6ezhlNVh79
+ mzn1BcT4Ce//+b6NgxNjeMphSy5qPQgVVbsAosD/zZRxjNeV1V3UQqyTsQZuYNAxgJhf
+ LKnw==
+X-Gm-Message-State: AOJu0YyoY+lLRBe1CSNJNmUgdExJJh31vj5alSmm5yqElLYAdu2FAuw0
+ 6kSZIaxyv879tctqhMoRVx37OpI6YRWkIiXuuGWhnS4tEuoVC1jKP1QB3QqyaC6hZo+8lyc9IQh
+ s8uE=
+X-Google-Smtp-Source: AGHT+IFoZGZ2xOn6DoNX48Cyob/sCWMqhmcOmKkrPwzRqng0EGHIwXNsWlrU9iXNFHY4U7Ugdg9AJw==
+X-Received: by 2002:a05:600c:1d14:b0:424:a401:f012 with SMTP id
+ 5b1f17b1804b1-4257984c6cfmr55374295e9.3.1719850052223; 
+ Mon, 01 Jul 2024 09:07:32 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  5b1f17b1804b1-4256af557fesm161952135e9.11.2024.07.01.09.07.31
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 01 Jul 2024 09:07:31 -0700 (PDT)
+ Mon, 01 Jul 2024 09:07:32 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 03/29] hw/misc: Implement mailbox properties for customer OTP
- and device specific private keys
-Date: Mon,  1 Jul 2024 17:07:03 +0100
-Message-Id: <20240701160729.1910763-4-peter.maydell@linaro.org>
+Subject: [PULL 04/29] tests/avocado: update firmware for sbsa-ref
+Date: Mon,  1 Jul 2024 17:07:04 +0100
+Message-Id: <20240701160729.1910763-5-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240701160729.1910763-1-peter.maydell@linaro.org>
 References: <20240701160729.1910763-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::236;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x236.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,196 +92,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Rayhan Faizel <rayhan.faizel@gmail.com>
+From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
 
-Four mailbox properties are implemented as follows:
-1. Customer OTP: GET_CUSTOMER_OTP and SET_CUSTOMER_OTP
-2. Device-specific private key: GET_PRIVATE_KEY and
-SET_PRIVATE_KEY.
+Update firmware to have graphics card memory fix from EDK2 commit
+c1d1910be6e04a8b1a73090cf2881fb698947a6e:
 
-The customer OTP is located in the rows 36-43. The device-specific private key
-is located in the rows 56-63.
+    OvmfPkg/QemuVideoDxe: add feature PCD to remap framebuffer W/C
 
-The customer OTP can be locked with the magic numbers 0xffffffff 0xaffe0000
-when running the SET_CUSTOMER_OTP mailbox command. Bit 6 of row 32 indicates
-this lock, which is undocumented. The lock also applies to the device-specific
-private key.
+    Some platforms (such as SBSA-QEMU on recent builds of the emulator) only
+    tolerate misaligned accesses to normal memory, and raise alignment
+    faults on such accesses to device memory, which is the default for PCIe
+    MMIO BARs.
 
-Signed-off-by: Rayhan Faizel <rayhan.faizel@gmail.com>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+    When emulating a PCIe graphics controller, the framebuffer is typically
+    exposed via a MMIO BAR, while the disposition of the region is closer to
+    memory (no side effects on reads or writes, except for the changing
+    picture on the screen; direct random access to any pixel in the image).
+
+    In order to permit the use of such controllers on platforms that only
+    tolerate these types of accesses for normal memory, it is necessary to
+    remap the memory. Use the DXE services to set the desired capabilities
+    and attributes.
+
+    Hide this behavior under a feature PCD so only platforms that really
+    need it can enable it. (OVMF on x86 has no need for this)
+
+With this fix enabled we can boot sbsa-ref with more than one cpu core.
+
+Signed-off-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-id: 20240620-b4-new-firmware-v3-1-29a3a2f1be1e@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- include/hw/arm/raspberrypi-fw-defs.h |  2 +
- include/hw/misc/bcm2835_property.h   |  2 +
- hw/arm/bcm2835_peripherals.c         |  2 +
- hw/misc/bcm2835_property.c           | 87 ++++++++++++++++++++++++++++
- 4 files changed, 93 insertions(+)
+ tests/avocado/machine_aarch64_sbsaref.py | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/include/hw/arm/raspberrypi-fw-defs.h b/include/hw/arm/raspberrypi-fw-defs.h
-index 8b404e05336..60b8e5b4513 100644
---- a/include/hw/arm/raspberrypi-fw-defs.h
-+++ b/include/hw/arm/raspberrypi-fw-defs.h
-@@ -56,6 +56,7 @@ enum rpi_firmware_property_tag {
-     RPI_FWREQ_GET_THROTTLED =                          0x00030046,
-     RPI_FWREQ_GET_CLOCK_MEASURED =                     0x00030047,
-     RPI_FWREQ_NOTIFY_REBOOT =                          0x00030048,
-+    RPI_FWREQ_GET_PRIVATE_KEY =                        0x00030081,
-     RPI_FWREQ_SET_CLOCK_STATE =                        0x00038001,
-     RPI_FWREQ_SET_CLOCK_RATE =                         0x00038002,
-     RPI_FWREQ_SET_VOLTAGE =                            0x00038003,
-@@ -73,6 +74,7 @@ enum rpi_firmware_property_tag {
-     RPI_FWREQ_SET_PERIPH_REG =                         0x00038045,
-     RPI_FWREQ_GET_POE_HAT_VAL =                        0x00030049,
-     RPI_FWREQ_SET_POE_HAT_VAL =                        0x00038049,
-+    RPI_FWREQ_SET_PRIVATE_KEY =                        0x00038081,
-     RPI_FWREQ_SET_POE_HAT_VAL_OLD =                    0x00030050,
-     RPI_FWREQ_NOTIFY_XHCI_RESET =                      0x00030058,
-     RPI_FWREQ_GET_REBOOT_FLAGS =                       0x00030064,
-diff --git a/include/hw/misc/bcm2835_property.h b/include/hw/misc/bcm2835_property.h
-index ba8896610cc..2f93fd0c757 100644
---- a/include/hw/misc/bcm2835_property.h
-+++ b/include/hw/misc/bcm2835_property.h
-@@ -11,6 +11,7 @@
- #include "hw/sysbus.h"
- #include "net/net.h"
- #include "hw/display/bcm2835_fb.h"
-+#include "hw/nvram/bcm2835_otp.h"
- #include "qom/object.h"
+diff --git a/tests/avocado/machine_aarch64_sbsaref.py b/tests/avocado/machine_aarch64_sbsaref.py
+index 6bb82f2a03c..e854ec6a1af 100644
+--- a/tests/avocado/machine_aarch64_sbsaref.py
++++ b/tests/avocado/machine_aarch64_sbsaref.py
+@@ -37,18 +37,18 @@ def fetch_firmware(self):
  
- #define TYPE_BCM2835_PROPERTY "bcm2835-property"
-@@ -26,6 +27,7 @@ struct BCM2835PropertyState {
-     MemoryRegion iomem;
-     qemu_irq mbox_irq;
-     BCM2835FBState *fbdev;
-+    BCM2835OTPState *otp;
+         Used components:
  
-     MACAddr macaddr;
-     uint32_t board_rev;
-diff --git a/hw/arm/bcm2835_peripherals.c b/hw/arm/bcm2835_peripherals.c
-index 7d735bb56cf..ac153a96b9a 100644
---- a/hw/arm/bcm2835_peripherals.c
-+++ b/hw/arm/bcm2835_peripherals.c
-@@ -132,6 +132,8 @@ static void raspi_peripherals_base_init(Object *obj)
-                                    OBJECT(&s->fb));
-     object_property_add_const_link(OBJECT(&s->property), "dma-mr",
-                                    OBJECT(&s->gpu_bus_mr));
-+    object_property_add_const_link(OBJECT(&s->property), "otp",
-+                                   OBJECT(&s->otp));
+-        - Trusted Firmware 2.11.0
+-        - Tianocore EDK2 stable202405
+-        - Tianocore EDK2-platforms commit 4bbd0ed
++        - Trusted Firmware         v2.11.0
++        - Tianocore EDK2           4d4f569924
++        - Tianocore EDK2-platforms 3f08401
  
-     /* Extended Mass Media Controller */
-     object_initialize_child(obj, "sdhci", &s->sdhci, TYPE_SYSBUS_SDHCI);
-diff --git a/hw/misc/bcm2835_property.c b/hw/misc/bcm2835_property.c
-index bdd9a6bbcec..63de3db6215 100644
---- a/hw/misc/bcm2835_property.c
-+++ b/hw/misc/bcm2835_property.c
-@@ -32,6 +32,7 @@ static void bcm2835_property_mbox_push(BCM2835PropertyState *s, uint32_t value)
-     uint32_t tmp;
-     int n;
-     uint32_t offset, length, color;
-+    uint32_t start_num, number, otp_row;
+         """
  
-     /*
-      * Copy the current state of the framebuffer config; we will update
-@@ -322,6 +323,89 @@ static void bcm2835_property_mbox_push(BCM2835PropertyState *s, uint32_t value)
-                         0);
-             resplen = VCHI_BUSADDR_SIZE;
-             break;
-+
-+        /* Customer OTP */
-+
-+        case RPI_FWREQ_GET_CUSTOMER_OTP:
-+            start_num = ldl_le_phys(&s->dma_as, value + 12);
-+            number = ldl_le_phys(&s->dma_as, value + 16);
-+
-+            resplen = 8 + 4 * number;
-+
-+            for (n = start_num; n < start_num + number &&
-+                 n < BCM2835_OTP_CUSTOMER_OTP_LEN; n++) {
-+                otp_row = bcm2835_otp_get_row(s->otp,
-+                                              BCM2835_OTP_CUSTOMER_OTP + n);
-+                stl_le_phys(&s->dma_as,
-+                            value + 20 + ((n - start_num) << 2), otp_row);
-+            }
-+            break;
-+        case RPI_FWREQ_SET_CUSTOMER_OTP:
-+            start_num = ldl_le_phys(&s->dma_as, value + 12);
-+            number = ldl_le_phys(&s->dma_as, value + 16);
-+
-+            resplen = 4;
-+
-+            /* Magic numbers to permanently lock customer OTP */
-+            if (start_num == BCM2835_OTP_LOCK_NUM1 &&
-+                number == BCM2835_OTP_LOCK_NUM2) {
-+                bcm2835_otp_set_row(s->otp,
-+                                    BCM2835_OTP_ROW_32,
-+                                    BCM2835_OTP_ROW_32_LOCK);
-+                break;
-+            }
-+
-+            /* If row 32 has the lock bit, don't allow further writes */
-+            if (bcm2835_otp_get_row(s->otp, BCM2835_OTP_ROW_32) &
-+                                    BCM2835_OTP_ROW_32_LOCK) {
-+                break;
-+            }
-+
-+            for (n = start_num; n < start_num + number &&
-+                 n < BCM2835_OTP_CUSTOMER_OTP_LEN; n++) {
-+                otp_row = ldl_le_phys(&s->dma_as,
-+                                      value + 20 + ((n - start_num) << 2));
-+                bcm2835_otp_set_row(s->otp,
-+                                    BCM2835_OTP_CUSTOMER_OTP + n, otp_row);
-+            }
-+            break;
-+
-+        /* Device-specific private key */
-+
-+        case RPI_FWREQ_GET_PRIVATE_KEY:
-+            start_num = ldl_le_phys(&s->dma_as, value + 12);
-+            number = ldl_le_phys(&s->dma_as, value + 16);
-+
-+            resplen = 8 + 4 * number;
-+
-+            for (n = start_num; n < start_num + number &&
-+                 n < BCM2835_OTP_PRIVATE_KEY_LEN; n++) {
-+                otp_row = bcm2835_otp_get_row(s->otp,
-+                                              BCM2835_OTP_PRIVATE_KEY + n);
-+                stl_le_phys(&s->dma_as,
-+                            value + 20 + ((n - start_num) << 2), otp_row);
-+            }
-+            break;
-+        case RPI_FWREQ_SET_PRIVATE_KEY:
-+            start_num = ldl_le_phys(&s->dma_as, value + 12);
-+            number = ldl_le_phys(&s->dma_as, value + 16);
-+
-+            resplen = 4;
-+
-+            /* If row 32 has the lock bit, don't allow further writes */
-+            if (bcm2835_otp_get_row(s->otp, BCM2835_OTP_ROW_32) &
-+                                    BCM2835_OTP_ROW_32_LOCK) {
-+                break;
-+            }
-+
-+            for (n = start_num; n < start_num + number &&
-+                 n < BCM2835_OTP_PRIVATE_KEY_LEN; n++) {
-+                otp_row = ldl_le_phys(&s->dma_as,
-+                                      value + 20 + ((n - start_num) << 2));
-+                bcm2835_otp_set_row(s->otp,
-+                                    BCM2835_OTP_PRIVATE_KEY + n, otp_row);
-+            }
-+            break;
-         default:
-             qemu_log_mask(LOG_UNIMP,
-                           "bcm2835_property: unhandled tag 0x%08x\n", tag);
-@@ -449,6 +533,9 @@ static void bcm2835_property_realize(DeviceState *dev, Error **errp)
-     s->dma_mr = MEMORY_REGION(obj);
-     address_space_init(&s->dma_as, s->dma_mr, TYPE_BCM2835_PROPERTY "-memory");
- 
-+    obj = object_property_get_link(OBJECT(dev), "otp", &error_abort);
-+    s->otp = BCM2835_OTP(obj);
-+
-     /* TODO: connect to MAC address of USB NIC device, once we emulate it */
-     qemu_macaddr_default_if_unset(&s->macaddr);
- 
+         # Secure BootRom (TF-A code)
+         fs0_xz_url = (
+             "https://artifacts.codelinaro.org/artifactory/linaro-419-sbsa-ref/"
+-            "20240528-140808/edk2/SBSA_FLASH0.fd.xz"
++            "20240619-148232/edk2/SBSA_FLASH0.fd.xz"
+         )
+-        fs0_xz_hash = "fa6004900b67172914c908b78557fec4d36a5f784f4c3dd08f49adb75e1892a9"
++        fs0_xz_hash = "0c954842a590988f526984de22e21ae0ab9cb351a0c99a8a58e928f0c7359cf7"
+         tar_xz_path = self.fetch_asset(fs0_xz_url, asset_hash=fs0_xz_hash,
+                                       algorithm='sha256')
+         archive.extract(tar_xz_path, self.workdir)
+@@ -57,9 +57,9 @@ def fetch_firmware(self):
+         # Non-secure rom (UEFI and EFI variables)
+         fs1_xz_url = (
+             "https://artifacts.codelinaro.org/artifactory/linaro-419-sbsa-ref/"
+-            "20240528-140808/edk2/SBSA_FLASH1.fd.xz"
++            "20240619-148232/edk2/SBSA_FLASH1.fd.xz"
+         )
+-        fs1_xz_hash = "5f3747d4000bc416d9641e33ff4ac60c3cc8cb74ca51b6e932e58531c62eb6f7"
++        fs1_xz_hash = "c6ec39374c4d79bb9e9cdeeb6db44732d90bb4a334cec92002b3f4b9cac4b5ee"
+         tar_xz_path = self.fetch_asset(fs1_xz_url, asset_hash=fs1_xz_hash,
+                                       algorithm='sha256')
+         archive.extract(tar_xz_path, self.workdir)
 -- 
 2.34.1
 
