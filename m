@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B083D91E4F1
-	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 18:12:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59D7691E4DA
+	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 18:09:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOJa0-0002Uf-Lz; Mon, 01 Jul 2024 12:08:36 -0400
+	id 1sOJZv-0001rE-P1; Mon, 01 Jul 2024 12:08:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sOJZI-0000wl-92
- for qemu-devel@nongnu.org; Mon, 01 Jul 2024 12:07:53 -0400
-Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
+ id 1sOJZI-0000wj-5U
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 12:07:54 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sOJZE-0005Uz-Cn
- for qemu-devel@nongnu.org; Mon, 01 Jul 2024 12:07:52 -0400
-Received: by mail-lf1-x12b.google.com with SMTP id
- 2adb3069b0e04-52cd717ec07so4066287e87.0
- for <qemu-devel@nongnu.org>; Mon, 01 Jul 2024 09:07:47 -0700 (PDT)
+ id 1sOJZE-0005V6-DM
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 12:07:51 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-424a3ccd0c0so23522725e9.1
+ for <qemu-devel@nongnu.org>; Mon, 01 Jul 2024 09:07:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719850066; x=1720454866; darn=nongnu.org;
+ d=linaro.org; s=google; t=1719850067; x=1720454867; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=XF99cI8EMXtHQdN2r/6udNjoGMUqreNEU/+MKGXXDD0=;
- b=HDcBAjceT7QOlkkAtv3vioO0BsUdkIB6V3BSWImhX5sNSyf2u5YkIp6Jj4Gz6FWjG8
- Bf8MQrgUx1VDNekXsEoMNY0TWw1zTc6XHCZfZ8sq2KMQ6mNcJEOE8fkhhG6RXyODllVK
- DWsJfHs0CvL8KDhsJQ6Be4ABtjEp1zISaJ9Q02tmxJpwl0rxwhvh1kfee9bUYBSs2Obg
- HtAXPTm0y1UvgGIjxbRXseXXjAxYtTq9p18lgV3Sr2xQ9g05GmT4iQEAsFyIlb/RlU8/
- Eal2yz3wBImy7DvfwitMljCQms2wctLgt0ic2uSSo9sznSjPPNraOgPixIXiTNm8afrV
- 6p+w==
+ :reply-to; bh=jDxsxwb6wke90AJTR7bX+v27HwUxef5Wp/hVnhRyzbY=;
+ b=WVRt26Jwrr5RVBjnVcHP0r2HRnMgK2xzX66Hw+dlMB3IGXxebtC86e7NVjudUe7nP/
+ DBBgSvCsE7GBCOM3r8q1er3p7KkMzLeeHOUH1VImAo2eNVGvd40Uyt416Cz7+DMCbOZR
+ i0yrJNBpnMsuPCTdZVtfqKDy5hKBNnojlrNwoqNaww0C/TIyV4jZxW58QpTZa1anXalj
+ njdiLfGAwh58q/ymBobhuw7DefXyvZ7tvhHh4Igd+1RnYu6KT4fC8VDcQiZXb2Oi8LhI
+ NTaMVYWw66OwhfPcrOAVcOAK/bOhTn5renqIzfdIPiOJCHzotAxbTvyWF4vi1MOQsBYn
+ 3tWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719850066; x=1720454866;
+ d=1e100.net; s=20230601; t=1719850067; x=1720454867;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=XF99cI8EMXtHQdN2r/6udNjoGMUqreNEU/+MKGXXDD0=;
- b=gdw7bR6QmHbygVZmHdLw0Ux4WeTN/4v2o5AgA3su/EagUOYPP/XHbMTAyjF49F2h/N
- SE6Tm9SOjPeeKc0ltPwkreVLYX+eWc8izC/7Qg0/lqWFZ2AoEhkbk0h8bKg9MjUyc/iy
- hQqdCBblykpNIvYwDp4/HKxhp9+o7F7l2BZBAwW3HPJc3fVzxbq7yRWOy+8+lrjYHUIO
- iIHLSyS1qYkdKZoCWEB3HXpu03EwtVFn6ScPry5Ixpi8OxHg3bu2ZxIuyHRZNp8lxjj8
- ep41u8vC00WZmStUqVWFq0xj5drLXtZ/VjXsOcPdJcZexLzP0yrjv6qRwaylQ0bRTtwJ
- TQ2g==
-X-Gm-Message-State: AOJu0Yy6MAt90lJTfbEXWU3wJufbMxPICSQP9Tm5JG4q5cxhOYIAKMpz
- Co5FDgYeIpmE0enOdetspaXZPzlpBQywkD3ysGu5aj4No3iTDzH22GB7hc13FCmuO5HshE7F5WG
- +2lU=
-X-Google-Smtp-Source: AGHT+IHXTWJOtnXmoULvk3S4KH6gxBbh7JUWQuQXA+RAAUlQ45ONdVcN8rPuFwRpTzp3k8WsmtovuA==
-X-Received: by 2002:a05:6512:3c9f:b0:52e:7a8c:35a0 with SMTP id
- 2adb3069b0e04-52e82651c44mr5297140e87.7.1719850066523; 
- Mon, 01 Jul 2024 09:07:46 -0700 (PDT)
+ bh=jDxsxwb6wke90AJTR7bX+v27HwUxef5Wp/hVnhRyzbY=;
+ b=bcR8am2+50IGCXHVGnNfgEwFODTBu4hlR43cReDAqAgbqSfypPaD2aomcrxceGoKr+
+ XPCRa03vkL4g1xvcWLfvewxLclGxAtk7BzNV9vGh41KlgaavSvdkt//m93tgluXPb8qB
+ cmoSGukTjq93UiCp02w94qXbfH4pYO/9mvGef2AyomDaRvk4nT9JYKYlq9GTqfkW9/BK
+ itRKEQjNuKJ1TpDWP0Ty5vyLKZ3SRKyQozzX2p/5JS/TaY7W3c27ykS9vro6Sg4Il6ij
+ G6vp4tNw5149jXoPwz4Eu7NViCC0IyK2XF5l2f5NHCef0aSWlowGw3D4fx8iz0QmTTYQ
+ 7H2g==
+X-Gm-Message-State: AOJu0Yz8McT3TIXNe+DEgqgV3Sr++6QObkqlb3Fd2BwdNjXIx9vPIN2c
+ qG5TGm3Ywfx1hcyeyLxwGJo21PjTfb1MOAN9yONDdoG2zAAIXIh+xey2Yy5HGmije4LQCD5F0KR
+ gL9E=
+X-Google-Smtp-Source: AGHT+IGsuKXI3YaXResEN87ED5WxbotncR7N7Zq1ktyaNgcBXHIXtK2IWJ9jKerW5exS0q3GhioWyQ==
+X-Received: by 2002:a05:600c:6a8d:b0:425:77b4:366d with SMTP id
+ 5b1f17b1804b1-4257a02f3f6mr41316475e9.11.1719850067025; 
+ Mon, 01 Jul 2024 09:07:47 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  5b1f17b1804b1-4256af557fesm161952135e9.11.2024.07.01.09.07.46
@@ -59,18 +59,18 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Mon, 01 Jul 2024 09:07:46 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 28/29] hw/misc: In STM32L4x5 EXTI,
- correct configurable interrupts
-Date: Mon,  1 Jul 2024 17:07:28 +0100
-Message-Id: <20240701160729.1910763-29-peter.maydell@linaro.org>
+Subject: [PULL 29/29] tests/qtest: Ensure STM32L4x5 EXTI state is correct at
+ the end of QTests
+Date: Mon,  1 Jul 2024 17:07:29 +0100
+Message-Id: <20240701160729.1910763-30-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240701160729.1910763-1-peter.maydell@linaro.org>
 References: <20240701160729.1910763-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,101 +95,73 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Inès Varhol <ines.varhol@telecom-paris.fr>
 
-The implementation of configurable interrupts (interrupts supporting
-edge selection) was incorrectly expecting alternating input levels :
-this commits adds a new status field `irq_levels` to actually detect
-edges.
+EXTI's new field `irq_levels` tracks irq levels between tests when using
+`global_qtest`.
+This happens in `stm32l4x5_exti-test.c`, `stm32l4x5_syscfg-test.c` and
+`stm32l4x5_gpio-test.c` (`dm163.c` doesn't use `global_qtest`).
+
+To ensure that `irq_levels` has the same value before and after each
+QTest, this commit toggles back the irq lines that were changed at the
+end of each problematic test. Most QTests were already doing this.
 
 Signed-off-by: Inès Varhol <ines.varhol@telecom-paris.fr>
-Message-id: 20240629110800.539969-2-ines.varhol@telecom-paris.fr
+Message-id: 20240629110800.539969-3-ines.varhol@telecom-paris.fr
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- include/hw/misc/stm32l4x5_exti.h |  2 ++
- hw/misc/stm32l4x5_exti.c         | 28 +++++++++++++---------------
- 2 files changed, 15 insertions(+), 15 deletions(-)
+ tests/qtest/stm32l4x5_exti-test.c   | 8 ++++++++
+ tests/qtest/stm32l4x5_syscfg-test.c | 2 +-
+ 2 files changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/include/hw/misc/stm32l4x5_exti.h b/include/hw/misc/stm32l4x5_exti.h
-index be961d2f01f..55f763fa376 100644
---- a/include/hw/misc/stm32l4x5_exti.h
-+++ b/include/hw/misc/stm32l4x5_exti.h
-@@ -45,6 +45,8 @@ struct Stm32l4x5ExtiState {
-     uint32_t swier[EXTI_NUM_REGISTER];
-     uint32_t pr[EXTI_NUM_REGISTER];
+diff --git a/tests/qtest/stm32l4x5_exti-test.c b/tests/qtest/stm32l4x5_exti-test.c
+index 7092860b9b7..7e39c992fd3 100644
+--- a/tests/qtest/stm32l4x5_exti-test.c
++++ b/tests/qtest/stm32l4x5_exti-test.c
+@@ -448,6 +448,9 @@ static void test_masked_interrupt(void)
+     g_assert_cmphex(exti_readl(EXTI_PR1), ==, 0x00000000);
+     /* Check that the interrupt isn't pending in NVIC */
+     g_assert_false(check_nvic_pending(EXTI1_IRQ));
++
++    /* Clean EXTI */
++    exti_set_irq(1, 0);
+ }
  
-+    /* used for edge detection */
-+    uint32_t irq_levels[EXTI_NUM_REGISTER];
-     qemu_irq irq[EXTI_NUM_INTERRUPT_OUT_LINES];
- };
+ static void test_interrupt(void)
+@@ -498,6 +501,9 @@ static void test_interrupt(void)
+     /* Clean NVIC */
+     unpend_nvic_irq(EXTI1_IRQ);
+     g_assert_false(check_nvic_pending(EXTI1_IRQ));
++
++    /* Clean EXTI */
++    exti_set_irq(1, 0);
+ }
  
-diff --git a/hw/misc/stm32l4x5_exti.c b/hw/misc/stm32l4x5_exti.c
-index 495a0004ab4..6a2ec62d785 100644
---- a/hw/misc/stm32l4x5_exti.c
-+++ b/hw/misc/stm32l4x5_exti.c
-@@ -88,6 +88,7 @@ static void stm32l4x5_exti_reset_hold(Object *obj, ResetType type)
-         s->ftsr[bank] = 0x00000000;
-         s->swier[bank] = 0x00000000;
-         s->pr[bank] = 0x00000000;
-+        s->irq_levels[bank] = 0x00000000;
+ static void test_orred_interrupts(void)
+@@ -531,6 +537,8 @@ static void test_orred_interrupts(void)
+ 
+         unpend_nvic_irq(EXTI5_9_IRQ);
+         g_assert_false(check_nvic_pending(EXTI5_9_IRQ));
++
++        exti_set_irq(i, 0);
      }
  }
  
-@@ -102,27 +103,23 @@ static void stm32l4x5_exti_set_irq(void *opaque, int irq, int level)
-     /* Shift the value to enable access in x2 registers. */
-     irq %= EXTI_MAX_IRQ_PER_BANK;
+diff --git a/tests/qtest/stm32l4x5_syscfg-test.c b/tests/qtest/stm32l4x5_syscfg-test.c
+index 1cdf8f05c80..258417cd889 100644
+--- a/tests/qtest/stm32l4x5_syscfg-test.c
++++ b/tests/qtest/stm32l4x5_syscfg-test.c
+@@ -221,10 +221,10 @@ static void test_interrupt(void)
+     g_assert_true(get_irq(1));
  
-+    if (level == extract32(s->irq_levels[bank], irq, 1)) {
-+        /* No change in IRQ line state: do nothing */
-+        return;
-+    }
-+    s->irq_levels[bank] = deposit32(s->irq_levels[bank], irq, 1, level);
-+
-     /* If the interrupt is masked, pr won't be raised */
-     if (!extract32(s->imr[bank], irq, 1)) {
-         return;
-     }
- 
--    if (((1 << irq) & s->rtsr[bank]) && level) {
--        /* Rising Edge */
--        s->pr[bank] |= 1 << irq;
--        qemu_irq_pulse(s->irq[oirq]);
--    } else if (((1 << irq) & s->ftsr[bank]) && !level) {
--        /* Falling Edge */
-+    if ((level && extract32(s->rtsr[bank], irq, 1)) ||
-+        (!level && extract32(s->ftsr[bank], irq, 1))) {
-+
-         s->pr[bank] |= 1 << irq;
-         qemu_irq_pulse(s->irq[oirq]);
-     }
--    /*
--     * In the following situations :
--     * - falling edge but rising trigger selected
--     * - rising edge but falling trigger selected
--     * - no trigger selected
--     * No action is required
--     */
+     /* Clean the test */
+-    syscfg_writel(SYSCFG_EXTICR1, 0x00000000);
+     syscfg_set_irq(0, 0);
+     /* irq 15 is high at reset because GPIOA15 is high at reset */
+     syscfg_set_irq(17, 0);
++    syscfg_writel(SYSCFG_EXTICR1, 0x00000000);
  }
  
- static uint64_t stm32l4x5_exti_read(void *opaque, hwaddr addr,
-@@ -255,8 +252,8 @@ static void stm32l4x5_exti_init(Object *obj)
- 
- static const VMStateDescription vmstate_stm32l4x5_exti = {
-     .name = TYPE_STM32L4X5_EXTI,
--    .version_id = 1,
--    .minimum_version_id = 1,
-+    .version_id = 2,
-+    .minimum_version_id = 2,
-     .fields = (VMStateField[]) {
-         VMSTATE_UINT32_ARRAY(imr, Stm32l4x5ExtiState, EXTI_NUM_REGISTER),
-         VMSTATE_UINT32_ARRAY(emr, Stm32l4x5ExtiState, EXTI_NUM_REGISTER),
-@@ -264,6 +261,7 @@ static const VMStateDescription vmstate_stm32l4x5_exti = {
-         VMSTATE_UINT32_ARRAY(ftsr, Stm32l4x5ExtiState, EXTI_NUM_REGISTER),
-         VMSTATE_UINT32_ARRAY(swier, Stm32l4x5ExtiState, EXTI_NUM_REGISTER),
-         VMSTATE_UINT32_ARRAY(pr, Stm32l4x5ExtiState, EXTI_NUM_REGISTER),
-+        VMSTATE_UINT32_ARRAY(irq_levels, Stm32l4x5ExtiState, EXTI_NUM_REGISTER),
-         VMSTATE_END_OF_LIST()
-     }
- };
+ static void test_irq_pin_multiplexer(void)
 -- 
 2.34.1
 
