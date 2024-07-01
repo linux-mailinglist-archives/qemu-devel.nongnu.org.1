@@ -2,61 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 172EA91D797
-	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 07:42:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5037C91D6CC
+	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 06:09:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sO9mj-0001CL-Fg; Mon, 01 Jul 2024 01:41:05 -0400
+	id 1sO8L8-0004zB-O5; Mon, 01 Jul 2024 00:08:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lijiayi@eswincomputing.com>)
- id 1sO6kA-0006ar-Qf
- for qemu-devel@nongnu.org; Sun, 30 Jun 2024 22:26:14 -0400
-Received: from azure-sdnproxy.icoremail.net ([20.231.56.155])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <lijiayi@eswincomputing.com>) id 1sO6k8-00032h-TR
- for qemu-devel@nongnu.org; Sun, 30 Jun 2024 22:26:14 -0400
-Received: from E0005096DT.eswin.cn (unknown [10.64.112.173])
- by app1 (Coremail) with SMTP id TAJkCgDHWuK3E4JmOcQSAA--.23755S4;
- Mon, 01 Jul 2024 10:26:02 +0800 (CST)
-From: Jiayi Li <lijiayi@eswincomputing.com>
-To: qemu-devel@nongnu.org, bmeng.cn@gmail.com, dbarboza@ventanamicro.com,
- luweu1518@gmail.com, zhiwei_liu@linux.alibaba.com
-Cc: lijiayi@eswincomputing.com
-Subject: [PATCH] target/riscv: Validate the mode in write_vstvec
-Date: Mon,  1 Jul 2024 10:25:53 +0800
-Message-Id: <20240701022553.1982-1-lijiayi@eswincomputing.com>
-X-Mailer: git-send-email 2.39.2.windows.1
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sO8Kx-0004yy-BV
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 00:08:19 -0400
+Received: from mgamail.intel.com ([192.198.163.14])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sO8Ku-0004u8-P4
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 00:08:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1719806896; x=1751342896;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=I78+8o4y5TO/43sNey+piGJbq6eN+6lk2q0DLezIb5A=;
+ b=ZCxYDK6dk0nXf05cDv50nAyGL7xSC5PVTjyaMH1U0za+eyBtT8qjE4jf
+ oS7WDFPZINkFn8YQM3m4EDG8rY9lRU2+Asbm91MdOD7+zkaOD3X7SFusX
+ 6VYrvrhRtnvz6ToonbBilF+iOd33zcmTk+ZQcC2mH/0fPQ8Tl+r3Y5P0b
+ 5OE2vCLGe5F6kLX1qZx024ZPZJSG7OwK2aHeXVowaTtd4JT9YrSvHwaVg
+ jwKjUkaPC4KRNWpqw+Y0pVO1OeYs9d1lD1aRIE5krHOLA6GOy+RTI8ZVO
+ YYgzxuTeCP+wOM1/mUhn7fSzYUoKjqfDyFneLyDL8u8SVCySblnukuxC3 A==;
+X-CSE-ConnectionGUID: Mt75o2f1Qq+XhuHD1N75DQ==
+X-CSE-MsgGUID: krduxK+GSqGyOSkTD4mMqQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11119"; a="17128006"
+X-IronPort-AV: E=Sophos;i="6.09,175,1716274800"; d="scan'208";a="17128006"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Jun 2024 21:08:11 -0700
+X-CSE-ConnectionGUID: VzCKJDD4Q/SCgmtEWvVBEw==
+X-CSE-MsgGUID: 2dgP7byzR3GxMdsw541gEA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,175,1716274800"; d="scan'208";a="45352101"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by fmviesa008.fm.intel.com with ESMTP; 30 Jun 2024 21:08:11 -0700
+Date: Mon, 1 Jul 2024 12:23:46 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Xiaoyao Li <xiaoyao.li@intel.com>, qemu-devel <qemu-devel@nongnu.org>,
+ John Allen <john.allen@amd.com>
+Subject: Re: [PATCH 2/2] target/i386: drop AMD machine check bits from Intel
+ CPUID
+Message-ID: <ZoIvUtVOgK91UuvF@intel.com>
+References: <20240627140628.1025317-1-pbonzini@redhat.com>
+ <20240627140628.1025317-3-pbonzini@redhat.com>
+ <a8f5d517-7037-4146-824e-3f985774c780@intel.com>
+ <CABgObfa24iTNt7V_VjsKYRhLyD3pt6oGDHEUFxe1A_A-4HF7MA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: TAJkCgDHWuK3E4JmOcQSAA--.23755S4
-X-Coremail-Antispam: 1UD129KBjvdXoWrur48tr1kZr1kAF47tF1DJrb_yoWfWFX_Gr
- 1SgFyF93yDW3ZavFWjywn0yFyFkry0grn3ta13Cr98KrWqg3s8Ja1qvF9xXryrurW7Jwn3
- u3srXa17GF4a9jkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
- 9fnUUIcSsGvfJTRUUUb28FF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
- 6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
- A2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j
- 6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
- Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
- I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
- 4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCY02Avz4vE-syl42xK
- 82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGw
- C20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48J
- MIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMI
- IF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E
- 87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x0JUdHUDUUUUU=
-X-CM-SenderInfo: 5olmxt11l6v25zlqu0xpsx3x1qjou0bp/
-Received-SPF: pass client-ip=20.231.56.155;
- envelope-from=lijiayi@eswincomputing.com; helo=azure-sdnproxy.icoremail.net
-X-Spam_score_int: -25
-X-Spam_score: -2.6
-X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CABgObfa24iTNt7V_VjsKYRhLyD3pt6oGDHEUFxe1A_A-4HF7MA@mail.gmail.com>
+Received-SPF: pass client-ip=192.198.163.14; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Mon, 01 Jul 2024 01:41:02 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,33 +84,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Base on the riscv-privileged spec, vstvec substitutes for the usual stvec.
-Therefore, the encoding of the MODE should also be restricted to 0 and 1.
+On Fri, Jun 28, 2024 at 03:23:11PM +0200, Paolo Bonzini wrote:
+> Date: Fri, 28 Jun 2024 15:23:11 +0200
+> From: Paolo Bonzini <pbonzini@redhat.com>
+> Subject: Re: [PATCH 2/2] target/i386: drop AMD machine check bits from
+>  Intel CPUID
+> 
+> Il ven 28 giu 2024, 10:32 Xiaoyao Li <xiaoyao.li@intel.com> ha scritto:
+> 
+> > On 6/27/2024 10:06 PM, Paolo Bonzini wrote:
+> > > The recent addition of the SUCCOR bit to kvm_arch_get_supported_cpuid()
+> > > causes the bit to be visible when "-cpu host" VMs are started on Intel
+> > > processors.
+> > >
+> > > While this should in principle be harmless, it's not tidy and we don't
+> > > even know for sure that it doesn't cause any guest OS to take unexpected
+> > > paths.  Since x86_cpu_get_supported_feature_word() can return different
+> > > different values depending on the guest, adjust it to hide the SUCCOR
+> >
+> > superfluous different
+> >
+> > > bit if the guest has non-AMD vendor.
+> >
+> > It seems to adjust it based on vendor in kvm_arch_get_supported_cpuid()
+> > is better than in x86_cpu_get_supported_feature_word(). Otherwise
+> > kvm_arch_get_supported_cpuid() still returns "risky" value for Intel VMs.
+> >
+> 
+> But the cpuid bit is only invalid for Intel *guest* vendor, not host. It is
+> not a problem to have it if you run on Intel host but have a guest model
+> with AMD vendor.
+> 
+> I will check if there are other callers of kvm_arch_get_supported_cpuid(),
+> or callers of x86_cpu_get_supported_feature_word() with NULL cpu, that
+> might care about the difference.
 
-Signed-off-by: Jiayi Li <lijiayi@eswincomputing.com>
----
- target/riscv/csr.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+Another example is CPUID_EXT3_TOPOEXT, though it's a no_autoenable_flags,
+it can be set by "-cpu host,+topoext" on Intel platforms.
 
-diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-index 432c59dc66..f9229d92ab 100644
---- a/target/riscv/csr.c
-+++ b/target/riscv/csr.c
-@@ -3791,7 +3791,12 @@ static RISCVException read_vstvec(CPURISCVState *env, int csrno,
- static RISCVException write_vstvec(CPURISCVState *env, int csrno,
-                                    target_ulong val)
- {
--    env->vstvec = val;
-+    /* bits [1:0] encode mode; 0 = direct, 1 = vectored, 2 >= reserved */
-+    if ((val & 3) < 2) {
-+        env->vstvec = val;
-+    } else {
-+        qemu_log_mask(LOG_UNIMP, "CSR_VSTVEC: reserved mode not supported\n");
-+    }
-     return RISCV_EXCP_NONE;
- }
- 
--- 
-2.25.1
+For this case, we have recognized that that the host/max CPU should only
+contain vender specific features, and I think it would be hard to expand
+such a rule afterwards, especially since there's other x86 vender like
+zhaoxin who implement a subset of Intel/AMD:
+
+https://lore.kernel.org/qemu-devel/d4c0dae5-b9d5-4deb-b300-78492ab11ed8@zhaoxin.com/#t
+
+What about a new flag "host_bare_metal_check" in FeatureWordInfo? Then
+if a feature is marked as "host_bare_metal_check", in addition to the
+current checks in x86_cpu_get_supported_feature_word(), bare-metal CPUID
+check is also needed (by host_cpuid()) for "host" CPU.
+
+-Zhao
 
 
