@@ -2,72 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A283791E0C1
-	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 15:32:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8993091E0BF
+	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 15:32:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOH7k-0008EI-1q; Mon, 01 Jul 2024 09:31:16 -0400
+	id 1sOH86-0008Ih-7u; Mon, 01 Jul 2024 09:31:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1sOH7a-0008Cg-IN
- for qemu-devel@nongnu.org; Mon, 01 Jul 2024 09:31:06 -0400
-Received: from mail-pj1-x102c.google.com ([2607:f8b0:4864:20::102c])
+ id 1sOH7n-0008HR-TQ
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 09:31:20 -0400
+Received: from mail-pg1-x532.google.com ([2607:f8b0:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1sOH7O-00059S-Pw
- for qemu-devel@nongnu.org; Mon, 01 Jul 2024 09:31:03 -0400
-Received: by mail-pj1-x102c.google.com with SMTP id
- 98e67ed59e1d1-2c8e7553c9eso2155182a91.3
- for <qemu-devel@nongnu.org>; Mon, 01 Jul 2024 06:30:51 -0700 (PDT)
+ id 1sOH7l-0005Na-Ke
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 09:31:19 -0400
+Received: by mail-pg1-x532.google.com with SMTP id
+ 41be03b00d2f7-713fa1aea36so965400a12.1
+ for <qemu-devel@nongnu.org>; Mon, 01 Jul 2024 06:31:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1719840649; x=1720445449; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=ACjYCACcN+OWc47eXAmrxeH7/7W3zi9H8TmCFf0Y8Ck=;
- b=l6ZKYwgbE1jxnFQhKL7MfszGxthqdLLAf8M1nOmU/5wFWuIoPf3AwAjyROfmhkAJ8B
- EOM0oAVJVmSYt+eXQgEToyoS4bMVOLXiftttkba0YpNeZRUf8jMspSepDFEgxvv+4GiW
- VjBFzFK0lp9Um+HU0FJg0SFXXdzeFDWMfiPUptVX+pfFDwonQbEVns8CKRsJ5AOksm7o
- rdV55+gDrV7nNPqAlO15WTOGRk6WcICOtF2S18jjj16kzAguV2Nqyql6wPozj2u69vCQ
- 7vc5hFbaA/C08kWmBaPIZnC+CHq981MckJA0hb/b6od7Csve9uYNaIrUIPUuTMm6qSO6
- 0sBA==
+ d=ventanamicro.com; s=google; t=1719840675; x=1720445475; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=6TUzEiTYDYxtoBN8a40dqDmyHQkViHYBXJaMnTel9nE=;
+ b=WtQ5EsllbhugFLS8ZniB2sQG3owiA3gnZkk46tXBHz17P3OBVQCURbUGeAKzkQSKp5
+ QTONWFzv2sayT+o3z9x878vkfF66j/1do8T+Rv/eMEpigCM+P22awpvXM/WGgNfQpJHP
+ GCmpIgRafKfyFHN1WSHX1hByzOsmcB/L0VVlICaVSXDaR14Y3mAhoAkCDDk7ZQ5bbNix
+ KYZot3aO5BqvrkEu/K2jZ5IQNcFc/yX/u0wz9avRIupzJfYUt/YLTLnXCCIcbKglKO4i
+ lgnHndrbrDoMdGGuOrDB+CGvr1NFkE/u0FWRXhxmVODUVlMGXC/OUjOnviitG2ZESWTT
+ OYZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719840649; x=1720445449;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=ACjYCACcN+OWc47eXAmrxeH7/7W3zi9H8TmCFf0Y8Ck=;
- b=Y1uv4kCaEEGeXrvzH/OK7AtTWemc8yWCIfGNWS2Kz1ADcu8UjLRtSwcenga1F/4NUV
- fS+GtPPorJAFcF6BqRk+PcznVnlyFGvKmf17NWoDkXEp+ojOj2uD/4MI4XqbzUyUSeg/
- 3OOvPNrM2QhywaWAou3HwjynhY64rnbuwPwXVXOgS8+XUPi6rfg5IW54dvzrmNmcMuz9
- KWeXw6rcVh23fRzPjRimpkiCSBG0dgxVPKsowNiY0hTLths9q16QQV5X9GzI8rLEC5Pw
- UYo3lD1ICWYIOVUxzMSRH/MlYCg9Km9o4nR8h8CfP+Y+0HdOHDRprpOU/6lhTLZXMkF2
- U9jw==
-X-Gm-Message-State: AOJu0Ywkgw8R5lRErCNx7/zpFYXHUcDJ2i7Lr9RvD18V4bwJiZ0epD1Y
- 4oWW6rBmGE+i+BmV7ev3ZLa88YDXOFOJsQcI4BoxtRNq8Exj6vu46pVECACOznHok1FbypTKuMQ
- L
-X-Google-Smtp-Source: AGHT+IEsEH0syE5I5eIq0bNcuc/4kdWvvN/EjpqarenQEf1WTCeU95Cg+G2deP6nky2vYBpYZVAY1A==
-X-Received: by 2002:a17:90b:4d8d:b0:2c8:ac1:d8c3 with SMTP id
- 98e67ed59e1d1-2c93d732b8fmr4730670a91.29.1719840649163; 
- Mon, 01 Jul 2024 06:30:49 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1719840675; x=1720445475;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=6TUzEiTYDYxtoBN8a40dqDmyHQkViHYBXJaMnTel9nE=;
+ b=UzhDEj5l4rgo6JiIpabSk9rqklBOShv2UurKmXFh9NzQXRMB14pCkkdFjbluxAtHS5
+ x8PjfvXU4txXP4cozdjaaYfsJ95hm9RpywIDLUktN7Mb9MYCp1YB82OgPKBXx/KoqSaQ
+ oE64KG9KC7I5FG2m2GocVh2W8du8JxZI6Tm2XvNaH+68cG/XorVlENoAPHrDYPJVmn9L
+ e+AW+DpX0a6yPH13MCrF9CZi8XQixiV8GVOugy8jCD8sDgtG8eSlG0/nlr//WHBNjC7f
+ hDFvqrZ0ts7V3GKitt9YZlcg0AoKUPN21S8xe1IQlp8f0pHIAqwDjX0oAIu96KLxFcZm
+ h61w==
+X-Gm-Message-State: AOJu0YzCIIZS+OV+GpH4rk6c9/on2Q6GWIQFVRIA1ZHItGAEtGGZW3fF
+ FTZLYRaJ1feO08qhH8gtv6GRCHTsTlBXvkZ0jyXpZUdF6X7HmGfU3DkgZkwT/WJm8tidpUoBccP
+ 9
+X-Google-Smtp-Source: AGHT+IEibPnWg6v0pK2ZYjMH2dhvG2gANOz+c4zEmlVhpqdeWggaPjihKJCPJBLGPhK7fSPIzzmV3w==
+X-Received: by 2002:a17:90b:4c8f:b0:2c8:820:71c4 with SMTP id
+ 98e67ed59e1d1-2c93d71f424mr2787188a91.29.1719840651800; 
+ Mon, 01 Jul 2024 06:30:51 -0700 (PDT)
 Received: from grind.. ([179.193.8.43]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2c91d3eb34bsm6736935a91.56.2024.07.01.06.30.46
+ 98e67ed59e1d1-2c91d3eb34bsm6736935a91.56.2024.07.01.06.30.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 01 Jul 2024 06:30:48 -0700 (PDT)
+ Mon, 01 Jul 2024 06:30:51 -0700 (PDT)
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
 Cc: ajones@ventanamicro.com,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>
-Subject: [PATCH 0/2] system/vl.c: parse all '-accel' opts 
-Date: Mon,  1 Jul 2024 10:30:36 -0300
-Message-ID: <20240701133038.1489043-1-dbarboza@ventanamicro.com>
+Subject: [PATCH 1/2] system/vl.c: do not allow mixed -accel opts
+Date: Mon,  1 Jul 2024 10:30:37 -0300
+Message-ID: <20240701133038.1489043-2-dbarboza@ventanamicro.com>
 X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240701133038.1489043-1-dbarboza@ventanamicro.com>
+References: <20240701133038.1489043-1-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102c;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pj1-x102c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::532;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pg1-x532.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,45 +93,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+We're allowing multiple -accel options to be used with different
+accelerators, even though we don't have any machine that supports mixed
+acceleration.
 
-In the current handling of  '-accel' only the first instance is parsed.
-All other instances (aside from a 'helper' command that triggers the
-help text and exits) is ignored.
+In fact, it will only parse the first occurence of -accel and, aside
+from a help option (e.g. -accel help) that will always cause the process
+to print the help text, it will accept every other accel option
+regardless of being correct or not. E.g. this:
 
-This also means that we can mix different accelerators in the same
-command line. In fact we can do whatever we want as long as the first
-instance of '-accel' is valid. E.g. this command line will boot a x86_64
-KVM guest without problems:
+qemu-system-x86_64 -accel kvm -accel tcg -accel IamNotAnAccel (...)
 
-qemu-system-x86_64 -accel kvm -accel tcg -accel not_an_accel (...)
+will happily boot a x86_64 KVM guest.
 
-And this will boot a KVM guest with kernel-irqchip=off because it will
-ignore the second '-accel' that sets its back to 'on':
-
-qemu-system-x86_64 -accel kvm,kernel-irqchip=off \
-    -accel kvm,kernel-irqchip=on (...)
-
-My initial intention was to fix a problem we're having with libvirt and
-RISC-V where we can't set 'riscv-aia' by appending '-accel kvm,riscv-aia=val'
-via <qemu:cmdline> in the domain XML. libvirt will add a leading
-'-accel kvm' in the regular command line and ignore the second. But to
-fix that (patch 2) we must first guarantee that we're not mixing different
-accelerators.
-
-Both patches can be squashed in a single patch if preferrable. I'm
-sending in separate because I'm not fully confident in patch 1.
+Do not allow for different accelerators to be used when multiple
+instances of -accel are present.
 
 Cc: Paolo Bonzini <pbonzini@redhat.com>
 Cc: Thomas Huth <thuth@redhat.com>
+Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+---
+ system/vl.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-Daniel Henrique Barboza (2):
-  system/vl.c: do not allow mixed -accel opts
-  system/vl.c: parse all -accel options
-
- system/vl.c | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
-
+diff --git a/system/vl.c b/system/vl.c
+index bdd2f6ecf6..32602e68b7 100644
+--- a/system/vl.c
++++ b/system/vl.c
+@@ -3318,10 +3318,22 @@ void qemu_init(int argc, char **argv)
+                     }
+                     break;
+                 }
+-            case QEMU_OPTION_accel:
++            case QEMU_OPTION_accel: {
++                QemuOptsList *list = qemu_find_opts("accel");
++                const char *prev_accel = qemu_opt_get(QTAILQ_LAST(&list->head),
++                                                      "accel");
++
+                 accel_opts = qemu_opts_parse_noisily(qemu_find_opts("accel"),
+                                                      optarg, true);
+                 optarg = qemu_opt_get(accel_opts, "accel");
++
++                if (prev_accel && optarg && strcmp(prev_accel, optarg)) {
++                    printf("Unable to mix accelerators with multiple "
++                           "-accel options (have: '%s' and '%s')\n",
++                           prev_accel, optarg);
++                    exit(1);
++                }
++
+                 if (!optarg || is_help_option(optarg)) {
+                     printf("Accelerators supported in QEMU binary:\n");
+                     GSList *el, *accel_list = object_class_get_list(TYPE_ACCEL,
+@@ -3343,6 +3355,7 @@ void qemu_init(int argc, char **argv)
+                     exit(0);
+                 }
+                 break;
++            }
+             case QEMU_OPTION_usb:
+                 qdict_put_str(machine_opts_dict, "usb", "on");
+                 break;
 -- 
 2.45.2
 
