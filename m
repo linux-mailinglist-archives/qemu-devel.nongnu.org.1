@@ -2,49 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCB6791E071
-	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 15:20:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EB4191E073
+	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 15:20:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOGw6-0000K8-T8; Mon, 01 Jul 2024 09:19:15 -0400
+	id 1sOGw6-0000IA-Sv; Mon, 01 Jul 2024 09:19:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <anthony@xenproject.org>)
- id 1sOGvw-0000G1-Vv
- for qemu-devel@nongnu.org; Mon, 01 Jul 2024 09:19:05 -0400
+ id 1sOGvr-0000Bo-PO
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 09:19:01 -0400
 Received: from mail.xenproject.org ([104.130.215.37])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <anthony@xenproject.org>)
- id 1sOGvd-0007ub-DO
- for qemu-devel@nongnu.org; Mon, 01 Jul 2024 09:19:04 -0400
+ id 1sOGvc-0007ug-SU
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 09:18:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=xenproject.org; s=20200302mail; h=Content-Transfer-Encoding:Content-Type:
- MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From;
- bh=xwhPXZgnf2ShtahzS2ZragTwFKjTepc0etNckiWQG/8=; b=0FAej2CnIaurGLWoXc42EvwX4e
- KYgTnmGFwh7kQoO3zNpIKl2+Dv2atVZLculYNNscVXbJELPE74L/TYBk4lxxVfmT8TS8FqH7D9Pm5
- 8jEmLWSR0RjvU8sGY6YfbG95wBjnGJgxmSZNrPnFDrGiZaaRiROPh0W6dyi1/bsXDREg=;
+ d=xenproject.org; s=20200302mail; h=Content-Transfer-Encoding:MIME-Version:
+ References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From;
+ bh=eLWf5lVhYi1sa2TPFSGa67dLAt0BU3i5V6yFCd2EQj4=; b=FF6yf+d7ftRuksNEJETH6r6XxR
+ 18UPO4LdR/fiIH07sq1YK7VyvXxW1PqKFLUZ3gF7EJUVjSDu9oUkoi8H+oZb8h+ceoDiRsbbT0Qtp
+ rjxs5rDhDq48QnAhJ8T/hGGBeP+v7O1p0LjEhpeyIFbwN98noTx8HLpRbjTgAzfFhDeI=;
 Received: from xenbits.xenproject.org ([104.239.192.120])
  by mail.xenproject.org with esmtp (Exim 4.92)
  (envelope-from <anthony@xenproject.org>)
- id 1sOGva-0006nk-QH; Mon, 01 Jul 2024 13:18:42 +0000
+ id 1sOGvb-0006no-FK; Mon, 01 Jul 2024 13:18:43 +0000
 Received: from lfbn-lyo-1-451-148.w2-7.abo.wanadoo.fr ([2.7.43.148]
  helo=l14.home) by xenbits.xenproject.org with esmtpsa
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <anthony@xenproject.org>)
- id 1sOGva-0000WF-HL; Mon, 01 Jul 2024 13:18:42 +0000
+ id 1sOGvb-0000WF-6O; Mon, 01 Jul 2024 13:18:43 +0000
 From: anthony@xenproject.org
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Marek=20Marczykowski-G=C3=B3recki?=
- <marmarek@invisiblethingslab.com>
-Subject: [PULL 2/3] xen: fix stubdom PCI addr
-Date: Mon,  1 Jul 2024 15:18:32 +0200
-Message-Id: <20240701131833.29486-3-anthony@xenproject.org>
+Cc: Ross Lagerwall <ross.lagerwall@citrix.com>
+Subject: [PULL 3/3] xen-hvm: Avoid livelock while handling buffered ioreqs
+Date: Mon,  1 Jul 2024 15:18:33 +0200
+Message-Id: <20240701131833.29486-4-anthony@xenproject.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240701131833.29486-1-anthony@xenproject.org>
 References: <20240701131833.29486-1-anthony@xenproject.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=104.130.215.37;
  envelope-from=anthony@xenproject.org; helo=mail.xenproject.org
@@ -70,148 +68,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
+From: Ross Lagerwall <ross.lagerwall@citrix.com>
 
-When running in a stubdomain, the config space access via sysfs needs to
-use BDF as seen inside stubdomain (connected via xen-pcifront), which is
-different from the real BDF. For other purposes (hypercall parameters
-etc), the real BDF needs to be used.
-Get the in-stubdomain BDF by looking up relevant PV PCI xenstore
-entries.
+A malicious or buggy guest may generated buffered ioreqs faster than
+QEMU can process them in handle_buffered_iopage(). The result is a
+livelock - QEMU continuously processes ioreqs on the main thread without
+iterating through the main loop which prevents handling other events,
+processing timers, etc. Without QEMU handling other events, it often
+results in the guest becoming unsable and makes it difficult to stop the
+source of buffered ioreqs.
 
-Signed-off-by: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
-Reviewed-by: Anthony PERARD <anthony.perard@citrix.com>
-Message-Id: <35049e99da634a74578a1ff2cb3ae4cc436ede33.1711506237.git-series.marmarek@invisiblethingslab.com>
+To avoid this, if we process a full page of buffered ioreqs, stop and
+reschedule an immediate timer to continue processing them. This lets
+QEMU go back to the main loop and catch up.
+
+Signed-off-by: Ross Lagerwall <ross.lagerwall@citrix.com>
+Reviewed-by: Paul Durrant <paul@xen.org>
+Message-Id: <20240404140833.1557953-1-ross.lagerwall@citrix.com>
 Signed-off-by: Anthony PERARD <anthony@xenproject.org>
 ---
- hw/xen/xen-host-pci-device.c | 76 +++++++++++++++++++++++++++++++++++-
- hw/xen/xen-host-pci-device.h |  6 +++
- 2 files changed, 81 insertions(+), 1 deletion(-)
+ hw/xen/xen-hvm-common.c | 26 +++++++++++++++++---------
+ 1 file changed, 17 insertions(+), 9 deletions(-)
 
-diff --git a/hw/xen/xen-host-pci-device.c b/hw/xen/xen-host-pci-device.c
-index 8c6e9a1716..eaf32f2710 100644
---- a/hw/xen/xen-host-pci-device.c
-+++ b/hw/xen/xen-host-pci-device.c
-@@ -9,6 +9,8 @@
- #include "qemu/osdep.h"
- #include "qapi/error.h"
- #include "qemu/cutils.h"
-+#include "hw/xen/xen-legacy-backend.h"
-+#include "hw/xen/xen-bus-helper.h"
- #include "xen-host-pci-device.h"
- 
- #define XEN_HOST_PCI_MAX_EXT_CAP \
-@@ -33,13 +35,73 @@
- #define IORESOURCE_PREFETCH     0x00001000      /* No side effects */
- #define IORESOURCE_MEM_64       0x00100000
- 
-+/*
-+ * Non-passthrough (dom0) accesses are local PCI devices and use the given BDF
-+ * Passthough (stubdom) accesses are through PV frontend PCI device.  Those
-+ * either have a BDF identical to the backend's BDF (xen-backend.passthrough=1)
-+ * or a local virtual BDF (xen-backend.passthrough=0)
-+ *
-+ * We are always given the backend's BDF and need to lookup the appropriate
-+ * local BDF for sysfs access.
-+ */
-+static void xen_host_pci_fill_local_addr(XenHostPCIDevice *d, Error **errp)
-+{
-+    unsigned int num_devs, len, i;
-+    unsigned int domain, bus, dev, func;
-+    char *be_path = NULL;
-+    char path[16];
-+
-+    be_path = qemu_xen_xs_read(xenstore, 0, "device/pci/0/backend", &len);
-+    if (!be_path) {
-+        error_setg(errp, "Failed to read device/pci/0/backend");
-+        goto out;
-+    }
-+
-+    if (xs_node_scanf(xenstore, 0, be_path, "num_devs", NULL,
-+                      "%d", &num_devs) != 1) {
-+        error_setg(errp, "Failed to read or parse %s/num_devs", be_path);
-+        goto out;
-+    }
-+
-+    for (i = 0; i < num_devs; i++) {
-+        snprintf(path, sizeof(path), "dev-%d", i);
-+        if (xs_node_scanf(xenstore, 0, be_path, path, NULL,
-+                          "%x:%x:%x.%x", &domain, &bus, &dev, &func) != 4) {
-+            error_setg(errp, "Failed to read or parse %s/%s", be_path, path);
-+            goto out;
-+        }
-+        if (domain != d->domain ||
-+                bus != d->bus ||
-+                dev != d->dev ||
-+                func != d->func)
-+            continue;
-+        snprintf(path, sizeof(path), "vdev-%d", i);
-+        if (xs_node_scanf(xenstore, 0, be_path, path, NULL,
-+                          "%x:%x:%x.%x", &domain, &bus, &dev, &func) != 4) {
-+            error_setg(errp, "Failed to read or parse %s/%s", be_path, path);
-+            goto out;
-+        }
-+        d->local_domain = domain;
-+        d->local_bus = bus;
-+        d->local_dev = dev;
-+        d->local_func = func;
-+        goto out;
-+    }
-+    error_setg(errp, "Failed to find PCI device %x:%x:%x.%x in xenstore",
-+               d->domain, d->bus, d->dev, d->func);
-+
-+out:
-+    free(be_path);
-+}
-+
- static void xen_host_pci_sysfs_path(const XenHostPCIDevice *d,
-                                     const char *name, char *buf, ssize_t size)
- {
-     int rc;
- 
-     rc = snprintf(buf, size, "/sys/bus/pci/devices/%04x:%02x:%02x.%d/%s",
--                  d->domain, d->bus, d->dev, d->func, name);
-+                  d->local_domain, d->local_bus, d->local_dev, d->local_func,
-+                  name);
-     assert(rc >= 0 && rc < size);
+diff --git a/hw/xen/xen-hvm-common.c b/hw/xen/xen-hvm-common.c
+index b8ace1c368..3a9d6f981b 100644
+--- a/hw/xen/xen-hvm-common.c
++++ b/hw/xen/xen-hvm-common.c
+@@ -475,11 +475,11 @@ static void handle_ioreq(XenIOState *state, ioreq_t *req)
+     }
  }
  
-@@ -342,6 +404,18 @@ void xen_host_pci_device_get(XenHostPCIDevice *d, uint16_t domain,
-     d->dev = dev;
-     d->func = func;
+-static bool handle_buffered_iopage(XenIOState *state)
++static unsigned int handle_buffered_iopage(XenIOState *state)
+ {
+     buffered_iopage_t *buf_page = state->buffered_io_page;
+     buf_ioreq_t *buf_req = NULL;
+-    bool handled_ioreq = false;
++    unsigned int handled = 0;
+     ioreq_t req;
+     int qw;
  
-+    if (xen_is_stubdomain) {
-+        xen_host_pci_fill_local_addr(d, errp);
-+        if (*errp) {
-+            goto error;
-+        }
+@@ -492,7 +492,7 @@ static bool handle_buffered_iopage(XenIOState *state)
+     req.count = 1;
+     req.dir = IOREQ_WRITE;
+ 
+-    for (;;) {
++    do {
+         uint32_t rdptr = buf_page->read_pointer, wrptr;
+ 
+         xen_rmb();
+@@ -533,22 +533,30 @@ static bool handle_buffered_iopage(XenIOState *state)
+         assert(!req.data_is_ptr);
+ 
+         qatomic_add(&buf_page->read_pointer, qw + 1);
+-        handled_ioreq = true;
+-    }
++        handled += qw + 1;
++    } while (handled < IOREQ_BUFFER_SLOT_NUM);
+ 
+-    return handled_ioreq;
++    return handled;
+ }
+ 
+ static void handle_buffered_io(void *opaque)
+ {
++    unsigned int handled;
+     XenIOState *state = opaque;
+ 
+-    if (handle_buffered_iopage(state)) {
++    handled = handle_buffered_iopage(state);
++    if (handled >= IOREQ_BUFFER_SLOT_NUM) {
++        /* We handled a full page of ioreqs. Schedule a timer to continue
++         * processing while giving other stuff a chance to run.
++         */
+         timer_mod(state->buffered_io_timer,
+-                BUFFER_IO_MAX_DELAY + qemu_clock_get_ms(QEMU_CLOCK_REALTIME));
+-    } else {
++                qemu_clock_get_ms(QEMU_CLOCK_REALTIME));
++    } else if (handled == 0) {
+         timer_del(state->buffered_io_timer);
+         qemu_xen_evtchn_unmask(state->xce_handle, state->bufioreq_local_port);
 +    } else {
-+        d->local_domain = d->domain;
-+        d->local_bus = d->bus;
-+        d->local_dev = d->dev;
-+        d->local_func = d->func;
-+    }
-+
-     xen_host_pci_config_open(d, errp);
-     if (*errp) {
-         goto error;
-diff --git a/hw/xen/xen-host-pci-device.h b/hw/xen/xen-host-pci-device.h
-index 4d8d34ecb0..270dcb27f7 100644
---- a/hw/xen/xen-host-pci-device.h
-+++ b/hw/xen/xen-host-pci-device.h
-@@ -23,6 +23,12 @@ typedef struct XenHostPCIDevice {
-     uint8_t dev;
-     uint8_t func;
++        timer_mod(state->buffered_io_timer,
++                BUFFER_IO_MAX_DELAY + qemu_clock_get_ms(QEMU_CLOCK_REALTIME));
+     }
+ }
  
-+    /* different from the above in case of stubdomain */
-+    uint16_t local_domain;
-+    uint8_t local_bus;
-+    uint8_t local_dev;
-+    uint8_t local_func;
-+
-     uint16_t vendor_id;
-     uint16_t device_id;
-     uint32_t class_code;
 -- 
 Anthony PERARD
 
