@@ -2,78 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 218F691E95D
-	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 22:16:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08A5191E980
+	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 22:21:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sONQ9-0003Bi-L7; Mon, 01 Jul 2024 16:14:41 -0400
+	id 1sONVM-0004cU-2b; Mon, 01 Jul 2024 16:20:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sONQ5-0003BR-Uy
- for qemu-devel@nongnu.org; Mon, 01 Jul 2024 16:14:37 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sONVI-0004bp-FJ
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 16:20:00 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sONQ4-0001Ae-Az
- for qemu-devel@nongnu.org; Mon, 01 Jul 2024 16:14:37 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sONVG-0003GT-EY
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 16:20:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719864875;
+ s=mimecast20190719; t=1719865192;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=lOvFdcz7K52N6SM7IUW/pf2PVkY0VVtHQdaVBHVrw18=;
- b=R3SL9KWCmzVSdI43ZLdSJBVVjs5y9NvMQ7nVqew6FYj6X/d29sfwSlNy71sE7ff1MYtg8V
- uwGhW9Ohjh/1yWVKI4aYO4fu/mNr1qGOlJZkhYjUNirrzOeh7bv7LRbpJzAXEsu/GaS6gQ
- N6kp3/zmha0cvE/NJiqdrLKuqB1tOwo=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=jlFDMOvTLd6/YLldJMOHChPlcIdy0ES0l/G5/R3+dZ0=;
+ b=PovSR6ztBB3OV887BpCZUI2mDm10znzbYP97knuRgG+kuR/tzbuwJ5hoa6T+sxywFXPYPF
+ FtQzwJy+W2LPtrxoE+EXQeEvAVWvzx4xhfkuPKhiR8DMSLUBJwofSfADXn5sOCmx40+LaQ
+ ZZyOl/q+rSIZMeTrmDy4ICzFT4YLoUI=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-489-ohyjGHoSOXG6ibbGT4bIjg-1; Mon, 01 Jul 2024 16:14:31 -0400
-X-MC-Unique: ohyjGHoSOXG6ibbGT4bIjg-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-36743ab5fb3so2210521f8f.1
- for <qemu-devel@nongnu.org>; Mon, 01 Jul 2024 13:14:31 -0700 (PDT)
+ us-mta-672-09YhzBOUM1eX5jNssH-HNA-1; Mon, 01 Jul 2024 16:19:50 -0400
+X-MC-Unique: 09YhzBOUM1eX5jNssH-HNA-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-425685183edso27020095e9.0
+ for <qemu-devel@nongnu.org>; Mon, 01 Jul 2024 13:19:50 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719864870; x=1720469670;
+ d=1e100.net; s=20230601; t=1719865189; x=1720469989;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=lOvFdcz7K52N6SM7IUW/pf2PVkY0VVtHQdaVBHVrw18=;
- b=CZ/MInPBdhKbWnrsAPwJ+l5HGT8I8Xhq+iWH7c7GIrSht+NQCXMzw8VRQqHM3+XcwL
- EFyrx9MkwAMiMfXC6ogfNYLTus0A8C2oNGTvLkHFBKPkTk8i4kppf/Qa0p7Z0kqc46uT
- 5ZtVHK3bJaQ9BmkEBfbfA8WEgObxPiwlWaikwVlncQYqfwWbou4RZDVu6yxoMggcNyXl
- O81N+aEWC25bjyWFflwM7x/4DvLRGyDl9C9F/9mVSj+ZFoU2j/+fa1w8NXDY1yQ4XtQK
- 8CU3i6PNE4tlCPvCxoMPtqHbIki0/wqY8RXzjQJ1w6hfmiYjCG+VdmZg/w6eSy2gNK/1
- JbCw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWAlfOiotcpsM5CUJRaIHZ8heYfOjhhoMXof8jH+VgijF2jQ4fVpiYoo4HB0lIqrY9ozUM8dUxCqEhRJRUVMupwmh+P/S0=
-X-Gm-Message-State: AOJu0YzAfWSW7V8UHP+bYYwdbYi8w0thEXA1IpxR5qE8iAnLapreJPkn
- NzIJhM6bDOkixjY7S9/AugMFAs169qpLTuKW0xOMbd508EDu2X0pme3SwnFOCtRXfb5ra7C89Fb
- RT15VMn00j3zSnIphCX/syov2zPjmZ8dWdFI1j25NdeGXK/V0GcgsrsgjhNVf
-X-Received: by 2002:a5d:554b:0:b0:362:e874:54e8 with SMTP id
- ffacd0b85a97d-36760ab6165mr7808191f8f.30.1719864869749; 
- Mon, 01 Jul 2024 13:14:29 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFUx3AqI/TY5MwKB64a6GOsGKmsZNNu2CoWIWxgOwo3i8gmzx0mvqEyh5yZicvjw8bfviv43Q==
-X-Received: by 2002:a5d:554b:0:b0:362:e874:54e8 with SMTP id
- ffacd0b85a97d-36760ab6165mr7808183f8f.30.1719864869194; 
- Mon, 01 Jul 2024 13:14:29 -0700 (PDT)
+ bh=jlFDMOvTLd6/YLldJMOHChPlcIdy0ES0l/G5/R3+dZ0=;
+ b=xAQ+Az3j3+mVv8WKLZIUhV/q410jIPNZlfGhUyZsii1NntETnwTWo4RilzvT/TKjgm
+ +ckTa3fTyVdwtuRKlEQTdzFA/CbvDa1xxgAzljXM5l74ENuZ/pNvfvK0krCZ6vyKwPCZ
+ FkMhu2e/ArppQceZYAAk2GYQQUdQ98dIpSccdZdqEuK8ZF1/mgHqWlrc5mRzId2HXp/M
+ VhIlTGQI8LHWLACu65cGXYJW9kDIYYu8RXmzn48CDcpHE5QXbcASwK4uYdbw9u5kxuTK
+ ldIOaHi69ocjkXeRcgtxmC/nJTWDpkethCalkKqRQEYUS58cVPi8l1+IWZbcPcS+dE+n
+ ZZVg==
+X-Gm-Message-State: AOJu0YzZ+X/WA0F3MPxOf2IPrAmrDGlIhYjHMl9dkICd4IPdAK4aFL2c
+ 2G87+sGl7HGwvGoOlkcKaBKVCQVeM+/lo/ft3xRM2PvVlZsusSiuUHEjGqo50nsRd5YKqmc06tz
+ i975vvPGvkiYkrfOzkgvGmbwduk6n//SP/565BMIM6vPTqkdJqHe/
+X-Received: by 2002:a05:600c:3501:b0:424:aa73:83db with SMTP id
+ 5b1f17b1804b1-4257a02b8edmr45092825e9.3.1719865189345; 
+ Mon, 01 Jul 2024 13:19:49 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG+5c8hxGgUOtivzqUNoRsI8yQokGlyU/5UEAapoWd9u3MjcciTu+SQdI7jNzZgJcoDvoD4Jw==
+X-Received: by 2002:a05:600c:3501:b0:424:aa73:83db with SMTP id
+ 5b1f17b1804b1-4257a02b8edmr45092685e9.3.1719865188751; 
+ Mon, 01 Jul 2024 13:19:48 -0700 (PDT)
 Received: from redhat.com ([2a02:14f:1f5:eadd:8c31:db01:9d01:7604])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4256b097fd4sm166665475e9.29.2024.07.01.13.14.27
+ 5b1f17b1804b1-4256af5b66csm164553535e9.18.2024.07.01.13.19.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 01 Jul 2024 13:14:28 -0700 (PDT)
-Date: Mon, 1 Jul 2024 16:14:25 -0400
+ Mon, 01 Jul 2024 13:19:47 -0700 (PDT)
+Date: Mon, 1 Jul 2024 16:19:39 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Dmitry Frolov <frolov@swemel.ru>
-Cc: sdl.qemu@linuxtesting.org, qemu-devel@nongnu.org
-Subject: Re: [PATCH v3] hw/net/virtio-net.c: fix crash in iov_copy()
-Message-ID: <20240701161404-mutt-send-email-mst@kernel.org>
-References: <20240613143529.602591-2-frolov@swemel.ru>
+To: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Cc: qemu-devel@nongnu.org, Ani Sinha <anisinha@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, Song Gao <gaosong@loongson.cn>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Sergio Lopez <slp@redhat.com>
+Subject: Re: [PATCH 1/3] acpi/ged: Implement S3 and S4 sleep
+Message-ID: <20240701161751-mutt-send-email-mst@kernel.org>
+References: <20240613-loongarch64-sleep-v1-0-d2ef0aaa543a@flygoat.com>
+ <20240613-loongarch64-sleep-v1-1-d2ef0aaa543a@flygoat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240613143529.602591-2-frolov@swemel.ru>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+In-Reply-To: <20240613-loongarch64-sleep-v1-1-d2ef0aaa543a@flygoat.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -97,40 +102,214 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jun 13, 2024 at 05:35:30PM +0300, Dmitry Frolov wrote:
-> A crash found while fuzzing device virtio-net-socket-check-used.
-> Assertion "offset == 0" in iov_copy() fails if less than guest_hdr_len bytes
-> were transmited.
+On Thu, Jun 13, 2024 at 06:30:15PM +0100, Jiaxun Yang wrote:
+> Implement S3 and S4 sleep with ACPI_GED_REG_SLEEP_CTL.SLP_TYP
+> writes.
 > 
-> Signed-off-by: Dmitry Frolov <frolov@swemel.ru>
-
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-
-Jason, are you merging this?
-
-> ---
-> v1: https://patchew.org/QEMU/20240527133140.218300-2-frolov@swemel.ru/
-> v2: broken
-> v3: goto instead of repeating code
-> ---
->  hw/net/virtio-net.c | 4 ++++
->  1 file changed, 4 insertions(+)
+> Implement wakeup callback and WAK_STS register to inform guest
+> about current states.
 > 
-> diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-> index 9c7e85caea..8f30972708 100644
-> --- a/hw/net/virtio-net.c
-> +++ b/hw/net/virtio-net.c
-> @@ -2735,6 +2735,10 @@ static int32_t virtio_net_flush_tx(VirtIONetQueue *q)
->           */
->          assert(n->host_hdr_len <= n->guest_hdr_len);
->          if (n->host_hdr_len != n->guest_hdr_len) {
-> +            if (iov_size(out_sg, out_num) < n->guest_hdr_len) {
-> +                virtio_error(vdev, "virtio-net header is invalid");
-> +                goto detach;
+> All new functions are gated by "slp-typs" property, it is defaulted
+> to S5 only and machines can opt-in for S3 and S4.
+> 
+> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+> ---
+>  hw/acpi/generic_event_device.c         | 70 ++++++++++++++++++++++++++++++----
+>  include/hw/acpi/generic_event_device.h | 12 +++++-
+>  2 files changed, 73 insertions(+), 9 deletions(-)
+> 
+> diff --git a/hw/acpi/generic_event_device.c b/hw/acpi/generic_event_device.c
+> index 2d6e91b124e5..f1fc99c04011 100644
+> --- a/hw/acpi/generic_event_device.c
+> +++ b/hw/acpi/generic_event_device.c
+> @@ -11,6 +11,7 @@
+>  
+>  #include "qemu/osdep.h"
+>  #include "qapi/error.h"
+> +#include "qapi/qapi-events-run-state.h"
+>  #include "hw/acpi/acpi.h"
+>  #include "hw/acpi/generic_event_device.h"
+>  #include "hw/irq.h"
+> @@ -186,24 +187,53 @@ static const MemoryRegionOps ged_evt_ops = {
+>  
+>  static uint64_t ged_regs_read(void *opaque, hwaddr addr, unsigned size)
+>  {
+> +    GEDState *ged_st = opaque;
+> +
+> +    switch (addr) {
+> +    case ACPI_GED_REG_SLEEP_STS:
+> +        return ged_st->sleep_sts;
+> +    default:
+> +        break;
+> +    }
+> +
+>      return 0;
+>  }
+>  
+>  static void ged_regs_write(void *opaque, hwaddr addr, uint64_t data,
+>                             unsigned int size)
+>  {
+> -    bool slp_en;
+> -    int slp_typ;
+> +    GEDState *ged_st = opaque;
+> +    AcpiGedState *s = container_of(ged_st, AcpiGedState, ged_state);
+>  
+>      switch (addr) {
+>      case ACPI_GED_REG_SLEEP_CTL:
+> -        slp_typ = (data >> 2) & 0x07;
+> -        slp_en  = (data >> 5) & 0x01;
+> -        if (slp_en && slp_typ == 5) {
+> -            qemu_system_shutdown_request(SHUTDOWN_CAUSE_GUEST_SHUTDOWN);
+> +        if (data & ACPI_GED_SLP_EN) {
+> +            switch (extract8(data, 2, 3)) {
+> +            case ACPI_GED_SLP_TYP_S3:
+> +                if (s->slp_typs_bitmap & (1 << ACPI_GED_SLP_TYP_S3)) {
+> +                    qemu_system_suspend_request();
+> +                }
+> +                break;
+> +            case ACPI_GED_SLP_TYP_S4:
+> +                if (s->slp_typs_bitmap & (1 << ACPI_GED_SLP_TYP_S4)) {
+> +                    qapi_event_send_suspend_disk();
+> +                    qemu_system_shutdown_request(SHUTDOWN_CAUSE_GUEST_SHUTDOWN);
+> +                }
+> +                break;
+> +            case ACPI_GED_SLP_TYP_S5:
+> +                if (s->slp_typs_bitmap & (1 << ACPI_GED_SLP_TYP_S5)) {
+> +                    qemu_system_shutdown_request(SHUTDOWN_CAUSE_GUEST_SHUTDOWN);
+> +                }
+> +                break;
+> +            default:
+> +                break;
 > +            }
->              unsigned sg_num = iov_copy(sg, ARRAY_SIZE(sg),
->                                         out_sg, out_num,
->                                         0, n->host_hdr_len);
+>          }
+>          return;
+>      case ACPI_GED_REG_SLEEP_STS:
+> +        if (data & ACPI_GED_WAK_STS) {
+> +            ged_st->sleep_sts &= ~ACPI_GED_WAK_STS;
+> +        }
+>          return;
+>      case ACPI_GED_REG_RESET:
+>          if (data == ACPI_GED_RESET_VALUE) {
+> @@ -223,6 +253,14 @@ static const MemoryRegionOps ged_regs_ops = {
+>      },
+>  };
+>  
+> +static void acpi_ged_notify_wakeup(Notifier *notifier, void *data)
+> +{
+> +    GEDState *ged_st = container_of(notifier, GEDState, wakeup);
+> +
+> +    ged_st->sleep_sts |= ACPI_GED_WAK_STS;
+> +}
+> +
+> +
+>  static void acpi_ged_device_plug_cb(HotplugHandler *hotplug_dev,
+>                                      DeviceState *dev, Error **errp)
+>  {
+> @@ -305,6 +343,8 @@ static void acpi_ged_send_event(AcpiDeviceIf *adev, AcpiEventStatusBits ev)
+>  
+>  static Property acpi_ged_properties[] = {
+>      DEFINE_PROP_UINT32("ged-event", AcpiGedState, ged_event_bitmap, 0),
+> +    DEFINE_PROP_UINT32("slp-typs", AcpiGedState, slp_typs_bitmap,
+> +                        (1 << ACPI_GED_SLP_TYP_S5)),
+
+
+I don't see an immediate need for users to tweak this.
+Accordingly, prefix this property with "x-" so users know that
+if they do, this is unsupported.
+
+
+>      DEFINE_PROP_END_OF_LIST(),
+>  };
+>  
+> @@ -320,10 +360,11 @@ static const VMStateDescription vmstate_memhp_state = {
+>  
+>  static const VMStateDescription vmstate_ged_state = {
+>      .name = "acpi-ged-state",
+> -    .version_id = 1,
+> -    .minimum_version_id = 1,
+> +    .version_id = 2,
+> +    .minimum_version_id = 2,
+>      .fields = (const VMStateField[]) {
+>          VMSTATE_UINT32(sel, GEDState),
+> +        VMSTATE_UINT8(sleep_sts, GEDState),
+>          VMSTATE_END_OF_LIST()
+>      }
+>  };
+
+
+No, avoid playing with versions please.
+Use a conditional section instead, so format does not change
+for existing machine types.
+
+
+> @@ -371,6 +412,18 @@ static const VMStateDescription vmstate_acpi_ged = {
+>      }
+>  };
+>  
+> +static void acpi_ged_realize(DeviceState *dev, Error **errp)
+> +{
+> +    AcpiGedState *s = ACPI_GED(dev);
+> +    GEDState *ged_st = &s->ged_state;
+> +
+> +    if (s->slp_typs_bitmap & (1 << ACPI_GED_SLP_TYP_S3)) {
+> +        ged_st->wakeup.notify = acpi_ged_notify_wakeup;
+> +        qemu_register_wakeup_notifier(&ged_st->wakeup);
+> +        qemu_register_wakeup_support();
+> +    }
+> +}
+> +
+>  static void acpi_ged_initfn(Object *obj)
+>  {
+>      DeviceState *dev = DEVICE(obj);
+> @@ -409,6 +462,7 @@ static void acpi_ged_class_init(ObjectClass *class, void *data)
+>      AcpiDeviceIfClass *adevc = ACPI_DEVICE_IF_CLASS(class);
+>  
+>      dc->desc = "ACPI Generic Event Device";
+> +    dc->realize = acpi_ged_realize;
+>      device_class_set_props(dc, acpi_ged_properties);
+>      dc->vmsd = &vmstate_acpi_ged;
+>  
+> diff --git a/include/hw/acpi/generic_event_device.h b/include/hw/acpi/generic_event_device.h
+> index ba84ce021477..1ea3cb848679 100644
+> --- a/include/hw/acpi/generic_event_device.h
+> +++ b/include/hw/acpi/generic_event_device.h
+> @@ -80,9 +80,16 @@ OBJECT_DECLARE_SIMPLE_TYPE(AcpiGedState, ACPI_GED)
+>  /* ACPI_GED_REG_RESET value for reset*/
+>  #define ACPI_GED_RESET_VALUE       0x42
+>  
+> -/* ACPI_GED_REG_SLEEP_CTL.SLP_TYP value for S5 (aka poweroff) */
+> +/* ACPI_GED_REG_SLEEP_CTL.SLP_EN bit */
+> +#define ACPI_GED_SLP_EN            (1 << 5)
+> +
+> +/* ACPI_GED_REG_SLEEP_CTL.SLP_TYP values */
+> +#define ACPI_GED_SLP_TYP_S3        0x03
+> +#define ACPI_GED_SLP_TYP_S4        0x04
+>  #define ACPI_GED_SLP_TYP_S5        0x05
+>  
+> +#define ACPI_GED_WAK_STS           (1 << 7)
+> +
+>  #define GED_DEVICE      "GED"
+>  #define AML_GED_EVT_REG "EREG"
+>  #define AML_GED_EVT_SEL "ESEL"
+> @@ -99,7 +106,9 @@ OBJECT_DECLARE_SIMPLE_TYPE(AcpiGedState, ACPI_GED)
+>  typedef struct GEDState {
+>      MemoryRegion evt;
+>      MemoryRegion regs;
+> +    Notifier     wakeup;
+>      uint32_t     sel;
+> +    uint8_t      sleep_sts;
+>  } GEDState;
+>  
+>  struct AcpiGedState {
+> @@ -108,6 +117,7 @@ struct AcpiGedState {
+>      MemoryRegion container_memhp;
+>      GEDState ged_state;
+>      uint32_t ged_event_bitmap;
+> +    uint32_t slp_typs_bitmap;
+>      qemu_irq irq;
+>      AcpiGhesState ghes_state;
+>  };
+> 
 > -- 
 > 2.43.0
 
