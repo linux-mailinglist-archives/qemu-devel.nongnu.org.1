@@ -2,79 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3882191E294
-	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 16:36:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7C8C91E30E
+	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 17:00:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOI7d-0000w6-Ma; Mon, 01 Jul 2024 10:35:13 -0400
+	id 1sOIUm-0003M1-QH; Mon, 01 Jul 2024 10:59:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
- id 1sOI7b-0000vy-HV
- for qemu-devel@nongnu.org; Mon, 01 Jul 2024 10:35:11 -0400
-Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
- id 1sOI7X-0004XM-E4
- for qemu-devel@nongnu.org; Mon, 01 Jul 2024 10:35:11 -0400
-Received: by mail-ej1-x633.google.com with SMTP id
- a640c23a62f3a-a6fe7a0cb58so153074366b.1
- for <qemu-devel@nongnu.org>; Mon, 01 Jul 2024 07:35:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1719844506; x=1720449306; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=eZww6N4FXnwd+gMZy4Nk8A9I2Qib6HFNI65vtKUOJiY=;
- b=EIGG9VLhSG/dTlWfvOwvN4HL4W1xnalYMAE1gQhBe+9c8gVM8NFEsJOcFC3Mm8jK2w
- h+OLBF04K4OTWIXxWrZE5y9gqw5ik46iicCP2GAejW83671eYeocPFE6eSXR+KGNggIH
- oCvhqcMN4uHfpDmkGjKlhu/YSFZWWkCoFX7EaEEg7OuRB//dg32pX4kxJ8p/uVAssNl3
- FQutFj+lGFpRtXQXjcbNyKC3mjDbWEypDZvqGwjSZIglPhZ0aA5seAg/jD5rwE+cO4MX
- P/NPGVh5zjMGqKZ20UxqqEwFk4IYn8fEGJm3w95GdexQdLrUKqRUQtRJO+DK3EEAlesf
- sQbA==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1sOIUj-0003HM-2I
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 10:59:05 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1sOIUg-0004vD-67
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 10:59:04 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1719845941;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=Jg2YGBQJvxdBebsUu4RYgkViIJm4O2ffOHiDEzRB7LQ=;
+ b=WEX+agjCsjJqQqatyBQZQafAKYD8fu3KDwBqFcN11PeJ57ywKunwQRjLUYxMH59U627WBz
+ SBazmP3pR5VWRvooVBLbpJexhaD3aynM9J5FPEDhkG1XgfvJB4dRbDR7tEvvoYOFh/SOiF
+ lQYr765YArpERoqS8tlu9so0GPIYfNc=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-625-aOTOgO9fPzu8LEJEMMMLhA-1; Mon, 01 Jul 2024 10:58:59 -0400
+X-MC-Unique: aOTOgO9fPzu8LEJEMMMLhA-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-3634a25a7beso1930762f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 01 Jul 2024 07:58:59 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719844506; x=1720449306;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1719845937; x=1720450737;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=eZww6N4FXnwd+gMZy4Nk8A9I2Qib6HFNI65vtKUOJiY=;
- b=RzzBE0jLUiQ5zs7WFTjelrtYGZW6O5OWu1eMvYn0CwKpGh2UiMpV+3JAbR3oaDRtIY
- Jp9tIapBBCH6rTxF+FmcZKCRaEzJQGL4IyKP8750rzk86Uuk5sDq6wYan1PPCQs4XdYO
- n3F1GXYLXv3DaNUFFzf95mI8DOlvxVX0dNPp0gh5L3dRb2wXliw2ig2YYxX0fIZ9dnNt
- ivLFpNHoUd77mJpr+3iNtukvZnE6L+VbilhxcsRhlDOtCkhi2RLQ7MP5Ex4lwKpyyQr5
- yTZIiaIHuqJnthFMf+MVzOHH4lSreJLwbjl6O0OlqQJFv8ObXIg2sR9fwW+QpGeTDRXT
- DacA==
-X-Gm-Message-State: AOJu0YwAE3P68EpRlxXbzwez8gugiA/bnjBZh8UAdfZ+19G28Z63sN8G
- f1W7hbAE7ka46VgPp0S/0TC2K+Q2l8/XWavCYx5KcLn6XFIcxcHRZA1n91mdatAGrY1/9fodO7u
- LrJ5h1gm+xxwSeiu6owKsSi1UDVc=
-X-Google-Smtp-Source: AGHT+IHRLrN6RbgnMhN+GP4BrC6L0LhuTVoWZrJC+PAQoWWAqLNzUu/TDjwQ6ko3aN82hro5kiwQGWdRDG4be7Jle5o=
-X-Received: by 2002:a05:6402:1e88:b0:57c:6d89:eaef with SMTP id
- 4fb4d7f45d1cf-5879f3ac701mr5577176a12.18.1719844505325; Mon, 01 Jul 2024
- 07:35:05 -0700 (PDT)
+ bh=Jg2YGBQJvxdBebsUu4RYgkViIJm4O2ffOHiDEzRB7LQ=;
+ b=IVUjMK7f0wFzKBrTx3MlE5gcsmN2GYjn3Z3TGHs+1QSR1Sh2IJQXLdDxAxVfAZUp/p
+ 1O5U0mfiypSEQV1mTpi1tnVmytLK7emW5Eq0baFZ8qF8ONL3wrrN7KvcI/3gC83sF9N3
+ 8TtlY82r1V8yy26cVTPub+lb+eoLATGyt/5tBWjkp03EAQhWNPqkF6NyH3kN6X5F7P2z
+ rXu+8CghARFJ407hSy1EEfDlcQ0Bw9/oDbUMqNOQkT9V4c41wpzSTUJnje8vg9ddHYSD
+ gs6Oj9g68yEL5rIqVOy1pgyPTkBYA+6RFZULx+0xkakFsk3868eH22FVQ7IYRA8byt2L
+ +DUA==
+X-Gm-Message-State: AOJu0YxhLU3byx7VtZR9CTyD83+i55lnq4Gj2TgxDaCMmaZpYuaJHavI
+ IIP0bReAR01ppAgm19Oe76lljc1MZHr22YjLksMh50b2PSB4hY8+FnrT3JHQaj1LM3biKbbS0aT
+ w3nMqu77hFc6zmSX5BqmO+4wzPNuFV2Qc3XG+OssR9MCfANGoaSHsuw+PUysec2X/VJ/8P0Xv+/
+ B8AC1fVHfPtTbZCmLjGt9VHQv5zfmP+OFMMqXf
+X-Received: by 2002:a05:6000:b44:b0:366:eb2f:4f81 with SMTP id
+ ffacd0b85a97d-3677571e245mr3746471f8f.45.1719845936845; 
+ Mon, 01 Jul 2024 07:58:56 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHgVF3wnLEFFhkzfa2Sdf54LgWfM2nDGS9ef8sFs98GuMCEzizZ50UjjJcpMBsb5suYdwXNWQ==
+X-Received: by 2002:a05:6000:b44:b0:366:eb2f:4f81 with SMTP id
+ ffacd0b85a97d-3677571e245mr3746449f8f.45.1719845936292; 
+ Mon, 01 Jul 2024 07:58:56 -0700 (PDT)
+Received: from avogadro.local ([151.95.101.29])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3675a10302fsm10229054f8f.93.2024.07.01.07.58.55
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 01 Jul 2024 07:58:55 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Hanna Czenczek <hreitz@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>
+Subject: [PATCH 00/14] rust: example of bindings code for Rust in QEMU
+Date: Mon,  1 Jul 2024 16:58:32 +0200
+Message-ID: <20240701145853.1394967-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-References: <20240529140739.1387692-1-edgar.iglesias@gmail.com>
- <20240529140739.1387692-3-edgar.iglesias@gmail.com> <ZoKnQLBwIwh004yy@l14>
- <CAJy5ezqdxQ_y_sCyP243yTfgOJfLh1COzN9Eg+PxxoaVeOh-mQ@mail.gmail.com>
- <CAJy5ezrSs8r=ibTgb_oURdFTDW07sVVBeU6Rw7jsM+iaqPLNgg@mail.gmail.com>
-In-Reply-To: <CAJy5ezrSs8r=ibTgb_oURdFTDW07sVVBeU6Rw7jsM+iaqPLNgg@mail.gmail.com>
-From: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
-Date: Mon, 1 Jul 2024 16:34:53 +0200
-Message-ID: <CAJy5ezrPgUR3-gWK3Mfnc7iAgV3MEStSardY+0kkvHB+PHbe4w@mail.gmail.com>
-Subject: Re: [PATCH v8 2/8] xen: mapcache: Unmap first entries in buckets
-To: Anthony PERARD <anthony.perard@vates.tech>
-Cc: qemu-devel@nongnu.org, sstabellini@kernel.org, jgross@suse.com, 
- "Edgar E. Iglesias" <edgar.iglesias@amd.com>, Paul Durrant <paul@xen.org>,
- xen-devel@lists.xenproject.org
-Content-Type: multipart/alternative; boundary="000000000000cf1678061c30803d"
-Received-SPF: pass client-ip=2a00:1450:4864:20::633;
- envelope-from=edgar.iglesias@gmail.com; helo=mail-ej1-x633.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,216 +102,227 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000cf1678061c30803d
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Hi all,
 
-On Mon, Jul 1, 2024 at 4:30=E2=80=AFPM Edgar E. Iglesias <edgar.iglesias@gm=
-ail.com>
-wrote:
+this is an example of what some bindings code for QEMU would look like.
+Note that some parts of this code are barely expected to compile, and
+are probably full of bugs, but still should look like finished code
+(in fact, because they compile, the type system parts should be okay;
+though a conditional "should" is required).
 
->
->
-> On Mon, Jul 1, 2024 at 3:58=E2=80=AFPM Edgar E. Iglesias <edgar.iglesias@=
-gmail.com>
-> wrote:
->
->> On Mon, Jul 1, 2024 at 2:55=E2=80=AFPM Anthony PERARD <anthony.perard@va=
-tes.tech>
->> wrote:
->>
->>> Hi all,
->>>
->>> Following this commit, a test which install Debian in a guest with OVMF
->>> as firmware started to fail. QEMU exit with an error when GRUB is
->>> running on the freshly installed Debian (I don't know if GRUB is
->>> starting Linux or not).
->>> The error is:
->>>     Bad ram offset ffffffffffffffff
->>>
->>> Some logs:
->>>
->>> http://logs.test-lab.xenproject.org/osstest/logs/186611/test-amd64-amd6=
-4-xl-qemuu-ovmf-amd64/info.html
->>>
->>> Any idea? Something is trying to do something with the address "-1" whe=
-n
->>> it shouldn't?
->>>
->>>
->> Hi Anothny,
->>
->> Yes, it looks like something is calling qemu_get_ram_block() on somethin=
-g
->> that isn't mapped.
->> One possible path is in qemu_ram_block_from_host() but there may be
->> others.
->>
->> The following patch may help.
->> Any chance you could try to get a backtrace from QEMU when it failed?
->>
->> diff --git a/system/physmem.c b/system/physmem.c
->> index 33d09f7571..2669c4dbbb 100644
->> --- a/system/physmem.c
->> +++ b/system/physmem.c
->> @@ -2277,6 +2277,9 @@ RAMBlock *qemu_ram_block_from_host(void *ptr, bool
->> round_offset,
->>          ram_addr_t ram_addr;
->>          RCU_READ_LOCK_GUARD();
->>          ram_addr =3D xen_ram_addr_from_mapcache(ptr);
->> +        if (ram_addr =3D=3D RAM_ADDR_INVALID) {
->> +            return NULL;
->> +        }
->>          block =3D qemu_get_ram_block(ram_addr);
->>          if (block) {
->>              *offset =3D ram_addr - block->offset;
->>
->>
->>
-> One more thing, regarding this specific patch. I don't think we should
-> clear the
-> entire entry, the next field should be kept, otherwise we'll disconnect
-> following
-> mappings that will never be found again. IIUC, this could very well be
-> causing the problem you see.
->
-> Does the following make sense?
->
-> diff --git a/hw/xen/xen-mapcache.c b/hw/xen/xen-mapcache.c
-> index 5f23b0adbe..e9df53c19d 100644
-> --- a/hw/xen/xen-mapcache.c
-> +++ b/hw/xen/xen-mapcache.c
-> @@ -597,7 +597,14 @@ static void
-> xen_invalidate_map_cache_entry_unlocked(MapCache *mc,
->          pentry->next =3D entry->next;
->          g_free(entry);
->      } else {
-> -        memset(entry, 0, sizeof *entry);
-> +        /* Invalidate mapping.  */
-> +        entry->paddr_index =3D 0;
-> +        entry->vaddr_base =3D NULL;
-> +        entry->size =3D 0;
-> +        g_free(entry->valid_mapping);
-> +        entry->valid_mapping =3D NULL;
-> +        entry->flags =3D 0;
-> +        /* Keep entry->next pointing to the rest of the list.  */
->      }
->  }
->
->
->
+This code is not integrated in the QEMU source tree, because again it
+is just a example of what kind of Rust code would exist to handle the
+C<->Rust FFI.  The translation of a handful of C structs and function
+prototypes is done by hand rather than with bindgen, in particular.
 
-And here without double-freeing entry->valid_mapping:
+The patches are organized as follows:
 
-diff --git a/hw/xen/xen-mapcache.c b/hw/xen/xen-mapcache.c
-index 5f23b0adbe..667807b3b6 100644
---- a/hw/xen/xen-mapcache.c
-+++ b/hw/xen/xen-mapcache.c
-@@ -597,7 +597,13 @@ static void
-xen_invalidate_map_cache_entry_unlocked(MapCache *mc,
-         pentry->next =3D entry->next;
-         g_free(entry);
-     } else {
--        memset(entry, 0, sizeof *entry);
-+        /* Invalidate mapping.  */
-+        entry->paddr_index =3D 0;
-+        entry->vaddr_base =3D NULL;
-+        entry->size =3D 0;
-+        entry->valid_mapping =3D NULL;
-+        entry->flags =3D 0;
-+        /* Keep entry->next pointing to the rest of the list.  */
-     }
- }
+Patches 1-2 introduce the skeleton for the rest of the code and are
+not particularly interesting, since that skeleton would be provided
+by the patches that introduce Rust usage in QEMU.
 
---000000000000cf1678061c30803d
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
-<div dir=3D"ltr" class=3D"gmail_attr">On Mon, Jul 1, 2024 at 4:30=E2=80=AFP=
-M Edgar E. Iglesias &lt;<a href=3D"mailto:edgar.iglesias@gmail.com">edgar.i=
-glesias@gmail.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote"=
- style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);p=
-adding-left:1ex"><div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=
-=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Mon, Jul 1, 2024 =
-at 3:58=E2=80=AFPM Edgar E. Iglesias &lt;<a href=3D"mailto:edgar.iglesias@g=
-mail.com" target=3D"_blank">edgar.iglesias@gmail.com</a>&gt; wrote:<br></di=
-v><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;borde=
-r-left:1px solid rgb(204,204,204);padding-left:1ex"><div dir=3D"ltr"><div d=
-ir=3D"ltr">On Mon, Jul 1, 2024 at 2:55=E2=80=AFPM Anthony PERARD &lt;anthon=
-y.perard@vates.tech&gt; wrote:<br></div><div class=3D"gmail_quote"><blockqu=
-ote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px=
- solid rgb(204,204,204);padding-left:1ex">Hi all,<br>
-<br>
-Following this commit, a test which install Debian in a guest with OVMF<br>
-as firmware started to fail. QEMU exit with an error when GRUB is<br>
-running on the freshly installed Debian (I don&#39;t know if GRUB is<br>
-starting Linux or not).<br>
-The error is:<br>
-=C2=A0 =C2=A0 Bad ram offset ffffffffffffffff<br>
-<br>
-Some logs:<br>
-<a href=3D"http://logs.test-lab.xenproject.org/osstest/logs/186611/test-amd=
-64-amd64-xl-qemuu-ovmf-amd64/info.html" rel=3D"noreferrer" target=3D"_blank=
-">http://logs.test-lab.xenproject.org/osstest/logs/186611/test-amd64-amd64-=
-xl-qemuu-ovmf-amd64/info.html</a><br>
-<br>
-Any idea? Something is trying to do something with the address &quot;-1&quo=
-t; when<br>
-it shouldn&#39;t?<br>
-<br></blockquote><div><br></div><div>Hi Anothny,</div><div><br></div><div>Y=
-es, it looks like something is calling=C2=A0qemu_get_ram_block() on somethi=
-ng that isn&#39;t mapped.</div><div>One possible path is in=C2=A0qemu_ram_b=
-lock_from_host() but there may be others.</div><div><br></div><div>The=C2=
-=A0following patch may help.</div><div>Any chance you could try to get a ba=
-cktrace from QEMU when it failed?</div><div><br></div><div>diff --git a/sys=
-tem/physmem.c b/system/physmem.c<br>index 33d09f7571..2669c4dbbb 100644<br>=
---- a/system/physmem.c<br>+++ b/system/physmem.c<br>@@ -2277,6 +2277,9 @@ R=
-AMBlock *qemu_ram_block_from_host(void *ptr, bool round_offset,<br>=C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0ram_addr_t ram_addr;<br>=C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0RCU_READ_LOCK_GUARD();<br>=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0ram_a=
-ddr =3D xen_ram_addr_from_mapcache(ptr);<br>+ =C2=A0 =C2=A0 =C2=A0 =C2=A0if=
- (ram_addr =3D=3D RAM_ADDR_INVALID) {<br>+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0return NULL;<br>+ =C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>=C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0block =3D qemu_get_ram_block(ram_addr);<br>=C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0if (block) {<br>=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0*offset =3D ram_addr - block-&gt;offset;<br></div><div><br></d=
-iv><div><br></div></div></div></blockquote><div><br></div><div>One more thi=
-ng, regarding this specific patch. I don&#39;t think we should clear the</d=
-iv><div>entire entry, the next field should be kept, otherwise we&#39;ll di=
-sconnect following</div><div>mappings that will never be found again. IIUC,=
- this could very well be causing the problem you see.</div><div><br></div><=
-div>Does the following make sense?</div><div class=3D"gmail_quote"><br></di=
-v>diff --git a/hw/xen/xen-mapcache.c b/hw/xen/xen-mapcache.c<br>index 5f23b=
-0adbe..e9df53c19d 100644<br>--- a/hw/xen/xen-mapcache.c<br>+++ b/hw/xen/xen=
--mapcache.c<br>@@ -597,7 +597,14 @@ static void xen_invalidate_map_cache_en=
-try_unlocked(MapCache *mc,<br>=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0pentry-&gt;=
-next =3D entry-&gt;next;<br>=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0g_free(entry)=
-;<br>=C2=A0 =C2=A0 =C2=A0} else {<br>- =C2=A0 =C2=A0 =C2=A0 =C2=A0memset(en=
-try, 0, sizeof *entry);<br>+ =C2=A0 =C2=A0 =C2=A0 =C2=A0/* Invalidate mappi=
-ng. =C2=A0*/<br>+ =C2=A0 =C2=A0 =C2=A0 =C2=A0entry-&gt;paddr_index =3D 0;<b=
-r>+ =C2=A0 =C2=A0 =C2=A0 =C2=A0entry-&gt;vaddr_base =3D NULL;<br>+ =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0entry-&gt;size =3D 0;<br>+ =C2=A0 =C2=A0 =C2=A0 =C2=A0g=
-_free(entry-&gt;valid_mapping);<br>+ =C2=A0 =C2=A0 =C2=A0 =C2=A0entry-&gt;v=
-alid_mapping =3D NULL;<br>+ =C2=A0 =C2=A0 =C2=A0 =C2=A0entry-&gt;flags =3D =
-0;<br>+ =C2=A0 =C2=A0 =C2=A0 =C2=A0/* Keep entry-&gt;next pointing to the r=
-est of the list. =C2=A0*/<br>=C2=A0 =C2=A0 =C2=A0}<br>=C2=A0}<br><div>=C2=
-=A0<br></div><div><br></div></div></div></blockquote><div><br></div><div><b=
-r></div><div>And here without double-freeing entry-&gt;valid_mapping:</div>=
-<div><br></div><div>diff --git a/hw/xen/xen-mapcache.c b/hw/xen/xen-mapcach=
-e.c<br>index 5f23b0adbe..667807b3b6 100644<br>--- a/hw/xen/xen-mapcache.c<b=
-r>+++ b/hw/xen/xen-mapcache.c<br>@@ -597,7 +597,13 @@ static void xen_inval=
-idate_map_cache_entry_unlocked(MapCache *mc,<br>=C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0pentry-&gt;next =3D entry-&gt;next;<br>=C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0g_free(entry);<br>=C2=A0 =C2=A0 =C2=A0} else {<br>- =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0memset(entry, 0, sizeof *entry);<br>+ =C2=A0 =C2=A0 =C2=A0 =C2=A0=
-/* Invalidate mapping. =C2=A0*/<br>+ =C2=A0 =C2=A0 =C2=A0 =C2=A0entry-&gt;p=
-addr_index =3D 0;<br>+ =C2=A0 =C2=A0 =C2=A0 =C2=A0entry-&gt;vaddr_base =3D =
-NULL;<br>+ =C2=A0 =C2=A0 =C2=A0 =C2=A0entry-&gt;size =3D 0;<br>+ =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0entry-&gt;valid_mapping =3D NULL;<br>+ =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0entry-&gt;flags =3D 0;<br>+ =C2=A0 =C2=A0 =C2=A0 =C2=A0/* Keep en=
-try-&gt;next pointing to the rest of the list. =C2=A0*/<br>=C2=A0 =C2=A0 =
-=C2=A0}<br>=C2=A0}</div><div><br></div></div></div>
+Patches 3-4 define common code to handle conversion of data structures
+between Rust and C.  I couldn't find an existing crate to do this,
+though there are similar concepts in glib-rs.  The crate defines
+variants of Clone, From and Into that convert a Rust struct to a
+C pointer, for example:
 
---000000000000cf1678061c30803d--
+   let s = "abc".clone_to_foreign();        // mallocs a NULL-terminated copy
+   let p = s.as_ptr();
+   drop(s);                                 // p is freed now
+
+or the other way round:
+
+   let s = String::cloned_from_foreign(p);  // p is a *const c_char
+
+   let t: String = p.into_native();         // p is a *mut c_char and is free()d
+
+The second patch defines what you need to convert strings from and to
+C.  It's used by tests but also by a couple of QOM functions implemented
+below; it lets you forget the differences between String, &str, CString,
+&CStr and Cow<'_, str>.
+
+This is the only complete part of the skeleton (in fact I wrote it
+a couple years ago), and it comes with testcases that pass in both
+"#[test]" and "doctest" (i.e. snippets integrated in the documentation
+comments) styles.
+
+
+Patch 5 (mostly complete except for &error_abort support and missing
+tests) allows using the above functionality for the QEMU Error*.
+
+
+Patches 6-8 provide an example of how to use QOM from Rust.  They
+define all the functionality to:
+
+- handle reference counting
+
+- handle typesafe casting (i.e. code doesn't compile if an upcast
+  is invalid, or if a downcast cannot possibly succeed).
+
+- faking inheritance since Rust doesn't support it.
+
+While I started with some implementation ideas in glib-rs, this has
+evolved quite a bit and doesn't really look much like glib-rs anymore.
+I provided a handful of functions to wrap C APIs.  For example:
+
+   object_property_add_child(obj, "foo", object_new(TYPE_BLAH))
+
+becomes
+
+   obj.property_add_child("foo", Blah::new());
+
+... except that the former leaks a reference and the latter does not
+(gotcha :)).  The idea is that these functions would be written, in
+general, as soon as Rust code uses them, but I included a few as an
+example of using the various abstractions for typecasting, reference
+counting, and converting from/to C data strcutures.
+
+A large part of this code is of the "it compiles and it looks nice, it
+must be perfect" kind.  Rust is _very_ picky on type safety, in case you
+didn't know.  One day we're all going to be programming in Haskell,
+without even noticing it.
+
+
+Patches 9-10 deal with how to define new subclasses in Rust.  They are
+a lot less polished and less ready.  There is probably a lot of polish
+that could be applied to make the code look nicer, but I guess there is
+always time to make the code look nicer until the details are sorted out.
+
+The things that I considered here are:
+
+- splitting configuration from runtime state.  Configuration is
+  immutable throughout the lifetime of the object, and holds the
+  value of user-configured properties.  State will typically be a
+  Mutex<> or RefCell<> since the QOM bindings make wide use of interior
+  mutability---almost all functions are declared as &self---following
+  the lead of glib-rs.
+
+- automatic generation of instance_init and instance_finalize.  For
+  this I opted to introduce a new initialization step that is tailored to
+  Rust, called instance_mem_init(), that is executed before the default
+  value of properties is set.  This makes sure that user code only ever
+  sees valid values for the whole struct, including after a downcast;
+  it matters because some Rust types (notably references) cannot be
+  initialized to a zero-bytes pattern.  The default implementation of
+  instance_mem_init is simply a memset(), since the callback replaces the
+
+    memset(obj, 0, type->instance_size);
+
+  line in object_initialize_with_type().  I have prototyped this change
+  in QEMU already.
+
+- generation of C vtables from safe code that is written in Rust. I
+  chose a trait that only contains associated constants as a way to
+  access the vtables generically.  For example:
+
+    impl ObjectImpl for TestDevice {
+        const UNPARENT: Option<fn(&TestDevice)> = Some(TestDevice::unparent);
+    }
+
+    impl DeviceImpl for TestDevice {
+        const REALIZE: Option<fn(&TestDevice) -> Result<()>> = Some(TestDevice::realize);
+    }
+
+  This works and it seems like a style that (in the future) we could apply
+  macro or even procedural macro magic to.
+
+- generation of qdev property tables.  While only boolean properties are
+  implemented here, one idea that I experimented with, is that the
+  default value of properties is derived from the ConstDefault trait.
+  (ConstDefault is provided by the const_default external crate).  Again,
+  this is material for future conversion to procedural macros.
+
+I absolutely didn't look at vmstate, but it shouldn't be too different
+from properties, at least for the common cases.
+
+
+Patches 11-14 finally are an example of the changes that are needed
+to respect a minimum supported Rust version consistent with what is in
+Debian Bullseye.  It's not too bad, especially since the current version
+of the QOM bindings does not require generic associated types anymore.
+
+
+Why am I posting this?  Because this kind of glue code is the ultimate
+source of technical debt.  It is the thing that we should be scared of
+when introducing a new language in QEMU.  It makes it harder to change C
+code, and it is hard to change once Rust code becomes more widespread.
+If we think a C API is not fully baked, we probably shouldn't write
+Rust code that uses it (including bindings code).  If we think a Rust
+API is not fully baked, we probably shouldn't add too much Rust code
+that uses it.
+
+We should have an idea of what this glue code looks like, in order to make
+an informed choice.  If we think we're not comfortable with reviewing it,
+well, we should be ready to say so and stick with C until we are.
+
+The alternative could be to use Rust without this kind of binding.  I
+think it's a bad idea.  It removes many of the advantages of Rust 
+(which are exemplified by the above object_property_add_child one-liner),
+and it also introduces _new_ kinds of memory errors, since Rust has
+its own undefined behavior conditions that are not there in C/C++.
+For example:
+
+    impl Struct {
+        pub fn f(&self) {
+            call_some_c_function(Self::g, self as *const Self as *mut _);
+        }
+
+        fn do_g(&mut self) {
+            ...
+        }
+
+        extern "C" fn g(ptr: *mut Self) {
+            unsafe { &mut *ptr }.do_g();
+        }
+    }
+
+is invalid because a &mut reference (exclusive) is alive at the same time
+as a & reference (shared).  It is left as an exercise to the reader to
+figure out all the possible ways in which we can shoot our own feet,
+considering the pervasive use of callbacks in QEMU.
+
+
+With respect to callbacks, that's something that is missing in this
+prototype.  Fortunately, that's also something that will be tackled very
+soon if the PL011 example is merged, because memory regions and character
+devices both introduce them.  Also, as I understand it, Rust code using
+callbacks is not particularly nice anyway, though it is of course doable.
+Instead, this exercise are about being able to write *nice* Rust code,
+with all the advantages provided by the language, and the cost of
+writing/maintaining the glue code that makes it possible.  I expect
+that we'll use a technique similar to the extern_c crate (it's 20 lines of
+code; https://docs.rs/crate/extern-c/) to convert something that implements
+Fn(), including a member function, into an extern "C" function.
+
+
+Anyhow: I think we can do it, otherwise I would not have written 2000 lines
+of code (some of it two or three times).  But if people are now scared and
+think we shouldn't, well, that's also a success of its own kind.
+
+Paolo
+
+
+Paolo Bonzini (14):
+  add skeleton
+  set expectations
+  rust: define traits and pointer wrappers to convert from/to C
+    representations
+  rust: add tests for util::foreign
+  rust: define wrappers for Error
+  rust: define wrappers for basic QOM concepts
+  rust: define wrappers for methods of the QOM Object class
+  rust: define wrappers for methods of the QOM Device class
+  rust: add idiomatic bindings to define Object subclasses
+  rust: add idiomatic bindings to define Device subclasses
+  rust: replace std::ffi::c_char with libc::c_char
+  rust: replace c"" literals with cstr crate
+  rust: introduce alternative to offset_of!
+  rust: use version of toml_edit that does not require new Rust
+
+-- 
+2.45.2
+
+
 
