@@ -2,99 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B5E991DFFA
-	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 14:55:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BEFA791E057
+	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 15:14:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOGZE-00087C-B7; Mon, 01 Jul 2024 08:55:36 -0400
+	id 1sOGql-00060R-Gp; Mon, 01 Jul 2024 09:13:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOGZA-0007vw-Gd
- for qemu-devel@nongnu.org; Mon, 01 Jul 2024 08:55:32 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOGZ5-0005e6-JQ
- for qemu-devel@nongnu.org; Mon, 01 Jul 2024 08:55:31 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-4257a390a4eso12510915e9.0
- for <qemu-devel@nongnu.org>; Mon, 01 Jul 2024 05:55:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719838525; x=1720443325; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=xAZY3KwQVvcIInlMOR/b8oGpaTozUJdYUcKYuEK8xMw=;
- b=eV/6nCsAhv6ocCmAPTzF8MSsvT+or+QywaKcseG7Y6fwH1+RGSo2AF8ApM2+heeXnA
- 7e+Z32uiDTs08+hgcOf0valUuJWRiruvJB06+W8RTaRkJxokG27siijvKLsbMoJpqKyP
- XY/6cu3MuxH6dbEDOd2alU+lxVVSk+75WrUgiONAo3NX8ujyCMaQ3DJYSgxQgxmvadxa
- UiT3eCUlciCsa0M2DqLnedhtMvvpjGlQyVqLvmncZwynVh7qA7rDr8GKJ/4SC/kMtgW9
- 4k4Unbvu95sX+i7/I1a17rbyjX1lEFvOh3ggX+yKnORsI7+6omqF3lwkaF6xqI5+zN31
- Y2hg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719838525; x=1720443325;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=xAZY3KwQVvcIInlMOR/b8oGpaTozUJdYUcKYuEK8xMw=;
- b=JnSinxxsMHg0VcESNzF3bUKQP+gu3lhuqsdN35rlbMJYuJmJfX2Xbmh/h7D9GgPEZo
- HwfxVnjYxVLx65h1TZHH7Cd7eQRUboqy2SaOcLZLbzCapmFLuA09XvwBoHj93TlVaiZp
- s/pYlX2Lg7wP3xR3hjMsdoD9GcfBDhMow4TqFQY19UY3WEJ0uOqO6K5PkgR3KzlBbjtG
- 2rpJpplZqk/8i+tQ4a4mme0/6VVcr3AJuDUtSsW7I+44cr1oiYZOw1Fb1R0+J7eaB0+w
- GPQD3Vvx4TsmAyA+WPWCvI9ssqgGsM5CNz6LscTEwoCW1CTpq9YusTSBxgN95S8URR5Y
- oqnA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUIIFOdYTxHJvvp0SYzYy1/+y2NWICS7qTdugSZdesDWflrTd1x95D7muFCJUGwtLnaQXChed2pdIanvmTZuZmqyAAWSjY=
-X-Gm-Message-State: AOJu0Yx5smZPvwPZKXsKLKMiPd2KfQCeSscF3KdDdYFJvBZ6SMHap4Zk
- 3CPUx2FsYP+JoAvu2LhJP3kMBfypGkszXuALnwVdV5PtrEKPlo4jGs3CLhRKcXE=
-X-Google-Smtp-Source: AGHT+IFLAe9UNwKPMtbujWGkKRDPAafVnTFJSxfViUbtpX0Tm22pbytFj6AmFDKNAHKtbrriI60DlA==
-X-Received: by 2002:a05:600c:3b09:b0:424:a721:1d0f with SMTP id
- 5b1f17b1804b1-4257a020eeemr36572665e9.29.1719838524673; 
- Mon, 01 Jul 2024 05:55:24 -0700 (PDT)
-Received: from [192.168.69.100] ([176.176.177.159])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4257dee5f2asm63843755e9.22.2024.07.01.05.55.22
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 01 Jul 2024 05:55:24 -0700 (PDT)
-Message-ID: <ddb08424-4211-4202-aa73-ef5fc7c11404@linaro.org>
-Date: Mon, 1 Jul 2024 14:55:21 +0200
+ (Exim 4.90_1) (envelope-from
+ <bounce-md_30504962.6682a742.v1-3817fa9c32484dec8c19c638b7468323@bounce.vates.tech>)
+ id 1sOGqf-000605-5V
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 09:13:37 -0400
+Received: from mail145-25.atl61.mandrillapp.com ([198.2.145.25])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from
+ <bounce-md_30504962.6682a742.v1-3817fa9c32484dec8c19c638b7468323@bounce.vates.tech>)
+ id 1sOGqc-0006Br-QH
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 09:13:36 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mandrillapp.com;
+ s=mte1; t=1719838530; x=1720099030;
+ bh=VpP23dnSGMr3v2CEKMNAe5zKPZgSu5ZxiHq/Xs24dYc=;
+ h=From:Subject:To:Cc:Message-Id:References:In-Reply-To:Feedback-ID:
+ Date:MIME-Version:Content-Type:Content-Transfer-Encoding:CC:Date:
+ Subject:From;
+ b=Ny83Y58m6oWh5I6f3VeENNyv3VxXEXSW24lNptMduvW4qTVrjEA/fxVJNto/58P/S
+ mQaIkHgH06OJNaPo4/6v1wWBj4bNSByv1fpFQWLVo2LzMgy57fk2kjep3dJlMnknct
+ /PnGSu1kSfY8s32Z5OctqjPRuNry9mlbWy3trEjZsqaCsfO3l0MHiaGIrQvnqW9OK7
+ QY3E3+6Nq/5Es8I4meZCQfxwQxsuWpBxXO0g/E5PA64n0F8WdZ6BjyWK+XNfK7Cfxb
+ ttJeyuXLAYTk0ShXDWsTHibrngnb9fK09YQk9i+MDIpbBeW1KlfLdu/+fnRo/6MNg7
+ 4QpPL187QVfyA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vates.tech; s=mte1;
+ t=1719838530; x=1720099030; i=anthony.perard@vates.tech;
+ bh=VpP23dnSGMr3v2CEKMNAe5zKPZgSu5ZxiHq/Xs24dYc=;
+ h=From:Subject:To:Cc:Message-Id:References:In-Reply-To:Feedback-ID:
+ Date:MIME-Version:Content-Type:Content-Transfer-Encoding:CC:Date:
+ Subject:From;
+ b=crfnrwXanFZzzSdUZuH07VYdfXSaI4knD3yJ8OMVtpslUNeomgrJHcvlWhezwlGj8
+ 4NywvViCMP86r7o/pJcasi8uB2o/+S1ZWBqDlCJtSaSrFHG+gebNeZf+ZI3mwn3gfH
+ GRKp9t/INgxMMBCooj3Schu9RP3mg4m49kaslan72HRXHIKMFAu+4LAYql1J4G2jxG
+ zAtuyk7+r68Aj+Ian56o0soN8laHSLB6bWd6SsKD15O8nUj8snCdYjmctXHMYiFB2P
+ 5RZBXRlddaOsRhFXIIdMzJIMfW+4lP0AZkoM0FQ4eeJgf+SFaVWe0KHGOs3WVi5umz
+ GZtBHi5ZK7gSQ==
+Received: from pmta06.mandrill.prod.atl01.rsglab.com (localhost [127.0.0.1])
+ by mail145-25.atl61.mandrillapp.com (Mailchimp) with ESMTP id
+ 4WCQxt56z6z35hZM5
+ for <qemu-devel@nongnu.org>; Mon,  1 Jul 2024 12:55:30 +0000 (GMT)
+From: Anthony PERARD <anthony.perard@vates.tech>
+Subject: =?utf-8?Q?Re:=20[PATCH=20v8=202/8]=20xen:=20mapcache:=20Unmap=20first=20entries=20in=20buckets?=
+Received: from [37.26.189.201] by mandrillapp.com id
+ 3817fa9c32484dec8c19c638b7468323; Mon, 01 Jul 2024 12:55:30 +0000
+X-Bm-Disclaimer: Yes
+X-Bm-Milter-Handled: 4ffbd6c1-ee69-4e1b-aabd-f977039bd3e2
+X-Bm-Transport-Timestamp: 1719838529271
+To: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
+Cc: qemu-devel@nongnu.org, sstabellini@kernel.org, jgross@suse.com,
+ "Edgar E. Iglesias" <edgar.iglesias@amd.com>, Paul Durrant <paul@xen.org>,
+ xen-devel@lists.xenproject.org
+Message-Id: <ZoKnQLBwIwh004yy@l14>
+References: <20240529140739.1387692-1-edgar.iglesias@gmail.com>
+ <20240529140739.1387692-3-edgar.iglesias@gmail.com>
+In-Reply-To: <20240529140739.1387692-3-edgar.iglesias@gmail.com>
+X-Native-Encoded: 1
+X-Report-Abuse: =?UTF-8?Q?Please=20forward=20a=20copy=20of=20this=20message,
+ =20including=20all=20headers,
+ =20to=20abuse@mandrill.com.=20You=20can=20also=20report=20abuse=20here:=20https://mandrillapp.com/contact/abuse=3Fid=3D30504962.3817fa9c32484dec8c19c638b7468323?=
+X-Mandrill-User: md_30504962
+Feedback-ID: 30504962:30504962.20240701:md
+Date: Mon, 01 Jul 2024 12:55:30 +0000
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 02/14] hw/arm: convert 'virt' machine definitions to
- use new macros
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- qemu-devel@nongnu.org
-Cc: Halil Pasic <pasic@linux.ibm.com>, devel@lists.libvirt.org,
- "Michael S. Tsirkin" <mst@redhat.com>, Eric Farman <farman@linux.ibm.com>,
- qemu-s390x@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- Nicholas Piggin <npiggin@gmail.com>, David Hildenbrand <david@redhat.com>,
- Ilya Leoshkevich <iii@linux.ibm.com>,
- David Gibson <david@gibson.dropbear.id.au>, qemu-arm@nongnu.org,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clegoate@redhat.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Yanan Wang <wangyanan55@huawei.com>, Eduardo Habkost <eduardo@habkost.net>,
- Peter Maydell <peter.maydell@linaro.org>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Laurent Vivier <laurent@vivier.eu>, qemu-ppc@nongnu.org
-References: <20240620165742.1711389-1-berrange@redhat.com>
- <20240620165742.1711389-3-berrange@redhat.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240620165742.1711389-3-berrange@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=198.2.145.25;
+ envelope-from=bounce-md_30504962.6682a742.v1-3817fa9c32484dec8c19c638b7468323@bounce.vates.tech;
+ helo=mail145-25.atl61.mandrillapp.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,17 +98,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 20/6/24 18:57, Daniel P. Berrangé wrote:
-> This changes the DEFINE_VIRT_MACHINE macro to use the common
-> helpers for constructing versioned symbol names and strings,
-> bringing greater consistency across targets.
+Hi all,
+
+Following this commit, a test which install Debian in a guest with OVMF
+as firmware started to fail. QEMU exit with an error when GRUB is
+running on the freshly installed Debian (I don't know if GRUB is
+starting Linux or not).
+The error is:
+    Bad ram offset ffffffffffffffff
+
+Some logs:
+http://logs.test-lab.xenproject.org/osstest/logs/186611/test-amd64-amd64-xl-qemuu-ovmf-amd64/info.html
+
+Any idea? Something is trying to do something with the address "-1" when
+it shouldn't?
+
+Cheers,
+
+Anthony
+
+On Wed, May 29, 2024 at 04:07:33PM +0200, Edgar E. Iglesias wrote:
+> From: "Edgar E. Iglesias" <edgar.iglesias@amd.com>
 > 
-> Reviewed-by: Thomas Huth <thuth@redhat.com>
-> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+> When invalidating memory ranges, if we happen to hit the first
+> entry in a bucket we were never unmapping it. This was harmless
+> for foreign mappings but now that we're looking to reuse the
+> mapcache for transient grant mappings, we must unmap entries
+> when invalidated.
+> 
+> Signed-off-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
+> Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
 > ---
->   hw/arm/virt.c | 28 +++++++++++++++-------------
->   1 file changed, 15 insertions(+), 13 deletions(-)
+>  hw/xen/xen-mapcache.c | 11 ++++++++---
+>  1 file changed, 8 insertions(+), 3 deletions(-)
+> 
+> diff --git a/hw/xen/xen-mapcache.c b/hw/xen/xen-mapcache.c
+> index bc860f4373..ec95445696 100644
+> --- a/hw/xen/xen-mapcache.c
+> +++ b/hw/xen/xen-mapcache.c
+> @@ -491,18 +491,23 @@ static void xen_invalidate_map_cache_entry_unlocked(MapCache *mc,
+>          return;
+>      }
+>      entry->lock--;
+> -    if (entry->lock > 0 || pentry == NULL) {
+> +    if (entry->lock > 0) {
+>          return;
+>      }
+>  
+> -    pentry->next = entry->next;
+>      ram_block_notify_remove(entry->vaddr_base, entry->size, entry->size);
+>      if (munmap(entry->vaddr_base, entry->size) != 0) {
+>          perror("unmap fails");
+>          exit(-1);
+>      }
+> +
+>      g_free(entry->valid_mapping);
+> -    g_free(entry);
+> +    if (pentry) {
+> +        pentry->next = entry->next;
+> +        g_free(entry);
+> +    } else {
+> +        memset(entry, 0, sizeof *entry);
+> +    }
+>  }
+>  
+>  typedef struct XenMapCacheData {
+> -- 
+> 2.40.1
+> 
+> 
+-- 
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Anthony Perard | Vates XCP-ng Developer
 
+XCP-ng & Xen Orchestra - Vates solutions
+
+web: https://vates.tech
 
