@@ -2,84 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42FD691DD8E
-	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 13:09:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00E5891DD8D
+	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 13:09:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOEqK-0003YQ-Mm; Mon, 01 Jul 2024 07:05:08 -0400
+	id 1sOEsX-0001cQ-OX; Mon, 01 Jul 2024 07:07:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <3Fo2CZggKCnUlfhlmTYTZhhZeX.VhfjXfn-WXoXeghgZgn.hkZ@flex--smostafa.bounces.google.com>)
- id 1sOEph-0002aW-2F
- for qemu-devel@nongnu.org; Mon, 01 Jul 2024 07:04:32 -0400
-Received: from mail-wm1-x349.google.com ([2a00:1450:4864:20::349])
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1sOEsU-0001MU-Kg
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 07:07:22 -0400
+Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from
- <3Fo2CZggKCnUlfhlmTYTZhhZeX.VhfjXfn-WXoXeghgZgn.hkZ@flex--smostafa.bounces.google.com>)
- id 1sOEpa-0005TM-6I
- for qemu-devel@nongnu.org; Mon, 01 Jul 2024 07:04:28 -0400
-Received: by mail-wm1-x349.google.com with SMTP id
- 5b1f17b1804b1-425657ac234so20840655e9.1
- for <qemu-devel@nongnu.org>; Mon, 01 Jul 2024 04:03:52 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1sOEsS-00066w-4Y
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 07:07:22 -0400
+Received: by mail-ej1-x635.google.com with SMTP id
+ a640c23a62f3a-a7241b2fe79so296298466b.1
+ for <qemu-devel@nongnu.org>; Mon, 01 Jul 2024 04:07:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1719831831; x=1720436631; darn=nongnu.org;
- h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
- :date:from:to:cc:subject:date:message-id:reply-to;
- bh=qrJKnFaCEJDJnPHMZ/xtMAaHa/F2XKk5TQh+K0QKGvQ=;
- b=Ze1m6LUVVG53RSQ1xsvqn1xEK7F4CiEhBNa7NhAfll0IWJkNkSuQ4qmF2GKPDrK/8l
- /cEPl/Ssa1TKO4fxb4lj4KwChhcoFeMsH3+ANGJp3LkzVO3uBELjaAuLYi+sOtHtN4Sz
- WVyUVHLR4aOaQPiyGeeUzDaXmqPBVzPe0dc1sS3vv8F29qP/ecG2u2NaUiwqhdCPK+FC
- /xYuk4wAo9vzxQiii2hZx4TW0Tcva21Yuvg3rts0+Gv3MYODCB46j2IiAHy9lHn08co7
- /SoYbNRHNxCrxXxiK2ktLTKyiNquM9ciSDjz0gR05ZV0ngEmlViHZbGB+NvipIRyaU0q
- QttA==
+ d=linaro.org; s=google; t=1719832038; x=1720436838; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=/Od2/jZBLxgbQRrQXshh83CzTsx/CJFDt98b+evwPNE=;
+ b=wwq39pqBFQM5KgigKbvB1v5470CBGPq4piSpSzmgzQf+QJKqluQdBY7va/djYgfn86
+ setIQCy1ojo5LQ7hYV6HdKfYppENPSe5W3pN8u1QUZw46GKuWaT6L1gGduJcEqAtkM/k
+ W4eX3ygkSPbiWoa0Jqi7IwUxLwA3EgFy/FUv718qCssQ1g01aBGyGVIc6evgMMtetfjI
+ S1PsQQEQbE5DfRFsVg6+aR11uMCI/Iwb5P8jb/lPfyKRu8tlaAvQ1b9uuVV/0+ABRvmp
+ j/Iwf7ow9+IadLLlDY9h2uPNPSGp9rnAGxvSqBe044tODx5CaEy8pvGwsRPwZmaRi5ez
+ 5rLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719831831; x=1720436631;
- h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
- :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=qrJKnFaCEJDJnPHMZ/xtMAaHa/F2XKk5TQh+K0QKGvQ=;
- b=VHZ8XYJXWdANFzMjplMd+bdhUmE587hqwmjsClnkW5i9B3BPqHLxmp7S7gvzBaEcci
- qqfxtLF/SXG5oZIILGztiH9f3la+lVSjrllwosQU4bjze5spm/aGwSRaaGShbI2K+iaf
- Jkcs6nCJXey2JPZ2PL2jUrZEtta3BwWCXqXT97IzK7WULlT7+iVu+nfBANYWC+ksQGRv
- GHZSnjFWEzQ6r2ITYK77gz4HPAbN2UyEoNyPycIMEKnPR/bG1BaB/9sFKb760sGRz972
- Pw9IgVLM0iLb5cVyDu96y642yaDw+AL50Zs97LRq6enQvibVb7CjcaMTZf5RcXkyAMw3
- mIfg==
+ d=1e100.net; s=20230601; t=1719832038; x=1720436838;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=/Od2/jZBLxgbQRrQXshh83CzTsx/CJFDt98b+evwPNE=;
+ b=IbDrBUzt8HCnzD3RUFxvW04QuvQugi5lAqEpvmrJ8/q/7uHHYlok7j+vr/4fAO2LQ7
+ gqGLktqgShsAQgx0UpJ0HtCMORDfCFS1nvgOMke6OXetnrk7ZWxCTxEN/UxJ7VB7yxad
+ wZ4vCgu/4q5zFLTEpJ69WOmIJ/VtpAbRQU0GFFIqZxS7g4Z4tN4emmeE56iu5kgV27oe
+ csw9vBovs8OXutAkyxa/SyfPBDjnxl7MFJUUqfD20RtIwZF7oMs4t+WiH6LtXLOS6UZb
+ tkG2oQLvLfhP/qpTAxBUoP1/Um7GgEsJmnb83t70FHinQuPtvP9NmXPWH9w0OZqQ15d+
+ xeTg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXikMuAaPMfj7qem5dC+6lSci7MdCyIQ9UEP22zoCY/S+v2HJlCce9IugIWLOK/LxZ7WubXBz8PcJRvKIerlGiuqqxux88=
-X-Gm-Message-State: AOJu0Yw+v314OsA6oQ2hyMyRsZlgeIk2QiRp76sHRMZjz3jpwXSTyTAh
- VRZ9jUjBX5lpUCskauFqGCbMIS4eDqP1RQmwglE3P2CiIq4hf/CYc1w5RYqhPnoJo4XBFWTI318
- DwBrgjzUnBw==
-X-Google-Smtp-Source: AGHT+IFUvw3RBG+2kPGfC4p+U48kacJg4z32znanatvhv6jKM8UzBbL7avg9ABDM3lU5yDveYhbHWHW2gt+c/g==
-X-Received: from mostafa.c.googlers.com
- ([fda3:e722:ac3:cc00:28:9cb1:c0a8:333c])
- (user=smostafa job=sendgmr) by 2002:a05:600c:5488:b0:424:a585:4b48 with SMTP
- id 5b1f17b1804b1-4257a08a9cfmr218315e9.7.1719831830959; Mon, 01 Jul 2024
- 04:03:50 -0700 (PDT)
-Date: Mon,  1 Jul 2024 11:02:41 +0000
-In-Reply-To: <20240701110241.2005222-1-smostafa@google.com>
-Mime-Version: 1.0
-References: <20240701110241.2005222-1-smostafa@google.com>
-X-Mailer: git-send-email 2.45.2.803.g4e1b14247a-goog
-Message-ID: <20240701110241.2005222-20-smostafa@google.com>
-Subject: [PATCH v4 19/19] hw/arm/smmu: Refactor SMMU OAS
-From: Mostafa Saleh <smostafa@google.com>
-To: qemu-arm@nongnu.org, eric.auger@redhat.com, peter.maydell@linaro.org, 
- qemu-devel@nongnu.org
-Cc: jean-philippe@linaro.org, alex.bennee@linaro.org, maz@kernel.org, 
- nicolinc@nvidia.com, julien@xen.org, richard.henderson@linaro.org, 
- marcin.juszkiewicz@linaro.org, Mostafa Saleh <smostafa@google.com>
+ AJvYcCUpXskzLv5J5rdQGnc65zG+gNbDd9cXhKVs+q5e/Uwbe7F7LuUklLkST7VUjsGFFoxUVy9W02gJ+eVYYMN49ooCZ/PgaHY=
+X-Gm-Message-State: AOJu0Yxe/8JRMa12YOts2G6OG8YBG1zX23RgYlU+g71c/CnwLMzsVdhL
+ nbymrHEXtaa2vrGFbvyd4UeJySy7LjkBG06S/Z+cx95AzCorqXy8MX9I1RKay5kgI9cEXqYTB9B
+ bHyeXSKAqiWGGohm2Csgbo2rSyZ/NNZ3k2Wr1hA==
+X-Google-Smtp-Source: AGHT+IGz02tGKxERCfC5Yigs+6ggl6sTE5HkWjYzw9VXX2F+TCfOL6sQ7KGQk+WeUybvu1pB+TtGnONMWWmlJiFHj74=
+X-Received: by 2002:a17:906:3748:b0:a72:7d95:a786 with SMTP id
+ a640c23a62f3a-a751445461dmr359830366b.25.1719832037517; Mon, 01 Jul 2024
+ 04:07:17 -0700 (PDT)
+MIME-Version: 1.0
+References: <20240610144708.81351-1-berto@igalia.com>
+ <eyt18.e0s2rty6vd9y@linaro.org> <w51sewtpk1t.fsf@igalia.com>
+In-Reply-To: <w51sewtpk1t.fsf@igalia.com>
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Date: Mon, 1 Jul 2024 14:07:01 +0300
+Message-ID: <CAAjaMXau1qvDrBGn1Kj4Z7g0rRGsp0x6n9hmyK_-SA2HFeZ0Pg@mail.gmail.com>
+Subject: Re: [PATCH] scripts/qcow2-to-stdout.py: Add script to write qcow2
+ images to stdout
+To: Alberto Garcia <berto@igalia.com>
+Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, 
+ Eric Blake <eblake@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
+ Hanna Czenczek <hreitz@redhat.com>, Madeeha Javed <javed@igalia.com>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::349;
- envelope-from=3Fo2CZggKCnUlfhlmTYTZhhZeX.VhfjXfn-WXoXeghgZgn.hkZ@flex--smostafa.bounces.google.com;
- helo=mail-wm1-x349.google.com
-X-Spam_score_int: -95
-X-Spam_score: -9.6
-X-Spam_bar: ---------
-X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01,
- USER_IN_DEF_DKIM_WL=-7.5 autolearn=unavailable autolearn_force=no
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::635;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ej1-x635.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,176 +93,164 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-SMMUv3 OAS is currently hardcoded in the code to 44 bits, for nested
-configurations that can be a problem, as stage-2 might be shared with
-the CPU which might have different PARANGE, and according to SMMU manual
-ARM IHI 0070F.b:
-    6.3.6 SMMU_IDR5, OAS must match the system physical address size.
+Hi Berto :)
 
-This patch doesn't change the SMMU OAS, but refactors the code to
-make it easier to do that:
-- Rely everywhere on IDR5 for reading OAS instead of using the
-  SMMU_IDR5_OAS macro, so, it is easier just to change IDR5 and
-  it propagages correctly.
-- Add additional checks when OAS is greater than 48bits.
-- Remove unused functions/macros: pa_range/MAX_PA.
+On Mon, 1 Jul 2024 at 11:56, Alberto Garcia <berto@igalia.com> wrote:
+>
+> On Wed 12 Jun 2024 02:00:19 PM +03, Manos Pitsidianakis wrote:
+>
+> Hi, thanks for the review and sorry for taking so long to reply, I was
+> on vacation.
+>
+> >> scripts/qcow2-to-stdout.py | 330 +++++++++++++++++++++++++++++++++++++
+> >> 1 file changed, 330 insertions(+)
+> >> create mode 100755 scripts/qcow2-to-stdout.py
+> >
+> > I recommend running the `black` formatter on this script, it makes the
+> > code more diff-friendly and uniform. Also it has become the de-facto
+> > python style.
+>
+> Hmmm, I don't like how it reformats some of the lines. However other
+> changes do make sense, so I'll apply those.
 
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
-Signed-off-by: Mostafa Saleh <smostafa@google.com>
----
- hw/arm/smmu-common.c     |  7 ++++---
- hw/arm/smmuv3-internal.h | 13 -------------
- hw/arm/smmuv3.c          | 35 ++++++++++++++++++++++++++++-------
- 3 files changed, 32 insertions(+), 23 deletions(-)
+It's not a project coding style requirement (for now) so it's fine.
 
-diff --git a/hw/arm/smmu-common.c b/hw/arm/smmu-common.c
-index faba4adc49..2cff80e5dd 100644
---- a/hw/arm/smmu-common.c
-+++ b/hw/arm/smmu-common.c
-@@ -452,7 +452,8 @@ static int smmu_ptw_64_s1(SMMUTransCfg *cfg,
-     inputsize = 64 - tt->tsz;
-     level = 4 - (inputsize - 4) / stride;
-     indexmask = VMSA_IDXMSK(inputsize, stride, level);
--    baseaddr = extract64(tt->ttb, 0, 48);
-+
-+    baseaddr = extract64(tt->ttb, 0, cfg->oas);
-     baseaddr &= ~indexmask;
- 
-     while (level < VMSA_LEVELS) {
-@@ -576,8 +577,8 @@ static int smmu_ptw_64_s2(SMMUTransCfg *cfg,
-      * Get the ttb from concatenated structure.
-      * The offset is the idx * size of each ttb(number of ptes * (sizeof(pte))
-      */
--    uint64_t baseaddr = extract64(cfg->s2cfg.vttb, 0, 48) + (1 << stride) *
--                                  idx * sizeof(uint64_t);
-+    uint64_t baseaddr = extract64(cfg->s2cfg.vttb, 0, cfg->s2cfg.eff_ps) +
-+                                  (1 << stride) * idx * sizeof(uint64_t);
-     dma_addr_t indexmask = VMSA_IDXMSK(inputsize, stride, level);
- 
-     baseaddr &= ~indexmask;
-diff --git a/hw/arm/smmuv3-internal.h b/hw/arm/smmuv3-internal.h
-index 0f3ecec804..0ebf2eebcf 100644
---- a/hw/arm/smmuv3-internal.h
-+++ b/hw/arm/smmuv3-internal.h
-@@ -602,19 +602,6 @@ static inline int oas2bits(int oas_field)
-     return -1;
- }
- 
--static inline int pa_range(STE *ste)
--{
--    int oas_field = MIN(STE_S2PS(ste), SMMU_IDR5_OAS);
--
--    if (!STE_S2AA64(ste)) {
--        return 40;
--    }
--
--    return oas2bits(oas_field);
--}
--
--#define MAX_PA(ste) ((1 << pa_range(ste)) - 1)
--
- /* CD fields */
- 
- #define CD_VALID(x)   extract32((x)->word[0], 31, 1)
-diff --git a/hw/arm/smmuv3.c b/hw/arm/smmuv3.c
-index 88378e83dd..6954b385c7 100644
---- a/hw/arm/smmuv3.c
-+++ b/hw/arm/smmuv3.c
-@@ -410,10 +410,10 @@ static bool s2t0sz_valid(SMMUTransCfg *cfg)
-     }
- 
-     if (cfg->s2cfg.granule_sz == 16) {
--        return (cfg->s2cfg.tsz >= 64 - oas2bits(SMMU_IDR5_OAS));
-+        return (cfg->s2cfg.tsz >= 64 - cfg->s2cfg.eff_ps);
-     }
- 
--    return (cfg->s2cfg.tsz >= MAX(64 - oas2bits(SMMU_IDR5_OAS), 16));
-+    return (cfg->s2cfg.tsz >= MAX(64 - cfg->s2cfg.eff_ps, 16));
- }
- 
- /*
-@@ -434,8 +434,11 @@ static bool s2_pgtable_config_valid(uint8_t sl0, uint8_t t0sz, uint8_t gran)
-     return nr_concat <= VMSA_MAX_S2_CONCAT;
- }
- 
--static int decode_ste_s2_cfg(SMMUTransCfg *cfg, STE *ste)
-+static int decode_ste_s2_cfg(SMMUv3State *s, SMMUTransCfg *cfg,
-+                             STE *ste)
- {
-+    uint8_t oas = FIELD_EX32(s->idr[5], IDR5, OAS);
-+
-     if (STE_S2AA64(ste) == 0x0) {
-         qemu_log_mask(LOG_UNIMP,
-                       "SMMUv3 AArch32 tables not supported\n");
-@@ -468,7 +471,15 @@ static int decode_ste_s2_cfg(SMMUTransCfg *cfg, STE *ste)
-     }
- 
-     /* For AA64, The effective S2PS size is capped to the OAS. */
--    cfg->s2cfg.eff_ps = oas2bits(MIN(STE_S2PS(ste), SMMU_IDR5_OAS));
-+    cfg->s2cfg.eff_ps = oas2bits(MIN(STE_S2PS(ste), oas));
-+    /*
-+     * For SMMUv3.1 and later, when OAS == IAS == 52, the stage 2 input
-+     * range is further limited to 48 bits unless STE.S2TG indicates a
-+     * 64KB granule.
-+     */
-+    if (cfg->s2cfg.granule_sz != 16) {
-+        cfg->s2cfg.eff_ps = MIN(cfg->s2cfg.eff_ps, 48);
-+    }
-     /*
-      * It is ILLEGAL for the address in S2TTB to be outside the range
-      * described by the effective S2PS value.
-@@ -544,6 +555,7 @@ static int decode_ste(SMMUv3State *s, SMMUTransCfg *cfg,
-                       STE *ste, SMMUEventInfo *event)
- {
-     uint32_t config;
-+    uint8_t oas = FIELD_EX32(s->idr[5], IDR5, OAS);
-     int ret;
- 
-     if (!STE_VALID(ste)) {
-@@ -587,8 +599,8 @@ static int decode_ste(SMMUv3State *s, SMMUTransCfg *cfg,
-          * Stage-1 OAS defaults to OAS even if not enabled as it would be used
-          * in input address check for stage-2.
-          */
--        cfg->oas = oas2bits(SMMU_IDR5_OAS);
--        ret = decode_ste_s2_cfg(cfg, ste);
-+        cfg->oas = oas2bits(oas);
-+        ret = decode_ste_s2_cfg(s, cfg, ste);
-         if (ret) {
-             goto bad_ste;
-         }
-@@ -714,6 +726,7 @@ static int decode_cd(SMMUv3State *s, SMMUTransCfg *cfg,
-     int i;
-     SMMUTranslationStatus status;
-     SMMUTLBEntry *entry;
-+    uint8_t oas = FIELD_EX32(s->idr[5], IDR5, OAS);
- 
-     if (!CD_VALID(cd) || !CD_AARCH64(cd)) {
-         goto bad_cd;
-@@ -732,7 +745,7 @@ static int decode_cd(SMMUv3State *s, SMMUTransCfg *cfg,
-     cfg->aa64 = true;
- 
-     cfg->oas = oas2bits(CD_IPS(cd));
--    cfg->oas = MIN(oas2bits(SMMU_IDR5_OAS), cfg->oas);
-+    cfg->oas = MIN(oas2bits(oas), cfg->oas);
-     cfg->tbi = CD_TBI(cd);
-     cfg->asid = CD_ASID(cd);
-     cfg->affd = CD_AFFD(cd);
-@@ -761,6 +774,14 @@ static int decode_cd(SMMUv3State *s, SMMUTransCfg *cfg,
-             goto bad_cd;
-         }
- 
-+        /*
-+         * An address greater than 48 bits in size can only be output from a
-+         * TTD when, in SMMUv3.1 and later, the effective IPS is 52 and a 64KB
-+         * granule is in use for that translation table
-+         */
-+        if (tt->granule_sz != 16) {
-+            cfg->oas = MIN(cfg->oas, 48);
-+        }
-         tt->tsz = tsz;
-         tt->ttb = CD_TTB(cd, i);
- 
--- 
-2.45.2.803.g4e1b14247a-goog
+>
+> > Also, it's more pythonic to name constants in uppercase, like
+> > allocated_l2_tables. You can check such lints with pylint
+> > scripts/qcow2-to-stdout.py
+>
+> allocated_l2_tables is not a constant :-?
 
+Eeeh right, correct. `pylint`'s error message said it was a constant,
+my bad. It says it is a constant because it is declared as a global
+(module-level), `__all__` is not defined with any globals, and
+according to PEP-8 non-public globals start with an underscore in the
+name.
+
+>
+> >>+    struct.pack_into('>I', header, 0x70, 0x6803f857)
+> >>+    struct.pack_into('>I', header, 0x74, len(qcow2_features) * 48)
+> >>+    cur_offset =3D 0x78
+> >
+> > Minor comment: extract magic values/offsets into constant globals with
+> > descriptive names, it'd help the code be more readable and easier to
+> > maintain if ported in the future to other formats.
+>
+> Good idea, will do.
+>
+> >>+    for (feature_type, feature_bit, feature_name) in qcow2_features:
+> >>+        struct.pack_into('>BB46s', header, cur_offset,
+> >>+                         feature_type, feature_bit, feature_name.encod=
+e('ascii'))
+> >>+        cur_offset +=3D 48
+> >>+
+> >
+> >>From here onwards put everything under a main block like so:
+>
+> Ok.
+>
+> >>+# Command-line arguments
+> >>+parser =3D argparse.ArgumentParser(description=3D'This program convert=
+s a QEMU disk image to qcow2 '
+> >>+                                 'and writes it to the standard output=
+')
+> >>+parser.add_argument('input_file', help=3D'name of the input file')
+> >
+> > Suggestion:
+> >
+> > -parser.add_argument('input_file', help=3D'name of the input file')
+> > +parser.add_argument('input_file', help=3D'name of the input file', typ=
+e=3Dpathlib.Path, required=3DTrue)
+>
+> 'required' is not valid in positional arguments,
+
+Sorry did not notice it's a positional!
+
+> and I'm not sure what
+> benefits using pathlib brings in this case.
+
+implicit type requirement, argument value validations, path normalization e=
+tc.
+
+>
+> >>+parser.add_argument('-v', dest=3D'qcow2_version', metavar=3D'qcow2_ver=
+sion',
+> >
+> > Maybe -q instead of -v? No strong feelings on this one, it's just that
+> > -v is usually version. -q is also usually --quiet so not sure...
+>
+> Yeah, I thought the same but I didn't want to complicate this too much,
+> this is just a helper script.
+>
+> >>+# If the input file is not in raw format we can use
+> >>+# qemu-storage-daemon to make it appear as such
+> >>+if input_format !=3D 'raw':
+> >>+    temp_dir =3D tempfile.mkdtemp()
+> >
+> > Consider using the tempfile.TemporaryDirectory as with... context
+> > manager so that the temp dir cleanup is performed automatically
+>
+> I don't think I can do that directly here because the temp dir has to
+> live until the very end (qemu-storage-daemon needs it).
+>
+> >>+    pid_file =3D temp_dir + "/pid"
+> >>+    raw_file =3D temp_dir + "/raw"
+> >>+    open(raw_file, 'wb').close()
+> >
+> > Consider using a with open(...) open manager for opening the file
+>
+> How would that be? Like this?
+>
+>     with open(raw_file, 'wb'):
+>         pass
+>
+> If so I don't see the benefit, I just need to create an empty file and
+> close it immediately.
+
+My only argument here is that it's "more pythonic" which I know is of
+little value and consequence :) Feel free to ignore! They were mere
+suggestions.
+
+>
+> >>+    atexit.register(kill_storage_daemon, pid_file, raw_file, temp_dir)
+> >
+> > Hm, this too could be a context manager. Seems very C-like to use
+> > atexit here.
+>
+> Yeah it is, but I think that using the context manager would require me
+> to split the main function in two, and I'm not sure that it's worth it
+> for this case. Other Python scripts in the QEMU repo use atexit already.
+>
+> >>+    ret =3D subprocess.run(["qemu-storage-daemon", "--daemonize", "--p=
+idfile", pid_file,
+> >>+                          "--blockdev", f"driver=3Dfile,node-name=3Dfi=
+le0,driver=3Dfile,filename=3D{input_file},read-only=3Don",
+> >>+                          "--blockdev", f"driver=3D{input_format},node=
+-name=3Ddisk0,file=3Dfile0,read-only=3Don",
+> >>+                          "--export", f"type=3Dfuse,id=3Dexport0,node-=
+name=3Ddisk0,mountpoint=3D{raw_file},writable=3Doff"])
+> >
+> > You can add shell=3DTrue, check=3DFalse arguments to subprocess.run() s=
+o
+> > that it captures the outputs. (check=3DFalse is the default behavior, b=
+ut
+> > better make it explicit)
+>
+> I'm not sure that I understand, why would I need to use a shell here?
+
+I must have meant capture_output=3DTrue, not shell=3DTrue, sorry for that
+=F0=9F=A4=94. The explicit check=3DFalse says to the reader that this won't=
+ throw
+an exception so it's just for readability. The capture_output part is
+so that you can print the outputs if the return code is an error.
+
+I wouldn't want to overcomplicate things for no real reason,
+especially for a simple single patch like this so I suggested minor
+stuff for code readability. Should have made it more explicit in the
+first place! :)
+
+--=20
+Manos Pitsidianakis
+Emulation and Virtualization Engineer at Linaro Ltd
 
