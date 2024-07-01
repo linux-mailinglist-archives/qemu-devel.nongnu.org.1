@@ -2,96 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1190C91E337
-	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 17:04:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5385291E31F
+	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 17:01:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOIVO-0004CW-J5; Mon, 01 Jul 2024 10:59:46 -0400
+	id 1sOIVQ-0004Fe-86; Mon, 01 Jul 2024 10:59:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sOIVM-00045Z-KK
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOIVM-00045Y-Hx
  for qemu-devel@nongnu.org; Mon, 01 Jul 2024 10:59:44 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sOIVK-0005pK-3H
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOIVH-0005Td-Sx
  for qemu-devel@nongnu.org; Mon, 01 Jul 2024 10:59:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719845981;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=luGqbPijLsIyeJwfJwi+l/hOQ+ghfxnFRgaepulV208=;
- b=T/zdvewbLcrr/DIWvVf/LHCHCpAqA2MmkixWV9jajdP6fhQLc/jocRIbXeALD5DTP2zwtr
- 7rDqNr43bEIeqGb9AjhDDumiix0gEJzGMFk4uq/oMWkcw2w5/7LPyEkQeV0kH0BSzttmof
- fi07csMxIOjia1qn8YWUupxWvbZX31w=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-658-yIct2ODCNCuRp60fWHdyGQ-1; Mon, 01 Jul 2024 10:59:40 -0400
-X-MC-Unique: yIct2ODCNCuRp60fWHdyGQ-1
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-36536118656so1875030f8f.1
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-4256f102e89so21247965e9.0
  for <qemu-devel@nongnu.org>; Mon, 01 Jul 2024 07:59:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1719845978; x=1720450778; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=M50FB3NLEFti9qLfiHvrL21QsVqbQ33it1JlOscvyhk=;
+ b=MMIB04tiUWWJHeQYxeFFeFegRc/nFosyyuFd3A3vxZ0ttM49bxFrpufB+aTruYne9T
+ c//W8/NYpkKqQ0FSGP+Ku6MPTYLE85SlD55Lk4odCQOBldbsACvP/+bO6Htc7RqufH3I
+ PRdxBHMWp4RfwzvAMiBvxJKB0Hb5lGvSQW77bFcMKz9TH91CANoGbgmnacwVcY4qk84T
+ Yjng0WU/mJb/EO6dIZ370AjlN2223q1coM+H45dKttX/XsxSSCaWLHPl1Bj//HrY6web
+ VFg4cJKN1kvR2oFVAzLFeGXi9O/MiTeyQ6Fgf/2DQfE0cMe4GmY0gzbsUrw/G74Ovc1F
+ ObRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719845977; x=1720450777;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=luGqbPijLsIyeJwfJwi+l/hOQ+ghfxnFRgaepulV208=;
- b=mbNXi+npS+6TI/gIEyjobwbIkshPgerssM3ZYpL8SGaJhk498TL2Eg3uTHtSghkfBk
- fMuhtphYX9V/n0XAfNDFIR1p78H50R2YjXpYpDbJ/i4qJ6IXj1qX67zzuOSdCRx3102V
- YT+XSmsBabFV3JkI0fbDyjV0ljJ/pXpXtcTy10P6p5tRGLOI7yWxNaU5PbsXUXOwG9JK
- TN5hFaoi9k/06Nc77A58X0AcyhX3XOG9P/FXgB3ge40pRzaaF75vRCHKqpyhJAUx+UhJ
- /rAKQeJcoIdnRu97nvzHJFRpNj0o5HoDog2aP6FvlnGYuIOpHd91imeJ9cFhs3H6vV5W
- 3/Aw==
-X-Gm-Message-State: AOJu0YzmrRuVRJIwyagW27jvwq0fDdLwun7lIl44jWenMXPgHwfsCYpb
- BXeh88eAfcoVhilE6ZuD/VHQa9RAzE3HtIijU/eWnPkoLI2Yr6EjZCfRZQUI13xo/oxZ4O7J+a6
- 9GNkDycpwlMo7E4v1B9bYIyYr0zQ1az9UK3C7MgGxL6S/L0YL8v/SxjVaBM0ZtUauCnCZn5WZeM
- dTzf5t/01jGDVq5zapRuc+DTt5HjJyVhSZiNOH
-X-Received: by 2002:a5d:6205:0:b0:367:4dc9:efcb with SMTP id
- ffacd0b85a97d-367757305c6mr4185680f8f.70.1719845977783; 
- Mon, 01 Jul 2024 07:59:37 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFYpktNCTaKAuU/apTVDe8ZFC76gPb3FORDsTr4ThlRulNc0TDB9C7Ge/UmV5o7AbbXsyj7vA==
-X-Received: by 2002:a5d:6205:0:b0:367:4dc9:efcb with SMTP id
- ffacd0b85a97d-367757305c6mr4185660f8f.70.1719845977449; 
- Mon, 01 Jul 2024 07:59:37 -0700 (PDT)
-Received: from avogadro.local ([151.95.101.29])
+ d=1e100.net; s=20230601; t=1719845978; x=1720450778;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=M50FB3NLEFti9qLfiHvrL21QsVqbQ33it1JlOscvyhk=;
+ b=idu5E5wBAj1qwBIJVPbjyd48oaLZ19meeoWA7JJH1A4zbjMxeMWgpvbHX8S9JMxmTR
+ buDXzkY8upV6AgMmnXdLsJ9GRuJsw6RilNznWxLeT9LCjVBpcfPHNuLr3DLkR6kTxlvQ
+ TmJ0O26Ve0C7TxI0ryDSugzQ05+YwRzOZkPemYZt9Ju/87simLaXry6UxeYCFDBVcOb9
+ qJe1jsZkOtZpBcH5uPIfAAh+plklM4x+HHnFBFfig6eS7zgVgmQpWm81Gb9Jn1ndKIq/
+ sOsT9/2cmLXBoEyc+OGE2ob0t4FMNsf2nnZolDkec8bPPJG54SWNLY8x4QIrjMNuW2n7
+ ZP1g==
+X-Gm-Message-State: AOJu0YyHfAYOoJi4H5BrH6eYfvmbhwbtlep49ryUGbs2hlNV/ZdDCn3z
+ LHteK/zAPxJlIQxUNvzexeAIvfNewA+Ffv1dLhMBnOIzbae7xkJOiYpdqTS7nEc=
+X-Google-Smtp-Source: AGHT+IHX60a4qR7ntMLnsy2W148ViUVqv5eBdnjy/PMHWg+CDvtsTUCOFCIC0z6Cuycxd0YjZ26V0A==
+X-Received: by 2002:a5d:5702:0:b0:35f:1c34:adfc with SMTP id
+ ffacd0b85a97d-36775729a52mr3318587f8f.67.1719845978095; 
+ Mon, 01 Jul 2024 07:59:38 -0700 (PDT)
+Received: from [192.168.69.100] ([176.176.177.159])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4256b0c1018sm155820705e9.40.2024.07.01.07.59.36
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 01 Jul 2024 07:59:36 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Hanna Czenczek <hreitz@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PATCH 14/14] rust: use version of toml_edit that does not require
- new Rust
-Date: Mon,  1 Jul 2024 16:58:46 +0200
-Message-ID: <20240701145853.1394967-15-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240701145853.1394967-1-pbonzini@redhat.com>
-References: <20240701145853.1394967-1-pbonzini@redhat.com>
+ ffacd0b85a97d-3675a1046f2sm10202397f8f.112.2024.07.01.07.59.36
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 01 Jul 2024 07:59:37 -0700 (PDT)
+Message-ID: <3b1d88c7-6d9b-48f4-b887-06f0c401285e@linaro.org>
+Date: Mon, 1 Jul 2024 16:59:35 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] system/physmem: Fix reference to dump-guest-core
+To: Akihiko Odaki <akihiko.odaki@daynix.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
+ David Hildenbrand <david@redhat.com>
+Cc: qemu-devel@nongnu.org
+References: <20240628-dump-v1-1-c581d10f3646@daynix.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240628-dump-v1-1-c581d10f3646@daynix.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,27 +93,14 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-toml_edit is quite aggressive in bumping the minimum required
-version of Rust.  Force usage of an old version that runs
-with 1.63.0.
+On 28/6/24 06:05, Akihiko Odaki wrote:
+> dump_guest_core is exposed as dump-guest-core with QOM.
+> 
+> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> ---
+>   system/physmem.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- qemu/Cargo.toml |  3 +++
- 2 files changed, 71 insertions(+), 3 deletions(-)
-
-diff --git a/qemu/Cargo.toml b/qemu/Cargo.toml
-index 93808a5..3ce5dba 100644
---- a/qemu/Cargo.toml
-+++ b/qemu/Cargo.toml
-@@ -15,3 +15,6 @@ matches = ">=0"
- 
- [build-dependencies]
- version_check = { version = "~0.9" }
-+
-+# pick older version in order to support Rust 1.63
-+toml_edit = { version = "~0.14" }
--- 
-2.45.2
+Patch queued.
 
 
