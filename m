@@ -2,72 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB48D91DA84
-	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 10:52:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DDFB91DA72
+	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 10:50:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOClo-00061D-Tq; Mon, 01 Jul 2024 04:52:20 -0400
+	id 1sOCjY-0002yo-1H; Mon, 01 Jul 2024 04:50:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1sOCkG-0003oT-KY
- for qemu-devel@nongnu.org; Mon, 01 Jul 2024 04:50:45 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1sOCkD-0005ak-Rt
- for qemu-devel@nongnu.org; Mon, 01 Jul 2024 04:50:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719823840;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=FLOs2MLWeFfGVRFiNyOnYfkh03vw78pTCpOtytRgy10=;
- b=IXjY1dSJcWDTHUzc+IcrjktsmkOKWl5ZHpe6o4NdUjgEGVXYLZ4UfjAO7fiwrx/uNepsgu
- Hdl/M4hz4WmKMpesMeF4qUcIFCPzZV+EaT2WQ70KoCd1owhQTE++PdpWdV8DkpiqMV+8r1
- FiMbRYEUGZaNbcMYdLkbiR5j8inWrcs=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-263-pGNGqp9TO1CkJC1Yzj2Yow-1; Mon,
- 01 Jul 2024 04:50:37 -0400
-X-MC-Unique: pGNGqp9TO1CkJC1Yzj2Yow-1
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 70105196CDCA; Mon,  1 Jul 2024 08:50:34 +0000 (UTC)
-Received: from laptop.redhat.com (unknown [10.22.9.3])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 48F951956089; Mon,  1 Jul 2024 08:50:30 +0000 (UTC)
-From: Eric Auger <eric.auger@redhat.com>
-To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
- qemu-arm@nongnu.org, mst@redhat.com, jean-philippe@linaro.org,
- peter.maydell@linaro.org, clg@redhat.com, yanghliu@redhat.com,
- zhenzhong.duan@intel.com, alex.williamson@redhat.com
-Subject: [PATCH v2 7/7] virtio-iommu: Revert transient enablement of IOMMU MR
- in bypass mode
-Date: Mon,  1 Jul 2024 10:48:59 +0200
-Message-ID: <20240701084957.1567641-8-eric.auger@redhat.com>
-In-Reply-To: <20240701084957.1567641-1-eric.auger@redhat.com>
-References: <20240701084957.1567641-1-eric.auger@redhat.com>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1sOCis-0002u9-RU
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 04:49:19 -0400
+Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1sOCir-00050r-1d
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 04:49:18 -0400
+Received: by mail-ed1-x529.google.com with SMTP id
+ 4fb4d7f45d1cf-585e6ad9dbcso2969741a12.3
+ for <qemu-devel@nongnu.org>; Mon, 01 Jul 2024 01:49:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1719823751; x=1720428551; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:references
+ :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=d47GClQWTKYuZpPkQTNk8v60KFq323k3GhJ96sEsSp8=;
+ b=toulnVX6eZAj5A8pv5ABhbgeFWzLNqMl+OeuTOnPKSTRQdSgfuXFSIUchbA48p+ptQ
+ 3A9u8TiiFyTYtBZiS+YYgk40eW+kvkOslB3ksTu+0qS1ZygCh+XCcXCZOZ2mhdspCYw7
+ 7B8lvr2JJMC1ZjHkhTgNTlgZCzj0Wc9ouBfjkhV+vF8sZvYmvTy2K/QtwDisn2KK970X
+ /VDrFyzPyClozbDbweUghomzMNzxyb85EU94z3eZyaJ4WgOVni7YRYMXunYkO3pJq19h
+ PqBN/dBdyWcAvYut+xnxqSxw17gyjEfWk6WiQk55DpIalS4vcKBuqTzm6GJwCFjl00PJ
+ 0E7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1719823751; x=1720428551;
+ h=content-transfer-encoding:mime-version:message-id:date:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=d47GClQWTKYuZpPkQTNk8v60KFq323k3GhJ96sEsSp8=;
+ b=Y9XgqcvDzO3k/Wgpf7HKbbx0u46OnGGEFH15cqwJvlI7B+B5VHZxWJfTPGIDvE1dAt
+ Ulz1oHCYgcVTxVhLqvKkUCoCkuGiX6pzLIJ9iJu5m+trJ8596JHtELQC9ik8l7zGn1Mn
+ BqZtHOCyFreNOoMGP2OlwD55YXxFa1hrstdANI4JMsO5D4CbeY0LdPuc+LTCmcy83MyZ
+ hfAZ3+iQUznvDrDFCpmY9uJBrAordmjSgsVJ7KZAP3jmElsNSurm8xMpUbYpUXbscpjL
+ 7/jlIzpgdHfoTZVw2YopyNz14lAsp3+YMSXR+FEbrhtLxkY2RIn1TOQ7R6DFR5Y8whaD
+ 9m0A==
+X-Gm-Message-State: AOJu0YxoZiDYEavH8f/sf7tgdaKuoGplWToVs7Ahv1x66OfcWRmxLMzr
+ BII6yKTK2C+kXN2LtXTyES489EK5qZK+/ovISguTmRsVSJ3GGTV1B0VSvZK7Gsw=
+X-Google-Smtp-Source: AGHT+IGuWg/18eBk95/Il++5Bi3s4PuX1mPXDAG+n48WKNbf+g05dtr7J5P85DSPiGEsejnwm6jYpw==
+X-Received: by 2002:a17:906:adb:b0:a6f:878e:d6f8 with SMTP id
+ a640c23a62f3a-a75144deb8dmr290146966b.70.1719823751021; 
+ Mon, 01 Jul 2024 01:49:11 -0700 (PDT)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-a72ab0b7ddasm310363966b.207.2024.07.01.01.49.10
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 01 Jul 2024 01:49:10 -0700 (PDT)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 5CD035F877;
+ Mon,  1 Jul 2024 09:49:09 +0100 (BST)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: =?utf-8?B?6aG55paH5oiQ?= <xiangwencheng@dayudpu.com>
+Cc: <qemu-devel@nongnu.org>,  <mst@redhat.com>
+Subject: Re: [PATCH] vhost-user: Skip unnecessary duplicated
+ VHOST_USER_SET_LOG_BASE requests
+In-Reply-To: <20240613065150.3100-1-xiangwencheng@dayudpu.com>
+ (=?utf-8?B?IumhueaWh+aIkCIncw==?=
+ message of "Thu, 13 Jun 2024 14:51:50 +0800")
+References: <20240613065150.3100-1-xiangwencheng@dayudpu.com>
+Date: Mon, 01 Jul 2024 09:49:09 +0100
+Message-ID: <87zfr1qyyi.fsf@draig.linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.129.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::529;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x529.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,44 +95,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In 94df5b2180d6 ("virtio-iommu: Fix 64kB host page size VFIO device
-assignment"), in case of bypass mode, we transiently enabled the
-IOMMU MR to allow the set_page_size_mask() to be called and pass
-information about the page size mask constraint of cold plugged
-VFIO devices. Now we do not use the IOMMU MR callback anymore, we
-can just get rid of this hack.
+=E9=A1=B9=E6=96=87=E6=88=90 <xiangwencheng@dayudpu.com> writes:
 
-Signed-off-by: Eric Auger <eric.auger@redhat.com>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
----
- hw/virtio/virtio-iommu.c | 12 ------------
- 1 file changed, 12 deletions(-)
+> From: BillXiang <xiangwencheng@dayudpu.com>
+>
+> The VHOST_USER_SET_LOG_BASE requests should be categorized into
+> non-vring specific messages, and should be sent only once.
+> If send more than once, dpdk will munmap old log_addr which may has
+> been used and cause segmentation fault.
 
-diff --git a/hw/virtio/virtio-iommu.c b/hw/virtio/virtio-iommu.c
-index dc337a6805..72011d2d11 100644
---- a/hw/virtio/virtio-iommu.c
-+++ b/hw/virtio/virtio-iommu.c
-@@ -1387,18 +1387,6 @@ static void virtio_iommu_freeze_granule(Notifier *notifier, void *data)
-     VirtIOIOMMU *s = container_of(notifier, VirtIOIOMMU, machine_done);
-     int granule;
- 
--    if (likely(s->config.bypass)) {
--        /*
--         * Transient IOMMU MR enable to collect page_size_mask requirements
--         * through memory_region_iommu_set_page_size_mask() called by
--         * VFIO region_add() callback
--         */
--         s->config.bypass = false;
--         virtio_iommu_switch_address_space_all(s);
--         /* restore default */
--         s->config.bypass = true;
--         virtio_iommu_switch_address_space_all(s);
--    }
-     s->granule_frozen = true;
-     granule = ctz64(s->config.page_size_mask);
-     trace_virtio_iommu_freeze_granule(BIT_ULL(granule));
--- 
-2.41.0
+This looks fine to me but looking at the vhost-user.rst we don't seem to
+make any explicit statements about how many times given messages should
+be sent.
 
+>
+> Signed-off-by: BillXiang <xiangwencheng@dayudpu.com>
+> ---
+>  hw/virtio/vhost-user.c | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
+> index cdf9af4a4b..41e34edd49 100644
+> --- a/hw/virtio/vhost-user.c
+> +++ b/hw/virtio/vhost-user.c
+> @@ -371,6 +371,7 @@ static bool vhost_user_per_device_request(VhostUserRe=
+quest request)
+>      case VHOST_USER_RESET_DEVICE:
+>      case VHOST_USER_ADD_MEM_REG:
+>      case VHOST_USER_REM_MEM_REG:
+> +    case VHOST_USER_SET_LOG_BASE:
+>          return true;
+>      default:
+>          return false;
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
