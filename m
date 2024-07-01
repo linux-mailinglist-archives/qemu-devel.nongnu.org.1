@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0ABE391E312
-	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 17:00:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C37BC91E320
+	for <lists+qemu-devel@lfdr.de>; Mon,  1 Jul 2024 17:01:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOIVS-0004Pk-QZ; Mon, 01 Jul 2024 10:59:51 -0400
+	id 1sOIVN-00046Z-VG; Mon, 01 Jul 2024 10:59:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sOIVQ-0004M2-El
- for qemu-devel@nongnu.org; Mon, 01 Jul 2024 10:59:48 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1sOIVL-00045A-ER
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 10:59:43 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sOIVB-0005LJ-Nd
- for qemu-devel@nongnu.org; Mon, 01 Jul 2024 10:59:48 -0400
+ id 1sOIVF-0005NO-P6
+ for qemu-devel@nongnu.org; Mon, 01 Jul 2024 10:59:43 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719845973;
+ s=mimecast20190719; t=1719845976;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ATkDSIn1AD4iloFEBRdTrGDcFCBr2wUtEchDeQI6v+Q=;
- b=ErwXH893U6f3EPXmS9wr5FVZu/nCulC2NsNmAfRooQGdf+CHeJANgk8x8UapRA2wZB3Fm+
- h8rJntb/nZajO+aeDBQe6n7Qo5tg8ZK8zSVjbgJxo2hC11SzeEPQ7fOTpGfnM2Cwiui5U3
- p2Z/NFx12AyCMceFJdnkxkH/bb3aJWE=
-Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
- [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=S6tUQLMOUhCwh40f/djXK9f9MtwQXr/0BnjScvVQiDg=;
+ b=BZP9CGBNzbz2UhvtSwaNrkKRnyxJuGzBHPd1LbXfC2ACOP7l9xzQtxgx7OAfiZXLOdbeM7
+ eJKtgK+LaVypiu7sHRz4ahb6osFH+zMQ6UzmCWiik/X5oHItIjHBIQGwlxxNVVdSi1wPnB
+ RURMK7MEp1lAgqmXPxcEu9lBXJBs94Q=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-655-SwrYpLGaMSm5psLRhGgHaw-1; Mon, 01 Jul 2024 10:59:31 -0400
-X-MC-Unique: SwrYpLGaMSm5psLRhGgHaw-1
-Received: by mail-lf1-f71.google.com with SMTP id
- 2adb3069b0e04-52d174e26baso4072166e87.2
- for <qemu-devel@nongnu.org>; Mon, 01 Jul 2024 07:59:31 -0700 (PDT)
+ us-mta-516-pPjkiIKAOgKSLHsSNLI_5A-1; Mon, 01 Jul 2024 10:59:34 -0400
+X-MC-Unique: pPjkiIKAOgKSLHsSNLI_5A-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-36725ec0f7dso1789636f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 01 Jul 2024 07:59:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719845969; x=1720450769;
+ d=1e100.net; s=20230601; t=1719845972; x=1720450772;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ATkDSIn1AD4iloFEBRdTrGDcFCBr2wUtEchDeQI6v+Q=;
- b=rUgyIgwcb09Fn7SxTBECaatROdXsoS7+bipkU6dMcmoTDtUOiZB4tS+Rs2wMkfn1oU
- MVwwfvrLMtZ2nnPQHtQZ/tum/zy+Mhaxpp2iOEIWFEx7fY+4k4JIkI/1BVfa4pw2ahUi
- 0/KGxU5ay/S3k84Vjirxucdfm1HDWQWBnA0acAkFVXJN1lW5dQD+xWAJ6Tj+GBfZNuQ3
- nA9f3HTajc3dasaOJbQXo4UFHCX55C3dAxo+gXSnOhNOq3CSqtJImeYbAO+wC/d1cPIr
- OGBjQtBOz+WwS9gHPS13CYjmcLQglZvR+plYadc6+29ZDoYb6agNsRidY/iXgJmwNYmQ
- tPYw==
-X-Gm-Message-State: AOJu0YyA5mLWtZVHMb6M8szIz3QUlgaHQvj6PQZfNEh4aRluaKO4bae0
- b+H0mh6cNtmVXgecKf9+PfVo9ju+7+XZtoWrdXWRDtlnEeHk7ibIi6aamSIYsH1rFlIu/cT7K/8
- oKOQXHiAx+Hi0i5/UL3RppHN54jUdbewvWnosnRDEljqf+HSTWUI/ik+tumkI202Z6glCCSNngc
- rkcNBKEbrrhIqaUldR4oi9ZtpMRz+3niIJGBMv
-X-Received: by 2002:a05:6512:2807:b0:52e:764b:b20d with SMTP id
- 2adb3069b0e04-52e8266df15mr4109348e87.28.1719845969613; 
- Mon, 01 Jul 2024 07:59:29 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGRUwwyRrlhMLiBz8bYjke97OF81aIw/lI/5KWh8bhZEqd1yOGGLzXZGVgy1sfMMY1nE4sg2A==
-X-Received: by 2002:a05:6512:2807:b0:52e:764b:b20d with SMTP id
- 2adb3069b0e04-52e8266df15mr4109332e87.28.1719845969238; 
- Mon, 01 Jul 2024 07:59:29 -0700 (PDT)
+ bh=S6tUQLMOUhCwh40f/djXK9f9MtwQXr/0BnjScvVQiDg=;
+ b=aF+tJXeLA/vCbGeePaSJ6jm9aqyJG32b+aL1DFTJWABcPA6p1bgSFX5TwhgpePiEJM
+ ywYecaqmH4HDqIvzyUV/lgifoOWUlsBCi3yLCT9mSwMP2q2ey/1/tGPp+Ai/yJqBgw1G
+ iMdrMHt1eR9fhKg9dTcMnlEyWjgTZz3sd/8/JUft2XxBeBZCes4Piafm2f78yzx9u4mQ
+ MLRXZIwE4B/BVqvS4XjBjvYGg4aqH4wkMYyzxTwmxVq+ZCHvuKTcuyq9Gy2nEwf92jnq
+ NF2VuXkQkY697ttSeUh1R7AxjZD+pFsf04yBj1PlX1jiwyxaF9aO902neQBnFRFDN3i6
+ Y5hA==
+X-Gm-Message-State: AOJu0Yw9hnKw2QeTTr7BLgWRpn1CpjB/HShhiHvLsfT5PTJdc7wXEDe0
+ bcUxKx0FZZSh1ngOdG3I8q0dl2C0rIMRSDDuiFaZdYvtDhA0hYgW6QR/3mIbdZDXqagtb+2y13v
+ WSyzEeWQFxeZx6u3xfRJtIvtuDopuMVUJN0xdSeLQAQNDZqmj9Z9nss01NME1ndLsi1MN5lDDlM
+ OGAucJLWanXV86RL68E5g0QCSiGoU1A98lYebe
+X-Received: by 2002:a05:6000:cc1:b0:35f:1f28:2ec9 with SMTP id
+ ffacd0b85a97d-367757309b3mr4591235f8f.70.1719845972471; 
+ Mon, 01 Jul 2024 07:59:32 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHUs8iJiZlS9gIYM6LIQ8vGya0LH7I8sevS5ByHUq2hKrw+Xtip4wuC3ch865IK6PTZOxjwVQ==
+X-Received: by 2002:a05:6000:cc1:b0:35f:1f28:2ec9 with SMTP id
+ ffacd0b85a97d-367757309b3mr4591205f8f.70.1719845972000; 
+ Mon, 01 Jul 2024 07:59:32 -0700 (PDT)
 Received: from avogadro.local ([151.95.101.29])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4256af3cf9bsm159885515e9.8.2024.07.01.07.59.28
+ ffacd0b85a97d-3675a0e1412sm10232820f8f.53.2024.07.01.07.59.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 01 Jul 2024 07:59:28 -0700 (PDT)
+ Mon, 01 Jul 2024 07:59:31 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
@@ -73,22 +73,23 @@ Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Hanna Czenczek <hreitz@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PATCH 11/14] rust: replace std::ffi::c_char with libc::c_char
-Date: Mon,  1 Jul 2024 16:58:43 +0200
-Message-ID: <20240701145853.1394967-12-pbonzini@redhat.com>
+Subject: [PATCH 12/14] rust: replace c"" literals with cstr crate
+Date: Mon,  1 Jul 2024 16:58:44 +0200
+Message-ID: <20240701145853.1394967-13-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240701145853.1394967-1-pbonzini@redhat.com>
 References: <20240701145853.1394967-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -105,51 +106,237 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Allow working with Rust versions prior to 1.64.
+Part of what's needed to work with Rust versions prior to 1.77.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- qemu/src/bindings/mod.rs | 3 ++-
- qemu/src/util/foreign.rs | 7 +++++--
- 2 files changed, 7 insertions(+), 3 deletions(-)
+ qemu/Cargo.toml            |  3 +++
+ qemu/qom-rust.txt          |  2 +-
+ qemu/src/hw/core/device.rs |  4 +++-
+ qemu/src/qom/object.rs     |  4 +++-
+ qemu/src/util/error.rs     |  4 +++-
+ qemu/src/util/foreign.rs   | 20 +++++++++++---------
+ qemu/tests/main.rs         |  7 ++++---
+ 8 files changed, 39 insertions(+), 16 deletions(-)
 
-diff --git a/qemu/src/bindings/mod.rs b/qemu/src/bindings/mod.rs
-index a49447b..0ad3828 100644
---- a/qemu/src/bindings/mod.rs
-+++ b/qemu/src/bindings/mod.rs
-@@ -1,4 +1,5 @@
--use std::ffi::{c_char, c_void};
-+use libc::c_char;
-+use std::ffi::c_void;
+diff --git a/qemu/Cargo.toml b/qemu/Cargo.toml
+index 1100725..a07a449 100644
+--- a/qemu/Cargo.toml
++++ b/qemu/Cargo.toml
+@@ -7,5 +7,8 @@ edition = "2021"
+ const-default = { version = "~1", features = ["derive"] }
+ libc = "^0"
  
- #[repr(C)]
- pub struct Object {
++# pick older version in order to support Rust 1.63
++cstr = { version = "=0.2.10" }
++
+ [dev-dependencies]
+ matches = ">=0"
+diff --git a/qemu/qom-rust.txt b/qemu/qom-rust.txt
+index 1588445..ef4bd06 100644
+--- a/qemu/qom-rust.txt
++++ b/qemu/qom-rust.txt
+@@ -48,7 +48,7 @@ Bindings for C classes
+ struct must implement ObjectType
+ 
+     unsafe impl ObjectType for Object {
+-        const TYPE: &'static CStr = c"object";
++        const TYPE: &'static CStr = cstr!("object");
+     }
+ 
+ struct must implement IsA<T> for all superclasses T
+diff --git a/qemu/src/hw/core/device.rs b/qemu/src/hw/core/device.rs
+index 294251e..4edf61d 100644
+--- a/qemu/src/hw/core/device.rs
++++ b/qemu/src/hw/core/device.rs
+@@ -17,12 +17,14 @@ use crate::qom_isa;
+ 
+ use crate::Result;
+ 
++use cstr::cstr;
++
+ use std::ffi::CStr;
+ use std::ops::Deref;
+ use std::ptr::null_mut;
+ 
+ unsafe impl ObjectType for DeviceState {
+-    const TYPE: &'static CStr = c"device";
++    const TYPE: &'static CStr = cstr!("device");
+ }
+ 
+ qom_isa!(DeviceState, Object);
+diff --git a/qemu/src/qom/object.rs b/qemu/src/qom/object.rs
+index 4e84e29..9f6c078 100644
+--- a/qemu/src/qom/object.rs
++++ b/qemu/src/qom/object.rs
+@@ -7,6 +7,8 @@ use std::ffi::CStr;
+ use std::fmt;
+ use std::ops::Deref;
+ 
++use cstr::cstr;
++
+ use crate::bindings::object_get_typename;
+ use crate::bindings::object_property_add_child;
+ use crate::bindings::object_new;
+@@ -42,7 +44,7 @@ pub unsafe trait ObjectType: Sized {
+ }
+ 
+ unsafe impl ObjectType for Object {
+-    const TYPE: &'static CStr = c"object";
++    const TYPE: &'static CStr = cstr!("object");
+ }
+ 
+ // ------------------------------
+diff --git a/qemu/src/util/error.rs b/qemu/src/util/error.rs
+index e7e6f2e..79c3c81 100644
+--- a/qemu/src/util/error.rs
++++ b/qemu/src/util/error.rs
+@@ -7,6 +7,8 @@ use crate::bindings::error_free;
+ use crate::bindings::error_get_pretty;
+ use crate::bindings::error_setg_internal;
+ 
++use cstr::cstr;
++
+ use std::ffi::CStr;
+ use std::fmt::{self, Display};
+ use std::ptr;
+@@ -215,7 +217,7 @@ impl CloneToForeign for Error {
+                 ptr::null_mut(), // FIXME
+                 0,
+                 ptr::null_mut(), // FIXME
+-                c"%s".as_ptr(),
++                cstr!("%s").as_ptr(),
+                 format!("{}", self),
+             );
+             OwnedPointer::new(x)
 diff --git a/qemu/src/util/foreign.rs b/qemu/src/util/foreign.rs
-index 0b8b708..464400a 100644
+index 464400a..7a663cc 100644
 --- a/qemu/src/util/foreign.rs
 +++ b/qemu/src/util/foreign.rs
-@@ -4,8 +4,11 @@
- /// Traits to map between C structs and native Rust types.
- /// Similar to glib-rs but a bit simpler and possibly more
- /// idiomatic.
-+
-+use libc::c_char;
-+
- use std::borrow::Cow;
--use std::ffi::{c_char, c_void, CStr, CString};
-+use std::ffi::{c_void, CStr, CString};
- use std::fmt;
- use std::fmt::Debug;
- use std::mem;
-@@ -166,7 +169,7 @@ pub trait FromForeign: CloneToForeign + Sized {
-     /// # use qemu::FromForeign;
-     /// let p = c"Hello, world!".as_ptr();
-     /// let s = unsafe {
--    ///     String::cloned_from_foreign(p as *const std::ffi::c_char)
-+    ///     String::cloned_from_foreign(p as *const libc::c_char)
-     /// };
-     /// assert_eq!(s, "Hello, world!");
+@@ -167,7 +167,8 @@ pub trait FromForeign: CloneToForeign + Sized {
+     ///
      /// ```
+     /// # use qemu::FromForeign;
+-    /// let p = c"Hello, world!".as_ptr();
++    /// # use cstr::cstr;
++    /// let p = cstr!("Hello, world!").as_ptr();
+     /// let s = unsafe {
+     ///     String::cloned_from_foreign(p as *const libc::c_char)
+     /// };
+@@ -476,6 +477,7 @@ mod tests {
+     #![allow(clippy::shadow_unrelated)]
+ 
+     use super::*;
++    use cstr::cstr;
+     use matches::assert_matches;
+     use std::ffi::c_void;
+ 
+@@ -498,7 +500,7 @@ mod tests {
+     #[test]
+     fn test_cloned_from_foreign_string_cow() {
+         let s = "Hello, world!".to_string();
+-        let cstr = c"Hello, world!";
++        let cstr = cstr!("Hello, world!");
+         let cloned = unsafe { Cow::cloned_from_foreign(cstr.as_ptr()) };
+         assert_eq!(s, cloned);
+     }
+@@ -506,7 +508,7 @@ mod tests {
+     #[test]
+     fn test_cloned_from_foreign_string() {
+         let s = "Hello, world!".to_string();
+-        let cstr = c"Hello, world!";
++        let cstr = cstr!("Hello, world!");
+         let cloned = unsafe { String::cloned_from_foreign(cstr.as_ptr()) };
+         assert_eq!(s, cloned);
+     }
+@@ -570,7 +572,7 @@ mod tests {
+     #[test]
+     fn test_clone_to_foreign_str() {
+         let s = "Hello, world!";
+-        let p = c"Hello, world!".as_ptr();
++        let p = cstr!("Hello, world!").as_ptr();
+         let cloned = s.clone_to_foreign();
+         unsafe {
+             let len = libc::strlen(cloned.as_ptr());
+@@ -588,7 +590,7 @@ mod tests {
+ 
+     #[test]
+     fn test_clone_to_foreign_cstr() {
+-        let s: &CStr = c"Hello, world!";
++        let s: &CStr = cstr!("Hello, world!");
+         let cloned = s.clone_to_foreign();
+         unsafe {
+             let len = libc::strlen(cloned.as_ptr());
+@@ -606,7 +608,7 @@ mod tests {
+ 
+     #[test]
+     fn test_clone_to_foreign_string_cow() {
+-        let p = c"Hello, world!".as_ptr();
++        let p = cstr!("Hello, world!").as_ptr();
+         for s in vec![
+             Into::<Cow<str>>::into("Hello, world!"),
+             Into::<Cow<str>>::into("Hello, world!".to_string())] {
+@@ -663,7 +665,7 @@ mod tests {
+     #[test]
+     fn test_clone_to_foreign_string() {
+         let s = "Hello, world!".to_string();
+-        let cstr = c"Hello, world!";
++        let cstr = cstr!("Hello, world!");
+         let cloned = s.clone_to_foreign();
+         unsafe {
+             let len = libc::strlen(cloned.as_ptr());
+@@ -683,7 +685,7 @@ mod tests {
+     fn test_option() {
+         // An Option can be used to produce or convert NULL pointers
+         let s = Some("Hello, world!".to_string());
+-        let cstr = c"Hello, world!";
++        let cstr = cstr!("Hello, world!");
+         unsafe {
+             assert_eq!(Option::<String>::cloned_from_foreign(cstr.as_ptr()), s);
+             assert_matches!(Option::<String>::cloned_from_foreign(ptr::null()), None);
+@@ -695,7 +697,7 @@ mod tests {
+     fn test_box() {
+         // A box can be produced if the inner type has the capability.
+         let s = Box::new("Hello, world!".to_string());
+-        let cstr = c"Hello, world!";
++        let cstr = cstr!("Hello, world!");
+         let cloned = unsafe { Box::<String>::cloned_from_foreign(cstr.as_ptr()) };
+         assert_eq!(s, cloned);
+ 
+diff --git a/qemu/tests/main.rs b/qemu/tests/main.rs
+index e499c14..601e92b 100644
+--- a/qemu/tests/main.rs
++++ b/qemu/tests/main.rs
+@@ -1,4 +1,5 @@
+ use const_default::ConstDefault;
++use cstr::cstr;
+ 
+ use qemu::qom_define_type;
+ use qemu::Object;
+@@ -27,7 +28,7 @@ struct TestState {
+ }
+ 
+ qom_define_type!(
+-    c"test-object",
++    cstr!("test-object"),
+     TestObject,
+     TestConf,
+     ();
+@@ -37,12 +38,12 @@ qom_define_type!(
+ impl ObjectImpl for TestObject {}
+ 
+ qdev_define_type!(
+-    c"test-device",
++    cstr!("test-device"),
+     TestDevice,
+     TestConf,
+     RefCell<TestState>;
+     @extends DeviceState;
+-    @properties [qdev_prop!(bool, c"foo", TestDevice, true, foo)]
++    @properties [qdev_prop!(bool, cstr!("foo"), TestDevice, true, foo)]
+ );
+ 
+ impl TestDevice {
 -- 
 2.45.2
 
