@@ -2,80 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75AA59242A3
+	by mail.lfdr.de (Postfix) with ESMTPS id 7491D9242A2
 	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 17:42:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOfdB-00051f-Fv; Tue, 02 Jul 2024 11:41:21 -0400
+	id 1sOfcm-0004pa-U0; Tue, 02 Jul 2024 11:40:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zheyuma97@gmail.com>)
- id 1sOfd0-0004vP-5c; Tue, 02 Jul 2024 11:41:11 -0400
-Received: from mail-lj1-x233.google.com ([2a00:1450:4864:20::233])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOfci-0004oL-FV
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 11:40:53 -0400
+Received: from mail-lj1-x22d.google.com ([2a00:1450:4864:20::22d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <zheyuma97@gmail.com>)
- id 1sOfcy-0001U4-5b; Tue, 02 Jul 2024 11:41:09 -0400
-Received: by mail-lj1-x233.google.com with SMTP id
- 38308e7fff4ca-2ee7885ac1cso7667441fa.1; 
- Tue, 02 Jul 2024 08:41:07 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOfcf-0001Px-Gg
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 11:40:52 -0400
+Received: by mail-lj1-x22d.google.com with SMTP id
+ 38308e7fff4ca-2ec50d4e47bso42177971fa.2
+ for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 08:40:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1719934866; x=1720539666; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=zlsYGxOBAA6aPqp1UDFvjA499Ut0I1N9iQ293R9omT8=;
- b=WkZIeTc2yYVNkUgeluJGdEenTsQH6vf4D/5zLWmkaeNeFZIosTmiG2kvkAbcU8N5hC
- 9iZBo5vk6eL2YKZWVsTnFxW+YUMlUXiiZjaGXUN21L0+HmSbNBz98fAMpGOlpT9bT0FH
- 5J4HZwJulQhzZz8hT62hX6ktCx08GU1J2faxhaRQ9Dkvuy2R/6bz+kiDEGp8CSNbnAgL
- py0siOzzD4Jg+DpwVx7G7DpeFFqLvGcnKIyC5kDBsI/jy4PiecBhFDm5wcv7yb27mEAe
- UlbX6Q/SffAGhkBHVox6eI4kO6Ir0a1WEd1FfQHfOoCKWSu3WSkOXTT4WM9X42NT4m7P
- WolA==
+ d=linaro.org; s=google; t=1719934847; x=1720539647; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=stF7WuGpcrsQaV3ZUFr5l5WCk/9RTmiuVw2jUbyk6xk=;
+ b=Qei5Sh4lqNuvjWCj8vTmP2yRlZ2GxHJ6Jv7pavzbUj1onSSg+18cEQU9uOY/lZGa95
+ IcVYYlHcsAT470VkPf8FEY44g9fOw1BROkY+LqnZemakc1kKPewSBa5ubtKTydMELXTr
+ yN4S75dykFnp8HcpjnBULlu2M4aMfBWzynZV497GPOXQ3QaORIWxYAy+pAq3D/OmiQar
+ /w+KBA3kdRZQTE3Os97f24+5KU+mqlBUqSHwswP/wg0/Awv1Xqm1JazB8IMrjlfC8L7U
+ M4y7q2VHc4+rljinoq+wPSBa7NVqhGIeHenk7XpiUZjycwbLVPdaF6KI0cAh4P9xkGCE
+ rlhw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719934866; x=1720539666;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=zlsYGxOBAA6aPqp1UDFvjA499Ut0I1N9iQ293R9omT8=;
- b=SPCB/OxsQAnLq5Ds4WSfqUS7fQnFnh28UjJ/prUMOooVS6k0ZyGZO9U+hmtHUaVRDI
- c/nt+ZFo89ke7hW2sX/HcOZSevU2iVcBzeIkVHjxh7DruAA8p6GfQnUVxajFAxVqCiyL
- Q6HhcZzqO1GC6czvqwrpytVgx4W1YHLA8YnJJELZB3gMLp/DdwF1C2nlFLyIGrpt5TG6
- chDYhhLlRiJyDcKKvqQc1EmuGxBlvxD4BOktmwu8d4Iy7j2vypnAsxJ1AKWslQ2vMSQb
- CRl03BWdfmCrb8QXIou6cPKCdGnqSzAjv7+F0Io9IBykAweNW7uHPkB+IlRkoWfvxOtN
- zFjg==
+ d=1e100.net; s=20230601; t=1719934847; x=1720539647;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=stF7WuGpcrsQaV3ZUFr5l5WCk/9RTmiuVw2jUbyk6xk=;
+ b=kpQlJiMle02Oq2qvvGnAk8VS14aNZtyFSC48hl1y3gmV7NliUcY1CrYrzVa0C3Faq/
+ T+De4ewSIqIYzbhPKk7+5LecX8oahsaTN683r1l4rghzgwuUsf8Wn2g4/L93KnzxibLT
+ nw2FWd+89KQbrvKbkK94QtZQkdAcYeKK0aPpIu5TH+wEB6MJ/XHfwL2WjZVjAO57oDfI
+ IuGIFJ05aRqi7jswr7t0fEGPnKv2HKFZ/LGcrMwKAIaDQocppvdYH7ALQI/s/rOoGETU
+ 3M2W7P6sKMUzwe1/cgrg8/BRx3bQ5oxb12TnqGXzttQdy+MZaD1G/C2bmf+PLGvCKqEl
+ mXYA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCU94fjA4SUGrSJXSCmhfdIMQwvuZHYyb8ZseZCBjvMv3j0R1RSl1P4K4cawAAbzAUUrPAuZS9idxdCmpQMib7ozYsrzFTAVQtj0D3qRK8qn/P21EthCNqPi6oA=
-X-Gm-Message-State: AOJu0YyYS4r09VtskgC28tSnGWZ/4ByjUOgXPesXfqszd2WITl+4Oyyy
- Pidqu9ZmKclWOoCacO09a+iDbLjfmtMMGVaSJ2zmwWYHMeLidhw=
-X-Google-Smtp-Source: AGHT+IHyRJKTlb42+0zLVN1xnholb3NBQOYwUglXEymC/ajMDCBk705K531X96sVDEXUof0bygjyTw==
-X-Received: by 2002:a05:651c:244:b0:2ee:7255:5048 with SMTP id
- 38308e7fff4ca-2ee7255542dmr30379251fa.48.1719934865548; 
- Tue, 02 Jul 2024 08:41:05 -0700 (PDT)
-Received: from wing.epfl.ch (dhcp-122-dist-b-021.epfl.ch. [128.178.122.21])
+ AJvYcCXfFzfTx1ySdjrXxFUj0FgrYpvJ94FWIcewH6XThhdxpO56US4qcp3PFD6um0A70vcOzqmXcT00tod8kmVXVrNutRAFdSk=
+X-Gm-Message-State: AOJu0Yzood26PTkWHO8oSr4sMN9xSWNzHVHf3UwlJb+o/STQGQPk114u
+ tVyAjZ0OWSc2ILWcJ8yhZJXrMr3mBrFqnKX7vpEQTZVuH4HRZ87nxXf95v07NdRh0diNI21g1bi
+ 6
+X-Google-Smtp-Source: AGHT+IEuNf1jMCVzFwnSd5LWtj/oPDsf16fL9kkdV77XvNfIkJ0JarULKNWHBMBoqVpm1A3i/wbT7A==
+X-Received: by 2002:a2e:a912:0:b0:2ee:4e67:85ec with SMTP id
+ 38308e7fff4ca-2ee5e337908mr81930911fa.5.1719934847322; 
+ Tue, 02 Jul 2024 08:40:47 -0700 (PDT)
+Received: from [192.168.69.100] ([176.187.209.58])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3675a0fbbd4sm13617467f8f.84.2024.07.02.08.41.05
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 02 Jul 2024 08:41:05 -0700 (PDT)
-From: Zheyu Ma <zheyuma97@gmail.com>
-To: Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: Zheyu Ma <zheyuma97@gmail.com>, qemu-arm@nongnu.org, qemu-devel@nongnu.org
-Subject: [PATCH v2] hw/misc/bcm2835_thermal: Fix access size handling in
- bcm2835_thermal_ops
-Date: Tue,  2 Jul 2024 17:40:41 +0200
-Message-Id: <20240702154042.3018932-1-zheyuma97@gmail.com>
-X-Mailer: git-send-email 2.34.1
+ 5b1f17b1804b1-4256af5b61bsm204781685e9.17.2024.07.02.08.40.45
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 02 Jul 2024 08:40:46 -0700 (PDT)
+Message-ID: <b72e40c9-c2de-487c-a9ad-a52c1f286d77@linaro.org>
+Date: Tue, 2 Jul 2024 17:40:44 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::233;
- envelope-from=zheyuma97@gmail.com; helo=mail-lj1-x233.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] hw/char/pl011: Avoid division-by-zero in
+ pl011_get_baudrate()
+To: Zheyu Ma <zheyuma97@gmail.com>, Peter Maydell <peter.maydell@linaro.org>, 
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org
+References: <20240702152750.3017426-1-zheyuma97@gmail.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240702152750.3017426-1-zheyuma97@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::22d;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x22d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,58 +97,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The current implementation of bcm2835_thermal_ops sets
-impl.max_access_size and valid.min_access_size to 4, but leaves
-impl.min_access_size and valid.max_access_size unset, defaulting to 1.
-This causes issues when the memory system is presented with an access
-of size 2 at an offset of 3, leading to an attempt to synthesize it as
-a pair of byte accesses at offsets 3 and 4, which trips an assert.
+Hi Zheyu,
 
-Additionally, the lack of valid.max_access_size setting causes another
-issue: the memory system tries to synthesize a read using a 4-byte
-access at offset 3 even though the device doesn't allow unaligned
-accesses.
+On 2/7/24 17:27, Zheyu Ma wrote:
+> In pl011_get_baudrate(), when we calculate the baudrate we can
+> accidentally divide by zero. This happens because although (as the
+> specification requires) we treat UARTIBRD = 0 as invalid, we aren't
+> correctly limiting UARTIBRD and UARTFBRD values to the 16-bit and 6-bit
+> ranges the hardware allows, and so some non-zero values of UARTIBRD can
+> result in a zero divisor.
+> 
+> Enforce the correct register field widths on guest writes and on inbound
+> migration to avoid the division by zero.
+> 
+> ASAN log:
+> ==2973125==ERROR: AddressSanitizer: FPE on unknown address 0x55f72629b348
+> (pc 0x55f72629b348 bp 0x7fffa24d0e00 sp 0x7fffa24d0d60 T0)
+>      #0 0x55f72629b348 in pl011_get_baudrate hw/char/pl011.c:255:17
+>      #1 0x55f726298d94 in pl011_trace_baudrate_change hw/char/pl011.c:260:33
+>      #2 0x55f726296fc8 in pl011_write hw/char/pl011.c:378:9
+> 
+> Reproducer:
+> cat << EOF | qemu-system-aarch64 -display \
+> none -machine accel=qtest, -m 512M -machine realview-pb-a8 -qtest stdio
+> writeq 0x1000b024 0xf8000000
+> EOF
+> 
+> Signed-off-by: Zheyu Ma <zheyuma97@gmail.com>
+> ---
+> Changes in v2:
+> - Enforce the correct register field widths on writes to both UARTIBRD
+>    and UARTFBRD registers.
+> - Mask UARTIBRD to 16 bits and UARTFBRD to 6 bits in the pl011_post_load
+>    function to prevent division by zero during inbound migration.
+> ---
+>   hw/char/pl011.c | 7 +++++--
+>   1 file changed, 5 insertions(+), 2 deletions(-)
+> 
+> diff --git a/hw/char/pl011.c b/hw/char/pl011.c
+> index 8753b84a84..ba5f7cfbda 100644
+> --- a/hw/char/pl011.c
+> +++ b/hw/char/pl011.c
+> @@ -374,11 +374,11 @@ static void pl011_write(void *opaque, hwaddr offset,
+>           s->ilpr = value;
+>           break;
+>       case 9: /* UARTIBRD */
+> -        s->ibrd = value;
+> +        s->ibrd = value & 0xffff;
 
-This patch addresses these issues by explicitly setting both
-impl.min_access_size and valid.max_access_size to 4, ensuring proper
-handling of access sizes.
+LGTM but could you add a definition instead of these magic values?
 
-Error log:
-ERROR:hw/misc/bcm2835_thermal.c:55:bcm2835_thermal_read: code should not be reached
-Bail out! ERROR:hw/misc/bcm2835_thermal.c:55:bcm2835_thermal_read: code should not be reached
-Aborted
+Similarly to the ones in the top if this file:
 
-Reproducer:
-cat << EOF | qemu-system-aarch64 -display \
-none -machine accel=qtest, -m 512M -machine raspi3b -m 1G -qtest stdio
-readw 0x3f212003
-EOF
+   /* Flag Register, UARTFR */
+   #define PL011_FLAG_RI   0x100
+   #define PL011_FLAG_TXFE 0x80
+   ...
 
-Signed-off-by: Zheyu Ma <zheyuma97@gmail.com>
----
-Changes in v2:
-- Added .valid.min_access_size and .valid.max_access_size settings
-  to ensure proper handling of valid access sizes.
----
- hw/misc/bcm2835_thermal.c | 2 ++
- 1 file changed, 2 insertions(+)
+   /* Integer Baud Rate Divider, UARTIBRD */
+   #define IBRD_MASK 0x3f
 
-diff --git a/hw/misc/bcm2835_thermal.c b/hw/misc/bcm2835_thermal.c
-index ee7816b8a5..0c49c088a7 100644
---- a/hw/misc/bcm2835_thermal.c
-+++ b/hw/misc/bcm2835_thermal.c
-@@ -80,8 +80,10 @@ static void bcm2835_thermal_write(void *opaque, hwaddr addr,
- static const MemoryRegionOps bcm2835_thermal_ops = {
-     .read = bcm2835_thermal_read,
-     .write = bcm2835_thermal_write,
-+    .impl.min_access_size = 4,
-     .impl.max_access_size = 4,
-     .valid.min_access_size = 4,
-+    .valid.max_access_size = 4,
-     .endianness = DEVICE_NATIVE_ENDIAN,
- };
- 
--- 
-2.34.1
+   /* Fractional Baud Rate Divider, UARTFBRD */
+   #define FBRD_MASK 0xffff
+
+Then use these definitions :)
+
+Regards,
+
+Phil.
+
+>           pl011_trace_baudrate_change(s);
+>           break;
+>       case 10: /* UARTFBRD */
+> -        s->fbrd = value;
+> +        s->fbrd = value & 0x3f;
+>           pl011_trace_baudrate_change(s);
+>           break;
+>       case 11: /* UARTLCR_H */
+> @@ -531,6 +531,9 @@ static int pl011_post_load(void *opaque, int version_id)
+>           s->read_pos = 0;
+>       }
+>   
+> +    s->ibrd &= 0xffff;
+> +    s->fbrd &= 0x3f;
+> +
+>       return 0;
+>   }
+>   
 
 
