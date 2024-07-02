@@ -2,84 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 911AB92437F
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 18:27:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B24569243C1
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 18:41:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOgLF-0007QN-Gc; Tue, 02 Jul 2024 12:26:53 -0400
+	id 1sOgYF-0005oc-8u; Tue, 02 Jul 2024 12:40:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sOgLD-0007Pp-Dt
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 12:26:51 -0400
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sOgL4-0003dU-5z
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 12:26:51 -0400
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-1f9ffd24262so25812185ad.0
- for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 09:26:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719937591; x=1720542391; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:references
- :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
- :cc:subject:date:message-id:reply-to;
- bh=/IBqG+c1bd5KlsdYkeDk3KE2DqhVQpASsLjfGugP36U=;
- b=hPCS16cq0i58rfB/Rxi/o5AW71lNkzcrTXg42DcR1Cpvr0/RYM9d81xOzqVCAfeMR0
- XXEUAdTCz9Fi9SRWaIIvxY4edEUieCOQkwoGiR7qbArUHYgDUpP3843PB8yQuFeCrMhm
- FGXHdpbwnEcjERHfcfTHXTUgp4J2SFziBWXfWstghX0ziUyvSIhaOT9ZevnCnlCWSpBg
- k+1D9fanmbhMf4HG+fRudxdN0fBx5tZE0bWdH3rRnNtxcULtApTYA3fTAkFjRJtZzvAk
- drMr51ACyvHZpbrwDad9oEKA6YtiB9H/TK5QsZVkZd8jLyjbqV/d05apd1P/OXle15/F
- Jw6w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719937591; x=1720542391;
- h=content-transfer-encoding:in-reply-to:content-language:references
- :cc:to:from:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=/IBqG+c1bd5KlsdYkeDk3KE2DqhVQpASsLjfGugP36U=;
- b=c9uAoJCTHQDLRj//lPR4nCGGXIkCgcuKgchEb/FmqkTHxZFdjWDqjgtB8RwBS29/oi
- rYg0RqQ/s8jAzpBbMuKqw0w3NuhwDc8UdRWi9lJhr9iKZlSLo2DcwNKdiFnW7OsDQg0J
- o9eI/h1Nh1A/9QEQLRhkSLEyZStzKENuruDflIcNkMGdcBXUpZVJx2GG0m+CDyPgAj4Q
- 512BiDBCmqDj6XNH1Qhz9wumIkL5pJsl2srBlb+iVXiEQvJrtxZrOX7aRrQ4PHw2xWL1
- p1D08GsqTK1Z4AtQcvT+VK8eAYw0RtCWyBxqtnObHEfVgYx2uyUCWc8JwvqmUECUlLIm
- JsIg==
-X-Gm-Message-State: AOJu0YzsxUtV/IHidschxba4p+zwi9pXVyKtIXIIdjPKNjbyd1AR8iNv
- OcrbrPsqGJPWwbDdQZOmoVEG9eXDZ9wcixnIVVt0ikum5V9UxdWdnPbMMht+74c0TUYrwQv1WzT
- d
-X-Google-Smtp-Source: AGHT+IG5c1KcPPDFJsrNK6HyBZvL3xI41OK07gtdEX8xM1mvWsdmt777FSl+YW5i1RiODZuFHzdS6Q==
-X-Received: by 2002:a17:902:f54b:b0:1f9:cf4c:e699 with SMTP id
- d9443c01a7336-1fadbcf423cmr76213175ad.55.1719937590774; 
- Tue, 02 Jul 2024 09:26:30 -0700 (PDT)
-Received: from [192.168.0.4] (174-21-76-141.tukw.qwest.net. [174.21.76.141])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1fac159686csm86431835ad.266.2024.07.02.09.26.29
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 02 Jul 2024 09:26:30 -0700 (PDT)
-Message-ID: <eaa4ffc9-19e1-4d47-b8ef-0a76ef6be593@linaro.org>
-Date: Tue, 2 Jul 2024 09:26:28 -0700
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1sOgYC-0005nb-LS
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 12:40:16 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1sOgYA-0008Qa-AT
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 12:40:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1719938412;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=MYxs85tFB5LUy8hxs5TCNTpdgqH3LOw1D/B/P7AvnkE=;
+ b=TJ6onc5syraMnoKM3OTYAOTdrSW+RXtTzqG4JPYvXR4W+bW2ivquOht6Znc3lYBLx64E0C
+ TOhr6/wYKtXbpmM6s9RQHVf/yQce2+qR4KLi79oMbv3Igls8cqSZ1r3PcMumGX4xqeu9rZ
+ NPR31ajhnx9wTLfEfOYf6Uypn1zBwXw=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-381-1jqaFcBmP0K4j3YfkV7ZxA-1; Tue,
+ 02 Jul 2024 12:40:01 -0400
+X-MC-Unique: 1jqaFcBmP0K4j3YfkV7ZxA-1
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 994881955E7E; Tue,  2 Jul 2024 16:39:58 +0000 (UTC)
+Received: from merkur.redhat.com (unknown [10.39.192.206])
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 7303519560A3; Tue,  2 Jul 2024 16:39:55 +0000 (UTC)
+From: Kevin Wolf <kwolf@redhat.com>
+To: qemu-block@nongnu.org
+Cc: kwolf@redhat.com, richard.henderson@linaro.org, hreitz@redhat.com,
+ eblake@redhat.com, stefanha@redhat.com, qemu-devel@nongnu.org,
+ qemu-stable@nongnu.org
+Subject: [PULL 0/4] Block layer patches (CVE-2024-4467)
+Date: Tue,  2 Jul 2024 18:39:39 +0200
+Message-ID: <20240702163943.276618-1-kwolf@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/3] util: Add cpuinfo support for riscv
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: brad@comstyle.com, Alistair.Francis@wdc.com, palmer@dabbelt.com,
- qemu-riscv@nongnu.org, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Bin Meng <bmeng.cn@gmail.com>
-References: <20240627180350.128575-1-richard.henderson@linaro.org>
-Content-Language: en-US
-In-Reply-To: <20240627180350.128575-1-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x632.google.com
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,32 +76,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Ping, particularly from the riscv folk.
-I'm keen to get on Brad's *BSD patches in my next PR.
+The following changes since commit c80a339587fe4148292c260716482dd2f86d4476:
 
-r~
+  Merge tag 'pull-target-arm-20240701' of https://git.linaro.org/people/pmaydell/qemu-arm into staging (2024-07-01 10:41:45 -0700)
 
-On 6/27/24 11:03, Richard Henderson wrote:
-> Do cpu feature detection in util, like other hosts.
-> Support the OpenBSD ucontext_t.
-> Support the Linux __riscv_hwprobe syscall.
-> 
-> r~
-> 
-> Richard Henderson (3):
->    util/cpuinfo-riscv: Support host/cpuinfo.h for riscv
->    util/cpuinfo-riscv: Support OpenBSD signal frame
->    util/cpuinfo-riscv: Use linux __riscv_hwprobe syscall
-> 
->   meson.build                       |   6 ++
->   host/include/riscv/host/cpuinfo.h |  23 ++++++
->   tcg/riscv/tcg-target.h            |  46 ++++++------
->   util/cpuinfo-riscv.c              | 118 ++++++++++++++++++++++++++++++
->   tcg/riscv/tcg-target.c.inc        |  84 ++-------------------
->   util/meson.build                  |   2 +
->   6 files changed, 178 insertions(+), 101 deletions(-)
->   create mode 100644 host/include/riscv/host/cpuinfo.h
->   create mode 100644 util/cpuinfo-riscv.c
-> 
+are available in the Git repository at:
+
+  https://repo.or.cz/qemu/kevin.git tags/for-upstream
+
+for you to fetch changes up to 7ead946998610657d38d1a505d5f25300d4ca613:
+
+  block: Parse filenames only when explicitly requested (2024-07-02 18:12:30 +0200)
+
+----------------------------------------------------------------
+Block layer patches (CVE-2024-4467)
+
+- Don't open qcow2 data files in 'qemu-img info'
+- Disallow protocol prefixes for qcow2 data files, VMDK extent files and
+  other child nodes that are neither 'file' nor 'backing'
+
+----------------------------------------------------------------
+Kevin Wolf (4):
+      qcow2: Don't open data_file with BDRV_O_NO_IO
+      iotests/244: Don't store data-file with protocol in image
+      iotests/270: Don't store data-file with json: prefix in image
+      block: Parse filenames only when explicitly requested
+
+ block.c                    | 90 +++++++++++++++++++++++++++++-----------------
+ block/qcow2.c              | 17 ++++++++-
+ tests/qemu-iotests/061     |  6 ++--
+ tests/qemu-iotests/061.out |  8 +++--
+ tests/qemu-iotests/244     | 19 ++++++++--
+ tests/qemu-iotests/270     | 14 ++++++--
+ 6 files changed, 110 insertions(+), 44 deletions(-)
 
 
