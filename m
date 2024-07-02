@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 702F89240CC
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 16:27:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C12D924079
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 16:20:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOeJH-00010S-Us; Tue, 02 Jul 2024 10:16:44 -0400
+	id 1sOeJK-0001CQ-Mo; Tue, 02 Jul 2024 10:16:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=fXIt=OC=kaod.org=clg@ozlabs.org>)
- id 1sOeIl-0000G7-7o; Tue, 02 Jul 2024 10:16:12 -0400
+ id 1sOeJ1-0000Sb-TH; Tue, 02 Jul 2024 10:16:33 -0400
 Received: from gandalf.ozlabs.org ([150.107.74.76] helo=mail.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=fXIt=OC=kaod.org=clg@ozlabs.org>)
- id 1sOeIg-0006mt-OO; Tue, 02 Jul 2024 10:16:10 -0400
+ id 1sOeIz-0006qc-5I; Tue, 02 Jul 2024 10:16:27 -0400
 Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4WD4hJ0bv0z4xGl;
- Wed,  3 Jul 2024 00:16:00 +1000 (AEST)
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4WD4hj24kcz4xNs;
+ Wed,  3 Jul 2024 00:16:21 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits))
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4WD4h94mSSz4wx6;
- Wed,  3 Jul 2024 00:15:53 +1000 (AEST)
-Message-ID: <c18a660d-9695-4d60-b3c5-ff541754b083@kaod.org>
-Date: Tue, 2 Jul 2024 16:15:49 +0200
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4WD4hb4Ngnz4wcS;
+ Wed,  3 Jul 2024 00:16:15 +1000 (AEST)
+Message-ID: <d9707ffc-54c5-4071-a3ee-73501a364911@kaod.org>
+Date: Tue, 2 Jul 2024 16:16:13 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] hw/sd/npcm7xx_sdhci: Use TYPE_SYSBUS_SDHCI definition
+Subject: Re: [PATCH 2/4] hw/sd/sdhci: Log non-sequencial access as GUEST_ERROR
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
 Cc: Tyrone Ting <kfting@nuvoton.com>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -40,10 +40,10 @@ Cc: Tyrone Ting <kfting@nuvoton.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Bin Meng <bmeng.cn@gmail.com>, qemu-arm@nongnu.org, qemu-block@nongnu.org,
  Patrick Venture <venture@google.com>
 References: <20240702140842.54242-1-philmd@linaro.org>
- <20240702140842.54242-2-philmd@linaro.org>
+ <20240702140842.54242-3-philmd@linaro.org>
 Content-Language: en-US, fr
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20240702140842.54242-2-philmd@linaro.org>
+In-Reply-To: <20240702140842.54242-3-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=150.107.74.76;
@@ -70,8 +70,6 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 7/2/24 4:08 PM, Philippe Mathieu-Daudé wrote:
-> Use the macro instead of two explicit string literals.
-> 
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
@@ -83,29 +81,24 @@ C.
 
 
 > ---
->   hw/sd/npcm7xx_sdhci.c | 3 ++-
->   1 file changed, 2 insertions(+), 1 deletion(-)
+>   hw/sd/sdhci.c | 5 +++--
+>   1 file changed, 3 insertions(+), 2 deletions(-)
 > 
-> diff --git a/hw/sd/npcm7xx_sdhci.c b/hw/sd/npcm7xx_sdhci.c
-> index e93dab8dbd..fb51821e11 100644
-> --- a/hw/sd/npcm7xx_sdhci.c
-> +++ b/hw/sd/npcm7xx_sdhci.c
-> @@ -16,6 +16,7 @@
->   
->   #include "qemu/osdep.h"
->   
-> +#include "hw/sd/sdhci.h"
->   #include "hw/sd/npcm7xx_sdhci.h"
->   #include "migration/vmstate.h"
->   #include "sdhci-internal.h"
-> @@ -162,7 +163,7 @@ static void npcm7xx_sdhci_instance_init(Object *obj)
+> diff --git a/hw/sd/sdhci.c b/hw/sd/sdhci.c
+> index 27673e1c70..d02c3e3963 100644
+> --- a/hw/sd/sdhci.c
+> +++ b/hw/sd/sdhci.c
+> @@ -983,8 +983,9 @@ static inline bool
+>   sdhci_buff_access_is_sequential(SDHCIState *s, unsigned byte_num)
 >   {
->       NPCM7xxSDHCIState *s = NPCM7XX_SDHCI(obj);
->   
-> -    object_initialize_child(OBJECT(s), "generic-sdhci", &s->sdhci,
-> +    object_initialize_child(OBJECT(s), TYPE_SYSBUS_SDHCI, &s->sdhci,
->                               TYPE_SYSBUS_SDHCI);
->   }
->   
+>       if ((s->data_count & 0x3) != byte_num) {
+> -        trace_sdhci_error("Non-sequential access to Buffer Data Port register"
+> -                          "is prohibited\n");
+> +        qemu_log_mask(LOG_GUEST_ERROR,
+> +                      "SDHCI: Non-sequential access to Buffer Data Port"
+> +                      " register is prohibited\n");
+>           return false;
+>       }
+>       return true;
 
 
