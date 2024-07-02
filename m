@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 553579239C4
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 11:23:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D8B69239BA
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 11:22:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOZi7-0001Bf-SK; Tue, 02 Jul 2024 05:22:04 -0400
+	id 1sOZiA-0001CT-34; Tue, 02 Jul 2024 05:22:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOZi3-0001B8-4e
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOZi3-0001B7-4e
  for qemu-devel@nongnu.org; Tue, 02 Jul 2024 05:21:59 -0400
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOZhs-0006Rv-Qv
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOZhy-0006SF-Fn
  for qemu-devel@nongnu.org; Tue, 02 Jul 2024 05:21:58 -0400
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-3626c29d3f0so2001288f8f.1
- for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 02:21:48 -0700 (PDT)
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-424ad289949so28596435e9.2
+ for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 02:21:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719912106; x=1720516906; darn=nongnu.org;
+ d=linaro.org; s=google; t=1719912112; x=1720516912; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=VFi1L5rHZo7v36UetRUIEpZ+be6zBjT18RH5cfq/7Gg=;
- b=c04R2OBLwAdRAp7Nu2BSr46oWCvvpqAK+LMr4dgjMbXGFmj6UtsqdokCA+h12EP8Ft
- 5p7x0iMAhjaFe3WJpdVqI3cC7pFi8s3YcrLsDkEIqK61ok12yGMxZZcfphc/EYyUopSa
- cvLrORWx/5t01x2wzfWAM9t++wNUllM76BA6gI3jjai98HbP81XQKwehe35ddLc/Fmdy
- YkOOkL+7rNPkU6MLIW7KRlDKq4wRBS8Ub6lefVXKpXE+7SqdWKkV+Mqv7HmQ8REQexHK
- GO2u32lY3/DkDebEPAs+Vp268Knadj7CsXfIjxMWEH+CQTrvwlvm5QcKZxIEixGGzRwi
- 9EkQ==
+ bh=VGAqlXXmWHNhTh9vgnZWCBaKbJgiHWhA9edkrjy7PcE=;
+ b=Ak49Db7zbTHvDl8yDot8XOnyehNXcLQNBGbjbwYuqSuBk4DWQIF/mE4Mc59MgU/5aT
+ 2Dww1kBNkTQGrkXWhvER05zKobR9Gh0pEK2FlUIeNeVnzMDvqcZ5lftDhIyeFNDpeVa0
+ VPcmzB7pRksBQUfv6atbHZn2OmxJ1tt88q527+XLniC/GRhQctDariVb5Zq9BrKRhMAS
+ 4G92+lUEgrODE1wh+wcP0us2nOBqiPW8aTBN82US4kTRutqtr5kpp9fClXup2vA7aCih
+ GB80jxj/y4rFJFn8ox4p15vapOeHHKyfOhQrowwb7WCIjoVrtPDCwk07E+J/N+WMKB9Z
+ 0Vrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719912106; x=1720516906;
+ d=1e100.net; s=20230601; t=1719912112; x=1720516912;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=VFi1L5rHZo7v36UetRUIEpZ+be6zBjT18RH5cfq/7Gg=;
- b=q2Q00cghyY9VgcV914DBMtIHUyjG3Sx2CiFguSl+txirczVkMa//rj87oXR36bQBI3
- azu0xyM0j4cCyAXpVRD4SI8+ihr1BeHl2kSL8YN3TVeJGcd3e437CNwYNmQhbvZSgzly
- xwx2HixS3AMd8eVg3oaHs35qeYZ7c3oLjC7jHTlMt6BwuGPrw9WxiV8KMWGHF4ACg5N5
- 4UJQWSKC4Zfak5j/UnwGceOHt8IIVCCr360knPXuQS/SnpPQVytPo0qeOLNk9b1i9GGE
- cZY1trTSAybLwz3i6IrbSOP35pyMB7LizhC9JvvjWpUjUEgbC7h1XL+ooA5K8TW18Hqu
- 3PZQ==
-X-Gm-Message-State: AOJu0YxZyD6GV9wrtGaQAuqzB8pqkBapv5xH8lgSa2NgiPq8JDm4khPW
- oMMnsBl5KmhSdcDOx8REuCr0a9o7ZQzD/bc7SfxiIKB9Lv/I9bhOrfK2SQHPnIOnme9IFl7LSr2
- E
-X-Google-Smtp-Source: AGHT+IEjxuGo1JugIYNt9Bdp0vjfFoKrw5zuqh/q78SNC2KYw6irvDg96k7GUTKIOea8ekxX2syeBQ==
-X-Received: by 2002:a5d:4043:0:b0:366:f8c3:ddcb with SMTP id
- ffacd0b85a97d-36775725c6emr5347764f8f.52.1719912106566; 
- Tue, 02 Jul 2024 02:21:46 -0700 (PDT)
+ bh=VGAqlXXmWHNhTh9vgnZWCBaKbJgiHWhA9edkrjy7PcE=;
+ b=VaZys4X3z21yRy8Mwd+PsqvGQm9lXeI8XDEKJD2SgLy285Apn+uA5k6OYYMAi/T8Rq
+ bW7/SXwyuq7fQTyT7sXSVYmjxsA/GSdIUBZ+LFYdcmTeGVfVtp7rOpHDkqsOjfdKnPI5
+ JZydVybksNxF5Ad678T+zvWLjEuHV3oqxnuIGOV1Ej5HqjNPHDYOq+8os8y7bETHpqL5
+ a2OvWcUODhQNfBWwrgmwbTnWQu0irIKRZCJ5KoLSpiD+yAlrkCavO1wJE4//VeHFC7gG
+ w9huUaB4mQYgvz6s3d9cnaQfRc5TpfvB9t/+ewEGrrsApPDOh09csMW0cPibK1qHy8cb
+ dz5A==
+X-Gm-Message-State: AOJu0YyiqFWaBi9DVQTNefCNWXie+vheSwat2A+DMqu5INtIDK52SuXM
+ TfizepVBGVneSlx2bJC5yM77IsOVZiHWNwrMzWd3V2U2KVqBxyungRONG2t2WQuX3TO9Oz8ffAT
+ S
+X-Google-Smtp-Source: AGHT+IHQJifoKcqTa8dDVQmj1rRhk+XofTXeCiT3xFEJviYT9/2UvnbYF49qTp76g8ymgpcGDuZLJQ==
+X-Received: by 2002:a7b:cbd2:0:b0:425:5eec:d261 with SMTP id
+ 5b1f17b1804b1-4257a02805dmr62707875e9.34.1719912112410; 
+ Tue, 02 Jul 2024 02:21:52 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.209.58])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3675a0fba2dsm12653980f8f.73.2024.07.02.02.21.45
+ 5b1f17b1804b1-4257a2f7451sm132918665e9.0.2024.07.02.02.21.51
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 02 Jul 2024 02:21:46 -0700 (PDT)
+ Tue, 02 Jul 2024 02:21:52 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 09/67] hw/sd/sdcard: Assign SDCardStates enum values
-Date: Tue,  2 Jul 2024 11:19:52 +0200
-Message-ID: <20240702092051.45754-10-philmd@linaro.org>
+Subject: [PULL 10/67] hw/sd/sdcard: Simplify sd_inactive_state handling
+Date: Tue,  2 Jul 2024 11:19:53 +0200
+Message-ID: <20240702092051.45754-11-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240702092051.45754-1-philmd@linaro.org>
 References: <20240702092051.45754-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,51 +92,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-SDCardStates enum values are specified, so assign them
-correspondingly. It will be useful later when we add
-states from later specs, which might not be continuous.
+Card entering sd_inactive_state powers off, and won't respond
+anymore. Handle that once when entering sd_do_command().
 
-See CURRENT_STATE bits in section 4.10.1 "Card Status".
+Remove condition always true in sd_cmd_GO_IDLE_STATE().
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Tested-by: Cédric Le Goater <clg@redhat.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Message-Id: <20240628070216.92609-11-philmd@linaro.org>
+Message-Id: <20240628070216.92609-12-philmd@linaro.org>
 ---
- hw/sd/sd.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ hw/sd/sd.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
 diff --git a/hw/sd/sd.c b/hw/sd/sd.c
-index 04ca895645..824cb47856 100644
+index 824cb47856..30c1d299d4 100644
 --- a/hw/sd/sd.c
 +++ b/hw/sd/sd.c
-@@ -75,16 +75,16 @@ enum SDCardModes {
- };
+@@ -1078,10 +1078,8 @@ static sd_rsp_type_t sd_cmd_unimplemented(SDState *sd, SDRequest req)
+ /* CMD0 */
+ static sd_rsp_type_t sd_cmd_GO_IDLE_STATE(SDState *sd, SDRequest req)
+ {
+-    if (sd->state != sd_inactive_state) {
+-        sd->state = sd_idle_state;
+-        sd_reset(DEVICE(sd));
+-    }
++    sd->state = sd_idle_state;
++    sd_reset(DEVICE(sd));
  
- enum SDCardStates {
--    sd_inactive_state = -1,
--    sd_idle_state = 0,
--    sd_ready_state,
--    sd_identification_state,
--    sd_standby_state,
--    sd_transfer_state,
--    sd_sendingdata_state,
--    sd_receivingdata_state,
--    sd_programming_state,
--    sd_disconnect_state,
-+    sd_inactive_state       = -1,
-+    sd_idle_state           = 0,
-+    sd_ready_state          = 1,
-+    sd_identification_state = 2,
-+    sd_standby_state        = 3,
-+    sd_transfer_state       = 4,
-+    sd_sendingdata_state    = 5,
-+    sd_receivingdata_state  = 6,
-+    sd_programming_state    = 7,
-+    sd_disconnect_state     = 8,
- };
+     return sd_is_spi(sd) ? sd_r1 : sd_r0;
+ }
+@@ -1580,7 +1578,6 @@ static sd_rsp_type_t sd_normal_command(SDState *sd, SDRequest req)
+         switch (sd->state) {
+         case sd_ready_state:
+         case sd_identification_state:
+-        case sd_inactive_state:
+             return sd_illegal;
+         case sd_idle_state:
+             if (rca) {
+@@ -1801,6 +1798,11 @@ int sd_do_command(SDState *sd, SDRequest *req,
+         return 0;
+     }
  
- typedef sd_rsp_type_t (*sd_cmd_handler)(SDState *sd, SDRequest req);
++    if (sd->state == sd_inactive_state) {
++        rtype = sd_illegal;
++        goto send_response;
++    }
++
+     if (sd_req_crc_validate(req)) {
+         sd->card_status |= COM_CRC_ERROR;
+         rtype = sd_illegal;
 -- 
 2.41.0
 
