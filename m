@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90FF7924016
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 16:13:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A44A7924043
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 16:16:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOeCG-0006VM-FU; Tue, 02 Jul 2024 10:09:29 -0400
+	id 1sOeCE-0006Ie-I9; Tue, 02 Jul 2024 10:09:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOeBz-0005lg-Dk
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:09:14 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOeC1-0005mz-LY
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:09:15 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOeBi-0008FK-KY
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:09:11 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOeBp-0008GL-ND
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:09:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719929331;
+ s=mimecast20190719; t=1719929335;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=qGhmwqguo7pIYQaZC7WOHDuKcF1Cau7swIzTfVk8co4=;
- b=PBZZMdY0BYeeZY1gWlehomRY9h0rUfr83DId0S9pz8s2fj2cNhQHo6ovqhhgMtCl+rW91q
- Xdt7IrRyQoSyfKi+UagWIrxDctyHe7petyPJml8bb+eoCCw8m8ZcyD+ACtPV78a7kWePSr
- GdwCYGrKfmoxeMjoUlwAMT7HcYeKjk0=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=g4UiaVaJHqFRMzcgj8Lsoa2O3CKB9KU5Hs0p0vn09PA=;
+ b=L2QZwgdckfuL4YiVA+uHMpDnu5sjoNXgHtcGe8rR/a2Hj14jCHCPcgCMzxHjv1Bl8ZR/sA
+ huuYhK8fXpxBw5yu+9oiyLsif1DPjlcTFVN2VczmbvugJ+qyelBuzYkPsZGMcvxskQn8mZ
+ d2SkZW9qARsrc9ZyM66G/Oggct3WeJA=
+Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
+ [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-41-FnxhrcMlMKG-lH96vinZSw-1; Tue, 02 Jul 2024 10:08:50 -0400
-X-MC-Unique: FnxhrcMlMKG-lH96vinZSw-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-3678ff75122so9500f8f.0
- for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 07:08:50 -0700 (PDT)
+ us-mta-375-Z3lPNtdkNJSmjaRw-mX6vg-1; Tue, 02 Jul 2024 10:08:54 -0400
+X-MC-Unique: Z3lPNtdkNJSmjaRw-mX6vg-1
+Received: by mail-lf1-f71.google.com with SMTP id
+ 2adb3069b0e04-52cdaae5b3dso4121925e87.1
+ for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 07:08:53 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719929329; x=1720534129;
+ d=1e100.net; s=20230601; t=1719929332; x=1720534132;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=qGhmwqguo7pIYQaZC7WOHDuKcF1Cau7swIzTfVk8co4=;
- b=jU65TzSTVkd9PEY2IbY7D2YuRw+xOCeDe+B3bNfWtgk8QP2vh7X7y3SicyB6dr2DwD
- +w8PYJXOoGfpp/hLfqlif+bRRbK2EGB8OE9ajsWwcd+3q/HyNiMrbUbnqOdOAqizDqfi
- ehtI9rJZ7dwqHRNC/tBY3Bqavh2pE0Aj0GFOzYfgs68IPM4HhKwX1VpqnbwVDrCxBpgE
- sziycUv2SmdO6H/wLZDutFhLwXLPBAQIZHBkLQ55OJ7wc69ZeekzurAm/Ds/Hf94iXKb
- bG5OEhGRV3HWGdZNnLRiqUw0f7xq9HbfiF1uKD645lrp0pvERPMcIZR0PO/dyS9HWHfG
- bI2Q==
-X-Gm-Message-State: AOJu0YwwD1ozO6dSrfc4qBRzHDX6nJd/HPULIPvNVZlS5CS2PiHZLpTe
- xjFIoOjKCQxbxooIc+kSy4HLHkkAPl5QatCAjYJGVbY9h+dnWfAmRv7IFMUNVrie2KlGH38LpAl
- 58716bbIHJe8+i00DBRCfoTuOtisMNVewrqu6ptuKvab31vGFcLE7m3kxfw+CMmMSvcC+/pJxgA
- jvQ+EQvbeE6yt6F2oK5/EJG1JZKT4S7Q==
-X-Received: by 2002:adf:e8c9:0:b0:367:8811:5e3c with SMTP id
- ffacd0b85a97d-36788115f10mr1291206f8f.20.1719929328816; 
- Tue, 02 Jul 2024 07:08:48 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGdHQHfR1BBbKX7Z8/pliAgvf2nr8yI2EjSUJvUXkTQV3Sssrr5SKo2yq/u0V/3Hzxoy40F7w==
-X-Received: by 2002:adf:e8c9:0:b0:367:8811:5e3c with SMTP id
- ffacd0b85a97d-36788115f10mr1291172f8f.20.1719929328215; 
- Tue, 02 Jul 2024 07:08:48 -0700 (PDT)
+ bh=g4UiaVaJHqFRMzcgj8Lsoa2O3CKB9KU5Hs0p0vn09PA=;
+ b=KbEzMeOXUyO0vw7iUSRk1wUnv1fS068oHbpLpfD+aHBIXVjjIAtOB9zn34xtkSMN7H
+ qOVBCFY/SnaKxXrkcOk0TaJXtCU6/R7rqiX25rumdCmkHj0uFnLYgHDVeKF4Hd1+Jbhj
+ z2qzaebGMyt5hS5ZH/7BLHfOXRrjgnzV94zbQqsQ/vYHXEcc4qAEzDi+//Yiv3n4d0ip
+ CMtXE6y0oC4a6NADjyide/CBKzAbGGEYtbbomcKAno9maWTc3y5wyO/e2t7KJ/jrW3Lq
+ ASV/XMQuI09mdd8aS9qWQUeE+5irbbODePOAz/Kxejb93hsRPNOB9lk69B/gB1GhnVw2
+ JrOA==
+X-Gm-Message-State: AOJu0YxKLulPqVbpN0GeTGlwZlWKHBDaS1IQxApPAzSDOFPdO966MAD6
+ Cez0ONcuqjZ7tBrk6rdj07lhoVxra5oUg90QiAW+SUFLusRrcb1EB4dv7p0btGtMREAEYnuHEyJ
+ 9ELDjEQNo6ULT0q2nZH3Av5ArX/EcjBZap7b34v7n8egPk4iUS6GErx/R72PKrQfhp6k6a7zktl
+ jSnMJncjgmV71OGLVYdZfJwJ1nzMnkZw==
+X-Received: by 2002:a05:6512:acc:b0:52c:e180:4eac with SMTP id
+ 2adb3069b0e04-52e8264bbd4mr6138112e87.9.1719929331771; 
+ Tue, 02 Jul 2024 07:08:51 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHuX90VK8ksXbSxePclulwPa6zXZIh2on3nP5rDXVK+qd4OEkkGV/CINRLPnRVfcg2VU7SIFw==
+X-Received: by 2002:a05:6512:acc:b0:52c:e180:4eac with SMTP id
+ 2adb3069b0e04-52e8264bbd4mr6138087e87.9.1719929331216; 
+ Tue, 02 Jul 2024 07:08:51 -0700 (PDT)
 Received: from redhat.com ([2a02:14f:1f5:eadd:8c31:db01:9d01:7604])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3678877f19dsm1886874f8f.43.2024.07.02.07.08.46
+ 5b1f17b1804b1-4256af59732sm200523615e9.11.2024.07.02.07.08.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 02 Jul 2024 07:08:47 -0700 (PDT)
-Date: Tue, 2 Jul 2024 10:08:45 -0400
+ Tue, 02 Jul 2024 07:08:50 -0700 (PDT)
+Date: Tue, 2 Jul 2024 10:08:48 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas@t-8ch.de>,
- Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PULL 35/91] tests/qtest/pvpanic: add tests for pvshutdown event
-Message-ID: <b279c3c88da3e8a301e4436fcdf233c0838ed4bc.1719929191.git.mst@redhat.com>
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 36/91] Revert "docs/specs/pvpanic: mark shutdown event as not
+ implemented"
+Message-ID: <0c0cc13d319cf7b876f327fa1c5cc1866ad868cc.1719929191.git.mst@redhat.com>
 References: <cover.1719929191.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -86,7 +86,8 @@ X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,119 +105,31 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Thomas Weißschuh <thomas@t-8ch.de>
 
-Validate that a shutdown via the pvpanic device emits the correct
-QMP events.
+The missing functionality has been implemented now.
+
+This reverts commit e739d1935c461d0668057e9dbba9d06f728d29ec.
 
 Signed-off-by: Thomas Weißschuh <thomas@t-8ch.de>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20240527-pvpanic-shutdown-v8-7-5a28ec02558b@t-8ch.de>
+Message-Id: <20240527-pvpanic-shutdown-v8-8-5a28ec02558b@t-8ch.de>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- tests/qtest/pvpanic-pci-test.c | 39 ++++++++++++++++++++++++++++++++++
- tests/qtest/pvpanic-test.c     | 29 +++++++++++++++++++++++++
- 2 files changed, 68 insertions(+)
+ docs/specs/pvpanic.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/qtest/pvpanic-pci-test.c b/tests/qtest/pvpanic-pci-test.c
-index b372caf41d..dc021c2fdf 100644
---- a/tests/qtest/pvpanic-pci-test.c
-+++ b/tests/qtest/pvpanic-pci-test.c
-@@ -85,11 +85,50 @@ static void test_panic(void)
-     qtest_quit(qts);
- }
+diff --git a/docs/specs/pvpanic.rst b/docs/specs/pvpanic.rst
+index b0f27860ec..61a80480ed 100644
+--- a/docs/specs/pvpanic.rst
++++ b/docs/specs/pvpanic.rst
+@@ -29,7 +29,7 @@ bit 1
+   a guest panic has happened and will be handled by the guest;
+   the host should record it or report it, but should not affect
+   the execution of the guest.
+-bit 2 (to be implemented)
++bit 2
+   a regular guest shutdown has happened and should be processed by the host
  
-+static void test_pvshutdown(void)
-+{
-+    uint8_t val;
-+    QDict *response, *data;
-+    QTestState *qts;
-+    QPCIBus *pcibus;
-+    QPCIDevice *dev;
-+    QPCIBar bar;
-+
-+    qts = qtest_init("-device pvpanic-pci,addr=04.0");
-+    pcibus = qpci_new_pc(qts, NULL);
-+    dev = qpci_device_find(pcibus, QPCI_DEVFN(0x4, 0x0));
-+    qpci_device_enable(dev);
-+    bar = qpci_iomap(dev, 0, NULL);
-+
-+    qpci_memread(dev, bar, 0, &val, sizeof(val));
-+    g_assert_cmpuint(val, ==, PVPANIC_EVENTS);
-+
-+    val = PVPANIC_SHUTDOWN;
-+    qpci_memwrite(dev, bar, 0, &val, sizeof(val));
-+
-+    response = qtest_qmp_eventwait_ref(qts, "GUEST_PVSHUTDOWN");
-+    qobject_unref(response);
-+
-+    response = qtest_qmp_eventwait_ref(qts, "SHUTDOWN");
-+    g_assert(qdict_haskey(response, "data"));
-+    data = qdict_get_qdict(response, "data");
-+    g_assert(qdict_haskey(data, "guest"));
-+    g_assert(qdict_get_bool(data, "guest"));
-+    g_assert(qdict_haskey(data, "reason"));
-+    g_assert_cmpstr(qdict_get_str(data, "reason"), ==, "guest-shutdown");
-+    qobject_unref(response);
-+
-+    g_free(dev);
-+    qpci_free_pc(pcibus);
-+    qtest_quit(qts);
-+}
-+
- int main(int argc, char **argv)
- {
-     g_test_init(&argc, &argv, NULL);
-     qtest_add_func("/pvpanic-pci/panic", test_panic);
-     qtest_add_func("/pvpanic-pci/panic-nopause", test_panic_nopause);
-+    qtest_add_func("/pvpanic-pci/pvshutdown", test_pvshutdown);
- 
-     return g_test_run();
- }
-diff --git a/tests/qtest/pvpanic-test.c b/tests/qtest/pvpanic-test.c
-index ccc603472f..d49d2ba931 100644
---- a/tests/qtest/pvpanic-test.c
-+++ b/tests/qtest/pvpanic-test.c
-@@ -58,11 +58,40 @@ static void test_panic(void)
-     qtest_quit(qts);
- }
- 
-+static void test_pvshutdown(void)
-+{
-+    uint8_t val;
-+    QDict *response, *data;
-+    QTestState *qts;
-+
-+    qts = qtest_init("-device pvpanic");
-+
-+    val = qtest_inb(qts, 0x505);
-+    g_assert_cmpuint(val, ==, PVPANIC_EVENTS);
-+
-+    qtest_outb(qts, 0x505, PVPANIC_SHUTDOWN);
-+
-+    response = qtest_qmp_eventwait_ref(qts, "GUEST_PVSHUTDOWN");
-+    qobject_unref(response);
-+
-+    response = qtest_qmp_eventwait_ref(qts, "SHUTDOWN");
-+    g_assert(qdict_haskey(response, "data"));
-+    data = qdict_get_qdict(response, "data");
-+    g_assert(qdict_haskey(data, "guest"));
-+    g_assert(qdict_get_bool(data, "guest"));
-+    g_assert(qdict_haskey(data, "reason"));
-+    g_assert_cmpstr(qdict_get_str(data, "reason"), ==, "guest-shutdown");
-+    qobject_unref(response);
-+
-+    qtest_quit(qts);
-+}
-+
- int main(int argc, char **argv)
- {
-     g_test_init(&argc, &argv, NULL);
-     qtest_add_func("/pvpanic/panic", test_panic);
-     qtest_add_func("/pvpanic/panic-nopause", test_panic_nopause);
-+    qtest_add_func("/pvpanic/pvshutdown", test_pvshutdown);
- 
-     return g_test_run();
- }
+ PCI Interface
 -- 
 MST
 
