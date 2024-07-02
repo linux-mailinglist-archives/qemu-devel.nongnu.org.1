@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C83D591EE14
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 07:04:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3921091EE18
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 07:04:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOVfy-0006kE-NJ; Tue, 02 Jul 2024 01:03:34 -0400
+	id 1sOVg3-0007CE-EI; Tue, 02 Jul 2024 01:03:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOVfw-0006Zt-Qq
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 01:03:32 -0400
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOVg1-00077t-Se
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 01:03:37 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOVfu-0007jH-Rx
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 01:03:32 -0400
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-36743abace4so3058669f8f.1
- for <qemu-devel@nongnu.org>; Mon, 01 Jul 2024 22:03:29 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOVg0-0007kr-6Z
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 01:03:37 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-42563a9fa58so26603305e9.0
+ for <qemu-devel@nongnu.org>; Mon, 01 Jul 2024 22:03:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719896607; x=1720501407; darn=nongnu.org;
+ d=linaro.org; s=google; t=1719896614; x=1720501414; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=gqSkcaHksS2cqMSoL7Eku8EtIEifuvQ5Pl0L19IlD0A=;
- b=B20hqhmICiiAkIiiB3zmghz23/lx1cZ9fsATCi+BbR+QzPjjK0Z3jrxAmbqZRJ2vRb
- 0FOEaxnEgyYxmQCvlLN19mvcLbvKeuutFg+EJRr6kVReiWms5FN1PK9fTAGQxXVUmsOa
- FCvZymuSp0cDamW6Hzt4GcjDba730lnVVla40TQYxlCrpClCAQ8unukRBpaOXzRD/ZnA
- /y7yyRCl6ftKQNAaJxufEMZnZ99xQwwhXHxDR+1+ClEt6jWZK7As2xtLC53kFFJ+DeP/
- QcEDjWqbiJwrvjiq9LbsP3UPXE7ojXPbwEkssem0IOpkuJON1AuTzp9YhzKtrtI36fft
- lm3A==
+ bh=+91gvHB50PukN639vXpRuhbPnrJzG8qgNtIT0wpdvQ0=;
+ b=HHvVaW6juuLgxK7PB7wAVnYYhmvsAO2Q/FIWE7nUJ3AlmRa8iSUhmgLun0mK/Ce4ZI
+ HLnavpyJrDkwHDzW95LWARnxszf/cbsYXLwJx/yBuyHBXPidrb5QpXJ+OnglTYCL2wdD
+ v788O5D8hva7xMO8Rd/o10WrxtZ+h6tU86poeYJHSJnjI4NKzX3dusV2ds2KCuQi12sK
+ 1aKwOJ2hKJHuWQF8RGsY38IPE6gUHQGd/Km9+UFK0yu3fWgyrzAqj0ZLWPnBzZZxMAFT
+ 9/8YBbew2Ynl71HszuQ+5XDm/msQ5RUUyA7pRF/Q/nJeVnQK0LRuF3XWsNtyCz0f1ADZ
+ 1oBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719896607; x=1720501407;
+ d=1e100.net; s=20230601; t=1719896614; x=1720501414;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=gqSkcaHksS2cqMSoL7Eku8EtIEifuvQ5Pl0L19IlD0A=;
- b=O67VmY5/h93uTViBULVI0far57HI3p/On7Eqie4EpdfutieUD+svqUawcMW38YVVxM
- WhQ6vCFDz/11jc4dPWtAiNgLz1zHpy3q70jeFR6VJD5nwEczuxjZmNL2Jz6UehOcJBFD
- 4H6wYl1njp30m3IAivcypWj3dYUHWvyepSH68HAMBS6drDIePP3Cuymka62YhD8Eqv2M
- j3J6CJlKY9JMLga2QLO4C3tP5cWdg9YdL2jPhXoRIpFgUfAFr8lcVn59HhGBb6ybSzSV
- A+6lXO3UAr8TCFk9JShDXQAmvj7RNOtfBbfVjKcyuaiQ937bBE8nlH3jK5dS1rRdur5e
- wOcQ==
-X-Gm-Message-State: AOJu0YxwSyQsTFn6g8AW5bpNRh37QPugHUxpj5ccJos33l1CpIht7KoC
- x1XqEt0gkloJBRkLpf/ZQv3kBx0hsTHjTpzXVOwj6HAx3GA1eY1CB59glBXzEuztX5AEqLwd+KH
- G
-X-Google-Smtp-Source: AGHT+IGumnLFzdNEvjn/7mA/AIS+is9JD1ebCdr7fsuOUDOjfmCSSAGBVPlDTGu8nIXCBV9VBODgAA==
-X-Received: by 2002:a5d:5987:0:b0:363:776:821b with SMTP id
- ffacd0b85a97d-3676045b4a0mr10874244f8f.0.1719896606899; 
- Mon, 01 Jul 2024 22:03:26 -0700 (PDT)
+ bh=+91gvHB50PukN639vXpRuhbPnrJzG8qgNtIT0wpdvQ0=;
+ b=hQfifEeeAF4LdMKoOI30iHqVo1meSbTVS9PVb5xmw+HCFxWE+8pExP/1J6X5smffp9
+ Ytdm4epI8hshveNrHNfdCdxXSz93+51JoqA5SNSsGowJry7ynZH9ug75NFilUqn7MzRk
+ o2h9VICHdHs3dGln1T6NGiHKsnTO042f/jY0tQ38isOTH9LoTcCBbO3AvUk985r5qhx/
+ k4raDuVEQRcVe86R6fqnKkp8WtdnRoCo2Nbzsfk+l8WE/8m1RMgU1LrIsrHW4Z8CfJdC
+ DrzCABQ1XTRgOAGKGwDAMvEHuwLEPA4hdpWsldSCJxqpJYd8mu5augFUhPHZjmNcNQA3
+ u1wA==
+X-Gm-Message-State: AOJu0YyGo7LnSoUfSo0T04p4VnH5xf511cy4s82j9t5NFaV+Bh3S7dEn
+ M7QycsCzEOduPkPQQLT7+SoguBtyolBzrgHkFikBJwnkXd+cRrtlQQqk7AbyrzJokooE5puPYWy
+ U
+X-Google-Smtp-Source: AGHT+IGDQ2sY+VJHOtj0T8WhUCw9UjKVR3/V2ntXvnhz/eo46yvt36H/87ZR2E4SVsTE7vgxPwh9kQ==
+X-Received: by 2002:a05:600c:3b09:b0:424:7bcf:2486 with SMTP id
+ 5b1f17b1804b1-4257a00aadamr43499815e9.4.1719896613926; 
+ Mon, 01 Jul 2024 22:03:33 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.209.58])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3675a0fc4c9sm11968503f8f.86.2024.07.01.22.03.25
+ 5b1f17b1804b1-4256b061eedsm173093075e9.26.2024.07.01.22.03.31
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 01 Jul 2024 22:03:26 -0700 (PDT)
+ Mon, 01 Jul 2024 22:03:32 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
+Cc: Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 21/22] net/vmnet: Drop ifdef for macOS versions older than 12.0
-Date: Tue,  2 Jul 2024 07:01:11 +0200
-Message-ID: <20240702050112.35907-22-philmd@linaro.org>
+Subject: [PULL 22/22] Remove inclusion of hw/hw.h from files that don't need it
+Date: Tue,  2 Jul 2024 07:01:12 +0200
+Message-ID: <20240702050112.35907-23-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240702050112.35907-1-philmd@linaro.org>
 References: <20240702050112.35907-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,171 +94,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
+From: Thomas Huth <thuth@redhat.com>
 
-macOS versions older than 12.0 are no longer supported.
+hw/hw.h only contains the prototype of hw_error() nowadays, so
+files that don't use this function don't need to include this
+header.
 
-docs/about/build-platforms.rst says:
-> Support for the previous major version will be dropped 2 years after
-> the new major version is released or when the vendor itself drops
-> support, whichever comes first.
-
-macOS 12.0 was released 2021:
-https://www.apple.com/newsroom/2021/10/macos-monterey-is-now-available/
-
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20240629-macos-v1-4-6e70a6b700a0@daynix.com>
+Message-ID: <20240701132649.58345-1-thuth@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- net/vmnet-host.c    | 24 +-----------------------
- net/vmnet-shared.c  | 13 -------------
- net/vmnet-bridged.m | 13 +------------
- net/vmnet-common.m  |  3 ---
- 4 files changed, 2 insertions(+), 51 deletions(-)
+ include/hw/misc/xlnx-cfi-if.h | 1 -
+ hw/misc/edu.c                 | 1 -
+ hw/vfio/container.c           | 1 -
+ 3 files changed, 3 deletions(-)
 
-diff --git a/net/vmnet-host.c b/net/vmnet-host.c
-index 1f95f7343a..49fb25c224 100644
---- a/net/vmnet-host.c
-+++ b/net/vmnet-host.c
-@@ -21,31 +21,13 @@
- static bool validate_options(const Netdev *netdev, Error **errp)
- {
-     const NetdevVmnetHostOptions *options = &(netdev->u.vmnet_host);
--
--#if defined(MAC_OS_VERSION_11_0) && \
--    MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_VERSION_11_0
--
-     QemuUUID net_uuid;
-+
-     if (options->net_uuid &&
-         qemu_uuid_parse(options->net_uuid, &net_uuid) < 0) {
-         error_setg(errp, "Invalid UUID provided in 'net-uuid'");
-         return false;
-     }
--#else
--    if (options->has_isolated) {
--        error_setg(errp,
--                   "vmnet-host.isolated feature is "
--                   "unavailable: outdated vmnet.framework API");
--        return false;
--    }
--
--    if (options->net_uuid) {
--        error_setg(errp,
--                   "vmnet-host.net-uuid feature is "
--                   "unavailable: outdated vmnet.framework API");
--        return false;
--    }
--#endif
+diff --git a/include/hw/misc/xlnx-cfi-if.h b/include/hw/misc/xlnx-cfi-if.h
+index f9bd12292d..5010401517 100644
+--- a/include/hw/misc/xlnx-cfi-if.h
++++ b/include/hw/misc/xlnx-cfi-if.h
+@@ -11,7 +11,6 @@
+ #define XLNX_CFI_IF_H 1
  
-     if ((options->start_address ||
-          options->end_address ||
-@@ -71,9 +53,6 @@ static xpc_object_t build_if_desc(const Netdev *netdev)
-                               vmnet_operation_mode_key,
-                               VMNET_HOST_MODE);
+ #include "qemu/help-texts.h"
+-#include "hw/hw.h"
+ #include "qom/object.h"
  
--#if defined(MAC_OS_VERSION_11_0) && \
--    MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_VERSION_11_0
--
-     xpc_dictionary_set_bool(if_desc,
-                             vmnet_enable_isolation_key,
-                             options->isolated);
-@@ -85,7 +64,6 @@ static xpc_object_t build_if_desc(const Netdev *netdev)
-                                 vmnet_network_identifier_key,
-                                 net_uuid.data);
-     }
--#endif
- 
-     if (options->start_address) {
-         xpc_dictionary_set_string(if_desc,
-diff --git a/net/vmnet-shared.c b/net/vmnet-shared.c
-index 40c7306a75..4726b07253 100644
---- a/net/vmnet-shared.c
-+++ b/net/vmnet-shared.c
-@@ -21,16 +21,6 @@ static bool validate_options(const Netdev *netdev, Error **errp)
- {
-     const NetdevVmnetSharedOptions *options = &(netdev->u.vmnet_shared);
- 
--#if !defined(MAC_OS_VERSION_11_0) || \
--    MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_VERSION_11_0
--    if (options->has_isolated) {
--        error_setg(errp,
--                   "vmnet-shared.isolated feature is "
--                   "unavailable: outdated vmnet.framework API");
--        return false;
--    }
--#endif
--
-     if ((options->start_address ||
-          options->end_address ||
-          options->subnet_mask) &&
-@@ -76,14 +66,11 @@ static xpc_object_t build_if_desc(const Netdev *netdev)
-                                   options->subnet_mask);
-     }
- 
--#if defined(MAC_OS_VERSION_11_0) && \
--    MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_VERSION_11_0
-     xpc_dictionary_set_bool(
-         if_desc,
-         vmnet_enable_isolation_key,
-         options->isolated
-     );
--#endif
- 
-     return if_desc;
- }
-diff --git a/net/vmnet-bridged.m b/net/vmnet-bridged.m
-index 76a28abe79..a04a14fa11 100644
---- a/net/vmnet-bridged.m
-+++ b/net/vmnet-bridged.m
-@@ -88,15 +88,6 @@ static bool validate_options(const Netdev *netdev, Error **errp)
-         return false;
-     }
- 
--#if !defined(MAC_OS_VERSION_11_0) || \
--    MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_VERSION_11_0
--    if (options->has_isolated) {
--        error_setg(errp,
--                   "vmnet-bridged.isolated feature is "
--                   "unavailable: outdated vmnet.framework API");
--        return false;
--    }
--#endif
-     return true;
- }
- 
-@@ -115,12 +106,10 @@ static xpc_object_t build_if_desc(const Netdev *netdev)
-                               vmnet_shared_interface_name_key,
-                               options->ifname);
- 
--#if defined(MAC_OS_VERSION_11_0) && \
--    MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_VERSION_11_0
-     xpc_dictionary_set_bool(if_desc,
-                             vmnet_enable_isolation_key,
-                             options->isolated);
--#endif
-+
-     return if_desc;
- }
- 
-diff --git a/net/vmnet-common.m b/net/vmnet-common.m
-index 2958283485..30c4e53c13 100644
---- a/net/vmnet-common.m
-+++ b/net/vmnet-common.m
-@@ -47,11 +47,8 @@
-         return "buffers exhausted in kernel";
-     case VMNET_TOO_MANY_PACKETS:
-         return "packet count exceeds limit";
--#if defined(MAC_OS_VERSION_11_0) && \
--    MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_VERSION_11_0
-     case VMNET_SHARING_SERVICE_BUSY:
-         return "conflict, sharing service is in use";
--#endif
-     default:
-         return "unknown vmnet error";
-     }
+ #define TYPE_XLNX_CFI_IF "xlnx-cfi-if"
+diff --git a/hw/misc/edu.c b/hw/misc/edu.c
+index fa052c44db..504178b4a2 100644
+--- a/hw/misc/edu.c
++++ b/hw/misc/edu.c
+@@ -26,7 +26,6 @@
+ #include "qemu/log.h"
+ #include "qemu/units.h"
+ #include "hw/pci/pci.h"
+-#include "hw/hw.h"
+ #include "hw/pci/msi.h"
+ #include "qemu/timer.h"
+ #include "qom/object.h"
+diff --git a/hw/vfio/container.c b/hw/vfio/container.c
+index 2e7ecdf10e..88ede913d6 100644
+--- a/hw/vfio/container.c
++++ b/hw/vfio/container.c
+@@ -26,7 +26,6 @@
+ #include "exec/address-spaces.h"
+ #include "exec/memory.h"
+ #include "exec/ram_addr.h"
+-#include "hw/hw.h"
+ #include "qemu/error-report.h"
+ #include "qemu/range.h"
+ #include "sysemu/reset.h"
 -- 
 2.41.0
 
