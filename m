@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53BAF924903
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 22:19:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92E4F9248F9
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 22:18:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOjtw-0003MD-GB; Tue, 02 Jul 2024 16:14:56 -0400
+	id 1sOju3-0003Qp-7b; Tue, 02 Jul 2024 16:15:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOjtt-0003M0-Sa
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 16:14:53 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOjty-0003NA-7y
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 16:14:58 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOjts-0007dV-BZ
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 16:14:53 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOjtw-0007fq-Po
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 16:14:57 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719951291;
+ s=mimecast20190719; t=1719951295;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=2dkENUzfzIIIcUTPF2EEwEXmUV3lpfWAm7D6XMdf5LE=;
- b=ifoEUJbcmQLHrNcUOZp0Qsj8Rk3S5Hoha7e8WBNzecjCsL64VOqtl0NhGD6MpomeB07R0d
- LBdMjUpPGMBHxYBrzXMdnbtsmLQqtWb2wV0mjCdpbNQAssKw9OGcCq+FPmyBeaY5+1gw9+
- rpgTKj06HAarE/8BdUqZMv1DJkkof8U=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=I7oOBawQ17ekJGPjTeJH6qenvWsB1BSkAwbq0wuPpCg=;
+ b=L/rY4tbnSVezCvfo6yjPepW5OmVImUUBBiFRJLgK68l4YRMY6ti5EczR4BhibbGI1QmVJJ
+ cQOsiQ0c8QqUPRka1TvS/Dvzf94flQ53FQlooNqDEuPyTgEksi5wDsZza1aFtsaZoZPsTR
+ P/8t/iyvF4eIsqqgfzcdkM3aAHobF0k=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-544-7RnuDCL4MGuJSGYzeTCZSg-1; Tue, 02 Jul 2024 16:14:50 -0400
-X-MC-Unique: 7RnuDCL4MGuJSGYzeTCZSg-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-4258675a531so14505125e9.3
- for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 13:14:50 -0700 (PDT)
+ us-mta-496-4xeFUQbzN0mcNhLoJRsHHw-1; Tue, 02 Jul 2024 16:14:54 -0400
+X-MC-Unique: 4xeFUQbzN0mcNhLoJRsHHw-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-4257dd7d462so19983325e9.2
+ for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 13:14:53 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719951288; x=1720556088;
+ d=1e100.net; s=20230601; t=1719951292; x=1720556092;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=2dkENUzfzIIIcUTPF2EEwEXmUV3lpfWAm7D6XMdf5LE=;
- b=OcOvZmK4uZm2QoZs76HWbCK7F3oMTHaG6S0ZyaXFB0ZCzyq8mYVw6I5nMcvYv/tFUa
- WP60rzdjNsErXQ3gIOoN2Kh7tpGz9fUX+qFUZ39o1dztJUNu0FnbP8nkIj7X9iTAzGBt
- pH6KAxeoyooz9L9jG1HhQAtYyyavHDcQDrX41Y7hsjbiBnLJI8dhyKxMvLR9kQ+vGQpJ
- 39MHmjud4SV4KVcvWnLfyT8ZpczTc8k3jDK8/zmHHt1YrMyUqOOxNNxlZwNZpsWvCI0c
- 4amtQuQqb56OZX0+GuWR2dj6KKWdamOg+kzlEJHR10X8GwRsQ3NZax5eRqT6pQQHNdZg
- 0Uig==
-X-Gm-Message-State: AOJu0Yx72BfDH7gGQ/KFjQ/I46rcclHloToxDZuO8erVGQjgavZVHpn1
- R+t1BhWhzeQWxCrm59ZkPh8kdfUd2LlLgSHEhENxycBFA2FT5Nnq9LHfW3C8aOUQlqKwePBy1fH
- lfv+qtFXeZbj7vnPjmS172oBD6PnLeQwQv5ec8pqqCO59pGHlOVCEggznY131ZO59k6Zk34oqCk
- ovg4w9pUXQNRYME9aKj7JYNEb4t5x5uw==
-X-Received: by 2002:a05:6000:1aca:b0:366:ead6:6198 with SMTP id
- ffacd0b85a97d-36775696c0bmr6993027f8f.2.1719951288439; 
- Tue, 02 Jul 2024 13:14:48 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG+dXUNcLOu+juR1AFIk5Ju7GBfr6GNKNlap0LZoRDAqr4T23uAwNjRIJgVCIjPsPsf5MLF0A==
-X-Received: by 2002:a05:6000:1aca:b0:366:ead6:6198 with SMTP id
- ffacd0b85a97d-36775696c0bmr6992997f8f.2.1719951287586; 
- Tue, 02 Jul 2024 13:14:47 -0700 (PDT)
+ bh=I7oOBawQ17ekJGPjTeJH6qenvWsB1BSkAwbq0wuPpCg=;
+ b=INMMpKPBxcgxKOYS6ITTATdNeWRQZf5KnQSYjHpfIwLUsZ0bl8zOitjc6c81seaJ3b
+ lqSKztzo2gIFvURGO9WIxnyKV7seVxRRNJtpoCAVj+YVfexbpwxGV4nyCh/pxxupg96D
+ 7C2RZ//Cq2IV+phwxPoyHfJSA6QUslMA0se+46a/jeFJ5m3Rkt9IYhLD1Y/sSWXDiEFy
+ 7ERDaml0+QIv+qLUDaHrK+jUn81yXAwLxvSjnntMWkNU5OR3HtkSW98mLVdlE/ag7MJp
+ oWwJ6egY0sp025f1AjgDPM6tinhagefISyJhN/7Bpoe87zjwOXGvvyfz6EdegErE+re4
+ oGfg==
+X-Gm-Message-State: AOJu0YwUrtRjwjc2LfaAQAn9VrS5vLt/J0yIJx4G0346+trvkr1epBiq
+ QZEbZw01wdWCD9Wckb4UZZveKoE/+hbgjZP+7wCQ8OZrltmbhfgkwSGrskXR1sBtqrA8TjxqfGd
+ GJfh8133z9NZna4pVO/SKjy0giqXG/odGIm9bMVQCQ6UPZ7Xy/zn+zevf4FbN+2NlvSOb6GVKJJ
+ BmnvN7g4xQJAPu92zDjsTB/T9FjlVx5A==
+X-Received: by 2002:a05:6000:154f:b0:366:ec2f:dbd3 with SMTP id
+ ffacd0b85a97d-3677571b658mr9289694f8f.47.1719951292429; 
+ Tue, 02 Jul 2024 13:14:52 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGjNDjff2LahlWcndzEyTXgjsFwtDkRgzRQvF9uVTuCadFvIT5ieHO5rlnV1vjy4wKpkkHFPg==
+X-Received: by 2002:a05:6000:154f:b0:366:ec2f:dbd3 with SMTP id
+ ffacd0b85a97d-3677571b658mr9289664f8f.47.1719951291687; 
+ Tue, 02 Jul 2024 13:14:51 -0700 (PDT)
 Received: from redhat.com ([2a02:14f:1f5:eadd:8c31:db01:9d01:7604])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3675a0e12fcsm14085179f8f.48.2024.07.02.13.14.45
+ ffacd0b85a97d-3675a0d8e97sm14039802f8f.33.2024.07.02.13.14.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 02 Jul 2024 13:14:47 -0700 (PDT)
-Date: Tue, 2 Jul 2024 16:14:44 -0400
+ Tue, 02 Jul 2024 13:14:51 -0700 (PDT)
+Date: Tue, 2 Jul 2024 16:14:48 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Gregory Price <gourry.memverge@gmail.com>,
  Gregory Price <gregory.price@memverge.com>,
  Jonathan Cameron <Jonathan.Cameron@huawei.com>, Fan Ni <fan.ni@samsung.com>
-Subject: [PULL v2 16/91] hw/cxl/mailbox: change CCI cmd set structure to be a
- member, not a reference
-Message-ID: <05b70ceba033759d44c6d3d9b24118cd9fc9d616.1719951026.git.mst@redhat.com>
+Subject: [PULL v2 17/91] hw/cxl/mailbox: interface to add CCI commands to an
+ existing CCI
+Message-ID: <67adb7979b6c1151a906d99f19fccf1e789316b1.1719951026.git.mst@redhat.com>
 References: <cover.1719951026.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -104,89 +104,84 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Gregory Price <gourry.memverge@gmail.com>
 
-This allows devices to have fully customized CCIs, along with complex
-devices where wrapper devices can override or add additional CCI
-commands without having to replicate full command structures or
-pollute a base device with every command that might ever be used.
+This enables wrapper devices to customize the base device's CCI
+(for example, with custom commands outside the specification)
+without the need to change the base device.
+
+The also enabled the base device to dispatch those commands without
+requiring additional driver support.
+
+Heavily edited by Jonathan Cameron to increase code reuse
 
 Signed-off-by: Gregory Price <gregory.price@memverge.com>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Fan Ni <fan.ni@samsung.com>
-Message-Id: <20240523174651.1089554-2-nifan.cxl@gmail.com>
+Message-Id: <20240523174651.1089554-3-nifan.cxl@gmail.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- include/hw/cxl/cxl_device.h |  2 +-
- hw/cxl/cxl-mailbox-utils.c  | 19 +++++++++++++++----
- 2 files changed, 16 insertions(+), 5 deletions(-)
+ include/hw/cxl/cxl_device.h |  2 ++
+ hw/cxl/cxl-mailbox-utils.c  | 19 +++++++++++++++++--
+ 2 files changed, 19 insertions(+), 2 deletions(-)
 
 diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
-index 279b276bda..ccc4611875 100644
+index ccc4611875..a5f8e25020 100644
 --- a/include/hw/cxl/cxl_device.h
 +++ b/include/hw/cxl/cxl_device.h
-@@ -164,7 +164,7 @@ typedef struct CXLEventLog {
- } CXLEventLog;
- 
- typedef struct CXLCCI {
--    const struct cxl_cmd (*cxl_cmd_set)[256];
-+    struct cxl_cmd cxl_cmd_set[256][256];
-     struct cel_log {
-         uint16_t opcode;
-         uint16_t effect;
+@@ -301,6 +301,8 @@ void cxl_initialize_mailbox_t3(CXLCCI *cci, DeviceState *d, size_t payload_max);
+ void cxl_initialize_mailbox_swcci(CXLCCI *cci, DeviceState *intf,
+                                   DeviceState *d, size_t payload_max);
+ void cxl_init_cci(CXLCCI *cci, size_t payload_max);
++void cxl_add_cci_commands(CXLCCI *cci, const struct cxl_cmd (*cxl_cmd_set)[256],
++                          size_t payload_max);
+ int cxl_process_cci_message(CXLCCI *cci, uint8_t set, uint8_t cmd,
+                             size_t len_in, uint8_t *pl_in,
+                             size_t *len_out, uint8_t *pl_out,
 diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
-index e5eb97cb91..2c9f50f0f9 100644
+index 2c9f50f0f9..2a64c58e2f 100644
 --- a/hw/cxl/cxl-mailbox-utils.c
 +++ b/hw/cxl/cxl-mailbox-utils.c
-@@ -1447,10 +1447,21 @@ void cxl_init_cci(CXLCCI *cci, size_t payload_max)
-                                  bg_timercb, cci);
+@@ -1424,9 +1424,9 @@ static void bg_timercb(void *opaque)
+     }
  }
  
-+static void cxl_copy_cci_commands(CXLCCI *cci, const struct cxl_cmd (*cxl_cmds)[256])
+-void cxl_init_cci(CXLCCI *cci, size_t payload_max)
++static void cxl_rebuild_cel(CXLCCI *cci)
+ {
+-    cci->payload_max = payload_max;
++    cci->cel_size = 0; /* Reset for a fresh build */
+     for (int set = 0; set < 256; set++) {
+         for (int cmd = 0; cmd < 256; cmd++) {
+             if (cci->cxl_cmd_set[set][cmd].handler) {
+@@ -1440,6 +1440,13 @@ void cxl_init_cci(CXLCCI *cci, size_t payload_max)
+             }
+         }
+     }
++}
++
++void cxl_init_cci(CXLCCI *cci, size_t payload_max)
 +{
-+    for (int set = 0; set < 256; set++) {
-+        for (int cmd = 0; cmd < 256; cmd++) {
-+            if (cxl_cmds[set][cmd].handler) {
-+                cci->cxl_cmd_set[set][cmd] = cxl_cmds[set][cmd];
-+            }
-+        }
-+    }
++    cci->payload_max = payload_max;
++    cxl_rebuild_cel(cci);
++
+     cci->bg.complete_pct = 0;
+     cci->bg.starttime = 0;
+     cci->bg.runtime = 0;
+@@ -1458,6 +1465,14 @@ static void cxl_copy_cci_commands(CXLCCI *cci, const struct cxl_cmd (*cxl_cmds)[
+     }
+ }
+ 
++void cxl_add_cci_commands(CXLCCI *cci, const struct cxl_cmd (*cxl_cmd_set)[256],
++                                 size_t payload_max)
++{
++    cci->payload_max = MAX(payload_max, cci->payload_max);
++    cxl_copy_cci_commands(cci, cxl_cmd_set);
++    cxl_rebuild_cel(cci);
 +}
 +
  void cxl_initialize_mailbox_swcci(CXLCCI *cci, DeviceState *intf,
                                    DeviceState *d, size_t payload_max)
  {
--    cci->cxl_cmd_set = cxl_cmd_set_sw;
-+    cxl_copy_cci_commands(cci, cxl_cmd_set_sw);
-     cci->d = d;
-     cci->intf = intf;
-     cxl_init_cci(cci, payload_max);
-@@ -1458,7 +1469,7 @@ void cxl_initialize_mailbox_swcci(CXLCCI *cci, DeviceState *intf,
- 
- void cxl_initialize_mailbox_t3(CXLCCI *cci, DeviceState *d, size_t payload_max)
- {
--    cci->cxl_cmd_set = cxl_cmd_set;
-+    cxl_copy_cci_commands(cci, cxl_cmd_set);
-     cci->d = d;
- 
-     /* No separation for PCI MB as protocol handled in PCI device */
-@@ -1476,7 +1487,7 @@ static const struct cxl_cmd cxl_cmd_set_t3_ld[256][256] = {
- void cxl_initialize_t3_ld_cci(CXLCCI *cci, DeviceState *d, DeviceState *intf,
-                                size_t payload_max)
- {
--    cci->cxl_cmd_set = cxl_cmd_set_t3_ld;
-+    cxl_copy_cci_commands(cci, cxl_cmd_set_t3_ld);
-     cci->d = d;
-     cci->intf = intf;
-     cxl_init_cci(cci, payload_max);
-@@ -1496,7 +1507,7 @@ void cxl_initialize_t3_fm_owned_ld_mctpcci(CXLCCI *cci, DeviceState *d,
-                                            DeviceState *intf,
-                                            size_t payload_max)
- {
--    cci->cxl_cmd_set = cxl_cmd_set_t3_fm_owned_ld_mctp;
-+    cxl_copy_cci_commands(cci, cxl_cmd_set_t3_fm_owned_ld_mctp);
-     cci->d = d;
-     cci->intf = intf;
-     cxl_init_cci(cci, payload_max);
 -- 
 MST
 
