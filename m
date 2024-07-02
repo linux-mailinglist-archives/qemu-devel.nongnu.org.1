@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC3779239DB
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 11:25:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FD679239B6
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 11:22:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOZhT-00013p-3v; Tue, 02 Jul 2024 05:21:25 -0400
+	id 1sOZhY-00014A-Ap; Tue, 02 Jul 2024 05:21:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOZhK-000138-Dz
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOZhK-00013A-EL
  for qemu-devel@nongnu.org; Tue, 02 Jul 2024 05:21:14 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+Received: from mail-lj1-x233.google.com ([2a00:1450:4864:20::233])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOZhH-0006MT-P3
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 05:21:13 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-4256eec963eso27749145e9.1
- for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 02:21:01 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOZhH-0006Mp-SN
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 05:21:14 -0400
+Received: by mail-lj1-x233.google.com with SMTP id
+ 38308e7fff4ca-2ebe40673d8so52306031fa.3
+ for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 02:21:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719912060; x=1720516860; darn=nongnu.org;
+ d=linaro.org; s=google; t=1719912066; x=1720516866; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=cnrpgaba+viPx04OXDYFrUGjYb7FyAmcjVlf/y5TLg0=;
- b=Se7sgW/8/xFjnSfrFqKP66hNIrboEBT3Icew00IcMVU5iBcOw88GMBNG+SpGS8a21c
- MvrWJjdrW3jljhGWvcSgIneLaj4gjlNWH+UBtTp+j9cff+UrNsCA/9eKXUtCPjq+OIzr
- LgkdFXKld/9WH/U1p5hDT5x74K7+pgTyB/zKrJc0aCqtqQQbWrKsz0Ra1obnUZLCFZzm
- NWNKPSSv3BWXWPRLbDtOkfRmI/6jraxXd93DD7ZYW1LsCVu8EEMIBE6fRBlnMHLB9gCV
- SwWFukWD7m45N8FCul2bXcoN0elWGpeHL1+jOoYKd1Q0x29dWJqWRdh5H/HoL98vW30B
- N7aw==
+ bh=9WSx0o0NoRwLFVmVIU2eDisxkgWjS2aVMQINVCuPfpI=;
+ b=XMIHQ1Pc3lsDySUScGW8Qxm8t0/LEgjWpzGCoHUzLO91eVKq3QF/8VwBVTSuU5pjSs
+ tbDH2FSAX8sRAja6rWnJq1p/uXLHdpFG/1kPaqvrhhfg4wFAANq6nKVUNzEABi4niHuH
+ GbqGwmyuj++0i1Bw0bscBGK2d0f1d1I8F+sDHAuIKGFNnuvUIxtfGL9fjLay0wo+t5Bi
+ P97lQTmbyJL9rq6uy5Ik8n+3GbwY5mdi/8l6Z52/iwXtNxORMOXkTqSzhHO+v3JOyctS
+ vDK/fubtDPpBJYM02T+Qv5tPsx6cWpgmfzPX/L0gOFWoqZ9fRonELV99wAHpO0K2LdA1
+ Pxyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719912060; x=1720516860;
+ d=1e100.net; s=20230601; t=1719912066; x=1720516866;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=cnrpgaba+viPx04OXDYFrUGjYb7FyAmcjVlf/y5TLg0=;
- b=llogNf55xGtUxxwzy3I+x1zF4kpo/GZT3ePHVwyt9LTCE3P3q3gexesG996OYy3iLE
- +nMyfaLPId1ZxHUcYvmn+6A0lkMh4NAuEhCHVoFaVmM6Ld2f0w8FOlxVPUSw04AztoDj
- 8LasGUvb1gWFy5yXzkL6nbLXcnVweDsU8g64Ruzzb0sHglDQTCZ2+1Qpl4DQk0wH4wdI
- uD35phVoIRpPOOZyNhMdP2k0T46dhwMkXJZwsuKn5umjHeVY9NoGJ8BrX72kcsjzhisz
- 9olCelZMgJGCfJQxtzSF5oUghOCnV/ukl7GDRm0JLyegn4G4kiC9W/jurx52mtovTigw
- By0g==
-X-Gm-Message-State: AOJu0Yxts+EWZqYeh1y6Xzvn0SLFigDi5i9ErlgIZ/lXhjFiGMj/oMZd
- GOtDmq9XgCDtqPH6pBu/u3C2S7SpwXbae0T/U+EV+Ujs4EAqH8Nz8HQU8h3gXUbM6VHlc3WXXQw
- C
-X-Google-Smtp-Source: AGHT+IHPxlhz7r6hSMhYoxgitvfI9+nOoTze2Jc1cL/pyPJoZZ/vEextPI7QLr68ZFhmtJHj4d4pmQ==
-X-Received: by 2002:a05:600c:3501:b0:424:a3d7:2a89 with SMTP id
- 5b1f17b1804b1-4257a02c817mr49545515e9.4.1719912060238; 
- Tue, 02 Jul 2024 02:21:00 -0700 (PDT)
+ bh=9WSx0o0NoRwLFVmVIU2eDisxkgWjS2aVMQINVCuPfpI=;
+ b=olVby9j+t9KRiNOsVJ+BRUvFUgaexy0og8RZLYlp1ZV1EWHjwWgsGPjV3PB5ykEe6K
+ tRWV0+dJqKR/JBNOkNv2xFXYwhlyyi5RGcZHby9R8qjk7G3hw1xXSL8VoUAGuSy4GMXm
+ U1yH301mNh/R1H5i+KZtd/b8AyqRty4J0IP7SNcRJ1r+7RltlpZeDVdhU7xv3ga9A2I/
+ q2SJp8W8p1cAcwEL3ukupu1/8ejapPOQhBaAgboQyPVl1FlInqbPMwolBgdOaMV7n3py
+ VSTpDHIelF0QuQB9IFe64THr8gTm5hvTkeGOoH3iTM91gElTuEUV6W8r71cJfEWVS+7V
+ Hd7A==
+X-Gm-Message-State: AOJu0Yy1ZQkfRw41dmjeLhibBh8Eryc3ZQUDdNPMBJarZ+ja9qrlsY76
+ 8hJKFuAP8LIeKQksYsl/CQJD+6UFFfSGr7dSpRESdsf5mrBCSZYU3D3VhcROkxsjqIAG29qyI65
+ 2
+X-Google-Smtp-Source: AGHT+IHWVJWzLgH3m+hxe0oGMnEVH2MvcI2sJFuqkgD1m+lAutDZ5QDdR4yHVUI7nJGAMNFqrsE1FA==
+X-Received: by 2002:a05:651c:88a:b0:2ee:6cda:637b with SMTP id
+ 38308e7fff4ca-2ee6cda6515mr35005801fa.35.1719912065944; 
+ Tue, 02 Jul 2024 02:21:05 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.209.58])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4256af5b91bsm190794595e9.20.2024.07.02.02.20.59
+ 5b1f17b1804b1-4257cdf4982sm110219655e9.47.2024.07.02.02.21.04
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 02 Jul 2024 02:20:59 -0700 (PDT)
+ Tue, 02 Jul 2024 02:21:05 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 01/67] hw/sd/sdcard: Deprecate support for spec v1.10
-Date: Tue,  2 Jul 2024 11:19:44 +0200
-Message-ID: <20240702092051.45754-2-philmd@linaro.org>
+Subject: [PULL 02/67] hw/sd/sdcard: Track last command used to help logging
+Date: Tue,  2 Jul 2024 11:19:45 +0200
+Message-ID: <20240702092051.45754-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240702092051.45754-1-philmd@linaro.org>
 References: <20240702092051.45754-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::233;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x233.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,36 +92,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We use the v2.00 spec by default since commit 2f0939c234
-("sdcard: Add a 'spec_version' property, default to Spec v2.00").
-Time to deprecate the v1.10 which doesn't bring much, and
-is not tested.
+The command is selected on the I/O lines, and further
+processing might be done on the DAT lines via the
+sd_read_byte() and sd_write_byte() handlers. Since
+these methods can't distinct between normal and APP
+commands, keep the name of the current command in
+the SDState and use it in the DAT handlers. This
+fixes a bug that all normal commands were displayed
+as APP commands.
 
+Fixes: 2ed61fb57b ("sdcard: Display command name when tracing CMD/ACMD")
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Tested-by: Cédric Le Goater <clg@redhat.com>
-Message-Id: <20240627071040.36190-2-philmd@linaro.org>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Message-Id: <20240628070216.92609-4-philmd@linaro.org>
 ---
- docs/about/deprecated.rst | 6 ++++++
- 1 file changed, 6 insertions(+)
+ hw/sd/sd.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-index ff3da68208..02cdef14aa 100644
---- a/docs/about/deprecated.rst
-+++ b/docs/about/deprecated.rst
-@@ -362,6 +362,12 @@ recommending to switch to their stable counterparts:
- - "Zve64f" should be replaced with "zve64f"
- - "Zve64d" should be replaced with "zve64d"
+diff --git a/hw/sd/sd.c b/hw/sd/sd.c
+index a48010cfc1..aa011fc892 100644
+--- a/hw/sd/sd.c
++++ b/hw/sd/sd.c
+@@ -133,6 +133,7 @@ struct SDState {
+     uint32_t pwd_len;
+     uint8_t function_group[6];
+     uint8_t current_cmd;
++    const char *last_cmd_name;
+     /* True if we will handle the next command as an ACMD. Note that this does
+      * *not* track the APP_CMD status bit!
+      */
+@@ -1154,12 +1155,13 @@ static sd_rsp_type_t sd_normal_command(SDState *sd, SDRequest req)
+     uint16_t rca;
+     uint64_t addr;
  
-+``-device sd-card,spec_version=1`` (since 9.1)
-+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-+
-+SD physical layer specification v2.00 supersedes the v1.10 one.
-+v2.00 is the default since QEMU 3.0.0.
-+
- Block device options
- ''''''''''''''''''''
++    sd->last_cmd_name = sd_cmd_name(req.cmd);
+     /* CMD55 precedes an ACMD, so we are not interested in tracing it.
+      * However there is no ACMD55, so we want to trace this particular case.
+      */
+     if (req.cmd != 55 || sd->expecting_acmd) {
+         trace_sdcard_normal_command(sd_proto(sd)->name,
+-                                    sd_cmd_name(req.cmd), req.cmd,
++                                    sd->last_cmd_name, req.cmd,
+                                     req.arg, sd_state_name(sd->state));
+     }
  
+@@ -1620,7 +1622,8 @@ static sd_rsp_type_t sd_normal_command(SDState *sd, SDRequest req)
+ static sd_rsp_type_t sd_app_command(SDState *sd,
+                                     SDRequest req)
+ {
+-    trace_sdcard_app_command(sd_proto(sd)->name, sd_acmd_name(req.cmd),
++    sd->last_cmd_name = sd_acmd_name(req.cmd);
++    trace_sdcard_app_command(sd_proto(sd)->name, sd->last_cmd_name,
+                              req.cmd, req.arg, sd_state_name(sd->state));
+     sd->card_status |= APP_CMD;
+ 
+@@ -1913,7 +1916,7 @@ void sd_write_byte(SDState *sd, uint8_t value)
+         return;
+ 
+     trace_sdcard_write_data(sd_proto(sd)->name,
+-                            sd_acmd_name(sd->current_cmd),
++                            sd->last_cmd_name,
+                             sd->current_cmd, value);
+     switch (sd->current_cmd) {
+     case 24:  /* CMD24:  WRITE_SINGLE_BLOCK */
+@@ -2069,7 +2072,7 @@ uint8_t sd_read_byte(SDState *sd)
+     io_len = (sd->ocr & (1 << 30)) ? 512 : sd->blk_len;
+ 
+     trace_sdcard_read_data(sd_proto(sd)->name,
+-                           sd_acmd_name(sd->current_cmd),
++                           sd->last_cmd_name,
+                            sd->current_cmd, io_len);
+     switch (sd->current_cmd) {
+     case 6:  /* CMD6:   SWITCH_FUNCTION */
+@@ -2214,6 +2217,7 @@ static void sd_instance_init(Object *obj)
+ {
+     SDState *sd = SD_CARD(obj);
+ 
++    sd->last_cmd_name = "UNSET";
+     sd->enable = true;
+     sd->ocr_power_timer = timer_new_ns(QEMU_CLOCK_VIRTUAL, sd_ocr_powerup, sd);
+ }
 -- 
 2.41.0
 
