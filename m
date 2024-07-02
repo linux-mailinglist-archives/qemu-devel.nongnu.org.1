@@ -2,90 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 253C092490A
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 22:20:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C86392490F
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 22:21:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOjwg-0001ll-8F; Tue, 02 Jul 2024 16:17:46 -0400
+	id 1sOjwf-0001jB-UJ; Tue, 02 Jul 2024 16:17:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOjvk-000767-Pc
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOjvj-000758-Gv
  for qemu-devel@nongnu.org; Tue, 02 Jul 2024 16:16:50 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOjvc-0008JM-ES
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 16:16:48 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719951399;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=FMOgEcAe53x2nl/kUwLBbhwXiRFlv4+KNdbX+UZGPhI=;
- b=CO1yXoq74hNy9scjomFIM+YnkdZ9sIlJcOgsazOVeoFaBRHpUOiU7dKtvbubjlWmIsOGh6
- Bejf9O3s3wjd+OXzJ9hn01ny4ghZp0Qet0JfEMohGy6ntXgxtelOYIJmxz7QEgvQ4FJ/SO
- GD9Tu148c4SWAOJcCF2Gm9dJmOCF1K4=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-86-YzN6a8scNsaTQqVMPb274w-1; Tue, 02 Jul 2024 16:16:38 -0400
-X-MC-Unique: YzN6a8scNsaTQqVMPb274w-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-36787ba7ad4so654807f8f.3
- for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 13:16:38 -0700 (PDT)
+Received: from mail-lj1-x22f.google.com ([2a00:1450:4864:20::22f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOjvZ-0008IK-Ud
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 16:16:47 -0400
+Received: by mail-lj1-x22f.google.com with SMTP id
+ 38308e7fff4ca-2ec408c6d94so47112901fa.3
+ for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 13:16:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1719951396; x=1720556196; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=1ZNQWxchbYqRE/ztI0Efzhv51Qe7ss4Fe5+9hHsNJe0=;
+ b=CU3xthDXWcb+aKzV0IjRdbXuq4cC4K7ElBPTQ0Gl/WWmpMVmDBT4x+gJlgYwWxXW7G
+ zWvm8/4lzDDBmwvbrTWflSAD1obR42oZjrzXn704BdnSPq4r+UHONT9OAdNQNtwlOeO1
+ 3ZHAoe/osn2fQQiOkIOUsRKzLfr/OSshGsPyFH1+RRdAQQWlNs9GxCEzEOWKPC1GnhBQ
+ 9DmEYXGsGSKeOqcdNbE8yfz2tJoLv+2irEanim0I3U2GkpwEA6QqpH7XTEn2TUf5vcNz
+ gCRA12LDq6XsbAWJ1oEKJcrJSo0B9DbbN+QJB8fNGupG+8v9rd+ulGBlqt/0kEyuZAj+
+ 6aUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1719951396; x=1720556196;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=FMOgEcAe53x2nl/kUwLBbhwXiRFlv4+KNdbX+UZGPhI=;
- b=suZdT4sZxurW/NFhSYMP7D0/HGLV3qJAdZBXD1fhIqaur9i1DMOx8UBiVPy8CEMnw+
- c3mMROqArgse1UlYzCqjTSyJownINBbqC/rvSNiV0eOruhggrItWyLXQ0AX4dUXH4PSZ
- pyHr8FcEEx26YxFOgR+wd8yQWJLmusHlIbfomAF5/gIxjc0lFd/aHO4C2lc04OkXyGoz
- HF7DphNypg98WDNLer6I5jXKSxtNPoj4XXUOBlJHt7EGLuWNp2uO4U58BIIQg7O7xkxp
- OIzw5LRfe8uiDDqvqz0CDszLfNfGfPxFP14J4At0Brl4qfTztFmi8zuGY3F7OrTyRkuq
- VEhw==
-X-Gm-Message-State: AOJu0YwFZbTEig//KSixz/alQzJj3PMex7GhH29oGKhVP5svhjjUUJ60
- MhUlgjOOTO/JKlR8bdyYIJmvGaizeMl+vLJ0sU1xUgl1YbL8JhiqOOSmCfEwgbBXOyMZcnguyXA
- RwC3gatTw75GtXPGFaPrKFhg86nQp059JBPgKM0ixd6XIkDE6XogA0Yi3Iw39o016LAlXzxtLnF
- 8c5NRLy6DZilnPIvqpKngDPhDKoFqEeA==
-X-Received: by 2002:adf:e708:0:b0:367:8a24:dd2d with SMTP id
- ffacd0b85a97d-3678a24decfmr1491582f8f.65.1719951396465; 
- Tue, 02 Jul 2024 13:16:36 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGMtiYZ27S1YV8XToo5Ab9zb6KtzPNmsNuBl91U8kQBzkQCyfA5M9cGR1KqUmeVjeZOFGhIeQ==
-X-Received: by 2002:adf:e708:0:b0:367:8a24:dd2d with SMTP id
- ffacd0b85a97d-3678a24decfmr1491564f8f.65.1719951395756; 
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=1ZNQWxchbYqRE/ztI0Efzhv51Qe7ss4Fe5+9hHsNJe0=;
+ b=rFo2xq08nxteqHqNkWBSD7lL7y9cfegGrbb3AKLELhrbH8QIxxL2Zl315htdJ6o6o0
+ +OPSzRYsrcW5rniPsC4M4CsstuPli1OgnDDoDR3xYJ6RuIZDrPw9ZRLFnRxBMuCES0c0
+ XmfL1PpUJk8+tlmxRsP8eWx94ecf9Mr5RCOTfpRVN7+MZxHeTLk8ypRaERiWYCwryVfk
+ VvuWC6RK4AjLXrQHOe5akwRfprIRAwoccFGZDgmHhmHyjGIzhRmFXSuiEmyx0mkeJrkV
+ dkrXYkcQ1AFZtbUbC0L5LnnYwMOGefzqWZHyXoOuBsUK/xznsmHW3MIl7Xxj0ZpEqsMX
+ jhtQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXWv7gzK7Pp8c4udxxGaWg322gC33lkWRTOTNHe/rb1gp0RZ1ODtYQ5sxOzpSN0u6wKkPzxE0r6AXB1zcwS2R14mS6rQbQ=
+X-Gm-Message-State: AOJu0Yz+7hdtfr4NDcUpwMCL1ATaOXUIqyx422+f82MBl4xBvJ4a4f6R
+ 2QkCHrYWdJOKBJuL/KWvo9E4etJ6KapiG1oMPrjjklBJUDV1Tn82/L9GvQo9fZ6n/rBcXB54X9m
+ Z
+X-Google-Smtp-Source: AGHT+IGMX6MnZLCe/1fW+tugyANw9Un86MNPq2sjgTHmfF/LiOiIPxPiJlGxbHVST/re+GRx3NFbYg==
+X-Received: by 2002:a05:651c:2115:b0:2eb:fc08:5d83 with SMTP id
+ 38308e7fff4ca-2ee5e704790mr73455611fa.44.1719951395485; 
  Tue, 02 Jul 2024 13:16:35 -0700 (PDT)
-Received: from redhat.com ([2a02:14f:1f5:eadd:8c31:db01:9d01:7604])
+Received: from [192.168.69.100] ([176.187.220.97])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3675a103d62sm14073289f8f.105.2024.07.02.13.16.34
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ 5b1f17b1804b1-4256af3c25esm210533775e9.9.2024.07.02.13.16.34
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
  Tue, 02 Jul 2024 13:16:35 -0700 (PDT)
-Date: Tue, 2 Jul 2024 16:16:32 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, Fan Ni <fan.ni@samsung.com>,
- Gregory Price <gregory.price@memverge.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PULL v2 22/88] hw/mem/cxl-type3: Refactor
- ct3_build_cdat_entries_for_mr to take mr size instead of mr as argument
-Message-ID: <69e4fb569dc1602bfeef5b8c58de5f40cd5d756e.1719951168.git.mst@redhat.com>
-References: <cover.1719951168.git.mst@redhat.com>
+Message-ID: <b2866a26-7119-4906-8228-b02698838b23@linaro.org>
+Date: Tue, 2 Jul 2024 22:16:33 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1719951168.git.mst@redhat.com>
-X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
-X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] virtio: Implement Virtio Backend for SD/MMC in QEMU
+To: Mikhail Krasheninnikov <krashmisha@gmail.com>, qemu-devel@nongnu.org
+Cc: Matwey Kornilov <matwey.kornilov@gmail.com>, qemu-block@nongnu.org,
+ "Michael S . Tsirkin" <mst@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>
+References: <20240702185842.31061-1-krashmisha@gmail.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240702185842.31061-1-krashmisha@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::22f;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x22f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,96 +96,176 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Fan Ni <fan.ni@samsung.com>
+Hi Mikhail,
 
-The function ct3_build_cdat_entries_for_mr only uses size of the passed
-memory region argument, refactor the function definition to make the passed
-arguments more specific.
+(mostly style comments)
 
-Reviewed-by: Gregory Price <gregory.price@memverge.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Fan Ni <fan.ni@samsung.com>
-Message-Id: <20240523174651.1089554-8-nifan.cxl@gmail.com>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
----
- hw/mem/cxl_type3.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+On 2/7/24 20:58, Mikhail Krasheninnikov wrote:
+> From: Mi <krashmisha@gmail.com>
+> 
+> Add a Virtio backend for SD/MMC devices. Confirmed interoperability with
+> Linux.
+> 
+> Signed-off-by: Mikhail Krasheninnikov <krashmisha@gmail.com>
+> CC: Matwey Kornilov <matwey.kornilov@gmail.com>
+> CC: qemu-block@nongnu.org
+> CC: Michael S. Tsirkin <mst@redhat.com>
+> CC: Kevin Wolf <kwolf@redhat.com>
+> CC: Stefan Hajnoczi <stefanha@redhat.com>
+> ---
+> 
+> After a feedback, moved virtio.c from virtio core directory to hw/block.
+>  From what I see from the examples of virtio drivers, other files should
+> be where they are now. Correct me if I'm wrong.
 
-diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
-index 06c6f9bb78..51be50ce87 100644
---- a/hw/mem/cxl_type3.c
-+++ b/hw/mem/cxl_type3.c
-@@ -44,7 +44,7 @@ enum {
- };
- 
- static void ct3_build_cdat_entries_for_mr(CDATSubHeader **cdat_table,
--                                          int dsmad_handle, MemoryRegion *mr,
-+                                          int dsmad_handle, uint64_t size,
-                                           bool is_pmem, uint64_t dpa_base)
- {
-     CDATDsmas *dsmas;
-@@ -63,7 +63,7 @@ static void ct3_build_cdat_entries_for_mr(CDATSubHeader **cdat_table,
-         .DSMADhandle = dsmad_handle,
-         .flags = is_pmem ? CDAT_DSMAS_FLAG_NV : 0,
-         .DPA_base = dpa_base,
--        .DPA_length = memory_region_size(mr),
-+        .DPA_length = size,
-     };
- 
-     /* For now, no memory side cache, plausiblish numbers */
-@@ -132,7 +132,7 @@ static void ct3_build_cdat_entries_for_mr(CDATSubHeader **cdat_table,
-          */
-         .EFI_memory_type_attr = is_pmem ? 2 : 1,
-         .DPA_offset = 0,
--        .DPA_length = memory_region_size(mr),
-+        .DPA_length = size,
-     };
- 
-     /* Header always at start of structure */
-@@ -149,6 +149,7 @@ static int ct3_build_cdat_table(CDATSubHeader ***cdat_table, void *priv)
-     g_autofree CDATSubHeader **table = NULL;
-     CXLType3Dev *ct3d = priv;
-     MemoryRegion *volatile_mr = NULL, *nonvolatile_mr = NULL;
-+    uint64_t vmr_size = 0, pmr_size = 0;
-     int dsmad_handle = 0;
-     int cur_ent = 0;
-     int len = 0;
-@@ -163,6 +164,7 @@ static int ct3_build_cdat_table(CDATSubHeader ***cdat_table, void *priv)
-             return -EINVAL;
-         }
-         len += CT3_CDAT_NUM_ENTRIES;
-+        vmr_size = memory_region_size(volatile_mr);
-     }
- 
-     if (ct3d->hostpmem) {
-@@ -171,21 +173,22 @@ static int ct3_build_cdat_table(CDATSubHeader ***cdat_table, void *priv)
-             return -EINVAL;
-         }
-         len += CT3_CDAT_NUM_ENTRIES;
-+        pmr_size = memory_region_size(nonvolatile_mr);
-     }
- 
-     table = g_malloc0(len * sizeof(*table));
- 
-     /* Now fill them in */
-     if (volatile_mr) {
--        ct3_build_cdat_entries_for_mr(table, dsmad_handle++, volatile_mr,
-+        ct3_build_cdat_entries_for_mr(table, dsmad_handle++, vmr_size,
-                                       false, 0);
-         cur_ent = CT3_CDAT_NUM_ENTRIES;
-     }
- 
-     if (nonvolatile_mr) {
--        uint64_t base = volatile_mr ? memory_region_size(volatile_mr) : 0;
-+        uint64_t base = vmr_size;
-         ct3_build_cdat_entries_for_mr(&(table[cur_ent]), dsmad_handle++,
--                                      nonvolatile_mr, true, base);
-+                                      pmr_size, true, base);
-         cur_ent += CT3_CDAT_NUM_ENTRIES;
-     }
-     assert(len == cur_ent);
--- 
-MST
+Alternative is hw/sd/.
 
+> 
+>   hw/block/Kconfig                            |   5 +
+>   hw/block/meson.build                        |   1 +
+>   hw/block/virtio-mmc.c                       | 165 ++++++++++++++++++++
+
+virtio-sdhci.c could be a better name.
+
+>   hw/virtio/meson.build                       |   1 +
+>   hw/virtio/virtio-mmc-pci.c                  |  85 ++++++++++
+>   hw/virtio/virtio.c                          |   3 +-
+>   include/hw/virtio/virtio-mmc.h              |  20 +++
+>   include/standard-headers/linux/virtio_ids.h |   1 +
+>   8 files changed, 280 insertions(+), 1 deletion(-)
+>   create mode 100644 hw/block/virtio-mmc.c
+>   create mode 100644 hw/virtio/virtio-mmc-pci.c
+>   create mode 100644 include/hw/virtio/virtio-mmc.h
+> 
+> diff --git a/hw/block/Kconfig b/hw/block/Kconfig
+> index 9e8f28f982..a3059261fa 100644
+> --- a/hw/block/Kconfig
+> +++ b/hw/block/Kconfig
+> @@ -44,3 +44,8 @@ config VHOST_USER_BLK
+>   
+>   config SWIM
+>       bool
+> +
+> +config VIRTIO_MMC
+
+(config VIRTIO_SDHCI?)
+
+> +    bool
+> +    default y
+
+for SDBus API:
+
+        select SD
+
+> +    depends on VIRTIO
+
+[...]
+
+> diff --git a/hw/block/virtio-mmc.c b/hw/block/virtio-mmc.c
+> new file mode 100644
+> index 0000000000..50bd7113c5
+> --- /dev/null
+> +++ b/hw/block/virtio-mmc.c
+> @@ -0,0 +1,165 @@
+> +#include "qemu/osdep.h"
+> +#include "qapi/error.h"
+> +
+> +#include "hw/virtio/virtio.h"
+> +#include "hw/virtio/virtio-mmc.h"
+> +#include "qemu/typedefs.h"
+> +#include "sysemu/blockdev.h"
+> +
+> +typedef struct mmc_req {
+> +    uint32_t opcode;
+> +    uint32_t arg;
+> +} mmc_req;
+> +
+> +typedef struct virtio_mmc_req {
+> +    uint8_t flags;
+> +
+> +#define VIRTIO_MMC_REQUEST_DATA BIT(1)
+> +#define VIRTIO_MMC_REQUEST_WRITE BIT(2)
+> +#define VIRTIO_MMC_REQUEST_STOP BIT(3)
+> +#define VIRTIO_MMC_REQUEST_SBC BIT(4)
+> +
+> +    mmc_req request;
+> +
+> +    uint8_t buf[4096];
+> +    size_t buf_len;
+> +
+> +    mmc_req stop_req;
+> +    mmc_req sbc_req;
+> +} virtio_mmc_req;
+> +
+> +typedef struct virtio_mmc_resp {
+> +    uint32_t response[4];
+> +    int resp_len;
+> +    uint8_t buf[4096];
+> +} virtio_mmc_resp;
+> +
+> +static void send_command(SDBus *sdbus, mmc_req *mmc_request, uint8_t *response,
+> +                         virtio_mmc_resp *virtio_resp)
+> +{
+> +    SDRequest sdreq;
+
+QEMU style declares variables in function prologue.
+
+> +    sdreq.cmd = (uint8_t)mmc_request->opcode;
+> +    sdreq.arg = mmc_request->arg;
+> +    int resp_len = sdbus_do_command(sdbus, &sdreq, response);
+> +    virtio_resp->resp_len = resp_len;
+> +
+> +    for (int i = 0; i < resp_len / sizeof(uint32_t); i++) {
+> +        virtio_resp->response[i] = ldl_be_p(&virtio_resp->response[i]);
+> +    }
+> +}
+> +
+> +static void send_command_without_response(SDBus *sdbus, mmc_req *mmc_request)
+> +{
+> +    SDRequest sdreq;
+> +    sdreq.cmd = (uint8_t)mmc_request->opcode;
+> +    sdreq.arg = mmc_request->arg;
+> +    uint8_t response[4];
+
+Ditto style (various occurences).
+
+> +    sdbus_do_command(sdbus, &sdreq, response);
+> +}
+
+[...]
+> diff --git a/include/hw/virtio/virtio-mmc.h b/include/hw/virtio/virtio-mmc.h
+> new file mode 100644
+> index 0000000000..a68f45d7cb
+> --- /dev/null
+> +++ b/include/hw/virtio/virtio-mmc.h
+> @@ -0,0 +1,20 @@
+> +#pragma once
+> +
+> +#include "hw/virtio/virtio.h"
+> +#include "hw/sd/sd.h"
+> +#include "qemu/typedefs.h"
+> +
+> +#define VIRTIO_ID_MMC 42
+> +
+> +#define TYPE_VIRTIO_MMC "virtio-mmc-device"
+> +#define VIRTIO_MMC(obj) \
+> +    OBJECT_CHECK(VirtIOMMC, (obj), TYPE_VIRTIO_MMC)
+> +#define VIRTIO_MMC_GET_PARENT_CLASS(obj) \
+> +    OBJECT_GET_PARENT_CLASS(VIRTIO_MMC(obj), TYPE_VIRTIO_MMC)
+> +
+> +typedef struct VirtIOMMC {
+> +    VirtIODevice parent_obj;
+
+Please add a newline here
+
+> +    VirtQueue *vq;
+> +    SDBus sdbus;
+> +    BlockBackend *blk;
+> +} VirtIOMMC;
+
+Otherwise (skipping virtio), for SD/MMC LGTM so far.
+
+Regards,
+
+Phil.
 
