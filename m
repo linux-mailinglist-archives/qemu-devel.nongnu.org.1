@@ -2,90 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 809D49240CD
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 16:27:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49BAB924081
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 16:22:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOeCH-0006cE-Go; Tue, 02 Jul 2024 10:09:29 -0400
+	id 1sOeCM-0007NH-MZ; Tue, 02 Jul 2024 10:09:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOeC6-0005ra-Hy
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:09:20 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOeBy-0008Ih-TO
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:09:17 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-4256eec963eso30021385e9.1
- for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 07:09:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719929348; x=1720534148; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=XWggSwLJ6RlaYPnvt8r7pYn4BtA1ozuqT1p3WRkPS7k=;
- b=tfFlFu5NY7YgN8x6JsTLpST44yoW8/ClOoKyPv4pYCi6ZFfXo6waeDo3B83y+UxJnW
- yCKxLOR4PdESBte0J3GGLzcItjjXbvEiNeMWe9+DHZBjHcI1hGxiWCPwZ543DZu3ipwD
- Yss2MEdpEK7f8xIaZX2VhdTGtpv6lcx+NOQLri3S8Gcwy4jXZRMxPrlrPaCkRj5jptNm
- Rq+3IfR3VxBNuapi9FX0Y8bNMUv6ek82fClhMbTsYfIGp3lucd7GaZfaKJlaSSYQXYKH
- f60dJa4APgkkjNm24EaA2b9MF7FyNQEBt01mG3VqYfnYanwSbIKj9mtr3GGVfyg9n3AV
- kcjA==
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOeBu-0005Tf-5T
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:09:06 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOeBi-0008F3-1Z
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:09:04 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1719929329;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=YhLUD4bgFXykNLby5YqUbG3vAr/0cDl4XOSKHnOq4eQ=;
+ b=SWNkcraKwU+33j8Fgk90fQ1vdE7xjwVKNwuqn4TIaDBeLLLFrIjw4folk3SDHnnGcgRzTQ
+ /R3eiFUab5jhuoqIFbKl4Jhvdu97mt14LZO3v52qES2IEwH3iP5cF5TWEJnkAlVMYP82Ba
+ Vt0Pp0Wj91PrSBM+YjKtQACh6SdIDJc=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-434-xFZh1DHaNxec_NAuDZacHQ-1; Tue, 02 Jul 2024 10:08:47 -0400
+X-MC-Unique: xFZh1DHaNxec_NAuDZacHQ-1
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-36248c176c4so2741921f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 07:08:47 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719929348; x=1720534148;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=XWggSwLJ6RlaYPnvt8r7pYn4BtA1ozuqT1p3WRkPS7k=;
- b=c9BziYTAAGQFF01vOo3zKbfj0w7sq8zZ75BwIKPn35j9Ukm5V01DweOLoT9XSfvvUg
- Oe7s9FpZ4XUBM1HQTW2U6RpaHlaRgSF+EGo6P0gBQnBtRC8F1vL97E8fQSwgBKUsFYc5
- fMQs5ayOJYCClZOu8ETZfJ+Tzy2aykm9bBbZU5LfGJUissZlmZ0RPpM/ke3D9qjsGAR0
- Tpim0STORlPT5RDSMsnbvG7265tw/Y09NJlLu+3UizM/cTAAXZxh3p/Fr+qe4AnBbTzO
- SGeZgzuCUl6BISqtGM8zToiz4EKiyak6bJ7TjtS3Hx1XimH+SwaXNtDSMWd4feGXI+IT
- Okzw==
-X-Gm-Message-State: AOJu0Ywdys+XxKpD6bwc3P2IXwkkO8SD0+eE3chYIgK0M9tRZoZyd7kv
- HUgqMxwZ8S3yjO7d2xda5rZ1x+lfZ4x19eM4IdK/AJa/hzpMsI8LBdAJLlN8Zp0Xd9wmq09Inmd
- G
-X-Google-Smtp-Source: AGHT+IGK6J0SIr9qh+SQmZOFCUSzmwpCpfY9oOwpRo0K67Iu3SZcQGj/11yIp47K4VezA9+2tDRakw==
-X-Received: by 2002:a05:600c:35d6:b0:424:e04b:88f9 with SMTP id
- 5b1f17b1804b1-4257a02c83bmr62402145e9.3.1719929348204; 
- Tue, 02 Jul 2024 07:09:08 -0700 (PDT)
-Received: from m1x-phil.lan ([176.187.209.58])
+ d=1e100.net; s=20230601; t=1719929326; x=1720534126;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=YhLUD4bgFXykNLby5YqUbG3vAr/0cDl4XOSKHnOq4eQ=;
+ b=F5GsLF8QGVgqUX/z/FTAdu7BR/km9MPJo00M4wNB2CSNwJoCc9da9oBcy1sgJIumDd
+ okBESnRZsoTSPAeJtsxECoNwtG/pdYKc3cIobRJ6TaLZfNYWTBzw/3AlKKQFiGt7EENy
+ sku/ex0mD5YELGrQnyx3r4W1DVSSoVEEINWQlrtvbLTZtycECcN8j1Z4ICZ/5n4jl3pF
+ iRDyhyqckNsyripYYQFWDSKd/AArjb2xvzarLdOcEaiSvDTrw+lZMPIo/mX4hjIcFWTI
+ kT3cET/x4eiFsc7yfgLLqt/v4hulkf93BUsa6VSNA16vezcvtz1uIJSywGkXhispic2s
+ dWag==
+X-Gm-Message-State: AOJu0YwHlH7W/NjBqpALgGGQ84PpCE6rvja5DPciPsqLZ4wbzXHO0rG7
+ lDIWO9rCOrGSasvCQGVWkiMROiSdDUuNWVa6LVdmIWt6BRV0hCIBTMVeZ/GjhL0r2lv20QFvGFd
+ 2TVtPPzfVnpgMEolAi0Fhabm1OEBFY51BrNwjAcpjizjEofPJ2pHIJ1Fv6fwTaDfFTzQ3LAhtgx
+ FU+y3Sbu/cSfk/n84443elaU2QoLFNYA==
+X-Received: by 2002:a05:6000:400d:b0:366:e685:d0cb with SMTP id
+ ffacd0b85a97d-3677569762bmr5969476f8f.6.1719929325921; 
+ Tue, 02 Jul 2024 07:08:45 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFlI1QbSiDmh8c9mM8CHdiAhR8Qlw9actoZSffLipZLpZ5KSZcQDn3VxWE9L5My8VJlIfJPFw==
+X-Received: by 2002:a05:6000:400d:b0:366:e685:d0cb with SMTP id
+ ffacd0b85a97d-3677569762bmr5969447f8f.6.1719929325317; 
+ Tue, 02 Jul 2024 07:08:45 -0700 (PDT)
+Received: from redhat.com ([2a02:14f:1f5:eadd:8c31:db01:9d01:7604])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4256b061eedsm191171385e9.26.2024.07.02.07.09.05
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 02 Jul 2024 07:09:07 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+ ffacd0b85a97d-36789fd7a0esm1532692f8f.104.2024.07.02.07.08.43
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 02 Jul 2024 07:08:44 -0700 (PDT)
+Date: Tue, 2 Jul 2024 10:08:42 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Tyrone Ting <kfting@nuvoton.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Hao Wu <wuhaotsh@google.com>, Thomas Huth <thuth@redhat.com>,
- Shengtan Mao <stmao@google.com>, Chris Rauer <crauer@google.com>,
- Joel Stanley <joel@jms.id.au>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Sai Pavan Boddu <sai.pavan.boddu@amd.com>,
- Laurent Vivier <lvivier@redhat.com>, Luc Michel <luc.michel@amd.com>,
- Bin Meng <bmeng.cn@gmail.com>, qemu-arm@nongnu.org, qemu-block@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Patrick Venture <venture@google.com>
-Subject: [PATCH 3/4] tests/qtest/npcm7xx_sdhci: Access the card using its
- published address
-Date: Tue,  2 Jul 2024 16:08:41 +0200
-Message-ID: <20240702140842.54242-4-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20240702140842.54242-1-philmd@linaro.org>
-References: <20240702140842.54242-1-philmd@linaro.org>
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Alejandro Jimenez <alejandro.j.jimenez@oracle.com>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PULL 34/91] pvpanic: Emit GUEST_PVSHUTDOWN QMP event on pvpanic
+ shutdown signal
+Message-ID: <8db1f7be788b23f8eca189fe4546298ed387e9cb.1719929191.git.mst@redhat.com>
+References: <cover.1719929191.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cover.1719929191.git.mst@redhat.com>
+X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
+X-Mutt-Fcc: =sent
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,73 +102,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently setup_sd_card() asks the card its address,
-but discard the response and use hardcoded 0x4567.
+From: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
 
-Set the SDHC_CMD_RESPONSE bit to have the controller
-record the bus response, and read the response from
-the RSPREG0 register. Then we can select the card with
-its real address.
+Emit a QMP event on receiving a PVPANIC_SHUTDOWN event. Even though a typical
+SHUTDOWN event will be sent, it will be indistinguishable from a shutdown
+originating from other cases (e.g. KVM exit due to KVM_SYSTEM_EVENT_SHUTDOWN)
+that also issue the guest-shutdown cause.
+A management layer application can detect the new GUEST_PVSHUTDOWN event to
+determine if the guest is using the pvpanic interface to request shutdowns.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
+Message-Id: <20240527-pvpanic-shutdown-v8-6-5a28ec02558b@t-8ch.de>
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
-Cc: Hao Wu <wuhaotsh@google.com>
-Cc: Chris Rauer <crauer@google.com>
-Cc: Shengtan Mao <stmao@google.com>
-Cc: Patrick Venture <venture@google.com>
-Cc: Tyrone Ting <kfting@nuvoton.com>
----
- tests/qtest/libqos/sdhci-cmd.h   | 2 ++
- tests/qtest/npcm7xx_sdhci-test.c | 8 ++++++--
- 2 files changed, 8 insertions(+), 2 deletions(-)
+ qapi/run-state.json | 14 ++++++++++++++
+ system/runstate.c   |  1 +
+ 2 files changed, 15 insertions(+)
 
-diff --git a/tests/qtest/libqos/sdhci-cmd.h b/tests/qtest/libqos/sdhci-cmd.h
-index 9e61dd4944..90efa028ef 100644
---- a/tests/qtest/libqos/sdhci-cmd.h
-+++ b/tests/qtest/libqos/sdhci-cmd.h
-@@ -22,6 +22,7 @@
- #define SDHC_ARGUMENT 0x08
- #define SDHC_TRNMOD 0x0C
- #define SDHC_CMDREG 0x0E
-+#define SDHC_RSPREG0 0x10
- #define SDHC_BDATA 0x20
- #define SDHC_PRNSTS 0x24
- #define SDHC_BLKGAP 0x2A
-@@ -38,6 +39,7 @@
- #define SDHC_TRNS_MULTI 0x0020
+diff --git a/qapi/run-state.json b/qapi/run-state.json
+index f8773f23b2..5ac0fec852 100644
+--- a/qapi/run-state.json
++++ b/qapi/run-state.json
+@@ -462,6 +462,20 @@
+ { 'event': 'GUEST_CRASHLOADED',
+   'data': { 'action': 'GuestPanicAction', '*info': 'GuestPanicInformation' } }
  
- /* CMD Reg */
-+#define SDHC_CMD_RESPONSE (3 << 0)
- #define SDHC_CMD_DATA_PRESENT (1 << 5)
- #define SDHC_ALL_SEND_CID (2 << 8)
- #define SDHC_SEND_RELATIVE_ADDR (3 << 8)
-diff --git a/tests/qtest/npcm7xx_sdhci-test.c b/tests/qtest/npcm7xx_sdhci-test.c
-index 5d68540e52..01f237a816 100644
---- a/tests/qtest/npcm7xx_sdhci-test.c
-+++ b/tests/qtest/npcm7xx_sdhci-test.c
-@@ -30,6 +30,8 @@ char *sd_path;
- 
- static QTestState *setup_sd_card(void)
- {
-+    uint16_t rca;
++##
++# @GUEST_PVSHUTDOWN:
++#
++# Emitted when guest submits a shutdown request via pvpanic interface
++#
++# Since: 9.1
++#
++# Example:
++#
++#     <- { "event": "GUEST_PVSHUTDOWN",
++#          "timestamp": { "seconds": 1648245259, "microseconds": 893771 } }
++##
++{ 'event': 'GUEST_PVSHUTDOWN' }
 +
-     QTestState *qts = qtest_initf(
-         "-machine kudo-bmc "
-         "-device sd-card,drive=drive0 "
-@@ -43,8 +45,10 @@ static QTestState *setup_sd_card(void)
-     sdhci_cmd_regs(qts, NPCM7XX_MMC_BA, 0, 0, 0, 0, SDHC_APP_CMD);
-     sdhci_cmd_regs(qts, NPCM7XX_MMC_BA, 0, 0, 0x41200000, 0, (41 << 8));
-     sdhci_cmd_regs(qts, NPCM7XX_MMC_BA, 0, 0, 0, 0, SDHC_ALL_SEND_CID);
--    sdhci_cmd_regs(qts, NPCM7XX_MMC_BA, 0, 0, 0, 0, SDHC_SEND_RELATIVE_ADDR);
--    sdhci_cmd_regs(qts, NPCM7XX_MMC_BA, 0, 0, 0x45670000, 0,
-+    sdhci_cmd_regs(qts, NPCM7XX_MMC_BA, 0, 0, 0, 0, SDHC_SEND_RELATIVE_ADDR
-+                                                    | SDHC_CMD_RESPONSE);
-+    rca = qtest_readl(qts, NPCM7XX_MMC_BA + SDHC_RSPREG0) >> 16;
-+    sdhci_cmd_regs(qts, NPCM7XX_MMC_BA, 0, 0, rca << 16, 0,
-                    SDHC_SELECT_DESELECT_CARD);
+ ##
+ # @GuestPanicAction:
+ #
+diff --git a/system/runstate.c b/system/runstate.c
+index fc49fd3e61..c833316f6d 100644
+--- a/system/runstate.c
++++ b/system/runstate.c
+@@ -586,6 +586,7 @@ void qemu_system_guest_crashloaded(GuestPanicInformation *info)
  
-     return qts;
+ void qemu_system_guest_pvshutdown(void)
+ {
++    qapi_event_send_guest_pvshutdown();
+     qemu_system_shutdown_request(SHUTDOWN_CAUSE_GUEST_SHUTDOWN);
+ }
+ 
 -- 
-2.41.0
+MST
 
 
