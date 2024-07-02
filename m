@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E225924928
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 22:26:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9E16924921
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 22:24:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOk0S-0005rj-7m; Tue, 02 Jul 2024 16:21:40 -0400
+	id 1sOk0a-0006wb-NT; Tue, 02 Jul 2024 16:21:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOjzo-00058j-DM
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOjzp-00059D-D0
  for qemu-devel@nongnu.org; Tue, 02 Jul 2024 16:21:04 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOjzm-0001kd-Ac
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 16:21:00 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOjzn-0001l0-TR
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 16:21:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719951657;
+ s=mimecast20190719; t=1719951659;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=L4UFSErF8Ci7X9ojGTRrl+PVA8jTE90RlPCAhdXfrho=;
- b=bolMi6Ed3eWtop0BWNAW6AG3QUmFcxisfUXwcxDgGS9n1D1087Ki5yGcHDLAdT95ufBj+3
- xrzRAoMlsaE1tQbDm1Kf/GF7HBkqFUV0H4l+5Dc9Uioi4R52Nj4i4VtMsQ02dVXaYMF7KV
- hy+S8S67Kj3GlLLkuC/wXWHZVBts9MI=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=fFIfkLYWXfsdkRs/ADDmSifhmh+YyxsrJ8fplItaj14=;
+ b=RgHb5imVKknt5SL12czJy3YZ6MD31+p4kZX809sOKTO+ZQoSa16oRnHC1IM/qiuxRItVGr
+ PjBi7A8YY+fD0YWb+55Cg7mc6ElDipVEXaNPhE7HvcK1j2RbiXynZGywPQLU6nr+MNpiDB
+ HTJdpgw7mqPPkgi0gewwf8gUASV66qQ=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-93-NV2b8cfNPwiYam3kZZZBbg-1; Tue, 02 Jul 2024 16:20:54 -0400
-X-MC-Unique: NV2b8cfNPwiYam3kZZZBbg-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-424a775ee7fso32110635e9.0
- for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 13:20:52 -0700 (PDT)
+ us-mta-444-zrUO1PdQO26OK5IB2bjraA-1; Tue, 02 Jul 2024 16:20:58 -0400
+X-MC-Unique: zrUO1PdQO26OK5IB2bjraA-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-424fb2df2bdso42167935e9.3
+ for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 13:20:57 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719951651; x=1720556451;
+ d=1e100.net; s=20230601; t=1719951656; x=1720556456;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=L4UFSErF8Ci7X9ojGTRrl+PVA8jTE90RlPCAhdXfrho=;
- b=Fcrx7BJ9FeC/Fn/0PBKvLUiDIoIQZ/uxYomSI3tFJMdtBwtBIpoDn7W3nIZjR1M7no
- RLUc+fKwPSmQrKwY5osDK1uqG6ydwa6ATvPjap3avSXJrVYEEEXT6+wpJcLHXD+hy2Xg
- iBSI9px1sGfn1u3zwVRUpSfRrU4A1gwBZsDNm5FZkjqu6nGHCr9dCFX1fJ9feptUM0gb
- Q1ZOSrCRU44thGnP+xzoWiIEGSm5Jq/mCLBT8Jo2RnpQZLDNY7PmmQPjrji52AY8n2jF
- PNnUzIhqTKDlW4g5Vd1M7R+Y1NBID8ymfEHyGdw1DtLmdtps4JTMN39LH6G9+roo+mKv
- AmXA==
-X-Gm-Message-State: AOJu0Yw3uou6s/VP8o4qPN1Iv4K7f+p6Jl2yyqtnN4EBZ2UuYTikiPOV
- IzcgLkstvP4iNwqLllcn9brR0Eh83yJRVhYu7FKmCrO88eACcIOwbuycSJ5lgG9mYD9XOwyTYjm
- /XCuaXSNgQqhCkzOOZxPpe/08TD85uTO478e9Yfk9b/40JE7xgxwW/2SXHoWuLQnUVSYB+0n48j
- +u/Gha8IQPMfjeoJ/aSSlxUHtFLs6HVg==
-X-Received: by 2002:a05:600c:4508:b0:425:7f73:47ee with SMTP id
- 5b1f17b1804b1-4257f734c02mr50197795e9.33.1719951651326; 
- Tue, 02 Jul 2024 13:20:51 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGP4bzfEKfuuTva0dsrBjAttWIwDWrGHF2xrffv5vuk+WunbKy6PZg88mYeN/pCKaN6hxmVRA==
-X-Received: by 2002:a05:600c:4508:b0:425:7f73:47ee with SMTP id
- 5b1f17b1804b1-4257f734c02mr50197695e9.33.1719951650786; 
- Tue, 02 Jul 2024 13:20:50 -0700 (PDT)
+ bh=fFIfkLYWXfsdkRs/ADDmSifhmh+YyxsrJ8fplItaj14=;
+ b=rR1NXhIG/ulyFNkkwooouKpSb3ORSUnYXG7Bb1PXbUzPJNua0g/te4sF/z86hy4ptN
+ 0hMfXluAfCNU3yU06TT7CjuOk+UGPioRkiz9Bz4RUdzMY1MGxCa0EOivPcV3Zjbp0wBG
+ gfSjn7QASd8Fg8RBaFhF7bzQ9heEVDtGgh0hz3XopuRKt41zWEYPo+xnMI5Z+AgLlJHj
+ G47+F5q9HT9oTEx+QEJoC49PMUFe/bKVUxG848YVUUvEEBFHoaJq8Nd/aFZHpsB9b/Q1
+ 23Ct6vLFDTDQe+RPFavLZHTviWaeNNL5Ne/DlYz34YT8ZchJqfhHdNRMjXjPx8J0mMeB
+ B8QQ==
+X-Gm-Message-State: AOJu0YwTYoZbpoOfnnMwxNjHBRX8752ph0VnU2355KF3bABtn6vgz0mF
+ Rd8sbuEYv3ChoOnIRYFgOgxa7u1PU+KhJOykb+hGPl0YlQ24e866X76eUnl9c869h8k0nQliWN+
+ 4n9xE82m0xVfyNgcXTJT+Z/YE6XXE0TWJnvPriz0t7JwK7Obn+FXplRdD4UnwLu9MjQAEjc7DX3
+ VMrXgfEnQOm1EidqV/ABgn5FF6CLQuDQ==
+X-Received: by 2002:a5d:4212:0:b0:367:89d3:5d3f with SMTP id
+ ffacd0b85a97d-36789d35f35mr1952544f8f.6.1719951656254; 
+ Tue, 02 Jul 2024 13:20:56 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF+3+Y1xG6sT7SpyEr3z7j9pfrnyyMjqlP+aEyCTgV7Y8+WZ63Mjccc+ed1ZZYtEm7IYecC/w==
+X-Received: by 2002:a5d:4212:0:b0:367:89d3:5d3f with SMTP id
+ ffacd0b85a97d-36789d35f35mr1952523f8f.6.1719951655629; 
+ Tue, 02 Jul 2024 13:20:55 -0700 (PDT)
 Received: from redhat.com ([2a02:14f:1f5:eadd:8c31:db01:9d01:7604])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4257a4d4cd1sm147571685e9.28.2024.07.02.13.20.49
+ ffacd0b85a97d-3675a0d8ed0sm14171038f8f.28.2024.07.02.13.20.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 02 Jul 2024 13:20:50 -0700 (PDT)
-Date: Tue, 2 Jul 2024 16:20:47 -0400
+ Tue, 02 Jul 2024 13:20:54 -0700 (PDT)
+Date: Tue, 2 Jul 2024 16:20:51 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Akihiko Odaki <akihiko.odaki@daynix.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PULL v2 84/88] pcie_sriov: Reuse SR-IOV VF device instances
-Message-ID: <7c557f461200f25e8d87634ec0f731dd87f2aaba.1719951168.git.mst@redhat.com>
+Subject: [PULL v2 85/88] pcie_sriov: Release VFs failed to realize
+Message-ID: <9593e06b3ab7b99c07fc3b78d84aedc897ebb54c.1719951168.git.mst@redhat.com>
 References: <cover.1719951168.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -76,7 +76,7 @@ Content-Disposition: inline
 In-Reply-To: <cover.1719951168.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -102,258 +102,30 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-Disable SR-IOV VF devices by reusing code to power down PCI devices
-instead of removing them when the guest requests to disable VFs. This
-allows to realize devices and report VF realization errors at PF
-realization time.
+Release VFs failed to realize just as we do in unregister_vfs().
 
+Fixes: 7c0fa8dff811 ("pcie: Add support for Single Root I/O Virtualization (SR/IOV)")
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Message-Id: <20240627-reuse-v10-6-7ca0b8ed3d9f@daynix.com>
+Message-Id: <20240627-reuse-v10-7-7ca0b8ed3d9f@daynix.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- include/hw/pci/pci.h        |  5 --
- include/hw/pci/pci_device.h | 15 ++++++
- include/hw/pci/pcie_sriov.h |  1 -
- hw/pci/pci.c                |  2 +-
- hw/pci/pcie_sriov.c         | 95 ++++++++++++++++---------------------
- 5 files changed, 56 insertions(+), 62 deletions(-)
+ hw/pci/pcie_sriov.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
-index fe04b4fafd..14a869eeaa 100644
---- a/include/hw/pci/pci.h
-+++ b/include/hw/pci/pci.h
-@@ -680,9 +680,4 @@ static inline void pci_irq_pulse(PCIDevice *pci_dev)
- MSIMessage pci_get_msi_message(PCIDevice *dev, int vector);
- void pci_set_enabled(PCIDevice *pci_dev, bool state);
- 
--static inline void pci_set_power(PCIDevice *pci_dev, bool state)
--{
--    pci_set_enabled(pci_dev, state);
--}
--
- #endif
-diff --git a/include/hw/pci/pci_device.h b/include/hw/pci/pci_device.h
-index d57f9ce838..ca15132508 100644
---- a/include/hw/pci/pci_device.h
-+++ b/include/hw/pci/pci_device.h
-@@ -205,6 +205,21 @@ static inline uint16_t pci_get_bdf(PCIDevice *dev)
-     return PCI_BUILD_BDF(pci_bus_num(pci_get_bus(dev)), dev->devfn);
- }
- 
-+static inline void pci_set_power(PCIDevice *pci_dev, bool state)
-+{
-+    /*
-+     * Don't change the enabled state of VFs when powering on/off the device.
-+     *
-+     * When powering on, VFs must not be enabled immediately but they must
-+     * wait until the guest configures SR-IOV.
-+     * When powering off, their corresponding PFs will be reset and disable
-+     * VFs.
-+     */
-+    if (!pci_is_vf(pci_dev)) {
-+        pci_set_enabled(pci_dev, state);
-+    }
-+}
-+
- uint16_t pci_requester_id(PCIDevice *dev);
- 
- /* DMA access functions */
-diff --git a/include/hw/pci/pcie_sriov.h b/include/hw/pci/pcie_sriov.h
-index aa704e8f9d..70649236c1 100644
---- a/include/hw/pci/pcie_sriov.h
-+++ b/include/hw/pci/pcie_sriov.h
-@@ -18,7 +18,6 @@
- typedef struct PCIESriovPF {
-     uint16_t num_vfs;   /* Number of virtual functions created */
-     uint8_t vf_bar_type[PCI_NUM_REGIONS];   /* Store type for each VF bar */
--    const char *vfname; /* Reference to the device type used for the VFs */
-     PCIDevice **vf;     /* Pointer to an array of num_vfs VF devices */
- } PCIESriovPF;
- 
-diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-index 68d30feb86..e32a69f3fa 100644
---- a/hw/pci/pci.c
-+++ b/hw/pci/pci.c
-@@ -2895,7 +2895,7 @@ void pci_set_enabled(PCIDevice *d, bool state)
-     memory_region_set_enabled(&d->bus_master_enable_region,
-                               (pci_get_word(d->config + PCI_COMMAND)
-                                & PCI_COMMAND_MASTER) && d->enabled);
--    if (!d->enabled) {
-+    if (d->qdev.realized) {
-         pci_device_reset(d);
-     }
- }
 diff --git a/hw/pci/pcie_sriov.c b/hw/pci/pcie_sriov.c
-index f0bde0d3fc..faadb0d2ea 100644
+index faadb0d2ea..9bd7f8acc3 100644
 --- a/hw/pci/pcie_sriov.c
 +++ b/hw/pci/pcie_sriov.c
-@@ -20,9 +20,16 @@
- #include "qapi/error.h"
- #include "trace.h"
+@@ -99,6 +99,8 @@ bool pcie_sriov_pf_init(PCIDevice *dev, uint16_t offset,
+         vf->exp.sriov_vf.vf_number = i;
  
--static PCIDevice *register_vf(PCIDevice *pf, int devfn,
--                              const char *name, uint16_t vf_num);
--static void unregister_vfs(PCIDevice *dev);
-+static void unparent_vfs(PCIDevice *dev, uint16_t total_vfs)
-+{
-+    for (uint16_t i = 0; i < total_vfs; i++) {
-+        PCIDevice *vf = dev->exp.sriov_pf.vf[i];
-+        object_unparent(OBJECT(vf));
-+        object_unref(OBJECT(vf));
-+    }
-+    g_free(dev->exp.sriov_pf.vf);
-+    dev->exp.sriov_pf.vf = NULL;
-+}
- 
- bool pcie_sriov_pf_init(PCIDevice *dev, uint16_t offset,
-                         const char *vfname, uint16_t vf_dev_id,
-@@ -30,6 +37,8 @@ bool pcie_sriov_pf_init(PCIDevice *dev, uint16_t offset,
-                         uint16_t vf_offset, uint16_t vf_stride,
-                         Error **errp)
- {
-+    BusState *bus = qdev_get_parent_bus(&dev->qdev);
-+    int32_t devfn = dev->devfn + vf_offset;
-     uint8_t *cfg = dev->config + offset;
-     uint8_t *wmask;
- 
-@@ -49,7 +58,6 @@ bool pcie_sriov_pf_init(PCIDevice *dev, uint16_t offset,
-                         offset, PCI_EXT_CAP_SRIOV_SIZEOF);
-     dev->exp.sriov_cap = offset;
-     dev->exp.sriov_pf.num_vfs = 0;
--    dev->exp.sriov_pf.vfname = g_strdup(vfname);
-     dev->exp.sriov_pf.vf = NULL;
- 
-     pci_set_word(cfg + PCI_SRIOV_VF_OFFSET, vf_offset);
-@@ -83,14 +91,34 @@ bool pcie_sriov_pf_init(PCIDevice *dev, uint16_t offset,
- 
-     qdev_prop_set_bit(&dev->qdev, "multifunction", true);
- 
-+    dev->exp.sriov_pf.vf = g_new(PCIDevice *, total_vfs);
-+
-+    for (uint16_t i = 0; i < total_vfs; i++) {
-+        PCIDevice *vf = pci_new(devfn, vfname);
-+        vf->exp.sriov_vf.pf = dev;
-+        vf->exp.sriov_vf.vf_number = i;
-+
-+        if (!qdev_realize(&vf->qdev, bus, errp)) {
-+            unparent_vfs(dev, i);
-+            return false;
-+        }
-+
-+        /* set vid/did according to sr/iov spec - they are not used */
-+        pci_config_set_vendor_id(vf->config, 0xffff);
-+        pci_config_set_device_id(vf->config, 0xffff);
-+
-+        dev->exp.sriov_pf.vf[i] = vf;
-+        devfn += vf_stride;
-+    }
-+
-     return true;
- }
- 
- void pcie_sriov_pf_exit(PCIDevice *dev)
- {
--    unregister_vfs(dev);
--    g_free((char *)dev->exp.sriov_pf.vfname);
--    dev->exp.sriov_pf.vfname = NULL;
-+    uint8_t *cfg = dev->config + dev->exp.sriov_cap;
-+
-+    unparent_vfs(dev, pci_get_word(cfg + PCI_SRIOV_TOTAL_VF));
- }
- 
- void pcie_sriov_pf_init_vf_bar(PCIDevice *dev, int region_num,
-@@ -156,38 +184,11 @@ void pcie_sriov_vf_register_bar(PCIDevice *dev, int region_num,
-     }
- }
- 
--static PCIDevice *register_vf(PCIDevice *pf, int devfn, const char *name,
--                              uint16_t vf_num)
--{
--    PCIDevice *dev = pci_new(devfn, name);
--    dev->exp.sriov_vf.pf = pf;
--    dev->exp.sriov_vf.vf_number = vf_num;
--    PCIBus *bus = pci_get_bus(pf);
--    Error *local_err = NULL;
--
--    qdev_realize(&dev->qdev, &bus->qbus, &local_err);
--    if (local_err) {
--        error_report_err(local_err);
--        return NULL;
--    }
--
--    /* set vid/did according to sr/iov spec - they are not used */
--    pci_config_set_vendor_id(dev->config, 0xffff);
--    pci_config_set_device_id(dev->config, 0xffff);
--
--    return dev;
--}
--
- static void register_vfs(PCIDevice *dev)
- {
-     uint16_t num_vfs;
-     uint16_t i;
-     uint16_t sriov_cap = dev->exp.sriov_cap;
--    uint16_t vf_offset =
--        pci_get_word(dev->config + sriov_cap + PCI_SRIOV_VF_OFFSET);
--    uint16_t vf_stride =
--        pci_get_word(dev->config + sriov_cap + PCI_SRIOV_VF_STRIDE);
--    int32_t devfn = dev->devfn + vf_offset;
- 
-     assert(sriov_cap > 0);
-     num_vfs = pci_get_word(dev->config + sriov_cap + PCI_SRIOV_NUM_VF);
-@@ -195,18 +196,10 @@ static void register_vfs(PCIDevice *dev)
-         return;
-     }
- 
--    dev->exp.sriov_pf.vf = g_new(PCIDevice *, num_vfs);
--
-     trace_sriov_register_vfs(dev->name, PCI_SLOT(dev->devfn),
-                              PCI_FUNC(dev->devfn), num_vfs);
-     for (i = 0; i < num_vfs; i++) {
--        dev->exp.sriov_pf.vf[i] = register_vf(dev, devfn,
--                                              dev->exp.sriov_pf.vfname, i);
--        if (!dev->exp.sriov_pf.vf[i]) {
--            num_vfs = i;
--            break;
--        }
--        devfn += vf_stride;
-+        pci_set_enabled(dev->exp.sriov_pf.vf[i], true);
-     }
-     dev->exp.sriov_pf.num_vfs = num_vfs;
- }
-@@ -219,12 +212,8 @@ static void unregister_vfs(PCIDevice *dev)
-     trace_sriov_unregister_vfs(dev->name, PCI_SLOT(dev->devfn),
-                                PCI_FUNC(dev->devfn), num_vfs);
-     for (i = 0; i < num_vfs; i++) {
--        PCIDevice *vf = dev->exp.sriov_pf.vf[i];
--        object_unparent(OBJECT(vf));
--        object_unref(OBJECT(vf));
-+        pci_set_enabled(dev->exp.sriov_pf.vf[i], false);
-     }
--    g_free(dev->exp.sriov_pf.vf);
--    dev->exp.sriov_pf.vf = NULL;
-     dev->exp.sriov_pf.num_vfs = 0;
- }
- 
-@@ -246,14 +235,10 @@ void pcie_sriov_config_write(PCIDevice *dev, uint32_t address,
-                              PCI_FUNC(dev->devfn), off, val, len);
- 
-     if (range_covers_byte(off, len, PCI_SRIOV_CTRL)) {
--        if (dev->exp.sriov_pf.num_vfs) {
--            if (!(val & PCI_SRIOV_CTRL_VFE)) {
--                unregister_vfs(dev);
--            }
-+        if (val & PCI_SRIOV_CTRL_VFE) {
-+            register_vfs(dev);
-         } else {
--            if (val & PCI_SRIOV_CTRL_VFE) {
--                register_vfs(dev);
--            }
-+            unregister_vfs(dev);
+         if (!qdev_realize(&vf->qdev, bus, errp)) {
++            object_unparent(OBJECT(vf));
++            object_unref(vf);
+             unparent_vfs(dev, i);
+             return false;
          }
-     }
- }
 -- 
 MST
 
