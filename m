@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F8CB924066
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 16:18:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96A12924012
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 16:13:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOeCl-0001oI-2z; Tue, 02 Jul 2024 10:09:59 -0400
+	id 1sOeCj-0001Yc-PB; Tue, 02 Jul 2024 10:09:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOeCb-0000rg-J0
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:09:49 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOeCd-0001DB-Sl
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:09:51 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOeCW-0008Q7-4A
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:09:49 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOeCV-0008Q3-0u
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:09:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1719929382;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=hyIX+6gMMv2zX4UnJSMWLVmYqSE0wXcA/BACsQ8Un/M=;
- b=OYOKjyRAPTtSeqUKoXuFaFRpPYwD4G3Pj7qzdqpoHJ3bFagVOP8CbZVNrKK3IXHJFB8WeE
- Ulev7elPpALOJaDBMhSyu4CaLcUZYcvZd/PxI5+0QF4RWesWFwsjVuDp2ftlxIjLu3BvJM
- XkFUxaJ/50LQoYkM40xcBREW4ViRfVw=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Xz1NfthBeUYnFyP8G3rI1icjzqQ87e2k5Q1ZCQ4OJGs=;
+ b=iesPMSZOZ448A7LwL8kkCpHTuLkFpOn9fehi9Lhgk2u8hKsv5FomO4ywIe1Vtx8ma0je/h
+ tAcLCuWzDiNsAL11upucVk6PF7L/RQF2jsG1qRBkW1i/QIUAYO83718aHnh8GxSiZIsevn
+ qvwY2YJ0w+EvGqa2D/ZAETNSx29MnSQ=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-63-XH3OD9E7M3edTRJ8jg-vdQ-1; Tue, 02 Jul 2024 10:09:37 -0400
-X-MC-Unique: XH3OD9E7M3edTRJ8jg-vdQ-1
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-36743ab5fb3so2631494f8f.1
- for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 07:09:36 -0700 (PDT)
+ us-mta-544-CK9KUdqUOmmgrM5FA4Jp1g-1; Tue, 02 Jul 2024 10:09:41 -0400
+X-MC-Unique: CK9KUdqUOmmgrM5FA4Jp1g-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-3634a634f8aso2402458f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 07:09:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719929375; x=1720534175;
+ d=1e100.net; s=20230601; t=1719929378; x=1720534178;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=hyIX+6gMMv2zX4UnJSMWLVmYqSE0wXcA/BACsQ8Un/M=;
- b=MXdnR0ELlm+G2z3IDLK4evfbiQ4onYDUkKCn4u+Y7aVGTnoJTcXAvy3mpcFZRNbeSn
- 8allZ+Vrqcd9LJkgvg4bTRYXK6nUEc6j5q2AOGvcflXmPH9t4mUNOVIb0tFDxqFi+Isg
- GmgrAW/OvIowyQeEw3hVkcIiWtRMeNcYp0kpC9cntg9lPW6rt+Zbfn0Jvz10RkHmaGWF
- nPt6Gvm0YnT1siLo4WOlqGsvt9MpfbM+sZu+3VDgrv8OcZ6cgv82ppq/gKCYjuXoiOCI
- VzIfIuoPO9r30XLdU0LSVg75xrzkEARY1qZ44lefBmj4IHBJJrVgZcoomvmwcg6DzS0t
- BSBA==
-X-Gm-Message-State: AOJu0YwdwKTn3c/0LvdlMVcJg8Rc+VSwF4Hxhpx0Un62fSO2bMznA4Dw
- zXtMMRTC8dzBu1tq/ezy/3+NhJDraxBQA53UJhJal7lVlc0T4bebcGSBFnSEe0sBEAG3D77F22X
- cUXkPbQfUbQJJVlRpmHjqJGUVLyACVtd4y2sQCqJHOhEQhow3gAA6WS9SxJdnQyvD1rmixvUsxF
- UQ0Ia+v/BZlTpzf7YbX1I77e9EQzyOIw==
-X-Received: by 2002:a05:600c:3089:b0:424:ab8c:a24e with SMTP id
- 5b1f17b1804b1-4257986256bmr76503945e9.11.1719929375473; 
- Tue, 02 Jul 2024 07:09:35 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFbmq/VKXGOolJIsaGFW/Ph9dgGPejQhQd6cTLWIFBNxtohAqRTAk08vXxhV72OoQatigxOiA==
-X-Received: by 2002:a05:600c:3089:b0:424:ab8c:a24e with SMTP id
- 5b1f17b1804b1-4257986256bmr76503545e9.11.1719929374866; 
- Tue, 02 Jul 2024 07:09:34 -0700 (PDT)
+ bh=Xz1NfthBeUYnFyP8G3rI1icjzqQ87e2k5Q1ZCQ4OJGs=;
+ b=SJI6LuOxnLuXHUxZZPp+ePo3p5g+jIH88fplIzxfqJqg4UOrgvYRwuHd/NKFxgLAxu
+ VlwoU0oG1krcWy5mhWvTVedxa2j+lwqAd1s6Y5fwNDwlnBfvtICGs8G1nG9sf0rawswA
+ uU14lBUyA3Wwflw3qsue3tU7nNVTg1JikYAehKDuqSL+MGRvSB5b763guD1qILUoAa9E
+ Xhk4dU8fue1Wnmrw06wqo+xCl9xOA51b4E95jXDLCzDmAfXmiT9BIV+S5B2jayW6OnfE
+ baFbPdoJUE7nrj621vQbtQ4lP0QzLpILqno7kZpxaEX94KWboOva/OZibFvEcDKpvbym
+ y+1A==
+X-Gm-Message-State: AOJu0YyuyphfDkgjymOopNOknywhLlhf1SRQC9VZQK1hpL6yTyJtwCvV
+ tiupRigZ7rtlCGF2qQpxz+yLh0KjpnuMOZPsyklFUtXELZc9A52OOZ9/YHYbZceq5XATRrtLtLp
+ lS+jaoZk9V1vtc7dGqvuQSYj8UGR5K38JWCeQXTI11kxEtJSm1FAo8RKZuJ9MvBk7z+JB/gsR8u
+ ywwJhvDhZq1id8l/60uzJ6GUKSGmZnOQ==
+X-Received: by 2002:a05:6000:4582:b0:35f:159e:5ec2 with SMTP id
+ ffacd0b85a97d-367756c73aamr4163386f8f.39.1719929378247; 
+ Tue, 02 Jul 2024 07:09:38 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG18+wNbjXzPcHYme9fmFSpAsLrQL4G8+P/wjcq4DrMt+mI+Y9O1ECFeECgs1yZOHPWbSER1Q==
+X-Received: by 2002:a05:6000:4582:b0:35f:159e:5ec2 with SMTP id
+ ffacd0b85a97d-367756c73aamr4163363f8f.39.1719929377622; 
+ Tue, 02 Jul 2024 07:09:37 -0700 (PDT)
 Received: from redhat.com ([2a02:14f:1f5:eadd:8c31:db01:9d01:7604])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4256af3cf9bsm203206195e9.8.2024.07.02.07.09.33
+ ffacd0b85a97d-3678aa3caccsm1095845f8f.35.2024.07.02.07.09.36
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 02 Jul 2024 07:09:34 -0700 (PDT)
-Date: Tue, 2 Jul 2024 10:09:32 -0400
+ Tue, 02 Jul 2024 07:09:37 -0700 (PDT)
+Date: Tue, 2 Jul 2024 10:09:35 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
@@ -70,10 +70,9 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Stefan Hajnoczi <stefanha@redhat.com>,
  David Hildenbrand <david@redhat.com>,
- Raphael Norwitz <raphael@enfabrica.net>
-Subject: [PULL 51/91] contrib/vhost-user-blk: fix bind() using the right size
- of the address
-Message-ID: <f198e30f0ade672979b27700db856817bdc798b9.1719929191.git.mst@redhat.com>
+ Raphael Norwitz <raphael@enfabrica.net>, Gerd Hoffmann <kraxel@redhat.com>
+Subject: [PULL 52/91] contrib/vhost-user-*: use QEMU bswap helper functions
+Message-ID: <0e951d36e4852e161438a27eddecf62db0a302e7.1719929191.git.mst@redhat.com>
 References: <cover.1719929191.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -82,7 +81,7 @@ Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1719929191.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -108,69 +107,103 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Stefano Garzarella <sgarzare@redhat.com>
 
-On macOS passing `-s /tmp/vhost.socket` parameter to the vhost-user-blk
-application, the bind was done on `/tmp/vhost.socke` pathname,
-missing the last character.
+Let's replace the calls to le*toh() and htole*() with qemu/bswap.h
+helpers to make the code more portable.
 
-This sounds like one of the portability problems described in the
-unix(7) manpage:
-
-   Pathname sockets
-       When  binding  a socket to a pathname, a few rules should
-       be observed for maximum portability and ease of coding:
-
-       •  The pathname in sun_path should be null-terminated.
-
-       •  The length of the pathname, including the  terminating
-          null byte, should not exceed the size of sun_path.
-
-       •  The  addrlen  argument  that  describes  the enclosing
-          sockaddr_un structure should have a value of at least:
-
-              offsetof(struct sockaddr_un, sun_path) +
-              strlen(addr.sun_path)+1
-
-          or,  more  simply,  addrlen  can   be   specified   as
-          sizeof(struct sockaddr_un).
-
-So let's follow the last advice and simplify the code as well.
-
+Suggested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Acked-by: Stefan Hajnoczi <stefanha@redhat.com>
 Reviewed-by: David Hildenbrand <david@redhat.com>
 Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-Message-Id: <20240618100440.145664-1-sgarzare@redhat.com>
+Message-Id: <20240618100447.145697-1-sgarzare@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- contrib/vhost-user-blk/vhost-user-blk.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ contrib/vhost-user-blk/vhost-user-blk.c |  9 +++++----
+ contrib/vhost-user-input/main.c         | 16 ++++++++--------
+ 2 files changed, 13 insertions(+), 12 deletions(-)
 
 diff --git a/contrib/vhost-user-blk/vhost-user-blk.c b/contrib/vhost-user-blk/vhost-user-blk.c
-index 89e5f11a64..a8ab9269a2 100644
+index a8ab9269a2..9492146855 100644
 --- a/contrib/vhost-user-blk/vhost-user-blk.c
 +++ b/contrib/vhost-user-blk/vhost-user-blk.c
-@@ -469,7 +469,6 @@ static int unix_sock_new(char *unix_fn)
- {
-     int sock;
-     struct sockaddr_un un;
--    size_t len;
+@@ -16,6 +16,7 @@
+  */
  
-     assert(unix_fn);
+ #include "qemu/osdep.h"
++#include "qemu/bswap.h"
+ #include "standard-headers/linux/virtio_blk.h"
+ #include "libvhost-user-glib.h"
  
-@@ -481,10 +480,9 @@ static int unix_sock_new(char *unix_fn)
+@@ -194,8 +195,8 @@ vub_discard_write_zeroes(VubReq *req, struct iovec *iov, uint32_t iovcnt,
+     #if defined(__linux__) && defined(BLKDISCARD) && defined(BLKZEROOUT)
+     VubDev *vdev_blk = req->vdev_blk;
+     desc = buf;
+-    uint64_t range[2] = { le64toh(desc->sector) << 9,
+-                          le32toh(desc->num_sectors) << 9 };
++    uint64_t range[2] = { le64_to_cpu(desc->sector) << 9,
++                          le32_to_cpu(desc->num_sectors) << 9 };
+     if (type == VIRTIO_BLK_T_DISCARD) {
+         if (ioctl(vdev_blk->blk_fd, BLKDISCARD, range) == 0) {
+             g_free(buf);
+@@ -267,13 +268,13 @@ static int vub_virtio_process_req(VubDev *vdev_blk,
+     req->in = (struct virtio_blk_inhdr *)elem->in_sg[in_num - 1].iov_base;
+     in_num--;
  
-     un.sun_family = AF_UNIX;
-     (void)snprintf(un.sun_path, sizeof(un.sun_path), "%s", unix_fn);
--    len = sizeof(un.sun_family) + strlen(un.sun_path);
+-    type = le32toh(req->out->type);
++    type = le32_to_cpu(req->out->type);
+     switch (type & ~VIRTIO_BLK_T_BARRIER) {
+     case VIRTIO_BLK_T_IN:
+     case VIRTIO_BLK_T_OUT: {
+         ssize_t ret = 0;
+         bool is_write = type & VIRTIO_BLK_T_OUT;
+-        req->sector_num = le64toh(req->out->sector);
++        req->sector_num = le64_to_cpu(req->out->sector);
+         if (is_write) {
+             ret  = vub_writev(req, &elem->out_sg[1], out_num);
+         } else {
+diff --git a/contrib/vhost-user-input/main.c b/contrib/vhost-user-input/main.c
+index 081230da54..f3362d41ac 100644
+--- a/contrib/vhost-user-input/main.c
++++ b/contrib/vhost-user-input/main.c
+@@ -51,8 +51,8 @@ static void vi_input_send(VuInput *vi, struct virtio_input_event *event)
+     vi->queue[vi->qindex++].event = *event;
  
-     (void)unlink(unix_fn);
--    if (bind(sock, (struct sockaddr *)&un, len) < 0) {
-+    if (bind(sock, (struct sockaddr *)&un, sizeof(un)) < 0) {
-         perror("bind");
-         goto fail;
+     /* ... until we see a report sync ... */
+-    if (event->type != htole16(EV_SYN) ||
+-        event->code != htole16(SYN_REPORT)) {
++    if (event->type != cpu_to_le16(EV_SYN) ||
++        event->code != cpu_to_le16(SYN_REPORT)) {
+         return;
      }
+ 
+@@ -103,9 +103,9 @@ vi_evdev_watch(VuDev *dev, int condition, void *data)
+ 
+         g_debug("input %d %d %d", evdev.type, evdev.code, evdev.value);
+ 
+-        virtio.type  = htole16(evdev.type);
+-        virtio.code  = htole16(evdev.code);
+-        virtio.value = htole32(evdev.value);
++        virtio.type  = cpu_to_le16(evdev.type);
++        virtio.code  = cpu_to_le16(evdev.code);
++        virtio.value = cpu_to_le32(evdev.value);
+         vi_input_send(vi, &virtio);
+     }
+ }
+@@ -124,9 +124,9 @@ static void vi_handle_status(VuInput *vi, virtio_input_event *event)
+ 
+     evdev.input_event_sec = tval.tv_sec;
+     evdev.input_event_usec = tval.tv_usec;
+-    evdev.type = le16toh(event->type);
+-    evdev.code = le16toh(event->code);
+-    evdev.value = le32toh(event->value);
++    evdev.type = le16_to_cpu(event->type);
++    evdev.code = le16_to_cpu(event->code);
++    evdev.value = le32_to_cpu(event->value);
+ 
+     rc = write(vi->evdevfd, &evdev, sizeof(evdev));
+     if (rc == -1) {
 -- 
 MST
 
