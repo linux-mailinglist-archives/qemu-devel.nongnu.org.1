@@ -2,81 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F40CA9240C6
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 16:27:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 260D0923FF5
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 16:10:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOeCv-0002YX-J1; Tue, 02 Jul 2024 10:10:09 -0400
+	id 1sOeCo-00027L-Nc; Tue, 02 Jul 2024 10:10:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOeCh-0001fR-4d
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOeCh-0001fZ-5J
  for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:09:55 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOeCY-0008R8-Ng
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOeCa-0008Rt-CI
  for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:09:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719929385;
+ s=mimecast20190719; t=1719929387;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=2AGZP+nspE3HlB5tjeGIUHiwMrs8aGiCZ0Y1FdNl3gU=;
- b=cuDWcMhvu5qgMs2FhYSkJDYNWVxWMm3GUQFHd11jCwmgUSK0X21DekS7zY4w2ROg0y92jr
- RrtYx6U5UHuqwrithWFeteDGdXUh2odwEHnPiW1xrQ+YL5JX2AFyfTBkF+MJonCU/eHk5b
- FL9dojMZziMDsmQIuHbkxHzR+1V0drA=
-Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
- [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=f88EXx30zef+oxtKxh27fnm0osRHGKUTzZYejeCgKxU=;
+ b=MfX7qCsXcWjDwC+ck1rd/6g0MII722hB+RKejnfdFHb0O/PWh0CCveZy94DDla8Zs8rw7W
+ BFZ0qC0NdkC/DKZXdMsVBsw4X043P4SAsQbgWZTzIDwK2c4sgBKjWr3LE4oqyxX8hjZOpq
+ rNIUV6hvrIBcBe+107OZ+x/zs3SGxFg=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-505-FqzP7xG2NgWL7HdHs4tyEg-1; Tue, 02 Jul 2024 10:09:43 -0400
-X-MC-Unique: FqzP7xG2NgWL7HdHs4tyEg-1
-Received: by mail-lj1-f199.google.com with SMTP id
- 38308e7fff4ca-2ee4a63e95cso42568101fa.1
- for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 07:09:43 -0700 (PDT)
+ us-mta-674-oqbmgllFNqCJddRDmQiIiQ-1; Tue, 02 Jul 2024 10:09:46 -0400
+X-MC-Unique: oqbmgllFNqCJddRDmQiIiQ-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-36248c176c4so2742569f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 07:09:46 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719929381; x=1720534181;
+ d=1e100.net; s=20230601; t=1719929385; x=1720534185;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=2AGZP+nspE3HlB5tjeGIUHiwMrs8aGiCZ0Y1FdNl3gU=;
- b=J+4vgGiom+PZ4gZgBzz4wVrVPbrNM1JJKVrtZ9CkjfeI9Vb47fJ3UP/9JC6VrGbWut
- /b4h4jRWm9KOvU8k9cMQligGC+MfAFnuXTpIuAbDqKmvWQa/jgCVyrNJ4AQWTUj5hPJM
- bgvYVfKYfybmWjNA1Fo2M8Xo2DhGQCzXTSACIlJsyDbXUL4mLG6dgh6AOVrKJvtQuB8e
- hreZPDLIlSV6+ZfBIjHl8onYnBdcF9T6ISA6Lpz+qZDi/fcGkLUFhSNBss8q09TBFnAH
- 08vAz5MtzPOL+WNj1PLkCybp+nEmEbATpbzLytx0Ee2pOYFM4MMvGp03KPWPmLqHEID9
- q4ig==
-X-Gm-Message-State: AOJu0Yxb7Z87Hui02lJDpEVTPbz3lHxefsF11SogDabHdaF8ZCHkEkO0
- kzfA+9EnrRL4JXlYsTHmFxV4X3w7rxf4QpkMcpbtNJaxbDFBX4latSSkG0idQAAohUYLoLfxZ8J
- e+DswLbIh1L4lCBuJsrMzZShmqDxZ5fRkFdYYReok74qlz4nJQQfoWee5HsW+Kr01VCZE4Njddm
- F6DWvV8NPKrHjJT77x3SWUvXxjisTEHA==
-X-Received: by 2002:a2e:a910:0:b0:2ee:7b88:7f3 with SMTP id
- 38308e7fff4ca-2ee7b880869mr253701fa.12.1719929381695; 
- Tue, 02 Jul 2024 07:09:41 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEh5T6tlzwkVF81E+h4m6CYc6nyeXRZ3lFkO2Q0xNdE+EoVmKRQcH68EtN3LkWAR4NKoSxqNQ==
-X-Received: by 2002:a2e:a910:0:b0:2ee:7b88:7f3 with SMTP id
- 38308e7fff4ca-2ee7b880869mr253331fa.12.1719929381084; 
- Tue, 02 Jul 2024 07:09:41 -0700 (PDT)
+ bh=f88EXx30zef+oxtKxh27fnm0osRHGKUTzZYejeCgKxU=;
+ b=LK3QKVSqn+LowiDUSIb45noZsDS/d0JDDzvQUnMP3fyf7JrDEKqEpPgLOy6xpWwHea
+ spTfFjj4vhZdaA17acmzporiyUnTGGNzVXaSBDS7YNs/ozWy7ogK8VCmBalEwUnc/p1U
+ kZn9iVuKRhtWd/MQbbT/g+eMH8WPrHYO5zvCukDwoaaPLFt2uPizAEjECmAY4PmFGcPu
+ mEtD6QIgFFnAdGpB+N5a7EsUc84WwZ9k0WjVq+1w25j4rapP7NqmVWI5vtayVXS9Ijwn
+ xoJQeiDS86PTAXp3FwOKjPxOsZ+8f9gv7pu+ogGVUabhg0r+ZJ+hfJ06fMqCJwn9/EkK
+ /a5g==
+X-Gm-Message-State: AOJu0YwmBMb6yf3CuaXnXle1KeNAy/uLVl31WdwhE7ApdkArUGCfU64Z
+ r+oSjbZ09qXXw4mIk1QZP08ebqX0UfIT4txkDlHW9ICl86NZb6OpuXlF9ftl6EyEQEB+thpFwQJ
+ i8Bsz+OHQ7yzCqIzK+rdFMTYDT8p8lRu/WInHDlAIuI5KS43Ajg8pzW73nZQDIsyP2SaytlROZG
+ UqTDvCeN+dQ5LjaQvZcV47VNbr2pXiUA==
+X-Received: by 2002:adf:e261:0:b0:367:33b1:e82b with SMTP id
+ ffacd0b85a97d-36775728540mr4990850f8f.68.1719929384867; 
+ Tue, 02 Jul 2024 07:09:44 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGmAC/nE5wyzN9z6ae0wLWWzKBphmOM/ONNUT1z55m3rXTfGZNnDDqoTzKQn5XQlNJ6FTTbSw==
+X-Received: by 2002:adf:e261:0:b0:367:33b1:e82b with SMTP id
+ ffacd0b85a97d-36775728540mr4990824f8f.68.1719929384256; 
+ Tue, 02 Jul 2024 07:09:44 -0700 (PDT)
 Received: from redhat.com ([2a02:14f:1f5:eadd:8c31:db01:9d01:7604])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4258014f8b7sm105297925e9.41.2024.07.02.07.09.38
+ ffacd0b85a97d-3675a0cd778sm13563686f8f.5.2024.07.02.07.09.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 02 Jul 2024 07:09:40 -0700 (PDT)
-Date: Tue, 2 Jul 2024 10:09:37 -0400
+ Tue, 02 Jul 2024 07:09:43 -0700 (PDT)
+Date: Tue, 2 Jul 2024 10:09:41 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Stefano Garzarella <sgarzare@redhat.com>,
  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Stefan Hajnoczi <stefanha@redhat.com>,
- David Hildenbrand <david@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
  Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
- Thomas Huth <thuth@redhat.com>, qemu-block@nongnu.org
-Subject: [PULL 53/91] vhost-user: enable frontends on any POSIX system
-Message-ID: <7f2a913552148d1f553a67a6f9f92585d150b21c.1719929191.git.mst@redhat.com>
+ Thomas Huth <thuth@redhat.com>
+Subject: [PULL 54/91] libvhost-user: enable it on any POSIX system
+Message-ID: <800a3dfe84bb922f27156451007ed3e2e3b8abdb.1719929191.git.mst@redhat.com>
 References: <cover.1719929191.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -85,7 +82,7 @@ Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1719929191.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -112,68 +109,148 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 From: Stefano Garzarella <sgarzare@redhat.com>
 
 The vhost-user protocol is not really Linux-specific so let's enable
-vhost-user frontends for any POSIX system.
+libvhost-user for any POSIX system.
 
-In vhost_net.c we use VHOST_FILE_UNBIND which is defined in a Linux
-specific header, let's define it for other systems as well.
+Compiling it on macOS and FreeBSD some problems came up:
+- avoid to include linux/vhost.h which is available only on Linux
+  (vhost_types.h contains many of the things we need)
+- macOS doesn't provide sys/endian.h, so let's define them
+  (note: libvhost-user doesn't include QEMU's headers, so we can't use
+   use "qemu/bswap.h")
+- define eventfd_[write|read] as write/read wrapper when system doesn't
+  provide those (e.g. macOS)
+- copy SEAL defines from include/qemu/memfd.h to make the code works
+  on FreeBSD where MFD_ALLOW_SEALING is defined
+- define MAP_NORESERVE if it's not defined (e.g. on FreeBSD)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Acked-by: Stefan Hajnoczi <stefanha@redhat.com>
-Reviewed-by: David Hildenbrand <david@redhat.com>
 Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-Message-Id: <20240618100455.145733-1-sgarzare@redhat.com>
+Message-Id: <20240618100503.145768-1-sgarzare@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/net/vhost_net.c | 5 +++++
- hw/block/Kconfig   | 2 +-
- meson.build        | 1 -
- 3 files changed, 6 insertions(+), 2 deletions(-)
+ subprojects/libvhost-user/libvhost-user.h |  2 +-
+ subprojects/libvhost-user/libvhost-user.c | 60 +++++++++++++++++++++--
+ meson.build                               |  2 +-
+ 3 files changed, 59 insertions(+), 5 deletions(-)
 
-diff --git a/hw/net/vhost_net.c b/hw/net/vhost_net.c
-index 18898afe81..d25b1bc839 100644
---- a/hw/net/vhost_net.c
-+++ b/hw/net/vhost_net.c
-@@ -34,8 +34,13 @@
+diff --git a/subprojects/libvhost-user/libvhost-user.h b/subprojects/libvhost-user/libvhost-user.h
+index deb40e77b3..e13e1d3931 100644
+--- a/subprojects/libvhost-user/libvhost-user.h
++++ b/subprojects/libvhost-user/libvhost-user.h
+@@ -18,9 +18,9 @@
+ #include <stdbool.h>
+ #include <stddef.h>
+ #include <poll.h>
+-#include <linux/vhost.h>
+ #include <pthread.h>
  #include "standard-headers/linux/virtio_ring.h"
- #include "hw/virtio/vhost.h"
- #include "hw/virtio/virtio-bus.h"
-+#if defined(__linux__)
- #include "linux-headers/linux/vhost.h"
++#include "standard-headers/linux/vhost_types.h"
+ 
+ /* Based on qemu/hw/virtio/vhost-user.c */
+ #define VHOST_USER_F_PROTOCOL_FEATURES 30
+diff --git a/subprojects/libvhost-user/libvhost-user.c b/subprojects/libvhost-user/libvhost-user.c
+index 9c630c2170..d855a97a4c 100644
+--- a/subprojects/libvhost-user/libvhost-user.c
++++ b/subprojects/libvhost-user/libvhost-user.c
+@@ -28,9 +28,7 @@
+ #include <inttypes.h>
+ #include <sys/types.h>
+ #include <sys/socket.h>
+-#include <sys/eventfd.h>
+ #include <sys/mman.h>
+-#include <endian.h>
+ 
+ /* Necessary to provide VIRTIO_F_VERSION_1 on system
+  * with older linux headers. Must appear before
+@@ -39,8 +37,8 @@
+ #include "standard-headers/linux/virtio_config.h"
+ 
+ #if defined(__linux__)
++#include <endian.h>
+ #include <sys/syscall.h>
+-#include <fcntl.h>
+ #include <sys/ioctl.h>
+ #include <linux/vhost.h>
+ #include <sys/vfs.h>
+@@ -52,6 +50,62 @@
+ 
+ #endif
+ 
++#if defined(__APPLE__) && (__MACH__)
++#include <libkern/OSByteOrder.h>
++#define htobe16(x) OSSwapHostToBigInt16(x)
++#define htole16(x) OSSwapHostToLittleInt16(x)
++#define be16toh(x) OSSwapBigToHostInt16(x)
++#define le16toh(x) OSSwapLittleToHostInt16(x)
++
++#define htobe32(x) OSSwapHostToBigInt32(x)
++#define htole32(x) OSSwapHostToLittleInt32(x)
++#define be32toh(x) OSSwapBigToHostInt32(x)
++#define le32toh(x) OSSwapLittleToHostInt32(x)
++
++#define htobe64(x) OSSwapHostToBigInt64(x)
++#define htole64(x) OSSwapHostToLittleInt64(x)
++#define be64toh(x) OSSwapBigToHostInt64(x)
++#define le64toh(x) OSSwapLittleToHostInt64(x)
 +#endif
- 
-+#ifndef VHOST_FILE_UNBIND
-+#define VHOST_FILE_UNBIND -1
++
++#ifdef CONFIG_EVENTFD
++#include <sys/eventfd.h>
++#else
++#define eventfd_t uint64_t
++
++int eventfd_write(int fd, eventfd_t value)
++{
++    return (write(fd, &value, sizeof(value)) == sizeof(value)) ? 0 : -1;
++}
++
++int eventfd_read(int fd, eventfd_t *value)
++{
++    return (read(fd, value, sizeof(*value)) == sizeof(*value)) ? 0 : -1;
++}
 +#endif
++
++#ifdef MFD_ALLOW_SEALING
++#include <fcntl.h>
++
++#ifndef F_LINUX_SPECIFIC_BASE
++#define F_LINUX_SPECIFIC_BASE 1024
++#endif
++
++#ifndef F_ADD_SEALS
++#define F_ADD_SEALS (F_LINUX_SPECIFIC_BASE + 9)
++#define F_GET_SEALS (F_LINUX_SPECIFIC_BASE + 10)
++
++#define F_SEAL_SEAL     0x0001  /* prevent further seals from being set */
++#define F_SEAL_SHRINK   0x0002  /* prevent file from shrinking */
++#define F_SEAL_GROW     0x0004  /* prevent file from growing */
++#define F_SEAL_WRITE    0x0008  /* prevent writes */
++#endif
++#endif
++
++#ifndef MAP_NORESERVE
++#define MAP_NORESERVE 0
++#endif
++
+ #include "include/atomic.h"
  
- /* Features supported by host kernel. */
- static const int kernel_feature_bits[] = {
-diff --git a/hw/block/Kconfig b/hw/block/Kconfig
-index 9e8f28f982..29ee09e434 100644
---- a/hw/block/Kconfig
-+++ b/hw/block/Kconfig
-@@ -40,7 +40,7 @@ config VHOST_USER_BLK
-     bool
-     # Only PCI devices are provided for now
-     default y if VIRTIO_PCI
--    depends on VIRTIO && VHOST_USER && LINUX
-+    depends on VIRTIO && VHOST_USER
- 
- config SWIM
-     bool
+ #include "libvhost-user.h"
 diff --git a/meson.build b/meson.build
-index 54e6b09f4f..98db5ea322 100644
+index 98db5ea322..6c1a489cc0 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -151,7 +151,6 @@ have_tpm = get_option('tpm') \
+@@ -3203,7 +3203,7 @@ if have_system and vfio_user_server_allowed
+ endif
  
- # vhost
- have_vhost_user = get_option('vhost_user') \
--  .disable_auto_if(host_os != 'linux') \
-   .require(host_os != 'windows',
-            error_message: 'vhost-user is not available on Windows').allowed()
- have_vhost_vdpa = get_option('vhost_vdpa') \
+ vhost_user = not_found
+-if host_os == 'linux' and have_vhost_user
++if have_vhost_user
+   libvhost_user = subproject('libvhost-user')
+   vhost_user = libvhost_user.get_variable('vhost_user_dep')
+ endif
 -- 
 MST
 
