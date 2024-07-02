@@ -2,76 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C57F924966
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 22:37:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AF9F92496A
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 22:38:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOjzE-0003x8-Iv; Tue, 02 Jul 2024 16:20:24 -0400
+	id 1sOjzH-0004BO-2s; Tue, 02 Jul 2024 16:20:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOjz9-0003hu-US
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOjzA-0003kW-Af
  for qemu-devel@nongnu.org; Tue, 02 Jul 2024 16:20:20 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOjz3-0001WU-1V
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOjz4-0001Xp-21
  for qemu-devel@nongnu.org; Tue, 02 Jul 2024 16:20:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719951611;
+ s=mimecast20190719; t=1719951612;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=f1BCTKIu7zTn8KYIwKYaAlAh7ZMPZO9ZVLyIB5EQHjk=;
- b=Bd2WN6hzJmjTtl+c3fMljp9s/PmOalLbVVzuo1/H9nPgpdqE+cEkJqYEKd//ZgXfEqWDQB
- 7i3P7Pzd4skFi8i/ahqdkvT2jmpG0pIdS1B6RyrWymJEhh0vxZKpdVtwWqO63+aZuQuYCc
- OCy4N3SUYDb5WyokoCqSQLA5bAxHL3E=
-Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
- [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Dp+XdzPzdo45On8QxmeO3KbH8ukLhYQRI6dbRMmEeEA=;
+ b=K2Z/tAkQCxYMFh/IZi4BRvjhZ3ZHoTGoT/LlCCfvmVQCoahpDX1Q19KNv4dIewDVUNMWxE
+ oVsIEYtrYkRnYT6E9JqzHHoxmvm5Ssufzaa+tdOFdd7i+yUoTay8N2ts6iGbKcDf+lyXE0
+ m9QHPJ8k30jN7hOHRXw4z51FDG95LQ4=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-166-vnYDNjUCNOy6yDbyzSa3sQ-1; Tue, 02 Jul 2024 16:20:08 -0400
-X-MC-Unique: vnYDNjUCNOy6yDbyzSa3sQ-1
-Received: by mail-lf1-f71.google.com with SMTP id
- 2adb3069b0e04-52cdd8ca5a8so4683058e87.3
- for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 13:20:08 -0700 (PDT)
+ us-mta-210-WCN3tHwvPsOl2VZ2dl6gJQ-1; Tue, 02 Jul 2024 16:20:11 -0400
+X-MC-Unique: WCN3tHwvPsOl2VZ2dl6gJQ-1
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-3678f832c75so400839f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 13:20:11 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719951606; x=1720556406;
+ d=1e100.net; s=20230601; t=1719951609; x=1720556409;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=f1BCTKIu7zTn8KYIwKYaAlAh7ZMPZO9ZVLyIB5EQHjk=;
- b=Y9Khth4bzo3NCJ2oY8tTeYeaR9ZWUVmlU7ForFx3jcN7aE5FQXzJ1w0LxNE6ST8ERF
- eFeD0/52rAUkdBT08xAoJTKn5Tl9Eyj+1HQmCo9sWxRxa9cqCesElR4XddDAkeZP43MI
- NCqdFuF54/Ao3WP71ybAim2ekfBAZiGBzwtt/8GdPQ6zBISK3YkHr3EtSN879HzQGuEt
- sKDBydaw0RM5c62X6NntURVf7FGV9HWxDwOELybTqWa/fd4JLfPns2Ox/fbnaiT71A7x
- /H3/r+0Y9mt6cnrn4tOvvVidTWRgpxCIoUQW6aqTpu8vLgAVXmezdLEc4kLJYqfP6q9v
- EPTg==
-X-Gm-Message-State: AOJu0YwUFeWPqYHZOgfMPxzQ6vG8oErEDjY7FmBSm4YETZnXS/VrBrw9
- xcCZQCH5zKAxTSN1D4SwN+bgtoE1QEdTcy98jmLdyoazaoJgs4xWwRhAd7ohbwhzojTDKwCcMzW
- NYdvR94va216FXV/YOyWYCreEF09zYR4AsyRKe4zeZ8IpLyRsi/rU8N/CxHEMUfZWeuL2GZxlB9
- N2fZtUR0lVrqueqV659dFcqWVFyOWt+w==
-X-Received: by 2002:a05:6512:e97:b0:52c:cd7d:4e7d with SMTP id
- 2adb3069b0e04-52e8264bcc0mr5622044e87.5.1719951606452; 
- Tue, 02 Jul 2024 13:20:06 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHQdcJn83d1MAcxWSS7aSrhwqkgS7XopI9M1ZemrWgnDFz5oDPQV7TIFGNB5gh4PhckfdQfJw==
-X-Received: by 2002:a05:6512:e97:b0:52c:cd7d:4e7d with SMTP id
- 2adb3069b0e04-52e8264bcc0mr5622023e87.5.1719951605760; 
- Tue, 02 Jul 2024 13:20:05 -0700 (PDT)
+ bh=Dp+XdzPzdo45On8QxmeO3KbH8ukLhYQRI6dbRMmEeEA=;
+ b=hLv3bXXY2cRLxzv09iLG1aq17VT11ls89OWpyLnm9Qn+gM29f6IDMgqMSDmIEuO59w
+ 6hysSYtmNnts65pfi0J6BA82MLG2bPMw9yFLogZnfDX4gGfhXeH3hXlcoK8E+kFNhxzX
+ upse805rDDl7Mts2121n7MzYOiWRI54XIFtR9BNFKSL1KBzloDG76Qmg9sEKJLZkWXDA
+ 5tnvtT3XJ+KEJD7xrgLJYxpVH0t4ONinWO5d3ueLNLk5bArEoMtwo7HVSyy+BgIZpbQC
+ 0oDSQq7vyS77nBTVsamgdJ9TzyKDaUkwgvKDIaaw7b8Nc6gL3B6OYdIx2dfzaYzpuMLM
+ WyBA==
+X-Gm-Message-State: AOJu0YxJRCPaa87+hDso44aIHKnFtBbbWvC+ptng6V11oleixfIsaHul
+ zWeaVoCXbr20YxVCd4RqhiwbYgQEuvyslAbF85ors8e3AJ0W6D9F4MiE+VgtZng9b2KXi9xXHUe
+ WS6zSE62lFm7DWL2PR9nbR9aj0n2ATrbGnPN0jt+zrGEFuMhgcL7YhsM14Iq5RrYzy+HW0KmraV
+ XiP8YX7QhJpJOChEU/JFqF6Jf2SBsvbw==
+X-Received: by 2002:a5d:4b4c:0:b0:360:9dd6:cd04 with SMTP id
+ ffacd0b85a97d-367757302c5mr7648665f8f.67.1719951609729; 
+ Tue, 02 Jul 2024 13:20:09 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFvmtFfBhGN26u/fK2aB6K8p2fGfc40+p1ojp++UYCJByI/yRHLmyW/oP5qevNqOgt+0dpJyw==
+X-Received: by 2002:a5d:4b4c:0:b0:360:9dd6:cd04 with SMTP id
+ ffacd0b85a97d-367757302c5mr7648639f8f.67.1719951609092; 
+ Tue, 02 Jul 2024 13:20:09 -0700 (PDT)
 Received: from redhat.com ([2a02:14f:1f5:eadd:8c31:db01:9d01:7604])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4256af552bbsm212110615e9.13.2024.07.02.13.20.03
+ ffacd0b85a97d-3675a10337csm14058915f8f.97.2024.07.02.13.20.07
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 02 Jul 2024 13:20:05 -0700 (PDT)
-Date: Tue, 2 Jul 2024 16:20:02 -0400
+ Tue, 02 Jul 2024 13:20:08 -0700 (PDT)
+Date: Tue, 2 Jul 2024 16:20:06 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Sunil V L <sunilvl@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>,
- Igor Mammedov <imammedo@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PULL v2 73/88] pc-bios/meson.build: Add support for RISC-V in
- unpack_edk2_blobs
-Message-ID: <60eae0fbce9e4049aca4cd078e20fbf83c488551.1719951168.git.mst@redhat.com>
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>
+Subject: [PULL v2 74/88] tests/data/acpi/rebuild-expected-aml.sh: Add RISC-V
+Message-ID: <475305d63a17f5ae7371ec94f614bfb5cc984d01.1719951168.git.mst@redhat.com>
 References: <cover.1719951168.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -105,47 +103,41 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Sunil V L <sunilvl@ventanamicro.com>
 
-Update list of images supported in unpack_edk2_blobs to enable RISC-V
-ACPI table testing.
+Update the list of supported architectures to include RISC-V.
 
 Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 Reviewed-by: Igor Mammedov <imammedo@redhat.com>
-Message-Id: <20240625150839.1358279-13-sunilvl@ventanamicro.com>
+Message-Id: <20240625150839.1358279-14-sunilvl@ventanamicro.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- pc-bios/meson.build     | 2 ++
- tests/qtest/meson.build | 3 +++
- 2 files changed, 5 insertions(+)
+ tests/data/acpi/rebuild-expected-aml.sh | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/pc-bios/meson.build b/pc-bios/meson.build
-index 0760612bea..8602b45b9b 100644
---- a/pc-bios/meson.build
-+++ b/pc-bios/meson.build
-@@ -4,6 +4,8 @@ if unpack_edk2_blobs
-     'edk2-aarch64-code.fd',
-     'edk2-arm-code.fd',
-     'edk2-arm-vars.fd',
-+    'edk2-riscv-code.fd',
-+    'edk2-riscv-vars.fd',
-     'edk2-i386-code.fd',
-     'edk2-i386-secure-code.fd',
-     'edk2-i386-vars.fd',
-diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index 12792948ff..6508bfb1a2 100644
---- a/tests/qtest/meson.build
-+++ b/tests/qtest/meson.build
-@@ -259,6 +259,9 @@ qtests_s390x = \
- qtests_riscv32 = \
-   (config_all_devices.has_key('CONFIG_SIFIVE_E_AON') ? ['sifive-e-aon-watchdog-test'] : [])
+diff --git a/tests/data/acpi/rebuild-expected-aml.sh b/tests/data/acpi/rebuild-expected-aml.sh
+index dcf2e2f221..c1092fb8ba 100755
+--- a/tests/data/acpi/rebuild-expected-aml.sh
++++ b/tests/data/acpi/rebuild-expected-aml.sh
+@@ -12,7 +12,7 @@
+ # This work is licensed under the terms of the GNU GPLv2.
+ # See the COPYING.LIB file in the top-level directory.
  
-+qtests_riscv64 = \
-+  (unpack_edk2_blobs ? ['bios-tables-test'] : [])
-+
- qos_test_ss = ss.source_set()
- qos_test_ss.add(
-   'ac97-test.c',
+-qemu_arches="x86_64 aarch64"
++qemu_arches="x86_64 aarch64 riscv64"
+ 
+ if [ ! -e "tests/qtest/bios-tables-test" ]; then
+     echo "Test: bios-tables-test is required! Run make check before this script."
+@@ -36,7 +36,8 @@ fi
+ if [ -z "$qemu_bins" ]; then
+     echo "Only the following architectures are currently supported: $qemu_arches"
+     echo "None of these configured!"
+-    echo "To fix, run configure --target-list=x86_64-softmmu,aarch64-softmmu"
++    echo "To fix, run configure \
++         --target-list=x86_64-softmmu,aarch64-softmmu,riscv64-softmmu"
+     exit 1;
+ fi
+ 
 -- 
 MST
 
