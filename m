@@ -2,74 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCAE8924353
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 18:11:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42D64924358
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 18:11:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOg5Z-0006ev-0H; Tue, 02 Jul 2024 12:10:41 -0400
+	id 1sOg5f-0006gk-Be; Tue, 02 Jul 2024 12:10:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOg5W-0006eH-CJ
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 12:10:38 -0400
-Received: from mail-lf1-x132.google.com ([2a00:1450:4864:20::132])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOg5d-0006g6-Ih
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 12:10:45 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOg5U-0008QW-FC
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 12:10:38 -0400
-Received: by mail-lf1-x132.google.com with SMTP id
- 2adb3069b0e04-52ce6c8db7bso6752650e87.1
- for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 09:10:36 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOg5Z-0008UP-UC
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 12:10:45 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-4256aee6d4fso27050335e9.3
+ for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 09:10:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719936634; x=1720541434; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=meeckgI4VIWDYOJOBwaUzIzKqWBLrnAVpWbI7HYkDIY=;
- b=KWufI3OS9XZqoxbS+AbHE/Q/AzWbVbhQdOII6EJpgNae3ec/nAsK1woVTwsBBlfHLD
- xKeKUL3ikN6DyjuI7V4CRTf8jF9WqixHibvmUO10Pnk8gWIntapzVv+pPBE+vV42i3SN
- RjCLJysP7ZNuoEm0F7MoICHd7JMXQR9cqB0wNGs+Z/GOJICd5e4GXnhJea1ePlmimNM7
- M79nvEryukBYYLI9nPzTuiTJl6/A9GZKKosaHS+XBKCjj/izDqCC76RtrEloysJr3rWD
- 9ZTPzRjZ9hEju20GX08+9/7+cOfrn3HJT0/uk6uvNBUgxYec2IF5qKWyBQqD8uWHC39W
- Od9g==
+ d=linaro.org; s=google; t=1719936640; x=1720541440; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=6t+GbJBD58UyWaUHFeiM6fRRrol1LCDDEUBkP2sRRWQ=;
+ b=dAHkw/olkc4sWbVLMOCYXcLhWxcNtG3qLCe/HyjmXL7v1Kl3Jn2KkSBG4IvK4WjBKr
+ gKQMSri2aYDBSasP8RQ8eDPJfT3ddnQedTDSgHJj0BmiJw+rW65ByJi53SeHXOrflapJ
+ 5v8VFuCya8VX1hAOc9fkfmTZJyXZ9KXsar8GjxhFH8SOVFCxdzGJKSh/diuIs8zCkbzy
+ ZYlsPKMKcOidG6XibsLBg1m7x1J+GNgCzctZiGGg/BCWpk8I1KCo8dHHRtTqq7gBXZOw
+ AycAqIyH+IcZseuyc74tL2Xi7/ZY8P9HxZO4msBYEwXbzi7icgxnnPN4hOBIMd+7ovDO
+ 7cgQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719936634; x=1720541434;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=meeckgI4VIWDYOJOBwaUzIzKqWBLrnAVpWbI7HYkDIY=;
- b=WVL6Z4zxoS1Fcz1tkfpnHUpcndt5EKQMZvqqLQtlUP2ejAMuj6J6HlulP1kAmvtryQ
- wgZuf4+K9/3mlxw4/1aamlKFj5vXd1DUiAdAf3g7UN/8FOb0lY3XX2VQFXc9dk21B94D
- tUzOucCc1BagoxyoXD3WdP24GsjEfmXf2nV7dBh31dAhaoZXo3cwVwVp7PVfbbjq30l/
- GSsmsh2PHkwjjyCj7/QXQjyzJkYbUy4zZEugKWVI8aFIQG19jESC2I/Y33jTU6ePlW6K
- IlsKeDHuT5mt3YH4LLvQkxtMDu9AT+ALDklm3hkG7IHZW2C7Mum5WK/aoZssyBvuvKKA
- +vWw==
-X-Gm-Message-State: AOJu0YwF7F3NQH/Wdz/8VsUUDoNQe9l+N1J0+h/KJA7mogIcsFIaMOLD
- x4XjA1roLZ+ATUgBLg1LICDKL3F4urjqgu4MEPIZKqI9GSIYz0X8iJGznukt+vRQyhKAavBriST
- V
-X-Google-Smtp-Source: AGHT+IGyERsoHxJybXoKsIV0Y757Iu54pmoheYA8eW5txRerl9o0Cn5sb1nRfBVDj5LMgoYzmlZVFQ==
-X-Received: by 2002:a05:6512:318c:b0:52c:9f24:a253 with SMTP id
- 2adb3069b0e04-52e827528eemr7057744e87.64.1719936634313; 
- Tue, 02 Jul 2024 09:10:34 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1719936640; x=1720541440;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=6t+GbJBD58UyWaUHFeiM6fRRrol1LCDDEUBkP2sRRWQ=;
+ b=UFuqogtYv9xqFfke02yHtG8H+Zo8AyAH+29QNu6fR7Fpdp/oDe8S21ghsU58htDgrz
+ cO5L4NiluroELsT+RetaXkIJ8vqmNLkvozNlvtzI27hTT4nzRXAf6D5BZNxpC+u+FbjV
+ sXtHdQZxBYjq02WmXJcJyHUIVd+PGVZ6Yf/NlTgmK93kGvL2P7H5+tMPAQx2XIXhVBNI
+ yHwWniPEzsOqwo80rpxLZwvIbDroGIBO9UMeNKg2jTcfsVlrEEXyxFqL1hcGcna72V5n
+ JO2KBe5cyqhsFZthlWPaTPa/i6g/hF0IC46t5uHLx1LHnsbaocAz1fSFLCttdHQDtpKY
+ g1eg==
+X-Gm-Message-State: AOJu0YyJJBJZBUsBjRsuw7Q9K1qM9KbSIrFkW5Mu40UGM37qqRvtrH6X
+ EvUoWFVHXKrwDNVrjAGeKKyTl8cX7kJnljPApbdyWGSWz3nvrPcjevGU69efE8pmIAnOirj9PZV
+ t
+X-Google-Smtp-Source: AGHT+IHV8oQPTs1w/MJrgrSf8wwEkjBNNcun7HXo+1KEX9OnG8LpmAcix1W2N7TPPOsudy858f6mSg==
+X-Received: by 2002:a05:600c:1604:b0:425:5f0e:bb69 with SMTP id
+ 5b1f17b1804b1-4257a05f0a6mr57323665e9.38.1719936640047; 
+ Tue, 02 Jul 2024 09:10:40 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.209.58])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3675a0e1688sm13677581f8f.60.2024.07.02.09.10.32
+ 5b1f17b1804b1-4256b097bcbsm204602385e9.35.2024.07.02.09.10.38
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 02 Jul 2024 09:10:33 -0700 (PDT)
+ Tue, 02 Jul 2024 09:10:39 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Bin Meng <bmeng.cn@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Luc Michel <luc.michel@amd.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, qemu-block@nongnu.org
-Subject: [PATCH v43 0/2] hw/sd/sdcard: Cleanups before adding eMMC support
-Date: Tue,  2 Jul 2024 18:10:29 +0200
-Message-ID: <20240702161031.59362-1-philmd@linaro.org>
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ qemu-block@nongnu.org,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PATCH v43 1/2] hw/sd/sdcard: Use spec v3.01 by default
+Date: Tue,  2 Jul 2024 18:10:30 +0200
+Message-ID: <20240702161031.59362-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20240702161031.59362-1-philmd@linaro.org>
+References: <20240702161031.59362-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::132;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x132.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,20 +97,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Addressing review comments from Daniel on v42:
-https://lore.kernel.org/qemu-devel/20240628070216.92609-1-philmd@linaro.org/
-(patches already reviewed not reposted)
+Recent SDHCI expect cards to support the v3.01 spec
+to negociate lower I/O voltage. Select it by default.
 
-Supersedes: <20240628070216.92609-1-philmd@linaro.org>
+Versioned machine types with a version of 9.0 or
+earlier retain the old default (spec v2.00).
 
-Philippe Mathieu-Daudé (2):
-  hw/sd/sdcard: Use spec v3.01 by default
-  hw/sd/sdcard: Do not store vendor data on block drive (CMD56)
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+---
+v43: update versioned machines (danpb)
+---
+ hw/core/machine.c | 1 +
+ hw/sd/sd.c        | 2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
- hw/core/machine.c |  1 +
- hw/sd/sd.c        | 18 ++++++++++--------
- 2 files changed, 11 insertions(+), 8 deletions(-)
-
+diff --git a/hw/core/machine.c b/hw/core/machine.c
+index 655d75c21f..4377f943d5 100644
+--- a/hw/core/machine.c
++++ b/hw/core/machine.c
+@@ -38,6 +38,7 @@ GlobalProperty hw_compat_9_0[] = {
+     {"arm-cpu", "backcompat-cntfrq", "true" },
+     {"scsi-disk-base", "migrate-emulated-scsi-request", "false" },
+     {"vfio-pci", "skip-vsc-check", "false" },
++    {"sd-card", "spec_version", "2" },
+ };
+ const size_t hw_compat_9_0_len = G_N_ELEMENTS(hw_compat_9_0);
+ 
+diff --git a/hw/sd/sd.c b/hw/sd/sd.c
+index b158402704..808dc1cea6 100644
+--- a/hw/sd/sd.c
++++ b/hw/sd/sd.c
+@@ -2471,7 +2471,7 @@ static void sd_realize(DeviceState *dev, Error **errp)
+ 
+ static Property sd_properties[] = {
+     DEFINE_PROP_UINT8("spec_version", SDState,
+-                      spec_version, SD_PHY_SPECv2_00_VERS),
++                      spec_version, SD_PHY_SPECv3_01_VERS),
+     DEFINE_PROP_DRIVE("drive", SDState, blk),
+     /* We do not model the chip select pin, so allow the board to select
+      * whether card should be in SSI or MMC/SD mode.  It is also up to the
 -- 
 2.41.0
 
