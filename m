@@ -2,58 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1DB7923FF1
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 16:09:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D58E924096
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 16:24:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOeBs-0005IO-R6; Tue, 02 Jul 2024 10:09:06 -0400
+	id 1sOeCH-0006P9-2O; Tue, 02 Jul 2024 10:09:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOeBj-0005DJ-6s
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:08:55 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOeBr-0005QC-07
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:09:04 -0400
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOeBf-0008EY-Fo
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:08:53 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-42562a984d3so29883265e9.3
- for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 07:08:49 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOeBj-0008G7-Nb
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:09:02 -0400
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-36743a79dceso3070463f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 07:08:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719929327; x=1720534127; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=uvjGohX9jpqU4S0vaNGN/OLaq0Blh/PgFGJDO8c8dTs=;
- b=QSz5sBDGjTzLMQhDBf7pxGa0X0wmLFkpobBO0ac9ko0Bml/gWdmobFQa4IhO1G1lvM
- yM6j8Ayy+g4Kiskc3NODIJ9Mj0ieQAlcOk2gUmuKbyYsTt7+0W/USb8i9ZvXABfRRzZ7
- MwdtF1HgszTAUDhYZxgPppqfHCOcMgraaZUKFohvPi9d0yuzuNfxX98I/jy58fdiwa5i
- CVKISAo+ghDRunov+Tez/eOsNi9srsREGhLBZZ6HNMjHoGmARewD96JIcXLdm0rI6DgR
- /ooCybvO9BRJwH1yfMG0UakUj8z6vsHrrow1SiqIuZ7FNi/WtruaK5Vn4Xw86lKa0MkY
- mIeg==
+ d=linaro.org; s=google; t=1719929334; x=1720534134; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=NKQMcV9LKaA6zhhnGkX4WVr3MTh1gxn1oQ7jR99yzBA=;
+ b=kWG11Kj/eIWq6GJRDSrARgMtsPrmErcJIscuQlk6M7CZbb3we9YQ/ohgVEgoXbCJ16
+ 8RLSNxIzsvLCRBSSRrIrwkpzIVGIxpvW4AWI3x9RE8pj+0LroHmomUxpVIjO9kwgBC6N
+ 0BgmICic4Avjw7hgrGVvEDlubtsXLLgoohiPusf8qV8Ss7b9+UpOuxWNo5OE91PV8AwP
+ 5kKYdhkmONWCTkCfVwRo3+UjjPldiJHGhVk45ppYWG91etfdeCQDDGLftFvBq6yJ8nsV
+ r+oc4H9jFCADH5EsOnpFP+eVy1DiUPs3WiN36duzaMp7mNblLxEUCYmfK17FpgyHyzLi
+ H0ow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719929327; x=1720534127;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=uvjGohX9jpqU4S0vaNGN/OLaq0Blh/PgFGJDO8c8dTs=;
- b=poO7PaVfyo+mvxfdEgJiZEBvjFHo+Eu+0lsFRg6nj6FfkMfxaggxWnjriS4uDDwMPF
- EvDvaUTCkhpPPCyHQF8AhRCXKs7XPwH35ktUO2WBTozUqbs1la/g/MaGi0N9sijWlYfe
- raJQbNOaNIQKA5RWpTCI5325ZIuw+RxTJGaTFM1jU7DfSGI22ZsEIOa6UqCabMFUzEeP
- JNJ6FAUaIj76SElOdTsaFFeBssU7RSNnQ+Tm5LLBWCJgaWzHtTa6c3pTdFWTXY7f8tbp
- 16BaubNWNZ/p4pyigYTPvhtIEifOkXt5iDf9+a0tk7CYnZ1ZbFWxMGTSigEerrNNzowD
- Pc4g==
-X-Gm-Message-State: AOJu0YwnPix1I2LFMDT7+oJ4siyMJmPSosxwKr/bN6ogApT8KwXO2pQq
- H4UU4vigh1uhd5ypJM2A4VlPtZ1vr/SL+SGGo0QviKn/C2AnctpuYS7qsNe7rutrYL8isG8CFHh
- l
-X-Google-Smtp-Source: AGHT+IHFrvHXuxh0hP5aZ+0Qp9pNGRCRzh6Bmr2FcRdtst4WCo5UodAc45HP7w1ylNTO+HM8MSbf7w==
-X-Received: by 2002:a05:600c:35c3:b0:425:65c5:79b4 with SMTP id
- 5b1f17b1804b1-4257a02b6c5mr65427185e9.26.1719929326704; 
- Tue, 02 Jul 2024 07:08:46 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1719929334; x=1720534134;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=NKQMcV9LKaA6zhhnGkX4WVr3MTh1gxn1oQ7jR99yzBA=;
+ b=Fz5k7ldeLpH2GdlC9UbBY4QaNYVnUrdSNY26IQKGi/V8+QR7oH32UoTtF5iQQw1itD
+ tPe2X+EFtFI8yL7ziTKjtDjtrzl6fKwBYsleuZuPS9zfqyWFi4AhUOkNYjqpDbSVwgAW
+ 7wNKtPfvAI1IguSlgyNY1QddKCit+DUpaDgfaz+V6IT5NZu/Og64h5fLiqoeFvjOjP65
+ a8vZCnPxGsX6nRLm8L66s+Cnvd1xwojannvjJF7aLs4sCXH6osESVYxcejnIjgExd7gQ
+ saDvK+1WlamD0hI8Sr/Y+0j+5yFmb8c5++HCyAuOkMUOx2eN7wsS4psA5r5fojABWGZn
+ FntQ==
+X-Gm-Message-State: AOJu0Yzm9SI5b835KLoYufTD907mVnS0nQ3Vf701tv6wZ3w3G15xotv9
+ CAU714z/7lctn7xT98WzBuxG8rjft51CnU6jkmwF39ES4H03/YIZOL4R6LwkmsB5VbvDzJFz/PD
+ o
+X-Google-Smtp-Source: AGHT+IGBgvIuN7AYOsu5c5vTjjvI6HHngXc6OltS1FUcKAX0ZScRb7Z2yM9feOBhWX+6s8kGWNCJKQ==
+X-Received: by 2002:a5d:4282:0:b0:367:89b0:f584 with SMTP id
+ ffacd0b85a97d-36789b0f6demr1274520f8f.11.1719929333915; 
+ Tue, 02 Jul 2024 07:08:53 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.209.58])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4257fb4fabdsm106739375e9.46.2024.07.02.07.08.44
+ ffacd0b85a97d-3675a0d8cd8sm13305323f8f.27.2024.07.02.07.08.51
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 02 Jul 2024 07:08:46 -0700 (PDT)
+ Tue, 02 Jul 2024 07:08:53 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Tyrone Ting <kfting@nuvoton.com>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -66,22 +67,23 @@ Cc: Tyrone Ting <kfting@nuvoton.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Bin Meng <bmeng.cn@gmail.com>, qemu-arm@nongnu.org, qemu-block@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Patrick Venture <venture@google.com>
-Subject: [PATCH 0/4] qtest/npcm7xx_sdhci: Use card-provided address (RCA)
-Date: Tue,  2 Jul 2024 16:08:38 +0200
-Message-ID: <20240702140842.54242-1-philmd@linaro.org>
+Subject: [PATCH 1/4] hw/sd/npcm7xx_sdhci: Use TYPE_SYSBUS_SDHCI definition
+Date: Tue,  2 Jul 2024 16:08:39 +0200
+Message-ID: <20240702140842.54242-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20240702140842.54242-1-philmd@linaro.org>
+References: <20240702140842.54242-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,23 +99,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Avoid to use the SDCard hardcoded 0x4567 RCA in npcm7xx
-SDHCI qtest, so we can generate one in the card model.
+Use the macro instead of two explicit string literals.
 
-Philippe Mathieu-Daudé (4):
-  hw/sd/npcm7xx_sdhci: Use TYPE_SYSBUS_SDHCI definition
-  hw/sd/sdhci: Log non-sequencial access as GUEST_ERROR
-  tests/qtest/npcm7xx_sdhci: Access the card using its published address
-  hw/sd/sdcard: Generate random RCA value
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ hw/sd/npcm7xx_sdhci.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
- tests/qtest/libqos/sdhci-cmd.h   |  2 ++
- hw/sd/npcm7xx_sdhci.c            |  3 ++-
- hw/sd/sd.c                       | 11 ++++++++---
- hw/sd/sdhci.c                    |  5 +++--
- tests/qtest/npcm7xx_sdhci-test.c |  8 ++++++--
- hw/sd/trace-events               |  1 +
- 6 files changed, 22 insertions(+), 8 deletions(-)
-
+diff --git a/hw/sd/npcm7xx_sdhci.c b/hw/sd/npcm7xx_sdhci.c
+index e93dab8dbd..fb51821e11 100644
+--- a/hw/sd/npcm7xx_sdhci.c
++++ b/hw/sd/npcm7xx_sdhci.c
+@@ -16,6 +16,7 @@
+ 
+ #include "qemu/osdep.h"
+ 
++#include "hw/sd/sdhci.h"
+ #include "hw/sd/npcm7xx_sdhci.h"
+ #include "migration/vmstate.h"
+ #include "sdhci-internal.h"
+@@ -162,7 +163,7 @@ static void npcm7xx_sdhci_instance_init(Object *obj)
+ {
+     NPCM7xxSDHCIState *s = NPCM7XX_SDHCI(obj);
+ 
+-    object_initialize_child(OBJECT(s), "generic-sdhci", &s->sdhci,
++    object_initialize_child(OBJECT(s), TYPE_SYSBUS_SDHCI, &s->sdhci,
+                             TYPE_SYSBUS_SDHCI);
+ }
+ 
 -- 
 2.41.0
 
