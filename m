@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19D9991EE0C
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 07:03:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE47591EE12
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 07:03:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOVfM-0001Sw-TW; Tue, 02 Jul 2024 01:02:56 -0400
+	id 1sOVfO-0001js-5t; Tue, 02 Jul 2024 01:02:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOVfE-00019a-24
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 01:02:48 -0400
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOVfJ-0001Kz-8v
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 01:02:53 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOVfB-0007Fh-HR
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 01:02:47 -0400
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-365663f51adso2267665f8f.1
- for <qemu-devel@nongnu.org>; Mon, 01 Jul 2024 22:02:44 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOVfG-0007GJ-P2
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 01:02:52 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-424ad991cbbso29004525e9.0
+ for <qemu-devel@nongnu.org>; Mon, 01 Jul 2024 22:02:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719896563; x=1720501363; darn=nongnu.org;
+ d=linaro.org; s=google; t=1719896569; x=1720501369; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=PXbwBlxU331VYAjhHl0SMCsb+VRuyHw+K3ZyG49lmEk=;
- b=DJRdSkedUzVs+NlupvIA2E0EEAdXTmNh63d0IChjIFh1Ev1GNCQym4zT8XEP6phyJl
- XsYFnyJqSyttJ5oQILVWIKlnE51TFR7L3n4h93XWD7LeJKHn3NhLiJGgWgWY4T3MiRi0
- WAWBjgcW82qpdAWAUvEI3dTbgJOVNLtxpnb1o0g1hiii+aLSM8FjRzeFtDmY0w9LI7KM
- 2wL7Ktahe1IpWm8mK3ZPVN033Zk065/S0PUaMBcTCIclYm4ap+eGqRC4HjrIyrwiU7u7
- LaCPk4kfC2CdI7Rl572yjyUcS0U2K1ah9ZpDQwzk+crxKmdo1B0K+EQvheXoViUK7aeG
- DQMg==
+ bh=IoGL6utQV9KZz7a0NZhlOkuZgg5oZQA8TSNIPaPeX+c=;
+ b=pxJRoc9gnLyrVxrTMnue1Z0fOLHpNxnGcGXazHLBw5djDfb3GGDKZOBolVqHgGkbWo
+ Zxd1nEsbaJjKQ3AVnUh/rvVRx4eauN5Sm88b3k+I+lFc6LPwsObrnYIsjQ+RW3re3yG5
+ DA4lmFoicpsSxKRya91W5EbkmPZxqsvwO05SkU2xGf2w7gbscHmLrzKyN52CMUlhFf06
+ 8vVCqwlQuLerI1zgDOcd0hyr7lhp5YcpzPNEuXeeBZRM9CuNNjEIZMunkQv6l2ZDERZw
+ EfnIkpJOVrXryB0EEDkRQjyjeniyP6qAG+m34rdYIiLZ13P75jFdXgWiUbXtdIQHoLaF
+ JcOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719896563; x=1720501363;
+ d=1e100.net; s=20230601; t=1719896569; x=1720501369;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=PXbwBlxU331VYAjhHl0SMCsb+VRuyHw+K3ZyG49lmEk=;
- b=jaa3tYsFVFu29nt0NNb97nqsXmb/I25QY5nCquzRybOI2/nj27pLDlZt+rXwg3QSAp
- 4dq8ofAwecAFqv9mdoHqXyjZ8dK5xqHDpf5TLBrtAAhI0MFnwxNEodvQOJ6gLMdYFuHB
- T5SkPqWEpA/6Kh5gn/SJkQE/o0nyUaJ3J6CooQ21j8HlaOa1rPvWaL3p7McnJUtb1SRl
- Uf/b7Fl+1YzVY38In0UN3Y2L5rSTDrRas5o1acAgOcR+c9lORJlXnseN3cBZ0o90/xm0
- Us8ktU38qKc3hZLmmV78CTc+ckdH6UdfFU2rlajMZfhLe1xeSJGtwi1aRgt3DmhHePHE
- ib2A==
-X-Gm-Message-State: AOJu0YzCz4miHpJo2q0yaC37DfCwYL+l4ggH7XtA//IvJ5g5lX35Yb3D
- Z68ijpGO80nRG/P1H/XqG9PYo40HEdArTx10fewsuqKxdb3lzby0suGSOpHY8lQMBbWyuyq8Nuh
- M
-X-Google-Smtp-Source: AGHT+IFVujcSisPo8JytqnbS/Bt4UbwjzCyHVB4GqXU3Z3T7peLMM4Ijc2ZNravMiXJwy/bvaQYsmQ==
-X-Received: by 2002:adf:e98d:0:b0:35f:276c:ac5f with SMTP id
- ffacd0b85a97d-367756bb740mr5016036f8f.40.1719896563060; 
- Mon, 01 Jul 2024 22:02:43 -0700 (PDT)
+ bh=IoGL6utQV9KZz7a0NZhlOkuZgg5oZQA8TSNIPaPeX+c=;
+ b=Uc3PzVzXLwDw6D4N1guwKQ7E8sKkfJ6216lE0f1XH5aSkGVeGjfMIMhT72pK7kDLqC
+ NIR7YYl1pvipwQs8kejbyQ0oXTiTIGFIw0NDYxYHDivgUc1X/8qozZEDZNx49o6KjeLs
+ W9IcMlswjrEpMOc4bTyfLLUg+D/V7SbqrQ8hjLWL/HbqeYUCb+p4l5brdn5EVykQzoFY
+ emjui1qbqxPeiaS5LfsSO9jU80gRuitvqu8X8moF7QWFKvg3nlj99rxrgaPwniWaBwQJ
+ l1z2quMYfi62G8iGtn3lV2TV1FyX8di1B3KOgm+/UCIOYTqb7D1TsJ6D3JfZLh+2TGPm
+ QYKg==
+X-Gm-Message-State: AOJu0Yw8l9F8QxfCfW36TajAaEEzg3YRjXP+E9hTvFT7x7TxaW2LfT9I
+ SioCaHbbTF5KZuHyVuHe41LIOmHr8xBCCxvp1yBKrZOVB26N/CW+rPy86KNQkKPg9OJtscfWDZ5
+ c
+X-Google-Smtp-Source: AGHT+IFVM6prAhPdX59Xe0UIszUnCIjlrZFwQ2OcgmLo4HyK34MbZmFeg+xhbdSncMOvgFCOT5PWqg==
+X-Received: by 2002:a05:600c:3388:b0:425:600a:5e95 with SMTP id
+ 5b1f17b1804b1-4257a06db61mr43950945e9.39.1719896568880; 
+ Mon, 01 Jul 2024 22:02:48 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.209.58])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-367892a4817sm400158f8f.10.2024.07.01.22.02.39
+ 5b1f17b1804b1-4256af389efsm182140545e9.7.2024.07.01.22.02.47
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 01 Jul 2024 22:02:40 -0700 (PDT)
+ Mon, 01 Jul 2024 22:02:48 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 14/22] hw/i386: remove obsolete manual deprecation reason
- string of i440fx machines
-Date: Tue,  2 Jul 2024 07:01:04 +0200
-Message-ID: <20240702050112.35907-15-philmd@linaro.org>
+Subject: [PULL 15/22] docs: document special exception for machine type
+ deprecation & removal
+Date: Tue,  2 Jul 2024 07:01:05 +0200
+Message-ID: <20240702050112.35907-16-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240702050112.35907-1-philmd@linaro.org>
 References: <20240702050112.35907-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,37 +96,43 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel P. Berrangé <berrange@redhat.com>
 
-The automatic deprecation mechanism introduced in the preceeding patches
-will mark every i440fx machine upto and including 2.12 as deprecated. As
-such we can revert the manually added deprecation introduced in:
-
-  commit 792b4fdd4eb8197bd6eb9e80a1dfaf0cb3b54aeb
-  Author: Philippe Mathieu-Daudé <philmd@linaro.org>
-  Date:   Wed Feb 28 10:34:35 2024 +0100
-
-    hw/i386/pc: Deprecate 2.4 to 2.12 pc-i440fx machines
+This extends the deprecation policy to indicate that versioned machine
+types will be marked deprecated after 3 years, and then subject to
+removal after a further 3 years has passed.
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20240620165742.1711389-14-berrange@redhat.com>
+Message-ID: <20240620165742.1711389-15-berrange@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/i386/pc_piix.c | 1 -
- 1 file changed, 1 deletion(-)
+ docs/about/deprecated.rst | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-index 5705d6e155..9445b07b4f 100644
---- a/hw/i386/pc_piix.c
-+++ b/hw/i386/pc_piix.c
-@@ -688,7 +688,6 @@ DEFINE_I440FX_MACHINE(3, 0);
- static void pc_i440fx_machine_2_12_options(MachineClass *m)
- {
-     pc_i440fx_machine_3_0_options(m);
--    m->deprecation_reason = "old and unattended - use a newer version instead";
-     compat_props_add(m->compat_props, hw_compat_2_12, hw_compat_2_12_len);
-     compat_props_add(m->compat_props, pc_compat_2_12, pc_compat_2_12_len);
- }
+diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+index ff3da68208..bba12d1641 100644
+--- a/docs/about/deprecated.rst
++++ b/docs/about/deprecated.rst
+@@ -11,6 +11,19 @@ releases, the feature is liable to be removed. Deprecated features may also
+ generate warnings on the console when QEMU starts up, or if activated via a
+ monitor command, however, this is not a mandatory requirement.
+ 
++As a special exception to this general timeframe, rather than have an
++indefinite lifetime, versioned machine types are only intended to be
++supported for a period of 6 years, equivalent to 18 QEMU releases. All
++versioned machine types will be automatically marked deprecated after an
++initial 3 years (9 QEMU releases) has passed, and will then be deleted after
++a further 3 year period has passed. It is recommended that a deprecated
++machine type is only used for incoming migrations and restore of saved state,
++for pre-existing VM deployments. They should be scheduled for updating to a
++newer machine type during an appropriate service window. Newly deployed VMs
++should exclusively use a non-deprecated machine type, with use of the most
++recent version highly recommended. Non-versioned machine types follow the
++general feature deprecation policy.
++
+ Prior to the 2.10.0 release there was no official policy on how
+ long features would be deprecated prior to their removal, nor
+ any documented list of which features were deprecated. Thus
 -- 
 2.41.0
 
