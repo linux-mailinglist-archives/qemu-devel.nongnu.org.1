@@ -2,81 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FBDB92477D
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 20:46:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0EEE924780
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 20:46:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOiVJ-0005OR-07; Tue, 02 Jul 2024 14:45:25 -0400
+	id 1sOiVs-0005QO-KJ; Tue, 02 Jul 2024 14:46:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1sOiVC-0005Nr-ED
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 14:45:18 -0400
-Received: from mail-pg1-x531.google.com ([2607:f8b0:4864:20::531])
+ id 1sOiVR-0005Pn-Pg
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 14:45:35 -0400
+Received: from mail-pg1-x52a.google.com ([2607:f8b0:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1sOiV8-0008Jp-MR
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 14:45:16 -0400
-Received: by mail-pg1-x531.google.com with SMTP id
- 41be03b00d2f7-7182a634815so2779140a12.3
- for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 11:45:14 -0700 (PDT)
+ id 1sOiVP-0008Lg-RZ
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 14:45:33 -0400
+Received: by mail-pg1-x52a.google.com with SMTP id
+ 41be03b00d2f7-72c03d2926eso2674659a12.2
+ for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 11:45:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719945913; x=1720550713; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=niG05aeHHNe9KFZ6CFq0rHqwgfpKzMy35BwCLWmdTuk=;
- b=jXuZzt2nfs4Q+zsJ4JF7jTo4szSfo1/ceH+LA3rHRnfCMBYJik251Ceh6egVfntjkR
- 5JtfnkwjAIh+d7+YBUR97vgaE+DqchanAWrGf5ZQDtHCe5RI/Wzn42ZRUltf/4GrWOE6
- oCWqNaYpuac6gMOWpBAqwn7Tv9guaqiBHeTr4MB4SSHBtTzMGYfb5QGmI2CcMA4aHoNA
- HDvWMzW4OLlH3UvqHDkNgpRGEKhVK2hKj9s/Ma7Fonzg+4x1IzhE1j6DPbTkdRr5jmHv
- 9lNcazTtcKGYwWklSE1w7pWOE9aKjJBv0ixBzUeNnsQiqk7RC8POn7FVEzuUDqJpu0iD
- 5+vg==
+ d=linaro.org; s=google; t=1719945929; x=1720550729; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=7+voljX0AmW22AD8bOWRHKDkhslmC+iUf/qO1GcCxqc=;
+ b=kDg3jZHT01cw61Z5stQ0NhPYx0LPzkZ33wp8y5zkyBSS1wNIg3iaaqU9WbWZtcRfBU
+ xsYWIfE8cquLLjTLIIvO9mD0i29JHaGhJ8nmRljvQ2+Af1o6wFbhNx8+mESmECUZlOUK
+ 5OK+aE/1YcNaAwoD0f1o/jAs3PYcFZliktw/PxoeYxMbYeHm+fawW14vlb9CcaASHAxe
+ jP/b20ypNldowT86yaGiAzOiXoS+fJqjtenJ6Xsgu1OFd6djvHo3VDzBkeekWUHod6sd
+ WHnOSLljHm2LIwU72Y7TKUwRELRJiVi3YRMM+j8zGI0d8vfC4eC7q6nlAfgf1oNoJOuO
+ mE9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719945913; x=1720550713;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=niG05aeHHNe9KFZ6CFq0rHqwgfpKzMy35BwCLWmdTuk=;
- b=Ut9f+67m1vBr9xcZD1wBYFJdsbsPGGPaqJw4NEPf+bzcHtXo5cMFfce8vQmsa4DYOy
- E6iyb0Wv+q9BUZIgGauZYSykJ8DcXclDl/TROyTTPS5GzZBkela49nZqOOjoVfhmrULB
- EDWDGYAILjyskntsWEn3fT1anmMf/K4H5jkLreAd3Y0le0JXeYJycPjFLDG8++4PvCLX
- OxifKiQBP+ogyQxtoMC8TgrxFfxKb6TVmt3kGzLoeSrDqz7Cb8GgAvqvsg0cHxmj8z5x
- c/LOYUKGyolwcUHX10JGqawnCFS7TXueV8hxfIr2iPz0U0hUebD2iSvQYuOYb2h6zMqu
- FQJg==
-X-Gm-Message-State: AOJu0YyoFlz1FhWDTlBJoTGOTQOQhMjTRiCNaWDRF7RL3LBBgWXNEI+b
- 9oQy53avediydFl3wfmMj8HNrlZ1ZiCJe+/gv1MuRoFFJv4d7f98C+BmdiyoqC+TJm8+ktoRTRn
- q
-X-Google-Smtp-Source: AGHT+IHoww3DfwrgWxowo2PMFDH642Wsrg2WBJcNAprtRj93FStxEG5a3RHDgukaMZphLJbj2bV/fQ==
-X-Received: by 2002:a05:6a20:9145:b0:1bd:2520:1fa5 with SMTP id
- adf61e73a8af0-1bef60e3effmr9701242637.4.1719945912858; 
- Tue, 02 Jul 2024 11:45:12 -0700 (PDT)
-Received: from linaro.vn.shawcable.net ([2604:3d08:9384:1d00::2193])
+ d=1e100.net; s=20230601; t=1719945929; x=1720550729;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=7+voljX0AmW22AD8bOWRHKDkhslmC+iUf/qO1GcCxqc=;
+ b=E8ZG3Zu4Jnc5MJn+SctUah8g3uumOYdB+klYEo0oYQLwwNiSsK80rInZLwTo/+dW+y
+ IYrhHeaDIUFLXWW1+9VE24aiVFmgUSnIMoKdHaG0ho28j/aIEi753MBdTQYRSvSj7KvM
+ MEJF17KkLfkTCmr7g2mIwCTVpk7+EuSViLILOHe7Y3/dVNTZ3yUm5MAFNb3B4upfzkPk
+ NolSchwahb0vLYeA21TA/TBWX4sKdlfuTb/R/K6T1mSqOgAT/krTxqbWedV6kI5ScsZy
+ Hh1dFZtjJIt1fgKptZYLtFp33twM1sQ4QPPstVwaIllRHA32fPvl7VtKokIAEtIDJs7q
+ 0MNg==
+X-Gm-Message-State: AOJu0YwXuSh4TUP6OQ2iKrIOp2nQWOvh4G6sMGJNujs9Scyyz+u+3I1N
+ KGfpAVtwiXioUmn0EfJ/5r73ODbOJRbEVJFSJsy4eZxmjsKTyQh/wn/suwF1I+2bm3M6IbZ5YFQ
+ e
+X-Google-Smtp-Source: AGHT+IFtWUP2MrDGlyaYBaoPVtloOxL2Mrql9L1SZ646JI2uZ4RHq6zq/htDYHr5fMxQCKxVxm0X0A==
+X-Received: by 2002:a05:6a20:4324:b0:1bd:23bd:4b9a with SMTP id
+ adf61e73a8af0-1bef60f3bd8mr10314428637.9.1719945929433; 
+ Tue, 02 Jul 2024 11:45:29 -0700 (PDT)
+Received: from ?IPV6:2604:3d08:9384:1d00::2193? ([2604:3d08:9384:1d00::2193])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2c91d3e8196sm9257394a91.49.2024.07.02.11.45.11
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 02 Jul 2024 11:45:11 -0700 (PDT)
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Alexandre Iooss <erdnaxe@crans.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>
-Subject: [PATCH v4 7/7] tests/tcg/x86_64: add test for plugin memory access
-Date: Tue,  2 Jul 2024 11:44:48 -0700
-Message-Id: <20240702184448.551705-8-pierrick.bouvier@linaro.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240702184448.551705-1-pierrick.bouvier@linaro.org>
-References: <20240702184448.551705-1-pierrick.bouvier@linaro.org>
+ d2e1a72fcca58-708049893a4sm8876364b3a.197.2024.07.02.11.45.28
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 02 Jul 2024 11:45:29 -0700 (PDT)
+Message-ID: <22b0bf9e-a725-435d-99fe-087e01c0c237@linaro.org>
+Date: Tue, 2 Jul 2024 11:45:27 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::531;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pg1-x531.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/7] plugins: access values during a memory read/write
+Content-Language: en-US
+To: qemu-devel@nongnu.org
+Cc: Eduardo Habkost <eduardo@habkost.net>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Alexandre Iooss <erdnaxe@crans.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>
+References: <20240702011015.325609-1-pierrick.bouvier@linaro.org>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <20240702011015.325609-1-pierrick.bouvier@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52a;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pg1-x52a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,204 +100,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add an explicit test to check expected memory values are read/written.
-For sizes 8, 16, 32, 64 and 128, we generate a load/store operation.
-For size 8 -> 64, we generate an atomic __sync_val_compare_and_swap too.
-For 128bits memory access, we rely on SSE2 instructions.
+Posted v4.
 
-By default, atomic accesses are non atomic if a single cpu is running,
-so we force creation of a second one by creating a new thread first.
-
-load/store helpers code path can't be triggered easily in user mode (no
-softmmu), so we can't test it here.
-
-Can be run with:
-make -C build/tests/tcg/x86_64-linux-user run-plugin-test-plugin-mem-access-with-libmem.so
-
-Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
----
- tests/tcg/x86_64/test-plugin-mem-access.c   | 89 +++++++++++++++++++++
- tests/tcg/x86_64/Makefile.target            |  7 ++
- tests/tcg/x86_64/check-plugin-mem-access.sh | 48 +++++++++++
- 3 files changed, 144 insertions(+)
- create mode 100644 tests/tcg/x86_64/test-plugin-mem-access.c
- create mode 100755 tests/tcg/x86_64/check-plugin-mem-access.sh
-
-diff --git a/tests/tcg/x86_64/test-plugin-mem-access.c b/tests/tcg/x86_64/test-plugin-mem-access.c
-new file mode 100644
-index 00000000000..7fdd6a55829
---- /dev/null
-+++ b/tests/tcg/x86_64/test-plugin-mem-access.c
-@@ -0,0 +1,89 @@
-+#include <emmintrin.h>
-+#include <pthread.h>
-+#include <stdint.h>
-+#include <stdlib.h>
-+
-+static void *data;
-+
-+#define DEFINE_STORE(name, type, value) \
-+static void store_##name(void)          \
-+{                                       \
-+    *((type *)data) = value;            \
-+}
-+
-+#define DEFINE_ATOMIC_OP(name, type, value)                 \
-+static void atomic_op_##name(void)                          \
-+{                                                           \
-+    *((type *)data) = 0x42;                                 \
-+    __sync_val_compare_and_swap((type *)data, 0x42, value); \
-+}
-+
-+#define DEFINE_LOAD(name, type)                         \
-+static void load_##name(void)                           \
-+{                                                       \
-+    register type var asm("eax") = *((type *) data);    \
-+    (void)var;                                          \
-+}
-+
-+DEFINE_STORE(u8, uint8_t, 0xf1)
-+DEFINE_ATOMIC_OP(u8, uint8_t, 0xf1)
-+DEFINE_LOAD(u8, uint8_t)
-+DEFINE_STORE(u16, uint16_t, 0xf123)
-+DEFINE_ATOMIC_OP(u16, uint16_t, 0xf123)
-+DEFINE_LOAD(u16, uint16_t)
-+DEFINE_STORE(u32, uint32_t, 0xff112233)
-+DEFINE_ATOMIC_OP(u32, uint32_t, 0xff112233)
-+DEFINE_LOAD(u32, uint32_t)
-+DEFINE_STORE(u64, uint64_t, 0xf123456789abcdef)
-+DEFINE_ATOMIC_OP(u64, uint64_t, 0xf123456789abcdef)
-+DEFINE_LOAD(u64, uint64_t)
-+
-+static void store_u128(void)
-+{
-+    _mm_store_si128(data, _mm_set_epi32(0xf1223344, 0x55667788,
-+                                        0xf1234567, 0x89abcdef));
-+}
-+
-+static void load_u128(void)
-+{
-+    __m128i var = _mm_load_si128(data);
-+    (void)var;
-+}
-+
-+static void *f(void *p)
-+{
-+    return NULL;
-+}
-+
-+int main(void)
-+{
-+    /*
-+     * We force creation of a second thread to enable cpu flag CF_PARALLEL.
-+     * This will generate atomic operations when needed.
-+     */
-+    pthread_t thread;
-+    pthread_create(&thread, NULL, &f, NULL);
-+    pthread_join(thread, NULL);
-+
-+    data = malloc(sizeof(__m128i));
-+    atomic_op_u8();
-+    store_u8();
-+    load_u8();
-+
-+    atomic_op_u16();
-+    store_u16();
-+    load_u16();
-+
-+    atomic_op_u32();
-+    store_u32();
-+    load_u32();
-+
-+    atomic_op_u64();
-+    store_u64();
-+    load_u64();
-+
-+    store_u128();
-+    load_u128();
-+
-+    free(data);
-+}
-diff --git a/tests/tcg/x86_64/Makefile.target b/tests/tcg/x86_64/Makefile.target
-index 5fedf221174..5f7015fd8b4 100644
---- a/tests/tcg/x86_64/Makefile.target
-+++ b/tests/tcg/x86_64/Makefile.target
-@@ -14,6 +14,7 @@ X86_64_TESTS += noexec
- X86_64_TESTS += cmpxchg
- X86_64_TESTS += adox
- X86_64_TESTS += test-1648
-+PLUGINS_TESTS += test-plugin-mem-access
- TESTS=$(MULTIARCH_TESTS) $(X86_64_TESTS) test-x86_64
- else
- TESTS=$(MULTIARCH_TESTS)
-@@ -24,6 +25,12 @@ adox: CFLAGS=-O2
- run-test-i386-ssse3: QEMU_OPTS += -cpu max
- run-plugin-test-i386-ssse3-%: QEMU_OPTS += -cpu max
- 
-+run-plugin-test-plugin-mem-access-with-libmem.so: \
-+	PLUGIN_ARGS=$(COMMA)print-accesses=true
-+run-plugin-test-plugin-mem-access-with-libmem.so: \
-+	CHECK_PLUGIN_OUTPUT_COMMAND= \
-+	$(SRC_PATH)/tests/tcg/x86_64/check-plugin-mem-access.sh
-+
- test-x86_64: LDFLAGS+=-lm -lc
- test-x86_64: test-i386.c test-i386.h test-i386-shift.h test-i386-muldiv.h
- 	$(CC) $(CFLAGS) $< -o $@ $(LDFLAGS)
-diff --git a/tests/tcg/x86_64/check-plugin-mem-access.sh b/tests/tcg/x86_64/check-plugin-mem-access.sh
-new file mode 100755
-index 00000000000..92008e25a93
---- /dev/null
-+++ b/tests/tcg/x86_64/check-plugin-mem-access.sh
-@@ -0,0 +1,48 @@
-+#!/usr/bin/env bash
-+
-+set -euo pipefail
-+
-+die()
-+{
-+    echo "$@" 1>&2
-+    exit 1
-+}
-+
-+check()
-+{
-+    file=$1
-+    pattern=$2
-+    grep "$pattern" "$file" > /dev/null || die "\"$pattern\" not found in $file"
-+}
-+
-+[ $# -eq 1 ] || die "usage: plugin_out_file"
-+
-+plugin_out=$1
-+
-+expected()
-+{
-+    cat << EOF
-+,store_u8,.*,8,store,0xf1
-+,atomic_op_u8,.*,8,load,0x42
-+,atomic_op_u8,.*,8,store,0xf1
-+,load_u8,.*,8,load,0xf1
-+,store_u16,.*,16,store,0xf123
-+,atomic_op_u16,.*,16,load,0x42
-+,atomic_op_u16,.*,16,store,0xf123
-+,load_u16,.*,16,load,0xf123
-+,store_u32,.*,32,store,0xff112233
-+,atomic_op_u32,.*,32,load,0x42
-+,atomic_op_u32,.*,32,store,0xff112233
-+,load_u32,.*,32,load,0xff112233
-+,store_u64,.*,64,store,0xf123456789abcdef
-+,atomic_op_u64,.*,64,load,0x42
-+,atomic_op_u64,.*,64,store,0xf123456789abcdef
-+,load_u64,.*,64,load,0xf123456789abcdef
-+,store_u128,.*,128,store,0xf122334455667788f123456789abcdef
-+,load_u128,.*,128,load,0xf122334455667788f123456789abcdef
-+EOF
-+}
-+
-+expected | while read line; do
-+    check "$plugin_out" "$line"
-+done
--- 
-2.39.2
-
+On 7/1/24 18:10, Pierrick Bouvier wrote:
+> This series allows plugins to know which value is read/written during a memory
+> access.
+> 
+> For every memory access, we know copy this value before calling mem callbacks,
+> and those can query it using new API function:
+> - qemu_plugin_mem_get_value
+> 
+> Mem plugin was extended to print accesses, and a new test was added to check
+> functionality work as expected. A bug was found where callbacks were not
+> called as expected.
+> 
+> This will open new use cases for plugins, such as following specific values in
+> memory.
+> 
+> v3
+> - simplify API: return an algebraic data type for value accessed
+>    this can be easily extended when QEMU will support wider accesses
+> - fix Makefile test (use quiet-command instead of manually run the command)
+> - rename upper/lower to high/low
+> - reorder functions parameters and code to low/high instead of high/low, to
+>    follow current convention in QEMU codebase
+> 
+> v2
+> - fix compilation on aarch64 (missing undef in accel/tcg/atomic_template.h)
+> 
+> v3
+> - add info when printing memory accesses (insn_vaddr,mem_vaddr,mem_hwaddr)
+> 
+> Pierrick Bouvier (7):
+>    plugins: fix mem callback array size
+>    plugins: save value during memory accesses
+>    plugins: extend API to get latest memory value accessed
+>    tests/tcg: add mechanism to run specific tests with plugins
+>    tests/tcg: allow to check output of plugins
+>    tests/plugin/mem: add option to print memory accesses
+>    tests/tcg/x86_64: add test for plugin memory access
+> 
+>   accel/tcg/atomic_template.h                 | 66 +++++++++++++--
+>   include/qemu/plugin.h                       |  8 ++
+>   include/qemu/qemu-plugin.h                  | 32 ++++++++
+>   accel/tcg/plugin-gen.c                      |  3 +-
+>   plugins/api.c                               | 34 ++++++++
+>   plugins/core.c                              |  7 ++
+>   tcg/tcg-op-ldst.c                           | 72 +++++++++++++++--
+>   tests/plugin/mem.c                          | 69 +++++++++++++++-
+>   tests/tcg/x86_64/test-plugin-mem-access.c   | 89 +++++++++++++++++++++
+>   accel/tcg/atomic_common.c.inc               | 13 ++-
+>   accel/tcg/ldst_common.c.inc                 | 38 +++++----
+>   plugins/qemu-plugins.symbols                |  1 +
+>   tests/tcg/Makefile.target                   | 10 ++-
+>   tests/tcg/x86_64/Makefile.target            |  7 ++
+>   tests/tcg/x86_64/check-plugin-mem-access.sh | 48 +++++++++++
+>   15 files changed, 462 insertions(+), 35 deletions(-)
+>   create mode 100644 tests/tcg/x86_64/test-plugin-mem-access.c
+>   create mode 100755 tests/tcg/x86_64/check-plugin-mem-access.sh
+> 
 
