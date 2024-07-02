@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DC759240A5
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 16:25:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F6AD924024
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 16:14:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOeDI-0004Rq-Hl; Tue, 02 Jul 2024 10:10:32 -0400
+	id 1sOeDJ-0004bd-JR; Tue, 02 Jul 2024 10:10:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOeD8-0003rd-Ls
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:10:23 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOeDD-0004A7-IW
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:10:27 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOeD5-0000Ii-FB
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:10:22 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOeD8-0000J0-36
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:10:27 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719929418;
+ s=mimecast20190719; t=1719929420;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=FXwifnBJIBh3zju1O5LT6q/8nalot/g3k4ePiwaH62E=;
- b=F2YtbeKtlfbvVH+Rhm3sVZhEFHJD8GYAPiQyZOFHQ2x49BzX6yZIRCzlyKKw30uf9tsis7
- ANBVJoV0R4+VKZdLk3btlU6hu2uPdQiUHg6qlcTEoeU1hXrddSckK7VZn5Y2leGZOBgEjc
- FyvuYW0OA4dlYiEmfcuLnRxeW8LaVcQ=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Qq6X3kMK8U5RTSY4JoCXP6cD3LHFaX4iQOeFqnwxYP8=;
+ b=AD+Jn+39gteK/SPWlHoM8YBFCH3XwpGf1BMTYSsq4Y2w/ek5GSmtiqWPZGOoJnWF/X/pEz
+ XK506Dr6qbhUs1CnOj8RwsQnnT+DJ5ABASTIogbb+X9NKVHNMroKpsq6hHvl1GbBQLL7ma
+ SfG+QYKlQdnBYUykT5DACW0dfC8/NKo=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-184-D2-eDGZOPKiRW9xgmHuuCA-1; Tue, 02 Jul 2024 10:10:15 -0400
-X-MC-Unique: D2-eDGZOPKiRW9xgmHuuCA-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-3678e549a1eso196164f8f.0
- for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 07:10:15 -0700 (PDT)
+ us-mta-104-ywZo8X4QMFSRI91soVd6MA-1; Tue, 02 Jul 2024 10:10:18 -0400
+X-MC-Unique: ywZo8X4QMFSRI91soVd6MA-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-4256667ebf9so29787045e9.1
+ for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 07:10:18 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719929414; x=1720534214;
+ d=1e100.net; s=20230601; t=1719929417; x=1720534217;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=FXwifnBJIBh3zju1O5LT6q/8nalot/g3k4ePiwaH62E=;
- b=J/yx5TK6e8+dRn4tuEbyuYjL0ByLswJvTpAEO6B8RB1rK/G54IP8MHE384hRj49e/3
- rXddElMaMTXcyI01z7QHLLny7wwhJ6dmpPAttEcIIjLGa5GC37Y8nFoGAbsnpLQimoDW
- g7O0OXhszH7uCO8WrYQdJjt477JJ2g9w7h8sJ+jWWfCii8KEeOZOi4KWCvwgWNjG1Mm+
- 796UFGTLA0tUdUW7yuZ+pZwXqGPDhxhp1VDH0K+f9y5KrOrI8MWv24Iclc4dBEWAKeCl
- yI+NlaXejIlsk1rOws0G4UQUhQA4F3ybdtJRF8zJjUiIMGIj7I63E8V10YBjFwgBHlPC
- /F4g==
-X-Gm-Message-State: AOJu0YzYkO3zF0beSPdrcJ48avk3ovJUNstgyBxBs0vbH91p/V+WOhw9
- YI8QUpbpizy7nNhtJKlp1ivbBIw3ZbnNYNfWqlLji3r2ZvIw7p7q62WigdyiAJQdMgVKgv6OYRH
- AiYwNg5FTYR7itNsDtRZSe8S+pkV/fC6xhgpd9uVhkrDZY9950febjYmuUKti648I+q3W2h7mL4
- pnIfRPFXE95fj01Iw+2P0Sjtm4oqmHgw==
-X-Received: by 2002:adf:ec03:0:b0:367:8e63:4da4 with SMTP id
- ffacd0b85a97d-3678e634fa5mr750890f8f.14.1719929413934; 
- Tue, 02 Jul 2024 07:10:13 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHXqLGWe/UUyKylroPMXaPCxn4iIPB7sy9r6J/5ObEupwkwci/2EZYqSuhXQD3gPzyaiRDSpg==
-X-Received: by 2002:adf:ec03:0:b0:367:8e63:4da4 with SMTP id
- ffacd0b85a97d-3678e634fa5mr750849f8f.14.1719929413359; 
- Tue, 02 Jul 2024 07:10:13 -0700 (PDT)
+ bh=Qq6X3kMK8U5RTSY4JoCXP6cD3LHFaX4iQOeFqnwxYP8=;
+ b=H/ICMbOavj+fgFnpSFL1uMOA/d8PfiUtDSaZUd3+JN7V1ZA+X9KtcAHxceIBkRPJp2
+ pVIQlOmjT3zZXu6RxME1CdUfEnszQOemAnhPm7r9azPSL0m1b84neHeAUL9zD6eabgwk
+ q+Bev1lAW52BimyRr3cJyXKYrttkXmBzS2/KOvcn2cJPULLhfWYfi5azwB6GSwY2RJUV
+ yXoIXT+xiL9PKfPlnmcofPOasTMhAQyW8Xe/9vOGYfHFbBaJ9Gz0nZFtuCKzPmwlIqYR
+ 34qQRUgqLiqAnU65Ndg6Lxs1Yk/eJDGRBzskafLNZsYtZ487+9TgMje4ot7gEMzdjVD9
+ XVmQ==
+X-Gm-Message-State: AOJu0Yyqs9/qDQQtmlQMNvQiprTZAbX92MEZgrvIhR+lEGH2Ehcl6Dri
+ B5Mzn0ZtWJ5eK0hY5ittdHS2HHEE/5h2gwzcH2EPXyxdeMtfGRp7fMHyjNb/Zd87tSN2m0GckqA
+ 3w1RX5J5aW7w4pX6o6N9e5WQb9R8KC3fiZWRKTkg4vkZ2oq45hwxJuhXaK64NLukC7fmNNoqik8
+ 56ow9/ufEg0n64L17MvjPTabADEvkJ7A==
+X-Received: by 2002:a05:600c:4f94:b0:425:7c46:d336 with SMTP id
+ 5b1f17b1804b1-4257c46d499mr54231075e9.17.1719929417089; 
+ Tue, 02 Jul 2024 07:10:17 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFySsgJqXcJ79POgmKrIbdLl8PEOmX4fONoo6vKU///699K/Pk4odKCdhbUbT93ZVyLZ+bPAg==
+X-Received: by 2002:a05:600c:4f94:b0:425:7c46:d336 with SMTP id
+ 5b1f17b1804b1-4257c46d499mr54230735e9.17.1719929416515; 
+ Tue, 02 Jul 2024 07:10:16 -0700 (PDT)
 Received: from redhat.com ([2a02:14f:1f5:eadd:8c31:db01:9d01:7604])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4256b099c72sm198300495e9.37.2024.07.02.07.10.11
+ ffacd0b85a97d-3675a0fba0bsm13305727f8f.69.2024.07.02.07.10.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 02 Jul 2024 07:10:12 -0700 (PDT)
-Date: Tue, 2 Jul 2024 10:10:10 -0400
+ Tue, 02 Jul 2024 07:10:16 -0700 (PDT)
+Date: Tue, 2 Jul 2024 10:10:13 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Nicolin Chen <nicolinc@nvidia.com>, Eric Auger <eric.auger@redhat.com>,
- Shannon Zhao <shannon.zhaosl@gmail.com>,
+ Sunil V L <sunilvl@ventanamicro.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
  Igor Mammedov <imammedo@redhat.com>,
- Ani Sinha <anisinha@redhat.com>, qemu-arm@nongnu.org
-Subject: [PULL 62/91] hw/arm/virt-acpi-build: Fix id_count in
- build_iort_id_mapping
-Message-ID: <9bad72efc04a87e595aec1e9ac0c43ae3c0ad695.1719929191.git.mst@redhat.com>
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 63/91] uefi-test-tools/UefiTestToolsPkg: Add RISC-V support
+Message-ID: <492ce19c7be7fd2a36550420a27d646ed6af74e2.1719929191.git.mst@redhat.com>
 References: <cover.1719929191.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -103,90 +102,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Nicolin Chen <nicolinc@nvidia.com>
+From: Sunil V L <sunilvl@ventanamicro.com>
 
-It's observed that Linux kernel booting with the VM reports a "conflicting
-mapping for input ID" FW_BUG.
+Enable building the test application for RISC-V with appropriate
+dependencies updated.
 
-The IORT doc defines "Number of IDs" to be "the number of IDs in the range
-minus one", while virt-acpi-build.c simply stores the number of IDs in the
-id_count without the "minus one". Meanwhile, some of the callers pass in a
-0xFFFF following the spec. So, this is a mismatch between the function and
-its callers.
-
-Fix build_iort_id_mapping() by internally subtracting one from the pass-in
-@id_count. Accordingly make sure that all existing callers pass in a value
-without the "minus one", i.e. change all 0xFFFFs to 0x10000s.
-
-Also, add a few lines of comments to highlight this change along with the
-referencing document for this build_iort_id_mapping().
-
-Fixes: 42e0f050e3a5 ("hw/arm/virt-acpi-build: Add IORT support to bypass SMMUv3")
-Suggested-by: Michael S. Tsirkin <mst@redhat.com>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
-Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
-Message-Id: <20240619201243.936819-1-nicolinc@nvidia.com>
+Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
+Acked-by: Gerd Hoffmann <kraxel@redhat.com>
+Acked-by: Alistair Francis <alistair.francis@wdc.com>
+Acked-by: Igor Mammedov <imammedo@redhat.com>
+Message-Id: <20240625150839.1358279-3-sunilvl@ventanamicro.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/arm/virt-acpi-build.c | 19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
+ tests/uefi-test-tools/UefiTestToolsPkg/UefiTestToolsPkg.dsc | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
-index 102e2da934..e10cad86dd 100644
---- a/hw/arm/virt-acpi-build.c
-+++ b/hw/arm/virt-acpi-build.c
-@@ -209,12 +209,19 @@ static void acpi_dsdt_add_tpm(Aml *scope, VirtMachineState *vms)
- #define ROOT_COMPLEX_ENTRY_SIZE 36
- #define IORT_NODE_OFFSET 48
+diff --git a/tests/uefi-test-tools/UefiTestToolsPkg/UefiTestToolsPkg.dsc b/tests/uefi-test-tools/UefiTestToolsPkg/UefiTestToolsPkg.dsc
+index c8511cd732..0902fd3c73 100644
+--- a/tests/uefi-test-tools/UefiTestToolsPkg/UefiTestToolsPkg.dsc
++++ b/tests/uefi-test-tools/UefiTestToolsPkg/UefiTestToolsPkg.dsc
+@@ -19,7 +19,7 @@
+   PLATFORM_VERSION        = 0.1
+   PLATFORM_NAME           = UefiTestTools
+   SKUID_IDENTIFIER        = DEFAULT
+-  SUPPORTED_ARCHITECTURES = ARM|AARCH64|IA32|X64
++  SUPPORTED_ARCHITECTURES = ARM|AARCH64|IA32|X64|RISCV64
+   BUILD_TARGETS           = DEBUG
  
-+/*
-+ * Append an ID mapping entry as described by "Table 4 ID mapping format" in
-+ * "IO Remapping Table System Software on ARM Platforms", Chapter 3.
-+ * Document number: ARM DEN 0049E.f, Apr 2024
-+ *
-+ * Note that @id_count gets internally subtracted by one, following the spec.
-+ */
- static void build_iort_id_mapping(GArray *table_data, uint32_t input_base,
-                                   uint32_t id_count, uint32_t out_ref)
- {
--    /* Table 4 ID mapping format */
-     build_append_int_noprefix(table_data, input_base, 4); /* Input base */
--    build_append_int_noprefix(table_data, id_count, 4); /* Number of IDs */
-+    /* Number of IDs - The number of IDs in the range minus one */
-+    build_append_int_noprefix(table_data, id_count - 1, 4);
-     build_append_int_noprefix(table_data, input_base, 4); /* Output base */
-     build_append_int_noprefix(table_data, out_ref, 4); /* Output Reference */
-     /* Flags */
-@@ -305,8 +312,8 @@ build_iort(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
-         }
+ [BuildOptions.IA32]
+@@ -60,6 +60,10 @@
  
-         /* Append the last RC -> ITS ID mapping */
--        if (next_range.input_base < 0xFFFF) {
--            next_range.id_count = 0xFFFF - next_range.input_base;
-+        if (next_range.input_base < 0x10000) {
-+            next_range.id_count = 0x10000 - next_range.input_base;
-             g_array_append_val(its_idmaps, next_range);
-         }
+ [LibraryClasses.IA32, LibraryClasses.X64]
+   BaseMemoryLib|MdePkg/Library/BaseMemoryLibRepStr/BaseMemoryLibRepStr.inf
++  RegisterFilterLib|MdePkg/Library/RegisterFilterLibNull/RegisterFilterLibNull.inf
++
++[LibraryClasses.RISCV64]
++  BaseMemoryLib|MdePkg/Library/BaseMemoryLib/BaseMemoryLib.inf
  
-@@ -365,7 +372,7 @@ build_iort(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
-         build_append_int_noprefix(table_data, 0, 4);
- 
-         /* output IORT node is the ITS group node (the first node) */
--        build_iort_id_mapping(table_data, 0, 0xFFFF, IORT_NODE_OFFSET);
-+        build_iort_id_mapping(table_data, 0, 0x10000, IORT_NODE_OFFSET);
-     }
- 
-     /* Table 17 Root Complex Node */
-@@ -418,7 +425,7 @@ build_iort(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
-         }
-     } else {
-         /* output IORT node is the ITS group node (the first node) */
--        build_iort_id_mapping(table_data, 0, 0xFFFF, IORT_NODE_OFFSET);
-+        build_iort_id_mapping(table_data, 0, 0x10000, IORT_NODE_OFFSET);
-     }
- 
-     acpi_table_end(linker, &table);
+ [PcdsFixedAtBuild]
+   gEfiMdePkgTokenSpaceGuid.PcdDebugPrintErrorLevel|0x8040004F
 -- 
 MST
 
