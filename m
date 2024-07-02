@@ -2,54 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3331923B7C
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 12:34:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C67B923B83
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 12:34:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOapR-00048D-CE; Tue, 02 Jul 2024 06:33:41 -0400
+	id 1sOapY-0004As-QC; Tue, 02 Jul 2024 06:33:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sOapP-00047l-DG
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 06:33:39 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sOapW-00048z-HC
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 06:33:46 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sOapN-000769-UK
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 06:33:39 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sOapU-00076V-SZ
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 06:33:46 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719916417;
+ s=mimecast20190719; t=1719916424;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=7XduJ0TCBnplDVugYYmZN5o8ZkVImVBc1PGz+/I5i4k=;
- b=OHejST+rcq9eniGPGiI8xKjWB6KBEHkXv4o1hivMMTQvlUAL1xwKPTEbw6DNAotYTIuzhN
- /Y6gTknRLMRk2ZobQ6NO5HEB37VdxctM5AVZlBj6/tJ3zmwRi9MdGJH5vmLQqL5891rgCY
- gJWsNTiWg/MiTZK60lHpGUr8YcC7kUk=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ bh=UP5k2DL6LgqTBAh4YGOkkQj9J7KbuqTIoxbbpQ6g+zs=;
+ b=Di25aOGtvNZSu6rtkHrd91eGNkJjNjnWl2POtmZbzkrYhF6U5vAP2UZfBnbnYMcMhX5Zhr
+ ait3RYv0Mg40zaglpQglsJzs5RPA+55qmy7/bDkxqgnF28ui9HOu06NlM5WO7sDIZOuqsq
+ JIx8By5TQUARGrB1Mf0rVvUni8SfMh8=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-651-mTWvgJHZMpuw7UtLa_Zoag-1; Tue,
- 02 Jul 2024 06:33:36 -0400
-X-MC-Unique: mTWvgJHZMpuw7UtLa_Zoag-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-501-SEnZ4n55MgWMwbeCEaqjtg-1; Tue,
+ 02 Jul 2024 06:33:40 -0400
+X-MC-Unique: SEnZ4n55MgWMwbeCEaqjtg-1
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 1D3CE1955F03; Tue,  2 Jul 2024 10:33:35 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 0EC4119560A2; Tue,  2 Jul 2024 10:33:39 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.116])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id E3D4319560AA; Tue,  2 Jul 2024 10:33:31 +0000 (UTC)
+ id C23A219560AA; Tue,  2 Jul 2024 10:33:35 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org,
 	Richard Henderson <richard.henderson@linaro.org>
 Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
  "Michael S . Tsirkin" <mst@redhat.com>
-Subject: [PULL 06/12] tests/qtest: Free paths
-Date: Tue,  2 Jul 2024 12:33:04 +0200
-Message-ID: <20240702103310.347201-7-thuth@redhat.com>
+Subject: [PULL 07/12] tests/qtest: Free GThread
+Date: Tue,  2 Jul 2024 12:33:05 +0200
+Message-ID: <20240702103310.347201-8-thuth@redhat.com>
 In-Reply-To: <20240702103310.347201-1-thuth@redhat.com>
 References: <20240702103310.347201-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -81,58 +82,48 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-This fixes LeakSanitizer warnings.
+These GThreads are never referenced.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Message-ID: <20240627-san-v2-14-750bb0946dbd@daynix.com>
+Message-ID: <20240627-san-v2-15-750bb0946dbd@daynix.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/qtest/qos-test.c | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ tests/qtest/vhost-user-test.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/tests/qtest/qos-test.c b/tests/qtest/qos-test.c
-index 5da4091ec3..114f6bef27 100644
---- a/tests/qtest/qos-test.c
-+++ b/tests/qtest/qos-test.c
-@@ -33,7 +33,6 @@
- static char *old_path;
+diff --git a/tests/qtest/vhost-user-test.c b/tests/qtest/vhost-user-test.c
+index d4e437265f..929af5c183 100644
+--- a/tests/qtest/vhost-user-test.c
++++ b/tests/qtest/vhost-user-test.c
+@@ -928,7 +928,7 @@ static void *vhost_user_test_setup_reconnect(GString *cmd_line, void *arg)
+ {
+     TestServer *s = test_server_new("reconnect", arg);
  
+-    g_thread_new("connect", connect_thread, s);
++    g_thread_unref(g_thread_new("connect", connect_thread, s));
+     append_mem_opts(s, cmd_line, 256, TEST_MEMFD_AUTO);
+     s->vu_ops->append_opts(s, cmd_line, ",server=on");
  
--
- /**
-  * qos_set_machines_devices_available(): sets availability of qgraph
-  * machines and devices.
-@@ -191,6 +190,12 @@ static void subprocess_run_one_test(const void *arg)
-     g_test_trap_assert_passed();
- }
+@@ -965,7 +965,7 @@ static void *vhost_user_test_setup_connect_fail(GString *cmd_line, void *arg)
  
-+static void destroy_pathv(void *arg)
-+{
-+    g_free(((char **)arg)[0]);
-+    g_free(arg);
-+}
-+
- /*
-  * in this function, 2 path will be built:
-  * path_str, a one-string path (ex "pc/i440FX-pcihost/...")
-@@ -295,10 +300,13 @@ static void walk_path(QOSGraphNode *orig_path, int len)
-     if (path->u.test.subprocess) {
-         gchar *subprocess_path = g_strdup_printf("/%s/%s/subprocess",
-                                                  qtest_get_arch(), path_str);
--        qtest_add_data_func(path_str, subprocess_path, subprocess_run_one_test);
--        g_test_add_data_func(subprocess_path, path_vec, run_one_test);
-+        qtest_add_data_func_full(path_str, subprocess_path,
-+                                 subprocess_run_one_test, g_free);
-+        g_test_add_data_func_full(subprocess_path, path_vec,
-+                                  run_one_test, destroy_pathv);
-     } else {
--        qtest_add_data_func(path_str, path_vec, run_one_test);
-+        qtest_add_data_func_full(path_str, path_vec,
-+                                 run_one_test, destroy_pathv);
-     }
+     s->test_fail = true;
  
-     g_free(path_str);
+-    g_thread_new("connect", connect_thread, s);
++    g_thread_unref(g_thread_new("connect", connect_thread, s));
+     append_mem_opts(s, cmd_line, 256, TEST_MEMFD_AUTO);
+     s->vu_ops->append_opts(s, cmd_line, ",server=on");
+ 
+@@ -980,7 +980,7 @@ static void *vhost_user_test_setup_flags_mismatch(GString *cmd_line, void *arg)
+ 
+     s->test_flags = TEST_FLAGS_DISCONNECT;
+ 
+-    g_thread_new("connect", connect_thread, s);
++    g_thread_unref(g_thread_new("connect", connect_thread, s));
+     append_mem_opts(s, cmd_line, 256, TEST_MEMFD_AUTO);
+     s->vu_ops->append_opts(s, cmd_line, ",server=on");
+ 
 -- 
 2.45.2
 
