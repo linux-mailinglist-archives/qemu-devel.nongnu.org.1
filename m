@@ -2,57 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C208C923B8D
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 12:35:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05D16923B89
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 12:35:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOapj-0004VC-Ia; Tue, 02 Jul 2024 06:33:59 -0400
+	id 1sOapq-0004xM-KK; Tue, 02 Jul 2024 06:34:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sOaph-0004RS-JZ
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 06:33:57 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sOapm-0004o2-HA
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 06:34:02 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sOapg-00077o-1x
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 06:33:57 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sOapl-00078F-0e
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 06:34:02 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719916435;
+ s=mimecast20190719; t=1719916440;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Owm1mlq7uqIiykzVPb5sz2Sw4STwQhD7wcxtudtRzVE=;
- b=R0kEiAMrSYUpFmKg2mhCd8Gp7QYTGjjZPaLA6WYfgQW9dqIEaIP2L1b4aSjdPTEvise9jw
- foq4iG+5f/yrGFfsvynECHMmj9izY/QPcXvd6U7m820FeyWC3zRE+A2a3CfzwIJdicxqoi
- N6XLYNfOy7Y/GUphX3Q3Y/r3YEfTVJ4=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ bh=6T0SU6q6wZ8+O2LXk5UJvJ5/nk6nIiV7hiT5oboTAYQ=;
+ b=Z7jbPjFlWpVs2JBgXw7wnjs2M24HteOrHRwba44iVF+AJzNT1N50+Swz3pDrhQ+e0QwRw5
+ BXohIDSv99lKOciMjwGIOFjQm6ORQRI8bhwaEnpc/8akowCzb4tNCWZRDIXmyTB55CpS2X
+ dXW62fKoFNcDTUCq//9k93gUaQc0QTw=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-484-F56KU3M9PnKMma4Ed_hEMg-1; Tue,
- 02 Jul 2024 06:33:53 -0400
-X-MC-Unique: F56KU3M9PnKMma4Ed_hEMg-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-330-aScFn9gBPnaCu_jFVNseQA-1; Tue,
+ 02 Jul 2024 06:33:56 -0400
+X-MC-Unique: aScFn9gBPnaCu_jFVNseQA-1
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id BEC871944D36; Tue,  2 Jul 2024 10:33:52 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 698521944EAC; Tue,  2 Jul 2024 10:33:55 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.116])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 7146719560AA; Tue,  2 Jul 2024 10:33:50 +0000 (UTC)
+ id CE5151955E74; Tue,  2 Jul 2024 10:33:53 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org,
 	Richard Henderson <richard.henderson@linaro.org>
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PULL 11/12] .travis.yml: Install python3-tomli in all build jobs
-Date: Tue,  2 Jul 2024 12:33:09 +0200
-Message-ID: <20240702103310.347201-12-thuth@redhat.com>
+Subject: [PULL 12/12] pc-bios/s390-ccw: Remove duplicated LDFLAGS
+Date: Tue,  2 Jul 2024 12:33:10 +0200
+Message-ID: <20240702103310.347201-13-thuth@redhat.com>
 In-Reply-To: <20240702103310.347201-1-thuth@redhat.com>
 References: <20240702103310.347201-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
@@ -79,69 +77,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since commit 1f97715c83 ('Revert "python: use vendored tomli"')
-this package is a hard requirement for compiling QEMU, so install
-it now in all Travis jobs, too.
+The -Wl,-pie and -nostdlib flags are added to LDFLAGS twice. Merge
+the two lines to get rid of the duplicates.
 
-Message-ID: <20240624094807.182313-1-thuth@redhat.com>
-Acked-by: Alex Bennée <alex.bennee@linaro.org>
+Message-ID: <20240621082422.136217-2-thuth@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- .travis.yml | 6 ++++++
- 1 file changed, 6 insertions(+)
+ pc-bios/s390-ccw/Makefile | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/.travis.yml b/.travis.yml
-index cef0308952..8fc1ae0cf2 100644
---- a/.travis.yml
-+++ b/.travis.yml
-@@ -106,6 +106,7 @@ jobs:
-           - libvdeplug-dev
-           - libvte-2.91-dev
-           - ninja-build
-+          - python3-tomli
-           # Tests dependencies
-           - genisoimage
-       env:
-@@ -141,6 +142,7 @@ jobs:
-           - libvdeplug-dev
-           - libvte-2.91-dev
-           - ninja-build
-+          - python3-tomli
-           # Tests dependencies
-           - genisoimage
-       env:
-@@ -175,6 +177,7 @@ jobs:
-           - libvdeplug-dev
-           - libvte-2.91-dev
-           - ninja-build
-+          - python3-tomli
-           # Tests dependencies
-           - genisoimage
-       env:
-@@ -215,6 +218,7 @@ jobs:
-           - libzstd-dev
-           - nettle-dev
-           - ninja-build
-+          - python3-tomli
-           # Tests dependencies
-           - genisoimage
-       env:
-@@ -231,6 +235,7 @@ jobs:
-           - ninja-build
-           - flex
-           - bison
-+          - python3-tomli
-       env:
-         - TEST_CMD="make check check-tcg V=1"
-         - CONFIG="--disable-containers --disable-system"
-@@ -263,6 +268,7 @@ jobs:
-           - libvdeplug-dev
-           - libvte-2.91-dev
-           - ninja-build
-+          - python3-tomli
-       env:
-         - TEST_CMD="make check-unit"
-         - CONFIG="--disable-containers --disable-tcg --enable-kvm --disable-tools
+diff --git a/pc-bios/s390-ccw/Makefile b/pc-bios/s390-ccw/Makefile
+index acfcd1e71a..6207911b53 100644
+--- a/pc-bios/s390-ccw/Makefile
++++ b/pc-bios/s390-ccw/Makefile
+@@ -40,7 +40,7 @@ EXTRA_CFLAGS += -ffreestanding -fno-delete-null-pointer-checks -fno-common -fPIE
+ EXTRA_CFLAGS += -fwrapv -fno-strict-aliasing -fno-asynchronous-unwind-tables
+ EXTRA_CFLAGS += -msoft-float
+ EXTRA_CFLAGS += -std=gnu99
+-LDFLAGS += -Wl,-pie -nostdlib
++LDFLAGS += -Wl,-pie -nostdlib -z noexecstack
+ 
+ cc-test = $(CC) -Werror $1 -c -o /dev/null -xc /dev/null >/dev/null 2>/dev/null
+ cc-option = if $(call cc-test, $1); then \
+@@ -55,8 +55,6 @@ config-cc.mak: Makefile
+ 	    $(call cc-option,-march=z900,-march=z10)) 3> config-cc.mak
+ -include config-cc.mak
+ 
+-LDFLAGS += -Wl,-pie -nostdlib -z noexecstack
+-
+ build-all: s390-ccw.img s390-netboot.img
+ 
+ s390-ccw.elf: $(OBJECTS)
 -- 
 2.45.2
 
