@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F5BA92406A
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 16:19:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1355923FEE
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 16:09:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOeBQ-0003aW-KH; Tue, 02 Jul 2024 10:08:36 -0400
+	id 1sOeBW-0004CN-9N; Tue, 02 Jul 2024 10:08:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOeBO-0003OW-9t
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:08:34 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOeBR-0003pj-U9
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:08:38 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOeBM-0008Ae-Ht
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:08:34 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOeBQ-0008Cf-2m
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:08:37 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719929311;
+ s=mimecast20190719; t=1719929314;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=QuE+o0AC9wdLKXlzVTnODsdNe5/ti8zXK/7OKFfOYUM=;
- b=DiOFenw6p4NCmQ1ZXNmSBQ3DWjFuNA+Vv5fMbYUBkajuVFjXWD0ux7tTWclOyhnpitej5+
- Qd+rlQ6gsxBWOmAy1AaDvfyeHr+jfGnrIYRbm364nqdy01ltm2pJmw9JeOicW25oIdq9wz
- rS9pxwoXAgJyJiBm0YzdGJtI6CmdEDM=
-Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
- [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=WFUPapk07PnJ8CLhVhbjjsuC+NoP2UxN6SJb+Hfxl60=;
+ b=BnxtlM91yj03wI9asrZvP0JwFIKHOuRaVmjS2HP6UbuYVWSJmjsI23rtMTekHGGvLJJ6D4
+ nRsYceCA1EQOJMCV04IJLagHWtlSj1Mq34nVFdpXRRjPHTjv+9yBnLJ5eQ6ZwV4AdxwMMW
+ BpnlHsJxtGe3GBbMhoaS/f0z8UMNKH0=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-499-Bdfjy7BhO-KJCUZqdKaNdA-1; Tue, 02 Jul 2024 10:08:30 -0400
-X-MC-Unique: Bdfjy7BhO-KJCUZqdKaNdA-1
-Received: by mail-lj1-f200.google.com with SMTP id
- 38308e7fff4ca-2ee45dea727so43498571fa.2
- for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 07:08:30 -0700 (PDT)
+ us-mta-615-yJWFgpvlP0e8Lp9KKyadrA-1; Tue, 02 Jul 2024 10:08:32 -0400
+X-MC-Unique: yJWFgpvlP0e8Lp9KKyadrA-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-4257a75193aso19222955e9.1
+ for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 07:08:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719929308; x=1720534108;
+ d=1e100.net; s=20230601; t=1719929311; x=1720534111;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=QuE+o0AC9wdLKXlzVTnODsdNe5/ti8zXK/7OKFfOYUM=;
- b=g1h8iWs80kx+ZZ76gGxV95rgIn6Nu+q+E7ADvgZFTSJAXr6bSIchWGsyMSuEr+ul+O
- n0FDf3TWWeS5mq4bMMXuO+1k/pAxhebuk7SsoZKvDw+laNfOmRH2+90V+IPMQ58QKH0b
- XmZN85eLRQ9JRt5tuIfEuyMwjiW4T3+iS/be1Ey/oXcA/W/6xg4XT6xhtrFh5Jtud75+
- /67nlI5xcktus2A3F2HmcuEJCNsuBXdy0vGu984E4Ve5TkemYEpcIdRwh0cCuMovO6tJ
- mMWjdMxrcH2TpYIxxoUszwN+MGqRm9+zeGimWB2tgisLKrSFIhYY0XBA2u8BccTCRH/l
- OFEg==
-X-Gm-Message-State: AOJu0Yw3xMFDu8+Q1Q8U6MWTtufZlAy+pn+XsmFk8z+rvgo+E/rvgmGC
- UPP2VxXYAx5Dkt/ZzyFPe5e3ZZNui7ofJr7JDiDJW+9O7sVz42OjLyKlkfprZnqAl7BiXazjkjw
- wRCeeZ9+8iPCxwBYFEpX1Y08PzJZNhRK7q6RTmqHr+r5W/nbuASrcazsZCFKikeLH4oTP9TAMYT
- ZTVavf/TKmNDJS4xbjDYoA3oDBN+FWIw==
-X-Received: by 2002:a2e:a80c:0:b0:2ee:6254:f9f1 with SMTP id
- 38308e7fff4ca-2ee6254fb37mr71784921fa.6.1719929308521; 
- Tue, 02 Jul 2024 07:08:28 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEB7VMSAe5RZrg8sr1ujo7YRzCLDLvgQFHZNzW1YvKgmeNf6Z/zI39IVAcf8AOQDWz6P+uU5w==
-X-Received: by 2002:a2e:a80c:0:b0:2ee:6254:f9f1 with SMTP id
- 38308e7fff4ca-2ee6254fb37mr71783931fa.6.1719929306902; 
- Tue, 02 Jul 2024 07:08:26 -0700 (PDT)
+ bh=WFUPapk07PnJ8CLhVhbjjsuC+NoP2UxN6SJb+Hfxl60=;
+ b=IwJtvy7+x6VdX0ieXCBjpxK7YKtnAvKV+cXjVVy5x5eIQaWEiBVpaVzVZMYOt50mpi
+ 6yB8iSSXNDDeNTDpkHND5Rw8YN3nJThGv8k6nWLVKCn23rtoIpRWGMM3mbniW7rTfbVb
+ kURgSkF+ZZCvwU7CEnqwmNdBb3BXbJladScpyKA5aVZK4wfT34H0qXo4gkdL6gvPUpQ6
+ v5INpna9uyD+6nS5vNb+9AlvwzOHLaKAUEG3Y0Y54JHogN5qUaKiN8+Jy3ulBj+e4MxS
+ FV5/FBPUgwFO7RsBrvQAdQyX3UeFrf+OR+1a251q/OOa0RtunYb+Bug7iPcXmwoGQmDM
+ P+Cg==
+X-Gm-Message-State: AOJu0YzFPeJgRJpuighXRjxgNIGQ9DFTGNbpZMcWNNqOkxvsP6DbwE9N
+ GYzhHcuFw24OdDcitqtzNGhuqZuu/716wjQU7A/CfGDJIiML7R4mWMwcVCzRiXBV47DnIo6Lfle
+ xXBrDwV6X4QQF5dLBRL+E/iNfrD0vLgT4/RXnUk8QTqY7czJMLBX7GqRlasc4K+mxd2OsGNfRgH
+ QVqno77ASEVTZMIHO4ZNyzS0nwPUsXxw==
+X-Received: by 2002:a7b:c458:0:b0:424:a655:c8b with SMTP id
+ 5b1f17b1804b1-4257a010ab5mr58862765e9.19.1719929311402; 
+ Tue, 02 Jul 2024 07:08:31 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH8VuEGxyfX1E4eygZUT+D6B9/QgjkiBFNHFLZX/IlHRAeYyEiWkuA+aZweZmup7TL3k3Q7Hw==
+X-Received: by 2002:a7b:c458:0:b0:424:a655:c8b with SMTP id
+ 5b1f17b1804b1-4257a010ab5mr58862525e9.19.1719929310849; 
+ Tue, 02 Jul 2024 07:08:30 -0700 (PDT)
 Received: from redhat.com ([2a02:14f:1f5:eadd:8c31:db01:9d01:7604])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4256af376f5sm200519545e9.6.2024.07.02.07.08.25
+ ffacd0b85a97d-3675a0d9b12sm13309086f8f.44.2024.07.02.07.08.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 02 Jul 2024 07:08:26 -0700 (PDT)
-Date: Tue, 2 Jul 2024 10:08:24 -0400
+ Tue, 02 Jul 2024 07:08:30 -0700 (PDT)
+Date: Tue, 2 Jul 2024 10:08:28 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, Fan Ni <fan.ni@samsung.com>,
  Svetly Todorov <svetly.todorov@memverge.com>,
  Gregory Price <gregory.price@memverge.com>,
- Jonathan Cameron <jonathan.cameron@huawei.com>
-Subject: [PULL 28/91] hw/cxl/cxl-mailbox-utils: Add superset extent release
- mailbox support
-Message-ID: <3083f018b59fd35b9ee993715694f967c49afeb1.1719929191.git.mst@redhat.com>
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PULL 29/91] hw/mem/cxl_type3: Allow to release extent superset in
+ QMP interface
+Message-ID: <c51dca04281f9be6eacdad8fc8f9c7ddc87dcf3c.1719929191.git.mst@redhat.com>
 References: <cover.1719929191.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -104,70 +104,37 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Fan Ni <fan.ni@samsung.com>
 
-With the change, we extend the extent release mailbox command processing
-to allow more flexible release. As long as the DPA range of the extent to
-release is covered by accepted extent(s) in the device, the release can be
-performed.
+Before the change, the QMP interface used for add/release DC extents
+only allows to release an extent whose DPA range is contained by a single
+accepted extent in the device.
+
+With the change, we relax the constraints.  As long as the DPA range of
+the extent is covered by accepted extents, we allow the release.
 
 Tested-by: Svetly Todorov <svetly.todorov@memverge.com>
 Reviewed-by: Gregory Price <gregory.price@memverge.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Fan Ni <fan.ni@samsung.com>
-Message-Id: <20240523174651.1089554-14-nifan.cxl@gmail.com>
+Message-Id: <20240523174651.1089554-15-nifan.cxl@gmail.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/cxl/cxl-mailbox-utils.c | 21 ++++++++-------------
- 1 file changed, 8 insertions(+), 13 deletions(-)
+ hw/mem/cxl_type3.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
-index c4852112fe..74eeb6fde7 100644
---- a/hw/cxl/cxl-mailbox-utils.c
-+++ b/hw/cxl/cxl-mailbox-utils.c
-@@ -1704,6 +1704,13 @@ static CXLRetCode cxl_dc_extent_release_dry_run(CXLType3Dev *ct3d,
-         dpa = in->updated_entries[i].start_dpa;
-         len = in->updated_entries[i].len;
- 
-+        /* Check if the DPA range is not fully backed with valid extents */
-+        if (!ct3_test_region_block_backed(ct3d, dpa, len)) {
-+            ret = CXL_MBOX_INVALID_PA;
-+            goto free_and_exit;
-+        }
-+
-+        /* After this point, extent overflow is the only error can happen */
-         while (len > 0) {
-             QTAILQ_FOREACH(ent, updated_list, node) {
-                 range_init_nofail(&range, ent->start_dpa, ent->len);
-@@ -1718,14 +1725,7 @@ static CXLRetCode cxl_dc_extent_release_dry_run(CXLType3Dev *ct3d,
-                     if (range_contains(&range, dpa + len - 1)) {
-                         len2 = ent_start_dpa + ent_len - dpa - len;
-                     } else {
--                        /*
--                         * TODO: we reject the attempt to remove an extent
--                         * that overlaps with multiple extents in the device
--                         * for now. We will allow it once superset release
--                         * support is added.
--                         */
--                        ret = CXL_MBOX_INVALID_PA;
--                        goto free_and_exit;
-+                        dpa = ent_start_dpa + ent_len;
-                     }
-                     len_done = ent_len - len1 - len2;
- 
-@@ -1752,14 +1752,9 @@ static CXLRetCode cxl_dc_extent_release_dry_run(CXLType3Dev *ct3d,
-                     }
- 
-                     len -= len_done;
--                    /* len == 0 here until superset release is added */
-                     break;
-                 }
+diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
+index 0d18259ec0..5d4a1276be 100644
+--- a/hw/mem/cxl_type3.c
++++ b/hw/mem/cxl_type3.c
+@@ -1947,7 +1947,7 @@ static void qmp_cxl_process_dynamic_capacity_prescriptive(const char *path,
+                            "cannot release extent with pending DPA range");
+                 return;
              }
--            if (len) {
--                ret = CXL_MBOX_INVALID_PA;
--                goto free_and_exit;
--            }
-         }
-     }
- free_and_exit:
+-            if (!cxl_extents_contains_dpa_range(&dcd->dc.extents, dpa, len)) {
++            if (!ct3_test_region_block_backed(dcd, dpa, len)) {
+                 error_setg(errp,
+                            "cannot release extent with non-existing DPA range");
+                 return;
 -- 
 MST
 
