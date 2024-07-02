@@ -2,39 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCD94924106
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 16:36:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24866924107
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 16:36:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOebH-00058Y-AK; Tue, 02 Jul 2024 10:35:19 -0400
+	id 1sOebd-0005ix-QY; Tue, 02 Jul 2024 10:35:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1sOeb3-00055z-Ly
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:35:11 -0400
+ id 1sOeba-0005hf-FV
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:35:38 -0400
 Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1sOeaz-0007hU-4k
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:35:05 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.231])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4WD54z63qGz6J6pg;
- Tue,  2 Jul 2024 22:33:55 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
- by mail.maildlp.com (Postfix) with ESMTPS id 96733140B55;
+ id 1sOebY-00081p-5j
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:35:37 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4WD56850lFz6JBYT;
  Tue,  2 Jul 2024 22:34:56 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+ by mail.maildlp.com (Postfix) with ESMTPS id 95B04140684;
+ Tue,  2 Jul 2024 22:35:32 +0800 (CST)
 Received: from SecurePC-101-06.china.huawei.com (10.122.19.247) by
  lhrpeml500005.china.huawei.com (7.191.163.240) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Tue, 2 Jul 2024 15:34:56 +0100
+ 15.1.2507.39; Tue, 2 Jul 2024 15:35:27 +0100
 To: <linux-cxl@vger.kernel.org>, <mst@redhat.com>, Markus Armbruster
  <armbru@redhat.com>, <qemu-devel@nongnu.org>, Li Zhijian
  <lizhijian@fujitsu.com>
 CC: <linuxarm@huawei.com>
-Subject: [PATCH 1/3] hw/cxl: Get rid of unused cfmw_list
-Date: Tue, 2 Jul 2024 15:34:23 +0100
-Message-ID: <20240702143425.717452-2-Jonathan.Cameron@huawei.com>
+Subject: [PATCH 2/3] hw/cxl/cxl-mailbox-utils: remove unneeded mailbox output
+ payload space zeroing
+Date: Tue, 2 Jul 2024 15:34:24 +0100
+Message-ID: <20240702143425.717452-3-Jonathan.Cameron@huawei.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240702143425.717452-1-Jonathan.Cameron@huawei.com>
 References: <20240702143425.717452-1-Jonathan.Cameron@huawei.com>
@@ -69,42 +70,80 @@ From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Li Zhijian <lizhijian@fujitsu.com>
+From: Fan Ni <fan.ni@samsung.com>
 
-There is no user for this member. All '-M cxl-fmw.N' options have
-been parsed and saved to CXLState.fixed_windows.
+The whole mailbox output payload space is already zeroed after copying
+out the input payload, which happens before processing the specific mailbox
+command:
+https://elixir.bootlin.com/qemu/v8.2.1/source/hw/cxl/cxl-device-utils.c#L204
 
-Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
+Signed-off-by: Fan Ni <fan.ni@samsung.com>
+Link: https://lore.kernel.org/r/20240221221824.1092966-1-nifan.cxl@gmail.com
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- include/hw/cxl/cxl.h | 1 -
- hw/cxl/cxl-host.c    | 1 -
- 2 files changed, 2 deletions(-)
+ hw/cxl/cxl-mailbox-utils.c | 7 -------
+ 1 file changed, 7 deletions(-)
 
-diff --git a/include/hw/cxl/cxl.h b/include/hw/cxl/cxl.h
-index 75e47b6864..e3ecbef038 100644
---- a/include/hw/cxl/cxl.h
-+++ b/include/hw/cxl/cxl.h
-@@ -43,7 +43,6 @@ typedef struct CXLState {
-     MemoryRegion host_mr;
-     unsigned int next_mr_idx;
-     GList *fixed_windows;
--    CXLFixedMemoryWindowOptionsList *cfmw_list;
- } CXLState;
+diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
+index 74eeb6fde7..facec42dc8 100644
+--- a/hw/cxl/cxl-mailbox-utils.c
++++ b/hw/cxl/cxl-mailbox-utils.c
+@@ -235,7 +235,6 @@ static CXLRetCode cmd_events_get_records(const struct cxl_cmd *cmd,
+     log_type = payload_in[0];
  
- struct CXLHost {
-diff --git a/hw/cxl/cxl-host.c b/hw/cxl/cxl-host.c
-index c5f5fcfd64..926d3d3da7 100644
---- a/hw/cxl/cxl-host.c
-+++ b/hw/cxl/cxl-host.c
-@@ -335,7 +335,6 @@ static void machine_set_cfmw(Object *obj, Visitor *v, const char *name,
-     for (it = cfmw_list; it; it = it->next) {
-         cxl_fixed_memory_window_config(state, it->value, errp);
+     pl = (CXLGetEventPayload *)payload_out;
+-    memset(pl, 0, sizeof(*pl));
+ 
+     max_recs = (cxlds->payload_size - CXL_EVENT_PAYLOAD_HDR_SIZE) /
+                 CXL_EVENT_RECORD_SIZE;
+@@ -273,7 +272,6 @@ static CXLRetCode cmd_events_get_interrupt_policy(const struct cxl_cmd *cmd,
+     CXLEventLog *log;
+ 
+     policy = (CXLEventInterruptPolicy *)payload_out;
+-    memset(policy, 0, sizeof(*policy));
+ 
+     log = &cxlds->event_logs[CXL_EVENT_TYPE_INFO];
+     if (log->irq_enabled) {
+@@ -372,7 +370,6 @@ static CXLRetCode cmd_infostat_identify(const struct cxl_cmd *cmd,
+     QEMU_BUILD_BUG_ON(sizeof(*is_identify) != 18);
+ 
+     is_identify = (void *)payload_out;
+-    memset(is_identify, 0, sizeof(*is_identify));
+     is_identify->pcie_vid = class->vendor_id;
+     is_identify->pcie_did = class->device_id;
+     if (object_dynamic_cast(OBJECT(cci->d), TYPE_CXL_USP)) {
+@@ -606,7 +603,6 @@ static CXLRetCode cmd_infostat_bg_op_sts(const struct cxl_cmd *cmd,
+     QEMU_BUILD_BUG_ON(sizeof(*bg_op_status) != 8);
+ 
+     bg_op_status = (void *)payload_out;
+-    memset(bg_op_status, 0, sizeof(*bg_op_status));
+     bg_op_status->status = cci->bg.complete_pct << 1;
+     if (cci->bg.runtime > 0) {
+         bg_op_status->status |= 1U << 0;
+@@ -647,7 +643,6 @@ static CXLRetCode cmd_firmware_update_get_info(const struct cxl_cmd *cmd,
      }
--    state->cfmw_list = cfmw_list;
- }
  
- void cxl_machine_init(Object *obj, CXLState *state)
+     fw_info = (void *)payload_out;
+-    memset(fw_info, 0, sizeof(*fw_info));
+ 
+     fw_info->slots_supported = 2;
+     fw_info->slot_info = BIT(0) | BIT(3);
+@@ -805,7 +800,6 @@ static CXLRetCode cmd_identify_memory_device(const struct cxl_cmd *cmd,
+     }
+ 
+     id = (void *)payload_out;
+-    memset(id, 0, sizeof(*id));
+ 
+     snprintf(id->fw_revision, 0x10, "BWFW VERSION %02d", 0);
+ 
+@@ -1095,7 +1089,6 @@ static CXLRetCode cmd_media_get_poison_list(const struct cxl_cmd *cmd,
+     out_pl_len = sizeof(*out) + record_count * sizeof(out->records[0]);
+     assert(out_pl_len <= CXL_MAILBOX_MAX_PAYLOAD_SIZE);
+ 
+-    memset(out, 0, out_pl_len);
+     QLIST_FOREACH(ent, poison_list, node) {
+         uint64_t start, stop;
+ 
 -- 
 2.43.0
 
