@@ -2,54 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8408D924B69
+	by mail.lfdr.de (Postfix) with ESMTPS id 872ED924B6A
 	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jul 2024 00:16:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOlme-0003NP-9T; Tue, 02 Jul 2024 18:15:33 -0400
+	id 1sOlnR-0003iZ-Ha; Tue, 02 Jul 2024 18:16:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xin@zytor.com>) id 1sOlm6-0003KK-6N
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 18:15:00 -0400
-Received: from torg.zytor.com ([2607:7c80:54:3::138] helo=mail.zytor.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xin@zytor.com>) id 1sOlm0-0000fN-IS
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 18:14:57 -0400
-Received: from terminus.zytor.com (terminus.zytor.com
- [IPv6:2607:7c80:54:3:0:0:0:136]) (authenticated bits=0)
- by mail.zytor.com (8.17.2/8.17.1) with ESMTPSA id 462MEYag020032
- (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
- Tue, 2 Jul 2024 15:14:38 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 462MEYag020032
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
- s=2024061501; t=1719958479;
- bh=bbNwVXOr7mQVz1cDObhCPhAldXpEeSEx7lnpAxYk31s=;
- h=From:To:Cc:Subject:Date:From;
- b=K1otk+YLFMDi1EyzvD/Zp7+SKAAE/dzIigWYjRVaEm3FZAAHV8UjKApqlhoCAAwiO
- EcsQQ1hUQtCsOtJoYN0T76yarEZo1SiHCfWd4Tm0uL9TtYi/PQ/1u65FxYaOlEeRvF
- W5CBy6xmHW7HNEfTEPn9zf+VMn3S4nd56OSL6BiG0UjNSYLJ3otxTjifymQ2OpzsZI
- icAnYWVK7LQ7bUOMpVEVyyHtM3DC2pbSD2noQUH1JBEVFRTHmLXw0VODJOPnYcHQO0
- xzZaYBmDJTw26fiBeblmbKHVA/SUhBMRhC6fvOD8fF7LPKiMkvwfC7w6lpt17NNMnS
- mblKurWuSL+Pg==
-From: "Xin Li (Intel)" <xin@zytor.com>
-To: qemu-devel@nongnu.org
-Cc: pbonzini@redhat.com, xin3.li@intel.com
-Subject: [PATCH v1 1/1] target/i386: Delete a duplicated macro definition
- CR4_FRED_MASK
-Date: Tue,  2 Jul 2024 15:14:33 -0700
-Message-ID: <20240702221433.20017-1-xin@zytor.com>
-X-Mailer: git-send-email 2.45.2
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1sOlnH-0003bJ-Dy
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 18:16:12 -0400
+Received: from mail-pg1-x531.google.com ([2607:f8b0:4864:20::531])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1sOlnB-00019h-Rr
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 18:16:10 -0400
+Received: by mail-pg1-x531.google.com with SMTP id
+ 41be03b00d2f7-6c5bcb8e8edso3905161a12.2
+ for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 15:16:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1719958564; x=1720563364; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=IpYGeMoHXXx9o7qsPLEmznXVSgvR1hH8hEmynS0g+3c=;
+ b=DiUs5X5Dda6IhYOjKyf75FY5g13kWD+riOix+lrsr0mLU9SJZ/cGV/Wcw5dCB5udJ3
+ /sTcHViKgzlq/Q2nFG6/CBbKhOsb5JyaDA4U11Im91TCxP5RaRwj//l2P6r2UbEJaJeH
+ TqpNXBEX6gdt1oaAZPAKl+3NQ8GJtws/BPd/6hEJPaUexzCPRyASXH7pO0XC1VvPioC2
+ iWXshDO6u7eVKbXH9oyvVNDUEzj4r/yPMiQGtQ0mHGX7e9E9vYfLEGpbY+T1EtZPxEqf
+ wnGIUGfDhNC57+2kWyZWm8Zb74hIZCpfa5onH6BqKi7jr67IETyXkd7AwdXTGerc4NOk
+ bLYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1719958564; x=1720563364;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=IpYGeMoHXXx9o7qsPLEmznXVSgvR1hH8hEmynS0g+3c=;
+ b=c4MRnsF6zGmGOMPA1Ui402ECMlqAfwPu1LHIwVQ2E/GB3Nt+cJwRwU2y76HZAIXqRx
+ vTLlX2ezfb1SzPl27/zCFhmFc/PgCiZQK3QHOY4GPg9GVf6lbL8fgaIswcxQqABJACFP
+ O1u9xzXxtsvlwAKFLyM9zvK1CayNGNYrW+zuPY8cyijuHUG2regHWec9Af+K3qNj1nii
+ w97SLbiZI1vRudEq8MLSRW4EfNVzCjL826+uafcr14GMZE64r32T/yo0yUQcnypz5H1V
+ KUjljGroM3uvRxOzgcyXjNCADXG9v7q9mvk4HaxrEwAy5Pt7W+HKTkVFy4pj1K9Y0Tid
+ 5KkQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCW8knkk2Z6Hw+QtQWkhvaW3WT9XAvIvDawVLgaUfurHSqRgwp+hMGaqQmUv3pTj0d+V7ZkPnftA+nWJ/DwoyOnUYM67cPc=
+X-Gm-Message-State: AOJu0Yzhc0VzwD5FLlDDz8G1hdi4P0h5IzKu64YFq8fj26pIARptBqGk
+ ORmRvHo/zeKfTtqc9f7YaiIQtCVRxEjyIAYfPqJPP9kG2YTu6w++MiPEaAYsBdo=
+X-Google-Smtp-Source: AGHT+IF8tYcPh7g3XZIpZeJP9/DH2FsZ2H6hbhYAG2+YAlMjUBYlyxwcBEg6u1yy/zw3XgmtP8XEkQ==
+X-Received: by 2002:a05:6a20:da88:b0:1c0:bd3d:6d20 with SMTP id
+ adf61e73a8af0-1c0bd3d7228mr817681637.14.1719958563680; 
+ Tue, 02 Jul 2024 15:16:03 -0700 (PDT)
+Received: from [192.168.68.109] ([179.193.8.43])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-1fac1535b1esm89584265ad.140.2024.07.02.15.16.01
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 02 Jul 2024 15:16:03 -0700 (PDT)
+Message-ID: <793a6bbe-5ac6-400c-b02b-9893a8887ee0@ventanamicro.com>
+Date: Tue, 2 Jul 2024 19:15:59 -0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:7c80:54:3::138; envelope-from=xin@zytor.com;
- helo=mail.zytor.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/3] util/cpuinfo-riscv: Use linux __riscv_hwprobe syscall
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: brad@comstyle.com, Alistair.Francis@wdc.com, palmer@dabbelt.com,
+ qemu-riscv@nongnu.org
+References: <20240627180350.128575-1-richard.henderson@linaro.org>
+ <20240627180350.128575-4-richard.henderson@linaro.org>
+Content-Language: en-US
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <20240627180350.128575-4-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::531;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pg1-x531.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -65,33 +97,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Macro CR4_FRED_MASK is defined twice due to a merge incident, delete one.
 
-Signed-off-by: Xin Li (Intel) <xin@zytor.com>
----
- target/i386/cpu.h | 6 ------
- 1 file changed, 6 deletions(-)
 
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index 29daf37048..b73685a745 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -267,12 +267,6 @@ typedef enum X86Seg {
- #define CR4_FRED_MASK   0
- #endif
- 
--#ifdef TARGET_X86_64
--#define CR4_FRED_MASK   (1ULL << 32)
--#else
--#define CR4_FRED_MASK   0
--#endif
--
- #define CR4_RESERVED_MASK \
- (~(target_ulong)(CR4_VME_MASK | CR4_PVI_MASK | CR4_TSD_MASK \
-                 | CR4_DE_MASK | CR4_PSE_MASK | CR4_PAE_MASK \
+On 6/27/24 3:03 PM, Richard Henderson wrote:
+> With recent linux kernels, there is a syscall to probe for various
+> ISA extensions.  These bits were phased in over several kernel
+> releases, so we still require checks for symbol availability.
+> 
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>   meson.build          |  6 ++++++
+>   util/cpuinfo-riscv.c | 26 ++++++++++++++++++++++++++
+>   2 files changed, 32 insertions(+)
+> 
+> diff --git a/meson.build b/meson.build
+> index 97e00d6f59..58afd0125d 100644
+> --- a/meson.build
+> +++ b/meson.build
+> @@ -2837,6 +2837,12 @@ have_cpuid_h = cc.links('''
+>     }''')
+>   config_host_data.set('CONFIG_CPUID_H', have_cpuid_h)
+>   
+> +# Don't bother to advertise asm/hwprobe.h for old versions that do
+> +# not contain RISCV_HWPROBE_EXT_ZBA.
+> +config_host_data.set('CONFIG_ASM_HWPROBE_H',
+> +                     cc.has_header_symbol('asm/hwprobe.h',
+> +                                          'RISCV_HWPROBE_EXT_ZBA'))
+> +
 
-base-commit: ff6d8490e33acf44ed8afd549e203a42d6f813b5
--- 
-2.45.2
+FWIW I looked around Linux and I think we can snapshot hwprobe support by
+checking for RISCV_HWPROBE_KEY_IMA_EXT_0 (Linux commit 162e4df137c) if we
+ever need hwprobe for exts earlier than ZBA (C and V).
 
+Checking for ZBA is fine for this patch though.
+
+
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+
+
+>   config_host_data.set('CONFIG_AVX2_OPT', get_option('avx2') \
+>     .require(have_cpuid_h, error_message: 'cpuid.h not available, cannot enable AVX2') \
+>     .require(cc.links('''
+> diff --git a/util/cpuinfo-riscv.c b/util/cpuinfo-riscv.c
+> index abf799794f..cf59ce83a3 100644
+> --- a/util/cpuinfo-riscv.c
+> +++ b/util/cpuinfo-riscv.c
+> @@ -6,6 +6,11 @@
+>   #include "qemu/osdep.h"
+>   #include "host/cpuinfo.h"
+>   
+> +#ifdef CONFIG_ASM_HWPROBE_H
+> +#include <asm/hwprobe.h>
+> +#include <sys/syscall.h>
+> +#endif
+> +
+>   unsigned cpuinfo;
+>   static volatile sig_atomic_t got_sigill;
+>   
+> @@ -47,6 +52,27 @@ unsigned __attribute__((constructor)) cpuinfo_init(void)
+>   #endif
+>       left &= ~info;
+>   
+> +#ifdef CONFIG_ASM_HWPROBE_H
+> +    if (left) {
+> +        /*
+> +         * TODO: glibc 2.40 will introduce <sys/hwprobe.h>, which
+> +         * provides __riscv_hwprobe and __riscv_hwprobe_one,
+> +         * which is a slightly cleaner interface.
+> +         */
+> +        struct riscv_hwprobe pair = { .key = RISCV_HWPROBE_KEY_IMA_EXT_0 };
+> +        if (syscall(__NR_riscv_hwprobe, &pair, 1, 0, NULL, 0) == 0
+> +            && pair.key >= 0) {
+> +            info |= pair.value & RISCV_HWPROBE_EXT_ZBA ? CPUINFO_ZBA : 0;
+> +            info |= pair.value & RISCV_HWPROBE_EXT_ZBB ? CPUINFO_ZBB : 0;
+> +            left &= ~(CPUINFO_ZBA | CPUINFO_ZBB);
+> +#ifdef RISCV_HWPROBE_EXT_ZICOND
+> +            info |= pair.value & RISCV_HWPROBE_EXT_ZICOND ? CPUINFO_ZICOND : 0;
+> +            left &= ~CPUINFO_ZICOND;
+> +#endif
+> +        }
+> +    }
+> +#endif /* CONFIG_ASM_HWPROBE_H */
+> +
+>       if (left) {
+>           struct sigaction sa_old, sa_new;
+>   
 
