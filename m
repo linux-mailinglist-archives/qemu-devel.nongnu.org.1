@@ -2,78 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1870924C44
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ED76924C43
 	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jul 2024 01:43:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOn8f-0007nJ-Ok; Tue, 02 Jul 2024 19:42:21 -0400
+	id 1sOn8m-0007q0-W0; Tue, 02 Jul 2024 19:42:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sOn8P-0007lQ-CV
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 19:42:05 -0400
-Received: from mail-pg1-x52b.google.com ([2607:f8b0:4864:20::52b])
+ id 1sOn8V-0007mc-Rp
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 19:42:13 -0400
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sOn8J-0006Mk-C0
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 19:42:05 -0400
-Received: by mail-pg1-x52b.google.com with SMTP id
- 41be03b00d2f7-710437d0affso2816836a12.3
- for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 16:41:58 -0700 (PDT)
+ id 1sOn8L-0006N1-8d
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 19:42:11 -0400
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-1f6a837e9a3so20790785ad.1
+ for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 16:42:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719963718; x=1720568518; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=mZ5AdtoXeBWo04SqXtXVV3bVy8fFh+q0Y63ABmnLjpU=;
- b=HS2CvEqSFlkzP8SzQLvpFM9t7L1geY47WOyZJI4LHQc9CPSNsSWCEEP1sLAMxfjQsD
- qawWm93eZZLFMKTK9ytjzja5XGPr5VMszhg6yODKE4EirqYtFjTzw8llUAx7Hl/U5FKK
- mP+65et3CAGNfFoq6V9CKbAO5I3HDIjAjNC3/CK7VLX7SiYy3zSfXqHQHcgvcBSDequd
- p11ChWRe9Qexgbp+QpWDjH7uUWfQfbIeitTW6YGPEiTpJo7gd8oBFmH/mMqNJnRJXF3q
- bc8njGPsDd9cA8ng2PqTSsIPJSZHSEwOlheUKkGXqbhN6TR/szQ0e6vFLzQz8iMt6GxJ
- LbJA==
+ d=linaro.org; s=google; t=1719963719; x=1720568519; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=GwtkDEQSe1rF7ol2hwOawpAhY63WerL1vNoE65OHhNw=;
+ b=ysXTxB4bkgw0sR27syT0Hz/gco+NJBS3zOKv0hTKunkISc6Qqa7PLnrq8eG8TDJfY+
+ dYekmK0/u7GTpif7C1tIVRIC931mZ/8i/idZDPYDDZ06ox46+FE81hyjzsII79yeyXLw
+ Z25lKm6Py1BHWyVRYwzYldXODh+rstujVWyYIBMggwgnKeLdzJK+EKfWCMNZYa4O39fT
+ MNVfUgwCWdariqVwmhYugDZgfNPKi2g87joqnOi7L16OY5MNChx1ly+V+8trvoyeoieR
+ 4Se3lmdNpm51wNpP9SbyQSZvtiOr+ZLbuQ+5tf1G1zu2PKgNFPg+7WFbgiufAK+uTZlG
+ miLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719963718; x=1720568518;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=mZ5AdtoXeBWo04SqXtXVV3bVy8fFh+q0Y63ABmnLjpU=;
- b=U6KCFbMadwbF7WlpJzlBtJM5sJOoxyb9d8h+L583S7hXnyjnfU3B26A6c2nzmgrjSV
- KRE7k432KCy2YZ20OgmvLfRYWfCCxcMZzyQdVu/DRfCHqMkZdicwwMRxTfpqHdtLnhvp
- ENk12iS7L9esQnDLR4qT38/S6f5/nOA/ZME7C9lRESfa6qM1PidOxn/OuCjCXSiDAYc+
- XKk/Ox33i/e3FKE0/6vyoZ6QOsaQOQOdzqUl8ym8FpFo/Z3NKOISF+5VI36wGkWOM2fj
- 9F1GV63rMomcs4lVC5okCTjHZoCTHXdbivWXFlMJ2xiKGbcDEE1PhBjrM3dvfJDUnvId
- Nz1g==
-X-Gm-Message-State: AOJu0YxP0fgT1WU2/m+1WNRBNircSU0lDk6GK8DdXXU6jtovJDD2kv+E
- J0Yxy6MqFlXzVB4vpmzalzxVDQyku/NPUwhXkW8LeE6vTzSuzCkxrcEzWnhVYlsFOg3zs+RBpc6
- 8
-X-Google-Smtp-Source: AGHT+IGNZa3TI8BO0F0AVOq4RnSj6Qdnhi7PBvl6+40DrqmDo6FzYHL0IRYmTUxVzobZ7yJHWmGXNw==
-X-Received: by 2002:a05:6a21:999e:b0:1be:c42f:be42 with SMTP id
- adf61e73a8af0-1bef61019f4mr11018847637.19.1719963717603; 
- Tue, 02 Jul 2024 16:41:57 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1719963719; x=1720568519;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=GwtkDEQSe1rF7ol2hwOawpAhY63WerL1vNoE65OHhNw=;
+ b=KbZrGMjGGxStiRsssNJ3N0jldFDrpiZpEH8X6n21E0AhvYwGbbgbeaJysLoPEkvtFG
+ tKaR1RhTzHylBTyxGWtxeGV5jirN0wz7hib10x6rtIXL2LFGcCOBhU8axoWun9OeH/m7
+ 6MIJf1yqVOr5CWeIAGhOYuouM5BXWaNDxBGC/OUODiti/TGCIkQWP9iShd6N1VIakfJ8
+ UjZVhZhjl4A7NXLgX0W6MB2dnq7AQ7JnKgLZsaZZJA/YPPyAa0VImiblrBv1wEYXwzsA
+ Z2JLKNZCwDtLp0rEJ79amXIKol6YRqjQL2lCwb0zpfDhfyj812pP2J8DecOgL1cfk9DX
+ iq1Q==
+X-Gm-Message-State: AOJu0YwoOQ8j0FPTVAVGvlVA5nuS2+p2D2hzNIvGc0MOt3aFVekP8ppE
+ l326OXc7AmP+TmYviqT13DXfYuC5h0JLzoKFVwnHK9V7v4ZCUbYrZBOlzNFTquGfrDVxlpv0gvq
+ 4
+X-Google-Smtp-Source: AGHT+IHOYRSUiaHVo/dZPtbFSp3GKRAwXQYonDt1x2/3DGColNSHvgpGjcmugaZfvgZw3ES0YOvZmg==
+X-Received: by 2002:a17:902:e54f:b0:1f7:1655:825c with SMTP id
+ d9443c01a7336-1fadbca1794mr82220985ad.36.1719963718703; 
+ Tue, 02 Jul 2024 16:41:58 -0700 (PDT)
 Received: from stoup.. (174-21-76-141.tukw.qwest.net. [174.21.76.141])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1fac15993c5sm90403755ad.244.2024.07.02.16.41.56
+ d9443c01a7336-1fac15993c5sm90403755ad.244.2024.07.02.16.41.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 02 Jul 2024 16:41:56 -0700 (PDT)
+ Tue, 02 Jul 2024 16:41:58 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, qemu-ppc@nongnu.org, iii@linux.ibm.com,
  david@redhat.com, balaton@eik.bme.hu
-Subject: [PATCH 0/2] target/arm: Fix unwind from dc zva and FEAT_MOPS
-Date: Tue,  2 Jul 2024 16:41:53 -0700
-Message-Id: <20240702234155.2106399-1-richard.henderson@linaro.org>
+Subject: [PATCH 1/2] accel/tcg: Introduce memset_ra, memmove_ra
+Date: Tue,  2 Jul 2024 16:41:54 -0700
+Message-Id: <20240702234155.2106399-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240702234155.2106399-1-richard.henderson@linaro.org>
+References: <20240702234155.2106399-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -90,35 +92,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-While looking into Zoltan's attempt to speed up ppc64 DCBZ
-(data cache block set to zero), I wondered what AArch64 was
-doing differently.  It turned out that Arm is the only user
-of tlb_vaddr_to_host.
+Add wrappers that set and clear helper_retaddr around the
+host memory operation.  This cannot fail for system mode,
+but might raise SIGSEGV for user mode.
 
-None of the code sequences in use between AArch64, Power64 and S390X
-are 100% safe, with race conditions vs mmap et al, however, AArch64
-is the only one that will fail this single threaded test case.  Use
-of these new functions fixes the race condition as well, though I
-have not yet touched the other guests.
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ include/exec/cpu_ldst.h | 40 ++++++++++++++++++++++++++++++++++++++++
+ accel/tcg/user-exec.c   | 22 ++++++++++++++++++++++
+ 2 files changed, 62 insertions(+)
 
-I thought about exposing accel/tcg/user-retaddr.h for direct use
-from the targets, but perhaps these wrappers are cleaner.  RFC?
-
-
-r~
-
-
-Richard Henderson (2):
-  accel/tcg: Introduce memset_ra, memmove_ra
-  target/arm: Use memset_ra, memmove_ra in helper-a64.c
-
- include/exec/cpu_ldst.h            | 40 ++++++++++++++++
- accel/tcg/user-exec.c              | 22 +++++++++
- target/arm/tcg/helper-a64.c        | 10 ++--
- tests/tcg/multiarch/memset-fault.c | 77 ++++++++++++++++++++++++++++++
- 4 files changed, 144 insertions(+), 5 deletions(-)
- create mode 100644 tests/tcg/multiarch/memset-fault.c
-
+diff --git a/include/exec/cpu_ldst.h b/include/exec/cpu_ldst.h
+index 71009f84f5..baf4f9367d 100644
+--- a/include/exec/cpu_ldst.h
++++ b/include/exec/cpu_ldst.h
+@@ -379,4 +379,44 @@ void *tlb_vaddr_to_host(CPUArchState *env, abi_ptr addr,
+                         MMUAccessType access_type, int mmu_idx);
+ #endif
+ 
++/**
++ * memset_ra:
++ * @p: host pointer
++ * @c: data
++ * @n: length
++ * @ra: unwind return address
++ *
++ * Like system memset(p,c,n), except manages @ra for the calling
++ * helper in the event of a signal.  To be used with the result
++ * of tlb_vaddr_to_host to resolve the host pointer.
++ */
++#ifdef CONFIG_USER_ONLY
++void *memset_ra(void *p, int c, size_t n, uintptr_t ra);
++#else
++static inline void *memset_ra(void *p, int c, size_t n, uintptr_t ra)
++{
++    return memset(p, c, n);
++}
++#endif
++
++/**
++ * memmove_ra:
++ * @d: host destination pointer
++ * @s: host source pointer
++ * @n: length
++ * @ra: unwind return address
++ *
++ * Like system memmove(d,s,n), except manages @ra for the calling
++ * helper in the event of a signal.  To be used with the result of
++ * tlb_vaddr_to_host to resolve the host pointer.
++ */
++#ifdef CONFIG_USER_ONLY
++void *memmove_ra(void *d, const void *s, size_t n, uintptr_t ra);
++#else
++static inline void *memmove_ra(void *d, const void *s, size_t n, uintptr_t ra)
++{
++    return memmove(d, s, n);
++}
++#endif
++
+ #endif /* CPU_LDST_H */
+diff --git a/accel/tcg/user-exec.c b/accel/tcg/user-exec.c
+index 80d24540ed..a73da42e3a 100644
+--- a/accel/tcg/user-exec.c
++++ b/accel/tcg/user-exec.c
+@@ -1289,3 +1289,25 @@ static void *atomic_mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
+ #define DATA_SIZE 16
+ #include "atomic_template.h"
+ #endif
++
++void *memset_ra(void *p, int c, size_t n, uintptr_t ra)
++{
++    void *r;
++
++    set_helper_retaddr(ra);
++    r = memset(p, c, n);
++    clear_helper_retaddr();
++
++    return r;
++}
++
++void *memmove_ra(void *d, const void *s, size_t n, uintptr_t ra)
++{
++    void *r;
++
++    set_helper_retaddr(ra);
++    r = memmove(d, s, n);
++    clear_helper_retaddr();
++
++    return r;
++}
 -- 
 2.34.1
 
