@@ -2,60 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84B3F923B84
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 12:34:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E74C1923B85
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 12:34:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOapb-0004DS-UZ; Tue, 02 Jul 2024 06:33:51 -0400
+	id 1sOapf-0004G1-Fe; Tue, 02 Jul 2024 06:33:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sOapa-0004Cg-DX
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 06:33:50 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sOape-0004Dq-6R
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 06:33:54 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sOapY-00076n-US
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 06:33:50 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sOapc-00077S-Ee
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 06:33:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719916428;
+ s=mimecast20190719; t=1719916431;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=2v7y+Szx7I0PFjj7v8I/JWtqzU8QM9nTaUE9ATLXoTE=;
- b=MhondXAj0gcQO4tYTR44mAd5qG/c/jegF5xPPT4/mOlQey02iE0rUsGHp38L4Vna30BJBa
- oT1ujuYOp+YF9ZebTTEVxyuAj6k2x/zJ38NMvwRW80vANSGGmwBHYfBXkYKb1CNLEiyybq
- VgHzdqMRc9b2FafTsbln4WM3BcZwozI=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ bh=nUgnAr0EHqOZRhxhITpjsaPmlVNhJFbBBDZ6+gnyp10=;
+ b=C3KdRfqE+gy1f/L1IV2jwOT43SJmll99qDIeMiozU7xYvcPppWAZmj/I8eDwP3mpju8pAx
+ sH3GR2ilJUU1Uan0+7Z3RN1AyUVTaXegXJbRCWDo2Ko2fgF1gLNP+jTs7K1tCXynYDMVUr
+ BXdaa3f4aYCcPF/hW6QiAbgklmFr4p4=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-632-s6dEpXTCOZae74KrdY_9Ow-1; Tue,
- 02 Jul 2024 06:33:45 -0400
-X-MC-Unique: s6dEpXTCOZae74KrdY_9Ow-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-139-z0PPa2qnM2-prR3nBMW9cg-1; Tue,
+ 02 Jul 2024 06:33:48 -0400
+X-MC-Unique: z0PPa2qnM2-prR3nBMW9cg-1
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 7F1E519560AB; Tue,  2 Jul 2024 10:33:43 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 59DE819560B1; Tue,  2 Jul 2024 10:33:47 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.116])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 647811955D89; Tue,  2 Jul 2024 10:33:39 +0000 (UTC)
+ id 9CBDA19560AA; Tue,  2 Jul 2024 10:33:44 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org,
 	Richard Henderson <richard.henderson@linaro.org>
-Cc: Alexandre Iooss <erdnaxe@crans.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PULL 08/12] docs: add precision about capstone for execlog plugin
-Date: Tue,  2 Jul 2024 12:33:06 +0200
-Message-ID: <20240702103310.347201-9-thuth@redhat.com>
+Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 09/12] hw/s390x: Attach default virtio-net devices to the
+ /machine/virtual-css-bridge
+Date: Tue,  2 Jul 2024 12:33:07 +0200
+Message-ID: <20240702103310.347201-10-thuth@redhat.com>
 In-Reply-To: <20240702103310.347201-1-thuth@redhat.com>
 References: <20240702103310.347201-1-thuth@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -79,35 +81,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Alexandre Iooss <erdnaxe@crans.org>
+The initial virtio-net-ccw devices currently do not have a proper parent
+in the QOM tree, so they show up under /machine/unattached - which is
+somewhat ugly. Let's attach them to /machine/virtual-css-bridge/virtual-css
+instead.
 
-Some people are wondering why they get an empty string as disassembly.
-Most of the time, they configured QEMU without Capstone support.
-Let's document this behaviour to help users.
-
-Signed-off-by: Alexandre Iooss <erdnaxe@crans.org>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-ID: <20240620135731.977377-1-erdnaxe@crans.org>
+Message-ID: <20240701200108.154271-1-thuth@redhat.com>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- docs/devel/tcg-plugins.rst | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ hw/s390x/s390-virtio-ccw.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/docs/devel/tcg-plugins.rst b/docs/devel/tcg-plugins.rst
-index 9cc09d8c3d..f7d7b9e3a4 100644
---- a/docs/devel/tcg-plugins.rst
-+++ b/docs/devel/tcg-plugins.rst
-@@ -539,7 +539,9 @@ which will output an execution trace following this structure::
-   0, 0xd34, 0xf9c8f000, "bl #0x10c8"
-   0, 0x10c8, 0xfff96c43, "ldr r3, [r0, #0x44]", load, 0x200000e4, RAM
+diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
+index f87ca36264..c1edbd9131 100644
+--- a/hw/s390x/s390-virtio-ccw.c
++++ b/hw/s390x/s390-virtio-ccw.c
+@@ -216,8 +216,11 @@ static void s390_init_ipl_dev(const char *kernel_filename,
+ static void s390_create_virtio_net(BusState *bus, const char *name)
+ {
+     DeviceState *dev;
++    int cnt = 0;
  
--the output can be filtered to only track certain instructions or
-+Please note that you need to configure QEMU with Capstone support to get disassembly.
-+
-+The output can be filtered to only track certain instructions or
- addresses using the ``ifilter`` or ``afilter`` options. You can stack the
- arguments if required::
- 
+     while ((dev = qemu_create_nic_device(name, true, "virtio"))) {
++        g_autofree char *childname = g_strdup_printf("%s[%d]", name, cnt++);
++        object_property_add_child(OBJECT(bus), childname, OBJECT(dev));
+         qdev_realize_and_unref(dev, bus, &error_fatal);
+     }
+ }
 -- 
 2.45.2
 
