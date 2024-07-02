@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DDA6924955
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 22:33:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C883A924968
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 22:37:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOjyp-0001vg-0S; Tue, 02 Jul 2024 16:19:59 -0400
+	id 1sOjyr-0002Ak-7S; Tue, 02 Jul 2024 16:20:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOjyl-0001lk-NI
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 16:19:55 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOjyo-0001wW-3n
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 16:19:58 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOjyj-0001IN-1v
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 16:19:55 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOjyl-0001Jv-FB
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 16:19:57 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719951590;
+ s=mimecast20190719; t=1719951594;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=PxS1+bCJZBeQoTfbYKSlDoSTgSREcQFLu7+nTuWUmeY=;
- b=d6E720waoBjGLlbSvUoxkz2GsBFy2cbAirOu39CaVFiG0JrcFa+N3PcX8DSp9FAXsZvJ7M
- PPjNVM1veq+lfBv2ikIldoOFO3TxHsWl/Lqk5LuJmED8wv30p8/cKiJ92ZUaoB3jLFZrme
- ZUVnaPb41SDnbC0xN8xC7sYOKhYKvpc=
+ bh=H0Zx9hcjCb8TTX+fknLAFuiiboZn7NyIn2VBiJnNZQk=;
+ b=KpX6nThhXswB4ZXllGWYSEhmqQA7o0/ZUJFHAOCMbYSpU2ECQUP1z5afb1ZgAy3yODPu/0
+ xdzRc1moFZXP7sDVl591FifhGMdGcaWc2uWFL87PldcKlnXCNsGcxp/IXu+kTkX6b+kja6
+ iIZ2m61OE791zTue+iRdG+hvy0wZLWE=
 Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
  [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-583-d7cpGZdENbGvMM-Fr0JMmA-1; Tue, 02 Jul 2024 16:19:49 -0400
-X-MC-Unique: d7cpGZdENbGvMM-Fr0JMmA-1
+ us-mta-536-L1sTOom1Mu-sbppVROs9mQ-1; Tue, 02 Jul 2024 16:19:53 -0400
+X-MC-Unique: L1sTOom1Mu-sbppVROs9mQ-1
 Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-4258675a531so14529365e9.3
- for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 13:19:49 -0700 (PDT)
+ 5b1f17b1804b1-4256b7702a5so25791295e9.1
+ for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 13:19:53 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719951587; x=1720556387;
+ d=1e100.net; s=20230601; t=1719951591; x=1720556391;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=PxS1+bCJZBeQoTfbYKSlDoSTgSREcQFLu7+nTuWUmeY=;
- b=Osp7Q1aUStqldgYgI1ZQsnZiuopSV49Otuj8A8Hkza3caJsIt6OJc24HhDlCeFhWEl
- otkfcAxe1CKBU2Vx417kI9BrxEjwdTgEKmj+xxgvrqEj2HZ/x1O/eo7ZBd/XmkY5G7BM
- K7NYK90Hij61shA3kbeqbpo+2sQoawolYgZyUc6dObZMpNr9EBER6HEevC3umX/Bs4I/
- Vxlp1diKOLuAHbcz6zaanFRmjJ2mrvIRo599VvW5ATb4Qhe2/zezpAdC9SOgJU1gPW4T
- Tl0xMwd3pAvj78MYPfv5DXlFGLo8GKg5f+f9H1APnGUNeaXBT2fXwSLH9U85oBMok8L8
- wPvw==
-X-Gm-Message-State: AOJu0Yw8RDrBLy4PNxRtveYUMV7Rfzb3RYdlU+H+Q6NqW8vEkdYoV8I+
- Xzcw9ijx9ilb1a1bDK/o89+UqG8IzXzMVN/8RQJh/0MkyHWs+GxBbfSNTlpH4GHLn2ogvtNazEf
- Jo5AmFpJktDc2ZK4bHdQ+V5BAe4znq6gzsxJ2iLM99ONnx2iAODupeTQnlP3I9GdxuCAaLL6q9/
- in8izmvO7fJTxAnFUitevM05hCNASPMA==
-X-Received: by 2002:adf:f30b:0:b0:362:b906:99c4 with SMTP id
- ffacd0b85a97d-3677572829amr5635396f8f.58.1719951587409; 
- Tue, 02 Jul 2024 13:19:47 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHzEgq1Ja7oVtQLIn6FTz3aI1hqp2bY7hIqRfrM4WNvJEdTHMe7OOpJi9TZDnH/nz3WcYF7Ug==
-X-Received: by 2002:adf:f30b:0:b0:362:b906:99c4 with SMTP id
- ffacd0b85a97d-3677572829amr5635369f8f.58.1719951586672; 
- Tue, 02 Jul 2024 13:19:46 -0700 (PDT)
+ bh=H0Zx9hcjCb8TTX+fknLAFuiiboZn7NyIn2VBiJnNZQk=;
+ b=jf1xhKXkg60B9WKtpVFBMZ/ENAfl89cTaPSwimL1o5YiHdhtV/2GhlsZOPpSLUZK0o
+ A3RUlcLJNpQ/HC9ZVnBDO9uzjLN4VedZcdQACn1JID3FiDF9aYcIQXGNbx8PyyM9pa3b
+ d+q00BytItHLkVwnWpYdaH2U+a+fAPVaLLAZv8If0wbvKL+Zp7u1ZMcICrf+ej+TUtom
+ R0o9dhrgvM/NtA4beObubZherIwp99GzwcrtSWKFPvTVGzIraUj9PzX+IaAOahyaz51+
+ ciasDm8MFC/WRK28VK3S3pDEMjAiSNKESOZn31k1tvKF3JLGBxXck64yBfHcQnPsj1VT
+ FbeQ==
+X-Gm-Message-State: AOJu0YxkmrBgHIaSWhb5qy0pIEZZ2GZCtNvpedP+SpMYYSxYmGJHSsfz
+ ufIn127XoOe0Zizx6OBL5+g+9EXfRd7nT0lhUYtxKUrEv97jnudyzR/qV74ed+NtavPiMwJ/+0I
+ fd1zwqXDI5hnS/hlwDNdgmbzmzG+InlOphCQtZXFMsPA8+ejBWb6mD05nfql4N92jc/Kqrl9UsX
+ Ua9tMZzxMjtVFT2D7lW3paJcQyj/gF/A==
+X-Received: by 2002:a05:600c:4f16:b0:421:b65d:2235 with SMTP id
+ 5b1f17b1804b1-42579714d61mr93029365e9.0.1719951591481; 
+ Tue, 02 Jul 2024 13:19:51 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF5LnQe9lle+IF9n0IWNRiQAY/EbxHqa8cXcAmAzPGUrzd318H77JIg6Lwq2NhiAgtZssIm4w==
+X-Received: by 2002:a05:600c:4f16:b0:421:b65d:2235 with SMTP id
+ 5b1f17b1804b1-42579714d61mr93029095e9.0.1719951590800; 
+ Tue, 02 Jul 2024 13:19:50 -0700 (PDT)
 Received: from redhat.com ([2a02:14f:1f5:eadd:8c31:db01:9d01:7604])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3675a0e0661sm13961980f8f.47.2024.07.02.13.19.44
+ 5b1f17b1804b1-4256af557fesm213327415e9.11.2024.07.02.13.19.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 02 Jul 2024 13:19:46 -0700 (PDT)
-Date: Tue, 2 Jul 2024 16:19:43 -0400
+ Tue, 02 Jul 2024 13:19:50 -0700 (PDT)
+Date: Tue, 2 Jul 2024 16:19:47 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Sunil V L <sunilvl@ventanamicro.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>
-Subject: [PULL v2 68/88] tests/qtest/bios-tables-test.c: Set "arch" for
- aarch64 tests
-Message-ID: <54f055a3e0b40814248e49c08296a56b4ab0a27e.1719951168.git.mst@redhat.com>
+ Sunil V L <sunilvl@ventanamicro.com>, Igor Mammedov <imammedo@redhat.com>,
+ Ani Sinha <anisinha@redhat.com>
+Subject: [PULL v2 69/88] tests/qtest/bios-tables-test.c: Set "arch" for x86
+ tests
+Message-ID: <3bf5d06c79acac90acb65877527982e31b71f4cc.1719951168.git.mst@redhat.com>
 References: <cover.1719951168.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -78,7 +77,7 @@ Content-Disposition: inline
 In-Reply-To: <cover.1719951168.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -105,86 +104,508 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 From: Sunil V L <sunilvl@ventanamicro.com>
 
 To search for expected AML files under ${arch}/${machine} path, set this
-field for AARCH64 related test cases.
+field for X86 related test cases.
 
 Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
-Acked-by: Alistair Francis <alistair.francis@wdc.com>
 Reviewed-by: Igor Mammedov <imammedo@redhat.com>
-Message-Id: <20240625150839.1358279-8-sunilvl@ventanamicro.com>
+Message-Id: <20240625150839.1358279-9-sunilvl@ventanamicro.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- tests/qtest/bios-tables-test.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ tests/qtest/bios-tables-test.c | 77 ++++++++++++++++++++++++++++------
+ 1 file changed, 64 insertions(+), 13 deletions(-)
 
 diff --git a/tests/qtest/bios-tables-test.c b/tests/qtest/bios-tables-test.c
-index 29c52952f4..007c281c9a 100644
+index 007c281c9a..f4c4704bab 100644
 --- a/tests/qtest/bios-tables-test.c
 +++ b/tests/qtest/bios-tables-test.c
-@@ -1591,6 +1591,7 @@ static void test_acpi_aarch64_virt_tcg_memhp(void)
+@@ -933,6 +933,7 @@ static void test_acpi_piix4_tcg(void)
+      * This is to make guest actually run.
+      */
+     data.machine = MACHINE_PC;
++    data.arch    = "x86";
+     data.required_struct_types = base_required_struct_types;
+     data.required_struct_types_len = ARRAY_SIZE(base_required_struct_types);
+     test_acpi_one(NULL, &data);
+@@ -944,6 +945,7 @@ static void test_acpi_piix4_tcg_bridge(void)
+     test_data data = {};
+ 
+     data.machine = MACHINE_PC;
++    data.arch    = "x86";
+     data.variant = ".bridge";
+     data.required_struct_types = base_required_struct_types;
+     data.required_struct_types_len = ARRAY_SIZE(base_required_struct_types);
+@@ -981,6 +983,7 @@ static void test_acpi_piix4_no_root_hotplug(void)
+     test_data data = {};
+ 
+     data.machine = MACHINE_PC;
++    data.arch    = "x86";
+     data.variant = ".roothp";
+     data.required_struct_types = base_required_struct_types;
+     data.required_struct_types_len = ARRAY_SIZE(base_required_struct_types);
+@@ -997,6 +1000,7 @@ static void test_acpi_piix4_no_bridge_hotplug(void)
+     test_data data = {};
+ 
+     data.machine = MACHINE_PC;
++    data.arch    = "x86";
+     data.variant = ".hpbridge";
+     data.required_struct_types = base_required_struct_types;
+     data.required_struct_types_len = ARRAY_SIZE(base_required_struct_types);
+@@ -1013,6 +1017,7 @@ static void test_acpi_piix4_no_acpi_pci_hotplug(void)
+     test_data data = {};
+ 
+     data.machine = MACHINE_PC;
++    data.arch    = "x86";
+     data.variant = ".hpbrroot";
+     data.required_struct_types = base_required_struct_types;
+     data.required_struct_types_len = ARRAY_SIZE(base_required_struct_types);
+@@ -1034,6 +1039,7 @@ static void test_acpi_q35_tcg(void)
+     test_data data = {};
+ 
+     data.machine = MACHINE_Q35;
++    data.arch = "x86";
+     data.required_struct_types = base_required_struct_types;
+     data.required_struct_types_len = ARRAY_SIZE(base_required_struct_types);
+     test_acpi_one(NULL, &data);
+@@ -1049,6 +1055,7 @@ static void test_acpi_q35_kvm_type4_count(void)
  {
      test_data data = {
-         .machine = "virt",
-+        .arch = "aarch64",
-         .tcg_only = true,
-         .uefi_fl1 = "pc-bios/edk2-aarch64-code.fd",
-         .uefi_fl2 = "pc-bios/edk2-arm-vars.fd",
-@@ -1684,6 +1685,7 @@ static void test_acpi_aarch64_virt_tcg_numamem(void)
+         .machine = MACHINE_Q35,
++        .arch    = "x86",
+         .variant = ".type4-count",
+         .required_struct_types = base_required_struct_types,
+         .required_struct_types_len = ARRAY_SIZE(base_required_struct_types),
+@@ -1065,6 +1072,7 @@ static void test_acpi_q35_kvm_core_count(void)
  {
      test_data data = {
-         .machine = "virt",
-+        .arch = "aarch64",
-         .tcg_only = true,
-         .uefi_fl1 = "pc-bios/edk2-aarch64-code.fd",
-         .uefi_fl2 = "pc-bios/edk2-arm-vars.fd",
-@@ -1706,6 +1708,7 @@ static void test_acpi_aarch64_virt_tcg_pxb(void)
+         .machine = MACHINE_Q35,
++        .arch    = "x86",
+         .variant = ".core-count",
+         .required_struct_types = base_required_struct_types,
+         .required_struct_types_len = ARRAY_SIZE(base_required_struct_types),
+@@ -1082,6 +1090,7 @@ static void test_acpi_q35_kvm_core_count2(void)
  {
      test_data data = {
-         .machine = "virt",
-+        .arch = "aarch64",
-         .tcg_only = true,
-         .uefi_fl1 = "pc-bios/edk2-aarch64-code.fd",
-         .uefi_fl2 = "pc-bios/edk2-arm-vars.fd",
-@@ -1779,6 +1782,7 @@ static void test_acpi_aarch64_virt_tcg_acpi_hmat(void)
+         .machine = MACHINE_Q35,
++        .arch    = "x86",
+         .variant = ".core-count2",
+         .required_struct_types = base_required_struct_types,
+         .required_struct_types_len = ARRAY_SIZE(base_required_struct_types),
+@@ -1099,6 +1108,7 @@ static void test_acpi_q35_kvm_thread_count(void)
  {
      test_data data = {
-         .machine = "virt",
-+        .arch = "aarch64",
-         .tcg_only = true,
-         .uefi_fl1 = "pc-bios/edk2-aarch64-code.fd",
-         .uefi_fl2 = "pc-bios/edk2-arm-vars.fd",
-@@ -1935,6 +1939,7 @@ static void test_acpi_aarch64_virt_tcg(void)
+         .machine = MACHINE_Q35,
++        .arch    = "x86",
+         .variant = ".thread-count",
+         .required_struct_types = base_required_struct_types,
+         .required_struct_types_len = ARRAY_SIZE(base_required_struct_types),
+@@ -1116,6 +1126,7 @@ static void test_acpi_q35_kvm_thread_count2(void)
  {
      test_data data = {
-         .machine = "virt",
-+        .arch = "aarch64",
-         .tcg_only = true,
-         .uefi_fl1 = "pc-bios/edk2-aarch64-code.fd",
-         .uefi_fl2 = "pc-bios/edk2-arm-vars.fd",
-@@ -1954,6 +1959,7 @@ static void test_acpi_aarch64_virt_tcg_topology(void)
+         .machine = MACHINE_Q35,
++        .arch    = "x86",
+         .variant = ".thread-count2",
+         .required_struct_types = base_required_struct_types,
+         .required_struct_types_len = ARRAY_SIZE(base_required_struct_types),
+@@ -1134,6 +1145,7 @@ static void test_acpi_q35_tcg_bridge(void)
+     test_data data = {};
+ 
+     data.machine = MACHINE_Q35;
++    data.arch    = "x86",
+     data.variant = ".bridge";
+     data.required_struct_types = base_required_struct_types;
+     data.required_struct_types_len = ARRAY_SIZE(base_required_struct_types);
+@@ -1148,6 +1160,7 @@ static void test_acpi_q35_tcg_no_acpi_hotplug(void)
+     test_data data = {};
+ 
+     data.machine = MACHINE_Q35;
++    data.arch    = "x86",
+     data.variant = ".noacpihp";
+     data.required_struct_types = base_required_struct_types;
+     data.required_struct_types_len = ARRAY_SIZE(base_required_struct_types);
+@@ -1176,6 +1189,7 @@ static void test_acpi_q35_multif_bridge(void)
  {
      test_data data = {
-         .machine = "virt",
-+        .arch = "aarch64",
-         .variant = ".topology",
-         .tcg_only = true,
-         .uefi_fl1 = "pc-bios/edk2-aarch64-code.fd",
-@@ -2037,6 +2043,7 @@ static void test_acpi_aarch64_virt_viot(void)
+         .machine = MACHINE_Q35,
++        .arch    = "x86",
+         .variant = ".multi-bridge",
+     };
+     test_vm_prepare("-S"
+@@ -1225,6 +1239,7 @@ static void test_acpi_q35_tcg_mmio64(void)
  {
      test_data data = {
-         .machine = "virt",
-+        .arch = "aarch64",
+         .machine = MACHINE_Q35,
++        .arch    = "x86",
+         .variant = ".mmio64",
          .tcg_only = true,
-         .uefi_fl1 = "pc-bios/edk2-aarch64-code.fd",
-         .uefi_fl2 = "pc-bios/edk2-arm-vars.fd",
-@@ -2213,6 +2220,7 @@ static void test_acpi_aarch64_virt_oem_fields(void)
+         .required_struct_types = base_required_struct_types,
+@@ -1245,6 +1260,7 @@ static void test_acpi_piix4_tcg_cphp(void)
+     test_data data = {};
+ 
+     data.machine = MACHINE_PC;
++    data.arch    = "x86";
+     data.variant = ".cphp";
+     test_acpi_one("-smp 2,cores=3,sockets=2,maxcpus=6"
+                   " -object memory-backend-ram,id=ram0,size=64M"
+@@ -1260,6 +1276,7 @@ static void test_acpi_q35_tcg_cphp(void)
+     test_data data = {};
+ 
+     data.machine = MACHINE_Q35;
++    data.arch    = "x86",
+     data.variant = ".cphp";
+     test_acpi_one(" -smp 2,cores=3,sockets=2,maxcpus=6"
+                   " -object memory-backend-ram,id=ram0,size=64M"
+@@ -1279,6 +1296,7 @@ static void test_acpi_q35_tcg_ipmi(void)
+     test_data data = {};
+ 
+     data.machine = MACHINE_Q35;
++    data.arch    = "x86",
+     data.variant = ".ipmibt";
+     data.required_struct_types = ipmi_required_struct_types;
+     data.required_struct_types_len = ARRAY_SIZE(ipmi_required_struct_types);
+@@ -1293,6 +1311,7 @@ static void test_acpi_q35_tcg_smbus_ipmi(void)
+     test_data data = {};
+ 
+     data.machine = MACHINE_Q35;
++    data.arch    = "x86",
+     data.variant = ".ipmismbus";
+     data.required_struct_types = ipmi_required_struct_types;
+     data.required_struct_types_len = ARRAY_SIZE(ipmi_required_struct_types);
+@@ -1310,6 +1329,7 @@ static void test_acpi_piix4_tcg_ipmi(void)
+      * This is to make guest actually run.
+      */
+     data.machine = MACHINE_PC;
++    data.arch    = "x86";
+     data.variant = ".ipmikcs";
+     data.required_struct_types = ipmi_required_struct_types;
+     data.required_struct_types_len = ARRAY_SIZE(ipmi_required_struct_types);
+@@ -1324,6 +1344,7 @@ static void test_acpi_q35_tcg_memhp(void)
+     test_data data = {};
+ 
+     data.machine = MACHINE_Q35;
++    data.arch    = "x86",
+     data.variant = ".memhp";
+     test_acpi_one(" -m 128,slots=3,maxmem=1G"
+                   " -object memory-backend-ram,id=ram0,size=64M"
+@@ -1339,6 +1360,7 @@ static void test_acpi_piix4_tcg_memhp(void)
+     test_data data = {};
+ 
+     data.machine = MACHINE_PC;
++    data.arch    = "x86";
+     data.variant = ".memhp";
+     test_acpi_one(" -m 128,slots=3,maxmem=1G"
+                   " -object memory-backend-ram,id=ram0,size=64M"
+@@ -1354,6 +1376,7 @@ static void test_acpi_piix4_tcg_nosmm(void)
+     test_data data = {};
+ 
+     data.machine = MACHINE_PC;
++    data.arch    = "x86";
+     data.variant = ".nosmm";
+     test_acpi_one("-machine smm=off", &data);
+     free_test_data(&data);
+@@ -1364,6 +1387,7 @@ static void test_acpi_piix4_tcg_smm_compat(void)
+     test_data data = {};
+ 
+     data.machine = MACHINE_PC;
++    data.arch    = "x86";
+     data.variant = ".smm-compat";
+     test_acpi_one("-global PIIX4_PM.smm-compat=on", &data);
+     free_test_data(&data);
+@@ -1374,6 +1398,7 @@ static void test_acpi_piix4_tcg_smm_compat_nosmm(void)
+     test_data data = {};
+ 
+     data.machine = MACHINE_PC;
++    data.arch    = "x86";
+     data.variant = ".smm-compat-nosmm";
+     test_acpi_one("-global PIIX4_PM.smm-compat=on -machine smm=off", &data);
+     free_test_data(&data);
+@@ -1384,6 +1409,7 @@ static void test_acpi_piix4_tcg_nohpet(void)
+     test_data data = {};
+ 
+     data.machine = MACHINE_PC;
++    data.arch    = "x86";
+     data.machine_param = ",hpet=off";
+     data.variant = ".nohpet";
+     test_acpi_one(NULL, &data);
+@@ -1395,6 +1421,7 @@ static void test_acpi_q35_tcg_numamem(void)
+     test_data data = {};
+ 
+     data.machine = MACHINE_Q35;
++    data.arch    = "x86",
+     data.variant = ".numamem";
+     test_acpi_one(" -object memory-backend-ram,id=ram0,size=128M"
+                   " -numa node -numa node,memdev=ram0", &data);
+@@ -1406,6 +1433,7 @@ static void test_acpi_q35_kvm_xapic(void)
+     test_data data = {};
+ 
+     data.machine = MACHINE_Q35;
++    data.arch    = "x86",
+     data.variant = ".xapic";
+     test_acpi_one(" -object memory-backend-ram,id=ram0,size=128M"
+                   " -numa node -numa node,memdev=ram0"
+@@ -1418,6 +1446,7 @@ static void test_acpi_q35_tcg_nosmm(void)
+     test_data data = {};
+ 
+     data.machine = MACHINE_Q35;
++    data.arch    = "x86",
+     data.variant = ".nosmm";
+     test_acpi_one("-machine smm=off", &data);
+     free_test_data(&data);
+@@ -1428,6 +1457,7 @@ static void test_acpi_q35_tcg_smm_compat(void)
+     test_data data = {};
+ 
+     data.machine = MACHINE_Q35;
++    data.arch    = "x86",
+     data.variant = ".smm-compat";
+     test_acpi_one("-global ICH9-LPC.smm-compat=on", &data);
+     free_test_data(&data);
+@@ -1438,6 +1468,7 @@ static void test_acpi_q35_tcg_smm_compat_nosmm(void)
+     test_data data = {};
+ 
+     data.machine = MACHINE_Q35;
++    data.arch    = "x86",
+     data.variant = ".smm-compat-nosmm";
+     test_acpi_one("-global ICH9-LPC.smm-compat=on -machine smm=off", &data);
+     free_test_data(&data);
+@@ -1448,6 +1479,7 @@ static void test_acpi_q35_tcg_nohpet(void)
+     test_data data = {};
+ 
+     data.machine = MACHINE_Q35;
++    data.arch    = "x86",
+     data.machine_param = ",hpet=off";
+     data.variant = ".nohpet";
+     test_acpi_one(NULL, &data);
+@@ -1459,6 +1491,7 @@ static void test_acpi_q35_kvm_dmar(void)
+     test_data data = {};
+ 
+     data.machine = MACHINE_Q35;
++    data.arch    = "x86",
+     data.variant = ".dmar";
+     test_acpi_one("-machine kernel-irqchip=split -accel kvm"
+                   " -device intel-iommu,intremap=on,device-iotlb=on", &data);
+@@ -1470,6 +1503,7 @@ static void test_acpi_q35_tcg_ivrs(void)
+     test_data data = {};
+ 
+     data.machine = MACHINE_Q35;
++    data.arch    = "x86",
+     data.variant = ".ivrs";
+     data.tcg_only = true,
+     test_acpi_one(" -device amd-iommu", &data);
+@@ -1481,6 +1515,7 @@ static void test_acpi_piix4_tcg_numamem(void)
+     test_data data = {};
+ 
+     data.machine = MACHINE_PC;
++    data.arch    = "x86";
+     data.variant = ".numamem";
+     test_acpi_one(" -object memory-backend-ram,id=ram0,size=128M"
+                   " -numa node -numa node,memdev=ram0", &data);
+@@ -1489,8 +1524,9 @@ static void test_acpi_piix4_tcg_numamem(void)
+ 
+ uint64_t tpm_tis_base_addr;
+ 
+-static void test_acpi_tcg_tpm(const char *machine, const char *tpm_if,
+-                              uint64_t base, enum TPMVersion tpm_version)
++static void test_acpi_tcg_tpm(const char *machine, const char *arch,
++                              const char *tpm_if, uint64_t base,
++                              enum TPMVersion tpm_version)
+ {
+     gchar *tmp_dir_name = g_strdup_printf("qemu-test_acpi_%s_tcg_%s.XXXXXX",
+                                           machine, tpm_if);
+@@ -1517,6 +1553,7 @@ static void test_acpi_tcg_tpm(const char *machine, const char *tpm_if,
+     tpm_emu_test_wait_cond(&test);
+ 
+     data.machine = machine;
++    data.arch = arch;
+     data.variant = variant;
+ 
+     args = g_strdup_printf(
+@@ -1540,19 +1577,20 @@ static void test_acpi_tcg_tpm(const char *machine, const char *tpm_if,
+ 
+ static void test_acpi_q35_tcg_tpm2_tis(void)
+ {
+-    test_acpi_tcg_tpm("q35", "tis", 0xFED40000, TPM_VERSION_2_0);
++    test_acpi_tcg_tpm("q35", "x86", "tis", 0xFED40000, TPM_VERSION_2_0);
+ }
+ 
+ static void test_acpi_q35_tcg_tpm12_tis(void)
+ {
+-    test_acpi_tcg_tpm("q35", "tis", 0xFED40000, TPM_VERSION_1_2);
++    test_acpi_tcg_tpm("q35", "x86", "tis", 0xFED40000, TPM_VERSION_1_2);
+ }
+ 
+-static void test_acpi_tcg_dimm_pxm(const char *machine)
++static void test_acpi_tcg_dimm_pxm(const char *machine, const char *arch)
+ {
+     test_data data = {};
+ 
+     data.machine = machine;
++    data.arch    = arch;
+     data.variant = ".dimmpxm";
+     test_acpi_one(" -machine nvdimm=on,nvdimm-persistence=cpu"
+                   " -smp 4,sockets=4"
+@@ -1579,12 +1617,12 @@ static void test_acpi_tcg_dimm_pxm(const char *machine)
+ 
+ static void test_acpi_q35_tcg_dimm_pxm(void)
+ {
+-    test_acpi_tcg_dimm_pxm(MACHINE_Q35);
++    test_acpi_tcg_dimm_pxm(MACHINE_Q35, "x86");
+ }
+ 
+ static void test_acpi_piix4_tcg_dimm_pxm(void)
+ {
+-    test_acpi_tcg_dimm_pxm(MACHINE_PC);
++    test_acpi_tcg_dimm_pxm(MACHINE_PC, "x86");
+ }
+ 
+ static void test_acpi_aarch64_virt_tcg_memhp(void)
+@@ -1621,6 +1659,7 @@ static void test_acpi_aarch64_virt_tcg_memhp(void)
+ static void test_acpi_microvm_prepare(test_data *data)
+ {
+     data->machine = "microvm";
++    data->arch = "x86";
+     data->required_struct_types = NULL; /* no smbios */
+     data->required_struct_types_len = 0;
+     data->blkdev = "virtio-blk-device";
+@@ -1737,11 +1776,12 @@ static void test_acpi_aarch64_virt_tcg_pxb(void)
+     free_test_data(&data);
+ }
+ 
+-static void test_acpi_tcg_acpi_hmat(const char *machine)
++static void test_acpi_tcg_acpi_hmat(const char *machine, const char *arch)
+ {
+     test_data data = {};
+ 
+     data.machine = machine;
++    data.arch    = arch;
+     data.variant = ".acpihmat";
+     test_acpi_one(" -machine hmat=on"
+                   " -smp 2,sockets=2"
+@@ -1770,12 +1810,12 @@ static void test_acpi_tcg_acpi_hmat(const char *machine)
+ 
+ static void test_acpi_q35_tcg_acpi_hmat(void)
+ {
+-    test_acpi_tcg_acpi_hmat(MACHINE_Q35);
++    test_acpi_tcg_acpi_hmat(MACHINE_Q35, "x86");
+ }
+ 
+ static void test_acpi_piix4_tcg_acpi_hmat(void)
+ {
+-    test_acpi_tcg_acpi_hmat(MACHINE_PC);
++    test_acpi_tcg_acpi_hmat(MACHINE_PC, "x86");
+ }
+ 
+ static void test_acpi_aarch64_virt_tcg_acpi_hmat(void)
+@@ -1841,6 +1881,7 @@ static void test_acpi_q35_tcg_acpi_hmat_noinitiator(void)
+     test_data data = {};
+ 
+     data.machine = MACHINE_Q35;
++    data.arch    = "x86";
+     data.variant = ".acpihmat-noinitiator";
+     test_acpi_one(" -machine hmat=on"
+                   " -smp 4,sockets=2"
+@@ -1884,13 +1925,14 @@ static void test_acpi_q35_tcg_acpi_hmat_noinitiator(void)
+ }
+ 
+ #ifdef CONFIG_POSIX
+-static void test_acpi_erst(const char *machine)
++static void test_acpi_erst(const char *machine, const char *arch)
+ {
+     gchar *tmp_path = g_dir_make_tmp("qemu-test-erst.XXXXXX", NULL);
+     gchar *params;
+     test_data data = {};
+ 
+     data.machine = machine;
++    data.arch    = arch;
+     data.variant = ".acpierst";
+     params = g_strdup_printf(
+         " -object memory-backend-file,id=erstnvram,"
+@@ -1905,12 +1947,12 @@ static void test_acpi_erst(const char *machine)
+ 
+ static void test_acpi_piix4_acpi_erst(void)
+ {
+-    test_acpi_erst(MACHINE_PC);
++    test_acpi_erst(MACHINE_PC, "x86");
+ }
+ 
+ static void test_acpi_q35_acpi_erst(void)
+ {
+-    test_acpi_erst(MACHINE_Q35);
++    test_acpi_erst(MACHINE_Q35, "x86");
+ }
+ 
+ static void test_acpi_microvm_acpi_erst(void)
+@@ -1978,6 +2020,7 @@ static void test_acpi_q35_viot(void)
  {
      test_data data = {
-         .machine = "virt",
-+        .arch = "aarch64",
-         .tcg_only = true,
-         .uefi_fl1 = "pc-bios/edk2-aarch64-code.fd",
-         .uefi_fl2 = "pc-bios/edk2-arm-vars.fd",
+         .machine = MACHINE_Q35,
++        .arch    = "x86",
+         .variant = ".viot",
+     };
+ 
+@@ -2002,6 +2045,7 @@ static void test_acpi_q35_cxl(void)
+ 
+     test_data data = {
+         .machine = MACHINE_Q35,
++        .arch    = "x86",
+         .variant = ".cxl",
+     };
+     /*
+@@ -2067,6 +2111,7 @@ static void test_acpi_q35_slic(void)
+ {
+     test_data data = {
+         .machine = MACHINE_Q35,
++        .arch    = "x86",
+         .variant = ".slic",
+     };
+ 
+@@ -2081,6 +2126,7 @@ static void test_acpi_q35_applesmc(void)
+ {
+     test_data data = {
+         .machine = MACHINE_Q35,
++        .arch    = "x86",
+         .variant = ".applesmc",
+     };
+ 
+@@ -2094,6 +2140,7 @@ static void test_acpi_q35_pvpanic_isa(void)
+ {
+     test_data data = {
+         .machine = MACHINE_Q35,
++        .arch    = "x86",
+         .variant = ".pvpanic-isa",
+     };
+ 
+@@ -2106,6 +2153,7 @@ static void test_acpi_pc_smbios_options(void)
+     uint8_t req_type11[] = { 11 };
+     test_data data = {
+         .machine = MACHINE_PC,
++        .arch    = "x86",
+         .variant = ".pc_smbios_options",
+         .required_struct_types = req_type11,
+         .required_struct_types_len = ARRAY_SIZE(req_type11),
+@@ -2120,6 +2168,7 @@ static void test_acpi_pc_smbios_blob(void)
+     uint8_t req_type11[] = { 11 };
+     test_data data = {
+         .machine = MACHINE_PC,
++        .arch    = "x86",
+         .variant = ".pc_smbios_blob",
+         .required_struct_types = req_type11,
+         .required_struct_types_len = ARRAY_SIZE(req_type11),
+@@ -2169,6 +2218,7 @@ static void test_acpi_piix4_oem_fields(void)
+     test_data data = {};
+ 
+     data.machine = MACHINE_PC;
++    data.arch    = "x86";
+     data.required_struct_types = base_required_struct_types;
+     data.required_struct_types_len = ARRAY_SIZE(base_required_struct_types);
+ 
+@@ -2187,6 +2237,7 @@ static void test_acpi_q35_oem_fields(void)
+     test_data data = {};
+ 
+     data.machine = MACHINE_Q35;
++    data.arch    = "x86";
+     data.required_struct_types = base_required_struct_types;
+     data.required_struct_types_len = ARRAY_SIZE(base_required_struct_types);
+ 
 -- 
 MST
 
