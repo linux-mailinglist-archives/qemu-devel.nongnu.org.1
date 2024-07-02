@@ -2,83 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE47591EE12
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 07:03:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD4BB91EE10
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 07:03:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOVfO-0001js-5t; Tue, 02 Jul 2024 01:02:58 -0400
+	id 1sOVfT-0002go-TC; Tue, 02 Jul 2024 01:03:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOVfJ-0001Kz-8v
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 01:02:53 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOVfR-0002WJ-RU
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 01:03:01 -0400
+Received: from mail-lf1-x132.google.com ([2a00:1450:4864:20::132])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOVfG-0007GJ-P2
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 01:02:52 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-424ad991cbbso29004525e9.0
- for <qemu-devel@nongnu.org>; Mon, 01 Jul 2024 22:02:50 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOVfM-0007OQ-OA
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 01:03:01 -0400
+Received: by mail-lf1-x132.google.com with SMTP id
+ 2adb3069b0e04-52e8037f8a5so3446283e87.1
+ for <qemu-devel@nongnu.org>; Mon, 01 Jul 2024 22:02:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719896569; x=1720501369; darn=nongnu.org;
+ d=linaro.org; s=google; t=1719896574; x=1720501374; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=IoGL6utQV9KZz7a0NZhlOkuZgg5oZQA8TSNIPaPeX+c=;
- b=pxJRoc9gnLyrVxrTMnue1Z0fOLHpNxnGcGXazHLBw5djDfb3GGDKZOBolVqHgGkbWo
- Zxd1nEsbaJjKQ3AVnUh/rvVRx4eauN5Sm88b3k+I+lFc6LPwsObrnYIsjQ+RW3re3yG5
- DA4lmFoicpsSxKRya91W5EbkmPZxqsvwO05SkU2xGf2w7gbscHmLrzKyN52CMUlhFf06
- 8vVCqwlQuLerI1zgDOcd0hyr7lhp5YcpzPNEuXeeBZRM9CuNNjEIZMunkQv6l2ZDERZw
- EfnIkpJOVrXryB0EEDkRQjyjeniyP6qAG+m34rdYIiLZ13P75jFdXgWiUbXtdIQHoLaF
- JcOQ==
+ bh=ckBzbdEj+3o/s/LUD3LYtPTx7oK9lF8pkA5ZkoB219g=;
+ b=GVx1YCZmWLkDQMFSQnVyq5IDJ9yS+WstoLkil5mQxqPxFSLZpwNiTuKuFsRPV0vNGS
+ 2x004ZKHROK3pgPw2pXdL/3f5kt7J1lnvgRLT50RYBU04cpBxBaUU0iTekfnicF0eSX/
+ QLYIWnoxnBKKf7Y0Z4mIgPw9HEfV3IAwG8ei7fq5owSuEg0r3lx1zRCVRwOGc5NtqFnu
+ rqJss0lUVQa6PT3tVwQTRlEdAlpRAoGhlS4MhZQQf+NmPBdJPh3kwNhwVm+CMvUJYXU8
+ MPfh8Me9SIqbg9VsSeeT1JDC3gL/Yi1KDAnUH7b6swfQCcmfrHXpFSyQG8RSUNUxkk/R
+ sGLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719896569; x=1720501369;
+ d=1e100.net; s=20230601; t=1719896574; x=1720501374;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=IoGL6utQV9KZz7a0NZhlOkuZgg5oZQA8TSNIPaPeX+c=;
- b=Uc3PzVzXLwDw6D4N1guwKQ7E8sKkfJ6216lE0f1XH5aSkGVeGjfMIMhT72pK7kDLqC
- NIR7YYl1pvipwQs8kejbyQ0oXTiTIGFIw0NDYxYHDivgUc1X/8qozZEDZNx49o6KjeLs
- W9IcMlswjrEpMOc4bTyfLLUg+D/V7SbqrQ8hjLWL/HbqeYUCb+p4l5brdn5EVykQzoFY
- emjui1qbqxPeiaS5LfsSO9jU80gRuitvqu8X8moF7QWFKvg3nlj99rxrgaPwniWaBwQJ
- l1z2quMYfi62G8iGtn3lV2TV1FyX8di1B3KOgm+/UCIOYTqb7D1TsJ6D3JfZLh+2TGPm
- QYKg==
-X-Gm-Message-State: AOJu0Yw8l9F8QxfCfW36TajAaEEzg3YRjXP+E9hTvFT7x7TxaW2LfT9I
- SioCaHbbTF5KZuHyVuHe41LIOmHr8xBCCxvp1yBKrZOVB26N/CW+rPy86KNQkKPg9OJtscfWDZ5
- c
-X-Google-Smtp-Source: AGHT+IFVM6prAhPdX59Xe0UIszUnCIjlrZFwQ2OcgmLo4HyK34MbZmFeg+xhbdSncMOvgFCOT5PWqg==
-X-Received: by 2002:a05:600c:3388:b0:425:600a:5e95 with SMTP id
- 5b1f17b1804b1-4257a06db61mr43950945e9.39.1719896568880; 
- Mon, 01 Jul 2024 22:02:48 -0700 (PDT)
+ bh=ckBzbdEj+3o/s/LUD3LYtPTx7oK9lF8pkA5ZkoB219g=;
+ b=BYT+7sDWVt8wtftUbuhDt/2w+uEhPH8UUgvqVwSEViAsvCqS9aT1z7TR0ZxUIgH/kY
+ HaCQiJ7TdvpnJogFO+uOTqwMddxIYn1/5MdsvdhM/FEKATen8gm820CTv7Oh1YuK3Lao
+ 6h4J7AJi0LMpMcc6Z6CftZvE/ro1zzm1zavmJAz2wFtk13hkQnnUei4PX+XP3pGFNQZk
+ rvvvxiNFE9f78knNiRyqbYixEPr/kY7BVz/PGJnVzupQiwhHdnwjdsbn5EU+Rc4AxxYK
+ sghhxA9YigQX3cXStYue5L3dtXh9n8/Y8ExZFJB5LxaNc8qdI0QCc41ArNIlkG41xqES
+ 8Sow==
+X-Gm-Message-State: AOJu0YwDg7dPEvrPHIHN2gU5RRopQUeBJ3uPjPolJnYB4pgXp1mHbseS
+ sj1DJz42Nt1Mo+Te2IjF2IgjPjDMrokJyrsQGhA5iqFb1LJcZfjiBFQzafAWB7fsSFfdR4Li1lw
+ a
+X-Google-Smtp-Source: AGHT+IHuYyLWmbfp7HqwfMztJsjTsMO9hHkgvEf4+OOUzqNO+QdE51/N0cREA0/Iq0aoH8JWuVx+5w==
+X-Received: by 2002:a05:6512:2309:b0:52c:e03d:dfd7 with SMTP id
+ 2adb3069b0e04-52e8268d153mr6350848e87.39.1719896574653; 
+ Mon, 01 Jul 2024 22:02:54 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.209.58])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4256af389efsm182140545e9.7.2024.07.01.22.02.47
+ ffacd0b85a97d-3675a0cd663sm12079456f8f.3.2024.07.01.22.02.53
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 01 Jul 2024 22:02:48 -0700 (PDT)
+ Mon, 01 Jul 2024 22:02:54 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 15/22] docs: document special exception for machine type
- deprecation & removal
-Date: Tue,  2 Jul 2024 07:01:05 +0200
-Message-ID: <20240702050112.35907-16-philmd@linaro.org>
+Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ David Hildenbrand <david@redhat.com>
+Subject: [PULL 16/22] system/physmem: Fix reference to dump-guest-core
+Date: Tue,  2 Jul 2024 07:01:06 +0200
+Message-ID: <20240702050112.35907-17-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240702050112.35907-1-philmd@linaro.org>
 References: <20240702050112.35907-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::132;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x132.google.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,45 +92,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Daniel P. Berrangé <berrange@redhat.com>
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-This extends the deprecation policy to indicate that versioned machine
-types will be marked deprecated after 3 years, and then subject to
-removal after a further 3 years has passed.
+dump_guest_core is exposed as dump-guest-core with QOM.
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20240620165742.1711389-15-berrange@redhat.com>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Message-ID: <20240628-dump-v1-1-c581d10f3646@daynix.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- docs/about/deprecated.rst | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ system/physmem.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-index ff3da68208..bba12d1641 100644
---- a/docs/about/deprecated.rst
-+++ b/docs/about/deprecated.rst
-@@ -11,6 +11,19 @@ releases, the feature is liable to be removed. Deprecated features may also
- generate warnings on the console when QEMU starts up, or if activated via a
- monitor command, however, this is not a mandatory requirement.
- 
-+As a special exception to this general timeframe, rather than have an
-+indefinite lifetime, versioned machine types are only intended to be
-+supported for a period of 6 years, equivalent to 18 QEMU releases. All
-+versioned machine types will be automatically marked deprecated after an
-+initial 3 years (9 QEMU releases) has passed, and will then be deleted after
-+a further 3 year period has passed. It is recommended that a deprecated
-+machine type is only used for incoming migrations and restore of saved state,
-+for pre-existing VM deployments. They should be scheduled for updating to a
-+newer machine type during an appropriate service window. Newly deployed VMs
-+should exclusively use a non-deprecated machine type, with use of the most
-+recent version highly recommended. Non-versioned machine types follow the
-+general feature deprecation policy.
-+
- Prior to the 2.10.0 release there was no official policy on how
- long features would be deprecated prior to their removal, nor
- any documented list of which features were deprecated. Thus
+diff --git a/system/physmem.c b/system/physmem.c
+index 33d09f7571..261196cde0 100644
+--- a/system/physmem.c
++++ b/system/physmem.c
+@@ -1521,7 +1521,7 @@ static void qemu_ram_setup_dump(void *addr, ram_addr_t size)
+         if (ret) {
+             perror("qemu_madvise");
+             fprintf(stderr, "madvise doesn't support MADV_DONTDUMP, "
+-                            "but dump_guest_core=off specified\n");
++                            "but dump-guest-core=off specified\n");
+         }
+     }
+ }
 -- 
 2.41.0
 
