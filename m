@@ -2,80 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61E9E92492D
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 22:27:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD7369248FA
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 22:18:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOjwq-0002yj-9P; Tue, 02 Jul 2024 16:17:56 -0400
+	id 1sOjx1-0004DF-Vj; Tue, 02 Jul 2024 16:18:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOjwh-0002MF-VW
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 16:17:48 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOjwk-0002eo-Ir
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 16:17:50 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOjwe-0008V2-4e
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 16:17:47 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOjwi-0008Va-Dh
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 16:17:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719951463;
+ s=mimecast20190719; t=1719951467;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=g4UiaVaJHqFRMzcgj8Lsoa2O3CKB9KU5Hs0p0vn09PA=;
- b=AHc3RaG9XmWjOU54+r2CQCaVCeSuBUt78fNGRb9eroGF5d8I0/qKmne6keKqHTXm5lwC41
- +Ty4qZ2C3PGNsTDS91obR2nI4nmQtlOi/BhzVluQZBKoLPCEPTm5AHNULeomh8IQxImNGz
- DF6Outso0QqarmeHwXqNddZ/XaOjUMc=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=PMqT3UA862JsOGcigX9iEr1iG7UpaUmQpd1D/p7t/1Y=;
+ b=Eo8c6URmF3Ff8E2/ycjD9wbKNlTtZbJKwpAlOvEZHKCrLrwQqHwpzGPKHdciv4HLfdKdNs
+ LJsZbhOr0xH8AMQxBm7sdM72xVBn49vz6BaUiJ6J2mkZxakUSBn+fGkWnVyCLrnwhdvkvX
+ f6JTY8iI2gUP1Kq2QdB2/r6601VJMRM=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-213-6Zu5CjTHNgKW1wunOb3oNg-1; Tue, 02 Jul 2024 16:17:42 -0400
-X-MC-Unique: 6Zu5CjTHNgKW1wunOb3oNg-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-363542774e1so4860168f8f.2
- for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 13:17:41 -0700 (PDT)
+ us-mta-547-nvJltKjrPVKbTOmzhaeRWA-1; Tue, 02 Jul 2024 16:17:46 -0400
+X-MC-Unique: nvJltKjrPVKbTOmzhaeRWA-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-42566c4aa0fso37118895e9.1
+ for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 13:17:45 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719951460; x=1720556260;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=g4UiaVaJHqFRMzcgj8Lsoa2O3CKB9KU5Hs0p0vn09PA=;
- b=j1QbckjddPYxP+X86sjPISyHNQWAO5mTN4hucWsUKV603oR4gu4rnyzovNyVsDx7Gi
- mlUtLln3zE7sy5EsQjr/rBUTTQ2I+zziXolR5GD3NFPjPavVnC2BdSHRP1pu3DRcyGEW
- 2Sy2kId5/9RzHEos5EKCxnzmY8gz+k0zgNzgNRGxQYw2eZ7ASEj+4eQz7SU1B2lZLtR8
- VSLZuD+vwq2sGV5zo6StPAI5Ec6T4iVuDj/mAeqNwXAP3d1tis2kWHajeXUcTz19M+Q7
- Y9knHwvypdtcykXio6R9rE1BrOxW3vioDe3aWW4lZ+iM3+HYTCMn/OcJHz7+2jSYsQu8
- ojBQ==
-X-Gm-Message-State: AOJu0YyAy9lZfpkj4heLCizx9cUp8dQQta0kxDsMomKfREcvQ9XgJo/7
- PG6QOOPZBO2IWc4rP+wXuTwHg+py2o+cx2s4mAZ2Xo0/qK8Dc8bp9g4gly0dZXccNBU9IgCVxVd
- Q34qJE6CqBhmXWQMuUgbxJH4saDYHpekORpcBpQL0co+FGErYFa3Er2vQ15H75+ECoJtunTe17Y
- Mv77Pho15B1NYtAKAzmQnOU0KcDQA/pg==
-X-Received: by 2002:a05:6000:1f88:b0:366:f2c2:61f3 with SMTP id
- ffacd0b85a97d-3677572492dmr9653100f8f.51.1719951460450; 
- Tue, 02 Jul 2024 13:17:40 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGH+TGxMh99Mc5Ft2lSoxDo4TyJtXrv56JEw1a6jDH3BelwvfUpvmqQXu/kEzPveujoF1PfyQ==
-X-Received: by 2002:a05:6000:1f88:b0:366:f2c2:61f3 with SMTP id
- ffacd0b85a97d-3677572492dmr9653076f8f.51.1719951459963; 
- Tue, 02 Jul 2024 13:17:39 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1719951464; x=1720556264;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=PMqT3UA862JsOGcigX9iEr1iG7UpaUmQpd1D/p7t/1Y=;
+ b=pXwJA2G/nUwzGPJqZZSsAciUhmNBoHyF6DLBnYNsJDv05cynWGqDgtEijXIHTDsFKU
+ F2QmCVUZ2fLlfVb+GhDWbAOq/kaoH1JKvc5RJa13/ef5PzICTvgru7Stz6XCaPifGu6+
+ n80bdI5Y1fABqPDtar9hh+pt1iWbgmpNjLyXqaUGCVGD2D6MKVgg/vqtTTvYfkg7vCYc
+ TS3TgXwLNJfObN9XoPa3sc89WgYv+pMH/6lz0rmhRsk6x6u2rSJGMrKEUUEstVwQiuoA
+ mSdaepJ93VCEm236Qm1RA8RoE+pZBtltjkroarddc+XE/xGaURzj9l3WcXKo4Tuujcj8
+ 6zEg==
+X-Gm-Message-State: AOJu0Yw/KuhxXYo3TQSmiOjJa9TSgutBIkMTf+T1Fv6K+SI/8WlxIa5p
+ CokmiB7PXUF5DhCarLShzjf8XQomupN+ZobAEUomjqw1y2dVYDvvr+X9eddkdIb0WXewsAdSkDM
+ lHCEMw7uHY2TG0yTMfRouBpXYgPiU3+/mW11lid7p5xbc/801qNPzZoZUFVO6gI6mUXH6JYwlQl
+ TVnYZMXDWSl+q6guxMA5lOELm9rLfFeA==
+X-Received: by 2002:a05:600c:c88:b0:422:62db:5a02 with SMTP id
+ 5b1f17b1804b1-4257a05f928mr64712845e9.32.1719951464029; 
+ Tue, 02 Jul 2024 13:17:44 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEI0qmSpZoTU+G1mSgocUfLqCHqeB+AlNTGLbd+XjVxzOEOpUPaw75mqNITd6vAhSBNS4r/PQ==
+X-Received: by 2002:a05:600c:c88:b0:422:62db:5a02 with SMTP id
+ 5b1f17b1804b1-4257a05f928mr64712735e9.32.1719951463510; 
+ Tue, 02 Jul 2024 13:17:43 -0700 (PDT)
 Received: from redhat.com ([2a02:14f:1f5:eadd:8c31:db01:9d01:7604])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3678a23b349sm2303124f8f.36.2024.07.02.13.17.38
+ 5b1f17b1804b1-4256b097bd6sm213742855e9.30.2024.07.02.13.17.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 02 Jul 2024 13:17:39 -0700 (PDT)
-Date: Tue, 2 Jul 2024 16:17:37 -0400
+ Tue, 02 Jul 2024 13:17:42 -0700 (PDT)
+Date: Tue, 2 Jul 2024 16:17:40 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas@t-8ch.de>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL v2 36/88] Revert "docs/specs/pvpanic: mark shutdown event as
- not implemented"
-Message-ID: <0c0cc13d319cf7b876f327fa1c5cc1866ad868cc.1719951168.git.mst@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>, Cindy Lu <lulu@redhat.com>,
+ qemu-stable@nongnu.org
+Subject: [PULL v2 37/88] virtio-pci: Fix the failure process in
+ kvm_virtio_pci_vector_use_one()
+Message-ID: <a113d041e8d0b152d72a7c2bf47dd09aabf9ade2.1719951168.git.mst@redhat.com>
 References: <cover.1719951168.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1719951168.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
@@ -103,33 +100,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Weißschuh <thomas@t-8ch.de>
+From: Cindy Lu <lulu@redhat.com>
 
-The missing functionality has been implemented now.
+In function kvm_virtio_pci_vector_use_one(), the function will only use
+the irqfd/vector for itself. Therefore, in the undo label, the failing
+process is incorrect.
+To fix this, we can just remove this label.
 
-This reverts commit e739d1935c461d0668057e9dbba9d06f728d29ec.
-
-Signed-off-by: Thomas Weißschuh <thomas@t-8ch.de>
-Message-Id: <20240527-pvpanic-shutdown-v8-8-5a28ec02558b@t-8ch.de>
+Fixes: f9a09ca3ea ("vhost: add support for configure interrupt")
+Cc: qemu-stable@nongnu.org
+Signed-off-by: Cindy Lu <lulu@redhat.com>
+Message-Id: <20240528084840.194538-1-lulu@redhat.com>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- docs/specs/pvpanic.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/virtio/virtio-pci.c | 18 ++----------------
+ 1 file changed, 2 insertions(+), 16 deletions(-)
 
-diff --git a/docs/specs/pvpanic.rst b/docs/specs/pvpanic.rst
-index b0f27860ec..61a80480ed 100644
---- a/docs/specs/pvpanic.rst
-+++ b/docs/specs/pvpanic.rst
-@@ -29,7 +29,7 @@ bit 1
-   a guest panic has happened and will be handled by the guest;
-   the host should record it or report it, but should not affect
-   the execution of the guest.
--bit 2 (to be implemented)
-+bit 2
-   a regular guest shutdown has happened and should be processed by the host
+diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
+index 7d62e92365..5941f1a94d 100644
+--- a/hw/virtio/virtio-pci.c
++++ b/hw/virtio/virtio-pci.c
+@@ -898,7 +898,7 @@ static int kvm_virtio_pci_vector_use_one(VirtIOPCIProxy *proxy, int queue_no)
+     }
+     ret = kvm_virtio_pci_vq_vector_use(proxy, vector);
+     if (ret < 0) {
+-        goto undo;
++        return ret;
+     }
+     /*
+      * If guest supports masking, set up irqfd now.
+@@ -908,25 +908,11 @@ static int kvm_virtio_pci_vector_use_one(VirtIOPCIProxy *proxy, int queue_no)
+         ret = kvm_virtio_pci_irqfd_use(proxy, n, vector);
+         if (ret < 0) {
+             kvm_virtio_pci_vq_vector_release(proxy, vector);
+-            goto undo;
++            return ret;
+         }
+     }
  
- PCI Interface
+     return 0;
+-undo:
+-
+-    vector = virtio_queue_vector(vdev, queue_no);
+-    if (vector >= msix_nr_vectors_allocated(dev)) {
+-        return ret;
+-    }
+-    if (vdev->use_guest_notifier_mask && k->guest_notifier_mask) {
+-        ret = virtio_pci_get_notifier(proxy, queue_no, &n, &vector);
+-        if (ret < 0) {
+-            return ret;
+-        }
+-        kvm_virtio_pci_irqfd_release(proxy, n, vector);
+-    }
+-    return ret;
+ }
+ static int kvm_virtio_pci_vector_vq_use(VirtIOPCIProxy *proxy, int nvqs)
+ {
 -- 
 MST
 
