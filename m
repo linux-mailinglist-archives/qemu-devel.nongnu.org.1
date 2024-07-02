@@ -2,81 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 557C7924969
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 22:37:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F38E792491B
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 22:23:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOjwK-0007ey-QL; Tue, 02 Jul 2024 16:17:24 -0400
+	id 1sOjwJ-0007Np-LX; Tue, 02 Jul 2024 16:17:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOjug-0005Zj-U4
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 16:15:48 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOjuq-0005eE-83
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 16:15:55 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOjue-00084c-DF
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 16:15:42 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOjuo-00086H-Cv
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 16:15:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719951339;
+ s=mimecast20190719; t=1719951346;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=N8epoI+2XR2IZhKNbWvFqqmIBG6jX2/y5dIWNKzyj2M=;
- b=OODe6RHSWySVHiHkbBGNE7gYI1cYxbT9vfHe0r80yCnZvFqBE+9CvRqbbsRGAjibWRETNv
- Uf2onUsyFmMLauWvUVeseVFE87p2foBTlmta5D6SeprYChtrICWce/a0XpKh+U0j4uZuQJ
- lzlNXnMblglF7WxdW39I5j87qylKeZQ=
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
- [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=OCCVtvSfvqBAUBpNFi/zb/m65iBLwl7XEHTViiftxcE=;
+ b=HsNlUzLt8Gq/kotVELS49SzD+gxAkGTjj6UNBqcVkN0RZVjqtRVNBeKR2+c427teW9HNoS
+ MVzBiGC1b2tHcyM9BOT8ipn8ZWYtqI7MqH31AvhK2FCTDpMFlrX/fRMpCIafAok3i7ak//
+ Bsf1IYW2KcFZUMMaH1CdDzW+dduTRnA=
+Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
+ [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-650-Ark1eFbwNPmpLTmKfyTngA-1; Tue, 02 Jul 2024 16:15:38 -0400
-X-MC-Unique: Ark1eFbwNPmpLTmKfyTngA-1
-Received: by mail-qt1-f197.google.com with SMTP id
- d75a77b69052e-44659591ce2so59021111cf.3
- for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 13:15:38 -0700 (PDT)
+ us-mta-388-ieYhMKNoM2-c1VZa1LGGMg-1; Tue, 02 Jul 2024 16:15:45 -0400
+X-MC-Unique: ieYhMKNoM2-c1VZa1LGGMg-1
+Received: by mail-lj1-f198.google.com with SMTP id
+ 38308e7fff4ca-2ee4ab40417so37099351fa.0
+ for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 13:15:45 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719951337; x=1720556137;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=N8epoI+2XR2IZhKNbWvFqqmIBG6jX2/y5dIWNKzyj2M=;
- b=ZWZtdTgNnb0CYdXmOV8L+dEcFgHjJnMufZFhJZ45DkBGIe70Xrg35DTVOyW+o9hKeM
- yhMLWOVe1iAlAGDP5VRKuBqqy/3JDK5L/AUKeV8EnQ+U36OnTboanj+gwtQ1RWkGeDV0
- YoroFeVKqJRDdFF0TsLTdDKc0f7r4GnPbupqQv7V2YRnA8VXeNU72DwRP/zLSpTuxKVH
- tjLavVuPw7mjGTrO/jqX2E6mjCOiEkC5pbq5nSmvy65LqGtn/R4ASyMM78d7xbykUQh7
- Pz8ayEHvjxeupsYNvWJRg/gg1N0g+lW5TEAE0cpf6c0httaqGnlDVH9FoR+fWxqMQnVv
- DyYA==
-X-Gm-Message-State: AOJu0YxI0mOqgEMpABr//danQJaDHHZoN/H4h6RWAw2A0sgFpWwwu7sH
- bbijytjoNemO+BM3UW/68lLdQhyMYO7Ibytsp/OCOGiyCq1AiTsISy0U100atSPJFPSVygG0i1V
- mLkydOoNPbUpyC1XBKSCIwixHA3xGfDJhqdMpsMENkgr+ne0CTaJ1jiEr93qA9a2com5iEAme8u
- metMOTm4fVVnV7kqbGLXFYc47kAilFbA==
-X-Received: by 2002:a05:622a:1988:b0:444:fd74:5a87 with SMTP id
- d75a77b69052e-44662e413damr131964321cf.53.1719951337143; 
- Tue, 02 Jul 2024 13:15:37 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHuKYVFyBp6l3p2OhoLuocUf0sYfMXxdAooZF919jOXTWNdNqTviuGLfipn+sSKqXTemuXUNw==
-X-Received: by 2002:a05:622a:1988:b0:444:fd74:5a87 with SMTP id
- d75a77b69052e-44662e413damr131963911cf.53.1719951336608; 
- Tue, 02 Jul 2024 13:15:36 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1719951343; x=1720556143;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=OCCVtvSfvqBAUBpNFi/zb/m65iBLwl7XEHTViiftxcE=;
+ b=W3bwzgbTTW2IHH3bL3EXu2UD9vuRYUgZHghZlaPkDjZ9QXjX2c8gVYjWLc9Hqp4Bxb
+ IJDXBbUnSBMmqxkdnR+UyAdGXf/KARaPdduaYfobhEk+wGGqAEktHrLH0S3ukuLzYCoD
+ T+6x/lK2qCja35b3ZGNnXSsjki1xXnViMX3WJW5dCzxI9jwXQYM7FN02sO++ZCuyEF6B
+ c7etloQUeTptVCobJTZi2tfDi6ZpxUM6qze+fL9Zr6J2OrYxHtIpNKEZhiCsJe3ILAbI
+ ypkVrxaqzgLwqh80SjmzBMuMvwSXWutddGEwnGmskxs9wjT1BtD+/QHaHt4D+2bbrzcF
+ kYYg==
+X-Gm-Message-State: AOJu0Yxd2y8WPeLO8ny/UEAKDB7ij2yrC0VCjSGnFr5Za7J1zan2s4Ck
+ VwhLZ2K2qfjpMj09P6JbgUKhAKnarc4w81p7Qsa7feIQfOCt7dQmmiBmbKnqILmJhn+KX8wvQ5n
+ 7JW4cainrAa7RUGe+VCqpzRIvPEfpMdhTCMse30uNYnIkwHiYcDuH3GMlUG0hKaU+XAjE+Qhs9E
+ tAwBlTLpDJZzMry1ElOkL2Fr4ykcWKCw==
+X-Received: by 2002:a05:651c:1593:b0:2ec:3f79:dcd5 with SMTP id
+ 38308e7fff4ca-2ee5e6c5d5fmr31059931fa.18.1719951343480; 
+ Tue, 02 Jul 2024 13:15:43 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHCkb3qJUDpTu/nYt09lnMh4EPJw6soXZY6Wynm8Wcl0Kk/MJOFPa/p/U8mKIzRtRICLGdFmw==
+X-Received: by 2002:a05:651c:1593:b0:2ec:3f79:dcd5 with SMTP id
+ 38308e7fff4ca-2ee5e6c5d5fmr31059621fa.18.1719951342602; 
+ Tue, 02 Jul 2024 13:15:42 -0700 (PDT)
 Received: from redhat.com ([2a02:14f:1f5:eadd:8c31:db01:9d01:7604])
  by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-446514b6169sm44137591cf.91.2024.07.02.13.15.33
+ 38308e7fff4ca-2ee5161f89asm17185541fa.29.2024.07.02.13.15.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 02 Jul 2024 13:15:36 -0700 (PDT)
-Date: Tue, 2 Jul 2024 16:15:30 -0400
+ Tue, 02 Jul 2024 13:15:42 -0700 (PDT)
+Date: Tue, 2 Jul 2024 16:15:37 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Jonah Palmer <jonah.palmer@oracle.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
- Thomas Huth <thuth@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Eric Farman <farman@linux.ibm.com>, qemu-s390x@nongnu.org
-Subject: [PULL v2 07/88] virtio-ccw: Handle extra notification data
-Message-ID: <594b543a4a75d08f47e5ea92c96a89502a3eab72.1719951168.git.mst@redhat.com>
+ Jonah Palmer <jonah.palmer@oracle.com>, Lei Yang <leiyang@redhat.com>,
+ Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
+ Srujana Challa <schalla@marvell.com>,
+ Raphael Norwitz <raphael@enfabrica.net>,
+ Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ Jason Wang <jasowang@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>,
+ Stefan Hajnoczi <stefanha@redhat.com>, qemu-block@nongnu.org,
+ virtio-fs@lists.linux.dev
+Subject: [PULL v2 08/88] vhost/vhost-user: Add VIRTIO_F_NOTIFICATION_DATA to
+ vhost feature bits
+Message-ID: <b937fa896321fb7b6d7f2205edb5490e0e5d6c69.1719951168.git.mst@redhat.com>
 References: <cover.1719951168.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1719951168.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
@@ -106,64 +112,124 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jonah Palmer <jonah.palmer@oracle.com>
 
-Add support to virtio-ccw devices for handling the extra data sent from
-the driver to the device when the VIRTIO_F_NOTIFICATION_DATA transport
-feature has been negotiated.
+Add support for the VIRTIO_F_NOTIFICATION_DATA feature across a variety
+of vhost devices.
 
-The extra data that's passed to the virtio-ccw device when this feature
-is enabled varies depending on the device's virtqueue layout.
+The inclusion of VIRTIO_F_NOTIFICATION_DATA in the feature bits arrays
+for these devices ensures that the backend is capable of offering and
+providing support for this feature, and that it can be disabled if the
+backend does not support it.
 
-That data passed to the virtio-ccw device is in the same format as the
-data passed to virtio-pci devices.
-
+Tested-by: Lei Yang <leiyang@redhat.com>
+Reviewed-by: Eugenio Pérez <eperezma@redhat.com>
 Signed-off-by: Jonah Palmer <jonah.palmer@oracle.com>
-Message-Id: <20240315165557.26942-5-jonah.palmer@oracle.com>
+Message-Id: <20240315165557.26942-6-jonah.palmer@oracle.com>
+Acked-by: Srujana Challa <schalla@marvell.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/s390x/s390-virtio-ccw.c | 17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
+ hw/block/vhost-user-blk.c    | 1 +
+ hw/net/vhost_net.c           | 2 ++
+ hw/scsi/vhost-scsi.c         | 1 +
+ hw/scsi/vhost-user-scsi.c    | 1 +
+ hw/virtio/vhost-user-fs.c    | 2 +-
+ hw/virtio/vhost-user-vsock.c | 1 +
+ net/vhost-vdpa.c             | 1 +
+ 7 files changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
-index cd063f8b64..8cd912f20e 100644
---- a/hw/s390x/s390-virtio-ccw.c
-+++ b/hw/s390x/s390-virtio-ccw.c
-@@ -126,9 +126,11 @@ static void subsystem_reset(void)
- static int virtio_ccw_hcall_notify(const uint64_t *args)
- {
-     uint64_t subch_id = args[0];
--    uint64_t queue = args[1];
-+    uint64_t data = args[1];
-     SubchDev *sch;
-+    VirtIODevice *vdev;
-     int cssid, ssid, schid, m;
-+    uint16_t vq_idx = data;
+diff --git a/hw/block/vhost-user-blk.c b/hw/block/vhost-user-blk.c
+index 9e6bbc6950..bc2677dbef 100644
+--- a/hw/block/vhost-user-blk.c
++++ b/hw/block/vhost-user-blk.c
+@@ -51,6 +51,7 @@ static const int user_feature_bits[] = {
+     VIRTIO_F_RING_PACKED,
+     VIRTIO_F_IOMMU_PLATFORM,
+     VIRTIO_F_RING_RESET,
++    VIRTIO_F_NOTIFICATION_DATA,
+     VHOST_INVALID_FEATURE_BIT
+ };
  
-     if (ioinst_disassemble_sch_ident(subch_id, &m, &cssid, &ssid, &schid)) {
-         return -EINVAL;
-@@ -137,12 +139,19 @@ static int virtio_ccw_hcall_notify(const uint64_t *args)
-     if (!sch || !css_subch_visible(sch)) {
-         return -EINVAL;
-     }
--    if (queue >= VIRTIO_QUEUE_MAX) {
-+
-+    vdev = virtio_ccw_get_vdev(sch);
-+    if (vq_idx >= VIRTIO_QUEUE_MAX || !virtio_queue_get_num(vdev, vq_idx)) {
-         return -EINVAL;
-     }
--    virtio_queue_notify(virtio_ccw_get_vdev(sch), queue);
--    return 0;
+diff --git a/hw/net/vhost_net.c b/hw/net/vhost_net.c
+index fd1a93701a..18898afe81 100644
+--- a/hw/net/vhost_net.c
++++ b/hw/net/vhost_net.c
+@@ -48,6 +48,7 @@ static const int kernel_feature_bits[] = {
+     VIRTIO_F_IOMMU_PLATFORM,
+     VIRTIO_F_RING_PACKED,
+     VIRTIO_F_RING_RESET,
++    VIRTIO_F_NOTIFICATION_DATA,
+     VIRTIO_NET_F_HASH_REPORT,
+     VHOST_INVALID_FEATURE_BIT
+ };
+@@ -55,6 +56,7 @@ static const int kernel_feature_bits[] = {
+ /* Features supported by others. */
+ static const int user_feature_bits[] = {
+     VIRTIO_F_NOTIFY_ON_EMPTY,
++    VIRTIO_F_NOTIFICATION_DATA,
+     VIRTIO_RING_F_INDIRECT_DESC,
+     VIRTIO_RING_F_EVENT_IDX,
  
-+    if (virtio_vdev_has_feature(vdev, VIRTIO_F_NOTIFICATION_DATA)) {
-+        virtio_queue_set_shadow_avail_idx(virtio_get_queue(vdev, vq_idx),
-+                                          (data >> 16) & 0xFFFF);
-+    }
-+
-+    virtio_queue_notify(vdev, vq_idx);
-+    return 0;
- }
+diff --git a/hw/scsi/vhost-scsi.c b/hw/scsi/vhost-scsi.c
+index ae26bc19a4..3d5fe0994d 100644
+--- a/hw/scsi/vhost-scsi.c
++++ b/hw/scsi/vhost-scsi.c
+@@ -38,6 +38,7 @@ static const int kernel_feature_bits[] = {
+     VIRTIO_RING_F_EVENT_IDX,
+     VIRTIO_SCSI_F_HOTPLUG,
+     VIRTIO_F_RING_RESET,
++    VIRTIO_F_NOTIFICATION_DATA,
+     VHOST_INVALID_FEATURE_BIT
+ };
  
- static int virtio_ccw_hcall_early_printk(const uint64_t *args)
+diff --git a/hw/scsi/vhost-user-scsi.c b/hw/scsi/vhost-user-scsi.c
+index a63b1f4948..0b050805a8 100644
+--- a/hw/scsi/vhost-user-scsi.c
++++ b/hw/scsi/vhost-user-scsi.c
+@@ -36,6 +36,7 @@ static const int user_feature_bits[] = {
+     VIRTIO_RING_F_EVENT_IDX,
+     VIRTIO_SCSI_F_HOTPLUG,
+     VIRTIO_F_RING_RESET,
++    VIRTIO_F_NOTIFICATION_DATA,
+     VHOST_INVALID_FEATURE_BIT
+ };
+ 
+diff --git a/hw/virtio/vhost-user-fs.c b/hw/virtio/vhost-user-fs.c
+index cca2cd41be..ae48cc1c96 100644
+--- a/hw/virtio/vhost-user-fs.c
++++ b/hw/virtio/vhost-user-fs.c
+@@ -33,7 +33,7 @@ static const int user_feature_bits[] = {
+     VIRTIO_F_RING_PACKED,
+     VIRTIO_F_IOMMU_PLATFORM,
+     VIRTIO_F_RING_RESET,
+-
++    VIRTIO_F_NOTIFICATION_DATA,
+     VHOST_INVALID_FEATURE_BIT
+ };
+ 
+diff --git a/hw/virtio/vhost-user-vsock.c b/hw/virtio/vhost-user-vsock.c
+index 9431b9792c..802b44a07d 100644
+--- a/hw/virtio/vhost-user-vsock.c
++++ b/hw/virtio/vhost-user-vsock.c
+@@ -21,6 +21,7 @@ static const int user_feature_bits[] = {
+     VIRTIO_RING_F_INDIRECT_DESC,
+     VIRTIO_RING_F_EVENT_IDX,
+     VIRTIO_F_NOTIFY_ON_EMPTY,
++    VIRTIO_F_NOTIFICATION_DATA,
+     VHOST_INVALID_FEATURE_BIT
+ };
+ 
+diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+index eda714d1a4..daa38428c5 100644
+--- a/net/vhost-vdpa.c
++++ b/net/vhost-vdpa.c
+@@ -62,6 +62,7 @@ const int vdpa_feature_bits[] = {
+     VIRTIO_F_RING_PACKED,
+     VIRTIO_F_RING_RESET,
+     VIRTIO_F_VERSION_1,
++    VIRTIO_F_NOTIFICATION_DATA,
+     VIRTIO_NET_F_CSUM,
+     VIRTIO_NET_F_CTRL_GUEST_OFFLOADS,
+     VIRTIO_NET_F_CTRL_MAC_ADDR,
 -- 
 MST
 
