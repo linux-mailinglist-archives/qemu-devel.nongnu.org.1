@@ -2,79 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0C569248DE
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 22:15:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B4B69248EF
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 22:17:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOjte-0002RV-UT; Tue, 02 Jul 2024 16:14:39 -0400
+	id 1sOjtj-0002jn-Cs; Tue, 02 Jul 2024 16:14:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOjtc-0002Cc-JQ
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 16:14:36 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOjtf-0002Xk-4A
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 16:14:39 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOjtb-0007bm-0t
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 16:14:36 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOjtd-0007by-IZ
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 16:14:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719951274;
+ s=mimecast20190719; t=1719951276;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Hq1ZdMUpXgQO0jHpQkHjtkURKxmq/FjBLx45BW2ity0=;
- b=KuqoQOd1lPhEL56Bqe5uLZ9VNWUKg5i8BRklNb+HR+NfPCyPd8EshPomreXdZ5Z2DCQPXY
- Fm1prAl4ct09kXroQfOqvMImk7koXvarYQXuhkvElLdTTJmIpw7cCqM+5ML5HvQiu/c7Nc
- iFlQWobmJsjIREZCM1808HCk2LF27E8=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=3bV+n5a+n2PubUhTQh2qtot7neovPmYiRH9+8WKEDSw=;
+ b=D7aPZxj9ITWoEWRoO0H1Okx4b4bBZpQ2eZ50eb0cYLDVLzXFgoHjW7GzCv++ROMYivPsyj
+ 9y+EpHYJGsQZcwxn7MV/YZbvbYNiab8OOBZboc4y6tfCpoIYqnIooCRNlN2AfqaYDQ5FT4
+ eVMb2Sb1XmNbgzAu8meiynac3vGIlwo=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-117-5b1mqgrtMiOB70NQtx1_OA-1; Tue, 02 Jul 2024 16:14:33 -0400
-X-MC-Unique: 5b1mqgrtMiOB70NQtx1_OA-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-4257f95ffc6so19690965e9.1
- for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 13:14:33 -0700 (PDT)
+ us-mta-214-yqeaZFxoPJW9H7sahcvl8w-1; Tue, 02 Jul 2024 16:14:35 -0400
+X-MC-Unique: yqeaZFxoPJW9H7sahcvl8w-1
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-3678e549a1eso364935f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 13:14:35 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719951271; x=1720556071;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Hq1ZdMUpXgQO0jHpQkHjtkURKxmq/FjBLx45BW2ity0=;
- b=VrRTmKjFB36GV5u53VrBoCt6+PZoi6ddKODoNmS3xIqDw/hYLbOlsjue/nfGblFda8
- JS+sP5pLP/c/hbuiKR9UXEdnfAf+8Fkmu4PcesBH0viYK/gYG92DO7Vmw5YMydFvUiBV
- m3swvYqcTlRuCVZW+55nzH4wa/+6dovg5ehYlzNUELZMBFjWQOpdAGowmbLVyzmHeYM5
- Hm1DkWK4k1TsYR26tN/BDWVeoCFCUnOzzCwIk1PHA0M9l1bKbQsetSVv3Nb97VNLmPWy
- Z2tzGPqZ0ktzGPWcn3gyxG1TqEQ58IyJLngfAKnFB8BqnrpEn7TlZ5F8tXJjbvEsZy6J
- vZPw==
-X-Gm-Message-State: AOJu0Yx9owTMo1q06Vs1sI/w5lm9YrxoAhzmNnDGcynVX08R8IUxqB2o
- Rp+Z2YoS3t0n0NOc7yaZBbCp+K37KIG07/xIECs1W52WlPf9YNlCXIqWHSdEzkSgVOlt2ssdB4l
- GFzhbUC3wh9ZKHT7w+PPW2+QFQBqyq+eHSCMoG171AevWkdnYcGcMRQVWAXd2SBDxmfYOVAqqBn
- a3+1fgUd7/WIl0TOrp9hdPb9WTpvLyyQ==
-X-Received: by 2002:a05:600c:3b09:b0:424:a721:1d0f with SMTP id
- 5b1f17b1804b1-4257a020eeemr62966035e9.29.1719951271367; 
- Tue, 02 Jul 2024 13:14:31 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHF5NifnjEM7pOIcbG0FbD0SBlaYpfCpFm068A60biJnDoZCAPxzefvX60afDOkcxl8CwJTPQ==
-X-Received: by 2002:a05:600c:3b09:b0:424:a721:1d0f with SMTP id
- 5b1f17b1804b1-4257a020eeemr62965865e9.29.1719951270768; 
- Tue, 02 Jul 2024 13:14:30 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1719951274; x=1720556074;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=3bV+n5a+n2PubUhTQh2qtot7neovPmYiRH9+8WKEDSw=;
+ b=hpqZr0+QA0k+SJu64KZHZyU8z8gm/vVAriPneu6Fi5urF/gk2o0ki0a0YAxnpwpaXk
+ RU+khECpcLzE28oL+eaBoh6Q1dShYLSdAuidd51Iy8lZsPSWasr8MhWQG7M66CTi8a2i
+ hjOzpkBZfR0GBTwgrAVlhbvliXKeB237b+cTxypo3Dj5tr2jaqQ1rrtXWjlwOfTMQSv/
+ pqLazSLlL2wYGrN0T+UGTg/31IPmnxFZziBVrBM/F3veHrMXSmwxOFbaqW0xLJtvdXZG
+ doyDspFmKQtFY6Zwr0qCdDWm+xyqs0BniLAe0case84qlCf3iMWNHnNfnc8+Q30TKKXX
+ MO7g==
+X-Gm-Message-State: AOJu0Ywl2NGrvpzvHQ9H21R/59d45jrHx1Lk6C2R1O5KliBMTzF7Jtyr
+ OEZnDXsRcQAA4Xr2XGkOzIyeJOI4NOmfqG2lqAchz70jPzwdLBYq8zPiRenHanm9YuiuQejrdXz
+ cw9cHKQebgFlJ4NirUhneLd1Z0M5/VSJizndXxOz50FkZUH0cKE28GrDWyXdjnInZtnUCKxGZqy
+ 847B1IMaGSBR4gRu2E8STXSeGRcE8OIg==
+X-Received: by 2002:a05:6000:1fa5:b0:363:b3ea:7290 with SMTP id
+ ffacd0b85a97d-36760a7c1d3mr11939434f8f.20.1719951274203; 
+ Tue, 02 Jul 2024 13:14:34 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGLecyn7ZBvvspbnxBGcKjPpo9PrK6dn9JMj/R7pdyrcuMSsk78qZbxGXrravxG2IEFAL1GkA==
+X-Received: by 2002:a05:6000:1fa5:b0:363:b3ea:7290 with SMTP id
+ ffacd0b85a97d-36760a7c1d3mr11939407f8f.20.1719951273639; 
+ Tue, 02 Jul 2024 13:14:33 -0700 (PDT)
 Received: from redhat.com ([2a02:14f:1f5:eadd:8c31:db01:9d01:7604])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4256b0c0f26sm207952565e9.39.2024.07.02.13.14.29
+ 5b1f17b1804b1-4257a2f7451sm154403165e9.0.2024.07.02.13.14.32
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 02 Jul 2024 13:14:30 -0700 (PDT)
-Date: Tue, 2 Jul 2024 16:14:27 -0400
+ Tue, 02 Jul 2024 13:14:33 -0700 (PDT)
+Date: Tue, 2 Jul 2024 16:14:31 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, Jiqian Chen <Jiqian.Chen@amd.com>
-Subject: [PULL v2 12/91] virtio-pci: only reset pm state during resetting
-Message-ID: <84b58169e40f5c7428db6f0b229e01213068aa21.1719951026.git.mst@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>
+Subject: [PULL v2 13/91] vhost-user-gpu: fix import of DMABUF
+Message-ID: <80c8a26de5f1b7d67d4594957c0d82a0c47626be.1719951026.git.mst@redhat.com>
 References: <cover.1719951026.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1719951026.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -98,50 +101,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jiqian Chen <Jiqian.Chen@amd.com>
+From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Fix bug imported by 27ce0f3afc9dd ("fix Power Management Control Register for PCI Express virtio devices"
-After this change, observe that QEMU may erroneously clear the power status of the device,
-or may erroneously clear non writable registers, such as NO_SOFT_RESET, etc.
+When using vhost-user-gpu with GL, qemu -display gtk doesn't show output
+and prints: qemu: eglCreateImageKHR failed
 
-Only state of PM_CTRL is writable.
-Only when flag VIRTIO_PCI_FLAG_INIT_PM is set, need to reset state.
+Since commit 9ac06df8b ("virtio-gpu-udmabuf: correct naming of
+QemuDmaBuf size properties"), egl_dmabuf_import_texture() uses
+backing_{width,height} for the texture dimension.
 
-Fixes: 27ce0f3afc9dd ("fix Power Management Control Register for PCI Express virtio devices"
-Signed-off-by: Jiqian Chen <Jiqian.Chen@amd.com>
-Message-Id: <20240515073526.17297-2-Jiqian.Chen@amd.com>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Fixes: 9ac06df8b ("virtio-gpu-udmabuf: correct naming of QemuDmaBuf size properties")
+Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Message-Id: <20240515105237.1074116-1-marcandre.lureau@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/virtio/virtio-pci.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ hw/display/vhost-user-gpu.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
-index cffc7efcae..7d62e92365 100644
---- a/hw/virtio/virtio-pci.c
-+++ b/hw/virtio/virtio-pci.c
-@@ -2306,10 +2306,16 @@ static void virtio_pci_bus_reset_hold(Object *obj, ResetType type)
-     virtio_pci_reset(qdev);
+diff --git a/hw/display/vhost-user-gpu.c b/hw/display/vhost-user-gpu.c
+index e4b398d26c..63c64ddde6 100644
+--- a/hw/display/vhost-user-gpu.c
++++ b/hw/display/vhost-user-gpu.c
+@@ -281,8 +281,9 @@ vhost_user_gpu_handle_display(VhostUserGPU *g, VhostUserGpuMsg *msg)
+             modifier = m2->modifier;
+         }
  
-     if (pci_is_express(dev)) {
-+        VirtIOPCIProxy *proxy = VIRTIO_PCI(dev);
-+
-         pcie_cap_deverr_reset(dev);
-         pcie_cap_lnkctl_reset(dev);
- 
--        pci_set_word(dev->config + dev->exp.pm_cap + PCI_PM_CTRL, 0);
-+        if (proxy->flags & VIRTIO_PCI_FLAG_INIT_PM) {
-+            pci_word_test_and_clear_mask(
-+                dev->config + dev->exp.pm_cap + PCI_PM_CTRL,
-+                PCI_PM_CTRL_STATE_MASK);
-+        }
-     }
- }
- 
+-        dmabuf = qemu_dmabuf_new(m->fd_width, m->fd_height,
+-                                 m->fd_stride, 0, 0, 0, 0,
++        dmabuf = qemu_dmabuf_new(m->width, m->height,
++                                 m->fd_stride, 0, 0,
++                                 m->fd_width, m->fd_height,
+                                  m->fd_drm_fourcc, modifier,
+                                  fd, false, m->fd_flags &
+                                  VIRTIO_GPU_RESOURCE_FLAG_Y_0_TOP);
 -- 
 MST
 
