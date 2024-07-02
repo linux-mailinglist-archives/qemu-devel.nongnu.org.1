@@ -2,80 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD6CE9240A7
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 16:25:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E6EE924072
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 16:20:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOeCO-0007gJ-7s; Tue, 02 Jul 2024 10:09:36 -0400
+	id 1sOeCQ-0007wM-FW; Tue, 02 Jul 2024 10:09:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOeCK-0007RP-TT
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:09:33 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOeCG-0006ke-Dw
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:09:28 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOeC0-0008Is-3l
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:09:32 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOeC1-0008JS-Ib
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:09:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719929350;
+ s=mimecast20190719; t=1719929352;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=TisxAqM9JFoRTBzvBR2/yPIkvvWOj6XGjDsm9k9s/20=;
- b=RGfQvvgmHrfWQPxc53+GV/X9meQCN43c4FI/y1e1cKOxw+920dKLy3kmtfmUeyW02it2BP
- L8sNNAuCTWTbbnjNwXjP9n8Nd6sPse3mo4PcD6O9YyKPycA1/6YUcEOoQsT3fGiPokoNLf
- iABwi+y6BslLaX697Q1yqbyTioLXj3Y=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=y6iaejVuyK6cotgddPWIYQA8dIBm4KoXB6zsOD2vQwU=;
+ b=J+S7SgmtQJWd4qMHFANjrby1/ALwbuShzvktBStCBoW/I76WtJ6GzBtxylvZv/wJb1nHiO
+ J1LlY93Vfeecx54YrgmrrmFgDEkAcDVMRTgy6eK++1tW/bNGdogGWxQeamwhdFRUHGEc08
+ IlzUvnT+LfxsuW5Hh9jm0CWlVnF6sR0=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-208-LtdjTcIgNFWxGcaq5Ux9uw-1; Tue, 02 Jul 2024 10:09:09 -0400
-X-MC-Unique: LtdjTcIgNFWxGcaq5Ux9uw-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-424a775ee7fso29863525e9.0
- for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 07:09:09 -0700 (PDT)
+ us-mta-426-R-0IazY5MgKuPUr-5o8noA-1; Tue, 02 Jul 2024 10:09:11 -0400
+X-MC-Unique: R-0IazY5MgKuPUr-5o8noA-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-425897358f0so6717715e9.2
+ for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 07:09:11 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719929347; x=1720534147;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=TisxAqM9JFoRTBzvBR2/yPIkvvWOj6XGjDsm9k9s/20=;
- b=V+S4fz5/U7mV/AaZr4QDxyGNE4NZRxLQ1rPpPSbgjt03oUwZFWQfJePbdBznmox4Jr
- iyJgDeB2WONdRlq3HwJUBdpwD+GCIMKQtMcEN82v7EaURMumFP5XHYi5hRCS941H6oTd
- jEa2WRG/Vb2nGA9bDc5ENNrLB7PGbUW+YQt4Ie9/AoBhZWU5tf77xj6P8NDFL0ntECwX
- RuLL3wM2Fskrt42YVQsFAUSdVDOhuWU5Ep7fnsdr/BAn06bDSXZg1dfcATc/UUhXb+j8
- vU0UpUFpsIRYMy1GBFFX2YhT5eW7Thrr9GbR6rbBVw2+AMnVztNw9dwl9bimJyQvvgw9
- 9/lw==
-X-Gm-Message-State: AOJu0YxZcPMfFu45FEG9VkpH1klWGMjqs8iROXRiCK/gAhUz19//HbFe
- Q+V6XTM46PNSVA/6HzoMwSs53eNCXZL+qWvDJKBBlCOzRr6f0/vhZjCcMbXsT3fUucuVeGKWhqe
- J5DNR/Ahyt2Si2mHdXEU/BIeb0xn8SUZWpZr4r0D32/krGMHoZHPLC8+j36ss3u376s3/3qqdJ0
- 391jqWyhKFqiPzJe/fex8EcIStqoitKQ==
-X-Received: by 2002:a05:600c:68b:b0:424:a7e7:e443 with SMTP id
- 5b1f17b1804b1-4257a02b8d2mr60203965e9.12.1719929347571; 
- Tue, 02 Jul 2024 07:09:07 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFpARjIxgEDOnSoOk/9sIqxKCk+3dibiA8TewD7x6DubYxlnlnJHkFaxZXObdOr8+7P2/ingQ==
-X-Received: by 2002:a05:600c:68b:b0:424:a7e7:e443 with SMTP id
- 5b1f17b1804b1-4257a02b8d2mr60203675e9.12.1719929346999; 
- Tue, 02 Jul 2024 07:09:06 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1719929350; x=1720534150;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=y6iaejVuyK6cotgddPWIYQA8dIBm4KoXB6zsOD2vQwU=;
+ b=m2reEi/bB47PRfjlZbM/XwLuvLLNiPH8cbS8eqdpuCiO3OSTYjRkBqGnpgjK5SG4HY
+ sGIQ4tualRZXXAqkNkiA+eJcf38Xfbi+fliiHNSzuqZYk9weLUaRYBa/iDkBXObVxAqP
+ wp+8QRFTdzcb7Qym68J736QkHJKJuz5jRISP+bA9TjkdOMLQiJak2l+NQKG7FpKh7V93
+ htCI64Pa1OOB+2MsqANS34EO899D6n1Bq2Rt6NS/RFK/QhghQ/C2/XOFyUZ7TGlf/m8C
+ pr3yHAtUf6lgXTgA33y+90xm6AJkXMGGx3SwSTrydviIz3Jtc/J1eL3ua6/t5rFdYbwD
+ FS0g==
+X-Gm-Message-State: AOJu0YymPGLe9b8mneGJ9yRDN7XPYS60tpyUuZckyY+c2osEh4MO5617
+ t+Wd/O9K6cGStvjcflPbxrApRdMNS0SwbViM4Kv8SmqIkLZsKR+p1KTv2LYo6kJ0zs8rtBs4Db5
+ L/OhBkEQrVaizBsawI7c1yaD8wJ4zklS90IuNVU2fmt9H3CB1AVjBCV8rRE2G/GfrlCyHe9ylyo
+ agrFuQ/YsqoUnXbOhvpDsYV09dznUEAw==
+X-Received: by 2002:adf:ea84:0:b0:356:48f5:4383 with SMTP id
+ ffacd0b85a97d-3677572979bmr5367434f8f.61.1719929350138; 
+ Tue, 02 Jul 2024 07:09:10 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFpzMafSGeFZz/jd4b6+Erq9rMCn23IsDQ8j+ILYv5DxSJc8Ds1N2V1VBKsaRZbIz64oLf3Bg==
+X-Received: by 2002:adf:ea84:0:b0:356:48f5:4383 with SMTP id
+ ffacd0b85a97d-3677572979bmr5367410f8f.61.1719929349536; 
+ Tue, 02 Jul 2024 07:09:09 -0700 (PDT)
 Received: from redhat.com ([2a02:14f:1f5:eadd:8c31:db01:9d01:7604])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4256af5b8e2sm199033255e9.16.2024.07.02.07.09.04
+ ffacd0b85a97d-367892a4817sm1766231f8f.10.2024.07.02.07.09.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 02 Jul 2024 07:09:05 -0700 (PDT)
-Date: Tue, 2 Jul 2024 10:09:03 -0400
+ Tue, 02 Jul 2024 07:09:09 -0700 (PDT)
+Date: Tue, 2 Jul 2024 10:09:07 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, Zhao Liu <zhao1.liu@intel.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PULL 41/91] i386/apic: Add hint on boot failure because of
- disabling x2APIC
-Message-ID: <7801fa5054e0eac7a169b32bf630cb237d2652ec.1719929191.git.mst@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>,
+ Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PULL 42/91] hw/virtio: Free vqs after vhost_dev_cleanup()
+Message-ID: <577682151b14ae79560eb709ba06f1bbb7c4a414.1719929191.git.mst@redhat.com>
 References: <cover.1719929191.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1719929191.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
@@ -86,7 +83,8 @@ X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,69 +100,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhao Liu <zhao1.liu@intel.com>
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-Currently, the Q35 supports up to 4096 vCPUs (since v9.0), but for TCG
-cases, if x2APIC is not actively enabled to boot more than 255 vCPUs (
-e.g., qemu-system-i386 -M pc-q35-9.0 -smp 666), the following error is
-reported:
+This fixes LeakSanitizer warnings.
 
-Unexpected error in apic_common_set_id() at ../hw/intc/apic_common.c:449:
-qemu-system-i386: APIC ID 255 requires x2APIC feature in CPU
-Aborted (core dumped)
-
-This error can be resolved by setting x2apic=on in -cpu. In order to
-better help users deal with this scenario, add the error hint to
-instruct users on how to enable the x2apic feature. Then, the error
-report becomes the following:
-
-Unexpected error in apic_common_set_id() at ../hw/intc/apic_common.c:448:
-qemu-system-i386: APIC ID 255 requires x2APIC feature in CPU
-Try x2apic=on in -cpu.
-Aborted (core dumped)
-
-Note since @errp is &error_abort, error_append_hint() can't be applied
-on @errp. And in order to separate the exact error message from the
-(perhaps effectively) hint, adding a hint via error_append_hint() is
-also necessary. Therefore, introduce @local_error in
-apic_common_set_id() to handle both the error message and the error
-hint.
-
-Suggested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Message-Id: <20240606140858.2157106-1-zhao1.liu@intel.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Message-Id: <20240627-san-v2-7-750bb0946dbd@daynix.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/intc/apic_common.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ hw/virtio/vhost-user-base.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/hw/intc/apic_common.c b/hw/intc/apic_common.c
-index d8fc1e2815..c13cdd7994 100644
---- a/hw/intc/apic_common.c
-+++ b/hw/intc/apic_common.c
-@@ -433,6 +433,7 @@ static void apic_common_set_id(Object *obj, Visitor *v, const char *name,
-     APICCommonState *s = APIC_COMMON(obj);
-     DeviceState *dev = DEVICE(obj);
-     uint32_t value;
-+    Error *local_err = NULL;
+diff --git a/hw/virtio/vhost-user-base.c b/hw/virtio/vhost-user-base.c
+index 11e72b1e3b..2bc3423326 100644
+--- a/hw/virtio/vhost-user-base.c
++++ b/hw/virtio/vhost-user-base.c
+@@ -223,6 +223,7 @@ static void vub_disconnect(DeviceState *dev)
+ {
+     VirtIODevice *vdev = VIRTIO_DEVICE(dev);
+     VHostUserBase *vub = VHOST_USER_BASE(vdev);
++    struct vhost_virtqueue *vhost_vqs = vub->vhost_dev.vqs;
  
-     if (dev->realized) {
-         qdev_prop_set_after_realize(dev, name, errp);
-@@ -444,7 +445,11 @@ static void apic_common_set_id(Object *obj, Visitor *v, const char *name,
-     }
+     if (!vub->connected) {
+         goto done;
+@@ -231,6 +232,7 @@ static void vub_disconnect(DeviceState *dev)
  
-     if (value >= 255 && !cpu_has_x2apic_feature(&s->cpu->env)) {
--        error_setg(errp, "APIC ID %d requires x2APIC feature in CPU", value);
-+        error_setg(&local_err,
-+                   "APIC ID %d requires x2APIC feature in CPU",
-+                   value);
-+        error_append_hint(&local_err, "Try x2apic=on in -cpu.\n");
-+        error_propagate(errp, local_err);
-         return;
-     }
+     vub_stop(vdev);
+     vhost_dev_cleanup(&vub->vhost_dev);
++    g_free(vhost_vqs);
  
+ done:
+     /* Re-instate the event handler for new connections */
 -- 
 MST
 
