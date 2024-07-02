@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DCD29239C7
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 11:23:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F8F69239ED
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 11:27:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOZhu-000187-TS; Tue, 02 Jul 2024 05:21:51 -0400
+	id 1sOZhv-00018E-SM; Tue, 02 Jul 2024 05:21:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOZhq-00017X-Sq
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOZhq-00017Z-VL
  for qemu-devel@nongnu.org; Tue, 02 Jul 2024 05:21:48 -0400
 Received: from mail-lj1-x22f.google.com ([2a00:1450:4864:20::22f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOZhm-0006R6-8M
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOZhm-0006RG-Oz
  for qemu-devel@nongnu.org; Tue, 02 Jul 2024 05:21:45 -0400
 Received: by mail-lj1-x22f.google.com with SMTP id
- 38308e7fff4ca-2ebe785b234so40005991fa.1
- for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 02:21:37 -0700 (PDT)
+ 38308e7fff4ca-2ebeefb9a7fso44908401fa.0
+ for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 02:21:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719912095; x=1720516895; darn=nongnu.org;
+ d=linaro.org; s=google; t=1719912101; x=1720516901; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+BJVqbuDB73td3icnKEL+Hn1IcWwELHqxD1Mx9jzZME=;
- b=SN9ZqQb2ehnCRFlBL5bHkWdxGBIhpsiuuNYFscBAzs1Fd+JisZiijgV/OR8iAe2YP3
- rqSOyMpXj3va7W3GCmZhEQAQjfySW37nppdZdmxb38cTLC1OB1W/9ApwTtAJ+kIJMSS7
- qfbgYueMvXnt8pjIKAmt2CoolVcBVwb/GOj7pspDZCO8Ex8MOM+NuNiIkYpE147D929D
- eFR5F2mKLFMCrl40zNDbSzHsTUZMSbQS7RRi9f2Tbkdoe77ePHVqxiFZ24op+OZrQiVQ
- Df53Ko84p/Q41zsfarf1LkAN4aGKtwZB6QX0fOb4z9xMnHsamKsOlScFtwwB5+/SJKBp
- Z0bA==
+ bh=YMu0JsqJ0+r4fsG0B6FCI0Tvxg5Vyf5673gOlduh3A4=;
+ b=jQYZFj+uVo+5j4n/xXlgwk41bH0Yj23Og0CzQMTuLa9jqGSwWlhrfkoATlGfkms/jf
+ r4xx3XGGz4imNC04eUni6RytnCyL/RGxvJgVShygZNw0pIsk+lAgn4LTSFvgVNV3I08u
+ ImAulvZWhNoDFlRXk96qMd/DimPrHZazPu/jnJjhccBi8jUfcN8jlRkBot4JWdqa7509
+ /BK1342PINeN9xA0utQio1kxct2A/ubOxamf5+oVPq9ZKdKXCt2UDOOF8I/EMeZw8ZiU
+ B0o2dCisBnn4k+vOGjUvn0tb7CEFMyahNkDATWTJRwITSt3l54zCMapcD18K2jmnnLcA
+ TEYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719912095; x=1720516895;
+ d=1e100.net; s=20230601; t=1719912101; x=1720516901;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+BJVqbuDB73td3icnKEL+Hn1IcWwELHqxD1Mx9jzZME=;
- b=htDGm6ISl4Es3h7u3bAffGLD8kEDQaIbP1XW47QhWhQy8iADKiqcREOkB7JupYlJNe
- uyBKJ2MaK6U6/AWcmQ2oNoEZkAVSNrTkx153b8o6npX4pAVK196sEosKDmyAWr28ZPRn
- OtbGDOfPRpiBSnIGkNo3RuIRwLTEM4KX3Y/2Pz01M5rwQJ+AnmCi5FI9L4ErpkGJBZVB
- WXXo+t/5NzNRhTkByPmV2ZhZafiDoHc65hTScgXGXbc1uMQcqe8rDnq5wOfwyQj3iwtO
- 6PmOcTOdBH0qXCGKkQEYl7+Op8IPzkxxrxDAJsgnruw77mxCyzpxgiQ0dkkhOIJhTDSA
- fYVg==
-X-Gm-Message-State: AOJu0YzbPNETf2VL8/EVj+nMo2uLILqgVKzKPvy4JSnmtaNNGMVA72Cp
- yvNPmiBp4MINhiKpTHBVlVhoe7c+aTBikIEuc7OvazE4Po1asIN2daaeX224S6zl5uXjiqUTeEU
- T
-X-Google-Smtp-Source: AGHT+IFl4hgc/yNQvJmQgunSI2cYavv9Ubr3AySMQQr/t3A4wpxrrHGW7+Yf3Ylnz+5pjaauUWC1uw==
-X-Received: by 2002:a2e:9793:0:b0:2ec:5518:9550 with SMTP id
- 38308e7fff4ca-2ee5e390c38mr55097991fa.10.1719912095005; 
- Tue, 02 Jul 2024 02:21:35 -0700 (PDT)
+ bh=YMu0JsqJ0+r4fsG0B6FCI0Tvxg5Vyf5673gOlduh3A4=;
+ b=gC8pk/ewTYHH2b01ATZ3BoCN++R2BtfpsL7D1tpVWiLbIRfBEcB08pVpP+NrLW0A1U
+ jLpXOE1bgCaUMkgE0uM1IUjj9iwt0faocRLS5CbUKk5v016aUZCb3S4Z1nBtHqgQ3urR
+ z8BpRC3fk3loaiJjIPqlZBP0ZJic62/8PgscPjFmtbjtgR4jN4xSH12t7qKgSJL60eiZ
+ LZxix16HNx8+7VoajyAq7xMMCpIYf5HTX6b+hrzwwLfvDF5TaL0qDIlrjyRI4qvnNjZA
+ 2Ed2FkIIy6gyQcSCp37njwFphzA0FrmWjGcoTQJpcJopZ4boK21WDR2dfaM2S2K3bXHW
+ wXhQ==
+X-Gm-Message-State: AOJu0YxmJZc9UVLZ3be8PiN6JWGu0xBtwzlXjF9UX0AI3GrV1EKx7b0z
+ fJjVIOaqgxgNOzO5MdiOlDm1IgyHYK1JbHX/koYJD/ATNADQSNvTRDwaW1/cAVrD/Tg1IzHs/hl
+ Z
+X-Google-Smtp-Source: AGHT+IGTFyBDZeJPw+gvfFHQBWO49c5VRJeaK2/vCzHi8dXwV7K2qqIFzsbKrFaSgYtqTDn5VYU+lw==
+X-Received: by 2002:a2e:9dd4:0:b0:2ec:4e59:a3de with SMTP id
+ 38308e7fff4ca-2ee5e3811eemr50130121fa.10.1719912100813; 
+ Tue, 02 Jul 2024 02:21:40 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.209.58])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4256b09a2bcsm187830895e9.36.2024.07.02.02.21.33
+ 5b1f17b1804b1-4257c4e10d6sm117669665e9.30.2024.07.02.02.21.39
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 02 Jul 2024 02:21:34 -0700 (PDT)
+ Tue, 02 Jul 2024 02:21:40 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL 07/67] hw/sd/sdcard: Send NUM_WR_BLOCKS bits MSB first (ACMD22)
-Date: Tue,  2 Jul 2024 11:19:50 +0200
-Message-ID: <20240702092051.45754-8-philmd@linaro.org>
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PULL 08/67] hw/sd/sdcard: Use READY_FOR_DATA definition instead of
+ magic value
+Date: Tue,  2 Jul 2024 11:19:51 +0200
+Message-ID: <20240702092051.45754-9-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240702092051.45754-1-philmd@linaro.org>
 References: <20240702092051.45754-1-philmd@linaro.org>
@@ -93,36 +93,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Per sections 3.6.1 (SD Bus Protocol), 4.3.4 "Data Write"
-and 7.3.2 (Responses):
-
-  In the CMD line the Most Significant Bit is transmitted first.
-
-Use the stl_be_p() helper to store the value in big-endian.
-
-Fixes: a1bb27b1e9 ("Initial SD card emulation")
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Tested-by: Cédric Le Goater <clg@redhat.com>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Message-Id: <20240628070216.92609-9-philmd@linaro.org>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Message-Id: <20240628070216.92609-10-philmd@linaro.org>
 ---
- hw/sd/sd.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ hw/sd/sd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/hw/sd/sd.c b/hw/sd/sd.c
-index 1e9530f9ae..54bb0ff1c9 100644
+index 54bb0ff1c9..04ca895645 100644
 --- a/hw/sd/sd.c
 +++ b/hw/sd/sd.c
-@@ -1669,8 +1669,7 @@ static sd_rsp_type_t sd_app_command(SDState *sd,
-     case 22:  /* ACMD22: SEND_NUM_WR_BLOCKS */
-         switch (sd->state) {
-         case sd_transfer_state:
--            *(uint32_t *) sd->data = sd->blk_written;
--
-+            stl_be_p(sd->data, sd->blk_written);
-             sd->state = sd_sendingdata_state;
-             sd->data_start = 0;
-             sd->data_offset = 0;
+@@ -559,7 +559,7 @@ FIELD(CSR, OUT_OF_RANGE,               31,  1)
+ 
+ static void sd_set_cardstatus(SDState *sd)
+ {
+-    sd->card_status = 0x00000100;
++    sd->card_status = READY_FOR_DATA;
+ }
+ 
+ static void sd_set_sdstatus(SDState *sd)
 -- 
 2.41.0
 
