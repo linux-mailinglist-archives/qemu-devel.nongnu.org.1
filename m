@@ -2,61 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C67B923B83
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 12:34:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84B3F923B84
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 12:34:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOapY-0004As-QC; Tue, 02 Jul 2024 06:33:48 -0400
+	id 1sOapb-0004DS-UZ; Tue, 02 Jul 2024 06:33:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sOapW-00048z-HC
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 06:33:46 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sOapa-0004Cg-DX
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 06:33:50 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sOapU-00076V-SZ
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 06:33:46 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sOapY-00076n-US
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 06:33:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719916424;
+ s=mimecast20190719; t=1719916428;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=UP5k2DL6LgqTBAh4YGOkkQj9J7KbuqTIoxbbpQ6g+zs=;
- b=Di25aOGtvNZSu6rtkHrd91eGNkJjNjnWl2POtmZbzkrYhF6U5vAP2UZfBnbnYMcMhX5Zhr
- ait3RYv0Mg40zaglpQglsJzs5RPA+55qmy7/bDkxqgnF28ui9HOu06NlM5WO7sDIZOuqsq
- JIx8By5TQUARGrB1Mf0rVvUni8SfMh8=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ bh=2v7y+Szx7I0PFjj7v8I/JWtqzU8QM9nTaUE9ATLXoTE=;
+ b=MhondXAj0gcQO4tYTR44mAd5qG/c/jegF5xPPT4/mOlQey02iE0rUsGHp38L4Vna30BJBa
+ oT1ujuYOp+YF9ZebTTEVxyuAj6k2x/zJ38NMvwRW80vANSGGmwBHYfBXkYKb1CNLEiyybq
+ VgHzdqMRc9b2FafTsbln4WM3BcZwozI=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-501-SEnZ4n55MgWMwbeCEaqjtg-1; Tue,
- 02 Jul 2024 06:33:40 -0400
-X-MC-Unique: SEnZ4n55MgWMwbeCEaqjtg-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-632-s6dEpXTCOZae74KrdY_9Ow-1; Tue,
+ 02 Jul 2024 06:33:45 -0400
+X-MC-Unique: s6dEpXTCOZae74KrdY_9Ow-1
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 0EC4119560A2; Tue,  2 Jul 2024 10:33:39 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 7F1E519560AB; Tue,  2 Jul 2024 10:33:43 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.116])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id C23A219560AA; Tue,  2 Jul 2024 10:33:35 +0000 (UTC)
+ id 647811955D89; Tue,  2 Jul 2024 10:33:39 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org,
 	Richard Henderson <richard.henderson@linaro.org>
-Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- "Michael S . Tsirkin" <mst@redhat.com>
-Subject: [PULL 07/12] tests/qtest: Free GThread
-Date: Tue,  2 Jul 2024 12:33:05 +0200
-Message-ID: <20240702103310.347201-8-thuth@redhat.com>
+Cc: Alexandre Iooss <erdnaxe@crans.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: [PULL 08/12] docs: add precision about capstone for execlog plugin
+Date: Tue,  2 Jul 2024 12:33:06 +0200
+Message-ID: <20240702103310.347201-9-thuth@redhat.com>
 In-Reply-To: <20240702103310.347201-1-thuth@redhat.com>
 References: <20240702103310.347201-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -80,49 +79,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
+From: Alexandre Iooss <erdnaxe@crans.org>
 
-These GThreads are never referenced.
+Some people are wondering why they get an empty string as disassembly.
+Most of the time, they configured QEMU without Capstone support.
+Let's document this behaviour to help users.
 
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Message-ID: <20240627-san-v2-15-750bb0946dbd@daynix.com>
+Signed-off-by: Alexandre Iooss <erdnaxe@crans.org>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Message-ID: <20240620135731.977377-1-erdnaxe@crans.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/qtest/vhost-user-test.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ docs/devel/tcg-plugins.rst | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/tests/qtest/vhost-user-test.c b/tests/qtest/vhost-user-test.c
-index d4e437265f..929af5c183 100644
---- a/tests/qtest/vhost-user-test.c
-+++ b/tests/qtest/vhost-user-test.c
-@@ -928,7 +928,7 @@ static void *vhost_user_test_setup_reconnect(GString *cmd_line, void *arg)
- {
-     TestServer *s = test_server_new("reconnect", arg);
+diff --git a/docs/devel/tcg-plugins.rst b/docs/devel/tcg-plugins.rst
+index 9cc09d8c3d..f7d7b9e3a4 100644
+--- a/docs/devel/tcg-plugins.rst
++++ b/docs/devel/tcg-plugins.rst
+@@ -539,7 +539,9 @@ which will output an execution trace following this structure::
+   0, 0xd34, 0xf9c8f000, "bl #0x10c8"
+   0, 0x10c8, 0xfff96c43, "ldr r3, [r0, #0x44]", load, 0x200000e4, RAM
  
--    g_thread_new("connect", connect_thread, s);
-+    g_thread_unref(g_thread_new("connect", connect_thread, s));
-     append_mem_opts(s, cmd_line, 256, TEST_MEMFD_AUTO);
-     s->vu_ops->append_opts(s, cmd_line, ",server=on");
- 
-@@ -965,7 +965,7 @@ static void *vhost_user_test_setup_connect_fail(GString *cmd_line, void *arg)
- 
-     s->test_fail = true;
- 
--    g_thread_new("connect", connect_thread, s);
-+    g_thread_unref(g_thread_new("connect", connect_thread, s));
-     append_mem_opts(s, cmd_line, 256, TEST_MEMFD_AUTO);
-     s->vu_ops->append_opts(s, cmd_line, ",server=on");
- 
-@@ -980,7 +980,7 @@ static void *vhost_user_test_setup_flags_mismatch(GString *cmd_line, void *arg)
- 
-     s->test_flags = TEST_FLAGS_DISCONNECT;
- 
--    g_thread_new("connect", connect_thread, s);
-+    g_thread_unref(g_thread_new("connect", connect_thread, s));
-     append_mem_opts(s, cmd_line, 256, TEST_MEMFD_AUTO);
-     s->vu_ops->append_opts(s, cmd_line, ",server=on");
+-the output can be filtered to only track certain instructions or
++Please note that you need to configure QEMU with Capstone support to get disassembly.
++
++The output can be filtered to only track certain instructions or
+ addresses using the ``ifilter`` or ``afilter`` options. You can stack the
+ arguments if required::
  
 -- 
 2.45.2
