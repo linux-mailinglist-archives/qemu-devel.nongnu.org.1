@@ -2,89 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C14092492A
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 22:26:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44F61924946
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 22:31:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOjyF-0008Ka-NP; Tue, 02 Jul 2024 16:19:23 -0400
+	id 1sOjyD-00083P-8m; Tue, 02 Jul 2024 16:19:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOjxx-0006Yo-66
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 16:19:05 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOjxy-0006jg-UO
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 16:19:07 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOjxr-0001DA-FB
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 16:19:04 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOjxu-0001DN-Kj
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 16:19:06 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719951538;
+ s=mimecast20190719; t=1719951541;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=8Eny4dc4u4alXpsHdU13CSR0Mm+jD6T0BjGB+X7tlZ0=;
- b=GABe7M/8fL2Y0PixuhryR5sLMPyHjr380SquBEOunQ3sOvIAQ743ugC7x9d4zkcYhJjfJK
- 5XlBcyA9XdO28CGmXrtqRSEw/4RtQxUFw/eGI/TroUULXZCq2sW/+jrtsisw5D9UcvxJMg
- zMOSf77MuZw26Qo4oAkY+kBMthEi6Sk=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=nT/3bEAHv/ccVmumWuUDEQosc383NR5xwSBkJ1pU+nE=;
+ b=UJ1Q3GQrf4WjNMabRBl6vUAnJRRDfIa+SWRU7G7tiAzwcu51SV1onIT2W3+2yQ8a8IK1DC
+ cbnZMyBbsiR4I3+nJn3D3K9g13if7CZs0sTI0E4aPuwW6Ltt0SOCpgOAs0At4k0ODfgbwk
+ TCoa4CDJQV2LBBZd+lHy/lH222KJ5Mo=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-267-GuReS-DXM-WHsepmW9cUjA-1; Tue, 02 Jul 2024 16:18:57 -0400
-X-MC-Unique: GuReS-DXM-WHsepmW9cUjA-1
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-3678fd1edf8so209374f8f.0
- for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 13:18:57 -0700 (PDT)
+ us-mta-650-vJROqLE8MSynTU3woZ7Uog-1; Tue, 02 Jul 2024 16:19:00 -0400
+X-MC-Unique: vJROqLE8MSynTU3woZ7Uog-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-4257dd7d462so20007135e9.2
+ for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 13:19:00 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719951533; x=1720556333;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=8Eny4dc4u4alXpsHdU13CSR0Mm+jD6T0BjGB+X7tlZ0=;
- b=d2vEFDqRESoz3vvFLleVBa+vFXEbaG2f5J6yi7W2/Ai31BVTYSi9j7uiWp58gYA/ef
- AlNif7HbxWC345japcKlEi665KTbaDmb7fp+dMnthSsD6+fYKreos1gZhXNX6EMnbyCO
- gFTTqtSOwluq1PK6qottjXwDjErnY9vCCIyCkA3F530Q2ywQzPD0k3dIh2fgXwHlYPyR
- 7ZKAm1DxoTi1mZMog1oebFZjCmpaaxLMImVswNwY6FxJxlebJMkStzfBekKhFZvsHeoT
- 5UCLp5y0uIlQABbgIo/3sA/7QIkoebhQi28OO3/Klw0Bov4kPMQBKsRh5Y41iN+JvPvX
- 5odg==
-X-Gm-Message-State: AOJu0YwjDDOGffgOtU9483uoJYqJ97Tja7MGhCDp/cgOUd/qgxJEYUlC
- 5B877ly0vl2zJkz8zpMpPmRzuaea9UjeVtWqPun9b41+xVHKZhF3xt9gh+P5rMBdP4BgeZSfK8u
- 63CVHCzszwxT/UWh+hi0oa55MB7k7g0CuPIkIGvfeUZBaxu/Pdiekd0unXJcEYMyBfOgdWari2U
- sJXHm2dGHOcSThZ/6RwWlk9zRn1IFj0Q==
-X-Received: by 2002:a5d:64ca:0:b0:362:ff95:5697 with SMTP id
- ffacd0b85a97d-36760aa2b8cmr14059566f8f.28.1719951532887; 
- Tue, 02 Jul 2024 13:18:52 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFBQkU8GqFnvPWymycASQkkBf2P9Q5u0ww2Qi9YkMZGwHddPO3Q/ng7vH9kkJcpB9lvccYw1Q==
-X-Received: by 2002:a5d:64ca:0:b0:362:ff95:5697 with SMTP id
- ffacd0b85a97d-36760aa2b8cmr14059531f8f.28.1719951532334; 
- Tue, 02 Jul 2024 13:18:52 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1719951539; x=1720556339;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=nT/3bEAHv/ccVmumWuUDEQosc383NR5xwSBkJ1pU+nE=;
+ b=EuM+E3qnopJ5agWwwtY7XE266TvU0DLIFmjqRhmJaPZVc0X23VCtpi0LwG0q3H97sj
+ E/JF/mEzVEQctcPH2PMLzAthKY/LtLgFf9mUlDc5+Lvd3eK0ZFMR6fswiIS0AdREedbu
+ gC4E+ySdZXZJpemD9FUJfbuhdEtYiTy/Hu3mlbvSq+bArmI5DQLj8TQWL5Kv0kp99i7t
+ gMrQj8eQyH3+crHdp08rG8BAVsRP4f45Nuxf0S+Gufc8MUXcL9mmqHe2DCJ7S9lPdUme
+ wq4XScSYUlhT62w919WilmccWP4g24hiu5MbUNO/ZV3Fpp+w5YJ2vIp/IFTqWeI0U7KT
+ Sx1g==
+X-Gm-Message-State: AOJu0YxjjSVXek3zZJXozPIyp/XtBZFaC4hGckBA0+4JCLxY+2laPuTH
+ zdxKG+vqbzOrsItAoWzgSX83aNw1aAxwygWMqBxOd8lZ2eXMvbt3iBidWn5RUveijESE8Zo4y17
+ t8lHJZEgCI29lMpGgQ5dsyT6stQ61hb3CTjQPOMXF2tGSnPc3K31w/2MjiwNNyMrsrqVhFpzA1B
+ uXrvTcoakcPfywOj4QSqWYvfDJxXTkaQ==
+X-Received: by 2002:a05:6000:d51:b0:360:9e68:d9e1 with SMTP id
+ ffacd0b85a97d-367756bd5d6mr6596600f8f.40.1719951538842; 
+ Tue, 02 Jul 2024 13:18:58 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFfDDHZ/BhFi0Z/rj8/uRy+aPnl/QyGiWnJkgp3mQSJbY+2xjXI5HqVBDNf0c7y0cKHmLUErA==
+X-Received: by 2002:a05:6000:d51:b0:360:9e68:d9e1 with SMTP id
+ ffacd0b85a97d-367756bd5d6mr6596570f8f.40.1719951537975; 
+ Tue, 02 Jul 2024 13:18:57 -0700 (PDT)
 Received: from redhat.com ([2a02:14f:1f5:eadd:8c31:db01:9d01:7604])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4256af55aeasm207553605e9.17.2024.07.02.13.18.49
+ ffacd0b85a97d-3675a0d8e97sm14047022f8f.33.2024.07.02.13.18.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 02 Jul 2024 13:18:51 -0700 (PDT)
-Date: Tue, 2 Jul 2024 16:18:48 -0400
+ Tue, 02 Jul 2024 13:18:56 -0700 (PDT)
+Date: Tue, 2 Jul 2024 16:18:52 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Stefano Garzarella <sgarzare@redhat.com>,
+ David Hildenbrand <david@redhat.com>,
  Stefan Hajnoczi <stefanha@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Raphael Norwitz <raphael@enfabrica.net>,
+ Markus Armbruster <armbru@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, Eric Blake <eblake@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>,
- =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
  Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
- Thomas Huth <thuth@redhat.com>
-Subject: [PULL v2 55/88] contrib/vhost-user-blk: enable it on any POSIX system
-Message-ID: <ff2c62ac7dd6a8f3a7a6d4d4edf1668d67e545b8.1719951168.git.mst@redhat.com>
+ Eduardo Habkost <eduardo@habkost.net>
+Subject: [PULL v2 56/88] hostmem: add a new memory backend based on POSIX
+ shm_open()
+Message-ID: <21e7b1d01ec98d7012899760c280816c6cf328a2.1719951168.git.mst@redhat.com>
 References: <cover.1719951168.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1719951168.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -110,81 +109,280 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Stefano Garzarella <sgarzare@redhat.com>
 
-Let's make the code more portable by adding defines from
-block/file-posix.c to support O_DIRECT in other systems (e.g. macOS).
+shm_open() creates and opens a new POSIX shared memory object.
+A POSIX shared memory object allows creating memory backend with an
+associated file descriptor that can be shared with external processes
+(e.g. vhost-user).
 
-vhost-user-server.c is a dependency, let's enable it for any POSIX
-system.
+The new `memory-backend-shm` can be used as an alternative when
+`memory-backend-memfd` is not available (Linux only), since shm_open()
+should be provided by any POSIX-compliant operating system.
 
+This backend mimics memfd, allocating memory that is practically
+anonymous. In theory shm_open() requires a name, but this is allocated
+for a short time interval and shm_unlink() is called right after
+shm_open(). After that, only fd is shared with external processes
+(e.g., vhost-user) as if it were associated with anonymous memory.
+
+In the future we may also allow the user to specify the name to be
+passed to shm_open(), but for now we keep the backend simple, mimicking
+anonymous memory such as memfd.
+
+Acked-by: David Hildenbrand <david@redhat.com>
 Acked-by: Stefan Hajnoczi <stefanha@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Acked-by: Markus Armbruster <armbru@redhat.com> (QAPI schema)
 Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-Message-Id: <20240618100511.145789-1-sgarzare@redhat.com>
+Message-Id: <20240618100519.145853-1-sgarzare@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- contrib/vhost-user-blk/vhost-user-blk.c | 14 ++++++++++++++
- meson.build                             |  2 --
- util/meson.build                        |  4 +++-
- 3 files changed, 17 insertions(+), 3 deletions(-)
+ qapi/qom.json                      |  23 +++++-
+ backends/hostmem-shm.c             | 123 +++++++++++++++++++++++++++++
+ backends/meson.build               |   1 +
+ docs/system/devices/vhost-user.rst |   5 +-
+ qemu-options.hx                    |  16 ++++
+ 5 files changed, 164 insertions(+), 4 deletions(-)
+ create mode 100644 backends/hostmem-shm.c
 
-diff --git a/contrib/vhost-user-blk/vhost-user-blk.c b/contrib/vhost-user-blk/vhost-user-blk.c
-index 9492146855..a450337685 100644
---- a/contrib/vhost-user-blk/vhost-user-blk.c
-+++ b/contrib/vhost-user-blk/vhost-user-blk.c
-@@ -25,6 +25,20 @@
- #include <sys/ioctl.h>
- #endif
+diff --git a/qapi/qom.json b/qapi/qom.json
+index 9b8f6a7ab5..92b0fea76c 100644
+--- a/qapi/qom.json
++++ b/qapi/qom.json
+@@ -601,8 +601,8 @@
+ #
+ # @share: if false, the memory is private to QEMU; if true, it is
+ #     shared (default false for backends memory-backend-file and
+-#     memory-backend-ram, true for backends memory-backend-epc and
+-#     memory-backend-memfd)
++#     memory-backend-ram, true for backends memory-backend-epc,
++#     memory-backend-memfd, and memory-backend-shm)
+ #
+ # @reserve: if true, reserve swap space (or huge pages) if applicable
+ #     (default: true) (since 6.1)
+@@ -721,6 +721,21 @@
+             '*hugetlbsize': 'size',
+             '*seal': 'bool' } }
  
-+/* OS X does not have O_DSYNC */
-+#ifndef O_DSYNC
-+#ifdef O_SYNC
-+#define O_DSYNC O_SYNC
-+#elif defined(O_FSYNC)
-+#define O_DSYNC O_FSYNC
-+#endif
-+#endif
++##
++# @MemoryBackendShmProperties:
++#
++# Properties for memory-backend-shm objects.
++#
++# This memory backend supports only shared memory, which is the
++# default.
++#
++# Since: 9.1
++##
++{ 'struct': 'MemoryBackendShmProperties',
++  'base': 'MemoryBackendProperties',
++  'data': { },
++  'if': 'CONFIG_POSIX' }
 +
-+/* Approximate O_DIRECT with O_DSYNC if O_DIRECT isn't available */
-+#ifndef O_DIRECT
-+#define O_DIRECT O_DSYNC
-+#endif
+ ##
+ # @MemoryBackendEpcProperties:
+ #
+@@ -1049,6 +1064,8 @@
+     { 'name': 'memory-backend-memfd',
+       'if': 'CONFIG_LINUX' },
+     'memory-backend-ram',
++    { 'name': 'memory-backend-shm',
++      'if': 'CONFIG_POSIX' },
+     'pef-guest',
+     { 'name': 'pr-manager-helper',
+       'if': 'CONFIG_LINUX' },
+@@ -1121,6 +1138,8 @@
+       'memory-backend-memfd':       { 'type': 'MemoryBackendMemfdProperties',
+                                       'if': 'CONFIG_LINUX' },
+       'memory-backend-ram':         'MemoryBackendProperties',
++      'memory-backend-shm':         { 'type': 'MemoryBackendShmProperties',
++                                      'if': 'CONFIG_POSIX' },
+       'pr-manager-helper':          { 'type': 'PrManagerHelperProperties',
+                                       'if': 'CONFIG_LINUX' },
+       'qtest':                      'QtestProperties',
+diff --git a/backends/hostmem-shm.c b/backends/hostmem-shm.c
+new file mode 100644
+index 0000000000..374edc3db8
+--- /dev/null
++++ b/backends/hostmem-shm.c
+@@ -0,0 +1,123 @@
++/*
++ * QEMU host POSIX shared memory object backend
++ *
++ * Copyright (C) 2024 Red Hat Inc
++ *
++ * Authors:
++ *   Stefano Garzarella <sgarzare@redhat.com>
++ *
++ * This work is licensed under the terms of the GNU GPL, version 2 or later.
++ * See the COPYING file in the top-level directory.
++ */
 +
- enum {
-     VHOST_USER_BLK_MAX_QUEUES = 8,
- };
-diff --git a/meson.build b/meson.build
-index 6c1a489cc0..a947b83c3f 100644
---- a/meson.build
-+++ b/meson.build
-@@ -2026,8 +2026,6 @@ has_statx = cc.has_header_symbol('sys/stat.h', 'STATX_BASIC_STATS', prefix: gnu_
- has_statx_mnt_id = cc.has_header_symbol('sys/stat.h', 'STATX_MNT_ID', prefix: gnu_source_prefix)
- 
- have_vhost_user_blk_server = get_option('vhost_user_blk_server') \
--  .require(host_os == 'linux',
--           error_message: 'vhost_user_blk_server requires linux') \
-   .require(have_vhost_user,
-            error_message: 'vhost_user_blk_server requires vhost-user support') \
-   .disable_auto_if(not have_tools and not have_system) \
-diff --git a/util/meson.build b/util/meson.build
-index 72b505df11..c414178ace 100644
---- a/util/meson.build
-+++ b/util/meson.build
-@@ -112,10 +112,12 @@ if have_block
-     util_ss.add(files('filemonitor-stub.c'))
-   endif
-   if host_os == 'linux'
--    util_ss.add(files('vhost-user-server.c'), vhost_user)
-     util_ss.add(files('vfio-helpers.c'))
-     util_ss.add(files('chardev_open.c'))
-   endif
-+  if host_os != 'windows'
-+    util_ss.add(files('vhost-user-server.c'), vhost_user)
-+  endif
-   util_ss.add(files('yank.c'))
++#include "qemu/osdep.h"
++#include "sysemu/hostmem.h"
++#include "qapi/error.h"
++
++#define TYPE_MEMORY_BACKEND_SHM "memory-backend-shm"
++
++OBJECT_DECLARE_SIMPLE_TYPE(HostMemoryBackendShm, MEMORY_BACKEND_SHM)
++
++struct HostMemoryBackendShm {
++    HostMemoryBackend parent_obj;
++};
++
++static bool
++shm_backend_memory_alloc(HostMemoryBackend *backend, Error **errp)
++{
++    g_autoptr(GString) shm_name = g_string_new(NULL);
++    g_autofree char *backend_name = NULL;
++    uint32_t ram_flags;
++    int fd, oflag;
++    mode_t mode;
++
++    if (!backend->size) {
++        error_setg(errp, "can't create shm backend with size 0");
++        return false;
++    }
++
++    if (!backend->share) {
++        error_setg(errp, "can't create shm backend with `share=off`");
++        return false;
++    }
++
++    /*
++     * Let's use `mode = 0` because we don't want other processes to open our
++     * memory unless we share the file descriptor with them.
++     */
++    mode = 0;
++    oflag = O_RDWR | O_CREAT | O_EXCL;
++    backend_name = host_memory_backend_get_name(backend);
++
++    /*
++     * Some operating systems allow creating anonymous POSIX shared memory
++     * objects (e.g. FreeBSD provides the SHM_ANON constant), but this is not
++     * defined by POSIX, so let's create a unique name.
++     *
++     * From Linux's shm_open(3) man-page:
++     *   For  portable  use,  a shared  memory  object should be identified
++     *   by a name of the form /somename;"
++     */
++    g_string_printf(shm_name, "/qemu-" FMT_pid "-shm-%s", getpid(),
++                    backend_name);
++
++    fd = shm_open(shm_name->str, oflag, mode);
++    if (fd < 0) {
++        error_setg_errno(errp, errno,
++                         "failed to create POSIX shared memory");
++        return false;
++    }
++
++    /*
++     * We have the file descriptor, so we no longer need to expose the
++     * POSIX shared memory object. However it will remain allocated as long as
++     * there are file descriptors pointing to it.
++     */
++    shm_unlink(shm_name->str);
++
++    if (ftruncate(fd, backend->size) == -1) {
++        error_setg_errno(errp, errno,
++                         "failed to resize POSIX shared memory to %" PRIu64,
++                         backend->size);
++        close(fd);
++        return false;
++    }
++
++    ram_flags = RAM_SHARED;
++    ram_flags |= backend->reserve ? 0 : RAM_NORESERVE;
++
++    return memory_region_init_ram_from_fd(&backend->mr, OBJECT(backend),
++                                              backend_name, backend->size,
++                                              ram_flags, fd, 0, errp);
++}
++
++static void
++shm_backend_instance_init(Object *obj)
++{
++    HostMemoryBackendShm *m = MEMORY_BACKEND_SHM(obj);
++
++    MEMORY_BACKEND(m)->share = true;
++}
++
++static void
++shm_backend_class_init(ObjectClass *oc, void *data)
++{
++    HostMemoryBackendClass *bc = MEMORY_BACKEND_CLASS(oc);
++
++    bc->alloc = shm_backend_memory_alloc;
++}
++
++static const TypeInfo shm_backend_info = {
++    .name = TYPE_MEMORY_BACKEND_SHM,
++    .parent = TYPE_MEMORY_BACKEND,
++    .instance_init = shm_backend_instance_init,
++    .class_init = shm_backend_class_init,
++    .instance_size = sizeof(HostMemoryBackendShm),
++};
++
++static void register_types(void)
++{
++    type_register_static(&shm_backend_info);
++}
++
++type_init(register_types);
+diff --git a/backends/meson.build b/backends/meson.build
+index 106312f0c8..749b491f12 100644
+--- a/backends/meson.build
++++ b/backends/meson.build
+@@ -13,6 +13,7 @@ system_ss.add([files(
+ if host_os != 'windows'
+   system_ss.add(files('rng-random.c'))
+   system_ss.add(files('hostmem-file.c'))
++  system_ss.add([files('hostmem-shm.c'), rt])
  endif
+ if host_os == 'linux'
+   system_ss.add(files('hostmem-memfd.c'))
+diff --git a/docs/system/devices/vhost-user.rst b/docs/system/devices/vhost-user.rst
+index 9b2da106ce..35259d8ec7 100644
+--- a/docs/system/devices/vhost-user.rst
++++ b/docs/system/devices/vhost-user.rst
+@@ -98,8 +98,9 @@ Shared memory object
  
+ In order for the daemon to access the VirtIO queues to process the
+ requests it needs access to the guest's address space. This is
+-achieved via the ``memory-backend-file`` or ``memory-backend-memfd``
+-objects. A reference to a file-descriptor which can access this object
++achieved via the ``memory-backend-file``, ``memory-backend-memfd``, or
++``memory-backend-shm`` objects.
++A reference to a file-descriptor which can access this object
+ will be passed via the socket as part of the protocol negotiation.
+ 
+ Currently the shared memory object needs to match the size of the main
+diff --git a/qemu-options.hx b/qemu-options.hx
+index 8ca7f34ef0..ad6521ef5e 100644
+--- a/qemu-options.hx
++++ b/qemu-options.hx
+@@ -5240,6 +5240,22 @@ SRST
+ 
+         The ``share`` boolean option is on by default with memfd.
+ 
++    ``-object memory-backend-shm,id=id,merge=on|off,dump=on|off,share=on|off,prealloc=on|off,size=size,host-nodes=host-nodes,policy=default|preferred|bind|interleave``
++        Creates a POSIX shared memory backend object, which allows
++        QEMU to share the memory with an external process (e.g. when
++        using vhost-user).
++
++        ``memory-backend-shm`` is a more portable and less featureful version
++        of ``memory-backend-memfd``. It can then be used in any POSIX system,
++        especially when memfd is not supported.
++
++        Please refer to ``memory-backend-file`` for a description of the
++        options.
++
++        The ``share`` boolean option is on by default with shm. Setting it to
++        off will cause a failure during allocation because it is not supported
++        by this backend.
++
+     ``-object iommufd,id=id[,fd=fd]``
+         Creates an iommufd backend which allows control of DMA mapping
+         through the ``/dev/iommu`` device.
 -- 
 MST
 
