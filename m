@@ -2,32 +2,32 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 809B4923EB3
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 15:19:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A2C11923EB4
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 15:19:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOdPW-0001jO-51; Tue, 02 Jul 2024 09:19:11 -0400
+	id 1sOdPc-0001qd-CO; Tue, 02 Jul 2024 09:19:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1sOdOs-0001Fr-BM
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 09:18:28 -0400
+ id 1sOdPA-0001Sh-Ge
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 09:18:45 -0400
 Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1sOdOn-0006vN-6C
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 09:18:26 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.231])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4WD3NN6HXnz6J6gs;
- Tue,  2 Jul 2024 21:17:08 +0800 (CST)
+ id 1sOdP8-0006yd-PD
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 09:18:44 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4WD3N115kkz6K9TH;
+ Tue,  2 Jul 2024 21:16:49 +0800 (CST)
 Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
- by mail.maildlp.com (Postfix) with ESMTPS id 7408B140680;
- Tue,  2 Jul 2024 21:18:09 +0800 (CST)
+ by mail.maildlp.com (Postfix) with ESMTPS id 67E57140517;
+ Tue,  2 Jul 2024 21:18:40 +0800 (CST)
 Received: from SecurePC-101-06.china.huawei.com (10.122.19.247) by
  lhrpeml500005.china.huawei.com (7.191.163.240) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Tue, 2 Jul 2024 14:18:08 +0100
+ 15.1.2507.39; Tue, 2 Jul 2024 14:18:39 +0100
 To: <imammedo@redhat.com>, <mst@redhat.com>, Markus Armbruster
  <armbru@redhat.com>, <qemu-devel@nongnu.org>, <ankita@nvidia.com>,
  <marcel.apfelbaum@gmail.com>, <philmd@linaro.org>, Richard Henderson
@@ -36,9 +36,10 @@ CC: <linuxarm@huawei.com>, Dave Jiang <dave.jiang@intel.com>, Huang Ying
  <ying.huang@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
  <eduardo@habkost.net>, <linux-cxl@vger.kernel.org>, Michael Roth
  <michael.roth@amd.com>, Ani Sinha <anisinha@redhat.com>
-Subject: [PATCH v4 07/13] hw/pci-bridge: Add acpi_uid property to TYPE_PXB_BUS
-Date: Tue, 2 Jul 2024 14:14:12 +0100
-Message-ID: <20240702131428.664859-8-Jonathan.Cameron@huawei.com>
+Subject: [PATCH v4 08/13] hw/i386/acpi: Use TYPE_PXB_BUS property acpi_uid for
+ DSDT
+Date: Tue, 2 Jul 2024 14:14:13 +0100
+Message-ID: <20240702131428.664859-9-Jonathan.Cameron@huawei.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240702131428.664859-1-Jonathan.Cameron@huawei.com>
 References: <20240702131428.664859-1-Jonathan.Cameron@huawei.com>
@@ -55,7 +56,7 @@ X-Spam_score: -4.2
 X-Spam_bar: ----
 X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
  RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -73,49 +74,50 @@ From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Enable ACPI table creation for PCI Expander Bridges to be independent
-of PCI internals.  Note that the UID is currently the PCI bus number.
-This is motivated by the forthcoming ACPI Generic Port SRAT entries
-which can be made completely independent of PCI internals.
+Rather than relying on PCI internals, use the new acpi_property
+to obtain the ACPI _UID values.  These are still the same
+as the PCI Bus numbers so no functional change.
 
 Suggested-by: Igor Mammedov <imammedo@redhat.com>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-
 ---
-v4: Generalize to all TYPE_PXB_BUS.  The handling for primary root
-    bridges is separate and doesn't overlap with this change.
+v4: New patch.
 ---
- hw/pci-bridge/pci_expander_bridge.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ hw/i386/acpi-build.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/hw/pci-bridge/pci_expander_bridge.c b/hw/pci-bridge/pci_expander_bridge.c
-index 0411ad31ea..d71eb4b175 100644
---- a/hw/pci-bridge/pci_expander_bridge.c
-+++ b/hw/pci-bridge/pci_expander_bridge.c
-@@ -85,12 +85,23 @@ static uint16_t pxb_bus_numa_node(PCIBus *bus)
-     return pxb->numa_node;
- }
+diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
+index ee92783836..cc32f1e6d4 100644
+--- a/hw/i386/acpi-build.c
++++ b/hw/i386/acpi-build.c
+@@ -1550,6 +1550,7 @@ build_dsdt(GArray *table_data, BIOSLinker *linker,
+         QLIST_FOREACH(bus, &bus->child, sibling) {
+             uint8_t bus_num = pci_bus_num(bus);
+             uint8_t numa_node = pci_bus_numa_node(bus);
++            uint8_t uid;
  
-+static void prop_pxb_uid_get(Object *obj, Visitor *v, const char *name,
-+                             void *opaque, Error **errp)
-+{
-+    uint32_t uid = pci_bus_num(PCI_BUS(obj));
-+
-+    visit_type_uint32(v, name, &uid, errp);
-+}
-+
- static void pxb_bus_class_init(ObjectClass *class, void *data)
- {
-     PCIBusClass *pbc = PCI_BUS_CLASS(class);
+             /* look only for expander root buses */
+             if (!pci_bus_is_root(bus)) {
+@@ -1560,14 +1561,16 @@ build_dsdt(GArray *table_data, BIOSLinker *linker,
+                 root_bus_limit = bus_num - 1;
+             }
  
-     pbc->bus_num = pxb_bus_num;
-     pbc->numa_node = pxb_bus_numa_node;
-+
-+    object_class_property_add(class, "acpi_uid", "uint32",
-+                              prop_pxb_uid_get, NULL, NULL, NULL);
- }
++            uid = object_property_get_uint(OBJECT(bus), "acpi_uid",
++                                           &error_fatal);
+             scope = aml_scope("\\_SB");
  
- static const TypeInfo pxb_bus_info = {
+             if (pci_bus_is_cxl(bus)) {
+-                dev = aml_device("CL%.02X", bus_num);
++                dev = aml_device("CL%.02X", uid);
+             } else {
+-                dev = aml_device("PC%.02X", bus_num);
++                dev = aml_device("PC%.02X", uid);
+             }
+-            aml_append(dev, aml_name_decl("_UID", aml_int(bus_num)));
++            aml_append(dev, aml_name_decl("_UID", aml_int(uid)));
+             aml_append(dev, aml_name_decl("_BBN", aml_int(bus_num)));
+             if (pci_bus_is_cxl(bus)) {
+                 struct Aml *aml_pkg = aml_package(2);
 -- 
 2.43.0
 
