@@ -2,91 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98A3A924014
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 16:13:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AFC5592402F
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 16:14:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOeBh-000575-TB; Tue, 02 Jul 2024 10:08:55 -0400
+	id 1sOeCT-0008Eh-79; Tue, 02 Jul 2024 10:09:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOeBf-00055D-8l
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:08:51 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOeBc-0008EQ-Tg
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:08:50 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719929327;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=kZkfnrsmrcpCA4paPRwjE2CzS2LM1h/03EC8/LUs/AI=;
- b=WZXMuYhBkGT3sbkZJvMXyGkT9tjDo9r0BwZL1nOwxO5ylAkLOu43ZATtopLNZFN0B08BZS
- du+0O0Tut+fsU2q0RnBfGyHEyNY2sOViv8Uv5KlbMHfKrpoNgp+8a2AkjXznWD7xhYQbc/
- 0pjXk22N4FWpjRyzQbBijPaHaCmPt2A=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-250-TNUpZdfsP4-TlMjRcVicoA-1; Tue, 02 Jul 2024 10:08:44 -0400
-X-MC-Unique: TNUpZdfsP4-TlMjRcVicoA-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-4256667ebf9so29778225e9.1
- for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 07:08:44 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOeCG-0006aB-0t
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:09:28 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOeBv-0008Hk-4g
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:09:25 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-4255fc43f1cso29599965e9.0
+ for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 07:09:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1719929341; x=1720534141; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=x5n/UUecZqva2u2ersebHsP4O+vyf81j9dlx/AwZ1Sc=;
+ b=o0cs7IZenV28NQslm2YVS016/oOUO8yoanKqHD9OPNL6h0rLWaZ3dJEplrTtaTXTW8
+ diYEwhau56TzbR4TT5t56zdbHTG1MDu5NMkTolL/olgrtyCPb5urN/i2sbAP5amYlEAw
+ ikmzHLnX7H41fVz1+99TtUzLy2v4EiOgIrZfap93oVemN01kn0Bz+avMlDV9tA0hzn/v
+ nmLNBsh8rk9+OkzIBWFrupSSLTAdVx66n8Dg3tWIJnRPUMhMqVJIp+3jAWun1X5mUdRC
+ zR3H+ujVrLStKtrjMZJnuy+7+Gykxszc8k3x3u4KuqbgZDX9QYqhYpYuK3Av7f4UOmOU
+ 84Jg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719929323; x=1720534123;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=kZkfnrsmrcpCA4paPRwjE2CzS2LM1h/03EC8/LUs/AI=;
- b=RhkXxDxfxwZ4CecIR7rqZowaS3VeZoWieKY/zFo762cdmbz4UDiW1alc3hS7Xv5F5j
- DNX4HrZWbYbH50whVO8TS+2Dizej5/3ji49/GJQZV/3N2vkWy4X1kLYUHRw2quEgBH6q
- LC6fZHPhs0REgff4ycFoRIe+YyNowiy63LLq7Q+DUlZ0JF6vwt8D4J+mr8HDVm3W9s92
- tuLvhpev0/u2jp+q6AYKAq75hbYKwByDcGEuGWG2xzysEnmnsBnEJEZAnXGmgRb06SzW
- R9JNhwoH/OM51/2p4jc2CRUgGXFg2rN4/HQpxfsNTxUBLzuyK47XC9Om60uQKKT2ty8K
- wQwg==
-X-Gm-Message-State: AOJu0Yy/qx/kRvDKlbQdKZyMygUwmrAcdkw7SXLNNMRlZKiThI463mop
- sir8WuIHNSX3Y+ZNN1xXmKOvu3LAvRXSbzyH3Xj0LWRXmGN4TsSU8sMthL93CaHOjiaKPQVhVX/
- J7DuqR2xwqgFiQIrGPZzBHUWhdstnvqbU6E1g6EZCaVIdQV0tKEBWQafLXz2FEQqGefxdsys39V
- hOAQq7VNfl9tvydrUIKpv+y9QggcjGZA==
-X-Received: by 2002:a05:600c:480f:b0:425:7ca2:68bc with SMTP id
- 5b1f17b1804b1-4257ca26afamr61510435e9.34.1719929323129; 
- Tue, 02 Jul 2024 07:08:43 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFwEwdqqCIGB/U31YgBC3pW0iSqSJSSCcieC0L/ueIKRAE23+V08HPF1gLd8tQ065sP4jEahg==
-X-Received: by 2002:a05:600c:480f:b0:425:7ca2:68bc with SMTP id
- 5b1f17b1804b1-4257ca26afamr61510085e9.34.1719929322460; 
- Tue, 02 Jul 2024 07:08:42 -0700 (PDT)
-Received: from redhat.com ([2a02:14f:1f5:eadd:8c31:db01:9d01:7604])
+ d=1e100.net; s=20230601; t=1719929341; x=1720534141;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=x5n/UUecZqva2u2ersebHsP4O+vyf81j9dlx/AwZ1Sc=;
+ b=k2gdmHp1/yMfF0NsF+/YqJOOnY7vb/s97bWfnoHbksxBq8+TLjpWcBBkzlcywCtwib
+ m3aX+23wU3GiynGOELlrjL/5MbsmhBtXd2Hvj0tvbgZ+8VJ/ICN1X8D1ssPWcOnvNmpL
+ rdwJ6887jx1VfsAJumf3ePNIryub5q28NYbiM0OSVTk0AZQ5zvGXmOkupGYH9Qpp5ICJ
+ bZxsfq/yiG7n81nDaA9r7V+LRGH7Q2k8bZJEjtavs+tMVttlZXG96CkBVorXXfQMgVfP
+ 6ZgE2TRLmD82ojVvrmaH6weMwikv+r4KhO6ywixKb/s746HMq4rvlAbLLOr88FsMRTAY
+ ecuQ==
+X-Gm-Message-State: AOJu0YwgBi7qYe867bSCND6BVB+CMaEoUMudfmhw7IfRNhIE8POkuTnT
+ J+Xsid6kMaEn4qKH/1PhL6d8cERd5aonPDBt0ao74DTGE5F3sWjCsg5CaXvfOqbyDu7Dg4arxc0
+ r
+X-Google-Smtp-Source: AGHT+IHCu0fqEvu51d+e8aT6IH25ou2O1uaKHFB/oFow7q5yfcls7V1JlLFmBRCofJjeAGyrEe4okw==
+X-Received: by 2002:a05:600c:1793:b0:425:7ac6:9709 with SMTP id
+ 5b1f17b1804b1-4257ac698c2mr64240385e9.3.1719929340986; 
+ Tue, 02 Jul 2024 07:09:00 -0700 (PDT)
+Received: from m1x-phil.lan ([176.187.209.58])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3675a0d8df0sm13422689f8f.29.2024.07.02.07.08.41
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 02 Jul 2024 07:08:42 -0700 (PDT)
-Date: Tue, 2 Jul 2024 10:08:40 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
+ 5b1f17b1804b1-4256af37828sm205816585e9.9.2024.07.02.07.08.58
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Tue, 02 Jul 2024 07:09:00 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas@t-8ch.de>,
- Cornelia Huck <cohuck@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PULL 33/91] hw/misc/pvpanic: add support for normal shutdowns
-Message-ID: <6269086b0179e3d70750672174ed7fbd29ac7eaa.1719929191.git.mst@redhat.com>
-References: <cover.1719929191.git.mst@redhat.com>
+Cc: Tyrone Ting <kfting@nuvoton.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Hao Wu <wuhaotsh@google.com>, Thomas Huth <thuth@redhat.com>,
+ Shengtan Mao <stmao@google.com>, Chris Rauer <crauer@google.com>,
+ Joel Stanley <joel@jms.id.au>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Sai Pavan Boddu <sai.pavan.boddu@amd.com>,
+ Laurent Vivier <lvivier@redhat.com>, Luc Michel <luc.michel@amd.com>,
+ Bin Meng <bmeng.cn@gmail.com>, qemu-arm@nongnu.org, qemu-block@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Patrick Venture <venture@google.com>
+Subject: [PATCH 2/4] hw/sd/sdhci: Log non-sequencial access as GUEST_ERROR
+Date: Tue,  2 Jul 2024 16:08:40 +0200
+Message-ID: <20240702140842.54242-3-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20240702140842.54242-1-philmd@linaro.org>
+References: <20240702140842.54242-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <cover.1719929191.git.mst@redhat.com>
-X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
-X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,85 +99,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Weißschuh <thomas@t-8ch.de>
-
-Shutdown requests are normally hardware dependent.
-By extending pvpanic to also handle shutdown requests, guests can
-submit such requests with an easily implementable and cross-platform
-mechanism.
-
-Acked-by: Cornelia Huck <cohuck@redhat.com>
-Signed-off-by: Thomas Weißschuh <thomas@t-8ch.de>
-Message-Id: <20240527-pvpanic-shutdown-v8-5-5a28ec02558b@t-8ch.de>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/misc/pvpanic.h | 4 +++-
- include/sysemu/runstate.h | 1 +
- hw/misc/pvpanic.c         | 5 +++++
- system/runstate.c         | 5 +++++
- 4 files changed, 14 insertions(+), 1 deletion(-)
+ hw/sd/sdhci.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/include/hw/misc/pvpanic.h b/include/hw/misc/pvpanic.h
-index 1e5b20e4ed..9a71a5ad0d 100644
---- a/include/hw/misc/pvpanic.h
-+++ b/include/hw/misc/pvpanic.h
-@@ -20,7 +20,9 @@
- 
- #include "standard-headers/misc/pvpanic.h"
- 
--#define PVPANIC_EVENTS (PVPANIC_PANICKED | PVPANIC_CRASH_LOADED)
-+#define PVPANIC_EVENTS (PVPANIC_PANICKED | \
-+                        PVPANIC_CRASH_LOADED | \
-+                        PVPANIC_SHUTDOWN)
- 
- #define TYPE_PVPANIC_ISA_DEVICE "pvpanic"
- #define TYPE_PVPANIC_PCI_DEVICE "pvpanic-pci"
-diff --git a/include/sysemu/runstate.h b/include/sysemu/runstate.h
-index 0117d243c4..e210a37abf 100644
---- a/include/sysemu/runstate.h
-+++ b/include/sysemu/runstate.h
-@@ -104,6 +104,7 @@ void qemu_system_killed(int signal, pid_t pid);
- void qemu_system_reset(ShutdownCause reason);
- void qemu_system_guest_panicked(GuestPanicInformation *info);
- void qemu_system_guest_crashloaded(GuestPanicInformation *info);
-+void qemu_system_guest_pvshutdown(void);
- bool qemu_system_dump_in_progress(void);
- 
- #endif
-diff --git a/hw/misc/pvpanic.c b/hw/misc/pvpanic.c
-index 4b2307d2c2..3b893340c0 100644
---- a/hw/misc/pvpanic.c
-+++ b/hw/misc/pvpanic.c
-@@ -41,6 +41,11 @@ static void handle_event(int event)
-         qemu_system_guest_crashloaded(NULL);
-         return;
-     }
-+
-+    if (event & PVPANIC_SHUTDOWN) {
-+        qemu_system_guest_pvshutdown();
-+        return;
-+    }
- }
- 
- /* return supported events on read */
-diff --git a/system/runstate.c b/system/runstate.c
-index ec32e270cb..fc49fd3e61 100644
---- a/system/runstate.c
-+++ b/system/runstate.c
-@@ -584,6 +584,11 @@ void qemu_system_guest_crashloaded(GuestPanicInformation *info)
-     qapi_free_GuestPanicInformation(info);
- }
- 
-+void qemu_system_guest_pvshutdown(void)
-+{
-+    qemu_system_shutdown_request(SHUTDOWN_CAUSE_GUEST_SHUTDOWN);
-+}
-+
- void qemu_system_reset_request(ShutdownCause reason)
+diff --git a/hw/sd/sdhci.c b/hw/sd/sdhci.c
+index 27673e1c70..d02c3e3963 100644
+--- a/hw/sd/sdhci.c
++++ b/hw/sd/sdhci.c
+@@ -983,8 +983,9 @@ static inline bool
+ sdhci_buff_access_is_sequential(SDHCIState *s, unsigned byte_num)
  {
-     if (reboot_action == REBOOT_ACTION_SHUTDOWN &&
+     if ((s->data_count & 0x3) != byte_num) {
+-        trace_sdhci_error("Non-sequential access to Buffer Data Port register"
+-                          "is prohibited\n");
++        qemu_log_mask(LOG_GUEST_ERROR,
++                      "SDHCI: Non-sequential access to Buffer Data Port"
++                      " register is prohibited\n");
+         return false;
+     }
+     return true;
 -- 
-MST
+2.41.0
 
 
