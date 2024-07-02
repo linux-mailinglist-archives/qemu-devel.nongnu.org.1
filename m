@@ -2,75 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C73192426F
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 17:31:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75AA59242A3
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 17:42:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOfTb-0007Ab-T0; Tue, 02 Jul 2024 11:31:27 -0400
+	id 1sOfdB-00051f-Fv; Tue, 02 Jul 2024 11:41:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1sOfTY-00077h-Pc
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 11:31:25 -0400
-Received: from mail-qt1-x82f.google.com ([2607:f8b0:4864:20::82f])
+ (Exim 4.90_1) (envelope-from <zheyuma97@gmail.com>)
+ id 1sOfd0-0004vP-5c; Tue, 02 Jul 2024 11:41:11 -0400
+Received: from mail-lj1-x233.google.com ([2a00:1450:4864:20::233])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1sOfTW-0005CJ-2Q
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 11:31:24 -0400
-Received: by mail-qt1-x82f.google.com with SMTP id
- d75a77b69052e-446449e5df5so21143951cf.0
- for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 08:31:21 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <zheyuma97@gmail.com>)
+ id 1sOfcy-0001U4-5b; Tue, 02 Jul 2024 11:41:09 -0400
+Received: by mail-lj1-x233.google.com with SMTP id
+ 38308e7fff4ca-2ee7885ac1cso7667441fa.1; 
+ Tue, 02 Jul 2024 08:41:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1719934281; x=1720539081; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=EzssBnxLsekDQqFHz3eMMn3NJIyn6OIB58pC86B1QWY=;
- b=Jxn3/uTGCpSRPReE2tcGt+of9XI1xXHQiEOFj5XV6epDE/0kezySX03dN5UtvPm425
- 222pnDM0r95qpQgev3Ys9mVBAYB/Ouvmg8z3KiTxSwcp41PPybsvID91VCjGWYa2ifAT
- xHpAyZe6q2ba1R0VrWZ5YD0SQeRdO+8I17SeXEt/IgWuYfgDtiRC0Bq6LogkOLqlhcp7
- 6JyrzffQEEoq0ya99L1FtJ8vPaUNCMgept2niQS+gOS1QattAyXaogfDpOxO+YYuOGpu
- tOiuKcJu03SSYpc9mH0B3RZieN02fIN10/TZZzTTwyrYYDed3HF9m6TaEzvHTmYW904f
- lnmg==
+ d=gmail.com; s=20230601; t=1719934866; x=1720539666; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=zlsYGxOBAA6aPqp1UDFvjA499Ut0I1N9iQ293R9omT8=;
+ b=WkZIeTc2yYVNkUgeluJGdEenTsQH6vf4D/5zLWmkaeNeFZIosTmiG2kvkAbcU8N5hC
+ 9iZBo5vk6eL2YKZWVsTnFxW+YUMlUXiiZjaGXUN21L0+HmSbNBz98fAMpGOlpT9bT0FH
+ 5J4HZwJulQhzZz8hT62hX6ktCx08GU1J2faxhaRQ9Dkvuy2R/6bz+kiDEGp8CSNbnAgL
+ py0siOzzD4Jg+DpwVx7G7DpeFFqLvGcnKIyC5kDBsI/jy4PiecBhFDm5wcv7yb27mEAe
+ UlbX6Q/SffAGhkBHVox6eI4kO6Ir0a1WEd1FfQHfOoCKWSu3WSkOXTT4WM9X42NT4m7P
+ WolA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719934281; x=1720539081;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1719934866; x=1720539666;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=EzssBnxLsekDQqFHz3eMMn3NJIyn6OIB58pC86B1QWY=;
- b=BY8idrQSGDu6fjpfveGBHZVbTBx83KiaOGELip1sQwRLQ0NtZJU/EB33UuI+Y8Rc5w
- qW+hNRUuqzspLB5O03tuslc+zkq9bWImQSVH0IVB007PmNJDiRSsn00NVkCrj6skDLSb
- x1bHfnk4/ha3N04ig/7C7sOMom4M7oqI21mnBBXQy/RZRzUAzvBAluXn9tFAz3R8mwrH
- W8+BkDEAhYco7juJ/3yKxK75NtNSj1QUnYZGpq5JAa/03QlOxzCsSs/uKkd56Q1ZyWuI
- pCb0u9Zz9SRVbatEWltNhCLr7oxXbVu20NsKzyaziYXhKo4eUutqEerFwnMHkejE0sNA
- USOg==
-X-Gm-Message-State: AOJu0Yz1g9oG2N/Nqmd+TgIs+zFv0E3Rd0wSXS1SOd4TMLkz02plWdrf
- 1eCYUn8K++qxZn4RUwXCxcMgReDkpuXnDarJAI9DHx03RkpXuX2PdEhqQve4VS6QWeXmaoIygHV
- 3pyufgE8WF3exSYTZNjufVpS//9k=
-X-Google-Smtp-Source: AGHT+IGWQ8M5/JtsFVnjf7q1j+5zhsm6z5A6DZTsho3Awn7HIOtlk7fu0tlKbLmVOPiP5e8pE5S/YsHYSDDORM/a1Uo=
-X-Received: by 2002:ac8:590d:0:b0:441:315:1c90 with SMTP id
- d75a77b69052e-44662c954bbmr108516121cf.12.1719934280635; Tue, 02 Jul 2024
- 08:31:20 -0700 (PDT)
+ bh=zlsYGxOBAA6aPqp1UDFvjA499Ut0I1N9iQ293R9omT8=;
+ b=SPCB/OxsQAnLq5Ds4WSfqUS7fQnFnh28UjJ/prUMOooVS6k0ZyGZO9U+hmtHUaVRDI
+ c/nt+ZFo89ke7hW2sX/HcOZSevU2iVcBzeIkVHjxh7DruAA8p6GfQnUVxajFAxVqCiyL
+ Q6HhcZzqO1GC6czvqwrpytVgx4W1YHLA8YnJJELZB3gMLp/DdwF1C2nlFLyIGrpt5TG6
+ chDYhhLlRiJyDcKKvqQc1EmuGxBlvxD4BOktmwu8d4Iy7j2vypnAsxJ1AKWslQ2vMSQb
+ CRl03BWdfmCrb8QXIou6cPKCdGnqSzAjv7+F0Io9IBykAweNW7uHPkB+IlRkoWfvxOtN
+ zFjg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCU94fjA4SUGrSJXSCmhfdIMQwvuZHYyb8ZseZCBjvMv3j0R1RSl1P4K4cawAAbzAUUrPAuZS9idxdCmpQMib7ozYsrzFTAVQtj0D3qRK8qn/P21EthCNqPi6oA=
+X-Gm-Message-State: AOJu0YyYS4r09VtskgC28tSnGWZ/4ByjUOgXPesXfqszd2WITl+4Oyyy
+ Pidqu9ZmKclWOoCacO09a+iDbLjfmtMMGVaSJ2zmwWYHMeLidhw=
+X-Google-Smtp-Source: AGHT+IHyRJKTlb42+0zLVN1xnholb3NBQOYwUglXEymC/ajMDCBk705K531X96sVDEXUof0bygjyTw==
+X-Received: by 2002:a05:651c:244:b0:2ee:7255:5048 with SMTP id
+ 38308e7fff4ca-2ee7255542dmr30379251fa.48.1719934865548; 
+ Tue, 02 Jul 2024 08:41:05 -0700 (PDT)
+Received: from wing.epfl.ch (dhcp-122-dist-b-021.epfl.ch. [128.178.122.21])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3675a0fbbd4sm13617467f8f.84.2024.07.02.08.41.05
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 02 Jul 2024 08:41:05 -0700 (PDT)
+From: Zheyu Ma <zheyuma97@gmail.com>
+To: Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: Zheyu Ma <zheyuma97@gmail.com>, qemu-arm@nongnu.org, qemu-devel@nongnu.org
+Subject: [PATCH v2] hw/misc/bcm2835_thermal: Fix access size handling in
+ bcm2835_thermal_ops
+Date: Tue,  2 Jul 2024 17:40:41 +0200
+Message-Id: <20240702154042.3018932-1-zheyuma97@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20240701014809.255682-1-zhenzhong.duan@intel.com>
- <20240701014809.255682-2-zhenzhong.duan@intel.com>
-In-Reply-To: <20240701014809.255682-2-zhenzhong.duan@intel.com>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Tue, 2 Jul 2024 19:31:07 +0400
-Message-ID: <CAJ+F1CL1WMK+QdTsSDteBDpUo=rJ91ddhVG7Gx0hsMzsPT5bfA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] vfio/display: Fix potential memleak of edid info
-To: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Cc: qemu-devel@nongnu.org, alex.williamson@redhat.com, clg@redhat.com, 
- kraxel@redhat.com, chao.p.peng@intel.com
-Content-Type: multipart/alternative; boundary="000000000000d59daa061c456703"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::82f;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x82f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::233;
+ envelope-from=zheyuma97@gmail.com; helo=mail-lj1-x233.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -87,115 +91,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000d59daa061c456703
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+The current implementation of bcm2835_thermal_ops sets
+impl.max_access_size and valid.min_access_size to 4, but leaves
+impl.min_access_size and valid.max_access_size unset, defaulting to 1.
+This causes issues when the memory system is presented with an access
+of size 2 at an offset of 3, leading to an attempt to synthesize it as
+a pair of byte accesses at offsets 3 and 4, which trips an assert.
 
-On Mon, Jul 1, 2024 at 5:51=E2=80=AFAM Zhenzhong Duan <zhenzhong.duan@intel=
-.com>
-wrote:
+Additionally, the lack of valid.max_access_size setting causes another
+issue: the memory system tries to synthesize a read using a 4-byte
+access at offset 3 even though the device doesn't allow unaligned
+accesses.
 
-> EDID related device region info is leaked in vfio_display_edid_init()
-> error path and VFIODisplay destroying path.
->
-> Fixes: 08479114b0de ("vfio/display: add edid support.")
-> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
->
+This patch addresses these issues by explicitly setting both
+impl.min_access_size and valid.max_access_size to 4, ensuring proper
+handling of access sizes.
 
-Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+Error log:
+ERROR:hw/misc/bcm2835_thermal.c:55:bcm2835_thermal_read: code should not be reached
+Bail out! ERROR:hw/misc/bcm2835_thermal.c:55:bcm2835_thermal_read: code should not be reached
+Aborted
 
+Reproducer:
+cat << EOF | qemu-system-aarch64 -display \
+none -machine accel=qtest, -m 512M -machine raspi3b -m 1G -qtest stdio
+readw 0x3f212003
+EOF
 
-> ---
->  hw/vfio/display.c | 3 +++
->  1 file changed, 3 insertions(+)
->
-> diff --git a/hw/vfio/display.c b/hw/vfio/display.c
-> index 661e921616..9c57fd3888 100644
-> --- a/hw/vfio/display.c
-> +++ b/hw/vfio/display.c
-> @@ -171,7 +171,9 @@ static void vfio_display_edid_init(VFIOPCIDevice *vde=
-v)
->
->  err:
->      trace_vfio_display_edid_write_error();
-> +    g_free(dpy->edid_info);
->      g_free(dpy->edid_regs);
-> +    dpy->edid_info =3D NULL;
->      dpy->edid_regs =3D NULL;
->      return;
->  }
-> @@ -182,6 +184,7 @@ static void vfio_display_edid_exit(VFIODisplay *dpy)
->          return;
->      }
->
-> +    g_free(dpy->edid_info);
->      g_free(dpy->edid_regs);
->      g_free(dpy->edid_blob);
->      timer_free(dpy->edid_link_timer);
-> --
-> 2.34.1
->
->
->
+Signed-off-by: Zheyu Ma <zheyuma97@gmail.com>
+---
+Changes in v2:
+- Added .valid.min_access_size and .valid.max_access_size settings
+  to ensure proper handling of valid access sizes.
+---
+ hw/misc/bcm2835_thermal.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---=20
-Marc-Andr=C3=A9 Lureau
+diff --git a/hw/misc/bcm2835_thermal.c b/hw/misc/bcm2835_thermal.c
+index ee7816b8a5..0c49c088a7 100644
+--- a/hw/misc/bcm2835_thermal.c
++++ b/hw/misc/bcm2835_thermal.c
+@@ -80,8 +80,10 @@ static void bcm2835_thermal_write(void *opaque, hwaddr addr,
+ static const MemoryRegionOps bcm2835_thermal_ops = {
+     .read = bcm2835_thermal_read,
+     .write = bcm2835_thermal_write,
++    .impl.min_access_size = 4,
+     .impl.max_access_size = 4,
+     .valid.min_access_size = 4,
++    .valid.max_access_size = 4,
+     .endianness = DEVICE_NATIVE_ENDIAN,
+ };
+ 
+-- 
+2.34.1
 
---000000000000d59daa061c456703
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
-<div dir=3D"ltr" class=3D"gmail_attr">On Mon, Jul 1, 2024 at 5:51=E2=80=AFA=
-M Zhenzhong Duan &lt;<a href=3D"mailto:zhenzhong.duan@intel.com">zhenzhong.=
-duan@intel.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" st=
-yle=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padd=
-ing-left:1ex">EDID related device region info is leaked in vfio_display_edi=
-d_init()<br>
-error path and VFIODisplay destroying path.<br>
-<br>
-Fixes: 08479114b0de (&quot;vfio/display: add edid support.&quot;)<br>
-Signed-off-by: Zhenzhong Duan &lt;<a href=3D"mailto:zhenzhong.duan@intel.co=
-m" target=3D"_blank">zhenzhong.duan@intel.com</a>&gt;<br></blockquote><div>=
-<br></div><div>Reviewed-by: Marc-Andr=C3=A9 Lureau &lt;<a href=3D"mailto:ma=
-rcandre.lureau@redhat.com">marcandre.lureau@redhat.com</a>&gt;</div><div>=
-=C2=A0<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0=
-px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
----<br>
-=C2=A0hw/vfio/display.c | 3 +++<br>
-=C2=A01 file changed, 3 insertions(+)<br>
-<br>
-diff --git a/hw/vfio/display.c b/hw/vfio/display.c<br>
-index 661e921616..9c57fd3888 100644<br>
---- a/hw/vfio/display.c<br>
-+++ b/hw/vfio/display.c<br>
-@@ -171,7 +171,9 @@ static void vfio_display_edid_init(VFIOPCIDevice *vdev)=
-<br>
-<br>
-=C2=A0err:<br>
-=C2=A0 =C2=A0 =C2=A0trace_vfio_display_edid_write_error();<br>
-+=C2=A0 =C2=A0 g_free(dpy-&gt;edid_info);<br>
-=C2=A0 =C2=A0 =C2=A0g_free(dpy-&gt;edid_regs);<br>
-+=C2=A0 =C2=A0 dpy-&gt;edid_info =3D NULL;<br>
-=C2=A0 =C2=A0 =C2=A0dpy-&gt;edid_regs =3D NULL;<br>
-=C2=A0 =C2=A0 =C2=A0return;<br>
-=C2=A0}<br>
-@@ -182,6 +184,7 @@ static void vfio_display_edid_exit(VFIODisplay *dpy)<br=
->
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return;<br>
-=C2=A0 =C2=A0 =C2=A0}<br>
-<br>
-+=C2=A0 =C2=A0 g_free(dpy-&gt;edid_info);<br>
-=C2=A0 =C2=A0 =C2=A0g_free(dpy-&gt;edid_regs);<br>
-=C2=A0 =C2=A0 =C2=A0g_free(dpy-&gt;edid_blob);<br>
-=C2=A0 =C2=A0 =C2=A0timer_free(dpy-&gt;edid_link_timer);<br>
--- <br>
-2.34.1<br>
-<br>
-<br>
-</blockquote></div><br clear=3D"all"><br><span class=3D"gmail_signature_pre=
-fix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signature">Marc-Andr=C3=
-=A9 Lureau<br></div></div>
-
---000000000000d59daa061c456703--
 
