@@ -2,55 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53B6F923B8A
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 12:35:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3331923B7C
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 12:34:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOapO-00047O-GB; Tue, 02 Jul 2024 06:33:38 -0400
+	id 1sOapR-00048D-CE; Tue, 02 Jul 2024 06:33:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sOapM-00047E-MY
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 06:33:36 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sOapP-00047l-DG
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 06:33:39 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sOapL-00075g-6h
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 06:33:36 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sOapN-000769-UK
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 06:33:39 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719916413;
+ s=mimecast20190719; t=1719916417;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=IKIAq/0EbL7dNlGbo5FSiT/Ht/+xCoUVYFafVxD5iyM=;
- b=W6zWMwU9wtGpxcxPiKCKahE9Km4fZjn6DlbXPCBTGg6+lwYhCNNbnPxxW36KabU4daK8S8
- YuFxtm99te44w/Qgfmg6hGSsWvRjOsEGBlD4VrGaYNV7fdgrPWru6S5+UNZfYw+p7KNHI7
- 3o5kZZRUYIZ6mPgkizUHwtBHD20kYXw=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=7XduJ0TCBnplDVugYYmZN5o8ZkVImVBc1PGz+/I5i4k=;
+ b=OHejST+rcq9eniGPGiI8xKjWB6KBEHkXv4o1hivMMTQvlUAL1xwKPTEbw6DNAotYTIuzhN
+ /Y6gTknRLMRk2ZobQ6NO5HEB37VdxctM5AVZlBj6/tJ3zmwRi9MdGJH5vmLQqL5891rgCY
+ gJWsNTiWg/MiTZK60lHpGUr8YcC7kUk=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-33-cCZGvjrWMH24usGdaK6wPg-1; Tue,
- 02 Jul 2024 06:33:32 -0400
-X-MC-Unique: cCZGvjrWMH24usGdaK6wPg-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-651-mTWvgJHZMpuw7UtLa_Zoag-1; Tue,
+ 02 Jul 2024 06:33:36 -0400
+X-MC-Unique: mTWvgJHZMpuw7UtLa_Zoag-1
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 440B019560B3; Tue,  2 Jul 2024 10:33:31 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 1D3CE1955F03; Tue,  2 Jul 2024 10:33:35 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.116])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 4E5411955E74; Tue,  2 Jul 2024 10:33:26 +0000 (UTC)
+ id E3D4319560AA; Tue,  2 Jul 2024 10:33:31 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org,
 	Richard Henderson <richard.henderson@linaro.org>
 Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
- Peter Maydell <peter.maydell@linaro.org>,
  "Michael S . Tsirkin" <mst@redhat.com>
-Subject: [PULL 05/12] tests/qtest: Free old machine variable name
-Date: Tue,  2 Jul 2024 12:33:03 +0200
-Message-ID: <20240702103310.347201-6-thuth@redhat.com>
+Subject: [PULL 06/12] tests/qtest: Free paths
+Date: Tue,  2 Jul 2024 12:33:04 +0200
+Message-ID: <20240702103310.347201-7-thuth@redhat.com>
 In-Reply-To: <20240702103310.347201-1-thuth@redhat.com>
 References: <20240702103310.347201-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -85,26 +84,55 @@ From: Akihiko Odaki <akihiko.odaki@daynix.com>
 This fixes LeakSanitizer warnings.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Message-ID: <20240627-san-v2-12-750bb0946dbd@daynix.com>
+Message-ID: <20240627-san-v2-14-750bb0946dbd@daynix.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/qtest/libqtest.c | 1 +
- 1 file changed, 1 insertion(+)
+ tests/qtest/qos-test.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/tests/qtest/libqtest.c b/tests/qtest/libqtest.c
-index ca46b1f8d0..1326e34291 100644
---- a/tests/qtest/libqtest.c
-+++ b/tests/qtest/libqtest.c
-@@ -1514,6 +1514,7 @@ static struct MachInfo *qtest_get_machines(const char *var)
-     int idx;
+diff --git a/tests/qtest/qos-test.c b/tests/qtest/qos-test.c
+index 5da4091ec3..114f6bef27 100644
+--- a/tests/qtest/qos-test.c
++++ b/tests/qtest/qos-test.c
+@@ -33,7 +33,6 @@
+ static char *old_path;
  
-     if (g_strcmp0(qemu_var, var)) {
-+        g_free(qemu_var);
-         qemu_var = g_strdup(var);
  
-         /* new qemu, clear the cache */
+-
+ /**
+  * qos_set_machines_devices_available(): sets availability of qgraph
+  * machines and devices.
+@@ -191,6 +190,12 @@ static void subprocess_run_one_test(const void *arg)
+     g_test_trap_assert_passed();
+ }
+ 
++static void destroy_pathv(void *arg)
++{
++    g_free(((char **)arg)[0]);
++    g_free(arg);
++}
++
+ /*
+  * in this function, 2 path will be built:
+  * path_str, a one-string path (ex "pc/i440FX-pcihost/...")
+@@ -295,10 +300,13 @@ static void walk_path(QOSGraphNode *orig_path, int len)
+     if (path->u.test.subprocess) {
+         gchar *subprocess_path = g_strdup_printf("/%s/%s/subprocess",
+                                                  qtest_get_arch(), path_str);
+-        qtest_add_data_func(path_str, subprocess_path, subprocess_run_one_test);
+-        g_test_add_data_func(subprocess_path, path_vec, run_one_test);
++        qtest_add_data_func_full(path_str, subprocess_path,
++                                 subprocess_run_one_test, g_free);
++        g_test_add_data_func_full(subprocess_path, path_vec,
++                                  run_one_test, destroy_pathv);
+     } else {
+-        qtest_add_data_func(path_str, path_vec, run_one_test);
++        qtest_add_data_func_full(path_str, path_vec,
++                                 run_one_test, destroy_pathv);
+     }
+ 
+     g_free(path_str);
 -- 
 2.45.2
 
