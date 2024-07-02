@@ -2,73 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 327B4924050
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 16:17:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5764A924071
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 16:20:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOeD3-0003AZ-DT; Tue, 02 Jul 2024 10:10:17 -0400
+	id 1sOeD7-0003U8-8O; Tue, 02 Jul 2024 10:10:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOeCv-0002nc-G3
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:10:09 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOeCy-00035W-Qn
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:10:12 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOeCt-0000FH-2r
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:10:09 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOeCw-0000H5-SX
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:10:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719929406;
+ s=mimecast20190719; t=1719929410;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=/8Z7JyQo+HEEofucdvOkehCzjauROI/8uJ9hGYzaVe8=;
- b=NeT/gFBhcV/D7OB5oTDHUElsFegm/YIXrogtle7ho6FqlOl3oS3n8uflevn8cYEd9MdIIu
- vm3lpoqOoO11XCGCVdCvawNWa40pRGWQeVIaWAPxMANM0AdLY/bG8eiikOhS9oay4S+TtU
- I32W2enBgvA/Tv50dxKySg1oCEWoIWA=
-Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
- [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=SUxXXLDnAjmmN0Yi+4nhd+mhBCkrJEwNWiEK8gau7L4=;
+ b=g9QFwDEFaRh+R/WykTlie0CjcwXyBMxtOx+sOxSnqingws+2u81SfXE3ydj2g9YPnAXESq
+ cYnEvxflLhwC7GuQgbgvw1KPaa3OAtAKhHjBXSKMBQ5FDd0KJa4sg+Gs0MVupuQsaZ+pxE
+ nJbRVdWSNLfxGZ1ZadaZHIPWOrRMxHw=
+Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
+ [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-414-M2u2y-SPMWGZUqRdWZVdeA-1; Tue, 02 Jul 2024 10:10:05 -0400
-X-MC-Unique: M2u2y-SPMWGZUqRdWZVdeA-1
-Received: by mail-lj1-f198.google.com with SMTP id
- 38308e7fff4ca-2ec60e68c81so41338891fa.3
- for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 07:10:04 -0700 (PDT)
+ us-mta-601-XoqE_xaUMr6hKXaV3lPEAg-1; Tue, 02 Jul 2024 10:10:08 -0400
+X-MC-Unique: XoqE_xaUMr6hKXaV3lPEAg-1
+Received: by mail-lj1-f199.google.com with SMTP id
+ 38308e7fff4ca-2ec55065e52so38904251fa.2
+ for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 07:10:08 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719929403; x=1720534203;
+ d=1e100.net; s=20230601; t=1719929407; x=1720534207;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=/8Z7JyQo+HEEofucdvOkehCzjauROI/8uJ9hGYzaVe8=;
- b=Gp9IvlYu7ueQi6JVLRt/St01d0ZAb1CEVQeuxXn6+WSNan38X85NVXndauYc0hcLIN
- kYMUmN+eO9gZQU+m2ft/dPJmJkoh7lcy+i8/t48M7Y37mtjgeWOO8RHWoFxXSxwYSG4H
- EYcER6+zSmP7pHr39hP2kZH+P1H43nI1BoBGgK9IB9S4vJ4QIgxEsDdxDB7GyCmZSWeT
- Y7rpW6MlYVVyugVaLFI6nWhljWPJ/p46nBlC/523i7F2QsCsv7URMNl5CyXkISfgKIRz
- PLXqI22mw0tX9x3cRfw3VH7IqW+s8VM9CbwTte7BvYjOPCeA6qXij2+xs3RrhKyY++pS
- 5ZNQ==
-X-Gm-Message-State: AOJu0Ywds0Y168hILQgPq6u8DAV6lDqesls4VDUvoJ5AmoEq4BND0y9o
- 9/HYrAIY4EooN/Lr/EWlzrXex2qhvyec8Kk5wdX5Keb2UYAhLTz5/j53Fk3CVrebBmMQh5quzE4
- uMiaObnYUlFJEYHr0EtbMXpq0x+hJpsxGfaX3OHbBYNjD/dCb7dd9lOsu4fSGH2BvsXcVERodJY
- 8EeGWPLBHS8uNMtccIv7rbtDZFp0vwaA==
-X-Received: by 2002:a05:651c:198b:b0:2ec:5843:2fbd with SMTP id
- 38308e7fff4ca-2ee5e6cd69cmr64760301fa.41.1719929403307; 
- Tue, 02 Jul 2024 07:10:03 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG2vVM+J0u/21ILTnwbOyL1wB1+k03EWEAQcooVg3hcn1q7fxh17QTgSg6QJYKMZp9avWtzvw==
-X-Received: by 2002:a05:651c:198b:b0:2ec:5843:2fbd with SMTP id
- 38308e7fff4ca-2ee5e6cd69cmr64759971fa.41.1719929402706; 
- Tue, 02 Jul 2024 07:10:02 -0700 (PDT)
+ bh=SUxXXLDnAjmmN0Yi+4nhd+mhBCkrJEwNWiEK8gau7L4=;
+ b=L18Ab5u7xZMNHC2PIDM7BJGhz7VOeb0ENPGeYc18Q2nftmGiHuasUDkfeQmDAfmQuc
+ 5skAEuucpsVofR0nS1g/zbz1OlKTV/5zWUurJ06q+E1hUzr1zqaDD6RCi40T/fdv+eKn
+ ZO+wKf118VZVEsir4AMWCh0hBT/ft1t2Ru7j1rkksREv/wBzutRwFIrp1mZpXUZ5tIxM
+ 6vQsgMUqmzSG/5jVd2KInAu6/PFr5KC5m6j6FSHpJL5TR6uoa3V2fuYFBrTu1jR40ww1
+ 9NMuLpjFvPxG21RlgY/h5QOqtqL4uvU8cBEDkeuE2fTw6eT6jgjhGZDH2RovHMOihtAQ
+ Fwqw==
+X-Gm-Message-State: AOJu0YyUajnf9vIZfijoxaJRMBL2WcCcfX5gDWsbjyReHXw90aJMMXza
+ K5qXEdQPcFncesMibW+YnS9ofZ92awzJIo+Ei5TrRh5KeZbN1ShGkQISJkfnxSAkzC7uIEjowf9
+ bTp5akCkW7lUkPQsYOtCrpqghhAr2ShMc8DP7fRWAxi5FiWeaLaY4W9qjQvJGTRXBcgjt9BoQOX
+ f0O8+Jruy9VbT/nFT5tf+vwHLYWG/EuQ==
+X-Received: by 2002:a05:6512:33cd:b0:52c:e1e1:ae91 with SMTP id
+ 2adb3069b0e04-52e8264be16mr6461259e87.11.1719929407029; 
+ Tue, 02 Jul 2024 07:10:07 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF5HGFD8Gtl1xhibEEU4DuyU74dPhGRwW3+0HCQ5rRmx1zTOaVGlux2qXBFPeZaNzPYhEArKQ==
+X-Received: by 2002:a05:6512:33cd:b0:52c:e1e1:ae91 with SMTP id
+ 2adb3069b0e04-52e8264be16mr6461215e87.11.1719929405946; 
+ Tue, 02 Jul 2024 07:10:05 -0700 (PDT)
 Received: from redhat.com ([2a02:14f:1f5:eadd:8c31:db01:9d01:7604])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-36787db4d12sm1976984f8f.110.2024.07.02.07.10.01
+ ffacd0b85a97d-3675a0fba0bsm13305331f8f.69.2024.07.02.07.10.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 02 Jul 2024 07:10:02 -0700 (PDT)
-Date: Tue, 2 Jul 2024 10:10:00 -0400
+ Tue, 02 Jul 2024 07:10:05 -0700 (PDT)
+Date: Tue, 2 Jul 2024 10:10:02 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Subject: [PULL 59/91] hw/virtio: Fix the de-initialization of vhost-user
- devices
-Message-ID: <b3e63e65010973d0582bd69cb90fc07d3834e811.1719929191.git.mst@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Nicolin Chen <nicolinc@nvidia.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eric Auger <eric.auger@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Ani Sinha <anisinha@redhat.com>,
+ Shannon Zhao <shannon.zhaosl@gmail.com>, qemu-arm@nongnu.org
+Subject: [PULL 60/91] hw/arm/virt-acpi-build: Drop local iort_node_offset
+Message-ID: <f5b7c97cbf3562a2d52337c6ccba8a73e9dc0c11.1719929191.git.mst@redhat.com>
 References: <cover.1719929191.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -76,7 +79,7 @@ Content-Disposition: inline
 In-Reply-To: <cover.1719929191.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -100,93 +103,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+From: Nicolin Chen <nicolinc@nvidia.com>
 
-The unrealize functions of the various vhost-user devices are
-calling the corresponding vhost_*_set_status() functions with a
-status of 0 to shut down the device correctly.
+Both the other two callers of build_iort_id_mapping() just directly pass
+in the IORT_NODE_OFFSET macro. Keeping a "const uint32_t" local variable
+storing the same value doesn't have any gain.
 
-Now these vhost_*_set_status() functions all follow this scheme:
+Simplify this by replacing the only place using this local variable with
+the macro directly.
 
-    bool should_start = virtio_device_should_start(vdev, status);
-
-    if (vhost_dev_is_started(&vvc->vhost_dev) == should_start) {
-        return;
-    }
-
-    if (should_start) {
-        /* ... do the initialization stuff ... */
-    } else {
-        /* ... do the cleanup stuff ... */
-    }
-
-The problem here is virtio_device_should_start(vdev, 0) currently
-always returns "true" since it internally only looks at vdev->started
-instead of looking at the "status" parameter. Thus once the device
-got started once, virtio_device_should_start() always returns true
-and thus the vhost_*_set_status() functions return early, without
-ever doing any clean-up when being called with status == 0. This
-causes e.g. problems when trying to hot-plug and hot-unplug a vhost
-user devices multiple times since the de-initialization step is
-completely skipped during the unplug operation.
-
-This bug has been introduced in commit 9f6bcfd99f ("hw/virtio: move
-vm_running check to virtio_device_started") which replaced
-
- should_start = status & VIRTIO_CONFIG_S_DRIVER_OK;
-
-with
-
- should_start = virtio_device_started(vdev, status);
-
-which later got replaced by virtio_device_should_start(). This blocked
-the possibility to set should_start to false in case the status flag
-VIRTIO_CONFIG_S_DRIVER_OK was not set.
-
-Fix it by adjusting the virtio_device_should_start() function to
-only consider the status flag instead of vdev->started. Since this
-function is only used in the various vhost_*_set_status() functions
-for exactly the same purpose, it should be fine to fix it in this
-central place there without any risk to change the behavior of other
-code.
-
-Fixes: 9f6bcfd99f ("hw/virtio: move vm_running check to virtio_device_started")
-Buglink: https://issues.redhat.com/browse/RHEL-40708
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20240618121958.88673-1-thuth@redhat.com>
-Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
+Message-Id: <20240619001708.926511-1-nicolinc@nvidia.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- include/hw/virtio/virtio.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ hw/arm/virt-acpi-build.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/include/hw/virtio/virtio.h b/include/hw/virtio/virtio.h
-index 1451926a13..7512afbc84 100644
---- a/include/hw/virtio/virtio.h
-+++ b/include/hw/virtio/virtio.h
-@@ -472,9 +472,9 @@ static inline bool virtio_device_started(VirtIODevice *vdev, uint8_t status)
-  * @vdev - the VirtIO device
-  * @status - the devices status bits
-  *
-- * This is similar to virtio_device_started() but also encapsulates a
-- * check on the VM status which would prevent a device starting
-- * anyway.
-+ * This is similar to virtio_device_started() but ignores vdev->started
-+ * and also encapsulates a check on the VM status which would prevent a
-+ * device from starting anyway.
-  */
- static inline bool virtio_device_should_start(VirtIODevice *vdev, uint8_t status)
+diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
+index b2366f24f9..102e2da934 100644
+--- a/hw/arm/virt-acpi-build.c
++++ b/hw/arm/virt-acpi-build.c
+@@ -269,7 +269,6 @@ static void
+ build_iort(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
  {
-@@ -482,7 +482,7 @@ static inline bool virtio_device_should_start(VirtIODevice *vdev, uint8_t status
-         return false;
-     }
- 
--    return virtio_device_started(vdev, status);
-+    return status & VIRTIO_CONFIG_S_DRIVER_OK;
- }
- 
- static inline void virtio_set_started(VirtIODevice *vdev, bool started)
+     int i, nb_nodes, rc_mapping_count;
+-    const uint32_t iort_node_offset = IORT_NODE_OFFSET;
+     size_t node_size, smmu_offset = 0;
+     AcpiIortIdMapping *idmap;
+     uint32_t id = 0;
+@@ -415,7 +414,7 @@ build_iort(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
+             range = &g_array_index(its_idmaps, AcpiIortIdMapping, i);
+             /* output IORT node is the ITS group node (the first node) */
+             build_iort_id_mapping(table_data, range->input_base,
+-                                  range->id_count, iort_node_offset);
++                                  range->id_count, IORT_NODE_OFFSET);
+         }
+     } else {
+         /* output IORT node is the ITS group node (the first node) */
 -- 
 MST
 
