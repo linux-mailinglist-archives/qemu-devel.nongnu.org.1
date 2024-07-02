@@ -2,101 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19910924337
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 18:07:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43CED924357
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 18:11:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOg2S-0005et-DX; Tue, 02 Jul 2024 12:07:28 -0400
+	id 1sOg5e-0006gf-Rn; Tue, 02 Jul 2024 12:10:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1sOg2P-0005eQ-QA
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 12:07:25 -0400
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sOg5c-0006fV-1q
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 12:10:44 -0400
+Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1sOg2O-00079D-4E
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 12:07:25 -0400
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-1f9b364faddso27002455ad.3
- for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 09:07:23 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sOg5Q-0008Kb-4l
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 12:10:42 -0400
+Received: by mail-ed1-x532.google.com with SMTP id
+ 4fb4d7f45d1cf-57ccd1111b0so1207951a12.3
+ for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 09:10:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719936442; x=1720541242; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=zYsFmV7hGOpxcKgFklKsON8FSqJ4rZSt39jfDg5UOCo=;
- b=LZ62YYUttWoD2j41Qwc9q9Vrz3YBXGZ5fRdPXVR3psh5+zUwSUmnOGzTBKr5n1VXrr
- 1XN/lJw7YpexBPPX3j3/NF80KeAuBWQpAVEMUbJBKqz90EC7TOM/dK0I4AdLIV1/wMl1
- EotDy275rvWxX77OtQSzOc4nCL5vlzSCrU1zystYSp5x8/GFXt38SkmUPi5TEvjqKFLS
- hiNaM9XNUxat6kaT/1Uwfi+Sl8IYWlUXL6hCkO8ps0Fw14Ns1flYCRK7iqifD24C+1M8
- vmVfnthtqlNVUBTPGa4yFOwSJVHU3D+K8Kc5Tk8eXI+uTY7Etlf5GWYsZGovnxB0lc/G
- Uj7Q==
+ d=linaro.org; s=google; t=1719936628; x=1720541428; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=F+i7ACyt1A0jbEbq7uoJN/YZ4dYpl40dS0lxWrdwFWE=;
+ b=ouQuq5kWS+cU9DJkxi+MZVaBQ4Wkll3LkIZu57jdfUkQJlYRPOatNiFtU4+sOoma4Q
+ C3Goj+hatIILKYeVUWif3ZJUv4kAiH4k1MNQ3UHKJ25qlnT01yW44lyWG0VGIdZf2Z+U
+ vLM4yoGIb3ndiwMOY8LAnSxZrRTVGZSNIIe4x7nBnXY2X5GzaFCO3tebRjZkjOZiVwZQ
+ u4GbU0nXNSVwcZUoptqAhx6VdKLzymTIVOad197dfpAGp199hNjiC0eDhi5CpRPH0c8f
+ fvILuXHW92dxSqaAUX9zYinE3uGzXEXcjBkTPiL/Zk1tsF9cfazHM5n+4QX06y/AYCWt
+ 5ubw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719936442; x=1720541242;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=zYsFmV7hGOpxcKgFklKsON8FSqJ4rZSt39jfDg5UOCo=;
- b=PsSgwTqu5yp0Jq5pr+DPQvFVn49x7r2ZsswIkaZ8ab4DLnMXdTvtUxevRR/78ernA4
- OCM2lMacfHUxbvhdcpKOLrJN7vd/nTmYRQhw2HIv9Z3Nj98X1fNK444lsXB3Au5eHbsF
- QP8PIx6Bp0CbzUPbdsvn5qfk9X4J2f9P3oE7RY55E//gtwOFVyW86d6qxoM37kNiBkgs
- E6e7sM9mZ5c3YV+ZlzDL7GTDY4nIE/nIg9xFOoZlwwSdGUf378Qx+EoY0g7kH1CKgchV
- WtCnk0N+ZBQ+AH2/jDOBq/BIl8ShZg6aepeQ1str7iR2YgzXjVJNuIXBCyFwb4lwPc8H
- Oe8g==
-X-Gm-Message-State: AOJu0YzrhOV38I8p3lMt3aB5AdLouiDVmAB9q8JnnxwMJTwi9rLpGMtF
- 3ug7VSvnAGXn78Bon5ARlTf9cgPnSjDuXW5tZszs9fUajgcrJaHLXtsZynUGK0s=
-X-Google-Smtp-Source: AGHT+IFu0/nToU+Q48glIk8h8hI41RTBdCHCvasZ2F8YPuHxuNvyClDTMMA/hlZODiuAQD61Bb7fsA==
-X-Received: by 2002:a17:902:eccf:b0:1fa:3537:58a5 with SMTP id
- d9443c01a7336-1fadbc73dfemr59035405ad.18.1719936442020; 
- Tue, 02 Jul 2024 09:07:22 -0700 (PDT)
-Received: from ?IPV6:2604:3d08:9384:1d00::2193? ([2604:3d08:9384:1d00::2193])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1fac1568efdsm86127315ad.193.2024.07.02.09.07.20
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 02 Jul 2024 09:07:21 -0700 (PDT)
-Message-ID: <5b251e76-a22f-4bb7-98fe-b5becb56a1b4@linaro.org>
-Date: Tue, 2 Jul 2024 09:07:19 -0700
+ d=1e100.net; s=20230601; t=1719936628; x=1720541428;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=F+i7ACyt1A0jbEbq7uoJN/YZ4dYpl40dS0lxWrdwFWE=;
+ b=YFnz9bacgbXutkCmNKNt5fEbbAsvZESW2rJY1dI8/0NQlIpkf3nWjvkKglDTvbeLDf
+ PzWMFaVt4Jq7MoW4O8+P9dmPdmlABWrc3ag/bHQRraiN827cio6sE+efkyLrCc3TlWRc
+ EtRnWbfiAFbQ9tXeN5tWcmrtl2klhd4a+YayoBw6Wsm8jvw5V98mMscd83F6zbna+crL
+ leMzjtueccA7zkHVubDzaOGfUJaU+f+mL15SL4hPIIs7u5yYPILqZQGQj0zrJ5+epq8s
+ XHnChA8OuC7kZs8/7oRpJQTbLMcNBh28z/7EtuTMwrWRBbgAxCU+sWQjyfH9KoHNOo4P
+ JOvw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCV7M7PAloQsKxwttlWjTxECEGvK+KpOFTfzErfS0ljx6W56XXQ3p7i/8KgOXimmL7F6Idi4y1DXLWFmr6YEMP9+/1LaaUo=
+X-Gm-Message-State: AOJu0YzqRfdvCsjFaulEBd7zEyZYDSZajctfYU1KaF9hKX9Uclm6L6F5
+ jO5Oh9AL51zMpBrOomWPXg0UMlVqTMBtF8MdnnJyMG5235aLAz9hK+IQF6HbFdYIZPrv8xwDY5L
+ QIZCR8nIPmjXf33og9uLjXOE7XPSoQzUh0/6/KQ==
+X-Google-Smtp-Source: AGHT+IEnuT1Rv5cWYuGuBaO46pzlv+m+rP5BeTSbSwFLaatEozTSQSd0KgaV6os3ECnMB4yoFOT35gJZs/MA93a5UOs=
+X-Received: by 2002:a05:6402:2549:b0:57d:42f6:63fe with SMTP id
+ 4fb4d7f45d1cf-5879f69b504mr8401197a12.22.1719936628594; Tue, 02 Jul 2024
+ 09:10:28 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v3 2/5] rust: add bindgen step as a meson dependency
-Content-Language: en-US
-To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Zhao Liu <zhao1.liu@intel.com>
-Cc: qemu-devel@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
- Mads Ynddal <mads@ynddal.dk>, Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?Q?Alex_Benn_=C3=A9_e?= <alex.bennee@linaro.org>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?Q?Marc-Andr_=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud_=C3=A9?= <philmd@linaro.org>,
- Gustavo Romero <gustavo.romero@linaro.org>, rowan.hart@intel.com,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, John Snow <jsnow@redhat.com>,
- Cleber Rosa <crosa@redhat.com>
-References: <rust-pl011-rfc-v3.git.manos.pitsidianakis@linaro.org>
- <6bf311a35e6d3bfa8b3bfd10d8f896a9e655fa30.1718827153.git.manos.pitsidianakis@linaro.org>
- <ZnlGlOGORQkOsoO5@intel.com> <fl60u.ry7sk6d8fv39@linaro.org>
- <ZnrpgW+CopiJAGZF@intel.com> <fnew7.3urdmuxnhe3l@linaro.org>
- <27f52dce-b659-446d-8358-50b6001f7307@linaro.org>
- <dfa7bc8f-378f-4876-b630-fe1182dca937@linaro.org>
- <fu1lr.ewime9aej60m@linaro.org>
- <2626cef5-3ece-4b01-94e8-1d293bd4425b@linaro.org>
- <fzxke.kvm3u8zw4532@linaro.org>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <fzxke.kvm3u8zw4532@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x632.google.com
+References: <20240702154042.3018932-1-zheyuma97@gmail.com>
+ <3bdd7747-316d-4b58-a9c3-2320864e6cf8@linaro.org>
+In-Reply-To: <3bdd7747-316d-4b58-a9c3-2320864e6cf8@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 2 Jul 2024 17:10:17 +0100
+Message-ID: <CAFEAcA9iGeUc75tfPPOh2K2QMjVVjsE6s4owmrsO62+-9=Go2Q@mail.gmail.com>
+Subject: Re: [PATCH v2] hw/misc/bcm2835_thermal: Fix access size handling in
+ bcm2835_thermal_ops
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: Zheyu Ma <zheyuma97@gmail.com>, qemu-arm@nongnu.org, qemu-devel@nongnu.org,
+ Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::532;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x532.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,68 +91,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/2/24 05:25, Manos Pitsidianakis wrote:
-> On Mon, 01 Jul 2024 21:54, Pierrick Bouvier <pierrick.bouvier@linaro.org> wrote:
->> The ctor is not run, but, interesting point, there is the same problem
->> on Linux :)
->>
->> Can you please confirm with a clean build this work on your machine with
->> this v3, and report exact configure and run commands you use?
-> 
-> On a clean checkout, I did exactly the following:
-> 
-> ```
-> mkdir ./build && cd ./build
-> ../configure --enable-system --enable-debug \
->   --target-list=aarch64-softmmu --enable-with-rust
-> ninja qemu-system-aarch64
-> ```
-> 
+On Tue, 2 Jul 2024 at 16:50, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org=
+> wrote:
+> Personally I consider accepting access of
+>
+>    .valid.min_access_size > .impl.min_access_size
+>
+> as a bug in the memory core layer, whether being
+> unaligned or not.
 
-Debug flag was the difference.
-After looking with Manos, we identified an issue with release builds 
-(unused symbols gets dropped, including device ctor), that will be 
-solved in v4.
+Mmm. You could make an argument for
+  .valid: min_access_size =3D 4, unaligned =3D true
+  .impl.min_access_size =3D 1, unaligned =3D false
 
-> which selected the default cc/gcc on debian,
-> gcc (Debian 12.2.0-14) 12.2.0
-> 
-> and ran QEMU with like this:
-> 
-> ```
-> ./qemu-system-aarch64 -M virt \
->    -machine virtualization=true -machine virt,gic-version=3 \
->    -cpu max,pauth-impdef=on -smp 2 -m 4096 \
->    [.. drive and img arguments ..] \
->    -nographic
-> ```
-> 
-> 
->>
->> Thanks,
->> Pierrick
->>
->> On 6/29/24 01:06, Manos Pitsidianakis wrote:
->>> On Fri, 28 Jun 2024 22:12, Pierrick Bouvier <pierrick.bouvier@linaro.org> wrote:
->>>> I've been able to build rust device on windows, with a few tweaks
->>>> needed.
->>>>
->>>> - specificy the target for libclang (used by bindgen), which targets
->>>> MSVC by default (so different set of headers)
->>>> - additional headers (libclang searches its own header with a relative
->>>> path instead of absolute)
->>>> - additional windows libs that must be linked in final executable
->>>>
->>>> However, even tough I can build the executable, I get this error:
->>>> $ ./build/qemu-system-aarch64 -M virt
->>>> C:\w\qemu\build\qemu-system-aarch64.exe: unknown type 'x-pl011-rust'
->>>>
->>>> Any idea of what could be missing here?
->>>
->>> Sounds like either the rust lib is not linked to the final binary (which
->>> you can confirm if you look at the included symbols and don't see
->>> anything with rust origin) or the constructor decorated with
->>> #[cfg_attr(target_os = "windows", link_section = ".CRT$XCU"] is not
->>> linked properly (you can add a puts() and see if it's invoked or add a
->>> breakpoint in gdb)
+meaning "accesses must be 32 bits, and if the guest
+makes an unaligned 32 bit access then you can
+synthesize it with 4 byte reads/writes", I guess.
+But whether we (a) get that right (b) use it anywhere
+(c) use it anywhere intentionally is not something
+I'd be very confident in asserting :-)
+
+I definitely think that our "synthesize accesses
+where valid and impl mismatch" code could use a
+going-over, so we either get it right or assert if
+the MemoryRegionOps ask for something we don't handle.
+Maybe someday...
+
+thanks
+-- PMM
 
