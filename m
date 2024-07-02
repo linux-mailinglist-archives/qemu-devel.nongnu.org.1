@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87B5391F0B5
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 10:02:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 319FF91F0B8
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 10:03:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOYS3-0006Qn-2l; Tue, 02 Jul 2024 04:01:23 -0400
+	id 1sOYS2-0006Q5-Fl; Tue, 02 Jul 2024 04:01:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sOYS1-0006Pn-5e
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 04:01:21 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sOYS0-0006Pc-8C
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 04:01:20 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sOYRy-0006ej-NY
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 04:01:20 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sOYRy-0006f7-LC
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 04:01:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719907275;
+ s=mimecast20190719; t=1719907277;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Zi6zYQMto5lubYOQ/sYeE8+FoDtdbBQU0ZE882Zr2eA=;
- b=JBwkHq8vvkTom5dxaCE4ZGysSKBIn+Bay0gsvWoWCJhNQ0vV0CxlX9DHkRVfdNau6e9RP7
- /a17nqXmVIDnVwTcr9WNdNGUlDCPV7QkKjsrDxp9M8JH4/E93Q3exq7Iry+9Bd4JWx6cpx
- YzqOMfdw5A9M5X4wbAJdco4thFpE1Oc=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=z5tqltcXsgUG44t78KWWfCoFY96TbP+/6a15niwYQlM=;
+ b=Nb5y0g5g+y4B8yrZqXcUKsdFDA9t79caOG2Ov73XzPtjT6XzZVMIV9569EFv83/LTI9gCv
+ P2l8M2gyjc+YrHTNqt6Qh25z1R9UWrg2FU3BTyNYn84sdvsDcYGTG6inXj6DNLjGlUTCbI
+ uQ6tNl62ImphL6tdApV9LTpewn72jgQ=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-364-NX0n8toxO9SkFCxIEvuLwA-1; Tue,
- 02 Jul 2024 04:01:13 -0400
-X-MC-Unique: NX0n8toxO9SkFCxIEvuLwA-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-646-3LJXy6tiNvCeZrk2nI3LqQ-1; Tue,
+ 02 Jul 2024 04:01:11 -0400
+X-MC-Unique: 3LJXy6tiNvCeZrk2nI3LqQ-1
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id AC4F71955D80; Tue,  2 Jul 2024 08:01:12 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 2FAF91955E75; Tue,  2 Jul 2024 08:01:10 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.192.90])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 1B88319560AA; Tue,  2 Jul 2024 08:00:59 +0000 (UTC)
+ id 12B2C1955D82; Tue,  2 Jul 2024 08:01:07 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: Jamin Lin <jamin_lin@aspeedtech.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 5/6] aspeed/sdmc: Remove extra R_MAIN_STATUS case
-Date: Tue,  2 Jul 2024 10:00:41 +0200
-Message-ID: <20240702080042.464220-6-clg@redhat.com>
+Subject: [PULL 6/6] hw/net:ftgmac100: fix coding style
+Date: Tue,  2 Jul 2024 10:00:42 +0200
+Message-ID: <20240702080042.464220-7-clg@redhat.com>
 In-Reply-To: <20240702080042.464220-1-clg@redhat.com>
 References: <20240702080042.464220-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -82,31 +82,54 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jamin Lin <jamin_lin@aspeedtech.com>
 
-Coverity reports that the newly added 'case R_MAIN_STATUS' is DEADCODE
-because it can not be reached. This is because R_MAIN_STATUS is handled
-before in the "Unprotected registers" switch statement. Remove it.
+Fix coding style issues from checkpatch.pl
 
-Fixes: Coverity CID 1547112
+Test command:
+./scripts/checkpatch.pl --no-tree -f hw/net/ftgmac100.c
+
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
-[ clg: Rewrote commit log ]
-Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/misc/aspeed_sdmc.c | 1 -
- 1 file changed, 1 deletion(-)
+ hw/net/ftgmac100.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/hw/misc/aspeed_sdmc.c b/hw/misc/aspeed_sdmc.c
-index 44da085e10cb..ebf139cb5c91 100644
---- a/hw/misc/aspeed_sdmc.c
-+++ b/hw/misc/aspeed_sdmc.c
-@@ -595,7 +595,6 @@ static void aspeed_2700_sdmc_write(AspeedSDMCState *s, uint32_t reg,
-     case R_INT_STATUS:
-     case R_INT_CLEAR:
-     case R_INT_MASK:
--    case R_MAIN_STATUS:
-     case R_ERR_STATUS:
-     case R_ECC_FAIL_STATUS:
-     case R_ECC_FAIL_ADDR:
+diff --git a/hw/net/ftgmac100.c b/hw/net/ftgmac100.c
+index 74b6c3d9a75b..25e4c0cd5bfe 100644
+--- a/hw/net/ftgmac100.c
++++ b/hw/net/ftgmac100.c
+@@ -238,7 +238,8 @@ typedef struct {
+  */
+ #define FTGMAC100_MAX_FRAME_SIZE    9220
+ 
+-/* Limits depending on the type of the frame
++/*
++ * Limits depending on the type of the frame
+  *
+  *   9216 for Jumbo frames (+ 4 for VLAN)
+  *   1518 for other frames (+ 4 for VLAN)
+@@ -533,8 +534,10 @@ static void ftgmac100_do_tx(FTGMAC100State *s, uint32_t tx_ring,
+             break;
+         }
+ 
+-        /* record transmit flags as they are valid only on the first
+-         * segment */
++        /*
++         * record transmit flags as they are valid only on the first
++         * segment
++         */
+         if (bd.des0 & FTGMAC100_TXDES0_FTS) {
+             flags = bd.des1;
+         }
+@@ -639,7 +642,8 @@ static bool ftgmac100_can_receive(NetClientState *nc)
+  */
+ static uint32_t ftgmac100_rxpoll(FTGMAC100State *s)
+ {
+-    /* Polling times :
++    /*
++     * Polling times :
+      *
+      * Speed      TIME_SEL=0    TIME_SEL=1
+      *
 -- 
 2.45.2
 
