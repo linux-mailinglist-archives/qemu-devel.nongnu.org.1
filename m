@@ -2,82 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74654924987
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 22:45:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CC74924959
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 22:33:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOjvK-0006CG-0z; Tue, 02 Jul 2024 16:16:31 -0400
+	id 1sOjw7-0006q1-EY; Tue, 02 Jul 2024 16:17:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOjus-0005j3-Cx
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 16:15:59 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOjuu-0005jc-2p
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 16:16:00 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOjuq-00086o-DC
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 16:15:53 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOjur-00087K-Uy
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 16:15:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719951351;
+ s=mimecast20190719; t=1719951353;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Q0Pfb548kulwNGCVafgBGSBiO4uWmp/hiUtG94za6C8=;
- b=finLhCXoeqQfSf0Ztpm4oVsGsmHM89aE/BcLGo+hJHJuo7toUhijtlTurbU92GUOf/Y6nO
- Y6/E6oXecXpmgrukOeknv4wy8sQ5SxkTSdOfSPIY4XJbxoQ4WlUTRNiLsT5Aux8tkB2vcl
- yQ1cXLIT01dtRmDyiEwUhM40uf1w1yg=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=QKgBtghpdntZCNxsubdg5dbN8fdbQsXq4OpajtHNP9c=;
+ b=EhKKmxQ7CgBGSmMwa8WLxm9FuwYI2VxHqaTofWoQOPxssCOSx3k6MY3tvbgZ4FwHDIS2p3
+ bcXsSnkNasaOS1UtGipXxaN7gIaRjhowGP6Jle2c0ZdGoPJNMBEQ8PlT8aHvfvYj6b9V42
+ jYVCdH77ucV++JGzY6ayRoxC4hqP00I=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-515-QwS1oQpsOWCXMYTGtiByDA-1; Tue, 02 Jul 2024 16:15:48 -0400
-X-MC-Unique: QwS1oQpsOWCXMYTGtiByDA-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-3678f832c75so397677f8f.3
- for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 13:15:47 -0700 (PDT)
+ us-mta-470-w0HZz0bhOBuvwaL5pa_sYA-1; Tue, 02 Jul 2024 16:15:51 -0400
+X-MC-Unique: w0HZz0bhOBuvwaL5pa_sYA-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-42566c4aa0fso37108825e9.1
+ for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 13:15:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719951346; x=1720556146;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Q0Pfb548kulwNGCVafgBGSBiO4uWmp/hiUtG94za6C8=;
- b=FXsYuEk4cuqV7jzWenpkAVRCUpaHhLFsKcKd1aNAjPQ51Xe4HoecmQ6F3JuQ93XDU+
- Ka5H1w2tkTtTnM6UcCGv9teUkHEcsboXevnHV9QW3XaMgQM0Jc/HuRb/rpScJqJcD2Yc
- swXJ7e7ONPrud5uKd52p+UGtBTGcyTa3ERqu4Ux6fYnV0qLh5TxnUPGZi7yX0Zgeb9kD
- FE0AQVVqQ63ulOKxeq1kTHR+4wBwenGGTt7KmoAcmriytkwFDT2Ps2podwmgZr6mHjL+
- iBkpqr1w8/tECOduMjvKZsIIA1oz6WgJADYzgQ1OaWm2gQ0KBVwnjB2IXnDeRsOOmzvs
- ++Zg==
-X-Gm-Message-State: AOJu0YwFR1QyOLXmAX1Dd0laQi5K4ut9j+EQblWV6T3K+5Gtc5PpTiq0
- /jDfuED1TfiW3o1tdrwHi5LXGVaKV52S/pELYklCmXwFCcgPIRr/jAktGlopmp+F58XVf468+Ml
- Cf10sr2TRtH1OpxwMWxPThcGFRTQ9tSwkhW2wZiBW3sj4PO5MQH36GT8drveRzBCK9JkCFDuXKK
- kFZsrqNnIKa74LUoRfB6BBrBfyomcb+A==
-X-Received: by 2002:adf:e948:0:b0:367:900c:c098 with SMTP id
- ffacd0b85a97d-367900cc129mr620624f8f.39.1719951346706; 
- Tue, 02 Jul 2024 13:15:46 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEkCM7X2B0H0bOHPxIyrMAd+8YGIR7jCyOK8joKTFfyv8e0jQA0jJjhtQFXgsSwe3XZMLzSDg==
-X-Received: by 2002:adf:e948:0:b0:367:900c:c098 with SMTP id
- ffacd0b85a97d-367900cc129mr620611f8f.39.1719951346145; 
- Tue, 02 Jul 2024 13:15:46 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1719951350; x=1720556150;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=QKgBtghpdntZCNxsubdg5dbN8fdbQsXq4OpajtHNP9c=;
+ b=QUCT6k78cEpULt0+ibQ740VCpzPXV7qX2zJbCcgGc9JW3kIVydTsxiO3V+0z5AXLvD
+ RVdnjMcTaIWyxY3MSredOTQAETRF/fn8s4aejUjy/1hx6MU0m6VeLMhjR/oa2KeUF6T1
+ FrohiYwoO/tnahpvuHIDW8m6EAKh0VeV7c+wplxARUV60uPHEVOVOgKOHOCzV9P39aCJ
+ nix+F2hmVhYAZZjPJ6Xn05G5HIUkAK5/wgxA3jE8ibD+PuyTdXGWbYOYuj4jLDUc149v
+ TA0+Gb9SDCKAJ5kTVIW7DkXr6zgqQDTI1oXnTopBvP13N5nlZ38xva7W34F+WkfRQGvc
+ uzyA==
+X-Gm-Message-State: AOJu0Yy7KFCpu9eTzneOSfwUoCj22diwNua0EE1gNuUQj2YqDR6kQhao
+ PiUWp5mA9OuM+3vLGDpB4zlxz/LZkRxIbDKkwSExyjBNay+91YtrvO8MToKWJty8wf8vopcIVwm
+ DhL5v1n6/HJ8A62q6u9uwf/WAkJIHtTo57nPxLCqrmC5HyhC4JwzvDD8CdV3gprWO6kxxCsNAT6
+ kHEPVXidMQ1UCt/8c84w8EnelODq/jRg==
+X-Received: by 2002:a7b:c452:0:b0:423:6957:89bd with SMTP id
+ 5b1f17b1804b1-4257a02f401mr64134845e9.12.1719951350236; 
+ Tue, 02 Jul 2024 13:15:50 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGBb5FxWYCHwylsBrsnglts8slYFMiP/OWWBAEeSFF0+AXdNfWPEykds0gJTJutdpGj53OSSQ==
+X-Received: by 2002:a7b:c452:0:b0:423:6957:89bd with SMTP id
+ 5b1f17b1804b1-4257a02f401mr64134705e9.12.1719951349729; 
+ Tue, 02 Jul 2024 13:15:49 -0700 (PDT)
 Received: from redhat.com ([2a02:14f:1f5:eadd:8c31:db01:9d01:7604])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3675a0e13d4sm14397297f8f.56.2024.07.02.13.15.44
+ ffacd0b85a97d-3675a0fc623sm14156551f8f.87.2024.07.02.13.15.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 02 Jul 2024 13:15:45 -0700 (PDT)
-Date: Tue, 2 Jul 2024 16:15:43 -0400
+ Tue, 02 Jul 2024 13:15:49 -0700 (PDT)
+Date: Tue, 2 Jul 2024 16:15:46 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Christian =?utf-8?Q?P=C3=B6tzsch?= <christian.poetzsch@kernkonzept.com>
-Subject: [PULL v2 09/88] Fix vhost user assertion when sending more than one fd
-Message-ID: <5093bee0fa8a6c9712c96653da3a79bc37a4e45d.1719951168.git.mst@redhat.com>
+ Halil Pasic <pasic@linux.ibm.com>, Marc Hartmayer <mhartmay@linux.ibm.com>
+Subject: [PULL v2 10/88] vhost-vsock: add VIRTIO_F_RING_PACKED to feature_bits
+Message-ID: <a0eebd790ca4f90fc1e3662cb38542ccc21963bf.1719951168.git.mst@redhat.com>
 References: <cover.1719951168.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1719951168.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -101,36 +99,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Christian Pötzsch <christian.poetzsch@kernkonzept.com>
+From: Halil Pasic <pasic@linux.ibm.com>
 
-If the client sends more than one region this assert triggers. The
-reason is that two fd's are 8 bytes and VHOST_MEMORY_BASELINE_NREGIONS
-is exactly 8.
+Not having VIRTIO_F_RING_PACKED in feature_bits[] is a problem when the
+vhost-vsock device does not offer the feature bit VIRTIO_F_RING_PACKED
+but the in QEMU device is configured to try to use the packed layout
+(the virtio property "packed" is on).
 
-The assert is wrong because it should not test for the size of the fd
-array, but for the numbers of regions.
+As of today, the  Linux kernel vhost-vsock device does not support the
+packed queue layout (as vhost does not support packed), and does not
+offer VIRTIO_F_RING_PACKED. Thus when for example a vhost-vsock-ccw is
+used with packed=on, VIRTIO_F_RING_PACKED ends up being negotiated,
+despite the fact that the device does not actually support it, and
+one gets to keep the pieces.
 
-Signed-off-by: Christian Pötzsch <christian.poetzsch@kernkonzept.com>
-Message-Id: <20240426083313.3081272-1-christian.poetzsch@kernkonzept.com>
+Fixes: 74b3e46630 ("virtio: add property to enable packed virtqueue")
+Reported-by: Marc Hartmayer <mhartmay@linux.ibm.com>
+Signed-off-by: Halil Pasic <pasic@linux.ibm.com>
+Message-Id: <20240429113334.2454197-1-pasic@linux.ibm.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- subprojects/libvhost-user/libvhost-user.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/virtio/vhost-vsock-common.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/subprojects/libvhost-user/libvhost-user.c b/subprojects/libvhost-user/libvhost-user.c
-index a879149fef..8adb277d54 100644
---- a/subprojects/libvhost-user/libvhost-user.c
-+++ b/subprojects/libvhost-user/libvhost-user.c
-@@ -568,7 +568,7 @@ vu_message_read_default(VuDev *dev, int conn_fd, VhostUserMsg *vmsg)
-         if (cmsg->cmsg_level == SOL_SOCKET && cmsg->cmsg_type == SCM_RIGHTS) {
-             fd_size = cmsg->cmsg_len - CMSG_LEN(0);
-             vmsg->fd_num = fd_size / sizeof(int);
--            assert(fd_size < VHOST_MEMORY_BASELINE_NREGIONS);
-+            assert(vmsg->fd_num <= VHOST_MEMORY_BASELINE_NREGIONS);
-             memcpy(vmsg->fds, CMSG_DATA(cmsg), fd_size);
-             break;
-         }
+diff --git a/hw/virtio/vhost-vsock-common.c b/hw/virtio/vhost-vsock-common.c
+index 12ea87d7a7..fd88df2560 100644
+--- a/hw/virtio/vhost-vsock-common.c
++++ b/hw/virtio/vhost-vsock-common.c
+@@ -22,6 +22,7 @@
+ const int feature_bits[] = {
+     VIRTIO_VSOCK_F_SEQPACKET,
+     VIRTIO_F_RING_RESET,
++    VIRTIO_F_RING_PACKED,
+     VHOST_INVALID_FEATURE_BIT
+ };
+ 
 -- 
 MST
 
