@@ -2,87 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87A4891EDF1
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 06:47:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AFA991EE05
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 07:02:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOVP2-0003kt-PZ; Tue, 02 Jul 2024 00:46:04 -0400
+	id 1sOVdt-00077w-IP; Tue, 02 Jul 2024 01:01:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOVOs-0003ie-7v
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 00:46:00 -0400
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOVdo-00077h-HG
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 01:01:20 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOVOo-0001RT-84
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 00:45:52 -0400
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-3672aec418cso1961452f8f.0
- for <qemu-devel@nongnu.org>; Mon, 01 Jul 2024 21:45:49 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOVdm-000582-EH
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 01:01:20 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-42565697036so28050885e9.1
+ for <qemu-devel@nongnu.org>; Mon, 01 Jul 2024 22:01:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719895548; x=1720500348; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=5hRM5RmiLRODUjzvf+gKjs2NmX8zuEYbR+EOHCXYABk=;
- b=cMeOzdhR2fYqwU8++O43+wa2yfNunWmjAiS970oCzkWo/SjqrsdjdI6gDCvlp89JeA
- LQ0E8z58Op6rk22ezaJQYHyDn6UCkd64Wy+neZV5cPypZMqLML4zOuSDYtIxZdcWd+05
- ivr7yGLPe+2/XzLoqCcfoYXrGxDEQcHpxIRPsQp2H/QUIBGdmBbRjfeEzkKcmrrk3e3z
- tqcKXQkIuv/NWJKSL/Rb58ZqQ12dlttyPC/KdoQ44BSUNS2zK7IuFiKACODI6R6QT/yv
- LQXXVN0FNIPf14lc76D0dUAgGWYHME8cMLiSKisQBzDiWHtEDU6OczSNdD4Kxemn5kBm
- usnw==
+ d=linaro.org; s=google; t=1719896475; x=1720501275; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=wc0MaQgBES3M1CkLvxNOArN1CUAzFOoiIWOq/I+5GYY=;
+ b=b34+kKpIcHecW7t5ROqNaxQl62BbeTPXfNmaDrLnkthbkObfjm9ZDgy4bnnqPbdtsx
+ CjQbWYHbCnk6TLK04S4a0OGhx99WAFxrEeO6OHCokOVqUCDbGv0W5TDfgZbGJa80fvQR
+ nNdWckmPosOFtIXLRXlqn9r9FpKksQLng1zx+Hd9N0s0Q7dgQTTWIiCNmaWVJljKvCKz
+ u14dx4TkmU0shPyZ3Jz9ZpW2pEoJzXEjhZXCB5reM5Lw5LFB+H1jPn38quN9Zxx0+Itz
+ CHhp3RIGDU6BXjS1BEVT0ORfHpipTRUYnGikmMGXBdufIi/4Pn6X4iDvjo/qzt3vAEwN
+ 2KTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719895548; x=1720500348;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=5hRM5RmiLRODUjzvf+gKjs2NmX8zuEYbR+EOHCXYABk=;
- b=jRyEC5/15y6HeHLFZn1zvWFpbOhSSZ9mC75OhAziFLg74yFi9AfkN2Vx1EKHdMDIsn
- eoFf5VODvGHL6/IGBcNOM6XRxMpYnraT7JkeOYpxaj13Wo1bxA+iuZ4mQBfumiqYYXzb
- lkIedN7PHpS1Wi+fqp1wm3lrQ7YqMBU1mzyTI13vznPAxsOUELQuEZPqb5OmDycSV+km
- J42CFK3+g4n3SEJDvHEj/DsA/ivB5IckXM7P+eEYEFzR+bzHPcKnZg/xgXuNuul1BzKh
- NORfRv7iTRSmGUIpgPif5EsbVJp+8de1n/YpftxF31bdn55NG08GsXU9mZDQq1WAaQzz
- M+MQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWO/Hv+fdsacO0my+6H/Ax/7Fs1JA6MErokn3XLTDZS6I99GgkQCsX7cXhwyi2U3W7xbqbIVWlTX3wV22YtepAPElUSxis=
-X-Gm-Message-State: AOJu0Yx4P9DyoDRbA9l4Vod6+tMCo3S4IpWQboYAxHP5nwiFgubBhPvb
- t0oWV35wtDUCzkpYS/MzVyz1NLkcE/x3hEIRenMlEkFSM9jhKB3ywhZ5cMGAXC0=
-X-Google-Smtp-Source: AGHT+IG2l8vaTIMrjH6AXpHM8t7cfmJReTMPXXYXOsRcAiJqVnW+nA1xns0MW1HNbHUEJ5fWW9+glA==
-X-Received: by 2002:a5d:5392:0:b0:362:1322:b013 with SMTP id
- ffacd0b85a97d-3677571c4dcmr4777311f8f.47.1719895547568; 
- Mon, 01 Jul 2024 21:45:47 -0700 (PDT)
-Received: from [192.168.69.100] ([176.187.209.58])
+ d=1e100.net; s=20230601; t=1719896475; x=1720501275;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=wc0MaQgBES3M1CkLvxNOArN1CUAzFOoiIWOq/I+5GYY=;
+ b=kbdzAcqtixMkwVQvCaFw6IJYI2lUwrTovLX0MkUiVbtXZ6asu+2TNu66um/3Q4JE7I
+ WcGDC61BRtsNag5LC67tfH9si/jGwCBdFFEfmXyzkCySzg+WEhJLX/7zI2yMYGLzvRUv
+ 8JI6g7rAeYlaycLm8UKBK8v64B67ixfvXkqF+fcPfsmSPpRl60cltz3mjUjfaWa8ceFg
+ 9MRpMW0481IPRkxG/xumr/UI4pFskEzQ6sNrxcUxWURaxHW9f562FtkTYD9zGoXLyg97
+ BmYxOcEB1uVdzQubrQA7wClCQ48mVkyWxOasTKBKKBSDe9nqnnk9v95AkEWJiIMiWoiT
+ Fb2A==
+X-Gm-Message-State: AOJu0YwK8yI/eZ7JsXeuN2ikJ1F24Pr9kttfwtJV6KBJ0akI1tRitIOB
+ l5u9dJhS2/R+EYDCnvttc3cxtVHl1poH0fq4qe0+p/CXZ95/XCU9T7xO8dcH783DnuGHlHKYiDK
+ L
+X-Google-Smtp-Source: AGHT+IFo3YKoVtRnowO7gROdAueoYzi47Zws7orXaxWBnqqH4ExNBi1hwOWbnQng0qg2aEbY9Ba0Cw==
+X-Received: by 2002:a05:6000:1e46:b0:362:ad01:5435 with SMTP id
+ ffacd0b85a97d-36774f938ddmr6810942f8f.29.1719896475198; 
+ Mon, 01 Jul 2024 22:01:15 -0700 (PDT)
+Received: from m1x-phil.lan ([176.187.209.58])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3675a0e12fcsm11906714f8f.48.2024.07.01.21.45.45
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 01 Jul 2024 21:45:46 -0700 (PDT)
-Message-ID: <1ee6db7a-a99f-44c1-9705-28c5651c7348@linaro.org>
-Date: Tue, 2 Jul 2024 06:45:44 +0200
+ ffacd0b85a97d-3675a0cd778sm12174609f8f.5.2024.07.01.22.01.14
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Mon, 01 Jul 2024 22:01:14 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Philippe =?unknown-8bit?q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 00/22] Misc HW patches for 2024-07-02
+Date: Tue,  2 Jul 2024 07:00:50 +0200
+Message-ID: <20240702050112.35907-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hw/s390x: Attach default virtio-net devices to the
- /machine/virtual-css-bridge
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
- Halil Pasic <pasic@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Eric Farman <farman@linux.ibm.com>
-Cc: qemu-s390x@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>
-References: <20240701200108.154271-1-thuth@redhat.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240701200108.154271-1-thuth@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,18 +88,107 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/7/24 22:01, Thomas Huth wrote:
-> The initial virtio-net-ccw devices currently do not have a proper parent
-> in the QOM tree, so they show up under /machine/unattached - which is
-> somewhat ugly. Let's attach them to /machine/virtual-css-bridge/virtual-css
-> instead.
-> 
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-> ---
->   hw/s390x/s390-virtio-ccw.c | 3 +++
->   1 file changed, 3 insertions(+)
+The following changes since commit b6d32a06fc0984e537091cba08f2e1ed9f775d74:
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+  Merge tag 'pull-trivial-patches' of https://gitlab.com/mjt0k/qemu into staging (2024-06-30 16:12:24 -0700)
 
+are available in the Git repository at:
+
+  https://github.com/philmd/qemu.git tags/hw-misc-20240702
+
+for you to fetch changes up to f0936cbc1d42410ccd58c042bc26fa33a23a77d6:
+
+  Remove inclusion of hw/hw.h from files that don't need it (2024-07-02 06:58:48 +0200)
+
+Ignored checkpatch warnings:
+
+  WARNING: line over 80 characters
+  #45: FILE: include/hw/boards.h:431:
+  + *          mc->desc = "QEMU " MACHINE_VER_STR(__VA_ARGS__) " Virtual Machine"; \
+  #205: FILE: include/hw/boards.h:591:
+  +    prefix ## _machine_ ## major ## _ ## minor ## _ ## micro ## _ ## tag ## _ ## sym
+  #40: FILE: hw/arm/virt.c:112:
+  +        mc->desc = "QEMU " MACHINE_VER_STR(__VA_ARGS__) " ARM Virtual Machine"; \
+  #55: FILE: hw/s390x/s390-virtio-ccw.c:828:
+  +        mc->desc = "Virtual s390x machine (version " MACHINE_VER_STR(__VA_ARGS__) ")"; \
+  #43: FILE: hw/m68k/virt.c:345:
+  +        mc->desc = "QEMU " MACHINE_VER_STR(__VA_ARGS__) " M68K Virtual Machine"; \
+
+----------------------------------------------------------------
+Misc HW patches queue
+
+- Prevent NULL deref in sPAPR network model (Oleg)
+- Automatic deprecation of versioned machine types (Daniel)
+- Correct 'dump-guest-core' property name in hint (Akihiko)
+- Prevent IRQ leak in MacIO IDE model (Mark)
+- Remove dead #ifdef'ry related to unsupported macOS 12.0 (Akihiko)
+- Remove "hw/hw.h" where unnecessary (Thomas)
+
+----------------------------------------------------------------
+
+Akihiko Odaki (5):
+  system/physmem: Fix reference to dump-guest-core
+  hvf: Drop ifdef for macOS versions older than 12.0
+  audio: Drop ifdef for macOS versions older than 12.0
+  block/file-posix: Drop ifdef for macOS versions older than 12.0
+  net/vmnet: Drop ifdef for macOS versions older than 12.0
+
+Daniel P. Berrangé (14):
+  include/hw: add helpers for defining versioned machine types
+  hw/arm: convert 'virt' machine definitions to use new macros
+  hw/s390x: convert 'ccw' machine definitions to use new macros
+  hw/ppc: convert 'spapr' machine definitions to use new macros
+  hw/m68k: convert 'virt' machine definitions to use new macros
+  hw/i386: convert 'i440fx' machine definitions to use new macros
+  hw/i386: convert 'q35' machine definitions to use new macros
+  include/hw: add macros for deprecation & removal of versioned machines
+  include/hw: temporarily disable deletion of versioned machine types
+  hw: set deprecation info for all versioned machine types
+  hw: skip registration of outdated versioned machine types
+  hw/ppc: remove obsolete manual deprecation reason string of spapr
+    machines
+  hw/i386: remove obsolete manual deprecation reason string of i440fx
+    machines
+  docs: document special exception for machine type deprecation &
+    removal
+
+Mark Cave-Ayland (1):
+  hw/ide/macio: switch from using qemu_allocate_irq() to qdev input
+    GPIOs
+
+Oleg Sviridov (1):
+  hw/net/spapr: prevent potential NULL dereference
+
+Thomas Huth (1):
+  Remove inclusion of hw/hw.h from files that don't need it
+
+ docs/about/deprecated.rst     |  13 ++
+ include/hw/boards.h           | 298 ++++++++++++++++++++++++++++++++++
+ include/hw/i386/pc.h          |  28 ++++
+ include/hw/misc/macio/macio.h |   7 +-
+ include/hw/misc/xlnx-cfi-if.h |   1 -
+ accel/hvf/hvf-all.c           |   3 -
+ block/file-posix.c            |   5 -
+ hw/arm/virt.c                 |  34 ++--
+ hw/i386/pc_piix.c             | 220 +++++++++++--------------
+ hw/i386/pc_q35.c              | 215 ++++++++++--------------
+ hw/ide/macio.c                |  10 +-
+ hw/m68k/virt.c                |  57 ++++---
+ hw/misc/edu.c                 |   1 -
+ hw/net/spapr_llan.c           |   6 +
+ hw/ppc/spapr.c                | 100 +++++++-----
+ hw/s390x/s390-virtio-ccw.c    | 102 +++++++-----
+ hw/vfio/container.c           |   1 -
+ net/vmnet-host.c              |  24 +--
+ net/vmnet-shared.c            |  13 --
+ system/physmem.c              |   2 +-
+ target/i386/hvf/hvf.c         |  23 +--
+ audio/coreaudio.m             |   5 -
+ net/vmnet-bridged.m           |  13 +-
+ net/vmnet-common.m            |   3 -
+ 24 files changed, 710 insertions(+), 474 deletions(-)
+
+-- 
+2.41.0
 
 
