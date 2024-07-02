@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F632924C07
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jul 2024 01:14:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1870924C44
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jul 2024 01:43:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOmgp-0004Fg-4x; Tue, 02 Jul 2024 19:13:35 -0400
+	id 1sOn8f-0007nJ-Ok; Tue, 02 Jul 2024 19:42:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zheyuma97@gmail.com>)
- id 1sOmgn-0004Ee-9H; Tue, 02 Jul 2024 19:13:33 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sOn8P-0007lQ-CV
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 19:42:05 -0400
+Received: from mail-pg1-x52b.google.com ([2607:f8b0:4864:20::52b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <zheyuma97@gmail.com>)
- id 1sOmgj-0004Yr-LX; Tue, 02 Jul 2024 19:13:32 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-4256788e13bso34330535e9.2; 
- Tue, 02 Jul 2024 16:13:28 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sOn8J-0006Mk-C0
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 19:42:05 -0400
+Received: by mail-pg1-x52b.google.com with SMTP id
+ 41be03b00d2f7-710437d0affso2816836a12.3
+ for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 16:41:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1719962008; x=1720566808; darn=nongnu.org;
+ d=linaro.org; s=google; t=1719963718; x=1720568518; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=xHkUt+eV1l1vcITX4D9Ydky+EZIHXltfyBlVfjJmleE=;
- b=ZurYSll86zmnwmSfBA3dn0Vgxgg/3mrx3b43iJ6JCwuAiDIyf1JnPi9d+NaRFRVkBS
- aZOHaDSc+0F8TG1ydL1X8PVn5TK2CM5XZ18Yaf3Tf8IxFnC3GnvNkwjVb1PZjmd0nndG
- aCb50M1nj8ulCuZUKtFt6qhIHnWspeYejqPx+ucUy5d0Okq1hKyHK6TsQHtTFK53DVG7
- TtnKBt7WZjpw8JN/38Hk3mOmXt7lvrA9gFu5nl31jLzs1O6Kxb4NXr5c2T6I3R+JHwcd
- /BvlxdQ3qiFXhkyvNe4IIEQufL5NJ5mAMR8bkAf2KvX+Ij9PCnggUMO4mtfhLXYNJPri
- yqag==
+ bh=mZ5AdtoXeBWo04SqXtXVV3bVy8fFh+q0Y63ABmnLjpU=;
+ b=HS2CvEqSFlkzP8SzQLvpFM9t7L1geY47WOyZJI4LHQc9CPSNsSWCEEP1sLAMxfjQsD
+ qawWm93eZZLFMKTK9ytjzja5XGPr5VMszhg6yODKE4EirqYtFjTzw8llUAx7Hl/U5FKK
+ mP+65et3CAGNfFoq6V9CKbAO5I3HDIjAjNC3/CK7VLX7SiYy3zSfXqHQHcgvcBSDequd
+ p11ChWRe9Qexgbp+QpWDjH7uUWfQfbIeitTW6YGPEiTpJo7gd8oBFmH/mMqNJnRJXF3q
+ bc8njGPsDd9cA8ng2PqTSsIPJSZHSEwOlheUKkGXqbhN6TR/szQ0e6vFLzQz8iMt6GxJ
+ LbJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719962008; x=1720566808;
+ d=1e100.net; s=20230601; t=1719963718; x=1720568518;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=xHkUt+eV1l1vcITX4D9Ydky+EZIHXltfyBlVfjJmleE=;
- b=GmTThs6jAJvhoJ8hDNETs8L0tkvYFQONnsYc6JISghmf6OZkm312p8PidKsU345H9K
- 39LF5GfKvTiq0vyBPyWDe3XUCpM44Om0ldgFvaqi7JPjUKeskJusDgsfN6Y1bqr6B4Dd
- v7aTam4K/E4OrEK05rcK8RmypXKWejHuRGv5pwxjHMsfCLZs/s/GbFnCnZUMWnCpJd9s
- LY/AAJ5yHaGOQDw5ibGLpz1ZDtgzSXf3tzaAZkJrgkLCVi+rBF6pvETXWxQWshUeD108
- 7eyv6GRde9Yuw58+8bLq9EnIH9NYh2WbdeopGcTRtc8S5rLXh72P7xuGaQagN7biP/gl
- 5WkA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVjSEYJmtGHXGjS+AXepGwtpMiy0H2FYpH/RPNYoiZlihOgFVyTxfbIcJbX+ik9cH36kpSQdjOsn+buhxdA8wQk98ALCoEdEHQqNUT5GERD9pC15llJkQ+ZXq1wTg==
-X-Gm-Message-State: AOJu0YygYMp8brp5JptO2WuOjLxGzfL7Fi7RMdzC96v5AX+EavVflSgg
- Ae98888nPvNch/g8UudWE3Xg4WvJqKvnv0Fl+wQ6gqWAOwOMBMA=
-X-Google-Smtp-Source: AGHT+IGtFVRHmAqvedEr19BSPe093sL6u3BELbRkEnCM0ScA4c1ZDPrgFkJIiz8RwNtW0IGfGfUjKg==
-X-Received: by 2002:a05:600c:2157:b0:425:3084:c99 with SMTP id
- 5b1f17b1804b1-4257a0642ecmr72431645e9.31.1719962007498; 
- Tue, 02 Jul 2024 16:13:27 -0700 (PDT)
-Received: from wing.epfl.ch (dhcp-122-dist-b-021.epfl.ch. [128.178.122.21])
+ bh=mZ5AdtoXeBWo04SqXtXVV3bVy8fFh+q0Y63ABmnLjpU=;
+ b=U6KCFbMadwbF7WlpJzlBtJM5sJOoxyb9d8h+L583S7hXnyjnfU3B26A6c2nzmgrjSV
+ KRE7k432KCy2YZ20OgmvLfRYWfCCxcMZzyQdVu/DRfCHqMkZdicwwMRxTfpqHdtLnhvp
+ ENk12iS7L9esQnDLR4qT38/S6f5/nOA/ZME7C9lRESfa6qM1PidOxn/OuCjCXSiDAYc+
+ XKk/Ox33i/e3FKE0/6vyoZ6QOsaQOQOdzqUl8ym8FpFo/Z3NKOISF+5VI36wGkWOM2fj
+ 9F1GV63rMomcs4lVC5okCTjHZoCTHXdbivWXFlMJ2xiKGbcDEE1PhBjrM3dvfJDUnvId
+ Nz1g==
+X-Gm-Message-State: AOJu0YxP0fgT1WU2/m+1WNRBNircSU0lDk6GK8DdXXU6jtovJDD2kv+E
+ J0Yxy6MqFlXzVB4vpmzalzxVDQyku/NPUwhXkW8LeE6vTzSuzCkxrcEzWnhVYlsFOg3zs+RBpc6
+ 8
+X-Google-Smtp-Source: AGHT+IGNZa3TI8BO0F0AVOq4RnSj6Qdnhi7PBvl6+40DrqmDo6FzYHL0IRYmTUxVzobZ7yJHWmGXNw==
+X-Received: by 2002:a05:6a21:999e:b0:1be:c42f:be42 with SMTP id
+ adf61e73a8af0-1bef61019f4mr11018847637.19.1719963717603; 
+ Tue, 02 Jul 2024 16:41:57 -0700 (PDT)
+Received: from stoup.. (174-21-76-141.tukw.qwest.net. [174.21.76.141])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4256b0c0f99sm219690105e9.41.2024.07.02.16.13.26
+ d9443c01a7336-1fac15993c5sm90403755ad.244.2024.07.02.16.41.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 02 Jul 2024 16:13:27 -0700 (PDT)
-From: Zheyu Ma <zheyuma97@gmail.com>
-To: Keith Busch <kbusch@kernel.org>, Klaus Jensen <its@irrelevant.dk>,
- Jesper Devantier <foss@defmacro.it>
-Cc: Zheyu Ma <zheyuma97@gmail.com>, qemu-block@nongnu.org,
- qemu-devel@nongnu.org
-Subject: [PATCH] hw/nvme: Fix memory leak in nvme_dsm
-Date: Wed,  3 Jul 2024 01:13:03 +0200
-Message-Id: <20240702231303.3077584-1-zheyuma97@gmail.com>
+ Tue, 02 Jul 2024 16:41:56 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, qemu-ppc@nongnu.org, iii@linux.ibm.com,
+ david@redhat.com, balaton@eik.bme.hu
+Subject: [PATCH 0/2] target/arm: Fix unwind from dc zva and FEAT_MOPS
+Date: Tue,  2 Jul 2024 16:41:53 -0700
+Message-Id: <20240702234155.2106399-1-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=zheyuma97@gmail.com; helo=mail-wm1-x32b.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,40 +90,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The allocated memory to hold LBA ranges leaks in the nvme_dsm function. This
-happens because the allocated memory for iocb->range is not freed in all
-error handling paths.
+While looking into Zoltan's attempt to speed up ppc64 DCBZ
+(data cache block set to zero), I wondered what AArch64 was
+doing differently.  It turned out that Arm is the only user
+of tlb_vaddr_to_host.
 
-Fix this by adding a free to ensure that the allocated memory is properly freed.
+None of the code sequences in use between AArch64, Power64 and S390X
+are 100% safe, with race conditions vs mmap et al, however, AArch64
+is the only one that will fail this single threaded test case.  Use
+of these new functions fixes the race condition as well, though I
+have not yet touched the other guests.
 
-ASAN log:
-==3075137==ERROR: LeakSanitizer: detected memory leaks
+I thought about exposing accel/tcg/user-retaddr.h for direct use
+from the targets, but perhaps these wrappers are cleaner.  RFC?
 
-Direct leak of 480 byte(s) in 6 object(s) allocated from:
-    #0 0x55f1f8a0eddd in malloc llvm/compiler-rt/lib/asan/asan_malloc_linux.cpp:129:3
-    #1 0x7f531e0f6738 in g_malloc (/lib/x86_64-linux-gnu/libglib-2.0.so.0+0x5e738)
-    #2 0x55f1faf1f091 in blk_aio_get block/block-backend.c:2583:12
-    #3 0x55f1f945c74b in nvme_dsm hw/nvme/ctrl.c:2609:30
-    #4 0x55f1f945831b in nvme_io_cmd hw/nvme/ctrl.c:4470:16
-    #5 0x55f1f94561b7 in nvme_process_sq hw/nvme/ctrl.c:7039:29
 
-Signed-off-by: Zheyu Ma <zheyuma97@gmail.com>
----
- hw/nvme/ctrl.c | 1 +
- 1 file changed, 1 insertion(+)
+r~
 
-diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
-index 127c3d2383..cf610eab21 100644
---- a/hw/nvme/ctrl.c
-+++ b/hw/nvme/ctrl.c
-@@ -2592,6 +2592,7 @@ next:
- done:
-     iocb->aiocb = NULL;
-     iocb->common.cb(iocb->common.opaque, iocb->ret);
-+    g_free(iocb->range);
-     qemu_aio_unref(iocb);
- }
- 
+
+Richard Henderson (2):
+  accel/tcg: Introduce memset_ra, memmove_ra
+  target/arm: Use memset_ra, memmove_ra in helper-a64.c
+
+ include/exec/cpu_ldst.h            | 40 ++++++++++++++++
+ accel/tcg/user-exec.c              | 22 +++++++++
+ target/arm/tcg/helper-a64.c        | 10 ++--
+ tests/tcg/multiarch/memset-fault.c | 77 ++++++++++++++++++++++++++++++
+ 4 files changed, 144 insertions(+), 5 deletions(-)
+ create mode 100644 tests/tcg/multiarch/memset-fault.c
+
 -- 
 2.34.1
 
