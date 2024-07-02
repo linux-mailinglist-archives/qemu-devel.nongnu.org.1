@@ -2,78 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7F0292495A
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 22:33:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C57F924966
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 22:37:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOjzL-0004QO-JK; Tue, 02 Jul 2024 16:20:31 -0400
+	id 1sOjzE-0003x8-Iv; Tue, 02 Jul 2024 16:20:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOjzE-0004BS-N4
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 16:20:24 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOjz9-0003hu-US
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 16:20:20 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOjz4-0001Yc-Ja
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 16:20:24 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOjz3-0001WU-1V
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 16:20:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719951613;
+ s=mimecast20190719; t=1719951611;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=C7ChEDGI2fc0o0DZcqX9FIMiPGbOKd/BvwKVobPrMIk=;
- b=fr+j02YjsyVEFQYqH8M1vObADgVzUp5VpdeaIbMBPSmrpwYshpUf0sMzyulvt59ftuMHWY
- GWDvcGg+qwRygEzVcRmB/CkWFGGcIXZarqkZxXm8YsClcKW8f2o4hS3puF8SRSKfBCid63
- ZNEF1yPIeFTXy9CIjSujMECQ8EXNYE0=
-Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
- [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=f1BCTKIu7zTn8KYIwKYaAlAh7ZMPZO9ZVLyIB5EQHjk=;
+ b=Bd2WN6hzJmjTtl+c3fMljp9s/PmOalLbVVzuo1/H9nPgpdqE+cEkJqYEKd//ZgXfEqWDQB
+ 7i3P7Pzd4skFi8i/ahqdkvT2jmpG0pIdS1B6RyrWymJEhh0vxZKpdVtwWqO63+aZuQuYCc
+ OCy4N3SUYDb5WyokoCqSQLA5bAxHL3E=
+Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
+ [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-421-y-RfN4jBO2ezDm7oGVsZ2A-1; Tue, 02 Jul 2024 16:20:12 -0400
-X-MC-Unique: y-RfN4jBO2ezDm7oGVsZ2A-1
-Received: by mail-lf1-f70.google.com with SMTP id
- 2adb3069b0e04-52d174e26baso6284978e87.2
- for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 13:20:05 -0700 (PDT)
+ us-mta-166-vnYDNjUCNOy6yDbyzSa3sQ-1; Tue, 02 Jul 2024 16:20:08 -0400
+X-MC-Unique: vnYDNjUCNOy6yDbyzSa3sQ-1
+Received: by mail-lf1-f71.google.com with SMTP id
+ 2adb3069b0e04-52cdd8ca5a8so4683058e87.3
+ for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 13:20:08 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719951603; x=1720556403;
+ d=1e100.net; s=20230601; t=1719951606; x=1720556406;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=C7ChEDGI2fc0o0DZcqX9FIMiPGbOKd/BvwKVobPrMIk=;
- b=KejnR7q3GEoU1e0pvM1TZEBbPH1MV2mFwG/YtX9biEISUwwfIDd42gP+Wjunn/pvWN
- Ro2BOc8VeElIhazOvQhEa2EIjPGnIGlm5RENGhnbexF9BCMK3adD3Vc1/7a7fzWBfyrR
- 3Vt1UdBcoOCN4H6BpPevAa0nIP5UIamFCyf/BqHnkyR7MhTG4w8nbrmqhCfzZeFgqEZy
- TXfg2k40JgajG1FmqzaGN1YEZnB7ZeYGXeqBwSsR+rhjbJIlvzYp43Vsbgg+ZlKYxFwg
- x+luIO6myYZDPLCXIRLOxv3N4Nj5ACknmuZ2iQBmDYoSBGkKTAvwGDqS0mbviQKvWYWZ
- mStA==
-X-Gm-Message-State: AOJu0YzYpDs2NsXlx2WwhSNeuqEuESnb0FPj9R7brjLrwbwwTAMEPYg8
- zf/4rtUP5EaNXuafXT8aKQS2Jv1ZnXWSSpA3cM+u3eqzSlmy8Zilugu5ZyxS6C2l06NVhd25iLN
- ZtAhGzysH6J7iZod0WqEUhLLge9/l/ZGLgSd2cOjZ58fm6ERp9ePWrkUM8ub2V1qmp81lGXvzAI
- EuFQ2fishTlUsbK0ZQmaTDnhpx5zTfqg==
-X-Received: by 2002:a05:6512:114c:b0:52c:de7b:586f with SMTP id
- 2adb3069b0e04-52e8273656amr6138771e87.67.1719951602965; 
- Tue, 02 Jul 2024 13:20:02 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEAdUV5CY2MHASeNPKHVgykD23IAQ9cmS73fJ2mkallWbehmypuYIqzZT0pzxQiVNrq+lIAaA==
-X-Received: by 2002:a05:6512:114c:b0:52c:de7b:586f with SMTP id
- 2adb3069b0e04-52e8273656amr6138743e87.67.1719951602281; 
- Tue, 02 Jul 2024 13:20:02 -0700 (PDT)
+ bh=f1BCTKIu7zTn8KYIwKYaAlAh7ZMPZO9ZVLyIB5EQHjk=;
+ b=Y9Khth4bzo3NCJ2oY8tTeYeaR9ZWUVmlU7ForFx3jcN7aE5FQXzJ1w0LxNE6ST8ERF
+ eFeD0/52rAUkdBT08xAoJTKn5Tl9Eyj+1HQmCo9sWxRxa9cqCesElR4XddDAkeZP43MI
+ NCqdFuF54/Ao3WP71ybAim2ekfBAZiGBzwtt/8GdPQ6zBISK3YkHr3EtSN879HzQGuEt
+ sKDBydaw0RM5c62X6NntURVf7FGV9HWxDwOELybTqWa/fd4JLfPns2Ox/fbnaiT71A7x
+ /H3/r+0Y9mt6cnrn4tOvvVidTWRgpxCIoUQW6aqTpu8vLgAVXmezdLEc4kLJYqfP6q9v
+ EPTg==
+X-Gm-Message-State: AOJu0YwUFeWPqYHZOgfMPxzQ6vG8oErEDjY7FmBSm4YETZnXS/VrBrw9
+ xcCZQCH5zKAxTSN1D4SwN+bgtoE1QEdTcy98jmLdyoazaoJgs4xWwRhAd7ohbwhzojTDKwCcMzW
+ NYdvR94va216FXV/YOyWYCreEF09zYR4AsyRKe4zeZ8IpLyRsi/rU8N/CxHEMUfZWeuL2GZxlB9
+ N2fZtUR0lVrqueqV659dFcqWVFyOWt+w==
+X-Received: by 2002:a05:6512:e97:b0:52c:cd7d:4e7d with SMTP id
+ 2adb3069b0e04-52e8264bcc0mr5622044e87.5.1719951606452; 
+ Tue, 02 Jul 2024 13:20:06 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHQdcJn83d1MAcxWSS7aSrhwqkgS7XopI9M1ZemrWgnDFz5oDPQV7TIFGNB5gh4PhckfdQfJw==
+X-Received: by 2002:a05:6512:e97:b0:52c:cd7d:4e7d with SMTP id
+ 2adb3069b0e04-52e8264bcc0mr5622023e87.5.1719951605760; 
+ Tue, 02 Jul 2024 13:20:05 -0700 (PDT)
 Received: from redhat.com ([2a02:14f:1f5:eadd:8c31:db01:9d01:7604])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4256af5ba51sm208565135e9.12.2024.07.02.13.20.00
+ 5b1f17b1804b1-4256af552bbsm212110615e9.13.2024.07.02.13.20.03
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 02 Jul 2024 13:20:01 -0700 (PDT)
-Date: Tue, 2 Jul 2024 16:19:59 -0400
+ Tue, 02 Jul 2024 13:20:05 -0700 (PDT)
+Date: Tue, 2 Jul 2024 16:20:02 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Sunil V L <sunilvl@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>,
- Igor Mammedov <imammedo@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
- Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
- Thomas Huth <thuth@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL v2 72/88] meson.build: Add RISC-V to the edk2-target list
-Message-ID: <0f05e4452fd777657df812b3e34e4b7b7106b55b.1719951168.git.mst@redhat.com>
+ Igor Mammedov <imammedo@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PULL v2 73/88] pc-bios/meson.build: Add support for RISC-V in
+ unpack_edk2_blobs
+Message-ID: <60eae0fbce9e4049aca4cd078e20fbf83c488551.1719951168.git.mst@redhat.com>
 References: <cover.1719951168.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -81,7 +79,7 @@ Content-Disposition: inline
 In-Reply-To: <cover.1719951168.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -107,31 +105,47 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Sunil V L <sunilvl@ventanamicro.com>
 
-so that ACPI table test can be supported.
+Update list of images supported in unpack_edk2_blobs to enable RISC-V
+ACPI table testing.
 
 Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 Reviewed-by: Igor Mammedov <imammedo@redhat.com>
-Message-Id: <20240625150839.1358279-12-sunilvl@ventanamicro.com>
+Message-Id: <20240625150839.1358279-13-sunilvl@ventanamicro.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- meson.build | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ pc-bios/meson.build     | 2 ++
+ tests/qtest/meson.build | 3 +++
+ 2 files changed, 5 insertions(+)
 
-diff --git a/meson.build b/meson.build
-index a947b83c3f..088bbbbbda 100644
---- a/meson.build
-+++ b/meson.build
-@@ -93,7 +93,7 @@ else
-   iasl = find_program(get_option('iasl'), required: true)
- endif
+diff --git a/pc-bios/meson.build b/pc-bios/meson.build
+index 0760612bea..8602b45b9b 100644
+--- a/pc-bios/meson.build
++++ b/pc-bios/meson.build
+@@ -4,6 +4,8 @@ if unpack_edk2_blobs
+     'edk2-aarch64-code.fd',
+     'edk2-arm-code.fd',
+     'edk2-arm-vars.fd',
++    'edk2-riscv-code.fd',
++    'edk2-riscv-vars.fd',
+     'edk2-i386-code.fd',
+     'edk2-i386-secure-code.fd',
+     'edk2-i386-vars.fd',
+diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
+index 12792948ff..6508bfb1a2 100644
+--- a/tests/qtest/meson.build
++++ b/tests/qtest/meson.build
+@@ -259,6 +259,9 @@ qtests_s390x = \
+ qtests_riscv32 = \
+   (config_all_devices.has_key('CONFIG_SIFIVE_E_AON') ? ['sifive-e-aon-watchdog-test'] : [])
  
--edk2_targets = [ 'arm-softmmu', 'aarch64-softmmu', 'i386-softmmu', 'x86_64-softmmu' ]
-+edk2_targets = [ 'arm-softmmu', 'aarch64-softmmu', 'i386-softmmu', 'x86_64-softmmu', 'riscv64-softmmu' ]
- unpack_edk2_blobs = false
- foreach target : edk2_targets
-   if target in target_dirs
++qtests_riscv64 = \
++  (unpack_edk2_blobs ? ['bios-tables-test'] : [])
++
+ qos_test_ss = ss.source_set()
+ qos_test_ss.add(
+   'ac97-test.c',
 -- 
 MST
 
