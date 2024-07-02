@@ -2,32 +2,32 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74F04923EA8
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 15:17:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9F8E923EB0
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 15:18:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOdNH-0007vk-OE; Tue, 02 Jul 2024 09:16:49 -0400
+	id 1sOdOa-0000pk-C4; Tue, 02 Jul 2024 09:18:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1sOdNA-0007rH-PF
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 09:16:44 -0400
+ id 1sOdNf-0000Ru-IP
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 09:17:15 -0400
 Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1sOdN9-0006dy-69
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 09:16:40 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.216])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4WD3Lc0xGZz6J6mP;
- Tue,  2 Jul 2024 21:15:36 +0800 (CST)
+ id 1sOdNd-0006mD-6z
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 09:17:10 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4WD3LD0WL1z6K9n6;
+ Tue,  2 Jul 2024 21:15:16 +0800 (CST)
 Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
- by mail.maildlp.com (Postfix) with ESMTPS id AE2DA1404FC;
- Tue,  2 Jul 2024 21:16:36 +0800 (CST)
+ by mail.maildlp.com (Postfix) with ESMTPS id 546D2140B2A;
+ Tue,  2 Jul 2024 21:17:07 +0800 (CST)
 Received: from SecurePC-101-06.china.huawei.com (10.122.19.247) by
  lhrpeml500005.china.huawei.com (7.191.163.240) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Tue, 2 Jul 2024 14:16:36 +0100
+ 15.1.2507.39; Tue, 2 Jul 2024 14:17:06 +0100
 To: <imammedo@redhat.com>, <mst@redhat.com>, Markus Armbruster
  <armbru@redhat.com>, <qemu-devel@nongnu.org>, <ankita@nvidia.com>,
  <marcel.apfelbaum@gmail.com>, <philmd@linaro.org>, Richard Henderson
@@ -36,10 +36,10 @@ CC: <linuxarm@huawei.com>, Dave Jiang <dave.jiang@intel.com>, Huang Ying
  <ying.huang@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
  <eduardo@habkost.net>, <linux-cxl@vger.kernel.org>, Michael Roth
  <michael.roth@amd.com>, Ani Sinha <anisinha@redhat.com>
-Subject: [PATCH v4 04/13] hw/acpi: Rename build_all_acpi_generic_initiators()
- to build_acpi_generic_initiator()
-Date: Tue, 2 Jul 2024 14:14:09 +0100
-Message-ID: <20240702131428.664859-5-Jonathan.Cameron@huawei.com>
+Subject: [PATCH v4 05/13] hw/pci: Add a busnr property to pci_props and use
+ for acpi/gi
+Date: Tue, 2 Jul 2024 14:14:10 +0100
+Message-ID: <20240702131428.664859-6-Jonathan.Cameron@huawei.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240702131428.664859-1-Jonathan.Cameron@huawei.com>
 References: <20240702131428.664859-1-Jonathan.Cameron@huawei.com>
@@ -74,40 +74,89 @@ From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Igor noted that this function only builds one instance, so was rather
-misleadingly named. Fix that.
+Using a property allows us to hide the internal details of the PCI device
+from the code to build a SRAT Generic Initiator Affinity Structure with
+PCI Device Handle.
 
 Suggested-by: Igor Mammedov <imammedo@redhat.com>
-Reviewed-by: Igor Mammedov <imammedo@redhat.com>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
 ---
-v4: Collected tags.
+V4: Avoid confusion with device creation parameter bus but renaming to
+    busnr
 ---
- hw/acpi/acpi_generic_initiator.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ hw/acpi/acpi_generic_initiator.c | 11 ++++++-----
+ hw/pci/pci.c                     | 14 ++++++++++++++
+ 2 files changed, 20 insertions(+), 5 deletions(-)
 
 diff --git a/hw/acpi/acpi_generic_initiator.c b/hw/acpi/acpi_generic_initiator.c
-index 7665b16107..73bafaaaea 100644
+index 73bafaaaea..f2711c91ef 100644
 --- a/hw/acpi/acpi_generic_initiator.c
 +++ b/hw/acpi/acpi_generic_initiator.c
-@@ -74,7 +74,7 @@ static void acpi_generic_initiator_class_init(ObjectClass *oc, void *data)
-         acpi_generic_initiator_set_node, NULL, NULL);
- }
+@@ -9,6 +9,7 @@
+ #include "hw/boards.h"
+ #include "hw/pci/pci_device.h"
+ #include "qemu/error-report.h"
++#include "qapi/error.h"
  
--static int build_all_acpi_generic_initiators(Object *obj, void *opaque)
-+static int build_acpi_generic_initiator(Object *obj, void *opaque)
- {
+ typedef struct AcpiGenericInitiatorClass {
+     ObjectClass parent_class;
+@@ -79,7 +80,7 @@ static int build_acpi_generic_initiator(Object *obj, void *opaque)
      MachineState *ms = MACHINE(qdev_get_machine());
      AcpiGenericInitiator *gi;
-@@ -111,6 +111,6 @@ static int build_all_acpi_generic_initiators(Object *obj, void *opaque)
- void build_srat_generic_pci_initiator(GArray *table_data)
- {
-     object_child_foreach_recursive(object_get_root(),
--                                   build_all_acpi_generic_initiators,
-+                                   build_acpi_generic_initiator,
-                                    table_data);
+     GArray *table_data = opaque;
+-    PCIDevice *pci_dev;
++    uint8_t bus, devfn;
+     Object *o;
+ 
+     if (!object_dynamic_cast(obj, TYPE_ACPI_GENERIC_INITIATOR)) {
+@@ -100,10 +101,10 @@ static int build_acpi_generic_initiator(Object *obj, void *opaque)
+         exit(1);
+     }
+ 
+-    pci_dev = PCI_DEVICE(o);
+-    build_srat_pci_generic_initiator(table_data, gi->node, 0,
+-                                     pci_bus_num(pci_get_bus(pci_dev)),
+-                                     pci_dev->devfn);
++    bus = object_property_get_uint(o, "busnr", &error_fatal);
++    devfn = object_property_get_uint(o, "addr", &error_fatal);
++
++    build_srat_pci_generic_initiator(table_data, gi->node, 0, bus, devfn);
+ 
+     return 0;
  }
+diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+index 50b86d5790..29d4852c21 100644
+--- a/hw/pci/pci.c
++++ b/hw/pci/pci.c
+@@ -67,6 +67,19 @@ static char *pcibus_get_fw_dev_path(DeviceState *dev);
+ static void pcibus_reset_hold(Object *obj, ResetType type);
+ static bool pcie_has_upstream_port(PCIDevice *dev);
+ 
++static void prop_pci_busnr_get(Object *obj, Visitor *v, const char *name,
++                             void *opaque, Error **errp)
++{
++    uint8_t busnr = pci_dev_bus_num(PCI_DEVICE(obj));
++
++    visit_type_uint8(v, name, &busnr, errp);
++}
++
++static const PropertyInfo prop_pci_busnr = {
++    .name = "busnr",
++    .get = prop_pci_busnr_get,
++};
++
+ static Property pci_props[] = {
+     DEFINE_PROP_PCI_DEVFN("addr", PCIDevice, devfn, -1),
+     DEFINE_PROP_STRING("romfile", PCIDevice, romfile),
+@@ -85,6 +98,7 @@ static Property pci_props[] = {
+                     QEMU_PCIE_ERR_UNC_MASK_BITNR, true),
+     DEFINE_PROP_BIT("x-pcie-ari-nextfn-1", PCIDevice, cap_present,
+                     QEMU_PCIE_ARI_NEXTFN_1_BITNR, false),
++    { .name = "busnr", .info = &prop_pci_busnr },
+     DEFINE_PROP_END_OF_LIST()
+ };
+ 
 -- 
 2.43.0
 
