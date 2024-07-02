@@ -2,76 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6088592473C
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 20:23:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EE6B924819
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 21:23:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOi8Y-0003a9-0C; Tue, 02 Jul 2024 14:21:54 -0400
+	id 1sOj5y-0004PY-T0; Tue, 02 Jul 2024 15:23:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zheyuma97@gmail.com>)
- id 1sOi8J-0003LH-Mo
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 14:21:44 -0400
-Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1sOj5l-0004OQ-Vt
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 15:23:06 -0400
+Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <zheyuma97@gmail.com>)
- id 1sOi8B-0001QD-UJ
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 14:21:38 -0400
-Received: by mail-ed1-x52a.google.com with SMTP id
- 4fb4d7f45d1cf-58bac81f3f9so1313437a12.2
- for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 11:21:29 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1sOj5j-0004qw-Tm
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 15:23:05 -0400
+Received: by mail-ed1-x535.google.com with SMTP id
+ 4fb4d7f45d1cf-58b447c511eso1662411a12.2
+ for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 12:23:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1719944486; x=1720549286; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=J5pHvK+/7K1mMyOz0VxaRhz2ZlJ78AmxoX9zR6YhqAw=;
- b=Nrk/Ky3t0IV62l1o5zMilSPtSlQp0laW5DPqVI2fecNabHNOzsh8no/i8HE8wx0nbP
- tZdv3qJlcl/kyEJl2KsDzsJxb5eravECb9xpWYze4Dt++I+qbhaQF/X2kk1fuAQKtSN1
- hKd76Q0Iyt2VsK979+SfI7yyctXiURsUUCyEnW/EMmMBKl0AAjEQckFJYIprfViYPZs0
- xwN/Vb1PwddyWSGnexSQ0CgKSkI/xBrTh4gbckX4idxfkvJGbvLIMHLdPoIJMW66VgFU
- o8o9CQiMAt+1X0XZYn0WQMRLiLzwrBKfH9SW7XorhOfEFnc7kXQaCsxt3btQ/4KtAEJy
- 6q9Q==
+ d=gmail.com; s=20230601; t=1719948181; x=1720552981; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=wGjWIDO7eDFYieOuRM3NIoYxSl+UQV575BXoeht75JI=;
+ b=mde6UuXUNpzI0Ei2Bam7KqMtlIl9JCV4k47x+WOIX2qQaSGIfwDEbXcbn48eHG8fBP
+ VWytgr1FM93kU0vKeIWQjAiQMUCM6tSK6C+FhtMMMYJwOityjT0vhpi00dUEJnJg9+aL
+ 3z84PRj3oSiBtxUKqN9Lg2rh7A1eqizHVI3CcT2hht4Qe5gzg/FAgCt+kwMSOh2HW6N/
+ CjQwaJrV5Sifllw/ZnrXjQ8o9OBoFiYk5KPwdwVax4jiPWe5zSIgpuhb7gyT0WuQNNw9
+ k3U2ZiBrsiniZw8pEGMzkQ9KI25NBUzyjCfrkLz1RCKQPnt3XHfxcERNql8K/WZjr0cM
+ kU9Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719944486; x=1720549286;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=J5pHvK+/7K1mMyOz0VxaRhz2ZlJ78AmxoX9zR6YhqAw=;
- b=f95Tf0E0E5X/F7gfr9lUwctJ2io0en5Lj4k4hmORoOhYT5ziSY5IajXWFX4DOwy6Rg
- PYwtJ3scm0maVdCbXb8BDz96D1QIOoEA6Wsu22zqBBDOLjjmXWhiuxil37LxR/lai3B5
- BUydaRdWUOyVKxPou7PS2LOQ3Qce3/0nCUPLRNgZ8+GNeEcyAo34eLree6g4TT+VhZck
- l9RvOoPB5aYvgnJs16ah8MJzfBoaHvzSOQWLZnUg1ppQiu6PfaBTuxdVbSODXNbJHfQG
- ovzqRFN9oPluxoZH9egfplZ+GVppxGmYXTmIoEZKWJ7A7tgX2iyLgzK5631pscS8Rf+W
- pjxA==
-X-Gm-Message-State: AOJu0YzNFslX0LP4QmmUj+9oNMw8CLIc7H9m39EO6YZw772Bxl5MxW3f
- imLre4tBOfZBjKRpLpAnvwUrE1E25rqsVRSlsGrEsz3Vj73UI9Bazx38unebZ5hSp4BnRW3mfCt
- SoxMsQCs6Oo02zHFHH8L9ZKHx/xbweCo=
-X-Google-Smtp-Source: AGHT+IHdIGVocsJs3xNkuXGRlf6YiLhbrTW8P4yomA5P+Bg17IpEN9HBgBGAoBgzgdlq4T6CFGmqh07OT2uc5GgmKbM=
-X-Received: by 2002:a17:906:d930:b0:a6f:cf64:a5d9 with SMTP id
- a640c23a62f3a-a75144f66abmr546421366b.49.1719944485578; Tue, 02 Jul 2024
- 11:21:25 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1719948181; x=1720552981;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=wGjWIDO7eDFYieOuRM3NIoYxSl+UQV575BXoeht75JI=;
+ b=roGNqVcMEOThUZuW2heEq2wKU1C8ReTEhBwImbAZxdMARJfqkcUHXJViUeTFg7use8
+ fulAD9RHSRUpfzGKep69UaUFuZiFBOfTnssdrLj5Ok4hL03fR/EJ969e3YBZX1PJ5Rsw
+ PZ3vU/LLSg6skVVJ2nB+i9EtT3gTGWYmXDSaiB4TXeMXYM7lhKYSMtYnfeeQLtQkGa+6
+ MaKGvaY/kCCM6QoJOqmbUZiCYExm/HQ18EkAlY0OQtx/yW8u4niyN/bRLkP9TQEDMBUJ
+ xXi2OLQRuKleINj2zMwQDNTI1i3ldVJR+IVyRWRYVHEYvtRr9+FW130UVeUUsM8SAhRM
+ 2r0Q==
+X-Gm-Message-State: AOJu0YzPB7SQEfg1pljUr8uuoDtI54YYDP47S5ptn5xVreBhotvLxGFi
+ IGFrTesfgfhuzc1WZfNv0HHGV+PT0ArkarY01CkO5lizsO/TRSQKg80J2g==
+X-Google-Smtp-Source: AGHT+IHhPWR7nlo2oO6uk3jE1Lohz82UI/+umt9MB5Iq22vFmRxEvcOE1RYy56G/CiADjQLj+rGAlA==
+X-Received: by 2002:a05:6402:3592:b0:57c:5eed:4ebf with SMTP id
+ 4fb4d7f45d1cf-5879f5a61e1mr8072522a12.19.1719948181045; 
+ Tue, 02 Jul 2024 12:23:01 -0700 (PDT)
+Received: from [127.0.0.1] (dynamic-077-011-043-115.77.11.pool.telefonica.de.
+ [77.11.43.115]) by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-58b4a97b1f3sm1321718a12.18.2024.07.02.12.22.58
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 02 Jul 2024 12:22:59 -0700 (PDT)
+Date: Tue, 02 Jul 2024 18:42:23 +0000
+From: Bernhard Beschow <shentey@gmail.com>
+To: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ BALATON Zoltan <balaton@eik.bme.hu>
+CC: philmd@linaro.org, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_2/2=5D_hw/isa/vt82c686=2Ec=3A_Embed_i82?=
+ =?US-ASCII?Q?59_irq_in_device_state_instead_of_allocating?=
+In-Reply-To: <CAFEAcA_tBjQrJMpjbzVUVcrTWghr4v=MHB0qpWx=xjML6ek9mg@mail.gmail.com>
+References: <cover.1719690591.git.balaton@eik.bme.hu>
+ <b70b9e72063b4dd4005bf4bc040b84f2bb617bf4.1719690591.git.balaton@eik.bme.hu>
+ <CAFEAcA_tBjQrJMpjbzVUVcrTWghr4v=MHB0qpWx=xjML6ek9mg@mail.gmail.com>
+Message-ID: <4CBF639B-CC3E-4644-9F87-481B9147F2A9@gmail.com>
 MIME-Version: 1.0
-References: <20240630163225.2973081-1-zheyuma97@gmail.com>
- <CAFEAcA81ymhA+bGLpfT_jmZ+=D9t+h_wg7QgWkgSFR4EKRGPqg@mail.gmail.com>
-In-Reply-To: <CAFEAcA81ymhA+bGLpfT_jmZ+=D9t+h_wg7QgWkgSFR4EKRGPqg@mail.gmail.com>
-From: Zheyu Ma <zheyuma97@gmail.com>
-Date: Tue, 2 Jul 2024 20:21:10 +0200
-Message-ID: <CAMhUBjkePcrX5Fg-WKc62DnorF6Enkd6LoRMT8QvaQaXTHzwvw@mail.gmail.com>
-Subject: Re: [PATCH] hw/usb: Fix memory leak in musb_reset()
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org
-Content-Type: multipart/alternative; boundary="00000000000018ace2061c47c876"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
- envelope-from=zheyuma97@gmail.com; helo=mail-ed1-x52a.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, HTML_MESSAGE=0.001,
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::535;
+ envelope-from=shentey@gmail.com; helo=mail-ed1-x535.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,212 +95,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---00000000000018ace2061c47c876
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Hi Peter,
 
-On Mon, Jul 1, 2024 at 2:43=E2=80=AFPM Peter Maydell <peter.maydell@linaro.=
-org>
-wrote:
-
-> On Sun, 30 Jun 2024 at 17:33, Zheyu Ma <zheyuma97@gmail.com> wrote:
-> >
-> > The musb_reset function was causing a memory leak by not properly freei=
-ng
-> > the memory associated with USBPacket instances before reinitializing
-> them.
-> > This commit addresses the memory leak by adding calls to
-> usb_packet_cleanup
-> > for each USBPacket instance before reinitializing them with
-> usb_packet_init.
-> >
-> > Asan log:
-> >
-> > =3D2970623=3D=3DERROR: LeakSanitizer: detected memory leaks
-> > Direct leak of 256 byte(s) in 16 object(s) allocated from:
-> >     #0 0x561e20629c3d in malloc
-> llvm/compiler-rt/lib/asan/asan_malloc_linux.cpp:129:3
-> >     #1 0x7fee91885738 in g_malloc
-> (/lib/x86_64-linux-gnu/libglib-2.0.so.0+0x5e738)
-> >     #2 0x561e21b4d0e1 in usb_packet_init hw/usb/core.c:531:5
-> >     #3 0x561e21c5016b in musb_reset hw/usb/hcd-musb.c:372:9
-> >     #4 0x561e21c502a9 in musb_init hw/usb/hcd-musb.c:385:5
-> >     #5 0x561e21c893ef in tusb6010_realize hw/usb/tusb6010.c:827:15
-> >     #6 0x561e23443355 in device_set_realized hw/core/qdev.c:510:13
-> >     #7 0x561e2346ac1b in property_set_bool qom/object.c:2354:5
-> >     #8 0x561e23463895 in object_property_set qom/object.c:1463:5
-> >     #9 0x561e23477909 in object_property_set_qobject
-> qom/qom-qobject.c:28:10
-> >     #10 0x561e234645ed in object_property_set_bool qom/object.c:1533:15
-> >     #11 0x561e2343c830 in qdev_realize hw/core/qdev.c:291:12
-> >     #12 0x561e2343c874 in qdev_realize_and_unref hw/core/qdev.c:298:11
-> >     #13 0x561e20ad5091 in sysbus_realize_and_unref
-> hw/core/sysbus.c:261:12
-> >     #14 0x561e22553283 in n8x0_usb_setup hw/arm/nseries.c:800:5
-> >     #15 0x561e2254e99b in n8x0_init hw/arm/nseries.c:1356:5
-> >     #16 0x561e22561170 in n810_init hw/arm/nseries.c:1418:5
-> >
-> > Signed-off-by: Zheyu Ma <zheyuma97@gmail.com>
-> > ---
-> >  hw/usb/hcd-musb.c | 2 ++
-> >  1 file changed, 2 insertions(+)
-> >
-> > diff --git a/hw/usb/hcd-musb.c b/hw/usb/hcd-musb.c
-> > index 6dca373cb1..0300aeaec6 100644
-> > --- a/hw/usb/hcd-musb.c
-> > +++ b/hw/usb/hcd-musb.c
-> > @@ -368,6 +368,8 @@ void musb_reset(MUSBState *s)
-> >          s->ep[i].maxp[1] =3D 0x40;
-> >          s->ep[i].musb =3D s;
-> >          s->ep[i].epnum =3D i;
-> > +        usb_packet_cleanup(&s->ep[i].packey[0].p);
-> > +        usb_packet_cleanup(&s->ep[i].packey[1].p);
-> >          usb_packet_init(&s->ep[i].packey[0].p);
-> >          usb_packet_init(&s->ep[i].packey[1].p);
-> >      }
+Am 1=2E Juli 2024 12:58:15 UTC schrieb Peter Maydell <peter=2Emaydell@lina=
+ro=2Eorg>:
+>On Sat, 29 Jun 2024 at 21:01, BALATON Zoltan <balaton@eik=2Ebme=2Ehu> wro=
+te:
+>>
+>> To avoid a warning about unfreed qemu_irq embed the i8259 irq in the
+>> device state instead of allocating it=2E
+>>
+>> Signed-off-by: BALATON Zoltan <balaton@eik=2Ebme=2Ehu>
+>> ---
+>>  hw/isa/vt82c686=2Ec | 7 ++++---
+>>  1 file changed, 4 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/hw/isa/vt82c686=2Ec b/hw/isa/vt82c686=2Ec
+>> index 8582ac0322=2E=2E834051abeb 100644
+>> --- a/hw/isa/vt82c686=2Ec
+>> +++ b/hw/isa/vt82c686=2Ec
+>> @@ -592,6 +592,8 @@ OBJECT_DECLARE_SIMPLE_TYPE(ViaISAState, VIA_ISA)
+>>
+>>  struct ViaISAState {
+>>      PCIDevice dev;
+>> +
+>> +    IRQState i8259_irq;
+>>      qemu_irq cpu_intr;
+>>      qemu_irq *isa_irqs_in;
+>>      uint16_t irq_state[ISA_NUM_IRQS];
+>> @@ -715,13 +717,12 @@ static void via_isa_realize(PCIDevice *d, Error *=
+*errp)
+>>      ViaISAState *s =3D VIA_ISA(d);
+>>      DeviceState *dev =3D DEVICE(d);
+>>      PCIBus *pci_bus =3D pci_get_bus(d);
+>> -    qemu_irq *isa_irq;
+>>      ISABus *isa_bus;
+>>      int i;
+>>
+>>      qdev_init_gpio_out(dev, &s->cpu_intr, 1);
+>>      qdev_init_gpio_in_named(dev, via_isa_pirq, "pirq", PCI_NUM_PINS);
+>> -    isa_irq =3D qemu_allocate_irqs(via_isa_request_i8259_irq, s, 1);
+>> +    qemu_init_irq(&s->i8259_irq, via_isa_request_i8259_irq, s, 0);
+>>      isa_bus =3D isa_bus_new(dev, pci_address_space(d), pci_address_spa=
+ce_io(d),
+>>                            errp);
 >
-> I don't think it's valid to call usb_packet_cleanup() on
-> a USBPacket that's never been inited, which is what will
-> happen on the first reset with this patch.
+>So if I understand correctly, this IRQ line isn't visible
+>from outside this chip,
+
+Actally it is, in the form of the INTR pin=2E Assuming similar naming conv=
+entions in vt82xx and piix, one can confirm this by consulting the piix4 da=
+tasheet, "Figure 5=2E Interrupt Controller Block Diagram"=2E Moreover, the =
+pegasos2 schematics (linked in the QEMU documentation) suggest that this pi=
+n is actually used there, although not modeled in QEMU=2E Compare this to h=
+ow the "intr" pin is exposed by the piix4 device model and wired in the Mal=
+ta board=2E
+
+> we're just trying to wire together
+>two internal components of the chip? If so, I agree that
+>this seems a better way than creating a named GPIO that
+>we then have to document as a "not really an external
+>connection, don't try to use this" line=2E (We've done that
+>before I think in other devices, and it works but it's
+>a bit odd-looking=2E)
 >
-> Looking at how hcd-ehci.c handles its s->ipacket (which has
-> the same "allocated at device creation and reused for the
-> whole lifetime of the device" semantics) I think what we
-> want is:
->  * at device init, call usb_packet_init()
->  * at device reset, do nothing
->  * at device finalize, call usb_packet_cleanup()
+>That said, I do notice that the via_isa_request_i8259_irq()
+>function doesn't do anything except pass the level onto
+>another qemu_irq, so I think the theoretical ideal would be
+>if we could arrange to plumb things directly through rather
+>than needing this extra qemu_irq and function=2E There's
+>probably a reason (order of device creation/connection?)
+>that doesn't work though=2E
+
+I think there could be a general pattern of device creation/connection whi=
+ch I've outlined here: https://lore=2Ekernel=2Eorg/qemu-devel/0FFB5FD2-08CE=
+-4CEC-9001-E7AC24407A44@gmail=2Ecom/
+
+Best regards,
+Bernhard
+
 >
-> (There is currently no hcd-musb function for finalize
-> because the only uses of it are for devices which continue
-> to exist for the whole lifetime of the simulation. So we
-> can ignore the last part of that.)
+>-- PMM
 >
-> PS: the tusb6010 and hcd-musb are both used only by deprecated
-> board types which are scheduled to be deleted by the end
-> of the year (basically after we get the 9.1 release out,
-> and before 9.2). You might prefer to target your fuzzing
-> efforts to board types which aren't deprecated.
->
-
-Thanks for your kind reminder. I'll check the bug list and ignore
-the devices which will be deprecated :)
-
-Regards,
-Zheyu
-
---00000000000018ace2061c47c876
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div dir=3D"ltr">Hi=C2=A0Peter,</div><br><div class=3D"gma=
-il_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Mon, Jul 1, 2024 at 2:43=
-=E2=80=AFPM Peter Maydell &lt;<a href=3D"mailto:peter.maydell@linaro.org">p=
-eter.maydell@linaro.org</a>&gt; wrote:<br></div><blockquote class=3D"gmail_=
-quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,=
-204);padding-left:1ex">On Sun, 30 Jun 2024 at 17:33, Zheyu Ma &lt;<a href=
-=3D"mailto:zheyuma97@gmail.com" target=3D"_blank">zheyuma97@gmail.com</a>&g=
-t; wrote:<br>
-&gt;<br>
-&gt; The musb_reset function was causing a memory leak by not properly free=
-ing<br>
-&gt; the memory associated with USBPacket instances before reinitializing t=
-hem.<br>
-&gt; This commit addresses the memory leak by adding calls to usb_packet_cl=
-eanup<br>
-&gt; for each USBPacket instance before reinitializing them with usb_packet=
-_init.<br>
-&gt;<br>
-&gt; Asan log:<br>
-&gt;<br>
-&gt; =3D2970623=3D=3DERROR: LeakSanitizer: detected memory leaks<br>
-&gt; Direct leak of 256 byte(s) in 16 object(s) allocated from:<br>
-&gt;=C2=A0 =C2=A0 =C2=A0#0 0x561e20629c3d in malloc llvm/compiler-rt/lib/as=
-an/asan_malloc_linux.cpp:129:3<br>
-&gt;=C2=A0 =C2=A0 =C2=A0#1 0x7fee91885738 in g_malloc (/lib/x86_64-linux-gn=
-u/libglib-2.0.so.0+0x5e738)<br>
-&gt;=C2=A0 =C2=A0 =C2=A0#2 0x561e21b4d0e1 in usb_packet_init hw/usb/core.c:=
-531:5<br>
-&gt;=C2=A0 =C2=A0 =C2=A0#3 0x561e21c5016b in musb_reset hw/usb/hcd-musb.c:3=
-72:9<br>
-&gt;=C2=A0 =C2=A0 =C2=A0#4 0x561e21c502a9 in musb_init hw/usb/hcd-musb.c:38=
-5:5<br>
-&gt;=C2=A0 =C2=A0 =C2=A0#5 0x561e21c893ef in tusb6010_realize hw/usb/tusb60=
-10.c:827:15<br>
-&gt;=C2=A0 =C2=A0 =C2=A0#6 0x561e23443355 in device_set_realized hw/core/qd=
-ev.c:510:13<br>
-&gt;=C2=A0 =C2=A0 =C2=A0#7 0x561e2346ac1b in property_set_bool qom/object.c=
-:2354:5<br>
-&gt;=C2=A0 =C2=A0 =C2=A0#8 0x561e23463895 in object_property_set qom/object=
-.c:1463:5<br>
-&gt;=C2=A0 =C2=A0 =C2=A0#9 0x561e23477909 in object_property_set_qobject qo=
-m/qom-qobject.c:28:10<br>
-&gt;=C2=A0 =C2=A0 =C2=A0#10 0x561e234645ed in object_property_set_bool qom/=
-object.c:1533:15<br>
-&gt;=C2=A0 =C2=A0 =C2=A0#11 0x561e2343c830 in qdev_realize hw/core/qdev.c:2=
-91:12<br>
-&gt;=C2=A0 =C2=A0 =C2=A0#12 0x561e2343c874 in qdev_realize_and_unref hw/cor=
-e/qdev.c:298:11<br>
-&gt;=C2=A0 =C2=A0 =C2=A0#13 0x561e20ad5091 in sysbus_realize_and_unref hw/c=
-ore/sysbus.c:261:12<br>
-&gt;=C2=A0 =C2=A0 =C2=A0#14 0x561e22553283 in n8x0_usb_setup hw/arm/nseries=
-.c:800:5<br>
-&gt;=C2=A0 =C2=A0 =C2=A0#15 0x561e2254e99b in n8x0_init hw/arm/nseries.c:13=
-56:5<br>
-&gt;=C2=A0 =C2=A0 =C2=A0#16 0x561e22561170 in n810_init hw/arm/nseries.c:14=
-18:5<br>
-&gt;<br>
-&gt; Signed-off-by: Zheyu Ma &lt;<a href=3D"mailto:zheyuma97@gmail.com" tar=
-get=3D"_blank">zheyuma97@gmail.com</a>&gt;<br>
-&gt; ---<br>
-&gt;=C2=A0 hw/usb/hcd-musb.c | 2 ++<br>
-&gt;=C2=A0 1 file changed, 2 insertions(+)<br>
-&gt;<br>
-&gt; diff --git a/hw/usb/hcd-musb.c b/hw/usb/hcd-musb.c<br>
-&gt; index 6dca373cb1..0300aeaec6 100644<br>
-&gt; --- a/hw/usb/hcd-musb.c<br>
-&gt; +++ b/hw/usb/hcd-musb.c<br>
-&gt; @@ -368,6 +368,8 @@ void musb_reset(MUSBState *s)<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 s-&gt;ep[i].maxp[1] =3D 0x40;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 s-&gt;ep[i].musb =3D s;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 s-&gt;ep[i].epnum =3D i;<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 usb_packet_cleanup(&amp;s-&gt;ep[i].packe=
-y[0].p);<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 usb_packet_cleanup(&amp;s-&gt;ep[i].packe=
-y[1].p);<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 usb_packet_init(&amp;s-&gt;ep[i].pac=
-key[0].p);<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 usb_packet_init(&amp;s-&gt;ep[i].pac=
-key[1].p);<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 }<br>
-<br>
-I don&#39;t think it&#39;s valid to call usb_packet_cleanup() on<br>
-a USBPacket that&#39;s never been inited, which is what will<br>
-happen on the first reset with this patch.<br>
-<br>
-Looking at how hcd-ehci.c handles its s-&gt;ipacket (which has<br>
-the same &quot;allocated at device creation and reused for the<br>
-whole lifetime of the device&quot; semantics) I think what we<br>
-want is:<br>
-=C2=A0* at device init, call usb_packet_init()<br>
-=C2=A0* at device reset, do nothing<br>
-=C2=A0* at device finalize, call usb_packet_cleanup()<br>
-<br>
-(There is currently no hcd-musb function for finalize<br>
-because the only uses of it are for devices which continue<br>
-to exist for the whole lifetime of the simulation. So we<br>
-can ignore the last part of that.)<br>
-<br>
-PS: the tusb6010 and hcd-musb are both used only by deprecated<br>
-board types which are scheduled to be deleted by the end<br>
-of the year (basically after we get the 9.1 release out,<br>
-and before 9.2). You might prefer to target your fuzzing<br>
-efforts to board types which aren&#39;t deprecated.<br></blockquote><div><b=
-r></div><div>Thanks for your kind reminder. I&#39;ll check the bug list and=
- ignore the=C2=A0devices which will be deprecated :)<br><br>Regards,<br>Zhe=
-yu</div></div></div>
-
---00000000000018ace2061c47c876--
 
