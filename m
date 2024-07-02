@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 929E092495C
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 22:34:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95FD4924947
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 22:31:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOk0R-0005kS-JU; Tue, 02 Jul 2024 16:21:39 -0400
+	id 1sOk0X-0006kT-N3; Tue, 02 Jul 2024 16:21:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOjzU-0004oH-3j
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 16:20:41 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOjzc-000534-Qn
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 16:20:52 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOjzS-0001fD-Eb
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 16:20:39 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOjzW-0001gp-Hv
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 16:20:46 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719951637;
+ s=mimecast20190719; t=1719951641;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=actUboiQ+IrTgCsdz18KhXUIoDAvYkrEhXUsAIxh/Nc=;
- b=jMxqsST9afUvCKLr5XrAqdOjjwsEZidyIxye4ZipJR1JtyiAVLJFmITez1WYPK0sYOvMwN
- D/Xzyz1yODVTrk2SQcBzgsE0CFCrg24KfDh4I/RIo1X6SeoPVgqI7n56GQEP7GICXb0vlI
- 4XhNKT2ujetEvCQ9jsaSwcIaRqF7dho=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=DMkazJvXlCFuPVFo5zwsqgTLcz0EAKKfqUw3BcILaOs=;
+ b=IS7G4fmEOyDxjyvngXeMTZu1s7pMhIe1ZYb2UvNhVqhDs/BydNmPJTg4PcCZkvbTZN/bGV
+ 61z2VaZeaREkTDyEtFuLMGxtIfoFZIgkBlwfP+Qx8O6HxybIhCaFTGnbU5bspmfiav2GlM
+ P31dpiwm8wJfeXCvTQ9ef/3fTcHalOc=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-696-w2XAogIFOaKG95DIwplffg-1; Tue, 02 Jul 2024 16:20:35 -0400
-X-MC-Unique: w2XAogIFOaKG95DIwplffg-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-42566e8a9efso42185895e9.2
- for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 13:20:35 -0700 (PDT)
+ us-mta-641-3ck2n6byOgCMvhG8q5dZ0Q-1; Tue, 02 Jul 2024 16:20:40 -0400
+X-MC-Unique: 3ck2n6byOgCMvhG8q5dZ0Q-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-4257f95fe85so18823315e9.1
+ for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 13:20:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719951634; x=1720556434;
+ d=1e100.net; s=20230601; t=1719951639; x=1720556439;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=actUboiQ+IrTgCsdz18KhXUIoDAvYkrEhXUsAIxh/Nc=;
- b=Xr5gm+BFXrM+vK1ZPhXQUGaXOhP+b0XcdMfw8CwbDhH9Dh33nBeYaay0ZryuI0AfPS
- hQcki9QH+rPG+brGG1Ue3iAboqWwEDOs4Arf4P6VwKW1+VoxrEYhpVEA5cCVTYN1qmUr
- +a9iGfLNjjesoRAQyKwUXcDEbaEsuFJHN6MOsmjyYB54b+GyS9V/jFz4yFq1LAezsOxo
- F7gbM1u5DcTlvjeLc2Kt4u54T13eYyKVfd+t86m7lQUo/5lmdrmJWQdBUtg82YuHszOe
- CEuFVWE/7/P817B6jWM5JS8v6ZYpKHpsRfsJsTwIdvdY+f135EXk9a3ibyW/b1RRATXC
- SisQ==
-X-Gm-Message-State: AOJu0YzzHo5nf2xBqUE01jH7o3z05Xq87tZejMB86b2Y83n0KPdObFHQ
- A9JrLgUjSue4iegJ+fNq73a2M1xLMlXhpFFo2MnH3J93t51ap9TInetJRhB7AK2S3hJNUJodg/e
- Km9uop9y1YYI7C1aZJFDWovy7F8D2DPAm7wXSt6s0rV3dXMnlnA35wBabFAXhC3P48d75uvWkPy
- Dnxckz65TvJ9ItF6cVqyvpVa7emxJSyQ==
-X-Received: by 2002:adf:f18b:0:b0:361:dd0c:678 with SMTP id
- ffacd0b85a97d-367756bc471mr7294514f8f.36.1719951633881; 
- Tue, 02 Jul 2024 13:20:33 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IElwaApP0XIJ4pjyGb7BSj59w+Y8v1dEKdAKZhiQ4vH4/PKwktwFYx+c/wz1REhd0gpEnEjUQ==
-X-Received: by 2002:adf:f18b:0:b0:361:dd0c:678 with SMTP id
- ffacd0b85a97d-367756bc471mr7294488f8f.36.1719951633340; 
- Tue, 02 Jul 2024 13:20:33 -0700 (PDT)
+ bh=DMkazJvXlCFuPVFo5zwsqgTLcz0EAKKfqUw3BcILaOs=;
+ b=BqsI3M44DQGv6QbqPSo6tbvNCcriETMMBhdv3lPt8kFtPoCN3F93Wg1y3Bx8C4rhZq
+ jKm0HlgPCm9KkIYhBILXPNd4ncCgEnflPcNESbS8Na5ajYUhNTXHzOJtmurRIKtv+yhx
+ K/IUBRktXZiiIcMVzbZk4xVy7HfUFntqw6UTsxFwBBaA2eG4iLgQRotqCgXfmj211PiX
+ 6W1feWUa8tfnmlvxtAhMZGpRFma4jIeuxNISZwfMvzHRRc1jLJOGYeku4D7VINgu6aAO
+ eqWvTjO4svjnl05IK1qvgBXOA19lTOURiqmq7nPmmtOspd6M23QFcyx9z8ME9wIF8BLM
+ il5A==
+X-Gm-Message-State: AOJu0YzdSNH/54RiLEE1OqHwKMxASlEvQhcmv+QT+59dYnq9REiHr8Dt
+ V8R1BVta9f/K+kfNHgIum6Av+LmpX4jZJj1KszvMIMo00pbDGtwIYs8DpQwZUQSbE8i7FTpBUjk
+ IDGpLG/uzg7qNUn8+baFgY3dsIsoDrYOxrTmhfWrZOe+Gm80gaZjBUASrX83pck1XLy/mHXThgY
+ BZziupGBAH94/v7Bhft52AW9B/Q6tiGg==
+X-Received: by 2002:adf:ef4a:0:b0:367:92b3:f6b0 with SMTP id
+ ffacd0b85a97d-36792b3fb91mr26195f8f.21.1719951638981; 
+ Tue, 02 Jul 2024 13:20:38 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHAF+SlkAFzGwtURNvVdFbF9BNL5XgDH8lttnUMErgQlryZynmCV6YMMTleK4DTI+VRjSbS1A==
+X-Received: by 2002:adf:ef4a:0:b0:367:92b3:f6b0 with SMTP id
+ ffacd0b85a97d-36792b3fb91mr26178f8f.21.1719951638424; 
+ Tue, 02 Jul 2024 13:20:38 -0700 (PDT)
 Received: from redhat.com ([2a02:14f:1f5:eadd:8c31:db01:9d01:7604])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3675a0e1412sm14091632f8f.53.2024.07.02.13.20.30
+ ffacd0b85a97d-3675a0e12d7sm14135571f8f.51.2024.07.02.13.20.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 02 Jul 2024 13:20:32 -0700 (PDT)
-Date: Tue, 2 Jul 2024 16:20:29 -0400
+ Tue, 02 Jul 2024 13:20:37 -0700 (PDT)
+Date: Tue, 2 Jul 2024 16:20:33 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
@@ -70,9 +70,8 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
  David Gibson <david@gibson.dropbear.id.au>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-ppc@nongnu.org
-Subject: [PULL v2 80/88] hw/ppc/spapr_pci: Do not create DT for disabled PCI
- device
-Message-ID: <1367c24db02afde209d307d653313351bf774b07.1719951168.git.mst@redhat.com>
+Subject: [PULL v2 81/88] hw/ppc/spapr_pci: Do not reject VFs created after a PF
+Message-ID: <620ed810335bb71279404d1c197d5a15c7201b79.1719951168.git.mst@redhat.com>
 References: <cover.1719951168.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -80,7 +79,7 @@ Content-Disposition: inline
 In-Reply-To: <cover.1719951168.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -88,7 +87,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,32 +105,31 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-Disabled means it is a disabled SR-IOV VF or it is powered off, and
-hidden from the guest.
+A PF may automatically create VFs and the PF may be function 0.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Message-Id: <20240627-reuse-v10-2-7ca0b8ed3d9f@daynix.com>
+Message-Id: <20240627-reuse-v10-3-7ca0b8ed3d9f@daynix.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/ppc/spapr_pci.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ hw/ppc/spapr_pci.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/hw/ppc/spapr_pci.c b/hw/ppc/spapr_pci.c
-index 7cf9904c35..f63182a03c 100644
+index f63182a03c..ed4454bbf7 100644
 --- a/hw/ppc/spapr_pci.c
 +++ b/hw/ppc/spapr_pci.c
-@@ -1296,6 +1296,10 @@ static void spapr_dt_pci_device_cb(PCIBus *bus, PCIDevice *pdev,
-         return;
-     }
- 
-+    if (!pdev->enabled) {
-+        return;
-+    }
-+
-     err = spapr_dt_pci_device(p->sphb, pdev, p->fdt, p->offset);
-     if (err < 0) {
-         p->err = err;
+@@ -1573,7 +1573,9 @@ static void spapr_pci_pre_plug(HotplugHandler *plug_handler,
+      * hotplug, we do not allow functions to be hotplugged to a
+      * slot that already has function 0 present
+      */
+-    if (plugged_dev->hotplugged && bus->devices[PCI_DEVFN(slotnr, 0)] &&
++    if (plugged_dev->hotplugged &&
++        !pci_is_vf(pdev) &&
++        bus->devices[PCI_DEVFN(slotnr, 0)] &&
+         PCI_FUNC(pdev->devfn) != 0) {
+         error_setg(errp, "PCI: slot %d function 0 already occupied by %s,"
+                    " additional functions can no longer be exposed to guest.",
 -- 
 MST
 
