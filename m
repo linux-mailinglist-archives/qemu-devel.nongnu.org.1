@@ -2,73 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E332C924092
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 16:23:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A2C492402B
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 16:14:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOeCb-0000fg-KM; Tue, 02 Jul 2024 10:09:49 -0400
+	id 1sOeCa-0000WU-6k; Tue, 02 Jul 2024 10:09:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOeCS-0008Vr-B1
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:09:41 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOeCR-0008Ho-4y
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:09:39 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOeCA-0008Lc-5h
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:09:40 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOeCB-0008Li-1l
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:09:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719929361;
+ s=mimecast20190719; t=1719929362;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=iKFeowSJAGhilDZfxfLdJ5fHZQGvWfI2BMoyWfTY0Wo=;
- b=DHK7awJUuTkReY/KFSV08GmDRQMZujf/Jyis2rhp/8aNCON2/nwXy71jpIoMcAyXQo+i5H
- bPGSHO0PByCoDb9mzdOfGIxq+gxzAaSEMZDx8UFKTAh5R//sFKdLLbdUoTzlVZJvlJDvXO
- Ek++HYpQUWlymELREBgeEEiYRPG0wKg=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=pgJQy7t094Dms9DBv10pUkz+7onKHwqzjJeEHsSRcQk=;
+ b=b9Jp9lo0hUm++0MuFRzpSoThxRT3VvuxtUSb9sL+bSLKragceM9FT+dvcSrp371Ya8+git
+ 9riNXrJk+LsF0YqS/c6dr6/k+BENyCyUwO8r0hj6UPTzgkvrQYSgDHugAIGgpJSRAdmomW
+ AiG1Msasuh6vH1XjLQUuUhfGxOAbUaU=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-232-S6WE9z1OPcWLDDU0trQP2A-1; Tue, 02 Jul 2024 10:09:18 -0400
-X-MC-Unique: S6WE9z1OPcWLDDU0trQP2A-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-4256809ae27so27882905e9.1
- for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 07:09:17 -0700 (PDT)
+ us-mta-604-TZL2ob9zNeONuqC2p20Osw-1; Tue, 02 Jul 2024 10:09:20 -0400
+X-MC-Unique: TZL2ob9zNeONuqC2p20Osw-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-4256569a4faso27263465e9.1
+ for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 07:09:19 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719929356; x=1720534156;
+ d=1e100.net; s=20230601; t=1719929358; x=1720534158;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=iKFeowSJAGhilDZfxfLdJ5fHZQGvWfI2BMoyWfTY0Wo=;
- b=Cfgivc6UgTHqAXJ2ENaaS3zIaSOQTO+PlhPN3AWwrUbt9R+EkhgKBkk6EPlhf/MqmO
- uVokh+Qyk2w23Gh7ONSnwbg2u+5AILCpN3Mk58Rk+YaSzR0S9eRaVcgrqPA9+SJookbT
- 6Lq5qfvVF3sjsczhhoD8lmig9wAEioxFV7Dc90rtyJGS6kyKTsETmXAHg8i/Fe4i8S2o
- Ow7j+6rkYubqEc5BUNuDKnyWgcOU86JAzGJR3RZnlZF02bR6XUPaiobdPBthqmULZG1U
- /hPB3HDoiza0noIbNttKhGpC9O+uiV2YFfEOywNHCOYUgGIvMkfHYfefb3EZ9I5lIj+u
- kCXQ==
-X-Gm-Message-State: AOJu0Ywx1sCJQ2VU4qgxMPeWCkKQEeIXu5v/KWmT4cO7R0ufA2nyQT+t
- TdM2IthJW7/FC3vlA8xsxdFs4yaGJvx3Mbpq1tezRiQwW3BNOHG5xemHcRWNf1wsqgAczykHvVI
- r6Gdix9MMwxdoA2HbVtz/HsnczncYuKdAZeH2pKUOd8EouOr3tFmXqAj7W17lK2i+wGUrTNMb8v
- bn4WZ8LLphJ1vRqg1WvR8BZ4mxeECJlA==
-X-Received: by 2002:a05:600c:3089:b0:425:7835:4382 with SMTP id
- 5b1f17b1804b1-4257a06da46mr69368105e9.34.1719929355854; 
- Tue, 02 Jul 2024 07:09:15 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHYhhUxgOUBoVeoPojhGnoBsde97DcBQEjbJucX4F1iYVRgfogJwjvGPENSsEJ+Wjx7ap5bjQ==
-X-Received: by 2002:a05:600c:3089:b0:425:7835:4382 with SMTP id
- 5b1f17b1804b1-4257a06da46mr69367865e9.34.1719929355305; 
- Tue, 02 Jul 2024 07:09:15 -0700 (PDT)
+ bh=pgJQy7t094Dms9DBv10pUkz+7onKHwqzjJeEHsSRcQk=;
+ b=KR/Qjt8xLNJGys1fEb0TepYHZp0NmqAqH7dDHppmjr6E2UUopHUBunX16sZtrRADef
+ Y7agemK80ceMk8rVVVpzwL5c+jxIAUhujSIpSNTMsjfYlC6HtuZ7QbJ8NylH1QIDdFE+
+ MRrqgVs07wIvVV5jZG7FgbR04cuo9NmArisDYhz1ENu7D/ftExtO4aQWwhHJaaa0XVL1
+ hq10bemClISBRDDc5cZ2XmSYdQ6T5cWFermywxCP2BVb2tN7FOO8a6pw85Vy/ehhH1JT
+ i58zKZ2/92ZmAKQkFEhp/jx6D6pwuCop7t6MPorkB/Mg/5EqG/YNiuq2bYEcG92Xyrgq
+ +X+w==
+X-Gm-Message-State: AOJu0YxJcdbl0jtqFFeLHTque/SUBkK6t7qivUNNg0U8py4YNVJOxMIg
+ hYidhKZPObF6N5V48+eCZFVQ4yyvdEWDTrfgcIfgOhlWy7DOkYRr4H0ogGyYkEcTMbYshVKCsOe
+ JP1kzL3sDsy0CYy+To2j3Pj3zB/Pb/iYyFtULkSd35n/pydStsLS4NOtykCl+4u8oROVil5bTBl
+ 8UFNTMalAjVjBrRxwP95ai3M1CoOxNiQ==
+X-Received: by 2002:a05:600c:4f13:b0:425:6290:b11b with SMTP id
+ 5b1f17b1804b1-4256d58dc93mr107235165e9.18.1719929358538; 
+ Tue, 02 Jul 2024 07:09:18 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFHbFq1qkUi1fZdglcJIPPyGd1pO8r2TtH/fMhcS06wamh8zkt0pz65ViGTQJUh9rWesjxoPg==
+X-Received: by 2002:a05:600c:4f13:b0:425:6290:b11b with SMTP id
+ 5b1f17b1804b1-4256d58dc93mr107234875e9.18.1719929357982; 
+ Tue, 02 Jul 2024 07:09:17 -0700 (PDT)
 Received: from redhat.com ([2a02:14f:1f5:eadd:8c31:db01:9d01:7604])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3675a103371sm13375112f8f.101.2024.07.02.07.09.14
+ 5b1f17b1804b1-4257bc89832sm128332435e9.42.2024.07.02.07.09.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 02 Jul 2024 07:09:14 -0700 (PDT)
-Date: Tue, 2 Jul 2024 10:09:12 -0400
+ Tue, 02 Jul 2024 07:09:17 -0700 (PDT)
+Date: Tue, 2 Jul 2024 10:09:15 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- BillXiang <xiangwencheng@dayudpu.com>
-Subject: [PULL 44/91] vhost-user: Skip unnecessary duplicated
- VHOST_USER_SET_LOG_BASE requests
-Message-ID: <df4de32475fe554351d63049a8c92783c724ec36.1719929191.git.mst@redhat.com>
+ Dmitry Frolov <frolov@swemel.ru>, Jason Wang <jasowang@redhat.com>
+Subject: [PULL 45/91] hw/net/virtio-net.c: fix crash in iov_copy()
+Message-ID: <7bc77e8972cb30f5278ab1746ea962684b92f4ca.1719929191.git.mst@redhat.com>
 References: <cover.1719929191.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -84,7 +83,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,32 +99,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: BillXiang <xiangwencheng@dayudpu.com>
+From: Dmitry Frolov <frolov@swemel.ru>
 
-The VHOST_USER_SET_LOG_BASE requests should be categorized into
-non-vring specific messages, and should be sent only once.
-If send more than once, dpdk will munmap old log_addr which may has been used and cause segmentation fault.
+A crash found while fuzzing device virtio-net-socket-check-used.
+Assertion "offset == 0" in iov_copy() fails if less than guest_hdr_len bytes
+were transmited.
 
-Signed-off-by: BillXiang <xiangwencheng@dayudpu.com>
-Message-Id: <20240613065150.3100-1-xiangwencheng@dayudpu.com>
+Signed-off-by: Dmitry Frolov <frolov@swemel.ru>
+Message-Id: <20240613143529.602591-2-frolov@swemel.ru>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/virtio/vhost-user.c | 1 +
- 1 file changed, 1 insertion(+)
+ hw/net/virtio-net.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
-index c407ea8939..00561daa06 100644
---- a/hw/virtio/vhost-user.c
-+++ b/hw/virtio/vhost-user.c
-@@ -371,6 +371,7 @@ static bool vhost_user_per_device_request(VhostUserRequest request)
-     case VHOST_USER_RESET_DEVICE:
-     case VHOST_USER_ADD_MEM_REG:
-     case VHOST_USER_REM_MEM_REG:
-+    case VHOST_USER_SET_LOG_BASE:
-         return true;
-     default:
-         return false;
+diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
+index 9c7e85caea..8f30972708 100644
+--- a/hw/net/virtio-net.c
++++ b/hw/net/virtio-net.c
+@@ -2735,6 +2735,10 @@ static int32_t virtio_net_flush_tx(VirtIONetQueue *q)
+          */
+         assert(n->host_hdr_len <= n->guest_hdr_len);
+         if (n->host_hdr_len != n->guest_hdr_len) {
++            if (iov_size(out_sg, out_num) < n->guest_hdr_len) {
++                virtio_error(vdev, "virtio-net header is invalid");
++                goto detach;
++            }
+             unsigned sg_num = iov_copy(sg, ARRAY_SIZE(sg),
+                                        out_sg, out_num,
+                                        0, n->host_hdr_len);
 -- 
 MST
 
