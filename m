@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBEE391EE1A
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 07:04:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE73491EE13
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 07:03:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOVf5-0000T5-4M; Tue, 02 Jul 2024 01:02:39 -0400
+	id 1sOVfL-00012x-9T; Tue, 02 Jul 2024 01:02:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOVf1-0008Tq-K3
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 01:02:35 -0400
-Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOVf5-0000he-Ut
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 01:02:39 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOVex-0007Ea-9r
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 01:02:34 -0400
-Received: by mail-lf1-x12b.google.com with SMTP id
- 2adb3069b0e04-52e829086f3so3575683e87.3
- for <qemu-devel@nongnu.org>; Mon, 01 Jul 2024 22:02:30 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOVf4-0007Ew-5V
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 01:02:39 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-4257a390a4eso17654665e9.0
+ for <qemu-devel@nongnu.org>; Mon, 01 Jul 2024 22:02:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719896549; x=1720501349; darn=nongnu.org;
+ d=linaro.org; s=google; t=1719896555; x=1720501355; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=JbdsfJ44aAB8rxW6wAXXI/854m0o2ZFI+jAaNwL715g=;
- b=FBFI41WO3Y5PjrYn8KHPhZQXGFbPrmytEnrd7/qJQbiHEj6bVjgmJXb/IzvNIvJvUH
- rCAp5tvTeuonI9zWClXeEf7jpOID4LtMGeUcf/nL0kcW3sQrHtqPyxQwJaLgAW+zA5ff
- FP5pJwUWFFYm23fRUZWC3lKGpBnJZFnxxVHFk5nEbZ32IjysywBCZKCtB+TTBHOqaIA+
- a5PYGGmTxIPvdZf2d3xFku5n1YaHlb/SahjFMuBWMW5LWQN42kE9auQ+XmNZ4z6wCBWT
- N4s1nEuhDZpFu3H1SBYsjEwk5LKw8o24jNuVz+PV5o2KdsNYYWrq8jJZ1Mdh1mQJ93wJ
- M32Q==
+ bh=Eas6wsShgW42jSmZDNlDNzwrh4Tvlo8xVG0UAKG97gM=;
+ b=lW0kAK1ZqMbz/E0DoTiJaMZTbJkjawuhX8aDYi9wBn14te1r1yINMB5X+Us49B/SQF
+ LxisdfsABYb+/h9v7W9Gh/UO5YFrbAzDq2EIK3fH8kt3bdzdvbMxG9asVMzscZoqo7pU
+ WHlTvISt7Qqlqa2JvIQQ/tAg8UagBH1M7EEWst8DTw0XvzdigOZIN82lBJA3fE3vnGeT
+ niPASdHK6JCJB1Vrwdy0PeeSEE0hjXUPeHK6XN2DjBS7Q4s5YLHZqZPkkJcqbPJk5C+c
+ oJg9y5FDlsWm6kaxm2UXvE7gK6wlJuY8ASubrieJKR4jwzARYk1jrPufiz0cL1Yqdmu9
+ 9uqQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719896549; x=1720501349;
+ d=1e100.net; s=20230601; t=1719896555; x=1720501355;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=JbdsfJ44aAB8rxW6wAXXI/854m0o2ZFI+jAaNwL715g=;
- b=uHI05vyDXxW0iDvaawxSqCBaq1ZqNSTBuxxhh3A5tpdID1IbwWfBFGuNaZ0B8+PrCt
- tccruV3z3fn21TG1BThR3SYx1fxcSL/VwhIZ+SZzNwZnyypcBiM+bvpTau/2DYfI94zM
- DZueJDAeItLLuT9HfYwngsu/KDL/yT/So8+NTQcdd1RonZj7/fVtWHoaOTJILZd8gFww
- TjsL7+iLqwO7DBF0EnGWs8GzjznF2arOs5+AAxMtdZq3M/jJFyj9ltpl0CHhaNV0wMvb
- 0ou0SxCQloL1j8JgwEqxpcPdi0NsjyUmj0dAaJHyv2vvRPm6H4Zz5LNUhJ31YaHaUjot
- r/OA==
-X-Gm-Message-State: AOJu0YzVKUviFamP2E5n1XlbUNLk/SAQ+ZAaqyz3Kf4OwtMvvp4LgVC6
- 9qmpChyCQ6aov0SmX/ys5bhItzV/TOKdYSmfX9vfNmVOg5Yvt2VAawCxF8NlVKGEaV22BwURhzd
- T
-X-Google-Smtp-Source: AGHT+IHcSruALdXDiIhrnburbKhsGcwxE0dO3V+PQeZp6k6vmsrjg8P3WukjH+jfgclugP65Ugy08g==
-X-Received: by 2002:ac2:4c41:0:b0:52b:bee3:dcc6 with SMTP id
- 2adb3069b0e04-52e826fa995mr5628932e87.51.1719896549046; 
- Mon, 01 Jul 2024 22:02:29 -0700 (PDT)
+ bh=Eas6wsShgW42jSmZDNlDNzwrh4Tvlo8xVG0UAKG97gM=;
+ b=dl20ibR0Rvy+r3814JOh4MJTD+3ZrLhF3VIJ2lXncduLTZrYFxpTNptz2d8vEnHhbf
+ Jyg4+a2WH4tc9vvT4ZFX62wcYar0vNLeHSFn7LTO/u28mAokSFTNGoF1Str+sMfN2qk3
+ LZDQbZ5mjoPckdmRWHkdmegQG2p3uONzEU1JuKSQYmEN0xfxjVyy8U+C9D38H4IZPTTO
+ 2L1ZqjN4KFc7ycB5HR7H/+HWajUGParhwbbJuyuBd6Dbmf62OIGWxw3xjuNbm4GhzDpe
+ XfMwTsmFnfjbxbIjsvyK3YuLJipElbNiW6n73kweGZL0ZyzszpdPV2OSU3iJhUkaYItJ
+ u1yg==
+X-Gm-Message-State: AOJu0Yw0IqJi4kdHg9poxeXsbc3xZKryAsPm2H3asXez6DkBKEAu0puS
+ BYraiWNh7mFJg5TCMYu8U5n5cWH/s+beGCRbvxJ0mN3H5C+Tis0zN3YgvPTV1bDegTnor8GPoH4
+ V
+X-Google-Smtp-Source: AGHT+IEkLClfvhCpvr9H30CpGvp3cfM/yrAuqZjU+z2QTi2KTGkWuQ8lEOPAUiXvIv4iwdT/EvVNZg==
+X-Received: by 2002:a05:600c:1989:b0:425:7a0e:f63 with SMTP id
+ 5b1f17b1804b1-4257a0e11e7mr49860665e9.3.1719896554928; 
+ Mon, 01 Jul 2024 22:02:34 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.209.58])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3675a1108b0sm11916332f8f.114.2024.07.01.22.02.27
+ 5b1f17b1804b1-4256b09aa32sm181009225e9.34.2024.07.01.22.02.33
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 01 Jul 2024 22:02:28 -0700 (PDT)
+ Mon, 01 Jul 2024 22:02:34 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 12/22] hw: skip registration of outdated versioned machine types
-Date: Tue,  2 Jul 2024 07:01:02 +0200
-Message-ID: <20240702050112.35907-13-philmd@linaro.org>
+Subject: [PULL 13/22] hw/ppc: remove obsolete manual deprecation reason string
+ of spapr machines
+Date: Tue,  2 Jul 2024 07:01:03 +0200
+Message-ID: <20240702050112.35907-14-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240702050112.35907-1-philmd@linaro.org>
 References: <20240702050112.35907-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x12b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,89 +96,37 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel P. Berrangé <berrange@redhat.com>
 
-This calls the MACHINE_VER_DELETION() macro in the machine type
-registration method, so that when a versioned machine type reaches
-the end of its life, it is no longer registered with QOM and thus
-cannot be used.
+The automatic deprecation mechanism introduced in the preceeding patches
+will mark every spapr machine upto and including 2.12 as deprecated. As
+such we can revert the manually added deprecation which was a subset:
 
-The actual definition of the machine type should be deleted at
-this point, but experience shows that can easily be forgotten.
-By skipping registration the manual code deletion task can be
-done at any later date.
+  commit 1392617d35765d5d912625fbb5cab1ffbed8e140
+  Author: Cédric Le Goater <clg@kaod.org>
+  Date:   Tue Jan 23 16:37:02 2024 +1000
+
+    spapr: Tag pseries-2.1 - 2.11 machines as deprecated
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20240620165742.1711389-12-berrange@redhat.com>
+Message-ID: <20240620165742.1711389-13-berrange@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/i386/pc.h       | 1 +
- hw/arm/virt.c              | 1 +
- hw/m68k/virt.c             | 1 +
- hw/ppc/spapr.c             | 1 +
- hw/s390x/s390-virtio-ccw.c | 1 +
- 5 files changed, 5 insertions(+)
+ hw/ppc/spapr.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
-index 83d2e66498..4e55d7ef6e 100644
---- a/include/hw/i386/pc.h
-+++ b/include/hw/i386/pc.h
-@@ -340,6 +340,7 @@ extern const size_t pc_compat_2_3_len;
-     }; \
-     static void MACHINE_VER_SYM(register, namesym, __VA_ARGS__)(void) \
-     { \
-+        MACHINE_VER_DELETION(__VA_ARGS__); \
-         type_register(&MACHINE_VER_SYM(info, namesym, __VA_ARGS__)); \
-     } \
-     type_init(MACHINE_VER_SYM(register, namesym, __VA_ARGS__));
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index 02e13b4a3d..b0c68d66a3 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -123,6 +123,7 @@ static void arm_virt_compat_set(MachineClass *mc)
-     }; \
-     static void MACHINE_VER_SYM(register, virt, __VA_ARGS__)(void) \
-     { \
-+        MACHINE_VER_DELETION(__VA_ARGS__); \
-         type_register_static(&MACHINE_VER_SYM(info, virt, __VA_ARGS__)); \
-     } \
-     type_init(MACHINE_VER_SYM(register, virt, __VA_ARGS__));
-diff --git a/hw/m68k/virt.c b/hw/m68k/virt.c
-index 37bb36b385..cda199af8f 100644
---- a/hw/m68k/virt.c
-+++ b/hw/m68k/virt.c
-@@ -356,6 +356,7 @@ type_init(virt_machine_register_types)
-     }; \
-     static void MACHINE_VER_SYM(register, virt, __VA_ARGS__)(void) \
-     { \
-+        MACHINE_VER_DELETION(__VA_ARGS__); \
-         type_register_static(&MACHINE_VER_SYM(info, virt, __VA_ARGS__)); \
-     } \
-     type_init(MACHINE_VER_SYM(register, virt, __VA_ARGS__));
 diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-index 55268489d3..044e6a8d9d 100644
+index 044e6a8d9d..98fa3aa6a8 100644
 --- a/hw/ppc/spapr.c
 +++ b/hw/ppc/spapr.c
-@@ -4824,6 +4824,7 @@ static void spapr_machine_latest_class_options(MachineClass *mc)
-     };                                                               \
-     static void MACHINE_VER_SYM(register, spapr, __VA_ARGS__)(void)  \
-     {                                                                \
-+        MACHINE_VER_DELETION(__VA_ARGS__);                           \
-         type_register(&MACHINE_VER_SYM(info, spapr, __VA_ARGS__));   \
-     }                                                                \
-     type_init(MACHINE_VER_SYM(register, spapr, __VA_ARGS__))
-diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
-index c25dc3e13f..336cb8c6d4 100644
---- a/hw/s390x/s390-virtio-ccw.c
-+++ b/hw/s390x/s390-virtio-ccw.c
-@@ -847,6 +847,7 @@ static const TypeInfo ccw_machine_info = {
-     };                                                                        \
-     static void MACHINE_VER_SYM(register, ccw, __VA_ARGS__)(void)             \
-     {                                                                         \
-+        MACHINE_VER_DELETION(__VA_ARGS__);                                    \
-         type_register_static(&MACHINE_VER_SYM(info, ccw, __VA_ARGS__));       \
-     }                                                                         \
-     type_init(MACHINE_VER_SYM(register, ccw, __VA_ARGS__))
+@@ -5156,7 +5156,6 @@ static void spapr_machine_2_11_class_options(MachineClass *mc)
+     spapr_machine_2_12_class_options(mc);
+     smc->default_caps.caps[SPAPR_CAP_HTM] = SPAPR_CAP_ON;
+     compat_props_add(mc->compat_props, hw_compat_2_11, hw_compat_2_11_len);
+-    mc->deprecation_reason = "old and not maintained - use a 2.12+ version";
+ }
+ 
+ DEFINE_SPAPR_MACHINE(2, 11);
 -- 
 2.41.0
 
