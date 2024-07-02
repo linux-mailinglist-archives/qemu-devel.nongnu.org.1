@@ -2,72 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA206924902
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 22:19:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86FEF9248E0
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 22:15:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOjuS-0004pb-LK; Tue, 02 Jul 2024 16:15:28 -0400
+	id 1sOjuS-0004r2-TU; Tue, 02 Jul 2024 16:15:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOjuI-0004IO-LP
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 16:15:19 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOjuK-0004O0-5s
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 16:15:20 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOjuD-0007kF-Ml
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 16:15:17 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOjuI-0007kj-3L
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 16:15:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719951313;
+ s=mimecast20190719; t=1719951317;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=gfd+vfybB3O3+4pkXHRWr1BbxFsd2M2r8td4r0aSbjQ=;
- b=adpfhVv8JBe5HXMRcd/cyLELhMCd6+3jEx9CVnfihjEVKQy9QYhPTi3MbIWPm4T9iF7dFZ
- l9oXYyXYNf0JJbGH6Xo3sd5rb1+CIMs3xnXyxiJKgLZRrY5Wq0NMen/gq8xuXqf/2Si5X+
- XtsywFstS7lx5lLTYbSJhbUMkhCzri8=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=uKK/AiLdjMfeKEPpHLdhaqq0Kf5J8WlC0WD4BsUonqY=;
+ b=bJI2C1t/Qc2HhgjZvy8+rhhh0gdDDoA5zKLaCF9Al0sXVIt71c5IMUbyw19O/3wlL/nTe4
+ n7bG1/lXIKHrTKTX/+ujMKuJzr/NMkoIkFGNAup4TrTscXIFhNVNt0C8ZmZ4ext+1iozoJ
+ 8IMq3K0Eq44yrM3JvWwyOknmfPuIujo=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-189-ZxAdE8gPMOezoGrog_x4pg-1; Tue, 02 Jul 2024 16:15:11 -0400
-X-MC-Unique: ZxAdE8gPMOezoGrog_x4pg-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-425897358f0so9435805e9.2
- for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 13:15:11 -0700 (PDT)
+ us-mta-616-zFWGn_F5P7maEKkr9gCCZw-1; Tue, 02 Jul 2024 16:15:16 -0400
+X-MC-Unique: zFWGn_F5P7maEKkr9gCCZw-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-3634a634f8aso2622668f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 13:15:15 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719951310; x=1720556110;
+ d=1e100.net; s=20230601; t=1719951314; x=1720556114;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=gfd+vfybB3O3+4pkXHRWr1BbxFsd2M2r8td4r0aSbjQ=;
- b=tmB7r22V3+R7qgpeuB/97HJHS6LIefsOY2Tu2GoGVEivYgAH9qNEmRmnC4b1h0F2z+
- hYxBUnAUtlfLrMtk0ZIDrAjb7RAVPQvhjRQuu5+83wqiAQ3g2YSerCc5f0BA0NAGum70
- PjSqv52vVOj5bJQgZ5h2q4UjToE5ZxSsRf8lCF2iaoPx7oizQnkWEFJ2oYDncTKhr4uk
- Ne/g5gbfsAzFe4e7YfSxgn4vARot2Kvs0MT44Y4NRBLYKpYd4einav/FPZFhvkE3R0d+
- ZSSqY+ZFXW18ZEuznpiyq5OgcxLup8GLOUi8sHElgkqx8pb/SnTX26EvtzTnmUyMbIFE
- ocDg==
-X-Gm-Message-State: AOJu0YyS7XFIb09/yCBGYUafBdRru0j0IUR+g2Yjux1zVzvOSBfewPiA
- YZSfEbLiaCxqGLf2tkETVf75Pt5cLrGuiJEUbrpHX875csg4bkD4Zlrn3hxZTvoTfY/K/SKgHHO
- DLD1OTqmB9m3GOyH1MYfLtF73PRbcrLPrJHotw391zTZpl9i1UF8valIEm9R5v+bktdBHHXMkAs
- 4ykDV7j/zEUHJ22bMddXE3dUkPgNnbSA==
-X-Received: by 2002:a05:6000:1fa8:b0:366:e9b8:784f with SMTP id
- ffacd0b85a97d-367756c6fabmr6677285f8f.32.1719951310186; 
- Tue, 02 Jul 2024 13:15:10 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE/XZQ7Q4CfA7ocYiHwYKMaKg644P0Boq/rdHmnzQ50OAnMAiixgU3Fti0FdYMcy0qamJpuZA==
-X-Received: by 2002:a05:6000:1fa8:b0:366:e9b8:784f with SMTP id
- ffacd0b85a97d-367756c6fabmr6677264f8f.32.1719951309651; 
- Tue, 02 Jul 2024 13:15:09 -0700 (PDT)
+ bh=uKK/AiLdjMfeKEPpHLdhaqq0Kf5J8WlC0WD4BsUonqY=;
+ b=k8nn5lYdpDGctFz0anz4ed6PCTtwWMbsi8CwztjtBpMiQ4fQ8YoK1kGzHYic0VMVjq
+ y47VLEIi8djzDQjgUZxuWWmI7FVEv7VJLSA9249cqEoF/G3GShazWs3TOIGplXVN5saB
+ AALqVOD60l4hEiStfNfOTCPfFZJjCSCzTm0zcXorhjSDzx7865LbeSHzhFg6hxfKpFm6
+ qFv657Z318TLA0A8I1envpTCGPRGBlYomgzXWy8s00SNL5KWW+ci0zt1GVgNVR8Dk4Js
+ EJZysjNuYQEOfY6H51QLN/GkYf4M4vFGJVIuNr1VOg8vFdB4YV8cobShE1BVJX7mgvzm
+ DAwg==
+X-Gm-Message-State: AOJu0YybCLxvefg1ddEfg/gQU+00eC/Af9YRSkgRg/PxFf3CQTo1fMH5
+ xeypEEqFvozZDNs5cYkppORaqV+rsTRwCfMkmDfCcomPQC9aDwgvcsoYN7r+8/Bf/stZRDQcFqD
+ P33/Cq4AxyB4o1gkU8kUT2Lp5JKx1sOT+Ad6lk3Z9etLpKMXARtH27Zs+MK7x3EwMXhMg8n9I/L
+ T534pJQ3gh70OT/KlD9io+WSqEDEcqpA==
+X-Received: by 2002:a5d:47ab:0:b0:367:4337:4065 with SMTP id
+ ffacd0b85a97d-367757214b2mr8717893f8f.51.1719951314572; 
+ Tue, 02 Jul 2024 13:15:14 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGxehkpas8/Fnbqd5cCCXPbBWbSNk5lcqrw1uHt3eh02z4nubT/4+5sMKfPry/ztoIc4gQedg==
+X-Received: by 2002:a5d:47ab:0:b0:367:4337:4065 with SMTP id
+ ffacd0b85a97d-367757214b2mr8717869f8f.51.1719951314040; 
+ Tue, 02 Jul 2024 13:15:14 -0700 (PDT)
 Received: from redhat.com ([2a02:14f:1f5:eadd:8c31:db01:9d01:7604])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3675a103e5esm14070868f8f.108.2024.07.02.13.15.08
+ ffacd0b85a97d-3675a0cd623sm14177713f8f.16.2024.07.02.13.15.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 02 Jul 2024 13:15:09 -0700 (PDT)
-Date: Tue, 2 Jul 2024 16:15:06 -0400
+ Tue, 02 Jul 2024 13:15:13 -0700 (PDT)
+Date: Tue, 2 Jul 2024 16:15:10 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Si-Wei Liu <si-wei.liu@oracle.com>
-Subject: [PULL v2 01/88] vhost: dirty log should be per backend type
-Message-ID: <51d59a64eed6c2cd2d2f991f44ffbe21eb33c733.1719951168.git.mst@redhat.com>
+ Si-Wei Liu <si-wei.liu@oracle.com>,
+ Joao Martins <joao.m.martins@oracle.com>, Jason Wang <jasowang@redhat.com>
+Subject: [PULL v2 02/88] vhost: Perform memory section dirty scans once per
+ iteration
+Message-ID: <c5cd7e5f230afb56891e3826fbb60f9e2b6c086a.1719951168.git.mst@redhat.com>
 References: <cover.1719951168.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -75,7 +77,7 @@ Content-Disposition: inline
 In-Reply-To: <cover.1719951168.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -101,132 +103,177 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Si-Wei Liu <si-wei.liu@oracle.com>
 
-There could be a mix of both vhost-user and vhost-kernel clients
-in the same QEMU process, where separate vhost loggers for the
-specific vhost type have to be used. Make the vhost logger per
-backend type, and have them properly reference counted.
+On setups with one or more virtio-net devices with vhost on,
+dirty tracking iteration increases cost the bigger the number
+amount of queues are set up e.g. on idle guests migration the
+following is observed with virtio-net with vhost=on:
 
-Suggested-by: Michael S. Tsirkin <mst@redhat.com>
+48 queues -> 78.11%  [.] vhost_dev_sync_region.isra.13
+8 queues -> 40.50%   [.] vhost_dev_sync_region.isra.13
+1 queue -> 6.89%     [.] vhost_dev_sync_region.isra.13
+2 devices, 1 queue -> 18.60%  [.] vhost_dev_sync_region.isra.14
+
+With high memory rates the symptom is lack of convergence as soon
+as it has a vhost device with a sufficiently high number of queues,
+the sufficient number of vhost devices.
+
+On every migration iteration (every 100msecs) it will redundantly
+query the *shared log* the number of queues configured with vhost
+that exist in the guest. For the virtqueue data, this is necessary,
+but not for the memory sections which are the same. So essentially
+we end up scanning the dirty log too often.
+
+To fix that, select a vhost device responsible for scanning the
+log with regards to memory sections dirty tracking. It is selected
+when we enable the logger (during migration) and cleared when we
+disable the logger. If the vhost logger device goes away for some
+reason, the logger will be re-selected from the rest of vhost
+devices.
+
+After making mem-section logger a singleton instance, constant cost
+of 7%-9% (like the 1 queue report) will be seen, no matter how many
+queues or how many vhost devices are configured:
+
+48 queues -> 8.71%    [.] vhost_dev_sync_region.isra.13
+2 devices, 8 queues -> 7.97%   [.] vhost_dev_sync_region.isra.14
+
+Co-developed-by: Joao Martins <joao.m.martins@oracle.com>
+Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
 Signed-off-by: Si-Wei Liu <si-wei.liu@oracle.com>
-Message-Id: <1710448055-11709-1-git-send-email-si-wei.liu@oracle.com>
+Message-Id: <1710448055-11709-2-git-send-email-si-wei.liu@oracle.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
 ---
- hw/virtio/vhost.c | 45 +++++++++++++++++++++++++++++++++------------
- 1 file changed, 33 insertions(+), 12 deletions(-)
+ include/hw/virtio/vhost.h |  1 +
+ hw/virtio/vhost.c         | 67 +++++++++++++++++++++++++++++++++++----
+ 2 files changed, 62 insertions(+), 6 deletions(-)
 
+diff --git a/include/hw/virtio/vhost.h b/include/hw/virtio/vhost.h
+index 02477788df..d75faf46e9 100644
+--- a/include/hw/virtio/vhost.h
++++ b/include/hw/virtio/vhost.h
+@@ -129,6 +129,7 @@ struct vhost_dev {
+     void *opaque;
+     struct vhost_log *log;
+     QLIST_ENTRY(vhost_dev) entry;
++    QLIST_ENTRY(vhost_dev) logdev_entry;
+     QLIST_HEAD(, vhost_iommu) iommu_list;
+     IOMMUNotifier n;
+     const VhostDevConfigOps *config_ops;
 diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
-index 4acd77e890..a1e8b79e1a 100644
+index a1e8b79e1a..06fc71746e 100644
 --- a/hw/virtio/vhost.c
 +++ b/hw/virtio/vhost.c
-@@ -43,8 +43,8 @@
-     do { } while (0)
- #endif
+@@ -45,6 +45,7 @@
  
--static struct vhost_log *vhost_log;
--static struct vhost_log *vhost_log_shm;
-+static struct vhost_log *vhost_log[VHOST_BACKEND_TYPE_MAX];
-+static struct vhost_log *vhost_log_shm[VHOST_BACKEND_TYPE_MAX];
+ static struct vhost_log *vhost_log[VHOST_BACKEND_TYPE_MAX];
+ static struct vhost_log *vhost_log_shm[VHOST_BACKEND_TYPE_MAX];
++static QLIST_HEAD(, vhost_dev) vhost_log_devs[VHOST_BACKEND_TYPE_MAX];
  
  /* Memslots used by backends that support private memslots (without an fd). */
  static unsigned int used_memslots;
-@@ -287,6 +287,10 @@ static int vhost_set_backend_type(struct vhost_dev *dev,
-         r = -1;
+@@ -149,6 +150,47 @@ bool vhost_dev_has_iommu(struct vhost_dev *dev)
      }
- 
-+    if (r == 0) {
-+        assert(dev->vhost_ops->backend_type == backend_type);
-+    }
-+
-     return r;
  }
  
-@@ -319,16 +323,22 @@ static struct vhost_log *vhost_log_alloc(uint64_t size, bool share)
-     return log;
- }
- 
--static struct vhost_log *vhost_log_get(uint64_t size, bool share)
-+static struct vhost_log *vhost_log_get(VhostBackendType backend_type,
-+                                       uint64_t size, bool share)
- {
--    struct vhost_log *log = share ? vhost_log_shm : vhost_log;
-+    struct vhost_log *log;
++static inline bool vhost_dev_should_log(struct vhost_dev *dev)
++{
++    assert(dev->vhost_ops);
++    assert(dev->vhost_ops->backend_type > VHOST_BACKEND_TYPE_NONE);
++    assert(dev->vhost_ops->backend_type < VHOST_BACKEND_TYPE_MAX);
 +
++    return dev == QLIST_FIRST(&vhost_log_devs[dev->vhost_ops->backend_type]);
++}
++
++static inline void vhost_dev_elect_mem_logger(struct vhost_dev *hdev, bool add)
++{
++    VhostBackendType backend_type;
++
++    assert(hdev->vhost_ops);
++
++    backend_type = hdev->vhost_ops->backend_type;
 +    assert(backend_type > VHOST_BACKEND_TYPE_NONE);
 +    assert(backend_type < VHOST_BACKEND_TYPE_MAX);
 +
-+    log = share ? vhost_log_shm[backend_type] : vhost_log[backend_type];
++    if (add && !QLIST_IS_INSERTED(hdev, logdev_entry)) {
++        if (QLIST_EMPTY(&vhost_log_devs[backend_type])) {
++            QLIST_INSERT_HEAD(&vhost_log_devs[backend_type],
++                              hdev, logdev_entry);
++        } else {
++            /*
++             * The first vhost_device in the list is selected as the shared
++             * logger to scan memory sections. Put new entry next to the head
++             * to avoid inadvertent change to the underlying logger device.
++             * This is done in order to get better cache locality and to avoid
++             * performance churn on the hot path for log scanning. Even when
++             * new devices come and go quickly, it wouldn't end up changing
++             * the active leading logger device at all.
++             */
++            QLIST_INSERT_AFTER(QLIST_FIRST(&vhost_log_devs[backend_type]),
++                               hdev, logdev_entry);
++        }
++    } else if (!add && QLIST_IS_INSERTED(hdev, logdev_entry)) {
++        QLIST_REMOVE(hdev, logdev_entry);
++    }
++}
++
+ static int vhost_sync_dirty_bitmap(struct vhost_dev *dev,
+                                    MemoryRegionSection *section,
+                                    hwaddr first,
+@@ -166,12 +208,14 @@ static int vhost_sync_dirty_bitmap(struct vhost_dev *dev,
+     start_addr = MAX(first, start_addr);
+     end_addr = MIN(last, end_addr);
  
-     if (!log || log->size != size) {
-         log = vhost_log_alloc(size, share);
-         if (share) {
--            vhost_log_shm = log;
-+            vhost_log_shm[backend_type] = log;
-         } else {
--            vhost_log = log;
-+            vhost_log[backend_type] = log;
-         }
-     } else {
-         ++log->refcnt;
-@@ -340,11 +350,20 @@ static struct vhost_log *vhost_log_get(uint64_t size, bool share)
- static void vhost_log_put(struct vhost_dev *dev, bool sync)
- {
-     struct vhost_log *log = dev->log;
-+    VhostBackendType backend_type;
- 
-     if (!log) {
-         return;
+-    for (i = 0; i < dev->mem->nregions; ++i) {
+-        struct vhost_memory_region *reg = dev->mem->regions + i;
+-        vhost_dev_sync_region(dev, section, start_addr, end_addr,
+-                              reg->guest_phys_addr,
+-                              range_get_last(reg->guest_phys_addr,
+-                                             reg->memory_size));
++    if (vhost_dev_should_log(dev)) {
++        for (i = 0; i < dev->mem->nregions; ++i) {
++            struct vhost_memory_region *reg = dev->mem->regions + i;
++            vhost_dev_sync_region(dev, section, start_addr, end_addr,
++                                  reg->guest_phys_addr,
++                                  range_get_last(reg->guest_phys_addr,
++                                                 reg->memory_size));
++        }
+     }
+     for (i = 0; i < dev->nvqs; ++i) {
+         struct vhost_virtqueue *vq = dev->vqs + i;
+@@ -383,6 +427,7 @@ static void vhost_log_put(struct vhost_dev *dev, bool sync)
+         g_free(log);
      }
  
-+    assert(dev->vhost_ops);
-+    backend_type = dev->vhost_ops->backend_type;
-+
-+    if (backend_type == VHOST_BACKEND_TYPE_NONE ||
-+        backend_type >= VHOST_BACKEND_TYPE_MAX) {
-+        return;
-+    }
-+
-     --log->refcnt;
-     if (log->refcnt == 0) {
-         /* Sync only the range covered by the old log */
-@@ -352,13 +371,13 @@ static void vhost_log_put(struct vhost_dev *dev, bool sync)
-             vhost_log_sync_range(dev, 0, dev->log_size * VHOST_LOG_CHUNK - 1);
++    vhost_dev_elect_mem_logger(dev, false);
+     dev->log = NULL;
+     dev->log_size = 0;
+ }
+@@ -998,6 +1043,15 @@ static int vhost_dev_set_log(struct vhost_dev *dev, bool enable_log)
+             goto err_vq;
          }
- 
--        if (vhost_log == log) {
-+        if (vhost_log[backend_type] == log) {
-             g_free(log->log);
--            vhost_log = NULL;
--        } else if (vhost_log_shm == log) {
-+            vhost_log[backend_type] = NULL;
-+        } else if (vhost_log_shm[backend_type] == log) {
-             qemu_memfd_free(log->log, log->size * sizeof(*(log->log)),
-                             log->fd);
--            vhost_log_shm = NULL;
-+            vhost_log_shm[backend_type] = NULL;
+     }
++
++    /*
++     * At log start we select our vhost_device logger that will scan the
++     * memory sections and skip for the others. This is possible because
++     * the log is shared amongst all vhost devices for a given type of
++     * backend.
++     */
++    vhost_dev_elect_mem_logger(dev, enable_log);
++
+     return 0;
+ err_vq:
+     for (; i >= 0; --i) {
+@@ -2075,6 +2129,7 @@ int vhost_dev_start(struct vhost_dev *hdev, VirtIODevice *vdev, bool vrings)
+             VHOST_OPS_DEBUG(r, "vhost_set_log_base failed");
+             goto fail_log;
          }
- 
-         g_free(log);
-@@ -376,7 +395,8 @@ static bool vhost_dev_log_is_shared(struct vhost_dev *dev)
- 
- static inline void vhost_dev_log_resize(struct vhost_dev *dev, uint64_t size)
- {
--    struct vhost_log *log = vhost_log_get(size, vhost_dev_log_is_shared(dev));
-+    struct vhost_log *log = vhost_log_get(dev->vhost_ops->backend_type,
-+                                          size, vhost_dev_log_is_shared(dev));
-     uint64_t log_base = (uintptr_t)log->log;
-     int r;
- 
-@@ -2044,7 +2064,8 @@ int vhost_dev_start(struct vhost_dev *hdev, VirtIODevice *vdev, bool vrings)
-         uint64_t log_base;
- 
-         hdev->log_size = vhost_get_log_size(hdev);
--        hdev->log = vhost_log_get(hdev->log_size,
-+        hdev->log = vhost_log_get(hdev->vhost_ops->backend_type,
-+                                  hdev->log_size,
-                                   vhost_dev_log_is_shared(hdev));
-         log_base = (uintptr_t)hdev->log->log;
-         r = hdev->vhost_ops->vhost_set_log_base(hdev,
++        vhost_dev_elect_mem_logger(hdev, true);
+     }
+     if (vrings) {
+         r = vhost_dev_set_vring_enable(hdev, true);
 -- 
 MST
 
