@@ -2,93 +2,107 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A36F92412C
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 16:45:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0085892410D
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 16:40:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOekR-0008IV-JH; Tue, 02 Jul 2024 10:44:47 -0400
+	id 1sOefS-0002Xo-6d; Tue, 02 Jul 2024 10:39:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1sOekP-0008Hm-M7
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:44:45 -0400
-Received: from mail-lf1-x133.google.com ([2a00:1450:4864:20::133])
+ (Exim 4.90_1) (envelope-from <schwab@suse.de>) id 1sOefQ-0002XT-CI
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:39:36 -0400
+Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1sOekM-00072k-Hh
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:44:45 -0400
-Received: by mail-lf1-x133.google.com with SMTP id
- 2adb3069b0e04-52cecba8d11so5202813e87.1
- for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 07:44:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719931478; x=1720536278; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to
- :references:user-agent:subject:cc:to:from:date:from:to:cc:subject
- :date:message-id:reply-to;
- bh=EuHGikV1Xu3ZOawZ3lxMeDpvvmh+YBc4mVHIE954ujA=;
- b=LWGF4n5OGQHuLFmo0GIiK/psxNi/Vlu7gIRc0pCmf4xXuNfFfGnNys3S1HGACQ9NTZ
- LlNI8fz6Bbg/pYz1L3VbrILXUy1ou86RqW9juXi03+H4dLP54SkjcG0MswEO6qnzj6aH
- QnuG1D4mYfQSkDOUq731xpPrpgtO5ALTa/q7UnJnHmax/GCF6cofWWi4DH909wAhoZUo
- Rkx+AexE7k7B7rNIW0NVKxw3VAiQlRytiVFKakjvNADHsuAtrP3ZZubEootpv59mKm/i
- 5Eqa/2/lUJoTQHOQh4Fw8F5heFF7mFqf+hNjdUIBif44HrEr55WJ2x6GsTdoxVy4B/xq
- +McA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719931478; x=1720536278;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to
- :references:user-agent:subject:cc:to:from:date:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=EuHGikV1Xu3ZOawZ3lxMeDpvvmh+YBc4mVHIE954ujA=;
- b=qItRgcnN1zo4ueAqeC52LxnqsB/PW+v3lwFSdr71hcwtG8rVYB4vN/GkI2+EwN8RdI
- 8DKn0nsGMH+E8g8S1qLchqStTaz8D8Tj1FEo0QZk4hL0+yaAG+JoqvtN4HqkN0drA8Lh
- ctmJADfb2gvYB4Zji8UWPROFrQf/HlbuUIoMV5tfDoR/nH8U2RXev/E90GGgR3BZ6i8t
- UuKYt+ckCBJY7J7DGBQKvL7jwcJIN8Q2tJtlbAirAnhvvlFGYQdp3iDTdFNqCln1Y2HU
- +dInr/NvTuxxRN7hiLVyFvsyiywVFOyiWddZaZeaq2xYBoeOq8UJKV5uZXk20OzyKExK
- JfOg==
-X-Gm-Message-State: AOJu0Yz/3ZK9DAh1Zc0PnqdB5ho5F2kUgfuT5zrf2H+x4AK9r/feEq1Q
- OQoacNXF72tNpG+ewANKbGxoVMWMSewFa5lxTgbtgx3DgpVk3XtO9TWs58meNhGfTs/VdUfgZL0
- pJMM=
-X-Google-Smtp-Source: AGHT+IGDVnof08/MHmBWTZvbKV0AL+1D9cfUqg2WT7NDU1C6pEjvMamPFWmipuLGecp5IqtyCt3szA==
-X-Received: by 2002:a05:6512:1246:b0:52c:850b:cfc6 with SMTP id
- 2adb3069b0e04-52e82688110mr6357681e87.38.1719931477729; 
- Tue, 02 Jul 2024 07:44:37 -0700 (PDT)
-Received: from meli-email.org (adsl-193.37.6.1.tellas.gr. [37.6.1.193])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3678fe13ef4sm193274f8f.117.2024.07.02.07.44.37
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 02 Jul 2024 07:44:37 -0700 (PDT)
-Date: Tue, 02 Jul 2024 17:38:12 +0300
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-To: "Daniel P. Berrang=?UTF-8?B?w6k=?= " <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
- Mads Ynddal <mads@ynddal.dk>, Peter Maydell <peter.maydell@linaro.org>,
- Alex Benn=?UTF-8?B?w6k=?= e <alex.bennee@linaro.org>,
- Marc-Andr=?UTF-8?B?w6kg?=Lureau <marcandre.lureau@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Philippe Mathieu-Daud=?UTF-8?B?w6kg?=<philmd@linaro.org>,
- Zhao Liu <zhao1.liu@intel.com>, Gustavo Romero <gustavo.romero@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>, rowan.hart@intel.com,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, John Snow <jsnow@redhat.com>,
- Cleber Rosa <crosa@redhat.com>
-Subject: Re: [RFC PATCH v3 1/5] build-sys: Add rust feature option
-User-Agent: meli 0.8.6
-References: <rust-pl011-rfc-v3.git.manos.pitsidianakis@linaro.org>
- <e74803e6b570ab36ebc538dd84dc7c4bc2fbe4e7.1718827153.git.manos.pitsidianakis@linaro.org>
- <ZnmkN2PL3r-2sxqe@redhat.com>
-In-Reply-To: <ZnmkN2PL3r-2sxqe@redhat.com>
-Message-ID: <g03mb.04m2bqm0mj1q@linaro.org>
+ (Exim 4.90_1) (envelope-from <schwab@suse.de>) id 1sOefO-0001p4-Lg
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:39:36 -0400
+Received: from hawking.nue2.suse.org (unknown [10.168.4.11])
+ by smtp-out1.suse.de (Postfix) with ESMTP id 5FD0C2192D;
+ Tue,  2 Jul 2024 14:39:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1719931170; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=hw6KPjxSNwihZ2+cZgt6VpL7W2FBubD6ArgfOA4lcGg=;
+ b=cHGgD3u9jR5tNWon3IeKklTKbskjYDK9hmI+GAZ+jgXkoume+Q5AOBhyHwxN9Lm6O4mket
+ HGvvXKNcMs+5yrUjkPz3FiSB9+NlsWqu2/nUedKa9NzcS6ak7l94Sdvkf9m/gGWge52gmD
+ FIMznXInsijiJUSIse+XpRs2HMzt+BE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1719931170;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=hw6KPjxSNwihZ2+cZgt6VpL7W2FBubD6ArgfOA4lcGg=;
+ b=NhyfQz9hwCEzn4fp76CVFkXY7IwuN9ojjKEo/3GAuTsHI4Izkh5aD10HD1PWhqvTbIXOjU
+ szEkwbErqacTCACA==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1719931169; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=hw6KPjxSNwihZ2+cZgt6VpL7W2FBubD6ArgfOA4lcGg=;
+ b=mabNIkChy35gQ6s3Y8f7jJ5uaehWueLg8n9iRBJdzxit0dCTYeZpnbIw/snNv62jni9JVg
+ UxMD+JPMuy8cTbmKGVBe5ZnedqOkeWIMU36EWPhCXqI6UIel27evCgumztaBt2PsEPsaSY
+ T6V1sMj5RCcDutOiFbf/RKwXteLkTvs=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1719931169;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=hw6KPjxSNwihZ2+cZgt6VpL7W2FBubD6ArgfOA4lcGg=;
+ b=AQafLEFZjqZC9CiRfU4kuybedq9gkAJtyTc/nDZWI7/oCzGbbVZ5VlSZfjfq0Bp3sYFqGh
+ jiqTDkY0TDnmp3DA==
+Received: by hawking.nue2.suse.org (Postfix, from userid 17005)
+ id 50D264A054F; Tue,  2 Jul 2024 16:39:29 +0200 (CEST)
+From: Andreas Schwab <schwab@suse.de>
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: Peter Maydell <peter.maydell@linaro.org>,  Warner Losh <imp@bsdimp.com>,
+ QEMU Developers <qemu-devel@nongnu.org>
+Subject: Re: linux-user cannot allocate stack memory on riscv64 host due to
+ non-zero guest_base
+In-Reply-To: <fbe9c88e-677a-4248-9901-76c56e52283b@linaro.org> (Richard
+ Henderson's message of "Tue, 2 Jul 2024 07:18:46 -0700")
+References: <mvm8qytp828.fsf@suse.de>
+ <9f3cb0e3-c069-497d-81de-234db7bd4d33@linaro.org>
+ <mvm4j9gp0xd.fsf@suse.de>
+ <34fed985-6a6a-4458-95f9-aa651744ef1a@linaro.org>
+ <CANCZdfq4=s=g8GoeCKY4576xgJs4-X+fXh7m5ZOJ1UeBXwWdCQ@mail.gmail.com>
+ <mvmv81un7m9.fsf@suse.de>
+ <CANCZdfpW+G54v3oeKZ6QYuovOga93D5hou9Ajeo838Y9bDNsUA@mail.gmail.com>
+ <mvmmsn6lawv.fsf@suse.de>
+ <CAFEAcA-dbLncCmY8zyZAz8e+AWeoGC437B=nV3wPznER+RmhbA@mail.gmail.com>
+ <mvmr0cdjjlh.fsf@suse.de>
+ <f681575f-1dae-481e-8330-6fe2fc8d0f11@linaro.org>
+ <mvm7ce4jjvf.fsf@suse.de>
+ <fbe9c88e-677a-4248-9901-76c56e52283b@linaro.org>
+X-Yow: Everywhere I look I see NEGATIVITY and ASPHALT...
+Date: Tue, 02 Jul 2024 16:39:29 +0200
+Message-ID: <mvmtth7j1su.fsf@suse.de>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset=utf-8; format=flowed
-Received-SPF: pass client-ip=2a00:1450:4864:20::133;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-lf1-x133.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain
+X-Spam-Score: -4.20
+X-Spamd-Result: default: False [-4.20 / 50.00]; BAYES_HAM(-3.00)[99.99%];
+ NEURAL_HAM_LONG(-1.00)[-1.000];
+ NEURAL_HAM_SHORT(-0.20)[-0.999]; MIME_GOOD(-0.10)[text/plain];
+ RCVD_NO_TLS_LAST(0.10)[]; MIME_TRACE(0.00)[0:+];
+ MID_RHS_MATCH_FROM(0.00)[]; ARC_NA(0.00)[];
+ RCVD_COUNT_ONE(0.00)[1]; FROM_HAS_DN(0.00)[];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
+ RCPT_COUNT_THREE(0.00)[4]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ URIBL_BLOCKED(0.00)[suse.de:email,hawking.nue2.suse.org:helo];
+ TO_DN_ALL(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,hawking.nue2.suse.org:helo]
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
+ envelope-from=schwab@suse.de; helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -105,71 +119,14 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Daniel, I missed one of your questions and I just re-read the thread 
-today,
+On Jul 02 2024, Richard Henderson wrote:
 
-On Mon, 24 Jun 2024 19:52, "Daniel P. Berrangé" <berrange@redhat.com> wrote:
->On Wed, Jun 19, 2024 at 11:13:58PM +0300, Manos Pitsidianakis wrote:
->> Add options for Rust in meson_options.txt, meson.build, configure to
->> prepare for adding Rust code in the followup commits.
->> 
->> `rust` is a reserved meson name, so we have to use an alternative.
->> `with_rust` was chosen.
->> 
->> A cargo_wrapper.py script is added that is heavily based on the work of
->> Marc-André Lureau from 2021.
->> 
->> https://patchew.org/QEMU/20210907121943.3498701-1-marcandre.lureau@redhat.com/
->> 
->> Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
->> Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
->> ---
->>  MAINTAINERS                   |   5 +
->>  configure                     |  11 ++
->>  meson.build                   |  11 ++
->>  meson_options.txt             |   4 +
->>  scripts/cargo_wrapper.py      | 279 ++++++++++++++++++++++++++++++++++
->>  scripts/meson-buildoptions.sh |   6 +
->>  6 files changed, 316 insertions(+)
->>  create mode 100644 scripts/cargo_wrapper.py
->
->> diff --git a/configure b/configure
->> index 38ee257701..6894d7c2d1 100755
->> --- a/configure
->> +++ b/configure
->> @@ -302,6 +302,9 @@ else
->>    objcc="${objcc-${cross_prefix}clang}"
->>  fi
->>
->>[..snip..]
->> +with_rust_target_triple=""
->> +
->>  ar="${AR-${cross_prefix}ar}"
->>  as="${AS-${cross_prefix}as}"
->>  ccas="${CCAS-$cc}"
->> @@ -760,6 +763,12 @@ for opt do
->>    ;;
->>    --gdb=*) gdb_bin="$optarg"
->>    ;;
->> +  --enable-with-rust) with_rust=enabled
->> +  ;;
->> +  --disable-with-rust) with_rust=disabled
->> +  ;;
->
->--enable-with-XXX / --disable-with-XXX is pretty unsual naming.
->
->Normally you'd see either --enable-XXX or --with-XXX and their
->corresponding --disable-XXX or --without-XXX.
+> Is /proc mounted in your environment?
 
-True. As the commit message says, `rust` is a reserved meson feature 
-name, so the auto-generated scripts/meson-buildoptions.sh
-has the following args:
+Sure, it's a fully running system on real hardware.
 
-  --enable-with-rust
-  --disable-with-rust
-
-I used the same in `configure` even though it's not autogenerated in 
-order to keep the two synced. If there's a way to get around this I'd 
-prefer it.
-
+-- 
+Andreas Schwab, SUSE Labs, schwab@suse.de
+GPG Key fingerprint = 0196 BAD8 1CE9 1970 F4BE  1748 E4D4 88E3 0EEA B9D7
+"And now for something completely different."
 
