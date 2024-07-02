@@ -2,95 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6835C9246B0
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 19:52:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E52A9246D5
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 20:01:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOhfG-0007Ia-7O; Tue, 02 Jul 2024 13:51:38 -0400
+	id 1sOho2-0002Ji-Ct; Tue, 02 Jul 2024 14:00:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nsoffer@redhat.com>)
- id 1sOhfC-0007I7-Uh
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 13:51:34 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nsoffer@redhat.com>)
- id 1sOhfA-0001DU-FG
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 13:51:33 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719942691;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=nxgYAXd/+YFzZ7rLI+uMe+OUSE9XQYlUOuvjx3bEFOE=;
- b=CkJ2FVhmQndZo+iDhDgufqHZ72DAQSctD1VD/w6h3bg4BqFsCzblPaclovPd81nMjUmRUq
- kMNyaqRqA4b1bnOkzkCL41C1u8SNiWIeo4Jy/tvtNU1LKm0ohZJUe2O/syG99ajwaawKfq
- iJaF0qB9c3O8in9e/86e1mX0O97pNPE=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-398-KnTOE_L-MzuqIWVSwcpuvw-1; Tue, 02 Jul 2024 13:51:27 -0400
-X-MC-Unique: KnTOE_L-MzuqIWVSwcpuvw-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-4257db9d71fso18275795e9.2
- for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 10:51:27 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <zheyuma97@gmail.com>)
+ id 1sOhnp-0002JB-52
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 14:00:29 -0400
+Received: from mail-lj1-x234.google.com ([2a00:1450:4864:20::234])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <zheyuma97@gmail.com>)
+ id 1sOhnk-0003aN-5r
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 14:00:28 -0400
+Received: by mail-lj1-x234.google.com with SMTP id
+ 38308e7fff4ca-2ee794ebffbso11721011fa.1
+ for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 11:00:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1719943221; x=1720548021; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=wR2BmCT6VDT1Y5obj8gTeCOH/DiiacLEMDmrsBy0+tM=;
+ b=Q9CUMLxPAAOtBZ5OAmGfYm4PTW0RVHwUe46c849v1qwQKXm/Z7sN4EIsUS3wqKpjDL
+ bqUFLlcGXmo5mJGpZDyFpyg27keB/s2GpSsXtZwU9iNvNX4k152d0yv8rsiR9g8Yx8UB
+ iMPVEULN9Ws+KABnfQKoDUWZgvQMDShspMHkZFM0f7oO88cOXN0TzBQqp3aFEwqgBBxG
+ X/XLKJC5dyznZJOFStsXPyifMniDQNUQSc/mUDL6hMykmbz7zI2/fG8Hh4feRMj2fd3K
+ WGwsTIx1XgQKBNuBu4JnHXuytpluBEMvyrfzZU8+iaF3zOih+mKTfss4aEZrTzfjuIE8
+ hhow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719942686; x=1720547486;
- h=references:to:cc:in-reply-to:date:subject:mime-version:message-id
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=nxgYAXd/+YFzZ7rLI+uMe+OUSE9XQYlUOuvjx3bEFOE=;
- b=vkAyk8D2abtGUb4jf80fn0mkjNbhOLMReZ8Y045Tlud+vk6+exwaHb6DFm5A3m7f5V
- wKsVX+xTBNmBKaew0pyEgCuJ7ZGJFIvqHnqWGK7nCUtcFOzfQG1TbroRaOaMJsvzF6qn
- NMaw+VoKqKSUd8/REcMRp3vu6CHF2cKhcd5/l5Wme+d45tD9xeo5BTzTReZejWOuVZx8
- jIJlojfvZ8NglqmBYTr6J7YHGJ+QRAuGViWfVe2emAhG3I/Ed5kFuB5qsatowwW38VwK
- 8ddBYX+rTuvgJ4qnDVGyJo+JpBrHuROGaziUpSedY5+Y3eI0yQHwMJTE7gqc6XXZOjlp
- /S/A==
-X-Gm-Message-State: AOJu0Yz06WQsmllaHTxG12JNc2sGO1er5cGfkYry33tAZFPaTeJOAdzM
- UNo+2mWo3wVKhZeboKAb15L2vsx7WDXSPg38fuhMnuu0Rc4cCJX7RWhBiTChvQ5lbGq/69i6Jdp
- WlOuPUeArkIIAgttmBgYB6TQOyaJXtdbw2xz2h7kvFxpHJMSzvg6j
-X-Received: by 2002:a05:600c:a297:b0:425:8d90:4ade with SMTP id
- 5b1f17b1804b1-4258d904b67mr7797625e9.22.1719942686539; 
- Tue, 02 Jul 2024 10:51:26 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEyYJwdZeYzSikZgUoUdNoIj3A2EIMxSl7R0yzabdfAn3LE3LS01dhapzwKTi6g+X6fCMsdCg==
-X-Received: by 2002:a05:600c:a297:b0:425:8d90:4ade with SMTP id
- 5b1f17b1804b1-4258d904b67mr7797455e9.22.1719942686146; 
- Tue, 02 Jul 2024 10:51:26 -0700 (PDT)
-Received: from smtpclient.apple ([89.138.166.0])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4256af557fesm209680515e9.11.2024.07.02.10.51.24
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Tue, 02 Jul 2024 10:51:25 -0700 (PDT)
-From: Nir Soffer <nsoffer@redhat.com>
-Message-Id: <52CCCC9F-CAEE-46D2-9698-209A8D1DEA1E@redhat.com>
-Content-Type: multipart/alternative;
- boundary="Apple-Mail=_6863A337-8BE4-4E1D-951C-5378B714D697"
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.600.62\))
-Subject: Re: [PATCH 3/4] iotests: Change imports for Python 3.13
-Date: Tue, 2 Jul 2024 20:51:13 +0300
-In-Reply-To: <CAFn=p-Yz58vhQkQABp7uPPFLuuT_bL=Bdjxz+swsaHPzqS+dVA@mail.gmail.com>
-Cc: QEMU Developers <qemu-devel@nongnu.org>,
- qemu-block <qemu-block@nongnu.org>, Cleber Rosa <crosa@redhat.com>,
- =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?utf-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Kevin Wolf <kwolf@redhat.com>, Beraldo Leal <bleal@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Hanna Reitz <hreitz@redhat.com>
-To: John Snow <jsnow@redhat.com>
-References: <20240626232230.408004-1-jsnow@redhat.com>
- <20240626232230.408004-4-jsnow@redhat.com>
- <CAMRbyyuPVcwaLcyW=LeMhAWCRdqDBkNzYwE9q4Wan0Pm0k41GQ@mail.gmail.com>
- <CAFn=p-Yz58vhQkQABp7uPPFLuuT_bL=Bdjxz+swsaHPzqS+dVA@mail.gmail.com>
-X-Mailer: Apple Mail (2.3774.600.62)
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=nsoffer@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ d=1e100.net; s=20230601; t=1719943221; x=1720548021;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=wR2BmCT6VDT1Y5obj8gTeCOH/DiiacLEMDmrsBy0+tM=;
+ b=GbDaTLz98WtXs7RvUOi6hJIlkkhZ16dje0xDA72njY88Tsk3bylBnsHjQMNyV3kxz0
+ FVPthqKXIkIhJTA8qcKMY42scB2TDrXPPESLy2/ueGWduTv8Uvx/Cuief0wxwOx8Xnkx
+ V96ElVvnyu+bpkIpgwdKXkCLwyjeSNQOZsJXwN8xvD5QdtrMpDWuvFq6YmZZwbKl473E
+ uY23T88oNUG2qumb9bItICm8uR1d3RnHGDJSrK5ldgnI1Tpr/7IQMGqJXyohiTaYv6aq
+ R+/sSNGdC47GIt+rafYiEOGUIKDmQbRmA13fb1wQq8+LDFqIbTfNFyFrtb3iiAgV+n5w
+ 2qFQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCW1Q1J70FMrMtDmAt3qU02sJ8RFGs8jjkmaF+C5opn9m7UQP/QruUPPqirrxKrSpS6LzeHKztHsM5t6CQA43hKtV5oW3FQ=
+X-Gm-Message-State: AOJu0YzJboVIWMfyuPfNP5TLYeiJ30wOo+BaPk1jKJG7CzHB8do2jAC9
+ aYA6DkSW61i74ySAU4zTat+e9YUpL6rhGROCQ6kENAXEDrt9SnMQBfPdQD+9GoGaUNBXy1EISrZ
+ +nQwOQbdU7NbWEsR57fkUdg1h5w==
+X-Google-Smtp-Source: AGHT+IE8V4/xdMUOauWscFRLqYnRFcQjunWekBpZXFe3SZbuyvwP16h9P1rsKwuVib7+WTNlRkTZsycWuzwmJJ4/Fvk=
+X-Received: by 2002:a05:651c:b13:b0:2ec:4093:ec7 with SMTP id
+ 38308e7fff4ca-2ee5e3bf0f1mr84201781fa.30.1719943220352; Tue, 02 Jul 2024
+ 11:00:20 -0700 (PDT)
+MIME-Version: 1.0
+References: <20240630130426.2966539-1-zheyuma97@gmail.com>
+ <OSZPR01MB6453E079CFEB83C0577D37228DD32@OSZPR01MB6453.jpnprd01.prod.outlook.com>
+In-Reply-To: <OSZPR01MB6453E079CFEB83C0577D37228DD32@OSZPR01MB6453.jpnprd01.prod.outlook.com>
+From: Zheyu Ma <zheyuma97@gmail.com>
+Date: Tue, 2 Jul 2024 20:00:04 +0200
+Message-ID: <CAMhUBjnXNC_mm6CBZzknExKCoOsSQVjVA78ZeH=PTd_gdbXyVQ@mail.gmail.com>
+Subject: Re: [PATCH] hw/display/tcx: Fix out-of-bounds access in
+ tcx_blit_writel
+To: "Xingtao Yao (Fujitsu)" <yaoxt.fnst@fujitsu.com>
+Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, 
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Content-Type: multipart/alternative; boundary="000000000000aee075061c477cc2"
+Received-SPF: pass client-ip=2a00:1450:4864:20::234;
+ envelope-from=zheyuma97@gmail.com; helo=mail-lj1-x234.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, HTML_MESSAGE=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -107,132 +91,217 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
---Apple-Mail=_6863A337-8BE4-4E1D-951C-5378B714D697
+--000000000000aee075061c477cc2
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain;
-	charset=utf-8
 
+Hi Xingtao,
 
-> On 2 Jul 2024, at 17:44, John Snow <jsnow@redhat.com> wrote:
->=20
->=20
->=20
-> On Tue, Jul 2, 2024 at 7:52=E2=80=AFAM Nir Soffer <nsoffer@redhat.com =
-<mailto:nsoffer@redhat.com>> wrote:
->> On Thu, Jun 27, 2024 at 2:23=E2=80=AFAM John Snow <jsnow@redhat.com =
-<mailto:jsnow@redhat.com>> wrote:
->> >
->> > Python 3.13 isn't out yet, but it's in beta and Fedora is ramping =
-up to
->> > make it the default system interpreter for Fedora 41.
->> >
->> > They moved our cheese for where ContextManager lives; add a =
-conditional
->> > to locate it while we support both pre-3.9 and 3.13+.
->> >
->> > Signed-off-by: John Snow <jsnow@redhat.com =
-<mailto:jsnow@redhat.com>>
->> > ---
->> >  tests/qemu-iotests/testenv.py    | 7 ++++++-
->> >  tests/qemu-iotests/testrunner.py | 9 ++++++---
->> >  2 files changed, 12 insertions(+), 4 deletions(-)
->> >
->> > diff --git a/tests/qemu-iotests/testenv.py =
-b/tests/qemu-iotests/testenv.py
->> > index 588f30a4f14..96d69e56963 100644
->> > --- a/tests/qemu-iotests/testenv.py
->> > +++ b/tests/qemu-iotests/testenv.py
->> > @@ -25,7 +25,12 @@
->> >  import random
->> >  import subprocess
->> >  import glob
->> > -from typing import List, Dict, Any, Optional, ContextManager
->> > +from typing import List, Dict, Any, Optional
->> > +
->> > +if sys.version_info >=3D (3, 9):
->> > +    from contextlib import AbstractContextManager as =
-ContextManager
->> > +else:
->> > +    from typing import ContextManager
->>=20
->> It can be cleaner to add a compat module hiding the details so the
->> entire project
->> can have a single instance of this. Other code will just use:
->>=20
->>     from compat import ContextManager
->=20
-> If there were more than two uses, I'd consider it. As it stands, a =
-compat.py module with just one import conditional in it doesn't seem =
-worth the hassle. Are there more cases of compatibility goop inside =
-iotests that need to be factored out to make it worth it?
+On Mon, Jul 1, 2024 at 5:13=E2=80=AFAM Xingtao Yao (Fujitsu) <yaoxt.fnst@fu=
+jitsu.com>
+wrote:
 
-I don=E2=80=99t about other. For me even one instance is ugly enough :-)
+> Hi, zheyu
+>
+> > -----Original Message-----
+> > From: qemu-devel-bounces+yaoxt.fnst=3Dfujitsu.com@nongnu.org
+> > <qemu-devel-bounces+yaoxt.fnst=3Dfujitsu.com@nongnu.org> On Behalf Of
+> Zheyu
+> > Ma
+> > Sent: Sunday, June 30, 2024 9:04 PM
+> > To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+> > Cc: Zheyu Ma <zheyuma97@gmail.com>; qemu-devel@nongnu.org
+> > Subject: [PATCH] hw/display/tcx: Fix out-of-bounds access in
+> tcx_blit_writel
+> >
+> > This patch addresses a potential out-of-bounds memory access issue in t=
+he
+> > tcx_blit_writel function. It adds bounds checking to ensure that memory
+> > accesses do not exceed the allocated VRAM size. If an out-of-bounds
+> access
+> > is detected, an error is logged using qemu_log_mask.
+> >
+> > ASAN log:
+> > =3D=3D2960379=3D=3DERROR: AddressSanitizer: SEGV on unknown address
+> > 0x7f524752fd01 (pc 0x7f525c2c4881 bp 0x7ffdaf87bfd0 sp 0x7ffdaf87b788 T=
+0)
+> > =3D=3D2960379=3D=3DThe signal is caused by a READ memory access.
+> >     #0 0x7f525c2c4881 in memcpy
+> > string/../sysdeps/x86_64/multiarch/memmove-vec-unaligned-erms.S:222
+> >     #1 0x55aa782bd5b1 in __asan_memcpy
+> > llvm/compiler-rt/lib/asan/asan_interceptors_memintrinsics.cpp:22:3
+> >     #2 0x55aa7854dedd in tcx_blit_writel hw/display/tcx.c:590:13
+> >
+> > Reproducer:
+> > cat << EOF | qemu-system-sparc -display none \
+> > -machine accel=3Dqtest, -m 512M -machine LX -m 256 -qtest stdio
+> > writel 0x562e98c4 0x3d92fd01
+> > EOF
+> >
+> > Signed-off-by: Zheyu Ma <zheyuma97@gmail.com>
+> > ---
+> >  hw/display/tcx.c | 9 +++++++++
+> >  1 file changed, 9 insertions(+)
+> >
+> > diff --git a/hw/display/tcx.c b/hw/display/tcx.c
+> > index 99507e7638..af43bea7f2 100644
+> > --- a/hw/display/tcx.c
+> > +++ b/hw/display/tcx.c
+> > @@ -33,6 +33,7 @@
+> >  #include "migration/vmstate.h"
+> >  #include "qemu/error-report.h"
+> >  #include "qemu/module.h"
+> > +#include "qemu/log.h"
+> >  #include "qom/object.h"
+> >
+> >  #define TCX_ROM_FILE "QEMU,tcx.bin"
+> > @@ -577,6 +578,14 @@ static void tcx_blit_writel(void *opaque, hwaddr
+> addr,
+> >          addr =3D (addr >> 3) & 0xfffff;
+> >          adsr =3D val & 0xffffff;
+> >          len =3D ((val >> 24) & 0x1f) + 1;
+> > +
+> > +        if (addr + len > s->vram_size || adsr + len > s->vram_size) {
+> if adsr =3D=3D 0xffffff, this condition may be always true, thus the bran=
+ch
+> =E2=80=9Cif (adsr =3D=3D 0xffffff) {=E2=80=9D will be never
+> reached.
+>
 
+You are right, I misunderstood the condition :(
 
---Apple-Mail=_6863A337-8BE4-4E1D-951C-5378B714D697
+Thanks,
+Zheyu
+
+>
+> > +            qemu_log_mask(LOG_GUEST_ERROR,
+> > +                          "%s: VRAM access out of bounds. addr: 0x%lx,
+> adsr:
+> > 0x%x, len: %u\n",
+> > +                          __func__, addr, adsr, len);
+> > +            return;
+> > +        }
+> > +
+> >          if (adsr =3D=3D 0xffffff) {
+> >              memset(&s->vram[addr], s->tmpblit, len);
+> >              if (s->depth =3D=3D 24) {
+> > --
+> > 2.34.1
+> >
+>
+>
+
+--000000000000aee075061c477cc2
+Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/html;
-	charset=utf-8
 
-<html><head><meta http-equiv=3D"content-type" content=3D"text/html; =
-charset=3Dutf-8"></head><body style=3D"overflow-wrap: break-word; =
--webkit-nbsp-mode: space; line-break: =
-after-white-space;"><br><div><blockquote type=3D"cite"><div>On 2 Jul =
-2024, at 17:44, John Snow &lt;jsnow@redhat.com&gt; wrote:</div><br =
-class=3D"Apple-interchange-newline"><div><meta charset=3D"UTF-8"><br =
-class=3D"Apple-interchange-newline"><br style=3D"caret-color: rgb(0, 0, =
-0); font-family: Helvetica; font-size: 13px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none;"><div class=3D"gmail_quote" style=3D"caret-color: =
-rgb(0, 0, 0); font-family: Helvetica; font-size: 13px; font-style: =
-normal; font-variant-caps: normal; font-weight: 400; letter-spacing: =
-normal; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none;"><div dir=3D"ltr" class=3D"gmail_attr">On Tue, =
-Jul 2, 2024 at 7:52=E2=80=AFAM Nir Soffer &lt;<a =
-href=3D"mailto:nsoffer@redhat.com">nsoffer@redhat.com</a>&gt; =
-wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin: 0px =
-0px 0px 0.8ex; border-left-width: 1px; border-left-style: solid; =
-border-left-color: rgb(204, 204, 204); padding-left: 1ex;">On Thu, Jun =
-27, 2024 at 2:23=E2=80=AFAM John Snow &lt;<a =
-href=3D"mailto:jsnow@redhat.com" =
-target=3D"_blank">jsnow@redhat.com</a>&gt; wrote:<br>&gt;<br>&gt; Python =
-3.13 isn't out yet, but it's in beta and Fedora is ramping up to<br>&gt; =
-make it the default system interpreter for Fedora 41.<br>&gt;<br>&gt; =
-They moved our cheese for where ContextManager lives; add a =
-conditional<br>&gt; to locate it while we support both pre-3.9 and =
-3.13+.<br>&gt;<br>&gt; Signed-off-by: John Snow &lt;<a =
-href=3D"mailto:jsnow@redhat.com" =
-target=3D"_blank">jsnow@redhat.com</a>&gt;<br>&gt; ---<br>&gt;&nbsp; =
-tests/qemu-iotests/testenv.py&nbsp; &nbsp; | 7 ++++++-<br>&gt;&nbsp; =
-tests/qemu-iotests/testrunner.py | 9 ++++++---<br>&gt;&nbsp; 2 files =
-changed, 12 insertions(+), 4 deletions(-)<br>&gt;<br>&gt; diff --git =
-a/tests/qemu-iotests/testenv.py b/tests/qemu-iotests/testenv.py<br>&gt; =
-index 588f30a4f14..96d69e56963 100644<br>&gt; --- =
-a/tests/qemu-iotests/testenv.py<br>&gt; +++ =
-b/tests/qemu-iotests/testenv.py<br>&gt; @@ -25,7 +25,12 @@<br>&gt;&nbsp; =
-import random<br>&gt;&nbsp; import subprocess<br>&gt;&nbsp; import =
-glob<br>&gt; -from typing import List, Dict, Any, Optional, =
-ContextManager<br>&gt; +from typing import List, Dict, Any, =
-Optional<br>&gt; +<br>&gt; +if sys.version_info &gt;=3D (3, 9):<br>&gt; =
-+&nbsp; &nbsp; from contextlib import AbstractContextManager as =
-ContextManager<br>&gt; +else:<br>&gt; +&nbsp; &nbsp; from typing import =
-ContextManager<br><br>It can be cleaner to add a compat module hiding =
-the details so the<br>entire project<br>can have a single instance of =
-this. Other code will just use:<br><br>&nbsp; &nbsp;<span =
-class=3D"Apple-converted-space">&nbsp;</span>from compat import =
-ContextManager<br></blockquote><div><br></div><div>If there were more =
-than two uses, I'd consider it. As it stands, a compat.py module with =
-just one import conditional in it doesn't seem worth the hassle. Are =
-there more cases of compatibility goop inside iotests that need to be =
-factored out to make it worth =
-it?<br></div></div></div></blockquote><div><br></div><div>I don=E2=80=99t =
-about other. For me even one instance is ugly enough =
-:-)</div></div><br></body></html>=
+<div dir=3D"ltr"><div dir=3D"ltr">Hi=C2=A0Xingtao,</div><br><div class=3D"g=
+mail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Mon, Jul 1, 2024 at 5:=
+13=E2=80=AFAM Xingtao Yao (Fujitsu) &lt;<a href=3D"mailto:yaoxt.fnst@fujits=
+u.com">yaoxt.fnst@fujitsu.com</a>&gt; wrote:<br></div><blockquote class=3D"=
+gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(20=
+4,204,204);padding-left:1ex">Hi, zheyu<br>
+<br>
+&gt; -----Original Message-----<br>
+&gt; From: qemu-devel-bounces+yaoxt.fnst=3D<a href=3D"mailto:fujitsu.com@no=
+ngnu.org" target=3D"_blank">fujitsu.com@nongnu.org</a><br>
+&gt; &lt;qemu-devel-bounces+yaoxt.fnst=3D<a href=3D"mailto:fujitsu.com@nong=
+nu.org" target=3D"_blank">fujitsu.com@nongnu.org</a>&gt; On Behalf Of Zheyu=
+<br>
+&gt; Ma<br>
+&gt; Sent: Sunday, June 30, 2024 9:04 PM<br>
+&gt; To: Mark Cave-Ayland &lt;<a href=3D"mailto:mark.cave-ayland@ilande.co.=
+uk" target=3D"_blank">mark.cave-ayland@ilande.co.uk</a>&gt;<br>
+&gt; Cc: Zheyu Ma &lt;<a href=3D"mailto:zheyuma97@gmail.com" target=3D"_bla=
+nk">zheyuma97@gmail.com</a>&gt;; <a href=3D"mailto:qemu-devel@nongnu.org" t=
+arget=3D"_blank">qemu-devel@nongnu.org</a><br>
+&gt; Subject: [PATCH] hw/display/tcx: Fix out-of-bounds access in tcx_blit_=
+writel<br>
+&gt; <br>
+&gt; This patch addresses a potential out-of-bounds memory access issue in =
+the<br>
+&gt; tcx_blit_writel function. It adds bounds checking to ensure that memor=
+y<br>
+&gt; accesses do not exceed the allocated VRAM size. If an out-of-bounds ac=
+cess<br>
+&gt; is detected, an error is logged using qemu_log_mask.<br>
+&gt; <br>
+&gt; ASAN log:<br>
+&gt; =3D=3D2960379=3D=3DERROR: AddressSanitizer: SEGV on unknown address<br=
+>
+&gt; 0x7f524752fd01 (pc 0x7f525c2c4881 bp 0x7ffdaf87bfd0 sp 0x7ffdaf87b788 =
+T0)<br>
+&gt; =3D=3D2960379=3D=3DThe signal is caused by a READ memory access.<br>
+&gt;=C2=A0 =C2=A0 =C2=A0#0 0x7f525c2c4881 in memcpy<br>
+&gt; string/../sysdeps/x86_64/multiarch/memmove-vec-unaligned-erms.S:222<br=
+>
+&gt;=C2=A0 =C2=A0 =C2=A0#1 0x55aa782bd5b1 in __asan_memcpy<br>
+&gt; llvm/compiler-rt/lib/asan/asan_interceptors_memintrinsics.cpp:22:3<br>
+&gt;=C2=A0 =C2=A0 =C2=A0#2 0x55aa7854dedd in tcx_blit_writel hw/display/tcx=
+.c:590:13<br>
+&gt; <br>
+&gt; Reproducer:<br>
+&gt; cat &lt;&lt; EOF | qemu-system-sparc -display none \<br>
+&gt; -machine accel=3Dqtest, -m 512M -machine LX -m 256 -qtest stdio<br>
+&gt; writel 0x562e98c4 0x3d92fd01<br>
+&gt; EOF<br>
+&gt; <br>
+&gt; Signed-off-by: Zheyu Ma &lt;<a href=3D"mailto:zheyuma97@gmail.com" tar=
+get=3D"_blank">zheyuma97@gmail.com</a>&gt;<br>
+&gt; ---<br>
+&gt;=C2=A0 hw/display/tcx.c | 9 +++++++++<br>
+&gt;=C2=A0 1 file changed, 9 insertions(+)<br>
+&gt; <br>
+&gt; diff --git a/hw/display/tcx.c b/hw/display/tcx.c<br>
+&gt; index 99507e7638..af43bea7f2 100644<br>
+&gt; --- a/hw/display/tcx.c<br>
+&gt; +++ b/hw/display/tcx.c<br>
+&gt; @@ -33,6 +33,7 @@<br>
+&gt;=C2=A0 #include &quot;migration/vmstate.h&quot;<br>
+&gt;=C2=A0 #include &quot;qemu/error-report.h&quot;<br>
+&gt;=C2=A0 #include &quot;qemu/module.h&quot;<br>
+&gt; +#include &quot;qemu/log.h&quot;<br>
+&gt;=C2=A0 #include &quot;qom/object.h&quot;<br>
+&gt; <br>
+&gt;=C2=A0 #define TCX_ROM_FILE &quot;QEMU,tcx.bin&quot;<br>
+&gt; @@ -577,6 +578,14 @@ static void tcx_blit_writel(void *opaque, hwaddr =
+addr,<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 addr =3D (addr &gt;&gt; 3) &amp; 0xf=
+ffff;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 adsr =3D val &amp; 0xffffff;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 len =3D ((val &gt;&gt; 24) &amp; 0x1=
+f) + 1;<br>
+&gt; +<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (addr + len &gt; s-&gt;vram_size || ad=
+sr + len &gt; s-&gt;vram_size) {<br>
+if adsr =3D=3D 0xffffff, this condition may be always true, thus the branch=
+ =E2=80=9Cif (adsr =3D=3D 0xffffff) {=E2=80=9D will be never<br>
+reached.<br></blockquote><div><br></div><div>You are right, I misunderstood=
+ the condition :(</div><div><br></div><div>Thanks,</div><div>Zheyu=C2=A0</d=
+iv><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;bord=
+er-left:1px solid rgb(204,204,204);padding-left:1ex">
+<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 qemu_log_mask(LOG_GUEST_ERR=
+OR,<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0 =C2=A0 &quot;%s: VRAM access out of bounds. addr: 0x%lx, ads=
+r:<br>
+&gt; 0x%x, len: %u\n&quot;,<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0 =C2=A0 __func__, addr, adsr, len);<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return;<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
+&gt; +<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 if (adsr =3D=3D 0xffffff) {<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 memset(&amp;s-&gt;vram=
+[addr], s-&gt;tmpblit, len);<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 if (s-&gt;depth =3D=3D=
+ 24) {<br>
+&gt; --<br>
+&gt; 2.34.1<br>
+&gt; <br>
+<br>
+</blockquote></div></div>
 
---Apple-Mail=_6863A337-8BE4-4E1D-951C-5378B714D697--
-
+--000000000000aee075061c477cc2--
 
