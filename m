@@ -2,80 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1012F924BA1
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jul 2024 00:36:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5F4C924BDD
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jul 2024 00:49:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOm5a-0003Vd-Sb; Tue, 02 Jul 2024 18:35:08 -0400
+	id 1sOmIC-0002lY-GY; Tue, 02 Jul 2024 18:48:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <debug@rivosinc.com>)
- id 1sOm5K-0003Pc-Sh
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 18:34:52 -0400
-Received: from mail-pj1-x1029.google.com ([2607:f8b0:4864:20::1029])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sOmIA-0002l8-8P
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 18:48:06 -0400
+Received: from mail-pj1-x102e.google.com ([2607:f8b0:4864:20::102e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <debug@rivosinc.com>)
- id 1sOm5I-0001rJ-Ch
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 18:34:50 -0400
-Received: by mail-pj1-x1029.google.com with SMTP id
- 98e67ed59e1d1-2c8e422c40cso2838739a91.2
- for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 15:34:30 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sOmI8-00028j-KI
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 18:48:05 -0400
+Received: by mail-pj1-x102e.google.com with SMTP id
+ 98e67ed59e1d1-2c9785517c0so40605a91.0
+ for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 15:48:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1719959669; x=1720564469;
- darn=nongnu.org; 
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=teK2dbJPJGjp9j6O0rW0RrLg/324QgFq5JfybygwYRw=;
- b=YHGLHVndr+EzloyV12qGJW4UNAp6QAGWGfXAboKIF9luWEQk3xIj6h1GaNF8d7w2l3
- meNspERaCfALEGynBQ6m9s36VugltuiKj+nwWUJAMJzLelpI/POoMY2/Gy/pAT3W19fe
- O1WG+f822jA7d28bqMpOvyoGFyXKFpWxkLqAUfqXROnfBI86cZXpTRHiqmHPtvvgV8zP
- aYFgLMwHuHibH0iqd8x2Nle5VrW6moULgz5FJXxGrVYjCDyiSZZrL8xPXDuuQl2n7pj7
- U+Iv/cW93cqZi2OsJvwMf/UBoh5osGfweE3kXJMb4Pqxy6+9a2LEcGrwwq7WvRAb59Sh
- EIjQ==
+ d=linaro.org; s=google; t=1719960483; x=1720565283; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=xzViVz0RgqTMnq6v0aLF/VAMt1kEy90VTp6r2oT6g1I=;
+ b=h9oOYOh+CFEA53v4yfv6KVLWyLGrjgnaYyBXIFGTBW8EsXz46TGUN7yBrL1TaRigJO
+ 2Ndf1jzjwSTSxEXkrNnvHgcRWlrAswBcM8Uhezg38G/yEvoTtMYVdi1PxVB6D+6qkM6F
+ XgoAmNbHsOx3QF76WXZI+azi+kouaNQgB9ryjOAzWbFwMW8WlEgRUibO/7DK0aXWtb0f
+ HNu3Yd3EozjtjdJVdmbl0CyaBXnrAUDYOBaKJQL4VVFhqeU0jhTKj9tbRxX2k55/I0GW
+ YiABGHL9snHudKCTC5x0rCvhCrG1/sWTCvoWnqe0d9dZam2TeDBWNW4WbLkkcvjYKupD
+ AEow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719959669; x=1720564469;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=teK2dbJPJGjp9j6O0rW0RrLg/324QgFq5JfybygwYRw=;
- b=fZWLZmhaeJe62X6pRoyqiYme9Bdl8lIp7acuQ6SUkw3MDAQQs2vu+ar+hrTim3Jqpx
- DJpoNmC9BCz6pJJxfjo7mqpNsMSf/xZfKBYVnpOzyDGb3dExieN10nOK70OC1Ihrb0hS
- ZujMngaBHjLzcB/gsyi7wkT7473XI5BtxRSJkGpQyDfEqyGEWcidKnvLE4QMw41kBiDW
- 7dpPrlcHer3bs1zz9GjbAu+WPte9Q/k67AtRKOeca5K/D6Fiksp67zAF2zWMmagqrjd2
- 0vavgarzwf5iawe3LbXVR8vslYF/JIzkceXEahD9RCTUhWNBJtMq5x6JbaS2Mogq3NbI
- 0YPQ==
-X-Gm-Message-State: AOJu0YzNfmvM3s094gk3rlmlzevNJ9Gmhb6pGrdGOPppi6d//pt7cGWE
- RpX9bPZYmBw++7yTR16Ed38jTIbWiN9YeSPnSNxKqYQfzx764BzM8Bpis97DUJc=
-X-Google-Smtp-Source: AGHT+IHPhPQJSN80APrR3MVw5cSnwzY2kPDOR+eLpjp2NLmVO/TeYGSidyxvnknVQh3te4REHyzeIQ==
-X-Received: by 2002:a17:90b:3105:b0:2c4:e4a3:b83c with SMTP id
- 98e67ed59e1d1-2c93d6dc7b7mr6251396a91.2.1719959669478; 
- Tue, 02 Jul 2024 15:34:29 -0700 (PDT)
-Received: from debug.ba.rivosinc.com ([64.71.180.162])
+ d=1e100.net; s=20230601; t=1719960483; x=1720565283;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=xzViVz0RgqTMnq6v0aLF/VAMt1kEy90VTp6r2oT6g1I=;
+ b=Eg+Ntq3zC8xwDzqnlbP0mhaGmHpBtFY4GLwaNISKj3/7AQrEbGl4C+vx0tRaLCT/Vi
+ e2xH1PrnuC60Mg11dHJqOw1gr13Cxow9jlsnUYSjq6d4zJjuVZ7j7w+SS6RAP5U9UObl
+ O63wqyK4hljtuFFkZTlT84/rCm4dytWXYwdjm+U9tK6VOdrswPFTjYZt3vDejECHwXlm
+ ynpDC/1Zkwepw1I/DXqxOb7WAGzAI6V5iRFJNIbacg7Fo7fFGI0k4vkFS/Ud6VZSPbGj
+ C+iNg2IpB/dcCM8C0b2FjBM3X+oziPK+/Yg7oTGEA+sXNGVKhH1qpAiy7HgerB+4N1Fk
+ IxGw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXk9M52FdKtgLPy00FyI2l6a93+xNLYzTsS4ZvKbY/9da+JI/jUfSzQm+LGewURoqbc+/VwpM0EUL6E7fKcz384UAT0stI=
+X-Gm-Message-State: AOJu0YwNvmFZJ6VETlD5nd9aEC01nBvYgg2QJTk9TRFhQo43sX/l2f4r
+ YMbT/uC/+cgaLrsgd4vYUU95bsqknSShRYop3RU7xYapLPu/2voU0u8GghdU8jY=
+X-Google-Smtp-Source: AGHT+IESsUmUPn0mR9Lkogu6oeX3uqgLBLF9s98fUmHA3eNA51JlnFxLYP2TJ5E3tkS1Kd4i0tSScw==
+X-Received: by 2002:a17:90a:9ca:b0:2c9:649b:c249 with SMTP id
+ 98e67ed59e1d1-2c9649bc32dmr1751898a91.27.1719960482571; 
+ Tue, 02 Jul 2024 15:48:02 -0700 (PDT)
+Received: from [192.168.0.4] (174-21-76-141.tukw.qwest.net. [174.21.76.141])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2c91ce43303sm9361904a91.17.2024.07.02.15.34.28
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 02 Jul 2024 15:34:29 -0700 (PDT)
-Date: Tue, 2 Jul 2024 15:34:27 -0700
-From: Deepak Gupta <debug@rivosinc.com>
-To: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, palmer@dabbelt.com,
- alistair.francis@wdc.com, dbarboza@ventanamicro.com,
- liwei1518@gmail.com, bmeng.cn@gmail.com
-Subject: Re: [PATCH v2 00/11] target/riscv: Support zimop/zcmop/zama16b/zabha
-Message-ID: <ZoSAc4Jap1Wl04GX@debug.ba.rivosinc.com>
-References: <20240630030559.877-1-zhiwei_liu@linux.alibaba.com>
+ 98e67ed59e1d1-2c9784b9ed5sm62631a91.33.2024.07.02.15.48.01
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 02 Jul 2024 15:48:01 -0700 (PDT)
+Message-ID: <5079f504-1b65-4a44-8fd7-bb676b2367b6@linaro.org>
+Date: Tue, 2 Jul 2024 15:47:59 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20240630030559.877-1-zhiwei_liu@linux.alibaba.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1029;
- envelope-from=debug@rivosinc.com; helo=mail-pj1-x1029.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PULL 0/6] aspeed queue
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org
+References: <20240702080042.464220-1-clg@redhat.com>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20240702080042.464220-1-clg@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -92,75 +95,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi LIU,
+On 7/2/24 01:00, Cédric Le Goater wrote:
+> The following changes since commit c80a339587fe4148292c260716482dd2f86d4476:
+> 
+>    Merge tag 'pull-target-arm-20240701' ofhttps://git.linaro.org/people/pmaydell/qemu-arm  into staging (2024-07-01 10:41:45 -0700)
+> 
+> are available in the Git repository at:
+> 
+>    https://github.com/legoater/qemu/  tags/pull-aspeed-20240702
+> 
+> for you to fetch changes up to 5b0961f7ad6790f473623703834351b6e43fbaa6:
+> 
+>    hw/net:ftgmac100: fix coding style (2024-07-02 07:53:53 +0200)
+> 
+> ----------------------------------------------------------------
+> aspeed queue:
+> 
+> * Coverity fixes
+> * Deprecation of tacoma-bmc machine
+> * Buffer overflow fix in GPIO model
+> * Minor cleanup
 
-On Sun, Jun 30, 2024 at 11:05:48AM +0800, LIU Zhiwei wrote:
->We have sent their implementations separately, and we have received few objective
->comments except for some ISA extensions order. So, I have put them together
->as one patch set to make it easier for merging.
->
->v1->v2:
->    1. Fix the isa orders.
->    2. Make zimop/zcmop/zama16b/zabha depend on priviledged 1.13
+Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/9.1 as appropriate.
 
-I didn't realize you started zimop/zcmop upstream efforts already. I had sent
-a patch series last friday. And just noticed that you this one on Saturday.
-It seems you had sent first set of zimop/zcmop patches in May (which I missed).
 
-Overall my patches and yours look equivalent. Infact, you've added disasm
-support as well, so it's a superset. I'll stop my effort to upstream then.
+r~
 
-Thanks for working on these.
-
-Otherwise (for zimop/zcmop patches in this series)
-
-Reviewed-by: Deepak Gupta <debug@rivosinc.com>
-
->    2. Add review tags.
->
->The v1 patch set is here
->    1. zimop/zcmop
->        https://mail.gnu.org/archive/html/qemu-riscv/2024-05/msg00207.html
->    2. zama16b
->        https://mail.gnu.org/archive/html/qemu-riscv/2024-05/msg00212.html
->    3. zabha
->        https://mail.gnu.org/archive/html/qemu-riscv/2024-05/msg00214.html
->
->LIU Zhiwei (11):
->  target/riscv: Add zimop extension
->  disas/riscv: Support zimop disassemble
->  target/riscv: Add zcmop extension
->  disas/riscv: Support zcmop disassemble
->  target/riscv: Support Zama16b extension
->  target/riscv: Move gen_amo before implement Zabha
->  target/riscv: Add AMO instructions for Zabha
->  target/riscv: Move gen_cmpxchg before adding amocas.[b|h]
->  target/riscv: Add amocas.[b|h] for Zabha
->  target/riscv: Enable zabha for max cpu
->  disas/riscv: Support zabha disassemble
->
-> disas/riscv.c                               | 183 ++++++++++++++++++++
-> target/riscv/cpu.c                          |   8 +
-> target/riscv/cpu_cfg.h                      |   4 +
-> target/riscv/insn16.decode                  |   1 +
-> target/riscv/insn32.decode                  |  33 ++++
-> target/riscv/insn_trans/trans_rva.c.inc     |  51 ++----
-> target/riscv/insn_trans/trans_rvd.c.inc     |  14 +-
-> target/riscv/insn_trans/trans_rvf.c.inc     |  14 +-
-> target/riscv/insn_trans/trans_rvi.c.inc     |   6 +
-> target/riscv/insn_trans/trans_rvzabha.c.inc | 145 ++++++++++++++++
-> target/riscv/insn_trans/trans_rvzacas.c.inc |  13 --
-> target/riscv/insn_trans/trans_rvzcmop.c.inc |  29 ++++
-> target/riscv/insn_trans/trans_rvzimop.c.inc |  37 ++++
-> target/riscv/tcg/tcg-cpu.c                  |   5 +
-> target/riscv/translate.c                    |  38 ++++
-> 15 files changed, 531 insertions(+), 50 deletions(-)
-> create mode 100644 target/riscv/insn_trans/trans_rvzabha.c.inc
-> create mode 100644 target/riscv/insn_trans/trans_rvzcmop.c.inc
-> create mode 100644 target/riscv/insn_trans/trans_rvzimop.c.inc
->
->-- 
->2.25.1
->
->
 
