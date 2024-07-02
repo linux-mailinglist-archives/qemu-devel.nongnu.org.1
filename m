@@ -2,69 +2,123 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0C38923FD7
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 16:04:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C149A924118
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 16:43:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOe5q-0007sG-Co; Tue, 02 Jul 2024 10:02:50 -0400
+	id 1sOei9-0004I4-KN; Tue, 02 Jul 2024 10:42:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1sOe5n-0007rQ-PW; Tue, 02 Jul 2024 10:02:47 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <ayush.m55@samsung.com>)
+ id 1sOdkI-00081Z-Pw
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 09:40:36 -0400
+Received: from mailout1.samsung.com ([203.254.224.24])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1sOe5k-0003HE-KU; Tue, 02 Jul 2024 10:02:47 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.31])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4WD4Lk1Hn8z67k9Y;
- Tue,  2 Jul 2024 22:00:46 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
- by mail.maildlp.com (Postfix) with ESMTPS id 75B93140A70;
- Tue,  2 Jul 2024 22:02:37 +0800 (CST)
-Received: from localhost (10.203.174.77) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Tue, 2 Jul
- 2024 15:02:36 +0100
-Date: Tue, 2 Jul 2024 15:02:36 +0100
-To: "Michael S. Tsirkin" <mst@redhat.com>
-CC: Igor Mammedov <imammedo@redhat.com>, Sunil V L <sunilvl@ventanamicro.com>, 
- <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>, <qemu-riscv@nongnu.org>,
- Paolo Bonzini <pbonzini@redhat.com>, =?ISO-8859-1?Q?Marc-Andr=E9?= Lureau
- <marcandre.lureau@redhat.com>, "Daniel P . =?ISO-8859-1?Q?Berrang=E9?="
- <berrange@redhat.com>, Thomas Huth <thuth@redhat.com>, Philippe
- =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>, Ani Sinha
- <anisinha@redhat.com>, Laurent Vivier <lvivier@redhat.com>, Gerd Hoffmann
- <kraxel@redhat.com>, Sia Jee Heng <jeeheng.sia@starfivetech.com>, Alistair
- Francis <alistair23@gmail.com>, Daniel Henrique Barboza
- <dbarboza@ventanamicro.com>, Palmer Dabbelt <palmer@dabbelt.com>, Bin Meng
- <bmeng.cn@gmail.com>, Weiwei Li <liwei1518@gmail.com>, Liu Zhiwei
- <zhiwei_liu@linux.alibaba.com>, "Alistair Francis" <alistair.francis@wdc.com>
-Subject: Re: [PATCH v4 16/16] tests/qtest/bios-tables-test: Add expected
- ACPI data files for RISC-V
-Message-ID: <20240702150236.000042eb@Huawei.com>
-In-Reply-To: <20240701170330-mutt-send-email-mst@kernel.org>
-References: <20240625150839.1358279-1-sunilvl@ventanamicro.com>
- <20240625150839.1358279-17-sunilvl@ventanamicro.com>
- <20240627141803.42cd46c1@imammedo.users.ipa.redhat.com>
- <20240701170330-mutt-send-email-mst@kernel.org>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <ayush.m55@samsung.com>)
+ id 1sOdkB-0007Mh-2e
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 09:40:33 -0400
+Received: from epcas5p1.samsung.com (unknown [182.195.41.39])
+ by mailout1.samsung.com (KnoxPortal) with ESMTP id
+ 20240702134017epoutp01b988ede3c87b61a7a4db2054bc99a8d8~eaQ43Jpdt1289012890epoutp01S
+ for <qemu-devel@nongnu.org>; Tue,  2 Jul 2024 13:40:17 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com
+ 20240702134017epoutp01b988ede3c87b61a7a4db2054bc99a8d8~eaQ43Jpdt1289012890epoutp01S
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+ s=mail20170921; t=1719927617;
+ bh=Tc04XVLYYScLca5YrloOjmE417jHIdRSu1c6MkC6BYM=;
+ h=From:To:Cc:Subject:Date:References:From;
+ b=Hh/JChhY+nChIzrG1q33nFHsLfHGQfYhMN04EEEWatpxQ8SMBjIPGu40zVlnqcLfl
+ FxUeA27sSo+S5eeu3bIc/f53c9g9PObRbzN+X/2JKNjClJVKiboLDt56GTSweNfu4G
+ 1J/ucv6vg6KhL+v43GWVrgBxFd5aJFGnvMdw7ujU=
+Received: from epsnrtp2.localdomain (unknown [182.195.42.163]) by
+ epcas5p4.samsung.com (KnoxPortal) with ESMTP id
+ 20240702134017epcas5p4b6d417adaf595c7e28e6cc9a1cd2bfa2~eaQ4pqyol0142801428epcas5p4G;
+ Tue,  2 Jul 2024 13:40:17 +0000 (GMT)
+Received: from epsmges5p2new.samsung.com (unknown [182.195.38.180]) by
+ epsnrtp2.localdomain (Postfix) with ESMTP id 4WD3v40dVDz4x9Pw; Tue,  2 Jul
+ 2024 13:40:16 +0000 (GMT)
+Received: from epcas5p4.samsung.com ( [182.195.41.42]) by
+ epsmges5p2new.samsung.com (Symantec Messaging Gateway) with SMTP id
+ 47.B8.09989.F3304866; Tue,  2 Jul 2024 22:40:15 +0900 (KST)
+Received: from epsmtrp1.samsung.com (unknown [182.195.40.13]) by
+ epcas5p2.samsung.com (KnoxPortal) with ESMTPA id
+ 20240702133144epcas5p22b982613bfbfce0e7ad0c74fd72a7956~eaJbAG7uc1478014780epcas5p2n;
+ Tue,  2 Jul 2024 13:31:44 +0000 (GMT)
+Received: from epsmgmc1p1new.samsung.com (unknown [182.195.42.40]) by
+ epsmtrp1.samsung.com (KnoxPortal) with ESMTP id
+ 20240702133144epsmtrp120509736bfe851d4c537af5097cf305c~eaJa-c6NK2395523955epsmtrp1c;
+ Tue,  2 Jul 2024 13:31:44 +0000 (GMT)
+X-AuditID: b6c32a4a-bffff70000002705-9e-6684033fa496
+Received: from epsmtip1.samsung.com ( [182.195.34.30]) by
+ epsmgmc1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
+ BE.79.07412.04104866; Tue,  2 Jul 2024 22:31:44 +0900 (KST)
+Received: from localhost.sa.corp.samsungelectronics.net (unknown
+ [107.99.41.223]) by epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
+ 20240702133143epsmtip1658fb420c8b1043b6dbb320b07aa6277~eaJaJXUEF2392523925epsmtip1e;
+ Tue,  2 Jul 2024 13:31:43 +0000 (GMT)
+From: Ayush Mishra <ayush.m55@samsung.com>
+To: qemu-devel@nongnu.org
+Cc: kbusch@kernel.org, its@irrelevant.dk, foss@defmacro.it, Ayush Mishra
+ <ayush.m55@samsung.com>
+Subject: [PATCH] hw/nvme: actually implement abort
+Date: Tue,  2 Jul 2024 13:32:32 +0530
+Message-ID: <20240702080232.848849-1-ayush.m55@samsung.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.203.174.77]
-X-ClientProxiedBy: lhrpeml100003.china.huawei.com (7.191.160.210) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+Content-Transfer-Encoding: 8bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrCKsWRmVeSWpSXmKPExsWy7bCmlq49c0uaQdM8IYvbk3ksTkwJs9h/
+ 8BurxaRD1xgtjvfuYHFg9Zgy7Rq7x7kd59k9Nq3qZPN4cm0zk0ffllWMAaxR2TYZqYkpqUUK
+ qXnJ+SmZeem2St7B8c7xpmYGhrqGlhbmSgp5ibmptkouPgG6bpk5QLuVFMoSc0qBQgGJxcVK
+ +nY2RfmlJakKGfnFJbZKqQUpOQUmBXrFibnFpXnpenmpJVaGBgZGpkCFCdkZf9ZfZin4z1+x
+ +/MJpgbGNu4uRk4OCQETiUWf/zN2MXJxCAnsZpTYuXkuI0hCSOATo8S3eTwQiW+MEucXbWOC
+ 6fi9sZsFIrGXUWJP43uo9jYmibMTvzGDVLEJaEnce3mLBcQWEZCU+N11GijOwcEskCTR9Vkb
+ JCwsYCSxcepjsKEsAqoS/R/vgdm8AtYSmzd8ZoNYJi+xeMdyZoi4oMTJmU/ARjIDxZu3zmaG
+ qNnFLtHwXhvCdpH48v8NO4QtLPHq+BYoW0riZX8blJ0tMaf1GyOEXSKxdt41FgjbXuLinr9M
+ EGdqSqzfpQ8RlpWYemodE8RaPone30+g4cArsWPeE7ByCQFliZ5DBhBhSYknr79AXe8h8X7T
+ YVaQEiGBWIkH6w0nMMrPQvLLLCS/zELYu4CReRWjZGpBcW56arFpgVFeajk8UpPzczcxgpOf
+ ltcOxocPPugdYmTiYDzEKMHBrCTCK/W+OU2INyWxsiq1KD++qDQntfgQoykwgCcyS4km5wPT
+ b15JvKGJpYGJmZmZiaWxmaGSOO/r1rkpQgLpiSWp2ampBalFMH1MHJxSDUyt1zrFTSJ6n93X
+ +F0s6Ve2ULLatiCAZ/XhvFiriZ7PGcs4T+pdsubaZOaztXq19J7/6yeInn9ee6QmWO/6s5+7
+ flyNvTVBMOut+P4kg+Jeha01ifxXjnAZBaznFZt8KGGHrXjP2q0nU66Ws/xd8OqF0OMN4ac5
+ /Pg/Sm+a9HxO8sxMiYmtygVxYZwbgll07kZ+ezr7eMmvMtXr57elKc9MVzyQrfCtecryCLOo
+ 7v+P12RIdrM9uZ6dHuDovEw48E/saqW6lzsktlrZGl77t2pyyqsPj+xEzdZeu3j9QNPzD9Ld
+ RzRcyzL4JwUfbV2S9V9hak1T14W4ncmyFSyTzql/bF/xQl1j44R5Etw3Wf4qsRRnJBpqMRcV
+ JwIA3KN9CAcEAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrCLMWRmVeSWpSXmKPExsWy7bCSnK4DY0uawZZNgha3J/NYnJgSZrH/
+ 4DdWi0mHrjFaHO/dweLA6jFl2jV2j3M7zrN7bFrVyebx5NpmJo++LasYA1ijuGxSUnMyy1KL
+ 9O0SuDL+rL/MUvCfv2L35xNMDYxt3F2MnBwSAiYSvzd2s3QxcnEICexmlHj9bgorREJSYu62
+ b1C2sMTKf8/ZIYpamCSmPJkGlmAT0JK49/IWC4gtAtTwu+s0M4jNLJAm8bXlMRuILSxgJLFx
+ 6mMmEJtFQFWi/+M9MJtXwFpi84bPbBAL5CUW71jODBEXlDg58wkLxBx5ieats5knMPLNQpKa
+ hSS1gJFpFaNkakFxbnpusmGBYV5quV5xYm5xaV66XnJ+7iZGcEBqaexgvDf/n94hRiYOxkOM
+ EhzMSiK8Uu+b04R4UxIrq1KL8uOLSnNSiw8xSnOwKInzGs6YnSIkkJ5YkpqdmlqQWgSTZeLg
+ lGpgem7RZCY5R+sDI6fIr36Of057ZjFJXky2e8o28/ixLb8Sd+klWMyx3bCiZr7Vt0oPLcVV
+ sRbnr/7tvGzxxXO22YNKf82KsOgdf15U9xUXXt/ZlR3l/Pn8wUtSCeKnVq5fsrCpVquvctsj
+ 6/IpsRuWMPr71m1ybrlmejjiVNm+myJVZ1j2lKX7pDx0UGGLWrrjoTXL0RlXnlxe/SlZTik5
+ teOCi/VcfW4N9z1a2zXXOc9/xjN1ksaLpIYl0WeFHBOXNXsZKKtderrsvOURoQX2Nh4lFxVn
+ fr7N19U+z2udaq6ywstvs31517T81Vuhziy68Oop7zhb+2kmMQ8571wQ6Om+ERH58Qu/xT/J
+ gl0qSizFGYmGWsxFxYkAnAAEWLcCAAA=
+X-CMS-MailID: 20240702133144epcas5p22b982613bfbfce0e7ad0c74fd72a7956
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-Sendblock-Type: REQ_APPROVE
+CMS-TYPE: 105P
+DLP-Filter: Pass
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20240702133144epcas5p22b982613bfbfce0e7ad0c74fd72a7956
+References: <CGME20240702133144epcas5p22b982613bfbfce0e7ad0c74fd72a7956@epcas5p2.samsung.com>
+Received-SPF: pass client-ip=203.254.224.24;
+ envelope-from=ayush.m55@samsung.com; helo=mailout1.samsung.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_03_06=1.592,
+ DKIMWL_WL_HIGH=-0.001, DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
+ DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Tue, 02 Jul 2024 10:42:15 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,150 +130,73 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 1 Jul 2024 17:03:43 -0400
-"Michael S. Tsirkin" <mst@redhat.com> wrote:
+Abort was not implemented previously, but we can implement it for AERs and asynchrnously for I/O.
 
-> On Thu, Jun 27, 2024 at 02:18:03PM +0200, Igor Mammedov wrote:
-> > On Tue, 25 Jun 2024 20:38:39 +0530
-> > Sunil V L <sunilvl@ventanamicro.com> wrote:
-> >   
-> > > As per the step 5 in the process documented in bios-tables-test.c,
-> > > generate the expected ACPI AML data files for RISC-V using the
-> > > rebuild-expected-aml.sh script and update the
-> > > bios-tables-test-allowed-diff.h.
-> > > 
-> > > These are all new files being added for the first time. Hence, iASL diff
-> > > output is not added.
-> > > 
-> > > Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
-> > > Acked-by: Alistair Francis <alistair.francis@wdc.com>
-> > > Acked-by: Igor Mammedov <imammedo@redhat.com>  
-> > 
-> > Michael,
-> > can it go via risc-v tree or
-> > do you plan to merge it via your tree?  
-> 
-> given patch 1 is merged, I took the rest.
+Signed-off-by: Ayush Mishra <ayush.m55@samsung.com>
+---
+ hw/nvme/ctrl.c | 32 ++++++++++++++++++++++++++++++++
+ 1 file changed, 32 insertions(+)
 
-Looks like your CI runs are catching this as well but
-RHCT here is failing.  I rebased the GI/GP set on top of this
-and ignored that failure by skipping riscv64 tests.
-
-Jonathan
-
-> 
-> > > ---
-> > >  tests/data/acpi/riscv64/virt/APIC           | Bin 0 -> 116 bytes
-> > >  tests/data/acpi/riscv64/virt/DSDT           | Bin 0 -> 3518 bytes
-> > >  tests/data/acpi/riscv64/virt/FACP           | Bin 0 -> 276 bytes
-> > >  tests/data/acpi/riscv64/virt/MCFG           | Bin 0 -> 60 bytes
-> > >  tests/data/acpi/riscv64/virt/RHCT           | Bin 0 -> 314 bytes
-> > >  tests/data/acpi/riscv64/virt/SPCR           | Bin 0 -> 80 bytes
-> > >  tests/qtest/bios-tables-test-allowed-diff.h |   6 ------
-> > >  7 files changed, 6 deletions(-)
-> > > 
-> > > diff --git a/tests/data/acpi/riscv64/virt/APIC b/tests/data/acpi/riscv64/virt/APIC
-> > > index e69de29bb2d1d6434b8b29ae775ad8c2e48c5391..66a25dfd2d6ea2b607c024722b2eab95873a01e9 100644
-> > > GIT binary patch
-> > > literal 116
-> > > zcmZ<^@N_O=U|?X|;^gn_5v<@85#X!<1dKp25F13pfP@Mo12P{Zj?R|`s)2!c7=s}J
-> > > I#NvT*0o0BN0RR91
-> > > 
-> > > literal 0
-> > > HcmV?d00001
-> > > 
-> > > diff --git a/tests/data/acpi/riscv64/virt/DSDT b/tests/data/acpi/riscv64/virt/DSDT
-> > > index e69de29bb2d1d6434b8b29ae775ad8c2e48c5391..0fb2d5e0e389541209b765d5092d0706f40298f6 100644
-> > > GIT binary patch
-> > > literal 3518
-> > > zcmZvf%WvaU6vnR;w@IBxlQexl(t(j!ppl%0(ryq<oOYV3X-%9`q=14{b;M9K6c~^O
-> > > zgcx<fqhd2ti4B_~D)B!c1W2sdvE#L7!#}_>eCJ*}oI`D?w!iChKA+$9t$orAn%(bn
-> > > zN+n)t?0eh6a^of6TgGN7rRbcFh1Tyc_k%{iceZVNuIr}z+pT7<?)fc<HI?okw3^tr  
-> > > z>)qm0&dr&dmZB`a{a^Ra*0&D5Eo1b;X8Qm}E3gQ<btjYVdtTkbz7rISPX6ODvMUs3
-> > > zVE91w&KfCiza7@#@A>YkTOF1_DRa)WNl^t#{A^TNmZNji{btZCtt5&QPNDqU;E!+b    
-> > > zecnEQ^xc;~?0jvN=B?69B6sx0n@1<N?!0~c*1N~|jvlD2+E~Xu>-LMCh<kUhvyXCD
-> > > z|GVk1+UV8=+`16nn$W3iZBaGE(t=R0Su8V)L_|(iti)M3i8v3Jc_g_<E!HC$=dr;&
-> > > zZ0_+)tcM-v;WLjB?y(x{F%swTD)SiS9?!;ljK+DKGLIDZSc~;Y#d$nr9_i3y=NsQ^  
-> > > zu@zZ&*ReP}{EyK3th+T@*_*eqZ#4FX%O>b{iWO(USDtFAW3{YY{55g*p1P}!a8zWX
-> > > z7lz;IPVBzpJS=7G%wV8y2Q62ba|`EHRm#%1lYm%>L=vK=N;x|_7+?*WxKL3R0`umY
-> > > z&O>M<DHHxW7E8~>hKe$y(1g;N2-TU8l!<C|EEb%J4HacZp-Gd8P@M@$nW#v|VwsuP    
-> > > zP=$;-)Haz>@sOMoiwl`i1tW@cj+o4-cu3BPCB-VhD+4MD9hIDroD&Pl#Oi8OIy2%-
-> > > zNlr-4iRFXLXr|LTGn$gL<b>p$V}cX!M^n3=p)tt`$vN>NG_kr`M{qil6Owag1ZPHY
-> > > zW+W#h=gbPutl-Q_PDsv)?-Htwo@Y*Q<|HR1=gbSvyx`1BPDsu<E;z>p=eXpA<eYfp
-> > > zv*(GAkEvZhm4f7i<eWvpSrnW_$qC6hOM<f`I7^Zfl5<W7&I!ReAvqyAXIXHT1!q}u
-> > > zLUPVY!8s{7CnYB&=bRFpQ-X6!azb*>X~8)yIHx5iB<DoK!Jg-g;GB`1keqW?aLx+O  
-> > > zS;+~>Ip+lDoZy_3oRFMzUU1F}&UwiR$vGDU=Yrr|kera5b5U?E3eH8z3CTH^1m}|A    
-> > > zT#}rSoU<Z0D}u8kIUx;a@2q9hqcop+`Y3zu*6>5@qiM`L8Qmx@>rXnqyVu6bqy3;0
-> > > zSfN$e$O$X-aop-gjFlN1TJ2C(VM8aZsGs9rPsDhcG3gaHcG3%d9rt=N#><R_Ugd1x  
-> > > zYt+>h-rEXOMpLn!a_)bcQwbVUYCt>d6Z~go(OKwiV=x$e6rJOWm8FJLZ)jL(gSOQ9    
-> > > z(=101Q%{N90rg{iGreXyIPiUy_PU*2Ro)uw?+2cJexkhQVfAu5b@3W?^1b$-wSOuL  
-> > > z8($pWumAYmuXoN*92)^EIHqx|osu9QI;oM>2efl4w7)DozPM|Bh$~ecUA>%od=bT&    
-> > > z;R0PerC=JrI{7MZ#_1;2tCR9A{Hkc%mp4o`zpVZISFrki`_c5@?b)Ba_T|{c>*}hQ    
-> > > pv@F`;cR<_jYzAT_(hnb+<eKANn;)0v1k>|8pBtRxTSGr9{slF`>K_0A
-> > > 
-> > > literal 0
-> > > HcmV?d00001
-> > > 
-> > > diff --git a/tests/data/acpi/riscv64/virt/FACP b/tests/data/acpi/riscv64/virt/FACP
-> > > index e69de29bb2d1d6434b8b29ae775ad8c2e48c5391..a5276b65ea8ce46cc9b40d96d98f0669c9089ed4 100644
-> > > GIT binary patch
-> > > literal 276  
-> > > zcmZ>BbPf<<WME(ucJg=j2v%^42yj*a0-z8Bhz+8t3k1-OV?`GjD1M-;Zz#xa0OIBc    
-> > > A0RR91
-> > > 
-> > > literal 0
-> > > HcmV?d00001
-> > > 
-> > > diff --git a/tests/data/acpi/riscv64/virt/MCFG b/tests/data/acpi/riscv64/virt/MCFG
-> > > index e69de29bb2d1d6434b8b29ae775ad8c2e48c5391..37eb923a9320f5573c0c2cdb90bd98409cc7eb6f 100644
-> > > GIT binary patch
-> > > literal 60
-> > > rcmeZuc5}C3U|?Y6aq@Te2v%^42yj*a0!E-1hz+8VfB}^KA4CHH3`GY4
-> > > 
-> > > literal 0
-> > > HcmV?d00001
-> > > 
-> > > diff --git a/tests/data/acpi/riscv64/virt/RHCT b/tests/data/acpi/riscv64/virt/RHCT
-> > > index e69de29bb2d1d6434b8b29ae775ad8c2e48c5391..beaa961bbf0f0486c0dee25f543377c928354f84 100644
-> > > GIT binary patch
-> > > literal 314
-> > > zcmXAlu}%Xq42FGxD#XNyI`tt=C&buWx`A2-wkXNvbP-K1O46&8iKjrk6)SI3ey5h~
-> > > z@3-SPa`wCa{iPvl)b_RC9X8vKw|)adiC8n)zP^7d?+~A>`lE(^DK1@Wog4=(iq&1K  
-> > > z7;1J`gewX|OE=3Z>{xM3wM)ljIQKa+635YaZ7jrOeGc+eJEnks*|jl=GEUBVQ8WhX    
-> > > zK@<flJgso_nMF!k2aE&flg}m^e@2oQd6bm~m(n5!gJ?a<U{EgOALs#2D_Y&qJuA9g  
-> > > Pp1|9>GjINg;u`)Bd);9H    
-> > > 
-> > > literal 0
-> > > HcmV?d00001
-> > > 
-> > > diff --git a/tests/data/acpi/riscv64/virt/SPCR b/tests/data/acpi/riscv64/virt/SPCR
-> > > index e69de29bb2d1d6434b8b29ae775ad8c2e48c5391..4da9daf65f71a13ac2b488d4e9728f194b569a43 100644
-> > > GIT binary patch
-> > > literal 80  
-> > > zcmWFza1IJ!U|?X{>E!S15v<@85#X!<1dKp25F12;fdT`FDF9*%FmM4$c8~z`e;@#f    
-> > > G!2kgKJqrN<
-> > > 
-> > > literal 0
-> > > HcmV?d00001
-> > > 
-> > > diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
-> > > index 70474a097f..dfb8523c8b 100644
-> > > --- a/tests/qtest/bios-tables-test-allowed-diff.h
-> > > +++ b/tests/qtest/bios-tables-test-allowed-diff.h
-> > > @@ -1,7 +1 @@
-> > >  /* List of comma-separated changed AML files to ignore */
-> > > -"tests/data/acpi/riscv64/virt/APIC",
-> > > -"tests/data/acpi/riscv64/virt/DSDT",
-> > > -"tests/data/acpi/riscv64/virt/FACP",
-> > > -"tests/data/acpi/riscv64/virt/MCFG",
-> > > -"tests/data/acpi/riscv64/virt/RHCT",
-> > > -"tests/data/acpi/riscv64/virt/SPCR",  
-> 
-> 
+diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
+index 127c3d2383..a38037b5f8 100644
+--- a/hw/nvme/ctrl.c
++++ b/hw/nvme/ctrl.c
+@@ -1759,6 +1759,10 @@ static void nvme_aio_err(NvmeRequest *req, int ret)
+         break;
+     }
+ 
++    if (ret == -ECANCELED) {
++        status = NVME_CMD_ABORT_REQ;
++    }
++
+     trace_pci_nvme_err_aio(nvme_cid(req), strerror(-ret), status);
+ 
+     error_setg_errno(&local_err, -ret, "aio failed");
+@@ -5759,12 +5763,40 @@ static uint16_t nvme_identify(NvmeCtrl *n, NvmeRequest *req)
+ static uint16_t nvme_abort(NvmeCtrl *n, NvmeRequest *req)
+ {
+     uint16_t sqid = le32_to_cpu(req->cmd.cdw10) & 0xffff;
++    uint16_t cid  = (le32_to_cpu(req->cmd.cdw10) >> 16) & 0xffff;
++    NvmeSQueue *sq = n->sq[sqid];
++    NvmeRequest *r, *next;
++    int i;
+ 
+     req->cqe.result = 1;
+     if (nvme_check_sqid(n, sqid)) {
+         return NVME_INVALID_FIELD | NVME_DNR;
+     }
+ 
++    if (sqid == 0) {
++        for (i = 0; i < n->outstanding_aers; i++) {
++            NvmeRequest *re = n->aer_reqs[i];
++            if (re->cqe.cid == cid) {
++                memmove(n->aer_reqs + i, n->aer_reqs + i + 1,
++                         (n->outstanding_aers - i - 1) * sizeof(NvmeRequest *));
++                n->outstanding_aers--;
++                re->status = NVME_CMD_ABORT_REQ;
++                req->cqe.result = 0;
++                nvme_enqueue_req_completion(&n->admin_cq, re);
++                return NVME_SUCCESS;
++            }
++        }
++    }
++
++    QTAILQ_FOREACH_SAFE(r, &sq->out_req_list, entry, next) {
++        if (r->cqe.cid == cid) {
++            if (r->aiocb) {
++                blk_aio_cancel_async(r->aiocb);
++            }
++            break;
++        }
++    }
++
+     return NVME_SUCCESS;
+ }
+ 
+-- 
+2.43.0
 
 
