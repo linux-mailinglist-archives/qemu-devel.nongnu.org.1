@@ -2,95 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AC58924036
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 16:15:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 702F89240CC
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 16:27:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOeGl-0001Mb-7w; Tue, 02 Jul 2024 10:14:07 -0400
+	id 1sOeJH-00010S-Us; Tue, 02 Jul 2024 10:16:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sOeGh-0001G4-58
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:14:03 -0400
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sOeGe-0006D6-Td
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:14:02 -0400
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-1f4a5344ec7so30665425ad.1
- for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 07:13:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719929639; x=1720534439; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=7YcBvk2dbGB7VtbEXR/wh8uTaeMJm+lOTQpKSurAb/I=;
- b=r8ZGO6I0Tbqk9TYUJfBWzzRFI51ria/gKEHpW9dw7YMA0XTnjv87n2DWt0rNXOzoPN
- AhW7QTLkSuvqyfrF4jOEfJuf0/abj0cpjIKKm/8+3tT4FLIOHZOLJ3gYxWDAc9Lt69tW
- BPprlSBcB7amUR5kS7AOAuGdNaAMOHNfA97qDrUHlpT5jZc6MF9W6GnlRh/Ncf9EvaTT
- zWG0BMfI+fjZxFL6L3yyn7Rpum+eFyFFUT1krcUcicaoFcEUVOg+mad8VcO76Ui4z4/L
- 3XV3N9YIiTUC2shSMM/y+WUt4D2OkQGippzhbXPYxRE9Yp+q5LtsN4En/Lg1Cnll4EZp
- R3pw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719929639; x=1720534439;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=7YcBvk2dbGB7VtbEXR/wh8uTaeMJm+lOTQpKSurAb/I=;
- b=QZwOKs7/oieFKDrXs5dlbecQRSZfivX3GIo8VSyjCZ95NBoel1PuFYTQtWz0QgVveT
- HG1deOnqGq17+Rxxh/RKIyBiMP+dG9lruKhilHwFfS7XUHDeytUaz6s+Sgl/PsOJ+5H/
- yjlK7+9UJOBcjqJj7ecRQYH3oAUtykQZ3ZQ8VevsiI/s5u0wool5BdXuzQaB18JwLAbr
- NW3OPu1oSciPO3NVBfeANbkdNKEHuHEWeuBvNhhBFqO8w+9mH8kMmRmRCdTe76hQfHkL
- zQNzgVtvJmPO63YwddQpgRJVkeSxeqqdmK4RehgH57dXObOZsTSjrDGDrICNY2TUclP5
- UiEA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUoNpKU+Fw6saKWeLicxQoL82D+GW//ZRMoNM5/McPfKXEksrT6atlysoX10s+ocEX1L4dkJV8LkyjfwVcUbVqTNbe+Yew=
-X-Gm-Message-State: AOJu0YzkZ43okWx+Lmkd2EdyNj9Glkl36mfTXf6U0yaCPOprn6yNpHUu
- Dgn5ECBarNu8uHANg7xgBzYvLIYqH5qwBB24+0doAmQtWK92R/IfrrrdWHezn+4=
-X-Google-Smtp-Source: AGHT+IGAM8lLY7eTW3eGi2WaQoBenEfxlKNobhIsNpKovbN831lD3t2GRQR3X5eHtpjCDgsmiDdIPg==
-X-Received: by 2002:a17:902:f70b:b0:1fa:92ee:38e0 with SMTP id
- d9443c01a7336-1fadb433a9dmr124911535ad.12.1719929638789; 
- Tue, 02 Jul 2024 07:13:58 -0700 (PDT)
-Received: from [192.168.0.4] (174-21-76-141.tukw.qwest.net. [174.21.76.141])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1fb0bfe6564sm3758795ad.206.2024.07.02.07.13.57
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 02 Jul 2024 07:13:58 -0700 (PDT)
-Message-ID: <6cc708b5-5d6f-42c2-9bc6-820abb3eea94@linaro.org>
-Date: Tue, 2 Jul 2024 07:13:55 -0700
+ (Exim 4.90_1) (envelope-from <SRS0=fXIt=OC=kaod.org=clg@ozlabs.org>)
+ id 1sOeIl-0000G7-7o; Tue, 02 Jul 2024 10:16:12 -0400
+Received: from gandalf.ozlabs.org ([150.107.74.76] helo=mail.ozlabs.org)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <SRS0=fXIt=OC=kaod.org=clg@ozlabs.org>)
+ id 1sOeIg-0006mt-OO; Tue, 02 Jul 2024 10:16:10 -0400
+Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4WD4hJ0bv0z4xGl;
+ Wed,  3 Jul 2024 00:16:00 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4WD4h94mSSz4wx6;
+ Wed,  3 Jul 2024 00:15:53 +1000 (AEST)
+Message-ID: <c18a660d-9695-4d60-b3c5-ff541754b083@kaod.org>
+Date: Tue, 2 Jul 2024 16:15:49 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: linux-user cannot allocate stack memory on riscv64 host due to
- non-zero guest_base
-To: Andreas Schwab <schwab@suse.de>
-Cc: Peter Maydell <peter.maydell@linaro.org>, Warner Losh <imp@bsdimp.com>,
- QEMU Developers <qemu-devel@nongnu.org>
-References: <mvm8qytp828.fsf@suse.de>
- <9f3cb0e3-c069-497d-81de-234db7bd4d33@linaro.org> <mvm4j9gp0xd.fsf@suse.de>
- <34fed985-6a6a-4458-95f9-aa651744ef1a@linaro.org>
- <CANCZdfq4=s=g8GoeCKY4576xgJs4-X+fXh7m5ZOJ1UeBXwWdCQ@mail.gmail.com>
- <mvmv81un7m9.fsf@suse.de>
- <CANCZdfpW+G54v3oeKZ6QYuovOga93D5hou9Ajeo838Y9bDNsUA@mail.gmail.com>
- <mvmmsn6lawv.fsf@suse.de>
- <CAFEAcA-dbLncCmY8zyZAz8e+AWeoGC437B=nV3wPznER+RmhbA@mail.gmail.com>
- <mvmr0cdjjlh.fsf@suse.de> <f681575f-1dae-481e-8330-6fe2fc8d0f11@linaro.org>
- <mvm7ce4jjvf.fsf@suse.de>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <mvm7ce4jjvf.fsf@suse.de>
+Subject: Re: [PATCH 1/4] hw/sd/npcm7xx_sdhci: Use TYPE_SYSBUS_SDHCI definition
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Tyrone Ting <kfting@nuvoton.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Hao Wu <wuhaotsh@google.com>, Thomas Huth <thuth@redhat.com>,
+ Shengtan Mao <stmao@google.com>, Chris Rauer <crauer@google.com>,
+ Joel Stanley <joel@jms.id.au>, Sai Pavan Boddu <sai.pavan.boddu@amd.com>,
+ Laurent Vivier <lvivier@redhat.com>, Luc Michel <luc.michel@amd.com>,
+ Bin Meng <bmeng.cn@gmail.com>, qemu-arm@nongnu.org, qemu-block@nongnu.org,
+ Patrick Venture <venture@google.com>
+References: <20240702140842.54242-1-philmd@linaro.org>
+ <20240702140842.54242-2-philmd@linaro.org>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20240702140842.54242-2-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=fXIt=OC=kaod.org=clg@ozlabs.org; helo=mail.ozlabs.org
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.001, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,20 +69,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/2/24 01:09, Andreas Schwab wrote:
-> On Jul 01 2024, Richard Henderson wrote:
+On 7/2/24 4:08 PM, Philippe Mathieu-Daudé wrote:
+> Use the macro instead of two explicit string literals.
 > 
->> With -d page, I get
->>
->> Locating guest address space @ 0x3f4000
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+
+Thanks,
+
+C.
+
+
+> ---
+>   hw/sd/npcm7xx_sdhci.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
 > 
-> Why do you get a different address?
-> 
+> diff --git a/hw/sd/npcm7xx_sdhci.c b/hw/sd/npcm7xx_sdhci.c
+> index e93dab8dbd..fb51821e11 100644
+> --- a/hw/sd/npcm7xx_sdhci.c
+> +++ b/hw/sd/npcm7xx_sdhci.c
+> @@ -16,6 +16,7 @@
+>   
+>   #include "qemu/osdep.h"
+>   
+> +#include "hw/sd/sdhci.h"
+>   #include "hw/sd/npcm7xx_sdhci.h"
+>   #include "migration/vmstate.h"
+>   #include "sdhci-internal.h"
+> @@ -162,7 +163,7 @@ static void npcm7xx_sdhci_instance_init(Object *obj)
+>   {
+>       NPCM7xxSDHCIState *s = NPCM7XX_SDHCI(obj);
+>   
+> -    object_initialize_child(OBJECT(s), "generic-sdhci", &s->sdhci,
+> +    object_initialize_child(OBJECT(s), TYPE_SYSBUS_SDHCI, &s->sdhci,
+>                               TYPE_SYSBUS_SDHCI);
+>   }
+>   
 
-Come on, man.  Please answer my question:
-
-> Now I need to know about your qemu version and build configuration. 
-
-
-r~
 
