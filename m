@@ -2,80 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 572FA924002
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 16:12:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DDC5924007
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 16:12:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOeAf-00024x-1W; Tue, 02 Jul 2024 10:07:49 -0400
+	id 1sOeAf-000259-7p; Tue, 02 Jul 2024 10:07:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOeAa-00023R-T6
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:07:44 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOeAb-00023i-ST
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:07:45 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOeAY-0007x4-JN
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:07:44 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOeAZ-0007xO-3T
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:07:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719929260;
+ s=mimecast20190719; t=1719929262;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Bf3inGfH3C1OrX/KdJFaqQvDHDePnfUDWhDjBaZ52tk=;
- b=O3j5J0v0vFSMiLulKM068Y8mV2J+86e5fbBWGJYnSwvIT+SvwfoZd9BVtJPNEb82PanvTr
- e3xtifQpMqxon1cx2bbaq2DCgkn/jef5fhNSeFHre+27qhez6FPf/Yd1hNQM7LmwKzv481
- qsADgfDWmU2hyeIrm4R+l+bPTQThueY=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Hq1ZdMUpXgQO0jHpQkHjtkURKxmq/FjBLx45BW2ity0=;
+ b=SRqRxE+INEdBxpLankakr1IyxEwS5O06Rfm6STMRlQkU/obBw0BWPQFdVr9FbHecAZHU/g
+ E5b6WJL4fXmsqxLS2qHkrfO79guWqfPn0YtyokdRXH4+6xCyjPNLB0NhwasHPy25bPnuio
+ 2o9/X+0EnQ4SMaW2KwbqEP+5PAOzfFQ=
+Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
+ [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-616-MJ4QSHjUOX-fLj2B6pW1HA-1; Tue, 02 Jul 2024 10:07:35 -0400
-X-MC-Unique: MJ4QSHjUOX-fLj2B6pW1HA-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-42567dbbd20so31657415e9.0
- for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 07:07:35 -0700 (PDT)
+ us-mta-128-EUon15auNiavX2KnKmrBsQ-1; Tue, 02 Jul 2024 10:07:39 -0400
+X-MC-Unique: EUon15auNiavX2KnKmrBsQ-1
+Received: by mail-lf1-f69.google.com with SMTP id
+ 2adb3069b0e04-52cda76173dso3716467e87.2
+ for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 07:07:38 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719929254; x=1720534054;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Bf3inGfH3C1OrX/KdJFaqQvDHDePnfUDWhDjBaZ52tk=;
- b=InVJs3fBH8s/6B/1pDV58pE0QXgadSZRvJZsempkgwv9+x/jdTwu7GgNMP4r1Ra72C
- W/vM/Hspb8lot8yyD6+RlDDjL7rSt0+jpXCNJYILQ5rnVgp3x2u7KMdpFrPXRNfCpGDF
- e+BrjtezYR1zXruYjjV/DnhzzLtcY8PCCm7KAMNk3NUKJUTHf7Po5IPQ3iZpXWCujOpl
- BmnRwCctgk1AwWQxX8RG6W3TIAduGaB0SSAezIwwmf/5GlaJtBOLm2vzKEaH4VjqGt0X
- 2h8T4Vz6nzd+ZfF6uLDNi322RgL3a9rzcraUdYjLjYkzrLYFYTFcAvbJIOm0+I4DOElX
- eMSg==
-X-Gm-Message-State: AOJu0YwloPrTHdOIl9J2K7uUSU+dhX5QEN85z6vW7oAno3OSIiUkfShM
- SRhYT4r6caUxcqjZhk/g3IOUrFNYXlCIQVrqByB8nylKG46FosTTDOZMIEuUMrTyD02RsbeZRYf
- X7nL3cpAR5xHcHxaNv424A5hDshmJCZQp6EMsk//m6ceGPcn+mI5hixj62qrC+t8XbVjjsmsnQu
- bIYPX3JZpQgb/g/bLG/5P2UdiuUV03qQ==
-X-Received: by 2002:a05:600c:4da1:b0:425:64c4:e016 with SMTP id
- 5b1f17b1804b1-4257a0098c1mr58126755e9.12.1719929254050; 
- Tue, 02 Jul 2024 07:07:34 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGgqgXXTAj0rm4CAIuShkn4R+gTJ9PgwVNThobgo59qdwLkqdpgk8+yeCqyuWs3dnNY5m1lFA==
-X-Received: by 2002:a05:600c:4da1:b0:425:64c4:e016 with SMTP id
- 5b1f17b1804b1-4257a0098c1mr58126515e9.12.1719929253494; 
- Tue, 02 Jul 2024 07:07:33 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1719929256; x=1720534056;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Hq1ZdMUpXgQO0jHpQkHjtkURKxmq/FjBLx45BW2ity0=;
+ b=fdkZzH/HeETIEQ5B+/UT3yoFQbCpVvBQtVLJDzwFNspWYDo0Acluk9T6BBHnmQSqaH
+ e/0lvXfeMAFv7CVYfTJ1LdF+9ASBlHunwQerK0/riCg85kGSwQHZzW6mTg4dnhj72Qvn
+ aeCPZBCzfVJWt9Jxc0fg/1msPDqI9/Mw55PoddzRfu6B4t77aVYKWCv4kbCv/P3nx7l9
+ MlV+OVMyCGg/s7Pi5bL/c9kb+GqMOvAMCshK2MS3ABod2w8o/Eu6sRba9SBjHr4e24ct
+ Mln7/HxVAtyjulqiQ6eVt7+ZHNmRwfQGxjANNucVAZsMuSuaVy9bSqCN0vN5ZZlN51st
+ p+pA==
+X-Gm-Message-State: AOJu0YzfzxqjIhW74jjpdTGuOfbM4ma3BxZ+dNwOgYqoHTQ+oQVa75IB
+ yFZgVA8uuJYiYw928qOzqvj8VWWHsQXUIdadUG+JnwuU8Ht1P6JaZd2dSa/TsKmEsnWgEF+QiWn
+ 1PKL8u/ua9zPpdHKal1R1uk2mpSZ+a/ue2+byIW/6asPSBLTj6Jf3gqYlq+aBCDzVknvpJamh5L
+ OnVkVbW2+5S2hXSWY6NPEZIWVeeglVAQ==
+X-Received: by 2002:a05:6512:6cf:b0:52d:582e:410f with SMTP id
+ 2adb3069b0e04-52e826fc39amr5980456e87.46.1719929256677; 
+ Tue, 02 Jul 2024 07:07:36 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGymzmVHfBVpTtWSvIQDNsJDYacuIfyb5B3q5fYg+P0JgvBQl2JH1qR8VUY9x9SfW7OPt3h9Q==
+X-Received: by 2002:a05:6512:6cf:b0:52d:582e:410f with SMTP id
+ 2adb3069b0e04-52e826fc39amr5980431e87.46.1719929256024; 
+ Tue, 02 Jul 2024 07:07:36 -0700 (PDT)
 Received: from redhat.com ([2a02:14f:1f5:eadd:8c31:db01:9d01:7604])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4256af55cccsm199945575e9.16.2024.07.02.07.07.31
+ ffacd0b85a97d-3675a103371sm13371783f8f.101.2024.07.02.07.07.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 02 Jul 2024 07:07:32 -0700 (PDT)
-Date: Tue, 2 Jul 2024 10:07:29 -0400
+ Tue, 02 Jul 2024 07:07:35 -0700 (PDT)
+Date: Tue, 2 Jul 2024 10:07:33 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, Wafer <wafer@jaguarmicro.com>,
- Jason Wang <jasowang@redhat.com>,
- Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>
-Subject: [PULL 11/91] hw/virtio: Fix obtain the buffer id from the last
- descriptor
-Message-ID: <33abfea239592a706e98269b01c0096249612ea4.1719929191.git.mst@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>, Jiqian Chen <Jiqian.Chen@amd.com>
+Subject: [PULL 12/91] virtio-pci: only reset pm state during resetting
+Message-ID: <84b58169e40f5c7428db6f0b229e01213068aa21.1719929191.git.mst@redhat.com>
 References: <cover.1719929191.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1719929191.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
@@ -103,49 +98,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Wafer <wafer@jaguarmicro.com>
+From: Jiqian Chen <Jiqian.Chen@amd.com>
 
-The virtio-1.3 specification
-<https://docs.oasis-open.org/virtio/virtio/v1.3/virtio-v1.3.html> writes:
-2.8.6 Next Flag: Descriptor Chaining
-      Buffer ID is included in the last descriptor in the list.
+Fix bug imported by 27ce0f3afc9dd ("fix Power Management Control Register for PCI Express virtio devices"
+After this change, observe that QEMU may erroneously clear the power status of the device,
+or may erroneously clear non writable registers, such as NO_SOFT_RESET, etc.
 
-If the feature (_F_INDIRECT_DESC) has been negotiated, install only
-one descriptor in the virtqueue.
-Therefor the buffer id should be obtained from the first descriptor.
+Only state of PM_CTRL is writable.
+Only when flag VIRTIO_PCI_FLAG_INIT_PM is set, need to reset state.
 
-In descriptor chaining scenarios, the buffer id should be obtained
-from the last descriptor.
-
-Fixes: 86044b24e8 ("virtio: basic packed virtqueue support")
-
-Signed-off-by: Wafer <wafer@jaguarmicro.com>
-Reviewed-by: Jason Wang <jasowang@redhat.com>
-Reviewed-by: Eugenio Pérez <eperezma@redhat.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Message-Id: <20240510072753.26158-2-wafer@jaguarmicro.com>
+Fixes: 27ce0f3afc9dd ("fix Power Management Control Register for PCI Express virtio devices"
+Signed-off-by: Jiqian Chen <Jiqian.Chen@amd.com>
+Message-Id: <20240515073526.17297-2-Jiqian.Chen@amd.com>
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/virtio/virtio.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ hw/virtio/virtio-pci.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
-index 28cd406e16..3678ec2f88 100644
---- a/hw/virtio/virtio.c
-+++ b/hw/virtio/virtio.c
-@@ -1745,6 +1745,11 @@ static void *virtqueue_packed_pop(VirtQueue *vq, size_t sz)
-                                              &indirect_desc_cache);
-     } while (rc == VIRTQUEUE_READ_DESC_MORE);
+diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
+index cffc7efcae..7d62e92365 100644
+--- a/hw/virtio/virtio-pci.c
++++ b/hw/virtio/virtio-pci.c
+@@ -2306,10 +2306,16 @@ static void virtio_pci_bus_reset_hold(Object *obj, ResetType type)
+     virtio_pci_reset(qdev);
  
-+    if (desc_cache != &indirect_desc_cache) {
-+        /* Buffer ID is included in the last descriptor in the list. */
-+        id = desc.id;
-+    }
+     if (pci_is_express(dev)) {
++        VirtIOPCIProxy *proxy = VIRTIO_PCI(dev);
 +
-     /* Now copy what we have collected and mapped */
-     elem = virtqueue_alloc_element(sz, out_num, in_num);
-     for (i = 0; i < out_num; i++) {
+         pcie_cap_deverr_reset(dev);
+         pcie_cap_lnkctl_reset(dev);
+ 
+-        pci_set_word(dev->config + dev->exp.pm_cap + PCI_PM_CTRL, 0);
++        if (proxy->flags & VIRTIO_PCI_FLAG_INIT_PM) {
++            pci_word_test_and_clear_mask(
++                dev->config + dev->exp.pm_cap + PCI_PM_CTRL,
++                PCI_PM_CTRL_STATE_MASK);
++        }
+     }
+ }
+ 
 -- 
 MST
 
