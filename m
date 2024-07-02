@@ -2,76 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A2C492402B
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 16:14:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 551409240AA
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 16:25:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOeCa-0000WU-6k; Tue, 02 Jul 2024 10:09:48 -0400
+	id 1sOeCd-0000uV-Av; Tue, 02 Jul 2024 10:09:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOeCR-0008Ho-4y
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:09:39 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOeCV-0000Cd-3Z
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:09:46 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOeCB-0008Li-1l
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:09:38 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOeCF-0008Lq-QQ
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:09:41 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719929362;
+ s=mimecast20190719; t=1719929365;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=pgJQy7t094Dms9DBv10pUkz+7onKHwqzjJeEHsSRcQk=;
- b=b9Jp9lo0hUm++0MuFRzpSoThxRT3VvuxtUSb9sL+bSLKragceM9FT+dvcSrp371Ya8+git
- 9riNXrJk+LsF0YqS/c6dr6/k+BENyCyUwO8r0hj6UPTzgkvrQYSgDHugAIGgpJSRAdmomW
- AiG1Msasuh6vH1XjLQUuUhfGxOAbUaU=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=UGyASDiFbODYa7hIKIzPzDlV0Bv9TAjx5HfpD5vtANQ=;
+ b=T5GdU7I+E8GLgwAFyb9XIqzWzBZKaHncT7TnVct0QbBWNZj78y1nzdChvTy7VXM/o3XOcz
+ 695ZxNTiFcTKtKceTz+HS0boQZduqFskNZr4VoOFpBib2r3HF31sSv+YfiBukr2yofcG13
+ acue4bPLjxi2SQXJVJj+j2UV+zxsTbU=
+Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
+ [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-604-TZL2ob9zNeONuqC2p20Osw-1; Tue, 02 Jul 2024 10:09:20 -0400
-X-MC-Unique: TZL2ob9zNeONuqC2p20Osw-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-4256569a4faso27263465e9.1
- for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 07:09:19 -0700 (PDT)
+ us-mta-678-tLwoAdioO7GXfv1yNxfJWQ-1; Tue, 02 Jul 2024 10:09:24 -0400
+X-MC-Unique: tLwoAdioO7GXfv1yNxfJWQ-1
+Received: by mail-lf1-f69.google.com with SMTP id
+ 2adb3069b0e04-52e9345073aso273512e87.3
+ for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 07:09:23 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719929358; x=1720534158;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=pgJQy7t094Dms9DBv10pUkz+7onKHwqzjJeEHsSRcQk=;
- b=KR/Qjt8xLNJGys1fEb0TepYHZp0NmqAqH7dDHppmjr6E2UUopHUBunX16sZtrRADef
- Y7agemK80ceMk8rVVVpzwL5c+jxIAUhujSIpSNTMsjfYlC6HtuZ7QbJ8NylH1QIDdFE+
- MRrqgVs07wIvVV5jZG7FgbR04cuo9NmArisDYhz1ENu7D/ftExtO4aQWwhHJaaa0XVL1
- hq10bemClISBRDDc5cZ2XmSYdQ6T5cWFermywxCP2BVb2tN7FOO8a6pw85Vy/ehhH1JT
- i58zKZ2/92ZmAKQkFEhp/jx6D6pwuCop7t6MPorkB/Mg/5EqG/YNiuq2bYEcG92Xyrgq
- +X+w==
-X-Gm-Message-State: AOJu0YxJcdbl0jtqFFeLHTque/SUBkK6t7qivUNNg0U8py4YNVJOxMIg
- hYidhKZPObF6N5V48+eCZFVQ4yyvdEWDTrfgcIfgOhlWy7DOkYRr4H0ogGyYkEcTMbYshVKCsOe
- JP1kzL3sDsy0CYy+To2j3Pj3zB/Pb/iYyFtULkSd35n/pydStsLS4NOtykCl+4u8oROVil5bTBl
- 8UFNTMalAjVjBrRxwP95ai3M1CoOxNiQ==
-X-Received: by 2002:a05:600c:4f13:b0:425:6290:b11b with SMTP id
- 5b1f17b1804b1-4256d58dc93mr107235165e9.18.1719929358538; 
- Tue, 02 Jul 2024 07:09:18 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFHbFq1qkUi1fZdglcJIPPyGd1pO8r2TtH/fMhcS06wamh8zkt0pz65ViGTQJUh9rWesjxoPg==
-X-Received: by 2002:a05:600c:4f13:b0:425:6290:b11b with SMTP id
- 5b1f17b1804b1-4256d58dc93mr107234875e9.18.1719929357982; 
- Tue, 02 Jul 2024 07:09:17 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1719929362; x=1720534162;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=UGyASDiFbODYa7hIKIzPzDlV0Bv9TAjx5HfpD5vtANQ=;
+ b=uYvAGKHCIysHPJpr75DHlwgaM5pKILUgpssHcKc9lWErowDhEmrXq57pm1t8ob3lSG
+ t0GGxU+5okjY73g92tmIgoWtv4rVMaGgM5VhD5IG9Uvu1JmttiYd5oCvXJNNM8tOj7LR
+ GBkVtbqoxcMydpXeamIGHRkque8I9YV7zjuwaozhIexciX65BuHP3/F6YmjCTI8kDYp4
+ gPassM1nfw4/+DtgYucLGjwSR3t+wtZy0HM+T7Z4Zg9I6qaXSKgmncAukt+NOKDbEJix
+ W31Xd3Xm9nq+xglr+cy9PCg3VzaU5VA5r/9/WGZPALf/kFKFkiYnIQauQg8tWegU+HAP
+ +9Wg==
+X-Gm-Message-State: AOJu0YzdJ2T821Ym+uUkMiP51NfMrObI19H43sjzdsZMG5nkMsDsJKum
+ IQalrW9wE6xYw7MgYY5PIUnRFjh2AmvDkWEGapaLHo7rUY2tptqXieAWS4d8gjzmMPrZ/rzYUpb
+ MbZI2vch/VTxL9EteSOW5PWmxKovmWvK7DXwuXuIGV5Y8tinFKU9SuZDcO5b96DKD6d4DpljTK3
+ h0UE0jZjUfEchblUpQUkGrvHZwQK63qg==
+X-Received: by 2002:a05:6512:ba3:b0:52c:1298:7304 with SMTP id
+ 2adb3069b0e04-52e82661f17mr6206213e87.26.1719929362168; 
+ Tue, 02 Jul 2024 07:09:22 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHuH7WatXxtPZfjW5xJxKrk48fmN4oGK5WxTFxJ6DEO8RZjI2cZLcsdJoubAbV4txUNqXstWw==
+X-Received: by 2002:a05:6512:ba3:b0:52c:1298:7304 with SMTP id
+ 2adb3069b0e04-52e82661f17mr6206177e87.26.1719929361388; 
+ Tue, 02 Jul 2024 07:09:21 -0700 (PDT)
 Received: from redhat.com ([2a02:14f:1f5:eadd:8c31:db01:9d01:7604])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4257bc89832sm128332435e9.42.2024.07.02.07.09.16
+ 5b1f17b1804b1-4256b097bcbsm200181985e9.35.2024.07.02.07.09.19
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 02 Jul 2024 07:09:17 -0700 (PDT)
-Date: Tue, 2 Jul 2024 10:09:15 -0400
+ Tue, 02 Jul 2024 07:09:21 -0700 (PDT)
+Date: Tue, 2 Jul 2024 10:09:18 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Dmitry Frolov <frolov@swemel.ru>, Jason Wang <jasowang@redhat.com>
-Subject: [PULL 45/91] hw/net/virtio-net.c: fix crash in iov_copy()
-Message-ID: <7bc77e8972cb30f5278ab1746ea962684b92f4ca.1719929191.git.mst@redhat.com>
+ Stefano Garzarella <sgarzare@redhat.com>,
+ David Hildenbrand <david@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Eric Blake <eblake@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>
+Subject: [PULL 46/91] qapi: clarify that the default is backend dependent
+Message-ID: <34921eba4321d5a62fcabf1b57c79571cc68ac82.1719929191.git.mst@redhat.com>
 References: <cover.1719929191.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1719929191.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
@@ -99,35 +107,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Dmitry Frolov <frolov@swemel.ru>
+From: Stefano Garzarella <sgarzare@redhat.com>
 
-A crash found while fuzzing device virtio-net-socket-check-used.
-Assertion "offset == 0" in iov_copy() fails if less than guest_hdr_len bytes
-were transmited.
+The default value of the @share option of the @MemoryBackendProperties
+really depends on the backend type, so let's document the default
+values in the same place where we define the option to avoid
+dispersing the information.
 
-Signed-off-by: Dmitry Frolov <frolov@swemel.ru>
-Message-Id: <20240613143529.602591-2-frolov@swemel.ru>
+Cc: David Hildenbrand <david@redhat.com>
+Suggested-by: Markus Armbruster <armbru@redhat.com>
+Reviewed-by: Markus Armbruster <armbru@redhat.com>
+Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+Message-Id: <20240618100043.144657-2-sgarzare@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/net/virtio-net.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ qapi/qom.json | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-index 9c7e85caea..8f30972708 100644
---- a/hw/net/virtio-net.c
-+++ b/hw/net/virtio-net.c
-@@ -2735,6 +2735,10 @@ static int32_t virtio_net_flush_tx(VirtIONetQueue *q)
-          */
-         assert(n->host_hdr_len <= n->guest_hdr_len);
-         if (n->host_hdr_len != n->guest_hdr_len) {
-+            if (iov_size(out_sg, out_num) < n->guest_hdr_len) {
-+                virtio_error(vdev, "virtio-net header is invalid");
-+                goto detach;
-+            }
-             unsigned sg_num = iov_copy(sg, ARRAY_SIZE(sg),
-                                        out_sg, out_num,
-                                        0, n->host_hdr_len);
+diff --git a/qapi/qom.json b/qapi/qom.json
+index 8bd299265e..9b8f6a7ab5 100644
+--- a/qapi/qom.json
++++ b/qapi/qom.json
+@@ -600,7 +600,9 @@
+ #     preallocation threads (default: none) (since 7.2)
+ #
+ # @share: if false, the memory is private to QEMU; if true, it is
+-#     shared (default: false)
++#     shared (default false for backends memory-backend-file and
++#     memory-backend-ram, true for backends memory-backend-epc and
++#     memory-backend-memfd)
+ #
+ # @reserve: if true, reserve swap space (or huge pages) if applicable
+ #     (default: true) (since 6.1)
+@@ -700,8 +702,6 @@
+ #
+ # Properties for memory-backend-memfd objects.
+ #
+-# The @share boolean option is true by default with memfd.
+-#
+ # @hugetlb: if true, the file to be created resides in the hugetlbfs
+ #     filesystem (default: false)
+ #
+@@ -726,8 +726,6 @@
+ #
+ # Properties for memory-backend-epc objects.
+ #
+-# The @share boolean option is true by default with epc
+-#
+ # The @merge boolean option is false by default with epc
+ #
+ # The @dump boolean option is false by default with epc
 -- 
 MST
 
