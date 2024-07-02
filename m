@@ -2,54 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5633D923B7F
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 12:34:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 53B6F923B8A
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 12:35:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOapL-00046j-Q2; Tue, 02 Jul 2024 06:33:35 -0400
+	id 1sOapO-00047O-GB; Tue, 02 Jul 2024 06:33:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sOapJ-00045V-LP
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 06:33:33 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sOapM-00047E-MY
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 06:33:36 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sOapG-000750-2y
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 06:33:32 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sOapL-00075g-6h
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 06:33:36 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719916409;
+ s=mimecast20190719; t=1719916413;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=y0NL3aqv+v3DosFGjnrW8EZ2itT91S+J9/+IbzdYKwk=;
- b=TWG/oc4lV6FvFh7pMKr9Gb2qccK6oeBI3kXOS0Yk0T19DKIv6w6ao0VXvjqnUThHS6k+ab
- uT5EldvrvuWmha07sN70FKKU4928e2ND9RZbN8S3NwmtwYOFv9LXZ0oNGObzzTtlVQZZAi
- uz52eA23OZAdiywDhSllhAg8ehMwt9E=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ bh=IKIAq/0EbL7dNlGbo5FSiT/Ht/+xCoUVYFafVxD5iyM=;
+ b=W6zWMwU9wtGpxcxPiKCKahE9Km4fZjn6DlbXPCBTGg6+lwYhCNNbnPxxW36KabU4daK8S8
+ YuFxtm99te44w/Qgfmg6hGSsWvRjOsEGBlD4VrGaYNV7fdgrPWru6S5+UNZfYw+p7KNHI7
+ 3o5kZZRUYIZ6mPgkizUHwtBHD20kYXw=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-635-5RNaKzizMyiyPZBd7JcGlQ-1; Tue,
- 02 Jul 2024 06:33:27 -0400
-X-MC-Unique: 5RNaKzizMyiyPZBd7JcGlQ-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-33-cCZGvjrWMH24usGdaK6wPg-1; Tue,
+ 02 Jul 2024 06:33:32 -0400
+X-MC-Unique: cCZGvjrWMH24usGdaK6wPg-1
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D40F019560A6; Tue,  2 Jul 2024 10:33:26 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 440B019560B3; Tue,  2 Jul 2024 10:33:31 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.116])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 86CD119560AA; Tue,  2 Jul 2024 10:33:24 +0000 (UTC)
+ id 4E5411955E74; Tue,  2 Jul 2024 10:33:26 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org,
 	Richard Henderson <richard.henderson@linaro.org>
 Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
  "Michael S . Tsirkin" <mst@redhat.com>
-Subject: [PULL 04/12] tests/qtest: Free unused QMP response
-Date: Tue,  2 Jul 2024 12:33:02 +0200
-Message-ID: <20240702103310.347201-5-thuth@redhat.com>
+Subject: [PULL 05/12] tests/qtest: Free old machine variable name
+Date: Tue,  2 Jul 2024 12:33:03 +0200
+Message-ID: <20240702103310.347201-6-thuth@redhat.com>
 In-Reply-To: <20240702103310.347201-1-thuth@redhat.com>
 References: <20240702103310.347201-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -84,26 +85,26 @@ From: Akihiko Odaki <akihiko.odaki@daynix.com>
 This fixes LeakSanitizer warnings.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Message-ID: <20240627-san-v2-11-750bb0946dbd@daynix.com>
+Message-ID: <20240627-san-v2-12-750bb0946dbd@daynix.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/qtest/libqtest.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tests/qtest/libqtest.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/tests/qtest/libqtest.c b/tests/qtest/libqtest.c
-index c7f6897d78..ca46b1f8d0 100644
+index ca46b1f8d0..1326e34291 100644
 --- a/tests/qtest/libqtest.c
 +++ b/tests/qtest/libqtest.c
-@@ -749,6 +749,8 @@ QDict *qtest_qmp_receive(QTestState *s)
-                         response, s->eventData)) {
-             /* Stash the event for a later consumption */
-             s->pending_events = g_list_append(s->pending_events, response);
-+        } else {
-+            qobject_unref(response);
-         }
-     }
- }
+@@ -1514,6 +1514,7 @@ static struct MachInfo *qtest_get_machines(const char *var)
+     int idx;
+ 
+     if (g_strcmp0(qemu_var, var)) {
++        g_free(qemu_var);
+         qemu_var = g_strdup(var);
+ 
+         /* new qemu, clear the cache */
 -- 
 2.45.2
 
