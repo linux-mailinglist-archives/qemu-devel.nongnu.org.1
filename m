@@ -2,66 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3941F9249A4
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 22:57:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 511AF9249AF
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 23:04:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOkY8-0004xd-Q8; Tue, 02 Jul 2024 16:56:28 -0400
+	id 1sOket-00081t-7w; Tue, 02 Jul 2024 17:03:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dongwon.kim@intel.com>)
- id 1sOkY4-0004wP-I2
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 16:56:24 -0400
-Received: from mgamail.intel.com ([192.198.163.10])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dongwon.kim@intel.com>)
- id 1sOkY2-0001GC-PD
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 16:56:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1719953782; x=1751489782;
- h=from:to:subject:date:message-id:in-reply-to:references:
- mime-version:content-transfer-encoding;
- bh=3vwg8wmA5DCsngLhZ8wHvJDzQzDYML4wcP8YeufEq3E=;
- b=PN0fJMlDm95396RoPCV11xFpeqIvBBXl7EjkNQ0MKc1fHqNaVW16UgSN
- 2XHhZD6xbTjGFlZklFw/tiTPvok+AtQ/04Xo5XGy08NzCP4TgCqsEXEsL
- bOnzU2Cw3BKWEW9Wt06jCqfTFCjFz9d7iLi8eg04/V39ApXg6WcOEbpb/
- bbaI4E+0rbw3kNhEGSPXOPXV/P0wt6M3kpHOKR6g9dKkhqyKpjE9qdb5i
- 1uHOQkZT5G2GgPJFcFGbSOVHmTHkp1LNEZMaGABlhreob5LsWKbGquuS7
- GcQhFtk+tGpZR+kVYKuVsI/Bb//1JCap9LxCN7WyM2Yxt0SRAOPcsccJ4 Q==;
-X-CSE-ConnectionGUID: IdfNQ06MRlyeI2z+/Rh69Q==
-X-CSE-MsgGUID: tmywFvQ7RrSN95PD6wWesw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11121"; a="28549753"
-X-IronPort-AV: E=Sophos;i="6.09,180,1716274800"; d="scan'208";a="28549753"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Jul 2024 13:56:16 -0700
-X-CSE-ConnectionGUID: evh9ibklTee6XKoQoRuG+g==
-X-CSE-MsgGUID: cocdOU6NQ4CQkEEG7dYktQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,180,1716274800"; d="scan'208";a="46085791"
-Received: from dongwonk-z390-aorus-ultra.fm.intel.com ([10.105.129.124])
- by fmviesa010.fm.intel.com with ESMTP; 02 Jul 2024 13:56:16 -0700
-From: dongwon.kim@intel.com
-To: qemu-devel@nongnu.org
-Subject: [PATCH 2/2] ui/dmabuf: Remove 'sync' from QemuDmaBuf struct
-Date: Tue,  2 Jul 2024 13:55:03 -0700
-Message-Id: <20240702205503.2774745-3-dongwon.kim@intel.com>
+ (Exim 4.90_1) (envelope-from <zheyuma97@gmail.com>)
+ id 1sOkee-000804-OF
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 17:03:13 -0400
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <zheyuma97@gmail.com>)
+ id 1sOked-0007Hw-5I
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 17:03:12 -0400
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-361785bfa71so3215910f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 14:03:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1719954189; x=1720558989; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=eT3tfvANiBCnVaEI91vYtDYUp3ZwZaFuJlrs2Y7RAys=;
+ b=U9Tg+RwAwUCRkpOguxu4HRefefkBRKKUrupZJbpmdL618FxvRZ7yD/VOou/CQLyN9a
+ rdq6xfG1Ap0noa6qODNSXlNu8cBvA1ZKJ5Gz0sawTeQIzQd65U24MrCpJsuAURjUeOqc
+ fEgNa9tpm206j2r1xxoF8p3oLpwjah0AmYB0so3WmTXe1nmKyO2x4F9rM/4rWuzLCMSV
+ VFGGxow6Koa1JrPItMANpbAGKo05YTm2DMo5wdM1VbFgn88eDt+mA0I54cqqRVAxaZ0u
+ yQg0YGhVrOdaGIhYQGq8HWcO/UVCvaMYEEqiu0SfZXZDBxlqQSeMsmo8EKwAGLM9Gyo3
+ uVVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1719954189; x=1720558989;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=eT3tfvANiBCnVaEI91vYtDYUp3ZwZaFuJlrs2Y7RAys=;
+ b=EwqEZI2K5zf6CCA3NWPHqAjBKk5WSISQoIHgiEeLXBdgCdztj4NT17s7mG000/HQzD
+ iCfX4N8Zwb8eScuqEAWD6ttQrCM601p1X96eK3NYPQMk6Crum0paKJ5/hhwJ5d2L0Qma
+ e6lcu8XquCNXzMB+XPlIToW3gzkP155xIAxX1oY21erfAJa1NYnxq/AayrQqtjo//Dw+
+ cSwBK7SJBM+j5ZDDMo6CxTbirkJsPBA7ImD/BlOHUn7Bo88U3vrhPCn/BVZITlzPldtG
+ msOq+SPBHjC30NxF/WkR9RafLd+ORspfR3hfsvYXjgtcJxpGHvzEI+++/vtQQDQ06Jqe
+ oCZg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCU6g9HHUULSunCUeBrwvLG0uUs4adr70LsKDoJThgQUITFLGjz/WDLeyUf1Q01Wt974AZ3gKI0cSedeyJLkIpvIZ0ukCQ8=
+X-Gm-Message-State: AOJu0Yw33IPRHLOzFVS4TTSy0cvEC8pxsGYx3skScMj0ZJYb8JfiC2qm
+ 7qjt1Ud0Lte072SxAg3G0XsmSemSmTL6O3RtCRnEwG9I/B/IFY4=
+X-Google-Smtp-Source: AGHT+IEToIuyzV4vlj7y/8IWjbc1L9c4SBlJnyBz7Hb55nRAtCUx++7N6TfgnBP2JkvgAyEDHG6z0g==
+X-Received: by 2002:adf:f510:0:b0:35f:2366:12c5 with SMTP id
+ ffacd0b85a97d-367756aade1mr6411680f8f.23.1719954188339; 
+ Tue, 02 Jul 2024 14:03:08 -0700 (PDT)
+Received: from wing.epfl.ch (dhcp-122-dist-b-021.epfl.ch. [128.178.122.21])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3678fefc01dsm910313f8f.26.2024.07.02.14.03.07
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 02 Jul 2024 14:03:07 -0700 (PDT)
+From: Zheyu Ma <zheyuma97@gmail.com>
+To: "Michael S. Tsirkin" <mst@redhat.com>,
+ "Gonglei (Arei)" <arei.gonglei@huawei.com>
+Cc: Zheyu Ma <zheyuma97@gmail.com>,
+	qemu-devel@nongnu.org
+Subject: [PATCH] hw/virtio/virtio-crypto: Fix op_code assignment in
+ virtio_crypto_create_asym_session
+Date: Tue,  2 Jul 2024 23:02:27 +0200
+Message-Id: <20240702210227.3059947-1-zheyuma97@gmail.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240702205503.2774745-1-dongwon.kim@intel.com>
-References: <20240702205503.2774745-1-dongwon.kim@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=192.198.163.10;
- envelope-from=dongwon.kim@intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=zheyuma97@gmail.com; helo=mail-wr1-x430.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -78,76 +94,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Dongwon Kim <dongwon.kim@intel.com>
+The assignment of the op_code in the virtio_crypto_create_asym_session
+function was moved before its usage to ensure it is correctly set.
+Previously, if the function failed during the key_len check, the op_code
+did not have a proper value, causing virtio_crypto_free_create_session_req
+to not free the memory correctly, leading to a memory leak.
 
-Sync object is not used so removing it from QemuDmaBuf struct
+By setting the op_code before performing any checks, we ensure that
+virtio_crypto_free_create_session_req has the correct context to
+perform cleanup operations properly, thus preventing memory leaks.
 
-Cc: Gerd Hoffmann <kraxel@redhat.com>
-Cc: Marc-André Lureau <marcandre.lureau@redhat.com>
-Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>
-Signed-off-by: Dongwon Kim <dongwon.kim@intel.com>
+ASAN log:
+==3055068==ERROR: LeakSanitizer: detected memory leaks
+Direct leak of 512 byte(s) in 1 object(s) allocated from:
+    #0 0x5586a75e6ddd in malloc llvm/compiler-rt/lib/asan/asan_malloc_linux.cpp:129:3
+    #1 0x7fb6b63b6738 in g_malloc (/lib/x86_64-linux-gnu/libglib-2.0.so.0+0x5e738)
+    #2 0x5586a864bbde in virtio_crypto_handle_ctrl hw/virtio/virtio-crypto.c:407:19
+    #3 0x5586a94fc84c in virtio_queue_notify_vq hw/virtio/virtio.c:2277:9
+    #4 0x5586a94fc0a2 in virtio_queue_host_notifier_read hw/virtio/virtio.c:3641:9
+
+Signed-off-by: Zheyu Ma <zheyuma97@gmail.com>
 ---
- include/ui/dmabuf.h |  2 --
- ui/dmabuf.c         | 14 --------------
- 2 files changed, 16 deletions(-)
+ hw/virtio/virtio-crypto.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/ui/dmabuf.h b/include/ui/dmabuf.h
-index dc74ba895a..7f0f7f3f6e 100644
---- a/include/ui/dmabuf.h
-+++ b/include/ui/dmabuf.h
-@@ -36,13 +36,11 @@ uint32_t qemu_dmabuf_get_y(QemuDmaBuf *dmabuf);
- uint32_t qemu_dmabuf_get_backing_width(QemuDmaBuf *dmabuf);
- uint32_t qemu_dmabuf_get_backing_height(QemuDmaBuf *dmabuf);
- bool qemu_dmabuf_get_y0_top(QemuDmaBuf *dmabuf);
--void *qemu_dmabuf_get_sync(QemuDmaBuf *dmabuf);
- int32_t qemu_dmabuf_get_fence_fd(QemuDmaBuf *dmabuf);
- bool qemu_dmabuf_get_allow_fences(QemuDmaBuf *dmabuf);
- bool qemu_dmabuf_get_draw_submitted(QemuDmaBuf *dmabuf);
- void qemu_dmabuf_set_texture(QemuDmaBuf *dmabuf, uint32_t texture);
- void qemu_dmabuf_set_fence_fd(QemuDmaBuf *dmabuf, int32_t fence_fd);
--void qemu_dmabuf_set_sync(QemuDmaBuf *dmabuf, void *sync);
- void qemu_dmabuf_set_draw_submitted(QemuDmaBuf *dmabuf, bool draw_submitted);
- void qemu_dmabuf_set_fd(QemuDmaBuf *dmabuf, int32_t fd);
+diff --git a/hw/virtio/virtio-crypto.c b/hw/virtio/virtio-crypto.c
+index bbe8aa4b99..5034768bff 100644
+--- a/hw/virtio/virtio-crypto.c
++++ b/hw/virtio/virtio-crypto.c
+@@ -205,6 +205,7 @@ virtio_crypto_create_asym_session(VirtIOCrypto *vcrypto,
+     int queue_index;
+     uint32_t algo, keytype, keylen;
  
-diff --git a/ui/dmabuf.c b/ui/dmabuf.c
-index df7a09703f..2332292a08 100644
---- a/ui/dmabuf.c
-+++ b/ui/dmabuf.c
-@@ -23,7 +23,6 @@ struct QemuDmaBuf {
-     uint32_t  backing_width;
-     uint32_t  backing_height;
-     bool      y0_top;
--    void      *sync;
-     int       fence_fd;
-     bool      allow_fences;
-     bool      draw_submitted;
-@@ -170,13 +169,6 @@ bool qemu_dmabuf_get_y0_top(QemuDmaBuf *dmabuf)
-     return dmabuf->y0_top;
- }
++    sreq->info.op_code = opcode;
+     algo = ldl_le_p(&sess_req->para.algo);
+     keytype = ldl_le_p(&sess_req->para.keytype);
+     keylen = ldl_le_p(&sess_req->para.keylen);
+@@ -224,7 +225,6 @@ virtio_crypto_create_asym_session(VirtIOCrypto *vcrypto,
+         iov_discard_front(&iov, &out_num, keylen);
+     }
  
--void *qemu_dmabuf_get_sync(QemuDmaBuf *dmabuf)
--{
--    assert(dmabuf != NULL);
--
--    return dmabuf->sync;
--}
--
- int32_t qemu_dmabuf_get_fence_fd(QemuDmaBuf *dmabuf)
- {
-     assert(dmabuf != NULL);
-@@ -210,12 +202,6 @@ void qemu_dmabuf_set_fence_fd(QemuDmaBuf *dmabuf, int32_t fence_fd)
-     dmabuf->fence_fd = fence_fd;
- }
- 
--void qemu_dmabuf_set_sync(QemuDmaBuf *dmabuf, void *sync)
--{
--    assert(dmabuf != NULL);
--    dmabuf->sync = sync;
--}
--
- void qemu_dmabuf_set_draw_submitted(QemuDmaBuf *dmabuf, bool draw_submitted)
- {
-     assert(dmabuf != NULL);
+-    sreq->info.op_code = opcode;
+     asym_info = &sreq->info.u.asym_sess_info;
+     asym_info->algo = algo;
+     asym_info->keytype = keytype;
 -- 
 2.34.1
 
