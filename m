@@ -2,84 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 053149240A9
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 16:25:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82AD1924089
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 16:23:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOeM0-0000if-MG; Tue, 02 Jul 2024 10:19:32 -0400
+	id 1sOeNR-00068E-5B; Tue, 02 Jul 2024 10:21:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOeLd-0000Wb-0u
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:19:12 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOeNC-00062H-33
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:20:48 -0400
+Received: from mail-lf1-x133.google.com ([2a00:1450:4864:20::133])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOeLZ-0007Hq-41
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:19:07 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-424ad991cbbso33078225e9.0
- for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 07:19:03 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOeN7-0007sF-9E
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:20:42 -0400
+Received: by mail-lf1-x133.google.com with SMTP id
+ 2adb3069b0e04-52cdf4bc083so6532155e87.2
+ for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 07:20:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719929942; x=1720534742; darn=nongnu.org;
+ d=linaro.org; s=google; t=1719930038; x=1720534838; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=XsgGTvTlNoxE2PA6imqpfUttw4MzXq9eE6nVA8ZM0LI=;
- b=e0YjmpYC6cfPMwVGxqnCdK5gcOZyp/a/Vs2KrmdXlqA5J9/Eaa/bc+Ezdv5wTiBAlU
- 40PuiZ/8HCaojifmFddZirmlachoV0JmA9UaBgmw7DRslnUn7t5siTMd9zZ3bLmQiWbQ
- 37bOXza2J1ZYZ46zZSmHyc/boMbhXOhkBqCjz0is92C8eP36ni6moZ/hQ6tVUPpsghNV
- I+mHVc1nlv8oy/a4377kCxBwKznV34JdVQ2mEPFRVUh/g8Q2YDVLIY9OJQJunPxTFD7G
- TjfgUeTOt212ybC4esdR3sU/iBRQ4oQqJsIdFBZ6fvG4P6uunKWXb+pfYd/v+i7B/xGZ
- MMYg==
+ bh=b05OdKC7qRpMTJ/rt4WWEUSDUsmruZyUovh4hUJy6e4=;
+ b=gCQugORl3kX0kRubObchUcQeA3ajM8IECR+clBvDDrvvDJYpKLNRdV6RltWhmh0l+U
+ ripXPnlDaFsieRHWYU/tQVxGxiiaZFOJgIdpI1ok8kdinSrDFWluL+cePp09NG/3/2BA
+ tmC+GNHFwKg71M2ud66fSb38v2vubKG2aW7tEcd+iVAI76NXYE4QqaLh2AlsO8M7xET2
+ pfrAAEHawu4NjvJ7xJL5w3U4Zjtk8h9e+hGCifDyYsyjjRCOheTIArhHnULMaRf1l3x0
+ v824lIx2rqn5uJELXRugxy/TV+NakazazjQu0IAyboIR5Ky5kI+E4G92XJM0Ry8w2Z3O
+ Z23A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719929942; x=1720534742;
+ d=1e100.net; s=20230601; t=1719930038; x=1720534838;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=XsgGTvTlNoxE2PA6imqpfUttw4MzXq9eE6nVA8ZM0LI=;
- b=u0OJWdY/FnQ6HDJP5lrqlf/bDloWspj6m3HfTNGyxayTvxId373+jQe9q83YmeJaiG
- /eOs5iH6dpd7CEea8XM4Aa0IeHDJVLqUYSCcekpDTgaQ0SfrwjYCBrssA5QFj9PHHNIH
- 5ti35SjkjeuXZKAeb8RpVSWlIM2YjxzEHlsXahXmfOuIWHJEtLoMlIUhFOwXZRh7Sqw8
- 9ojcp+PDD01MLSWvNr9GHswtucS1U167cadXAyH0nQ5sWil1pG1ov0wAs+ezFvhJHbAN
- TH6usLv6dolPKicEusA9N7qBtppPWYDmqRaXWlZw5BWHR4FSbrgk5xhbN7kDBehdYN7Y
- pDCA==
+ bh=b05OdKC7qRpMTJ/rt4WWEUSDUsmruZyUovh4hUJy6e4=;
+ b=hlgq5S00EZ4wioX0SwkYNLuXtQ6+3ybmVRoNpzaz4NpKyqKW0AMEex7FS9ye5PzwCp
+ A52MWW1wkyYq6rBx1Pif9G3jxKFZqkhehtGPsPJz4swKpdYUkFQXTtKWBlMtN0JFSX0R
+ 3QVyt3T3Lnz216rkkC+Uik9iSGPF+FU/SrjMSDAlYm7+12t7hOxLyVSdWOqvdObQkm5l
+ Qr2bXx//5twyw7rxGXfxSqGBxyza+iaVesuL3zPuTppdDcCLPn0NAAzsdtQOFbkJJGqU
+ m67lrUNA+78W8mbeQ9rs1eiXE3rbVcrUD7PTmMrwut5ug+vyOA4wHNeMWXsCWirdATso
+ xMHw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUydojx1R98SBYvyhT38sQnchW3kEchbePkZhxrb++KxYDaFuGsEHfKedRfSFucPUvQmHNt+VMbB7whoLimHLpF45aklmk=
-X-Gm-Message-State: AOJu0Yyl9ybcK3OhSP3YFtpZLIVEBs8uv/M6q1Tex9H8GZAFHdSAtwyR
- NUunDqrSINAi5iW8ftAA2RJcKynrljwMHxvQ7UNi4CZiLrMV5e1dSYUNcqUHP7Q=
-X-Google-Smtp-Source: AGHT+IHB2KW4HfFI/kszd+A6pIMVdT+U6nAPiVRQ+9IWkRYmVuR5cqGXj2SRz9QG5th+nRHL8kDA1g==
-X-Received: by 2002:a05:600c:4f12:b0:425:675a:d52e with SMTP id
- 5b1f17b1804b1-4257a02147cmr59664885e9.2.1719929942351; 
- Tue, 02 Jul 2024 07:19:02 -0700 (PDT)
+ AJvYcCX5xNHzOMGOWrPvHxhrwiuFv1iKakeuI6vcJDjKiOnHnB0tESZHsbV49+0lV19lH/ye2ZS42x0i924lLKti1kNJSuJgB6o=
+X-Gm-Message-State: AOJu0Yzn7gigyWJZTBj0aWQJvHF3lxY+wxtiriwb38nDN7fdkXAZvfNx
+ 094RmFYHoC01k4E3MFrtr+6UZsKZ9R3MEGZHbK+jOmKGBp00DHFotvTHCd9+Aok=
+X-Google-Smtp-Source: AGHT+IEforiev8MJVoghSzGhyXNHIb61PX0oxG27M2E1+miRYayGTegASw/GC1pya+2iP4bnHahYNw==
+X-Received: by 2002:ac2:4c12:0:b0:52c:a8c4:4d99 with SMTP id
+ 2adb3069b0e04-52e8272f459mr4342698e87.68.1719930038084; 
+ Tue, 02 Jul 2024 07:20:38 -0700 (PDT)
 Received: from [192.168.69.100] ([176.187.209.58])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4256b0c19eesm204892695e9.45.2024.07.02.07.19.00
+ 5b1f17b1804b1-4256af5b66csm196547145e9.18.2024.07.02.07.20.35
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 02 Jul 2024 07:19:01 -0700 (PDT)
-Message-ID: <cad162ba-db4e-4acb-b45e-39053ebb02b0@linaro.org>
-Date: Tue, 2 Jul 2024 16:18:59 +0200
+ Tue, 02 Jul 2024 07:20:37 -0700 (PDT)
+Message-ID: <56d0c526-5d41-44a5-a737-e4eda60f61e7@linaro.org>
+Date: Tue, 2 Jul 2024 16:20:34 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/6] target/riscv: Expose RV32 cpu to RV64 QEMU
-To: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, palmer@dabbelt.com, alistair.francis@wdc.com,
- dbarboza@ventanamicro.com, liwei1518@gmail.com, bmeng.cn@gmail.com,
- TANG Tiancheng <tangtiancheng.ttc@alibaba-inc.com>
-References: <20240701033722.954-1-zhiwei_liu@linux.alibaba.com>
+Subject: Re: [PATCH v2 3/4] ui/cocoa: Add cursor composition
+To: Phil Dennis-Jordan <phil@philjordan.eu>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
+ Gerd Hoffmann <kraxel@redhat.com>,
+ Dmitry Fleytman <dmitry.fleytman@gmail.com>, qemu-devel@nongnu.org
+References: <20240627-cursor-v2-0-c3cd3ee35616@daynix.com>
+ <20240627-cursor-v2-3-c3cd3ee35616@daynix.com>
+ <CAAibmn0S+BvotSV6Sw-d17ybCu10a6Hgyu2sEUrJrzejHs9WZA@mail.gmail.com>
 Content-Language: en-US
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240701033722.954-1-zhiwei_liu@linux.alibaba.com>
+In-Reply-To: <CAAibmn0S+BvotSV6Sw-d17ybCu10a6Hgyu2sEUrJrzejHs9WZA@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::133;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x133.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,75 +101,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Zhiwei,
+Hi Phil,
 
-On 1/7/24 05:37, LIU Zhiwei wrote:
-> From: TANG Tiancheng <tangtiancheng.ttc@alibaba-inc.com>
-> 
-> This patch set aims to expose 32-bit RISC-V cpu to RV64 QEMU. Thus
-> qemu-system-riscv64 can directly boot a RV32 Linux.
-> 
-> This patch set has been tested with 6.9.0 Linux Image.
-> 
-> - Run RV64 QEMU with RV32 CPU
-> qemu-system-riscv64 -cpu rv32 -M virt -nographic \
->      -kernel Image \
->      -append "root=/dev/vda ro console=ttyS0" \
->      -drive file=rootfs.ext2,format=raw,id=hd0 \
->      -device virtio-blk-device,drive=hd0 -netdev user,id=net0 \
->      -device virtio-net-device,netdev=net0
-> 
-> OpenSBI v1.4
-> QEMU emulator version 9.0.50 (v9.0.0-1132-g7799dc2e3b)
-> [    0.000000] Linux version 6.9.0 (developer@11109ca35736) (riscv32-unknown-linux-gnu-gcc (gc891d8dc23e-dirty) 13.2.0, GNU ld (GNU Binutils) 2.42) #3 SMP Fri May 31 08:42:15 UTC 2024
-> [    0.000000] random: crng init done
-> [    0.000000] OF: fdt: Ignoring memory range 0x80000000 - 0x80400000
-> [    0.000000] Machine model: riscv-virtio,qemu
-> [    0.000000] SBI specification v2.0 detected
-> [    0.000000] SBI implementation ID=0x1 Version=0x10004
-> [    0.000000] SBI TIME extension detected
-> [    0.000000] SBI IPI extension detected
-> [    0.000000] SBI RFENCE extension detected
-> [    0.000000] SBI SRST extension detected
-> [    0.000000] SBI DBCN extension detected
-> [    0.000000] efi: UEFI not found.
-> [    0.000000] OF: reserved mem: 0x80000000..0x8003ffff (256 KiB) nomap non-reusable mmode_resv1@80000000
-> [    0.000000] OF: reserved mem: 0x80040000..0x8004ffff (64 KiB) nomap non-reusable mmode_resv0@80040000
-> [    0.000000] Zone ranges:
-> [    0.000000]   Normal   [mem 0x0000000080400000-0x0000000087ffffff]
-> [    0.000000] Movable zone start for each node
-> [    0.000000] Early memory node ranges
-> [    0.000000]   node   0: [mem 0x0000000080400000-0x0000000087ffffff]
-> [    0.000000] Initmem setup node 0 [mem 0x0000000080400000-0x0000000087ffffff]
-> [    0.000000] On node 0, zone Normal: 1024 pages in unavailable ranges
-> [    0.000000] SBI HSM extension detected
-> [    0.000000] riscv: base ISA extensions acdfhim
-> [    0.000000] riscv: ELF capabilities acdfim
-> [    0.000000] percpu: Embedded 17 pages/cpu s37728 r8192 d23712 u69632
-> [    0.000000] Kernel command line: root=/dev/vda ro console=ttyS0
-> [    0.000000] Dentry cache hash table entries: 16384 (order: 4, 65536 bytes, linear)
-> [    0.000000] Inode-cache hash table entries: 8192 (order: 3, 32768 bytes, linear)
-> [    0.000000] Built 1 zonelists, mobility grouping on.  Total pages: 31465
-> [    0.000000] mem auto-init: stack:all(zero), heap alloc:off, heap free:off
-> [    0.000000] Virtual kernel memory layout:
-> [    0.000000]       fixmap : 0x9c800000 - 0x9d000000   (8192 kB)
-> [    0.000000]       pci io : 0x9d000000 - 0x9e000000   (  16 MB)
-> [    0.000000]      vmemmap : 0x9e000000 - 0xa0000000   (  32 MB)
-> [    0.000000]      vmalloc : 0xa0000000 - 0xc0000000   ( 512 MB)
-> [    0.000000]       lowmem : 0xc0000000 - 0xc7c00000   ( 124 MB)
-> [    0.000000] Memory: 95700K/126976K available (9090K kernel code, 8845K rwdata, 4096K rodata, 4231K init, 341K bss, 31276K reserved, 0K cma-reserved)
-> ...
-> Welcome to Buildroot
-> buildroot login: root
-> # cat /proc/cpuinfo
-> processor       : 0
-> hart            : 0
-> isa             : rv32imafdch_zicbom_zicboz_zicntr_zicsr_zifencei_zihintntl_zihintpause_zihpm_zfa_zba_zbb_zbc_zbs_sstc
-> mmu             : sv32
+On 2/7/24 15:19, Phil Dennis-Jordan wrote:
 
-Please provide an Avocado test (i.e. checking /proc/cpuinfo
-contains "isa             : rv32"). See for reference
-tests/avocado/boot_linux_console.py.
+> I'm still keen on NSCursor support for absolute pointing mode though, so 
+> I can experiment with doing a better job of cleaning it up as part v3 of 
+> that patch series.
 
-Thanks!
+Do we need a v3, or can you clean on top?
+
+Regards,
+
+Phil :)
 
