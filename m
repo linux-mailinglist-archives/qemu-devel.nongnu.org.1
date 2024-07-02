@@ -2,87 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F032E924063
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 16:18:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 327B4924050
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Jul 2024 16:17:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOeD3-0003ID-QT; Tue, 02 Jul 2024 10:10:18 -0400
+	id 1sOeD3-0003AZ-DT; Tue, 02 Jul 2024 10:10:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOeCr-0002ao-P1
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:10:06 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOeCv-0002nc-G3
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:10:09 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOeCp-0008WM-VW
- for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:10:05 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sOeCt-0000FH-2r
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 10:10:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1719929403;
+ s=mimecast20190719; t=1719929406;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=QybIKg16iYqXdH14Jxyn469nV1P/mwHXBmUUNkfpRqo=;
- b=dN8AFhR4kpaVxVvIBxNIdYeD4O6ayMSdwkCCAyZ4DAEDDdlJDdMXALGl1gTmRrS+mvrggA
- tbDBgkQBvOe9JyI1E5K0qJRX6cL0n2+zah7UMstenfRIGzWDXZFxP8owJQoDnJAVesA4mw
- SLiu1LeFY9rfarL1WobAB3bT/OTLzUc=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=/8Z7JyQo+HEEofucdvOkehCzjauROI/8uJ9hGYzaVe8=;
+ b=NeT/gFBhcV/D7OB5oTDHUElsFegm/YIXrogtle7ho6FqlOl3oS3n8uflevn8cYEd9MdIIu
+ vm3lpoqOoO11XCGCVdCvawNWa40pRGWQeVIaWAPxMANM0AdLY/bG8eiikOhS9oay4S+TtU
+ I32W2enBgvA/Tv50dxKySg1oCEWoIWA=
+Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
+ [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-349-IzU3b0dGNTSMrW5A3mAHLA-1; Tue, 02 Jul 2024 10:10:02 -0400
-X-MC-Unique: IzU3b0dGNTSMrW5A3mAHLA-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-425739141c2so27419685e9.2
- for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 07:10:01 -0700 (PDT)
+ us-mta-414-M2u2y-SPMWGZUqRdWZVdeA-1; Tue, 02 Jul 2024 10:10:05 -0400
+X-MC-Unique: M2u2y-SPMWGZUqRdWZVdeA-1
+Received: by mail-lj1-f198.google.com with SMTP id
+ 38308e7fff4ca-2ec60e68c81so41338891fa.3
+ for <qemu-devel@nongnu.org>; Tue, 02 Jul 2024 07:10:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719929400; x=1720534200;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=QybIKg16iYqXdH14Jxyn469nV1P/mwHXBmUUNkfpRqo=;
- b=dgMag1O+L9zfSuyR3ef/qa6fcegdFa2A7g+JGLTdlH0zVYfGBh0jMJ/9yIIhcwlzYq
- rGEHMVFzsZmUPE14wb3QIAel3I+A1kVL2wmwkWniDj7uIGY1VX7pXBQ3MLXRcUMIl8Xp
- H+LGhhxbwgmHuo1md8YzdqLQQLyNSfLY4kjWyxbRR1RYK9JMHgJtVt7tSmIwFk44wfkw
- LT4RAuNdy6EG7fN0nUmg+/RpX2Q6hoOHl3VvED9Ru3hJGket1+ICa84/GKfilJ5i4nZa
- 3o3fXJlCdapAQz6qLhRHiI1ZQKiMQ08IXLwRUgz3kcb7DHROUXZBNobHTLfpOX1pVKjD
- HiwA==
-X-Gm-Message-State: AOJu0YxJOfNviLfKNVM9/QMig7Z4J44z6v5IXhUbhcR4uH1a7mbNlq/n
- mbj9ZzMxcW82YJL38SyWqNdYUK9mr+ldLSPj1c9ntZGtPv+Eq8e2kBTiKTCOy5Gh5Kdwsh2ClJB
- zPpNyeHvf3g82cm409Idak1bwHX1rHbIM9jgTDvKdiwRcDITWGCr72pWxWIjuxWo+3u/dcBuXk3
- cm2Bq9jMww5xkv0P6Zs1bAN/PBOJxgzg==
-X-Received: by 2002:a05:600c:12c6:b0:424:ada1:6d9 with SMTP id
- 5b1f17b1804b1-4257a088e18mr77320925e9.34.1719929400501; 
- Tue, 02 Jul 2024 07:10:00 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEl9FmzUp/EUK4GA1u0LQgSGoi2TW/FrnRT0JL5BVAGCmriZME0X4VREmN1CxYhw9ApWTydYA==
-X-Received: by 2002:a05:600c:12c6:b0:424:ada1:6d9 with SMTP id
- 5b1f17b1804b1-4257a088e18mr77320605e9.34.1719929399897; 
- Tue, 02 Jul 2024 07:09:59 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1719929403; x=1720534203;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=/8Z7JyQo+HEEofucdvOkehCzjauROI/8uJ9hGYzaVe8=;
+ b=Gp9IvlYu7ueQi6JVLRt/St01d0ZAb1CEVQeuxXn6+WSNan38X85NVXndauYc0hcLIN
+ kYMUmN+eO9gZQU+m2ft/dPJmJkoh7lcy+i8/t48M7Y37mtjgeWOO8RHWoFxXSxwYSG4H
+ EYcER6+zSmP7pHr39hP2kZH+P1H43nI1BoBGgK9IB9S4vJ4QIgxEsDdxDB7GyCmZSWeT
+ Y7rpW6MlYVVyugVaLFI6nWhljWPJ/p46nBlC/523i7F2QsCsv7URMNl5CyXkISfgKIRz
+ PLXqI22mw0tX9x3cRfw3VH7IqW+s8VM9CbwTte7BvYjOPCeA6qXij2+xs3RrhKyY++pS
+ 5ZNQ==
+X-Gm-Message-State: AOJu0Ywds0Y168hILQgPq6u8DAV6lDqesls4VDUvoJ5AmoEq4BND0y9o
+ 9/HYrAIY4EooN/Lr/EWlzrXex2qhvyec8Kk5wdX5Keb2UYAhLTz5/j53Fk3CVrebBmMQh5quzE4
+ uMiaObnYUlFJEYHr0EtbMXpq0x+hJpsxGfaX3OHbBYNjD/dCb7dd9lOsu4fSGH2BvsXcVERodJY
+ 8EeGWPLBHS8uNMtccIv7rbtDZFp0vwaA==
+X-Received: by 2002:a05:651c:198b:b0:2ec:5843:2fbd with SMTP id
+ 38308e7fff4ca-2ee5e6cd69cmr64760301fa.41.1719929403307; 
+ Tue, 02 Jul 2024 07:10:03 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG2vVM+J0u/21ILTnwbOyL1wB1+k03EWEAQcooVg3hcn1q7fxh17QTgSg6QJYKMZp9avWtzvw==
+X-Received: by 2002:a05:651c:198b:b0:2ec:5843:2fbd with SMTP id
+ 38308e7fff4ca-2ee5e6cd69cmr64759971fa.41.1719929402706; 
+ Tue, 02 Jul 2024 07:10:02 -0700 (PDT)
 Received: from redhat.com ([2a02:14f:1f5:eadd:8c31:db01:9d01:7604])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4256b09890dsm200112335e9.36.2024.07.02.07.09.58
+ ffacd0b85a97d-36787db4d12sm1976984f8f.110.2024.07.02.07.10.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 02 Jul 2024 07:09:59 -0700 (PDT)
-Date: Tue, 2 Jul 2024 10:09:56 -0400
+ Tue, 02 Jul 2024 07:10:02 -0700 (PDT)
+Date: Tue, 2 Jul 2024 10:10:00 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Stefano Garzarella <sgarzare@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>,
- David Hildenbrand <david@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PULL 58/91] tests/qtest/vhost-user-test: add a test case for
- memory-backend-shm
-Message-ID: <e9db90230233a5f6844ed727902ace71de5620ee.1719929191.git.mst@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Subject: [PULL 59/91] hw/virtio: Fix the de-initialization of vhost-user
+ devices
+Message-ID: <b3e63e65010973d0582bd69cb90fc07d3834e811.1719929191.git.mst@redhat.com>
 References: <cover.1719929191.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1719929191.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -106,85 +100,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Stefano Garzarella <sgarzare@redhat.com>
+From: Thomas Huth <thuth@redhat.com>
 
-`memory-backend-shm` can be used with vhost-user devices, so let's
-add a new test case for it.
+The unrealize functions of the various vhost-user devices are
+calling the corresponding vhost_*_set_status() functions with a
+status of 0 to shut down the device correctly.
 
-Acked-by: Thomas Huth <thuth@redhat.com>
-Acked-by: Stefan Hajnoczi <stefanha@redhat.com>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-Message-Id: <20240618100534.145917-1-sgarzare@redhat.com>
+Now these vhost_*_set_status() functions all follow this scheme:
+
+    bool should_start = virtio_device_should_start(vdev, status);
+
+    if (vhost_dev_is_started(&vvc->vhost_dev) == should_start) {
+        return;
+    }
+
+    if (should_start) {
+        /* ... do the initialization stuff ... */
+    } else {
+        /* ... do the cleanup stuff ... */
+    }
+
+The problem here is virtio_device_should_start(vdev, 0) currently
+always returns "true" since it internally only looks at vdev->started
+instead of looking at the "status" parameter. Thus once the device
+got started once, virtio_device_should_start() always returns true
+and thus the vhost_*_set_status() functions return early, without
+ever doing any clean-up when being called with status == 0. This
+causes e.g. problems when trying to hot-plug and hot-unplug a vhost
+user devices multiple times since the de-initialization step is
+completely skipped during the unplug operation.
+
+This bug has been introduced in commit 9f6bcfd99f ("hw/virtio: move
+vm_running check to virtio_device_started") which replaced
+
+ should_start = status & VIRTIO_CONFIG_S_DRIVER_OK;
+
+with
+
+ should_start = virtio_device_started(vdev, status);
+
+which later got replaced by virtio_device_should_start(). This blocked
+the possibility to set should_start to false in case the status flag
+VIRTIO_CONFIG_S_DRIVER_OK was not set.
+
+Fix it by adjusting the virtio_device_should_start() function to
+only consider the status flag instead of vdev->started. Since this
+function is only used in the various vhost_*_set_status() functions
+for exactly the same purpose, it should be fine to fix it in this
+central place there without any risk to change the behavior of other
+code.
+
+Fixes: 9f6bcfd99f ("hw/virtio: move vm_running check to virtio_device_started")
+Buglink: https://issues.redhat.com/browse/RHEL-40708
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+Message-Id: <20240618121958.88673-1-thuth@redhat.com>
+Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- tests/qtest/vhost-user-test.c | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ include/hw/virtio/virtio.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/tests/qtest/vhost-user-test.c b/tests/qtest/vhost-user-test.c
-index 255bde54ab..0fa8951c9f 100644
---- a/tests/qtest/vhost-user-test.c
-+++ b/tests/qtest/vhost-user-test.c
-@@ -44,6 +44,8 @@
-                         "mem-path=%s,share=on -numa node,memdev=mem"
- #define QEMU_CMD_MEMFD  " -m %d -object memory-backend-memfd,id=mem,size=%dM," \
-                         " -numa node,memdev=mem"
-+#define QEMU_CMD_SHM    " -m %d -object memory-backend-shm,id=mem,size=%dM," \
-+                        " -numa node,memdev=mem"
- #define QEMU_CMD_CHR    " -chardev socket,id=%s,path=%s%s"
- #define QEMU_CMD_NETDEV " -netdev vhost-user,id=hs0,chardev=%s,vhostforce=on"
+diff --git a/include/hw/virtio/virtio.h b/include/hw/virtio/virtio.h
+index 1451926a13..7512afbc84 100644
+--- a/include/hw/virtio/virtio.h
++++ b/include/hw/virtio/virtio.h
+@@ -472,9 +472,9 @@ static inline bool virtio_device_started(VirtIODevice *vdev, uint8_t status)
+  * @vdev - the VirtIO device
+  * @status - the devices status bits
+  *
+- * This is similar to virtio_device_started() but also encapsulates a
+- * check on the VM status which would prevent a device starting
+- * anyway.
++ * This is similar to virtio_device_started() but ignores vdev->started
++ * and also encapsulates a check on the VM status which would prevent a
++ * device from starting anyway.
+  */
+ static inline bool virtio_device_should_start(VirtIODevice *vdev, uint8_t status)
+ {
+@@ -482,7 +482,7 @@ static inline bool virtio_device_should_start(VirtIODevice *vdev, uint8_t status
+         return false;
+     }
  
-@@ -195,6 +197,7 @@ enum test_memfd {
-     TEST_MEMFD_AUTO,
-     TEST_MEMFD_YES,
-     TEST_MEMFD_NO,
-+    TEST_MEMFD_SHM,
- };
- 
- static void append_vhost_net_opts(TestServer *s, GString *cmd_line,
-@@ -228,6 +231,8 @@ static void append_mem_opts(TestServer *server, GString *cmd_line,
- 
-     if (memfd == TEST_MEMFD_YES) {
-         g_string_append_printf(cmd_line, QEMU_CMD_MEMFD, size, size);
-+    } else if (memfd == TEST_MEMFD_SHM) {
-+        g_string_append_printf(cmd_line, QEMU_CMD_SHM, size, size);
-     } else {
-         const char *root = init_hugepagefs() ? : server->tmpfs;
- 
-@@ -791,6 +796,19 @@ static void *vhost_user_test_setup_memfd(GString *cmd_line, void *arg)
-     return server;
+-    return virtio_device_started(vdev, status);
++    return status & VIRTIO_CONFIG_S_DRIVER_OK;
  }
  
-+static void *vhost_user_test_setup_shm(GString *cmd_line, void *arg)
-+{
-+    TestServer *server = test_server_new("vhost-user-test", arg);
-+    test_server_listen(server);
-+
-+    append_mem_opts(server, cmd_line, 256, TEST_MEMFD_SHM);
-+    server->vu_ops->append_opts(server, cmd_line, "");
-+
-+    g_test_queue_destroy(vhost_user_test_cleanup, server);
-+
-+    return server;
-+}
-+
- static void test_read_guest_mem(void *obj, void *arg, QGuestAllocator *alloc)
- {
-     TestServer *server = arg;
-@@ -1084,6 +1102,11 @@ static void register_vhost_user_test(void)
-                  "virtio-net",
-                  test_read_guest_mem, &opts);
- 
-+    opts.before = vhost_user_test_setup_shm;
-+    qos_add_test("vhost-user/read-guest-mem/shm",
-+                 "virtio-net",
-+                 test_read_guest_mem, &opts);
-+
-     if (qemu_memfd_check(MFD_ALLOW_SEALING)) {
-         opts.before = vhost_user_test_setup_memfd;
-         qos_add_test("vhost-user/read-guest-mem/memfd",
+ static inline void virtio_set_started(VirtIODevice *vdev, bool started)
 -- 
 MST
 
