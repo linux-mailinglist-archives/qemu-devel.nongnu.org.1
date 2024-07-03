@@ -2,75 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7356A92572B
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jul 2024 11:44:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE1D7925732
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jul 2024 11:47:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOwWI-0002VB-7a; Wed, 03 Jul 2024 05:43:22 -0400
+	id 1sOwZU-0004GM-Vh; Wed, 03 Jul 2024 05:46:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chenhuacai@kernel.org>)
- id 1sOwWF-0002Uh-Ht
- for qemu-devel@nongnu.org; Wed, 03 Jul 2024 05:43:19 -0400
-Received: from dfw.source.kernel.org ([139.178.84.217])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chenhuacai@kernel.org>)
- id 1sOwWD-0002qI-P5
- for qemu-devel@nongnu.org; Wed, 03 Jul 2024 05:43:19 -0400
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by dfw.source.kernel.org (Postfix) with ESMTP id 00CC96217E
- for <qemu-devel@nongnu.org>; Wed,  3 Jul 2024 09:43:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA3F7C2BD10
- for <qemu-devel@nongnu.org>; Wed,  3 Jul 2024 09:43:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1719999794;
- bh=qenc0dsP8KCDKFLK65aWg7lGsgYAgKKvK+Jgz12/h88=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=FUya/1V2T2ZxpoQ91+1hu7zVklaumQDIOVUhcjaTXdMDM36/R4keHp4PLlA5yO12k
- 1fSM15Y4sjLkIczX2Eqrvn0eq6DD2ClBr3XbQD6LTqJhHLsBaz0R2CS/oLC1mjqD1C
- /PKaWjVYwbYqpEbmgcV1CP+ADWPRgDkpG9BTd7FacVsqFYQooyGInzIolNyc/dQBed
- VkBMHoRf0jsJgTNRpZKt7badw9lFlLSJcsMZCRLPAl8xb4ttGpj+6n3WwXxVvtq47B
- lLslfLhBvAmuzuuTRjJbYKqOYWt7laenWAoAAeLaVANN5oqNTadh7UMkmQOiT49s82
- kyWend8AyFwmw==
-Received: by mail-lf1-f52.google.com with SMTP id
- 2adb3069b0e04-52e9380add2so2048283e87.3
- for <qemu-devel@nongnu.org>; Wed, 03 Jul 2024 02:43:14 -0700 (PDT)
-X-Forwarded-Encrypted: i=1;
- AJvYcCUIGOQ5elecMuIgIbXFnBPvHcjp0EHWtlB7hvz53ovsAwVVAuv2oVUg17YBIUAajpC6Vz9etDL30e7gbqsT/VhmgEBh1KQ=
-X-Gm-Message-State: AOJu0YwV1BZLb2rMIVUvwbP4YNcIWu4AQu9t1jYgpgxE6Zi09I0Y49ut
- qqC2xjywQ5WUyjB9KNFaOa2jQKXaT0vQfliRNAzNFe3l2fywmXPtbFW/2dbIpnIaFZXKJ22lnWC
- 0TJZsI1CfYWCnQPLba9CU/hFbA4M=
-X-Google-Smtp-Source: AGHT+IGoOTIuIfsxB5C9W6bvnkaexg0uS0xZHItCHVslgDwpIcqmvxiSqrB4liK+nHQAg7Vdyuo/W+XvSzwgLhUb4bA=
-X-Received: by 2002:a05:6512:3b84:b0:52b:c33a:aa7c with SMTP id
- 2adb3069b0e04-52e82747dcamr8969654e87.65.1719999793051; Wed, 03 Jul 2024
- 02:43:13 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1sOwZR-0004Fh-0U
+ for qemu-devel@nongnu.org; Wed, 03 Jul 2024 05:46:37 -0400
+Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1sOwZO-0003eZ-R4
+ for qemu-devel@nongnu.org; Wed, 03 Jul 2024 05:46:36 -0400
+Received: by mail-pf1-x42b.google.com with SMTP id
+ d2e1a72fcca58-7066463c841so3483294b3a.1
+ for <qemu-devel@nongnu.org>; Wed, 03 Jul 2024 02:46:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1719999992; x=1720604792; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=K7gY0skHye9VnQi2Uo8sQ7ZsJIo+uyRo3JAlqXo4TXA=;
+ b=h47q/fXrpSOg9aiCLrT3aC9Gj7fVtvqgkbtEQFjX3XByCZrIfzEOs4wFECtfQTSDUb
+ aEVODQY6WhnHnzncQJ0Iz1k9dlwJ1RsVIlU31fXD8YN/1PGkXE5M5BtFi6GyZQM8+Eng
+ 8sV+Z2hBfryeRa7VDOJP1j5Z/JrruYS2L5PpNDCI7VpsT2YeReWT/hcDlWpmIRANMtzq
+ LCtGHk6mgKBtpstB2/q9AF8s1WkJL0Way9GFut+JO5wPqOI9SnB35F72zRgHCsxGAWs/
+ zlUUjB4eRQdiW9zrcV/hSaWDT09mslibN5+hjpSevNz5VU27xI/15jg5rPG8wXWSXjsy
+ oMRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1719999992; x=1720604792;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=K7gY0skHye9VnQi2Uo8sQ7ZsJIo+uyRo3JAlqXo4TXA=;
+ b=GS1GjQlQbgDX3y6Ml1L/qWpgH2DFl1gHJqw70qGFupPLyo99lfNWK3CkG7LX2slhSc
+ shJns39xs3IZ0EAANa0kARTGYQqqLXpkTxi9zWpszfGppjXn575dtgiEeWsTDHX+3sBO
+ Ltjh4d0kTo/eo14GNB95cAmGoicDCIeC2IBemcvx/BRK7pLWEUk462qay7RrGfS8xAht
+ 1ESUlVaIzT7gOKTfes/MwVgVoIs6BVOH5l3Wlk9tEwVTAMJkpfPge/wWlg/IvtpgJyVk
+ UJe6kAmoGkqFNg+y5FcXJPOH+7q9i6tAaiafObb9zVPVyWIlcEMqY7H7F4gfTd3onFob
+ bu9Q==
+X-Gm-Message-State: AOJu0Yw303Qxw6Qr7wADnPBZmDjz2HTsZsqjk7cUaBDF0On+Pw+qcnqg
+ MkOHNs7f6ThhQPARmljNZzC+cZRu3T7vWs2NT7fv2iTFQMCSCHA9myn7wJ/UikuwXbfJVWlqA2F
+ 9
+X-Google-Smtp-Source: AGHT+IFa/3fQZYLh2eOfuSyPhIgtZgnzCZRxTn6iRVw7k2cebi5vB4+Ej77q6JUXQylKAjt0c/CRaw==
+X-Received: by 2002:a05:6a20:2451:b0:1bd:289e:5fbb with SMTP id
+ adf61e73a8af0-1bef6228338mr11914110637.58.1719999992487; 
+ Wed, 03 Jul 2024 02:46:32 -0700 (PDT)
+Received: from grind.dc1.ventanamicro.com ([179.193.8.43])
+ by smtp.gmail.com with ESMTPSA id
+ 98e67ed59e1d1-2c91d3bc5a1sm10278621a91.36.2024.07.03.02.46.30
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 03 Jul 2024 02:46:32 -0700 (PDT)
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+To: qemu-devel@nongnu.org
+Cc: pbonzini@redhat.com, richard.henderson@linaro.org, berrange@redhat.com,
+ eduardo@habkost.net, Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PATCH 0/2] qdev,accel-system: allow Accel type globals
+Date: Wed,  3 Jul 2024 06:46:24 -0300
+Message-ID: <20240703094626.1704990-1-dbarboza@ventanamicro.com>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-References: <20240530064941.1289573-1-maobibo@loongson.cn>
- <20240530064941.1289573-2-maobibo@loongson.cn>
- <db19ed93-027c-4e29-aac5-e3a1edcd760b@app.fastmail.com>
- <60da2f5e-009d-4362-bf62-32a088b2848c@app.fastmail.com>
-In-Reply-To: <60da2f5e-009d-4362-bf62-32a088b2848c@app.fastmail.com>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Wed, 3 Jul 2024 17:43:00 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H4YqauX+dDFGK1oHrRjROSykkp-j0AfRD4a43Yea4qMxQ@mail.gmail.com>
-Message-ID: <CAAhV-H4YqauX+dDFGK1oHrRjROSykkp-j0AfRD4a43Yea4qMxQ@mail.gmail.com>
-Subject: Re: [RFC v3 1/2] target/loongarch: Add loongson binary translation
- feature
-To: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Cc: Bibo Mao <maobibo@loongson.cn>, Song Gao <gaosong@loongson.cn>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- QEMU devel <qemu-devel@nongnu.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=139.178.84.217;
- envelope-from=chenhuacai@kernel.org; helo=dfw.source.kernel.org
-X-Spam_score_int: -70
-X-Spam_score: -7.1
-X-Spam_bar: -------
-X-Spam_report: (-7.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x42b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -87,114 +90,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jul 3, 2024 at 3:51=E2=80=AFPM Jiaxun Yang <jiaxun.yang@flygoat.com=
-> wrote:
->
->
->
-> =E5=9C=A82024=E5=B9=B47=E6=9C=881=E6=97=A5=E4=B8=83=E6=9C=88 =E4=B8=8B=E5=
-=8D=882:57=EF=BC=8CJiaxun Yang=E5=86=99=E9=81=93=EF=BC=9A
-> > =E5=9C=A82024=E5=B9=B45=E6=9C=8830=E6=97=A5=E4=BA=94=E6=9C=88 =E4=B8=8A=
-=E5=8D=887:49=EF=BC=8CBibo Mao=E5=86=99=E9=81=93=EF=BC=9A
-> >> Loongson Binary Translation (LBT) is used to accelerate binary
-> >> translation, which contains 4 scratch registers (scr0 to scr3), x86/AR=
-M
-> >> eflags (eflags) and x87 fpu stack pointer (ftop).
-> >>
-> >> Now LBT feature is added in kvm mode, not supported in TCG mode since
-> >> it is not emulated. Feature variable lbt is added with OnOffAuto type,
-> >> If lbt feature is not supported with KVM host, it reports error if the=
-re
-> >> is lbt=3Don command line.
-> >>
-> >> If there is no any command line about lbt parameter, it checks whether
-> >> KVM host supports lbt feature and set the corresponding value in cpucf=
-g.
-> >>
-> >> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-> > Hi Bibo,
-> >
-> > I was going across recent LoongArch changes and this comes into my atte=
-ntion:
-> >
-> >> ---
-> >>  target/loongarch/cpu.c                | 53 ++++++++++++++++++++++++++=
-+
-> >>  target/loongarch/cpu.h                |  6 +++
-> >>  target/loongarch/kvm/kvm.c            | 26 +++++++++++++
-> >>  target/loongarch/kvm/kvm_loongarch.h  | 16 ++++++++
-> >>  target/loongarch/loongarch-qmp-cmds.c |  2 +-
-> >>  5 files changed, 102 insertions(+), 1 deletion(-)
-> >>
-> >> diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
-> >> index b5c1ec94af..14265b6667 100644
-> >> --- a/target/loongarch/cpu.c
-> >> +++ b/target/loongarch/cpu.c
-> >> @@ -571,6 +571,30 @@ static void loongarch_cpu_disas_set_info(CPUState
-> >> *s, disassemble_info *info)
-> >>      info->print_insn =3D print_insn_loongarch;
-> >>  }
-> >>
-> >> +static void loongarch_cpu_check_lbt(CPUState *cs, Error **errp)
-> >> +{
-> >> +    CPULoongArchState *env =3D cpu_env(cs);
-> >> +    LoongArchCPU *cpu =3D LOONGARCH_CPU(cs);
-> >> +    bool kvm_supported;
-> >> +
-> >> +    kvm_supported =3D kvm_feature_supported(cs, LOONGARCH_FEATURE_LBT=
-);
-> >
-> > IMHO if there is no global states that should be saved/restored VM wise=
-,
-> > this should be handled at per CPU level, preferably with CPUCFG flags h=
-int.
-> >
-> > We should minimize non-privilege KVM feature bits to prevent hindering
-> > asymmetry ISA system.
->
-> + Huacai for further discussion
->
-> Hi Bibo, Huacai,
->
-> I investigated the topic further and went through the thread on kernel si=
-de.
->
-> I think Huacai and me are all on the same page that we should unify the i=
-nterface for per-CPU
-> level feature probing and setting interface. Huacai purposed converting a=
-ll features to VM feature
-> but I still believe CPUCFG is the best interface.
->
-> To probe LBT before actual vcpu creation, we can borrow the approach used=
- by other architectures
-> (kvm_arm_create_scratch_host_vcpu() & kvm_riscv_create_scratch_vcpu()).
->
-> Kernel will reject setting unknown CPUCFG bits with -EINVAL, so to probe =
-LBT we just need to perform
-> KVM_SET_REGS to scratch vcpu with LBT set to see if it's valid for kernel=
-. There is no need for any other
-> probing interface.
->
-> I do think scratch CPU interface is also necessary if we are going to imp=
-lement cpu =3D host.
->
-> Huacai, would you agree with me?
-For me the important thing is consistency, all vm-features or all
-vcpu-features are both accepted.
+Hi,
 
-Huacai
+This is another approach of the problem we tried to fix with [1]. It was
+suggested by Paolo during the review.
 
->
-> Thanks
-> - Jiaxun
->
-> >
-> > Thanks
-> > - Jiaxun
-> >
-> > --
-> > - Jiaxun
->
-> --
-> - Jiaxun
+In the current handling of '-accel' only the first instance is parsed.
+All other instances (aside from a 'helper' command that triggers the
+help text and exits) is ignored. So this command line:
+
+qemu-system-riscv64 -accel kvm -accel kvm,riscv-aia=hwaccel
+
+Won't change 'riscv-aia' to 'hwaccel'. 
+
+This is affecting at least one use case we have with libvirt and RISC-V:
+we can't set 'riscv-aia' by appending '-accel kvm,riscv-aia=val'
+via <qemu:cmdline> in the domain XML. libvirt will add a leading
+'-accel kvm' in the regular command line and ignore the second. We'll
+add official libvirt support for this KVM property in the near future
+(we're still discussing if this prop should be a bool instead), but
+for now a QEMU side change would unlock this RISC-V KVM use case in
+libvirt.
+
+With this series we'll be able to set 'riscv-aia' using globals as
+follows:
+
+qemu-system-riscv64 -accel kvm -global kvm-accel.riscv-aia=hwaccel
+
+This change benefit all archs (not just RISC-V) and will allow globals
+to be used with all accelerators, not just KVM.
+
+[1] https://lore.kernel.org/qemu-devel/20240701133038.1489043-1-dbarboza@ventanamicro.com/
+
+Daniel Henrique Barboza (2):
+  qdev: change qdev_prop_set_globals() to use Object*
+  qdev, accel-system: add support to Accel globals
+
+ accel/accel-system.c         |  3 +++
+ hw/core/qdev-properties.c    | 39 +++++++++++++++++++++++-------------
+ hw/core/qdev.c               |  2 +-
+ include/hw/qdev-properties.h |  2 +-
+ 4 files changed, 30 insertions(+), 16 deletions(-)
+
+-- 
+2.45.2
+
 
