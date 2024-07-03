@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AD04926BD7
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 00:49:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BD13926BE5
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 00:50:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sP8kn-00037T-BU; Wed, 03 Jul 2024 18:47:09 -0400
+	id 1sP8ks-0003aP-P9; Wed, 03 Jul 2024 18:47:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sP8kj-0002jZ-AF
- for qemu-devel@nongnu.org; Wed, 03 Jul 2024 18:47:06 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sP8kp-0003Pi-Pl
+ for qemu-devel@nongnu.org; Wed, 03 Jul 2024 18:47:11 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sP8ke-0001Wj-HO
- for qemu-devel@nongnu.org; Wed, 03 Jul 2024 18:47:04 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sP8ki-0001X9-GO
+ for qemu-devel@nongnu.org; Wed, 03 Jul 2024 18:47:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1720046816;
+ s=mimecast20190719; t=1720046821;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=kZkfnrsmrcpCA4paPRwjE2CzS2LM1h/03EC8/LUs/AI=;
- b=NrxoEYT0UgUrRrjexz4nq9yYlSaoE/kXFGnghMfCFAt5/DN5SSy2MOsLkNkfUJlNrP3Twa
- +5/7Niu2LL/V6G9Assqk5R4ByNxqhxe5IzjTOcaOFIMtoX34RpTeKjrcMkIxzRIYNaheYu
- 3HSjzn5Rj0KNYFmL4Ds/LMxK+KYEHLA=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=YhLUD4bgFXykNLby5YqUbG3vAr/0cDl4XOSKHnOq4eQ=;
+ b=fywVA3o56V5cL5jlEqAbQjb9uLH6N7V6M7QgekzLLD1B97WfmeWz9EOQWhvMlp2IHAHipD
+ QWH6CkZcdr+ohcKHrINDWmSczPAHQPmCDmJTgOfyf/J9vFPQOELo1HJpV9Xa0HliLb6M0G
+ LDFjIP4r8YtUxHTjGBy+li5ruXwGGyY=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-421-lh1XtLPJNtW_lRclZy1qvA-1; Wed, 03 Jul 2024 18:46:55 -0400
-X-MC-Unique: lh1XtLPJNtW_lRclZy1qvA-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-a728c02df80so1419666b.1
- for <qemu-devel@nongnu.org>; Wed, 03 Jul 2024 15:46:55 -0700 (PDT)
+ us-mta-595-p55CqpImPtS0xiMFQHoLJw-1; Wed, 03 Jul 2024 18:47:00 -0400
+X-MC-Unique: p55CqpImPtS0xiMFQHoLJw-1
+Received: by mail-ed1-f72.google.com with SMTP id
+ 4fb4d7f45d1cf-584ef6c00c0so1685181a12.1
+ for <qemu-devel@nongnu.org>; Wed, 03 Jul 2024 15:47:00 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720046814; x=1720651614;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=kZkfnrsmrcpCA4paPRwjE2CzS2LM1h/03EC8/LUs/AI=;
- b=J4NbrLgwO0cBhwYMQjmqFQn4pOZgaWEQq+g+pDkVLJSZt4PoGcwaVWL+cKiFMeCbBN
- Vz5o30EL0K0Nj6GTUYcJzQ8XX7PUSDz/3pQNBSPhNg8xsUf2qlp4SCs4Do27jvhH1T5g
- RuP/Uq6qCvb9jMeQFDzcFfZ+bBRFmIpI6TioedzPWK3kK+8f0NXVzfbqi1lnoEQrBtd4
- /rkXwIAEKkdAx9wuwApCdRhJVfEfKNvJdGlKl7goCEHDnGYWzfaRGK67nRBX9xGJ4u5W
- 5nkVuWSb9afCL9SGx0p/itaRnkspt4pZUNWYfrIlts3N203tpp9lLqJpm5kGL3x+8YJy
- nhEg==
-X-Gm-Message-State: AOJu0YweBf68Yi5qpzjyn2FrZaYWrAcJgkCKoj/5NNS2ChxfOkK/Xp83
- D4XO4tUK8VGPUdf6D2oA7MO+JDhiD/K6T6U8ZoRG+2uPtuFOaRyN7kn7vXjv0u91Iz+i3QrRCux
- iwC5ZNye8DCoRNFeQIZHUhOm1Qhbbj6Ei2Evp1UJNfMzYpAeyBR3/6aPpskjf2OPRWm6N/qWnNv
- LHDp4PbTvZUVOGFLgu0iwgfUSQQXv1Rw==
-X-Received: by 2002:a17:906:e206:b0:a6f:b3af:2add with SMTP id
- a640c23a62f3a-a7514454648mr794781666b.45.1720046814158; 
- Wed, 03 Jul 2024 15:46:54 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH2ZS0q05QJ4Am/5bRx7I4vmSPmcFJve5W+TRFKbc82EfIWirtYxQGQ6oF6m6APGWFD/3/Zfg==
-X-Received: by 2002:a17:906:e206:b0:a6f:b3af:2add with SMTP id
- a640c23a62f3a-a7514454648mr794780466b.45.1720046813435; 
- Wed, 03 Jul 2024 15:46:53 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1720046819; x=1720651619;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=YhLUD4bgFXykNLby5YqUbG3vAr/0cDl4XOSKHnOq4eQ=;
+ b=YrAhbpbjf4VjdSNBsXbVbP/wsTM250xOvtUFVeeW2KXs3S0zf+XNwvUNPknR7VXphv
+ C6wC7e8zw7V/Pgt+dE403AzNtNOO39Yg9kSYPtht/SaTJJ5Sssxes0OTxuCVxuC4xyEk
+ 8I4qCXhUdJr2M5kopfMWPNI6BtPLos2G2avg1zLjY7LuhpyVoOmk8pbpE2cYcjaVYHUN
+ aqFBhAN0o4cTUAtC16KibuseOugfkCvagu+0/4Vh//8NGNBmS3QKoDpFc45yHCOKaEK7
+ o7I94jkGOifTJsBxf8dexSMSf1nCpeBtXmYhmTWa82foSmeuO4z9bdSdk2qQHPmrcEjW
+ zaWg==
+X-Gm-Message-State: AOJu0YzWIe4cXpw5Lh1dlYQam679Mb1dtdWXmn7Q0VEbn6m8pQ8EMDU3
+ YJf5tLynRcOUlMQPmxX58G0B0EKo1ptTzh69tgoxj5TMQxPMZexuHqF/gbeC+OYCS7OskUeBFsR
+ rnpi9N7bzgudVbj4AfRvgWw9jnaTUCKsoNYcj9wDmGnLaV+qj35qb3Hig5z/k4JI13nfT8geZ+1
+ 10BrPi+2//Hf7pSZBXY8Kv2llBV/mp2Q==
+X-Received: by 2002:a05:6402:40c5:b0:586:178f:aaa4 with SMTP id
+ 4fb4d7f45d1cf-58ce5169885mr2529743a12.9.1720046818825; 
+ Wed, 03 Jul 2024 15:46:58 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IENdjYuJum/0AUWZOYdpsjlAu/xeqTbkfywve+ZRZCJpAlgJW3rf9MBRkFeWZhx6xBDabQRzg==
+X-Received: by 2002:a05:6402:40c5:b0:586:178f:aaa4 with SMTP id
+ 4fb4d7f45d1cf-58ce5169885mr2529725a12.9.1720046818289; 
+ Wed, 03 Jul 2024 15:46:58 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc7:441:91a8:a47d:5a9:c02f:92f2])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a72ab0900f1sm543684566b.168.2024.07.03.15.46.51
+ 4fb4d7f45d1cf-58612c8368esm7573106a12.19.2024.07.03.15.46.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 03 Jul 2024 15:46:52 -0700 (PDT)
-Date: Wed, 3 Jul 2024 18:46:50 -0400
+ Wed, 03 Jul 2024 15:46:57 -0700 (PDT)
+Date: Wed, 3 Jul 2024 18:46:53 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas@t-8ch.de>,
- Cornelia Huck <cohuck@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PULL v3 33/85] hw/misc/pvpanic: add support for normal shutdowns
-Message-ID: <6269086b0179e3d70750672174ed7fbd29ac7eaa.1720046570.git.mst@redhat.com>
+ Alejandro Jimenez <alejandro.j.jimenez@oracle.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>
+Subject: [PULL v3 34/85] pvpanic: Emit GUEST_PVSHUTDOWN QMP event on pvpanic
+ shutdown signal
+Message-ID: <8db1f7be788b23f8eca189fe4546298ed387e9cb.1720046570.git.mst@redhat.com>
 References: <cover.1720046570.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1720046570.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
@@ -86,7 +86,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,84 +102,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Weißschuh <thomas@t-8ch.de>
+From: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
 
-Shutdown requests are normally hardware dependent.
-By extending pvpanic to also handle shutdown requests, guests can
-submit such requests with an easily implementable and cross-platform
-mechanism.
+Emit a QMP event on receiving a PVPANIC_SHUTDOWN event. Even though a typical
+SHUTDOWN event will be sent, it will be indistinguishable from a shutdown
+originating from other cases (e.g. KVM exit due to KVM_SYSTEM_EVENT_SHUTDOWN)
+that also issue the guest-shutdown cause.
+A management layer application can detect the new GUEST_PVSHUTDOWN event to
+determine if the guest is using the pvpanic interface to request shutdowns.
 
-Acked-by: Cornelia Huck <cohuck@redhat.com>
-Signed-off-by: Thomas Weißschuh <thomas@t-8ch.de>
-Message-Id: <20240527-pvpanic-shutdown-v8-5-5a28ec02558b@t-8ch.de>
+Signed-off-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
+Message-Id: <20240527-pvpanic-shutdown-v8-6-5a28ec02558b@t-8ch.de>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- include/hw/misc/pvpanic.h | 4 +++-
- include/sysemu/runstate.h | 1 +
- hw/misc/pvpanic.c         | 5 +++++
- system/runstate.c         | 5 +++++
- 4 files changed, 14 insertions(+), 1 deletion(-)
+ qapi/run-state.json | 14 ++++++++++++++
+ system/runstate.c   |  1 +
+ 2 files changed, 15 insertions(+)
 
-diff --git a/include/hw/misc/pvpanic.h b/include/hw/misc/pvpanic.h
-index 1e5b20e4ed..9a71a5ad0d 100644
---- a/include/hw/misc/pvpanic.h
-+++ b/include/hw/misc/pvpanic.h
-@@ -20,7 +20,9 @@
+diff --git a/qapi/run-state.json b/qapi/run-state.json
+index f8773f23b2..5ac0fec852 100644
+--- a/qapi/run-state.json
++++ b/qapi/run-state.json
+@@ -462,6 +462,20 @@
+ { 'event': 'GUEST_CRASHLOADED',
+   'data': { 'action': 'GuestPanicAction', '*info': 'GuestPanicInformation' } }
  
- #include "standard-headers/misc/pvpanic.h"
- 
--#define PVPANIC_EVENTS (PVPANIC_PANICKED | PVPANIC_CRASH_LOADED)
-+#define PVPANIC_EVENTS (PVPANIC_PANICKED | \
-+                        PVPANIC_CRASH_LOADED | \
-+                        PVPANIC_SHUTDOWN)
- 
- #define TYPE_PVPANIC_ISA_DEVICE "pvpanic"
- #define TYPE_PVPANIC_PCI_DEVICE "pvpanic-pci"
-diff --git a/include/sysemu/runstate.h b/include/sysemu/runstate.h
-index 0117d243c4..e210a37abf 100644
---- a/include/sysemu/runstate.h
-+++ b/include/sysemu/runstate.h
-@@ -104,6 +104,7 @@ void qemu_system_killed(int signal, pid_t pid);
- void qemu_system_reset(ShutdownCause reason);
- void qemu_system_guest_panicked(GuestPanicInformation *info);
- void qemu_system_guest_crashloaded(GuestPanicInformation *info);
-+void qemu_system_guest_pvshutdown(void);
- bool qemu_system_dump_in_progress(void);
- 
- #endif
-diff --git a/hw/misc/pvpanic.c b/hw/misc/pvpanic.c
-index 4b2307d2c2..3b893340c0 100644
---- a/hw/misc/pvpanic.c
-+++ b/hw/misc/pvpanic.c
-@@ -41,6 +41,11 @@ static void handle_event(int event)
-         qemu_system_guest_crashloaded(NULL);
-         return;
-     }
++##
++# @GUEST_PVSHUTDOWN:
++#
++# Emitted when guest submits a shutdown request via pvpanic interface
++#
++# Since: 9.1
++#
++# Example:
++#
++#     <- { "event": "GUEST_PVSHUTDOWN",
++#          "timestamp": { "seconds": 1648245259, "microseconds": 893771 } }
++##
++{ 'event': 'GUEST_PVSHUTDOWN' }
 +
-+    if (event & PVPANIC_SHUTDOWN) {
-+        qemu_system_guest_pvshutdown();
-+        return;
-+    }
- }
- 
- /* return supported events on read */
+ ##
+ # @GuestPanicAction:
+ #
 diff --git a/system/runstate.c b/system/runstate.c
-index ec32e270cb..fc49fd3e61 100644
+index fc49fd3e61..c833316f6d 100644
 --- a/system/runstate.c
 +++ b/system/runstate.c
-@@ -584,6 +584,11 @@ void qemu_system_guest_crashloaded(GuestPanicInformation *info)
-     qapi_free_GuestPanicInformation(info);
+@@ -586,6 +586,7 @@ void qemu_system_guest_crashloaded(GuestPanicInformation *info)
+ 
+ void qemu_system_guest_pvshutdown(void)
+ {
++    qapi_event_send_guest_pvshutdown();
+     qemu_system_shutdown_request(SHUTDOWN_CAUSE_GUEST_SHUTDOWN);
  }
  
-+void qemu_system_guest_pvshutdown(void)
-+{
-+    qemu_system_shutdown_request(SHUTDOWN_CAUSE_GUEST_SHUTDOWN);
-+}
-+
- void qemu_system_reset_request(ShutdownCause reason)
- {
-     if (reboot_action == REBOOT_ACTION_SHUTDOWN &&
 -- 
 MST
 
