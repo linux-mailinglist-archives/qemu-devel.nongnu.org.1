@@ -2,71 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3BCA926758
+	by mail.lfdr.de (Postfix) with ESMTPS id 04CBC926754
 	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jul 2024 19:44:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sP406-0003Hi-Aj; Wed, 03 Jul 2024 13:42:41 -0400
+	id 1sP40L-0003KN-2H; Wed, 03 Jul 2024 13:42:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sP400-0003FN-TI
- for qemu-devel@nongnu.org; Wed, 03 Jul 2024 13:42:34 -0400
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ id 1sP406-0003IC-4n
+ for qemu-devel@nongnu.org; Wed, 03 Jul 2024 13:42:38 -0400
+Received: from mail-pj1-x102a.google.com ([2607:f8b0:4864:20::102a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sP3zy-0005L2-7n
- for qemu-devel@nongnu.org; Wed, 03 Jul 2024 13:42:32 -0400
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-1fa55dbf2e7so33047095ad.2
- for <qemu-devel@nongnu.org>; Wed, 03 Jul 2024 10:42:29 -0700 (PDT)
+ id 1sP3zz-0005L6-7d
+ for qemu-devel@nongnu.org; Wed, 03 Jul 2024 13:42:36 -0400
+Received: by mail-pj1-x102a.google.com with SMTP id
+ 98e67ed59e1d1-2c8e422c40cso3443709a91.2
+ for <qemu-devel@nongnu.org>; Wed, 03 Jul 2024 10:42:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1720028548; x=1720633348; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=9rsjcrfQ2cyUBUHYCAMnDhrC0DCadQBGWJaj8Yt/WK0=;
- b=xnWtmHbiiQtH2iwf3IUPCURapgNmY60kiz57HFfdZI2AnL+FG63+0fpl6uSd3s4Uo9
- 3nY2KJWjtvm0bKNUO5hHt3NBVE9337kf8sf/0/VveDooN5tQh2KQKeX+lA4N8C9p4NZm
- FqFSf+rlWpxaO+w4U8XqghjgmPgBnRWRI7AQtssl/neLuXa3VDBXz6uA1EGRIdKuHS0f
- DvxNj/OsYBxKqza8IFmSKYrHGzjtg0OXHpJcDFW1z8SQMlPHNpnIPUr4q8NgFVKTJY1s
- zf0QBinW9innV2warNovpwH9d6YRpNtemCYU9vDYXAPdKkt0puXjO9bYLopwo1A1j5Cx
- Eg3w==
+ d=linaro.org; s=google; t=1720028549; x=1720633349; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=EnxIQkGUi2BYtKcUGzQDYlf64W/Zr3vE/ZFzoUY3DEc=;
+ b=Hl9tSlaR+CSvJsvwE/cB1RTj535JwahLHOIua4/xUHMkQnI3jZyyZuP7IstoDQbPNQ
+ cnoCbcNYOQwYEVKiQHvfMi7ayfwrvPJhKdjYKJGAWTtSPE1C/K6Mr55g5tHm82Lj1La8
+ 8U2m2vrQHeQWnBoh45Gh6xY0wdwpLoI6tmWMPYOyi8N0EL8lbOoOSzqy15r+Tc2tbn7x
+ 7W7UPapvVwNRVZ4D10AXgTv9aMoZsa3gA5h0MRNc4Dm/jguDa0vo4MJpUOsaIvfob9RN
+ KkHQeIY9XVD+mZ5Xpbz0g1Ax9SFD4v0RYMQ6WZ+C4a35oDCWZUAAvx/R0igQIepz6027
+ VMCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720028548; x=1720633348;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=9rsjcrfQ2cyUBUHYCAMnDhrC0DCadQBGWJaj8Yt/WK0=;
- b=uWTeqGcH/m+1pNdy2D+7h5YQw09HWAmIpHqwfPDGZTZx4ViHI8hfeRtm2nkOShYs1c
- hbvFOnSJ5vPfK1k5PSBcHsAI0DwKY6Uclfo2bMgFOHsL1SUw7Fo7gjvzvV5RXTbuvdGD
- UiPXTVCepeRK6sLtMHfE64dxxoro9lRt4KOVZ4g3ojB8CbX6mdIxqBnJILyhvCIeKLtt
- mmo5GDMd8AVPt/S4bh2jdIz5F+xGq6W7MKyIUys1axsFrZ0PoHruvjEOMaUTfnWMuONS
- sj/ZD+5xODUY9N0Jyp4Q7P1tDoIx9HAftDqaQqW6qovNavCLM7LIkiudsPjFsNokiWkS
- /YRQ==
-X-Gm-Message-State: AOJu0YwgUvzELLfwdoFxEdVzFq7/Oj1e7Y3dtbtLkaQhaAPbFTKrY/Nb
- c9gHwB04swhuKOytqrj9GrzN3wOp7lOtKvWlscmV7RqgHiXwXnz+CGvvFFIQxK2bgiaV37sXuXb
- G
-X-Google-Smtp-Source: AGHT+IFHf6CVaAM3dHfSeVzasX1nTvSc5x7I9DUmAKgE8dS+132DAbsP3Vu7IzWJKx+rMtKpwWki6Q==
-X-Received: by 2002:a17:90a:348b:b0:2c9:5fae:4f83 with SMTP id
- 98e67ed59e1d1-2c95fae5251mr4218193a91.6.1720028547904; 
- Wed, 03 Jul 2024 10:42:27 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1720028549; x=1720633349;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=EnxIQkGUi2BYtKcUGzQDYlf64W/Zr3vE/ZFzoUY3DEc=;
+ b=KTb+KWvqphYIytSaFaRXe3KMPjAqaQG0fcIcXF6QIXt9iZR/GRmvAvOjoIFexuvgjz
+ 3k+4n0UKl9dHXGS/j4xYrx+ha/oHvEMLCE5PYVfzpazl7RoMTk4kGQOD17MYfL+lqqod
+ +aDYUMwFhETwFFB9hzcd95/FEDB4yd6zjtACA4V+C1BewAOsUjiO5eOXTisJVE7J+zd/
+ xcTPwb9ikebEveH+wXACEiOl7u37PcY8aTaTx8X7znFlccQdiWKeAweTmUJqSOJvXwDb
+ YdTBEpUGtgKeRpj5cYu8eCD4+20FquzyHbkO12Bo64q8yN1/1mOPFQYlec2280aFHa2I
+ JjnQ==
+X-Gm-Message-State: AOJu0Yyq8QFguweQU4eE0U4f+/tbS18jhW0Vv/xr+YcWHouap4Gbp0d9
+ CnILIG8VVUUIHiFWcz3X3oaq2mmvzkqfp0/U2oVLlsKbEWofsgCmzwhYP/0ctt+5jDBdnbKjCZ1
+ H
+X-Google-Smtp-Source: AGHT+IFBQUKQglZl9IfJW3f2KwwqeOQtops/qhoSKf+KR1PSz2x5h4Gdkg9I4sw4BYCRpOc1+UWgaA==
+X-Received: by 2002:a17:90b:4f8f:b0:2c8:7330:68b3 with SMTP id
+ 98e67ed59e1d1-2c93d767f2bmr8007980a91.39.1720028548809; 
+ Wed, 03 Jul 2024 10:42:28 -0700 (PDT)
 Received: from stoup.. (174-21-76-141.tukw.qwest.net. [174.21.76.141])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2c91d3e7d7bsm11070030a91.47.2024.07.03.10.42.27
- for <qemu-devel@nongnu.org>
+ 98e67ed59e1d1-2c91d3e7d7bsm11070030a91.47.2024.07.03.10.42.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 03 Jul 2024 10:42:27 -0700 (PDT)
+ Wed, 03 Jul 2024 10:42:28 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 0/7] tcg patch queue
-Date: Wed,  3 Jul 2024 10:42:19 -0700
-Message-Id: <20240703174226.2117169-1-richard.henderson@linaro.org>
+Cc: Brad Smith <brad@comstyle.com>
+Subject: [PULL 1/7] util/cpuinfo-ppc: Fix building on OpenBSD
+Date: Wed,  3 Jul 2024 10:42:20 -0700
+Message-Id: <20240703174226.2117169-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240703174226.2117169-1-richard.henderson@linaro.org>
+References: <20240703174226.2117169-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x630.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,48 +92,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 6746482d12da3b6e4d3cdf06481a0027a797f719:
+From: Brad Smith <brad@comstyle.com>
 
-  Merge tag 'sdmmc-20240702' of https://github.com/philmd/qemu into staging (2024-07-02 09:52:10 -0700)
+OpenBSD does not support AT_HWCAP.
 
-are available in the Git repository at:
+Signed-off-by: Brad Smith <brad@comstyle.com>
+Message-Id: <ZnzM1T6Vo1Q0yAH-@humpty.home.comstyle.com>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ util/cpuinfo-ppc.c | 20 ++++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
 
-  https://gitlab.com/rth7680/qemu tags/pull-tcg-20240703
+diff --git a/util/cpuinfo-ppc.c b/util/cpuinfo-ppc.c
+index b2d8893a06..47af55aa0c 100644
+--- a/util/cpuinfo-ppc.c
++++ b/util/cpuinfo-ppc.c
+@@ -6,11 +6,13 @@
+ #include "qemu/osdep.h"
+ #include "host/cpuinfo.h"
+ 
+-#include <asm/cputable.h>
+-#ifdef CONFIG_GETAUXVAL
+-# include <sys/auxv.h>
+-#else
+-# include "elf.h"
++#ifdef CONFIG_LINUX
++# include <asm/cputable.h>
++# ifdef CONFIG_GETAUXVAL
++#  include <sys/auxv.h>
++# else
++#  include "elf.h"
++# endif
+ #endif
+ 
+ unsigned cpuinfo;
+@@ -19,16 +21,17 @@ unsigned cpuinfo;
+ unsigned __attribute__((constructor)) cpuinfo_init(void)
+ {
+     unsigned info = cpuinfo;
+-    unsigned long hwcap, hwcap2;
+ 
+     if (info) {
+         return info;
+     }
+ 
+-    hwcap = qemu_getauxval(AT_HWCAP);
+-    hwcap2 = qemu_getauxval(AT_HWCAP2);
+     info = CPUINFO_ALWAYS;
+ 
++#ifdef CONFIG_LINUX
++    unsigned long hwcap = qemu_getauxval(AT_HWCAP);
++    unsigned long hwcap2 = qemu_getauxval(AT_HWCAP2);
++
+     /* Version numbers are monotonic, and so imply all lower versions. */
+     if (hwcap2 & PPC_FEATURE2_ARCH_3_1) {
+         info |= CPUINFO_V3_1 | CPUINFO_V3_0 | CPUINFO_V2_07 | CPUINFO_V2_06;
+@@ -58,6 +61,7 @@ unsigned __attribute__((constructor)) cpuinfo_init(void)
+             }
+         }
+     }
++#endif
+ 
+     cpuinfo = info;
+     return info;
+-- 
+2.34.1
 
-for you to fetch changes up to a71d9dfbf63db42d6e6ae87fc112d1f5502183bd:
-
-  tcg/optimize: Fix TCG_COND_TST* simplification of setcond2 (2024-07-03 10:24:12 -0700)
-
-----------------------------------------------------------------
-util: cpuinfo portability fixes for FreeBSD and OpenBSD
-util: cpuinfo for riscv host
-tcg/optimize: Fix TCG_COND_TST* simplification of setcond2
-
-----------------------------------------------------------------
-Brad Smith (3):
-      util/cpuinfo-ppc: Fix building on OpenBSD
-      util/cpuinfo-ppc: Add FreeBSD support
-      util/cpuinfo-aarch64: Add OpenBSD support
-
-Richard Henderson (4):
-      util/cpuinfo-riscv: Support host/cpuinfo.h for riscv
-      util/cpuinfo-riscv: Support OpenBSD signal frame
-      util/cpuinfo-riscv: Use linux __riscv_hwprobe syscall
-      tcg/optimize: Fix TCG_COND_TST* simplification of setcond2
-
- meson.build                       |   6 ++
- host/include/riscv/host/cpuinfo.h |  23 ++++++++
- tcg/riscv/tcg-target.h            |  46 +++++++--------
- tcg/optimize.c                    |   2 +-
- tests/tcg/x86_64/test-2413.c      |  30 ++++++++++
- util/cpuinfo-aarch64.c            |  36 ++++++++++++
- util/cpuinfo-ppc.c                |  27 ++++++---
- util/cpuinfo-riscv.c              | 118 ++++++++++++++++++++++++++++++++++++++
- tcg/riscv/tcg-target.c.inc        |  84 +++------------------------
- tests/tcg/x86_64/Makefile.target  |   2 +
- util/meson.build                  |   2 +
- 11 files changed, 266 insertions(+), 110 deletions(-)
- create mode 100644 host/include/riscv/host/cpuinfo.h
- create mode 100644 tests/tcg/x86_64/test-2413.c
- create mode 100644 util/cpuinfo-riscv.c
 
