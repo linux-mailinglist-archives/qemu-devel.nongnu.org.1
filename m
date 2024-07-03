@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 983D2926C09
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 00:52:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA6C4926C05
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 00:52:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sP8no-0002kl-56; Wed, 03 Jul 2024 18:50:16 -0400
+	id 1sP8nr-00039l-Lk; Wed, 03 Jul 2024 18:50:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sP8nf-0002FF-Am
- for qemu-devel@nongnu.org; Wed, 03 Jul 2024 18:50:07 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sP8np-0002a6-6W
+ for qemu-devel@nongnu.org; Wed, 03 Jul 2024 18:50:17 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sP8nd-0007LH-DL
- for qemu-devel@nongnu.org; Wed, 03 Jul 2024 18:50:07 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sP8ni-0007P9-B3
+ for qemu-devel@nongnu.org; Wed, 03 Jul 2024 18:50:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1720047004;
+ s=mimecast20190719; t=1720047008;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=YWXH9YhJGBTUPtLIg1EJaieR/oMq54SMMzeEyf0UDBU=;
- b=c7zSluSRuDpWrqfgi2GQhy643W65ujq3kS73qkE5rZYT/EhLXEulmae2M+eo8MaUG8PAho
- H1zxDtFMQ/HfoE45MJvqdf+ho53b62wEZHvmOUAQ8P5/DS55Zi1uq7mBgpInnZeYAViu2W
- b5bXxtYuCrkcOWtMusvwKLC1jpE2KZM=
+ bh=sYzP7D9xykWeqZt2i0B3IIaPj2W0maOmrsq57DCD/d0=;
+ b=HL8yTB28u1rUpzQRZplp0nHuAk0xEFUpO1iQFuYivAdMK/xLfJRGnGahO7Fha54vflbjGF
+ daRL476UeHnznkVvWlcTMCS01s2OzK1YbRXBpNY7Vxr/2+nQloer/GDhkFiDn9WjgF83g5
+ CqOofWJr2VtfFlKJpAAoOfoiaOVjNLk=
 Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
  [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-146-PMnSLp06PZSIy1j1SIF9sw-1; Wed, 03 Jul 2024 18:50:03 -0400
-X-MC-Unique: PMnSLp06PZSIy1j1SIF9sw-1
+ us-mta-346-01SiHKRjOve5eOJGJFbcyQ-1; Wed, 03 Jul 2024 18:50:07 -0400
+X-MC-Unique: 01SiHKRjOve5eOJGJFbcyQ-1
 Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-366e0a4c965so37448f8f.1
- for <qemu-devel@nongnu.org>; Wed, 03 Jul 2024 15:50:03 -0700 (PDT)
+ ffacd0b85a97d-3678ff75122so52125f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 03 Jul 2024 15:50:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720047002; x=1720651802;
+ d=1e100.net; s=20230601; t=1720047005; x=1720651805;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=YWXH9YhJGBTUPtLIg1EJaieR/oMq54SMMzeEyf0UDBU=;
- b=MmM7uTND3+QmlHSDAcRwE6iGfxXqV56LAgca8MnrhxahSyYUD9Mu3FfbHEhCwCZEG2
- 8jx+WVXl/rYe478MItgHIgMKEpdWcjJX37xTxebr/k12QFJovDYZTDJ9obxsVA3ncKuC
- vc8LinWjFtS8dHrcV2P8CqM/OKG9gRLEGKwEtuk0t9oIYAW7RKYOOEVHnzUYaReq0YcV
- IuFSji6qPqGla+0tq1no9zchMyn6Mwj1/SSCZ/gr17VMO1bIJHQpZwXkoCdbUVWcPsY5
- ZX5tvnKE0k81wlBD0l6wMf+253M+jdJjmWnjYoPcfecr2IiHjl1IwQQO6lsIVY4YHhlb
- Bofg==
-X-Gm-Message-State: AOJu0Yzr+fpNG7es4wwDi0mbxLxDqR/5um+JmQgvTlaXBwGNPtd0vIEv
- qM0K0dC7mtF8JxAbRdeCtJroMRiqFYAYMfuUkI+hQ1oR5zqYUv8F5QKgSkaat5VdAaNKam3o+/C
- ArFX0c4+qwYFotGLczLuJlsRizWr5An8yyffxAwH8VWa/QEJuD6aykC/eAqWbjhbSLGllWGUT74
- /RsrRGQVm872R/UPOZ5JHpP9uGq3dd1A==
-X-Received: by 2002:adf:e50d:0:b0:367:900c:c0a4 with SMTP id
- ffacd0b85a97d-3679dd15a36mr10220f8f.11.1720047002061; 
- Wed, 03 Jul 2024 15:50:02 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHYFHxYAFZf4yivxY1Cn3du2bgc6ZWiPpVzv+mVZHEU0YZRJVuCNQ1CVifNwbnyrzrSvJlq5Q==
-X-Received: by 2002:adf:e50d:0:b0:367:900c:c0a4 with SMTP id
- ffacd0b85a97d-3679dd15a36mr10205f8f.11.1720047001138; 
- Wed, 03 Jul 2024 15:50:01 -0700 (PDT)
+ bh=sYzP7D9xykWeqZt2i0B3IIaPj2W0maOmrsq57DCD/d0=;
+ b=IySrL4OOx8NlA3m6dav6TUB79OXYl3Wxt1mJWyo281LvvV16/PlQJOXRIc0A5Ca65G
+ 5xp6rAPSSgT/NgQuJ3ej6str8lor9M5PnIJgvCol/BqxkV68QAxgJ5DsRjQO8lVI6G0E
+ 19OPjsHhW2D/LcaxCJqFyhSpLDt07Owy3/YxqLSTunIlgS9RJ1vvOHvrXrQ4Z5rBjkeV
+ lF86xbT0n4ixSgkwZvS+lhQ4dAPl6+AuxaNJoXOlwV4/d9+2aJ6HAlwnitt4/19IAFmT
+ wXaiKbIFqxFlrdRWgM91XMk1zH1o7GEChhmapVAoF30nku8jor6xY7mPcsaxO1tEtkWs
+ 7/Bw==
+X-Gm-Message-State: AOJu0Yx3LBIbEQTG5JGRLLjx0JpuQE12CxdiWF3HZXnJLqfszck05Z8U
+ PjZoFRzAV17l3We5bwW/V+fDomjwYxgk32vu+FKSLyuAft/YVxoM+DgFlqJUuOlIRajTdbCldcj
+ P83/JZppL6K8msX6kyaNi2N74MKGCRhwnBJaCFH6Vszr0mwhEeLC83jdUmzw/KTOltYhJgRluB/
+ zgnktUdJOFSFfjr0k1NwhGwJaN2Sf06g==
+X-Received: by 2002:a5d:4d4e:0:b0:367:900c:c0a3 with SMTP id
+ ffacd0b85a97d-3679dd15be0mr14789f8f.4.1720047005357; 
+ Wed, 03 Jul 2024 15:50:05 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE42dKA7uESBquH/igR/A8qDsT9V2sfQCdLMEsgJwRfsfIdN24Iw7nIriyz48t2jOSlpT09Yw==
+X-Received: by 2002:a5d:4d4e:0:b0:367:900c:c0a3 with SMTP id
+ ffacd0b85a97d-3679dd15be0mr14780f8f.4.1720047004708; 
+ Wed, 03 Jul 2024 15:50:04 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc7:441:91a8:a47d:5a9:c02f:92f2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3678a648dd3sm4937131f8f.89.2024.07.03.15.49.58
+ ffacd0b85a97d-3675a0cdc5csm16868540f8f.18.2024.07.03.15.50.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 03 Jul 2024 15:50:00 -0700 (PDT)
-Date: Wed, 3 Jul 2024 18:49:57 -0400
+ Wed, 03 Jul 2024 15:50:03 -0700 (PDT)
+Date: Wed, 3 Jul 2024 18:50:01 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Stefano Garzarella <sgarzare@redhat.com>, jasowang@redhat.com,
- qemu-stable@nongnu.org, Xoykie <xoykie@gmail.com>,
- Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>
-Subject: [PULL v3 74/85] virtio: remove virtio_tswap16s() call in
- vring_packed_event_read()
-Message-ID: <7aa6492401e95fb296dec7cda81e67d91f6037d7.1720046570.git.mst@redhat.com>
+ =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>,
+ Eric Auger <eric.auger@redhat.com>
+Subject: [PULL v3 75/85] virtio-iommu: Clear IOMMUDevice when VFIO device is
+ unplugged
+Message-ID: <1b889d6e39c32d709f1114699a014b381bcf1cb1.1720046570.git.mst@redhat.com>
 References: <cover.1720046570.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -104,46 +103,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Stefano Garzarella <sgarzare@redhat.com>
+From: Cédric Le Goater <clg@redhat.com>
 
-Commit d152cdd6f6 ("virtio: use virtio accessor to access packed event")
-switched using of address_space_read_cached() to virito_lduw_phys_cached()
-to access packed descriptor event.
+When a VFIO device is hoplugged in a VM using virtio-iommu, IOMMUPciBus
+and IOMMUDevice cache entries are created in the .get_address_space()
+handler of the machine IOMMU device. However, these entries are never
+destroyed, not even when the VFIO device is detached from the machine.
+This can lead to an assert if the device is reattached again.
 
-When we used address_space_read_cached(), we needed to call
-virtio_tswap16s() to handle the endianess of the field, but
-virito_lduw_phys_cached() already handles it internally, so we no longer
-need to call virtio_tswap16s() (as the commit had done for `off_wrap`,
-but forgot for `flags`).
+When reattached, the .get_address_space() handler reuses an
+IOMMUDevice entry allocated when the VFIO device was first attached.
+virtio_iommu_set_host_iova_ranges() is called later on from the
+.set_iommu_device() handler an fails with an assert on 'probe_done'
+because the device appears to have been already probed when this is
+not the case.
 
-Fixes: d152cdd6f6 ("virtio: use virtio accessor to access packed event")
-Cc: jasowang@redhat.com
-Cc: qemu-stable@nongnu.org
-Reported-by: Xoykie <xoykie@gmail.com>
-Link: https://lore.kernel.org/qemu-devel/CAFU8RB_pjr77zMLsM0Unf9xPNxfr_--Tjr49F_eX32ZBc5o2zQ@mail.gmail.com
-Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-Message-Id: <20240701075208.19634-1-sgarzare@redhat.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Eugenio Pérez <eperezma@redhat.com>
+The IOMMUDevice entry is allocated in pci_device_iommu_address_space()
+called from under vfio_realize(), the VFIO PCI realize handler. Since
+pci_device_unset_iommu_device() is called from vfio_exitfn(), a sub
+function of the PCIDevice unrealize() handler, it seems that the
+.unset_iommu_device() handler is the best place to release resources
+allocated at realize time. Clear the IOMMUDevice cache entry there to
+fix hotplug.
+
+Fixes: 817ef10da23c ("virtio-iommu: Implement set|unset]_iommu_device() callbacks")
+Signed-off-by: Cédric Le Goater <clg@redhat.com>
+Message-Id: <20240701101453.203985-1-clg@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/virtio/virtio.c | 1 -
- 1 file changed, 1 deletion(-)
+ hw/virtio/virtio-iommu.c | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
-diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
-index 3678ec2f88..583a224163 100644
---- a/hw/virtio/virtio.c
-+++ b/hw/virtio/virtio.c
-@@ -323,7 +323,6 @@ static void vring_packed_event_read(VirtIODevice *vdev,
-     /* Make sure flags is seen before off_wrap */
-     smp_rmb();
-     e->off_wrap = virtio_lduw_phys_cached(vdev, cache, off_off);
--    virtio_tswap16s(vdev, &e->flags);
+diff --git a/hw/virtio/virtio-iommu.c b/hw/virtio/virtio-iommu.c
+index ed7426afc7..7c54c6b5e2 100644
+--- a/hw/virtio/virtio-iommu.c
++++ b/hw/virtio/virtio-iommu.c
+@@ -467,6 +467,26 @@ static AddressSpace *virtio_iommu_find_add_as(PCIBus *bus, void *opaque,
+     return &sdev->as;
  }
  
- static void vring_packed_off_wrap_write(VirtIODevice *vdev,
++static void virtio_iommu_device_clear(VirtIOIOMMU *s, PCIBus *bus, int devfn)
++{
++    IOMMUPciBus *sbus = g_hash_table_lookup(s->as_by_busptr, bus);
++    IOMMUDevice *sdev;
++
++    if (!sbus) {
++        return;
++    }
++
++    sdev = sbus->pbdev[devfn];
++    if (!sdev) {
++        return;
++    }
++
++    g_list_free_full(sdev->resv_regions, g_free);
++    sdev->resv_regions = NULL;
++    g_free(sdev);
++    sbus->pbdev[devfn] = NULL;
++}
++
+ static gboolean hiod_equal(gconstpointer v1, gconstpointer v2)
+ {
+     const struct hiod_key *key1 = v1;
+@@ -650,6 +670,7 @@ virtio_iommu_unset_iommu_device(PCIBus *bus, void *opaque, int devfn)
+     }
+ 
+     g_hash_table_remove(viommu->host_iommu_devices, &key);
++    virtio_iommu_device_clear(viommu, bus, devfn);
+ }
+ 
+ static const PCIIOMMUOps virtio_iommu_ops = {
 -- 
 MST
 
