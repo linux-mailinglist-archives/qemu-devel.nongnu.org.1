@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48D8D9269D4
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FC6D9269D5
 	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jul 2024 23:03:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sP77Q-0000hg-Kl; Wed, 03 Jul 2024 17:02:24 -0400
+	id 1sP77b-0000or-1i; Wed, 03 Jul 2024 17:02:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1sP77O-0000hJ-Lf
- for qemu-devel@nongnu.org; Wed, 03 Jul 2024 17:02:22 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1sP77Z-0000nI-Fs
+ for qemu-devel@nongnu.org; Wed, 03 Jul 2024 17:02:33 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1sP77N-0000S0-0I
- for qemu-devel@nongnu.org; Wed, 03 Jul 2024 17:02:22 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1sP77Y-0001DU-26
+ for qemu-devel@nongnu.org; Wed, 03 Jul 2024 17:02:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1720040540;
+ s=mimecast20190719; t=1720040551;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=yjCSx2xXZa2imboFxKPWgPHy6sZtgdQlYu7Dkui4UnQ=;
- b=dhXpDxQEL4L7Ib5/D8IspCnKQocHpvLymNtpfgJZzCeziSj3OLoCUIcQMyfvOOmeC4I3Ho
- nNBCuZNQdPn7oT1e8ydiPMunf2qIWqxKueRLBd5vpXGsJItQvdcuHrZjTLAoXMI5I7J7x0
- BvAxdfw2+zmL1VBNF5TQNai9+lkJOZg=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ bh=PagiVVcxaoz6SG+vMEHIcFhw1tdKzH4mYLKugaIWlWs=;
+ b=P9CyutWBqrM/GjgHpLEtKRsjvFQbA8O4EXpoo14n1o/7UiEexM8O/oGlKSP8dpu7O2+7KP
+ 3YkUCrDtxAQo+KziIoS+VcVr4qWOyQjmYn0XQH33AKZdLPTf3ipY3X76QN2MvB+qN41KF+
+ 3yDntDshhMzJyiF6ucwytWXuGFbAsHg=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-294-m6tCTfLVNk6e7JdkMKK5bA-1; Wed,
- 03 Jul 2024 17:02:16 -0400
-X-MC-Unique: m6tCTfLVNk6e7JdkMKK5bA-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-7-Cx_fKnGuPXGPL6BUgfI3Gg-1; Wed,
+ 03 Jul 2024 17:02:23 -0400
+X-MC-Unique: Cx_fKnGuPXGPL6BUgfI3Gg-1
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 8EC4B1955F69; Wed,  3 Jul 2024 21:02:14 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 383D419560B2; Wed,  3 Jul 2024 21:02:21 +0000 (UTC)
 Received: from scv.localdomain (unknown [10.22.34.31])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id B55FC1955F22; Wed,  3 Jul 2024 21:02:07 +0000 (UTC)
+ id B81251955E8F; Wed,  3 Jul 2024 21:02:14 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: "Michael S. Tsirkin" <mst@redhat.com>, Peter Xu <peterx@redhat.com>,
@@ -65,18 +65,17 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>, Peter Xu <peterx@redhat.com>,
  Eric Blake <eblake@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Yanan Wang <wangyanan55@huawei.com>, Jiri Pirko <jiri@resnulli.us>,
- John Snow <jsnow@redhat.com>
-Subject: [PATCH 3/8] docs/qapidoc: add QMP highlighting to annotated
- qmp-example blocks
-Date: Wed,  3 Jul 2024 17:01:38 -0400
-Message-ID: <20240703210144.339530-4-jsnow@redhat.com>
+ Harmonie Snow <harmonie@gmail.com>, John Snow <jsnow@redhat.com>
+Subject: [PATCH 4/8] docs/sphinx: add CSS styling for qmp-example directive
+Date: Wed,  3 Jul 2024 17:01:39 -0400
+Message-ID: <20240703210144.339530-5-jsnow@redhat.com>
 In-Reply-To: <20240703210144.339530-1-jsnow@redhat.com>
 References: <20240703210144.339530-1-jsnow@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -100,142 +99,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For any code literal blocks inside of a qmp-example directive, apply and
-enforce the QMP lexer/highlighter to those blocks.
+From: Harmonie Snow <harmonie@gmail.com>
 
-This way, you won't need to write:
+Add CSS styling for qmp-example directives to increase readability and
+consistently style all example blocks.
 
-```
-.. qmp-example::
-   :annotated:
-
-   Blah blah
-
-   .. code-block:: QMP
-
-      -> { "lorem": "ipsum" }
-```
-
-But instead, simply:
-
-```
-.. qmp-example::
-   :annotated:
-
-   Blah blah::
-
-     -> { "lorem": "ipsum" }
-```
-
-Once the directive block is exited, whatever the previous default
-highlight language was will be restored; localizing the forced QMP
-lexing to exclusively this directive.
-
-Note, if the default language is *already* QMP, this directive will not
-generate and restore redundant highlight configuration nodes. We may
-well decide that the default language ought to be QMP for any QAPI
-reference pages, but this way the directive behaves consistently no
-matter where it is used.
-
+Signed-off-by: Harmonie Snow <harmonie@gmail.com>
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- docs/sphinx/qapidoc.py | 53 ++++++++++++++++++++++++++++++++++++++----
- 1 file changed, 49 insertions(+), 4 deletions(-)
+ docs/sphinx-static/theme_overrides.css | 49 ++++++++++++++++++++++++++
+ 1 file changed, 49 insertions(+)
 
-diff --git a/docs/sphinx/qapidoc.py b/docs/sphinx/qapidoc.py
-index b0f3917dc5b..fb2b23698a0 100644
---- a/docs/sphinx/qapidoc.py
-+++ b/docs/sphinx/qapidoc.py
-@@ -26,6 +26,7 @@
+diff --git a/docs/sphinx-static/theme_overrides.css b/docs/sphinx-static/theme_overrides.css
+index c70ef951286..965ecac54fd 100644
+--- a/docs/sphinx-static/theme_overrides.css
++++ b/docs/sphinx-static/theme_overrides.css
+@@ -87,6 +87,55 @@ div[class^="highlight"] pre {
+     padding-bottom: 1px;
+ }
  
- import os
- import re
-+import sys
- import textwrap
- from typing import List
++/* qmp-example directive styling */
++
++.rst-content .admonition-example {
++    /* do not apply the standard admonition background */
++    background-color: transparent;
++    border: solid #ffd2ed 1px;
++}
++
++.rst-content .admonition-example > .admonition-title:before {
++    content: "▷";
++}
++
++.rst-content .admonition-example > .admonition-title {
++    background-color: #5980a6;
++}
++
++.rst-content .admonition-example > div[class^="highlight"] {
++    /* make code boxes take up the full width of the admonition w/o margin */
++    margin-left: -12px;
++    margin-right: -12px;
++
++    border-top: 1px solid #ffd2ed;
++    border-bottom: 1px solid #ffd2ed;
++    border-left: 0px;
++    border-right: 0px;
++}
++
++.rst-content .admonition-example > div[class^="highlight"]:nth-child(2) {
++    /* If a code box is the second element in an example admonition,
++     * it is the first child after the title. let it sit flush against
++     * the title. */
++    margin-top: -12px;
++    border-top: 0px;
++}
++
++.rst-content .admonition-example > div[class^="highlight"]:last-child {
++    /* If a code box is the final element in an example admonition, don't
++     * render margin below it; let it sit flush with the end of the
++     * admonition box */
++    margin-bottom: -12px;
++    border-bottom: 0px;
++}
++
++.rst-content .admonition-example .highlight {
++    background-color: #fffafd;
++}
++
++/* end qmp-example styling */
++
+ @media screen {
  
-@@ -37,6 +38,7 @@
- from qapi.schema import QAPISchema
- 
- import sphinx
-+from sphinx import addnodes
- from sphinx.directives.code import CodeBlock
- from sphinx.errors import ExtensionError
- from sphinx.util.nodes import nested_parse_with_titles
-@@ -574,10 +576,10 @@ class QMPExample(CodeBlock, NestedDirective):
-     Custom admonition for QMP code examples.
- 
-     When the :annotated: option is present, the body of this directive
--    is parsed as normal rST instead. Code blocks must be explicitly
--    written by the user, but this allows for intermingling explanatory
--    paragraphs with arbitrary rST syntax and code blocks for more
--    involved examples.
-+    is parsed as normal rST, but with any '::' code blocks set to use
-+    the QMP lexer. Code blocks must be explicitly written by the user,
-+    but this allows for intermingling explanatory paragraphs with
-+    arbitrary rST syntax and code blocks for more involved examples.
- 
-     When :annotated: is absent, the directive body is treated as a
-     simple standalone QMP code block literal.
-@@ -591,6 +593,33 @@ class QMPExample(CodeBlock, NestedDirective):
-         "title": directives.unchanged,
-     }
- 
-+    def _highlightlang(self) -> addnodes.highlightlang:
-+        """Return the current highlightlang setting for the document"""
-+        node = None
-+        doc = self.state.document
-+
-+        if hasattr(doc, "findall"):
-+            # docutils >= 0.18.1
-+            for node in doc.findall(addnodes.highlightlang):
-+                pass
-+        else:
-+            for elem in doc.traverse():
-+                if isinstance(elem, addnodes.highlightlang):
-+                    node = elem
-+
-+        if node:
-+            return node
-+
-+        # No explicit directive found, use defaults
-+        node = addnodes.highlightlang(
-+            lang=self.env.config.highlight_language,
-+            force=False,
-+            # Yes, Sphinx uses this value to effectively disable line
-+            # numbers and not 0 or None or -1 or something. ¯\_(ツ)_/¯
-+            linenothreshold=sys.maxsize,
-+        )
-+        return node
-+
-     def admonition_wrap(self, *content) -> List[nodes.Node]:
-         title = "Example:"
-         if "title" in self.options:
-@@ -605,8 +634,24 @@ def admonition_wrap(self, *content) -> List[nodes.Node]:
-         return [admon]
- 
-     def run_annotated(self) -> List[nodes.Node]:
-+        lang_node = self._highlightlang()
-+
-         content_node: nodes.Element = nodes.section()
-+
-+        # Configure QMP highlighting for "::" blocks, if needed
-+        if lang_node["lang"] != "QMP":
-+            content_node += addnodes.highlightlang(
-+                lang="QMP",
-+                force=False,  # "True" ignores lexing errors
-+                linenothreshold=lang_node["linenothreshold"],
-+            )
-+
-         self.do_parse(self.content, content_node)
-+
-+        # Restore prior language highlighting, if needed
-+        if lang_node["lang"] != "QMP":
-+            content_node += addnodes.highlightlang(**lang_node.attributes)
-+
-         return content_node.children
- 
-     def run(self) -> List[nodes.Node]:
+     /* content column
 -- 
 2.45.0
 
