@@ -2,73 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13E23926BD5
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 00:48:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52D8E926BD3
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 00:48:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sP8l5-0004Pu-Pl; Wed, 03 Jul 2024 18:47:28 -0400
+	id 1sP8l9-0004pj-93; Wed, 03 Jul 2024 18:47:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sP8kx-0004E6-OC
- for qemu-devel@nongnu.org; Wed, 03 Jul 2024 18:47:19 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sP8l1-0004Va-Sl
+ for qemu-devel@nongnu.org; Wed, 03 Jul 2024 18:47:24 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sP8kv-0001a8-54
- for qemu-devel@nongnu.org; Wed, 03 Jul 2024 18:47:19 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sP8l0-0001ao-6i
+ for qemu-devel@nongnu.org; Wed, 03 Jul 2024 18:47:23 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1720046836;
+ s=mimecast20190719; t=1720046840;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=PMqT3UA862JsOGcigX9iEr1iG7UpaUmQpd1D/p7t/1Y=;
- b=BLMtR6OT0BqKhiN4AKbUYPVMLNMZEg3men9ovwthi8t7xnBh+BI5QLmmkCcus7arEgNUHx
- /4QPLsFUEDmlDHip3kQu0bZP1yA+e76gurM9nMWn1SNz+0iM4HQ/YwDWx1YzgwKY84NfQW
- luPdl1IX2L5qP1P4yiEKJqvdizjcxeQ=
-Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
- [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=3jl4Qu4kLpM2wQ0qiu2Lf05x2qWhSbW1JbTTyjioPSc=;
+ b=fWPd8LjsH3d1sKln/PUdIdxzuhAbAteGCXq2U7UCLTt5NkA3K6PnXRhObUXJVnnGTQE+Pk
+ vfbZJaeJxGqJLX5cCPnO8DU5Ep/tcoP+P41yMcklEUMNcNvXcVzSaRxOnIrko6bqEqYZWq
+ 56ia9Rlr89Xuw9NB/NKudJo/FuOW+Ew=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-612-1-j-HpKBOv6sbQvbDD60Aw-1; Wed, 03 Jul 2024 18:47:15 -0400
-X-MC-Unique: 1-j-HpKBOv6sbQvbDD60Aw-1
-Received: by mail-lf1-f71.google.com with SMTP id
- 2adb3069b0e04-52e98c1a9d2so1207817e87.3
- for <qemu-devel@nongnu.org>; Wed, 03 Jul 2024 15:47:15 -0700 (PDT)
+ us-mta-333-BmsJdodkM_esErekfvqRWw-1; Wed, 03 Jul 2024 18:47:19 -0400
+X-MC-Unique: BmsJdodkM_esErekfvqRWw-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-a7194d0fd53so2218166b.0
+ for <qemu-devel@nongnu.org>; Wed, 03 Jul 2024 15:47:19 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720046833; x=1720651633;
+ d=1e100.net; s=20230601; t=1720046837; x=1720651637;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=PMqT3UA862JsOGcigX9iEr1iG7UpaUmQpd1D/p7t/1Y=;
- b=rTGu24lDELN7XIscv2vdecvr5icMfXB01mztW+hc0cGk9Moxt0kvic72mEa0okLJty
- /I+6cKbOToMpJncx7fCU2aPuWMvjb8U/9+wWsr9lh5qD8HdV46Kvb7mHRxO/nt8zj24P
- dhPrt/Ggznf5xLCbgp4XYTZIMbdGo42oB0Pin+E/yOH8gYFTacoGYg2OI8DE4OD76SPh
- AaAPjLK3g+ImFlzigVGBNt4R18xD7dJs0uYLEo6i/YOz8AePQlgRUHUM6y0+jLHEa9Uu
- gEIm9nVp0kLhGisGCBA1t0Qj4wFydmXf0XtCJAO+mZSRM4O7QsuqwPdGeQF1r8V3eLrw
- W64Q==
-X-Gm-Message-State: AOJu0YxB3tbuojGShu6HBCfnySyTx2foShwCtdCGaCUDNbK7W9LFWdyd
- qBgZ08pUNCHEhniF1mbj8+wiUPzIIlpDAGDe6I2EgqhW8eM5SRPhANvpzoq9TpIfRwfkS237Qk8
- UcBXHxZTg+EaZ6Nta8mVN+U3IMAGBf7EI5Ugx9Tri0ldT4/xropX2awzmGsRIoqdHDGyty6KWoY
- et8SNZqEiNlmylAARKYn3j+NiZomzfPQ==
-X-Received: by 2002:a05:6512:3610:b0:52c:825e:3b1c with SMTP id
- 2adb3069b0e04-52e8266f836mr6460157e87.26.1720046833227; 
- Wed, 03 Jul 2024 15:47:13 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHujyPKjr2Wl8Siz3B5hB6YJWFLDZ7BWmFStpBTX1i51rqT+3LekGS1RtyKu8QCGwGvE2bmNQ==
-X-Received: by 2002:a05:6512:3610:b0:52c:825e:3b1c with SMTP id
- 2adb3069b0e04-52e8266f836mr6460142e87.26.1720046832220; 
- Wed, 03 Jul 2024 15:47:12 -0700 (PDT)
+ bh=3jl4Qu4kLpM2wQ0qiu2Lf05x2qWhSbW1JbTTyjioPSc=;
+ b=enHpUVKW1vw3Ac8gkVg7bhUXCy2qof4FpsHRV7nvMM/pV6m+f65H8h+BK+MlfC0UAO
+ SjDJBvPyNcZSg73/Pjbk5SRGRDJN10u0JHyuX/rhpbh0HMSpXHht3T7PbAcGEQKRJ7IW
+ ksOuxW0Uf1zNPijBeuxdX2c2et1EOTkz1YQiPVbf9KDX/HOyejfCt4ehtW/lYSg7fBUm
+ h1ayidrqF8MTzv9bo7EAmY2fDFMoDSYSAWSang5oBxENTURtfU3Cy5DO4OEahMkInMVf
+ D5oxKPu0ykjA+RR/OLB2qYYRzlxWDHLRm5pTdwAmAP35iLgLgbXSQfx8fibMOVGwSYFe
+ /17w==
+X-Gm-Message-State: AOJu0YxHTGaXHCNs6ylOJRldBS7Yf3xFOx0/a+YenqkLJDdjxv3auUWj
+ DtngNVhRLe2bEyh/Y6bhxsWBOEr/9KNkTSZVYdm6UoRJ+Un7J+TrmpgSU6MxWSXn3FNXw11BLhP
+ 0G2VWtldFzl3xriR3rejLFTSdg2snYufNqDS5LphMgo0NNv6tqbT3h6YFQ5YkjeHgNtrT58+isS
+ sMGZXU7FSfWvgb00Sq3XGxZsCVhV5YEA==
+X-Received: by 2002:a17:906:782:b0:a72:75b1:2bf2 with SMTP id
+ a640c23a62f3a-a7514498ab2mr733599366b.36.1720046837464; 
+ Wed, 03 Jul 2024 15:47:17 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGQC+9Xz5S/z4N2m/+2ZSYYlMZhXApoUf9RYtBIzxYEERcImlFtc3g7y/X7IVIQvK40oAL5yw==
+X-Received: by 2002:a17:906:782:b0:a72:75b1:2bf2 with SMTP id
+ a640c23a62f3a-a7514498ab2mr733598366b.36.1720046836794; 
+ Wed, 03 Jul 2024 15:47:16 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc7:441:91a8:a47d:5a9:c02f:92f2])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a72aaf18b15sm551172866b.19.2024.07.03.15.47.09
+ a640c23a62f3a-a72aaf18493sm544775966b.7.2024.07.03.15.47.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 03 Jul 2024 15:47:11 -0700 (PDT)
-Date: Wed, 3 Jul 2024 18:47:08 -0400
+ Wed, 03 Jul 2024 15:47:16 -0700 (PDT)
+Date: Wed, 3 Jul 2024 18:47:13 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, Cindy Lu <lulu@redhat.com>,
- qemu-stable@nongnu.org
-Subject: [PULL v3 37/85] virtio-pci: Fix the failure process in
- kvm_virtio_pci_vector_use_one()
-Message-ID: <a113d041e8d0b152d72a7c2bf47dd09aabf9ade2.1720046570.git.mst@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>, Ira Weiny <ira.weiny@intel.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, Fan Ni <fan.ni@samsung.com>
+Subject: [PULL v3 38/85] hw/cxl: Fix read from bogus memory
+Message-ID: <e6c9c9e7f46a9ecaf1d90a68595915d65cd9d72d.1720046570.git.mst@redhat.com>
 References: <cover.1720046570.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -76,7 +75,7 @@ Content-Disposition: inline
 In-Reply-To: <cover.1720046570.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -84,7 +83,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,64 +99,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Cindy Lu <lulu@redhat.com>
+From: Ira Weiny <ira.weiny@intel.com>
 
-In function kvm_virtio_pci_vector_use_one(), the function will only use
-the irqfd/vector for itself. Therefore, in the undo label, the failing
-process is incorrect.
-To fix this, we can just remove this label.
+Peter and coverity report:
 
-Fixes: f9a09ca3ea ("vhost: add support for configure interrupt")
-Cc: qemu-stable@nongnu.org
-Signed-off-by: Cindy Lu <lulu@redhat.com>
-Message-Id: <20240528084840.194538-1-lulu@redhat.com>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+	We've passed '&data' to address_space_write(), which means "read
+	from the address on the stack where the function argument 'data'
+	lives", so instead of writing 64 bytes of data to the guest ,
+	we'll write 64 bytes which start with a host pointer value and
+	then continue with whatever happens to be on the host stack
+	after that.
+
+Indeed the intention was to write 64 bytes of data at the address given.
+
+Fix the parameter to address_space_write().
+
+Reported-by: Peter Maydell <peter.maydell@linaro.org>
+Link: https://lore.kernel.org/all/CAFEAcA-u4sytGwTKsb__Y+_+0O2-WwARntm3x8WNhvL1WfHOBg@mail.gmail.com/
+Fixes: 6bda41a69bdc ("hw/cxl: Add clear poison mailbox command support.")
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+Message-Id: <20240531-fix-poison-set-cacheline-v1-1-e3bc7e8f1158@intel.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- hw/virtio/virtio-pci.c | 18 ++----------------
- 1 file changed, 2 insertions(+), 16 deletions(-)
+ hw/mem/cxl_type3.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
-index 7d62e92365..5941f1a94d 100644
---- a/hw/virtio/virtio-pci.c
-+++ b/hw/virtio/virtio-pci.c
-@@ -898,7 +898,7 @@ static int kvm_virtio_pci_vector_use_one(VirtIOPCIProxy *proxy, int queue_no)
-     }
-     ret = kvm_virtio_pci_vq_vector_use(proxy, vector);
-     if (ret < 0) {
--        goto undo;
-+        return ret;
-     }
-     /*
-      * If guest supports masking, set up irqfd now.
-@@ -908,25 +908,11 @@ static int kvm_virtio_pci_vector_use_one(VirtIOPCIProxy *proxy, int queue_no)
-         ret = kvm_virtio_pci_irqfd_use(proxy, n, vector);
-         if (ret < 0) {
-             kvm_virtio_pci_vq_vector_release(proxy, vector);
--            goto undo;
-+            return ret;
-         }
+diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
+index 5d4a1276be..3274e5dcbb 100644
+--- a/hw/mem/cxl_type3.c
++++ b/hw/mem/cxl_type3.c
+@@ -1292,7 +1292,7 @@ static bool set_cacheline(CXLType3Dev *ct3d, uint64_t dpa_offset, uint8_t *data)
+         dpa_offset -= (vmr_size + pmr_size);
      }
  
-     return 0;
--undo:
--
--    vector = virtio_queue_vector(vdev, queue_no);
--    if (vector >= msix_nr_vectors_allocated(dev)) {
--        return ret;
--    }
--    if (vdev->use_guest_notifier_mask && k->guest_notifier_mask) {
--        ret = virtio_pci_get_notifier(proxy, queue_no, &n, &vector);
--        if (ret < 0) {
--            return ret;
--        }
--        kvm_virtio_pci_irqfd_release(proxy, n, vector);
--    }
--    return ret;
+-    address_space_write(as, dpa_offset, MEMTXATTRS_UNSPECIFIED, &data,
++    address_space_write(as, dpa_offset, MEMTXATTRS_UNSPECIFIED, data,
+                         CXL_CACHE_LINE_SIZE);
+     return true;
  }
- static int kvm_virtio_pci_vector_vq_use(VirtIOPCIProxy *proxy, int nvqs)
- {
 -- 
 MST
 
