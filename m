@@ -2,78 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BA6D92675A
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jul 2024 19:44:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64E1C926755
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jul 2024 19:44:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sP40R-0003MG-1D; Wed, 03 Jul 2024 13:42:59 -0400
+	id 1sP40N-0003Kx-Ml; Wed, 03 Jul 2024 13:42:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sP40A-0003Iv-Hk
+ id 1sP40A-0003Iz-IM
  for qemu-devel@nongnu.org; Wed, 03 Jul 2024 13:42:42 -0400
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+Received: from mail-pj1-x1034.google.com ([2607:f8b0:4864:20::1034])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sP404-0005LX-UB
+ id 1sP404-0005Lg-Ue
  for qemu-devel@nongnu.org; Wed, 03 Jul 2024 13:42:39 -0400
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-1fa9ecfb321so36632635ad.0
- for <qemu-devel@nongnu.org>; Wed, 03 Jul 2024 10:42:33 -0700 (PDT)
+Received: by mail-pj1-x1034.google.com with SMTP id
+ 98e67ed59e1d1-2c983d8bdc7so496366a91.0
+ for <qemu-devel@nongnu.org>; Wed, 03 Jul 2024 10:42:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1720028553; x=1720633353; darn=nongnu.org;
+ d=linaro.org; s=google; t=1720028554; x=1720633354; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+uNpnZst6srkdFxwP3aq1QH/I3J8LM6sXBaE+jLcP9o=;
- b=cwLUQGwmGsUr7KGTLaNztMTVoShhlxKFn64U/epIt/uOIyypKhmEUmPw4nrgLCKs35
- kxN33gFswPT4XQWqhhop1dXMn9/hOOFyRdIb7Gl+YQ18lqF3ZxBpY5HvcS1ifFDTl6Ld
- YXDv07NkP3OncY3KfWIzESPoGVOiOLBSMfV7aZOqCrwi5dTEC2czYGPIQn+xwZUflh+O
- NJ9EWhA9Scw5LFW3ZSlA1kiosdvnA+u9BKoVItiXQ7Ea/TjVXjouLQVoSfXy3NXqgYd9
- lh5U4uoER6LGB8IGcNdrOWEJT0Y4oODEJFntdNCOIeLLwNQKwbmwL8Ni5Reg5MzpdF2z
- iRyQ==
+ bh=7R7OJJiu7/4ltitIhcOKEZN8yuDpc4Bx0+hw02RzbL8=;
+ b=gpC6xX1tTOi4L1sgLfED/zN96kolyJ6bY67FuzYRZPbhDC8tsDTQH9mOnemaJ0oDSY
+ nX/1Zh00YB6BD7o+FK6qkiagA+QJC59x4CVMjjbFC/k/jtSUtsYOkOzFt+mYwCDuMAZi
+ L6ULgRMGAMqdod8TGD1dzyHjcOVhYBbXfRjVPw+kdgTK0UTlgiCen+mi5giGzZNILApm
+ yq/BdaYQmCJNPF0bah4ss/RM4YbKz8oWauNLaNH8eFgdqz/+kpQ1+MKGMam78c+sjnBE
+ aUmMPy9R6kXaRKohlCqG8RvVb4IbotyHn0nZxRp1xEZgp3HzEEqXMvlXRsm1GOg7D3UE
+ qNYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720028553; x=1720633353;
+ d=1e100.net; s=20230601; t=1720028554; x=1720633354;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+uNpnZst6srkdFxwP3aq1QH/I3J8LM6sXBaE+jLcP9o=;
- b=si6mn3kbXRQUvtIQkd79uBK7BEdZBPtQyAFXxka0CVNPs09mIwzEYImfTgqQLnRNZo
- 9nDEhDjnQ5wV3KDOnrQjurM/g3C2S0jGTR9L2vr1PHx+d8icaIBHxmBdQ5Z2m2rLBhlF
- aHBErxZTqIujv22w9K8SYSKrIYdHaQssjr04Nqb8Woz/dmQt85MFdOl3A/njKGWa/xXt
- nNOaPF5up9LOdJR8uKE36ZyeW1q5TL9wmd0VEy2ew/AaHaLmzgg+2omwEBT21Pvh1oaY
- Ump4BCGicA5o4+L1hknM9bocxcQqBb5OQplijixUAh10JKDPdmNW5T0Ln6JLk6l45pRK
- Nu2w==
-X-Gm-Message-State: AOJu0Yy8UYkJ0MyANYyHNjFWRINYuXn/wovsj6ilX/sxSb7RimkYrh8c
- vFi/U819RyqcejxWuAo12fSlm0M6DshGzmvppMGfRqJs9raer6VJkLgc6qyGwWBptx0ygg4ud7s
- q
-X-Google-Smtp-Source: AGHT+IG5Nn+2lqja723x9RM3LjZRe2CriXgqfAFRZhNwf2Wjp6K26i+E970Q0kP98eY3fWmov8/9VA==
-X-Received: by 2002:a17:90a:c7d7:b0:2c9:692e:7d6a with SMTP id
- 98e67ed59e1d1-2c9692e81e7mr3516785a91.20.1720028552797; 
- Wed, 03 Jul 2024 10:42:32 -0700 (PDT)
+ bh=7R7OJJiu7/4ltitIhcOKEZN8yuDpc4Bx0+hw02RzbL8=;
+ b=Flmu8GRMcGDPGcE7eLxPjf4hW7lyxMCfdwGpyOJapfve2cEZfUKiiP89wfV2n0SDNT
+ MzsJqoenRzrf/qIPh+HgDHi6GJRVVCvyerIdB5ouah4pcOqqBHq0TGwXNB7ev7Pnd7OC
+ goJL0p3gVBTzQmB7QZV5K8cKLmIDz0Fq6mZtoTLnwg0pjF2yAhX3fdoWDZ0az/ldrFgz
+ w69XZjhVIbQO0wGl8DXY2ueJI/wQlGhRI9jja3VYSvcZFpwv0djoNEDXmBRkHrZG2f+G
+ cOjoqRLSPklVEKitCtDcTMwREOc2rIMnc2OFZVmFFcCDswTj0kqrwC+tXU8m073nRqCi
+ TXeA==
+X-Gm-Message-State: AOJu0YzvGxI8JbcaERcXg634qbs//qi2HR7ahiuBniPSH4zbC94haWHh
+ 5NdNzDzYOuwktnY2NyEF0r4drXEak4awww5WgbmCZw4kAN/LgQhbn/UmK+m5kmC9zPvTJa/ll0g
+ J
+X-Google-Smtp-Source: AGHT+IH4O6Ox6Tjv9UwQa7S+1l4zWKCK3ZDUE2Ur1X7Pu6I3DBqk5WhyLZTkgMnFePao8lQF4WfpFQ==
+X-Received: by 2002:a17:90a:9204:b0:2c9:6d07:18f4 with SMTP id
+ 98e67ed59e1d1-2c96d071921mr3089793a91.35.1720028553579; 
+ Wed, 03 Jul 2024 10:42:33 -0700 (PDT)
 Received: from stoup.. (174-21-76-141.tukw.qwest.net. [174.21.76.141])
  by smtp.gmail.com with ESMTPSA id
  98e67ed59e1d1-2c91d3e7d7bsm11070030a91.47.2024.07.03.10.42.32
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 03 Jul 2024 10:42:32 -0700 (PDT)
+ Wed, 03 Jul 2024 10:42:33 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Brad Smith <brad@comstyle.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 5/7] util/cpuinfo-riscv: Support OpenBSD signal frame
-Date: Wed,  3 Jul 2024 10:42:24 -0700
-Message-Id: <20240703174226.2117169-6-richard.henderson@linaro.org>
+Cc: Alistair Francis <alistair.francis@wdc.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PULL 6/7] util/cpuinfo-riscv: Use linux __riscv_hwprobe syscall
+Date: Wed,  3 Jul 2024 10:42:25 -0700
+Message-Id: <20240703174226.2117169-7-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240703174226.2117169-1-richard.henderson@linaro.org>
 References: <20240703174226.2117169-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1034;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1034.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,34 +93,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reported-by: Brad Smith <brad@comstyle.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Acked-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+With recent linux kernels, there is a syscall to probe for various
+ISA extensions.  These bits were phased in over several kernel
+releases, so we still require checks for symbol availability.
+
 Acked-by: Alistair Francis <alistair.francis@wdc.com>
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- util/cpuinfo-riscv.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ meson.build          |  6 ++++++
+ util/cpuinfo-riscv.c | 26 ++++++++++++++++++++++++++
+ 2 files changed, 32 insertions(+)
 
+diff --git a/meson.build b/meson.build
+index 54e6b09f4f..2f981f936e 100644
+--- a/meson.build
++++ b/meson.build
+@@ -2862,6 +2862,12 @@ have_cpuid_h = cc.links('''
+   }''')
+ config_host_data.set('CONFIG_CPUID_H', have_cpuid_h)
+ 
++# Don't bother to advertise asm/hwprobe.h for old versions that do
++# not contain RISCV_HWPROBE_EXT_ZBA.
++config_host_data.set('CONFIG_ASM_HWPROBE_H',
++                     cc.has_header_symbol('asm/hwprobe.h',
++                                          'RISCV_HWPROBE_EXT_ZBA'))
++
+ config_host_data.set('CONFIG_AVX2_OPT', get_option('avx2') \
+   .require(have_cpuid_h, error_message: 'cpuid.h not available, cannot enable AVX2') \
+   .require(cc.links('''
 diff --git a/util/cpuinfo-riscv.c b/util/cpuinfo-riscv.c
-index 1236ee5fa4..7dcfbee2ab 100644
+index 7dcfbee2ab..497ce12680 100644
 --- a/util/cpuinfo-riscv.c
 +++ b/util/cpuinfo-riscv.c
-@@ -13,7 +13,14 @@ static void sigill_handler(int signo, siginfo_t *si, void *data)
- {
-     /* Skip the faulty instruction */
-     ucontext_t *uc = (ucontext_t *)data;
-+
-+#ifdef __linux__
-     uc->uc_mcontext.__gregs[REG_PC] += 4;
-+#elif defined(__OpenBSD__)
-+    uc->sc_sepc += 4;
-+#else
-+# error Unsupported OS
-+#endif
+@@ -6,6 +6,11 @@
+ #include "qemu/osdep.h"
+ #include "host/cpuinfo.h"
  
-     got_sigill = 1;
- }
++#ifdef CONFIG_ASM_HWPROBE_H
++#include <asm/hwprobe.h>
++#include <sys/syscall.h>
++#endif
++
+ unsigned cpuinfo;
+ static volatile sig_atomic_t got_sigill;
+ 
+@@ -47,6 +52,27 @@ unsigned __attribute__((constructor)) cpuinfo_init(void)
+ #endif
+     left &= ~info;
+ 
++#ifdef CONFIG_ASM_HWPROBE_H
++    if (left) {
++        /*
++         * TODO: glibc 2.40 will introduce <sys/hwprobe.h>, which
++         * provides __riscv_hwprobe and __riscv_hwprobe_one,
++         * which is a slightly cleaner interface.
++         */
++        struct riscv_hwprobe pair = { .key = RISCV_HWPROBE_KEY_IMA_EXT_0 };
++        if (syscall(__NR_riscv_hwprobe, &pair, 1, 0, NULL, 0) == 0
++            && pair.key >= 0) {
++            info |= pair.value & RISCV_HWPROBE_EXT_ZBA ? CPUINFO_ZBA : 0;
++            info |= pair.value & RISCV_HWPROBE_EXT_ZBB ? CPUINFO_ZBB : 0;
++            left &= ~(CPUINFO_ZBA | CPUINFO_ZBB);
++#ifdef RISCV_HWPROBE_EXT_ZICOND
++            info |= pair.value & RISCV_HWPROBE_EXT_ZICOND ? CPUINFO_ZICOND : 0;
++            left &= ~CPUINFO_ZICOND;
++#endif
++        }
++    }
++#endif /* CONFIG_ASM_HWPROBE_H */
++
+     if (left) {
+         struct sigaction sa_old, sa_new;
+ 
 -- 
 2.34.1
 
