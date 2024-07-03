@@ -2,88 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 977D69258A1
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jul 2024 12:31:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CAE39925974
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jul 2024 12:44:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOxFN-0004c0-Bs; Wed, 03 Jul 2024 06:29:57 -0400
+	id 1sOxSN-0008Le-HU; Wed, 03 Jul 2024 06:43:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sOxFL-0004bU-DQ
- for qemu-devel@nongnu.org; Wed, 03 Jul 2024 06:29:55 -0400
-Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sOxFI-000189-Mr
- for qemu-devel@nongnu.org; Wed, 03 Jul 2024 06:29:55 -0400
-Received: by mail-ej1-x62c.google.com with SMTP id
- a640c23a62f3a-a7527afa23cso383536666b.2
- for <qemu-devel@nongnu.org>; Wed, 03 Jul 2024 03:29:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1720002591; x=1720607391; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:references
- :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=S3BaVCbWUQVWg8g6+tIMwrc/4+x9EHM3HGscom/xawg=;
- b=fJ+uCdqHrz7q4L8Hglf+2JCuS9i60E0XYvKdd+Fnvf+qCzml0W6XqwaL/Ez+jkcnvX
- ZXkR5UCdtJ/d1WHm7MuaePA1qAX9/j9GN+TxViW18uHRtHtfAptT2GydXeRJHHtErRbv
- M/1wUgruM+zfqlqeDO64IsSuF1t2ywSnQjw0dY8/WiDCJwu/ozoJzpN8NqVgvHgU5jjv
- IxY6MmzicsQ1lFqpT5D0C/ECj1SUfP2GG2cvsuLW/Xn6aLNffFhgz5joqsYwQG61MrB1
- 8pyVdKzeACESP4SmC/RJ11O3c0zxJQ+fcbijJ+dUPcixUZ2lH9+yQsaj5dtuR21wnD5x
- Q5Hw==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1sOxSL-0008LO-NC
+ for qemu-devel@nongnu.org; Wed, 03 Jul 2024 06:43:21 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1sOxSJ-0002eB-2T
+ for qemu-devel@nongnu.org; Wed, 03 Jul 2024 06:43:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1720003397;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=oseQ60e5wmgH0ZYm/I14i7Pkbsm8+uJkxNMnBtHXQnA=;
+ b=WZQssXeWEPrSOjQ7FEH1qTAM8N6TVTsqyJfxhGhTsBlzGrQNRT3jzomQTj06Y8R4ljS/WC
+ AGy7IYALEvZlVLQBtUpmSPwWXl+bhMN7YHU3B3PfZ9lm31ggGsEpd9kWJrXVA01tjpV4he
+ iup5d5f/2vdV7FDbphPjgUrI3uefptw=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-61-6mpm0oXiNgiYRnwqSGLlPQ-1; Wed, 03 Jul 2024 06:43:15 -0400
+X-MC-Unique: 6mpm0oXiNgiYRnwqSGLlPQ-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-42565672e0aso2870645e9.0
+ for <qemu-devel@nongnu.org>; Wed, 03 Jul 2024 03:43:15 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720002591; x=1720607391;
- h=content-transfer-encoding:mime-version:message-id:date:references
- :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=S3BaVCbWUQVWg8g6+tIMwrc/4+x9EHM3HGscom/xawg=;
- b=MnWu+O+meKzu1ZZR2ojWeaRgdzbDPRYHfW+cW3jU/MiLL5eJTAVV7YNX4NufFhg/RF
- ATmRwdT2TmFDHHwnHlPKU9ul9lpfKg4ZXCvn45NwLr0Nd5ZNWrroR0o1sU7z1o3poK7n
- ydHInZBqJAIh0Iu7i5ndnOoyv4iR5kjVWysttOeYFmajgaidAJXoNLVLSIFuo81gMxrq
- zz+xBr8qP8TIcClVrXd4eM2q7dpWXEzmgZTGx/pEZHgpYWaHcC8JXikY7VhR48rgFmKg
- GeC3wBUtdRxlmsXgTEPcyBxqkjHApe+UDbyoiBCIpoV6WToG+vYfMGvTw57i8K9SO/WD
- vQUw==
-X-Gm-Message-State: AOJu0YxDs/xWtRKKtmYKG2Nr/WgyjeKkDlEcSA7ZGI8jOuBvmU4yU3/l
- h7U0FwyEuA9s2wmvz5W/z6DQXxv3W+FAZC4D/qzL+LdBP8mTeLMwcXZWhi24O8Y=
-X-Google-Smtp-Source: AGHT+IELes4Zit0wv02a/5x2645sgDTvimp2t+4lwlqxqiT6jBSFAtVyu/ik3DarXLIXrH5HRycj5Q==
-X-Received: by 2002:a17:906:1350:b0:a6f:dc10:6534 with SMTP id
- a640c23a62f3a-a751449e587mr742362066b.34.1720002590346; 
- Wed, 03 Jul 2024 03:29:50 -0700 (PDT)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a72ae84b3d8sm481576266b.121.2024.07.03.03.29.49
+ d=1e100.net; s=20230601; t=1720003394; x=1720608194;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=oseQ60e5wmgH0ZYm/I14i7Pkbsm8+uJkxNMnBtHXQnA=;
+ b=EvSaQidRMkIGJ4N/mmxbnfCCI4rnrVleinJR28kPhpkXpO3PQNnPHJXIpaTguKTUML
+ YZJ0YKDW8I3gjBzsv5CxfU5wsY1eA/Z7NFsx8rkqjAIDPNCWvYN44AUggvUKqZdG+C9M
+ YMTQazAJdK8T7R8FA88zJ71G9JeIyEEmvV2DUKhzwxmMatTLtaCfRZK29Tpa5rFgMS2c
+ TDnNVFKXNx32twX1cih9/ECkDtUgLPXjtZZ1AL4XJOV3KTBLRR84+82irNXuDRwv9JGh
+ nSCwGttMLpoH61mWf6KPd4O0Dex/s3wWzhN2NNp4AOang37XEol6VAx/ciqinHDVfH0S
+ V5Nw==
+X-Gm-Message-State: AOJu0YwcSebXg96B+YdXloNPBXnODQkwtOlEjpxUbY/r4kx1XRzNd8Nf
+ 0Q28eZjocX0DEEtg/LlI0b2PrK7PLVna6P1gVV+X/YqakrJoC2CoZbrV7KcLBQreQ/UIG9yKnVF
+ clv8S0NagiXN3zBNDjas+ZQIF69MflRPBZHwz67vHjvV0HDc80TfBjrL8qXbsDe6jWZMlz8PQpv
+ exFMZWpAARW9qDhvjSXGntGmfx+A0U4egh1Y6U
+X-Received: by 2002:a05:600c:5106:b0:424:86aa:b7e7 with SMTP id
+ 5b1f17b1804b1-42640914d1fmr13175695e9.9.1720003393993; 
+ Wed, 03 Jul 2024 03:43:13 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGS5TKI55xriN+xEbVHEfhsraTS0wOn5l8z9QEAQe62aQruh/CyRQsAx1rG/N12ZFH/ir+Xyg==
+X-Received: by 2002:a05:600c:5106:b0:424:86aa:b7e7 with SMTP id
+ 5b1f17b1804b1-42640914d1fmr13175495e9.9.1720003393622; 
+ Wed, 03 Jul 2024 03:43:13 -0700 (PDT)
+Received: from avogadro.local ([151.95.101.29])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4256af38a0asm237721405e9.1.2024.07.03.03.43.12
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 03 Jul 2024 03:29:49 -0700 (PDT)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 185755F841;
- Wed,  3 Jul 2024 11:29:49 +0100 (BST)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: John Snow <jsnow@redhat.com>
-Cc: qemu-devel@nongnu.org,  qemu-block@nongnu.org,  Cleber Rosa
- <crosa@redhat.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>,  Wainer
- dos Santos Moschetta <wainersm@redhat.com>,  Kevin Wolf
- <kwolf@redhat.com>,  Beraldo Leal <bleal@redhat.com>,  Thomas Huth
- <thuth@redhat.com>,  Hanna Reitz <hreitz@redhat.com>
-Subject: Re: [PATCH 4/4] python: enable testing for 3.13
-In-Reply-To: <20240626232230.408004-5-jsnow@redhat.com> (John Snow's message
- of "Wed, 26 Jun 2024 19:22:30 -0400")
-References: <20240626232230.408004-1-jsnow@redhat.com>
- <20240626232230.408004-5-jsnow@redhat.com>
-Date: Wed, 03 Jul 2024 11:29:49 +0100
-Message-ID: <871q4arco2.fsf@draig.linaro.org>
+ Wed, 03 Jul 2024 03:43:12 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Subject: [PATCH] target/i386: SEV: fix formatting of CPUID mismatch message
+Date: Wed,  3 Jul 2024 12:43:12 +0200
+Message-ID: <20240703104312.1642361-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::62c;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62c.google.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,21 +96,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-John Snow <jsnow@redhat.com> writes:
+Fixes: 70943ad8e4d ("i386/sev: Add support for SNP CPUID validation", 2024-06-05)
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ target/i386/sev.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-> Python 3.13 is in beta and Fedora 41 is preparing to make it the default
-> system interpreter; enable testing for it.
->
-> (In the event problems develop prior to release, it should only impact
-> the check-python-tox job, which is not run by default and is allowed to
-> fail.)
->
-> Signed-off-by: John Snow <jsnow@redhat.com>
+diff --git a/target/i386/sev.c b/target/i386/sev.c
+index 3ab8b3c28b7..2a0f94d390d 100644
+--- a/target/i386/sev.c
++++ b/target/i386/sev.c
+@@ -841,7 +841,7 @@ sev_snp_cpuid_report_mismatches(SnpCpuidInfo *old,
+     size_t i;
+ 
+     if (old->count != new->count) {
+-        error_report("SEV-SNP: CPUID validation failed due to count mismatch,"
++        error_report("SEV-SNP: CPUID validation failed due to count mismatch, "
+                      "provided: %d, expected: %d", old->count, new->count);
+         return;
+     }
+@@ -853,8 +853,8 @@ sev_snp_cpuid_report_mismatches(SnpCpuidInfo *old,
+         new_func = &new->entries[i];
+ 
+         if (memcmp(old_func, new_func, sizeof(SnpCpuidFunc))) {
+-            error_report("SEV-SNP: CPUID validation failed for function 0x%x, index: 0x%x"
+-                         "provided: eax:0x%08x, ebx: 0x%08x, ecx: 0x%08x, edx: 0x%08x"
++            error_report("SEV-SNP: CPUID validation failed for function 0x%x, index: 0x%x, "
++                         "provided: eax:0x%08x, ebx: 0x%08x, ecx: 0x%08x, edx: 0x%08x, "
+                          "expected: eax:0x%08x, ebx: 0x%08x, ecx: 0x%08x, edx: 0x%08x",
+                          old_func->eax_in, old_func->ecx_in,
+                          old_func->eax, old_func->ebx, old_func->ecx, old_func->edx,
+-- 
+2.45.2
 
-Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
-Tested-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
 
