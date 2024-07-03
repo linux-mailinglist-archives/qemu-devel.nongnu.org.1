@@ -2,61 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E77A1924DFA
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jul 2024 04:50:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA92F924FCD
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jul 2024 05:40:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOq33-0000oh-GB; Tue, 02 Jul 2024 22:48:47 -0400
+	id 1sOqq0-0001TT-S8; Tue, 02 Jul 2024 23:39:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
- id 1sOq2y-0000oT-2a; Tue, 02 Jul 2024 22:48:40 -0400
-Received: from out30-99.freemail.mail.aliyun.com ([115.124.30.99])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
- id 1sOq2u-0003wv-1Y; Tue, 02 Jul 2024 22:48:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linux.alibaba.com; s=default;
- t=1719974902; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
- bh=oZQfr0Jy5PLi0K+/m6W0/6hdH8dA03lJTjwO0NUJGI8=;
- b=gi8GxTccdGKKUtfBEPNwcjzOEdsWJK5+Jokal5xV/xsDhwk+3iZK7dqhJEFFgLC66qxdChRXqj2ECo4tjHBrAZ7Ca9XIjitR82J5z++7SyAm4j62bAm/5aOzLWkGsuwbxkoYGCWU/Qua5TH3o2RQpHG4buW2v1ErG7eDQT+SgjA=
-X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R121e4; CH=green; DM=||false|;
- DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=maildocker-contentspam033037067110;
- MF=zhiwei_liu@linux.alibaba.com; NM=1; PH=DS; RN=9; SR=0;
- TI=SMTPD_---0W9kOmtV_1719974901; 
-Received: from 30.166.64.126(mailfrom:zhiwei_liu@linux.alibaba.com
- fp:SMTPD_---0W9kOmtV_1719974901) by smtp.aliyun-inc.com;
- Wed, 03 Jul 2024 10:48:21 +0800
-Message-ID: <8b300457-7cf6-4a43-9f4a-521dd8725f44@linux.alibaba.com>
-Date: Wed, 3 Jul 2024 10:46:58 +0800
+ (Exim 4.90_1) (envelope-from <dongzhihai@eswincomputing.com>)
+ id 1sOqpw-0001Sc-Pn
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 23:39:16 -0400
+Received: from zg8tmja5ljk3lje4ms43mwaa.icoremail.net ([209.97.181.73])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <dongzhihai@eswincomputing.com>) id 1sOqpu-0001QW-D7
+ for qemu-devel@nongnu.org; Tue, 02 Jul 2024 23:39:16 -0400
+Received: from E0005117DT.eswin.cn (unknown [10.64.112.170])
+ by app2 (Coremail) with SMTP id TQJkCgAXKbvVx4RmaHkTAA--.49688S4;
+ Wed, 03 Jul 2024 11:39:03 +0800 (CST)
+From: Zhihai Dong <dongzhihai@eswincomputing.com>
+To: qemu-devel@nongnu.org
+Cc: dongzhihai@eswincomputing.com
+Subject: [PATCH] README.rst: add the missing punctuations
+Date: Wed,  3 Jul 2024 11:39:01 +0800
+Message-Id: <20240703033901.1017-1-dongzhihai@eswincomputing.com>
+X-Mailer: git-send-email 2.33.0.windows.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/6] target/riscv: Detect sxl to set bit width for RV32 in
- RV64
-To: Alistair Francis <alistair23@gmail.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, palmer@dabbelt.com,
- alistair.francis@wdc.com, dbarboza@ventanamicro.com, liwei1518@gmail.com,
- bmeng.cn@gmail.com, TANG Tiancheng <tangtiancheng.ttc@alibaba-inc.com>
-References: <20240701033722.954-1-zhiwei_liu@linux.alibaba.com>
- <20240701033722.954-5-zhiwei_liu@linux.alibaba.com>
- <CAKmqyKPsCWRy2Fwpnv3LB5QXVujBHVBHqLUNrVDnG4rfXH5TVA@mail.gmail.com>
-Content-Language: en-US
-From: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-In-Reply-To: <CAKmqyKPsCWRy2Fwpnv3LB5QXVujBHVBHqLUNrVDnG4rfXH5TVA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=115.124.30.99;
- envelope-from=zhiwei_liu@linux.alibaba.com;
- helo=out30-99.freemail.mail.aliyun.com
-X-Spam_score_int: -174
-X-Spam_score: -17.5
-X-Spam_bar: -----------------
-X-Spam_report: (-17.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, ENV_AND_HDR_SPF_MATCH=-0.5,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- UNPARSEABLE_RELAY=0.001, USER_IN_DEF_DKIM_WL=-7.5,
- USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
+X-CM-TRANSID: TQJkCgAXKbvVx4RmaHkTAA--.49688S4
+X-Coremail-Antispam: 1UD129KBjvJXoW7WryrXr4fGrW7tFyxXr1DWrg_yoW8Jr1kpr
+ Zxu345u3s2vF13J3yrWa1UZw1FgrZ5XF42qw12gw47JF1Sv3Z2g3ZYyr42ya4UXa9a9rW5
+ JF10vr1vqa4UAFJanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+ 9KBjDU0xBIdaVrnRJUUUk214x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+ rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+ 1l84ACjcxK6xIIjxv20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
+ JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
+ CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
+ 2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
+ W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc2xSY4AK6svPMxAI
+ w28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr
+ 4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUXVWUAwCIc40Y0x0EwIxG
+ rwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8Jw
+ CI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2
+ z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjfU5WlkUUUUU
+X-CM-SenderInfo: pgrqw65klktx46hv4xpqfrz1xxwl0woofrz/
+Received-SPF: pass client-ip=209.97.181.73;
+ envelope-from=dongzhihai@eswincomputing.com;
+ helo=zg8tmja5ljk3lje4ms43mwaa.icoremail.net
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -72,83 +70,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Make the README more clearly.
 
-On 2024/7/3 10:33, Alistair Francis wrote:
-> On Mon, Jul 1, 2024 at 1:41 PM LIU Zhiwei <zhiwei_liu@linux.alibaba.com> wrote:
->> From: TANG Tiancheng <tangtiancheng.ttc@alibaba-inc.com>
->>
->> Ensure correct bit width based on sxl when running RV32 on RV64 QEMU.
->> This is required as MMU address translations run in S-mode.
->>
->> Signed-off-by: TANG Tiancheng <tangtiancheng.ttc@alibaba-inc.com>
->> Reviewed-by: Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
->> ---
->>   target/riscv/cpu_helper.c | 15 +++++++++++----
->>   1 file changed, 11 insertions(+), 4 deletions(-)
->>
->> diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
->> index 6709622dd3..1af83a0a36 100644
->> --- a/target/riscv/cpu_helper.c
->> +++ b/target/riscv/cpu_helper.c
->> @@ -887,12 +887,14 @@ static int get_physical_address(CPURISCVState *env, hwaddr *physical,
->>
->>       CPUState *cs = env_cpu(env);
->>       int va_bits = PGSHIFT + levels * ptidxbits + widened;
->> +    int sxlen = 16UL << riscv_cpu_sxl(env);
->> +    int sxlen_bytes = sxlen / 8;
->>
->>       if (first_stage == true) {
->>           target_ulong mask, masked_msbs;
->>
->> -        if (TARGET_LONG_BITS > (va_bits - 1)) {
->> -            mask = (1L << (TARGET_LONG_BITS - (va_bits - 1))) - 1;
->> +        if (sxlen > (va_bits - 1)) {
->> +            mask = (1L << (sxlen - (va_bits - 1))) - 1;
->>           } else {
->>               mask = 0;
->>           }
->> @@ -961,7 +963,7 @@ restart:
->>
->>           int pmp_prot;
->>           int pmp_ret = get_physical_address_pmp(env, &pmp_prot, pte_addr,
->> -                                               sizeof(target_ulong),
->> +                                               sxlen_bytes,
->>                                                  MMU_DATA_LOAD, PRV_S);
->>           if (pmp_ret != TRANSLATE_SUCCESS) {
->>               return TRANSLATE_PMP_FAIL;
->> @@ -1113,7 +1115,7 @@ restart:
->>            *   it is no longer valid and we must re-walk the page table.
->>            */
->>           MemoryRegion *mr;
->> -        hwaddr l = sizeof(target_ulong), addr1;
->> +        hwaddr l = sxlen_bytes, addr1;
->>           mr = address_space_translate(cs->as, pte_addr, &addr1, &l,
->>                                        false, MEMTXATTRS_UNSPECIFIED);
->>           if (memory_region_is_ram(mr)) {
->> @@ -1126,6 +1128,11 @@ restart:
->>               *pte_pa = pte = updated_pte;
->>   #else
->>               target_ulong old_pte = qatomic_cmpxchg(pte_pa, pte, updated_pte);
-> I think you missed removing this line
+Signed-off-by: Zhihai Dong <dongzhihai@eswincomputing.com>
+---
+ README.rst | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-Good catch.  We will fix this in v2 patch set.
+diff --git a/README.rst b/README.rst
+index 21df79ef43..b120a1f69e 100644
+--- a/README.rst
++++ b/README.rst
+@@ -82,7 +82,7 @@ guidelines set out in the `style section
+ the Developers Guide.
+ 
+ Additional information on submitting patches can be found online via
+-the QEMU website
++the QEMU website:
+ 
+ * `<https://wiki.qemu.org/Contribute/SubmitAPatch>`_
+ * `<https://wiki.qemu.org/Contribute/TrivialPatches>`_
+@@ -102,7 +102,7 @@ requires a working 'git send-email' setup, and by default doesn't
+ automate everything, so you may want to go through the above steps
+ manually for once.
+ 
+-For installation instructions, please go to
++For installation instructions, please go to:
+ 
+ *  `<https://github.com/stefanha/git-publish>`_
+ 
+@@ -159,7 +159,7 @@ Contact
+ =======
+ 
+ The QEMU community can be contacted in a number of ways, with the two
+-main methods being email and IRC
++main methods being email and IRC:
+ 
+ * `<mailto:qemu-devel@nongnu.org>`_
+ * `<https://lists.nongnu.org/mailman/listinfo/qemu-devel>`_
+-- 
+2.34.1
 
-Thanks,
-Zhiwei
-
->
-> Alistair
->
->> +            if (riscv_cpu_sxl(env) == MXL_RV32) {
->> +                old_pte = qatomic_cmpxchg((uint32_t *)pte_pa, pte, updated_pte);
->> +            } else {
->> +                old_pte = qatomic_cmpxchg(pte_pa, pte, updated_pte);
->> +            }
->>               if (old_pte != pte) {
->>                   goto restart;
->>               }
->> --
->> 2.43.0
->>
->>
 
