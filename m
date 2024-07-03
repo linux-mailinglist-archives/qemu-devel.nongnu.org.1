@@ -2,78 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B204926BB2
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 00:45:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58A32926BB9
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 00:46:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sP8iH-0001yQ-9J; Wed, 03 Jul 2024 18:44:33 -0400
+	id 1sP8iQ-000220-JZ; Wed, 03 Jul 2024 18:44:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sP8iF-0001yE-LL
- for qemu-devel@nongnu.org; Wed, 03 Jul 2024 18:44:31 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sP8iO-00021Q-Fa
+ for qemu-devel@nongnu.org; Wed, 03 Jul 2024 18:44:40 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sP8iD-0000sG-T7
- for qemu-devel@nongnu.org; Wed, 03 Jul 2024 18:44:31 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sP8iM-0000sn-RZ
+ for qemu-devel@nongnu.org; Wed, 03 Jul 2024 18:44:40 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1720046668;
+ s=mimecast20190719; t=1720046677;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=uKK/AiLdjMfeKEPpHLdhaqq0Kf5J8WlC0WD4BsUonqY=;
- b=On/H69i/g4OAD7urwGfAFSCjHWPGdE1QyeibfRBAACOdZNEcVtrmzSWzsD1Uwbi7JWk+GS
- Gx5PAYb+H+6Hq8uZkCgRlUR5A3x4v/ZGFDi7zvCWXqy82+C6IHaFIDdW2d+wB7XPIEZK58
- yJAkgE1EZljL9oJGHzVCPI4HLzqMT4U=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=ZMYpex8C2s46cF0GfMcoGvUcCxmqXFvGY/Nt+8TTLHo=;
+ b=K0VyH5rpSv2qWcn15X/c1ktc8DjuhIzw2bRqKZc5zIzyL0xFp9XbppFbJhEoAzbXvbO7w6
+ +SBrX67u36x/1O6ED4Nna8HZqzmGM+AVjdWT9sfAJAzen2s+nDqXi7PZ28YGn5VH+ftT6N
+ 3lQzZx81SCHa6etp2bgKutGXiyTvCW4=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-632-nE7yoPyCPh6-qmpjdza7Fg-1; Wed, 03 Jul 2024 18:44:26 -0400
-X-MC-Unique: nE7yoPyCPh6-qmpjdza7Fg-1
-Received: by mail-ed1-f70.google.com with SMTP id
- 4fb4d7f45d1cf-58cd7a95dabso650838a12.2
- for <qemu-devel@nongnu.org>; Wed, 03 Jul 2024 15:44:25 -0700 (PDT)
+ us-mta-302-jUUD6836Pout-wHBxs9P_Q-1; Wed, 03 Jul 2024 18:44:32 -0400
+X-MC-Unique: jUUD6836Pout-wHBxs9P_Q-1
+Received: by mail-ed1-f72.google.com with SMTP id
+ 4fb4d7f45d1cf-58c859c5d96so1038560a12.3
+ for <qemu-devel@nongnu.org>; Wed, 03 Jul 2024 15:44:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720046664; x=1720651464;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=uKK/AiLdjMfeKEPpHLdhaqq0Kf5J8WlC0WD4BsUonqY=;
- b=g8ThQqX4XCVXIFJQytkm8pgV7kgyAWWL9877wE+b/kndCmBXsAOfZVBJ7E5Wrzejrh
- 2vFUlFiqEB+ux09aUWh20OqzUo19Kubi7kmIQx1HMuMvoBqGB1L3JLV1O3bBfeu1zk6x
- JHj+phNyNI1GFkZeL2sGGTjrNkj/5+IqL9ea+iOjiO7j9/IkKvsuQs0ICVvTGgiNK1dp
- E4HOfp3m+JAuGqUo7nURZLZywD/Y6PsG6kjINNApofJLnYrlMjP+UagnfqKHokJE+O/7
- xfb4EQ4bF2sbIxHe03vylsXE9rbM91UPUNsvcxvyT7U6v9XHJl4Dw1D2wbP2fb64FRBd
- krmw==
-X-Gm-Message-State: AOJu0YzNu0ZQ524rDlo16DHvVCZv8zxC3y1erV7e8/F2lB7PAno1UFyH
- J7JIGldj3lN48EgWgRlKJ2VsdcsUmrh/0DtrKHHMXkxxgyeCnIB1If8swzMFOL98hH6RkrfLr1S
- 6NOlOMWvAYTEu2Fb3IGgR6+33VHrJMNiT54UjenjXuAJc/P1DA4VGsPhKMaSXe+kaAUQFYD8TfZ
- 7puZwoJqWKfbArUldDZBuELFX0uDowXw==
-X-Received: by 2002:a05:6402:1913:b0:587:2dd1:4b6c with SMTP id
- 4fb4d7f45d1cf-587a0822bdemr11691843a12.30.1720046663912; 
- Wed, 03 Jul 2024 15:44:23 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHPVA3gyimLwz7HWkXro6XcDKREO2jj8DTMtOdzI7ag7EE0wqmlhPN0pJg9R4LjRAs0oKo9zA==
-X-Received: by 2002:a05:6402:1913:b0:587:2dd1:4b6c with SMTP id
- 4fb4d7f45d1cf-587a0822bdemr11691824a12.30.1720046663179; 
- Wed, 03 Jul 2024 15:44:23 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1720046669; x=1720651469;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=ZMYpex8C2s46cF0GfMcoGvUcCxmqXFvGY/Nt+8TTLHo=;
+ b=NToue104VHqhuFnp5biaGZPP9vOhMYlPO8ssNuHI03H6xFFNF1GTKOSf+wYJwOrcoL
+ Y4naQ1wBtWye/qekII8hgkSBoby9zrwZF4BofuF4eYc/fD+i1717VBVVJKq2eAPkW8lT
+ sVaKN2NPw+1TBo6SGm9T21AgiJX1hH6xWaEqHRvSq9GziaoUo1R/hZhJJungOD8h9lhQ
+ z5tJAdxHtg1QLcDGd0EM/B3RBB6BFFXAu3LwvP+C3h5AM5HwZbJhNP8S25VhnkV9a08T
+ +Vh+NdBuFRHl6eP++G/OncZ+jSFS3AFIRLtx+h1FzXTesTteePGM2ailDKH5GHeVmeVy
+ qC5w==
+X-Gm-Message-State: AOJu0YzVISAWFBA2v+Di+m+u8EY0yQqd2Ze7WrOCSL8d/+WxEVjrp4FD
+ tq8h/8DSLGnDohSYA+kmhFjzT7Klb0SK491PwVIi4sh/KpE3PibmrTp6GcPmWncFCW3cQQnxV6Q
+ 2OZJcmOyhRdG1pTexlYnWQCCwjAvsqIA1SbMbcK7m2vuCFqSpCM+7qwJgkIlF4hP2wdioQ67Fx/
+ 1d73Z3HLfqr021xPb7yF2OwhdJAv9Oow==
+X-Received: by 2002:a05:6402:1e8b:b0:586:e6a4:c173 with SMTP id
+ 4fb4d7f45d1cf-587a0bfc6b1mr8196016a12.28.1720046668963; 
+ Wed, 03 Jul 2024 15:44:28 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE1d1GPAdI2F06sCYFgpvk4JO5xApbuY9Xuo/L8KpkO9Y+sLuGXCWsuVH2M0HkQAJ5YHoeRLw==
+X-Received: by 2002:a05:6402:1e8b:b0:586:e6a4:c173 with SMTP id
+ 4fb4d7f45d1cf-587a0bfc6b1mr8195997a12.28.1720046668391; 
+ Wed, 03 Jul 2024 15:44:28 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc7:441:91a8:a47d:5a9:c02f:92f2])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-58d3ab39f06sm1138310a12.5.2024.07.03.15.44.21
+ 4fb4d7f45d1cf-58ceee04b51sm1362861a12.71.2024.07.03.15.44.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 03 Jul 2024 15:44:22 -0700 (PDT)
-Date: Wed, 3 Jul 2024 18:44:19 -0400
+ Wed, 03 Jul 2024 15:44:27 -0700 (PDT)
+Date: Wed, 3 Jul 2024 18:44:24 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Si-Wei Liu <si-wei.liu@oracle.com>,
- Joao Martins <joao.m.martins@oracle.com>, Jason Wang <jasowang@redhat.com>
-Subject: [PULL v3 02/85] vhost: Perform memory section dirty scans once per
- iteration
-Message-ID: <c5cd7e5f230afb56891e3826fbb60f9e2b6c086a.1720046570.git.mst@redhat.com>
+ Stefano Garzarella <sgarzare@redhat.com>,
+ Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
+ Jason Wang <jasowang@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL v3 03/85] vhost-vdpa: check vhost_vdpa_set_vring_ready()
+ return value
+Message-ID: <9d5a807c4cb56837f11be9a9250f854fab951290.1720046570.git.mst@redhat.com>
 References: <cover.1720046570.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1720046570.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
@@ -101,179 +105,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Si-Wei Liu <si-wei.liu@oracle.com>
+From: Stefano Garzarella <sgarzare@redhat.com>
 
-On setups with one or more virtio-net devices with vhost on,
-dirty tracking iteration increases cost the bigger the number
-amount of queues are set up e.g. on idle guests migration the
-following is observed with virtio-net with vhost=on:
+vhost_vdpa_set_vring_ready() could already fail, but if Linux's
+patch [1] will be merged, it may fail with more chance if
+userspace does not activate virtqueues before DRIVER_OK when
+VHOST_BACKEND_F_ENABLE_AFTER_DRIVER_OK is not negotiated.
 
-48 queues -> 78.11%  [.] vhost_dev_sync_region.isra.13
-8 queues -> 40.50%   [.] vhost_dev_sync_region.isra.13
-1 queue -> 6.89%     [.] vhost_dev_sync_region.isra.13
-2 devices, 1 queue -> 18.60%  [.] vhost_dev_sync_region.isra.14
+So better check its return value anyway.
 
-With high memory rates the symptom is lack of convergence as soon
-as it has a vhost device with a sufficiently high number of queues,
-the sufficient number of vhost devices.
+[1] https://lore.kernel.org/virtualization/20240206145154.118044-1-sgarzare@redhat.com/T/#u
 
-On every migration iteration (every 100msecs) it will redundantly
-query the *shared log* the number of queues configured with vhost
-that exist in the guest. For the virtqueue data, this is necessary,
-but not for the memory sections which are the same. So essentially
-we end up scanning the dirty log too often.
-
-To fix that, select a vhost device responsible for scanning the
-log with regards to memory sections dirty tracking. It is selected
-when we enable the logger (during migration) and cleared when we
-disable the logger. If the vhost logger device goes away for some
-reason, the logger will be re-selected from the rest of vhost
-devices.
-
-After making mem-section logger a singleton instance, constant cost
-of 7%-9% (like the 1 queue report) will be seen, no matter how many
-queues or how many vhost devices are configured:
-
-48 queues -> 8.71%    [.] vhost_dev_sync_region.isra.13
-2 devices, 8 queues -> 7.97%   [.] vhost_dev_sync_region.isra.14
-
-Co-developed-by: Joao Martins <joao.m.martins@oracle.com>
-Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
-Signed-off-by: Si-Wei Liu <si-wei.liu@oracle.com>
-Message-Id: <1710448055-11709-2-git-send-email-si-wei.liu@oracle.com>
+Acked-by: Eugenio Pérez <eperezma@redhat.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+Message-Id: <20240322092315.31885-1-sgarzare@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
 ---
- include/hw/virtio/vhost.h |  1 +
- hw/virtio/vhost.c         | 67 +++++++++++++++++++++++++++++++++++----
- 2 files changed, 62 insertions(+), 6 deletions(-)
+ net/vhost-vdpa.c | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/include/hw/virtio/vhost.h b/include/hw/virtio/vhost.h
-index 02477788df..d75faf46e9 100644
---- a/include/hw/virtio/vhost.h
-+++ b/include/hw/virtio/vhost.h
-@@ -129,6 +129,7 @@ struct vhost_dev {
-     void *opaque;
-     struct vhost_log *log;
-     QLIST_ENTRY(vhost_dev) entry;
-+    QLIST_ENTRY(vhost_dev) logdev_entry;
-     QLIST_HEAD(, vhost_iommu) iommu_list;
-     IOMMUNotifier n;
-     const VhostDevConfigOps *config_ops;
-diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
-index a1e8b79e1a..06fc71746e 100644
---- a/hw/virtio/vhost.c
-+++ b/hw/virtio/vhost.c
-@@ -45,6 +45,7 @@
- 
- static struct vhost_log *vhost_log[VHOST_BACKEND_TYPE_MAX];
- static struct vhost_log *vhost_log_shm[VHOST_BACKEND_TYPE_MAX];
-+static QLIST_HEAD(, vhost_dev) vhost_log_devs[VHOST_BACKEND_TYPE_MAX];
- 
- /* Memslots used by backends that support private memslots (without an fd). */
- static unsigned int used_memslots;
-@@ -149,6 +150,47 @@ bool vhost_dev_has_iommu(struct vhost_dev *dev)
+diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+index 85e73dd6a7..eda714d1a4 100644
+--- a/net/vhost-vdpa.c
++++ b/net/vhost-vdpa.c
+@@ -399,7 +399,10 @@ static int vhost_vdpa_net_data_load(NetClientState *nc)
      }
- }
  
-+static inline bool vhost_dev_should_log(struct vhost_dev *dev)
-+{
-+    assert(dev->vhost_ops);
-+    assert(dev->vhost_ops->backend_type > VHOST_BACKEND_TYPE_NONE);
-+    assert(dev->vhost_ops->backend_type < VHOST_BACKEND_TYPE_MAX);
-+
-+    return dev == QLIST_FIRST(&vhost_log_devs[dev->vhost_ops->backend_type]);
-+}
-+
-+static inline void vhost_dev_elect_mem_logger(struct vhost_dev *hdev, bool add)
-+{
-+    VhostBackendType backend_type;
-+
-+    assert(hdev->vhost_ops);
-+
-+    backend_type = hdev->vhost_ops->backend_type;
-+    assert(backend_type > VHOST_BACKEND_TYPE_NONE);
-+    assert(backend_type < VHOST_BACKEND_TYPE_MAX);
-+
-+    if (add && !QLIST_IS_INSERTED(hdev, logdev_entry)) {
-+        if (QLIST_EMPTY(&vhost_log_devs[backend_type])) {
-+            QLIST_INSERT_HEAD(&vhost_log_devs[backend_type],
-+                              hdev, logdev_entry);
-+        } else {
-+            /*
-+             * The first vhost_device in the list is selected as the shared
-+             * logger to scan memory sections. Put new entry next to the head
-+             * to avoid inadvertent change to the underlying logger device.
-+             * This is done in order to get better cache locality and to avoid
-+             * performance churn on the hot path for log scanning. Even when
-+             * new devices come and go quickly, it wouldn't end up changing
-+             * the active leading logger device at all.
-+             */
-+            QLIST_INSERT_AFTER(QLIST_FIRST(&vhost_log_devs[backend_type]),
-+                               hdev, logdev_entry);
-+        }
-+    } else if (!add && QLIST_IS_INSERTED(hdev, logdev_entry)) {
-+        QLIST_REMOVE(hdev, logdev_entry);
-+    }
-+}
-+
- static int vhost_sync_dirty_bitmap(struct vhost_dev *dev,
-                                    MemoryRegionSection *section,
-                                    hwaddr first,
-@@ -166,12 +208,14 @@ static int vhost_sync_dirty_bitmap(struct vhost_dev *dev,
-     start_addr = MAX(first, start_addr);
-     end_addr = MIN(last, end_addr);
- 
--    for (i = 0; i < dev->mem->nregions; ++i) {
--        struct vhost_memory_region *reg = dev->mem->regions + i;
--        vhost_dev_sync_region(dev, section, start_addr, end_addr,
--                              reg->guest_phys_addr,
--                              range_get_last(reg->guest_phys_addr,
--                                             reg->memory_size));
-+    if (vhost_dev_should_log(dev)) {
-+        for (i = 0; i < dev->mem->nregions; ++i) {
-+            struct vhost_memory_region *reg = dev->mem->regions + i;
-+            vhost_dev_sync_region(dev, section, start_addr, end_addr,
-+                                  reg->guest_phys_addr,
-+                                  range_get_last(reg->guest_phys_addr,
-+                                                 reg->memory_size));
+     for (int i = 0; i < v->dev->nvqs; ++i) {
+-        vhost_vdpa_set_vring_ready(v, i + v->dev->vq_index);
++        int ret = vhost_vdpa_set_vring_ready(v, i + v->dev->vq_index);
++        if (ret < 0) {
++            return ret;
 +        }
      }
-     for (i = 0; i < dev->nvqs; ++i) {
-         struct vhost_virtqueue *vq = dev->vqs + i;
-@@ -383,6 +427,7 @@ static void vhost_log_put(struct vhost_dev *dev, bool sync)
-         g_free(log);
-     }
- 
-+    vhost_dev_elect_mem_logger(dev, false);
-     dev->log = NULL;
-     dev->log_size = 0;
- }
-@@ -998,6 +1043,15 @@ static int vhost_dev_set_log(struct vhost_dev *dev, bool enable_log)
-             goto err_vq;
-         }
-     }
-+
-+    /*
-+     * At log start we select our vhost_device logger that will scan the
-+     * memory sections and skip for the others. This is possible because
-+     * the log is shared amongst all vhost devices for a given type of
-+     * backend.
-+     */
-+    vhost_dev_elect_mem_logger(dev, enable_log);
-+
      return 0;
- err_vq:
-     for (; i >= 0; --i) {
-@@ -2075,6 +2129,7 @@ int vhost_dev_start(struct vhost_dev *hdev, VirtIODevice *vdev, bool vrings)
-             VHOST_OPS_DEBUG(r, "vhost_set_log_base failed");
-             goto fail_log;
-         }
-+        vhost_dev_elect_mem_logger(hdev, true);
+ }
+@@ -1238,7 +1241,10 @@ static int vhost_vdpa_net_cvq_load(NetClientState *nc)
+ 
+     assert(nc->info->type == NET_CLIENT_DRIVER_VHOST_VDPA);
+ 
+-    vhost_vdpa_set_vring_ready(v, v->dev->vq_index);
++    r = vhost_vdpa_set_vring_ready(v, v->dev->vq_index);
++    if (unlikely(r < 0)) {
++        return r;
++    }
+ 
+     if (v->shadow_vqs_enabled) {
+         n = VIRTIO_NET(v->dev->vdev);
+@@ -1277,7 +1283,10 @@ static int vhost_vdpa_net_cvq_load(NetClientState *nc)
      }
-     if (vrings) {
-         r = vhost_dev_set_vring_enable(hdev, true);
+ 
+     for (int i = 0; i < v->dev->vq_index; ++i) {
+-        vhost_vdpa_set_vring_ready(v, i);
++        r = vhost_vdpa_set_vring_ready(v, i);
++        if (unlikely(r < 0)) {
++            return r;
++        }
+     }
+ 
+     return 0;
 -- 
 MST
 
