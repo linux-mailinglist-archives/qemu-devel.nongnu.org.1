@@ -2,99 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBE84925844
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jul 2024 12:20:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C527F925863
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jul 2024 12:24:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOx69-0007DG-9m; Wed, 03 Jul 2024 06:20:25 -0400
+	id 1sOx9N-00021V-OJ; Wed, 03 Jul 2024 06:23:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1sOx66-00079F-N6
- for qemu-devel@nongnu.org; Wed, 03 Jul 2024 06:20:22 -0400
-Received: from flow7-smtp.messagingengine.com ([103.168.172.142])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1sOx5t-0008ND-Ns
- for qemu-devel@nongnu.org; Wed, 03 Jul 2024 06:20:21 -0400
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
- by mailflow.nyi.internal (Postfix) with ESMTP id 74C9320046D;
- Wed,  3 Jul 2024 06:20:08 -0400 (EDT)
-Received: from imap44 ([10.202.2.94])
- by compute3.internal (MEProxy); Wed, 03 Jul 2024 06:20:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
- cc:cc:content-transfer-encoding:content-type:content-type:date
- :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
- :references:reply-to:subject:subject:to:to; s=fm3; t=1720002008;
- x=1720009208; bh=yM2EdPI9XusHAZG4ZlPVShG8MDlT1v5rFbqttzLVTfk=; b=
- Ksfj05snDz2cN2Iw0plLEtSx6fHF4b74fCJfcl4LlLs/bHuEmJy/txhPRCyynl0B
- EBpKf1TqVgzaQzNErR1nXghM/UnFpNhrHXPOTrx80FM5sVPyf5iTuGr9rBWyiyY0
- KL7OK6mxYwRrzKBoDddijUSd68s0NRnTn7G06ksffmT59utUMB+3SK07FlDXXt10
- uTSxXXBwJKpkEweR1/7xvifSsKdQE5MCXzF40dW5ET5HLCpejv5orIu4ZIex6JFx
- jH+2IwGp0VM7mKZ5/21+vIlJWKA21EkmKJ4PgaxcVwvUo9tjk8F80RV43Ad5MlyS
- OnOpKNRS7lTPescsUPGLrg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-transfer-encoding
- :content-type:content-type:date:date:feedback-id:feedback-id
- :from:from:in-reply-to:in-reply-to:message-id:mime-version
- :references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
- :x-me-sender:x-me-sender:x-sasl-enc; s=ifd894703.fm2; t=
- 1720002008; x=1720009208; bh=yM2EdPI9XusHAZG4ZlPVShG8MDlT1v5rFbq
- ttzLVTfk=; b=VaK6AoLrZRhwaybRGv++cRDcjMQNttCHYbGlYL6WmETj4kcVi9R
- Yr3UdkIsTu9yR1mWIC2KuNwgKbtfDQObSyrP6T1gh1bGE7h+DN2UxuEelDSZpP9J
- eft+8OSJ76Y7HTA8p1b5S1J0ycq9gpa0w7+1ZNhT50w7uMxXozpRQnz4vee6BAcL
- 9kvXcWW3334SzEf8OPTE+Iri8uY5vGOYmbFsdaaYPYSHW2h2xQBrzJs/joObOSKA
- m94NYumwt24tKGwvEFkt9USmLWVxRxKgXpoXCkH8J6ys6I62D+lkYn7AGlU2D+bO
- iHElGtNhlDjiJHd6fD/6sbigrj/gXEYxjnw==
-X-ME-Sender: <xms:2CWFZnmD77noIRXpa8FLfzt4LCUJpOW6xa1JERdv_uJeKdzhuwWdDw>
- <xme:2CWFZq3Mm8QBeDTdHpturBmMT4CCVJ1EimDULUuqZ448FiuZmqThQyYS2j58AJE7O
- 2IgKdUt0MWuDgFeBGQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrudejgddvjecutefuodetggdotefrodftvf
- curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
- uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
- fjughrpefofgggkfgjfhffhffvvefutgfgsehtqhertderreejnecuhfhrohhmpedflfhi
- rgiguhhnucgjrghnghdfuceojhhirgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomh
- eqnecuggftrfgrthhtvghrnhepudefgeeftedugeehffdtheefgfevffelfefghefhjeeu
- geevtefhudduvdeihefgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrg
- hilhhfrhhomhepjhhirgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomh
-X-ME-Proxy: <xmx:2CWFZtrrFV3lPVq8j4gVP8PpOVx2ltdu9tzGzB9bNKXv_ouy5fRdmw>
- <xmx:2CWFZvmzFhKcqsT9xUhiOFSHDEfIlW8u8r_0u7FaJq1EK0Y6j9Nj1A>
- <xmx:2CWFZl0bLC2kuLB4xkr26OOHgQhRqWWBmtskkgbbGjwcWBMj-Cy2Sg>
- <xmx:2CWFZuvQ_zxwc4PO9_dEzvXl38R98eBAiFP8lrApGVDvdf5_QYw2lQ>
- <xmx:2CWFZpWn4KPuLneTQBQqvBiQAuyBdDfh_XhSMymlt4F5ZHEA7vAaPyBe>
-Feedback-ID: ifd894703:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
- id 4C94436A0074; Wed,  3 Jul 2024 06:20:08 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.11.0-alpha0-566-g3812ddbbc-fm-20240627.001-g3812ddbb
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1sOx9L-00020I-L4
+ for qemu-devel@nongnu.org; Wed, 03 Jul 2024 06:23:43 -0400
+Received: from mail-lj1-x22f.google.com ([2a00:1450:4864:20::22f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1sOx9J-00013D-LF
+ for qemu-devel@nongnu.org; Wed, 03 Jul 2024 06:23:43 -0400
+Received: by mail-lj1-x22f.google.com with SMTP id
+ 38308e7fff4ca-2ec5779b423so47507911fa.0
+ for <qemu-devel@nongnu.org>; Wed, 03 Jul 2024 03:23:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1720002219; x=1720607019; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=Fxyt99NhpqSZijq/0y3id4ljx98fv4+n+XLIHqT3rY8=;
+ b=eVa96Ex5A5CaPfmVCOZQw5quQrITWol5aIlswO6dUR5YIDt+sX1gKTOnGKMz62L1V5
+ 2ZrMWngMNMRViajS58MRT40amtIImFMHVUgKZSLKZiUOnJWCU3LsJupxuqxO4YGrOmm1
+ O419LoVWaq7IS7lSND6lsng4yWLieECWkBgJMqFSJlpoHdaQkbNrwOhih3e/KJZx9qHY
+ BCc0dTBmrVUuXAv9VFQQGll8otnOqz8d5IeGTJLxFg4zdCvsfHQPGezPiC5Pk5nsl85X
+ VVsl/O2/MVrBL1MZKCM4qZvDw5M3K+XImA8vwQYO9wVPNu8MFRApDjB8cOH8Wgc8VM+B
+ 8bTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1720002219; x=1720607019;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Fxyt99NhpqSZijq/0y3id4ljx98fv4+n+XLIHqT3rY8=;
+ b=rcjXs1thyeQTw4c/7Q2gVcfnUY9og4vV4c31ax9Ymq0XlBhl5j8zYWwzMU+mpLaRvm
+ K8998lqnPmq4RkmYRtok+F0HTwF3xCz/dLL4IdgXYHAl/YVO3fg8vO5r/RMHIhsAUlma
+ i50XMqzZGJvXx++Ua7/u2KM1TP8l5IXRD9EDwZpCqZIoggL9KvWhicltRbNpbSToHYE9
+ +j7I+vmKtEVAdfGzKxJTefAd4vWHgux3bQl1l5zhm7AR4Uf5cGBJFY1UT8TkVD7u9/lG
+ zcV2hbabtovRcUoST7/Px/3zoe9xdPMLVa5iE6QTqO2q1DjpDh1xLoEJ2zS500z27hS1
+ qjsw==
+X-Gm-Message-State: AOJu0YwP+ydQPdKfKz4kfR12uGxpb0qlKyoaYclnNdpUaH03QFRNqrIz
+ 4oM2Eo6evppo21GKnutd4LARZJFChpci5Z1ju3RwA4vst++aQmic8xUpvvuD3J+Pp49tjGQ6fgQ
+ 2+yw=
+X-Google-Smtp-Source: AGHT+IHUfIRMsHItMQE/onGd/rfWExc8F3COEbxAd5PZ9UGVYVoABKxK0YuoGGMM5TWjMRL6Jdh9Vg==
+X-Received: by 2002:a2e:9e15:0:b0:2ec:4aac:8fd4 with SMTP id
+ 38308e7fff4ca-2ee5e390cd2mr75461741fa.1.1720002218828; 
+ Wed, 03 Jul 2024 03:23:38 -0700 (PDT)
+Received: from meli-email.org (adsl-193.37.6.1.tellas.gr. [37.6.1.193])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3675a0cdc5csm15476481f8f.18.2024.07.03.03.23.38
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 03 Jul 2024 03:23:38 -0700 (PDT)
+Date: Wed, 03 Jul 2024 13:21:29 +0300
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+To: qemu-devel@nongnu.org,
+ "Daniel P. Berrang=?UTF-8?B?w6k=?= " <berrange@redhat.com>
+Cc: Marc-Andr=?UTF-8?B?w6kg?=Lureau <marcandre.lureau@redhat.com>,
+ Philippe Mathieu-Daud=?UTF-8?B?w6kg?=<philmd@linaro.org>,
+ Konstantin Kostiuk <kkostiuk@redhat.com>,
+ "Daniel P. Berrang=?UTF-8?B?w6k=?= " <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Michael Roth <michael.roth@amd.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH v2 18/22] qga: don't disable fsfreeze commands if vss_init
+ fails
+User-Agent: meli 0.8.6
+References: <20240613150127.1361931-1-berrange@redhat.com>
+ <20240613154406.1365469-1-berrange@redhat.com>
+ <20240613154406.1365469-13-berrange@redhat.com>
+In-Reply-To: <20240613154406.1365469-13-berrange@redhat.com>
+Message-ID: <g1m7d.30xyxwwcb8l4@linaro.org>
 MIME-Version: 1.0
-Message-Id: <c0d18ff3-3c58-4794-bc31-db6787e4becd@app.fastmail.com>
-In-Reply-To: <5224f884-6327-f181-5bbf-f1d1f9f3b894@loongson.cn>
-References: <20240530064941.1289573-1-maobibo@loongson.cn>
- <20240530064941.1289573-2-maobibo@loongson.cn>
- <db19ed93-027c-4e29-aac5-e3a1edcd760b@app.fastmail.com>
- <60da2f5e-009d-4362-bf62-32a088b2848c@app.fastmail.com>
- <CAAhV-H4YqauX+dDFGK1oHrRjROSykkp-j0AfRD4a43Yea4qMxQ@mail.gmail.com>
- <5224f884-6327-f181-5bbf-f1d1f9f3b894@loongson.cn>
-Date: Wed, 03 Jul 2024 18:19:46 +0800
-From: "Jiaxun Yang" <jiaxun.yang@flygoat.com>
-To: "Bibo Mao" <maobibo@loongson.cn>, "Huacai Chen" <chenhuacai@kernel.org>
-Cc: "Song Gao" <gaosong@loongson.cn>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- "QEMU devel" <qemu-devel@nongnu.org>
-Subject: Re: [RFC v3 1/2] target/loongarch: Add loongson binary translation
- feature
-Content-Type: text/plain;charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=103.168.172.142;
- envelope-from=jiaxun.yang@flygoat.com; helo=flow7-smtp.messagingengine.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8; format=flowed
+Received-SPF: pass client-ip=2a00:1450:4864:20::22f;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-lj1-x22f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -111,26 +102,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Thu, 13 Jun 2024 18:44, "Daniel P. Berrangé" <berrange@redhat.com> wrote:
+>The fsfreeze commands are already written to report an error if
+>vss_init() fails. Reporting a more specific error message is more
+>helpful than a generic "command is disabled" message, which cannot
+>beteween an admin config decision and lack of platform support.
 
+s/beteween/between
 
-=E5=9C=A82024=E5=B9=B47=E6=9C=883=E6=97=A5=E4=B8=83=E6=9C=88 =E4=B8=8B=E5=
-=8D=886:10=EF=BC=8Cmaobibo=E5=86=99=E9=81=93=EF=BC=9A
-[...]
->>>
->>> Huacai, would you agree with me?
->> For me the important thing is consistency, all vm-features or all
->> vcpu-features are both accepted.
-> To understand features immediately is difficult job for me. There is=20
-> supported features/used features usages etc, overall feature detection=20
-> should be VM relative by my knowledge.
 >
-> Maybe after host machine type and migration feature detection and=20
-> checking is finished, there will be further upstanding -:(
+>Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+>---
+> qga/commands-win32.c | 18 +++---------------
+> qga/main.c           |  4 ++++
+> 2 files changed, 7 insertions(+), 15 deletions(-)
+>
+>diff --git a/qga/commands-win32.c b/qga/commands-win32.c
+>index 2533e4c748..5866cc2e3c 100644
+>--- a/qga/commands-win32.c
+>+++ b/qga/commands-win32.c
+>@@ -1203,7 +1203,7 @@ GuestFilesystemInfoList *qmp_guest_get_fsinfo(Error **errp)
+> GuestFsfreezeStatus qmp_guest_fsfreeze_status(Error **errp)
+> {
+>     if (!vss_initialized()) {
+>-        error_setg(errp, QERR_UNSUPPORTED);
+>+        error_setg(errp, "fsfreeze not possible as VSS failed to initialize");
+>         return 0;
 
-Do you agree with the scratch_vcpu approach? This seems to be the only
-straight forward way to make some progress here.
+Should this be return -1 by the way?
 
-Thanks
---=20
-- Jiaxun
+
+>     }
+> 
+>@@ -1231,7 +1231,7 @@ int64_t qmp_guest_fsfreeze_freeze_list(bool has_mountpoints,
+>     Error *local_err = NULL;
+> 
+>     if (!vss_initialized()) {
+>-        error_setg(errp, QERR_UNSUPPORTED);
+>+        error_setg(errp, "fsfreeze not possible as VSS failed to initialize");
+>         return 0;
+>     }
+> 
+>@@ -1266,7 +1266,7 @@ int64_t qmp_guest_fsfreeze_thaw(Error **errp)
+>     int i;
+> 
+>     if (!vss_initialized()) {
+>-        error_setg(errp, QERR_UNSUPPORTED);
+>+        error_setg(errp, "fsfreeze not possible as VSS failed to initialize");
+>         return 0;
+>     }
+> 
+>@@ -1961,18 +1961,6 @@ done:
+> /* add unsupported commands to the list of blocked RPCs */
+> GList *ga_command_init_blockedrpcs(GList *blockedrpcs)
+> {
+>-    if (!vss_init(true)) {
+>-        g_debug("vss_init failed, vss commands are going to be disabled");
+>-        const char *list[] = {
+>-            "guest-get-fsinfo", "guest-fsfreeze-status",
+>-            "guest-fsfreeze-freeze", "guest-fsfreeze-thaw", NULL};
+>-        char **p = (char **)list;
+>-
+>-        while (*p) {
+>-            blockedrpcs = g_list_append(blockedrpcs, g_strdup(*p++));
+>-        }
+>-    }
+>-
+>     return blockedrpcs;
+> }
+> 
+>diff --git a/qga/main.c b/qga/main.c
+>index f4d5f15bb3..17b6ce18ac 100644
+>--- a/qga/main.c
+>+++ b/qga/main.c
+>@@ -1395,6 +1395,10 @@ static GAState *initialize_agent(GAConfig *config, int socket_activation)
+>                    " '%s': %s", config->state_dir, strerror(errno));
+>         return NULL;
+>     }
+>+
+>+    if (!vss_init(true)) {
+>+        g_debug("vss_init failed, vss commands will not function");
+>+    }
+> #endif
+> 
+>     if (ga_is_frozen(s)) {
+>-- 
+>2.45.1
+>
+>
+
+
+Otherwise LGTM:
+
+Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 
