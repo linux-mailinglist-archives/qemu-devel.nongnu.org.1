@@ -2,88 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A8219255C4
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jul 2024 10:47:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2387D9255F2
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jul 2024 10:53:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOvdo-0007dO-VC; Wed, 03 Jul 2024 04:47:05 -0400
+	id 1sOvkI-0004JC-Qx; Wed, 03 Jul 2024 04:53:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOvdg-0007aO-J3
- for qemu-devel@nongnu.org; Wed, 03 Jul 2024 04:46:58 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOvde-0004i3-Uy
- for qemu-devel@nongnu.org; Wed, 03 Jul 2024 04:46:56 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-424ad289912so35747295e9.2
- for <qemu-devel@nongnu.org>; Wed, 03 Jul 2024 01:46:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719996413; x=1720601213; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=N9bvL1+HdDzJokAo5TtS7mNrOx9Wbo7iYajtyDWJmzE=;
- b=yL4wyfQ+mS/G5bqzgL/W01dnzSZZd6osCXTds4lXrH2HjG50qGqROZO3phSfeymGo5
- /S8pavJPsBiAhYxOr7bm7KCfKhZKUf+heJc0WE94XZr56ifHVnvZnVRk0zHVtIPPANaM
- fc4n4PMoUV0rZ7fpVrDSz0RiveiKSWqb9R7Bt7k4l/GNcHc3/EzQEXX/TcDcGl0wsuo3
- BiBQIx7FiBlNg5liUrUPXFkSvNtvcHhHgjJT9dZcoEmBOxoq4HU6sAblM9uuBMBSSP2/
- spgnyGrN70k0YU/Sd7nkws4mDfgxF1ZatyDYd2wwoaoe/Lm8Nhn3DiY0CVx7KoVjldC1
- viQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719996413; x=1720601213;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=N9bvL1+HdDzJokAo5TtS7mNrOx9Wbo7iYajtyDWJmzE=;
- b=cYTxJkirNno1enWJkjvq0ZS3E3HTZlbd24b5btktm6SizQOg23/DLV4k8Z7OaI23TL
- LDVAwWlDAUAUJQ8vuIwFWwEiI3vUnMwphfplSk0QO/rKloafKID4F6StZXvwUW1HtyEL
- xyH0wkM+M4ROmAGSGpO3c5SidkuBpcNBiJuYum5Zc/SEUyX6BjBpzWo1vKRWYBwGEyBV
- ZaVrNiK90dqXpnsVVJfpIhfNu8csNthTiaBZRhk3IYry55boox+DKHzKXt13FW9ba405
- /7k43QpjZgtgS8Ui9bb1fo/bj/JX1BgbT1A22i6A1a4UQ6c0G93BXGRR8ETbKYdKAJx/
- dpuA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCW/nD2CBN2OL7JYtgMt6j/qNsrjtjXIAuCohZOqlmAyLJVh6t85a747N7O0COMDc4SMB8JDQCfJjFQQmpkRxFKh/U+S9+k=
-X-Gm-Message-State: AOJu0YxwBq1OBOEsFpRu9F6r+APkTKZpFC28nMhVUXJoEJ81ZjA+TTzz
- lp+X8mZbL/BSmFv+QOooTTxcr2A0tkSgrCip2zpxNdrvEHHmt1XhjbJR7y3D2UE=
-X-Google-Smtp-Source: AGHT+IFAvi2vH2INDoW2XHFejJQMDTU81dGcUzljaTOvyxrNicT8yBEDnLirkme6dENn5dXrfAWHng==
-X-Received: by 2002:a05:600c:492f:b0:424:a5d8:ac83 with SMTP id
- 5b1f17b1804b1-4257a03acddmr59977955e9.41.1719996413170; 
- Wed, 03 Jul 2024 01:46:53 -0700 (PDT)
-Received: from [192.168.69.100] ([176.187.220.97])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42577a0c286sm123494165e9.0.2024.07.03.01.46.51
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 03 Jul 2024 01:46:52 -0700 (PDT)
-Message-ID: <9757b113-b6c9-4676-a63d-d2b07a744be1@linaro.org>
-Date: Wed, 3 Jul 2024 10:46:50 +0200
+ (Exim 4.90_1) (envelope-from <ying.huang@intel.com>)
+ id 1sOvkF-0004IV-ME
+ for qemu-devel@nongnu.org; Wed, 03 Jul 2024 04:53:43 -0400
+Received: from mgamail.intel.com ([198.175.65.11])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <ying.huang@intel.com>)
+ id 1sOvkD-0004iJ-F2
+ for qemu-devel@nongnu.org; Wed, 03 Jul 2024 04:53:43 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1719996821; x=1751532821;
+ h=from:to:cc:subject:in-reply-to:references:date:
+ message-id:mime-version;
+ bh=uJy6npIbvFhICTmqeRyyXfHKUe2Xu5teyWK4mPdnf60=;
+ b=g/ahm4rmFWfpd3VC3C/iUTS0xUy/Ao6OI3QE3fHrqJpzDuSlP1kwaJF5
+ axotzHVs/6Laq4B7SpNId6lMHB8awO0t1V09F9KofBOC+s5qmxW89yPIE
+ RvxZuM1oou6+3OTa0J5wn7/eYxC0hvDghkvK4UGBd6jl8sfTfbRnRyg8N
+ u4YoR0HrYaK0Jv7rJRf3uIrUtUpn1AjnVvCXwOUbhiL9dcH7ztey8Y4Uh
+ JciTNE+qIFopTNioz7hXIleT8KahGI7sVzDVFnjUkLBMOtM0AqY77m3hq
+ 4iKdS6/t5UksnEYd0hLGPSqI17iSf0PnQhNjn728sbJem0JsiYxTPmF0D g==;
+X-CSE-ConnectionGUID: K7x1ja/gR8ygFmNR+htxfA==
+X-CSE-MsgGUID: Ip34g9+8QUqfWM7Z8oxPFQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11121"; a="27818569"
+X-IronPort-AV: E=Sophos;i="6.09,181,1716274800"; d="scan'208";a="27818569"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Jul 2024 01:53:36 -0700
+X-CSE-ConnectionGUID: TNLyrCPHR5SOEUdQfrNb3w==
+X-CSE-MsgGUID: b4l4Pq1yTnWXfVH4a1AjFA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,181,1716274800"; d="scan'208";a="50633629"
+Received: from unknown (HELO yhuang6-desk2.ccr.corp.intel.com)
+ ([10.238.208.55])
+ by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Jul 2024 01:53:31 -0700
+From: "Huang, Ying" <ying.huang@intel.com>
+To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+Cc: "Ho-Ren (Jack) Chuang" <horen.chuang@linux.dev>,  Gregory Price
+ <gourry.memverge@gmail.com>,  <aneesh.kumar@linux.ibm.com>,
+ <mhocko@suse.com>,  <tj@kernel.org>,  <john@jagalactic.com>,  Eishan
+ Mirakhur <emirakhur@micron.com>,  Vinicius Tavares Petrucci
+ <vtavarespetr@micron.com>,  Ravis OpenSrc <Ravis.OpenSrc@micron.com>,
+ Alistair Popple <apopple@nvidia.com>,  Srinivasulu Thanneeru
+ <sthanneeru@micron.com>,  SeongJae Park <sj@kernel.org>,  "Rafael J.
+ Wysocki" <rafael@kernel.org>,  "Len Brown" <lenb@kernel.org>,  Andrew
+ Morton <akpm@linux-foundation.org>,  "Dave Jiang" <dave.jiang@intel.com>,
+ Dan Williams <dan.j.williams@intel.com>,  <linux-acpi@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>,  <linux-mm@kvack.org>,  "Ho-Ren (Jack)
+ Chuang" <horenc@vt.edu>,  "Ho-Ren (Jack) Chuang"
+ <horenchuang@bytedance.com>,  "Ho-Ren (Jack) Chuang"
+ <horenchuang@gmail.com>,  <linux-cxl@vger.kernel.org>,
+ <qemu-devel@nongnu.org>
+Subject: Re: [PATCH v2 1/1] memory tier: consolidate the initialization of
+ memory tiers
+In-Reply-To: <20240702142535.00003dc0@Huawei.com> (Jonathan Cameron's message
+ of "Tue, 2 Jul 2024 14:25:35 +0100")
+References: <20240628060925.303309-1-horen.chuang@linux.dev>
+ <20240628060925.303309-2-horen.chuang@linux.dev>
+ <20240702142535.00003dc0@Huawei.com>
+Date: Wed, 03 Jul 2024 16:51:40 +0800
+Message-ID: <87a5iykgdf.fsf@yhuang6-desk2.ccr.corp.intel.com>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 04/22] qga: move linux fs/disk command impls to
- commands-linux.c
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- Michael Roth <michael.roth@amd.com>, Konstantin Kostiuk
- <kkostiuk@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-References: <20240613150127.1361931-1-berrange@redhat.com>
- <20240613150127.1361931-5-berrange@redhat.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240613150127.1361931-5-berrange@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=ascii
+Received-SPF: pass client-ip=198.175.65.11; envelope-from=ying.huang@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,18 +98,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 13/6/24 17:01, Daniel P. Berrangé wrote:
-> The qmp_guest_{fstrim, get_fsinfo, get_disks} command impls in
-> commands-posix.c are surrounded by '#ifdef __linux__' so should
-> instead live in commands-linux.c
-> 
-> Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-> ---
->   qga/commands-linux.c | 904 ++++++++++++++++++++++++++++++++++++++++++
->   qga/commands-posix.c | 909 -------------------------------------------
->   2 files changed, 904 insertions(+), 909 deletions(-)
+Jonathan Cameron <Jonathan.Cameron@Huawei.com> writes:
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> On Fri, 28 Jun 2024 06:09:23 +0000
+> "Ho-Ren (Jack) Chuang" <horen.chuang@linux.dev> wrote:
 
+[snip]
+
+>> @@ -875,8 +886,7 @@ static int __meminit memtier_hotplug_callback(struct notifier_block *self,
+>>  
+>>  static int __init memory_tier_init(void)
+>>  {
+>> -	int ret, node;
+>> -	struct memory_tier *memtier;
+>> +	int ret;
+>>  
+>>  	ret = subsys_virtual_register(&memory_tier_subsys, NULL);
+>>  	if (ret)
+>> @@ -887,7 +897,8 @@ static int __init memory_tier_init(void)
+>>  				GFP_KERNEL);
+>>  	WARN_ON(!node_demotion);
+>>  #endif
+>> -	mutex_lock(&memory_tier_lock);
+>> +
+>> +	guard(mutex)(&memory_tier_lock);
+>
+> If this was safe to do without the rest of the change (I think so)
+> then better to pull that out as a trivial precursor so less noise
+> in here.
+>
+>>  	/*
+>>  	 * For now we can have 4 faster memory tiers with smaller adistance
+>>  	 * than default DRAM tier.
+>> @@ -897,29 +908,9 @@ static int __init memory_tier_init(void)
+>>  	if (IS_ERR(default_dram_type))
+>>  		panic("%s() failed to allocate default DRAM tier\n", __func__);
+>>  
+>> -	/*
+>> -	 * Look at all the existing N_MEMORY nodes and add them to
+>> -	 * default memory tier or to a tier if we already have memory
+>> -	 * types assigned.
+>> -	 */
+>> -	for_each_node_state(node, N_MEMORY) {
+>> -		if (!node_state(node, N_CPU))
+>> -			/*
+>> -			 * Defer memory tier initialization on
+>> -			 * CPUless numa nodes. These will be initialized
+>> -			 * after firmware and devices are initialized.
+>> -			 */
+>> -			continue;
+>> -
+>> -		memtier = set_node_memory_tier(node);
+>> -		if (IS_ERR(memtier))
+>> -			/*
+>> -			 * Continue with memtiers we are able to setup
+>> -			 */
+>> -			break;
+>> -	}
+>> -	establish_demotion_targets();
+>> -	mutex_unlock(&memory_tier_lock);
+>> +	/* Record nodes with memory and CPU to set default DRAM performance. */
+>> +	nodes_and(default_dram_nodes, node_states[N_MEMORY],
+>> +		  node_states[N_CPU]);
+>
+> There are systems where (for various esoteric reasons, such as describing an
+> association with some other memory that isn't DRAM where the granularity
+> doesn't match) the CPU nodes contain no DRAM but rather it's one node away.
+> Handling that can be a job for another day though.
+>
+> Why does this need to be computed here?  Why not do it in
+> hmat_set_default_dram_perf? Doesn't seem to be used anywhere else.
+
+IMO, which node is default dram node is a general concept instead of
+HMAT specific.  So, I think that it's better to decide that in the
+general code (memory-tiers.c).
+
+>>  
+>>  	hotplug_memory_notifier(memtier_hotplug_callback, MEMTIER_HOTPLUG_PRI);
+>>  	return 0;
+
+--
+Best Regards,
+Huang, Ying
 
