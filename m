@@ -2,73 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60A7C926C04
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 00:52:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 181E1926C13
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 00:52:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sP8nt-0003Hc-4V; Wed, 03 Jul 2024 18:50:21 -0400
+	id 1sP8nx-0003Xr-2o; Wed, 03 Jul 2024 18:50:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sP8nr-0003DN-BH
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sP8nr-0003FT-RI
  for qemu-devel@nongnu.org; Wed, 03 Jul 2024 18:50:19 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sP8nn-0007Qu-Lg
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sP8nq-0007Rl-8z
  for qemu-devel@nongnu.org; Wed, 03 Jul 2024 18:50:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1720047012;
+ s=mimecast20190719; t=1720047016;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=PtAXW6LVwA3P89VkFVi94GjAlNMJ1XHCqV5FMloDGgI=;
- b=AMolVbH2kguEj4tA7choLGdmHig5QFYcQ5nGT6Duk7sixWILIY0lrCb11yDLSDZLfaNl7z
- CQeUa893mAV6p3SBcAi77/ztXvZBW4wanho8e2cbXufLf2jGZOyQ1WxWci9x+6EBIOee7N
- /lCBwSmNgMl2ZBv4S0MZUyCPX7P8Y78=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=actUboiQ+IrTgCsdz18KhXUIoDAvYkrEhXUsAIxh/Nc=;
+ b=ZOMPW1bNqKYYfm1AP1dYJiw1I9FLoK0ZLYehz+Fx4+SQd4zbg+/vLSrG8thyw0yKJQzrtT
+ gKVHJ7YRn+A75K3ZbyxMFD18VHYCXj9LplI0LAexcwLx/vR8jQFbHO12K3WjbErKlsSUt2
+ v/3PGBaxejrJPoawPF78DUdZHZ0ImQM=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-343-fRc4uKRTMxChNLYPGNeHqg-1; Wed, 03 Jul 2024 18:50:11 -0400
-X-MC-Unique: fRc4uKRTMxChNLYPGNeHqg-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-425897358f0so5405e9.2
- for <qemu-devel@nongnu.org>; Wed, 03 Jul 2024 15:50:10 -0700 (PDT)
+ us-mta-65-YLK5RpOCOCaZOGW5uBkhmQ-1; Wed, 03 Jul 2024 18:50:14 -0400
+X-MC-Unique: YLK5RpOCOCaZOGW5uBkhmQ-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-4263fff5eaeso105725e9.0
+ for <qemu-devel@nongnu.org>; Wed, 03 Jul 2024 15:50:14 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720047009; x=1720651809;
+ d=1e100.net; s=20230601; t=1720047013; x=1720651813;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=PtAXW6LVwA3P89VkFVi94GjAlNMJ1XHCqV5FMloDGgI=;
- b=tiR9QcPY62S0RXRjFNk2RajLyaQv7SrESZcgYM/LonWM8V5FWO1SKwGqh7yhrn/pxc
- BGQnY8Xrixgztpeske7+U1vXzfftCAsNwy4HLpvvb+p3W+Y4/fLGO0Cc9DGinh4Sjrpt
- eDX24xt4syYIOhWVd+kb6mQbPK5/yGDZan7uLsbSuiHPAOpaL2lQPS33pH0Mty+ej8Ib
- AIjVkvgQ1NVcY3HDrdVBW0MEbGFRESEE6Ls8oxgqCS184Nl4sbB+pM+bXVN2CvDPhZ3D
- 2o9TnfjioSpAxgYX8uID92Eds3AYK5Sqsplwmuvd+7oxROSvi0JLy/yhe30L6dtZfmYd
- xkNg==
-X-Gm-Message-State: AOJu0YyIIr3SZfsc26my+qqkJJtxqr0rqGkMj9uI1HpRBV0kAMWoPjlD
- 0CluhZxBTrgx0R4uegHD6O2RaxXTlxoBq+1sJsndTpbK+5+sBwkFlLBz0EiLOHH47udC9DgJr1h
- xTCdQL//YmtazgwOFo/5EWZv5m0D7EtrIAf+3BCV4VBt1HdXWmRUYerGCVwC6TYTqpuqRFloVrP
- r0r84+qlZZNokOn4b76PEbooarTnzuTA==
-X-Received: by 2002:a05:600c:4b17:b0:424:a578:fc7 with SMTP id
- 5b1f17b1804b1-4264a3cc9f5mr415515e9.3.1720047009045; 
- Wed, 03 Jul 2024 15:50:09 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFpa77sy9qcpEziIeS7eh+YqAW5vVfTokYAPRI+PfSjMPs8mQy0gyLw0cLiwbfI2y2KQ/aGaA==
-X-Received: by 2002:a05:600c:4b17:b0:424:a578:fc7 with SMTP id
- 5b1f17b1804b1-4264a3cc9f5mr415265e9.3.1720047008069; 
- Wed, 03 Jul 2024 15:50:08 -0700 (PDT)
+ bh=actUboiQ+IrTgCsdz18KhXUIoDAvYkrEhXUsAIxh/Nc=;
+ b=ZXmG2Za2GEhoy/fgjbGcIEx9IRUjDAjw8yZRfQdqQg9rngm5pHvREpUkC8ipm/VhTB
+ 93zJ7CXcg5l6mNUW4OVQLzSxfsnmvB5OOIXsBIrl+g6QtnT565J8OXtS4WTL7LHLIHwS
+ ycB7rLVK3FTFeZLtQZnOCdmx0S1eWSo3LzmxX8Mm3CyEXStfXlFtddiloJByAK+G2/Do
+ +dnFed8OAzEhEk359u60UkSuUceCNrAvTKAZeBM9IRUyZLvV9wCro4ZsurycQBdaxKdl
+ z7UJYoL9wAB1vtfQl/nC4/9QfG0pPtuftYGTyF3ZbgsonD7QL05n8D2u1yK+NH304q8F
+ 49dA==
+X-Gm-Message-State: AOJu0YxPi0C+knJlavaJAlCyD5UPDtEdprRl7hJGoWX5XWvYUnhcrLdK
+ mm3kDI3ENb3fnJrHtyHdujohPLMy5W5EnXSNucesmVMuESGln9f6aJT6klVPwwS5iU3YM/yJMRr
+ ldUkDW1GFKWNNxVbpMsoHPbIoUA6tluMZmzYWJgvXlDXrCTvvF8SzKzDouONXZbPyMpu45MOJb5
+ mjT8szZAPEuD8EQtUolBVkvjMhN5NK0g==
+X-Received: by 2002:a05:600c:63ce:b0:424:aa83:ef01 with SMTP id
+ 5b1f17b1804b1-4264a3d1e2emr357115e9.10.1720047012991; 
+ Wed, 03 Jul 2024 15:50:12 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFXo/zzTggwe17jzj0Xhk3SPjb+uH2NxGoezo62WozFu8slXIycgNJSg2oK2kTztQNBOV4Mfg==
+X-Received: by 2002:a05:600c:63ce:b0:424:aa83:ef01 with SMTP id
+ 5b1f17b1804b1-4264a3d1e2emr356935e9.10.1720047012419; 
+ Wed, 03 Jul 2024 15:50:12 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc7:441:91a8:a47d:5a9:c02f:92f2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4264a1dd902sm1233625e9.12.2024.07.03.15.50.06
+ 5b1f17b1804b1-4264a21cbb7sm1204725e9.26.2024.07.03.15.50.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 03 Jul 2024 15:50:07 -0700 (PDT)
-Date: Wed, 3 Jul 2024 18:50:04 -0400
+ Wed, 03 Jul 2024 15:50:11 -0700 (PDT)
+Date: Wed, 3 Jul 2024 18:50:08 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Akihiko Odaki <akihiko.odaki@daynix.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PULL v3 76/85] hw/pci: Rename has_power to enabled
-Message-ID: <6a31b219a5338564f3978251c79f96f689e037da.1720046570.git.mst@redhat.com>
+ Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-ppc@nongnu.org
+Subject: [PULL v3 77/85] hw/ppc/spapr_pci: Do not create DT for disabled PCI
+ device
+Message-ID: <723c5b4628d047e43825a046c6ee517b82b88117.1720046570.git.mst@redhat.com>
 References: <cover.1720046570.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -102,118 +106,32 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-The renamed state will not only represent powering state of PFs, but
-also represent SR-IOV VF enablement in the future.
+Disabled means it is a disabled SR-IOV VF or it is powered off, and
+hidden from the guest.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Message-Id: <20240627-reuse-v10-1-7ca0b8ed3d9f@daynix.com>
+Message-Id: <20240627-reuse-v10-2-7ca0b8ed3d9f@daynix.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- include/hw/pci/pci.h        |  7 ++++++-
- include/hw/pci/pci_device.h |  2 +-
- hw/pci/pci.c                | 14 +++++++-------
- hw/pci/pci_host.c           |  4 ++--
- 4 files changed, 16 insertions(+), 11 deletions(-)
+ hw/ppc/spapr_pci.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
-index eb26cac810..fe04b4fafd 100644
---- a/include/hw/pci/pci.h
-+++ b/include/hw/pci/pci.h
-@@ -678,6 +678,11 @@ static inline void pci_irq_pulse(PCIDevice *pci_dev)
- }
+diff --git a/hw/ppc/spapr_pci.c b/hw/ppc/spapr_pci.c
+index 7cf9904c35..f63182a03c 100644
+--- a/hw/ppc/spapr_pci.c
++++ b/hw/ppc/spapr_pci.c
+@@ -1296,6 +1296,10 @@ static void spapr_dt_pci_device_cb(PCIBus *bus, PCIDevice *pdev,
+         return;
+     }
  
- MSIMessage pci_get_msi_message(PCIDevice *dev, int vector);
--void pci_set_power(PCIDevice *pci_dev, bool state);
-+void pci_set_enabled(PCIDevice *pci_dev, bool state);
++    if (!pdev->enabled) {
++        return;
++    }
 +
-+static inline void pci_set_power(PCIDevice *pci_dev, bool state)
-+{
-+    pci_set_enabled(pci_dev, state);
-+}
- 
- #endif
-diff --git a/include/hw/pci/pci_device.h b/include/hw/pci/pci_device.h
-index d3dd0f64b2..d57f9ce838 100644
---- a/include/hw/pci/pci_device.h
-+++ b/include/hw/pci/pci_device.h
-@@ -56,7 +56,7 @@ typedef struct PCIReqIDCache PCIReqIDCache;
- struct PCIDevice {
-     DeviceState qdev;
-     bool partially_hotplugged;
--    bool has_power;
-+    bool enabled;
- 
-     /* PCI config space */
-     uint8_t *config;
-diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-index 50b86d5790..68d30feb86 100644
---- a/hw/pci/pci.c
-+++ b/hw/pci/pci.c
-@@ -1525,7 +1525,7 @@ static void pci_update_mappings(PCIDevice *d)
-             continue;
- 
-         new_addr = pci_bar_address(d, i, r->type, r->size);
--        if (!d->has_power) {
-+        if (!d->enabled) {
-             new_addr = PCI_BAR_UNMAPPED;
-         }
- 
-@@ -1613,7 +1613,7 @@ void pci_default_write_config(PCIDevice *d, uint32_t addr, uint32_t val_in, int
-         pci_update_irq_disabled(d, was_irq_disabled);
-         memory_region_set_enabled(&d->bus_master_enable_region,
-                                   (pci_get_word(d->config + PCI_COMMAND)
--                                   & PCI_COMMAND_MASTER) && d->has_power);
-+                                   & PCI_COMMAND_MASTER) && d->enabled);
-     }
- 
-     msi_write_config(d, addr, val_in, l);
-@@ -2884,18 +2884,18 @@ MSIMessage pci_get_msi_message(PCIDevice *dev, int vector)
-     return msg;
- }
- 
--void pci_set_power(PCIDevice *d, bool state)
-+void pci_set_enabled(PCIDevice *d, bool state)
- {
--    if (d->has_power == state) {
-+    if (d->enabled == state) {
-         return;
-     }
- 
--    d->has_power = state;
-+    d->enabled = state;
-     pci_update_mappings(d);
-     memory_region_set_enabled(&d->bus_master_enable_region,
-                               (pci_get_word(d->config + PCI_COMMAND)
--                               & PCI_COMMAND_MASTER) && d->has_power);
--    if (!d->has_power) {
-+                               & PCI_COMMAND_MASTER) && d->enabled);
-+    if (!d->enabled) {
-         pci_device_reset(d);
-     }
- }
-diff --git a/hw/pci/pci_host.c b/hw/pci/pci_host.c
-index dfe6fe6184..0d82727cc9 100644
---- a/hw/pci/pci_host.c
-+++ b/hw/pci/pci_host.c
-@@ -86,7 +86,7 @@ void pci_host_config_write_common(PCIDevice *pci_dev, uint32_t addr,
-      * allowing direct removal of unexposed functions.
-      */
-     if ((pci_dev->qdev.hotplugged && !pci_get_function_0(pci_dev)) ||
--        !pci_dev->has_power || is_pci_dev_ejected(pci_dev)) {
-+        !pci_dev->enabled || is_pci_dev_ejected(pci_dev)) {
-         return;
-     }
- 
-@@ -111,7 +111,7 @@ uint32_t pci_host_config_read_common(PCIDevice *pci_dev, uint32_t addr,
-      * allowing direct removal of unexposed functions.
-      */
-     if ((pci_dev->qdev.hotplugged && !pci_get_function_0(pci_dev)) ||
--        !pci_dev->has_power || is_pci_dev_ejected(pci_dev)) {
-+        !pci_dev->enabled || is_pci_dev_ejected(pci_dev)) {
-         return ~0x0;
-     }
- 
+     err = spapr_dt_pci_device(p->sphb, pdev, p->fdt, p->offset);
+     if (err < 0) {
+         p->err = err;
 -- 
 MST
 
