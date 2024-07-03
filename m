@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E72BF926C16
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 00:53:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB774926BE8
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 00:50:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sP8mL-0000tk-QI; Wed, 03 Jul 2024 18:48:45 -0400
+	id 1sP8mR-0001TH-Gi; Wed, 03 Jul 2024 18:48:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sP8mH-0000rJ-6B
- for qemu-devel@nongnu.org; Wed, 03 Jul 2024 18:48:41 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sP8mO-0001Ag-E4
+ for qemu-devel@nongnu.org; Wed, 03 Jul 2024 18:48:49 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sP8mF-0004u9-MT
- for qemu-devel@nongnu.org; Wed, 03 Jul 2024 18:48:40 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sP8mL-0005EH-PV
+ for qemu-devel@nongnu.org; Wed, 03 Jul 2024 18:48:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1720046919;
+ s=mimecast20190719; t=1720046924;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=R3m1Xw9Ub15rW4o3esEC0MkiVgr91nuiCfcAKrltL4I=;
- b=gLXVBeNnXJ8IB6Sds6w6bO15BWiBQbFy/VAYVAqPhZycinXuGop37Xx/dJ76cAoqTKXRy6
- GzD94knMuvc0WSOO4n1UvTI5IGze/C9y6s9rwv1Obfa1qdmeG/H1SdjxjwYhCVjgw/xTL2
- vJsEau0NLi6t7JHHh7NxWozi/uyaj+U=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=QybIKg16iYqXdH14Jxyn469nV1P/mwHXBmUUNkfpRqo=;
+ b=ffqJMdghg5tVf+DxQZ8CmvPp3kWft4jBc6lB/v+ZcyS/XOgQD9bVrfdC/giRfngGS4u75H
+ 9ll03g29LfgLRVDDwA0AVzafxVnsWAKie+wlcOrIkEm6dnMMGJqdBz58peZVsNZ8rk2qvD
+ rGRVsT7WMhwHEFvhW8dfX1u5G2gSzHo=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-57-onQhYNbOMBGVh91aRUk3gw-1; Wed, 03 Jul 2024 18:48:37 -0400
-X-MC-Unique: onQhYNbOMBGVh91aRUk3gw-1
-Received: by mail-ed1-f69.google.com with SMTP id
- 4fb4d7f45d1cf-57c93227bbeso2848118a12.3
- for <qemu-devel@nongnu.org>; Wed, 03 Jul 2024 15:48:37 -0700 (PDT)
+ us-mta-453-BEohjOQBMiyqKxmYSJ0pPg-1; Wed, 03 Jul 2024 18:48:43 -0400
+X-MC-Unique: BEohjOQBMiyqKxmYSJ0pPg-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-364b75a8194so34068f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 03 Jul 2024 15:48:42 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720046916; x=1720651716;
+ d=1e100.net; s=20230601; t=1720046921; x=1720651721;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=R3m1Xw9Ub15rW4o3esEC0MkiVgr91nuiCfcAKrltL4I=;
- b=WoByO90matRelWjwdZpiunVKCI2hCsRtIILv4asopnMPOTnrAutMFZzstoJNAXhJgQ
- ZailbZbX52iHZ4q2mvykaQf8jz1k1enSCohC/tqejEDEznpuHigHpodlJgToszqA6/cT
- 5PdD/FkLpOQUS0vtiIxSIQ/QBn1twtQBLForIWVfa5ocmKaNUERXF2iIMYjp6lsSeF2W
- kYg7bgwlQi9hq5BDghRHsmRX7pdAWLEbdOhAi8amHABDM/gmBHidQ4SIFdnIArlxgKw3
- zFH+ba4WVkdNA/x0WZd5FM9jVYRA7MdpBa5MSIYXkDZ1LTZTeIeatxfvEAPGGvK4fv8P
- K/Nw==
-X-Gm-Message-State: AOJu0YwfTPivsk2ln4DUgPd7RQ6UmdmJwyQ69UkVFczdgd/u5VYOq+/v
- LU5doCoJPLr3hWFn0sXZPcxlK228v1TpTAcrZXMxrQ0v5b/jzOcSKRfByVbpLA52Wgg/q4zMD17
- bWeOpJ2UmIIZXbMTaGC9q9FRpNKRTH2ILvydATK4L3I0PMQxYtDfGJkfSFF0ODMsuvkYr4p5JW5
- Oqb/b6A1nEZGaF/eUoqCuG4qe6Zjzo4Q==
-X-Received: by 2002:a05:6402:358d:b0:57d:4ca2:fdab with SMTP id
- 4fb4d7f45d1cf-5879f0c68d1mr8884830a12.3.1720046916445; 
- Wed, 03 Jul 2024 15:48:36 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH8UBCVXWDCCux2Am9uUGEs2H0c4tVgBuv20zn9EgbKXUA7mtcJj51lLPMzIURZgiDFAqzcGg==
-X-Received: by 2002:a05:6402:358d:b0:57d:4ca2:fdab with SMTP id
- 4fb4d7f45d1cf-5879f0c68d1mr8884810a12.3.1720046915828; 
- Wed, 03 Jul 2024 15:48:35 -0700 (PDT)
+ bh=QybIKg16iYqXdH14Jxyn469nV1P/mwHXBmUUNkfpRqo=;
+ b=loFjG1vLoatjyaFaqHEWDXaOpuNzQjRX/YNinPqNO91cYM4Mkl70j3prHieyMNI1Do
+ iJpm2mnBZyVMJb9yMGF+Ic5U85uzVmjh35Z9hWXMPc94AWnF9LAsFHjEGDL6CAjp/36K
+ OMEPGEJNZ6ST8qRCELh+Bp6OyuyrP9BrKXPbett6WyGuLpETylxWEF9Te86NRtQsYlL6
+ S7977rc0TqmkOGI6YfOiPw3nT3JHJcMWHCn3PRNAbfULGILQB+OU2NiMDhWTRj6eiOEi
+ VF9Zl1Up8F5isWXH6cW2Hqn7rZ1vHA93LE3uIsvt5dPocVdUypVJmXzM6zP5YCP5fAQ6
+ ZO1w==
+X-Gm-Message-State: AOJu0Yz8y6LHJETcXao8Zzh/shndPKXlKInMnGL82jlsBAuYvFt4fxDx
+ mqbavcgulUwELt2QeE/u2PZA2DVeJ9CZnBQUkUSNf77D5Z/O91cxFNSTyZ1t8ZcGCrgsl39nflp
+ t4/aei3/1IJzixMcua6rYTGqBhxaRx4eRsAiR3We3mr0EHjT3pk3eCU+c1Pbid0lausH4DSktXe
+ N/gaIHYIkoz2YlJsaajRZBh6erOjqcAg==
+X-Received: by 2002:adf:e5c9:0:b0:367:94f7:88f3 with SMTP id
+ ffacd0b85a97d-3679dd72b16mr2212f8f.57.1720046921389; 
+ Wed, 03 Jul 2024 15:48:41 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHDTHY/Gvoyw2qkyB8B+bZX8Vd466iBKU/h2FTOOwHiO6Ov4rfPrbCgPbNnB0tyRisupbeiEg==
+X-Received: by 2002:adf:e5c9:0:b0:367:94f7:88f3 with SMTP id
+ ffacd0b85a97d-3679dd72b16mr2190f8f.57.1720046920590; 
+ Wed, 03 Jul 2024 15:48:40 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc7:441:91a8:a47d:5a9:c02f:92f2])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5861324ff85sm7692218a12.29.2024.07.03.15.48.32
+ ffacd0b85a97d-3679976da15sm702065f8f.94.2024.07.03.15.48.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 03 Jul 2024 15:48:35 -0700 (PDT)
-Date: Wed, 3 Jul 2024 18:48:30 -0400
+ Wed, 03 Jul 2024 15:48:40 -0700 (PDT)
+Date: Wed, 3 Jul 2024 18:48:36 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Stefano Garzarella <sgarzare@redhat.com>, Thomas Huth <thuth@redhat.com>,
  Stefan Hajnoczi <stefanha@redhat.com>,
+ David Hildenbrand <david@redhat.com>,
  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- David Hildenbrand <david@redhat.com>, Coiby Xu <Coiby.Xu@gmail.com>,
  Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PULL v3 54/85] tests/qtest/vhost-user-blk-test: use
+Subject: [PULL v3 55/85] tests/qtest/vhost-user-test: add a test case for
  memory-backend-shm
-Message-ID: <e349062727c7b35ac4c9bd08c534f64f571389fe.1720046570.git.mst@redhat.com>
+Message-ID: <0173ce4b2bb4f159f4a6d54e14adbe35f826a848.1720046570.git.mst@redhat.com>
 References: <cover.1720046570.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -108,39 +108,83 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Stefano Garzarella <sgarzare@redhat.com>
 
-`memory-backend-memfd` is available only on Linux while the new
-`memory-backend-shm` can be used on any POSIX-compliant operating
-system. Let's use it so we can run the test in multiple environments.
-
-Since we are here, let`s remove `share=on` which is the default for shm
-(and also for memfd).
+`memory-backend-shm` can be used with vhost-user devices, so let's
+add a new test case for it.
 
 Acked-by: Thomas Huth <thuth@redhat.com>
 Acked-by: Stefan Hajnoczi <stefanha@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-Message-Id: <20240618100527.145883-1-sgarzare@redhat.com>
+Message-Id: <20240618100534.145917-1-sgarzare@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- tests/qtest/vhost-user-blk-test.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/qtest/vhost-user-test.c | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-diff --git a/tests/qtest/vhost-user-blk-test.c b/tests/qtest/vhost-user-blk-test.c
-index 117b9acd10..ea90d41232 100644
---- a/tests/qtest/vhost-user-blk-test.c
-+++ b/tests/qtest/vhost-user-blk-test.c
-@@ -906,7 +906,7 @@ static void start_vhost_user_blk(GString *cmd_line, int vus_instances,
-                            vhost_user_blk_bin);
+diff --git a/tests/qtest/vhost-user-test.c b/tests/qtest/vhost-user-test.c
+index 255bde54ab..0fa8951c9f 100644
+--- a/tests/qtest/vhost-user-test.c
++++ b/tests/qtest/vhost-user-test.c
+@@ -44,6 +44,8 @@
+                         "mem-path=%s,share=on -numa node,memdev=mem"
+ #define QEMU_CMD_MEMFD  " -m %d -object memory-backend-memfd,id=mem,size=%dM," \
+                         " -numa node,memdev=mem"
++#define QEMU_CMD_SHM    " -m %d -object memory-backend-shm,id=mem,size=%dM," \
++                        " -numa node,memdev=mem"
+ #define QEMU_CMD_CHR    " -chardev socket,id=%s,path=%s%s"
+ #define QEMU_CMD_NETDEV " -netdev vhost-user,id=hs0,chardev=%s,vhostforce=on"
  
-     g_string_append_printf(cmd_line,
--            " -object memory-backend-memfd,id=mem,size=256M,share=on "
-+            " -object memory-backend-shm,id=mem,size=256M "
-             " -M memory-backend=mem -m 256M ");
+@@ -195,6 +197,7 @@ enum test_memfd {
+     TEST_MEMFD_AUTO,
+     TEST_MEMFD_YES,
+     TEST_MEMFD_NO,
++    TEST_MEMFD_SHM,
+ };
  
-     for (i = 0; i < vus_instances; i++) {
+ static void append_vhost_net_opts(TestServer *s, GString *cmd_line,
+@@ -228,6 +231,8 @@ static void append_mem_opts(TestServer *server, GString *cmd_line,
+ 
+     if (memfd == TEST_MEMFD_YES) {
+         g_string_append_printf(cmd_line, QEMU_CMD_MEMFD, size, size);
++    } else if (memfd == TEST_MEMFD_SHM) {
++        g_string_append_printf(cmd_line, QEMU_CMD_SHM, size, size);
+     } else {
+         const char *root = init_hugepagefs() ? : server->tmpfs;
+ 
+@@ -791,6 +796,19 @@ static void *vhost_user_test_setup_memfd(GString *cmd_line, void *arg)
+     return server;
+ }
+ 
++static void *vhost_user_test_setup_shm(GString *cmd_line, void *arg)
++{
++    TestServer *server = test_server_new("vhost-user-test", arg);
++    test_server_listen(server);
++
++    append_mem_opts(server, cmd_line, 256, TEST_MEMFD_SHM);
++    server->vu_ops->append_opts(server, cmd_line, "");
++
++    g_test_queue_destroy(vhost_user_test_cleanup, server);
++
++    return server;
++}
++
+ static void test_read_guest_mem(void *obj, void *arg, QGuestAllocator *alloc)
+ {
+     TestServer *server = arg;
+@@ -1084,6 +1102,11 @@ static void register_vhost_user_test(void)
+                  "virtio-net",
+                  test_read_guest_mem, &opts);
+ 
++    opts.before = vhost_user_test_setup_shm;
++    qos_add_test("vhost-user/read-guest-mem/shm",
++                 "virtio-net",
++                 test_read_guest_mem, &opts);
++
+     if (qemu_memfd_check(MFD_ALLOW_SEALING)) {
+         opts.before = vhost_user_test_setup_memfd;
+         qos_add_test("vhost-user/read-guest-mem/memfd",
 -- 
 MST
 
