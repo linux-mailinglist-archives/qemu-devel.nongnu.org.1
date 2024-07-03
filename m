@@ -2,83 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDA91926C06
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 00:52:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00BDB926BDE
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 00:49:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sP8lI-0005oU-R3; Wed, 03 Jul 2024 18:47:40 -0400
+	id 1sP8lH-0005jv-Mc; Wed, 03 Jul 2024 18:47:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sP8lF-0005cm-Ne
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sP8lF-0005cE-CG
  for qemu-devel@nongnu.org; Wed, 03 Jul 2024 18:47:37 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sP8lC-0001bx-2Z
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sP8lD-0001jf-MB
  for qemu-devel@nongnu.org; Wed, 03 Jul 2024 18:47:37 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1720046851;
+ s=mimecast20190719; t=1720046855;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=LYdZnAc26juhzysGXK6UuvaiCGSQLeNMHoi5Vg2b1dE=;
- b=hq6AYHuxxYnwsdi29jyyQaZBFZSN2+vHfMNj4w/K1UVnO/FG+IiAPks23CDxVx+xvUc2uK
- k3nib8/76QxR8xHiGb9tOF/8/jZ3GSzLSlAMhYcaDUqT9mPfUVKSU5sRs3L83bsIBj85hc
- qim1eS/mLjuKcVThZuv6LwamL4KK4RQ=
-Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
- [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=TisxAqM9JFoRTBzvBR2/yPIkvvWOj6XGjDsm9k9s/20=;
+ b=ahcZkK5Cidr5k1V0oUh3CYppNyHtCFLLj6m5oIFZSZpT6oZjqUqPR6zyOnPuPm7sL2XotF
+ wC1iW41iR8P1hdR2evJLrafKbAnDg1sSQ9ap+E6xRVdqOEFIWVhTqAC2fb1A/ZwjS2xfHL
+ YmFK7KF+VvmfvzaeOednKct/TTrP6gE=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-218-3kL2Y8V5Ofq6mggGDQqFBg-1; Wed, 03 Jul 2024 18:47:28 -0400
-X-MC-Unique: 3kL2Y8V5Ofq6mggGDQqFBg-1
-Received: by mail-lf1-f69.google.com with SMTP id
- 2adb3069b0e04-52cda76173dso5431677e87.2
- for <qemu-devel@nongnu.org>; Wed, 03 Jul 2024 15:47:28 -0700 (PDT)
+ us-mta-625-7bZXWk2pPOaeCnMSkdC19A-1; Wed, 03 Jul 2024 18:47:34 -0400
+X-MC-Unique: 7bZXWk2pPOaeCnMSkdC19A-1
+Received: by mail-ed1-f72.google.com with SMTP id
+ 4fb4d7f45d1cf-57d539484ddso4440a12.1
+ for <qemu-devel@nongnu.org>; Wed, 03 Jul 2024 15:47:33 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720046847; x=1720651647;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=LYdZnAc26juhzysGXK6UuvaiCGSQLeNMHoi5Vg2b1dE=;
- b=hbFKaS3L6IURLQr6h2IxXMHZdhRz3e5T3GR6KLWbuWy8PYz8A5s4mqKvj38sTQ+zMn
- qwRkp8Xj0cXgBEcZo9Z5Lzyx6BAqZ8mlLA1GlT4HGizBg2Quqrb3pnFsYMnt/9HsItaP
- gAIcTbnqkw44MxEavaOTavtFgkYA+dm9JtfBMkpJFkQK1pUJqB9sDjUOK2Zdu++AXzqS
- nun9l46GIAMSJKNblMgoVLWB9mjR8P/ErNz2Mt4nst1Ed2VbyJAaIdRlj5LAp+i+/OmA
- T/DZmTcpFvN10gV+vhNT78/kWtMI0ryx1+b5g+MyBcs9roWsvN92dKcurYee7X7sqRD4
- lw/g==
-X-Gm-Message-State: AOJu0Yy8YXz1Rhyp49iFfjdH8rGrigIMZHlyi7co2faKbv5pFvWAy9O8
- mZccej0ZGcMp2cenAKZu/5oQ1FX1H96zS4X5qUFPa2j2piicbPTHJ92oxt9hYCqDVJ3vSxOkFaz
- utFthk9NteFQ8oAuausCGqUcvXIqjZCYhtcRhv/npa7lsfxFaTbt4VjONvrUNEFMf3wuPtwjhQu
- 7qzO/Ti2MmlytUZvOgh3qqWwh7XoSHHQ==
-X-Received: by 2002:ac2:5487:0:b0:52e:934f:bda5 with SMTP id
- 2adb3069b0e04-52e934fbdf5mr2360933e87.21.1720046847024; 
- Wed, 03 Jul 2024 15:47:27 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFZtg+8b7ZwW4Xu+gbxk61NEm7H3iipD5KMEeUFWkNdKVicZ5eh/ox7UMMfuXQmzJa24fOD9Q==
-X-Received: by 2002:ac2:5487:0:b0:52e:934f:bda5 with SMTP id
- 2adb3069b0e04-52e934fbdf5mr2360923e87.21.1720046846345; 
- Wed, 03 Jul 2024 15:47:26 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1720046852; x=1720651652;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=TisxAqM9JFoRTBzvBR2/yPIkvvWOj6XGjDsm9k9s/20=;
+ b=GMG3GzVP2fvJr05rtoKE4FIQxUxr2heDHGcZaly/grOGpikDXZlp7EdGwdFS8L02Ha
+ Nr6pwW8uzEDb75m7dU12DT4May77C9gIBPlclNpmcLfecXPWymPPvyy3u257XPZLdLTt
+ HTjWc52Xnnnrk2Lk+8/9133RV86670VbCe0Qd//BHcfaUEkejcrcjDH7H5fMgGFgJSUV
+ A1bMGPCg9SAZxz5zUHoi4cAVKONXbCRcPHZx0UePJx7ljry0yX2J9CxNbEhLdpJnnVb0
+ gNdG48YyfQPIsz6Iu9pUUoDy0Vyvz+a8Id39gY5FbhmDzb/L7Py5YKpUXuUsijmyxrZN
+ iYvw==
+X-Gm-Message-State: AOJu0YwFPJwi1cvITj65av87BkkEK9BVCO+RFms8F/xP+USG/wAF8Z25
+ qNg1wHk+LLb2M/mS7xKo0veZtTbVMI/F8pUATrr7ob7Bc07nwbC3/cYOWtgyFFpBFIftpQDlJNv
+ rfdSopqoQqtqswXNMtiR99W6q7NGKN0ZsQZneqc5wFbfSzClkVBt6lcIIV/XkBo7tvP/LIX6L9y
+ ATm8v00CCDpgGNvgQmL8krXgRsqtTsAw==
+X-Received: by 2002:a05:6402:c92:b0:58b:fe68:9e51 with SMTP id
+ 4fb4d7f45d1cf-58bfe68a2bdmr2356121a12.35.1720046852418; 
+ Wed, 03 Jul 2024 15:47:32 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHXiyx2t40TZhpm/bdjIeIoR2XWhN/Kb/mgEeScw8k0KU1RNlVMs6KXe1nV8dIO8ISFA29EpQ==
+X-Received: by 2002:a05:6402:c92:b0:58b:fe68:9e51 with SMTP id
+ 4fb4d7f45d1cf-58bfe68a2bdmr2356103a12.35.1720046851239; 
+ Wed, 03 Jul 2024 15:47:31 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc7:441:91a8:a47d:5a9:c02f:92f2])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a77ae5bfcddsm39242866b.173.2024.07.03.15.47.23
+ 4fb4d7f45d1cf-58612c8371dsm7648617a12.9.2024.07.03.15.47.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 03 Jul 2024 15:47:25 -0700 (PDT)
-Date: Wed, 3 Jul 2024 18:47:21 -0400
+ Wed, 03 Jul 2024 15:47:30 -0700 (PDT)
+Date: Wed, 3 Jul 2024 18:47:26 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Yuxue Liu <yuxue.liu@jaguarmicro.com>,
- Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+Cc: Peter Maydell <peter.maydell@linaro.org>, Zhao Liu <zhao1.liu@intel.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PULL v3 40/85] vhost-user-test: no set non-blocking for cal fd less
- than 0.
-Message-ID: <f72fc16910c8f44edf052f52672e0e63bbbc773c.1720046570.git.mst@redhat.com>
+Subject: [PULL v3 41/85] i386/apic: Add hint on boot failure because of
+ disabling x2APIC
+Message-ID: <e05ee2994a9c188fc49a9ddf70b79ed7f1808e2f.1720046570.git.mst@redhat.com>
 References: <cover.1720046570.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1720046570.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -102,43 +103,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Yuxue Liu <yuxue.liu@jaguarmicro.com>
+From: Zhao Liu <zhao1.liu@intel.com>
 
-In the scenario where vhost-user sets eventfd to -1,
-qemu_chr_fe_get_msgfds retrieves fd as -1. When vhost_user_read
-receives, it does not perform blocking operations on the descriptor
-with fd=-1, so non-blocking operations should not be performed here
-either.This is a normal use case. Calling g_unix_set_fd_nonblocking
-at this point will cause the test to interrupt.
+Currently, the Q35 supports up to 4096 vCPUs (since v9.0), but for TCG
+cases, if x2APIC is not actively enabled to boot more than 255 vCPUs (
+e.g., qemu-system-i386 -M pc-q35-9.0 -smp 666), the following error is
+reported:
 
-When vhost_user_write sets the call fd to -1, it sets the number of
-fds to 0, so the fds obtained by qemu_chr_fe_get_msgfds will also
-be 0.
+Unexpected error in apic_common_set_id() at ../hw/intc/apic_common.c:449:
+qemu-system-i386: APIC ID 255 requires x2APIC feature in CPU
+Aborted (core dumped)
 
-Signed-off-by: Yuxue Liu <yuxue.liu@jaguarmicro.com>
-Message-Id: <20240411073555.1357-1-yuxue.liu@jaguarmicro.com>
+This error can be resolved by setting x2apic=on in -cpu. In order to
+better help users deal with this scenario, add the error hint to
+instruct users on how to enable the x2apic feature. Then, the error
+report becomes the following:
+
+Unexpected error in apic_common_set_id() at ../hw/intc/apic_common.c:448:
+qemu-system-i386: APIC ID 255 requires x2APIC feature in CPU
+Try x2apic=on in -cpu.
+Aborted (core dumped)
+
+Note since @errp is &error_abort, error_append_hint() can't be applied
+on @errp. And in order to separate the exact error message from the
+(perhaps effectively) hint, adding a hint via error_append_hint() is
+also necessary. Therefore, introduce @local_error in
+apic_common_set_id() to handle both the error message and the error
+hint.
+
+Suggested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+Message-Id: <20240606140858.2157106-1-zhao1.liu@intel.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- tests/qtest/vhost-user-test.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ hw/intc/apic_common.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/tests/qtest/vhost-user-test.c b/tests/qtest/vhost-user-test.c
-index d4e437265f..255bde54ab 100644
---- a/tests/qtest/vhost-user-test.c
-+++ b/tests/qtest/vhost-user-test.c
-@@ -458,7 +458,10 @@ static void chr_read(void *opaque, const uint8_t *buf, int size)
-     case VHOST_USER_SET_VRING_KICK:
-     case VHOST_USER_SET_VRING_CALL:
-         /* consume the fd */
--        qemu_chr_fe_get_msgfds(chr, &fd, 1);
-+        if (!qemu_chr_fe_get_msgfds(chr, &fd, 1) && fd < 0) {
-+            qos_printf("call fd: %d, do not set non-blocking\n", fd);
-+            break;
-+        }
-         /*
-          * This is a non-blocking eventfd.
-          * The receive function forces it to be blocking,
+diff --git a/hw/intc/apic_common.c b/hw/intc/apic_common.c
+index d8fc1e2815..c13cdd7994 100644
+--- a/hw/intc/apic_common.c
++++ b/hw/intc/apic_common.c
+@@ -433,6 +433,7 @@ static void apic_common_set_id(Object *obj, Visitor *v, const char *name,
+     APICCommonState *s = APIC_COMMON(obj);
+     DeviceState *dev = DEVICE(obj);
+     uint32_t value;
++    Error *local_err = NULL;
+ 
+     if (dev->realized) {
+         qdev_prop_set_after_realize(dev, name, errp);
+@@ -444,7 +445,11 @@ static void apic_common_set_id(Object *obj, Visitor *v, const char *name,
+     }
+ 
+     if (value >= 255 && !cpu_has_x2apic_feature(&s->cpu->env)) {
+-        error_setg(errp, "APIC ID %d requires x2APIC feature in CPU", value);
++        error_setg(&local_err,
++                   "APIC ID %d requires x2APIC feature in CPU",
++                   value);
++        error_append_hint(&local_err, "Try x2apic=on in -cpu.\n");
++        error_propagate(errp, local_err);
+         return;
+     }
+ 
 -- 
 MST
 
