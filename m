@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB1C39269DC
+	by mail.lfdr.de (Postfix) with ESMTPS id 438319269DB
 	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jul 2024 23:03:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sP77u-0001JC-Ph; Wed, 03 Jul 2024 17:02:54 -0400
+	id 1sP785-0001OJ-UF; Wed, 03 Jul 2024 17:03:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1sP77t-0001Gt-43
- for qemu-devel@nongnu.org; Wed, 03 Jul 2024 17:02:53 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1sP780-0001Ms-LB
+ for qemu-devel@nongnu.org; Wed, 03 Jul 2024 17:03:00 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1sP77r-0001i3-9T
- for qemu-devel@nongnu.org; Wed, 03 Jul 2024 17:02:52 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1sP77y-0002J4-Ks
+ for qemu-devel@nongnu.org; Wed, 03 Jul 2024 17:03:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1720040570;
+ s=mimecast20190719; t=1720040577;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=qEdS/Gb8GO1qphubxtf0mIutzvbw2WgtC4FPzFeseyw=;
- b=avwIO6tkf5BVxbgCylgIecSB/zWgJtboRhwob+LzIudQFFtfVO2AuDj/r4CaGm8SUbn3BH
- 7iFeoEx8DolzJO0xbrL74F1LB1e06R8UPcQgp85bpf1EhOh2PfjzUO19ckl49DOye2b4Dv
- zbY3TXFNlxlx0UfoHc0A/VnNHZtoq7U=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ bh=bYt+M1Vz4HSKtH7x62vDhOJdfNxWp/An1HxtiZGPiB4=;
+ b=S3Nz3ra9FjCjtiCITX1/xJndTkz7drek+PVuM1qAN5OxFg5ZlXd6dopzdKQTDoaGwTXR6J
+ 4q9jEM0OPJiJjXvuIBbM18yVaz/4y4Fae7T8WvtXDhb8BUJ9Z5nprNC+fkS1OIu/i3YewK
+ KvirL2Lu6SIMMQuY9oOLmphOMD/ZSJg=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-445-lcuuY3M9OiyBiXlq1zgWdA-1; Wed,
- 03 Jul 2024 17:02:46 -0400
-X-MC-Unique: lcuuY3M9OiyBiXlq1zgWdA-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-214-vxZO8It8OdGnSOBhuJKHjg-1; Wed,
+ 03 Jul 2024 17:02:54 -0400
+X-MC-Unique: vxZO8It8OdGnSOBhuJKHjg-1
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 03CA01955BD2; Wed,  3 Jul 2024 21:02:44 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 833751954B0C; Wed,  3 Jul 2024 21:02:51 +0000 (UTC)
 Received: from scv.localdomain (unknown [10.22.34.31])
  by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 22F801955E93; Wed,  3 Jul 2024 21:02:36 +0000 (UTC)
+ id 21D301955F21; Wed,  3 Jul 2024 21:02:43 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: "Michael S. Tsirkin" <mst@redhat.com>, Peter Xu <peterx@redhat.com>,
@@ -66,15 +66,15 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>, Peter Xu <peterx@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Yanan Wang <wangyanan55@huawei.com>, Jiri Pirko <jiri@resnulli.us>,
  John Snow <jsnow@redhat.com>
-Subject: [PATCH 7/8] qapi: convert "Example" sections with longer prose
-Date: Wed,  3 Jul 2024 17:01:42 -0400
-Message-ID: <20240703210144.339530-8-jsnow@redhat.com>
+Subject: [PATCH 8/8] qapi: remove "Example" doc section
+Date: Wed,  3 Jul 2024 17:01:43 -0400
+Message-ID: <20240703210144.339530-9-jsnow@redhat.com>
 In-Reply-To: <20240703210144.339530-1-jsnow@redhat.com>
 References: <20240703210144.339530-1-jsnow@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -98,231 +98,328 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These examples require longer explanations or have explanations that
-require markup to look reasonable when rendered and so use the longer
-form of the ".. qmp-example::" directive.
+Fully eliminate the "Example" sections in QAPI doc blocks now that they
+have all been converted to arbitrary rST syntax using the
+".. qmp-example::" directive. Update tests to match.
 
-By using the :annotated: option, the content in the example block is
-assumed *not* to be a code block literal and is instead parsed as normal
-rST - with the exception that any code literal blocks after `::` will
-assumed to be a QMP code literal block.
+Migrating to the new syntax
+---------------------------
 
-Note: There's one title-less conversion in this patch that comes along
-for the ride because it's part of a larger "Examples" block that was
-better to convert all at once.
+The old "Example:" or "Examples:" section syntax is now caught as an
+error, but "Example::" is stil permitted as explicit rST syntax for an
+un-lexed, generic preformatted text block.
 
-See commit-5: "docs/qapidoc: create qmp-example directive", for a
-              detailed explanation of this custom directive syntax.
+('Example' is not special in this case, any sentence that ends with "::"
+will start an indented code block in rST.)
 
-See commit+1: "qapi: remove "Example" doc section" for a detailed
-              explanation of why.
+Arbitrary rST for Examples is now possible, but it's strongly
+recommended that documentation authors use the ".. qmp-example::"
+directive for consistent visual formatting in rendered HTML docs. The
+":title:" directive option may be used to add extra information into the
+title bar for the example. The ":annotated:" option can be used to write
+arbitrary rST instead, with nested "::" blocks applying QMP formatting
+where desired.
+
+Other choices available are ".. code-block:: QMP" which will not create
+an "Example:" box, or the short-form "::" code-block syntax which will
+not apply QMP highlighting when used outside of the qmp-example
+directive.
+
+Why?
+----
+
+This patch has several benefits:
+
+1. Example sections can now be written more arbitrarily, mixing
+   explanatory paragraphs and code blocks however desired.
+
+2. Example sections can now use fully arbitrary rST.
+
+3. All code blocks are now lexed and validated as QMP; increasing
+   usability of the docs and ensuring validity of example snippets.
+
+   (To some extent - This patch only gaurantees it lexes correctly, not
+   that it's valid under the JSON or QMP grammars. It will catch most
+   small mistakes, however.)
+
+4. Each qmp-example can be titled or annotated independently without
+   bypassing the QMP lexer/validator.
+
+   (i.e. code blocks are now for *code* only, so we don't have to
+   sacrifice exposition for having lexically valid examples.)
+
+NOTE: As with the "Notes" conversion patch, this patch (and those
+      preceding) may change the rendering order for Examples in the
+      current generator. The forthcoming qapidoc rewrite will fix this
+      by always generating documentation in source order.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- qapi/block.json     | 26 ++++++++++++++++----------
- qapi/machine.json   | 30 ++++++++++++++++++++----------
- qapi/migration.json |  7 +++++--
- qapi/virtio.json    | 24 ++++++++++++++++++------
- 4 files changed, 59 insertions(+), 28 deletions(-)
+ docs/devel/qapi-code-gen.rst    | 58 ++++++++++++++++++++++++++++-----
+ scripts/qapi/parser.py          | 10 +++++-
+ tests/qapi-schema/doc-good.json | 19 +++++++----
+ tests/qapi-schema/doc-good.out  | 26 ++++++++++-----
+ tests/qapi-schema/doc-good.txt  | 23 ++++++-------
+ 5 files changed, 98 insertions(+), 38 deletions(-)
 
-diff --git a/qapi/block.json b/qapi/block.json
-index 5ddd061e964..d95e9fd8140 100644
---- a/qapi/block.json
-+++ b/qapi/block.json
-@@ -545,31 +545,37 @@
- #
- # Since: 4.0
- #
--# Example:
-+# .. qmp-example::
-+#    :annotated:
- #
--#     Set new histograms for all io types with intervals
--#     [0, 10), [10, 50), [50, 100), [100, +inf):
-+#    Set new histograms for all io types with intervals
-+#    [0, 10), [10, 50), [50, 100), [100, +inf)::
- #
- #     -> { "execute": "block-latency-histogram-set",
- #          "arguments": { "id": "drive0",
- #                         "boundaries": [10, 50, 100] } }
- #     <- { "return": {} }
- #
--# Example:
-+# .. qmp-example::
-+#    :annotated:
- #
--#     Set new histogram only for write, other histograms will remain
--#     not changed (or not created):
-+#    Set new histogram only for write, other histograms will remain
-+#    not changed (or not created)::
- #
- #     -> { "execute": "block-latency-histogram-set",
- #          "arguments": { "id": "drive0",
- #                         "boundaries-write": [10, 50, 100] } }
- #     <- { "return": {} }
- #
--# Example:
-+# .. qmp-example::
-+#    :annotated:
- #
--#     Set new histograms with the following intervals:
--#       read, flush: [0, 10), [10, 50), [50, 100), [100, +inf)
--#       write: [0, 1000), [1000, 5000), [5000, +inf)
-+#    Set new histograms with the following intervals:
-+#
-+#    - read, flush: [0, 10), [10, 50), [50, 100), [100, +inf)
-+#    - write: [0, 1000), [1000, 5000), [5000, +inf)
-+#
-+#    ::
- #
- #     -> { "execute": "block-latency-histogram-set",
- #          "arguments": { "id": "drive0",
-diff --git a/qapi/machine.json b/qapi/machine.json
-index 83f60b319c7..0a5ffe652b7 100644
---- a/qapi/machine.json
-+++ b/qapi/machine.json
-@@ -1047,10 +1047,11 @@
- #
- # Since: 2.7
- #
--# Examples:
-+# .. qmp-example::
-+#    :annotated:
- #
--#     For pseries machine type started with -smp 2,cores=2,maxcpus=4
--#     -cpu POWER8:
-+#    For pseries machine type started with
-+#    ``-smp 2,cores=2,maxcpus=4 -cpu POWER8``::
- #
- #     -> { "execute": "query-hotpluggable-cpus" }
- #     <- {"return": [
-@@ -1060,7 +1061,10 @@
- #            "vcpus-count": 1, "qom-path": "/machine/unattached/device[0]"}
- #        ]}
- #
--#     For pc machine type started with -smp 1,maxcpus=2:
-+# .. qmp-example::
-+#    :annotated:
-+#
-+#    For pc machine type started with ``-smp 1,maxcpus=2``::
- #
- #     -> { "execute": "query-hotpluggable-cpus" }
- #     <- {"return": [
-@@ -1075,8 +1079,11 @@
- #          }
- #        ]}
- #
--#     For s390x-virtio-ccw machine type started with -smp 1,maxcpus=2
--#     -cpu qemu (Since: 2.11):
-+# .. qmp-example::
-+#    :annotated:
-+#
-+#    For s390x-virtio-ccw machine type started with
-+#    ``-smp 1,maxcpus=2 -cpu qemu`` (Since: 2.11)::
- #
- #     -> { "execute": "query-hotpluggable-cpus" }
- #     <- {"return": [
-@@ -1130,12 +1137,15 @@
- #
- # Since: 0.14
- #
--# Example:
-+# .. qmp-example::
-+#    :annotated:
- #
--#     -> { "execute": "balloon", "arguments": { "value": 536870912 } }
--#     <- { "return": {} }
-+#    ::
- #
--#     With a 2.5GiB guest this command inflated the ballon to 3GiB.
-+#      -> { "execute": "balloon", "arguments": { "value": 536870912 } }
-+#      <- { "return": {} }
-+#
-+#    With a 2.5GiB guest this command inflated the ballon to 3GiB.
- ##
- { 'command': 'balloon', 'data': {'value': 'int'} }
+diff --git a/docs/devel/qapi-code-gen.rst b/docs/devel/qapi-code-gen.rst
+index ae97b335cbf..2e10a3cbd69 100644
+--- a/docs/devel/qapi-code-gen.rst
++++ b/docs/devel/qapi-code-gen.rst
+@@ -899,7 +899,7 @@ Documentation markup
+ ~~~~~~~~~~~~~~~~~~~~
  
-diff --git a/qapi/migration.json b/qapi/migration.json
-index 37ce8afa380..e208a86258a 100644
---- a/qapi/migration.json
-+++ b/qapi/migration.json
-@@ -2106,13 +2106,16 @@
+ Documentation comments can use most rST markup.  In particular,
+-a ``::`` literal block can be used for examples::
++a ``::`` literal block can be used for pre-formatted text::
+ 
+     # ::
+     #
+@@ -995,8 +995,8 @@ line "Features:", like this::
+   # @feature: Description text
+ 
+ A tagged section begins with a paragraph that starts with one of the
+-following words: "Since:", "Example:"/"Examples:", "Returns:",
+-"Errors:", "TODO:".  It ends with the start of a new section.
++following words: "Since:", "Returns:", "Errors:", "TODO:".  It ends with
++the start of a new section.
+ 
+ The second and subsequent lines of tagged sections must be indented
+ like this::
+@@ -1020,13 +1020,53 @@ detailing a relevant error condition. For example::
+ A "Since: x.y.z" tagged section lists the release that introduced the
+ definition.
+ 
+-An "Example" or "Examples" section is rendered entirely
+-as literal fixed-width text.  "TODO" sections are not rendered at all
+-(they are for developers, not users of QMP).  In other sections, the
+-text is formatted, and rST markup can be used.
++"TODO" sections are not rendered at all (they are for developers, not
++users of QMP).  In other sections, the text is formatted, and rST markup
++can be used.
++
++QMP Examples can be added by using the ``.. qmp-example::``
++directive. In its simplest form, this can be used to contain a single
++QMP code block which accepts standard JSON syntax with additional server
++directionality indicators (``->`` and ``<-``), and elisions (``...``).
++
++Optionally, a plaintext title may be provided by using the ``:title:``
++directive option. If the title is omitted, the example title will
++default to "Example:".
++
++A simple QMP example::
++
++  # .. qmp-example::
++  #    :title: Using query-block
++  #
++  #    -> { "execute": "query-block" }
++  #    <- { ... }
++
++More complex or multi-step examples where exposition is needed before or
++between QMP code blocks can be created by using the ``:annotated:``
++directive option. When using this option, nested QMP code blocks must be
++entered explicitly with rST's ``::`` syntax.
++
++Highlighting in non-QMP languages can be accomplished by using the
++``.. code-block:: lang`` directive, and non-highlighted text can be
++achieved by omitting the language argument.
+ 
+ For example::
+ 
++  # .. qmp-example::
++  #    :annotated:
++  #    :title: A more complex demonstration
++  #
++  #    This is a more complex example that can use
++  #    ``arbitrary rST syntax`` in its exposition::
++  #
++  #      -> { "execute": "query-block" }
++  #      <- { ... }
++  #
++  #    Above, lengthy output has been omitted for brevity.
++
++
++Examples of complete definition documentation::
++
+  ##
+  # @BlockStats:
+  #
+@@ -1058,11 +1098,11 @@ For example::
+  #
+  # Since: 0.14
+  #
+- # Example:
++ # .. qmp-example::
+  #
+  #     -> { "execute": "query-blockstats" }
+  #     <- {
+- #          ... lots of output ...
++ #          ...
+  #        }
+  ##
+  { 'command': 'query-blockstats',
+diff --git a/scripts/qapi/parser.py b/scripts/qapi/parser.py
+index 6ad5663e545..adc85b5b394 100644
+--- a/scripts/qapi/parser.py
++++ b/scripts/qapi/parser.py
+@@ -553,7 +553,7 @@ def get_doc(self) -> 'QAPIDoc':
+                     # Note: "sections" with two colons are left alone as
+                     # rST markup and not interpreted as a section heading.
+ 
+-                    # TODO: Remove this error sometime in 2025 or so
++                    # TODO: Remove these errors sometime in 2025 or so
+                     # after we've fully transitioned to the new qapidoc
+                     # generator.
+ 
+@@ -567,6 +567,14 @@ def get_doc(self) -> 'QAPIDoc':
+                         )
+                         raise QAPIParseError(self, emsg)
+ 
++                    if 'Example' in match.group(1):
++                        emsg = (
++                            f"The '{match.group(1)}' section is no longer "
++                            "supported. Please use the '.. qmp-example::' "
++                            "directive, or other suitable markup instead."
++                        )
++                        raise QAPIParseError(self, emsg)
++
+                     doc.new_tagged_section(self.info, match.group(1))
+                     text = line[match.end():]
+                     if text:
+diff --git a/tests/qapi-schema/doc-good.json b/tests/qapi-schema/doc-good.json
+index 107123f8a8d..c71d65cd51f 100644
+--- a/tests/qapi-schema/doc-good.json
++++ b/tests/qapi-schema/doc-good.json
+@@ -172,12 +172,17 @@
  #
- # Since: 5.2
+ #  Duis aute irure dolor
+ #
+-# Example:
++# .. qmp-example::
++#    :title: Ideal fast-food burger situation
+ #
+-#  -> in
+-#  <- out
++#    -> "in"
++#    <- "out"
+ #
+-# Examples:
++# Examples::
++#
++#  - Not a QMP code block
++#  - Merely a preformatted code block literal
++#  It isn't even an rST list.
+ #  - *verbatim*
+ #  - {braces}
+ #
+@@ -199,11 +204,11 @@
+ # @cmd-feat1: a feature
+ # @cmd-feat2: another feature
  #
 -# Example:
 +# .. qmp-example::
  #
- #     -> {"execute": "calc-dirty-rate", "arguments": {"calc-time": 1,
- #                                                     "sample-pages": 512} }
- #     <- { "return": {} }
+-#  -> in
++#    -> "this example"
  #
--#     Measure dirty rate using dirty bitmap for 500 milliseconds:
-+# .. qmp-example::
-+#    :annotated:
-+#
-+#    Measure dirty rate using dirty bitmap for 500 milliseconds::
- #
- #     -> {"execute": "calc-dirty-rate", "arguments": {"calc-time": 500,
- #         "calc-time-unit": "millisecond", "mode": "dirty-bitmap"} }
-diff --git a/qapi/virtio.json b/qapi/virtio.json
-index d965c98ad2b..26df8b3064b 100644
---- a/qapi/virtio.json
-+++ b/qapi/virtio.json
-@@ -203,9 +203,11 @@
- #
- # Since: 7.2
- #
--# Examples:
-+# .. qmp-example::
-+#    :annotated:
- #
--#     1. Poll for the status of virtio-crypto (no vhost-crypto active)
-+#    Poll for the status of virtio-crypto (no vhost-crypto active)
-+#    ::
- #
- #     -> { "execute": "x-query-virtio-status",
- #          "arguments": { "path": "/machine/peripheral/crypto0/virtio-backend" }
-@@ -261,7 +263,11 @@
- #          }
- #        }
- #
--#     2. Poll for the status of virtio-net (vhost-net is active)
-+# .. qmp-example::
-+#    :annotated:
-+#
-+#    Poll for the status of virtio-net (vhost-net is active)
-+#    ::
- #
- #     -> { "execute": "x-query-virtio-status",
- #          "arguments": { "path": "/machine/peripheral-anon/device[1]/virtio-backend" }
-@@ -568,9 +574,11 @@
- #
- # Since: 7.2
- #
--# Examples:
-+# .. qmp-example::
-+#    :annotated:
- #
--#     1. Get VirtQueueStatus for virtio-vsock (vhost-vsock running)
-+#    Get VirtQueueStatus for virtio-vsock (vhost-vsock running)
-+#    ::
- #
- #     -> { "execute": "x-query-virtio-queue-status",
- #          "arguments": { "path": "/machine/peripheral/vsock0/virtio-backend",
-@@ -593,7 +601,11 @@
- #          }
- #        }
- #
--#     2. Get VirtQueueStatus for virtio-serial (no vhost)
-+# .. qmp-example::
-+#    :annotated:
-+#
-+#    Get VirtQueueStatus for virtio-serial (no vhost)
-+#    ::
- #
- #     -> { "execute": "x-query-virtio-queue-status",
- #          "arguments": { "path": "/machine/peripheral-anon/device[0]/virtio-backend",
+-#  <- out
++#    <- "has no title"
+ ##
+ { 'command': 'cmd-boxed', 'boxed': true,
+   'data': 'Object',
+diff --git a/tests/qapi-schema/doc-good.out b/tests/qapi-schema/doc-good.out
+index bd876b6542d..eee18cd436a 100644
+--- a/tests/qapi-schema/doc-good.out
++++ b/tests/qapi-schema/doc-good.out
+@@ -184,13 +184,21 @@ frobnicate
+  - Ut enim ad minim veniam
+ 
+  Duis aute irure dolor
+-    section=Example
+- -> in
+- <- out
+-    section=Examples
++
++.. qmp-example::
++   :title: Ideal fast-food burger situation
++
++   -> "in"
++   <- "out"
++
++Examples::
++
++ - Not a QMP code block
++ - Merely a preformatted code block literal
++ It isn't even an rST list.
+  - *verbatim*
+  - {braces}
+-    section=None
++
+ Note::
+    Ceci n'est pas une note
+     section=Since
+@@ -202,10 +210,12 @@ If you're bored enough to read this, go see a video of boxed cats
+ a feature
+     feature=cmd-feat2
+ another feature
+-    section=Example
+- -> in
++    section=None
++.. qmp-example::
+ 
+- <- out
++   -> "this example"
++
++   <- "has no title"
+ doc symbol=EVT_BOXED
+     body=
+ 
+diff --git a/tests/qapi-schema/doc-good.txt b/tests/qapi-schema/doc-good.txt
+index 30d457e5488..cb37db606a6 100644
+--- a/tests/qapi-schema/doc-good.txt
++++ b/tests/qapi-schema/doc-good.txt
+@@ -217,17 +217,16 @@ Notes:
+ 
+ Duis aute irure dolor
+ 
++Example: Ideal fast-food burger situation:
+ 
+-Example
+-~~~~~~~
++   -> "in"
++   <- "out"
+ 
+-   -> in
+-   <- out
+-
+-
+-Examples
+-~~~~~~~~
++Examples:
+ 
++   - Not a QMP code block
++   - Merely a preformatted code block literal
++   It isn't even an rST list.
+    - *verbatim*
+    - {braces}
+ 
+@@ -261,13 +260,11 @@ Features
+ "cmd-feat2"
+    another feature
+ 
++Example::
+ 
+-Example
+-~~~~~~~
++   -> "this example"
+ 
+-   -> in
+-
+-   <- out
++   <- "has no title"
+ 
+ 
+ "EVT_BOXED" (Event)
 -- 
 2.45.0
 
