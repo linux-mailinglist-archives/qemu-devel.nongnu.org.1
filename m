@@ -2,62 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B09E4925664
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jul 2024 11:19:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B050925682
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jul 2024 11:21:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOw8i-0005Rm-Bp; Wed, 03 Jul 2024 05:19:00 -0400
+	id 1sOwAU-0006r5-2F; Wed, 03 Jul 2024 05:20:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=dfZQ=OD=kaod.org=clg@ozlabs.org>)
- id 1sOw8b-0005QY-Bh; Wed, 03 Jul 2024 05:18:53 -0400
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=dfZQ=OD=kaod.org=clg@ozlabs.org>)
- id 1sOw8Z-0008US-6Y; Wed, 03 Jul 2024 05:18:53 -0400
-Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4WDZ2s1c1mz4x0w;
- Wed,  3 Jul 2024 19:18:45 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4WDZ2k5gFzz4wxs;
- Wed,  3 Jul 2024 19:18:19 +1000 (AEST)
-Message-ID: <153d7e87-28d6-403c-9d84-786c52cd6acb@kaod.org>
-Date: Wed, 3 Jul 2024 11:18:16 +0200
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1sOwAO-0006pM-Ci; Wed, 03 Jul 2024 05:20:44 -0400
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1sOwAJ-0000dV-3B; Wed, 03 Jul 2024 05:20:43 -0400
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-1fafc9e07f8so10617935ad.0; 
+ Wed, 03 Jul 2024 02:20:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1719998437; x=1720603237; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=NudA2bhXuzFAzawwdhUAK7Y2RKTZD0qNB2Y5Jdgr6hE=;
+ b=Xk2VIJuBGlC8tgZ4i7ZgfJ5du0MlsDC+c93Y4jtKVlZuCDHdGsPLWAmX6L0NW02CK1
+ aNVuUa+E6kccMTg9lTPDJ+uIzCZrwlrAZQ0LZytqnq/jcvWhWujoyUJHjwHlSZeXqVO1
+ 6+XF173bGwxgnZarSpV7yj+TbiUaj0tc1dnBTRciyx97IH65Mg4jstKX43KLApE0A8HN
+ TMEQ8U8OjdZFe5Qh0H6wDe7XdrDjXXO5J7ihDtDSZra/wxTuZlFb2UyU/dnGE/0vha6a
+ nNRvWtSUil061Z7bZij7xtUST9lsIdGBvJhKigglsYFP2eJYq8EUbcxNDLmXXGX+fujA
+ jMgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1719998437; x=1720603237;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=NudA2bhXuzFAzawwdhUAK7Y2RKTZD0qNB2Y5Jdgr6hE=;
+ b=T5MWsFTaRaRY9VQCLgEzoYe1H2ikJscpeE7txsZO3fT0YHEx1clfakATLcNH7SxeRE
+ AkUP9j3y/zHpsYE5sTOqT4wbx01zQit7ztSbw0AE4FSxXi9/ODqX437UW7+7uPfBSSj0
+ 2EuNBtES08AHnfIK4E9V+MZViiQZzz/U0j/ROtgS9UN5jSsuQuaIeuZL1NoOhhTKnHiU
+ 76EG2XafmL8cos8dmPEvf1d7btl3drGh2qUVgw4NEB/C1zNaWeEBUKZzBJ4dF0akZ7Cm
+ c39qTyhPAPnTOSN6RBzmi89BhVaiUG2JpMzC+Mk5q4hotmpEZ+5ZpYQXCqznKOQZwJcg
+ 2Q2Q==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUyHsr/9Er/bui2gfFrWVSjb1/jWYzJjf9Zv+VY0gv8KUAI7bU8tJaIxv1f+xTXB4IgzdGNeGmg/qNdrT4vLRot8b66zfO3Fh95YZyTbxYusGBklQXM48rZ5GhwvQ==
+X-Gm-Message-State: AOJu0YwT0wGyqYOEcDfwF1GkPUIhk0bOehzVTqwpGy8YWjYDWFoN2W0X
+ KXQil2Qm11svhp4Q//+iAC4a+72FAMn2ydrOWxebRVZvXuFWl5F0
+X-Google-Smtp-Source: AGHT+IFWISOGU+SXRGwU97x58vgVmAYCDTXOVz2nVpCO5nbjsaHts8TfcKkCVC0XDwK8kh0E3jhFRg==
+X-Received: by 2002:a17:90a:d490:b0:2c9:74cc:1c1b with SMTP id
+ 98e67ed59e1d1-2c974cc1d03mr1483051a91.7.1719998436914; 
+ Wed, 03 Jul 2024 02:20:36 -0700 (PDT)
+Received: from toolbox.alistair23.me
+ (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
+ [2403:580b:97e8:0:82ce:f179:8a79:69f4])
+ by smtp.gmail.com with ESMTPSA id
+ 98e67ed59e1d1-2c95ca64649sm2905596a91.13.2024.07.03.02.20.31
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 03 Jul 2024 02:20:36 -0700 (PDT)
+From: Alistair Francis <alistair23@gmail.com>
+X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
+To: its@irrelevant.dk, mst@redhat.com, hchkuo@avery-design.com.tw,
+ wilfred.mallawa@wdc.com, jiewen.yao@intel.com, marcel.apfelbaum@gmail.com,
+ lukas@wunner.de, cbrowy@avery-design.com, qemu-devel@nongnu.org,
+ Jonathan.Cameron@Huawei.com, kbusch@kernel.org
+Cc: Alistair Francis <alistair.francis@wdc.com>, alistair23@gmail.com,
+ qemu-block@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Jesper Devantier <foss@defmacro.it>
+Subject: [PATCH v8 0/3] Initial support for SPDM Responders
+Date: Wed,  3 Jul 2024 19:20:24 +1000
+Message-ID: <20240703092027.644758-1-alistair.francis@wdc.com>
+X-Mailer: git-send-email 2.45.2
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 5/5] test/avocado/machine_aspeed.py: update to test
- network for AST2700
-To: Jamin Lin <jamin_lin@aspeedtech.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Steven Lee <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>,
- Andrew Jeffery <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>,
- Alistair Francis <alistair@alistair23.me>, Kevin Wolf <kwolf@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Cleber Rosa <crosa@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, "open list:ASPEED BMCs"
- <qemu-arm@nongnu.org>, "open list:All patches CC here"
- <qemu-devel@nongnu.org>, "open list:Block layer core" <qemu-block@nongnu.org>
-Cc: troy_lee@aspeedtech.com, yunlin.tang@aspeedtech.com
-References: <20240703081623.2740862-1-jamin_lin@aspeedtech.com>
- <20240703081623.2740862-6-jamin_lin@aspeedtech.com>
-Content-Language: en-US, fr
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20240703081623.2740862-6-jamin_lin@aspeedtech.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=dfZQ=OD=kaod.org=clg@ozlabs.org; helo=mail.ozlabs.org
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.001, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x62c.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -73,85 +98,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/3/24 10:16 AM, Jamin Lin wrote:
-> Update a test case to test network connection via ssh and
-> changes to test Aspeed OpenBMC SDK v09.02 for AST2700.
-> 
-> ASPEED fixed TX mask issue from linux/drivers/ftgmac100.c.
-> It is required to use ASPEED SDK image since v09.02
-> for AST2700 QEMU network testing.
-> 
-> A test image is downloaded from the ASPEED Forked OpenBMC GitHub
-> release repository :
-> https://github.com/AspeedTech-BMC/openbmc/releases/
-> 
-> Test command:
-> ```
-> cd build
-> pyvenv/bin/avocado run ../qemu/tests/avocado/machine_aspeed.py:AST2x00MachineSDK.test_aarch64_ast2700_evb_sdk_v09_02
-> ```
-> 
-> Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
+The Security Protocol and Data Model (SPDM) Specification defines
+messages, data objects, and sequences for performing message exchanges
+over a variety of transport and physical media.
+ - https://www.dmtf.org/sites/default/files/standards/documents/DSP0274_1.3.0.pdf
 
-Could you please split the patch ? The change of SDK should be
-a standalone patch.
+SPDM currently supports PCIe DOE and MCTP transports, but it can be
+extended to support others in the future. This series adds
+support to QEMU to connect to an external SPDM instance.
 
+SPDM support can be added to any QEMU device by exposing a
+TCP socket to a SPDM server. The server can then implement the SPDM
+decoding/encoding support, generally using libspdm [1].
 
-Thanks,
+This is similar to how the current TPM implementation works and means
+that the heavy lifting of setting up certificate chains, capabilities,
+measurements and complex crypto can be done outside QEMU by a well
+supported and tested library.
 
-C.
+This series implements socket support and exposes SPDM for a NVMe device.
 
+1: https://github.com/DMTF/libspdm
 
-> ---
->   tests/avocado/machine_aspeed.py | 13 +++++++------
->   1 file changed, 7 insertions(+), 6 deletions(-)
-> 
-> diff --git a/tests/avocado/machine_aspeed.py b/tests/avocado/machine_aspeed.py
-> index 3a20644fb2..855da805ae 100644
-> --- a/tests/avocado/machine_aspeed.py
-> +++ b/tests/avocado/machine_aspeed.py
-> @@ -313,14 +313,14 @@ def do_test_arm_aspeed_sdk_start(self, image):
->   
->       def do_test_aarch64_aspeed_sdk_start(self, image):
->           self.vm.set_console()
-> -        self.vm.add_args('-drive', 'file=' + image + ',if=mtd,format=raw')
-> +        self.vm.add_args('-drive', 'file=' + image + ',if=mtd,format=raw',
-> +                         '-net', 'nic', '-net', 'user,hostfwd=:127.0.0.1:0-:22')
->   
->           self.vm.launch()
->   
->           self.wait_for_console_pattern('U-Boot 2023.10')
->           self.wait_for_console_pattern('## Loading kernel from FIT Image')
->           self.wait_for_console_pattern('Starting kernel ...')
-> -        self.wait_for_console_pattern("systemd[1]: Hostname set to")
->   
->       @skipUnless(os.getenv('QEMU_TEST_FLAKY_TESTS'), 'Test is unstable on GitLab')
->   
-> @@ -387,15 +387,15 @@ def test_arm_ast2600_evb_sdk(self):
->           year = time.strftime("%Y")
->           self.ssh_command_output_contains('/sbin/hwclock -f /dev/rtc1', year);
->   
-> -    def test_aarch64_ast2700_evb_sdk_v09_01(self):
-> +    def test_aarch64_ast2700_evb_sdk_v09_02(self):
->           """
->           :avocado: tags=arch:aarch64
->           :avocado: tags=machine:ast2700-evb
->           """
->   
->           image_url = ('https://github.com/AspeedTech-BMC/openbmc/releases/'
-> -                     'download/v09.01/ast2700-default-obmc.tar.gz')
-> -        image_hash = 'b1cc0fd73c7650d34c9c8459a243f52a91e9e27144b8608b2645ab19461d1e07'
-> +                     'download/v09.02/ast2700-default-obmc.tar.gz')
-> +        image_hash = 'ac969c2602f4e6bdb69562ff466b89ae3fe1d86e1f6797bb7969d787f82116a7'
->           image_path = self.fetch_asset(image_url, asset_hash=image_hash,
->                                         algorithm='sha256')
->           archive.extract(image_path, self.workdir)
-> @@ -436,4 +436,5 @@ def test_aarch64_ast2700_evb_sdk_v09_01(self):
->   
->           self.vm.add_args('-smp', str(num_cpu))
->           self.do_test_aarch64_aspeed_sdk_start(image_dir + 'image-bmc')
-> -
-> +        self.wait_for_console_pattern('nodistro.0 ast2700-default ttyS12')
-> +        self.ssh_connect('root', '0penBmc', False)
+v8:
+ - Fixup i386 failures (thanks to Wilfred)
+ - Passes CI on GitLab: https://gitlab.com/alistair23/qemu/-/tree/mainline/alistair/spdm-socket.next?ref_type=heads
+v7:
+ - Fixup checkpatch failures
+ - Fixup test failures
+ - Rename port name to be clearer
+v6:
+ - Add documentation to public functions
+ - Rename socket variable to spdm_socket
+ - Don't override errp
+ - Correctly return false from nvme_init_pci() on error
+v5:
+ - Update MAINTAINERS
+v4:
+ - Rebase
+v3:
+ - Spelling fixes
+ - Support for SPDM-Utils
+v2:
+ - Add cover letter
+ - A few code fixes based on comments
+ - Document SPDM-Utils
+ - A few tweaks and clarifications to the documentation
+
+Alistair Francis (1):
+  hw/pci: Add all Data Object Types defined in PCIe r6.0
+
+Huai-Cheng Kuo (1):
+  backends: Initial support for SPDM socket support
+
+Wilfred Mallawa (1):
+  hw/nvme: Add SPDM over DOE support
+
+ MAINTAINERS                  |   6 +
+ docs/specs/index.rst         |   1 +
+ docs/specs/spdm.rst          | 134 ++++++++++++++++++++++
+ include/hw/pci/pci_device.h  |   7 ++
+ include/hw/pci/pcie_doe.h    |   5 +
+ include/sysemu/spdm-socket.h |  74 ++++++++++++
+ backends/spdm-socket.c       | 216 +++++++++++++++++++++++++++++++++++
+ hw/nvme/ctrl.c               |  62 ++++++++++
+ backends/Kconfig             |   4 +
+ backends/meson.build         |   2 +
+ 10 files changed, 511 insertions(+)
+ create mode 100644 docs/specs/spdm.rst
+ create mode 100644 include/sysemu/spdm-socket.h
+ create mode 100644 backends/spdm-socket.c
+
+-- 
+2.45.2
 
 
