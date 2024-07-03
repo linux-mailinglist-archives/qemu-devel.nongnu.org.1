@@ -2,61 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B050925682
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jul 2024 11:21:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58D6F925683
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jul 2024 11:21:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOwAU-0006r5-2F; Wed, 03 Jul 2024 05:20:50 -0400
+	id 1sOwAd-0006xY-8l; Wed, 03 Jul 2024 05:20:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sOwAO-0006pM-Ci; Wed, 03 Jul 2024 05:20:44 -0400
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ id 1sOwAR-0006ql-91; Wed, 03 Jul 2024 05:20:47 -0400
+Received: from mail-pg1-x530.google.com ([2607:f8b0:4864:20::530])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sOwAJ-0000dV-3B; Wed, 03 Jul 2024 05:20:43 -0400
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-1fafc9e07f8so10617935ad.0; 
- Wed, 03 Jul 2024 02:20:38 -0700 (PDT)
+ id 1sOwAP-0000e8-52; Wed, 03 Jul 2024 05:20:46 -0400
+Received: by mail-pg1-x530.google.com with SMTP id
+ 41be03b00d2f7-70df213542bso2838379a12.3; 
+ Wed, 03 Jul 2024 02:20:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1719998437; x=1720603237; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=NudA2bhXuzFAzawwdhUAK7Y2RKTZD0qNB2Y5Jdgr6hE=;
- b=Xk2VIJuBGlC8tgZ4i7ZgfJ5du0MlsDC+c93Y4jtKVlZuCDHdGsPLWAmX6L0NW02CK1
- aNVuUa+E6kccMTg9lTPDJ+uIzCZrwlrAZQ0LZytqnq/jcvWhWujoyUJHjwHlSZeXqVO1
- 6+XF173bGwxgnZarSpV7yj+TbiUaj0tc1dnBTRciyx97IH65Mg4jstKX43KLApE0A8HN
- TMEQ8U8OjdZFe5Qh0H6wDe7XdrDjXXO5J7ihDtDSZra/wxTuZlFb2UyU/dnGE/0vha6a
- nNRvWtSUil061Z7bZij7xtUST9lsIdGBvJhKigglsYFP2eJYq8EUbcxNDLmXXGX+fujA
- jMgA==
+ d=gmail.com; s=20230601; t=1719998443; x=1720603243; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=t+wS3hv0icffnZAPLdGTguKnNLO8tS7zhQ2s1WZd2/g=;
+ b=dW/R1uohQaUX0hmvGOwcQm6qslQRrZifdXNponQiI85suN/RXQK6fsqqqmLzrMsZG7
+ 7uZ8LnyxsYM8leOwbhE6XCSRI+PvAn13GlOvPo2a0+f/IoT+OfEEPg8H0g/xmLpcLOL+
+ 71x7xYw7JfbJTyrLl1Ik5JpLs8wZtG4PXRwUrj9ovddQGDPxiq8oh8M8gZT9EIPYK3Q1
+ cc8WvBEHZXuXG7TOvOW6jamZ4q2q4jsz5HuWt6eI6Ec5J36IWbYTVmpJKbjni+yll4iM
+ AdIAXWbVnmspQ6rbO2KIjmmiu2z8pE1lhDBTaeP38DhwddwNq2bMniGSHGKKqNL5ReG/
+ sPXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719998437; x=1720603237;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=NudA2bhXuzFAzawwdhUAK7Y2RKTZD0qNB2Y5Jdgr6hE=;
- b=T5MWsFTaRaRY9VQCLgEzoYe1H2ikJscpeE7txsZO3fT0YHEx1clfakATLcNH7SxeRE
- AkUP9j3y/zHpsYE5sTOqT4wbx01zQit7ztSbw0AE4FSxXi9/ODqX437UW7+7uPfBSSj0
- 2EuNBtES08AHnfIK4E9V+MZViiQZzz/U0j/ROtgS9UN5jSsuQuaIeuZL1NoOhhTKnHiU
- 76EG2XafmL8cos8dmPEvf1d7btl3drGh2qUVgw4NEB/C1zNaWeEBUKZzBJ4dF0akZ7Cm
- c39qTyhPAPnTOSN6RBzmi89BhVaiUG2JpMzC+Mk5q4hotmpEZ+5ZpYQXCqznKOQZwJcg
- 2Q2Q==
+ d=1e100.net; s=20230601; t=1719998443; x=1720603243;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=t+wS3hv0icffnZAPLdGTguKnNLO8tS7zhQ2s1WZd2/g=;
+ b=TgTUxikKlHL76qxSCaL1wb8rzK9U8C875oJMF3yrGHid6GOt2zGJ6ELp1iCAakdsbx
+ vQJzy/wkdoL6SsEcZjo31RxD3KRxN54GgTI/NGRFFVnBc+95aitpTgwZ1sHkwDecKG2I
+ DQJVdDOgdm3S3Jrqnt5ctXmJ00CS0l+/vG2WbX6HFR7y6LMdI7O0A2pQJGgu3ShvJHRn
+ tewmM/mha0OU2S91nGmIGh8caShD/ezrgVnItn3Yh2j1p4GLhOb53GLlHbVpuFctPbAt
+ ajVlR1KoqqaH834Rg9C05NXLKE0q4zHDoE/dqnUPukYoizc/XDCV/GDr5hEYpeD/nvFf
+ 228g==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUyHsr/9Er/bui2gfFrWVSjb1/jWYzJjf9Zv+VY0gv8KUAI7bU8tJaIxv1f+xTXB4IgzdGNeGmg/qNdrT4vLRot8b66zfO3Fh95YZyTbxYusGBklQXM48rZ5GhwvQ==
-X-Gm-Message-State: AOJu0YwT0wGyqYOEcDfwF1GkPUIhk0bOehzVTqwpGy8YWjYDWFoN2W0X
- KXQil2Qm11svhp4Q//+iAC4a+72FAMn2ydrOWxebRVZvXuFWl5F0
-X-Google-Smtp-Source: AGHT+IFWISOGU+SXRGwU97x58vgVmAYCDTXOVz2nVpCO5nbjsaHts8TfcKkCVC0XDwK8kh0E3jhFRg==
-X-Received: by 2002:a17:90a:d490:b0:2c9:74cc:1c1b with SMTP id
- 98e67ed59e1d1-2c974cc1d03mr1483051a91.7.1719998436914; 
- Wed, 03 Jul 2024 02:20:36 -0700 (PDT)
+ AJvYcCVOSAYW1z7OjneT1UaND+mrTovv/AWqKNO2+Q3nldmIKNqTSFY8/c9N+UZC5aLSB60dkMDFelhVbs6wNL3InEpL7/dQFGT2A2fgbu07Z7MUyKHnToPg9Okm+jYV1A==
+X-Gm-Message-State: AOJu0Yx//RL7oUh4vxbAXFjjPTokdMeA5cAhjpNxQq3oeEkJRe4WQyJe
+ FTBR4dtJO8Ei47AcHEB30QNHXlXrYNyLAS7+Bm8cEnSsr9wTKTIy
+X-Google-Smtp-Source: AGHT+IEdnQtp+aBJYUdFyTaTvB5VsyQo4rMqRXyLoPfEmpc+bTgTBcIUEwcj4w3M58zX+/40ilWwhA==
+X-Received: by 2002:a05:6a20:8422:b0:1b5:fd58:30e8 with SMTP id
+ adf61e73a8af0-1bef6140771mr11101961637.18.1719998443124; 
+ Wed, 03 Jul 2024 02:20:43 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2c95ca64649sm2905596a91.13.2024.07.03.02.20.31
+ 98e67ed59e1d1-2c95ca64649sm2905596a91.13.2024.07.03.02.20.37
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 03 Jul 2024 02:20:36 -0700 (PDT)
+ Wed, 03 Jul 2024 02:20:42 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: its@irrelevant.dk, mst@redhat.com, hchkuo@avery-design.com.tw,
@@ -65,16 +66,18 @@ To: its@irrelevant.dk, mst@redhat.com, hchkuo@avery-design.com.tw,
  Jonathan.Cameron@Huawei.com, kbusch@kernel.org
 Cc: Alistair Francis <alistair.francis@wdc.com>, alistair23@gmail.com,
  qemu-block@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Jesper Devantier <foss@defmacro.it>
-Subject: [PATCH v8 0/3] Initial support for SPDM Responders
-Date: Wed,  3 Jul 2024 19:20:24 +1000
-Message-ID: <20240703092027.644758-1-alistair.francis@wdc.com>
+ Jesper Devantier <foss@defmacro.it>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH v8 1/3] hw/pci: Add all Data Object Types defined in PCIe r6.0
+Date: Wed,  3 Jul 2024 19:20:25 +1000
+Message-ID: <20240703092027.644758-2-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.45.2
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20240703092027.644758-1-alistair.francis@wdc.com>
+References: <20240703092027.644758-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x62c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::530;
+ envelope-from=alistair23@gmail.com; helo=mail-pg1-x530.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -98,77 +101,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The Security Protocol and Data Model (SPDM) Specification defines
-messages, data objects, and sequences for performing message exchanges
-over a variety of transport and physical media.
- - https://www.dmtf.org/sites/default/files/standards/documents/DSP0274_1.3.0.pdf
+Add all of the defined protocols/features from the PCIe-SIG r6.0
+"Table 6-32 PCI-SIG defined Data Object Types (Vendor ID = 0001h)"
+table.
 
-SPDM currently supports PCIe DOE and MCTP transports, but it can be
-extended to support others in the future. This series adds
-support to QEMU to connect to an external SPDM instance.
+Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reviewed-by: Wilfred Mallawa <wilfred.mallawa@wdc.com>
+---
+ include/hw/pci/pcie_doe.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-SPDM support can be added to any QEMU device by exposing a
-TCP socket to a SPDM server. The server can then implement the SPDM
-decoding/encoding support, generally using libspdm [1].
-
-This is similar to how the current TPM implementation works and means
-that the heavy lifting of setting up certificate chains, capabilities,
-measurements and complex crypto can be done outside QEMU by a well
-supported and tested library.
-
-This series implements socket support and exposes SPDM for a NVMe device.
-
-1: https://github.com/DMTF/libspdm
-
-v8:
- - Fixup i386 failures (thanks to Wilfred)
- - Passes CI on GitLab: https://gitlab.com/alistair23/qemu/-/tree/mainline/alistair/spdm-socket.next?ref_type=heads
-v7:
- - Fixup checkpatch failures
- - Fixup test failures
- - Rename port name to be clearer
-v6:
- - Add documentation to public functions
- - Rename socket variable to spdm_socket
- - Don't override errp
- - Correctly return false from nvme_init_pci() on error
-v5:
- - Update MAINTAINERS
-v4:
- - Rebase
-v3:
- - Spelling fixes
- - Support for SPDM-Utils
-v2:
- - Add cover letter
- - A few code fixes based on comments
- - Document SPDM-Utils
- - A few tweaks and clarifications to the documentation
-
-Alistair Francis (1):
-  hw/pci: Add all Data Object Types defined in PCIe r6.0
-
-Huai-Cheng Kuo (1):
-  backends: Initial support for SPDM socket support
-
-Wilfred Mallawa (1):
-  hw/nvme: Add SPDM over DOE support
-
- MAINTAINERS                  |   6 +
- docs/specs/index.rst         |   1 +
- docs/specs/spdm.rst          | 134 ++++++++++++++++++++++
- include/hw/pci/pci_device.h  |   7 ++
- include/hw/pci/pcie_doe.h    |   5 +
- include/sysemu/spdm-socket.h |  74 ++++++++++++
- backends/spdm-socket.c       | 216 +++++++++++++++++++++++++++++++++++
- hw/nvme/ctrl.c               |  62 ++++++++++
- backends/Kconfig             |   4 +
- backends/meson.build         |   2 +
- 10 files changed, 511 insertions(+)
- create mode 100644 docs/specs/spdm.rst
- create mode 100644 include/sysemu/spdm-socket.h
- create mode 100644 backends/spdm-socket.c
-
+diff --git a/include/hw/pci/pcie_doe.h b/include/hw/pci/pcie_doe.h
+index 87dc17dcef..15d94661f9 100644
+--- a/include/hw/pci/pcie_doe.h
++++ b/include/hw/pci/pcie_doe.h
+@@ -46,6 +46,8 @@ REG32(PCI_DOE_CAP_STATUS, 0)
+ 
+ /* PCI-SIG defined Data Object Types - r6.0 Table 6-32 */
+ #define PCI_SIG_DOE_DISCOVERY       0x00
++#define PCI_SIG_DOE_CMA             0x01
++#define PCI_SIG_DOE_SECURED_CMA     0x02
+ 
+ #define PCI_DOE_DW_SIZE_MAX         (1 << 18)
+ #define PCI_DOE_PROTOCOL_NUM_MAX    256
 -- 
 2.45.2
 
