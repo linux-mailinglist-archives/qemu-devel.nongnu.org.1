@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 328E4926BE0
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 00:49:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A107E926C15
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 00:53:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sP8mz-0005Lg-R7; Wed, 03 Jul 2024 18:49:25 -0400
+	id 1sP8mx-00059p-75; Wed, 03 Jul 2024 18:49:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sP8ms-0004ou-9g
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sP8ms-0004p2-Mf
  for qemu-devel@nongnu.org; Wed, 03 Jul 2024 18:49:19 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sP8mh-0005jI-BW
- for qemu-devel@nongnu.org; Wed, 03 Jul 2024 18:49:17 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sP8mk-0005sY-LJ
+ for qemu-devel@nongnu.org; Wed, 03 Jul 2024 18:49:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1720046945;
+ s=mimecast20190719; t=1720046950;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=Qq6X3kMK8U5RTSY4JoCXP6cD3LHFaX4iQOeFqnwxYP8=;
- b=dfBQV6p845Sxk+L00Ag7hBM4ygLxVzyK9VJR6oe96Jpy6DjMn65wMEo8jZJH+S8sb2kNHz
- 2Jho2K8AJanxilDPvtqhluuTlpwJIiZ8cOQ/BPYpXxjwZu8XBlc5yPJpStCcDyys8O5gJd
- ma02KLOkCO9wzvIHygzm3YN3G4d1vv0=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=wXu48vkZ7/C+tOxLrIxzTN9h9b+wSo5eOaPVc/4Fs+U=;
+ b=O8ZzZOWqIM1Q9OzBili2HlSxa6WJQBcBvP37XeHvADaHSBiLrsJoxXQDnhDnBVG+Z3E3DF
+ k83WQKxY7bheZwZC8sJYnPoCu/JjIt/rQKOUDHqj0pWSpwHvVZhw8UxvaAMsdqnt2fGkRZ
+ eyWsItTB+rujOrkhZ8S1FjaWI5DBSIo=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-686-eDJGmhNYNCGuaVCEWCgtwg-1; Wed, 03 Jul 2024 18:49:04 -0400
-X-MC-Unique: eDJGmhNYNCGuaVCEWCgtwg-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-36794ef4815so33833f8f.1
- for <qemu-devel@nongnu.org>; Wed, 03 Jul 2024 15:49:04 -0700 (PDT)
+ us-mta-90-26da-2vkPaCC8s8efYIqmQ-1; Wed, 03 Jul 2024 18:49:08 -0400
+X-MC-Unique: 26da-2vkPaCC8s8efYIqmQ-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-367960f4673so535709f8f.1
+ for <qemu-devel@nongnu.org>; Wed, 03 Jul 2024 15:49:08 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720046942; x=1720651742;
+ d=1e100.net; s=20230601; t=1720046947; x=1720651747;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Qq6X3kMK8U5RTSY4JoCXP6cD3LHFaX4iQOeFqnwxYP8=;
- b=kXszI61jxEiF/eE6n7kkhDZtbyeD/lGFw1c9xtvHBS3tGUyf0qgd8fgx5Gs5GdJf0E
- FWHN4AAOIhOMVnvCiMomPAOUDyB5c4sGKi9bWT6AxKquby7CWmjv1BjQHGkG2rYbyO7W
- EoLZgrLxzKqrVeIfiv2XY2QtnCnPsy/GiSw4vsV5/K5O0THYbkRv47pAPxD0LTbc8D92
- LftY0Y2NjlTzoF48Od2gIEN4rGWEh1PY5FQjRmlZf0GXnzkKvI556UHoS8Xv6GXtQMB8
- ieYwPbx/zgVvKS8wA+Zedrn/dzS2dkvvAWbGArMqjAKOtAf/3xyrQg35sBTLCN1QxIJ+
- U31A==
-X-Gm-Message-State: AOJu0Yy6IzQ7Ms+04dSpif0dVUkEMLKK01cjBuG7mf8kF3/xk2Tkycx0
- MJy74XylFKipw8YsNcFfYQrkJP7iOH/y6gJJ1AR+xnt4ztNzfBqEzdel3jNioPlLn6QmF9R/KsH
- gOG10toUqYG22iBA4Kt8r8V1Vcg+hQayP2xBSNdhk17cKyb1AdZe+ugTPwe4XV6acK3cSiP49Cp
- ls4zHSCdrxw2KAkki0APE7FzhVi/07xA==
-X-Received: by 2002:a5d:634b:0:b0:367:40e6:46bd with SMTP id
- ffacd0b85a97d-3679dd73dd5mr3268f8f.61.1720046942680; 
- Wed, 03 Jul 2024 15:49:02 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEwNgm45H9+37MtlccIZDiJAMzaIGI9WslSjpYndIx3Pphid0K6fLJy+PomiNZpDtDL2fpBEA==
-X-Received: by 2002:a5d:634b:0:b0:367:40e6:46bd with SMTP id
- ffacd0b85a97d-3679dd73dd5mr3258f8f.61.1720046942114; 
- Wed, 03 Jul 2024 15:49:02 -0700 (PDT)
+ bh=wXu48vkZ7/C+tOxLrIxzTN9h9b+wSo5eOaPVc/4Fs+U=;
+ b=fsN7e7LiK79M4kF8JcJOfxkDxFPcZ3f6BMO0BiCrg6oqdGrLsMI2m1NvxDAVl+OMza
+ aRdm8PshhtaVmKuTI8teqR7OdzWjuiYB8bsBfgkm6hv70qAu7cUU/gP10mcw4YmqQp9F
+ 1TRzaUt9k8gctNngw0qbR6NSwRhC/94F4PMJ6igiiCrFLmcOojjbc8LFeiX3OHAwB97u
+ kFCOFCGYRktVtGCVX6wnKF5z4wxtBRqIVhf+RvV0XetfKHwUlE9a5CbbRYXchFMfpxuX
+ 2mTzGqonWGcXqCJlhfxX7OpsAPmkg761C/va5dvVWordAtiGB3ApVGYt2wfIWKus3V3F
+ fxeA==
+X-Gm-Message-State: AOJu0Yxl7HxzsfEDq5VE2lypFN5fEC6mjR+PKHK74STAZnQFOb3SVKuo
+ k5/KveXWSiGFeWVm3cssm6q/MGR/CsN70MeXKogq1IIraAHgqEkBZ1WgFaf27CoGrJGNxNRJiGQ
+ FNYTquFl4uqheagqR8djVUedC4EfY6BYmPX3mamCQvlCsegryVfECW+9hzFXUOiIwlJnRZ3Ue1y
+ p4d+AIqYQQjioxtAhqZUZpuJ2+NofYNw==
+X-Received: by 2002:a05:600c:4f0c:b0:424:84fb:9fd2 with SMTP id
+ 5b1f17b1804b1-42640b6e086mr27145925e9.19.1720046947030; 
+ Wed, 03 Jul 2024 15:49:07 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEWnl5KRGoJO02dkcidekGahK4zIsQQ5S6iCycyafTAJap5UPntX81nwoYOHPFb2EEwymqyAQ==
+X-Received: by 2002:a05:600c:4f0c:b0:424:84fb:9fd2 with SMTP id
+ 5b1f17b1804b1-42640b6e086mr27145635e9.19.1720046946049; 
+ Wed, 03 Jul 2024 15:49:06 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc7:441:91a8:a47d:5a9:c02f:92f2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3675a10337csm16824378f8f.97.2024.07.03.15.48.59
+ ffacd0b85a97d-36796351169sm1995299f8f.95.2024.07.03.15.49.03
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 03 Jul 2024 15:49:01 -0700 (PDT)
-Date: Wed, 3 Jul 2024 18:48:58 -0400
+ Wed, 03 Jul 2024 15:49:05 -0700 (PDT)
+Date: Wed, 3 Jul 2024 18:49:02 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Sunil V L <sunilvl@ventanamicro.com>, Gerd Hoffmann <kraxel@redhat.com>,
- Alistair Francis <alistair.francis@wdc.com>,
  Igor Mammedov <imammedo@redhat.com>,
  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL v3 60/85] uefi-test-tools/UefiTestToolsPkg: Add RISC-V support
-Message-ID: <b05ff4086f79cdc59c4adcfd278259792a8bb714.1720046570.git.mst@redhat.com>
+Subject: [PULL v3 61/85] uefi-test-tools: Add support for python based build
+ script
+Message-ID: <ad8560fa29fc18acda2e8cfc1fdd87f6c6cca122.1720046570.git.mst@redhat.com>
 References: <cover.1720046570.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -104,44 +104,132 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Sunil V L <sunilvl@ventanamicro.com>
 
-Enable building the test application for RISC-V with appropriate
-dependencies updated.
+edk2-funcs.sh which is used in this Makefile, was removed in the commit
+c28a2891f3 ("edk2: update build script"). It is replaced with a python
+based script. So, update the Makefile and add the configuration file as
+required to support the python based build script.
 
 Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
 Acked-by: Gerd Hoffmann <kraxel@redhat.com>
-Acked-by: Alistair Francis <alistair.francis@wdc.com>
 Acked-by: Igor Mammedov <imammedo@redhat.com>
-Message-Id: <20240625150839.1358279-3-sunilvl@ventanamicro.com>
+Message-Id: <20240625150839.1358279-4-sunilvl@ventanamicro.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- tests/uefi-test-tools/UefiTestToolsPkg/UefiTestToolsPkg.dsc | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ tests/uefi-test-tools/Makefile               | 19 +++----
+ tests/uefi-test-tools/uefi-test-build.config | 52 ++++++++++++++++++++
+ 2 files changed, 59 insertions(+), 12 deletions(-)
+ create mode 100644 tests/uefi-test-tools/uefi-test-build.config
 
-diff --git a/tests/uefi-test-tools/UefiTestToolsPkg/UefiTestToolsPkg.dsc b/tests/uefi-test-tools/UefiTestToolsPkg/UefiTestToolsPkg.dsc
-index c8511cd732..0902fd3c73 100644
---- a/tests/uefi-test-tools/UefiTestToolsPkg/UefiTestToolsPkg.dsc
-+++ b/tests/uefi-test-tools/UefiTestToolsPkg/UefiTestToolsPkg.dsc
-@@ -19,7 +19,7 @@
-   PLATFORM_VERSION        = 0.1
-   PLATFORM_NAME           = UefiTestTools
-   SKUID_IDENTIFIER        = DEFAULT
--  SUPPORTED_ARCHITECTURES = ARM|AARCH64|IA32|X64
-+  SUPPORTED_ARCHITECTURES = ARM|AARCH64|IA32|X64|RISCV64
-   BUILD_TARGETS           = DEBUG
+diff --git a/tests/uefi-test-tools/Makefile b/tests/uefi-test-tools/Makefile
+index 0c003f2877..f4eaebd8ff 100644
+--- a/tests/uefi-test-tools/Makefile
++++ b/tests/uefi-test-tools/Makefile
+@@ -12,7 +12,7 @@
  
- [BuildOptions.IA32]
-@@ -60,6 +60,10 @@
+ edk2_dir              := ../../roms/edk2
+ images_dir            := ../data/uefi-boot-images
+-emulation_targets     := arm aarch64 i386 x86_64
++emulation_targets     := arm aarch64 i386 x86_64 riscv64
+ uefi_binaries         := bios-tables-test
+ intermediate_suffixes := .efi .fat .iso.raw
  
- [LibraryClasses.IA32, LibraryClasses.X64]
-   BaseMemoryLib|MdePkg/Library/BaseMemoryLibRepStr/BaseMemoryLibRepStr.inf
-+  RegisterFilterLib|MdePkg/Library/RegisterFilterLibNull/RegisterFilterLibNull.inf
+@@ -56,7 +56,8 @@ Build/%.iso.raw: Build/%.fat
+ # stripped from, the argument.
+ map_arm_to_uefi     = $(subst arm,ARM,$(1))
+ map_aarch64_to_uefi = $(subst aarch64,AA64,$(call map_arm_to_uefi,$(1)))
+-map_i386_to_uefi    = $(subst i386,IA32,$(call map_aarch64_to_uefi,$(1)))
++map_riscv64_to_uefi = $(subst riscv64,RISCV64,$(call map_aarch64_to_uefi,$(1)))
++map_i386_to_uefi    = $(subst i386,IA32,$(call map_riscv64_to_uefi,$(1)))
+ map_x86_64_to_uefi  = $(subst x86_64,X64,$(call map_i386_to_uefi,$(1)))
+ map_to_uefi         = $(subst .,,$(call map_x86_64_to_uefi,$(1)))
+ 
+@@ -70,7 +71,7 @@ Build/%.fat: Build/%.efi
+ 	uefi_bin_b=$$(stat --format=%s -- $<) && \
+ 		uefi_fat_kb=$$(( (uefi_bin_b * 11 / 10 + 1023) / 1024 )) && \
+ 		uefi_fat_kb=$$(( uefi_fat_kb >= 64 ? uefi_fat_kb : 64 )) && \
+-		mkdosfs -C $@ -n $(basename $(@F)) -- $$uefi_fat_kb
++		mkdosfs -C $@ -n "bios-test" -- $$uefi_fat_kb
+ 	MTOOLS_SKIP_CHECK=1 mmd -i $@ ::EFI
+ 	MTOOLS_SKIP_CHECK=1 mmd -i $@ ::EFI/BOOT
+ 	MTOOLS_SKIP_CHECK=1 mcopy -i $@ -- $< \
+@@ -95,15 +96,9 @@ Build/%.fat: Build/%.efi
+ # we must mark the recipe manually as recursive, by using the "+" indicator.
+ # This way, when the inner "make" starts a parallel build of the target edk2
+ # module, it can communicate with the outer "make"'s job server.
+-Build/bios-tables-test.%.efi: build-edk2-tools
+-	+./build.sh $(edk2_dir) BiosTablesTest $* $@
+-
+-build-edk2-tools:
+-	cd $(edk2_dir)/BaseTools && git submodule update --init --force
+-	$(MAKE) -C $(edk2_dir)/BaseTools \
+-		PYTHON_COMMAND=$${EDK2_PYTHON_COMMAND:-python3} \
+-		EXTRA_OPTFLAGS='$(EDK2_BASETOOLS_OPTFLAGS)' \
+-		EXTRA_LDFLAGS='$(EDK2_BASETOOLS_LDFLAGS)'
++Build/bios-tables-test.%.efi:
++	$(PYTHON) ../../roms/edk2-build.py --config uefi-test-build.config \
++		--match $*
+ 
+ clean:
+ 	rm -rf Build Conf log
+diff --git a/tests/uefi-test-tools/uefi-test-build.config b/tests/uefi-test-tools/uefi-test-build.config
+new file mode 100644
+index 0000000000..1f389ae541
+--- /dev/null
++++ b/tests/uefi-test-tools/uefi-test-build.config
+@@ -0,0 +1,52 @@
++[global]
++core = ../../roms/edk2
 +
-+[LibraryClasses.RISCV64]
-+  BaseMemoryLib|MdePkg/Library/BaseMemoryLib/BaseMemoryLib.inf
- 
- [PcdsFixedAtBuild]
-   gEfiMdePkgTokenSpaceGuid.PcdDebugPrintErrorLevel|0x8040004F
++####################################################################################
++# arm
++
++[build.arm]
++conf = UefiTestToolsPkg/UefiTestToolsPkg.dsc
++plat = UefiTestTools
++dest = ./Build
++arch = ARM
++cpy1 = ARM/BiosTablesTest.efi  bios-tables-test.arm.efi
++
++####################################################################################
++# aarch64
++
++[build.aarch64]
++conf = UefiTestToolsPkg/UefiTestToolsPkg.dsc
++plat = UefiTestTools
++dest = ./Build
++arch = AARCH64
++cpy1 = AARCH64/BiosTablesTest.efi  bios-tables-test.aarch64.efi
++
++####################################################################################
++# riscv64
++
++[build.riscv]
++conf = UefiTestToolsPkg/UefiTestToolsPkg.dsc
++plat = UefiTestTools
++dest = ./Build
++arch = RISCV64
++cpy1 = RISCV64/BiosTablesTest.efi  bios-tables-test.riscv64.efi
++
++####################################################################################
++# ia32
++
++[build.ia32]
++conf = UefiTestToolsPkg/UefiTestToolsPkg.dsc
++plat = UefiTestTools
++dest = ./Build
++arch = IA32
++cpy1 = IA32/BiosTablesTest.efi  bios-tables-test.i386.efi
++
++####################################################################################
++# x64
++
++[build.x64]
++conf = UefiTestToolsPkg/UefiTestToolsPkg.dsc
++plat = UefiTestTools
++dest = ./Build
++arch = X64
++cpy1 = X64/BiosTablesTest.efi  bios-tables-test.x86_64.efi
 -- 
 MST
 
