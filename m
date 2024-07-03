@@ -2,83 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE3DE926756
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jul 2024 19:44:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6634C926778
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jul 2024 19:54:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sP40U-0003NG-Fs; Wed, 03 Jul 2024 13:43:02 -0400
+	id 1sP49x-0003FW-LT; Wed, 03 Jul 2024 13:52:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sP40A-0003J1-JT
- for qemu-devel@nongnu.org; Wed, 03 Jul 2024 13:42:42 -0400
-Received: from mail-pj1-x1030.google.com ([2607:f8b0:4864:20::1030])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sP405-0005Lr-Rw
- for qemu-devel@nongnu.org; Wed, 03 Jul 2024 13:42:39 -0400
-Received: by mail-pj1-x1030.google.com with SMTP id
- 98e67ed59e1d1-2c961b5f215so1380011a91.0
- for <qemu-devel@nongnu.org>; Wed, 03 Jul 2024 10:42:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1720028555; x=1720633355; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=7spuBkQx1Mu7jCpv4kzIy4W/rs9oZa5KoZssRj5BGLM=;
- b=uSjzt9lvjqd+BjeB3PxVHjSymKjuwLspoalAFkrwN/zeXpU7JR/2COFbOzEyqImXCu
- 1exnMwWEAYcZVesVuacIgaeUCCGLSXKDw4PFFqxcQpFJFXPFBJtFoGlqckc8+IftQhqx
- FqZ/Cl09Gx9dOQjmZNUGD4emmDkN9LGiQL1Tqfpv83AchdVlErxikk6THkE6MAtZ6TR5
- QNtrx37QMgohQI7oOjwtLQp/PL1/q7qSdHrebeK52EBpnef1n/S6p33Ie4QD4ainLFEQ
- cKcXljuvQG0KbnznBLAJfjeXAVpdJ1qM3PLn1VO3n7AK7o/9m2hG/six1OyXUSEtE833
- QjdA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720028555; x=1720633355;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=7spuBkQx1Mu7jCpv4kzIy4W/rs9oZa5KoZssRj5BGLM=;
- b=SRHufD4e7UKWjLcLlReAJes525JCU7vHHSPqwOHZ4u+8zlLM9UKG5MnIDYeiReWqMB
- wfTOjbVomHPaY+XlrIWTyUGxeoHRaNlsOIpejZ3W4YONKyMTbWcFZcb/Ns6aA0ao7h47
- hNK+cvIRb7IQGuaDwLOm34LzTh+xXE8CpyW71/fZiVNCZ0mCy3TkNppB03J48DqAODgl
- 91yd4siHWZqhxWnsi3HoSqt6DVK7nK0oCV3JCc9so6ga3wZkXvQH2Xv0lxdjKfp1G8Zt
- xQ21AY7/jeLO8robH5anZ1FpzAq4zXG4/lu8bVrq1YH3ciQab3kghQtM2EK0qYXSnbKW
- Rjgg==
-X-Gm-Message-State: AOJu0YwQ7dvVMebQh4doFzd0bDlVWnNELmjE/ZdJ1f7+7K5VamhXRIuu
- wG3X5VGzlM2+lOrAmYX+WN9YecVb+UjuyPtksyvN1OiYMs+jA/4C+MTv7vtgZemABV6MYGgwzOL
- 7
-X-Google-Smtp-Source: AGHT+IENfYBdzqgRlMiDpUzjBk/rXepj9Ae3rm1N8d8sGkopqcLdCB7bRRNLoBu2C0mUOQorRd98dg==
-X-Received: by 2002:a17:90a:4214:b0:2c6:dc3b:d6fd with SMTP id
- 98e67ed59e1d1-2c93d767707mr8395488a91.31.1720028554450; 
- Wed, 03 Jul 2024 10:42:34 -0700 (PDT)
-Received: from stoup.. (174-21-76-141.tukw.qwest.net. [174.21.76.141])
- by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2c91d3e7d7bsm11070030a91.47.2024.07.03.10.42.33
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 03 Jul 2024 10:42:34 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1sP49v-0003F0-AZ
+ for qemu-devel@nongnu.org; Wed, 03 Jul 2024 13:52:47 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1sP49s-0001FO-9u
+ for qemu-devel@nongnu.org; Wed, 03 Jul 2024 13:52:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1720029163;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=e0vdgbI6cFFYammuYGEmn/VaVPPNRa/koqoZUcBHlTo=;
+ b=NPPSAed9L2WtKzELJksKheWb4MIRXcMY9isChVZjfLvQT7H+SUcVMfAWV/KWHNzV0Q71PH
+ N/HGXIy1puqepj62yhgPmTv5HDN5oFdePbyqTKaIVmlSFA3pOMJ++39359zEcFD7CdRZS0
+ Ag70rL6myZr3Z+EQH45pfYVfnKDFOBU=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-630-Iy6r05A6NM-E7FiQOxigBA-1; Wed,
+ 03 Jul 2024 13:52:39 -0400
+X-MC-Unique: Iy6r05A6NM-E7FiQOxigBA-1
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id E7B9D19560B4; Wed,  3 Jul 2024 17:52:37 +0000 (UTC)
+Received: from scv.localdomain (unknown [10.22.34.31])
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 780B71955BC0; Wed,  3 Jul 2024 17:52:36 +0000 (UTC)
+From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PULL 7/7] tcg/optimize: Fix TCG_COND_TST* simplification of setcond2
-Date: Wed,  3 Jul 2024 10:42:26 -0700
-Message-Id: <20240703174226.2117169-8-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240703174226.2117169-1-richard.henderson@linaro.org>
-References: <20240703174226.2117169-1-richard.henderson@linaro.org>
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>,
+ John Snow <jsnow@redhat.com>
+Subject: [PATCH v2 0/2] docs/python: bump minimum Sphinx version
+Date: Wed,  3 Jul 2024 13:52:33 -0400
+Message-ID: <20240703175235.239004-1-jsnow@redhat.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1030;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1030.google.com
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,88 +77,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Argument ordering for setcond2 is:
-
-  output, a_low, a_high, b_low, b_high, cond
-
-The test is supposed to be against b_low, not a_high.
-
-Cc: qemu-stable@nongnu.org
-Fixes: ceb9ee06b71 ("tcg/optimize: Handle TCG_COND_TST{EQ,NE}")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2413
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Tested-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20240701024623.1265028-1-richard.henderson@linaro.org>
----
- tcg/optimize.c                   |  2 +-
- tests/tcg/x86_64/test-2413.c     | 30 ++++++++++++++++++++++++++++++
- tests/tcg/x86_64/Makefile.target |  2 ++
- 3 files changed, 33 insertions(+), 1 deletion(-)
- create mode 100644 tests/tcg/x86_64/test-2413.c
-
-diff --git a/tcg/optimize.c b/tcg/optimize.c
-index 8886f7037a..ba16ec27e2 100644
---- a/tcg/optimize.c
-+++ b/tcg/optimize.c
-@@ -2384,7 +2384,7 @@ static bool fold_setcond2(OptContext *ctx, TCGOp *op)
- 
-     case TCG_COND_TSTEQ:
-     case TCG_COND_TSTNE:
--        if (arg_is_const_val(op->args[2], 0)) {
-+        if (arg_is_const_val(op->args[3], 0)) {
-             goto do_setcond_high;
-         }
-         if (arg_is_const_val(op->args[4], 0)) {
-diff --git a/tests/tcg/x86_64/test-2413.c b/tests/tcg/x86_64/test-2413.c
-new file mode 100644
-index 0000000000..456e5332fc
---- /dev/null
-+++ b/tests/tcg/x86_64/test-2413.c
-@@ -0,0 +1,30 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/* Copyright 2024 Linaro, Ltd. */
-+/* See https://gitlab.com/qemu-project/qemu/-/issues/2413 */
-+
-+#include <assert.h>
-+
-+void test(unsigned long *a, unsigned long *d, unsigned long c)
-+{
-+    asm("xorl %%eax, %%eax\n\t"
-+        "xorl %%edx, %%edx\n\t"
-+        "testb $0x20, %%cl\n\t"
-+        "sete %%al\n\t"
-+        "setne %%dl\n\t"
-+        "shll %%cl, %%eax\n\t"
-+        "shll %%cl, %%edx\n\t"
-+        : "=a"(*a), "=d"(*d)
-+        : "c"(c));
-+}
-+
-+int main(void)
-+{
-+    unsigned long a, c, d;
-+
-+    for (c = 0; c < 64; c++) {
-+        test(&a, &d, c);
-+        assert(a == (c & 0x20 ? 0 : 1u << (c & 0x1f)));
-+        assert(d == (c & 0x20 ? 1u << (c & 0x1f) : 0));
-+    }
-+    return 0;
-+}
-diff --git a/tests/tcg/x86_64/Makefile.target b/tests/tcg/x86_64/Makefile.target
-index 5fedf22117..eda9bd7396 100644
---- a/tests/tcg/x86_64/Makefile.target
-+++ b/tests/tcg/x86_64/Makefile.target
-@@ -8,6 +8,8 @@
- 
- include $(SRC_PATH)/tests/tcg/i386/Makefile.target
- 
-+X86_64_TESTS += test-2413
-+
- ifeq ($(filter %-linux-user, $(TARGET)),$(TARGET))
- X86_64_TESTS += vsyscall
- X86_64_TESTS += noexec
--- 
-2.34.1
+With recent deprecations, we can advance our minimum sphinx version=0D
+safely. This is heavily motivated by new qapidoc work which is much=0D
+easier to maintain cross-version compatibility for - see difficulties in=0D
+our dbus documentation which only works on sphinx >=3D 4.=0D
+=0D
+We can only guarantee >=3D 3.4.3 now, but that's still vastly easier than=0D
+maintaining compatibility all the way back to 1.x.=0D
+=0D
+https://gitlab.com/jsnow/qemu/-/pipelines/1359549621=0D
+=0D
+(failures appear to be unrelated to the series.)=0D
+=0D
+V2: refactor all code deletions into patch 2=0D
+=0D
+John Snow (2):=0D
+  Python: bump minimum sphinx version to 3.4.3=0D
+  docs: remove Sphinx 1.x compatibility code=0D
+=0D
+ docs/conf.py             |  7 +++----=0D
+ docs/sphinx/hxtool.py    | 21 ++++-----------------=0D
+ docs/sphinx/kerneldoc.py | 38 ++++++++++++--------------------------=0D
+ docs/sphinx/kernellog.py | 28 ----------------------------=0D
+ docs/sphinx/qapidoc.py   | 29 +++--------------------------=0D
+ pythondeps.toml          |  2 +-=0D
+ 6 files changed, 23 insertions(+), 102 deletions(-)=0D
+ delete mode 100644 docs/sphinx/kernellog.py=0D
+=0D
+-- =0D
+2.45.0=0D
+=0D
 
 
