@@ -2,83 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E591E9269AE
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jul 2024 22:43:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DC119269D3
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jul 2024 23:03:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sP6nn-0006Rl-4y; Wed, 03 Jul 2024 16:42:07 -0400
+	id 1sP777-0000d6-Kx; Wed, 03 Jul 2024 17:02:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1sP6nl-0006R1-E3
- for qemu-devel@nongnu.org; Wed, 03 Jul 2024 16:42:05 -0400
-Received: from mail-pj1-x102e.google.com ([2607:f8b0:4864:20::102e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1sP6nj-00049B-J8
- for qemu-devel@nongnu.org; Wed, 03 Jul 2024 16:42:05 -0400
-Received: by mail-pj1-x102e.google.com with SMTP id
- 98e67ed59e1d1-2c8c6cc53c7so4052635a91.0
- for <qemu-devel@nongnu.org>; Wed, 03 Jul 2024 13:42:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1720039321; x=1720644121; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=HzCi6fZiLkpynqwuxhQ2truwKbzSufAiF10zMorZH6c=;
- b=FylIp/lRejks5WUoOu7boS+ZjNzPDQ308MdmohKD0GuSLND5H1p6VtvT7zsYgfaMs4
- pxU9Chd7sSzoCUlUF27bk3ESl4DpUVkZUfHxQe7zC32+W8rf2N74b8i417usV77F2b1B
- z6D0Watwc1DePSOS+hvStmZCO8V7flxAdxtB8BVUsegdwCOfXZULTIx+Oj3uLSXNI/9i
- n9bUOOCz0HDk99iiHTKWjDqW+ykBWklwoo7sDi4caoZEWlvLHDp6dMF/k8YFCYQRJECp
- 75IEcBNMHaZyDGoGuto1OmB7YikSge78c23KfpVO6+OmwOPGhWo8MLIz6PsFdE3AayP2
- 4sKw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720039321; x=1720644121;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=HzCi6fZiLkpynqwuxhQ2truwKbzSufAiF10zMorZH6c=;
- b=IaW7f7izXSt+6/YsB/ngX9WUlEimeHkUOii67HGdKj99Isekv2HWoj5Acu3YySSpDd
- JSc8Adbh8hpYqCY3zGeTPau2apfjn/IsNUzyQ7SmjktYEtr9M2eIUAS389E4qE5y4imt
- YM1cAxjCfNbBuBIpJuzRdt+wys/EpBDywdf1cNbheL9jUqpIlmuRe3j055LGYdhQMs3I
- cygO+1sQNL23NWX7FPe6fThX6kGB9yKOEWG4HJD4SOgwSmT3hSDjcy2M/ZQAVIQq5Sd4
- pzZLq6S7WQdyvnbKVnq90xF068t/skrvljhBo9Q10Nzq2iTg8vjibjR+vpSucGbTHVVA
- gNAQ==
-X-Gm-Message-State: AOJu0Yyc9ca21STEXC5j3tnTl68b0aqr3zWeJyrv4vebBFpINHCxSWy2
- THAYP9jT2aX1o+gBh36xq/ysSUA26hKUkxa/wxOUW7NxHNyAfZ5jNgIdPl/J1Zy+hzbY8l8Wsn/
- Y
-X-Google-Smtp-Source: AGHT+IGg+ob4Fhj2MH/KBWS65kKLGVthgeNn5xU4WmYEZgsIwQL7v2XZV7bufOC9DBgawi+t2QzCpQ==
-X-Received: by 2002:a17:90a:6388:b0:2c8:716f:b46e with SMTP id
- 98e67ed59e1d1-2c93d704341mr9851484a91.16.1720039321139; 
- Wed, 03 Jul 2024 13:42:01 -0700 (PDT)
-Received: from grind.dc1.ventanamicro.com ([179.193.8.43])
- by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2c91ce42667sm11284888a91.16.2024.07.03.13.41.58
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 03 Jul 2024 13:42:00 -0700 (PDT)
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1sP775-0000cu-DR
+ for qemu-devel@nongnu.org; Wed, 03 Jul 2024 17:02:03 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1sP773-00088E-H2
+ for qemu-devel@nongnu.org; Wed, 03 Jul 2024 17:02:03 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1720040519;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=jPl2Libghn/zK5iVAyW17gBHT+3bCBjv9cgXjDBY2vk=;
+ b=WgC/Zm6odKNLXaYZ2j7fE4crRv3MOQC5cYvHfsBhrb+by9nEgIroLEMVQgRAF9WHpFyYae
+ Q7OZh7TQhhPZk3jpkr6YQ20PIOV1xVidWkVB+IWxY9nMVaUeJCRWr67DujG7fpnKExw9/h
+ Su6/qXTUzXSaUAj8dnaWyNEGeP9khGg=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-67-XRuf3J2RMsiNOwUBt60DGg-1; Wed,
+ 03 Jul 2024 17:01:56 -0400
+X-MC-Unique: XRuf3J2RMsiNOwUBt60DGg-1
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C4CC219560B2; Wed,  3 Jul 2024 21:01:53 +0000 (UTC)
+Received: from scv.localdomain (unknown [10.22.34.31])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 1C0271955F21; Wed,  3 Jul 2024 21:01:45 +0000 (UTC)
+From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: pbonzini@redhat.com, richard.henderson@linaro.org, berrange@redhat.com,
- eduardo@habkost.net, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Andrew Jones <ajones@ventanamicro.com>
-Subject: [PATCH v2 2/2] qom/object, accel-system: add support to Accel globals
-Date: Wed,  3 Jul 2024 17:41:49 -0300
-Message-ID: <20240703204149.1957136-3-dbarboza@ventanamicro.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240703204149.1957136-1-dbarboza@ventanamicro.com>
-References: <20240703204149.1957136-1-dbarboza@ventanamicro.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Peter Xu <peterx@redhat.com>,
+ qemu-block@nongnu.org,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Kevin Wolf <kwolf@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Stefan Berger <stefanb@linux.vnet.ibm.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Markus Armbruster <armbru@redhat.com>,
+ Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
+ Stefan Hajnoczi <stefanha@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ Lukas Straub <lukasstraub2@web.de>, Ani Sinha <anisinha@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, Michael Roth <michael.roth@amd.com>,
+ Hanna Reitz <hreitz@redhat.com>, Mads Ynddal <mads@ynddal.dk>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Eric Blake <eblake@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>, Jiri Pirko <jiri@resnulli.us>,
+ John Snow <jsnow@redhat.com>
+Subject: [PATCH 0/8] qapi: convert example sections to qmp-example rST
+ directives
+Date: Wed,  3 Jul 2024 17:01:35 -0400
+Message-ID: <20240703210144.339530-1-jsnow@redhat.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102e;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pj1-x102e.google.com
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,129 +97,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We're not honouring KVM options that are provided by any -accel option
-aside from the first. In this example:
-
-qemu-system-riscv64 -accel kvm,riscv-aia=emul (...) \
-    -accel kvm,riscv-aia=hwaccel
-
-'riscv-aia' will be set to 'emul', ignoring the last occurrence of the
-option that set 'riscv-aia' to 'hwaccel'.
-
-A failed attempt to solve this issue by setting 'merge_lists' can be
-found in [1]. A different approach was suggested in [2]: enable global
-properties for accelerators. This allows an user to override any accel
-setting by using '-global' and we won't need to change how '-accel' opts
-are handled.
-
-This is done by calling object_prop_set_globals() in
-accel_init_machine(). As done in device_post_init(), user's global
-props take precedence over compat props so object_prop_set_globals() is
-called after object_set_accelerator_compat_props().
-
-object_prop_check_globals() is then changed to recognize TYPE_ACCEL
-globals as valid.
-
-Re-using the fore-mentioned example we'll be able to set
-riscv-aia=hwaccel by doing the following:
-
-qemu-system-riscv64 -accel kvm,riscv-aia=emul (...) \
-    -global kvm-accel.riscv-aia=hwaccel
-
-[1] https://lore.kernel.org/qemu-devel/20240701133038.1489043-1-dbarboza@ventanamicro.com/
-[2] https://lore.kernel.org/qemu-devel/CABgObfbVJkCdpHV2uA7LGTbYEaoaizrbeG0vNo_T1ua5b=jq7Q@mail.gmail.com/
-
-Reported-by: Andrew Jones <ajones@ventanamicro.com>
-Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
----
- accel/accel-system.c |  2 ++
- qom/object.c         | 34 +++++++++++++++++++++++-----------
- 2 files changed, 25 insertions(+), 11 deletions(-)
-
-diff --git a/accel/accel-system.c b/accel/accel-system.c
-index f6c947dd82..8cb1eaa907 100644
---- a/accel/accel-system.c
-+++ b/accel/accel-system.c
-@@ -29,6 +29,7 @@
- #include "sysemu/cpus.h"
- #include "qemu/error-report.h"
- #include "accel-system.h"
-+#include "qapi/error.h"
- 
- int accel_init_machine(AccelState *accel, MachineState *ms)
- {
-@@ -43,6 +44,7 @@ int accel_init_machine(AccelState *accel, MachineState *ms)
-         object_unref(OBJECT(accel));
-     } else {
-         object_set_accelerator_compat_props(acc->compat_props);
-+        object_prop_set_globals(OBJECT(accel), &error_fatal);
-     }
-     return ret;
- }
-diff --git a/qom/object.c b/qom/object.c
-index 60dbd00edd..8730e770e6 100644
---- a/qom/object.c
-+++ b/qom/object.c
-@@ -15,6 +15,7 @@
- #include "qapi/error.h"
- #include "qom/object.h"
- #include "qom/object_interfaces.h"
-+#include "qemu/accel.h"
- #include "qemu/cutils.h"
- #include "qemu/memalign.h"
- #include "qapi/visitor.h"
-@@ -516,27 +517,38 @@ int object_prop_check_globals(void)
- 
-     for (i = 0; i < global_props()->len; i++) {
-         GlobalProperty *prop;
--        ObjectClass *oc;
-+        ObjectClass *globalc, *oc;
-         DeviceClass *dc;
- 
-         prop = g_ptr_array_index(global_props(), i);
-         if (prop->used) {
-             continue;
-         }
--        oc = object_class_by_name(prop->driver);
--        oc = object_class_dynamic_cast(oc, TYPE_DEVICE);
--        if (!oc) {
--            warn_report("global %s.%s has invalid class name",
--                        prop->driver, prop->property);
--            ret = 1;
-+        globalc = object_class_by_name(prop->driver);
-+        oc = object_class_dynamic_cast(globalc, TYPE_DEVICE);
-+        if (oc) {
-+            dc = DEVICE_CLASS(oc);
-+            if (!dc->hotpluggable && !prop->used) {
-+                warn_report("global %s.%s=%s not used",
-+                            prop->driver, prop->property, prop->value);
-+                ret = 1;
-+            }
-             continue;
-         }
--        dc = DEVICE_CLASS(oc);
--        if (!dc->hotpluggable && !prop->used) {
-+
-+        /*
-+         * At this point is either an accelerator global that is
-+         * unused or an invalid global. Both set ret = 1.
-+         */
-+        ret = 1;
-+
-+        oc = object_class_dynamic_cast(globalc, TYPE_ACCEL);
-+        if (oc) {
-             warn_report("global %s.%s=%s not used",
-                         prop->driver, prop->property, prop->value);
--            ret = 1;
--            continue;
-+        } else {
-+            warn_report("global %s.%s has invalid class name",
-+                        prop->driver, prop->property);
-         }
-     }
-     return ret;
--- 
-2.45.2
+GitLab: https://gitlab.com/jsnow/qemu/-/pipelines/1359714660=0D
+=0D
+This patchset focuses on converting example sections to rST directives=0D
+using a new `.. qmp-example::` directive.=0D
+=0D
+It is based on what I *assume* will be Markus' next pull request that=0D
+covers note conversion. Pull these patches from GitLab directly if=0D
+that's too annoying:=0D
+https://gitlab.com/jsnow/qemu/-/commits/sphinx-domain-prereqs-examples=0D
+=0D
+It is also annoyingly the case that both Markus' next pull request and=0D
+this series conflicts with a separate series I sent out, "docs/python:=0D
+bump minimum Sphinx version" - so it's extremely likely I'll need to=0D
+rebase and respin this series depending on what goes in and in what=0D
+order. Ah well...=0D
+=0D
+Changes since this was split out from the prior series:=0D
+=0D
+- Harmonie updated the CSS for the example block section.=0D
+  I think it's really tidy now! Thanks Harmonie!=0D
+- Dependence on SphinxDirective was removed, but it will likely=0D
+  re-appear in the next series anyway.=0D
+- qapi-code-gen.rst was updated with a section on how to write examples.=0D
+- Various minor tweaks to comments, commit messages, docs, etc.=0D
+=0D
+Harmonie Snow (1):=0D
+  docs/sphinx: add CSS styling for qmp-example directive=0D
+=0D
+John Snow (7):=0D
+  docs/qapidoc: factor out do_parse()=0D
+  docs/qapidoc: create qmp-example directive=0D
+  docs/qapidoc: add QMP highlighting to annotated qmp-example blocks=0D
+  qapi: convert "Example" sections without titles=0D
+  qapi: convert "Example" sections with titles=0D
+  qapi: convert "Example" sections with longer prose=0D
+  qapi: remove "Example" doc section=0D
+=0D
+ docs/devel/qapi-code-gen.rst           |  58 +++++++--=0D
+ docs/sphinx-static/theme_overrides.css |  49 ++++++++=0D
+ docs/sphinx/qapidoc.py                 | 156 +++++++++++++++++++++----=0D
+ qapi/acpi.json                         |   4 +-=0D
+ qapi/block-core.json                   |  88 +++++++-------=0D
+ qapi/block.json                        |  57 +++++----=0D
+ qapi/char.json                         |  24 ++--=0D
+ qapi/control.json                      |   8 +-=0D
+ qapi/dump.json                         |   8 +-=0D
+ qapi/machine-target.json               |   2 +-=0D
+ qapi/machine.json                      |  68 ++++++-----=0D
+ qapi/migration.json                    |  90 +++++++-------=0D
+ qapi/misc-target.json                  |  22 ++--=0D
+ qapi/misc.json                         |  32 ++---=0D
+ qapi/net.json                          |  20 ++--=0D
+ qapi/pci.json                          |   2 +-=0D
+ qapi/qdev.json                         |  10 +-=0D
+ qapi/qom.json                          |  16 +--=0D
+ qapi/replay.json                       |   8 +-=0D
+ qapi/rocker.json                       |   8 +-=0D
+ qapi/run-state.json                    |  30 ++---=0D
+ qapi/tpm.json                          |   6 +-=0D
+ qapi/trace.json                        |   4 +-=0D
+ qapi/transaction.json                  |   2 +-=0D
+ qapi/ui.json                           |  45 +++----=0D
+ qapi/vfio.json                         |   2 +-=0D
+ qapi/virtio.json                       |  45 ++++---=0D
+ qapi/yank.json                         |   4 +-=0D
+ scripts/qapi/parser.py                 |  10 +-=0D
+ tests/qapi-schema/doc-good.json        |  19 +--=0D
+ tests/qapi-schema/doc-good.out         |  26 +++--=0D
+ tests/qapi-schema/doc-good.txt         |  23 ++--=0D
+ 32 files changed, 605 insertions(+), 341 deletions(-)=0D
+=0D
+-- =0D
+2.45.0=0D
+=0D
 
 
