@@ -2,77 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95337926C1A
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 00:53:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6215B926C24
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 00:57:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sP8oR-00088t-Ri; Wed, 03 Jul 2024 18:50:56 -0400
+	id 1sP8tz-0003so-RZ; Wed, 03 Jul 2024 18:56:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sP8oP-0007sn-5J
- for qemu-devel@nongnu.org; Wed, 03 Jul 2024 18:50:53 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sP8ty-0003rn-6P
+ for qemu-devel@nongnu.org; Wed, 03 Jul 2024 18:56:38 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sP8oN-0007aG-Ao
- for qemu-devel@nongnu.org; Wed, 03 Jul 2024 18:50:52 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sP8tw-0001ek-4d
+ for qemu-devel@nongnu.org; Wed, 03 Jul 2024 18:56:37 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1720047049;
+ s=mimecast20190719; t=1720047395;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=bN0cTm8m+n/A4V5Tgbpm0TUAfWebEt6LcyWQbTcpz4g=;
- b=Eui+RqHgA0+BA8StBatp5vu1upqwU4ECUHdd1Y+hSk0AKYvga7GeSdkB4cYKKKOvxgxOLo
- R+5ZVnP6dUvYEHyEXJ8nvw1bhamFteiv2VAzxqw1t4pOcmsZNG8SHbhcJR952MOG0woVM0
- rym91oxT+yyy/KaRN5RbSn5RPr8b4s4=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=MwYyD/KUkbkxSb1TRAT8zXkqiqU7/n4SuhkILToxS/w=;
+ b=JqmNwpu9lmSm2pxZfa3INsOFJNzWs0HlPjff3KWxEQbqMhrejJ2Zb5RIbBKcXP5YsmqXaB
+ /oWdJk0qqmLwENKm4nnkuVZz3n29rO9tfUx8ow+Mu92PdcYreQHAbgfDKiR1zOl6VpdieG
+ 7LmM/CsgxiX+vmMKhjo3EN2fZoCxG3A=
+Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
+ [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-99-0aFcczPxOBumtE8voqanJw-1; Wed, 03 Jul 2024 18:50:48 -0400
-X-MC-Unique: 0aFcczPxOBumtE8voqanJw-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-4257c42f035so31563265e9.3
- for <qemu-devel@nongnu.org>; Wed, 03 Jul 2024 15:50:48 -0700 (PDT)
+ us-mta-691-nRTa7nZHN3iSO1A-25YxiQ-1; Wed, 03 Jul 2024 18:56:34 -0400
+X-MC-Unique: nRTa7nZHN3iSO1A-25YxiQ-1
+Received: by mail-lf1-f69.google.com with SMTP id
+ 2adb3069b0e04-52e982ad660so1184605e87.0
+ for <qemu-devel@nongnu.org>; Wed, 03 Jul 2024 15:56:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720047046; x=1720651846;
+ d=1e100.net; s=20230601; t=1720047392; x=1720652192;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=bN0cTm8m+n/A4V5Tgbpm0TUAfWebEt6LcyWQbTcpz4g=;
- b=YmxK1ChFTWiZXaSzcUKdkOQznq7LXh5San4VZpGKqakM4fs+Td2wPbCoEUSOL7crJW
- BM0916w4huw2OHlxk4WryQwS3UD11GRG3W3B8V8aQBh/sc7BjY58a7KBmA+2LDn5A4Vw
- wiSUfoUvmgiLX5cG3cr0run7x8j7R96PE2tRYoaFmo04sIbtLl9eREZcCB9a7Zsup9/e
- TbY6ZxYleb9lC46fWj46Z9AkzJ7XsZtgl8cZQlLMLCcuqhAK612yM2YJz4x/iN7SM1MI
- MZrG42OmIWK376ixGWrAbErxHPH9Wpp9AfJyjNcWUh9CjdMFdtOQ04b5JrzreQoF6g4x
- ArlA==
-X-Gm-Message-State: AOJu0YzW0AcIws4VBr5B1wB3UiY+YvNdQp6Qb9IQ1BoyRWsYOMgPK3kp
- EhintXVLgO62M3FMXnhbiyRoJ6hk+/wHReU502AF4JHg4VMb6ukhM1hz2Cn/rmVfIajr39zw4iJ
- IeuXtDLSvcEkaO+5Z0r/O9rnKFZPCfdMMCI6PZmShGaN6OA9RNLlKuKjm38DAYy+LMwRHMO+3Tf
- 6L2aBmXOOk4v7KPNlbZ7MSdJNA0pYYtA==
-X-Received: by 2002:a7b:cd95:0:b0:425:6dce:8c54 with SMTP id
- 5b1f17b1804b1-4264a48c4e0mr219965e9.33.1720047046520; 
- Wed, 03 Jul 2024 15:50:46 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHOSRByIk9k3rv668VG4ZZgH3goxRYz4rLRrmCDty5VxwTtGnPAQNDI+3zjtturXDoaidQjDg==
-X-Received: by 2002:a7b:cd95:0:b0:425:6dce:8c54 with SMTP id
- 5b1f17b1804b1-4264a48c4e0mr219825e9.33.1720047046024; 
- Wed, 03 Jul 2024 15:50:46 -0700 (PDT)
+ bh=MwYyD/KUkbkxSb1TRAT8zXkqiqU7/n4SuhkILToxS/w=;
+ b=pojSUNe3Moh04VCfzgnrvIHtdg1NnRch9wAZLlS+rrY0juJXmRSTJnjWY0sNuF/jhW
+ 8hIPkwGMw1+K/g7t1Zpq1ANaEow8INkDj54eKsvcqm2lZotQXUUskB7feE8AxaN3kFSO
+ ezJrNBqkGZBmagBbIcwxLnWEpE8eXkERCrZQyrszT3xFwIsfQ0tyI66qwlUqbYsebYAh
+ 2ChRWDSAkMxQPsEifpwYcY2sNUDSXdNT5we+NkJ2YTW0FkIiU8ZgH4EdGwd8RNkf21bK
+ rFTGMyw+bkJgpMGlFidvomshaSq1JqBeiJFJf+HED/0m2nCTaclcBsENxBoUudOT9Mdc
+ Tdxw==
+X-Gm-Message-State: AOJu0YxRojsUya2KNX1sZxim9sLn6Z34AIcAZ/siwVzWCkPoUQTXNuzS
+ 4b0GqhTgzcT2TDUJBNnnEWgHbELgJsVfeTeLIY7vmmUss4IjQFDhUwMX2SoIe1Uk8TJFd61ZNzt
+ 9AmCd47QVk0q7VKySbXC9JDhd1EiZq1kQS6zkm4F8fFLl1oJnQtviKSobuV1+RGxZ/nSeZh39SN
+ IqoOok9pBvcd9HuBlp4hOss4eQVbtaGg==
+X-Received: by 2002:a05:6512:3c9c:b0:52c:8979:9627 with SMTP id
+ 2adb3069b0e04-52e826467f8mr10887558e87.3.1720047392028; 
+ Wed, 03 Jul 2024 15:56:32 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFYR6GPRB9iG/xpmU5wXORmOCudYip0iPHL3usAsVW7BYYmW9ewnODZ6s4AXh7fMfEFw78TMw==
+X-Received: by 2002:a05:6512:3c9c:b0:52c:8979:9627 with SMTP id
+ 2adb3069b0e04-52e826467f8mr10887532e87.3.1720047391149; 
+ Wed, 03 Jul 2024 15:56:31 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc7:441:91a8:a47d:5a9:c02f:92f2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3675a0cd634sm17094726f8f.9.2024.07.03.15.50.43
+ 4fb4d7f45d1cf-58b43df9efdsm2933694a12.57.2024.07.03.15.56.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 03 Jul 2024 15:50:45 -0700 (PDT)
-Date: Wed, 3 Jul 2024 18:50:42 -0400
+ Wed, 03 Jul 2024 15:56:30 -0700 (PDT)
+Date: Wed, 3 Jul 2024 18:56:26 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Akihiko Odaki <akihiko.odaki@daynix.com>,
- Markus Armbruster <armbru@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony PERARD <anthony@xenproject.org>,
- Paul Durrant <paul@xen.org>, xen-devel@lists.xenproject.org
-Subject: [PULL v3 85/85] hw/pci: Replace -1 with UINT32_MAX for romsize
-Message-ID: <6a67577d8003428bdbeba61d32a9f8158f12624b.1720046570.git.mst@redhat.com>
+ Sunil V L <sunilvl@ventanamicro.com>, Igor Mammedov <imammedo@redhat.com>
+Subject: [PULL v3 68/85] tests/data/acpi/virt: Move ARM64 ACPI tables under
+ aarch64/${machine} path
+Message-ID: <7434f904673c36b78871a3b18ab1f5c09c640131.1720046570.git.mst@redhat.com>
 References: <cover.1720046570.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -104,89 +100,170 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
+From: Sunil V L <sunilvl@ventanamicro.com>
 
-romsize is an uint32_t variable. Specifying -1 as an uint32_t value is
-obscure way to denote UINT32_MAX.
+Same machine name can be used by different architectures. Hence, create
+aarch64 folder and move all aarch64 related AML files for virt machine
+inside.
 
-Worse, if int is wider than 32-bit, it will change the behavior of a
-construct like the following:
-romsize = -1;
-if (romsize != -1) {
-    ...
-}
-
-When -1 is assigned to romsize, -1 will be implicitly casted into
-uint32_t, resulting in UINT32_MAX. On contrary, when evaluating
-romsize != -1, romsize will be casted into int, and it will be a
-comparison of UINT32_MAX and -1, and result in false.
-
-Replace -1 with UINT32_MAX for statements involving the variable to
-clarify the intent and prevent potential breakage.
-
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
-Message-Id: <20240627-reuse-v10-10-7ca0b8ed3d9f@daynix.com>
+Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
+Reviewed-by: Igor Mammedov <imammedo@redhat.com>
+Message-Id: <20240625150839.1358279-11-sunilvl@ventanamicro.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/pci/pci.c             | 8 ++++----
- hw/xen/xen_pt_load_rom.c | 2 +-
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ tests/data/acpi/{ => aarch64}/virt/APIC             | Bin
+ .../data/acpi/{ => aarch64}/virt/APIC.acpihmatvirt  | Bin
+ tests/data/acpi/{ => aarch64}/virt/APIC.topology    | Bin
+ tests/data/acpi/{ => aarch64}/virt/DBG2             | Bin
+ tests/data/acpi/{ => aarch64}/virt/DSDT             | Bin
+ .../data/acpi/{ => aarch64}/virt/DSDT.acpihmatvirt  | Bin
+ tests/data/acpi/{ => aarch64}/virt/DSDT.memhp       | Bin
+ tests/data/acpi/{ => aarch64}/virt/DSDT.pxb         | Bin
+ tests/data/acpi/{ => aarch64}/virt/DSDT.topology    | Bin
+ tests/data/acpi/{ => aarch64}/virt/FACP             | Bin
+ tests/data/acpi/{ => aarch64}/virt/GTDT             | Bin
+ .../data/acpi/{ => aarch64}/virt/HMAT.acpihmatvirt  | Bin
+ tests/data/acpi/{ => aarch64}/virt/IORT             | Bin
+ tests/data/acpi/{ => aarch64}/virt/MCFG             | Bin
+ tests/data/acpi/{ => aarch64}/virt/NFIT.memhp       | Bin
+ tests/data/acpi/{ => aarch64}/virt/PPTT             | Bin
+ .../data/acpi/{ => aarch64}/virt/PPTT.acpihmatvirt  | Bin
+ tests/data/acpi/{ => aarch64}/virt/PPTT.topology    | Bin
+ tests/data/acpi/{ => aarch64}/virt/SLIT.memhp       | Bin
+ tests/data/acpi/{ => aarch64}/virt/SPCR             | Bin
+ .../data/acpi/{ => aarch64}/virt/SRAT.acpihmatvirt  | Bin
+ tests/data/acpi/{ => aarch64}/virt/SRAT.memhp       | Bin
+ tests/data/acpi/{ => aarch64}/virt/SRAT.numamem     | Bin
+ tests/data/acpi/{ => aarch64}/virt/SSDT.memhp       | Bin
+ tests/data/acpi/{ => aarch64}/virt/VIOT             | Bin
+ 25 files changed, 0 insertions(+), 0 deletions(-)
+ rename tests/data/acpi/{ => aarch64}/virt/APIC (100%)
+ rename tests/data/acpi/{ => aarch64}/virt/APIC.acpihmatvirt (100%)
+ rename tests/data/acpi/{ => aarch64}/virt/APIC.topology (100%)
+ rename tests/data/acpi/{ => aarch64}/virt/DBG2 (100%)
+ rename tests/data/acpi/{ => aarch64}/virt/DSDT (100%)
+ rename tests/data/acpi/{ => aarch64}/virt/DSDT.acpihmatvirt (100%)
+ rename tests/data/acpi/{ => aarch64}/virt/DSDT.memhp (100%)
+ rename tests/data/acpi/{ => aarch64}/virt/DSDT.pxb (100%)
+ rename tests/data/acpi/{ => aarch64}/virt/DSDT.topology (100%)
+ rename tests/data/acpi/{ => aarch64}/virt/FACP (100%)
+ rename tests/data/acpi/{ => aarch64}/virt/GTDT (100%)
+ rename tests/data/acpi/{ => aarch64}/virt/HMAT.acpihmatvirt (100%)
+ rename tests/data/acpi/{ => aarch64}/virt/IORT (100%)
+ rename tests/data/acpi/{ => aarch64}/virt/MCFG (100%)
+ rename tests/data/acpi/{ => aarch64}/virt/NFIT.memhp (100%)
+ rename tests/data/acpi/{ => aarch64}/virt/PPTT (100%)
+ rename tests/data/acpi/{ => aarch64}/virt/PPTT.acpihmatvirt (100%)
+ rename tests/data/acpi/{ => aarch64}/virt/PPTT.topology (100%)
+ rename tests/data/acpi/{ => aarch64}/virt/SLIT.memhp (100%)
+ rename tests/data/acpi/{ => aarch64}/virt/SPCR (100%)
+ rename tests/data/acpi/{ => aarch64}/virt/SRAT.acpihmatvirt (100%)
+ rename tests/data/acpi/{ => aarch64}/virt/SRAT.memhp (100%)
+ rename tests/data/acpi/{ => aarch64}/virt/SRAT.numamem (100%)
+ rename tests/data/acpi/{ => aarch64}/virt/SSDT.memhp (100%)
+ rename tests/data/acpi/{ => aarch64}/virt/VIOT (100%)
 
-diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-index fa85f87b1c..4c7be52951 100644
---- a/hw/pci/pci.c
-+++ b/hw/pci/pci.c
-@@ -70,7 +70,7 @@ static bool pcie_has_upstream_port(PCIDevice *dev);
- static Property pci_props[] = {
-     DEFINE_PROP_PCI_DEVFN("addr", PCIDevice, devfn, -1),
-     DEFINE_PROP_STRING("romfile", PCIDevice, romfile),
--    DEFINE_PROP_UINT32("romsize", PCIDevice, romsize, -1),
-+    DEFINE_PROP_UINT32("romsize", PCIDevice, romsize, UINT32_MAX),
-     DEFINE_PROP_UINT32("rombar",  PCIDevice, rom_bar, 1),
-     DEFINE_PROP_BIT("multifunction", PCIDevice, cap_present,
-                     QEMU_PCI_CAP_MULTIFUNCTION_BITNR, false),
-@@ -2073,7 +2073,7 @@ static void pci_qdev_realize(DeviceState *qdev, Error **errp)
-                                  g_cmp_uint32, NULL);
-     }
- 
--    if (pci_dev->romsize != -1 && !is_power_of_2(pci_dev->romsize)) {
-+    if (pci_dev->romsize != UINT32_MAX && !is_power_of_2(pci_dev->romsize)) {
-         error_setg(errp, "ROM size %u is not a power of two", pci_dev->romsize);
-         return;
-     }
-@@ -2359,7 +2359,7 @@ static void pci_add_option_rom(PCIDevice *pdev, bool is_default_rom,
-         return;
-     }
- 
--    if (load_file || pdev->romsize == -1) {
-+    if (load_file || pdev->romsize == UINT32_MAX) {
-         path = qemu_find_file(QEMU_FILE_TYPE_BIOS, pdev->romfile);
-         if (path == NULL) {
-             path = g_strdup(pdev->romfile);
-@@ -2378,7 +2378,7 @@ static void pci_add_option_rom(PCIDevice *pdev, bool is_default_rom,
-                        pdev->romfile);
-             return;
-         }
--        if (pdev->romsize != -1) {
-+        if (pdev->romsize != UINT_MAX) {
-             if (size > pdev->romsize) {
-                 error_setg(errp, "romfile \"%s\" (%u bytes) "
-                            "is too large for ROM size %u",
-diff --git a/hw/xen/xen_pt_load_rom.c b/hw/xen/xen_pt_load_rom.c
-index 03422a8a71..6bc64acd33 100644
---- a/hw/xen/xen_pt_load_rom.c
-+++ b/hw/xen/xen_pt_load_rom.c
-@@ -53,7 +53,7 @@ void *pci_assign_dev_load_option_rom(PCIDevice *dev,
-     }
-     fseek(fp, 0, SEEK_SET);
- 
--    if (dev->romsize != -1) {
-+    if (dev->romsize != UINT_MAX) {
-         if (st.st_size > dev->romsize) {
-             error_report("ROM BAR \"%s\" (%ld bytes) is too large for ROM size %u",
-                          rom_file, (long) st.st_size, dev->romsize);
+diff --git a/tests/data/acpi/virt/APIC b/tests/data/acpi/aarch64/virt/APIC
+similarity index 100%
+rename from tests/data/acpi/virt/APIC
+rename to tests/data/acpi/aarch64/virt/APIC
+diff --git a/tests/data/acpi/virt/APIC.acpihmatvirt b/tests/data/acpi/aarch64/virt/APIC.acpihmatvirt
+similarity index 100%
+rename from tests/data/acpi/virt/APIC.acpihmatvirt
+rename to tests/data/acpi/aarch64/virt/APIC.acpihmatvirt
+diff --git a/tests/data/acpi/virt/APIC.topology b/tests/data/acpi/aarch64/virt/APIC.topology
+similarity index 100%
+rename from tests/data/acpi/virt/APIC.topology
+rename to tests/data/acpi/aarch64/virt/APIC.topology
+diff --git a/tests/data/acpi/virt/DBG2 b/tests/data/acpi/aarch64/virt/DBG2
+similarity index 100%
+rename from tests/data/acpi/virt/DBG2
+rename to tests/data/acpi/aarch64/virt/DBG2
+diff --git a/tests/data/acpi/virt/DSDT b/tests/data/acpi/aarch64/virt/DSDT
+similarity index 100%
+rename from tests/data/acpi/virt/DSDT
+rename to tests/data/acpi/aarch64/virt/DSDT
+diff --git a/tests/data/acpi/virt/DSDT.acpihmatvirt b/tests/data/acpi/aarch64/virt/DSDT.acpihmatvirt
+similarity index 100%
+rename from tests/data/acpi/virt/DSDT.acpihmatvirt
+rename to tests/data/acpi/aarch64/virt/DSDT.acpihmatvirt
+diff --git a/tests/data/acpi/virt/DSDT.memhp b/tests/data/acpi/aarch64/virt/DSDT.memhp
+similarity index 100%
+rename from tests/data/acpi/virt/DSDT.memhp
+rename to tests/data/acpi/aarch64/virt/DSDT.memhp
+diff --git a/tests/data/acpi/virt/DSDT.pxb b/tests/data/acpi/aarch64/virt/DSDT.pxb
+similarity index 100%
+rename from tests/data/acpi/virt/DSDT.pxb
+rename to tests/data/acpi/aarch64/virt/DSDT.pxb
+diff --git a/tests/data/acpi/virt/DSDT.topology b/tests/data/acpi/aarch64/virt/DSDT.topology
+similarity index 100%
+rename from tests/data/acpi/virt/DSDT.topology
+rename to tests/data/acpi/aarch64/virt/DSDT.topology
+diff --git a/tests/data/acpi/virt/FACP b/tests/data/acpi/aarch64/virt/FACP
+similarity index 100%
+rename from tests/data/acpi/virt/FACP
+rename to tests/data/acpi/aarch64/virt/FACP
+diff --git a/tests/data/acpi/virt/GTDT b/tests/data/acpi/aarch64/virt/GTDT
+similarity index 100%
+rename from tests/data/acpi/virt/GTDT
+rename to tests/data/acpi/aarch64/virt/GTDT
+diff --git a/tests/data/acpi/virt/HMAT.acpihmatvirt b/tests/data/acpi/aarch64/virt/HMAT.acpihmatvirt
+similarity index 100%
+rename from tests/data/acpi/virt/HMAT.acpihmatvirt
+rename to tests/data/acpi/aarch64/virt/HMAT.acpihmatvirt
+diff --git a/tests/data/acpi/virt/IORT b/tests/data/acpi/aarch64/virt/IORT
+similarity index 100%
+rename from tests/data/acpi/virt/IORT
+rename to tests/data/acpi/aarch64/virt/IORT
+diff --git a/tests/data/acpi/virt/MCFG b/tests/data/acpi/aarch64/virt/MCFG
+similarity index 100%
+rename from tests/data/acpi/virt/MCFG
+rename to tests/data/acpi/aarch64/virt/MCFG
+diff --git a/tests/data/acpi/virt/NFIT.memhp b/tests/data/acpi/aarch64/virt/NFIT.memhp
+similarity index 100%
+rename from tests/data/acpi/virt/NFIT.memhp
+rename to tests/data/acpi/aarch64/virt/NFIT.memhp
+diff --git a/tests/data/acpi/virt/PPTT b/tests/data/acpi/aarch64/virt/PPTT
+similarity index 100%
+rename from tests/data/acpi/virt/PPTT
+rename to tests/data/acpi/aarch64/virt/PPTT
+diff --git a/tests/data/acpi/virt/PPTT.acpihmatvirt b/tests/data/acpi/aarch64/virt/PPTT.acpihmatvirt
+similarity index 100%
+rename from tests/data/acpi/virt/PPTT.acpihmatvirt
+rename to tests/data/acpi/aarch64/virt/PPTT.acpihmatvirt
+diff --git a/tests/data/acpi/virt/PPTT.topology b/tests/data/acpi/aarch64/virt/PPTT.topology
+similarity index 100%
+rename from tests/data/acpi/virt/PPTT.topology
+rename to tests/data/acpi/aarch64/virt/PPTT.topology
+diff --git a/tests/data/acpi/virt/SLIT.memhp b/tests/data/acpi/aarch64/virt/SLIT.memhp
+similarity index 100%
+rename from tests/data/acpi/virt/SLIT.memhp
+rename to tests/data/acpi/aarch64/virt/SLIT.memhp
+diff --git a/tests/data/acpi/virt/SPCR b/tests/data/acpi/aarch64/virt/SPCR
+similarity index 100%
+rename from tests/data/acpi/virt/SPCR
+rename to tests/data/acpi/aarch64/virt/SPCR
+diff --git a/tests/data/acpi/virt/SRAT.acpihmatvirt b/tests/data/acpi/aarch64/virt/SRAT.acpihmatvirt
+similarity index 100%
+rename from tests/data/acpi/virt/SRAT.acpihmatvirt
+rename to tests/data/acpi/aarch64/virt/SRAT.acpihmatvirt
+diff --git a/tests/data/acpi/virt/SRAT.memhp b/tests/data/acpi/aarch64/virt/SRAT.memhp
+similarity index 100%
+rename from tests/data/acpi/virt/SRAT.memhp
+rename to tests/data/acpi/aarch64/virt/SRAT.memhp
+diff --git a/tests/data/acpi/virt/SRAT.numamem b/tests/data/acpi/aarch64/virt/SRAT.numamem
+similarity index 100%
+rename from tests/data/acpi/virt/SRAT.numamem
+rename to tests/data/acpi/aarch64/virt/SRAT.numamem
+diff --git a/tests/data/acpi/virt/SSDT.memhp b/tests/data/acpi/aarch64/virt/SSDT.memhp
+similarity index 100%
+rename from tests/data/acpi/virt/SSDT.memhp
+rename to tests/data/acpi/aarch64/virt/SSDT.memhp
+diff --git a/tests/data/acpi/virt/VIOT b/tests/data/acpi/aarch64/virt/VIOT
+similarity index 100%
+rename from tests/data/acpi/virt/VIOT
+rename to tests/data/acpi/aarch64/virt/VIOT
 -- 
 MST
 
