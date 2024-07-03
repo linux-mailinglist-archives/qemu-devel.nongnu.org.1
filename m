@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC0D5925530
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jul 2024 10:18:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A786B925532
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jul 2024 10:18:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOvAn-0003JQ-Q1; Wed, 03 Jul 2024 04:17:05 -0400
+	id 1sOvAq-0003Lc-A0; Wed, 03 Jul 2024 04:17:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1sOvAk-0003Iy-Mr; Wed, 03 Jul 2024 04:17:02 -0400
+ id 1sOvAm-0003Js-MV; Wed, 03 Jul 2024 04:17:05 -0400
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1sOvAi-00014r-5c; Wed, 03 Jul 2024 04:17:01 -0400
+ id 1sOvAk-00014r-VI; Wed, 03 Jul 2024 04:17:04 -0400
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Wed, 3 Jul
@@ -36,9 +36,10 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  <qemu-block@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
  <yunlin.tang@aspeedtech.com>
-Subject: [PATCH v2 4/5] hw/block: m25p80: support quad mode for w25q01jvq
-Date: Wed, 3 Jul 2024 16:16:22 +0800
-Message-ID: <20240703081623.2740862-5-jamin_lin@aspeedtech.com>
+Subject: [PATCH v2 5/5] test/avocado/machine_aspeed.py: update to test network
+ for AST2700
+Date: Wed, 3 Jul 2024 16:16:23 +0800
+Message-ID: <20240703081623.2740862-6-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240703081623.2740862-1-jamin_lin@aspeedtech.com>
 References: <20240703081623.2740862-1-jamin_lin@aspeedtech.com>
@@ -69,74 +70,75 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-According to the w25q01jv datasheet at page 16,
-it is required to set QE bit in "Status Register 2".
-Besides, users are able to utilize "Write Status Register 1(0x01)"
-command to set QE bit in "Status Register 2" and
-utilize "Read Status Register 2(0x35)" command to get the QE bit status.
+Update a test case to test network connection via ssh and
+changes to test Aspeed OpenBMC SDK v09.02 for AST2700.
 
-To support quad mode for w25q01jvq, update collecting data needed
-2 bytes for WRSR command in decode_new_cmd function and
-verify QE bit at the second byte of collecting data bit 2
-in complete_collecting_data.
+ASPEED fixed TX mask issue from linux/drivers/ftgmac100.c.
+It is required to use ASPEED SDK image since v09.02
+for AST2700 QEMU network testing.
 
-Update RDCR_EQIO command to set bit 2 of return data
-if quad mode enable in decode_new_cmd.
+A test image is downloaded from the ASPEED Forked OpenBMC GitHub
+release repository :
+https://github.com/AspeedTech-BMC/openbmc/releases/
 
-Signed-off-by: Troy Lee <troy_lee@aspeedtech.com>
+Test command:
+```
+cd build
+pyvenv/bin/avocado run ../qemu/tests/avocado/machine_aspeed.py:AST2x00MachineSDK.test_aarch64_ast2700_evb_sdk_v09_02
+```
+
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 ---
- hw/block/m25p80.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ tests/avocado/machine_aspeed.py | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/hw/block/m25p80.c b/hw/block/m25p80.c
-index 8dec134832..9e99107b42 100644
---- a/hw/block/m25p80.c
-+++ b/hw/block/m25p80.c
-@@ -416,6 +416,7 @@ typedef enum {
-     /*
-      * Micron: 0x35 - enable QPI
-      * Spansion: 0x35 - read control register
-+     * Winbond: 0x35 - quad enable
-      */
-     RDCR_EQIO = 0x35,
-     RSTQIO = 0xf5,
-@@ -798,6 +799,11 @@ static void complete_collecting_data(Flash *s)
-                 s->four_bytes_address_mode = extract32(s->data[1], 5, 1);
-             }
-             break;
-+        case MAN_WINBOND:
-+            if (s->len > 1) {
-+                s->quad_enable = !!(s->data[1] & 0x02);
-+            }
-+            break;
-         default:
-             break;
-         }
-@@ -1254,6 +1260,10 @@ static void decode_new_cmd(Flash *s, uint32_t value)
-             s->needed_bytes = 2;
-             s->state = STATE_COLLECTING_VAR_LEN_DATA;
-             break;
-+        case MAN_WINBOND:
-+            s->needed_bytes = 2;
-+            s->state = STATE_COLLECTING_VAR_LEN_DATA;
-+            break;
-         default:
-             s->needed_bytes = 1;
-             s->state = STATE_COLLECTING_DATA;
-@@ -1431,6 +1441,12 @@ static void decode_new_cmd(Flash *s, uint32_t value)
-         case MAN_MACRONIX:
-             s->quad_enable = true;
-             break;
-+        case MAN_WINBOND:
-+            s->data[0] = (!!s->quad_enable) << 1;
-+            s->pos = 0;
-+            s->len = 1;
-+            s->state = STATE_READING_DATA;
-+            break;
-         default:
-             break;
-         }
+diff --git a/tests/avocado/machine_aspeed.py b/tests/avocado/machine_aspeed.py
+index 3a20644fb2..855da805ae 100644
+--- a/tests/avocado/machine_aspeed.py
++++ b/tests/avocado/machine_aspeed.py
+@@ -313,14 +313,14 @@ def do_test_arm_aspeed_sdk_start(self, image):
+ 
+     def do_test_aarch64_aspeed_sdk_start(self, image):
+         self.vm.set_console()
+-        self.vm.add_args('-drive', 'file=' + image + ',if=mtd,format=raw')
++        self.vm.add_args('-drive', 'file=' + image + ',if=mtd,format=raw',
++                         '-net', 'nic', '-net', 'user,hostfwd=:127.0.0.1:0-:22')
+ 
+         self.vm.launch()
+ 
+         self.wait_for_console_pattern('U-Boot 2023.10')
+         self.wait_for_console_pattern('## Loading kernel from FIT Image')
+         self.wait_for_console_pattern('Starting kernel ...')
+-        self.wait_for_console_pattern("systemd[1]: Hostname set to")
+ 
+     @skipUnless(os.getenv('QEMU_TEST_FLAKY_TESTS'), 'Test is unstable on GitLab')
+ 
+@@ -387,15 +387,15 @@ def test_arm_ast2600_evb_sdk(self):
+         year = time.strftime("%Y")
+         self.ssh_command_output_contains('/sbin/hwclock -f /dev/rtc1', year);
+ 
+-    def test_aarch64_ast2700_evb_sdk_v09_01(self):
++    def test_aarch64_ast2700_evb_sdk_v09_02(self):
+         """
+         :avocado: tags=arch:aarch64
+         :avocado: tags=machine:ast2700-evb
+         """
+ 
+         image_url = ('https://github.com/AspeedTech-BMC/openbmc/releases/'
+-                     'download/v09.01/ast2700-default-obmc.tar.gz')
+-        image_hash = 'b1cc0fd73c7650d34c9c8459a243f52a91e9e27144b8608b2645ab19461d1e07'
++                     'download/v09.02/ast2700-default-obmc.tar.gz')
++        image_hash = 'ac969c2602f4e6bdb69562ff466b89ae3fe1d86e1f6797bb7969d787f82116a7'
+         image_path = self.fetch_asset(image_url, asset_hash=image_hash,
+                                       algorithm='sha256')
+         archive.extract(image_path, self.workdir)
+@@ -436,4 +436,5 @@ def test_aarch64_ast2700_evb_sdk_v09_01(self):
+ 
+         self.vm.add_args('-smp', str(num_cpu))
+         self.do_test_aarch64_aspeed_sdk_start(image_dir + 'image-bmc')
+-
++        self.wait_for_console_pattern('nodistro.0 ast2700-default ttyS12')
++        self.ssh_connect('root', '0penBmc', False)
 -- 
 2.34.1
 
