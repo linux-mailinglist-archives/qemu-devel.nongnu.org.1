@@ -2,79 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17F39926BE1
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 00:49:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 467E1926C02
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 00:52:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sP8mt-0004mj-WC; Wed, 03 Jul 2024 18:49:20 -0400
+	id 1sP8mu-0004rD-GQ; Wed, 03 Jul 2024 18:49:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sP8mo-0004U9-QB
- for qemu-devel@nongnu.org; Wed, 03 Jul 2024 18:49:14 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sP8mq-0004fg-7e
+ for qemu-devel@nongnu.org; Wed, 03 Jul 2024 18:49:16 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sP8mY-0005Tu-Cu
- for qemu-devel@nongnu.org; Wed, 03 Jul 2024 18:49:14 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sP8me-0005iU-TW
+ for qemu-devel@nongnu.org; Wed, 03 Jul 2024 18:49:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1720046937;
+ s=mimecast20190719; t=1720046942;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=H3osRPyR8JjW6MeyHBrRsmkcAIK1uR3HKs135scl6wM=;
- b=SY1YGsNQGllu8x5XJjc1PDJESSF/C3fPbPzxuIeWTnO33yfa93oV4ZNo0c2e+hhOnDkOEn
- MsYCNfA4YVIrfo4+byO1y0ds0G4XM3DSv92R6r1WYlWxJcqgxg3Erc8YTlWi9zwr49KXX7
- c50CII3l0xmRJyjHd4/2jodc7laKsWc=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=FXwifnBJIBh3zju1O5LT6q/8nalot/g3k4ePiwaH62E=;
+ b=ZVTCsj1mlm79tsobKDPMb5xT4y3tuQkEReBQz+DGvCjpSw37h4QtXOJdScUUITYEXTUdVE
+ EQjSvnVLMmOELlOyPIIS9rMnyAK6bHHi9AJwzT/bQ1m2SjT/qengMP5MN4fuJQ8X74qdYR
+ iQ5O/OcgGRQTuu/2YCba7Yqgb2172kM=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-557-p_0d4iUpMsCdtph_woEHiA-1; Wed, 03 Jul 2024 18:48:56 -0400
-X-MC-Unique: p_0d4iUpMsCdtph_woEHiA-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-367987cff30so35037f8f.1
- for <qemu-devel@nongnu.org>; Wed, 03 Jul 2024 15:48:56 -0700 (PDT)
+ us-mta-81-biRXV3JaNEO04Rmtgfk6IQ-1; Wed, 03 Jul 2024 18:49:01 -0400
+X-MC-Unique: biRXV3JaNEO04Rmtgfk6IQ-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-425685183edso104365e9.0
+ for <qemu-devel@nongnu.org>; Wed, 03 Jul 2024 15:49:00 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720046935; x=1720651735;
+ d=1e100.net; s=20230601; t=1720046939; x=1720651739;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=H3osRPyR8JjW6MeyHBrRsmkcAIK1uR3HKs135scl6wM=;
- b=MkR6YfX043vIwW/EU467l3iaMUWs8Sz9QbxEYMzz9FBaDPMkKqSw/DOmc15/c4Xqx2
- aFhB9CK6hzQ7/rSGdI1nuZwt8M0JpI/Dh6vJnRUkfNQ+HQZa6i9xJfvvbi/Ra5QAbej4
- U26zfhyA6rMvnNVyobOp08eW7SJ26XJaIXxQZ5zrmGmm0rSqgEC9JfuFEK8NeHvI2bng
- VnDEiEVcNuxzUlbNyvrbtT9J61jrKLqJ/U8xosHflFqBfBNjR7UAtG6F8XjqVlLTn4Qw
- 4mo6Tq7nBchTQ52MZRLmSX6RmLdr0fBXBmXcdkEvvDkEWeBca7TZkHIOPvWYep0bBz33
- tKRw==
-X-Gm-Message-State: AOJu0YzY2KMDLn3yEXp/LaTDAs/SwQCALeMrCk8S1UgZOcRGROuETgAd
- fmkjbDpWJLfoKaJCRdycl6aRSoprJawEVdIwIh2C2Sc6NFe6tMDGLCTJaPZ4y8XKNoakp5VsAcn
- JOntytBSxO1D7scjOLnGPfj0Ikr5uXqkngS8VlEwN0+y966A4gQnAtbiZ0nJk/kN5TejQkrwDJk
- G4z06gp9rPmy8P8lun/sRld4DjL0BfXg==
-X-Received: by 2002:a5d:66ca:0:b0:367:8f29:f7ae with SMTP id
- ffacd0b85a97d-3679dd66b1bmr5160f8f.49.1720046934776; 
- Wed, 03 Jul 2024 15:48:54 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEFKhCAyPDpugccROJeD258jAmHezRr/Sn4NGzUPphB9Iay3BGmMuCHosOVZfO24CbmP1GOMg==
-X-Received: by 2002:a5d:66ca:0:b0:367:8f29:f7ae with SMTP id
- ffacd0b85a97d-3679dd66b1bmr5139f8f.49.1720046934182; 
- Wed, 03 Jul 2024 15:48:54 -0700 (PDT)
+ bh=FXwifnBJIBh3zju1O5LT6q/8nalot/g3k4ePiwaH62E=;
+ b=FAXtf+GH5J119YUN7j2pZ74wS1z5eyLAmV3JXsXq7AKCpX1QsMcedf09DQiqlQ2l43
+ oAW0BsZdeIOOrX0JR7gcsXpauq6oUtNxrzwlpeoDBVLqJTTBSjzw2qNSl44PBE1edVVC
+ lpoVVu2+CXuyGScaUXn3u+2iaGpy0pb0d5lkZovpuKEAlnLxRowFBA3I1u8h50wKqMwR
+ oDxgrXCzCdAa5WTVmV4GaTXNY9DTUb1rqtG7bZIeBDz7EN7xueljd0EnOJGtT/uLvqb8
+ wn2G4oW3nNTQD9x4SwIeQMGZ1JzffaQhd+PZRVM2ZEjbD1Hox4r8/5NLVBwZf72rqG56
+ z4Ag==
+X-Gm-Message-State: AOJu0YyctfvLwejaXw84eaTdF8F3B4wE+JvD10poT0F7acGEPLBIVR5g
+ Q+yHulngYuEpZHg+7Pu9Fc/Ppn2NI3j8pAMLeukPdm4ghnwb5b924PVWBjAAuV1XURBDRBSwgwd
+ VQZTEQjSqZDgP2kmmje85EcFOgZrgq7zzWMdHcfrowJtm20ar3xRAcxxB9yAVeRWCrohuazMe7E
+ gvQXHRYvvPmnLWWpdA3BzaLmxl6NmE5w==
+X-Received: by 2002:a05:600c:1d01:b0:424:a823:51d7 with SMTP id
+ 5b1f17b1804b1-4264a3d98edmr343105e9.5.1720046938874; 
+ Wed, 03 Jul 2024 15:48:58 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHSkQI1Qx2aVlbsBEWx5hEBMzJWxGE8eTgPoQwJ7lVZrkUmZoWytvo3wHaUROOtX8hQwMEaWQ==
+X-Received: by 2002:a05:600c:1d01:b0:424:a823:51d7 with SMTP id
+ 5b1f17b1804b1-4264a3d98edmr342935e9.5.1720046937884; 
+ Wed, 03 Jul 2024 15:48:57 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc7:441:91a8:a47d:5a9:c02f:92f2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4264a1d0b24sm1234945e9.3.2024.07.03.15.48.51
+ 5b1f17b1804b1-4264a21d2adsm1174445e9.29.2024.07.03.15.48.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 03 Jul 2024 15:48:53 -0700 (PDT)
-Date: Wed, 3 Jul 2024 18:48:49 -0400
+ Wed, 03 Jul 2024 15:48:57 -0700 (PDT)
+Date: Wed, 3 Jul 2024 18:48:54 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- David Woodhouse <dwmw2@infradead.org>, David Woodhouse <dwmw@amazon.co.uk>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Sergio Lopez <slp@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, Paul Durrant <paul@xen.org>,
- kvm@vger.kernel.org
-Subject: [PULL v3 58/85] hw/i386/fw_cfg: Add etc/e820 to fw_cfg late
-Message-ID: <93c76555d842b5d84b95f66abecb6b19545338d9.1720046570.git.mst@redhat.com>
+ Nicolin Chen <nicolinc@nvidia.com>, Eric Auger <eric.auger@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ Shannon Zhao <shannon.zhaosl@gmail.com>, qemu-arm@nongnu.org
+Subject: [PULL v3 59/85] hw/arm/virt-acpi-build: Fix id_count in
+ build_iort_id_mapping
+Message-ID: <5786827f47a0721bb997ad3f653d2b843ba3fd76.1720046570.git.mst@redhat.com>
 References: <cover.1720046570.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -84,12 +80,13 @@ X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,230 +102,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: David Woodhouse <dwmw2@infradead.org>
+From: Nicolin Chen <nicolinc@nvidia.com>
 
-In e820_add_entry() the e820_table is reallocated with g_renew() to make
-space for a new entry. However, fw_cfg_arch_create() just uses the
-existing e820_table pointer. This leads to a use-after-free if anything
-adds a new entry after fw_cfg is set up.
+It's observed that Linux kernel booting with the VM reports a "conflicting
+mapping for input ID" FW_BUG.
 
-Shift the addition of the etc/e820 file to the machine done notifier, via
-a new fw_cfg_add_e820() function.
+The IORT doc defines "Number of IDs" to be "the number of IDs in the range
+minus one", while virt-acpi-build.c simply stores the number of IDs in the
+id_count without the "minus one". Meanwhile, some of the callers pass in a
+0xFFFF following the spec. So, this is a mismatch between the function and
+its callers.
 
-Also make e820_table private and use an e820_get_table() accessor function
-for it, which sets a flag that will trigger an assert() for any *later*
-attempts to add to the table.
+Fix build_iort_id_mapping() by internally subtracting one from the pass-in
+@id_count. Accordingly make sure that all existing callers pass in a value
+without the "minus one", i.e. change all 0xFFFFs to 0x10000s.
 
-Make e820_add_entry() return void, as most callers don't check for error
-anyway.
+Also, add a few lines of comments to highlight this change along with the
+referencing document for this build_iort_id_mapping().
 
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-Message-Id: <a2708734f004b224f33d3b4824e9a5a262431568.camel@infradead.org>
+Fixes: 42e0f050e3a5 ("hw/arm/virt-acpi-build: Add IORT support to bypass SMMUv3")
+Suggested-by: Michael S. Tsirkin <mst@redhat.com>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
+Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
+Message-Id: <20240619201243.936819-1-nicolinc@nvidia.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/i386/e820_memory_layout.h |  8 ++------
- hw/i386/fw_cfg.h             |  1 +
- hw/i386/e820_memory_layout.c | 17 ++++++++++++-----
- hw/i386/fw_cfg.c             | 18 +++++++++++++-----
- hw/i386/microvm.c            |  4 ++--
- hw/i386/pc.c                 |  1 +
- target/i386/kvm/kvm.c        |  6 +-----
- target/i386/kvm/xen-emu.c    |  7 +------
- 8 files changed, 33 insertions(+), 29 deletions(-)
+ hw/arm/virt-acpi-build.c | 19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
 
-diff --git a/hw/i386/e820_memory_layout.h b/hw/i386/e820_memory_layout.h
-index 7c239aa033..b50acfa201 100644
---- a/hw/i386/e820_memory_layout.h
-+++ b/hw/i386/e820_memory_layout.h
-@@ -22,13 +22,9 @@ struct e820_entry {
-     uint32_t type;
- } QEMU_PACKED __attribute((__aligned__(4)));
+diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
+index 102e2da934..e10cad86dd 100644
+--- a/hw/arm/virt-acpi-build.c
++++ b/hw/arm/virt-acpi-build.c
+@@ -209,12 +209,19 @@ static void acpi_dsdt_add_tpm(Aml *scope, VirtMachineState *vms)
+ #define ROOT_COMPLEX_ENTRY_SIZE 36
+ #define IORT_NODE_OFFSET 48
  
--extern struct e820_entry *e820_table;
--
--int e820_add_entry(uint64_t address, uint64_t length, uint32_t type);
--int e820_get_num_entries(void);
-+void e820_add_entry(uint64_t address, uint64_t length, uint32_t type);
- bool e820_get_entry(int index, uint32_t type,
-                     uint64_t *address, uint64_t *length);
--
--
-+int e820_get_table(struct e820_entry **table);
- 
- #endif
-diff --git a/hw/i386/fw_cfg.h b/hw/i386/fw_cfg.h
-index 92e310f5fd..e560fd7be8 100644
---- a/hw/i386/fw_cfg.h
-+++ b/hw/i386/fw_cfg.h
-@@ -27,5 +27,6 @@ void fw_cfg_build_smbios(PCMachineState *pcms, FWCfgState *fw_cfg,
-                          SmbiosEntryPointType ep_type);
- void fw_cfg_build_feature_control(MachineState *ms, FWCfgState *fw_cfg);
- void fw_cfg_add_acpi_dsdt(Aml *scope, FWCfgState *fw_cfg);
-+void fw_cfg_add_e820(FWCfgState *fw_cfg);
- 
- #endif
-diff --git a/hw/i386/e820_memory_layout.c b/hw/i386/e820_memory_layout.c
-index 06970ac44a..3e848fb69c 100644
---- a/hw/i386/e820_memory_layout.c
-+++ b/hw/i386/e820_memory_layout.c
-@@ -11,22 +11,29 @@
- #include "e820_memory_layout.h"
- 
- static size_t e820_entries;
--struct e820_entry *e820_table;
-+static struct e820_entry *e820_table;
-+static gboolean e820_done;
- 
--int e820_add_entry(uint64_t address, uint64_t length, uint32_t type)
-+void e820_add_entry(uint64_t address, uint64_t length, uint32_t type)
++/*
++ * Append an ID mapping entry as described by "Table 4 ID mapping format" in
++ * "IO Remapping Table System Software on ARM Platforms", Chapter 3.
++ * Document number: ARM DEN 0049E.f, Apr 2024
++ *
++ * Note that @id_count gets internally subtracted by one, following the spec.
++ */
+ static void build_iort_id_mapping(GArray *table_data, uint32_t input_base,
+                                   uint32_t id_count, uint32_t out_ref)
  {
-+    assert(!e820_done);
-+
-     /* new "etc/e820" file -- include ram and reserved entries */
-     e820_table = g_renew(struct e820_entry, e820_table, e820_entries + 1);
-     e820_table[e820_entries].address = cpu_to_le64(address);
-     e820_table[e820_entries].length = cpu_to_le64(length);
-     e820_table[e820_entries].type = cpu_to_le32(type);
-     e820_entries++;
--
--    return e820_entries;
- }
+-    /* Table 4 ID mapping format */
+     build_append_int_noprefix(table_data, input_base, 4); /* Input base */
+-    build_append_int_noprefix(table_data, id_count, 4); /* Number of IDs */
++    /* Number of IDs - The number of IDs in the range minus one */
++    build_append_int_noprefix(table_data, id_count - 1, 4);
+     build_append_int_noprefix(table_data, input_base, 4); /* Output base */
+     build_append_int_noprefix(table_data, out_ref, 4); /* Output Reference */
+     /* Flags */
+@@ -305,8 +312,8 @@ build_iort(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
+         }
  
--int e820_get_num_entries(void)
-+int e820_get_table(struct e820_entry **table)
- {
-+    e820_done = true;
-+
-+    if (table) {
-+        *table = e820_table;
-+    }
-+
-     return e820_entries;
- }
+         /* Append the last RC -> ITS ID mapping */
+-        if (next_range.input_base < 0xFFFF) {
+-            next_range.id_count = 0xFFFF - next_range.input_base;
++        if (next_range.input_base < 0x10000) {
++            next_range.id_count = 0x10000 - next_range.input_base;
+             g_array_append_val(its_idmaps, next_range);
+         }
  
-diff --git a/hw/i386/fw_cfg.c b/hw/i386/fw_cfg.c
-index 7c43c325ef..0e4494627c 100644
---- a/hw/i386/fw_cfg.c
-+++ b/hw/i386/fw_cfg.c
-@@ -48,6 +48,15 @@ const char *fw_cfg_arch_key_name(uint16_t key)
-     return NULL;
- }
+@@ -365,7 +372,7 @@ build_iort(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
+         build_append_int_noprefix(table_data, 0, 4);
  
-+/* Add etc/e820 late, once all regions should be present */
-+void fw_cfg_add_e820(FWCfgState *fw_cfg)
-+{
-+    struct e820_entry *table;
-+    int nr_e820 = e820_get_table(&table);
-+
-+    fw_cfg_add_file(fw_cfg, "etc/e820", table, nr_e820 * sizeof(*table));
-+}
-+
- void fw_cfg_build_smbios(PCMachineState *pcms, FWCfgState *fw_cfg,
-                          SmbiosEntryPointType ep_type)
- {
-@@ -60,6 +69,7 @@ void fw_cfg_build_smbios(PCMachineState *pcms, FWCfgState *fw_cfg,
-     PCMachineClass *pcmc = PC_MACHINE_GET_CLASS(pcms);
-     MachineClass *mc = MACHINE_GET_CLASS(pcms);
-     X86CPU *cpu = X86_CPU(ms->possible_cpus->cpus[0].cpu);
-+    int nr_e820;
- 
-     if (pcmc->smbios_defaults) {
-         /* These values are guest ABI, do not change */
-@@ -78,8 +88,9 @@ void fw_cfg_build_smbios(PCMachineState *pcms, FWCfgState *fw_cfg,
+         /* output IORT node is the ITS group node (the first node) */
+-        build_iort_id_mapping(table_data, 0, 0xFFFF, IORT_NODE_OFFSET);
++        build_iort_id_mapping(table_data, 0, 0x10000, IORT_NODE_OFFSET);
      }
  
-     /* build the array of physical mem area from e820 table */
--    mem_array = g_malloc0(sizeof(*mem_array) * e820_get_num_entries());
--    for (i = 0, array_count = 0; i < e820_get_num_entries(); i++) {
-+    nr_e820 = e820_get_table(NULL);
-+    mem_array = g_malloc0(sizeof(*mem_array) * nr_e820);
-+    for (i = 0, array_count = 0; i < nr_e820; i++) {
-         uint64_t addr, len;
- 
-         if (e820_get_entry(i, E820_RAM, &addr, &len)) {
-@@ -138,9 +149,6 @@ FWCfgState *fw_cfg_arch_create(MachineState *ms,
- #endif
-     fw_cfg_add_i32(fw_cfg, FW_CFG_IRQ0_OVERRIDE, 1);
- 
--    fw_cfg_add_file(fw_cfg, "etc/e820", e820_table,
--                    sizeof(struct e820_entry) * e820_get_num_entries());
--
-     fw_cfg_add_bytes(fw_cfg, FW_CFG_HPET, &hpet_cfg, sizeof(hpet_cfg));
-     /* allocate memory for the NUMA channel: one (64bit) word for the number
-      * of nodes, one word for each VCPU->node and one word for each node to
-diff --git a/hw/i386/microvm.c b/hw/i386/microvm.c
-index fec63cacfa..40edcee7af 100644
---- a/hw/i386/microvm.c
-+++ b/hw/i386/microvm.c
-@@ -324,8 +324,6 @@ static void microvm_memory_init(MicrovmMachineState *mms)
-     fw_cfg_add_i16(fw_cfg, FW_CFG_MAX_CPUS, machine->smp.max_cpus);
-     fw_cfg_add_i64(fw_cfg, FW_CFG_RAM_SIZE, (uint64_t)machine->ram_size);
-     fw_cfg_add_i32(fw_cfg, FW_CFG_IRQ0_OVERRIDE, 1);
--    fw_cfg_add_file(fw_cfg, "etc/e820", e820_table,
--                    sizeof(struct e820_entry) * e820_get_num_entries());
- 
-     rom_set_fw(fw_cfg);
- 
-@@ -586,9 +584,11 @@ static void microvm_machine_done(Notifier *notifier, void *data)
- {
-     MicrovmMachineState *mms = container_of(notifier, MicrovmMachineState,
-                                             machine_done);
-+    X86MachineState *x86ms = X86_MACHINE(mms);
- 
-     acpi_setup_microvm(mms);
-     dt_setup_microvm(mms);
-+    fw_cfg_add_e820(x86ms->fw_cfg);
- }
- 
- static void microvm_powerdown_req(Notifier *notifier, void *data)
-diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index 77415064c6..d2c29fbfcb 100644
---- a/hw/i386/pc.c
-+++ b/hw/i386/pc.c
-@@ -625,6 +625,7 @@ void pc_machine_done(Notifier *notifier, void *data)
-     acpi_setup();
-     if (x86ms->fw_cfg) {
-         fw_cfg_build_smbios(pcms, x86ms->fw_cfg, pcms->smbios_entry_point_type);
-+        fw_cfg_add_e820(x86ms->fw_cfg);
-         fw_cfg_build_feature_control(MACHINE(pcms), x86ms->fw_cfg);
-         /* update FW_CFG_NB_CPUS to account for -device added CPUs */
-         fw_cfg_modify_i16(x86ms->fw_cfg, FW_CFG_NB_CPUS, x86ms->boot_cpus);
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index dd8b0f3313..bf182570fe 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -2706,11 +2706,7 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
+     /* Table 17 Root Complex Node */
+@@ -418,7 +425,7 @@ build_iort(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
+         }
+     } else {
+         /* output IORT node is the ITS group node (the first node) */
+-        build_iort_id_mapping(table_data, 0, 0xFFFF, IORT_NODE_OFFSET);
++        build_iort_id_mapping(table_data, 0, 0x10000, IORT_NODE_OFFSET);
      }
  
-     /* Tell fw_cfg to notify the BIOS to reserve the range. */
--    ret = e820_add_entry(identity_base, 0x4000, E820_RESERVED);
--    if (ret < 0) {
--        fprintf(stderr, "e820_add_entry() table is full\n");
--        return ret;
--    }
-+    e820_add_entry(identity_base, 0x4000, E820_RESERVED);
- 
-     shadow_mem = object_property_get_int(OBJECT(s), "kvm-shadow-mem", &error_abort);
-     if (shadow_mem != -1) {
-diff --git a/target/i386/kvm/xen-emu.c b/target/i386/kvm/xen-emu.c
-index fc2c2321ac..2f89dc628e 100644
---- a/target/i386/kvm/xen-emu.c
-+++ b/target/i386/kvm/xen-emu.c
-@@ -176,12 +176,7 @@ int kvm_xen_init(KVMState *s, uint32_t hypercall_msr)
-     s->xen_caps = xen_caps;
- 
-     /* Tell fw_cfg to notify the BIOS to reserve the range. */
--    ret = e820_add_entry(XEN_SPECIAL_AREA_ADDR, XEN_SPECIAL_AREA_SIZE,
--                         E820_RESERVED);
--    if (ret < 0) {
--        fprintf(stderr, "e820_add_entry() table is full\n");
--        return ret;
--    }
-+    e820_add_entry(XEN_SPECIAL_AREA_ADDR, XEN_SPECIAL_AREA_SIZE, E820_RESERVED);
- 
-     /* The pages couldn't be overlaid until KVM was initialized */
-     xen_primary_console_reset();
+     acpi_table_end(linker, &table);
 -- 
 MST
 
