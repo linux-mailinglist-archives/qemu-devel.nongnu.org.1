@@ -2,76 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BFBD926C0E
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 00:52:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 168F5926C12
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 00:52:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sP8o0-0004Eq-Kz; Wed, 03 Jul 2024 18:50:28 -0400
+	id 1sP8o2-0004fJ-Jw; Wed, 03 Jul 2024 18:50:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sP8nx-0003xS-8W
- for qemu-devel@nongnu.org; Wed, 03 Jul 2024 18:50:25 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sP8nz-0004Kb-Vg
+ for qemu-devel@nongnu.org; Wed, 03 Jul 2024 18:50:28 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sP8nt-0007UB-Ks
- for qemu-devel@nongnu.org; Wed, 03 Jul 2024 18:50:23 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sP8ny-0007X7-7t
+ for qemu-devel@nongnu.org; Wed, 03 Jul 2024 18:50:27 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1720047021;
+ s=mimecast20190719; t=1720047025;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=DMkazJvXlCFuPVFo5zwsqgTLcz0EAKKfqUw3BcILaOs=;
- b=AdZvQWvyyJXX3dqBB5/ARhMTF1R8i7n5UdD4IRvnMo93vDKYMgzbyiJpGMg5jJiILhGXOk
- AHL2q1wjfkmiuBNB8h7ue/4bd3+JN1SC0PXWoPLXzCDHwL8J2pqoSs8v/2OWvxNGxc3dBZ
- lgODEP1vN/Va6gHkcZCi+Ptj1u279fI=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=6T5wYohIMyfJ7zfD4BymibarRz8jk6tb2fFAczZH0qE=;
+ b=EwCL+JBFFQR3+TI7uBKW6tggUuG7VkEnVmP7HZSw06s3GIQk2aPwSoiw+xE+jfcS1M42C+
+ nASF5P9wAIrjM4PHmKZGlZC8AhtUJv4sYOne/ERTY0HLaItt/VcZvqUO8iYozd5esIY90y
+ NJ3xZTzct6HESb5NkbhwAX28koe1cbs=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-220-2fItBZLdPeeP1VmiJOks3g-1; Wed, 03 Jul 2024 18:50:20 -0400
-X-MC-Unique: 2fItBZLdPeeP1VmiJOks3g-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-366e0a4c965so37627f8f.1
- for <qemu-devel@nongnu.org>; Wed, 03 Jul 2024 15:50:19 -0700 (PDT)
+ us-mta-428-tDgj2u9OOsOC2l5U9pe00g-1; Wed, 03 Jul 2024 18:50:24 -0400
+X-MC-Unique: tDgj2u9OOsOC2l5U9pe00g-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-3678e549a1eso36889f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 03 Jul 2024 15:50:23 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720047018; x=1720651818;
+ d=1e100.net; s=20230601; t=1720047022; x=1720651822;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=DMkazJvXlCFuPVFo5zwsqgTLcz0EAKKfqUw3BcILaOs=;
- b=nl+Ph5nxFzu0gcHYaSJqiXSKdwGOuOIHEhkTndElFaxJk3W6sPrXard2mllEuXNFTA
- LaJTQdeeQxjtl7L+dG9PKOLUbRSp4IXRbp+gyxsN2LCGYhu5Olw871On8fZraJaI7RRo
- FdNkEpQB1H+YntV1OBHWgmh3/kPGoimv8+wOVQyz+7ij943Xvn6Mr8UIu7Ot9MWPoGt/
- TGZWGoQlKQ0DoJLmKeAK3ii1WCSaHXtgnc3mhPRqVPcqnR1bFsygM+b/KNVKtXxqLHYx
- msPSyKygNp0Yb+vHGoIph7+x7FDUlgIZy5Jim0IPOho0Evo4u05nyowjNmMtgLFvam/s
- +BFQ==
-X-Gm-Message-State: AOJu0YxDy3/ReKvMgGnLTYsnpH3LX+h6uwgHGUW8NRfCRZSPABz3Sj0B
- Pizu9kRzDslQzFh7z1F7xnLX7mn/KZCmraHUDBl+xPQStvLPol40rmVxIKGNKoQzUsla+xzg7VK
- uU73gnVAqCmcdbzxngj+dv7Gp9F51BOxe7ucXjbzXasxIUn6uCoW1VYfsxHhBPD4/p2klR14Z65
- QXzGIikqBiQKU9OgbGjz4m2MjnO0qIag==
-X-Received: by 2002:adf:fccd:0:b0:366:ebd2:662f with SMTP id
- ffacd0b85a97d-3679dd34163mr9149f8f.30.1720047018140; 
- Wed, 03 Jul 2024 15:50:18 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEaooaPw282ZT5JS2s5r681ut3H6DUwmgSQ+036eoYeugyGzbJ1HayzLRizzhHO1CsgMTAyxw==
-X-Received: by 2002:adf:fccd:0:b0:366:ebd2:662f with SMTP id
- ffacd0b85a97d-3679dd34163mr9136f8f.30.1720047017589; 
- Wed, 03 Jul 2024 15:50:17 -0700 (PDT)
+ bh=6T5wYohIMyfJ7zfD4BymibarRz8jk6tb2fFAczZH0qE=;
+ b=YPk06O06lHsIfrGGs7/mFa/wBNQZJa/arMJVz2aUe3rvECxWpVATyhQpgFTRh2q38T
+ FFmYYZpLEKkEv8LbXFwNPgdHvivWrz89iF+ZFU0JvrZ9i8haSwxYtbpTK+bzwM4W0f2m
+ IG8kg5U1amtlnJU9legK9L4mdEWceUt4qIeMHy66rXOYEaCpbd39HiQDw5v9cZaGntae
+ JerPtGhr4vG44wxIcoMe3DnIAVUQaqx+LRrZMvjlU+OLpsynPDaF6qOyVJlea/d7+jew
+ kzKwScDy5b4kxesAHxFYVPA3EUGbV82SGq5x2udck6ZL7nspdtxhf96tppXxKiyzHZaj
+ atTA==
+X-Gm-Message-State: AOJu0Yz7tw3cv6RYHQuVsutOi7S5TmmBnu8VduMejiTA9I0a4DP1+wIB
+ uzzbnMcy+JvaqmqLlGmKIyapsl/4tEXaKeJzOvvTFmRVaPSKI/eJHRIriiNBTDlv18J7JLbNVmI
+ mZcczYND2Mcpkwf6YwaOO3nuYjPWTNdG0NpkFNSVXcLQA5CZ+2YqhthuiI+iBLRXMZsD9RUFv4V
+ wFJ0hVF3Ydbq7XalwwO/qiKzsbf/l5rQ==
+X-Received: by 2002:adf:fe03:0:b0:367:3404:1c06 with SMTP id
+ ffacd0b85a97d-367947a6c35mr2645055f8f.20.1720047022205; 
+ Wed, 03 Jul 2024 15:50:22 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH8nRWl6r6HY/AR80oLiKIOloEJjI9UzbQZyAoSCZIK3/30EKBGMLJU9n0fkFgSpinRlNVoXw==
+X-Received: by 2002:adf:fe03:0:b0:367:3404:1c06 with SMTP id
+ ffacd0b85a97d-367947a6c35mr2645038f8f.20.1720047021600; 
+ Wed, 03 Jul 2024 15:50:21 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc7:441:91a8:a47d:5a9:c02f:92f2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3678eb6593bsm4188588f8f.93.2024.07.03.15.50.14
+ ffacd0b85a97d-367957d3451sm2319022f8f.101.2024.07.03.15.50.19
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 03 Jul 2024 15:50:16 -0700 (PDT)
-Date: Wed, 3 Jul 2024 18:50:13 -0400
+ Wed, 03 Jul 2024 15:50:20 -0700 (PDT)
+Date: Wed, 3 Jul 2024 18:50:18 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Akihiko Odaki <akihiko.odaki@daynix.com>,
- Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-ppc@nongnu.org
-Subject: [PULL v3 78/85] hw/ppc/spapr_pci: Do not reject VFs created after a PF
-Message-ID: <26f86093ec989cb73ad03e8a234f5dc321e1e267.1720046570.git.mst@redhat.com>
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: [PULL v3 79/85] pcie_sriov: Do not manually unrealize
+Message-ID: <c613ad25125bf3016aa8f81ce170f5ac91d2379f.1720046570.git.mst@redhat.com>
 References: <cover.1720046570.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -105,31 +102,32 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-A PF may automatically create VFs and the PF may be function 0.
+A device gets automatically unrealized when being unparented.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Message-Id: <20240627-reuse-v10-3-7ca0b8ed3d9f@daynix.com>
+Message-Id: <20240627-reuse-v10-4-7ca0b8ed3d9f@daynix.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/ppc/spapr_pci.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ hw/pci/pcie_sriov.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/hw/ppc/spapr_pci.c b/hw/ppc/spapr_pci.c
-index f63182a03c..ed4454bbf7 100644
---- a/hw/ppc/spapr_pci.c
-+++ b/hw/ppc/spapr_pci.c
-@@ -1573,7 +1573,9 @@ static void spapr_pci_pre_plug(HotplugHandler *plug_handler,
-      * hotplug, we do not allow functions to be hotplugged to a
-      * slot that already has function 0 present
-      */
--    if (plugged_dev->hotplugged && bus->devices[PCI_DEVFN(slotnr, 0)] &&
-+    if (plugged_dev->hotplugged &&
-+        !pci_is_vf(pdev) &&
-+        bus->devices[PCI_DEVFN(slotnr, 0)] &&
-         PCI_FUNC(pdev->devfn) != 0) {
-         error_setg(errp, "PCI: slot %d function 0 already occupied by %s,"
-                    " additional functions can no longer be exposed to guest.",
+diff --git a/hw/pci/pcie_sriov.c b/hw/pci/pcie_sriov.c
+index e9b23221d7..499becd527 100644
+--- a/hw/pci/pcie_sriov.c
++++ b/hw/pci/pcie_sriov.c
+@@ -204,11 +204,7 @@ static void unregister_vfs(PCIDevice *dev)
+     trace_sriov_unregister_vfs(dev->name, PCI_SLOT(dev->devfn),
+                                PCI_FUNC(dev->devfn), num_vfs);
+     for (i = 0; i < num_vfs; i++) {
+-        Error *err = NULL;
+         PCIDevice *vf = dev->exp.sriov_pf.vf[i];
+-        if (!object_property_set_bool(OBJECT(vf), "realized", false, &err)) {
+-            error_reportf_err(err, "Failed to unplug: ");
+-        }
+         object_unparent(OBJECT(vf));
+         object_unref(OBJECT(vf));
+     }
 -- 
 MST
 
