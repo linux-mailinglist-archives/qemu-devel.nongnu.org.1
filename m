@@ -2,87 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13BCC9255EC
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jul 2024 10:53:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C24F9255F5
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Jul 2024 10:54:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sOviz-0001aa-Oo; Wed, 03 Jul 2024 04:52:25 -0400
+	id 1sOvl6-00056Q-4k; Wed, 03 Jul 2024 04:54:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOviv-0001a5-Jh
- for qemu-devel@nongnu.org; Wed, 03 Jul 2024 04:52:21 -0400
-Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
+ (Exim 4.90_1) (envelope-from <jeuk20.kim@gmail.com>)
+ id 1sOvl4-000562-0p; Wed, 03 Jul 2024 04:54:34 -0400
+Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sOvio-0004T8-SO
- for qemu-devel@nongnu.org; Wed, 03 Jul 2024 04:52:20 -0400
-Received: by mail-lf1-x12e.google.com with SMTP id
- 2adb3069b0e04-52e992a24a1so319610e87.0
- for <qemu-devel@nongnu.org>; Wed, 03 Jul 2024 01:52:14 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <jeuk20.kim@gmail.com>)
+ id 1sOvl2-00052B-Ay; Wed, 03 Jul 2024 04:54:33 -0400
+Received: by mail-pf1-x42c.google.com with SMTP id
+ d2e1a72fcca58-70670188420so3537271b3a.2; 
+ Wed, 03 Jul 2024 01:54:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719996733; x=1720601533; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=zj4HYUzXDv0A1hTe/qO2rFG9BXTThHtoCKV011XHWzs=;
- b=VNJoAEGxOKixBf544yMb/mQ6By1JA8evG7GaKOKlL4Kk4+aufy9bIPzMB/8AOv8ka2
- 5E519gaiHby6SXZv27ILgLQUw2RH6887Nk0kc3EvjMa8sFkfjobmVc0mOshijcvDN/BZ
- VG4simuo7uptheLcpyFjDxEe+4IRDpM03pdiRMJHkUOggAirNqJGN/p87Nuu/xjkF725
- oDOi9Nla53QKsn70wwxLQ6Gb5/4QzEaP1WYJkVO80oBvNN3DBGqixoJrGU2SnEfBN+kS
- rjYODq+Gog0hoUjRYJuF6n0UB6Pzj1iZJRWHMPopLqF7tWzwbhXCNHdLVj2mqPJF7AHD
- C8aA==
+ d=gmail.com; s=20230601; t=1719996868; x=1720601668; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=lBtGd/kc9qY147JUp6Sd3Zdv63Ew3wYPxd807yyYljE=;
+ b=iHOIXihS7KPEIrBbL+FVFl4dbPpNf75UFDH1fOnHsBfczKVbT4Z4amYdOwOr+6/FOS
+ KnqAUUdpd+XcvkDt7W0bZNIyLManlu4WdxfbFi31pY97XeMIhAI3Qb9BjnW3AHwRi5vV
+ sZxLsmGUOncZV7Kkir4i+MyxQnaC5QYyOWL+XXX8bIN8Jm9t7j1LYU1e08AN9Cnj0+Hl
+ 8466OFPm5GgjORoWcvohMNQ3lhUH4DNDAgLy8+BFlTdd/6ZMoI/L3yPoP1KYIdBLsMZI
+ dVOcL9U2ieTt9OTwbnC8tlymYX1M7AYC/VUjOMd1KJeUMt00XaRVozfQ3/eGzu1L4UW0
+ 5vaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719996733; x=1720601533;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=zj4HYUzXDv0A1hTe/qO2rFG9BXTThHtoCKV011XHWzs=;
- b=eUPuwT2YMyxR49OB6WeR/7hFf3wEbhgNuJxrX/8UkURu6zqPhWNzcRC1RVs9IzPAHv
- 4lSs+qhkHTnnhAwIBe3HvduMSyAzNsTV6Xc0L7c1KZ+Miezt9U5+jVRrb9GhI4Nbouhx
- 58VlYlkKikGxpQHuZbKjjSPMGnVuiCVb3xDw3sedT3mrQ31KBdKelll0Y+/f5dX+1CJF
- +ET1Q2FBbn/VJo3P7C5qaPXTIGQkS3MK3m4fWoBXHBE3HtULtiOaO3MZimpIv85ALENs
- 8hMyqO0iHk8q+E9QYxlg4lJeZTZfoRV3c7dnpaPELC+fLDqWjlqIlsZDRSndfRVHXUfY
- xjMQ==
-X-Gm-Message-State: AOJu0Yy9RQVtw4h0xJT0yhsISPQNa1bKh+qhlv9PWpy8dfy1PT+fD1CS
- Tsg+marXN2dTDeTDTKYF20Q0Jvq0tI03s3tC06kaVV2p/wUwMjRM5gWNF5jqqtcVu58blprbUWA
- p
-X-Google-Smtp-Source: AGHT+IHvevyisN2WzHVC4bzwQ4lnygyawv4vQxHkl/G4xjgjqw8W+9NWe+pySx5YZNp+ioZjKmJgJw==
-X-Received: by 2002:a05:6512:3a8e:b0:52e:7448:e137 with SMTP id
- 2adb3069b0e04-52e8264dfebmr8097238e87.6.1719996732873; 
- Wed, 03 Jul 2024 01:52:12 -0700 (PDT)
-Received: from m1x-phil.lan ([176.187.220.97])
+ d=1e100.net; s=20230601; t=1719996868; x=1720601668;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=lBtGd/kc9qY147JUp6Sd3Zdv63Ew3wYPxd807yyYljE=;
+ b=JCuZ9HilvzRvGiJCvRTQES/dbg1F/IkNYmo/fDxgYt3nKtmuELKSbgh/ZU6hhCwciu
+ 6paslcwWd3Lp7LHPdlE0NsLkrfyfjtOTTXca7NpCmxG8VflQdiQxwC4C3/zrVDY7/FGh
+ 8kTQeuUdaZaDQWreurSc/dCMvdhdN7xJyFDEkUGdLyX1vfHwuK7D1cipROPPNyKBZFrZ
+ QiDpIJw2ydKrgCJNPt4L/5Dt7e/AvzUfsYj0O9ECKM+rqxiQASOcU1KmV7YCnOgbp01j
+ OOq2Tp1Fm/Fzx7PgtSKGYZjKsvUSMMSySeL4PfS6BgkgEGOH4FX2SDTI/i3vX2hI+4+f
+ NN8A==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVoH/X9To72zaIMTO8T48r685NJ5o3S657Z0/DK9uRteDM/JZa40xPgAmktjPN8d0zvpHmlH1MABWURJ7AGC4k09OY4XmQ=
+X-Gm-Message-State: AOJu0YzKbSP6vdrvu1mx+s5t3JEzZzBGCGy8tOVi2OSuJnlOcoaJSY+3
+ wN9O54a+VwU5d0Wnnuurm0SFtJ43l5Zfen+sxLbxTQgeytwyEJAHvsoslURI
+X-Google-Smtp-Source: AGHT+IEmi3qMPx0c+sBI2hThJxDEPHmbpRinGwXkWR5s2eZ2VIyPaGFs6m+ORnCP+j4o2I+R2ZV0uQ==
+X-Received: by 2002:a05:6a00:2ea6:b0:705:bf9c:4cdd with SMTP id
+ d2e1a72fcca58-70aaad4f015mr12089110b3a.16.1719996868368; 
+ Wed, 03 Jul 2024 01:54:28 -0700 (PDT)
+Received: from jeuk-MS-7D42.. ([210.223.46.112])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4257c4e1112sm158320545e9.3.2024.07.03.01.52.11
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 03 Jul 2024 01:52:12 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+ d2e1a72fcca58-7080246e1d9sm9905498b3a.71.2024.07.03.01.54.26
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 03 Jul 2024 01:54:27 -0700 (PDT)
+From: Jeuk Kim <jeuk20.kim@gmail.com>
+X-Google-Original-From: Jeuk Kim <jeuk20.kim@samsung.com>
 To: qemu-devel@nongnu.org
-Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, qemu-block@nongnu.org,
- Luc Michel <luc.michel@amd.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Bin Meng <bmeng.cn@gmail.com>, Eduardo Habkost <eduardo@habkost.net>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Yanan Wang <wangyanan55@huawei.com>
-Subject: [PATCH v44 3/3] hw/sd/sdcard: Remove leftover comment about removed
- 'spi' Property
-Date: Wed,  3 Jul 2024 10:51:48 +0200
-Message-ID: <20240703085148.66188-4-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20240703085148.66188-1-philmd@linaro.org>
-References: <20240703085148.66188-1-philmd@linaro.org>
+Cc: jeuk20.kim@samsung.com, qemu-block@nongnu.org, j-young.choi@samsung.com,
+ minwoo.im@samsung.com
+Subject: [PATCH] hw/ufs: Fix mcq register range determination logic
+Date: Wed,  3 Jul 2024 17:54:10 +0900
+Message-Id: <6dcb63036f3b35c833de752d1472d08bf4a9c289.1719996804.git.jeuk20.kim@samsung.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12e;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x12e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
+ envelope-from=jeuk20.kim@gmail.com; helo=mail-pf1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,31 +90,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit c3287c0f70 ("hw/sd: Introduce a "sd-card" SPI variant
-model") removed the 'spi' property. Remove the comment left
-over.
+The function ufs_is_mcq_reg() only evaluated the range of the
+mcq_op_reg offset, which is defined as a constant.
+Therefore, it was possible for ufs_is_mcq_reg() to return true
+despite ufs device is configured to not support the mcq.
+This could cause ufs_mmio_read()/ufs_mmio_write() to overflow the
+buffer. So fix it.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Fixes: 5c079578d2e4 ("hw/ufs: Add support MCQ of UFSHCI 4.0")
+Signed-off-by: Jeuk Kim <jeuk20.kim@samsung.com>
 ---
- hw/sd/sd.c | 4 ----
- 1 file changed, 4 deletions(-)
+ hw/ufs/ufs.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/hw/sd/sd.c b/hw/sd/sd.c
-index 000b923c73..904da440ba 100644
---- a/hw/sd/sd.c
-+++ b/hw/sd/sd.c
-@@ -2485,10 +2485,6 @@ static Property sd_properties[] = {
-     DEFINE_PROP_UINT8("spec_version", SDState,
-                       spec_version, SD_PHY_SPECv3_01_VERS),
-     DEFINE_PROP_DRIVE("drive", SDState, blk),
--    /* We do not model the chip select pin, so allow the board to select
--     * whether card should be in SSI or MMC/SD mode.  It is also up to the
--     * board to ensure that ssi transfers only occur when the chip select
--     * is asserted.  */
-     DEFINE_PROP_END_OF_LIST()
- };
+diff --git a/hw/ufs/ufs.c b/hw/ufs/ufs.c
+index 683fff5840..cf0edd281c 100644
+--- a/hw/ufs/ufs.c
++++ b/hw/ufs/ufs.c
+@@ -57,7 +57,13 @@ static inline uint64_t ufs_reg_size(UfsHc *u)
  
+ static inline bool ufs_is_mcq_reg(UfsHc *u, uint64_t addr, unsigned size)
+ {
+-    uint64_t mcq_reg_addr = ufs_mcq_reg_addr(u, 0);
++    uint64_t mcq_reg_addr;
++
++    if (!u->params.mcq) {
++        return false;
++    }
++
++    mcq_reg_addr = ufs_mcq_reg_addr(u, 0);
+     return (addr >= mcq_reg_addr &&
+             addr + size <= mcq_reg_addr + sizeof(u->mcq_reg));
+ }
 -- 
-2.41.0
+2.34.1
 
 
