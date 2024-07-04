@@ -2,75 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1285D927235
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 10:54:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6955E927239
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 10:55:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPIDi-00010V-Q9; Thu, 04 Jul 2024 04:53:38 -0400
+	id 1sPIEX-0001UA-2V; Thu, 04 Jul 2024 04:54:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <binbin.wu@linux.intel.com>)
- id 1sPIDg-00010I-31
- for qemu-devel@nongnu.org; Thu, 04 Jul 2024 04:53:36 -0400
-Received: from mgamail.intel.com ([192.198.163.16])
+ (Exim 4.90_1) (envelope-from <SRS0=mgHy=OE=kaod.org=clg@ozlabs.org>)
+ id 1sPIEU-0001OW-6L; Thu, 04 Jul 2024 04:54:26 -0400
+Received: from gandalf.ozlabs.org ([150.107.74.76] helo=mail.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <binbin.wu@linux.intel.com>)
- id 1sPIDd-0003SU-Qs
- for qemu-devel@nongnu.org; Thu, 04 Jul 2024 04:53:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1720083214; x=1751619214;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=+lF34JGBkAdyt9HCQOqpXFiCvpqwRAf+cHBgPF+ZnVU=;
- b=Lwyf3k7/1bu1FJHbYOmVDUm5kFQbRgJbPx0x8snyL7dHcvjt56oBVIHz
- g0QkXk8MImqcL6HOLNobTipZt5SlCFKxe9Zcnzttx1xffO91Hh+ouqZZU
- pQSUxm12lH7BSjZ0162ir53i9vxF8HCMepisRjh9vmtxvSebuggIAkc6E
- xQzXDl26Jh0ZT2Y/u3q2n1UEhyMi534978nOAhzdcpi+fL/a5MAl0pJZv
- jYT5k/xoIamA55c/8tlZU1h1Ae4VqDrpL3Om7V1Eycm1VRbBlcEFN9jwE
- xsc4nbzEY6Dpdw8GUitWZtjMuP02iwHxpnWUZDpMrjds84Yk773FpG55Z w==;
-X-CSE-ConnectionGUID: eh+1AQpCRUio2+5zeqweAQ==
-X-CSE-MsgGUID: ORIrxiGSSFWHgnqhwWnSzg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11122"; a="12390395"
-X-IronPort-AV: E=Sophos;i="6.09,183,1716274800"; d="scan'208";a="12390395"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Jul 2024 01:53:29 -0700
-X-CSE-ConnectionGUID: /KZ/JQjzTZymZwam7D3/NQ==
-X-CSE-MsgGUID: 1IoHEw6XTUS8aKcV3xujdw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,183,1716274800"; d="scan'208";a="46486287"
-Received: from chungegx-mobl1.ccr.corp.intel.com (HELO [10.238.1.52])
- ([10.238.1.52])
- by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Jul 2024 01:53:26 -0700
-Message-ID: <d25cc62c-0f56-4be2-968a-63c8b1d63b5a@linux.intel.com>
-Date: Thu, 4 Jul 2024 16:53:24 +0800
+ (Exim 4.90_1) (envelope-from <SRS0=mgHy=OE=kaod.org=clg@ozlabs.org>)
+ id 1sPIEP-0003XO-R8; Thu, 04 Jul 2024 04:54:23 -0400
+Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4WF9S75nr9z4x0C;
+ Thu,  4 Jul 2024 18:54:15 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits))
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4WF9S11Cb1z4wny;
+ Thu,  4 Jul 2024 18:54:08 +1000 (AEST)
+Message-ID: <5f67cefc-c819-4532-b2f0-9044e2d13a4d@kaod.org>
+Date: Thu, 4 Jul 2024 10:54:06 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 30/31] i386/kvm: Add KVM_EXIT_HYPERCALL handling for
- KVM_HC_MAP_GPA_RANGE
-To: Pankaj Gupta <pankaj.gupta@amd.com>, qemu-devel@nongnu.org
-Cc: brijesh.singh@amd.com, dovmurik@linux.ibm.com, armbru@redhat.com,
- michael.roth@amd.com, xiaoyao.li@intel.com, pbonzini@redhat.com,
- thomas.lendacky@amd.com, isaku.yamahata@intel.com, berrange@redhat.com,
- kvm@vger.kernel.org, anisinha@redhat.com
-References: <20240530111643.1091816-1-pankaj.gupta@amd.com>
- <20240530111643.1091816-31-pankaj.gupta@amd.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20240530111643.1091816-31-pankaj.gupta@amd.com>
+Subject: Re: [PATCH v3 3/8] hw/net:ftgmac100: introduce TX and RX ring base
+ address high registers to support 64 bits
+To: Jamin Lin <jamin_lin@aspeedtech.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Steven Lee <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>,
+ Andrew Jeffery <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>,
+ Alistair Francis <alistair@alistair23.me>, Kevin Wolf <kwolf@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ Cleber Rosa <crosa@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>, "open list:ASPEED BMCs"
+ <qemu-arm@nongnu.org>, "open list:All patches CC here"
+ <qemu-devel@nongnu.org>, "open list:Block layer core" <qemu-block@nongnu.org>
+Cc: troy_lee@aspeedtech.com, yunlin.tang@aspeedtech.com
+References: <20240704082922.1464317-1-jamin_lin@aspeedtech.com>
+ <20240704082922.1464317-4-jamin_lin@aspeedtech.com>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20240704082922.1464317-4-jamin_lin@aspeedtech.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=192.198.163.16;
- envelope-from=binbin.wu@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -42
-X-Spam_score: -4.3
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=mgHy=OE=kaod.org=clg@ozlabs.org; helo=mail.ozlabs.org
+X-Spam_score_int: -41
+X-Spam_score: -4.2
 X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.001, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,63 +73,194 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 7/4/24 10:29 AM, Jamin Lin wrote:
+> ASPEED AST2700 SOC is a 64 bits quad core CPUs (Cortex-a35)
+> And the base address of dram is "0x4 00000000" which
+> is 64bits address.
+> 
+> It have "Normal Priority Transmit Ring Base Address Register High(0x17C)",
+> "High Priority Transmit Ring Base Address Register High(0x184)" and
+> "Receive Ring Base Address Register High(0x18C)" to save the high part physical
+> address of descriptor manager.
+> Ex: TX descriptor manager address [34:0]
+> The "Normal Priority Transmit Ring Base Address Register High(0x17C)"
+> bits [2:0] which corresponds the bits [34:32] of the 64 bits address of
+> the TX ring buffer address.
+> The "Normal Priority Transmit Ring Base Address Register(0x20)" bits [31:0]
+> which corresponds the bits [31:0] of the 64 bits address
+> of the TX ring buffer address.
+> 
+> Introduce a new sub region which size is 0x100 for the set of new registers
+> and map it at 0x100 in the container region.
+> This sub region range is from 0x100 to 0x1ff.
+> 
+> Introduce a new property and object attribute to activate the region for new registers.
+> Introduce a new memop handlers for the new register read and write.
+> 
+> Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 
 
-On 5/30/2024 7:16 PM, Pankaj Gupta wrote:
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
 
-[...]
+Thanks,
+
+C.
+
+
+> ---
+>   hw/net/ftgmac100.c         | 82 ++++++++++++++++++++++++++++++++++++++
+>   include/hw/net/ftgmac100.h |  4 ++
+>   2 files changed, 86 insertions(+)
+> 
+> diff --git a/hw/net/ftgmac100.c b/hw/net/ftgmac100.c
+> index d026242e2b..68956aeb94 100644
+> --- a/hw/net/ftgmac100.c
+> +++ b/hw/net/ftgmac100.c
+> @@ -56,6 +56,16 @@
+>   #define FTGMAC100_PHYDATA         0x64
+>   #define FTGMAC100_FCR             0x68
+>   
 > +/*
-> + * Currently the handling here only supports use of KVM_HC_MAP_GPA_RANGE
-> + * to service guest-initiated memory attribute update requests so that
-> + * KVM_SET_MEMORY_ATTRIBUTES can update whether or not a page should be
-> + * backed by the private memory pool provided by guest_memfd, and as such
-> + * is only applicable to guest_memfd-backed guests (e.g. SNP/TDX).
+> + * FTGMAC100 registers high
 > + *
-> + * Other other use-cases for KVM_HC_MAP_GPA_RANGE, such as for SEV live
-            ^
-            extra "other"?
-> + * migration, are not implemented here currently.
-> + *
-> + * For the guest_memfd use-case, these exits will generally be synthesized
-> + * by KVM based on platform-specific hypercalls, like GHCB requests in the
-> + * case of SEV-SNP, and not issued directly within the guest though the
-> + * KVM_HC_MAP_GPA_RANGE hypercall. So in this case, KVM_HC_MAP_GPA_RANGE is
-> + * not actually advertised to guests via the KVM CPUID feature bit, as
-> + * opposed to SEV live migration where it would be. Since it is unlikely the
-> + * SEV live migration use-case would be useful for guest-memfd backed guests,
-> + * because private/shared page tracking is already provided through other
-> + * means, these 2 use-cases should be treated as being mutually-exclusive.
+> + * values below are offset by - FTGMAC100_REG_HIGH_OFFSET from datasheet
+> + * because its memory region is start at FTGMAC100_REG_HIGH_OFFSET
 > + */
-> +static int kvm_handle_hc_map_gpa_range(struct kvm_run *run)
+> +#define FTGMAC100_NPTXR_BADR_HIGH   (0x17C - FTGMAC100_REG_HIGH_OFFSET)
+> +#define FTGMAC100_HPTXR_BADR_HIGH   (0x184 - FTGMAC100_REG_HIGH_OFFSET)
+> +#define FTGMAC100_RXR_BADR_HIGH     (0x18C - FTGMAC100_REG_HIGH_OFFSET)
+> +
+>   /*
+>    * Interrupt status register & interrupt enable register
+>    */
+> @@ -913,6 +923,60 @@ static void ftgmac100_write(void *opaque, hwaddr addr,
+>       ftgmac100_update_irq(s);
+>   }
+>   
+> +static uint64_t ftgmac100_high_read(void *opaque, hwaddr addr, unsigned size)
 > +{
-> +    uint64_t gpa, size, attributes;
+> +    FTGMAC100State *s = FTGMAC100(opaque);
+> +    uint64_t val = 0;
 > +
-> +    if (!machine_require_guest_memfd(current_machine))
-> +        return -EINVAL;
+> +    switch (addr) {
+> +    case FTGMAC100_NPTXR_BADR_HIGH:
+> +        val = extract64(s->tx_ring, 32, 32);
+> +        break;
+> +    case FTGMAC100_HPTXR_BADR_HIGH:
+> +        /* High Priority Transmit Ring Base High Address */
+> +        qemu_log_mask(LOG_UNIMP, "%s: read to unimplemented register 0x%"
+> +                      HWADDR_PRIx "\n", __func__, addr);
+> +        break;
+> +    case FTGMAC100_RXR_BADR_HIGH:
+> +        val = extract64(s->rx_ring, 32, 32);
+> +        break;
+> +    default:
+> +        qemu_log_mask(LOG_GUEST_ERROR, "%s: Bad address at offset 0x%"
+> +                      HWADDR_PRIx "\n", __func__, addr);
+> +        break;
+> +    }
 > +
-> +    gpa = run->hypercall.args[0];
-> +    size = run->hypercall.args[1] * TARGET_PAGE_SIZE;
-> +    attributes = run->hypercall.args[2];
-> +
-> +    trace_kvm_hc_map_gpa_range(gpa, size, attributes, run->hypercall.flags);
-> +
-> +    return kvm_convert_memory(gpa, size, attributes & KVM_MAP_GPA_RANGE_ENCRYPTED);
-
-run->hypercall.ret should be updated accordingly.
-At least for successful case.
-For failure case, QEMU will shutdown the VM, is it the expected behavior?
-
-
+> +    return val;
 > +}
 > +
-> +static int kvm_handle_hypercall(struct kvm_run *run)
+> +static void ftgmac100_high_write(void *opaque, hwaddr addr,
+> +                          uint64_t value, unsigned size)
 > +{
-> +    if (run->hypercall.nr == KVM_HC_MAP_GPA_RANGE)
-> +        return kvm_handle_hc_map_gpa_range(run);
+> +    FTGMAC100State *s = FTGMAC100(opaque);
 > +
-> +    return -EINVAL;
+> +    switch (addr) {
+> +    case FTGMAC100_NPTXR_BADR_HIGH:
+> +        s->tx_ring = deposit64(s->tx_ring, 32, 32, value);
+> +        s->tx_descriptor = deposit64(s->tx_descriptor, 32, 32, value);
+> +        break;
+> +    case FTGMAC100_HPTXR_BADR_HIGH:
+> +        /* High Priority Transmit Ring Base High Address */
+> +        qemu_log_mask(LOG_UNIMP, "%s: write to unimplemented register 0x%"
+> +                      HWADDR_PRIx "\n", __func__, addr);
+> +        break;
+> +    case FTGMAC100_RXR_BADR_HIGH:
+> +        s->rx_ring = deposit64(s->rx_ring, 32, 32, value);
+> +        s->rx_descriptor = deposit64(s->rx_descriptor, 32, 32, value);
+> +        break;
+> +    default:
+> +        qemu_log_mask(LOG_GUEST_ERROR, "%s: Bad address at offset 0x%"
+> +                      HWADDR_PRIx "\n", __func__, addr);
+> +        break;
+> +    }
+> +
+> +    ftgmac100_update_irq(s);
 > +}
 > +
->
-[...]
+>   static int ftgmac100_filter(FTGMAC100State *s, const uint8_t *buf, size_t len)
+>   {
+>       unsigned mcast_idx;
+> @@ -1077,6 +1141,14 @@ static const MemoryRegionOps ftgmac100_ops = {
+>       .endianness = DEVICE_LITTLE_ENDIAN,
+>   };
+>   
+> +static const MemoryRegionOps ftgmac100_high_ops = {
+> +    .read = ftgmac100_high_read,
+> +    .write = ftgmac100_high_write,
+> +    .valid.min_access_size = 4,
+> +    .valid.max_access_size = 4,
+> +    .endianness = DEVICE_LITTLE_ENDIAN,
+> +};
+> +
+>   static void ftgmac100_cleanup(NetClientState *nc)
+>   {
+>       FTGMAC100State *s = FTGMAC100(qemu_get_nic_opaque(nc));
+> @@ -1114,6 +1186,15 @@ static void ftgmac100_realize(DeviceState *dev, Error **errp)
+>                             TYPE_FTGMAC100 ".regs", FTGMAC100_REG_MEM_SIZE);
+>       memory_region_add_subregion(&s->iomem_container, 0x0, &s->iomem);
+>   
+> +    if (s->dma64) {
+> +        memory_region_init_io(&s->iomem_high, OBJECT(s), &ftgmac100_high_ops,
+> +                              s, TYPE_FTGMAC100 ".regs.high",
+> +                              FTGMAC100_REG_HIGH_MEM_SIZE);
+> +        memory_region_add_subregion(&s->iomem_container,
+> +                                    FTGMAC100_REG_HIGH_OFFSET,
+> +                                    &s->iomem_high);
+> +    }
+> +
+>       sysbus_init_irq(sbd, &s->irq);
+>       qemu_macaddr_default_if_unset(&s->conf.macaddr);
+>   
+> @@ -1162,6 +1243,7 @@ static const VMStateDescription vmstate_ftgmac100 = {
+>   static Property ftgmac100_properties[] = {
+>       DEFINE_PROP_BOOL("aspeed", FTGMAC100State, aspeed, false),
+>       DEFINE_NIC_PROPERTIES(FTGMAC100State, conf),
+> +    DEFINE_PROP_BOOL("dma64", FTGMAC100State, dma64, false),
+>       DEFINE_PROP_END_OF_LIST(),
+>   };
+>   
+> diff --git a/include/hw/net/ftgmac100.h b/include/hw/net/ftgmac100.h
+> index aae57ae8cb..24ccdf0260 100644
+> --- a/include/hw/net/ftgmac100.h
+> +++ b/include/hw/net/ftgmac100.h
+> @@ -16,6 +16,8 @@ OBJECT_DECLARE_SIMPLE_TYPE(FTGMAC100State, FTGMAC100)
+>   
+>   #define FTGMAC100_MEM_SIZE 0x1000
+>   #define FTGMAC100_REG_MEM_SIZE 0x100
+> +#define FTGMAC100_REG_HIGH_MEM_SIZE 0x100
+> +#define FTGMAC100_REG_HIGH_OFFSET 0x100
+>   
+>   #include "hw/sysbus.h"
+>   #include "net/net.h"
+> @@ -35,6 +37,7 @@ struct FTGMAC100State {
+>       qemu_irq irq;
+>       MemoryRegion iomem_container;
+>       MemoryRegion iomem;
+> +    MemoryRegion iomem_high;
+>   
+>       uint8_t frame[FTGMAC100_MAX_FRAME_SIZE];
+>   
+> @@ -68,6 +71,7 @@ struct FTGMAC100State {
+>       bool aspeed;
+>       uint32_t txdes0_edotr;
+>       uint32_t rxdes0_edorr;
+> +    bool dma64;
+>   };
+>   
+>   #define TYPE_ASPEED_MII "aspeed-mmi"
+
 
