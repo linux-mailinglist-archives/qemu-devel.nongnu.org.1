@@ -2,77 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D823D927337
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 11:40:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04EF892735C
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 11:49:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPIwF-0005rw-4M; Thu, 04 Jul 2024 05:39:39 -0400
+	id 1sPJ4h-0007nw-Nd; Thu, 04 Jul 2024 05:48:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sPIwC-0005kX-GF
- for qemu-devel@nongnu.org; Thu, 04 Jul 2024 05:39:36 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sPIw6-00073O-A8
- for qemu-devel@nongnu.org; Thu, 04 Jul 2024 05:39:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1720085969;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=wDLZJHKzSrjg2/Q2Ck/6gMTQyX9tZqJNy+6mBsYfN4w=;
- b=VkFk2PllrNxPP62Q2DlRKaYxxRCm/UnQgkyzMpTXG4gzgPIRv65BVrJTay/r40h63Uxf62
- 0wwNm43SrE33vF9rwvX0j6pWMXUcdxI6qjAmaPulGgqcNJOAaPkkBE6kaOnn9BOexfDf31
- mMIT3N+c4vgIUMaiBOricgcuZPtC1uQ=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-583-OZfNEKOQO9ugSNal8hkWRQ-1; Thu,
- 04 Jul 2024 05:39:25 -0400
-X-MC-Unique: OZfNEKOQO9ugSNal8hkWRQ-1
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id DC4201958B35; Thu,  4 Jul 2024 09:39:23 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.21])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E92353000180; Thu,  4 Jul 2024 09:39:20 +0000 (UTC)
-Date: Thu, 4 Jul 2024 10:39:17 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Michael Roth <michael.roth@amd.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org
-Subject: Re: [PATCH] i386/sev: Don't allow automatic fallback to legacy
- KVM_SEV*_INIT
-Message-ID: <ZoZtxUPdDmnFaya6@redhat.com>
-References: <20240704000019.3928862-1-michael.roth@amd.com>
- <CABgObfYX+nDnQSW5xyT3SjYbQ72--EW5buCkUuG_Z_JPFqfQNA@mail.gmail.com>
- <ZoZge_2UT_yRJE56@redhat.com>
- <CABgObfbf1u_RvRTcoZFepFWdavFnkqNwUCwHm1nE4tNKmM8+pA@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1sPJ4e-0007nN-Qe
+ for qemu-devel@nongnu.org; Thu, 04 Jul 2024 05:48:20 -0400
+Received: from mail-lf1-x12d.google.com ([2a00:1450:4864:20::12d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1sPJ4P-000345-K6
+ for qemu-devel@nongnu.org; Thu, 04 Jul 2024 05:48:20 -0400
+Received: by mail-lf1-x12d.google.com with SMTP id
+ 2adb3069b0e04-52cdf2c7454so811711e87.1
+ for <qemu-devel@nongnu.org>; Thu, 04 Jul 2024 02:48:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1720086483; x=1720691283; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:references
+ :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=eTGtAckJ4OPcEYf3bG6lbqS6cGVXgdLQAk3WTr1SGgw=;
+ b=NdSZetiD63igXmtSEIVC6JJc/cAWwLKpU7TsS9NWF7yZvxV3W6KJ72kLeyY1gi3tmT
+ GW02Ntx2B5HTbMG7M2rg9qjAV7egfAAF7f2VkrqQVNNzaBIjtlfLGCbuCoI5TPIeIr6J
+ tk0Do3vOWvQf66hSpzkKWbsM3d6CW5d1n2dyVdu5EEObUW38RQEDP8w8y4bLoK3z1gSF
+ dmYXKGtWeSl6z64XFrHuDUiug3rUNDJKpEMpqIJ5GTPh9DrEb9x27CAjeLOHyGTeOAe4
+ T1KCiYKwRgVH8XiDaEq3nR+KEGTrOIjuhmoGAO06kUgl26U5pHBDdKWowM2FNf5W+ZOg
+ O8gg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1720086483; x=1720691283;
+ h=content-transfer-encoding:mime-version:message-id:date:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=eTGtAckJ4OPcEYf3bG6lbqS6cGVXgdLQAk3WTr1SGgw=;
+ b=BqigDbmm2duAgMTUNvzmYrCT4YL5lc0Ow7NsVUoPVPKRNkkBEsIX4OXdhV2VTj89ZL
+ cgr3bMViGHqtCkdmSKML36V/HMYQfjWnyYmDta09Zb49eK5a4BFK0yIRwU8g+HZFz1hM
+ gllOs5dLxHLz1RXGWDvw2VF9jKGRAkbVtZjM3Xt6BUvhuwqwW1ozg3GFpR+rCsKhd+HO
+ KiTz7isKEtBwqNQtDMCs1QkFf8DBCuOGExcV5pX8MYVordYL5TOAKT1qKkBRNM2jAbRk
+ ouRL3z1ZwgS9eKV7ouMYFLFKjb0lvYOwdbfZ3jEAkQTreicNkc5he1e+aipByuRqa5Bd
+ zBuA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUarj3uui0/1Vwp58okUTtQYZAmFSr3G9CcyPqn3euUridJA2ceDscqTlMs/Txb6a0uzPO33iyY+0B3PUKPUVWafgbxHRk=
+X-Gm-Message-State: AOJu0YzH2LBn08FPDB6mVK0x//DLfQlWIAcRX/7ubHCfIi2PWjqrRcHx
+ DepWbMqvkF9A7VeqO8uFD6cs3vAm6RQAFONIZ5X9Er43Kju8b2OdNql+eSvEaxQ=
+X-Google-Smtp-Source: AGHT+IHHrsxmnvpZAyGJcca6l/ncdPkOXI0cqmZbtEj4hJx2fPkPjCChla7/npTlrlvo8UknmC/x7w==
+X-Received: by 2002:a19:6a0d:0:b0:52c:905b:ea5f with SMTP id
+ 2adb3069b0e04-52ea06c7fc2mr869461e87.63.1720086483236; 
+ Thu, 04 Jul 2024 02:48:03 -0700 (PDT)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-a77af9f46c0sm70223766b.181.2024.07.04.02.48.02
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 04 Jul 2024 02:48:02 -0700 (PDT)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 14A7B5F839;
+ Thu,  4 Jul 2024 10:48:02 +0100 (BST)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Zhao Liu <zhao1.liu@intel.com>
+Cc: Michael Tokarev <mjt@tls.msk.ru>,  Laurent Vivier <laurent@vivier.eu>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-trivial@nongnu.org, qemu-devel@nongnu.org
+Subject: Re: [PATCH 1/4] accel/kvm/kvm-all: Fix superfluous trailing semicolon
+In-Reply-To: <20240704084759.1824420-2-zhao1.liu@intel.com> (Zhao Liu's
+ message of "Thu, 4 Jul 2024 16:47:56 +0800")
+References: <20240704084759.1824420-1-zhao1.liu@intel.com>
+ <20240704084759.1824420-2-zhao1.liu@intel.com>
+Date: Thu, 04 Jul 2024 10:48:02 +0100
+Message-ID: <87cyntpjxp.fsf@draig.linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CABgObfbf1u_RvRTcoZFepFWdavFnkqNwUCwHm1nE4tNKmM8+pA@mail.gmail.com>
-User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::12d;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x12d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,81 +95,35 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jul 04, 2024 at 11:31:16AM +0200, Paolo Bonzini wrote:
-> On Thu, Jul 4, 2024 at 10:42 AM Daniel P. Berrangé <berrange@redhat.com> wrote:
-> >
-> > On Thu, Jul 04, 2024 at 08:51:05AM +0200, Paolo Bonzini wrote:
-> > > On Thu, Jul 4, 2024 at 2:01 AM Michael Roth <michael.roth@amd.com> wrote:
-> > > > Currently if the 'legacy-vm-type' property of the sev-guest object is
-> > > > left unset, QEMU will attempt to use the newer KVM_SEV_INIT2 kernel
-> > > > interface in conjunction with the newer KVM_X86_SEV_VM and
-> > > > KVM_X86_SEV_ES_VM KVM VM types.
-> > > >
-> > > > This can lead to measurement changes if, for instance, an SEV guest was
-> > > > created on a host that originally had an older kernel that didn't
-> > > > support KVM_SEV_INIT2, but is booted on the same host later on after the
-> > > > host kernel was upgraded.
-> > >
-> > > I think this is the right thing to do for SEV-ES. I agree that it's
-> > > bad to require a very new kernel (6.10 will be released only a month
-> > > before QEMU 9.1), on the other hand the KVM_SEV_ES_INIT API is broken
-> > > in several ways. As long as there is a way to go back to it, and it's
-> > > not changed by old machine types, not using it for SEV-ES is the
-> > > better choice for upstream.
-> >
-> > Broken how ?   I know there was the regression with the 'debug_swap'
-> > parameter, but was something that should just be fixed in the kernel,
-> > rather than breaking userspace. What else is a problem ?
-> 
-> The debug_swap parameter simply could not be enabled in the old API
-> without breaking measurements. The new API *is the fix* to allow using
-> it (though QEMU doesn't have the option plumbed in yet). There is no
-> extensibility.
-> 
-> Enabling debug_swap by default is also a thorny problem; it cannot be
-> enabled by default because not all CPUs support it, and also we'd have
-> the same problem that we cannot enable debug_swap on new machine types
-> without requiring a new kernel. Tying the default to the -cpu model
-> would work but it is confusing.
+Zhao Liu <zhao1.liu@intel.com> writes:
 
-Presumably we can tie it to '-cpu host' without much problem, and
-then just leave it as an opt-in feature flag for named CPU models.
+> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> ---
+>  accel/kvm/kvm-all.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+> index 2b4ab896794b..64bf47a03300 100644
+> --- a/accel/kvm/kvm-all.c
+> +++ b/accel/kvm/kvm-all.c
+> @@ -3878,7 +3878,7 @@ static StatsList *add_kvmstat_entry(struct kvm_stat=
+s_desc *pdesc,
+>      /* Alloc and populate data list */
+>      stats =3D g_new0(Stats, 1);
+>      stats->name =3D g_strdup(pdesc->name);
+> -    stats->value =3D g_new0(StatsValue, 1);;
+> +    stats->value =3D g_new0(StatsValue, 1);
+>=20=20
+>      if ((pdesc->flags & KVM_STATS_UNIT_MASK) =3D=3D KVM_STATS_UNIT_BOOLE=
+AN) {
+>          stats->value->u.boolean =3D *stats_data;
 
-> But I guess we can add support for debug_swap, disabled by default and
-> switch to the new API if debug_swap is enabled.
-> 
-> > I don't think its reasonable for QEMU to require a brand new kernel
-> > for new machine types, given SEV & SEV-ES have been deployed for
-> > many years already.
-> 
-> I think it's reasonable if the fix is displayed right into the error
-> message. It's only needed for SEV-ES though, SEV can use the old and
-> new APIs interchangeably.
+Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
 
-FYI currently it is proposed to unconditionally force set legacy-vm-type=true
-in libvirt, so QEMU guests would *never* use the new ioctl, to fix what we
-consider to be a QEMU / kernel guest ABI regression.
-
-If libvirt adds this though, it is basically a forever setting we would
-never be able to remove as removing would break ABI compat again.
-
-  https://lists.libvirt.org/archives/list/devel@lists.libvirt.org/message/KP24LPFV4OCMN45TDHNXQVBPDZ56QSRR/
-
-I'd much rather QEMU did NOT set this by default in its machine types,
-so libvirt doesn't have to add this forced flag. That way downstream
-distros who /can/ guarantee new enough kernels, can still use
-legacy-vm-type=false in their downstream machine types, without
-libvirt overriding this.
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
