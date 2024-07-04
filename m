@@ -2,82 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93F45927E73
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 23:07:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7DB0927E79
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 23:12:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPTfC-0006Xb-JE; Thu, 04 Jul 2024 17:06:46 -0400
+	id 1sPTjl-0001u3-HD; Thu, 04 Jul 2024 17:11:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1sPTfA-0006V6-Ha
- for qemu-devel@nongnu.org; Thu, 04 Jul 2024 17:06:44 -0400
-Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
+ (Exim 4.90_1) (envelope-from <giacomo.parmeggiani@gmail.com>)
+ id 1sPTji-0001tb-Tw
+ for qemu-devel@nongnu.org; Thu, 04 Jul 2024 17:11:26 -0400
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1sPTf8-0007Ws-F0
- for qemu-devel@nongnu.org; Thu, 04 Jul 2024 17:06:44 -0400
-Received: by mail-ed1-x52b.google.com with SMTP id
- 4fb4d7f45d1cf-57cbc66a0a6so1780137a12.1
- for <qemu-devel@nongnu.org>; Thu, 04 Jul 2024 14:06:41 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <giacomo.parmeggiani@gmail.com>)
+ id 1sPTjg-00085G-Bi
+ for qemu-devel@nongnu.org; Thu, 04 Jul 2024 17:11:26 -0400
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-36796a9b636so736079f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 04 Jul 2024 14:11:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1720127199; x=1720731999; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
+ d=gmail.com; s=20230601; t=1720127483; x=1720732283; darn=nongnu.org;
+ h=to:references:message-id:content-transfer-encoding:cc:date
+ :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=lwddYItCT82VQZGmH5vkpRu4iOBj1LGve7vBI/wi1Io=;
- b=NgBVBfAuJX9NJMPi+cY1WMbr+u96HjcY+xQv4rjoHtI5JVMCKwxjQWbO2v7HytM7Uo
- 68yVLWtJ13ycflBO+lWgYklKWf7SiRfMW0zqD3hqHvo8KDEBOjmvGwHIf7H+Vog1rpnd
- 28gXAaZ4Kl0z1wCtdY9hSowpFnZbxaksFmsL2MvMMPzzIkcAOsFao2VK8albVHb2gWlO
- KVbxBSmS1mBrq3M1WobJmdorMx4/2jKnc5OfeOrN/dTdnuHeoNn22bsaeHMYFfDhNnH1
- MsECYD5saOwOs4OhNOMxGdDskAK3zE518z5zmUFx41F6jgn4CfnlqmTmbRXS3XiwpXQD
- xrqw==
+ bh=SMwaWncjWvRYOpyY+8XQB9IVhPBKMXdU6EZFMxf21O8=;
+ b=Lba4DcRwDtsrnfi9k7M0f/TUUY4cVKZOxyc/hTh9bDMumxQGiZR9oLwYUsybAlBjTs
+ J7oVRwKeD9+w/NdjjawIwyxr0T1zxBYGfOPCjKShi9g7bANUx4DQ18LaUYCe/ExeoIW0
+ eiBrsTG884JidRSIhrEFGVbK3vHstlDRuHsc9WBZOhPQhVA4T/hlsHm7QAU/13oegrE1
+ Ozd+DYNZNMp1ds5dDHtZE9X/fyjV8axFyRbtyhdvHiXwuYBuiT+T6FePiW8mb2dhGfMA
+ rEY3egZzcDdqOA3VAcX80b6sKuNASqOkeyhJwmrKkf6ovSukncOS+VmpKBs/wHsSyNDK
+ BuHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720127199; x=1720731999;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1720127483; x=1720732283;
+ h=to:references:message-id:content-transfer-encoding:cc:date
+ :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=lwddYItCT82VQZGmH5vkpRu4iOBj1LGve7vBI/wi1Io=;
- b=fx3ipEKxGLAGpSvfCET5vsa27smGshhxlcz/DCiJlsXvkp1rzhBMgki3FgPz0iOPyW
- 8cnogxKmrb9hs7EOMVwvW16pl5BSBtjRjEOFZqtQ9ZV3cXlWVtoYL03jtQB9UR/ZPbws
- EzNZsB+WxIdhgmlEE32MFTXMDtesXdFHGlEx15nPQdj1MtOV9MpTSsOPK23dykP6pOPi
- lTW9liS8BM+kt/emV+oA//l07RHgbgEAKbN9mXHDiR+3sSopSPqyze5nIFRGr8z8VSWm
- Kkcp5m9Mrxw6Reh6V1mQIVMNz8wbxdDMzEsF25LdfVRDvK1bL/Or4LVrr0syg4Yk+CYl
- 0nsQ==
-X-Gm-Message-State: AOJu0Yw63Q63uzdsaq1BJSz4KkdBd0hHwDWZ/gDhtDyUTCU6SHkej2cA
- 2fhHYv+453oFL8PKcgTpUs1wfyJadOpCoFvhJzJcHfIaHuFhLbBr
-X-Google-Smtp-Source: AGHT+IH5nuWpxdUF9o3wayaqi3wvukvsGnqUlFC42f48mCmrTqPetukMxwyOuoqyhS3lQbjp9VDQlQ==
-X-Received: by 2002:a05:6402:5202:b0:58c:36e:51bf with SMTP id
- 4fb4d7f45d1cf-58e7a74c721mr2201817a12.3.1720127199290; 
- Thu, 04 Jul 2024 14:06:39 -0700 (PDT)
-Received: from [127.0.0.1] (dynamic-077-188-087-180.77.188.pool.telefonica.de.
- [77.188.87.180]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-58612c835c4sm8862170a12.11.2024.07.04.14.06.38
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 04 Jul 2024 14:06:38 -0700 (PDT)
-Date: Thu, 04 Jul 2024 21:06:36 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: BALATON Zoltan <balaton@eik.bme.hu>
-CC: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- philmd@linaro.org, Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_2/2=5D_hw/isa/vt82c686=2Ec=3A_Embed_i82?=
- =?US-ASCII?Q?59_irq_in_device_state_instead_of_allocating?=
-In-Reply-To: <4aa99879-7769-29a4-67f4-236dfa24299a@eik.bme.hu>
-References: <cover.1719690591.git.balaton@eik.bme.hu>
- <b70b9e72063b4dd4005bf4bc040b84f2bb617bf4.1719690591.git.balaton@eik.bme.hu>
- <CAFEAcA_tBjQrJMpjbzVUVcrTWghr4v=MHB0qpWx=xjML6ek9mg@mail.gmail.com>
- <4CBF639B-CC3E-4644-9F87-481B9147F2A9@gmail.com>
- <00311AC8-D02C-4C3A-85A7-8FB3B51DDE9C@gmail.com>
- <cf46b29f-b36f-37b8-373f-72ad487ee749@eik.bme.hu>
- <69FF1605-8E74-44CA-BE43-8D85AAC89EBE@gmail.com>
- <4aa99879-7769-29a4-67f4-236dfa24299a@eik.bme.hu>
-Message-ID: <07E1F496-C129-4E24-AA20-D650080B5B78@gmail.com>
-MIME-Version: 1.0
+ bh=SMwaWncjWvRYOpyY+8XQB9IVhPBKMXdU6EZFMxf21O8=;
+ b=DYsDyhtjv2gHTUgS9kJd4hufRD0BfmrTqY0W5Lulcii7b5LJGFuFdiv6xrKwPDIs4O
+ rJPBky4gf25Q7Zx3jvYs9YlqzB/9jfd4pfGQ2AYK7mP1uak6OGLTadsdjcTvogduQniK
+ oiue5R7/6hsOyjyFLMXl5RJ5kl5EU0NqnkhN6B8C5IbRXC8epdxz0ZWhp+tcZHwvWHuQ
+ Gcjl60rx0iByS0m0Sa0sVnAMAph2Fds+zM5iWQQdAmp6UM9B7ScSqARzTZxpIYmukYPx
+ AKY6T/ySNoMh5MiGlUuCVkA//0BGJf8x+s6XLTi1lR8ep7T62fTSlAIB5X1UBnZ+Vx9Q
+ aLLw==
+X-Gm-Message-State: AOJu0Yx802qC9Av9jz9xe3h8J0oSg0zihVazLDJZfuMFZ6C8sGYGinef
+ 0jzVo1IhhBI5dghoTMBAS8aiGKU1f8MzfJnS//XS40L87G4cDtGe
+X-Google-Smtp-Source: AGHT+IGkn4xXtU8jNWN5lo4v3rIJUmxRoYq/T7sgO7nEZ1FuoPnseJwaFfTUJ0sclav/hsxC/hBLSw==
+X-Received: by 2002:a5d:58f9:0:b0:367:8aa3:4366 with SMTP id
+ ffacd0b85a97d-3679dd34c08mr2121938f8f.38.1720127481991; 
+ Thu, 04 Jul 2024 14:11:21 -0700 (PDT)
+Received: from smtpclient.apple ([213.55.241.196])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3678e68a622sm6712091f8f.106.2024.07.04.14.11.20
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Thu, 04 Jul 2024 14:11:21 -0700 (PDT)
 Content-Type: text/plain;
- charset=utf-8
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.1\))
+Subject: Re: [PATCH v2 7/7] crypto: Add test suite for ECDSA algorithm
+From: Giacomo Parmeggiani <giacomo.parmeggiani@gmail.com>
+In-Reply-To: <20220622091549.31115-8-helei.sig11@bytedance.com>
+Date: Thu, 4 Jul 2024 23:11:20 +0200
+Cc: qemu-devel@nongnu.org, berrange@redhat.com, f4bug@amsat.org,
+ mst@redhat.com, pizhenwei@bytedance.com, jasowang@redhat.com
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
- envelope-from=shentey@gmail.com; helo=mail-ed1-x52b.google.com
+Message-Id: <9D69E1A4-5694-44FC-B3FD-C6BE7EC68EA3@gmail.com>
+References: <20220622091549.31115-1-helei.sig11@bytedance.com>
+ <20220622091549.31115-8-helei.sig11@bytedance.com>
+To: Lei He <helei.sig11@bytedance.com>
+X-Mailer: Apple Mail (2.3696.120.41.1.1)
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=giacomo.parmeggiani@gmail.com; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,115 +95,460 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+PING
+Hello Li He, maintainers,
 
+Any chance to revive this thread?=20
+The patch series no longer applies to latest QEMU and it would be a =
+useful feature to have.
 
-Am 3=2E Juli 2024 11:13:08 UTC schrieb BALATON Zoltan <balaton@eik=2Ebme=
-=2Ehu>:
->On Wed, 3 Jul 2024, Bernhard Beschow wrote:
->> Am 3=2E Juli 2024 00:09:45 UTC schrieb BALATON Zoltan <balaton@eik=2Ebm=
-e=2Ehu>:
->>> On Tue, 2 Jul 2024, Bernhard Beschow wrote:
->>>> Am 2=2E Juli 2024 18:42:23 UTC schrieb Bernhard Beschow <shentey@gmai=
-l=2Ecom>:
->>>>> Am 1=2E Juli 2024 12:58:15 UTC schrieb Peter Maydell <peter=2Emaydel=
-l@linaro=2Eorg>:
->>>>>> On Sat, 29 Jun 2024 at 21:01, BALATON Zoltan <balaton@eik=2Ebme=2Eh=
-u> wrote:
->>>>>>>=20
->>>>>>> To avoid a warning about unfreed qemu_irq embed the i8259 irq in t=
-he
->>>>>>> device state instead of allocating it=2E
->>>>>>>=20
->>>>>>> Signed-off-by: BALATON Zoltan <balaton@eik=2Ebme=2Ehu>
->>>>>>> ---
->>>>>>>  hw/isa/vt82c686=2Ec | 7 ++++---
->>>>>>>  1 file changed, 4 insertions(+), 3 deletions(-)
->>>>>>>=20
->>>>>>> diff --git a/hw/isa/vt82c686=2Ec b/hw/isa/vt82c686=2Ec
->>>>>>> index 8582ac0322=2E=2E834051abeb 100644
->>>>>>> --- a/hw/isa/vt82c686=2Ec
->>>>>>> +++ b/hw/isa/vt82c686=2Ec
->>>>>>> @@ -592,6 +592,8 @@ OBJECT_DECLARE_SIMPLE_TYPE(ViaISAState, VIA_IS=
-A)
->>>>>>>=20
->>>>>>>  struct ViaISAState {
->>>>>>>      PCIDevice dev;
->>>>>>> +
->>>>>>> +    IRQState i8259_irq;
->>>>>>>      qemu_irq cpu_intr;
->>>>>>>      qemu_irq *isa_irqs_in;
->>>>>>>      uint16_t irq_state[ISA_NUM_IRQS];
->>>>>>> @@ -715,13 +717,12 @@ static void via_isa_realize(PCIDevice *d, Er=
-ror **errp)
->>>>>>>      ViaISAState *s =3D VIA_ISA(d);
->>>>>>>      DeviceState *dev =3D DEVICE(d);
->>>>>>>      PCIBus *pci_bus =3D pci_get_bus(d);
->>>>>>> -    qemu_irq *isa_irq;
->>>>>>>      ISABus *isa_bus;
->>>>>>>      int i;
->>>>>>>=20
->>>>>>>      qdev_init_gpio_out(dev, &s->cpu_intr, 1);
->>>>>>>      qdev_init_gpio_in_named(dev, via_isa_pirq, "pirq", PCI_NUM_PI=
-NS);
->>>>>>> -    isa_irq =3D qemu_allocate_irqs(via_isa_request_i8259_irq, s, =
-1);
->>>>>>> +    qemu_init_irq(&s->i8259_irq, via_isa_request_i8259_irq, s, 0)=
-;
->>>>>>>      isa_bus =3D isa_bus_new(dev, pci_address_space(d), pci_addres=
-s_space_io(d),
->>>>>>>                            errp);
->>>>>>=20
->>>>>> So if I understand correctly, this IRQ line isn't visible
->>>>>> from outside this chip,
->>>>>=20
->>>>> Actally it is, in the form of the INTR pin=2E Assuming similar namin=
-g
->>>=20
->>> The INTR pin corresponds to qemu_irq cpu_intr not the i8259_irq=2E
->>>=20
->>>>> conventions in vt82xx and piix, one can confirm this by consulting t=
-he piix4 datasheet, "Figure 5=2E Interrupt Controller Block Diagram"=2E Mor=
-eover, the pegasos2 schematics (linked in the QEMU documentation) suggest t=
-hat this pin is actually used there, although not modeled in QEMU=2E
->>>>=20
->>>> Well, QEMU does actually wire the intr pin in the pegasos2 board code=
-, except that it isn't a named gpio like in piix4=2E If we allow this pin t=
-o
->>>=20
->>> I could make that named to make it clearer, now it's the only output g=
-pio so did not name it as usually devices that only have one output don't u=
-se named gpios for that=2E
->>>=20
->>>> be wired before the south bridge's realize we might be able to elimin=
-ate the "intermediate irq forwarder" as Phil used to name it, resulting in =
-less and more efficient code=2E This solution would basically follow the pa=
-ttern I outlined under below link=2E
->>>=20
->>> I think the problem here is that i8259 does not provide an output gpio=
- for this interrupt that the VT82xx could pass on but instead i8259_init() =
-needs a qemu_irq to be passed rhat the i8259 model will set=2E This seems t=
-o be a legacy init function so the fix may be to Qdev-ify i8259 and add an =
-output irq to it then its users could instantiate and connect its IRQs as u=
-sual and we don't need to create a qemu_irq to pass it to i8259_init()=2E
->>=20
->> I've implemented the approach avoiding the intermediate IRQ forwarders =
-here: https://github=2Ecom/shentok/qemu/commits/upstream/vt82c686-irq/ =2E =
-I'd send this series to the list as soon as I resolve some email authentica=
-tion issues=2E
->
->This connects the gpio out before the device is realized=2E I don't think=
- that's the right fix and confuses all the users of this device as they wil=
-l need to remember to do this=2E I think the current interrupt forwarder is=
- OK until i8259 is Qdev-ified and solves this within the device=2E I'm OK w=
-ith the patch that makes intr named if you can submit just that=2E
+BR
+Giacomo
 
-I've now sent a series with naming the gpio as the first patch: https://lo=
-re=2Ekernel=2Eorg/qemu-devel/20240704205854=2E18537-1-shentey@gmail=2Ecom/
+> On 22 Jun 2022, at 11:15, Lei He <helei.sig11@bytedance.com> wrote:
+>=20
+> 1. add test suite for ecdsa algorithm.
+> 2. use qcrypto_akcihper_max_xxx_len to help create buffers in
+>=20
+> Signed-off-by: lei he <helei.sig11@bytedance.com>
+> Reviewed-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+> ---
+> tests/unit/test-crypto-akcipher.c | 338 =
+++++++++++++++++++++++++++++++++++++--
+> 1 file changed, 323 insertions(+), 15 deletions(-)
+>=20
+> diff --git a/tests/unit/test-crypto-akcipher.c =
+b/tests/unit/test-crypto-akcipher.c
+> index 4f1f4214dd..414387cfb4 100644
+> --- a/tests/unit/test-crypto-akcipher.c
+> +++ b/tests/unit/test-crypto-akcipher.c
+> @@ -314,12 +314,117 @@ static const uint8_t rsa2048_public_key[] =3D {
+>    0xed, 0x02, 0x03, 0x01, 0x00, 0x01
+> };
+>=20
+> +static const uint8_t ecdsa_p192_public_key[] =3D {
+> +    0x04, 0xc4, 0x16, 0xb3, 0xff, 0xac, 0xd5, 0x87,
+> +    0x98, 0xf7, 0xd9, 0x45, 0xfe, 0xd3, 0x5c, 0x17,
+> +    0x9d, 0xb2, 0x36, 0x22, 0xcc, 0x07, 0xb3, 0x6d,
+> +    0x3c, 0x4e, 0x04, 0x5f, 0xeb, 0xb6, 0x52, 0x58,
+> +    0xfb, 0x36, 0x10, 0x52, 0xb7, 0x01, 0x62, 0x0e,
+> +    0x94, 0x51, 0x1d, 0xe2, 0xef, 0x10, 0x82, 0x88,
+> +    0x78,
+> +};
+> +
+> +static const uint8_t ecdsa_p192_private_key[] =3D {
+> +    0x30, 0x53, 0x02, 0x01, 0x01, 0x04, 0x18, 0xcb,
+> +    0xc8, 0x86, 0x0e, 0x66, 0x3c, 0xf7, 0x5a, 0x44,
+> +    0x13, 0xb8, 0xef, 0xea, 0x1d, 0x7b, 0xa6, 0x1c,
+> +    0xda, 0xf4, 0x1b, 0xc7, 0x67, 0x6b, 0x35, 0xa1,
+> +    0x34, 0x03, 0x32, 0x00, 0x04, 0xc4, 0x16, 0xb3,
+> +    0xff, 0xac, 0xd5, 0x87, 0x98, 0xf7, 0xd9, 0x45,
+> +    0xfe, 0xd3, 0x5c, 0x17, 0x9d, 0xb2, 0x36, 0x22,
+> +    0xcc, 0x07, 0xb3, 0x6d, 0x3c, 0x4e, 0x04, 0x5f,
+> +    0xeb, 0xb6, 0x52, 0x58, 0xfb, 0x36, 0x10, 0x52,
+> +    0xb7, 0x01, 0x62, 0x0e, 0x94, 0x51, 0x1d, 0xe2,
+> +    0xef, 0x10, 0x82, 0x88, 0x78,
+> +};
+> +
+> +static const uint8_t ecdsa_p256_private_key[] =3D {
+> +    0x30, 0x77, 0x02, 0x01, 0x01, 0x04, 0x20, 0xf6,
+> +    0x92, 0xdd, 0x29, 0x1c, 0x6e, 0xef, 0xb6, 0xb2,
+> +    0x73, 0x9f, 0x40, 0x1b, 0xb3, 0x2a, 0x28, 0xd2,
+> +    0x37, 0xd6, 0x4a, 0x5b, 0xe4, 0x40, 0x4c, 0x6a,
+> +    0x95, 0x99, 0xfa, 0xf7, 0x92, 0x49, 0xbe, 0xa0,
+> +    0x0a, 0x06, 0x08, 0x2a, 0x86, 0x48, 0xce, 0x3d,
+> +    0x03, 0x01, 0x07, 0xa1, 0x44, 0x03, 0x42, 0x00,
+> +    0x04, 0xed, 0x42, 0x9c, 0x67, 0x79, 0xbe, 0x46,
+> +    0x83, 0x88, 0x3e, 0x8c, 0xc1, 0x33, 0xf3, 0xc3,
+> +    0xf6, 0x2c, 0xf3, 0x13, 0x6a, 0x00, 0xc2, 0xc9,
+> +    0x3e, 0x87, 0x7f, 0x86, 0x39, 0xe6, 0xae, 0xe3,
+> +    0xb9, 0xba, 0x2f, 0x58, 0x63, 0x32, 0x62, 0x62,
+> +    0x54, 0x07, 0x27, 0xf9, 0x5a, 0x3a, 0xc7, 0x3a,
+> +    0x6b, 0x5b, 0xbc, 0x0d, 0x33, 0xba, 0xbb, 0xd4,
+> +    0xa3, 0xff, 0x4f, 0x9e, 0xdd, 0xf5, 0x59, 0xc0,
+> +    0xf6,
+> +};
+> +
+> +static const uint8_t ecdsa_p256_public_key[] =3D {
+> +    0x04, 0xed, 0x42, 0x9c, 0x67, 0x79, 0xbe, 0x46,
+> +    0x83, 0x88, 0x3e, 0x8c, 0xc1, 0x33, 0xf3, 0xc3,
+> +    0xf6, 0x2c, 0xf3, 0x13, 0x6a, 0x00, 0xc2, 0xc9,
+> +    0x3e, 0x87, 0x7f, 0x86, 0x39, 0xe6, 0xae, 0xe3,
+> +    0xb9, 0xba, 0x2f, 0x58, 0x63, 0x32, 0x62, 0x62,
+> +    0x54, 0x07, 0x27, 0xf9, 0x5a, 0x3a, 0xc7, 0x3a,
+> +    0x6b, 0x5b, 0xbc, 0x0d, 0x33, 0xba, 0xbb, 0xd4,
+> +    0xa3, 0xff, 0x4f, 0x9e, 0xdd, 0xf5, 0x59, 0xc0,
+> +    0xf6,
+> +};
+> +
+> +static const uint8_t ecdsa_p384_public_key[] =3D {
+> +    0x04, 0xab, 0xd5, 0xf8, 0x87, 0x1d, 0x23, 0x9b,
+> +    0x26, 0xb9, 0x57, 0x7e, 0x97, 0x78, 0x10, 0xcd,
+> +    0x13, 0xe3, 0x98, 0x25, 0xa8, 0xd6, 0xab, 0x66,
+> +    0x35, 0x26, 0x68, 0x8a, 0x0e, 0x49, 0xd9, 0x4a,
+> +    0x91, 0x7d, 0x6c, 0x94, 0x06, 0x06, 0x99, 0xf1,
+> +    0x8d, 0x2a, 0x25, 0x8d, 0xf9, 0xbf, 0x40, 0xfa,
+> +    0xb7, 0xcb, 0xe1, 0x14, 0x22, 0x0a, 0xa7, 0xfb,
+> +    0x0a, 0xb4, 0x02, 0x05, 0x8b, 0x98, 0xaa, 0x78,
+> +    0xcd, 0x53, 0x00, 0x1e, 0xd1, 0x79, 0x6a, 0x5f,
+> +    0x09, 0x01, 0x88, 0xb4, 0xbc, 0x32, 0x62, 0x83,
+> +    0x92, 0x84, 0x2d, 0xc6, 0xf8, 0xda, 0xc4, 0x7f,
+> +    0x10, 0xa3, 0x18, 0x1d, 0xae, 0x0d, 0xa4, 0x41,
+> +    0x9f,
+> +};
+> +
+> +static const uint8_t ecdsa_p384_private_key[] =3D {
+> +    0x30, 0x81, 0x9b, 0x02, 0x01, 0x01, 0x04, 0x30,
+> +    0xb6, 0x04, 0xef, 0xb1, 0x2c, 0x98, 0xdf, 0xcf,
+> +    0xd4, 0x16, 0x31, 0xd4, 0x69, 0x0c, 0x27, 0x81,
+> +    0x4a, 0xac, 0x1a, 0x83, 0x3c, 0xe4, 0xef, 0x65,
+> +    0xe1, 0x7a, 0x6a, 0xc6, 0xd6, 0xf7, 0xea, 0x79,
+> +    0xbe, 0xf1, 0x00, 0x3c, 0xdf, 0x6e, 0x9d, 0x10,
+> +    0x22, 0x61, 0x1b, 0x11, 0xcf, 0x49, 0x6e, 0x62,
+> +    0xa1, 0x64, 0x03, 0x62, 0x00, 0x04, 0xab, 0xd5,
+> +    0xf8, 0x87, 0x1d, 0x23, 0x9b, 0x26, 0xb9, 0x57,
+> +    0x7e, 0x97, 0x78, 0x10, 0xcd, 0x13, 0xe3, 0x98,
+> +    0x25, 0xa8, 0xd6, 0xab, 0x66, 0x35, 0x26, 0x68,
+> +    0x8a, 0x0e, 0x49, 0xd9, 0x4a, 0x91, 0x7d, 0x6c,
+> +    0x94, 0x06, 0x06, 0x99, 0xf1, 0x8d, 0x2a, 0x25,
+> +    0x8d, 0xf9, 0xbf, 0x40, 0xfa, 0xb7, 0xcb, 0xe1,
+> +    0x14, 0x22, 0x0a, 0xa7, 0xfb, 0x0a, 0xb4, 0x02,
+> +    0x05, 0x8b, 0x98, 0xaa, 0x78, 0xcd, 0x53, 0x00,
+> +    0x1e, 0xd1, 0x79, 0x6a, 0x5f, 0x09, 0x01, 0x88,
+> +    0xb4, 0xbc, 0x32, 0x62, 0x83, 0x92, 0x84, 0x2d,
+> +    0xc6, 0xf8, 0xda, 0xc4, 0x7f, 0x10, 0xa3, 0x18,
+> +    0x1d, 0xae, 0x0d, 0xa4, 0x41, 0x9f,
+> +};
+> +
+> static const uint8_t test_sha1_dgst[] =3D {
+>    0x3c, 0x05, 0x19, 0x34, 0x29, 0x19, 0xc7, 0xe0,
+>    0x87, 0xb6, 0x24, 0xf9, 0x58, 0xac, 0xa4, 0xd4,
+>    0xb2, 0xd9, 0x03, 0x9e,
+> };
+>=20
+> +static const uint8_t test_sha512_dgst[] =3D {
+> +    0x8b, 0x79, 0xc0, 0x3c, 0xcb, 0x15, 0x26, 0x51,
+> +    0x50, 0xca, 0xb1, 0xa7, 0xf3, 0xf6, 0x1e, 0x0a,
+> +    0xbb, 0x39, 0x7c, 0x97, 0x7f, 0xad, 0x9e, 0x51,
+> +    0xb4, 0xa0, 0xb0, 0xd8, 0xd6, 0xb9, 0xd8, 0x81,
+> +    0xac, 0x8a, 0xb3, 0x30, 0x07, 0xea, 0x6e, 0x63,
+> +    0x2f, 0xda, 0x8f, 0x2c, 0x4b, 0xa0, 0xee, 0x9a,
+> +    0xda, 0x32, 0x2d, 0x6c, 0xb1, 0x8b, 0xe2, 0xd8,
+> +    0x79, 0x48, 0xd4, 0xf9, 0xb1, 0xfa, 0xf1, 0xa2,
+> +};
+> +
+> static const uint8_t exp_signature_rsa2048_pkcs1[] =3D {
+>    0x4e, 0x82, 0x56, 0x4c, 0x84, 0x66, 0xca, 0x1e,
+>    0xc6, 0x92, 0x46, 0x20, 0x02, 0x6b, 0x64, 0x46,
+> @@ -374,6 +479,82 @@ static const uint8_t =
+exp_signature_rsa1024_pkcs1[] =3D {
+>    0xab, 0x0d, 0xc6, 0x59, 0x1d, 0xc7, 0x33, 0x7b,
+> };
+>=20
+> +static const uint8_t exp_signature_ecdsa_p192[] =3D {
+> +    0x30, 0x35, 0x02, 0x19, 0x00, 0xba, 0xf7, 0xc0,
+> +    0xc1, 0x7e, 0xf5, 0x69, 0xd5, 0xb7, 0x5d, 0x06,
+> +    0xcb, 0x92, 0x28, 0x57, 0x52, 0x96, 0x9a, 0xdc,
+> +    0xc9, 0xf9, 0xd5, 0x2c, 0x51, 0x02, 0x18, 0x26,
+> +    0x21, 0x5d, 0x16, 0xba, 0xff, 0x19, 0x74, 0x56,
+> +    0x8e, 0xdf, 0x51, 0x2b, 0x2c, 0xce, 0xc2, 0x7b,
+> +    0x5b, 0x03, 0x10, 0x56, 0x57, 0x63, 0x47,
+> +};
+> +
+> +static const uint8_t exp_signature_ecdsa_p192_sha512[] =3D {
+> +    0x30, 0x35, 0x02, 0x19, 0x00, 0xbb, 0x03, 0x61,
+> +    0x98, 0x28, 0xb3, 0x02, 0xca, 0x61, 0x08, 0xce,
+> +    0x98, 0xfd, 0x57, 0x6e, 0x60, 0xfa, 0xa0, 0x06,
+> +    0x03, 0xe2, 0xb2, 0x07, 0x22, 0x02, 0x18, 0x26,
+> +    0xdc, 0x17, 0x3b, 0xf1, 0x88, 0x0a, 0x2c, 0xd5,
+> +    0x51, 0x23, 0xbc, 0x83, 0x54, 0x05, 0x77, 0x28,
+> +    0xd5, 0x84, 0xdf, 0x16, 0x4f, 0x50, 0x20,
+> +};
+> +
+> +static const uint8_t exp_signature_ecdsa_p256[] =3D {
+> +    0x30, 0x45, 0x02, 0x21, 0x00, 0xac, 0x09, 0xf3,
+> +    0x32, 0xb6, 0xf6, 0x7e, 0x12, 0x4f, 0x68, 0xdb,
+> +    0x10, 0x14, 0x61, 0xf6, 0x29, 0xbd, 0xdd, 0x72,
+> +    0x9f, 0x81, 0xf8, 0x83, 0x8a, 0xf3, 0x29, 0x87,
+> +    0x7b, 0xbb, 0xcf, 0xea, 0x64, 0x02, 0x20, 0x14,
+> +    0xfc, 0x2e, 0x2f, 0x3e, 0x06, 0xb1, 0xd0, 0xbb,
+> +    0x91, 0x44, 0xd5, 0x53, 0xb4, 0x72, 0xa1, 0x83,
+> +    0xc7, 0x3a, 0xa8, 0xfc, 0x43, 0x1b, 0x2e, 0xbb,
+> +    0xb0, 0xe9, 0xef, 0x0b, 0x03, 0x32, 0x74,
+> +};
+> +
+> +static const uint8_t exp_signature_ecdsa_p256_sha512[] =3D {
+> +    0x30, 0x46, 0x02, 0x21, 0x00, 0xe0, 0x48, 0x74,
+> +    0x65, 0xaa, 0x63, 0x97, 0x68, 0x45, 0x68, 0xfa,
+> +    0xec, 0x51, 0x64, 0xfe, 0x09, 0xc7, 0x5c, 0x65,
+> +    0x5d, 0x93, 0x04, 0x17, 0x23, 0xbe, 0x1b, 0x2f,
+> +    0x89, 0x5e, 0x02, 0xcd, 0x55, 0x02, 0x21, 0x00,
+> +    0xe9, 0x24, 0xbd, 0x7a, 0xbd, 0x05, 0x89, 0x04,
+> +    0x92, 0x2d, 0x67, 0x8d, 0x66, 0xa8, 0x9d, 0x7b,
+> +    0xb1, 0x5b, 0xae, 0xd1, 0xd4, 0x7b, 0xe8, 0x72,
+> +    0xe9, 0xd9, 0x45, 0xfd, 0xd3, 0x76, 0xbe, 0xfb,
+> +};
+> +
+> +static const uint8_t exp_signature_ecdsa_p384[] =3D {
+> +    0x30, 0x64, 0x02, 0x30, 0x3c, 0x79, 0x7f, 0x5a,
+> +    0x91, 0x08, 0x79, 0xde, 0x6e, 0x03, 0x19, 0x39,
+> +    0xcb, 0x94, 0x9c, 0xc6, 0x09, 0x12, 0xfa, 0xbd,
+> +    0xa8, 0x35, 0x5e, 0x3f, 0x74, 0x05, 0x12, 0xd1,
+> +    0x8e, 0xd9, 0x3c, 0x79, 0x9d, 0x7c, 0x1a, 0xae,
+> +    0x96, 0x05, 0x0e, 0x35, 0x21, 0x73, 0xd8, 0xfe,
+> +    0x1b, 0x43, 0x06, 0xb9, 0x02, 0x30, 0x11, 0xdf,
+> +    0xa7, 0xba, 0x70, 0x84, 0x4b, 0x74, 0xab, 0x1e,
+> +    0x9e, 0x6a, 0xc1, 0x46, 0xe3, 0x98, 0x0a, 0x25,
+> +    0x82, 0xf5, 0xff, 0xb5, 0x6f, 0x04, 0xda, 0xc3,
+> +    0xfd, 0x3e, 0xea, 0x96, 0x03, 0x0c, 0x22, 0xf2,
+> +    0xda, 0x86, 0xeb, 0x91, 0x2f, 0x36, 0x13, 0xba,
+> +    0x37, 0xcd, 0xe7, 0x91, 0x85, 0xf3,
+> +};
+> +
+> +static const uint8_t exp_signature_ecdsa_p384_sha512[] =3D {
+> +    0x30, 0x64, 0x02, 0x30, 0x04, 0xa2, 0x3e, 0xb0,
+> +    0xc0, 0x1f, 0xa0, 0xbb, 0x19, 0x60, 0x56, 0x04,
+> +    0x11, 0x95, 0xa9, 0x34, 0x0d, 0x0a, 0x80, 0x7f,
+> +    0x5b, 0x08, 0xb3, 0xf9, 0x33, 0xc2, 0xd4, 0x6d,
+> +    0x23, 0x0a, 0xed, 0x29, 0xca, 0x93, 0xba, 0x8c,
+> +    0xee, 0xbf, 0x2d, 0xb8, 0x45, 0xda, 0xaf, 0x2f,
+> +    0x2e, 0x5b, 0xda, 0x62, 0x02, 0x30, 0x2e, 0x6f,
+> +    0xa4, 0x24, 0xf7, 0xcf, 0x58, 0xc3, 0xca, 0x29,
+> +    0xd8, 0x0b, 0xe7, 0xb5, 0x88, 0xeb, 0x81, 0xbe,
+> +    0x50, 0x2a, 0xd3, 0x37, 0xeb, 0x23, 0xcc, 0x55,
+> +    0x6f, 0xf5, 0x02, 0xb9, 0xf9, 0xa1, 0x58, 0x2a,
+> +    0x35, 0x00, 0xe9, 0x2f, 0xc8, 0x73, 0x5c, 0x27,
+> +    0xbc, 0x4b, 0x8c, 0x0e, 0x4d, 0xde,
+> +};
+> +
+> static const uint8_t test_plaintext[] =3D {
+>    0x00, 0x44, 0xbc, 0x6f, 0x77, 0xfb, 0xe2, 0xa4,
+>    0x98, 0x9e, 0xf5, 0x33, 0xa0, 0xbd, 0x81, 0xb9,
+> @@ -870,7 +1051,114 @@ static QCryptoAkCipherTestData =
+akcipher_test_data[] =3D {
+>        .signature =3D exp_signature_rsa2048_pkcs1,
+>        .slen =3D sizeof(exp_signature_rsa2048_pkcs1),
+>    },
+> +    {
+> +        .path =3D "/crypto/akcipher/ecdsa-nist-p192-with-sha1",
+> +        .opt =3D {
+> +            .alg =3D QCRYPTO_AKCIPHER_ALG_ECDSA,
+> +            .u.ecdsa =3D {
+> +                .curve_id =3D QCRYPTO_CURVE_ID_NIST_P192,
+> +            },
+> +        },
+> +        .pub_key =3D ecdsa_p192_public_key,
+> +        .pub_key_len =3D sizeof(ecdsa_p192_public_key),
+> +        .priv_key =3D ecdsa_p192_private_key,
+> +        .priv_key_len =3D sizeof(ecdsa_p192_private_key),
+> +
+> +        .dgst =3D test_sha1_dgst,
+> +        .dlen =3D sizeof(test_sha1_dgst),
+> +        .signature =3D exp_signature_ecdsa_p192,
+> +        .slen =3D sizeof(exp_signature_ecdsa_p192),
+> +    },
+> +    {
+> +        .path =3D "/crypto/akcipher/ecdsa-nist-p192-with-sha512",
+> +        .opt =3D {
+> +            .alg =3D QCRYPTO_AKCIPHER_ALG_ECDSA,
+> +            .u.ecdsa =3D {
+> +                .curve_id =3D QCRYPTO_CURVE_ID_NIST_P192,
+> +            },
+> +        },
+> +        .pub_key =3D ecdsa_p192_public_key,
+> +        .pub_key_len =3D sizeof(ecdsa_p192_public_key),
+> +        .priv_key =3D ecdsa_p192_private_key,
+> +        .priv_key_len =3D sizeof(ecdsa_p192_private_key),
+> +
+> +        .dgst =3D test_sha512_dgst,
+> +        .dlen =3D sizeof(test_sha512_dgst),
+> +        .signature =3D exp_signature_ecdsa_p192_sha512,
+> +        .slen =3D sizeof(exp_signature_ecdsa_p192_sha512),
+> +    },
+> +    {
+> +        .path =3D "/crypto/akcipher/ecdsa-nist-p256-with-sha1",
+> +        .opt =3D {
+> +            .alg =3D QCRYPTO_AKCIPHER_ALG_ECDSA,
+> +            .u.ecdsa =3D {
+> +                .curve_id =3D QCRYPTO_CURVE_ID_NIST_P256,
+> +            },
+> +        },
+> +        .pub_key =3D ecdsa_p256_public_key,
+> +        .pub_key_len =3D sizeof(ecdsa_p256_public_key),
+> +        .priv_key =3D ecdsa_p256_private_key,
+> +        .priv_key_len =3D sizeof(ecdsa_p256_private_key),
+>=20
+> +        .dgst =3D test_sha1_dgst,
+> +        .dlen =3D sizeof(test_sha1_dgst),
+> +        .signature =3D exp_signature_ecdsa_p256,
+> +        .slen =3D sizeof(exp_signature_ecdsa_p256),
+> +    },
+> +    {
+> +        .path =3D "/crypto/akcipher/ecdsa-nist-p256-with-sha512",
+> +        .opt =3D {
+> +            .alg =3D QCRYPTO_AKCIPHER_ALG_ECDSA,
+> +            .u.ecdsa =3D {
+> +                .curve_id =3D QCRYPTO_CURVE_ID_NIST_P256,
+> +            },
+> +        },
+> +        .pub_key =3D ecdsa_p256_public_key,
+> +        .pub_key_len =3D sizeof(ecdsa_p256_public_key),
+> +        .priv_key =3D ecdsa_p256_private_key,
+> +        .priv_key_len =3D sizeof(ecdsa_p256_private_key),
+> +
+> +        .dgst =3D test_sha512_dgst,
+> +        .dlen =3D sizeof(test_sha512_dgst),
+> +        .signature =3D exp_signature_ecdsa_p256_sha512,
+> +        .slen =3D sizeof(exp_signature_ecdsa_p256_sha512),
+> +    },
+> +    {
+> +        .path =3D "/crypto/akcipher/ecdsa-nist-p384-with-sha1",
+> +        .opt =3D {
+> +            .alg =3D QCRYPTO_AKCIPHER_ALG_ECDSA,
+> +            .u.ecdsa =3D {
+> +                .curve_id =3D QCRYPTO_CURVE_ID_NIST_P384,
+> +            },
+> +        },
+> +        .pub_key =3D ecdsa_p384_public_key,
+> +        .pub_key_len =3D sizeof(ecdsa_p384_public_key),
+> +        .priv_key =3D ecdsa_p384_private_key,
+> +        .priv_key_len =3D sizeof(ecdsa_p384_private_key),
+> +
+> +        .dgst =3D test_sha1_dgst,
+> +        .dlen =3D sizeof(test_sha1_dgst),
+> +        .signature =3D exp_signature_ecdsa_p384,
+> +        .slen =3D sizeof(exp_signature_ecdsa_p384),
+> +    },
+> +    {
+> +        .path =3D "/crypto/akcipher/ecdsa-nist-p384-with-sha512",
+> +        .opt =3D {
+> +            .alg =3D QCRYPTO_AKCIPHER_ALG_ECDSA,
+> +            .u.ecdsa =3D {
+> +                .curve_id =3D QCRYPTO_CURVE_ID_NIST_P384,
+> +            },
+> +        },
+> +        .pub_key =3D ecdsa_p384_public_key,
+> +        .pub_key_len =3D sizeof(ecdsa_p384_public_key),
+> +        .priv_key =3D ecdsa_p384_private_key,
+> +        .priv_key_len =3D sizeof(ecdsa_p384_private_key),
+> +
+> +        .dgst =3D test_sha512_dgst,
+> +        .dlen =3D sizeof(test_sha512_dgst),
+> +        .signature =3D exp_signature_ecdsa_p384_sha512,
+> +        .slen =3D sizeof(exp_signature_ecdsa_p384_sha512),
+> +    },
+> };
+>=20
+> static void test_akcipher(const void *opaque)
+> @@ -879,6 +1167,8 @@ static void test_akcipher(const void *opaque)
+>    g_autofree uint8_t *plaintext =3D NULL;
+>    g_autofree uint8_t *ciphertext =3D NULL;
+>    g_autofree uint8_t *signature =3D NULL;
+> +    int signature_len, ciphertext_len, plaintext_len;
+> +    int max_plen, max_slen, max_clen;
+>    QCryptoAkCipher *pub_key, *priv_key;
+>=20
+>    if (!qcrypto_akcipher_supports((QCryptoAkCipherOptions =
+*)&data->opt)) {
+> @@ -894,32 +1184,41 @@ static void test_akcipher(const void *opaque)
+>                                    data->priv_key, data->priv_key_len,
+>                                    &error_abort);
+>    g_assert(priv_key !=3D NULL);
+> +    max_plen =3D qcrypto_akcipher_max_plaintext_len(pub_key);
+> +    max_clen =3D qcrypto_akcipher_max_plaintext_len(pub_key);
+> +    max_slen =3D qcrypto_akcipher_max_signature_len(priv_key);
+>=20
+>    if (data->plaintext !=3D NULL) {
+>=20
+> -        ciphertext =3D g_new0(uint8_t, data->clen);
+> -        g_assert(qcrypto_akcipher_encrypt(pub_key, data->plaintext, =
+data->plen,
+> -                                          ciphertext, data->clen,
+> -                                          &error_abort) > 0);
+> +        ciphertext =3D g_new0(uint8_t, max_clen);
+> +        ciphertext_len =3D qcrypto_akcipher_encrypt(pub_key,
+> +                                                  data->plaintext, =
+data->plen,
+> +                                                  ciphertext, =
+max_clen,
+> +                                                  &error_abort);
+> +        g_assert(ciphertext_len > 0);
+>=20
+>        /**
+>         * In the asymmetric encryption algorithms, the ciphertext =
+generated
+>         * each time may be different, here only compare the decrypted
+>         * plaintext
+>         */
+> -        plaintext =3D g_new0(uint8_t, data->clen);
+> -        g_assert(qcrypto_akcipher_decrypt(priv_key, ciphertext,
+> -                                          data->clen, plaintext,
+> -                                          data->plen,
+> -                                          &error_abort) =3D=3D =
+data->plen);
+> +        plaintext =3D g_new0(uint8_t, max_plen);
+> +        plaintext_len =3D qcrypto_akcipher_decrypt(priv_key,
+> +                                                 ciphertext, =
+ciphertext_len,
+> +                                                 plaintext, max_plen,
+> +                                                 &error_abort);
+> +        g_assert(plaintext_len =3D=3D data->plen);
+>        g_assert(!memcmp(plaintext, data->plaintext, data->plen));
+>    }
+>=20
+>    if (data->signature !=3D NULL) {
+> -        signature =3D g_new(uint8_t, data->slen);
+> -        g_assert(qcrypto_akcipher_sign(priv_key, data->dgst, =
+data->dlen,
+> -                                       signature, data->slen,
+> -                                       &error_abort) > 0);
+> +        signature =3D g_new(uint8_t, max_slen);
+> +        signature_len =3D qcrypto_akcipher_sign(priv_key,
+> +                                              data->dgst, data->dlen,
+> +                                              signature, max_slen,
+> +                                              &error_abort);
+> +        g_assert(signature_len > 0);
+> +
+>        /**
+>         * The signature generated each time may be different, here =
+only check
+>         * the verification.
+> @@ -927,12 +1226,21 @@ static void test_akcipher(const void *opaque)
+>        g_assert(qcrypto_akcipher_verify(pub_key, data->signature, =
+data->slen,
+>                                         data->dgst, data->dlen,
+>                                         &error_abort) =3D=3D 0);
+> -        g_assert(qcrypto_akcipher_verify(pub_key, signature, =
+data->slen,
+> +        g_assert(qcrypto_akcipher_verify(pub_key, signature, =
+signature_len,
+> +                                         data->dgst, data->dlen,
+> +                                         &error_abort) =3D=3D 0);
+> +
+> +        g_assert(qcrypto_akcipher_verify(priv_key, data->signature, =
+data->slen,
+> +                                         data->dgst, data->dlen,
+> +                                         &error_abort) =3D=3D 0);
+> +        g_assert(qcrypto_akcipher_verify(priv_key, signature, =
+signature_len,
+>                                         data->dgst, data->dlen,
+>                                         &error_abort) =3D=3D 0);
+>        ++signature[0];
+>        /* Here error should be ignored */
+> -        g_assert(qcrypto_akcipher_verify(pub_key, signature, =
+data->slen,
+> +        g_assert(qcrypto_akcipher_verify(pub_key, signature, =
+signature_len,
+> +                                         data->dgst, data->dlen, =
+NULL) !=3D 0);
+> +        g_assert(qcrypto_akcipher_verify(priv_key, signature, =
+signature_len,
+>                                         data->dgst, data->dlen, NULL) =
+!=3D 0);
+>    }
+>=20
+> --=20
+> 2.11.0
+>=20
 
-Best regards,
-Bernhard
-
->
->Regards,
->BALATON Zoltan
 
