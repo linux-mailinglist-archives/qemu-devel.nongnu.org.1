@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7B93927E67
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 23:03:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56A4B927E6A
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 23:03:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPTaQ-0008Cq-B3; Thu, 04 Jul 2024 17:01:50 -0400
+	id 1sPTaQ-0008Ct-8j; Thu, 04 Jul 2024 17:01:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sPTaM-00086l-1P; Thu, 04 Jul 2024 17:01:46 -0400
+ id 1sPTaL-00083a-KD; Thu, 04 Jul 2024 17:01:45 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sPTaF-0004Lz-Lq; Thu, 04 Jul 2024 17:01:45 -0400
+ id 1sPTaG-0004MG-WF; Thu, 04 Jul 2024 17:01:45 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 0ADFD77568;
+ by isrv.corpit.ru (Postfix) with ESMTP id 1B09A7756A;
  Fri,  5 Jul 2024 00:00:51 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 1F00DFECA2;
+ by tsrv.corpit.ru (Postfix) with SMTP id 2FC76FECA3;
  Fri,  5 Jul 2024 00:00:56 +0300 (MSK)
-Received: (nullmailer pid 1507746 invoked by uid 1000);
+Received: (nullmailer pid 1507749 invoked by uid 1000);
  Thu, 04 Jul 2024 21:00:55 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Fabiano Rosas <farosas@suse.de>,
+Cc: qemu-stable@nongnu.org, Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Prasad Pandit <pjp@fedoraproject.org>, Peter Xu <peterx@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.0.2 11/22] migration: Fix file migration with fdset
-Date: Fri,  5 Jul 2024 00:00:41 +0300
-Message-Id: <20240704210055.1507652-11-mjt@tls.msk.ru>
+Subject: [Stable-9.0.2 12/22] tests: Update our CI to use CentOS Stream 9
+ instead of 8
+Date: Fri,  5 Jul 2024 00:00:42 +0300
+Message-Id: <20240704210055.1507652-12-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-9.0.2-20240704162154@cover.tls.msk.ru>
 References: <qemu-stable-9.0.2-20240704162154@cover.tls.msk.ru>
@@ -61,58 +61,313 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Fabiano Rosas <farosas@suse.de>
+From: Thomas Huth <thuth@redhat.com>
 
-When the "file:" migration support was added we missed the special
-case in the qemu_open_old implementation that allows for a particular
-file name format to be used to refer to a set of file descriptors that
-have been previously provided to QEMU via the add-fd QMP command.
+RHEL 9 (and thus also the derivatives) have been available since two
+years now, so according to QEMU's support policy, we can drop the active
+support for the previous major version 8 now.
 
-When using this fdset feature, we should not truncate the migration
-file because being given an fd means that the management layer is in
-control of the file and will likely already have some data written to
-it. This is further indicated by the presence of the 'offset'
-argument, which indicates the start of the region where QEMU is
-allowed to write.
+Another reason for doing this is that Centos Stream 8 will go EOL soon:
 
-Fix the issue by replacing the O_TRUNC flag on open by an ftruncate
-call, which will take the offset into consideration.
+https://blog.centos.org/2023/04/end-dates-are-coming-for-centos-stream-8-and-centos-linux-7/
 
-Fixes: 385f510df5 ("migration: file URI offset")
-Suggested-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: Prasad Pandit <pjp@fedoraproject.org>
-Reviewed-by: Peter Xu <peterx@redhat.com>
+  "After May 31, 2024, CentOS Stream 8 will be archived
+   and no further updates will be provided."
+
+Thus upgrade our CentOS Stream container to major version 9 now.
+
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
-(cherry picked from commit 6d3279655ac49b806265f08415165f471d33e032)
+Message-ID: <20240418101056.302103-5-thuth@redhat.com>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+(cherry picked from commit 641b1efe01b2dd6e7ac92f23d392dcee73508746)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/migration/file.c b/migration/file.c
-index ab18ba505a..ba5b5c44ff 100644
---- a/migration/file.c
-+++ b/migration/file.c
-@@ -84,12 +84,19 @@ void file_start_outgoing_migration(MigrationState *s,
+diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
+index 92e65bb78e..8440bc8ef6 100644
+--- a/.gitlab-ci.d/buildtest.yml
++++ b/.gitlab-ci.d/buildtest.yml
+@@ -158,9 +158,9 @@ build-system-centos:
+     - .native_build_job_template
+     - .native_build_artifact_template
+   needs:
+-    job: amd64-centos8-container
++    job: amd64-centos9-container
+   variables:
+-    IMAGE: centos8
++    IMAGE: centos9
+     CONFIGURE_ARGS: --disable-nettle --enable-gcrypt --enable-vfio-user-server
+       --enable-modules --enable-trace-backends=dtrace --enable-docs
+     TARGETS: ppc64-softmmu or1k-softmmu s390x-softmmu
+@@ -242,7 +242,7 @@ check-system-centos:
+     - job: build-system-centos
+       artifacts: true
+   variables:
+-    IMAGE: centos8
++    IMAGE: centos9
+     MAKE_CHECK_ARGS: check
  
-     trace_migration_file_outgoing(filename);
+ avocado-system-centos:
+@@ -251,7 +251,7 @@ avocado-system-centos:
+     - job: build-system-centos
+       artifacts: true
+   variables:
+-    IMAGE: centos8
++    IMAGE: centos9
+     MAKE_CHECK_ARGS: check-avocado
+     AVOCADO_TAGS: arch:ppc64 arch:or1k arch:s390x arch:x86_64 arch:rx
+       arch:sh4 arch:nios2
+@@ -327,9 +327,9 @@ avocado-system-flaky:
+ build-tcg-disabled:
+   extends: .native_build_job_template
+   needs:
+-    job: amd64-centos8-container
++    job: amd64-centos9-container
+   variables:
+-    IMAGE: centos8
++    IMAGE: centos9
+   script:
+     - mkdir build
+     - cd build
+@@ -654,9 +654,9 @@ build-tci:
+ build-without-defaults:
+   extends: .native_build_job_template
+   needs:
+-    job: amd64-centos8-container
++    job: amd64-centos9-container
+   variables:
+-    IMAGE: centos8
++    IMAGE: centos9
+     CONFIGURE_ARGS:
+       --without-default-devices
+       --without-default-features
+diff --git a/.gitlab-ci.d/container-core.yml b/.gitlab-ci.d/container-core.yml
+index 08f8450fa1..5459447676 100644
+--- a/.gitlab-ci.d/container-core.yml
++++ b/.gitlab-ci.d/container-core.yml
+@@ -1,10 +1,10 @@
+ include:
+   - local: '/.gitlab-ci.d/container-template.yml'
  
--    fioc = qio_channel_file_new_path(filename, O_CREAT | O_WRONLY | O_TRUNC,
--                                     0600, errp);
-+    fioc = qio_channel_file_new_path(filename, O_CREAT | O_WRONLY, 0600, errp);
-     if (!fioc) {
-         return;
-     }
+-amd64-centos8-container:
++amd64-centos9-container:
+   extends: .container_job_template
+   variables:
+-    NAME: centos8
++    NAME: centos9
  
-+    if (ftruncate(fioc->fd, offset)) {
-+        error_setg_errno(errp, errno,
-+                         "failed to truncate migration file to offset %" PRIx64,
-+                         offset);
-+        object_unref(OBJECT(fioc));
-+        return;
-+    }
-+
-     outgoing_args.fname = g_strdup(filename);
+ amd64-fedora-container:
+   extends: .container_job_template
+diff --git a/tests/docker/dockerfiles/centos8.docker b/tests/docker/dockerfiles/centos9.docker
+similarity index 82%
+rename from tests/docker/dockerfiles/centos8.docker
+rename to tests/docker/dockerfiles/centos9.docker
+index d97c30e96a..9fc9b27eb7 100644
+--- a/tests/docker/dockerfiles/centos8.docker
++++ b/tests/docker/dockerfiles/centos9.docker
+@@ -1,15 +1,14 @@
+ # THIS FILE WAS AUTO-GENERATED
+ #
+-#  $ lcitool dockerfile --layers all centos-stream-8 qemu
++#  $ lcitool dockerfile --layers all centos-stream-9 qemu
+ #
+ # https://gitlab.com/libvirt/libvirt-ci
  
-     ioc = QIO_CHANNEL(fioc);
+-FROM quay.io/centos/centos:stream8
++FROM quay.io/centos/centos:stream9
+ 
+ RUN dnf distro-sync -y && \
+     dnf install 'dnf-command(config-manager)' -y && \
+-    dnf config-manager --set-enabled -y powertools && \
+-    dnf install -y centos-release-advanced-virtualization && \
++    dnf config-manager --set-enabled -y crb && \
+     dnf install -y epel-release && \
+     dnf install -y epel-next-release && \
+     dnf install -y \
+@@ -42,7 +41,6 @@ RUN dnf distro-sync -y && \
+         glib2-static \
+         glibc-langpack-en \
+         glibc-static \
+-        glusterfs-api-devel \
+         gnutls-devel \
+         gtk3-devel \
+         hostname \
+@@ -82,6 +80,7 @@ RUN dnf distro-sync -y && \
+         lzo-devel \
+         make \
+         mesa-libgbm-devel \
++        meson \
+         mtools \
+         ncurses-devel \
+         nettle-devel \
+@@ -95,25 +94,25 @@ RUN dnf distro-sync -y && \
+         pixman-devel \
+         pkgconfig \
+         pulseaudio-libs-devel \
+-        python38 \
+-        python38-PyYAML \
+-        python38-numpy \
+-        python38-pip \
+-        python38-setuptools \
+-        python38-wheel \
++        python3 \
++        python3-PyYAML \
++        python3-numpy \
++        python3-pillow \
++        python3-pip \
++        python3-sphinx \
++        python3-sphinx_rtd_theme \
++        python3-tomli \
+         rdma-core-devel \
+         sed \
+         snappy-devel \
+         socat \
+         spice-protocol \
+-        spice-server-devel \
+         swtpm \
+         systemd-devel \
+         systemtap-sdt-devel \
+         tar \
+         usbredir-devel \
+         util-linux \
+-        virglrenderer-devel \
+         vte291-devel \
+         which \
+         xfsprogs-devel \
+@@ -131,18 +130,11 @@ RUN dnf distro-sync -y && \
+     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/g++ && \
+     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/gcc
+ 
+-RUN /usr/bin/pip3.8 install \
+-                    meson==0.63.2 \
+-                    pillow \
+-                    sphinx \
+-                    sphinx-rtd-theme \
+-                    tomli
+-
+ ENV CCACHE_WRAPPERSDIR "/usr/libexec/ccache-wrappers"
+ ENV LANG "en_US.UTF-8"
+ ENV MAKE "/usr/bin/make"
+ ENV NINJA "/usr/bin/ninja"
+-ENV PYTHON "/usr/bin/python3.8"
++ENV PYTHON "/usr/bin/python3"
+ # As a final step configure the user (if env is defined)
+ ARG USER
+ ARG UID
+diff --git a/tests/lcitool/mappings.yml b/tests/lcitool/mappings.yml
+index 407c03301b..03b974ad02 100644
+--- a/tests/lcitool/mappings.yml
++++ b/tests/lcitool/mappings.yml
+@@ -1,66 +1,50 @@
+ mappings:
+   flake8:
+-    CentOSStream8:
+     OpenSUSELeap15:
+ 
+   meson:
+-    CentOSStream8:
+     OpenSUSELeap15:
+ 
+   python3:
+-    CentOSStream8: python38
+     OpenSUSELeap15: python311-base
+ 
+   python3-PyYAML:
+-    CentOSStream8: python38-PyYAML
+     OpenSUSELeap15:
+ 
+   python3-devel:
+-    CentOSStream8: python38-devel
+     OpenSUSELeap15: python311-devel
+ 
+   python3-docutils:
+-    CentOSStream8:
+     OpenSUSELeap15:
+ 
+   python3-numpy:
+-    CentOSStream8: python38-numpy
+     OpenSUSELeap15:
+ 
+   python3-opencv:
+-    CentOSStream8:
+     OpenSUSELeap15:
+ 
+   python3-pillow:
+-    CentOSStream8:
+     OpenSUSELeap15:
+ 
+   python3-pip:
+-    CentOSStream8: python38-pip
+     OpenSUSELeap15: python311-pip
+ 
+   python3-pillow:
+-    CentOSStream8:
+     OpenSUSELeap15:
+ 
+   python3-selinux:
+-    CentOSStream8:
+     OpenSUSELeap15:
+ 
+   python3-setuptools:
+-    CentOSStream8: python38-setuptools
+     OpenSUSELeap15: python311-setuptools
+ 
+   python3-sphinx:
+-    CentOSStream8:
+     OpenSUSELeap15:
+ 
+   python3-sphinx-rtd-theme:
+-    CentOSStream8:
+     OpenSUSELeap15:
+ 
+   python3-sqlite3:
+-    CentOSStream8: python38
+     OpenSUSELeap15: python311
+ 
+   python3-tomli:
+@@ -69,15 +53,11 @@ mappings:
+     Fedora:
+     Debian12:
+     OpenSUSELeap15:
+-    # Not available for Python 3.8
+-    CentOSStream8:
+ 
+   python3-venv:
+-    CentOSStream8: python38
+     OpenSUSELeap15: python311-base
+ 
+   python3-wheel:
+-    CentOSStream8: python38-wheel
+     OpenSUSELeap15: python311-pip
+ 
+ pypi_mappings:
+diff --git a/tests/lcitool/refresh b/tests/lcitool/refresh
+index fe7692c500..bfb2d5b753 100755
+--- a/tests/lcitool/refresh
++++ b/tests/lcitool/refresh
+@@ -125,7 +125,7 @@ try:
+     # Standard native builds
+     #
+     generate_dockerfile("alpine", "alpine-318")
+-    generate_dockerfile("centos8", "centos-stream-8")
++    generate_dockerfile("centos9", "centos-stream-9")
+     generate_dockerfile("debian", "debian-12",
+                         trailer="".join(debian12_extras))
+     generate_dockerfile("fedora", "fedora-38")
+diff --git a/tests/vm/centos b/tests/vm/centos
+index 097a9ca14d..d25c8f8b5b 100755
+--- a/tests/vm/centos
++++ b/tests/vm/centos
+@@ -26,8 +26,8 @@ class CentosVM(basevm.BaseVM):
+         export SRC_ARCHIVE=/dev/vdb;
+         sudo chmod a+r $SRC_ARCHIVE;
+         tar -xf $SRC_ARCHIVE;
+-        make docker-test-block@centos8 {verbose} J={jobs} NETWORK=1;
+-        make docker-test-quick@centos8 {verbose} J={jobs} NETWORK=1;
++        make docker-test-block@centos9 {verbose} J={jobs} NETWORK=1;
++        make docker-test-quick@centos9 {verbose} J={jobs} NETWORK=1;
+     """
+ 
+     def build_image(self, img):
 -- 
 2.39.2
 
