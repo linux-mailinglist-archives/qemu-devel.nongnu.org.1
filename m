@@ -2,87 +2,135 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7448927560
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 13:44:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08011927578
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 13:49:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPKso-0006Sd-Hz; Thu, 04 Jul 2024 07:44:14 -0400
+	id 1sPKxN-0002zT-BR; Thu, 04 Jul 2024 07:48:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1sPKsf-0006I1-DG; Thu, 04 Jul 2024 07:44:05 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sPKxF-0002z1-Ow
+ for qemu-devel@nongnu.org; Thu, 04 Jul 2024 07:48:52 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1sPKsc-0006DE-Bh; Thu, 04 Jul 2024 07:44:05 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.231])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4WFF9g1gQYz6K99n;
- Thu,  4 Jul 2024 19:41:59 +0800 (CST)
-Received: from lhrpeml100003.china.huawei.com (unknown [7.191.160.210])
- by mail.maildlp.com (Postfix) with ESMTPS id 51A5B140B63;
- Thu,  4 Jul 2024 19:43:53 +0800 (CST)
-Received: from lhrpeml500001.china.huawei.com (7.191.163.213) by
- lhrpeml100003.china.huawei.com (7.191.160.210) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Thu, 4 Jul 2024 12:43:52 +0100
-Received: from lhrpeml500001.china.huawei.com ([7.191.163.213]) by
- lhrpeml500001.china.huawei.com ([7.191.163.213]) with mapi id 15.01.2507.039; 
- Thu, 4 Jul 2024 12:43:52 +0100
-To: Nicholas Piggin <npiggin@gmail.com>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>, "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>
-CC: "maz@kernel.org" <maz@kernel.org>, "jean-philippe@linaro.org"
- <jean-philippe@linaro.org>, Jonathan Cameron <jonathan.cameron@huawei.com>,
- "lpieralisi@kernel.org" <lpieralisi@kernel.org>, "peter.maydell@linaro.org"
- <peter.maydell@linaro.org>, "richard.henderson@linaro.org"
- <richard.henderson@linaro.org>, "imammedo@redhat.com" <imammedo@redhat.com>,
- "andrew.jones@linux.dev" <andrew.jones@linux.dev>, "david@redhat.com"
- <david@redhat.com>, "philmd@linaro.org" <philmd@linaro.org>,
- "eric.auger@redhat.com" <eric.auger@redhat.com>, "oliver.upton@linux.dev"
- <oliver.upton@linux.dev>, "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "mst@redhat.com" <mst@redhat.com>, "will@kernel.org" <will@kernel.org>,
- "gshan@redhat.com" <gshan@redhat.com>, "rafael@kernel.org"
- <rafael@kernel.org>, "alex.bennee@linaro.org" <alex.bennee@linaro.org>,
- "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
- "darren@os.amperecomputing.com" <darren@os.amperecomputing.com>,
- "ilkka@os.amperecomputing.com" <ilkka@os.amperecomputing.com>,
- "vishnu@os.amperecomputing.com" <vishnu@os.amperecomputing.com>,
- "karl.heubaum@oracle.com" <karl.heubaum@oracle.com>, "miguel.luis@oracle.com"
- <miguel.luis@oracle.com>, "salil.mehta@opnsrc.net" <salil.mehta@opnsrc.net>,
- zhukeqian <zhukeqian1@huawei.com>, "wangxiongfeng (C)"
- <wangxiongfeng2@huawei.com>, "wangyanan (Y)" <wangyanan55@huawei.com>,
- "jiakernel2@gmail.com" <jiakernel2@gmail.com>, "maobibo@loongson.cn"
- <maobibo@loongson.cn>, "lixianglai@loongson.cn" <lixianglai@loongson.cn>,
- "harshpb@linux.ibm.com" <harshpb@linux.ibm.com>, Linuxarm
- <linuxarm@huawei.com>, Jonathan Cameron <jonathan.cameron@huawei.com>,
- Shaoqin Huang <shahuang@redhat.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: RE: [PATCH V13 3/8] hw/acpi: Update ACPI GED framework to support
- vCPU Hotplug
-Thread-Topic: [PATCH V13 3/8] hw/acpi: Update ACPI GED framework to support
- vCPU Hotplug
-Thread-Index: AQHauNIRAeRMruTFh0K+ZTjTNpSYCbHl+vuAgACeIgA=
-Date: Thu, 4 Jul 2024 11:43:52 +0000
-Message-ID: <5539e63ff2e8409f94edf210ad9d7a21@huawei.com>
-References: <20240607115649.214622-1-salil.mehta@huawei.com>
- <20240607115649.214622-4-salil.mehta@huawei.com>
- <D2GF5O8SP4Q8.38I35G35K74OG@gmail.com>
-In-Reply-To: <D2GF5O8SP4Q8.38I35G35K74OG@gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.48.159.88]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sPKxA-0000m9-Se
+ for qemu-devel@nongnu.org; Thu, 04 Jul 2024 07:48:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1720093723;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=wbnzEb95xqpOM6pTDVI5AD87mXajYOGOfP+VPhuNCZQ=;
+ b=RXLkXo+N3nDtlnydFzkSSzY3D+duwDLUNAaFrYMi9pokzpGriuomTZRawB5i/ideLUZrov
+ Jf9aTZXbXxUs71NedQs/MyHge2JmwIb3DJFzewTRoMKoL65cBsgCP0MQAfDigp6WJilAV3
+ PninwLIcQVVS8ucOHha+VNGkHrifsHE=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-378-tDUz1uM4OQuGMM7weJEQUw-1; Thu, 04 Jul 2024 07:48:42 -0400
+X-MC-Unique: tDUz1uM4OQuGMM7weJEQUw-1
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-36796a0687bso500446f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 04 Jul 2024 04:48:41 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1720093721; x=1720698521;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=wbnzEb95xqpOM6pTDVI5AD87mXajYOGOfP+VPhuNCZQ=;
+ b=Nj3iuHEUeEHO3UfC5zmBnyA3wYbax7JDBQVYmCiv4HbeNSV9fM77VzhWXbZzbFxbyc
+ CtVOFdewzqznmZ3dqi0wrRScezPuuvl1E6a8/n/+EfRWoMCMtof9Ec2q+9zZi9yLiPDj
+ 9udQGuYeXIU5cMx42idYVOtDWigfbor+YLSRjQsTdn0RY8Nyl29aFg80psgrSbw/C0PO
+ hCt1zqgNajXLFZRMAnhxCV7Fu/xiNm+olyingFuQxtUvScBVagViGdic/YM5UE2sYwDa
+ 3NXaNL8LiUmBCAMJc2wExn9NrCPpuYgUjx9SFmE87P5hAULdG5KPfZkxZXm3ABsuungj
+ wNlg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVjzWC/t7rSr00T51yFsrjVBRE/YIOL7B7fpwZx586UWECGyVBA05l/FuKdpc8UjfWh593yRWdoL5fFBrjG/YVg8bVc+PQ=
+X-Gm-Message-State: AOJu0Yz5gcNNlUDedIjMrLDfdao93564lJKfZaZ6aeV0Uqv+yVqZQZgc
+ MooWDH3U44Eh607nr/Y+tuhWxYo1cNLneaiIum4QYsPg7KXfjRJQNYIokf7xmxsC5/Vr63oSZ8f
+ ZdcOeN3ofrvG4VyqS9ovC/6bTpXoKL5mIyh8nfmiYqCInXrUguy8M
+X-Received: by 2002:adf:e68b:0:b0:360:791c:aff2 with SMTP id
+ ffacd0b85a97d-3679dd66a54mr994215f8f.47.1720093720892; 
+ Thu, 04 Jul 2024 04:48:40 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFVpHWklQ0YSlJr59kKo3eI5IhBZ7DiQzDiwZU1SOPy6cPNlE9e3q25cpazsoS588ZaVaHITw==
+X-Received: by 2002:adf:e68b:0:b0:360:791c:aff2 with SMTP id
+ ffacd0b85a97d-3679dd66a54mr994202f8f.47.1720093720569; 
+ Thu, 04 Jul 2024 04:48:40 -0700 (PDT)
+Received: from [192.168.0.4] (ip-109-42-179-211.web.vodafone.de.
+ [109.42.179.211]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-367a29eab73sm431506f8f.41.2024.07.04.04.48.39
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 04 Jul 2024 04:48:40 -0700 (PDT)
+Message-ID: <db14e63e-3a86-4173-b4f6-cd469a511f10@redhat.com>
+Date: Thu, 4 Jul 2024 13:48:38 +0200
 MIME-Version: 1.0
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=salil.mehta@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PULL 02/12] tests/qtest/migration-test: enable on s390x with TCG
+To: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
+ Richard Henderson <richard.henderson@linaro.org>
+Cc: Prasad Pandit <pjp@fedoraproject.org>
+References: <20240702103310.347201-1-thuth@redhat.com>
+ <20240702103310.347201-3-thuth@redhat.com>
+ <D2GPQVG9Q7RY.1HUJR9EC96HWC@gmail.com>
+From: Thomas Huth <thuth@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <D2GPQVG9Q7RY.1HUJR9EC96HWC@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,28 +143,32 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Salil Mehta <salil.mehta@huawei.com>
-From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-SEkgTmljaywNCg0KPiAgRnJvbTogTmljaG9sYXMgUGlnZ2luIDxucGlnZ2luQGdtYWlsLmNvbT4N
-Cj4gIFNlbnQ6IFRodXJzZGF5LCBKdWx5IDQsIDIwMjQgNDowMyBBTQ0KPiAgVG86IFNhbGlsIE1l
-aHRhIDxzYWxpbC5tZWh0YUBodWF3ZWkuY29tPjsgcWVtdS1kZXZlbEBub25nbnUub3JnOw0KPiAg
-cWVtdS1hcm1Abm9uZ251Lm9yZw0KPiAgDQo+ICBPbiBGcmkgSnVuIDcsIDIwMjQgYXQgOTo1NiBQ
-TSBBRVNULCBTYWxpbCBNZWh0YSB3cm90ZToNCj4gID4gQEAgLTQwMCw2ICs0MTEsMTIgQEAgc3Rh
-dGljIHZvaWQgYWNwaV9nZWRfaW5pdGZuKE9iamVjdCAqb2JqKQ0KPiAgPiAgICAgIG1lbW9yeV9y
-ZWdpb25faW5pdF9pbygmZ2VkX3N0LT5yZWdzLCBvYmosICZnZWRfcmVnc19vcHMsIGdlZF9zdCwN
-Cj4gID4gICAgICAgICAgICAgICAgICAgICAgICAgICAgVFlQRV9BQ1BJX0dFRCAiLXJlZ3MiLCBB
-Q1BJX0dFRF9SRUdfQ09VTlQpOw0KPiAgPiAgICAgIHN5c2J1c19pbml0X21taW8oc2JkLCAmZ2Vk
-X3N0LT5yZWdzKTsNCj4gID4gKw0KPiAgPiArICAgIG1lbW9yeV9yZWdpb25faW5pdCgmcy0+Y29u
-dGFpbmVyX2NwdWhwLCBPQkpFQ1QoZGV2KSwgImNwdWhwDQo+ICBjb250YWluZXIiLA0KPiAgPiAr
-ICAgICAgICAgICAgICAgICAgICAgICBBQ1BJX0NQVV9IT1RQTFVHX1JFR19MRU4pOw0KPiAgPiAr
-ICAgIHN5c2J1c19pbml0X21taW8oc2JkLCAmcy0+Y29udGFpbmVyX2NwdWhwKTsNCj4gID4gKyAg
-ICBjcHVfaG90cGx1Z19od19pbml0KCZzLT5jb250YWluZXJfY3B1aHAsIE9CSkVDVChkZXYpLA0K
-PiAgPiArICAgICAgICAgICAgICAgICAgICAgICAgJnMtPmNwdWhwX3N0YXRlLCAwKTsNCj4gID4g
-IH0NCj4gIA0KPiAgQ291bGQgdGhlIEFDUEkgcGVyc2lzdGVudCBwcmVzZW5jZSBBUk0gcmVxdWly
-ZXMgYmUgYSBwcm9wZXJ0eSBvZiB0aGUgQUNQSQ0KPiAgZGV2aWNlPw0KDQoNCkkgdGhpbmsgaXQg
-aXMgbW9yZSBvZiBhIENQVSBwcm9wZXJ0eSByYXRoZXIgdGhhbiBhIEdFRCBkZXZpY2U/IA0KDQoN
-Cj4gIA0KPiAgVGhhbmtzLA0KPiAgTmljaw0K
+On 04/07/2024 13.20, Nicholas Piggin wrote:
+> On Tue Jul 2, 2024 at 8:33 PM AEST, Thomas Huth wrote:
+>> From: Nicholas Piggin <npiggin@gmail.com>
+>>
+>> s390x with TCG is more stable now. Enable it.
+> 
+> Ah, you did a more complete version of my flic fix that migrates all the
+> state. I didn't see that go by but yeah I suspect that was probably the
+> correct thing to do. Thanks for that.
+
+Drat, seems like I forgot to CC: you on that patch, sorry for that, that was 
+by accident and certainly not on purpose :-(
+
+> Should the s390x flic migrate fix could be got to stable, perhaps?
+
+We need a new machine type for enabling the fix, so it does not make much 
+sense on stable, unfortunately.
+
+> There's some kvm-unit-tests s390x migration tests that can be enabled
+> after the fix too don't forget.
+
+Right, I'll try to remember to enable it once QEMU 9.1 has been released.
+
+  Thomas
+
 
