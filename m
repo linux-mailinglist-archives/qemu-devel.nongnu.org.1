@@ -2,43 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55FCA92766E
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 14:52:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C1A3927659
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 14:50:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPLtj-0004eR-6f; Thu, 04 Jul 2024 08:49:15 -0400
+	id 1sPLuG-0005Dm-7F; Thu, 04 Jul 2024 08:49:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sPLtg-0004aW-4L; Thu, 04 Jul 2024 08:49:12 -0400
+ id 1sPLtg-0004aU-4K; Thu, 04 Jul 2024 08:49:12 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sPLte-0006Ug-8X; Thu, 04 Jul 2024 08:49:11 -0400
+ id 1sPLte-0006Uo-HI; Thu, 04 Jul 2024 08:49:11 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 85A6B773A4;
+ by isrv.corpit.ru (Postfix) with ESMTP id 928BD773A5;
  Thu,  4 Jul 2024 15:48:22 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 1DCDBFE789;
+ by tsrv.corpit.ru (Postfix) with SMTP id 2D113FE78A;
  Thu,  4 Jul 2024 15:48:27 +0300 (MSK)
-Received: (nullmailer pid 1471795 invoked by uid 1000);
+Received: (nullmailer pid 1471798 invoked by uid 1000);
  Thu, 04 Jul 2024 12:48:26 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
+Cc: qemu-stable@nongnu.org, Thomas Huth <thuth@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.13 10/17] tests: don't run benchmarks for the tsan build
-Date: Thu,  4 Jul 2024 15:48:17 +0300
-Message-Id: <20240704124826.1471715-10-mjt@tls.msk.ru>
+Subject: [Stable-7.2.13 11/17] gitlab-ci: Disable the
+ riscv64-debian-cross-container by default
+Date: Thu,  4 Jul 2024 15:48:18 +0300
+Message-Id: <20240704124826.1471715-11-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.13-20240704143502@cover.tls.msk.ru>
 References: <qemu-stable-7.2.13-20240704143502@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -62,38 +59,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Alex Bennée <alex.bennee@linaro.org>
+From: Thomas Huth <thuth@redhat.com>
 
-All we are really doing here is checking that TSAN builds compile and are
-therefor a tool available to developers. The benchmarks are not
-representative of QEMU's actual threading behaviour and they burn
-precious CI time. Indeed switching to check-unit reveals many
-unaddressed issues which have been logged at:
+This job is failing since weeks. Let's mark it as manual until
+it gets fixed.
 
-  https://gitlab.com/qemu-project/qemu/-/issues/1496
-
-So for now disable the make check and make this a build only
-test.
-
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20230228190653.1602033-8-alex.bennee@linaro.org>
-(cherry picked from commit 7c7d369b33f01d3705a14c361689776de6bb5b7a)
+Message-Id: <82aa015a-ca94-49ce-beec-679cc175b726@redhat.com>
+Acked-by: Michael Tokarev <mjt@tls.msk.ru>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+(cherry picked from commit f51f90c65ed7706c3c4f7a889ce3d6b7ab75ef6a)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index dec57a3240..9b6da37582 100644
---- a/.gitlab-ci.d/buildtest.yml
-+++ b/.gitlab-ci.d/buildtest.yml
-@@ -469,7 +469,6 @@ tsan-build:
-     CONFIGURE_ARGS: --enable-tsan --cc=clang-10 --cxx=clang++-10
-           --enable-trace-backends=ust --enable-fdt=system --disable-slirp
-     TARGETS: x86_64-softmmu ppc64-softmmu riscv64-softmmu x86_64-linux-user
--    MAKE_CHECK_ARGS: bench V=1
+diff --git a/.gitlab-ci.d/container-cross.yml b/.gitlab-ci.d/container-cross.yml
+index 2d560e9764..24343192ac 100644
+--- a/.gitlab-ci.d/container-cross.yml
++++ b/.gitlab-ci.d/container-cross.yml
+@@ -115,6 +115,7 @@ riscv64-debian-cross-container:
+   allow_failure: true
+   variables:
+     NAME: debian-riscv64-cross
++    QEMU_JOB_OPTIONAL: 1
  
- # gprof/gcov are GCC features
- build-gprof-gcov:
+ # we can however build TCG tests using a non-sid base
+ riscv64-debian-test-cross-container:
 -- 
 2.39.2
 
