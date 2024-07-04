@@ -2,43 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DB70927A8C
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 17:55:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57A54927AA3
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 17:57:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPOlz-0000VR-1z; Thu, 04 Jul 2024 11:53:27 -0400
+	id 1sPOm0-0000Wi-Ev; Thu, 04 Jul 2024 11:53:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sPOls-0000Qd-EX; Thu, 04 Jul 2024 11:53:20 -0400
+ id 1sPOlv-0000St-8X; Thu, 04 Jul 2024 11:53:23 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sPOlq-00023S-3D; Thu, 04 Jul 2024 11:53:19 -0400
+ id 1sPOls-00023m-G2; Thu, 04 Jul 2024 11:53:22 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id C25B577496;
+ by isrv.corpit.ru (Postfix) with ESMTP id D0B1377497;
  Thu,  4 Jul 2024 18:52:46 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 8A5E4FEAE1;
+ by tsrv.corpit.ru (Postfix) with SMTP id 98F19FEAE2;
  Thu,  4 Jul 2024 18:52:51 +0300 (MSK)
-Received: (nullmailer pid 1481693 invoked by uid 1000);
+Received: (nullmailer pid 1481696 invoked by uid 1000);
  Thu, 04 Jul 2024 15:52:51 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
- =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.6 08/18] target/sparc: use signed denominator in sdiv
- helper
-Date: Thu,  4 Jul 2024 18:52:39 +0300
-Message-Id: <20240704155251.1481617-8-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ Song Gao <gaosong@loongson.cn>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.6 09/18] tcg/loongarch64: Fix tcg_out_movi vs some pcrel
+ pointers
+Date: Thu,  4 Jul 2024 18:52:40 +0300
+Message-Id: <20240704155251.1481617-9-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.6-20240704154854@cover.tls.msk.ru>
 References: <qemu-stable-8.2.6-20240704154854@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -62,34 +59,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Clément Chigot <chigot@adacore.com>
+From: Richard Henderson <richard.henderson@linaro.org>
 
-The result has to be done with the signed denominator (b32) instead of
-the unsigned value passed in argument (b).
+Simplify the logic for two-part, 32-bit pc-relative addresses.
+Rather than assume all such fit in int32_t, do some arithmetic
+and assert a result, do some arithmetic first and then check
+to see if the pieces are in range.
 
 Cc: qemu-stable@nongnu.org
-Fixes: 1326010322d6 ("target/sparc: Remove CC_OP_DIV")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2319
-Signed-off-by: Clément Chigot <chigot@adacore.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20240606144331.698361-1-chigot@adacore.com>
+Fixes: dacc51720db ("tcg/loongarch64: Implement tcg_out_mov and tcg_out_movi")
+Reviewed-by: Song Gao <gaosong@loongson.cn>
+Reported-by: Song Gao <gaosong@loongson.cn>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-(cherry picked from commit 6b4965373e561b77f91cfbdf41353635c9661358)
+(cherry picked from commit 521d7fb3ebdf88112ed13556a93e3037742b9eb8)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/sparc/helper.c b/target/sparc/helper.c
-index bd10b60e4b..8820c59e7c 100644
---- a/target/sparc/helper.c
-+++ b/target/sparc/helper.c
-@@ -121,7 +121,7 @@ uint64_t helper_sdiv(CPUSPARCState *env, target_ulong a, target_ulong b)
-         return (uint32_t)(b32 < 0 ? INT32_MAX : INT32_MIN) | (-1ull << 32);
+diff --git a/tcg/loongarch64/tcg-target.c.inc b/tcg/loongarch64/tcg-target.c.inc
+index abdc8b7f4d..6c99e799b3 100644
+--- a/tcg/loongarch64/tcg-target.c.inc
++++ b/tcg/loongarch64/tcg-target.c.inc
+@@ -365,8 +365,7 @@ static void tcg_out_movi(TCGContext *s, TCGType type, TCGReg rd,
+      * back to the slow path.
+      */
+ 
+-    intptr_t pc_offset;
+-    tcg_target_long val_lo, val_hi, pc_hi, offset_hi;
++    intptr_t src_rx, pc_offset;
+     tcg_target_long hi12, hi32, hi52;
+ 
+     /* Value fits in signed i32.  */
+@@ -376,24 +375,23 @@ static void tcg_out_movi(TCGContext *s, TCGType type, TCGReg rd,
      }
  
--    a64 /= b;
-+    a64 /= b32;
-     r = a64;
-     if (unlikely(r != a64)) {
-         return (uint32_t)(a64 < 0 ? INT32_MIN : INT32_MAX) | (-1ull << 32);
+     /* PC-relative cases.  */
+-    pc_offset = tcg_pcrel_diff(s, (void *)val);
+-    if (pc_offset == sextreg(pc_offset, 0, 22) && (pc_offset & 3) == 0) {
+-        /* Single pcaddu2i.  */
+-        tcg_out_opc_pcaddu2i(s, rd, pc_offset >> 2);
+-        return;
++    src_rx = (intptr_t)tcg_splitwx_to_rx(s->code_ptr);
++    if ((val & 3) == 0) {
++        pc_offset = val - src_rx;
++        if (pc_offset == sextreg(pc_offset, 0, 22)) {
++            /* Single pcaddu2i.  */
++            tcg_out_opc_pcaddu2i(s, rd, pc_offset >> 2);
++            return;
++        }
+     }
+ 
+-    if (pc_offset == (int32_t)pc_offset) {
+-        /* Offset within 32 bits; load with pcalau12i + ori.  */
+-        val_lo = sextreg(val, 0, 12);
+-        val_hi = val >> 12;
+-        pc_hi = (val - pc_offset) >> 12;
+-        offset_hi = val_hi - pc_hi;
+-
+-        tcg_debug_assert(offset_hi == sextreg(offset_hi, 0, 20));
+-        tcg_out_opc_pcalau12i(s, rd, offset_hi);
++    pc_offset = (val >> 12) - (src_rx >> 12);
++    if (pc_offset == sextreg(pc_offset, 0, 20)) {
++        /* Load with pcalau12i + ori.  */
++        tcg_target_long val_lo = val & 0xfff;
++        tcg_out_opc_pcalau12i(s, rd, pc_offset);
+         if (val_lo != 0) {
+-            tcg_out_opc_ori(s, rd, rd, val_lo & 0xfff);
++            tcg_out_opc_ori(s, rd, rd, val_lo);
+         }
+         return;
+     }
 -- 
 2.39.2
 
