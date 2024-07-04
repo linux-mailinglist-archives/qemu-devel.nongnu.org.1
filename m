@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F9B6927380
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 11:59:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B04F4927387
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 12:00:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPJEn-0006vH-2l; Thu, 04 Jul 2024 05:58:49 -0400
+	id 1sPJEs-00076P-GM; Thu, 04 Jul 2024 05:58:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sPJEg-0006lh-IW
- for qemu-devel@nongnu.org; Thu, 04 Jul 2024 05:58:42 -0400
+ id 1sPJEj-0006oT-0O
+ for qemu-devel@nongnu.org; Thu, 04 Jul 2024 05:58:45 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sPJEe-000889-RL
- for qemu-devel@nongnu.org; Thu, 04 Jul 2024 05:58:42 -0400
+ id 1sPJEh-00088O-2Y
+ for qemu-devel@nongnu.org; Thu, 04 Jul 2024 05:58:44 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1720087119;
+ s=mimecast20190719; t=1720087121;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=pRScqcX5QDybTFLfNWFpvTz+PpMZynX466ZxF4qnzH4=;
- b=ADkYR14syI8Mrpob96w3B5deOz/PhINzoQ4zAuDCJtG5Nvr/8JKKzapzdJxuQFHt3ntsN8
- oWu7JRctDsDaiIvWSJXloyW17Q5QRakqoYUXX7yzCZbPWrGLZx6q1GgAI9QIvOfy7soWHG
- ZVBhqyXdMWTeAv/eZinEKbHHTRym+bs=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=n3cYvj5uU+nN/F2qMr7WF3fjwOiYUBjz++YEMm43ueI=;
+ b=FaCCpdx/gYE8Xdn6zoOKWzSGz4qGjWlIKS6+UJx8sBQJiLocbrGwg+9rJfyzHck9FU+6VH
+ 1Y4aXXjH5cMQ/d20JA+a5DmsaVl6kyp5N4ksvS0UJqd6yEWLupSdnFGzXQG6wDQkLzho2J
+ F197iH82dw5QAg4rWUa6G67D/wNwGdI=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-32-Qg6uIkizPTOHD_QYMkfFbw-1; Thu, 04 Jul 2024 05:58:37 -0400
-X-MC-Unique: Qg6uIkizPTOHD_QYMkfFbw-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-42648daf064so2826785e9.1
- for <qemu-devel@nongnu.org>; Thu, 04 Jul 2024 02:58:37 -0700 (PDT)
+ us-mta-386-3abIG9b9Mg-LwzYgKsfyqA-1; Thu, 04 Jul 2024 05:58:39 -0400
+X-MC-Unique: 3abIG9b9Mg-LwzYgKsfyqA-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-367990a5796so327964f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 04 Jul 2024 02:58:39 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720087116; x=1720691916;
+ d=1e100.net; s=20230601; t=1720087118; x=1720691918;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=pRScqcX5QDybTFLfNWFpvTz+PpMZynX466ZxF4qnzH4=;
- b=qavvhOs/DTN/ry/pVDVLrxl8vEyik5Mad+2UTnQ/FPgXQ0Xj/N/YzkqI5rWWc7pGzu
- iCHiRt/AGpNqZ190mfjTMLDYnD25FpWFjeFvMBFIN7yW2rUUkulkR+IdMP6XXSz/YDXS
- jT8h2ctVIeChvnV7E7PuevRyWsZ2fzG1I2tOWBpLN6A44Q5Bf0rFT0YhXiRs9Sqbom0D
- KMTX5agfS4HuuUqIJFO6EuabWAEDzoH7JjFAB+xygcJsXIh1RUB/3+QDKVXvVnWUB16o
- kDYHyf3mfkKQummjGAKshBslFLG3Rs2u82fZLjfZphoOVMt2C2S1GO8ny6EY2H/EDoSt
- Kegg==
-X-Gm-Message-State: AOJu0YyLIMbomC0fVzfiBDunYngbljj/JQxVxYymD+FSkFwqrOibU+1s
- sKWW1PjV3Km/RuBsCE7w3Zi27IL3UZu8XRsw3jtl5D69Tembqq3H0JcyPDcTVz17eL/op883aNo
- 7HQDB6PF1u1MA4pPlBvjYWvS44rNBf+7Bv9eWTC63vrOlYc2RvV35ncZrCQVqfYcfdWr6aoEXcy
- +vtTqvSuQJdIaRdoQsNfryN9ZH3+Ztb5Sfm43C
-X-Received: by 2002:a05:600c:47c5:b0:426:4765:b905 with SMTP id
- 5b1f17b1804b1-4264b1275dfmr10103155e9.7.1720087116065; 
- Thu, 04 Jul 2024 02:58:36 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFvHS8Ui8lUT2zZuT2ZO17MVP1SKwRLd/pL2wqAGdo1MH6IGfrxk7WBCAxWkzsOpWUxqdM99Q==
-X-Received: by 2002:a05:600c:47c5:b0:426:4765:b905 with SMTP id
- 5b1f17b1804b1-4264b1275dfmr10102915e9.7.1720087115691; 
- Thu, 04 Jul 2024 02:58:35 -0700 (PDT)
+ bh=n3cYvj5uU+nN/F2qMr7WF3fjwOiYUBjz++YEMm43ueI=;
+ b=p0C64IWpfslj1R3Nd2JQmR1GBKJ/sXbYarf84HI/HK+JfflxtWLUNr9rN7XCO4gce4
+ yxS7WdaAMOwt0D+kZVWJmJJPkOOsEsGsl7c3iwKYEqdsCn4B1p8uLcoCM/5DdRzSVSKI
+ Fv9lYq5czZv+Ul/xUhKcDl1k+fYrAnOihx0/+2A9fBZNU7/vSv4GvgGvvcwiH9zTHMft
+ f+IybFqUyfim7iCF4rkzDsUlZinpyqAk9v/CH38cUyvZE4B27EV343CW5rase7ux0RRA
+ WpJ4fBbgSrxSB5NNjFkJAlMs3Em0ZjPIJ8XoQlkNuBh3SkIP9FTIZQdzFA/J6BSsmOvy
+ 2muQ==
+X-Gm-Message-State: AOJu0Ywkngbx3+DUoFyaSz6b7zes/WfUTEzxynoUXBuBm5bH2Yxn0L3q
+ fRf8oUr1KcgJeplzTDL2lAnGvClRxUh/WuQVQEiynJwQSkG20MQeFrMiYDuiA4wdoZ7WaUXhKJ3
+ 4MWcbHG57SXxX0H22rqiYbyu7dLhjQzHdPb/l+6gni5ZqwqXbBgi1DateeHyzV/a9mrMT8LoViG
+ WWxDlhalS68T045JzFUnYe6YXA7KjsNXMfjP9Z
+X-Received: by 2002:adf:ed49:0:b0:367:9621:6fa with SMTP id
+ ffacd0b85a97d-3679dd547e9mr1072970f8f.37.1720087118522; 
+ Thu, 04 Jul 2024 02:58:38 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHLcRS0a81rrU++UgUxCznRNHJ0gaYkNI/TL3izcN7UbeUahDDOXDs3q8Qw6UShiNbW4Mit6g==
+X-Received: by 2002:adf:ed49:0:b0:367:9621:6fa with SMTP id
+ ffacd0b85a97d-3679dd547e9mr1072958f8f.37.1720087118185; 
+ Thu, 04 Jul 2024 02:58:38 -0700 (PDT)
 Received: from avogadro.local ([151.95.101.29])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4264a1d6677sm17316115e9.17.2024.07.04.02.58.33
+ ffacd0b85a97d-3678f41116bsm5012238f8f.116.2024.07.04.02.58.36
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 04 Jul 2024 02:58:33 -0700 (PDT)
+ Thu, 04 Jul 2024 02:58:36 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Michal Privoznik <mprivozn@redhat.com>
-Subject: [PULL 12/16] i386/sev: Fallback to the default SEV device if none
- provided in sev_get_capabilities()
-Date: Thu,  4 Jul 2024 11:58:02 +0200
-Message-ID: <20240704095806.1780273-13-pbonzini@redhat.com>
+Subject: [PULL 13/16] target/i386: add avx-vnni-int16 feature
+Date: Thu,  4 Jul 2024 11:58:03 +0200
+Message-ID: <20240704095806.1780273-14-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240704095806.1780273-1-pbonzini@redhat.com>
 References: <20240704095806.1780273-1-pbonzini@redhat.com>
@@ -101,54 +100,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Michal Privoznik <mprivozn@redhat.com>
+AVX-VNNI-INT16 (CPUID[EAX=7,ECX=1).EDX[10]) is supported by Clearwater
+Forest processor, add it to QEMU as it does not need any specific
+enablement.
 
-When management tools (e.g. libvirt) query QEMU capabilities,
-they start QEMU with a minimalistic configuration and issue
-various commands on monitor. One of the command issued is/might
-be "query-sev-capabilities" to learn values like cbitpos or
-reduced-phys-bits. But as of v9.0.0-1145-g16dcf200dc the monitor
-command returns an error instead.
-
-This creates a chicken-egg problem because in order to query
-those aforementioned values QEMU needs to be started with a
-'sev-guest' object. But to start QEMU with the values must be
-known.
-
-I think it's safe to assume that the default path ("/dev/sev")
-provides the same data as user provided one. So fall back to it.
-
-Fixes: 16dcf200dc951c1cde3e5b442457db5f690b8cf0
-Signed-off-by: Michal Privoznik <mprivozn@redhat.com>
-Link: https://lore.kernel.org/r/157f93712c23818be193ce785f648f0060b33dee.1719218926.git.mprivozn@redhat.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/sev.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ target/i386/cpu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/i386/sev.c b/target/i386/sev.c
-index 054366878aa..2f3dbe289f4 100644
---- a/target/i386/sev.c
-+++ b/target/i386/sev.c
-@@ -587,13 +587,13 @@ static SevCapability *sev_get_capabilities(Error **errp)
-     }
- 
-     sev_common = SEV_COMMON(MACHINE(qdev_get_machine())->cgs);
--    if (!sev_common) {
--        error_setg(errp, "SEV is not configured");
--        return NULL;
-+    if (sev_common) {
-+        sev_device = object_property_get_str(OBJECT(sev_common), "sev-device",
-+                                             &error_abort);
-+    } else {
-+        sev_device = g_strdup(DEFAULT_SEV_DEVICE);
-     }
- 
--    sev_device = object_property_get_str(OBJECT(sev_common), "sev-device",
--                                         &error_abort);
-     fd = open(sev_device, O_RDWR);
-     if (fd < 0) {
-         error_setg_errno(errp, errno, "SEV: Failed to open %s",
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index c40551d9bfb..c05765eeafc 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -1131,7 +1131,7 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
+         .feat_names = {
+             NULL, NULL, NULL, NULL,
+             "avx-vnni-int8", "avx-ne-convert", NULL, NULL,
+-            "amx-complex", NULL, NULL, NULL,
++            "amx-complex", NULL, "avx-vnni-int16", NULL,
+             NULL, NULL, "prefetchiti", NULL,
+             NULL, NULL, NULL, NULL,
+             NULL, NULL, NULL, NULL,
 -- 
 2.45.2
 
