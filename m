@@ -2,27 +2,27 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9D049271C1
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 10:32:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2F089271C4
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 10:32:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPHqe-0000SM-VU; Thu, 04 Jul 2024 04:29:48 -0400
+	id 1sPHqm-0000V7-DD; Thu, 04 Jul 2024 04:29:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1sPHqc-0000RU-5G; Thu, 04 Jul 2024 04:29:46 -0400
+ id 1sPHqk-0000U8-7n; Thu, 04 Jul 2024 04:29:54 -0400
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1sPHqW-0002HT-PL; Thu, 04 Jul 2024 04:29:45 -0400
+ id 1sPHqi-0002HT-Bp; Thu, 04 Jul 2024 04:29:53 -0400
 Received: from TWMBX02.aspeed.com (192.168.0.24) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1258.12; Thu, 4 Jul
  2024 16:29:23 +0800
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX02.aspeed.com
  (192.168.0.25) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Thu, 4 Jul
- 2024 16:29:23 +0800
+ 2024 16:29:24 +0800
 Received: from localhost.localdomain (192.168.10.10) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server id 15.2.1258.12 via Frontend
  Transport; Thu, 4 Jul 2024 16:29:23 +0800
@@ -39,9 +39,10 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  <qemu-block@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
  <yunlin.tang@aspeedtech.com>
-Subject: [PATCH v3 2/8] hw/net:ftgmac100: update ring base address to 64 bits
-Date: Thu, 4 Jul 2024 16:29:16 +0800
-Message-ID: <20240704082922.1464317-3-jamin_lin@aspeedtech.com>
+Subject: [PATCH v3 3/8] hw/net:ftgmac100: introduce TX and RX ring base
+ address high registers to support 64 bits
+Date: Thu, 4 Jul 2024 16:29:17 +0800
+Message-ID: <20240704082922.1464317-4-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240704082922.1464317-1-jamin_lin@aspeedtech.com>
 References: <20240704082922.1464317-1-jamin_lin@aspeedtech.com>
@@ -76,147 +77,185 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Update TX and RX ring base address data type to uint64_t for
-64 bits dram address DMA support.
+ASPEED AST2700 SOC is a 64 bits quad core CPUs (Cortex-a35)
+And the base address of dram is "0x4 00000000" which
+is 64bits address.
 
-Both "Normal Priority Transmit Ring Base Address Register(0x20)" and
-"Receive Ring Base Address Register (0x24)" are used for saving the
-low part physical address of descriptor manager.
+It have "Normal Priority Transmit Ring Base Address Register High(0x17C)",
+"High Priority Transmit Ring Base Address Register High(0x184)" and
+"Receive Ring Base Address Register High(0x18C)" to save the high part physical
+address of descriptor manager.
+Ex: TX descriptor manager address [34:0]
+The "Normal Priority Transmit Ring Base Address Register High(0x17C)"
+bits [2:0] which corresponds the bits [34:32] of the 64 bits address of
+the TX ring buffer address.
+The "Normal Priority Transmit Ring Base Address Register(0x20)" bits [31:0]
+which corresponds the bits [31:0] of the 64 bits address
+of the TX ring buffer address.
 
-Therefore, changes to set TX and RX descriptor manager address bits [31:0]
-in ftgmac100_read and ftgmac100_write functions.
+Introduce a new sub region which size is 0x100 for the set of new registers
+and map it at 0x100 in the container region.
+This sub region range is from 0x100 to 0x1ff.
 
-Incrementing the version of vmstate to 2.
+Introduce a new property and object attribute to activate the region for new registers.
+Introduce a new memop handlers for the new register read and write.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 ---
- hw/net/ftgmac100.c         | 33 ++++++++++++++++-----------------
- include/hw/net/ftgmac100.h |  9 ++++-----
- 2 files changed, 20 insertions(+), 22 deletions(-)
+ hw/net/ftgmac100.c         | 82 ++++++++++++++++++++++++++++++++++++++
+ include/hw/net/ftgmac100.h |  4 ++
+ 2 files changed, 86 insertions(+)
 
 diff --git a/hw/net/ftgmac100.c b/hw/net/ftgmac100.c
-index 9e1f12cd33..d026242e2b 100644
+index d026242e2b..68956aeb94 100644
 --- a/hw/net/ftgmac100.c
 +++ b/hw/net/ftgmac100.c
-@@ -515,12 +515,12 @@ out:
-     return frame_size;
+@@ -56,6 +56,16 @@
+ #define FTGMAC100_PHYDATA         0x64
+ #define FTGMAC100_FCR             0x68
+ 
++/*
++ * FTGMAC100 registers high
++ *
++ * values below are offset by - FTGMAC100_REG_HIGH_OFFSET from datasheet
++ * because its memory region is start at FTGMAC100_REG_HIGH_OFFSET
++ */
++#define FTGMAC100_NPTXR_BADR_HIGH   (0x17C - FTGMAC100_REG_HIGH_OFFSET)
++#define FTGMAC100_HPTXR_BADR_HIGH   (0x184 - FTGMAC100_REG_HIGH_OFFSET)
++#define FTGMAC100_RXR_BADR_HIGH     (0x18C - FTGMAC100_REG_HIGH_OFFSET)
++
+ /*
+  * Interrupt status register & interrupt enable register
+  */
+@@ -913,6 +923,60 @@ static void ftgmac100_write(void *opaque, hwaddr addr,
+     ftgmac100_update_irq(s);
  }
  
--static void ftgmac100_do_tx(FTGMAC100State *s, uint32_t tx_ring,
--                            uint32_t tx_descriptor)
-+static void ftgmac100_do_tx(FTGMAC100State *s, uint64_t tx_ring,
-+                            uint64_t tx_descriptor)
++static uint64_t ftgmac100_high_read(void *opaque, hwaddr addr, unsigned size)
++{
++    FTGMAC100State *s = FTGMAC100(opaque);
++    uint64_t val = 0;
++
++    switch (addr) {
++    case FTGMAC100_NPTXR_BADR_HIGH:
++        val = extract64(s->tx_ring, 32, 32);
++        break;
++    case FTGMAC100_HPTXR_BADR_HIGH:
++        /* High Priority Transmit Ring Base High Address */
++        qemu_log_mask(LOG_UNIMP, "%s: read to unimplemented register 0x%"
++                      HWADDR_PRIx "\n", __func__, addr);
++        break;
++    case FTGMAC100_RXR_BADR_HIGH:
++        val = extract64(s->rx_ring, 32, 32);
++        break;
++    default:
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: Bad address at offset 0x%"
++                      HWADDR_PRIx "\n", __func__, addr);
++        break;
++    }
++
++    return val;
++}
++
++static void ftgmac100_high_write(void *opaque, hwaddr addr,
++                          uint64_t value, unsigned size)
++{
++    FTGMAC100State *s = FTGMAC100(opaque);
++
++    switch (addr) {
++    case FTGMAC100_NPTXR_BADR_HIGH:
++        s->tx_ring = deposit64(s->tx_ring, 32, 32, value);
++        s->tx_descriptor = deposit64(s->tx_descriptor, 32, 32, value);
++        break;
++    case FTGMAC100_HPTXR_BADR_HIGH:
++        /* High Priority Transmit Ring Base High Address */
++        qemu_log_mask(LOG_UNIMP, "%s: write to unimplemented register 0x%"
++                      HWADDR_PRIx "\n", __func__, addr);
++        break;
++    case FTGMAC100_RXR_BADR_HIGH:
++        s->rx_ring = deposit64(s->rx_ring, 32, 32, value);
++        s->rx_descriptor = deposit64(s->rx_descriptor, 32, 32, value);
++        break;
++    default:
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: Bad address at offset 0x%"
++                      HWADDR_PRIx "\n", __func__, addr);
++        break;
++    }
++
++    ftgmac100_update_irq(s);
++}
++
+ static int ftgmac100_filter(FTGMAC100State *s, const uint8_t *buf, size_t len)
  {
-     int frame_size = 0;
-     uint8_t *ptr = s->frame;
--    uint32_t addr = tx_descriptor;
-+    uint64_t addr = tx_descriptor;
-     uint32_t flags = 0;
- 
-     while (1) {
-@@ -726,9 +726,9 @@ static uint64_t ftgmac100_read(void *opaque, hwaddr addr, unsigned size)
-     case FTGMAC100_MATH1:
-         return s->math[1];
-     case FTGMAC100_RXR_BADR:
--        return s->rx_ring;
-+        return extract64(s->rx_ring, 0, 32);
-     case FTGMAC100_NPTXR_BADR:
--        return s->tx_ring;
-+        return extract64(s->tx_ring, 0, 32);
-     case FTGMAC100_ITC:
-         return s->itc;
-     case FTGMAC100_DBLAC:
-@@ -799,9 +799,8 @@ static void ftgmac100_write(void *opaque, hwaddr addr,
-                           HWADDR_PRIx "\n", __func__, value);
-             return;
-         }
--
--        s->rx_ring = value;
--        s->rx_descriptor = s->rx_ring;
-+        s->rx_ring = deposit64(s->rx_ring, 0, 32, value);
-+        s->rx_descriptor = deposit64(s->rx_descriptor, 0, 32, value);
-         break;
- 
-     case FTGMAC100_RBSR: /* DMA buffer size */
-@@ -814,8 +813,8 @@ static void ftgmac100_write(void *opaque, hwaddr addr,
-                           HWADDR_PRIx "\n", __func__, value);
-             return;
-         }
--        s->tx_ring = value;
--        s->tx_descriptor = s->tx_ring;
-+        s->tx_ring = deposit64(s->tx_ring, 0, 32, value);
-+        s->tx_descriptor = deposit64(s->tx_descriptor, 0, 32, value);
-         break;
- 
-     case FTGMAC100_NPTXPD: /* Trigger transmit */
-@@ -957,7 +956,7 @@ static ssize_t ftgmac100_receive(NetClientState *nc, const uint8_t *buf,
-     FTGMAC100State *s = FTGMAC100(qemu_get_nic_opaque(nc));
-     FTGMAC100Desc bd;
-     uint32_t flags = 0;
--    uint32_t addr;
-+    uint64_t addr;
-     uint32_t crc;
-     uint32_t buf_addr;
-     uint8_t *crc_ptr;
-@@ -1126,18 +1125,14 @@ static void ftgmac100_realize(DeviceState *dev, Error **errp)
- 
- static const VMStateDescription vmstate_ftgmac100 = {
-     .name = TYPE_FTGMAC100,
--    .version_id = 1,
--    .minimum_version_id = 1,
-+    .version_id = 2,
-+    .minimum_version_id = 2,
-     .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(irq_state, FTGMAC100State),
-         VMSTATE_UINT32(isr, FTGMAC100State),
-         VMSTATE_UINT32(ier, FTGMAC100State),
-         VMSTATE_UINT32(rx_enabled, FTGMAC100State),
--        VMSTATE_UINT32(rx_ring, FTGMAC100State),
-         VMSTATE_UINT32(rbsr, FTGMAC100State),
--        VMSTATE_UINT32(tx_ring, FTGMAC100State),
--        VMSTATE_UINT32(rx_descriptor, FTGMAC100State),
--        VMSTATE_UINT32(tx_descriptor, FTGMAC100State),
-         VMSTATE_UINT32_ARRAY(math, FTGMAC100State, 2),
-         VMSTATE_UINT32(itc, FTGMAC100State),
-         VMSTATE_UINT32(aptcr, FTGMAC100State),
-@@ -1156,6 +1151,10 @@ static const VMStateDescription vmstate_ftgmac100 = {
-         VMSTATE_UINT32(phy_int_mask, FTGMAC100State),
-         VMSTATE_UINT32(txdes0_edotr, FTGMAC100State),
-         VMSTATE_UINT32(rxdes0_edorr, FTGMAC100State),
-+        VMSTATE_UINT64(rx_ring, FTGMAC100State),
-+        VMSTATE_UINT64(tx_ring, FTGMAC100State),
-+        VMSTATE_UINT64(rx_descriptor, FTGMAC100State),
-+        VMSTATE_UINT64(tx_descriptor, FTGMAC100State),
-         VMSTATE_END_OF_LIST()
-     }
+     unsigned mcast_idx;
+@@ -1077,6 +1141,14 @@ static const MemoryRegionOps ftgmac100_ops = {
+     .endianness = DEVICE_LITTLE_ENDIAN,
  };
+ 
++static const MemoryRegionOps ftgmac100_high_ops = {
++    .read = ftgmac100_high_read,
++    .write = ftgmac100_high_write,
++    .valid.min_access_size = 4,
++    .valid.max_access_size = 4,
++    .endianness = DEVICE_LITTLE_ENDIAN,
++};
++
+ static void ftgmac100_cleanup(NetClientState *nc)
+ {
+     FTGMAC100State *s = FTGMAC100(qemu_get_nic_opaque(nc));
+@@ -1114,6 +1186,15 @@ static void ftgmac100_realize(DeviceState *dev, Error **errp)
+                           TYPE_FTGMAC100 ".regs", FTGMAC100_REG_MEM_SIZE);
+     memory_region_add_subregion(&s->iomem_container, 0x0, &s->iomem);
+ 
++    if (s->dma64) {
++        memory_region_init_io(&s->iomem_high, OBJECT(s), &ftgmac100_high_ops,
++                              s, TYPE_FTGMAC100 ".regs.high",
++                              FTGMAC100_REG_HIGH_MEM_SIZE);
++        memory_region_add_subregion(&s->iomem_container,
++                                    FTGMAC100_REG_HIGH_OFFSET,
++                                    &s->iomem_high);
++    }
++
+     sysbus_init_irq(sbd, &s->irq);
+     qemu_macaddr_default_if_unset(&s->conf.macaddr);
+ 
+@@ -1162,6 +1243,7 @@ static const VMStateDescription vmstate_ftgmac100 = {
+ static Property ftgmac100_properties[] = {
+     DEFINE_PROP_BOOL("aspeed", FTGMAC100State, aspeed, false),
+     DEFINE_NIC_PROPERTIES(FTGMAC100State, conf),
++    DEFINE_PROP_BOOL("dma64", FTGMAC100State, dma64, false),
+     DEFINE_PROP_END_OF_LIST(),
+ };
+ 
 diff --git a/include/hw/net/ftgmac100.h b/include/hw/net/ftgmac100.h
-index 269446e858..aae57ae8cb 100644
+index aae57ae8cb..24ccdf0260 100644
 --- a/include/hw/net/ftgmac100.h
 +++ b/include/hw/net/ftgmac100.h
-@@ -42,10 +42,6 @@ struct FTGMAC100State {
-     uint32_t isr;
-     uint32_t ier;
-     uint32_t rx_enabled;
--    uint32_t rx_ring;
--    uint32_t rx_descriptor;
--    uint32_t tx_ring;
--    uint32_t tx_descriptor;
-     uint32_t math[2];
-     uint32_t rbsr;
-     uint32_t itc;
-@@ -58,7 +54,10 @@ struct FTGMAC100State {
-     uint32_t phycr;
-     uint32_t phydata;
-     uint32_t fcr;
--
-+    uint64_t rx_ring;
-+    uint64_t rx_descriptor;
-+    uint64_t tx_ring;
-+    uint64_t tx_descriptor;
+@@ -16,6 +16,8 @@ OBJECT_DECLARE_SIMPLE_TYPE(FTGMAC100State, FTGMAC100)
  
-     uint32_t phy_status;
-     uint32_t phy_control;
+ #define FTGMAC100_MEM_SIZE 0x1000
+ #define FTGMAC100_REG_MEM_SIZE 0x100
++#define FTGMAC100_REG_HIGH_MEM_SIZE 0x100
++#define FTGMAC100_REG_HIGH_OFFSET 0x100
+ 
+ #include "hw/sysbus.h"
+ #include "net/net.h"
+@@ -35,6 +37,7 @@ struct FTGMAC100State {
+     qemu_irq irq;
+     MemoryRegion iomem_container;
+     MemoryRegion iomem;
++    MemoryRegion iomem_high;
+ 
+     uint8_t frame[FTGMAC100_MAX_FRAME_SIZE];
+ 
+@@ -68,6 +71,7 @@ struct FTGMAC100State {
+     bool aspeed;
+     uint32_t txdes0_edotr;
+     uint32_t rxdes0_edorr;
++    bool dma64;
+ };
+ 
+ #define TYPE_ASPEED_MII "aspeed-mmi"
 -- 
 2.34.1
 
