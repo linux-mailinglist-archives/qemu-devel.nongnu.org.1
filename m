@@ -2,37 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E58A927655
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 14:50:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 132C9927656
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 14:50:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPLtX-0004Ij-N0; Thu, 04 Jul 2024 08:49:03 -0400
+	id 1sPLtd-0004V1-9v; Thu, 04 Jul 2024 08:49:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sPLtD-00048f-Li; Thu, 04 Jul 2024 08:48:47 -0400
+ id 1sPLtM-0004B7-68; Thu, 04 Jul 2024 08:48:53 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sPLt9-0006I7-9L; Thu, 04 Jul 2024 08:48:43 -0400
+ id 1sPLtD-0006Ja-II; Thu, 04 Jul 2024 08:48:51 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 0A63F7739D;
+ by isrv.corpit.ru (Postfix) with ESMTP id 1A3867739E;
  Thu,  4 Jul 2024 15:48:22 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 969D8FE782;
+ by tsrv.corpit.ru (Postfix) with SMTP id A66F1FE783;
  Thu,  4 Jul 2024 15:48:26 +0300 (MSK)
-Received: (nullmailer pid 1471773 invoked by uid 1000);
+Received: (nullmailer pid 1471776 invoked by uid 1000);
  Thu, 04 Jul 2024 12:48:26 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+Cc: qemu-stable@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.13 03/17] stdvga: fix screen blanking
-Date: Thu,  4 Jul 2024 15:48:10 +0300
-Message-Id: <20240704124826.1471715-3-mjt@tls.msk.ru>
+Subject: [Stable-7.2.13 04/17] linux-user: Make TARGET_NR_setgroups affect
+ only the current thread
+Date: Thu,  4 Jul 2024 15:48:11 +0300
+Message-Id: <20240704124826.1471715-4-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.13-20240704143502@cover.tls.msk.ru>
 References: <qemu-stable-7.2.13-20240704143502@cover.tls.msk.ru>
@@ -61,41 +62,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Gerd Hoffmann <kraxel@redhat.com>
+From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-In case the display surface uses a shared buffer (i.e. uses vga vram
-directly instead of a shadow) go unshare the buffer before clearing it.
-
-This avoids vga memory corruption, which in turn fixes unblanking not
-working properly with X11.
+Like TARGET_NR_setuid, TARGET_NR_setgroups should affect only the
+calling thread, and not the entire process. Therefore, implement it
+using a syscall, and not a libc call.
 
 Cc: qemu-stable@nongnu.org
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2067
-Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
-Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Message-ID: <20240605131444.797896-2-kraxel@redhat.com>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-(cherry picked from commit b1cf266c82cb1211ee2785f1813a6a3f3e693390)
+Fixes: 19b84f3c35d7 ("added setgroups and getgroups syscalls")
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-Id: <20240614154710.1078766-1-iii@linux.ibm.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+(cherry picked from commit 54b27921026df384f67df86f04c39539df375c60)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/display/vga.c b/hw/display/vga.c
-index 0cb26a791b..8e2d44bea3 100644
---- a/hw/display/vga.c
-+++ b/hw/display/vga.c
-@@ -1746,6 +1746,13 @@ static void vga_draw_blank(VGACommonState *s, int full_update)
-     if (s->last_scr_width <= 0 || s->last_scr_height <= 0)
-         return;
+diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+index 74240f99ad..53c46ae951 100644
+--- a/linux-user/syscall.c
++++ b/linux-user/syscall.c
+@@ -7228,11 +7228,17 @@ static inline int tswapid(int id)
+ #else
+ #define __NR_sys_setresgid __NR_setresgid
+ #endif
++#ifdef __NR_setgroups32
++#define __NR_sys_setgroups __NR_setgroups32
++#else
++#define __NR_sys_setgroups __NR_setgroups
++#endif
  
-+    if (is_buffer_shared(surface)) {
-+        /* unshare buffer, otherwise the blanking corrupts vga vram */
-+        surface = qemu_create_displaysurface(s->last_scr_width,
-+                                             s->last_scr_height);
-+        dpy_gfx_replace_surface(s->con, surface);
-+    }
-+
-     w = s->last_scr_width * surface_bytes_per_pixel(surface);
-     d = surface_data(surface);
-     for(i = 0; i < s->last_scr_height; i++) {
+ _syscall1(int, sys_setuid, uid_t, uid)
+ _syscall1(int, sys_setgid, gid_t, gid)
+ _syscall3(int, sys_setresuid, uid_t, ruid, uid_t, euid, uid_t, suid)
+ _syscall3(int, sys_setresgid, gid_t, rgid, gid_t, egid, gid_t, sgid)
++_syscall2(int, sys_setgroups, int, size, gid_t *, grouplist)
+ 
+ void syscall_init(void)
+ {
+@@ -11453,7 +11459,7 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
+                 unlock_user(target_grouplist, arg2,
+                             gidsetsize * sizeof(target_id));
+             }
+-            return get_errno(setgroups(gidsetsize, grouplist));
++            return get_errno(sys_setgroups(gidsetsize, grouplist));
+         }
+     case TARGET_NR_fchown:
+         return get_errno(fchown(arg1, low2highuid(arg2), low2highgid(arg3)));
+@@ -11789,7 +11795,7 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
+                 }
+                 unlock_user(target_grouplist, arg2, 0);
+             }
+-            return get_errno(setgroups(gidsetsize, grouplist));
++            return get_errno(sys_setgroups(gidsetsize, grouplist));
+         }
+ #endif
+ #ifdef TARGET_NR_fchown32
 -- 
 2.39.2
 
