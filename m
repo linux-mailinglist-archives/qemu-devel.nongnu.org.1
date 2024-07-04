@@ -2,38 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 094F4927E68
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 23:03:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91841927E5F
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 23:01:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPTZu-0006v5-IR; Thu, 04 Jul 2024 17:01:18 -0400
+	id 1sPTa0-000736-07; Thu, 04 Jul 2024 17:01:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sPTZs-0006tI-I7; Thu, 04 Jul 2024 17:01:16 -0400
+ id 1sPTZu-0006wz-AE; Thu, 04 Jul 2024 17:01:18 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sPTZq-0004LE-Gh; Thu, 04 Jul 2024 17:01:16 -0400
+ id 1sPTZs-0004LY-Kb; Thu, 04 Jul 2024 17:01:18 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id D1A8677565;
+ by isrv.corpit.ru (Postfix) with ESMTP id DFD9677566;
  Fri,  5 Jul 2024 00:00:50 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id E69E8FEC9F;
- Fri,  5 Jul 2024 00:00:55 +0300 (MSK)
-Received: (nullmailer pid 1507737 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id 0253DFECA0;
+ Fri,  5 Jul 2024 00:00:56 +0300 (MSK)
+Received: (nullmailer pid 1507740 invoked by uid 1000);
  Thu, 04 Jul 2024 21:00:55 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+Cc: qemu-stable@nongnu.org,
+ =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.0.2 08/22] linux-user: Make TARGET_NR_setgroups affect only
- the current thread
-Date: Fri,  5 Jul 2024 00:00:38 +0300
-Message-Id: <20240704210055.1507652-8-mjt@tls.msk.ru>
+Subject: [Stable-9.0.2 09/22] target/sparc: use signed denominator in sdiv
+ helper
+Date: Fri,  5 Jul 2024 00:00:39 +0300
+Message-Id: <20240704210055.1507652-9-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-9.0.2-20240704162154@cover.tls.msk.ru>
 References: <qemu-stable-9.0.2-20240704162154@cover.tls.msk.ru>
@@ -62,62 +62,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Ilya Leoshkevich <iii@linux.ibm.com>
+From: Clément Chigot <chigot@adacore.com>
 
-Like TARGET_NR_setuid, TARGET_NR_setgroups should affect only the
-calling thread, and not the entire process. Therefore, implement it
-using a syscall, and not a libc call.
+The result has to be done with the signed denominator (b32) instead of
+the unsigned value passed in argument (b).
 
 Cc: qemu-stable@nongnu.org
-Fixes: 19b84f3c35d7 ("added setgroups and getgroups syscalls")
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20240614154710.1078766-1-iii@linux.ibm.com>
+Fixes: 1326010322d6 ("target/sparc: Remove CC_OP_DIV")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2319
+Signed-off-by: Clément Chigot <chigot@adacore.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20240606144331.698361-1-chigot@adacore.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-(cherry picked from commit 54b27921026df384f67df86f04c39539df375c60)
+(cherry picked from commit 6b4965373e561b77f91cfbdf41353635c9661358)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index 59fb3e911f..2edbd1ef15 100644
---- a/linux-user/syscall.c
-+++ b/linux-user/syscall.c
-@@ -7210,11 +7210,17 @@ static inline int tswapid(int id)
- #else
- #define __NR_sys_setresgid __NR_setresgid
- #endif
-+#ifdef __NR_setgroups32
-+#define __NR_sys_setgroups __NR_setgroups32
-+#else
-+#define __NR_sys_setgroups __NR_setgroups
-+#endif
+diff --git a/target/sparc/helper.c b/target/sparc/helper.c
+index 2247e243b5..7846ddd6f6 100644
+--- a/target/sparc/helper.c
++++ b/target/sparc/helper.c
+@@ -121,7 +121,7 @@ uint64_t helper_sdiv(CPUSPARCState *env, target_ulong a, target_ulong b)
+         return (uint32_t)(b32 < 0 ? INT32_MAX : INT32_MIN) | (-1ull << 32);
+     }
  
- _syscall1(int, sys_setuid, uid_t, uid)
- _syscall1(int, sys_setgid, gid_t, gid)
- _syscall3(int, sys_setresuid, uid_t, ruid, uid_t, euid, uid_t, suid)
- _syscall3(int, sys_setresgid, gid_t, rgid, gid_t, egid, gid_t, sgid)
-+_syscall2(int, sys_setgroups, int, size, gid_t *, grouplist)
- 
- void syscall_init(void)
- {
-@@ -11892,7 +11898,7 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
-                 unlock_user(target_grouplist, arg2,
-                             gidsetsize * sizeof(target_id));
-             }
--            return get_errno(setgroups(gidsetsize, grouplist));
-+            return get_errno(sys_setgroups(gidsetsize, grouplist));
-         }
-     case TARGET_NR_fchown:
-         return get_errno(fchown(arg1, low2highuid(arg2), low2highgid(arg3)));
-@@ -12228,7 +12234,7 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
-                 }
-                 unlock_user(target_grouplist, arg2, 0);
-             }
--            return get_errno(setgroups(gidsetsize, grouplist));
-+            return get_errno(sys_setgroups(gidsetsize, grouplist));
-         }
- #endif
- #ifdef TARGET_NR_fchown32
+-    a64 /= b;
++    a64 /= b32;
+     r = a64;
+     if (unlikely(r != a64)) {
+         return (uint32_t)(a64 < 0 ? INT32_MIN : INT32_MAX) | (-1ull << 32);
 -- 
 2.39.2
 
