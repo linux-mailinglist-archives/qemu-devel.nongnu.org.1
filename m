@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBD10927377
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 11:58:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A84E927378
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 11:58:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPJEI-0006RC-DX; Thu, 04 Jul 2024 05:58:18 -0400
+	id 1sPJEL-0006Rj-40; Thu, 04 Jul 2024 05:58:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sPJEG-0006Qj-8C
- for qemu-devel@nongnu.org; Thu, 04 Jul 2024 05:58:16 -0400
+ id 1sPJEJ-0006RX-L8
+ for qemu-devel@nongnu.org; Thu, 04 Jul 2024 05:58:19 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sPJEE-000854-JJ
- for qemu-devel@nongnu.org; Thu, 04 Jul 2024 05:58:15 -0400
+ id 1sPJEH-00085j-R2
+ for qemu-devel@nongnu.org; Thu, 04 Jul 2024 05:58:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1720087093;
+ s=mimecast20190719; t=1720087097;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=EYG7z0+92zsKHX2B0kS2w6WkiJ9TG5QWULKkYSPwyBU=;
- b=GorGj7byopdBn3WFbRVhRUI2tLdJOVj9jMPFdjpHW0XefOmlgT1l8E4veCMXb/XfITj09M
- meyeqSPhCq5rv1dFN3wZmEg7dJ2OERrH4NS+mt4xGikAXbCiygF8iQu3qWDKmEdHKj2h6N
- RKd6hrqGx/+SjRFRpPnAAZE/sArAxdk=
-Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
- [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=kId3BsrX4Ck23yi00sPWp4rXEyQ/RKL0+nMr7yxJA3E=;
+ b=BdYSh3ps764deqnFQRdEMV6yoEzAG5ys3zDK2cdRxuq8yYHA0J8gpF+oyt16igR/zAmPwM
+ 5LuzMrZ2m9vO1gcQTkpDJ7iNC846f0OVr4tFelVbGTiedhvtvDY2+GXikcZkOx4t+mK+fW
+ XG7qNPEedRbQUg8KK5x93x1KWp12zrw=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-582-o-fV7CN6NCCRB8Jj-ZFBkQ-1; Thu, 04 Jul 2024 05:58:11 -0400
-X-MC-Unique: o-fV7CN6NCCRB8Jj-ZFBkQ-1
-Received: by mail-lf1-f69.google.com with SMTP id
- 2adb3069b0e04-52ea249d1c9so187217e87.0
- for <qemu-devel@nongnu.org>; Thu, 04 Jul 2024 02:58:11 -0700 (PDT)
+ us-mta-602-3HPYNIgbNuGeESIIJ7SiPw-1; Thu, 04 Jul 2024 05:58:13 -0400
+X-MC-Unique: 3HPYNIgbNuGeESIIJ7SiPw-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-36789dfcc8bso315917f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 04 Jul 2024 02:58:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720087090; x=1720691890;
+ d=1e100.net; s=20230601; t=1720087091; x=1720691891;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=EYG7z0+92zsKHX2B0kS2w6WkiJ9TG5QWULKkYSPwyBU=;
- b=ZM8s2VOZTJPTcD8JJ7qWlirZvsh7hh0pH9qmk4yqczTYG+sNZCux2VxkvyygK6Ktgh
- 9N3KP1FYr9pOELB/jcGJQEjcFfKl8J4sJb5lI1hnG/SRdg5UruQYhfj5RHVGlKB4hI8g
- pPPzI/ZcZ7iG2axjLUreCbaFyTnd2hi1S7ghgJuKvH75MoBOeGv54iW8dYOYKY1gNLR4
- DztOXoKxUzc/2wPOpupV+/pu2eax3XtxZsoeOe0+zRmhjPv0KEsxQf46NDo6PgXko4an
- 34v65DAQIje33vBc0X2Ad76nFlg3YYL70fcPkZ+f0OHU/cxwcWN1VrR8X9R8j92DtXc7
- 7tAQ==
-X-Gm-Message-State: AOJu0Yw2J7yYhsu9qiklnwObjYRoFpZ2RxXlKjD8hrv+K2v7CG7nbKFP
- kv7kfyDUb9OrWx6ksgqlR5LS5WIhzkG5/a4XTOuojyi2Rr/Z+5q+J62ZsQlGaGumQyBZoq7CYV+
- Fy16h/1ZkxEJ2k0uxmy6jerpk+gp1ap8Jz77R2NQEizUd5nx0X+6g4yh0g/d/FKPmShUMJjnZE7
- cC9s7O9CvAGReJqPxaOq6I8SdFtR2rbVbhkz7N
-X-Received: by 2002:ac2:57c1:0:b0:52e:7125:c70a with SMTP id
- 2adb3069b0e04-52ea06bc9f4mr801000e87.47.1720087089905; 
- Thu, 04 Jul 2024 02:58:09 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHrtf+9BoxgTq+hDNCHdQVz0sxkcrpAjCxOl0rZNolNELJQnztPXtQuW3I5ogVA8NUniAvdVw==
-X-Received: by 2002:ac2:57c1:0:b0:52e:7125:c70a with SMTP id
- 2adb3069b0e04-52ea06bc9f4mr800991e87.47.1720087089448; 
- Thu, 04 Jul 2024 02:58:09 -0700 (PDT)
+ bh=kId3BsrX4Ck23yi00sPWp4rXEyQ/RKL0+nMr7yxJA3E=;
+ b=qsjZu+jJ7NaXq4IUwPm2PBaGqmoK0xBvCfN+Hre621B5bwPJvrus/a0fqGeQS34X6H
+ wO+8SAO6FBPHqb/Me6ppSdFxOWbqwcHH5bIW+qb3uf4L5vLo3V4T/XjHuQl1oZ0UNNee
+ eTwdMwX9wF4WLmsE1Y2nOK5GA4JucZ/H0Z7pdBTSTNwpsTeRjnhILMLci1eP1XM0jXw3
+ uPQRXozBpObmjqNnlwxdFecLs/tHQZg1ePdIo+npb4lsv/WZH2ADhAmMwD3ygI9bPP+h
+ 1Ky+QcZSa+eS26d3i6UmTckHnA2AfB1Nkn9JdQjTSJfSRYsMo+R+Z7bMmQFn826ceEXu
+ LnIw==
+X-Gm-Message-State: AOJu0YyCrA0EngQNghEcHqXmN+lPQ9m2g4D3iqEaxzm70V9R7PEDNSl6
+ beZbtapO4cPIJ0az8du0XIF6XBhExiZ6VGhF3yrR5n21TvnOvRURbUixvp9A9quMGuJsjX/fAh1
+ J0mIs4lO/IE2LTC+kOV7SBkL66GMtl706Fc91tRg8ue3xnL6A/Q27V+rk2oUmyRvd+5SYDTbFE5
+ lLrYZTjzzNhHAiK9pJ2iYb99FHPtTZW+i3A+AT
+X-Received: by 2002:a5d:5265:0:b0:367:9ce3:1667 with SMTP id
+ ffacd0b85a97d-3679dd3c4eemr790905f8f.15.1720087091646; 
+ Thu, 04 Jul 2024 02:58:11 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFeIBN4e10hTzkoF1vYyI+5msU11MqQiDjJ4Cx/B+73man6fZLx1eAV1rhWa2HBeFQ5Zo3YoA==
+X-Received: by 2002:a5d:5265:0:b0:367:9ce3:1667 with SMTP id
+ ffacd0b85a97d-3679dd3c4eemr790891f8f.15.1720087091198; 
+ Thu, 04 Jul 2024 02:58:11 -0700 (PDT)
 Received: from avogadro.local ([151.95.101.29])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4264a1d50b0sm17612535e9.7.2024.07.04.02.58.08
+ ffacd0b85a97d-367956ca37asm3443591f8f.75.2024.07.04.02.58.10
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 04 Jul 2024 02:58:08 -0700 (PDT)
+ Thu, 04 Jul 2024 02:58:10 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 01/16] meson: move shared_module() calls where modules are
- already walked
-Date: Thu,  4 Jul 2024 11:57:51 +0200
-Message-ID: <20240704095806.1780273-2-pbonzini@redhat.com>
+Subject: [PULL 02/16] meson: move block.syms dependency out of libblock
+Date: Thu,  4 Jul 2024 11:57:52 +0200
+Message-ID: <20240704095806.1780273-3-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240704095806.1780273-1-pbonzini@redhat.com>
 References: <20240704095806.1780273-1-pbonzini@redhat.com>
@@ -101,102 +100,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+In order to define libqemuutil symbols that are requested by block modules,
+QEMU currently uses a combination of the "link_depends" argument of
+libraries (which is propagated into dependencies, but not available in
+dependencies) and the "link_args" argument of declare_dependency()
+(which _is_ available in static_library, but probably not used for
+historical reasons only).
+
+Unfortunately the link_depends will not be propagated into the
+"block" dependency if it is defined using
+declare_dependency(objects: ...); and it is not possible to
+add it directly to the dependency because the keyword argument
+simply is not available.
+
+The only solution, in order to switch to defining the dependency
+without using "link_whole" (which has problems of its own, see
+https://github.com/mesonbuild/meson/pull/8151#issuecomment-754796420),
+is unfortunately to add the link_args and link_depends to the
+executables directly; fortunately there is just four of them.
+
+It is possible (and I will look into it) to add "link_depends"
+to declare_dependency(), but it probably will be a while before
+QEMU can use it.
+
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- meson.build | 34 +++++++++++++++++++---------------
- 1 file changed, 19 insertions(+), 15 deletions(-)
+ meson.build                | 5 +++--
+ storage-daemon/meson.build | 1 +
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/meson.build b/meson.build
-index 54e6b09f4fb..8909f8c87d9 100644
+index 8909f8c87d9..df9a64302f0 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -3602,6 +3602,7 @@ modinfo_files = []
+@@ -3759,12 +3759,10 @@ system_ss.add(migration)
+ block_ss = block_ss.apply({})
+ libblock = static_library('block', block_ss.sources() + genh,
+                           dependencies: block_ss.dependencies(),
+-                          link_depends: block_syms,
+                           name_suffix: 'fa',
+                           build_by_default: false)
  
- block_mods = []
- system_mods = []
-+emulator_modules = []
- foreach d, list : modules
-   if not (d == 'block' ? have_block : have_system)
-     continue
-@@ -3609,14 +3610,20 @@ foreach d, list : modules
+ block = declare_dependency(link_whole: [libblock],
+-                           link_args: '@block.syms',
+                            dependencies: [crypto, io])
  
-   foreach m, module_ss : list
-     if enable_modules
-+      module_ss.add(modulecommon)
-       module_ss = module_ss.apply(config_all_devices, strict: false)
-       sl = static_library(d + '-' + m, [genh, module_ss.sources()],
--                          dependencies: [modulecommon, module_ss.dependencies()], pic: true)
-+                          dependencies: module_ss.dependencies(), pic: true)
-       if d == 'block'
-         block_mods += sl
-       else
-         system_mods += sl
-       endif
-+      emulator_modules += shared_module(sl.name(),
-+                    name_prefix: '',
-+                    link_whole: sl,
-+                    install: true,
-+                    install_dir: qemu_moddir)
-       if module_ss.sources() != []
-         # FIXME: Should use sl.extract_all_objects(recursive: true) as
-         # input. Sources can be used multiple times but objects are
-@@ -3642,6 +3649,7 @@ endforeach
- foreach d, list : target_modules
-   foreach m, module_ss : list
-     if enable_modules
-+      module_ss.add(modulecommon)
-       foreach target : target_dirs
-         if target.endswith('-softmmu')
-           config_target = config_target_mak[target]
-@@ -3654,11 +3662,16 @@ foreach d, list : target_modules
-             module_name = d + '-' + m + '-' + config_target['TARGET_NAME']
-             sl = static_library(module_name,
-                                 [genh, target_module_ss.sources()],
--                                dependencies: [modulecommon, target_module_ss.dependencies()],
-+                                dependencies: target_module_ss.dependencies(),
-                                 include_directories: target_inc,
-                                 c_args: c_args,
-                                 pic: true)
-             system_mods += sl
-+            emulator_modules += shared_module(sl.name(),
-+                    name_prefix: '',
-+                    link_whole: sl,
-+                    install: true,
-+                    install_dir: qemu_moddir)
-             # FIXME: Should use sl.extract_all_objects(recursive: true) too.
-             modinfo_files += custom_target(module_name + '.modinfo',
-                                            output: module_name + '.modinfo',
-@@ -3692,6 +3705,10 @@ if enable_modules
-       hw_arch[arch].add(modinfo_dep)
-     endif
-   endforeach
-+
-+  if emulator_modules.length() > 0
-+    alias_target('modules', emulator_modules)
-+  endif
+ blockdev_ss = blockdev_ss.apply({})
+@@ -4033,10 +4031,13 @@ endif
+ 
+ if have_tools
+   qemu_img = executable('qemu-img', [files('qemu-img.c'), hxdep],
++             link_args: '@block.syms', link_depends: block_syms,
+              dependencies: [authz, block, crypto, io, qom, qemuutil], install: true)
+   qemu_io = executable('qemu-io', files('qemu-io.c'),
++             link_args: '@block.syms', link_depends: block_syms,
+              dependencies: [block, qemuutil], install: true)
+   qemu_nbd = executable('qemu-nbd', files('qemu-nbd.c'),
++               link_args: '@block.syms', link_depends: block_syms,
+                dependencies: [blockdev, qemuutil, gnutls, selinux],
+                install: true)
+ 
+diff --git a/storage-daemon/meson.build b/storage-daemon/meson.build
+index 46267b63e72..fd5e32f4b28 100644
+--- a/storage-daemon/meson.build
++++ b/storage-daemon/meson.build
+@@ -8,6 +8,7 @@ if have_tools
+   qsd_ss = qsd_ss.apply({})
+   qsd = executable('qemu-storage-daemon',
+                    qsd_ss.sources(),
++                   link_args: '@block.syms', link_depends: block_syms,
+                    dependencies: qsd_ss.dependencies(),
+                    install: true)
  endif
- 
- nm = find_program('nm')
-@@ -3785,19 +3802,6 @@ common_ss.add(hwcore)
- # Targets #
- ###########
- 
--emulator_modules = []
--foreach m : block_mods + system_mods
--  emulator_modules += shared_module(m.name(),
--                build_by_default: true,
--                name_prefix: '',
--                link_whole: m,
--                install: true,
--                install_dir: qemu_moddir)
--endforeach
--if emulator_modules.length() > 0
--  alias_target('modules', emulator_modules)
--endif
--
- system_ss.add(authz, blockdev, chardev, crypto, io, qmp)
- common_ss.add(qom, qemuutil)
- 
 -- 
 2.45.2
 
