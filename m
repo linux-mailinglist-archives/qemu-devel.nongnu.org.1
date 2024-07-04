@@ -2,75 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25A219271F2
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 10:44:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70D9A9271C9
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 10:32:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPI3J-00078w-MN; Thu, 04 Jul 2024 04:42:53 -0400
+	id 1sPHtU-0006fm-BB; Thu, 04 Jul 2024 04:32:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sPI3I-00078m-78
- for qemu-devel@nongnu.org; Thu, 04 Jul 2024 04:42:52 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sPHtK-0006Pc-6x; Thu, 04 Jul 2024 04:32:34 -0400
+Received: from mgamail.intel.com ([192.198.163.17])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1sPI3C-0004B0-W7
- for qemu-devel@nongnu.org; Thu, 04 Jul 2024 04:42:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1720082565;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=vozscD3o8VlMPbAmDro3V7LyfO/P+fi6WccYcHp4DII=;
- b=NH5njtcUfcEInh6kcPQzw4kFvwuuDJvHPpYG9rwRUtTbqZexTBbrtwCFCUnaFRhVTnyl0w
- 1vbrqxHCU5R3D0AeJPUsQbvgOUFoQ0IAvCW6f4dc+521re4NMnk9Hk09R8Hsf4XXZyW2cG
- mv1OzFRYaPVXSvHlSOlfK0mfte1fJ1o=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-195-6OlWIiqyOrqGJhyDnD3FHg-1; Thu,
- 04 Jul 2024 04:42:43 -0400
-X-MC-Unique: 6OlWIiqyOrqGJhyDnD3FHg-1
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id CC19F1956088; Thu,  4 Jul 2024 08:42:41 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.21])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 30406195605A; Thu,  4 Jul 2024 08:42:38 +0000 (UTC)
-Date: Thu, 4 Jul 2024 09:42:35 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Michael Roth <michael.roth@amd.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org
-Subject: Re: [PATCH] i386/sev: Don't allow automatic fallback to legacy
- KVM_SEV*_INIT
-Message-ID: <ZoZge_2UT_yRJE56@redhat.com>
-References: <20240704000019.3928862-1-michael.roth@amd.com>
- <CABgObfYX+nDnQSW5xyT3SjYbQ72--EW5buCkUuG_Z_JPFqfQNA@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sPHtE-00051M-Rp; Thu, 04 Jul 2024 04:32:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1720081949; x=1751617949;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=m49gTWXS6ca2p8lqTCdnmzYMtneKlZAzq3sovEPigys=;
+ b=DwjCbnOMErMJkIK3PN+shkv6hVSxHxU/KfK+T/5ZDn7L/291udGSInLS
+ A/ZmwZDWTMQ7DJm9HTwJhlMmXF/u4oMNT10ieNUOy27FtranISWTTUSgx
+ /6MW1IzvuDyZC+KuY2xz4KjZVl1tcy/igVCoMnsDUc+tJCPaFq44u7Nm+
+ 62BYu7TQ9CliPG6R1J2fCHWtna8PvQnwzhGSpKbrZq4oORqeJKuQmCZ6j
+ hWRZKN9HHQm50KvtT1pD0jIgCV+XDEgq7zHponWz3kxrZQ3T7ZxwnIgw0
+ HmfnqZdWO0/KcjDYCWAdH0RFYhNDGwgx2P4cZfbMnVF2UmrllU7R2Buj7 A==;
+X-CSE-ConnectionGUID: D65HesfHS0alymoKTAicxg==
+X-CSE-MsgGUID: m4T8espFQWCHeHF5uzB/5g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11122"; a="17215688"
+X-IronPort-AV: E=Sophos;i="6.09,183,1716274800"; d="scan'208";a="17215688"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Jul 2024 01:32:25 -0700
+X-CSE-ConnectionGUID: HhYFVVGiTM2/9Sj8/iPrwg==
+X-CSE-MsgGUID: H+wxlzMNQhS/xyjcE004qw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,183,1716274800"; d="scan'208";a="46597203"
+Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
+ by fmviesa010.fm.intel.com with ESMTP; 04 Jul 2024 01:32:24 -0700
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Michael Tokarev <mjt@tls.msk.ru>, Laurent Vivier <laurent@vivier.eu>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-trivial@nongnu.org, qemu-devel@nongnu.org,
+ Zhao Liu <zhao1.liu@intel.com>
+Subject: [PATCH 0/4] trivial: Fix superfluous trailing semicolon
+Date: Thu,  4 Jul 2024 16:47:55 +0800
+Message-Id: <20240704084759.1824420-1-zhao1.liu@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CABgObfYX+nDnQSW5xyT3SjYbQ72--EW5buCkUuG_Z_JPFqfQNA@mail.gmail.com>
-User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=192.198.163.17; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,43 +73,30 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jul 04, 2024 at 08:51:05AM +0200, Paolo Bonzini wrote:
-> On Thu, Jul 4, 2024 at 2:01 AM Michael Roth <michael.roth@amd.com> wrote:
-> > Currently if the 'legacy-vm-type' property of the sev-guest object is
-> > left unset, QEMU will attempt to use the newer KVM_SEV_INIT2 kernel
-> > interface in conjunction with the newer KVM_X86_SEV_VM and
-> > KVM_X86_SEV_ES_VM KVM VM types.
-> >
-> > This can lead to measurement changes if, for instance, an SEV guest was
-> > created on a host that originally had an older kernel that didn't
-> > support KVM_SEV_INIT2, but is booted on the same host later on after the
-> > host kernel was upgraded.
-> 
-> I think this is the right thing to do for SEV-ES. I agree that it's
-> bad to require a very new kernel (6.10 will be released only a month
-> before QEMU 9.1), on the other hand the KVM_SEV_ES_INIT API is broken
-> in several ways. As long as there is a way to go back to it, and it's
-> not changed by old machine types, not using it for SEV-ES is the
-> better choice for upstream.
+Hi,
 
-Broken how ?   I know there was the regression with the 'debug_swap'
-parameter, but was something that should just be fixed in the kernel,
-rather than breaking userspace. What else is a problem ?
+I checked the files in QEMU to fix these few errors about "superfluous
+trailing semicolon" to honor the requirement in checkpatch.pl.
 
-I don't think its reasonable for QEMU to require a brand new kernel
-for new machine types, given SEV & SEV-ES have been deployed for
-many years already. 
+Thanks and Best Regards,
+Zhao
+---
+Zhao Liu (4):
+  accel/kvm/kvm-all: Fix superfluous trailing semicolon
+  hw/i386/x86: Fix superfluous trailing semicolon
+  util/oslib-posix: Fix superfluous trailing semicolon
+  target/hexagon/imported/mmvec: Fix superfluous trailing semicolon
 
+ accel/kvm/kvm-all.c                    | 2 +-
+ hw/i386/x86.c                          | 2 +-
+ target/hexagon/imported/mmvec/ext.idef | 2 +-
+ util/oslib-posix.c                     | 2 +-
+ 4 files changed, 4 insertions(+), 4 deletions(-)
 
-With regards,
-Daniel
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+2.34.1
 
 
