@@ -2,81 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FFFC9274FE
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 13:26:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3897C927522
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 13:31:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPKal-0007iv-59; Thu, 04 Jul 2024 07:25:35 -0400
+	id 1sPKf0-0003qk-S4; Thu, 04 Jul 2024 07:29:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <EwanHai-oc@zhaoxin.com>)
- id 1sPKai-0007bu-C7
- for qemu-devel@nongnu.org; Thu, 04 Jul 2024 07:25:32 -0400
-Received: from mx1.zhaoxin.com ([210.0.225.12])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1sPKex-0003oW-HN
+ for qemu-devel@nongnu.org; Thu, 04 Jul 2024 07:29:55 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <EwanHai-oc@zhaoxin.com>)
- id 1sPKab-0002tZ-Dg
- for qemu-devel@nongnu.org; Thu, 04 Jul 2024 07:25:32 -0400
-X-ASG-Debug-ID: 1720092315-086e2311061449f0001-jgbH7p
-Received: from ZXSHMBX1.zhaoxin.com (ZXSHMBX1.zhaoxin.com [10.28.252.163]) by
- mx1.zhaoxin.com with ESMTP id 8NWS5QDzayiQXxoU (version=TLSv1.2
- cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO);
- Thu, 04 Jul 2024 19:25:15 +0800 (CST)
-X-Barracuda-Envelope-From: EwanHai-oc@zhaoxin.com
-X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.163
-Received: from zxbjmbx1.zhaoxin.com (10.29.252.163) by ZXSHMBX1.zhaoxin.com
- (10.28.252.163) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 4 Jul
- 2024 19:25:14 +0800
-Received: from ewan-server.zhaoxin.com (10.28.66.62) by zxbjmbx1.zhaoxin.com
- (10.29.252.163) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 4 Jul
- 2024 19:25:14 +0800
-X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.163
-From: EwanHai <ewanhai-oc@zhaoxin.com>
-X-Barracuda-RBL-Trusted-Forwarder: 10.29.252.163
-To: <pbonzini@redhat.com>, <zhao1.liu@intel.com>, <xiaoyao.li@intel.com>
-CC: <qemu-devel@nongnu.org>, <ewanhai@zhaoxin.com>, <cobechen@zhaoxin.com>,
- <rockcui@zhaoxin.com>, <louisqi@zhaoxin.com>, <liamni@zhaoxin.com>,
- <frankzhu@zhaoxin.com>
-Subject: [PATCH v2 4/4] target/i386: Update CMPLegacy handling for Zhaoxin CPUs
-Date: Thu, 4 Jul 2024 07:25:11 -0400
-X-ASG-Orig-Subj: [PATCH v2 4/4] target/i386: Update CMPLegacy handling for
- Zhaoxin CPUs
-Message-ID: <20240704112511.184257-5-ewanhai-oc@zhaoxin.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240704112511.184257-1-ewanhai-oc@zhaoxin.com>
-References: <20240704112511.184257-1-ewanhai-oc@zhaoxin.com>
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1sPKev-0004C8-Ly
+ for qemu-devel@nongnu.org; Thu, 04 Jul 2024 07:29:55 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1720092590;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=uff1tZ0HiZ9BC/wKbDvGWNLSdnnfBJ9B+cRzxsc+Hg0=;
+ b=KYvr9PxTCq52ToD/3QtLNsV5xF1LNTfemauA7jWpdYY4utPB4nTKSDQ5gxe4hAc7/Zu+LW
+ ASY7scmxFbJ9pFs1EpgQuVYz8CTSYfdG4EO+vdOGqDjuBHKBUp01hhNjFEOJuf+HHeYhQi
+ BXZnVpcwDtLLpoUwn7kxgh21gpS2wds=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-377-h9THZCBTPL-oEefUK5zfew-1; Thu,
+ 04 Jul 2024 07:29:47 -0400
+X-MC-Unique: h9THZCBTPL-oEefUK5zfew-1
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id AD2FD1955BD0; Thu,  4 Jul 2024 11:29:43 +0000 (UTC)
+Received: from redhat.com (unknown [10.39.194.2])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 4DE9A3000180; Thu,  4 Jul 2024 11:29:38 +0000 (UTC)
+Date: Thu, 4 Jul 2024 13:29:35 +0200
+From: Kevin Wolf <kwolf@redhat.com>
+To: Michael Tokarev <mjt@tls.msk.ru>
+Cc: qemu-block@nongnu.org, richard.henderson@linaro.org, hreitz@redhat.com,
+ eblake@redhat.com, stefanha@redhat.com, qemu-devel@nongnu.org,
+ qemu-stable@nongnu.org
+Subject: Re: [PULL 4/4] block: Parse filenames only when explicitly requested
+Message-ID: <ZoaHn87kcpnwFcIU@redhat.com>
+References: <20240702163943.276618-1-kwolf@redhat.com>
+ <20240702163943.276618-5-kwolf@redhat.com>
+ <358eddb4-7d14-4a6d-b360-24bb416b901e@tls.msk.ru>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.28.66.62]
-X-ClientProxiedBy: zxbjmbx1.zhaoxin.com (10.29.252.163) To
- zxbjmbx1.zhaoxin.com (10.29.252.163)
-X-Barracuda-Connect: ZXSHMBX1.zhaoxin.com[10.28.252.163]
-X-Barracuda-Start-Time: 1720092315
-X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
-X-Barracuda-URL: https://10.28.252.35:4443/cgi-mod/mark.cgi
-X-Virus-Scanned: by bsmtpd at zhaoxin.com
-X-Barracuda-Scan-Msg-Size: 1065
-X-Barracuda-BRTS-Status: 1
-X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
-X-Barracuda-Spam-Score: -2.02
-X-Barracuda-Spam-Status: No,
- SCORE=-2.02 using global scores of TAG_LEVEL=1000.0
- QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=
-X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.127153
- Rule breakdown below
- pts rule name              description
- ---- ---------------------- --------------------------------------------------
-Received-SPF: pass client-ip=210.0.225.12; envelope-from=EwanHai-oc@zhaoxin.com;
- helo=mx1.zhaoxin.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <358eddb4-7d14-4a6d-b360-24bb416b901e@tls.msk.ru>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,32 +81,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Zhaoxin CPUs handle the CMPLegacy bit in the same way
-as Intel CPUs. This patch simplifies the existing logic by
-using the IS_XXX_CPU macro and includes checks for Zhaoxin
-vendor to align their behavior with Intel.
+Am 03.07.2024 um 23:16 hat Michael Tokarev geschrieben:
+> 02.07.2024 19:39, Kevin Wolf wrote:
+> > When handling image filenames from legacy options such as -drive or from
+> > tools, these filenames are parsed for protocol prefixes, including for
+> > the json:{} pseudo-protocol.
+> > 
+> > This behaviour is intended for filenames that come directly from the
+> > command line and for backing files, which may come from the image file
+> > itself. Higher level management tools generally take care to verify that
+> > untrusted images don't contain a bad (or any) backing file reference;
+> > 'qemu-img info' is a suitable tool for this.
+> > 
+> > However, for other files that can be referenced in images, such as
+> > qcow2 data files or VMDK extents, the string from the image file is
+> > usually not verified by management tools - and 'qemu-img info' wouldn't
+> > be suitable because in contrast to backing files, it already opens these
+> > other referenced files. So here the string should be interpreted as a
+> > literal local filename. More complex configurations need to be specified
+> > explicitly on the command line or in QMP.
+> > 
+> > This patch changes bdrv_open_inherit() so that it only parses filenames
+> > if a new parameter parse_filename is true. It is set for the top level
+> > in bdrv_open(), for the file child and for the backing file child. All
+> > other callers pass false and disable filename parsing this way.
+> 
+> I'm attaching backports of this change to 8.2 and 7.2 series.
+> 
+> Please check if the resulting backports are correct, or if they're needed
+> in the first place.  Note: 7.2 lacks quite some locking in this area, eg
+> v8.0.0-2069-g8394c35ee148 "block: Fix AioContext locking in bdrv_open_child()"
+> v8.2.0-rc0-59-g6bc0bcc89f84 "block: Fix deadlocks in bdrv_graph_wrunlock()".
 
-Signed-off-by: EwanHai <ewanhai-oc@zhaoxin.com>
----
- target/i386/cpu.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+Apart from minor style differences, your 7.2 backport is a perfect match
+of the RHEL 9.2 backport which I already reviewed downstream. The 8.2
+patch is a bit different from the RHEL 9.4 one because we backported the
+final bits of the multiqueue work, but the differences make sense for
+upstream QEMU 8.2.
 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index a3747fc487..c52a4cf3ba 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -6945,9 +6945,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-          * So don't set it here for Intel to make Linux guests happy.
-          */
-         if (threads_per_pkg > 1) {
--            if (env->cpuid_vendor1 != CPUID_VENDOR_INTEL_1 ||
--                env->cpuid_vendor2 != CPUID_VENDOR_INTEL_2 ||
--                env->cpuid_vendor3 != CPUID_VENDOR_INTEL_3) {
-+            if (!IS_INTEL_CPU(env) && !IS_ZHAOXIN_CPU(env)) {
-                 *ecx |= 1 << 1;    /* CmpLegacy bit */
-             }
-         }
--- 
-2.34.1
+So both patches look good to me.
+
+Kevin
 
 
