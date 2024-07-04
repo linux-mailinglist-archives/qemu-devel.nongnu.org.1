@@ -2,43 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 132C9927656
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 14:50:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A94992766C
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 14:52:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPLtd-0004V1-9v; Thu, 04 Jul 2024 08:49:09 -0400
+	id 1sPLtf-0004W9-3R; Thu, 04 Jul 2024 08:49:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sPLtM-0004B7-68; Thu, 04 Jul 2024 08:48:53 -0400
+ id 1sPLtT-0004E5-Fg; Thu, 04 Jul 2024 08:49:01 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sPLtD-0006Ja-II; Thu, 04 Jul 2024 08:48:51 -0400
+ id 1sPLtJ-0006KZ-Ts; Thu, 04 Jul 2024 08:48:58 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 1A3867739E;
+ by isrv.corpit.ru (Postfix) with ESMTP id 291587739F;
  Thu,  4 Jul 2024 15:48:22 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id A66F1FE783;
+ by tsrv.corpit.ru (Postfix) with SMTP id B657FFE784;
  Thu,  4 Jul 2024 15:48:26 +0300 (MSK)
-Received: (nullmailer pid 1471776 invoked by uid 1000);
+Received: (nullmailer pid 1471779 invoked by uid 1000);
  Thu, 04 Jul 2024 12:48:26 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.13 04/17] linux-user: Make TARGET_NR_setgroups affect
- only the current thread
-Date: Thu,  4 Jul 2024 15:48:11 +0300
-Message-Id: <20240704124826.1471715-4-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ Song Gao <gaosong@loongson.cn>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.13 05/17] tcg/loongarch64: Fix tcg_out_movi vs some pcrel
+ pointers
+Date: Thu,  4 Jul 2024 15:48:12 +0300
+Message-Id: <20240704124826.1471715-5-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.13-20240704143502@cover.tls.msk.ru>
 References: <qemu-stable-7.2.13-20240704143502@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -62,62 +59,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Ilya Leoshkevich <iii@linux.ibm.com>
+From: Richard Henderson <richard.henderson@linaro.org>
 
-Like TARGET_NR_setuid, TARGET_NR_setgroups should affect only the
-calling thread, and not the entire process. Therefore, implement it
-using a syscall, and not a libc call.
+Simplify the logic for two-part, 32-bit pc-relative addresses.
+Rather than assume all such fit in int32_t, do some arithmetic
+and assert a result, do some arithmetic first and then check
+to see if the pieces are in range.
 
 Cc: qemu-stable@nongnu.org
-Fixes: 19b84f3c35d7 ("added setgroups and getgroups syscalls")
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20240614154710.1078766-1-iii@linux.ibm.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Fixes: dacc51720db ("tcg/loongarch64: Implement tcg_out_mov and tcg_out_movi")
+Reviewed-by: Song Gao <gaosong@loongson.cn>
+Reported-by: Song Gao <gaosong@loongson.cn>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-(cherry picked from commit 54b27921026df384f67df86f04c39539df375c60)
+(cherry picked from commit 521d7fb3ebdf88112ed13556a93e3037742b9eb8)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+(Mjt: context fixup in tcg/loongarch64/tcg-target.c.inc)
 
-diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index 74240f99ad..53c46ae951 100644
---- a/linux-user/syscall.c
-+++ b/linux-user/syscall.c
-@@ -7228,11 +7228,17 @@ static inline int tswapid(int id)
- #else
- #define __NR_sys_setresgid __NR_setresgid
- #endif
-+#ifdef __NR_setgroups32
-+#define __NR_sys_setgroups __NR_setgroups32
-+#else
-+#define __NR_sys_setgroups __NR_setgroups
-+#endif
+diff --git a/tcg/loongarch64/tcg-target.c.inc b/tcg/loongarch64/tcg-target.c.inc
+index d326e28740..f1934b6d7b 100644
+--- a/tcg/loongarch64/tcg-target.c.inc
++++ b/tcg/loongarch64/tcg-target.c.inc
+@@ -332,8 +332,7 @@ static void tcg_out_movi(TCGContext *s, TCGType type, TCGReg rd,
+      * back to the slow path.
+      */
  
- _syscall1(int, sys_setuid, uid_t, uid)
- _syscall1(int, sys_setgid, gid_t, gid)
- _syscall3(int, sys_setresuid, uid_t, ruid, uid_t, euid, uid_t, suid)
- _syscall3(int, sys_setresgid, gid_t, rgid, gid_t, egid, gid_t, sgid)
-+_syscall2(int, sys_setgroups, int, size, gid_t *, grouplist)
+-    intptr_t pc_offset;
+-    tcg_target_long val_lo, val_hi, pc_hi, offset_hi;
++    intptr_t src_rx, pc_offset;
+     tcg_target_long hi32, hi52;
+     bool rd_high_bits_are_ones;
  
- void syscall_init(void)
- {
-@@ -11453,7 +11459,7 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
-                 unlock_user(target_grouplist, arg2,
-                             gidsetsize * sizeof(target_id));
-             }
--            return get_errno(setgroups(gidsetsize, grouplist));
-+            return get_errno(sys_setgroups(gidsetsize, grouplist));
+@@ -344,24 +343,23 @@ static void tcg_out_movi(TCGContext *s, TCGType type, TCGReg rd,
+     }
+ 
+     /* PC-relative cases.  */
+-    pc_offset = tcg_pcrel_diff(s, (void *)val);
+-    if (pc_offset == sextreg(pc_offset, 0, 22) && (pc_offset & 3) == 0) {
+-        /* Single pcaddu2i.  */
+-        tcg_out_opc_pcaddu2i(s, rd, pc_offset >> 2);
+-        return;
++    src_rx = (intptr_t)tcg_splitwx_to_rx(s->code_ptr);
++    if ((val & 3) == 0) {
++        pc_offset = val - src_rx;
++        if (pc_offset == sextreg(pc_offset, 0, 22)) {
++            /* Single pcaddu2i.  */
++            tcg_out_opc_pcaddu2i(s, rd, pc_offset >> 2);
++            return;
++        }
+     }
+ 
+-    if (pc_offset == (int32_t)pc_offset) {
+-        /* Offset within 32 bits; load with pcalau12i + ori.  */
+-        val_lo = sextreg(val, 0, 12);
+-        val_hi = val >> 12;
+-        pc_hi = (val - pc_offset) >> 12;
+-        offset_hi = val_hi - pc_hi;
+-
+-        tcg_debug_assert(offset_hi == sextreg(offset_hi, 0, 20));
+-        tcg_out_opc_pcalau12i(s, rd, offset_hi);
++    pc_offset = (val >> 12) - (src_rx >> 12);
++    if (pc_offset == sextreg(pc_offset, 0, 20)) {
++        /* Load with pcalau12i + ori.  */
++        tcg_target_long val_lo = val & 0xfff;
++        tcg_out_opc_pcalau12i(s, rd, pc_offset);
+         if (val_lo != 0) {
+-            tcg_out_opc_ori(s, rd, rd, val_lo & 0xfff);
++            tcg_out_opc_ori(s, rd, rd, val_lo);
          }
-     case TARGET_NR_fchown:
-         return get_errno(fchown(arg1, low2highuid(arg2), low2highgid(arg3)));
-@@ -11789,7 +11795,7 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
-                 }
-                 unlock_user(target_grouplist, arg2, 0);
-             }
--            return get_errno(setgroups(gidsetsize, grouplist));
-+            return get_errno(sys_setgroups(gidsetsize, grouplist));
-         }
- #endif
- #ifdef TARGET_NR_fchown32
+         return;
+     }
 -- 
 2.39.2
 
