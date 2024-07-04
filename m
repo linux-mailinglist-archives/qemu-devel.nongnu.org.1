@@ -2,38 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77F9E927E60
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 23:02:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBFC6927E64
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 23:02:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPTaS-0008Si-TR; Thu, 04 Jul 2024 17:01:53 -0400
+	id 1sPTaS-0008Tp-TZ; Thu, 04 Jul 2024 17:01:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sPTaO-0008Ip-Tu; Thu, 04 Jul 2024 17:01:49 -0400
+ id 1sPTaP-0008Iq-6G; Thu, 04 Jul 2024 17:01:49 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sPTaN-0004PG-2e; Thu, 04 Jul 2024 17:01:48 -0400
+ id 1sPTaN-0004Pa-F5; Thu, 04 Jul 2024 17:01:48 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 2C5347756B;
+ by isrv.corpit.ru (Postfix) with ESMTP id 3A8F87756C;
  Fri,  5 Jul 2024 00:00:51 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 3F2DEFECA4;
+ by tsrv.corpit.ru (Postfix) with SMTP id 511A5FECA5;
  Fri,  5 Jul 2024 00:00:56 +0300 (MSK)
-Received: (nullmailer pid 1507752 invoked by uid 1000);
+Received: (nullmailer pid 1507755 invoked by uid 1000);
  Thu, 04 Jul 2024 21:00:55 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Chuang Xu <xuchuangxclwt@bytedance.com>,
- Guixiong Wei <weiguixiong@bytedance.com>, Yipeng Yin <yinyipeng@bytedance.com>,
- Zhao Liu <zhao1.liu@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.0.2 13/22] i386/cpu: fixup number of addressable IDs for
- processor cores in the physical package
-Date: Fri,  5 Jul 2024 00:00:43 +0300
-Message-Id: <20240704210055.1507652-13-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.0.2 14/22] target/arm: Fix VCMLA Dd, Dn, Dm[idx]
+Date: Fri,  5 Jul 2024 00:00:44 +0300
+Message-Id: <20240704210055.1507652-14-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-9.0.2-20240704162154@cover.tls.msk.ru>
 References: <qemu-stable-9.0.2-20240704162154@cover.tls.msk.ru>
@@ -61,51 +58,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Chuang Xu <xuchuangxclwt@bytedance.com>
+From: Richard Henderson <richard.henderson@linaro.org>
 
-When QEMU is started with:
--cpu host,host-cache-info=on,l3-cache=off \
--smp 2,sockets=1,dies=1,cores=1,threads=2
-Guest can't acquire maximum number of addressable IDs for processor cores in
-the physical package from CPUID[04H].
+The inner loop, bounded by eltspersegment, must not be
+larger than the outer loop, bounded by elements.
 
-When creating a CPU topology of 1 core per package, host-cache-info only
-uses the Host's addressable core IDs field (CPUID.04H.EAX[bits 31-26]),
-resulting in a conflict (on the multicore Host) between the Guest core
-topology information in this field and the Guest's actual cores number.
-
-Fix it by removing the unnecessary condition to cover 1 core per package
-case. This is safe because cores_per_pkg will not be 0 and will be at
-least 1.
-
-Fixes: d7caf13b5fcf ("x86: cpu: fixup number of addressable IDs for logical processors sharing cache")
-Signed-off-by: Guixiong Wei <weiguixiong@bytedance.com>
-Signed-off-by: Yipeng Yin <yinyipeng@bytedance.com>
-Signed-off-by: Chuang Xu <xuchuangxclwt@bytedance.com>
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Message-ID: <20240611032314.64076-1-xuchuangxclwt@bytedance.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit 903916f0a017fe4b7789f1c6c6982333a5a71876)
+Cc: qemu-stable@nongnu.org
+Fixes: 18fc2405781 ("target/arm: Implement SVE fp complex multiply add (indexed)")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2376
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Message-id: 20240625183536.1672454-2-richard.henderson@linaro.org
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+(cherry picked from commit 76bccf3cb9d9383da0128bbc6d1300cddbe3ae8f)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(Mjt: fixup for 9.0 due to other changes in this area past 9.0)
 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index e693f8ca9a..02a2da04a7 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -6097,10 +6097,8 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-             if (*eax & 31) {
-                 int host_vcpus_per_cache = 1 + ((*eax & 0x3FFC000) >> 14);
-                 int vcpus_per_socket = cs->nr_cores * cs->nr_threads;
--                if (cs->nr_cores > 1) {
--                    *eax &= ~0xFC000000;
--                    *eax |= (pow2ceil(cs->nr_cores) - 1) << 26;
--                }
-+                *eax &= ~0xFC000000;
-+                *eax |= (pow2ceil(cs->nr_cores) - 1) << 26;
-                 if (host_vcpus_per_cache > vcpus_per_socket) {
-                     *eax &= ~0x3FFC000;
-                     *eax |= (pow2ceil(vcpus_per_socket) - 1) << 14;
+diff --git a/target/arm/tcg/vec_helper.c b/target/arm/tcg/vec_helper.c
+index 1f93510b85..cc7cab338c 100644
+--- a/target/arm/tcg/vec_helper.c
++++ b/target/arm/tcg/vec_helper.c
+@@ -843,7 +843,7 @@ void HELPER(gvec_fcmlah_idx)(void *vd, void *vn, void *vm, void *va,
+     intptr_t index = extract32(desc, SIMD_DATA_SHIFT + 2, 2);
+     uint32_t neg_real = flip ^ neg_imag;
+     intptr_t elements = opr_sz / sizeof(float16);
+-    intptr_t eltspersegment = 16 / sizeof(float16);
++    intptr_t eltspersegment = MIN(16 / sizeof(float16), elements);
+     intptr_t i, j;
+ 
+     /* Shift boolean to the sign bit so we can xor to negate.  */
+@@ -905,7 +905,7 @@ void HELPER(gvec_fcmlas_idx)(void *vd, void *vn, void *vm, void *va,
+     intptr_t index = extract32(desc, SIMD_DATA_SHIFT + 2, 2);
+     uint32_t neg_real = flip ^ neg_imag;
+     intptr_t elements = opr_sz / sizeof(float32);
+-    intptr_t eltspersegment = 16 / sizeof(float32);
++    intptr_t eltspersegment = MIN(16 / sizeof(float32), elements);
+     intptr_t i, j;
+ 
+     /* Shift boolean to the sign bit so we can xor to negate.  */
 -- 
 2.39.2
 
