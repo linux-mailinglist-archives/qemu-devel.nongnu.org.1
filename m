@@ -2,75 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D44C927DC8
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 21:28:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4494B927D11
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 20:32:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPS7t-0005gU-Qh; Thu, 04 Jul 2024 15:28:18 -0400
+	id 1sPREa-0004ps-10; Thu, 04 Jul 2024 14:31:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1sPS7M-0005Ti-Gl
- for qemu-devel@nongnu.org; Thu, 04 Jul 2024 15:27:46 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1sPS7I-0005yt-0I
- for qemu-devel@nongnu.org; Thu, 04 Jul 2024 15:27:41 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1720121258;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=loDU8/JJcRpy7c/7ZYNrN1xoYWHU1S8Gazi+09fVM3Q=;
- b=Lq/ZRu6L/GtqKqMZYf5BERZECwrQ88em551xu0c4vswlJjtReaIbFA2G3AImm7Mz5yBadp
- NtJIrS+p43G9ePhuYhCojC7M4X47VAvPKQrPhskxNB3TiHFeikOlAKj/D8OLN8ZkkxGbvM
- uv954W2v1GBb1w1P+L/V4lbfyV6GXTI=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-668-bLjT9rwpO9-ohfdLoJVRWg-1; Thu,
- 04 Jul 2024 15:27:31 -0400
-X-MC-Unique: bLjT9rwpO9-ohfdLoJVRWg-1
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id DC7701955F44; Thu,  4 Jul 2024 19:27:29 +0000 (UTC)
-Received: from localhost (unknown [10.39.192.129])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 3E93F195605F; Thu,  4 Jul 2024 19:27:27 +0000 (UTC)
-Date: Thu, 4 Jul 2024 20:28:55 +0200
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Changqi Lu <luchangqi.123@bytedance.com>
-Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, kwolf@redhat.com,
- hreitz@redhat.com, fam@euphon.net, ronniesahlberg@gmail.com,
- pbonzini@redhat.com, pl@dlhnet.de, kbusch@kernel.org,
- its@irrelevant.dk, foss@defmacro.it, philmd@linaro.org,
- pizhenwei@bytedance.com
-Subject: Re: [PATCH v6 05/10] hw/scsi: add persistent reservation in/out api
- for scsi device
-Message-ID: <20240704182855.GH2529519@fedora.redhat.com>
-References: <20240613071327.2498953-1-luchangqi.123@bytedance.com>
- <20240613071327.2498953-6-luchangqi.123@bytedance.com>
+ (Exim 4.90_1) (envelope-from <jean-philippe@linaro.org>)
+ id 1sPREX-0004pX-DY
+ for qemu-devel@nongnu.org; Thu, 04 Jul 2024 14:31:05 -0400
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <jean-philippe@linaro.org>)
+ id 1sPRET-00032E-CF
+ for qemu-devel@nongnu.org; Thu, 04 Jul 2024 14:31:05 -0400
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-35f06861ae6so548746f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 04 Jul 2024 11:30:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1720117858; x=1720722658; darn=nongnu.org;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=kBz6wkB7tMJYy0wPftLZ4Ulgjae0KVvXGdcfYoc+8Eg=;
+ b=SuvJ/jpg85ZOHYJQHfkBCDhxlgotxy35VnN1TRCnM3IHgQ4CyS7aLdY5+nXI9Y/kHt
+ cGBiGSf9cDzQlWRQ0VShIKx3znIR0+Tz+DtRRikAAfGLYHi3FGhPkQa1KnYmwDEQSpsS
+ IoWQHvJVbfp1OCpIiZW9mVL83TjSjqcicLeqJ8VroJolaH+bAzxWU6AYSKMIRxcVBkST
+ R3A1EQeZT8HxsZ0MUW+2R5w5iAu6FmNVWj+EVe/12JwPXdI38vvezcruyn7P5RrfKc76
+ rHwL9CplVKTT+MDFDbLbiry+wR3mBwv1Voh5/eLOMyqyIFHjo2XO2O6Gbbj0cAIHprGT
+ y50A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1720117858; x=1720722658;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=kBz6wkB7tMJYy0wPftLZ4Ulgjae0KVvXGdcfYoc+8Eg=;
+ b=pXP0XNZd/swCdAKXfqG+BdAX+E23nBzIvAbYnVOvosG2dt6yw9ThCHxGoxg+ffNREV
+ IfTNsm1r2616YaELHP1NdwdYAG2ujEbqmoGCFi7aulyOZ16lA3PsGrkb1vx8Pwpdakvv
+ dDJrHkBh3BFDPYwPf5vZxpiO/TeZC6PQCXHpNjvmriLfOWShIIKt/VBi9M402204Xhk9
+ ZQCc0Z0+Ecp3LW/7YJBqc5uiAmiEdxF16xWZOxImVMSsIDBVZWnNpAU73mP7H6IILeaz
+ GB7av+4dKPV7BVDuUAZ2Z38bbXWQkAqgT4kKfND6p+LdqsYnqVyYeXPiv+gsd7O3b9Er
+ BTGg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCV+Vel9/VNp/wJ9DgwH/FfbhW/+aDlWv+8t3V4hIutffZxQ5O4mOwg3+NCYiDl6EGcJZRAezNq8JYod5aa6WWWBM39Kga0=
+X-Gm-Message-State: AOJu0Yxu5uJw+RyY42adipQs73/wIkuUJhOpfSByoDayWCQ5tvAW5Ltj
+ 4J/43cNpDbuFm784CQ+2nwMla0X47s7XiyF/ondKqkL/eLvK+bF9wvHknujLxrI=
+X-Google-Smtp-Source: AGHT+IGk1rcRfobvCyz8ROSlgmGUT3lBfb91NhA3zH7UjjfwAbcYNb5Br5rKmV8SKHwTnTjqWRlm+w==
+X-Received: by 2002:a05:6000:124d:b0:362:fc59:1ff5 with SMTP id
+ ffacd0b85a97d-3679dd73891mr2021105f8f.59.1720117857623; 
+ Thu, 04 Jul 2024 11:30:57 -0700 (PDT)
+Received: from myrica ([2.221.137.100]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-367a3b1e523sm853610f8f.53.2024.07.04.11.30.57
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 04 Jul 2024 11:30:57 -0700 (PDT)
+Date: Thu, 4 Jul 2024 19:31:10 +0100
+From: Jean-Philippe Brucker <jean-philippe@linaro.org>
+To: Mostafa Saleh <smostafa@google.com>
+Cc: qemu-arm@nongnu.org, eric.auger@redhat.com, peter.maydell@linaro.org,
+ qemu-devel@nongnu.org, alex.bennee@linaro.org, maz@kernel.org,
+ nicolinc@nvidia.com, julien@xen.org, richard.henderson@linaro.org,
+ marcin.juszkiewicz@linaro.org
+Subject: Re: [PATCH v4 11/19] hw/arm/smmu-common: Support nested translation
+Message-ID: <20240704183110.GH1693268@myrica>
+References: <20240701110241.2005222-1-smostafa@google.com>
+ <20240701110241.2005222-12-smostafa@google.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="lrp0SycR2lKUIPE2"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240613071327.2498953-6-luchangqi.123@bytedance.com>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+In-Reply-To: <20240701110241.2005222-12-smostafa@google.com>
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=jean-philippe@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,470 +95,193 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Mon, Jul 01, 2024 at 11:02:33AM +0000, Mostafa Saleh wrote:
+> When nested translation is requested, do the following:
+> 
+> - Translate stage-1 table address IPA into PA through stage-2.
+> - Translate stage-1 table walk output (IPA) through stage-2.
+> - Create a single TLB entry from stage-1 and stage-2 translations
+>   using logic introduced before.
+> 
+> For stage-1 table translation, the spec (ARM IHI 0070 F.b) says in:
+>     7.3.12 F_WALK_EABT:
+>         Translation of an IPA for Stage 1 descriptor fetch:
+> 	S2 == 1 (stage 2), CLASS == T
+> So, F_WALK_EABT is used which propagtes to CLASS == TT.
 
---lrp0SycR2lKUIPE2
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I don't think the text applies to this case, the context is:
 
-On Thu, Jun 13, 2024 at 03:13:22PM +0800, Changqi Lu wrote:
-> Add persistent reservation in/out operations in the
-> SCSI device layer. By introducing the persistent
-> reservation in/out api, this enables the SCSI device
-> to perform reservation-related tasks, including querying
-> keys, querying reservation status, registering reservation
-> keys, initiating and releasing reservations, as well as
-> clearing and preempting reservations held by other keys.
->=20
-> These operations are crucial for management and control of
-> shared storage resources in a persistent manner.
->=20
-> Signed-off-by: Changqi Lu <luchangqi.123@bytedance.com>
-> Signed-off-by: zhenwei pi <pizhenwei@bytedance.com>
+	A stage 2 table walk can encounter EABT accessing the physical
+	address of a stage 2 descriptor, because of a:
+	[...]
+	* Translation of an IPA for Stage 1 descriptor fetch
+
+So EABT is when failing to load the stage 2 descriptor. I can't find
+exact text for this case but looking at the flowchart 15.5, I think
+this should be F_TRANSLATION/F_ADDR_SIZE/F_PERMISSION/F_ACCESS with
+CLASS=TT and S2.
+
+Thanks,
+Jean
+
+> 
+> smmu_ptw() has a new argument SMMUState which include the TLB as
+> stage-1 table address can be cached in there.
+> 
+> Also in smmu_ptw() a separate path used for nesting to simplify the
+> code, although some logic can be combined.
+> 
+> Signed-off-by: Mostafa Saleh <smostafa@google.com>
 > ---
->  hw/scsi/scsi-disk.c | 352 ++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 352 insertions(+)
->=20
-> diff --git a/hw/scsi/scsi-disk.c b/hw/scsi/scsi-disk.c
-> index 4bd7af9d0c..0e964dbd87 100644
-> --- a/hw/scsi/scsi-disk.c
-> +++ b/hw/scsi/scsi-disk.c
-> @@ -32,6 +32,7 @@
->  #include "migration/vmstate.h"
->  #include "hw/scsi/emulation.h"
->  #include "scsi/constants.h"
-> +#include "scsi/utils.h"
->  #include "sysemu/block-backend.h"
->  #include "sysemu/blockdev.h"
->  #include "hw/block/block.h"
-> @@ -42,6 +43,7 @@
->  #include "qemu/cutils.h"
->  #include "trace.h"
->  #include "qom/object.h"
-> +#include "block/block_int.h"
-> =20
->  #ifdef __linux
->  #include <scsi/sg.h>
-> @@ -1474,6 +1476,346 @@ static void scsi_disk_emulate_read_data(SCSIReque=
-st *req)
->      scsi_req_complete(&r->req, GOOD);
+>  hw/arm/smmu-common.c         | 72 +++++++++++++++++++++++++++++++-----
+>  include/hw/arm/smmu-common.h |  2 +-
+>  2 files changed, 64 insertions(+), 10 deletions(-)
+> 
+> diff --git a/hw/arm/smmu-common.c b/hw/arm/smmu-common.c
+> index 24b7d09e2b..71afd486ba 100644
+> --- a/hw/arm/smmu-common.c
+> +++ b/hw/arm/smmu-common.c
+> @@ -318,6 +318,38 @@ SMMUTransTableInfo *select_tt(SMMUTransCfg *cfg, dma_addr_t iova)
+>      return NULL;
 >  }
-> =20
-> +typedef struct SCSIPrReadKeys {
-> +    uint32_t generation;
-> +    uint32_t num_keys;
-> +    uint64_t *keys;
-> +    void     *req;
-> +} SCSIPrReadKeys;
-> +
-> +typedef struct SCSIPrReadReservation {
-> +    uint32_t generation;
-> +    uint64_t key;
-> +    BlockPrType type;
-> +    void *req;
-> +} SCSIPrReadReservation;
-> +
-> +static void scsi_pr_read_keys_complete(void *opaque, int ret)
+>  
+> +/* Translate stage-1 table address using stage-2 page table. */
+> +static inline int translate_table_addr_ipa(dma_addr_t *table_addr,
+> +                                           SMMUTransCfg *cfg,
+> +                                           SMMUPTWEventInfo *info,
+> +                                           SMMUState *bs)
 > +{
-> +    int num_keys;
-> +    uint8_t *buf;
-> +    SCSIPrReadKeys *blk_keys =3D (SCSIPrReadKeys *)opaque;
-> +    SCSIDiskReq *r =3D (SCSIDiskReq *)blk_keys->req;
-> +    SCSIDiskState *s =3D DO_UPCAST(SCSIDiskState, qdev, r->req.dev);
+> +    dma_addr_t addr = *table_addr;
+> +    SMMUTLBEntry *cached_entry;
+> +    int asid;
 > +
-> +    assert(blk_get_aio_context(s->qdev.conf.blk) =3D=3D
-> +            qemu_get_current_aio_context());
-> +
-> +    assert(r->req.aiocb !=3D NULL);
-> +    r->req.aiocb =3D NULL;
-> +
-> +    if (scsi_disk_req_check_error(r, ret, true)) {
-> +        goto done;
-> +    }
-> +
-> +    buf =3D scsi_req_get_buf(&r->req);
-> +    num_keys =3D MIN(blk_keys->num_keys, ret);
-> +    blk_keys->generation =3D cpu_to_be32(blk_keys->generation);
-> +    memcpy(&buf[0], &blk_keys->generation, 4);
-> +    for (int i =3D 0; i < num_keys; i++) {
-> +        blk_keys->keys[i] =3D cpu_to_be64(blk_keys->keys[i]);
-> +        memcpy(&buf[8 + i * 8], &blk_keys->keys[i], 8);
-> +    }
-> +    num_keys =3D cpu_to_be32(num_keys * 8);
-> +    memcpy(&buf[4], &num_keys, 4);
-> +
-> +    scsi_req_data(&r->req, r->buflen);
-> +done:
-> +    scsi_req_unref(&r->req);
-> +    g_free(blk_keys->keys);
-> +    g_free(blk_keys);
-> +}
-> +
-> +static int scsi_disk_emulate_pr_read_keys(SCSIRequest *req)
-> +{
-> +    SCSIPrReadKeys *blk_keys;
-> +    SCSIDiskReq *r =3D DO_UPCAST(SCSIDiskReq, req, req);
-> +    SCSIDiskState *s =3D DO_UPCAST(SCSIDiskState, qdev, req->dev);
-> +    int buflen =3D MIN(r->req.cmd.xfer, r->buflen);
-> +    int num_keys =3D (buflen - sizeof(uint32_t) * 2) / sizeof(uint64_t);
-> +
-> +    blk_keys =3D g_new0(SCSIPrReadKeys, 1);
-> +    blk_keys->generation =3D 0;
-> +    /* num_keys is the maximum number of keys that can be transmitted */
-> +    blk_keys->num_keys =3D num_keys;
-> +    blk_keys->keys =3D g_malloc(sizeof(uint64_t) * num_keys);
-> +    blk_keys->req =3D r;
-> +
-> +    /* The request is used as the AIO opaque value, so add a ref.  */
-> +    scsi_req_ref(&r->req);
-> +    r->req.aiocb =3D blk_aio_pr_read_keys(s->qdev.conf.blk, &blk_keys->g=
-eneration,
-> +                                        blk_keys->num_keys, blk_keys->ke=
-ys,
-> +                                        scsi_pr_read_keys_complete, blk_=
-keys);
-> +    return 0;
-> +}
-> +
-> +static void scsi_pr_read_reservation_complete(void *opaque, int ret)
-> +{
-> +    uint8_t *buf;
-> +    uint32_t additional_len =3D 0;
-> +    SCSIPrReadReservation *blk_rsv =3D (SCSIPrReadReservation *)opaque;
-> +    SCSIDiskReq *r =3D (SCSIDiskReq *)blk_rsv->req;
-> +    SCSIDiskState *s =3D DO_UPCAST(SCSIDiskState, qdev, r->req.dev);
-> +
-> +    assert(blk_get_aio_context(s->qdev.conf.blk) =3D=3D
-> +            qemu_get_current_aio_context());
-> +
-> +    assert(r->req.aiocb !=3D NULL);
-> +    r->req.aiocb =3D NULL;
-> +
-> +    if (scsi_disk_req_check_error(r, ret, true)) {
-> +        goto done;
-> +    }
-> +
-> +    buf =3D scsi_req_get_buf(&r->req);
-> +    blk_rsv->generation =3D cpu_to_be32(blk_rsv->generation);
-> +    memcpy(&buf[0], &blk_rsv->generation, 4);
-> +    if (ret) {
-> +        additional_len =3D cpu_to_be32(16);
-> +        blk_rsv->key =3D cpu_to_be64(blk_rsv->key);
-> +        memcpy(&buf[8], &blk_rsv->key, 8);
-> +        buf[21] =3D block_pr_type_to_scsi(blk_rsv->type) & 0xf;
-> +    } else {
-> +        additional_len =3D cpu_to_be32(0);
-> +    }
-> +
-> +    memcpy(&buf[4], &additional_len, 4);
-> +    scsi_req_data(&r->req, r->buflen);
-> +
-> +done:
-> +    scsi_req_unref(&r->req);
-> +    g_free(blk_rsv);
-> +}
-> +
-> +static int scsi_disk_emulate_pr_read_reservation(SCSIRequest *req)
-> +{
-> +    SCSIPrReadReservation *blk_rsv;
-> +    SCSIDiskReq *r =3D DO_UPCAST(SCSIDiskReq, req, req);
-> +    SCSIDiskState *s =3D DO_UPCAST(SCSIDiskState, qdev, req->dev);
-> +
-> +    blk_rsv =3D g_malloc(sizeof(*blk_rsv));
-> +    blk_rsv->generation =3D 0;
-> +    blk_rsv->key =3D 0;
-> +    blk_rsv->type =3D 0;
-> +    blk_rsv->req =3D r;
-> +
-> +    /* The request is used as the AIO opaque value, so add a ref.  */
-> +    scsi_req_ref(&r->req);
-> +    r->req.aiocb =3D blk_aio_pr_read_reservation(s->qdev.conf.blk,
-> +                   &blk_rsv->generation, &blk_rsv->key, &blk_rsv->type,
-> +                   scsi_pr_read_reservation_complete, blk_rsv);
-> +    return 0;
-> +}
-> +
-> +static int scsi_disk_emulate_pr_report_capabilities(SCSIRequest *req)
-> +{
-> +    SCSIDiskReq *r =3D DO_UPCAST(SCSIDiskReq, req, req);
-> +    SCSIDiskState *s =3D DO_UPCAST(SCSIDiskState, qdev, req->dev);
-> +    BlockDriverState *bs =3D blk_bs(s->qdev.conf.blk);
-> +    uint8_t blk_pr_cap =3D bs->file->bs->bl.pr_cap;
-
-I'm not sure that file->bs is always valid here. Block layer code
-typically checks for !bs and !bs->drv.
-
-Also, ->file could be NULL if the SCSI disk points directly to
---blockdev file without a --blockdev raw on top. I think the block layer
-should propagate pr_cap from the leaves of the block graph to the root
-node via bdrv_merge_limits() so that traversing the graph (->file) is
-not necessary. Instead this line should just be bs->bl.pr_cap.
-
-> +    uint8_t *buf =3D scsi_req_get_buf(req);
-> +    uint16_t pr_cap;
 > +    /*
-> +     * according to response of report_capabilities
-> +     * command of chapter 6.13 of spc4
+> +     * The translation table walks performed from TTB0 or TTB1 are always
+> +     * performed in IPA space if stage 2 translations are enabled.
 > +     */
-> +    int len =3D sizeof(uint16_t) * 2 + sizeof(uint8_t) * 4;
+> +    asid = cfg->asid;
+> +    cfg->stage = SMMU_STAGE_2;
+> +    cfg->asid = -1;
+> +    cached_entry = smmu_translate(bs, cfg, addr, IOMMU_RO, info);
+> +    cfg->asid = asid;
+> +    cfg->stage = SMMU_NESTED;
 > +
-> +    if (len > r->buflen) {
-> +        return -EINVAL;
-> +    }
-> +
-> +    len =3D cpu_to_be16(len);
-> +    memcpy(&buf[0], &len, 2);
-> +    /* enable PTPL_C */
-> +    buf[2] =3D 1;
-> +    buf[3] =3D (blk_pr_cap & BLK_PR_CAP_PTPL) ? 1 : 0;
-> +    /* enable TMV */
-> +    buf[3] |=3D 1 << 7;
-> +
-> +    /* enable persistent reservation type */
-> +    pr_cap =3D block_pr_cap_to_scsi(blk_pr_cap);
-> +    buf[4] =3D pr_cap >> 8 & 0xff;
-> +    buf[5] =3D pr_cap & 0xff;
-> +
-> +    scsi_req_data(&r->req, len);
-> +    return 0;
-> +}
-> +
-> +static void scsi_aio_pr_complete(void *opaque, int ret)
-> +{
-> +    SCSIDiskReq *r =3D (SCSIDiskReq *)opaque;
-> +    SCSIDiskState *s =3D DO_UPCAST(SCSIDiskState, qdev, r->req.dev);
-> +
-> +    /* The request must only run in the BlockBackend's AioContext */
-> +    assert(blk_get_aio_context(s->qdev.conf.blk) =3D=3D
-> +           qemu_get_current_aio_context());
-> +
-> +    assert(r->req.aiocb !=3D NULL);
-> +    r->req.aiocb =3D NULL;
-> +
-> +    if (scsi_disk_req_check_error(r, ret, true)) {
-> +        goto done;
-> +    }
-> +
-> +    scsi_req_complete(&r->req, GOOD);
-> +
-> +done:
-> +    scsi_req_unref(&r->req);
-> +}
-> +
-> +static int scsi_disk_emulate_pr_register(SCSIDiskReq *r, uint64_t r_key,
-> +                                         uint64_t sa_key, SCSIPrType typ=
-e,
-> +                                         uint8_t aptpl, bool ignore_key)
-> +{
-> +    SCSIRequest *req =3D &r->req;
-> +    SCSIDiskState *s =3D DO_UPCAST(SCSIDiskState, qdev, req->dev);
-> +
-> +    /* The request is used as the AIO opaque value, so add a ref.  */
-> +    scsi_req_ref(&r->req);
-> +    r->req.aiocb =3D blk_aio_pr_register(s->qdev.conf.blk, r_key, sa_key,
-> +                                       scsi_pr_type_to_block(type),
-> +                                       aptpl ? true : false,
-> +                                       ignore_key, scsi_aio_pr_complete,=
- r);
-> +
-> +    return 0;
-> +}
-> +
-> +static int scsi_disk_emulate_pr_reserve(SCSIDiskReq *r, uint64_t r_key,
-> +                                        SCSIPrType type)
-> +{
-> +    SCSIRequest *req =3D &r->req;
-> +    SCSIDiskState *s =3D DO_UPCAST(SCSIDiskState, qdev, req->dev);
-> +
-> +    /* The request is used as the AIO opaque value, so add a ref.  */
-> +    scsi_req_ref(&r->req);
-> +    r->req.aiocb =3D blk_aio_pr_reserve(s->qdev.conf.blk, r_key,
-> +                                      scsi_pr_type_to_block(type),
-> +                                      scsi_aio_pr_complete, r);
-> +
-> +    return 0;
-> +}
-> +
-> +static int scsi_disk_emulate_pr_release(SCSIDiskReq *r, uint64_t r_key,
-> +                                        SCSIPrType type)
-> +{
-> +    SCSIRequest *req =3D &r->req;
-> +    SCSIDiskState *s =3D DO_UPCAST(SCSIDiskState, qdev, req->dev);
-> +
-> +    /* The request is used as the AIO opaque value, so add a ref.  */
-> +    scsi_req_ref(&r->req);
-> +    r->req.aiocb =3D blk_aio_pr_release(s->qdev.conf.blk, r_key,
-> +                                      scsi_pr_type_to_block(type),
-> +                                      scsi_aio_pr_complete, r);
-> +
-> +    return 0;
-> +}
-> +
-> +static int scsi_disk_emulate_pr_clear(SCSIDiskReq *r, uint64_t r_key)
-> +{
-> +    SCSIRequest *req =3D &r->req;
-> +    SCSIDiskState *s =3D DO_UPCAST(SCSIDiskState, qdev, req->dev);
-> +
-> +    /* The request is used as the AIO opaque value, so add a ref.  */
-> +    scsi_req_ref(&r->req);
-> +    r->req.aiocb =3D blk_aio_pr_clear(s->qdev.conf.blk, r_key,
-> +                                    scsi_aio_pr_complete, r);
-> +
-> +    return 0;
-> +}
-> +
-> +static int scsi_disk_emulate_pr_preempt(SCSIDiskReq *r, uint64_t r_key,
-> +                                        uint64_t sa_key, SCSIPrType type,
-> +                                        bool abort)
-> +{
-> +    SCSIRequest *req =3D &r->req;
-> +    SCSIDiskState *s =3D DO_UPCAST(SCSIDiskState, qdev, req->dev);
-> +
-> +    /* The request is used as the AIO opaque value, so add a ref.  */
-> +    scsi_req_ref(&r->req);
-> +    r->req.aiocb =3D blk_aio_pr_preempt(s->qdev.conf.blk, r_key, sa_key,
-> +                                      scsi_pr_type_to_block(type), abort,
-> +                                      scsi_aio_pr_complete, r);
-> +
-> +    return 0;
-> +}
-> +
-> +static int scsi_disk_emulate_pr_in(SCSIRequest *req)
-> +{
-> +    int rc;
-> +    SCSIPrInAction action =3D req->cmd.buf[1] & 0x1f;
-> +
-> +    switch (action) {
-> +    case SCSI_PR_IN_READ_KEYS:
-> +        rc =3D scsi_disk_emulate_pr_read_keys(req);
-> +        break;
-> +    case SCSI_PR_IN_READ_RESERVATION:
-> +        rc =3D scsi_disk_emulate_pr_read_reservation(req);
-> +        break;
-> +    case SCSI_PR_IN_REPORT_CAPABILITIES:
-> +        rc =3D scsi_disk_emulate_pr_report_capabilities(req);
-> +        break;
-> +    default:
-> +        return -ENOTSUP;
-> +    }
-> +
-> +    return rc;
-> +}
-> +
-> +static int scsi_disk_emulate_pr_out(SCSIDiskReq *r, uint8_t *inbuf)
-> +{
-> +    int rc;
-> +    uint8_t aptpl;
-> +    uint64_t r_key, sa_key;
-> +    SCSIPrOutAction action;
-> +    SCSIPrScope scope;
-> +    SCSIPrType type;
-> +    SCSIRequest *req =3D &r->req;
-> +
-> +    memcpy(&r_key, &inbuf[0], 8);
-> +    r_key =3D be64_to_cpu(r_key);
-> +    memcpy(&sa_key, &inbuf[8], 8);
-> +    sa_key =3D be64_to_cpu(sa_key);
-> +    memcpy(&aptpl, &inbuf[20], 1);
-> +    aptpl =3D  aptpl & 0x01;
-> +    action =3D req->cmd.buf[1] & 0x1f;
-> +    scope =3D (req->cmd.buf[2] >> 4) & 0x0f;
-> +    type =3D req->cmd.buf[2] & 0x0f;
-> +
-> +    if (scope !=3D SCSI_PR_LU_SCOPE) {
-> +        return -ENOTSUP;
-> +    }
-> +
-> +    switch (action) {
-> +    case SCSI_PR_OUT_REGISTER:
-> +        rc =3D scsi_disk_emulate_pr_register(r, r_key, sa_key, type,
-> +                                           aptpl, false);
-> +        break;
-> +    case SCSI_PR_OUT_REG_AND_IGNORE_KEY:
-> +        rc =3D scsi_disk_emulate_pr_register(r, r_key, sa_key, type, apt=
-pl, true);
-> +        break;
-> +    case SCSI_PR_OUT_RESERVE:
-> +        rc =3D scsi_disk_emulate_pr_reserve(r, r_key, type);
-> +        break;
-> +    case SCSI_PR_OUT_RELEASE:
-> +        rc =3D scsi_disk_emulate_pr_release(r, r_key, type);
-> +        break;
-> +    case SCSI_PR_OUT_CLEAR:
-> +        rc =3D scsi_disk_emulate_pr_clear(r, r_key);
-> +        break;
-> +    case SCSI_PR_OUT_PREEMPT:
-> +        rc =3D scsi_disk_emulate_pr_preempt(r, r_key, sa_key, type, fals=
-e);
-> +        break;
-> +    case SCSI_PR_OUT_PREEMPT_AND_ABORT:
-> +        rc =3D scsi_disk_emulate_pr_preempt(r, r_key, sa_key, type, true=
-);
-> +        break;
-> +    default:
-> +        return -ENOTSUP;
-> +    }
-> +
-> +    return rc;
-> +}
-> +
->  static int scsi_disk_check_mode_select(SCSIDiskState *s, int page,
->                                         uint8_t *inbuf, int inlen)
->  {
-> @@ -1957,6 +2299,9 @@ static void scsi_disk_emulate_write_data(SCSIReques=
-t *req)
->          scsi_req_complete(&r->req, GOOD);
->          break;
-> =20
-> +    case PERSISTENT_RESERVE_OUT:
-> +        scsi_disk_emulate_pr_out(r, r->iov.iov_base);
-> +        break;
->      default:
->          abort();
->      }
-> @@ -2213,6 +2558,11 @@ static int32_t scsi_disk_emulate_command(SCSIReque=
-st *req, uint8_t *buf)
->      case FORMAT_UNIT:
->          trace_scsi_disk_emulate_command_FORMAT_UNIT(r->req.cmd.xfer);
->          break;
-> +    case PERSISTENT_RESERVE_OUT:
-> +        break;
-> +    case PERSISTENT_RESERVE_IN:
-> +        scsi_disk_emulate_pr_in(req);
+> +    if (cached_entry) {
+> +        *table_addr = CACHED_ENTRY_TO_ADDR(cached_entry, addr);
 > +        return 0;
->      default:
->          trace_scsi_disk_emulate_command_UNKNOWN(buf[0],
->                                                  scsi_command_name(buf[0]=
-));
-> @@ -2632,6 +2982,8 @@ static const SCSIReqOps *const scsi_disk_reqops_dis=
-patch[256] =3D {
->      [VERIFY_12]                       =3D &scsi_disk_emulate_reqops,
->      [VERIFY_16]                       =3D &scsi_disk_emulate_reqops,
->      [FORMAT_UNIT]                     =3D &scsi_disk_emulate_reqops,
-> +    [PERSISTENT_RESERVE_IN]           =3D &scsi_disk_emulate_reqops,
-> +    [PERSISTENT_RESERVE_OUT]          =3D &scsi_disk_emulate_reqops,
-> =20
->      [READ_6]                          =3D &scsi_disk_dma_reqops,
->      [READ_10]                         =3D &scsi_disk_dma_reqops,
-> --=20
-> 2.20.1
->=20
-
---lrp0SycR2lKUIPE2
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmaG6ecACgkQnKSrs4Gr
-c8i1Vgf+KPdtOFECBGNd4mNMtkKvSXrlffzFN96Fajksaw5yelcID3tg3FaPE+0y
-qKLhJkpRly+V8kVOXZaTt7AL/DB7oGUtJHsT2lFTifZKdKBWykwKNYUu6Jywr0nQ
-Vo3vkCUStcUziyR3+UZRXQ1VWqScjBOOqEmwmvOBVLRZBXid0DyD86EkxwUemJCx
-HdTMPeGQrtCSQHhbI9QfEDAs8uROSbiiHXVA7EHq1sgnENjZwHsNpwNFWTsoZ6V0
-2AiBgD7pp2TLdPcFEI+6rEUPwtKDvW5iBig+qkIoXQlkllV8t5sgE0vOTGLrvgUs
-huLXxEerEfmk/GCiVeJ20sQIar7EVg==
-=/Lpf
------END PGP SIGNATURE-----
-
---lrp0SycR2lKUIPE2--
-
+> +    }
+> +
+> +    info->stage = SMMU_STAGE_2;
+> +    info->type = SMMU_PTW_ERR_WALK_EABT;
+> +    info->addr = addr;
+> +    return -EINVAL;
+> +}
+> +
+>  /**
+>   * smmu_ptw_64_s1 - VMSAv8-64 Walk of the page tables for a given IOVA
+>   * @cfg: translation config
+> @@ -333,7 +365,8 @@ SMMUTransTableInfo *select_tt(SMMUTransCfg *cfg, dma_addr_t iova)
+>   */
+>  static int smmu_ptw_64_s1(SMMUTransCfg *cfg,
+>                            dma_addr_t iova, IOMMUAccessFlags perm,
+> -                          SMMUTLBEntry *tlbe, SMMUPTWEventInfo *info)
+> +                          SMMUTLBEntry *tlbe, SMMUPTWEventInfo *info,
+> +                          SMMUState *bs)
+>  {
+>      dma_addr_t baseaddr, indexmask;
+>      SMMUStage stage = cfg->stage;
+> @@ -381,6 +414,11 @@ static int smmu_ptw_64_s1(SMMUTransCfg *cfg,
+>                  goto error;
+>              }
+>              baseaddr = get_table_pte_address(pte, granule_sz);
+> +            if (cfg->stage == SMMU_NESTED) {
+> +                if (translate_table_addr_ipa(&baseaddr, cfg, info, bs)) {
+> +                    goto error;
+> +                }
+> +            }
+>              level++;
+>              continue;
+>          } else if (is_page_pte(pte, level)) {
+> @@ -568,10 +606,8 @@ error:
+>   * combine S1 and S2 TLB entries into a single entry.
+>   * As a result the S1 entry is overriden with combined data.
+>   */
+> -static void __attribute__((unused)) combine_tlb(SMMUTLBEntry *tlbe,
+> -                                                SMMUTLBEntry *tlbe_s2,
+> -                                                dma_addr_t iova,
+> -                                                SMMUTransCfg *cfg)
+> +static void combine_tlb(SMMUTLBEntry *tlbe, SMMUTLBEntry *tlbe_s2,
+> +                        dma_addr_t iova, SMMUTransCfg *cfg)
+>  {
+>      if (tlbe_s2->entry.addr_mask < tlbe->entry.addr_mask) {
+>          tlbe->entry.addr_mask = tlbe_s2->entry.addr_mask;
+> @@ -596,14 +632,19 @@ static void __attribute__((unused)) combine_tlb(SMMUTLBEntry *tlbe,
+>   * @perm: tentative access type
+>   * @tlbe: returned entry
+>   * @info: ptw event handle
+> + * @bs: smmu state which includes TLB instance
+>   *
+>   * return 0 on success
+>   */
+>  int smmu_ptw(SMMUTransCfg *cfg, dma_addr_t iova, IOMMUAccessFlags perm,
+> -             SMMUTLBEntry *tlbe, SMMUPTWEventInfo *info)
+> +             SMMUTLBEntry *tlbe, SMMUPTWEventInfo *info, SMMUState *bs)
+>  {
+> +    int ret;
+> +    SMMUTLBEntry tlbe_s2;
+> +    dma_addr_t ipa;
+> +
+>      if (cfg->stage == SMMU_STAGE_1) {
+> -        return smmu_ptw_64_s1(cfg, iova, perm, tlbe, info);
+> +        return smmu_ptw_64_s1(cfg, iova, perm, tlbe, info, bs);
+>      } else if (cfg->stage == SMMU_STAGE_2) {
+>          /*
+>           * If bypassing stage 1(or unimplemented), the input address is passed
+> @@ -621,7 +662,20 @@ int smmu_ptw(SMMUTransCfg *cfg, dma_addr_t iova, IOMMUAccessFlags perm,
+>          return smmu_ptw_64_s2(cfg, iova, perm, tlbe, info);
+>      }
+>  
+> -    g_assert_not_reached();
+> +    /* SMMU_NESTED. */
+> +    ret = smmu_ptw_64_s1(cfg, iova, perm, tlbe, info, bs);
+> +    if (ret) {
+> +        return ret;
+> +    }
+> +
+> +    ipa = CACHED_ENTRY_TO_ADDR(tlbe, iova);
+> +    ret = smmu_ptw_64_s2(cfg, ipa, perm, &tlbe_s2, info);
+> +    if (ret) {
+> +        return ret;
+> +    }
+> +
+> +    combine_tlb(tlbe, &tlbe_s2, iova, cfg);
+> +    return 0;
+>  }
+>  
+>  SMMUTLBEntry *smmu_translate(SMMUState *bs, SMMUTransCfg *cfg, dma_addr_t addr,
+> @@ -677,7 +731,7 @@ SMMUTLBEntry *smmu_translate(SMMUState *bs, SMMUTransCfg *cfg, dma_addr_t addr,
+>      }
+>  
+>      cached_entry = g_new0(SMMUTLBEntry, 1);
+> -    status = smmu_ptw(cfg, aligned_addr, flag, cached_entry, info);
+> +    status = smmu_ptw(cfg, aligned_addr, flag, cached_entry, info, bs);
+>      if (status) {
+>              g_free(cached_entry);
+>              return NULL;
+> diff --git a/include/hw/arm/smmu-common.h b/include/hw/arm/smmu-common.h
+> index 1db566d451..cf0fd3ec74 100644
+> --- a/include/hw/arm/smmu-common.h
+> +++ b/include/hw/arm/smmu-common.h
+> @@ -185,7 +185,7 @@ static inline uint16_t smmu_get_sid(SMMUDevice *sdev)
+>   * pair, according to @cfg translation config
+>   */
+>  int smmu_ptw(SMMUTransCfg *cfg, dma_addr_t iova, IOMMUAccessFlags perm,
+> -             SMMUTLBEntry *tlbe, SMMUPTWEventInfo *info);
+> +             SMMUTLBEntry *tlbe, SMMUPTWEventInfo *info, SMMUState *bs);
+>  
+>  
+>  /*
+> -- 
+> 2.45.2.803.g4e1b14247a-goog
+> 
 
