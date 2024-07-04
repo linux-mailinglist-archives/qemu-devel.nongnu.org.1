@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B1B4926FA2
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 08:34:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BE5A926FA3
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 08:34:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPG1c-0004iZ-Dx; Thu, 04 Jul 2024 02:33:00 -0400
+	id 1sPG1p-000592-VA; Thu, 04 Jul 2024 02:33:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sPG1V-0004gK-Ry; Thu, 04 Jul 2024 02:32:54 -0400
-Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
+ id 1sPG1k-0004yV-TS; Thu, 04 Jul 2024 02:33:08 -0400
+Received: from mail-pg1-x530.google.com ([2607:f8b0:4864:20::530])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sPG1U-0006iH-0o; Thu, 04 Jul 2024 02:32:53 -0400
-Received: by mail-pf1-x42b.google.com with SMTP id
- d2e1a72fcca58-70af22a9c19so232039b3a.2; 
- Wed, 03 Jul 2024 23:32:51 -0700 (PDT)
+ id 1sPG1h-0006kU-Mj; Thu, 04 Jul 2024 02:33:07 -0400
+Received: by mail-pg1-x530.google.com with SMTP id
+ 41be03b00d2f7-70df2135426so155861a12.2; 
+ Wed, 03 Jul 2024 23:33:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1720074770; x=1720679570; darn=nongnu.org;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
+ d=gmail.com; s=20230601; t=1720074781; x=1720679581; darn=nongnu.org;
+ h=in-reply-to:references:subject:cc:to:from:message-id:date
  :content-transfer-encoding:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=rcFFBnU+YY0pTUb3FVdmVnTU4+BOt7OchAPyEOUOKjo=;
- b=kdQMi9XerSmfTFaZobJbBM39XnAjvbc8R5TblnJ1M0yoXTeUShy9SobMLrQhs3Y/Op
- FwPyM5F0lbJlgkaJ70WHPAUOn4djVTXimVEr0+4cm1CCNhZS1Xu10du5SOFX3houff0k
- ENFSjQ9CI3QgFKs3ED8FBsfXgOXYQHgSZgGBhCRQs2dRiilOPp5xwlajuSnlIE5jiIgo
- 2Miwzu29mXGEWbUwZtpoAi68dbdhkBn2S9UQ2jHF8oh1XbVZSz1w/xpZnfjldXJ1PHch
- MsU99e7cRQrmgdVsItRU7dI+wKDRIg9AEBKiKG4yOuQjUpCsLQCtAT5fGxKEXDMo3Tnm
- 3PTw==
+ bh=6pW4IVJ3VX7HsHjeIdWQNmZStem/CMD0/GtV2HTSZTY=;
+ b=LF2C4mtVzcX+Q7ogh1g2ruu3hS6xY4whVH2g7ZQvVaXHUL6ieIZdFwLXyWkt8HDzRR
+ qE5RngSdxVXV4iI+rQwTMm/VKdbRPGlfQm2EF+mLlMADONpxMqiNpoNTqhRwtWip7LGc
+ ssY/3wXUAlOJt2EeIhdT7+WOzQ8uBs3THKbYMMInnWhOZbm+RH1gC249SrRGQDKmKm1I
+ DXnwXpIcaGSPQ83P5SrqSCIOOdECowK9+2N+64I8dhgmUsLku9JdU2KLCIIkgfUSFkli
+ DouUsv5663nHL52lMExSHfZQSQLz7J7dliJOxLM1nizS10vI698lVq1kXR/kKS4t/+bx
+ +Cfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720074770; x=1720679570;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
+ d=1e100.net; s=20230601; t=1720074781; x=1720679581;
+ h=in-reply-to:references:subject:cc:to:from:message-id:date
  :content-transfer-encoding:mime-version:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=rcFFBnU+YY0pTUb3FVdmVnTU4+BOt7OchAPyEOUOKjo=;
- b=g5veXUmXWz1WeZXKHd/NmZ1NS55zRDs7FWLACW84hPck8W8bPXAbUzJxp1CItEWVll
- NcYi4uFpOEHUUToQXsMUOcsOd9zgWReZIblrEkdAkTbKwEIjZP2zVKu115bWCUomTd28
- hQLDqHkw2PN5eGzctBS+IDRyGh8LgHAkbyi8hpjTgpVAw16S+oXps0o3YnaEFuUwFI5h
- tL/sIn+4dboKckTvqFqAMb+4NcPuEPaRO01JvQJ7IDPZX8EJHdvnEC8XO+2WaK2zfRI7
- GTr3Bch5OkhBzyONAl7tbjtzfqb2SDKeMClHa2SuxADwzhaYKy8CwHySRFBAtxY07JvR
- /Log==
+ bh=6pW4IVJ3VX7HsHjeIdWQNmZStem/CMD0/GtV2HTSZTY=;
+ b=jlfZhafkvLpLKvqynP0mx/0zHB9EyzAQPlfqI/oLh4aTmrcvT8RaF2LgZ6VJ1xQV0b
+ m8yYP6rKmXFaVQ1VzZIqOjTb7Wn3Mx8sGatsSf42pvRYDg9IFJPJXIb+niGu9izKCKnL
+ 2ADb3tmFBUmt0zm0FYJ/cZ6e+cP8ND+EDBgcLmphFnXWjsCF2l3aMgyKl2rVQsSSDAgU
+ iGG3yU3G2tEvHv1LQO2YBF1nu65xSWB2GlsHnxt7mv5YEyv5f7TIjgjQ+1SiwV4rbHnn
+ QHcEgdZFYFzh9NBpJ+c58YiB6tv71ecKjpHC6Iu4KwTEVaIdjgxXaROqB3xogFm+kNT5
+ TlQQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCV7AK0b5ssz3+Glx9aOCpnRjg4Rqfh96st2idganlzIl1FQ0mRU20+o1eFoD02+LpCrDNhpYOdeeXfUlXG/hFyBzTgwxEvRip1+bKMF4bR0+ZRSMxkeV4mQVkc=
-X-Gm-Message-State: AOJu0Yzb3N9XHGWo1/sGQ3hmNcAE0G8P+qzfn0yf9USPYcF8J/Oou7MZ
- JwOKSy7zMd/jrib/fziKj08XbvLfm45P+Q9GdWlrLhKwUXNwWN7w
-X-Google-Smtp-Source: AGHT+IEJ7w3/06BxTriXrcZtvNubUHjbuNu0QCuRRYf0GYJXKYrIxtmwxANZYys/nnmhq+yIrA1BOw==
-X-Received: by 2002:a05:6a00:4b55:b0:706:8e4:56a1 with SMTP id
- d2e1a72fcca58-70b0096cb8emr819472b3a.18.1720074768822; 
- Wed, 03 Jul 2024 23:32:48 -0700 (PDT)
+ AJvYcCVVvoRDc9NaIWA40mPKo52mjj5jl77EjVJDynGDbcL6oOofpkBRdQyXUZ/20KoF+gOM0XG1zZcmowjC9bYCB8sVbSxHwictkpOkARItih8Cm5tDyc9Db0uYN7I=
+X-Gm-Message-State: AOJu0YwkCp9HeDavsWGwDPDRqtPaiZb2N6FtIU9BnYpAOp0ETO/sIpvu
+ 6PA+hwiOfcfbWU1oITnzqQLDiD392mQrWOvhbc0o7jKsjiUqHOH/C5fMpA==
+X-Google-Smtp-Source: AGHT+IEhbT1lpEBwqzRqeOYwgeoah+I5sM6qxQfzFkSSLm6Ww3XrwSknE6DNWccTDeEi1hTnM9MxfQ==
+X-Received: by 2002:a05:6a20:12c2:b0:1b7:4f5a:8d27 with SMTP id
+ adf61e73a8af0-1c0cc8eff2emr628023637.56.1720074780843; 
+ Wed, 03 Jul 2024 23:33:00 -0700 (PDT)
 Received: from localhost ([1.146.24.72]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-70804989f5asm11504673b3a.195.2024.07.03.23.32.46
+ d9443c01a7336-1fac10c6c57sm114571755ad.53.2024.07.03.23.32.58
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 03 Jul 2024 23:32:48 -0700 (PDT)
+ Wed, 03 Jul 2024 23:33:00 -0700 (PDT)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 04 Jul 2024 16:32:43 +1000
-Message-Id: <D2GJM5NE55UZ.3L5C0BVVEJ51M@gmail.com>
-Cc: "Daniel Henrique Barboza" <danielhb413@gmail.com>
-Subject: Re: [PATCH 22/43] target/ppc/mmu_common.c: Stop using ctx in
- ppc6xx_tlb_check()
+Date: Thu, 04 Jul 2024 16:32:55 +1000
+Message-Id: <D2GJMBA6A7HV.3H5SSP17PXY32@gmail.com>
 From: "Nicholas Piggin" <npiggin@gmail.com>
 To: "BALATON Zoltan" <balaton@eik.bme.hu>, <qemu-devel@nongnu.org>,
  <qemu-ppc@nongnu.org>
+Cc: "Daniel Henrique Barboza" <danielhb413@gmail.com>
+Subject: Re: [PATCH 23/43] target/ppc/mmu_common.c: Rename function parameter
 X-Mailer: aerc 0.17.0
 References: <cover.1716763435.git.balaton@eik.bme.hu>
- <e3538f2cd74f716237586971bddcbc40d27fb38b.1716763435.git.balaton@eik.bme.hu>
-In-Reply-To: <e3538f2cd74f716237586971bddcbc40d27fb38b.1716763435.git.balaton@eik.bme.hu>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x42b.google.com
+ <f09e49e0e0e400e67ac0c61164ca3937ee8cc335.1716763435.git.balaton@eik.bme.hu>
+In-Reply-To: <f09e49e0e0e400e67ac0c61164ca3937ee8cc335.1716763435.git.balaton@eik.bme.hu>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::530;
+ envelope-from=npiggin@gmail.com; helo=mail-pg1-x530.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,100 +94,91 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On Mon May 27, 2024 at 9:12 AM AEST, BALATON Zoltan wrote:
-> Pass raddr and prot in function parameters instead.
->
-> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+> Rename parameter of get_bat_6xx_tlb() from virtual to eaddr to match
+> other functions.
 
 Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 
+>
+> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 > ---
->  target/ppc/mmu_common.c | 26 +++++++++++++-------------
->  1 file changed, 13 insertions(+), 13 deletions(-)
+>  target/ppc/mmu_common.c | 18 +++++++++---------
+>  1 file changed, 9 insertions(+), 9 deletions(-)
 >
 > diff --git a/target/ppc/mmu_common.c b/target/ppc/mmu_common.c
-> index be09c3b1a3..ede409eb99 100644
+> index ede409eb99..110936ca83 100644
 > --- a/target/ppc/mmu_common.c
 > +++ b/target/ppc/mmu_common.c
-> @@ -91,10 +91,9 @@ int ppc6xx_tlb_getnum(CPUPPCState *env, target_ulong e=
-addr,
+> @@ -221,7 +221,7 @@ static inline void bat_size_prot(CPUPPCState *env, ta=
+rget_ulong *blp,
+>  }
 > =20
->  /* Software driven TLB helpers */
-> =20
-> -static int ppc6xx_tlb_check(CPUPPCState *env,
-> -                            mmu_ctx_t *ctx, target_ulong eaddr,
-> -                            MMUAccessType access_type, target_ulong ptem=
-,
-> -                            bool key, bool nx)
-> +static int ppc6xx_tlb_check(CPUPPCState *env, hwaddr *raddr, int *prot,
-> +                            target_ulong eaddr, MMUAccessType access_typ=
-e,
-> +                            target_ulong ptem, bool key, bool nx)
+>  static int get_bat_6xx_tlb(CPUPPCState *env, mmu_ctx_t *ctx,
+> -                           target_ulong virtual, MMUAccessType access_ty=
+pe)
+> +                           target_ulong eaddr, MMUAccessType access_type=
+)
 >  {
->      ppc6xx_tlb_t *tlb;
->      target_ulong *pte1p;
-> @@ -102,7 +101,7 @@ static int ppc6xx_tlb_check(CPUPPCState *env,
->      bool is_code =3D (access_type =3D=3D MMU_INST_FETCH);
+>      target_ulong *BATlt, *BATut, *BATu, *BATl;
+>      target_ulong BEPIl, BEPIu, bl;
+> @@ -230,7 +230,7 @@ static int get_bat_6xx_tlb(CPUPPCState *env, mmu_ctx_=
+t *ctx,
+>      bool ifetch =3D access_type =3D=3D MMU_INST_FETCH;
 > =20
->      /* Initialize real address with an invalid value */
-> -    ctx->raddr =3D (hwaddr)-1ULL;
-> +    *raddr =3D (hwaddr)-1ULL;
->      best =3D -1;
->      ret =3D -1; /* No TLB found */
->      for (way =3D 0; way < env->nb_ways; way++) {
-> @@ -130,17 +129,17 @@ static int ppc6xx_tlb_check(CPUPPCState *env,
->              continue;
->          }
->          /* all matches should have equal RPN, WIMG & PP */
-> -        if (ctx->raddr !=3D (hwaddr)-1ULL &&
-> -            (ctx->raddr & PTE_CHECK_MASK) !=3D (tlb->pte1 & PTE_CHECK_MA=
-SK)) {
-> +        if (*raddr !=3D (hwaddr)-1ULL &&
-> +            (*raddr & PTE_CHECK_MASK) !=3D (tlb->pte1 & PTE_CHECK_MASK))=
- {
->              qemu_log_mask(CPU_LOG_MMU, "Bad RPN/WIMG/PP\n");
->              /* TLB inconsistency */
->              continue;
->          }
->          /* Keep the matching PTE information */
->          best =3D nr;
-> -        ctx->raddr =3D tlb->pte1;
-> -        ctx->prot =3D ppc_hash32_prot(key, tlb->pte1 & HPTE32_R_PP, nx);
-> -        if (check_prot_access_type(ctx->prot, access_type)) {
-> +        *raddr =3D tlb->pte1;
-> +        *prot =3D ppc_hash32_prot(key, tlb->pte1 & HPTE32_R_PP, nx);
-> +        if (check_prot_access_type(*prot, access_type)) {
->              qemu_log_mask(CPU_LOG_MMU, "PTE access granted !\n");
->              ret =3D 0;
->              break;
-> @@ -152,7 +151,7 @@ static int ppc6xx_tlb_check(CPUPPCState *env,
->      if (best !=3D -1) {
->          qemu_log_mask(CPU_LOG_MMU, "found TLB at addr " HWADDR_FMT_plx
->                        " prot=3D%01x ret=3D%d\n",
-> -                      ctx->raddr & TARGET_PAGE_MASK, ctx->prot, ret);
-> +                      *raddr & TARGET_PAGE_MASK, *prot, ret);
->          /* Update page flags */
->          pte1p =3D &env->tlb.tlb6[best].pte1;
->          *pte1p |=3D 0x00000100; /* Update accessed flag */
-> @@ -162,7 +161,7 @@ static int ppc6xx_tlb_check(CPUPPCState *env,
->                  *pte1p |=3D 0x00000080;
->              } else {
->                  /* Force page fault for first write access */
-> -                ctx->prot &=3D ~PAGE_WRITE;
-> +                *prot &=3D ~PAGE_WRITE;
+>      qemu_log_mask(CPU_LOG_MMU, "%s: %cBAT v " TARGET_FMT_lx "\n", __func=
+__,
+> -                  ifetch ? 'I' : 'D', virtual);
+> +                  ifetch ? 'I' : 'D', eaddr);
+>      if (ifetch) {
+>          BATlt =3D env->IBAT[1];
+>          BATut =3D env->IBAT[0];
+> @@ -246,15 +246,15 @@ static int get_bat_6xx_tlb(CPUPPCState *env, mmu_ct=
+x_t *ctx,
+>          bat_size_prot(env, &bl, &valid, &prot, BATu, BATl);
+>          qemu_log_mask(CPU_LOG_MMU, "%s: %cBAT%d v " TARGET_FMT_lx " BATu=
+ "
+>                        TARGET_FMT_lx " BATl " TARGET_FMT_lx "\n", __func_=
+_,
+> -                      ifetch ? 'I' : 'D', i, virtual, *BATu, *BATl);
+> -        if ((virtual & 0xF0000000) =3D=3D BEPIu &&
+> -            ((virtual & 0x0FFE0000) & ~bl) =3D=3D BEPIl) {
+> +                      ifetch ? 'I' : 'D', i, eaddr, *BATu, *BATl);
+> +        if ((eaddr & 0xF0000000) =3D=3D BEPIu &&
+> +            ((eaddr & 0x0FFE0000) & ~bl) =3D=3D BEPIl) {
+>              /* BAT matches */
+>              if (valid !=3D 0) {
+>                  /* Get physical address */
+>                  ctx->raddr =3D (*BATl & 0xF0000000) |
+> -                    ((virtual & 0x0FFE0000 & bl) | (*BATl & 0x0FFE0000))=
+ |
+> -                    (virtual & 0x0001F000);
+> +                    ((eaddr & 0x0FFE0000 & bl) | (*BATl & 0x0FFE0000)) |
+> +                    (eaddr & 0x0001F000);
+>                  /* Compute access rights */
+>                  ctx->prot =3D prot;
+>                  if (check_prot_access_type(ctx->prot, access_type)) {
+> @@ -273,7 +273,7 @@ static int get_bat_6xx_tlb(CPUPPCState *env, mmu_ctx_=
+t *ctx,
+>      if (ret < 0) {
+>          if (qemu_log_enabled()) {
+>              qemu_log_mask(CPU_LOG_MMU, "no BAT match for "
+> -                          TARGET_FMT_lx ":\n", virtual);
+> +                          TARGET_FMT_lx ":\n", eaddr);
+>              for (i =3D 0; i < 4; i++) {
+>                  BATu =3D &BATut[i];
+>                  BATl =3D &BATlt[i];
+> @@ -284,7 +284,7 @@ static int get_bat_6xx_tlb(CPUPPCState *env, mmu_ctx_=
+t *ctx,
+>                                " BATu " TARGET_FMT_lx " BATl " TARGET_FMT=
+_lx
+>                                "\n\t" TARGET_FMT_lx " " TARGET_FMT_lx " "
+>                                TARGET_FMT_lx "\n", __func__, ifetch ? 'I'=
+ : 'D',
+> -                              i, virtual, *BATu, *BATl, BEPIu, BEPIl, bl=
+);
+> +                              i, eaddr, *BATu, *BATl, BEPIu, BEPIl, bl);
 >              }
 >          }
 >      }
-> @@ -344,7 +343,8 @@ static int mmu6xx_get_physical_address(CPUPPCState *e=
-nv, mmu_ctx_t *ctx,
->          *hashp =3D hash;
-> =20
->          /* Software TLB search */
-> -        return ppc6xx_tlb_check(env, ctx, eaddr, access_type, ptem, key,=
- nx);
-> +        return ppc6xx_tlb_check(env, &ctx->raddr, &ctx->prot, eaddr,
-> +                                access_type, ptem, key, nx);
->      }
-> =20
->      /* Direct-store segment : absolutely *BUGGY* for now */
 
 
