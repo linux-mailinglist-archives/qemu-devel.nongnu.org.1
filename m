@@ -2,40 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85908927E6B
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 23:04:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7B93927E67
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 23:03:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPTa0-0007EI-7i; Thu, 04 Jul 2024 17:01:24 -0400
+	id 1sPTaQ-0008Cq-B3; Thu, 04 Jul 2024 17:01:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sPTZv-000728-Ht; Thu, 04 Jul 2024 17:01:19 -0400
+ id 1sPTaM-00086l-1P; Thu, 04 Jul 2024 17:01:46 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sPTZt-0004Ll-S5; Thu, 04 Jul 2024 17:01:19 -0400
+ id 1sPTaF-0004Lz-Lq; Thu, 04 Jul 2024 17:01:45 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id EE12377567;
- Fri,  5 Jul 2024 00:00:50 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 0ADFD77568;
+ Fri,  5 Jul 2024 00:00:51 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 10AAFFECA1;
+ by tsrv.corpit.ru (Postfix) with SMTP id 1F00DFECA2;
  Fri,  5 Jul 2024 00:00:56 +0300 (MSK)
-Received: (nullmailer pid 1507743 invoked by uid 1000);
+Received: (nullmailer pid 1507746 invoked by uid 1000);
  Thu, 04 Jul 2024 21:00:55 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- Song Gao <gaosong@loongson.cn>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.0.2 10/22] tcg/loongarch64: Fix tcg_out_movi vs some pcrel
- pointers
-Date: Fri,  5 Jul 2024 00:00:40 +0300
-Message-Id: <20240704210055.1507652-10-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Fabiano Rosas <farosas@suse.de>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Prasad Pandit <pjp@fedoraproject.org>, Peter Xu <peterx@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.0.2 11/22] migration: Fix file migration with fdset
+Date: Fri,  5 Jul 2024 00:00:41 +0300
+Message-Id: <20240704210055.1507652-11-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-9.0.2-20240704162154@cover.tls.msk.ru>
 References: <qemu-stable-9.0.2-20240704162154@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -59,74 +61,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+From: Fabiano Rosas <farosas@suse.de>
 
-Simplify the logic for two-part, 32-bit pc-relative addresses.
-Rather than assume all such fit in int32_t, do some arithmetic
-and assert a result, do some arithmetic first and then check
-to see if the pieces are in range.
+When the "file:" migration support was added we missed the special
+case in the qemu_open_old implementation that allows for a particular
+file name format to be used to refer to a set of file descriptors that
+have been previously provided to QEMU via the add-fd QMP command.
 
-Cc: qemu-stable@nongnu.org
-Fixes: dacc51720db ("tcg/loongarch64: Implement tcg_out_mov and tcg_out_movi")
-Reviewed-by: Song Gao <gaosong@loongson.cn>
-Reported-by: Song Gao <gaosong@loongson.cn>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-(cherry picked from commit 521d7fb3ebdf88112ed13556a93e3037742b9eb8)
+When using this fdset feature, we should not truncate the migration
+file because being given an fd means that the management layer is in
+control of the file and will likely already have some data written to
+it. This is further indicated by the presence of the 'offset'
+argument, which indicates the start of the region where QEMU is
+allowed to write.
+
+Fix the issue by replacing the O_TRUNC flag on open by an ftruncate
+call, which will take the offset into consideration.
+
+Fixes: 385f510df5 ("migration: file URI offset")
+Suggested-by: Daniel P. Berrangé <berrange@redhat.com>
+Reviewed-by: Prasad Pandit <pjp@fedoraproject.org>
+Reviewed-by: Peter Xu <peterx@redhat.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Signed-off-by: Fabiano Rosas <farosas@suse.de>
+(cherry picked from commit 6d3279655ac49b806265f08415165f471d33e032)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/tcg/loongarch64/tcg-target.c.inc b/tcg/loongarch64/tcg-target.c.inc
-index 06ca1ab11c..8f68bd3e51 100644
---- a/tcg/loongarch64/tcg-target.c.inc
-+++ b/tcg/loongarch64/tcg-target.c.inc
-@@ -366,8 +366,7 @@ static void tcg_out_movi(TCGContext *s, TCGType type, TCGReg rd,
-      * back to the slow path.
-      */
+diff --git a/migration/file.c b/migration/file.c
+index ab18ba505a..ba5b5c44ff 100644
+--- a/migration/file.c
++++ b/migration/file.c
+@@ -84,12 +84,19 @@ void file_start_outgoing_migration(MigrationState *s,
  
--    intptr_t pc_offset;
--    tcg_target_long val_lo, val_hi, pc_hi, offset_hi;
-+    intptr_t src_rx, pc_offset;
-     tcg_target_long hi12, hi32, hi52;
+     trace_migration_file_outgoing(filename);
  
-     /* Value fits in signed i32.  */
-@@ -377,24 +376,23 @@ static void tcg_out_movi(TCGContext *s, TCGType type, TCGReg rd,
-     }
- 
-     /* PC-relative cases.  */
--    pc_offset = tcg_pcrel_diff(s, (void *)val);
--    if (pc_offset == sextreg(pc_offset, 0, 22) && (pc_offset & 3) == 0) {
--        /* Single pcaddu2i.  */
--        tcg_out_opc_pcaddu2i(s, rd, pc_offset >> 2);
--        return;
-+    src_rx = (intptr_t)tcg_splitwx_to_rx(s->code_ptr);
-+    if ((val & 3) == 0) {
-+        pc_offset = val - src_rx;
-+        if (pc_offset == sextreg(pc_offset, 0, 22)) {
-+            /* Single pcaddu2i.  */
-+            tcg_out_opc_pcaddu2i(s, rd, pc_offset >> 2);
-+            return;
-+        }
-     }
- 
--    if (pc_offset == (int32_t)pc_offset) {
--        /* Offset within 32 bits; load with pcalau12i + ori.  */
--        val_lo = sextreg(val, 0, 12);
--        val_hi = val >> 12;
--        pc_hi = (val - pc_offset) >> 12;
--        offset_hi = val_hi - pc_hi;
--
--        tcg_debug_assert(offset_hi == sextreg(offset_hi, 0, 20));
--        tcg_out_opc_pcalau12i(s, rd, offset_hi);
-+    pc_offset = (val >> 12) - (src_rx >> 12);
-+    if (pc_offset == sextreg(pc_offset, 0, 20)) {
-+        /* Load with pcalau12i + ori.  */
-+        tcg_target_long val_lo = val & 0xfff;
-+        tcg_out_opc_pcalau12i(s, rd, pc_offset);
-         if (val_lo != 0) {
--            tcg_out_opc_ori(s, rd, rd, val_lo & 0xfff);
-+            tcg_out_opc_ori(s, rd, rd, val_lo);
-         }
+-    fioc = qio_channel_file_new_path(filename, O_CREAT | O_WRONLY | O_TRUNC,
+-                                     0600, errp);
++    fioc = qio_channel_file_new_path(filename, O_CREAT | O_WRONLY, 0600, errp);
+     if (!fioc) {
          return;
      }
+ 
++    if (ftruncate(fioc->fd, offset)) {
++        error_setg_errno(errp, errno,
++                         "failed to truncate migration file to offset %" PRIx64,
++                         offset);
++        object_unref(OBJECT(fioc));
++        return;
++    }
++
+     outgoing_args.fname = g_strdup(filename);
+ 
+     ioc = QIO_CHANNEL(fioc);
 -- 
 2.39.2
 
