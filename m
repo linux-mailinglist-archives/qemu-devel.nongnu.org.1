@@ -2,79 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBE6B927324
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 11:36:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1560D927329
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 11:37:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPIse-0001qN-IB; Thu, 04 Jul 2024 05:35:56 -0400
+	id 1sPItQ-0002s6-Gt; Thu, 04 Jul 2024 05:36:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sPIsc-0001pI-K4
- for qemu-devel@nongnu.org; Thu, 04 Jul 2024 05:35:54 -0400
-Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
+ id 1sPItO-0002gw-1N
+ for qemu-devel@nongnu.org; Thu, 04 Jul 2024 05:36:42 -0400
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sPIsX-000370-Pt
- for qemu-devel@nongnu.org; Thu, 04 Jul 2024 05:35:54 -0400
-Received: by mail-ed1-x536.google.com with SMTP id
- 4fb4d7f45d1cf-58b447c5112so528687a12.3
- for <qemu-devel@nongnu.org>; Thu, 04 Jul 2024 02:35:49 -0700 (PDT)
+ id 1sPItG-0003BL-Lk
+ for qemu-devel@nongnu.org; Thu, 04 Jul 2024 05:36:41 -0400
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-58b447c519eso550215a12.3
+ for <qemu-devel@nongnu.org>; Thu, 04 Jul 2024 02:36:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1720085748; x=1720690548; darn=nongnu.org;
+ d=linaro.org; s=google; t=1720085792; x=1720690592; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=U03veFQenI/Utth8gnAPVCdRcWiHwgvsqN6ytuwipU0=;
- b=vAbGfGebxKLLthr8qzX+fXXDdXI5ZjHzvzhIh8LR9YOn3X2S2Axx9hwSSRbcdILjDe
- QaQJyrG4XIvOlQCgBd2s2Fff1/1MOJi2D2g1XQt9iGiHdbuO7ngpbznQ2jMyRdUC4B4C
- +Kt2ya66bY9yPYb5y6pt4RkuAG43E2uh2wchSR3ZI5SOanoVSovUSM5DpCnj1HCTbAA9
- +38KoysyscVyA/1Ttd1AQQJZXdiLp0KoFjh9zFWXFQ4ZZk0WXfP7H0ds39HqktA8/HNY
- 0ij3yNbjI52c1++46D/lzUDIBTebIGL6SIinP6/0PlNN/loLSv7GS/k3ps5B45KmQVIv
- QxAg==
+ bh=G8B6eb4ww0yKA+UBY9yvqfw0NCeMSI847h9VcCUDQ0s=;
+ b=vquM2rQ/Qh/TkTX+VcojZezpsZW8or2FrqtjznHldnxmFQ2yYjg4jfxFyzis0oya/h
+ FpHT0Tu4eQYhcdQGSTd8T5sutM6ZwfI/jVxyILetdL2DLQlL9Y3ilhXJbOwnrqaqjK+y
+ y0asfbPBKGDuKqfkcA+yag42ESUhBQGdE8KxliYMaHQ/nlNS6EPdlIAj4rGvZLNWX2AK
+ 30zTOi86shM9F1yAQdx89UQPpDv4qPgoD9a+7A47Qz4NCQQ3s+pYnJwpCNzyotRdRVGV
+ NE0BzJaSDvndZcFPlUrm3RfHpR+sTJmcLt8R1G/c45LUshEzxdH1krPp7f/roMGMd5ng
+ 735w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720085748; x=1720690548;
+ d=1e100.net; s=20230601; t=1720085792; x=1720690592;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=U03veFQenI/Utth8gnAPVCdRcWiHwgvsqN6ytuwipU0=;
- b=iB90dpOb/ZUFnjkQS5rXdZt6FxiRiaRTxNRiukM+vkIj1bT5Yg5GdpajGmPoqj7lHQ
- nn8mbz+TU6supN8fEUZ//XbFYRBkgpEw2ayLhwhS3krMLi3L4Tk3c3D4JRLqAfRHlu5n
- 15yNuy5iS+/2p68JJ2JU2IRhzVla8y6NussaI/NA1rojnTRIBFQG43Bu9WTpWc8s7vLZ
- q5lDbJHf0ufnXVU5GhNO154TlkAkRnYNLQPMOgYFVp9Hh+jVCFnwkuT5Nw2sGz7a350n
- /BggeoQ6JpnWZUg1DNCM9W/mZ3IMFEA7Pr0hRzIm2M9wzgIyXgunCdHKrfph38dFZlYx
- 7x8Q==
+ bh=G8B6eb4ww0yKA+UBY9yvqfw0NCeMSI847h9VcCUDQ0s=;
+ b=L4dkrPZ3TAD3KgaluEISJ0Gxgqre38PGhqpSjwHOi+LDvtmluzNRW5L6ryfL3101Rn
+ CiHsAoqXSKGGINuX+az5HqVkLyUpV9j3/WJge4lBQSlly2ewClI6Q19Fo9CRlrCaIcVC
+ wabGN2fPRso6PbnFcLxauo7jVi6xPZJjkoBjl0ZQjcDIGk+HvCjx68MbX7xBGx9AuyLq
+ 44F0eQ43b0/GTEEiVgq8Ldx7DFYfDce+BaccFfy3oGUiQu+qLC9dlVnEnJU0P4/BlOeP
+ IviujLk7S2tWiM9rusc0N7ShDBtmdZTtkl5r9eBU9rCXmYn34jHutAohQHHDJ5XE2B4X
+ SNlA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXWM4mPjHGe/+dqFvoeo0zOUQDYGxO/F243458mlQt0AwKDSsSeluUWEVnDfSS9/H28wqzviHbKCSjugr4130E1grVCvWk=
-X-Gm-Message-State: AOJu0YzNtxCDNssf5KHxZ11QnVYb1UDV7cRVbnZ/FslJgi3D0/HxJcUC
- M/Te36+MmP1qaUp1OjmyrzDA0Yqc37EMvGeKj3RESOHNdi78IL7HYlTulBQ08wz6DXAAz6iyY0t
- pyno3xQSXyCWLFDYmo/MwGCWp4ePUWhSEPgWNqQ==
-X-Google-Smtp-Source: AGHT+IHiDLwFohbLMfdykNOns5eO0chkk+sAjL47R3R0AibStB3FYkrUSI23NG5RIx3kTVScr/rG5M/m69WmYpn0WOs=
-X-Received: by 2002:a05:6402:11d0:b0:57c:5ec6:1466 with SMTP id
- 4fb4d7f45d1cf-58e5b2b0643mr913509a12.25.1720085748120; Thu, 04 Jul 2024
- 02:35:48 -0700 (PDT)
+ AJvYcCV88+38rpF2rO7tjyDHQ4fKUbRA+ox0ZoqV6dKc7AIMCMJuZWHi4CI2CH6dBeknN1wC0va23fvaRmY5TgORczx/MVErHnk=
+X-Gm-Message-State: AOJu0YwSZBSGuGpr7j8ttQxH/PaltyIOl87AMuKV7vwe5sQJ4NLaijgS
+ IQog4I0wDsPB964lJF6XC43v3EIghmYXeVR/181QJLtvqUWMPwPc7Rrm3rmeceO1395lOjFK4n2
+ SinNjXIn0soaF8XyEClwKN8W2+wnFw060AnGureHnXHanwhF6
+X-Google-Smtp-Source: AGHT+IEm4Ni4osSrVgfdMV1pc/mrSL6pb2ZxCsk9CmIB7a0rI5AruiKCoRITk/YFJZo/Ab8HqK4hkB+HSjXFEQrCp/k=
+X-Received: by 2002:a05:6402:35d0:b0:58a:e810:227d with SMTP id
+ 4fb4d7f45d1cf-58e5b3a7c0fmr755344a12.21.1720085792104; Thu, 04 Jul 2024
+ 02:36:32 -0700 (PDT)
 MIME-Version: 1.0
 References: <20240704084759.1824420-1-zhao1.liu@intel.com>
- <20240704084759.1824420-4-zhao1.liu@intel.com>
-In-Reply-To: <20240704084759.1824420-4-zhao1.liu@intel.com>
+ <20240704084759.1824420-5-zhao1.liu@intel.com>
+In-Reply-To: <20240704084759.1824420-5-zhao1.liu@intel.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 4 Jul 2024 10:35:36 +0100
-Message-ID: <CAFEAcA8BAwjLo_4M_U6ucbM9at9ko28mXJPq7yEByjG1fr3o=A@mail.gmail.com>
-Subject: Re: [PATCH 3/4] util/oslib-posix: Fix superfluous trailing semicolon
+Date: Thu, 4 Jul 2024 10:36:20 +0100
+Message-ID: <CAFEAcA_hW5CLHdxRfLX0CwyPp=6Z3xn6SgZDdF50_NWyE7PxRw@mail.gmail.com>
+Subject: Re: [PATCH 4/4] target/hexagon/imported/mmvec: Fix superfluous
+ trailing semicolon
 To: Zhao Liu <zhao1.liu@intel.com>
 Cc: Michael Tokarev <mjt@tls.msk.ru>, Laurent Vivier <laurent@vivier.eu>, 
  =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- qemu-trivial@nongnu.org, qemu-devel@nongnu.org
+ qemu-trivial@nongnu.org, qemu-devel@nongnu.org, 
+ Brian Cain <bcain@quicinc.com>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::536;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x536.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::531;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x531.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,29 +94,35 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On Thu, 4 Jul 2024 at 09:33, Zhao Liu <zhao1.liu@intel.com> wrote:
 >
+> Fix the superfluous trailing semicolon in target/hexagon/imported/mmvec/
+> ext.idef.
+>
+> Cc: Brian Cain <bcain@quicinc.com>
 > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 > ---
->  util/oslib-posix.c | 2 +-
+>  target/hexagon/imported/mmvec/ext.idef | 2 +-
 >  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> diff --git a/util/oslib-posix.c b/util/oslib-posix.c
-> index e76441695bdc..b090fe0eed0d 100644
-> --- a/util/oslib-posix.c
-> +++ b/util/oslib-posix.c
-> @@ -263,7 +263,7 @@ int qemu_socketpair(int domain, int type, int protocol, int sv[2])
->          return ret;
+> diff --git a/target/hexagon/imported/mmvec/ext.idef b/target/hexagon/imported/mmvec/ext.idef
+> index 98daabfb07c4..03d31f6181d7 100644
+> --- a/target/hexagon/imported/mmvec/ext.idef
+> +++ b/target/hexagon/imported/mmvec/ext.idef
+> @@ -2855,7 +2855,7 @@ EXTINSN(V6_vscattermhw_add,  "vscatter(Rt32,Mu2,Vvv32.w).h+=Vw32", ATTRIBS(A_EXT
+>      fVALIGN(RtV, element_size);
+>      fVFOREACH(32, i) {
+>          for(j = 0; j < 2; j++) {
+> -             EA =  RtV + fVALIGN(VvvV.v[j].uw[i],ALIGNMENT);;
+> +             EA =  RtV + fVALIGN(VvvV.v[j].uw[i],ALIGNMENT);
+>               fVLOG_VTCM_HALFWORD_INCREMENT_DV(EA,VvvV.v[j].uw[i],VwV,(2*i+j),i,j,ALIGNMENT,MuV);
+>          }
 >      }
->  #endif
-> -    ret = socketpair(domain, type, protocol, sv);;
-> +    ret = socketpair(domain, type, protocol, sv);
->      if (ret == 0) {
->          qemu_set_cloexec(sv[0]);
->          qemu_set_cloexec(sv[1]);
 > --
 > 2.34.1
->
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+As a change this is obviously fine, but given the "imported"
+in the pathname I don't know if this is something that should
+be fixed in whatever upstream source we got this from instead
+or as well. Brian ?
 
 thanks
 -- PMM
