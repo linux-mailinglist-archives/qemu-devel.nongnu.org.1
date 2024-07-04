@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4BE39275C8
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 14:17:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 937A69275C9
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 14:17:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPLNk-0007qc-QP; Thu, 04 Jul 2024 08:16:12 -0400
+	id 1sPLOZ-0007vj-LE; Thu, 04 Jul 2024 08:17:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1sPLNg-0007oe-Dp
- for qemu-devel@nongnu.org; Thu, 04 Jul 2024 08:16:08 -0400
-Received: from mail-lj1-x230.google.com ([2a00:1450:4864:20::230])
+ id 1sPLNl-0007r5-JW
+ for qemu-devel@nongnu.org; Thu, 04 Jul 2024 08:16:16 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1sPLNZ-0002PE-9i
- for qemu-devel@nongnu.org; Thu, 04 Jul 2024 08:16:07 -0400
-Received: by mail-lj1-x230.google.com with SMTP id
- 38308e7fff4ca-2ec595d0acbso7098421fa.1
- for <qemu-devel@nongnu.org>; Thu, 04 Jul 2024 05:15:58 -0700 (PDT)
+ id 1sPLNZ-0002PU-Ik
+ for qemu-devel@nongnu.org; Thu, 04 Jul 2024 08:16:13 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-42574064b16so3819535e9.2
+ for <qemu-devel@nongnu.org>; Thu, 04 Jul 2024 05:16:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1720095356; x=1720700156; darn=nongnu.org;
+ d=linaro.org; s=google; t=1720095359; x=1720700159; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=hS0Lhnq0ub+oR2j0gfm0V0iTzo6BJYZeeH7eXts0Kaw=;
- b=crLPjKpT+MRDjpqVRMzq0UXdIwBU6Hlz6Njeo3BBO/BIEqux3JTBYy+nEJ9oa7hS7K
- 4tTGCnxnQB3cji2DoCUFxSpZzFVVyJvKQoYEJamgqQJ5Zviy3cU3DCTUzK35THDTE1sP
- KlSPcIJDCZmI202JoXXTohS7YIAW6Xu1kW7ThwsPWlrup5h842snB5sOXoReVj7HlWni
- KptIa1fzsBCuMINAggJifxzzpoZBqLsDom7aYzEKtcQNJnjteo6WWrx4shJg2475sKr+
- N1zW+PEozV2FkvNSjVEV4TrxHOoiOGgQUtfMmD2FIiqrz44WS9TBd+wflYMFkmpkH5U/
- Ja9A==
+ bh=9wdmH73h+dBKRqM1kMpHUr/tBq0w0+7ozYuWaUzEdN8=;
+ b=kMyEck179WRiFWmQbp2zxPwN0qUnopiwpeMkS/muPv1NMDf/82Drio/BrLSQyDLHZ5
+ 2wyVG2lseXrniSSzl+FZsxYbc36re5azkEB/crtw/IQEsDJqKxpeLS7RcBo8dU+OifLz
+ uEw5aG9MX2TeNwvYQCsu+TEZgESavNR5XpKRJNMvZod+ViObSAh9dGbZLGdOMh9R/w9f
+ /LWH9cclzC0uVRYB6PKTSIWyVwWL06NqAo4NuGJsS3efLHnVQFebeknCFkdQS+74oqKg
+ 006I2zo3SAp95ZSVc+4+v5Q/cIOcWyIyNiw33mqUKDc7WTjFd6+sdxlZLR+9e9qyA/DC
+ umvQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720095356; x=1720700156;
+ d=1e100.net; s=20230601; t=1720095359; x=1720700159;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=hS0Lhnq0ub+oR2j0gfm0V0iTzo6BJYZeeH7eXts0Kaw=;
- b=VFMkzQIOPZ8DDCiQuYhys/PmWGMfh68yFqf1RiCyzqUt+P39KTelJXp/doil8vjVZi
- xy5iZZithvTYFNmrr7irPEzAssOCRulhhn3irmMhQE9VrrLJ9WqsAfld4MiVlj2RKi9M
- msyz5IkI/TIko+2qLyg8lzphWOo+VBbTgWkA0epQml++pSncHks2LENjI/8oSpApPTLj
- cv3Fje5voBDuVcdyyK9f99NZgDBckiq25lfSSy7ngmOhimkCJJUeQHKO/mwlCMTbIQb+
- 74CNy8tlH0ayHUpzvURERf3BZFfbLLeiTrwoFB68quephlM0V4onjcvQ42lv16Re/WNz
- wfyQ==
-X-Gm-Message-State: AOJu0YytukstvLH+SfvQ35CgOk/Z3EzQ8wqxOttaG0ome7AYoiS+xUvG
- yN42x1v9Nli9i+q1vyp7+QqcBNKaB3vwZnYvvFJEyp2rVcX99aLaCOfZKKFxUGWGRsz+5DmM7Tf
- bYnw=
-X-Google-Smtp-Source: AGHT+IHzRHMDXaZdadaT9o6rjkbm9o22rGbLSPF3ap3w5u/y4Mn+lFWPO8cTMPPLVahqIA17DTR/mg==
-X-Received: by 2002:a05:651c:105c:b0:2ec:57c7:c737 with SMTP id
- 38308e7fff4ca-2ee8edfead1mr10418981fa.40.1720095354847; 
- Thu, 04 Jul 2024 05:15:54 -0700 (PDT)
+ bh=9wdmH73h+dBKRqM1kMpHUr/tBq0w0+7ozYuWaUzEdN8=;
+ b=FXKgdzUs62qEFixhrq8f8EvXnh79ozzdAd3FeMRpIK2o/QllTeZmaM2G9zMxBGB74D
+ cL8wZNYKClL/fVws3/uAM5AarqQKPMT2iGG321Vo2MGIPb+mviG2S6LaBmwpgIZgV2h3
+ Mb41ml3BJvAaZ4vHbFL6ISfV7KZGm+DB/HFHZjcS9X/57u6fcGQdyIDZ2MCCT9wh5ZjA
+ TSXDlC+jf4YllJEQlSaoLiBZUbXolXYwLv2ncIFJ+N8iQrk6wNYD7Ex45NDggNBxZI5v
+ UjN+iDZbIDVZR6+jL+70Y6OUxpEyMu0C9v4QLtXJA578RsltDMSJfjpXf7QOHhYyeMK0
+ 5bxg==
+X-Gm-Message-State: AOJu0YyO/1Cde6JfzfEA9vSxHU7aCXV0f3DDmtH8eEKKWZHCcZ6XOPA+
+ J/Gz8t3wQhJJog6rP24D+hr0Hoyd17La/dgXYPsVXVXS+wy0u1S/KHW64BW6PhwvOlAG/hbbbMk
+ VmWM=
+X-Google-Smtp-Source: AGHT+IErY6rE5qtxu0L1+UIaWbA/c6C9IB8wm+aMHi/LbXJETKPxeKHUM2EX1nQhpNBOFbK83y+YQQ==
+X-Received: by 2002:a05:600c:364d:b0:425:5f6d:b4a with SMTP id
+ 5b1f17b1804b1-4264a3e3182mr11164255e9.9.1720095358937; 
+ Thu, 04 Jul 2024 05:15:58 -0700 (PDT)
 Received: from localhost.localdomain (adsl-241.37.6.160.tellas.gr.
  [37.6.160.241]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4264a2ca5casm22471015e9.32.2024.07.04.05.15.52
+ 5b1f17b1804b1-4264a2ca5casm22471015e9.32.2024.07.04.05.15.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 04 Jul 2024 05:15:54 -0700 (PDT)
+ Thu, 04 Jul 2024 05:15:58 -0700 (PDT)
 From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Stefan Hajnoczi <stefanha@redhat.com>, Mads Ynddal <mads@ynddal.dk>,
@@ -71,24 +71,24 @@ Cc: Stefan Hajnoczi <stefanha@redhat.com>, Mads Ynddal <mads@ynddal.dk>,
  Richard Henderson <richard.henderson@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>, John Snow <jsnow@redhat.com>,
  Cleber Rosa <crosa@redhat.com>
-Subject: [RFC PATCH v4 1/7] build-sys: Add rust feature option
-Date: Thu,  4 Jul 2024 15:15:37 +0300
-Message-ID: <12f78335f01f2264b91b3170995aa86ccae7d0cb.1720094395.git.manos.pitsidianakis@linaro.org>
+Subject: [RFC PATCH v4 2/7] rust: add bindgen step as a meson dependency
+Date: Thu,  4 Jul 2024 15:15:38 +0300
+Message-ID: <4ce5a7330f594c6c94c8cc3aabceb061095bb855.1720094395.git.manos.pitsidianakis@linaro.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <rust-pl011-rfc-v4.git.manos.pitsidianakis@linaro.org>
 References: <rust-pl011-rfc-v4.git.manos.pitsidianakis@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=UTF8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::230;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-lj1-x230.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,461 +104,345 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add options for Rust in meson_options.txt, meson.build, configure to
-prepare for adding Rust code in the followup commits.
+Add mechanism to generate rust hw targets that depend on a custom
+bindgen target for rust bindings to C.
 
-`rust` is a reserved meson name, so we have to use an alternative.
-`with_rust` was chosen.
+This way bindings will be created before the rust crate is compiled.
 
-A cargo_wrapper.py script is added that is heavily based on the work of
-Marc-André Lureau from 2021.
+The bindings will end up in BUILDDIR/{target}-generated.rs and have the same name
+as a target:
 
-https://patchew.org/QEMU/20210907121943.3498701-1-marcandre.lureau@redhat.com/
+ninja aarch64-softmmu-generated.rs
 
-Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+The way the bindings are generated is:
+
+1. All required C headers are included in a single file, in our case
+   rust/wrapper.h for convenience. Otherwise we'd have to provide a list
+   of headers every time to the bindgen tool.
+
+2. Meson creates a generated_rs target that runs bindgen making sure
+   the architecture etc header dependencies are present.
+
+3. The generated_rs target takes a list of files, type symbols,
+   function symbols to block from being generated. This is not necessary
+   for the bindings to work, but saves us time and space.
+
+4. Meson creates rust hardware target dependencies from the rust_targets
+   dictionary defined in rust/meson.build.
+
+   Since we cannot declare a dependency on generated_rs before it is
+   declared in meson.build, the rust crate targets must be defined after
+   the generated_rs target for each target architecture is defined. This
+   way meson sets up the dependency tree properly.
+
+5. After compiling each rust crate with the cargo_wrapper.py script,
+   its static library artifact is linked as a `whole-archive` with the
+   final binary.
+
 Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 ---
- MAINTAINERS                   |   5 +
- configure                     |  11 ++
- meson.build                   |  11 ++
- meson_options.txt             |   5 +
- scripts/cargo_wrapper.py      | 294 ++++++++++++++++++++++++++++++++++
- scripts/meson-buildoptions.sh |   6 +
- 6 files changed, 332 insertions(+)
- create mode 100644 scripts/cargo_wrapper.py
+ MAINTAINERS              |   3 ++
+ meson.build              |  57 ++++++++++++++++++++
+ rust/.gitignore          |   3 ++
+ rust/meson.build         | 112 +++++++++++++++++++++++++++++++++++++++
+ rust/wrapper.h           |  39 ++++++++++++++
+ scripts/cargo_wrapper.py |  18 +++----
+ 6 files changed, 220 insertions(+), 12 deletions(-)
+ create mode 100644 rust/.gitignore
+ create mode 100644 rust/meson.build
+ create mode 100644 rust/wrapper.h
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 6725913c8b..d01bd06ab7 100644
+index d01bd06ab7..6e7b8207fb 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -4226,6 +4226,11 @@ F: docs/sphinx/
- F: docs/_templates/
- F: docs/devel/docs.rst
+@@ -4230,6 +4230,9 @@ Rust build system integration
+ M: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+ S: Maintained
+ F: scripts/cargo_wrapper.py
++F: rust/meson.build
++F: rust/wrapper.h
++F: rust/.gitignore
  
-+Rust build system integration
-+M: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-+S: Maintained
-+F: scripts/cargo_wrapper.py
-+
  Miscellaneous
  -------------
- Performance Tools and Tests
-diff --git a/configure b/configure
-index 8b6a2f16ce..180d87b9c9 100755
---- a/configure
-+++ b/configure
-@@ -302,6 +302,9 @@ else
-   objcc="${objcc-${cross_prefix}clang}"
- fi
- 
-+with_rust="auto"
-+with_rust_target_triple=""
-+
- ar="${AR-${cross_prefix}ar}"
- as="${AS-${cross_prefix}as}"
- ccas="${CCAS-$cc}"
-@@ -757,6 +760,12 @@ for opt do
-   ;;
-   --gdb=*) gdb_bin="$optarg"
-   ;;
-+  --enable-with-rust) with_rust=enabled
-+  ;;
-+  --disable-with-rust) with_rust=disabled
-+  ;;
-+  --with-rust-target-triple=*) with_rust_target_triple="$optarg"
-+  ;;
-   # everything else has the same name in configure and meson
-   --*) meson_option_parse "$opt" "$optarg"
-   ;;
-@@ -1789,6 +1798,8 @@ if test "$skip_meson" = no; then
-   test -n "${LIB_FUZZING_ENGINE+xxx}" && meson_option_add "-Dfuzzing_engine=$LIB_FUZZING_ENGINE"
-   test "$plugins" = yes && meson_option_add "-Dplugins=true"
-   test "$tcg" != enabled && meson_option_add "-Dtcg=$tcg"
-+  test "$with_rust" != enabled && meson_option_add "-Dwith_rust=$with_rust"
-+  test "$with_rust_target_triple" != "" && meson_option_add "-Dwith_rust_target_triple=$with_rust_target_triple"
-   run_meson() {
-     NINJA=$ninja $meson setup "$@" "$PWD" "$source_path"
-   }
 diff --git a/meson.build b/meson.build
-index 2f981f936e..11b8b146da 100644
+index 11b8b146da..71011fd3b3 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -290,6 +290,12 @@ foreach lang : all_languages
-   endif
- endforeach
+@@ -3929,6 +3929,63 @@ foreach target : target_dirs
+     lib_deps += dep.partial_dependency(compile_args: true, includes: true)
+   endforeach
  
-+cargo = not_found
-+if get_option('with_rust').allowed()
-+  cargo = find_program('cargo', required: get_option('with_rust'))
-+endif
-+with_rust = cargo.found()
++  if with_rust and target_type == 'system'
++       # FIXME: meson outputs the following warnings, which should be resolved
++       # before merging:
++       # > WARNING: Project specifies a minimum meson_version '>=0.63.0' but
++       # > uses features which were added in newer versions:
++       # > * 0.64.0: {'fs.copyfile'}
++       # > * 1.0.0: {'dependencies arg in rust.bindgen', 'module rust as stable module'}
++      rust_bindgen = import('rust')
 +
- # default flags for all hosts
- # We use -fwrapv to tell the compiler that we require a C dialect where
- # left shift of signed integers is well defined and has the expected
-@@ -2118,6 +2124,7 @@ endif
- 
- config_host_data = configuration_data()
- 
-+config_host_data.set('CONFIG_WITH_RUST', with_rust)
- audio_drivers_selected = []
- if have_system
-   audio_drivers_available = {
-@@ -4243,6 +4250,10 @@ if 'objc' in all_languages
- else
-   summary_info += {'Objective-C compiler': false}
- endif
-+summary_info += {'Rust support':      with_rust}
-+if with_rust and get_option('with_rust_target_triple') != ''
-+  summary_info += {'Rust target':     get_option('with_rust_target_triple')}
-+endif
- option_cflags = (get_option('debug') ? ['-g'] : [])
- if get_option('optimization') != 'plain'
-   option_cflags += ['-O' + get_option('optimization')]
-diff --git a/meson_options.txt b/meson_options.txt
-index 0269fa0f16..3443c48001 100644
---- a/meson_options.txt
-+++ b/meson_options.txt
-@@ -371,3 +371,8 @@ option('hexagon_idef_parser', type : 'boolean', value : true,
- 
- option('x86_version', type : 'combo', choices : ['0', '1', '2', '3', '4'], value: '1',
-        description: 'tweak required x86_64 architecture version beyond compiler default')
++      # We need one bindings_rs build target per arch target, so give them
++      # arch-specific names.
++      copy = fs.copyfile('rust/wrapper.h',
++                         target + '_wrapper.h')
++      bindings_rs = rust_bindgen.bindgen(
++        input: copy,
++        dependencies: arch_deps + lib_deps,
++        output: 'bindings-' + target + '.rs',
++        include_directories: include_directories('.', 'include'),
++        args: [
++          '--ctypes-prefix', 'core::ffi',
++          '--formatter', 'rustfmt',
++          '--generate-block',
++          '--generate-cstr',
++          '--impl-debug',
++          '--merge-extern-blocks',
++          '--no-doc-comments',
++          '--no-include-path-detection',
++          '--use-core',
++          '--with-derive-default',
++          '--allowlist-file', meson.project_source_root() + '/include/.*',
++          '--allowlist-file', meson.project_source_root() + '/.*',
++          '--allowlist-file', meson.project_build_root() + '/.*'
++        ],
++      )
 +
-+option('with_rust', type: 'feature', value: 'auto',
-+       description: 'Enable Rust support')
-+option('with_rust_target_triple', type : 'string', value: '',
-+       description: 'Override Rust target triple')
-diff --git a/scripts/cargo_wrapper.py b/scripts/cargo_wrapper.py
++      if target in rust_targets
++        rust_hw = ss.source_set()
++        foreach t: rust_targets[target]
++          rust_device_cargo_build = custom_target(t['name'],
++                                       output: t['output'],
++                                       depends: [bindings_rs],
++                                       build_always_stale: true,
++                                       command: t['command'])
++          rust_dep = declare_dependency(link_args: [
++                                          '-Wl,--whole-archive',
++                                          t['output'],
++                                          '-Wl,--no-whole-archive'
++                                          ],
++                                          sources: [rust_device_cargo_build])
++          rust_hw.add(rust_dep)
++        endforeach
++        rust_hw_config = rust_hw.apply(config_target, strict: false)
++        arch_srcs += rust_hw_config.sources()
++        arch_deps += rust_hw_config.dependencies()
++      endif
++  endif
++
+   lib = static_library('qemu-' + target,
+                  sources: arch_srcs + genh,
+                  dependencies: lib_deps,
+diff --git a/rust/.gitignore b/rust/.gitignore
 new file mode 100644
-index 0000000000..d2c7265461
+index 0000000000..1bf71b1f68
 --- /dev/null
++++ b/rust/.gitignore
+@@ -0,0 +1,3 @@
++# Ignore any cargo development build artifacts; for qemu-wide builds, all build
++# artifacts will go to the meson build directory.
++target
+diff --git a/rust/meson.build b/rust/meson.build
+new file mode 100644
+index 0000000000..5fdc2621a3
+--- /dev/null
++++ b/rust/meson.build
+@@ -0,0 +1,112 @@
++# Supported hosts
++rust_supported_oses = {
++  'linux': '-unknown-linux-gnu',
++  # 'darwin': '-apple-darwin',
++  # 'windows': '-pc-windows-gnu'
++}
++rust_supported_cpus = ['x86_64', 'aarch64']
++
++# Future-proof the above definitions against any change in the root meson.build file:
++foreach rust_os: rust_supported_oses.keys()
++  if not supported_oses.contains(rust_os)
++    message()
++    warning('UNSUPPORTED OS VALUES IN ' + meson.current_source_dir() + '/meson.build')
++    message()
++    message('This meson.build file claims OS `+' + rust_os + '` is supported but')
++    message('it is not included in the global supported OSes list in')
++    message(meson.global_source_root() + '/meson.build.')
++  endif
++endforeach
++foreach rust_cpu: rust_supported_cpus
++  if not supported_cpus.contains(rust_cpu)
++    message()
++    warning('UNSUPPORTED CPU VALUES IN ' + meson.current_source_dir() + '/meson.build')
++    message()
++    message('This meson.build file claims CPU `+' + rust_cpu + '` is supported but')
++    message('it is not included in the global supported CPUs list in')
++    message(meson.global_source_root() + '/meson.build.')
++  endif
++endforeach
++
++msrv = {
++  'rustc': '1.77.2',
++  'cargo': '1.77.2',
++  'bindgen': '0.69.4',
++}
++
++foreach bin_dep: msrv.keys()
++  bin = find_program(bin_dep, required: true)
++  if bin.version() < msrv[bin_dep]
++    message()
++    error(bin_dep + ' version ' + bin.version() + ' is unsupported: Please upgrade to at least ' + msrv[bin_dep])
++  endif
++endforeach
++
++rust_target_triple = get_option('with_rust_target_triple')
++
++if rust_target_triple == ''
++  if not supported_oses.contains(host_os)
++    message()
++    error('QEMU does not support `' + host_os +'` as a Rust platform.')
++  elif not supported_cpus.contains(host_arch)
++    message()
++    error('QEMU does not support `' + host_arch +'` as a Rust architecture.')
++  endif
++  rust_target_triple = host_arch + rust_supported_oses[host_os]
++  # if host_os == 'windows' and host_arch == 'aarch64'
++  #   rust_target_triple += 'llvm'
++  # endif
++else
++  # verify rust_target_triple if given as an option
++  rustc = find_program('rustc', required: true)
++  rustc_targets = run_command(rustc, '--print', 'target-list', capture: true, check: true).stdout().strip().split()
++  if not rustc_targets.contains(rust_target_triple)
++    message()
++    error('Given rust_target_triple ' + rust_target_triple + ' is not listed in rustc --print target-list output')
++  endif
++endif
++
++rust_targets = {}
++
++cargo_wrapper = [
++  find_program(meson.global_source_root() / 'scripts/cargo_wrapper.py'),
++  '--config-headers', meson.project_build_root() / 'config-host.h',
++  '--meson-build-root', meson.project_build_root(),
++]
++
++if get_option('b_colorout') != 'never'
++  cargo_wrapper += ['--color', 'always']
++endif
++
++if get_option('optimization') in ['0', '1', 'g']
++  rs_build_profile = 'dev'
++else
++  rs_build_profile = 'release'
++endif
++
++subdir('qemu-api')
++
++# Collect metadata for each (crate,qemu-target,compiler-target) combination.
++# Rust meson targets cannot be defined a priori because they depend on bindgen
++# generation that is created for each emulation target separately. Thus Rust
++# meson targets will be defined for each target after the target-specific
++# bindgen dependency is declared.
++rust_hw_target_list = {}
++
++foreach rust_hw_target, rust_hws: rust_hw_target_list
++  foreach rust_hw_dev: rust_hws
++    crate_metadata = {
++      'name': rust_hw_dev['name'],
++      'output': [rust_hw_dev['output']],
++      'command': [cargo_wrapper,
++        '--crate-dir', meson.current_source_dir() / rust_hw_dev['dirname'],
++        '--profile', rs_build_profile,
++        '--target-triple', rust_target_triple,
++        '--private-dir', '@PRIVATE_DIR@',
++        '--outdir', '@OUTDIR@',
++        'build-lib'
++        ]
++      }
++    rust_targets += { rust_hw_target: [crate_metadata] }
++  endforeach
++endforeach
+diff --git a/rust/wrapper.h b/rust/wrapper.h
+new file mode 100644
+index 0000000000..51985f0ef1
+--- /dev/null
++++ b/rust/wrapper.h
+@@ -0,0 +1,39 @@
++/*
++ * QEMU System Emulator
++ *
++ * Copyright 2024 Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining a copy
++ * of this software and associated documentation files (the "Software"), to deal
++ * in the Software without restriction, including without limitation the rights
++ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
++ * copies of the Software, and to permit persons to whom the Software is
++ * furnished to do so, subject to the following conditions:
++ *
++ * The above copyright notice and this permission notice shall be included in
++ * all copies or substantial portions of the Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
++ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
++ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
++ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
++ * THE SOFTWARE.
++ */
++
++#include "qemu/osdep.h"
++#include "qemu/module.h"
++#include "qemu-io.h"
++#include "sysemu/sysemu.h"
++#include "hw/sysbus.h"
++#include "exec/memory.h"
++#include "chardev/char-fe.h"
++#include "hw/clock.h"
++#include "hw/qdev-clock.h"
++#include "hw/qdev-properties.h"
++#include "hw/qdev-properties-system.h"
++#include "hw/irq.h"
++#include "qapi/error.h"
++#include "migration/vmstate.h"
++#include "chardev/char-serial.h"
+diff --git a/scripts/cargo_wrapper.py b/scripts/cargo_wrapper.py
+index d2c7265461..e7d9238c16 100644
+--- a/scripts/cargo_wrapper.py
 +++ b/scripts/cargo_wrapper.py
-@@ -0,0 +1,294 @@
-+#!/usr/bin/env python3
-+
-+"""Wrap cargo builds for meson integration
-+
-+This program builds Rust library crates and makes sure:
-+ - They receive the correct --cfg compile flags from the QEMU build that calls
-+   it.
-+ - They receive the generated Rust bindings path so that they can copy it
-+   inside their output subdirectories.
-+ - Cargo puts all its build artifacts in the appropriate meson build directory.
-+ - The produced static libraries are copied to the path the caller (meson)
-+   defines.
-+
-+Copyright (c) 2020 Red Hat, Inc.
-+Copyright (c) 2024 Linaro Ltd.
-+
-+Authors:
-+ Marc-André Lureau <marcandre.lureau@redhat.com>
-+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-+
-+This program is free software; you can redistribute it and/or modify
-+it under the terms of the GNU General Public License as published by
-+the Free Software Foundation; either version 2 of the License, or
-+(at your option) any later version.
-+
-+This program is distributed in the hope that it will be useful,
-+but WITHOUT ANY WARRANTY; without even the implied warranty of
-+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+GNU General Public License for more details.
-+
-+You should have received a copy of the GNU General Public License
-+along with this program.  If not, see <http://www.gnu.org/licenses/>.
-+"""
-+
-+
-+import argparse
-+import json
-+import logging
-+import os
-+import subprocess
-+import sys
-+import shutil
-+
-+from pathlib import Path
-+from typing import Any, Dict, List
-+
-+
-+def generate_cfg_flags(header: str) -> List[str]:
-+    """Converts defines from config[..].h headers to rustc --cfg flags."""
-+
-+    def cfg_name(name: str) -> str:
-+        """Filter function for C #defines"""
-+        if (
-+            name.startswith("CONFIG_")
-+            or name.startswith("TARGET_")
-+            or name.startswith("HAVE_")
-+        ):
-+            return name
-+        return ""
-+
-+    with open(header, encoding="utf-8") as cfg:
-+        config = [l.split()[1:] for l in cfg if l.startswith("#define")]
-+
-+    cfg_list = []
-+    for cfg in config:
-+        name = cfg_name(cfg[0])
-+        if not name:
-+            continue
-+        if len(cfg) >= 2 and cfg[1] != "1":
-+            continue
-+        cfg_list.append("--cfg")
-+        cfg_list.append(name)
-+    return cfg_list
-+
-+
-+def cargo_target_dir(args: argparse.Namespace) -> Path:
-+    """Place cargo's build artifacts into meson's build directory"""
-+    return args.private_dir
-+
-+
-+def manifest_path(args: argparse.Namespace) -> Path:
-+    """Returns the Cargo.toml manifest path"""
-+    return args.crate_dir / "Cargo.toml"
-+
-+
-+def get_cargo_rustc(args: argparse.Namespace) -> tuple[Dict[str, Any], List[str]]:
-+    """Returns the appropriate cargo invocation and environment"""
-+
-+    # See https://doc.rust-lang.org/cargo/reference/environment-variables.html
-+    # Item `CARGO_ENCODED_RUSTFLAGS — A list of custom flags separated by
-+    # 0x1f (ASCII Unit Separator) to pass to all compiler invocations that Cargo
-+    # performs`
-+    cfg = chr(0x1F).join(
-+        [c for h in args.config_headers for c in generate_cfg_flags(h)]
-+    )
-+    target_dir = cargo_target_dir(args)
-+    cargo_path = manifest_path(args)
-+
-+    cargo_cmd = [
-+        "cargo",
-+        "build",
-+        "--target-dir",
-+        str(target_dir),
-+        "--manifest-path",
-+        str(cargo_path),
-+    ]
-+    if args.target_triple:
-+        cargo_cmd += ["--target", args.target_triple]
-+    if args.profile == "release":
-+        cargo_cmd += ["--release"]
-+
-+    env = os.environ
-+    env["CARGO_ENCODED_RUSTFLAGS"] = cfg
-+
-+    return (env, cargo_cmd)
-+
-+
-+def run_cargo(env: Dict[str, Any], cargo_cmd: List[str]) -> str:
-+    """Calls cargo build invocation."""
-+    envlog = " ".join([f"{k}={v}" for k, v in env.items()])
-+    cmdlog = " ".join(cargo_cmd)
-+    logging.debug("Running %s %s", envlog, cmdlog)
-+    try:
-+        out = subprocess.check_output(
-+            cargo_cmd,
-+            env=dict(os.environ, **env),
-+            stderr=subprocess.STDOUT,
-+            universal_newlines=True,
-+        )
-+    except subprocess.CalledProcessError as err:
-+        print("Environment: " + envlog)
-+        print("Command: " + cmdlog)
-+        print(err.output)
-+        sys.exit(1)
-+
-+    return out
-+
-+
-+def get_package_name(cargo_toml_path: Path) -> str:
-+    """Attempts to get package name from cargo manifest file with toml parsing libraries."""
-+    # pylint: disable=import-outside-toplevel
-+
-+    try:
-+        import tomllib
-+    except ImportError:
-+        import tomli as tomllib
-+    with open(cargo_toml_path, "rb") as toml_file:
-+        config = tomllib.load(toml_file)
-+
-+    package_name = config["package"]["name"].strip('"').replace("-", "_")
-+    return package_name
-+
-+
-+def get_package_name_json(cargo_toml_path: Path) -> str:
-+    """Attempts to get package name from cargo-metadata output which has a standard JSON format."""
-+
-+    cmd = [
-+        "cargo",
-+        "metadata",
-+        "--format-version",
-+        "1",
-+        "--no-deps",
-+        "--manifest-path",
-+        str(cargo_toml_path),
-+        "--offline",
-+    ]
-+    try:
-+        out = subprocess.check_output(
-+            cmd,
-+            env=os.environ,
-+            stderr=subprocess.STDOUT,
-+            universal_newlines=True,
-+        )
-+    except subprocess.CalledProcessError as err:
-+        print("Command: ", " ".join(cmd))
-+        print(err.output)
-+        raise err
-+    package_name = json.loads(out)["packages"][0]["name"].strip('"').replace("-", "_")
-+    return package_name
-+
-+
-+def build_lib(args: argparse.Namespace) -> None:
-+    """Builds Rust lib given by command line arguments."""
-+
-+    logging.debug("build-lib")
-+    target_dir = cargo_target_dir(args)
-+    cargo_toml_path = manifest_path(args)
-+
-+    try:
-+        # If we have tomllib or tomli, parse the .toml file
-+        package_name = get_package_name(cargo_toml_path)
-+    except ImportError as import_exc:
-+        try:
-+            # Parse the json output of cargo-metadata as a fallback
-+            package_name = get_package_name_json(cargo_toml_path)
-+        except Exception as exc:
-+            raise exc from import_exc
-+
-+    liba_filename = "lib" + package_name + ".a"
-+    profile_dir = args.profile
-+    if args.profile == "dev":
-+        profile_dir = "debug"
-+
-+    liba = target_dir / args.target_triple / profile_dir / liba_filename
-+
-+    env, cargo_cmd = get_cargo_rustc(args)
-+    out = run_cargo(env, cargo_cmd)
-+    logging.debug("cargo output: %s", out)
-+    logging.debug("cp %s %s", liba, args.outdir)
-+    shutil.copy2(liba, args.outdir)
-+
-+
-+def main() -> None:
-+    # pylint: disable=missing-function-docstring
-+    parser = argparse.ArgumentParser()
-+    parser.add_argument("-v", "--verbose", action="store_true")
-+    parser.add_argument(
-+        "--color",
-+        metavar="WHEN",
-+        choices=["auto", "always", "never"],
-+        default="auto",
-+        help="Coloring: auto, always, never",
-+    )
-+    parser.add_argument(
-+        "--config-headers",
-+        metavar="CONFIG_HEADER",
-+        action="append",
-+        dest="config_headers",
-+        help="paths to any configuration C headers (*.h files), if any",
-+        required=False,
-+        default=[],
-+    )
-+    parser.add_argument(
-+        "--meson-build-dir",
-+        metavar="BUILD_DIR",
-+        help="meson.current_build_dir()",
-+        type=Path,
-+        dest="meson_build_dir",
-+        required=True,
-+    )
-+    parser.add_argument(
-+        "--meson-source-dir",
-+        metavar="SOURCE_DIR",
-+        help="meson.current_source_dir()",
-+        type=Path,
-+        dest="meson_build_dir",
-+        required=True,
-+    )
-+    parser.add_argument(
-+        "--crate-dir",
-+        metavar="CRATE_DIR",
-+        type=Path,
-+        dest="crate_dir",
-+        help="Absolute path that contains the manifest file of the crate to compile. Example: '/path/to/qemu/rust/pl011'",
-+        required=True,
-+    )
-+    parser.add_argument(
-+        "--outdir",
-+        metavar="OUTDIR",
-+        type=Path,
-+        dest="outdir",
-+        help="Destination path to copy compiled artifacts to for Meson to use. Example values: '/path/to/qemu/build', '.'",
-+        required=True,
-+    )
-+    # using @PRIVATE_DIR@ is necessary for `ninja clean` to clean up rust's intermediate build artifacts.
-+    # NOTE: at the moment cleanup doesn't work due to a bug: https://github.com/mesonbuild/meson/issues/7584
-+    parser.add_argument(
-+        "--private-dir",
-+        metavar="PRIVATE_DIR",
-+        type=Path,
-+        dest="private_dir",
-+        help="Override cargo's target directory with a meson provided private directory.",
-+        required=True,
-+    )
-+    parser.add_argument(
-+        "--profile", type=str, choices=["release", "dev"], required=True
-+    )
-+    parser.add_argument("--target-triple", type=str, required=True)
-+
-+    subparsers = parser.add_subparsers()
-+
-+    buildlib = subparsers.add_parser("build-lib")
-+    buildlib.set_defaults(func=build_lib)
-+
-+    args = parser.parse_args()
-+    if args.verbose:
-+        logging.basicConfig(level=logging.DEBUG)
-+    logging.debug("args: %s", args)
-+
-+    args.func(args)
-+
-+
-+if __name__ == "__main__":
-+    main()
-diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
-index cfadb5ea86..23a24ccaa7 100644
---- a/scripts/meson-buildoptions.sh
-+++ b/scripts/meson-buildoptions.sh
-@@ -79,6 +79,8 @@ meson_options_help() {
-   printf "%s\n" '                           auto/sigaltstack/ucontext/windows)'
-   printf "%s\n" '  --with-pkgversion=VALUE  use specified string as sub-version of the'
-   printf "%s\n" '                           package'
-+  printf "%s\n" '  --with-rust-target-triple=VALUE'
-+  printf "%s\n" '                           Specify Rust host target triple'
-   printf "%s\n" '  --with-suffix=VALUE      Suffix for QEMU data/modules/config directories'
-   printf "%s\n" '                           (can be empty) [qemu]'
-   printf "%s\n" '  --with-trace-file=VALUE  Trace file prefix for simple backend [trace]'
-@@ -216,6 +218,7 @@ meson_options_help() {
-   printf "%s\n" '  vvfat           vvfat image format support'
-   printf "%s\n" '  werror          Treat warnings as errors'
-   printf "%s\n" '  whpx            WHPX acceleration support'
-+  printf "%s\n" '  with-rust       Enable Rust support'
-   printf "%s\n" '  xen             Xen backend support'
-   printf "%s\n" '  xen-pci-passthrough'
-   printf "%s\n" '                  Xen PCI passthrough support'
-@@ -552,6 +555,9 @@ _meson_option_parse() {
-     --enable-whpx) printf "%s" -Dwhpx=enabled ;;
-     --disable-whpx) printf "%s" -Dwhpx=disabled ;;
-     --x86-version=*) quote_sh "-Dx86_version=$2" ;;
-+    --enable-with-rust) printf "%s" -Dwith_rust=enabled ;;
-+    --disable-with-rust) printf "%s" -Dwith_rust=disabled ;;
-+    --with-rust-target-triple=*) quote_sh "-Dwith_rust_target_triple=$2" ;;
-     --enable-xen) printf "%s" -Dxen=enabled ;;
-     --disable-xen) printf "%s" -Dxen=disabled ;;
-     --enable-xen-pci-passthrough) printf "%s" -Dxen_pci_passthrough=enabled ;;
+@@ -111,6 +111,8 @@ def get_cargo_rustc(args: argparse.Namespace) -> tuple[Dict[str, Any], List[str]
+ 
+     env = os.environ
+     env["CARGO_ENCODED_RUSTFLAGS"] = cfg
++    env["MESON_BUILD_DIR"] = str(target_dir)
++    env["MESON_BUILD_ROOT"] = str(args.meson_build_root)
+ 
+     return (env, cargo_cmd)
+ 
+@@ -231,19 +233,11 @@ def main() -> None:
+         default=[],
+     )
+     parser.add_argument(
+-        "--meson-build-dir",
+-        metavar="BUILD_DIR",
+-        help="meson.current_build_dir()",
++        "--meson-build-root",
++        metavar="BUILD_ROOT",
++        help="meson.project_build_root(): the root build directory. Example: '/path/to/qemu/build'",
+         type=Path,
+-        dest="meson_build_dir",
+-        required=True,
+-    )
+-    parser.add_argument(
+-        "--meson-source-dir",
+-        metavar="SOURCE_DIR",
+-        help="meson.current_source_dir()",
+-        type=Path,
+-        dest="meson_build_dir",
++        dest="meson_build_root",
+         required=True,
+     )
+     parser.add_argument(
 -- 
 γαῖα πυρί μιχθήτω
 
