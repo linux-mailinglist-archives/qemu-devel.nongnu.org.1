@@ -2,82 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9763F927AAE
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 17:58:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE97A927ABF
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 17:59:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPOnE-0003Xc-5K; Thu, 04 Jul 2024 11:54:44 -0400
+	id 1sPOrv-0002cv-DR; Thu, 04 Jul 2024 11:59:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sPOnB-0003Uh-3a
- for qemu-devel@nongnu.org; Thu, 04 Jul 2024 11:54:41 -0400
-Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sPOn9-0002Ez-7x
- for qemu-devel@nongnu.org; Thu, 04 Jul 2024 11:54:40 -0400
-Received: by mail-ed1-x529.google.com with SMTP id
- 4fb4d7f45d1cf-58ba3e38028so1070591a12.0
- for <qemu-devel@nongnu.org>; Thu, 04 Jul 2024 08:54:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1720108477; x=1720713277; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=oyz6MO0o1ZQ7jec6svcJsnZQzb5WUcVMNCW1YAIVeJc=;
- b=japqO5XPGsI0I15r68ml6GfQ99rfW5gaMvG303yN4wz2HB6DazFG6XpoyfVMxmlrwi
- FKXERVFb6A0+QOCgo99HShc84DGCs7eNG2ZdoCEk0nRMMMyxzKmR5ILQFfyZ2OCl0XFX
- zoReyTTcpoqtSshSfTPpoX8rWjb4CV/6TnK5mVzoDyC4p/m3cHcR11fQt9FNwjJpwfHC
- qa3f85XJpJPpzTONg14TuOnLPu35qm14+40EfWSbcDIRsoI7V8rfA9WodQg0f4B7HALi
- pkeS5ZNgKNXgViWiEaVh3Vrsx2miiBWiYECzd1rI7YjPiWoGF+dVI5Cs9KTVZngeW1Ab
- D/WA==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sPOrb-0002aT-TI
+ for qemu-devel@nongnu.org; Thu, 04 Jul 2024 11:59:16 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sPOrV-0004yU-Ne
+ for qemu-devel@nongnu.org; Thu, 04 Jul 2024 11:59:14 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1720108748;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=cNJC9YkzsIoYupo2wb4nu+BVtsZ3vk289bF2kXRFtpA=;
+ b=VelVMkAYQbLm31RfV/Y1HFEe7SDocka39EKlg586/z86YD5gQiJHqKvK5RRKxgsVGMrD58
+ nPYgTtwce0fsz3yYCXghMp60xIQHN3KgGoGvGIZehiSPum/csED8y41ggpfuzcBkP4lCgW
+ Se/tusDlOS/5JPqUUC4YK6jC6vbQ94s=
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
+ [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-515-n2fIKrq-P2CZNNip418Veg-1; Thu, 04 Jul 2024 11:59:07 -0400
+X-MC-Unique: n2fIKrq-P2CZNNip418Veg-1
+Received: by mail-qt1-f199.google.com with SMTP id
+ d75a77b69052e-44671e02749so1725641cf.1
+ for <qemu-devel@nongnu.org>; Thu, 04 Jul 2024 08:59:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720108477; x=1720713277;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=oyz6MO0o1ZQ7jec6svcJsnZQzb5WUcVMNCW1YAIVeJc=;
- b=RMi8hcAFqXNXuE4UEI++o21sDW8BllmBYFyL4qpTk1JAMk/iIhU53kBG8T3PgAEBlb
- iWhyiEiW1YyYdu4zWq1mHlYk8SiloeTUsXuUFmhHYmPIkdC3lDc/lKNvPOnARbaHt4W0
- bxmK6eQR5yaoUfgJkpgNA7jgkzfuLkPZyZMx3DKY8A2Utu7ySziT5k7Bx1eGYb397ou4
- MA8VOJSF75JQnpWsNEhNxp9d+j+zU8CihBO4qL9aFpQlvqUpRoj/IAaJGH09oRiWAYh6
- aqSHdJUO6vq6ieO+6f25Y9timmb8eOUAl5L1NtXRS9oFgAlKEyrMwA4IjqBrwGZxooM4
- 8vWw==
+ d=1e100.net; s=20230601; t=1720108746; x=1720713546;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=cNJC9YkzsIoYupo2wb4nu+BVtsZ3vk289bF2kXRFtpA=;
+ b=a+9IH4ZQF0ViwxkRUWlBZmf4LKlI6BmBEvSDnqk8i2hBrTSzxlq3IPdil2Lqh1lhCI
+ sMUvIUTHarBJBcNPWBIxCjC6raIM5UrJVcyz5+YLeeFiSzdPBrJdffiJn18dTkIK0is6
+ 7wOMRRs0rKpWNCjs3zkct1GUt83IV0KX4l1Jp7LZ1u37LMCGQ44UwkaafdhGGYOG/97g
+ OOxvwds+DPMMZTaOj5ch9yvRUq8WZqvwgXxYT+SC3a/lyh2wUvBUs2Cpez0bz3RacyJg
+ eE20CVIKIPrwCt/J4VBcUDYqKYB7s4eXnjR9XtbFcic3j52gFJTbSl9u3D7qKCel7kqb
+ QzDA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVcPHvGLEFSRXdNyUisV0xS0b2wNpK0lbF3mvElEDGuFao2k0QvB0kCXnvnskFd6dLLd3ccrEwzJCK6DJAe3L5mE4t+kEc=
-X-Gm-Message-State: AOJu0YwCqRzYqfp0TiI4Tz5oeoTh/rSYaV+zn1Xglz3cF5wD2RsgkFRP
- oiViM401SPU2tHYC1UawVhjlX32r27m67Ers49IMeXNwh4YM4wl6kWKJlg0JsI++wCcOjRXG5rv
- k8m/8+e08vjrqdzhJbxWDp6eZrN2CXku3Wb+6bQ==
-X-Google-Smtp-Source: AGHT+IFtJc9rfRUQOqGDqVkWngTz0E0opcedNiC2Jpq6ifMm4vN1zygYW0WXH4HLUEcOkMsXoEHeVqDlkg8yO7segy0=
-X-Received: by 2002:a05:6402:3583:b0:573:5c4f:27a8 with SMTP id
- 4fb4d7f45d1cf-58e5cd1222fmr1442990a12.35.1720108477315; Thu, 04 Jul 2024
- 08:54:37 -0700 (PDT)
+ AJvYcCWJRTxZDzAav2WXEzJDHklv6h5ACvSjb1DiVU6ouXIVgYckBJWRfjM9V13xv1k+9QvYUTXaDw5ut1FRQfkazIcPdTxOWoc=
+X-Gm-Message-State: AOJu0YyWO2i6aPB+xikz0xuJ52vNayhhT0lX9xfIoczdaW76Qj0uieNU
+ ML3b3Olq5g+URq0rPRGNyI1qUvhV000OMxVzIYFfGssuIo+FGL1/V4nv0hDJxmU5LLbhk5ubiW+
+ w2gQ8xJ8FXRApmp0KPjRlYMjRFVLNsb9PaRGUmwtfZrG5ciADcfnr
+X-Received: by 2002:a05:620a:4088:b0:79c:103b:af39 with SMTP id
+ af79cd13be357-79eee298dfamr216466985a.7.1720108746524; 
+ Thu, 04 Jul 2024 08:59:06 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEsY+afl4Zz/yT9YrN9buSnNkBZZeLC39uC9q24yz2c4vfSoyXhyyMsKdvnN12ljvhmBlmK3w==
+X-Received: by 2002:a05:620a:4088:b0:79c:103b:af39 with SMTP id
+ af79cd13be357-79eee298dfamr216465685a.7.1720108746179; 
+ Thu, 04 Jul 2024 08:59:06 -0700 (PDT)
+Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com.
+ [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
+ af79cd13be357-79d6925ecbesm686095985a.24.2024.07.04.08.59.05
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 04 Jul 2024 08:59:05 -0700 (PDT)
+Date: Thu, 4 Jul 2024 11:59:03 -0400
+From: Peter Xu <peterx@redhat.com>
+To: "Wang, Wei W" <wei.w.wang@intel.com>
+Cc: "pbonzini@redhat.com" <pbonzini@redhat.com>,
+ "mtosatti@redhat.com" <mtosatti@redhat.com>,
+ "farosas@suse.de" <farosas@suse.de>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "Wang, Lei4" <lei4.wang@intel.com>, Jiri Denemark <jdenemar@redhat.com>,
+ Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+Subject: Re: [PATCH v1] target/i386: kvm: Block migration when enfore_cpuid
+ is set to false
+Message-ID: <ZobGx3KORPLQfBNC@x1n>
+References: <20240703144912.130988-1-wei.w.wang@intel.com>
+ <ZoWSdR1IOQ0iIxZC@x1n>
+ <DS0PR11MB6373852F86A43ED9E1AFC7B7DCDE2@DS0PR11MB6373.namprd11.prod.outlook.com>
 MIME-Version: 1.0
-References: <20240618160039.36108-1-philmd@linaro.org>
- <5ae93d7c-0fd2-4ead-b903-6b5838e0c24b@linaro.org>
- <6dfa4bb0-e4c5-46c9-93e5-d30f3a26592a@linaro.org>
- <68014035-47e7-48b4-b11b-83b219f4ef63@linaro.org>
-In-Reply-To: <68014035-47e7-48b4-b11b-83b219f4ef63@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 4 Jul 2024 16:54:26 +0100
-Message-ID: <CAFEAcA_Z8ap1SbyWJTadPwD212-G15DEoDas7xXjfMCya_O0DQ@mail.gmail.com>
-Subject: Re: [PULL 00/76] Misc patches for 2024-06-18
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::529;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x529.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <DS0PR11MB6373852F86A43ED9E1AFC7B7DCDE2@DS0PR11MB6373.namprd11.prod.outlook.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_PASS=-0.001, T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,54 +105,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 18 Jun 2024 at 21:32, Richard Henderson
-<richard.henderson@linaro.org> wrote:
->
-> On 6/18/24 13:15, Philippe Mathieu-Daud=C3=A9 wrote:
-> > On 18/6/24 22:06, Richard Henderson wrote:
-> >> Fails testing:
-> >>
-> >> https://gitlab.com/qemu-project/qemu/-/jobs/7129004955
-> >>
-> >> qemu-system-tricore: ../accel/tcg/cpu-exec.c:1082: tcg_exec_realizefn:=
- Assertion
-> >> `cpu->cc->tcg_ops->cpu_exec_halt' failed.
-> >
-> > Doh sorry, I tested but hit a libusb issue on this target and mingw64,
-> > tested there and thought this was the only issue and missed that.
-> >
-> > Hmm cpu_has_work() is defined inlined. I'll just drop the 3 lines
-> > I added to Peter's patch and send his unmodified.
->
-> No, the assert is exactly correct, and caught a bug in the previous patch=
- (55/76).
-> Without your assert, we will just SEGV in cpu_handle_halt instead with pa=
-tch (56/76).
+On Thu, Jul 04, 2024 at 03:10:27PM +0000, Wang, Wei W wrote:
+> > > diff --git a/target/i386/cpu.c b/target/i386/cpu.c index
+> > > 4c2e6f3a71..7db4fe4ead 100644
+> > > --- a/target/i386/cpu.c
+> > > +++ b/target/i386/cpu.c
+> > > @@ -8258,7 +8258,7 @@ static Property x86_cpu_properties[] = {
+> > >      DEFINE_PROP_UINT32("hv-version-id-snumber", X86CPU,
+> > > hyperv_ver_id_sn, 0),
+> > >
+> > >      DEFINE_PROP_BOOL("check", X86CPU, check_cpuid, true),
+> > > -    DEFINE_PROP_BOOL("enforce", X86CPU, enforce_cpuid, false),
+> > > +    DEFINE_PROP_BOOL("enforce", X86CPU, enforce_cpuid, true),
+> > 
+> > I assume in many cases people can still properly migrate when the hosts are
+> > similar or identical, so maybe we at least want the old machine types keep
+> > working (by introducing a machine compat property)?
+> 
+> You meant keeping "enforce_cpuid=false" for old machine types (e.g. before 9.1)?
+> This will make them non-migratable with this patch, but they were migratable (by
+> default) as "migratable" wasn't enforced by "enforce_cpuid". Should we keep them
+> being migratable by default (e.g. enforce_cpuid=true) as well?
 
-Yep, we're missing the setup of .cpu_exec_halt for tricore.
-I missed this because I used a grep for the setup of .cpu_exec_interrupt
-to find all the TCGCPUOps I needed to update, and for some reason
-tricore doesn't implement that hook. (This surprises me because
-I expected every guest CPU to need to provide handling for
-interrupts. But looking at the callsite in accel/tcg it does
-indeed allow a target to leave cpu_exec_interrupt NULL.)
+Ah, this is trickier than I thought..
 
-Though we won't ever segv without the assert() in patch 3:
-tricore doesn't implement a halt state, so we won't ever
-try to call the non-existent cpu_exec_halt method. (This is
-why my local testing didn't catch the missing method.)
+The issue is if we make them silently switch to enforce_cpuid=true on old
+machines, there's chance they start to fail boot, am I right?
 
-Anyway, I've squashed this in to patch 2 and re-queued the
-series to target-arm.next:
+    if (cpu->enforce_cpuid && x86_cpu_have_filtered_features(cpu)) {
+        error_setg(&local_err,
+                   accel_uses_host_cpuid() ?
+                       "Host doesn't support requested features" :
+                       "TCG doesn't support requested features");
+        goto out;
+    }
 
---- a/target/tricore/cpu.c
-+++ b/target/tricore/cpu.c
-@@ -169,6 +169,7 @@ static const TCGCPUOps tricore_tcg_ops =3D {
-     .synchronize_from_tb =3D tricore_cpu_synchronize_from_tb,
-     .restore_state_to_opc =3D tricore_restore_state_to_opc,
-     .tlb_fill =3D tricore_cpu_tlb_fill,
-+    .cpu_exec_halt =3D tricore_cpu_has_work,
- };
+I suppose we still need to keep all the old worlds running all fine without
+breaking them when people do an QEMU upgrade.  It needs to work both on
+booting fine, and on allowing to migrate.
 
--- PMM
+So maybe we actually need two things?
+
+  - One patch introduce forbit_migration_if_cpuid_mismatch property, when
+    set, block migration if not enforced, otherwise it should still allow
+    migration even if enforce_cpud=fales.  It should default to on, but off
+    on old machines.
+
+  - One patch change default value of enforce_cpuid to on, but turn it off
+    on old machines.
+
+Does that look right?
+
+Thanks,
+
+-- 
+Peter Xu
+
 
