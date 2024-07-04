@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 651FA9271CA
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 10:32:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F4559271CD
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 10:33:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPHtb-0006zZ-1A; Thu, 04 Jul 2024 04:32:51 -0400
+	id 1sPHtd-0007L6-H0; Thu, 04 Jul 2024 04:32:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sPHtN-0006er-JI; Thu, 04 Jul 2024 04:32:37 -0400
+ id 1sPHtQ-0006oj-GI; Thu, 04 Jul 2024 04:32:43 -0400
 Received: from mgamail.intel.com ([192.198.163.17])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sPHtH-00051p-6t; Thu, 04 Jul 2024 04:32:37 -0400
+ id 1sPHtM-00051M-DS; Thu, 04 Jul 2024 04:32:40 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1720081951; x=1751617951;
+ t=1720081956; x=1751617956;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=5hujl58AvrZ/on+e6096dEufyQnj74Jlw/4R9zcO3Qk=;
- b=a/gliyOnUAGvMCEIFjzKrxFzIWUS/u/s/H3klJEKQxyltg2a+zFOVdcm
- Tb9aHWTE6sPy6c8pF3D268lZZk3f4BrWF2Q9fg3o3acthnVA5zmPEAor5
- vfDqmuPokn2io+XbG2KohVzoWCOPakJyVz8vEOTcn35oZHDyTl9B+lxHd
- k2sChZ/bIny1IUrcI38c/FYp2nIRIPS8Pvziv4li3cdrz2gwRih9GoAcU
- klD8mR8H5hZFIWCEQjdRywSGRneJCRSzcXNqa4+LBBAlO0OgZEP2s+UPP
- wCdlujqSXAIbQY+26CyWL1n+HX/2n8oNfDBUQjPRkGE47ASL16wW1WzFI Q==;
-X-CSE-ConnectionGUID: bcw3DM53RouerE7MNXplWQ==
-X-CSE-MsgGUID: Vw67vI1BSyKqryh3HPky5g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11122"; a="17215708"
-X-IronPort-AV: E=Sophos;i="6.09,183,1716274800"; d="scan'208";a="17215708"
+ bh=XmoMpvmKAHPv2PSXeHNReCSPQ/rSyVyEIcqFuYeye7Y=;
+ b=abdLOnLYMzUbFuFDpsCriOCFVcGrAiwfjraXu6DY1Ys91yLTKLE++UUo
+ HczdQvNI51ikTlzlxpCqaCpuTj/F0RTXdNfAAhNomm5HF4yIxMvM1RcW1
+ ik4uyGL4RuxFg0d3yYhXyzGM5hc5stejgHxoNrtouHcXpj+tg9CMaBpDJ
+ 9+t8qw4O5oQTbGcvPvd7dkjJYS1ajYVOKoZtt1tBjvXRxxPp4nw8caTFq
+ IX+dGJoHBGFoH+9Uq7IYuO7+HIKrF9ychDh5M0Q9JQZCYqG2zIQcP+bSV
+ evbOORuxTCqjncE8nlzPkEjtSMNza7QmIETcMHjHFC8vJj3ybQB5NNrJ6 g==;
+X-CSE-ConnectionGUID: HHR55cafRiCnzdMOXQRKmg==
+X-CSE-MsgGUID: l7gPOqTfTBW/Ac5hMDfyzw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11122"; a="17215713"
+X-IronPort-AV: E=Sophos;i="6.09,183,1716274800"; d="scan'208";a="17215713"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Jul 2024 01:32:28 -0700
-X-CSE-ConnectionGUID: OfqZiTpSRCekWdrFoa/2vw==
-X-CSE-MsgGUID: Ga0YK8oJSTuvKY/kY9JhKg==
+ 04 Jul 2024 01:32:30 -0700
+X-CSE-ConnectionGUID: WAglHtl0TcCefB+5nwVypA==
+X-CSE-MsgGUID: P3Ew53cGTHWqI+MC9u8mwQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,183,1716274800"; d="scan'208";a="46597249"
+X-IronPort-AV: E=Sophos;i="6.09,183,1716274800"; d="scan'208";a="46597254"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by fmviesa010.fm.intel.com with ESMTP; 04 Jul 2024 01:32:27 -0700
+ by fmviesa010.fm.intel.com with ESMTP; 04 Jul 2024 01:32:29 -0700
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Michael Tokarev <mjt@tls.msk.ru>, Laurent Vivier <laurent@vivier.eu>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 Cc: qemu-trivial@nongnu.org, qemu-devel@nongnu.org,
  Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH 2/4] hw/i386/x86: Fix superfluous trailing semicolon
-Date: Thu,  4 Jul 2024 16:47:57 +0800
-Message-Id: <20240704084759.1824420-3-zhao1.liu@intel.com>
+Subject: [PATCH 3/4] util/oslib-posix: Fix superfluous trailing semicolon
+Date: Thu,  4 Jul 2024 16:47:58 +0800
+Message-Id: <20240704084759.1824420-4-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240704084759.1824420-1-zhao1.liu@intel.com>
 References: <20240704084759.1824420-1-zhao1.liu@intel.com>
@@ -80,22 +80,22 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- hw/i386/x86.c | 2 +-
+ util/oslib-posix.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/i386/x86.c b/hw/i386/x86.c
-index a4aa8e081098..01fc5e656272 100644
---- a/hw/i386/x86.c
-+++ b/hw/i386/x86.c
-@@ -242,7 +242,7 @@ static void x86_machine_get_pit(Object *obj, Visitor *v, const char *name,
- static void x86_machine_set_pit(Object *obj, Visitor *v, const char *name,
-                                     void *opaque, Error **errp)
- {
--    X86MachineState *x86ms = X86_MACHINE(obj);;
-+    X86MachineState *x86ms = X86_MACHINE(obj);
- 
-     visit_type_OnOffAuto(v, name, &x86ms->pit, errp);
- }
+diff --git a/util/oslib-posix.c b/util/oslib-posix.c
+index e76441695bdc..b090fe0eed0d 100644
+--- a/util/oslib-posix.c
++++ b/util/oslib-posix.c
+@@ -263,7 +263,7 @@ int qemu_socketpair(int domain, int type, int protocol, int sv[2])
+         return ret;
+     }
+ #endif
+-    ret = socketpair(domain, type, protocol, sv);;
++    ret = socketpair(domain, type, protocol, sv);
+     if (ret == 0) {
+         qemu_set_cloexec(sv[0]);
+         qemu_set_cloexec(sv[1]);
 -- 
 2.34.1
 
