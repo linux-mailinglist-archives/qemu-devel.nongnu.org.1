@@ -2,36 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2583927A87
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 17:54:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CBD4927A99
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 17:56:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPOll-0000Ci-Kn; Thu, 04 Jul 2024 11:53:15 -0400
+	id 1sPOlu-0000RX-47; Thu, 04 Jul 2024 11:53:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sPOlY-0000Bi-D3; Thu, 04 Jul 2024 11:53:00 -0400
+ id 1sPOlg-0000Dq-KW; Thu, 04 Jul 2024 11:53:08 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sPOlU-0001yM-Ut; Thu, 04 Jul 2024 11:53:00 -0400
+ id 1sPOlb-0001zk-44; Thu, 04 Jul 2024 11:53:07 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 53F907748F;
+ by isrv.corpit.ru (Postfix) with ESMTP id 6212377490;
  Thu,  4 Jul 2024 18:52:46 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 1C4A8FEADA;
+ by tsrv.corpit.ru (Postfix) with SMTP id 2A574FEADB;
  Thu,  4 Jul 2024 18:52:51 +0300 (MSK)
-Received: (nullmailer pid 1481671 invoked by uid 1000);
+Received: (nullmailer pid 1481674 invoked by uid 1000);
  Thu, 04 Jul 2024 15:52:51 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Paolo Bonzini <pbonzini@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.6 01/18] target/i386: fix size of EBP writeback in
- gen_enter()
-Date: Thu,  4 Jul 2024 18:52:32 +0300
-Message-Id: <20240704155251.1481617-1-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Alexey Dobriyan <adobriyan@yandex-team.ru>,
+ Jason Wang <jasowang@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.6 02/18] virtio-net: drop too short packets early
+Date: Thu,  4 Jul 2024 18:52:33 +0300
+Message-Id: <20240704155251.1481617-2-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.6-20240704154854@cover.tls.msk.ru>
 References: <qemu-stable-8.2.6-20240704154854@cover.tls.msk.ru>
@@ -59,40 +58,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+From: Alexey Dobriyan <adobriyan@yandex-team.ru>
 
-The calculation of FrameTemp is done using the size indicated by mo_pushpop()
-before being written back to EBP, but the final writeback to EBP is done using
-the size indicated by mo_stacksize().
+Reproducer from https://gitlab.com/qemu-project/qemu/-/issues/1451
+creates small packet (1 segment, len = 10 == n->guest_hdr_len),
+then destroys queue.
 
-In the case where mo_pushpop() is MO_32 and mo_stacksize() is MO_16 then the
-final writeback to EBP is done using MO_16 which can leave junk in the top
-16-bits of EBP after executing ENTER.
+"if (n->host_hdr_len != n->guest_hdr_len)" is triggered, if body creates
+zero length/zero segment packet as there is nothing after guest header.
 
-Change the writeback of EBP to use the same size indicated by mo_pushpop() to
-ensure that the full value is written back.
+qemu_sendv_packet_async() tries to send it.
 
-Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2198
-Message-ID: <20240606095319.229650-5-mark.cave-ayland@ilande.co.uk>
-Cc: qemu-stable@nongnu.org
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit 3973615e7fbaeef1deeaa067577e373781ced70a)
+slirp discards it because it is smaller than Ethernet header,
+but returns 0 because tx hooks are supposed to return total length of data.
+
+0 is propagated upwards and is interpreted as "packet has been sent"
+which is terrible because queue is being destroyed, nobody is waiting for TX
+to complete and assert it triggered.
+
+Fix is discard such empty packets instead of sending them.
+
+Length 1 packets will go via different codepath:
+
+	virtqueue_push(q->tx_vq, elem, 0);
+	virtio_notify(vdev, q->tx_vq);
+	g_free(elem);
+
+and aren't problematic.
+
+Signed-off-by: Alexey Dobriyan <adobriyan@yandex-team.ru>
+Signed-off-by: Jason Wang <jasowang@redhat.com>
+(cherry picked from commit 2c3e4e2de699cd4d9f6c71f30a22d8f125cd6164)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-index 063727c912..716a747df7 100644
---- a/target/i386/tcg/translate.c
-+++ b/target/i386/tcg/translate.c
-@@ -2662,7 +2662,7 @@ static void gen_enter(DisasContext *s, int esp_addend, int level)
+diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
+index 8451dbee41..0467b3bd8a 100644
+--- a/hw/net/virtio-net.c
++++ b/hw/net/virtio-net.c
+@@ -2709,18 +2709,14 @@ static int32_t virtio_net_flush_tx(VirtIONetQueue *q)
+         out_sg = elem->out_sg;
+         if (out_num < 1) {
+             virtio_error(vdev, "virtio-net header not in first element");
+-            virtqueue_detach_element(q->tx_vq, elem, 0);
+-            g_free(elem);
+-            return -EINVAL;
++            goto detach;
+         }
+ 
+         if (n->has_vnet_hdr) {
+             if (iov_to_buf(out_sg, out_num, 0, &vhdr, n->guest_hdr_len) <
+                 n->guest_hdr_len) {
+                 virtio_error(vdev, "virtio-net header incorrect");
+-                virtqueue_detach_element(q->tx_vq, elem, 0);
+-                g_free(elem);
+-                return -EINVAL;
++                goto detach;
+             }
+             if (n->needs_vnet_hdr_swap) {
+                 virtio_net_hdr_swap(vdev, (void *) &vhdr);
+@@ -2751,6 +2747,11 @@ static int32_t virtio_net_flush_tx(VirtIONetQueue *q)
+                              n->guest_hdr_len, -1);
+             out_num = sg_num;
+             out_sg = sg;
++
++            if (out_num < 1) {
++                virtio_error(vdev, "virtio-net nothing to send");
++                goto detach;
++            }
+         }
+ 
+         ret = qemu_sendv_packet_async(qemu_get_subqueue(n->nic, queue_index),
+@@ -2771,6 +2772,11 @@ drop:
+         }
      }
+     return num_packets;
++
++detach:
++    virtqueue_detach_element(q->tx_vq, elem, 0);
++    g_free(elem);
++    return -EINVAL;
+ }
  
-     /* Copy the FrameTemp value to EBP.  */
--    gen_op_mov_reg_v(s, a_ot, R_EBP, s->T1);
-+    gen_op_mov_reg_v(s, d_ot, R_EBP, s->T1);
- 
-     /* Compute the final value of ESP.  */
-     tcg_gen_subi_tl(s->T1, s->T1, esp_addend + size * level);
+ static void virtio_net_tx_timer(void *opaque);
 -- 
 2.39.2
 
