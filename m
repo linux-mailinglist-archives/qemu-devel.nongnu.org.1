@@ -2,88 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65F599275B1
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 14:04:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E0E89275C7
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 14:17:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPLBK-00049r-4H; Thu, 04 Jul 2024 08:03:22 -0400
+	id 1sPLOK-0007vZ-54; Thu, 04 Jul 2024 08:16:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1sPLBG-00048p-L8; Thu, 04 Jul 2024 08:03:19 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1sPLBE-00018J-6X; Thu, 04 Jul 2024 08:03:18 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.231])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4WFFdF18hGz6JB6Z;
- Thu,  4 Jul 2024 20:02:25 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
- by mail.maildlp.com (Postfix) with ESMTPS id 6D0121400D4;
- Thu,  4 Jul 2024 20:03:06 +0800 (CST)
-Received: from lhrpeml500001.china.huawei.com (7.191.163.213) by
- lhrpeml500005.china.huawei.com (7.191.163.240) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Thu, 4 Jul 2024 13:03:06 +0100
-Received: from lhrpeml500001.china.huawei.com ([7.191.163.213]) by
- lhrpeml500001.china.huawei.com ([7.191.163.213]) with mapi id 15.01.2507.039; 
- Thu, 4 Jul 2024 13:03:06 +0100
-To: Nicholas Piggin <npiggin@gmail.com>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>, "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>,
- "mst@redhat.com" <mst@redhat.com>
-CC: "maz@kernel.org" <maz@kernel.org>, "jean-philippe@linaro.org"
- <jean-philippe@linaro.org>, Jonathan Cameron <jonathan.cameron@huawei.com>,
- "lpieralisi@kernel.org" <lpieralisi@kernel.org>, "peter.maydell@linaro.org"
- <peter.maydell@linaro.org>, "richard.henderson@linaro.org"
- <richard.henderson@linaro.org>, "imammedo@redhat.com" <imammedo@redhat.com>,
- "andrew.jones@linux.dev" <andrew.jones@linux.dev>, "david@redhat.com"
- <david@redhat.com>, "philmd@linaro.org" <philmd@linaro.org>,
- "eric.auger@redhat.com" <eric.auger@redhat.com>, "will@kernel.org"
- <will@kernel.org>, "ardb@kernel.org" <ardb@kernel.org>,
- "oliver.upton@linux.dev" <oliver.upton@linux.dev>, "pbonzini@redhat.com"
- <pbonzini@redhat.com>, "gshan@redhat.com" <gshan@redhat.com>,
- "rafael@kernel.org" <rafael@kernel.org>, "borntraeger@linux.ibm.com"
- <borntraeger@linux.ibm.com>, "alex.bennee@linaro.org"
- <alex.bennee@linaro.org>, "harshpb@linux.ibm.com" <harshpb@linux.ibm.com>,
- "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
- "darren@os.amperecomputing.com" <darren@os.amperecomputing.com>,
- "ilkka@os.amperecomputing.com" <ilkka@os.amperecomputing.com>,
- "vishnu@os.amperecomputing.com" <vishnu@os.amperecomputing.com>,
- "karl.heubaum@oracle.com" <karl.heubaum@oracle.com>, "miguel.luis@oracle.com"
- <miguel.luis@oracle.com>, "salil.mehta@opnsrc.net" <salil.mehta@opnsrc.net>,
- zhukeqian <zhukeqian1@huawei.com>, "wangxiongfeng (C)"
- <wangxiongfeng2@huawei.com>, "wangyanan (Y)" <wangyanan55@huawei.com>,
- "jiakernel2@gmail.com" <jiakernel2@gmail.com>, "maobibo@loongson.cn"
- <maobibo@loongson.cn>, "lixianglai@loongson.cn" <lixianglai@loongson.cn>,
- "shahuang@redhat.com" <shahuang@redhat.com>, "zhao1.liu@intel.com"
- <zhao1.liu@intel.com>, Linuxarm <linuxarm@huawei.com>
-Subject: RE: [PATCH RFC V3 08/29] arm/virt: Init PMU at host for all possible
- vcpus
-Thread-Topic: [PATCH RFC V3 08/29] arm/virt: Init PMU at host for all possible
- vcpus
-Thread-Index: AQHavesi86fgew/iIE+bf2vMiBRCyLHl8hsAgACi3XA=
-Date: Thu, 4 Jul 2024 12:03:05 +0000
-Message-ID: <570b94603f414a3da01cb49a23a001a8@huawei.com>
-References: <20240613233639.202896-1-salil.mehta@huawei.com>
- <20240613233639.202896-9-salil.mehta@huawei.com>
- <D2GF9A9AJO02.1G1G8UEXA5AOD@gmail.com>
-In-Reply-To: <D2GF9A9AJO02.1G1G8UEXA5AOD@gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.48.159.88]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1sPLNl-0007r0-BH
+ for qemu-devel@nongnu.org; Thu, 04 Jul 2024 08:16:13 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1sPLNZ-0002Oj-Fu
+ for qemu-devel@nongnu.org; Thu, 04 Jul 2024 08:16:13 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-42578fe58a6so3739525e9.3
+ for <qemu-devel@nongnu.org>; Thu, 04 Jul 2024 05:15:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1720095352; x=1720700152; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=/dq+SgYGDDs7RBqgqaNd2JkbYqtxXuJ1AcTEJkRSexg=;
+ b=r1IRqZfjQc/9DlgGoHzChq7IseFp0Amc6wtmStmeVgRANdIv2uyY83p+/qoInlwVVu
+ jybiBxrUIN+ALUexOcz7Rkg6zVPFm4VltlFneAH/sZSkW1QdwpUVeoWOIP+6KuN4mgQq
+ pxj3E3MlUgX7CmuyJ+XffnBYx2S5H+UAd7JovNIqDIiQPnUEg+1ZaUWzSXyIk1ho3cNu
+ 3doCL4icoIVcmMh3Y/gqXwyFX+ldxFRZyZxPfK1uiJL9zC/j+HZcJLXkzEm4cIRJJIGi
+ oTTnY3P33SFqKwScwmW3ksgRhalsJw5irQoR0bR139v5EJeh814QoPYebGscqr5ELGz1
+ w+Ew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1720095352; x=1720700152;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=/dq+SgYGDDs7RBqgqaNd2JkbYqtxXuJ1AcTEJkRSexg=;
+ b=Qw0b5KPHJ1+HnDOHxLRRaV5b5tZT/PVNYFx1nG4O/36YVadJ29nNUtqBGRPY0I2LAK
+ 1g046J2uaXPP33dk7UJkG/7+Aa0MXnqMQrs2DrvqovlRROgyBD0NDQ7vQ4jR+Nnbo5D/
+ 64erJTQdSrfoPKnnpXMYetg3DCkd+7iMI3+KJINYXDnjZtA+ictzs/FlL2qiHmWwQWRc
+ Rz9x9FN/4YzdeapPb3AbjBmAd89reP2jSa/lhN8RsUv+pXy+dzWT8714gsEzs23zbZAi
+ Jkg+d+jW4R9bNA7KtxVPUCsuQpZfCom5j5QHTxPzes/XEngI8+R6Ok3u++15vZ143OiC
+ uLWQ==
+X-Gm-Message-State: AOJu0YykflFjHC/DzYUuoEnV0fDJ/jBRxuBL+rbxP7EKnaxIbjq6P+Ex
+ D4DkQ7vk54jAPSilGP8grbojWHz+HOHTaX6L64sg2fVa69xeQyQOs4rX/GoSvtFn7mNGp4tq7xz
+ KZNk=
+X-Google-Smtp-Source: AGHT+IFbaKbUYsHc+Q3ruwdxVhExqVAGgnnaQ/Q22MsWRYtaJqyJdMpn4551OoY1D5VmLS80A0dICw==
+X-Received: by 2002:a05:600c:4254:b0:425:5f6d:2f3c with SMTP id
+ 5b1f17b1804b1-4264a469de1mr13618015e9.39.1720095352044; 
+ Thu, 04 Jul 2024 05:15:52 -0700 (PDT)
+Received: from localhost.localdomain (adsl-241.37.6.160.tellas.gr.
+ [37.6.160.241]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4264a2ca5casm22471015e9.32.2024.07.04.05.15.49
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 04 Jul 2024 05:15:51 -0700 (PDT)
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, Mads Ynddal <mads@ynddal.dk>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Zhao Liu <zhao1.liu@intel.com>, Gustavo Romero <gustavo.romero@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>, rowan.hart@intel.com,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [RFC PATCH v4 0/7] Add Rust support, implement ARM PL011
+Date: Thu,  4 Jul 2024 15:15:36 +0300
+Message-ID: <rust-pl011-rfc-v4.git.manos.pitsidianakis@linaro.org>
+X-Mailer: git-send-email 2.44.0
 MIME-Version: 1.0
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=salil.mehta@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x32e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,80 +96,132 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Salil Mehta <salil.mehta@huawei.com>
-From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-SEkgTmljaywNCg0KPiAgRnJvbTogTmljaG9sYXMgUGlnZ2luIDxucGlnZ2luQGdtYWlsLmNvbT4N
-Cj4gIFNlbnQ6IFRodXJzZGF5LCBKdWx5IDQsIDIwMjQgNDowOCBBTQ0KPiAgVG86IFNhbGlsIE1l
-aHRhIDxzYWxpbC5tZWh0YUBodWF3ZWkuY29tPjsgcWVtdS1kZXZlbEBub25nbnUub3JnOw0KPiAg
-cWVtdS1hcm1Abm9uZ251Lm9yZzsgbXN0QHJlZGhhdC5jb20NCj4gIA0KPiAgT24gRnJpIEp1biAx
-NCwgMjAyNCBhdCA5OjM2IEFNIEFFU1QsIFNhbGlsIE1laHRhIHdyb3RlOg0KPiAgPiBQTVUgZm9y
-IGFsbCBwb3NzaWJsZSB2Q1BVcyBtdXN0IGJlIGluaXRpYWxpemVkIGF0IHRoZSBWTSBpbml0aWFs
-aXphdGlvbiB0aW1lLg0KPiAgPiBSZWZhY3RvciBleGlzdGluZyBjb2RlIHRvIGFjY29tb2RhdGUg
-cG9zc2libGUgdkNQVXMuIFRoaXMgYWxzbyBhc3N1bWVzDQo+ICA+IHRoYXQgYWxsIHByb2Nlc3Nv
-ciBiZWluZyB1c2VkIGFyZSBpZGVudGljYWwuDQo+ICA+DQo+ICA+IFBhc3QgZGlzY3Vzc2lvbiBm
-b3IgcmVmZXJlbmNlOg0KPiAgPiBMaW5rOg0KPiAgPiBodHRwczovL2xpc3RzLmdudS5vcmcvYXJj
-aGl2ZS9odG1sL3FlbXUtZGV2ZWwvMjAyMC0wNi9tc2cwMDEzMS5odG1sDQo+ICANCj4gIEkgZ3Vl
-c3MgaXQncyBzb21ldGhpbmcgZm9yIHRoZSBBUk0gcGVvcGxlLCBidXQgdGhlcmUncyBhIGxvdCBv
-ZiBpbmZvcm1hdGlvbiBpbg0KPiAgdGhlcmUsIGNvdWxkIGl0IGJlIHVzZWZ1bCB0byBzdW1tYXJp
-c2UgaW1wb3J0YW50IHBhcnRzIGhlcmUsIGUuZy4sIGZyb20NCj4gIEFuZHJldzoNCj4gIA0KPiAg
-IEtWTSByZXF1aXJlcyBhbGwgVkNQVXMgdG8gaGF2ZSBhIFBNVSBpZiBvbmUgZG9lcy4gSWYgdGhl
-IEFSTSBBUk0gIHNheXMNCj4gIGl0J3MgcG9zc2libGUgdG8gaGF2ZSBQTVVzIGZvciBvbmx5IHNv
-bWUgQ1BVcywgdGhlbiwgZm9yIFRDRywgIHRoZQ0KPiAgcmVzdHJpY3Rpb24gY291bGQgYmUgcmVs
-YXhlZC4NCj4gIA0KPiAgKEkgYXNzdW1lIGhlIG1lYW50IEFSTSBhcmNoKQ0KDQoNCkkgcmV0YWlu
-ZWQgdGhlIGxpbmsganVzdCBmb3IgYSByZWZlcmVuY2UuIFJpZ2h0IG5vdyBpdCBpcyBhbiBhc3N1
-bXB0aW9uIHRoYXQNCmFsbCB2Q1BVcyBoYXZlIHNpbWlsYXIgZmVhdHVyZXMuIFRoaXMgaXMgcmVm
-bGVjdGVkIGluIEtWTSBhcyB3ZWxsLiANCihNYXliZSB0aGlzIG1pZ2h0IG5vdCBiZSB0aGUgY2Fz
-ZSBpbiBmdXR1cmUgZXZlbnR1YWxseSB3aXRoIHRoZSBhZHZlbnQgb2YNCmhldGVyb2dlbm91cyBj
-b21wdXRpbmcuIExpbmFybyBoYWQgc29tZXRoaW5nIGdvaW5nIGluIHRoYXQgZGlyZWN0aW9uPyAN
-CkZvciBub3csIGl0IGxvb2tzIHRvIGJlIGEgZmFyLWZldGNoZWQgaWRlYSkuIA0KDQpJIGNhbiBk
-ZWZpbml0ZWx5IHN1bW1hcml6ZSB3aGF0IHdhcyBkaXNjdXNzZWQgZWFybGllci4NCg0KDQo+ICA+
-IENvLWRldmVsb3BlZC1ieTogU2FsaWwgTWVodGEgPHNhbGlsLm1laHRhQGh1YXdlaS5jb20+DQo+
-ICA+IFNpZ25lZC1vZmYtYnk6IFNhbGlsIE1laHRhIDxzYWxpbC5tZWh0YUBodWF3ZWkuY29tPg0K
-PiAgPiBDby1kZXZlbG9wZWQtYnk6IEtlcWlhbiBaaHUgPHpodWtlcWlhbjFAaHVhd2VpLmNvbT4N
-Cj4gID4gU2lnbmVkLW9mZi1ieTogS2VxaWFuIFpodSA8emh1a2VxaWFuMUBodWF3ZWkuY29tPg0K
-PiAgPiBTaWduZWQtb2ZmLWJ5OiBTYWxpbCBNZWh0YSA8c2FsaWwubWVodGFAaHVhd2VpLmNvbT4N
-Cj4gID4gLS0tDQo+ICA+ICBody9hcm0vdmlydC5jICAgICAgICAgfCAxMiArKysrKysrKy0tLS0N
-Cj4gID4gIGluY2x1ZGUvaHcvYXJtL3ZpcnQuaCB8ICAxICsNCj4gID4gIDIgZmlsZXMgY2hhbmdl
-ZCwgOSBpbnNlcnRpb25zKCspLCA0IGRlbGV0aW9ucygtKQ0KPiAgPg0KPiAgPiBkaWZmIC0tZ2l0
-IGEvaHcvYXJtL3ZpcnQuYyBiL2h3L2FybS92aXJ0LmMgaW5kZXgNCj4gID4gYWM1M2JmYWRjYS4u
-NTdlYzQyOTAyMiAxMDA2NDQNCj4gID4gLS0tIGEvaHcvYXJtL3ZpcnQuYw0KPiAgPiArKysgYi9o
-dy9hcm0vdmlydC5jDQo+ICA+IEBAIC0yMDQ1LDEyICsyMDQ1LDE0IEBAIHN0YXRpYyB2b2lkDQo+
-ICBmaW5hbGl6ZV9naWNfdmVyc2lvbihWaXJ0TWFjaGluZVN0YXRlICp2bXMpDQo+ICA+ICAgKi8N
-Cj4gID4gIHN0YXRpYyB2b2lkIHZpcnRfY3B1X3Bvc3RfaW5pdChWaXJ0TWFjaGluZVN0YXRlICp2
-bXMsIE1lbW9yeVJlZ2lvbg0KPiAgPiAqc3lzbWVtKSAgew0KPiAgPiArICAgIENQVUFyY2hJZExp
-c3QgKnBvc3NpYmxlX2NwdXMgPSB2bXMtPnBhcmVudC5wb3NzaWJsZV9jcHVzOw0KPiAgPiAgICAg
-IGludCBtYXhfY3B1cyA9IE1BQ0hJTkUodm1zKS0+c21wLm1heF9jcHVzOw0KPiAgPiAtICAgIGJv
-b2wgYWFyY2g2NCwgcG11LCBzdGVhbF90aW1lOw0KPiAgPiArICAgIGJvb2wgYWFyY2g2NCwgc3Rl
-YWxfdGltZTsNCj4gID4gICAgICBDUFVTdGF0ZSAqY3B1Ow0KPiAgPiArICAgIGludCBuOw0KPiAg
-Pg0KPiAgPiAgICAgIGFhcmNoNjQgPSBvYmplY3RfcHJvcGVydHlfZ2V0X2Jvb2woT0JKRUNUKGZp
-cnN0X2NwdSksICJhYXJjaDY0IiwgTlVMTCk7DQo+ICA+IC0gICAgcG11ID0gb2JqZWN0X3Byb3Bl
-cnR5X2dldF9ib29sKE9CSkVDVChmaXJzdF9jcHUpLCAicG11IiwgTlVMTCk7DQo+ICA+ICsgICAg
-dm1zLT5wbXUgPSBvYmplY3RfcHJvcGVydHlfZ2V0X2Jvb2woT0JKRUNUKGZpcnN0X2NwdSksICJw
-bXUiLA0KPiAgPiArIE5VTEwpOw0KPiAgPiAgICAgIHN0ZWFsX3RpbWUgPSBvYmplY3RfcHJvcGVy
-dHlfZ2V0X2Jvb2woT0JKRUNUKGZpcnN0X2NwdSksDQo+ICA+ICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAia3ZtLXN0ZWFsLXRpbWUiLCBOVUxMKTsNCj4gID4NCj4g
-ID4gQEAgLTIwNzcsOCArMjA3OSwxMCBAQCBzdGF0aWMgdm9pZCB2aXJ0X2NwdV9wb3N0X2luaXQo
-VmlydE1hY2hpbmVTdGF0ZQ0KPiAgKnZtcywgTWVtb3J5UmVnaW9uICpzeXNtZW0pDQo+ICA+ICAg
-ICAgICAgICAgICBtZW1vcnlfcmVnaW9uX2FkZF9zdWJyZWdpb24oc3lzbWVtLCBwdnRpbWVfcmVn
-X2Jhc2UsDQo+ICBwdnRpbWUpOw0KPiAgPiAgICAgICAgICB9DQo+ICA+DQo+ICA+IC0gICAgICAg
-IENQVV9GT1JFQUNIKGNwdSkgew0KPiAgPiAtICAgICAgICAgICAgaWYgKHBtdSkgew0KPiAgPiAr
-ICAgICAgICBmb3IgKG4gPSAwOyBuIDwgcG9zc2libGVfY3B1cy0+bGVuOyBuKyspIHsNCj4gID4g
-KyAgICAgICAgICAgIGNwdSA9IHFlbXVfZ2V0X3Bvc3NpYmxlX2NwdShuKTsNCj4gID4gKw0KPiAg
-DQo+ICBNYXliZSBhIENQVV9GT1JFQUNIX1BPU1NJQkxFKCk/DQoNCg0Kc3VyZS4NCg0KDQpUaGFu
-ayB5b3UNClNhbGlsLg0KDQo+ICANCj4gIFRoYW5rcywNCj4gIE5pY2sNCj4gIA0KPiAgPiArICAg
-ICAgICAgICAgaWYgKHZtcy0+cG11KSB7DQo+ICA+ICAgICAgICAgICAgICAgICAgYXNzZXJ0KGFy
-bV9mZWF0dXJlKCZBUk1fQ1BVKGNwdSktPmVudiwNCj4gIEFSTV9GRUFUVVJFX1BNVSkpOw0KPiAg
-PiAgICAgICAgICAgICAgICAgIGlmIChrdm1faXJxY2hpcF9pbl9rZXJuZWwoKSkgew0KPiAgPiAg
-ICAgICAgICAgICAgICAgICAgICBrdm1fYXJtX3BtdV9zZXRfaXJxKEFSTV9DUFUoY3B1KSwNCj4g
-ID4gVklSVFVBTF9QTVVfSVJRKTsgZGlmZiAtLWdpdCBhL2luY2x1ZGUvaHcvYXJtL3ZpcnQuaA0K
-PiAgPiBiL2luY2x1ZGUvaHcvYXJtL3ZpcnQuaCBpbmRleCAzNmFjNWZmNGEyLi5kOGRjYzg5YTBk
-IDEwMDY0NA0KPiAgPiAtLS0gYS9pbmNsdWRlL2h3L2FybS92aXJ0LmgNCj4gID4gKysrIGIvaW5j
-bHVkZS9ody9hcm0vdmlydC5oDQo+ICA+IEBAIC0xNTUsNiArMTU1LDcgQEAgc3RydWN0IFZpcnRN
-YWNoaW5lU3RhdGUgew0KPiAgPiAgICAgIGJvb2wgcmFzOw0KPiAgPiAgICAgIGJvb2wgbXRlOw0K
-PiAgPiAgICAgIGJvb2wgZHRiX3JhbmRvbW5lc3M7DQo+ICA+ICsgICAgYm9vbCBwbXU7DQo+ICA+
-ICAgICAgT25PZmZBdXRvIGFjcGk7DQo+ICA+ICAgICAgVmlydEdJQ1R5cGUgZ2ljX3ZlcnNpb247
-DQo+ICA+ICAgICAgVmlydElPTU1VVHlwZSBpb21tdTsNCg0K
+Changes from v3->v4:
+- Add rust-specific files to .gitattributes
+- Added help text to scripts/cargo_wrapper.py arguments (thanks Stephan)
+- Split bindings separate crate
+- Add declarative macros for symbols exported to QEMU to said crate
+- Lowered MSRV to 1.77.2
+- Removed auto-download and install of bindgen-cli
+- Fixed re-compilation of Rust objects in case they are missing from 
+  filesystem
+- Fixed optimized builds by adding #[used] (thanks Pierrick for the help 
+  debugging this)
+
+Also, Pierrick helped confirming it works on Windows with some 
+windows-specific changes. I confirmed it works on macos by allowing 
+bindgen to detect system paths for clang, which is a workaround and not 
+a solution. However this series doesn't have the windows changes 
+integrated.
+
+Changes from v2->v3:
+- Addressed minor mistakes (thanks Stefan)
+- Setup supported version checks for cargo, rustc and bindgen (thanks 
+  everyone who pointed it out / suggested it)
+- Fixed problem with bindgen failing if certain system headers where 
+  needed by defining an allowlist for headers instead of a blocklist for 
+  what we don't want (thanks Alex Bennée for reporting it)
+- Cleaned up bindgen target/dependendy definition in meson.build by 
+  removing unnecessary bits
+
+Changes from v1->v2:
+- Create bindgen target first, then add commit for device (thanks 
+  Pierrick)
+- Create a special named generated.rs for each target as compilation 
+  would fail if more than one targets were defined. The generated.rs 
+  target names would clash.
+- Add more descriptive commit messages
+- Update MAINTAINERS
+- Cleanup patch order for better review, hopefully
+
+
+Manos Pitsidianakis (7):
+  build-sys: Add rust feature option
+  rust: add bindgen step as a meson dependency
+  rust: add crate to expose bindings and interfaces
+  rust: add PL011 device model
+  .gitattributes: add Rust diff and merge attributes
+  DO NOT MERGE: add rustdoc build for gitlab pages
+  DO NOT MERGE: replace TYPE_PL011 with x-pl011-rust in arm virt machine
+
+ .gitattributes                    |   3 +
+ .gitlab-ci.d/buildtest.yml        |  64 +++-
+ MAINTAINERS                       |  20 ++
+ configure                         |  11 +
+ hw/arm/virt.c                     |   4 +
+ meson.build                       |  72 ++++
+ meson_options.txt                 |   5 +
+ rust/.cargo/config.toml           |   2 +
+ rust/.gitignore                   |   3 +
+ rust/meson.build                  | 114 ++++++
+ rust/pl011/.gitignore             |   2 +
+ rust/pl011/Cargo.lock             | 125 +++++++
+ rust/pl011/Cargo.toml             |  67 ++++
+ rust/pl011/README.md              |  31 ++
+ rust/pl011/deny.toml              |  57 +++
+ rust/pl011/meson.build            |   7 +
+ rust/pl011/rustfmt.toml           |   1 +
+ rust/pl011/src/definitions.rs     |  39 +++
+ rust/pl011/src/device.rs          | 509 +++++++++++++++++++++++++++
+ rust/pl011/src/device_class.rs    |  48 +++
+ rust/pl011/src/lib.rs             | 556 ++++++++++++++++++++++++++++++
+ rust/pl011/src/memory_ops.rs      |  45 +++
+ rust/qemu-api/.gitignore          |   2 +
+ rust/qemu-api/Cargo.lock          |   7 +
+ rust/qemu-api/Cargo.toml          |  59 ++++
+ rust/qemu-api/README.md           |  17 +
+ rust/qemu-api/build.rs            |  48 +++
+ rust/qemu-api/deny.toml           |  57 +++
+ rust/qemu-api/meson.build         |   0
+ rust/qemu-api/rustfmt.toml        |   1 +
+ rust/qemu-api/src/bindings.rs     |   8 +
+ rust/qemu-api/src/definitions.rs  | 112 ++++++
+ rust/qemu-api/src/device_class.rs | 131 +++++++
+ rust/qemu-api/src/lib.rs          |  29 ++
+ rust/qemu-api/src/tests.rs        |  48 +++
+ rust/rustfmt.toml                 |   7 +
+ rust/wrapper.h                    |  39 +++
+ scripts/cargo_wrapper.py          | 288 ++++++++++++++++
+ scripts/meson-buildoptions.sh     |   6 +
+ 39 files changed, 2625 insertions(+), 19 deletions(-)
+ create mode 100644 rust/.cargo/config.toml
+ create mode 100644 rust/.gitignore
+ create mode 100644 rust/meson.build
+ create mode 100644 rust/pl011/.gitignore
+ create mode 100644 rust/pl011/Cargo.lock
+ create mode 100644 rust/pl011/Cargo.toml
+ create mode 100644 rust/pl011/README.md
+ create mode 100644 rust/pl011/deny.toml
+ create mode 100644 rust/pl011/meson.build
+ create mode 120000 rust/pl011/rustfmt.toml
+ create mode 100644 rust/pl011/src/definitions.rs
+ create mode 100644 rust/pl011/src/device.rs
+ create mode 100644 rust/pl011/src/device_class.rs
+ create mode 100644 rust/pl011/src/lib.rs
+ create mode 100644 rust/pl011/src/memory_ops.rs
+ create mode 100644 rust/qemu-api/.gitignore
+ create mode 100644 rust/qemu-api/Cargo.lock
+ create mode 100644 rust/qemu-api/Cargo.toml
+ create mode 100644 rust/qemu-api/README.md
+ create mode 100644 rust/qemu-api/build.rs
+ create mode 100644 rust/qemu-api/deny.toml
+ create mode 100644 rust/qemu-api/meson.build
+ create mode 120000 rust/qemu-api/rustfmt.toml
+ create mode 100644 rust/qemu-api/src/bindings.rs
+ create mode 100644 rust/qemu-api/src/definitions.rs
+ create mode 100644 rust/qemu-api/src/device_class.rs
+ create mode 100644 rust/qemu-api/src/lib.rs
+ create mode 100644 rust/qemu-api/src/tests.rs
+ create mode 100644 rust/rustfmt.toml
+ create mode 100644 rust/wrapper.h
+ create mode 100644 scripts/cargo_wrapper.py
+
+
+base-commit: 7914bda497f07965f15a91905cd7ed9eaf1c1092
+-- 
+γαῖα πυρί μιχθήτω
+
 
