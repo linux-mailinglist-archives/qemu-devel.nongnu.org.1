@@ -2,95 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD0859275CB
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 14:18:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E59919275FD
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 14:29:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPLOq-0007yA-V2; Thu, 04 Jul 2024 08:17:22 -0400
+	id 1sPLYs-0006f5-Rt; Thu, 04 Jul 2024 08:27:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sPLNo-0007rm-TD
- for qemu-devel@nongnu.org; Thu, 04 Jul 2024 08:16:20 -0400
-Received: from mail-lj1-x229.google.com ([2a00:1450:4864:20::229])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sPLNj-0002Rp-81
- for qemu-devel@nongnu.org; Thu, 04 Jul 2024 08:16:16 -0400
-Received: by mail-lj1-x229.google.com with SMTP id
- 38308e7fff4ca-2ebe6495aedso5590661fa.0
- for <qemu-devel@nongnu.org>; Thu, 04 Jul 2024 05:16:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1720095368; x=1720700168; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=N68lwFl0nfpyW4wDEg4VIaNRRSkKW426BhVoyDd5Sxg=;
- b=g0FxUZSerB9gQjuidjlm2REvO0RgG4Dh+M8NkHNkWhAVox4yHW3muQbb9xXBF1VPBL
- ybcE+u0oBOm+xR5V4a5rJfUMop81ITM4L3hLY/7c7PXG5xgfXmDLvleR22hQtaSjDkKo
- lgxm9uEdE9y0Rmgn3Yr8boTnOdR638iOZvO9CCX6zx7hF2TYEYJgZ/zPHm8YZsaLBLXP
- vmzMKrdgPZhLi5av9yb+0bueSE9LKoiy0c8nw8TpwZ0Vrk7VIzr687EcWAdKCxtP5iTc
- JF7cvavaE2HHZWzk8qGw9c4K4H9/W9dTT+MCCml/kVa14MiBhahfWq7XKiSpb4BJaT3H
- 6eiw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720095368; x=1720700168;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=N68lwFl0nfpyW4wDEg4VIaNRRSkKW426BhVoyDd5Sxg=;
- b=gd/lUPQKzG6U3D13H2xqa5Tbim7ZLzWnHmKtjJPg0HB1PCJpS3UULCbLc0tAWub4H4
- ojUPvzffs0ZHmN/KXDsBqntPCQpwBSnRpygvXVJ7ifCXlXndCuJfCftjyCAfeahngeUS
- LnWHeQRdOyeSp6j0bwVbe3JaA937oOUru+1DCcribdn4JxcIaLajFtF+yJxHV3OW6ENX
- XprWd+ZS/YKsdurof0SYP/d9/uu/+toJzoi06KlnnwFpmdPvIbn7rTaFNktzMglt06Hf
- W7L8FhYTiRUaHtRHGjbOHpsn086MevPQ0BJBAYarso2T2++YtUk+wSRYM0jHgtQzuPx9
- s30A==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVYHDqGgnijHlCysVmnLkYQzdPC78cjkYrvuURmyJXDm24f2shM41P9f/US0+FiWq+4Riln/2h+2tt8GinYa84PKwk1LsI=
-X-Gm-Message-State: AOJu0YykPJyCqs25FRNYw8CUlNqHd342ZWDv47hq0O5PzC1TCh50M+zA
- TuODNGgPerTh5uwYU9pHZCosZmMElDeZEj2/rgRO+WQqzz1okPQHwLF9F+Wiv0/fnV7vVzUYzgE
- z+8wF5VT5VnvwV2sV/z/J54B+u5+p7/1L61SUvA==
-X-Google-Smtp-Source: AGHT+IGpvoRhPHYw1R430AwkSGs8NzMqZYnIQNg7OZ/y9s9RwtAV5NC48d5dl6qLKcX1KZc2fA3lIbQM7cCFgIUlauI=
-X-Received: by 2002:a19:5f5c:0:b0:52e:9ebe:7325 with SMTP id
- 2adb3069b0e04-52ea065f06cmr1074378e87.31.1720095368378; Thu, 04 Jul 2024
- 05:16:08 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
+ id 1sPLYo-0006eT-OM; Thu, 04 Jul 2024 08:27:38 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
+ id 1sPLYc-0008Bu-Eo; Thu, 04 Jul 2024 08:27:38 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4WFG9C2G4gz6JB5N;
+ Thu,  4 Jul 2024 20:26:39 +0800 (CST)
+Received: from lhrpeml100006.china.huawei.com (unknown [7.191.160.224])
+ by mail.maildlp.com (Postfix) with ESMTPS id 13A3B140736;
+ Thu,  4 Jul 2024 20:27:21 +0800 (CST)
+Received: from lhrpeml500001.china.huawei.com (7.191.163.213) by
+ lhrpeml100006.china.huawei.com (7.191.160.224) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Thu, 4 Jul 2024 13:27:20 +0100
+Received: from lhrpeml500001.china.huawei.com ([7.191.163.213]) by
+ lhrpeml500001.china.huawei.com ([7.191.163.213]) with mapi id 15.01.2507.039; 
+ Thu, 4 Jul 2024 13:27:20 +0100
+To: Nicholas Piggin <npiggin@gmail.com>, "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>, "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>,
+ "mst@redhat.com" <mst@redhat.com>
+CC: "maz@kernel.org" <maz@kernel.org>, "jean-philippe@linaro.org"
+ <jean-philippe@linaro.org>, Jonathan Cameron <jonathan.cameron@huawei.com>,
+ "lpieralisi@kernel.org" <lpieralisi@kernel.org>, "peter.maydell@linaro.org"
+ <peter.maydell@linaro.org>, "richard.henderson@linaro.org"
+ <richard.henderson@linaro.org>, "imammedo@redhat.com" <imammedo@redhat.com>,
+ "andrew.jones@linux.dev" <andrew.jones@linux.dev>, "david@redhat.com"
+ <david@redhat.com>, "philmd@linaro.org" <philmd@linaro.org>,
+ "eric.auger@redhat.com" <eric.auger@redhat.com>, "will@kernel.org"
+ <will@kernel.org>, "ardb@kernel.org" <ardb@kernel.org>,
+ "oliver.upton@linux.dev" <oliver.upton@linux.dev>, "pbonzini@redhat.com"
+ <pbonzini@redhat.com>, "gshan@redhat.com" <gshan@redhat.com>,
+ "rafael@kernel.org" <rafael@kernel.org>, "borntraeger@linux.ibm.com"
+ <borntraeger@linux.ibm.com>, "alex.bennee@linaro.org"
+ <alex.bennee@linaro.org>, "harshpb@linux.ibm.com" <harshpb@linux.ibm.com>,
+ "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
+ "darren@os.amperecomputing.com" <darren@os.amperecomputing.com>,
+ "ilkka@os.amperecomputing.com" <ilkka@os.amperecomputing.com>,
+ "vishnu@os.amperecomputing.com" <vishnu@os.amperecomputing.com>,
+ "karl.heubaum@oracle.com" <karl.heubaum@oracle.com>, "miguel.luis@oracle.com"
+ <miguel.luis@oracle.com>, "salil.mehta@opnsrc.net" <salil.mehta@opnsrc.net>,
+ zhukeqian <zhukeqian1@huawei.com>, "wangxiongfeng (C)"
+ <wangxiongfeng2@huawei.com>, "wangyanan (Y)" <wangyanan55@huawei.com>,
+ "jiakernel2@gmail.com" <jiakernel2@gmail.com>, "maobibo@loongson.cn"
+ <maobibo@loongson.cn>, "lixianglai@loongson.cn" <lixianglai@loongson.cn>,
+ "shahuang@redhat.com" <shahuang@redhat.com>, "zhao1.liu@intel.com"
+ <zhao1.liu@intel.com>, Linuxarm <linuxarm@huawei.com>
+Subject: RE: [PATCH RFC V3 25/29] target/arm/kvm: Write CPU state back to KVM
+ on reset
+Thread-Topic: [PATCH RFC V3 25/29] target/arm/kvm: Write CPU state back to KVM
+ on reset
+Thread-Index: AQHavewIBjwTl+QVTkWSZMJOrzp7nbHl96KAgACklnA=
+Date: Thu, 4 Jul 2024 12:27:20 +0000
+Message-ID: <a4329bdf36d74e29b6c2a00329fb9e97@huawei.com>
+References: <20240613233639.202896-1-salil.mehta@huawei.com>
+ <20240613233639.202896-26-salil.mehta@huawei.com>
+ <D2GFOGQC3HYO.2LKOV306JIU98@gmail.com>
+In-Reply-To: <D2GFOGQC3HYO.2LKOV306JIU98@gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.48.159.88]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-References: <20240627-san-v2-0-750bb0946dbd@daynix.com>
- <20240627-san-v2-6-750bb0946dbd@daynix.com>
- <CAFEAcA-Zmc0BQgUiqEgzCvVGWyiPt9bo+Xt90n4wxhJ3_D91fA@mail.gmail.com>
- <Zn98p6CUV0KnIo50@zatzit>
-In-Reply-To: <Zn98p6CUV0KnIo50@zatzit>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 4 Jul 2024 13:15:57 +0100
-Message-ID: <CAFEAcA_LN8i66KUkxrgg=CUKJNYM=s9pTYv6w5QQ7PSU1Q3=bg@mail.gmail.com>
-Subject: Re: [PATCH v2 06/15] ppc/vof: Fix unaligned FDT property access
-To: David Gibson <david@gibson.dropbear.id.au>
-Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
- Eduardo Habkost <eduardo@habkost.net>, 
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Yanan Wang <wangyanan55@huawei.com>, John Snow <jsnow@redhat.com>, 
- BALATON Zoltan <balaton@eik.bme.hu>, Jiaxun Yang <jiaxun.yang@flygoat.com>, 
- Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>, 
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Alexey Kardashevskiy <aik@ozlabs.ru>, 
- "Michael S. Tsirkin" <mst@redhat.com>,
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Paolo Bonzini <pbonzini@redhat.com>, 
- David Hildenbrand <david@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>, 
- qemu-devel@nongnu.org, qemu-block@nongnu.org, qemu-ppc@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::229;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x229.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=salil.mehta@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,68 +96,55 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Salil Mehta <salil.mehta@huawei.com>
+From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, 29 Jun 2024 at 04:17, David Gibson <david@gibson.dropbear.id.au> wrote:
->
-> On Fri, Jun 28, 2024 at 04:20:02PM +0100, Peter Maydell wrote:
-> > On Thu, 27 Jun 2024 at 14:39, Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
-> > >
-> > > FDT properties are aligned by 4 bytes, not 8 bytes.
-> > >
-> > > Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-> > > ---
-> > >  hw/ppc/vof.c | 2 +-
-> > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > >
-> > > diff --git a/hw/ppc/vof.c b/hw/ppc/vof.c
-> > > index e3b430a81f4f..b5b6514d79fc 100644
-> > > --- a/hw/ppc/vof.c
-> > > +++ b/hw/ppc/vof.c
-> > > @@ -646,7 +646,7 @@ static void vof_dt_memory_available(void *fdt, GArray *claimed, uint64_t base)
-> > >      mem0_reg = fdt_getprop(fdt, offset, "reg", &proplen);
-> > >      g_assert(mem0_reg && proplen == sizeof(uint32_t) * (ac + sc));
-> > >      if (sc == 2) {
-> > > -        mem0_end = be64_to_cpu(*(uint64_t *)(mem0_reg + sizeof(uint32_t) * ac));
-> > > +        mem0_end = ldq_be_p(mem0_reg + sizeof(uint32_t) * ac);
-> > >      } else {
-> > >          mem0_end = be32_to_cpu(*(uint32_t *)(mem0_reg + sizeof(uint32_t) * ac));
-> > >      }
-> >
-> > I did wonder if there was a better way to do what this is doing,
-> > but neither we (in system/device_tree.c) nor libfdt seem to
-> > provide one.
->
-> libfdt does provide unaligned access helpers (fdt32_ld() etc.), but
-> not an automatic aligned-or-unaligned helper.   Maybe we should add that?
-
-fdt32_ld() and friends only do the "load from this bit of memory"
-part, which we already have QEMU utility functions for (and which
-are this patch uses).
-
-This particular bit of code is dealing with an fdt property ("memory")
-that is an array of (address, size) tuples where address and size
-can independently be either 32 or 64 bits, and it wants the
-size value of tuple 0. So the missing functionality is something at
-a higher level than fdt32_ld() which would let you say "give me
-tuple N field X" with some way to specify the tuple layout. (Which
-is an awkward kind of API to write in C.)
-
-Slightly less general, but for this case we could perhaps have
-something like the getprop equivalent of qemu_fdt_setprop_sized_cells():
-
-  uint64_t value_array[2];
-  qemu_fdt_getprop_sized_cells(fdt, nodename, "memory", &value_array,
-                               ac, sc);
-  /*
-   * fills in value_array[0] with address, value_array[1] with size,
-   * probably barfs if the varargs-list of cell-sizes doesn't
-   * cover the whole property, similar to the current assert on
-   * proplen.
-   */
-  mem0_end = value_array[0];
-
-thanks
--- PMM
+SGkgTmljaywNCg0KPiAgRnJvbTogTmljaG9sYXMgUGlnZ2luIDxucGlnZ2luQGdtYWlsLmNvbT4N
+Cj4gIFNlbnQ6IFRodXJzZGF5LCBKdWx5IDQsIDIwMjQgNDoyOCBBTQ0KPiAgVG86IFNhbGlsIE1l
+aHRhIDxzYWxpbC5tZWh0YUBodWF3ZWkuY29tPjsgcWVtdS1kZXZlbEBub25nbnUub3JnOw0KPiAg
+cWVtdS1hcm1Abm9uZ251Lm9yZzsgbXN0QHJlZGhhdC5jb20NCj4gIA0KPiAgT24gRnJpIEp1biAx
+NCwgMjAyNCBhdCA5OjM2IEFNIEFFU1QsIFNhbGlsIE1laHRhIHdyb3RlOg0KPiAgPiBGcm9tOiBK
+ZWFuLVBoaWxpcHBlIEJydWNrZXIgPGplYW4tcGhpbGlwcGVAbGluYXJvLm9yZz4NCj4gID4NCj4g
+ID4gV2hlbiBhIEtWTSB2Q1BVIGlzIHJlc2V0IGZvbGxvd2luZyBhIFBTQ0kgQ1BVX09OIGNhbGws
+IGl0cyBwb3dlciBzdGF0ZQ0KPiAgPiBpcyBub3Qgc3luY2hyb25pemVkIHdpdGggS1ZNIGF0IHRo
+ZSBtb21lbnQuIEJlY2F1c2UgdGhlIHZDUFUgaXMgbm90DQo+ICA+IG1hcmtlZCBkaXJ0eSwgd2Ug
+bWlzcyB0aGUgY2FsbCB0byBrdm1fYXJjaF9wdXRfcmVnaXN0ZXJzKCkgdGhhdCB3cml0ZXMNCj4g
+ID4gdG8gS1ZNJ3MgTVBfU1RBVEUuIEZvcmNlIG1wX3N0YXRlIHN5bmNocm9uaXphdGlvbi4NCj4g
+IA0KPiAgSG1tLiBJcyB0aGlzIGEgYnVnIGZpeCBmb3IgdXBzdHJlYW0/IGFybSBkb2VzIHJlc3Bv
+bmQgdG8gQ1BVX09OIGNhbGxzIGJ5DQo+ICB0aGUgbG9vaywgYnV0IG1heWJlIGl0J3Mgbm90IGRv
+aW5nIEtWTSBwYXJraW5nIHVudGlsIHlvdXIgc2VyaWVzPw0KDQoNClllcywgdGhpcyBpcyByZXF1
+aXJlZCB3ZSBub3cgcGFyayBhbmQgdW4tcGFyayB0aGUgdkNQVXMuIFdlIG11c3QgZW5zdXJlIHRo
+ZQ0KS1ZNIHJlc2V0cyB0aGUgS1ZNIFZDUFUgc3RhdGUgYXMgd2VsbC4gSGVuY2UsIG5vdCBhIGZp
+eCBidXQgYSBjaGFuZ2Ugd2hpY2gNCmlzIHJlcXVpcmVkIGluIGNvbnRleHQgdG8gdGhpcyBwYXRj
+aC1zZXQuDQoNCg0KPiAgTWF5YmUganVzdCBhIHNsaWdodCBjaGFuZ2UgdG8gc2F5ICJXaGVuIEtW
+TSBwYXJraW5nIGlzIGltcGxlbWVudGVkIGZvcg0KPiAgQVJNLi4uIiBpZiBzby4NCg0KU3VyZS4N
+Cg0KPiAgDQo+ICA+DQo+ICA+IFNpZ25lZC1vZmYtYnk6IEplYW4tUGhpbGlwcGUgQnJ1Y2tlciA8
+amVhbi1waGlsaXBwZUBsaW5hcm8ub3JnPg0KPiAgPiBTaWduZWQtb2ZmLWJ5OiBTYWxpbCBNZWh0
+YSA8c2FsaWwubWVodGFAaHVhd2VpLmNvbT4NCj4gID4gLS0tDQo+ICA+ICB0YXJnZXQvYXJtL2t2
+bS5jIHwgNyArKysrKysrDQo+ICA+ICAxIGZpbGUgY2hhbmdlZCwgNyBpbnNlcnRpb25zKCspDQo+
+ICA+DQo+ICA+IGRpZmYgLS1naXQgYS90YXJnZXQvYXJtL2t2bS5jIGIvdGFyZ2V0L2FybS9rdm0u
+YyBpbmRleA0KPiAgPiAxMTIxNzcxYzRhLi43YWNkODNjZTY0IDEwMDY0NA0KPiAgPiAtLS0gYS90
+YXJnZXQvYXJtL2t2bS5jDQo+ICA+ICsrKyBiL3RhcmdldC9hcm0va3ZtLmMNCj4gID4gQEAgLTk4
+MCw2ICs5ODAsNyBAQCB2b2lkIGt2bV9hcm1fY3B1X3Bvc3RfbG9hZChBUk1DUFUgKmNwdSkNCj4g
+IHZvaWQNCj4gID4ga3ZtX2FybV9yZXNldF92Y3B1KEFSTUNQVSAqY3B1KSAgew0KPiAgPiAgICAg
+IGludCByZXQ7DQo+ICA+ICsgICAgQ1BVU3RhdGUgKmNzID0gQ1BVKGNwdSk7DQo+ICA+DQo+ICA+
+ICAgICAgLyogUmUtaW5pdCBWQ1BVIHNvIHRoYXQgYWxsIHJlZ2lzdGVycyBhcmUgc2V0IHRvDQo+
+ICA+ICAgICAgICogdGhlaXIgcmVzcGVjdGl2ZSByZXNldCB2YWx1ZXMuDQo+ICA+IEBAIC0xMDAx
+LDYgKzEwMDIsMTIgQEAgdm9pZCBrdm1fYXJtX3Jlc2V0X3ZjcHUoQVJNQ1BVICpjcHUpDQo+ICA+
+ICAgICAgICogZm9yIHRoZSBzYW1lIHJlYXNvbiB3ZSBkbyBzbyBpbiBrdm1fYXJjaF9nZXRfcmVn
+aXN0ZXJzKCkuDQo+ICA+ICAgICAgICovDQo+ICA+ICAgICAgd3JpdGVfbGlzdF90b19jcHVzdGF0
+ZShjcHUpOw0KPiAgPiArDQo+ICA+ICsgICAgLyoNCj4gID4gKyAgICAgKiBFbnN1cmUgd2UgY2Fs
+bCBrdm1fYXJjaF9wdXRfcmVnaXN0ZXJzKCkuIFRoZSB2Q1BVIGlzbid0IG1hcmtlZCBkaXJ0eSBp
+Zg0KPiAgPiArICAgICAqIGl0IHdhcyBwYXJrZWQgaW4gS1ZNIGFuZCBpcyBub3cgYm9vdGluZyBm
+cm9tIGEgUFNDSSBDUFVfT04gY2FsbC4NCj4gID4gKyAgICAgKi8NCj4gID4gKyAgICBjcy0+dmNw
+dV9kaXJ0eSA9IHRydWU7DQo+ICA+ICB9DQo+ICA+DQo+ICA+ICB2b2lkIGt2bV9hcm1fY3JlYXRl
+X2hvc3RfdmNwdShBUk1DUFUgKmNwdSkNCj4gIA0KPiAgQWxzbyBhYm92ZSBteSBwYXkgZ3JhZGUs
+IGJ1dCBhcm1fc2V0X2NwdV9vbl9hc3luY193b3JrKCkgd2hpY2ggc2VlbXMNCj4gIHRvIGJlIHdo
+YXQgY2FsbHMgdGhlIENQVSByZXNldCB5b3UgcmVmZXIgdG8gZG9lcyBhIGJ1bmNoIG9mIENQVSBy
+ZWdpc3RlciBhbmQNCj4gIHN0YXRlIHNldHRpbmcgaW5jbHVkaW5nIHRoZSBwb3dlciBzdGF0ZSBz
+ZXR0aW5nIHRoYXQgeW91IG1lbnRpb24uDQo+ICBXb3VsZCB0aGUgdmNwdV9kaXJ0eSBiZSBiZXR0
+ZXIgdG8gZ28gdGhlcmU/DQoNCg0KTWF5YmUgd2UgY2FuLiBMZXQgbWUgY3Jvc3MgdmVyaWZ5IHRo
+aXMuDQoNCg0KVGhhbmtzDQpTYWxpbC4NCg0KPiAgDQo+ICBUaGFua3MsDQo+ICBOaWNrDQo=
 
