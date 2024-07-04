@@ -2,38 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE8BA927E62
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 23:02:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8244A927E5D
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 23:01:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPTZg-0006UP-18; Thu, 04 Jul 2024 17:01:04 -0400
+	id 1sPTZe-0006QE-PS; Thu, 04 Jul 2024 17:01:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sPTZd-0006Qd-EZ; Thu, 04 Jul 2024 17:01:01 -0400
+ id 1sPTZc-0006My-0E; Thu, 04 Jul 2024 17:01:00 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sPTZZ-0004IJ-LT; Thu, 04 Jul 2024 17:01:01 -0400
+ id 1sPTZZ-0004II-KO; Thu, 04 Jul 2024 17:00:59 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 57BA17755D;
+ by isrv.corpit.ru (Postfix) with ESMTP id 62D0F7755E;
  Fri,  5 Jul 2024 00:00:50 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 6DFF4FEC97;
+ by tsrv.corpit.ru (Postfix) with SMTP id 79B6DFEC98;
  Fri,  5 Jul 2024 00:00:55 +0300 (MSK)
-Received: (nullmailer pid 1507710 invoked by uid 1000);
+Received: (nullmailer pid 1507715 invoked by uid 1000);
  Thu, 04 Jul 2024 21:00:55 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.0.2 00/22] Patch Round-up for stable 9.0.2,
- freeze on 2024-07-14
-Date: Fri,  5 Jul 2024 00:00:30 +0300
-Message-Id: <qemu-stable-9.0.2-20240704162154@cover.tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Paolo Bonzini <pbonzini@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.0.2 01/22] target/i386: fix size of EBP writeback in
+ gen_enter()
+Date: Fri,  5 Jul 2024 00:00:31 +0300
+Message-Id: <20240704210055.1507652-1-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <qemu-stable-9.0.2-20240704162154@cover.tls.msk.ru>
+References: <qemu-stable-9.0.2-20240704162154@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -57,68 +59,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following patches are queued for QEMU stable v9.0.2:
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 
-  https://gitlab.com/qemu-project/qemu/-/commits/staging-9.0
+The calculation of FrameTemp is done using the size indicated by mo_pushpop()
+before being written back to EBP, but the final writeback to EBP is done using
+the size indicated by mo_stacksize().
 
-Patch freeze is 2024-07-14, and the release is planned for 2024-07-16:
+In the case where mo_pushpop() is MO_32 and mo_stacksize() is MO_16 then the
+final writeback to EBP is done using MO_16 which can leave junk in the top
+16-bits of EBP after executing ENTER.
 
-  https://wiki.qemu.org/Planning/9.0
+Change the writeback of EBP to use the same size indicated by mo_pushpop() to
+ensure that the full value is written back.
 
-Please respond here or CC qemu-stable@nongnu.org on any additional patches
-you think should (or shouldn't) be included in the release.
+Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2198
+Message-ID: <20240606095319.229650-5-mark.cave-ayland@ilande.co.uk>
+Cc: qemu-stable@nongnu.org
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+(cherry picked from commit 3973615e7fbaeef1deeaa067577e373781ced70a)
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-The changes which are staging for inclusion, with the original commit hash
-from master branch, are given below the bottom line.
+diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
+index a55df176c6..26ed900f34 100644
+--- a/target/i386/tcg/translate.c
++++ b/target/i386/tcg/translate.c
+@@ -2684,7 +2684,7 @@ static void gen_enter(DisasContext *s, int esp_addend, int level)
+     }
+ 
+     /* Copy the FrameTemp value to EBP.  */
+-    gen_op_mov_reg_v(s, a_ot, R_EBP, s->T1);
++    gen_op_mov_reg_v(s, d_ot, R_EBP, s->T1);
+ 
+     /* Compute the final value of ESP.  */
+     tcg_gen_subi_tl(s->T1, s->T1, esp_addend + size * level);
+-- 
+2.39.2
 
-Thanks!
-
-/mjt
-
---------------------------------------
-01 3973615e7fba Mark Cave-Ayland:
-   target/i386: fix size of EBP writeback in gen_enter()
-02 2c3e4e2de699 Alexey Dobriyan:
-   virtio-net: drop too short packets early
-03 77bf310084da Dongwon Kim:
-   ui/gtk: Draw guest frame at refresh cycle
-04 719c6819ed9a Stefan Hajnoczi:
-   Revert "monitor: use aio_co_reschedule_self()"
-05 a276ec8e2632 Philippe Mathieu-Daudé:
-   hw/audio/virtio-snd: Always use little endian audio format
-06 b1cf266c82cb Gerd Hoffmann:
-   stdvga: fix screen blanking
-07 3b279f73fa37 Anton Johansson:
-   accel/tcg: Fix typo causing tb->page_addr[1] to not be recorded
-08 54b27921026d Ilya Leoshkevich:
-   linux-user: Make TARGET_NR_setgroups affect only the current thread
-09 6b4965373e56 Clément Chigot:
-   target/sparc: use signed denominator in sdiv helper
-10 521d7fb3ebdf Richard Henderson:
-   tcg/loongarch64: Fix tcg_out_movi vs some pcrel pointers
-11 6d3279655ac4 Fabiano Rosas:
-   migration: Fix file migration with fdset
-12 641b1efe01b2 Thomas Huth:
-   tests: Update our CI to use CentOS Stream 9 instead of 8
-13 903916f0a017 Chuang Xu:
-   i386/cpu: fixup number of addressable IDs for processor cores in the 
-   physical package
-14 76bccf3cb9d9 Richard Henderson:
-   target/arm: Fix VCMLA Dd, Dn, Dm[idx]
-15 7619129f0d4a Richard Henderson:
-   target/arm: Fix FJCVTZS vs flush-to-zero
-16 9d7950edb0cd Daniel P. Berrangé:
-   hw/core: allow parameter=1 for SMP topology on any machine
-17 e68dcbb07923 Daniel P. Berrangé:
-   tests: add testing of parameter=1 for SMP topology
-18 bd385a5298d7 Kevin Wolf:
-   qcow2: Don't open data_file with BDRV_O_NO_IO
-19 2eb42a728d27 Kevin Wolf:
-   iotests/244: Don't store data-file with protocol in image
-20 7e1110664ecb Kevin Wolf:
-   iotests/270: Don't store data-file with json: prefix in image
-21 7ead94699861 Kevin Wolf:
-   block: Parse filenames only when explicitly requested
-22 a71d9dfbf63d Richard Henderson:
-   tcg/optimize: Fix TCG_COND_TST* simplification of setcond2
 
