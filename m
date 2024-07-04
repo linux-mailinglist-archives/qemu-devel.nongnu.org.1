@@ -2,204 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 890B3927673
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 14:53:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B5FD9276ED
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 15:12:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPLuP-0006GG-2t; Thu, 04 Jul 2024 08:49:57 -0400
+	id 1sPMEf-000412-HL; Thu, 04 Jul 2024 09:10:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yi.l.liu@intel.com>)
- id 1sPLtz-0005AL-GZ
- for qemu-devel@nongnu.org; Thu, 04 Jul 2024 08:49:33 -0400
-Received: from mgamail.intel.com ([198.175.65.20])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yi.l.liu@intel.com>)
- id 1sPLtt-0006Wg-1c
- for qemu-devel@nongnu.org; Thu, 04 Jul 2024 08:49:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1720097365; x=1751633365;
- h=message-id:date:subject:to:cc:references:from:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=jGVAmgM1YUx2Rmm9eO5hSd5VCfaeNr3ElMEzMtAiujQ=;
- b=KQbnZk28n/rHamJpVgta2Ezx/jFGkoaz4UpzaIN5IiuiD/VM7qm2Kmmw
- BoOXpojXJWbtgdFoJwBhy1B0ykPz5EduZ3FBdv9cdYHAy+pNcHOLSeTHT
- VTPWd89ClCAMfcbbankY1jKrIIiG0E9ylbYpXh0ItA9EbGu7grWKy20Lm
- yo9W11E+kXIxpCOYHze3wvk09qR5VvBzGVgK2TygXbA4HGTf9vtlDEaIM
- 0g5dNl7KnHhVFfb5QLGgekfH5euyA/mF7sW2GXVX8MCylg7OQVSMH0iEM
- t6ImCBWv+IwmJMTBR/qNLgt6L9pKwrbF8SEC21uuOFdGM7UCwsq98iT3r A==;
-X-CSE-ConnectionGUID: wJ4AVX00Rc2eCCItxxASEg==
-X-CSE-MsgGUID: nIvufYeCSbmSqtzGeb4big==
-X-IronPort-AV: E=McAfee;i="6700,10204,11122"; a="17193656"
-X-IronPort-AV: E=Sophos;i="6.09,183,1716274800"; d="scan'208";a="17193656"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Jul 2024 05:49:07 -0700
-X-CSE-ConnectionGUID: uIFagib0Rd+vlPLVSUblGQ==
-X-CSE-MsgGUID: xOQTDvryQEq5bEDIoEp3kg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,183,1716274800"; d="scan'208";a="46480719"
-Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
- by fmviesa007.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 04 Jul 2024 05:49:07 -0700
-Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
- fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Thu, 4 Jul 2024 05:49:06 -0700
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Thu, 4 Jul 2024 05:49:06 -0700
-Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Thu, 4 Jul 2024 05:49:06 -0700
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (104.47.59.169)
- by edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Thu, 4 Jul 2024 05:49:06 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=RUEWmbuGhFHqXYEuulawIG/RoxeQls8bYZ0hIRddsw603MGVP3L4MzkTm10L3pCACHoihit1VBFy2CN0RckFEWAO8jhLUObF+T8Mw2JKBXO/0t5QOQ4sfu1PoUcVjVND4ypBqYnWompCaXGEFCUSMCKHU/hUds61KC9h3IVNRg/S+Ydud2C2nS1majEvvHky5g2BQz5b051wbUXDdcF+0rb5x8t5MiPjCBlgGozykrJwvgovFDm5TmvHs9Q6B8Ldb/6GhpI10AeY49NOlLiJCGzbjkFz56y73nMkOLUVSyX1XIbBW9ZK0oeTdEW+WTyujcB2T20Oe3ALLxMtU+x4DA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=R/AxhA4RY0IUiilnXwe9P+eg+BV0nEyR5pm34ewcTJ4=;
- b=Xxr6hpUD8TcuzBUSBnQDyG1so9/hQSj+40lkNsIDKOQx83Qd2+2Sga6qA6iOBfIUX5s9FNKOhmaqHSJZDiKCRfHL3pvbvnYgiBDfEdC2L9bhNy6zCSy+fOBEGuXHuZIfFSyaRCNpuHHxTWs+S9eAh3x/Z/vfQvs+kEnqnbWs4aGmicsknUUW3q8V2izBUL4frEqHo/kBp9s1ROAWoskQcxlN/Sr5ywTQYr7Wd1d8m1E207c1TM+4G3zaNODtQOo+AOyZ2Syw8Z9pepIlpwdwFAcrwiMZA9qpYKgTdW0SHuAeMQb1Zd2KX4h6tb+bDOxP3RFKDmm/iClK5aiqMxvxCg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS0PR11MB7529.namprd11.prod.outlook.com (2603:10b6:8:141::20)
- by SJ0PR11MB4848.namprd11.prod.outlook.com (2603:10b6:a03:2af::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7741.26; Thu, 4 Jul
- 2024 12:49:03 +0000
-Received: from DS0PR11MB7529.namprd11.prod.outlook.com
- ([fe80::d244:15cd:1060:941a]) by DS0PR11MB7529.namprd11.prod.outlook.com
- ([fe80::d244:15cd:1060:941a%3]) with mapi id 15.20.7741.029; Thu, 4 Jul 2024
- 12:49:03 +0000
-Message-ID: <ce5730ef-95e5-4167-af5a-237bde5e04f9@intel.com>
-Date: Thu, 4 Jul 2024 20:52:59 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH ats_vtd v5 19/22] memory: add an API for ATS support
-To: CLEMENT MATHIEU--DRIF <clement.mathieu--drif@eviden.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-CC: "jasowang@redhat.com" <jasowang@redhat.com>, "zhenzhong.duan@intel.com"
- <zhenzhong.duan@intel.com>, "kevin.tian@intel.com" <kevin.tian@intel.com>,
- "joao.m.martins@oracle.com" <joao.m.martins@oracle.com>, "peterx@redhat.com"
- <peterx@redhat.com>, "mst@redhat.com" <mst@redhat.com>
-References: <20240702055221.1337035-1-clement.mathieu--drif@eviden.com>
- <20240702055221.1337035-20-clement.mathieu--drif@eviden.com>
- <ca43f372-413e-4e3f-b4d9-26164f5cb7db@intel.com>
- <4ba9b7bc-b965-4a24-88aa-ec1010d60189@eviden.com>
-Content-Language: en-US
-From: Yi Liu <yi.l.liu@intel.com>
-In-Reply-To: <4ba9b7bc-b965-4a24-88aa-ec1010d60189@eviden.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SI2P153CA0030.APCP153.PROD.OUTLOOK.COM
- (2603:1096:4:190::15) To DS0PR11MB7529.namprd11.prod.outlook.com
- (2603:10b6:8:141::20)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1sPMEY-00040h-NB
+ for qemu-devel@nongnu.org; Thu, 04 Jul 2024 09:10:47 -0400
+Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1sPMEV-0003GC-1U
+ for qemu-devel@nongnu.org; Thu, 04 Jul 2024 09:10:46 -0400
+Received: by mail-ej1-x62f.google.com with SMTP id
+ a640c23a62f3a-a72988749f0so89299166b.0
+ for <qemu-devel@nongnu.org>; Thu, 04 Jul 2024 06:10:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1720098638; x=1720703438; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:references
+ :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=J9jXl/SAccJGn5LesSoh4AjnbcxAVfwKnvRvF1b8xdg=;
+ b=uL9LDaZlhNbFrxY58zCn9k4rOJZUdlY4VEn3MY7OLmZZc8V28hZLw4sm7Alq5qBQmI
+ RTI/L15RVeXAATapRjY548d9JC6gV7s1e/olwaP9FVo/ygDEJFFH640RYSiUI5aiBIif
+ IwzexwHMBjKabUhz2NSjO4OL7HmEUjjNZ5HcdTnTrLVf0EhaA+cmPZBIz8tApN9nhuud
+ zKwIEGftarc8PMNdJYE2KZl+IFmH2sjbkUIzwF9vadYONX8uK/wKSOgOxpbaAjHs5WAD
+ CIcxtdAKpH+/2Hv8GbQ7kxUfEeNNGODqi9lYdMM5aBcGHNrXjQGnKac9za4MWNwRkb7o
+ rTig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1720098638; x=1720703438;
+ h=content-transfer-encoding:mime-version:message-id:date:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=J9jXl/SAccJGn5LesSoh4AjnbcxAVfwKnvRvF1b8xdg=;
+ b=YTdMNOYUEglNX3HbMOGAKkS376V9/UAtVotmtzyh6TNN473U3o3ao3NtxmRfwRkSs9
+ owB3QVThmcWC6cMpr/j9a43UP1nPQ3nkbjccYBxG9C96l5me+BtQNlGsZlDqMxqJaFZF
+ jw5DE7h6x0MmR/xbvDxl4GVwJ5fU/OORgbjULJMCcOO+I4xZVrYCXsX8eVAw0nszzRx6
+ Wgebzu/8+Ta4mgFpw0Y5ucJ5TGbY9SBPE8dMhV2X5PP2/MeV57tBTgkiH3I2ATsRMzRc
+ YJM25r3pOjnkZyuREv4AeE6cIU+KwxNkYo22uWTZopoMLyFVx3DNOSlp/ugEEMhLerO2
+ jzFA==
+X-Gm-Message-State: AOJu0YzXY6TYNrsn1Sy0PbbyMazKiUWhZzkFjskGAUHYLaOEa61vNzsx
+ fp8A50dGkeo49h7jmX2oSRMLGbS6Si+Ij9WP3sbEW3oLkBDHbNazq5l+THfmc34=
+X-Google-Smtp-Source: AGHT+IFvDB9ld3mXQCduKDUHkhXJ+lOn+yZQz7R2Wu8lvajpHMM9pM40UyiYwYx3tFnX2mpIwCs+Hg==
+X-Received: by 2002:a17:906:abd4:b0:a75:360a:6cb0 with SMTP id
+ a640c23a62f3a-a77ba46fa36mr107219766b.29.1720098637896; 
+ Thu, 04 Jul 2024 06:10:37 -0700 (PDT)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-a77affca606sm83950766b.170.2024.07.04.06.10.37
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 04 Jul 2024 06:10:37 -0700 (PDT)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 6E5FF5F839;
+ Thu,  4 Jul 2024 14:10:36 +0100 (BST)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: TaiseiIto <taisei1212@outlook.jp>
+Cc: qemu-devel@nongnu.org,  mst@redhat.com,  pbonzini@redhat.com, Marcel
+ Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: Re: [PATCH] hw/timer/hpet: Fix wrong HPET interrupts
+In-Reply-To: <TY0PR0101MB4285838139BC56DEC3D1CCFDA4CE2@TY0PR0101MB4285.apcprd01.prod.exchangelabs.com>
+ (TaiseiIto's message of "Tue, 18 Jun 2024 13:10:44 +0000")
+References: <TY0PR0101MB4285838139BC56DEC3D1CCFDA4CE2@TY0PR0101MB4285.apcprd01.prod.exchangelabs.com>
+Date: Thu, 04 Jul 2024 14:10:36 +0100
+Message-ID: <871q49nvzn.fsf@draig.linaro.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR11MB7529:EE_|SJ0PR11MB4848:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5f574de5-c6c2-49e0-955b-08dc9c27af34
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?K2dPRFJFeXZRL0U2d0ovL3YyM29GK2VKUm9qNUdCaEc0SEo5NDQwclcrZVc3?=
- =?utf-8?B?bXlhMzUrZnpzeHdPT0luY0xZU0I4d3NnR1BBYkRIYTMxQ2FRc0tXNlZZNlo1?=
- =?utf-8?B?U1BoQ2JBMXh2RTlLOU1UOUh6ckY5U3dQY0JJcndjLzRJd1J4NlNxNUNOVGpw?=
- =?utf-8?B?cFdBYndaMGFYTUJIcFcycXRuSlczN1RIZC9qK1JKU2ZuajNqallQbUgvb2s3?=
- =?utf-8?B?MTd0SG1YUlNTZ0NvR1Z3R0k2dEZaVlNkUklUUm84K3N1MU9MUkVHWXN6VGxR?=
- =?utf-8?B?aEJoc1d4ZmxlZEYyRmNIWDdPQkF6RjJtNWY0dCs2aXZZUTRJVGtqV2x0OUFM?=
- =?utf-8?B?Y1R4cHNZNnpJaTlZVUx4NzVnUTdTdmNCQjh0NTZkcm9iYXFld3NxMkNFN2xS?=
- =?utf-8?B?SWFWSmVQeVJXdjA3K3FVYjVXVlJsbEptS3lLWDJiTzRNNWdDTU1obDE0NFRD?=
- =?utf-8?B?RUIwMjlqcnU4MWZNRHhoeUZsenhEQW5qNHZ0VkNzSW1nK3MwRzExUm45UjNP?=
- =?utf-8?B?ektacG5meUcxL0ZQbldNQjZDWnYxc2hGcTlWcGNmbnY2cGpBQmc1NFF0Z0JP?=
- =?utf-8?B?dnhRQmJ4SmVwanRnR1lsd2dFOG9xUDgvazBCSzJsSDd5YWRkYUdmdm9Db1Nk?=
- =?utf-8?B?Qlkyb3M3alhFb1lnS3dLWUFGWm9MelVsRlgwMVUxVTRTM2NuSWJWUVdTYlhW?=
- =?utf-8?B?aE1IRHlLTlU0TkNIZkxnVGlYNEJWZ093Y0xIY2dJSjB4cnY3SkhvYjFlYWhz?=
- =?utf-8?B?QmZaVWh1N3BDV296bzljbkc2RVdQZU5sS2pSOEVmdTVYOTdGdHFNRTVrQkRP?=
- =?utf-8?B?bHVzS2V4SldHZmlMb09FV0pDaUVObE83NEpHVjNKU3hZNFc0YnRCNDk0MGtZ?=
- =?utf-8?B?bG5XSncwT0lNWWlsNWxLZWhMY2doWDVjUW9qUmY3YXMzdnpYazIxZkJncXlv?=
- =?utf-8?B?UDc0MkN1MnBYVFpwZSt1N2ltZjhHYVVwYWptVGpMRC9HTmtyNkZyMFJvZ29V?=
- =?utf-8?B?djhzN2g1dC9naEZpRFh6TUV0QkZXKzJJMWQ0Qko0a1hEd05HQlZWcEg0V2Rp?=
- =?utf-8?B?SnU3QmJtUkU2cytLNzN5aXFPcDRSVHRGTkxZSHRBa0pKdW5YeGtlRm16Mk5z?=
- =?utf-8?B?VVg4c2F0NCtMZjgyQjYwaWVFd3FCd0d4dkVZUnZNZkNJV2tpZW16Mko2ZHNw?=
- =?utf-8?B?ZFROemkxOUdDNWdicHdBTlBSODNYUUhyUGxkdjVtZDVFNXJZaGVWaVc2d0pi?=
- =?utf-8?B?dGVGZElvYlROVlpyRE55SUo5WWpZODlMaFl6eVBxZW13N0RwZWYwQTE1WUJY?=
- =?utf-8?B?dTI2dEZhbk1BMWVZbnQ5cXo0MkFYS1lQeUttWWNDU1kyU05TWVZ0RDNmb2xH?=
- =?utf-8?B?T3BaWUU4b252eVhIU2JxZURqbEhmSWZnYnEzMys5bWtFamJOM3RIcXRFWUlu?=
- =?utf-8?B?MVQ2b0l3UTBGOTVwUFhpWG92MEN6MzNzYUl3dDZvMG12V3lWcnZDaFVSRXJj?=
- =?utf-8?B?dnhQeGFXcUZpQ29weDVnNlFnbUZnYTFsamJYK1JvNWZwRlJJMXNxODV3Szg2?=
- =?utf-8?B?bG9tWllpTExidTl5QmU0MUYxQ09kT2FyQ2hKamhTRkU2d2FHanNJd0szaWhL?=
- =?utf-8?B?YmxOMDZIZWtYbUlpMnZNa0djKy9jL0pzQXNxTEF4blVvN0RtakxWWG1KdmJQ?=
- =?utf-8?B?NE5MamdweHRCYThZUW1nMFp4ajRDOWRnckM4Q1B6NnRsRjNjZjVlNHhsNXJR?=
- =?utf-8?B?Y1ZRd1NQQW5CRWwrRzVTclI0NXAwL0NBQy9acnFvUnhPNVhpcmdVRkg5SE5X?=
- =?utf-8?B?YWhEeGtZOFFvZ0ZWbnlOUT09?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DS0PR11MB7529.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(366016)(1800799024); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Zkp3OUZTeGZ0MjdUaDBjQmNpK1ZyRE8yRVRLZVNHR1pveDJwSFpDRnVXOWp2?=
- =?utf-8?B?UmtOUFZkaFVHakN5QkUwam5hMFNqSlpMK3dWaG1YNnIrYlAyWHRDMFJwbG1k?=
- =?utf-8?B?b2o3cGw0VnJROS9xREZlYVVWZFJYTExqcDhneWl5dk9IaEN3cnROcVh2NG9l?=
- =?utf-8?B?U2xyUXdwdlpCMTREaytlTTRudkk5UXozMXcrVWYxbUQrcnhXT0FsV2lScm9m?=
- =?utf-8?B?ZUh1OVFKSE44bjMxdFVUYU0xOFNzS1RtRnJuUUlnbEh2Q2QrUVUzSUhseDd1?=
- =?utf-8?B?UjAveWRaQ25qRGMvZTZRZXRuVHlYempXWjdRR2JJTlR4TFVEdDFnNDROc05p?=
- =?utf-8?B?U3VzUjkwZS9PZG5GQVZVeUhRbFRkZEJOcjMvWExUdUhlT1lTcUJzVW02a2Jx?=
- =?utf-8?B?T2I4MlNPOVh5Y0VLNjY2c0F2enVmNWlEeWEwd1ByOEtWTkpKbUpxZFFOQ1I5?=
- =?utf-8?B?RXQzMkcvR0t4bTBIQUw2TUN5ZjJpVTV2ZThTdHlyUjgzdzEwWmhrRGZiM1Rm?=
- =?utf-8?B?TDBieFZ6YWJhREtnMUlrM2tqLzdvNC91eCtwRnl3K1JJcmQ5RzJQdkp3cmhI?=
- =?utf-8?B?QmNJSDNZTFM3d2ZtNUFxWmFzN3JoQU9oN0RmOGhMa0tmQU1oMkRjU1FFYTFO?=
- =?utf-8?B?T3lOdVA5UVVyZSs3Mm14OXptaUJ6RHdKb2RuU1I5ODZUZXZxUjdXREcvbkll?=
- =?utf-8?B?YWhXK2xVNERWZXJxZm4wTUttdXV1cnNBVjhXNXFaeVFxMTF6WmFReG5GYytS?=
- =?utf-8?B?UVp2NlpZRHJzV1dTNmNLTjFaVEcyZVljaFpUWTNTT3VpaFR6WFRQQzZoS20z?=
- =?utf-8?B?M2dpU01JbFd3bG9CbkJiaHJvTGRWYytGQXEyb1JPWGJRMzVXVGJUSGxPVmNE?=
- =?utf-8?B?NW9mR09lTktEMjNuN2kwSGVYeVJUd29CSHNJQzFIZFYyejRwRlpSVG94byti?=
- =?utf-8?B?TGg1UkdsT2dpOXVHTG0zVi9sbkUzZGwzWUVKbm9jeFBWYTZNQnhubldJc2JY?=
- =?utf-8?B?RUhsTk84YXJGTSswSGpjS1gzelFmTm9BU1NwZnBUUENXRml1U1ZkQ1p3cCty?=
- =?utf-8?B?cFZER0kxV2h0UTBOaFFoMVBTdHBjMVN3RnllV3VMVVBTbzdPbllFNmY1YWI5?=
- =?utf-8?B?aENxVU9WdXEwZjBnNEJwc244eCttYTFYUTJxc2ZQbjRjTVVNYWxIeUtVRVBJ?=
- =?utf-8?B?dTRJTUlOYzdXcHg3a3RUK2ZCd1lrWEJEcXcvMSswbEswOFlYZVROd1hPakc0?=
- =?utf-8?B?VnNWL2VmNXgrRzg0dzd0a1hQY2ZHTzZQM1RSSHhnVDV4SWhrcWF6bzgrOW9k?=
- =?utf-8?B?YTZFVkpXN0J6Wm00RTF5MmJUWFVOWStRbHd2amJyVkhhcktBNytpMW1PWVp3?=
- =?utf-8?B?Z05OQXhTSFNaMkZyNGx5VlY3RUlnN0VKSlJIak5vRG5GdEovNjZSZm5rNXlR?=
- =?utf-8?B?R3llTXJOd1hIT2xDSGRrMUE0c2FLM2JVZzNrMzhveXd5NWtuZS9NMjFIaUdF?=
- =?utf-8?B?Q1FieVg1YVpySmVxOUVYMWQ4MFJkZkZMZllaM256Vzdob0NWTGQzOFpTRFhy?=
- =?utf-8?B?SVVEY0Rad0ZNZVhsRHpQa0RSZlNFekdaRFVxMHA1MWMxWTZ1TmhoaFB0eUxR?=
- =?utf-8?B?Y2RIamJZN2daM1RYVElRcEtiNitNVXlDZ2dOb0lhK0w0NzJ0Nk9pWklsZWs4?=
- =?utf-8?B?TnRoNzFHSm0vQmZ3ckhaZ3BONUhWMDZ0UkhDVlNHOGVsUHYvL0pnb2V6Wmow?=
- =?utf-8?B?dEUzR3MyNG1CWGJNWUhxSVdqTFVEV3U4VlNsYWYyVGk4ZzNXY3dnMEJydThU?=
- =?utf-8?B?ZU1id2ZZSktTRjhpZGNBU3ZnSWNwWWtYWGZxUzZhVEdOUzFlM1hHV0JaaGNQ?=
- =?utf-8?B?ZlJ0RzhHdEFPcW9yTDVjQ2RpK1FsbVdwZkh5cUcwMFkrSTI3em9ZVlRSVTJS?=
- =?utf-8?B?MGFWMFUyYld4RW04b2ZEZG05WXRmQStienBCWUNzR3lQOEVsR3pwTk44a3hV?=
- =?utf-8?B?V3ZKc0RFUSs2Tkt6NW5HcGRnaFlmSjRjVkFoUzE1dTR2MkNkd2F5VlRnSDNF?=
- =?utf-8?B?SC9SR0h1YmVmVEg5YWgzZDVxK3JicWlET1dxODVxbkgyTDVhN2xUZUkybUVH?=
- =?utf-8?Q?scFIhIeQm1OiBg4wYeSgEqKlH?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5f574de5-c6c2-49e0-955b-08dc9c27af34
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7529.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jul 2024 12:49:03.8036 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: dE0NGM44Oc33B0q+7Xv8WXbWRh+Iey3OMg2gBw2Fsmpjxvbq9FZFKAtl1Db2DijPyoTS/w4MZuSgE7oXxFP21w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB4848
-X-OriginatorOrg: intel.com
-Received-SPF: pass client-ip=198.175.65.20; envelope-from=yi.l.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -215,147 +94,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2024/7/4 12:30, CLEMENT MATHIEU--DRIF wrote:
-> 
-> On 03/07/2024 14:14, Yi Liu wrote:
->> Caution: External email. Do not open attachments or click links,
->> unless this email comes from a known sender and you know the content
->> is safe.
->>
->>
->> On 2024/7/2 13:52, CLEMENT MATHIEU--DRIF wrote:
->>> From: Clément Mathieu--Drif <clement.mathieu--drif@eviden.com>
->>>
->>> IOMMU have to implement iommu_ats_request_translation to support ATS.
->>>
->>> Devices can use IOMMU_TLB_ENTRY_TRANSLATION_ERROR to check the tlb
->>> entries returned by a translation request.
->>>
->>> Signed-off-by: Clément Mathieu--Drif <clement.mathieu--drif@eviden.com>
->>> ---
->>>    include/exec/memory.h | 26 ++++++++++++++++++++++++++
->>>    system/memory.c       | 20 ++++++++++++++++++++
->>>    2 files changed, 46 insertions(+)
->>>
->>> diff --git a/include/exec/memory.h b/include/exec/memory.h
->>> index 003ee06610..48555c87c6 100644
->>> --- a/include/exec/memory.h
->>> +++ b/include/exec/memory.h
->>> @@ -148,6 +148,10 @@ struct IOMMUTLBEntry {
->>>        uint32_t         pasid;
->>>    };
->>>
->>> +/* Check if an IOMMU TLB entry indicates a translation error */
->>> +#define IOMMU_TLB_ENTRY_TRANSLATION_ERROR(entry) ((((entry)->perm) &
->>> IOMMU_RW) \
->>> +                                                    == IOMMU_NONE)
->>> +
->>>    /*
->>>     * Bitmap for different IOMMUNotifier capabilities. Each notifier can
->>>     * register with one or multiple IOMMU Notifier capability bit(s).
->>> @@ -571,6 +575,20 @@ struct IOMMUMemoryRegionClass {
->>>         int (*iommu_set_iova_ranges)(IOMMUMemoryRegion *iommu,
->>>                                      GList *iova_ranges,
->>>                                      Error **errp);
->>> +
->>> +    /**
->>> +     * @iommu_ats_request_translation:
->>> +     * This method must be implemented if the IOMMU has ATS enabled
->>> +     *
->>> +     * @see pci_ats_request_translation_pasid
->>> +     */
->>> +    ssize_t (*iommu_ats_request_translation)(IOMMUMemoryRegion *iommu,
->>> +                                             bool priv_req, bool
->>> exec_req,
->>> +                                             hwaddr addr, size_t
->>> length,
->>> +                                             bool no_write,
->>> +                                             IOMMUTLBEntry *result,
->>> +                                             size_t result_length,
->>> +                                             uint32_t *err_count);
->>>    };
->>>
->>
->> I'm not quite understanding why the existing translate() does not work.
->> Could you elaborate?
-> We need more parameters than what the existing translation function has.
-> This one is designed to get translations for a range instead of just a
-> single address.
-> The main purpose is to expose an API that has the same parameters as a
-> PCIe translation request message
-> and to give all the information the IOMMU needs to process the request.
+TaiseiIto <taisei1212@outlook.jp> writes:
 
-ok. Please make the reason clear in commit message as well. Let's see if
-any other opinion on it.
+(widen CC list to include machine pc maintainers which use HPET)
 
->>
->>>    typedef struct RamDiscardListener RamDiscardListener;
->>> @@ -1926,6 +1944,14 @@ void
->>> memory_region_iommu_replay(IOMMUMemoryRegion *iommu_mr, IOMMUNotifier
->>> *n);
->>>    void memory_region_unregister_iommu_notifier(MemoryRegion *mr,
->>>                                                 IOMMUNotifier *n);
->>>
->>> +ssize_t
->>> memory_region_iommu_ats_request_translation(IOMMUMemoryRegion *iommu_mr,
->>> +                                                bool priv_req, bool
->>> exec_req,
->>> +                                                hwaddr addr, size_t
->>> length,
->>> +                                                bool no_write,
->>> +                                                IOMMUTLBEntry *result,
->>> +                                                size_t result_length,
->>> +                                                uint32_t *err_count);
->>> +
->>>    /**
->>>     * memory_region_iommu_get_attr: return an IOMMU attr if get_attr() is
->>>     * defined on the IOMMU.
->>> diff --git a/system/memory.c b/system/memory.c
->>> index 74cd73ebc7..8268df7bf5 100644
->>> --- a/system/memory.c
->>> +++ b/system/memory.c
->>> @@ -2005,6 +2005,26 @@ void
->>> memory_region_unregister_iommu_notifier(MemoryRegion *mr,
->>>        memory_region_update_iommu_notify_flags(iommu_mr, NULL);
->>>    }
->>>
->>> +ssize_t
->>> memory_region_iommu_ats_request_translation(IOMMUMemoryRegion *iommu_mr,
->>> +                                                    bool priv_req,
->>> +                                                    bool exec_req,
->>> +                                                    hwaddr addr,
->>> size_t length,
->>> +                                                    bool no_write,
->>> + IOMMUTLBEntry *result,
->>> +                                                    size_t
->>> result_length,
->>> +                                                    uint32_t
->>> *err_count)
->>> +{
->>> +    IOMMUMemoryRegionClass *imrc =
->>> memory_region_get_iommu_class_nocheck(iommu_mr);
->>> +
->>> +    if (!imrc->iommu_ats_request_translation) {
->>> +        return -ENODEV;
->>> +    }
->>> +
->>> +    return imrc->iommu_ats_request_translation(iommu_mr, priv_req,
->>> exec_req,
->>> +                                               addr, length,
->>> no_write, result,
->>> +                                               result_length,
->>> err_count);
->>> +}
->>> +
->>>    void memory_region_notify_iommu_one(IOMMUNotifier *notifier,
->>>                                        IOMMUTLBEvent *event)
->>>    {
->>
->> -- 
->> Regards,
->> Yi Liu
+> Before this commit, there are 3 problems about HPET timer interrupts. Fir=
+st,
+> HPET periodic timers cause a too early interrupt before HPET main counter
+> value reaches a value written its comparator value register. Second,
+> disabled HPET timers whose comparator value register is not
+> 0xffffffffffffffff cause wrong interrupts. Third, enabled HPET timers who=
+se
+> comparator value register is 0xffffffffffffffff don't cause any interrupt=
+s.
+> About the first one, for example, an HPET driver writes 0x00000000aaaaaaaa
+> to an HPET periodic timer comparator value register. As a result, the
+> register becomes 0xffffffffaaaaaaaa because writing to the higher 32 bits
+> of the register doesn't affect itself in periodic mode. (see
+> "case HPET_TN_CMP + 4" of "hpet_ram_write" function.) And "timer->period"
+> which means interrupt period in periodic mode becomes 0xaaaaaaaa. Next, t=
+he
+> HPET driver sets the HPET_CFG_ENABLE flag to start the main counter. The
+> comparator value register (0xffffffffaaaaaaaa) indicate the next interrupt
+> time. The period (0xaaaaaaaa) is added to the comparator value register at
+> "hpet_timer" function because "hpet_time_after64" function returns true w=
+hen
+> the main counter is small. So, the first interrupt is planned when the ma=
+in
+> counter is 0x0000000055555554, but the first interrupt should occur when =
+the
+> main counter is 0x00000000aaaaaaaa. To solve this problem, I fix the code=
+ to
+> clear the higher 32 bits of comparator value registers of periodic mode
+> timers when HPET starts the main counter. About the other two problems, it
+> was decided by comparator value whether each timer is enabled, but it sho=
+uld
+> be decided by "timer_enabled" function which confirm "HPET_TN_ENABLE" fla=
+g.
+> To solve these problems, I fix the code to decide correctly whether each
+> timer is enabled. After this commit, the 3 problems are solved. First, HP=
+ET
+> periodic timers cause the first interrupt when the main counter value
+> reaches a value written its comparator value register. Second, disabled H=
+PET
+> timers never cause any interrupt. Third, enabled HPET timers cause
+> interrupts correctly even if an HPET driver writes 0xffffffff to its
+> comparator value register.
+>
+> Signed-off-by: TaiseiIto <taisei1212@outlook.jp>
+> ---
+>  hw/timer/hpet.c | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
+>
+> diff --git a/hw/timer/hpet.c b/hw/timer/hpet.c
+> index 01efe4885d..2dcefa7049 100644
+> --- a/hw/timer/hpet.c
+> +++ b/hw/timer/hpet.c
+> @@ -599,8 +599,12 @@ static void hpet_ram_write(void *opaque, hwaddr addr,
+>                  s->hpet_offset =3D
+>                      ticks_to_ns(s->hpet_counter) - qemu_clock_get_ns(QEM=
+U_CLOCK_VIRTUAL);
+>                  for (i =3D 0; i < s->num_timers; i++) {
+> -                    if ((&s->timer[i])->cmp !=3D ~0ULL) {
+> -                        hpet_set_timer(&s->timer[i]);
+> +                    HPETTimer *timer =3D &s->timer[i];
+> +                    if (timer_enabled(timer)) {
+> +                        if (timer_is_periodic(timer)) {
+> +                            timer->cmp &=3D 0xffffffffULL;
+> +                        }
+> +                        hpet_set_timer(timer);
+>                      }
+>                  }
+>              } else if (deactivating_bit(old_val, new_val, HPET_CFG_ENABL=
+E)) {
 
--- 
-Regards,
-Yi Liu
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
