@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F589926F46
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 08:03:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ECC90926F4C
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 08:04:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPFYA-0005NZ-DT; Thu, 04 Jul 2024 02:02:34 -0400
+	id 1sPFZH-0007MY-J5; Thu, 04 Jul 2024 02:03:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sPFY7-0005Md-Pw; Thu, 04 Jul 2024 02:02:32 -0400
-Received: from mail-pg1-x533.google.com ([2607:f8b0:4864:20::533])
+ id 1sPFZE-0007Lu-KX; Thu, 04 Jul 2024 02:03:40 -0400
+Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sPFY6-0003Gb-5G; Thu, 04 Jul 2024 02:02:31 -0400
-Received: by mail-pg1-x533.google.com with SMTP id
- 41be03b00d2f7-754d2b05db5so155703a12.0; 
- Wed, 03 Jul 2024 23:02:28 -0700 (PDT)
+ id 1sPFZC-0003Sr-Vh; Thu, 04 Jul 2024 02:03:40 -0400
+Received: by mail-pf1-x42a.google.com with SMTP id
+ d2e1a72fcca58-70b03ffbb3aso32258b3a.0; 
+ Wed, 03 Jul 2024 23:03:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1720072948; x=1720677748; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1720073016; x=1720677816; darn=nongnu.org;
  h=in-reply-to:references:to:from:subject:cc:message-id:date
  :content-transfer-encoding:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=fW1kHwQW+ZQqfl6YzXuD5WAQD0U/p8pO3/HG5Kgcih8=;
- b=Rh/KXfiBAyS5+ed0eKKOpn5I56eWx/OELhilDCCt/tgkP+LQP80CZBFWU06cPrNp27
- bUHl6v65qm28SOc6XwL7+Ebr89qbEHmzF6KHwwdJ7pShK6eL4knDWhKcP95f0ixd7NyG
- FfqVmL+BVg+hDCWuXF8lD3qYnD2/LxY5V9ddP8YdhhmHm3Y5/RLb6lw4ZLYutTr7bibe
- 9FssrLqHBv2IQVafpmfjGd6tJA/9nDAT1Eq9Jd2jGAGXMzou/LmUsiPGIvi7578NpVY2
- 4NgWXzPLPQlacihcnzCGaibMGFf2vtU2Wg2GC1Xs+8t1ijFiMg4rnBnuvrMErYfnpSNB
- LBmA==
+ bh=mxGgsi1OylkVRUeaDXjiAR6xLQSDHDQBOi/tBKGkzfU=;
+ b=MODVG/ulDL20EgGpdAWBgk4aYfdNva+IvbIA6try80oZ6GxN8je35n3P9eBOMk5BXF
+ 8z5Z6k3V27391fnXLX7JbINW3hW76Xgdcwu26H148gHNo4MTmmaZUb3Ur97nCOU3MM1d
+ 2+q8MIbfKETa/R0FgRz6zg+s9BAWigJYrGAFiTOlqzczq/KYYE3aV9ecOGidQipCG7lY
+ rGBGHm9uQhs5qMKVcPZbbjUVGq8GdgBoCMXtXgVoYNm12RTrpkTDGCrlALYNoJSxJy6P
+ lTuFM4tllenIeEry9hu25mYZMR3rLYBwlRk0PN6v6Ig5feVTclecSEZCHdeRakw79z8M
+ NGcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720072948; x=1720677748;
+ d=1e100.net; s=20230601; t=1720073016; x=1720677816;
  h=in-reply-to:references:to:from:subject:cc:message-id:date
  :content-transfer-encoding:mime-version:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=fW1kHwQW+ZQqfl6YzXuD5WAQD0U/p8pO3/HG5Kgcih8=;
- b=G92JkgcZMtzapat6VWXxiFK/X2+v37YTszYaT9HDcYt92JOxn3Zw7LEsf6rL1hKcXZ
- jXChwzyXXT9vdjjpsyWaViikqjgTeIOaCtbYTWH4TUvR3VYmo+YVsRNi6hKSZPgm/cLT
- NXiwqjbSWxsXcBR+IVYWr/WUykorQ8LKjtQxsKw9BFPKd56XCSFKj0k0qJ0R/0xJ2Kw0
- rl7ZhsMHJNHAkW0Er6Dz686FFW89Zsz45f4b16S88BrymjKblI8TdfFntxNMxohkcK1Z
- NHE+hBRdtAcTXV6X86/00yUEN5Gf7NzO/4DxbgmvvjJ8DSOtHyZstMlRTEMBAu7r5awb
- 2EcQ==
+ bh=mxGgsi1OylkVRUeaDXjiAR6xLQSDHDQBOi/tBKGkzfU=;
+ b=t9kj7bFKtP0PYVKioYW/CAEOZnVl2yNsjLzhqhqHwPCoxFWqKpezJ/bqI36h0x/SZz
+ U+b0tCxSF4PHqBGyfRoAtlRN4I1HsAWwzpLIDO/KezSDc4THLu4e2/S5IWsNT+CzPdqD
+ 2lSBTHcnDi27GtYip+Uux9l3vRggf2irtVJ9raJgp+oJlejl4QlMpkOBXc3KYG4Ic0Xn
+ Kg/uH6Bd3hJFbxV7uhqlGRz9SyPK66snQTMqY+krhAsJeFi/s+2/+g+RQMH1PMUu5Nse
+ o9jwy9JNurou92BUJxLG5txysI+7iGvsOB3QYq5wQJI4yNJNzeAxAtQViHctrcQMP6L6
+ hRjA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVM+bFR09snnCvQZeX9sNEZKkWQdMVDrx+dnsmDFnG1IPqm1Ew7CyMBi1lYaG3KXO9QZzy2izqtAA8QWhruFrPRDpYzV8c8szL5CeRJkfPWyL6deyGIHKxzc5M=
-X-Gm-Message-State: AOJu0YzBsOAJcfOl9ByQ9CqUnCgVLLVPTAI6lGUa+5k8us9pebEi4NAo
- MOoFvb/610NGZCQ2GzLTu0Lm5NX31Z6KUKMIbYkphUlWarvJYZHv
-X-Google-Smtp-Source: AGHT+IFEiRdWTAY8zzVDLHycGP9ZQJv9ssGHllTmzUlzIGM4KDcn4aV/118nhX2ECLXZBkVnPY7OPQ==
-X-Received: by 2002:a05:6a20:da8e:b0:1bd:1d46:e6ca with SMTP id
- adf61e73a8af0-1c0cc8d6ea7mr551304637.50.1720072947879; 
- Wed, 03 Jul 2024 23:02:27 -0700 (PDT)
+ AJvYcCUBvxRQUvFaA6dunqBanQbo4ezBPpQYDEHQ4hpdXnUnezSTtYxXjx9JGj6jCgHiLaEJFiU+esEHvMcN6S8wuJ/4Q50FNDlqfTtj/p0mxChJciqnudXEzYtVxA0=
+X-Gm-Message-State: AOJu0YwCROUUQJYatLHXanwd7cmbD3RqDq4qppOCL6yUp4Q9r4m8/SZn
+ erTol0tp6kRLidOLx/Tv84sgnSKFYdh/dpAjLTDaMndMfFkyUbQR
+X-Google-Smtp-Source: AGHT+IHIqdN0F3Z3I6KvfljY+kP40hupil8VKEwIYAfprzoU74gNVEG3A/SiXuC/x4g8Wcw/abwsiw==
+X-Received: by 2002:a05:6a20:7291:b0:1be:d745:66bc with SMTP id
+ adf61e73a8af0-1c0cc877b66mr640660637.15.1720073016344; 
+ Wed, 03 Jul 2024 23:03:36 -0700 (PDT)
 Received: from localhost ([1.146.24.72]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2c99aab8e04sm587600a91.56.2024.07.03.23.02.25
+ d2e1a72fcca58-70803ed469fsm11453545b3a.111.2024.07.03.23.03.33
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 03 Jul 2024 23:02:27 -0700 (PDT)
+ Wed, 03 Jul 2024 23:03:35 -0700 (PDT)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 04 Jul 2024 16:02:22 +1000
-Message-Id: <D2GIYX6CYSWW.2Y6J4P6XFM45S@gmail.com>
+Date: Thu, 04 Jul 2024 16:03:31 +1000
+Message-Id: <D2GIZSONBKGW.2L3FO5O933FIF@gmail.com>
 Cc: "Daniel Henrique Barboza" <danielhb413@gmail.com>
-Subject: Re: [PATCH 09/43] target/ppc/mmu_common.c: Remove unused field from
+Subject: Re: [PATCH 10/43] target/ppc/mmu_common.c: Remove hash field from
  mmu_ctx_t
 From: "Nicholas Piggin" <npiggin@gmail.com>
 To: "BALATON Zoltan" <balaton@eik.bme.hu>, <qemu-devel@nongnu.org>,
  <qemu-ppc@nongnu.org>
 X-Mailer: aerc 0.17.0
 References: <cover.1716763435.git.balaton@eik.bme.hu>
- <889571de5f25b4abdff5df829706286367b59cc9.1716763435.git.balaton@eik.bme.hu>
-In-Reply-To: <889571de5f25b4abdff5df829706286367b59cc9.1716763435.git.balaton@eik.bme.hu>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::533;
- envelope-from=npiggin@gmail.com; helo=mail-pg1-x533.google.com
+ <21fb0a89458b7d245d688abfdcf77492f674610a.1716763435.git.balaton@eik.bme.hu>
+In-Reply-To: <21fb0a89458b7d245d688abfdcf77492f674610a.1716763435.git.balaton@eik.bme.hu>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,37 +95,92 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On Mon May 27, 2024 at 9:12 AM AEST, BALATON Zoltan wrote:
-> The eaddr field of mmu_ctx_t is set once but never used so can be
-> removed.
+> Return hash value via a parameter and remove it from mmu_ctx.t.
 >
 > Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 
 Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 
 > ---
->  target/ppc/mmu_common.c | 2 --
->  1 file changed, 2 deletions(-)
+>  target/ppc/mmu_common.c | 19 ++++++++-----------
+>  1 file changed, 8 insertions(+), 11 deletions(-)
 >
 > diff --git a/target/ppc/mmu_common.c b/target/ppc/mmu_common.c
-> index 28adb3ca10..0a07023f48 100644
+> index 0a07023f48..e3537c63c0 100644
 > --- a/target/ppc/mmu_common.c
 > +++ b/target/ppc/mmu_common.c
-> @@ -40,7 +40,6 @@
->  /* Context used internally during MMU translations */
+> @@ -41,7 +41,6 @@
 >  typedef struct {
 >      hwaddr raddr;      /* Real address             */
-> -    hwaddr eaddr;      /* Effective address        */
 >      int prot;          /* Protection bits          */
->      hwaddr hash[2];    /* Pagetable hash values    */
+> -    hwaddr hash[2];    /* Pagetable hash values    */
 >      target_ulong ptem; /* Virtual segment ID | API */
-> @@ -348,7 +347,6 @@ static int mmu6xx_get_physical_address(CPUPPCState *e=
+>      int key;           /* Access key               */
+>      int nx;            /* Non-execute area         */
+> @@ -331,7 +330,7 @@ static int get_bat_6xx_tlb(CPUPPCState *env, mmu_ctx_=
+t *ctx,
+>  }
+> =20
+>  static int mmu6xx_get_physical_address(CPUPPCState *env, mmu_ctx_t *ctx,
+> -                                       target_ulong eaddr,
+> +                                       target_ulong eaddr, hwaddr *hashp=
+,
+>                                         MMUAccessType access_type, int ty=
+pe)
+>  {
+>      PowerPCCPU *cpu =3D env_archcpu(env);
+> @@ -379,8 +378,7 @@ static int mmu6xx_get_physical_address(CPUPPCState *e=
 nv, mmu_ctx_t *ctx,
+>          qemu_log_mask(CPU_LOG_MMU, "htab_base " HWADDR_FMT_plx " htab_ma=
+sk "
+>                        HWADDR_FMT_plx " hash " HWADDR_FMT_plx "\n",
+>                        ppc_hash32_hpt_base(cpu), ppc_hash32_hpt_mask(cpu)=
+, hash);
+> -        ctx->hash[0] =3D hash;
+> -        ctx->hash[1] =3D ~hash;
+> +        *hashp =3D hash;
 > =20
->      /* Perform segment based translation when no BATs matched */
->      pr =3D FIELD_EX64(env->msr, MSR, PR);
-> -    ctx->eaddr =3D eaddr;
+>          /* Initialize real address with an invalid value */
+>          ctx->raddr =3D (hwaddr)-1ULL;
+> @@ -761,8 +759,8 @@ static bool ppc_6xx_xlate(PowerPCCPU *cpu, vaddr eadd=
+r,
+>      CPUState *cs =3D CPU(cpu);
+>      CPUPPCState *env =3D &cpu->env;
+>      mmu_ctx_t ctx;
+> -    int type;
+> -    int ret;
+> +    hwaddr hash =3D 0; /* init to 0 to avoid used uninit warning */
+> +    int type, ret;
 > =20
->      sr =3D env->sr[eaddr >> 28];
->      ctx->key =3D (((sr & 0x20000000) && pr) ||
+>      if (ppc_real_mode_xlate(cpu, eaddr, access_type, raddrp, psizep, pro=
+tp)) {
+>          return true;
+> @@ -779,9 +777,8 @@ static bool ppc_6xx_xlate(PowerPCCPU *cpu, vaddr eadd=
+r,
+>      }
+> =20
+>      ctx.prot =3D 0;
+> -    ctx.hash[0] =3D 0;
+> -    ctx.hash[1] =3D 0;
+> -    ret =3D mmu6xx_get_physical_address(env, &ctx, eaddr, access_type, t=
+ype);
+> +    ret =3D mmu6xx_get_physical_address(env, &ctx, eaddr, &hash,
+> +                                      access_type, type);
+>      if (ret =3D=3D 0) {
+>          *raddrp =3D ctx.raddr;
+>          *protp =3D ctx.prot;
+> @@ -834,9 +831,9 @@ static bool ppc_6xx_xlate(PowerPCCPU *cpu, vaddr eadd=
+r,
+>  tlb_miss:
+>              env->error_code |=3D ctx.key << 19;
+>              env->spr[SPR_HASH1] =3D ppc_hash32_hpt_base(cpu) +
+> -                                  get_pteg_offset32(cpu, ctx.hash[0]);
+> +                                  get_pteg_offset32(cpu, hash);
+>              env->spr[SPR_HASH2] =3D ppc_hash32_hpt_base(cpu) +
+> -                                  get_pteg_offset32(cpu, ctx.hash[1]);
+> +                                  get_pteg_offset32(cpu, ~hash);
+>              break;
+>          case -2:
+>              /* Access rights violation */
 
 
