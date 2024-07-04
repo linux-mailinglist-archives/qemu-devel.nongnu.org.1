@@ -2,79 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D4E292731F
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 11:33:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A02CC9272CF
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 11:20:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPIpd-0006am-H2; Thu, 04 Jul 2024 05:32:49 -0400
+	id 1sPIc2-0006NC-0p; Thu, 04 Jul 2024 05:18:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sPIpa-0006Xp-9K
- for qemu-devel@nongnu.org; Thu, 04 Jul 2024 05:32:46 -0400
-Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sPIpY-000240-JW
- for qemu-devel@nongnu.org; Thu, 04 Jul 2024 05:32:45 -0400
-Received: by mail-ed1-x52c.google.com with SMTP id
- 4fb4d7f45d1cf-58bac81f40bso609879a12.1
- for <qemu-devel@nongnu.org>; Thu, 04 Jul 2024 02:32:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1720085561; x=1720690361; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=Wg5r9sYSQsAvjhQ+CRVIQveWls8q4Cp7ZuTqAA6lFzA=;
- b=qDw9DZlPPlu8o0cFuH9Of8+aeCMdVYNsYNNsHUqpEBWmZKqfMLVKlSGT5qEEXjXsRB
- f1WEc6AU+wS8Vl41uZwJ+z2liX/aWtlhDsopuJ8tZupvvWEuaHFd5Pp4C8V3se2d124K
- tG/eSZITlAfPQjNWi5Kv1CjRz5p1Q7hUWSp+sf5cgKwtcUz08Eaz2OKDgPXgxOBIeupN
- 3WQJf7HxiVfgerVer7diSHQfU2o0qYXUEJ8GfplnUhf3fHJUz4UOmM3v+VqpFNAh68gr
- jsVGm2EDw4ErGEt3/ZrxsswL+6FXppGNW6j2Sodp9rVJGer41Z3etAsiC+V+s5psR5nq
- 29/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720085561; x=1720690361;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Wg5r9sYSQsAvjhQ+CRVIQveWls8q4Cp7ZuTqAA6lFzA=;
- b=l+/7/UO4Kjayqm2Yc5FF27E5K0JHjb5e+19Lssc0AfOv4MWC8vMmQvRbuaVpj4Mu+v
- eac5fGiGAgmTHW5+zbjRj1QNnJ079rzSlapQDFu7IVW9rFmbw0n8QNC8tSSXCSDQ14P/
- huIdt8XQHxN8V2cYfXOam3ru/dM+AzmjZMcGShx/Y89uSr9uX0SaVCyuwA3R3m4xFsZN
- UtuH8rjDM3fgTRlIj15/zWCUloNPRyuOuHs1Y+hqpYtWjDz5Tl/6bs+kp6I7fcxEnSyc
- 8NGnxLFnpJALl87WnVgjWDO7j/N34uHX5bSslR0Pr7xD1hDT8EEBdvtgdPG88fnWyknb
- F4MA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWsNsBNSMmY2Kk7uR6vIrlRJVCb3frtGcKaFcNP6lXkG57l9Ttm1CFur1D5jw7AfMEgsQkXCzRMC+9vLEAsIAB7SLwiVAo=
-X-Gm-Message-State: AOJu0YyPB2JbNSelbzA1huiv7Itgp6kj+kMdEnUdKRgR8eQZUTj1B0Db
- XLm2W9wwNwQXHJmW0k1/t1nsidbA+WXTo2mjBAySMgF/0iI0392gacQ/bO3Vq1eF+Sz/GChPlR7
- pMA7wt4I7+IgSAuufc8p2JQfwetblwwTOywH1ZQ==
-X-Google-Smtp-Source: AGHT+IE7qXHKBYmBeRGY9jO1i6pr9B2inR+WbVBPpgVsf7Cvbh+WgpRKmtihOw20IuEFvTewixVo7sDHvFXPMqFBQk0=
-X-Received: by 2002:a05:6402:34c1:b0:587:2fa6:496a with SMTP id
- 4fb4d7f45d1cf-58e5abdc863mr784969a12.15.1720085560867; Thu, 04 Jul 2024
- 02:32:40 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1sPIbu-0006MK-Ea; Thu, 04 Jul 2024 05:18:38 -0400
+Received: from mgamail.intel.com ([198.175.65.16])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1sPIbr-0001br-0q; Thu, 04 Jul 2024 05:18:37 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1720084715; x=1751620715;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=2yWda5+RJ5YHltmBgTNQsmoOCifxWuqxZL3/wnZPkyo=;
+ b=lmi0LTQ8FKeeAA07jXM2Pcci3CFZSV3rR6dheE8TIhFTJTSi6rmkfw8q
+ 2+pz6lEfV7VPEhI7mjjeEeddV4O2lyKyam00oBuK4FpM4B3l64S/GdMgz
+ lUE6HqTbA6uwu8eBSCKcMzxr80iv52h1QiqVcun38puqXdn0stAfdZoNF
+ oQIOZIPRWCUtn4+A8jwCL7M1gGfSYhnYKI2RO6PMRrDnzy6UKzWJkLWY6
+ DCVPOzmI9DP23AExNx6T+odzbgDjbfq3/6+0IXGG1tfYmVUZKd09ZrrRN
+ y692zW6S6s+V6+5KU0CZmCHQMrPuY5D4XZTvCe4CHCyODVh0zrNMKUNd6 A==;
+X-CSE-ConnectionGUID: /zi5M0lRTRCNrEC2DGVo1g==
+X-CSE-MsgGUID: 6x2jhHUdRQ6fKIzbYHeVjA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11122"; a="17487617"
+X-IronPort-AV: E=Sophos;i="6.09,183,1716274800"; d="scan'208";a="17487617"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Jul 2024 02:18:31 -0700
+X-CSE-ConnectionGUID: wKOGwyB6QpWVKu8euJf57Q==
+X-CSE-MsgGUID: f6mIF49JR16jMnM5i269TA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,183,1716274800"; d="scan'208";a="50863190"
+Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
+ by fmviesa003.fm.intel.com with ESMTP; 04 Jul 2024 02:18:29 -0700
+From: Zhao Liu <zhao1.liu@linux.intel.com>
+To: Jonathan Cameron <jonathan.cameron@huawei.com>, Fan Ni <fan.ni@samsung.com>
+Cc: qemu-devel@nongnu.org, qemu-stable@nongnu.org,
+ Zhao Liu <zhao1.liu@intel.com>
+Subject: [PATCH] hw/cxl/cxl-host: Fix guest crash when getting cxl-fmw property
+Date: Thu,  4 Jul 2024 17:34:04 +0800
+Message-Id: <20240704093404.1848132-1-zhao1.liu@linux.intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20240703213102.254927-1-zheyuma97@gmail.com>
-In-Reply-To: <20240703213102.254927-1-zheyuma97@gmail.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 4 Jul 2024 10:32:29 +0100
-Message-ID: <CAFEAcA_9_fymBmp4Ei+ZxP3PB6u3JckTxufLcJn6JKuf4Yjkaw@mail.gmail.com>
-Subject: Re: [PATCH] hw/intc: sifive_plic: Fix heap-buffer-overflow in SiFive
- PLIC read operation
-To: Zheyu Ma <zheyuma97@gmail.com>
-Cc: Alistair Francis <Alistair.Francis@wdc.com>, Bin Meng <bmeng.cn@gmail.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, qemu-riscv@nongnu.org,
- qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=198.175.65.16;
+ envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -42
+X-Spam_score: -4.3
+X-Spam_bar: ----
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,65 +74,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 3 Jul 2024 at 22:32, Zheyu Ma <zheyuma97@gmail.com> wrote:
->
-> The sifive_plic_read function in hw/intc/sifive_plic.c had a potential
-> heap-buffer-overflow issue when reading from the pending_base region.
-> This occurred because the code did not check if the calculated word index
-> was within valid bounds before accessing the pending array.
->
-> This fix prevents out-of-bounds memory access, ensuring safer and more
-> robust handling of PLIC reads.
->
-> ASAN log:
-> ==78800==ERROR: AddressSanitizer: heap-buffer-overflow on address 0x602000038a14 at pc 0x5baf49d0d6cb bp 0x7ffc2ea4e180 sp 0x7ffc2ea4e178
-> READ of size 4 at 0x602000038a14 thread T0
->     #0 0x5baf49d0d6ca in sifive_plic_read hw/intc/sifive_plic.c:151:16
->     #1 0x5baf49f7f3bb in memory_region_read_accessor system/memory.c:445:11
->
-> Reproducer:
-> cat << EOF | qemu-system-riscv64  -display \
-> none -machine accel=qtest, -m 512M -machine shakti_c -m 2G -qtest stdio
-> readl 0xc001004
-> EOF
->
-> Signed-off-by: Zheyu Ma <zheyuma97@gmail.com>
-> ---
->  hw/intc/sifive_plic.c | 9 ++++++++-
->  1 file changed, 8 insertions(+), 1 deletion(-)
->
-> diff --git a/hw/intc/sifive_plic.c b/hw/intc/sifive_plic.c
-> index e559f11805..d2a90dfd3a 100644
-> --- a/hw/intc/sifive_plic.c
-> +++ b/hw/intc/sifive_plic.c
-> @@ -147,7 +147,14 @@ static uint64_t sifive_plic_read(void *opaque, hwaddr addr, unsigned size)
->                              (plic->num_sources + 31) >> 3)) {
->          uint32_t word = (addr - plic->pending_base) >> 2;
->
-> -        return plic->pending[word];
-> +        if (word < plic->bitfield_words) {
-> +            return plic->pending[word];
-> +        } else {
-> +            qemu_log_mask(LOG_GUEST_ERROR,
-> +                          "sifive_plic_read: Word out of bounds for pending_base read: word=%u\n",
-> +                          word);
-> +            return 0;
-> +        }
+From: Zhao Liu <zhao1.liu@intel.com>
 
-This seems a bit odd. This part of the code is guarded by
+Guest crashes (Segmentation fault) when getting cxl-fmw property via
+qmp:
 
-    } else if (addr_between(addr, plic->pending_base,
-                            (plic->num_sources + 31) >> 3)) {
+(QEMU) qom-get path=machine property=cxl-fmw
 
-and we calculate plic->bitfield_words in realize based on
-plic->num_sources:
-    s->bitfield_words = (s->num_sources + 31) >> 5;
+This issue is caused by accessing wrong callback (opaque) type in
+machine_get_cfmw().
 
-so presumably the intention was that we put enough words
-in the bitfield for the number of sources we have, so that
-the array access wouldn't overrun. Maybe we got the
-calculation wrong?
+cxl_machine_init() sets the callback as `CXLState *` type but
+machine_get_cfmw() treats the callback as
+`CXLFixedMemoryWindowOptionsList **`.
 
-thanks
--- PMM
+Fix this error by casting opaque to `CXLState *` type in
+machine_get_cfmw().
+
+Fixes: 03b39fcf64bc ("hw/cxl: Make the CXL fixed memory window setup a machine parameter.")
+Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+---
+ hw/cxl/cxl-host.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/hw/cxl/cxl-host.c b/hw/cxl/cxl-host.c
+index c5f5fcfd64d0..e9f2543c43c6 100644
+--- a/hw/cxl/cxl-host.c
++++ b/hw/cxl/cxl-host.c
+@@ -315,7 +315,8 @@ static void machine_set_cxl(Object *obj, Visitor *v, const char *name,
+ static void machine_get_cfmw(Object *obj, Visitor *v, const char *name,
+                              void *opaque, Error **errp)
+ {
+-    CXLFixedMemoryWindowOptionsList **list = opaque;
++    CXLState *state = opaque;
++    CXLFixedMemoryWindowOptionsList **list = &state->cfmw_list;
+ 
+     visit_type_CXLFixedMemoryWindowOptionsList(v, name, list, errp);
+ }
+-- 
+2.34.1
+
 
