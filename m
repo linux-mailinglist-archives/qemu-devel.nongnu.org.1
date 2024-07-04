@@ -2,84 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC89A927CE9
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 20:16:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45991927DCA
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 21:28:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPR0Q-0004JD-Ck; Thu, 04 Jul 2024 14:16:30 -0400
+	id 1sPS7m-0005d4-7H; Thu, 04 Jul 2024 15:28:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sPR0O-0004IV-3b
- for qemu-devel@nongnu.org; Thu, 04 Jul 2024 14:16:28 -0400
-Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sPR0M-0000BA-Bp
- for qemu-devel@nongnu.org; Thu, 04 Jul 2024 14:16:27 -0400
-Received: by mail-pf1-x42c.google.com with SMTP id
- d2e1a72fcca58-7066f68e22cso644651b3a.2
- for <qemu-devel@nongnu.org>; Thu, 04 Jul 2024 11:16:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1720116984; x=1720721784; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=8wxdDhrJj5m9EBv+KsTaak4F5a5JHE5zuinYQ+oTD74=;
- b=MeeyHbVjj81IZln0geVc7LZwz+y2hbqTPgHx4qN56Y00TXK8KwjPjZhp8GRIRJJonr
- aT6pL5DRVJTDDAsJd+TgwuVYrvPodP8UA2WuuqmwgiDwivQZu8TvpzqD4MJUDg2j056G
- p2y0gJ2xxvMyYXktKRZHETxjBR7Re6JgaGdkUhF9z5e9YCsU9QpImL9X2pDkxiOULATy
- SRO4ZCjPp2KOz9hunxh9OWtjo/a8EyrfNmAHWA6gNJqIlY4CF7+tmjgXygtiOy8Rmc0F
- KMLA9q9GKL9VdGxXmiNN13CcCcG7ZhOBmCR23LHhTsKMxXPy0kHcp9zzBYd8zeTbww8d
- vURQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720116984; x=1720721784;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=8wxdDhrJj5m9EBv+KsTaak4F5a5JHE5zuinYQ+oTD74=;
- b=mxoBOVQrPMxkmNIZr5SsOJ9rVA1U/al2LxstWAEGHNlChZw9IpAtTv5y7RTy55CwmR
- 4Fpry+94UD+rp68Hs/lq7d7Xkfb9mjMGcjkNFz8n4gWv/thyfDEt01rmfWB7HoP6AeCo
- dpWNzfM4npV7kxPu+lmJ5QZIdTsePlK+wu2y15gU6yoO8dhIGo/dIcA+etqai9StzF+E
- b2PDVVvag8zaFubMfRhus3kzGD07abpacZTPLS7KjmiBq/zym7HhWG8Zah0qR5rVnLDv
- ABB+ZGGjctj4t6eReVqYNbMHIP9kTYppfO7qra2sEaLvu8MOS8wtrZNFRY/r1lqZ1vMe
- XBVQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCU4j+zBF7b3D8jSuOtn5huAOB8/JKWRCkwAWCX7hsqyid/Ws6k81RjveGmOUMCfQLoDHkvskgSE4raZIYjfGjrvUVB17fY=
-X-Gm-Message-State: AOJu0YxPgKyRsm1ZHhq/cl3hYBoCZJybAyj6pQr8CoyJBqh10UH1yAu2
- CqiJsb1/bVcpE2OalV6Vy/wblmCX7uzb663pGDa/vmuXRITIltXDyIa5z9sNPL3z71wMLkJyXjB
- L
-X-Google-Smtp-Source: AGHT+IHMjwHCvwrbeyhUYUQKS8SURYUIpVt1GZpSz6DuEllCRIqrTP+D9IAl6lHCPwoOF0ThS1GnMA==
-X-Received: by 2002:a05:6a00:13a7:b0:706:5e33:32d5 with SMTP id
- d2e1a72fcca58-70b00afe62bmr2645485b3a.33.1720116984151; 
- Thu, 04 Jul 2024 11:16:24 -0700 (PDT)
-Received: from [192.168.0.4] (174-21-76-141.tukw.qwest.net. [174.21.76.141])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7080246c90asm12518290b3a.59.2024.07.04.11.16.23
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 04 Jul 2024 11:16:23 -0700 (PDT)
-Message-ID: <ffd0e577-95e0-4cfb-9500-9e2dee993fa6@linaro.org>
-Date: Thu, 4 Jul 2024 11:16:21 -0700
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1sPS7E-0005Nh-7O
+ for qemu-devel@nongnu.org; Thu, 04 Jul 2024 15:27:40 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1sPS7C-0005y4-Gv
+ for qemu-devel@nongnu.org; Thu, 04 Jul 2024 15:27:35 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1720121254;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=GAKDGATUOn4BexJcSQiNhjOEn93yjajJn7Tv5gbabtg=;
+ b=Lreibf5W8IY0/AuODmju5prJKk4jfF1NUDWc/Y6Nci7LB8M+RywtrddL2L3C+nIZh4VX0C
+ GIUqNXlHle3vG3UTYR7eQaXQrlx+6jJKxAQZWrmgo+J0FF2Y4olxKZOd3oLr/cprFnixXQ
+ AisuElFaAMj3BwbyrySFFtgvGLUu8gE=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-616-fV1K-eBANN-sN-fM7NYyFg-1; Thu,
+ 04 Jul 2024 15:27:28 -0400
+X-MC-Unique: fV1K-eBANN-sN-fM7NYyFg-1
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 7A0F919560B1; Thu,  4 Jul 2024 19:27:26 +0000 (UTC)
+Received: from localhost (unknown [10.39.192.129])
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id EE6771956046; Thu,  4 Jul 2024 19:27:24 +0000 (UTC)
+Date: Thu, 4 Jul 2024 20:20:31 +0200
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: kwolf@redhat.com
+Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, hreitz@redhat.com,
+ fam@euphon.net, ronniesahlberg@gmail.com, pbonzini@redhat.com,
+ pl@dlhnet.de, kbusch@kernel.org, its@irrelevant.dk,
+ foss@defmacro.it, philmd@linaro.org, pizhenwei@bytedance.com,
+ Changqi Lu <luchangqi.123@bytedance.com>
+Subject: Re: [PATCH v6 08/10] hw/nvme: enable ONCS and rescap function
+Message-ID: <20240704182031.GG2529519@fedora.redhat.com>
+References: <20240613071327.2498953-1-luchangqi.123@bytedance.com>
+ <20240613071327.2498953-9-luchangqi.123@bytedance.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 00/16] meson, i386 changes for 2024-07-04
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-References: <20240704095806.1780273-1-pbonzini@redhat.com>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240704095806.1780273-1-pbonzini@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42c.google.com
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="7pgJn/R9+Q0pRPbP"
+Content-Disposition: inline
+In-Reply-To: <20240613071327.2498953-9-luchangqi.123@bytedance.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,31 +85,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/4/24 02:57, Paolo Bonzini wrote:
-> The following changes since commit 1a2d52c7fcaeaaf4f2fe8d4d5183dccaeab67768:
-> 
->    Merge tag 'pull-request-2024-07-02' ofhttps://gitlab.com/thuth/qemu  into staging (2024-07-02 15:49:08 -0700)
-> 
-> are available in the Git repository at:
-> 
->    https://gitlab.com/bonzini/qemu.git  tags/for-upstream
-> 
-> for you to fetch changes up to 188569c10d5dc6996bde90ce25645083e9661ecb:
-> 
->    target/i386/SEV: implement mask_cpuid_features (2024-07-04 11:56:20 +0200)
-> 
-> ----------------------------------------------------------------
-> * meson: Pass objects and dependencies to declare_dependency(), not static_library()
-> * meson: Drop the .fa library suffix
-> * target/i386: drop AMD machine check bits from Intel CPUID
-> * target/i386: add avx-vnni-int16 feature
-> * target/i386: SEV bugfixes
-> * target/i386: SEV-SNP -cpu host support
-> * char: fix exit issues
 
-Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/9.1 as appropriate.
+--7pgJn/R9+Q0pRPbP
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
+On Thu, Jun 13, 2024 at 03:13:25PM +0800, Changqi Lu wrote:
+> This commit enables ONCS to support the reservation
+> function at the controller level. Also enables rescap
+> function in the namespace by detecting the supported reservation
+> function in the backend driver.
+>=20
+> Signed-off-by: Changqi Lu <luchangqi.123@bytedance.com>
+> Signed-off-by: zhenwei pi <pizhenwei@bytedance.com>
+> ---
+>  hw/nvme/ctrl.c | 3 ++-
+>  hw/nvme/ns.c   | 5 +++++
+>  2 files changed, 7 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
+> index 127c3d2383..182307a48b 100644
+> --- a/hw/nvme/ctrl.c
+> +++ b/hw/nvme/ctrl.c
+> @@ -8248,7 +8248,8 @@ static void nvme_init_ctrl(NvmeCtrl *n, PCIDevice *=
+pci_dev)
+>      id->nn =3D cpu_to_le32(NVME_MAX_NAMESPACES);
+>      id->oncs =3D cpu_to_le16(NVME_ONCS_WRITE_ZEROES | NVME_ONCS_TIMESTAM=
+P |
+>                             NVME_ONCS_FEATURES | NVME_ONCS_DSM |
+> -                           NVME_ONCS_COMPARE | NVME_ONCS_COPY);
+> +                           NVME_ONCS_COMPARE | NVME_ONCS_COPY |
+> +                           NVME_ONCS_RESRVATIONS);
 
-r~
+RESRVATIONS -> RESERVATIONS typo?
+
+> =20
+>      /*
+>       * NOTE: If this device ever supports a command set that does NOT us=
+e 0x0
+> diff --git a/hw/nvme/ns.c b/hw/nvme/ns.c
+> index ea8db175db..320c9bf658 100644
+> --- a/hw/nvme/ns.c
+> +++ b/hw/nvme/ns.c
+> @@ -20,6 +20,7 @@
+>  #include "qemu/bitops.h"
+>  #include "sysemu/sysemu.h"
+>  #include "sysemu/block-backend.h"
+> +#include "block/block_int.h"
+> =20
+>  #include "nvme.h"
+>  #include "trace.h"
+> @@ -33,6 +34,7 @@ void nvme_ns_init_format(NvmeNamespace *ns)
+>      BlockDriverInfo bdi;
+>      int npdg, ret;
+>      int64_t nlbas;
+> +    uint8_t blk_pr_cap;
+> =20
+>      ns->lbaf =3D id_ns->lbaf[NVME_ID_NS_FLBAS_INDEX(id_ns->flbas)];
+>      ns->lbasz =3D 1 << ns->lbaf.ds;
+> @@ -55,6 +57,9 @@ void nvme_ns_init_format(NvmeNamespace *ns)
+>      }
+> =20
+>      id_ns->npda =3D id_ns->npdg =3D npdg - 1;
+> +
+> +    blk_pr_cap =3D blk_bs(ns->blkconf.blk)->file->bs->bl.pr_cap;
+
+Kevin: This unprotected block graph access and the assumption that
+->file->bs exists could be problematic. What is the best practice for
+making this code safe and defensive?
+
+> +    id_ns->rescap =3D block_pr_cap_to_nvme(blk_pr_cap);
+>  }
+> =20
+>  static int nvme_ns_init(NvmeNamespace *ns, Error **errp)
+> --=20
+> 2.20.1
+>=20
+
+--7pgJn/R9+Q0pRPbP
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmaG5+8ACgkQnKSrs4Gr
+c8iIvwf+Lvhrrj5nYClxPzdheIPZiLbOX1R4VjjJXgp2h2YGtpy2KvZAZZz0dLig
+a8ejpx7JryrTfkmnPVwNbbkUN2SnqrI+j6WfO/3RaRJwGTZXvef3h9VRc5Bh3j7/
+bUMOO6EwllCcfpkEyB/rxlB1/u3BfVstrAt9wnNfOEV4tilGXfw0eCUYcXkqokNN
+CDK4SBhtDO/9JJEu9SiJDTrEECa3YGJ+kgb5JAWxt/t0FI0+ynD58LGxfOpJifxH
+OXoyN7Y+zaXy/Hsb5dQHLqeAbZirqi2GXQvNa+3+iW4rrwv9c4YAPpld8B3PKaCF
+4cKk8aFcreKkD0+GzYAekFXfwV9alw==
+=5dqS
+-----END PGP SIGNATURE-----
+
+--7pgJn/R9+Q0pRPbP--
 
 
