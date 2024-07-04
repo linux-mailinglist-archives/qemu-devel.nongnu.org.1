@@ -2,65 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 198C3926EEB
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 07:38:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE82F926F0B
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 07:47:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPFA3-00026N-AX; Thu, 04 Jul 2024 01:37:39 -0400
+	id 1sPFJ7-0003Mo-A3; Thu, 04 Jul 2024 01:47:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sPFA0-00025U-Vg
- for qemu-devel@nongnu.org; Thu, 04 Jul 2024 01:37:36 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1sPFJ2-0003MP-Sd
+ for qemu-devel@nongnu.org; Thu, 04 Jul 2024 01:46:57 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sPF9z-000284-BD
- for qemu-devel@nongnu.org; Thu, 04 Jul 2024 01:37:36 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1sPFJ0-0008AQ-OI
+ for qemu-devel@nongnu.org; Thu, 04 Jul 2024 01:46:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1720071454;
+ s=mimecast20190719; t=1720072012;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=jAd08S4leZm+bx2Dv0vqRuA8lclulq6U0frAhcMKHqU=;
- b=Sf+qV8wah20k1xWRFnG9LTB+sxN7OnqetCvasX1qxNm1teSLPzrAcGQyW6N4pPJjz/gh6W
- TIjD/zWXA99n1nFQO1tZ4Cae9Pg28UT5WOQKFT2CrCEbGbrT/3RdVpJtjxtSXUdmq24f+M
- RWi5u1pQXhGq9w8HBOhMutczhZ8SCPI=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-480-2KLAVVLfPOmb16muBEnqQQ-1; Thu,
- 04 Jul 2024 01:37:30 -0400
-X-MC-Unique: 2KLAVVLfPOmb16muBEnqQQ-1
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 8CAFA1956095; Thu,  4 Jul 2024 05:37:28 +0000 (UTC)
-Received: from corto.redhat.com (unknown [10.39.192.90])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id BD580195607C; Thu,  4 Jul 2024 05:37:25 +0000 (UTC)
-From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-To: qemu-arm@nongnu.org,
-	qemu-devel@nongnu.org
-Cc: Andrew Jeffery <andrew@codeconstruct.com.au>,
- Joel Stanley <joel@jms.id.au>, Steven Lee <steven_lee@aspeedtech.com>,
- Troy Lee <leetroy@gmail.com>, Jamin Lin <jamin_lin@aspeedtech.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [PATCH 8/8] aspeed: Introduce a 'boot-emmc' machine option
-Date: Thu,  4 Jul 2024 07:36:51 +0200
-Message-ID: <20240704053651.1100732-9-clg@redhat.com>
-In-Reply-To: <20240704053651.1100732-1-clg@redhat.com>
-References: <20240704053651.1100732-1-clg@redhat.com>
+ bh=cZYTWzTEddJ57pt9YZks29g81dw6pUMQWtZ5EBpCHNs=;
+ b=OTFrlTv/Iu77DOvbwVzs1fAeddMaF/0THJ9z2AeuT293PXxZKS2P7hOH24Ga73//F5A5Hh
+ 9fj4JtYB96jfy1nKX9ABvKJgoK0oQ+tGZNpYVySMX3n7Gkcf5DN8iAcNRorJFL2PyoTNEG
+ kqUmRaBfFgRJY0MwAf5+NMfCrUCLOE4=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-471-3fDLkLAAOkasBSZWFLzJFQ-1; Thu, 04 Jul 2024 01:46:50 -0400
+X-MC-Unique: 3fDLkLAAOkasBSZWFLzJFQ-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-3678ff75122so245799f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 03 Jul 2024 22:46:50 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1720072009; x=1720676809;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=cZYTWzTEddJ57pt9YZks29g81dw6pUMQWtZ5EBpCHNs=;
+ b=PnFeqZgc/aAjX/iuYB/4ssBhkeR5IXISRQg4KyQWeMGahi5TIpJOuHCHGyfN6+SjFy
+ ICs+e2OSkTIzqvGy82cv76VgzZaOqqtKxSc7Wyu+QkMzB6RjYas702SzlGAHqBLgS+Nt
+ RL4I7Yi51cJZDuWHyNgkD3esvaY5NB1wPVU9eBGOHvACc5arzD1t/BEDPwgy5cm7PlFH
+ bBalxt30KQa+8UBDvDwX+6FRx4iIpMD1VT2s5jCQ23mih62JsNZCfZzV5g+ol+2A60lk
+ yns5lEKWtI7chnIGn3q7vG04FadUE/fIc4XGvCw6w/FW8OL3K/5piWCO+wRsfyNa7+Ym
+ r6yQ==
+X-Gm-Message-State: AOJu0YzFvW5E8aWEy0o6F53eTo73QOdEoyLmX3ht8lgeRfs+UzdsH1U8
+ /xoY+rqJUTS22fBsO3mlKPr0gGeLnDO3Ip9FdJgce/ZPGUfk6ciXP0NcNszdcgNyY15og80hY9N
+ dYK54AfHq9QrJjgExZovw1VewN/2tmKFlnxWej9nEwHIQ96hZv9Rl8TXU72Jvr+tdPGqU0gc3ki
+ YozC1UzpG8l/xNN4aYHzd92QBlQPc=
+X-Received: by 2002:adf:e743:0:b0:367:9624:f369 with SMTP id
+ ffacd0b85a97d-3679dd2925emr394563f8f.16.1720072009638; 
+ Wed, 03 Jul 2024 22:46:49 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHP+RUjQPIFtlJb/UQ0SenjHkkIRYeUACL5aKXF5atwq0f4ZGBGu3VgjthJzV9qMmZCTFvHAYa0T1t9dw+37B0=
+X-Received: by 2002:adf:e743:0:b0:367:9624:f369 with SMTP id
+ ffacd0b85a97d-3679dd2925emr394555f8f.16.1720072009234; Wed, 03 Jul 2024
+ 22:46:49 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+References: <20240703110134.1645979-1-pbonzini@redhat.com>
+ <20240704002615.ffmdnewoldrntkia@amd.com>
+In-Reply-To: <20240704002615.ffmdnewoldrntkia@amd.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Thu, 4 Jul 2024 07:46:37 +0200
+Message-ID: <CABgObfYYLQAGCEPoTBFfZdB9ZXkm0pyikmyTxdQ3_YD6Ou9-Gg@mail.gmail.com>
+Subject: Re: [RFC PATCH 0/2] target/i386: SEV: allow running SNP guests with
+ "-cpu host"
+To: Michael Roth <michael.roth@amd.com>
+Cc: qemu-devel@nongnu.org, zixchen@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -84,91 +96,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Cédric Le Goater <clg@kaod.org>
+On Thu, Jul 4, 2024 at 2:26=E2=80=AFAM Michael Roth <michael.roth@amd.com> =
+wrote:
+> > Michael, any ideas?  Is there a way for the host to retrieve the suppor=
+ted
+> > CPUID bits for SEV-SNP guests?
+>
+> If we want to support -cpu host, then I don't really see a way around
+> needing to maintain a filter of some sort sanitize what gets passed to
+> firmware. Generally, every new CPU model is likely to have some features
+> which might be a liability security-wise to allow in SNP guests, so the
+> CPUID validation is sort of a whitelist of curated features that make
+> sense for guests and can be enabled securely in the context of SNP.
+>
+> Everything else would need to be filtered out, so we'd need to keep that
+> list constantly updated.
 
-The default behavior of some Aspeed machines is to boot from the eMMC
-device, like the rainier-bmc. Others like ast2600-evb could also boot
-from eMMC if the HW strapping boot-from-eMMC bit was set. Add a
-property to set or unset this bit. This is useful to test boot images.
+It would be per new model and right now there are only a handful of
+bits that have to be blocked; so it wouldn't be particularly bad.
 
-For now, only activate this property on the ast2600-evb and rainier-bmc
-machines for which eMMC images are available or can be built.
+> I think that may be possible, but do we have a strong use-case for
+> supporting -cpu host in conjunction with SNP guests that this would be
+> a worthwhile endeavor?
 
-Signed-off-by: Cédric Le Goater <clg@kaod.org>
----
- docs/system/arm/aspeed.rst |  2 ++
- hw/arm/aspeed.c            | 30 ++++++++++++++++++++++++++++++
- 2 files changed, 32 insertions(+)
+It's a common way to launch a guest if you're not interested in
+migration (which is obviously the case for SNP right now), so it's
+more like "why not". :)
 
-diff --git a/docs/system/arm/aspeed.rst b/docs/system/arm/aspeed.rst
-index cd9559e3e291..6733ffd2b941 100644
---- a/docs/system/arm/aspeed.rst
-+++ b/docs/system/arm/aspeed.rst
-@@ -123,6 +123,8 @@ To boot the machine from the flash image, use an MTD drive :
- 
- Options specific to Aspeed machines are :
- 
-+ * ``boot-emmc`` to set or unset boot from eMMC (AST2600).
-+
-  * ``execute-in-place`` which emulates the boot from the CE0 flash
-    device by using the FMC controller to load the instructions, and
-    not simply from RAM. This takes a little longer.
-diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
-index 4ce995e875da..e7cfd0c5fbcd 100644
---- a/hw/arm/aspeed.c
-+++ b/hw/arm/aspeed.c
-@@ -1176,6 +1176,34 @@ static void aspeed_machine_class_init_cpus_defaults(MachineClass *mc)
-     mc->valid_cpu_types = sc->valid_cpu_types;
- }
- 
-+static bool aspeed_machine_ast2600_get_boot_from_emmc(Object *obj, Error **errp)
-+{
-+    AspeedMachineState *bmc = ASPEED_MACHINE(obj);
-+
-+    return !!(bmc->hw_strap1 & AST2600_HW_STRAP_BOOT_SRC_EMMC);
-+}
-+
-+static void aspeed_machine_ast2600_set_boot_from_emmc(Object *obj, bool value,
-+                                                      Error **errp)
-+{
-+    AspeedMachineState *bmc = ASPEED_MACHINE(obj);
-+
-+    if (value) {
-+        bmc->hw_strap1 |= AST2600_HW_STRAP_BOOT_SRC_EMMC;
-+    } else {
-+        bmc->hw_strap1 &= ~AST2600_HW_STRAP_BOOT_SRC_EMMC;
-+    }
-+}
-+
-+static void aspeed_machine_ast2600_class_emmc_init(ObjectClass *oc)
-+{
-+    object_class_property_add_bool(oc, "boot-emmc",
-+                                   aspeed_machine_ast2600_get_boot_from_emmc,
-+                                   aspeed_machine_ast2600_set_boot_from_emmc);
-+    object_class_property_set_description(oc, "boot-emmc",
-+                                          "Set or unset boot from EMMC");
-+}
-+
- static void aspeed_machine_class_init(ObjectClass *oc, void *data)
- {
-     MachineClass *mc = MACHINE_CLASS(oc);
-@@ -1375,6 +1403,7 @@ static void aspeed_machine_ast2600_evb_class_init(ObjectClass *oc, void *data)
-     amc->i2c_init  = ast2600_evb_i2c_init;
-     mc->default_ram_size = 1 * GiB;
-     aspeed_machine_class_init_cpus_defaults(mc);
-+    aspeed_machine_ast2600_class_emmc_init(oc);
- };
- 
- static void aspeed_machine_tacoma_class_init(ObjectClass *oc, void *data)
-@@ -1447,6 +1476,7 @@ static void aspeed_machine_rainier_class_init(ObjectClass *oc, void *data)
-     amc->i2c_init  = rainier_bmc_i2c_init;
-     mc->default_ram_size = 1 * GiB;
-     aspeed_machine_class_init_cpus_defaults(mc);
-+    aspeed_machine_ast2600_class_emmc_init(oc);
- };
- 
- #define FUJI_BMC_RAM_SIZE ASPEED_RAM_SIZE(2 * GiB)
--- 
-2.45.2
+> > One possibility is to set up a fake guest---either in QEMU or when KVM
+> > starts---to do a LAUNCH_UPDATE for the CPUID page, but even that is not
+> > perfect.  For example, I got
+>
+> Yah, the firmware-provided responses are more of a debug tool and not
+> something I think we can rely on to enumerate capabilities.
+>
+> You could in theory take the ruleset in the PPR (Chapter 2, CPUID Policy
+> Enforcement), turn that into something programmatic, and apply that
+> against the host's CPUID values, but the policies are a bit more
+> specific in some cases, and the PPR is per-CPU-model so both the rules
+> and inputs can change from one host to the next.
+
+Yeah, and if you mix that with knowledge of what KVM can/cannot
+virtualize that doesn't exist in the processor (which isn't that
+much), then you end up with something a lot like patch 2
+
+It would be nice if the policy enforcement were changed to allow the
+TSC deadline timer and X2APIC bits (you probably don't want TSC
+adjust, that's the right call; and virt SSBD is not accessible because
+you use V_SPEC_CTRL instead). But then there would be no way to find
+out if the change actually happened.
+
+> So I don't see a great way to leverage that to make things easier here.
+> The manually-maintained filter you've proposed here seems more reliable
+> to me.
+
+Yep, I think I'll include that patch as the maintainability doesn't seem ba=
+d.
+
+Paolo
 
 
