@@ -2,40 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A94992766C
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 14:52:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7DC692765A
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 14:51:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPLtf-0004W9-3R; Thu, 04 Jul 2024 08:49:11 -0400
+	id 1sPLth-0004ax-Hl; Thu, 04 Jul 2024 08:49:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sPLtT-0004E5-Fg; Thu, 04 Jul 2024 08:49:01 -0400
+ id 1sPLtW-0004Kp-R6; Thu, 04 Jul 2024 08:49:03 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sPLtJ-0006KZ-Ts; Thu, 04 Jul 2024 08:48:58 -0400
+ id 1sPLtN-0006PP-KJ; Thu, 04 Jul 2024 08:49:02 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 291587739F;
+ by isrv.corpit.ru (Postfix) with ESMTP id 39ED6773A0;
  Thu,  4 Jul 2024 15:48:22 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id B657FFE784;
+ by tsrv.corpit.ru (Postfix) with SMTP id C4F0AFE785;
  Thu,  4 Jul 2024 15:48:26 +0300 (MSK)
-Received: (nullmailer pid 1471779 invoked by uid 1000);
+Received: (nullmailer pid 1471782 invoked by uid 1000);
  Thu, 04 Jul 2024 12:48:26 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- Song Gao <gaosong@loongson.cn>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.13 05/17] tcg/loongarch64: Fix tcg_out_movi vs some pcrel
- pointers
-Date: Thu,  4 Jul 2024 15:48:12 +0300
-Message-Id: <20240704124826.1471715-5-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Fabiano Rosas <farosas@suse.de>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.13 06/17] gitlab-ci.d/buildtest: Merge the
+ --without-default-* jobs
+Date: Thu,  4 Jul 2024 15:48:13 +0300
+Message-Id: <20240704124826.1471715-6-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.13-20240704143502@cover.tls.msk.ru>
 References: <qemu-stable-7.2.13-20240704143502@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -43,7 +47,7 @@ X-Spam_score_int: -68
 X-Spam_score: -6.9
 X-Spam_bar: ------
 X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001, T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -59,75 +63,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+From: Thomas Huth <thuth@redhat.com>
 
-Simplify the logic for two-part, 32-bit pc-relative addresses.
-Rather than assume all such fit in int32_t, do some arithmetic
-and assert a result, do some arithmetic first and then check
-to see if the pieces are in range.
+Let's safe some CI minutes by merging these two jobs. We can now
+also drop "--disable-capstone" since the capstone submodule has
+been removed a while ago. We should rather test --disable-fdt now
+to check a compilation without the "dtc" submodule (for this we
+have to drop i386-softmmu from the target list unfortunately).
+Additionally, the qtests with s390x and sh4 are not read for
+"--without-default-devices" yet, so we can only test mips64 and
+avr here now.
 
-Cc: qemu-stable@nongnu.org
-Fixes: dacc51720db ("tcg/loongarch64: Implement tcg_out_mov and tcg_out_movi")
-Reviewed-by: Song Gao <gaosong@loongson.cn>
-Reported-by: Song Gao <gaosong@loongson.cn>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-(cherry picked from commit 521d7fb3ebdf88112ed13556a93e3037742b9eb8)
+Message-Id: <20230130104446.1286773-5-thuth@redhat.com>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+(cherry picked from commit e030d08c2fc02743dd37e3d2e6e28fdd739590b9)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(Mjt: context fixup in tcg/loongarch64/tcg-target.c.inc)
 
-diff --git a/tcg/loongarch64/tcg-target.c.inc b/tcg/loongarch64/tcg-target.c.inc
-index d326e28740..f1934b6d7b 100644
---- a/tcg/loongarch64/tcg-target.c.inc
-+++ b/tcg/loongarch64/tcg-target.c.inc
-@@ -332,8 +332,7 @@ static void tcg_out_movi(TCGContext *s, TCGType type, TCGReg rd,
-      * back to the slow path.
-      */
+diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
+index 7243b8079b..956025f689 100644
+--- a/.gitlab-ci.d/buildtest.yml
++++ b/.gitlab-ci.d/buildtest.yml
+@@ -560,29 +560,22 @@ build-coroutine-sigaltstack:
+     MAKE_CHECK_ARGS: check-unit
  
--    intptr_t pc_offset;
--    tcg_target_long val_lo, val_hi, pc_hi, offset_hi;
-+    intptr_t src_rx, pc_offset;
-     tcg_target_long hi32, hi52;
-     bool rd_high_bits_are_ones;
- 
-@@ -344,24 +343,23 @@ static void tcg_out_movi(TCGContext *s, TCGType type, TCGReg rd,
-     }
- 
-     /* PC-relative cases.  */
--    pc_offset = tcg_pcrel_diff(s, (void *)val);
--    if (pc_offset == sextreg(pc_offset, 0, 22) && (pc_offset & 3) == 0) {
--        /* Single pcaddu2i.  */
--        tcg_out_opc_pcaddu2i(s, rd, pc_offset >> 2);
--        return;
-+    src_rx = (intptr_t)tcg_splitwx_to_rx(s->code_ptr);
-+    if ((val & 3) == 0) {
-+        pc_offset = val - src_rx;
-+        if (pc_offset == sextreg(pc_offset, 0, 22)) {
-+            /* Single pcaddu2i.  */
-+            tcg_out_opc_pcaddu2i(s, rd, pc_offset >> 2);
-+            return;
-+        }
-     }
- 
--    if (pc_offset == (int32_t)pc_offset) {
--        /* Offset within 32 bits; load with pcalau12i + ori.  */
--        val_lo = sextreg(val, 0, 12);
--        val_hi = val >> 12;
--        pc_hi = (val - pc_offset) >> 12;
--        offset_hi = val_hi - pc_hi;
+ # Check our reduced build configurations
+-build-without-default-devices:
++build-without-defaults:
+   extends: .native_build_job_template
+   needs:
+     job: amd64-centos8-container
+   variables:
+     IMAGE: centos8
+-    CONFIGURE_ARGS: --without-default-devices --disable-user
 -
--        tcg_debug_assert(offset_hi == sextreg(offset_hi, 0, 20));
--        tcg_out_opc_pcalau12i(s, rd, offset_hi);
-+    pc_offset = (val >> 12) - (src_rx >> 12);
-+    if (pc_offset == sextreg(pc_offset, 0, 20)) {
-+        /* Load with pcalau12i + ori.  */
-+        tcg_target_long val_lo = val & 0xfff;
-+        tcg_out_opc_pcalau12i(s, rd, pc_offset);
-         if (val_lo != 0) {
--            tcg_out_opc_ori(s, rd, rd, val_lo & 0xfff);
-+            tcg_out_opc_ori(s, rd, rd, val_lo);
-         }
-         return;
-     }
+-build-without-default-features:
+-  extends: .native_build_job_template
+-  needs:
+-    job: amd64-fedora-container
+-  variables:
+-    IMAGE: fedora
+     CONFIGURE_ARGS:
++      --without-default-devices
+       --without-default-features
+-      --disable-capstone
++      --disable-fdt
+       --disable-pie
+       --disable-qom-cast-debug
+       --disable-strip
+-    TARGETS: avr-softmmu i386-softmmu mips64-softmmu s390x-softmmu sh4-softmmu
++    TARGETS: avr-softmmu mips64-softmmu s390x-softmmu sh4-softmmu
+       sparc64-softmmu hexagon-linux-user i386-linux-user s390x-linux-user
+-    MAKE_CHECK_ARGS: check-unit check-qtest SPEED=slow
++    MAKE_CHECK_ARGS: check-unit check-qtest-avr check-qtest-mips64
+ 
+ build-libvhost-user:
+   extends: .base_job_template
 -- 
 2.39.2
 
