@@ -2,39 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0168C927654
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 14:50:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01D5D927650
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 14:49:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPLtj-0004ea-Jx; Thu, 04 Jul 2024 08:49:15 -0400
+	id 1sPLtr-0004gQ-70; Thu, 04 Jul 2024 08:49:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sPLtY-0004QJ-DI; Thu, 04 Jul 2024 08:49:04 -0400
+ id 1sPLtd-0004Vn-59; Thu, 04 Jul 2024 08:49:09 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sPLtW-0006R4-Fc; Thu, 04 Jul 2024 08:49:04 -0400
+ id 1sPLta-0006Tg-7H; Thu, 04 Jul 2024 08:49:08 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 56885773A1;
+ by isrv.corpit.ru (Postfix) with ESMTP id 66969773A2;
  Thu,  4 Jul 2024 15:48:22 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id D5A69FE786;
+ by tsrv.corpit.ru (Postfix) with SMTP id F28EDFE787;
  Thu,  4 Jul 2024 15:48:26 +0300 (MSK)
-Received: (nullmailer pid 1471786 invoked by uid 1000);
+Received: (nullmailer pid 1471789 invoked by uid 1000);
  Thu, 04 Jul 2024 12:48:26 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+Cc: qemu-stable@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.13 07/17] Update lcitool and fedora to 37
-Date: Thu,  4 Jul 2024 15:48:14 +0300
-Message-Id: <20240704124826.1471715-7-mjt@tls.msk.ru>
+Subject: [Stable-7.2.13 08/17] ci,
+ docker: update CentOS and OpenSUSE Python to non-EOL versions
+Date: Thu,  4 Jul 2024 15:48:15 +0300
+Message-Id: <20240704124826.1471715-8-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.13-20240704143502@cover.tls.msk.ru>
 References: <qemu-stable-7.2.13-20240704143502@cover.tls.msk.ru>
@@ -63,107 +61,239 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Marc-André Lureau <marcandre.lureau@redhat.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
 
-Fedora 35 is EOL.
+Python 3.6 is at end-of-life.  Update the libvirt-ci module to a
+version that supports overrides for targets and package mappings;
+this way, QEMU can use the newer versions provided by CentOS 8 (Python
+3.8) and OpenSUSE 15.3 (Python 3.9).
 
-Update to upstream lcitool, that dropped f35 and added f37.
-
-Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20230110132700.833690-7-marcandre.lureau@redhat.com>
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20230124180127.1881110-11-alex.bennee@linaro.org>
-(cherry picked from commit 0054dc8bde408d61257bacdb489bbacc4ca5cde5)
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+(cherry picked from commit d639cf79783a1eba349b7705e0fb270fa76118a4)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/tests/docker/dockerfiles/fedora-win32-cross.docker b/tests/docker/dockerfiles/fedora-win32-cross.docker
-index 75383ba185..cc5d1ac4be 100644
---- a/tests/docker/dockerfiles/fedora-win32-cross.docker
-+++ b/tests/docker/dockerfiles/fedora-win32-cross.docker
-@@ -1,10 +1,10 @@
- # THIS FILE WAS AUTO-GENERATED
- #
--#  $ lcitool dockerfile --layers all --cross mingw32 fedora-35 qemu
-+#  $ lcitool dockerfile --layers all --cross mingw32 fedora-37 qemu
- #
- # https://gitlab.com/libvirt/libvirt-ci
+diff --git a/docs/devel/testing.rst b/docs/devel/testing.rst
+index 98c26ecf18..b4c99be195 100644
+--- a/docs/devel/testing.rst
++++ b/docs/devel/testing.rst
+@@ -473,6 +473,12 @@ thus some extra preparation steps will be required first
+    the ``libvirt-ci`` submodule to point to a commit that contains
+    the ``mappings.yml`` update.
  
--FROM registry.fedoraproject.org/fedora:35
-+FROM registry.fedoraproject.org/fedora:37
++For enterprise distros that default to old, end-of-life versions of the
++Python runtime, QEMU uses a separate set of mappings that work with more
++recent versions.  These can be found in ``tests/lcitool/mappings.yml``.
++Modifying this file should not be necessary unless the new pre-requisite
++is a Python library or tool.
++
  
- RUN dnf install -y nosync && \
-     echo -e '#!/bin/sh\n\
-diff --git a/tests/docker/dockerfiles/fedora-win64-cross.docker b/tests/docker/dockerfiles/fedora-win64-cross.docker
-index 98c03dc13b..cabbf4edfc 100644
---- a/tests/docker/dockerfiles/fedora-win64-cross.docker
-+++ b/tests/docker/dockerfiles/fedora-win64-cross.docker
-@@ -1,10 +1,10 @@
- # THIS FILE WAS AUTO-GENERATED
- #
--#  $ lcitool dockerfile --layers all --cross mingw64 fedora-35 qemu
-+#  $ lcitool dockerfile --layers all --cross mingw64 fedora-37 qemu
- #
- # https://gitlab.com/libvirt/libvirt-ci
+ Adding new OS distros
+ ^^^^^^^^^^^^^^^^^^^^^
+diff --git a/tests/docker/dockerfiles/centos8.docker b/tests/docker/dockerfiles/centos8.docker
+index 1f70d41aeb..cc09402eb3 100644
+--- a/tests/docker/dockerfiles/centos8.docker
++++ b/tests/docker/dockerfiles/centos8.docker
+@@ -82,7 +82,6 @@ RUN dnf distro-sync -y && \
+         lzo-devel \
+         make \
+         mesa-libgbm-devel \
+-        meson \
+         ncurses-devel \
+         nettle-devel \
+         ninja-build \
+@@ -95,13 +94,12 @@ RUN dnf distro-sync -y && \
+         pixman-devel \
+         pkgconfig \
+         pulseaudio-libs-devel \
+-        python3 \
+-        python3-PyYAML \
+-        python3-numpy \
+-        python3-pillow \
+-        python3-pip \
+-        python3-sphinx \
+-        python3-sphinx_rtd_theme \
++        python38 \
++        python38-PyYAML \
++        python38-numpy \
++        python38-pip \
++        python38-setuptools \
++        python38-wheel \
+         rdma-core-devel \
+         rpm \
+         sed \
+@@ -130,8 +128,14 @@ RUN dnf distro-sync -y && \
+     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/g++ && \
+     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/gcc
  
--FROM registry.fedoraproject.org/fedora:35
-+FROM registry.fedoraproject.org/fedora:37
++RUN /usr/bin/pip3.8 install \
++                    meson==0.63.2 \
++                    pillow \
++                    sphinx \
++                    sphinx-rtd-theme
++
+ ENV CCACHE_WRAPPERSDIR "/usr/libexec/ccache-wrappers"
+ ENV LANG "en_US.UTF-8"
+ ENV MAKE "/usr/bin/make"
+ ENV NINJA "/usr/bin/ninja"
+-ENV PYTHON "/usr/bin/python3"
++ENV PYTHON "/usr/bin/python3.8"
+diff --git a/tests/docker/dockerfiles/opensuse-leap.docker b/tests/docker/dockerfiles/opensuse-leap.docker
+index 4361b01464..4f1191dc05 100644
+--- a/tests/docker/dockerfiles/opensuse-leap.docker
++++ b/tests/docker/dockerfiles/opensuse-leap.docker
+@@ -90,16 +90,9 @@ RUN zypper update -y && \
+            pcre-devel-static \
+            perl-base \
+            pkgconfig \
+-           python3-Pillow \
+-           python3-PyYAML \
+-           python3-Sphinx \
+-           python3-base \
+-           python3-numpy \
+-           python3-opencv \
+-           python3-pip \
+-           python3-setuptools \
+-           python3-sphinx_rtd_theme \
+-           python3-wheel \
++           python39-base \
++           python39-pip \
++           python39-setuptools \
+            rdma-core-devel \
+            rpm \
+            sed \
+@@ -131,10 +124,15 @@ RUN zypper update -y && \
+     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/g++ && \
+     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/gcc
  
- RUN dnf install -y nosync && \
-     echo -e '#!/bin/sh\n\
-diff --git a/tests/docker/dockerfiles/fedora.docker b/tests/docker/dockerfiles/fedora.docker
-index d200c7fc10..f44b005000 100644
---- a/tests/docker/dockerfiles/fedora.docker
-+++ b/tests/docker/dockerfiles/fedora.docker
-@@ -1,10 +1,10 @@
- # THIS FILE WAS AUTO-GENERATED
- #
--#  $ lcitool dockerfile --layers all fedora-35 qemu
-+#  $ lcitool dockerfile --layers all fedora-37 qemu
- #
- # https://gitlab.com/libvirt/libvirt-ci
+-RUN /usr/bin/pip3 install meson==0.56.0
++RUN /usr/bin/pip3.9 install \
++                    PyYAML \
++                    meson==0.63.2 \
++                    pillow \
++                    sphinx \
++                    sphinx-rtd-theme
  
--FROM registry.fedoraproject.org/fedora:35
-+FROM registry.fedoraproject.org/fedora:37
+ ENV CCACHE_WRAPPERSDIR "/usr/libexec/ccache-wrappers"
+ ENV LANG "en_US.UTF-8"
+ ENV MAKE "/usr/bin/make"
+ ENV NINJA "/usr/bin/ninja"
+-ENV PYTHON "/usr/bin/python3"
++ENV PYTHON "/usr/bin/python3.9"
+diff --git a/tests/docker/dockerfiles/ubuntu2004.docker b/tests/docker/dockerfiles/ubuntu2004.docker
+index 9417bca2fa..39c744eba9 100644
+--- a/tests/docker/dockerfiles/ubuntu2004.docker
++++ b/tests/docker/dockerfiles/ubuntu2004.docker
+@@ -140,7 +140,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/g++ && \
+     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/gcc
  
- RUN dnf install -y nosync && \
-     echo -e '#!/bin/sh\n\
-diff --git a/tests/lcitool/libvirt-ci b/tests/lcitool/libvirt-ci
-index e3eb28cf2e..319a534c22 160000
---- a/tests/lcitool/libvirt-ci
-+++ b/tests/lcitool/libvirt-ci
-@@ -1 +1 @@
--Subproject commit e3eb28cf2e17fbcf7fe7e19505ee432b8ec5bbb5
-+Subproject commit 319a534c220f53fc8670254cac25d6f662c82112
-diff --git a/tests/lcitool/refresh b/tests/lcitool/refresh
-index fa966e4009..a5ea0efc3b 100755
---- a/tests/lcitool/refresh
-+++ b/tests/lcitool/refresh
-@@ -111,7 +111,7 @@ try:
-     generate_dockerfile("centos8", "centos-stream-8")
-     generate_dockerfile("debian-amd64", "debian-11",
-                         trailer="".join(debian11_extras))
--    generate_dockerfile("fedora", "fedora-35")
-+    generate_dockerfile("fedora", "fedora-37")
-     generate_dockerfile("opensuse-leap", "opensuse-leap-153")
-     generate_dockerfile("ubuntu2004", "ubuntu-2004",
-                         trailer="".join(ubuntu2004_tsanhack))
-@@ -161,12 +161,12 @@ try:
-                         trailer=cross_build("s390x-linux-gnu-",
-                                             "s390x-softmmu,s390x-linux-user"))
+-RUN /usr/bin/pip3 install meson==0.56.0
++RUN /usr/bin/pip3 install meson==0.63.2
  
--    generate_dockerfile("fedora-win32-cross", "fedora-35",
-+    generate_dockerfile("fedora-win32-cross", "fedora-37",
-                         cross="mingw32",
-                         trailer=cross_build("i686-w64-mingw32-",
-                                             "i386-softmmu"))
- 
--    generate_dockerfile("fedora-win64-cross", "fedora-35",
-+    generate_dockerfile("fedora-win64-cross", "fedora-37",
-                         cross="mingw64",
-                         trailer=cross_build("x86_64-w64-mingw32-",
-                                             "x86_64-softmmu"))
+ ENV CCACHE_WRAPPERSDIR "/usr/libexec/ccache-wrappers"
+ ENV LANG "en_US.UTF-8"
+diff --git a/tests/lcitool/mappings.yml b/tests/lcitool/mappings.yml
+new file mode 100644
+index 0000000000..e4719e4551
+--- /dev/null
++++ b/tests/lcitool/mappings.yml
+@@ -0,0 +1,77 @@
++mappings:
++  flake8:
++    CentOSStream8:
++    OpenSUSELeap153:
++
++  meson:
++    CentOSStream8:
++    OpenSUSELeap153:
++
++  python3:
++    CentOSStream8: python38
++    OpenSUSELeap153: python39-base
++
++  python3-PyYAML:
++    CentOSStream8: python38-PyYAML
++    OpenSUSELeap153:
++
++  python3-devel:
++    CentOSStream8: python38-devel
++    OpenSUSELeap153: python39-devel
++
++  python3-docutils:
++    CentOSStream8:
++    OpenSUSELeap153:
++
++  python3-numpy:
++    CentOSStream8: python38-numpy
++    OpenSUSELeap153:
++
++  python3-opencv:
++    CentOSStream8:
++    OpenSUSELeap153:
++
++  python3-pillow:
++    CentOSStream8:
++    OpenSUSELeap153:
++
++  python3-pip:
++    CentOSStream8: python38-pip
++    OpenSUSELeap153: python39-pip
++
++  python3-pillow:
++    CentOSStream8:
++    OpenSUSELeap153:
++
++  python3-selinux:
++    CentOSStream8:
++    OpenSUSELeap153:
++
++  python3-setuptools:
++    CentOSStream8: python38-setuptools
++    OpenSUSELeap153: python39-setuptools
++
++  python3-sphinx:
++    CentOSStream8:
++    OpenSUSELeap153:
++
++  python3-sphinx-rtd-theme:
++    CentOSStream8:
++    OpenSUSELeap153:
++
++  python3-venv:
++    CentOSStream8: python38
++    OpenSUSELeap153: python39-base
++
++  python3-wheel:
++    CentOSStream8: python38-wheel
++    OpenSUSELeap153: python39-pip
++
++pypi_mappings:
++  # Request more recent version
++  meson:
++    default: meson==0.63.2
++
++  # Drop packages that need devel headers
++  python3-numpy:
++    OpenSUSELeap153:
+diff --git a/tests/lcitool/targets/centos-stream-8.yml b/tests/lcitool/targets/centos-stream-8.yml
+new file mode 100644
+index 0000000000..6b11160fd1
+--- /dev/null
++++ b/tests/lcitool/targets/centos-stream-8.yml
+@@ -0,0 +1,3 @@
++paths:
++  pip3: /usr/bin/pip3.8
++  python: /usr/bin/python3.8
+diff --git a/tests/lcitool/targets/opensuse-leap-153.yml b/tests/lcitool/targets/opensuse-leap-153.yml
+new file mode 100644
+index 0000000000..683016e007
+--- /dev/null
++++ b/tests/lcitool/targets/opensuse-leap-153.yml
+@@ -0,0 +1,3 @@
++paths:
++  pip3: /usr/bin/pip3.9
++  python: /usr/bin/python3.9
 -- 
 2.39.2
 
