@@ -2,63 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A02CC9272CF
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 11:20:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49634927325
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 11:36:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPIc2-0006NC-0p; Thu, 04 Jul 2024 05:18:46 -0400
+	id 1sPIsX-0001m6-Nk; Thu, 04 Jul 2024 05:35:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1sPIbu-0006MK-Ea; Thu, 04 Jul 2024 05:18:38 -0400
-Received: from mgamail.intel.com ([198.175.65.16])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1sPIbr-0001br-0q; Thu, 04 Jul 2024 05:18:37 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1720084715; x=1751620715;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=2yWda5+RJ5YHltmBgTNQsmoOCifxWuqxZL3/wnZPkyo=;
- b=lmi0LTQ8FKeeAA07jXM2Pcci3CFZSV3rR6dheE8TIhFTJTSi6rmkfw8q
- 2+pz6lEfV7VPEhI7mjjeEeddV4O2lyKyam00oBuK4FpM4B3l64S/GdMgz
- lUE6HqTbA6uwu8eBSCKcMzxr80iv52h1QiqVcun38puqXdn0stAfdZoNF
- oQIOZIPRWCUtn4+A8jwCL7M1gGfSYhnYKI2RO6PMRrDnzy6UKzWJkLWY6
- DCVPOzmI9DP23AExNx6T+odzbgDjbfq3/6+0IXGG1tfYmVUZKd09ZrrRN
- y692zW6S6s+V6+5KU0CZmCHQMrPuY5D4XZTvCe4CHCyODVh0zrNMKUNd6 A==;
-X-CSE-ConnectionGUID: /zi5M0lRTRCNrEC2DGVo1g==
-X-CSE-MsgGUID: 6x2jhHUdRQ6fKIzbYHeVjA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11122"; a="17487617"
-X-IronPort-AV: E=Sophos;i="6.09,183,1716274800"; d="scan'208";a="17487617"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Jul 2024 02:18:31 -0700
-X-CSE-ConnectionGUID: wKOGwyB6QpWVKu8euJf57Q==
-X-CSE-MsgGUID: f6mIF49JR16jMnM5i269TA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,183,1716274800"; d="scan'208";a="50863190"
-Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by fmviesa003.fm.intel.com with ESMTP; 04 Jul 2024 02:18:29 -0700
-From: Zhao Liu <zhao1.liu@linux.intel.com>
-To: Jonathan Cameron <jonathan.cameron@huawei.com>, Fan Ni <fan.ni@samsung.com>
-Cc: qemu-devel@nongnu.org, qemu-stable@nongnu.org,
- Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH] hw/cxl/cxl-host: Fix guest crash when getting cxl-fmw property
-Date: Thu,  4 Jul 2024 17:34:04 +0800
-Message-Id: <20240704093404.1848132-1-zhao1.liu@linux.intel.com>
-X-Mailer: git-send-email 2.34.1
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sPIsW-0001lH-Ef
+ for qemu-devel@nongnu.org; Thu, 04 Jul 2024 05:35:48 -0400
+Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sPIsM-0002rl-Co
+ for qemu-devel@nongnu.org; Thu, 04 Jul 2024 05:35:48 -0400
+Received: by mail-ed1-x529.google.com with SMTP id
+ 4fb4d7f45d1cf-58ef19aa6b3so4141a12.1
+ for <qemu-devel@nongnu.org>; Thu, 04 Jul 2024 02:35:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1720085735; x=1720690535; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=HmY7sgA1giYdLexKfeUXxNv0Ke5XVPxlGYl4+WbrtEw=;
+ b=pdD+zizt1mlQCf13Ztpgbry5ye/aVL7yOMz33bNh/zuUrEk57sPDIF/MwmzAvTytPi
+ aB6g0d+6p/+rBFkVKp+BtjvJIi4QD/IMzS1KpLOkAZDYFH0o3AkMeuIjtUxhrl2549Ld
+ ON7I4m6ym/T7xo1spPkzTcYT1aivsrncbGCkFr9vCRHZKBGLsgSvHZjb6tREceH7FQ0g
+ 2MoLSme5I64boiJJYzAX1SoAmqN2/pUqO+XbPTriBqaehUKNEVRAHzdYtihuWFNWf+w1
+ My8Supg1Dh4LItFgtzcM/BpG0nsmn8KJ2iA4tnlYTWshAnNTC80Ke+/N1s4ppK+OBp03
+ QegA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1720085735; x=1720690535;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=HmY7sgA1giYdLexKfeUXxNv0Ke5XVPxlGYl4+WbrtEw=;
+ b=Lm73zIo/tL8FgzIETooaSAYXDC8Pc2sIEbU/CRXH+0qHl7KbAR3Mwg2QIInHf018+J
+ B9VFAJoYw4P9TqgsghfCFTSYPPrMd64Gh7v/R7t3E1KWuN198tNJ6C3rrzhVVsjtNOEJ
+ W8VEzk/LxoRkP1VuO+X5ZRogXuagk5DaErbYgrGI1sKBeAP75qtzR4F8IUE26RAZvoyU
+ RiOxOGYbpWtdrHy+WChZXwxTEYOAWBlaQeJ5erMJccILYC8R54tqI5Kb4nCr8WSDJbLX
+ LVzLGVr+jNjv7RtAdf4lJa1Vl15ghaBmMb4khixtsXZrKsYU/hK3PZyOnxr4e0qrHoCm
+ UK1Q==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWfHTJw/O0+mwlihmvgNMnppAAHyAiCNCE5EOM01DavkktBzoVqFgiD+H0xCWdZgxTaKAkdjG8w8Cb3lyKktxvbPOJBZ+M=
+X-Gm-Message-State: AOJu0YxzaDY0hNTR+AswNWK4TX0k7Mm4SLp4tUQGuk4+c3y09x/XXbrg
+ wPSJ02COjzyemUTbvBomu+MeLPuz31WNKz4e6GUz820U8etVr5+uTO/oM6JywAtPRQXLgITA0D7
+ emljOVeml/iL79IFHAje3TOTWVgEq/RaMwWAuvw==
+X-Google-Smtp-Source: AGHT+IFbTR1Ef8u6fiv4NGrNg+TDdT/8wn4LheWeXDbrLfZ5rFHVZYOsQZhTrUGZRUFyhc0OfK7HzcqhafOmq3me9r4=
+X-Received: by 2002:a05:6402:b29:b0:58c:3252:3ab8 with SMTP id
+ 4fb4d7f45d1cf-58e5bd7d6f3mr938422a12.37.1720085735488; Thu, 04 Jul 2024
+ 02:35:35 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=198.175.65.16;
- envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
+References: <20240704084759.1824420-1-zhao1.liu@intel.com>
+ <20240704084759.1824420-2-zhao1.liu@intel.com>
+In-Reply-To: <20240704084759.1824420-2-zhao1.liu@intel.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 4 Jul 2024 10:35:24 +0100
+Message-ID: <CAFEAcA9CLhREMhbNs4MU8+YfjLoZBeQR3Y1Hjtxs3g6AAdCxYw@mail.gmail.com>
+Subject: Re: [PATCH 1/4] accel/kvm/kvm-all: Fix superfluous trailing semicolon
+To: Zhao Liu <zhao1.liu@intel.com>
+Cc: Michael Tokarev <mjt@tls.msk.ru>, Laurent Vivier <laurent@vivier.eu>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ qemu-trivial@nongnu.org, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::529;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x529.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -74,44 +90,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhao Liu <zhao1.liu@intel.com>
+On Thu, 4 Jul 2024 at 09:32, Zhao Liu <zhao1.liu@intel.com> wrote:
+>
+> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> ---
+>  accel/kvm/kvm-all.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+> index 2b4ab896794b..64bf47a03300 100644
+> --- a/accel/kvm/kvm-all.c
+> +++ b/accel/kvm/kvm-all.c
+> @@ -3878,7 +3878,7 @@ static StatsList *add_kvmstat_entry(struct kvm_stats_desc *pdesc,
+>      /* Alloc and populate data list */
+>      stats = g_new0(Stats, 1);
+>      stats->name = g_strdup(pdesc->name);
+> -    stats->value = g_new0(StatsValue, 1);;
+> +    stats->value = g_new0(StatsValue, 1);
+>
+>      if ((pdesc->flags & KVM_STATS_UNIT_MASK) == KVM_STATS_UNIT_BOOLEAN) {
+>          stats->value->u.boolean = *stats_data;
 
-Guest crashes (Segmentation fault) when getting cxl-fmw property via
-qmp:
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
-(QEMU) qom-get path=machine property=cxl-fmw
-
-This issue is caused by accessing wrong callback (opaque) type in
-machine_get_cfmw().
-
-cxl_machine_init() sets the callback as `CXLState *` type but
-machine_get_cfmw() treats the callback as
-`CXLFixedMemoryWindowOptionsList **`.
-
-Fix this error by casting opaque to `CXLState *` type in
-machine_get_cfmw().
-
-Fixes: 03b39fcf64bc ("hw/cxl: Make the CXL fixed memory window setup a machine parameter.")
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
----
- hw/cxl/cxl-host.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/hw/cxl/cxl-host.c b/hw/cxl/cxl-host.c
-index c5f5fcfd64d0..e9f2543c43c6 100644
---- a/hw/cxl/cxl-host.c
-+++ b/hw/cxl/cxl-host.c
-@@ -315,7 +315,8 @@ static void machine_set_cxl(Object *obj, Visitor *v, const char *name,
- static void machine_get_cfmw(Object *obj, Visitor *v, const char *name,
-                              void *opaque, Error **errp)
- {
--    CXLFixedMemoryWindowOptionsList **list = opaque;
-+    CXLState *state = opaque;
-+    CXLFixedMemoryWindowOptionsList **list = &state->cfmw_list;
- 
-     visit_type_CXLFixedMemoryWindowOptionsList(v, name, list, errp);
- }
--- 
-2.34.1
-
+thanks
+-- PMM
 
