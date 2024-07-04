@@ -2,57 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1264E927661
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 14:51:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83A8F927653
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 14:50:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPLtX-0004L5-Uv; Thu, 04 Jul 2024 08:49:03 -0400
+	id 1sPLtg-0004ZN-SV; Thu, 04 Jul 2024 08:49:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <lvivier@redhat.com>)
- id 1sPLtJ-0004Ad-Iu
- for qemu-devel@nongnu.org; Thu, 04 Jul 2024 08:48:52 -0400
+ id 1sPLtN-0004BU-OK
+ for qemu-devel@nongnu.org; Thu, 04 Jul 2024 08:48:55 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <lvivier@redhat.com>)
- id 1sPLtE-0006Jw-H2
- for qemu-devel@nongnu.org; Thu, 04 Jul 2024 08:48:48 -0400
+ id 1sPLtH-0006N4-KX
+ for qemu-devel@nongnu.org; Thu, 04 Jul 2024 08:48:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1720097322;
+ s=mimecast20190719; t=1720097325;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=0KIsVzaMJ2c6J7JjJ0pwhbJkp5EspKm1WD0SiiZ8bvQ=;
- b=YzJUtnLKCJhz86/4YATZib4CUtaqxVe8I87SkBveWpvdMHbguTfGjZPyZUZymo0RzDRoC0
- MZzFBDpMfH/6FLA0dt+anuIzl3D9yzeBKFtLnzHJqDfaNk977RKwfnsTby4vdOUPW6pZEu
- T+oG+e46GErdGJXXbyVPOodcSDmlatI=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=gSClSFqgDijE7gySCiOqoSrtd8XEDPCNBGX6CqO2M6U=;
+ b=iwWoKO0eBqCkJFXvQbHrPqr066AgREGlaZU1LD8Fxjbe+YZAVfMBMARDgS0EBI8bE7XNs2
+ gKf7gQcmtV3Md4jQaIXbbvilFqiCTfXeqce1poZoLScNatcjfBzbJvBHaYFUShhQkhxSlF
+ GtNwS9iUpPtPOsu4dBmzdh7MizlCroI=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-660-i6hVYa_wO6yS0Jj88EeCoQ-1; Thu,
- 04 Jul 2024 08:48:39 -0400
-X-MC-Unique: i6hVYa_wO6yS0Jj88EeCoQ-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-618-pXkspCKQNdKIl2d3SmTF7Q-1; Thu,
+ 04 Jul 2024 08:48:42 -0400
+X-MC-Unique: pXkspCKQNdKIl2d3SmTF7Q-1
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 44479196CE01; Thu,  4 Jul 2024 12:48:38 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 7B7F619560B3; Thu,  4 Jul 2024 12:48:41 +0000 (UTC)
 Received: from lenovo-t14s.redhat.com (unknown [10.39.192.194])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id B45391955F65; Thu,  4 Jul 2024 12:48:35 +0000 (UTC)
+ id 92E9D1956046; Thu,  4 Jul 2024 12:48:38 +0000 (UTC)
 From: Laurent Vivier <lvivier@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@gmail.com>,
  Jason Wang <jasowang@redhat.com>, Laurent Vivier <lvivier@redhat.com>
-Subject: [PATCH v2 0/4] net: update netdev stream/dgram man page
-Date: Thu,  4 Jul 2024 14:48:30 +0200
-Message-ID: <20240704124834.81958-1-lvivier@redhat.com>
-Content-Type: text/plain; charset="utf-8"
+Subject: [PATCH v2 1/4] net: update netdev stream/dgram man page
+Date: Thu,  4 Jul 2024 14:48:31 +0200
+Message-ID: <20240704124834.81958-2-lvivier@redhat.com>
+In-Reply-To: <20240704124834.81958-1-lvivier@redhat.com>
+References: <20240704124834.81958-1-lvivier@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=lvivier@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -61,8 +63,8 @@ X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,30 +80,143 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add the description of "-netdev stream" and "-netdev dgram" in the QEMU=0D
-manpage.=0D
-=0D
-Add some examples on how to use them, including a way to use=0D
-"-netdev stream" and "passt" in place of "-netdev user".=0D
-("passt" is a non privileged translation proxy between layer-2,=0D
-like "-netdev stream", and layer-4 on host, like TCP, UDP,=0D
-ICMP/ICMPv6 echo)=0D
-=0D
-v2:=0D
-  - split patch=0D
-  - update unix socket description with stream and datagram words.=0D
-=0D
-Laurent Vivier (4):=0D
-  net: update netdev stream/dgram man page=0D
-  net: update netdev stream man page with unix socket=0D
-  net: update netdev dgram man page with unix socket=0D
-  net: update netdev stream man page with the reconnect parameter=0D
-=0D
- qemu-options.hx | 189 ++++++++++++++++++++++++++++++++++++++++++++++++=0D
- 1 file changed, 189 insertions(+)=0D
-=0D
--- =0D
-2.45.2=0D
-=0D
+Add the description of "-netdev stream" and "-netdev dgram" in the QEMU
+manpage.
+
+Add some examples on how to use them.
+
+Fixes: 5166fe0ae46d ("qapi: net: add stream and dgram netdevs")
+Signed-off-by: Laurent Vivier <lvivier@redhat.com>
+---
+ qemu-options.hx | 114 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 114 insertions(+)
+
+diff --git a/qemu-options.hx b/qemu-options.hx
+index 8ca7f34ef0c8..2a099731ea0a 100644
+--- a/qemu-options.hx
++++ b/qemu-options.hx
+@@ -3353,6 +3353,120 @@ SRST
+                          -device e1000,netdev=n1,mac=52:54:00:12:34:56 \\
+                          -netdev socket,id=n1,mcast=239.192.168.1:1102,localaddr=1.2.3.4
+ 
++``-netdev stream,id=str[,server=on|off],addr.type=inet,addr.host=host,addr.port=port[,to=maxport][,numeric=on|off][,keep-alive=on|off][,mptcp=on|off][,addr.ipv4=on|off][,addr.ipv6=on|off]``
++    Configure a network backend to connect to another QEMU virtual machine or a proxy using a TCP/IP socket.
++
++    ``server=on|off``
++        if ``on`` create a server socket
++
++    ``addr.host=host,addr.port=port``
++        socket address to listen on (server=on) or connect to (server=off)
++
++    ``to=maxport``
++        if present, this is range of possible addresses, with port between ``port`` and ``maxport``.
++
++    ``numeric=on|off``
++        if ``on`` ``host`` and ``port`` are guaranteed to be numeric, otherwise a name resolution should be attempted (default: ``off``)
++
++    ``keep-alive=on|off``
++        enable keep-alive when connecting to this socket.  Not supported for passive sockets.
++
++    ``mptcp=on|off``
++        enable multipath TCP
++
++    ``ipv4=on|off``
++        whether to accept IPv4 addresses, default to try both IPv4 and IPv6
++
++    ``ipv6=on|off``
++        whether to accept IPv6 addresses, default to try both IPv4 and IPv6
++
++    Example (two guests connected using a TCP/IP socket):
++
++    .. parsed-literal::
++
++        # first VM
++        |qemu_system| linux.img \\
++                      -device virtio-net,netdev=net0,mac=52:54:00:12:34:56 \\
++                      -netdev stream,id=net0,server=on,addr.type=inet,addr.host=localhost,addr.port=1234
++        # second VM
++        |qemu_system| linux.img \\
++                      -device virtio-net,netdev=net0,mac=52:54:00:12:34:57 \\
++                      -netdev stream,id=net0,server=off,addr.type=inet,addr.host=localhost,addr.port=1234
++
++``-netdev stream,id=str[,server=on|off],addr.type=fd,addr.str=file-descriptor``
++    Configure a network backend to connect to another QEMU virtual machine or a proxy using a stream oriented socket file descriptor.
++
++    ``server=on|off``
++        if ``on`` create a server socket
++
++    ``addr.str=file-descriptor``
++        file descriptor number to use as a socket
++
++``-netdev dgram,id=str,remote.type=inet,remote.host=maddr,remote.port=port[,local.type=inet,local.host=addr]``
++    Configure a network backend to connect to a multicast address.
++
++    ``remote.host=maddr,remote.port=port``
++        multicast address
++
++    ``local.host=addr``
++        specify the host address to send packets from
++
++    Example:
++
++    .. parsed-literal::
++
++        # launch one QEMU instance
++        |qemu_system| linux.img \\
++                      -device virtio-net,netdev=net0,mac=52:54:00:12:34:56 \\
++                      -netdev dgram,id=net0,remote.type=inet,remote.host=224.0.0.1,remote.port=1234
++        # launch another QEMU instance on same "bus"
++        |qemu_system| linux.img \\
++                      -device virtio-net,netdev=net0,mac=52:54:00:12:34:57 \\
++                      -netdev dgram,id=net0,remote.type=inet,remote.host=224.0.0.1,remote.port=1234
++        # launch yet another QEMU instance on same "bus"
++        |qemu_system| linux.img \\
++                      -device virtio-net,netdev=net0,mac=52:54:00:12:34:58 \\
++                      -netdev dgram,id=net0,remote.type=inet,remote.host=224.0.0.1,remote.port=1234
++
++``-netdev dgram,id=str,remote.type=inet,remote.host=maddr,remote.port=port[,local.type=fd,local.str=file-descriptor]``
++    Configure a network backend to connect to a multicast address using a UDP socket file descriptor.
++
++    ``remote.host=maddr,remote.port=port``
++        multicast address
++
++    ``local.str=file-descriptor``
++        File descriptor to use to send packets
++
++``-netdev dgram,id=str,local.type=inet,local.host=addr,local.port=port[,remote.type=inet,remote.host=addr,remote.port=port]``
++    Configure a network backend to connect to another QEMU virtual
++    machine or a proxy using a datagram oriented unix domain socket.
++
++    ``local.host=addr,local.port=port``
++        IP address to use to send the packets from
++
++    ``remote.host=addr,remote.port=port``
++        Destination IP address
++
++    Example (two guests connected using an UDP/IP socket):
++
++    .. parsed-literal::
++
++        # first VM
++        |qemu_system| linux.img \\
++                      -device virtio-net,netdev=net0,mac=52:54:00:12:34:56 \\
++                      -netdev dgram,id=net0,local.type=inet,local.host=localhost,local.port=1234,remote.type=inet,remote.host=localhost,remote.port=1235
++        # second VM
++        |qemu_system| linux.img \\
++                      -device virtio-net,netdev=net0,mac=52:54:00:12:34:56 \\
++                      -netdev dgram,id=net0,local.type=inet,local.host=localhost,local.port=1235,remote.type=inet,remote.host=localhost,remote.port=1234
++
++``-netdev dgram,id=str,local.type=fd,local.str=file-descriptor``
++    Configure a network backend to connect to another QEMU virtual
++    machine or a proxy using a datagram oriented socket file descriptor.
++
++    ``local.str=file-descriptor``
++        File descriptor to use to send packets
++
+ ``-netdev l2tpv3,id=id,src=srcaddr,dst=dstaddr[,srcport=srcport][,dstport=dstport],txsession=txsession[,rxsession=rxsession][,ipv6=on|off][,udp=on|off][,cookie64][,counter][,pincounter][,txcookie=txcookie][,rxcookie=rxcookie][,offset=offset]``
+     Configure a L2TPv3 pseudowire host network backend. L2TPv3 (RFC3931)
+     is a popular protocol to transport Ethernet (and other Layer 2) data
+-- 
+2.45.2
 
 
