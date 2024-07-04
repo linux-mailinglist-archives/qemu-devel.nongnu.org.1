@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37D9292738E
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 12:00:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CAFB92737E
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 11:59:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPJEt-0007Ae-B3; Thu, 04 Jul 2024 05:58:55 -0400
+	id 1sPJEl-0006n0-71; Thu, 04 Jul 2024 05:58:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sPJEh-0006n6-9m
- for qemu-devel@nongnu.org; Thu, 04 Jul 2024 05:58:44 -0400
+ id 1sPJEe-0006iF-1z
+ for qemu-devel@nongnu.org; Thu, 04 Jul 2024 05:58:40 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sPJEb-00087W-GO
- for qemu-devel@nongnu.org; Thu, 04 Jul 2024 05:58:42 -0400
+ id 1sPJEb-00087p-7u
+ for qemu-devel@nongnu.org; Thu, 04 Jul 2024 05:58:39 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1720087113;
+ s=mimecast20190719; t=1720087116;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=oseQ60e5wmgH0ZYm/I14i7Pkbsm8+uJkxNMnBtHXQnA=;
- b=im3Gz5c6uPI+Vf+Ognv3VP28mWvKjjp01N52qt8rmX26nopIsx4BXsSeaXN+M9jWwNofXo
- 5dGCgI3MHgyVfhNHEt/Nhk/4BCgnheE/vjfPLStGg8ktBms84RPN6+c9PBp+lTavKw44o6
- vmzDbgBvOqdefM1Ho8yLeGzPVxd4p0c=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=4MTUOgRFnaAQLOr/FyDNaauHZx0Uilejdebgta3jTEQ=;
+ b=XuH5OJ8fsxNMdMJon5SFxh6gMbFKnNQHPkimbElbNONoxJwSjfr89QEHdCWe8oEaIK6125
+ W6a/AUSDjAz/IMVmAz6HXE9FHa3qhQzEUwoSxG4WIQr8kz4p/moQzb67T8NTqBPqFwAePh
+ i1iVRzIo4Vpc3+sv1QJzYsseDxnUBEU=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-102-V77fFsZZMcGcPJcMkJ5YGA-1; Thu, 04 Jul 2024 05:58:32 -0400
-X-MC-Unique: V77fFsZZMcGcPJcMkJ5YGA-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-36793b39ee5so353656f8f.2
- for <qemu-devel@nongnu.org>; Thu, 04 Jul 2024 02:58:31 -0700 (PDT)
+ us-mta-480-GSME48tbO5WlGufHvFhuHQ-1; Thu, 04 Jul 2024 05:58:33 -0400
+X-MC-Unique: GSME48tbO5WlGufHvFhuHQ-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-425685183edso3708165e9.0
+ for <qemu-devel@nongnu.org>; Thu, 04 Jul 2024 02:58:33 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720087110; x=1720691910;
+ d=1e100.net; s=20230601; t=1720087112; x=1720691912;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=oseQ60e5wmgH0ZYm/I14i7Pkbsm8+uJkxNMnBtHXQnA=;
- b=w9EBwlttGr+EdJs0FYsrXzCI+aE2d5dN11+gDDUYoDaE9J6v9xtlg6aXJVF9xCOBoW
- 5qBRSnNsr4+IMciMe/OUrBUmWZHoavrQZ4xBdxGO5TmtZhSLKR8DJeSnDeNSsg3DG6hl
- nZ1BLcVAfD8IFrHhZb1o3411WBTUmY3/5lFaxmdAMhpEQCEgoeoY/mLRvENn73UJwm7Q
- aC7TeTrtMUQz7QPJ6Socz3POyY6Q8mw4in33A+ZgQsl5r2xwq4qrUc8ESMRiI5ir9QLl
- /Rwibh64zJ5tdmUNwEjYr5XHJ1bCkv9/NJCwTUcgxSz3cRKn4Spcvy+pHZOGZ5elmV0i
- uVlg==
-X-Gm-Message-State: AOJu0YzbdQF0e40h5kzYxkkVq0SOdl+n1mC49yljzB5b/EnRwiQM1f66
- ZuVAu0icjQyH2dSLnETSfJ64eygfbnJ6kO8S8D3DZBHlTTDVDAZVREzSdw+gK8bqdPLd134Vcpy
- goqDzKNOGvC1VlJhHNaU+RRimVZrURYgagXxELFje9qLlPjRrukDzHMO36hoDjQo6N3KOxnH59a
- 9XTQLlLNL299HMGoQp60MANy2yEmDwNTliebho
-X-Received: by 2002:a5d:634a:0:b0:35f:2030:d42c with SMTP id
- ffacd0b85a97d-3679dd23884mr836053f8f.17.1720087110333; 
- Thu, 04 Jul 2024 02:58:30 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFHiGLzNYBYPP7ccKZI76EO1/MeLF57Qjfznlta5K+o3POQ3uYjQmQIBywRVTbBLyrO+TN6YQ==
-X-Received: by 2002:a5d:634a:0:b0:35f:2030:d42c with SMTP id
- ffacd0b85a97d-3679dd23884mr836041f8f.17.1720087110019; 
- Thu, 04 Jul 2024 02:58:30 -0700 (PDT)
+ bh=4MTUOgRFnaAQLOr/FyDNaauHZx0Uilejdebgta3jTEQ=;
+ b=iwb8txBFgrGIVw7IPQl2edHa5YFCN+z/OUGM/0Ixg0oRp/sJqul1lWimSHhZ3QKQLm
+ gAZrYWa+PVscCXnbFlOW3TZfnRRDROzDi8zlRCLWEKmpu0XF8GRToSQxGHxEbIY2oEja
+ jeWmAxJGvdado+c3c//i2s7ooiPg1yeQoX7yACkVfz1Yf9rBEfjcxVL2GVeyBTu0rlXB
+ H42CD1la12C1V7CaEB9ZSZT3NXDtjedgW1XtrR+LXdysr4+QF9J0caJbKkiGPW//AJZX
+ 7iU+CbcQtgg0b8RaSQ/OSc9ShO4nz6CWyR+Tislu9cV2NBuMz1Ld25mEFWBZo3u5TRlf
+ kQ0w==
+X-Gm-Message-State: AOJu0Yx9MUAipAqy3UPYHZEBi3mQzbK95I9sZyESaxoPtXkX1lHPhyLP
+ rCLk/RQLIhf77tXtzpjTYby5vl+fZ2osKCPmFEnWpnXfAUlCLWW8nPaZ4uoXIfFac5YFDBMjISZ
+ jQoPMQc5tGktSJ+9KqEiy1p5uLF+5lfqVqMIFTK/8s4Yg5MNsXYrmyjPRgz3zPPDkTkSfOdc8Lv
+ vdzB22zN/K2Frh4DhsxC/RnRsCc4FDhh7oOAze
+X-Received: by 2002:a05:600c:1d01:b0:424:a823:51d7 with SMTP id
+ 5b1f17b1804b1-4264a3d98edmr7901895e9.5.1720087111876; 
+ Thu, 04 Jul 2024 02:58:31 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH2d7pjRtK/y4tRaCePStbfdb7cFHEqio4Q9CKTU86/vYRj+HdJQeMBy9PKSnx3DzlKf/ij5g==
+X-Received: by 2002:a05:600c:1d01:b0:424:a823:51d7 with SMTP id
+ 5b1f17b1804b1-4264a3d98edmr7901815e9.5.1720087111483; 
+ Thu, 04 Jul 2024 02:58:31 -0700 (PDT)
 Received: from avogadro.local ([151.95.101.29])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-36794e6863dsm3595268f8f.50.2024.07.04.02.58.28
+ 5b1f17b1804b1-4264aa07a95sm15361815e9.1.2024.07.04.02.58.30
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 04 Jul 2024 02:58:28 -0700 (PDT)
+ Thu, 04 Jul 2024 02:58:30 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 09/16] target/i386: SEV: fix formatting of CPUID mismatch
- message
-Date: Thu,  4 Jul 2024 11:57:59 +0200
-Message-ID: <20240704095806.1780273-10-pbonzini@redhat.com>
+Subject: [PULL 10/16] target/i386: do not include undefined bits in the AMD
+ topoext leaf
+Date: Thu,  4 Jul 2024 11:58:00 +0200
+Message-ID: <20240704095806.1780273-11-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240704095806.1780273-1-pbonzini@redhat.com>
 References: <20240704095806.1780273-1-pbonzini@redhat.com>
@@ -84,8 +84,8 @@ X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,36 +101,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fixes: 70943ad8e4d ("i386/sev: Add support for SNP CPUID validation", 2024-06-05)
+Commit d7c72735f61 ("target/i386: Add new EPYC CPU versions with updated
+cache_info", 2023-05-08) ensured that AMD-defined CPU models did not
+have the 'complex_indexing' bit set, but left it set in "-cpu host"
+which uses the default ("legacy") cache information.
+
+Reimplement that commit using a CPU feature, so that it can be applied
+to all guests using a new machine type, independent of the CPU model.
+
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/sev.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ target/i386/cpu.h | 3 +++
+ hw/i386/pc.c      | 1 +
+ target/i386/cpu.c | 4 ++++
+ 3 files changed, 8 insertions(+)
 
-diff --git a/target/i386/sev.c b/target/i386/sev.c
-index 3ab8b3c28b7..2a0f94d390d 100644
---- a/target/i386/sev.c
-+++ b/target/i386/sev.c
-@@ -841,7 +841,7 @@ sev_snp_cpuid_report_mismatches(SnpCpuidInfo *old,
-     size_t i;
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index 9bea7142bf4..0d5624355e4 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -2104,6 +2104,9 @@ struct ArchCPU {
+     /* Only advertise CPUID leaves defined by the vendor */
+     bool vendor_cpuid_only;
  
-     if (old->count != new->count) {
--        error_report("SEV-SNP: CPUID validation failed due to count mismatch,"
-+        error_report("SEV-SNP: CPUID validation failed due to count mismatch, "
-                      "provided: %d, expected: %d", old->count, new->count);
-         return;
-     }
-@@ -853,8 +853,8 @@ sev_snp_cpuid_report_mismatches(SnpCpuidInfo *old,
-         new_func = &new->entries[i];
++    /* Only advertise TOPOEXT features that AMD defines */
++    bool amd_topoext_features_only;
++
+     /* Enable auto level-increase for Intel Processor Trace leave */
+     bool intel_pt_auto_level;
  
-         if (memcmp(old_func, new_func, sizeof(SnpCpuidFunc))) {
--            error_report("SEV-SNP: CPUID validation failed for function 0x%x, index: 0x%x"
--                         "provided: eax:0x%08x, ebx: 0x%08x, ecx: 0x%08x, edx: 0x%08x"
-+            error_report("SEV-SNP: CPUID validation failed for function 0x%x, index: 0x%x, "
-+                         "provided: eax:0x%08x, ebx: 0x%08x, ecx: 0x%08x, edx: 0x%08x, "
-                          "expected: eax:0x%08x, ebx: 0x%08x, ecx: 0x%08x, edx: 0x%08x",
-                          old_func->eax_in, old_func->ecx_in,
-                          old_func->eax, old_func->ebx, old_func->ecx, old_func->edx,
+diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+index 77415064c62..5dff91422ff 100644
+--- a/hw/i386/pc.c
++++ b/hw/i386/pc.c
+@@ -80,6 +80,7 @@
+     { "athlon-" TYPE_X86_CPU, "model-id", "QEMU Virtual CPU version " v, },
+ 
+ GlobalProperty pc_compat_9_0[] = {
++    { TYPE_X86_CPU, "x-amd-topoext-features-only", "false" },
+     { TYPE_X86_CPU, "x-l1-cache-per-thread", "false" },
+     { TYPE_X86_CPU, "guest-phys-bits", "0" },
+     { "sev-guest", "legacy-vm-type", "true" },
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 5e5bf71702c..c40551d9bfb 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -6982,6 +6982,9 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+             *eax = *ebx = *ecx = *edx = 0;
+             break;
+         }
++        if (cpu->amd_topoext_features_only) {
++            *edx &= CACHE_NO_INVD_SHARING | CACHE_INCLUSIVE;
++        }
+         break;
+     case 0x8000001E:
+         if (cpu->core_id <= 255) {
+@@ -8293,6 +8296,7 @@ static Property x86_cpu_properties[] = {
+     DEFINE_PROP_STRING("hv-vendor-id", X86CPU, hyperv_vendor),
+     DEFINE_PROP_BOOL("cpuid-0xb", X86CPU, enable_cpuid_0xb, true),
+     DEFINE_PROP_BOOL("x-vendor-cpuid-only", X86CPU, vendor_cpuid_only, true),
++    DEFINE_PROP_BOOL("x-amd-topoext-features-only", X86CPU, amd_topoext_features_only, true),
+     DEFINE_PROP_BOOL("lmce", X86CPU, enable_lmce, false),
+     DEFINE_PROP_BOOL("l3-cache", X86CPU, enable_l3_cache, true),
+     DEFINE_PROP_BOOL("kvm-pv-enforce-cpuid", X86CPU, kvm_pv_enforce_cpuid,
 -- 
 2.45.2
 
