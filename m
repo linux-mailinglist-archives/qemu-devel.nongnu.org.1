@@ -2,83 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90183926E89
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 06:42:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5931926E3D
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 06:10:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPEIP-0003gN-Nf; Thu, 04 Jul 2024 00:42:14 -0400
+	id 1sPDnD-0005kv-55; Thu, 04 Jul 2024 00:09:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <seven.yi.lee@gmail.com>)
- id 1sPDWx-0007Be-HS
- for qemu-devel@nongnu.org; Wed, 03 Jul 2024 23:53:11 -0400
-Received: from mail-pj1-x1032.google.com ([2607:f8b0:4864:20::1032])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <seven.yi.lee@gmail.com>)
- id 1sPDWw-0002Jl-0Z
- for qemu-devel@nongnu.org; Wed, 03 Jul 2024 23:53:11 -0400
-Received: by mail-pj1-x1032.google.com with SMTP id
- 98e67ed59e1d1-2c8e422c40cso168355a91.2
- for <qemu-devel@nongnu.org>; Wed, 03 Jul 2024 20:53:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1720065188; x=1720669988; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=954FZtnJ/4RzyioUlGQPdT8LzFDA4On2KO0MEDyOHSQ=;
- b=h6is+Gak77uaRvH74MzbI6m8T4T8kqa0M8U179MuKO8SgpPPlwmZGovE3FnH9im/ma
- ymNs2ETGouX3AlIp+9anrxqOAmHiXDSshZxLRmWyxlygI6+6LDcayUeywL18GuEQh2qS
- PLX4gkze5r6VHCKLnBfoaSlPFoYOpK0uv8q62hBd9TZxJtfEr9J0LODpJ/sjo+uyXf7T
- 9KSoxaPaqEOzkweNFYtJ2Mt5GkPIT7dSQ9lpVkl3YVGRUvECO+srr9RCzIawm3hQR1yN
- J13zstXpWsEkh7+OVy3bLZWkGjdDxnCXqhkKD0tOYbKh7TV116hQnf5//+ohDAfz2bP7
- vGLQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720065188; x=1720669988;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=954FZtnJ/4RzyioUlGQPdT8LzFDA4On2KO0MEDyOHSQ=;
- b=frzqaG0WXDdIRNdChk5rSiyiygl0HKguhKsf3L4BFuV4+KNiXDUuFs2Es8tcBOFeWx
- IT+DZd0soTwgty3aPW0M5JYjoEu125jFpGpvoAQKPp00Q9IT5z8FbBkap7wcQn/BEf6Y
- wiA/7gMYtNFza7NSm/GtBZAXrIzLL3at9p4/xYwKLFiSiMU3IxS35GDzhUwLaacYUj57
- tEfv9ZadEtPoNx6AYTbLVyq4aVJG2WY8VL66nVo233xCuA1xeoGZfNzkCZKzlis4I8ka
- wD+tiuXCHYx3g7qIbDaTXaMFSAgrmkYT932+Rdcm+Lo29QzY2K8mC9PnL1WNXd6crhro
- 6xtw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCV/389W9PD8bWlmdSrTAY5ZCAQXpWbaDRObwrWgmUxw/evkkMJ0n4f+fTUEv8viS8H9zEbs5n2A4Ej4rcX9As1CQyra89I=
-X-Gm-Message-State: AOJu0YxF9kSjEso5JuvIh7NZxpoMKDlOkExvl9Im911Ozqb30xVAfsl4
- xt39MOBysdAPsgcmMUp/OljqBoBr0gep0jy9E8+F1LIqFC8X0wAF
-X-Google-Smtp-Source: AGHT+IFRMlIb1Y/nzC4AbH6bz91LMqWAoqdE4GHKAN0D40uVBdeFwbe6LoWEJMCtykolU1eTes54jQ==
-X-Received: by 2002:a17:90a:7406:b0:2c9:7cb6:38b0 with SMTP id
- 98e67ed59e1d1-2c99c694cdbmr302720a91.19.1720065187961; 
- Wed, 03 Jul 2024 20:53:07 -0700 (PDT)
-Received: from localhost.localdomain (113-131-184-203.on-nets.com.
- [203.184.131.113]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2c99a92c1ffsm364594a91.9.2024.07.03.20.53.05
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 03 Jul 2024 20:53:07 -0700 (PDT)
-From: YeeLi <seven.yi.lee@gmail.com>
-To: mst@redhat.com,
-	jasowang@redhat.com
-Cc: pbonzini@redhat.com, richard.henderson@linaro.org, eduardo@habkost.net,
- qemu-devel@nongnu.org, yeeli <seven.yi.lee@gmail.com>
-Subject: [PATCH] intel-iommu: fix Read DMAR IQA REG DW
-Date: Thu,  4 Jul 2024 11:53:02 +0800
-Message-Id: <20240704035302.306244-1-seven.yi.lee@gmail.com>
-X-Mailer: git-send-email 2.34.1
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1sPDnA-0005kP-Tl
+ for qemu-devel@nongnu.org; Thu, 04 Jul 2024 00:09:56 -0400
+Received: from mgamail.intel.com ([192.198.163.12])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1sPDn8-0000yO-Ol
+ for qemu-devel@nongnu.org; Thu, 04 Jul 2024 00:09:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1720066195; x=1751602195;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=vPfv98N33pPnna36PiJA/F9cC9nEMA5OavXDbU2b7Iw=;
+ b=XlFZlr0JzkfYf2rbKGMlB66G9Ro9/al2YjGb60Xs6HwPHBHwfPh93Bqq
+ gqNm8yAR3mFn6zrqnGgYwd4vg1pUBcq/n/0l/QRV0sfuFpqU8THym87h6
+ veweYagmyq9JW4r6O2kRDJ+qmOSRwODwOcD7DMWcY3MrCr3KskU0IbmLX
+ XDE0eX05+FwAxWtlwL/EtfqWDl61ZPLrcc0vo+Llh2b0ADGAoJKG8F3j+
+ UdO4sMlMFoQXL76enu8o2ogLyDOnN8UlfiFOeC9970JnWLV7fQslgRjAG
+ 8WT4tvpDatousvID1xW9svE6ntW0sjaO3x7IFFnz2tsPiVfV7o57IV8t2 A==;
+X-CSE-ConnectionGUID: AmpwQdXRRb+ALz+5B27r6A==
+X-CSE-MsgGUID: 984pOd8UT1Sv+5lgNlECRQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11122"; a="21195172"
+X-IronPort-AV: E=Sophos;i="6.09,183,1716274800"; d="scan'208";a="21195172"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Jul 2024 21:09:52 -0700
+X-CSE-ConnectionGUID: geRWiIKuQAehZqJYaC3G0g==
+X-CSE-MsgGUID: 8gcTW4u+SQK0aH2QY11Lqg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,183,1716274800"; d="scan'208";a="84008243"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.26])
+ ([10.124.240.26])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Jul 2024 21:09:49 -0700
+Message-ID: <213b9762-205e-4d48-b7f7-1948d0f3b0d9@intel.com>
+Date: Thu, 4 Jul 2024 12:09:45 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1032;
- envelope-from=seven.yi.lee@gmail.com; helo=mail-pj1-x1032.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 20/31] i386/sev: Add support for SNP CPUID validation
+To: Michael Roth <michael.roth@amd.com>
+Cc: Pankaj Gupta <pankaj.gupta@amd.com>, qemu-devel@nongnu.org,
+ brijesh.singh@amd.com, dovmurik@linux.ibm.com, armbru@redhat.com,
+ pbonzini@redhat.com, thomas.lendacky@amd.com, isaku.yamahata@intel.com,
+ berrange@redhat.com, kvm@vger.kernel.org, anisinha@redhat.com
+References: <20240530111643.1091816-1-pankaj.gupta@amd.com>
+ <20240530111643.1091816-21-pankaj.gupta@amd.com>
+ <ce80850a-fbd1-4e14-8107-47c7423fa204@intel.com>
+ <20240704003406.6tduun5n25kgtojf@amd.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20240704003406.6tduun5n25kgtojf@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=192.198.163.12; envelope-from=xiaoyao.li@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.001, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Thu, 04 Jul 2024 00:42:05 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,38 +88,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: yeeli <seven.yi.lee@gmail.com>
+On 7/4/2024 8:34 AM, Michael Roth wrote:
+> On Tue, Jul 02, 2024 at 11:07:18AM +0800, Xiaoyao Li wrote:
+>> On 5/30/2024 7:16 PM, Pankaj Gupta wrote:
+>>> From: Michael Roth <michael.roth@amd.com>
+>>>
+>>> SEV-SNP firmware allows a special guest page to be populated with a
+>>> table of guest CPUID values so that they can be validated through
+>>> firmware before being loaded into encrypted guest memory where they can
+>>> be used in place of hypervisor-provided values[1].
+>>>
+>>> As part of SEV-SNP guest initialization, use this interface to validate
+>>> the CPUID entries reported by KVM_GET_CPUID2 prior to initial guest
+>>> start and populate the CPUID page reserved by OVMF with the resulting
+>>> encrypted data.
+>>
+>> How is KVM CPUIDs (leaf 0x40000001) validated?
+>>
+>> I suppose not all KVM_FEATURE_XXX are supported for SNP guest. And SNP
+>> firmware doesn't validate such CPUID range. So how does them get validated?
+> 
+> This rules for CPUID enforcement are documented in the PPR for each AMD
+> CPU model in Chapter 2, section "CPUID Policy Enforcement". For the
+> situation you mentioned, it's stated there that:
+> 
+>    The PSP enforces the following policy:
+>    - If the CPUID function is not in the standard range (Fn00000000 through
+>      Fn0000FFFF) or the extended range
+>      (Fn8000_0000 through Fn8000_FFFF), the function output check is
+>      UnChecked.
+>    - If the CPUID function is in the standard or extended range and the
+>      function is not listed in SEV-SNP CPUID
+>      Policy table, then the output check is Strict and required to be 0. Note
+>      that if the CPUID function does not depend
+>      on ECX and/or XCR0, then the PSP policy ignores those inputs,
+>      respectively.
+>    - Otherwise, the check is defined according to the values listed in
+>      SEV-SNP CPUID Policy table.
+> 
+> So there are specific ranges that are checked, mainly ones where there
+> is potential for guests to misbehave if they are being lied to. But
+> hypervisor-ranges are paravirtual in a sense so there's no assumptions
+> being made about what the underlying hardware is doing, so the checks
+> are needed as much in those cases.
 
-When dmar_readq or devmem2 read the DW of IQA always 0UL because
-"& VTD_IQA_QS". So, try to fix it.
+I'm a little confused. Per your reference above, hypervisor-ranges is 
+unchecked because it's not in the standard range nor the extended range.
 
-case:
-after vtd_mem_write
-IQA val: 0x100206801
+And your last sentence said "so the checks are needed as much in those 
+cases". So how does hypervisor-ranges get checked?
 
-after vtd_mem_read
-IQA val: 0x100206001
-
-Signed-off-by: yeeli <seven.yi.lee@gmail.com>
----
- hw/i386/intel_iommu.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-index 37c21a0aec..e230a45940 100644
---- a/hw/i386/intel_iommu.c
-+++ b/hw/i386/intel_iommu.c
-@@ -2938,7 +2938,8 @@ static uint64_t vtd_mem_read(void *opaque, hwaddr addr, unsigned size)
- 
-     /* Invalidation Queue Address Register, 64-bit */
-     case DMAR_IQA_REG:
--        val = s->iq | (vtd_get_quad(s, DMAR_IQA_REG) & VTD_IQA_QS);
-+        val = s->iq | (vtd_get_quad(s, DMAR_IQA_REG) & VTD_IQA_QS
-+                | VTD_IQA_DW_MASK);
-         if (size == 4) {
-             val = val & ((1ULL << 32) - 1);
-         }
--- 
-2.34.1
+> -Mike
+> 
+>>
+>>> [1] SEV SNP Firmware ABI Specification, Rev. 0.8, 8.13.2.6
+>>>
+>>
 
 
