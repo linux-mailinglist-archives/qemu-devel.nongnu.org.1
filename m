@@ -2,39 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7DC692765A
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 14:51:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0168C927654
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 14:50:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPLth-0004ax-Hl; Thu, 04 Jul 2024 08:49:14 -0400
+	id 1sPLtj-0004ea-Jx; Thu, 04 Jul 2024 08:49:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sPLtW-0004Kp-R6; Thu, 04 Jul 2024 08:49:03 -0400
+ id 1sPLtY-0004QJ-DI; Thu, 04 Jul 2024 08:49:04 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sPLtN-0006PP-KJ; Thu, 04 Jul 2024 08:49:02 -0400
+ id 1sPLtW-0006R4-Fc; Thu, 04 Jul 2024 08:49:04 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 39ED6773A0;
+ by isrv.corpit.ru (Postfix) with ESMTP id 56885773A1;
  Thu,  4 Jul 2024 15:48:22 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id C4F0AFE785;
+ by tsrv.corpit.ru (Postfix) with SMTP id D5A69FE786;
  Thu,  4 Jul 2024 15:48:26 +0300 (MSK)
-Received: (nullmailer pid 1471782 invoked by uid 1000);
+Received: (nullmailer pid 1471786 invoked by uid 1000);
  Thu, 04 Jul 2024 12:48:26 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Fabiano Rosas <farosas@suse.de>,
+Cc: qemu-stable@nongnu.org,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.13 06/17] gitlab-ci.d/buildtest: Merge the
- --without-default-* jobs
-Date: Thu,  4 Jul 2024 15:48:13 +0300
-Message-Id: <20240704124826.1471715-6-mjt@tls.msk.ru>
+Subject: [Stable-7.2.13 07/17] Update lcitool and fedora to 37
+Date: Thu,  4 Jul 2024 15:48:14 +0300
+Message-Id: <20240704124826.1471715-7-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.13-20240704143502@cover.tls.msk.ru>
 References: <qemu-stable-7.2.13-20240704143502@cover.tls.msk.ru>
@@ -47,7 +47,7 @@ X-Spam_score_int: -68
 X-Spam_score: -6.9
 X-Spam_bar: ------
 X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- SPF_PASS=-0.001, T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -63,64 +63,107 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Let's safe some CI minutes by merging these two jobs. We can now
-also drop "--disable-capstone" since the capstone submodule has
-been removed a while ago. We should rather test --disable-fdt now
-to check a compilation without the "dtc" submodule (for this we
-have to drop i386-softmmu from the target list unfortunately).
-Additionally, the qtests with s390x and sh4 are not read for
-"--without-default-devices" yet, so we can only test mips64 and
-avr here now.
+Fedora 35 is EOL.
 
-Message-Id: <20230130104446.1286773-5-thuth@redhat.com>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Update to upstream lcitool, that dropped f35 and added f37.
+
+Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-(cherry picked from commit e030d08c2fc02743dd37e3d2e6e28fdd739590b9)
+Message-Id: <20230110132700.833690-7-marcandre.lureau@redhat.com>
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Message-Id: <20230124180127.1881110-11-alex.bennee@linaro.org>
+(cherry picked from commit 0054dc8bde408d61257bacdb489bbacc4ca5cde5)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index 7243b8079b..956025f689 100644
---- a/.gitlab-ci.d/buildtest.yml
-+++ b/.gitlab-ci.d/buildtest.yml
-@@ -560,29 +560,22 @@ build-coroutine-sigaltstack:
-     MAKE_CHECK_ARGS: check-unit
+diff --git a/tests/docker/dockerfiles/fedora-win32-cross.docker b/tests/docker/dockerfiles/fedora-win32-cross.docker
+index 75383ba185..cc5d1ac4be 100644
+--- a/tests/docker/dockerfiles/fedora-win32-cross.docker
++++ b/tests/docker/dockerfiles/fedora-win32-cross.docker
+@@ -1,10 +1,10 @@
+ # THIS FILE WAS AUTO-GENERATED
+ #
+-#  $ lcitool dockerfile --layers all --cross mingw32 fedora-35 qemu
++#  $ lcitool dockerfile --layers all --cross mingw32 fedora-37 qemu
+ #
+ # https://gitlab.com/libvirt/libvirt-ci
  
- # Check our reduced build configurations
--build-without-default-devices:
-+build-without-defaults:
-   extends: .native_build_job_template
-   needs:
-     job: amd64-centos8-container
-   variables:
-     IMAGE: centos8
--    CONFIGURE_ARGS: --without-default-devices --disable-user
--
--build-without-default-features:
--  extends: .native_build_job_template
--  needs:
--    job: amd64-fedora-container
--  variables:
--    IMAGE: fedora
-     CONFIGURE_ARGS:
-+      --without-default-devices
-       --without-default-features
--      --disable-capstone
-+      --disable-fdt
-       --disable-pie
-       --disable-qom-cast-debug
-       --disable-strip
--    TARGETS: avr-softmmu i386-softmmu mips64-softmmu s390x-softmmu sh4-softmmu
-+    TARGETS: avr-softmmu mips64-softmmu s390x-softmmu sh4-softmmu
-       sparc64-softmmu hexagon-linux-user i386-linux-user s390x-linux-user
--    MAKE_CHECK_ARGS: check-unit check-qtest SPEED=slow
-+    MAKE_CHECK_ARGS: check-unit check-qtest-avr check-qtest-mips64
+-FROM registry.fedoraproject.org/fedora:35
++FROM registry.fedoraproject.org/fedora:37
  
- build-libvhost-user:
-   extends: .base_job_template
+ RUN dnf install -y nosync && \
+     echo -e '#!/bin/sh\n\
+diff --git a/tests/docker/dockerfiles/fedora-win64-cross.docker b/tests/docker/dockerfiles/fedora-win64-cross.docker
+index 98c03dc13b..cabbf4edfc 100644
+--- a/tests/docker/dockerfiles/fedora-win64-cross.docker
++++ b/tests/docker/dockerfiles/fedora-win64-cross.docker
+@@ -1,10 +1,10 @@
+ # THIS FILE WAS AUTO-GENERATED
+ #
+-#  $ lcitool dockerfile --layers all --cross mingw64 fedora-35 qemu
++#  $ lcitool dockerfile --layers all --cross mingw64 fedora-37 qemu
+ #
+ # https://gitlab.com/libvirt/libvirt-ci
+ 
+-FROM registry.fedoraproject.org/fedora:35
++FROM registry.fedoraproject.org/fedora:37
+ 
+ RUN dnf install -y nosync && \
+     echo -e '#!/bin/sh\n\
+diff --git a/tests/docker/dockerfiles/fedora.docker b/tests/docker/dockerfiles/fedora.docker
+index d200c7fc10..f44b005000 100644
+--- a/tests/docker/dockerfiles/fedora.docker
++++ b/tests/docker/dockerfiles/fedora.docker
+@@ -1,10 +1,10 @@
+ # THIS FILE WAS AUTO-GENERATED
+ #
+-#  $ lcitool dockerfile --layers all fedora-35 qemu
++#  $ lcitool dockerfile --layers all fedora-37 qemu
+ #
+ # https://gitlab.com/libvirt/libvirt-ci
+ 
+-FROM registry.fedoraproject.org/fedora:35
++FROM registry.fedoraproject.org/fedora:37
+ 
+ RUN dnf install -y nosync && \
+     echo -e '#!/bin/sh\n\
+diff --git a/tests/lcitool/libvirt-ci b/tests/lcitool/libvirt-ci
+index e3eb28cf2e..319a534c22 160000
+--- a/tests/lcitool/libvirt-ci
++++ b/tests/lcitool/libvirt-ci
+@@ -1 +1 @@
+-Subproject commit e3eb28cf2e17fbcf7fe7e19505ee432b8ec5bbb5
++Subproject commit 319a534c220f53fc8670254cac25d6f662c82112
+diff --git a/tests/lcitool/refresh b/tests/lcitool/refresh
+index fa966e4009..a5ea0efc3b 100755
+--- a/tests/lcitool/refresh
++++ b/tests/lcitool/refresh
+@@ -111,7 +111,7 @@ try:
+     generate_dockerfile("centos8", "centos-stream-8")
+     generate_dockerfile("debian-amd64", "debian-11",
+                         trailer="".join(debian11_extras))
+-    generate_dockerfile("fedora", "fedora-35")
++    generate_dockerfile("fedora", "fedora-37")
+     generate_dockerfile("opensuse-leap", "opensuse-leap-153")
+     generate_dockerfile("ubuntu2004", "ubuntu-2004",
+                         trailer="".join(ubuntu2004_tsanhack))
+@@ -161,12 +161,12 @@ try:
+                         trailer=cross_build("s390x-linux-gnu-",
+                                             "s390x-softmmu,s390x-linux-user"))
+ 
+-    generate_dockerfile("fedora-win32-cross", "fedora-35",
++    generate_dockerfile("fedora-win32-cross", "fedora-37",
+                         cross="mingw32",
+                         trailer=cross_build("i686-w64-mingw32-",
+                                             "i386-softmmu"))
+ 
+-    generate_dockerfile("fedora-win64-cross", "fedora-35",
++    generate_dockerfile("fedora-win64-cross", "fedora-37",
+                         cross="mingw64",
+                         trailer=cross_build("x86_64-w64-mingw32-",
+                                             "x86_64-softmmu"))
 -- 
 2.39.2
 
