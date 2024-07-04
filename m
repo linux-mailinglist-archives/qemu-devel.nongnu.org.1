@@ -2,81 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C64CF926DCD
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 05:02:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A2228926DFD
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Jul 2024 05:19:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPCj0-0004lZ-8z; Wed, 03 Jul 2024 23:01:34 -0400
+	id 1sPD0A-0007UK-6a; Wed, 03 Jul 2024 23:19:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sPCii-0004SR-QD; Wed, 03 Jul 2024 23:01:23 -0400
-Received: from mgamail.intel.com ([198.175.65.9])
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1sPD07-0007Tp-IJ
+ for qemu-devel@nongnu.org; Wed, 03 Jul 2024 23:19:15 -0400
+Received: from mgamail.intel.com ([198.175.65.18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sPCih-00040P-0L; Wed, 03 Jul 2024 23:01:16 -0400
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1sPD05-0000fo-OV
+ for qemu-devel@nongnu.org; Wed, 03 Jul 2024 23:19:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1720062075; x=1751598075;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=7xazZwz0EnajiB5Y3BpYOkdjmqrqDIqJeO1R5Tf6FMU=;
- b=gDNXJcOXBOlqJKQ+bZ2X0cORPwvbXtvZItGOzBQlHABryeCmq3mtnCsO
- E8JQD/d1oxtW04nXKOFqlrCJEvr3KYbq+mpp14kKUQcx/Aw5XpphXQkyJ
- djwbWFXq4sqDpy+FR/Q7BluGsO/pBDbHfLe0Jfz3857KvCY8yf7vhwFLP
- jNDvD5PZK6hyBt1SPyuH6LYyQaE3IHj73sUUuBZAJ0nsqEEwF2tTSJ1UV
- 0fMi3PBZEobxrobE+HIWPPv/JAGPqXm44IKJA7igMggnwYr0HdiofSpEe
- XpAPscunJpOcwVSc4fQEKDZQe49DxAZvf+30P18s8SM6N4zbiMAO+Eh4A w==;
-X-CSE-ConnectionGUID: 6T0oVediSsW4lHPdbrQg8Q==
-X-CSE-MsgGUID: RbKQ5RxzRpu5n4zLQZju7g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11122"; a="39838169"
-X-IronPort-AV: E=Sophos;i="6.09,183,1716274800"; d="scan'208";a="39838169"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Jul 2024 20:01:13 -0700
-X-CSE-ConnectionGUID: uK+DmRjmRO6RTIeeRo8L0Q==
-X-CSE-MsgGUID: PAO0ufSFQueLjRECY+D3Cg==
+ t=1720063154; x=1751599154;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=W3bTFOLBuac1BrRBBLR71U03QeIrXChG8XHMyRtOPMI=;
+ b=Yh85C+sqgexUxLYtfYLbCvyhLwn0EKrzbk9scUrp49AyaxWzrBVZDxy7
+ 580QZ+9DITF/1SatSC7jb+yZZqj5Ex5n4xlMX5minqlFHiwpWmzgE0MqV
+ UffCOyOSbGqX1OzB4iYgRCD5z5P4iL0JaNon74q+nGnKoe20UzHSYJxqf
+ C+sBUkLxfNGfd+hhlMiGOXalXkAkPhEFCnRhPWDPJWBMpscDjvQGu0FRA
+ tZTzOzlw1DuWkcM0tUa4e7ajg9E+CKXUMvhAGLbsvBnEMZQ+KkM6Pu2hV
+ hA9UcH92PEMonYiDrB5znyJCmMZh5k7eVKzIsEweaj+nsjd27GxaHPBt9 Q==;
+X-CSE-ConnectionGUID: juz/FDUWRJK2cbrKURT+Yg==
+X-CSE-MsgGUID: 6RHgkKdzTqSC7DWeB5D5WA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11122"; a="17460263"
+X-IronPort-AV: E=Sophos;i="6.09,183,1716274800"; d="scan'208";a="17460263"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Jul 2024 20:19:12 -0700
+X-CSE-ConnectionGUID: 1GUe2LA6TBKE4yNIKj+5Rg==
+X-CSE-MsgGUID: UV4594Z8Q22iMh8sftHgYQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,183,1716274800"; d="scan'208";a="51052503"
-Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by fmviesa004.fm.intel.com with ESMTP; 03 Jul 2024 20:01:08 -0700
-From: Zhao Liu <zhao1.liu@intel.com>
-To: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Sia Jee Heng <jeeheng.sia@starfivetech.com>
-Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, qemu-riscv@nongnu.org,
- qemu-arm@nongnu.org, Zhenyu Wang <zhenyu.z.wang@intel.com>,
- Dapeng Mi <dapeng1.mi@linux.intel.com>, Yongwei Ma <yongwei.ma@intel.com>,
- Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH 8/8] qemu-options: Add the description of smp-cache object
-Date: Thu,  4 Jul 2024 11:16:03 +0800
-Message-Id: <20240704031603.1744546-9-zhao1.liu@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240704031603.1744546-1-zhao1.liu@intel.com>
-References: <20240704031603.1744546-1-zhao1.liu@intel.com>
+X-IronPort-AV: E=Sophos;i="6.09,183,1716274800"; d="scan'208";a="46424241"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.26])
+ ([10.124.240.26])
+ by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Jul 2024 20:19:08 -0700
+Message-ID: <3f0c171e-b956-4b90-8a84-a0ce297053f3@intel.com>
+Date: Thu, 4 Jul 2024 11:19:05 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/4] target/i386: Update CMPLegacy handling for Zhaoxin
+ and VIA CPUs
+To: Ewan Hai <ewanhai-oc@zhaoxin.com>, pbonzini@redhat.com
+Cc: qemu-devel@nongnu.org, ewanhai@zhaoxin.com, cobechen@zhaoxin.com,
+ rockcui@zhaoxin.com, louisqi@zhaoxin.com
+References: <20240625091905.1325205-1-ewanhai-oc@zhaoxin.com>
+ <20240625091905.1325205-5-ewanhai-oc@zhaoxin.com>
+ <81ee1a67-e70f-4437-ab28-6c4d4f741d8b@intel.com>
+ <7a988f9e-fc63-4a6d-b3b1-d416dfc7e982@zhaoxin.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <7a988f9e-fc63-4a6d-b3b1-d416dfc7e982@zhaoxin.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=198.175.65.9; envelope-from=zhao1.liu@intel.com;
+Received-SPF: pass client-ip=198.175.65.18; envelope-from=xiaoyao.li@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
 X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.001, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,95 +87,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
----
-Changes since RFC v2:
- * Rewrote the document of smp-cache object.
+On 7/4/2024 11:14 AM, Ewan Hai wrote:
+> On 7/3/24 10:49, Xiaoyao Li wrote:
+>>
+>> On 6/25/2024 5:19 PM, EwanHai wrote:
+>>> Zhaoxin and VIA CPUs handle the CMPLegacy bit in the same way
+>>> as Intel CPUs. This patch simplifies the existing logic by
+>>> using the IS_XXX_CPU macro and includes checks for Zhaoxin
+>>> and VIA vendors to align their behavior with Intel.
+>>>
+>>> Signed-off-by: EwanHai <ewanhai-oc@zhaoxin.com>
+>>> ---
+>>>   target/i386/cpu.c | 6 +++---
+>>>   1 file changed, 3 insertions(+), 3 deletions(-)
+>>>
+>>> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+>>> index 50edff077e..0836416617 100644
+>>> --- a/target/i386/cpu.c
+>>> +++ b/target/i386/cpu.c
+>>> @@ -6945,9 +6945,9 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t 
+>>> index, uint32_t count,
+>>>            * So don't set it here for Intel to make Linux guests happy.
+>>>            */
+>>>           if (threads_per_pkg > 1) {
+>>> -            if (env->cpuid_vendor1 != CPUID_VENDOR_INTEL_1 ||
+>>> -                env->cpuid_vendor2 != CPUID_VENDOR_INTEL_2 ||
+>>> -                env->cpuid_vendor3 != CPUID_VENDOR_INTEL_3) {
+>>> +            if (!IS_INTEL_CPU(env) &&
+>>> +                !IS_ZHAOXIN_CPU(env) &&
+>>> +                !IS_VIA_CPU(env)) {
+>>
+>> it seems you added ! by mistake.
+>>
+>>>                   *ecx |= 1 << 1; /* CmpLegacy bit */
+>>>               }
+>>>           }
+>>
+> For CPUID leaf 0x80000001 ECX bit 1, Intel defines it as "Bits 04-01: 
+> Reserved,"
+> whereas AMD defines it as "CmpLegacy, Core multi-processing legacy 
+> mode." For Intel
+> CPUs and those following Intel's behavior, this bit should not be set to 
+> 1. Therefore,
+> I believe the "!" here is correct.
+> 
 
-Changes since RFC v1:
- * Use "*_cache=topo_level" as -smp example as the original "level"
-   term for a cache has a totally different meaning. (Jonathan)
----
- qemu-options.hx | 58 +++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 58 insertions(+)
+Sorry, I misread the original code.
 
-diff --git a/qemu-options.hx b/qemu-options.hx
-index 8ca7f34ef0c8..4b84f4508a6e 100644
---- a/qemu-options.hx
-+++ b/qemu-options.hx
-@@ -159,6 +159,15 @@ SRST
-         ::
- 
-             -machine cxl-fmw.0.targets.0=cxl.0,cxl-fmw.0.targets.1=cxl.1,cxl-fmw.0.size=128G,cxl-fmw.0.interleave-granularity=512
-+
-+    ``smp-cache='id'``
-+        Allows to configure cache property (now only the cache topology level).
-+
-+        For example:
-+        ::
-+
-+            -object '{"qom-type":"smp-cache","id":"cache","caches":[{"name":"l1d","topo":"core"},{"name":"l1i","topo":"core"},{"name":"l2","topo":"module"},{"name":"l3","topo":"die"}]}'
-+            -machine smp-cache=cache
- ERST
- 
- DEF("M", HAS_ARG, QEMU_OPTION_M,
-@@ -5871,6 +5880,55 @@ SRST
-         ::
- 
-             (qemu) qom-set /objects/iothread1 poll-max-ns 100000
-+
-+    ``-object '{"qom-type":"smp-cache","id":id,"caches":[{"name":cache_name,"topo":cache_topo}]}'``
-+        Create an smp-cache object that configures machine's cache
-+        property. Currently, cache property only include cache topology
-+        level.
-+
-+        This option must be written in JSON format to support JSON list.
-+
-+        The ``caches`` parameter accepts a list of cache property in JSON
-+        format.
-+
-+        A list element requires the cache name to be specified in the
-+        ``name`` parameter (currently ``l1d``, ``l1i``, ``l2`` and ``l3``
-+        are supported). ``topo`` parameter accepts CPU topology levels
-+        including ``thread``, ``core``, ``module``, ``cluster``, ``die``,
-+        ``socket``, ``book``, ``drawer`` and ``default``. The ``topo``
-+        parameter indicates CPUs winthin the same CPU topology container
-+        are sharing the same cache.
-+
-+        Some machines may have their own cache topology model, and this
-+        object may override the machine-specific cache topology setting
-+        by specifying smp-cache object in the -machine. When specifying
-+        the cache topology level of ``default``, it will honor the default
-+        machine-specific cache topology setting. For other topology levels,
-+        they will override the default setting.
-+
-+        An example list of caches to configure the cache model (l1d cache
-+        per core, l1i cache per core, l2 cache per module and l3 cache per
-+        socket) supported by PC machine might look like:
-+
-+        ::
-+
-+              {
-+                "caches": [
-+                   { "name": "l1d", "topo": "core" },
-+                   { "name": "l1i", "topo": "core" },
-+                   { "name": "l2", "topo": "module" },
-+                   { "name": "l3", "topo": "socket" },
-+                ]
-+              }
-+
-+        An example smp-cache object would look like:()
-+
-+        .. parsed-literal::
-+
-+             # |qemu_system| \\
-+                 ... \\
-+                 -object '{"qom-type":"smp-cache","id":id,"caches":[{"name":cache_name,"topo":cache_topo}]}' \\
-+                 ...
- ERST
- 
- 
--- 
-2.34.1
-
+I think maybe we can just use is_AMD_CPU(). But I'm not sure if any 
+magic use case with customized VENDOR ID relies on it. So you code looks 
+good to me.
 
