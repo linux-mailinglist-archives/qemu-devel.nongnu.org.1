@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 057A6928442
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jul 2024 10:58:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BDF9928411
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jul 2024 10:49:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPel2-0002mt-Q7; Fri, 05 Jul 2024 04:57:32 -0400
+	id 1sPebk-00018A-Qe; Fri, 05 Jul 2024 04:47:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sPeky-0002f2-9m
- for qemu-devel@nongnu.org; Fri, 05 Jul 2024 04:57:28 -0400
-Received: from mail-lj1-x22c.google.com ([2a00:1450:4864:20::22c])
+ id 1sPebG-0000tm-Te
+ for qemu-devel@nongnu.org; Fri, 05 Jul 2024 04:47:27 -0400
+Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sPekk-0001uW-1b
- for qemu-devel@nongnu.org; Fri, 05 Jul 2024 04:57:28 -0400
-Received: by mail-lj1-x22c.google.com with SMTP id
- 38308e7fff4ca-2eaae2a6dc1so19930291fa.0
- for <qemu-devel@nongnu.org>; Fri, 05 Jul 2024 01:57:13 -0700 (PDT)
+ id 1sPeb5-0004Aa-8k
+ for qemu-devel@nongnu.org; Fri, 05 Jul 2024 04:47:25 -0400
+Received: by mail-ed1-x52f.google.com with SMTP id
+ 4fb4d7f45d1cf-58b5f7bf3edso880706a12.0
+ for <qemu-devel@nongnu.org>; Fri, 05 Jul 2024 01:47:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1720169832; x=1720774632; darn=nongnu.org;
+ d=linaro.org; s=google; t=1720169232; x=1720774032; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ho2Bfe7yXa5eu8lKetJ/WAF5D27mUTaA0a7vXnXcLIs=;
- b=mFoAOdUB6/t3Vn+1zMnJuodmIonBo0cOUFmVGgdsJ6CjzgKySr0PU7L3q9nro14D7N
- RvuBDSvlKOIx8jgJ0N+sLC2ZI46AirP31A9g+W0KKDCutt0iBhSj8qFl3nkz1/3yk5h1
- WuXsl/d+MwXddanKK6GnNFMclu+C+SM0zAkVyF9kgktll3L/cBCiVX7CJ5eXaSdZsSNi
- 0uzJ51pN6IcsPZxIMmJAm5RlTfnhg1sRzSGcGhMM78q3B+LH1GfOvpwn7CMxOuBGIpBG
- 4kqRQdWtzBgD0TDK2E9iXMxB/b+pMhxWG5PMtjxZF1/hTE6mj4YFmq5rV5QejjJPkHI5
- NTeg==
+ bh=wP7tDDLg44bwHUt8SqbYxvL0ekGWQNKDr20DKrRYxss=;
+ b=oCRt8zXiielVnfGoVZacjZ6UYFMT3ewmaZh8tbnCS99ir/YPMpB7IKZBmTca0xLV0X
+ jCEtgJftL9NF+LUE5viHwXkLYdw0ExmpvW+obOPNN9VYoxfTsrv2t8Fo52pZ/379soh4
+ 0zOa0Nv+Oq4G0EhmIB94/Tuvsfw3X5Utq2D5aVXbSZ8XTM1zLX3rWmU45e3kamFw5F+C
+ 2d3vEPiQvg2aIUQlpTY4Spk0eqNe7YWWs+x18Kayv2MhJZnOuazcpqMaxQlxZqqxDV2n
+ NyxWLeWLoopiKoxbm+BCDCv6UfMsTyN+qusJFW3+FbCDY0BDUaYwPZKv9/WYKUYe0faZ
+ KVdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720169832; x=1720774632;
+ d=1e100.net; s=20230601; t=1720169232; x=1720774032;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ho2Bfe7yXa5eu8lKetJ/WAF5D27mUTaA0a7vXnXcLIs=;
- b=ZuyTe2/KtSI7K9aIQeo1KF1gSCU1+ywowzfkbB8Cmm3vH5fhM/4OUmDTjnHwsFLHWP
- mHLRxsuk2UsjtJOKxH7pu18W9Wib3s3pISoNG57aNNxhU06Sda8Ytsyr5z1O1VuwrIRY
- VNcBhdc9dsbH7MrT2rz7/4O1On12y802ZBFm551pP5snVCoUldF/LPsAqY/TmyRFUloj
- fhepCXVx2FdN2liB/5Wcg9wlkY9fq+2WFex4JON17QHETkkaGW8nzxYfwUN8KjJGdIhl
- oEqLWO6aA6nMvhJ0e4w5x91VCMewXgH8ymH+WYD9iYFpdQE+twTdxMuN52mf0SyC16wv
- npsA==
-X-Gm-Message-State: AOJu0YxZ0zjyarDfuKFq4O6mFcAV1E3+F20mJwHv9ldFLKO3U+w1qBi+
- U0JuuC4EthTTiphjeY1XhEFo3OqxDrtTia94N7TD4Lu2bJEt9u23POb4/quj+uQ=
-X-Google-Smtp-Source: AGHT+IHfZol7NkpqhMgZI+ueTbQskITA3RtbBrKeyqRVZF47QARE14/7WoFDnDzuzhXOLEPchKKOpA==
-X-Received: by 2002:a2e:9c8a:0:b0:2ee:80b2:1ea9 with SMTP id
- 38308e7fff4ca-2ee8ee21297mr31636331fa.49.1720169831473; 
- Fri, 05 Jul 2024 01:57:11 -0700 (PDT)
+ bh=wP7tDDLg44bwHUt8SqbYxvL0ekGWQNKDr20DKrRYxss=;
+ b=HF2IzBbvvLhGG6xPqpPcfV1I3kS2efElf0CGHGBOzfhPK6g2E+kbFGoQ5yLYJW5qBb
+ BdGdpbmB2e9JNcN3XTrwC9lbwJxkeuAAZqTIxC5RNV2aKBwIvoKv+4l36dbvQFlYX+qf
+ d+E2CAA5tiNdjVdVW5g1H6d+0qneohiHskwSf6qsGJLPJ+G02Yvqs3d6PdV08rQDN8uY
+ 0S57oGe3eGLZqgDmGWjeXZ/UbMuZSLzXFOQL56NirtYoWXByA8XrvAe4cKQiUWDKMKND
+ PPznQ9gLFw6V2RqL/Ct7YJTbw0FoGSJ1zJoXfAUnvItLhCZfCM7zho4NtQ9WOstYS+KU
+ 3ihQ==
+X-Gm-Message-State: AOJu0YwAt2YooqNFnhGpThSX+9YKKHl+OC05SoR1eaJeKpnM5yPb+Drb
+ HPcJZUw1FsMxM6z2Fqs7PG7QioS0627lUoT3DXZRGkRxz7WhE/LTWvbvJVIOskA=
+X-Google-Smtp-Source: AGHT+IH6pqLRN2BJry8uihFs7eo43QrE13jE3wSumHFBZkfY5J/MUYf4TRrBpTsgmSGz+kGUd0z0AQ==
+X-Received: by 2002:a05:6402:5108:b0:58b:2d93:ad6c with SMTP id
+ 4fb4d7f45d1cf-58e5a408b30mr4002966a12.19.1720169231495; 
+ Fri, 05 Jul 2024 01:47:11 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a77c0117b15sm101350566b.43.2024.07.05.01.57.10
+ 4fb4d7f45d1cf-58eeabbf108sm1247721a12.93.2024.07.05.01.47.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 05 Jul 2024 01:57:10 -0700 (PDT)
+ Fri, 05 Jul 2024 01:47:10 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id E720B6213D;
- Fri,  5 Jul 2024 09:40:49 +0100 (BST)
+ by draig.lan (Postfix) with ESMTP id 085AA62142;
+ Fri,  5 Jul 2024 09:40:50 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Wainer dos Santos Moschetta <wainersm@redhat.com>,
@@ -76,17 +76,17 @@ Cc: Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Paul Burton <paulburton@kernel.org>, Stefan Hajnoczi <stefanha@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Laurent Vivier <laurent@vivier.eu>
-Subject: [PATCH v2 23/40] plugins/lockstep: preserve sock_path
-Date: Fri,  5 Jul 2024 09:40:30 +0100
-Message-Id: <20240705084047.857176-24-alex.bennee@linaro.org>
+Subject: [PATCH v2 24/40] plugins/lockstep: make mixed-mode safe
+Date: Fri,  5 Jul 2024 09:40:31 +0100
+Message-Id: <20240705084047.857176-25-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240705084047.857176-1-alex.bennee@linaro.org>
 References: <20240705084047.857176-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::22c;
- envelope-from=alex.bennee@linaro.org; helo=mail-lj1-x22c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -109,27 +109,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We can't assign sock_path directly from the autofree'd GStrv, take a
-copy.
+The ExecState is shared across the socket and if we want to compare
+say 64 bit and 32 bit binaries we need the two to use the same sizes
+for things.
 
+Message-Id: <20240628124258.832466-11-alex.bennee@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- contrib/plugins/lockstep.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ contrib/plugins/lockstep.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/contrib/plugins/lockstep.c b/contrib/plugins/lockstep.c
-index 237543b43a..111ec3fa27 100644
+index 111ec3fa27..761bcdf363 100644
 --- a/contrib/plugins/lockstep.c
 +++ b/contrib/plugins/lockstep.c
-@@ -347,7 +347,7 @@ QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
-                 return -1;
-             }
-         } else if (g_strcmp0(tokens[0], "sockpath") == 0) {
--            sock_path = tokens[1];
-+            sock_path = strdup(tokens[1]);
-         } else {
-             fprintf(stderr, "option parsing failed: %s\n", p);
-             return -1;
+@@ -57,7 +57,7 @@ typedef struct {
+ /* The execution state we compare */
+ typedef struct {
+     uint64_t pc;
+-    unsigned long insn_count;
++    uint64_t insn_count;
+ } ExecState;
+ 
+ typedef struct {
+@@ -148,7 +148,7 @@ static void report_divergance(ExecState *us, ExecState *them)
+ 
+         g_string_printf(out,
+                         "Δ insn_count @ 0x%016" PRIx64
+-                        " (%ld) vs 0x%016" PRIx64 " (%ld)\n",
++                        " (%"PRId64") vs 0x%016" PRIx64 " (%"PRId64")\n",
+                         us->pc, us->insn_count, them->pc, them->insn_count);
+ 
+         for (entry = log, i = 0;
 -- 
 2.39.2
 
