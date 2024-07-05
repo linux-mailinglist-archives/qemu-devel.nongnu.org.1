@@ -2,85 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56098928BB4
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jul 2024 17:32:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D517C928BCA
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jul 2024 17:35:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPku0-0005gy-UU; Fri, 05 Jul 2024 11:31:13 -0400
+	id 1sPktv-0005cq-5r; Fri, 05 Jul 2024 11:31:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sPktu-0005cg-5O
- for qemu-devel@nongnu.org; Fri, 05 Jul 2024 11:31:06 -0400
-Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
+ id 1sPkts-0005bq-73
+ for qemu-devel@nongnu.org; Fri, 05 Jul 2024 11:31:04 -0400
+Received: from mail-lf1-x135.google.com ([2a00:1450:4864:20::135])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sPktn-0000Ix-Sc
- for qemu-devel@nongnu.org; Fri, 05 Jul 2024 11:31:05 -0400
-Received: by mail-ej1-x62f.google.com with SMTP id
- a640c23a62f3a-a7541fad560so204966766b.0
- for <qemu-devel@nongnu.org>; Fri, 05 Jul 2024 08:30:56 -0700 (PDT)
+ id 1sPktp-0000Ju-Sv
+ for qemu-devel@nongnu.org; Fri, 05 Jul 2024 11:31:03 -0400
+Received: by mail-lf1-x135.google.com with SMTP id
+ 2adb3069b0e04-52ea2ce7abaso1860650e87.0
+ for <qemu-devel@nongnu.org>; Fri, 05 Jul 2024 08:31:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1720193456; x=1720798256; darn=nongnu.org;
+ d=linaro.org; s=google; t=1720193458; x=1720798258; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=zgH3hJroWZO1UK9YywGYVtlcVLycJueDEDps19iwMSg=;
- b=uzvV6aXMD/fLrJ0PvMQVDjSNB7hHVbLbCNjMuW7Irb3NG/7lpyBM+5pK8p0FoWr8EF
- kL7nicCYj0KJgCq62iE0lTMvFJDXDJw7EgZUov1b3pxj4xp0sx92qLLtYQA/1UBkcXGm
- IiwDxytBFJo/ufYabuCsZr161reATHkos+tFHwW6PzjBhQcumCdw2MlWhSSduf5UieIr
- okTeVoZxZRHU3OQNgtK4/mBY7aOKk0vXdF2TmIixinx0Sf7yoqzlkAGwb8WOGT3BetB8
- 2jQSGP8M6iUQCjlKm/t2PHH0zyBrBfUpg5hPRg6zhHOnxPzad51k3kT5bjfWh9pEeRLC
- t/CQ==
+ bh=yb3iq8Uefi2wrk4lmxR12EyJjPJCI4ULXKQi9nDSkSE=;
+ b=OQqyg1isdbClJoHoIs0oT5BZ+oNSIqP0HKXjRvYB3u5eHOQHxFlh9YltDwC9bHtLsd
+ RjZfknKoP46HW1C53AWtM8fSHJrheCqL2BnJeuXAWEK3KYoUaXD5XVIOHf+KQdh24ir3
+ kYN+WBdwlbALdrVTL29I2KTwWotQl4ppKeKCmbCYhhFUjOjBH1SiqoEyYNgO5EX/Ca+B
+ evCvOqkwSabnYqmdY93F+rOsmO+ibWTFS0SB+CoqM6V/OowrardRjwfRMl7pwcNj+WAo
+ bQpnD8BV7VKCYmDEzdWroL0wu5E0Pp2r/qvk7SAGume+7H5zK8v6GMmCmnE3J7/+E9rj
+ ilrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720193456; x=1720798256;
+ d=1e100.net; s=20230601; t=1720193458; x=1720798258;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=zgH3hJroWZO1UK9YywGYVtlcVLycJueDEDps19iwMSg=;
- b=kU75zsX1qzALqN32rN7KcGuTW5qIgp0U9Tm+JBrSpn61hhOBKFl/nqcc8aoUM7kn1o
- uN7zTHtnEIh1x1ZXwYacA/6c2AhsY+b6Q5QorNxeSIepkzOIefv0aHSIEAPqUsQZZVuj
- qHWrEMrV676aIg6WQoRzR6mypA0CS2hZ41vljdYEZoyGOel3fFCGSxrC01XTx8wKB4X2
- TjUVGN4eUChw77oLXNIu9P1GSnIo2Debb1LtGEq6mq4K8R0NnRWEucx3cFDGvO/ug7Uc
- x0AqqTKi8GMgxBBfs63JtcWFYWXGtLBge7FaDpUwFZYtw8hl4d/HXMcX3HJvDK+KiK3F
- 3geg==
-X-Gm-Message-State: AOJu0Ywh7qw8Bt0mJOAsrRsa4h8yXr2YBA8kFqFfC0H7HaaGUBS0dldx
- kdRCxefwys7sMDnck/zHOJ387+eCRDzFdU2S0c1EcNTA+t8EgBerW0+0lER9g1w=
-X-Google-Smtp-Source: AGHT+IEmYUzvSGk1q179Y7kU1U+SyJnIRTXKSnWzEQN0FcvwBv8QvpB6NjEf9vBorWF0XF+zmU7hHQ==
-X-Received: by 2002:a17:906:747:b0:a77:c824:b4c4 with SMTP id
- a640c23a62f3a-a77c824b586mr190009666b.19.1720193455672; 
- Fri, 05 Jul 2024 08:30:55 -0700 (PDT)
+ bh=yb3iq8Uefi2wrk4lmxR12EyJjPJCI4ULXKQi9nDSkSE=;
+ b=HikECl/UDx2qa7yLrl4ld/t/PDWPddDF/zeHoSG0LguRh3R5/RAb/E8aJIWjF9vDly
+ CcOhxZBiDFOdGWEuJnFnikVcXmR5XcmHkoVQw0dRr766WxWN+ZxWslrUCq7em1Fgg/wT
+ SiqSjyVUYT3iYvFCGTFfsmKfS2O7OVTd6qDmFnpcpFECnGYJQ84KQ4RiK4S9F04pHHJF
+ PnrNN879EfiP/W0at/pGqlb8Lkru8vNRyOP9mpqPH2xnHlvpf6OCitPmmMXmBoE/NknO
+ FqmfVft/CbMNnr5sMQ9P/RLyJvUxtyHJEi/W2pu0iA7QdpW6pERk1+zqTrdZ86Eqiv0Y
+ 2dFg==
+X-Gm-Message-State: AOJu0YzTG/CMaB2mq7BCUurDjQEYG7GYj4hK7WiE1gDGa3v6L4vzWqkZ
+ yVHZpIUREyvXFQ3EZ3fg6DHbPSHyJMOCbTVYbNNuQppV/sl/3xbfVKtRUVUPXIg=
+X-Google-Smtp-Source: AGHT+IHfMA9NFaJxHx6aXpr+68A520t5IjObMWRon1c2zY7oqiy+85/NpP25xu0BpNDt52ckLMFJSA==
+X-Received: by 2002:ac2:4115:0:b0:52c:f3fa:86c with SMTP id
+ 2adb3069b0e04-52ea0629bc7mr3994185e87.18.1720193457678; 
+ Fri, 05 Jul 2024 08:30:57 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a77da27c044sm33099166b.157.2024.07.05.08.30.54
+ 4fb4d7f45d1cf-58e9e68e110sm1929049a12.91.2024.07.05.08.30.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 05 Jul 2024 08:30:54 -0700 (PDT)
+ Fri, 05 Jul 2024 08:30:55 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 637955F931;
+ by draig.lan (Postfix) with ESMTP id 7AA925F935;
  Fri,  5 Jul 2024 16:30:53 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Aleksandar Rikalo <arikalo@gmail.com>, Paul Burton <paulburton@kernel.org>
-Subject: [PULL 04/40] hw/core: ensure kernel_end never gets used undefined
-Date: Fri,  5 Jul 2024 16:30:16 +0100
-Message-Id: <20240705153052.1219696-5-alex.bennee@linaro.org>
+Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>
+Subject: [PULL 05/40] tests/docker: Specify --userns keep-id for Podman
+Date: Fri,  5 Jul 2024 16:30:17 +0100
+Message-Id: <20240705153052.1219696-6-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240705153052.1219696-1-alex.bennee@linaro.org>
 References: <20240705153052.1219696-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::135;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x135.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,40 +99,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Really the problem here is the return values of fit_load_[kernel|fdt]() are a
-little all over the place. However we don't want to somehow get
-through not having set kernel_end and having it just be random unused
-data.
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-The compiler complained on an --enable-gcov build:
+Previously we are always specifying -u $(UID) to match the UID in the
+container with one outside. This causes a problem with rootless Podman.
 
-  In file included from ../../hw/core/loader-fit.c:20:
-  /home/alex/lsrc/qemu.git/include/qemu/osdep.h: In function ‘load_fit’:
-  /home/alex/lsrc/qemu.git/include/qemu/osdep.h:486:45: error: ‘kernel_end’ may be used uninitialized [-Werror=maybe-uninitialized]
-    486 | #define ROUND_UP(n, d) ROUND_DOWN((n) + (d) - 1, (d))
-        |                                             ^
-  ../../hw/core/loader-fit.c:270:12: note: ‘kernel_end’ was declared here
-    270 |     hwaddr kernel_end;
-        |            ^~~~~~~~~~
+Rootless Podman remaps user IDs in the container to ones controllable
+for the current user outside. The -u option instructs Podman to use
+a specified UID in the container but does not affect the UID remapping.
+Therefore, the UID in the container can be remapped to some other UID
+outside the container. This can make the access to bind-mounted volumes
+fail because the remapped UID mismatches with the owner of the
+directories.
 
-Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Replace -u $(UID) with --userns keep-id, which fixes the UID remapping.
+This change is limited to Podman because Docker does not support
+--userns keep-id.
+
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Message-Id: <20240626-podman-v1-1-f8c8daf2bb0a@daynix.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Aleksandar Rikalo <arikalo@gmail.com>
-Message-Id: <20240705084047.857176-5-alex.bennee@linaro.org>
+Message-Id: <20240705084047.857176-6-alex.bennee@linaro.org>
 
-diff --git a/hw/core/loader-fit.c b/hw/core/loader-fit.c
-index 9f20007dbb..7ccc9d5fbc 100644
---- a/hw/core/loader-fit.c
-+++ b/hw/core/loader-fit.c
-@@ -267,7 +267,7 @@ int load_fit(const struct fit_loader *ldr, const char *filename, void *opaque)
-     const char *def_cfg_name;
-     char path[FIT_LOADER_MAX_PATH];
-     int itb_size, configs, cfg_off, off;
--    hwaddr kernel_end;
-+    hwaddr kernel_end = 0;
-     int ret;
- 
-     itb = load_device_tree(filename, &itb_size);
+diff --git a/tests/docker/Makefile.include b/tests/docker/Makefile.include
+index 8df50a0ca0..708e3a72fb 100644
+--- a/tests/docker/Makefile.include
++++ b/tests/docker/Makefile.include
+@@ -207,7 +207,12 @@ docker-run: docker-qemu-src
+ 	$(call quiet-command,						\
+ 		$(RUNC) run 						\
+ 			--rm						\
+-			$(if $(NOUSER),,-u $(UID)) 			\
++			$(if $(NOUSER),,				\
++				$(if $(filter docker,$(RUNC)),		\
++					-u $(UID),			\
++					--userns keep-id		\
++				)					\
++			) 						\
+ 			--security-opt seccomp=unconfined		\
+ 			$(if $(DEBUG),-ti,)				\
+ 			$(if $(NETWORK),$(if $(subst $(NETWORK),,1),--net=$(NETWORK)),--net=none) \
 -- 
 2.39.2
 
