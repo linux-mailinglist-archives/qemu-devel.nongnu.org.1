@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78E3C928BE7
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jul 2024 17:39:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7447C928BE4
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jul 2024 17:39:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPkzy-0002b6-Fo; Fri, 05 Jul 2024 11:37:22 -0400
+	id 1sPl0D-0002rS-7f; Fri, 05 Jul 2024 11:37:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sPkzs-0002Zq-F2
- for qemu-devel@nongnu.org; Fri, 05 Jul 2024 11:37:16 -0400
-Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
+ id 1sPl04-0002ea-2w
+ for qemu-devel@nongnu.org; Fri, 05 Jul 2024 11:37:28 -0400
+Received: from mail-lj1-x22c.google.com ([2a00:1450:4864:20::22c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sPkzp-0001GP-Id
- for qemu-devel@nongnu.org; Fri, 05 Jul 2024 11:37:16 -0400
-Received: by mail-ed1-x52e.google.com with SMTP id
- 4fb4d7f45d1cf-58b5f7bf3edso1118672a12.0
- for <qemu-devel@nongnu.org>; Fri, 05 Jul 2024 08:37:13 -0700 (PDT)
+ id 1sPl02-0001Ja-5Y
+ for qemu-devel@nongnu.org; Fri, 05 Jul 2024 11:37:27 -0400
+Received: by mail-lj1-x22c.google.com with SMTP id
+ 38308e7fff4ca-2eaae2a6dc1so26647591fa.0
+ for <qemu-devel@nongnu.org>; Fri, 05 Jul 2024 08:37:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1720193832; x=1720798632; darn=nongnu.org;
+ d=linaro.org; s=google; t=1720193843; x=1720798643; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Ua23xrZ298Q42RDQyaYLhWTnQd77z5dPlxT8bKsVuUY=;
- b=T9OaeGVBYQU0WVa+fs/1TSFsI2Ra0XfWN6SmbU2MCwsrwBM9Nd1NUlnHgpNVo3HMZU
- /KvfSlU7pS69DQwacEeFvsNy2MnzesDOqMfSwX9N1XZ8oACPR1bYcu9nyHRT80z0TwlB
- fEtNv9IWOAYg2hve9mKiLVhvIWoN+cDejvStI+rVwzXWQmu+Jg+kBrj5Dw5lrC+55DT3
- m5QXW3lkoEP+tyQrvm0lHnQ2FwdhLMSgZLMC+vGSkOm0HvQ/72Ja/bKAwhV1mMdHiYfq
- cAjZRWnMIl5QSOuHBm79sFDE06VN5YdlbWfGhQ3/hR/Hvgui8YOr+DKps2Bn7S3iexD5
- Zu5Q==
+ bh=XHcDwGWcAEdZtrzAOVXBblsUbX47TAsskA5aGzhGobA=;
+ b=PoFJPeD0JgXi7RFumxc/DUaJralHHwJhNJxHJhu801DR4fP9nkssClfFNoU0DiJUqG
+ l53Bv9pPGliTuoszMXazvlG/MN6c0MSw3dJi5Im9P8Lb/u+DAX7bKKtDV8VG3a8wklGt
+ lMeXcylpnJs5h3irekQo9ooTbx1vfgt1IBpztNSkOPRZx8aM6Bbyd7Ye7bjDwPQHRna7
+ ratuOqIrqd9If6RgokddrNN5HTABQOSuytc/INt13ZEXICB0EIVQJMfTnKQY+PxDEjMb
+ 1HIn493DlvGYYBxA+YbHIJAj7eAH7Qo6iIornp0/AhqdmS+vRt3PVJrN+47uuo5/YKxa
+ fysA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720193832; x=1720798632;
+ d=1e100.net; s=20230601; t=1720193843; x=1720798643;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Ua23xrZ298Q42RDQyaYLhWTnQd77z5dPlxT8bKsVuUY=;
- b=p4D6qxljGzmHviwGs6cfIIXTFv97hXYpOz+JElLpqNZ/5QVgWiX//VxmCXGei7pC18
- EiQnG686TeN3p+ORE8OUcUZlVoQ97KuQp9JJsq+HvP/0wjG+Qd8cS2FtntMK557VSGFv
- 6Rle/titkftRyBSd3NioLQ6vcRFzI/l1i+sUc27GcrDUt5SMUyuv46opGyFUcCtrzcXQ
- 7SRLuMnj2iyOQYh4pQd9ud0rYGmPCTZFVge7QrDYR+nR3r9driEDtGVyzkLzgRjKZkvl
- YioO8fs6eO8wQTE/bGujc4MA+v7a5gxGZZ+yl26tvzabIDCOxEVaP71sgt5zGSkR4L2E
- ucqA==
-X-Gm-Message-State: AOJu0YzcGPUcChp5U+uH4HLehFfquFbqaRPVhYGWnkkUKWWMa0YaMvHv
- W1OiAOlFZhpCHg5Z2QDjYJx4Nx6SbZSUspqL5OaA9NfcO4kCFI7bWIrvKgnLMDE=
-X-Google-Smtp-Source: AGHT+IFZccrel+TFP0JVYkHmWdVeZ5dXJTaanWcRPzpZB2PkqoX9Q4At3wMRE6ZwNXLYT2CNqZAgog==
-X-Received: by 2002:a05:6402:1ece:b0:57d:496:209a with SMTP id
- 4fb4d7f45d1cf-58e5994eb84mr4943921a12.6.1720193831410; 
- Fri, 05 Jul 2024 08:37:11 -0700 (PDT)
+ bh=XHcDwGWcAEdZtrzAOVXBblsUbX47TAsskA5aGzhGobA=;
+ b=i5hFrCiHKxkhmnNGCBSe7RF+kC81cFhr55rRjzMnJ7dzDjHO/TqiWOp5BFjnIJ7F3t
+ N7sHFFm1gPgIJKaYk2z2TFgnPFOYayGh8LEq7JjoVwDIxjnslq2fHJdKoIw6aeTnDWUS
+ OUB/IR12FQDgaejC+HuiHUxkRI2K9fvdHSwI1ftBcSMt2GpZsNX/23GppttjuxGghOaS
+ 3swOPoN9793xeLKwE3dHPvgmffMnDuLHKfBK5kcFyWAtPmk0IOQnCoolUONxf1c/Fhh0
+ 1mE87bPKXE1THEPt9orteZDoWgCqE1obv9LAYbEGv6fdw1/3W0ZZ+8/piVHv0uqZ4OGf
+ veEg==
+X-Gm-Message-State: AOJu0YzDGy2DjsVIWSxkCReD9H752Cu4kANGVuBhCZTz2ZG5tYOYiokr
+ XzLCRtXy1raZRbCuTilbNA1dwm5gmKou3kJ6gS4o53+Ue5dN+9B7qM0W/rMLO6A=
+X-Google-Smtp-Source: AGHT+IHE4Hx2qnBGa0yjQGxGqK2+IHmHvdTnqeukx+ZK7/mErmC5np0DIHi3FPEdrALxmuNCXC2+QQ==
+X-Received: by 2002:a2e:730a:0:b0:2ec:4093:ec7 with SMTP id
+ 38308e7fff4ca-2ee8eda81femr41880451fa.30.1720193842507; 
+ Fri, 05 Jul 2024 08:37:22 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5907e4d79ddsm212536a12.59.2024.07.05.08.37.10
+ a640c23a62f3a-a72ab08d0e7sm688192866b.165.2024.07.05.08.37.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 05 Jul 2024 08:37:10 -0700 (PDT)
+ Fri, 05 Jul 2024 08:37:20 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 896355F876;
+ by draig.lan (Postfix) with ESMTP id A11D262155;
  Fri,  5 Jul 2024 16:30:55 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Alexandre Iooss <erdnaxe@crans.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>
-Subject: [PULL 27/40] plugins: Ensure vCPU index is assigned in init/exit hooks
-Date: Fri,  5 Jul 2024 16:30:39 +0100
-Message-Id: <20240705153052.1219696-28-alex.bennee@linaro.org>
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>
+Subject: [PULL 28/40] plugins: Free CPUPluginState before destroying vCPU state
+Date: Fri,  5 Jul 2024 16:30:40 +0100
+Message-Id: <20240705153052.1219696-29-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240705153052.1219696-1-alex.bennee@linaro.org>
 References: <20240705153052.1219696-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22c;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lj1-x22c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,35 +101,46 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Since vCPUs are hashed by their index, this index can't
-be uninitialized (UNASSIGNED_CPU_INDEX).
+cpu::plugin_state is allocated in cpu_common_initfn() when
+the vCPU state is created. Release it in cpu_common_finalize()
+when we are done.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-Id: <20240606124010.2460-2-philmd@linaro.org>
+Message-Id: <20240606124010.2460-3-philmd@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20240705084047.857176-28-alex.bennee@linaro.org>
+Message-Id: <20240705084047.857176-29-alex.bennee@linaro.org>
 
-diff --git a/plugins/core.c b/plugins/core.c
-index 9d737d8278..a864275ae7 100644
---- a/plugins/core.c
-+++ b/plugins/core.c
-@@ -245,6 +245,7 @@ void qemu_plugin_vcpu_init_hook(CPUState *cpu)
+diff --git a/include/qemu/plugin.h b/include/qemu/plugin.h
+index bc5aef979e..af5f9db469 100644
+--- a/include/qemu/plugin.h
++++ b/include/qemu/plugin.h
+@@ -149,6 +149,9 @@ struct CPUPluginState {
+ 
+ /**
+  * qemu_plugin_create_vcpu_state: allocate plugin state
++ *
++ * The returned data must be released with g_free()
++ * when no longer required.
+  */
+ CPUPluginState *qemu_plugin_create_vcpu_state(void);
+ 
+diff --git a/hw/core/cpu-common.c b/hw/core/cpu-common.c
+index f131cde2c0..8f6cb64da3 100644
+--- a/hw/core/cpu-common.c
++++ b/hw/core/cpu-common.c
+@@ -283,6 +283,11 @@ static void cpu_common_finalize(Object *obj)
  {
-     bool success;
+     CPUState *cpu = CPU(obj);
  
-+    assert(cpu->cpu_index != UNASSIGNED_CPU_INDEX);
-     qemu_rec_mutex_lock(&plugin.lock);
-     plugin.num_vcpus = MAX(plugin.num_vcpus, cpu->cpu_index + 1);
-     plugin_cpu_update__locked(&cpu->cpu_index, NULL, NULL);
-@@ -263,6 +264,7 @@ void qemu_plugin_vcpu_exit_hook(CPUState *cpu)
- 
-     plugin_vcpu_cb__simple(cpu, QEMU_PLUGIN_EV_VCPU_EXIT);
- 
-+    assert(cpu->cpu_index != UNASSIGNED_CPU_INDEX);
-     qemu_rec_mutex_lock(&plugin.lock);
-     success = g_hash_table_remove(plugin.cpu_ht, &cpu->cpu_index);
-     g_assert(success);
++#ifdef CONFIG_PLUGIN
++    if (tcg_enabled()) {
++        g_free(cpu->plugin_state);
++    }
++#endif
+     g_array_free(cpu->gdb_regs, TRUE);
+     qemu_lockcnt_destroy(&cpu->in_ioctl_lock);
+     qemu_mutex_destroy(&cpu->work_mutex);
 -- 
 2.39.2
 
