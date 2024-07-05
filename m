@@ -2,89 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 083B8928BC3
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jul 2024 17:34:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 841E5928BF9
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jul 2024 17:50:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPkwQ-0004jm-Ne; Fri, 05 Jul 2024 11:33:42 -0400
+	id 1sPlCl-0007N0-1q; Fri, 05 Jul 2024 11:50:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sPkwK-0004Yf-Ml
- for qemu-devel@nongnu.org; Fri, 05 Jul 2024 11:33:37 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1sPlCi-0007Mm-MS
+ for qemu-devel@nongnu.org; Fri, 05 Jul 2024 11:50:32 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sPkwI-0000hC-SM
- for qemu-devel@nongnu.org; Fri, 05 Jul 2024 11:33:36 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1sPlCb-0008TL-S8
+ for qemu-devel@nongnu.org; Fri, 05 Jul 2024 11:50:32 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1720193612;
+ s=mimecast20190719; t=1720194621;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=Xk3vA0U4TENu6hHY5znsH0smcSS/zwl30tPzqtEmqLQ=;
- b=OAP6i0GOtpzIPGPS+oaPGIcFUBBznAdLQGFb27J/ZJi5oVjRhbZjN7Y8m+P80efJvfkoS0
- pLe/tdgkm+yr2a6aMHow4EFg55HdfMAk2NNP0Mdn2DCEG2T6PRj+2T8Cxsw50yOQnWPmQY
- 4QCoTtr0skJcOJbrON9CV3fdrZ/klhU=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=weDaGjOAUwFqvvd7/Kx5DdMHewGv1COwQycMqPQvvNI=;
+ b=bqq3fu+tyoLNts5cjWorQ/0yVu5Rbz4ygKK8xyulhgN4hVvB0QaQZdD/7AbMqKuX0Tg0mu
+ ghB7tKNEWvvJECcA5j8NklaDXQPaFkOkCRA8AumgQ1QYEz5TxRFzXzjKxagjVDxXuvt9u9
+ pJOmT5IhhsRilTYCL/S/+PS3AOeBZKk=
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com
+ [209.85.215.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-246-cwTPFDKEP_uqDqc9rsXFtg-1; Fri, 05 Jul 2024 11:33:29 -0400
-X-MC-Unique: cwTPFDKEP_uqDqc9rsXFtg-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-4264dc624a5so8847005e9.1
- for <qemu-devel@nongnu.org>; Fri, 05 Jul 2024 08:33:29 -0700 (PDT)
+ us-mta-261-BTSXSwbVPre2xMZzUSguTg-1; Fri, 05 Jul 2024 11:50:19 -0400
+X-MC-Unique: BTSXSwbVPre2xMZzUSguTg-1
+Received: by mail-pg1-f200.google.com with SMTP id
+ 41be03b00d2f7-7623e193d89so1145960a12.0
+ for <qemu-devel@nongnu.org>; Fri, 05 Jul 2024 08:50:19 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720193608; x=1720798408;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Xk3vA0U4TENu6hHY5znsH0smcSS/zwl30tPzqtEmqLQ=;
- b=hE7e2wETrJo40P6hitn48C8P9jH8cI8XwYZQRvTzfae8ZVR9VNlFlTTua9hc3o4gVu
- vJjV/WHv477SWaVheCj9r0iANe+ACIifQI/OucoAuRBky7py2G0JFmgIbDmVSM+x3cVi
- DJ/IVjxagJSR1XUInOcCEDQy8Xsu4vkBKkXcdeAemOi15ZsE0BJVddweKvX2eSZKMXSo
- jRCVYy6o3+NRNbAvg71UJDUQvvWeP8W0H9nBL+qFC27lzecx7NeLgt5fMraQJwEzqmop
- hN3VnJXMDE6eoLSOTRDDSiICUDsyvQkqxbrPAVLQcXFtnJrM5zwP/H6zsNqlMXtKTm5H
- lObQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWhnNrQQ8+YshAZ5/n0oW7KjeCp2VWJwmx+FGyqleIb3XV57vTxAouhgvIqrjcwUgxHi3u/M5iDt62bplyXFrDr6nSYMj8=
-X-Gm-Message-State: AOJu0YzSW2hGPmIdEAauFuflCc6DYrtrReYJ7562cvvvBmUdeCpp8AHV
- zq6q2VTtXQ1tV6SoIwEq9+PDEBn6v/nEdIteemWGRBHYG04i2Lulg1B4zSopl/N0hYTiWgMRp1e
- wzzbdkmPqjrAUFxq+G9UWLBgoW1JyoLzfM27hg1JDH0SaWjqIG7uaKfS0NiJD
-X-Received: by 2002:a05:600c:21a:b0:425:641c:5f46 with SMTP id
- 5b1f17b1804b1-4264a44d471mr36436535e9.30.1720193608271; 
- Fri, 05 Jul 2024 08:33:28 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGtdKXd8/CP3N7qb/hRC9Hkxy2F8mTsiesjF9q3KZ/RvBiX2LLTl/ksw+yE/wGILJW43af7+Q==
-X-Received: by 2002:a05:600c:21a:b0:425:641c:5f46 with SMTP id
- 5b1f17b1804b1-4264a44d471mr36436245e9.30.1720193607517; 
- Fri, 05 Jul 2024 08:33:27 -0700 (PDT)
-Received: from redhat.com ([2a0d:6fc7:441:1b5b:ac5c:b82e:a18c:2c6e])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4264a1d50b0sm66990645e9.7.2024.07.05.08.33.25
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 05 Jul 2024 08:33:26 -0700 (PDT)
-Date: Fri, 5 Jul 2024 11:33:23 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: linux-cxl@vger.kernel.org, qemu-devel@nongnu.org, fan.ni@samsung.com,
- Davidlohr Bueso <dave@stgolabs.net>, Fan Ni <nifan.cxl@gmail.com>,
- linuxarm@huawei.com
-Subject: Re: [PATCH v4 1/1] hw/cxl: Support firmware updates
-Message-ID: <20240705113248-mutt-send-email-mst@kernel.org>
-References: <20240705125915.991672-1-Jonathan.Cameron@huawei.com>
- <20240705125915.991672-2-Jonathan.Cameron@huawei.com>
+ d=1e100.net; s=20230601; t=1720194617; x=1720799417;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=weDaGjOAUwFqvvd7/Kx5DdMHewGv1COwQycMqPQvvNI=;
+ b=Y16OPp+A8Ly7wrGNNnUfElJc5+Y8VMg7Gf8+8agWGR6/hJ08yHWNN5oloUkug52JqT
+ abSceiPJYSPQLfhxO/Nza0QuMOmGgTOUPF1gvjMl//IA3kx5dROR+ET1afNNKJFN7cyn
+ h9927mr7yejaSsX8euKuH3jcoqEquhzRlE1/jqrdiVLz43EcT3pj62TK6NjJ6p49qYzy
+ 1J1ALxEbSydiLpz5gnfnIg0mXb1AoXchGHcS/qNcs+RHCczUAvc7L/CXACIJTswF40Wg
+ OHxIb7J3tEJAVTXTaUkPRHOtTGRyVKAxfUC/GoYVkkzzLN3KWCgp0N/Am0zAzq7epsSt
+ PGiQ==
+X-Gm-Message-State: AOJu0YyHEBy1vuO+HXzvM/REah7Dm4m85Mx3HXUmsPfJUygtSa4b+3Yd
+ IWjRpbE25cT2xwK0+o5tsFYhDaTFgJxD2rT53AbTDArnPIr+gslb62FYLM5qLWOt0+bO2bnGSYj
+ NUNofxzu4Uwqt+VB1TfVcr3HFLGQU3FAozUsKEmDbCOEGxV7K8ZQ38t/6gFJPY+GwF5rRwRLxus
+ AJkIn0AxQ7ECmbkJLMc41MZj4qf6d77IXRXNM=
+X-Received: by 2002:a17:90a:d803:b0:2c9:6d07:18f4 with SMTP id
+ 98e67ed59e1d1-2c99c6b383emr3828161a91.35.1720194617515; 
+ Fri, 05 Jul 2024 08:50:17 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFGD2EGdQlC4L8A9PwJ6h35oPhNxfCD2hhuDENSSQD9jFtU4M/cXKjASnS/mt7JRgNjfgfg/L5jHIejKtBhkoE=
+X-Received: by 2002:a17:90a:d803:b0:2c9:6d07:18f4 with SMTP id
+ 98e67ed59e1d1-2c99c6b383emr3828147a91.35.1720194617107; Fri, 05 Jul 2024
+ 08:50:17 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240705125915.991672-2-Jonathan.Cameron@huawei.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+References: <20240703175235.239004-1-jsnow@redhat.com>
+In-Reply-To: <20240703175235.239004-1-jsnow@redhat.com>
+From: John Snow <jsnow@redhat.com>
+Date: Fri, 5 Jul 2024 11:50:04 -0400
+Message-ID: <CAFn=p-Z6jM3AVodkNh=n=-4+W8wF4suG1S_O2tNCotewkLTruw@mail.gmail.com>
+Subject: Re: [PATCH v2 0/2] docs/python: bump minimum Sphinx version
+To: qemu-devel <qemu-devel@nongnu.org>, Markus Armbruster <armbru@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Michael Roth <michael.roth@amd.com>
+Content-Type: multipart/alternative; boundary="00000000000018fce5061c82052c"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,8 +92,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+--00000000000018fce5061c82052c
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-just a small request, pls use same prefix for all patches in
-the series including the cover letter.
+On Wed, Jul 3, 2024, 1:52=E2=80=AFPM John Snow <jsnow@redhat.com> wrote:
+
+> With recent deprecations, we can advance our minimum sphinx version
+> safely. This is heavily motivated by new qapidoc work which is much
+> easier to maintain cross-version compatibility for - see difficulties in
+> our dbus documentation which only works on sphinx >=3D 4.
+>
+> We can only guarantee >=3D 3.4.3 now, but that's still vastly easier than
+> maintaining compatibility all the way back to 1.x.
+>
+> https://gitlab.com/jsnow/qemu/-/pipelines/1359549621
+>
+> (failures appear to be unrelated to the series.)
+>
+> V2: refactor all code deletions into patch 2
+>
+> John Snow (2):
+>   Python: bump minimum sphinx version to 3.4.3
+>   docs: remove Sphinx 1.x compatibility code
+>
+>  docs/conf.py             |  7 +++----
+>  docs/sphinx/hxtool.py    | 21 ++++-----------------
+>  docs/sphinx/kerneldoc.py | 38 ++++++++++++--------------------------
+>  docs/sphinx/kernellog.py | 28 ----------------------------
+>  docs/sphinx/qapidoc.py   | 29 +++--------------------------
+>  pythondeps.toml          |  2 +-
+>  6 files changed, 23 insertions(+), 102 deletions(-)
+>  delete mode 100644 docs/sphinx/kernellog.py
+>
+> --
+> 2.45.0
+>
+
+Going to assume It's okay for me to stage this one under my Python tree.
+
+Markus: This will create a minor conflict with the notes patches (the
+delint patch), but the resolution is straightforward.
+
+--js
+
+--00000000000018fce5061c82052c
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
+class=3D"gmail_attr">On Wed, Jul 3, 2024, 1:52=E2=80=AFPM John Snow &lt;<a =
+href=3D"mailto:jsnow@redhat.com">jsnow@redhat.com</a>&gt; wrote:<br></div><=
+blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px=
+ #ccc solid;padding-left:1ex">With recent deprecations, we can advance our =
+minimum sphinx version<br>
+safely. This is heavily motivated by new qapidoc work which is much<br>
+easier to maintain cross-version compatibility for - see difficulties in<br=
+>
+our dbus documentation which only works on sphinx &gt;=3D 4.<br>
+<br>
+We can only guarantee &gt;=3D 3.4.3 now, but that&#39;s still vastly easier=
+ than<br>
+maintaining compatibility all the way back to 1.x.<br>
+<br>
+<a href=3D"https://gitlab.com/jsnow/qemu/-/pipelines/1359549621" rel=3D"nor=
+eferrer noreferrer" target=3D"_blank">https://gitlab.com/jsnow/qemu/-/pipel=
+ines/1359549621</a><br>
+<br>
+(failures appear to be unrelated to the series.)<br>
+<br>
+V2: refactor all code deletions into patch 2<br>
+<br>
+John Snow (2):<br>
+=C2=A0 Python: bump minimum sphinx version to 3.4.3<br>
+=C2=A0 docs: remove Sphinx 1.x compatibility code<br>
+<br>
+=C2=A0docs/conf.py=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 7=
+ +++----<br>
+=C2=A0docs/sphinx/hxtool.py=C2=A0 =C2=A0 | 21 ++++-----------------<br>
+=C2=A0docs/sphinx/kerneldoc.py | 38 ++++++++++++--------------------------<=
+br>
+=C2=A0docs/sphinx/kernellog.py | 28 ----------------------------<br>
+=C2=A0docs/sphinx/qapidoc.py=C2=A0 =C2=A0| 29 +++--------------------------=
+<br>
+=C2=A0pythondeps.toml=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 |=C2=A0 2 +-<br>
+=C2=A06 files changed, 23 insertions(+), 102 deletions(-)<br>
+=C2=A0delete mode 100644 docs/sphinx/kernellog.py<br>
+<br>
+-- <br>
+2.45.0<br></blockquote></div></div><div dir=3D"auto"><br></div><div dir=3D"=
+auto">Going to assume It&#39;s okay for me to stage this one under my Pytho=
+n tree.</div><div dir=3D"auto"><br></div><div dir=3D"auto">Markus: This wil=
+l create a minor conflict with the notes patches (the delint patch), but th=
+e resolution is straightforward.</div><div dir=3D"auto"><br></div><div dir=
+=3D"auto">--js</div><div dir=3D"auto"><br></div></div>
+
+--00000000000018fce5061c82052c--
 
 
