@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFA54928F33
-	for <lists+qemu-devel@lfdr.de>; Sat,  6 Jul 2024 00:05:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8B28928F3A
+	for <lists+qemu-devel@lfdr.de>; Sat,  6 Jul 2024 00:06:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPr3W-0002lw-2x; Fri, 05 Jul 2024 18:05:26 -0400
+	id 1sPr3b-0003KW-IK; Fri, 05 Jul 2024 18:05:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sPr3T-0002b7-UN
- for qemu-devel@nongnu.org; Fri, 05 Jul 2024 18:05:23 -0400
-Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sPr3a-0003JB-4M
+ for qemu-devel@nongnu.org; Fri, 05 Jul 2024 18:05:30 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sPr3R-0007ao-Ti
- for qemu-devel@nongnu.org; Fri, 05 Jul 2024 18:05:23 -0400
-Received: by mail-lj1-x231.google.com with SMTP id
- 38308e7fff4ca-2ee4ae13aabso21280081fa.2
- for <qemu-devel@nongnu.org>; Fri, 05 Jul 2024 15:05:21 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sPr3X-0007c9-Ok
+ for qemu-devel@nongnu.org; Fri, 05 Jul 2024 18:05:29 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-424ad289912so14168625e9.2
+ for <qemu-devel@nongnu.org>; Fri, 05 Jul 2024 15:05:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1720217119; x=1720821919; darn=nongnu.org;
+ d=linaro.org; s=google; t=1720217125; x=1720821925; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=u9D/WC7IdxNIJk6AHwWA75pe1sGPv4JT8i2Sn6RjhLY=;
- b=UPJVTWigr1nz7qhxhxMLkMl1QnA3dyjWaAoAJRDVuFg+kaT1u1+/TSDXnZNAH33Ihi
- mAGrRfvHpr21hmPYvQ4UHbJTsjXaC1XIIbllppPpMAQHhLKaRBoykH70EIr2zII+ndGs
- dgpTXwgpYEd8sCBNNXZWIIK7eMYGsRfhb6CNSAJLv+KYPHF6XjC+rR1Zgz5NkhLA1EOF
- SJzldqAPgZ1iJc0GUK2tNm8nsebRJLEvA9Fzj7TqTGre2qr7SWdCoPAxBeRABpDEZf2J
- ILODxWy4R9b8EYcfQuPZjk66pC/UUbucbnrL9NBr+9uX2QuhSjirDz2SBUlebsCFhLA5
- KHKg==
+ bh=fniJoDv0JvGQIrVVzQXHvMIti3h9L7JHmKwMnT7C6s8=;
+ b=S+iG/9flDDq0GPoeMxaLsAOHmOXxxHISjQlHHfjs5/jnV80zJTedWiGCYTb5nRSUYJ
+ DzAZyTmpCDlDtFMHzX921/+kENKPBLgC7yM4zA+27D4pJsPthDr+kEvyvvkhU8Y3MJGM
+ LATZfW4X5t/zPlZDp9RA7COd+pm2MV5LJkqRK3q85CmHIkae9RwN+fAedA+6b9ybkQ9S
+ 1XL/Cav2bEFX2e30at66XsfI7qidAXDRV1ZM3xP3VGCvHnPnFERDXlsnb5zoeALLWg8B
+ ycVb1ahKd/E/w/MaRg10ef3gu3NohDUI1mkyPyqzqe026EU0Ofb9v+PCMSC9ST9W7csI
+ n3Pw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720217119; x=1720821919;
+ d=1e100.net; s=20230601; t=1720217125; x=1720821925;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=u9D/WC7IdxNIJk6AHwWA75pe1sGPv4JT8i2Sn6RjhLY=;
- b=Pc+uhe3DOiS7RMHW4WNmu9yFTuuGYqk581HFv1zRpFFjLl9NLCf2l7x6dkZW5wB7Eh
- C/FZ/kOsbHvTCyxlJ+M+7Aih1ijxIa1jhYj4k1G8VsIL+JGsJtM0w6pnDuM5tzazNzVf
- dkBnR7unoJj4NNf/SFgrwqPTKA4PTgFi+ec4Y8jK5pIUHJBAXGrdBK+LmvIbVqmUpAf+
- uVFKmn84X+b6pPNuZwGLVLjsf0ky8RCpaMe9cn3AbXblMgkRbijfnaR4TpplQHVrh+O+
- 3CBivt4jgg7RTIYCak20rFkPBg5CxkRoVSvv+HxAhmQBn1O+Cyu0bU3fiFuK07M0u6jF
- qVUA==
-X-Gm-Message-State: AOJu0YxzB3oswiKJaR7/xYC7BzMdEvgZkzB7STE3SJqyYzzw6ETIBipA
- B27rSw2u0QiMANOYJ72SLwzFgoPfRIvGwhFOGf3gwt/j/hAM4VwLE0sVJ4WV9SvipWzUJzzX6u+
- F
-X-Google-Smtp-Source: AGHT+IG1NrXTtvKE0/gC2BkJSpVAcK3dCnqIch9eydENs2uP9aw6rKTl7r+NTujlIH08W+Ca5Wqgkg==
-X-Received: by 2002:a2e:bb85:0:b0:2ee:8817:422b with SMTP id
- 38308e7fff4ca-2ee8ed8f728mr32341751fa.19.1720217119568; 
- Fri, 05 Jul 2024 15:05:19 -0700 (PDT)
+ bh=fniJoDv0JvGQIrVVzQXHvMIti3h9L7JHmKwMnT7C6s8=;
+ b=dA+6KfDhzbdFLbcbgjpMUSOfD31K6s7ryb++2NHe11H/5rZJTdN2bB1YwEMfDKDQ3t
+ DAhBc4YeYOL2xq6EjdQYzhe7o1iUf64tX8udimKPYoS8EJu2+44q3m8OBF0FjJ7JSTd2
+ 1Busiri5Lzgy4qAeQReVnA94pD/tBs1mVbcXQqI1o3oU19mQbeyYxGA+JXLz4Kg/D6mE
+ 05cQfgYiSZWKhLR2rEAaHGrBzZgTBSwHtgE09iFvct64zVS+IN0xkrWUQzH6wl7WRHCY
+ 0s9wVo4Lo/AHmzcUotCac3hlmoudvD9Ze7YdGYi6pbQVOTUcLJEW4cnBuvn3G9X2gqTw
+ IaWw==
+X-Gm-Message-State: AOJu0YyIbGicN3CWvK9QG5lhNgQRS5kJpBaTr4om+zplebw2xvbjvkJe
+ 0tPVa1kmNTRdZeU1q/s9Q8KmWwmvl1sSI//VUvlW3ZJBGMTtq9jwAslzwMTTOb+InXqHVK8Hdqc
+ o
+X-Google-Smtp-Source: AGHT+IGLy4efDOQBdT5KqhRwf4MbrZpH+wS8334TJmUP1WnhZZp5grEsKwABA17q0tuNXIX2XxiFEw==
+X-Received: by 2002:a05:600c:5126:b0:424:bb93:7aad with SMTP id
+ 5b1f17b1804b1-4264a36eebbmr45998925e9.0.1720217124877; 
+ Fri, 05 Jul 2024 15:05:24 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.163.129])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4264a1f23c1sm75363905e9.28.2024.07.05.15.05.18
+ 5b1f17b1804b1-4264a1f23c1sm75365555e9.28.2024.07.05.15.05.23
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 05 Jul 2024 15:05:19 -0700 (PDT)
+ Fri, 05 Jul 2024 15:05:24 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Andrew Jeffery <andrew@codeconstruct.com.au>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 08/16] hw/sd/sdcard: Add sd_cmd_GEN_CMD handler (CMD56)
-Date: Sat,  6 Jul 2024 00:04:26 +0200
-Message-ID: <20240705220435.15415-9-philmd@linaro.org>
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ Andrew Jeffery <andrew@codeconstruct.com.au>
+Subject: [PULL 09/16] hw/sd/sdcard: Remove sd_none enum from sd_cmd_type_t
+Date: Sat,  6 Jul 2024 00:04:27 +0200
+Message-ID: <20240705220435.15415-10-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240705220435.15415-1-philmd@linaro.org>
 References: <20240705220435.15415-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::231;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x231.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,145 +93,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-"General command" (GEN_CMD, CMD56) is described as:
-
-  GEN_CMD is the same as the single block read or write
-  commands (CMD24 or CMD17). The difference is that [...]
-  the data block is not a memory payload data but has a
-  vendor specific format and meaning.
-
-Thus this block must not be stored overwriting data block
-on underlying storage drive. Handle as RAZ/WI.
+All handlers using the 'sd_none' enum got converted,
+remove it.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Tested-by: Andrew Jeffery <andrew@codeconstruct.com.au>
 Tested-by: Cédric Le Goater <clg@redhat.com>
-Message-Id: <20240703134356.85972-3-philmd@linaro.org>
+Message-Id: <20240628070216.92609-76-philmd@linaro.org>
 ---
- hw/sd/sd.c | 54 ++++++++++++++++++++----------------------------------
- 1 file changed, 20 insertions(+), 34 deletions(-)
+ include/hw/sd/sd.h | 1 -
+ hw/sd/sd.c         | 7 +------
+ 2 files changed, 1 insertion(+), 7 deletions(-)
 
+diff --git a/include/hw/sd/sd.h b/include/hw/sd/sd.h
+index 29c76935a0..c1a35ab420 100644
+--- a/include/hw/sd/sd.h
++++ b/include/hw/sd/sd.h
+@@ -76,7 +76,6 @@ typedef enum  {
+ } sd_uhs_mode_t;
+ 
+ typedef enum {
+-    sd_none = 0,
+     sd_spi,
+     sd_bc,     /* broadcast -- no response */
+     sd_bcr,    /* broadcast with response */
 diff --git a/hw/sd/sd.c b/hw/sd/sd.c
-index 8618c2bcf0..10f2764a53 100644
+index 10f2764a53..43f60cf089 100644
 --- a/hw/sd/sd.c
 +++ b/hw/sd/sd.c
-@@ -243,7 +243,6 @@ static const char *sd_cmd_name(SDState *sd, uint8_t cmd)
-                                             [25]    = "WRITE_MULTIPLE_BLOCK",
-         [26]    = "MANUF_RSVD",
-         [40]    = "DPS_spec",
--        [56]    = "GEN_CMD",
-         [60]    = "MANUF_RSVD",             [61]    = "MANUF_RSVD",
-         [62]    = "MANUF_RSVD",             [63]    = "MANUF_RSVD",
-     };
-@@ -902,9 +901,6 @@ static void sd_blk_write(SDState *sd, uint64_t addr, uint32_t len)
+@@ -524,17 +524,12 @@ static void sd_set_rca(SDState *sd, uint16_t value)
+ static uint16_t sd_req_get_rca(SDState *s, SDRequest req)
+ {
+     switch (s->proto->cmd[req.cmd].type) {
+-    case sd_none:
+-        /* Called from legacy code not ported to SDProto array */
+-        assert(!s->proto->cmd[req.cmd].handler);
+-        /* fall-through */
+     case sd_ac:
+     case sd_adtc:
+         return req.arg >> 16;
+     case sd_spi:
+-        g_assert_not_reached();
+     default:
+-        return 0;
++        g_assert_not_reached();
      }
  }
  
--#define APP_READ_BLOCK(a, len)  memset(sd->data, 0xec, len)
--#define APP_WRITE_BLOCK(a, len)
--
- static void sd_erase(SDState *sd)
- {
-     uint64_t erase_start = sd->erase_start;
-@@ -1641,6 +1637,22 @@ static sd_rsp_type_t sd_cmd_APP_CMD(SDState *sd, SDRequest req)
-     return sd_r1;
- }
- 
-+/* CMD56 */
-+static sd_rsp_type_t sd_cmd_GEN_CMD(SDState *sd, SDRequest req)
-+{
-+    if (sd->state != sd_transfer_state) {
-+        return sd_invalid_state_for_cmd(sd, req);
-+    }
-+
-+    /* Vendor specific command: our model is RAZ/WI */
-+    if (req.arg & 1) {
-+        memset(sd->data, 0, sizeof(sd->data));
-+        return sd_cmd_to_sendingdata(sd, req, 0, NULL, 0);
-+    } else {
-+        return sd_cmd_to_receivingdata(sd, req, 0, 0);
-+    }
-+}
-+
- /* CMD58 */
- static sd_rsp_type_t spi_cmd_READ_OCR(SDState *sd, SDRequest req)
- {
-@@ -1836,22 +1848,6 @@ static sd_rsp_type_t sd_normal_command(SDState *sd, SDRequest req)
-     case 26:  /* CMD26:  PROGRAM_CID */
-         return sd_cmd_to_receivingdata(sd, req, 0, sizeof(sd->cid));
- 
--    /* Application specific commands (Class 8) */
--    case 56:  /* CMD56:  GEN_CMD */
--        switch (sd->state) {
--        case sd_transfer_state:
--            sd->data_offset = 0;
--            if (req.arg & 1)
--                sd->state = sd_sendingdata_state;
--            else
--                sd->state = sd_receivingdata_state;
--            return sd_r1;
--
--        default:
--            break;
--        }
--        break;
--
-     default:
-         qemu_log_mask(LOG_GUEST_ERROR, "SD: Unknown CMD%i\n", req.cmd);
-         return sd_illegal;
-@@ -2187,11 +2183,7 @@ void sd_write_byte(SDState *sd, uint8_t value)
-         break;
- 
-     case 56:  /* CMD56:  GEN_CMD */
--        sd->data[sd->data_offset ++] = value;
--        if (sd->data_offset >= sd->blk_len) {
--            APP_WRITE_BLOCK(sd->data_start, sd->data_offset);
--            sd->state = sd_transfer_state;
--        }
-+        sd_generic_write_byte(sd, value);
-         break;
- 
-     default:
-@@ -2233,6 +2225,7 @@ uint8_t sd_read_byte(SDState *sd)
-     case 22: /* ACMD22: SEND_NUM_WR_BLOCKS */
-     case 30: /* CMD30:  SEND_WRITE_PROT */
-     case 51: /* ACMD51: SEND_SCR */
-+    case 56: /* CMD56:  GEN_CMD */
-         sd_generic_read_byte(sd, &ret);
-         break;
- 
-@@ -2260,15 +2253,6 @@ uint8_t sd_read_byte(SDState *sd)
-         }
-         break;
- 
--    case 56:  /* CMD56:  GEN_CMD */
--        if (sd->data_offset == 0)
--            APP_READ_BLOCK(sd->data_start, sd->blk_len);
--        ret = sd->data[sd->data_offset ++];
--
--        if (sd->data_offset >= sd->blk_len)
--            sd->state = sd_transfer_state;
--        break;
--
-     default:
-         qemu_log_mask(LOG_GUEST_ERROR, "%s: unknown command\n", __func__);
-         return 0x00;
-@@ -2323,6 +2307,7 @@ static const SDProto sd_proto_spi = {
-         [52] = {9,  sd_spi, "IO_RW_DIRECT", sd_cmd_optional},
-         [53] = {9,  sd_spi, "IO_RW_EXTENDED", sd_cmd_optional},
-         [55] = {8,  sd_spi, "APP_CMD", sd_cmd_APP_CMD},
-+        [56] = {8,  sd_spi, "GEN_CMD", sd_cmd_GEN_CMD},
-         [57] = {10, sd_spi, "DIRECT_SECURE_WRITE", sd_cmd_optional},
-         [58] = {0,  sd_spi, "READ_OCR", spi_cmd_READ_OCR},
-         [59] = {0,  sd_spi, "CRC_ON_OFF", spi_cmd_CRC_ON_OFF},
-@@ -2383,6 +2368,7 @@ static const SDProto sd_proto_sd = {
-         [52] = {9,  sd_bc,   "IO_RW_DIRECT", sd_cmd_optional},
-         [53] = {9,  sd_bc,   "IO_RW_EXTENDED", sd_cmd_optional},
-         [55] = {8,  sd_ac,   "APP_CMD", sd_cmd_APP_CMD},
-+        [56] = {8,  sd_adtc, "GEN_CMD", sd_cmd_GEN_CMD},
-         [57] = {10, sd_adtc, "DIRECT_SECURE_WRITE", sd_cmd_optional},
-         [58] = {11, sd_adtc, "READ_EXTR_MULTI", sd_cmd_optional},
-         [59] = {11, sd_adtc, "WRITE_EXTR_MULTI", sd_cmd_optional},
 -- 
 2.41.0
 
