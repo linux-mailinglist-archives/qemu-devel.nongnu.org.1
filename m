@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A169A92841A
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jul 2024 10:49:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B26199283DF
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jul 2024 10:42:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPecA-0002BE-Iv; Fri, 05 Jul 2024 04:48:22 -0400
+	id 1sPeVg-0000t5-RR; Fri, 05 Jul 2024 04:41:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sPebL-0000wg-NR
- for qemu-devel@nongnu.org; Fri, 05 Jul 2024 04:47:33 -0400
-Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
+ id 1sPeVE-00008W-89
+ for qemu-devel@nongnu.org; Fri, 05 Jul 2024 04:41:14 -0400
+Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sPeb7-0004BL-Au
- for qemu-devel@nongnu.org; Fri, 05 Jul 2024 04:47:30 -0400
-Received: by mail-ej1-x635.google.com with SMTP id
- a640c23a62f3a-a77bf336171so194562066b.1
- for <qemu-devel@nongnu.org>; Fri, 05 Jul 2024 01:47:14 -0700 (PDT)
+ id 1sPeV9-0003HT-TG
+ for qemu-devel@nongnu.org; Fri, 05 Jul 2024 04:41:11 -0400
+Received: by mail-ed1-x52f.google.com with SMTP id
+ 4fb4d7f45d1cf-58bac81f419so1968677a12.0
+ for <qemu-devel@nongnu.org>; Fri, 05 Jul 2024 01:41:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1720169234; x=1720774034; darn=nongnu.org;
+ d=linaro.org; s=google; t=1720168866; x=1720773666; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=42dfRSdqLtSCAsO34FUpCEGuS1QIkfM9imEkVZpHhnU=;
- b=GfWbHettglD/1qZJ+xJdCZ4Prn2MdsbYFm4H9gVmVkC74u3N0jmiZ3/4SWsHuwlvIM
- xxywDdITQJyAEunfjBTpvZfz3L2Cys/AiyNNFN4eDPELh+ROI73+fSGfC6QXgL0uDs6E
- JlCWzBF2Bj4WiX1dKAX4T6ojOQH5CG+cx9XAyk++eS1n2D2g6K/AhPdtIcO2i83wlG0w
- N+O+0RyTdI6S2y2Th7Xe4zSBj89lWeCmUVfJUdwOPMFhw0rzikfkXm4I1vnkIqDLdQsF
- P1LNM+gRlljvmNrNVVmD9ESNn3VhhLQaxDuzE/UKUxmVIx4lHLsiyK8wG9lZf3Sue+a8
- 8KbQ==
+ bh=xGMwdrjzaVjDq8zEZYSVnqK2CyrYL4caV/sFBWJUwr8=;
+ b=Ak7jKdK4SNmN7ZUmF78STJF7G4GBBZ8fo+llHShZxXbtKsqUUynBtQa/2OMs2oVNXh
+ QFRXG07XXL8su3CtknbFhWrbLbzKL3jmV/W2rHJ5I3MBO6LfGllkoES29D6IIQXa7JpW
+ azT6LsVpXUj4NLHMId0ExvIGQbtEixOvurAdwM4P8vuPF7NnOJaq7PnKIshsYt1otdhz
+ 2MEhgCDNj0GtDBmU9HJZxNiSmurJr61mBLG5MGSARvU3bi25HodsbIlbTaWt/Ghh08FI
+ moZj3IOaQ/dzW7zcMaav6iH0mzF22G1hgAymLq3xAZ3UCbQSM13uO81PedBgPj4vrmWl
+ H6ug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720169234; x=1720774034;
+ d=1e100.net; s=20230601; t=1720168866; x=1720773666;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=42dfRSdqLtSCAsO34FUpCEGuS1QIkfM9imEkVZpHhnU=;
- b=PAGlG+eZE0j4DT/AGZlGEtcpLXsEEN5nmDUDsjMFxwW0hZm1lZWo4EAfdpfnwnedzy
- smRbmhgh7lfcSnt8AKqXY8xSd/4KMbhPR9EeGqP/gni2A+LgkmeEOPDxrErE9tScWVRy
- nb+sNrPQayJ2nM19VAliGN7YEOIeAfVeDTmUGWxTbKvlwLnG/2oBIn4pUUxh21Fn64eo
- oppRi7UuhCKS/uHf2+rB4HzTKM6v/pOQolNGRF0mPX5DyYf0F5qGvseQ7FsxPX9ISghx
- 8lMMOXoKh7gssmuRFyvQbBYB0B95GezGn/7ozxeHNQrFdoMpnvj3SWeEFGktdFKhWTu1
- KRgg==
-X-Gm-Message-State: AOJu0Yy0rFJSmeu1hOXOierkcoLHPF9Q9zUznYsxZYbhRVnFgoCsA8fz
- a8EdFQdP+HNszyNSj+LYqu4TCPf7XSFnDX0afTRsZ443xnps5cObC/mlny2hYUM=
-X-Google-Smtp-Source: AGHT+IERQtXO/lSildv7YfdLiTQqGhIu/s50ufihwva0gyWZEBGvTmIMU0XYvjX4tHT7LWrcdNsuZA==
-X-Received: by 2002:a17:906:348c:b0:a6f:6337:1ad5 with SMTP id
- a640c23a62f3a-a77bda9cc3emr285297666b.27.1720169233689; 
- Fri, 05 Jul 2024 01:47:13 -0700 (PDT)
+ bh=xGMwdrjzaVjDq8zEZYSVnqK2CyrYL4caV/sFBWJUwr8=;
+ b=ND/nNf9A2Zb66BLknNyHeMtre8HT1Fnl3w6Ju7Xw3IlDlK1Ib4D5YOmUyjRsQslOCA
+ inQhMu9LuimTB8GSU6Ff3kY6R3AoJqsahd/Tf3nVw4pbhvukk2qoj0GKcHyMAzQM6MP6
+ lwGgowYOHcGvoapmBBp3xvhlKeZTD+805UpKphawsNw4JBeUbigXNlilV6/cmBp4UH5m
+ D4yFr7D/4SEs8Zfz2lHdotnkdSydELRH1lZn6dzBpPKYBOR0MQQU0tTw7pr6GSswrvgk
+ BNv+Z+nrsCo+MjP36TnHeUtS+HboUK9QECv56veIV7P340l4sv2vA0re4rKLFvR9Iw26
+ p6aw==
+X-Gm-Message-State: AOJu0Yy1ZUM1HtsVJsUAVBjb0M659JaJSP1EmhQUrQGwmPqMCGHlXpLR
+ QWg9TGEABd1GdW44nzGm9doOZp54MDXozf5n2qt3wF8SqFpiotJ+Kz+7An7iCf0=
+X-Google-Smtp-Source: AGHT+IG3ittBM/K9+GEuiAPuXbV5kJonx+k58MpQduMwZltZG15RemxO/mBmRFXnWoDn3Kr0/bwgSw==
+X-Received: by 2002:a17:906:605:b0:a6f:e47d:a965 with SMTP id
+ a640c23a62f3a-a77ba4d146dmr238250066b.41.1720168866257; 
+ Fri, 05 Jul 2024 01:41:06 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a77dade9b61sm3514866b.160.2024.07.05.01.47.11
+ a640c23a62f3a-a73e52c2cb5sm578758266b.16.2024.07.05.01.40.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 05 Jul 2024 01:47:11 -0700 (PDT)
+ Fri, 05 Jul 2024 01:41:00 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 8B2346211E;
+ by draig.lan (Postfix) with ESMTP id A390462139;
  Fri,  5 Jul 2024 09:40:49 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -75,27 +75,25 @@ Cc: Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Paul Burton <paulburton@kernel.org>, Stefan Hajnoczi <stefanha@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Laurent Vivier <laurent@vivier.eu>,
- Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH v2 19/40] linux-user/main: Suppress out-of-range comparison
- warning for clang
-Date: Fri,  5 Jul 2024 09:40:26 +0100
-Message-Id: <20240705084047.857176-20-alex.bennee@linaro.org>
+ Laurent Vivier <laurent@vivier.eu>
+Subject: [PATCH v2 20/40] gitlab: don't bother with KVM for TCI builds
+Date: Fri,  5 Jul 2024 09:40:27 +0100
+Message-Id: <20240705084047.857176-21-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240705084047.857176-1-alex.bennee@linaro.org>
 References: <20240705084047.857176-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::635;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x635.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -111,38 +109,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+In fact any other accelerator would be pointless as the point is to
+exercise the TCI accelerator anyway.
 
-For arm32 host and arm64 guest we get
-
-.../main.c:851:32: error: result of comparison of constant 70368744177664 with expression of type 'unsigned long' is always false [-Werror,-Wtautological-constant-out-of-range-compare]
-        if (TASK_UNMAPPED_BASE < reserved_va) {
-            ~~~~~~~~~~~~~~~~~~ ^ ~~~~~~~~~~~
-
-We already disable -Wtype-limits here, for this exact comparison, but
-that is not enough for clang.  Disable -Wtautological-compare as well,
-which is a superset.  GCC ignores the unknown warning flag.
-
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Message-Id: <20240630190050.160642-15-richard.henderson@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- linux-user/main.c | 1 +
- 1 file changed, 1 insertion(+)
+ .gitlab-ci.d/buildtest.yml   | 2 +-
+ .gitlab-ci.d/crossbuilds.yml | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/linux-user/main.c b/linux-user/main.c
-index 94c99a1366..7d3cf45fa9 100644
---- a/linux-user/main.c
-+++ b/linux-user/main.c
-@@ -843,6 +843,7 @@ int main(int argc, char **argv, char **envp)
-      */
- #pragma GCC diagnostic push
- #pragma GCC diagnostic ignored "-Wtype-limits"
-+#pragma GCC diagnostic ignored "-Wtautological-compare"
+diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
+index 425fc6479b..e3a0758bd9 100644
+--- a/.gitlab-ci.d/buildtest.yml
++++ b/.gitlab-ci.d/buildtest.yml
+@@ -635,7 +635,7 @@ build-tci:
+     - TARGETS="aarch64 arm hppa m68k microblaze ppc64 s390x x86_64"
+     - mkdir build
+     - cd build
+-    - ../configure --enable-tcg-interpreter --disable-docs --disable-gtk --disable-vnc
++    - ../configure --enable-tcg-interpreter --disable-kvm --disable-docs --disable-gtk --disable-vnc
+         --target-list="$(for tg in $TARGETS; do echo -n ${tg}'-softmmu '; done)"
+         || { cat config.log meson-logs/meson-log.txt && exit 1; }
+     - make -j"$JOBS"
+diff --git a/.gitlab-ci.d/crossbuilds.yml b/.gitlab-ci.d/crossbuilds.yml
+index 3de0341afe..cb499e4ee0 100644
+--- a/.gitlab-ci.d/crossbuilds.yml
++++ b/.gitlab-ci.d/crossbuilds.yml
+@@ -68,7 +68,7 @@ cross-i686-tci:
+   variables:
+     IMAGE: debian-i686-cross
+     ACCEL: tcg-interpreter
+-    EXTRA_CONFIGURE_OPTS: --target-list=i386-softmmu,i386-linux-user,aarch64-softmmu,aarch64-linux-user,ppc-softmmu,ppc-linux-user --disable-plugins
++    EXTRA_CONFIGURE_OPTS: --target-list=i386-softmmu,i386-linux-user,aarch64-softmmu,aarch64-linux-user,ppc-softmmu,ppc-linux-user --disable-plugins --disable-kvm
+     MAKE_CHECK_ARGS: check check-tcg
  
-     /*
-      * Select an initial value for task_unmapped_base that is in range.
+ cross-mipsel-system:
 -- 
 2.39.2
 
