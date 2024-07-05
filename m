@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C7A5928BDE
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jul 2024 17:38:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 85E25928BCB
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Jul 2024 17:35:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sPl0A-0002h6-2i; Fri, 05 Jul 2024 11:37:34 -0400
+	id 1sPku6-0005lT-6G; Fri, 05 Jul 2024 11:31:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sPkzy-0002cO-Js
- for qemu-devel@nongnu.org; Fri, 05 Jul 2024 11:37:22 -0400
-Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
+ id 1sPku4-0005kK-7l
+ for qemu-devel@nongnu.org; Fri, 05 Jul 2024 11:31:16 -0400
+Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sPkzw-0001IW-Va
- for qemu-devel@nongnu.org; Fri, 05 Jul 2024 11:37:22 -0400
-Received: by mail-ej1-x62d.google.com with SMTP id
- a640c23a62f3a-a77cc73d35fso130563566b.0
- for <qemu-devel@nongnu.org>; Fri, 05 Jul 2024 08:37:20 -0700 (PDT)
+ id 1sPkty-0000Rs-9X
+ for qemu-devel@nongnu.org; Fri, 05 Jul 2024 11:31:15 -0400
+Received: by mail-ej1-x62e.google.com with SMTP id
+ a640c23a62f3a-a77b550128dso227621066b.0
+ for <qemu-devel@nongnu.org>; Fri, 05 Jul 2024 08:31:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1720193839; x=1720798639; darn=nongnu.org;
+ d=linaro.org; s=google; t=1720193467; x=1720798267; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=tcblXcJm1xF5LxPcrc6RNUAzD4wW3iGRX/uV+phD6V0=;
- b=LYl7hFAque1r8d9B93ePkItkHP0yvn4oi7GgmfPKnr90xEfGPF0n7jrFZeAVNQU3oT
- OGnESmOsYBnsqRPOd7wH3xLA4JGftWt5GIewBWPlfm7zid6BXPdgnahoOCTtTsk6CJ63
- VN4OV7lSKJxWcqBBOVxSSMi6Bs78V3G/fBDbbGLlm6Ilgmu0qjYv+p8Ias6SXro/uFsD
- e7mWP4TzXMPp4dkVAGfKTI7tWPHTAZ6nNSASyCN7ci44qrweV2pAC8cMcyhghrO+DkAx
- lEAKtYmWJw7WUKinT4bUE+IEQRQ0hPUP4Mu4xnw1c4V4K8tiO9Xq+kIryaBssYwvaSJa
- oThw==
+ bh=QehyRM+GTwCmdsI3rONPQxQARmvRAp8NK6kIeDY+sDQ=;
+ b=Ool1+wKjSguZSqZldgEQlGRknT9iUHGJIr9DzxKRCyOvQu2YyaU9P6civf5AAgRhbO
+ 9O3X7zMVp3/vxrAaFPr32hGOdtcoHmUBcjV9986AeEmZvLXXQH6h+suRoH+iQb8Sl4/Y
+ vb5glPgzN1dUL5X/ZBerrEx44FLaWwLfskiescsa2i3i8m1s5Xk4ZUImTrbjhlpEZhaA
+ nifeFyG7U0vEPX0IWxwEfTIgWPogYJSwmGXgrSxW66ADhwHdwte4nrfd5KQY+z+r53zK
+ PXmcXX5hUOWV/xReLhCm3LYckpjvmIVMDlVgBoCApZnAQa6AR7UHmXMWU/I/FG8XDFE0
+ HJTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1720193839; x=1720798639;
+ d=1e100.net; s=20230601; t=1720193467; x=1720798267;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=tcblXcJm1xF5LxPcrc6RNUAzD4wW3iGRX/uV+phD6V0=;
- b=aFV3UtBRYNYPzbuEO+9DhMMFT5ioG26aFlewKCpfVCNJK9PwlVB9Ra7visDjeE9PmP
- o/HuMUK5FSCSuCl8zWg/61O3QhBOZHkBuCyqT1M7/sid93vXH09ZKuh+V0DPFWlm28Ao
- enqBNNUXpoqt1WJ3AuQYuZ5HHg8SAFiDKuGf2bjlZzYCR5qfAD9XBW4QxSFMt2j8117e
- 6xoR4nQNsAiUQW46TRP00fM55YrKMrPe9L+Hdq2dwbI3Gmp3DxYP6dswzzf/PrB4/D6u
- N3VfcKFH/HLK6YMVsvEAEMQRFR7gKnG/tP12qpydnnhTHcx7xK8GInSSO+Q5KyP5oH5D
- jiFw==
-X-Gm-Message-State: AOJu0YwbJy4JimxQNNBxAqJXP10UN26SPRLgfqPiyfjwM3AVEkOpWSJc
- lJ+Mnt0NoqoKdcy7apXx/q2DP2E7gtumwGAzZcNbTf28FDFwfkIZXJRjPQQT9SA=
-X-Google-Smtp-Source: AGHT+IHP5vAOBmjMJaXra2aiwjJhGqJHotB4VfhfRqcWkzIhyw0Vuk1bxsrne9XAORZTgUdlXO0zoA==
-X-Received: by 2002:a17:906:d1d2:b0:a77:cfe9:8ed5 with SMTP id
- a640c23a62f3a-a77cfe98f21mr157190366b.30.1720193839427; 
- Fri, 05 Jul 2024 08:37:19 -0700 (PDT)
+ bh=QehyRM+GTwCmdsI3rONPQxQARmvRAp8NK6kIeDY+sDQ=;
+ b=Xs/IC3wp9NzzlmnG+dnGe0N8dsP0vFCVIlv+9MbITDNdvG3rwZcF8unnQ5DJarYDUM
+ Shh0jUfk31FUMRz3XRIXVnoxZ+v5Xam0hm8jo/Z6Z6Yh2a+QTI5QbXWvxLKkiSGY8V5Z
+ zmBYIOxain8I37heGCpwcGtCimLM8Z9uXStPtbllHUmcJDaUsaZdR0STDiuTq3/Nx/EB
+ Use4UWuwJSWkJQW65E+uv/y8fe2nNlL26vkenzgJLB57uH0Jf9FBjZbeE4f4DuROkFE/
+ 3MkV89vrzdP3b1G8jnzPjC7N1mqJQs66POriArWwp6S0RHXmdUBKYdKYE/UIfZPPYRsV
+ 3ztA==
+X-Gm-Message-State: AOJu0YyNfD60jm3vtGCiTjA99Qma9u8XP1wAo9nunsh9DXu5dESPzsT9
+ B/8U8EzC/RtWsPrhXDsQWG4qmDcOcS7FAJ5sHB0B2I8yLK/huHPMO/G+0Gs+TRQ=
+X-Google-Smtp-Source: AGHT+IGcck61umbUMgfe961N6IIg4yjJj2DtEGXEMLtQ9OLREDmuWyEpzZEwcIQC+YSes7UQ3S+c2A==
+X-Received: by 2002:a17:906:4794:b0:a75:3cd2:aaab with SMTP id
+ a640c23a62f3a-a77ba455290mr397533666b.3.1720193467111; 
+ Fri, 05 Jul 2024 08:31:07 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a77c3ef218bsm103433166b.71.2024.07.05.08.37.12
+ a640c23a62f3a-a77da27c044sm33109966b.157.2024.07.05.08.31.03
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 05 Jul 2024 08:37:14 -0700 (PDT)
+ Fri, 05 Jul 2024 08:31:04 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 7384B62176;
+ by draig.lan (Postfix) with ESMTP id 8C6CB62177;
  Fri,  5 Jul 2024 16:30:56 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Gustavo Romero <gustavo.romero@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 36/40] gdbstub: Make hex conversion function non-internal
-Date: Fri,  5 Jul 2024 16:30:48 +0100
-Message-Id: <20240705153052.1219696-37-alex.bennee@linaro.org>
+Subject: [PULL 37/40] gdbstub: Pass CPU context to command handler
+Date: Fri,  5 Jul 2024 16:30:49 +0100
+Message-Id: <20240705153052.1219696-38-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240705153052.1219696-1-alex.bennee@linaro.org>
 References: <20240705153052.1219696-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,42 +99,62 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Gustavo Romero <gustavo.romero@linaro.org>
 
-Make gdb_hextomem non-internal so it's not confined to use only in
-gdbstub.c.
+Allow passing the current CPU context to command handlers via user_ctx
+when the handler requires it.
 
 Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20240628050850.536447-8-gustavo.romero@linaro.org>
+Message-Id: <20240628050850.536447-9-gustavo.romero@linaro.org>
+Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20240705084047.857176-37-alex.bennee@linaro.org>
+Message-Id: <20240705084047.857176-38-alex.bennee@linaro.org>
 
-diff --git a/gdbstub/internals.h b/gdbstub/internals.h
-index 34121dc61a..bf5a5c6302 100644
---- a/gdbstub/internals.h
-+++ b/gdbstub/internals.h
-@@ -107,7 +107,6 @@ static inline int tohex(int v)
- 
- void gdb_put_strbuf(void);
- int gdb_put_packet_binary(const char *buf, int len, bool dump);
--void gdb_hextomem(GByteArray *mem, const char *buf, int len);
- void gdb_memtohex(GString *buf, const uint8_t *mem, int len);
- void gdb_memtox(GString *buf, const char *mem, int len);
- void gdb_read_byte(uint8_t ch);
 diff --git a/include/gdbstub/commands.h b/include/gdbstub/commands.h
-index 306dfdef97..e51f276b40 100644
+index e51f276b40..f3058f9dda 100644
 --- a/include/gdbstub/commands.h
 +++ b/include/gdbstub/commands.h
-@@ -91,4 +91,10 @@ void gdb_extend_set_table(GdbCmdParseEntry *table, int size);
+@@ -54,6 +54,8 @@ typedef union GdbCmdVariant {
+  * "stop reply" packet. The list of commands that accept such response is
+  * defined at the GDB Remote Serial Protocol documentation. See:
+  * https://sourceware.org/gdb/onlinedocs/gdb/Stop-Reply-Packets.html#Stop-Reply-Packets.
++ *
++ * @need_cpu_context: Pass current CPU context to command handler via user_ctx.
   */
- void gdb_extend_qsupported_features(char *qsupported_features);
+ typedef struct GdbCmdParseEntry {
+     GdbCmdHandler handler;
+@@ -61,6 +63,7 @@ typedef struct GdbCmdParseEntry {
+     bool cmd_startswith;
+     const char *schema;
+     bool allow_stop_reply;
++    bool need_cpu_context;
+ } GdbCmdParseEntry;
  
-+/**
-+ * Convert a hex string to bytes. Conversion is done per byte, so 2 hex digits
-+ * are converted to 1 byte. Invalid hex digits are treated as 0 digits.
-+ */
-+void gdb_hextomem(GByteArray *mem, const char *buf, int len);
+ /**
+diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
+index b1ca253f97..5c1612ed2a 100644
+--- a/gdbstub/gdbstub.c
++++ b/gdbstub/gdbstub.c
+@@ -938,6 +938,7 @@ static bool process_string_cmd(const char *data,
+ 
+     for (i = 0; i < num_cmds; i++) {
+         const GdbCmdParseEntry *cmd = &cmds[i];
++        void *user_ctx = NULL;
+         g_assert(cmd->handler && cmd->cmd);
+ 
+         if ((cmd->cmd_startswith && !startswith(data, cmd->cmd)) ||
+@@ -952,8 +953,12 @@ static bool process_string_cmd(const char *data,
+             }
+         }
+ 
++        if (cmd->need_cpu_context) {
++            user_ctx = (void *)gdbserver_state.g_cpu;
++        }
 +
- #endif /* GDBSTUB_COMMANDS_H */
+         gdbserver_state.allow_stop_reply = cmd->allow_stop_reply;
+-        cmd->handler(params, NULL);
++        cmd->handler(params, user_ctx);
+         return true;
+     }
+ 
 -- 
 2.39.2
 
